@@ -334,7 +334,7 @@
 			ar)))
 	    (length sym-array))))
 	(t
-	 (merror "rfft: input is not a list or an array: ~M." object))))
+	 (merror "real_fft: input is not a list or an array: ~M." object))))
 
 ;;; Maxima's RFFT function.
 ;;;
@@ -342,12 +342,12 @@
 ;;; to a real-valued float.  If the input has length N, then the
 ;;; output is a complex reuslt of length N/2 + 1 because of the
 ;;; symmetry of the FFT for real inputs.
-(defun $rfft (input)
+(defun $real_fft (input)
   (multiple-value-bind (z from-lisp input-length)
       (find-rfft-converters input)
     (declare (type (simple-array (complex double-float) (*)) z))
     (unless (= input-length (ash 1 (log-base2 input-length)))
-      (merror "rfft: size of input must be a power of 2, not ~M" input-length))
+      (merror "real_fft: size of input must be a power of 2, not ~M" input-length))
     (let* ((n (ash (length z) 1))
 	   (result (make-array (1+ (length z)) :element-type '(complex double-float))))
       ;; This declaration causes CCL to generate incorrect code for at
@@ -358,7 +358,7 @@
       ;; We don't handle input of length 4 or less.  Use the complex
       ;; FFT routine to produce the desired (correct) output.
       (when (< n 3)
-	(return-from $rfft ($fft input)))
+	(return-from $real_fft ($fft input)))
       (locally
 	  ;; Setting safety to 0 causes an internal compiler error with CCL 1.11.
 	  (declare (optimize (speed 3) (safety #-ccl 0 #+ccl 1)))
@@ -420,29 +420,29 @@
 			   (setf (aref result (1+ k)) (imagpart z))))
 		result))))
 	(t
-	 (merror "inverse_rfft: input is not a list or an array: ~M." object))))
+	 (merror "inverse_real_fft: input is not a list or an array: ~M." object))))
 
 ;;; Maxima's inverse RFFT routine.
 ;;;
 ;;; The input is assumed to consist of objects that can be converted
 ;;; to a complex-valued floats.  The input MUST have a lenght that is
 ;;; one more than a power of two, as is returned by RFFT.
-(defun $inverse_rfft (input)
+(defun $inverse_real_fft (input)
   (multiple-value-bind (ft from-lisp)
       (find-irfft-converters input)
     (declare (type (simple-array (complex double-float) (*)) ft))
     (let* ((n (1- (length ft))))
       (when (< n 2)
 	;; Just use the regular inverse fft to compute these values
-	;; because inverse_rfft below doesn't work for these cases.
-	(return-from $inverse_rfft ($inverse_fft input)))
+	;; because inverse_real_fft below doesn't work for these cases.
+	(return-from $inverse_real_fft ($inverse_fft input)))
       (let* ((order (log-base2 n))
 	     (sincos (sincos-table (1+ order)))
 	     (z (make-array n :element-type '(complex double-float))))
 	(declare (type (simple-array (complex double-float) (*)) sincos))
 
 	(unless (= n (ash 1 order))
-	  (merror "inverse_rfft: input length must be one more than a power of two, not ~M" (1+ n)))
+	  (merror "inverse_real_fft: input length must be one more than a power of two, not ~M" (1+ n)))
 
 	(locally
 	    (declare (optimize (speed 3)))
@@ -579,14 +579,14 @@
 	(t
 	 (merror "bf_rfft: input is not a list or an array: ~M." object))))
 
-(defun $bf_rfft (input)
+(defun $bf_real_fft (input)
   (multiple-value-bind (z from-lisp)
       (find-bf-rfft-converters input)
     (let* ((n (ash (length z) 1))
 	   (result (make-array (1+ (length z)))))
 
       (when (< n 3)
-	(return-from $bf_rfft ($bf_fft input)))
+	(return-from $bf_real_fft ($bf_fft input)))
     
       ;; Compute FFT of shorter complex vector.  NOTE: the result
       ;; returned by bigfloat:fft has scaled the output by the length of
@@ -643,23 +643,23 @@
 			   (setf (aref result (1+ k)) (imagpart z))))
 		result))))
 	(t
-	 (merror "bf_inverse_rfft: input is not a list or an array: ~M." object))))
+	 (merror "bf_inverse_real_fft: input is not a list or an array: ~M." object))))
   
-(defun $bf_inverse_rfft (input)
+(defun $bf_inverse_real_fft (input)
   (multiple-value-bind (ft from-lisp)
       (find-bf-irfft-converters input)
   (let* ((n (1- (length ft))))
     (when (< n 2)
       ;; Just use the regular inverse fft to compute these values
-      ;; because inverse_rfft below doesn't work for these cases.
-      (return-from $bf_inverse_rfft ($bf_inverse_fft input)))
+      ;; because inverse_real_fft below doesn't work for these cases.
+      (return-from $bf_inverse_real_fft ($bf_inverse_fft input)))
 
     (let* ((z (make-array n))
 	   (order (log-base2 n))
 	   (sincos (bigfloat::sincos-table (1+ order))))
 
       (unless (= n (ash 1 order))
-	(merror "bf_inverse_rfft: input length must be one more than a power of two, not ~M" (1+ n)))
+	(merror "bf_inverse_real_fft: input length must be one more than a power of two, not ~M" (1+ n)))
 
       (loop for k from 0 below n
 	    do
