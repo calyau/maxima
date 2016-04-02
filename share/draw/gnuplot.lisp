@@ -1571,7 +1571,7 @@
 	      (setf (aref sample i j) 1)
 	      (setf (aref sample i j) -1)))))))
 
-(defun print-segment (points xmin xdelta ymin ydelta)
+(defun draw-print-segment (points xmin xdelta ymin ydelta)
   (let* ((point1 (car points)) (point2 (cadr points))
 	 (x1 (coerce (+ xmin (/ (* xdelta (+ (car point1) (caddr point1))) 2)) 'flonum) )
 	 (y1 (coerce (+ ymin (/ (* ydelta (+ (cadr point1) (cadddr point1))) 2)) 'flonum) )
@@ -1579,7 +1579,7 @@
 	 (y2 (coerce (+ ymin (/ (* ydelta (+ (cadr point2) (cadddr point2))) 2)) 'flonum) ))
      (setq pts (nconc (list x1 y1 x2 y2) pts))))	
 
-(defun print-square (xmin xmax ymin ymax sample grid)
+(defun draw-print-square (xmin xmax ymin ymax sample grid)
   (let* ((xdelta (/ (- xmax xmin) ($first grid)))
 	 (ydelta (/ (- ymax ymin) ($second grid))))
     (do ((i 0 (1+ i)))
@@ -1596,7 +1596,7 @@
 		  (setq points (cons `(,i ,(1+ j) ,(1+ i) ,(1+ j)) points)))
 	      (if (< (* (aref sample i j) (aref sample i (1+ j))) 0)
 		  (setq points (cons `(,i ,j ,i ,(1+ j)) points)))
-	      (print-segment points xmin xdelta ymin ydelta)) )))))
+	      (draw-print-segment points xmin xdelta ymin ydelta)) )))))
 
 (defun imp-pl-prepare-factor (expr)
   (cond 
@@ -1652,7 +1652,7 @@
 		   (yymax (+ yymin ydelta)))
 	      (sample-data e xxmin xxmax yymin yymax
 			   ssample ip-grid-in)
-	      (print-square xxmin xxmax yymin yymax
+	      (draw-print-square xxmin xxmax yymin yymax
 			    ssample ip-grid-in) )) ))
 
     ; geometric transformation
@@ -2806,8 +2806,10 @@
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
-            (format nil "set obj 1 fc rgb '~a' fs solid 1.0 noborder ~%"
-                        (get-option '$background_color)) ; background rectangle
+            (if *multiplot-is-active*
+               ""
+               (format nil "set obj 1 fc rgb '~a' fs solid 1.0 noborder ~%"
+                       (get-option '$background_color)) )
             (if (equal (get-option '$proportional_axes) '$none)
                (format nil "set size noratio~%")
                (format nil "set size ratio -1~%") )
