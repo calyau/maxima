@@ -339,6 +339,8 @@ Default value: 10
 
 This option is relevant only for 2d @code{explicit} functions.
 
+See also @code{nticks}
+
 @opencatbox
 @category{Package draw}
 @closecatbox
@@ -2267,7 +2269,7 @@ See also @mref{logx_draw} and @mrefdot{logy_draw}
 
 
 
-@anchor{nticks_draw}
+@anchor{nticks}
 @defvr {Graphic option} nticks
 Default value: 29
 
@@ -2283,6 +2285,8 @@ This option affects the following graphic objects:
 @item
 @code{gr3d}: @mrefdot{parametric}
 @end itemize
+
+See also @code{adapt_depth}
 
 Example:
 
