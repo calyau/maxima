@@ -206,6 +206,7 @@ configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine
 configure_file("${CMAKE_SOURCE_DIR}/wine-sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-sbcl.sh")
 
 
+configure_file("${CMAKE_SOURCE_DIR}/setup-imaxima-imath.el-patch.tmpl" "${CMAKE_BINARY_DIR}/setup-imaxima-imath.el-patch" NEWLINE_STYLE WIN32)
 
 externalproject_add(maxima
   # first copy the maxima source to a build directory, since out-of-source-builds do not work
@@ -213,6 +214,7 @@ externalproject_add(maxima
   DEPENDS clisp sbcl tcl tk
   BUILD_IN_SOURCE 1
   PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/maxima-vtk-patch
+        COMMAND patch --binary -p0 < ${CMAKE_BINARY_DIR}/setup-imaxima-imath.el-patch
   CONFIGURE_COMMAND ./bootstrap
             COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=C:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...
