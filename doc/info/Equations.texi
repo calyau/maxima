@@ -255,6 +255,8 @@ For complex polynomials an algorithm by Jenkins and Traub is used
 the algorithm used is due to Jenkins (Algorithm 493, @i{ACM TOMS}, vol. 1,
 (1975), p.178).
 
+See also @mrefdot{bfallroots}
+
 Examples:
 
 @c ===beg===
