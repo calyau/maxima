@@ -350,8 +350,8 @@ Computation of sine and cosine coefficients.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{rfft}
-@deffn {Function} rfft (@var{x})
+@anchor{real_fft}
+@deffn {Function} real_fft (@var{x})
 
 Computes the fast Fourier transform of a real-valued sequence
 @var{x}.  This is equivalent to performing @code{fft(x)}, except that
@@ -362,7 +362,7 @@ No check is made that @var{x} contains only real values.
 
 The symmetry properites of the Fourier transform of real sequences to
 reduce he complexity.  In particular the first and last output values
-of @code{rfft} are purely real.  For larger sequencyes, @code{rfft}
+of @code{real_fft} are purely real.  For larger sequencyes, @code{real_fft}
 may be computed more quickly than @code{fft}.
 
 @opencatbox
@@ -371,11 +371,11 @@ may be computed more quickly than @code{fft}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{inverse_rfft}
-@deffn {Function} inverse_rfft (@var{y})
+@anchor{inverse_real_fft}
+@deffn {Function} inverse_real_fft (@var{y})
 Computes the inverse Fourier transfrom of @var{y}, which must have a
 length of @code{N/2+1} where @code{N} is a power of two.  That is, the
-input @var{x} is expected to be the output of @code{rfft}.
+input @var{x} is expected to be the output of @code{real_fft}.
 
 No check is made to ensure that the input has the correct format.
 (The first and last elements must be purely real.)
@@ -408,17 +408,17 @@ bigfloats and returns a bigfloat result.
 @closecatbox
 @end deffn
 
-@anchor{bf_rfft}
-@deffn {Function} bf_rfft (@var{x})
+@anchor{bf_real_fft}
+@deffn {Function} bf_real_fft (@var{x})
 
 Computes the forward fast Fourier transform of a real-valued input
 returning a bigfloat result.  This is the bigfloat version of
-@code{rfft}.
+@code{real_fft}.
 
-@anchor{bf_inverse_rfft}
-@deffn {Function} bf_inverse_rfft (@var{y})
+@anchor{bf_inverse_real_fft}
+@deffn {Function} bf_inverse_real_fft (@var{y})
 Computes the inverse fast Fourier transfrom with a real-valued
-bigfloat output.  This is the bigfloat version of @code{inverse_rfft}.
+bigfloat output.  This is the bigfloat version of @code{inverse_real_fft}.
 
 @c -----------------------------------------------------------------------------
 @node Functions for numerical solution of equations, Introduction to numerical solution of differential equations, Functions and Variables for fast Fourier transform, Numerical
