@@ -1,0 +1,424 @@
+This is a short introduction to the charsets package written by
+D. Wang in Maple and translated to Maxima by Dan Stanger partly
+mechanically with the help of an ocaml translater he wrote. The
+original Maple package can be found on the web, but doesn't work any
+more under recent versions of Maple, even having corrected the most
+obvious problems ( replacing " by % and "" by %%, removing the last
+instructions which aim at creating a Maple package). However it can be
+read into Maple and some functions can be called. The maxima package
+was also non functional, there are obviously many errors which need
+corrections, inexistent maxima functions, etc. I (Michel Talon) have
+corrected a number of these errors to the point that a fair number of
+tests in the test suite run and provide the expected result.  This is
+sufficient to compute charsets of different types and try to solve non
+linear systems of equations. However i have not touched at all to the
+functions trying to form irreducible charsets, because they are very
+complex, and there are already many problems before them.
+
+History
+
+Charsets are a way to study systems of multivariate polynomial
+equations, or systems of non linear differential partial
+equations. They have been invented in this context by J.F. Ritt in his
+book "Differential Algebra" (AMS 1950) but it was the Chinese
+mathematician Wu Wen-Tsun who recognized that the same method could be
+used to study polynomial ideals and get a technique for mechanical
+proof of geometry theorems. This work is described in "Basic
+principles of mechanical theorem proving in elementary geometry" (
+J. Sys. Sci. & Math. Scis. 4 (1984)) a very good and readable paper
+which can also be found in his Collected papers "Selected papers of
+Wen-Tsun Wu" (World Scientific 2008) as paper 12. At the same time
+Bruno Buchberger invented Groebner bases, which have a similar aim of
+providing a finite algorithm for deciding if a polynomial belongs to
+an ideal.  This technique and all the related algebra is excellently
+described in the book "Ideals, Varieties, and Algorithms" by D. Cox,
+J. Little and D. O'Shea (Springer 1997), which has a short description 
+of charsets. Finally there is an available working Maple package of
+mechanical geometry proofs called RENE in honour of Descartes by
+Doron Zeilberger
+http://www.math.rutgers.edu/~zeilberg/PG/RENE
+
+But the most systematic application of these cartesian methods to
+geometry is due to Wu Wen-Tsun and his students, particularly Dongming
+Wang and Shang-Ching Chou. The last one has a book "Mechanical
+geometry theorem proving" (Reidel 1988) which contains a clear
+exposition of the method followed by the proof of 512 geometry
+theorems. The first one has: "Elimination Practice: Software Tools and
+Applications" (Imperial College Press 2004) which is supposed to
+describe the algorithms is the present package, and several other
+books. The description below is based on Wu Wen-Tsun 's paper.
+
+Polynomial ordering
+
+One considers polynomials in several variables u1,...,ue and
+x1,...,xN.  The variables u are considered as parameters and the x are
+the true variables.  In geometry problems the u may be the abscissas
+of some points and the x their ordinates. Any ways this implies that
+the polynomial ring is of the form K[x1,...,xN] where K is itself a
+ring and not a field, which has implication for division of
+polynomials (K is the ring of polynomials in u). First one orders
+variables.  All the u are before all the x, and one fixes an order
+such as x1 < x2 < .... < xN. Then one orders monomials using the
+so-called lex or plex ordering (used in Groebner theory among other
+orders, such as grevlex).  This means that a monomial is larger than
+another one if he has a bigger variable to a higher degree, failing
+that one goes to the next bigger one, etc. Hence x1*x2*x3 < x1*x4 and
+x1*x2*x3 < x1*x2^2*x3. This is a total order on monomials compatible
+with the product.  For any polynomial F one can thus find the higher
+monomial in it, called the leading monomial, which contains the
+highest variable z=xm (1<= m <=N). One calls m the class of the
+polynomial and one can expand F= a0*z^P + a1*z^{p-1} +...+ap where the
+aj are polynomials in x1,...,x{m-1}. The term a0(x1,...,x{m-1}),
+coefficient of the highest power of xm is called the initial of F
+(much used in the package, as well as in Groebner theory).
+
+There exists a partial ordering between polynomials called rank. (In
+the package several weak versions of this notion are defined). We say
+that F has lower rank than G if either F has lower class than G
+(i.e. there appears a higher variable in G than in F), or if they have
+the same class p, the degree of F in xp is less than the degree of G
+in xp. If they are of the same degree in xp one says they have the
+same rank (one may imagine discriminating on x{p-1} but this
+definition doesn't). Two polynomials of class 0 (which only contain u
+variables) are of the same rank. If F is of class p one has F =
+f0*xp^m + ... and for any other polynomial G one can do euclidean
+division with respect to variable xp to write
+
+f0^s G = Q*F + R
+
+where Q is the quotient, R the remainder, such that the degree of R in
+xp is less than m and the factor f0^s is introduced with s minimal,
+because we are not allowed to do divisions in our ring. So each time
+we want to cancel a power of xp in G using f0*xp^m we have to multiply
+G by f0. Anyways R is called the reduction of G by F.
+
+We can now define ascending sets ("as" in the package) as ordered sets
+of polynomials [A1,...,Ar] such that either . r=1 and A1 # 0 called
+contradictory because there is no common zero . r > 1 then class(A1) <
+class(A2) < ... < class(Ar) meaning that the system is strictly
+triangular. Moreover the polynomials are respectively reduced, which
+means that Aj is reduced with respect to Ai for j>i, that is Aj
+contains the leading variable of Ai to a lowest power, which can
+always be achieved by division.  Necessarily r <= N.
+
+One can define a partial order on ascending sets. Consider two
+ascending sets [A1,...,Ar] and [B1,...,Bs].  We say that B < A , B has
+lower rank than A, if either there is an index j such that A1 has the
+same rank as B1, etc, A{j-1} has the same rank as B{j-1} while Bj has
+lower rank that Bj, or in the case where s>r and all Bj have the same
+rank as Aj (meaning same leading variable to same power).  Hence if by
+is obtained from A by adjunction of some permissible element, it is
+considered of lower rank. If sets [A] and [B] have same length and
+corresponding elements of same rank they are of the same rank. One can
+see that a decreasing sequence of ascending sets necessarily
+stabilizes (all sets have same rank) in a finite number of steps.  A
+minimal ascending set is called a basic set. This is what the package
+computes, using the following algorithm. Let be given a set of
+polynomials S, we want to study the ideal generated by S. First choose
+an ascending set in S. Start from a polynomial of lowest
+class, then if it exists a polynomial of second lowest class, etc.
+Reduce A2 with respect to A1, then A3 with respect to A1 and A2, etc.
+Let [A1,...,Ar] be the ascending set so obtained. It is a basic set
+since one cannot extend it. For any other
+polynomial B in the given polynomial set, not in [A] proceed as
+follows: divide B successively by Ar, ... ,A1:
+
+Ir^{sr} B = Qr*Ar + R{r-1},   where Ir is the initial of A_r, sr minimal
+I{r-1}^{s{r-1}} R{r-1} = Q{r-1}*A{r-1} + R{r-2}, I{r-1} initial of A{r-1}, etc.
+....
+I_1^s1 R1 = Q1*A1 + R0  where I_1 is the initial of A1 and s1 is mainimal.
+By combination we get
+I1^s1 ....Ir^sr B = Q'1*A1 + ... + Q'r*Ar + R 
+
+where R=R0, the I are the initials of the set [A], the Q' are
+polynomials, and the s are minimal. This is called pseudo division of
+B by the ascending set [A] and R is the pseudo remainder, and is
+implemented by charsets_prem in the package.  Of course R is reduced
+with respect to all polynomials in [A]. For all polynomials B in the
+given set S, add to set the pseudo remainders R of B with respect to
+[A].  Note they all lie in the ideal generated by S. We get a new set
+S1. Form a basic set in S1 like above, it will be of lower rank than
+the previous one. Continue in the same way until the decreasing
+sequence of basic sets stabilize. Then we have obtained what is called
+a charset. Any polynomial can be pseudo-divided by the charset [A] and
+the pseudo remainder vanishes if and only if the polynomial is in the
+ideal generated by S otherwise one could add the remainder to S and
+get a basic set of lower rank. Hence this algorithm gives a way to
+decide in a finite number of steps if a polynomial belongs to the
+ideal generated by S.
+
+Zeros of polynomial sets.
+
+One of the aims of these constructions is to find the common zeros of
+a set of multivariate polynomials. This is called an algebraic
+variety, or more precisely an affine part of an algebraic variety (if
+one considers a projective algebraic variety). Since a charset is
+strictly triangular, one can solve the equations successively variable
+by variable, like with the Gaussian pivoting method for linear
+equations. Since the divisions involved in the procedure introduce
+initials in the game one has to be careful with the results. Let
+[A1,...,Ar] be the charset, with initials I1,...,Ir.  For any
+polynomial G in the given set S one has: I1^s1 ....Ir^sr G = Q1*A1 +
+... + Qr*Ar thus any common zero of S is also a common zero of [A],
+and any common zero of [A] which is not a zero of The I_j is a common
+zero of S. The problems comes with the zeros of the initials, which in
+geometry problems correspond to exceptional configurations of the
+figures. The package tries to work around this difficulty by adding
+initials to the given polynomial sets and recomputing charsets, thus
+obtaining series of charsets. Unfortunately this works only partly at present.
+
+There is a second difficulty related to the irreducibility of the
+charsets, which is also related to the irreducibility of the above
+algebraic variety.  Recall the theorems in algebra: if V is the
+algebraic variety which is the common set of zeros of an ideal J, then
+Hilbert's theorem say that V is vacuous if and only if J contains the
+constant polynomial 1, and in general, a polynomial P vanishes on V if
+and only if some power of P belongs to J. The necessity of the power
+is easily seen, since taking for J the ideal generated by x^2 and y^2,
+and for P the polynomial x*y which vanishes on V={(x=0,y=0)}, we see
+that only p^2 belongs to J. An ideal is prime if when x*y belongs to J
+either x or y belongs to J. This generalizes prime numbers.  An ideal
+is primary if when x*y belongs to J and x doesn't, then some power y^m
+belongs to J.  This generalizes powers of prime numbers. The Lasker
+Noether theorem says that polynomial ideals can be uniquely decomposed
+as products of primary ideals
+https://en.wikipedia.org/wiki/Primary_decomposition 
+and this corresponds to the decomposition of an algebraic variety into
+irreducible components. The package contains functions to do this sort
+of decompositions, but at present they don't work. The relation with
+charsets is that one defines an irreducible charset [A] as a charset
+such that, not only each A_j is irreducible, but much more strongly,
+A2 is irreducible in the extension obtained by adding the roots of A1,
+etc. Hence this entails studying factorization not only on Q but on
+extensions. The package is supposed to do that. To clarify the
+condition take this example from Chou's book. A1=x1^2-u1,
+A2=x2^2-2*x1*x2+u1. Of course A1 is irreducible for generic u1, but as
+soon as one considers the extension obtained by adding a root x1, then
+A2=(x2-x1)^2 becomes reducible. Then one has the theorem that if [A]
+is an irreducible ascending chain and J is the ideal of polynomials
+having zero pseudo remainder with [A], then J is a prime ideal,
+defining an irreducible variety, and [A] is its charset. All of this
+is described in Chou's book, and may be necessary for the proof of
+some geometrical theorems in exceptional cases.
+
+Mechanical geometry theorem proving
+
+The main aim of these techniques is to be able to prove geometry
+theorems by using "analytic geometry" in the tradition of René
+Descartes.  The idea is to state the hypothesis of the theorem as a
+collection of polynomial equations, the conclusion being another
+polynomial equation. So the problem boils down to the ability to
+manipulate the hypothesis so as to deduce the conclusion.  If we want
+to do that mechanically, we need to consider the ideal generated by
+the hypothesis, and see if the conclusion (or a power of the
+conclusion) belongs to this ideal. One problem linked to
+irreducibility is that the hypothesis may define a reducible variety,
+and the conclusion may hold only on one component. Apparently
+such misbehaviour is rare. Let us look at an example from Chou's
+book, Simson's theorem. Let ABC be a triangle and D a point on the
+circumscribed circle of center O. Let E, F, G the orthogonal projections 
+of D on the three sides BC, CA, AB. Show that E, F, G are aligned.
+A judicious choice of parameters and variables is:
+A=(0,0), B=(u1,0), C=(u2,u3), O=(x2,x1), D=(x3,u4), E=(x5,x4),
+F=(x7,x6), G=(x3,0).  Note that D and G have same abscissa.  
+Let us list the hypothesis:
+h1: 2*u2*x2+2*u3*x1-u3^2-u2^2		h1=0 <=> OA=OC
+h2: 2*u1*x2-u1^2			h2=0 <=> OA=OB
+h3: -x3^2+2*x2*x3+2*u4*x1-u4^2		h3=0 <=> OA=OD
+h4: u3*x5+(u1-u2)*x4-u1*u3		h4=0 <=> EBC collinear
+h5: (u2-u1)*x5+u3*x4+(u1-u2)*x3-u3*u4	h5=0 <=> DE perp BC
+h6: u3*x7-u2*x6				h6=0 <=> AFC collinear
+h7: u2*x7+u3*x6-u2*x3-u3*u4		h7=0 <=> DF perp AC
+The conclusion EFG aligned reads g=0 with
+g: x4*x7+(x3-x5)*x6-x3*x4          
+Let us apply  charsets to this situation. After having loaded charsets.mac
+in maxima and loaded the above values of polynomials one gets:
+(%i11) ps:[h1,h2,h3,h4,h5,h6,h7]$
+
+(%i12) ord:[x1,x2,x3,x4,x5,x6,x7]$
+
+(%i13) charsets_charset(ps,ord,triset);
+
+(%o13) [2*u3*x1-u3^2-u2^2+u1*u2,2*u2*x2+2*u3*x1-u3^2-u2^2,
+        2*x3*x2+2*u4*x1-x3^2-u4^2,
+        (u4-x4)*u3^2+((-u1+x3)*u2+u1^2-x3*u1)*u3-x4*u2^2+2*x4*u1*u2-x4*u1^2,
+        (u4-x4)*u3+(x3-x5)*u2+(-x3+x5)*u1,(u4-x6)*u3^2+x3*u2*u3-x6*u2^2,
+        (u4-x6)*u3+(x3-x7)*u2]
+(%i14) charsets_premas(g,%,ord);
+
+(%o14) 0
+
+Here premas is the pseudo remainder with respect to an ascending
+set. Since it is 0, g belongs to the ideal generated by
+h1,...,h7. Hence the theorem is true. Note that the charset produced
+is indeed triangular, the first polynomial only depends on x1, the
+second on x1 and x2, the third x1,x2,x3, etc.Also note that the
+initials of these 7 polynomials are respectively 2*u3, 2*u2, 2*x2,
+-u2^2+2*u1*u2-u1^2, u1-u2, -u3^2-u2^2, -u2. So their vanishing
+corresponds to u1=u2 or u2 or u3 vanishing or finally x2
+vanishing. When u1=u2 the triangle is rectangle at B and O is the
+middle of AC. The triangle EDG is rectangle at D. the situation is not
+obviously degenerate, and the theorem is still true, but cannot be
+asserted by the above computation (except by passing to the limit of
+moving C on the circle).  For u2=0 the triangle is rectangle at A and
+we have the same situation. But u3=0 means that C is on AB and the
+triangle degenerates. Finally x2=0 means that OA perp AB, whhich
+implies that AP is tangent to the circle and thus A=B so the triangle
+is also degenerate.
+
+
+Documentation of some functions
+
+From the Maple help file
+
+For computing a characteristic set of a polynomial set ps, the invocation is
+CALLING SEQUENCE: charsets_charset(PS,X)  or  charsets_charset(PS,X,medset)
+                or  charsets_charset(PS,X,medset,'Y')
+PARAMETERS:  PS         - set or list of (multivariate) polynomials in X
+             X          - set or list of names,
+                         (not including parameters),
+             medset     - medial set: 'basset' (basic set),
+                          'wbasset' (weak-basic set),
+                          'qbasset' (quasi-basic set),
+                          'charsetn' (nearly characteristic set - default),
+                          'wcharsetn' (nearly weak-characteristic set),
+                          'qcharsetn' (nearly quasi-characteristic set),
+                          'triset' (triangularized set),
+                          'trisetc' (strong triangularized set),
+             Y          - (a name) list of reordered names,
+
+ SYNOPSIS :   
+ 
+- charset(PS,X,medset)  computes  a  (weak-, quasi-)  characteristic  set of
+  the polynomial set PS with respect to the variables X.  The  resulting set
+  CS  is returned as a list of polynomials.  CS  is  a characteristic set if
+  medset is 'basset',  'charsetn'  or  'trisetc';  a weak-characteristic set
+  if it is  'wbasset'  or  'wcharsetn';  a quasi-characteristic set if it is
+  'qbasset', 'qcharsetn' or 'triset'.
+- In any case,  the zero relation  Zero(CS/J) -< Zero(PS) -< Zero(CS) holds,
+  where  Zero(PS)  denotes the set of common zeros of the polynomials in PS,
+  Zero(CS/J) = Zero(CS) minus Zero(J),  J is  the  product  of  initials  of
+  polynomials in  CS  and  -< stands for ``be contained in``.
+- A list  of  variables  X := [x[1], x[2] ,..., x[n]]  induces  the ordering
+  x[1] < x[2] < ... < x[n].
+- If the variables are given as a set X := {x[1], x[2] ,..., x[n]}, they are
+  are  automatically  reordered  to  be "heuristically optimal"; The list of
+  reordered variables is assigned to the fourth argument 'Y' if it appears.
+
+The signification of this terminology is briefly discussed in the accompanying
+paper of Domning Wang. In principle all these functions work in maxima.
+Except that, since at that time maxima didn't have sets, one cannot specify sets
+of variables and automatic reordering doesn't occur, so that Y is useless.
+However one can call explicitly charsets_reorder to get a heuristic good order
+for the variables. I have not seen this being very effective. Example:
+
+(%i1) load("charsets.mac");
+
+; file: /home/michel/Documents/pro/charsets/charsets_set.lisp
+; in: DEFUN $CHARSETS_UNORDEREDP
+;     (DEFUN MAXIMA::$CHARSETS_UNORDEREDP (MAXIMA::A MAXIMA::B) T)
+; 
+; caught STYLE-WARNING:
+;   The variable A is defined but never used.
+; 
+; caught STYLE-WARNING:
+;   The variable B is defined but never used.
+; 
+; compilation unit finished
+;   caught 2 STYLE-WARNING conditions
+(%o1)                            charsets.mac
+(%i2) ps: [x^2-3*x*z+2, x*y+z^3, 5*y^2-3*z^3-7];
+                            2       3             3      2
+(%o2)           [- 3 x z + x  + 2, z  + x y, - 3 z  + 5 y  - 7]
+(%i3) charsets_charset(ps,[x,y,z],basset);
+             12       11       10        9         8        7        6        5
+(%o3)/R/ [5 x   - 81 x   + 60 x   - 486 x  - 4803 x  - 972 x  + 800 x  - 648 x
+           4        2            4      6      4       2                 2
+   + 1200 x  + 960 x  + 320, 27 x  y + x  + 6 x  + 12 x  + 8, - 3 x z + x  + 2]
+(%i4) charsets_charset(ps,[x,y,z],triset);
+             12       11       10        9         8        7        6        5
+(%o4)/R/ [5 x   - 81 x   + 60 x   - 486 x  - 4803 x  - 972 x  + 800 x  - 648 x
+            4        2         6               4       2                 2
+    + 1200 x  + 960 x  + 320, x  + (27 y + 6) x  + 12 x  + 8, - 3 x z + x  + 2]
+(%i5) charsets_charset(ps,[x,y,z],trisetc);
+             12       11       10        9         8        7        6        5
+(%o5)/R/ [5 x   - 81 x   + 60 x   - 486 x  - 4803 x  - 972 x  + 800 x  - 648 x
+            4        2         6               4       2                 2
+    + 1200 x  + 960 x  + 320, x  + (27 y + 6) x  + 12 x  + 8, - 3 x z + x  + 2]
+(%i6) charsets_charset(ps,[z,y,x],trisetc);
+              12        11       9        8        6        3
+(%o6)/R/ [25 z   - 135 z   + 60 z  - 315 z  + 176 z  + 168 z  + 196, 
+                       6         4      3           7        6        3
+                    5 z  + 15 y z  + 6 z  + 14, 15 z  - 5 x z  - 6 x z  - 14 x]
+(%i7) charsets_charset(ps,[z,x,y],trisetc);
+              12        11       9        8        6        3
+(%o7)/R/ [25 z   - 135 z   + 60 z  - 315 z  + 176 z  + 168 z  + 196, 
+        6        4      3                   7        6       4        3
+     5 z  - 9 x z  + 6 z  - 21 x z + 14, 9 z  + 5 y z  + 21 z  + 6 y z  + 14 y]
+
+
+As can be seen, changing the order of variables may change significantly the result,
+and some trial and error may give simpler results. If one wants to solve the system
+of equations, note the first one gives z, and the next two ones give x and y
+linearly knowing z.
+
+There are modifications of the algorithms aiming at factorizing a maximum of 
+extra variables introduced in the computation. They are called charsets_mcharset
+and have the same syntax as the previous ones. For example:
+(%i15) charsets_mcharset(ps,[y,x,z],trisetc);
+                   12           11          10           9           8
+(%o15)/R/ [[15625 y   + 151875 y   - 97500 y   - 850500 y  + 294675 y
+            7           6            5           4           3           2
+ + 1786050 y  - 522808 y  - 1666980 y  + 577563 y  + 583443 y  - 374556 y
+                      2           3                 4       2
+ + 117649, 3 y x + 5 y  - 7, (45 y  - 63 y) z + 25 y  - 52 y  + 49], [x]]
+ 
+which means that x has been factorized. Note this is not the result claimed by
+the Maple help file, so it may be false.
+
+In the hope of taming the problems coming from initials there are functions computing
+series of charsets, in which the initials are successively added to the game. See
+D. Wang's paper for that.  These functions are charsets_charser, for example:
+(%i23) ps2: [x1*x3-3*x2-1, -2*x4*x1-x3*x2*x4+2*x3, x2*x4^2-x4*x1+x3]$
+
+(%i24) charsets_charser(ps2,[x1,x2,x3,x4]);
+                 5        4         2                3
+(%o24)/R/ [[27 x2  + 27 x2  + (18 x1  + 36 x1 + 9) x2
+         2                2        2
+ + (12 x1  + 24 x1 + 1) x2  + (2 x1  + 4 x1) x2, x1 x3 - 3 x2 - 1, 
+       2                        2
+3 x4 x2  + (x4 - 6) x2 + 2 x4 x1  - 2], 
+                 2                           2                     2
+[x1, 3 x2 + 1, x3  - 12 x3, (x4 + 6) x3], [x1 , 3 x2 + 1, x1 x3, x4  x1], 
+                     2
+[x1, 3 x2 + 1, x3, x4 ]]
+
+Which is the result given in Maple help. One sees here a collection of charsets. One can put
+the arguments basset, charsetn or trisetc to the invocation. Here this doesn't change much.
+Finally one can call charsets_premas to see if a polynomial belongs to the ideal generated
+by the given polynomial set as shown above. Unfortunately most of the other functions
+in the package don't work at present, in particular those which deal with irreducibility.
+
+TODO
+
+When the Maple package has been translated, sets were not available in Maxima,
+while they are heavily used in the maple package. This is a big source of divergence 
+with the maple code, and maybe the cause of several problems. It would be nice to
+use only maxima sets in the package and see what happens. It would also be nice to
+introduce some of the functions in charsets_powers.lisp in the core maxima code,
+since having the basic definitions for multivariate polynomials in a CAS seems to me
+requisite. For example the definition of the leading term, the degree of a polynomial
+etc. Maxima only knows polynomials in one variable, which is severely lacking.
+Then it would be nice to continue debugging the package. Having a working version
+of the Maple code would help tracing functions and compare with what happens in Maxima.
+I have spent a lot of time trying to make charsets_triser work, without success.
+I have been able to run the function adjoina under Maple and check that it does the same
+thing in Maxima. However triser always end up looping or going into error.... In the course
+of doing that i have found a number of small errors scattered everywhere, in particular in
+support files like charsets_set.lisp  charsets_powers.lisp. I have been obliged to write
+another support file charsets_length.lisp, which could perhaps be replaced by the much simpler
+version contributed by R. Fateman fateman-len.lisp. One can find on the web another charsets
+package:
+http://www.mmrc.iss.ac.cn/~dwang/files/wsolve.txt
+which may be of interest for understanding some points.
+

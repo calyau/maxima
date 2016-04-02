@@ -47,10 +47,26 @@
               ((and (integerp a) (> s 1)
                     (cond ((= a 1) (take '(%zeta) s))
                           ((= a -1)
+			   ;; li[s](-1) = (2^(1-s)-1)*zeta(s)
                            (mul (add -1 (inv (expt 2 (- s 1))))
                                 (take '(%zeta) s))))))
               ((= s 2) (li2simp a))
-              ((= s 3) (li3simp a)))
+              ((= s 3) (li3simp a))
+	      ((or (complex-float-numerical-eval-p a)
+		   (complex-bigfloat-numerical-eval-p a))
+	       (cond ((bigfloat:= 1 (bigfloat:to a))
+		      ;; li[s](1) -> zeta(s)
+		      (let ((result ($zeta s)))
+			(if (floatp a)
+			    ($float result)
+			    ($bfloat result))))
+		     ((bigfloat:= -1 (bigfloat:to a))
+		      ;; li[s](-1) = (2^(1-s)-1)*zeta(s)
+		      (let ((result (mul (add -1 (inv (expt 2 (- s 1))))
+					 (take '(%zeta) s))))
+			(if (floatp a)
+			    ($float result)
+			    ($bfloat result)))))))
         (eqtest (subfunmakes '$li (ncons s) (ncons a))
                 expr))))
 
@@ -71,14 +87,29 @@
              index1 1 n t)))))
 
 (defun li2simp (arg)
-  (cond ((mnumericalp arg) (li2numer (float arg)))
+  (cond ((mnumericalp arg)
+	 ;; When arg is a float or rational, use the original li2numer
+	 ;; using Spences function.
+	 (li2numer (float arg)))
+	((complex-float-numerical-eval-p arg)
+	 ;; For complex args that should should result in float
+	 ;; answers, use bigfloat::li2numer.
+	 (to (bigfloat::li2numer (bigfloat:to ($float arg)))))
+	((or (bigfloat-numerical-eval-p arg)
+	     (complex-bigfloat-numerical-eval-p arg))
+	 (to (bigfloat::li2numer (bigfloat:to ($bfloat arg)))))
         ((alike1 arg '((rat) 1 2))
          (add (div (take '(%zeta) 2) 2)
               (mul '((rat simp) -1 2)
                    (power (take '(%log) 2) 2))))))
 
 (defun li3simp (arg)
-  (cond ((mnumericalp arg) (li3numer (float arg)))
+  (cond ((or (float-numerical-eval-p arg)
+	     (complex-float-numerical-eval-p arg))
+	 (to (bigfloat::li3numer (bigfloat:to ($float arg)))))
+	((or (bigfloat-numerical-eval-p arg)
+	     (complex-bigfloat-numerical-eval-p arg))
+	 (to (bigfloat::li3numer (bigfloat:to ($bfloat arg)))))
         ((alike1 arg '((rat) 1 2))
          (add (mul '((rat simp) 7 8) (take '(%zeta) 3))
               (mul (div (take '(%zeta) 2) -2) (take '(%log) 2))
@@ -171,28 +202,6 @@
 			  (/ (cl:expt (float pi) 2) 6)))))))
     (complexify (li2 y))))
 
-
-(defun li3numer (x)
-  (cond ((= x 0.0) 0.0)
-	((= x 1.0) 1.20205690)
-	((< x -1.0)
-	 (- (chebyli3 (/ x)) (* 1.64493407 (log (- x)))
-	     (/ (expt (log (- x)) 3) 6.0)))
-	((not (> x 0.5)) (chebyli3 x))
-	((not (> x 2.0))
-	 (let ((fac (* (expt (log x) 2) 0.5)))
-	   (m+t (+ 1.20205690
-		    (- (* (log x)
-			    (- 1.64493407 (chebyli2 (- 1.0 x))))
-			(chebys12 (- 1.0 x))
-			(* fac
-			    (log (cond ((< x 1.0) (- 1.0 x))
-				       ((1- x)))))))
-		(cond ((< x 1.0) 0)
-		      ((m*t (* fac -3.14159265) '$%i))))))
-	(t (m+t (+ (chebyli3 (/ x)) (* 3.28986813 (log x))
-		    (/ (expt (log x) 3) -6.0))
-		(m*t (* -1.57079633 (expt (log x) 2)) '$%i)))))
 
 (defvar *li2* (make-array 15. :initial-contents '(14.0 1.93506430 .166073033 2.48793229e-2
 						  4.68636196e-3 1.0016275e-3 2.32002196e-4
@@ -837,3 +846,180 @@
      ((and (integerp k) (complex-bigfloat-numerical-eval-p x))
       (to (bigfloat::lambert-w-k k (bigfloat:to x))))
      (t (list '(%generalized_lambert_w simp) k x)))))
+
+(in-package "BIGFLOAT")
+
+(defun li3numer (x)
+  ;; If |x| < series-threshold, the series is used.
+  (let ((series-threshold 0.8))
+    (cond ((zerop x)
+	   0.0)
+	  ((= x 1)
+	   (maxima::$zeta (maxima::to (float 3 x))))
+	  ((= x -1)
+	   ;; li[3](-1) = -(1-2^(1-3))*li[3](1)
+	   ;;           = 3/4*zeta(3)
+	   ;;
+	   ;; From the formula
+	   ;;
+	   ;;   li[s](-1) = (2^(1-s)-1)*zeta(s)
+	   ;;
+	   ;; (See http://functions.wolfram.com/10.08.03.0003.01)
+	   (* 3/4 (to (maxima::$zeta (maxima::to (float 3 x))))))
+	  ((> (abs x) 1)
+	   ;; For z not in the interval (0, 1) and for integral n, we
+	   ;; have the identity:
+	   ;;
+	   ;; li[n](z) = -log(-z)^n/n! + (-1)^(n-1)*li[n](1/z)
+	   ;;               + 2 * sum(li[2*r](-1)/(n-2*r)!*log(-z)^(n-2*r), r, 1, floor(n/2))
+	   ;;
+	   ;; (See http://functions.wolfram.com/ZetaFunctionsandPolylogarithms/PolyLog/17/02/01/01/0008/)
+	   ;;
+	   ;; In particular for n = 3:
+	   ;;
+	   ;; li[3](z) = li[3](1/z) - log(-z)/6*(log(-z)^2+%pi^2)
+	   (let* ((lg (log (- x)))
+		  (dpi (%pi x))
+		  (result (- (li3numer (/ x))
+			     (* (/ lg 6)
+				(+ (* lg lg) (* dpi dpi))))))
+		 result))
+	  ((> (abs x) .9)
+	   ;; When x is on or near the unit circle the other
+	   ;; approaches don't work.  Use the expansion in powers of
+	   ;; log(z) (from cephes cpolylog)
+	   ;;
+	   ;;   li[s](z) = sum(Z(s-j)*(log(z))^j/j!, j = 0, inf)
+	   ;;
+	   ;; where Z(j) = zeta(j) for j != 1.  For j = 1:
+	   ;;
+	   ;;   Z(1) = -log(-log(z)) + sum(1/k, k, 1, s - 1)
+	   ;;
+	   ;;
+	   ;; This is similar to
+	   ;; http://functions.wolfram.com/10.08.06.0024.01, but that
+	   ;; identity is clearly undefined if v is a positive
+	   ;; integer because zeta(1) is undefined.
+	   ;;
+	   ;; Thus,
+	   ;;
+	   ;;  li[3](z) = Z(3) + Z(2)*log(z) + Z(1)*log(z)^2/2!
+	   ;;    + Z(0)*log(z)^3/3! + sum(Z(-k)*log(z)^(k+4)/(k+4)!,k,1,inf);
+	   ;;
+	   ;; But Z(-k) = zeta(-k) is 0 if k is even.  So
+	   ;;
+	   ;;  li[3](z) = Z(3) + Z(2)*log(z) + Z(1)*log(z)^2/2!
+	   ;;    + Z(0)*log(z)^3/3! + sum(Z(-(2*k+1))*log(z)^(2*k+4)/(2*k+4)!,k,0,inf);
+
+	   (flet ((zfun (j)
+		    (cond ((= j 1)
+			   (let ((sum (- (log (- (log x))))))
+			     (+ sum
+				(loop for k from 1 below 3
+				      sum (/ k)))))
+			  (t
+			   (to (maxima::$zeta (maxima::to (float j (realpart x)))))))))
+	     (let* ((eps (epsilon x))
+		    (logx (log x))
+		    (logx^2 (* logx logx))
+		    (sum (+ (zfun 3)
+			    (* (zfun 2) logx)
+			    (* (zfun 1) logx^2 1/2)
+			    (* (zfun 0) (* logx^2 logx) 1/6))))
+	       (do* ((k 0 (1+ k))
+		     (top (expt logx 4) (* top logx^2))
+		     (bot 24 (* bot (+ k k 3) (+ k k 4)))
+		     (term (* (/ top bot) (to (maxima::$zeta (- (+ 1 (* 2 k))))))
+			   (* (/ top bot) (to (maxima::$zeta (- (+ 1 (* 2 k))))))))
+		    ((<= (abs term) (* (abs sum) eps)))
+		 ;;(format t "~3d: ~A / ~A = ~A~%" k top bot term)
+		 (incf sum term))
+	       sum)))
+	  ((> (abs x) series-threshold)
+	   ;; The series converges too slowly so use the identity:
+	   ;;
+	   ;;   li[3](-x/(1-x)) + li[3](1-x) + li[3](x)
+	   ;;     = li[3](1) + %pi^2/6*log(1-x) - 1/2*log(x)*(log(1-x))^2 + 1/6*(log(1-x))^3
+	   ;;
+	   ;; Or
+	   ;;
+	   ;;   li[3](x) = li[3](1) + %pi^2/6*log(1-x) - 1/2*log(x)*(log(1-x))^2 + 1/6*(log(1-x))^3
+	   ;;      - li[3](-x/(1-x)) - li[3](1-x)
+	   ;;
+	   ;; (See http://functions.wolfram.com/10.08.17.0048.01)
+	   (let* ((dpi (%pi x))
+		  (u (log x))
+		  (s (/ (* u u u) 6))
+		  (xc (- 1 x)))
+	     (decf s (* 0.5 u u (log xc)))
+	     (incf s (/ (* dpi dpi u) 6))
+	     (decf s (li3numer (- (/ xc x))))
+	     (decf s (li3numer xc))
+	     (incf s (li3numer 1))))
+	  (t
+	   ;; Sum the power series.  threshold determines when the
+	   ;; summation has converted.
+	   (let* ((threshold (epsilon x))
+		  (p (* x x x))
+		  (term (/ p 27)))
+	     (incf term (* 0.125 x x))
+	     (incf term x)
+	     (do* ((k 4 (1+ k))
+		   (p1 (* p x) (* p1 x))
+		   (h (/ p1 (* k k k)) (/ p1 (* k k k)))
+		   (s h (+ s h)))
+		  ((<= (abs (/ h s)) threshold)
+		   (+ s term))))))))
+
+(defun li2numer (z)
+  ;; The series threshold to above sqrt(1/2) because li[2](%i) needs
+  ;; the value of li[2](1/2-%i/2), and the magnitude of the argument
+  ;; is sqrt(1/2) = 0.707.  If the threshold is below this, we get
+  ;; into an infinite recursion oscillating between the two args.
+  (let ((series-threshold .75))
+    (cond ((zerop z)
+	 0)
+	((= z 1)
+	 ;; %pi^2/6.  This follows from the series.
+	 (/ (expt (%pi z) 2) 6))
+	((= z -1)
+	 ;; -%pi^2/12.  From the formula
+	 ;;
+	 ;;   li[s](-1) = (2^(1-s)-1)*zeta(s)
+	 ;;
+	 ;; (See http://functions.wolfram.com/10.08.03.0003.01)
+	 (/ (expt (%pi z) 2) -12))
+	((> (abs z) 1)
+	 ;; Use
+	 ;;   li[2](z) = -li[2](1/z) - 1/2*log(-z)^2 - %pi^2/6,
+	 ;;
+	 ;; valid for all z not in the intervale (0, 1).
+	 ;;
+	 ;; (See http://functions.wolfram.com/10.08.17.0013.01)
+	 (- (+ (li2numer (/ z))
+	       (* 0.5 (expt (log (- z)) 2))
+	       (/ (expt (%pi z) 2) 6))))
+	((> (abs z) series-threshold)
+	 ;; For 0.5 <= |z|, where the series would not converge very quickly, use
+	 ;;
+	 ;;  li[2](z) = li[2](1/(1-z)) + 1/2*log(1-z)^2 - log(-z)*log(1-z) - %pi^2/6
+	 ;;
+	 ;; (See http://functions.wolfram.com/10.08.17.0016.01)
+	 (let* ((1-z (- 1 z))
+		(ln (log 1-z)))
+	   (+ (li2numer (/ 1-z))
+	      (* 0.5 ln ln)
+	      (- (* (log (- z))
+		    ln))
+	      (- (/ (expt (%pi z) 2) 6)))))
+	(t
+	 ;; Series evaluation:
+	 ;;
+	 ;; li[2](z) = sum(z^k/k^2, k, 1, inf);
+	 (let ((eps (epsilon z)))
+	   (do* ((k 0 (1+ k))
+		 (term z (* term (/ (* z k k)
+				    (expt (1+ k) 2))))
+		 (sum z (+ term sum)))
+		((<= (abs (/ term sum)) eps)
+		 sum)))))))

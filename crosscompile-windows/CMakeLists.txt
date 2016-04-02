@@ -40,7 +40,7 @@ set(GNUPLOTVERSION   5.0.3)
 set(TCLVERSION       8.6.5)
 set(TKVERSION        8.6.5)
 set(VTKVERSION       6.3.0)
-set(SBCLVERSION      1.3.3)
+set(SBCLVERSION      1.3.4)
 
 
 # MD5 checksums for the current program versions.
@@ -81,7 +81,7 @@ set(VTK_URL       "http://www.vtk.org/files/release/6.3/VTK-${VTKVERSION}.tar.gz
 #    set(SBCL_MD5      "f8cd3044c74beb84bba4aa9df5bb804e")
 # else()
     set(SBCL_INSTALLER "sbcl-${SBCLVERSION}-x86-windows-binary.msi")
-    set(SBCL_MD5      "8b287f4c710b84cb7f60882c6aac82c3")
+    set(SBCL_MD5      "a8afa2f0f9b4237b63ef16993afc498f")
 # endif()
 set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/${SBCL_INSTALLER}")
 
@@ -206,6 +206,7 @@ configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine
 configure_file("${CMAKE_SOURCE_DIR}/wine-sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-sbcl.sh")
 
 
+configure_file("${CMAKE_SOURCE_DIR}/setup-imaxima-imath.el-patch.tmpl" "${CMAKE_BINARY_DIR}/setup-imaxima-imath.el-patch" NEWLINE_STYLE WIN32)
 
 externalproject_add(maxima
   # first copy the maxima source to a build directory, since out-of-source-builds do not work
@@ -213,6 +214,7 @@ externalproject_add(maxima
   DEPENDS clisp sbcl tcl tk
   BUILD_IN_SOURCE 1
   PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/maxima-vtk-patch
+        COMMAND patch --binary -p0 < ${CMAKE_BINARY_DIR}/setup-imaxima-imath.el-patch
   CONFIGURE_COMMAND ./bootstrap
             COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=C:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...

@@ -1969,3 +1969,79 @@ true;
 /* Test from the commit 576c7508 */
 ceiling((207300647060*%e^-563501581931)/(403978495031*%e^-1098127402131));
 ceiling((207300647060*%e^534625820200)/403978495031);
+
+/* Bug #3098: numerical evaluation of li[3] */
+li[3](0.0);
+0.0;
+
+closeto(li[3](1.0) - zeta(3.0), 1e-15);
+true;
+
+closeto(li[3](0.5) - li[3](1/2), 1e-15);
+true;
+
+closeto(li[3](-2.0) - float(subst(z=-2.0, li[3](1/z) - log(-z)/6*(log(-z)^2+%pi^2))), 1e-15);
+true;
+
+closeto(abs(li[3](2.0) - expand(float(subst(z=2.0, li[3](1/z) - log(-z)/6*(log(-z)^2+%pi^2))))), 1e-15);
+true;
+
+li[2](-1);
+-%pi^2/12;
+
+li[2](1);
+%pi^2/6;
+
+li[2](1/2);
+%pi^2/12 - log(2)^2/2;
+
+closeto(li[2](0.5) - (%pi^2/12 - log(2)^2/2), 1.1103e-16);
+true;
+
+closeto(li[2](2.0) - (%pi^2/4 - %i*%pi*log(2)), 8.9e-16), numer;
+true;
+
+closeto(li[2]((1-sqrt(5))/2) - (log((sqrt(5)-1)/2)^2/2-%pi^2/15), 1.1103e-16), numer;
+true;
+
+/* Catalan's constant: 0.915965594... */
+closeto(li[2](1.0*%i) - (-%pi^2/48 + %i*0.915965594177219015054603514932384110774149374281672134266), 1.3878e-16), numer;
+true;
+
+closeto(li[2](1.0-%i) - (%pi^2/16-%i*0.915965594177219015054603514932384110774149374281672134266 - %pi*%i*log(2)/4), 4.5e-16), numer;
+true;
+
+/* Make sure li[3](1/7),numer returns a float and not a bfloat */
+?floatp(li[3](float(1/7)));
+true;
+
+?floatp(realpart(li[2](1.0+1.0*%i)));
+true;
+
+closeto(li[3](0.5) - float((7*zeta(3))/8+log(2)^3/6-(%pi^2*log(2))/12), 1.1103e-16);
+true;
+
+closeto(float(li[3](exp(%pi*%i/3))) - float(zeta(3)/3 + %i*5*%pi^3/162), 4.5776e-16);
+true;
+
+/* Bug 3112: zeta(n) for negative even n is inaccurate */
+zeta(-4.0);
+0.0;
+
+zeta(-6b0);
+0b0;
+
+/* Bug 3105: li[s](1.0) doesn't simplify */
+closeto(li[4](1.0)-li[4](1), 1.11022e-16);
+true;
+
+closeto(li[4](-1.0)-li[4](-1), 1.11022e-16);
+true;
+
+closeto(li[4](1b0)-li[4](1), 10^-fpprec);
+true;
+
+closeto(li[4](-1b0)-li[4](-1), 10^-fpprec);
+true;
+
+

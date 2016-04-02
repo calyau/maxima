@@ -12,7 +12,7 @@ p_braket(_f,_g):= block([_x,_a,_b,_j,_jj:[],basis ],
 	mode_declare([_x,_a,_b],any),
 	basis:[],
 	for i:1 thru dim do (
-	basis:endcons(basis[i],basis)
+	basis:endcons('basis[i],basis)
 	),
 	_x:coefmatrix([d(_f)],basis),
 	_j:matrix([0,1],[-1,0]),

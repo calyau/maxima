@@ -1,0 +1,294 @@
+Maxima 5.35.1 http://maxima.sourceforge.net
+using Lisp SBCL 1.1.14.debian
+Distributed under the GNU Public License. See the file COPYING.
+Dedicated to the memory of William Schelter.
+The function bug_report() provides bug reporting information.
+(%i1) load("charsets.mac");
+
+; file: /home/michel/Documents/pro/charsets/maxima_charsets/charsets_set.lisp
+; in: DEFUN $CHARSETS_UNORDEREDP
+;     (DEFUN MAXIMA::$CHARSETS_UNORDEREDP (MAXIMA::A MAXIMA::B) T)
+; 
+; caught STYLE-WARNING:
+;   The variable A is defined but never used.
+; 
+; caught STYLE-WARNING:
+;   The variable B is defined but never used.
+; 
+; compilation unit finished
+;   caught 2 STYLE-WARNING conditions
+(%o1)                            charsets.mac
+(%i2) load("test.mac");
+(%o2)                              test.mac
+(%i3) charsets_test();
+Executing test number  1 
+Test 1 input: 
+charsets_charset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4])$
+Test 1 expected output: 
+[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),
+  x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2]]$
+CharSets_Test: 1 Good 
+Executing test number  2 
+Test 2 input: 
+charsets_charset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],basset)$
+Test 2 expected output: 
+[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),
+  x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2]]$
+CharSets_Test: 2 Good 
+Executing test number  3 
+Test 3 input: 
+charsets_charset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],wbasset)$
+Test 3 expected output: 
+[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),x3^2-x1*x2*x3+2*x1*x2^2+x1^2*x2+x1,
+  x1*x4+x3-x1*x2]]$
+CharSets_Test: 3 Good 
+Executing test number  4 
+Test 4 input: 
+charsets_charset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],qbasset)$
+Test 4 expected output: 
+[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),x3^2-x1*x2*x3+2*x1*x2^2+x1^2*x2+x1,
+  x1*x4+x3-x1*x2]]$
+CharSets_Test: 4 Good 
+Executing test number  5 
+Test 5 input: 
+charsets_charset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],charsetn)$
+Test 5 expected output: 
+[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),
+  x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2]]$
+CharSets_Test: 5 Good 
+Executing test number  6 
+Test 6 input: 
+charsets_charset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],wcharsetn)$
+Test 6 expected output: 
+[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),x3^2-x1*x2*x3+2*x1*x2^2+x1^2*x2+x1,
+  x1*x4+x3-x1*x2]]$
+CharSets_Test: 6 Good 
+Executing test number  7 
+Test 7 input: 
+charsets_charset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],qcharsetn)$
+Test 7 expected output: 
+[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),x3^2-x1*x2*x3+2*x1*x2^2+x1^2*x2+x1,
+  x1*x4+x3-x1*x2]]$
+CharSets_Test: 7 Good 
+Executing test number  8 
+Test 8 input: 
+charsets_charset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],triset)$
+Test 8 expected output: 
+[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),x3^2-x1*x2*x3+2*x1*x2^2+x1^2*x2+x1,
+  x1*x4+x3-x1*x2]]$
+CharSets_Test: 8 Good 
+Executing test number  9 
+Test 9 input: 
+charsets_charset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],trisetc)$
+Test 9 expected output: 
+[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),
+  x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2]]$
+CharSets_Test: 9 Good 
+Executing test number  10 
+Test 10 input: 
+charsets_mcharset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                   x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4])$
+Test 10 expected output: 
+[[[x1],
+  [2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,
+   x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2]]]$
+CharSets_Test: 10 Good 
+Executing test number  11 
+Test 11 input: 
+charsets_mcharset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                   x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],basset)$
+Test 11 expected output: 
+[[[x1],
+  [2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,
+   x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2]]]$
+CharSets_Test: 11 Good 
+Executing test number  12 
+Test 12 input: 
+charsets_mcharset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                   x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],wbasset)$
+Test 12 expected output: 
+[[[x1],
+  [2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,x3^2-x1*x2*x3+2*x1*x2^2+x1^2*x2+x1,
+   x1*x4+x3-x1*x2]]]$
+CharSets_Test: 12 Good 
+Executing test number  13 
+Test 13 input: 
+charsets_mcharset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                   x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],qbasset)$
+Test 13 expected output: 
+[[[x1],
+  [2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,x3^2-x1*x2*x3+2*x1*x2^2+x1^2*x2+x1,
+   x1*x4+x3-x1*x2]]]$
+CharSets_Test: 13 Good 
+Executing test number  14 
+Test 14 input: 
+charsets_mcharset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                   x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],charsetn)$
+Test 14 expected output: 
+[[[x1],
+  [2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,
+   x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2]]]$
+CharSets_Test: 14 Good 
+Executing test number  15 
+Test 15 input: 
+charsets_mcharset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                   x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],wcharsetn)$
+Test 15 expected output: 
+[[[x1],
+  [2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,x3^2-x1*x2*x3+2*x1*x2^2+x1^2*x2+x1,
+   x1*x4+x3-x1*x2]]]$
+CharSets_Test: 15 Good 
+Executing test number  16 
+Test 16 input: 
+charsets_mcharset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                   x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],qcharsetn)$
+Test 16 expected output: 
+[[[x1],
+  [2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,x3^2-x1*x2*x3+2*x1*x2^2+x1^2*x2+x1,
+   x1*x4+x3-x1*x2]]]$
+CharSets_Test: 16 Good 
+Executing test number  17 
+Test 17 input: 
+charsets_mcharset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                   x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],triset)$
+Test 17 expected output: 
+[[[x1],
+  [2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,x3^2-x1*x2*x3+2*x1*x2^2+x1^2*x2+x1,
+   x1*x4+x3-x1*x2]]]$
+CharSets_Test: 17 Good 
+Executing test number  18 
+Test 18 input: 
+charsets_mcharset([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                   x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],trisetc)$
+Test 18 expected output: 
+[[[x1],
+  [2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,
+   x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2]]]$
+CharSets_Test: 18 Good 
+Executing test number  19 
+Test 19 input: 
+charsets_iniset([12*b^3+6*b^2+b-1,
+                 (4*b^2-1)*(11664*c2^3+67392*b^2*c2^2+58320*b*c2^2-17712*c2^2
+                                      -50544*b^2*c2-58320*b*c2+23328*c2
+                                      +17496*b^2+29484*b-6156)
+                  -11],[b,c2])$
+Test 19 expected output: 
+[[2*b-1,2*b+1]]$
+CharSets_Test: 19 Good 
+Executing test number  20 
+Test 20 input: 
+charsets_remset([-11664*c2^3-67392*b^2*c2^2-58320*b*c2^2+17712*c2^2
+                            +50544*b^2*c2+58320*b*c2-23328*c2+12*b^3-17490*b^2
+                            -29483*b+6155,
+                 (11664*c2^3+67392*b^2*c2^2+58320*b*c2^2-17712*c2^2
+                            -50544*b^2*c2-58320*b*c2+23328*c2+17496*b^2
+                            +29484*b-6156)
+                  ^2,
+                 2*(11664*c2^3+67392*b^2*c2^2+58320*b*c2^2-17712*c2^2
+                              -50544*b^2*c2-58320*b*c2+23328*c2+17496*b^2
+                              +29484*b-6156)
+                  -b^2],
+                [12*b^3+6*b^2+b-1,
+                 11664*c2^3+67392*b^2*c2^2+58320*b*c2^2-17712*c2^2
+                           -50544*b^2*c2-58320*b*c2+23328*c2+17496*b^2+29484*b
+                           -6156],[b,c2])$
+Test 20 expected output: 
+[[b^2]]$
+CharSets_Test: 20 Good 
+Executing test number  21 
+Test 21 input: 
+charsets_charser([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4])$
+Test 21 expected output: 
+[[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),
+   x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2],
+  [x1,2*x2^2+1,x3,x4^2-x2*x4+3*x2],[x1+1,x2,x3^2-1,x4-x3]]]$
+CharSets_Test: 21 Good 
+Executing test number  22 
+Test 22 input: 
+charsets_charser([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],basset)$
+Test 22 expected output: 
+[[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),
+   x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2],
+  [x1,2*x2^2+1,x3,x4^2-x2*x4+3*x2],[x1+1,x2,x3^2-1,x4-x3]]]$
+CharSets_Test: 22 Good 
+Executing test number  24 
+Test 24 input: 
+charsets_charser([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],charsetn)$
+Test 24 expected output: 
+[[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),
+   x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2],
+  [x1,2*x2^2+1,x3,x4^2-x2*x4+3*x2],[x1+1,x2,x3^2-1,x4-x3]]]$
+CharSets_Test: 24 Good 
+Executing test number  26 
+Test 26 input: 
+charsets_charser([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+                  x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],trisetc)$
+Test 26 expected output: 
+[[[x1*(2*x1*x2^2+2*x2^2-2*x1*x2+x1+1),
+   x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2],
+  [x1,2*x2^2+1,x3,x4^2-x2*x4+3*x2],[x1+1,x2,x3^2-1,x4-x3]]]$
+CharSets_Test: 26 Good 
+Executing test number  27 
+Test 27 input: 
+charsets_mcs([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+              x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4])$
+Test 27 expected output: 
+[[[2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,
+   x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2],
+  [x1,2*x2^2+1,x3,x4^2-x2*x4+3*x2],[x1+1,x2,x3^2-1,x4-x3]]]$
+CharSets_Test: 27 Good 
+Executing test number  28 
+Test 28 input: 
+charsets_mcs([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+              x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],basset)$
+Test 28 expected output: 
+[[[2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,
+   x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2],
+  [x1,2*x2^2+1,x3,x4^2-x2*x4+3*x2],[x1+1,x2,x3^2-1,x4-x3]]]$
+CharSets_Test: 28 Good 
+Executing test number  29 
+Test 29 input: 
+charsets_mcs([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+              x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],wbasset)$
+Test 29 expected output: 
+[[[2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,x3^2-x1*x2*x3+2*x1*x2^2+x1^2*x2+x1,
+   x1*x4+x3-x1*x2],[x1,2*x2^2+1,x3,x4^2-x2*x4+3*x2],
+  [x1+1,x2,x3^2-1,x3*x4-2*x2^2-x1*x2-1]],
+ [[2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,x3^2-x1*x2*x3+2*x1*x2^2+x1^2*x2+x1,
+   x1*x4+x3-x1*x2],[x1,2*x2^2+1,x3,x4^2-x2*x4+3*x2],
+  [x1+1,x2,x3^2+x2*x3-2*x2^2+x2-1,x3*x4-2*x2^2-x1*x2-1]]]$
+CharSets_Test: 29 Good 
+Executing test number  30 
+Test 30 input: 
+charsets_mcs([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+              x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],charsetn)$
+Test 30 expected output: 
+[[[2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,
+   x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2],
+  [x1,2*x2^2+1,x3,x4^2-x2*x4+3*x2],[x1+1,x2,x3^2-1,x4-x3]]]$
+CharSets_Test: 30 Good 
+Executing test number  32 
+Test 32 input: 
+charsets_mcs([x1*x4^2+x4^2-x1*x2*x4-x2*x4+x1*x2+3*x2,x1*x4+x3-x1*x2,
+              x3*x4-2*x2^2-x1*x2-1],[x1,x2,x3,x4],trisetc)$
+Test 32 expected output: 
+[[[2*x1*x2^2+2*x2^2-2*x1*x2+x1+1,
+   x1*x3^2+x3^2-x1^2*x2*x3-x1*x2*x3+x1^3*x2+3*x1^2*x2,x1*x4+x3-x1*x2],
+  [x1,2*x2^2+1,x3,x4^2-x2*x4+3*x2],[x1+1,x2,x3^2-1,x4-x3]]]$
+CharSets_Test: 32 Good 
+(%o3)                                done
+(%i4) 
+
+

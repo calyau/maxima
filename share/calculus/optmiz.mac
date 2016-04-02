@@ -116,7 +116,7 @@ modh(grad,decslkmults) /*end MODHESSIAN*/,
        /* output */
          mhesssub:apply('ev,[mhess,stapts[i],'rectform]),
  /*eval. modified Hessian */
-         cpolysub:rectform(newdet(mhesssub,ntot)),/*form poly in EIGEN*/
+         cpolysub:rectform(newdet(mhesssub)),/*form poly in EIGEN*/
             /* if CPOLYSUB is univariate use REALROOTS, otherwise
             use the slower SOLVE function: */
          if listofvars(cpolysub) = [eigen] and freeof('%i,cpolysub)

@@ -116,12 +116,28 @@
 (defmfun div (x y)
   (if (=1 x)
       (inv y)
-      (mul x (inv y))))
+      (cond
+        ((and (floatp x) (floatp y))
+         (/ x y))
+        ((and ($bfloatp x) ($bfloatp y))
+         ;; Call BIGFLOATP to ensure that arguments have same precision.
+         ;; Otherwise FPQUOTIENT could return a spurious value.
+         (bcons (fpquotient (cdr (bigfloatp x)) (cdr (bigfloatp y)))))
+        (t
+          (mul x (inv y))))))
 
 (defmfun div* (x y)
   (if (=1 x)
       (inv* y)
-      (mul (simplifya x nil) (inv* y))))
+      (cond
+        ((and (floatp x) (floatp y))
+         (/ x y))
+        ((and ($bfloatp x) ($bfloatp y))
+         ;; Call BIGFLOATP to ensure that arguments have same precision.
+         ;; Otherwise FPQUOTIENT could return a spurious value.
+         (bcons (fpquotient (cdr (bigfloatp x)) (cdr (bigfloatp y)))))
+        (t
+          (mul (simplifya x nil) (inv* y))))))
 
 (defmfun ncmul2 (x y)
   (simplifya `((mnctimes) ,x ,y) t))
