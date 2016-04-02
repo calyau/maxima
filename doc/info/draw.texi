@@ -286,6 +286,7 @@ Example:
 (%i5) draw2d(color=brown, explicit(x^4,x,-1,1))$
 (%i6) multiplot_mode(none)$
 @end example
+@figure{draw_multiplot}
 
 @opencatbox
 @category{Package draw} @category{File output}
