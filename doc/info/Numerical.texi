@@ -193,7 +193,9 @@ Results are always computed as floats
 or expressions @code{a + b*%i} where @code{a} and @code{b} are floats.
 If bigfloat precision is needed the function @mref{bf_fft} can be used
 instead as a drop-in replacement of @code{fft} that is slower, but
-supports bfloats. 
+supports bfloats. In addition if it is known that the input consists
+of only real values (no imaginary parts), @mref{real_fft} can be used
+which is potentially faster.
 
 The discrete Fourier transform is defined as follows.
 Let @code{y} be the output of the transform.
@@ -237,7 +239,9 @@ b[n/2] = 0
 @code{load(fft)} loads this function.
 
 See also @mref{inverse_fft} (inverse transform), @mrefcomma{recttopolar} and
-@mrefdot{polartorect}
+@mrefdot{polartorect}. See @mref{real_fft} for FFTs of a real-valued
+input, and @mref{bf_fft} and @mref{bf_real_fft} for operations on
+bigfloat values.
 
 Examples:
 
@@ -365,6 +369,8 @@ reduce he complexity.  In particular the first and last output values
 of @code{real_fft} are purely real.  For larger sequencyes, @code{real_fft}
 may be computed more quickly than @code{fft}.
 
+Since the output length is short, the normal @mref{inverse_fft} cannot
+be directly used.  Use @mref{inverse_real_fft} to compute the inverse.
 @opencatbox
 @category{Package fft}
 @closecatbox
@@ -415,10 +421,20 @@ Computes the forward fast Fourier transform of a real-valued input
 returning a bigfloat result.  This is the bigfloat version of
 @code{real_fft}.
 
+@opencatbox
+@category{Package fft}
+@closecatbox
+@end deffn
+
 @anchor{bf_inverse_real_fft}
 @deffn {Function} bf_inverse_real_fft (@var{y})
 Computes the inverse fast Fourier transfrom with a real-valued
 bigfloat output.  This is the bigfloat version of @code{inverse_real_fft}.
+
+@opencatbox
+@category{Package fft}
+@closecatbox
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @node Functions for numerical solution of equations, Introduction to numerical solution of differential equations, Functions and Variables for fast Fourier transform, Numerical
