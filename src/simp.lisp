@@ -505,11 +505,11 @@
 	      (freel (cdr exp) var)))))
 
 (defmfun freel (l var)
-  (cond ((and (listp l) (listp (cdr l)))
-	 (do ((l l (cdr l))) ((null l) t)
-	   (cond ((not (free (car l) var)) (return nil)))))
-	(t
-	 t)))
+  (do ((l l (cdr l))) ((null l) t)
+    (cond
+     ((atom l) (return (equal l var)))	;; second element of a pair
+     ((not (free (car l) var)) (return nil)))))
+
 
 (defmfun freeargs (exp var)
   (cond ((alike1 exp var) nil)
