@@ -5,7 +5,8 @@
 %define enable_clisp 1
 %define clisp_flags --enable-clisp
 %define enable_ccl 0
-%define ccl_flags --disable-ccl --with-ccl=lx86cl
+%define ccl_flags --disable-ccl
+# --with-ccl=lx86cl
 %define enable_cmucl 0
 %define cmucl_flags --disable-cmucl
 %define enable_sbcl 0
@@ -281,7 +282,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/maxima.1
 %{_bindir}/maxima
 %{_bindir}/rmaxima
-%doc AUTHORS COPYING INSTALL INSTALL.lisp NEWS 
+%exclude %{_datadir}/mime/packages/x-mac.xml
+%doc AUTHORS COPYING INSTALL INSTALL.lisp NEWS x-mac.xml
 %doc README README.lisps README.rpms README.external README.i18n
 
 %files xmaxima
