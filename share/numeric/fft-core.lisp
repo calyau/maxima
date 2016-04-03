@@ -464,6 +464,9 @@
 ;;; algorithm with inputs and outputs in natural order.
 (in-package "BIGFLOAT")
 
+;; This is an equal hash table with a key being a list of the order of
+;; the FFT and fpprec.  We need fpprec in case the caller changes the
+;; requested precision.
 (defvar *bf-sincos-tables*
   (make-hash-table :test 'equal)
   "Hash table mapping log2 of the FFT size to an
