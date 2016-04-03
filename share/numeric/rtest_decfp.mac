@@ -1,0 +1,18 @@
+/*
+ * Tests for decimal floats, basically copied from the decfp-core.lisp
+ */
+
+(kill(all),
+ if not ?boundp('rounddecimalfloats) then load(decfp),
+ sum:0
+ );
+0;
+
+(for i: 1 thru 50 do sum:sum+decbfloat(9/10^i), is(sum < 1));
+true;
+
+is(sum+1/10^50=1.0L0);
+true;
+
+rationalize(1.0L-1)-1/10;
+0;
