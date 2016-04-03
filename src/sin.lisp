@@ -1676,6 +1676,9 @@
             (isinop exp var))
        (list '(%integrate) exp var))
 
+      ((zerop1 exp)	;; special case because 0 will not pass sum-of-intsp test
+       0)
+      
       ((let ((ans (simplify
                    (let ($opsubst varlist genvar stack)
 			 (integrator exp var)))))
@@ -1712,15 +1715,17 @@
 ;;
 ;;   (5) If the result is free of VAR, we're in a similar position to (1).
 ;;
-;;   (6) Otherwise something interested (and hopefully useful) has
+;;   (6) Otherwise something interesting (and hopefully useful) has
 ;;       happened. Return NIL to tell SININT to report it.
 (defun sum-of-intsp (ans)
   (cond ((atom ans)
-	 ;; If we have integrate(0, x) or integrate(x,x). then return
-	 ;; NIL so the caller will actually do the integral. Otherwise
-	 ;; return T.
-	 (not (or (equal ans 0)
-		  (eq ans var))))
+	 ;; Result of integration should never be a constant other than zero.
+	 ;; If the result of integration is zero, it is either because:
+	 ;; 1) a subroutine inside integration failed and returned nil,
+	 ;;    and (mul 0 nil) yielded 0, meaning that the result is wrong, or
+	 ;; 2) the original integrand was actually zero - this is handled
+	 ;;    with a separate special case in sinint
+	 (not (eq ans var)))
 	((mplusp ans) (every #'sum-of-intsp (cdr ans)))
 	((eq (caar ans) '%integrate) t)
 	((mtimesp ans)

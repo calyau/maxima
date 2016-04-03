@@ -1653,3 +1653,12 @@ rectform (bfloat (ev (integrate (x^2*%e^(30*%i*x-20*%i)*cos(2*x),x, 1.25, 1.5), 
  *
  */
 
+
+/* bug #3114 */
+integrate(sec(x)/sqrt(tan(x)),x);
+'integrate(sec(x)/sqrt(tan(x)),x);
+
+/* bug #3115 */
+integrate((x*sqrt(x^3-4*x))/(x^2-4),x);
+'integrate((x*sqrt(x^3-4*x))/(x^2-4),x);
+  
