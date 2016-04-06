@@ -365,6 +365,53 @@ openmcl-depends.mk: maxima.system
 
 endif
 
+## CCL64 #######################################################################
+
+if CCL64
+
+ccl64libdir = $(verpkglibdir)/binary-ccl64
+EXTRA_SCRIPTS += $(OPENMCL_MAXIMA)
+
+if CCL64_EXEC
+CCL64_MAXIMA = binary-ccl64/maxima$(EXEEXT)
+ccl64lib_SCRIPTS = $(CCL64_MAXIMA)
+omcl_flag = :prepend-kernel t
+else
+CCL64_MAXIMA = binary-ccl64/maxima.image
+ccl64lib_DATA = $(CCL64_MAXIMA)
+omcl_flag =
+endif
+
+EXECUTECCL64 = $(CCL64_NAME) -e
+BUILT_FILES += $(CCL64_MAXIMA)
+CLEAN_TARGETS += clean-ccl64
+
+COMPILE_CCL64 = $(EXECUTECCL64) \
+ '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))'
+WRITE_CCL64 = $(EXECUTECCL64) \
+ '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit))'
+BUILD_CCL64 = $(COMPILE_CCL64) && $(WRITE_CCL64)
+
+ccl64: $(CCL64_MAXIMA)
+
+$(CCL64_MAXIMA):
+	$(BUILD_CCL64)
+	$(EXECUTECCL64) \
+	  '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
+	$(EXECUTECCL64) \
+	  '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(opcl_flag)) (ccl::quit))'
+
+clean-ccl64:
+	rm -rf binary-ccl64
+
+ccl64-depends.mk: maxima.system
+	$(EXECUTECCL64) $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk,(ccl:quit))
+
+-include ccl64-depends.mk
+
+
+endif
+
 ## ECL #########################################################################
 if ECL
 

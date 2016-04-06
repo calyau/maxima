@@ -481,6 +481,48 @@ if test x"${openmcl}" = xtrue ; then
 	fi
 fi
 
+dnl n.b. ccl64_default_name is hardcoded in "with" message
+dnl We assume we're running on an x86 processor.  The user has to
+dnl select a different executable name to match his system, if neceessary.
+
+ccl64_default_name=dx86cl64
+AC_ARG_ENABLE(ccl64,
+	[  --enable-ccl64               Use CCL (Clozure Common Lisp), 64-bit],
+     	[case "${enableval}" in
+       		yes) ccl64=true 
+		     lisps_enabled="${lisps_enabled} ccl64"
+		     explicit_lisp=true;;
+       		no)  ccl64=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-ccl64) ;;
+     	esac],
+	[ccl64=false])
+AC_ARG_WITH(ccl64,
+	[  --with-ccl64=<prog>          Use ccl64 executable <prog> (default dx86cl64)],
+	[ccl64=true
+	lisps_enabled="${lisps_enabled} ccl64"
+	explicit_lisp=true
+	if test "$withval" = "yes"; then
+		CCL64_NAME="${ccl64_default_name}"
+	else
+		CCL64_NAME="$withval"
+	fi],
+	[CCL64_NAME=${ccl64_default_name}])
+AC_ARG_ENABLE(ccl64-exec,
+	[  --enable-ccl64-exec          Create a maxima executable image using CCL.
+                                No check is made if the version of 
+                                CCL supports executable images],
+	[case "${enableval}" in
+	    yes) ccl64_exec=true
+                 ccl64=true 
+		 lisps_enabled="${lisps_enabled} ccl64"
+                 explicit_lisp=true;;
+	    no) ccl64_exec=false ;;
+	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-ccl64-exec) ;;
+         esac
+	 CCL64_EXEC=${ccl64_exec}],
+	[ccl64_exec=false
+	 CCL64_EXEC=false])
+
 dnl n.b. ecl_default_name is hardcoded in "with" message
 ecl_default_name=ecl
 AC_ARG_ENABLE(ecl,
@@ -773,6 +815,7 @@ if test x"${explicit_lisp}" = xfalse ; then
 	AC_CHECK_PROG(sbcl_found,$SBCL_NAME,true,false)
 	AC_CHECK_PROG(acl_found,$ACL_NAME,true,false)
 	AC_CHECK_PROG(openmcl_found,$OPENMCL_NAME,true,false)
+	AC_CHECK_PROG(ccl64_found,$CCL64_NAME,true,false)
 	AC_CHECK_PROG(ecl_found,$ECL_NAME,true,false)
 
   	if test x"${clisp_found}" = xtrue ; then
@@ -796,6 +839,9 @@ if test x"${explicit_lisp}" = xfalse ; then
 	elif test x"${ecl_found}" = xtrue ; then
 		ecl=true
 		lisps_enabled="${lisps_enabled} ecl"
+        elif test x"${ccl64_found}" = xtrue; then
+                ccl64=true
+                lisps_enabled="${lisps_enabled} ccl64"
 	else
 		AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${scl_default_name}(SCL),${sbcl_default_name}(SBCL),${acl_default_name}(ACL),${openmcl_default_name}(OpenMCL),${ecl_default_name}(ECL)] were found in PATH)
 	fi
@@ -813,6 +859,8 @@ AM_CONDITIONAL(ACL, test x$acl = xtrue)
 AM_CONDITIONAL(OPENMCL, test x$openmcl = xtrue)
 AM_CONDITIONAL(OPENMCL_EXEC, test x${openmcl_exec} = xtrue)
 AM_CONDITIONAL(ECL, test x$ecl = xtrue)
+AM_CONDITIONAL(CCL64, test x$ccl64 = xtrue)
+AM_CONDITIONAL(CCL64_EXEC, test x${ccl64_exec} = xtrue)
 
 if test x"${clisp}" = xtrue; then
     if test x"${CLISP_RUNTIME_PATH}" = x"" ; then
@@ -976,6 +1024,13 @@ AC_ARG_WITH(default-lisp,
 			else
 				AC_MSG_ERROR(ecl not enabled)
 			fi
+			;;
+		ccl64)		
+			if test x"${ccl64}" = xtrue ; then
+				DEFAULTLISP=ccl64
+			else
+				AC_MSG_ERROR(ccl64 not enabled)
+			fi
 			;;		
 		*) 
 			AC_MSG_ERROR(Unknown argument ${DEFAULTLISP} to --with-default-lisp) 
@@ -997,6 +1052,8 @@ AC_ARG_WITH(default-lisp,
 		DEFAULTLISP=openmcl
 	elif test x"${ecl}" = xtrue ; then
 		DEFAULTLISP=ecl
+	elif test x"${ccl64}" = xtrue ; then
+		DEFAULTLISP=ccl64
 	else
 		AC_MSG_ERROR(Internal error. No lisp enabled. Please contact maintainer.)
 	fi])
@@ -1016,6 +1073,7 @@ AC_SUBST(GCL_NAME)
 AC_SUBST(ACL_NAME)
 AC_SUBST(OPENMCL_NAME)
 AC_SUBST(ECL_NAME)
+AC_SUBST(CCL64_NAME)
 AC_SUBST(DEFAULTLISP)
 AC_SUBST(HHC)
 AC_SUBST(lisps_enabled)

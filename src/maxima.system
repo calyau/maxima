@@ -99,8 +99,10 @@
   "binary-gcl"
   #+allegro
   "binary-acl"
-  #+openmcl
+  #+(and openmcl (not 64-bit-target))
   "binary-openmcl"
+  #+(and openmcl 64-bit-target)
+  "binary-ccl64"
   #+abcl
   "binary-abcl"
   #+lispworks
