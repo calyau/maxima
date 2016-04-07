@@ -34,7 +34,7 @@ option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 
 # current program versions
 set(CLISPVERSION     2.49)
-set(WXMAXIMAVERSION  15.08.2)
+set(WXMAXIMAVERSION  16.04.1)
 set(WXWIDGETSVERSION 3.0.2)
 set(GNUPLOTVERSION   5.0.3)
 set(TCLVERSION       8.6.5)
@@ -45,7 +45,7 @@ set(SBCLVERSION      1.3.4)
 
 # MD5 checksums for the current program versions.
 set(CLISP_MD5     "8d58d64f83dd7ad01c054aecc16c1f52")
-set(WXMAXIMA_MD5  "57f8ad6376bfc8ca92c69e613dcf0d99")
+set(WXMAXIMA_MD5  "0f5f184e3301f4e55a1e993cc88fa22a")
 set(WXWIDGETS_MD5 "ba4cd1f3853d0cd49134c5ae028ad080")
 set(GNUPLOT_MD5   "918769fda13a6110d89b42887d201294")
 set(TCL_MD5       "0e6426a4ca9401825fbc6ecf3d89a326")
