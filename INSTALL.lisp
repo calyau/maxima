@@ -30,8 +30,13 @@ To build Maxima:
     Press carriage return to accept the default values.
 
     The configure process can be automated through the use
-    of optional arguments to configure.
-    See the file configure.lisp for details.
+    of keyword arguments to configure.  For example,
+
+      (configure :interactive nil)
+
+    will use the default values for all options and will not
+    prompt for any input.
+    See the file configure.lisp for more details.
 
 (4) Quit Lisp,
     
