@@ -16,7 +16,7 @@
 @c -----------------------------------------------------------------------------
 
 Lists are the basic building block for Maxima and Lisp.  All data types
-other than arrays, hash tables, numbers are represented as Lisp lists,
+other than arrays, hash tables and numbers are represented as Lisp lists,
 These Lisp lists have the form
 
 @example
