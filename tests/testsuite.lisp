@@ -21,7 +21,9 @@
         "rtest11" "rtest13" "rtest13s"
         "rtest14"
         "rtest15"
-        "rtest16"
+	;; ccl versions 1.11 and earlier fail test 50.  Mark it as a
+	;; known failure.  Presumably 1.12 will have this fixed.
+        ((mlist simp) "rtest16" #+ccl 50)
         "rtestode" "rtestode_zp"
         "rtest3" "rtest8"
         ((mlist simp) "rtest12" 76 78)
