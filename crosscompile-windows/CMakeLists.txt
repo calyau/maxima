@@ -13,7 +13,16 @@ set(CMAKE_RC_COMPILER  ${HOST}-windres)
 project(maxima)
 cmake_minimum_required(VERSION 3.3)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/ ${CMAKE_BINARY_DIR}/)
+
+
+file(READ ${CMAKE_ROOT}/Modules/NSIS.template.in MYNSISTEMPLATE)
+string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel user" 
+        MYNSISTEMPLATE "${MYNSISTEMPLATE}")
+string(REPLACE "!insertmacro MUI_PAGE_DIRECTORY" "; page directory disabled: !insertmacro MUI_PAGE_DIRECTORY" 
+        MYNSISTEMPLATE "${MYNSISTEMPLATE}")
+file(WRITE ${CMAKE_BINARY_DIR}/NSIS.template.in "${MYNSISTEMPLATE}")
+message (STATUS "Copied and patched ${CMAKE_ROOT}/Modules/NSIS.template.in to ${CMAKE_BINARY_DIR}/NSIS.template.in")
 
 option(USE_WXMAXIMA_GIT "Use wxMaxima development snapshot." NO)
 option(USE_VTK "Use VTK." YES)
@@ -179,6 +188,7 @@ externalproject_add(gnuplot
 install(DIRECTORY ${CMAKE_BINARY_DIR}/gnuplot-prefix/src/gnuplot/ DESTINATION gnuplot)
 
 # TeX Fonts (a binary package just extract it...)
+# (currently not installed, to allow installation as unprivileged user)
 externalproject_add(texfonts
   URL "${TEXFONTS_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
