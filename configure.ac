@@ -1240,6 +1240,12 @@ fi
 if test x"${openmcl_exec}" = xtrue ; then
    echo "OpenMCL executable image enabled for maxima."
 fi
+if test x"${ccl64}" = xtrue ; then
+	echo "CCL64 enabled. Executable name: \"${CCL64_NAME}\""
+fi
+if test x"${ccl64_exec}" = xtrue ; then
+   echo "CCL64 executable image enabled for maxima."
+fi
 if test x"${ecl}" = xtrue ; then
 	echo "ECL enabled. Executable name: \"${ECL_NAME}\""
 fi
