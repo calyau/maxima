@@ -507,7 +507,7 @@
 (defmfun freel (l var)
   (do ((l l (cdr l))) ((null l) t)
     (cond
-     ((atom l) (return (equal l var)))	;; second element of a pair
+     ((atom l) (return (free l var)))	;; second element of a pair
      ((not (free (car l) var)) (return nil)))))
 
 
@@ -2872,7 +2872,8 @@
 	      ((= i 1) '$%i)
 	      ((= i 2) -1)
 	      (t (list '(mtimes simp) -1 '$%i))))
-      (power -1 (mul2 pot '((rat simp) 1 2)))))
+                                        ;      (power -1 (mul2 pot '((rat simp) 1 2)))))
+    (list '(mexpt simp) '$%i pot)))
 
 (defun mnlogp (pot)
   (cond ((eq (caar pot) '%log) (simplifya (cadr pot) nil))
