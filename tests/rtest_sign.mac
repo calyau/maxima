@@ -1112,3 +1112,23 @@ neg$
 
 (forget(q < 0, r > 0),0);
 0$
+
+/* Bug #3109: is(sin(x) <= 1) returns "unknown", is(sin(x) <= 1.00001) returns "true" */
+(kill(all),0);
+0$
+is(sin(x) <= 1);
+true$
+is(cos(x) <= 1);
+true$
+is(sin(x) >= -1);
+true$
+is(cos(x) >= -1);
+true$
+sign(sin(x)+1);
+pz$
+sign(cos(x)+1);
+pz$
+sign(sin(x)-1);
+nz$
+sign(cos(x)-1);
+nz$
