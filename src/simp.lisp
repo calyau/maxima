@@ -2872,8 +2872,7 @@
 	      ((= i 1) '$%i)
 	      ((= i 2) -1)
 	      (t (list '(mtimes simp) -1 '$%i))))
-                                        ;      (power -1 (mul2 pot '((rat simp) 1 2)))))
-    (list '(mexpt simp) '$%i pot)))
+    (power -1 (mul2 pot '((rat simp) 1 2)))))
 
 (defun mnlogp (pot)
   (cond ((eq (caar pot) '%log) (simplifya (cadr pot) nil))
