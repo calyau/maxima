@@ -364,7 +364,7 @@ draw_graph_list(grlist, [options]) :=
         grlist),
       apply(wxdraw, append(scenes, ['columns=length(grlist)])))
     else block(
-      [display_graphics:false, wxplot_size: 2*graphs_plot_size/3],
+      [display_graphics:false, wxplot_size: 2.0*graphs_plot_size/3],
       ldisp(
         map(lambda([g],
             apply(wxdraw2d,

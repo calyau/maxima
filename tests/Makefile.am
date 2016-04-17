@@ -73,6 +73,16 @@ openmcl-test.sh: test.sh.in
 	chmod a+x "$@"
 endif
 
+if CCL64
+TESTS += ccl64-test.sh
+ccl64-test.sh: test.sh.in
+	sed <"$<" >"$@"                                          \
+	  -e 's#!LOCAL_MAXIMA!#$(MAXIMA)#'                       \
+	  -e 's#!LISPNAME!#openmcl#'                             \
+	  -e 's#!OUTPUT_LOG!#$(top_builddir)/tests/openmcl.log#'
+	chmod a+x "$@"
+endif
+
 if ECL
 TESTS += ecl-test.sh
 ecl-test.sh: test.sh.in

@@ -137,6 +137,8 @@ figures/bodephase9.gif\
 figures/scene1.png\
 figures/scene2.png\
 figures/color_terminal.png\
+figures/draw_allocation.gif\
+figures/draw_allocation2.gif\
 figures/draw_axis3d.gif\
 figures/draw_axis_bottom.gif\
 figures/draw_bars.gif\
@@ -205,6 +207,7 @@ figures/draw_logx_secondary.gif\
 figures/draw_mesh2.gif\
 figures/draw_mesh3.gif\
 figures/draw_mesh.gif\
+figures/draw_multiplot.png\
 figures/draw_nticks.gif\
 figures/draw_palette2.gif\
 figures/draw_palette3.gif\
@@ -251,6 +254,7 @@ figures/draw_view.gif\
 figures/draw_wired_surface.gif\
 figures/draw_xaxis.gif\
 figures/draw_xaxis_secondary.gif\
+figures/draw_xugrid.gif\
 figures/draw_ylabel_secondary.gif\
 figures/draw_transform.gif\
 figures/worldmap_make_poly_continent.gif\
@@ -331,6 +335,8 @@ figures/bodephase9.pdf\
 figures/scene1.pdf\
 figures/scene2.pdf\
 figures/color_terminal.pdf\
+figures/draw_allocation.pdf\
+figures/draw_allocation2.pdf\
 figures/draw_axis3d.pdf\
 figures/draw_axis_bottom.pdf\
 figures/draw_bars.pdf\
@@ -399,6 +405,7 @@ figures/draw_logx_secondary.pdf\
 figures/draw_mesh2.pdf\
 figures/draw_mesh3.pdf\
 figures/draw_mesh.pdf\
+figures/draw_multiplot.pdf\
 figures/draw_nticks.pdf\
 figures/draw_palette2.pdf\
 figures/draw_palette3.pdf\
@@ -445,6 +452,7 @@ figures/draw_view.pdf\
 figures/draw_wired_surface.pdf\
 figures/draw_xaxis.pdf\
 figures/draw_xaxis_secondary.pdf\
+figures/draw_xugrid.pdf\
 figures/draw_ylabel_secondary.pdf\
 figures/draw_transform.pdf\
 figures/worldmap_make_poly_continent.pdf\

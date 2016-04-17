@@ -184,6 +184,17 @@ elif [ "$MAXIMA_LISP" = "openmcl" ]; then
     else
       exec "@OPENMCL_NAME@" -I "$maxima_image_base.image" $MAXIMA_LISP_OPTIONS -e '(cl-user::run)' -- "$@"
    fi
+elif [ "$MAXIMA_LISP" = "ccl64" ]; then
+# Ccl64 can use either an executable image or a regular lisp core
+# file.  Check for the executable image and run that if possible.
+# Otherwise, fallback and use the lisp core file.
+# FIXME: arguments need in a manner consistent with the way they are extracted
+#        in the function get-application-args in command-line.lisp
+    if [ -x "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" ]; then
+      exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" $MAXIMA_LISP_OPTIONS -e '(cl-user::run)' -- "$@"
+    else
+      exec "@CCL64_NAME@" -I "$maxima_image_base.image" $MAXIMA_LISP_OPTIONS -e '(cl-user::run)' -- "$@"
+   fi
 
 elif [ "$MAXIMA_LISP" = "ecl" ]; then
    exec "$maxima_image_base"  $MAXIMA_LISP_OPTIONS -- "$@"

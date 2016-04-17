@@ -99,8 +99,10 @@
   "binary-gcl"
   #+allegro
   "binary-acl"
-  #+openmcl
+  #+(and openmcl (not 64-bit-target))
   "binary-openmcl"
+  #+(and openmcl 64-bit-target)
+  "binary-ccl64"
   #+abcl
   "binary-abcl"
   #+lispworks
@@ -194,7 +196,8 @@
                                      (:file "ar")))
                (:module commands :source-pathname ""
                         :components ((:file "comm")
-                                     (:file "comm2")))
+                                     (:file "comm2"))
+			:depends-on (compatibility-macros1))
                (:module evaluator :source-pathname ""
                         :components ((:file "mlisp") 
                                      (:file "mmacro") 
@@ -496,7 +499,7 @@
 	       (:module server :source-pathname ""
 			:components ((:file "server")))
                (:module i-o :source-pathname ""
-			:depends-on (compatibility-macros)
+			:depends-on (compatibility-macros compatibility-macros1)
                         :components ((:file "macsys") 
                                      (:file "mload") 
                                      (:file "suprv1")
@@ -518,7 +521,7 @@
 				     (:file "rat3e") 
 				     (:file "nrat4") 
 				     (:file "ratout"))
-                        :depends-on (rat-macros other-macros))
+                        :depends-on (rat-macros other-macros compatibility-macros1))
 	       (:module maxima-language-compiler :source-pathname ""
 			:components ((:file "transl") 
 				     (:file "transs") 
@@ -549,7 +552,7 @@
 				     (:file "plasma")
 				     (:file "intpol")))
 	       (:module reader :source-pathname ""
-			:depends-on (compatibility-macros)
+			:depends-on (compatibility-macros compatibility-macros1)
 			:components ((:file "nparse")))
 	       (:module display :source-pathname ""
 			:components ((:file "displa") 
@@ -565,7 +568,8 @@
 			:components ((:file "inmis") 
 				     (:file "db") 
 				     (:file "compar") 
-				     (:file "askp"))) ;does this belong here?
+				     (:file "askp")) ;does this belong here?
+			:depends-on (compatibility-macros1))
 	       (:module integration :source-pathname ""
 			:components ((:file "sinint") 
 				     (:file "sin") 
@@ -595,7 +599,8 @@
 			:components ((:file "schatc") 
 				     (:file "matcom") 
 				     (:file "matrun") 
-				     (:file "nisimp")))
+				     (:file "nisimp"))
+			:depends-on (compatibility-macros1))
 	       (:module limits :source-pathname ""
 			:components ((:file "tlimit") 
 				     (:file "limit")))
@@ -604,10 +609,12 @@
 				     (:file "psolve") 
 				     (:file "algsys") 
 				     (:file "polyrz") 
-				     (:file "cpoly")))
+				     (:file "cpoly"))
+			:depends-on ("compatibility-macros1"))
 	       (:module debugging :source-pathname ""
 			:components ((:file "mtrace")
-				     (:file "mdebug")))
+				     (:file "mdebug"))
+			:depends-on ("compatibility-macros1"))
 	       (:module miscellaneous :source-pathname ""
 			:components ((:file "scs") 
 				     (:file "asum") 
@@ -630,12 +637,13 @@
                                      (:file "expintegral")
                                      (:file "gamma")
 				     (:file "mstuff"))
-                        :depends-on (pattern-matching))
+                        :depends-on (pattern-matching compatibility-macros1))
 	       (:module poisson-series :source-pathname ""
 			:components ((:file "pois2") 
 				     (:file "pois3")))
 	       (:module translated-packages :source-pathname ""
-			:depends-on ("maxima-language-compiler-macros")
+		        :depends-on ("maxima-language-compiler-macros"
+			             "compatibility-macros1")
 			:components
 			((:file "desoln")
 			 (:file "elim")

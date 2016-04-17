@@ -13,7 +13,16 @@ set(CMAKE_RC_COMPILER  ${HOST}-windres)
 project(maxima)
 cmake_minimum_required(VERSION 3.3)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/ ${CMAKE_BINARY_DIR}/)
+
+
+file(READ ${CMAKE_ROOT}/Modules/NSIS.template.in MYNSISTEMPLATE)
+string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel user" 
+        MYNSISTEMPLATE "${MYNSISTEMPLATE}")
+string(REPLACE "!insertmacro MUI_PAGE_DIRECTORY" "; page directory disabled: !insertmacro MUI_PAGE_DIRECTORY" 
+        MYNSISTEMPLATE "${MYNSISTEMPLATE}")
+file(WRITE ${CMAKE_BINARY_DIR}/NSIS.template.in "${MYNSISTEMPLATE}")
+message (STATUS "Copied and patched ${CMAKE_ROOT}/Modules/NSIS.template.in to ${CMAKE_BINARY_DIR}/NSIS.template.in")
 
 option(USE_WXMAXIMA_GIT "Use wxMaxima development snapshot." NO)
 option(USE_VTK "Use VTK." YES)
@@ -34,7 +43,7 @@ option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 
 # current program versions
 set(CLISPVERSION     2.49)
-set(WXMAXIMAVERSION  15.08.2)
+set(WXMAXIMAVERSION  16.04.1)
 set(WXWIDGETSVERSION 3.0.2)
 set(GNUPLOTVERSION   5.0.3)
 set(TCLVERSION       8.6.5)
@@ -45,7 +54,7 @@ set(SBCLVERSION      1.3.4)
 
 # MD5 checksums for the current program versions.
 set(CLISP_MD5     "8d58d64f83dd7ad01c054aecc16c1f52")
-set(WXMAXIMA_MD5  "57f8ad6376bfc8ca92c69e613dcf0d99")
+set(WXMAXIMA_MD5  "0f5f184e3301f4e55a1e993cc88fa22a")
 set(WXWIDGETS_MD5 "ba4cd1f3853d0cd49134c5ae028ad080")
 set(GNUPLOT_MD5   "918769fda13a6110d89b42887d201294")
 set(TCL_MD5       "0e6426a4ca9401825fbc6ecf3d89a326")
@@ -179,6 +188,7 @@ externalproject_add(gnuplot
 install(DIRECTORY ${CMAKE_BINARY_DIR}/gnuplot-prefix/src/gnuplot/ DESTINATION gnuplot)
 
 # TeX Fonts (a binary package just extract it...)
+# (currently not installed, to allow installation as unprivileged user)
 externalproject_add(texfonts
   URL "${TEXFONTS_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
