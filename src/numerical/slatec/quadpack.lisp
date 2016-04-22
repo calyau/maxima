@@ -2,6 +2,11 @@
 
 (in-package :maxima)
 
+(defvar *debug-quadpack*
+  nil
+  "Set to non-NIL to enable printing of the error object when the
+  Slatec routines throw an error.")
+
 #-(or gcl ecl)
 (defmacro get-integrand (fun var)
   `(compile nil (coerce-float-fun ,fun `((mlist) ,,var))))
