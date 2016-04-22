@@ -1477,7 +1477,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       (cond ((eq (sign* (add xrhs 1)) '$neg)	;; c > 1
 	     (setq sgn '$pos))
 	    ((eq (sign* (add xrhs -1)) '$pos)	;; c < -1
-	     (setq sgn '$neg))))
+	     (setq sgn '$neg))
+		((zerop1 (add xrhs 1))				;; c = 1
+	     (setq sgn '$pz))
+		((zerop1 (add xrhs -1))				;; c = -1
+		 (setq sgn '$nz))))
 	   
     (when (and $useminmax (or (minmaxp xlhs) (minmaxp xrhs)))
       (setq sgn (signdiff-minmax xlhs xrhs)))

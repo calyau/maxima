@@ -155,3 +155,40 @@ realpart(signum(%i*y+x))+%i*imagpart(signum(%i*y+x))$
 
 (forget(p > 0, n < 0, pz >= 0, nz <= 0,notequal(a,0)), remove(z,complex), 0);
 0$
+
+/* SF bug #2242: "integrating function with signum incorrect" */
+
+integrate(x*signum(x^2-1/4),x,-1,0);
+'integrate(x*signum(x^2-1/4),x,-1,0);
+
+/* SF bug #3123: "integrate(x*signum(x^2 - 4), x, 0, 3) yields spurious result" */
+
+integrate(x*signum(x^2 - 4), x, 0, 3);
+'integrate(x*signum(x^2 - 4), x, 0, 3);
+
+/* integrate can handle signum if it has constant sign between limits of integration */
+
+integrate(x*signum(x^2-1/4),x, -1, -1/2);
+-3/8;
+
+integrate(x*signum(x^2-1/4),x, -1/2, 1/2);
+0;
+
+integrate(x*signum(x^2-1/4),x, 1/2, 1);
+3/8;
+
+/* ... or it's an odd function from -a to a */
+
+integrate(x*signum(x^2-1/4),x,-1,1);
+0;
+
+/* other integrate(signum) examples */
+
+integrate(x*signum(x^3 - 8), x, 0, 3);
+'integrate(x*signum(x^3 - 8), x, 0, 3);
+
+integrate(x*signum(x^3 - 8), x, -2, 5);
+'integrate(x*signum(x^3 - 8), x, -2, 5);
+
+integrate(x*signum(x^3 - 8), x, 2, 5);
+21/2;

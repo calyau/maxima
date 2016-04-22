@@ -197,6 +197,7 @@ externalproject_add(texfonts
   BUILD_COMMAND ""
   INSTALL_COMMAND ""
 )
+install(DIRECTORY ${CMAKE_BINARY_DIR}/texfonts-prefix/src/texfonts/ DESTINATION wxMaxima/fonts)
 
 if(SBCL_64BIT)
 find_program(WINE_EXE NAMES wine64)
@@ -267,15 +268,15 @@ else()
         URL "${WXMAXIMA_URL}"
         DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
         URL_MD5 ${WXMAXIMA_MD5}
+        PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/wxmaxima-16.04.1-patch
         DEPENDS wxWidgets
-        BUILD_IN_SOURCE 1
-        CONFIGURE_COMMAND ./configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
+        CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
               COMMAND $(MAKE) allmo
               COMMAND $(MAKE) wxMaxima.win
         INSTALL_COMMAND ""
     )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/wxMaxima/ DESTINATION wxMaxima)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima-build/wxMaxima/ DESTINATION wxMaxima)
 endif()
 
 if(USE_VTK)
