@@ -52,7 +52,9 @@
 			 limit lenw 0 iwork work)
 	  (declare (ignore junk z-a z-b z-epsabs z-epsrel z-key z-limit z-lenw last))
 	  (list '(mlist) result abserr neval ier))
-      (error ()
+      (error (e)
+	(when *debug-quadpack*
+	  (format t "~S" e))
 	`(($quad_qag) ,fun ,var ,a ,b ,key
 	  ((mequal) $epsrel ,epsrel)
 	  ((mequal) $epsabs ,epsabs)
@@ -78,7 +80,9 @@
 			  limit lenw 0 iwork work)
 	  (declare (ignore junk z-a z-b z-epsabs z-epsrel z-limit z-lenw last))
 	  (list '(mlist) result abserr neval ier))
-      (error ()
+      (error (e)
+	(when *debug-quadpack*
+	  (format t "~S" e))
 	`(($quad_qags) ,fun ,var ,a ,b
 	  ((mequal) $epsrel ,epsrel)
 	  ((mequal) $epsabs ,epsabs)
@@ -137,7 +141,9 @@
 	      (declare (ignore junk z-bound z-inf z-epsabs z-epsrel
 			       z-limit z-lenw last))
 	      (list '(mlist) result abserr neval ier))
-	  (error ()
+	  (error (e)
+	    (when *debug-quadpack*
+	      (format t "~S" e))
 	    `(($quad_qagi) ,fun ,var ,a ,b
 	      ((mequal) $epsrel ,epsrel)
 	      ((mequal) $epsabs ,epsabs)
@@ -164,7 +170,9 @@
 			  limit lenw 0 iwork work)
 	  (declare (ignore junk z-a z-b z-c z-epsabs z-epsrel z-limit z-lenw last))
 	  (list '(mlist) result abserr neval ier))
-      (error ()
+      (error (e)
+	(when *debug-quadpack*
+	  (format t "~S" e))
 	`(($quad_qawc) ,fun ,var ,c ,a ,b
 	  ((mequal) $epsrel ,epsrel)
 	  ((mequal) $epsabs ,epsabs)
@@ -197,7 +205,9 @@
 	  (declare (ignore junk z-a z-omega z-integr epsabs z-limlst z-lst
 			   z-leniw z-maxp1 z-lenw))
 	  (list '(mlist) result abserr neval ier))
-      (error ()
+      (error (e)
+	(when *debug-quadpack*
+	  (format t "~S" e))
 	`(($quad_qawf) ,fun ,var ,a ,omega ,trig
 	  ((mequal) $epsabs ,epsabs)
 	  ((mequal) $limit ,limit)
@@ -233,7 +243,9 @@
 	  (declare (ignore junk z-a z-b z-omega z-integr z-epsabs z-epsrel
 			   z-lst z-leniw z-maxp1 z-lenw))
 	  (list '(mlist) result abserr neval ier))
-      (error ()
+      (error (e)
+	(when *debug-quadpack*
+	  (format t "~S" e))
 	`(($quad_qawo) ,fun ,var ,a ,b ,omega ,trig
 	  ((mequal) $epsrel ,epsrel)
 	  ((mequal) $epsabs ,epsabs)
@@ -265,7 +277,9 @@
 	  (declare (ignore junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
 			   z-limit z-lenw last))
 	  (list '(mlist) result abserr neval ier))
-      (error ()
+      (error (e)
+	(when *debug-quadpack*
+	  (format t "~S" e))
 	`(($quad_qaws) ,fun ,var ,a ,b ,alfa ,beta ,wfun
 	  ((mequal) $epsrel ,epsrel)
 	  ((mequal) $epsabs ,epsabs)
@@ -297,7 +311,9 @@
 	  (declare (ignore junk z-a z-b z-npts z-points z-epsabs z-epsrel
 			   z-leniw z-lenw last))
 	  (list '(mlist) result abserr neval ier))
-      (error ()
+      (error (e)
+	(when *debug-quadpack*
+	  (format t "~S" e))
 	`(($quad_qagp) ,fun ,var ,a ,b ,points
 	  ((mequal) $epsrel ,epsrel)
 	  ((mequal) $epsabs ,epsabs)
