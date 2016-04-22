@@ -66,7 +66,8 @@
 					 (take '(%zeta) s))))
 			(if (floatp a)
 			    ($float result)
-			    ($bfloat result)))))))
+			    ($bfloat result))))
+		     ((integerp s) (bigfloat::li-s-simp s (bigfloat:to a))))))
         (eqtest (subfunmakes '$li (ncons s) (ncons a))
                 expr))))
 
@@ -1037,10 +1038,10 @@
 	   ;; Series evaluation:
 	   ;;
 	   ;; li[s](z) = sum(z^k/k^s, k, 1, inf);
+	   (format t "series sum ~A~%" z)
 	   (let ((eps (epsilon z)))
-	     (do* ((k 0 (1+ k))
-		   (term z (* term (/ (* z k k)
-				      (expt (1+ k) s))))
+	     (do* ((k 1 (1+ k))
+		   (term z (* term z (expt (/ (- k 1) k) s)))
 		   (sum z (+ term sum)))
 		  ((<= (abs (/ term sum)) eps)
 		   sum))))
@@ -1052,28 +1053,77 @@
 	   ;;               + 2 * sum(li[2*r](-1)/(n-2*r)!*log(-z)^(n-2*r), r, 1, floor(n/2))
 	   ;;
 	   ;; (See http://functions.wolfram.com/ZetaFunctionsandPolylogarithms/PolyLog/17/02/01/01/0008/)
-	   (let* ((lg (log (- z)))
+	   ;;
+	   ;; Or
+	   ;;
+	   ;; li[n](z) = -log(-z)^n/n! + (-1)^(n-1)*li[n](1/z)
+	   ;;               + 2 * sum(li[2*m-2*r](-1)/(n-2*m+2*r)!*log(-z)^(n-2*m+2*r), r, 0, m - 1)
+	   ;;
+	   ;; where m = floor(n/2).  Thus, n-2*m = 0 if n is even and 1 if n is odd.
+	   ;;
+	   ;; For n = 2*m, we have
+	   ;;
+	   ;; li[2*m](z) = -log(-z)^(2*m)/(2*m)! - li[2*m](1/z)
+	   ;;               + 2 * sum(li[2*r](-1)/(2*m-2*r)!*log(-z)^(2*m-2*r), r, 1, m)
+	   ;;            = -log(-z)^(2*m)/(2*m)! - li[2*m](1/z)
+	   ;;               + 2 * sum((li[2*m-2*r](-1)*log(-z)^(2*r+1))/(2*r+1)!,r,0,m-1);
+	   ;;
+	   ;; For n = 2*m+1, we have
+	   ;;
+	   ;; li[2*m+1](z) = -log(-z)^(2*m+1)/(2*m+1)! + li[2*m+1](1/z)
+	   ;;                 + 2 * sum(li[2*r](-1)/(2*m-2*r + 1)!*log(-z)^(2*m-2*r + 1), r, 1, m)
+	   ;;              = -log(-z)^(2*m+1)/(2*m+1)! + li[2*m+1](1/z)
+	   ;;                + 2 * sum((li[2*m-2*r](-1)*log(-z)^(2*r+1))/(2*r+1)!,r,0,m-1);
+	   ;; Thus,
+	   ;;
+	   ;; li[n](z) = -log(-z)^n/n! + (-1)^(n-1)*li[n](1/z)
+	   ;;               + 2 * sum((li[2*m-2*r](-1)*log(-z)^(2*r+1))/(2*r+1)!,r,0,floor(n/2)-1);
+
+	   (format t "inversion sum ~A~%" z)
+	   (let* ((lgz (log (- z)))
+		  (lgz^2 (* lgz lgz))
 		  (half-s (floor s 2))
 		  (neg-1 (float -1 (realpart z)))
-		  (sum (+ (- (/ (expt lg s)
-				(maxima::take '(maxima::mfactorial) s)))
-			  (* (expt -1 (- s 1))
-			     (li-s-simp s (/ z))))))
-	     (do* ((r 1 (1+ r))
-		   (top (expt lg (- s 2))
-			(/ top lg))
-		   (bot (maxima::take '(maxima::mfactorial) (- s 2))
-			(/ bot (let ((div (- s (* 2 r))))
-				 (if (zerop div)
-				     1
-				     div))))
-		   (term (* (li-s-simp s neg-1)
-			    (/ top bot))
-			 (* (li-s-simp s neg-1)
-			    (/ top bot))))
-		  ((> r half-s))
-	       (incf sum term))
-	     sum))
+		  (sum 0))
+	     (if (evenp s)
+		 (do* ((r 0 (1+ r))
+		       (top (if (oddp s) lgz 1) (* top lgz^2))
+		       (bot 1 (* bot (+ r r -1) (+ r r)))
+		       (term (* (li-s-simp (* 2 (- half-s r)) neg-1)
+				(/ top bot))
+			     (* (li-s-simp (* 2 (- half-s r)) neg-1)
+				(/ top bot))))
+		      ((>= r half-s))
+		   (incf sum term)
+		   (format t "r = ~4d:  ~A / ~A, ~A; ~A~%" r top bot term sum)
+		   )
+		 (do* ((r 0 (1+ r))
+		       (top (if (oddp s) lgz 1) (* top lgz^2))
+		       (bot 1 (* bot (+ r r) (+ r r 1)))
+		       (term (* (li-s-simp (* 2 (- half-s r)) neg-1)
+				(/ top bot))
+			     (* (li-s-simp (* 2 (- half-s r)) neg-1)
+				(/ top bot))))
+		      ((>= r half-s))
+		   (incf sum term)
+		   (format t "r = ~4d:  ~A / ~A, ~A; ~A~%" r top bot term sum)
+		   ))
+	     (format t "sum = 2*~A + ~A + ~A~% = ~A"
+		     sum
+		     (- (/ (expt lgz s)
+			   (maxima::take '(maxima::mfactorial) s)))
+		     (* (expt -1 (- s 1))
+			(li-s-simp s (/ z)))
+		     (+ (+ sum sum)
+			(- (/ (expt lgz s)
+			      (maxima::take '(maxima::mfactorial) s)))
+			(* (expt -1 (- s 1))
+			   (li-s-simp s (/ z)))))
+	     (+ (+ sum sum)
+		(- (/ (expt lgz s)
+		      (maxima::take '(maxima::mfactorial) s)))
+		(* (expt -1 (- s 1))
+		   (li-s-simp s (/ z))))))
 	  (t
 	   ;; When x is on or near the unit circle the other
 	   ;; approaches don't work.  Use the expansion in powers of
@@ -1087,6 +1137,7 @@
 	   ;;
 	   ;;
 	   (flet ((zfun (j)
+		    (format t "zfun(~A)~%" j)
 		    (cond ((= j 1)
 			   (let ((sum (- (log (- (log z))))))
 			     (+ sum
@@ -1096,28 +1147,34 @@
 			   (to (maxima::$zeta (maxima::to (float j (realpart z)))))))))
 	     (let* ((eps (epsilon z))
 		    (logx (log z))
-		    (logx^2 logx)
+		    (logx^2 (* logx logx))
 		    (top logx)
 		    (bot 1)
 		    (sum (zfun s)))
 	       ;; Compute sum(Z(s-j)*log(z)^j/j!, j = 1, s)
 	       (do* ((k 1 (1+ k))
-		     (term (* (/ top bot) (zfun (- s k)))
-			   (* (/ top bot) (zfun (- s k)))))
-		    ((>= k s))
-		 (format t "~3d: ~A / ~A = ~A~%" k top bot term)
+		     (zf (zfun (- s k)) (zfun (- s k)))
+		     (term (* (/ top bot) zf)
+			   (* (/ top bot) zf)))
+		    ((> k s))
+		 ;;(format t "~3d: ~A / ~A * ~A= ~A~%" k top bot (zfun (- s k)) term)
+		 (format t "~3d: ~A / ~A * ~A => ~A~%" k top bot zf term)
 		 (incf sum term)
-		 (setf bot (* bot k))
+		 (setf bot (* bot (1+ k)))
 		 (setf top (* top logx)))
 
+	       (format t "s = ~A, sum = ~S top, bot = ~S ~S~%"
+		       s sum top bot)
 	       ;; Compute the sum for j = s+1 and up.
-	       (do* ((k 0 (1+ k))
-		     (term (* (/ top bot) (to (maxima::$zeta (- (+ 1 (* 2 k))))))
-			   (* (/ top bot) (to (maxima::$zeta (- (+ 1 (* 2 k))))))))
-		    ((<= (abs term) (* (abs sum) eps)))
-		 (format t "~3d: ~A / ~A = ~A~%" (+ k s) top bot term)
+	       (do* ((k (+ s 1) (+ k 2))
+		     (zf (zfun (- s k)) (zfun (- s k)))
+		     (term (* (/ top bot) zf)
+			   (* (/ top bot) zf)))
+		    ((<= (abs term) (* (abs sum) eps))
+		     (format t "term = ~A; zfun(~A) = ~A~%"
+			     term (- s k) zf))
+		 (format t "~3d: ~A / ~A = ~A~%" k top bot term)
 		 (incf sum term)
-		 (setf bot (* bot (+ k s 1) (+ k s 2)))
+		 (setf bot (* bot (+ k 1) (+ k 2)))
 		 (setf top (* top logx^2)))
 	       sum))))))
-	   
