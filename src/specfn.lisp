@@ -1137,7 +1137,7 @@
 	   ;;
 	   ;;
 	   (flet ((zfun (j)
-		    (format t "zfun(~A)~%" j)
+		    ;;(format t "zfun(~A)~%" j)
 		    (cond ((= j 1)
 			   (let ((sum (- (log (- (log z))))))
 			     (+ sum
@@ -1157,23 +1157,22 @@
 		     (term (* (/ top bot) zf)
 			   (* (/ top bot) zf)))
 		    ((> k s))
-		 ;;(format t "~3d: ~A / ~A * ~A= ~A~%" k top bot (zfun (- s k)) term)
-		 (format t "~3d: ~A / ~A * ~A => ~A~%" k top bot zf term)
+		 ;;(format t "~3d: ~A / ~A * ~A => ~A~%" k top bot zf term)
 		 (incf sum term)
 		 (setf bot (* bot (1+ k)))
 		 (setf top (* top logx)))
 
+	       #+nil
 	       (format t "s = ~A, sum = ~S top, bot = ~S ~S~%"
 		       s sum top bot)
-	       ;; Compute the sum for j = s+1 and up.
+	       ;; Compute the sum for j = s+1 and up.  But since
+	       ;; zeta(-k) is 0 for k even, we only every other term.
 	       (do* ((k (+ s 1) (+ k 2))
 		     (zf (zfun (- s k)) (zfun (- s k)))
 		     (term (* (/ top bot) zf)
 			   (* (/ top bot) zf)))
-		    ((<= (abs term) (* (abs sum) eps))
-		     (format t "term = ~A; zfun(~A) = ~A~%"
-			     term (- s k) zf))
-		 (format t "~3d: ~A / ~A = ~A~%" k top bot term)
+		    ((<= (abs term) (* (abs sum) eps)))
+		 ;;(format t "~3d: ~A / ~A = ~A~%" k top bot term)
 		 (incf sum term)
 		 (setf bot (* bot (+ k 1) (+ k 2)))
 		 (setf top (* top logx^2)))
