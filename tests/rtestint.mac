@@ -1661,4 +1661,9 @@ integrate(sec(x)/sqrt(tan(x)),x);
 /* bug #3115 */
 integrate((x*sqrt(x^3-4*x))/(x^2-4),x);
 'integrate((x*sqrt(x^3-4*x))/(x^2-4),x);
-  
+
+/* SF bug #3144: "stackoverflow in integral" */
+
+integrate(sin(k*x)/x*erf(x^2),x,0,inf);
+'integrate(sin(k*x)/x*erf(x^2),x,0,inf);
+
