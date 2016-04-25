@@ -2372,6 +2372,18 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (remove-if (lambda (sym) (mget sym '$numer))
                (cdr ($listofvars x)))))
 
+;; Rewrite a^b to a simpler expression that has the same sign:
+;; If b is odd or 1/b is odd, remove the exponent, e.g. x^3 becomes x.
+;; If b has a negative sign, return a^-b, e.g. 1/x^a becomes x^a.
+;; Otherwise, do nothing.
+(defun rewrite-mexpt-retaining-sign (x)
+  (if (mexptp x)
+    (let ((base (cadr x)) (exponent (caddr x)))
+      (cond ((or (eq (evod exponent) '$odd) (eq (evod (inv exponent)) '$odd)) base)
+	    ((negp exponent) (inv x))
+	    (t x)))
+    x))
+
 ;; COMPSPLT
 ;;
 ;; Split X into (values LHS RHS) so that X>0 <=> LHS > RHS. This is supposed to
@@ -2379,13 +2391,29 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; up in future.
 ;;
 ;; This uses two worker routines: COMPSPLT-SINGLE and COMPSPLT-GENERAL. The
-;; former assumes that X only contains one symbol value is not known (eg not %e,
+;; former assumes that X only contains one symbol whose value is not known (eg not %e,
 ;; %pi etc.). The latter tries to deal with arbitrary collections of variables.
 (defun compsplt (x)
-  (cond
-    ((or (atom x) (atom (car x))) (values x 0))
-    ((null (cdr (unknown-atoms x))) (compsplt-single x))
-    (t (compsplt-general x))))
+  (multiple-value-bind (lhs rhs) 
+    (cond
+      ((or (atom x) (atom (car x))) (values x 0))
+      ((null (cdr (unknown-atoms x))) (compsplt-single x))
+      (t (compsplt-general x)))
+	(let ((swapped nil))
+	  ;; If lhs is zero, swap lhs and rhs to make the following code simpler.
+	  ;; Remember that they were swapped to swap them back afterwards.
+      (when (equal lhs 0)
+        (setq lhs rhs rhs 0 swapped t))
+      (when (equal rhs 0)
+	    ;; Rewrite mexpts in factors so that e.g. x^3/y>0 becomes x*y>0. */
+	    (setq lhs
+		  (if (mtimesp lhs)
+		    (cons (car lhs) (mapcar #'rewrite-mexpt-retaining-sign (cdr lhs)))
+			(rewrite-mexpt-retaining-sign lhs))))
+	  ;; Undo swapping lhs and rhs.
+	  (if swapped
+	    (values rhs lhs)
+        (values lhs rhs)))))
 
 (defun compsplt-single (x)
   (do ((exp (list x 0)) (success nil))
@@ -2396,6 +2424,8 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  (t (setq success t)))))
 
 (defun compsplt-general (x)
+  ;; Let compsplt-single work on it first to treat constant factors/terms.
+  (multiple-value-bind (lhs rhs) (compsplt-single x) (setq x (sub lhs rhs)))
   (cond
     ;; If x is an atom or a single level list then we won't change it any.
     ((or (atom x) (atom (car x)))
