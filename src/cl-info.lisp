@@ -203,8 +203,8 @@
     ((value (cdr parameters))
      (filename (car value))
      (byte-offset (cadr value))
-     (byte-count (caddr value))
-     (text (make-string byte-count))
+     (char-count (caddr value))
+     (text (make-string char-count))
      (path+filename (merge-pathnames (make-pathname :name filename) dir-name)))
     (with-open-file (in path+filename :direction :input)
       (unless (plusp byte-offset)
@@ -214,7 +214,7 @@
       (file-position in byte-offset)
       (#-gcl read-sequence
        #+gcl gcl-read-sequence
-       text in :start 0 :end byte-count))
+       text in :start 0 :end char-count))
     text))
 
 #+gcl

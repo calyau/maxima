@@ -535,8 +535,8 @@ When one changes, the other does too."
 			   :help-string "Suppress expression labels and Maxima start-up message.")
 	   (make-cl-option :names '("-X" "--lisp-options")
 			   :argument "<Lisp options>"
-			   :action #'(lambda (&rest opts)
-				       (format t "Lisp options: ~A" opts))
+			   :action #'(lambda (&rest opts) (declare (special *maxima-quiet*))
+				       (unless *maxima-quiet* (format t "Lisp options: ~A" opts)))
 			   :help-string "Options to be given to the underlying Lisp")
 			   ))
     (process-args (get-application-args) maxima-options))
