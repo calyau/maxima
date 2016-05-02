@@ -2,7 +2,7 @@
 
 (in-package :maxima)
 (declare-top (special *m  fpprec $fpprec $float $bfloat $ratprint $ratepsilon $domain $m1pbranch
-		      $rounddecimalfloats))
+		      $rounddecimalfloats machine-mantiss-precision))
 
 (defvar $rounddecimalfloats nil)
 
@@ -207,7 +207,7 @@ is (sum+1/10^50=1.0L0) ;  should be true
 ;; overwrite this one, too
 (defun bigfloat2rat (x)
   (if (decimalfpp x) (let ((k (* (cadr x)(expt 10 (caddr x)))))
-		       (cons (numerator k)(denominator k)))
+		       (list '(rat) (numerator k)(denominator k)))
     (let ()
   (setq x (bigfloatp x))
   (let (($float2bf t)
@@ -241,7 +241,8 @@ is (sum+1/10^50=1.0L0) ;  should be true
 (defun decfloat-from-fp (x)  ($binarybfloat ($rationalize x)))
 
 ;; Convert a bigfloat into a floating point number.
-(defmfun decfp2flo (l)
+(defun fp2flo(l)(decfp2flo l)) ; redefine usual
+(defun decfp2flo (l)
   (if (decimalfpp l) 
       (coerce  (* (cadr l)(expt 10 (caddr l))) 'double-float)
      (let ((precision (caddar l))
@@ -724,7 +725,50 @@ rationalize(1.0L-1)-1/10		; ; should be zero
     #+gcl (load eval)
     #-gcl (:load-toplevel :execute)
      (fpprec1 nil $fpprec)		; Set up user's precision
-   )
+     )
+
+;; these 3 functions below are not needed .. see advise-fun-simp
+;; for the workaround.
+#+ignore
+(defun $decfloor(f)  
+  (if (decimalfpp f) (floor (* (cadr f)(expt 10 (caddr f))))
+    (mfuncall '$floor f)))
+
+#+ignore
+(defun $decceiling(f)
+  (if (decimalfpp f)(ceiling (* (cadr f)(expt 10 (caddr f))))
+    (mfuncall '$ceiling f)))
+
+#+ignore
+(defun $dectruncate(f)
+  (if (decimalfpp f)(truncate (* (cadr f)(expt 10 (caddr f))))
+    (mfuncall '$truncate f)))
+
+(defun advise-fun-simp (r test var val)  ;; hack the simplification
+    (unless (get r 'orig)
+      (setf (get r 'orig) (get r 'operators))) ; get the simplification program
+    (setf (get r 'operators)
+      (compile nil ` (lambda(,var %x %y)(declare(ignore %x %y))
+			    (if ,test ,val (,(get r 'orig) ,var 1 t))))))
+;; sort of like tellsimp
+(advise-fun-simp '%truncate '(decimalfpp (cadr f)) 'f '(truncate (* (cadadr f)(expt 10 (caddr(cadr f))))))
+(advise-fun-simp '$floor '(decimalfpp (cadr f)) 'f    '(floor (* (cadadr f)      (expt 10 (caddr(cadr f))))))
+(advise-fun-simp '$ceiling '(decimalfpp (cadr f)) 'f  '(ceiling (* (cadadr f)    (expt 10 (caddr(cadr f))))))
+;; why $floor but %truncate? historical accident..
+
+;; $remainder is a function...  another inconsistency..
+
+(defvar *oldremainder (symbol-function '$remainder))
+
+(defun $remainder (x y)  ;; convert to rational?  remainder is always 0 in Rational Field
+  (if (decimalfpp x)(setf x (bigfloat2rat x)))
+  (if (decimalfpp y)(setf y (bigfloat2rat y)))
+;  (format t "~% x=~s y=~s" x y) test
+  (funcall *oldremainder x y))
+      
+(defun $decimalfpp(x)(if (decimalfpp x) t nil))      
+      
+
 
 
 (in-package :bigfloat)
@@ -769,11 +813,15 @@ rationalize(1.0L-1)-1/10		; ; should be zero
 	 (t
 	  (make-instance 'bigfloat :real (maxima::decimalfpp re)))))
 
+
+
 #| BUGS 3/19/2016   abs(2.0l0) comes out as binary. eh. hard to fix because
 bigfloat-impl::bigfloat  loses the radix.
 atan2(3,4.0l0) wrong.  where to patch??
+remainder (6.1L0,6)
 
 atan2(3.0l0,4) works
 
 |#
+
 

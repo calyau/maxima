@@ -66,7 +66,9 @@
 					 (take '(%zeta) s))))
 			(if (floatp a)
 			    ($float result)
-			    ($bfloat result)))))))
+			    ($bfloat result))))
+		     ((integerp s)
+		      (to (bigfloat::li-s-simp s (bigfloat:to a)))))))
         (eqtest (subfunmakes '$li (ncons s) (ncons a))
                 expr))))
 
@@ -849,6 +851,8 @@
 
 (in-package "BIGFLOAT")
 
+(defvar *debug-li-eval* nil)
+
 (defun li3numer (x)
   ;; If |x| < series-threshold, the series is used.
   (let ((series-threshold 0.8))
@@ -1023,3 +1027,158 @@
 		 (sum z (+ term sum)))
 		((<= (abs (/ term sum)) eps)
 		 sum)))))))
+
+(defun polylog-power-series (s z)
+  ;; Series evaluation:
+  ;;
+  ;; li[s](z) = sum(z^k/k^s, k, 1, inf);
+  (let ((eps (epsilon z)))
+    (do* ((k 1 (1+ k))
+	  (term z (* term z (expt (/ (- k 1) k) s)))
+	  (sum z (+ term sum)))
+	 ((<= (abs (/ term sum)) eps)
+	  ;; Return the value and the number of terms used, for
+	  ;; debugging and for helping in determining the series
+	  ;; threshold.
+	  (values sum k)))))
+
+(defun polylog-log-series (s z)
+  ;; When x is on or near the unit circle the other
+  ;; approaches don't work.  Use the expansion in powers of
+  ;; log(z) (from cephes cpolylog)
+  ;;
+  ;;   li[s](z) = sum(Z(s-j)*(log(z))^j/j!, j = 0, inf)
+  ;;
+  ;; where Z(j) = zeta(j) for j != 1.  For j = 1:
+  ;;
+  ;;   Z(1) = -log(-log(z)) + sum(1/k, k, 1, s - 1)
+  (flet ((zfun (j)
+	   ;; Compute Z(j)
+	   (cond ((= j 1)
+		  (let ((sum (- (log (- (log z))))))
+		    (+ sum
+		       (loop for k from 1 below s
+			     sum (/ k)))))
+		 (t
+		  (to (maxima::$zeta (maxima::to (float j (realpart z)))))))))
+    (let* ((eps (epsilon z))
+	   (logx (log z))
+	   (logx^2 (* logx logx))
+	   (top logx)
+	   (bot 1)
+	   (sum (zfun s)))
+      ;; Compute sum(Z(s-j)*log(z)^j/j!, j = 1, s)
+      (do* ((k 1 (1+ k))
+	    (zf (zfun (- s k)) (zfun (- s k)))
+	    (term (* (/ top bot) zf)
+		  (* (/ top bot) zf)))
+	   ((> k s))
+	(when *debug-li-eval*
+	  (format t "~3d: ~A / ~A * ~A => ~A~%" k top bot zf term))
+	(incf sum term)
+	(setf bot (* bot (1+ k)))
+	(setf top (* top logx)))
+
+      (when *debug-li-eval*
+	(format t "s = ~A, sum = ~S top, bot = ~S ~S~%"
+		s sum top bot))
+      ;; Compute the sum for j = s+1 and up.  But since
+      ;; zeta(-k) is 0 for k even, we only every other term.
+      (do* ((k (+ s 1) (+ k 2))
+	    (zf (zfun (- s k)) (zfun (- s k)))
+	    (term (* (/ top bot) zf)
+		  (* (/ top bot) zf)))
+	   ((<= (abs term) (* (abs sum) eps))
+	    ;; Return the result and the number of terms used for
+	    ;; helping in determining the series threshold and the
+	    ;; log-series threshold.
+	    (values sum k))
+	(when *debug-li-eval*
+	  (format t "~3d: ~A / ~A = ~A~%" k top bot term))
+	(incf sum term)
+	(setf bot (* bot (+ k 1) (+ k 2)))
+	(setf top (* top logx^2))))))
+
+(defun polylog-inversion-formula (s z)
+  ;; For z not in the interval (0, 1) and for integral n, we
+  ;; have the identity:
+  ;;
+  ;; li[n](z) = -log(-z)^n/n! + (-1)^(n-1)*li[n](1/z)
+  ;;               + 2 * sum(li[2*r](-1)/(n-2*r)!*log(-z)^(n-2*r), r, 1, floor(n/2))
+  ;;
+  ;; (See http://functions.wolfram.com/ZetaFunctionsandPolylogarithms/PolyLog/17/02/01/01/0008/)
+  ;;
+  ;; Or
+  ;;
+  ;; li[n](z) = -log(-z)^n/n! + (-1)^(n-1)*li[n](1/z)
+  ;;               + 2 * sum(li[2*m-2*r](-1)/(n-2*m+2*r)!*log(-z)^(n-2*m+2*r), r, 0, m - 1)
+  ;;
+  ;; where m = floor(n/2).  Thus, n-2*m = 0 if n is even and 1 if n is odd.
+  ;;
+  ;; For n = 2*m, we have
+  ;;
+  ;; li[2*m](z) = -log(-z)^(2*m)/(2*m)! - li[2*m](1/z)
+  ;;               + 2 * sum(li[2*r](-1)/(2*m-2*r)!*log(-z)^(2*m-2*r), r, 1, m)
+  ;;            = -log(-z)^(2*m)/(2*m)! - li[2*m](1/z)
+  ;;               + 2 * sum((li[2*m-2*r](-1)*log(-z)^(2*r+1))/(2*r+1)!,r,0,m-1);
+  ;;
+  ;; For n = 2*m+1, we have
+  ;;
+  ;; li[2*m+1](z) = -log(-z)^(2*m+1)/(2*m+1)! + li[2*m+1](1/z)
+  ;;                 + 2 * sum(li[2*r](-1)/(2*m-2*r + 1)!*log(-z)^(2*m-2*r + 1), r, 1, m)
+  ;;              = -log(-z)^(2*m+1)/(2*m+1)! + li[2*m+1](1/z)
+  ;;                + 2 * sum((li[2*m-2*r](-1)*log(-z)^(2*r+1))/(2*r+1)!,r,0,m-1);
+  ;; Thus,
+  ;;
+  ;; li[n](z) = -log(-z)^n/n! + (-1)^(n-1)*li[n](1/z)
+  ;;               + 2 * sum((li[2*m-2*r](-1)*log(-z)^(2*r+1))/(2*r+1)!,r,0,floor(n/2)-1);
+  (let* ((lgz (log (- z)))
+	 (lgz^2 (* lgz lgz))
+	 (half-s (floor s 2))
+	 (neg-1 (float -1 (realpart z)))
+	 (sum 0))
+    (if (evenp s)
+	(do* ((r 0 (1+ r))
+	      (top (if (oddp s) lgz 1) (* top lgz^2))
+	      (bot 1 (* bot (+ r r -1) (+ r r)))
+	      (term (* (li-s-simp (* 2 (- half-s r)) neg-1)
+		       (/ top bot))
+		    (* (li-s-simp (* 2 (- half-s r)) neg-1)
+		       (/ top bot))))
+	     ((>= r half-s))
+	  (incf sum term)
+	  (when *debug-li-eval*
+	    (format t "r = ~4d:  ~A / ~A, ~A; ~A~%" r top bot term sum)))
+	(do* ((r 0 (1+ r))
+	      (top (if (oddp s) lgz 1) (* top lgz^2))
+	      (bot 1 (* bot (+ r r) (+ r r 1)))
+	      (term (* (li-s-simp (* 2 (- half-s r)) neg-1)
+		       (/ top bot))
+		    (* (li-s-simp (* 2 (- half-s r)) neg-1)
+		       (/ top bot))))
+	     ((>= r half-s))
+	  (incf sum term)
+	  (when *debug-li-eval*
+	    (format t "r = ~4d:  ~A / ~A, ~A; ~A~%" r top bot term sum))))
+    (+ (+ sum sum)
+       (- (/ (expt lgz s)
+	     (maxima::take '(maxima::mfactorial) s)))
+       (* (expt -1 (- s 1))
+	  (li-s-simp s (/ z))))))
+
+(defun li-s-simp (s z)
+  (let ((series-threshold 0.5)
+	(log-series-threshold 2))
+    (cond ((zerop z)
+	   (maxima::to (to 0.0)))
+	  ((= z 1)
+	   (maxima::$zeta (maxima::to (float s z))))
+	  ((= z -1)
+	   (- (* (- 1 (expt 2 (- 1 s)))
+		 (to (li-s-simp s (- z))))))
+	  ((<= (abs z) series-threshold)
+	   (values (polylog-power-series s z)))
+	  ((<= (abs z) log-series-threshold)
+	   (values (polylog-log-series s z)))
+	  ((> (abs z) 1.5)
+	   (polylog-inversion-formula s z)))))
