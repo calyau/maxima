@@ -10,7 +10,7 @@ dnl whitespace so when updating the version number only make changes
 dnl within the second pair of square brackets.
 AC_INIT([maxima], [5.38post])
 AC_CONFIG_SRCDIR([src/macsys.lisp])
-AM_INIT_AUTOMAKE([-Wno-portability])
+AM_INIT_AUTOMAKE([-Wno-portability tar-ustar])
 
 AM_PATH_LISPDIR
 
