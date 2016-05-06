@@ -6,8 +6,8 @@ SUBDIRS = admin crosscompile-windows src lisp-utils tests doc interfaces share d
 
 EXTRA_DIST = \
   common.mk maxima.iss.in x-mac.xml\
-  README.lisps README.rpms README.i18n README.external \
-  INSTALL.win32 INSTALL.lisp \
+  README.lisps README.rpms README.i18n README.external README.developers-howto \
+  INSTALL.win32 INSTALL.lisp INSTALL.git INSTALL.win32nogcl \
   configure.lisp  maxima-local.in xmaxima-local.in \
   macosx/Makefile macosx/Readme.txt macosx/maxima.sh macosx/script \
   macosx/xmaxima.sh macosx/appIcon.icns \
@@ -17,8 +17,9 @@ EXTRA_DIST = \
   ChangeLog-5.18 ChangeLog-5.19 ChangeLog-5.20 ChangeLog-5.21 ChangeLog-5.22 \
   ChangeLog-5.23 ChangeLog-5.24 ChangeLog-5.25 ChangeLog-5.26 ChangeLog-5.27 \
   ChangeLog-5.28 ChangeLog-5.29 ChangeLog-5.30 ChangeLog-5.31 ChangeLog-5.32 \
-  ChangeLog-5.33 ChangeLog-5.34 ChangeLog-5.35 ChangeLog-5.36.md
-
+  ChangeLog-5.33 ChangeLog-5.34 ChangeLog-5.35 ChangeLog-5.36.md ChangeLog-5.37.md \
+  ChangeLog-5.38.md LICENSES/getopt-license.txt
+  
 include common.mk
 
 extradocinstall:
