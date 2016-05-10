@@ -49,7 +49,7 @@ set(GNUPLOTVERSION   5.0.3)
 set(TCLVERSION       8.6.5)
 set(TKVERSION        8.6.5)
 set(VTKVERSION       6.3.0)
-set(SBCLVERSION      1.3.4)
+set(SBCLVERSION      1.3.5)
 
 
 # MD5 checksums for the current program versions.
@@ -90,7 +90,7 @@ set(VTK_URL       "http://www.vtk.org/files/release/6.3/VTK-${VTKVERSION}.tar.gz
 #    set(SBCL_MD5      "f8cd3044c74beb84bba4aa9df5bb804e")
 # else()
     set(SBCL_INSTALLER "sbcl-${SBCLVERSION}-x86-windows-binary.msi")
-    set(SBCL_MD5      "a8afa2f0f9b4237b63ef16993afc498f")
+    set(SBCL_MD5      "cef80ad220f520c30423f3e47c90c933")
 # endif()
 set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/${SBCL_INSTALLER}")
 
