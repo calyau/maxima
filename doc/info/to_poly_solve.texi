@@ -1121,7 +1121,7 @@ for conjunction, disjuntion, and implication, respectively; for example
 (%o9)                       %union()
 @end example
 
-The empty set is represented by @code{%union}.
+The empty set is represented by @code{%union()}.
 
 The function @code{to_poly_solve} is able to solve some, but not all,
 equations involving rational powers, some nonrational powers, absolute
