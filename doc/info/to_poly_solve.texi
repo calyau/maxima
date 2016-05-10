@@ -1394,3 +1394,71 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 @end deffn
 
+@anchor{%union}
+@deffn {Operator} %union (@var{soln_1}, @var{soln_2}, @var{soln_3}, ...)
+@deffnx {Operator} %union ()
+
+@code{%union(@var{soln_1}, @var{soln_2}, @var{soln_3}, ...)} represents the union of its arguments,
+each of which represents a solution set,
+as determined by @code{to_poly_solve}.
+@code{%union()} represents the empty set.
+
+In many cases, a solution is a list of equations @code{[@var{x} = ..., @var{y} = ..., @var{z} = ...]}
+where @var{x}, @var{y}, and @var{z} are one or more unknowns.
+In such cases, @code{to_poly_solve} returns a @code{%union} expression
+containing one or more such lists.
+
+The solution set sometimes involves simplifing versions of various
+of logical operators including @code{%and}, @code{%or}, or @code{%if}
+for conjunction, disjuntion, and implication, respectively.
+
+Examples:
+
+@code{%union(...)} represents the union of its arguments,
+each of which represents a solution set,
+as determined by @code{to_poly_solve}.
+In many cases, a solution is a list of equations.
+
+@c ===beg===
+@c load (to_poly_solve) $
+@c to_poly_solve ([sqrt(x^2 - y^2), x + y], [x, y]);
+@c ===end===
+@example
+(%i1) load (to_poly_solve) $
+(%i2) to_poly_solve ([sqrt(x^2 - y^2), x + y], [x, y]);
+(%o2)    %union([x = 0, y = 0], [x = %c13, y = - %c13])
+@end example
+
+@code{%union()} represents the empty set.
+
+@c ===beg===
+@c load (to_poly_solve) $
+@c to_poly_solve (abs(x) = -1, x);
+@c ===end===
+@example
+(%i1) load (to_poly_solve) $
+(%i2) to_poly_solve (abs(x) = -1, x);
+(%o2)                       %union()
+@end example
+
+The solution set sometimes involves simplifing versions of various
+of logical operators.
+
+@c ===beg===
+@c load (to_poly_solve) $
+@c sol : to_poly_solve (abs(x) = a, x);
+@c subst (a = 42, sol);
+@c subst (a = -42, sol);
+@c ===end===
+@example
+(%i1) load (to_poly_solve) $
+(%i2) sol : to_poly_solve (abs(x) = a, x);
+(%o2) %union(%if(isnonnegative_p(a), [x = - a], %union()), 
+                      %if(isnonnegative_p(a), [x = a], %union()))
+(%i3) subst (a = 42, sol);
+(%o3)             %union([x = - 42], [x = 42])
+(%i4) subst (a = -42, sol);
+(%o4)                       %union()
+@end example
+
+@end deffn
