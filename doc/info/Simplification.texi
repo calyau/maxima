@@ -1111,13 +1111,17 @@ simplifications are tried, it returns the original answer.
 @defvr {Option variable} simp
 Default value: @code{true}
 
-@code{simp} enables simplification.  This is the standard.  @code{simp} is also
+@code{simp} enables simplification.  This is the default.  @code{simp} is also
 an @code{evflag}, which is recognized by the function @code{ev}.  See @mrefdot{ev}
 
 When @code{simp} is used as an @code{evflag} with a value @code{false}, the 
 simplification is suppressed only during the evaluation phase of an expression.
-The flag can not suppress the simplification which follows the evaluation 
+The flag does not suppress the simplification which follows the evaluation 
 phase.
+
+Many Maxima functions and operations require simplification to be enabled to work normally.
+When simplification is disabled, many results will be incomplete,
+and in addition there may be incorrect results or program errors.
 
 Examples:
 
