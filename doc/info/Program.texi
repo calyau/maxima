@@ -238,7 +238,22 @@ functions, including the currently active function.
 
 @c -----------------------------------------------------------------------------
 @anchor{do}
+@anchor{while}
+@anchor{unless}
+@anchor{for}
+@anchor{from}
+@anchor{thru}
+@anchor{step}
+@anchor{next}
+@anchor{in}
 @deffn {Special operator} do
+@deffnx {Special operator} while
+@deffnx {Special operator} unless
+@deffnx {Special operator} for
+@deffnx {Special operator} from
+@deffnx {Special operator} thru
+@deffnx {Special operator} step
+@deffnx {Special operator} next
 @deffnx {Special operator} in
 
 The @code{do} statement is used for performing iteration.  Due to its
@@ -664,21 +679,6 @@ value of errormsg is false
 @closecatbox
 @end defvr
 
-@c REPHRASE
-@c AT LEAST SHOULD LIST VARIANTS HERE
-
-@c -----------------------------------------------------------------------------
-@anchor{for}
-@deffn {Special operator} for
-
-Used in iterations.  See @code{do} for a description of
-Maxima's iteration facilities.
-
-@opencatbox
-@category{Programming}
-@closecatbox
-@end deffn
-
 @c -----------------------------------------------------------------------------
 @anchor{go}
 @deffn {Function} go (@var{tag})
@@ -1056,21 +1056,6 @@ ways.
 Evaluates @var{expr} and throws the value back to the most recent
 @code{catch}.  @code{throw} is used with @code{catch} as a nonlocal return
 mechanism.
-
-@opencatbox
-@category{Programming}
-@closecatbox
-@end deffn
-
-@c NEED MORE HERE !!
-@c AT LEAST SHOULD LIST ACCEPTABLE VARIANTS
-
-@c -----------------------------------------------------------------------------
-@anchor{while}
-@anchor{unless}
-@deffn  {Special operator} while
-@deffnx {Special operator} unless
-See @code{do}.
 
 @opencatbox
 @category{Programming}
