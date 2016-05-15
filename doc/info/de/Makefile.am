@@ -31,3 +31,5 @@ zeilberger.de.texi \
 Glossary.de.texi Number.de.texi Indices.de.texi
 
 include ../common-lang.mk
+
+EXTRA_DIST += extract_categories1.awk extract_categories1.sed extract_categories.sh manual.css texi2html.init

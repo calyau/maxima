@@ -194,6 +194,8 @@ figures/draw_interpolate_color5.gif\
 figures/draw_interpolate_color6.gif\
 figures/draw_interpolate_color.gif\
 figures/draw_key.gif\
+figures/draw_key_label_alignment.gif\
+figures/draw_key_label_orientation.gif\
 figures/draw_key_pos2.gif\
 figures/draw_key_pos.gif\
 figures/draw_label2.gif\
@@ -315,6 +317,21 @@ figures/plotting24.pdf\
 figures/plotting25.pdf\
 figures/plotting26.pdf\
 figures/orthopoly1.pdf\
+figures/graphs01.pdf\
+figures/graphs02.pdf\
+figures/graphs03.pdf\
+figures/graphs04.pdf\
+figures/graphs05.pdf\
+figures/graphs06.pdf\
+figures/graphs07.pdf\
+figures/graphs08.pdf\
+figures/graphs09.pdf\
+figures/graphs10.pdf\
+figures/graphs11.pdf\
+figures/graphs12.pdf\
+figures/graphs13.pdf\
+figures/graphs14.pdf\
+figures/graphs15.pdf\
 figures/bodegain1.pdf\
 figures/bodegain2.pdf\
 figures/bodegain3.pdf\
@@ -392,6 +409,8 @@ figures/draw_interpolate_color5.pdf\
 figures/draw_interpolate_color6.pdf\
 figures/draw_interpolate_color.pdf\
 figures/draw_key.pdf\
+figures/draw_key_label_alignment.pdf\
+figures/draw_key_label_orientation.pdf\
 figures/draw_key_pos2.pdf\
 figures/draw_key_pos.pdf\
 figures/draw_label2.pdf\
@@ -469,6 +488,9 @@ figures/worldmap_geomap3.pdf\
 figures/worldmap_geomap4.pdf\
 figures/worldmap_geomap5.pdf\
 figures/worldmap_geomap6.pdf
+
+macfiles = figures/draw_allocation2.mac figures/draw_allocation.mac figures/draw_axis3d.mac figures/draw_axis_bottom.mac figures/draw_bars.mac figures/draw_border.mac figures/draw_cbrange.mac figures/draw_cbtics.mac figures/draw_colorbox2.mac figures/draw_colorbox.mac figures/draw_color.mac figures/draw_columns.mac figures/draw_contour2.mac figures/draw_contour.mac figures/draw_cylindrical.mac figures/draw_elevation_grid.mac figures/draw_ellipse.mac figures/draw_enhanced3d10.mac figures/draw_enhanced3d11.mac figures/draw_enhanced3d2.mac figures/draw_enhanced3d3.mac figures/draw_enhanced3d4.mac figures/draw_enhanced3d5.mac figures/draw_enhanced3d6.mac figures/draw_enhanced3d7.mac figures/draw_enhanced3d8.mac figures/draw_enhanced3d9.mac figures/draw_enhanced3d.mac figures/draw_equiv.mac figures/draw_errors2.mac figures/draw_errors.mac figures/draw_explicit2.mac figures/draw_explicit3.mac figures/draw_explicit.mac figures/draw_filledfunc2.mac figures/draw_filledfunc.mac figures/draw_grid2.mac figures/draw_grid.mac figures/draw_head_angle.mac figures/draw_head_both.mac figures/draw_head_length.mac figures/draw_head_type.mac figures/draw_image2.mac figures/draw_image3.mac figures/draw_image4.mac figures/draw_image5.mac figures/draw_image6.mac figures/draw_image.mac figures/draw_implicit2.mac figures/draw_implicit.mac figures/draw_interpolate_color2.mac figures/draw_interpolate_color3.mac figures/draw_interpolate_color4.mac figures/draw_interpolate_color5.mac figures/draw_interpolate_color6.mac figures/draw_interpolate_color.mac figures/draw_key.mac figures/draw_key_pos2.mac figures/draw_key_pos.mac figures/draw_label2.mac figures/draw_label_alignment.mac figures/draw_label.mac figures/draw_label_orientation.mac figures/draw_line_type.mac figures/draw_line_width.mac figures/draw_logcb.mac figures/draw_logx_secondary.mac figures/draw_mesh2.mac figures/draw_mesh3.mac figures/draw_mesh.mac figures/draw_nticks.mac figures/draw_palette2.mac figures/draw_palette3.mac figures/draw_palette4.mac figures/draw_palette5.mac figures/draw_palette.mac figures/draw_parametric2.mac figures/draw_parametric3.mac figures/draw_parametric.mac figures/draw_points2.mac figures/draw_points3.mac figures/draw_points4.mac figures/draw_points5.mac figures/draw_points6.mac figures/draw_points7.mac figures/draw_points8.mac figures/draw_point_size.mac figures/draw_points_joined.mac figures/draw_points.mac figures/draw_point_type.mac figures/draw_polar.mac figures/draw_polygon.mac figures/draw_proportional_axis2.mac figures/draw_proportional_axis.mac figures/draw_quadrilateral.mac figures/draw_rectangle.mac figures/draw_region.mac figures/draw_scene.mac figures/draw_spherical.mac figures/draw_surface_hide.mac figures/draw_title.mac figures/draw_transform2.mac figures/draw_transform.mac figures/draw_transparent.mac figures/draw_triangle.mac figures/draw_tube_extremes.mac figures/draw_tube.mac figures/draw_unit_vectors.mac figures/draw_user_preamble2.mac figures/draw_user_preamble.mac figures/draw_vector2.mac figures/draw_vector.mac figures/draw_view2.mac figures/draw_view.mac figures/draw_wired_surface.mac figures/draw_xaxis.mac figures/draw_xaxis_secondary.mac figures/draw_xugrid.mac figures/draw_ylabel_secondary.mac figures/worldmap_geomap2.mac figures/worldmap_geomap3.mac figures/worldmap_geomap4.mac figures/worldmap_geomap5.mac figures/worldmap_geomap6.mac figures/worldmap_geomap.mac figures/worldmap_make_poly_continent2.mac figures/worldmap_make_poly_continent.mac figures/worldmap_make_poly_country.mac figures/worldmap_make_polygon.mac figures/worldmap_region_boundaries.mac figures/worldmap_region_boundaries_plus.mac
+
 
 
 if CHM
@@ -555,10 +577,12 @@ clean-chm:
 endif
 
 EXTRA_DIST = texi2html manual.css texi2html.init \
-    $(genericdirDATA) $(pdffigures) \
-    create_index build_index.pl maxima-index.lisp  \
-    extract_categories1.awk  extract_categories1.sed  extract_categories.sh\
-    figures/Makefile.am figures/Makefile.in
+    $(genericdirDATA) $(pdffigures) $(macfiles) \
+    create_index build_index.pl maxima-index.lisp docdraw.mac \
+    extract_categories1.awk extract_categories1.sed extract_categories.sh check_tab fix_tab \
+    figures/Makefile.am figures/Makefile.in figures/README \
+    maxima-init.lisp mmref.tex README.update_examples \
+    figures/orthopoly1.ps.gz figures/plotdf1.ps.gz figures/plotdf2.ps.gz figures/plotdf3.ps.gz figures/plotdf4.ps.gz figures/plotdf5.ps.gz figures/plotdf6.ps.gz
 
 check_texinfo:
 	@pattern=`printf "\t"` ; \
