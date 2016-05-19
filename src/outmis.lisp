@@ -318,11 +318,11 @@
 			    (ncons (car i)))
 		    ret))))
 
-(declare-top (special invfun $programmode nfun
+(declare-top (special $programmode
 		      *roots *failures varlist genvar $ratfac))
 
 (defmfun $changevar (expr trans nvar ovar)
-  (let (invfun nfun $ratfac)
+  (let (tfun $ratfac)
     (cond ((or (atom expr) (eq (caar expr) 'rat) (eq (caar expr) 'mrat))  expr)
 	  ((atom trans) (merror (intl:gettext "changevar: second argument must not be an atom; found: ~M") trans))
 	  ((null (atom nvar)) (merror (intl:gettext "changevar: third argument must be an atom; found: ~M") nvar))
@@ -344,7 +344,8 @@
 	 (recur-apply #'changevar expr))
 	(t (let ((deriv (if tfun (sdiff tfun nvar)
 			    (neg (div (sdiff trans nvar) ;IMPLICIT DIFF.
-				      (sdiff trans ovar))))))
+				      (sdiff trans ovar)))))
+		 nfun)
 	     (cond ((and (member (caar expr) '(%sum %product) :test #'eq)
 			 (not (equal deriv 1)))
 		    (merror (intl:gettext "changevar: illegal change in summation or product")))
@@ -357,15 +358,15 @@
 					       trans ovar))))
 		    (cond ;; DEFINITE INTEGRAL,SUMMATION, OR PRODUCT
 		      ((cdddr expr)
-		       (or invfun (setq invfun (solvable trans nvar t)))
-		       (list (ncons (caar expr)) ;THIS WAS CHANGED
-			     nfun	;FROM '(%INTEGRATE)
-			     nvar
-			     ($limit invfun ovar (cadddr expr) '$plus)
-			     ($limit invfun
-				     ovar
-				     (car (cddddr expr))
-				     '$minus)))
+		       (let ((invfun (solvable trans nvar t)))
+			 (list (ncons (caar expr)) ;THIS WAS CHANGED
+			       nfun	;FROM '(%INTEGRATE)
+			       nvar
+			       ($limit invfun ovar (cadddr expr) '$plus)
+			       ($limit invfun
+				       ovar
+				       (car (cddddr expr))
+				       '$minus))))
 		      (t		;INDEFINITE INTEGRAL
 		       (list '(%integrate) nfun nvar))))
 		   (t expr))))))
