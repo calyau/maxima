@@ -119,8 +119,7 @@ eigenvectors(mat):=
 		nondiagonalizable:false,
 		eigvecs:[],realonly:false,algebraic:true,
 		for index1 thru count do 
-		(count:mi(count-part(multiplicities,index1)+1),
-		mmatrx:matrx-part(eigvals,1,index1)*vectr,
+		(mmatrx:matrx-part(eigvals,1,index1)*vectr,
 		equations:[],
 		for index2 thru dimnsn do
 		equations:cons(mmatrx[index2,1],equations),%rnum:0,
