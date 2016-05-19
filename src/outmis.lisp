@@ -318,7 +318,7 @@
 			    (ncons (car i)))
 		    ret))))
 
-(declare-top (special trans ovar nvar tfun invfun $programmode nfun
+(declare-top (special invfun $programmode nfun
 		      *roots *failures varlist genvar $ratfac))
 
 (defmfun $changevar (expr trans nvar ovar)
@@ -328,7 +328,7 @@
 	  ((null (atom nvar)) (merror (intl:gettext "changevar: third argument must be an atom; found: ~M") nvar))
 	  ((null (atom ovar)) (merror (intl:gettext "changevar: fourth argument must be an atom; found: ~M") ovar)))
     (setq tfun (solvable (setq trans (meqhk trans)) ovar))
-    (changevar expr)))
+    (changevar expr trans nvar ovar tfun)))
 
 (defun solvable (l var &optional (errswitch nil))
   (let (*roots *failures)
@@ -337,7 +337,7 @@
 	  (errswitch (merror (intl:gettext "changevar: failed to solve for ~M in ~M") var l))
 	  (t nil))))
 
-(defun changevar (expr)
+(defun changevar (expr trans nvar ovar tfun)
   (cond ((atom expr) expr)
 	((or (not (member (caar expr) '(%integrate %sum %product) :test #'eq))
 	     (not (alike1 (caddr expr) ovar)))
