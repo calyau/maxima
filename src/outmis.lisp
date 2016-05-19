@@ -322,13 +322,12 @@
 		      *roots *failures varlist genvar $ratfac))
 
 (defmfun $changevar (expr trans nvar ovar)
-  (let (tfun $ratfac)
+  (let ($ratfac)
     (cond ((or (atom expr) (eq (caar expr) 'rat) (eq (caar expr) 'mrat))  expr)
 	  ((atom trans) (merror (intl:gettext "changevar: second argument must not be an atom; found: ~M") trans))
 	  ((null (atom nvar)) (merror (intl:gettext "changevar: third argument must be an atom; found: ~M") nvar))
 	  ((null (atom ovar)) (merror (intl:gettext "changevar: fourth argument must be an atom; found: ~M") ovar)))
-    (setq tfun (solvable (setq trans (meqhk trans)) ovar))
-    (changevar expr trans nvar ovar tfun)))
+    (changevar expr trans nvar ovar)))
 
 (defun solvable (l var &optional (errswitch nil))
   (let (*roots *failures)
@@ -337,15 +336,17 @@
 	  (errswitch (merror (intl:gettext "changevar: failed to solve for ~M in ~M") var l))
 	  (t nil))))
 
-(defun changevar (expr trans nvar ovar tfun)
+(defun changevar (expr trans nvar ovar)
   (cond ((atom expr) expr)
 	((or (not (member (caar expr) '(%integrate %sum %product) :test #'eq))
 	     (not (alike1 (caddr expr) ovar)))
 	 (recur-apply #'changevar expr))
-	(t (let ((deriv (if tfun (sdiff tfun nvar)
-			    (neg (div (sdiff trans nvar) ;IMPLICIT DIFF.
-				      (sdiff trans ovar)))))
-		 nfun)
+	(t (let* ((tfun (solvable (setq trans (meqhk trans)) ovar))
+		  (deriv (if tfun
+			     (sdiff tfun nvar)
+			     (neg (div (sdiff trans nvar) ;IMPLICIT DIFF.
+				       (sdiff trans ovar)))))
+		  nfun)
 	     (cond ((and (member (caar expr) '(%sum %product) :test #'eq)
 			 (not (equal deriv 1)))
 		    (merror (intl:gettext "changevar: illegal change in summation or product")))
