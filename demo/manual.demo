@@ -147,6 +147,8 @@
    'integrate(%e^(sqrt(a)*sqrt(y)),y,0,4);
    changevar(%,y-z^2/a,z,y);
 
+   sum(a[k]*x^(N-1-k), k, 0, N - 1);
+   changevar(%, m = N - 1 - k, m, k);
 && charpoly  
 
    a:matrix([3,1],[2,4]);

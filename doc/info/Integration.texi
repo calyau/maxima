@@ -41,6 +41,8 @@ Makes the change of variable given by @code{@var{f(x,y)} = 0} in all integrals
 occurring in @var{expr} with integration with respect to @var{x}.
 The new variable is @var{y}.
 
+The change of variable can also be written @code{@var{f(x)} = @var{g(y)}}.
+
 @c HMM, THIS EXAMPLE YIELDS A CORRECT BUT SLIGHTLY STRANGE RESULT...
 @example
 (%i1) assume(a > 0)$
