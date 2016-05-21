@@ -318,15 +318,18 @@
 			    (ncons (car i)))
 		    ret))))
 
-(declare-top (special $programmode
-		      *roots *failures varlist genvar $ratfac))
+(declare-top (special $programmode *roots *failures varlist genvar $ratfac))
 
 (defmfun $changevar (expr trans nvar ovar)
   (let ($ratfac)
-    (cond ((or (atom expr) (eq (caar expr) 'rat) (eq (caar expr) 'mrat))  expr)
-	  ((atom trans) (merror (intl:gettext "changevar: second argument must not be an atom; found: ~M") trans))
-	  ((null (atom nvar)) (merror (intl:gettext "changevar: third argument must be an atom; found: ~M") nvar))
-	  ((null (atom ovar)) (merror (intl:gettext "changevar: fourth argument must be an atom; found: ~M") ovar)))
+    (cond ((or (atom expr) (eq (caar expr) 'rat) (eq (caar expr) 'mrat))
+	   expr)
+	  ((atom trans)
+	   (merror (intl:gettext "changevar: second argument must not be an atom; found: ~M") trans))
+	  ((null (atom nvar))
+	   (merror (intl:gettext "changevar: third argument must be an atom; found: ~M") nvar))
+	  ((null (atom ovar))
+	   (merror (intl:gettext "changevar: fourth argument must be an atom; found: ~M") ovar)))
     (changevar expr trans nvar ovar)))
 
 (defun solvable (l var &optional (errswitch nil))
