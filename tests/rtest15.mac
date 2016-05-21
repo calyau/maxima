@@ -1363,3 +1363,6 @@ trigrat(e^x * sin(x));
 trigrat(f^x * sin(x));
 %i*abs(f)^x*sin(x)*sin(atan2(0, f)*x) + abs(f)^x*sin(x)*cos(atan2(0, f)*x);
 
+/* Test changevar for summation */
+changevar(sum(a[N-1-r]*x^r, r, 0, N-1), s = N-1-r, s, r);
+sum(a[s]*x^(N-1-s), s, 0, N-1);
