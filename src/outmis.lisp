@@ -356,8 +356,7 @@
 		     (sdiff tfun nvar)
 		     (neg (div (sdiff trans nvar) ;IMPLICIT DIFF.
 			       (sdiff trans ovar)))))
-		(sum-product-p (member (caar expr) '(%sum %product) :test #'eq))
-		nfun)
+		(sum-product-p (member (caar expr) '(%sum %product) :test #'eq)))
 
 	   #+nil
 	   (progn
@@ -374,7 +373,7 @@
 			       (equal deriv -1))))
 	     (merror (intl:gettext "changevar: illegal change in summation or product")))
 
-	   (cond ((setq nfun ($radcan	;NIL IF KERNSUBST FAILS
+	   (let ((nfun ($radcan	;NIL IF KERNSUBST FAILS
 			      (if tfun
 				  (mul (maxima-substitute tfun ovar (cadr expr))
 				       ;; Don't multiply by deriv
@@ -385,37 +384,38 @@
 				       (if sum-product-p 1 deriv))
 				  (kernsubst ($ratsimp (mul (cadr expr)
 							    deriv))
-					     trans ovar))))
-		  ;; nfun is basically the result of subtituting ovar
-		  ;; with tfun in the integratand (summand).
-		  (cond	
-		    ((cdddr expr)
-		     ;; Handle definite integral, summation, or
-		     ;; product.  invfun expresses nvar in terms of
-		     ;; ovar so that we can compute the new lower and
-		     ;; upper limits of the integral (sum).
-		     (let* ((invfun (solvable trans nvar t))
-			    (lo-limit ($limit invfun ovar (cadddr expr) '$plus))
-			    (hi-limit ($limit invfun
-					      ovar
-					      (car (cddddr expr))
-					      '$minus)))
-		       ;; If this is a sum or product and deriv =
-		       ;; -1, we want to reverse the low and high
-		       ;; limits.
-		       (when (and sum-product-p (equal deriv -1))
-			 (rotatef lo-limit hi-limit))
+					     trans ovar)))))
+	     (cond
+	       (nfun
+		;; nfun is basically the result of subtituting ovar
+		;; with tfun in the integratand (summand).
+		(cond	
+		  ((cdddr expr)
+		   ;; Handle definite integral, summation, or product.
+		   ;; invfun expresses nvar in terms of ovar so that
+		   ;; we can compute the new lower and upper limits of
+		   ;; the integral (sum).
+		   (let* ((invfun (solvable trans nvar t))
+			  (lo-limit ($limit invfun ovar (cadddr expr) '$plus))
+			  (hi-limit ($limit invfun
+					    ovar
+					    (car (cddddr expr))
+					    '$minus)))
+		     ;; If this is a sum or product and deriv = -1, we
+		     ;; want to reverse the low and high limits.
+		     (when (and sum-product-p (equal deriv -1))
+		       (rotatef lo-limit hi-limit))
 
-		       ;; Construct the new result.
-		       (list (ncons (caar expr))
-			     nfun
-			     nvar
-			     lo-limit
-			     hi-limit)))
-		    (t
-		     ;; Indefinite integral
-		     (list '(%integrate) nfun nvar))))
-		 (t expr))))))
+		     ;; Construct the new result.
+		     (list (ncons (caar expr))
+			   nfun
+			   nvar
+			   lo-limit
+			   hi-limit)))
+		  (t
+		   ;; Indefinite integral
+		   (list '(%integrate) nfun nvar))))
+	       (t expr)))))))
 
 (defun kernsubst (expr form ovar)
   (let (varlist genvar nvarlist)
