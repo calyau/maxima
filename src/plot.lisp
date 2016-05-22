@@ -616,7 +616,7 @@ sin(y)*(10.0+6*cos(x)),
 	   ;; Just always try to convert the result to a float,
 	   ;; which handles things like $%pi.  See also BUG
 	   ;; #2880115
-	   ;; http://sourceforge.net/tracker/?func=detail&atid=104933&aid=2880115&group_id=4933
+	   ;; https://sourceforge.net/tracker/?func=detail&atid=104933&aid=2880115&group_id=4933
 	   ;;
 	   ;; Should we use HANDLER-CASE like we do above in
 	   ;; %coerce-float-fun?  Seems not necessary for what we want

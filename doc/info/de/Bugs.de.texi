@@ -225,7 +225,7 @@ Beispiel:
 (%i1) bug_report();
 
 Please report bugs to:
-    http://sourceforge.net/p/maxima/bugs
+    https://sourceforge.net/p/maxima/bugs/
 To report a bug, you must have a Sourceforge account.
 Please include the following information with your bug report:
 -------------------------------------------------------------

@@ -390,7 +390,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 
 (defmfun $bug_report ()
   (format t (intl:gettext "~%Please report bugs to:~%"))
-  (format t "    http://sourceforge.net/p/maxima/bugs~%")
+  (format t "    https://sourceforge.net/p/maxima/bugs~%")
   (format t (intl:gettext "To report a bug, you must have a Sourceforge account.~%"))
   (format t (intl:gettext "Please include the following information with your bug report:~%"))
   (format t "-------------------------------------------------------------~%")
