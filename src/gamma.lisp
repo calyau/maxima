@@ -1950,7 +1950,7 @@
 ;;   erf(z) = sqrt(z^2)/z*(1 - gamma_incomplete(1/2,z^2)/sqrt(%pi))
 ;;
 ;; When z is real sqrt(z^2)/z is signum(z).  For complex z,
-;; sqrt(z^2)/z = 1 if -%pi/2 < arg(z) <= %pi/2 and -1 otherwise.
+;; sqrt(z^2)/z = 1 if abs(arg(z)) <= %pi/2 and -1 otherwise.
 ;;
 ;; This relationship has serious round-off issues when z is small
 ;; because gamma_incomplete(1/2,z^2)/sqrt(%pi) is near 1.
@@ -1959,26 +1959,14 @@
 ;; bfloats, and complex-bfloat-erf is for complex bfloats.  Care is
 ;; taken to return real results for real arguments and imaginary
 ;; results for imaginary arguments
-;;
-;; Pure imaginary z with Im(z) < 0 causes trouble for Lisp implementations
-;; which recognize signed zero, so just avoid Im(z) < 0 altogether.
-
 (defun complex-erf (z)
-  (if (< (imagpart z) 0.0)
-    (conjugate (complex-erf-upper-half-plane (conjugate z)))
-    (complex-erf-upper-half-plane z)))
-
-(defun complex-erf-upper-half-plane (z)
   (let ((result
           (*
-	    (if (< (realpart z) 0.0) ;; only test needed in upper half plane
+	    (if (< (realpart z) 0.0)
 		-1
 	      1)
             (- 1.0 
-              ;; GAMMA-INCOMPLETE returns conjugate when z is pure imaginary
-              ;; with Im(z) < 0 and Lisp implementation recognizes signed zero.
-              ;; Good thing we are in the upper half plane.
-              (* (/ (sqrt (float pi))) (gamma-incomplete 0.5 (* z z)))))))
+              (* (/ (sqrt (float pi))) (gamma-incomplete 0.5 (expt z 2.0)))))))
     (cond
       ((= (imagpart z) 0.0)
        ;; Pure real argument, the result is real
