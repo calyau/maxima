@@ -15,7 +15,12 @@
 	(t (displa x1) (merror "bromberg: encountered a non-bigfloat."))))
 
 (defun bqeval3 (f x)
-  (cdr (funcall f (bcons x))))
+  (let*
+    ((bf-x (bcons x))
+     (result (funcall f bf-x)))
+    (if (atom result)
+      (merror "bromberg: integrand evaluates to a nonnumeric value at ~M" bf-x)
+      (cdr result))))
 
 (defun $bromberg (&rest l1) 
   (or (= (length l1) 4) (= (length l1) 3)
