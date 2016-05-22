@@ -318,57 +318,107 @@
 			    (ncons (car i)))
 		    ret))))
 
-(declare-top (special trans ovar nvar tfun invfun $programmode nfun
-		      *roots *failures varlist genvar $ratfac))
+(declare-top (special $programmode *roots *failures varlist genvar $ratfac))
 
 (defmfun $changevar (expr trans nvar ovar)
-  (let (invfun nfun $ratfac)
-    (cond ((or (atom expr) (eq (caar expr) 'rat) (eq (caar expr) 'mrat))  expr)
-	  ((atom trans) (merror (intl:gettext "changevar: second argument must not be an atom; found: ~M") trans))
-	  ((null (atom nvar)) (merror (intl:gettext "changevar: third argument must be an atom; found: ~M") nvar))
-	  ((null (atom ovar)) (merror (intl:gettext "changevar: fourth argument must be an atom; found: ~M") ovar)))
-    (setq tfun (solvable (setq trans (meqhk trans)) ovar))
-    (changevar expr)))
+  (let ($ratfac)
+    (cond ((or (atom expr) (eq (caar expr) 'rat) (eq (caar expr) 'mrat))
+	   expr)
+	  ((atom trans)
+	   (merror (intl:gettext "changevar: second argument must not be an atom; found: ~M") trans))
+	  ((null (atom nvar))
+	   (merror (intl:gettext "changevar: third argument must be an atom; found: ~M") nvar))
+	  ((null (atom ovar))
+	   (merror (intl:gettext "changevar: fourth argument must be an atom; found: ~M") ovar)))
+    (changevar expr trans nvar ovar)))
 
 (defun solvable (l var &optional (errswitch nil))
   (let (*roots *failures)
     (solve l var 1)
-    (cond (*roots ($rhs (car *roots)))
+    (cond (*roots
+	   ;; We arbitrarily pick the first root.  Should we be more careful?
+	   ($rhs (car *roots)))
 	  (errswitch (merror (intl:gettext "changevar: failed to solve for ~M in ~M") var l))
 	  (t nil))))
 
-(defun changevar (expr)
+(defun changevar (expr trans nvar ovar)
   (cond ((atom expr) expr)
 	((or (not (member (caar expr) '(%integrate %sum %product) :test #'eq))
 	     (not (alike1 (caddr expr) ovar)))
 	 (recur-apply #'changevar expr))
-	(t (let ((deriv (if tfun (sdiff tfun nvar)
-			    (neg (div (sdiff trans nvar) ;IMPLICIT DIFF.
-				      (sdiff trans ovar))))))
-	     (cond ((and (member (caar expr) '(%sum %product) :test #'eq)
-			 (not (equal deriv 1)))
-		    (merror (intl:gettext "changevar: illegal change in summation or product")))
-		   ((setq nfun ($radcan	;NIL IF KERNSUBST FAILS
-				(if tfun
-				    (mul (maxima-substitute tfun ovar (cadr expr))
-					 deriv)
-				    (kernsubst ($ratsimp (mul (cadr expr)
-							      deriv))
-					       trans ovar))))
-		    (cond ;; DEFINITE INTEGRAL,SUMMATION, OR PRODUCT
-		      ((cdddr expr)
-		       (or invfun (setq invfun (solvable trans nvar t)))
-		       (list (ncons (caar expr)) ;THIS WAS CHANGED
-			     nfun	;FROM '(%INTEGRATE)
-			     nvar
-			     ($limit invfun ovar (cadddr expr) '$plus)
-			     ($limit invfun
-				     ovar
-				     (car (cddddr expr))
-				     '$minus)))
-		      (t		;INDEFINITE INTEGRAL
-		       (list '(%integrate) nfun nvar))))
-		   (t expr))))))
+	(t
+	 ;; TRANS is the expression that relates old var and new var
+	 ;; and is of the form f(ovar, nvar) = 0. Using TRANS, try to
+	 ;; solve for ovar so that ovar = tfun(nvar), if possible.
+	 (let* ((tfun (solvable (setq trans (meqhk trans)) ovar))
+		(deriv
+		 ;; Compute diff(tfun, nvar) = dovar/dnvar if tfun is
+		 ;; available.  Otherwise, use implicit
+		 ;; differentiation.
+		 (if tfun
+		     (sdiff tfun nvar)
+		     (neg (div (sdiff trans nvar) ;IMPLICIT DIFF.
+			       (sdiff trans ovar)))))
+		(sum-product-p (member (caar expr) '(%sum %product) :test #'eq)))
+
+	   #+nil
+	   (progn
+	     (mformat t "tfun = ~M~%" tfun)
+	     (mformat t "deriv = ~M~%" deriv))
+
+	   ;; For sums and products, we want deriv to be +/-1 because
+	   ;; I think that means that integers will map into integers
+	   ;; (roughly), so that we don't need to express the
+	   ;; summation index or limits in some special way to account
+	   ;; for it.
+	   (when (and (member (caar expr) '(%sum %product) :test #'eq)
+		      (not (or (equal deriv 1)
+			       (equal deriv -1))))
+	     (merror (intl:gettext "changevar: illegal change in summation or product")))
+
+	   (let ((nfun ($radcan	;NIL IF KERNSUBST FAILS
+			      (if tfun
+				  (mul (maxima-substitute tfun ovar (cadr expr))
+				       ;; Don't multiply by deriv
+				       ;; for sums/products because
+				       ;; reversing the order of
+				       ;; limits doesn't change the
+				       ;; sign of the result.
+				       (if sum-product-p 1 deriv))
+				  (kernsubst ($ratsimp (mul (cadr expr)
+							    deriv))
+					     trans ovar)))))
+	     (cond
+	       (nfun
+		;; nfun is basically the result of subtituting ovar
+		;; with tfun in the integratand (summand).
+		(cond	
+		  ((cdddr expr)
+		   ;; Handle definite integral, summation, or product.
+		   ;; invfun expresses nvar in terms of ovar so that
+		   ;; we can compute the new lower and upper limits of
+		   ;; the integral (sum).
+		   (let* ((invfun (solvable trans nvar t))
+			  (lo-limit ($limit invfun ovar (cadddr expr) '$plus))
+			  (hi-limit ($limit invfun
+					    ovar
+					    (car (cddddr expr))
+					    '$minus)))
+		     ;; If this is a sum or product and deriv = -1, we
+		     ;; want to reverse the low and high limits.
+		     (when (and sum-product-p (equal deriv -1))
+		       (rotatef lo-limit hi-limit))
+
+		     ;; Construct the new result.
+		     (list (ncons (caar expr))
+			   nfun
+			   nvar
+			   lo-limit
+			   hi-limit)))
+		  (t
+		   ;; Indefinite integral
+		   (list '(%integrate) nfun nvar))))
+	       (t expr)))))))
 
 (defun kernsubst (expr form ovar)
   (let (varlist genvar nvarlist)

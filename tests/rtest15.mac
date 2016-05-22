@@ -1412,3 +1412,6 @@ eigenvectors (matrix ([0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 2, 0], [0, 0, 0, 2]));
 check_eigenvectors (matrix ([0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 2, 0], [0, 0, 0, 2]));
 true;
 
+/* Test changevar for summation */
+changevar(sum(a[N-1-r]*x^r, r, 0, N-1), s = N-1-r, s, r);
+sum(a[s]*x^(N-1-s), s, 0, N-1);

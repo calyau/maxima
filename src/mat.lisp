@@ -97,6 +97,8 @@
      (go loop2)))
 
 (defun meqhk (z)
+  "If Z is of the form lhs = rhs, return the expression lhs - rhs.
+  Otherwise, return Z unchanged."
   (if (and (not (atom z)) (eq (caar z) 'mequal))
       (simplus (list '(mplus) (cadr z) (list '(mtimes) -1 (caddr z))) 1 nil)
       z))

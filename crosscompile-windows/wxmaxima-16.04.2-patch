@@ -1,0 +1,48 @@
+--- Makefile.am-orig	2016-05-11 23:06:36.911498396 +0200
++++ Makefile.am	2016-05-11 23:37:50.139831728 +0200
+@@ -67,7 +67,7 @@
+ 	cp $(srcdir)/art/toolbar/*.png wxMaxima.app/Contents/Resources/toolbar
+ 	cp $(srcdir)/art/config/*.png wxMaxima.app/Contents/Resources/config
+ 	mkdir -p wxMaxima.app/Contents/Resources/help
+-	cp info/*.html wxMaxima.app/Contents/Resources/help
++	cp $(srcdir)/info/*.html wxMaxima.app/Contents/Resources/help
+ 	cp $(srcdir)/info/*.jpg  wxMaxima.app/Contents/Resources/help
+ 	cp $(srcdir)/info/*.png  wxMaxima.app/Contents/Resources/help
+ 	cp $(srcdir)/info/wxmaxima.hhp wxMaxima.app/Contents/Resources/help
+@@ -92,8 +92,8 @@
+ if CHM
+ 	cp $(srcdir)/info/*.chm  wxMaxima/help
+ else
+-	-cp info/*.html wxMaxima/help
+-	-cp $(srcdir)/info/wxmaxima.hhp wxMaxima/help
++	cp $(srcdir)/info/*.html wxMaxima/help
++	cp $(srcdir)/info/wxmaxima.hhp wxMaxima/help
+ endif
+ 	mkdir -p wxMaxima/art/toolbar
+ 	cp $(srcdir)/art/toolbar/*.png wxMaxima/art/toolbar
+@@ -113,7 +113,7 @@
+ 	zip -r wxMaxima.win.zip wxMaxima
+ 
+ allmo:
+-	    cd locales&&$(MAKE) allmo
++	    $(MAKE) -C locales allmo
+ 
+ signeddist: dist-gzip
+ 	gpg --armor --detach-sign $(distdir).tar.gz
+@@ -121,14 +121,14 @@
+ 
+ 
+ allpo:
+-	    cd locales&&$(MAKE) allpo
++	    $(MAKE) -C locales allpo
+ 
+ all: locales/en.mo
+ 
+ locales/en.mo: allmo
+ 
+ Doxygen: FORCE
+-	    cd Doxygen&&$(MAKE)
++	    $(MAKE) -C Doxygen
+ 
+ .PHONY:	allmo FORCE
+ FORCE:
