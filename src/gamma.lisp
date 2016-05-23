@@ -783,6 +783,8 @@
 ;;; Maxima returns the numercial result for gamma_incomplete_regularized
 
 (defun gamma-incomplete (a x &optional (regularized nil))
+  (setq x (+ x (cond ((complexp x) #C(0.0 0.0)) ((realp x) 0.0))))
+
   (let ((factor
 	 ;; Compute the factor needed to scale the series or continued
 	 ;; fraction.  This is x^a*exp(-x) or x^a*exp(-x)/gamma(a)
@@ -1966,7 +1968,7 @@
 		-1
 	      1)
             (- 1.0 
-              (* (/ (sqrt (float pi))) (gamma-incomplete 0.5 (expt z 2.0)))))))
+              (* (/ (sqrt (float pi))) (gamma-incomplete 0.5 (* z z)))))))
     (cond
       ((= (imagpart z) 0.0)
        ;; Pure real argument, the result is real
