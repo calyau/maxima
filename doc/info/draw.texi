@@ -692,7 +692,9 @@ Default value: @code{blue}
 @code{color} specifies the color for plotting lines, points, borders of
 polygons and labels.
 
-Colors can be given as names or in hexadecimal @i{rgb} code.
+Colors can be given as names or in hexadecimal @i{rgb} code. If a gnuplot
+version >= 5.0 is used and the terminal that is in use supports this
+@i{rgba} colors with transparency information are also supported.
 
 Available color names are:
 @verbatim
@@ -735,6 +737,16 @@ Example:
              label(["This is a label",0,1.2])  )$
 @end example
 @figure{draw_color}
+@example
+(%i1) draw2d(
+             line_width=50,
+             color="#FF0000",
+             explicit(sin(x),x,0,10),
+             color="#0000FF80",
+             explicit(cos(x),x,0,10)
+      );
+@end example
+@figure{draw_color2}
 
 See also @mrefdot{fill_color}
 

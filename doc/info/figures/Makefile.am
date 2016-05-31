@@ -268,8 +268,8 @@ worldmap_geomap3.gif\
 worldmap_geomap4.gif\
 worldmap_geomap5.gif\
 worldmap_geomap6.gif
-
-
+# draw_color2.gif and draw_color2.pdf aren't automatically remade since the gif terminal
+# doesn't support transparency
 
 
 
@@ -611,6 +611,8 @@ worldmap_geomap5.gif: worldmap_geomap5.mac ../docdraw.mac
 worldmap_geomap5.pdf: worldmap_geomap5.mac ../docdraw.mac
 worldmap_geomap6.gif: worldmap_geomap6.mac ../docdraw.mac
 worldmap_geomap6.pdf: worldmap_geomap6.mac ../docdraw.mac
+# draw_color2.gif isn't automatically remade since the gif terminal doesn't
+# support transparency
 
 .mac.pdf:
 	cd ..&&maxima < figures/$<
