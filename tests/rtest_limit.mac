@@ -751,3 +751,11 @@ integrate(x^3/(exp(x)-1),x,0,inf), numer;
                       +1.0*x^3*log(1-%e^x)-0.25*x^4,x,inf,minus)
  -6.0*li[4](1.0)$
 
+/* #3142 limit((x^(1/x) - 1)*sqrt(x), x, inf) => inf */
+limit((x^(1/x) - 1)*sqrt(x), x, inf);
+0;
+
+/* #3143 limit((x^(1/x) - 1)*sqrt(x), x, 0, minus) => inf */
+/* should really be '$infinity */
+limit((x^(1/x) - 1)*sqrt(x), x, 0, minus);
+'limit((x^(1/x) - 1)*sqrt(x), x, 0, minus);
