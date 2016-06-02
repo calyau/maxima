@@ -124,7 +124,7 @@ goto end
 
 :clisp_autotools
 set path=%maxima_imagesdir%\binary-clisp;%maxima_prefix%\clisp-2.49\base;%path%
-lisp.exe %lisp_options% -q -M %maxima_image_base%.mem "" -- %*
+lisp.exe %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
 goto end
 
 :clisp_exec
