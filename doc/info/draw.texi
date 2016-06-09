@@ -16,7 +16,7 @@
 There are three main functions to be used at Maxima level: 
 @code{draw2d}, @code{draw3d} and @code{draw}.
 
-Follow this links for more elaborated examples of this package:
+Follow these links for more elaborated examples of this package:
 
 @url{http://riotorto.users.sourceforge.net/gnuplot} @*
 @url{http://riotorto.users.sourceforge.net/vtk} 
