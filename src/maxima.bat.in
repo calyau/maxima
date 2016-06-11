@@ -11,8 +11,8 @@ rem set MAXIMA_LANG_SUBDIR=es
 set lisp=@DEFAULTLISP@
 set lisp_options=
 set version=@VERSION@
-set prefix=@prefix@
-set maxima_prefix=@prefix@
+set prefix=%~dp0\..
+set maxima_prefix=%~dp0\..
 set package=@PACKAGE@
 set verbose=false
 set path=%maxima_prefix%\gnuplot;%maxima_prefix%\gnuplot\bin;%maxima_prefix%\bin;%path%
@@ -124,7 +124,7 @@ goto end
 
 :clisp_autotools
 set path=%maxima_imagesdir%\binary-clisp;%maxima_prefix%\clisp-2.49\base;%path%
-lisp.exe %lisp_options% -q -M %maxima_image_base%.mem "" -- %*
+lisp.exe %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
 goto end
 
 :clisp_exec

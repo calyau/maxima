@@ -8,7 +8,7 @@ Lisp implementations, please see the file README.lisps.
 
 You can download installers for Maxima for Microsoft Windows, Mac OS 
 and RPM based Linux distributions from:
-http://sourceforge.net/projects/maxima/files/
+https://sourceforge.net/projects/maxima/files/
 
 
 If you want to build it from source, Maxima can be built in four ways.

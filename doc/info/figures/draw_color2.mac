@@ -1,0 +1,9 @@
+load("docdraw.mac");
+docdraw2d(
+    "figures/draw_color2",
+    line_width=50,
+    color="#FF0000",
+    explicit(sin(x),x,0,10),
+    color="#0000FF80",
+    explicit(cos(x),x,0,10)
+)$

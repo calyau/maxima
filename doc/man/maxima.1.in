@@ -360,7 +360,7 @@ Newer references:
 Maxima is a complex system. It includes both known and unknown bugs.
 Use at your own risk. The Maxima bug database is available at
 .LP
-http://sourceforge.net/p/maxima/bugs/
+https://sourceforge.net/p/maxima/bugs/
 .LP
 New bug reports are always appreciated. Please include the output of
 the Maxima function "build_info()" with the report.

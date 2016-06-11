@@ -15,7 +15,7 @@
 (defvar $show_openplot t)
 (defvar *socket-connection*)
 (defvar $old_stdout)
-(defvar $old_stdin)
+(defvar $old_stderr)
 
 (defun setup-client (port &optional (host "localhost"))
   ;; The following command has to be executed on windows before

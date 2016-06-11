@@ -2288,6 +2288,19 @@
       ;; Handle infinities at this place.
       ((eq z '$inf) 0)
       ((eq z '$minf) 2)
+      ((eq z '$infinity)	;; parallel to code in simplim%erf-%tanh
+       (destructuring-let (((rpart . ipart) (trisplit (cadr expr)))
+			   (ans ()) (rlim ()))
+			  (setq rlim (limit rpart var val 'think))
+			  (setq ans
+				(limit (m* rpart (m^t ipart -1)) var val 'think))
+			  (setq ans ($asksign (m+ `((mabs) ,ans) -1)))
+			  (cond ((or (eq ans '$pos) (eq ans '$zero))
+				 (cond ((eq rlim '$inf) 0)
+				       ((eq rlim '$minf) 2)
+				       (t '$und)))
+				(t '$und))))
+      ((eq z '$ind) '$ind)
       (t
        ;; All other cases are handled by the simplifier of the function.
        (simplify (list '(%erfc) z))))))

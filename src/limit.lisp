@@ -1922,7 +1922,7 @@ ignoring dummy variables and array indices."
           (t
            (setf denom (m* denom term)
                  constant-infty (or constant-infty (not (among var term))))
-           (unless (eq inf-type 'infinity)
+           (unless (eq inf-type '$infinity)
              (cond
                ((eq y '$infinity) (setq inf-type '$infinity))
                ((null inf-type) (setf inf-type y))
@@ -2473,7 +2473,6 @@ ignoring dummy variables and array indices."
 			      (list 'var var 1.))
 			     (t (list 'num term))))
 	((not (among var term))  (list 'num term))
-	((radicalp term var)  (list 'var term (rddeg term nil)))
 	((mplusp term)
 	 (let ((temp (ismax (mapcar #'istrength (cdr term)))))
 	   (cond ((not (null temp))  temp)
