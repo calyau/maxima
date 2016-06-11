@@ -1415,3 +1415,15 @@ true;
 /* Test changevar for summation */
 changevar(sum(a[N-1-r]*x^r, r, 0, N-1), s = N-1-r, s, r);
 sum(a[s]*x^(N-1-s), s, 0, N-1);
+
+/* SF bug report #3170: "Error in simtran" */
+
+(A:matrix([-2,1,1],[1,-2,1],[1,1,-2]),
+ simtran(A))$
+[[[-3,0],[2,1]],
+ [[[1/sqrt(2),0,-1/sqrt(2)],[0,1/sqrt(2),-1/sqrt(2)]],
+  [[1/sqrt(3),1/sqrt(3),1/sqrt(3)]]]]$
+
+leftmatrix . A . rightmatrix $
+matrix([-3,0,0],[0,-3,0],[0,0,0])$
+
