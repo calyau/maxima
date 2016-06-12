@@ -430,9 +430,9 @@
 (defun primpart (p)
 	(let ((d (do ((p (cdr p) (cdr p))	;calcul du contenu
 		      (g (caar p) (gcd g (caar p))))
-		     ((or (eq (abs g) 1) (null p))
+		     ((or (eql (abs g) 1) (null p))
 		         g) )))
-          (or (eq (abs d) 1)
+          (or (eql (abs d) 1)
 	      (mapc #'(lambda (u)		;diviser par le contenu
 	         (rplaca u (quotient (car u) d)))
 	        p))

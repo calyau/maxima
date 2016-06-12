@@ -299,10 +299,10 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	   (setq n (simplifya (third e) z))
 	   ($taylor (div (take '(%gamma) (add x n)) (take '(%gamma) x))))
 	   
-	  ((eq n 0) 1)
+	  ((eql n 0) 1)
 	  
 	  ;; pochhammer(1,n) = n! (factorial is faster than bigfloat::pochhammer.)
-	  ((eq x 1) (take '(mfactorial) n))
+	  ((eql x 1) (take '(mfactorial) n))
      
 	  ;; pure numeric evaluation--use numeric package.
 	  ((and (integerp n) (complex-number-p x '$numberp))
@@ -743,7 +743,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 		               (div (factorial (+ n m)) (factorial (- n m)))))
 		  (setq dx 1))
 		 (t
-		  (cond ((eq m 0)
+		  (cond ((eql m 0)
 			 (setq d 1))
 			(t
 			 (setq d (simplify  

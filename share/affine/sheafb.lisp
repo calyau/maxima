@@ -960,7 +960,7 @@
   (loop  for v in variables
 	 collecting
 	 (loop for w in simpl-eqns
-	       when (eq (pdegree w v ) 1)
+	       when (eql (pdegree w v) 1)
 	       ;;(poly-linearp w v invertible) the variables get replaced
 	       do (return       (linear-poly-solve w v)))))
 
@@ -1037,7 +1037,7 @@
 	(t (setq prep-fns (loop for v in list-fns
 				when (setq tem (gm-prepared v :inequal open-g))
 				collecting v ))
-	   (cond ((eq (length prep-fns) 1)
+	   (cond ((eql (length prep-fns) 1)
 		  (best-open-cover1 prep-fns open-g))
 		 (t (loop for v in prep-fns
 			  do
@@ -1057,7 +1057,7 @@
 			  finally
 			  (return
 				    (loop for v in possible
-					  when (eq (length v ) min)
+					  when (eql (length v) min)
 					  do (return v)))))))))
 
 (defun eliminate-multiples (list-fns &key (square-free t) &aux tem facts)
@@ -1107,7 +1107,7 @@
 	 collecting (nplcm open-g w)))
 
 (defun all-perms (list-lists)
- (cond ((eq (length list-lists) 1) (car list-lists))
+ (cond ((eql (length list-lists) 1) (car list-lists))
   (t (loop for v in (car list-lists)
 	   appending
 	   (loop for w in (all-perms (cdr list-lists))
@@ -1671,7 +1671,7 @@
 				   collecting v into some-ld
 				   finally (cond ((> (length some-ld) 1)
 						  (fsignal "Too many components"))
-						 ((eq (length some-ld) 1)
+						 ((eql (length some-ld) 1)
 						  (car some-ld))
 						 (t nil))))
 			    (t (setq simp-contract (car simp-contract)))))))
@@ -1830,7 +1830,7 @@
   (nreverse result))
 
 (defun intersection-equal1 (&rest l)
-  (cond ((eq (length l) 1) (car l))
+  (cond ((eql (length l) 1) (car l))
 	(t (apply #'intersection-equal (loop for v in (car l)
 					  when (member v (second l) :test #'equal)
 					  collecting v)
@@ -1944,8 +1944,8 @@
 	      when unit
 	      do (return 'unit)
 	      when
-	      cont do (cond ((eq (length (ldata-eqns v))
-				 (length (ldata-eqns image)))
+	      cont do (cond ((eql (length (ldata-eqns v))
+				  (length (ldata-eqns image)))
 			     (return-from sue  (cons current-open i)))
 			    (t (format t "image properly contains zl-SOME part"))))
 
@@ -2270,7 +2270,7 @@
   (iassert (member in-or-on '(in on) :test #'eq))
   (cond ((equal (car body) 'when)
 	 (setq when-clause (subseq body 0 2) body (cddr body)))
-	(t (iassert (eq (length body) 2))))
+	(t (iassert (eql (length body) 2))))
   (setq operation (first body) quantity (second body))
   (cond ((member operation '(minimize maximize) :test #'equal)
 	 (cond ((eq operation 'minimize)
@@ -2532,12 +2532,12 @@
   (cond ((arrayp mat)
   (let* ((dimensions (array-dimensions mat))
 	(number-dims (length dimensions)))
-    (cond ((eq number-dims 2)
+    (cond ((eql number-dims 2)
 	   (loop for i below (car dimensions)
 		 do (format t "~%")
 		 (loop for j below (second dimensions)
 		       do (format t "~3D" (aref mat i j)))))
-	  ((eq number-dims 3)
+	  ((eql number-dims 3)
 	   (loop for i below (car dimensions)
 		 do (format t "~%~%Block ~D " i)
 		 (loop for j below (second dimensions)

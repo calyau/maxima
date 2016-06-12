@@ -378,11 +378,11 @@ into genvar ordering and adds to genpairs"
 
 ;;the following works but is slow see projective
 (defmfun $gcdlist (&rest fns)
-  (cond ((and (eq (length fns) 1)
+  (cond ((and (eql (length fns) 1)
 	      ($listp (car fns))
 	      (setq fns (cdr (car fns))))))
   (let (varlist  gcd-denom gcd-num rat-fns )
-    (cond ((eq (length fns) 1) (car fns))
+    (cond ((eql (length fns) 1) (car fns))
 	  (t
 	   (loop for v in fns
 	      do (newvar v))

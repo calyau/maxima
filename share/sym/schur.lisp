@@ -116,7 +116,7 @@
                (cons (car l)
                      (mapcan #'(lambda (nb)
                                 (setq i (1- i))
-                                (and (not (eq nb 0)) (list i nb)))
+                                (and (not (eql nb 0)) (list i nb)))
                              (nreverse (cdr l)))))
             (lect $pol
                   (cons 'aa (lvar_lettre (cdr varetdegre) nil

@@ -20,7 +20,7 @@
 		   (loop for vv in variable-names
 			 for ww in variable-values
 			 when (and (consp vv) (affine-polynomialp vv)
-				   (eq (length vv) 3))
+				   (eql (length vv) 3))
 			 collecting (cons (car vv) ww))))))
 
 (defun gen-matrix-rows (mat )

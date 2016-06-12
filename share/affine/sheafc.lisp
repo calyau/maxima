@@ -374,7 +374,7 @@
 
 (defun monomialp (pol)
   (cond((atom pol) t)
-       (t (and (eq (length pol) 3) (monomialp (third pol))))))
+       (t (and (eql (length pol) 3) (monomialp (third pol))))))
 (defun one-variablep (f)
   (and (eql (length f) 3) (numberp (third f))))
 
@@ -634,7 +634,7 @@
 	collecting (cons op lis-dat) into all-data
 	and collecting i into opens-not-to-blowup
 	finally
-	(cond ((eq (length opens-not-to-blowup) (length all-data))
+	(cond ((eql (length opens-not-to-blowup) (length all-data))
 	       (merror "Not going to blowup anything")))
 	(return(values (construct-pre-ldata-sheaves :opens (mapcar 'car all-data)
 						    :data (mapcar 'cdr all-data))
@@ -967,7 +967,7 @@
 			when (and
 			       (not (member va variables-solved-for :test #'eq))
 			       (not (member va variables-in-prev-eqns :test #'eq))
-			       (eq (pdegree f va) 1)
+			       (eql (pdegree f va) 1)
 			       (setq tem  (linear-triangularp
 						 (delete-nth i fns)
 						 :varlist-of-fns
@@ -1000,7 +1000,7 @@
 					  when (and  (not (eql i j))
 						     (member va lis :test #'eq))
 					  do (return t)))
-			       (eq (pdegree f va) 1)
+			       (eql (pdegree f va) 1)
 			       (setq tem
 				 (linear-solvedp
 						 (delete-nth i fns)
@@ -1031,7 +1031,7 @@
 					    when (and  (not (eql i j))
 						       (member va lis :test #'eq))
 					    do (return t)))
-				(eq (pdegree f va) 1)
+				(eql (pdegree f va) 1)
 				(progn (multiple-value-setq
 					   (tem ord-fns)
 					 (linear-solvedp
@@ -1095,7 +1095,7 @@
 	do
 	(setq one-pls (open-sub-scheme pls i))
 	(setq simp-one-pls (simplify-svar-ldata one-pls))
-	(cond ((eq (length (pls-opens simp-one-pls)) 1)
+	(cond ((eql (length (pls-opens simp-one-pls)) 1)
 	       (setq list-of-dat (car  (pls-data simp-one-pls))))
 	      (t (loop for ope in (pls-opens simp-one-pls)
 		       for lis-dat in (pls-data simp-one-pls)

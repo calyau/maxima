@@ -28,7 +28,7 @@
   (cond ((null monomial-degs)poly)
 	((numberp monomial-degs) poly)
 	((numberp poly)(cond ((loop for w in (cdr monomial-degs) by #'cddr
-				    when (not (eq w 0))
+				    when (not (eql w 0))
 				    do(return t)) nil)
 			     (t poly)))
 	(t (let ((deg))
@@ -109,9 +109,9 @@
 the exact power, and if it is in variables to exclude it may not appear unless it
 was in monom to the exact power.  (pcoeff pol 1 ..) will exclude variables like
 substituting them to be zero."
-  (cond ((eq monom 1) nil)
+  (cond ((eql monom 1) nil)
 	((atom monom) (setq monom (list monom 1 1))))
-  (check-arg monom (or (listp monom)(eq monom 1)) "1 or a monomial")
+  (check-arg monom (or (listp monom)(eql monom 1)) "1 or a monomial")
   (cond ((pcoeff1 poly monom variables-to-exclude-from-cof ))
 	(t 0)))
 (defun pcoeff1 (poly monom &optional
@@ -181,13 +181,13 @@ substituting them to be zero."
   (cond ((null sequ) nil)
 	((numberp  sequ) sequ)
 	(t (setq tem (convert-deg-sequence-to-monomial (cddr sequ)))
-	   (cond (tem (cond ((not (eq 0 (second sequ))) (list (car sequ) (second sequ) tem))
+	   (cond (tem (cond ((not (eql 0 (second sequ))) (list (car sequ) (second sequ) tem))
 			    (t tem)))
 		 (t (list (car sequ) (second sequ) 1))))))
 
 (defun constant-deg-sequencep (seq)
   (loop for w in seq by #'cddr
-	when (not (eq w 0))
+	when (not (eql w 0))
 	do (return nil)
 	finally (return t)))
 
@@ -254,7 +254,7 @@ substituting them to be zero."
 (defun deg-sequence (variables degrees)
   (loop for v in variables
 	for w in degrees
-	unless (eq w 0)
+	unless (eql w 0)
 	collecting v
 	and
 	collecting w))
@@ -331,7 +331,7 @@ substituting them to be zero."
 		   (num replacement)
 		   (factor-out-monomial to-replace monomial-degs t)))	;copy?
        (setq answer (pplus answer tem))
-       (cond ((eq 1 (denom poly))
+       (cond ((eql 1 (denom poly))
 	      (setq answer (maybe-ratreduce answer  denom-replacement)))
 	     (t  (setq answer (maybe-ratreduce answer
 					       (ptimes (denom poly )
@@ -362,7 +362,7 @@ substituting them to be zero."
 		    (not  ($zerop orig))) (setq *poly-simplifications*
 						(list 1 (rzero))))
 	       (t *poly-simplifications*)))
-	((eq 0 (num rat-monom))  (princ ".")(setq simplify nil) *poly-simplifications*)
+	((eql 0 (num rat-monom))  (princ ".")(setq simplify nil) *poly-simplifications*)
 	((or (numberp rat-monom) (and (listp rat-monom)
 				      (constant-functionp (num rat-monom))))
 	 (setq *poly-simplifications* (list 1 (rzero)))
@@ -474,8 +474,8 @@ substituting them to be zero."
 	       (t (format t "no good yet"))))))
 
 (defun new-zerop (x)
-  (or (eq x  0)
-      (and (listp x) (eq (car x) 0))))
+  (or (eql x 0)
+      (and (listp x) (eql (car x) 0))))
 
 (defvar *simplify-rhs* t)
 
@@ -843,7 +843,7 @@ substituting them to be zero."
 ;		      (setq replaced-th i)
 ;
 ;		     (setq repl (replace-monomial-rat  poly (second v) (car v) tem ))
-;		     (cond ((eq (num repl) 0)(setq changes nil)))
+;		     (cond ((eql (num repl) 0)(setq changes nil)))
 ;		     (setq poly repl)
 ;		     (return 'changed))
 ;	       finally (return 'done))
@@ -867,7 +867,7 @@ substituting them to be zero."
 		     when (setq tem (part-above-degree (num poly) (car v)))
 		     do (setq changes t changed t)
 		     (setq repl (replace-monomial-rat  poly (second v) (car v) tem ))
-		     (cond ((eq (num repl) 0)(setq changes nil)))
+		     (cond ((eql (num repl) 0)(setq changes nil)))
 		     (setq poly (cons (num repl) 1))
 		     (return 'changed))
 	       finally (return 'done))))
@@ -887,7 +887,7 @@ substituting them to be zero."
 		     when (setq tem (part-above-degree (num poly) (car v)))
 		     do (setq changes t changed t)
 		     (setq repl (replace-monomial-rat  poly (second v) (car v) tem ))
-		     (cond ((eq (num repl) 0)(setq changes nil)))
+		     (cond ((eql (num repl) 0)(setq changes nil)))
 		     (setq poly repl)
 		     (return 'changed))
 	       finally (return 'done))
@@ -904,7 +904,7 @@ substituting them to be zero."
 ;		     when (setq tem (part-above-degree (num poly) (car v)))
 ;		     do (setq changes t changed t)
 ;		     (setq repl (replace-monomial (num poly) (second v) (car v) tem ))
-;		     (cond ((eq (num repl) 0)(setq changes nil)))
+;		     (cond ((eql (num repl) 0)(setq changes nil)))
 ;		     (setq poly (ratreduce (num repl) (ptimes (denom poly) (denom repl))))
 ;		     (return 'changed))
 ;	       finally (return 'done))
@@ -1021,7 +1021,7 @@ substituting them to be zero."
   (cond ((null a-list)
 	(setq a-list (loop for v in *genvar* collecting
 			   (intern (string-trim "$" (get v 'disrep)))))))
-  (check-arg a-list  (eq (length a-list) (length *genvar*)) "not right length")
+  (check-arg a-list  (eql (length a-list) (length *genvar*)) "not right length")
   (loop for v in *genvar*
 	for w in a-list
 	do
@@ -1045,7 +1045,7 @@ substituting them to be zero."
     (setq mee (new-rat me))
     (add-to-poly-simplifications mee)
     (check-overlaps 10 :add-to-simps t :reset t)
-      (cond ((eq 0 ($polysimp '$ggggg)) t)
+      (cond ((eql 0 ($polysimp '$ggggg)) t)
 	    (t nil)))
       (setq *poly-simplifications* old-simps)))
 
@@ -1078,7 +1078,7 @@ substituting them to be zero."
 ; below is similar but just uses occurs-in instead of must-replacep"
 ;  (let (rat-vars tem vv)
 ;  (check-arg variables $listp "macsyma list")
-;  (cond ((= n 0)(cond ((member 1 replacements :test #'eq) nil)
+;  (cond ((= n 0)(cond ((member 1 replacements) nil)
 ;		      (t (list 1))))
 ;	((= n 1)
 ;	 (setq rat-vars (loop for v in (cdr variables)
@@ -1131,7 +1131,7 @@ substituting them to be zero."
   (cond (reset (clear-memory-function 'grobner-monomials)))
   (let (rat-vars tem vv)
   (check-arg variables $listp "macsyma list")
-  (cond ((= n 0)(cond ((member 1 replacements :test #'eq) nil)
+  (cond ((= n 0)(cond ((member 1 replacements) nil)
 		      (t (list 1))))
 	((= n 1)
 	 (setq rat-vars (loop for v in (cdr variables)
@@ -1226,13 +1226,13 @@ substituting them to be zero."
 ;	   (:$rat (member (caadr x) *genvar* :test #'eq)(setq x (cdr x)))
 ;	   (t nil))
 ;	 (cond ((numberp x) x)
-;	       ((and (rational-functionp x)(eq (denom x) 1))(num x))
+;	       ((and (rational-functionp x)(eql (denom x) 1))(num x))
 ;	       (t x)))
 ;	(t (cond ((member (poly-type x) '(:rational-function :polynomial :number) :test #'eq)
 ;		  (merror "not in standard rat form ~A " x))
 ;		 (t (setq answer (new-rat x))(show (denom answer))
 ;		    (cond ((and (rational-functionp answer)
-;				(eq (denom answer) 1)) (num answer))
+;				(eql (denom answer) 1)) (num answer))
 ;			  (t answer)))))))
 
 (defun st-rat (x)
@@ -1242,7 +1242,7 @@ substituting them to be zero."
 
 (defun st-rat1 (x)
   (cond ((affine-polynomialp x) x)
-	((rational-functionp x) (cond ((eq (denom x) 1)(num x))
+	((rational-functionp x) (cond ((eql (denom x) 1)(num x))
 				      (t x)))
 	(($ratp x) (cond ((numberp (num (cdr x))) (st-rat (cdr x)))
 			 ((member  (caadr x) *genvar* :test #'eq)(st-rat (cdr x)))

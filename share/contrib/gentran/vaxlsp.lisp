@@ -99,7 +99,7 @@
 	 ; ((mexpt) x -1) --> (quotient 1.0 x)                    ;
 	 ; ((mexpt) x ((mminus) i)) --> (quotient 1.0 (expt x i)) ;
 	 (let ((var (cadr exp)) (pow (caddr exp)))
-	      (cond ((or (eq pow -1)
+	      (cond ((or (eql pow -1)
 			 (and (listp pow)
 			      (eq (caar pow) 'mminus)
 			      (onep (cadr pow))))

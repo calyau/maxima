@@ -1156,7 +1156,7 @@
 			with answer = 1
 			do
 		    (cond ((oddp exponent)
-			   (cond ((eq answer 1)
+			   (cond ((eql answer 1)
 				  (setq answer  2^i-power-poly))
 				 (t
 			   (setq answer (afp-times answer 2^i-power-poly))))))

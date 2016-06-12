@@ -409,7 +409,7 @@
 
 (defun require-medge (m ar e)
   (cond
-    ((not (and ($listp e) (eq 2 ($length e))))
+    ((not (and ($listp e) (eql 2 ($length e))))
      ($error "Argument" ar "to" m "is not an edge (0)."))
     (t (let ((u ($first e)) (v ($second e)))
 	 (unless (and (integerp u) (integerp v))
@@ -1391,7 +1391,7 @@
 
 (defmfun $is_biconnected (gr)
   (require-graph 'is_biconnected 1 gr)
-  (eq ($length ($biconnected_components gr)) 1))
+  (eql ($length ($biconnected_components gr)) 1))
 
 (defmfun $biconnected_components (gr)
   (require-graph 'biconnected_components 1 gr)
@@ -1472,7 +1472,7 @@
 
 (defmfun $is_sconnected (gr)
   (require-digraph 'strong_components 1 gr)
-  (eq ($length ($strong_components gr)) 1))
+  (eql ($length ($strong_components gr)) 1))
 
 (defmfun $strong_components (gr)
   (require-digraph 'strong_components 1 gr)

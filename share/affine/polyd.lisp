@@ -17,7 +17,7 @@ modulo ones-to-add checked thru the highest degree of ones to add."
 					;  (unwind-protect
   (progn
     (loop for v in (cdr $centrals_so_far)
-	   until (eq (length ones-to-add) 3)
+	   until (eql (length ones-to-add) 3)
 	   do
 	   (cond (($zerop ($dotsimp v))(setq v 0))
 		 (t (format t "~%Supposedly checking overlaps to deg ~a" ($nc_degree v))
@@ -104,7 +104,7 @@ far degree"
   (setq answer
 	(catch 'check_a_case
 	  (setq free-dot-simps $dot_simplifications)
-	  (loop for i from 3 until (or (eq i 6) (eq (length ones-to-add) 3))
+	  (loop for i from 3 until (or (eql i 6) (eql (length ones-to-add) 3))
 		;; 6 ;;enough?
 		do
 		(setq $dot_simplifications full-dot-simps)
@@ -239,7 +239,7 @@ far degree"
 
 (defun hilbert (n &rest l)
   (cond ((< n 0) 0)
-	((eq n 0) 1)
+	((eql n 0) 1)
 	((null l)($global_dimension_3 n))
 	(t (- (apply 'hilbert n (cdr l))
 	      (apply 'hilbert (- n (car l)) (cdr l))))))
@@ -268,7 +268,7 @@ far degree"
   (check-arg list-powers (eql (car list-powers) 1) "first should be one")
   (cond ((< degree 0) 0)
 	((zerop degree) 1)
-	((eq 1 degree) number-variables)
+	((eql 1 degree) number-variables)
 	;;(< degree degree-relations) (expt  number-variables degree))
 	(t
 	 (loop for deg-map in  list-degree-maps

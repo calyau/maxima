@@ -63,9 +63,9 @@
       ; thus grandchild doesn't become a zombie.
   
       (let ((child-pid (sb-posix:fork)))
-        (if (eq child-pid 0)
+        (if (eql child-pid 0)
           (let ((grandchild-pid (sb-posix:fork)))
-            (if (eq grandchild-pid 0)
+            (if (eql grandchild-pid 0)
               (progn
                 ; Grandchild process: I execute the Maxima session here.
                 (let*

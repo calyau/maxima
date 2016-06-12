@@ -123,7 +123,7 @@ denominator of denom^(pdegree poly var)"
 		 (setf (cadr tail)
 		       (poly-subst (cadr tail) var repl))))
 	      (t (cond
-		  ((eq 0 (pdegree poly var)) nil)
+		  ((eql 0 (pdegree poly var)) nil)
 		  (t
 		   (do ((tail (cdr poly)(cddr tail))
 			(answer 0))
@@ -228,7 +228,7 @@ poly)
 	   when (not  (pzerop  tem))
 	   collecting deg into lis
 	   collecting tem into lis
-	   finally (return (cond ((eq (car lis) 0) (second lis))
+	   finally (return (cond ((eql (car lis) 0) (second lis))
  				 (t (cons (p-var b) lis))))))))
 
 ;;incorrect doesn't take into account the
@@ -249,7 +249,7 @@ poly)
 	   when (not  (pzerop  tem))
 	   collecting deg into lis
 	   collecting tem into lis
-	   finally (return (cond ( (eq (car lis) 0)
+	   finally (return (cond ((eql (car lis) 0)
 				  (second lis))
 				 (t (cons (p-var b) lis))))))))
 
@@ -383,10 +383,10 @@ poly)
 	((get (car poly) 'constant)
 	 (loop for (deg cof) on (cdr poly) by #'cddr
 	       do (coll-linear1 cof)))
-	(t (cond ((and (eq (p-le poly) 1)
+	(t (cond ((and (eql (p-le poly) 1)
 		       (constant-functionp (p-lc poly)))
 		  (pushnew (p-var poly) *linear*)))
-	   (cond ((eq 0 (nth (- (length poly)  2) poly))
+	   (cond ((eql 0 (nth (- (length poly)  2) poly))
 		  (coll-linear1 (car (last poly)))))))
   ;;now must check these are really linear to remove the u collected above.
   (cond ((consp poly)

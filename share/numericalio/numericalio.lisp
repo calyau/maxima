@@ -274,7 +274,7 @@
     (loop
       (if
         (or
-          (and n (eq n 0))
+          (and n (eql n 0))
           (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in)))
               'eof))
         (return (cons '(mlist simp) (nreverse A))))
@@ -361,7 +361,7 @@
              (return nil)
              (return 'eof)))
           ((and (eq token sep-ch) (not (eq sep-ch #\space)))
-           (if (or found-sep-ch (eq initial-pos 0))
+           (if (or found-sep-ch (eql initial-pos 0))
              (progn
                (setq pushback-sep-ch token)
                (return nil))
