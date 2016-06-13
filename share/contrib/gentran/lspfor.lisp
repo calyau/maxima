@@ -344,7 +344,7 @@
 )
 
 (defun fortloop (stmt)
-  (prog (var lo nextexp exitcond body r)
+  (prog (var lo nextexp exitcond body)
 	(cond ((complexdop stmt)
 	       (return (fortstmt (seqtogp (simplifydo stmt))))))
 	(cond ((setq var (cadr stmt))

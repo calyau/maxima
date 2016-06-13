@@ -283,7 +283,7 @@
   (mkfratliteral (cdr stmt)))
 
 (defun ratloop (stmt)
-  (prog (var lo nextexp exitcond body r)
+  (prog (var lo nextexp exitcond body)
 	(cond ((complexdop stmt)
 	       (return (ratstmt (seqtogp (simplifydo stmt))))))
 	(cond ((setq var (cadr stmt))
