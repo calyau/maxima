@@ -286,7 +286,7 @@
     (let*
       ((L (car args))
        (n (or (cadr args) ($length L))))
-      (read-into-existing-list stream-or-filename nil 'binary n))
+      (read-into-existing-list stream-or-filename L nil 'binary n))
     (let ((n (car args)))
       (read-list stream-or-filename nil 'binary n))))
 
