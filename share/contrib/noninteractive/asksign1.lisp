@@ -48,6 +48,7 @@
 ;; Replaces ASK-PROP in askp.lisp
 (defvar *real-ask-prop* (symbol-function 'ask-prop))
 (defun ask-prop (object property fun-or-number)
+  (declare (ignore fun-or-number))
   (if $no_questions
       (meval `(($throw) '(($askprop) ,object ,property)))
       (funcall *real-ask-prop*)))

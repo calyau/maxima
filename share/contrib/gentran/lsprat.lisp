@@ -200,6 +200,7 @@
   (mkfratassign (cadr stmt) (caddr stmt)))
 
 (defun ratbreak (stmt)
+  (declare (ignore stmt))
   (mkfratbreak))
 
 (defun ratcall (stmt)
@@ -217,6 +218,7 @@
 	(return r)))
 
 (defun ratend (stmt)
+  (declare (ignore stmt))
   (mkfratend))
 
 (defun ratforfor (var lo nextexp cond body)
@@ -344,6 +346,7 @@
 	(return (mkfratcontinue stmtno))))
 
 (defun ratstop (stmt)
+  (declare (ignore stmt))
   (mkfratstop))
 
 (defun ratwhile (cond body)

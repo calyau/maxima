@@ -198,9 +198,11 @@
   (mkfcassign (cadr stmt) (caddr stmt)))
 
 (defun cbreak (stmt)
+  (declare (ignore stmt))
   (mkfcbreak))
 
 (defun cexit (stmt)
+  (declare (ignore stmt))
   (mkfcexit))
 
 (defun cexpstmt (exp)
