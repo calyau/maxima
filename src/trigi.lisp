@@ -95,8 +95,8 @@
 (defun domain-error (x f)
   (merror (intl:gettext "~A: argument ~:M isn't in the domain of ~A.") f (complexify x) f))
 
-;; Build a hash table 'cl-flonum-op' that maps Maxima function names 
-;; to their CL equivalents. 
+;; Build hash tables '*flonum-op*' and '*big-float-op*' that map Maxima
+;; function names to their corresponding Lisp functions.
 
 (defvar *flonum-op* (make-hash-table :size 64)
   "Hash table mapping a maxima function to a corresponding Lisp
@@ -382,7 +382,7 @@
 ;; When z is a Maxima complex float or when 'numer' is true and z is a
 ;; Maxima complex number, evaluate (op z) by applying the mapping from
 ;; the Maxima operator 'op' to the operator in the hash table
-;; 'flonum-op'. When z isn't a Maxima complex number, return
+;; '*flonum-op*'. When z isn't a Maxima complex number, return
 ;; nil.
 
 (defun flonum-eval (op z)
