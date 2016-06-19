@@ -478,7 +478,7 @@
           (get-dissym-1 b c))))))                              ; NEW
 
 (defun get-dissym-1 (b c)                                      ; NEW
-  (if (eq (car b) #\space)                                     ; NEW
+  (if (eql (car b) #\space)                                    ; NEW
     (cons #\space (append c (cons #\| (rest b))))              ; NEW
     (append c (cons #\| b))))                                  ; NEW
 

@@ -443,7 +443,7 @@
        (let* ((fx (cadr mexpress))
             (f (and (not (atom fx)) (atom (caar fx)) (caar fx)))
             (bascdr (and f (cdr fx))) (expon (caddr mexpress))
-            (doit (and f (member (char (string f) 0) (list #\% #\$) :test #'eq)
+            (doit (and f (member (char (string f) 0) (list #\% #\$))
                        (not (member f '(%sum %product) :test #'eq)))))
         (cond
            (doit (cond     ;;;; sin^2 x case

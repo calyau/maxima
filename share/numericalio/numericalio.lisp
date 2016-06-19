@@ -304,7 +304,7 @@
              ((not (null sign))
               (format t "numericalio: trailing sign (~S) at end of line; strange, but just eat it.~%" sign)))
            (cond
-             ((eq sep-ch #\space)
+             ((eql sep-ch #\space)
               (return (cons '(mlist) LL)))
              (t
                (return (cons '(mlist) (appropriate-append L LL)))))))
@@ -317,11 +317,11 @@
                (setq token (m* sign token))
                (setq sign nil)))
             (cond
-              ((eq sep-ch #\space)
+              ((eql sep-ch #\space)
                (setq LL (append LL (list token))))
               (t
                 (cond
-                  ((eq token sep-ch)
+                  ((eql token sep-ch)
                    (setq L (appropriate-append L LL))
                    (setq LL nil))
                   (t
@@ -360,7 +360,7 @@
            (if found-sep-ch
              (return nil)
              (return 'eof)))
-          ((and (eq token sep-ch) (not (eq sep-ch #\space)))
+          ((and (eql token sep-ch) (not (eql sep-ch #\space)))
            (if (or found-sep-ch (eql initial-pos 0))
              (progn
                (setq pushback-sep-ch token)

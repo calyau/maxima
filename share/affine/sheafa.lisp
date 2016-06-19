@@ -276,7 +276,7 @@
 (defun replace-genvar(&rest strings &aux tem hi)
   (loop for v in *genvar*
 	when (and (atom  (setq tem  (get v 'disrep)))
-		  (eq (aref (string v) 0) #\G)
+		  (eql (aref (string v) 0) #\G)
 		  (cond (strings (strings-search strings (string tem)))
 			(t t)))
 	do
