@@ -78,16 +78,19 @@ TKSOURCES = \
 	Tkmaxima/Tkmaxima.tcl 
 
 
-XMAXIMA_FILES = $(TKSOURCES) xmaxima-trailer.tcl
+XMAXIMA_FILES = $(TKSOURCES)
 XMAXIMASOURCES = Tkmaxima/Header.tcl $(TKSOURCES) autoconf-variables.tcl xmaxima-trailer.tcl
 
 
 xmaxima: $(XMAXIMASOURCES) Tkmaxima/tclIndex
 	rm -f xmaxima && \
-		cat $(XMAXIMASOURCES) > xmaxima && \
-		chmod +x xmaxima
+	cat Tkmaxima/Header.tcl > xmaxima && \
+	(cd "$(abs_top_srcdir)/interfaces/xmaxima/" ; cat $(XMAXIMA_FILES)) >> xmaxima && \
+	cat autoconf-variables.tcl >> xmaxima && \
+	cat "$(abs_top_srcdir)/interfaces/xmaxima/xmaxima-trailer.tcl" >> xmaxima && \
+	chmod +x xmaxima
 
-EXTRA_DIST = $(genericdirDATA) $(XMAXIMA_FILES) Tkmaxima/Header.tcl.in maxima-icon.png
+EXTRA_DIST = $(genericdirDATA) $(XMAXIMA_FILES) Tkmaxima/Header.tcl.in xmaxima-trailer.tcl maxima-icon.png
 
 
 # Developer convenience target
