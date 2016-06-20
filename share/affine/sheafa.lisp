@@ -264,7 +264,7 @@
 
 (defun remove-common-factors (from-poly divisor &aux answ)
   (setq answ (pgcdcofacts from-poly divisor))
-  (if (eq 1 (car answ))
+  (if (eql 1 (car answ))
       (second answ)
       (remove-common-factors (second answ) (first answ))))
 
@@ -276,7 +276,7 @@
 (defun replace-genvar(&rest strings &aux tem hi)
   (loop for v in *genvar*
 	when (and (atom  (setq tem  (get v 'disrep)))
-		  (eq (aref (string v) 0) #\G)
+		  (eql (aref (string v) 0) #\G)
 		  (cond (strings (strings-search strings (string tem)))
 			(t t)))
 	do
@@ -429,7 +429,7 @@
   (cond ((atom poly) poly)
 	(t (constant-term
 	     (let ((leng (length poly)))
-	       (cond ((eq (nth (- leng 2) poly) 0)
+	       (cond ((eql (nth (- leng 2) poly) 0)
 		      (constant-term (nth (1- leng) poly) ))
 		     (t 0)))))))
 
@@ -442,14 +442,14 @@
 	(t
 	 (cond  ((atom poly) nil)
 		(t (loop for v in linear-variables
-			 when (eq (pdegree poly v) 1)
+			 when (eql (pdegree poly v) 1)
 			 do (setq tem  (zero-sublis poly v))
 			 (cond ((may-invertp tem inequal)
 				      (return v)))))))))
 
 (defun degree-one-variables (poly)
   (loop for v in (list-variables poly)
-	when (eq (pdegree poly v) 1)
+	when (eql (pdegree poly v) 1)
 	collecting v ))
 
 (defun one-prepared (poly &key linear-variables &aux tem)
@@ -458,7 +458,7 @@
   (cond  ((atom poly) nil)
 	 ((zerop (constant-term poly)) nil)
 	 (t (loop for v in  linear-variables
-		  when (eq (pdegree poly v) 1)
+		  when (eql (pdegree poly v) 1)
 		  do (setq tem  (zero-sublis  poly v))
 		  (cond ((numberp tem) (return v)))))))
 
@@ -468,16 +468,16 @@
 ;(defun gm-prepared (poly &key  m (inequal 1) linear-variables &aux lins tem answ)
 ;  (cond (m
 ;  (cond ((atom poly ) nil)
-;	((eq 1 m)(cond ((setq tem (gone-prepared poly inequal :linear-variables linear-variables)))
+;	((eql 1 m)(cond ((setq tem (gone-prepared poly inequal :linear-variables linear-variables)))
 ;			(list tem))))
 ;	(t (loop for v in (list-variables poly)
 ;		 when
-;		 (eq (pdegree poly v) 1)
+;		 (eql (pdegree poly v) 1)
 ;		 do (setq tem (zero-sublis poly v))
 ;		 (cond ((setq answ (gm-prepared tem :m (1- m) :inequal inequal))
 ;			(return (cons v answ))))))))
 ;	(t (setq lins (loop for v in (list-variables poly)
-;			    when (eq (pdegree poly v) 1)
+;			    when (eql (pdegree poly v) 1)
 ;			    count 1))
 ;	   (loop for i from 1 to lins
 ;		 when (setq answ (gm-prepared poly :m i :inequal inequal))
@@ -496,7 +496,7 @@
   (cond ((null linear-variables) (setq linear-variables
 				       (degree-one-variables poly))))
   (cond (m
-	 (cond ((eq  m 0)(cond ((may-invertp poly inequal)(list 'ok))
+	 (cond ((eql m 0)(cond ((may-invertp poly inequal)(list 'ok))
 			       (t nil)))
 	       (t
 		(loop for v in (list-variables poly)
@@ -535,7 +535,7 @@
 				    (return (cons v answ))))))))
 
 	(t (setq lins (loop for v in linear-variables
-			    when (eq (pdegree poly v) 1)
+			    when (eql (pdegree poly v) 1)
 			      count 1))
 	   (loop for i from 1 to (min lins  *maximum-size-for-m-prepared* )
 		 when (setq answ (gm-prepared poly :m i :inequal inequal :linear-variables
@@ -549,7 +549,7 @@
   (cond (m
 	 (cond ((atom poly ) nil)
 	       ((zerop (constant-term poly)) nil)
-	       ((eq 1 m)(cond ((setq tem (one-prepared poly))
+	       ((eql 1 m)(cond ((setq tem (one-prepared poly))
 			       (list tem))))
 	       (t (loop for v in linear-variables
 			do (setq tem  (zero-sublis poly v))
@@ -574,7 +574,7 @@
 
 (defun gen-ptimes (&rest l)
   (cond ((null l) 1)
-	((eq (length l) 1) (car l))
+	((eql (length l) 1) (car l))
 	(t (ptimes (car l) (apply 'gen-ptimes (cdr l))))))
 
 
@@ -912,13 +912,13 @@
   (check-containments orig-ldata answ)
   (cond ((and (null *stop-simplify*)
 	      ;;this makes the divide dichotomy only apply after no more prod. dichot.
-	      (eq (length answ ) 1))
+	      (eql (length answ) 1))
 	 (setq answ
 	       (divide-dichotomy (car answ) :open-g open-g))))
   (check-containments orig-ldata answ)
 ;  (cond ((not (equal (length answ) 1))  (mshow answ)))
   (cond ((and (null *stop-simplify*)
-	      (eq (length answ ) 1))
+	      (eql (length answ) 1))
 	 (setq answ (try-factor-irreducible-ldata (car answ) open-g))))
    (cond ((and (null *stop-simplify*) (not recursive-p)
 
@@ -928,7 +928,7 @@
 			appending (linear-dichotomy ld :open-g open-g )))))))
 ;   (cond ((and (null *stop-simplify*)(not (variable-boundp *in-linear-dich*))
 ;	       (not recursive-p)
-;	       (eq (length answ ) 1))
+;	       (eql (length answ) 1))
 ;	  (let ((*in-linear-dich* t))
 ;	    (setq answ (linear-dichotomy (car answ) :open-g open-g )))))
 ;    (format t "~%Verifying the ~A component contain the original" (length answ))
@@ -1764,7 +1764,7 @@
 
 (defun poly-linearp (poly  var may-invert &aux cof)
   (cond ((numberp poly ) nil)
-	((eq (pdegree poly var) 1)
+	((eql (pdegree poly var) 1)
 	 (setq cof (pcoeff poly (list var 1 1)))
 	 (cond ((atom cof) cof)
 	       ((may-invertp cof may-invert) cof)
@@ -1903,7 +1903,7 @@
 
 (defun add-to-chain (poly chain)
   (setq poly (square-free poly))
-  (cond ((eq poly 0) chain)
+  (cond ((eql poly 0) chain)
 	(t  (loop for v in chain
 		       when (eq (p-var poly)(p-var v))
 		       do (cond ((< (p-le poly) (p-le v))(show 'deleting)
@@ -1956,7 +1956,7 @@
 
 
 ;(defun add-to-chain (poly chain)
-;  (cond ((eq poly 0) chain)
+;  (cond ((eql poly 0) chain)
 ;	(t
 ;  (loop for v on chain
 ;	collecting (car v) into tem
@@ -2363,11 +2363,11 @@ would restore the list"
 ; make-dichotomy
 ;    (setq answ (new-make-dichotomy ldata :open-g open-g))
 ;    ;;if no dichotomy continue
-;    (cond ((eq (length answ) 1) (setq ldata (car answ)))
+;    (cond ((eql (length answ) 1) (setq ldata (car answ)))
 ;	  (t (return (delete-redundant-ldata answ))))
 ; divide-dichotomy
 ;    (setq answ (new-divide-dichotomy ldata :open-g open-g))
-;    (cond ((eq (length answ) 1) (setq ldata (car answ)))
+;    (cond ((eql (length answ) 1) (setq ldata (car answ)))
 ;	  (t (return (delete-redundant-ldata answ))))
 ;    (return answ)))
 ;

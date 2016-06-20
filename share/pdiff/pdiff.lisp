@@ -240,7 +240,7 @@
 
 (defun tex-pderivop (x l r)
   ;(print `(lop = ,lop rop = ,rop x = ,x r = ,r l = ,l))
-  (cond ((and $tex_uses_prime_for_derivatives (eq 3 (length x)))
+  (cond ((and $tex_uses_prime_for_derivatives (eql 3 (length x)))
 	 (let* ((n (car (last x)))
 		(p))
 	   

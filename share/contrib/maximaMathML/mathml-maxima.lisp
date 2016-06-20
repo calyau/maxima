@@ -214,8 +214,8 @@
        (last-char (aref s (1- (length s)))))
       (if
         (and
-          (or (eq first-char #\") (eq first-char #\'))
-          (eq last-char first-char))
+          (or (eql first-char #\") (eql first-char #\'))
+          (eql last-char first-char))
         (subseq (subseq s 1) 0 (- (length s) 2))
         s))))
 

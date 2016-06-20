@@ -53,7 +53,7 @@ declared integer) or  sign(b - a) is negative or zero and h is nonzero.
 	   (simplify `((mlist))))
 	  
 	  ((not k) `(($.. simp) ,i ,j))
-	  ((eq 1 j) `(($.. simp) ,i ,k)) ; a .. 1 .. b == a .. b
+	  ((eql 1 j) `(($.. simp) ,i ,k)) ; a .. 1 .. b == a .. b
 	  (t `(($.. simp) ,i ,j ,k)))))
 
  

@@ -52,7 +52,7 @@ is (sum+1/10^50=1.0L0) ;  should be true
 (defun decimalfptrim(f &optional (flag $rounddecimalfloats))  ;;  f is (significand exponent)
   (let ((s (car f))
 	(e (cadr f)))
-    (cond((eq s 0)(list 0 0))
+    (cond((eql s 0)(list 0 0))
 	 (t
 	  ;; first remove trailing zeros
 	  (while (= (mod s 10) 0)(setf s (truncate s 10))(incf e))

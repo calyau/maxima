@@ -91,7 +91,7 @@
 
 	      ((and
 		itsalabel ;; but is it a user-command-label?
-		(eq (getcharn $inchar 2) (getcharn mexplabel 2)))
+		(eql (getcharn $inchar 2) (getcharn mexplabel 2)))
 	       ;; aha, this is a C-line: do the grinding:
 	       (format texport "<pre>~%~a " mexplabel) 
                ;; need to get rid of "<" signs

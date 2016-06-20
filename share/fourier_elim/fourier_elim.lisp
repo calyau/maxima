@@ -562,7 +562,7 @@
     (list
      ;;(list (opcons 'mlessp lb x) (opcons 'mlessp x ub))
      bounds
-     (if (some #'(lambda (s) (or (eq 0 s) (eq nil s))) acc) '$emptyset acc))))
+     (if (some #'(lambda (s) (or (eql 0 s) (eq nil s))) acc) '$emptyset acc))))
 
 ;; Apply max and min without looking at the current context; if something goes wrong,
 ;; cleanup the mess.

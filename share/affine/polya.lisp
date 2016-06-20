@@ -87,7 +87,7 @@
   (grind-top-level form))
 
 (defun list-terms (poly &aux terms)
-  (cond  ((eq poly 0) nil)
+  (cond  ((eql poly 0) nil)
 	 ((atom poly) (setq terms (list poly)))
 	 (t
 	  (setq terms
@@ -126,7 +126,7 @@
 	   (mnctimes (setq monomial term))
 	   (mncexpt (setq monomial term))
 	   (otherwise (error "~A is not a term." term)))
-	 (cond ((eq  1 (length monomial)) (setq monomial (car monomial))))))
+	 (cond ((eql 1 (length monomial)) (setq monomial (car monomial))))))
   (values answer monomial)) ;;Note this a monomial less the '(mtimes simp)!!!
 
 ;;definition:  A monomial is 1, or a symbol, or ((mexpt simp) var
@@ -922,7 +922,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 			       (setq monom (cdr monom))
 			       (loop while tem
 				  when (and $new_fast_dotsimp
-					    (or (eq 0 (second tem))
+					    (or (eql 0 (second tem))
 						(eq (rzero) (cdr (second tem)))))
 					;					    ($zerop (second tem)))
 				  do (setq tem (cddr tem))
@@ -1005,7 +1005,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 				     ( $my_coeff y x)) (cdr f))) nil))))
 
 (defun $ncoeff (f x &optional (exponent 1))
-  (cond ((eq x 1) ($my_coeff f x))
+  (cond ((eql x 1) ($my_coeff f x))
 	((equal exponent 1)($coeff f x))
 	(t ($coeff f x exponent))))
 
@@ -1131,8 +1131,8 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 ;  "Returns the dot-monomials which will not be replaced by $dot_simplifications
 ;  They are tail sorted if the optional third argument is given"
 ;  (check-arg a-list $listp "a Macsyma list")
-;  (cond ((eq n 0) (cons '(mlist simp) '(1)))
-;	((eq n 1) (setq answer (copy-list a-list))
+;  (cond ((eql n 0) (cons '(mlist simp) '(1)))
+;	((eql n 1) (setq answer (copy-list a-list))
 ;	 (loop for v in (cdr answer)
 ;	       when (member-even v $dot_simplifications)
 ;	       do (setq answer (delete  v answer)))
@@ -1172,7 +1172,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 		(cond
 		  ((and (not (atom u)) (eq (caar u) 'mnctimes))
 		   (setq nc-part u)
-		   (cond ((eq (length monomial) 3)
+		   (cond ((eql (length monomial) 3)
 			  (cond ((eq (second monomial) u)
 				 (setq sc-part (third monomial)))
 				(t (setq sc-part
@@ -1182,7 +1182,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 			(loop for u in (cdr monomial)
 			      when (and (atom u) (not ($scalarp u)))
 			      do (setq nc-part u )
-			      (cond ((eq (length monomial) 3)
+			      (cond ((eql (length monomial) 3)
 				     (cond ((eq (second monomial) u)
 					    (setq sc-part (third monomial)))
 					   (t (setq sc-part
@@ -1199,7 +1199,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
     (cond ((null sc-part) (setq sc-part (loop for u in monomial
 					      when (not(eq u nc-part))
 					      collecting u))
-	   (cond ((eq (length sc-part) 2) (setq sc-part (cadr sc-part))))))
+	   (cond ((eql (length sc-part) 2) (setq sc-part (cadr sc-part))))))
 
 
     (values nc-part sc-part)))
@@ -1618,17 +1618,17 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 (defremember commutative-monomials (a-list n &optional (type-of-weight :weight) (reset nil))
   (let ((atomic-terms))
   (cond (reset (remprop 'commutative-monomials :memory-table)))
-  (cond ((eq n 0) nil)
-	((eq n 1)
+  (cond ((eql n 0) nil)
+	((eql n 1)
 	 (loop for v in a-list
-	       when (eq n (degree v type-of-weight))
+	       when (eql n (degree v type-of-weight))
 	       collecting (list v) into tem
 	       finally (setq atomic-terms tem))
 	 atomic-terms)
 
 	(t
 	 (loop for v in a-list
-	       when (eq n (degree v type-of-weight ))
+	       when (eql n (degree v type-of-weight ))
 	       collecting (list v) into tem
 	       finally (setq atomic-terms tem))
 	 (loop for v in a-list
@@ -2280,7 +2280,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 ;	   do (setq variables (zl-delete v variables )))
 ;     (cond
 ;       ((setq answer (aref $current_monomials n)) answer)
-;	   ((eq n 0) (aset '((mlist simp) 1) $current_monomials 0)
+;	   ((eql n 0) (aset '((mlist simp) 1) $current_monomials 0)
 ;	    '((mlist simp) 1))
 ;	   (t
 ;

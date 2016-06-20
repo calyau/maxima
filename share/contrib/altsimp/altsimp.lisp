@@ -96,7 +96,7 @@ Unfixed:
 ;;   (f) (* cf e) (default)
 
 (defun number-times-expr (cf e)
-  (cond ((eq cf 1) e)
+  (cond ((eql cf 1) e)
 	((mzerop cf) cf)
 	((mnump e) (timesk cf e)) ; didn't think this should happen
 	((and (onep1 (neg cf)) (mplusp e))
@@ -245,7 +245,7 @@ Unfixed:
       (setq x (car x))
       (while (and l (like x (caar l)))
 	(mincf cf (cdr (pop l))))
-      (if (and (or (eq cf 1) (eq cf -1)) (mplusp x)) (setq do-over t))
+      (if (and (or (eql cf 1) (eql cf -1)) (mplusp x)) (setq do-over t))
       (setq x (number-times-expr cf x))
       (cond ((mnump x) (mincf num-sum x))
 	    ((not (mzerop x)) (push x acc))))

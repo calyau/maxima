@@ -216,6 +216,7 @@
   (mkffortassign (cadr stmt) (caddr stmt)))
 
 (defun fortbreak (stmt)
+  (declare (ignore stmt))
   (cond ((null *endofloopstack*)
 	 (gentranerr 'e nil "break not inside loop - cannot be translated" nil))
 	((atom (car *endofloopstack*))
@@ -248,6 +249,7 @@
 	(return result)))
 
 (defun fortend (stmt)
+  (declare (ignore stmt))
   (mkffortend))
 
 (defun fortfor (var lo nextexp exitcond body)
@@ -342,7 +344,7 @@
 )
 
 (defun fortloop (stmt)
-  (prog (var lo nextexp exitcond body r)
+  (prog (var lo nextexp exitcond body)
 	(cond ((complexdop stmt)
 	       (return (fortstmt (seqtogp (simplifydo stmt))))))
 	(cond ((setq var (cadr stmt))
@@ -418,6 +420,7 @@
 	(return (mkffortcontinue stmtno))))
 
 (defun fortstop (stmt)
+  (declare (ignore stmt))
   (mkffortstop))
 
 (defun fortwhile (exitcond body)

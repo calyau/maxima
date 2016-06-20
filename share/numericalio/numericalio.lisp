@@ -274,7 +274,7 @@
     (loop
       (if
         (or
-          (and n (eq n 0))
+          (and n (eql n 0))
           (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in)))
               'eof))
         (return (cons '(mlist simp) (nreverse A))))
@@ -286,7 +286,7 @@
     (let*
       ((L (car args))
        (n (or (cadr args) ($length L))))
-      (read-into-existing-list stream-or-filename nil 'binary n))
+      (read-into-existing-list stream-or-filename L nil 'binary n))
     (let ((n (car args)))
       (read-list stream-or-filename nil 'binary n))))
 
@@ -304,7 +304,7 @@
              ((not (null sign))
               (format t "numericalio: trailing sign (~S) at end of line; strange, but just eat it.~%" sign)))
            (cond
-             ((eq sep-ch #\space)
+             ((eql sep-ch #\space)
               (return (cons '(mlist) LL)))
              (t
                (return (cons '(mlist) (appropriate-append L LL)))))))
@@ -317,11 +317,11 @@
                (setq token (m* sign token))
                (setq sign nil)))
             (cond
-              ((eq sep-ch #\space)
+              ((eql sep-ch #\space)
                (setq LL (append LL (list token))))
               (t
                 (cond
-                  ((eq token sep-ch)
+                  ((eql token sep-ch)
                    (setq L (appropriate-append L LL))
                    (setq LL nil))
                   (t
@@ -360,8 +360,8 @@
            (if found-sep-ch
              (return nil)
              (return 'eof)))
-          ((and (eq token sep-ch) (not (eq sep-ch #\space)))
-           (if (or found-sep-ch (eq initial-pos 0))
+          ((and (eql token sep-ch) (not (eql sep-ch #\space)))
+           (if (or found-sep-ch (eql initial-pos 0))
              (progn
                (setq pushback-sep-ch token)
                (return nil))

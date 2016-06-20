@@ -150,8 +150,8 @@
              ($setify
                (cons '(mlist)
                       (filter #'(lambda (x)
-                                  (cond ((eq (getcharn x 1) #\$) x)
-                                        ((eq (getcharn x 1) #\%)
+                                  (cond ((eql (getcharn x 1) #\$) x)
+                                        ((eql (getcharn x 1) #\%)
                                          ;; Change to a verb, when present.
                                          (if (setq y (get x 'noun))
                                              y

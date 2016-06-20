@@ -132,9 +132,9 @@
 	  ((eq yy ':$rat)(setq ,y (cdr ,y) yy ':rational-function))
 	  ((eq yy ':rat ) (setq ,y (cons (second ,y) (third ,y))
 			       yy ':rational-function)))
-	(cond ((and (eq xx ':rational-function) (eq (denom ,x) 1))
+	(cond ((and (eq xx ':rational-function) (eql (denom ,x) 1))
 	       (setq ,x (car ,x) xx :polynomial)))
-	(cond ((and (eq yy ':rational-function) (eq (denom ,y) 1))
+	(cond ((and (eq yy ':rational-function) (eql (denom ,y) 1))
 	       (setq ,y (car ,y) yy :polynomial)))
 	(setq answer
 	      (case xx
@@ -181,7 +181,7 @@
   (setq answer (polyop x y nil 1  ratreduce ratreduce ratquotient))
   (setq answer (rationalize-denom-zeta3 answer))
   (cond ((numberp answer) answer)
-	((eq (denom answer) 1) (car answer))
+	((eql (denom answer) 1) (car answer))
 	(t answer)))
 
 (defun new-disrep (expr)
@@ -244,13 +244,13 @@
 	      ,form))))
 
 (defun splice-in (after-nth item a-list )
-  (cond ((eq after-nth -1)(cons item a-list))
+  (cond ((eql after-nth -1)(cons item a-list))
 	(t (nconc (subseq a-list 0 (1+ after-nth))
 		  (cons item (cdr (nthcdr after-nth a-list)))))))
 
 
 (defun nsplice-in (after-nth item a-list &aux tem)
-  (cond ((eq after-nth -1)(cons item a-list))
+  (cond ((eql after-nth -1)(cons item a-list))
 	(t
 ;	 (rplacd (setq tem (nthcdr after-nth a-list))
 ;		 (cons item (cdr tem)))

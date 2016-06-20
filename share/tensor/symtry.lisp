@@ -181,8 +181,8 @@
        (and ;; (rpobj e)   ;; g([a,b],[],y) = -g([a,u],[])*g([b,v],[])*g([],[u,v],y)
             (boundp '$imetric)
             (eq (caar e) $imetric)
-            (eq (length cov) 2)
-            (eq (length contr) 0)
+            (eql (length cov) 2)
+            (eql (length contr) 0)
             (= (length deriv) 1)
        )
        (return
@@ -217,8 +217,8 @@
        (and ;; (rpobj e)   ;; g([a,b],[],y,d)
             (boundp '$imetric)
             (eq (caar e) $imetric)
-            (eq (length cov) 2)
-            (eq (length contr) 0)
+            (eql (length cov) 2)
+            (eql (length contr) 0)
             (= (length deriv) 2)
        )
        (return

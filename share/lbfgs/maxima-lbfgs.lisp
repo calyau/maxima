@@ -145,7 +145,7 @@ estimates : lbfgs ('[F(a, b, c), [F1(a, b, c), F2(a, b, c), F3(a, b, c)]],
         ; That's what's returned if algorithm doesn't converge; better than nothing, I hope.
         (setq return-value (append '((mlist)) (mapcar #'(lambda (a b) `((mequal) ,a ,b)) (cdr x-list) (coerce scache 'list))))
         (cond
-          ((eq iflag 0)
+          ((eql iflag 0)
            (return)))))
 
     return-value))

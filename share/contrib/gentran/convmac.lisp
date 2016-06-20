@@ -143,6 +143,7 @@
   #+sbcl (sb-impl::charpos))
 
 (defun exec (program)
+  #-(or clisp cmu) (declare (ignore program))
   #+clisp (EXT:RUN-PROGRAM program)
   #+cmu (ext:run-program program))
 

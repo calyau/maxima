@@ -233,7 +233,7 @@
 (defun list-negp (l1)
   (dolist (i1 l1)
     (unless (zerop1 i1)
-      (return-from list-negp (eq -1 (signum1 i1))))))
+      (return-from list-negp (eql -1 (signum1 i1))))))
 
 (defun tlist-add (l1 l2) (mapcar #'clist-add l1 l2))
 

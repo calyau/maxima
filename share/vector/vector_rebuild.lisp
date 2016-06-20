@@ -166,11 +166,11 @@
     (cond
       ((and (vector-p left) (vector-p right))) ;; OK
       ;; due to a bug in Maxima allow left or right to be zero:
-      ((and (eq 0 left) (vector-p right))
+      ((and (eql 0 left) (vector-p right))
         (setq left 
           (cons '(mlist simp) 
             (make-list (vector-dim right) :initial-element 0))) )
-      ((and (eq 0 right) (vector-p left))
+      ((and (eql 0 right) (vector-p left))
         (setq right 
           (cons '(mlist simp) 
             (make-list (vector-dim left) :initial-element 0))) )
@@ -233,10 +233,10 @@
             (meval 
               `(($fullmapl) ((lambda) ((mlist) e) ((mminus) e)) ,vec) )))
         (if minus-flag
-          (if (eq 1 fac)
+          (if (eql 1 fac)
             `((mminus) ,vec)
             `((mminus) ((mtimesq) ,fac ,vec)) )
-          (if (eq 1 fac)
+          (if (eql 1 fac)
             vec
             `((mtimesq) ,fac ,vec) )))
       (t

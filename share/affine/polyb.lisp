@@ -130,10 +130,10 @@
   (or (in-nth-power-radical form $radical_nilpotent_of_order)
       (cond ((atom form)
 	     (loop for v on (cdr $dot_simplifications) by #'cddr
-		   when (and (eq 0 (second v)) (eq (car v) form))
+		   when (and (eql 0 (second v)) (eq (car v) form))
 		   do (return t)))
 	    (t (loop for v on (cdr $dot_simplifications) by #'cddr
-		     when (eq 0 (second v))
+		     when (eql 0 (second v))
 		     do (cond ((atom (setq u (car v)))
 			       (cond ((member u form :test #'equal) (return t))))
 			      (t (cond ((ordered-sublist (cdr u) form)(return t))))))))))
@@ -632,11 +632,11 @@
 ;(setq $new_fast_dotsimp t)
 (defun vadd* (&rest a-list)
   (cond ((null a-list) 0)
-	((eq (length a-list) 1) (car a-list))
+	((eql (length a-list) 1) (car a-list))
 	(t (header-poly (n+ (car a-list) (apply 'vadd* (cdr a-list)))))))
 (defun vmul* (&rest a-list)
   (cond ((null a-list) 1)
-	((eq (length a-list) 1) (car a-list))
+	((eql (length a-list) 1) (car a-list))
 	(t (header-poly (n* (car a-list) (apply 'vadd* (cdr a-list)))))))
 (defun vsub* (a b) (header-poly (n- a b)))
 (defun vdiv* (a b) (header-poly (nred  a b)))
@@ -976,13 +976,13 @@ and modulo-p not prime gives false answer"
 ;
 ;	(t (let ((rat-num rat-expr))
 ;						; (gshow rat-num)
-;	     (cond ((eq (car rat-num) gen-var)
+;	     (cond ((eql (car rat-num) gen-var)
 ;		    (setq rat-num (cdr rat-num))
 ;		    (loop while rat-num
-;			  when (eq (car rat-num) deg)
+;			  when (eql (car rat-num) deg)
 ;			  do
 ;			  (return  (second rat-num) )
-;			  when (eq (car rat-num) 0)
+;			  when (eql (car rat-num) 0)
 ;			  do
 ;			  (return (my-ratcoeff2 (second rat-expr) gen-var))
 ;			  else
@@ -992,7 +992,7 @@ and modulo-p not prime gives false answer"
 ;		   (t (setq rat-num (cdr rat-num))
 ;;		      (break t)
 ;		    (loop while rat-num
-;			    when (eq (car rat-num) 0)
+;			    when (eql (car rat-num) 0)
 ;			    do
 ;			    (return (my-ratcoeff2 (second rat-num) gen-var))
 ;			    else
@@ -1010,10 +1010,10 @@ and modulo-p not prime gives false answer"
 	     (cond ((eq (car rat-num) gen-var)
 		    (setq rat-num (cdr rat-num))
 		    (loop while rat-num
-			  when (eq (car rat-num) deg)
+			  when (eql (car rat-num) deg)
 			  do
 			  (return  (second rat-num) )
-			  when (eq (car rat-num) 0)
+			  when (eql (car rat-num) 0)
 			  do
 			  (return (my-ratcoeff2 (second rat-expr) gen-var))
 			  else
@@ -1023,7 +1023,7 @@ and modulo-p not prime gives false answer"
 		   (t (setq rat-num (cdr rat-num))
 ;		      (break t)
 		    (loop while rat-num
-			    when (eq (car rat-num) 0)
+			    when (eql (car rat-num) 0)
 			    do
 			    (return (my-ratcoeff2 (second rat-num) gen-var))
 			    else

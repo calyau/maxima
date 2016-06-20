@@ -99,7 +99,7 @@
 	 ; ((mexpt) x -1) --> (quotient 1.0 x)                    ;
 	 ; ((mexpt) x ((mminus) i)) --> (quotient 1.0 (expt x i)) ;
 	 (let ((var (cadr exp)) (pow (caddr exp)))
-	      (cond ((or (eq pow -1)
+	      (cond ((or (eql pow -1)
 			 (and (listp pow)
 			      (eq (caar pow) 'mminus)
 			      (onep (cadr pow))))
@@ -219,6 +219,7 @@
 	      (t (return (intern (format nil "(~a.0,0.0)" num)))))))
 
 (defun simptimes1 (terms fp)
+  (declare (ignore fp))
   (let ((neg) (denoms))
        (setq terms
 	     (foreach trm in (simptimes2 terms) conc
@@ -384,6 +385,7 @@
 (defun franzif (stmt)
   ; return the franz lisp representation for an if statement ;
   (destructuring-bind (x exp stmt1 y stmt2) stmt
+   (declare (ignore x y))
    (let ((fr '(cond)))
         (setq fr (append1 fr (list (franzexp exp 0 exp)
 				   (franzstmt stmt1))))
@@ -455,6 +457,7 @@
   ;            dobody)                                                      ;
   (let ((gvar) condbody)
     (destructuring-bind (dovar (_x1 . dolist) _x2 _x3 _x4 doexitcond dobody) (cdr stmt)
+       (declare (ignore _x1 _x2 _x3 _x4))
        (setq tvname tempvarname*)
        (setq tempvarname* 'i)
        (setq gvar ($tempvar nil))
@@ -498,10 +501,12 @@
 		(cdr stmt))))
 
 (defun franzstop (stmt)
+  (declare (ignore stmt))
   ; return the franz lisp representation for a stop statement ;
   '(stop))
 
 (defun franzend (stmt)
+  (declare (ignore stmt))
   ; return the franz lisp representation for an end statement ;
   '(end))
 
@@ -600,6 +605,7 @@
 
 
 (defun maccallp (stmt)
+  (declare (ignore stmt))
   ; is stmt a macsyma call statement? ;
   t)
 

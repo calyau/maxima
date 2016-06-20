@@ -8,7 +8,6 @@
 (in-package :maxima)
 
 (defvar $last_answer nil)
-(defvar *show-specials* nil)
 
 (defun which-centrals-to-add (&aux *previously-checked-pairs* ($dot_simplifications))
   "Checks you aren't adding a trivial product of centrals etc.
@@ -17,7 +16,7 @@ modulo ones-to-add checked thru the highest degree of ones to add."
 					;  (unwind-protect
   (progn
     (loop for v in (cdr $centrals_so_far)
-	   until (eq (length ones-to-add) 3)
+	   until (eql (length ones-to-add) 3)
 	   do
 	   (cond (($zerop ($dotsimp v))(setq v 0))
 		 (t (format t "~%Supposedly checking overlaps to deg ~a" ($nc_degree v))
@@ -104,7 +103,7 @@ far degree"
   (setq answer
 	(catch 'check_a_case
 	  (setq free-dot-simps $dot_simplifications)
-	  (loop for i from 3 until (or (eq i 6) (eq (length ones-to-add) 3))
+	  (loop for i from 3 until (or (eql i 6) (eql (length ones-to-add) 3))
 		;; 6 ;;enough?
 		do
 		(setq $dot_simplifications full-dot-simps)
@@ -239,7 +238,7 @@ far degree"
 
 (defun hilbert (n &rest l)
   (cond ((< n 0) 0)
-	((eq n 0) 1)
+	((eql n 0) 1)
 	((null l)($global_dimension_3 n))
 	(t (- (apply 'hilbert n (cdr l))
 	      (apply 'hilbert (- n (car l)) (cdr l))))))
@@ -268,7 +267,7 @@ far degree"
   (check-arg list-powers (eql (car list-powers) 1) "first should be one")
   (cond ((< degree 0) 0)
 	((zerop degree) 1)
-	((eq 1 degree) number-variables)
+	((eql 1 degree) number-variables)
 	;;(< degree degree-relations) (expt  number-variables degree))
 	(t
 	 (loop for deg-map in  list-degree-maps
@@ -336,84 +335,6 @@ far degree"
 ;	(t  (list 'quote   (parse-string *my-stream*)))))
 ;
 ;(si:SET-SYNTAX-/#-MACRO-CHAR #\$ 'x$-macro-read)
-
-;;the following will get the arg x of h into the list before the meval*.
-;;it is hard to see any other way of accomplishing this since the form must
-;;;be evaluated by simplifya etc, and so we need to have the
-;(defun h (x)
-; (declare (special x))       ;;these all work including the binding of x to ?x.
-;       #$3*[?x,y,z]$)        ;; maybe better form to use (defun h ($x) and avoid the
-;(setq me #$$y.y.y$)
-;
-;;;probably want one of the preceding with meval* built in and one without.
-;(defun h (x)
-;  #$factor(x^2+x+1)$)
-;
-;(defun h ($x $y)
-;  (declare (special $x $y))
-;  #$x^y$)
-;
-;       "~%Declaring special~
-; ~#[none ~; ~A ~; ~A and ~A ~; ~@{~#[~1; and ~] ~A~^,~}~]."
-;		       tem)
-(eval-when
-    #+gcl (load compile)
-    #-gcl (:load-toplevel :compile-toplevel)
-  (defvar *show-specials* nil))
-
-(defmacro def$fun (&body l)
-  "Will declare special any variables in the lambda list beginning with $
- This is useful in conjunction with the #$ reader macro so that variables bound
- in the arglist  will get declared and so can be referred to in the meval"
-  (setq l (copy-list l))
-
-  (loop for v in (second l)
-	when  (and (symbolp v) (eq (char v 0) #\$))
-	collecting v into tem
-	when   (and (listp v) (symbolp  (setq v (car v))) (eq (char  v 0) #\$))
-	collecting v into tem
-	finally
-	(cond (*show-specials*
-	(apply 'format t "~@{~%The variable ~A has been declared special for scoping~}" tem)))
-	(return `(defun ,(car l) ,(second l)
-			   ,@ (cons `(declare (special ,@ tem))
-				    (cddr l))))))
-
-;
-;(def$fun te ($x &aux $i (u 3) ($z 4))
-;   (loop for  $i below $z
-;	 collecting #$y^i+3*x^z$))
-
-
-;;;this expands into
-;(DEFUN TE ($X &AUX (U 3) ($Z 4))
-;    (DECLARE (SPECIAL $X $Z))
-;    (LET ((Y 3)) (MEVAL* '((MPLUS) $X 1))))
-;(te 2)==> 3
-;(def$fun te ($x n &aux $i)
-;	 (loop for $i below n
-;	       collecting #$x^i+3+y^i$
-;	       into tem
-;	       finally (return (cons '(mlist) tem))))
-;;expands to which does collect the right thing.
-;(DEFUN TE ($X N &AUX $I)
-;    (DECLARE (SPECIAL $X $I))
-;    (LOOP FOR
-;          $I
-;          BELOW
-;          N
-;          COLLECTING
-;          (MEVAL* '((MPLUS) ((MEXPT) $X $I) 3 ((MEXPT) $Y $I)))
-;          INTO
-;          TEM
-;          FINALLY
-;          (RETURN (CONS '(MLIST) TEM))))
-;(def$fun te ($x n &aux $i)
-;	 (loop for $i below n
-;	       collecting #$x^i+3+y^i$
-;	       into tem
-;	       finally (return (cons '(mlist) tem))))
-;;expands to which does collect the right thing.
 
 (defun $fast_central_elements_given_commutator (variables deg comut   used_var
 					       &aux  f unknowns eqns tem1 parameters answer )

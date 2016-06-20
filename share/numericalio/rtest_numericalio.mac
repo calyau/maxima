@@ -409,8 +409,20 @@ true;
  read_binary_list (file_search ("test-binary.f8-lsb")));
 [-1.125, 0.375, 3.750, -7.875, 2.625];
 
+(assume_external_byte_order (lsb),
+ L : makelist (0, 5),
+ read_binary_list (file_search ("test-binary.f8-lsb"), L),
+ L);
+[-1.125, 0.375, 3.750, -7.875, 2.625];
+
 (assume_external_byte_order (msb),
  read_binary_list (file_search ("test-binary.f8-msb")));
+[-1.125, 0.375, 3.750, -7.875, 2.625];
+
+(assume_external_byte_order (msb),
+ L : makelist (0, 5),
+ read_binary_list (file_search ("test-binary.f8-msb"), L),
+ L);
 [-1.125, 0.375, 3.750, -7.875, 2.625];
 
 (tmp_msb : sconcat (maxima_tempdir, "/tmp-binary.f8-msb"),
