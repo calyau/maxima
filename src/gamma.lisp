@@ -1952,7 +1952,7 @@
 ;;   erf(z) = sqrt(z^2)/z*(1 - gamma_incomplete(1/2,z^2)/sqrt(%pi))
 ;;
 ;; When z is real sqrt(z^2)/z is signum(z).  For complex z,
-;; sqrt(z^2)/z = 1 if abs(arg(z)) <= %pi/2 and -1 otherwise.
+;; sqrt(z^2)/z = 1 if -%pi/2 < arg(z) <= %pi/2 and -1 otherwise.
 ;;
 ;; This relationship has serious round-off issues when z is small
 ;; because gamma_incomplete(1/2,z^2)/sqrt(%pi) is near 1.
@@ -1964,7 +1964,7 @@
 (defun complex-erf (z)
   (let ((result
           (*
-	    (if (< (realpart z) 0.0)
+	    (if (or (< (realpart z) 0.0) (and (= (realpart z) 0.0) (< (imagpart z) 0.0)))
 		-1
 	      1)
             (- 1.0 
