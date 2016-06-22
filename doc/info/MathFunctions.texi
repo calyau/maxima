@@ -31,6 +31,8 @@ When applied to a list or matrix, @code{abs} automatically distributes over
 the terms. Similarly, it distributes over both sides of an
 equation. To alter this behaviour, see the variable @mrefdot{distribute_over}
 
+See also @mrefdot{cabs}
+
 Examples:
 
 Calculation of @code{abs} for real and complex numbers, including numerical
