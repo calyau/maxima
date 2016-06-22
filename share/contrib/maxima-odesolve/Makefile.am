@@ -8,3 +8,7 @@ kovacicODE.info: kovacicODE.texi
 
 maxima-odesolve-index.lisp: kovacicODE.info
 	perl $(top_srcdir)/doc/info/build_index.pl $< > $@
+
+info_TEXINFOS = kovacicODE.texi
+
+EXTRA_DIST = maxima-odesolve-index.lisp
