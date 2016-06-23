@@ -3728,3 +3728,19 @@ true;
 (fpprec:oldfpprec,done);
 done;
 
+/* SF bug #3090: "erfi switches sign at approximately -0.476 and 0.476" */
+
+block
+  (kill (x, L1, L2),
+   x : makelist (i/10.0, i, -20, 20),
+   L1 : makelist (erfi (x1), x1, x),
+   L2 : makelist (-%i*erf (%i*x1), x1, x),
+   every (lambda ([x1, x2], x1 = x2), L1, L2));
+true;
+
+every (lambda ([x1, e1], sign(x1) = sign(e1)), x, L1);
+true;
+
+every (lambda ([x1, e1], sign(x1) = sign(e1)), x, L2);
+true;
+
