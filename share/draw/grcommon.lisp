@@ -336,12 +336,9 @@
 ;; Interprets a rgb string or a rgba string and converts the latter to argb
 ;; as gnuplot needs this format
 (defun hex-to-rgb (str)
-  (if
-      (= (length str) 7)
-   (format nil "rgb '~a'" str)
-   (format nil "rgb '#~a~a'" (subseq str 7 9) (subseq str 1 7))
-   )
-  )
+  (if (= (length str) 7)
+    (format nil "rgb '~a'" str)
+    (format nil "rgb '#~a~a'" (subseq str 7 9) (subseq str 1 7))))
 
 (defun update-color (opt val)
   (let ((str (atom-to-downcased-string val)))
