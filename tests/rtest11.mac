@@ -141,6 +141,8 @@ h(x,y,z)$
 done$
 h(x,z,y);
 -h(x,y,z)$
+h[x,z,y]$
+-h[x,y,z];
 (kill(all),declare(j,nary));
 done$
 j(j(a,b),j(c,d));

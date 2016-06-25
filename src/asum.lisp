@@ -982,7 +982,7 @@ summation when necessary."
   (when (and $dotscrules (mnctimesp e))
     (let ($dotexptsimp)
       (setq e (simpnct e 1 nil))))
-  (if ($mapatom e) e (antisym1 e z)))
+  (if ($atom e) e (antisym1 e z)))
 
 (defun antisym1 (e z)
   (let ((antisym-sign nil)
