@@ -244,7 +244,7 @@ build_sample(tbl) :=
 /* classes we want, OR a list containing only the limits.      */
 /* If sample values are all equal, this function returns only  */
 /* one class of amplitude 2                                    */
-continuous_freq(lis,[opt]):=block([nc,mini,maxi,lim,amp,fr,ult,n,k,index],
+continuous_freq(lis,[opt]):=block([nc,mini,maxi,lim,amp,fr,ult,n,k,index,bins],
    if length(opt) = 1 and listofnumbersp(opt[1])
       then ( mini: opt[1][1],
 	     maxi: opt[1][2],
@@ -264,14 +264,51 @@ continuous_freq(lis,[opt]):=block([nc,mini,maxi,lim,amp,fr,ult,n,k,index],
      then [[lis[1]-1,lis[1]+1],[length(lis)]]
      else ( for i:1 thru nc do lim:endcons(mini+amp*i,lim),
             fr:makelist(0,i,1,nc),
-            for i:1 thru length(lis) do (
-               if lis[i]=mini
-                 then index: 1
-                 elseif lis[i] = maxi then index : nc
-                 else index: ceiling((lis[i]-mini)/amp),
-               fr[index]:fr[index]+1 ),
+            bins : makelist ([lim[i], lim[i + 1]], i, 1, length(lim) - 1),
+            count_em_up (lis, bins, fr),
             [lim,fr])   )$
 
+count_em_up (xx, bins, counts) := 
+ (xx : sort (xx),
+  for k thru length (bins)
+    do block ([i_first : find_index_first (xx, bins[k][1], ">="),
+               i_last : find_index_last (xx, bins[k][2],
+                                         if k < length(bins) and bins[k + 1][1] = bins[k][2] then "<" else "<=")],
+              counts[k] : if i_last = false or i_first = false then 0 else i_last - i_first + 1));
+
+/* assume xx is sorted; find least i s.t. xx[i] > x or xx[i] >= x */
+
+find_index_first (xx, x, comparison) :=
+  if comparison(last(xx), x)
+    then if comparison(first(xx), x)
+           then 1
+           else find_index_first_1 (xx, x, 1, length(xx), comparison);
+
+find_index_first_1 (xx, x, i0, i1, comparison) :=
+  if i1 - i0 <= 1 then i1
+  else
+    block ([i : floor (i0 + (i1 - i0) / 2)],
+           if comparison(xx[i], x)
+             then find_index_first_1 (xx, x, i0, i, comparison)
+             else find_index_first_1 (xx, x, i, i1, comparison));
+
+/* assume xx is sorted; find greatest i s.t. xx[i] < x or xx[i] <= x */
+
+find_index_last (xx, x, comparison) :=
+  if comparison(first(xx), x)
+    then if comparison(last(xx), x)
+           then length(xx)
+           else find_index_last_1 (xx, x, 1, length(xx), comparison);
+
+find_index_last_1 (xx, x, i0, i1, comparison) :=
+  if i1 - i0 <= 1 then i0
+  else
+    block ([i : floor (i0 + (i1 - i0) / 2)],
+           if comparison(xx[i], x)
+             then find_index_last_1 (xx, x, i, i1, comparison)
+             else find_index_last_1 (xx, x, i0, i, comparison));
+
+compile (count_em_up, find_index_first, find_index_first_1, find_index_last, find_index_last_1);
 
 
 /* Counts the frequency of each element in 'lis', its elements */
