@@ -311,19 +311,14 @@ find_index_last_1 (xx, x, i0, i1, comparison) :=
 
 /* Counts the frequency of each element in 'lis', its elements */
 /* can be numbers, Maxima expressions or strings.              */
-discrete_freq(lis):=block([n:length(lis),fr:[],sum,val,set:[],c],
-   lis: sort(lis),
-   c:1,
-   while c<=n do(
-      sum: 0,
-      val: lis[c],
-      set: endcons(val,set),
-      while c<=n and lis[c]=val do(
-         sum: sum+1,
-         c: c+1),
-      fr: endcons(sum,fr) ),
-   [set,fr]  )$
 
+discrete_freq (l) := block ([u],
+  l : sort (l),
+  u : unique (l),
+  [u, map (lambda ([u1],   find_index_last (l, u1, lambda ([x,y], not ordergreatp(x, y)))
+                         - find_index_first (l, u1, lambda([x,y], not orderlessp(x, y)))
+                         + 1),
+           u)]);
 
 /*       UNIVARIATE DESCRIPTIVE STATISTICS         */
 

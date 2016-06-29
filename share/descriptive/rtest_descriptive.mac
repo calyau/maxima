@@ -287,8 +287,49 @@ true;
 test_continuous_freq (append (makelist (random (10), 50), 50 + makelist (random (10), 50)), 10);
 true;
 
+discrete_freq ([]);
+[[], []];
+
 discrete_freq (s1);
 [[0,1,2,3,4,5,6,7,8,9],[8,8,12,12,10,8,9,8,12,13]]$
+
+discrete_freq (map (lambda ([x], printf (false, "~r", x)), s1));
+[["eight", "five", "four", "nine", "one", "seven", "six", "three", "two", "zero"],
+ [12, 8, 10, 13, 8, 8, 9, 12, 12, 8]];
+
+discrete_freq (map (lambda ([x], concat ('x, printf (false, "~r", x))), s1));
+['[xeight, xfive, xfour, xnine, xone, xseven, xsix, xthree, xtwo, xzero],
+ [12, 8, 10, 13, 8, 8, 9, 12, 12, 8]];
+
+(test_discrete_freq (xx) := block ([output, counts],
+  output : discrete_freq (xx),
+  counts : count_via_sublist (xx),
+  if counts = output[2]
+    then true
+    else ['data = xx, 'discrete_freq = output, 'count_via_sublist = counts]),
+ count_via_sublist (xx) :=
+   map (lambda ([x1], length (sublist (xx, lambda ([x], x = x1)))), unique (xx)),
+ set_random_state (make_random_state (2)),
+ 0);
+0;
+
+test_discrete_freq (makelist (random (20), 1));
+true;
+
+test_discrete_freq (makelist (random (20), 10));
+true;
+
+test_discrete_freq (makelist (random (20), 100));
+true;
+
+test_discrete_freq (makelist (random (20), 1000));
+true;
+
+test_discrete_freq (makelist (random (100), 100) * 0.25);
+true;
+
+test_discrete_freq (append (makelist (random (20), 50), 50 + makelist (random (20), 50)));
+true;
 
 part(standardize(s1), [1, 10, 20]);
 [-171/sqrt(84259),-171/sqrt(84259),-71/sqrt(84259)]$
