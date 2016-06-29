@@ -308,8 +308,6 @@ find_index_last_1 (xx, x, i0, i1, comparison) :=
              then find_index_last_1 (xx, x, i, i1, comparison)
              else find_index_last_1 (xx, x, i0, i, comparison));
 
-compile (count_by_bins, find_index_first, find_index_first_1, find_index_last, find_index_last_1);
-
 
 /* Counts the frequency of each element in 'lis', its elements */
 /* can be numbers, Maxima expressions or strings.              */
