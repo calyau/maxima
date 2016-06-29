@@ -1,6 +1,54 @@
 (kill(all), load(graphs), 0);
 0;
 
+/* a helper macro to capture output to a string ("print to string") */
+(p2s([L])::=buildq([L, f: gensym()],
+    block([f: make_string_output_stream()],
+      with_stdout(f, splice(L)),
+      get_output_stream_string(f))), 'done);
+'done$
+
+p2s(print_graph(create_graph([1,2,3], [[1,2], [2,3], [1,3]])));
+"
+Graph on 3 vertices with 3 edges.
+Adjacencies:
+  1 :  3  2
+  2 :  3  1
+  3 :  1  2
+"$
+
+p2s(print_graph(create_graph(
+                  [1,2,3,4],
+                  [
+                   [1,3], [1,4],
+                   [2,3], [2,4]
+                  ],
+                  'directed = true)));
+"
+Digraph on 4 vertices with 4 arcs.
+Adjacencies:
+  1 :  4  3
+  2 :  4  3
+  3 :
+  4 :
+"$
+
+p2s(print_graph(circulant_graph(10, [1, 3])));
+"
+Graph on 10 vertices with 20 edges.
+Adjacencies:
+  9 :  2  6  0  8
+  8 :  1  5  9  7
+  7 :  0  4  8  6
+  6 :  9  3  7  5
+  5 :  8  2  6  4
+  4 :  7  1  5  3
+  3 :  6  0  4  2
+  2 :  9  5  3  1
+  1 :  8  4  2  0
+  0 :  7  3  9  1
+"$
+
 (g:create_graph([1,2,3,4,5],[[1,2],[2,3],[1,3],[4,5]]), 0);
 0;
 
@@ -285,3 +333,13 @@ block([dg: cycle_digraph(3), dg2],
       dg2: copy_graph(dg),
       is (get_edge_weight([0,1], dg2) = get_edge_weight([0,1], dg)));
 true;
+
+edge_coloring(cycle_graph(4));
+[2,[[[0,1],2],[[1,2],1],[[2,3],2],[[0,3],1]]]$
+
+edge_coloring(petersen_graph());
+[4,
+ [[[0,5],3],[[5,7],1],[[0,1],1],[[1,6],2],[[6,8],1],[[1,2],3],[[2,7],4],
+  [[7,9],2],[[2,3],2],[[3,8],3],[[5,8],2],[[3,4],1],[[4,9],4],[[6,9],3],
+  [[0,4],2]]]$
+
