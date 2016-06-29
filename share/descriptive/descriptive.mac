@@ -271,9 +271,9 @@ continuous_freq(lis,[opt]):=block([nc,mini,maxi,lim,amp,fr,ult,n,k,index,bins],
 count_em_up (xx, bins, counts) := 
  (xx : sort (xx),
   for k thru length (bins)
-    do block ([i_first : find_index_first (xx, bins[k][1], ">="),
-               i_last : find_index_last (xx, bins[k][2],
-                                         if k < length(bins) and bins[k + 1][1] = bins[k][2] then "<" else "<=")],
+    do block ([i_first : find_index_first (xx, bins[k][1],
+                                           if k > 1 and bins[k][1] = bins[k - 1][2] then ">" else ">="),
+               i_last : find_index_last (xx, bins[k][2], "<=")],
               counts[k] : if i_last = false or i_first = false then 0 else i_last - i_first + 1));
 
 /* assume xx is sorted; find least i s.t. xx[i] > x or xx[i] >= x */

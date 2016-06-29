@@ -251,8 +251,8 @@ continuous_freq (s1, [-2,12]);
     then true
     else ['data = xx, 'continuous_freq = output, 'count_via_sublist = counts]),
  count_via_sublist (xx, bins) :=
-   append (map (lambda ([pq], length (sublist (xx, lambda ([x], pq[1] <= x and x < pq[2])))), rest(bins, -1)),
-           [length (sublist (xx, lambda ([x], last(bins)[1] <= x and x <= last(bins)[2])))]),
+   append ([length (sublist (xx, lambda ([x], first(bins)[1] <= x and x <= first(bins)[2])))],
+           map (lambda ([pq], length (sublist (xx, lambda ([x], pq[1] < x and x <= pq[2])))), rest(bins))),
  set_random_state (make_random_state (1)),
  0);
 0;
