@@ -1,4 +1,3 @@
-SUBDIRS = wxwidgets
 EXTRA_DIST =\
  CMakeLists.txt\
  FileAssociation.nsh\
