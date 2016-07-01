@@ -3,11 +3,16 @@
  * I release this work under terms of the GNU General Public License
  */
 
+/* for further examples, see also:
+ * http://web.mit.edu/reduce_v20101007/reduce-algebra-20101007/packages/ztrans/ztrans.tst
+ * and: http://www.reduce-algebra.com/docs/ztrans.pdf
+ */
+
 (if not get ('z_transform, 'present) then load (z_transform), 0);
 0;
 
 /*
- * Table 9.1.3 at: http://math.fullerton.edu/mathews/c2003/ZTransformIntroMod.html
+ * Table 9.1.3 at: http://mathfaculty.fullerton.edu/MATHEWS/C2003/ZTRANSFORMINTROMOD.HTML
  */
  
 apply_z_transform (z_transform (kron_delta (n, 0), n, z));

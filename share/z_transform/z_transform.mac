@@ -8,6 +8,10 @@
  * looking at foo(n, z). However, the Maxima pattern matcher does not have
  * backtracking, so one rule (r0 below) captures n and z, then all other
  * rules are applied.
+ *
+ * The inverse transform isn't implemented yet. For some inspiration, see:
+ * http://ece.citadel.edu/barsanti/elec407/L3%20Inverse%20Z%20Transforms.pdf
+ * and: http://www.reduce-algebra.com/docs/ztrans.pdf
  */
 
 put ('z_transform, true, 'present);
@@ -28,7 +32,7 @@ defrule (r0,
             r914_13, r914_14, r914_15a, r914_16)));
 
 /* Some specific transforms.
- * Table 9.1.3 at: http://math.fullerton.edu/mathews/c2003/ZTransformIntroMod.html
+ * Table 9.1.3 at: http://mathfaculty.fullerton.edu/MATHEWS/C2003/ZTRANSFORMINTROMOD.HTML
  */
 
 /* (1) delta[n] --> 1
@@ -125,7 +129,7 @@ defrule (r913_12,
 
 
 /* General properties.
- * Table 9.1.4 at: http://math.fullerton.edu/mathews/c2003/ZTransformIntroMod.html
+ * Table 9.1.4 at: http://mathfaculty.fullerton.edu/MATHEWS/C2003/ZTRANSFORMINTROMOD.HTML
  */
 
 /* (4) u[n - m] --> z^(1 - m)/(z - 1)
