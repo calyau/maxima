@@ -254,7 +254,7 @@
   ($separate_parameters ($sublis answer ($firstn n2 $aaaa))))
 (defun $matrix_from_list (a-list &aux tem)
   (let ((n (round (setq tem (expt ($length a-list) .5)))))
-    (cond ((eq (expt  n 2) ($length a-list)) 'fine)
+    (cond ((eql (expt n 2) ($length a-list)) 'fine)
 	  (t (merror "The length of list is not a square")))
     (setq a-list (cdr a-list))
     (loop while a-list

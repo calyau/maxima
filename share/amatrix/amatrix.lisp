@@ -238,7 +238,7 @@
   (let ((nc1 ($ncols m1)) (nr2 ($nrows m2)))
     (cond
       ((and (integerp nc1) (integerp nr2))
-       (if (eq ($ncols m1) ($nrows m2))
+       (if (eql ($ncols m1) ($nrows m2))
          (let
            ((aa (gensym))
             (nn ($ncols m1))
