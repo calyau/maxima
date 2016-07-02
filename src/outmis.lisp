@@ -132,7 +132,7 @@
 (defun properties (x)
   (if (stringp x)
     ; AT THIS POINT WE MIGHT WANT TO TRY TO TEST ALL CHARS IN STRING ...
-    (if (and (> (length x) 0) (member (char x 0) *alphabet* :test #'eq))
+    (if (and (> (length x) 0) (member (char x 0) *alphabet*))
       '((mlist) $alphabetic)
       '((mlist)))
     (do ((y (symbol-plist x) (cddr y))
