@@ -18,30 +18,40 @@ configure tries to autodetect the Lisp type if it is not specified,
 but it has been reported that autodetection can fail.
 
 --------------------------------------------------------------------
-Comparison of execution times for the run_testsuite function
-All times are in elapsed seconds
+Comparison of execution times (in seconds) for the run_testsuite()
+function for Maxima 5.36.0 as reported on the Maxima mailing list:
+              
+64 Bit (Gentoo Linux):
 
-Maxima      System                  GCL     SBCL    CMUCL   Clisp
+gcl-2.6.12    152
+sbcl-1.2.10   155
+ccl-1.10      313
+ecl-15.3.7    559
+clisp-2.49   1060
 
-pre-5.9.3   P2 450 MHz, Linux        75      91              301
+32 Bit (Gentoo Linux)
+sbcl-1.2.10  170
+gcl-2.6.12   177
+cmucl-20e    253
+ccl-1.10     293
+ecl-15.3.7   556
+clisp-2.49   844
 
 
 --------------------------------------------------------------------
 Clisp <http://clisp.org>
 
-	Clisp includes GNU readline support, so Maxima has
+	Clisp can be built with readline support, so Maxima has 
 advanced command-line editing facilities when built with it.
 
 Clisp is compiled to bytecodes, so Maxima running on Clisp is
-substantially slower than on Lisps compiled to machine instructions.
-Clisp computes floating-point operations in software,
-so floating-point operations in Clisp are much slower than in Lisps
-which make use of hardware instructions for floating-point operations.
-On the other hand, Clisp makes use of the GMP library for arbitrary-
-precision integer computations.
+substantially slower than on Lisps compiled to machine instructions. 
+On the other hand, Clisp contains code from CLN <http://www.ginac.de/CLN/>,
+a library for efficient computations with all kinds of numbers in 
+arbitrary precision.
 
-There are Clisp implementations for many platforms
-including MS Windows and Unix-like systems.
+There are Clisp implementations for many platforms including 
+MS Windows and Unix-like systems.
 
 --------------------------------------------------------------------
 CMUCL <http://www.cons.org/cmucl/>
