@@ -1177,7 +1177,7 @@ AC_OUTPUT(Makefile maxima.spec maxima.iss \
 admin/Makefile src/Makefile src/maxima src/rmaxima src/autoconf-variables.lisp \
 src/share-subdirs.lisp \
 lisp-utils/Makefile tests/Makefile doc/Makefile \
-crosscompile-windows/Makefile crosscompile-windows/wxwidgets/Makefile \
+crosscompile-windows/Makefile \
 doc/emaxima/Makefile doc/info/Makefile doc/info/include-maxima.texi \
 doc/info/texi2html.init \
 doc/info/figures/Makefile \

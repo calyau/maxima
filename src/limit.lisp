@@ -313,9 +313,6 @@
             (t
              '$und)))))
 
-;; Warning:  (CATCH NIL ...) will catch all throws.
-;; NIL should not be used as a tag name.
-
 (defun limunknown (f)
   (catch 'limunknown (limunknown1 (specrepcheck f))))
 

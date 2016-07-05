@@ -49,7 +49,7 @@ set(GNUPLOTVERSION   5.0.3)
 set(TCLVERSION       8.6.5)
 set(TKVERSION        8.6.5)
 set(VTKVERSION       6.3.0)
-set(SBCLVERSION      1.3.6)
+set(SBCLVERSION      1.3.7)
 
 
 # MD5 checksums for the current program versions.
@@ -90,7 +90,7 @@ set(VTK_URL       "http://www.vtk.org/files/release/6.3/VTK-${VTKVERSION}.tar.gz
 #    set(SBCL_MD5      "f8cd3044c74beb84bba4aa9df5bb804e")
 # else()
     set(SBCL_INSTALLER "sbcl-${SBCLVERSION}-x86-windows-binary.msi")
-    set(SBCL_MD5      "f541d53f3a4dee0635981e4c1cd68fa2")
+    set(SBCL_MD5      "a49b6f18ca9adf374b6ec4cbf90c698e")
 # endif()
 set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/${SBCL_INSTALLER}")
 
@@ -115,13 +115,14 @@ message(STATUS "Found libgcc_s_sjlj-1.dll at ${MINGW_LIBGCC}")
 include(ExternalProject)
 
 # Build wxWidgets static library (required for wxMaxima)
+# --host=${HOST} should suffice, but then wxwidgets creates libs with wrong names, so add --build=${HOST}
+# (that should mean, the build system is Windows - wrong. Perhaps a bug in the wxwidgets build system.)
 externalproject_add(wxWidgets
   URL "${WXWIDGETS_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${WXWIDGETS_MD5}
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/configure --disable-shared --disable-compat28 --with-zlib=builtin --with-libjpeg=builtin --without-libtiff --with-libpng=builtin --with-expat=builtin --host=${HOST}
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/configure --disable-shared --disable-compat28 --with-zlib=builtin --with-libjpeg=builtin --without-libtiff --with-libpng=builtin --with-expat=builtin --host=${HOST} --build=${HOST}
   BUILD_COMMAND $(MAKE)
-        COMMAND ${CMAKE_SOURCE_DIR}/wxwidgets/debian-crosscompile-correction.sh ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib
   INSTALL_COMMAND ""
 )
 
@@ -256,7 +257,7 @@ if(USE_WXMAXIMA_GIT)
         DEPENDS wxWidgets
         PATCH_COMMAND  ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/acinclude.m4
               COMMAND ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/bootstrap
-        CONFIGURE_COMMAND  ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
+        CONFIGURE_COMMAND  ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
               COMMAND $(MAKE) allmo
               COMMAND $(MAKE) wxMaxima.win
@@ -270,7 +271,7 @@ else()
         URL_MD5 ${WXMAXIMA_MD5}
         PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/wxmaxima-16.04.2-patch
         DEPENDS wxWidgets
-        CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-${HOST}-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
+        CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
               COMMAND $(MAKE) allmo
               COMMAND $(MAKE) wxMaxima.win

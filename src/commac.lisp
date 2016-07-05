@@ -590,7 +590,7 @@ values")
   ;; Adding this extra EOF test, because the testsuite generates
   ;; unexpected end of input-stream with Windows XP and GCL 2.6.8.
   #+gcl
-  (when (eq (peek-char nil stream nil eof-option) eof-option)
+  (when (eql (peek-char nil stream nil eof-option) eof-option)
     (return-from tyi-raw eof-option))
 
   (let ((ch (read-char-no-hang stream nil eof-option)))
@@ -604,7 +604,7 @@ values")
 
 (defun tyi (&optional (stream *standard-input*) eof-option)
   (let ((ch (tyi-raw stream eof-option)))
-    (if (eq ch eof-option)
+    (if (eql ch eof-option)
       ch
       (backslash-check ch stream eof-option))))
 

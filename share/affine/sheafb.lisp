@@ -2829,8 +2829,8 @@
 	 (setq used  (cons repeat (pdegree (first eqns-rep) repeat)))
 ;         (push repeat *used-divisors*)
 	 (show (length eqns-rep))
-	 (cond ((eq ( pdegree (first eqns-rep) repeat)
-		    (pdegree (second eqns-rep) repeat))
+	 (cond ((eql (pdegree (first eqns-rep) repeat)
+		     (pdegree (second eqns-rep) repeat))
 		;;choose the least complex leading coefficient to divide by
 		(setq eqns-rep
 		      (sort-key (subseq eqns-rep 0 2) '<
