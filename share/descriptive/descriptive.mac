@@ -207,7 +207,7 @@ transform_sample(m, varnames, expressions) :=
     block([tm],
         if matrixp(m)
             then (tm: args(transpose(m)),
-                     transpose(apply('matrix, psubst(map("=",varnames,tm), expressions))))
+                  transpose(apply('matrix, map('ev, psubst(map("=",varnames,tm), expressions)))))
             else error("transform_sample: argument must be a matrix")) $
 
 
