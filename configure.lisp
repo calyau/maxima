@@ -155,6 +155,7 @@
 			      (cons "@POSIX_SHELL@" shell)
 			      (cons "@expanded_top_srcdir@" 
 				    (replace-substring prefix "\\" "\\\\"))
+			      (cons "@lisp_only_build@" "t")
 			      (cons "@DEFAULTLISP@" *maxima-lispname*)
 			      (cons "@CLISP_NAME@" clisp)
 			      (cons "@CMUCL_NAME@" cmucl)
