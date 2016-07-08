@@ -5,9 +5,10 @@
 
 This chapter provides detailed information about the meaning of some error messages
 or on how to recover from errors.
-@node Error messages, part fell off the end, Error and warning messages, Error and warning messages
+@node Error messages, 0 to a negative exponent, Error and warning messages, Error and warning messages
 @section Error messages
 @menu
+* 0 to a negative exponent::
 * part fell off the end::
 * undefined variable during plotting::
 * loadfile failed to load::
@@ -21,7 +22,11 @@ or on how to recover from errors.
 * VTK is not installed::
 @end menu
 
-@node part fell off the end, undefined variable during plotting, Error messages, Error messages
+@node 0 to a negative exponent, part fell off the end, Error messages, Error messages
+@subsection expt: undefined:  0 to a negative exponent.
+This message notifies about a classical division by zero error.
+
+@node part fell off the end, undefined variable during plotting, 0 to a negative exponent, Error messages
 @subsection part: fell off the end
 @code{part()} was used to access the @code{n}th item in something that has less than
 @code{n} items.
