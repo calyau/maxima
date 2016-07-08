@@ -6,14 +6,19 @@
 ;;; ((mlist simp) "testfile.mac" 7 9 13).
 
 (setf $testsuite_files
-      '((mlist simp)
+      `((mlist simp)
         "rtest_rules"
         "rtestnset" 
         ((mlist) "rtest1" 180)
         "rtest1a"
         ((mlist) "rtest2" 86 95)
 	"rtest4"
-        "rtest5"
+        ;; Mark tests that require the documentation as known failures
+        ;; if this was a lisp-only build
+        ((mlist) "rtest5"
+                 ,@(and (boundp '*autoconf-lisp-only-build*)
+                        (symbol-value '*autoconf-lisp-only-build*)
+                        (list 78 80)))
         "rtest6" "rtest6a" "rtest6b" "rtest7"
         "rtest9" 
         "rtest9a"
