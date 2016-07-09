@@ -1137,12 +1137,13 @@ expanded_infodir="$(eval "prefix=\"${tmp_prefix}\";datarootdir=\"${datarootdir}\
 
 
 dnl Find all the directories in share, but remove the share directory
-dnl itself and all CVS directories (if any) and fortran directories.
+dnl itself and all CVS directories (if any) and fortran directories
+dnl and *.t2p directories (created when generating pdf documentation).
 dnl Remove the leading "share" part of the path, and add double-quotes
 dnl around it.
 
 #default_sharedirs=`find share -type d | sort | egrep -v 'share$|CVS|/fortran' | sed 's;share/\(.*\);        "\1" \\\\;' | sed '$s;\\\\;;'`
-default_sharedirs=`find share -type d | sort | egrep -v 'share$|CVS|/fortran' | sed 's;share/\(.*\);"\1";' | tr '\n' ' '`
+default_sharedirs=`find share -type d | sort | egrep -v 'share$|CVS|/fortran|*.t2p' | sed 's;share/\(.*\);"\1";' | tr '\n' ' '`
 
 AC_SUBST(expanded_top_srcdir)
 AC_SUBST(expanded_exec_prefix)
