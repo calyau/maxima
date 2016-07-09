@@ -37,11 +37,17 @@ number was @code{< 1} or @code{> length(list)}.
 @subsection assignment: cannot assign to <function name>
 Maxima supports several assignment operators. When trying to define a function
 @code{:=} has to be used.
+@opencatbox
+@category{Error messages}
+@closecatbox
 
 
 @node 0 to a negative exponent, Comma is not a prefix operator, cannot assign to function, Error messages
 @subsection expt: undefined:  0 to a negative exponent.
 This message notifies about a classical division by zero error.
+@opencatbox
+@category{Error messages}
+@closecatbox
 
 
 @node Comma is not a prefix operator, Illegal use of delimiter, 0 to a negative exponent, Error messages
@@ -104,6 +110,9 @@ something else, possibly a list or the name of a list.
 The most probable cause for this error is that there was an attempt to either
 use a number or a variable whose numerical value is known as a loop
 counter.
+@opencatbox
+@category{Error messages}
+@closecatbox
 
 
 @node out of memory, part fell off the end, Only symbols can be bound, Error messages
@@ -213,6 +222,9 @@ retain all the flexibility maxima provides in respect to this variable.
 If @code{x} isn't meant as a variable name but just a named option to a
 command prepending the named option by a single quote (@code{'}) should
 resolve this issue.
+@opencatbox
+@category{Error messages}
+@closecatbox
 
 
 @node replaced x by y,  , undefined variable during translation, Warning messages
