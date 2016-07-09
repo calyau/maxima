@@ -1965,7 +1965,7 @@ true;
 relerror(
   gamma_incomplete(0.5,-10+10.0*%i),
   921.0687349037275816861912330294 + 5931.0759029700741177372337479958*%i,
-  1e-15);
+  1.072e-15);
 true;
 
 relerror(
@@ -2013,7 +2013,7 @@ true;
 relerror(
   gamma_incomplete(0.5,-10+10.0*%i),
   921.0687349037275816861912330294 + 5931.0759029700741177372337479958*%i,
-  1e-15);
+  1.072e-15);
 true;
 
 relerror(
@@ -2595,7 +2595,7 @@ true;
 relerror(
   erfc(6.0),
   2.15197367124989131659335039918738463047751406e-17,
-  2e-15);
+  2.005e-15);
 true;
 
 relerror(
@@ -3584,7 +3584,7 @@ true;
 relerror(
   gamma_incomplete(1/5,-32.0),
   -4.0986398326716649399d12 - %i*2.9778361454160762231d12,
-  2e-15);
+  2.545e-15);
 true;
 
 relerror(
@@ -3602,7 +3602,7 @@ true;
 relerror(
   gamma_incomplete(10,-100d0+%i),
   subst(x=-100d0+%i, block([gamma_expand : true], gamma_incomplete(10,x))),
-  8.1e-15);
+  1.046e-14);
 true;
       
 relerror(

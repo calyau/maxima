@@ -1998,7 +1998,7 @@ li[2](1/2);
 closeto(li[2](0.5) - (%pi^2/12 - log(2)^2/2), 1.1103e-16);
 true;
 
-closeto(li[2](2.0) - (%pi^2/4 - %i*%pi*log(2)), 8.9e-16), numer;
+closeto(li[2](2.0) - (%pi^2/4 - %i*%pi*log(2)), 2.513e-15), numer;
 true;
 
 closeto(li[2]((1-sqrt(5))/2) - (log((sqrt(5)-1)/2)^2/2-%pi^2/15), 1.1103e-16), numer;
