@@ -347,6 +347,11 @@
   (pushnew 'lock-maxima-packages ext:*after-save-initializations*))
 
 
+;; Some versions of CMUCL already have a compatible version of INTL,
+;; so skip it if we have it.  CMUCL will already define the INTL
+;; package correctly.
+
+#+#.(cl:if (cl:and (cl:member :cmu cl:*features*) (cl:find-package '#:intl))  '(or) '(and))
 (defpackage :intl
   (:use :common-lisp)
   (:export #:setlocale #:textdomain #:gettext #:dgettext
