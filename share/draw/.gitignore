@@ -1,0 +1,3 @@
+*.t2p
+draw-index.lisp
+*.info
