@@ -1,3 +1,5 @@
 *.t2p
 draw-index.lisp
 *.info
+drawutils.pdf
+texinfo.tex
