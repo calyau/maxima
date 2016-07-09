@@ -284,16 +284,17 @@ Multivariate frequency table.
 
 @anchor{continuous_freq}
 @deffn {Function} continuous_freq @
-@fname{continuous_freq} (@var{list}) @
-@fname{continuous_freq} (@var{list}, @var{m})
+@fname{continuous_freq} (@var{data}) @
+@fname{continuous_freq} (@var{data}, @var{m})
 
-The argument of @code{continuous_freq} must be a list of numbers.
+The first argument of @code{continuous_freq} must be a list
+or 1-dimensional array (as created by @code{make_array}) of numbers.
 Divides the range in intervals and counts how many values
 are inside them. The second argument is optional and either
 equals the number of classes we want, 10 by default, or
 equals a list containing the class limits and the number of
 classes we want, or a list containing only the limits.
-Argument @var{list} must be a list of (2 or 3) real numbers.
+
 If sample values are all equal, this function returns only
 one class of amplitude 2.
 
@@ -349,6 +350,32 @@ Optional argument indicates we want the default number of classes with limits
                [0, 8, 20, 12, 18, 9, 8, 25, 0, 0]]
 @end example
 
+The first argument may be an array.
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c a1 : make_array (fixnum, length (s1)) $
+@c fillarray (a1, s1);
+@c continuous_freq (a1);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) a1 : make_array (fixnum, length (s1)) $
+(%i4) fillarray (a1, s1);
+(%o4) @{Lisp Array: 
+#(3 1 4 1 5 9 2 6 5 3 5 8 9 7 9 3 2 3 8 4 6 2 6 4 3 3 8 3 2 7 9 \
+5 0 2 8 8 4 1 9 7 1 6 9 3 9 9 3 7 5 1 0 5 8 2 0 9 7 4 9 4 4 5 9
+  2 3 0 7 8 1 6 4 0 6 2 8 6 2 0 8 9 9 8 6 2 8 0 3 4 8 2 5 3 4 2 \
+1 1 7 0 6 7)@}
+(%i5) continuous_freq (a1);
+           9   9  27  18  9  27  63  36  81
+(%o5) [[0, --, -, --, --, -, --, --, --, --, 9], 
+           10  5  10  5   2  5   10  5   10
+                             [8, 8, 12, 12, 10, 8, 9, 8, 12, 13]]
+@end example
+
 @opencatbox
 @category{Package descriptive}
 @closecatbox
@@ -357,8 +384,9 @@ Optional argument indicates we want the default number of classes with limits
 
 
 @anchor{discrete_freq}
-@deffn {Function} discrete_freq (@var{list})
+@deffn {Function} discrete_freq (@var{data})
 Counts absolute frequencies in discrete samples, both numeric and categorical. Its unique argument is a list,
+or 1-dimensional array (as created by @code{make_array}).
 
 @c ===beg===
 @c load (descriptive)$
@@ -376,6 +404,30 @@ Counts absolute frequencies in discrete samples, both numeric and categorical. I
 @end example
 
 The first list gives the sample values and the second their absolute frequencies. Commands @code{? col} and @code{? transpose} should help you to understand the last input.
+
+The argument may be an array.
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c a1 : make_array (fixnum, length (s1)) $
+@c fillarray (a1, s1);
+@c discrete_freq (a1);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) a1 : make_array (fixnum, length (s1)) $
+(%i4) fillarray (a1, s1);
+(%o4) @{Lisp Array: 
+#(3 1 4 1 5 9 2 6 5 3 5 8 9 7 9 3 2 3 8 4 6 2 6 4 3 3 8 3 2 7 9 \
+5 0 2 8 8 4 1 9 7 1 6 9 3 9 9 3 7 5 1 0 5 8 2 0 9 7 4 9 4 4 5 9
+  2 3 0 7 8 1 6 4 0 6 2 8 6 2 0 8 9 9 8 6 2 8 0 3 4 8 2 5 3 4 2 \
+1 1 7 0 6 7)@}
+(%i5) discrete_freq (a1);
+(%o5) [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 
+                             [8, 8, 12, 12, 10, 8, 9, 8, 12, 13]]
+@end example
 
 @opencatbox
 @category{Package descriptive}
