@@ -1,3 +1,4 @@
 *.info
 logic-index.lisp
 texinfo.tex
+*.t2p
