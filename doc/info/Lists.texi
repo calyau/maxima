@@ -67,7 +67,7 @@ itself, since after it has been through the simplifier the list would become
 @code{[} and @code{]} also enclose the subscripts of
 a list, array, hash array, or array function. Note that
 other than for arrays accessing the @code{n}th element of a list
-needs an amount of time that is roughly proportional to  @code{n},
+may need an amount of time that is roughly proportional to  @code{n},
 @xref{Performance considerations for Lists}.
 
 
@@ -1418,7 +1418,7 @@ They can be created without knowing their final dimensions.
 Lisp provides efficient means of copying and handling lists.
 Also nested lists do not need to be strictly rectangular.
 These advantages over declared arrays come with the drawback that the amount of time
-needed for accessing a random element within a list is roughly
+needed for accessing a random element within a list may be roughly
 proportional to the element's distance from its beginning.
 Efficient traversal of lists is still possible, though, by using the list as a
 stack or a fifo:
