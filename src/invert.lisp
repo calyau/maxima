@@ -26,9 +26,6 @@
       `((mtimes) ((mexpt) ,det -1) ,mat1)
       (div mat1 det))))
   
-(add2lnc '$adjoint $props)
-(add2lnc '$invert_by_adjoint $props)
-
 (defmvar $invert_method nil)
 (defmvar $invert_by_adjoint_size_limit 8)
 

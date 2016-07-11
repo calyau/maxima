@@ -39,5 +39,3 @@
     (if flag
 	(list '(mlist) ($rhs (simplify (mfuncall '$ev (simplify ($last (simplify ($solve (maref eqns 1) sv)))) '$eval))))
 	eqns)))
-
-(add2lnc '$eliminate $props)
