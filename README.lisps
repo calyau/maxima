@@ -101,7 +101,7 @@ including MS Windows and Unix-like systems.
 --------------------------------------------------------------------
 SBCL <http://www.sbcl.org>
 
-    SBCL is a fork of CMUCL which differs in some minor details,
+	SBCL is a fork of CMUCL which differs in some minor details,
 but most notably, it is simpler to rebuild SBCL than CMUCL.
 
 rmaxima is recommended for use with SBCL. See CMUCL above.
@@ -116,7 +116,7 @@ implementations. User feedback would be welcome.
 --------------------------------------------------------------------
 CCL <http://ccl.clozure.com/>
 
-    CCL, formerly known as OpenMCL, is known to work with maxima on
+	CCL, formerly known as OpenMCL, is known to work with maxima on
 all platforms where ccl runs including Linux, Mac OSX, and Windows.
 There are appear to be some bugs in the 32-bit version of ccl,  but
 the 64-bit version passes all tests.
@@ -124,7 +124,12 @@ the 64-bit version passes all tests.
 --------------------------------------------------------------------
 ECL <https://common-lisp.net/project/ecl/>
     
-    ECL is known to work with maxima and passes the testsuite.  ECL
+	ECL is known to work with maxima and passes the testsuite.  ECL
 runs on many platforms and OSes.
 
+--------------------------------------------------------------------
+Armed Bear Common Lisp (ABCL) <https://common-lisp.net/project/armedbear/>
+    Maxima can also compiled with ABCL - but currently not with
+a 'configure'-option but only with the purely Lisp-based procedure.
+(see INSTALL.lisp)
 
