@@ -730,6 +730,17 @@ if test x$chm = xtrue; then
   fi
 fi
 
+dnl Make the build quiet
+AC_ARG_ENABLE(quiet_build,
+  [  --enable-quiet-build         Make the build quieter],
+  [case "${enableval}" in
+     yes) quiet_build=true ;;
+     no)  quiet_build=false ;;
+     *) AC_MSG_ERROR(bad value ${enableval} for --enable-quiet-build) ;;
+   esac],
+  [quiet_build=false])
+AM_CONDITIONAL(QUIET_BUILD, test x${quiet_build} = xtrue)
+
 dnl Optionally build xmaxima.exe under windows
 dnl default to false as additional software
 AC_ARG_ENABLE(xmaxima_exe,

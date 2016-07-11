@@ -44,5 +44,3 @@
     (if (and flag (= ($length tvars) 1))
 	(maref teqns 1)
 	teqns)))
-
-(add2lnc '$desolve $props)
