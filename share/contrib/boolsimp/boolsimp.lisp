@@ -3,13 +3,6 @@
 ; Copyright 2006 by Robert Dodier.
 ; Released under the terms of the GNU General Public License.
 
-; The functions in this file are an attempt to make Boolean (and, or, not)
-; and conditional (if -- then -- else/elseif) expressions work more like
-; arithmetic expressions in the treatment of predicates which are
-; undecidable at the time the expression is evaluated,
-; by allowing undecided predicates in simplified and evaluated
-; expressions, instead of complaining or returning 'unknown.
-
 ; Ideas that haven't gone anywhere yet:
 ;  - given "if foo then bar else baz", simplify bar assuming foo,
 ;    and simplify baz assuming not foo
@@ -20,7 +13,7 @@
 
 (in-package :maxima)
 
-; Kill off translation properties of conditionals and Boolean operators.
+; Kill off translation properties of conditionals.
 ; Ideally we could avoid calling MEVAL when arguments are declared Boolean.
 ; We're not there yet.
 
