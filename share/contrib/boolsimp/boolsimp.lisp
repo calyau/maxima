@@ -166,13 +166,6 @@
 (putprop 'mcond 'simp-mcond 'operators)
 (putprop '%mcond 'simp-mcond 'operators)
 
-; WTF IS THIS ??
-(let ((save-intext (symbol-function 'intext)))
-  (defun intext (rel body)
-    (let ((result (funcall save-intext rel body)))
-      (if result result `((,rel) ,@body)))))
-
-
 ; REDEFINE PARSE-CONDITION (IN SRC/NPARSE.LISP) TO APPEND NIL INSTEAD OF $FALSE
 ; WHEN INPUT IS LIKE "IF FOO THEN BAR" (WITHOUT ELSE)
 
