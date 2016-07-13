@@ -179,3 +179,9 @@ my_max (a + b, c, 1);
 [assume (c < 1), my_max (a + b, c, 1), forget (c < 1)];
 [[c < 1], 'if a + b > c and a + b > 1 then a + b else 1, [c < 1]];
 
+/* explicit resimplification in evaluation (i.e. DEFMSPEC MCOND) not needed,
+ * since simplification of branches will be handled after evaluation.
+ */
+(kill (a, b, c), b:2, c:2, if a > 0 then b + c else b - c);
+if a > 0 then 4 else 0;
+
