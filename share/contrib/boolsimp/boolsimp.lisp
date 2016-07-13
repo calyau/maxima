@@ -33,44 +33,6 @@
 ; quad_qags (if x > 0 then x else -x, x, -1 ,1)
 ;                   =>   error       [1.0, 1.1107651257113993E-14, 63, 0]
 
-
-; In and, or, and if, arguments are evaluated, or simplified as the case may be,
-; from left to right, only as needed to establish whether the whole expression
-; is true or false. Therefore arguments which potentially have side effects
-; (print, kill, save, quit, etc) may or may not actually have those side effects.
-;
-; Simplification of "if" expressions:
-;
-; Let the expression be if P[1] then E[1] elseif P[2] then E[2] ... elseif P[n] then E[n]
-; ("if P[1] then E[1] else E[2]" parses to the above with P[2] = true,
-; and "if P[1] then E[1]" parses to the above with P[2] = true and E[2] = false.)
-;
-; (1) If any P[k] simplifies to false, do not simplify E[k],
-;     and omit P[k] and E[k] from the result.
-; (2) If any P[k] simplifies to true, simplify E[k],
-;     but do not simplify any P[k + 1], E[k + 1], ..., and omit them from the result.
-; (3) Otherwise, simplify E[k].
-;
-; If there are no P and E remaining, return false.
-; Let P*[1], E*[1], ... be any P and E remaining after applying (1), (2), and (3).
-; If P*[1] = true, return E*[1].
-; Otherwise return "if P*[1] then E*[1] elseif P*[2] then E*[2] ..."
-; with "if" being a noun iff the original "if" was a noun.
-;
-; Evaluation of "if" expressions:
-;
-; (1) If any P[k] evaluates to false, do not evaluate E[k],
-;     and omit P[k] and E[k] from the result.
-; (2) If any P[k] evaluates to true, evaluate E[k],
-;     but do not evaluate any P[k + 1], E[k + 1], ..., and omit them from the result.
-; (3) Otherwise, evaluate atoms (not function calls) in E[k].
-;
-; If there are no P and E remaining, return false.
-; Let P*[1], E*[1], ... be any P and E remaining after applying (1), (2), and (3).
-; If P*[1] = true, return E*[1].
-; Otherwise return "if P*[1] then E*[1] elseif P*[2] then E*[2] ..."
-; with "if" being a noun iff the original "if" was a noun.
-
 (in-package :maxima)
 
 ; Kill off translation properties of conditionals and Boolean operators.
