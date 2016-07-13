@@ -18,21 +18,6 @@
 ;  - make up rules via tellsimp & friends for integrate / sum / diff applied to conditionals
 ;  - knock out redundant clauses in simplification (i.e. if x implies y then knock out y)
 
-; Examples:
-;
-; assume (a > 1);
-;
-;                        Before      After
-;
-; a > 1 and b < 0   =>   error       b < 0
-; c > 1 and b < 0   =>   error       c > 1 and b < 0
-; not b < 0         =>   error       b >= 0
-; if c then d       =>   error       if c then d
-; plot2d (if x > 0 then x else -x, [x, -1, 1])
-;                   =>   error       nice plot
-; quad_qags (if x > 0 then x else -x, x, -1 ,1)
-;                   =>   error       [1.0, 1.1107651257113993E-14, 63, 0]
-
 (in-package :maxima)
 
 ; Kill off translation properties of conditionals and Boolean operators.
