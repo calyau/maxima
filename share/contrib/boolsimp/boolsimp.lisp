@@ -173,57 +173,6 @@
       (if result result `((,rel) ,@body)))))
 
 
-; $SOME / $EVERY REDEFINED FROM SRC/NSET.LISP
-
-#|
-(defun $every (f &rest x)
-  (cond ((or (null x) (and (null (cdr x)) ($emptyp (first x)))) t)
-   
- ((or ($listp (first x)) (and ($setp (first x)) (null (cdr x))))
-  (setq x (margs (simplify (apply #'map1 (cons f x)))))
-  ; ACTUALLY WE REALLY REALLY WANT TO POSTPONE EVALUATING THE PREDICATE HERE
-  (setq x (mapcar #'car (mapcar #'(lambda (s) (ignore-errors-mfuncall '$maybe s)) x)))
-  ; IF MAND RETURNS AN UNEVALUATED EXPRESSION HERE, RETURN AN UNEVALUATED EXPR WITH OP = $EVERY
-  (let ((a (simplifya `((mand) ,@x) t)))
-    ; FOR NOW ASSUME NIL IF ANYTHING BUT T OR $UNKNOWN (DON'T CHANGE $EVERY NOW)
-    (if (or (eq a t) (eq a '$unknown)) a nil)))
-   
- ((every '$matrixp x)
-  (let ((fmaplvl 2))
-    (setq x (margs (simplify (apply #'fmapl1 (cons f x)))))
-    (setq x (mapcar #'(lambda (s) ($every '$identity s)) x))
-    ; IF MAND RETURNS AN UNEVALUATED EXPRESSION HERE, RETURN AN UNEVALUATED EXPR WITH OP = $EVERY
-    (let ((a (simplifya `((mand) ,@x) t)))
-      ; FOR NOW ASSUME NIL IF ANYTHING BUT T OR $UNKNOWN (DON'T CHANGE $EVERY NOW)
-      (if (or (eq a t) (eq a '$unknown)) a nil))))
- 
- (t (merror "Improper arguments to function 'every'"))))
-
-(defun $some (f &rest x)
-  (cond ((or (null x) (and (null (cdr x)) ($emptyp (first x)))) nil)
-
- ((or ($listp (first x)) (and ($setp (first x)) (null (cdr x))))
-  (setq x (margs (simplify (apply #'map1 (cons f x)))))
-  ; ACTUALLY WE REALLY REALLY WANT TO POSTPONE EVALUATING THE PREDICATE HERE
-  (setq x (mapcar #'car (mapcar #'(lambda (s) (ignore-errors-mfuncall '$maybe s)) x)))
-  ; IF MOR RETURNS AN UNEVALUATED EXPRESSION HERE, RETURN AN UNEVALUATED EXPR WITH OP = $SOME
-  (let ((a (simplifya `((mor) ,@x) t)))
-    ; FOR NOW ASSUME NIL IF ANYTHING BUT T OR $UNKNOWN (DON'T CHANGE $SOME NOW)
-    (if (or (eq a t) (eq a '$unknown)) a nil)))
-
- ((every '$matrixp x)
-  (let ((fmaplvl 2))
-    (setq x (margs (simplify (apply #'fmapl1 (cons f x)))))
-    (setq x (mapcar #'(lambda (s) ($some '$identity s)) x))
-    ; IF MOR RETURNS AN UNEVALUATED EXPRESSION HERE, RETURN AN UNEVALUATED EXPR WITH OP = $SOME
-    (let ((a (simplifya `((mor) ,@x) t)))
-      ; FOR NOW ASSUME NIL IF ANYTHING BUT T OR $UNKNOWN (DON'T CHANGE $SOME NOW)
-      (if (or (eq a t) (eq a '$unknown)) a nil))))
-
-
- (t (merror "Improper arguments to function 'some'"))))
-|#
-
 ; REDEFINE PARSE-CONDITION (IN SRC/NPARSE.LISP) TO APPEND NIL INSTEAD OF $FALSE
 ; WHEN INPUT IS LIKE "IF FOO THEN BAR" (WITHOUT ELSE)
 
