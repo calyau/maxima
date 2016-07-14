@@ -308,7 +308,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{enable_sbcl}
 %files exec-sbcl
-/usr/lib/maxima/%{version}/binary-sbcl
+%{_libdir}/maxima/%{version}/binary-sbcl
 %endif
 
 %if %{enable_gcl}
