@@ -606,3 +606,34 @@ true;
   [1-sqrt(2), (1-sqrt(2))^x, log(log(2))]],
  map (lambda ([l], apply (exactly_1, listify (permutations (l)))), %%));
 [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
+
+/* totalorderp from mailing list 2016-07-18 "Testing for total order (for orderlessp testing)" tnx Stavros */
+
+(totalorderp(func,domain) :=
+   block([ord,i,j,res:[]],
+      ord: sort(domain, func),
+      i:0,
+      for eli in ord do
+        (i:i+1,
+         j:0,
+         for elj in ord do
+          (j:j+1,
+           if (func(eli,elj) # is(i<j)) and not(eli=elj)
+           then push([i,j,eli,elj],res))),
+              res),
+ 0);
+0;
+
+(b10: bfloat(1),fpprec:10,
+ b20: bfloat(1),fpprec:20,
+ totalorderp('orderlessp, [2^-K,b10,2^K,b20,K^(5/2),b10,2^x,K,x,2^-x,K^2]));
+[];
+
+(declare (K, constant),
+ totalorderp('orderlessp, [2^-K,b10,2^K,b20,K^(5/2),b10,2^x,K,x,2^-x,K^2]));
+[];
+
+kill (K);
+done;
+
+
