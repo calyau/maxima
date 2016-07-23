@@ -46,8 +46,9 @@ sin(y)*(10.0+6*cos(x)),
 (defvar *rot* (make-array 9 :element-type 'flonum))
 (defvar $rot nil)
 
-;; Global plot options list. It is not a Maxima variable, to discourage
-;; users from changing it directly; it should be changed via set_plot_option
+;; Global plot options list; this is a property list.. It is not a
+;; Maxima variable, to discourage users from changing it directly; it
+;; should be changed via set_plot_option
 
 (defvar *plot-options* 
   `(:plot_format
@@ -170,20 +171,23 @@ sin(y)*(10.0+6*cos(x)),
 ;; allow this to be set in a system init file (sys-init.lsp)
 
 (defun $get_plot_option (&optional name n)
-  (let ((options '((mlist))) key value)
-    ;; converts the options property list into a Maxima list
-    (dotimes (i (/ (length *plot-options*) 2))
-      (setq key
-            (intern (concatenate 'string "$" 
-                                 (symbol-name (nth (* i 2) *plot-options*)))))
-      (setq value (nth (+ (* i 2) 1) *plot-options*))
-      (if (consp value)
-          (push (cons '(mlist) (cons key value)) options)
-          (push (list '(mlist) key value) options)))
+  (let (options)
+    ;; Converts the options property list into a Maxima list
+    (do* ((list (copy-tree *plot-options*) (cddr list))
+	  (key (first list) (first list))
+	  (value (second list) (second list)))
+	 ((endp list))
+      (let ((max-key (intern (concatenate 'string "$" (symbol-name key)))))
+	(if (consp value)
+	    (push (cons '(mlist) (cons max-key value)) options)
+	    (push (list '(mlist) max-key value) options))))
+    (setf options (cons '(mlist) (nreverse options)))
     (if name
-        (loop for v in (cdr options)
-           when (eq (second v) name) do (return (if n (nth n  v) v)))
-        (reverse options))))
+	(let ((value (find name (cdr options) :key #'second)))
+	  (if n
+	      (nth n value)
+	      value))
+        options)))
 
 (defun quote-strings (opt)
   (if (atom opt)
