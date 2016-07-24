@@ -150,6 +150,12 @@ fourier_elim([x^2 + 1 >= 0], [x]);
 fourier_elim([x^2 + 1 # 0], [x]);
 'universalset$
 
+fourier_elim([2^x < 2^y], [x, y]);
+[x < y]$
+
+fourier_elim([1.5^x > 1.5^y], [x, y]);
+[y < x]$
+
 fourier_elim([a * b > 0],[a,b]);
 [0<a,0<b] or [a<0,b<0]$
 

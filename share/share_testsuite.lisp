@@ -60,7 +60,7 @@
     "rtest_atensor"
     "rtest_ctensor"
     "rtest_itensor"
-    ((mlist simp) "rtest_fourier_elim" 144 145 146 147)
+    ((mlist simp) "rtest_fourier_elim" 146 147 148 149)
     ((mlist simp) "rtest_sequence" 55)
     "test-cholesky"
     "test-eigens-by-jacobi"
