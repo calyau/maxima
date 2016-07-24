@@ -305,7 +305,7 @@ fourier_elim([max(x,-x/2) < 1],[x]);
 [-2<x,x<1]$
 
 fourier_elim([abs(x - abs(x-1)) + abs(x) < 1],[x]);
-[1/2<x,x<2/3] or [x=1/2] or [0<x,x<1/2]$  /* [0 < x, x < 2/3] is better */
+[0<x,x<1/2] or [x=1/2] or [1/2<x,x<2/3]$  /* [0 < x, x < 2/3] is better */
 
 fourier_elim([x * (x-1) < a * (a - 1)],[x,a]);
 [1-a<x,x<a,1/2<a] or [a<x,x<1-a,a<1/2]$
@@ -325,7 +325,7 @@ fourier_elim([min(x,0) >= 0],[x]);
 /* This answer isn't wrong, but it could be simplified. */
 
 fourier_elim([abs(x - abs(x - abs(x - 23))) > abs(x-1)],[x]);
-[x<1] or [x=1] or [1<x,x<6] or [23/2<x,x<12] or [x=23/2] or [11<x,x<23/2]$
+[x<1] or [x=1] or [1<x,x<6] or [11<x,x<23/2] or [x=23/2] or [23/2<x,x<12]$
 
 fourier_elim([sqrt(5) * x < 1],[x]);
 [x<1/sqrt(5)]$
