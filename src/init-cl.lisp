@@ -189,17 +189,21 @@ When one changes, the other does too."
     (combine-path (maxima-parse-dirstring base-dir) maxima-dir)))
 
 (defun default-tempdir ()
-  (let ((home-env (maxima-getenv "HOME"))
-	(base-dir ""))
-    (setf base-dir
-	  (if (and home-env (string/= home-env ""))
-	      (if (string= home-env "c:\\")
-		  "c:\\user\\"
-		  home-env)
-	      (if (string= *autoconf-windows* "true")
-		  "c:\\user\\"
-		  "/tmp")))
-    (maxima-parse-dirstring base-dir)))
+  (maxima-parse-dirstring
+    (let ((tmpdir-windows (maxima-getenv "TEMP"))
+ 	 (tmpdir-posix (maxima-getenv "TMPDIR"))
+	 (tmpdir-nonstandard1 (maxima-getenv "TMP"))
+	 (tmpdir-nonstandard2 (maxima-getenv "TEMPDIR")))
+
+	 (cond
+	   ((and tmpdir-windows (string/= tmpdir-windows "")) tmpdir-windows)
+	   ((and tmpdir-posix (string/= tmpdir-windows "")) tmpdir-posix)
+	   ((and tmpdir-nonstandard1 (string/= tmpdir-nonstandard1 "")) tmpdir-nonstandard1)
+	   ((and tmpdir-nonstandard2 (string/= tmpdir-nonstandard2 "")) tmpdir-nonstandard2)
+	   ; A fallback for windows if everything else has failed
+           ((string= *autoconf-windows* "true") "C:\\Windows\\temp")
+           ; A fallback for the rest of the operating systems
+           (t "/tmp")))))
 
 (defun set-locale-subdir ()
   (let (language territory codeset)

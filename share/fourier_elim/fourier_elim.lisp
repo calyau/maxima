@@ -226,9 +226,9 @@
 	  	  
 	  ;; Do a^x > a^y, where a > 1 --> x > y,
 	  ((and (not ($mapatom a)) (not ($mapatom b)) (eq (mop a) (mop b)) 
-		(op-equalp a 'mexpt) (eq (second a) (second b))
-		(eq (compare-using-empty-context (second a) 1) ">"))
-	   (m> (first (margs a)) (first (margs b))))
+		(op-equalp a 'mexpt) (eql (second a) (second b))
+		(equal (compare-using-empty-context (second a) 1) ">"))
+	   (m> (third a) (third b)))
 	  
 	  ;; Do a * b > 0 --> (a > 0, b > 0) or (a < 0, b < 0). We only do this when
 	  ;; z has two or more non-constant factors. This check seems spendy--is there

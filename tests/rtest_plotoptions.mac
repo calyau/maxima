@@ -2,3 +2,22 @@
 
 (set_plot_option([style,[points,3],[lines,2]]),get_plot_option(style));
 [style, [points, 3], [lines, 2]]$
+
+/*
+ * Bug #3186, get_plot_option cannot get the last pair of *plot-options*
+ *
+ * Also, make sure get_plot_option returns a copy of *plot-options* so
+ * changes to the result of get_plot_option don't change
+ * *plot-options* unexpecgedly.
+ */
+get_plot_option('gnuplot_term);
+[gnuplot_term, default];
+
+c:get_plot_option('color);
+[color, blue, red, green, magenta, black, cyan];
+
+c[2]:'purple;
+purple;
+
+get_plot_option('color);
+[color, blue, red, green, magenta, black, cyan];
