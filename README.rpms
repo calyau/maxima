@@ -15,7 +15,7 @@ The maxima-xmaxima rpm is optional. Xmaxima is a Maxima GUI.
 Building rpms
 =============
 
-You can build rpm files from an unpacked tarball or cvs sandbox.
+You can build rpm files from an unpacked tarball or Git checkout.
 
 (0) Go to the Maxima directory.
 
