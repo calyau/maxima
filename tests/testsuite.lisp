@@ -61,7 +61,7 @@
         "rtest_expintegral"
         "rtest_signum"
         "rtest_lambert_w"
-        "rtest_elliptic"
+        ((mlist) "rtest_elliptic" 124 138)
         "rtest_integrate"
         "rtest_integrate_special"
         ((mlist simp) "rtest_sqrt" 89)
