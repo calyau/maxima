@@ -1819,7 +1819,11 @@ first kind:
 	   ;; Numerically evaluate it
 	   (elliptic-pi ($float n) ($float phi) ($float m)))
       ((complex-float-numerical-eval-p n phi m)
-	   (elliptic-pi ($rectform ($float n)) ($rectform ($float phi)) ($rectform ($float m))))
+       (let*
+         ((rect-phi ($rectform ($float phi)))
+          (rp-phi ($realpart rect-phi))
+          (ip-phi ($imagpart rect-phi)))
+         (elliptic-pi ($float n) (complex rp-phi ip-phi) ($float m))))
 	  ((bigfloat-numerical-eval-p n phi m)
 	   (to (bigfloat::bf-elliptic-pi (bigfloat:to n)
 					 (bigfloat:to phi)
@@ -3621,18 +3625,15 @@ first kind:
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
 	(m (simpcheck (caddr form) z)))
-    ;; CALL FLOAT-NUMERICAL-EVAL-P HERE ??
-    (cond ((or (and (floatp u) (floatp m))
-	       (and $numer (numberp u) (numberp m)))
+    (cond
+      ((float-numerical-eval-p u m)
 	   ;; Numerically evaluate asn
 	   ;;
 	   ;; ans(x,m) = asn(1/x,m) = F(asin(1/x),m)
-	   (to (elliptic-f (cl:asin (/ (float u))) (float m))))
-      ;; CALL COMPLEX-FLOAT-NUMERICAL-EVAL-P HERE ??
-	  ((and $numer (complex-number-p u)
-		(complex-number-p m))
-	   (to (elliptic-f (cl:asin (/ (complex ($realpart u) ($imagpart u))))
-			   (complex ($realpart m) ($imagpart m)))))
+	   (to (elliptic-f (cl:asin (/ ($float u))) ($float m))))
+	  ((complex-float-numerical-eval-p u m)
+	   (to (elliptic-f (cl:asin (/ (complex ($realpart ($float u)) ($imagpart ($float u)))))
+			   (complex ($realpart ($float m)) ($imagpart ($float m))))))
 	  ((bigfloat-numerical-eval-p u m)
 	   (to (bigfloat::bf-elliptic-f (bigfloat:asin (bigfloat:/ (bigfloat:to ($bfloat u))))
 					(bigfloat:to ($bfloat m)))))
@@ -3750,10 +3751,11 @@ first kind:
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
 	(m (simpcheck (caddr form) z)))
-    ;; TRY TO DETECT COMPLEX FLOATS, BIGFLOATS, AND COMPLEX BIGFLOATS HERE AS WELL ??
-    (cond ((or (and (floatp u) (floatp m))
-	       (and $numer (numberp u) (numberp m)))
-	   ($inverse_jacobi_dn (/ u) m))
+    (cond ((or (float-numerical-eval-p u m)
+	       (complex-float-numerical-eval-p u m)
+	       (bigfloat-numerical-eval-p u m)
+	       (complex-bigfloat-numerical-eval-p u m))
+	   ($inverse_jacobi_dn (div 1 u) m))
 	  ((onep1 u)
 	   0)
 	  ((onep1 ($ratsimp (mul (power (sub 1 m) 1//2) u)))
@@ -3814,10 +3816,11 @@ first kind:
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
 	(m (simpcheck (caddr form) z)))
-    ;; TRY TO DETECT COMPLEX FLOATS, BIGFLOATS, AND COMPLEX BIGFLOATS HERE AS WELL ??
-    (cond ((or (and (floatp u) (floatp m))
-	       (and $numer (numberp u) (numberp m)))
-	   ($inverse_jacobi_sn (/ u (sqrt (+ 1 (* u u)))) m))
+    (cond ((or (float-numerical-eval-p u m)
+	       (complex-float-numerical-eval-p u m)
+	       (bigfloat-numerical-eval-p u m)
+	       (complex-bigfloat-numerical-eval-p u m))
+	   ($inverse_jacobi_sn (div u (power (add 1 (mul u u)) 1//2)) m))
 	  ((zerop1 u)
 	   ;; jacobi_sc(0,m) = 0
 	   0)
@@ -3934,10 +3937,11 @@ first kind:
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
 	(m (simpcheck (caddr form) z)))
-    ;; TRY TO DETECT COMPLEX FLOATS, BIGFLOATS, AND COMPLEX BIGFLOATS HERE AS WELL ??
-    (cond ((or (and (floatp u) (floatp m))
-	       (and $numer (numberp u) (numberp m)))
-	   ($inverse_jacobi_sc (/ u) m))
+    (cond ((or (float-numerical-eval-p u m)
+	       (complex-float-numerical-eval-p u m)
+	       (bigfloat-numerical-eval-p u m)
+	       (complex-bigfloat-numerical-eval-p u m))
+	   ($inverse_jacobi_sc (div 1 u) m))
 	  ((zerop1 u)
 	   `((%elliptic_kc) ,m))
 	  (t
@@ -4303,12 +4307,15 @@ first kind:
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
 	(m (simpcheck (caddr form) z)))
-    ;; TRY TO DETECT COMPLEX FLOATS, BIGFLOATS, AND COMPLEX BIGFLOATS HERE AS WELL ??
-    (cond ((or (and (floatp u) (floatp m))
-	       (and $numer (numberp u) (numberp m)))
+    (cond
+      ;; as it stands, ELLIPTIC-EU can't handle bigfloats or complex bigfloats,
+      ;; so handle only floats and complex floats here.
+      ((float-numerical-eval-p u m)
+       (elliptic-eu ($float u) ($float m)))
+      ((complex-float-numerical-eval-p u m)
 	   (let ((u-r ($realpart u))
 		 (u-i ($imagpart u))
-		 (m (float m)))
+		 (m ($float m)))
 	     (complexify (elliptic-eu (complex u-r u-i) m))))
 	  (t
 	   (eqtest `(($elliptic_eu) ,u ,m) form)))))
@@ -4326,11 +4333,16 @@ first kind:
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
 	(m (simpcheck (caddr form) z)))
-    ;; TRY TO DETECT COMPLEX FLOATS, BIGFLOATS, AND COMPLEX BIGFLOATS HERE AS WELL ??
-    (cond ((or (and (floatp u) (floatp m))
-	       (and $numer (numberp u) (numberp m)))
-	   ;; Numerically evaluate am
-	   (cl:asin (bigfloat::sn (float u) (float m))))
+    (cond
+      ;; as it stands, BIGFLOAT::SN can't handle bigfloats or complex bigfloats,
+      ;; so handle only floats and complex floats here.
+      ((float-numerical-eval-p u m)
+	   (cl:asin (bigfloat::sn ($float u) ($float m))))
+	  ((complex-float-numerical-eval-p u m)
+	   (let ((u-r ($realpart ($float u)))
+		 (u-i ($imagpart ($float u)))
+		 (m ($float m)))
+	     (complexify (cl:asin (bigfloat::sn (complex u-r u-i) m)))))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%jacobi_am) u m) form)))))
