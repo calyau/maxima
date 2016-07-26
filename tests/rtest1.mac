@@ -610,17 +610,16 @@ true;
 /* totalorderp from mailing list 2016-07-18 "Testing for total order (for orderlessp testing)" tnx Stavros */
 
 (totalorderp(func,domain) :=
-   block([ord,i,j,res:[], with_index],
-      with_index : makelist ([domain[i], i], i, 1, length(domain)),
-      ord: sort (with_index, lambda ([a, b], func(first(a), first(b)))),
+   block([ord,i,j,res:[]],
+      ord: sort(domain, func),
       i:0,
       for eli in ord do
         (i:i+1,
          j:0,
          for elj in ord do
           (j:j+1,
-           if (func(first(eli), first(elj)) # is(i<j)) and not(first(eli)=first(elj))
-           then push([second(eli),second(elj),first(eli),first(elj)],res))),
+           if (func(eli,elj) # is(i<j)) and not(eli=elj)
+           then push([i,j,eli,elj],res))),
               res),
  0);
 0;
