@@ -3152,7 +3152,7 @@
     (if (eql cmdstorage nil)
       (merror "draw: Cannot create file '~a'. Probably maxima_tempdir doesn't point to a writable directory." gfn))
 
-    ; requiered packages
+    ; pull in required packages
     (format cmdstorage "~a~%~a~%~%"
       "package require vtk"
       "package require vtkinteraction")
@@ -3161,7 +3161,7 @@
     (dolist (scn scenes)
       (format cmdstorage "~a" scn) )
 
-    ; renderer window
+    ;; the renderer window
     (format cmdstorage "~a" (vtkrendererwindow-code (length scenes)))
     (format cmdstorage "~a" (vtk-terminal))
 
