@@ -766,3 +766,12 @@ limit((x^(1/x) - 1)*sqrt(x), x, inf);
 /* should really be '$infinity */
 limit((x^(1/x) - 1)*sqrt(x), x, 0, minus);
 'limit((x^(1/x) - 1)*sqrt(x), x, 0, minus);
+
+/* SF bug #3185: "Error in sum with non-false modulus" */
+
+block([modulus:7], sum(i^-2,i,1,inf));
+'sum(i^-2,i,1,inf);
+
+block([modulus:7], limit(inf));
+inf;
+
