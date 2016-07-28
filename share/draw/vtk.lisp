@@ -3149,6 +3149,8 @@
     (setf cmdstorage
       (open gfn
             :direction :output :if-exists :supersede))
+    (if (eql cmdstorage nil)
+      (merror "draw: Cannot create file '~a'. Probably maxima_tempdir doesn't point to a writable directory." gfn))
 
     ; requiered packages
     (format cmdstorage "~a~%~a~%~%"
