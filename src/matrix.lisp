@@ -585,7 +585,9 @@
 (defmfun $triangularize (x) 
   (let (($ratmx t))
     (newvarmat1 (setq x (check x))))
-  (setq x (cons '($matrix) (mxc (disreplist1 (triang (replist1 (mcx (cdr x)))))))) 
+  (let (($algebraic $algebraic))
+    (and (not $algebraic) (some #'algp varlist) (setq $algebraic t))
+    (setq x (cons '($matrix) (mxc (disreplist1 (triang (replist1 (mcx (cdr x)))))))))
   (if $ratmx x ($totaldisrep x)))
 
 (defmfun $col (mat n)

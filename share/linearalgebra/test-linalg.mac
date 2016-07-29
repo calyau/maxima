@@ -693,22 +693,8 @@ mat_cond(matrix([1,2,3],[4,5,6],[7,8,10]),1);
 mat_cond(matrix([1,2,3],[4,5,6],[7,8,10]),inf);
 475/3$
 
+/* SF bug #3158: "triangularize gives incorrect result on a matrix containing %i" */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+nullspace (matrix([0, 1, 1, 0], [-1, 0, 0, 1], [0, 0, 0, 1], [0, 0, -1, 0]) + %i * ident(4));
+span(matrix([2*%i],[2],[0],[0]));
 
