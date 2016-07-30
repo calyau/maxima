@@ -783,3 +783,24 @@ matrix([%i,-1,0,0,1,0,0,0],
        [0,0,2,2*%i,1,0,-%i,1],
        [0,0,0,0,2*%i,2,0,0]);
 
+/* in this next example, one would hope that ev(..., algebraic) isn't necessary,
+ * however, it is necessary due to ALGPCHK at line 468, src/rat3e.lisp, namely:
+
+     ((not $algebraic) nil)
+
+ * That line can't be removed because there are a couple of calls to ALGPGET
+ * in src/nalgfa.lisp which appear to have potentially different behavior
+ * if that line is removed.
+ */
+
+(kill(foo),
+ tellrat(foo^2 + 1),
+ ev (triangularize (subst (%i=foo, matrix([%i,-1,0,0,1,0,0,0],
+                                          [1,%i,0,0,0,1,0,0],
+                                          [1,0,%i,-1,0,0,1,0],
+                                          [0,1,1,%i,0,0,0,1]))), algebraic));
+matrix([foo,-1,0,0,1,0,0,0],
+       [0,1,-1,-foo,-1,0,foo,0],
+       [0,0,2,2*foo,1,0,-foo,1],
+       [0,0,0,0,2*foo,2,0,0]);
+
