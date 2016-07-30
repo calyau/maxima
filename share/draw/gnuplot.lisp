@@ -3227,13 +3227,18 @@
        gfn (plot-temp-file (get-option '$gnuplot_file_name))
        dfn (plot-temp-file (get-option '$data_file_name)))
 
-    ; we now create two files: maxout.gnuplot and data.gnuplot
+    ;; we now create two files: maxout.gnuplot and data.gnuplot
     (setf cmdstorage
           (open gfn
                 :direction :output :if-exists :supersede))
+    (if (eql cmdstorage nil)
+      (merror "draw: Cannot create file '~a'. Probably maxima_tempdir doesn't point to a writable directory." gfn))
     (setf datastorage
           (open dfn
                 :direction :output :if-exists :supersede))
+    (if (eql datastorage nil)
+      (merror "draw: Cannot create file '~a'. Probably maxima_tempdir doesn't point to a writable directory." dfn))
+    
     (setf datapath (format nil "'~a'" dfn))
     ; when one multiplot window is active, change of terminal is not allowed
     (if (not *multiplot-is-active*)
