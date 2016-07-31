@@ -1,6 +1,6 @@
 #!/bin/sh
 top_srcdir=`(cd \`dirname $0\` > /dev/null 2>&1 ; pwd)`
-MAXIMA_PREFIX=$top_srcdir
+MAXIMA_PREFIX="$top_srcdir"
 export MAXIMA_PREFIX
 MAXIMA_LAYOUT_AUTOTOOLS=false
 export MAXIMA_LAYOUT_AUTOTOOLS
@@ -20,11 +20,11 @@ fi;
 
 # quick fix for plotting with plot_format=openmath (bug 3052)
 if [ ! -d "$top_srcdir/bin" ]; then
-    mkdir -p $top_srcdir/bin
-    ln -sf $top_srcdir/xmaxima-local $top_srcdir/bin/xmaxima
-    ln -sf $top_srcdir/doc $top_srcdir/bin/doc
-    ln -sf $top_srcdir/src $top_srcdir/bin/src
-    ln -sf $top_srcdir/interfaces $top_srcdir/bin/interfaces
+    mkdir -p "$top_srcdir/bin"
+    ln -sf "$top_srcdir/xmaxima-local" "$top_srcdir/bin/xmaxima"
+    ln -sf "$top_srcdir/doc" "$top_srcdir/bin/doc"
+    ln -sf "$top_srcdir/src" "$top_srcdir/bin/src"
+    ln -sf "$top_srcdir/interfaces" "$top_srcdir/bin/interfaces"
 fi
 
 POSIX_SHELL=@POSIX_SHELL@
