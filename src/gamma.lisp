@@ -449,7 +449,6 @@
      (let ((sgn ($sign ($realpart a))))
        (cond ((zerop1 a) '$inf)
              ((member sgn '($neg $nz)) '$infinity)
-             ((eq sgn '($pos)) ($gamma a))
              ;; Call the simplifier of the function.
              (t (simplify (list '(%gamma_incomplete) a z))))))
     (t
