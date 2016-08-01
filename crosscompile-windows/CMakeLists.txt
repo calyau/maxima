@@ -46,10 +46,10 @@ set(CLISPVERSION     2.49)
 set(WXMAXIMAVERSION  16.04.2)
 set(WXWIDGETSVERSION 3.0.2)
 set(GNUPLOTVERSION   5.0.4)
-set(TCLVERSION       8.6.5)
-set(TKVERSION        8.6.5)
+set(TCLVERSION       8.6.6)
+set(TKVERSION        8.6.6)
 set(VTKVERSION       6.3.0)
-set(SBCLVERSION      1.3.7)
+set(SBCLVERSION      1.3.8)
 
 
 # MD5 checksums for the current program versions.
@@ -57,8 +57,8 @@ set(CLISP_MD5     "8d58d64f83dd7ad01c054aecc16c1f52")
 set(WXMAXIMA_MD5  "6d98324d70115615e7b4f7413b594dd5")
 set(WXWIDGETS_MD5 "ba4cd1f3853d0cd49134c5ae028ad080")
 set(GNUPLOT_MD5   "ff740f99cac26479f48d7d7eb0f32284")
-set(TCL_MD5       "0e6426a4ca9401825fbc6ecf3d89a326")
-set(TK_MD5        "11dbbd425c3e0201f20d6a51482ce6c4")
+set(TCL_MD5       "5193aea8107839a79df8ac709552ecb7")
+set(TK_MD5        "dd7dbb3a6523c42d05f6ab6e86096e99")
 set(TEXFONTS_MD5  "8101a6feca2c43a6b9218195df9e7c35")
 set(VTK_MD5       "0231ca4840408e9dd60af48b314c5b6d")
 
@@ -90,7 +90,7 @@ set(VTK_URL       "http://www.vtk.org/files/release/6.3/VTK-${VTKVERSION}.tar.gz
 #    set(SBCL_MD5      "f8cd3044c74beb84bba4aa9df5bb804e")
 # else()
     set(SBCL_INSTALLER "sbcl-${SBCLVERSION}-x86-windows-binary.msi")
-    set(SBCL_MD5      "a49b6f18ca9adf374b6ec4cbf90c698e")
+    set(SBCL_MD5      "15b3b91ab090e4ca2071e688e1de1767")
 # endif()
 set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/${SBCL_INSTALLER}")
 
