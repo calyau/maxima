@@ -389,7 +389,7 @@ See also @mrefdot{file_type}
 @c -----------------------------------------------------------------------------
 @anchor{file_type_maxima}
 @defvr {Option variable} file_type_maxima
-Default value:  @code{[mac, mc, demo, dem, dm1, dm2, dm3, dmt]}
+Default value:  @code{[mac, mc, demo, dem, dm1, dm2, dm3, dmt, wxm]}
 
 @code{file_type_maxima} is a list of file extensions that maxima recognizes
 as denoting a Maxima source file.
