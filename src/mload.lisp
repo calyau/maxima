@@ -110,7 +110,7 @@
     (list '(mlist) "l" "lsp" "lisp"))
 
 (defmvar $file_type_maxima
-    (list '(mlist) "mac" "mc" "demo" "dem" "dm1" "dm2" "dm3" "dmt"))
+    (list '(mlist) "mac" "mc" "demo" "dem" "dm1" "dm2" "dm3" "dmt" "wxm"))
 
 (defun $file_type (fil)
   (let ((typ ($pathname_type fil)))
