@@ -60,7 +60,7 @@ set(GNUPLOT_MD5   "ff740f99cac26479f48d7d7eb0f32284")
 set(TCL_MD5       "5193aea8107839a79df8ac709552ecb7")
 set(TK_MD5        "dd7dbb3a6523c42d05f6ab6e86096e99")
 set(TEXFONTS_MD5  "8101a6feca2c43a6b9218195df9e7c35")
-set(VTK_MD5       "0231ca4840408e9dd60af48b314c5b6d")
+set(VTK_MD5       "8d8b0878be81a0ab471e929f828dfe9a")
 
 if(BUILD_CURRENT)
     set(USE_WXMAXIMA_GIT YES)
@@ -83,7 +83,7 @@ set(WXWIDGETS_URL "https://sourceforge.net/projects/wxwindows/files/${WXWIDGETSV
 set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPLOTVERSION}/gp${GNUPLOTVERSIONWITHOUTDOTS}-win32-mingw.zip")
 set(TCL_URL       "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
 set(TK_URL        "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
-set(VTK_URL       "http://www.vtk.org/files/release/6.3/VTK-${VTKVERSION}.tar.gz")
+set(VTK_URL       "http://www.vtk.org/files/release/6.3/vtkpython-${VTKVERSION}-Windows-32bit.exe")
 # SBCL (64 Bit) does currently not support Wine, so disable that option:
 # if(SBCL_64BIT)
 #    set(SBCL_INSTALLER "sbcl-${SBCLVERSION}-x86-64-windows-binary.msi")
@@ -212,6 +212,14 @@ else()
     message(FATAL_ERROR "Wine not found. It is required for crosscompiling Maxima.")
 endif()
 
+find_program(SEVENZIP_EXE NAMES 7z)
+
+if(SEVENZIP_EXE)
+    message(STATUS "Found 7z at ${SEVENZIP_EXE}")
+else()
+    message(FATAL_ERROR "7z not found. It is required for crosscompiling Maxima.")
+endif()
+
 set(CLISPROOT "${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp")
 configure_file("${CMAKE_SOURCE_DIR}/wine-clisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-clisp.sh")
 configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-lisp.sh")
@@ -225,8 +233,7 @@ externalproject_add(maxima
   DOWNLOAD_COMMAND rsync -a --exclude=crosscompile-windows/build/ "${CMAKE_SOURCE_DIR}/../"  "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima"
   DEPENDS clisp sbcl tcl tk
   BUILD_IN_SOURCE 1
-  PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/maxima-vtk-patch
-        COMMAND patch --binary -p0 < ${CMAKE_BINARY_DIR}/setup-imaxima-imath.el-patch
+  PATCH_COMMAND patch --binary -p0 < ${CMAKE_BINARY_DIR}/setup-imaxima-imath.el-patch
   CONFIGURE_COMMAND ./bootstrap
             COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=C:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...
@@ -281,27 +288,15 @@ else()
 endif()
 
 if(USE_VTK)
-    externalproject_add(vtk-native
-        URL "${VTK_URL}"
-        DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-        URL_MD5 ${VTK_MD5}
-        CMAKE_ARGS -DVTK_WRAP_TCL=YES -DVTK_USE_TK=YES -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/vtk-native-root
-        BUILD_COMMAND $(MAKE)
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/vtk)
+    file(WRITE ${CMAKE_BINARY_DIR}/download-vtk.cmake "file(DOWNLOAD ${VTK_URL} ${CMAKE_SOURCE_DIR}/downloads/vtkpython-${VTKVERSION}-Windows-32bit.exe SHOW_PROGRESS EXPECTED_HASH MD5=${VTK_MD5})")
+    add_custom_target(vtk ALL
+        WORKING_DIRECTORY vtk
+        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/download-vtk.cmake
+        COMMAND ${SEVENZIP_EXE} x -y ${CMAKE_SOURCE_DIR}/downloads/vtkpython-${VTKVERSION}-Windows-32bit.exe
+        
     )
-    externalproject_add(vtk
-        URL "${VTK_URL}"
-        DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-        URL_MD5 ${VTK_MD5}
-        PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/vtk-6.3.patch
-        DEPENDS tcl tk vtk-native
-        CMAKE_ARGS -DVTK_WRAP_TCL=YES -DVTK_USE_TK=YES -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/Toolchain-mingw32.cmake -DTCL_LIBRARY=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl-build/tcl86.dll -DTCL_INCLUDE_PATH=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl/generic -DTCL_TCLSH=C:/maxima-${MAXIMAVERSION}/bin/tclsh86.exe -DTK_LIBRARY=${CMAKE_BINARY_DIR}/tk-prefix/src/tk-build/tk86.dll -DTK_INCLUDE_PATH=${CMAKE_BINARY_DIR}/tk-prefix/src/tk/generic -DCMAKE_CROSSCOMPILING_EMULATOR=${WINE_EXE} -DVTKCompileTools_DIR=${CMAKE_BINARY_DIR}/vtk-native-prefix/src/vtk-native-build -DTK_XLIB_PATH=${CMAKE_BINARY_DIR}/tk-prefix/src/tk/xlib -DCMAKE_INSTALL_PREFIX=C:/maxima-${MAXIMAVERSION}
-        BUILD_COMMAND $(MAKE)
-        INSTALL_COMMAND $(MAKE) install
-                # install vtk.exe as vtk6.exe too (it is called as "vtk6" in vtk.lisp)
-                COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/vtk-prefix/src/vtk-build/C:/maxima-${MAXIMAVERSION}/bin/vtk.exe ${CMAKE_BINARY_DIR}/vtk-prefix/src/vtk-build/C:/maxima-${MAXIMAVERSION}/bin/vtk6.exe
-
-    )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/vtk-prefix/src/vtk-build/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin DESTINATION .)
 endif()
 
 # Include DLLs from the current Mingw environment.
