@@ -5,7 +5,6 @@ EXTRA_DIST =\
  maxima-icon.bmp\
  wine-clisp.sh.tmpl wine-lisp.sh.tmpl wine-sbcl.sh.tmpl\
  wxmaxima-16.04.2-patch\
- Toolchain-mingw32.cmake\
  setup-imaxima-imath.el-patch.tmpl\
  sbcl.sh.tmpl\
  lispselector.bat lispselector.tcl\
