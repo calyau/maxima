@@ -1380,8 +1380,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (sign1 (car x))
     (cond ((eq sign '$zero) (return t))
 	  ((and *complexsign* (eq sign '$complex))
-	   ;; Found a complex factor. Return immediately. The sign is $complex.
-	   (return t))
+	   ;; Found a complex factor.  We don't return immediately
+	   ;; because another factor could be zero.
+	   (setq s '$complex))
+	  ((and *complexsign* (eq s '$complex))) ; continue the loop
 	  ((and *complexsign* (eq sign '$imaginary))
 	   ;; Found an imaginary factor. Look if we have already one.
 	   (cond ((eq s '$imaginary)
