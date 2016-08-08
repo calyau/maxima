@@ -1149,7 +1149,7 @@ false$
 
 /* Exponents in inequality assumptions and queries  */
 assume(x^3/y>=0);
-[x*y>=0];
+[x*y>=0]$
 sign(y^3/x);
 pz$
 (declare(e, even, o, odd), 0);
