@@ -60,7 +60,6 @@
   (with-maxima-io-syntax ; $save stores Lisp expressions.
     (dsksetup (cdr form) nil '$save)))
 
-(defvar *macsyma-extend-types-saved* nil)
 (defvar *dsksetup-errset-value* t)
 
 (defun dsksetup (x storefl fn)
@@ -83,18 +82,9 @@
 	    ((or (not (eq (caar u) 'mequal)) (not (symbolp (cadr u))))
 	     (improper-arg-err u fn))))
     (setq list (ncons (car x))
-	  x (cdr x)
-	  *macsyma-extend-types-saved* nil)
+	  x (cdr x))
     (if (null (errset (dskstore x storefl file list)))
 	(setq maxima-error t))
-    ;; FOLLOWING CODE IS NEVER EXECUTED DUE TO PRECEDING (SETQ *MACSYMA-EXTEND-TYPES-SAVED* NIL)
-    ;; CUT (DEFVAR *MACSYMA-EXTEND-TYPES-SAVED*) AND FOLLOWING CODE AT SOME FUTURE DATE
-    (if (not (null *macsyma-extend-types-saved*))
-	(block nil
-	  (if (null (errset
-		     (dskstore (cons "{" *macsyma-extend-types-saved*) storefl file list)))
-	      (setq maxima-error t))
-	  (setq *macsyma-extend-types-saved* nil)))
     (close savefile)
     (namestring (truename savefile))))
 
