@@ -2174,3 +2174,13 @@ done$
 [-tan(x),-tan(x),-tan(x),-tan(x)]$
 kill(i, ei, oi);
 done$
+
+/* Bug #3148: sign can't figure out sign(a - b) but it knows sign(b - a) where a and b are exponentials */
+assume(t>0);
+[t>0]$
+sign(2^(500000*t)-2^(500007*t));
+neg$
+sign(2^(500007*t)-2^(500000*t));
+pos$
+kill(t);
+done$
