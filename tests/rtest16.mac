@@ -2157,3 +2157,20 @@ true;
 closeto(li[20](5b0) - (5.0000238783147176199891129814336b0 - 2.182054400942151422b-13*%i),
   6.76366b-24);
 true;
+
+/* Bug #3194: No simplification of "tan(x+n*%pi)" and "cot(x+n*%pi)" with "n" being a declared integer */
+/* Also test that the "modulus 1/2" check in "%piargs-tan/cot" works correctly. */
+declare(i, integer, ei, even, oi, odd);
+done$
+[tan(x+i*%pi),cot(x+i*%pi)];
+[tan(x),cot(x)]$
+[tan(x+ei*%pi),cot(x+ei*%pi)];
+[tan(x),cot(x)]$
+[tan(x+oi*%pi),cot(x+oi*%pi)];
+[tan(x),cot(x)]$
+[tan(x-3/2*%pi),tan(x-1/2*%pi),tan(x+1/2*%pi),tan(x+3/2*%pi)];
+[-cot(x),-cot(x),-cot(x),-cot(x)]$
+[cot(x-3/2*%pi),cot(x-1/2*%pi),cot(x+1/2*%pi),cot(x+3/2*%pi)];
+[-tan(x),-tan(x),-tan(x),-tan(x)]$
+kill(i, ei, oi);
+done$
