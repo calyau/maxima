@@ -111,6 +111,25 @@ execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libstdc++-6.dll
 message(STATUS "Found libstdc++-6.dll at ${MINGW_LIBSTDCPP}")
 message(STATUS "Found libgcc_s_sjlj-1.dll at ${MINGW_LIBGCC}")
 
+if(SBCL_64BIT)
+find_program(WINE_EXE NAMES wine64)
+else()
+find_program(WINE_EXE NAMES wine)
+endif()
+
+if(WINE_EXE)
+    message(STATUS "Found wine at ${WINE_EXE}")
+else()
+    message(FATAL_ERROR "Wine not found. It is required for crosscompiling Maxima.")
+endif()
+
+find_program(SEVENZIP_EXE NAMES 7z)
+
+if(SEVENZIP_EXE)
+    message(STATUS "Found 7z at ${SEVENZIP_EXE}")
+else()
+    message(FATAL_ERROR "7z not found. It is required for crosscompiling Maxima.")
+endif()
 
 include(ExternalProject)
 
@@ -200,25 +219,6 @@ externalproject_add(texfonts
 )
 install(DIRECTORY ${CMAKE_BINARY_DIR}/texfonts-prefix/src/texfonts/ DESTINATION wxMaxima/fonts)
 
-if(SBCL_64BIT)
-find_program(WINE_EXE NAMES wine64)
-else()
-find_program(WINE_EXE NAMES wine)
-endif()
-
-if(WINE_EXE)
-    message(STATUS "Found wine at ${WINE_EXE}")
-else()
-    message(FATAL_ERROR "Wine not found. It is required for crosscompiling Maxima.")
-endif()
-
-find_program(SEVENZIP_EXE NAMES 7z)
-
-if(SEVENZIP_EXE)
-    message(STATUS "Found 7z at ${SEVENZIP_EXE}")
-else()
-    message(FATAL_ERROR "7z not found. It is required for crosscompiling Maxima.")
-endif()
 
 set(CLISPROOT "${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp")
 configure_file("${CMAKE_SOURCE_DIR}/wine-clisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-clisp.sh")
@@ -303,6 +303,7 @@ endif()
 install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION wxMaxima/)
 install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION bin/)
 
+install(FILES "licenses.html" DESTINATION share/doc/)
 
 
 set(CPACK_GENERATOR "NSIS")
@@ -319,7 +320,7 @@ set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima\\\\maxima-ico
 set(CPACK_NSIS_MUI_UNIICON "${CPACK_NSIS_MUI_ICON}")
 set(CPACK_PACKAGE_EXECUTABLES "..\\\\wxMaxima\\\\wxmaxima" "wxMaxima (GUI for Maxima)")
 set(CPACK_NSIS_URL_INFO_ABOUT "http://maxima.sourceforge.net")
-set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "http://maxima.sourceforge.net" "About Maxima" "https://andrejv.github.io/wxmaxima/" "About wxMaxima" "share/doc/maxima.pdf" "Maxima documentation" "bin/lispselector.bat" "Configure default LISP for Maxima")
+set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "http://maxima.sourceforge.net" "About Maxima" "https://andrejv.github.io/wxmaxima/" "About wxMaxima" "share/doc/maxima.pdf" "Maxima documentation"  "share/doc/licenses.html" "Maxima and included software licenses" "bin/lispselector.bat" "Configure default LISP for Maxima")
 set(CPACK_PACKAGE_FILE_NAME "maxima-clisp-sbcl-${CPACK_PACKAGE_VERSION}")
 set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
 
