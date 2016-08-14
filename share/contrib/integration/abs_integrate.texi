@@ -3,6 +3,9 @@
 @setfilename abs_integrate.info
 @settitle abs_integrate
 
+@c Do not automatically break urls at every '.'
+@urefbreakstyle none
+
 @ifinfo 
 @macro var {expr}
 <\expr\>
@@ -37,14 +40,14 @@ is valid for all parameter values.
 @example
  (%i1) load("abs_integrate.mac")$
 
- (%i2)  integrate(abs(x),x);
- (%o2) (x^2*signum(x))/2
+ (%i2) integrate(abs(x),x);
+ (%o2) (x*abs(x))/2
 @end example
-To convert (%o2) into an expression involving the absolute value function,
-apply @code{signum_to_abs}; thus
+To convert (%o2) into an expression involving the signum function,
+apply @code{convert_to_signum}; thus
 @example
- (%i3) signum_to_abs(%);
- (%o3) (x*abs(x))/2
+ (%i3) convert_to_signum(%);
+ (%o3) (x^2*signum(x))/2
 @end example
 When the integrand has the form @math{p(x) |x - c1| |x - c2| ... |x - cn|},
 where @math{p(x)} is a polynomial and @math{c1, c2, ..., cn} are constants,
@@ -61,10 +64,11 @@ integrands involving @code{max, min, signum}, and @code{unit_step};
 examples:
 @example
  (%i5) integrate(max(x,x^2),x);
- (%o5) signum(x-1)*((x^3*signum(x))/6-1/6)+signum(x-1)*(1/4-(x^2*signum(x))/4)+x^3/6+x^2/4
-
+ (%o5) (signum(x-1)*((2*x^3-3*x^2)/12+1/12)+1/12)*signum(x)+
+       (x^3/3+x^2/2)/2
+ 
  (%i6) integrate(signum(x) - signum(1-x),x);
- (%o6) x*signum(x)+(x-1)*signum(x-1)
+ (%o6) abs(x)+abs(x-1)
 @end example
 A plot indicates that indeed (%o5) and (%o6) are continuous at zero and at one.
 
@@ -77,6 +81,7 @@ non-signum expression on each subinterval; for example
  (%i1) integrate(1 / (1 + abs(x-5)),x,-5,6);
  (%o1) log(11)+log(2)
 @end example
+@c the example above creates a much more complex function in current Maxima?? Left the old result, perhaps I have done someting wrong...
 
 Finally, @code{abs_integrate} is able to determine antiderivatives of @emph{some}
 functions of the form @math{F(x, |x - a|)}; examples
@@ -93,7 +98,7 @@ Kearney) wrote the @code{abs_integrate} package and its English
 language user documentation. This documentation also describes the
 @code{partition} package for integration. Richard Fateman wrote
 @code{partition}. Additional documentation for @code{partition} is
-located at http://www.cs.berkeley.edu/~fateman/papers/partition.pdf.
+located at @* @url{https://people.eecs.berkeley.edu/~fateman/papers/partition.pdf}.
 
 
 @b{To use} @file{load(abs_integrate)}
@@ -124,19 +129,27 @@ When the function @code{abs_integrate_use_if} is successful, it returns
 a conditional expression; for example
 @example
  (%i2) integrate(1/(1 + abs(x+1) + abs(x-1)),x);
- (%o2) %if(-(x+1)>0,-log(1-2*x)/2+log(3)-2/3,%if(-(x-1)>0,x/3+log(3)/2-1/3,log(2*x+1)/2))
+ (%o2) %if(-(x+1)>0,-log(1-2*x)/2+log(3)-2/3,
+           %if(-(x-1)>0,x/3+log(3)/2-1/3,log(2*x+1)/2))
 
  (%i3) integrate(exp(-abs(x-1) - abs(x)),x);
- (%o3) %if(-x>0,%e^(2*x-1)/2-2*%e^(-1),%if(-(x-1)>0,%e^(-1)*x-(3*%e^(-1))/2,-%e^(1-2*x)/2))
+ (%o3) %if(-x>0,%e^(2*x-1)/2-2*%e^(-1),
+           %if(-(x-1)>0,%e^(-1)*x-(3*%e^(-1))/2,-%e^(1-2*x)/2))
 @end example
 For definite integration, these conditional expressions can cause trouble:
 @example
  (%i4) integrate(exp(-abs(x-1) - abs(x)),x, minf,inf);
- (%o4) limit(%if(-x>0,(%e^(-1)*(%e^(2*x)-4))/2,%if(-(x-1)>0,(%e^(-1)*(2*x-3))/2,-%e^(1-2*x)/2)),x,inf,minus)-limit(%if(-x>0,(%e^(-1)*(%e^(2*x)-4))/2,%if(-(x-1)>0,(%e^(-1)*(2*x-3))/2,-%e^(1-2*x)/2)),x,-inf,plus)
+ (%o4) 'limit(%if(-x > 0,(%e^-1*(%e^(2*x)-4))/2,
+                  %if(-(x-1) > 0,(%e^-1*(2*x-3))/2,-%e^(1-2*x)/2)),
+                  x,inf,minus)
+ -'limit(%if(-x > 0,(%e^-1*(%e^(2*x)-4))/2,
+             %if(-(x-1) > 0,(%e^-1*(2*x-3))/2,-%e^(1-2*x)/2)),x,
+             minf,plus)
 @end example
 For such definite integrals, try disallowing the method @code{abs_integrate_use_if}:
 @example
-(%i9) integrate(exp(-abs(x-1) - abs(x)),x, minf,inf), extra_integration_methods : ['signum_int];
+(%i9) integrate(exp(-abs(x-1) - abs(x)),x, minf,inf), 
+                extra_integration_methods : ['signum_int];
 (%o9) 2*%e^(-1)
 @end example
 
@@ -226,7 +239,7 @@ mechanism; an example:
 
 @b{To use} @file{load(partition)}
 
-@b{Additional documentation} http://www.cs.berkeley.edu/~fateman/papers/partition.pdf
+@b{Additional documentation} @* @url{https://people.eecs.berkeley.edu/~fateman/papers/partition.pdf}
 
 @b{Related functions} @i{intfugudu}
 
@@ -257,7 +270,7 @@ the documentation for @code{intfudu}.
 
 @b{To use} @file{load(partition)}
 
-@b{Additional documentation} http://www.cs.berkeley.edu/~fateman/papers/partition.pdf
+@b{Additional documentation} @* @url{https://people.eecs.berkeley.edu/~fateman/papers/partition.pdf}
 
 @b{Related functions} @i{intfudu}
 
@@ -271,7 +284,8 @@ subexpressions of the form @math{signum(p) * signum(q)} by
 @math{signum(p * q)}; examples:
 
 @example
- (%i1) map('signum_to_abs, [x * signum(x), x * y * signum(x)* signum(y)/2]);
+ (%i1) map('signum_to_abs, [x * signum(x),
+                            x * y * signum(x)* signum(y)/2]);
  (%o1) [abs(x),(abs(x)*abs(y))/2]
 @end example
 @b{To use} @file{load(abs_integrate)}
@@ -289,30 +303,49 @@ function returns a conditional expression for the antiderivative.
 (%o1) %if(m#0,sin(m*x)/m,x)
 
 (%i2) conditional_integrate(cos(m*x)*cos(x),x);
-(%o2) %if((m-1#0) %and (m+1#0),-((m-1)*cos((m+1)*x)+(m+1)*cos((m-1)*x))/(2*m^2-2),(sin(2*x)+2*x)/4)
+(%o2) %if((m-1 # 0) %and (m+1 # 0),
+	  ((m-1)*sin((m+1)*x)+((-m)-1)*sin((1-m)*x))/(2*m^2-2),
+	  (sin(2*x)+2*x)/4)
 
 (%i3) sublis([m=6],%);
 (%o3) -(5*cos(7*x)+7*cos(5*x))/70
 
 (%i4) conditional_integrate(exp(a*x^2+b*x),x);
-(%o4) %if(a#0,-(sqrt(%pi)*%e^(-b^2/(4*a))*erf((2*a*x+b)/(2*sqrt(-a))))/(2*sqrt(-a)),%if(b#0,%e^(b*x)/b,x))
+(%o4) %if(a # 0,
+           -(sqrt(%pi)*%e^-(b^2/(4*a))*erf((2*a*x+b)/(2*sqrt(-a))))
+            /(2*sqrt(-a)),%if(b # 0,%e^(b*x)/b,x))
 @end example
 
 @end deffn
 
 @deffn {Function} convert_to_signum (@var{e})
 
-This function replaces subexpressions of the form @math{abs(q), unit_step(q),
- min(q1,q2, ..., qn)} and @math{max(q1,q2, ..., qn)} by equivalent @math{signum}
+This function replaces subexpressions of the form @math{abs(q)}, 
+@iftex
+@math{unit\_step(q)},
+@end iftex
+@ifnottex
+@math{unit_step(q)},
+@end ifnottex
+ @math{min(q1,q2, ..., qn)} and @math{max(q1,q2, ..., qn)} by equivalent @math{signum}
 terms.
 
 @example
- (%i1) map('convert_to_signum, [abs(x), unit_step(x), max(a,2), min(a,2)]);
- (%o1) [x*signum(x),(signum(x)+1)/2,((a-2)*signum(a-2)+a+2)/2,(-(a-2)*signum(a-2)+a+2)/2]
+ (%i1) map('convert_to_signum, [abs(x), unit_step(x),
+                                max(a,2), min(a,2)]);
+ (%o1) [x*signum(x),(signum(x)*(signum(x)+1))/2,
+        (a+signum(a-2)*(a-2)+2)/2,
+        (a-signum(a-2)*(a-2)+2)/2]
 @end example
 
 To convert @code{unit_step} to signum form, the function @code{convert_to_signum} 
-uses @math{unit_step(x) = (1 + signum(x))/2}. 
+uses
+@iftex
+@math{unit\_step(x) = (1 + signum(x))/2}.
+@end iftex
+@ifnottex
+@math{unit_step(x) = (1 + signum(x))/2}.
+@end ifnottex
 
 @b{To use} @file{load(abs_integrate)}
 
