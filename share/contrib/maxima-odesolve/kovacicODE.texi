@@ -1,5 +1,8 @@
 \input texinfo
 
+@c Remove the empty page before a new chapter.
+@setchapternewpage off
+
 @setfilename kovacicODE.info
 @settitle kovacicODE
 
@@ -9,7 +12,6 @@
 @end macro
 @end ifinfo
 
-@include category-macros.texi
 
 @node Top, Introduction to kovacicODE, (dir), (dir)
 @top
@@ -52,7 +54,7 @@ we'll set it to 0 to suppress debugging output in this example.
 @c ===end===
 @example
 (%i1) load (kovacicODE) $
-(%i2) eq : 'diff(y, x, 2) - 'diff(y, x, 1)/x + x^2*y/(x^4 + 2*x^2 + 1) = 0;
+(%i2) eq : 'diff(y,x,2) - 'diff(y,x,1)/x+x^2*y/(x^4+2*x^2+1) = 0;
                         dy
                    2    --        2
                   d y   dx       x  y
@@ -64,15 +66,13 @@ we'll set it to 0 to suppress debugging output in this example.
                      2           2                  2
 (%o4) [y = %k2 sqrt(x  + 1) log(x  + 1) + %k1 sqrt(x  + 1)]
 @end example
+@c Removed some spaces in (%i2) in the example above, so that PDF output is okay, otherwise the line is too long.
 
-@opencatbox
-@category{Package kovacicODE} @category{Differential equations}
-@closecatbox
 @end deffn
 
 @node Function and variable index,  , Definitions for kovacicODE, Top
 @appendix Function and variable index
 @printindex fn
-@printindex vr
+@c @printindex vr
 
 @bye
