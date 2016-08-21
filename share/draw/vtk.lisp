@@ -3180,9 +3180,9 @@
     ;; close script file
     (close cmdstorage)
 
-    #+windows
-    ($system "vtkpython" gfn)
-    #-windows
+    #+(or windows win32 win64)
+    ($system (format nil "vtkpython \"~a\"" gfn))
+    #-(or windows win32 win64)
     ($system (format nil "(python \"~a\")&" gfn))
 
     '$done))
