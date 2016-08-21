@@ -44,7 +44,7 @@ option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 # current program versions
 set(CLISPVERSION     2.49)
 set(WXMAXIMAVERSION  16.04.2)
-set(WXWIDGETSVERSION 3.0.2)
+set(WXWIDGETSVERSION 3.1.0)
 set(GNUPLOTVERSION   5.0.4)
 set(TCLVERSION       8.6.6)
 set(TKVERSION        8.6.6)
@@ -55,7 +55,7 @@ set(SBCLVERSION      1.3.8)
 # MD5 checksums for the current program versions.
 set(CLISP_MD5     "8d58d64f83dd7ad01c054aecc16c1f52")
 set(WXMAXIMA_MD5  "6d98324d70115615e7b4f7413b594dd5")
-set(WXWIDGETS_MD5 "ba4cd1f3853d0cd49134c5ae028ad080")
+set(WXWIDGETS_MD5 "e20c14bb9bf5d4ec0979a3cd7510dece")
 set(GNUPLOT_MD5   "ff740f99cac26479f48d7d7eb0f32284")
 set(TCL_MD5       "5193aea8107839a79df8ac709552ecb7")
 set(TK_MD5        "dd7dbb3a6523c42d05f6ab6e86096e99")
@@ -79,7 +79,7 @@ string(REPLACE "." "" GNUPLOTVERSIONWITHOUTDOTS "${GNUPLOTVERSION}")
 # download URLs
 set(CLISP_URL     "http://downloads.sourceforge.net/project/clisp/clisp/${CLISPVERSION}/clisp-${CLISPVERSION}-win32-mingw-big.zip")
 set(WXMAXIMA_URL  "http://sourceforge.net/projects/wxmaxima/files/wxMaxima/${WXMAXIMAVERSION}/wxmaxima-${WXMAXIMAVERSION}.tar.gz")
-set(WXWIDGETS_URL "https://sourceforge.net/projects/wxwindows/files/${WXWIDGETSVERSION}/wxWidgets-${WXWIDGETSVERSION}.tar.bz2")
+set(WXWIDGETS_URL "https://github.com/wxWidgets/wxWidgets/releases/download/v${WXWIDGETSVERSION}/wxWidgets-${WXWIDGETSVERSION}.tar.bz2")
 set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPLOTVERSION}/gp${GNUPLOTVERSIONWITHOUTDOTS}-win32-mingw.zip")
 set(TCL_URL       "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
 set(TK_URL        "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
@@ -264,7 +264,7 @@ if(USE_WXMAXIMA_GIT)
         DEPENDS wxWidgets
         PATCH_COMMAND  ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/acinclude.m4
               COMMAND ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/bootstrap
-        CONFIGURE_COMMAND  ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
+        CONFIGURE_COMMAND  ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/wx-config --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
               COMMAND $(MAKE) allmo
               COMMAND $(MAKE) wxMaxima.win
@@ -278,7 +278,7 @@ else()
         URL_MD5 ${WXMAXIMA_MD5}
         PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/wxmaxima-16.04.2-patch
         DEPENDS wxWidgets
-        CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/lib/wx/config/inplace-msw-unicode-static-3.0 --prefix=C:/maxima-${MAXIMAVERSION}
+        CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/wx-config --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
               COMMAND $(MAKE) allmo
               COMMAND $(MAKE) wxMaxima.win
