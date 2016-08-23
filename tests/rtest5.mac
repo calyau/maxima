@@ -213,6 +213,11 @@ true;
 (load ("load-graphs"), 0);
 0;
 
-(load ("integration-index"), 0);
+/* MYTOPIC.info is the output of makeinfo template-standalone.texi in share/ */
+(load ("MYTOPIC-index"), 0);
 0;
+
+/* frotz is described in MYTOPIC.info */
+describe ("frotz");
+true;
 
