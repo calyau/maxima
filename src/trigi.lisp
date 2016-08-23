@@ -612,19 +612,15 @@
 	     (merror (intl:gettext "tan: ~M isn't in the domain of tan.") x))
 	    (cos-of-coeff-pi
 	     (div sin-of-coeff-pi cos-of-coeff-pi))))
-       
-     ;; Need period of 2*%pi to continue
-     ((not (mevenp (car coeff))) nil)
- 
-     ;; This expression sets x to the coeff of %pi (mod 2) as a side
-     ;; effect and then, if this is an integer, returns tan of the
-     ;; rest.
-     ((integerp (setq x (mmod (cdr coeff) 2)))
+
+     ;; This expression sets x to the coeff of %pi (mod 1) as a side
+     ;; effect and then, if this is zero, returns tan of the
+     ;; rest, because tan has periodicity %pi.
+     ((zerop1 (setq x (mmod (cdr coeff) 1)))
       (cons-exp '%tan zl-rem))
  
-     ;; Similarly, if x = 1/2 or 3/2 then return -cot(x).
-     ((or (alike1 1//2 x)
-	  (alike1 '((rat) 3 2) x))
+     ;; Similarly, if x = 1/2 then return -cot(x).
+     ((alike1 1//2 x)
         (neg (cons-exp '%cot zl-rem))))))
 
 (defmfun simp-%csc (form y z)

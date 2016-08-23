@@ -1149,7 +1149,7 @@ false$
 
 /* Exponents in inequality assumptions and queries  */
 assume(x^3/y>=0);
-[x*y>=0];
+[x*y>=0]$
 sign(y^3/x);
 pz$
 (declare(e, even, o, odd), 0);
@@ -1168,3 +1168,24 @@ assume(f^(1/3)*g^h<0);
 [f*g^h<0]$
 (kill(all),0);
 0$
+
+/* The csign of a product with a complex factor and a zero factor used
+ * to depend on the order of the factors: if the zero came first then
+ * the sign was zero, but if the complex came first then the sign was
+ * complex.
+ */
+
+(declare (a, complex), assume (equal (b, 0)), 0)$
+0;
+csign (a * b);
+zero;
+(remove (a, complex), forget (equal (b, 0)), 0)$
+0;
+
+(declare (b, complex), assume (equal (a, 0)), 0)$
+0;
+csign (a * b);
+zero;
+(remove (b, complex), forget (equal (a, 0)), 0)$
+0;
+

@@ -2806,7 +2806,8 @@
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
-            (if *multiplot-is-active*
+            (if (or *multiplot-is-active*
+                    (equal (get-option '$terminal) '$eps))
                ""
                (format nil "set obj 1 fc rgb '~a' fs solid 1.0 noborder ~%"
                        (get-option '$background_color)) )

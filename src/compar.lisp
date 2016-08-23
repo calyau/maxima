@@ -1380,8 +1380,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
     (sign1 (car x))
     (cond ((eq sign '$zero) (return t))
 	  ((and *complexsign* (eq sign '$complex))
-	   ;; Found a complex factor. Return immediately. The sign is $complex.
-	   (return t))
+	   ;; Found a complex factor.  We don't return immediately
+	   ;; because another factor could be zero.
+	   (setq s '$complex))
+	  ((and *complexsign* (eq s '$complex))) ; continue the loop
 	  ((and *complexsign* (eq sign '$imaginary))
 	   ;; Found an imaginary factor. Look if we have already one.
 	   (cond ((eq s '$imaginary)
@@ -1415,32 +1417,44 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 
 (defun signdiff (x)
   (setq sign '$pnz)
-  (with-compsplt (lhs rhs x)
-    (if (and (mplusp lhs) (equal rhs 0)
-             (null (cdddr lhs))
-             (negp (cadr lhs)) (not (negp (caddr lhs))))
-        (setq rhs (neg (cadr lhs)) lhs (caddr lhs)))
-    (let (dum)
-      (cond ((or (equal rhs 0) (mplusp lhs)) nil)
-            ((and (member (constp rhs) '(numer symbol) :test #'eq)
-                  (numberp (setq dum (numer rhs)))
-                  (prog2 (setq rhs dum) nil)))
-            ((mplusp rhs) nil)
-            ((and (dcompare lhs rhs) (member sign '($pos $neg $zero) :test #'eq)))
-            ((and (not (atom lhs)) (not (atom rhs))
-                  (eq (caar lhs) (caar rhs))
-                  (kindp (caar lhs) '$increasing))
-             (sign (sub (cadr lhs) (cadr rhs)))
-             t)
-            ((and (not (atom lhs)) (not (atom rhs))
-                  (eq (caar lhs) (caar rhs))
-                  (kindp (caar lhs) '$decreasing))
-             (sign (sub (cadr rhs) (cadr lhs)))
-             t)
-            ((and (not (atom lhs)) (eq (caar lhs) 'mabs)
-                  (alike1 (cadr lhs) rhs))
-             (setq sign '$pz minus nil odds nil evens nil) t)
-            ((signdiff-special lhs rhs))))))
+  (let ((swapped nil) (retval))
+    (with-compsplt (lhs rhs x)
+      (if (and (mplusp lhs) (equal rhs 0) (null (cdddr lhs)))
+        (cond ((and (negp (cadr lhs)) (not (negp (caddr lhs))))
+                (setq rhs (neg (cadr lhs)) lhs (caddr lhs)))
+              ;; The following fixes SourceForge bug #3148
+              ;; where sign(a-b) returned pnz and sign(b-a) returned pos.
+			  ;; Previously, only the case (-a)+b was handled.
+			  ;; Now we also handle a+(-b) by swapping lhs and rhs,
+			  ;; setting a flag "swapped", running through the same code and
+			  ;; then flipping the answer.
+              ((and (negp (caddr lhs)) (not (negp (cadr lhs))))
+                (setq rhs (cadr lhs) lhs (neg (caddr lhs)) swapped t))))
+      (let (dum)
+        (setq retval
+          (cond ((or (equal rhs 0) (mplusp lhs)) nil)
+                ((and (member (constp rhs) '(numer symbol) :test #'eq)
+                      (numberp (setq dum (numer rhs)))
+                      (prog2 (setq rhs dum) nil)))
+                ((mplusp rhs) nil)
+                ((and (dcompare lhs rhs) (member sign '($pos $neg $zero) :test #'eq)))
+                ((and (not (atom lhs)) (not (atom rhs))
+                      (eq (caar lhs) (caar rhs))
+                      (kindp (caar lhs) '$increasing))
+                 (sign (sub (cadr lhs) (cadr rhs)))
+                 t)
+                ((and (not (atom lhs)) (not (atom rhs))
+                      (eq (caar lhs) (caar rhs))
+                      (kindp (caar lhs) '$decreasing))
+                 (sign (sub (cadr rhs) (cadr lhs)))
+                 t)
+                ((and (not (atom lhs)) (eq (caar lhs) 'mabs)
+                      (alike1 (cadr lhs) rhs))
+                 (setq sign '$pz minus nil odds nil evens nil) t)
+                ((signdiff-special lhs rhs))))))
+    (if swapped
+      (setq sign (flip sign)))
+    retval))
 
 (defun signdiff-special (xlhs xrhs)
   ;; xlhs may be a constant

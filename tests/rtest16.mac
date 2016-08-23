@@ -2079,7 +2079,7 @@ closeto(li[4](1.5b0) - (1.7347570807760620737768805117515b0 - 0.0349027048283367
 true;
 
 closeto(li[4](10.0) - (9.6140263862742968515251940747859 - 6.3921313179656069159740055708257*%i),
-  4.7830e-15);
+  5.618e-15);
 true;
 
 closeto(li[4](10.0b0) - (9.6140263862742968515251940747859b0 - 6.3921313179656069159740055708257b0*%i),
@@ -2111,7 +2111,7 @@ closeto(li[5](0.25b0) - 0.25202158817857420100669519623555b0,
 true;
 
 closeto(li[5](0.75) - 0.76973541059975738097269173152535,
-  1e-16);
+  1.111e-16);
 true;
 
 closeto(li[5](0.75b0) - 0.76973541059975738097269173152535b0,
@@ -2157,3 +2157,30 @@ true;
 closeto(li[20](5b0) - (5.0000238783147176199891129814336b0 - 2.182054400942151422b-13*%i),
   6.76366b-24);
 true;
+
+/* Bug #3194: No simplification of "tan(x+n*%pi)" and "cot(x+n*%pi)" with "n" being a declared integer */
+/* Also test that the "modulus 1/2" check in "%piargs-tan/cot" works correctly. */
+declare(i, integer, ei, even, oi, odd);
+done$
+[tan(x+i*%pi),cot(x+i*%pi)];
+[tan(x),cot(x)]$
+[tan(x+ei*%pi),cot(x+ei*%pi)];
+[tan(x),cot(x)]$
+[tan(x+oi*%pi),cot(x+oi*%pi)];
+[tan(x),cot(x)]$
+[tan(x-3/2*%pi),tan(x-1/2*%pi),tan(x+1/2*%pi),tan(x+3/2*%pi)];
+[-cot(x),-cot(x),-cot(x),-cot(x)]$
+[cot(x-3/2*%pi),cot(x-1/2*%pi),cot(x+1/2*%pi),cot(x+3/2*%pi)];
+[-tan(x),-tan(x),-tan(x),-tan(x)]$
+kill(i, ei, oi);
+done$
+
+/* Bug #3148: sign can't figure out sign(a - b) but it knows sign(b - a) where a and b are exponentials */
+assume(t>0);
+[t>0]$
+sign(2^(500000*t)-2^(500007*t));
+neg$
+sign(2^(500007*t)-2^(500000*t));
+pos$
+kill(t);
+done$

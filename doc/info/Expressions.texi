@@ -571,7 +571,7 @@ collapse the elements of the array @code{A} by doing
 @anchor{disolate}
 @deffn {Function} disolate (@var{expr}, @var{x_1}, @dots{}, @var{x_n})
 
-is similar to @code{isolate (@var{expr}, @var{x})} except that it enables the
+is similar to @mref{isolate}@code{ (@var{expr}, @var{x})} except that it enables the
 user to isolate more than one variable simultaneously.  This might be useful,
 for example, if one were attempting to change variables in a multiple
 integration, and that variable change involved two or more of the integration
@@ -966,7 +966,8 @@ can all be substituted back by evaluating the expression in which they occur.
 @var{var}.
 
 @code{isolate_wrt_times} if @code{true}, then @code{isolate} will also isolate
-with respect to products.  See @mrefdot{isolate_wrt_times}
+with respect to products.  See @mrefdot{isolate_wrt_times} See also @mrefdot{disolate}
+
 
 Do @code{example (isolate)} for examples.
 

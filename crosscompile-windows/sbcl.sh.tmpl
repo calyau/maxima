@@ -16,7 +16,7 @@ if [ "$MD5" != "@SBCL_MD5@" ] ; then
 fi
     
 cd @CMAKE_BINARY_DIR@/sbcl-prefix/src/sbcl
-7z x @CMAKE_SOURCE_DIR@/downloads/@SBCL_INSTALLER@
+@SEVENZIP_EXE@ x -y @CMAKE_SOURCE_DIR@/downloads/@SBCL_INSTALLER@
 mkdir -p contrib
 # Move files File_obj_sbcl.home_contrib_* in the directory "contrib" and remove the "File_obj_sbcl.home_contrib_"-prefix:
 for i in File_obj_sbcl.home_contrib_* ; do
