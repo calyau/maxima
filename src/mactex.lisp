@@ -564,43 +564,50 @@
     (let ((r (exploden number)))
       (member 'e r :test #'string-equal))))
 
+(defvar *tex-mexpt-trig-like-fns* '(%sin %cos %tan %sinh %cosh %tanh %asin %acos %atan %asinh %acosh %atanh))
+(defun tex-mexpt-trig-like-fn-p (f)
+  (member f *tex-mexpt-trig-like-fns*))
+(defun maybe-tex-mexpt-trig-like (x l r)
+  ;; here is where we have to check for f(x)^b to be displayed
+  ;; as f^b(x), as is the case for sin(x)^2 .
+  ;; which should be sin^2 x rather than (sin x)^2 or (sin(x))^2.
+  ;; yet we must not display (a+b)^2 as +^2(a,b)...
+  ;; or (sin(x))^(-1) as sin^(-1)x, which would be arcsine x
+  (let*
+      ((fx (cadr x)) ; this is f(x)
+       (f (and (not (atom fx)) (atom (caar fx)) (caar fx))) ; this is f [or nil]
+       (bascdr (and f (cdr fx))) ; this is (x) [maybe (x,y..), or nil]
+       (expon (caddr x)) ;; this is the exponent
+       (doit (and
+	      f ; there is such a function
+	      (tex-mexpt-trig-like-fn-p f) ; f is trig-like
+	      (member (getcharn f 1) '(#\% #\$)) ;; insist it is a % or $ function
+	      (not (member 'array (cdar fx) :test #'eq)) ; fix for x[i]^2
+	      (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
+		  (and (atom expon) (numberp expon) (> expon 0))))))
+                                        ; f(x)^3 is ok, but not f(x)^-1, which could
+                                        ; inverse of f, if written f^-1 x
+                                        ; what else? f(x)^(1/2) is sqrt(f(x)), ??
+    (cond (doit
+	   (setq l (tex `((mexpt) ,f ,expon) l nil 'mparen 'mparen))
+	   (if (and (null (cdr bascdr))
+		    (eq (get f 'tex) 'tex-prefix))
+	       (setq r (tex (car bascdr) nil r f 'mparen))
+	       (setq r (tex (cons '(mprogn) bascdr) nil r 'mparen 'mparen)))
+	   (append l r))
+	  (t nil))) ; won't doit. fall through
+  )
+
 ;; insert left-angle-brackets for mncexpt. a^<n> is how a^^n looks.
 (defun tex-mexpt (x l r)
   (let((nc (eq (caar x) 'mncexpt))) ; true if a^^b rather than a^b
-    ;; here is where we have to check for f(x)^b to be displayed
-    ;; as f^b(x), as is the case for sin(x)^2 .
-    ;; which should be sin^2 x rather than (sin x)^2 or (sin(x))^2.
-    ;; yet we must not display (a+b)^2 as +^2(a,b)...
-    ;; or (sin(x))^(-1) as sin^(-1)x, which would be arcsine x
     (cond ;; this whole clause
       ;; should be deleted if this hack is unwanted and/or the
       ;; time it takes is of concern.
       ;; it shouldn't be too expensive.
       ((and (eq (caar x) 'mexpt)      ; don't do this hack for mncexpt
-            (let*
-                ((fx (cadr x)) ; this is f(x)
-                 (f (and (not (atom fx)) (atom (caar fx)) (caar fx))) ; this is f [or nil]
-                 (bascdr (and f (cdr fx))) ; this is (x) [maybe (x,y..), or nil]
-                 (expon (caddr x)) ;; this is the exponent
-                 (doit (and
-                        f ; there is such a function
-                        (member (getcharn f 1) '(#\% #\$)) ;; insist it is a % or $ function
-                        (not (member 'array (cdar fx) :test #'eq)) ; fix for x[i]^2
-                        (not (member f '(%sum %product %derivative %integrate %at
-                                         %lsum %limit $pderivop) :test #'eq)) ;; what else? what a hack...
-                        (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
-                            (and (atom expon) (numberp expon) (> expon 0))))))
-                                        ; f(x)^3 is ok, but not f(x)^-1, which could
-                                        ; inverse of f, if written f^-1 x
-                                        ; what else? f(x)^(1/2) is sqrt(f(x)), ??
-              (cond (doit
-                     (setq l (tex `((mexpt) ,f ,expon) l nil 'mparen 'mparen))
-                     (if (and (null (cdr bascdr))
-                              (eq (get f 'tex) 'tex-prefix))
-                         (setq r (tex (car bascdr) nil r f 'mparen))
-                         (setq r (tex (cons '(mprogn) bascdr) nil r 'mparen 'mparen))))
-                    (t nil))))) ; won't doit. fall through
-      (t (setq l (cond ((or ($bfloatp (cadr x))
+	    (maybe-tex-mexpt-trig-like x l r)))  ; fall through if f is not trig-like
+       (t (setq l (cond ((or ($bfloatp (cadr x))
                             (and (numberp (cadr x)) (numneedsparen (cadr x))))
                         ; ACTUALLY THIS TREATMENT IS NEEDED WHENEVER (CAAR X) HAS GREATER BINDING POWER THAN MTIMES ...
                         (tex (cadr x) (append l '("\\left(")) '("\\right)") lop (caar x)))
@@ -614,8 +621,8 @@
                          (tex x (list "^{\\langle ") (cons "\\rangle}" r) 'mparen 'mparen)
                          (if (and (integerp x) (< x 10))
                              (tex x (list "^")(cons "" r) 'mparen 'mparen)
-                             (tex x (list "^{")(cons "}" r) 'mparen 'mparen)))))))
-    (append l r)))
+                             (tex x (list "^{")(cons "}" r) 'mparen 'mparen)))))
+	  (append l r)))))
 
 (defprop mncexpt tex-mexpt tex)
 

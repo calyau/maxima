@@ -38,3 +38,39 @@ substinpart(d^2,%,2);
 x . d^2$
 substinpart(f1,f[1](x+1),0);
 f1(x+1)$
+
+/* SF bug #2667: "tex1 of f(x)^n" */
+
+simp:false $
+false $
+
+tex1 (sqrt(x)^n);
+"\\sqrt{x}^{n}";
+
+simp:true $
+true $
+
+tex1(sin(x)^2);
+"\\sin ^2x";
+
+tex1(f(x)^2);
+"f\\left(x\\right)^2";
+
+tex1(sin(x)^n);
+"\\sin ^{n}x";
+
+tex1(f(x)^n);
+"f\\left(x\\right)^{n}";
+
+tex1(sin(x)^-1);
+"{{1}\\over{\\sin x}}";
+
+tex1(f(x)^-1);
+"{{1}\\over{f\\left(x\\right)}}";
+
+tex1(sin(x)^-2);
+"{{1}\\over{\\sin ^2x}}";
+
+tex1(f(x)^-2);
+"{{1}\\over{f\\left(x\\right)^2}}";
+
