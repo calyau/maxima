@@ -1403,6 +1403,19 @@ mod(-5,3);
 mod(-5,-3);
 -2$
 
+[mod(5.0, 3.0), mod(5.0, -3.0), mod(-5.0, 3.0), mod(-5.0, -3.0)];
+[2.0, -1.0, 1.0, -2.0];
+
+[mod(5.0b0, 3.0b0), mod(5.0b0, -3.0b0), mod(-5.0b0, 3.0b0), mod(-5.0b0, -3.0b0)];
+[2.0b0, -1.0b0, 1.0b0, -2.0b0];
+
+/* I'd rather do this up to 10^6 at least but it takes too long. Oh well. */
+every (lambda ([k], mod(float(k*k), float(k)) = 0.0), makelist (k, k, 1, 10000));
+true;
+
+every (lambda ([k], mod(bfloat(k*k), bfloat(k)) = 0.0b0), makelist (k, k, 1, 10000));
+true;
+
 mod(0,0);
 0$
 
