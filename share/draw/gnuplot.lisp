@@ -2807,7 +2807,8 @@
       (setf plotcmd
          (concatenate 'string
             (if (or *multiplot-is-active*
-                    (equal (get-option '$terminal) '$eps))
+                    (equal (get-option '$terminal) '$eps)
+                    (equal (get-option '$terminal) '$epslatex_standalone) )
                ""
                (format nil "set obj 1 fc rgb '~a' fs solid 1.0 noborder ~%"
                        (get-option '$background_color)) )
