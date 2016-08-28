@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2012-2017 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2012-2016 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -18,7 +18,7 @@
 ;;; This is a maxima-vtk interface.
 
 ;;; Visit
-;;; http://riotorto.users.sf.net/vtk
+;;; http://tecnostats.net/Maxima/vtk
 ;;; for examples
 
 ;;; For questions, suggestions, bugs and the like, feel free
@@ -239,6 +239,8 @@
     (format str "~a.SetShowLegend(~a)~%"
       cn
       (if (> *vtk-2dkey-counter* 0) 1 0))
+    (format str "~a.GetAxis(0).SetTitle(\"~a\")~%" cn (get-option '$ylabel))
+    (format str "~a.GetAxis(1).SetTitle(\"~a\")~%" cn (get-option '$xlabel))
     (when (get-option '$logx)
       (format str "~a.GetAxis(1).SetLogScale(1)~%" cn))
     (when (get-option '$logy)
@@ -2948,6 +2950,8 @@
                 ($point_size       (update-nonnegative-float '$point_size       ($rhs x)))
                 ($terminal         (update-terminal                             ($rhs x)))
                 ($unit_vectors     (update-boolean-option    '$unit_vectors     ($rhs x)))
+                ($xlabel           (update-string            '$xlabel           ($rhs x)))
+                ($ylabel           (update-string            '$ylabel           ($rhs x)))
 
                 ; options not yet implemented for 2D-vtk
                 ; they are included here to avoid error messages

@@ -18,7 +18,9 @@
 ;;; This is a maxima-gnuplot interface.
 
 ;;; Visit
-;;; http://riotorto.users.sourceforge.net/gnuplot
+;;; http://tecnostats.net/Maxima/gnuplot
+;;; and 
+;;; http://tecnostats.net/Maxima/vtk
 ;;; for examples
 
 ;;; Some portions of this package were written by 
@@ -136,11 +138,11 @@
       (gethash '$zaxis_width *gr-options*) 1
       (gethash '$zaxis_type *gr-options*)  0    ; two options: 1 (solid) and 0 (dots)
       (gethash '$zaxis_color *gr-options*) "#000000"
-      (gethash '$xlabel *gr-options*)      "X"
+      (gethash '$xlabel *gr-options*)      ""
       (gethash '$xlabel_secondary *gr-options*) ""
-      (gethash '$ylabel *gr-options*)      "Y"
+      (gethash '$ylabel *gr-options*)      ""
       (gethash '$ylabel_secondary *gr-options*) ""
-      (gethash '$zlabel *gr-options*)      "Z"
+      (gethash '$zlabel *gr-options*)      ""
       (gethash '$zlabel_rotate *gr-options*) '$auto
 
       ; point options
