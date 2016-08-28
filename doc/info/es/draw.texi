@@ -19,10 +19,14 @@
 Tres son las funciones principales a utilizar a nivel de Maxima: 
 @code{draw2d}, @code{draw3d} y @code{draw}.
 
-Sígase este enlace para ver ejemplos más elaborados
+Síganse estos enlaces para ver ejemplos más elaborados
 de este paquete:
 
-@url{http://riotorto.users.sourceforge.net/gnuplot}
+@url{http://tecnostats.net/Maxima/gnuplot}
+
+y 
+
+@url{http://tecnostats.net/Maxima/vtk}
 
 Se necesita tener instalado Gnuplot 4.2 o superior para ejecutar este paquete.
 
@@ -2707,7 +2711,7 @@ Véanse también @code{xaxis}, @code{xaxis_type} y @code{xaxis_color}.
 
 
 @defvr {Opción gráfica} xlabel
-Valor por defecto: @code{"x"}
+Valor por defecto: @code{""}
 
 La opción @code{xlabel} almacena una cadena con la
 etiqueta del eje @var{x}. Por defecto, el eje tiene etiqueta @code{"x"}.
@@ -3140,7 +3144,7 @@ Véanse también @code{yaxis}, @code{yaxis_type} y @code{yaxis_color}.
 
 
 @defvr {Opción gráfica} ylabel
-Valor por defecto: @code{"y"}
+Valor por defecto: @code{""}
 
 La opción @code{ylabel} almacena una cadena con la
 etiqueta del eje @var{y}. Por defecto, el eje tiene etiqueta @code{"y"}.
@@ -3478,7 +3482,7 @@ Véanse también @code{zaxis}, @code{zaxis_type} y @code{zaxis_color}.
 
 
 @defvr {Opción gráfica} zlabel
-Valor por defecto: @code{"z"}
+Valor por defecto: @code{""}
 
 La opción @code{zlabel} almacena una cadena con la
 etiqueta del eje @var{z}. Por defecto, el eje tiene etiqueta @code{"z"}.
