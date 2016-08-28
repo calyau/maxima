@@ -18,8 +18,8 @@ There are three main functions to be used at Maxima level:
 
 Follow these links for more elaborated examples of this package:
 
-@url{http://riotorto.users.sourceforge.net/gnuplot} @*
-@url{http://riotorto.users.sourceforge.net/vtk} 
+@url{http://tecnostats.net/Maxima/gnuplot} @*
+@url{http://tecnostats.net/Maxima/vtk} 
 
 You need Gnuplot 4.2 or newer to run this program.
 
@@ -3138,7 +3138,7 @@ See also @mrefcomma{xaxis}  @mref{xaxis_type} and @mrefdot{xaxis_color}
 
 @anchor{xlabel_draw}
 @defvr {Graphic option} xlabel
-Default value: @code{"x"}
+Default value: @code{""}
 
 Option @code{xlabel}, a string, is the label for the @var{x} axis.
 By default, the axis is labeled with string @code{"x"}.
@@ -3660,7 +3660,7 @@ See also @mrefcomma{yaxis}  @mref{yaxis_type} and @mrefdot{yaxis_color}
 
 @anchor{ylabel_draw}
 @defvr {Graphic option} ylabel
-Default value: @code{"y"}
+Default value: @code{""}
 
 Option @code{ylabel}, a string, is the label for the @var{y} axis.
 By default, the axis is labeled with string @code{"y"}.
@@ -4060,7 +4060,7 @@ See also @mrefcomma{zaxis}  @mref{zaxis_type} and @mrefdot{zaxis_color}
 
 @anchor{zlabel_draw}
 @defvr {Graphic option} zlabel
-Default value: @code{"z"}
+Default value: @code{""}
 
 Option @code{zlabel}, a string, is the label for the @var{z} axis.
 By default, the axis is labeled with string @code{"z"}.
