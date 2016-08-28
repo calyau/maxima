@@ -19,9 +19,9 @@ of commands.  That information can be passed to the external program
 either through a pipe or by calling the program with the name of a file
 where the data has been saved.  The data file is given the name
 @code{maxout_xxx.format}, where @code{xxx} is a number that is unique
-to every concurrently-running instance of maxima and @code{format} is
+to every concurrently-running instance of Maxima and @code{format} is
 the name of the plotting format being used (@code{gnuplot},
-@code{xmaxima}, @code{mgnuplot} or @code{gnuplot_pipes}).
+@code{xmaxima}, @code{mgnuplot}, @code{gnuplot_pipes} or @code{geomview}).
 
 There are to save the plot in a graphic format file. In those cases, the
 file @code{maxout_xxx.format} created by Maxima includes commands that will
@@ -62,8 +62,8 @@ information for either of those two packages.
 @section Plotting Formats
 @c -----------------------------------------------------------------------------
 
-Maxima can use either Gnuplot or Xmaxima as graphics program. Gnuplot is
-an external program that has to be installed separately, while Xmaxima
+Maxima can use either Gnuplot, Xmaxima or Geomview as graphics program. Gnuplot and Geomview are
+external programs which must be installed separately, while Xmaxima
 is distributed with Maxima. There are various different formats for
 those programs, which can be selected with the option @mref{plot_format}
 (see also the @mref{Plotting Options} section).
@@ -111,7 +111,7 @@ Unix systems, the Tcl/Tk system.
 Xmaxima is a Tcl/Tk graphical interface for Maxima that can also be used
 to display plots created when Maxima is run from the console or from
 other graphical interfaces.  To use this format, the xmaxima program,
-which is distributed together with Maxima, should be installed.  If
+which is distributed together with Maxima, must be installed.  If
 Maxima is being run from the Xmaxima console, the data and commands are
 passed to xmaxima through the same socket used for the communication
 between Maxima and the Xmaxima console. When used from a terminal or
@@ -121,6 +121,14 @@ name of that file as argument.
 
 In previous versions this format used to be called @code{openmath}; that
 old name still works as a synonym for @code{xmaxima}.
+
+@item
+@strong{geomview}
+
+Geomview, a Motif based interactive 3D viewing program for Unix, can
+also be used to display plots created by Maxima.  To use this format,
+the geomview program must be installed.
+
 @end itemize
 
 @opencatbox
@@ -185,6 +193,28 @@ number of contours, it is necessary to use a custom
 @category{Plotting}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{geomview_command}
+@defvr {System variable} geomview_command
+
+This variable stores the name of the command used to run the geomview
+program when the plot format is @code{geomview}. Its default value is
+"geomview".  If the geomview program is not found unless you give
+its complete path or if you want to try a different version of it,
+you may change the value of this variable. For instance,
+
+@c ===beg===
+@c geomview_command: "/usr/local/bin/my_geomview"$
+@c ===end===
+@example
+(%i1) geomview_command: "/usr/local/bin/my_geomview"$
+@end example
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{get_plot_option}
@@ -1354,8 +1384,8 @@ determined by the option @mrefdot{color}
 Default value: @code{gnuplot}, in Windows systems, or @code{gnuplot_pipes} in
 other systems.
 
-Where @var{format} is one of the following: gnuplot, xmaxima, mgnuplot or
-gnuplot_pipes.
+Where @var{format} is one of the following: gnuplot, xmaxima, mgnuplot,
+gnuplot_pipes or geomview.
 
 It sets the format to be used for plotting.
 

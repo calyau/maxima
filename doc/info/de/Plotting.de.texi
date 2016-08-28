@@ -39,8 +39,8 @@ Satz an Kommandos an das externe Grafikprogramm.  Die Daten werden als
 Datenstrom @"uber eine Pipe oder als eine Datei an das Grafikprogramm 
 @"ubergeben.  Die Datei erh@"alt den Namen @code{maxout.interface}, wobei 
 @code{interface} der Name des externen Grafikprogramms ist.  Die m@"oglichen 
-Dateiendungen sind: @code{gnuplot}, @code{xmaxima}, @code{mgnuplot} oder 
-@code{gnuplot_pipes}.
+Dateiendungen sind: @code{gnuplot}, @code{xmaxima}, @code{mgnuplot},
+@code{gnuplot_pipes} oder @code{geomview}.
 
 @c The @code{maxout.interface} file, in the cases when it is used, is created 
 @c in the directory specified by the system variable @var{maxima_tempdir}. That 
@@ -80,8 +80,8 @@ Um auch die entsprechende Grafikoption des Paketes @code{draw} zu sehen, kann
 @c section).
 @c The plotting formats are the following:
 
-Maxima verwendet f@"ur die Ausgabe von Grafiken die Grafikprogramme Gnuplot 
-oder Xmaxima.  Mit der Grafikoption @code{plot_format} k@"onnen verschiedene 
+Maxima verwendet f@"ur die Ausgabe von Grafiken die Grafikprogramme Gnuplot,
+Xmaxima oder Geomview.  Mit der Grafikoption @code{plot_format} k@"onnen verschiedene
 Grafikformate f@"ur diese Programme ausgew@"ahlt werden.  Die Grafikformate 
 sind:
 
@@ -149,20 +149,38 @@ Gnuplot.  Mgnuplot ben@"otigt die Installation von Gnuplot und Tcl/Tk.
 @item @strong{xmaxima}
 
 Xmaxima ist eine auf Tcl/Tk basierende grafische Nutzeroberfl@"ache, die von
-der Maxima-Konsole gestartet werden kann.  Um dieses Grafikformat zu nutzen, 
+der Maxima-Konsole gestartet werden kann.  Um dieses Grafikformat zu nutzen,
 muss Xmaxima installiert sein, das in der Distribution von Maxima enthalten ist.
-Wird Maxima aus Xmaxima gestartet, werden die Grafikkommandos und Daten @"uber 
+Wird Maxima aus Xmaxima gestartet, werden die Grafikkommandos und Daten @"uber
 denselben Socket gesendet, der auch f@"ur die Kommunikation zwischen Xmaxima und
-Maxima ge@"offnet wird.  Wird das Grafikformat von einer Konsole oder einer 
-anderen Nutzeroberfl@"ache gestartet, werden die Grafikkommandos und Daten in 
-die Datei @code{maxout.xmaxima} gespeichert.  Diese Datei wird an Xmaxima f@"ur 
+Maxima ge@"offnet wird.  Wird das Grafikformat von einer Konsole oder einer
+anderen Nutzeroberfl@"ache gestartet, werden die Grafikkommandos und Daten in
+die Datei @code{maxout.xmaxima} gespeichert.  Diese Datei wird an Xmaxima f@"ur
 die Ausgabe der Grafik @"ubergeben.
 
 @c In previous versions this format used to be called @code{openmath}; that
 @c old name will still be accepted as a synonym for @code{xmaxima}.
 
-In fr@"uheren Versionen wurde dieses Grafikformat @code{openmath} genannt. 
+In fr@"uheren Versionen wurde dieses Grafikformat @code{openmath} genannt.
 Dieser Name wird weiterhin als ein Synonym f@"ur @code{xmaxima} akzeptiert.
+
+
+@c @item
+@c @strong{geomview}
+@c
+@c Geomview, a Motif based interactive 3D viewing program for Unix, can
+@c also be used to display plots created by Maxima.  To use this format,
+@c the geomview program must be installed.
+
+
+@item
+@strong{geomview}
+
+Geomview ist ein - auf Motif basierendes - interaktives 3D Programm f@"ur Unix,
+das auch verwendet werden kann, um Plots von Maxima anzuzeigen.  Um dieses
+Format zu verwenden muss das Programm geomview installiert sein.
+
+
 @end itemize
 
 @c -----------------------------------------------------------------------------
