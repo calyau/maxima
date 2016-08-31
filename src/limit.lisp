@@ -245,7 +245,6 @@
 (defun limit-context (var val direction) ;Only works on entry!
   (cond (limit-top
 	 (assume '((mgreaterp) lim-epsilon 0))
-	 (assume '((mlessp) lim-epsilon ((rat) 1 100000000)))
 	 (assume '((mgreaterp) prin-inf 100000000))
 	 (setq limit-assumptions (make-limit-assumptions var val direction))
 	 (setq limit-top ()))
@@ -263,11 +262,9 @@
 	  ((eq val '$minf)
 	   `(,(assume `((mgreaterp) -100000000 ,var)) ,@new-assumptions))
 	  ((eq direction '$plus)
-	   `(,(assume `((mgreaterp) ((rat) 1 100000000) ,var))
-	     ,(assume `((mgreaterp) ,var 0)) ,@new-assumptions)) ;All limits around 0
+	   `(,(assume `((mgreaterp) ,var 0)) ,@new-assumptions)) ;All limits around 0
 	  ((eq direction '$minus)
-	   `(,(assume `((mgreaterp) ,var ((rat) -1 100000000)))
-	     ,(assume `((mgreaterp) 0 ,var)) ,@new-assumptions))
+	   `(,(assume `((mgreaterp) 0 ,var)) ,@new-assumptions))
 	  (t
 	   ()))))
 
@@ -278,7 +275,6 @@
       ((null assumption-list) t)
     (forget (car assumption-list)))
   (forget '((mgreaterp) lim-epsilon 0))
-  (forget '((mlessp) lim-epsilon ((rat) 1 100000000)))
   (forget '((mgreaterp) prin-inf 100000000))
   (cond ((and (not (null integer-info))
 	      (not limitp))
@@ -1098,7 +1094,7 @@ ignoring dummy variables and array indices."
     (cond ((involve e '(mfactorial)) nil)
 
 	  ;; functions that are defined at their discontinuities
-	  ((amongl '($atan2 $floor $round $ceiling %signum %integrate
+	  ((amongl '($atan2 $floor %round $ceiling %signum %integrate
 			    %gamma_incomplete)
 		   e) nil)
 
