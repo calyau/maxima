@@ -258,7 +258,7 @@
 		(not (maxima-integerp arglim)))
 	   (simplify (list '($floor) arglim)))
 	  (t
-	   nil))))
+	   (throw 'limit nil)))))
 
 (defprop $ceiling tex-matchfix tex)
 (defprop $ceiling (("\\left \\lceil " ) " \\right \\rceil") texsym)
@@ -324,7 +324,7 @@
 		(not (maxima-integerp arglim)))
 	   (simplify (list '($ceiling) arglim)))
 	  (t
-	   nil))))
+	   (throw 'limit nil)))))
 
 
 (defprop $mod simp-nummod operators)
@@ -401,7 +401,7 @@
 		(not (maxima-integerp (m+ 1//2 arglim))))
 	   (simplify (list '(%round) arglim)))
 	  (t
-	   nil))))
+	   (throw 'limit nil)))))
  
 ;; Round a number towards zero.
 
