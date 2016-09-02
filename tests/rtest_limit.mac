@@ -316,6 +316,9 @@ limit(round(x), x, 5/2, minus);
 limit(round(x), x, 5/2, plus);
 3;
 
+limit(floor(sin(x)), x, 0, minus);
+-1;
+
 /* [ 1587235 ] limit(floor(x),x,1) wrong */
 limit(floor(x),x,0);
 und;
