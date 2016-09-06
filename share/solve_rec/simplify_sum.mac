@@ -63,6 +63,7 @@ define_variable(simplify_sum_depth, 0, fixnum)$
 define_variable(simplify_sum_max_depth, 3, fixnum)$
 
 declare(simplify_sum, evfun)$
+declare(split_sum, evfun)$
 
 /*******************
  *
