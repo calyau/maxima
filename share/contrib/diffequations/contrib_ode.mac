@@ -334,7 +334,7 @@ struvelsimp(ex):=besFsimp(ex,struve_l,
    as was done for Bessel functions.  Not required for existing testsuite.
 */
 
-expintegral_e_simp(ex) := block( [argset],
+expintegral_e_simplify(ex) := block( [argset],
   if freeof(expintegral_e,ex) then return(ex),
   /* Get the set of arguments. Partition into sets with orders that
      differ by an integer and with common second arguments.  */
