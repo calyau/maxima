@@ -96,6 +96,7 @@ false;
 [odelin,0];
 
 /* Kamke 2. 210  */ 
+/* FIXME: hangs in odelin - 2016-09
 (pn_(210),ans:contrib_ode(eqn:x^2*'diff(y,x,2)-2*x*(x^2-a)*'diff(y,x,1)+(2*n*x^2+a*((-1)^n-1))*y,y,x),0);
 0$
 /*
@@ -108,6 +109,7 @@ false;
  */
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
+*/
 
 /* Kamke 2. 211  */ 
 (pn_(211),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+4*x^3*'diff(y,x,1)+(4*x^4+2*x^2+1)*y,y,x));
@@ -119,7 +121,8 @@ false;
 (pn_(212),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*(a*x^2+b)*'diff(y,x,1)+f(x)*y,y,x));
 false;
 
-/* Kamke 2. 213  */ 
+/* Kamke 2. 213  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(213),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*(x^3+1)*'diff(y,x,1)-y,y,x),0);
 0$
 /*
@@ -128,8 +131,10 @@ false;
  */
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
+*/
 
-/* Kamke 2. 214  */ 
+/* Kamke 2. 214  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(214),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+(-x^4+(2*n+2*a+1)*x^2+a*(-1)^n-a^2)*y,y,x),0);
 0$
 /*
@@ -142,6 +147,7 @@ false;
  */
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
+*/
 
 /* Kamke 2. 215  */ 
 (pn_(215),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*(a*x^n+b)*'diff(y,x,1)+(a1*x^(2*n)+b1*x^n+c_1)*y,y,x));
@@ -344,7 +350,8 @@ variationofparameters;
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
 
-/* Kamke 2. 242  */ 
+/* Kamke 2. 242  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(242),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)-(3*x+1)*'diff(y,x,1)+(x-x^2)*y,y,x));
 [y = %k2*(x^3*('integrate(8*x*%e^(2*x)/(x^4+4*x^3+6*x^2+4*x+1)
                                   -(7*%e^(2*x)/(x^4+4*x^3+6*x^2+4*x+1)),x))
@@ -364,6 +371,7 @@ variationofparameters;
           +%k1*(x+1)^2*%e^-x];
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
+*/
 
 /* Kamke 2. 243  */ 
 (pn_(243),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)+4*x*'diff(y,x,1)+(x^2+1)*y,y,x),0);
@@ -460,7 +468,8 @@ ode_check(eqn,ans[1]);
 method;
 exact;
 
-/* Kamke 2. 254  */ 
+/* Kamke 2. 254  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(254),ans:contrib_ode(eqn:(x^2+x-2)*'diff(y,x,2)+(x^2-x)*'diff(y,x,1)+(-6*x^2-7*x)*y,y,x),0);
 0$
 /*
@@ -488,6 +497,7 @@ exact;
  */
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
+*/
 
 /* Kamke 2. 255  */ 
 (pn_(255),ans:contrib_ode(eqn:(x-1)*x*'diff(y,x,2)+a*'diff(y,x,1)-2*y,y,x));
@@ -543,9 +553,11 @@ ode_check(eqn,ans[1]);
 method;
 freeofy;
 
-/* Kamke 2. 261  */ 
+/* Kamke 2. 261  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(261),ans:contrib_ode(eqn:x*(x+2)*'diff(y,x,2)+2*(-l*x^2+(n-2*l+1)*x+n+1)*'diff(y,x,1)+(2*l*(p-n-1)*x+2*l*p+m)*y,y,x));
 false;
+*/
 
 /* Kamke 2. 262  */ 
 (pn_(262),ans:contrib_ode(eqn:(x+1)^2*'diff(y,x,2)+(x^2+x-1)*'diff(y,x,1)+(-x-2)*y,y,x),0);

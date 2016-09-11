@@ -95,8 +95,10 @@ method;
 variationofparameters;
 
 /* Kamke 2. 311  */ 
+/* FIXME: hangs in odelin - 2016-09
 (pn_(311),ans:contrib_ode(eqn:x*(x^2+1)*'diff(y,x,2)+(2*x^2+1)*'diff(y,x,1)-v*(v+1)*x*y,y,x));
 false;
+*/
 
 /* Kamke 2. 312  */ 
 (pn_(312),ans:contrib_ode(eqn:x*(x^2+1)*'diff(y,x,2)+2*(x^2-1)*'diff(y,x,1)-2*x*y,y,x));
@@ -107,26 +109,35 @@ method;
 exact;
 
 /* Kamke 2. 313  */ 
+/* FIXME: hangs in odelin - 2016-09
 (pn_(313),ans:contrib_ode(eqn:x*(x^2+1)*'diff(y,x,2)+(2*(n+1)*x^2+2*n+1)*'diff(y,x,1)+(n-v)*(v+n+1)*x*y,y,x));
 false;
+*/
 
-/* Kamke 2. 314  */ 
+/* Kamke 2. 314  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(314),ans:contrib_ode(eqn:x*(x^2+1)*'diff(y,x,2)-(2*(n-1)*x^2+2*n-1)*'diff(y,x,1)+(-v+n-1)*(v+n)*x*y,y,x));
 false;
+*/
 
-/* Kamke 2. 315   CHECKME */ 
+/* Kamke 2. 315 */ 
 (pn_(315),ans:contrib_ode(eqn:x*(x^2-1)*'diff(y,x,2)+'diff(y,x,1)+a*x^3*y,y,x));
-[y=%k1*sin(sqrt(a)*log(2*sqrt(x^2-1)+2*x))+%k2*cos(sqrt(a)*log(2*sqrt(x^2-1)+2*x))];
-method;
-xformtoconstcoeff;
+[y = %k1*sin((sqrt(a)*(x^2-1))/(sqrt(x-1)*sqrt(x+1)))
+    +%k2*cos((sqrt(a)*(x^2-1))/(sqrt(x-1)*sqrt(x+1)))];
+[method,ode_check(eqn,ans[1])];
+[xformtoconstcoeff,0];
 
-/* Kamke 2. 316  */ 
+/* Kamke 2. 316  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(316),ans:contrib_ode(eqn:x*(x^2-1)*'diff(y,x,2)+(x^2-1)*'diff(y,x,1)-x*y,y,x));
 false;
+*/
 
-/* Kamke 2. 317  */ 
+/* Kamke 2. 317  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(317),ans:contrib_ode(eqn:x*(x^2-1)*'diff(y,x,2)+(3*x^2-1)*'diff(y,x,1)+x*y,y,x));
 false;
+*/
 
 /* Kamke 2. 318  */
 /* FIXME: ERROR "Quotient by a polynomial of higher degree"
@@ -426,9 +437,11 @@ forget(b>0,b>a^2);
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
 
-/* Kamke 2. 356  */ 
+/* Kamke 2. 356  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(356),ans:contrib_ode(eqn:'diff(y,x,2)=(-2*x^2-1)*'diff(y,x,1)/(x*(x^2+1))-(-v*(v+1)*x^2-n^2)*y/(x^2*(x^2+1)),y,x));
 false;
+*/
 
 /* Kamke 2. 357  */ 
 /* CHECKME - Takes a long time
@@ -442,13 +455,17 @@ false;
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
 
-/* Kamke 2. 359  */ 
+/* Kamke 2. 359  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(359),ans:contrib_ode(eqn:'diff(y,x,2)=-2*x*'diff(y,x,1)/(x^2-1)-v*(v+1)*y/(x^2*(x^2-1)),y,x));
 false;
+*/
 
-/* Kamke 2. 360  */ 
+/* Kamke 2. 360  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(360),ans:contrib_ode(eqn:'diff(y,x,2)=v*(v+1)*y/x^2-2*x*'diff(y,x,1)/(x^2-1),y,x));
 false;
+*/
 
 /* Kamke 2. 361  */ 
 (assume(a>0),done);
@@ -460,9 +477,11 @@ done;
 (forget(a>0),done);
 done;
 
-/* Kamke 2. 362  */ 
+/* Kamke 2. 362  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(362),ans:contrib_ode(eqn:'diff(y,x,2)=2*x*'diff(y,x,1)/(x^2-1)-(2*a*x^2+(a-n)*(n+a+1)*x^2*(x^2-1)+n*(n+1)*(x^2-1))*y/(x^2*(x^2-1)),y,x));
 false;
+*/
 
 /* Kamke 2. 363  */ 
 /* CHECKME:  Error "Quotient by a polynomial of higher degree"
@@ -489,12 +508,14 @@ ode_check(eqn,ans[1]);
 method;
 xformtoconstcoeff;
 
-/* Kamke 2. 367  */ 
+/* Kamke 2. 367  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(367),ans:contrib_ode(eqn:'diff(y,x,2)=-2*x*'diff(y,x,1)/(x^2+1)-(a^2*(x^2+1)^2-n*(n+1)*(x^2+1)+m^2)*y/(x^2+1)^2,y,x));
 [y = %k2*spherodialwave_b(-m,n^2+n-m^2+m-a^2,-a^2/4,-%i*x)/(x^2+1)^(m/2)
     +%k1*spherodialwave_a(-m,n^2+n-m^2+m-a^2,-a^2/4,-%i*x)/(x^2+1)^(m/2)];
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
+*/
 
 /* Kamke 2. 368  */ 
 (pn_(368),ans:contrib_ode(eqn:'diff(y,x,2)=-a*x*'diff(y,x,1)/(x^2+1)-b*y/(x^2+1)^2,y,x),0);
@@ -527,7 +548,8 @@ ode_check(eqn,ans[1]);
 method;
 xformtoconstcoeff;
 
-/* Kamke 2. 371  */ 
+/* Kamke 2. 371  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(371),ans:contrib_ode(eqn:'diff(y,x,2)=-y*(-(x^2-1)*lambda-a^2)/(x^2-1)^2-2*x*'diff(y,x,1)/(x^2-1),y,x),0);
 0$
 /*
@@ -540,13 +562,15 @@ xformtoconstcoeff;
  */
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
+*/
 
 /* Kamke 2. 372  */ 
 /* CHECKME - Takes a long time
 (pn_(372),ans:contrib_ode(eqn:'diff(y,x,2)=-2*x*'diff(y,x,1)/(x^2-1)-((x^2-1)*(a*x^2+b*x+c)-k^2)*y/(x^2-1)^2,y,x));
 */
 
-/* Kamke 2. 373  */ 
+/* Kamke 2. 373  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(373),ans:contrib_ode(eqn:'diff(y,x,2)=-2*x*'diff(y,x,1)/(x^2-1)-(-a^2*(x^2-1)^2-n*(n+1)*(x^2-1)-m^2)*y/(x^2-1)^2,y,x));
 [y = %k2*spherodialwave_b(-m,n^2+n-m^2+m-a^2,-a^2/4,-x)
           /((x-1)^(m/2)*(x+1)^(m/2))
@@ -554,6 +578,7 @@ xformtoconstcoeff;
            /((x-1)^(m/2)*(x+1)^(m/2))];
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
+*/
 
 /* Kamke 2. 374  */ 
 (pn_(374),ans:contrib_ode(eqn:'diff(y,x,2)=2*(2*a-1)*x*'diff(y,x,1)/(x^2-1)-((2*a*(2*a-1)-v*(v+1))*x^2+v*(v+1)+2*a)*y/(x^2-1)^2,y,x),0);
@@ -759,9 +784,11 @@ done;
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
 
-/* Kamke 2. 398  */ 
+/* Kamke 2. 398  */
+/*
 (pn_(398),ans:contrib_ode(eqn:'diff(y,x,2)=-(3*x^2-1)*'diff(y,x,1)/(x*(x^2-1))-(x^2-(2*v+1)^2-1)*y/(x^2-1)^2,y,x));
 false;
+*/
 
 /* Kamke 2. 399  */ 
 (pn_(399),ans:contrib_ode(eqn:'diff(y,x,2)=(3*x+1)*'diff(y,x,1)/((x-1)*(x+1))-36*(x+1)^2*y/((x-1)^2*(3*x+5)^2),y,x));

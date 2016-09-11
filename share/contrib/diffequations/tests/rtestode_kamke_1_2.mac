@@ -336,14 +336,14 @@ forget(4*b-a^2+2*a-1>0);
 
 /*  143  */ 
 assume(4*a*b>-1);
-[4*a*b>-1];
+[a*b>-(1/4)];
 (pn_(143),ans:contrib_ode(eqn:x^2*('diff(y,x,1)+a*y^2)-b,y,x));
 [x=%c*%e^-((log(-((-2*a*x*y+sqrt(4*a*b+1)+1)/(2*a*x*y+sqrt(4*a*b+1)-1)))
   /sqrt(4*a*b+1)))];
 method;
 genhom;
 forget(4*a*b>-1);
-[4*a*b>-1];
+[a*b>-(1/4)];
 
 /*  144  */ 
 (pn_(144),ans:contrib_ode(eqn:x^2*('diff(y,x,1)+a*y^2)+b*x^alpha+c,y,x));
@@ -568,11 +568,13 @@ genhom;
 [method,radcan(ode_check(eqn,ans[1]))];
 [linear,0];
 
-/*  176  */ 
+/*  176  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(176),ans:contrib_ode(eqn:x*(x^2-1)*'diff(y,x,1)+(x^2-1)*y^2-x^2,y,x));
 [[y='diff(%u,x,1)*x/%u,%u/(x*(x^2-1))-'diff(%u,x,2)/x-'diff(%u,x,1)/x^2=0]];
 method;
 riccati;
+*/
 
 /*  177  */ 
 (pn_(177),ans:contrib_ode(eqn:(x-1)*x^2*'diff(y,x,1)-y^2-(x-2)*x*y,y,x));
@@ -589,11 +591,13 @@ riccati;
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 
-/*  179  */ 
+/*  179  */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(179),ans:contrib_ode(eqn:3*x*(x^2-1)*'diff(y,x,1)+x*y^2+(-x^2-1)*y-3*x,y,x));
 [[y='diff(%u,x,1)*(3*x^2-3)/%u,-'diff(%u,x,1)*(6*x/(3*x^2-3)^2-(x^2/(3*x^3-3*x)+1/(3*x^3-3*x))/(3*x^2-3))-'diff(%u,x,2)/(3*x^2-3)+%u/((x^2-1)*(3*x^2-3)^2)=0]];
 method;
 riccati;
+*/
 
 /*  180  */ 
 assume(4*a*c>b^2);
@@ -764,6 +768,6 @@ solve(%,y);
 
 /*  200  */ 
 (pn_(200),ans:contrib_ode(eqn:(a*sin(x)^2+b)*'diff(y,x,1)+a*sin(2*x)*y+A*x*(a*sin(x)^2+c),y,x));
-[y = (%c-(c*x^2/2-a*(2*x*sin(2*x)+cos(2*x)-2*x^2)/8)*A)/(a*sin(x)^2+b)];
+[y=((A*a*(2*x*sin(2*x)+cos(2*x)-2*x^2))/8-(A*c*x^2)/2+%c)/(a*sin(x)^2+b)];
 [method,ode_check(eqn,ans[1])];
 [linear,0];

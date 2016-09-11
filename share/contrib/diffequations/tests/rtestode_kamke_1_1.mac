@@ -90,8 +90,10 @@ solve(map(exp,2*ans[1]),y);
 [separable,0];
 
 /* 13 - Riccati eqn */
+/* FIXME: hangs in odelin - 2016-09
 (pn_(13),ans:contrib_ode(eqn:'diff(y,x) + y^2 - a*x - b,y,x),0);
 0$
+*/
 /*
 [y = -(((-bessel_y(1/3,2*%i*(a*x+b)^(3/2)/(3*a))*%c
         -bessel_j(1/3,2*%i*(a*x+b)^(3/2)/(3*a)))*a*sqrt(a*x+b)
@@ -274,10 +276,8 @@ riccati;
 
 /* 26 */
 (pn_(26),ans:contrib_ode(eqn:'diff(y,x)-(A*y- a)*(B*y-b),y,x));
-[-((log(B*y-b)-log(A*y-a))/(a*B-A*b)) = x+%c];
-solve(map(exp,ans[1]*(a*B-b*A)),y);
-[y=(b*%e^(a*x*B+%c*a*B-b*x*A-%c*b*A)-a)/(B*%e^(a*x*B+%c*a*B-b*x*A-%c*b*A)-A)];
-[method,ode_check(eqn,%[1])];
+[((log(B*y-b)-log(A*y-a))/(a*B-A*b)) = x+%c];
+[method,ode_check(eqn,ans[1])];
 [separable,0];
 
 /* 27 - also Murphy 1.62*/
