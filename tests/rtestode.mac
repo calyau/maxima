@@ -3,6 +3,14 @@
 kill(all);
 done;
 
+/* Bug #2796 ode2 with n declared constant
+ *
+ * Can't load ode2.mac if any formal function args are
+ * declared constant
+ */
+(declare(n,constant), load(ode2), remove(n,constant));
+done;
+
 /* Trivial ode - bug 866510 */
 ode2('diff(y,x),y,x);
 y=%c;
