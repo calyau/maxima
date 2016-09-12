@@ -274,3 +274,24 @@ V = V0*%e^('at('integrate(kappa(p),p),[p = p0,V = V0])
 
 (kappa(x):=x, ev(%,nouns));
 V = %e^(p0^2/2-p^2/2)*V0;
+
+/* Bug report ID: 1621 Wrong solution to ode2
+ *
+ * 'diff(y,t,2)-a*'diff(y,t)=-t with a=0
+ *
+ * Test case is a 2nd order non-homogeneous linear ode with constant
+ * coefficients.  When solving homogeneous ode, cc2 asked if a=0, then
+ * returned a solution involving a.
+ */
+assume(equal(a,0));
+[equal(a,0)];
+
+ode2('diff(y,t,2)-a*'diff(y,t)=0,y,t);
+y=%k2*t+%k1;
+
+ode2('diff(y,t,2)-a*'diff(y,t)=-t,y,t);
+y=(-t^3/6)+%k2*t+%k1;
+
+forget(equal(a,0));
+[equal(a,0)];
+

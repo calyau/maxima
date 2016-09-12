@@ -163,13 +163,21 @@ hom2(a1,a2,a3):=block([ap,aq,pt],
 
 /*  B&DiP, pp. 106-112  */
 
+/* 2nd order linear homogeneous ode with constant coefficients
+   'diff(y,x,2) + %f%*'diff(y,x) + %g%*y = 0
+   %f% and %g% independent of x and y */
+
 cc2(%f%,%g%,y,x):=block([a,sign,radexpand:'all,alpha,zero,pos,ynew,%k1,%k2],
    if not(freeof(x,y,%f%) and freeof(x,y,%g%)) then return(false),
    method: 'constcoeff,
    a: %f%^2-4*%g%,
    if freeof(%i,a) then sign: asksign(a)
 		   else (radexpand: true, sign: 'pnz),
-   if sign = zero then return(y = %e^(-%f%*x/2) * (%k1 + %k2*x)),
+   if sign = zero then
+     if asksign(%f%^2) = zero then
+       return(y = %k1 + %k2*x)
+     else
+       return(y = %e^(-%f%*x/2) * (%k1 + %k2*x)),
    if sign = pos then
      return(y = %k1*%e^((-%f%+sqrt(a))*x/2) + %k2*%e^((-%f%-sqrt(a))*x/2)),
    a: -a, alpha: x*sqrt(a)/2,
