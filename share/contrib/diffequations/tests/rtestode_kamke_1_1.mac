@@ -276,7 +276,7 @@ riccati;
 
 /* 26 */
 (pn_(26),ans:contrib_ode(eqn:'diff(y,x)-(A*y- a)*(B*y-b),y,x));
-[((log(B*y-b)-log(A*y-a))/(a*B-A*b)) = x+%c];
+[((log(B*y-b)-log(A*y-a))/(A*b-a*B)) = x+%c];
 [method,ode_check(eqn,ans[1])];
 [separable,0];
 
