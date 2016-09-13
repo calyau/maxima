@@ -419,10 +419,15 @@
   (unless (member nil listofl)
     (combiney1 (delete '(0) listofl :test #'equal))))
 
+;;; DB (2016-09-13) Commit a158b1547 introduced a regression (SF bug 3210)
+;;; It: - restructured combiney
+;;;     - used ":test #'alike1" in place of "test #'equal" in combiney1
+;;; Reverting the change to combiney1 restores previous behaviour.
+;;; I don't understand algsys internals and haven't analysed this further.
 (defun combiney1 (listofl)
   (cond ((null listofl) (list nil))
 	(t (mapcan #'(lambda (r)
-		       (if (intersection (car listofl) r :test #'alike1)
+		       (if (intersection (car listofl) r :test #'equal)
 			   (list r)
 			   (mapcar #'(lambda (q) (cons q r)) (car listofl))))
 		   (combiney1 (cdr listofl))))))
