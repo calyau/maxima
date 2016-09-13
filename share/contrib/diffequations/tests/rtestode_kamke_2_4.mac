@@ -636,7 +636,21 @@ forget(a>0);
 
 /* Kamke 2. 381  */ 
 (pn_(381),ans:contrib_ode(eqn:'diff(y,x,2)=c-b*y/(x^2*(x-a)^2),y,x));
-false;
+[y = (c*x^((sqrt(a^2-4*b)+abs(a))/(2*abs(a)))
+              *'integrate(((x-a)^(sqrt(a^2-4*b)/abs(a))
+                           *'integrate(x^((sqrt(a^2-4*b)+abs(a))/(2*abs(a)))
+                                        /(x-a)
+                                         ^((sqrt(a^2-4*b)-abs(a))/(2*abs(a))),
+                                       x))
+                           /(x^(sqrt(a^2-4*b)/abs(a))*(x^2-a*x)),x))
+          /(x-a)^((sqrt(a^2-4*b)-abs(a))/(2*abs(a)))
+          +(%k2*abs(a)*x^(1/2-sqrt(a^2-4*b)/(2*abs(a)))
+               *(x-a)^(sqrt(a^2-4*b)/(2*abs(a))+1/2))
+           /(a*sqrt(a^2-4*b))
+          +%k1*x^(sqrt(a^2-4*b)/(2*abs(a))+1/2)
+              *(x-a)^(1/2-sqrt(a^2-4*b)/(2*abs(a)))];
+[method,ode_check(eqn,ans[1])];
+[kovacic,0];
 
 /* Kamke 2. 382  */ 
 /* CHECKME - Takes a long time

@@ -26,6 +26,12 @@ if get('ode1_nonlinear,'version)=false then
 if get('odelin,'version)=false then
   load('odelin)$
 
+if get('kovacic,'version)=false then
+  load('kovacicODE)$
+
+/* Set default debug output for kovacicODE */
+DEBUGFLAG:0;  
+
 load('opsubst)$
 
 contrib_ode(eqn,y,x) := block(
@@ -95,6 +101,18 @@ ode2_lin(eqn,y,x) := block(
         /* odelin returns a fundamental soln set */
         soln:listify(soln),
         [y=%k1*soln[1]+%k2*soln[2]]
+      ) else (
+        false
+      )
+    ) else (
+      /* Try kovacic algorithm */
+      ode_disp("    -> kovacicODE"),
+      soln:kovacicODE(de=0,y,x),
+      if (soln#false) then (
+        ode_disp("     Successful"),
+        method:'kovacic,
+        ode_disp(soln),
+	soln
       ) else (
         false
       )

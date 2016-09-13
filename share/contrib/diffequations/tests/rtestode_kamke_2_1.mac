@@ -344,7 +344,14 @@ exact;
 
 /* Kamke 2. 49  */ 
 (pn_(49),ans:contrib_ode(eqn:'diff(y,x,2)-4*x*'diff(y,x,1)+(4*x^2-1)*y-%e^x,y,x));
-false;
+[y = (sqrt(%pi)*((%e^x^2*sin((2*x-1)/2)-%i*%e^x^2*cos((2*x-1)/2))
+                      *erf((2*x+%i-1)/2)
+                      +(%e^x^2*sin((2*x-1)/2)+%i*%e^x^2*cos((2*x-1)/2))
+                       *erf((2*x-%i-1)/2)))
+         /4
+         +%k2*%e^x^2*sin(x)+%k1*%e^x^2*cos(x)];
+[method,ode_check(eqn,ans[1])];
+[kovacic,0];
 
 /* Kamke 2. 50  */ 
 (pn_(50),ans:contrib_ode(eqn:'diff(y,x,2)-4*x*'diff(y,x,1)+(4*x^2-2)*y,y,x));
@@ -354,7 +361,9 @@ false;
 
 /* Kamke 2. 51  */ 
 (pn_(51),ans:contrib_ode(eqn:'diff(y,x,2)-4*x*'diff(y,x,1)+(4*x^2-3)*y-%e^x^2,y,x));
-false;
+[y = %k2*%e^(x^2+x)+%k1*%e^(x^2-x)-%e^x^2];
+[method,ode_check(eqn,ans[1])];
+[kovacic,0];
 
 /* Kamke 2. 52  */ 
 (pn_(52),ans:contrib_ode(eqn:'diff(y,x,2)+a*x*'diff(y,x,1)+b*y,y,x),0);
@@ -420,7 +429,9 @@ false;
 
 /* Kamke 2. 61  */ 
 (pn_(61),ans:contrib_ode(eqn:'diff(y,x,2)+sqrt(x)*'diff(y,x,1)+(x/4+1/(4*sqrt(x))-9)*y-x*%e^-(x^(3/2)/3),y,x));
-false;
+[y=(-(x*%e^-(x^(3/2)/3))/9)+%k2*%e^(3*x-x^(3/2)/3)+%k1*%e^((-x^(3/2)/3)-3*x)];
+[method,ode_check(eqn,ans[1])];
+[kovacic,0];
 
 /* Kamke 2. 62  */ 
 (pn_(62),ans:contrib_ode(eqn:'diff(y,x,2)-'diff(y,x,1)/sqrt(x)+(x+sqrt(x)-8)*y/(4*x^2),y,x));
@@ -654,4 +665,6 @@ false;
 
 /* Kamke 2. 100  */ 
 (pn_(100),ans:contrib_ode(eqn:x*'diff(y,x,2)+2*'diff(y,x,1)-x*y-%e^x,y,x));
-false;
+[y =((2*x-1)*%e^x)/(4*x)+(%k2*%e^x)/x+(%k1*%e^-x)/x];
+[method,ode_check(eqn,ans[1])];
+[kovacic,0];
