@@ -569,12 +569,10 @@ genhom;
 [linear,0];
 
 /*  176  */
-/* FIXME: hangs in odelin - 2016-09
 (pn_(176),ans:contrib_ode(eqn:x*(x^2-1)*'diff(y,x,1)+(x^2-1)*y^2-x^2,y,x));
 [[y='diff(%u,x,1)*x/%u,%u/(x*(x^2-1))-'diff(%u,x,2)/x-'diff(%u,x,1)/x^2=0]];
 method;
 riccati;
-*/
 
 /*  177  */ 
 (pn_(177),ans:contrib_ode(eqn:(x-1)*x^2*'diff(y,x,1)-y^2-(x-2)*x*y,y,x));
@@ -592,12 +590,10 @@ riccati;
 [riccati,0];
 
 /*  179  */
-/* FIXME: hangs in odelin - 2016-09
 (pn_(179),ans:contrib_ode(eqn:3*x*(x^2-1)*'diff(y,x,1)+x*y^2+(-x^2-1)*y-3*x,y,x));
 [[y='diff(%u,x,1)*(3*x^2-3)/%u,-'diff(%u,x,1)*(6*x/(3*x^2-3)^2-(x^2/(3*x^3-3*x)+1/(3*x^3-3*x))/(3*x^2-3))-'diff(%u,x,2)/(3*x^2-3)+%u/((x^2-1)*(3*x^2-3)^2)=0]];
 method;
 riccati;
-*/
 
 /*  180  */ 
 assume(4*a*c>b^2);

@@ -16,7 +16,6 @@ true;
 [odelin,0];
 
 /* Kamke 2. 102  */
-/* FIXME: hangs in odelin - 2016-09
 (pn_(102),ans:contrib_ode(eqn:x*'diff(y,x,2)+2*'diff(y,x,1)+a*x^2*y,y,x),0);
 0$
 /*
@@ -25,7 +24,6 @@ true;
  */
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
-*/
 
 /* Kamke 2. 103  */ 
 (pn_(103),ans:contrib_ode(eqn:x*'diff(y,x,2)-2*'diff(y,x,1)+a*y,y,x));
@@ -195,7 +193,6 @@ forget(b>0,b>a^2);
 [b>0,b>a^2];
 
 /* Kamke 2. 124  */ 
-/* FIXME: hangs in odelin - 2016-09
 (pn_(124),ans:contrib_ode(eqn:x*'diff(y,x,2)-2*(x^2-a)*'diff(y,x,1)+2*n*x*y,y,x),0);
 0$
 /*
@@ -203,7 +200,6 @@ forget(b>0,b>a^2);
  */
 [method, ode_check(eqn,ans[1])];
 [odelin,0];
-*/
 
 /* Kamke 2. 125  */ 
 (pn_(125),ans:contrib_ode(eqn:x*'diff(y,x,2)+(4*x^2-1)*'diff(y,x,1)-4*x^3*y-4*x^5,y,x));
@@ -473,10 +469,8 @@ false;
 false;
 
 /* Kamke 2. 157  */
-/* FIXME: hangs in odelin - 2016-09
 (pn_(157),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+a*'diff(y,x,1)-x*y,y,x));
 false;
-*/
 
 /* Kamke 2. 158  */ 
 (pn_(158),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+a*'diff(y,x,1)+(-b^2*x^2-a*b)*y,y,x));
@@ -696,7 +690,6 @@ method;
 variationofparameters;
 
 /* Kamke 2. 185  */ 
-/* FIXME: hangs in odelin - 2016-09
 (pn_(185),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+5*x*'diff(y,x,1)+(4-2*x^3)*y,y,x),0);
 0$
 /*
@@ -705,7 +698,6 @@ variationofparameters;
  */
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
-*/
 
 /* Kamke 2. 186  */ 
 (pn_(186),ans:contrib_ode(eqn:x^2*'diff(y,x,2)-5*x*'diff(y,x,1)+8*y-x^3*sin(x),y,x));
