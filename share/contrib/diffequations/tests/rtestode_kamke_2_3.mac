@@ -270,12 +270,12 @@ exact;
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
 
-/* Kamke 2. 232  FIXME - What is Diff(LegendreP(n,x),x)? */ 
-(pn_(232),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)-n*(n+1)*y+Diff(LegendreP(n,x),x),y,x));
+/* Kamke 2. 232 */ 
+(pn_(232),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)-n*(n+1)*y+diff(legendre_p(n,x),x),y,x));
 false;
 
-/* Kamke 2. 233  FIXME - What is Diff(LegendreP(n,x),x)? */ 
-(pn_(233),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)-n*(n+1)*y+Diff(LegendreQ(n,x),x),y,x));
+/* Kamke 2. 233 */ 
+(pn_(233),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)-n*(n+1)*y+diff(legendre_q(n,x),x),y,x));
 false;
 
 /* Kamke 2. 234  */ 
