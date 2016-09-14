@@ -6,18 +6,18 @@ And some reasons why I did make some decisions...
 1. The fixed installation directory (C:\Maxima-VERSION)
 -------------------------------------------------------
 
-That was chosen, because of three reasons:
+That was chosen, because of four reasons:
 
 - The default installation root ("C:\Program files") contains a space, which
-might cause issues, because one needs to escape it.
+  might cause issues, because one needs to escape it.
 
 - The default installation path for a 32 Bit program is different on 32 and 
-64 Bit Windows Systems.
+  64 Bit Windows Systems.
 
 - When one builds Maxima using Autoconf, in './configure', the installation 
-prefix (--prefix=...) is set to a fixed value - and that value is used when 
-compiling maxima (at least in the manpage (not really relevant on Windows) 
-but also for some Lisp-variables (e.g. *autoconf-prefix*, ...).
+  prefix (--prefix=...) is set to a fixed value - and that value is used when 
+  compiling maxima (at least in the manpage (not really relevant on Windows) 
+  but also for some Lisp-variables (e.g. *autoconf-prefix*, ...).
 
 - A user might choose a installation directory with problematic characters
   (e.g. UTF8 chars in another language, special characters), which might
@@ -34,7 +34,7 @@ lead to trouble.
 --------------------
 
 At first the crosscompiling procedure worked only with CLISP.
-CLISP was chosen, because it worked nice with "Wine" (which is needed for
+CLISP was selected, because it worked nice with "Wine" (which is needed for
 crosscompiling) and they just released a ZIP file, which one can easy extract.
 
 Now SBCL is also included (the MSI-Installer can be extracted using 7z and

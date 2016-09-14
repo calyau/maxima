@@ -8,17 +8,18 @@ apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync p7zip-
 (If you are using a 64 bit operating system, it might be necessary to add
 the i386 architecture (https://wiki.debian.org/Multiarch/HOWTO) before).
 
-Then you can start the crosscompiling-process:
+Then you can extract the Maxima sourcecode or clone the git repository
+and start the crosscompiling-process:
 
 
-cd build # change to the build directory
+cd crosscompile-windows/build # change to the build directory
 cmake ..
 make
 make package
 
 This will download the required Software (CLISP, Gnuplot, wxMaxima,
 wxWidgets, Tcl, Tk, jsMath TeX Fonts, SBCL, VTK) from the Internet
-into the directory "download".
+into the directory "crosscompile-windows/download".
 
 The packages will be compiled (if necessary) and a Windows 
 installer for Maxima is generated.
@@ -34,9 +35,8 @@ cmake -DUSE_WXMAXIMA_GIT=YES ..
 
 If you want to exclude VTK, use
 cmake -DUSE_VTK=NO ..
-(Attention: The compilation time will increase with VTK (it is compiled
-twice - native and crosscompiled)!  The size of the installer will
-approximately be 50% larger than without VTK).
+(Attention: The size of the installer will approximately be 50% larger
+than without VTK).
 
 
 In case a new release of a software is released (and no new patches are needed),
