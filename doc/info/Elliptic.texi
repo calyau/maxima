@@ -452,8 +452,6 @@ The incomplete elliptic integral of the third kind, defined as
 $$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
-Only the derivative with respect to @math{phi} is known by Maxima.
-
 @opencatbox
 @category{Elliptic integrals}
 @closecatbox
