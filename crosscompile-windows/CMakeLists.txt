@@ -208,7 +208,6 @@ externalproject_add(gnuplot
 install(DIRECTORY ${CMAKE_BINARY_DIR}/gnuplot-prefix/src/gnuplot/ DESTINATION gnuplot)
 
 # TeX Fonts (a binary package just extract it...)
-# (currently not installed, to allow installation as unprivileged user)
 externalproject_add(texfonts
   URL "${TEXFONTS_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
