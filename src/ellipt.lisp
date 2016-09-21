@@ -1865,7 +1865,50 @@ first kind:
 	   (* (/ nn 3) (expt sin-phi 3)
 	      (bigfloat::bf-rj (expt cos-phi 2) k2sin 1.0
 			       (- 1 (* n (expt sin-phi 2)))))))))
-    
+
+;;; Deriviatives from functions.wolfram.com
+;;; http://functions.wolfram.com/EllipticIntegrals/EllipticPi3/20/
+(defprop $elliptic_pi
+  ((n z m)
+   ;Derivative wrt first argument
+   ((mtimes) ((rat) 1 2)
+    ((mexpt) ((mplus) m ((mtimes) -1 n)) -1)
+    ((mexpt) ((mplus) -1 n) -1)
+    ((mplus)
+     ((mtimes) ((mexpt) n -1)
+      ((mplus) ((mtimes) -1 m) ((mexpt) n 2))
+      (($elliptic_pi) n z m))
+     (($elliptic_e) z m)
+     ((mtimes) ((mplus) m ((mtimes) -1 n)) ((mexpt) n -1)
+      (($elliptic_f) z m))
+     ((mtimes) ((rat) -1 2) n
+      ((mexpt)
+       ((mplus) 1 ((mtimes) -1 m ((mexpt) ((%sin) z) 2)))
+       ((rat) 1 2))
+      ((mexpt)
+       ((mplus) 1 ((mtimes) -1 n ((mexpt) ((%sin) z) 2)))
+       -1)
+      ((%sin) ((mtimes) 2 z)))))
+   ;derivative wrt second argument
+   ((mtimes)
+    ((mexpt)
+     ((mplus) 1 ((mtimes) -1 m ((mexpt) ((%sin) z) 2)))
+     ((rat) -1 2))
+    ((mexpt)
+     ((mplus) 1 ((mtimes) -1 n ((mexpt) ((%sin) z) 2))) -1))
+   ;Derivative wrt third argument
+   ((mtimes) ((rat) 1 2)
+    ((mexpt) ((mplus) ((mtimes) -1 m) n) -1)
+    ((mplus) (($elliptic_pi) n z m)
+     ((mtimes) ((mexpt) ((mplus) -1 m) -1)
+      (($elliptic_e) z m))
+     ((mtimes) ((rat) -1 2) ((mexpt) ((mplus) -1 m) -1) m
+      ((mexpt)
+       ((mplus) 1 ((mtimes) -1 m ((mexpt) ((%sin) z) 2)))
+       ((rat) -1 2))
+      ((%sin) ((mtimes) 2 z))))))
+  grad)
+
 (in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
 ;; Translation of Jim FitzSimons' bigfloat implementation of elliptic
 ;; integrals from http://www.getnet.com/~cherry/elliptbf3.mac.

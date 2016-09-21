@@ -61,6 +61,20 @@ diff(elliptic_f(phi,m),m);
    -(cos(phi)*sin(phi)/sqrt(1-m*sin(phi)^2)))
  /(2*(1-m));
 
+diff(elliptic_pi(n,phi,m),n);
+((-(n*sqrt(1-m*sin(phi)^2)*sin(2*phi))/(2*(1-n*sin(phi)^2)))
+ +((m-n)*elliptic_f(phi,m))/n+elliptic_e(phi,m)
+ +((n^2-m)*elliptic_pi(n,phi,m))/n)
+ /(2*(m-n)*(n-1));
+
+diff(elliptic_pi(n,phi,m),phi);
+1/(sqrt(1-m*sin(phi)^2)*(1-n*sin(phi)^2));
+
+diff(elliptic_pi(n,phi,m),m);
+((-(m*sin(2*phi))/(2*(m-1)*sqrt(1-m*sin(phi)^2)))
+ +elliptic_e(phi,m)/(m-1)+elliptic_pi(n,phi,m))
+ /(2*(n-m));
+
 diff(elliptic_kc(m),m);
 (elliptic_ec(m)-(1-m)*elliptic_kc(m))/(2*(1-m)*m);
 
