@@ -948,3 +948,67 @@ if complex_bfloatp(elliptic_pi(n1, u1, k1))
  then true else elliptic_pi(n1, u1, k1) # elliptic_pi(n1, rectform(u1), k1) ; 
 true ; 
  
+/* Test derivatives using numerical differentiation
+   
+   f  - a function
+   df - deriviative of func wrt p-th argument
+   p - derivative wrt p-th argument 
+   vars - variables in expression df
+   table - table of points to evaluate
+   delta - offset for numerical derivative
+*/
+(test_deriv(func,deriv,vars,p,table,eps,delta) :=
+block([badpoints : [],
+       abserr    : 0,
+       maxerr    : -1],
+  for %z in table do
+    block([%z1, deriv, nderiv],
+      %z1:makelist(if i=p then %z[i]+delta else %z[i],i,1,length(%z)),
+      nderiv: float((apply(func,%z1)-apply(func,%z))/delta),
+      deriv : float(subst(maplist("=",vars,%z),deriv)),
+      abserr : abs(nderiv-deriv),
+      maxerr : max(maxerr,abserr),
+      if abserr > eps then
+	badpoints : cons ([%z,deriv,nderiv,abserr],badpoints)
+    ),
+  if badpoints # [] then
+    cons(maxerr,badpoints)
+  else
+    badpoints
+    ),done);
+done;
+
+/* test points for two-arg functions */
+(l2: [[0.2, 0.3], [0.2, 0.5], [1.5, 0.7], [0.5, 0.99], [1.5, 0.8],
+    [1.57, 0.8], [1.5707, 0.8], [-1.0, 0.8], [2.0, 0.8]],done);
+done;
+
+/* test points for three-arg functions */
+/* bug #3221 elliptic_pi() wrong for 2nd arg > float(%pi/2) */
+(l3: [[0.1,0.2,0.3],[0.1,0.2,0.5],[0.2,1.5,0.7],[0.001,0.5,0.99],
+    [0.2,1.5,0.8],[0.2,1.57,0.8],[0.2,1.5707,0.8]],done);
+done;
+
+test_deriv('elliptic_f,diff(elliptic_f(z,m),z),[z,m],1,l2,1.e-6,1.e-8);
+[];
+
+test_deriv('elliptic_f,diff(elliptic_f(z,m),m),[z,m],2,l2,1.e-6,1.e-8);
+[];
+
+test_deriv('elliptic_e,diff(elliptic_e(z,m),z),[z,m],1,l2,1.e-6,1.e-8);
+[];
+
+test_deriv('elliptic_e,diff(elliptic_e(z,m),m),[z,m],2,l2,1.e-6,1.e-8);
+[];
+
+test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),n),[n,z,m],1,l3,1.e-6,1.e-8);
+[];
+
+test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),z),[n,z,m],2,l3,1.e-6,1.e-8);
+[];
+
+test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),m),[n,z,m],3,l3,1.e-6,1.e-8);
+[];
+
+(kill(l2,l3),done);
+done;
