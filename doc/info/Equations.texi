@@ -7,7 +7,20 @@
 @section Functions and Variables for Equations
 @c -----------------------------------------------------------------------------
 
-@c NEED A DESCRIPTION OF %rnum AS WELL
+@anchor{%rnum}
+@defvr {System variable} %rnum
+Default value: @code{0}
+
+@code{%rnum} is the counter for the @code{%r} variables introduced in solutions by
+@mref{solve} and @mrefdot{algsys}.  The next @code{%r} variable is numbered
+@code{%rnum+1}.
+
+See also @mref{%rnum_list}.
+
+@opencatbox
+@category{Algebraic equations}
+@closecatbox
+@end defvr
 
 @c -----------------------------------------------------------------------------
 @anchor{%rnum_list}
@@ -18,6 +31,9 @@ Default value: @code{[]}
 @mref{solve} and @mrefdot{algsys}  @code{%r} variables are added to
 @code{%rnum_list} in the order they are created.  This is convenient for doing
 substitutions into the solution later on.
+
+See also @mref{%rnum}.
+
 @c WHAT DOES THIS STATEMENT MEAN ??
 It's recommended to use this list rather than doing @code{concat ('%r, j)}.
 
