@@ -968,8 +968,6 @@ block([badpoints : [],
       %z0:makelist(if i=p then %z[i]-delta else %z[i],i,1,length(%z)),
       nderiv: float((apply(func,%z1)-apply(func,%z0))/(2*delta)),
       deriv : float(subst(maplist("=",vars,%z),df)),
-      print("nderiv:",nderiv),
-      print("deriv:",deriv),
       abserr : abs(nderiv-deriv),
       maxerr : max(maxerr,abserr),
       if abserr > eps then
