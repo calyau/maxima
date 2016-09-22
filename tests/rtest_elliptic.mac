@@ -951,22 +951,25 @@ true ;
 /* Test derivatives at a few random points using numerical differentiation
    
    func  - a function
-   deriv - deriviative of func wrt p-th argument
+   df - deriviative of func wrt p-th argument
    p - derivative wrt p-th argument 
    vars - variables in expression deriv
    table - table of points to evaluate
    eps - report errors > eps
    delta - offset for numerical derivative
 */
-(test_deriv(func,deriv,vars,p,table,eps,delta) :=
+(test_deriv(func,df,vars,p,table,eps,delta) :=
 block([badpoints : [],
        abserr    : 0,
        maxerr    : -1],
   for %z in table do
-    block([%z1, deriv, nderiv],
+    block([%z0, %z1, deriv, nderiv],
       %z1:makelist(if i=p then %z[i]+delta else %z[i],i,1,length(%z)),
-      nderiv: float((apply(func,%z1)-apply(func,%z))/delta),
-      deriv : float(subst(maplist("=",vars,%z),deriv)),
+      %z0:makelist(if i=p then %z[i]-delta else %z[i],i,1,length(%z)),
+      nderiv: float((apply(func,%z1)-apply(func,%z0))/(2*delta)),
+      deriv : float(subst(maplist("=",vars,%z),df)),
+      print("nderiv:",nderiv),
+      print("deriv:",deriv),
       abserr : abs(nderiv-deriv),
       maxerr : max(maxerr,abserr),
       if abserr > eps then
@@ -990,25 +993,25 @@ done;
     [0.2,1.5,0.8],[0.2,1.57,0.8],[0.2,1.5707,0.8]],done);
 done;
 
-test_deriv('elliptic_f,diff(elliptic_f(z,m),z),[z,m],1,l2,1.e-6,1.e-8);
+test_deriv('elliptic_f,diff(elliptic_f(z,m),z),[z,m],1,l2,2.0e-7,1.0e-8);
 [];
 
-test_deriv('elliptic_f,diff(elliptic_f(z,m),m),[z,m],2,l2,1.e-6,1.e-8);
+test_deriv('elliptic_f,diff(elliptic_f(z,m),m),[z,m],2,l2,2.0e-7,1.0e-8);
 [];
 
-test_deriv('elliptic_e,diff(elliptic_e(z,m),z),[z,m],1,l2,1.e-6,1.e-8);
+test_deriv('elliptic_e,diff(elliptic_e(z,m),z),[z,m],1,l2,2.0e-7,1.0e-8);
 [];
 
-test_deriv('elliptic_e,diff(elliptic_e(z,m),m),[z,m],2,l2,1.e-6,1.e-8);
+test_deriv('elliptic_e,diff(elliptic_e(z,m),m),[z,m],2,l2,2.0e-7,1.0e-8);
 [];
 
-test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),n),[n,z,m],1,l3,1.e-6,1.e-8);
+test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),n),[n,z,m],1,l3,2.0e-7,1.0e-8);
 [];
 
-test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),z),[n,z,m],2,l3,1.e-6,1.e-8);
+test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),z),[n,z,m],2,l3,2.0e-7,1.0e-8);
 [];
 
-test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),m),[n,z,m],3,l3,1.e-6,1.e-8);
+test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),m),[n,z,m],3,l3,2.0e-7,1.0e-8);
 [];
 
 (kill(l2,l3,test_deriv),done);
