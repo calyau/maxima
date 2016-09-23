@@ -2427,13 +2427,14 @@ values are:
 @item subres
 for the subresultant polynomial remainder sequence (PRS) algorithm,
 @item mod
-for the modular resultant algorithm, and 
+(not enabled) for the modular resultant algorithm, and 
 @item red
 for the reduced polynomial remainder sequence (PRS) algorithm.
 @end table
 
-On most problems the default value @code{subres} should be best.  On some
-large degree univariate or bivariate problems @code{mod} may be better.
+On most problems the default value @code{subres} should be best.
+@c On some large degree univariate or bivariate problems @code{mod}
+@c may be better.
 
 @opencatbox
 @category{Polynomials}
