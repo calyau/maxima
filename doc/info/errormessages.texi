@@ -17,6 +17,7 @@ or on how to recover from errors.
 * loadfile failed to load::
 * makelist second argument must evaluate to a number::
 * Only symbols can be bound::
+* Operators of arguments must all be the same::
 * out of memory::
 * part fell off the end::
 * undefined variable during plotting::
@@ -158,7 +159,49 @@ counter.
 @closecatbox
 
 
-@node out of memory, part fell off the end, Only symbols can be bound, Error messages
+@node Operators of arguments must all be the same, out of memory, Only symbols can be bound, Error messages
+@subsection operators of arguments must all be the same
+One possible reason for this error message to appear is a try to use @mref{append} in order
+to add an equation to a list:
+@c ===beg===
+@c l:[a=1,b=2,c=3];
+@c append(l,d=5);
+@c ===end===
+@example
+@group
+(%i1) l:[a=1,b=2,c=3];
+(%o1)                 [a = 1, b = 2, c = 3]
+@end group
+@group
+(%i2) append(l,d=5);
+append: operators of arguments must all be the same.
+ -- an error. To debug this try: debugmode(true);
+@end group
+@end example
+In order to add an equation to a list it has to be wrapped in a
+single-element list first:
+@c ===beg===
+@c l:[a=1,b=2,c=3];
+@c append(l,[d=5]);
+@c ===end===
+@example
+@group
+(%i1) l:[a=1,b=2,c=3];
+(%o1)                 [a = 1, b = 2, c = 3]
+@end group
+@group
+(%i2) append(l,[d=5]);
+(%o2)             [a = 1, b = 2, c = 3, d = 5]
+@end group
+@end example
+
+
+@opencatbox
+@category{Error messages}
+@closecatbox
+
+
+@node out of memory, part fell off the end, Operators of arguments must all be the same, Error messages
 @subsection Out of memory
 Lisp typically handles several types of memory containing at least one stack
 and a heap that contains user objects. To avoid running out of memory several
