@@ -241,7 +241,7 @@ if the following maxima command is entered:
 @example
 @group
 (%i1) maxima_tempdir;
-(%o1)                     /home/gunter
+(%o1)                         /tmp
 @end group
 @end example
 
