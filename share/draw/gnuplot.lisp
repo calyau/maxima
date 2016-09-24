@@ -2806,10 +2806,8 @@
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
-            (if (or *multiplot-is-active*
-                    (equal (get-option '$terminal) '$eps)
-                    (equal (get-option '$terminal) '$epslatex_standalone) )
-               ""
+            (unless (or *multiplot-is-active*
+                        (member (get-option '$terminal) '($eps $epslatex $epslatex_standalone)))
                (format nil "set obj 1 fc rgb '~a' fs solid 1.0 noborder ~%"
                        (get-option '$background_color)) )
             (if (equal (get-option '$proportional_axes) '$none)
@@ -3397,8 +3395,8 @@
                      (incf nilcounter)))
                 (format cmdstorage "~%set size ~a, ~a~%" size1 size2)
                 (format cmdstorage "set origin ~a, ~a~%" origin1 origin2)
-                (when (and (not *multiplot-is-active*)
-                           (not (member (get-option '$terminal) '($epslatex $epslatex_standalone))))
+                (unless (or *multiplot-is-active*
+                            (member (get-option '$terminal) '($epslatex $epslatex_standalone)))
                   (format cmdstorage "set obj 1 rectangle behind from screen ~a,~a to screen ~a,~a~%" 
                                      origin1 origin2 (+ origin1 size1 ) (+ origin2 size2)))  ))
         (setf is1stobj t
