@@ -9,6 +9,7 @@ or on how to recover from errors.
 @section Error messages
 @menu
 * No such list element::
+* argument must be a non-atomic expression::
 * cannot assign to function::
 * 0 to a negative exponent::
 * Comma is not a prefix operator::
@@ -23,7 +24,7 @@ or on how to recover from errors.
 @end menu
 
 
-@node No such list element, cannot assign to function, Error messages, Error messages
+@node No such list element, argument must be a non-atomic expression, Error messages, Error messages
 @subsection apply: no such "list" element
 One common cause for this error message is that square brackets operator
 (@code{[ ]}) was used trying to access a list element that whose element
@@ -33,7 +34,49 @@ number was @code{< 1} or @code{> length(list)}.
 @closecatbox
 
 
-@node cannot assign to function, 0 to a negative exponent, No such list element, Error messages
+@node argument must be a non-atomic expression, cannot assign to function, No such list element, Error messages
+@subsection argument must be a non-atomic expression
+This normally means that a list, a set or something else that consists of more than one
+element was expected. One possible cause for this error message is a construct of the 
+following type:
+@c ===beg===
+@c l:[1,2,3];
+@c append(l,4);
+@c ===end===
+@example
+@group
+(%i1) l:[1,2,3];
+(%o1)                       [1, 2, 3]
+@end group
+@group
+(%i2) append(l,4);
+append: argument must be a non-atomic expression; found 4
+ -- an error. To debug this try: debugmode(true);
+@end group
+@end example
+The correct way to append variables or numbers to a list is to wrap them in a
+single-element list first:
+@c ===beg===
+@c l:[1,2,3];
+@c append(l,[4]);
+@c ===end===
+@example
+@group
+(%i1) l:[1,2,3];
+(%o1)                       [1, 2, 3]
+@end group
+@group
+(%i2) append(l,[4]);
+(%o2)                     [1, 2, 3, 4]
+@end group
+@end example
+
+@opencatbox
+@category{Error messages}
+@closecatbox
+
+
+@node cannot assign to function, 0 to a negative exponent, argument must be a non-atomic expression, Error messages
 @subsection assignment: cannot assign to <function name>
 Maxima supports several assignment operators. When trying to define a function
 @code{:=} has to be used.
