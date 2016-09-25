@@ -327,12 +327,29 @@ For binary output see @ref{Functions and Variables for binary input and output, 
 
 @c -----------------------------------------------------------------------------
 @anchor{openr}
-@deffn {Function} openr (@var{file}) 
+@deffn {Function} openr @
+@fname{openr} (@var{file}) @
+@fname{openr} (@var{file}, @var{encoding}) 
+
 
 Returns a character input stream to @var{file}.
 @code{openr} assumes that @var{file} already exists.
+If reading the file results in a lisp error about its encoding
+passing the correct string as the argument @var{encoding} might help.
+The available encodings and their names depend on the lisp being used.
+For sbcl a list of suitable strings can be found at
+@url{http://www.sbcl.org/manual/#External-Formats}.
 
 For binary input see @ref{Functions and Variables for binary input and output, , openr_binary} .
+See also @mref{close} and @mrefdot{openw}
+
+@example
+(%i1) istream : openr("data.txt","EUC-JP");
+(%o1)     #<FD-STREAM for "file /home/gunter/data.txt" @{10099A3AE3@}>
+(%i2) close(istream);
+(%o2)                                true
+@end example
+
 
 @opencatbox
 @category{File input} @category{Package stringproc}
@@ -349,6 +366,8 @@ If @var{file} does not exist, it will be created.
 If an existing file is opened, @code{openw} destructively modifies @var{file}.
 
 For binary output see @ref{Functions and Variables for binary input and output, , openw_binary} .
+
+See also @mref{close} and @mrefdot{openr}
 
 @opencatbox
 @category{File output} @category{Package stringproc}
