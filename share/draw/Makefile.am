@@ -10,4 +10,6 @@ draw-index.lisp: drawutils.info
 
 info_TEXINFOS = drawutils.texi
 
+AM_MAKEINFOHTMLFLAGS = --no-split
+
 EXTRA_DIST = draw-index.lisp

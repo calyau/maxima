@@ -10,4 +10,6 @@ logic-index.lisp: logic.info
 
 info_TEXINFOS = logic.texi
 
+AM_MAKEINFOHTMLFLAGS = --no-split
+
 EXTRA_DIST = logic-index.lisp

@@ -10,4 +10,6 @@ integration-index.lisp: abs_integrate.info
 
 info_TEXINFOS = abs_integrate.texi
 
+AM_MAKEINFOHTMLFLAGS = --no-split
+
 EXTRA_DIST = integration-index.lisp
