@@ -1,8 +1,5 @@
 /*************** -*- Mode: MACSYMA; Package: MAXIMA -*-  ******************/
 
-(load(sqdnst),0)$
-0;
-
 /* SF bug #3208 Can't solve this simple equation */
 algsys([x^2+y^2=1,(x-2)^2+(y-3)^2=9],[x,y]);
 [[x = 5/13-3^(5/2)/26, y = 3^(3/2)/13+15/26],
