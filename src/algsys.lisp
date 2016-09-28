@@ -487,7 +487,7 @@
 
 
 (defun presultant (p1 p2 var)
-  (cadr (ratf (resimplify ($resultant (pdis p1) (pdis p2) (pdis (list var 1 1)))))))
+  (cadr (ratf (simplify ($resultant (pdis p1) (pdis p2) (pdis (list var 1 1)))))))
 
 (defun ptimeftrs (l)
   (prog (ll)
@@ -508,11 +508,9 @@
   (mapcar #'(lambda (q) (ebaksubst1 solnl q)) lhsl))
 
 (defun ebaksubst1 (solnl q)
-  (cadr
-   (ratf
-    (what-the-$ev (pdis q)
-		  (cons '(mlist) solnl)
-		  '$radcan))))
+  (let ((e ($substitute `((mlist) ,@solnl) (pdis q))))
+    (setq e ($radcan e))
+    (cadr (ratf e))))
 
 (defun baksubst (solnl lhsl)
   (setq lhsl (delete 't (mapcar #'(lambda (q) (car (merrset (baksubst1 solnl q))))
