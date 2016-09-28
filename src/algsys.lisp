@@ -505,10 +505,14 @@
 ;; As well as doing the obvious substitution, EBAKSUBST also simplifies with
 ;; $RADCAN (presumably, E stands for Exponential)
 (defun ebaksubst (solnl lhsl)
-  (mapcar #'(lambda (q) (cadr (ratf (what-the-$ev (pdis q)
-						  (cons '(mlist) solnl)
-						  '$radcan))))
-	  lhsl))
+  (mapcar #'(lambda (q) (ebaksubst1 solnl q)) lhsl))
+
+(defun ebaksubst1 (solnl q)
+  (cadr
+   (ratf
+    (what-the-$ev (pdis q)
+		  (cons '(mlist) solnl)
+		  '$radcan))))
 
 (defun baksubst (solnl lhsl)
   (setq lhsl (delete 't (mapcar #'(lambda (q) (car (merrset (baksubst1 solnl q))))
