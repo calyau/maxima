@@ -73,5 +73,6 @@
         "rtest_powerseries"
         ((mlist) "rtest_laplace" 29 49 50 51 54 59 60 61 62 78 80)
         "rtest_plotoptions"
+	((mlist simp) "rtest_algsys" 2 3 4 17 18 20)
 	))
 
