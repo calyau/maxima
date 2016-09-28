@@ -487,7 +487,7 @@
 
 
 (defun presultant (p1 p2 var)
-  (cadr (ratf ($resultant (pdis p1) (pdis p2) (pdis (list var 1 1))))))
+  (cadr (ratf (resimplify ($resultant (pdis p1) (pdis p2) (pdis (list var 1 1)))))))
 
 (defun ptimeftrs (l)
   (prog (ll)
