@@ -507,8 +507,16 @@
 (defun ebaksubst (solnl lhsl)
   (mapcar #'(lambda (q) (ebaksubst1 solnl q)) lhsl))
 
+;; Many algsys failures occur in function EBAKSUBST1 [2016-09]
+;; For example:
+;;  - returning expressions that can be further simplified
+;;  - applying radcan to nested square-roots
+;;  - hangs due to radcan(very-large-expression)
 (defun ebaksubst1 (solnl q)
   (let ((e ($substitute `((mlist) ,@solnl) (pdis q))))
+    ;; sqrtdenest essentially only simplifies maxima constants
+    (when ($constantp e)
+      (setq e ($expand (sqrtdenest e))))
     (setq e ($radcan e))
     (cadr (ratf e))))
 
@@ -626,7 +634,13 @@
 ;;
 ;; Otherwise, or if SOLVE fails, we try to find an approximate solution with a
 ;; call to CALLAPPRS.
+;;
+;; SOLVE introduces solutions with nested radicals, which causes problems
+;; in EBAKSUBST1.  Try to clean up the solutions now.
 (defun callsolve (pv)
+  (mapcar  #'callsolve2 (callsolve1 pv)))
+
+(defun callsolve1 (pv)
   (let ((poly (car pv))
 	(var (cdr pv))
 	(varlist varlist)
@@ -655,6 +669,16 @@
                                    (realonly (remove-mult *roots))
                                    (remove-mult *roots))))))
 	  (t (callapprs poly)))))
+
+(defun callsolve2 (l)
+  "Simplify solution returned by callsolve1"
+  ;; l is single element list '((mequal simp) var expr)
+  (let* ((e (first l)) (op (mop e)) (var (second e)) (expr (third e)))
+    (cond
+     ;; sqrtdenest essentially only operates on maxima constants
+     (($constantp expr)
+      `(((,op) ,var ,(sqrtdenest expr))))
+     (t l))))
 
 ;;; (BIQUADRATICP POLY)
 ;;;

@@ -570,9 +570,14 @@ false;
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
 
-/* Kamke 2. 265  */ 
+/* Kamke 2. 265
+   2016-10:  Solvable with recent fixes to algsys.  Perhaps fragile solution */ 
 (pn_(265),ans:contrib_ode(eqn:(x-2)*(x-1)*'diff(y,x,2)-(2*x-3)*'diff(y,x,1)+y,y,x));
-false;
+[y = gauss_b((sqrt(5)+5)/2,-((sqrt(5)-5)/2),3,x-1)*%k2*(x-2)^2*(x-1)^2
+    +gauss_a((sqrt(5)+5)/2,-((sqrt(5)-5)/2),3,x-1)*%k1*(x-2)^2*(x-1)^2];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
+
 
 /* Kamke 2. 266  */ 
 (pn_(266),ans:contrib_ode(eqn:(x-2)^2*'diff(y,x,2)-(x-2)*'diff(y,x,1)-3*y,y,x));
