@@ -607,7 +607,8 @@
 	       (:module solve :source-pathname ""
 			:components ((:file "solve") 
 				     (:file "psolve") 
-				     (:file "algsys") 
+				     (:file "algsys")
+				     (:file "sqrtdenest")
 				     (:file "polyrz") 
 				     (:file "cpoly"))
 			:depends-on ("compatibility-macros1"))
