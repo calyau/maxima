@@ -19,3 +19,28 @@ sqrtdenest((19601-13860*sqrt(2))^(7/4));
 
 sqrtdenest(sqrtdenest((19601-13860*sqrt(2))^(7/4)));
 (5*sqrt(2)-7)^7$
+
+sqrtdenest(sqrt(3+2*sqrt(3)));
+3^(3/4)/sqrt(2)+3^(1/4)/sqrt(2);
+
+sqrtdenest(sqrt(4+3*sqrt(2)));
+2^(3/4)+2^(1/4);
+
+sqrtdenest(sqrt(199999-600*sqrt(111110)));
+10^(5/2)-3*sqrt(11111);
+
+sqrtdenest((sqrt(2*sqrt(6)+5)+1)^(1/3));
+(sqrt(3)+sqrt(2)+1)^(1/3);
+
+/* Some tests from sympy testsuite
+   https://github.com/sympy/sympy/blob/master/
+     sympy/simplify/tests/test_sqrtdenest.py [59403d3] of 8 Mar 2014
+ */
+sqrtdenest(sqrt(5+4*sqrt(5+2*sqrt(6))));
+sqrt(4*(sqrt(3)+sqrt(2))+5);
+
+sqrtdenest(sqrt(2*sqrt(3)+3));
+3^(3/4)/sqrt(2)+3^(1/4)/sqrt(2);
+
+sqrtdenest(sqrt(5*sqrt(3)+6*sqrt(2)));
+3^(3/4)+sqrt(2)*3^(1/4);
