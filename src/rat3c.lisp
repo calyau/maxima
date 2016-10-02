@@ -378,7 +378,7 @@
 (defun ucontent (p)			;CONTENT OF UNIV. POLY
   (cond ((pcoefp p) (abs p))
 	(t (setq p (mapcar #'abs (coefl (cdr p))))
-	   (let ((m (apply #'min p)))
+	   (let ((m (reduce #'min p)))
 	     (oldcontent2 (delete m p :test #'equal) m)))))
 
 ;;***	PGCDU CORRESPONDS TO BROWN'S ALGORITHM U
