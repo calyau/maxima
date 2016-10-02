@@ -511,6 +511,15 @@
             "stl.SetFileName(\"" filename ".stl\")" 
             "stl.Write()"
             "exit()" ))
+       ((eq terminal '$ply)
+          (format nil "~a~%~a~%~a~%~a~%~a~a~a~%~a~%~a~%"
+            "triangulator=vtk.vtkTriangleFilter()"
+            "triangulator.SetInputConnection(appenddata1.GetOutputPort())"
+            "stl=vtk.vtkPLYWriter()"
+            "stl.SetInputConnection(triangulator.GetOutputPort())"
+            "stl.SetFileName(\"" filename "\")" 
+            "stl.Write()"
+            "exit()" ))
        (t
           (merror "draw: unknown terminal for vtk")))))
 

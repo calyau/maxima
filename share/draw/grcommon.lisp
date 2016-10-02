@@ -381,7 +381,7 @@
                  $epslatex $epslatex_standalone $svg $x11 $qt
                  $dumb $dumb_file $pdf $pdfcairo $wxt $animated_gif
                  $multipage_pdfcairo $multipage_pdf $multipage_eps 
-                 $multipage_eps_color $aquaterm $tiff $vrml $obj $stl $pnm)))
+                 $multipage_eps_color $aquaterm $tiff $vrml $obj $stl $pnm $ply)))
      (cond
        ((member val terms)
           (when (and (eq val '$png) $draw_use_pngcairo)
