@@ -301,5 +301,45 @@ algsys([
  [x =   (sqrt(10)-1)/12,   y = -((sqrt(10)+1)/12),  z = 7/6],
  [x = -((sqrt(10)+1)/12),  y =   (sqrt(10)-1)/12,   z = 7/6]];
 
-(kill(eqt,eqs,F,G),done)$
+/* SF bug #2038
+   solve(eqs,[x,y]) gives correct solution
+   solve(subst(sqrt(3),q,eqs),[x,y]) yields []!
+*/
+algsys(eqs:[y^2+x^2-(400-400/(2/q+1))^2=0,
+       (-y-400/(2/q+1)+400)^2+x^2-640000/(2/q+1)^2=0],[x,y]);
+[[x = -(400*q*sqrt(-((q-2)/(q+2)))), y = -((400*q^2-800)/(q+2))],
+ [x =   400*q*sqrt(-((q-2)/(q+2))),  y = -((400*q^2-800)/(q+2))]];
+
+algsys(subst(q=sqrt(3),eqs),[x,y]);
+[[x = 1200-800*sqrt(3),y = 400*sqrt(3)-800],
+ [x = 800*sqrt(3)-1200,y = 400*sqrt(3)-800]];
+
+algsys(subst(q=1-sqrt(3),eqs),[x,y]);
+[[x = -((25*2^(7/2)*sqrt(3-sqrt(3))*sqrt(sqrt(3)-1)*sqrt(3)
+         +75*2^(7/2)*sqrt(3-sqrt(3))*sqrt(sqrt(3)-1))/3),
+ y = 800/sqrt(3)],
+[x = (25*2^(7/2)*sqrt(3-sqrt(3))*sqrt(sqrt(3)-1)*sqrt(3)
+         +75*2^(7/2)*sqrt(3-sqrt(3))*sqrt(sqrt(3)-1))/3,
+ y = 800/sqrt(3)]];
+
+/* SF bug #2736 (in comments)
+   Solving with p=1/(1-cos(1)) gave incorrect solution */
+eqs:[x*y=p,x-y=3]$
+[x*y = p,x-y = 3];
+
+algsys(subst(p=1/(1-cos(1)),eqs),[x,y])$
+[[x =   ((-sqrt(9*cos(1)^2-22*cos(1)+13))+3*cos(1)-3)/(2*cos(1)-2),
+  y =   -((sqrt(9*cos(1)^2-22*cos(1)+13) +3*cos(1)-3)/(2*cos(1)-2))],
+ [x =     (sqrt(9*cos(1)^2-22*cos(1)+13)+ 3*cos(1)-3)/(2*cos(1)-2),
+  y = -(((-sqrt(9*cos(1)^2-22*cos(1)+13))+3*cos(1)-3)/(2*cos(1)-2))]];
+
+float(%)$
+[[x =  3.603649840080336, y =  0.603649840080336],
+ [x = -0.603649840080336, y = -3.603649840080336]];
+
+float(algsys(subst(p=float(1/(1-cos(1))),eqs),[x,y]))$
+[[x = -0.6036497963666444,y = -3.603649796366644],
+ [x =  3.603649796366644, y =  0.6036497963666444]];
+
+(kill(eqt,eqs,F,G,p),done)$
 done;
