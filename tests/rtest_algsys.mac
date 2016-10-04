@@ -341,5 +341,18 @@ float(algsys(subst(p=float(1/(1-cos(1))),eqs),[x,y]))$
 [[x = -0.6036497963666444,y = -3.603649796366644],
  [x =  3.603649796366644, y =  0.6036497963666444]];
 
+/* SF bug 2059 - variable order dependent
+   No solution found for certain solution variable orders
+ */
+(eqs:[z-a=%i*b,z+a=c,a*z+3*(a-z)=13-12*%i,3*(z-a)+a*z=12*%i+13],
+algsys(eqs,[a,b,c,z]));
+[[a = (-2*%i)-3, b = 4, c = -6, z = 2*%i-3],
+ [a = 3-2*%i,    b = 4, c =  6, z = 2*%i+3]];
+
+/* Count the number of solutions for each permuation of variable */
+map(length,
+  map(lambda([u],algsys(eqs,u)), listify(permutations([a,b,c,z]))));
+[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2];
+
 (kill(eqt,eqs,F,G,p),done)$
 done;
