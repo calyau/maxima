@@ -357,12 +357,12 @@
 ;;; (PFREEOFMAINVARSP POLY)
 ;;;
 ;;; If POLY isn't a polynomial in the variables for which we're solving,
-;;; disrep it and apply $RADCAN.
+;;; disrep it and simplify appropriately.
 (defun pfreeofmainvarsp (poly)
   (if (or (atom poly)
           (member (car poly) *tvarxlist* :test #'eq))
       poly
-      ($radcan (pdis poly))))
+     (simplify-after-subst (pdis poly))))
 
 ;;; (LOFACTORS POLY)
 ;;;
@@ -507,17 +507,9 @@
 (defun ebaksubst (solnl lhsl)
   (mapcar #'(lambda (q) (ebaksubst1 solnl q)) lhsl))
 
-;; Many algsys failures occur in function EBAKSUBST1 [2016-09]
-;; For example:
-;;  - returning expressions that can be further simplified
-;;  - applying radcan to nested square-roots
-;;  - hangs due to radcan(very-large-expression)
 (defun ebaksubst1 (solnl q)
   (let ((e ($substitute `((mlist) ,@solnl) (pdis q))))
-    ;; sqrtdenest essentially only simplifies maxima constants
-    (when ($constantp e)
-      (setq e ($expand (sqrtdenest e))))
-    (setq e ($radcan e))
+    (setq e (simplify-after-subst e))
     (cadr (ratf e))))
 
 (defun baksubst (solnl lhsl)
@@ -544,6 +536,34 @@
   (let ((p (cadr (ratf ($ratsimp p)))))
     (or (numberp p)
 	(eq (pdis (pget (car p))) '$%i))))
+
+;; (SIMPLIFY-AFTER-SUBST EXPR)
+;;
+;; Simplify EXPR after substitution of a partial solution.
+;;
+;; Focus is on constant expressions:
+;; o failure to reduce a constant expression that is equivalent
+;;   to zero causes solutions to be falsely rejected
+;; o some operations, such as the reduction of nested square roots,
+;;   requires known sign and ordering of all terms
+;; o inappropriate simplification by $RADCAN introduced errors
+;;
+;; Problems from bug reports showed that further simplification of
+;; non-constant terms, with incomplete information, could lead to
+;; missed roots or unwanted complexity.
+;;
+;; $ratsimp with algebraic:true can transform
+;;     sqrt(2)*sqrt(-1/(sqrt(3)*%i+1)) => (sqrt(3)*%i)/2+1/2
+;; but $rectform is required for
+;;     sqrt(sqrt(3)*%i-1)) => (sqrt(3)*%i)/sqrt(2)+1/sqrt(2)
+(defun simplify-after-subst (expr)
+  "Simplify expression after substitution"
+  (let (($keepfloat t) ($algebraic t) (e expr))
+    (when ($constantp e)
+      (progn
+	(setq e (sqrtdenest e))
+	(setq e ($rectform e))))
+    ($ratsimp e)))
 
 ;; (BAKALEVEL SOLNL LHSL VAR)
 ;;
@@ -672,13 +692,9 @@
 
 (defun callsolve2 (l)
   "Simplify solution returned by callsolve1"
-  ;; l is single element list '((mequal simp) var expr)
-  (let* ((e (first l)) (op (mop e)) (var (second e)) (expr (third e)))
-    (cond
-     ;; sqrtdenest essentially only operates on maxima constants
-     (($constantp expr)
-      `(((,op) ,var ,(sqrtdenest expr))))
-     (t l))))
+  ;; l is a single element list '((mequal simp) var expr)
+  (let ((e (first l)))
+    `(((,(mop e)) ,(second e) ,(simplify-after-subst (third e))))))
 
 ;;; (BIQUADRATICP POLY)
 ;;;

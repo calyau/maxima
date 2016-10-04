@@ -616,10 +616,26 @@ y = -x/(x^2+%c);
 [riccati,0];
 
 /* 182 Riccati */
-(pn_(182),ans:contrib_ode(eqn:x*'diff(y,x)+a0+a1*x+(a2+a3*x*y)*y=0,y,x));
-[[y='diff(%u,x,1)/(%u*a3),%u*a3^2*(-a0/x-a1)-'diff(%u,x,1)*a2*a3/x-'diff(%u,x,2)*a3=0]];
-method;
-riccati;
+(pn_(182),ans:contrib_ode(eqn:x*'diff(y,x)+a0+a1*x+(a2+a3*x*y)*y=0,y,x),done);
+done;
+/* FIXME: Can't match form solution in testsuite
+[y = (sqrt(a1)*(%c*kummer_u(-((a0*sqrt(-a1)*sqrt(a3)-a1*a2)/(2*a1)),a2,
+                                   -2*sqrt(a1)*sqrt(-a3)*x)
+                      +kummer_m(-((a0*sqrt(-a1)*sqrt(a3)-a1*a2)/(2*a1)),a2,
+                                -2*sqrt(a1)*sqrt(-a3)*x)
+                      -(2*%c
+                        *dkummer_u(-((a0*sqrt(-a1)*sqrt(a3)-a1*a2)/(2*a1)),a2,
+                                   -2*sqrt(a1)*sqrt(-a3)*x))
+                      -(2*dkummer_m(-((a0*sqrt(-a1)*sqrt(a3)-a1*a2)/(2*a1)),a2,
+                                   -2*sqrt(a1)*sqrt(-a3)*x)))*sqrt(-a3))
+          /((%c*kummer_u(-((a0*sqrt(-a1)*sqrt(a3)-a1*a2)/(2*a1)),a2,
+                         -2*sqrt(a1)*sqrt(-a3)*x)
+           +kummer_m(-((a0*sqrt(-a1)*sqrt(a3)-a1*a2)/(2*a1)),a2,
+                     -2*sqrt(a1)*sqrt(-a3)*x))
+           *a3)];
+ */
+[method,radcan(ode_check(eqn,ans[1]))];
+[riccati,0];
 
 /* 183 Riccati - CHECK ME */
 (pn_(183),ans:contrib_ode(eqn:x*'diff(y,x)+a*x^2*y^2+2*y=b,y,x));

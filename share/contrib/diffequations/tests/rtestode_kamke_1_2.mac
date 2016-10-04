@@ -50,9 +50,24 @@ forget(a>0);
 
 /* 105 */
 (pn_(105),ans:contrib_ode(eqn:x*'diff(y,x)+a*x*y^2+b*y+c*x+d,y,x));
-[[y='diff(%u,x,1)/(%u*a),%u*a^2*(-d/x-c)-'diff(%u,x,1)*a*b/x-'diff(%u,x,2)*a = 0]];
-method;
-riccati;
+[y = (sqrt(a)*sqrt(-c)
+                    *(%c*kummer_u(-((sqrt(a)*sqrt(-c)*d-b*c)/(2*c)),b,
+                                  -2*sqrt(a)*sqrt(-c)*x)
+                     -2*%c
+                       *dkummer_u(-((sqrt(a)*sqrt(-c)*d-b*c)/(2*c)),b,
+                                  -2*sqrt(a)*sqrt(-c)*x))
+          +sqrt(a)*sqrt(-c)
+                  *kummer_m(-((sqrt(a)*sqrt(-c)*d-b*c)/(2*c)),b,
+                            -2*sqrt(a)*sqrt(-c)*x)
+          -2*sqrt(a)*sqrt(-c)
+            *dkummer_m(-((sqrt(a)*sqrt(-c)*d-b*c)/(2*c)),b,
+                       -2*sqrt(a)*sqrt(-c)*x))
+          /(a*(%c*kummer_u(-((sqrt(a)*sqrt(-c)*d-b*c)/(2*c)),b,
+                           -2*sqrt(a)*sqrt(-c)*x)
+              +kummer_m(-((sqrt(a)*sqrt(-c)*d-b*c)/(2*c)),b,
+                        -2*sqrt(a)*sqrt(-c)*x)))];
+[method,ode_check(eqn,ans[1])];
+[riccati,0];
 
 /* 106 */
 assume(not(equal(b+a,0)));
