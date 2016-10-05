@@ -1,4 +1,4 @@
-(kill(all), load("flatten.lisp"), 0);
+(kill(all), load("charsets_flatten.lisp"), 0);
 0$
 
 charsets_flatten(3);
