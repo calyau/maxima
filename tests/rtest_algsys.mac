@@ -3,6 +3,120 @@
 (kill(all), done);
 done;
 
+/* Examples from Beyer (1984), an early paper on algsys, which references
+   an internal General Motors report by Morgan (1981).  Morgan (1983) has
+   the same title and contains some of the problems.
+
+   Beyer, William A., Solution of Simultaneous Polynomial Equations by
+   Elimination in MACSYMA, Proceedings of the 1984 MACSYMA Users' Conference,
+   p 110-120
+
+   Morgan, Alexander P., A Method for Computing All Solutions to Systems of
+   Polynomials Equations, ACM Transactions on Mathematical Software,
+   9:1-17 (1983)
+ */
+
+/* Beyer example 1, p117 */
+algsys([x^2+x*y-1,y^2+x-5],[x,y]);
+[[x = -3.174087266251113,y = 2.859036144578313],
+ [x = 2.152189020152884,y = -1.687545787545788],
+ [x = 0.3937104979189148,y = 2.146226811046756],
+ [x = -0.3718122830843519,y = -2.317717206132879]];
+
+/* Beyer example 2, p117,  Morgan problem 1 */
+algsys([4*x^3-3*x-y,x^2-y],[x,y]);
+[[x = 1,y = 1],[x = -3/4,y = 9/16],[x = 0,y = 0]];
+
+/* Beyer example 3, p117, Morgan problem 2 */
+algsys([4*(x+y),4*(x+y)+(x-y)*((x-2)^2+y^2-1)],[x,y]);
+[[x = -((sqrt(2)*%i-2)/2), y =   (sqrt(2)*%i-2)/2],
+ [x =   (sqrt(2)*%i+2)/2,  y = -((sqrt(2)*%i+2)/2)],
+ [x = 0,y = 0]];
+
+/* Beyer example 4, p117 - Can't read poor copy of paper */
+
+/* Beyer example 5, p118 */
+/* CHECKME: expect 2 real and 6 complex solutions
+algsys([
+ x^2+2*y^2-4,
+ x^2+y^2+z-8,
+ (x-1)^2+(2*y-sqrt(2))^2+(z-5)^2-4],
+ [x,y]);
+[];
+ */
+
+/* Beyer example 6, p118 */
+block([%rnum:0],
+  algsys([x+10*y,z+w,(z-2*z)^2,(z-w)^2],[w,x,y,z]));
+[[w = 0, x = %r1 , y = -(%r1/10), z = 0]];
+
+/* Beyer example 7, p118 */
+/* CHECKME: Expect two real solutions
+algsys([
+ x+y+z+w-1,
+ x+y-z+w-3,
+ x^2+y^2+z^2+w^2-4,
+ (x-1)^2+y^2+z^2+w^2],
+ [w,x,y,z]);
+[[w = -(3^(3/2)*%i+1)/4, x = 5/2, y = (3^(3/2)*%i-1)/4,  z = -1],
+ [w =  (3^(3/2)*%i-1)/4, x = 5/2, y = -(3^(3/2)*%i+1)/4, z = -1]];
+ */
+
+/* Beyer example 8, p118. Two real solutions */
+algsys([
+ x1^2+x2^2+x3^2+x4-6,
+ x1+x2+x5+x6-1,
+ x1+3*x3+x6-3,
+ x1+x2+x4-2,
+ 2*x3+x6,
+ x5+x6],
+ [x1,x2,x3,x4,x5,x6]);
+[[x1 = 1,  x2 = 0,   x3 = 2,  x4 = 1, x5 = 4,   x6 = -4],
+ [x1 = 5/3,x2 = -2/3,x3 = 4/3,x4 = 1, x5 = 8/3, x6 = -8/3]];
+
+/* Beyer example 9, p118. Morgan problem 4
+   Three real and two complex solutions */
+algsys(
+ [x1+x1+x2+x3+x4+x5-6=0,
+  x2+x1+x2+x3+x4+x5-6=0,
+  x3+x1+x2+x3+x4+x5-6=0,
+  x4+x1+x2+x3+x4+x5-6=0,
+  x1*x2*x3*x4*x5-1=0],
+ [x1,x2,x3,x4,x5]);
+[[x1 = 0.916354556803995,
+  x2 = 0.916354556803995,
+  x3 = 0.916354556803995,
+  x4 = 0.916354556803995,
+  x5 = 1.418227215980025],
+ [x1 = -0.5790430889759374,
+  x2 = -0.5790430889759374,
+  x3 = -0.5790430889759374,
+  x4 = -0.5790430889759374,
+  x5 = 8.895215311004785],
+ [x1 = (-0.6100917318163317*%i)-0.06865574701986676,
+  x2 = (-0.6100917318163317*%i)-0.06865574701986676,
+  x3 = (-0.6100917318163317*%i)-0.06865574701986676,
+  x4 = (-0.6100917318163317*%i)-0.06865574701986676,
+  x5 = 3.050458659081659*%i+6.343278735099334],
+ [x1 = 0.6100917318163317*%i-0.06865574701986676,
+  x2 = 0.6100917318163318*%i-0.06865574701986678,
+  x3 = 0.6100917318163317*%i-0.06865574701986676,
+  x4 = 0.6100917318163317*%i-0.06865574701986676,
+  x5 = 6.343278735099333-3.050458659081658*%i],
+ [x1 = 1, x2 = 1, x3 = 1, x4 = 1, x5 = 1]];
+
+/* Beyer example 10, p118. 4 real one-parameter solutions */
+block([%rnum:0],
+  algsys([x^2+y^2-1,x^2+y^2+z^2-5=0],[x,y,z]));
+[[x = %r1, y = -sqrt(1-%r1^2), z =  2],
+ [x = %r2, y =  sqrt(1-%r2^2), z =  2],
+ [x = %r3, y = -sqrt(1-%r3^2), z = -2],
+ [x = %r4, y =  sqrt(1-%r4^2), z = -2]];
+
+/* Morgan problem 3.  Single solution (0,0,0,0) */
+algsys([x+10*y,sqrt(5)*(z-w),(y-2*z)^2,sqrt(10)*(x-w)^2],[w,x,y,z]);
+[[w = 0, x = 0, y = 0, z = 0]];
+
 /* SF bug #3208 Can't solve this simple equation */
 algsys([x^2+y^2=1,(x-2)^2+(y-3)^2=9],[x,y]);
 [[x = -((3^(5/2)-10)/26),y = (2*3^(3/2)+15)/26],
