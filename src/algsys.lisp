@@ -562,7 +562,8 @@
 ;;     sqrt(34)-sqrt(2)*sqrt(17) => 0
 (defun simplify-after-subst (expr)
   "Simplify expression after substitution"
-  (let (($keepfloat t) ($algebraic t) (e expr))
+  (let (($keepfloat t) ($algebraic t) (e expr)
+	($rootsconmode t) ($radexpand t))
     (when ($constantp e)
       (progn
 	(setq e (sqrtdenest e))
