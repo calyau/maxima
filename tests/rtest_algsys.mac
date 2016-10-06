@@ -429,12 +429,8 @@ algsys(subst(q=sqrt(3),eqs),[x,y]);
  [x = 800*sqrt(3)-1200,y = 400*sqrt(3)-800]];
 
 algsys(subst(q=1-sqrt(3),eqs),[x,y]);
-[[x = -((25*2^(7/2)*sqrt(3-sqrt(3))*sqrt(sqrt(3)-1)*sqrt(3)
-         +75*2^(7/2)*sqrt(3-sqrt(3))*sqrt(sqrt(3)-1))/3),
- y = 800/sqrt(3)],
-[x = (25*2^(7/2)*sqrt(3-sqrt(3))*sqrt(sqrt(3)-1)*sqrt(3)
-         +75*2^(7/2)*sqrt(3-sqrt(3))*sqrt(sqrt(3)-1))/3,
- y = 800/sqrt(3)]];
+[[x = -((25*2^(9/2))/3^(1/4)), y = 800/sqrt(3)],
+ [x =   (25*2^(9/2))/3^(1/4),  y = 800/sqrt(3)]];
 
 /* SF bug #2736 (in comments)
    Solving with p=1/(1-cos(1)) gave incorrect solution */
@@ -467,6 +463,18 @@ algsys(eqs,[a,b,c,z]));
 map(length,
   map(lambda([u],algsys(eqs,u)), listify(permutations([a,b,c,z]))));
 [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2];
+
+/* SF bug #453 algsys fails in simple case */
+algsys([v^2-2*v+u^2+10*u+1,v^2-10*v+u^2+2*u+1],[v,u]);
+[[v = -((sqrt(34)-6)/2), u =   (sqrt(2)*sqrt(17)-6)/2],
+ [v =   (sqrt(34)+6)/2,  u = -((sqrt(2)*sqrt(17)+6)/2)]];
+
+algsys([2*v^2-12*v+1,v^2-2*v+u^2+10*u+1],[v,u]);
+
+[[v = -((sqrt(2)*sqrt(17)-6)/2), u = -((sqrt(34)+14)/2)],
+ [v =   (sqrt(2)*sqrt(17)+6)/2,  u =   (sqrt(34)-14)/2],
+ [v =   (sqrt(2)*sqrt(17)+6)/2,  u = -((sqrt(34)+6)/2)],
+ [v = -((sqrt(2)*sqrt(17)-6)/2), u =   (sqrt(34)-6)/2]];
 
 (kill(eqt,eqs,F,G,p),done)$
 done;

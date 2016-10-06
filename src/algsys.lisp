@@ -547,6 +547,8 @@
 ;; o some operations, such as the reduction of nested square roots,
 ;;   requires known sign and ordering of all terms
 ;; o inappropriate simplification by $RADCAN introduced errors
+;;   $radcan(sqrt(-1/(1+%i)))     => exhausts heap
+;;   $radcan(sqrt(6-3^(3/2))) > 0 => sqrt(sqrt(3)-2)*sqrt(3)*%i < 0
 ;;
 ;; Problems from bug reports showed that further simplification of
 ;; non-constant terms, with incomplete information, could lead to
@@ -556,13 +558,16 @@
 ;;     sqrt(2)*sqrt(-1/(sqrt(3)*%i+1)) => (sqrt(3)*%i)/2+1/2
 ;; but $rectform is required for
 ;;     sqrt(sqrt(3)*%i-1)) => (sqrt(3)*%i)/sqrt(2)+1/sqrt(2)
+;; and $rootscontract is required for
+;;     sqrt(34)-sqrt(2)*sqrt(17) => 0
 (defun simplify-after-subst (expr)
   "Simplify expression after substitution"
   (let (($keepfloat t) ($algebraic t) (e expr))
     (when ($constantp e)
       (progn
 	(setq e (sqrtdenest e))
-	(setq e ($rectform e))))
+	(setq e ($rectform e))
+	(setq e ($rootscontract e))))
     ($ratsimp e)))
 
 ;; (BAKALEVEL SOLNL LHSL VAR)
