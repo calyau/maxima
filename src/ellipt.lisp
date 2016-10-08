@@ -1836,7 +1836,7 @@ first kind:
 	   `(($elliptic_f) ,phi ,m))
 	  ((zerop1 m)
 	   ;; 3 cases depending on n < 1, n > 1, or n = 1.
-	   (let ((s (asksign `((mplus) -1 ,n))))
+	   (let ((s (asksign (resimplify `((mplus) -1 ,n)))))
 	     (case s
 	       ($positive
 		(div (take '(%atanh) (mul (power (add n -1) 1//2)

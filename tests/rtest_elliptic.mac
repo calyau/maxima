@@ -437,6 +437,14 @@ sec(phi)^2/(1+tan(phi)^2/4);
 diff(elliptic_pi(1,phi,0),phi);
 sec(phi)^2;
 
+/* signbfloat:false provokes "Is 0 positive, negative, or zero?" */
+(signbfloat:false, 
+ diff(elliptic_pi(1,phi,0),phi));
+sec(phi)^2;
+
+(reset (signbfloat), 0);
+0;
+
 /* Special values */
 elliptic_ec(1);
 1;
