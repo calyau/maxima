@@ -563,11 +563,17 @@
 (defun simplify-after-subst (expr)
   "Simplify expression after substitution"
   (let (($keepfloat t) ($algebraic t) (e expr)
+	e2 e-size (growth-factor 1.2)
 	($rootsconmode t) ($radexpand t))
     (when ($constantp e)
       (progn
 	(setq e (sqrtdenest e))
-	(setq e ($rectform e))
+	;; Rectform does more than is wanted.  A function that denests and
+	;; rationalizes nested complex radicals would be better.
+	;; Limit expression growth.  The factor is based on trials.
+	(setq e2 ($rectform e))
+	(when (< (conssize e2) (* growth-factor (conssize e)))
+	  (setq e e2))
 	(setq e ($rootscontract e))))
     ($ratsimp e)))
 
