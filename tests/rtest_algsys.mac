@@ -373,6 +373,14 @@ block([%rnum:0], algsys([
 [v,w,x,y,z]));
 [[v=%r1,w=%r2,x=%r3,y=%r4,z=0]];
 
+/* Test problems distilled from share/contrib/diffequations tests
+
+   The odelin method for linear second order ODEs calls algys.
+   Changes to algsys capability change the odelin results.
+   A number of tests below were obtained by tracing algsys
+   while solving ODES with odelin (or contrib_ode).
+ */
+
 /* Solved by odelin for Kamke ODE 2.265.  New solution 2016-09 */
  algsys(
  [y = -1,
@@ -496,6 +504,122 @@ algsys([2*v^2-12*v+1,v^2-2*v+u^2+10*u+1],[v,u]);
  [v =   (sqrt(2)*sqrt(17)+6)/2,  u =   (sqrt(34)-14)/2],
  [v =   (sqrt(2)*sqrt(17)+6)/2,  u = -((sqrt(34)+6)/2)],
  [v = -((sqrt(2)*sqrt(17)-6)/2), u =   (sqrt(34)-6)/2]];
+
+/* Solved by odelin for Kamke ODE 2.184. */
+algsys(
+[w^2-a^2*w,2*w*x-2*a^2*x,
+ w*(2*y+2*a*c+b^2)-3*a^2*y+x^2-2*a*b*x+A*a^2,
+ w*(2*z+4*b*c)-4*a^2*z+2*x*y-4*a*b*y+2*A*a*b,
+ x*(2*z+2*b*c)-6*a*b*z+y^2+((-2*a*c)-b^2)*y+3*c^2*w+2*A*a*c+A*b^2,
+ 2*y*z+((-4*a*c)-2*b^2)*z+2*c^2*x+2*A*b*c,z^2-2*b*c*z+c^2*y+A*c^2],
+ [w,x,y,z]);
+[[w = a^2,
+  x = (a*(3*b-sqrt((-4*a*c)+b^2-4*A)))/2,
+  y = (a*c*(sqrt((-4*a*c)+b^2-4*A)+3*b)+2*A*b)/(sqrt((-4*a*c)+b^2-4*A)+b),
+  z = (c*(b-sqrt((-4*a*c)+b^2-4*A)))/2],
+ [w = a^2,
+  x = (a*(sqrt((-4*a*c)+b^2-4*A)+3*b))/2,
+  y = (a*c*(3*b-sqrt((-4*a*c)+b^2-4*A))+2*A*b)/(b-sqrt((-4*a*c)+b^2-4*A)),
+  z = (c*(sqrt((-4*a*c)+b^2-4*A)+b))/2]];
+
+/* Solved by odelin for Kamke ODE 2.119. */
+ algsys([x^2-x-b^2-b,2*x*y-2*y,y^2],[x,y]);
+[[x = -b, y = 0], [x = b+1, y = 0]];
+
+/* Solved by odelin for Kamke ODE 2.331. */
+algsys([x^2-16*x+48,2*x*y-32*y-192,y^2+64*y+64*x+192],[x,y]);
+[[x = 12,y = -24],[x = 4,y = -8]];
+
+/* Solved by odelin for Kamke ODE 2.382. */
+algsys([
+ w^2-w,
+ 2*w*x-2*x,w*(2*y+b^2+4*a*b+a^2)-3*y+x^2+(2*b+2*a)*x-c,
+ w*(2*z-4*a*b^2-4*a^2*b)-4*z+2*x*y+(4*b+4*a)*y+(2*b+2*a)*c,
+ x*(2*z-2*a*b^2-2*a^2*b)+(6*b+6*a)*z+y^2+((-b^2)-4*a*b-a^2)*y
+   +3*a^2*b^2*w+((-b^2)-4*a*b-a^2)*c,
+ 2*y*z+((-2*b^2)-8*a*b-2*a^2)*z+2*a^2*b^2*x+(2*a*b^2+2*a^2*b)*c,
+ z^2+(2*a*b^2+2*a^2*b)*z+a^2*b^2*y-a^2*b^2*c],
+[w,x,y,z]);
+[[w = 1,
+ x = -((sqrt(4*c+b^2-2*a*b+a^2)+3*b+3*a)/2),
+ y = -((b*(a*sqrt(4*c+b^2-2*a*b+a^2)-3*a^2)+(2*b+2*a)*c-3*a*b^2)
+       /((-sqrt(4*c+b^2-2*a*b+a^2))+b+a)),
+ z = -((b*(a*sqrt(4*c+b^2-2*a*b+a^2)+a^2)+a*b^2)/2)],
+[w = 1,
+ x = -(((-sqrt(4*c+b^2-2*a*b+a^2))+3*b+3*a)/2),
+ y = -((b*((-a*sqrt(4*c+b^2-2*a*b+a^2))-3*a^2)+(2*b+2*a)*c-3*a*b^2)
+       /(sqrt(4*c+b^2-2*a*b+a^2)+b+a)),
+ z = -((b*(a^2-a*sqrt(4*c+b^2-2*a*b+a^2))+a*b^2)/2)]];
+
+/* Solved by odelin for Kamke ODE 2.383. */
+algsys([
+  w^2-4*w,
+  2*w*x-8*x,
+  w*(2*y+4*b^2+16*a*b+4*a^2)-12*y+x^2+(8*b+8*a)*x+b*(8*a*b^2-16*a^2*b+8*a^3)
+                            +(4-4*a^2)*b^2+b^2*((-4*b^2)+8*a*b-4*a^2)
+                            +(8*a^3-8*a)*b-4*a^4+4*a^2,
+  w*(2*z-16*a*b^2-16*a^2*b)-16*z+2*x*y+(16*b+16*a)*y
+                           +b*((-16*a*b^3)+16*a^2*b^2+16*a^3*b-16*a^4)
+                           +b^2*(8*b^3-8*a*b^2-8*a^2*b+8*a^3)+(8*a^2-8)*b^3
+                           +(8*a-8*a^3)*b^2+(8*a^2-8*a^4)*b+8*a^5-8*a^3,
+  x*(2*z-8*a*b^2-8*a^2*b)+(24*b+24*a)*z+y^2+((-4*b^2)-16*a*b-4*a^2)*y
+                         +12*a^2*b^2*w
+                         +b*(8*a*b^4+16*a^2*b^3-48*a^3*b^2+16*a^4*b+8*a^5)
+                         +(4-4*a^2)*b^4
+                         +b^2*((-4*b^4)-8*a*b^3+24*a^2*b^2-8*a^3*b-4*a^4)
+                         +(8*a-8*a^3)*b^3+(24*a^4-24*a^2)*b^2+(8*a^3-8*a^5)*b
+                         -4*a^6+4*a^4,
+  2*y*z+((-8*b^2)-32*a*b-8*a^2)*z+8*a^2*b^2*x
+       +b*((-16*a^2*b^4)+16*a^3*b^3+16*a^4*b^2-16*a^5*b)
+       +b^2*(8*a*b^4-8*a^2*b^3-8*a^3*b^2+8*a^4*b)+(8*a^3-8*a)*b^4
+       +(8*a^2-8*a^4)*b^3+(8*a^3-8*a^5)*b^2+(8*a^6-8*a^4)*b,
+  z^2+(8*a*b^2+8*a^2*b)*z+4*a^2*b^2*y+b*(8*a^3*b^4-16*a^4*b^3+8*a^5*b^2)
+     +b^2*((-4*a^2*b^4)+8*a^3*b^3-4*a^4*b^2)+(4*a^2-4*a^4)*b^4
+     +(8*a^5-8*a^3)*b^3+(4*a^4-4*a^6)*b^2],
+ [w,x,y,z]);
+[[w = 4,
+  x = 2*b^2+((-4*a)-6)*b+2*a^2-6*a,
+  y = (-2*b^3)+(2*a+2)*b^2+(2*a^2+8*a)*b-2*a^3+2*a^2,
+  z = 2*a*b^3+((-4*a^2)-2*a)*b^2+(2*a^3-2*a^2)*b],
+ [w = 4,
+  x = (-2*b^2)+(4*a-6)*b-2*a^2-6*a,
+  y = 2*b^3+(2-2*a)*b^2+(8*a-2*a^2)*b+2*a^3+2*a^2,
+  z = (-2*a*b^3)+(4*a^2-2*a)*b^2+((-2*a^3)-2*a^2)*b]];
+
+/* Eugene L. Allgower, Kurt Georg and Rick Miranda, The Method of
+   Resultants for Computing Real Solutions of Polynomial Systems, 
+   SIAM Journal on Numerical Analysis, Vol 29 No 3, Jun 1992, pp 831-844
+ */
+
+/* Example 1, p840, qe 12.  Robot arm coordinates.
+   Real solutions have y = +/- 1.6237 
+ */
+(p1:x^2*y^2+(2/q2)*x^2*y+(2/q2)*(1-b)*x*y^2+x^2+y^2-(2/q2)*(1+b)*x-(2/q2)*y+1,
+ p2:(1-b-q1)*x^2*y^2+(-1-b-q1)*x^2-4*x*y+(-1+b-q1)*y^2+(1+b-q1),
+ algsys(subst([b=1/2,q1=4/5,q2=2/5],[p1,p2]),[x,y]));
+[[x = %i,y = -%i],
+ [x = -%i,y = %i],
+ [x = %i,y = -3*%i],
+ [x = -%i,y = 3*%i],
+ [x =   (sqrt(319)+8)/17,  y = -(sqrt(29)/sqrt(11))],
+ [x = -((sqrt(319)-8)/17), y =   sqrt(29)/sqrt(11)]];
+float([%[5],%[6]]);
+[[x = 1.521210064675985, y = -1.623688281771977],
+ [x = -0.58003359408775, y =  1.623688281771977]];
+
+/* Example 2, p 841.  Intersection of a sphere with two paraboloids,
+   Two real solutions (not found by maxima 5.38.0)
+   y = z = (sqrt(5)-1)/2, x = +/- sqrt(z-y^2)
+ */
+algsys([x^2+y^2+z^2-1,z-x^2-y^2,y-x^2-z^2],[x,y,z]);
+[[x =  sqrt(2)*%i,         y =   (sqrt(5)-1)/2,  z = -((sqrt(5)+1)/2)],
+ [x =  sqrt(2)*%i,         y = -((sqrt(5)+1)/2), z =   (sqrt(5)-1)/2],
+ [x = -sqrt(2)*%i,         y =   (sqrt(5)-1)/2,  z = -((sqrt(5)+1)/2)],
+ [x = -sqrt(2)*%i,         y = -((sqrt(5)+1)/2), z =   (sqrt(5)-1)/2],
+ [x =  sqrt((-sqrt(5))-2), y = -((sqrt(5)+1)/2), z = -((sqrt(5)+1)/2)],
+ [x = -sqrt((-sqrt(5))-2), y = -((sqrt(5)+1)/2), z = -((sqrt(5)+1)/2)],
+ [x =  sqrt(sqrt(5)-2),    y =   (sqrt(5)-1)/2,  z =   (sqrt(5)-1)/2],
+ [x = -sqrt(sqrt(5)-2),    y =   (sqrt(5)-1)/2,  z =   (sqrt(5)-1)/2]];
 
 (kill(eqt,eqs,F,G,p),done)$
 done;
