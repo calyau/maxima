@@ -541,7 +541,8 @@
 (defun run-testsuite (&key display_known_bugs display_all tests time share_tests debug)
   (declare (special $file_search_tests))
   (let ((test-file)
-	(expected-failures))
+	(expected-failures)
+	(test-file-path))
     ;; Allow only T and NIL for display_known_bugs and display_all
     (unless (member display_known_bugs '(t nil))
       (merror (intl:gettext "run_testsuite: display_known_bugs must be true or false; found: ~M") display_known_bugs))
@@ -570,9 +571,14 @@
 	   ;; Do nothing
 	   (values $testsuite_files $file_search_tests))
 	  ((t)
-	   ;; Append the share files
+	   ;; Append the share files and concatenate the search paths
+	   ;; for tests and maxima so we can find both sets of tests.
 	   (values ($append $testsuite_files $share_testsuite_files)
-		   $file_search_maxima))
+		   ;; Is there a better way to do this?
+		   (concatenate 'list
+				'((mlist))
+				(rest $file_search_tests)
+				(rest $file_search_maxima))))
 	  ($only
 	   ;; Only the share test files
 	   (values $share_testsuite_files $file_search_maxima)))
@@ -580,7 +586,8 @@
 	    ($file_search_tests desired-search-path))
 	(when debug
 	  (let (($stringdisp t))
-	    (mformat t "$testsuite_files = ~M~%" $testsuite_files)))
+	    (mformat t "$testsuite_files = ~M~%" $testsuite_files)
+	    (mformat t "$file_search_tests = ~M~%" $file_search_tests)))
 	(let ((error-break-file)
 	      (testresult)
 	      (tests-to-run (intersect-tests (cond ((consp tests) tests)
@@ -598,6 +605,7 @@
 		       do (if (atom testentry)
 			      (progn
 				(setf test-file testentry)
+				(setf test-file-path ($file_search test-file $file_search_tests))
 				(setf expected-failures nil))
 			      (progn
 				(setf test-file (second testentry))
@@ -607,11 +615,13 @@
 				  (if (symbolp test-file)
 				      (subseq (print-invert-case test-file) 1)
 				      test-file))
+			  (when debug
+			    (format t (intl:gettext "(~A) ") test-file-path))
 			  (or
 			    (errset
 			      (progn
 				(multiple-value-setq (testresult test-count)
-				  (test-batch ($file_search test-file $file_search_tests)
+				  (test-batch test-file-path
 					      expected-failures :show-expected display_known_bugs
 					      :show-all display_all :showtime time))
 				(setf testresult (rest testresult))
@@ -625,8 +635,14 @@
 				    (append errs
 					    (list (list error-break-file "error break"))))
 			      (format t
-				      (intl:gettext "~%Caused an error break: ~a~%")
-				      test-file)))
+				      (intl:gettext "~%Caused an error break: ~a")
+				      test-file)
+			      ;; If the test failed because we
+			      ;; couldn't find the file, make a noe of
+			      ;; that.
+			      (unless test-file-path
+				(format t (intl:gettext ": test file not found.")))
+			      (format t "~%")))
 		       finally (cond
 				 ((null errs)
 				  (format t
