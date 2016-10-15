@@ -796,6 +796,8 @@ One of the uses of this function is to @code{map} a function (e.g.
 wouldn't be possible to use the function on the entire expression due to an
 exhaustion of list storage space in the course of the computation.
 
+See also @mrefcomma{scanmap} @mrefcomma{maplist} @mrefcomma{outermap} @mref{matrixmap} and @mrefdot{apply}
+
 @c IN THESE EXAMPLES, SPELL OUT WHAT IS THE MAIN OPERATOR 
 @c AND SHOW HOW THE RESULT FOLLOWS FROM THE DESCRIPTION STATED IN THE FIRST PARAGRAPH
 @example
