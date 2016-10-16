@@ -1852,19 +1852,92 @@ first kind:
 	   ;; Nothing to do
 	   (eqtest (list '($elliptic_pi) n phi m) form)))))
 
+;; Complete elliptic-pi.  That is phi = %pi/2.  Then
+;; elliptic_pi(n,m)
+;;   = Rf(0, 1-m,1) + Rj(0,1-m,1-n)*n/3;
+(defun elliptic-pi-complete (n m)
+  (to (bigfloat:+ (bigfloat::bf-rf 0 (- 1 m) 1)
+	 (bigfloat:* 1/3 n (bigfloat::bf-rj 0 (- 1 m) 1 (- 1 n))))))
+
+;; To compute elliptic_pi for all z, we use the property
+;; (http://functions.wolfram.com/08.06.16.0002.01)
+;; 
+;; elliptic_pi(n, z + %pi*k, m)
+;;   = 2*k*elliptic_pi(n, %pi/2, m) + elliptic_pi(n, z, m)
+;;
+;; So we are left with computing the integral for 0 <= z < %pi.  Using
+;; Carlson's formulation produces the wrong values for %pi/2 < z <
+;; %pi.  How to do that?
+;;
+;; Let
+;;
+;;   I(a,b) = integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, a, b)
+;;
+;; That is, I(a,b) is the integral for the elliptic_pi function but
+;; with a lower limit of a and an upper limit of b.
+;;
+;; Then, we want to compute I(0, z), with %pi <= z < %pi.  Let w = z +
+;; %pi/2, 0 <= w < %pi/2.  Then
+;;
+;;   I(0, w+%pi/2) = I(0, %pi/2) + I(%pi/2, w+%pi/2)
+;;
+;; To evaluate I(%pi/2, w+%pi/2), use a change of variables:
+;;
+;;   changevar('integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, %pi/2, w + %pi/2),
+;;      x-%pi+u,u,x)
+;;
+;;     = integrate(-1/(sqrt(1-m*sin(u)^2)*(1-n*sin(u)^2)),u,%pi/2-w,%pi/2)
+;;     = I(%pi/2-w,%pi/2)
+;;     = I(0,%pi/2) - I(0,%pi/2-w)
+;; 
+;; Thus,
+;;
+;;   I(0,%pi/2+w) = 2*I(0,%pi/2) - I(0,%pi/2-w)
+;;
+;; This allows us to compute the general result with 0 <= z < %pi
+;;
+;;   I(0, k*%pi + z) = 2*k*I(0,%pi/2) + I(0,z);
+;;
+;; If 0 <= z < %pi/2, then the we are done.  If %pi/2 <= z < %pi, let
+;; z = w+%pi/2. Then
+;;
+;;   I(0,z) = 2*I(0,%pi/2) - I(0,%pi/2-w)
+;;
+;; Or, since w = z-%pi/2:
+;;
+;;   I(0,z) = 2*I(0,%pi/2) - I(0,%pi-z)
+ 
 (defun elliptic-pi (n phi m)
+  ;; elliptic_pi(n, -phi, m) = -elliptic_pi(n, phi, m).  That is, it
+  ;; is an odd function of phi.
+  (when (minusp phi)
+    (return-from elliptic-pi (- (elliptic-pi n (- phi) m))))
+
   ;; Note: Carlson's DRJ has n defined as the negative of the n given
   ;; in A&S.
-  (let* ((nn (- n))
-	 (sin-phi (sin phi))
-	 (cos-phi (cos phi))
-	 (k (sqrt m))
-	 (k2sin (* (- 1 (* k sin-phi))
-		   (+ 1 (* k sin-phi)))))
-    (to (- (* sin-phi (bigfloat::bf-rf (expt cos-phi 2) k2sin 1.0))
-	   (* (/ nn 3) (expt sin-phi 3)
-	      (bigfloat::bf-rj (expt cos-phi 2) k2sin 1.0
-			       (- 1 (* n (expt sin-phi 2)))))))))
+  (flet ((base (n phi m)
+	   ;; elliptic_pi(n,phi,m) =
+	   ;;   sin(phi)*Rf(cos(phi)^2, 1-m*sin(phi)^2, 1)
+	   ;;   - (-n / 3) * sin(phi)^3
+	   ;;     * Rj(cos(phi)^2, 1-m*sin(phi)^2, 1, 1-n*sin(phi)^2)
+	   (let* ((nn (- n))
+		  (sin-phi (sin phi))
+		  (cos-phi (cos phi))
+		  (k (sqrt m))
+		  (k2sin (* (- 1 (* k sin-phi))
+			    (+ 1 (* k sin-phi)))))
+	     (to (- (* sin-phi (bigfloat::bf-rf (expt cos-phi 2) k2sin 1.0))
+		    (* (/ nn 3) (expt sin-phi 3)
+		       (bigfloat::bf-rj (expt cos-phi 2) k2sin 1.0
+					(- 1 (* n (expt sin-phi 2))))))))))
+    (multiple-value-bind (cycles rem)
+	(floor phi pi)
+      (let ((complete (elliptic-pi-complete n m)))
+	(+ (* 2 cycles complete)
+	   (if (> rem (/ pi 2))
+	       (- (* 2 complete)
+		  (base n (- pi rem) m))
+	       (base n rem m)))))))
 
 ;;; Deriviatives from functions.wolfram.com
 ;;; http://functions.wolfram.com/EllipticIntegrals/EllipticPi3/20/
@@ -2270,19 +2343,36 @@ first kind:
 	   (- (bf-rf 0 m1 1)
 	      (* m 1/3 (bf-rd 0 m1 1)))))))
 
+(defun bf-elliptic-pi-complete (n m)
+  (+ (bf-rf 0 (- 1 m) 1)
+     (* 1/3 n (bf-rj 0 (- 1 m) 1 (- 1 n)))))
+
 (defun bf-elliptic-pi (n phi m)
   ;; Note: Carlson's DRJ has n defined as the negative of the n given
   ;; in A&S.
-  (let* ((nn (- n))
-	 (sin-phi (sin phi))
-	 (cos-phi (cos phi))
-	 (k (sqrt m))
-	 (k2sin (* (- 1 (* k sin-phi))
-		   (+ 1 (* k sin-phi)))))
-    (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
-       (* (/ nn 3) (expt sin-phi 3)
-	  (bf-rj (expt cos-phi 2) k2sin 1.0
-		 (- 1 (* n (expt sin-phi 2))))))))
+  (when (minusp phi)
+    (return-from bf-elliptic-pi (- (bf-elliptic-pi n (- phi) m))))
+
+  (flet ((base (n phi m)
+	   (let* ((nn (- n))
+		  (sin-phi (sin phi))
+		  (cos-phi (cos phi))
+		  (k (sqrt m))
+		  (k2sin (* (- 1 (* k sin-phi))
+			    (+ 1 (* k sin-phi)))))
+	     (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
+		(* (/ nn 3) (expt sin-phi 3)
+		   (bf-rj (expt cos-phi 2) k2sin 1.0
+			  (- 1 (* n (expt sin-phi 2)))))))))
+    (let ((bf-pi (%pi phi)))
+      (multiple-value-bind (cycles rem)
+	  (floor phi bf-pi)
+	(let ((complete (bf-elliptic-pi-complete n m)))
+	  (+ (* 2 cycles complete)
+	     (if (> rem (/ bf-pi 2))
+		 (- (* 2 complete)
+		    (base n (- bf-pi rem) m))
+		 (base n rem m))))))))
 
 ;; Compute inverse_jacobi_sn, for float or bigfloat args.
 (defun bf-inverse-jacobi-sn (u m)
