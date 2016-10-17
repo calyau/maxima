@@ -1020,5 +1020,22 @@ test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),z),[n,z,m],2,l3,2.0e-7,1.0e-8);
 test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),m),[n,z,m],3,l3,2.0e-7,1.0e-8);
 [];
 
+/* Test for Bug 3221 */
+closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<tol) then true else abse);
+closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<tol) then true else abse);
+
+closeto(elliptic_pi(0.2,1.57,0.8) - 2.5770799919605668, 1e-14);
+true;
+closeto(elliptic_pi(0.2,1.58,0.8) - 2.60502920656026151, 1e-14);
+true;
+closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090829025, 1e-14);
+true;
+closeto(elliptic_pi(0.2b0,1.57b0,0.8b0) - 2.5770799919605668, 1e-14);
+true;
+closeto(elliptic_pi(0.2b0,1.58b0,0.8b0) - 2.60502920656026151, 1e-14);
+true;
+closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090829025, 1e-14);
+true;
+
 (kill(l2,l3,test_deriv),done);
 done;
