@@ -1910,7 +1910,7 @@ first kind:
 (defun elliptic-pi (n phi m)
   ;; elliptic_pi(n, -phi, m) = -elliptic_pi(n, phi, m).  That is, it
   ;; is an odd function of phi.
-  (when (minusp phi)
+  (when (minusp (realpart phi))
     (return-from elliptic-pi (- (elliptic-pi n (- phi) m))))
 
   ;; Note: Carlson's DRJ has n defined as the negative of the n given
@@ -1926,17 +1926,16 @@ first kind:
 		  (k (sqrt m))
 		  (k2sin (* (- 1 (* k sin-phi))
 			    (+ 1 (* k sin-phi)))))
-	     (to (- (* sin-phi (bigfloat::bf-rf (expt cos-phi 2) k2sin 1.0))
+	     (- (* sin-phi (bigfloat::bf-rf (expt cos-phi 2) k2sin 1.0))
 		    (* (/ nn 3) (expt sin-phi 3)
 		       (bigfloat::bf-rj (expt cos-phi 2) k2sin 1.0
-					(- 1 (* n (expt sin-phi 2))))))))))
-    (multiple-value-bind (cycles rem)
-	(floor phi pi)
+					(- 1 (* n (expt sin-phi 2)))))))))
+    ;; FIXME: Reducing the arg by pi has significant round-off.
+    ;; Consider doing something better.
+    (let* ((cycles (round (realpart phi) pi))
+	   (rem (- phi (* cycles pi))))
       (let ((complete (elliptic-pi-complete n m)))
-	(+ (* 2 cycles complete)
-	   (if (> rem (/ pi 2))
-	       (- (* 2 complete)
-		  (base n (- pi rem) m))
+	(to (+ (* 2 cycles complete)
 	       (base n rem m)))))))
 
 ;;; Deriviatives from functions.wolfram.com
@@ -2350,9 +2349,6 @@ first kind:
 (defun bf-elliptic-pi (n phi m)
   ;; Note: Carlson's DRJ has n defined as the negative of the n given
   ;; in A&S.
-  (when (minusp phi)
-    (return-from bf-elliptic-pi (- (bf-elliptic-pi n (- phi) m))))
-
   (flet ((base (n phi m)
 	   (let* ((nn (- n))
 		  (sin-phi (sin phi))
@@ -2364,15 +2360,14 @@ first kind:
 		(* (/ nn 3) (expt sin-phi 3)
 		   (bf-rj (expt cos-phi 2) k2sin 1.0
 			  (- 1 (* n (expt sin-phi 2)))))))))
-    (let ((bf-pi (%pi phi)))
-      (multiple-value-bind (cycles rem)
-	  (floor phi bf-pi)
+    ;; FIXME: Reducing the arg by pi has significant round-off.
+    ;; Consider doing something better.
+    (let* ((bf-pi (%pi (realpart phi)))
+	   (cycles (round (realpart phi) bf-pi))
+	   (rem (- phi (* cycles bf-pi))))
 	(let ((complete (bf-elliptic-pi-complete n m)))
 	  (+ (* 2 cycles complete)
-	     (if (> rem (/ bf-pi 2))
-		 (- (* 2 complete)
-		    (base n (- bf-pi rem) m))
-		 (base n rem m))))))))
+	     (base n rem m))))))
 
 ;; Compute inverse_jacobi_sn, for float or bigfloat args.
 (defun bf-inverse-jacobi-sn (u m)
