@@ -1046,7 +1046,7 @@ true;
 closeto(elliptic_pi(0.20,2.00,0.80) - 3.6543835090829025, 7.47e-11);
 true;
 
-fpprec:32;
+(oldfpprec:fpprec,fpprec:32);
 32;
 closeto(elliptic_pi(0.2b0,1.57b0,0.8b0) - 2.5770799919605668058849721013196b0, 3.09b-32);
 true;
@@ -1055,5 +1055,5 @@ true;
 closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090082902501670624830938b0, 1b-32);
 true;
 
-(kill(l2,l3,test_deriv),done);
+(fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;
