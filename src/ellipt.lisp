@@ -1820,34 +1820,34 @@ first kind:
 	   (elliptic-pi ($float n) ($float phi) ($float m)))
       ((complex-float-numerical-eval-p n phi m)
        (let*
-         ((rect-phi ($rectform ($float phi)))
-          (rp-phi ($realpart rect-phi))
-          (ip-phi ($imagpart rect-phi)))
+	   ((rect-phi ($rectform ($float phi)))
+	    (rp-phi ($realpart rect-phi))
+	    (ip-phi ($imagpart rect-phi)))
          (elliptic-pi ($float n) (complex rp-phi ip-phi) ($float m))))
-	  ((bigfloat-numerical-eval-p n phi m)
-	   (to (bigfloat::bf-elliptic-pi (bigfloat:to n)
-					 (bigfloat:to phi)
-					 (bigfloat:to m))))
-	  ((complex-bigfloat-numerical-eval-p n phi m)
-	   (to (bigfloat::bf-elliptic-pi (bigfloat:to ($rectform n))
-					 (bigfloat:to ($rectform phi))
-					 (bigfloat:to ($rectform m)))))
-	  ((zerop1 n)
-	   `(($elliptic_f) ,phi ,m))
-	  ((zerop1 m)
-	   ;; 3 cases depending on n < 1, n > 1, or n = 1.
-	   (let ((s (asksign (resimplify `((mplus) -1 ,n)))))
-	     (case s
-	       ($positive
-		(div (take '(%atanh) (mul (power (add n -1) 1//2)
-					  (take '(%tan) phi)))
-		     (power (add n -1) 1//2)))
-	       ($negative
-		(div (take '(%atan) (mul (power (sub 1 n) 1//2)
-					 (take '(%tan) phi)))
-		     (power (sub 1 n) 1//2)))
-	       ($zero
-		(take '(%tan) phi)))))
+      ((bigfloat-numerical-eval-p n phi m)
+       (to (bigfloat::bf-elliptic-pi (bigfloat:to n)
+				     (bigfloat:to phi)
+				     (bigfloat:to m))))
+      ((complex-bigfloat-numerical-eval-p n phi m)
+       (to (bigfloat::bf-elliptic-pi (bigfloat:to ($rectform n))
+				     (bigfloat:to ($rectform phi))
+				     (bigfloat:to ($rectform m)))))
+      ((zerop1 n)
+       `(($elliptic_f) ,phi ,m))
+      ((zerop1 m)
+       ;; 3 cases depending on n < 1, n > 1, or n = 1.
+       (let ((s (asksign (resimplify `((mplus) -1 ,n)))))
+	 (case s
+	   ($positive
+	    (div (take '(%atanh) (mul (power (add n -1) 1//2)
+				      (take '(%tan) phi)))
+		 (power (add n -1) 1//2)))
+	   ($negative
+	    (div (take '(%atan) (mul (power (sub 1 n) 1//2)
+				     (take '(%tan) phi)))
+		 (power (sub 1 n) 1//2)))
+	   ($zero
+	    (take '(%tan) phi)))))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '($elliptic_pi) n phi m) form)))))
