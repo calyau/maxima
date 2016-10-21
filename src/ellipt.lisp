@@ -1819,12 +1819,10 @@ first kind:
     (cond ((float-numerical-eval-p n phi m)
 	   ;; Numerically evaluate it
 	   (elliptic-pi ($float n) ($float phi) ($float m)))
-      ((complex-float-numerical-eval-p n phi m)
-       (let*
-	   ((rect-phi ($rectform ($float phi)))
-	    (rp-phi ($realpart rect-phi))
-	    (ip-phi ($imagpart rect-phi)))
-         (elliptic-pi ($float n) (complex rp-phi ip-phi) ($float m))))
+      ((setf args (complex-float-numerical-eval-p n phi m))
+       (destructuring-bind (n phi m)
+	   args
+         (elliptic-pi ($float n) phi ($float m))))
       ((bigfloat-numerical-eval-p n phi m)
        (to (bigfloat::bf-elliptic-pi (bigfloat:to n)
 				     (bigfloat:to phi)
