@@ -128,7 +128,10 @@
 	  (return-from complex-float-numerical-eval-p nil))
 	;; Always save the result from trisplit.  But for backward
 	;; compatibility, only set the flag if any item is a bfloat.
-	(push (add rll (mul ill '$%i)) values)
+	(push (if (zerop ill)
+		  rll
+		  (complex rll ill))
+	      values)
 	(setf flag (or flag (or (floatp rll) (floatp ill))))))
     (when (or $numer flag)
       ;; Return the values in the same order as the args!
