@@ -119,6 +119,8 @@ The functions in the @code{eigen} package are:@*
 Appends the column(s) given by the one
 or more lists (or matrices) onto the matrix @var{M}.
 
+See also @mref{addrow} and @mrefdot{append}
+
 @opencatbox
 @category{Matrices}
 @closecatbox
@@ -130,6 +132,8 @@ or more lists (or matrices) onto the matrix @var{M}.
 
 Appends the row(s) given by the one or
 more lists (or matrices) onto the matrix @var{M}.
+
+See also @mref{addcol} and @mrefdot{append}
 
 @opencatbox
 @category{Matrices}

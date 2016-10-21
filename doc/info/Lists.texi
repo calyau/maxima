@@ -145,7 +145,7 @@ by the elements of @var{list_2}, @dots{}  @code{append} also works on
 general expressions, e.g. @code{append (f(a,b), f(c,d,e));} yields
 @code{f(a,b,c,d,e)}.
 
-See also @mrefdot{join}
+See also @mrefcomma{addrow} @mref{addcol} and @mrefdot{join}
 
 Do @code{example(append);} for an example.
 
