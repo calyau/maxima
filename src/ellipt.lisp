@@ -653,140 +653,140 @@
        (to (bigfloat::sn (bigfloat:to ($float u)) (bigfloat:to ($float m)))))
       ((complex-float-numerical-eval-p u m)
        (to (bigfloat::sn (bigfloat:to ($rectform ($float u))) (bigfloat:to ($rectform ($float m))))))
-	  ((bigfloat-numerical-eval-p u m)
-	   (to (bigfloat::sn (bigfloat:to ($bfloat u)) (bigfloat:to ($bfloat m)))))
+      ((bigfloat-numerical-eval-p u m)
+       (to (bigfloat::sn (bigfloat:to ($bfloat u)) (bigfloat:to ($bfloat m)))))
       ((complex-bigfloat-numerical-eval-p u m)
-	   (to (bigfloat::sn (bigfloat:to ($rectform ($bfloat u))) (bigfloat:to ($rectform ($bfloat m))))))
-	  ((zerop1 u)
-	   ;; A&S 16.5.1
-	   0)
-	  ((zerop1 m)
-	   ;; A&S 16.6.1
-	   `((%sin) ,u))
-	  ((onep1 m)
-	   ;; A&S 16.6.1
-	   `((%tanh) ,u))
-	  ((and $trigsign (mminusp* u))
-	   (neg (cons-exp '%jacobi_sn (neg u) m)))
-	  ((and $triginverses
-		(listp u)
-		(member (caar u) '(%inverse_jacobi_sn
-				   %inverse_jacobi_ns
-				   %inverse_jacobi_cn
-				   %inverse_jacobi_nc
-				   %inverse_jacobi_dn
-				   %inverse_jacobi_nd
-				   %inverse_jacobi_sc
-				   %inverse_jacobi_cs
-				   %inverse_jacobi_sd
-				   %inverse_jacobi_ds
-				   %inverse_jacobi_cd
-				   %inverse_jacobi_dc))
-		(alike1 (third u) m))
-	   (let ((inv-arg (second u)))
-	     (ecase (caar u)
-	       (%inverse_jacobi_sn
-		;; jacobi_sn(inverse_jacobi_sn(u,m), m) = u
-		inv-arg)
-	       (%inverse_jacobi_ns
-		;; inverse_jacobi_ns(u,m) = inverse_jacobi_sn(1/u,m)
-		(div 1 inv-arg))
-	       (%inverse_jacobi_cn
-		;; sn(x)^2 + cn(x)^2 = 1 so sn(x) = sqrt(1-cn(x)^2)
-		(power (sub 1 (mul inv-arg inv-arg)) 1//2))
-	       (%inverse_jacobi_nc
-		;; inverse_jacobi_nc(u) = inverse_jacobi_cn(1/u)
-		($jacobi_sn ($inverse_jacobi_cn (div 1 inv-arg) m)
-			    m))
-	       (%inverse_jacobi_dn
-		;; dn(x)^2 + m*sn(x)^2 = 1 so
-		;; sn(x) = 1/sqrt(m)*sqrt(1-dn(x)^2)
-		(mul (div 1 (power m 1//2))
-		     (power (sub 1 (mul inv-arg inv-arg)) 1//2)))
-	       (%inverse_jacobi_nd
-		;; inverse_jacobi_nd(u) = inverse_jacobi_dn(1/u)
-		($jacobi_sn ($inverse_jacobi_dn (div 1 inv-arg) m)
-			    m))
-	       (%inverse_jacobi_sc
-		;; See below for inverse_jacobi_sc.
-		(div inv-arg (power (add 1 (mul inv-arg inv-arg)) 1//2)))
-	       (%inverse_jacobi_cs
-		;; inverse_jacobi_cs(u) = inverse_jacobi_sc(1/u)
-		($jacobi_sn ($inverse_jacobi_sc (div 1 inv-arg) m)
-			    m))
-	       (%inverse_jacobi_sd
-		;; See below for inverse_jacobi_sd
-		(div inv-arg (power (add 1 (mul m (mul inv-arg inv-arg))) 1//2)))
-	       (%inverse_jacobi_ds
-		;; inverse_jacobi_ds(u) = inverse_jacobi_sd(1/u)
-		($jacobi_sn ($inverse_jacobi_sd (div 1 inv-arg) m)
-			    m))
-	       (%inverse_jacobi_cd
-		;; See below
-		(div (power (sub 1 (mul inv-arg inv-arg)) 1//2)
-		     (power (sub 1 (mul m (mul inv-arg inv-arg))) 1//2)))
-	       (%inverse_jacobi_dc
-		($jacobi_sn ($inverse_jacobi_cd (div 1 inv-arg) m) m)))))
-	  ;; A&S 16.20.1 (Jacobi's Imaginary transformation)
-	  ((and $%iargs (multiplep u '$%i))
-	   (mul '$%i
-		(cons-exp '%jacobi_sc (coeff u '$%i 1) (add 1 (neg m)))))
-	  ((setq coef (kc-arg2 u m))
-	   ;; sn(m*K+u)
-	   ;;
-	   ;; A&S 16.8.1
-	   (destructuring-bind (lin const)
-	       coef
-	     (cond ((integerp lin)
-		    (ecase (mod lin 4)
-		      (0
-		       ;; sn(4*m*K + u) = sn(u), sn(0) = 0
-		       (if (zerop1 const)
-			   0
-			   `((%jacobi_sn simp) ,const ,m)))
-		      (1
-		       ;; sn(4*m*K + K + u) = sn(K+u) = cd(u)
-		       ;; sn(K) = 1
-		       (if (zerop1 const)
-			   1
-			   `((%jacobi_cd simp) ,const ,m)))
-		      (2
-		       ;; sn(4*m*K+2*K + u) = sn(2*K+u) = -sn(u)
-		       ;; sn(2*K) = 0
-		       (if (zerop1 const)
-			   0
-			   (neg `((%jacobi_sn simp) ,const ,m))))
-		      (3
-		       ;; sn(4*m*K+3*K+u) = sn(2*K + K + u) = -sn(K+u) = -cd(u)
-		       ;; sn(3*K) = -1
-		       (if (zerop1 const)
-			   -1
-			   (neg `((%jacobi_cd simp) ,const ,m))))))
-		   ((and (alike1 lin 1//2)
-			 (zerop1 const))
-		    ;; A&S 16.5.2
-		    ;;
-		    ;; sn(1/2*K) = 1/sqrt(1+sqrt(1-m))
-		    `((mexpt simp)
-		      ((mplus simp) 1
-		       ((mexpt simp)
-			((mplus simp) 1 ((mtimes simp) -1 ,m))
-			((rat simp) 1 2)))
-		      ((rat) -1 2)))
-		   ((and (alike1 lin 3//2)
-			 (zerop1 const))
-		    ;; A&S 16.5.2
-		    ;;
-		    ;; sn(1/2*K + K) = cd(1/2*K,m)
-		    (simplifya
-		     `((%jacobi_cd) ((mtimes) ((rat) 1 2) ((%elliptic_kc) ,m))
-		       ,m)
-		     nil))
-		   (t
-		    (eqtest (list '(%jacobi_sn) u m) form)))))
-	  (t
-	   ;; Nothing to do
-	   (eqtest (list '(%jacobi_sn) u m) form)))))
+       (to (bigfloat::sn (bigfloat:to ($rectform ($bfloat u))) (bigfloat:to ($rectform ($bfloat m))))))
+      ((zerop1 u)
+       ;; A&S 16.5.1
+       0)
+      ((zerop1 m)
+       ;; A&S 16.6.1
+       `((%sin) ,u))
+      ((onep1 m)
+       ;; A&S 16.6.1
+       `((%tanh) ,u))
+      ((and $trigsign (mminusp* u))
+       (neg (cons-exp '%jacobi_sn (neg u) m)))
+      ((and $triginverses
+	    (listp u)
+	    (member (caar u) '(%inverse_jacobi_sn
+			       %inverse_jacobi_ns
+			       %inverse_jacobi_cn
+			       %inverse_jacobi_nc
+			       %inverse_jacobi_dn
+			       %inverse_jacobi_nd
+			       %inverse_jacobi_sc
+			       %inverse_jacobi_cs
+			       %inverse_jacobi_sd
+			       %inverse_jacobi_ds
+			       %inverse_jacobi_cd
+			       %inverse_jacobi_dc))
+	    (alike1 (third u) m))
+       (let ((inv-arg (second u)))
+	 (ecase (caar u)
+	   (%inverse_jacobi_sn
+	    ;; jacobi_sn(inverse_jacobi_sn(u,m), m) = u
+	    inv-arg)
+	   (%inverse_jacobi_ns
+	    ;; inverse_jacobi_ns(u,m) = inverse_jacobi_sn(1/u,m)
+	    (div 1 inv-arg))
+	   (%inverse_jacobi_cn
+	    ;; sn(x)^2 + cn(x)^2 = 1 so sn(x) = sqrt(1-cn(x)^2)
+	    (power (sub 1 (mul inv-arg inv-arg)) 1//2))
+	   (%inverse_jacobi_nc
+	    ;; inverse_jacobi_nc(u) = inverse_jacobi_cn(1/u)
+	    ($jacobi_sn ($inverse_jacobi_cn (div 1 inv-arg) m)
+			m))
+	   (%inverse_jacobi_dn
+	    ;; dn(x)^2 + m*sn(x)^2 = 1 so
+	    ;; sn(x) = 1/sqrt(m)*sqrt(1-dn(x)^2)
+	    (mul (div 1 (power m 1//2))
+		 (power (sub 1 (mul inv-arg inv-arg)) 1//2)))
+	   (%inverse_jacobi_nd
+	    ;; inverse_jacobi_nd(u) = inverse_jacobi_dn(1/u)
+	    ($jacobi_sn ($inverse_jacobi_dn (div 1 inv-arg) m)
+			m))
+	   (%inverse_jacobi_sc
+	    ;; See below for inverse_jacobi_sc.
+	    (div inv-arg (power (add 1 (mul inv-arg inv-arg)) 1//2)))
+	   (%inverse_jacobi_cs
+	    ;; inverse_jacobi_cs(u) = inverse_jacobi_sc(1/u)
+	    ($jacobi_sn ($inverse_jacobi_sc (div 1 inv-arg) m)
+			m))
+	   (%inverse_jacobi_sd
+	    ;; See below for inverse_jacobi_sd
+	    (div inv-arg (power (add 1 (mul m (mul inv-arg inv-arg))) 1//2)))
+	   (%inverse_jacobi_ds
+	    ;; inverse_jacobi_ds(u) = inverse_jacobi_sd(1/u)
+	    ($jacobi_sn ($inverse_jacobi_sd (div 1 inv-arg) m)
+			m))
+	   (%inverse_jacobi_cd
+	    ;; See below
+	    (div (power (sub 1 (mul inv-arg inv-arg)) 1//2)
+		 (power (sub 1 (mul m (mul inv-arg inv-arg))) 1//2)))
+	   (%inverse_jacobi_dc
+	    ($jacobi_sn ($inverse_jacobi_cd (div 1 inv-arg) m) m)))))
+      ;; A&S 16.20.1 (Jacobi's Imaginary transformation)
+      ((and $%iargs (multiplep u '$%i))
+       (mul '$%i
+	    (cons-exp '%jacobi_sc (coeff u '$%i 1) (add 1 (neg m)))))
+      ((setq coef (kc-arg2 u m))
+       ;; sn(m*K+u)
+       ;;
+       ;; A&S 16.8.1
+       (destructuring-bind (lin const)
+	   coef
+	 (cond ((integerp lin)
+		(ecase (mod lin 4)
+		  (0
+		   ;; sn(4*m*K + u) = sn(u), sn(0) = 0
+		   (if (zerop1 const)
+		       0
+		       `((%jacobi_sn simp) ,const ,m)))
+		  (1
+		   ;; sn(4*m*K + K + u) = sn(K+u) = cd(u)
+		   ;; sn(K) = 1
+		   (if (zerop1 const)
+		       1
+		       `((%jacobi_cd simp) ,const ,m)))
+		  (2
+		   ;; sn(4*m*K+2*K + u) = sn(2*K+u) = -sn(u)
+		   ;; sn(2*K) = 0
+		   (if (zerop1 const)
+		       0
+		       (neg `((%jacobi_sn simp) ,const ,m))))
+		  (3
+		   ;; sn(4*m*K+3*K+u) = sn(2*K + K + u) = -sn(K+u) = -cd(u)
+		   ;; sn(3*K) = -1
+		   (if (zerop1 const)
+		       -1
+		       (neg `((%jacobi_cd simp) ,const ,m))))))
+	       ((and (alike1 lin 1//2)
+		     (zerop1 const))
+		;; A&S 16.5.2
+		;;
+		;; sn(1/2*K) = 1/sqrt(1+sqrt(1-m))
+		`((mexpt simp)
+		  ((mplus simp) 1
+		   ((mexpt simp)
+		    ((mplus simp) 1 ((mtimes simp) -1 ,m))
+		    ((rat simp) 1 2)))
+		  ((rat) -1 2)))
+	       ((and (alike1 lin 3//2)
+		     (zerop1 const))
+		;; A&S 16.5.2
+		;;
+		;; sn(1/2*K + K) = cd(1/2*K,m)
+		(simplifya
+		 `((%jacobi_cd) ((mtimes) ((rat) 1 2) ((%elliptic_kc) ,m))
+		   ,m)
+		 nil))
+	       (t
+		(eqtest (list '(%jacobi_sn) u m) form)))))
+      (t
+       ;; Nothing to do
+       (eqtest (list '(%jacobi_sn) u m) form)))))
 
 (defmfun simp-%jacobi_cn (form unused z)
   (declare (ignore unused))
@@ -796,110 +796,110 @@
 	coef)
     (cond
       ((float-numerical-eval-p u m)
-	   (to (bigfloat::cn (bigfloat:to ($float u)) (bigfloat:to ($float m)))))
+       (to (bigfloat::cn (bigfloat:to ($float u)) (bigfloat:to ($float m)))))
       ((complex-float-numerical-eval-p u m)
-	   (to (bigfloat::cn (bigfloat:to ($rectform ($float u))) (bigfloat:to ($rectform ($float m))))))
-	  ((bigfloat-numerical-eval-p u m)
-	   (to (bigfloat::cn (bigfloat:to ($bfloat u)) (bigfloat:to ($bfloat m)))))
+       (to (bigfloat::cn (bigfloat:to ($rectform ($float u))) (bigfloat:to ($rectform ($float m))))))
+      ((bigfloat-numerical-eval-p u m)
+       (to (bigfloat::cn (bigfloat:to ($bfloat u)) (bigfloat:to ($bfloat m)))))
       ((complex-bigfloat-numerical-eval-p u m)
-	   (to (bigfloat::cn (bigfloat:to ($rectform ($bfloat u))) (bigfloat:to ($rectform ($bfloat m))))))
-	  ((zerop1 u)
-	   ;; A&S 16.5.1
-	   1)
-	  ((zerop1 m)
-	   ;; A&S 16.6.2
-	   `((%cos) ,u))
-	  ((onep1 m)
-	   ;; A&S 16.6.2
-	   `((%sech) ,u))
-	  ((and $trigsign (mminusp* u))
-	   (cons-exp '%jacobi_cn (neg u) m))
-	  ((and $triginverses
-		(listp u)
-		(member (caar u) '(%inverse_jacobi_sn
-				   %inverse_jacobi_ns
-				   %inverse_jacobi_cn
-				   %inverse_jacobi_nc
-				   %inverse_jacobi_dn
-				   %inverse_jacobi_nd
-				   %inverse_jacobi_sc
-				   %inverse_jacobi_cs
-				   %inverse_jacobi_sd
-				   %inverse_jacobi_ds
-				   %inverse_jacobi_cd
-				   %inverse_jacobi_dc))
-		(alike1 (third u) m))
-	   (cond ((eq (caar u) '%inverse_jacobi_cn)
-		  (second u))
-		 (t
-		  ;; I'm lazy.  Use cn(x) = sqrt(1-sn(x)^2).  Hope
-		  ;; this is right.
-		  (power (sub 1 (power ($jacobi_sn u (third u)) 2))
-			 1//2))))
-	  ;; A&S 16.20.2 (Jacobi's Imaginary transformation)
-	  ((and $%iargs (multiplep u '$%i))
-	   (cons-exp '%jacobi_nc (coeff u '$%i 1) (add 1 (neg m))))
-	  ((setq coef (kc-arg2 u m))
-	   ;; cn(m*K+u)
-	   ;;
-	   ;; A&S 16.8.2
-	   (destructuring-bind (lin const)
-	       coef
-	     (cond ((integerp lin)
-		    (ecase (mod lin 4)
-		      (0
-		       ;; cn(4*m*K + u) = cn(u),
-		       ;; cn(0) = 1
-		       (if (zerop1 const)
-			   1
-			   `((%jacobi_cn simp) ,const ,m)))
-		      (1
-		       ;; cn(4*m*K + K + u) = cn(K+u) = -sqrt(m1)*sd(u)
-		       ;; cn(K) = 0
-		       (if (zerop1 const)
-			   0
-			   (neg `((mtimes simp)
-				  ((mexpt simp)
-				   ((mplus simp) 1 ((mtimes simp) -1 ,m))
-				   ((rat simp) 1 2))
-				  ((%jacobi_sd simp) ,const ,m)))))
-		      (2
-		       ;; cn(4*m*K + 2*K + u) = cn(2*K+u) = -cn(u)
-		       ;; cn(2*K) = -1
-		       (if (zerop1 const)
-			   -1
-			   (neg `((%jacobi_cn) ,const ,m))))
-		      (3
-		       ;; cn(4*m*K + 3*K + u) = cn(2*K + K + u) =
-		       ;; -cn(K+u) = sqrt(m1)*sd(u)
-		       ;;
-		       ;; cn(3*K) = 0
-		       (if (zerop1 const)
-			   0
-			   `((mtimes simp)
-			     ((mexpt simp)
-			      ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			      ((rat simp) 1 2))
-			     ((%jacobi_sd simp) ,const ,m))))))
-		   ((and (alike1 lin 1//2)
-			 (zerop1 const))
-		    ;; A&S 16.5.2
-		    ;; cn(1/2*K) = (1-m)^(1/4)/sqrt(1+sqrt(1-m))
-		    `((mtimes simp)
-		      ((mexpt simp) ((mplus simp) 1
-				     ((mtimes simp) -1 ,m))
-		       ((rat simp) 1 4))
-		      ((mexpt simp)
-		       ((mplus simp) 1
-			((mexpt simp)
-			 ((mplus simp) 1
-			  ((mtimes simp) -1 ,m))
-			 ((rat simp) 1 2)))
-		       ((rat simp) -1 2))))
-		   (t
-		    (eqtest (list '(%jacobi_cn) u m) form)))))
-	  (t
-	   (eqtest (list '(%jacobi_cn) u m) form)))))
+       (to (bigfloat::cn (bigfloat:to ($rectform ($bfloat u))) (bigfloat:to ($rectform ($bfloat m))))))
+      ((zerop1 u)
+       ;; A&S 16.5.1
+       1)
+      ((zerop1 m)
+       ;; A&S 16.6.2
+       `((%cos) ,u))
+      ((onep1 m)
+       ;; A&S 16.6.2
+       `((%sech) ,u))
+      ((and $trigsign (mminusp* u))
+       (cons-exp '%jacobi_cn (neg u) m))
+      ((and $triginverses
+	    (listp u)
+	    (member (caar u) '(%inverse_jacobi_sn
+			       %inverse_jacobi_ns
+			       %inverse_jacobi_cn
+			       %inverse_jacobi_nc
+			       %inverse_jacobi_dn
+			       %inverse_jacobi_nd
+			       %inverse_jacobi_sc
+			       %inverse_jacobi_cs
+			       %inverse_jacobi_sd
+			       %inverse_jacobi_ds
+			       %inverse_jacobi_cd
+			       %inverse_jacobi_dc))
+	    (alike1 (third u) m))
+       (cond ((eq (caar u) '%inverse_jacobi_cn)
+	      (second u))
+	     (t
+	      ;; I'm lazy.  Use cn(x) = sqrt(1-sn(x)^2).  Hope
+	      ;; this is right.
+	      (power (sub 1 (power ($jacobi_sn u (third u)) 2))
+		     1//2))))
+      ;; A&S 16.20.2 (Jacobi's Imaginary transformation)
+      ((and $%iargs (multiplep u '$%i))
+       (cons-exp '%jacobi_nc (coeff u '$%i 1) (add 1 (neg m))))
+      ((setq coef (kc-arg2 u m))
+       ;; cn(m*K+u)
+       ;;
+       ;; A&S 16.8.2
+       (destructuring-bind (lin const)
+	   coef
+	 (cond ((integerp lin)
+		(ecase (mod lin 4)
+		  (0
+		   ;; cn(4*m*K + u) = cn(u),
+		   ;; cn(0) = 1
+		   (if (zerop1 const)
+		       1
+		       `((%jacobi_cn simp) ,const ,m)))
+		  (1
+		   ;; cn(4*m*K + K + u) = cn(K+u) = -sqrt(m1)*sd(u)
+		   ;; cn(K) = 0
+		   (if (zerop1 const)
+		       0
+		       (neg `((mtimes simp)
+			      ((mexpt simp)
+			       ((mplus simp) 1 ((mtimes simp) -1 ,m))
+			       ((rat simp) 1 2))
+			      ((%jacobi_sd simp) ,const ,m)))))
+		  (2
+		   ;; cn(4*m*K + 2*K + u) = cn(2*K+u) = -cn(u)
+		   ;; cn(2*K) = -1
+		   (if (zerop1 const)
+		       -1
+		       (neg `((%jacobi_cn) ,const ,m))))
+		  (3
+		   ;; cn(4*m*K + 3*K + u) = cn(2*K + K + u) =
+		   ;; -cn(K+u) = sqrt(m1)*sd(u)
+		   ;;
+		   ;; cn(3*K) = 0
+		   (if (zerop1 const)
+		       0
+		       `((mtimes simp)
+			 ((mexpt simp)
+			  ((mplus simp) 1 ((mtimes simp) -1 ,m))
+			  ((rat simp) 1 2))
+			 ((%jacobi_sd simp) ,const ,m))))))
+	       ((and (alike1 lin 1//2)
+		     (zerop1 const))
+		;; A&S 16.5.2
+		;; cn(1/2*K) = (1-m)^(1/4)/sqrt(1+sqrt(1-m))
+		`((mtimes simp)
+		  ((mexpt simp) ((mplus simp) 1
+				 ((mtimes simp) -1 ,m))
+		   ((rat simp) 1 4))
+		  ((mexpt simp)
+		   ((mplus simp) 1
+		    ((mexpt simp)
+		     ((mplus simp) 1
+		      ((mtimes simp) -1 ,m))
+		     ((rat simp) 1 2)))
+		   ((rat simp) -1 2))))
+	       (t
+		(eqtest (list '(%jacobi_cn) u m) form)))))
+      (t
+       (eqtest (list '(%jacobi_cn) u m) form)))))
 
 (defmfun simp-%jacobi_dn (form unused z)
   (declare (ignore unused))
@@ -912,91 +912,91 @@
        (to (bigfloat::dn (bigfloat:to ($float u)) (bigfloat:to ($float m)))))
       ((complex-float-numerical-eval-p u m)
        (to (bigfloat::dn (bigfloat:to ($rectform ($float u))) (bigfloat:to ($rectform ($float m))))))
-	  ((bigfloat-numerical-eval-p u m)
-	   (to (bigfloat::dn (bigfloat:to ($bfloat u)) (bigfloat:to ($bfloat m)))))
+      ((bigfloat-numerical-eval-p u m)
+       (to (bigfloat::dn (bigfloat:to ($bfloat u)) (bigfloat:to ($bfloat m)))))
       ((complex-bigfloat-numerical-eval-p u m)
-	   (to (bigfloat::dn (bigfloat:to ($rectform ($bfloat u))) (bigfloat:to ($rectform ($bfloat m))))))
-	  ((zerop1 u)
-	   ;; A&S 16.5.1
-	   1)
-	  ((zerop1 m)
-	   ;; A&S 16.6.3
-	   1)
-	  ((onep1 m)
-	   ;; A&S 16.6.3
-	   (take '(%sech) u))
-	  ((and $trigsign (mminusp* u))
-	   (cons-exp '%jacobi_dn (neg u) m))
-	  ((and $triginverses
-		(listp u)
-		(member (caar u) '(%inverse_jacobi_sn
-				   %inverse_jacobi_ns
-				   %inverse_jacobi_cn
-				   %inverse_jacobi_nc
-				   %inverse_jacobi_dn
-				   %inverse_jacobi_nd
-				   %inverse_jacobi_sc
-				   %inverse_jacobi_cs
-				   %inverse_jacobi_sd
-				   %inverse_jacobi_ds
-				   %inverse_jacobi_cd
-				   %inverse_jacobi_dc))
-		(alike1 (third u) m))
-	   (cond ((eq (caar u) '%inverse_jacobi_dn)
-		  ;; jacobi_dn(inverse_jacobi_dn(u,m), m) = u
-		  (second u))
-		 (t
-		  ;; Express in terms of sn:
-		  ;; dn(x) = sqrt(1-m*sn(x)^2)
-		  (power (sub 1 (mul m
-				     (power ($jacobi_sn u m) 2)))
-			 1//2))))
-	  ((zerop1 ($ratsimp (sub u (power (sub 1 m) 1//2))))
-	   ;; A&S 16.5.3
-	   ;; dn(sqrt(1-m),m) = K(m)
-	   ($elliptic_kc m))
-	  ;; A&S 16.20.2 (Jacobi's Imaginary transformation)
-	  ((and $%iargs (multiplep u '$%i))
-	   (cons-exp '%jacobi_dc (coeff u '$%i 1)
-		     (add 1 (neg m))))
-	  ((setq coef (kc-arg2 u m))
-	   ;; A&S 16.8.3
-	   ;;
-	   ;; dn(m*K+u) has period 2K
-	   ;;
-	   (destructuring-bind (lin const)
-	       coef
-	     (cond ((integerp lin)
-		    (ecase (mod lin 2)
-		      (0
-		       ;; dn(2*m*K + u) = dn(u)
-		       ;; dn(0) = 1
-		       (if (zerop1 const)
-			   1
-			   ;; dn(4*m*K+2*K + u) = dn(2*K+u) = dn(u)
-			   `((%jacobi_dn) ,const ,m)))
-		      (1
-		       ;; dn(2*m*K + K + u) = dn(K + u) = sqrt(1-m)*nd(u)
-		       ;; dn(K) = sqrt(1-m)
-		       (if (zerop1 const)
-			   `((mexpt simp)
-			     ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			     ((rat simp) 1 2))
-			   `((mtimes simp)
-			     ((mexpt simp)
-			      ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			      ((rat simp) 1 2))
-			     ((%jacobi_nd simp) ,const ,m))))))
-		   ((and (alike1 lin 1//2)
-			 (zerop1 const))
-		    ;; A&S 16.5.2
-		    ;; dn(1/2*K) = (1-m)^(1/4)
-		    `((mexpt simp)
-		      ((mplus simp) 1 ((mtimes simp) -1 ,m))
-		      ((rat simp) 1 4)))
-		   (t
-		    (eqtest (list '(%jacobi_dn) u m) form)))))
-	  (t (eqtest (list '(%jacobi_dn) u m) form)))))
+       (to (bigfloat::dn (bigfloat:to ($rectform ($bfloat u))) (bigfloat:to ($rectform ($bfloat m))))))
+      ((zerop1 u)
+       ;; A&S 16.5.1
+       1)
+      ((zerop1 m)
+       ;; A&S 16.6.3
+       1)
+      ((onep1 m)
+       ;; A&S 16.6.3
+       (take '(%sech) u))
+      ((and $trigsign (mminusp* u))
+       (cons-exp '%jacobi_dn (neg u) m))
+      ((and $triginverses
+	    (listp u)
+	    (member (caar u) '(%inverse_jacobi_sn
+			       %inverse_jacobi_ns
+			       %inverse_jacobi_cn
+			       %inverse_jacobi_nc
+			       %inverse_jacobi_dn
+			       %inverse_jacobi_nd
+			       %inverse_jacobi_sc
+			       %inverse_jacobi_cs
+			       %inverse_jacobi_sd
+			       %inverse_jacobi_ds
+			       %inverse_jacobi_cd
+			       %inverse_jacobi_dc))
+	    (alike1 (third u) m))
+       (cond ((eq (caar u) '%inverse_jacobi_dn)
+	      ;; jacobi_dn(inverse_jacobi_dn(u,m), m) = u
+	      (second u))
+	     (t
+	      ;; Express in terms of sn:
+	      ;; dn(x) = sqrt(1-m*sn(x)^2)
+	      (power (sub 1 (mul m
+				 (power ($jacobi_sn u m) 2)))
+		     1//2))))
+      ((zerop1 ($ratsimp (sub u (power (sub 1 m) 1//2))))
+       ;; A&S 16.5.3
+       ;; dn(sqrt(1-m),m) = K(m)
+       ($elliptic_kc m))
+      ;; A&S 16.20.2 (Jacobi's Imaginary transformation)
+      ((and $%iargs (multiplep u '$%i))
+       (cons-exp '%jacobi_dc (coeff u '$%i 1)
+		 (add 1 (neg m))))
+      ((setq coef (kc-arg2 u m))
+       ;; A&S 16.8.3
+       ;;
+       ;; dn(m*K+u) has period 2K
+       ;;
+       (destructuring-bind (lin const)
+	   coef
+	 (cond ((integerp lin)
+		(ecase (mod lin 2)
+		  (0
+		   ;; dn(2*m*K + u) = dn(u)
+		   ;; dn(0) = 1
+		   (if (zerop1 const)
+		       1
+		       ;; dn(4*m*K+2*K + u) = dn(2*K+u) = dn(u)
+		       `((%jacobi_dn) ,const ,m)))
+		  (1
+		   ;; dn(2*m*K + K + u) = dn(K + u) = sqrt(1-m)*nd(u)
+		   ;; dn(K) = sqrt(1-m)
+		   (if (zerop1 const)
+		       `((mexpt simp)
+			 ((mplus simp) 1 ((mtimes simp) -1 ,m))
+			 ((rat simp) 1 2))
+		       `((mtimes simp)
+			 ((mexpt simp)
+			  ((mplus simp) 1 ((mtimes simp) -1 ,m))
+			  ((rat simp) 1 2))
+			 ((%jacobi_nd simp) ,const ,m))))))
+	       ((and (alike1 lin 1//2)
+		     (zerop1 const))
+		;; A&S 16.5.2
+		;; dn(1/2*K) = (1-m)^(1/4)
+		`((mexpt simp)
+		  ((mplus simp) 1 ((mtimes simp) -1 ,m))
+		  ((rat simp) 1 4)))
+	       (t
+		(eqtest (list '(%jacobi_dn) u m) form)))))
+      (t (eqtest (list '(%jacobi_dn) u m) form)))))
 
 ;; Should we simplify the inverse elliptic functions into the
 ;; appropriate incomplete elliptic integral?  I think we should leave
