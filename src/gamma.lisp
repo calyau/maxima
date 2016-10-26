@@ -132,13 +132,7 @@
 	    (return-from complex-float-numerical-eval-p nil))
 	  ;; Always save the result from trisplit.  But for backward
 	  ;; compatibility, only set the flag if any item is a float.
-	  ;; Take care not to convert a real to a complex (with a zero
-	  ;; imaginary part).  Also need to convert Maxima rationals
-	  ;; to lisp rationals, if the imaginary part is not zero.
-	  (push (if (zerop1 ill)
-		    rll
-		    (complex (unrat rll) (unrat ill)))
-		values)
+	  (push (add rll (mul ill '$%i)) values)
 	  (setf flag (or flag (or (floatp rll) (floatp ill)))))))
     (when (or $numer flag)
       ;; Return the values in the same order as the args!
