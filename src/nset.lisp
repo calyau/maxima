@@ -26,7 +26,6 @@
 
 ;; Parse {a, b, c} into set(a, b, c).
 
-(putopr "{" '$set)
 (setf (get '$set 'op) "{")
 
 (setf (get '|$}| 'nud) 'delim-err)
@@ -44,6 +43,10 @@
 ;No RPOS
 
 (def-operator "{" '$any nil '$any nil nil nil nil '(nud . parse-matchfix) 'msize-matchfix 'dimension-match "}")
+
+;; DEF-OPERATOR makes "{" map to ${, but it needs to map to $SET.
+;; Just clobber whatever DEF-OPERATOR put into *OPR-TABLE*.
+(putopr "{" '$set)
 
 ;; Support for TeXing sets. If your mactex doesn't TeX the empty set
 ;; correctly, get the latest mactex.lisp.
