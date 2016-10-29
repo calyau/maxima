@@ -1020,22 +1020,40 @@ test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),z),[n,z,m],2,l3,2.0e-7,1.0e-8);
 test_deriv('elliptic_pi,diff(elliptic_pi(n,z,m),m),[n,z,m],3,l3,2.0e-7,1.0e-8);
 [];
 
+closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<tol) then true else abse);
+closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<tol) then true else abse);
+
+/*
+ * Some additional tests for complex values. Use the fact that
+ * elliptic_pi(0, phi, m) = elliptic_f(phi,m);
+ */
+closeto(elliptic_pi(0, 0.5, 0.25)- elliptic_f(0.5, 0.25), 1e-15);
+true;
+closeto(elliptic_pi(0, 0.5*%i, 0.25)- elliptic_f(0.5*%i, 0.25), 1e-15);
+true;
+
+closeto(elliptic_pi(0, 0.5b0, 0.25b0)- elliptic_f(0.5b0, 0.25b0), 1e-15);
+true;
+closeto(elliptic_pi(0, 0.5b0*%i, 0.25b0)- elliptic_f(0.5b0*%i, 0.25b0), 1e-15);
+true;
+
 /* Test for Bug 3221 */
-closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<tol) then true else abse);
-closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<tol) then true else abse);
 
 closeto(elliptic_pi(0.2,1.57,0.8) - 2.5770799919605668, 1e-14);
 true;
 closeto(elliptic_pi(0.2,1.58,0.8) - 2.60502920656026151, 1e-14);
 true;
-closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090829025, 1e-14);
-true;
-closeto(elliptic_pi(0.2b0,1.57b0,0.8b0) - 2.5770799919605668, 1e-14);
-true;
-closeto(elliptic_pi(0.2b0,1.58b0,0.8b0) - 2.60502920656026151, 1e-14);
-true;
-closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090829025, 1e-14);
+closeto(elliptic_pi(0.20,2.00,0.80) - 3.6543835090829025, 7.47e-11);
 true;
 
-(kill(l2,l3,test_deriv),done);
+(oldfpprec:fpprec,fpprec:32);
+32;
+closeto(elliptic_pi(0.2b0,1.57b0,0.8b0) - 2.5770799919605668058849721013196b0, 3.09b-32);
+true;
+closeto(elliptic_pi(0.2b0,1.58b0,0.8b0) - 2.6050292065602615145481924917132b0, 1.24b-32);
+true;
+closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090082902501670624830938b0, 1b-32);
+true;
+
+(fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;

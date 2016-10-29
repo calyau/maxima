@@ -31,12 +31,18 @@ Example:
 @c F3 (a + b + c);
 @c ===end===
 @example
+@group
 (%i1) F3 (a + b + c);
 (%o1)                     F3(c + b + a)
+@end group
+@group
 (%i2) declare (F3, additive);
 (%o2)                         done
+@end group
+@group
 (%i3) F3 (a + b + c);
 (%o3)                 F3(c) + F3(b) + F3(a)
+@end group
 @end example
 
 @opencatbox
@@ -67,22 +73,38 @@ Examples:
 @c T (a, c, e, d, b);
 @c ===end===
 @example
+@group
 (%i1) S (b, a);
 (%o1)                        S(b, a)
+@end group
+@group
 (%i2) declare (S, symmetric);
 (%o2)                         done
+@end group
+@group
 (%i3) S (b, a);
 (%o3)                        S(a, b)
+@end group
+@group
 (%i4) S (a, c, e, d, b);
 (%o4)                   S(a, b, c, d, e)
+@end group
+@group
 (%i5) T (b, a);
 (%o5)                        T(b, a)
+@end group
+@group
 (%i6) declare (T, antisymmetric);
 (%o6)                         done
+@end group
+@group
 (%i7) T (b, a);
 (%o7)                       - T(a, b)
+@end group
+@group
 (%i8) T (a, c, e, d, b);
 (%o8)                   T(a, b, c, d, e)
+@end group
 @end example
 
 @opencatbox
@@ -103,14 +125,18 @@ Example:
 @c combine (%);
 @c ===end===
 @example
+@group
 (%i1) 1*f/2*b + 2*c/3*a + 3*f/4*b +c/5*b*a;
-                             5 b f   a b c   2 a c
-(%o1)                        ----- + ----- + -----
-                               4       5       3
+                      5 b f   a b c   2 a c
+(%o1)                 ----- + ----- + -----
+                        4       5       3
+@end group
+@group
 (%i2) combine (%);
-                         75 b f + 4 (3 a b c + 10 a c)
-(%o2)                    -----------------------------
-                                      60
+                  75 b f + 4 (3 a b c + 10 a c)
+(%o2)             -----------------------------
+                               60
+@end group
 @end example
 
 @opencatbox
@@ -137,18 +163,30 @@ Exemplo:
 @c S (a, c, e, d, b);
 @c ===end===
 @example
+@group
 (%i1) S (b, a);
-(%o1)                               S(b, a)
+(%o1)                        S(b, a)
+@end group
+@group
 (%i2) S (a, b) + S (b, a);
-(%o2)                          S(b, a) + S(a, b)
+(%o2)                   S(b, a) + S(a, b)
+@end group
+@group
 (%i3) declare (S, commutative);
-(%o3)                                done
+(%o3)                         done
+@end group
+@group
 (%i4) S (b, a);
-(%o4)                               S(a, b)
+(%o4)                        S(a, b)
+@end group
+@group
 (%i5) S (a, b) + S (b, a);
-(%o5)                              2 S(a, b)
+(%o5)                       2 S(a, b)
+@end group
+@group
 (%i6) S (a, c, e, d, b);
-(%o6)                          S(a, b, c, d, e)
+(%o6)                   S(a, b, c, d, e)
+@end group
 @end example
 
 @opencatbox
@@ -236,8 +274,10 @@ The @code{sin} function maps over a list:
 @c sin([x,1,1.0]);
 @c ===end===
 @example
+@group
 (%i1) sin([x,1,1.0]);
-(%o1)                 [sin(x), sin(1), .8414709848078965]
+(%o1)         [sin(x), sin(1), 0.8414709848078965]
+@end group
 @end example
 
 @code{mod} is a function with two arguments which maps over lists.  Mapping over 
@@ -248,10 +288,14 @@ nested lists is possible too:
 @c mod([[x,y,z],11,2*a],10);
 @c ===end===
 @example
-(%i2) mod([x,11,2*a],10);
-(%o2)                    [mod(x, 10), 1, 2 mod(a, 5)]
-(%i3) mod([[x,y,z],11,2*a],10);
-(%o3)       [[mod(x, 10), mod(y, 10), mod(z, 10)], 1, 2 mod(a, 5)]
+@group
+(%i1) mod([x,11,2*a],10);
+(%o1)             [mod(x, 10), 1, 2 mod(a, 5)]
+@end group
+@group
+(%i2) mod([[x,y,z],11,2*a],10);
+(%o2) [[mod(x, 10), mod(y, 10), mod(z, 10)], 1, 2 mod(a, 5)]
+@end group
 @end example
 
 Mapping of the @code{floor} function over a matrix and an equation:
@@ -261,12 +305,16 @@ Mapping of the @code{floor} function over a matrix and an equation:
 @c floor(a=b);
 @c ===end===
 @example
-(%i4) floor(matrix([a,b],[c,d]));
-                            [ floor(a)  floor(b) ]
-(%o4)                       [                    ]
-                            [ floor(c)  floor(d) ]
-(%i5) floor(a=b);
-(%o5)                         floor(a) = floor(b)
+@group
+(%i1) floor(matrix([a,b],[c,d]));
+                     [ floor(a)  floor(b) ]
+(%o1)                [                    ]
+                     [ floor(c)  floor(d) ]
+@end group
+@group
+(%i2) floor(a=b);
+(%o2)                  floor(a) = floor(b)
+@end group
 @end example
 
 Functions with more than one argument map over any of the arguments or all
@@ -276,9 +324,11 @@ arguments:
 @c expintegral_e([1,2],[x,y]);
 @c ===end===
 @example
-(%i6) expintegral_e([1,2],[x,y]);
-(%o6) [[expintegral_e(1, x), expintegral_e(1, y)], 
-       [expintegral_e(2, x), expintegral_e(2, y)]]
+@group
+(%i1) expintegral_e([1,2],[x,y]);
+(%o1) [[expintegral_e(1, x), expintegral_e(1, y)], 
+                      [expintegral_e(2, x), expintegral_e(2, y)]]
+@end group
 @end example
 
 Check if a function has the property distribute_over:
@@ -287,8 +337,11 @@ Check if a function has the property distribute_over:
 @c properties(abs);
 @c ===end===
 @example
-(%i7) properties(abs);
-(%o7) [integral, distributes over bags, noun, rule, gradef]
+@group
+(%i1) properties(abs);
+(%o1) [integral, rule, distributes over bags, noun, gradef, 
+                                                 system function]
+@end group
 @end example
 
 The mapping of functions is switched off, when setting @code{distribute_over} 
@@ -298,17 +351,25 @@ to the value @code{false}.
 @c distribute_over;
 @c sin([x,1,1.0]);
 @c distribute_over : not distribute_over;
+@c sin([x,1,1.0]);
 @c ===end===
 @example
+@group
 (%i1) distribute_over;
-(%o1)                                true
+(%o1)                         true
+@end group
+@group
 (%i2) sin([x,1,1.0]);
-(%o2)                [sin(x), sin(1), 0.8414709848078965]
+(%o2)         [sin(x), sin(1), 0.8414709848078965]
+@end group
+@group
 (%i3) distribute_over : not distribute_over;
-(%o3)                                false
+(%o3)                         false
+@end group
+@group
 (%i4) sin([x,1,1.0]);
-(%o4)                          sin([x, 1, 1.0])
-(%i5)
+(%o4)                   sin([x, 1, 1.0])
+@end group
 @end example
 
 @opencatbox
@@ -424,31 +485,41 @@ Examples:
 @c expand(expr,2,2);
 @c ===end===
 @example
+@group
 (%i1) expr:(x+1)^2*(y+1)^3;
                                2        3
 (%o1)                   (x + 1)  (y + 1)
+@end group
+@group
 (%i2) expand(expr);
        2  3        3    3      2  2        2      2      2
 (%o2) x  y  + 2 x y  + y  + 3 x  y  + 6 x y  + 3 y  + 3 x  y
                                                       2
                                      + 6 x y + 3 y + x  + 2 x + 1
+@end group
+@group
 (%i3) expand(expr,2);
                2        3              3          3
 (%o3)         x  (y + 1)  + 2 x (y + 1)  + (y + 1)
+@end group
+@group
 (%i4) expr:(x+1)^-2*(y+1)^3;
                                    3
                             (y + 1)
 (%o4)                       --------
                                    2
                             (x + 1)
+@end group
+@group
 (%i5) expand(expr);
             3               2
            y             3 y            3 y             1
 (%o5) ------------ + ------------ + ------------ + ------------
        2              2              2              2
       x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1
-(%i6) expand(expr,2,2);
+@end group
 @group
+(%i6) expand(expr,2,2);
                                    3
                             (y + 1)
 (%o6)                     ------------
@@ -465,16 +536,22 @@ Resimplify an expression without expansion:
 @c expand(expr,0,0);
 @c ===end===
 @example
-(%i7) expr:(1+x)^2*sin(x);
-                                       2
-(%o7)                           (x + 1)  sin(x)
-(%i8) exponentialize:true;
-(%o8)                                true
-(%i9) expand(expr,0,0);
-                                   2    %i x     - %i x
-                         %i (x + 1)  (%e     - %e      )
-(%o9)                  - -------------------------------
-                                        2
+@group
+(%i1) expr:(1+x)^2*sin(x);
+                                2
+(%o1)                    (x + 1)  sin(x)
+@end group
+@group
+(%i2) exponentialize:true;
+(%o2)                         true
+@end group
+@group
+(%i3) expand(expr,0,0);
+                            2    %i x     - %i x
+                  %i (x + 1)  (%e     - %e      )
+(%o3)           - -------------------------------
+                                 2
+@end group
 @end example
 
 @opencatbox
@@ -637,14 +714,22 @@ Example:
 @c f(a*x);
 @c ===end===
 @example
+@group
 (%i1) declare (f, linear);
-(%o1)                                done
+(%o1)                         done
+@end group
+@group
 (%i2) f(x+y);
-(%o2)                             f(y) + f(x)
+(%o2)                      f(y) + f(x)
+@end group
+@group
 (%i3) declare (a, constant);
-(%o3)                                done
+(%o3)                         done
+@end group
+@group
 (%i4) f(a*x);
-(%o4)                               a f(x)
+(%o4)                        a f(x)
+@end group
 @end example
 
 @code{linear} is equivalent to @code{additive} and @code{outative}.
@@ -658,6 +743,7 @@ Example:
 @c 'sum (F(k) + G(k), k, 1, inf);
 @c ===end===
 @example
+@group
 (%i1) 'sum (F(k) + G(k), k, 1, inf);
                        inf
                        ====
@@ -666,10 +752,13 @@ Example:
                        /
                        ====
                        k = 1
+@end group
+@group
 (%i2) declare (nounify (sum), linear);
 (%o2)                         done
-(%i3) 'sum (F(k) + G(k), k, 1, inf);
+@end group
 @group
+(%i3) 'sum (F(k) + G(k), k, 1, inf);
                      inf          inf
                      ====         ====
                      \            \
@@ -746,12 +835,18 @@ Example:
 @c F2 (a * b * c);
 @c ===end===
 @example
+@group
 (%i1) F2 (a * b * c);
 (%o1)                       F2(a b c)
+@end group
+@group
 (%i2) declare (F2, multiplicative);
 (%o2)                         done
+@end group
+@group
 (%i3) F2 (a * b * c);
 (%o3)                   F2(a) F2(b) F2(c)
+@end group
 @end example
 
 @code{declare(nounify(product), multiplicative)} tells Maxima to simplify symbolic products.
@@ -762,22 +857,28 @@ Example:
 @c product (a[i] * b[i], i, 1, n);
 @c ===end===
 @example
+@group
 (%i1) product (a[i] * b[i], i, 1, n);
-                                    n
-                                  /===\
-                                   ! !
-(%o1)                              ! !  a  b
-                                   ! !   i  i
-                                  i = 1
+                             n
+                           /===\
+                            ! !
+(%o1)                       ! !  a  b
+                            ! !   i  i
+                           i = 1
+@end group
+@group
 (%i2) declare (nounify (product), multiplicative);
-(%o2)                                done
+(%o2)                         done
+@end group
+@group
 (%i3) product (a[i] * b[i], i, 1, n);
-                                 n         n
-                               /===\     /===\
-                                ! !       ! !
-(%o3)                         ( ! !  a )  ! !  b
-                                ! !   i   ! !   i
-                               i = 1     i = 1
+                          n         n
+                        /===\     /===\
+                         ! !       ! !
+(%o3)                  ( ! !  a )  ! !  b
+                         ! !   i   ! !   i
+                        i = 1     i = 1
+@end group
 @end example
 
 @opencatbox
@@ -890,14 +991,22 @@ Example:
 @c -(x+y);
 @c ===end===
 @example
+@group
 (%i1) negdistrib;
-(%o1)                                true
+(%o1)                         true
+@end group
+@group
 (%i2) -(x+y);
-(%o2)                               - y - x
+(%o2)                       (- y) - x
+@end group
+@group
 (%i3) negdistrib : not negdistrib ;
-(%o3)                                false
+(%o3)                         false
+@end group
+@group
 (%i4) -(x+y);
-(%o4)                              - (y + x)
+(%o4)                       - (y + x)
+@end group
 @end example
 
 @opencatbox
@@ -918,9 +1027,12 @@ Example:
 @c opproperties;
 @c ===end===
 @example
+@group
 (%i1) opproperties;
-(%o1) [linear, additive, multiplicative, outative, evenfun, oddfun,.
-       commutative, symmetric, antisymmetric, nary, lassociative, rassociative]
+(%o1) [linear, additive, multiplicative, outative, evenfun, 
+oddfun, commutative, symmetric, antisymmetric, nary, 
+lassociative, rassociative]
+@end group
 @end example
 
 @opencatbox
@@ -962,16 +1074,26 @@ Example:
 @c F1 (zz * y);
 @c ===end===
 @example
+@group
 (%i1) F1 (100 * x);
 (%o1)                       F1(100 x)
+@end group
+@group
 (%i2) declare (F1, outative);
 (%o2)                         done
+@end group
+@group
 (%i3) F1 (100 * x);
 (%o3)                       100 F1(x)
+@end group
+@group
 (%i4) declare (zz, constant);
 (%o4)                         done
+@end group
+@group
 (%i5) F1 (zz * y);
 (%o5)                       zz F1(y)
+@end group
 @end example
 
 @opencatbox
@@ -1019,16 +1141,20 @@ Examples:
 @c radcan((%e^x-1)/(1+%e^(x/2)));
 @c ===end===
 @example
+@group
 (%i1) radcan((log(x+x^2)-log(x))^a/log(1+x)^(a/2));
-                                           a/2
-(%o1)                            log(x + 1)
-
+                                    a/2
+(%o1)                     log(x + 1)
+@end group
+@group
 (%i2) radcan((log(1+2*a^x+a^(2*x))/log(1+a^x)));
-(%o2)                                  2
-
+(%o2)                           2
+@end group
+@group
 (%i3) radcan((%e^x-1)/(1+%e^(x/2)));
-                                     x/2
-(%o3)                              %e    - 1
+                              x/2
+(%o3)                       %e    - 1
+@end group
 @end example
 
 @opencatbox
@@ -1135,12 +1261,18 @@ simplification on.
 @c sin(1.0),simp;
 @c ===end===
 @example
+@group
 (%i1) simp:false;
-(%o1)                                false
+(%o1)                         false
+@end group
+@group
 (%i2) sin(1.0);
-(%o2)                              sin(1.0)
+(%o2)                       sin(1.0)
+@end group
+@group
 (%i3) sin(1.0),simp;
-(%o3)                          .8414709848078965
+(%o3)                  0.8414709848078965
+@end group
 @end example
 
 The simplification is switched on again.  The @code{simp}-flag cannot suppress
@@ -1154,12 +1286,18 @@ assignment has occurred during the evaluation phase of the expression.
 @c :lisp $x
 @c ===end===
 @example
-(%i4) simp:true;
-(%o4)                                true
-(%i5) x:sin(1.0),simp:false;
-(%o5)                          .8414709848078965
-(%i6) :lisp $X
+@group
+(%i1) simp:true;
+(%o1)                         true
+@end group
+@group
+(%i2) x:sin(1.0),simp:false;
+(%o2)                  0.8414709848078965
+@end group
+@group
+(%i3) :lisp $x
 ((%SIN) 1.0)
+@end group
 @end example
 
 @opencatbox
@@ -1206,20 +1344,22 @@ Examples:
 @c xthru (%);
 @c ===end===
 @example
-(%i1) ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
 @group
+(%i1) ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
                                 20
                  1       (x + 2)   - 2 y       x
 (%o1)        --------- + --------------- - ---------
                     19             20             20
              (y + x)        (y + x)        (y + x)
 @end group
+@group
 (%i2) xthru (%);
                                  20
                           (x + 2)   - y
 (%o2)                     -------------
                                    20
                             (y + x)
+@end group
 @end example
 
 @opencatbox

@@ -562,6 +562,8 @@ attempted.  The user's setting of @code{intfaclim} is used for internal
 calls to @code{factor}.  Thus, @code{intfaclim} may be reset to prevent
 Maxima from taking an inordinately long time factoring large integers.
 
+See also @mrefdot{collectterms}
+
 Examples:
 
 @c EXAMPLES BELOW ADAPTED FROM examples (factor)

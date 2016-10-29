@@ -995,6 +995,7 @@ See also @mrefcomma{for} @mrefcomma{while} @mref{do} and @mref{block}.
 @end deffn
 
 @c NEEDS CLARIFICATION
+@anchor{scanmap}
 @deffn {Function} scanmap @
 @fname{scanmap} (@var{f}, @var{expr}) @
 @fname{scanmap} (@var{f}, @var{expr}, bottomup)

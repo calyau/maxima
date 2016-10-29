@@ -605,11 +605,11 @@
 		       do (if (atom testentry)
 			      (progn
 				(setf test-file testentry)
-				(setf test-file-path ($file_search test-file $file_search_tests))
 				(setf expected-failures nil))
 			      (progn
 				(setf test-file (second testentry))
 				(setf expected-failures (cddr testentry))))
+		          (setf test-file-path ($file_search test-file $file_search_tests))
 			  (format t
 				  (intl:gettext "Running tests in ~a: ")
 				  (if (symbolp test-file)
