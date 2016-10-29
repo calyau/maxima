@@ -216,6 +216,7 @@ the factor and the exponent will be processed in this way.
 @anchor{collectterms}
 @deffn {Function} collectterms (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
 
+Collects all terms that contain @var{arg_1} ... @var{arg_n}.
 If several expressions have been simplified  with the following functions
 @code{facsum}, @code{factorfacsum}, @code{factenexpand}, @code{facexpten} or
 @code{factorfacexpten}, and they are to be added together, it may be desirable
@@ -227,6 +228,27 @@ returns a form  similar to @code{facsum}, but since it is adding forms that have
 already been processed by @code{facsum}, it does not need to repeat that effort.
 This capability is especially useful when the expressions to be summed are very
 large.
+
+See also @mrefdot{factor}
+
+Example:
+
+@c ===beg===
+@c (exp(x)+2)*x+exp(x);
+@c collectterms(expand(%),exp(x));
+@c ===end===
+@example
+@group
+(%i1) (exp(x)+2)*x+exp(x);
+                             x          x
+(%o1)                   x (%e  + 2) + %e
+@end group
+@group
+(%i2) collectterms(expand(%),exp(x));
+                                  x
+(%o2)                   (x + 1) %e  + 2 x
+@end group
+@end example
 
 @opencatbox
 @category{Package facexp} @category{Expressions}
