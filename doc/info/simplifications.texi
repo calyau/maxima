@@ -44,15 +44,21 @@ Examples:
 @c ===end===
 @example
 (%i1) load (absimp)$
+@group
 (%i2) (abs (x))^2;
-                                       2
-(%o2)                                 x
+                                2
+(%o2)                          x
+@end group
+@group
 (%i3) diff (abs (x), x);
-                                      x
-(%o3)                               ------
-                                    abs(x)
+                               x
+(%o3)                        ------
+                             abs(x)
+@end group
+@group
 (%i4) cosh (abs (x));
-(%o4)                               cosh(x)
+(%o4)                        cosh(x)
+@end group
 @end example
 
 @c disol.usg: "disolate" already in doc/info/Expressions.texi
@@ -216,6 +222,7 @@ the factor and the exponent will be processed in this way.
 @anchor{collectterms}
 @deffn {Function} collectterms (@var{expr}, @var{arg_1}, @dots{}, @var{arg_n})
 
+Collects all terms that contain @var{arg_1} ... @var{arg_n}.
 If several expressions have been simplified  with the following functions
 @code{facsum}, @code{factorfacsum}, @code{factenexpand}, @code{facexpten} or
 @code{factorfacexpten}, and they are to be added together, it may be desirable
@@ -227,6 +234,27 @@ returns a form  similar to @code{facsum}, but since it is adding forms that have
 already been processed by @code{facsum}, it does not need to repeat that effort.
 This capability is especially useful when the expressions to be summed are very
 large.
+
+See also @mrefdot{factor}
+
+Example:
+
+@c ===beg===
+@c (exp(x)+2)*x+exp(x);
+@c collectterms(expand(%),exp(x));
+@c ===end===
+@example
+@group
+(%i1) (exp(x)+2)*x+exp(x);
+                             x          x
+(%o1)                   x (%e  + 2) + %e
+@end group
+@group
+(%i2) collectterms(expand(%),exp(x));
+                                  x
+(%o2)                   (x + 1) %e  + 2 x
+@end group
+@end example
 
 @opencatbox
 @category{Package facexp} @category{Expressions}
@@ -268,9 +296,15 @@ To use @code{wronskian}, first @code{load(functs)}. Example:
 @c wronskian([f(x), g(x)],x);
 @c ===end===
 @example
-(%i1) load(functs)$
+(%i1) load (functs)$
+@group
 (%i2) wronskian([f(x), g(x)],x);
-(%o2) matrix([f(x),g(x)],['diff(f(x),x,1),'diff(g(x),x,1)])
+                    [   f(x)       g(x)    ]
+                    [                      ]
+(%o2)               [ d          d         ]
+                    [ -- (f(x))  -- (g(x)) ]
+                    [ dx         dx        ]
+@end group
 @end example
 
 @opencatbox
@@ -337,12 +371,19 @@ Example:
 @c linear (cos(u - v) + cos(u + v), u);
 @c ===end===
 @example
+@group
 (%i1) load (antid);
-(%o1)        /usr/share/maxima/5.29.1/share/integration/antid.mac
+(%o1)  /maxima/share/integration/antid.mac
+@end group
+@group
 (%i2) linear ((1 - w)*(1 - x)*z, z);
-(%o2)  [bargumentb = 0, aargumenta = (w - 1) x - w + 1, xargumentx = z]
+(%o2) [bargumentb = 0, aargumenta = (w - 1) x - w + 1, 
+                                                  xargumentx = z]
+@end group
+@group
 (%i3) linear (cos(u - v) + cos(u + v), u);
-(%o3)                                false
+(%o3)                         false
+@end group
 @end example
 
 @opencatbox
@@ -617,49 +658,45 @@ Example session:
 @c ===end===
 @example
 (%i1) load(ineq)$
-Warning: Putting rules on '+' or '*' is inefficient, and may not work.
-Warning: Putting rules on '+' or '*' is inefficient, and may not work.
-Warning: Putting rules on '+' or '*' is inefficient, and may not work.
-Warning: Putting rules on '+' or '*' is inefficient, and may not work.
-Warning: Putting rules on '+' or '*' is inefficient, and may not work.
-Warning: Putting rules on '+' or '*' is inefficient, and may not work.
-Warning: Putting rules on '+' or '*' is inefficient, and may not work.
-Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+tellsimp: warning: rule will treat '+
+                          ' as noncommutative and nonassociative.
+tellsimp: warning: rule will treat '+
+                          ' as noncommutative and nonassociative.
+tellsimp: warning: rule will treat '+
+                          ' as noncommutative and nonassociative.
+tellsimp: warning: rule will treat '+
+                          ' as noncommutative and nonassociative.
+tellsimp: warning: rule will treat '+
+                          ' as noncommutative and nonassociative.
+tellsimp: warning: rule will treat '+
+                          ' as noncommutative and nonassociative.
+tellsimp: warning: rule will treat '+
+                          ' as noncommutative and nonassociative.
+tellsimp: warning: rule will treat '+
+                          ' as noncommutative and nonassociative.
+@group
 (%i2) a>=4;  /* a sample inequality */
-(%o2)                               a >= 4
-(%i3) (b>c)+%; /* add a second, strict inequality */
-(%o3)                            b + a > c + 4
-(%i4) 7*(x<y); /* multiply by a positive number */
-(%o4)                              7 x < 7 y
-(%i5) -2*(x>=3*z); /* multiply by a negative number */
-(%o5)                           - 2 x <= - 6 z
-(%i6) (1+a^2)*(1/(1+a^2)<=1); /* Maxima knows that 1+a^2 > 0 */
-                                        2
-(%o6)                             1 <= a  + 1
-(%i7) assume(x>0)$ x*(2<3); /* assuming x>0 */
-(%o7)                              2 x < 3 x
-(%i8) a>=b; /* another inequality */
-(%o8)                               a >= b
-(%i9) 3+%; /* add something */
-(%o9)                           a + 3 >= b + 3
-(%i10) %-3; /* subtract it out */
-(%o10)                              a >= b
-(%i11) a>=c-b; /* yet another inequality */
-(%o11)                            a >= c - b
-(%i12) b+%; /* add b to both sides */
-(%o12)                            b + a >= c
-(%i13) %-c; /* subtract c from both sides */
-(%o13)                         - c + b + a >= 0
-(%i14) -%;  /* multiply by -1 */
-(%o14)                          c - b - a <= 0
-(%i15) (z-1)^2>-2*z; /* determining truth of assertion */
-                                      2
-(%o15)                         (z - 1)  > - 2 z
-(%i16) expand(%)+2*z; /* expand this and add 2*z to both sides */
-                                   2
-(%o16)                            z  + 1 > 0
-(%i17) %,pred;
-(%o17)                               true
+(%o2)                        a >= 4
+(%o3)                     b + a > c + 4
+(%o4)                       7 x < 7 y
+(%o5)                    - 2 x <= - 6 z
+                                 2
+(%o6)                      1 <= a  + 1
+(%o8)                       2 x < 3 x
+(%o9)                        a >= b
+(%o10)                   a + 3 >= b + 3
+(%o11)                       a >= b
+(%o12)                     a >= c - b
+(%o13)                     b + a >= c
+(%o14)                 (- c) + b + a >= 0
+(%o15)                   c - b - a <= 0
+                               2
+(%o16)                  (z - 1)  > - 2 z
+                            2
+(%o17)                     z  + 1 > 0
+(%o18)                        true
+@end group
+(%i19) (b>c)+%; /* add a second, strict inequality */
 @end example
 
 Be careful about using parentheses
@@ -681,12 +718,18 @@ The most common mis-feature is illustrated by:
 @c % - eq;
 @c ===end===
 @example
+@group
 (%i1) eq: a > b;
-(%o1)                              a > b
+(%o1)                         a > b
+@end group
+@group
 (%i2) 2*eq;
-(%o2)                            2 (a > b)
+(%o2)                       2 (a > b)
+@end group
+@group
 (%i3) % - eq;
-(%o3)                              a > b
+(%o3)                         a > b
+@end group
 @end example
 
 Another problem is 0 times an inequality; the default to have this
@@ -831,19 +874,23 @@ Denests @code{sqrt} of simple, numerical, binomial surds, where possible.  E.g.
 @c ===end===
 @example
 (%i1) load (sqdnst)$
+@group
 (%i2) sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12);
-                                    sqrt(3)
-                               sqrt(------- + 1)
-                                       2
-(%o2)                        ---------------------
-                             sqrt(11 sqrt(2) - 12)
+                             sqrt(3)
+                        sqrt(------- + 1)
+                                2
+(%o2)                 ---------------------
+                      sqrt(11 sqrt(2) - 12)
+@end group
+@group
 (%i3) sqrtdenest(%);
-                                  sqrt(3)   1
-                                  ------- + -
-                                     2      2
-(%o3)                            -------------
-                                    1/4    3/4
-                                 3 2    - 2
+                           sqrt(3)   1
+                           ------- + -
+                              2      2
+(%o3)                     -------------
+                             1/4    3/4
+                          3 2    - 2
+@end group
 @end example
 
 Sometimes it helps to apply @code{sqrtdenest} more than once, on such as

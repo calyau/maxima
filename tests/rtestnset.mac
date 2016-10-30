@@ -1888,3 +1888,18 @@ kron_delta (1/sqrt(2), sqrt(2)/2);
 sign (1/sqrt(2) - sqrt(2)/2);
 zero;
 
+/* apply(op({...}), [...]) doesn't yield a (($SET) ...) expression
+ * bug reported to mailing list 2016-10-27
+ */
+(S1:{1}, S2:apply(op(S1), [2]));
+{2};
+
+?eq(?caar(S1), 'set);
+true;
+
+?eq(?caar(S2), 'set);
+true;
+
+is (S1 = apply(op(S1), args(S1)));
+true;
+
