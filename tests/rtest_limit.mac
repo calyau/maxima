@@ -790,3 +790,25 @@ block([modulus:7], sum(i^-2,i,1,inf));
 block([modulus:7], limit(inf));
 inf;
 
+/* SF bug #3235: "ECL lisp arithmetic error in definite integration with large limits"
+ * the bug is actually in ECL (https://gitlab.com/embeddable-common-lisp/ecl/issues/299);
+ * here we'll test a work around.
+ */
+
+block ([actual, expected],
+  actual : limit(x*exp(x)*log(exp(x)+1),x,-1000,plus),
+  expected : -1000*%e^-1000*log(%e^-1000*(%e^1000+1)),
+  if ev (equal (actual, expected), logexpand='super) then true else [actual, expected]);
+true;
+
+/* accommodate different equivalent forms via 'equal' */
+block ([actual, expected],
+  actual : integrate((x^2)*exp(x) / (1 + exp(x))^2,x,-1000,1000),
+  expected : (-(2000*%e^1000*log(%e^-1000*(%e^1000+1)))/(%e^1000+1))
+  -(2000*log(%e^-1000*(%e^1000+1)))/(%e^1000+1)
+   -((2000*%e^1000+2000)*log(%e^1000+1)
+    +(2*%e^1000+2)*li[2](-%e^1000)-1000000*%e^1000)
+     /(%e^1000+1)+(2*%e^1000*li[2](-%e^-1000))/(%e^1000+1)
+     +(2*li[2](-%e^-1000))/(%e^1000+1)-1000000/(%e^1000+1),
+  if ev (equal (actual, expected), logexpand='super) then true else [actual, expected]);
+true;
