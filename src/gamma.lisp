@@ -114,15 +114,29 @@
 ;;; Test for numerically evaluation in complex float precision
 
 (defun complex-float-numerical-eval-p (&rest args)
-  (let ((flag nil))
-    (dolist (ll args)
-      (destructuring-bind (rll . ill) (trisplit ll)
-        (unless (and (float-or-rational-p rll)
-                     (float-or-rational-p ill))
-          (return-from complex-float-numerical-eval-p nil))
-        (when (or (floatp rll) (floatp ill))
-          (setq flag t))))
-    (if (or $numer flag) t nil)))
+  "Determine if ARGS consists of numerical values by determining if
+  the real and imaginary parts of each arg are nuemrical (but not
+  bigfloats).  A non-NIL result is returned if at least one of args is
+  a floating-point value or if numer is true.  If the result is
+  non-NIL, it is a list of the arguments reduced via rectform"
+  (let (flag values)
+    (flet ((unrat (x)
+	     (if (ratnump x)
+		 (/ (second x) (third x))
+		 x)))
+      (dolist (ll args)
+	(destructuring-bind (rll . ill)
+	    (trisplit ll)
+	  (unless (and (float-or-rational-p rll)
+		       (float-or-rational-p ill))
+	    (return-from complex-float-numerical-eval-p nil))
+	  ;; Always save the result from trisplit.  But for backward
+	  ;; compatibility, only set the flag if any item is a float.
+	  (push (add rll (mul ill '$%i)) values)
+	  (setf flag (or flag (or (floatp rll) (floatp ill)))))))
+    (when (or $numer flag)
+      ;; Return the values in the same order as the args!
+      (nreverse values))))
 
 ;;; Test for numerically evaluation in bigfloat precision
 
@@ -131,21 +145,34 @@
     (dolist (ll args)
       (when (not (bigfloat-or-number-p ll)) 
         (return-from bigfloat-numerical-eval-p nil))
-      (when ($bfloatp ll) (setq flag t)))
+      (when ($bfloatp ll)
+	(setq flag t)))
     (if (or $numer flag) t nil)))
 
 ;;; Test for numerically evaluation in complex bigfloat precision
 
 (defun complex-bigfloat-numerical-eval-p (&rest args)
-  (let ((flag nil))
+  "Determine if ARGS consists of numerical values by determining if
+  the real and imaginary parts of each arg are nuemrical (including
+  bigfloats). A non-NIL result is returned if at least one of args is
+  a floating-point value or if numer is true. If the result is
+  non-NIL, it is a list of the arguments reduced via rectform."
+
+  (let (flag values)
     (dolist (ll args)
-      (destructuring-bind (rll . ill) (trisplit ll)
+      (destructuring-bind (rll . ill)
+	  (trisplit ll)
         (unless (and (bigfloat-or-number-p rll)
                      (bigfloat-or-number-p ill))
           (return-from complex-bigfloat-numerical-eval-p nil))
-        (when (or ($bfloatp rll) ($bfloatp ill))
-          (setq flag t))))
-    (if (or $numer flag) t nil)))
+	;; Always save the result from trisplit.  But for backward
+	;; compatibility, only set the flag if any item is a bfloat.
+	(push (add rll (mul ill '$%i)) values)
+	(when (or ($bfloatp rll) ($bfloatp ill))
+          (setf flag t))))
+    (when (or $numer flag)
+      ;; Return the values in the same order as the args!
+      (nreverse values))))
 
 ;;; Test for numerical evaluation in any precision, real or complex.
 (defun numerical-eval-p (&rest args)
