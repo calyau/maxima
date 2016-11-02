@@ -225,7 +225,6 @@ ifmultthru(exp1,exp2):=
   then multthru(exp1,exp2)
   else exp1*exp2$
 
-collect&&
 
 /* COLLECTTEN(EXP):=COLLECTTERMSL(EXP,LISTOFTENS(EXP))$ */
 
