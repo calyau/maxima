@@ -670,44 +670,89 @@ values")
 
 ;; Parse date/time strings in these formats (and only these):
 ;;
-;;   YYYY-MM-DD[ T]hh:mm:ss[,.]nnn
-;;   YYYY-MM-DD[ T]hh:mm:ss
-;;   YYYY-MM-DD
+;;   YYYY-MM-DD([ T]hh:mm:ss)?([,.]n+)?([+-]hh:mm)?
+;;   YYYY-MM-DD([ T]hh:mm:ss)?([,.]n+)?([+-]hhmm)?
+;;   YYYY-MM-DD([ T]hh:mm:ss)?([,.]n+)?([+-]hh)?
+;;   YYYY-MM-DD([ T]hh:mm:ss)?([,.]n+)?[Z]?
+;;
+;; where (...)? indicates an optional group (occurs zero or one times)
+;; ...+ indicates one or more instances of ...,
+;; and [...] indicates literal character alternatives.
+;;
+;; Note that the nregex package doesn't handle optional groups or ...+.
+;; The notation above is only for describing the behavior of the parser.
+;;
+;; Trailing unparsed stuff causes the parser to fail (return NIL).
 
-(defun date-match-date (s) (funcall #.(maxima-nregex::regex-compile "([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])") s))
-(defun date-match-date+time (s) (funcall #.(maxima-nregex::regex-compile "([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])[ T]([0-9][0-9]):([0-9][0-9]):([0-9][0-9])") s))
-(defun date-match-date+time+ms (s) (funcall #.(maxima-nregex::regex-compile "([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])[ T]([0-9][0-9]):([0-9][0-9]):([0-9][0-9])[,.]([0-9][0-9][0-9])") s))
+(defun match-date-yyyy-mm-dd (s) (funcall #.(maxima-nregex::regex-compile "^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])") s))
+(defun match-time-hh-mm-ss (s) (funcall #.(maxima-nregex::regex-compile "^[ T]([0-9][0-9]):([0-9][0-9]):([0-9][0-9])") s))
+(defun match-fraction-nnn (s) (funcall #.(maxima-nregex::regex-compile "^[,.]([0-9][0-9]*)") s))
+(defun match-tz-hh-mm (s) (funcall #.(maxima-nregex::regex-compile "^([+-])([0-9][0-9]):([0-9][0-9])$") s))
+(defun match-tz-hhmm (s) (funcall #.(maxima-nregex::regex-compile "^([+-])([0-9][0-9])([0-9][0-9])$") s))
+(defun match-tz-hh (s) (funcall #.(maxima-nregex::regex-compile "^([+-])([0-9][0-9])$") s))
+(defun match-tz-Z (s) (funcall #.(maxima-nregex::regex-compile "^Z$") s))
 
 (defun $parse_timedate (s)
-  (if (date-match-date+time+ms s)
-    (date-parse-foo s)
-    (if (date-match-date+time s)
-      (date-parse-foo s)
-      (if (date-match-date s)
-        (date-parse-foo s)))))
+  (setq s (string-trim '(#\Space #\Tab #\Newline #\Return) s))
+  (let (year month day
+       (hours 0) (minutes 0) (seconds 0)
+       (seconds-fraction 0) seconds-fraction-numerator tz)
+    (if (match-date-yyyy-mm-dd s)
+      (progn 
+        (multiple-value-setq (year month day) (extract-groups-integers s))
+        (setq s (subseq s (second (aref maxima-nregex::*regex-groups* 0)))))
+      (return-from $parse_timedate nil))
+    (when (match-time-hh-mm-ss s)
+      (multiple-value-setq (hours minutes seconds) (extract-groups-integers s))
+      (setq s (subseq s (second (aref maxima-nregex::*regex-groups* 0)))))
+    (when (match-fraction-nnn s)
+      (multiple-value-setq (seconds-fraction-numerator) (extract-groups-integers s))
+      (let ((group1 (aref maxima-nregex::*regex-groups* 1)))
+        (setq seconds-fraction (div seconds-fraction-numerator (expt 10 (- (second group1) (first group1))))))
+      (setq s (subseq s (second (aref maxima-nregex::*regex-groups* 0)))))
+    (cond
+      ((match-tz-hh-mm s)
+       (multiple-value-bind (tz-sign tz-hours tz-minutes) (extract-groups-integers s)
+         (setq tz (* tz-sign (+ tz-hours (/ tz-minutes 60))))))
+      ((match-tz-hhmm s)
+       (multiple-value-bind (tz-sign tz-hours tz-minutes) (extract-groups-integers s)
+         (setq tz (* tz-sign (+ tz-hours (/ tz-minutes 60))))))
+      ((match-tz-hh s)
+       (multiple-value-bind (tz-sign tz-hours) (extract-groups-integers s)
+         (setq tz (* tz-sign tz-hours))))
+      ((match-tz-Z s)
+       (setq tz 0))
+      (t
+        (if (> (length s) 0)
+          (return-from $parse_timedate nil))))
 
-(defun date-parse-foo (s)
-  (let ((groups maxima-nregex::*regex-groups*) (ngroups maxima-nregex::*regex-groupings*))
-    (apply #'construct-universal-time
-      (mapcar #'parse-integer
-        (extract-date-bits s (rest (coerce (subseq groups 0 ngroups) 'list)))))))
+    (construct-universal-time year month day hours minutes seconds seconds-fraction (if tz (- tz)))))
 
-(defun extract-date-bits (s groups)
-  (loop for p in groups while p collect (apply #'subseq (cons s p))))
+(defun extract-groups-integers (s)
+  (let ((groups (coerce (subseq maxima-nregex::*regex-groups* 1 maxima-nregex::*regex-groupings*) 'list)))
+    (values-list (mapcar #'parse-integer-or-sign
+                         (mapcar #'(lambda (ab) (subseq s (first ab) (second ab)))
+                                 groups)))))
+
+(defun parse-integer-or-sign (s)
+  (cond
+    ((string= s "+") 1)
+    ((string= s "-") -1)
+    (t (parse-integer s))))
 
 ; Clisp (2.49) / Windows does have a problem with dates before 1970-01-01,
 ; therefore add 400 years in that case and subtract 12622780800
-; (= parse_timedate("2300-01-01") (Lisp starts with 1900-01-01) in timezone
+; (= parse_timedate("2300-01-01Z") (Lisp starts with 1900-01-01) in timezone
 ; GMT) afterwards.
 ; see discussion on mailing list circa 2015-04-21: "parse_timedate error"
 
 (if (and (string= (lisp-implementation-type) "CLISP") (string= *autoconf-windows* "true"))
   ; Clisp/Windows case:
-  (defun construct-universal-time (year month day &optional (hour 0) (minute 0) (second 0) (ms 0))
-    (add (div ms 1000) (sub (encode-universal-time second minute hour day month (add year 400)) 12622780800)))
+  (defun construct-universal-time (year month day &optional (hours 0) (minutes 0) (seconds 0) (seconds-fraction 0) tz)
+    (add seconds-fraction (sub (encode-universal-time seconds minutes hours day month (add year 400) tz) 12622780800)))
   ; other Lisp / OS versions:
-  (defun construct-universal-time (year month day &optional (hour 0) (minute 0) (second 0) (ms 0))
-    (add (div ms 1000) (encode-universal-time second minute hour day month year)))
+  (defun construct-universal-time (year month day &optional (hours 0) (minutes 0) (seconds 0) (seconds-fraction 0) tz)
+    (add seconds-fraction (encode-universal-time seconds minutes hours day month year tz)))
 )
 
 

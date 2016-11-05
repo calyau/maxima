@@ -301,10 +301,13 @@ timedate reports current time 2010-06-08 04:08:09+01:00
 
 Parses a string @var{S} representing a date or date and time of day
 and returns the number of seconds since midnight, January 1, 1900 GMT.
-If there is a nonzero milliseconds part, the value returned is a rational number,
+If there is a nonzero fractional part, the value returned is a rational number,
 otherwise, it is an integer.
+@code{parse_timedate} returns @code{false}
+if it cannot parse @var{S} according to any of the allowed formats.
 
-The string @var{S} must have one of the following formats:
+The string @var{S} must have one of the following formats,
+optionally followed by a timezone designation:
 
 @itemize @bullet
 @item
@@ -315,14 +318,47 @@ The string @var{S} must have one of the following formats:
 @code{YYYY-MM-DD}
 @end itemize
 
-where the fields are year, month, day, hours, minutes, seconds, and milliseconds,
+where the fields are year, month, day, hours, minutes, seconds, and fraction of a second,
 and square brackets indicate acceptable alternatives.
+The fraction may contain one or more digits.
+
+Except for the fraction of a second,
+each field must have exactly the number of digits indicated:
+four digits for the year, and two for the month, day of the month, hours, minutes, and seconds.
+
+A timezone designation must have one of the following forms:
+
+@itemize @bullet
+@item
+@code{[+-]hh:mm}
+@item
+@code{[+-]hhmm}
+@item
+@code{[+-]hh}
+@item
+@code{Z}
+@end itemize
+
+where @code{hh} and @code{mm} indicate hours and minutes east (@code{+}) or west (@code{-}) of GMT.
+The timezone may be from +24 hours (inclusive) to -24 hours (inclusive).
+
+A literal character @code{Z} is equivalent to @code{+00:00} and its variants,
+indicating GMT.
+
+If no timezone is indicated,
+the time is assumed to be in the local time zone.
+
+Any leading or trailing whitespace (space, tab, newline, and carriage return) is ignored,
+but any other leading or trailing characters cause @code{parse_timedate} to fail and return @code{false}.
 
 See also @mref{timedate} and @mrefdot{absolute_real_time}
 
 Examples:
 
 Midnight, January 1, 1900, in the local time zone, in each acceptable format.
+The result is the number of seconds the local time zone
+is ahead (negative result) or behind (positive result) GMT.
+In this example, the local time zone is 8 hours behind GMT.
 
 @c ===beg===
 @c parse_timedate ("1900-01-01 00:00:00,000");
@@ -350,6 +386,34 @@ Midnight, January 1, 1900, in the local time zone, in each acceptable format.
 (%o7)                         28800
 @end example
 
+Midnight, January 1, 1900, GMT, in different indicated time zones.
+
+@c ===beg===
+@c parse_timedate ("1900-01-01 19:00:00+19:00");
+@c parse_timedate ("1900-01-01 07:00:00+07:00");
+@c parse_timedate ("1900-01-01 01:00:00+01:00");
+@c parse_timedate ("1900-01-01Z");
+@c parse_timedate ("1899-12-31 21:00:00-03:00");
+@c parse_timedate ("1899-12-31 13:00:00-11:00");
+@c parse_timedate ("1899-12-31 08:00:00-16:00");
+@c ===end===
+@example
+(%i1) parse_timedate ("1900-01-01 19:00:00+19:00");
+(%o1)                           0
+(%i2) parse_timedate ("1900-01-01 07:00:00+07:00");
+(%o2)                           0
+(%i3) parse_timedate ("1900-01-01 01:00:00+01:00");
+(%o3)                           0
+(%i4) parse_timedate ("1900-01-01Z");
+(%o4)                           0
+(%i5) parse_timedate ("1899-12-31 21:00:00-03:00");
+(%o5)                           0
+(%i6) parse_timedate ("1899-12-31 13:00:00-11:00");
+(%o6)                           0
+(%i7) parse_timedate ("1899-12-31 08:00:00-16:00");
+(%o7)                           0
+@end example
+
 @opencatbox
 @category{Time and date functions}
 @closecatbox
@@ -359,7 +423,7 @@ Midnight, January 1, 1900, in the local time zone, in each acceptable format.
 @anchor{absolute_real_time}
 @deffn {Function} absolute_real_time ()
 
-Returns the number of seconds since midnight, January 1, 1900 UTC.
+Returns the number of seconds since midnight, January 1, 1900 GMT.
 The return value is an integer.
 
 See also @mref{elapsed_real_time} and @mrefdot{elapsed_run_time}
