@@ -4,28 +4,30 @@
 
 cd @CMAKE_SOURCE_DIR@/downloads
 
-if [  ! -f  @CMAKE_SOURCE_DIR@/downloads/@SBCL_INSTALLER@ ] ; then
+
+SBCLINSTALLER=@CMAKE_SOURCE_DIR@/downloads/sbcl-@SBCLVERSION@-x86-windows-binary.msi
+if [  ! -f  $SBCLINSTALLER ] ; then
     wget -c @SBCL_URL@
 fi
 
 
-MD5=$(md5sum @CMAKE_SOURCE_DIR@/downloads/@SBCL_INSTALLER@ | sed s/\ .*//)
+MD5=$(md5sum $SBCLINSTALLER | sed s/\ .*//)
 
 if [ "$MD5" != "@SBCL_MD5@" ] ; then
     wget -c @SBCL_URL@
 fi
     
 cd @CMAKE_BINARY_DIR@/sbcl-prefix/src/sbcl
-@SEVENZIP_EXE@ x -y @CMAKE_SOURCE_DIR@/downloads/@SBCL_INSTALLER@
+@SEVENZIP_EXE@ x -y $SBCLINSTALLER
 mkdir -p contrib
 # Move files File_obj_sbcl.home_contrib_* in the directory "contrib" and remove the "File_obj_sbcl.home_contrib_"-prefix:
 for i in File_obj_sbcl.home_contrib_* ; do
-    mv $i contrib/$(echo $i | sed s/File_obj_sbcl.home_contrib_//)
+    mv "$i" contrib/$(echo "$i" | sed s/File_obj_sbcl.home_contrib_//)
 done
 # Rename files in contrib directory - every but the last "." should be a "-".
 # (e.g. contrib/sb-bsd.sockets.fasl ==> contrib/sb-bsd-sockets.fasl
 for i in contrib/sb.* ; do
-    mv $i $(echo $i | sed 's/\./-/g' | rev | sed  s/-/\./ | rev)
+    mv "$i" $(echo "$i" | sed 's/\./-/g' | rev | sed  s/-/\./ | rev)
 done
 cd @CMAKE_BINARY_DIR@/
 
