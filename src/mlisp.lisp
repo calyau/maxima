@@ -241,7 +241,7 @@ is EQ to FNNAME if the latter is non-NIL."
   (destructuring-let (((fn . argl) (cdr form)) (aexprp))
     (unless (mquotep fn) (setq fn (meval fn)))
     (cond ((atom fn)
-	   (meval (cons (cons fn aryp) argl)))
+	   (meval (cons (cons (amperchk fn) aryp) argl)))
 	  ((eq (caar fn) 'lambda)
 	   (if aryp
 	       (merror (intl:gettext "lambda: cannot apply lambda as an array function."))

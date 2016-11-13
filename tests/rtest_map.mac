@@ -298,14 +298,71 @@ matrix([cosh(a), cosh(b)],[cosh(c), cosh(d)])$
 matrixmap(lambda([x], x * ident(2)), matrix([1,2],[3,4]));
 matrix([matrix([1,0],[0,1]),matrix([2,0],[0,2])],[matrix([3,0],[0,3]),matrix([4,0],[0,4])])$
 
+/* SF bug 3241: f()(...) not same as "foo"(...) when f returns "foo" */
 
+op(a + b)(1, 2);
+3;
 
+/* other examples related to #3241 */
 
+(prefix ("foo"),
+ fooval : "foo",
+ foofun() := "foo",
+ 0);
+0;
 
+map (fooval, [a, b, c]);
+[foo a, foo b, foo c];
 
+map (foofun(), [a, b, c]);
+[foo a, foo b, foo c];
 
+apply (fooval, [a]);
+foo a;
 
+apply (foofun(), [a]);
+foo a;
 
+funmake (fooval, [a]);
+foo a;
 
+funmake (foofun(), [a]);
+foo a;
 
+fooval(a);
+foo a;
+
+foofun()(a);
+foo a;
+
+(kill (bar, baralias),
+ alias (baralias, bar),
+ barval : 'bar,
+ barfun() := 'bar,
+ 0);
+0;
+
+map (barval, [a, b, c]);
+[baralias(a), baralias(b), baralias(c)];
+
+map (barfun(), [a, b, c]);
+[baralias(a), baralias(b), baralias(c)];
+
+apply (barval, [a]);
+baralias(a);
+
+apply (barfun(), [a]);
+baralias(a);
+
+funmake (barval, [a]);
+baralias(a);
+
+funmake (barfun(), [a]);
+baralias(a);
+
+barval(a);
+baralias(a);
+
+barfun()(a);
+baralias(a);
 
