@@ -239,8 +239,6 @@ list of lists call this function on each of the lists independently."
 	       (t (cons ($linearize_nc (car x)) ($linearize_nc (cdr x))))))
 	(t x)))
 
-(defun $copy (x) (copy-tree x))
-
 (defun $linearize_nc_to_nc (x)
   (cond ((consp x)
 	 (cond ((and (consp (car x)) (eq (caar x) 'mnctimes))

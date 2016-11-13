@@ -212,57 +212,6 @@ one member, return @code{span ()}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{copy}
-@deffn {Function} copy (@var{e})
-
-Return a copy of the Maxima expression @var{e}.  Although @var{e} can be any
-Maxima expression, the copy function is the most useful when @var{e} is either 
-a list or a matrix; consider:
-
-@c ===beg===
-@c m : [1,[2,3]]$
-@c mm : m$
-@c mm[2][1] : x$
-@c m;
-@c mm;
-@c ===end===
-@example 
-(%i1) m : [1,[2,3]]$
-(%i2) mm : m$
-(%i3) mm[2][1] : x$
-(%i4) m;
-(%o4)                      [1,[x,3]]
-(%i5) mm;
-(%o5)                      [1,[x,3]]
-@end example
-
-Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
-
-@c ===beg===
-@c m : [1,[2,3]]$
-@c mm : copy(m)$
-@c mm[2][1] : x$
-@c m;
-@c mm;
-@c ===end===
-@example
-(%i6) m : [1,[2,3]]$
-(%i7) mm : copy(m)$
-(%i8) mm[2][1] : x$
-(%i9) m;
-(%o9)                     [1,[2,3]]
-(%i10) mm;
-(%o10)                    [1,[x,3]]
-@end example
-
-This time, the assignment to @var{mm} does not change the value of @var{m}.
-
-@opencatbox
-@category{Package linearalgebra}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
 @anchor{cholesky}
 @deffn  {Function} cholesky @
 @fname{cholesky} (@var{M}) @
