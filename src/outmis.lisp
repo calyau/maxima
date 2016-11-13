@@ -345,7 +345,7 @@
   (cond ((atom expr) expr)
 	((or (not (member (caar expr) '(%integrate %sum %product) :test #'eq))
 	     (not (alike1 (caddr expr) ovar)))
-	 (recur-apply #'changevar expr))
+	 (recur-apply (lambda (e) (changevar e trans nvar ovar)) expr))
 	(t
 	 ;; TRANS is the expression that relates old var and new var
 	 ;; and is of the form f(ovar, nvar) = 0. Using TRANS, try to

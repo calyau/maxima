@@ -30,8 +30,6 @@ option(USE_VTK "Use VTK." YES)
 # it builds the current Maxima/wxMaxima Git versions and also
 # sets the installation directory to C:\maxima-current
 option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
-# SBCL (64 Bit) does currently not support Wine, so disable that option:
-# option(SBCL_64BIT "Build a installer with a 64 bit SBCL." NO)
 
 
 
@@ -49,7 +47,7 @@ set(GNUPLOTVERSION   5.0.4)
 set(TCLVERSION       8.6.6)
 set(TKVERSION        8.6.6)
 set(VTKVERSION       6.3.0)
-set(SBCLVERSION      1.3.10)
+set(SBCLVERSION      1.3.11)
 
 
 # MD5 checksums for the current program versions.
@@ -61,6 +59,7 @@ set(TCL_MD5       "5193aea8107839a79df8ac709552ecb7")
 set(TK_MD5        "dd7dbb3a6523c42d05f6ab6e86096e99")
 set(TEXFONTS_MD5  "8101a6feca2c43a6b9218195df9e7c35")
 set(VTK_MD5       "8d8b0878be81a0ab471e929f828dfe9a")
+set(SBCL_MD5      "b6cc97faac0e28deb34963fc8b913fbc")
 
 if(BUILD_CURRENT)
     set(USE_WXMAXIMA_GIT YES)
@@ -84,15 +83,7 @@ set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPL
 set(TCL_URL       "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
 set(TK_URL        "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
 set(VTK_URL       "http://www.vtk.org/files/release/6.3/vtkpython-${VTKVERSION}-Windows-32bit.exe")
-# SBCL (64 Bit) does currently not support Wine, so disable that option:
-# if(SBCL_64BIT)
-#    set(SBCL_INSTALLER "sbcl-${SBCLVERSION}-x86-64-windows-binary.msi")
-#    set(SBCL_MD5      "f8cd3044c74beb84bba4aa9df5bb804e")
-# else()
-    set(SBCL_INSTALLER "sbcl-${SBCLVERSION}-x86-windows-binary.msi")
-    set(SBCL_MD5      "68f7b0caed6aca2451d5dd5dde404763")
-# endif()
-set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/${SBCL_INSTALLER}")
+set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/sbcl-${SBCLVERSION}-x86-windows-binary.msi")
 
 # No license at the homepage, but the TeX fonts are public domain according to:
 # http://archive.debian.net/changelogs/pool/main/t/ttf-jsmath/ttf-jsmath_0.01-2/copyright
@@ -111,11 +102,8 @@ execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libstdc++-6.dll
 message(STATUS "Found libstdc++-6.dll at ${MINGW_LIBSTDCPP}")
 message(STATUS "Found libgcc_s_sjlj-1.dll at ${MINGW_LIBGCC}")
 
-if(SBCL_64BIT)
-find_program(WINE_EXE NAMES wine64)
-else()
+
 find_program(WINE_EXE NAMES wine)
-endif()
 
 if(WINE_EXE)
     message(STATUS "Found wine at ${WINE_EXE}")

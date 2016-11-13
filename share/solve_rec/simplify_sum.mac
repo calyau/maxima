@@ -658,9 +658,15 @@ split_sum(expr) :=
  *******************/
 
 ratfun_to_psi(ratfun, var, lo, hi) := block(
-  [pf, sum: 0, denom_f : factor_with_solve(denom(ratfun), var)],
+  [pf, sum: 0, denom_f : factor_with_solve(denom(ratfun), var), max_root],
 
   pf : partfrac(num(ratfun)/denom_f, var),
+
+  max_root: lmax(sublist(map(rhs, solve(denom_f, var)), numberp)),
+  if (numberp(max_root) and numberp(lo)) then (
+    while (lo < max_root) do (
+      sum: sum+subst(var=lo, ratfun),
+      lo: lo+1)),
 
   if inpart(pf, 0)="+" then pf: args(pf)
   else pf: [pf],
@@ -806,9 +812,6 @@ simp_harmonic_number(x__):=
   if x__=0 then 0
   else if integerp(x__) and x__<1 then error("Zero to negative power computed.") 
   else if integerp(x__) then num_harmonic_number(1, x__)
-  /*else if numberp(x__) and x__<-1 then block(
-    [a:-floor(x__), k%],
-    simp_harmonic_number(x__+a)-apply('sum, [1/k%, k%, x__, x__+a-1]))*/
   else if numberp(x__) or imagpart(x__)#0 then psi[0](x__+1) + %gamma
   else block(
     [a, b, var, k%],
