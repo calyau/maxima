@@ -946,7 +946,7 @@
 		(setq b (expt a (- b)))
 		(*red 1 b)))))
     (if (float-inf-p result)	;; needed for gcl and ecl - no trap of overflow
-	(merror (intl:gettext "EXPT: floating point overflow."))
+	(signal 'floating-point-overflow)
       result)))
     
 
@@ -2373,7 +2373,7 @@
               (let ((val (flonum-eval '%exp pot)))
 		(if (float-inf-p val)
 		    ;; needed for gcl and ecl - no trap of overflow
-		    (merror (intl:gettext "EXPT: floating point overflow.")))
+		    (signal 'floating-point-overflow))
                 (when val
                   (return val)))
               ;; Numerically evaluate if the power is a (complex)
