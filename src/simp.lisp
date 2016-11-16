@@ -945,7 +945,7 @@
 	       (t
 		(setq b (expt a (- b)))
 		(*red 1 b)))))
-    (if (float-inf-p result)	;; needed for gcl and ecl - no trap of overflow
+    (if (float-inf-p result)	;; needed for gcl - no trap of overflow
 	(signal 'floating-point-overflow)
       result)))
     
@@ -2372,7 +2372,7 @@
             (when $%emode
               (let ((val (flonum-eval '%exp pot)))
 		(if (float-inf-p val)
-		    ;; needed for gcl and ecl - no trap of overflow
+		    ;; needed for gcl - no trap of overflow
 		    (signal 'floating-point-overflow))
                 (when val
                   (return val)))

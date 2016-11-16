@@ -20,4 +20,4 @@
       s)))
 
 (si::trap-fpe 'floating-point-underflow nil)
-
+(si::trap-fpe 'floating-point-overflow t)
