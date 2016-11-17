@@ -3361,6 +3361,13 @@
     ; we try to set the dash type
     (format cmdstorage "~%if(GPVAL_VERSION >= 5.0){set for [i=1:8] linetype i dashtype i}")
 
+    ;; By default gnuplot assumes everything below 1e-8 to be a rounding error
+    ;; and rounds it down to 0. This is handy for standalone gnuplot as it allows
+    ;; to suppress pixels with imaginary part while allowing for small calculation
+    ;; errors. As plot and draw handle the imaginary part without gnuplot's help
+    ;; this isn't needed here and is turned off as it often surprises users.
+    (format cmdstorage "~%set zero 0.0")
+
     ; write descriptions of 2d and 3d scenes
     (let ((i -1)
           (alloc (reverse *allocations*))
