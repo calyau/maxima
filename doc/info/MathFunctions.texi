@@ -510,6 +510,7 @@ number.  Unlike the function @mrefcomma{abs} the @code{cabs} function always
 decomposes its argument into a real and an imaginary part.  If @code{x} and
 @code{y} represent real variables or expressions, the @code{cabs} function
 calculates the absolute value of @code{x + %i*y} as
+
 @c ===beg===
 @c cabs (1);
 @c cabs (1 + %i);
@@ -547,6 +548,7 @@ calculates the absolute value of @code{x + %i*y} as
 
 If @code{cabs} returns a noun form this most commonly is caused by
 some properties of the variables involved not being known:
+
 @c ===beg===
 @c cabs (a+%i*b);
 @c declare(a,real,b,real);
@@ -704,6 +706,7 @@ Examples:
 
 If @code{carg} returns a noun form this most communly is caused by
 some properties of the variables involved not being known:
+
 @c ===beg===
 @c carg (a+%i*b);
 @c declare(a,real,b,real);

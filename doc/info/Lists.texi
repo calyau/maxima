@@ -222,6 +222,7 @@ The Maxima function @code{cons} can also be used where the second argument is ot
 than a list and this might be useful. In this case, @code{cons (@var{expr_1}, @var{expr_2})}
 returns an expression with same operator as @var{expr_2} but with argument @code{cons(expr_1, args(expr_2))}.
 Examples:
+
 @c ===beg===
 @c cons(a,[b,c,d]);
 @c cons(a,f(b,c,d));
@@ -243,6 +244,7 @@ results in an illegal expression, since '^' cannot take three arguments.
 When @code{inflag} is true, @code{cons} operates on the internal structure of an expression, otherwise
 @code{cons} operates on the displayed form. Especially when @code{inflag} is true, @code{cons} applied 
 to a nonlist sometimes gives a surprising result; for example
+
 @c ===beg===
 @c cons(a,-a), inflag : true;
 @c cons(a,-a), inflag : false;
@@ -487,6 +489,7 @@ See @mref{first} for more details.
 the second argument is other than a list and this might be useful. In this case,
 @code{endcons (@var{expr_1}, @var{expr_2})} returns an expression with same operator as 
 @var{expr_2} but with argument @code{endcons(expr_1, args(expr_2))}. Examples:
+
 @c ===beg===
 @c endcons(a,[b,c,d]);
 @c endcons(a,f(b,c,d));
@@ -508,6 +511,7 @@ results in an illegal expression, since '^' cannot take three arguments.
 When @code{inflag} is true, @code{endcons} operates on the internal structure of an expression, otherwise
 @code{endcons} operates on the displayed form. Especially when @code{inflag} is true, @code{endcons} applied 
 to a nonlist sometimes gives a surprising result; for example
+
 @c ===beg===
 @c endcons(a,-a), inflag : true;
 @c endcons(a,-a), inflag : false;
@@ -548,6 +552,7 @@ See @mref{first} for more details.
 
 Returns the first part of @var{expr} which may result in the first element of a
 list, the first row of a matrix, the first term of a sum, etc.:
+
 @example
 @group
 (%i1) matrix([1,2],[3,4]);
@@ -566,12 +571,14 @@ list, the first row of a matrix, the first term of a sum, etc.:
 (%o5)                              a
 @end group
 @end example
+
 Note that
 @code{first} and its related functions, @code{rest} and @code{last}, work
 on the form of @var{expr} which is displayed not the form which is typed on
 input.  If the variable @mref{inflag} is set to @code{true} however, these
 functions will look at the internal form of @var{expr}. One reason why this may
 make a difference is that the simplifier re-orders expressions:
+
 @example
 @group
 (%i1) x+y;

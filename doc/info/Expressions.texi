@@ -385,6 +385,7 @@ The order of the items in the list may depend on the global flag
 See also @mrefcomma{substpart} @mrefcomma{apply} @mrefcomma{funmake} and @mrefdot{op}
 
 How to convert a matrix to a nested list:
+
 @c ===beg===
 @c M:matrix([1,2],[3,4]);
 @c args(M);
@@ -404,6 +405,7 @@ How to convert a matrix to a nested list:
 
 Since maxima internally treats a sum of @code{n} terms as a summation command
 with @code{n} arguments args() can extract the list of terms in a sum:
+
 @c ===beg===
 @c a+b+c;
 @c args(%);

@@ -434,6 +434,7 @@ rest of @var{A}.  If there are too many, the remaining ones are ignored.
 Examples:
 
 Create an array of 9 elements and fill it from a list.
+
 @c ===beg===
 @c array (a1, fixnum, 8);
 @c listarray (a1);
@@ -463,6 +464,7 @@ When there are too few elements to fill the array,
 the last element is repeated.
 When there are too many elements,
 the extra elements are ignored.
+
 @c ===beg===
 @c a2 : make_array (fixnum, 8);
 @c fillarray (a2, [1, 2, 3, 4, 5]);

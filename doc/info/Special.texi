@@ -926,6 +926,7 @@ Beta is symmetric and has mirror symmetry:
 @end example
 
 The derivative of the beta function wrt @code{a}:
+
 @example
 (%i17) diff(beta(a,b),a);
 (%o17)               - beta(a, b) (psi (b + a) - psi (a))
