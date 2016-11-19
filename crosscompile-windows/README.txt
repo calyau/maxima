@@ -3,7 +3,7 @@ Crosscompiling Maxima for Windows
 
 On a Ubuntu/Debian System just install some tools for crosscompiling:
 
-apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync p7zip-full wget tcl-dev tk-dev texlive g++ libgl1-mesa-dev gettext
+apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync p7zip-full tcl-dev tk-dev texlive g++ libgl1-mesa-dev gettext
 
 (If you are using a 64 bit operating system, it might be necessary to add
 the i386 architecture (https://wiki.debian.org/Multiarch/HOWTO) before).
@@ -61,7 +61,7 @@ Testing the installed package:
 ==============================
 
 After building it, you can (and should) test the new Maxima installation 
-package.  Install it on Windows and check that the installation (and later
+package. Install it on Windows and check that the installation (and later
 the deinstallation) works properly. To test Maxima, try the following:
 
  o Run the maxima testsuite: run_testsuite()

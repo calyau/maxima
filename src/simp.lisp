@@ -936,19 +936,19 @@
 ;;;-----------------------------------------------------------------------------
 
 (defun exptb (a b)
-  (cond ((equal a %e-val)
-	 ;; Make B a float so we'll get double-precision result.
-         (exp (float b)))
-        ((or (floatp a) (not (minusp b)))
-         #+gcl
-         (if (float-inf-p (setq b (expt a b)))
-             (merror (intl:gettext "EXPT: floating point overflow."))
-             b)
-         #-gcl
-         (expt a b))
-	(t
-	 (setq b (expt a (- b)))
-	 (*red 1 b))))
+  (let ((result
+	 (cond ((equal a %e-val)
+		;; Make B a float so we'll get double-precision result.
+		(exp (float b)))
+	       ((or (floatp a) (not (minusp b)))
+		(expt a b))
+	       (t
+		(setq b (expt a (- b)))
+		(*red 1 b)))))
+    (if (float-inf-p result)	;; needed for gcl - no trap of overflow
+	(signal 'floating-point-overflow)
+      result)))
+    
 
 ;;;-----------------------------------------------------------------------------
 ;;; SIMPLUS (X W Z)                                                27.09.2010/DK
@@ -2371,6 +2371,9 @@
             ;; Numerically evaluate if the power is a flonum.
             (when $%emode
               (let ((val (flonum-eval '%exp pot)))
+		(if (float-inf-p val)
+		    ;; needed for gcl - no trap of overflow
+		    (signal 'floating-point-overflow))
                 (when val
                   (return val)))
               ;; Numerically evaluate if the power is a (complex)

@@ -1,24 +1,7 @@
 #!/bin/sh
 
-# get and 'install' SBCL
+# recreate SBCL directory structure from the extracted installer
 
-cd @CMAKE_SOURCE_DIR@/downloads
-
-
-SBCLINSTALLER=@CMAKE_SOURCE_DIR@/downloads/sbcl-@SBCLVERSION@-x86-windows-binary.msi
-if [  ! -f  $SBCLINSTALLER ] ; then
-    wget -c @SBCL_URL@
-fi
-
-
-MD5=$(md5sum $SBCLINSTALLER | sed s/\ .*//)
-
-if [ "$MD5" != "@SBCL_MD5@" ] ; then
-    wget -c @SBCL_URL@
-fi
-    
-cd @CMAKE_BINARY_DIR@/sbcl-prefix/src/sbcl
-@SEVENZIP_EXE@ x -y $SBCLINSTALLER
 mkdir -p contrib
 # Move files File_obj_sbcl.home_contrib_* in the directory "contrib" and remove the "File_obj_sbcl.home_contrib_"-prefix:
 for i in File_obj_sbcl.home_contrib_* ; do
@@ -29,5 +12,4 @@ done
 for i in contrib/sb.* ; do
     mv "$i" $(echo "$i" | sed 's/\./-/g' | rev | sed  s/-/\./ | rev)
 done
-cd @CMAKE_BINARY_DIR@/
 

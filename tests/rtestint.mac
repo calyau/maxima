@@ -1120,8 +1120,10 @@ integrate(log(1+exp(cos(phi))),phi,0,%pi);
 integrate(atan2(y,x),x);
 y*log(y^2+x^2)/2+x*atan(y/x);
 
-integrate(atan2(y,x),y);
-y*atan(y/x)-(x*log(y^2/x^2+1)/2);
+/* Note: Fixing bug #3246 changed the answer to an equivalent one.
+   Therefore, compare the ratsimp-ed difference of the expressions to zero. */
+ratsimp(integrate(atan2(y,x),y) - (y*atan(y/x)-(x*log(y^2/x^2+1)/2)));
+0;
 
 /* Bug ID: 3023997 - integrate(x*atan2(x,y),x) -> noun form
  * We have generalized the special case for the atan2 function.

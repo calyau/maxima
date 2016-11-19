@@ -11,7 +11,7 @@ set(CMAKE_C_COMPILER   ${HOST}-gcc)
 set(CMAKE_CXX_COMPILER ${HOST}-g++)
 set(CMAKE_RC_COMPILER  ${HOST}-windres)
 project(maxima)
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.6)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/ ${CMAKE_BINARY_DIR}/)
 
@@ -169,20 +169,23 @@ externalproject_add(clisp
 )
 install(DIRECTORY ${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp/ DESTINATION clisp-${CLISPVERSION})
 
-
-configure_file("${CMAKE_SOURCE_DIR}/sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/sbcl.sh")
-
-# SBCL is released as a 'MSI'-installer; download and extract it (using 7z) with an own DOWNLOAD_COMMAND shell script.
 externalproject_add(sbcl
   URL "${SBCL_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${SBCL_MD5}
-  DOWNLOAD_COMMAND ${CMAKE_BINARY_DIR}/sbcl.sh
+  DOWNLOAD_NO_EXTRACT 1
   CONFIGURE_COMMAND ""
-  BUILD_COMMAND ""
+  BUILD_COMMAND cd ${CMAKE_BINARY_DIR}/sbcl && ${CMAKE_SOURCE_DIR}/sbcl.sh
   INSTALL_COMMAND ""
 )
-install(DIRECTORY ${CMAKE_BINARY_DIR}/sbcl-prefix/src/sbcl/ DESTINATION bin)
+ExternalProject_Add_Step(sbcl extract
+  COMMENT "Performing extraction step for 'SBCL'"
+  COMMAND mkdir -p ${CMAKE_BINARY_DIR}/sbcl && cd ${CMAKE_BINARY_DIR}/sbcl && ${SEVENZIP_EXE} x -y ${CMAKE_SOURCE_DIR}/downloads/sbcl-${SBCLVERSION}-x86-windows-binary.msi
+  DEPENDEES download
+  DEPENDERS patch
+)
+
+install(DIRECTORY ${CMAKE_BINARY_DIR}/sbcl/ DESTINATION bin)
 
 # Gnuplot (already a binary package just extract it...)
 externalproject_add(gnuplot
@@ -274,14 +277,22 @@ else()
     install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima-build/wxMaxima/ DESTINATION wxMaxima)
 endif()
 
+
 if(USE_VTK)
-    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/vtk)
-    file(WRITE ${CMAKE_BINARY_DIR}/download-vtk.cmake "file(DOWNLOAD ${VTK_URL} ${CMAKE_SOURCE_DIR}/downloads/vtkpython-${VTKVERSION}-Windows-32bit.exe SHOW_PROGRESS EXPECTED_HASH MD5=${VTK_MD5})")
-    add_custom_target(vtk ALL
-        WORKING_DIRECTORY vtk
-        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/download-vtk.cmake
-        COMMAND ${SEVENZIP_EXE} x -y ${CMAKE_SOURCE_DIR}/downloads/vtkpython-${VTKVERSION}-Windows-32bit.exe
-        
+    externalproject_add(vtk
+        URL "${VTK_URL}"
+        DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
+        DOWNLOAD_NO_EXTRACT 1
+        URL_MD5 ${VTK_MD5}
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        INSTALL_COMMAND ""
+    )
+    ExternalProject_Add_Step(vtk extract
+        COMMENT "Performing extraction step for 'VTK'"
+        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/vtk && cd ${CMAKE_BINARY_DIR}/vtk && ${SEVENZIP_EXE} x -y ${CMAKE_SOURCE_DIR}/downloads/vtkpython-${VTKVERSION}-Windows-32bit.exe
+        DEPENDEES download
+        DEPENDERS patch
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin DESTINATION .)
 endif()
