@@ -812,3 +812,15 @@ block ([actual, expected],
      +(2*li[2](-%e^-1000))/(%e^1000+1)-1000000/(%e^1000+1),
   if ev (equal (actual, expected), logexpand='super) then true else [actual, expected]);
 true;
+
+/* SF bug #3244: "error trying to promote float infinity to bigfloat in sign comparison"
+ * same as test under #3235 but ensure that bigfloat assume is present to trigger bug
+ */
+
+block ([actual, expected, ctxt:newcontext()],
+  assume (xfoo > 200b0),
+  actual : limit(xfoo*exp(xfoo)*log(exp(xfoo)+1),xfoo,-1000,plus),
+  expected : -1000*%e^-1000*log(%e^-1000*(%e^1000+1)),
+  killcontext (ctxt),
+  if ev (equal (actual, expected), logexpand='super) then true else [actual, expected]);
+true;
