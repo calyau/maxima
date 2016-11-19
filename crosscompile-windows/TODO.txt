@@ -42,11 +42,11 @@ a small shell script).
 
 Using other LISPs might be a good idea (I tried it), but there are some issues:
 
-GCL released exe installers (currently only for older versions)
+GCL released exe installers (currently only for older versions), crosscompiling
+did not work for me.
 
-ECL released an exe installer. 
-
-Trying to crosscompile GCL or ECL did not work for me.
+Crosscompiling ECL works and it seems to work with 'wine', but only in bytecode-mode -
+and Maxima can currently not compiled, if ECL uses the bytecode compiler.
 
 CCL released a ZIP File for windows (which is promising), but sadly it does
 not work with wine.

@@ -169,20 +169,23 @@ externalproject_add(clisp
 )
 install(DIRECTORY ${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp/ DESTINATION clisp-${CLISPVERSION})
 
-
-configure_file("${CMAKE_SOURCE_DIR}/sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/sbcl.sh")
-
-# SBCL is released as a 'MSI'-installer; download and extract it (using 7z) with an own DOWNLOAD_COMMAND shell script.
 externalproject_add(sbcl
   URL "${SBCL_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${SBCL_MD5}
-  DOWNLOAD_COMMAND ${CMAKE_BINARY_DIR}/sbcl.sh
+  DOWNLOAD_NO_EXTRACT 1
   CONFIGURE_COMMAND ""
-  BUILD_COMMAND ""
+  BUILD_COMMAND cd ${CMAKE_BINARY_DIR}/sbcl && ${CMAKE_SOURCE_DIR}/sbcl.sh
   INSTALL_COMMAND ""
 )
-install(DIRECTORY ${CMAKE_BINARY_DIR}/sbcl-prefix/src/sbcl/ DESTINATION bin)
+ExternalProject_Add_Step(sbcl extract
+  COMMENT "Performing extraction step for 'SBCL'"
+  COMMAND mkdir -p ${CMAKE_BINARY_DIR}/sbcl && cd ${CMAKE_BINARY_DIR}/sbcl && ${SEVENZIP_EXE} x -y ${CMAKE_SOURCE_DIR}/downloads/sbcl-${SBCLVERSION}-x86-windows-binary.msi
+  DEPENDEES download
+  DEPENDERS patch
+)
+
+install(DIRECTORY ${CMAKE_BINARY_DIR}/sbcl/ DESTINATION bin)
 
 # Gnuplot (already a binary package just extract it...)
 externalproject_add(gnuplot
