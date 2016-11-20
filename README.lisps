@@ -1,7 +1,7 @@
 Notes on Lisp implementations for Maxima:
 
-Clisp, CMUCL, Scieneer Common Lisp (SCL), GCL (ANSI-enabled only)
-and SBCL can compile and execute Maxima.
+Clisp, CMUCL, Scieneer Common Lisp (SCL), GCL (ANSI-enabled only),
+ECL, ABCL and SBCL can compile and execute Maxima.
 Allegro Common Lisp and OpenMCL might also work, but have not
 been fully tested.
 
@@ -126,6 +126,10 @@ ECL <https://common-lisp.net/project/ecl/>
     
 	ECL is known to work with maxima and passes the testsuite.  ECL
 runs on many platforms and OSes.
+
+ECL must be configured to use the C compiler, building Maxima with the
+ECL bytecode compiler is (currently) not possible.  So do *not* use the
+option "--with-cmp=no" when building ECL.
 
 --------------------------------------------------------------------
 Armed Bear Common Lisp (ABCL) <https://common-lisp.net/project/armedbear/>
