@@ -1,2 +1,0 @@
-print ("Solver: solver.mac was renamed Solver.mac; I'll load Solver.mac now.");
-load ("Solver.mac");
