@@ -185,7 +185,7 @@ block([fpprintprec:5], string(1.2345b0));
 "1.2345b0";
 
 block([fpprintprec:5], string(1.23456789b0));
-"1.2345b0";
+"1.2346b0";
 
 block([fpprintprec:25], string(1.2345678901234567890123456789b0));
 "1.234567890123457b0";
@@ -267,6 +267,151 @@ block ([L1 : [["1.2E-10","1.2E-9","1.2E-8","1.2E-7","1.2E-6","1.2E-5","1.2E-4","
  map (lambda ([s1, s2], if sequalignore (s1, s2) then true else s2 # s1), flatten (L1), flatten (L2)),
  delete (true, %%));
 [];
+
+/* SF bug #3213: "fpprintprec do not round bfloat correctly." */
+
+(reset (fpprec, bftrunc),
+ fpprintprec:4,
+ string (1.23456789b0));
+"1.235b0";
+
+/* default fpprintprec => print all digits */
+
+(reset (fpprintprec), 0);
+0;
+
+string (bfloat (1000000000000*(1 + 8/9)));
+"1.888888888888889b12";
+
+string (bfloat ((1 + 8/9)/1000000000000)), fpprec=50;
+"1.8888888888888888888888888888888888888888888888889b-12";
+
+string (bfloat (1000000000000*(1 + 8/9))), fpprec=10;
+"1.888888889b12";
+
+string (bfloat ((1 + 8/9)/1000000000000)), fpprec=2;
+"1.9b-12";
+
+/* expect to see bigfloat ending in 5 to round to even */
+
+map (string, map (bfloat, 1 + [1, 2, 3, 4, 5, 6, 7]/8)), fpprintprec=3;
+["1.12b0", "1.25b0", "1.38b0", "1.5b0", "1.62b0", "1.75b0", "1.88b0"];
+
+map (string, map (bfloat, 100 + makelist (i/64, i, 1, 63))), fpprintprec=8;
+["1.0001562b2", "1.0003125b2", "1.0004688b2", "1.000625b2", "1.0007812b2", "1.0009375b2", "1.0010938b2", "1.00125b2",
+ "1.0014062b2", "1.0015625b2", "1.0017188b2", "1.001875b2", "1.0020312b2", "1.0021875b2", "1.0023438b2", "1.0025b2",
+ "1.0026562b2", "1.0028125b2", "1.0029688b2", "1.003125b2", "1.0032812b2", "1.0034375b2", "1.0035938b2", "1.00375b2",
+ "1.0039062b2", "1.0040625b2", "1.0042188b2", "1.004375b2", "1.0045312b2", "1.0046875b2", "1.0048438b2", "1.005b2",
+ "1.0051562b2", "1.0053125b2", "1.0054688b2", "1.005625b2", "1.0057812b2", "1.0059375b2", "1.0060938b2", "1.00625b2",
+ "1.0064062b2", "1.0065625b2", "1.0067188b2", "1.006875b2", "1.0070312b2", "1.0071875b2", "1.0073438b2", "1.0075b2",
+ "1.0076562b2", "1.0078125b2", "1.0079688b2", "1.008125b2", "1.0082812b2", "1.0084375b2", "1.0085938b2", "1.00875b2",
+ "1.0089062b2", "1.0090625b2", "1.0092188b2", "1.009375b2", "1.0095312b2", "1.0096875b2", "1.0098438b2"];
+
+/* bftrunc=false => don't strip trailing 0's */
+
+map (string, map (bfloat, 1 + [1, 2, 3, 4, 5, 6, 7]/8)), fpprintprec=3, bftrunc=false;
+["1.12b0", "1.25b0", "1.38b0", "1.50b0", "1.62b0", "1.75b0", "1.88b0"];
+
+map (string, map (bfloat, 100 + makelist (i/64, i, 1, 63))), fpprintprec=8, bftrunc=false;
+["1.0001562b2", "1.0003125b2", "1.0004688b2", "1.0006250b2", "1.0007812b2", "1.0009375b2", "1.0010938b2", "1.0012500b2",
+ "1.0014062b2", "1.0015625b2", "1.0017188b2", "1.0018750b2", "1.0020312b2", "1.0021875b2", "1.0023438b2", "1.0025000b2",
+ "1.0026562b2", "1.0028125b2", "1.0029688b2", "1.0031250b2", "1.0032812b2", "1.0034375b2", "1.0035938b2", "1.0037500b2",
+ "1.0039062b2", "1.0040625b2", "1.0042188b2", "1.0043750b2", "1.0045312b2", "1.0046875b2", "1.0048438b2", "1.0050000b2",
+ "1.0051562b2", "1.0053125b2", "1.0054688b2", "1.0056250b2", "1.0057812b2", "1.0059375b2", "1.0060938b2", "1.0062500b2",
+ "1.0064062b2", "1.0065625b2", "1.0067188b2", "1.0068750b2", "1.0070312b2", "1.0071875b2", "1.0073438b2", "1.0075000b2",
+ "1.0076562b2", "1.0078125b2", "1.0079688b2", "1.0081250b2", "1.0082812b2", "1.0084375b2", "1.0085938b2", "1.0087500b2",
+ "1.0089062b2", "1.0090625b2", "1.0092188b2", "1.0093750b2", "1.0095312b2", "1.0096875b2", "1.0098438b2"];
+
+/* fpprintprec <= fpprec */
+
+every (lambda ([s], s="5.6b2"), map (string, makelist (bfloat (5000/9), fpprec, fpprintprec, 40))), fpprintprec=2;
+true;
+
+every (lambda ([s], s="5.56b-4"), map (string, makelist (bfloat (5/9000), fpprec, fpprintprec, 40))), fpprintprec=3;
+true;
+
+every (lambda ([s], s="5.556b2"), map (string, makelist (bfloat (5000/9), fpprec, fpprintprec, 40))), fpprintprec=4;
+true;
+
+every (lambda ([s], s="5.5556b-4"), map (string, makelist (bfloat (5/9000), fpprec, fpprintprec, 40))), fpprintprec=5;
+true;
+
+every (lambda ([s], s="5.55556b2"), map (string, makelist (bfloat (5000/9), fpprec, fpprintprec, 40))), fpprintprec=6;
+true;
+
+every (lambda ([s], s="5.555556b-4"), map (string, makelist (bfloat (5/9000), fpprec, fpprintprec, 40))), fpprintprec=7;
+true;
+
+every (lambda ([s], s="5.5555556b2"), map (string, makelist (bfloat (5000/9), fpprec, fpprintprec, 40))), fpprintprec=8;
+true;
+
+/* fpprintprec >= fpprec */
+
+/* bfloat generally produces a number which is not exactly the same as its argument.
+ * When bfloat returns a bigger number, it should round up when formatted,
+ * and when it's smaller, it should round down.
+ * When bfloat returns an exact result, in this case it should round up (to 6).
+ * Consider this when figuring out the correct output for these examples.
+ */
+
+(fpprec : 2, 
+ mybf : bfloat(5/9000),
+ is (rationalize (mybf) >= (5*sum(10^i, i, 0, fpprec)/10^(fpprec + 1))/1000));
+true;
+
+every (lambda ([s], s="5.6b-4"), map (string, makelist (mybf, fpprintprec, fpprec, 40)));
+true;
+
+(fpprec : 3,
+ mybf : bfloat(5000/9),
+ is (rationalize (mybf) >= (5*sum(10^i, i, 0, fpprec)/10^(fpprec + 1))*1000));
+true;
+
+every (lambda ([s], s="5.56b2"), map (string, makelist (mybf, fpprintprec, fpprec, 40)));
+true;
+
+(fpprec : 4,
+ mybf : bfloat(5/9000),
+ is (rationalize (mybf) >= (5*sum(10^i, i, 0, fpprec)/10^(fpprec + 1))/1000));
+true;
+
+every (lambda ([s], s="5.556b-4"), map (string, makelist (mybf, fpprintprec, fpprec, 40)));
+true;
+
+(fpprec : 5,
+ mybf : bfloat(5000/9),
+ is (rationalize (mybf) >= (5*sum(10^i, i, 0, fpprec)/10^(fpprec + 1))*1000));
+false;
+
+every (lambda ([s], s="5.5555b2"), map (string, makelist (mybf, fpprintprec, fpprec, 40)));
+true;
+
+(fpprec : 10,
+ mybf : bfloat(5/9000),
+ is (rationalize (mybf) >= (5*sum(10^i, i, 0, fpprec)/10^(fpprec + 1))/1000));
+true;
+
+every (lambda ([s], s="5.555555556b-4"), map (string, makelist (mybf, fpprintprec, fpprec, 40)));
+true;
+
+(fpprec : 20,
+ mybf : bfloat(5000/9),
+ is (rationalize (mybf) >= (5*sum(10^i, i, 0, fpprec)/10^(fpprec + 1))*1000));
+true;
+
+every (lambda ([s], s="5.5555555555555555556b2"), map (string, makelist (mybf, fpprintprec, fpprec, 40)));
+true;
+
+(fpprec : 40,
+ mybf : bfloat(5/9000),
+ is (rationalize (mybf) >= (5*sum(10^i, i, 0, fpprec)/10^(fpprec + 1))/1000));
+false;
+
+every (lambda ([s], s="5.555555555555555555555555555555555555555b-4"), map (string, makelist (mybf, fpprintprec, fpprec, 40)));
+true;
+
+(reset (fpprec), 0);
+0;
 
 /*
  * Bug 2142758: integrate(sqrt(2-2*x^2)*(sqrt(2)*x^2+sqrt(2))/(4-4*x^2),x,0,1)
