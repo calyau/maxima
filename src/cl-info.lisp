@@ -134,17 +134,18 @@
 
     (setq wanted
           (if (> nitems 1)
-          (loop
-           for prompt-count from 0
-           thereis (progn
-                 (finish-output *debug-io*)
-                 (print-prompt prompt-count)
-                 (force-output)
-                 (clear-input)
-                 (select-info-items
-                  (parse-user-choice nitems) items-list)))
-          items-list))
-    (clear-input)
+            (prog1
+              (loop
+                for prompt-count from 0
+                thereis (progn
+                          (finish-output *debug-io*)
+                          (print-prompt prompt-count)
+                          (force-output)
+                          (clear-input)
+                          (select-info-items
+                            (parse-user-choice nitems) items-list)))
+              (clear-input))
+            items-list))
     (finish-output *debug-io*)
     (when (consp wanted)
       (format t "~%")
