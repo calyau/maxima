@@ -643,7 +643,9 @@ values")
 
 (defvar ^w nil)
 
-(defun $timedate (&optional (time (get-universal-time)))
+(defun $timedate (&optional (time (get-universal-time)) tz)
+  (if (and (consp tz) (eq (caar tz) 'rat))
+    (setq tz (/ (second tz) (third tz))))
   (let*
     ((time-integer (mfuncall '$floor time))
      (time-fraction (sub time time-integer))
@@ -653,20 +655,22 @@ values")
       (setq time-millis 0))
     (multiple-value-bind
       (second minute hour date month year day-of-week dst-p tz)
-      (decode-universal-time time-integer)
+      (decode-universal-time time-integer (and tz (- tz)))
       (declare (ignore day-of-week))
-      (let
-        ((tz-offset (if dst-p (- 1 tz) (- tz))))
-        (multiple-value-bind
-          (tz-hours tz-hour-fraction)
-          (floor tz-offset)
-          (let
-            ((tz-sign (if (< 0 tz-hours) #\+ #\-)))
-            (if (= time-millis 0)
-              (format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~a~2,'0d:~2,'0d"
-                  year month date hour minute second tz-sign (abs tz-hours) (floor (* 60 tz-hour-fraction)))
-              (format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d.~3,'0d~a~2,'0d:~2,'0d"
-                  year month date hour minute second time-millis tz-sign (abs tz-hours) (floor (* 60 tz-hour-fraction))))))))))
+      (if (/= (mod tz 1/60) 0)
+        ($timedate time-integer (/ (round (- tz) 1/60) 60))
+        (let
+          ((tz-offset (if dst-p (- 1 tz) (- tz))))
+          (multiple-value-bind
+            (tz-hours tz-hour-fraction)
+            (truncate tz-offset)
+            (let
+              ((tz-sign (if (<= 0 tz-offset) #\+ #\-)))
+              (if (= time-millis 0)
+                (format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~a~2,'0d:~2,'0d"
+                    year month date hour minute second tz-sign (abs tz-hours) (floor (* 60 (abs tz-hour-fraction))))
+                (format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d.~3,'0d~a~2,'0d:~2,'0d"
+                    year month date hour minute second time-millis tz-sign (abs tz-hours) (floor (* 60 (abs tz-hour-fraction))))))))))))
 
 ;; Parse date/time strings in these formats (and only these):
 ;;

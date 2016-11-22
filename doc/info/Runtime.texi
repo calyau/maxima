@@ -247,19 +247,31 @@ and elapsed time with each output line.
 @c -----------------------------------------------------------------------------
 @anchor{timedate}
 @deffn  {Function} timedate @
-@fname{timedate} () @
+@fname{timedate} (@var{T}, @var{tz_offset})
 @fname{timedate} (@var{T})
+@fname{timedate} () @
 
-@code{timedate()} with no argument
-returns a string representing the current time and date.
-The string has the format @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ},
-where the fields are year, month, day, hours, minutes, seconds, and time zone
-offset in hours and minutes.
+@code{timedate(@var{T}, @var{tz_offset})} returns a string
+representing the time @var{T} in the time zone @var{tz_offset}.
+The string format is @code{YYYY-MM-DD HH:MM:SS.NNN[+|-]ZZ:ZZ}
+(using as many digits as necessary to represent the fractional part)
+if @var{T} has a nonzero fractional part,
+or @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ} if its fractional part is zero.
 
-@code{timedate(@var{T})} returns the time @var{T}
-as a string with the format @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ}.
-@var{T} is interpreted as the number of seconds since midnight, January 1, 1900,
-as returned by @code{absolute_real_time}.
+@var{T} measures time, in seconds, since midnight, January 1, 1900,
+in the GMT time zone.
+
+@var{tz_offset} measures the offset of the time zone, in hours,
+east (positive) or west (negative) of GMT.
+@var{tz_offset} must be between -24 and 24, inclusive.
+If @var{tz_offset} is not a multiple of 1/60, 
+it is rounded to the nearest multiple of 1/60.
+
+@code{timedate(@var{T})} is equivalent to @code{timedate(@var{T}, @var{tz_offset})}
+with @var{tz_offset} equal to the offset of the local time zone.
+
+@code{timedate()} is equivalent to @code{timedate(absolute_real_time())}.
+That is, it returns the current time in the local time zone.
 
 Example:
 
