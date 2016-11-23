@@ -644,8 +644,11 @@ values")
 (defvar ^w nil)
 
 (defun $timedate (&optional (time (get-universal-time)) tz)
-  (if (and (consp tz) (eq (caar tz) 'rat))
-    (setq tz (/ (second tz) (third tz))))
+  (cond
+    ((and (consp tz) (eq (caar tz) 'rat))
+     (setq tz (/ (second tz) (third tz))))
+    ((floatp tz)
+     (setq tz (rationalize tz))))
   (let*
     ((time-integer (mfuncall '$floor time))
      (time-fraction (sub time time-integer))

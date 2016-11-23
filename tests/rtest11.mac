@@ -328,6 +328,15 @@ timedate (86400, -1927/225);
 timedate (86400, 1927/225);
 "1900-01-02 08:34:00+08:34";
 
+timedate (0, float (0));
+"1900-01-01 00:00:00+00:00";
+
+timedate (86400, float (-1927/225));
+"1900-01-01 15:26:00-08:34";
+
+timedate (86400, float (1927/225));
+"1900-01-02 08:34:00+08:34";
+
 /* date parsing */
 
 parse_timedate (timedate (86400));
@@ -348,7 +357,7 @@ parse_timedate (timedate (1000000000));
 parse_timedate (timedate (10000000000));
 10000000000;
 
-parse_timedate (timedate (86400, 8+3/4));
+parse_timedate (timedate (86400, 8.75));
 86400;
 
 parse_timedate (timedate (86401, -1/4));
@@ -357,13 +366,13 @@ parse_timedate (timedate (86401, -1/4));
 parse_timedate (timedate (87400, 24));
 87400;
 
-parse_timedate (timedate (1000000, -24));
+parse_timedate (timedate (1000000, -24.0));
 1000000;
 
 parse_timedate (timedate (1000000000, 0));
 1000000000;
 
-parse_timedate (timedate (10000000000, 1927/225));
+parse_timedate (timedate (10000000000, float (1927/225)));
 10000000000;
 
 map (parse_timedate,
