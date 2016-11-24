@@ -649,6 +649,7 @@ values")
      (setq tz (/ (second tz) (third tz))))
     ((floatp tz)
      (setq tz (rationalize tz))))
+  (if tz (setq tz (/ (round tz 1/60) 60)))
   (let*
     ((time-integer (mfuncall '$floor time))
      (time-fraction (sub time time-integer))
@@ -658,8 +659,15 @@ values")
       (setq time-millis 0))
     (multiple-value-bind
       (second minute hour date month year day-of-week dst-p tz)
-      (decode-universal-time time-integer (and tz (- tz)))
+      ;; Some Lisps allow TZ to be null but CLHS doesn't explicitly allow it,
+      ;; so work around null TZ here.
+      (if tz (decode-universal-time time-integer (- tz))
+        (decode-universal-time time-integer))
       (declare (ignore day-of-week))
+      ;; DECODE-UNIVERSAL-TIME might return a timezone offset
+      ;; which is a multiple of 1/3600 but not 1/60.
+      ;; We need a multiple of 1/60 because our formatted
+      ;; timezone offset has only minutes and seconds.
       (if (/= (mod tz 1/60) 0)
         ($timedate time-integer (/ (round (- tz) 1/60) 60))
         (let
