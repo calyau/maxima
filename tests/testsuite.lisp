@@ -23,7 +23,8 @@
         "rtest9" 
         "rtest9a"
         ((mlist simp) "rtest10" 24 25)
-        "rtest11" "rtest13" "rtest13s"
+        ((mlist) "rtest11" #+(or gcl cmucl ccl64) 137)
+        "rtest13" "rtest13s"
         "rtest14"
         "rtest15"
 	;; ccl versions 1.11 and earlier fail test 50.  Mark it as a
