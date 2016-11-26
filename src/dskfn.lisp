@@ -263,7 +263,7 @@
   ;; For this reason only they are output as EQ-forms.
   (let ((ary (cond ((and (eq ind 'array) (get item 'array)) rename)
 		   ;; This code handles "complete" arrays.
-		   (t (fasprint t '(setq aaaaa (gensym))) 'aaaaa)))
+		   (t (fasprint t '(defparameter aaaaa (gensym))) 'aaaaa)))
 	(dims (arraydims val))
 	val1)
     (if (eq ind 'hashar) (fasprint t `(remcompary ,rename)))
