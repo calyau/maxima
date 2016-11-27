@@ -225,12 +225,24 @@
 	   (if (not (member var featurel :test #'eq)) (pradd2lnc var '$features))))
 	((and (eq item '$linenum) (eq item rename))
 	 (fasprint t `(setq $linenum ,val)))
-	((not ($ratp val))
-	 (fasprint t (list 'dsksetq rename
-			   (if (or (numberp val) (member val '(nil t) :test #'eq))
-			       val
-			       (list 'quote val)))))
-	(t (fasprint t `(dsksetq ,rename (dskrat (quote ,val)))))))
+	(($ratp val) (fasprint t `(dsksetq ,rename (dskrat (quote ,val)))))
+	(t
+      (cond
+        ;; Hash tables ("fast arrays") aren't printable in all Lisp implementations.
+        ((hash-table-p val)
+         (fasprint t `(dsksetq ,rename (fill-hash (make-hash-table :test 'equal) ',(list-hash-pairs val)))))
+        ;; If there are other unprintable values, this is a place to handle them.
+        (t
+          (fasprint t (list 'dsksetq rename (list 'quote val))))))))
+
+(defun fill-hash (h kv-list)
+  (dolist (kv kv-list)
+    (setf (gethash (first kv) h) (second kv)))
+  h)
+
+(defun list-hash-pairs (h)
+  (loop for value being the hash-values of h using (hash-key key)
+        collect (list key value)))
 
 (defun mpropschk (item rename file stfl)
   (do ((props (cdr (or (get item 'mprops) '(nil))) (cddr props)) (val))

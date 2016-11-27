@@ -586,3 +586,106 @@ m(1);
 kill (functions, arrays);
 done;
 
+/* try to verify that save(...) handles arrays correctly */
+
+(kill (all),
+ myundeclared[1234, foo] : sin(bar),
+ myundeclared[bar, baz + 1] : cos(quux),
+ myundeclared[1729, u^2] : tan(bar),
+ myundeclared[mumble, 7] : 9876,
+ array (mydeclared, 1, 1, 1),
+ mydeclared[0, 0, 0] : bar + 0,
+ mydeclared[0, 0, 1] : bar + 1,
+ mydeclared[0, 1, 0] : bar + 2,
+ mydeclared[0, 1, 1] : bar + 3,
+ mydeclared[1, 0, 0] : bar + 4,
+ mydeclared[1, 0, 1] : bar + 5,
+ mydeclared[1, 1, 0] : bar + 6,
+ mydeclared[1, 1, 1] : bar + 7,
+ myvalue : make_array (fixnum, 2, 2, 2, 2),
+ myvalue[0, 0, 0, 0] : %pi + 1,
+ myvalue[1, 1, 1, 1] : %e - 1,
+ use_fast_arrays : true,
+ myfast[foo, bar, baz] : blurf,
+ myfast["mumble", "abc", "xy", "Z"] : 2*blurf,
+ myfast[sin(foo), 1 - baz] : 3*blurf,
+ reset (use_fast_arrays),
+ save (sconcat (maxima_tempdir, "/tmpsavearrays.lisp"), arrays, values),
+ 0);
+0;
+
+[arrays, values];
+[[myundeclared, mydeclared], [myvalue, myfast]];
+
+arrayinfo (myundeclared);
+[hashed, 2, [1234,foo],[1729,u^2],[bar,baz+1],[mumble,7]];
+
+listarray (myundeclared);
+[sin(bar), tan(bar), cos(quux), 9876];
+
+arrayinfo (mydeclared);
+[declared, 3, [1, 1, 1]];
+
+listarray (mydeclared);
+[bar, bar + 1, bar + 2, bar + 3, bar + 4, bar + 5, bar + 6, bar + 7];
+
+arrayinfo (myvalue);
+[declared, 4, [1, 1, 1, 1]]; /* "declared" seems wrong here ... oh well */
+
+listarray (myvalue);
+[%pi + 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, %e - 1];
+
+(arrayinfo (myfast), [%%[1], %%[2], sort (rest (%%, 2))]);
+[hash_table, true, [["mumble", "abc", "xy", "Z"], [foo, bar, baz], [sin(foo), 1 - baz]]];
+
+sort (listarray (myfast));
+[blurf, 2*blurf, 3*blurf];
+
+kill (myundeclared, mydeclared, myvalue, myfast);
+done;
+
+[arrays, values];
+[[], []];
+
+[errcatch (arrayinfo (myundeclared)),
+ errcatch (arrayinfo (mydeclared)),
+ errcatch (arrayinfo (myvalue)),
+ errcatch (arrayinfo (myfast))];
+[[], [], [], []];
+
+[errcatch (listarray (myundeclared)),
+ errcatch (listarray (mydeclared)),
+ errcatch (listarray (myvalue)),
+ errcatch (listarray (myfast))];
+[[], [], [], []];
+
+(load (sconcat (maxima_tempdir, "/tmpsavearrays.lisp")), 0);
+0;
+
+[arrays, values];
+[[myundeclared, mydeclared], [myvalue, myfast]];
+
+arrayinfo (myundeclared);
+[hashed, 2, [1234,foo],[1729,u^2],[bar,baz+1],[mumble,7]];
+
+listarray (myundeclared);
+[sin(bar), tan(bar), cos(quux), 9876];
+
+arrayinfo (mydeclared);
+[declared, 3, [1, 1, 1]];
+
+listarray (mydeclared);
+[bar, bar + 1, bar + 2, bar + 3, bar + 4, bar + 5, bar + 6, bar + 7];
+
+arrayinfo (myvalue);
+[declared, 4, [1, 1, 1, 1]]; /* "declared" seems wrong here ... oh well */
+
+listarray (myvalue);
+[%pi + 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, %e - 1];
+
+(arrayinfo (myfast), [%%[1], %%[2], sort (rest (%%, 2))]);
+[hash_table, true, [["mumble", "abc", "xy", "Z"], [foo, bar, baz], [sin(foo), 1 - baz]]];
+
+sort (listarray (myfast));
+[blurf, 2*blurf, 3*blurf];
+
