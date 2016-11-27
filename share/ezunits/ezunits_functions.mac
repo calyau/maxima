@@ -251,10 +251,6 @@ simplify_units (e%) := block
     killcontext (mycontext),
     e%);
 
-/* Compile matchdeclare predicate functions in hopes of greater speed */
-/* Don't compile nondimensionalp due to bug in translator: %% is handled incorrectly. */
-compile (constantp_not0, constantp_not1, mult_expr_nontrivialconstfactorsp, /* nondimensionalp, */ unitop_p, unitp, nonconstantp);
-
 known_unit_conversions : {};
 
 get_unit_conversion (u) := assoc (u, known_unit_conversions);
