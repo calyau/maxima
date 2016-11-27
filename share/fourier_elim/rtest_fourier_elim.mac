@@ -1,6 +1,6 @@
 /* Let's place the known bugs at the end. */
 
-(kill(all),load("fourier_elim"), 0);
+(kill(all), reset(), load("fourier_elim"), 0);
 0$
 
 fourier_elim([max(x,0) > 0],[x]);

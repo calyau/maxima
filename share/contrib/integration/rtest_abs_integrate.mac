@@ -1,4 +1,11 @@
-(kill(all),load("abs_integrate.mac"), load('hypergeometric), load("hyperint.mac"), start : elapsed_real_time(), declare(signum,real), 0);
+(kill(all),
+ reset (),
+ load("abs_integrate.mac"),
+ load('hypergeometric),
+ load("hyperint.mac"),
+ start : elapsed_real_time(),
+ declare(signum,real),
+ 0);
 0$
 
 /* SF bug #2815: abs_integrate leads to infinite recursion

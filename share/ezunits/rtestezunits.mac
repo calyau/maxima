@@ -4,7 +4,7 @@
  * GNU General Public License.
  */
 
-(kill (all), load (ezunits), 0);
+(kill (all), reset (), load (ezunits), 0);
 0;
 
 a`m^3;
