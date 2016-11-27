@@ -959,11 +959,45 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
 
 ;; comparison - test functions - at Maxima and Lisp level
 ;;
-;;   for the sake of efficiency omit checkings here
 ;;
-(defun $sequal (s1 s2) (string= s1 s2))
+(defun $sequal       (s1 s2) (string= s1 s2))      ;; for the sake of efficiency 
+(defun $sequalignore (s1 s2) (string-equal s1 s2)) ;;   omit checkings here
 ;;
-(defun $sequalignore (s1 s2) (string-equal s1 s2))
+(defun $slessp    (s1 s2) (scompare s1 s2 "slessp"    '$sequal t   #'$clessp))
+(defun $sgreaterp (s1 s2) (scompare s1 s2 "sgreaterp" '$sequal nil #'$cgreaterp))
+;;
+(defun $slesspignore    (s1 s2) (scompare s1 s2 "slesspignore"    '$sequalignore t   #'$clesspignore))
+(defun $sgreaterpignore (s1 s2) (scompare s1 s2 "sgreaterpignore" '$sequalignore nil #'$cgreaterpignore))
+;;
+(defun scompare (s1 s2 name test lessp? ccomp)
+  (unless (and (stringp s1) (stringp s2)) (s-error2 name "the two"))
+  (let ((pos (mismatch s1 s2 :test test)))
+    (cond 
+      ((or (not pos) (>= pos (length (if lessp? s2 s1)))) nil)
+      ((>= pos (length (if lessp? s1 s2))) t)
+      (t (apply ccomp (chars-to-compare s1 s2 pos))) )))
+;;
+(defun chars-to-compare (s1 s2 pos)
+  (let ((l1 1) (l2 1))
+    (when *parse-utf-8-input*
+      ;; When mismatch finds a pos somewhere in an utf-8 octet sequence 
+      ;;   we have to identify the beginning and the length.
+      (while (= (logand (char-code (elt (subseq s1 pos (1+ pos)) 0)) 192.) 128.)
+        (decf pos) ) ;; the beginning
+      (setq l1 (parse-utf-8-header s1 pos) ;; the length
+            l2 (parse-utf-8-header s2 pos) ))
+    (list (subseq s1 pos (+ pos l1)) (subseq s2 pos (+ pos l2))) ))
+;;
+(defun parse-utf-8-header (str start) 
+  ;; The position start is the beginning of an utf-8 octet sequence.
+  ;; parse-utf-8-header then returns the length of this sequence.
+  (let ((h (char-code (elt (subseq str start (1+ start)) 0))))
+    (cond
+      ((not (logbitp 7 h)) 1)
+      ((= (ldb (byte 3 5) h) #b110) 2)
+      ((= (ldb (byte 4 4) h) #b1110) 3)
+      ((= (ldb (byte 5 3) h) #b11110) 4)
+      (t (gf-merror (intl:gettext "`parse-utf-8-header': ~m is no utf-8 header") h)) )))
 
 
 (defun $smismatch (s1 s2 &optional (test '$sequal))
