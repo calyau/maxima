@@ -974,7 +974,8 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
   (let ((pos (mismatch s1 s2 :test test)))
     (when pos 
       (if *parse-utf-8-input* 
-        (- (1+ pos) (utf-8-pos-dec s1 pos))
+        (- (1+ pos)
+           (utf-8-pos-dec s1 (if (= pos (length s1)) pos (1+ pos))) )
         (1+ pos) ))))
 
 
