@@ -187,6 +187,7 @@
 	     (:file "dorgqr"
 	      :depends-on ("dorg2r" "dlarft" "dlarfb" "ilaenv"))
 	     (:file "dlaln2"
+          #+ecl :load-only #+ecl t
 	      :depends-on ("dladiv"
 			   "dlamch"))
 	     (:file "ieeeck")
@@ -216,6 +217,7 @@
 	      :depends-on ("dlasy2" "dlanv2" "dlarfg" "dlamch" "dlange"
 				    "dlacpy" "dlartg"))
 	     (:file "dlasy2"
+          #+ecl :load-only #+ecl t
 	      :depends-on ("dlamch"))
 
 	     ;; DGESV
