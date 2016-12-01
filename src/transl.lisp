@@ -1226,7 +1226,7 @@ APPLY means like APPLY.")
 ;; Perhaps a mere expansion into an MPROG would be best.
 
 (def%tr mdo (form)
-  (let (returns assigns return-mode local (inside-mprog t) tem need-prog?)
+  (let (returns assigns return-mode local (inside-mprog t) need-prog?)
     (let (mode var init next test action varmode)
       (setq var (cond ((cadr form)) (t 'mdo)))
       (specialp var)
@@ -1240,7 +1240,6 @@ APPLY means like APPLY.")
       (setq form (copy-list form))
       ;;to make the end test for thru be numberp if the index is numberp
       ;;and to eliminate reevaluation
-      tem
       (cond ((not varmode)
 	     (declvalue var (*union-mode (car init) (car next)) t))
 	    (t
