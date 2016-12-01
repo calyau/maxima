@@ -818,7 +818,6 @@
    ;; tr is the truncation level desired
    ;; m is the term index
    (declare (fixnum m))
-   ;; s ;Ignored <- not true, see below. Who wrote this?
    (prog (a (k 0) ak cm-k c ma0 sum kr tr)
 	 (declare (fixnum k))
 	 ;; truly unfortunate that we need so many variables in this hack
