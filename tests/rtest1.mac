@@ -604,7 +604,9 @@ true;
   [1-sqrt(2), (1-sqrt(2))^x, log(2)],
   [1-sqrt(2), (1-sqrt(2))^x, log(log(1-sqrt(2)))],
   [1-sqrt(2), (1-sqrt(2))^x, log(log(2))]],
- map (lambda ([l], apply (exactly_1, listify (permutations (l)))), %%));
+  map (lambda ([l], apply (exactly_1, map (lambda ([triple], apply (in_order, triple)),  
+					   (listify (permutations (l)))))),
+       %%));
 [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
 
 /* totalorderp from mailing list 2016-07-18 "Testing for total order (for orderlessp testing)" tnx Stavros */
