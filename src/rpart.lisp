@@ -469,8 +469,7 @@
            ;; Case atan2(y,x) and y/x a real expression.
            (cons l 0))
 	  ((or (arcp (caar l)) (eq (caar l) '$atan2))
-	   (let ((ans (risplit (let (($logarc t))
-				 (resimplify l)))))
+	   (let ((ans (risplit (logarc (caar l) (cadr l)))))
 	     (when (eq (caar l) '$atan2)
 	       (setq ans (cons (sratsimp (car ans)) (sratsimp (cdr ans)))))
 	     (if (and (free l '$%i) (=0 (cdr ans)))
