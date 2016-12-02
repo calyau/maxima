@@ -537,7 +537,9 @@
 	       (t (cons (car x)
 			(mapcar #'(lambda (x) (simplifya x y)) (cdr x))))))
 	((eq (caar x) 'rat) (*red1 x))
-	((and (not dosimp) (member 'simp (cdar x) :test #'eq)) x)
+	;; Enforced resimplification: Reset dosimp and strip 'simp tags from x.
+	(dosimp (let ((dosimp nil)) (simplifya (unsimplify x) y)))
+	((member 'simp (cdar x) :test #'eq) x)
 	((eq (caar x) 'mrat) x)
 	((not (atom (caar x)))
 	 (cond ((or (eq (caaar x) 'lambda)
@@ -648,6 +650,11 @@
 (defun rulechk (x) (or (mget x 'oldrules) (get x 'rules)))
 
 (defmfun resimplify (x) (let ((dosimp t)) (simplifya x nil)))
+
+(defun unsimplify (x)
+  (if (or (atom x) (specrepp x))
+      x
+      (cons (remove 'simp (car x) :count 1) (mapcar #'unsimplify (cdr x)))))
 
 (defun simpargs (x y)
   (if (or (eq (get (caar x) 'dimension) 'dimension-infix)
