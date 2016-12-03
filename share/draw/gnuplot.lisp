@@ -18,12 +18,12 @@
 ;;; This is a maxima-gnuplot interface.
 
 ;;; Visit
-;;; http://riotorto.users.sf.net/gnuplot
+;;; http://tecnostats.net/Maxima/gnuplot
 ;;; for examples
 
 ;;; For questions, suggestions, bugs and the like, feel free
 ;;; to contact me at
-;;; mario @@@ edu DOT xunta DOT es
+;;; riotorto @@@ yahoo DOT com
 
 
 ;; use $draw_version to save package version
@@ -3027,7 +3027,7 @@
                (when (near-equal zi zf)
                   (setf zi (- zi 0.01)
                         zf (+ zf 0.01)))
-               (format nil "set format '%h'~%set xrange [~a:~a]~%set yrange [~a:~a]~%set zrange [~a:~a]~%"
+               (format nil "set xrange [~a:~a]~%set yrange [~a:~a]~%set zrange [~a:~a]~%"
                            xi xf yi yf zi zf))
             (if (get-option '$cbrange)
                (format nil "set cbrange [~a:~a]~%" 
@@ -3359,7 +3359,7 @@
 
     ; Make gnuplot versions newer than 5.0 understand that linetype means
     ; we try to set the dash type
-    (format cmdstorage "~%if(GPVAL_VERSION >= 5.0){set for [i=1:8] linetype i dashtype i}")
+    (format cmdstorage "~%if(GPVAL_VERSION >= 5.0){set for [i=1:8] linetype i dashtype i; set format '%h'}")
 
     ;; By default gnuplot assumes everything below 1e-8 to be a rounding error
     ;; and rounds it down to 0. This is handy for standalone gnuplot as it allows
