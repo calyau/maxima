@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005-2012 Mario Rodriguez Riotorto
+Copyright (C) 2005-2016 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -122,7 +122,8 @@ For questions, suggestions, bugs and the like, feel free
 to contact me at
 
 mario AT edu DOT xunta DOT es
-http://riotorto.users.sourceforge.net/
+http://tecnostats.net
+
 */
 
 
@@ -1103,6 +1104,8 @@ wxpiechart([desc]) := wxdraw2d(apply(piechart_description, desc)) $
 /* Specific options:                                                               */
 /*     - box_width (3/4): widths for boxes                                         */
 /*     - box_orientation (vertical): 'vertical' or 'horizontal'                    */
+/*     - range (inf): sets outliers boundaries                                     */
+/*     - outliers_size (1): outliers size                                          */
 /*                                                                                 */
 /* Draw options affecting this object:                                             */
 /*     - key                                                                       */
@@ -1117,21 +1120,29 @@ wxpiechart([desc]) := wxdraw2d(apply(piechart_description, desc)) $
 /*     - xrange                                                                    */
 /*     - yrange                                                                    */
 boxplot_description(m,[select]):=
-   block([fr,tot,top:0,bot:inf,before,localopts,p,
+   block([fr,tot,top:0,bot:inf,before,localopts,p,out:[],
           /* specific options*/
-          my_box_width:3/4, my_box_orientation:'vertical],
-      [before, localopts]: extract_options(select,'box_width,'box_orientation),
+          my_box_width:3/4, my_box_orientation:'vertical, my_range:'inf, my_outliers_size:1],
+      [before, localopts]: extract_options(select,'box_width,'box_orientation,'range,'outliers_size),
 
       for k in localopts do
         if lhs(k) = 'box_width
           then my_box_width: float(rhs(k))
         elseif lhs(k) = 'box_orientation
-          then my_box_orientation: rhs(k),
+          then my_box_orientation: rhs(k)
+        elseif lhs(k) = 'range
+          then my_range: float(rhs(k))
+        elseif lhs(k) = 'outliers_size
+          then my_outliers_size: float(rhs(k)),
 
       if not floatp(my_box_width) or my_box_width < 0 or my_box_width > 1
-        then error("boxplot: illegal value for box_width"),
+        then error("boxplot: illegal value for option box_width"),
       if not member(my_box_orientation, ['vertical, 'horizontal])
-	 then error("boxplot: illegal value for box_orientation"),
+	 then error("boxplot: illegal value for option box_orientation"),
+      if my_range # 'inf and (not floatp(my_range) or my_range < 0)
+	 then error("boxplot: illegal value for option range"),
+      if not floatp(my_outliers_size) or my_outliers_size < 0
+	 then error("boxplot: illegal outliers point size"),
 
       /* if m is not a row matrix, transpose it */
       if matrixp(m) and length(m)>1
@@ -1144,45 +1155,73 @@ boxplot_description(m,[select]):=
       if listoflistsp(m) or matrixp(m)
         then(
           tot: length(m),
-          append(before,
-                 ['points_joined = true,
-                  'point_size = 0,
-                  'point_type = 'dot],
-                 flatten(
-                   makelist(map('points,
-                                block([mi: float(smin(m[x])),
-                                       ma: float(smax(m[x])),
-                                       q1: float(quantile(m[x],0.25)),
-                                       q2: float(quantile(m[x],0.5)),
-                                       q3: float(quantile(m[x],0.75)),
-                                       w:  float(boxplot_width),
-                                       w2: my_box_width/2,
-                                       w4: my_box_width/4,
-                                       A,B,C,D,E,F,G,H,I,J,K,L,M,N],
-                                  top: max(top,ma),
-                                  bot: min(bot,mi),
-                                  A: [x-w2,q1],     B: [x-w2,q3],     C: [x+w2,q3],
-                                  D: [x+w2,q1],     E: [x-w2,q2],     F: [x+w2,q2],
-                                  G: [x,q3],        H: [x,ma],        I: [x-w4,ma],
-                                  J: [x+w4,ma],     K: [x,q1],        L: [x,mi],
-                                  M: [x-w4,mi],     N: [x+w4,mi],
-                                  p: [A,B,C,D,E,F,G,H,I,J,K,L,M,N],
-                                  if my_box_orientation = 'horizontal then p: map(reverse,p),
-                                  [ [p[1],p[2],p[3],p[4],p[1]],
-                                    [p[5],p[6]],
-                                    [p[7],p[8]],
-                                    [p[9],p[10]],
-                                    [p[11],p[12]],[p[13],p[14]] ] )),
-                          x,1,tot)),
-                 
-                  if my_box_orientation = 'vertical
-                    then [ 'xtics  = setify(makelist(k,k,1,tot)),
-                           'xrange = (tot-1)*0.05*[-1,+1.5]+[0.5,tot+0.5],
-                           'yrange = (top-bot)*0.05*[-1,+1]+[bot,top] ]
-                    else [ 'ytics  = setify(makelist(k,k,1,tot)),
-                           'yrange = (tot-1)*0.05*[-1,+1.5]+[0.5,tot+0.5],
-                           'xrange = (top-bot)*0.05*[-1,+1]+[bot,top] ]    ) )
-        else error("sorry, can't plot the box-whisker plot for these data") )$
+          [ before,
+            ['points_joined = true,
+             'point_size    = 0,
+             'point_type    = 'dot],
+
+            makelist(
+              block([mi, ma,
+                     mini: smin(m[x]),
+                     maxi: smax(m[x]),
+                     q1: float(quantile(m[x],0.25)),
+                     q2: float(quantile(m[x],0.5)),
+                     q3: float(quantile(m[x],0.75)),
+                     w:  float(boxplot_width),
+                     w2: my_box_width/2,
+                     w4: my_box_width/4,
+                     A,B,C,D,E,F,G,H,I,J,K,L,M,N],
+                top: max(top, maxi),
+                bot: min(bot, mini),
+                if my_range = 'inf
+                  then /* ignore possible outliers */
+                       [mi, ma]: float([mini, maxi])
+                  else /* calculate whisker positions */
+                       block([in:[],
+                              lowlim: q1-my_range*(q3-q1),
+                              upplim: q3+my_range*(q3-q1)],
+                         for k in m[x] do
+                           if k < lowlim or k > upplim
+                             then /* accumulate new outliers to global variable out */
+                                  out: cons([x,k], out)
+                             else in: cons(k, in),
+                         mi: lmin(in),
+                         ma: lmax(in)),
+                A: [x-w2,q1],  B: [x-w2,q3],  C: [x+w2,q3],
+                D: [x+w2,q1],  E: [x-w2,q2],  F: [x+w2,q2],
+                G: [x,q3],     H: [x,ma],     I: [x-w4,ma],
+                J: [x+w4,ma],  K: [x,q1],     L: [x,mi],
+                M: [x-w4,mi],  N: [x+w4,mi],
+                p: [A,B,C,D,E,F,G,H,I,J,K,L,M,N],
+                if my_box_orientation = 'horizontal
+                  then p: map(reverse,p),
+                [ points([p[1],p[2],p[3],p[4],p[1]]),
+                  points([p[5],p[6]]),
+                  points([p[7],p[8]]),
+                  points([p[9],p[10]]),
+                  points([p[11],p[12]]),
+                  points([p[13],p[14]]) ]),
+              x,1,tot),
+
+            /* plot all outliers as isolated points */
+            if length(out) > 0
+              then (if my_box_orientation = 'horizontal
+                      then out: map(reverse,out),
+                    ['points_joined = false,
+                     'point_size    = my_outliers_size,
+                     'point_type    = 'circle,
+                     points(out)])
+              else [],
+
+            if my_box_orientation = 'vertical
+              then [ 'xtics  = setify(makelist(k,k,1,tot)),
+                     'xrange = (tot-1)*0.05*[-1,+1.5]+[0.5,tot+0.5],
+                     'yrange = (top-bot)*0.05*[-1,+1]+[bot,top] ]
+              else [ 'ytics  = setify(makelist(k,k,1,tot)),
+                     'yrange = (tot-1)*0.05*[-1,+1.5]+[0.5,tot+0.5],
+                     'xrange = (top-bot)*0.05*[-1,+1]+[bot,top] ] ])
+        else error("sorry, can't plot the box-whisker plot for these data"))$
+
 boxplot([desc]) := draw2d(apply(boxplot_description, desc)) $
 wxboxplot([desc]) := wxdraw2d(apply(boxplot_description, desc)) $
 
