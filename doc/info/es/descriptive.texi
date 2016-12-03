@@ -1,4 +1,4 @@
-@c English version: 2013-12-13
+@c English version: 2016-12-03
 @menu
 * Introducción a descriptive::
 * Funciones y variables para el tratamiento de datos::
@@ -17,7 +17,7 @@ Junto con el código fuente se distribuyen tres conjuntos de datos:
 
 Cualquier manual de estadística se puede utilizar como referencia al paquete @code{descriptive}.
 
-Para comentarios, fallos y sugerencias, por favor contactar con @var{'mario AT edu DOT xunta DOT es'}.
+Para comentarios, fallos y sugerencias, por favor contactar con @var{'riotorto AT yahoo DOT com'}.
 
 Aquí un sencillo ejemplo sobre cómo operan las funciones de @code{descriptive}, dependiendo de la naturaleza de sus argumentos, listas o matrices,
 
@@ -2195,6 +2195,17 @@ multivariante. También se permite que @var{data} sea una lista de muestras
 con posibles tamaños diferentes; de hecho, esta es la única función
 del paquete @code{descriptive} que admite esta estructura de datos.
 
+La caja se dibuja desde el primer cuartil hasta el tercero, con un segmento
+horizontal situado a la altura del segundo cuartil o mediana. Por defecto,
+los bigotes inferior y superior se sitúan a la altura de los valores mínimo
+y máximo, respectivamente. La opción @var{range} se puede utilizar para indicar
+que los valores mayores que
+@code{quantile(x,3/4)+range*(quantile(x,3/4)-quantile(x,1/4))},
+o menores que
+@code{quantile(x,1/4)-range*(quantile(x,3/4)-quantile(x,1/4))},
+deben considerarse atípicos, en cuyo caso se dibujan como puntos aislados, al
+tiempo que los bigotes se colocan en los extremos del resto de la muestra.
+
 Opciones disponibles:
 
 @itemize @bullet
@@ -2206,6 +2217,13 @@ This  value must be in the range @code{[0,1]}.
 @item
 @var{box_orientation} (valor por defecto, @code{vertical}): valores posibles: @code{vertical}
 y @code{horizontal}.
+
+@item
+@var{range} (valor por defecto, @code{inf}): coeficiente positivo del rango intercuartílico para
+declarar los límites de los datos atípicos.
+
+@item
+@var{outliers_size} (valor por defecto, @code{1}): tamaño de los círculos para los datos atípicos.
 
 @item
 Todas las opciones globales de @code{draw}, excepto @code{points_joined}, 
@@ -2271,6 +2289,48 @@ Diagrama de cajas de tres muestras de tamaños diferentes.
         [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
 @end group
 (%i3) boxplot (A, box_orientation = horizontal)$
+@end example
+
+La opción @var{range} puede utilizarse para tratar con datos atípicos.
+
+@c ===beg===
+@c  load (descriptive)$
+@c  B: [[7, 15, 5, 8, 6, 5, 7, 3, 1],
+@c      [10, 8, 12, 8, 11, 9, 20],
+@c      [23, 17, 19, 7, 22, 19]] $
+@c  boxplot (B, range=1)$
+@c  boxplot (B, range=1.5, box_orientation = horizontal)$
+@c  draw2d(
+@c     boxplot_description(
+@c        B,
+@c        range            = 1.5,
+@c        line_width       = 3,
+@c        outliers_size    = 2,
+@c        color            = red,
+@c        background_color = light_gray),
+@c     xtics = {["Low",1],["Medium",2],["High",3]}) $
+@c ===end===
+
+@example
+(%i1) load (descriptive)$
+(%i2) B: [[7, 15, 5, 8, 6, 5, 7, 3, 1],
+          [10, 8, 12, 8, 11, 9, 20],
+          [23, 17, 19, 7, 22, 19]] $
+@group
+(%i3) boxplot (B, range=1)$
+(%i4) boxplot (B, range=1.5, box_orientation = horizontal)$
+@end group
+@group
+(%i5) draw2d(
+        boxplot_description(
+          B,
+          range            = 1.5,
+          line_width       = 3,
+          outliers_size    = 2,
+          color            = red,
+          background_color = light_gray),
+        xtics = @{["Low",1],["Medium",2],["High",3]@}) $
+@end group
 @end example
 
 @end deffn

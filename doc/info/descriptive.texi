@@ -15,7 +15,7 @@ your Maxima tree: @code{pidigits.data}, @code{wind.data} and @code{biomed.data}.
 
 Any statistics manual can be used as a reference to the functions in package @code{descriptive}.
 
-For comments, bugs or suggestions, please contact me at @var{'mario AT edu DOT xunta DOT es'}.
+For comments, bugs or suggestions, please contact me at @var{'riotorto AT yahoo DOT com'}.
 
 Here is a simple example on how the descriptive functions in @code{descriptive} do they work, depending on the nature of their arguments, lists or matrices,
 
@@ -2524,6 +2524,16 @@ But it is also allowed @var{data} to be a list of samples with
 possible different sample sizes, in fact this is the only function 
 in package @code{descriptive} that admits this type of data structure.
 
+The box is plotted from the first quartile to the third, with an horizontal
+segment situated at the second quartile or median. By default, lower and 
+upper whishkers are plotted at the minimum and maximum values,
+respectively. Option @var{range} can be used to indicate that values greater
+than @code{quantile(x,3/4)+range*(quantile(x,3/4)-quantile(x,1/4))} or 
+less than @code{quantile(x,1/4)-range*(quantile(x,3/4)-quantile(x,1/4))}
+must be considered as outliers, in which case they are plotted as
+isolated points, and the whishkers are located at the extremes of the rest of
+the sample.
+
 Available options are:
 
 @itemize @bullet
@@ -2535,6 +2545,13 @@ This  value must be in the range @code{[0,1]}.
 @item
 @var{box_orientation} (default, @code{vertical}): possible values: @code{vertical}
 and @code{horizontal}.
+
+@item
+@var{range} (default, @code{inf}): positive coefficient of the interquartilic range
+to set outliers boundaries.
+
+@item
+@var{outliers_size} (default, @code{1}): circle size for isolated outliers.
 
 @item
 All @code{draw} options, except @code{points_joined}, @code{point_size}, @code{point_type},
@@ -2598,6 +2615,48 @@ Box-and-whishker diagram from three samples of different sizes.
         [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
 @end group
 (%i3) boxplot (A, box_orientation = horizontal)$
+@end example
+
+Option @var{range} can be used to handle outliers.
+
+@c ===beg===
+@c  load (descriptive)$
+@c  B: [[7, 15, 5, 8, 6, 5, 7, 3, 1],
+@c      [10, 8, 12, 8, 11, 9, 20],
+@c      [23, 17, 19, 7, 22, 19]] $
+@c  boxplot (B, range=1)$
+@c  boxplot (B, range=1.5, box_orientation = horizontal)$
+@c  draw2d(
+@c     boxplot_description(
+@c        B,
+@c        range            = 1.5,
+@c        line_width       = 3,
+@c        outliers_size    = 2,
+@c        color            = red,
+@c        background_color = light_gray),
+@c     xtics = {["Low",1],["Medium",2],["High",3]}) $
+@c ===end===
+
+@example
+(%i1) load (descriptive)$
+(%i2) B: [[7, 15, 5, 8, 6, 5, 7, 3, 1],
+          [10, 8, 12, 8, 11, 9, 20],
+          [23, 17, 19, 7, 22, 19]] $
+@group
+(%i3) boxplot (B, range=1)$
+(%i4) boxplot (B, range=1.5, box_orientation = horizontal)$
+@end group
+@group
+(%i5) draw2d(
+        boxplot_description(
+          B,
+          range            = 1.5,
+          line_width       = 3,
+          outliers_size    = 2,
+          color            = red,
+          background_color = light_gray),
+        xtics = @{["Low",1],["Medium",2],["High",3]@}) $
+@end group
 @end example
 
 @opencatbox
