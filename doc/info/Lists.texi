@@ -974,7 +974,7 @@ Returns @var{expr} with its first @var{n} elements removed if @var{n}
 is positive and its last @code{- @var{n}} elements removed if @var{n}
 is negative. If @var{n} is 1 it may be omitted. The first argument
 @var{expr} may be a list, matrix, or other expression. When @var{expr}
-is a mapatom, @code{rest} signals an error; when @var{expr} is an empty
+is an atom, @code{rest} signals an error; when @var{expr} is an empty
 list and @code{partswitch} is false, @code{rest} signals an error. When 
 @var{expr} is an empty list and @code{partswitch} is true, @code{rest} 
 returns @code{end}.
