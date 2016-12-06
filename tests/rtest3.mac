@@ -419,3 +419,64 @@ errcatch (taylor(coth(x), x, %i*%pi, 0));
 
 (kill (mumble), bar () := (errcatch (taylor(coth(x), x, %i*%pi, 0)), throw ('mumble)), catch (foo ()));
 mumble;
+
+/* Verify that some special variables that were recently given DEFMVAR's are now resettable.
+ * If ever the default values of these variables are changed,
+ * some of the following tests will fail.
+ * In that case just update these tests to use the new default value.
+ */
+
+(kill(mydefaults),
+ mydefaults['verbose] : false,
+ mydefaults['exptsubst] : false,
+ mydefaults['partswitch] : false,
+ mydefaults['inflag] : false,
+ mydefaults['derivsubst] : false,
+ mydefaults['opsubst] : true,
+ mydefaults['demoivre] : false,
+ mydefaults['nointegrate] : false,
+ mydefaults['tlimswitch] : true,
+ mydefaults['limsubst] : false,
+ mydefaults['abconvtest] : false,
+ mydefaults['packagefile] : false,
+ mydefaults['factlim] : 100000,
+ mydefaults['cflength] : 1,
+ mydefaults['taylordepth] : 3,
+ mydefaults['maxtaydiff] : 4,
+ mydefaults['lhospitallim] : 4,
+ mydefaults['linel] : 79,
+ 0);
+0;
+
+(reset (),
+ every (lambda ([v], is(mydefaults[v] = ev(v))), flatten (rest (arrayinfo (mydefaults), 2))));
+true;
+
+(myflags : '[verbose, exptsubst, partswitch, inflag, derivsubst, opsubst, demoivre,
+             nointegrate, tlimswitch, limsubst, abconvtest, packagefile],
+ /* "not" causes an extra evaluation of its argument,
+  * so this next line won't work as expected if "not" ever becomes
+  * simplifying operator; update this test case as needed if that
+  * ever comes to pass.
+  */
+ myflags :: map ("not", myflags),
+ ev (myflags));
+[true, true, true, true, true, false, true, true, false, true, true, true];
+
+map (reset, myflags);
+[[verbose], [exptsubst], [partswitch], [inflag], [derivsubst], [opsubst], [demoivre],
+ [nointegrate], [tlimswitch], [limsubst], [abconvtest], [packagefile]];
+
+ev (myflags);
+[false, false, false, false, false, true, false, false, true, false, false, false];
+
+(myvals : '[factlim, cflength, taylordepth, maxtaydiff, lhospitallim, linel],
+ myvals :: makelist (99, v, myvals),
+ ev (myvals));
+[99, 99, 99, 99, 99, 99];
+
+map (reset, myvals);
+[[factlim], [cflength], [taylordepth], [maxtaydiff], [lhospitallim], [linel]];
+
+ev (myvals);
+[100000, 1, 3, 4, 4, 79];

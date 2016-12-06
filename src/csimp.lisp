@@ -22,9 +22,14 @@
 (declare-top (special $nointegrate $lhospitallim $tlimswitch $limsubst
 		      $abconvtest plogabs))
 
-(setq $demoivre nil rsn* nil $nointegrate nil $lhospitallim 4
-      $tlimswitch t $limsubst nil $abconvtest nil
-      plogabs nil)
+(defmvar $demoivre nil)
+(defmvar $nointegrate nil)
+(defmvar $lhospitallim 4)
+(defmvar $tlimswitch t)
+(defmvar $limsubst nil)
+(defmvar $abconvtest nil)
+(defvar rsn* nil)
+(defvar plogabs nil)
 
 ;; Simplified shortcuts of constant expressions involving %pi.
 (defvar %p%i '((mtimes) $%i $%pi))

@@ -61,16 +61,16 @@
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'op))
       '((mqapply $subvar) (bigfloat $bfloat)))
 
-(setq $exptsubst nil
-      $partswitch nil
-      $inflag nil
-      $gradefs '((mlist simp))
-      $dependencies '((mlist simp))
-      atvars '($@1 $@2 $@3 $@4)
-      $derivsubst nil
-      $opsubst t
-      in-p nil
-      substp nil)
+(defmvar $exptsubst nil)
+(defmvar $partswitch nil)
+(defmvar $inflag nil)
+(defmvar $derivsubst nil)
+(defmvar $opsubst t)
+(defvar $gradefs '((mlist simp)))
+(defvar $dependencies '((mlist simp)))
+(defvar atvars '($@1 $@2 $@3 $@4))
+(defvar in-p nil)
+(defvar substp nil)
 
 (defmvar $vect_cross nil
   "If TRUE allows DIFF(X~Y,T) to work where ~ is defined in

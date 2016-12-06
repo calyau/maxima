@@ -19,9 +19,9 @@
 		      $values $functions $arrays
 		      $contexts context $activecontexts))
 
-(setq $packagefile nil
-      indlist '(evfun evflag bindtest nonarray sp2 sp2subs opers
-		 special autoload assign mode))
+(defmvar $packagefile nil)
+(defvar indlist '(evfun evflag bindtest nonarray sp2 sp2subs opers
+                  special autoload assign mode))
 
 (defun infolstchk (x)
   (let ((iteml (cond ((not (and x (or (member (car x) '($all $contexts) :test #'eq)

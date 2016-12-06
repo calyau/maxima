@@ -56,7 +56,9 @@
 ;; for each window.  Set them here, anyway, so that RETRIEVE can be called from
 ;; top level.  The size of TOP-WINDOW is wired in here.
 
-(setq linel 79. $linel 79. ttyheight 24.)
+(defmvar $linel 79.)
+(defvar linel 79.)
+(defvar ttyheight 24.)
 
 (defvar linearray (make-array 80. :initial-element nil))
 
