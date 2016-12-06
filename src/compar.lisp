@@ -21,7 +21,7 @@
 
 (defvar %initiallearnflag)
 
-(defvar $context '$initial
+(defvar $context '$global
   "Whenever a user assumes a new fact, it is placed in the context
 named as the current value of the variable CONTEXT.  Similarly, FORGET
 references the current value of CONTEXT.  To add or DELETE a fact from a
@@ -30,7 +30,7 @@ perform the desired additions or deletions.  The context specified by the
 value of CONTEXT is automatically activated.  All of MACSYMA's built-in
 relational knowledge is contained in the default context GLOBAL.")
 
-(defvar $contexts '((mlist) $initial $global)
+(defvar $contexts '((mlist) $global)
   "A list of the currently active contexts.")
 
 (defvar $activecontexts '((mlist))
@@ -71,15 +71,6 @@ relational knowledge is contained in the default context GLOBAL.")
 (defmvar evens nil)
 
 (defvar $useminmax t)
-
-;; This variable is also initialized in DB for its own purposes.
-;; COMPAR is loaded after DB.
-(setq context '$global)
-
-;; Load-time environment for COMPAR.  $CONTEXT and $CONTEXTS will be
-;; reset at the end of the file via a call to ($newcontext '$initial).
-(setq $context '$global
-      $contexts '((mlist) $global))
 
 (defmacro pow (&rest x)
   `(power ,@x))
