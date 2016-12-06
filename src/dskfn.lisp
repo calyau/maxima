@@ -29,7 +29,7 @@
 		      t)
 		     ((eq (car x) '$all)
 		      (infolstchk (append (cdr $infolists)
-					  '($linenum $ratvars $weightlevels *ratweights
+					  '($linenum $ratvars *ratweights
 					    tellratlist *alphabet* $dontfactor $features $contexts))))
 		     ((eq (car x) '$labels) (reverse (cdr $labels)))
 		     ((member (car x) '($functions $macros $gradefs $dependencies $structures) :test #'eq)
@@ -119,7 +119,7 @@
       ((and (or (not (boundp item))
 		(and (eq item '$ratvars) (null varlist))
 		(prog2 (setq val (symbol-value item))
-		    (or (and (member item '($weightlevels $dontfactor) :test #'eq)
+		    (or (and (member item '($dontfactor) :test #'eq)
 			     (null (cdr val)))
 			(and (member item '(tellratlist *alphabet* *ratweights) :test #'eq) (null val))
 			(and (eq item '$features) (alike (cdr val) featurel))
@@ -210,7 +210,7 @@
 	 (fasprint t `(setq varlist (append varlist (quote ,varlist))))
 	 (fasprint t '(setq $ratvars (cons '(mlist simp) varlist)))
 	 (pradd2lnc '$ratvars '$myoptions))
-	((member item '($weightlevels $dontfactor) :test #'eq)
+	((member item '($dontfactor) :test #'eq)
 	 (fasprin `(setq ,item (nconc (quote ,val) (cdr ,item))))
 	 (pradd2lnc item '$myoptions))
 	((eq item 'tellratlist)

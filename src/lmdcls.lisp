@@ -131,7 +131,7 @@
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
 	  tstack typel user-mesfile varlist wflag
-	  $wtlevel $cflength $weightlevels *trunclist $taylordepth
+	  $wtlevel $cflength *trunclist $taylordepth
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
 	  silent-taylor-flag $define_variable $infolists))
 

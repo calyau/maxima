@@ -26,7 +26,7 @@
 		       $rules $props $ratvars
 		       varlist genvar
 		       $gensumnum checkfactors $features featurel
-		       $weightlevels tellratlist $dontfactor
+		       tellratlist $dontfactor
 		       dispflag savefile $%% $error
 		       opers *ratweights $ratweights
 		       $stringdisp $lispdisp
@@ -332,7 +332,7 @@
 	      (mapc #'kill1 (cdr $infolists))
 	      (setq $ratvars '((mlist simp)) varlist nil genvar nil
 		    checkfactors nil greatorder nil lessorder nil $gensumnum 0
-		    $weightlevels '((mlist)) *ratweights nil $ratweights
+		    *ratweights nil $ratweights
 		    '((mlist simp))
 		    tellratlist nil $dontfactor '((mlist)) $setcheck nil)
 	      (killallcontexts))
