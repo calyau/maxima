@@ -395,7 +395,7 @@ summation when necessary."
 
 ;; These variables should be initialized where they belong.
 
-(setq $wtlevel nil $cflength 1
+(setq $cflength 1
       *trunclist nil $taylordepth 3
       $maxtaydiff 4 $verbose nil $psexpand nil ps-bmt-disrep t
       silent-taylor-flag nil)
