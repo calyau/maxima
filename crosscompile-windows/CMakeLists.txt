@@ -47,7 +47,7 @@ set(GNUPLOTVERSION   5.0.4)
 set(TCLVERSION       8.6.6)
 set(TKVERSION        8.6.6)
 set(VTKVERSION       6.3.0)
-set(SBCLVERSION      1.3.11)
+set(SBCLVERSION      1.3.12)
 
 
 # MD5 checksums for the current program versions.
@@ -59,7 +59,7 @@ set(TCL_MD5       "5193aea8107839a79df8ac709552ecb7")
 set(TK_MD5        "dd7dbb3a6523c42d05f6ab6e86096e99")
 set(TEXFONTS_MD5  "8101a6feca2c43a6b9218195df9e7c35")
 set(VTK_MD5       "8d8b0878be81a0ab471e929f828dfe9a")
-set(SBCL_MD5      "b6cc97faac0e28deb34963fc8b913fbc")
+set(SBCL_MD5      "918fb23e00645e56c8687df4e06c30ae")
 
 if(BUILD_CURRENT)
     set(USE_WXMAXIMA_GIT YES)

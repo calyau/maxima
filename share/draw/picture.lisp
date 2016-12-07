@@ -1,6 +1,6 @@
 ;;                 COPYRIGHT NOTICE
 ;;  
-;;  Copyright (C) 2007 Mario Rodriguez Riotorto
+;;  Copyright (C) 2007-2016 Mario Rodriguez Riotorto
 ;;  
 ;;  This program is free software; you can redistribute
 ;;  it and/or modify it under the terms of the
@@ -20,7 +20,7 @@
 ;; For questions, suggestions, bugs and the like, feel free
 ;; to contact me at
 ;; mario @@@ edu DOT xunta DOT es
-;; www.biomates.net
+;; http://tecnostats.net/Maxima/gnuplot
 
 
 
@@ -248,11 +248,22 @@
 
 
 (defun read-colour (f)
-	   (let ((ctype (read-char f)))
-	     (ecase ctype
-	       (#\# (let ((*read-base* 16))
-		      (read f)))
-	       )))
+  (let ((ctype (read-char f)))
+    (case ctype
+
+      ; color in hexadecimal format
+      (#\#
+        (let ((*read-base* 16))
+          (read f)))
+
+      ; color name:
+      ; 0. read the rest of the name and append the first letter
+      ; 1. get the hexadecimal code from *color-table* defined in grcommon.lisp
+      ; 2. remove # and transform the code to an integer in base 10
+      (otherwise
+        (parse-integer
+          (subseq (gethash (atom-to-downcased-string (format nil "~a~a" ctype (read f))) *color-table*) 1)
+          :radix 16)) )))
 
 
 (defun read-charspec (f cnt)
@@ -278,9 +289,8 @@
   (init-readtable)
   (let ((*readtable* *xpm-readtable*)
         (fspec (string-trim "\"" (coerce (mstring mfspec) 'string))) )
-    (with-open-file (image fspec
-			   :direction :input)
-      (read-line image) ; Skip comment
+    (with-open-file (image fspec :direction :input)
+      (read-line image) ; Skip initial comment
       (read-line image) ; Skip C code
       (let ((colspec (read image))
 	    width
@@ -306,6 +316,6 @@
                            (setf rgb (gethash cs chartab))
                            (setf (aref img (incf counter)) (/ (logand rgb 16711680) 65536))
                            (setf (aref img (incf counter)) (/ (logand rgb 65280) 256))
-                           (setf (aref img (incf counter)) (logand rgb 255))))))
+                           (setf (aref img (incf counter)) (logand rgb 255)))))   )
 	    (list '(picture simp) '$rgb width height img)))))))
 
