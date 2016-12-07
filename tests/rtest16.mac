@@ -2336,3 +2336,7 @@ integrate(map(lambda([f], diff(u(x), x) * f(u(x) + c)), [asin,acos,atan,acsc,ase
 [(u(x)+c)*asin(u(x)+c)+sqrt(1-(u(x)+c)^2),(u(x)+c)*acos(u(x)+c)-sqrt(1-(u(x)+c)^2),(u(x)+c)*atan(u(x)+c)-log((u(x)+c)^2+1)/2,log(sqrt(1-1/(u(x)+c)^2)+1)/2-log(1-sqrt(1-1/(u(x)+c)^2))/2+(u(x)+c)*acsc(u(x)+c),-log(sqrt(1-1/(u(x)+c)^2)+1)/2+log(1-sqrt(1-1/(u(x)+c)^2))/2+(u(x)+c)*asec(u(x)+c),log((u(x)+c)^2+1)/2+(u(x)+c)*acot(u(x)+c),(u(x)+c)*asinh(u(x)+c)-sqrt((u(x)+c)^2+1),(u(x)+c)*acosh(u(x)+c)-sqrt((u(x)+c)^2-1),log(1-(u(x)+c)^2)/2+(u(x)+c)*atanh(u(x)+c),log(sqrt(1/(u(x)+c)^2+1)+1)/2-log(sqrt(1/(u(x)+c)^2+1)-1)/2+(u(x)+c)*acsch(u(x)+c),(u(x)+c)*asech(u(x)+c)-atan(sqrt(1/(u(x)+c)^2-1)),log(1-(u(x)+c)^2)/2+(u(x)+c)*acoth(u(x)+c)]$
 radcan(exponentialize(map(lambda([f], f(x) - diff(integrate(f(x), x), x)), [sin,cos,tan,csc,sec,cot,sinh,cosh,tanh,csch,sech,coth,asin,acos,atan,acsc,asec,acot,asinh,acosh,atanh,acsch,asech,acoth]))), domain:complex;
 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]$
+
+/* Bug #3258: integrate's answer contains diff operator with negative order */
+freeof(diff, integrate(%e^(c*x-r^2/(4*x))/x^(3/2),x));
+true$

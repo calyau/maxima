@@ -2458,7 +2458,7 @@
                  (div (power (mul -1 b ($log d)) (div 1 2)) var)))))))))
 
     ((and (m2-exp-type-4-1 expr)
-	  ($evenp (cdras 'n w))   ; only for n an even integer
+	  (poseven (cdras 'n w))  ; only for n a positive, even integer
 	  (symbolp (cdras 'a w))) ; a has to be a symbol
      (a b c d n)
      (let (($trigsign nil)) ; Do not simplify erfc(-x) !
