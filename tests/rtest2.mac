@@ -689,3 +689,212 @@ listarray (myvalue);
 sort (listarray (myfast));
 [blurf, 2*blurf, 3*blurf];
 
+/* firstn, lastn */
+
+(kill (a, b, z), mylist : [a, 3, %pi, b, -2, %e, z, 0, %phi], 0);
+0;
+
+firstn (mylist, 0);
+[];
+
+firstn (mylist, 1);
+[a];
+
+firstn (mylist, 4);
+[a, 3, %pi, b];
+
+firstn (mylist, 8);
+[a, 3, %pi, b, -2, %e, z, 0];
+
+firstn (mylist, 9);
+[a, 3, %pi, b, -2, %e, z, 0, %phi];
+
+firstn (mylist, 10);
+[a, 3, %pi, b, -2, %e, z, 0, %phi];
+
+firstn (mylist, 100);
+[a, 3, %pi, b, -2, %e, z, 0, %phi];
+
+errcatch (firstn (mylist, -4));
+[];
+
+lastn (mylist, 0);
+[];
+
+lastn (mylist, 1);
+[%phi];
+
+lastn (mylist, 4);
+[%e, z, 0, %phi];
+
+lastn (mylist, 8);
+[3, %pi, b, -2, %e, z, 0, %phi];
+
+lastn (mylist, 9);
+[a, 3, %pi, b, -2, %e, z, 0, %phi];
+
+lastn (mylist, 10);
+[a, 3, %pi, b, -2, %e, z, 0, %phi];
+
+lastn (mylist, 100);
+[a, 3, %pi, b, -2, %e, z, 0, %phi];
+
+errcatch (lastn (mylist, -4));
+[];
+
+(kill (foo), fooexpr : funmake (foo, mylist), 0);
+0;
+
+firstn (fooexpr, 0);
+foo();
+
+firstn (fooexpr, 1);
+foo(a);
+
+firstn (fooexpr, 4);
+foo(a, 3, %pi, b);
+
+firstn (fooexpr, 8);
+foo(a, 3, %pi, b, -2, %e, z, 0);
+
+firstn (fooexpr, 9);
+foo(a, 3, %pi, b, -2, %e, z, 0, %phi);
+
+firstn (fooexpr, 10);
+foo(a, 3, %pi, b, -2, %e, z, 0, %phi);
+
+firstn (fooexpr, 100);
+foo(a, 3, %pi, b, -2, %e, z, 0, %phi);
+
+errcatch (firstn (fooexpr, -4));
+[];
+
+lastn (fooexpr, 0);
+foo();
+
+lastn (fooexpr, 1);
+foo(%phi);
+
+lastn (fooexpr, 4);
+foo(%e, z, 0, %phi);
+
+lastn (fooexpr, 8);
+foo(3, %pi, b, -2, %e, z, 0, %phi);
+
+lastn (fooexpr, 9);
+foo(a, 3, %pi, b, -2, %e, z, 0, %phi);
+
+lastn (fooexpr, 10);
+foo(a, 3, %pi, b, -2, %e, z, 0, %phi);
+
+lastn (fooexpr, 100);
+foo(a, 3, %pi, b, -2, %e, z, 0, %phi);
+
+errcatch (lastn (fooexpr, -4));
+[];
+
+(kill (bar), nary ("bar"));
+"bar";
+
+barexpr : apply ("bar", mylist);
+a bar 3 bar %pi bar b bar (-2) bar %e bar z bar 0 bar %phi;
+
+firstn (barexpr, 0);
+"bar"();
+
+firstn (barexpr, 1);
+"bar"(a);
+
+firstn (barexpr, 4);
+a bar 3 bar %pi bar b;
+
+firstn (barexpr, 8);
+a bar 3 bar %pi bar b bar (-2) bar %e bar z bar 0;
+
+firstn (barexpr, 9);
+a bar 3 bar %pi bar b bar (-2) bar %e bar z bar 0 bar %phi;
+
+firstn (barexpr, 10);
+a bar 3 bar %pi bar b bar (-2) bar %e bar z bar 0 bar %phi;
+
+firstn (barexpr, 100);
+a bar 3 bar %pi bar b bar (-2) bar %e bar z bar 0 bar %phi;
+
+errcatch (firstn (barexpr, -4));
+[];
+
+lastn (barexpr, 0);
+"bar"();
+
+lastn (barexpr, 1);
+"bar"(%phi);
+
+lastn (barexpr, 4);
+%e bar z bar 0 bar %phi;
+
+lastn (barexpr, 8);
+3 bar %pi bar b bar (-2) bar %e bar z bar 0 bar %phi;
+
+lastn (barexpr, 9);
+a bar 3 bar %pi bar b bar (-2) bar %e bar z bar 0 bar %phi;
+
+lastn (barexpr, 10);
+a bar 3 bar %pi bar b bar (-2) bar %e bar z bar 0 bar %phi;
+
+lastn (barexpr, 100);
+a bar 3 bar %pi bar b bar (-2) bar %e bar z bar 0 bar %phi;
+
+errcatch (lastn (barexpr, -4));
+[];
+
+(kill (baz, k), bazexpr : funmake (baz[k], mylist), 0);
+0;
+
+firstn (bazexpr, 0);
+baz[k]();
+
+firstn (bazexpr, 1);
+baz[k](a);
+
+firstn (bazexpr, 4);
+baz[k](a, 3, %pi, b);
+
+firstn (bazexpr, 8);
+baz[k](a, 3, %pi, b, -2, %e, z, 0);
+
+firstn (bazexpr, 9);
+baz[k](a, 3, %pi, b, -2, %e, z, 0, %phi);
+
+firstn (bazexpr, 10);
+baz[k](a, 3, %pi, b, -2, %e, z, 0, %phi);
+
+firstn (bazexpr, 100);
+baz[k](a, 3, %pi, b, -2, %e, z, 0, %phi);
+
+errcatch (firstn (bazexpr, -4));
+[];
+
+lastn (bazexpr, 0);
+baz[k]();
+
+lastn (bazexpr, 1);
+baz[k](%phi);
+
+lastn (bazexpr, 4);
+baz[k](%e, z, 0, %phi);
+
+lastn (bazexpr, 8);
+baz[k](3, %pi, b, -2, %e, z, 0, %phi);
+
+lastn (bazexpr, 9);
+baz[k](a, 3, %pi, b, -2, %e, z, 0, %phi);
+
+lastn (bazexpr, 10);
+baz[k](a, 3, %pi, b, -2, %e, z, 0, %phi);
+
+lastn (bazexpr, 100);
+baz[k](a, 3, %pi, b, -2, %e, z, 0, %phi);
+
+errcatch (lastn (bazexpr, -4));
+[];
+

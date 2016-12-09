@@ -601,6 +601,164 @@ See also @mrefdot{part}
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{firstn}
+@deffn {Function} firstn (@var{expr}, @var{count})
+
+Returns the first @var{count} arguments of @var{expr}, if @var{expr} has at least @var{count} arguments.
+Returns @var{expr} if @var{expr} has less than @var{count} arguments.
+
+@var{expr} may be any nonatomic expression. 
+When @var{expr} is something other than a list,
+@code{firstn} returns an expression which has the same operator as @var{expr}.
+@var{count} must be a nonnegative integer.
+
+@code{firstn} honors the global flag @code{inflag},
+which governs whether the internal form of an expression is processed (when @code{inflag} is true)
+or the displayed form (when @code{inflag} is false).
+
+Note that @code{firstn(@var{expr}, 1)},
+which returns a nonatomic expression containing the first argument,
+is not the same as @code{first(@var{expr})},
+which returns the first argument by itself.
+
+See also @mref{lastn} and @mrefdot{rest}
+
+Examples:
+
+@code{firstn} returns the first @var{count} elements of @var{expr}, if @var{expr} has at least @var{count} elements.
+
+@c ===beg===
+@c mylist : [1, a, 2, b, 3, x, 4 - y, 2*z + sin(u)];
+@c firstn (mylist, 0);
+@c firstn (mylist, 1);
+@c firstn (mylist, 2);
+@c firstn (mylist, 7);
+@c ===end===
+@example
+@group
+(%i1) mylist : [1, a, 2, b, 3, x, 4 - y, 2*z + sin(u)];
+(%o1)        [1, a, 2, b, 3, x, 4 - y, 2 z + sin(u)]
+@end group
+@group
+(%i2) firstn (mylist, 0);
+(%o2)                          []
+@end group
+@group
+(%i3) firstn (mylist, 1);
+(%o3)                          [1]
+@end group
+@group
+(%i4) firstn (mylist, 2);
+(%o4)                        [1, a]
+@end group
+@group
+(%i5) firstn (mylist, 7);
+(%o5)               [1, a, 2, b, 3, x, 4 - y]
+@end group
+@end example
+
+@code{firstn} returns @var{expr} if @var{expr} has less than @var{count} elements.
+
+@c ===beg===
+@c mylist : [1, a, 2, b, 3, x, 4 - y, 2*z + sin(u)];
+@c firstn (mylist, 100);
+@c ===end===
+@example
+@group
+(%i1) mylist : [1, a, 2, b, 3, x, 4 - y, 2*z + sin(u)];
+(%o1)        [1, a, 2, b, 3, x, 4 - y, 2 z + sin(u)]
+@end group
+@group
+(%i2) firstn (mylist, 100);
+(%o2)        [1, a, 2, b, 3, x, 4 - y, 2 z + sin(u)]
+@end group
+@end example
+
+@var{expr} may be any nonatomic expression. 
+
+@c ===beg===
+@c myfoo : foo(1, a, 2, b, 3, x, 4 - y, 2*z + sin(u));
+@c firstn (myfoo, 4);
+@c mybar : bar[m, n](1, a, 2, b, 3, x, 4 - y, 2*z + sin(u));
+@c firstn (mybar, 4);
+@c mymatrix : genmatrix (lambda ([i, j], 10*i + j), 10, 4) $
+@c firstn (mymatrix, 3);
+@c ===end===
+@example
+@group
+(%i1) myfoo : foo(1, a, 2, b, 3, x, 4 - y, 2*z + sin(u));
+(%o1)      foo(1, a, 2, b, 3, x, 4 - y, 2 z + sin(u))
+@end group
+@group
+(%i2) firstn (myfoo, 4);
+(%o2)                    foo(1, a, 2, b)
+@end group
+@group
+(%i3) mybar : bar[m, n](1, a, 2, b, 3, x, 4 - y, 2*z + sin(u));
+(%o3)    bar    (1, a, 2, b, 3, x, 4 - y, 2 z + sin(u))
+            m, n
+@end group
+@group
+(%i4) firstn (mybar, 4);
+(%o4)                  bar    (1, a, 2, b)
+                          m, n
+@end group
+(%i5) mymatrix : genmatrix (lambda ([i, j], 10*i + j), 10, 4) $
+@group
+(%i6) firstn (mymatrix, 3);
+                       [ 11  12  13  14 ]
+                       [                ]
+(%o6)                  [ 21  22  23  24 ]
+                       [                ]
+                       [ 31  32  33  34 ]
+@end group
+@end example
+
+@code{firstn} honors the global flag @code{inflag}.
+
+@c ===beg===
+@c myexpr : a + b + c + d + e;
+@c firstn (myexpr, 3), inflag=true;
+@c firstn (myexpr, 3), inflag=false;
+@c ===end===
+@example
+@group
+(%i1) myexpr : a + b + c + d + e;
+(%o1)                   e + d + c + b + a
+@end group
+@group
+(%i2) firstn (myexpr, 3), inflag=true;
+(%o2)                       c + b + a
+@end group
+@group
+(%i3) firstn (myexpr, 3), inflag=false;
+(%o3)                       e + d + c
+@end group
+@end example
+
+Note that @code{firstn(@var{expr}, 1)} is not the same as @code{first(@var{expr})}.
+
+@c ===beg===
+@c firstn ([w, x, y, z], 1);
+@c first ([w, x, y, z]);
+@c ===end===
+@example
+@group
+(%i1) firstn ([w, x, y, z], 1);
+(%o1)                          [w]
+@end group
+@group
+(%i2) first ([w, x, y, z]);
+(%o2)                           w
+@end group
+@end example
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{fourth}
 @deffn {Function} fourth (@var{expr})
 
@@ -670,6 +828,164 @@ Returns the last part (term, row, element, etc.) of the @var{expr}.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{lastn}
+@deffn {Function} lastn (@var{expr}, @var{count})
+
+Returns the last @var{count} arguments of @var{expr}, if @var{expr} has at least @var{count} arguments.
+Returns @var{expr} if @var{expr} has less than @var{count} arguments.
+
+@var{expr} may be any nonatomic expression. 
+When @var{expr} is something other than a list,
+@code{lastn} returns an expression which has the same operator as @var{expr}.
+@var{count} must be a nonnegative integer.
+
+@code{lastn} honors the global flag @code{inflag},
+which governs whether the internal form of an expression is processed (when @code{inflag} is true)
+or the displayed form (when @code{inflag} is false).
+
+Note that @code{lastn(@var{expr}, 1)},
+which returns a nonatomic expression containing the last argument,
+is not the same as @code{last(@var{expr})},
+which returns the last argument by itself.
+
+See also @mref{firstn} and @mrefdot{rest}
+
+Examples:
+
+@code{lastn} returns the last @var{count} elements of @var{expr}, if @var{expr} has at least @var{count} elements.
+
+@c ===beg===
+@c mylist : [1, a, 2, b, 3, x, 4 - y, 2*z + sin(u)];
+@c lastn (mylist, 0);
+@c lastn (mylist, 1);
+@c lastn (mylist, 2);
+@c lastn (mylist, 7);
+@c ===end===
+@example
+@group
+(%i1) mylist : [1, a, 2, b, 3, x, 4 - y, 2*z + sin(u)];
+(%o1)        [1, a, 2, b, 3, x, 4 - y, 2 z + sin(u)]
+@end group
+@group
+(%i2) lastn (mylist, 0);
+(%o2)                          []
+@end group
+@group
+(%i3) lastn (mylist, 1);
+(%o3)                    [2 z + sin(u)]
+@end group
+@group
+(%i4) lastn (mylist, 2);
+(%o4)                 [4 - y, 2 z + sin(u)]
+@end group
+@group
+(%i5) lastn (mylist, 7);
+(%o5)         [a, 2, b, 3, x, 4 - y, 2 z + sin(u)]
+@end group
+@end example
+
+@code{lastn} returns @var{expr} if @var{expr} has less than @var{count} elements.
+
+@c ===beg===
+@c mylist : [1, a, 2, b, 3, x, 4 - y, 2*z + sin(u)];
+@c lastn (mylist, 100);
+@c ===end===
+@example
+@group
+(%i1) mylist : [1, a, 2, b, 3, x, 4 - y, 2*z + sin(u)];
+(%o1)        [1, a, 2, b, 3, x, 4 - y, 2 z + sin(u)]
+@end group
+@group
+(%i2) lastn (mylist, 100);
+(%o2)        [1, a, 2, b, 3, x, 4 - y, 2 z + sin(u)]
+@end group
+@end example
+
+@var{expr} may be any nonatomic expression. 
+
+@c ===beg===
+@c myfoo : foo(1, a, 2, b, 3, x, 4 - y, 2*z + sin(u));
+@c lastn (myfoo, 4);
+@c mybar : bar[m, n](1, a, 2, b, 3, x, 4 - y, 2*z + sin(u));
+@c lastn (mybar, 4);
+@c mymatrix : genmatrix (lambda ([i, j], 10*i + j), 10, 4) $
+@c lastn (mymatrix, 3);
+@c ===end===
+@example
+@group
+(%i1) myfoo : foo(1, a, 2, b, 3, x, 4 - y, 2*z + sin(u));
+(%o1)      foo(1, a, 2, b, 3, x, 4 - y, 2 z + sin(u))
+@end group
+@group
+(%i2) lastn (myfoo, 4);
+(%o2)            foo(3, x, 4 - y, 2 z + sin(u))
+@end group
+@group
+(%i3) mybar : bar[m, n](1, a, 2, b, 3, x, 4 - y, 2*z + sin(u));
+(%o3)    bar    (1, a, 2, b, 3, x, 4 - y, 2 z + sin(u))
+            m, n
+@end group
+@group
+(%i4) lastn (mybar, 4);
+(%o4)          bar    (3, x, 4 - y, 2 z + sin(u))
+                  m, n
+@end group
+(%i5) mymatrix : genmatrix (lambda ([i, j], 10*i + j), 10, 4) $
+@group
+(%i6) lastn (mymatrix, 3);
+                     [ 81   82   83   84  ]
+                     [                    ]
+(%o6)                [ 91   92   93   94  ]
+                     [                    ]
+                     [ 101  102  103  104 ]
+@end group
+@end example
+
+@code{lastn} honors the global flag @code{inflag}.
+
+@c ===beg===
+@c myexpr : a + b + c + d + e;
+@c lastn (myexpr, 3), inflag=true;
+@c lastn (myexpr, 3), inflag=false;
+@c ===end===
+@example
+@group
+(%i1) myexpr : a + b + c + d + e;
+(%o1)                   e + d + c + b + a
+@end group
+@group
+(%i2) lastn (myexpr, 3), inflag=true;
+(%o2)                       e + d + c
+@end group
+@group
+(%i3) lastn (myexpr, 3), inflag=false;
+(%o3)                       c + b + a
+@end group
+@end example
+
+Note that @code{lastn(@var{expr}, 1)} is not the same as @code{last(@var{expr})}.
+
+@c ===beg===
+@c lastn ([w, x, y, z], 1);
+@c last ([w, x, y, z]);
+@c ===end===
+@example
+@group
+(%i1) lastn ([w, x, y, z], 1);
+(%o1)                          [z]
+@end group
+@group
+(%i2) last ([w, x, y, z]);
+(%o2)                           z
+@end group
+@end example
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{length}
