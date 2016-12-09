@@ -593,7 +593,7 @@ make a difference is that the simplifier re-orders expressions:
 The functions @code{second} @dots{}
 @code{tenth} yield the second through the tenth part of their input argument.
 
-See also @mrefdot{part}
+See also @mref{firstn} and @mrefdot{part}
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -821,6 +821,8 @@ Examples:
 @deffn {Function} last (@var{expr})
 
 Returns the last part (term, row, element, etc.) of the @var{expr}.
+
+See also @mrefdot{lastn}
 
 @opencatbox
 @category{Lists} @category{Expressions}
@@ -1301,6 +1303,8 @@ make sense. For example, because '^' requires two arguments,
 @code{rest(a^b)} results in an error message. The functions
 @code{args} and @code{op} may be useful as well, since @code{args(a^b)}
 returns @code{[a,b]} and @code{op(a^b)} returns ^.
+
+See also @mref{firstn} and @mrefdot{lastn}
 
 @example
 @group
