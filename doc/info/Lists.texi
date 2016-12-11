@@ -1821,31 +1821,6 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{unique}
-@deffn {Function} unique (@var{L})
-
-Returns the unique elements of the list @var{L}.
-
-When all the elements of @var{L} are unique,
-@code{unique} returns a shallow copy of @var{L},
-not @var{L} itself.
-
-If @var{L} is not a list, @code{unique} returns @var{L}.
-
-Example:
-
-@c ===beg===
-@c unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
-@c ===end===
-@example
-@group
-(%i1) unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
-(%o1)              [1, 2, %e, %pi, [1], b + a]
-@end group
-@end example
-@end deffn
-
-@c -----------------------------------------------------------------------------
 @anchor{tenth}
 @deffn {Function} tenth (@var{expr})
 
@@ -1921,6 +1896,31 @@ Examples:
 @category{Sets} @category{Lists}
 @closecatbox
 
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{unique}
+@deffn {Function} unique (@var{L})
+
+Returns the unique elements of the list @var{L}.
+
+When all the elements of @var{L} are unique,
+@code{unique} returns a shallow copy of @var{L},
+not @var{L} itself.
+
+If @var{L} is not a list, @code{unique} returns @var{L}.
+
+Example:
+
+@c ===beg===
+@c unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
+@c ===end===
+@example
+@group
+(%i1) unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
+(%o1)              [1, 2, %e, %pi, [1], b + a]
+@end group
+@end example
 @end deffn
 
 @c -----------------------------------------------------------------------------
