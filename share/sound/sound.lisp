@@ -75,7 +75,7 @@
 (defstruct a-wave
    sample      ; an array to store the samples of this wave
    channel     ; channel number
-   att-coef    ; attenuation coeficients for the main wave and its delays
+   att-coef    ; attenuation coefficients for the main wave and its delays
    repeat-at)  ; when must the wave be repeated
 
 
