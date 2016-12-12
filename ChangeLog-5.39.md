@@ -5,7 +5,6 @@ New items in core:
 ------------------
 
 New functions firstn and lastn
-New functions for string comparison
 
 Changes in core:
 ----------------
@@ -14,8 +13,8 @@ Special variable clean-up
 Crosscompiling support
 Gnuplot 5.0 or newer versions
 Documentation updates
-Fast arrays in DSKARY
-Timezone offsets
+function save: portable way to save "fast" arrays (hash tables)
+functions timedate, parse_timedate: handle timezone offsets
 Floating point overflow handling
 Complex numericals
 Testsuite additions and improvements
@@ -23,21 +22,21 @@ GIT fixes
 ODE improvements
 Load .wxm files from wxMaxima
 Temporary file handling improvements
-Improvements to continuous_freq
 
 New in share:
 -------------
 
-Added Richard Fateman's decimal bigfloat package.
+package decfp: decimal bigfloat package (thanks to Richard Fateman)
 
 Changes in share:
 -----------------
 
 In some share test scripts, put reset() at the top
-Changes to solver
-Changes to stringproc
-Changes to charsets
-Changes to boolsimp
+package solver: rename solver.mac to Solver.mac
+package stringproc: new functions slessp, slesspignore, sgreaterp, sgreaterpignore (string comparison)
+package charsets: several updates and improvements; still work in progress
+package boolsimp: code clean-up; no functional changes
+package descriptive, functions continuous_freq, discrete_freq: faster counting algorithm; accept arrays as well as lists
 
 Bug fixes:
 ----------
