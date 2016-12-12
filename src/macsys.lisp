@@ -188,6 +188,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	 (c-tag)
 	 (d-tag))
 	(nil)
+      (declare (ignorable area-before area-after))
       (catch 'return-from-debugger
 	(when (or (not (checklabel $inchar))
 		  (not (checklabel $outchar)))
@@ -607,6 +608,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	shell shell-opt)
     #+(or gcl ecl lispworks)
     (declare (ignore s))
+    (declare (ignorable shell shell-opt))
 
     (cond ((string= *autoconf-windows* "true")
 	   (setf shell "cmd") (setf shell-opt "/c"))
