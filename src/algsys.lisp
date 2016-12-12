@@ -563,7 +563,7 @@
 (defun simplify-after-subst (expr)
   "Simplify expression after substitution"
   (let (($keepfloat t) ($algebraic t) (e expr)
-	e2 e-size (growth-factor 1.2)
+	e2 (growth-factor 1.2)
 	($rootsconmode t) ($radexpand t))
     (when ($constantp e)
       (progn

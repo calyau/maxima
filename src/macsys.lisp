@@ -279,9 +279,9 @@ DESTINATION is an actual stream (rather than nil for a string)."
           (princ (break-prompt))
           (force-output)
 	  (let (quitting)
-	    (do ((char)) (nil)
+	    (loop
 	      ;;those are common lisp characters you're reading here
-	      (case (setq char (read-char *terminal-io*))
+	      (case (read-char *terminal-io*)
                 ((#\page)
                  (fresh-line)
                  (princ (break-prompt))
