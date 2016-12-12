@@ -41,7 +41,7 @@ option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 
 # current program versions
 set(CLISPVERSION     2.49)
-set(WXMAXIMAVERSION  16.04.2)
+set(WXMAXIMAVERSION  16.12.0)
 set(WXWIDGETSVERSION 3.1.0)
 set(GNUPLOTVERSION   5.0.4)
 set(TCLVERSION       8.6.6)
@@ -52,7 +52,7 @@ set(SBCLVERSION      1.3.12)
 
 # MD5 checksums for the current program versions.
 set(CLISP_MD5     "8d58d64f83dd7ad01c054aecc16c1f52")
-set(WXMAXIMA_MD5  "6d98324d70115615e7b4f7413b594dd5")
+set(WXMAXIMA_MD5  "324e91f865996597e0f18a2231a94261")
 set(WXWIDGETS_MD5 "e20c14bb9bf5d4ec0979a3cd7510dece")
 set(GNUPLOT_MD5   "ff740f99cac26479f48d7d7eb0f32284")
 set(TCL_MD5       "5193aea8107839a79df8ac709552ecb7")
@@ -266,7 +266,6 @@ else()
         URL "${WXMAXIMA_URL}"
         DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
         URL_MD5 ${WXMAXIMA_MD5}
-        PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/wxmaxima-16.04.2-patch
         DEPENDS wxWidgets
         CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/wx-config --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
