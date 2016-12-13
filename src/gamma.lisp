@@ -120,20 +120,16 @@
   a floating-point value or if numer is true.  If the result is
   non-NIL, it is a list of the arguments reduced via rectform"
   (let (flag values)
-    (flet ((unrat (x)
-	     (if (ratnump x)
-		 (/ (second x) (third x))
-		 x)))
-      (dolist (ll args)
-	(destructuring-bind (rll . ill)
-	    (trisplit ll)
-	  (unless (and (float-or-rational-p rll)
-		       (float-or-rational-p ill))
-	    (return-from complex-float-numerical-eval-p nil))
-	  ;; Always save the result from trisplit.  But for backward
-	  ;; compatibility, only set the flag if any item is a float.
-	  (push (add rll (mul ill '$%i)) values)
-	  (setf flag (or flag (or (floatp rll) (floatp ill)))))))
+    (dolist (ll args)
+      (destructuring-bind (rll . ill)
+          (trisplit ll)
+        (unless (and (float-or-rational-p rll)
+                     (float-or-rational-p ill))
+          (return-from complex-float-numerical-eval-p nil))
+        ;; Always save the result from trisplit.  But for backward
+        ;; compatibility, only set the flag if any item is a float.
+        (push (add rll (mul ill '$%i)) values)
+        (setf flag (or flag (or (floatp rll) (floatp ill))))))
     (when (or $numer flag)
       ;; Return the values in the same order as the args!
       (nreverse values))))
