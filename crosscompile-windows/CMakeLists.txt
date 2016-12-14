@@ -40,26 +40,28 @@ option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 # updated setup-file automatically.
 
 # current program versions
-set(CLISPVERSION     2.49)
-set(WXMAXIMAVERSION  16.12.0)
-set(WXWIDGETSVERSION 3.1.0)
-set(GNUPLOTVERSION   5.0.4)
-set(TCLVERSION       8.6.6)
-set(TKVERSION        8.6.6)
-set(VTKVERSION       6.3.0)
-set(SBCLVERSION      1.3.12)
+set(CLISPVERSION       2.49)
+set(WXMAXIMAVERSION    16.12.0)
+set(WXWIDGETSVERSION   3.1.0)
+set(GNUPLOTVERSION     5.0.4)
+set(TCLVERSION         8.6.6)
+set(TKVERSION          8.6.6)
+set(VTKVERSION         6.3.0)
+set(SBCLVERSION        1.3.12)
+set(IMAGEMAGICKVERSION 7.0.3-10-portable-Q16)
 
 
 # MD5 checksums for the current program versions.
-set(CLISP_MD5     "8d58d64f83dd7ad01c054aecc16c1f52")
-set(WXMAXIMA_MD5  "324e91f865996597e0f18a2231a94261")
-set(WXWIDGETS_MD5 "e20c14bb9bf5d4ec0979a3cd7510dece")
-set(GNUPLOT_MD5   "ff740f99cac26479f48d7d7eb0f32284")
-set(TCL_MD5       "5193aea8107839a79df8ac709552ecb7")
-set(TK_MD5        "dd7dbb3a6523c42d05f6ab6e86096e99")
-set(TEXFONTS_MD5  "8101a6feca2c43a6b9218195df9e7c35")
-set(VTK_MD5       "8d8b0878be81a0ab471e929f828dfe9a")
-set(SBCL_MD5      "918fb23e00645e56c8687df4e06c30ae")
+set(CLISP_MD5       "8d58d64f83dd7ad01c054aecc16c1f52")
+set(WXMAXIMA_MD5    "324e91f865996597e0f18a2231a94261")
+set(WXWIDGETS_MD5   "e20c14bb9bf5d4ec0979a3cd7510dece")
+set(GNUPLOT_MD5     "ff740f99cac26479f48d7d7eb0f32284")
+set(TCL_MD5         "5193aea8107839a79df8ac709552ecb7")
+set(TK_MD5          "dd7dbb3a6523c42d05f6ab6e86096e99")
+set(TEXFONTS_MD5    "8101a6feca2c43a6b9218195df9e7c35")
+set(VTK_MD5         "8d8b0878be81a0ab471e929f828dfe9a")
+set(SBCL_MD5        "918fb23e00645e56c8687df4e06c30ae")
+set(IMAGEMAGICK_MD5 "f32f0345a912a222633b29432478decc")
 
 if(BUILD_CURRENT)
     set(USE_WXMAXIMA_GIT YES)
@@ -90,6 +92,7 @@ set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/sbcl-${SBCLVERSION}-x
 # https://www.mail-archive.com/sage-devel@googlegroups.com/msg09750.html
 # https://www.mail-archive.com/sage-devel@googlegroups.com/msg09748.html
 set(TEXFONTS_URL  "http://www.math.union.edu/~dpvc/jsMath/download/TeX-fonts-25.zip")
+set(IMAGEMAGICK_URL "https://www.imagemagick.org/download/binaries/ImageMagick-${IMAGEMAGICKVERSION}-x86.zip")
 
 set(WXMAXIMA_GIT "https://github.com/andrejv/wxmaxima.git")
 
@@ -295,6 +298,18 @@ if(USE_VTK)
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin DESTINATION .)
 endif()
+
+
+# Imagemagick "convert" is needed for wxMaxima (already a binary package just extract it...)
+externalproject_add(imagemagick
+  URL "${IMAGEMAGICK_URL}"
+  DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
+  URL_MD5 ${IMAGEMAGICK_MD5}
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND ""
+  INSTALL_COMMAND ""
+)
+install(FILES ${CMAKE_BINARY_DIR}/imagemagick-prefix/src/imagemagick/convert.exe DESTINATION wxMaxima)
 
 # Include DLLs from the current Mingw environment.
 install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION wxMaxima/)
