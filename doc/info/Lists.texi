@@ -1065,10 +1065,14 @@ Examples:
 @c lreduce (f, [1, 2, 3, 4]);
 @c ===end===
 @example
+@group
 (%i1) lreduce (f, [1, 2, 3]);
 (%o1)                     f(f(1, 2), 3)
+@end group
+@group
 (%i2) lreduce (f, [1, 2, 3, 4]);
 (%o2)                  f(f(f(1, 2), 3), 4)
+@end group
 @end example
 
 @code{lreduce} with the optional argument.
@@ -1077,8 +1081,10 @@ Examples:
 @c lreduce (f, [1, 2, 3], 4);
 @c ===end===
 @example
+@group
 (%i1) lreduce (f, [1, 2, 3], 4);
 (%o1)                  f(f(f(4, 1), 2), 3)
+@end group
 @end example
 
 @code{lreduce} applied to built-in binary operators.
@@ -1089,13 +1095,17 @@ Examples:
 @c lreduce ("/", args ({a, b, c, d}));
 @c ===end===
 @example
+@group
 (%i1) lreduce ("^", args (@{a, b, c, d@}));
                                b c d
 (%o1)                       ((a ) )
+@end group
+@group
 (%i2) lreduce ("/", args (@{a, b, c, d@}));
                                 a
 (%o2)                         -----
                               b c d
+@end group
 @end example
 
 @opencatbox
@@ -1431,10 +1441,14 @@ Examples:
 @c rreduce (f, [1, 2, 3, 4]);
 @c ===end===
 @example
+@group
 (%i1) rreduce (f, [1, 2, 3]);
 (%o1)                     f(1, f(2, 3))
+@end group
+@group
 (%i2) rreduce (f, [1, 2, 3, 4]);
 (%o2)                  f(1, f(2, f(3, 4)))
+@end group
 @end example
 
 @code{rreduce} with the optional argument.
@@ -1443,8 +1457,10 @@ Examples:
 @c rreduce (f, [1, 2, 3], 4);
 @c ===end===
 @example
+@group
 (%i1) rreduce (f, [1, 2, 3], 4);
 (%o1)                  f(1, f(2, f(3, 4)))
+@end group
 @end example
 
 @code{rreduce} applied to built-in binary operators.
@@ -1455,15 +1471,19 @@ Examples:
 @c rreduce ("/", args ({a, b, c, d}));
 @c ===end===
 @example
+@group
 (%i1) rreduce ("^", args (@{a, b, c, d@}));
                                  d
                                 c
                                b
 (%o1)                         a
+@end group
+@group
 (%i2) rreduce ("/", args (@{a, b, c, d@}));
                                a c
 (%o2)                          ---
                                b d
+@end group
 @end example
 
 @opencatbox
@@ -1878,8 +1898,10 @@ Examples:
 @c tree_reduce (f, [a, b, c, d]);
 @c ===end===
 @example
+@group
 (%i1) tree_reduce (f, [a, b, c, d]);
 (%o1)                  f(f(a, b), f(c, d))
+@end group
 @end example
 
 @code{tree_reduce} applied to a list with an odd number of elements.
@@ -1888,8 +1910,10 @@ Examples:
 @c tree_reduce (f, [a, b, c, d, e]);
 @c ===end===
 @example
+@group
 (%i1) tree_reduce (f, [a, b, c, d, e]);
 (%o1)               f(f(f(a, b), f(c, d)), e)
+@end group
 @end example
 
 @opencatbox
@@ -1961,12 +1985,18 @@ Examples:
 @c xreduce (F, [a, b, c, d, e]);
 @c ===end===
 @example
+@group
 (%i1) declare (F, nary);
 (%o1)                         done
+@end group
+@group
 (%i2) F ([L]) := L;
 (%o2)                      F([L]) := L
+@end group
+@group
 (%i3) xreduce (F, [a, b, c, d, e]);
-(%o3)         [[[[[("[", simp), a], b], c], d], e]
+(%o3)                    [a, b, c, d, e]
+@end group
 @end example
 
 @code{xreduce} applied to a function not known to be n-ary.
@@ -1978,12 +2008,18 @@ Examples:
 @c lreduce (G, [a, b, c, d, e]);
 @c ===end===
 @example
+@group
 (%i1) G ([L]) := L;
 (%o1)                      G([L]) := L
+@end group
+@group
 (%i2) xreduce (G, [a, b, c, d, e]);
-(%o2)         [[[[[("[", simp), a], b], c], d], e]
+(%o2)                 [[[[a, b], c], d], e]
+@end group
+@group
 (%i3) lreduce (G, [a, b, c, d, e]);
 (%o3)                 [[[[a, b], c], d], e]
+@end group
 @end example
 
 @opencatbox
