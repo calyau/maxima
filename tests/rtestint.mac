@@ -1711,3 +1711,8 @@ integrate (integrate (sqrt (4*x^2 - y^2), y, 0, x), x, 0, 1)$
 
 (forget (0 < x, x < 1, 0 < y, y < 1), 0)$
 0$
+
+/* Bug #2295: Failure to evaluate definite integral */
+
+integrate (1 / (sqrt (x) * (1 + sqrt (x))^2), x, 1, 4)$
+1/3$
