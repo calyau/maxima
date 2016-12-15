@@ -1265,7 +1265,7 @@ See @mref{first} for more details.
 @anchor{pop}
 @deffn {Function} pop (@var{list})
 
-@code{pop} removes and returns the first element from the list @var{list}. The second argument 
+@code{pop} removes and returns the first element from the list @var{list}. The argument
 @var{list} must be a mapatom that is bound to a nonempty list. If the argument @var{list} is 
 not bound to a nonempty list, Maxima signals an error. For examples, see @mrefdot{push}
 
