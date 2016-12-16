@@ -5,7 +5,7 @@
 
 This chapter provides detailed information about the meaning of some error messages
 or on how to recover from errors.
-@node Error messages, Warning messages
+@node Error messages, Warning messages,,Error and warning messages
 @section Error messages
 @menu
 * No such list element::
@@ -293,7 +293,7 @@ if the following maxima command is entered:
 @closecatbox
 
 
-@node Warning messages,  , Error messages
+@node Warning messages, ,Error messages,Error and warning messages
 @section Warning messages
 @menu
 * undefined variable during translation::
