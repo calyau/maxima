@@ -182,9 +182,12 @@ for item in form do
       wee:endcons(implicit(item,x,-(n+1),n+1,y,-(n+1),n+1),wee)),
 apply(draw2d,wee))$
 
-vennplot(a and b and not(c))$
 
+/* Usage examples:
+
+vennplot(a and b and not(c))$
 vennplot(not(d) and b);
 
+*/
 
 
