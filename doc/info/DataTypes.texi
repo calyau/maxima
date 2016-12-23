@@ -675,7 +675,7 @@ value is a symbol if the first argument is a symbol and a string otherwise.
 @code{concat} evaluates its arguments.  The single quote @code{'} prevents
 evaluation.
 
-See also @mrefdot{sconcat}
+See also @mref{sconcat} and @mrefdot{eval_string}
 
 @example
 (%i1) y: 7$
@@ -725,6 +725,8 @@ Note that although @code{concat (1, 2)} looks like a number, it is a string.
 
 Concatenates its arguments into a string.  Unlike @mrefcomma{concat} the
 arguments do @i{not} need to be atoms.
+
+See also @mref{concat} and @mrefdot{eval_string}
 
 @example
 (%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));
