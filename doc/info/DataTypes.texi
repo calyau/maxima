@@ -675,6 +675,8 @@ value is a symbol if the first argument is a symbol and a string otherwise.
 @code{concat} evaluates its arguments.  The single quote @code{'} prevents
 evaluation.
 
+See also @mrefdot{sconcat}
+
 @example
 (%i1) y: 7$
 (%i2) z: 88$
