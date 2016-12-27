@@ -149,7 +149,7 @@ something else, possibly a list or the name of a list.
 @closecatbox
 
 
-@node Only symbols can be bound, out of memory, makelist second argument must evaluate to a number, Error messages
+@node Only symbols can be bound, Operators of arguments must all be the same, makelist second argument must evaluate to a number, Error messages
 @subsection Only symbols can be bound
 The most probable cause for this error is that there was an attempt to either
 use a number or a variable whose numerical value is known as a loop
