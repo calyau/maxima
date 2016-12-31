@@ -9,7 +9,7 @@ h1(freq):=romberg('v,0,pi)$
 
 /* an alternative syntax is */
 
-h2(freq):=romberg(x*abs(sin(freq*x)),x,0,pi)$
+h2(freq):=romberg(t*abs(sin(freq*t)),t,0,pi)$
 
 
 h1(5.5);
