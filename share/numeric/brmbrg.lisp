@@ -37,6 +37,10 @@
 	(three (intofp 3)))
     (declare (special $bfloat $float2bf))
     (cond ((= (length l1) 4)
+	   (when ($constantp (cadr l1))
+	     (merror
+	       "bromberg: variable of integration cannot be a constant; found ~M"
+	       (cadr l1)))
 	   (setq fun (coerce-bfloat-fun (car l1) `((mlist) ,(cadr l1)))
 		 l1 (cdr l1)))
 	  (t

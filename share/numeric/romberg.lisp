@@ -106,6 +106,10 @@
          result
          `(($romberg) ,(first args) ,left ,right))))
     ((= (length args) 4)
+     (when ($constantp (second args))
+       (merror
+         "romberg: variable of integration cannot be a constant; found ~M"
+         (second args)))
      (multiple-value-bind
        (result left right)
        ;; BIND EVIL SPECIAL VARIABLE *PLOT-REALPART* HERE ...
