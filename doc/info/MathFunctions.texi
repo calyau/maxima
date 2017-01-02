@@ -1833,6 +1833,109 @@ will also simplify to @code{log(a)-log(b)} for rational numbers @code{a/b},
 @code{a#1}.  (@code{log(1/b)}, for integer @code{b}, always simplifies.) If it
 is set to @code{false}, all of these simplifications will be turned off.
 
+When @code{logexpand} is set to @code{all} or @code{super},
+the logarithm of a product expression simplifies to a summation of logarithms.
+
+Examples:
+
+When @code{logexpand} is @code{true},
+@code{log(a^b)} simplifies to @code{b*log(a)}.
+
+@c ===beg===
+@c log(n^2), logexpand=true;
+@c ===end===
+@example
+(%i1) log(n^2), logexpand=true;
+(%o1)                       2 log(n)
+@end example
+
+When @code{logexpand} is @code{all},
+@code{log(a*b)} simplifies to @code{log(a)+log(b)}.
+
+@c ===beg===
+@c log(10*x), logexpand=all;
+@c ===end===
+@example
+(%i1) log(10*x), logexpand=all;
+(%o1)                   log(x) + log(10)
+@end example
+
+When @code{logexpand} is @code{super},
+@code{log(a/b)} simplifies to @code{log(a)-log(b)}
+for rational numbers @code{a/b} with @code{a#1}.
+
+@c ===beg===
+@c log(a/(n + 1)), logexpand=super;
+@c ===end===
+@example
+(%i1) log(a/(n + 1)), logexpand=super;
+(%o1)                  log(a) - log(n + 1)
+@end example
+
+When @code{logexpand} is set to @code{all} or @code{super},
+the logarithm of a product expression simplifies to a summation of logarithms.
+
+@c ===beg===
+@c my_product : product (X(i), i, 1, n);
+@c log(my_product), logexpand=all;
+@c log(my_product), logexpand=super;
+@c ===end===
+@example
+(%i1) my_product : product (X(i), i, 1, n);
+                             n
+                           /===\
+                            ! !
+(%o1)                       ! !  X(i)
+                            ! !
+                           i = 1
+(%i2) log(my_product), logexpand=all;
+                          n
+                         ====
+                         \
+(%o2)                     >    log(X(i))
+                         /
+                         ====
+                         i = 1
+(%i3) log(my_product), logexpand=super;
+                          n
+                         ====
+                         \
+(%o3)                     >    log(X(i))
+                         /
+                         ====
+                         i = 1
+@end example
+
+When @code{logexpand} is @code{false},
+these simplifications are disabled.
+
+@c ===beg===
+@c logexpand : false $
+@c log(n^2);
+@c log(10*x);
+@c log(a/(n + 1));
+@c log ('product (X(i), i, 1, n));
+@c ===end===
+@example
+(%i1) logexpand : false $
+(%i2) log(n^2);
+                                  2
+(%o2)                        log(n )
+(%i3) log(10*x);
+(%o3)                       log(10 x)
+(%i4) log(a/(n + 1));
+                                 a
+(%o4)                      log(-----)
+                               n + 1
+(%i5) log ('product (X(i), i, 1, n));
+                               n
+                             /===\
+                              ! !
+(%o5)                    log( ! !  X(i))
+                              ! !
+                             i = 1
+@end example
+
 @opencatbox
 @category{Exponential and logarithm functions} @category{Simplification flags and variables}
 @closecatbox
