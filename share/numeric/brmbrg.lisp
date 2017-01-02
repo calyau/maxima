@@ -25,7 +25,7 @@
 (defun $bromberg (&rest l1) 
   (or (= (length l1) 4) (= (length l1) 3)
       (merror "bromberg: wrong number of arguments."))
-  (let ((fun) (var) (a) (b) (x)
+  (let ((fun) (a) (b) (x)
 	($bfloat t)
 	($float2bf t)
 	(lim (cdr ($bfloat $brombergtol)))
@@ -36,11 +36,15 @@
 	(one (intofp 1))
 	(three (intofp 3)))
     (declare (special $bfloat $float2bf))
-    (setq var (= (length l1) 4)) ;var=nil ==> first arg is function name 
-    (cond (var (setq var (cadr l1)
-                     fun (coerce-bfloat-fun (car l1) `((mlist) ,var))
-		     l1 (cdr l1)))
-	  (t (setq fun (coerce-bfloat-fun (car l1)))))
+    (cond ((= (length l1) 4)
+	   (when ($constantp (cadr l1))
+	     (merror
+	       "bromberg: variable of integration cannot be a constant; found ~M"
+	       (cadr l1)))
+	   (setq fun (coerce-bfloat-fun (car l1) `((mlist) ,(cadr l1)))
+		 l1 (cdr l1)))
+	  (t
+	   (setq fun (coerce-bfloat-fun (car l1)))))
     (setq a (bfmeval3 (cadr l1)) 
 	  b (bfmeval3 (caddr l1))
 	  x (fpdifference b a))
