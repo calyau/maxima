@@ -360,7 +360,8 @@
   '($julia
     $mandelbrot
     $plotdf
-    $ploteq))
+    $ploteq
+    $rk))
   (setf (get f 'autoload) "dynamics"))
 
 (dolist (mexpr       
@@ -369,8 +370,7 @@
     $evolution2d
     $chaosgame
     $ifs
-    $orbits
-    $rk))
+    $orbits))
   ($auto_mexpr mexpr "dynamics"))
 
 (setf (get '$scene 'autoload) "visualization")
