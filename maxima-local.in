@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 top_srcdir=`(cd \`dirname $0\` > /dev/null 2>&1 ; pwd)`
 MAXIMA_PREFIX="$top_srcdir"
 export MAXIMA_PREFIX
