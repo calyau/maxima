@@ -241,7 +241,9 @@
     typically much, much larger than the changelog. Look at previous
     changelogs to see the markdown format and organization.
 
-    Commit ChangeLog-5.mm.md to master.
+    Commit ChangeLog-5.mm.md to master. Don't forget to add it to 
+    the top level "Makefile.am" so that it will be included in the
+    release tarball.
 
   9.4  Git commands for releases
 

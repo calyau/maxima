@@ -109,6 +109,17 @@ this by running clisp command -- it should produce the same
 error message.  Known workaround is to create empty .clisprc
 file in user's home directory. 
 
+If you want, you can build the documentation in PDF and EPUB format
+(by default these formats are not build). Run
+make pdf
+after "make" to build PDFs from the reference manual and some
+other documents.
+make -C doc/info maxima.epub
+will generate a EPUB version of the Maxima reference manual in
+doc/info/maxima.epub
+Calibre is required for building the EPUB, LaTeX is required for
+building the PDFs.
+
 
 Generic Autotools build instructions follow.
 

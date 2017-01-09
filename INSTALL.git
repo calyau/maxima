@@ -1,7 +1,8 @@
-If the file "configure" does not exist, i.e., this is not a Maxima
-tarball release, execute the script "bootstrap," which will do 
-the necessary auto(conf,make) magic necessary to produce "configure."
+If the file "configure" does not exist, i.e. this is not a Maxima
+tarball release, execute the script "./bootstrap", which will do
+the necessary auto(conf,make) magic necessary to produce the
+"configure" script.
 
-Further installation instructions are available from
+Afterwards further installation instructions are available from
 	./configure --help
 and the file INSTALL.
