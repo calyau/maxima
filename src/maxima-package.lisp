@@ -53,8 +53,6 @@
 	   tanh cosh sinh tan  ;(trigi): same, could remove from trigi
 	   break		     ; special variable in displa.lisp
 	   gcd				; special in rat module
-	   ;; (getalias '$lambda) => cl:lambda, which implies that
-	   ;; Maxima parses lambda as cl:lambda. 
 	   #+(and sbcl sb-package-locks) makunbound)
   #+gcl
   (:import-from :system
@@ -361,5 +359,10 @@
 	   #:read-translatable-string)
   #+gcl
   (:shadowing-import-from #:system #:define-compiler-macro))
+
+;; (getalias '$lambda) => CL:LAMBDA, which implies that Maxima parses lambda as CL:LAMBDA.
+;; Unlocking the :common-lisp package seems to be the simplest way to avoid an error.
+;; (Shadowing LAMBDA causes errors and removing the alias causes some other errors. Oh well.)
+#+(and sbcl sb-package-locks) (sb-ext:unlock-package :common-lisp)
 
 (provide :maxima)
