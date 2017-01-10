@@ -59,7 +59,7 @@ CMUCL <http://www.cons.org/cmucl/>
 	CMUCL is a fast option for Maxima on platforms where it is
 available. The rmaxima front-end provides advanced line-editing
 facilities for Maxima when compiled with CMUCL. rlwrap is available
-from <http://utopia.knoware.nl/~hlub/uck/rlwrap/> .
+from <https://github.com/hanslub42/rlwrap> .
 
 CMUCL versions: 18e and 19a and later are known to work.
 
