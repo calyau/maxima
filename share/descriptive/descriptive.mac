@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005-2016 Mario Rodriguez Riotorto
+Copyright (C) 2005-2017 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -121,7 +121,7 @@ Thanks to Robert Dodier and Barton Willis for their help.
 For questions, suggestions, bugs and the like, feel free
 to contact me at
 
-mario AT edu DOT xunta DOT es
+riotorto AT yahoo DOT com
 http://tecnostats.net
 
 */
@@ -256,7 +256,17 @@ continuous_freq (lis, [opt]) :=
 continuous_freq_array (lis,[opt]):=block([nc,mini,maxi,lim,amp,fr,ult,n,k,index,bins],
    if ?length(lis) = 0
      then [[minf, inf], [0]]
-     else
+   elseif length(opt) > 0 and setp(opt[1])
+     then /* arbitrary bins */
+       ( lim:  sort(listify(opt[1])),
+         mini: first(lim),
+         maxi: last(lim),
+         if mini = maxi
+           then error("continuous_freq: at least two bin numbers are needed.")
+           else ( bins: makelist([lim[i], lim[i + 1]], i, 1, length(lim) - 1),
+                  fr: count_array_by_bins (lis, bins),
+                  [lim,fr]))
+     else /* bins of equal amplitude */
        (if length(opt) = 1 and listofnumbersp(opt[1])
            then ( mini: opt[1][1],
      	     maxi: opt[1][2],
@@ -765,7 +775,10 @@ wxscatterplot([desc]) := wxdraw(apply('scatterplot_description, desc)) $
 /* one row matrix.                                                   */
 /*                                                                   */
 /* Specific options (defaults in parentheses):                       */
-/*     - nclasses (10): number of classes, a positive integer.       */
+/*     - nclasses (10): number of classes, a positive integer, or    */
+/*                      a set of bin numbers. Also, it can be given  */
+/*                      the name of one of the three optimal algo-   */
+/*                      rithms available: 'fd, 'scott, or 'sturges.  */
 /*     - frequency (absolute): 'absolute', 'relative', 'density' or  */
 /*                               'percent'                           */
 /*     - htics (auto): 'auto, 'endpoints, 'intervals, list of labels */
@@ -781,7 +794,7 @@ wxscatterplot([desc]) := wxdraw(apply('scatterplot_description, desc)) $
 /*     - yrange                                                      */
 /*     - xtics                                                       */
 histogram_description(m,[select]):=
-   block([fr,amp,scen,before,localopts,num_classes,len_option,lbels,
+   block([fr,amp,scen,before,localopts,num_classes,v,lbels,
           /* specific options */
           my_nclasses:10, my_frequency:'absolute, my_htics:'auto],
       [before, localopts]: extract_options(select,'nclasses,'frequency,'htics),
@@ -793,17 +806,25 @@ histogram_description(m,[select]):=
           then my_frequency: rhs(k)
         elseif lhs(k) = 'htics
           then my_htics: rhs(k),
-
+    
       if listp(my_nclasses)
-        then ( len_option: length(my_nclasses),
-               if len_option = 2
+        then ( v: length(my_nclasses),
+               if v = 2
                  then num_classes: 10
-               elseif len_option = 3
+               elseif v = 3
                  then num_classes: third(my_nclasses)
                  else error("histogram: the second argument is not a list of two or three elements") )
-        elseif not integerp(my_nclasses) or my_nclasses < 3
+        elseif setp(my_nclasses)
+          then ( num_classes: length(my_nclasses)-1,
+                 if num_classes < 1
+                   then error("histogram: at least two bin numbers are needed"))
+        elseif integerp(my_nclasses) and my_nclasses < 1
           then error("histogram: number of classes must be an integer greater than two")
-          else num_classes: my_nclasses,
+        elseif integerp(my_nclasses) and my_nclasses > 0
+          then num_classes: my_nclasses
+        elseif not member(my_nclasses, ['fd, 'scott, 'sturges])
+               /* for optimal cases, computation of num_classes is delayed */
+          then error("histogram: incorrect format for option nclasses"),
       if not member(my_frequency, ['absolute, 'relative, 'percent, 'density])
         then error("histogram: frenquency must be either absolute, relative, density or percent"),
       if not member(my_htics, ['auto, 'endpoints, 'intervals]) and
@@ -820,37 +841,55 @@ histogram_description(m,[select]):=
                        else m: transpose(m)[1],
 
                /* frequency table */
+               /* first, calculate num_clases for the optimal cases */
+               if my_nclasses = 'fd  /* Robust Freedman - Diaconis method */
+                 then ( h: qrange(m),
+                        if h = 0
+                          then h: 2 * median(abs(m-median(m))), /* twice median absolute deviation */
+                        if h > 0
+                          then my_nclasses: num_classes: ceiling(range(m) / (2 * h * length(m)^(-1/3)))
+                          else my_nclasses: num_classes: 1 ),        
+               if my_nclasses = 'scott /* Scott's method to be applied under Gaussian assumptions */
+                 then ( if length(m) = 1
+                          then error("histogram: with Scott's method, sample size must be greater than 1"),
+                        h: 3.5 * std1(m) * length(m)^(-1/3),
+                        if h > 0
+                          then my_nclasses: num_classes: ceiling(range(m) / h)
+                          else my_nclasses: num_classes: 1 ),
+               if my_nclasses = 'sturges /* Sturges' method to be applied under Gaussian assumptions and n < 200 */
+                 then my_nclasses: num_classes:
+                        ceiling(1 + log(length(m)) / 0.6931471805599453), /* <-- log(2) */
                fr: float(continuous_freq(m,my_nclasses)),
                if member(my_frequency, ['relative, 'percent])
                  then fr: [first(fr), second(fr) / apply("+", second(fr))],
                if my_frequency = 'percent
                  then fr[2]: fr[2] * 100.0,
-               amp: fr[1][2]-fr[1][1],
+               amp: makelist(fr[1][i+1]-fr[1][i], i, 1, length(fr[1])-1),
                if my_frequency = 'density
-                 then fr: [first(fr), second(fr) / (apply("+", second(fr)) * amp)],
+                 then fr: [first(fr), second(fr) / apply("+", second(fr) * amp)],
 
                /* histogram tics */
                if my_htics = 'auto
                  then my_htics: []
                elseif my_htics = 'endpoints
-                 then my_htics: xtics = [fr[1][1],amp,fr[1][num_classes+1]]
+                 then my_htics: xtics = setify(fr[1])
                elseif my_htics = 'intervals
                  then ( lbels: [concat("[",fr[1][1],",",fr[1][2],"]")],
 			lbels: append(lbels, makelist(concat("(",fr[1][k],",",fr[1][k+1],"]"),k,2,num_classes)),
-			lbels: makelist([lbels[k],fr[1][k]+amp/2],k,1,num_classes),
+			lbels: makelist([lbels[k],fr[1][k]+amp[k]/2],k,1,num_classes),
 			my_htics: xtics = makeset([a,b],[a,b],lbels) )
                elseif listp(my_htics)
                  then ( if length(my_htics) < num_classes
 		          then my_htics: append(my_htics, makelist("",k,length(my_htics)+1,num_classes)),
-		        lbels: makelist([my_htics[k],fr[1][k]+amp/2],k,1,num_classes),
+		        lbels: makelist([my_htics[k],fr[1][k]+amp[k]/2],k,1,num_classes),
 		        my_htics: xtics = makeset([a,b],[a,b],lbels) ),
 
                scen: [before,
-                      'xrange = [fr[1][1]-amp/2, fr[1][num_classes+1]+amp/2],
+                      'xrange = [first(fr[1]), last(fr[1])] + [-1,+1] * mean(amp)/2,
                       'yrange = lmax(fr[2])*[-0.05, 1.05],
                       my_htics,
                       apply('bars,
-                            makelist([(fr[1][k]+fr[1][k+1])/2, fr[2][k], amp],k,1,num_classes))])
+                            makelist([(fr[1][k]+fr[1][k+1])/2, fr[2][k], amp[k]],k,1,length(fr[1])-1))])
         else error("histogram: can't plot the histogram for these data") )$
 histogram([desc]) := draw2d(apply(histogram_description, desc)) $
 wxhistogram([desc]) := wxdraw2d(apply(histogram_description, desc)) $
