@@ -461,10 +461,12 @@ box.
 
 @code{box} evaluates its argument.  However, a boxed expression does not
 evaluate to its content, so boxed expressions are effectively excluded from
-computations.
+computations. @mref{rembox} removes the box again.
 
 @mref{boxchar} is the character used to draw the box in @code{box} and in the
 @mref{dpart} and @mref{lpart} functions.
+
+See also @mrefcomma{rembox} @mref{dpart} and @mrefdot{lpart}
 
 Examples:
 
