@@ -225,27 +225,35 @@
 
 ;; BACKWARD SUBSTITUTION
 (defun backward ()
+  (declare(special ax delta m rank))
   (do ((i (1- rank) (1- i)))
       ((< i 1))
     (do ((l (1+ rank) (1+ l)))
-	((> l m))
+    ((> l m))
       (setf (aref ax (aref *row* i) (aref *col* l))
-	     (pquotient (pdifference
-			 (ptimes (aref ax (aref *row* i) (aref *col* l))
-				 (aref ax (aref *row* rank) (aref *col* rank)))
-			 (do ((j (1+ i) (1+ j)) (sum 0))
-			     ((> j rank) sum)
-			   (setq sum (pplus sum (ptimes (aref ax (aref *row* i) (aref *col* j))
-							(aref ax (aref *row* j) (aref *col* l)))))))
-			(aref ax (aref *row* i) (aref *col* i)))))
+    (let ((mess1  (pdifference
+             (ptimes (aref ax (aref *row* i) (aref *col* l))
+                 (aref ax (aref *row* rank) (aref *col* rank)))
+             (do ((j (1+ i) (1+ j)) (sum 0))
+                 ((> j rank) sum)
+               (setq sum (pplus sum (ptimes (aref ax (aref *row* i) (aref *col* j))
+                            (aref ax (aref *row* j) (aref *col* l))))))) )
+          (mess2 (aref ax (aref *row* i) (aref *col* i))  ))
+      (cond ((equal 0 mess1) 0)
+        ((equal 0 mess2) 0)
+        (t   ;;   (pquotient mess1 mess2) ; fixed by line below. RJF 1/12/2017
+
+         (car (ratreduce mess1 mess2))
+         )
+        ))))
     (do ((l (1+ i) (1+ l)))
-	((> l rank))
+    ((> l rank))
       (setf (aref ax (aref *row* i) (aref *col* l)) 0)))
   ;; PUT DELTA INTO THE DIAGONAL MATRIX
   (setq delta (aref ax (aref *row* rank) (aref *col* rank)))
   (do ((i 1 (1+ i)))
       ((> i rank))
-    (setf (aref ax (aref *row* i) (aref *col* i)) delta)))
+    (setf (aref ax (aref *row* i) (aref *col* i)) delta))  )
 
 ;;RECOVER THE ORDER OF ROWS AND COLUMNS.
 
