@@ -223,6 +223,45 @@ Examples:
 @end group
 @end example
 
+The difference between @mrefcomma{subst} @mref{at} and @mref{ev} can be
+seen in the following example:
+
+@c ===beg===
+@c e1:I(t)=C*diff(U(t),t)$
+@c e2:U(t)=L*diff(I(t),t)$
+@c at(e1,e2);
+@c subst(e2,e1);
+@c ev(e1,e2,diff);
+@c ===end===
+@example
+(%i1) e1:I(t)=C*diff(U(t),t)$
+(%i2) e2:U(t)=L*diff(I(t),t)$
+@group
+(%i3) at(e1,e2);
+                               !
+                      d        !
+(%o3)       I(t) = C (-- (U(t))!                    )
+                      dt       !          d
+                               !U(t) = L (-- (I(t)))
+                                          dt
+@end group
+@group
+(%i4) subst(e2,e1);
+                            d      d
+(%o4)             I(t) = C (-- (L (-- (I(t)))))
+                            dt     dt
+@end group
+@group
+(%i5) ev(e1,e2,diff);
+                                  2
+                                 d
+(%o5)                I(t) = C L (--- (I(t)))
+                                   2
+                                 dt
+@end group
+@end example
+
+
 @opencatbox
 @category{Evaluation} @category{Differential equations}
 @closecatbox
