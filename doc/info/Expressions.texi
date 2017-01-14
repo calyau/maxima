@@ -584,14 +584,18 @@ a list or a matrix; consider:
 @c m;
 @c mm;
 @c ===end===
-@example 
+@example
 (%i1) m : [1,[2,3]]$
 (%i2) mm : m$
 (%i3) mm[2][1] : x$
+@group
 (%i4) m;
-(%o4)                      [1,[x,3]]
+(%o4)                      [1, [x, 3]]
+@end group
+@group
 (%i5) mm;
-(%o5)                      [1,[x,3]]
+(%o5)                      [1, [x, 3]]
+@end group
 @end example
 
 Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
@@ -604,13 +608,17 @@ Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
 @c mm;
 @c ===end===
 @example
-(%i6) m : [1,[2,3]]$
-(%i7) mm : copy(m)$
-(%i8) mm[2][1] : x$
-(%i9) m;
-(%o9)                     [1,[2,3]]
-(%i10) mm;
-(%o10)                    [1,[x,3]]
+(%i1) m : [1,[2,3]]$
+(%i2) mm : copy(m)$
+(%i3) mm[2][1] : x$
+@group
+(%i4) m;
+(%o4)                      [1, [2, 3]]
+@end group
+@group
+(%i5) mm;
+(%o5)                      [1, [x, 3]]
+@end group
 @end example
 
 This time, the assignment to @var{mm} does not change the value of @var{m}.
