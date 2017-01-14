@@ -2232,6 +2232,8 @@ When @code{opsubst} is @code{false},
 @code{subst} will not attempt to substitute into the operator of an expression.
 E.g. @code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
 
+See also @mrefcomma{at} @mref{ev} and @mrefdot{psubst}
+
 Examples:
 
 @c ===beg===
@@ -2275,6 +2277,35 @@ might be expressed as @code{a+b+(-1*c)} internally.
 @example
 (%i3) subst(["+"="-"],a+b-c);
 (%o3)                                 c-b+a
+@end example
+
+The difference between @code{subst} and @code{at} can be seen in the
+following example:
+@c ===beg===
+@c g1:y(t)=a*x(t)+b*diff(x(t),t);
+@c subst('diff(x(t),t)=1,g1);
+@c at(g1,'diff(x(t),t)=1);
+@c ===end===
+@example
+@group
+(%i1) g1:y(t)=a*x(t)+b*diff(x(t),t);
+                            d
+(%o1)             y(t) = b (-- (x(t))) + a x(t)
+                            dt
+@end group
+@group
+(%i2) subst('diff(x(t),t)=1,g1);
+(%o2)                   y(t) = a x(t) + b
+@end group
+@group
+(%i3) at(g1,'diff(x(t),t)=1);
+                              !
+                     d        !
+(%o3)      y(t) = b (-- (x(t))!             ) + a x(t)
+                     dt       !d
+                              !-- (x(t)) = 1
+                               dt
+@end group
 @end example
 
 @noindent
