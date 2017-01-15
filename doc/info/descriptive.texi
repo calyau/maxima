@@ -2695,7 +2695,14 @@ Available options are:
 @item
 @var{nclasses} (default, @code{10}): number of classes of the histogram, or
 a list indicating the limits of the classes and the number of them, or
-only the limits.
+only the limits. This option also accepts bounds for varying bin widths, or
+a symbol with the name of one of the three optimal algorithms available for
+the number of classes: @code{'fd} (Freedman, D. and Diaconis, P. (1981) On the 
+histogram as a density estimator: L_2 theory. Zeitschrift fuer 
+Wahrscheinlichkeitstheorie und verwandte Gebiete 57, 453-476.), @code{'scott}
+(Scott, D. W. (1979) On optimal and data-based histograms. Biometrika 66, 
+605-610.), and @code{'sturges} (Sturges, H. A. (1926) The choice of a class
+interval. Journal of the American Statistical Association 21, 65-66).
 
 @item
 @var{frequency} (default, @code{absolute}): indicates the scale of the
@@ -2755,6 +2762,17 @@ A simple with eight classes:
 Setting the limits of the histogram to -2 and 12, with 3 classes.
 Also, we introduce predefined tics:
 
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c histogram (
+@c      s1,
+@c      nclasses     = [-2,12,3],
+@c      htics        = ["A", "B", "C"],
+@c      terminal     = png,
+@c      fill_color   = "#23afa0",
+@c      fill_density = 0.6)$
+@c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
@@ -2765,6 +2783,32 @@ Also, we introduce predefined tics:
            terminal     = png,
            fill_color   = "#23afa0",
            fill_density = 0.6)$
+@end example
+
+Bounds for varying bin widths.
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c histogram (s1, nclasses = {0,3,6,7,11})$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) histogram (s1, nclasses = @{0,3,6,7,11@})$
+@end example
+
+Freedmann - Diakonis robust method for optimal search of the number of classes.
+
+@c ===beg===
+@c load (descriptive)$
+@c s1 : read_list (file_search ("pidigits.data"))$
+@c histogram histogram(s1, nclasses=fd) $
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) s1 : read_list (file_search ("pidigits.data"))$
+(%i3) histogram(s1, nclasses=fd) $
 @end example
 
 @opencatbox

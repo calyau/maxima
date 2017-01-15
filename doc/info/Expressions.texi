@@ -461,10 +461,12 @@ box.
 
 @code{box} evaluates its argument.  However, a boxed expression does not
 evaluate to its content, so boxed expressions are effectively excluded from
-computations.
+computations. @mref{rembox} removes the box again.
 
 @mref{boxchar} is the character used to draw the box in @code{box} and in the
 @mref{dpart} and @mref{lpart} functions.
+
+See also @mrefcomma{rembox} @mref{dpart} and @mrefdot{lpart}
 
 Examples:
 
@@ -582,14 +584,18 @@ a list or a matrix; consider:
 @c m;
 @c mm;
 @c ===end===
-@example 
+@example
 (%i1) m : [1,[2,3]]$
 (%i2) mm : m$
 (%i3) mm[2][1] : x$
+@group
 (%i4) m;
-(%o4)                      [1,[x,3]]
+(%o4)                      [1, [x, 3]]
+@end group
+@group
 (%i5) mm;
-(%o5)                      [1,[x,3]]
+(%o5)                      [1, [x, 3]]
+@end group
 @end example
 
 Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
@@ -602,13 +608,17 @@ Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
 @c mm;
 @c ===end===
 @example
-(%i6) m : [1,[2,3]]$
-(%i7) mm : copy(m)$
-(%i8) mm[2][1] : x$
-(%i9) m;
-(%o9)                     [1,[2,3]]
-(%i10) mm;
-(%o10)                    [1,[x,3]]
+(%i1) m : [1,[2,3]]$
+(%i2) mm : copy(m)$
+(%i3) mm[2][1] : x$
+@group
+(%i4) m;
+(%o4)                      [1, [2, 3]]
+@end group
+@group
+(%i5) mm;
+(%o5)                      [1, [x, 3]]
+@end group
 @end example
 
 This time, the assignment to @var{mm} does not change the value of @var{m}.
@@ -2222,6 +2232,8 @@ When @code{opsubst} is @code{false},
 @code{subst} will not attempt to substitute into the operator of an expression.
 E.g. @code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
 
+See also @mrefcomma{at} @mref{ev} and @mrefdot{psubst}
+
 Examples:
 
 @c ===beg===
@@ -2265,6 +2277,35 @@ might be expressed as @code{a+b+(-1*c)} internally.
 @example
 (%i3) subst(["+"="-"],a+b-c);
 (%o3)                                 c-b+a
+@end example
+
+The difference between @code{subst} and @code{at} can be seen in the
+following example:
+@c ===beg===
+@c g1:y(t)=a*x(t)+b*diff(x(t),t);
+@c subst('diff(x(t),t)=1,g1);
+@c at(g1,'diff(x(t),t)=1);
+@c ===end===
+@example
+@group
+(%i1) g1:y(t)=a*x(t)+b*diff(x(t),t);
+                            d
+(%o1)             y(t) = b (-- (x(t))) + a x(t)
+                            dt
+@end group
+@group
+(%i2) subst('diff(x(t),t)=1,g1);
+(%o2)                   y(t) = a x(t) + b
+@end group
+@group
+(%i3) at(g1,'diff(x(t),t)=1);
+                              !
+                     d        !
+(%o3)      y(t) = b (-- (x(t))!             ) + a x(t)
+                     dt       !d
+                              !-- (x(t)) = 1
+                               dt
+@end group
 @end example
 
 @noindent
