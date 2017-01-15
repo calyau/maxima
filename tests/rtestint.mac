@@ -1716,3 +1716,32 @@ integrate (integrate (sqrt (4*x^2 - y^2), y, 0, x), x, 0, 1)$
 
 integrate (1 / (sqrt (x) * (1 + sqrt (x))^2), x, 1, 4)$
 1/3$
+
+/* SF bug #3274: "quotient by zero" error in integrate */
+
+(expr_tau: (%e^-(t/tau3)*(%e^(t/tau3+t/tau1)-%e^t*tau3))
+      /((tau1*%e^(t/tau1)+%e^(t/tau1))
+       *%e^(t/tau2)*tau3+%e^(t/tau2+t/tau1)),
+ I_tau : integrate(expr_tau, t));
+-(%e^((-t/tau2)-t/tau1)*(tau1*tau2*tau3^2*%e^(t-t/tau3)
+                        +%e^(t/tau1)
+                         *(tau1*(tau2^2*(tau3-1)-tau2*tau3)
+                          -tau2^2*tau3)))
+ /(tau1^2*(tau2*(tau3^2-tau3)-tau3^2)
+  +tau1*((-tau3^2)-tau3-tau2)+tau2*((-tau3^2)-tau3))$
+
+is(equal(diff(I_tau, t), expr_tau));
+true;
+
+(expr_c : subst([tau1=c1, tau2=c2, tau3=c3], expr_tau),
+ I_c : integrate (expr_c, t));
+(-(c1*c2*c3^2*%e^((-t/c3)-t/c2-t/c1+t))
+ /(c1^2*(c2*(c3^2-c3)-c3^2)+c1*((-c3^2)-c3-c2)+c2*((-c3^2)-c3)))
+ -(c2*c3*%e^-(t/c2))/(c1*c3^2+c3^2+c3)$
+
+is(equal(diff(I_c, t), expr_c));
+true;
+
+constantp (ratsimp (subst([c1=tau1, c2=tau2, c3=tau3], I_c) - I_tau));
+true;
+

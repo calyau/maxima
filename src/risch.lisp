@@ -286,7 +286,7 @@
 		 (gennegs denom (cddr num) numdenom)))))
 
 (defun rischlogeprog (p)
-  (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef)
+  (prog (p1e p2e p2deriv logcoef ncc dcc allcc expcoef my-divisor)
      (if (or (pzerop p) (pzerop (car p))) (return (rischzero)))
      (setq p1e (ratnumerator p))
      (desetq (dcc p2e) (oldcontent (ratdenominator p)))
@@ -314,9 +314,11 @@
      (setq p1e (ratqu p1e (ptimes dcc (p-lc p2e)))
 	   p2e (ratqu p2e (p-lc p2e)))	;MAKE DENOM MONIC
      (setq p2deriv (spderivative p2e mainvar))
-     (setq logcoef (ratqu p1e
-			  (if expflag (r- p2deriv (r* p2e expcoef))
-			      p2deriv)))
+     (setq my-divisor (if expflag (r- p2deriv (r* p2e expcoef)) p2deriv))
+     (when (equal my-divisor '(0 . 1))
+       (format t "HEY RISCHLOGEPROG, FOUND ZERO DIVISOR; GIVE UP.~%")
+       (return (rischnoun p)))
+     (setq logcoef (ratqu p1e my-divisor))
      (when (risch-constp logcoef)
        (if expflag
 	   (setq expstuff (r- expstuff (r* expcoef logcoef))))
