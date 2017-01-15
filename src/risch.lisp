@@ -316,7 +316,7 @@
      (setq p2deriv (spderivative p2e mainvar))
      (setq my-divisor (if expflag (r- p2deriv (r* p2e expcoef)) p2deriv))
      (when (equal my-divisor '(0 . 1))
-       (format t "HEY RISCHLOGEPROG, FOUND ZERO DIVISOR; GIVE UP.~%")
+       ;; (format t "HEY RISCHLOGEPROG, FOUND ZERO DIVISOR; GIVE UP.~%")
        (return (rischnoun p)))
      (setq logcoef (ratqu p1e my-divisor))
      (when (risch-constp logcoef)
