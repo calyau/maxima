@@ -48,7 +48,7 @@ set(TCLVERSION         8.6.6)
 set(TKVERSION          8.6.6)
 set(VTKVERSION         6.3.0)
 set(SBCLVERSION        1.3.12)
-set(IMAGEMAGICKVERSION 7.0.4-0-portable-Q16)
+set(IMAGEMAGICKVERSION 7.0.4-4-portable-Q16)
 
 
 # MD5 checksums for the current program versions.
@@ -61,7 +61,7 @@ set(TK_MD5          "dd7dbb3a6523c42d05f6ab6e86096e99")
 set(TEXFONTS_MD5    "8101a6feca2c43a6b9218195df9e7c35")
 set(VTK_MD5         "8d8b0878be81a0ab471e929f828dfe9a")
 set(SBCL_MD5        "918fb23e00645e56c8687df4e06c30ae")
-set(IMAGEMAGICK_MD5 "0abd88becda216ca235489e7a13b7a26")
+set(IMAGEMAGICK_MD5 "637b3302f09c7b03734e91fd80a0841c")
 
 if(BUILD_CURRENT)
     set(USE_WXMAXIMA_GIT YES)
