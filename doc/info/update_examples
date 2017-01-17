@@ -52,6 +52,9 @@ sub rem_codes {
 
     $res = expand($res);
 
+    # Escape "@" to "@@", as an unescaped at-sign might be interpreted as the
+    # beginning of a command.
+    $res =~s/\@/\@\@/g;
     return $res;
 }
 
