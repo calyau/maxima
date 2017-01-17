@@ -223,6 +223,9 @@ Examples:
 @end group
 @end example
 
+Note that in the last line @code{y} is treated differently to @code{x}
+as @code{y} isn't used as a differentiation variable.
+
 The difference between @mrefcomma{subst} @mref{at} and @mref{ev} can be
 seen in the following example:
 
