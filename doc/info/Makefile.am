@@ -517,7 +517,7 @@ maxima-index.lisp: maxima.info build_index.pl
 
 maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 	sh extract_categories.sh maxima
-	
+
 maxima.epub: maxima.html
 	ebook-convert maxima_singlepage.html maxima.epub --breadth-first "--title=Maxima @manual_version@ Manual" "--authors=Maxima Team" --language=en
 
