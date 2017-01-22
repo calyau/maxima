@@ -523,7 +523,7 @@ maxima.epub: maxima.html
 
 maxima.pdf: $(top_srcdir)/doc/info/maxima_pdf.texi $(top_srcdir)/doc/info/maxima.texi $(maxima_TEXINFOS) $(pdffigures)
 	$(TEXI2PDF) $(AM_V_texinfo) -o $@ $<
-	rm -f maxima_pdf.fns maxima_pdf.vr maxima_pdf.toc maxima_pdf.fn maxima_pdf.aux maxima_pdf.log
+	rm -f maxima_pdf.fns maxima_pdf.vr maxima_pdf.toc maxima_pdf.fn maxima_pdf.aux maxima_pdf.log maxima_pdf.vrs
 
 contents.hhc index.hhk: maxima.html
 	perl ./create_index

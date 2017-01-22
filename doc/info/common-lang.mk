@@ -20,7 +20,7 @@ maxima.html: maxima.texi $(maxima_TEXINFOS)
 maxima.pdf: maxima_pdf.texi maxima.texi $(maxima_TEXINFOS)
 	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf maxima_pdf.texi
 	rm -f maxima_pdf.fns maxima_pdf.vr maxima_pdf.tp maxima_pdf.pg maxima_pdf.ky maxima_pdf.cp \
-	maxima_pdf.toc maxima_pdf.fn maxima_pdf.aux maxima_pdf.log
+	maxima_pdf.toc maxima_pdf.fn maxima_pdf.aux maxima_pdf.log maxima_pdf.vrs
 
 contents.hhc: maxima.html
 	perl ../create_index
