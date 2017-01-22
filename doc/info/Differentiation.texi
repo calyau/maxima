@@ -321,6 +321,8 @@ variables @var{x_1}, @var{x_2}, @dots{} when atvalues are displayed.
 @code{atvalue} evaluates its arguments.
 @code{atvalue} returns @var{c}, the atvalue.
 
+See also @mrefdot{at}
+
 Examples:
 
 @c ===beg===
