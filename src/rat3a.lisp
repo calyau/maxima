@@ -47,7 +47,7 @@
          (if (or (floatp a) (floatp b)
                  (zerop (rem a b)))
              (/ a b)
-             (rat-error "quotient is not exact")))
+             (rat-error "CQUOTIENT: quotient is not exact")))
 	(t (ctimes a (crecip b)))))
 
 ;; ALG
@@ -522,7 +522,7 @@
 ;; cons pair of polynomials), representing an element of F[V].
 (defmfun pdivide (x y)
   (cond
-    ((pzerop y) (rat-error "Quotient by zero"))
+    ((pzerop y) (rat-error "PDIVIDE: Quotient by zero"))
     ;; If Y is a coefficient, it doesn't matter what X is: we can always do the
     ;; division.
     ((pacoefp y) (list (ratreduce x y) (rzero)))
@@ -667,10 +667,10 @@
 	 (cond ((pzerop x) (pzero))
 	       ((pcoefp y) (cquotient x y))
 	       ((alg y) (paquo x y))
-	       (t (rat-error "Quotient by a polynomial of higher degree"))))
+	       (t (rat-error "PQUOTIENT: Quotient by a polynomial of higher degree (case 1)"))))
 
 	((pcoefp y)
-         (cond ((pzerop y) (rat-error "Quotient by zero"))
+         (cond ((pzerop y) (rat-error "PQUOTIENT: Quotient by zero"))
                (modulus (pctimes (crecip y) x))
                (t (pcquotient x y))))
 
@@ -692,7 +692,7 @@
         ;; main variable and Y has a higher degree. There can't possibly be an
         ;; exact quotient.
 	((or (pointergp (p-var y) (p-var x)) (> (p-le y) (p-le x)))
-	 (rat-error "Quotient by a polynomial of higher degree"))
+	 (rat-error "PQUOTIENT: Quotient by a polynomial of higher degree (case 2)"))
 
         ;; If we got to here then X and Y have the same main variable and Y has
         ;; a degree less than or equal to that of X. We can now forget about the
@@ -733,7 +733,7 @@
     ;; If B didn't divide A after all, then eventually we'll end up with the
     ;; remainder in u, which has lower degree than that of B.
     (when (< (pt-le u) (pt-le v))
-      (rat-error "Polynomial quotient is not exact"))
+      (rat-error "PTPTQUOTIENT: Polynomial quotient is not exact"))
     (let ((le-q (- (pt-le u) (pt-le v)))
           (lc-q (pquotient (pt-lc u) (pt-lc v))))
       ;; We've calculated the leading exponent and coefficient of q. Push them
@@ -971,7 +971,7 @@
 		  (setq q (ptimes q (car a)))
 		  (setq a (cdr a)) ))
 	   (cond ((minusp (setq e (+ 1 (- (cadr q)) (pdegree p (car q)))))
-		  (rat-error "Quotient by a polynomial of higher degree")))
+		  (rat-error "RQUOTIENT: Quotient by a polynomial of higher degree")))
 	   (setq a (pexpt a e))
 	   (ratreduce (or (testdivide (ptimes a p) q)
 			  (prog2 (setq a (pexpt (p-lc q) e))
