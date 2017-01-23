@@ -1,4 +1,3 @@
-\input mmref 
 \input texinfo
 @setfilename  maxima.info
 @finalout
