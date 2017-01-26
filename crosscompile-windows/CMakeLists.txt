@@ -31,6 +31,7 @@ option(USE_VTK "Use VTK." YES)
 # sets the installation directory to C:\maxima-current
 option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 
+option(BUILD_64BIT "Build a 64 bit installer." NO)
 
 
 
@@ -43,11 +44,9 @@ option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 set(CLISPVERSION       2.49)
 set(WXMAXIMAVERSION    16.12.0)
 set(WXWIDGETSVERSION   3.1.0)
-set(GNUPLOTVERSION     5.0.5)
 set(TCLVERSION         8.6.6)
 set(TKVERSION          8.6.6)
 set(VTKVERSION         6.3.0)
-set(SBCLVERSION        1.3.12)
 set(IMAGEMAGICKVERSION 7.0.4-5-portable-Q16)
 
 
@@ -55,13 +54,10 @@ set(IMAGEMAGICKVERSION 7.0.4-5-portable-Q16)
 set(CLISP_MD5       "8d58d64f83dd7ad01c054aecc16c1f52")
 set(WXMAXIMA_MD5    "324e91f865996597e0f18a2231a94261")
 set(WXWIDGETS_MD5   "e20c14bb9bf5d4ec0979a3cd7510dece")
-set(GNUPLOT_MD5     "cda1529b623a93033b449eeab130cc99")
 set(TCL_MD5         "5193aea8107839a79df8ac709552ecb7")
 set(TK_MD5          "dd7dbb3a6523c42d05f6ab6e86096e99")
 set(TEXFONTS_MD5    "8101a6feca2c43a6b9218195df9e7c35")
 set(VTK_MD5         "8d8b0878be81a0ab471e929f828dfe9a")
-set(SBCL_MD5        "918fb23e00645e56c8687df4e06c30ae")
-set(IMAGEMAGICK_MD5 "d0f898c2c0be4797389ce59cc2fab6d7")
 
 if(BUILD_CURRENT)
     set(USE_WXMAXIMA_GIT YES)
@@ -75,24 +71,19 @@ endif()
 
 
 
-string(REPLACE "." "" GNUPLOTVERSIONWITHOUTDOTS "${GNUPLOTVERSION}")
-
 # download URLs
 set(CLISP_URL     "http://downloads.sourceforge.net/project/clisp/clisp/${CLISPVERSION}/clisp-${CLISPVERSION}-win32-mingw-big.zip")
 set(WXMAXIMA_URL  "http://sourceforge.net/projects/wxmaxima/files/wxMaxima/${WXMAXIMAVERSION}/wxmaxima-${WXMAXIMAVERSION}.tar.gz")
 set(WXWIDGETS_URL "https://github.com/wxWidgets/wxWidgets/releases/download/v${WXWIDGETSVERSION}/wxWidgets-${WXWIDGETSVERSION}.tar.bz2")
-set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPLOTVERSION}/gp${GNUPLOTVERSIONWITHOUTDOTS}-win32-mingw.zip")
 set(TCL_URL       "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
 set(TK_URL        "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
 set(VTK_URL       "http://www.vtk.org/files/release/6.3/vtkpython-${VTKVERSION}-Windows-32bit.exe")
-set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/sbcl-${SBCLVERSION}-x86-windows-binary.msi")
 
 # No license at the homepage, but the TeX fonts are public domain according to:
 # http://archive.debian.net/changelogs/pool/main/t/ttf-jsmath/ttf-jsmath_0.01-2/copyright
 # https://www.mail-archive.com/sage-devel@googlegroups.com/msg09750.html
 # https://www.mail-archive.com/sage-devel@googlegroups.com/msg09748.html
 set(TEXFONTS_URL  "http://www.math.union.edu/~dpvc/jsMath/download/TeX-fonts-25.zip")
-set(IMAGEMAGICK_URL "https://www.imagemagick.org/download/binaries/ImageMagick-${IMAGEMAGICKVERSION}-x86.zip")
 
 set(WXMAXIMA_GIT "https://github.com/andrejv/wxmaxima.git")
 
@@ -105,14 +96,7 @@ execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libstdc++-6.dll
 message(STATUS "Found libstdc++-6.dll at ${MINGW_LIBSTDCPP}")
 message(STATUS "Found libgcc_s_sjlj-1.dll at ${MINGW_LIBGCC}")
 
-
-find_program(WINE_EXE NAMES wine)
-
-if(WINE_EXE)
-    message(STATUS "Found wine at ${WINE_EXE}")
-else()
-    message(FATAL_ERROR "Wine not found. It is required for crosscompiling Maxima.")
-endif()
+add_subdirectory("wine/")
 
 find_program(SEVENZIP_EXE NAMES 7z)
 
@@ -172,34 +156,11 @@ externalproject_add(clisp
 )
 install(DIRECTORY ${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp/ DESTINATION clisp-${CLISPVERSION})
 
-externalproject_add(sbcl
-  URL "${SBCL_URL}"
-  DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-  URL_MD5 ${SBCL_MD5}
-  DOWNLOAD_NO_EXTRACT 1
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND cd ${CMAKE_BINARY_DIR}/sbcl && ${CMAKE_SOURCE_DIR}/sbcl.sh
-  INSTALL_COMMAND ""
-)
-ExternalProject_Add_Step(sbcl extract
-  COMMENT "Performing extraction step for 'SBCL'"
-  COMMAND mkdir -p ${CMAKE_BINARY_DIR}/sbcl && cd ${CMAKE_BINARY_DIR}/sbcl && ${SEVENZIP_EXE} x -y ${CMAKE_SOURCE_DIR}/downloads/sbcl-${SBCLVERSION}-x86-windows-binary.msi
-  DEPENDEES download
-  DEPENDERS patch
-)
+add_subdirectory("sbcl/")
 
-install(DIRECTORY ${CMAKE_BINARY_DIR}/sbcl/ DESTINATION bin)
+add_subdirectory("gnuplot/")
 
-# Gnuplot (already a binary package just extract it...)
-externalproject_add(gnuplot
-  URL "${GNUPLOT_URL}"
-  DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-  URL_MD5 ${GNUPLOT_MD5}
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND ""
-  INSTALL_COMMAND ""
-)
-install(DIRECTORY ${CMAKE_BINARY_DIR}/gnuplot-prefix/src/gnuplot/ DESTINATION gnuplot)
+add_subdirectory("imagemagick/")
 
 # TeX Fonts (a binary package just extract it...)
 externalproject_add(texfonts
@@ -300,16 +261,6 @@ if(USE_VTK)
 endif()
 
 
-# Imagemagick "convert" is needed for wxMaxima (already a binary package just extract it...)
-externalproject_add(imagemagick
-  URL "${IMAGEMAGICK_URL}"
-  DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-  URL_MD5 ${IMAGEMAGICK_MD5}
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND ""
-  INSTALL_COMMAND ""
-)
-install(FILES ${CMAKE_BINARY_DIR}/imagemagick-prefix/src/imagemagick/convert.exe DESTINATION wxMaxima)
 
 # Include DLLs from the current Mingw environment.
 install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION wxMaxima/)
