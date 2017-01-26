@@ -430,3 +430,29 @@ f5(2, 10);
  ordersort([[-7,[0,2,1]],[3,[1,2,1]],[1,[0,4,1]],[6,[4,3,3]],[6,[4,4,3]],[-7,[3,5,4]],[2,[0,0,5]],[-10,[2,2,5]],[-10,[3,4,7]],[7,[3,8,9]]],[x,y,z],">=")];
 [true, [[6,[4,4,3]],[6,[4,3,3]],[7,[3,8,9]],[-7,[3,5,4]],[-10,[3,4,7]],[-10,[2,2,5]],[3,[1,2,1]],[1,[0,4,1]],[-7,[0,2,1]],[2,[0,0,5]]]];
 
+/* 'define' translated incorrectly, reported to mailing list circa 2017-01-24 */
+
+(kill(foo, bar, baz, quux, mumble, blurf, umm, f, x, y),
+ foo(y) := define(bar(x), x + y),
+ baz(f, y) := define(funmake(f, [x]), x + y),
+ quux() := (mumble(x) := 1 + x),
+ [foo(10), baz(blurf, 20), quux()]);
+/* note that results match because rhs of ":=" isn't simplified */
+[bar(x) := 10 + x, blurf(x) := 20 + x, mumble(x) := 1 + x];
+
+[bar(5), blurf(5), mumble(5)];
+[15, 25, 6];
+
+(kill(bar, blurf, mumble),
+ translate(foo, baz, quux),
+ [foo(11), baz(umm, 21), quux()]);
+/* note that results match because rhs of ":=" isn't simplified */
+[bar(x) := 11 + x, umm(x) := 21 + x, mumble(x) := 1 + x];
+
+map (?fboundp, [foo, baz, quux]);
+[true, true, true];
+
+[bar(5), umm(5), mumble(5)];
+[16, 26, 6];
+
+
