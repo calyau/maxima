@@ -323,14 +323,6 @@
                    '$array))))))
 
 
-(def%tr $define (form)
-  (destructuring-let (((header body) (cdr form)))
-    `($any . (apply 'mdefine
-	      (list ',(cond ((mquotep header) (cadr header))
-			    (t (disp2 header)))
-	       ,(dtranslate body))))))
-
-
 ;;; it seems TRANSL has all sorts of code for hacking some kind of
 ;;; $CRE mode. somehow there is no translate property for MRAT. who
 ;;; knows. anyway here is something in the mean time before this

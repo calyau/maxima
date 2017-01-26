@@ -927,9 +927,6 @@ APPLY means like APPLY.")
   (setq tr-abort t)
   '($any . nil))
 
-(def%tr mdefine (form) ;; ((MDEFINE) ((F) ...) ...)
-  `($any . (meval ',form)))
-
 (def%tr mdefmacro (form)
   (meval form) ;; HMM, THIS HAS A SIDE EFFECT AT THE TIME OF TRANSLATION !!
   `($any . (meval ',form)))
