@@ -9,7 +9,6 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-# current program version
 set(IMAGEMAGICKVERSION 7.0.4-5-portable-Q16)
 
 if(BUILD_64BIT)

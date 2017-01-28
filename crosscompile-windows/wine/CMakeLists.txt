@@ -4,7 +4,6 @@
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-
 if(BUILD_64BIT)
     list(APPEND CMAKE_PROGRAM_PATH "/opt/wine-devel/bin")
     find_program(WINE_EXE NAMES wine64)

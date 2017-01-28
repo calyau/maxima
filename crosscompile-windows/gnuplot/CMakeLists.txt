@@ -9,7 +9,6 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-# current program version
 set(GNUPLOTVERSION     5.0.5)
 
 string(REPLACE "." "" GNUPLOTVERSIONWITHOUTDOTS "${GNUPLOTVERSION}")

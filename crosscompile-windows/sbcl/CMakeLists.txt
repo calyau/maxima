@@ -9,8 +9,6 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-# current program versions
-
 set(SBCLVERSION "1.3.12")
 
 if(BUILD_64BIT)
