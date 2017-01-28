@@ -115,18 +115,18 @@ The function 'cl_eval' evaluates the generated CL code; for example
   (let ((k) (lo) (inc) (pred) (hi) (body) (op))
     (setq k (expr-to-cl (nth 0 f)))
     (setq lo (expr-to-cl (nth 1 f)))
-    (setq d (expr-to-cl (nth 2 f)))
+    (setq inc (expr-to-cl (nth 2 f)))
     (setq hi (expr-to-cl (nth 4 f))) ;; skips (nth 3 f)?
     (setq pred (expr-to-cl (nth 5 f)))
     (setq body (expr-to-cl (nth 6 f)))
    
-    (cond ((and (null lo) (null hi) (null d)) `(do () (,pred (quote $done)) ,body))
+    (cond ((and (null lo) (null hi) (null inc)) `(do () (,pred (quote $done)) ,body))
 	  (t
-	   (setq d (or d 1))
-	   (setq op (if (> d 0) '> '<))
+	   (setq inc (or inc 1))
+	   (setq op (if (> inc 0) '> '<))
 	   (setq pred (if pred `((or (,op ,k ,hi) ,pred) (quote $done)) `((,op ,k ,hi) (quote $done))))
 	   (setq body (expr-to-cl (nth 6 f)))
-	   `(do ((,k ,lo (incf ,k ,d))) ,pred ,body)))))
+	   `(do ((,k ,lo (incf ,k ,inc))) ,pred ,body)))))
        		
 (defun mapatom-expr-to-cl (e)
   (cond ((eq e '$%i) (complex 0 1))
