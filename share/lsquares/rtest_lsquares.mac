@@ -174,3 +174,26 @@ true;
 
 (float_approx_equal_tolerance : save_tolerance, 0);
 0;
+
+/* SF bug #3282: "lsquares and lists of list of data to be fitted on" */
+
+(kill(a, b, c, x, y),
+ data:[matrix([0,0],[1,1],[2,2]),
+       matrix([2,2],[1,1],[2,2])],
+ eqtn:y=a*x^2+b*x+c,
+ mse_data_1 : lsquares_mse(data[1],[x,y],eqtn),
+ lsquares_estimates_approximate(%%,[a,b,c]));
+[[a = -3.405898581949557E-4, b = 1.000676542954337, c = -1.342533507359797E-4]];
+
+lsquares_estimates_exact (mse_data_1, [a, b, c]);
+[[a = 0, b = 1, c = 0]]; /* preceding approximate result matches this */
+
+(foo(k, z) := data[k]*z,
+ mse_foo_2_1_5 : lsquares_mse(foo(2, 1.5), [x, y], eqtn),
+ lsquares_estimates_approximate(%%, [a, b, c]));
+ [[a = 0.132534631873083, b = 0.4036035745637151, c = 0.5963736563696966]];
+
+(reset (%rnum, %rnum_list), /* ensure result contains %r1 */
+ lsquares_estimates_exact (mse_foo_2_1_5, [a, b, c]));
+[[a = (2*%r1)/9,b = 1-%r1,c = %r1]]$ /* preceding approximate result matches this */
+
