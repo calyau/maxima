@@ -6,7 +6,17 @@
 
 set(CMAKE_SYSTEM_NAME Windows)
 
-set(HOST i686-w64-mingw32)
+
+option(BUILD_64BIT "Build a 64 bit installer." NO)
+
+if(BUILD_64BIT)
+    set(HOST x86_64-w64-mingw32)
+    set(INSTALLERSUFFIX "win64")
+else()
+    set(HOST i686-w64-mingw32)
+    set(INSTALLERSUFFIX "win32")
+endif()
+    
 set(CMAKE_C_COMPILER   ${HOST}-gcc)
 set(CMAKE_CXX_COMPILER ${HOST}-g++)
 set(CMAKE_RC_COMPILER  ${HOST}-windres)
@@ -31,6 +41,7 @@ option(USE_VTK "Use VTK." YES)
 # sets the installation directory to C:\maxima-current
 option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 
+option(BUILD_64BIT "Build a 64 bit installer." NO)
 
 
 
@@ -41,27 +52,11 @@ option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 
 # current program versions
 set(CLISPVERSION       2.49)
-set(WXMAXIMAVERSION    16.12.0)
-set(WXWIDGETSVERSION   3.1.0)
-set(GNUPLOTVERSION     5.0.5)
-set(TCLVERSION         8.6.6)
-set(TKVERSION          8.6.6)
-set(VTKVERSION         6.3.0)
-set(SBCLVERSION        1.3.12)
-set(IMAGEMAGICKVERSION 7.0.4-5-portable-Q16)
 
 
 # MD5 checksums for the current program versions.
 set(CLISP_MD5       "8d58d64f83dd7ad01c054aecc16c1f52")
-set(WXMAXIMA_MD5    "324e91f865996597e0f18a2231a94261")
-set(WXWIDGETS_MD5   "e20c14bb9bf5d4ec0979a3cd7510dece")
-set(GNUPLOT_MD5     "cda1529b623a93033b449eeab130cc99")
-set(TCL_MD5         "5193aea8107839a79df8ac709552ecb7")
-set(TK_MD5          "dd7dbb3a6523c42d05f6ab6e86096e99")
 set(TEXFONTS_MD5    "8101a6feca2c43a6b9218195df9e7c35")
-set(VTK_MD5         "8d8b0878be81a0ab471e929f828dfe9a")
-set(SBCL_MD5        "918fb23e00645e56c8687df4e06c30ae")
-set(IMAGEMAGICK_MD5 "d0f898c2c0be4797389ce59cc2fab6d7")
 
 if(BUILD_CURRENT)
     set(USE_WXMAXIMA_GIT YES)
@@ -75,44 +70,31 @@ endif()
 
 
 
-string(REPLACE "." "" GNUPLOTVERSIONWITHOUTDOTS "${GNUPLOTVERSION}")
-
 # download URLs
 set(CLISP_URL     "http://downloads.sourceforge.net/project/clisp/clisp/${CLISPVERSION}/clisp-${CLISPVERSION}-win32-mingw-big.zip")
-set(WXMAXIMA_URL  "http://sourceforge.net/projects/wxmaxima/files/wxMaxima/${WXMAXIMAVERSION}/wxmaxima-${WXMAXIMAVERSION}.tar.gz")
-set(WXWIDGETS_URL "https://github.com/wxWidgets/wxWidgets/releases/download/v${WXWIDGETSVERSION}/wxWidgets-${WXWIDGETSVERSION}.tar.bz2")
-set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPLOTVERSION}/gp${GNUPLOTVERSIONWITHOUTDOTS}-win32-mingw.zip")
-set(TCL_URL       "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
-set(TK_URL        "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
-set(VTK_URL       "http://www.vtk.org/files/release/6.3/vtkpython-${VTKVERSION}-Windows-32bit.exe")
-set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/sbcl-${SBCLVERSION}-x86-windows-binary.msi")
 
 # No license at the homepage, but the TeX fonts are public domain according to:
 # http://archive.debian.net/changelogs/pool/main/t/ttf-jsmath/ttf-jsmath_0.01-2/copyright
 # https://www.mail-archive.com/sage-devel@googlegroups.com/msg09750.html
 # https://www.mail-archive.com/sage-devel@googlegroups.com/msg09748.html
 set(TEXFONTS_URL  "http://www.math.union.edu/~dpvc/jsMath/download/TeX-fonts-25.zip")
-set(IMAGEMAGICK_URL "https://www.imagemagick.org/download/binaries/ImageMagick-${IMAGEMAGICKVERSION}-x86.zip")
-
-set(WXMAXIMA_GIT "https://github.com/andrejv/wxmaxima.git")
 
 
-# Where are libgcc_s_sjlj-1.dll and libstdc++-6.dll?
-#
-execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libgcc_s_sjlj-1.dll OUTPUT_VARIABLE MINGW_LIBGCC    OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+# Where are libgcc and libstdc++?
+if(BUILD_64BIT)
+    execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libgcc_s_seh-1.dll OUTPUT_VARIABLE MINGW_LIBGCC    OUTPUT_STRIP_TRAILING_WHITESPACE)
+else()
+    execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libgcc_s_sjlj-1.dll OUTPUT_VARIABLE MINGW_LIBGCC    OUTPUT_STRIP_TRAILING_WHITESPACE)
+endif()
+
 execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libstdc++-6.dll     OUTPUT_VARIABLE MINGW_LIBSTDCPP OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-message(STATUS "Found libstdc++-6.dll at ${MINGW_LIBSTDCPP}")
-message(STATUS "Found libgcc_s_sjlj-1.dll at ${MINGW_LIBGCC}")
+message(STATUS "Found libstdc++ at ${MINGW_LIBSTDCPP}")
 
+message(STATUS "Found libgcc at ${MINGW_LIBGCC}")
 
-find_program(WINE_EXE NAMES wine)
-
-if(WINE_EXE)
-    message(STATUS "Found wine at ${WINE_EXE}")
-else()
-    message(FATAL_ERROR "Wine not found. It is required for crosscompiling Maxima.")
-endif()
+add_subdirectory("wine/")
 
 find_program(SEVENZIP_EXE NAMES 7z)
 
@@ -124,39 +106,7 @@ endif()
 
 include(ExternalProject)
 
-# Build wxWidgets static library (required for wxMaxima)
-# --host=${HOST} should suffice, but then wxwidgets creates libs with wrong names, so add --build=${HOST}
-# (that should mean, the build system is Windows - wrong. Perhaps a bug in the wxwidgets build system.)
-externalproject_add(wxWidgets
-  URL "${WXWIDGETS_URL}"
-  DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-  URL_MD5 ${WXWIDGETS_MD5}
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/configure --disable-shared --disable-compat28 --with-zlib=builtin --with-libjpeg=builtin --without-libtiff --with-libpng=builtin --with-expat=builtin --host=${HOST} --build=${HOST}
-  BUILD_COMMAND $(MAKE)
-  INSTALL_COMMAND ""
-)
 
-# build tcl/tk (required for xmaxima and the Lisp selection tool)
-externalproject_add(tcl
-  URL "${TCL_URL}"
-  DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-  URL_MD5 ${TCL_MD5}
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl/win/configure --host=${HOST} --prefix=C:/maxima-${MAXIMAVERSION}
-  BUILD_COMMAND $(MAKE)
-        COMMAND $(MAKE) install
-)
-install(DIRECTORY ${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl-build/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
-
-externalproject_add(tk
-  URL "${TK_URL}"
-  DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-  URL_MD5 ${TK_MD5}
-  DEPENDS tcl
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tk-prefix/src/tk/win/configure --host=${HOST} --with-tcl=${CMAKE_BINARY_DIR}/tcl-prefix/src/tcl-build/C:/maxima-${MAXIMAVERSION}/lib --prefix=C:/maxima-${MAXIMAVERSION}
-  BUILD_COMMAND $(MAKE)
-        COMMAND $(MAKE) install
-)
-install(DIRECTORY ${CMAKE_BINARY_DIR}/tk-prefix/src/tk-build/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 
 # Clisp (already a binary package just extract it...)
 #
@@ -172,34 +122,19 @@ externalproject_add(clisp
 )
 install(DIRECTORY ${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp/ DESTINATION clisp-${CLISPVERSION})
 
-externalproject_add(sbcl
-  URL "${SBCL_URL}"
-  DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-  URL_MD5 ${SBCL_MD5}
-  DOWNLOAD_NO_EXTRACT 1
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND cd ${CMAKE_BINARY_DIR}/sbcl && ${CMAKE_SOURCE_DIR}/sbcl.sh
-  INSTALL_COMMAND ""
-)
-ExternalProject_Add_Step(sbcl extract
-  COMMENT "Performing extraction step for 'SBCL'"
-  COMMAND mkdir -p ${CMAKE_BINARY_DIR}/sbcl && cd ${CMAKE_BINARY_DIR}/sbcl && ${SEVENZIP_EXE} x -y ${CMAKE_SOURCE_DIR}/downloads/sbcl-${SBCLVERSION}-x86-windows-binary.msi
-  DEPENDEES download
-  DEPENDERS patch
-)
+add_subdirectory("sbcl/")
 
-install(DIRECTORY ${CMAKE_BINARY_DIR}/sbcl/ DESTINATION bin)
+add_subdirectory("gnuplot/")
 
-# Gnuplot (already a binary package just extract it...)
-externalproject_add(gnuplot
-  URL "${GNUPLOT_URL}"
-  DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-  URL_MD5 ${GNUPLOT_MD5}
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND ""
-  INSTALL_COMMAND ""
-)
-install(DIRECTORY ${CMAKE_BINARY_DIR}/gnuplot-prefix/src/gnuplot/ DESTINATION gnuplot)
+add_subdirectory("imagemagick/")
+
+add_subdirectory("tcltk/")
+
+add_subdirectory("wxwidgets/")
+
+add_subdirectory("wxmaxima/")
+
+add_subdirectory("vtk/")
 
 # TeX Fonts (a binary package just extract it...)
 externalproject_add(texfonts
@@ -251,65 +186,7 @@ install(FILES "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima/doc/info/maxima.pdf"
 install(FILES "${CMAKE_SOURCE_DIR}/lispselector.tcl" DESTINATION bin/)
 install(FILES "${CMAKE_SOURCE_DIR}/lispselector.bat" DESTINATION bin/)
 
-if(USE_WXMAXIMA_GIT)
-    externalproject_add(wxMaxima-git
-        GIT_REPOSITORY ${WXMAXIMA_GIT}
-        DEPENDS wxWidgets
-        PATCH_COMMAND  ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/acinclude.m4
-              COMMAND ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/bootstrap
-        CONFIGURE_COMMAND  ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/wx-config --prefix=C:/maxima-${MAXIMAVERSION}
-        BUILD_COMMAND $(MAKE)
-              COMMAND $(MAKE) allmo
-              COMMAND $(MAKE) wxMaxima.win
-       INSTALL_COMMAND ""
-    )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-git-prefix/src/wxMaxima-git-build/wxMaxima/ DESTINATION wxMaxima)
-else()
-    externalproject_add(wxMaxima
-        URL "${WXMAXIMA_URL}"
-        DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-        URL_MD5 ${WXMAXIMA_MD5}
-        DEPENDS wxWidgets
-        CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxWidgets-prefix/src/wxWidgets-build/wx-config --prefix=C:/maxima-${MAXIMAVERSION}
-        BUILD_COMMAND $(MAKE)
-              COMMAND $(MAKE) allmo
-              COMMAND $(MAKE) wxMaxima.win
-        INSTALL_COMMAND ""
-    )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-prefix/src/wxMaxima-build/wxMaxima/ DESTINATION wxMaxima)
-endif()
 
-
-if(USE_VTK)
-    externalproject_add(vtk
-        URL "${VTK_URL}"
-        DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-        DOWNLOAD_NO_EXTRACT 1
-        URL_MD5 ${VTK_MD5}
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        INSTALL_COMMAND ""
-    )
-    ExternalProject_Add_Step(vtk extract
-        COMMENT "Performing extraction step for 'VTK'"
-        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/vtk && cd ${CMAKE_BINARY_DIR}/vtk && ${SEVENZIP_EXE} x -y ${CMAKE_SOURCE_DIR}/downloads/vtkpython-${VTKVERSION}-Windows-32bit.exe
-        DEPENDEES download
-        DEPENDERS patch
-    )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin DESTINATION .)
-endif()
-
-
-# Imagemagick "convert" is needed for wxMaxima (already a binary package just extract it...)
-externalproject_add(imagemagick
-  URL "${IMAGEMAGICK_URL}"
-  DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-  URL_MD5 ${IMAGEMAGICK_MD5}
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND ""
-  INSTALL_COMMAND ""
-)
-install(FILES ${CMAKE_BINARY_DIR}/imagemagick-prefix/src/imagemagick/convert.exe DESTINATION wxMaxima)
 
 # Include DLLs from the current Mingw environment.
 install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION wxMaxima/)
@@ -318,7 +195,7 @@ install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION bin/)
 install(FILES "licenses.html" DESTINATION share/doc/)
 
 
-set(CPACK_GENERATOR "NSIS")
+set(CPACK_GENERATOR "NSIS;ZIP")
 set(CPACK_PACKAGE_VERSION "${MAXIMAVERSION}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Maxima")
 set(CPACK_PACKAGE_VENDOR "Maxima Team")
@@ -333,7 +210,7 @@ set(CPACK_NSIS_MUI_UNIICON "${CPACK_NSIS_MUI_ICON}")
 set(CPACK_PACKAGE_EXECUTABLES "..\\\\wxMaxima\\\\wxmaxima" "wxMaxima (GUI for Maxima)")
 set(CPACK_NSIS_URL_INFO_ABOUT "http://maxima.sourceforge.net")
 set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "http://maxima.sourceforge.net" "About Maxima" "https://andrejv.github.io/wxmaxima/" "About wxMaxima" "share/doc/maxima.pdf" "Maxima documentation"  "share/doc/licenses.html" "Maxima and included software licenses" "bin/lispselector.bat" "Configure default LISP for Maxima")
-set(CPACK_PACKAGE_FILE_NAME "maxima-clisp-sbcl-${CPACK_PACKAGE_VERSION}")
+set(CPACK_PACKAGE_FILE_NAME "maxima-clisp-sbcl-${CPACK_PACKAGE_VERSION}-${INSTALLERSUFFIX}")
 set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
 
 # File associations:

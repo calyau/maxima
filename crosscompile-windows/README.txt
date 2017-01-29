@@ -44,6 +44,23 @@ it should be sufficient to just increase the version number and MD5-checksum
 for the new release in CMakeLists.txt.
 
 
+Building a 64 bit installer
+===========================
+
+By default a 32 bit installer (which works on 32 and 64 bit Windows) will be
+generated. If you want to crosscompile a 64 bit installer, install the 64 bit
+crosscompiler package (g++-mingw-w64-x86-64) and a recent 'wine' (version 2.0).
+(e.g. wine-devel from https://launchpad.net/~wine/+archive/ubuntu/wine-builds
+which installs in /opt/wine-devel (remember that additional PPAs might impact
+your system security). That will not be necessary in future, when Wine 2.0 is
+part of the standard distributions.)
+
+Then use the following commands to build a 64 bit installer:
+cmake -DBUILD_64BIT=YES ..
+make
+make package
+
+
 Installing the package
 ======================
 
