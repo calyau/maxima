@@ -538,7 +538,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	  *terminal-io* $appendfile)
     (multiple-value-bind (sec min hour day month year)
 	(get-decoded-time)
-      (format t (intl:gettext "~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/~&")
+      (format t (intl:gettext "~&/* Starts dribbling to ~A (~d/~d/~d, ~2,'0d:~2,'0d:~2,'0d).*/~&")
 	      name year month day hour min sec))
     '$done))
 
