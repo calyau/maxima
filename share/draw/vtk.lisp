@@ -3194,7 +3194,7 @@
     (close cmdstorage)
 
     #+(or windows win32 win64)
-    ($system (format nil "vtkpython \"~a\"" gfn))
+    ($system "vtkpython" gfn)
     #-(or windows win32 win64)
     ($system (format nil "(python \"~a\")&" gfn))
 
