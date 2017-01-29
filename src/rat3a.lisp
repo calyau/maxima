@@ -691,8 +691,10 @@
         ;; Either Y contains a variable that is not in X, or they have the same
         ;; main variable and Y has a higher degree. There can't possibly be an
         ;; exact quotient.
-	((or (pointergp (p-var y) (p-var x)) (> (p-le y) (p-le x)))
-	 (rat-error "PQUOTIENT: Quotient by a polynomial of higher degree (case 2)"))
+	((pointergp (p-var y) (p-var x))
+     (rat-error "PQUOTIENT: Quotient by a polynomial of higher degree (case 2a)"))
+	((> (p-le y) (p-le x))
+     (rat-error "PQUOTIENT: Quotient by a polynomial of higher degree (case 2b)"))
 
         ;; If we got to here then X and Y have the same main variable and Y has
         ;; a degree less than or equal to that of X. We can now forget about the
