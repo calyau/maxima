@@ -577,7 +577,7 @@
 
 (defun scan-number-rest (data)
   (let ((c (caar data)))
-    (cond ((member c '(#\.))
+    (cond ((char= c #\.)
 	   ;; We found a dot
 	   (scan-number-after-dot data))
 	  ((member c '(#\E #\e #\F #\f #\B #\b #\D #\d #\S #\s #\L #\l #+cmu #\W #+cmu #\w))

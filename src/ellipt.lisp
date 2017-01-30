@@ -1079,7 +1079,7 @@
 	   (take '($elliptic_f) (take '(%asin) u) 1))
 	  ((and (eq $triginverses '$all)
 		(listp u)
-		(member (caar u) '(%jacobi_sn))
+		(eq (caar u) '%jacobi_sn)
 		(alike1 (third u) m))
 	   ;; inverse_jacobi_sn(sn(u)) = u
 	   (second u))
@@ -1123,7 +1123,7 @@
 	   0)
 	  ((and (eq $triginverses '$all)
 		(listp u)
-		(member (caar u) '(%jacobi_cn))
+		(eq (caar u) '%jacobi_cn)
 		(alike1 (third u) m))
 	   ;; inverse_jacobi_cn(cn(u)) = u
 	   (second u))
@@ -1166,7 +1166,7 @@
 	   ($elliptic_kc m))
 	  ((and (eq $triginverses '$all)
 		(listp u)
-		(member (caar u) '(%jacobi_dn))
+		(eq (caar u) '%jacobi_dn)
 		(alike1 (third u) m))
 	   ;; inverse_jacobi_dn(dn(u)) = u
 	   (second u))
@@ -3860,7 +3860,7 @@ first kind:
        (neg `((%elliptic_kc) ,m)))
       ((and (eq $triginverses '$all)
 	    (listp u)
-	    (member (caar u) '(%jacobi_ns))
+	    (eq (caar u) '%jacobi_ns)
 	    (alike1 (third u) m))
        ;; inverse_jacobi_ns(ns(u)) = u
        (second u))
@@ -3915,7 +3915,7 @@ first kind:
 	   `((mtimes) 2 ((%elliptic_kc) ,m)))
 	  ((and (eq $triginverses '$all)
 		(listp u)
-		(member (caar u) '(%jacobi_nc))
+		(eq (caar u) '%jacobi_nc)
 		(alike1 (third u) m))
 	   ;; inverse_jacobi_nc(nc(u)) = u
 	   (second u))
@@ -3972,7 +3972,7 @@ first kind:
 	   ($elliptic_kc m))
 	  ((and (eq $triginverses '$all)
 		(listp u)
-		(member (caar u) '(%jacobi_nd))
+		(eq (caar u) '%jacobi_nd)
 		(alike1 (third u) m))
 	   ;; inverse_jacobi_nd(nd(u)) = u
 	   (second u))
@@ -4034,7 +4034,7 @@ first kind:
 	   0)
 	  ((and (eq $triginverses '$all)
 		(listp u)
-		(member (caar u) '(%jacobi_sc))
+		(eq (caar u) '%jacobi_sc)
 		(alike1 (third u) m))
 	   ;; inverse_jacobi_sc(sc(u)) = u
 	   (second u))
@@ -4102,7 +4102,7 @@ first kind:
 	   ($elliptic_kc m))
 	  ((and (eq $triginverses '$all)
 		(listp u)
-		(member (caar u) '(%jacobi_sd))
+		(eq (caar u) '%jacobi_sd)
 		(alike1 (third u) m))
 	   ;; inverse_jacobi_sd(sd(u)) = u
 	   (second u))
@@ -4212,7 +4212,7 @@ first kind:
 	   `((%elliptic_kc) ,m))
 	  ((and (eq $triginverses '$all)
 		(listp u)
-		(member (caar u) '(%jacobi_cd))
+		(eq (caar u) '%jacobi_cd)
 		(alike1 (third u) m))
 	   ;; inverse_jacobi_cd(cd(u)) = u
 	   (second u))
@@ -4271,7 +4271,7 @@ first kind:
 	   ($elliptic_kc m))
 	  ((and (eq $triginverses '$all)
 		(listp u)
-		(member (caar u) '(%jacobi_ds))
+		(eq (caar u) '%jacobi_ds)
 		(alike1 (third u) m))
 	   ;; inverse_jacobi_ds(ds(u)) = u
 	   (second u))
@@ -4328,7 +4328,7 @@ first kind:
 	   0)
 	  ((and (eq $triginverses '$all)
 		(listp u)
-		(member (caar u) '(%jacobi_dc))
+		(eq (caar u) '%jacobi_dc)
 		(alike1 (third u) m))
 	   ;; inverse_jacobi_dc(dc(u)) = u
 	   (second u))

@@ -1680,12 +1680,10 @@
       (($grid) ; defined as a Maxima list with two numbers.
 	       ; 0   0 means "off",
                ; >0 >0 means "on with n grid lines per tick",
-            (cond ((member val '(nil))
-		   (setf (gethash opt *gr-options*) (list 0 0))
-		   )
-		  ((member val '(t))
-		   (setf (gethash opt *gr-options*) (list 1 1))
-		   )
+            (cond ((null val)
+		   (setf (gethash opt *gr-options*) (list 0 0)))
+		  ((eq val t)
+		   (setf (gethash opt *gr-options*) (list 1 1)))
                   ((or (not ($listp val))
                        (/=  ($length val) 2))
                      (merror "draw: illegal grid lines specification: ~M " val))

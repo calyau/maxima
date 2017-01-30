@@ -969,7 +969,7 @@ APPLY means like APPLY.")
 	      (let* ((var (car l))
 		     (assign (get var 'assign)))
 		(if assign
-		    (cond ((member assign '(assign-mode-check) :test #'eq)
+		    (cond ((eq assign 'assign-mode-check)
 			   (push `(,assign ',var ,(teval var)) easy-assigns))
 			  (t
 			   (return nil)))))))
