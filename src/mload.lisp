@@ -411,7 +411,7 @@
 ;; multiple possibilities.  eg foo.l{i,}sp or foo.{dem,dm1,dm2}
 (defun $file_search (name &optional paths)
   (if (and (symbolp name)
-	   (member (char (symbol-name name) 0) '(#\$)))
+	   (char= (char (symbol-name name) 0) #\$))
       (setq name (subseq (print-invert-case name) 1)))
   (if (symbolp name)  (setf name (string name)))
   (if (file-exists-p name) (return-from $file_search name))

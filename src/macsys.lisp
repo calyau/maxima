@@ -524,7 +524,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 
 (defmfun $appendfile (name)
   (if (and (symbolp name)
-	   (member (char (symbol-name name) 0) '(#\$) :test #'char=))
+	   (char= (char (symbol-name name) 0) #\$))
       (setq name (maxima-string name)))
   (if $appendfile (merror (intl:gettext "appendfile: already in appendfile, you must call closefile first.")))
   (let ((stream  (open name :direction :output

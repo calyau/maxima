@@ -2203,7 +2203,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 	 (loop for u in (cdr f)
 	       maximize ($nc_degree u type-of-weight)))
 ;;;	 ($nc_degree (extract_nc_and_sc_parts f) type-of-weight ))
-	((member (caar f) '(rat) :test #'eq) 0)
+	((eq (caar f) 'rat) 0)
 	((eq (caar f) 'mrat)
 	 (cond ($leading_monomial_is_lowest_degree
 		(loop for v in (varlist f)
