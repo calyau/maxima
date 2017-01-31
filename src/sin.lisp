@@ -108,13 +108,12 @@
 ;; Like FIND-IF, but calls FUNC on elements of SEQ in turn until one returns
 ;; non-NIL. At that point, return the result (rather than the input, which is
 ;; what you'd get from FIND-IF)
+
 (defun map-find (func seq)
-  (catch 'map-find
-    (map nil
-         (lambda (x)
-           (let ((result (funcall func x)))
-             (when result (throw 'map-find result))))
-         seq)))
+  (map nil (lambda (x)
+             (let ((result (funcall func x)))
+               (when result (return-from map-find result))))
+       seq))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -132,7 +131,7 @@
          (map-find #'intform (cdr expres)))
 
         ((or (eq (caar expres) '%log)
-             (arcp (caar expres)))
+            (arcp (caar expres)))
          (cond
            ;; Method 9: Rational function times a log or arctric function
 	   ((setq arg (m2 exp
@@ -148,11 +147,11 @@
 	         
 	         ;; Method 10: Rational function times log(b*x+a)
 		 ((and (eq (caar expres) '%log)
-		       (setq z (m2-b*x+a (cadr expres)))
-		       (setq y (m2 exp
-				   '((mtimes)
-				     ((coefftt) (c rat8))
-				     ((coefftt) (d elem))))))
+                     (setq z (m2-b*x+a (cadr expres)))
+                     (setq y (m2 exp
+                                 '((mtimes)
+                                   ((coefftt) (c rat8))
+                                   ((coefftt) (d elem))))))
 		  (return
 		    (let ((a (cdr (assoc 'a z :test #'eq)))
 			  (b (cdr (assoc 'b z :test #'eq)))
@@ -178,27 +177,27 @@
 			 nil)
 			newvar)))))
 		 (t (return nil)))))))
-      
-      ;; We have a special function with an integral on the property list.
-      ;; After the integral property was defined for the trig functions,
-      ;; in rev 1.52, need to exclude trig functions here.
-      ((and (not (atom (car expres)))
+        
+        ;; We have a special function with an integral on the property list.
+        ;; After the integral property was defined for the trig functions,
+        ;; in rev 1.52, need to exclude trig functions here.
+        ((and (not (atom (car expres)))
             (not (optrig (caar expres)))
 	    (not (eq (caar expres) 'mexpt))
 	    (get (caar expres) 'integral))
-       (when *debug-integrate*
-	 (format t "~&INTFORM: found 'INTEGRAL on property list~%"))
-       (cond
-	 ((setq arg
-	    (m2 exp `((mtimes) ((,(caar expres)) (b rat8)) ((coefftt) (c rat8prime)))))
-	  ;; A rational function times the special function.
-	  ;; Integrate with the method integration-by-parts.
-	  (partial-integration (cons (cons 'a expres) arg) var))
-	 ;; The method of integration-by-parts can not be applied.
-	 ;; Maxima tries to get a clue for the argument of the function which
-	 ;; allows a substitution for the argument.
-	 ((intform (cadr expres)))
-	 (t nil)))
+         (when *debug-integrate*
+           (format t "~&INTFORM: found 'INTEGRAL on property list~%"))
+         (cond
+           ((setq arg
+                  (m2 exp `((mtimes) ((,(caar expres)) (b rat8)) ((coefftt) (c rat8prime)))))
+            ;; A rational function times the special function.
+            ;; Integrate with the method integration-by-parts.
+            (partial-integration (cons (cons 'a expres) arg) var))
+           ;; The method of integration-by-parts can not be applied.
+           ;; Maxima tries to get a clue for the argument of the function which
+           ;; allows a substitution for the argument.
+           ((intform (cadr expres)))
+           (t nil)))
         
         ;; Method 6: Elementary function of trigonometric functions
 	((optrig (caar expres))
@@ -206,12 +205,12 @@
 		(intform (cadr expres)))
 	       (t
 		(prog2
-		  (setq *powerl* t)
-		  (monstertrig exp var (cadr expres))))))
+                    (setq *powerl* t)
+                    (monstertrig exp var (cadr expres))))))
         
 	((and (eq (caar expres) '%derivative)
-	      (eq (caar exp) (caar expres))
-	      (checkderiv exp)))
+            (eq (caar exp) (caar expres))
+            (checkderiv exp)))
         
         ;; Stop intform if we have not a power function.
         ((not (eq (caar expres) 'mexpt)) nil)
@@ -225,7 +224,7 @@
                 (superexpt exp var (cadr expres) w))
                ((intform (caddr expres)))
                ((and (eq '$%e (cadr expres))
-                     (isinop (caddr expres) '%log))
+                   (isinop (caddr expres) '%log))
                 ;; Found something like exp(r*log(x))
                 (let* (($%e_to_numlog t)
                        ($radexpand nil) ; do not simplify sqrt(x^2) -> abs(x)
@@ -240,11 +239,11 @@
         
         ;; Method 3: Substitution for a rational root
 	((and (setq w (m2-ratrootform (cadr expres))) ; e*(a*x+b) / (c*x+d)
-	      (denomfind (caddr expres))) ; expon is ratnum
+            (denomfind (caddr expres))) ; expon is ratnum
          (or (progn
-               (setq *powerl* t)
-               (ratroot exp var (cadr expres) w))
-             (inte exp var)))
+              (setq *powerl* t)
+              (ratroot exp var (cadr expres) w))
+            (inte exp var)))
         
         ;; Method 4: Binomial - Chebyschev
 	((not (integerp1 (caddr expres))) ; 2*exponent not integer
@@ -271,8 +270,8 @@
 	((not (m2 (setq w ($expand (cadr expres)))
                 (cadr expres)))
 	 (prog2
-	   (setq exp (maxima-substitute w (cadr expres) exp))
-	   (intform (simplify (list '(mexpt) w (caddr expres))))))
+             (setq exp (maxima-substitute w (cadr expres) exp))
+             (intform (simplify (list '(mexpt) w (caddr expres))))))
         
         ;; Factor expres.
         ;; Substitute the factored factor into the integrand and try again.
