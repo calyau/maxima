@@ -273,6 +273,18 @@ random_gumbel(80,1/6,3);
 
 /* binomial distribution */
 
+pdf_binomial(x,n,1);
+kron_delta(n,x);
+
+pdf_binomial(x,n,0);
+kron_delta(0,x);
+
+pdf_binomial(0,0,0);
+1;
+
+pdf_binomial(0,0,1);
+1;
+
 cdf_binomial(3.2,6,1/8);
 130683/131072;
 
