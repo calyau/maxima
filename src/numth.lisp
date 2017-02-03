@@ -16,7 +16,7 @@
 
 (macsyma-module numth)
 
-(declare-top (special $intfaclim))
+(declare-top (special $intfaclim modulus))
 
 (load-macsyma-macros rzmac)
 
@@ -115,8 +115,6 @@
               (let ((r (abs a)))
                 (setf a (rem b r))
                 (setf b r)))))))
-
-(declare-top (special modulus $intfaclim))
 
 (defvar *incl* (let ((l (list 2 4))) (nconc l l)))
 
