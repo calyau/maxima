@@ -63,39 +63,58 @@
                ((null factors) total)))))
     (t (list '($totient) n))))
 
-
 ;;; JACOBI symbol and Gaussian factoring
 
-(defun rtzerl2 (n)
-  (cond ((zerop n) 0)
-	(t (do ((n n (ash n -2)))
-	       ((not (zerop (haipart n -2))) n)))))
+;; $jacobi/jacobi implement the Kronecker-Jacobi symbol, a light
+;; generalization of the Legendre/Jacobi symbols.
+;; (for a prime b, $jacobi(a b) is the Legendre symbol).
+;;
+;; The implementation follows algorithm 1.4.10 in 'A Course in
+;; Computational Algebraic Number Theory' by H. Cohen
 
-(defmfun $jacobi (p q)
-  (cond ((null (and (integerp p) (integerp q)))
-	 (list '($jacobi) p q))
-	((zerop q) (merror (intl:gettext "jacobi: zero denominator.")))
-	((minusp q) ($jacobi p (- q)))
-	((and (evenp (setq q (rtzerl2 q)))
-	      (setq q (ash q -1))
-	      (evenp p)) 0)
-	((equal q 1) 1)
-	((minusp (setq p (rem p q)))
-	 (jacobi (rtzerl2 (+ p q)) q))
-	(t (jacobi (rtzerl2 p) q))))
+(defun $jacobi (a b)
+  (if (and (integerp a) (integerp b))
+      (jacobi a b)
+      `(($jacobi) ,a ,b)))
 
-(defun jacobi (p q)
-  (do ((r1 p (rtzerl2 (rem r2 r1)))
-       (r2 q r1)
-       (bit2 (haipart q -2))
-       (odd 0 (boole boole-xor odd (boole boole-and bit2 (setq bit2 (haipart r1 -2))))))
-      ((zerop r1) 0)
-    (cond ((evenp r1)
-	   (setq r1 (ash r1 -1))
-	   (setq odd (boole boole-xor odd (ash (expt (haipart r2 -4) 2) -2)))))
-    (and (equal r1 1) (return (expt -1 (boole  boole-and 1 (ash odd -1)))))))
+(defun jacobi (a b)
+  (declare (integer a b) (optimize (speed 3)))
+  (cond ((zerop b)
+         (if (= 1 (abs a)) 1 0))
+        ((and (evenp a) (evenp b))
+         0)
+        (t
+         (let ((k 1)
+               (tab2 (make-array 8 :element-type '(integer -1 1)
+                                   :initial-contents #(0 1 0 -1 0 -1 0 1))))
+           (declare (type (integer -1 1) k))
 
+           (loop for v fixnum = 0 then (1+ v) ;remove 2's from b
+                 while (evenp b) do (setf b (ash b -1))
+                 finally (when (oddp v)
+                           (setf k (aref tab2 (logand a 7))))) ; (-1)^(a^2-1)/8
+           
+           (when (minusp b)
+             (setf b (- b))
+             (when (minusp a)
+               (setf k (- k))))
 
+           (loop
+              (when (zerop a)
+                (return-from jacobi (if (> b 1) 0 k)))
+
+              (loop for v fixnum = 0 then (1+ v)
+                    while (evenp a) do (setf a (ash a -1))
+                    finally (when (oddp v)
+                              (when (minusp (aref tab2 (logand b 7))); (-1)^(b^2-1)/8
+                                (setf k (- k)))))
+
+              (when (plusp (logand a b 2)) ;compute (-1)^(a-1)(b-1)/4
+                (setf k (- k)))
+
+              (let ((r (abs a)))
+                (setf a (rem b r))
+                (setf b r)))))))
 
 (declare-top (special modulus $intfaclim))
 
