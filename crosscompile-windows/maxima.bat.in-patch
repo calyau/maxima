@@ -1,0 +1,16 @@
+diff --git a/src/maxima.bat.in b/src/maxima.bat.in
+index 2fa6cc6..bd78208 100755
+--- a/src/maxima.bat.in
++++ b/src/maxima.bat.in
+@@ -144,6 +144,11 @@ if "%MAXIMA_SIGNALS_THREAD%" == "" (
+ ) else ( 
+   set start_maxima="(progn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
+ )
++
++rem only on 64bit: if using sbcl (and the user does not specify anything else(!))
++rem set the dynamic-space-size to 2GB so that load("lapack") will work.
++if "%lisp_options%"=="" set lisp_options=--dynamic-space-size^ 2000
++
+ sbcl.exe --core "%maxima_imagesdir%\binary-sbcl\maxima.core" --noinform %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options %*
+ goto end
+ :dosbcl_exec
