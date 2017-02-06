@@ -1,6 +1,7 @@
 /* ------------------------------------------------------------------ */
 /* SARAG - Linear Algebra                                             */
-/* by Fabrizio Caruso                                                 */
+/* by Fabrizio Caruso   modified by Alexandre Le Meur and Marie-Françoise Roy                           */
+
 
 /* It counts the sign change of a determinant after */
 /* i consecutive row changes */
@@ -16,7 +17,7 @@ exchange(m,i,j) :=
   m[j] : aux,
  
   return(m)
-  );
+  ); /* end proc */
 
 exchangeCol(m,i,j) :=
    block([aux,size,k],
@@ -26,9 +27,9 @@ exchangeCol(m,i,j) :=
       aux : m[k,i],
       m[k,i] : m[k,j],
       m[k,j] : aux
-      ),
+      ), /* end for */
    return(m)
-   );
+   ); /* end proc */
 
 
 
@@ -39,7 +40,7 @@ fixColumns(m,colEx) :=
    for i : 1 thru colEx do
      exchangeCols(m,colEx[i][1],colEx[i][2]),
    return(m)
-   ); 
+   );  /* end proc */
 
 
 removeElements(lst,blackList) :=
@@ -115,13 +116,13 @@ gaussElimArray(m) :=
       (
       zeroRows : endcons(k,zeroRows),
       offset : offset + 1
-      ),
+      ), /* end if */
    
     if not(j=r+1) and not(flag) then
       (
       colExList : endcons([r+1-1,j-1],colExList),
       exchangeCol(g,r+1-1,j-1)
-      ),    
+      ),  /* end if */  
     if not(flag) then
       (
       for i : k+2 thru nRows do
@@ -131,13 +132,13 @@ gaussElimArray(m) :=
           g[i-1,j-1] : 
                 g[i-1,j-1] - g[i-1,r+1-1]*
                              g[k+1-1,j-1]/g[k+1-1,r+1-1]
-          ),
+          ), /* end for */
      
         g[i-1,r+1-1] : 0
 
-        ),
+        ), /* end for */
       r : r + 1
-      ),
+      ), /* end if */
     k : k +1
     ), /* end main while loop */
 
@@ -147,7 +148,7 @@ gaussElimArray(m) :=
      zeroRows : append(zeroRows, makelist(i,i,k,nRows-1)),
 
   return([g,colExList,zeroRows])
-  );
+  ); /* end proc */
 
 
 gaussElimMod(m,gmod) := 
@@ -207,13 +208,13 @@ gaussElimWithDivisionModArray(m,gmod) :=
       (
       zeroRows : endcons(k,zeroRows),
       offset : offset + 1
-      ),
+      ), /* end if */
    
     if not(j=r+1) and not(flag) then
       (
       colExList : endcons([r+1-1,j-1],colExList),
       exchangeCol(g,r+1-1,j-1)
-      ),    
+      ),    /* end if */
     if not(flag) then
       (
       for i : k+2 thru nRows do
@@ -227,13 +228,13 @@ gaussElimWithDivisionModArray(m,gmod) :=
           g[i-1,j-1] : 
                 ratexpand(g[i-1,j-1] - g[i-1,r+1-1]*g[k+1-1,j-1]*modInv)
 
-          ),
+          ), /* end for */
      
         g[i-1,r+1-1] : 0
 
-        ),
+        ), /* end for */
       r : r + 1
-      ),
+      ), /* end if */
     k : k +1
     ), /* end main while loop */
 
@@ -244,7 +245,7 @@ gaussElimWithDivisionModArray(m,gmod) :=
 
   modulus : false, /* it resets the computation over the rationals */
   return([g,colExList,zeroRows])
-  );
+  ); /* end proc */
 
 
 gaussElimWithoutDivisionMod(m,gmod) :=
@@ -295,13 +296,13 @@ gaussElimWithoutDivisionModArray(m,gmod) :=
       (
       zeroRows : endcons(k,zeroRows),
       offset : offset + 1
-      ),
+      ), /* end if */
    
     if not(j=r+1) and not(flag) then
       (
       colExList : endcons([r+1-1,j-1],colExList),
       exchangeCol(g,r+1-1,j-1)
-      ),    
+      ),    /* end if */
     if not(flag) then
       (
       for i : k+2 thru nRows do
@@ -316,13 +317,13 @@ gaussElimWithoutDivisionModArray(m,gmod) :=
           g[i-1,j-1] : 
                 ratexpand(g[k+1-1,r+1-1]*g[i-1,j-1] - g[i-1,r+1-1]*g[k+1-1,j-1])
 
-          ),
+          ), /* end for */
      
         g[i-1,r+1-1] : 0
 
-        ),
+        ), /* end for */
       r : r + 1
-      ),
+      ), /* end if */
     k : k +1
     ), /* end main while loop */
 
@@ -333,7 +334,7 @@ gaussElimWithoutDivisionModArray(m,gmod) :=
 
   modulus : false, /* it resets the computation over the rationals */
   return([g,colExList,zeroRows])
-  );
+  ); /* end proc */
 
 echelonMod(m,gmod) := 
   echelonWithDivisionMod(m,gmod);
@@ -384,19 +385,19 @@ echelonWithDivisionModArray(m,gmod) :=
          flag : false
       else  
          j : j+1
-      ),
+      ), /* end while */
 
     if flag then 
       (
       zeroRows : endcons(k,zeroRows),
       offset : offset + 1
-      ),
+      ), /* end if */
    
     if not(j=r+1) and not(flag) then
       (
       colExList : endcons([r+1-1,j-1],colExList),
       exchangeCol(g,r+1-1,j-1)
-      ),    
+      ),  /* end if */  
     if not(flag) then
       (
 
@@ -412,11 +413,11 @@ echelonWithDivisionModArray(m,gmod) :=
           g[i-1,j-1] : 
                 ratexpand(g[i-1,j-1] - g[i-1,r+1-1]*g[k+1-1,j-1]*modInv)
 
-          ),
+          ), /* end for */
      
         g[i-1,r+1-1] : 0
 
-        ),
+        ), /* end for */
 
 
       for i : k+2 thru nRows do
@@ -431,13 +432,13 @@ echelonWithDivisionModArray(m,gmod) :=
           g[i-1,j-1] : 
                 ratexpand(g[i-1,j-1] - g[i-1,r+1-1]*g[k+1-1,j-1]*modInv)
 
-          ),
+          ), /* end for */
      
         g[i-1,r+1-1] : 0
 
-        ),
+        ), /* end for */
       r : r + 1
-      ),
+      ), /* end if */
     k : k +1
     ), /* end main while loop */
 
@@ -448,7 +449,7 @@ echelonWithDivisionModArray(m,gmod) :=
 
   modulus : false, /* it resets the computation over the rationals */
   return([g,colExList,zeroRows])
-  );
+  ); /* end proc */
 
 
 /* It computes the determinant by Gauss elimination */
@@ -456,7 +457,7 @@ echelonWithDivisionModArray(m,gmod) :=
 gaussDet(m) :=
   block([
          g : make_array('any),
-         k,i,j,flag,colEx],
+         k,i,j,flag,colEx,size],
  
   size : length(m), 
   g : list2array(m),      
@@ -487,17 +488,17 @@ gaussDet(m) :=
       /* column exchange required */
       colEx : colEx+1,
       exchangeCol(g,k+1-1,j-1)
-      ), 
+      ), /* end if */
     /* elimination */
     for i : k+2 thru size do
       (
       for j : k+2 thru size do
         g[i-1,j-1] : g[i-1,j-1] - g[i-1,k+1-1]*g[k+1-1,j-1]/g[k+1-1,k+1-1],
       g[i-1,k+1-1] : 0
-      )
-    ),
-  return((-1)^colEx * product(g[i,i],i,0,size-1))
-  );
+      ) /* end for */
+    ), /* end for */
+  return(expand((-1)^colEx * product(g[i,i],i,0,size-1)))
+  ); /* end proc */
 
 
 
@@ -506,7 +507,7 @@ gaussDet(m) :=
 bareissDet(m) :=
   block([
          g : make_array('any),
-         k,i,j,flag,colEx,oldPivot], 
+         k,i,j,flag,colEx,oldPivot, size], 
   size : length(m),
   g : list2array(m),     
   colEx : 0,  
@@ -534,7 +535,7 @@ bareissDet(m) :=
       /* column exchange required */
       colEx : colEx+1,
       exchangeCol(g,k+1-1,j-1)
-      ),
+      ), /* end if */
     /* elimination */
     for i : k+2 thru size do /* column loop */
       (
@@ -545,13 +546,13 @@ bareissDet(m) :=
         else
           oldPivot : g[k-1,k-1],
         g[i-1,j-1] : (g[k+1-1,k+1-1]*g[i-1,j-1]-g[i-1,k+1-1]*g[k+1-1,j-1])/oldPivot
-        ),
+        ), /* end for */
      
       g[i-1,k+1-1] : 0      
-      )
-    ),
-  return((-1)^colEx * g[size-1,size-1])
-  );
+      ) /* end for */
+    ), /* end if */
+  return(expand((-1)^colEx * g[size-1,size-1]))
+  ); /* end proc */
 
 
 princSubMat(m,ord) := 
@@ -561,7 +562,7 @@ princSubMat(m,ord) :=
     for j : 0 thru ord-1 do
       res[i,j] : m[i,j],
   return(res)
-  );
+  ); /* end proc */
 
 extractCol(m,j,size) :=
   block([res:make_array('any,size),k],
@@ -570,7 +571,7 @@ extractCol(m,j,size) :=
     res[k] : m[k,j],
 
   return(res)
-  );
+  ); /* end proc */
 
 extractRow(m,i,size) :=
   block([res:make_array('any,size),k],
@@ -579,7 +580,7 @@ extractRow(m,i,size) :=
     res[k] : m[i,k],
 
   return(res)
-  );
+  ); /* end proc */
 
 
 /* Linear algebra support routines */
@@ -593,14 +594,14 @@ solveSys(mat,vec,solver) :=
     (
     newEq : sum(mat[i][j]*unk[j],j,1,nCols)-vec[i]=0,
     sys : endcons(newEq,sys)
-    ),
+    ), /* end for */
   sol : solver(sys,makelist(unk[i],i,1,nCols)),
 
   if sol = [] then
     return([])
   else
     return(map(second,sol))
-  );
+  ); /* end proc */
 
 
 
@@ -621,9 +622,9 @@ newtonArrFromPoly(pol,var,len) :=
                      sum(ratcoeff(pol,var,degPol-j)*
                      newtonRes[i-j],j,1,
                      min(i,degPol))
-      ),
+      ), /* end for */
     return(newtonRes)
-    );
+    ); /* end proc */
 
 
 polyFromNewton(ns,var) :=
@@ -644,10 +645,11 @@ getCoeffFromNewtonArray(ns) :=
 
 
    return(resCoeff)
-   );
+   ); /* end proc */
 
 
-
+getCoeffFromNewtonList(ns) :=
+  array2singleList(getCoeffFromNewton(ns));
 
 matrixProd(a,b) :=
   array2list(matrixProdArray(list2array(a),list2array(b)));
@@ -665,7 +667,7 @@ matrixProdArray(a,b) :=
     print("matrixProd) a : ", a),
     print("matrixProd) b : ", b),
     return(false)
-    )
+    ) /* end if */
   else
     (
   l : second(third(arrayinfo(b)))+1,
@@ -679,8 +681,8 @@ matrixProdArray(a,b) :=
 
 
   return(res)
-    )
-  );
+    ) /* end else */
+  ); /* end proc */
 
 matrixTrace(A) :=
   block([ALen,i,res],
@@ -690,7 +692,7 @@ matrixTrace(A) :=
     for i : 1 thru ALen do
       res : res + A[i-1,i-1],
     return(res)
-    );
+    ); /* end proc */
 
 discreteSquareRoot(n) :=
  block([i,res],
@@ -705,20 +707,15 @@ discreteSquareRoot(n) :=
  for i : 1 thru comp_ceiling(bfloat(n/2)) do
    if i*i >= n then
      return(i)
- );
+ ); /* end proc */
 
 
 babyGiantCharPol(A,var) :=
-  babyGiantCharPolVerbose(A,var,DEFAULT_VERBOSITY);
+  babyGiantCharPolAux(list2array(A),var);
 
-
-
-babyGiantCharPolVerbose(A,var,verbosity) :=
-  babyGiantCharPolAuxVerbose(list2array(A),var,verbosity);
-
-babyGiantCharPolAuxVerbose(A,var,verbosity) :=
+babyGiantCharPolAux(A,var) :=
   list2poly(array2singleList(getCoeffFromNewtonArray(
-         getNewtonFromMatrixVerbose(A,verbosity))),
+         getNewtonFromMatrix(A))),
         var);  
 
 
@@ -733,25 +730,14 @@ diagonal(elem,len) :=
     i,1,len);
 
 gaussCharPol(A,var) :=
-  gaussCharPolVerbose(A,var,DEFAULT_VERBOSITY);
-
-gaussCharPolVerbose(A,var,verbosity) :=
   expandIf(gaussDet(matrixMinus(A,diagonal(var,length(A)))));
 
 bareissCharPol(A,var) :=
-  bareissCharPolVerbose(A,var,DEFAULT_VERBOSITY);
-
-bareissCharPolVerbose(A,var,verbosity) :=
   expandIf(bareissDet(matrixMinus(A,diagonal(var,length(A)))));
-
-
-
-getNewtonFromMatrix(A) :=
-  getNewtonFromMatrixVerbose(A,DEFAULT_VERBOSITY);
 
 /* Input : a bidimensional array */
 /* Output : the Newton sums of the corresponding characteristic polynomial */
-getNewtonFromMatrixVerbose(A,verbosity) :=
+getNewtonFromMatrix(A) :=
    block([i,j,k,r,n,dsr,
           B:make_array('any),G:make_array('any),ss:make_array('any)],
 
@@ -759,9 +745,6 @@ getNewtonFromMatrixVerbose(A,verbosity) :=
    ss : make_array('any,n +1 /* +1 */),
    
    dsr : discreteSquareRoot(n),
-   if verbosity>=NORMAL then
-     print("getNewtonFromMatrix) discrete square root: ", dsr),   
-
    if dsr*dsr = n then 
      r : dsr+1
    else
@@ -777,11 +760,9 @@ getNewtonFromMatrixVerbose(A,verbosity) :=
    for i : 1 thru r-2 do
      (
      B[i+1 -1] : matrixProdArray(A,B[i -1]),
-     ss[i+1] : matrixTrace(B[i+1 -1]),
+     ss[i+1] : matrixTrace(B[i+1 -1])
 
-     if verbosity>= NORMAL then
-        print("getNewtonFromMatrix) ss[",i+1,"] : ", ss[i+1])
-     ),  
+     ),  /* end for */
    G : make_array('any,r-1),
    for j : 1 thru r-1 do
      G[j-1] : make_array('any,n,r),
@@ -794,22 +775,19 @@ getNewtonFromMatrixVerbose(A,verbosity) :=
      if (j+1)*r <= n then
        (
        G[j+1 -1] : matrixProdArray(G[1-1],G[j -1]),
-       ss[(j+1)*r] : matrixTrace(G[j+1 -1]),
-
-       if verbosity>= NORMAL then
-          print("getNewtonFromMatrix) ss[",(j+1)*r,"] : ", ss[(j+1)*r])
-       )
-     ),   
+       ss[(j+1)*r] : matrixTrace(G[j+1 -1])
+       ) /* end if */
+     ),   /* end for */
    /* Newton's sums */
    for i : 1 thru r-1 do
       for j : 1 thru r-1 do
          (
          if j*r+i <= n then 
            ss[j*r+i] : matrixTrace(matrixProdArray(B[i -1],G[j -1]))
-         ),
+         ), /* end for */
 
 return(ss)
-);
+); /* end proc */
 
 companion(pol,var) :=
   array2list(companion(pol,var));
@@ -834,9 +812,9 @@ companionArray(pol,var) :=
       for j : i thru n-2 do
         m[i,j] : 0,
       m[i,n-1] : -coeff(pol,var,i)
-      ),
+      ), /* end for */
     return(m)
-    );
+    ); /* end proc */
 
 
 /* This should be changed with the algorithm shown in Proposition 4.7 */
@@ -858,33 +836,21 @@ newtonArr2Poly(newtonArr) :=
      for j : 1 thru i do
        res[degP-i] : sum(res[degP-i+j]*newtonArr[j],j,1,i)*(-1/i)
        
-     ),
+     ), /* end for */
    return(res)
-   );
-     
-
-descartesSignature(mtx) :=
-  descartesSignatureVerbose(mtx,DEFAULT_VERBOSITY);
-
+   ); /* end proc */
 
 /* Descartes Signature */
-descartesSignatureVerbose(mtx,verbosity) :=
+descartesSignature(mtx) :=
   block([charP,x,revCoeffList,charPDeg,i],
     charP : babyGiantCharPol(mtx,x), /* DEBUGGING */
     charPDeg : length(mtx),
     revCoeffList :  reverse(poly2list(charP,x)),
-
-    if verbosity>= NORMAL then
-      (
-      print("charP : ", charP),
-      print("revCoeffList : ", revCoeffList),
-      print("signed coeff list : ", makelist((-1)^(charPDeg-i)*revCoeffList[i+1],i,0,charPDeg))
-      ),
 
     return(signChanges(revCoeffList)-
            signChanges(
              makelist((-1)^(charPDeg-i)*revCoeffList[i+1],i,0,
                                                         charPDeg)))
 
-    );
+    ); /* end proc */
     

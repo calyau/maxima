@@ -1,0 +1,1076 @@
+/* files by Mathieu Kohli summer 2014*/
+
+
+/* New functions where we write I as a decreasing list, therefore reversing the rows in Info and Sigma for example. The first function allows us to reverse the rows of Sigma*/
+
+Reverserows(Sigma):=
+  if equal(Sigma,[]) then
+    Sigma
+  else append([reverse(first(Sigma))],Reverserows(rest(Sigma,1)))
+;
+
+cut_Sigma1(revSigma,temprow):=
+  block([templ_0,templ_1,templ_s],
+  if equal(revSigma,[]) then
+    [[],[],[]]
+  elseif equal(first(revSigma),[]) then
+    [[],[],[]]
+  elseif equal(rest(revSigma,1),[])  then
+    [[],[],[temprow]]
+  else
+    (if equal(rest(first(revSigma)),rest(second(revSigma))) then
+      ([templ_0,templ_1,templ_s] : cut_Sigma1(rest(revSigma,2),temprow+2),
+      [append([temprow],templ_0),append([temprow+1],templ_1),templ_s])
+    else
+      ([templ_0,templ_1,templ_s] : cut_Sigma1(rest(revSigma,1),temprow+1),
+      [templ_0,templ_1,append([temprow],templ_s)])
+    )
+  );
+
+cut_Sigma(revSigma):=cut_Sigma1(revSigma,1);
+
+extractXiXiprime1(temprevSigma,temprow,templ_0,templ_1,templ_s):=
+  block([tempXiprime,tempXi],
+  if equal(temprevSigma,[]) then
+    [[],[]]
+  elseif notequal(templ_0,[]) and equal(first(templ_0),temprow) then
+    ([tempXiprime,tempXi] : extractXiXiprime1(rest(temprevSigma,1),temprow+1,rest(templ_0,1),templ_1,templ_s),
+    [tempXiprime,append([rest(first(temprevSigma),1)],tempXi)] )
+  elseif notequal(templ_s,[]) and equal(first(templ_s),temprow) then
+    ([tempXiprime,tempXi] : extractXiXiprime1(rest(temprevSigma,1),temprow+1,templ_0,templ_1,rest(templ_s,1)),
+    [tempXiprime,append([rest(first(temprevSigma),1)],tempXi)] )
+  else
+    ([tempXiprime,tempXi] : extractXiXiprime1(rest(temprevSigma,1),temprow+1,templ_0,rest(templ_1,1),templ_s),
+    [append([rest(first(temprevSigma),1)],tempXiprime),tempXi]) )
+;
+
+extractXiXiprime(revSigma,l_0,l_1,l_s):=extractXiXiprime1(revSigma,1,l_0,l_1,l_s);
+
+assembleInfo1(tempInfoXi,tempInfoXiprime,temprow,templ_0,templ_1,templ_s):=
+  block([],
+  if notequal(templ_0,[]) and equal(first(templ_0),temprow) then
+    (append([append([0],first(tempInfoXi))],assembleInfo1(rest(tempInfoXi,1),tempInfoXiprime,temprow+1,rest(templ_0,1),templ_1,templ_s))
+    )
+  elseif notequal(templ_s,[]) and equal(first(templ_s),temprow) then
+    (append([append([s],first(tempInfoXi))],assembleInfo1(rest(tempInfoXi,1),tempInfoXiprime,temprow+1,templ_0,templ_1,rest(templ_s,1)))
+    )
+  elseif notequal(templ_1,[]) then
+    (append([append([1],first(tempInfoXiprime))],assembleInfo1(tempInfoXi,rest(tempInfoXiprime,1),temprow+1,templ_0,rest(templ_1,1),templ_s))  
+    )
+  else []
+  );
+  
+
+revInfo(revSigma,I):=
+  if equal(I,[]) then
+    revSigma
+  else
+    block([l_0,l_1,l_s,Xi,Xiprime],
+    [l_0,l_1,l_s] : cut_Sigma(revSigma),
+    [Xiprime,Xi] : extractXiXiprime(revSigma,l_0,l_1,l_s),
+    assembleInfo1(revInfo(Xi,rest(I,1)),revInfo(Xiprime,rest(I,1)),1,l_0,l_1,l_s)
+  );
+
+adaptedfamilyrow(rowrevInfo,I):=
+  if equal(rowrevInfo,[]) then
+    []
+  elseif first(rowrevInfo)=0 or first(rowrevInfo)=s then
+    adaptedfamilyrow(rest(rowrevInfo,1),rest(I,1))
+  else
+    append([first(I)],adaptedfamilyrow(rest(rowrevInfo,1),rest(I,1)))
+  ;
+
+adapted_family(revInfo,I):=
+  if equal(revInfo,[]) then
+    []
+  else append([adaptedfamilyrow(first(revInfo),I)],adapted_family(rest(revInfo,1),I)) ;
+
+scalarproduct(v,w):=
+  if equal(v,[]) then 0
+  else first(v)*first(w)+scalarproduct(rest(v,1),rest(w,1));
+
+evaluation(Mat,vect):=
+  if Mat=[] then []
+  else append([scalarproduct(first(Mat),vect)],evaluation(rest(Mat,1),vect));
+
+decreasinginsert(a,decreasinglist):=
+  if equal(decreasinglist,[]) then [a]
+  elseif a>first(decreasinglist) then
+    append([a],decreasinglist)
+  elseif equal(a,first(decreasinglist)) then
+    decreasinglist
+  else 
+    append([first(decreasinglist)],decreasinginsert(a,rest(decreasinglist,1))) ;
+
+comp(Ada):=
+  if equal(Ada,[]) or equal(Ada,[[]]) then []
+  elseif equal(first(Ada),[]) then
+    comp(rest(Ada,1))
+  else decreasinginsert(first(first(Ada)),comp(append([rest(first(Ada),1)],rest(Ada,1)))) ;
+
+rowcompression(row,comp,I):=
+  if equal(comp,[]) then []
+  elseif equal(first(comp),first(I)) then
+    append([first(row)],rowcompression(rest(row,1),rest(comp,1),rest(I,1)))
+  else
+    rowcompression(rest(row,1),comp,rest(I,1)) ;
+
+Matrixcomp(Mat,comp,I):=
+  if equal(Mat,[]) then []
+  else append([rowcompression(first(Mat),comp,I)],Matrixcomp(rest(Mat,1),comp,I)) ;
+
+power(znzcondition,i,I):=
+  if equal(i,first(I)) then first(znzcondition)
+  else power(rest(znzcondition,1),i,rest(I,1)) ;
+
+powerlist(znzcondition,J,I):=
+  if equal(J,[]) then 1
+  else power(znzcondition,first(J),I)*powerlist(znzcondition,rest(J,1),I) ;
+
+Sigmatopowerlist(revSigma,J,I):=
+  if revSigma=[] then []
+  else
+    append([powerlist(first(revSigma),J,I)],Sigmatopowerlist(rest(revSigma,1),J,I)) ;
+
+/*the next matrix we are about to define is NOT reversed if we compare it to what is written in the article*/
+
+Mat(A,revSigma,I):=
+  if equal(A,[]) then []
+  else
+    append([Sigmatopowerlist(revSigma,first(A),I)],Mat(rest(A,1),revSigma,I));
+
+/*Let's notice that in the case where A equals Ada, Mat(Ada,revSigma,I)=Mat(Ada,Matrixcomp(revSigma,comp,I),comp), which is quicker to compute*/
+
+extractlines1(Mat,lines,templine):=
+  block([tempresult,temprest],
+  if equal(lines,[]) then [[],Mat]
+  elseif equal(first(lines),templine) then
+    ([tempresult,temprest] : extractlines1(rest(Mat,1),rest(lines,1),templine+1),
+    [append([first(Mat)],tempresult),temprest]
+    )
+  else
+    ([tempresult,temprest] : extractlines1(rest(Mat,1),lines,templine+1),
+    [tempresult,append([first(Mat)],temprest)]
+    )
+  );
+
+extractlines(Mat,lines):=extractlines1(Mat,lines,1);
+
+extractcolumns(Mat,columns):=
+  block([tempresult,temprest,columnsfirstrow,restfirstrow],
+  if equal(Mat,[]) then [[],[]]
+  else
+    ([tempresult,temprest] : extractcolumns(rest(Mat,1),columns),
+    [columnsfirstrow,restfirstrow] : extractlines(first(Mat),columns),
+    [append([columnsfirstrow],tempresult),append([restfirstrow],temprest)]
+    )
+  );
+
+assemblevector1(partnb1,partnb2,indexpartnb1,tempindex):=
+  if equal(indexpartnb1,[]) then partnb2
+  elseif equal(tempindex,first(indexpartnb1)) then
+    append([first(partnb1)],assemblevector1(rest(partnb1,1),partnb2,rest(indexpartnb1,1),tempindex+1))
+  else append([first(partnb2)],assemblevector1(partnb1,rest(partnb2,1),indexpartnb1,tempindex+1)) ;
+
+assemblevector(partnb1,partnb2,indexpartnb1):=assemblevector1(partnb1,partnb2,indexpartnb1,1);
+
+extractinfo1(revInfo,tempindex):=
+  block([l0,l1,ls,l0Uls,InfoXi,InfoXiprime,card0,cards],
+  if equal(revInfo,[]) or equal(first(revInfo),[]) then [[],[],[],[],[],[],0,0]
+  elseif first(first(revInfo))=s then
+    ([l0,l1,ls,l0Uls,InfoXi,InfoXiprime,card0,cards] : extractinfo1(rest(revInfo,1),tempindex+1),
+    [l0,l1,append([tempindex],ls),append([tempindex],l0Uls),append([rest(first(revInfo),1)],InfoXi),InfoXiprime,card0,cards+1]
+    )
+  elseif equal(first(first(revInfo)),0) then
+    ([l0,l1,ls,l0Uls,InfoXi,InfoXiprime,card0,cards] : extractinfo1(rest(revInfo,1),tempindex+1),
+    [append([tempindex],l0),l1,ls,append([tempindex],l0Uls),append([rest(first(revInfo),1)],InfoXi),InfoXiprime,card0+1,cards]
+    )
+  else 
+    ([l0,l1,ls,l0Uls,InfoXi,InfoXiprime,card0,cards] : extractinfo1(rest(revInfo,1),tempindex+1),
+    [l0,append([tempindex],l1),ls,l0Uls,InfoXi,append([rest(first(revInfo),1)],InfoXiprime),card0,cards]
+    )
+  );
+
+extractinfo(revInfo):=extractinfo1(revInfo,1);
+
+substract(v,w):=
+  if w=[] then v
+  else append([first(v)-first(w)],substract(rest(v,1),rest(w,1))) ;
+
+assemble1(cl0,cl1,cls,temprow,templ_0,templ_1,templ_s):=
+  block([],
+  if notequal(templ_0,[]) and equal(first(templ_0),temprow) then
+    (append([first(cl0)],assemble1(rest(cl0,1),cl1,cls,temprow+1,rest(templ_0,1),templ_1,templ_s))
+    )
+  elseif notequal(templ_s,[]) and equal(first(templ_s),temprow) then
+    (append([first(cls)],assemble1(cl0,cl1,rest(cls,1),temprow+1,templ_0,templ_1,rest(templ_s,1)))
+    )
+  elseif notequal(templ_1,[]) then
+    (append([first(cl1)],assemble1(cl0,rest(cl1,1),cls,temprow+1,templ_0,rest(templ_1,1),templ_s))  
+    )
+  else []
+  );
+
+assemble(cl0,cl1,cls,templ_0,templ_1,templ_s):=assemble1(cl0,cl1,cls,1,templ_0,templ_1,templ_s);
+
+linear_solving(Mat,I,revInfo,v):=
+  block([l0,l1,ls,l0Uls,InfoXi,InfoXiprime,card0,cards,A,B,MatXi,M12,M21,MatXiprime,tl,M,w,tl1,cl0,cl1,cls],
+  if I=[] then v
+  else
+    ([l0,l1,ls,l0Uls,InfoXi,InfoXiprime,card0,cards] : extractinfo(revInfo),
+    [A,B] : extractlines(Mat,l0Uls),
+    [MatXi,M12] : extractcolumns(A,l0Uls),
+    [M21,MatXiprime] : extractcolumns(B,l0Uls),
+    tl : linear_solving(MatXi,rest(I,1),InfoXi,first(extractlines(v,l0Uls))),
+    if equal(ls,[]) then (tl1 : first(extractlines(v,l1)) )
+    else
+      (M : Matrixcomp(M21,ls,l0Uls),
+      w : evaluation(M,rowcompression(tl,ls,l0Uls)),
+      tl1 : substract(first(extractlines(v,l1)),w)
+      ),
+    cl1 : linear_solving(MatXiprime,rest(I,1),InfoXiprime,tl1),
+    cl0 : substract(rowcompression(tl,l0,l0Uls),cl1),
+    cls : rowcompression(tl,ls,l0Uls),
+    assemble(cl0,cl1,cls,l0,l1,ls)  
+    )
+  );
+
+/* We are now going to build the inversibility-query */
+
+/* In the next function, we suppose that second(gcdfreepartmethod(p,q)) gives the gcd free part of p with respect to q, as the function gcdFreePart (for example) does */
+keepsimpleroots(P,var,gcdfreepartmethod):=second(gcdfreepartmethod(P,diff(P,var,1),var));
+
+gcd1(P,Q,var):=first(gcdFreePart(P,Q,var));
+
+gcdInvertibilityQuery(Q,P,var):=degree(expand(P),var)-degree(gcd1(expand(P),expand(diff(P,var,1)*Q),var),var);
+
+polynomfamilymult(polylist,multiplyindex,I):=
+  if equal(multiplyindex,[]) then 1
+  elseif equal(first(multiplyindex),first(I)) then
+    first(polylist)*polynomfamilymult(rest(polylist,1),rest(multiplyindex,1),rest(I,1))
+  else
+    polynomfamilymult(rest(polylist,1),multiplyindex,rest(I,1))
+  ;
+
+AdaptedQuerylist(Ada,P,usefullpoly,comp,var,Qu):=
+  if equal(Ada,[]) then []
+  else
+    append([Qu(polynomfamilymult(usefullpoly,first(Ada),comp),P,var)],AdaptedQuerylist(rest(Ada,1),P,usefullpoly,comp,var,Qu));
+
+addfirstcolumn(elem,Mat):=
+  if equal(Mat,[]) then
+    []
+  else
+    append([append([elem],first(Mat))],addfirstcolumn(elem,rest(Mat,1))) ;
+
+add01to(Mat):=
+  if equal(Mat,[]) then []
+  else
+    append([append([0],first(Mat))],append([append([1],first(Mat))],add01to(rest(Mat,1))));
+
+insert0atevenindex(v):=
+  if equal(v,[]) then []
+  else
+    append([first(v)],append([0],insert0atevenindex(rest(v,1))));
+
+double(v):=
+  if equal(v,[]) then []
+  else
+    append([first(v)],append([first(v)],double(rest(v,1))));
+
+createMatAuxSigma(Mat):=
+  if equal(Mat,[]) then []
+  else
+    append([insert0atevenindex(first(Mat))],append([double(first(Mat))],createMatAuxSigma(rest(Mat,1))));
+
+alternateelemfrom(v,w):=
+  if equal(v,[]) then []
+  else
+    append([first(v)],alternateelemfrom(w,rest(v,1)));
+
+computeCiSigmaiLi1(Auxc,AuxSigma,AuxCompSigma,temprow):=
+  if equal(AuxSigma,[]) then [[],[],[],[],[],[],[]]
+  else
+    (block([c,Sigma,CompSigma,l0,l1,ls,l]),
+    if notequal(first(Auxc),0) and notequal(second(Auxc),0) then
+      ([c,Sigma,CompSigma,l0,l1,ls,l] : computeCiSigmaiLi1(rest(Auxc,2),rest(AuxSigma,2),rest(AuxCompSigma,2),temprow+2),
+      [append([first(Auxc)],append([second(Auxc)],c)),append([first(AuxSigma)],append([second(AuxSigma)],Sigma)),append([first(AuxCompSigma)],append([second(AuxCompSigma)],CompSigma)),append([temprow],l0),append([temprow+1],l1),ls,append([temprow],l)]
+      )
+    elseif notequal(first(Auxc),0) then
+      ([c,Sigma,CompSigma,l0,l1,ls,l] : computeCiSigmaiLi1(rest(Auxc,2),rest(AuxSigma,2),rest(AuxCompSigma,2),temprow+1),
+      [append([first(Auxc)],c),append([first(AuxSigma)],Sigma),append([first(AuxCompSigma)],CompSigma),l0,l1,append([temprow],ls),append([temprow],l)]
+      )
+    else
+      ([c,Sigma,CompSigma,l0,l1,ls,l] : computeCiSigmaiLi1(rest(Auxc,2),rest(AuxSigma,2),rest(AuxCompSigma,2),temprow+1),
+      [append([second(Auxc)],c),append([second(AuxSigma)],Sigma),append([second(AuxCompSigma)],CompSigma),l0,l1,append([temprow],ls),append([temprow],l)]
+      )
+    );
+
+computeCiSigmaiLi(Auxc,AuxSigma,AuxCompSigma,previouscompsigma):=
+  block([c,Sigma,CompSigma,l0,l1,ls,l],
+  [c,Sigma,CompSigma,l0,l1,ls,l] : computeCiSigmaiLi1(Auxc,AuxSigma,AuxCompSigma,1),
+  if notequal(l0,[]) then
+    [c,Sigma,CompSigma,l0,l1,ls,l]
+  else [c,Sigma,previouscompsigma,l0,l1,ls,l]
+  );
+
+deletefirstcolumn(Mat):=
+  if equal(Mat,[]) then []
+  else append([rest(first(Mat),1)],deletefirstcolumn(rest(Mat,1)));
+
+assembleAda_i1(previousAda,AdaXiprime_i,i,temprow,l0,l1,ls):=
+  if notequal(l0,[]) and equal(first(l0),temprow) then
+    append([first(previousAda)],assembleAda_i1(rest(previousAda,1),AdaXiprime_i,i,temprow+1,rest(l0,1),l1,ls))
+  elseif notequal(ls,[]) and equal(first(ls),temprow) then
+    append([first(previousAda)],assembleAda_i1(rest(previousAda,1),AdaXiprime_i,i,temprow+1,l0,l1,rest(ls,1)))
+  elseif notequal(l1,[]) and equal(first(l1),temprow) then
+    append([append([i],first(AdaXiprime_i))],assembleAda_i1(previousAda,rest(AdaXiprime_i,1),i,temprow+1,l0,rest(l1,1),ls))
+  else [] ;
+
+assembleAda_i(previousAda,AdaXiprime_i,i,l0,l1,ls):=assembleAda_i1(previousAda,AdaXiprime_i,i,1,l0,l1,ls);
+
+assembleQulist(AdaQulist,AdaQuPrime,l1,temprow):=
+  if equal(l1,[]) then AdaQulist
+  elseif equal(first(l1),temprow) then
+    append([first(AdaQuPrime)],assembleQulist(AdaQulist,rest(AdaQuPrime,1),rest(l1,1),temprow+1))
+  else
+    append([first(AdaQulist)],assembleQulist(rest(AdaQulist,1),AdaQuPrime,l1,temprow+1)) ;
+
+listunion(l1,ls):=
+  if equal(l1,[]) then ls
+  elseif equal(ls,[]) then l1
+  elseif first(l1)<first(ls) then append([first(l1)],listunion(rest(l1,1),ls))
+  else append([first(ls)],listunion(l1,rest(ls))) ;
+
+put0atposition(row,l0,tempposition):=
+  if equal(l0,[]) then row
+  elseif equal(first(l0),tempposition) then
+    append([0],put0atposition(row,rest(l0,1),tempposition+1))
+  else
+    append([first(row)],put0atposition(rest(row,1),l0,tempposition+1)) ;
+
+put0atcolumn(Mat,l0):=
+  if equal(Mat,[]) then []
+  else append([put0atposition(first(Mat),l0,1)],put0atcolumn(rest(Mat,1),l0)) ;
+
+extendrow(row,l0,ls):=
+  if equal(l0,[]) then row
+  elseif equal(ls,[]) then double(row)
+  elseif first(l0)<first(ls) then append([first(row),first(row)],extendrow(rest(row,1),rest(l0,1),ls))
+  else append([first(row)],extendrow(rest(row,1),l0,rest(ls,1))) ;
+
+extendMat(Mat,l0,ls):=
+  if equal(Mat,[]) then []
+  else append([extendrow(first(Mat),l0,ls)],extendMat(rest(Mat,1),l0,ls));
+  
+
+quickZerononzeroDeterminationwithcardinals(polylist,P,Qu,var):=
+  block([r,Sigma_i,CompressedSigma_i,c_i,comp_i,Info_i,Ada_i,Mat_i,AdaQulist,i,temppolylist,usefullpoly,InvQu,cPidiffzero,vprime,AuxSigma,AuxSigma2,InfoAux,AuxMat,v,c,Xiprime_i,InfoXiprime_i,AdaXiprime_i,CompletedAdaXiprime_i,AdaQuPrime,M,N,R,Mat_i],
+  r : Qu(1,P,var),
+  if equal(r,0) then [[],[]]
+  else
+    (Sigma_i : [[]],
+    CompressedSigma_i : [[]],
+    c_i : [r],
+    comp_i : [],
+    Info_i : [[]],
+    Ada_i : [[]],
+    Mat_i : [[1]],
+    AdaQulist : [r],
+    i : 0,
+    temppolylist : polylist,
+    usefullpoly : [],
+    while notequal(temppolylist,[]) do
+      (i : i+1,
+      InvQu : Qu(first(temppolylist),P,var),
+      cPidiffzero : InvQu,
+      cPiequalzero : r-InvQu,
+      if equal(cPiequalzero,0) then
+        (Sigma_i : addfirstcolumn(1,Sigma_i)
+        )
+      elseif equal(cPidiffzero,0) then
+        (Sigma_i : addfirstcolumn(0,Sigma_i)
+        )
+      else
+        (vprime : AdaptedQuerylist(addfirstcolumn(i,Ada_i),P,append([first(temppolylist)],usefullpoly),append([i],comp_i),var,Qu),
+        AuxSigma : add01to(CompressedSigma_i),
+        AuxSigma2 : add01to(Sigma_i),
+        InfoAux : add01to(Info_i),
+        AuxMat : createMatAuxSigma(Mat_i),
+        v : alternateelemfrom(AdaQulist,vprime),
+        c : linear_solving(AuxMat,append([i],comp_i),InfoAux,v),
+        [c_i,Sigma_i,CompressedSigma_i,l0,l1,ls,l] : computeCiSigmaiLi(c,AuxSigma2,AuxSigma,CompressedSigma_i),
+        if equal(l0,[]) then (1=1)
+        else
+          (comp_i : append([i],comp_i),
+          usefullpoly : append([first(temppolylist)],usefullpoly),
+          Xiprime_i : first(extractlines(deletefirstcolumn(CompressedSigma_i),l1)),
+          InfoXiprime_i : revInfo(Xiprime_i,rest(comp_i)),
+          AdaXiprime_i : adapted_family(InfoXiprime_i,rest(comp_i)),
+          CompletedAdaXiprime_i : addfirstcolumn(i,AdaXiprime_i),
+          AdaQuPrime : AdaptedQuerylist(CompletedAdaXiprime_i,P,usefullpoly,comp_i,var,Qu),
+          AdaQulist : assembleQulist(AdaQulist,AdaQuPrime,l1,1),
+          Info_i : assembleInfo1(Info_i,InfoXiprime_i,1,l0,l1,ls),
+          Ada_i : assembleAda_i(Ada_i,AdaXiprime_i,i,l0,l1,ls),
+          M : Mat(CompletedAdaXiprime_i,first(extractlines(CompressedSigma_i,listunion(l1,ls))),comp_i),
+          N : put0atcolumn(M,l0),
+          R : extendMat(Mat_i,l0,ls),
+          Mat_i : assembleQulist(R,N,l1,1)     
+          )
+        ),
+      temppolylist : rest(temppolylist,1)
+      )
+    ),
+  [c_i,Reverserows(Sigma_i)]
+  );
+
+quickZerononzeroDetermination(polylist,P,Qu,var):=
+  second(quickZerononzeroDeterminationwithcardinals(polylist,P,Qu,var));
+
+/* __________________________________________________________________________*/
+
+deletefirstcolumn(Mat):=
+  if equal(Mat,[]) then []
+  else append([rest(first(Mat),1)],deletefirstcolumn(rest(Mat,1)));
+
+extractfirstcolumn(Mat):=
+  if equal(Mat,[]) then []
+  else append([[first(first(Mat))]],extractfirstcolumn(rest(Mt,1)));
+
+extractfirstcolumn2(Mat):=
+  if equal(Mat,[]) then [[],[]]
+  else
+    block([result,left],
+    [result,left] : extractfirstcolumn2(rest(Mat,1)),
+    [append([[first(first(Mat))]],result),append([rest(first(Mat),1)],left)]
+    );
+
+
+glu(Mat1,Mat2):=
+  if equal(Mat2,[]) then Mat1
+  else append([append(first(Mat1),first(Mat2))],glu(rest(Mat1,1),rest(Mat2,1)));
+
+firstcolumnisntusefull(Mat):=
+  if equal(Mat,[]) then true
+  elseif not(first(first(Mat))=s) then
+    false
+  else
+    firstcolumnisntusefull(rest(Mat,1));
+
+compression(Info,Sigma,I):=
+  if equal(Info,[]) or equal(first(Info),[]) then [[],[],[]]
+  elseif firstcolumnisntusefull(Info) then
+    (compression(deletefirstcolumn(Info),deletefirstcolumn(Sigma),rest(I,1))
+    )
+  else
+    (block([CompInfo,CompSigma,comp,A,B,C,D],
+    [A,B] : extractfirstcolumn2(Info),
+    [C,D] : extractfirstcolumn2(Sigma),
+    [CompInfo,CompSigma,comp] : compression(B,D,rest(I,1)),
+    [glu(A,CompInfo),glu(C,CompSigma),append([first(I)],comp)]
+    )
+    );
+
+extractInfoSign1(Info,temprow):=
+  if equal(Info,[]) then [[],[],[],[],[],[],[],[],[],[],[],[]]
+  else
+    block([lp1,lp2,lp3,l0,l01,l0m1,l1m1,ls,l1,l10,lm10,lm11],
+    [lp1,lp2,lp3,l0,l01,l0m1,l1m1,ls,l1,l10,lm10,lm11] : extractInfoSign1(rest(Info,1),temprow+1),
+    if first(first(Info))=0 then
+      [append([temprow],lp1),lp2,lp3,append([temprow],l0),l01,l0m1,l1m1,ls,l1,l10,lm10,lm11]
+    elseif first(first(Info))=e01 then
+       [append([temprow],lp1),lp2,lp3,l0,append([temprow],l01),l0m1,l1m1,ls,l1,l10,lm10,lm11]
+    elseif first(first(Info))=e0m1 then
+       [append([temprow],lp1),lp2,lp3,l0,l01,append([temprow],l0m1),l1m1,ls,l1,l10,lm10,lm11]
+    elseif first(first(Info))=e1m1 then
+       [append([temprow],lp1),lp2,lp3,l0,l01,l0m1,append([temprow],l1m1),ls,l1,l10,lm10,lm11]
+    elseif first(first(Info))=s then
+       [append([temprow],lp1),lp2,lp3,l0,l01,l0m1,l1m1,append([temprow],ls),l1,l10,lm10,lm11]
+    elseif first(first(Info))=1 then
+       [lp1,append([temprow],lp2),lp3,l0,l01,l0m1,l1m1,ls,append([temprow],l1),l10,lm10,lm11]
+    elseif first(first(Info))=e10 then
+       [lp1,append([temprow],lp2),lp3,l0,l01,l0m1,l1m1,ls,l1,append([temprow],l10),lm10,lm11]
+    elseif first(first(Info))=em10 then
+       [lp1,append([temprow],lp2),lp3,l0,l01,l0m1,l1m1,ls,l1,l10,append([temprow],lm10),lm11]
+    elseif first(first(Info))=em11 then
+       [lp1,append([temprow],lp2),lp3,l0,l01,l0m1,l1m1,ls,l1,l10,lm10,append([temprow],lm11)]
+    else
+       [lp1,lp2,append([temprow],lp3),l0,l01,l0m1,l1m1,ls,l1,l10,lm10,lm11]
+    );
+
+extractInfoSign(Info):=extractInfoSign1(Info,1);
+
+extractl1l2l3rows1(Mat,l1,l2,l3,templine):=
+  if equal(Mat,[]) then [[],[],[]]
+  else
+    block([M1,M2,M3],
+    if notequal(l1,[]) and equal(first(l1),templine) then
+      ([M1,M2,M3] : extractl1l2l3rows1(rest(Mat,1),rest(l1,1),l2,l3,templine+1),
+      [append([first(Mat)],M1),M2,M3]
+      )
+    elseif notequal(l2,[]) and equal(first(l2),templine) then
+      ([M1,M2,M3] : extractl1l2l3rows1(rest(Mat,1),l1,rest(l2,1),l3,templine+1),
+      [M1,append([first(Mat)],M2),M3]
+      )
+    else
+      ([M1,M2,M3] : extractl1l2l3rows1(rest(Mat,1),l1,l2,rest(l3,1),templine+1),
+      [M1,M2,append([first(Mat)],M3)]
+      )
+    );
+
+extractl1l2l3rows(Mat,l1,l2,l3):=extractl1l2l3rows1(Mat,l1,l2,l3,1);
+
+extractl1l2l3columns(Mat,l1,l2,l3):=
+  if equal(Mat,[]) then [[],[],[]]
+  else
+    block([A,B,C,D,E,F],
+    [A,B,C] : extractl1l2l3rows(first(Mat),l1,l2,l3),
+    [D,E,F] : extractl1l2l3columns(rest(Mat),l1,l2,l3),
+    [append([A],D),append([B],E),append([C],F)]
+    );
+
+add(alpha,v,beta,w):=
+  if equal(v,[]) then []
+  else append([alpha*first(v)+beta*first(w)],add(alpha,rest(v,1),beta,rest(w,1))) ;
+
+multiplypartofvect(alpha,indexvect,indexpart,vect):=
+  if equal(indexpart,[]) then vect
+  elseif equal(first(indexpart),first(indexvect)) then
+    append([alpha*first(vect)],multiplypartofvect(alpha,rest(indexvect,1),rest(indexpart,1),rest(vect,1)))
+  else
+    append([first(vect)],multiplypartofvect(alpha,rest(indexvect,1),indexpart,rest(vect,1)));
+
+listSigma2insideSigma1(lp1,ls):=
+  if equal(ls,[]) then lp1
+  elseif equal(first(lp1),first(ls)) then
+    listSigma2insideSigma1(rest(lp1,1),rest(ls,1))
+  else
+    append([first(lp1)],listSigma2insideSigma1(rest(lp1,1),ls)) ;
+
+mult(alpha,v):=
+  if equal(v,[]) then []
+  else
+    append([alpha*first(v)],mult(alpha,rest(v,1)));
+
+sumvinsidew(alpha,v,listv,beta,w,listw):=
+  if equal(v,[]) then mult(beta,w)
+  elseif equal(first(listv),first(listw)) then
+    append([alpha*first(v)+beta*first(w)],sumvinsidew(alpha,rest(v,1),rest(listv,1),beta,rest(w,1),rest(listw,1)))
+  else
+    append([beta*first(w)],sumvinsidew(alpha,v,listv,beta,rest(w,1),rest(listw,1)));
+
+put0atrows(vect,Index,rows):=
+  if equal(rows,[]) then vect
+  elseif equal(first(Index),first(rows)) then
+    append([0],put0atrows(rest(vect,1),rest(Index,1),rest(rows,1)))
+  else
+    append([first(vect)],put0atrows(rest(vect,1),rest(Index,1),rows))
+;
+
+put0atcolumns(Mat,Index,columns):=
+  if equal(Mat,[]) then []
+  else
+    append([put0atrows(first(Mat),Index,columns)],put0atcolumns(rest(Mat,1),Index,columns));
+
+assemblec1(clp1,clp2,clp3,lp1,lp2,lp3,temprow):=
+  if equal(clp1,[]) and equal(clp2,[]) and equal(clp3,[]) then []
+  elseif notequal(lp1,[]) and equal(first(lp1),temprow) then
+    append([first(clp1)],assemblec1(rest(clp1,1),clp2,clp3,rest(lp1,1),lp2,lp3,temprow+1))
+  elseif notequal(lp2,[]) and equal(first(lp2),temprow) then
+    append([first(clp2)],assemblec1(clp1,rest(clp2,1),clp3,lp1,rest(lp2,1),lp3,temprow+1))
+  else
+    append([first(clp3)],assemblec1(clp1,clp2,rest(clp3,1),lp1,lp2,rest(lp3,1),temprow+1)) ;
+
+assemblec(clp1,clp2,clp3,lp1,lp2,lp3):= assemblec1(clp1,clp2,clp3,lp1,lp2,lp3,1);
+
+extractthelines(Mat,linesMat,extractedlines):=
+  if equal(extractedlines,[]) then [[],Mat]
+  else block([extr,restmat],
+  if equal(first(linesMat),first(extractedlines)) then
+    ([extr,restmat] : extractthelines(rest(Mat,1),rest(linesMat,1),rest(extractedlines,1)),
+    [append([first(Mat)],extr),restmat])
+  else
+    ([extr,restmat] : extractthelines(rest(Mat,1),rest(linesMat,1),extractedlines),
+    [extr,append([first(Mat)],restmat)])
+  );
+
+Special_linear_solving(Sigma,Q,Info,Mat,v):=
+  if equal(Q,[]) then v
+  else
+    block([lp1,lp2,lp3,l0,l01,l0m1,l1m1,ls,l1,l10,lm10,lm11,M1,M2,M3,M11,M12,M13,M21,M22,M23,M31,M32,M33,A,B,C,D,Sigma1,Sigma2,Sigma3,restSigma1,restSigma2,restSigma3,Info1,Info2,Info3,restInfo1,restInfo2,restInfo3,vlp1,vlp2,vlp3,t1lp1,t1lp2,t1lp3,t2lp2,t2lp1,t2lp3,N32,CompInfo3,CompSigma3,Comp3,clp1,clp2,clp3, CompInfo2,CompSigma2,Comp2],
+    [lp1,lp2,lp3,l0,l01,l0m1,l1m1,ls,l1,l10,lm10,lm11] : extractInfoSign(Info),
+    [M1,M2,M3] : extractl1l2l3rows(Mat,lp1,lp2,lp3),
+    [M11,M12,M13] : extractl1l2l3columns(M1,lp1,lp2,lp3),
+    [M21,M22,M23] : extractl1l2l3columns(M2,lp1,lp2,lp3),
+    [M31,M32,M33] : extractl1l2l3columns(M3,lp1,lp2,lp3),
+    [A,B] : extractthelines(M12,lp1,ls),
+    [C,D] : extractthelines(M13,lp1,l0),
+    [Sigma1,Sigma2,Sigma3] : extractl1l2l3rows(Sigma,lp1,lp2,lp3),
+    [restSigma1,restSigma2,restSigma3] :[deletefirstcolumn(Sigma1),deletefirstcolumn(Sigma2),deletefirstcolumn(Sigma3)],
+    [Info1,Info2,Info3] : extractl1l2l3rows(Info,lp1,lp2,lp3),
+    [restInfo1,restInfo2,restInfo3] :[deletefirstcolumn(Info1),deletefirstcolumn(Info2),deletefirstcolumn(Info3)],
+    [vlp1,vlp2,vlp3] : extractl1l2l3rows(v,lp1,lp2,lp3),
+    t1lp1 : Special_linear_solving(restSigma1,rest(Q,1),restInfo1,M11,vlp1),
+    t1lp2 : add(-1,evaluation(M21,t1lp1),1,vlp2),
+    (if notequal(lp3,[]) then
+      t1lp3 : add(-1,evaluation(M31,t1lp1),1,vlp3)
+    else
+      t1lp3 : []),
+    [CompInfo2,CompSigma2,Comp2] : compression(restInfo2,restSigma2,rest(Q,1)),
+    t2lp2 : Special_linear_solving(CompSigma2,Comp2,CompInfo2,newMat(CompSigma2,CompInfo2),t1lp2),
+    t2lp2 : multiplypartofvect(-1,lp2,lm10,t2lp2),
+    t2lp2 : multiplypartofvect(-(1/2),lp2,lm11,t2lp2),
+    t2lp1 : sumvinsidew(-1,t2lp2,listSigma2insideSigma1(lp1,ls),1,t1lp1,lp1),
+    N32 : put0atcolumns(M32,lp2,lm11),
+    t2lp3 : add(-1,evaluation(N32,t2lp2),1,t1lp3),
+    if notequal(lp3,[]) then
+      ([CompInfo3,CompSigma3,Comp3] : compression(restInfo3,restSigma3,rest(Q,1)),
+      clp3 : mult(1/2,Special_linear_solving(CompSigma3,Comp3,CompInfo3,newMat(CompSigma3,CompInfo3),t2lp3)),
+      clp1 : sumvinsidew(-2,clp3,l0,1,t2lp1,lp1),
+      clp2 : sumvinsidew(1,clp3,l1,1,t2lp2,lp2)
+      )
+    else
+      (clp1 : t2lp1,
+      clp2 : t2lp2,
+      clp3 : t2lp3
+      ),
+    assemblec(clp1,clp2,clp3,lp1,lp2,lp3)
+    );
+
+extractSig1Sig2Sig3lp1lp2lp3firstcolumnInfo1(Sigma,temprow):=
+  block([size,R1,R2,R3,Sig1,Sig2,Sig3,lp1,lp2,lp3,firstcolumnInfo],
+  if equal(Sigma,[]) then size : 0
+  elseif equal(rest(Sigma,1),[]) then (size : 1 , R1 : first(Sigma))
+  elseif equal(rest(rest(Sigma,1),1),[]) then 
+    (size :2, R1 : first(Sigma), R2 : second(Sigma))
+  else
+    (size : 3,
+    R1 : first(Sigma),
+    R2 : second(Sigma),
+    R3 : third(Sigma) ),
+  if equal(size,0) or equal(first(Sigma),[]) then [[],[],[],[],[],[],[]]
+  elseif equal(size,1) or not(rest(R1,1)=rest(R2,1)) then
+    ([Sig1,Sig2,Sig3,lp1,lp2,lp3,firstcolumnInfo] : extractSig1Sig2Sig3lp1lp2lp3firstcolumnInfo1(rest(Sigma,1),temprow+1),
+     [append([rest(R1)],Sig1),Sig2,Sig3,append([temprow],lp1),lp2,lp3,append([[s]],firstcolumnInfo)]
+    )
+  elseif equal(size,2) or not(rest(R2,1)=rest(R3,1)) then
+    ([Sig1,Sig2,Sig3,lp1,lp2,lp3,firstcolumnInfo] : extractSig1Sig2Sig3lp1lp2lp3firstcolumnInfo1(rest(Sigma,2),temprow+2),
+    if equal(first(R1),0) and equal(first(R2),1) then
+      [append([rest(R1)],Sig1),append([rest(R1)],Sig2),Sig3,append([temprow],lp1),append([temprow+1],lp2),lp3,append([[e01],[e10]],firstcolumnInfo)]
+    elseif equal(first(R1),0) and equal(first(R2),-1) then
+      [append([rest(R1)],Sig1),append([rest(R1)],Sig2),Sig3,append([temprow],lp1),append([temprow+1],lp2),lp3,append([[e0m1],[em10]],firstcolumnInfo)]
+    else
+      [append([rest(R1)],Sig1),append([rest(R1)],Sig2),Sig3,append([temprow],lp1),append([temprow+1],lp2),lp3,append([[e1m1],[em11]],firstcolumnInfo)]
+    )
+  else
+    ([Sig1,Sig2,Sig3,lp1,lp2,lp3,firstcolumnInfo] : extractSig1Sig2Sig3lp1lp2lp3firstcolumnInfo1(rest(Sigma,3),temprow+3),
+    [append([rest(R1)],Sig1),append([rest(R1)],Sig2),append([rest(R1)],Sig3),append([temprow],lp1),append([temprow+1],lp2),append([temprow+2],lp3),append([[0],[1],[m1]],firstcolumnInfo)]
+    )
+  );
+
+
+newassembleInfo(Info1,Info2,Info3,lp1,lp2,lp3,firstcolumnInfo,temprow):=
+  if equal(Info1,[]) and equal(Info2,[]) and equal(Info3,[]) then firstcolumnInfo
+  elseif notequal(lp1,[]) and equal(first(lp1),temprow) then
+    (
+
+  append([append(first(firstcolumnInfo),first(Info1))],newassembleInfo(rest(Info1,1),Info2,Info3,rest(lp1,1),lp2,lp3,rest(firstcolumnInfo,1),temprow+1)) )
+  elseif notequal(lp2,[]) and equal(first(lp2),temprow) then
+    ( 
+    append([append(first(firstcolumnInfo),first(Info2))],newassembleInfo(Info1,rest(Info2,1),Info3,lp1,rest(lp2,1),lp3,rest(firstcolumnInfo,1),temprow+1)) 
+)
+  else
+    (
+    append([append(first(firstcolumnInfo),first(Info3))],newassembleInfo(Info1,Info2,rest(Info3,1),lp1,lp2,rest(lp3,1),rest(firstcolumnInfo,1),temprow+1)) ) ;
+
+
+
+newInfo(Sigma):=
+  if equal(Sigma,[]) or equal(first(Sigma),[]) then Sigma
+  else  
+  block([Sig1,Sig2,Sig3,lp1,lp2,lp3,firstcolumnInfo,Info1,Info2,Info3],
+  [Sig1,Sig2,Sig3,lp1,lp2,lp3,firstcolumnInfo] : extractSig1Sig2Sig3lp1lp2lp3firstcolumnInfo1(Sigma,1),
+  Info1 : newInfo(Sig1),
+  Info2 : newInfo(Sig2),
+  Info3 : newInfo(Sig3),
+  newassembleInfo(Info1,Info2,Info3,lp1,lp2,lp3,firstcolumnInfo,1)
+  );
+
+newAdarow(temppolylist,rowInfo):=
+  if equal(temppolylist,[]) then 1
+  else
+  block([P],
+  P : newAdarow(rest(temppolylist,1),rest(rowInfo,1)),
+  if first(rowInfo)=1 or first(rowInfo)=e10 or first(rowInfo)=em10 or first(rowInfo)=em11 then
+    first(temppolylist)*P
+  elseif first(rowInfo)=m1 then
+    first(temppolylist)^2*P
+  else P
+  );
+
+newAda(Info,polylist):=
+  if equal(Info,[]) then []
+  else append([newAdarow(polylist,first(Info))],newAda(rest(Info,1),polylist));
+
+makecolumn(v):=
+  if equal(v,[]) then []
+  else append([[first(v)]],makecolumn(rest(v,1)));
+
+newfirstcolumn(v,Mat):=
+  if equal(Mat,[]) then makecolumn(v)
+  else append([append([first(v)],first(Mat))],newfirstcolumn(rest(v,1),rest(Mat,1)));
+
+newMat(Sigma,Info):=
+  if equal(Sigma,[]) then []
+  else newfirstcolumn(newAda(Info,first(Sigma)),newMat(rest(Sigma,1),Info)) ;
+  multlistby(list,elem) :=
+  if equal(list,[]) then []
+  else append([elem*first(list)],multlistby(rest(list,1),elem));
+
+Tarskiquerylist(P,polylist,TaQu,var):=
+  if equal(polylist,[]) then []
+  else
+    append([TaQu(first(polylist),P,var)],Tarskiquerylist(P,rest(polylist,1),TaQu,var)) ;
+
+rowNewAuxMat1(row):=
+  if equal(row,[]) then []
+  else append([first(row),first(row),first(row)],rowNewAuxMat1(rest(row,1)));
+
+rowNewAuxMat2(row):=
+  if equal(row,[]) then []
+  else append([0,first(row),-first(row)],rowNewAuxMat2(rest(row,1)));
+
+rowNewAuxMat3(row):=
+  if equal(row,[]) then []
+  else append([0,first(row),first(row)],rowNewAuxMat3(rest(row,1)));
+
+NewAuxMat(oldMat):=
+  if equal(oldMat,[]) then []
+  else append([rowNewAuxMat1(first(oldMat)),rowNewAuxMat2(first(oldMat)),rowNewAuxMat3(first(oldMat))],NewAuxMat(rest(oldMat,1))) ;
+
+createvector(v1,v2,v3):=
+  if equal(v1,[]) then []
+  else append([first(v1),first(v2),first(v3)],createvector(rest(v1,1),rest(v2,1),rest(v3,1)));
+
+makeauxSigma(Sigma):=
+  if equal(Sigma,[]) then []
+  else
+    append([append([0],first(Sigma)),append([1],first(Sigma)),append([-1],first(Sigma))],makeauxSigma(rest(Sigma,1))) ;
+
+makenewSigma(c,AuxSigma,AuxCompSigma,temprow):=
+  if equal(c,[]) then [[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+  else
+    block([tempc,tempSigma,tempSigma1,tempSigma2,tempSigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3],
+    if notequal(first(c),0) and notequal(second(c),0) and notequal(third(c),0) then
+      ([tempc,tempSigma,tempCompSigma,tempSigma1,tempSigma2,tempSigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3] :
+    makenewSigma(rest(c,3),rest(AuxSigma,3),rest(AuxCompSigma,3),temprow+3),
+      [append([first(c),second(c),third(c)],tempc),append([first(AuxSigma),second(AuxSigma),third(AuxSigma)],tempSigma),append([first(AuxCompSigma),second(AuxCompSigma),third(AuxCompSigma)],tempCompSigma),append([first(AuxCompSigma)],tempSigma1),append([second(AuxCompSigma)],tempSigma2),append([third(AuxCompSigma)],tempSigma3),append([temprow],l0),l01,l0m1,l1m1,ls,append([temprow],lp1),append([temprow+1],lp2),append([temprow+2],lp3)] )
+    elseif notequal(first(c),0) and notequal(second(c),0) then
+      ([tempc,tempSigma,tempCompSigma,tempSigma1,tempSigma2,tempSigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3] :
+    makenewSigma(rest(c,3),rest(AuxSigma,3),rest(AuxCompSigma,3),temprow+2),
+      [append([first(c),second(c)],tempc),append([first(AuxSigma),second(AuxSigma)],tempSigma),append([first(AuxCompSigma),second(AuxCompSigma)],tempCompSigma),append([first(AuxCompSigma)],tempSigma1),append([second(AuxCompSigma)],tempSigma2),tempSigma3,l0,append([temprow],l01),l0m1,l1m1,ls,append([temprow],lp1),append([temprow+1],lp2),lp3])
+    elseif notequal(first(c),0) and notequal(third(c),0) then
+      ([tempc,tempSigma,tempCompSigma,tempSigma1,tempSigma2,tempSigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3] :
+    makenewSigma(rest(c,3),rest(AuxSigma,3),rest(AuxCompSigma,3),temprow+2),
+      [append([first(c),third(c)],tempc),append([first(AuxSigma),third(AuxSigma)],tempSigma),append([first(AuxCompSigma),third(AuxCompSigma)],tempCompSigma),append([first(AuxCompSigma)],tempSigma1),append([third(AuxCompSigma)],tempSigma2),tempSigma3,l0,l01,append([temprow],l0m1),l1m1,ls,append([temprow],lp1),append([temprow+1],lp2),lp3])
+    elseif notequal(second(c),0) and notequal(third(c),0) then
+      ([tempc,tempSigma,tempCompSigma,tempSigma1,tempSigma2,tempSigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3] :
+    makenewSigma(rest(c,3),rest(AuxSigma,3),rest(AuxCompSigma,3),temprow+2),
+      [append([second(c),third(c)],tempc),append([second(AuxSigma),third(AuxSigma)],tempSigma),append([second(AuxCompSigma),third(AuxCompSigma)],tempCompSigma),append([second(AuxCompSigma)],tempSigma1),append([third(AuxCompSigma)],tempSigma2),tempSigma3,l0,l01,l0m1,append([temprow],l1m1),ls,append([temprow],lp1),append([temprow+1],lp2),lp3])
+    elseif notequal(first(c),0) then
+      ([tempc,tempSigma,tempCompSigma,tempSigma1,tempSigma2,tempSigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3] :
+    makenewSigma(rest(c,3),rest(AuxSigma,3),rest(AuxCompSigma,3),temprow+1),
+      [append([first(c)],tempc),append([first(AuxSigma)],tempSigma),append([first(AuxCompSigma)],tempCompSigma),append([first(AuxCompSigma)],tempSigma1),tempSigma2,tempSigma3,l0,l01,l0m1,l1m1,append([temprow],ls),append([temprow],lp1),lp2,lp3])
+    elseif notequal(second(c),0) then
+    ([tempc,tempSigma,tempCompSigma,tempSigma1,tempSigma2,tempSigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3] :
+    makenewSigma(rest(c,3),rest(AuxSigma,3),rest(AuxCompSigma,3),temprow+1),
+      [append([second(c)],tempc),append([second(AuxSigma)],tempSigma),append([second(AuxCompSigma)],tempCompSigma),append([second(AuxCompSigma)],tempSigma1),tempSigma2,tempSigma3,l0,l01,l0m1,l1m1,append([temprow],ls),append([temprow],lp1),lp2,lp3])
+    else
+      ([tempc,tempSigma,tempCompSigma,tempSigma1,tempSigma2,tempSigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3] :
+    makenewSigma(rest(c,3),rest(AuxSigma,3),rest(AuxCompSigma,3),temprow+1),
+      [append([third(c)],tempc),append([third(AuxSigma)],tempSigma),append([third(AuxCompSigma)],tempCompSigma),append([third(AuxCompSigma)],tempSigma1),tempSigma2,tempSigma3,l0,l01,l0m1,l1m1,append([temprow],ls),append([temprow],lp1),lp2,lp3])
+    );
+
+rowpart1ofNewMat(rowoldMat,l0,l01,l0m1,l1m1,ls,tempplace):=
+  if equal(rowoldMat,[]) then []
+  elseif notequal(l0,[]) and equal(tempplace,first(l0)) then
+    append([first(rowoldMat),first(rowoldMat),first(rowoldMat)],rowpart1ofNewMat(rest(rowoldMat,1),rest(l0,1),l01,l0m1,l1m1,ls,tempplace+3))
+  elseif notequal(l01,[]) and equal(tempplace,first(l01)) then
+    append([first(rowoldMat),first(rowoldMat)],rowpart1ofNewMat(rest(rowoldMat,1),l0,rest(l01,1),l0m1,l1m1,ls,tempplace+2))
+  elseif notequal(l0m1,[]) and equal(tempplace,first(l0m1)) then
+    append([first(rowoldMat),first(rowoldMat)],rowpart1ofNewMat(rest(rowoldMat,1),l0,l01,rest(l0m1,1),l1m1,ls,tempplace+2))
+  elseif notequal(l1m1,[]) and equal(tempplace,first(l1m1)) then
+    append([first(rowoldMat),first(rowoldMat)],rowpart1ofNewMat(rest(rowoldMat,1),l0,l01,l0m1,rest(l1m1,1),ls,tempplace+2))
+  elseif notequal(rowoldMat,[]) then
+     append([first(rowoldMat)],rowpart1ofNewMat(rest(rowoldMat,1),l0,l01,l0m1,l1m1,rest(ls,1),tempplace+1))
+  else [] ;
+
+part1ofNewMat(oldMat,l0,l01,l0m1,l1m1,ls):=
+  if equal(oldMat,[]) then []
+  else append([rowpart1ofNewMat(first(oldMat),l0,l01,l0m1,l1m1,ls,1)],part1ofNewMat(rest(oldMat,1),l0,l01,l0m1,l1m1,ls));
+
+assembletwoparts(part1,part2,lp1,lp2):=
+  if equal(lp2,[]) then part1
+  elseif equal(lp1,[]) then part2
+  elseif first(lp1)<first(lp2) then
+    append([first(part1)],assembletwoparts(rest(part1,1),part2,rest(lp1,1),lp2))
+  else
+    append([first(part2)],assembletwoparts(part1,rest(part2,1),lp1,rest(lp2,1)))
+;
+
+assemblethreeparts(part1,part2,part3,lp1,lp2,lp3):=
+  if equal(lp2,[]) and equal(lp3,[]) then part1
+  elseif equal(lp2,[]) then append(part3,part1)
+  elseif equal(lp3,[]) then assembletwoparts(part1,part2,lp1,lp2)
+  elseif equal(lp1,[]) then append(part2,part3)
+  elseif first(lp1)<first(lp2) and first(lp1)<first(lp3) then
+    append([first(part1)],assemblethreeparts(rest(part1,1),part2,part3,rest(lp1,1),lp2,lp3))
+  elseif first(lp2)<first(lp1) and first(lp2)<first(lp3) then
+    append([first(part2)],assemblethreeparts(part1,rest(part2,1),part3,lp1,rest(lp2,1),lp3))
+  else
+    append([first(part3)],assemblethreeparts(part1,part2,rest(part3),lp1,lp2,rest(lp3,1))) ;
+
+createfirstcolumnInfomat(l0,l01,l0m1,l1m1,ls,temprow):=
+  if notequal(l0,[]) and equal(first(l0),temprow) then
+    append([0,1,m1],createfirstcolumnInfomat(rest(l0,1),l01,l0m1,l1m1,ls,temprow+3))
+  elseif notequal(l01,[]) and equal(first(l01),temprow) then
+    append([e01,e10],createfirstcolumnInfomat(l0,rest(l01,1),l0m1,l1m1,ls,temprow+2))
+  elseif notequal(l0m1,[]) and equal(first(l0m1),temprow) then
+    append([e0m1,em10],createfirstcolumnInfomat(l0,l01,rest(l0m1,1),l1m1,ls,temprow+2))
+  elseif notequal(l1m1,[]) and equal(first(l1m1),temprow) then
+    append([e1m1,em11],createfirstcolumnInfomat(l0,l01,l0m1,rest(l1m1,1),ls,temprow+2))
+  elseif notequal(ls,[]) and equal(first(ls),temprow) then
+    append([s],createfirstcolumnInfomat(l0,l01,l0m1,l1m1,rest(ls),temprow+1))
+  else
+    []
+  ;
+
+createInformationmat(Info1,Info2,Info3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3):=
+  block([column,M],
+  column : createfirstcolumnInfomat(l0,l01,l0m1,l1m1,ls,1),
+  M : assemblethreeparts(Info1,Info2,Info3,lp1,lp2,lp3),
+  newfirstcolumn(column,M)
+  );
+
+addnewfirstcolumn(elem,Mat):=
+  if equal(Mat,[]) then []
+  else append([append([elem],first(Mat))],addnewfirstcolumn(elem,rest(Mat,1)));
+
+
+
+rowpart2ofNewMat(rowoldMat,l0,l01,l0m1,l1m1,ls,tempplace,Sigma):=
+  if equal(rowoldMat,[]) then []
+  elseif notequal(l0,[]) and equal(tempplace,first(l0)) then
+    append([0,first(rowoldMat),-first(rowoldMat)],rowpart2ofNewMat(rest(rowoldMat,1),rest(l0,1),l01,l0m1,l1m1,ls,tempplace+3,rest(Sigma,3)))
+  elseif notequal(l01,[]) and equal(tempplace,first(l01)) then
+    append([0,first(rowoldMat)],rowpart2ofNewMat(rest(rowoldMat,1),l0,rest(l01,1),l0m1,l1m1,ls,tempplace+2,rest(Sigma,2)))
+  elseif notequal(l0m1,[]) and equal(tempplace,first(l0m1)) then
+    append([0,-first(rowoldMat)],rowpart2ofNewMat(rest(rowoldMat,1),l0,l01,rest(l0m1,1),l1m1,ls,tempplace+2,rest(Sigma,2)))
+  elseif notequal(l1m1,[]) and equal(tempplace,first(l1m1)) then
+    append([first(rowoldMat),-first(rowoldMat)],rowpart2ofNewMat(rest(rowoldMat,1),l0,l01,l0m1,rest(l1m1,1),ls,tempplace+2,rest(Sigma,2)))
+  elseif notequal(rowoldMat,[]) then
+     append([first(rowoldMat)*first(first(Sigma))],rowpart2ofNewMat(rest(rowoldMat,1),l0,l01,l0m1,l1m1,rest(ls,1),tempplace+1,rest(Sigma,1)))
+  else [] ;
+
+part2ofNewMat(oldMat,l0,l01,l0m1,l1m1,ls,Sigma):=
+  if equal(oldMat,[]) then []
+  else append([rowpart2ofNewMat(first(oldMat),l0,l01,l0m1,l1m1,ls,1,Sigma)],part2ofNewMat(rest(oldMat,1),l0,l01,l0m1,l1m1,ls,Sigma));
+
+rowpart3ofNewMat(rowoldMat,l0,l01,l0m1,l1m1,ls,tempplace,Sigma):=
+  if equal(rowoldMat,[]) then []
+  elseif notequal(l0,[]) and equal(tempplace,first(l0)) then
+    append([0,first(rowoldMat),first(rowoldMat)],rowpart3ofNewMat(rest(rowoldMat,1),rest(l0,1),l01,l0m1,l1m1,ls,tempplace+3,rest(Sigma,3)))
+  elseif notequal(l01,[]) and equal(tempplace,first(l01)) then
+    append([0,first(rowoldMat)],rowpart3ofNewMat(rest(rowoldMat,1),l0,rest(l01,1),l0m1,l1m1,ls,tempplace+2,rest(Sigma,2)))
+  elseif notequal(l0m1,[]) and equal(tempplace,first(l0m1)) then
+    append([0,first(rowoldMat)],rowpart3ofNewMat(rest(rowoldMat,1),l0,l01,rest(l0m1,1),l1m1,ls,tempplace+2,rest(Sigma,2)))
+  elseif notequal(l1m1,[]) and equal(tempplace,first(l1m1)) then
+    append([first(rowoldMat),first(rowoldMat)],rowpart3ofNewMat(rest(rowoldMat,1),l0,l01,l0m1,rest(l1m1,1),ls,tempplace+2,rest(Sigma,2)))
+  elseif notequal(rowoldMat,[]) then
+     append([first(rowoldMat)*(first(first(Sigma)))^2],rowpart2ofNewMat(rest(rowoldMat,1),l0,l01,l0m1,l1m1,rest(ls,1),tempplace+1,rest(Sigma,1)))
+  else [] ;
+
+part3ofNewMat(oldMat,l0,l01,l0m1,l1m1,ls,Sigma):=
+  if equal(oldMat,[]) then []
+  else append([rowpart3ofNewMat(first(oldMat),l0,l01,l0m1,l1m1,ls,1,Sigma)],part3ofNewMat(rest(oldMat,1),l0,l01,l0m1,l1m1,ls,Sigma));
+ 
+
+Special_linear_solvingstep1(Sigma,Q,Info,Mat,v,oldc):=
+  if equal(Q,[]) then v
+  else
+    block([lp1,lp2,lp3,l0,l01,l0m1,l1m1,ls,l1,l10,lm10,lm11,M1,M2,M3,M11,M12,M13,M21,M22,M23,M31,M32,M33,Sigma1,Sigma2,Sigma3,restSigma1,restSigma2,restSigma3,Info1,Info2,Info3,restInfo1,restInfo2,restInfo3,vlp1,vlp2,vlp3,t1lp1,t1lp2,t1lp3,t2lp2,t2lp1,t2lp3,N32,CompInfo3,CompSigma3,Comp3,clp1,clp2,clp3],
+    [lp1,lp2,lp3,l0,l01,l0m1,l1m1,ls,l1,l10,lm10,lm11] : extractInfoSign(Info),
+    [M1,M2,M3] : extractl1l2l3rows(Mat,lp1,lp2,lp3),
+    [M11,M12,M13] : extractl1l2l3columns(M1,lp1,lp2,lp3),
+    [M21,M22,M23] : extractl1l2l3columns(M2,lp1,lp2,lp3),
+    [M31,M32,M33] : extractl1l2l3columns(M3,lp1,lp2,lp3),
+    [Sigma1,Sigma2,Sigma3] : extractl1l2l3rows(Sigma,lp1,lp2,lp3),
+    [restSigma1,restSigma2,restSigma3] :[deletefirstcolumn(Sigma1),deletefirstcolumn(Sigma2),deletefirstcolumn(Sigma3)],
+    [Info1,Info2,Info3] : extractl1l2l3rows(Info,lp1,lp2,lp3),
+    [restInfo1,restInfo2,restInfo3] :[deletefirstcolumn(Info1),deletefirstcolumn(Info2),deletefirstcolumn(Info3)],
+    [vlp1,vlp2,vlp3] : extractl1l2l3rows(v,lp1,lp2,lp3),
+    t1lp1 : oldc,
+    t1lp2 : add(-1,evaluation(M21,t1lp1),1,vlp2),
+    (if notequal(lp3,[]) then
+      t1lp3 : add(-1,evaluation(M31,t1lp1),1,vlp3)
+    else
+      t1lp3 : []),
+    [CompInfo2,CompSigma2,Comp2] : compression(restInfo2,restSigma2,rest(Q,1)),
+    t2lp2 : Special_linear_solving(CompSigma2,Comp2,CompInfo2,newMat(CompSigma2,CompInfo2),t1lp2),
+    t2lp2 : multiplypartofvect(-1,lp2,lm10,t2lp2),
+    t2lp2 : multiplypartofvect(-(1/2),lp2,lm11,t2lp2),
+    t2lp1 : sumvinsidew(-1,t2lp2,listSigma2insideSigma1(lp1,ls),1,t1lp1,lp1),
+    N32 : put0atcolumns(M32,lp2,lm11),
+    t2lp3 : add(-1,evaluation(N32,t2lp2),1,t1lp3),
+    if notequal(lp3,[]) then
+      ([CompInfo3,CompSigma3,Comp3] : compression(restInfo3,restSigma3,rest(Q,1)),
+      clp3 : mult(1/2,Special_linear_solving(CompSigma3,Comp3,CompInfo3,newMat(CompSigma3,CompInfo3),t2lp3)),
+      clp1 : sumvinsidew(-2,clp3,l0,1,t2lp1,lp1),
+      clp2 : sumvinsidew(1,clp3,l1,1,t2lp2,lp2)
+      )
+    else
+      (clp1 : t2lp1,
+      clp2 : t2lp2,
+      clp3 : t2lp3
+      ),
+    assemblec(clp1,clp2,clp3,lp1,lp2,lp3)
+    );
+
+newc1m1(c):=
+  if equal(c,[]) then []
+  else append([0,first(c),second(c)],newc1m1(rest(c,2)));
+
+newc0m1(c):=
+  if equal(c,[]) then []
+  else append([first(c),0,second(c)],newc0m1(rest(c,2)));
+
+newc01(c):=
+  if equal(c,[]) then []
+  else append([first(c),second(c),0],newc01(rest(c,2)));
+
+threepartvect(a,b,c):=
+  if equal(a,[]) then [] 
+  else append([first(a),first(b),first(c)],threepartvect(rest(a,1),rest(b,1),rest(c,1)));
+
+Special_linear_solvingthreesigns(CompSigma,Q,Info,Mat,v0,v1,v2,c_i):=
+  block([tprime,t2prime,cl2,cl3,cl1],
+  tprime : Special_linear_solving(CompSigma,Q,Info,Mat,v1),
+  t2prime : Special_linear_solving(CompSigma,Q,Info,Mat,v2),
+  cl2 : add(1/2,tprime,1/2,t2prime),
+  cl3 : add(-1/2,tprime,1/2,t2prime),
+  cl1 : add(1,c_i,-1,t2prime),
+  threepartvect(cl1,cl2,cl3)
+  );
+
+Special_linear_solving01(CompSigma,Q,Info,Mat,v0,v1,c_i):=
+  block([cl2,cl1],
+  cl2 : Special_linear_solving(CompSigma,Q,Info,Mat,v1),
+  cl1 : add(1,c_i,-1,cl2),
+  join(cl1,cl2)
+  );
+
+Special_linear_solving0m1(CompSigma,Q,Info,Mat,v0,v1,c_i):=
+  block([cl2,cl1],
+  cl2 : multlistby(Special_linear_solving(CompSigma,Q,Info,Mat,v1),-1),
+  cl1 : add(1,c_i,-1,cl2),
+  join(cl1,cl2)
+  );
+
+Special_linear_solving1m1(CompSigma,Q,Info,Mat,v0,v1,c_i):=
+  block([c2prime,cl1,cl2],
+  c2prime : Special_linear_solving(CompSigma,Q,Info,Mat,v1),
+  cl1 : add(1/2,c_i,1/2,c2prime),
+  cl2 : add(1/2,c_i,-1/2,c2prime),
+  join(cl1,cl2)
+  );
+
+quickSignDeterminationwithcardinals(polylist,P,TaQu,var):=
+  block([r,Sigma_i,CompressedSigma_i,c_i,comp_i,Info_i,Ada_i,Mat_i,AdaQulist,i,temppolylist,usefullpoly,cdet,cplus,cminus,czero,v1,v2,AuxCompSigma,AuxSigma,InfoAux,AuxMat,v,c,tempCompSigma,Sigma1,Sigma2,Sigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3,Info1,Info2,Info3,Ada1,Ada2,Ada3,TaQu1,TaQu2,TaQu3,Mat1,Mat2,Mat3, Mat2prime, Mat3prime],
+  r : TaQu(1,P,var),
+  if equal(r,0) then [[],[]]
+  else
+    (Sigma_i : [[]],
+    CompressedSigma_i : [[]],
+    c_i : [r],
+    comp_i : [],
+    Info_i : [[]],
+    Ada_i : [1],
+    Mat_i : [[1]],
+    AdaQulist : [r],
+    i : 0,
+    temppolylist : polylist,
+    usefullpoly : [],
+    while notequal(temppolylist,[]) do
+      (i : i+1,
+      cdet : evaluation([[1/2,1/2],[-1/2,1/2]],[TaQu(first(temppolylist),P,var),TaQu((first(temppolylist))^2,P,var)]),
+      [cplus,cminus] : cdet,
+      czero : r-(cplus+cminus),
+      if notequal(cplus,0) and notequal(cminus,0) and notequal(czero,0) then
+        (v1 : Tarskiquerylist(P,multlistby(Ada_i,first(temppolylist)),TaQu,var),
+        v2 : Tarskiquerylist(P,multlistby(Ada_i,(first(temppolylist))^2),TaQu,var),
+        c :Special_linear_solvingthreesigns(CompressedSigma_i,comp_i,Info_i,Mat_i,AdaQulist,v1,v2,c_i),
+        [c_i,Sigma_i,tempCompSigma,Sigma1,Sigma2,Sigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3] : makenewSigma(c,makeauxSigma(Sigma_i),makeauxSigma(CompressedSigma_i),1) )
+      elseif equal(cplus,0) and equal(cminus,0) then
+        (Sigma_i : addnewfirstcolumn(0,Sigma_i),
+        lp2 : [])
+      elseif equal(czero,0) and equal(cminus,0) then
+        (Sigma_i : addnewfirstcolumn(1,Sigma_i),
+        lp2 : [])
+      elseif equal(cplus,0) and equal(czero,0) then
+        (Sigma_i : addnewfirstcolumn(-1,Sigma_i),
+        lp2 : [])
+      elseif equal(czero,0) then
+        (v1 : Tarskiquerylist(P,multlistby(Ada_i,first(temppolylist)),TaQu,var),
+        c : Special_linear_solving1m1(CompressedSigma_i,comp_i,Info_i,Mat_i,AdaQulist,v1,c_i),
+        c : newc1m1(c),
+        [c_i,Sigma_i,tempCompSigma,Sigma1,Sigma2,Sigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3] : makenewSigma(c,makeauxSigma(Sigma_i),makeauxSigma(CompressedSigma_i),1)
+        )
+      elseif equal(cplus,0) then
+        (v1 : Tarskiquerylist(P,multlistby(Ada_i,first(temppolylist)),TaQu,var),
+        c : Special_linear_solving0m1(CompressedSigma_i,comp_i,Info_i,Mat,AdaQulist,v1,c_i),
+        c : newc0m1(c),
+        [c_i,Sigma_i,tempCompSigma,Sigma1,Sigma2,Sigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3] : makenewSigma(c,makeauxSigma(Sigma_i),makeauxSigma(CompressedSigma_i),1)
+        )
+      else
+        (v1 : Tarskiquerylist(P,multlistby(Ada_i,first(temppolylist)),TaQu,var),
+        c : Special_linear_solving01(CompressedSigma_i,comp_i,Info_i,Mat_i,AdaQulist,v1,c_i),
+        c : newc01(c),
+        [c_i,Sigma_i,tempCompSigma,Sigma1,Sigma2,Sigma3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3] : makenewSigma(c,makeauxSigma(Sigma_i),makeauxSigma(CompressedSigma_i),1)
+        ),
+      if equal(lp2,[]) then (1=1)
+      else
+        (CompressedSigma_i : tempCompSigma,
+        comp_i : append([i],comp_i),
+        usefullpoly : append([first(temppolylist)],usefullpoly),
+        Info1 : Info_i,
+        Info2 : newInfo(deletefirstcolumn(Sigma2)),
+        Info3 : newInfo(deletefirstcolumn(Sigma3)),
+        Info_i : createInformationmat(Info1,Info2,Info3,l0,l01,l0m1,l1m1,ls,lp1,lp2,lp3),
+        Mat1 : part1ofNewMat(Mat_i,l0,l01,l0m1,l1m1,ls),
+        Mat2prime : newMat(deletefirstcolumn(Sigma1),Info2),
+        Mat2 : part2ofNewMat(Mat2prime,l0,l01,l0m1,l1m1,ls,CompressedSigma_i),
+        Mat3prime : newMat(deletefirstcolumn(Sigma1),Info3),
+        Mat3 : part3ofNewMat(Mat3prime,l0,l01,l0m1,l1m1,ls,CompressedSigma_i),
+        Mat_i : assemblethreeparts(Mat1,Mat2,Mat3,lp1,lp2,lp3),
+        Info2 : addnewfirstcolumn(1,Info2),
+        Info3 : addnewfirstcolumn(m1,Info3),
+        Ada1 : Ada_i,
+        Ada2 : newAda(Info2,usefullpoly),
+        Ada3 : newAda(Info3,usefullpoly),
+        Ada_i : assemblethreeparts(Ada1,Ada2,Ada3,lp1,lp2,lp3),
+        TaQu1 : AdaQulist,
+        TaQu2 : Tarskiquerylist(P,Ada2,TaQu,var),
+        TaQu3 : Tarskiquerylist(P,Ada3,TaQu,var),
+        AdaQulist : assemblethreeparts(TaQu1,TaQu2,TaQu3,lp1,lp2,lp3)
+        
+        )
+      ,
+      temppolylist : rest(temppolylist,1)
+      ),
+    [c_i,Reverserows(Sigma_i)]
+    )
+  
+  );
+
+quickSignDetermination(polylist,P,TaQu,var):=
+  second(quickSignDeterminationwithcardinals(polylist,P,TaQu,var));

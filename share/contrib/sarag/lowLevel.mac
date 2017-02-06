@@ -1,6 +1,7 @@
 /* ------------------------------------------------------------------- */
 /* SARAG - Low Level Routines                                          */
 /* by Fabrizio Caruso                                                  */
+/*modified by Alexandre Le Meur and Marie-Françoise Roy */
 
 /* ------------------------------------------------------ */
 /* Polynomial related functions */
@@ -139,14 +140,23 @@ array2poly(arr,var) :=
 /* List manipulation */
 
 /* It removes the zeroes from a list */
-trimZeros(seq) :=
+trimZerosRec(seq) :=
   if seq = [] then
     [] 
   else
     if first(seq) = 0 then
-      trimZeros(rest(seq))
+      trimZerosRec(rest(seq))
     else
-      cons(first(seq),trimZeros(rest(seq)));
+      cons(first(seq),trimZerosRec(rest(seq)));
+
+trimZeros(seq) :=
+block([list,i],
+  list: [], 
+  for i:1 thru length(seq) do
+    if not(seq[i] = 0) then
+      list:append(list,[seq[i]]),
+return(list)
+);
 
 
 
@@ -188,9 +198,3 @@ mergeSorted(lhs,rhs,ordering) :=
   return(res)
        
  );
- 
- /* adds zeros to a list */
- 
- padWithZeros(seq,size) :=
-  append(seq,makelist(0,i,1,size-length(seq)));
-

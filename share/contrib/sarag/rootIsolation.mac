@@ -1,6 +1,6 @@
 /* ------------------------------------------------------------------- */
 /* SARAG - Root Isolation                                              */
-/* by Fabrizio Caruso                                                  */
+/* by Fabrizio Caruso modified by Alexandre Le Meur and Marie-Françoise Roy */       
 
 	
 /* i-th Bernstein polynomial of degree p for c and d */ 
@@ -12,6 +12,8 @@ bernstein(p,i,c,d,var) :=
 /* Bounds on real roots                   */
 
 /* Cauchy Root Upper Bound */
+/* Lemma 10.2 */
+/* (Defined for non-zero polynomials) */
 cauchyRootUpperBound(pol,var) :=
   block([p,q,i,den],
     p : expandIf(p),
@@ -22,7 +24,7 @@ cauchyRootUpperBound(pol,var) :=
     den : abs(coeff(pol,var,p)),
 
     return(sum(abs(coeff(pol,var,i)),i,q,p)/den)
-    );
+    ); /* end proc */
 
 
 /* Cauchy Root Lower Bound for non-zero roots */
@@ -35,11 +37,12 @@ cauchyRootLowerBound(pol,var) :=
        q : q + 1,
     den : abs(coeff(pol,var,q)),
     return((sum(abs(coeff(pol,var,i)),i,q,p)/den)^(-1))
-    ); 
+    ); /* end proc */
 
 
 
 /* Prime Cauchy Root Upper Bound */
+/* Lemma 10.5 */
 primeCauchyRootUpperBound(pol,var) :=
   block([p,q,i,den],
     p : expandIf(p),
@@ -49,7 +52,7 @@ primeCauchyRootUpperBound(pol,var) :=
        q : q + 1,
     den : coeff(pol,var,p)^2,
     return((p+1)* sum(coeff(pol,var,i)^2,i,q,p)/den)
-    );
+    ); /* end proc */
 
 
 /* Prime Cauchy Root Lower Bound for non-zero roots */
@@ -62,7 +65,7 @@ primeCauchyRootLowerBound(pol,var) :=
        q : q + 1,
     den : coeff(pol,var,q)^2,
     return(((p+1)* sum(coeff(pol,var,i)^2,i,q,p)/den)^(-1))
-    );
+    ); /* end proc */
 
 
 /* ----------------------------------------- */
@@ -76,7 +79,7 @@ signToTheLeft(bern) :=
     while(sgn(bern[i])=0) do 
       i : i+1,
     return(sgn(bern[i]))
-    );
+    ); /* end proc */
 
 
 /* It determines the sign */
@@ -87,16 +90,16 @@ signToTheLeft(bern) :=
     while(sgn(bern[i])=0) do 
       i : i-1,
     return(sgn(bern[i]))
-    );
+    ); /* end proc */
 
 
 
 
 /* ------------------------------------- */
-/* Splitting of Bernstein coefficients */
+/* Splitting of Bezier curves */
 
-/* De Casteljau */
-bernsteinSplit(coeffList, c, d, e) :=
+/* Alg. 10.31 */
+bernsteinSplit(coeffList, c, d,e) :=
   block([p : length(coeffList)-1,
          b : make_array('any),
          bern_ce,
@@ -120,12 +123,12 @@ bernsteinSplit(coeffList, c, d, e) :=
   
     bern_ed : cons(b[p-i],bern_ed)
 
-    ),
+    ), /* end for */
   return([bern_ce,bern_ed])
-  );
+  ); /* end proc */
 
 
-/* special De Casteljau */
+/* Algorithm 10.34 */
 specialBernsteinSplit(coeffList,c,d) :=
  block([p : length(coeffList)-1,
         bern_first,
@@ -149,11 +152,15 @@ specialBernsteinSplit(coeffList,c,d) :=
 
    bern_second : cons(2^(p-i)*b[p-i],bern_second)
 
-    ),
+    ), /* end for */
 
   return([bern_first,bern_second])
-  );
+  ); /* end proc */
 
+
+
+/* Square free part of a polynomial */
+squareFree(pol,var) := gcdFreePartWithZ(pol,diff(pol,var),var)[2];
 
 /* ---------------------------------------------- */
 /* Auxiliary routines for polynomial manipulation */
@@ -183,15 +190,25 @@ discreteLogInBaseTwo(val) :=
    while 2^i < val do
      i : i + 1,
    return(i)
-   );
+   ); /* end proc */
 
 bernsteinCoeffList(pol,var,c,d) :=
   convert2Bernstein(pol,degree(pol,var),var,c,d);
 
 /* Bernstein coefficients */
-convert2Bernstein(pol,polDeg,var,c,d) :=
-  block([auxPol,transMinusC, conDMinusC, recP, transMinusOne,res,i],
+/* computed by using Proposition 10.24 */
+convert2Bernstein(p,polDeg,var,c,d) :=
+  block([pol,auxPol,transMinusC, conDMinusC, recP, transMinusOne,res,i],
+
+pol:p,
+
+    if polDeg<degree(pol,var) then ( print("bad degree, d must be more than degree(P)"),
+    return(false))
+
+    else
+
     pol : expandIf(pol),
+    polDeg : max(degree(pol,var),polDeg),
     
     transMinusC : expand(translated(pol,var,-c)),
     conDMinusC : expand(contracted(transMinusC,var,d-c)),
@@ -208,7 +225,7 @@ convert2Bernstein(pol,polDeg,var,c,d) :=
     res : makelist(ratcoeff(auxPol,var,polDeg-i)/
                    binomial(polDeg,i),i,0,polDeg),
     return(res)
-    );
+    ); /* end proc */
 
 
 /* For a given squarefree polynonial SFP of degree p  */
@@ -260,180 +277,192 @@ isListWithSignsSort(isListWithSigns) :=
 /* Aliases for "deCasteljauIsolateRoots..." */
 
 /* Aliases for "deCasteljauIsolateRootsGeneral" */
-deCasteljauIsolateRoots(pol,var) :=
-  deCasteljauIsolateRootsGenStruct(pol,var,true); /* with Z by default */
 
 deCasteljauIsolateRootsWithARCF(pol,var) := /* ARCF stands for Archimedean Real Closed Field */
   deCasteljauIsolateRootsGenStruct(pol,var,false);
 
-deCasteljauIsolateRootsWithZ(pol,var) :=
-  deCasteljauIsolateRootsGenStruct(pol,var,true);
-
-deCasteljauIsolateRootsGenStruct(pol,var,integer_flag) :=
-  deCasteljauIsolateRootsGenStructVerbose(pol,var,
-                                        integer_flag,DEFAULT_VERBOSITY);
+deCasteljauIsolateRootsWithZ(pol,var) := 
+  deCasteljauIsolateRootsGenStruct(pol,var,true); 
 
 /* Aliases for "deCasteljauIsolateRootsGenStructVerbose" */
-deCasteljauIsolateRootsVerbose(pol,var,verbosity) :=
-  deCasteljauIsolateRootsGenStructVerbose(pol,var,false,verbosity);
 
-deCasteljauIsolateRootsWithZVerbose(pol,var,verbosity) :=
-  deCasteljauIsolateRootsGenStructVerbose(pol,var,true,verbosity);
+deCasteljauIsolateRootsGenStruct(pol,var,integer_flag) :=
+  deCasteljauFindRootsGenStruct(pol,var,inf,integer_flag);
 
-deCasteljauIsolateRootsGenStructVerbose(pol,var,integer_flag,verbosity) :=
-  deCasteljauFindRootsGenStructVerbose(pol,var,inf,integer_flag,verbosity);
+deCasteljauIsolateRootsBetweenWithARCF(pol,var,a,b) :=
+  deCasteljauFindRootsGenIntGenStructCert(pol,var,inf,a,b,false,false)[1];
 
+deCasteljauIsolateRootsBetweenWithZ(pol,var,a,b) :=
+  deCasteljauFindRootsGenIntGenStructCert(pol,var,inf,a,b,true,false)[1];
 
-deCasteljauIsolateRootsBetween(pol,var,search_interval) :=
-  deCasteljauFindRootsBetweenVerbose(pol,var,inf,search_interval,DEFAULT_VERBOSITY);
-
-deCasteljauIsolateRootsBetweenVerbose(pol,var,search_interval,verbosity) :=
-  deCasteljauFindRootsGenIntGenStructVerbose(pol,var,inf,search_interval,false,verbosity);
-
-deCasteljauIsolateRootsBetweenWithZ(pol,var,search_interval) :=
-  deCasteljauFindRootsBetweenWithZVerbose(pol,var,inf,search_interval,DEFAULT_VERBOSITY);
-
-deCasteljauIsolateRootsBetweenWithZVerbose(pol,var,search_interval,verbosity) :=
-  deCasteljauFindRootsGenIntGenStructVerbose(pol,var,inf,search_interval,true,verbosity);
-
+deCasteljauIsolateRootsBetweenWithZCert(pol,var,a,b) :=
+  deCasteljauFindRootsGenIntGenStructCert(pol,var,inf,a,b,true,true);
 
 
 /* Aliases for "deCasteljauFindRootsGeneral..." */
 
 /* Aliases for "deCasteljauFindRootsGeneral" */
 
-deCasteljauFindRoots(pol,var,threshold) :=
+deCasteljauFindRootsWithARCF(pol,var,threshold) :=
   deCasteljauFindRootsGenStruct(pol,var,threshold,false);
 
 deCasteljauFindRootsWithZ(pol,var,threshold) :=
   deCasteljauFindRootsGenStruct(pol,var,threshold,true);
 
+/* Aliases for "deCasteljauFindRootsGenStruct" */
+
+deCasteljauFindRootsBetweenWithZ(pol,var,threshold,a,b) :=
+  deCasteljauFindRootsGenIntGenStructCert(pol,var,threshold,a,b,true,false)[1];
+
+deCasteljauFindRootsWithZ(pol,var,threshold) :=
+  deCasteljauFindRootsGenStruct(pol,var,threshold,true);
+
 deCasteljauFindRootsGenStruct(pol,var,threshold,integer_flag) :=
-  deCasteljauFindRootsGenStructVerbose(pol,var,threshold,integer_flag,DEFAULT_VERBOSITY);
+  deCasteljauFindRootsGenIntGenStructCert(pol,var,threshold,false,0,integer_flag,false)[1];
 
-/* Aliases for "deCasteljauFindRootsGenStructVerbose" */
-deCasteljauFindRootsVerbose(pol,var,threshold,verbosity) :=
-  deCasteljauFindRootsGenStructVerbose(pol,var,threshold,true,verbosity); /* by default with Z */
+deCasteljauFindRootsGenStructCert(pol,var,threshold,integer_flag) :=
+  deCasteljauFindRootsGenIntGenStructCert(pol,var,threshold,false,0,integer_flag,true)[1];
 
-deCasteljauFindRootsBetween(pol,var,threshold,search_interval) :=
-  deCasteljauFindRootsBetweenVerbose(pol,var,threshold,search_interval,DEFAULT_VERBOSITY);
+/* definition de deCasteljauFindRootsGenIntGenStructCert */
 
-/* by default with Z */
-deCasteljauFindRootsBetweenVerbose(pol,var,threshold,search_interval,verbosity) :=
-  deCasteljauFindRootsGenIntGenStructVerbose(pol,var,threshold,search_interval,true,verbosity);
-
-deCasteljauFindRootsBetweenWithZ(pol,var,threshold,search_interval) :=
-  deCasteljauFindRootsBetweenWithZVerbose(pol,var,threshold,search_interval,DEFAULT_VERBOSITY);
-
-deCasteljauFindRootsBetweenWithZVerbose(pol,var,threshold,search_interval,verbosity) :=
-  deCasteljauFindRootsGenIntGenStructVerbose(pol,var,threshold,search_interval,true,verbosity);
-
-deCasteljauFindRootsWithZVerbose(pol,var,threshold,verbosity) :=
-  deCasteljauFindRootsGenStructVerbose(pol,var,threshold,true,verbosity);
-
-deCasteljauFindRootsGenStructVerbose(pol,var,threshold,integer_flag,verbosity) :=
-  deCasteljauFindRootsCauchyGenStructVerbose(pol,var,threshold,integer_flag,verbosity);
-
-deCasteljauFindRootsCauchyGenStructVerbose(pol,var,threshold,integer_flag,verbosity) :=
-  deCasteljauFindRootsGenIntGenStructVerbose(pol,var,threshold,false,integer_flag,verbosity);
-
-deCasteljauFindRootsGenIntGenStructVerbose(pol,var,threshold,search_interval,integer_flag,verbosity) :=
-  block([leftEnd,rightEnd,midPoint,n,sqPol,bCoeffList,pos,
-         resList,item,sgnCh,splitRes,c,k,count,gcdTest,normFact,searchLeftEnd, searchRightEnd],
+deCasteljauFindRootsGenIntGenStructCert(pol,var,threshold,a,b,integer_flag,modifCert) :=
+  block([leftEnd,rightEnd,midPoint,n,sqPol,bCoeff,pos,deg,
+         resList,item,sgnCh,splitRes,c,k,count,gcdTest,normFact,searchLeftEnd, searchRightEnd,mod,sg,certificate,P,resCert,bernIntSet,bsplit,lhsSplit, rhsSplit,bernInt],
   
-  pol : expandIf(pol),
 
-  if search_interval = false then
+  P : expandIf(pol),
+  deg : degree(P,var),
+
+
+  if a = false then
      (
-     n : discreteLogInBaseTwo(cauchyRootUpperBound(pol,var)),
-     searchLeftEnd : -2^n,
+     n : discreteLogInBaseTwo(cauchyRootUpperBound(P,var)),
+     searchLeftEnd : -(2^n),
      searchRightEnd : 2^n
-     )
+     ) /* end if */
   else
      (
-     searchLeftEnd : search_interval[1],
-     searchRightEnd : search_interval[2]
-     ),
+     searchLeftEnd : a,
+     searchRightEnd : b
+     ), /* end else */
 
-  sqPol : expand(factor(SQUARE_FREE_ALGORITHM(pol,var))), 
+  sqPol : expand(factor(squareFree(P,var))), 
   
-  resList : [],   
-  bCoeffList : [[bernsteinCoeffList(sqPol,var,searchLeftEnd,searchRightEnd),searchLeftEnd,searchRightEnd]],
+  resList : [],  
+  resCert : [],
+  if modifCert then ( 
+  bCoeff : bernsteinCoeffList(P,var,searchLeftEnd,searchRightEnd)
   
+     ) /* end if */
+ else ( 
+       bCoeff : bernsteinCoeffList(sqPol,var,searchLeftEnd,searchRightEnd)
+             ), /* end else */
+  sg: sgn(bCoeff[1]),
+  normFact : 0, 
+
+/* normFact is the multiplicative coefficient which makes the berstein coefficients integers*/
 
   if integer_flag then
      (
-     normFact : apply(sarag_lcm,map(denom,bCoeffList[1][1])),
-     if verbosity >= EXTRA then
-        print("non-normalized bCoeffList[1][1] : ", bCoeffList[1][1]),
-     if verbosity >= VERY then
-        print("normFact : ", normFact),
-     
-     bCoeffList : [[normFact*bCoeffList[1][1],
-                    bCoeffList[1][2],bCoeffList[1][3]]]
-     ),
+     normFact : apply(lcm,map(denom,bCoeff)),
+     bCoeff : normFact*bCoeff
+     ), /* end if */
   
 
-
-  count : 0,
-  while not(bCoeffList=[]) do
+  bernIntSet : [[[searchLeftEnd,searchRightEnd],normFact,bCoeff]],
+  certificate : true,
+  while not(bernIntSet=[]) and certificate do
     (
-    item : first(bCoeffList),
-    leftEnd : second(item),
-    rightEnd : third(item),
+    item : first(bernIntSet),
+    bernIntSet : rest(bernIntSet),
+    
+    bernInt : first(item),
+    bCoeff : third(item),    
 
-    if verbosity>=NORMAL then
-      print("deCasteljauIsolateRoots) Scanning open interval : ]",
-        leftEnd, ",", rightEnd, "["),
+    leftEnd : first(bernInt),
+    rightEnd : second(bernInt),
 
-    item : first(item),
-    bCoeffList : rest(bCoeffList),
-
-    sgnCh : signChanges(item),
-    if verbosity>=NORMAL then
-      print("deCasteljauIsolateRoots) Sign changes : ", sgnCh),
-    if (sgnCh = 1) and (rightEnd-leftEnd)<threshold then
+  if modifCert then 
+   (
+    if first(bCoeff)=0 then
+      (
+      certificate:false,
+      resCert:[false,[[leftEnd],sqPol],true,false]
+      )
+    else
+      ( 
+      if last(bCoeff)=0 then
        (
-       if verbosity>=EXTRA then
-          print("deCasteljauIsolateRoots) Bernstein coefficients : ", item ),
-       resList : endcons([leftEnd,
-                          rightEnd],resList),
-       if verbosity>=NORMAL then
-         (
-         print("deCasteljauIsolateRoots) Isolating open interval found : ]",
-               leftEnd, ",", rightEnd, "["),
-         count : count + 1,
-         print("deCasteljauIsolateRoots) Root count : ", count)
-         )
-       )
+       certificate:false,
+       resCert:[false,[[rightEnd],sqPol],true,false]
+       ) /* end if */
+     ) /* end else */
+    ), /* end if */
+    sgnCh : signChanges(bCoeff),
+   if (sgnCh = 1) and (rightEnd-leftEnd)<threshold then 
+
+        (if modifCert then      /* Loop which is useful for the function in the certificate file */
+         ((certificate : false),
+         resCert : [false,[[leftEnd,rightEnd],sqPol],true,false]
+               ) /* end if */
+         else 
+          resList : endcons([leftEnd,rightEnd],resList)
+            ) /* end if */
+    
     else 
-       (
+       ( 
+
        midPoint : (leftEnd+rightEnd)/2,
        if (sgnCh>=1) then
           (
           if subst(midPoint,var,pol)=0 then
              (
-             resList : endcons([midPoint],resList), 
-             if verbosity>=NORMAL then
-                (
-                print("deCasteljauIsolateRoots) Root found : ", midPoint).
-                count : count + 1,
-                print("deCasteljauIsolateRoots) Root count : ", count)
-                )
-             ),
-          splitRes : specialBernsteinSplit(item,leftEnd,rightEnd),
-          bCoeffList : append([[first(splitRes),leftEnd,midPoint],
-                               [second(splitRes),midPoint,rightEnd]],bCoeffList)
-          )
-       )
-    ),
-  return(isListSort(resList))
-  );
+             resList : endcons([midPoint],resList) 
+                          ), /* end if */
+          
+         bsplit : bernsteinSplitWithZ(bCoeff,leftEnd,rightEnd,midPoint),
+         lhsSplit : first(bsplit),
+
+        rhsSplit : second(bsplit),
+       
+        bernIntSet : endcons([[leftEnd,midPoint],
+                             normFact,lhsSplit],bernIntSet),
+        bernIntSet : endcons([[midPoint,rightEnd],
+                             normFact,rhsSplit],bernIntSet),
+
+        if rightEnd-midPoint<1 then 
+
+         ( normFact : normFact*2^deg ) /* end if */
+   
+
+
+                   ) /* end if */
+      else ( if modifCert then 
+               resCert : endcons([[leftEnd,rightEnd],normFact,bCoeff],resCert)
+               
+	      )  /* end else */
+       ) /* end else */
+    ), /* end while */
+  if certificate then (
+        if modifCert then
+            if isListCertSort(resCert)[1][3][1]>0 then 
+                  return([positive,compressCertificate(isListCertSort(resCert)),0,false,true])
+            else 
+                  return([negative,compressCertificate(isListCertSort(resCert)),0,false,true])
+        else
+        return([isListSort(resList),sqPol,false,false])
+         ) /* end if */
+  else 
+  return(resCert)
+  ); 
+ /* end proc */
 
 
 deCasteljauNumberOfRoots(pol,var) :=
   length(deCasteljauIsolateRoots(pol,var));  
 
+deCasteljauNumberOfRootsBetween(pol,var,a,b) :=
+  length(deCasteljauIsolateRootsBetween(pol,var,a,b));  
 
 /* Refine an open interval describing a unique real root */
 refineRoot(rootInterval,pol,var) :=
@@ -448,7 +477,7 @@ refineRoot(rootInterval,pol,var) :=
   else
     (
     resList : [],
-    sqPol : expand(factor(SQUARE_FREE_ALGORITHM(pol,var))),
+    sqPol : expand(factor(squareFree(pol,var))),
 
 
     bCoeffList : bernsteinCoeffList(sqPol,var,leftEnd,rightEnd),
@@ -460,8 +489,8 @@ refineRoot(rootInterval,pol,var) :=
       return([leftEnd,midPoint])
     else
       return([midPoint,rightEnd])
-    )
-);
+    ) /* end else */
+); /* end proc */
   
 
 
@@ -492,11 +521,9 @@ intermidiatePoint(lhs,rhs,poly,var) :=
 /* Sign or real roots */
 
 /* Sign of real roots */
-/* in an archimediean real closed field */
-deCasteljauRootsSign(isolListForP,p,q,var) :=
-  deCasteljauRootsSignVerbose(isolListForP,p,q,var,DEFAULT_VERBOSITY);
+/* in an archimedean real closed field */
 
-deCasteljauRootsSignVerbose(isolListForP,p,q,var,verbosity) := 
+deCasteljauRootsSign(isolListForP,p,q,var) := 
   block([sfP,sfQ,g,commonPtList,nonCommonPtList,commonInList,nonCommonInList,
          candList,nCom,sfPCoeffList,gCoeffList,candList,
          bound,i,l,c,k,
@@ -505,30 +532,7 @@ deCasteljauRootsSignVerbose(isolListForP,p,q,var,verbosity) :=
 
   p : expandIf(p),
   q : expandIf(q),
-
-
-  /* modular test for square-freeness */
-
-  /* BUGGY: Due to the behavious of "gcd" in Maxima */
-  /* the modular test has been commemted out */
-
-/*
-  modulus : MOD_TEST_PRIME,
-  if not(gcd(p,diff(p,var))=1) then
-    (
-    modulus : false,
-    sfP : SQUARE_FREE_ALGORITHM(p,var)
-    )
-  else
-    (
-    modulus : false,
-    sfP : p
-    ),
-*/
-
-  sfP : expand(factor(SQUARE_FREE_ALGORITHM(p,var))),
-  if verbosity>=EXTRA then
-    print("deCasteljauRootsSign) sfP : ", sfP),
+  sfP : expand(factor(squareFree(p,var))),  
   g : gcd(sfP,q),
 
   commonPtList : [],  /* In the book's notation : N(P) */
@@ -547,7 +551,7 @@ deCasteljauRootsSignVerbose(isolListForP,p,q,var,verbosity) :=
           commonPtList : endcons([isolListForP[i],sgnM],commonPtList)
        else
           nonCommonPtList : endcons([isolListForP[i],sgnM],nonCommonPtList)
-       )
+       ) /* end if */
     else
        (
 
@@ -558,8 +562,8 @@ deCasteljauRootsSignVerbose(isolListForP,p,q,var,verbosity) :=
                          bernsteinCoeffList(g,var,leftEnd,rightEnd)],
                          isolListForP[i]],
                          candList)
-       )
-    ),
+       ) /* end else */
+    ), /* end for */
 
   while not(candList=[]) do
     (
@@ -589,7 +593,7 @@ deCasteljauRootsSignVerbose(isolListForP,p,q,var,verbosity) :=
              commonPtList : endcons([[midPt],0],commonPtList)
            else 
              nonCommonPtList : endcons([[midPt],sgn(subst(midPt,var,q))],nonPtCommonList)
-           )
+           ) /* end if */
         else
            (
            bernSplitSfP : specialBernsteinSplit(bernSfP,leftEnd,rightEnd),
@@ -603,10 +607,11 @@ deCasteljauRootsSignVerbose(isolListForP,p,q,var,verbosity) :=
               candList : endcons([[bernSplitSfP[2],bernSplitG[2]],
                                 [midPt,rightEnd] 
                               ],candList)
-           )
+           ) /* end else */
 
-        )
-     ),
+        ) /* end else */
+     ), /* end while */
+
 /* second part */
   candList : nCom,
 
@@ -631,7 +636,7 @@ deCasteljauRootsSignVerbose(isolListForP,p,q,var,verbosity) :=
 
       nonCommonInList : endcons([[leftEnd,rightEnd],
                                sgn(bernQ[i])],nonCommonInList)
-      )
+      ) /* end if */
     else
       (
       midPt : (leftEnd+rightEnd)/2,
@@ -660,21 +665,18 @@ deCasteljauRootsSignVerbose(isolListForP,p,q,var,verbosity) :=
             candList : endcons([bernsteinCoeffList(sfP,var,midPt,rightEnd),
                              [midPt,rightEnd]
                             ],candList)
-         )
-      )
-    ),
+         ) /* end else */
+      ) /* end ele */
+    ), /* end if */
 
   return([[nonCommonPtList,nonCommonInList],[commonPtList,commonInList]])
-  );
+  ); /* end proc */
 
 
-deCasteljauSignsAtRoots(isolListForP,p,q,var) :=
-   deCasteljauSignsAtRootsVerbose(isolListForP,p,q,var,DEFAULT_VERBOSITY);
-
-deCasteljauSignsAtRootsVerbose(isolListForP,p,q,var,verbosity) := 
-  isListWithSignsSort(lambda([x],append(x[1][1],x[1][2],
-                    x[2][1],x[2][2]))(
-         deCasteljauRootsSignVerbose(isolListForP,p,q,var,verbosity)));
+deCasteljauSignsAtRoots(isolListForP,p,q,var) := 
+  isListWithSignsSort(lambda([l],append(l[1][1],l[1][2],
+                    l[2][1],l[2][2]))(
+         deCasteljauRootsSign(isolListForP,p,q,var)));
 
 
 /* --------------------------------------- */
@@ -709,7 +711,7 @@ removeSign(inList) :=
 
 /* Interval Intersection */
 intersectIn(inList1,inList2) := 
-  block([i,len1,len1,leftEnd1,rightEnd1,leftEnd2,rightEnd2,res],
+  block([i,len1,len1,len2, leftEnd1,rightEnd1,leftEnd2,rightEnd2,res],
 
   len1 : length(inList1),
   len2 : length(inList2),
@@ -736,33 +738,31 @@ intersectIn(inList1,inList2) :=
        (
        res : endcons([leftEnd2,min(rightEnd1,rightEnd2)],res),
        i : i + 1
-       )   
+       )   /* end if */
     else 
       if (leftEnd2<=leftEnd1) and
          (leftEnd1<=rightEnd2) then
          (
          res : endcons([leftEnd1,min(rightEnd1,rightEnd2)],res),
          i : i + 1
-         )
+         ) /* end if */
       else
          (
          print("impossible configuration"),
          return([])
-         )
-    ),
+         ) /* end else */
+    ), /* end while */
     return(res)
     
 
-  );  
+  );  /* end proc */
 
 
 
-/* Comparison of real roots */
+/* Evaluation of the signs of two polynomials at their roots */
 /* in an archimedean real closed field */
-deCasteljauCompareRoots(p,q,var) :=
-  deCasteljauCompareRootsVerbose(p,q,var,DEFAULT_VERBOSITY);
 
-deCasteljauCompareRootsVerbose(p,q,var,verosity) :=
+deCasteljauEvaluateSignsAtRoots(p,q,var):=
   block([l,isolP,isolQ,
          signComPtP,signComInP,signComPtQ,signComInQ,
          signNComPtP,signNComInP,signNComPtQ,signNComInQ,
@@ -796,13 +796,8 @@ deCasteljauCompareRootsVerbose(p,q,var,verosity) :=
 
 comIn : makeAsPt(intersectIn(signComAsInP,signComAsInQ)),
 return([comIn,signNComP,signNComQ])
-  );
+  ); /* end proc */
 
-compareRootsPrettyPrint(compareRootsOut) :=
-  isListWithSignsSort(
-      append(makelist([compareRootsOut[1][i],0,0],i,1,length(compareRootsOut[1])),
-             makelist([compareRootsOut[2][i][1],0,compareRootsOut[2][i][2]],i,1,length(compareRootsOut[2])),
-             makelist([compareRootsOut[3][i][1],compareRootsOut[3][i][2],0],i,1,length(compareRootsOut[3]))));
 
 /* Real root sample points */
 /* for an archimedean real closed field */
@@ -813,8 +808,7 @@ realSamplePointsARCF(polList) :=
     for j : 1 thru listSize do
       compRes : realRootComparisonARCF(p,q,var),
   return([0]) 
-  );
-
+  ); 
 
 
 

@@ -124,7 +124,7 @@ bernsteinMerge(lhs,rhs):=
 
 compressCertificate(certList) :=
   block([isList,resList,extBCoeff,firstItem,secondItem,degP,lhsNorm,
-         dnorm,ratnorm,leftEnd,rightEnd,middlePoint],
+         dnorm,ratnorm,leftEnd,rightEnd,middlePoint,merged],
     degP: length(certList[1][3]),
     resList : [],
     isList : certList,
@@ -161,15 +161,16 @@ compressCertificate(certList) :=
 
 /* Certification of positivity for a square free polynomial and */
 /* for a polynomial with no roots in the considered interval    */
-deCasteljauNoCheckCertificateBetweenVerbose(pol,var,
-                       search_interval,verbosity) :=
+deCasteljauNoCheckCertificateBetween(pol,var,
+                       search_interval) :=
   block([sfList,sfCert,i,j,intUnion,noCertificate,
          searchLeftEnd:search_interval[1],
          searchRightEnd:search_interval[2],
          sg,
          degP:degree(pol,var),
          res,bernIntSet,item,bernInt,noSubInt,
-         bcoeff,normFact,bsplit,leftEnd,rightEnd,middlePoint],
+         bcoeff,normFact,bsplit,leftEnd,rightEnd,middlePoint,bCoeff,
+lhsSplit, lhsNorm, rhsSplit, rhsNorm, ratnorm, dnorm, certificate,sgnCh],
 
   res : [],  
 
@@ -258,30 +259,28 @@ deCasteljauNoCheckCertificateBetweenVerbose(pol,var,
 
 
 /* Certification of positivity for a generic polynomial */
-deCasteljauCertificateBetweenVerbose(pol,var,search_interval,verbosity) :=
+deCasteljauCertificateBetween(pol,var,search_interval) :=
   block([sqFreeCert,sfCert,i,j,intUnion,noCertificate,
          res,sqFree,item,bernInt,noSubInt,
-         bcoeff,normFact,bsplit,leftEnd,rightEnd,middlePoint,exPol],
+         bcoeff,normFact,bsplit,leftEnd,rightEnd,middlePoint,exPol, searchLeftEnd, searchRightEnd],
 
   exPol:expandIf(pol),
   searchLeftEnd : first(search_interval),
   searchRightEnd : second(search_interval),
 
   sqFree: SQUARE_FREE_ALGORITHM(exPol,var),
-  sqFreeCert: deCasteljauNoCheckCertificateBetweenVerbose(sqFree,var,
-                                                    search_interval,verbosity),
+  sqFreeCert: deCasteljauNoCheckCertificateBetween(sqFree,var,
+                                                    search_interval),
        
   if first(sqFreeCert)=0 then
     (
     certificate: false,
-    if verbosity>=NORMAL then
-      print("no certificate"),
     return([0,sqFreeCert[2],sqFree])
     )
   else
     return(
-           deCasteljauNoCheckCertificateBetweenVerbose(exPol,var,
-           search_interval,verbosity)
+           deCasteljauNoCheckCertificateBetween(exPol,var,
+           search_interval)
            )
 
  );
