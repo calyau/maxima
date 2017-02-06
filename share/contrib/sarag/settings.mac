@@ -1,5 +1,5 @@
 /* Code by Fabrizio Caruso */
-
+/*modified by Alexandre Le Meur and Marie-Françoise Roy */
 /* Prime for modular square-freeness test */
 MOD_TEST_PRIME : 2;
 
@@ -18,23 +18,19 @@ NORM_ALGORITHM : lambda([x],ratexpand(x));
 NORM_ALGORITHM : lambda([x],rat(x));
 */
 
-/* Square-free algorithm */
-/* Standard possibilities: */
-/* squareFreeBuiltin       */
-/* squareFreeWithZ         */
-/* squareFreeWithQ         */
-SQUARE_FREE_ALGORITHM : lambda([x,y],squareFreeWithZ(x,y));
-
 /* Sign determination algorithm to be used in Thom encoding */
 /*
 THOM_SIGN_DET_ALG : naiveSignDetermination;
-*/
-THOM_SIGN_DET_ALG : smartSignDetermination; /* experimental! */
 
+THOM_SIGN_DET_ALG : smartSignDetermination;  experimental! */
+
+THOM_SIGN_DET_ALG : quickSignDetermination;
 
 
 /* Assume generic position for curves when studying the topology */
 ASSUME_GENERIC_POSITION : false;
+
+DRAW_TOPOLOGY : false;
 
 /* Warnings */
 WARNINGS : false;
@@ -82,12 +78,11 @@ SARAG_POINT_STYLE_NONCRITICAL : 1;
 /* unimplemented */
 SARAG_POINT_STYLE_AT_INFINITY : 1;
 
-
 /* default interval for the certificate of positivity */
 DEFAULT_LEFT_END : -1;
 DEFAULT_RIGHT_END : 1;
 
 /* compression of the certificate */
 COMPRESS_CERTIFICATE : true;
-
+ 
 

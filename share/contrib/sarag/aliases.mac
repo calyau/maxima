@@ -1,5 +1,5 @@
 /* Code by Fabrizio Caruso */
-
+/* Modified by Alexandre Le Meur and Marie-Françoise Roy */
 
 /* --------------------------------------------------- */
 /* High level aliases */
@@ -7,17 +7,22 @@
 
 /* --------------------------------------------------- */
 /* Determinant */
-det(A) := gaussDet(A); /* Bareiss is experimental */
+
+det(A):=bareissDet(A);
 
 elim(A) := gaussElim(A);
 
 /* --------------------------------------------------- */
 /* Characteristic polynomial */
+/* other methods : Gauss or Bareiss */
 
 charPol(A,var) := babyGiantCharPol(A,var);
 
 /* --------------------------------------------------- */
 /* Cauchy Index */
+
+/* The method chosen by default is the one with the subresultants */
+/* other methods : Signed Remainder Sequence */
 
 cauchyIndexBetween(q,p,var,a,b) :=
   sSubResCauchyIndexBetween(q,p,var,a,b);
@@ -25,152 +30,89 @@ cauchyIndexBetween(q,p,var,a,b) :=
 cauchyIndex(q,p,var) :=
   sSubResCauchyIndex(q,p,var);
 
+/* Tarski Query */
+
+/* The method chosen by default is the one with the subresultants */
+/* other methods : Signed Remainder Sequence */
+
 tarskiQueryBetween(q,p,var,a,b) :=
   sSubResTarskiQueryBetween(q,p,var,a,b);
 
 tarskiQuery(q,p,var) :=
   sSubResTarskiQuery(q,p,var);
 
-numberOfRootsBetween(p,var,a,b) :=
-  sSubResNumberOfRootsBetween(p,var,a,b);
+/* isolateRoots */
 
-sSubResNumberOfRoots(p,var) :=
-  sSubResNumberOfRoots(p,var);
-  /* why have that */
-
-numberOfRoots(p,var) :=
-  sSubResNumberOfRoots(p,var);
-
-
-
-findRoots(pol,var,threshold) :=
-  deCasteljauFindRoots(pol,var,threshold);
-
-findRootsVerbose(pol,var,threshold,verbosity) :=
-  deCasteljauFindRootsVerbose(pol,var,threshold,verbosity);
-  /* should not we suppress it ? */
-
+/* The Method used by default is the De Casteljau's method*/
+/* other method : Monomial (not yet working) */
 
 isolateRoots(pol,var) :=
   deCasteljauIsolateRoots(pol,var);
 
+isolateRootsBetween(pol,var,a,b) :=
+  deCasteljauIsolateRootsBetween(pol,var,a,b);
 
-isolateRootsVerbose(pol,var,verbosity) :=
-  deCasteljauIsolateRootsVerbose(pol,var,verbosity);
-    /* should not we suppress it ? */
+deCasteljauIsolateRoots(pol,var) :=
+  deCasteljauIsolateRootsWithZ(pol,var); /* isolateRoots is defined with Z by default */
+
+deCasteljauIsolateRootsBetween(pol,var,a,b) :=
+  deCasteljauIsolateRootsBetweenWithZ(pol,var,a,b);
+
+isolateRootsBetweenCert(pol,var,a,b) :=
+  deCasteljauIsolateRootsBetweenWithZCert(pol,var,a,b);
+
+/* findRoots */
+
+/* The Method used by default is the De Casteljau's method*/
+/* other method : Monomial (not yet working) */
+
+findRoots(pol,var,threshold) :=
+  deCasteljauFindRoots(pol,var,threshold);
+
+findRootsBetween(pol,var,threshold,a,b) :=
+deCasteljauFindRootsBetween(pol,var,threshold,a,b);
+
+deCasteljauFindRoots(pol,var,threshold) :=
+  deCasteljauFindRootsWithZ(pol,var,threshold); /* findRoots is defined with Z by default */
+
+deCasteljauFindRootsBetween(pol,var,threshold,a,b) :=
+  deCasteljauFindRootsBetweenWithZ(pol,var,threshold,a,b);  /* findRoots is defined with Z by default */
+
+/* numberOfRoots */
+
+/* The Method used by default is the De Casteljau's method*/
+/* other methods : Signed Remainder  and Signed Subresultants and Monomial (not yet working) */
+
+numberOfRootsBetween(p,var,a,b) :=
+  deCasteljauNumberOfRootsBetween(p,var,a,b);
+
+numberOfRoots(p,var) :=
+  sSubResNumberOfRoots(p,var);
+
+/* signsAtRoots */
+
+/* The Method used by default is the De Casteljau's method*/
+/* other method : Monomial (not yet working) */
 
 signsAtRoots(isolListForP,p,q,var) :=
   deCasteljauSignsAtRoots(isolListForP,p,q,var);
 
-signsAtRootsVerbose(isolListForP,p,q,var,verbosity) :=
-  deCasteljauSignsAtRootsVerbose(isolListForP,p,q,var,verbosity);
-    /* should not we suppress it ? */
-
 rootsSign(isLst,isPol,sgnPol,var) :=
   deCasteljauRootsSign(isLst,isPol,sgnPol,var);
 
-compareRoots(p,q,var) :=
-  deCasteljauCompareRoots(p,q,var);
+evaluateSignsAtRoots(p,q,var) :=
+  deCasteljauEvaluateSignsAtRoots(p,q,var);
 
-/* --------------------------------------------------- */
-/* Sign determination */
+/* Certificate */
 
-signDetermination(polList,ptSet,sqAlg,var) :=
-  smartSignDetermination(polList,ptSet,sqAlg,var);
-
-signDeterminationVerbose(polList,ptSet,sqAlg,var,verbosity) :=
-  smartSignDeterminationVerbose(polList,ptSet,sqAlg,var,verbosity);
-    /* should not we suppress it ? */
+/* The Method used by default is the De Casteljau's method*/
 
 
-/* --------------------------------------------------- */
-/* Dummy variables                                     */
-
-/*what  is this needed for ?*/
-
-
-/* Extra x */
-charPolDummy(m) :=
-  charPol(m,x);
-
-sSubResDummy(p,q) :=
-  sSubRes(p,q,x);
-
-sRemCauchyIndexDummy(q,p) :=
-  sRemCauchyIndex(q,p,x);
-
-sRemTarskiQueryDummy(q,p) :=
-  sRemTarskiQuery(q,p,x);
-
-cauchyIndexDummy(q,p) :=
-  cauchyIndex(q,p,x);
-
-tarskiQueryDummy(q,p) :=
-  tarskiQuery(q,p,x);
-
-numberOfRootsDummy(p) :=
-  numberOfRoots(p,x);
-
-posNegDiffDummy(p) :=
-  posNegDiff(p,x);
-
-sSubResNumberOfRootsDummy(p) :=
-  sSubResNumberOfRoots(p,x);
-
-isolateRootsDummy(pol) :=
-  isolateRoots(pol,x);
-
-deCasteljauCompareRootsDummy(p,q) :=
-  deCasteljauCompareRoots(p,q,x);
-
-thomEncodingDummy(p) :=
-  thomEncoding(p,x);
-
-thomCompareDummy(p,q) :=
-  thomCompare(p,q,x);
-
-cauchyRootUpperBoundDummy(p) :=
-  cauchyRootUpperBound(p,x);
-
-cauchyRootLowerBoundDummy(p) :=
-  cauchyRootLowerBound(p,x);
-
-primeCauchyRootUpperBoundDummy(p) :=
-  primeCauchyRootUpperBound(p,x);
-
-primeCauchyRootLowerBoundDummy(p) :=
-  primeCauchyRootLowerBound(p,x);
-
-
-/* Extra x and first */
-sRemDummyFirst(p,q) :=
-  first(sRem(q,p,x));
-
-sSubResDummyFirst(p,q) :=
-  first(sSubRes(p,q));
-
-/* Extra array2singleList */
-getCoeffFromNewtonList(ns) :=
-  array2singleList(getCoeffFromNewton(ns));
-
-/* Maybe Temporary definitions */
-topology(pol,x,y) :=
-  archimedianTopology(pol,deCasteljauIsolateRoots,x,y);
-
-topologyVerbose(pol,x,y,verbosity) :=
-  archimedianTopologyVerbose(pol,deCasteljauIsolateRoots,x,y,verbosity);
-
-
-
-/* Certificate of positivity */
-
-
-
-
-sqFreeCertificateVerbose(pol,var,verbosity):=
-  deCasteljauSqFreeCertificateBetweenVerbose(pol,var,
-                               [DEFAULT_LEFT_END,DEFAULT_RIGHT_END],verbosity);
-
+/* Certificate of positivity from MAXIMA 5.39.0*/
+/*
+sqFreeCertificate(pol,var,verbosity):=
+  deCasteljauSqFreeCertificateBetween(pol,var,                           [DEFAULT_LEFT_END,DEFAULT_RIGHT_END]);
+*/
   
 sqFreeCertificate(pol,var) :=
   deCasteljauSqFreeCertificateBetween(pol,var,[DEFAULT_LEFT_END,DEFAULT_RIGHT_END]);
@@ -186,23 +128,68 @@ sqFreeCertificateBetween(pol,var,search_interval) :=
 noCheckCertificateBetween(pol,var,search_interval) :=
   sqFreeCertificateBetween(pol,var,search_interval);
 
+/*
 deCasteljauSqFreeCertificateBetween(pol,var,search_interval) :=
   deCasteljauSqFreeCertificateBetweenVerbose(pol,var,search_interval,DEFAULT_VERBOSITY);
  
-deCasteljauSqFreeCertificateBetweenVerbose(pol,var,
-                                           search_interval,verbosity):=
-    deCasteljauNoCheckCertificateBetweenVerbose(pol,var,
-                                                search_interval,verbosity);
+deCasteljauSqFreeCertificateBetweenVerbose(pol,var, search_interval,verbosity):=
+    deCasteljauNoCheckCertificateBetweenVerbose(pol,var,                                        search_interval,verbosity);
+*/
 
+certificate([args]) := block([pol,var,interval],
+pol : first(args),
+var : second(args),
+if length(args) = 3 then
+  interval : third(args)
+else
+  interval : [DEFAULT_LEFT_END, DEFAULT_RIGHT_END],
+if length(args) = 4 then
+  interval : [third(args), fourth(args)],
+return (deCasteljauCertificateBetween(pol,var,interval))
+);
 
+/*
 certificate(pol,var) :=
-  deCasteljauCertificateBetween(pol,var,[DEFAULT_LEFT_END,DEFAULT_RIGHT_END]);
+deCasteljauCertificateBetween(pol,var,[DEFAULT_LEFT_END,DEFAULT_RIGHT_END]);
 
 certificateVerbose(pol,var,verbosity) :=
  deCasteljauCertificateBetweenVerbose(pol,var,[DEFAULT_LEFT_END, DEFAULT_RIGHT_END],verbosity);
+*/
 
 certificateBetween(pol,var,search_interval):=
   deCasteljauCertificateBetween(pol,var,search_interval);
 
+/*
 deCasteljauCertificateBetween(pol,var,search_interval) :=
   deCasteljauCertificateBetweenVerbose(pol,var,search_interval,DEFAULT_VERBOSITY);
+*/
+
+/* --------------------------------------------------- */
+/* Sign determination */
+
+signDetermination(polList,ptSet,sqAlg,var) :=
+  quickSignDetermination(polList,ptSet,sqAlg,var);
+
+/* Sign determination with cardinals */
+
+signDeterminationwithcardinals(polylist,P,TaQu,var):=
+quickSignDeterminationwithcardinals(polylist,P,TaQu,var);
+
+/* Invertibility Query */
+
+invertibilityQuery(q,p,var) :=
+  gcdInvertibilityQuery(q,p,var);
+
+/* Invertibility determination */
+
+zerononzeroDetermination(polList,ptSet,sqAlg,var) :=
+  quickZerononzeroDetermination(polList,ptSet,sqAlg,var);
+
+zerononzeroDeterminationwithcardinals(polylist,P,Qu,var):=
+quickZerononzeroDeterminationwithcardinals(polylist,P,Qu,var);
+  
+
+/*  archimedean method */
+topology(pol,x,y) :=
+  archimedeanTopology(pol,isolateRoots,x,y);
+
