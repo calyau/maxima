@@ -150,7 +150,7 @@ SolveSysVerboseOpt(Gpoly,unkPar,numUnkPar,indet,mode) :=
 /* indet : */
 SolveZSysVerboseOpt(Gpoly,unkPar1,numUnkPar1,unkPar2,numUnkPar2,indet,
                     solver,mode) :=
-   block([sol,dim,base,i,j,baseElem],
+   block([sol,dim,base,i,j,baseElem,sys],
 
    if mode>=verbose then
      (
