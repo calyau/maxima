@@ -156,7 +156,9 @@ parGosperVerboseOpt(f,k,n,ZAnsatzDegree,mode) :=
    i,
    GosperSol,
    test_Gpoly,
-   constantPart
+   constantPart,
+   GSol,
+   gfP
    ],   
 
 
