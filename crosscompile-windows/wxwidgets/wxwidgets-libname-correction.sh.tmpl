@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Crosscompiled wxWidgets generates (sometimes...) libraries with the suffix 
+# libXYZ-i686-w64-mingw32.a, (in 64 bit case: libXYZ-x86_64-w64-mingw32.a)
+# but i686-w64-mingw32-msw-unicode-static-3.0 --libs
+# does not contain this suffix.
+
+# correct the names of the generated libraries
+# (libXYZ-i686-w64-mingw32.a => libXYZ.a)
+
+cd "@CMAKE_BINARY_DIR@/wxwidgets/wxwidgets-prefix/src/wxwidgets-build/lib"
+for i in *@HOST@.a ; do 
+    cp $i $(echo $i | sed s/-@HOST@//) ; 
+done
+
