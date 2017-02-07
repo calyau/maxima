@@ -15,21 +15,17 @@ set(WXWIDGETS_MD5   "e20c14bb9bf5d4ec0979a3cd7510dece")
 
 set(WXWIDGETS_URL "https://github.com/wxWidgets/wxWidgets/releases/download/v${WXWIDGETSVERSION}/wxWidgets-${WXWIDGETSVERSION}.tar.bz2")
 
-# work around a problem, where wxwidgets names the libraries wrong on 32 bit
+# work around a problem, where wxwidgets names the libraries wrong
 # e.g. libwx_baseu-3.1-i686-w64-mingw32.a instead of libwx_baseu-3.1.a
-# the --build option should not be needed, but solves the problem
-if(BUILD_64BIT)
-    set(WXLIBRARYWORKAROUND "")
-else()
-    set(WXLIBRARYWORKAROUND "--build=${HOST}")
-endif()
+configure_file("${CMAKE_SOURCE_DIR}/wxwidgets/wxwidgets-libname-correction.sh.tmpl" "${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-libname-correction.sh")
 
 # Build wxWidgets static library (required for wxMaxima)
 externalproject_add(wxwidgets
   URL "${WXWIDGETS_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${WXWIDGETS_MD5}
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/configure --disable-shared --disable-compat28 --with-zlib=builtin --with-libjpeg=builtin --without-libtiff --with-libpng=builtin --with-expat=builtin --host=${HOST} ${WXLIBRARYWORKAROUND}
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/configure --disable-shared --disable-compat28 --with-zlib=builtin --with-libjpeg=builtin --without-libtiff --with-libpng=builtin --with-expat=builtin --host=${HOST}
   BUILD_COMMAND $(MAKE)
+        COMMAND ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-libname-correction.sh
   INSTALL_COMMAND ""
 )
