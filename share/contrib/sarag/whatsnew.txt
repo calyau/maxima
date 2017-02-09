@@ -21,11 +21,13 @@ Remark: When DRAW_TOPOLOGY set to true and you compute a topology, you will need
 
 5. New "revRowsCount" function (sign change after i-th row switch) from Maxima version.
 
-6. Fix of many local variables that were not declared as such.
+6. Verbosity parameters have been removed in almost of functions.
 
-7. Removed unused files (examples.mac, topology_examples.mac, whichversion.txti, etc.)
+7. Fix of many local variables that were not declared as such.
 
-8. Fix of multiple mispellings.
+8. Removed unused files (examples.mac, topology_examples.mac, whichversion.txti, etc.)
+
+9. Fix of multiple mispellings.
 
 ---------------------------------------------------------
 ---------------------------------------------------------
