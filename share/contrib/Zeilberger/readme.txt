@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------
-ZEILBERGER (Version 4.0)
+ZEILBERGER (Version 4.1.1)
 by Fabrizio Caruso
 --------------------------------------------------------------------------
 Implementation Zeilberger's algorithm for
@@ -26,9 +26,12 @@ Università di Pisa (Italy)
 at IRMAR, 
 Université de Rennes 1.
 
-[Version 4.0] (June 2006) 
+[Version 4.0 - 4.1] (June 2006) 
 at  Dipartimento di Matematica "L. Tonelli",
 Università di Pisa (Italy) 
+
+[Version 4.1.1] (February 2017)
+by Fabrizio Caruso (no academic affiliation)
 
 --------------------------------------------------------------------------
 DESCRIPTION OF THE PROBLEMS
@@ -231,6 +234,8 @@ possible inputs for "parGosper", i.e.
 each element of the list is a quadruple 
 of the form: "[F_n,k,k,n,order]".
 The level of details shown depend on "zb_prove_detail".
+
+IMPORTANT: This function is testing its own result.
 
 Remark: 
 The new version of the package includes some tests for "zb_test"

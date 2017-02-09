@@ -1,3 +1,11 @@
+WHAT'S NEW (Version 4.1.1)
+
+(i) clean-up all local variables that were not declared as such
+
+(2) make linear solver silent by default
+
+----------------------------------------------------------------------------
+
 WHAT'S NEW (Version 4.1)
 
 (Only minor aesthetic changes that make the use
@@ -33,7 +41,8 @@ and some others that test the result produced by
 (2) "zb_prove" proves the result of "parGosper" and "Zeilberger"
 (3) "zb_meaning" writes down the recurrence corresponding to
 the output of "parGosper" and "Zeilberger"
-(4) "zb_test" performs a test on a list of inputs for "parGosper"
+(4) "zb_test" performs a test on a list of inputs for "parGosper".
+REMARK: This is a sort of META-test because the test is checking its own result, in that it is computing a formal proof (certificate) of the result.
 
 ----------------------------------------------------------------------------
 WHAT'S NEW (Version 3.0)
