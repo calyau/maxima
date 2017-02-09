@@ -27,7 +27,7 @@ Remark: When DRAW_TOPOLOGY set to true and you compute a topology, you will need
 
 8. Removed unused files (examples.mac, topology_examples.mac, whichversion.txti, etc.)
 
-9. Fix of multiple mispellings.
+9. Fix of multiple misspellings.
 
 ---------------------------------------------------------
 ---------------------------------------------------------
