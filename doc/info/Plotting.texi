@@ -235,10 +235,9 @@ section on Plotting Options.
 
 This variable stores the name of the command used to run the gnuplot
 program when the plot format is @code{gnuplot}. Its default value is
-"wgnuplot" in Windows and "gnuplot" in other systems. If the gnuplot
-program is not found unless you give its complete path or if you want
-to try a different version of it, you may change the value of this
-variable. For instance,
+"gnuplot". If the gnuplot program is not found unless you give its
+complete path or if you want to try a different version of it, you
+may change the value of this variable. For instance,
 
 @c ===beg===
 @c gnuplot_command: "/usr/local/bin/my_gnuplot"$
