@@ -292,3 +292,85 @@ a[123];
 
 foo [baz];
 789;
+
+/* bug reported to mailing list 2017-02-02: "Structs broken?" */
+
+(kill (all),
+ reset (),
+ defstruct (foo (a, b)),
+ bar : new (foo),
+ aa : make_array (fixnum, 6),
+ bar@a : aa,
+ 0);
+0;
+
+(bar@a[4] : 123,
+ listarray (aa));
+[0, 0, 0, 0, 123, 0];
+
+?arrayp (bar@a);
+true;
+
+listarray (bar@a);
+[0, 0, 0, 0, 123, 0];
+
+(bb : make_array (fixnum, 6),
+ f(i) := if i = 1 then aa elseif i = 2 then bb,
+ 0);
+0;
+
+(f(2)[5] : 456,
+ listarray (bb));
+[0, 0, 0, 0, 0, 456];
+
+?arrayp (f(2));
+true;
+
+listarray (f(2));
+[0, 0, 0, 0, 0, 456];
+
+(l : [aa, bb],
+ 0);
+0;
+
+(l[2][1] : 789,
+ listarray (bb));
+[0, 789, 0, 0, 0, 456];
+
+?arrayp (l[2]);
+true;
+
+listarray (l[2]);
+[0, 789, 0, 0, 0, 456];
+
+(h1[mumble] : aa,
+ h1[blurf] : bb,
+ 0);
+0;
+
+(h1[mumble][3] : 333,
+ listarray (aa));
+[0, 0, 0, 333, 123, 0];
+
+?arrayp (h1[mumble]);
+true;
+
+listarray (h1[mumble]);
+[0, 0, 0, 333, 123, 0];
+
+(use_fast_arrays : true,
+ h2[mumble] : aa,
+ h2[blurf] : bb,
+ 0);
+0;
+
+(h2[blurf][2] : 555,
+ listarray (bb));
+[0, 789, 555, 0, 0, 456];
+
+?arrayp (h2[blurf]);
+true;
+
+listarray (h2[blurf]);
+[0, 789, 555, 0, 0, 456];
+

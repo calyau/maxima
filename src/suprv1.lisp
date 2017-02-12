@@ -666,7 +666,8 @@
   (cond
     ((symbolp name) name)
     ((stringp name)
-     (getalias (or (getopr0 name) (implode (cons #\$ (coerce name 'list))))))))
+     (getalias (or (getopr0 name) (implode (cons #\$ (coerce name 'list))))))
+    (t name)))
 
 (defmspec $stringout (x)
   (setq x (cdr x))

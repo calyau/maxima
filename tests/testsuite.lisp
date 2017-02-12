@@ -52,7 +52,7 @@
         "rtest_abs"
         ((mlist simp) "rtest_taylor" 88 91 94 99 123 124)
         ((mlist simp) "rtest_dot")
-        "rtest_mset"
+        ((mlist) "rtest_mset" 110 112)
         "rtest_boolean"
         "rtest_round"
         ((mlist simp) "rtest_map" 2 3 4)

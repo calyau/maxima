@@ -1894,7 +1894,7 @@ wrapper for this."
 		  (if (> (aref (symbol-array ary) 1) (aref (symbol-array ary) 0))
 		      (arraysize fun (* 2 (aref (symbol-array ary) 0))))
 		  r)
-		 ((and (eq fun 'mqapply) (mxorlistp (setq ary (meval (cadr l))))
+		 ((and (eq fun 'mqapply) (or (mxorlistp (setq ary (meval (cadr l)))) (arrayp ary))
 		       (prog2
 			   (setq mqapplyp t l (cdr l))
 			   nil)))
