@@ -1174,9 +1174,9 @@ pdf_binomial(x,n,p) :=
   elseif sign(x) = 'neg or sign(n-x) = 'neg or numberp(x) and x-floor(x) > 0
      then 0
   elseif sign(p) = 'zero
-     then if sign(x) = 'zero then 1 else 0
-  elseif float(p)=1.0
-     then if float(x)=float(n) then 1 else 0
+     then kron_delta(x,0)
+  elseif sign(1-p) = 'zero
+     then kron_delta(x,n)
      else binomial(n,x)*p^x*(1-p)^(n-x) $
 
 /* R: pbinom(x,n,p) */
@@ -1352,7 +1352,16 @@ random_poisson(m,[num]) :=
 /*           BERNOULLI DISTRIBUTION            */
 /* Bernoulli(p) is equivalent to binomial(1,p) */
 
-pdf_bernoulli(x,p):= pdf_binomial(x,1,p)$
+pdf_bernoulli(x,p) :=
+  if maybe(p >= 0 and p <= 1) = false
+     then error("pdf_bernoulli: p must be a probability")
+  elseif sign(x) = 'neg or sign(1-x) = 'neg or numberp(x) and x-floor(x) > 0
+     then 0
+  elseif sign(p) = 'zero
+     then kron_delta(x,0)
+  elseif sign(1-p) = 'zero
+     then kron_delta(x,1)
+     else p^x*(1-p)^(1-x) $
 
 cdf_bernoulli(x,p):= cdf_binomial(x,1,p)$
 
