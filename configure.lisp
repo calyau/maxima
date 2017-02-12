@@ -32,7 +32,7 @@
 (defun read-with-default (prompt default)
   (format t "~a [~a]: " prompt default)
   (terpri)
-  (let ((response (read-line)))
+  (let ((response (string-right-trim '(#\Return) (read-line))))
     (if (string= response "") default response)))
 
 
@@ -64,7 +64,7 @@
            (format t "WARNING: No version information found.~%~%"))
          version)
       (when (search "AC_INIT([maxima]," line)
-        #+openmcl (setq line (string-trim '(#\Return) line))
+        (setq line (string-trim '(#\Return) line))
         (setq temp
               (replace-substring line "AC_INIT([maxima], [" ""))
         (setq version
