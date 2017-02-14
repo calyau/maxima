@@ -29,7 +29,7 @@ if(USE_WXMAXIMA_GIT)
               COMMAND $(MAKE) wxMaxima.win
        INSTALL_COMMAND ""
     )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima-git/wxmaxima-git-prefix/src/wxmaxima-git-build/wxMaxima/ DESTINATION wxMaxima)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git-build/wxMaxima/ DESTINATION wxMaxima)
 else()
     externalproject_add(wxmaxima
         URL "${WXMAXIMA_URL}"
