@@ -86,11 +86,10 @@ SARAG with the only exception of plotting
 The latest version of Maxima is available on line at
 http://maxima.sourceforge.net/
 
-- GNUPLOT (3.7.x, 4.0.x or above)
+- GNUPLOT (5.0 or above for SARAG 1.3 and 3.7.x, 4.0.x for previous versions of SARAG)
 The function "drawTopology" in this library uses 
 Gnuplot for plotting graphs
-and it has been tested successfully on Gnuplot 3.7.x 
-and 4.0.x.
+and it has been tested successfully on Gnupolot 5.0.
 
 
 ---------------------------------------------------------------
@@ -880,8 +879,8 @@ Main functions
 INPUT : a square free polynomial P in x and y, 
 algorithm "isolAlg" for the
 isolation of real roots in an archimedean real closed field
-OUTPUT : a couple containing 
 FLAG: "DRAW_TOPOLOGY" (set to false by default) when set to true it will trigger "drawTopology" to display the topology diagram automatically. Remark: if a diagram is displayed, you need to close the pop-up window to get the result. 
+OUTPUT : a couple containing 
 
 i) the number "a" of changes of 
 system of coordinates in order to obtain a 
@@ -897,10 +896,10 @@ ii.1) the numbers describe the number of intersections
 of the curve with projections to the x-axis in intervals
 between critical points
 
-ii.2) the couples contain:
-ii.2.1) the number of intersections
+ii.2) the couples (numInt, critPos) contain:
+ii.2.1) the number of intersections numInt
 with projections to the x-axis on critical points
-ii.2.2) the position of the critical on the projection
+ii.2.2) the position critPos of the critical point on the projection
 (in bottom-up order).
 
 
