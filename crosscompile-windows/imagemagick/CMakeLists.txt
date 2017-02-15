@@ -9,13 +9,13 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(IMAGEMAGICKVERSION "7.0.4-8-portable-Q16")
+set(IMAGEMAGICKVERSION "7.0.4-9-portable-Q16")
 
 if(BUILD_64BIT)
-    set(IMAGEMAGICK_MD5 "e3468b8dfb71b5ee8c67390ccd402817")
+    set(IMAGEMAGICK_MD5 "b58435c2bd6ceb8f4c5afa70c3ea0880")
     set(IMAGEMAGICK_URL "https://www.imagemagick.org/download/binaries/ImageMagick-${IMAGEMAGICKVERSION}-x64.zip")
 else()
-    set(IMAGEMAGICK_MD5 "ee4edf63d9dcdbd5a8906329043da816")
+    set(IMAGEMAGICK_MD5 "0c2f3dcb4d1fc5e04e851c9126719362")
     set(IMAGEMAGICK_URL "https://www.imagemagick.org/download/binaries/ImageMagick-${IMAGEMAGICKVERSION}-x86.zip")
 endif()
 
