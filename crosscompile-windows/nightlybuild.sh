@@ -25,7 +25,7 @@ echo -n "Wxmaxima GIT Version: ">>$BUILDLOG
 (cd wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git ; git describe) >>$BUILDLOG
 echo -n "Build date and time (UTC): " >>$BUILDLOG
 date --utc >>$BUILDLOG
-cp $BUILDLOG maxima-current-win32.exe /tmp
+cp $BUILDLOG maxima-clisp-sbcl-current-win32.exe ~
 cd ..
 
 BUILDLOG=buildlog-win64
@@ -45,6 +45,6 @@ echo -n "Wxmaxima GIT Version: ">>$BUILDLOG
 (cd wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git ; git describe) >>$BUILDLOG
 echo -n "Build date and time (UTC): " >>$BUILDLOG
 date --utc >>$BUILDLOG
-cp $BUILDLOG maxima-current-win64.exe /tmp
+cp $BUILDLOG maxima-clisp-sbcl-current-win64.exe ~
 cd ..
 
