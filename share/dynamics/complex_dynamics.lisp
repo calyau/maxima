@@ -50,7 +50,7 @@
         (setq file-name (plot-file-path output-file))
       (setq file-name
 	    (plot-file-path
-	     (format nil "maxout.~(~a~)"
+	     (format nil "maxout~d.~(~a~)" (getpid)
 		     (ensure-string (getf options :plot_format))))))
 
     (unless (getf options :yx_ratio) (setf (getf options :same_xy) t))
@@ -122,7 +122,7 @@
         (setq file-name (plot-file-path output-file))
         (setq file-name
               (plot-file-path
-               (format nil "maxout.~(~a~)"
+               (format nil "maxout~d.~(~a~)" (getpid)
                        (ensure-string (getf options :plot_format))))))
 
     (unless (getf options :yx_ratio) (setf (getf options :same_xy) t))
