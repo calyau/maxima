@@ -665,13 +665,16 @@ thomComm(pol,var,extThomEnc) :=
 
 /* Root Comparison */
 thomCompare(p,q,var) :=
-  block([pSign,qSign],
+  block([pSign,qSign, exP, exQ],
 
-  pSign : thomSort(extThomEncoding(p,q,var)),
+  exP: expandIf(p),
+  exQ: expandIf(q),
 
-  qSign : thomSort(extThomEncoding(q,p,var)),
+  pSign : thomSort(extThomEncoding(exP,exQ,var)),
 
-  return(extThomMerge(pSign,degree(p,var),qSign,degree(q,var)))
+  qSign : thomSort(extThomEncoding(exQ,exP,var)),
+
+  return(extThomMerge(pSign,degree(exP,var),qSign,degree(exQ,var)))
 
   ); /* end proc */
 
