@@ -1,0 +1,22 @@
+y: [1d0, 0d0, 0d0];
+t: 0d0;
+rtol : 1d-4;
+atol: [1d-6, 1d-10, 1d-6];
+istate: 1;
+mf: 21;
+
+f1: -.04d0*y1 + 1d4*y2*y3;
+f3: 3d7*y2*y2;
+fex: [f1, -f1-f3, f3];
+t:0d0;
+tout:.4d0;
+
+result :[];
+state : dlsode_init(fex, mf);
+for k : 1 thru 12 do
+  block([],
+    /*result : dlsode_aux(['t,y1,y2,y3], fex, y, t, tout, rtol, atol, istate, mf),*/
+    result: dlsode(['t,y1,y2,y3], fex, y, t, tout, rtol, atol, istate, state),
+    printf(true, "At t = ~12,4,2e   y = ~{~14,6,2e~}~%", result[1], result[2]),
+    istate = result[3],
+    tout : tout * 10);
