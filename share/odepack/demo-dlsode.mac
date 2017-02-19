@@ -15,8 +15,7 @@ result :[];
 state : dlsode_init(fex, mf);
 for k : 1 thru 12 do
   block([],
-    /*result : dlsode_aux(['t,y1,y2,y3], fex, y, t, tout, rtol, atol, istate, mf),*/
     result: dlsode(fex, ['t,y1,y2,y3], y, t, tout, rtol, atol, istate, state),
     printf(true, "At t = ~12,4,2e   y = ~{~14,6,2e~}~%", result[1], result[2]),
-    istate = result[3],
+    istate : result[3],
     tout : tout * 10);
