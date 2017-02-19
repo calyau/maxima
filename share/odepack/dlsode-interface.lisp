@@ -1,6 +1,9 @@
 (in-package #:maxima)
 
 (defun $dlsode_init (f mf)
+  ;; Verify values of mf.
+  (unless (member mf '(10 21 22) :test #'eql)
+    (merror "MF must be 10, 21, or 22"))
   (let* ((neq (length (cdr f)))
 	 (lrw (ecase mf
 		(10
@@ -15,20 +18,31 @@
 		 (+ 20 neq))))
 	 (iwork (make-array liw :element-type 'f2cl-lib:integer4)))
     (make-mlist
-	  (make-mlist '$mf mf)
-	  (make-mlist '$neq neq)
-	  (make-mlist '$lrw lrw)
-	  (make-mlist '$liw liw)
-	  (make-mlist '$rwork rwork)
-	  (make-mlist '$iwork iwork))))
+     (make-mlist '$mf mf)
+     (make-mlist '$neq neq)
+     (make-mlist '$lrw lrw)
+     (make-mlist '$liw liw)
+     (make-mlist '$rwork rwork)
+     (make-mlist '$iwork iwork))))
 
-(defun $dlsode (vars f init-y tt tout rtol atol istate state)
+(defun $dlsode (f vars init-y tt tout rtol atol istate state)
   (let ((mf ($assoc '$mf state))
 	(neq ($assoc '$neq state))
 	(lrw ($assoc '$lrw state))
 	(liw ($assoc '$liw state))
 	(rwork ($assoc '$rwork state))
 	(iwork ($assoc '$iwork state)))
+    ;; Verify that we got something from state.  (Do we need more validation?)
+    (unless (and mf neq lrw liw rwork iwork)
+      (merror "State appears to be invalid"))
+    ;; Make sure neq is consistent with the number of elements in f
+    ;; and vars
+    (unless (= neq ($length f))
+      (merror "Expected ~M equations but got ~M: ~M"
+	      neq ($length f) f))
+    (unless (= (1+ neq) ($length vars))
+      (merror "Expected ~M variables but go ~M: ~M"
+	      (1+ neq) ($length vars) vars))
     (let* ((ff (compile nil (coerce-float-fun f vars)))
 	   (fjac (compile nil
 			  (coerce-float-fun
@@ -122,13 +136,13 @@
 		(list* '(mlist)
 		       (coerce y-array 'list))
 		ret-istate
-		(list '(mlist)
-		      (list '(mequal) '$n_steps (aref iwork 10))
-		      (list '(mequal) '$n_f_eval (aref iwork 11))
-		      (list '(mequal) '$n_j_eval (aref iwork 12))
-		      (list '(mequal) '$method_order (aref iwork 13))
-		      (list '(mequal) '$len_rwork (aref iwork 16))
-		      (list '(mequal) '$len_iwork (aref iwork 17)))))))))
+		(make-mlist
+		 (make-mlist '$n_steps (aref iwork 10))
+		 (make-mlist '$n_f_eval (aref iwork 11))
+		 (make-mlist '$n_j_eval (aref iwork 12))
+		 (make-mlist '$method_order (aref iwork 13))
+		 (make-mlist '$len_rwork (aref iwork 16))
+		 (make-mlist '$len_iwork (aref iwork 17)))))))))
   
 (defun $dlsode_aux (vars f init-y tt tout rtol atol istate mf)
   (let* ((neq (length (cdr f)))
