@@ -25,7 +25,7 @@
      (make-mlist '$rwork rwork)
      (make-mlist '$iwork iwork))))
 
-(defun $dlsode (f vars init-y tt tout rtol atol istate state)
+(defun $dlsode_step (f vars init-y tt tout rtol atol istate state)
   (let ((mf ($assoc '$mf state))
 	(neq ($assoc '$neq state))
 	(lrw ($assoc '$lrw state))
