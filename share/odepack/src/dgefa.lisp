@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
 ;;;  "macros.l,v 1409c1352feb 2013/03/24 20:44:50 toy $")
 
-;;; Using Lisp CMU Common Lisp snapshot-2013-11 (20E Unicode)
+;;; Using Lisp CMU Common Lisp snapshot-2017-01 (21B Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "ODEPACK")
 
@@ -24,7 +24,7 @@
   (f2cl-lib:with-multi-array-data
       ((a double-float a-%data% a-%offset%)
        (ipvt f2cl-lib:integer4 ipvt-%data% ipvt-%offset%))
-    (prog ((j 0) (k 0) (kp1 0) (l 0) (nm1 0) (t$ 0.0d0))
+    (prog ((j 0) (k 0) (kp1 0) (l 0) (nm1 0) (t$ 0.0))
       (declare (type (double-float) t$)
                (type (f2cl-lib:integer4) nm1 l kp1 k j))
       (setf info 0)
@@ -47,9 +47,8 @@
                     k)
                    1))
           (setf (f2cl-lib:fref ipvt-%data% (k) ((1 *)) ipvt-%offset%) l)
-          (if
-           (= (f2cl-lib:fref a-%data% (l k) ((1 lda) (1 *)) a-%offset%) 0.0d0)
-           (go label40))
+          (if (= (f2cl-lib:fref a-%data% (l k) ((1 lda) (1 *)) a-%offset%) 0.0)
+              (go label40))
           (if (= l k) (go label10))
           (setf t$ (f2cl-lib:fref a-%data% (l k) ((1 lda) (1 *)) a-%offset%))
           (setf (f2cl-lib:fref a-%data% (l k) ((1 lda) (1 *)) a-%offset%)
@@ -57,7 +56,7 @@
           (setf (f2cl-lib:fref a-%data% (k k) ((1 lda) (1 *)) a-%offset%) t$)
          label10
           (setf t$
-                  (/ -1.0d0
+                  (/ -1.0
                      (f2cl-lib:fref a-%data%
                                     (k k)
                                     ((1 lda) (1 *))
@@ -107,7 +106,7 @@
          label60))
      label70
       (setf (f2cl-lib:fref ipvt-%data% (n) ((1 *)) ipvt-%offset%) n)
-      (if (= (f2cl-lib:fref a-%data% (n n) ((1 lda) (1 *)) a-%offset%) 0.0d0)
+      (if (= (f2cl-lib:fref a-%data% (n n) ((1 lda) (1 *)) a-%offset%) 0.0)
           (setf info n))
       (go end_label)
      end_label

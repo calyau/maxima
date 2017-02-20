@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
 ;;;  "macros.l,v 1409c1352feb 2013/03/24 20:44:50 toy $")
 
-;;; Using Lisp CMU Common Lisp snapshot-2013-11 (20E Unicode)
+;;; Using Lisp CMU Common Lisp snapshot-2017-01 (21B Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "ODEPACK")
 
@@ -25,7 +25,7 @@
       ((abd double-float abd-%data% abd-%offset%)
        (ipvt f2cl-lib:integer4 ipvt-%data% ipvt-%offset%))
     (prog ((i 0) (i0 0) (j 0) (ju 0) (jz 0) (j0 0) (j1 0) (k 0) (kp1 0) (l 0)
-           (lm 0) (m 0) (mm 0) (nm1 0) (t$ 0.0d0))
+           (lm 0) (m 0) (mm 0) (nm1 0) (t$ 0.0))
       (declare (type (double-float) t$)
                (type (f2cl-lib:integer4) nm1 mm m lm l kp1 k j1 j0 jz ju j i0
                                          i))
@@ -48,7 +48,7 @@
                                    (i jz)
                                    ((1 lda) (1 *))
                                    abd-%offset%)
-                      0.0d0)
+                      0.0)
              label10))
          label20))
      label30
@@ -70,7 +70,7 @@
                                    (i jz)
                                    ((1 lda) (1 *))
                                    abd-%offset%)
-                      0.0d0)
+                      0.0)
              label40))
          label50
           (setf lm
@@ -92,7 +92,7 @@
                   (f2cl-lib:int-sub (f2cl-lib:int-add l k) m))
           (if
            (= (f2cl-lib:fref abd-%data% (l k) ((1 lda) (1 *)) abd-%offset%)
-              0.0d0)
+              0.0)
            (go label100))
           (if (= l m) (go label60))
           (setf t$
@@ -109,7 +109,7 @@
                   t$)
          label60
           (setf t$
-                  (/ -1.0d0
+                  (/ -1.0
                      (f2cl-lib:fref abd-%data%
                                     (m k)
                                     ((1 lda) (1 *))
@@ -181,9 +181,8 @@
          label120))
      label130
       (setf (f2cl-lib:fref ipvt-%data% (n) ((1 *)) ipvt-%offset%) n)
-      (if
-       (= (f2cl-lib:fref abd-%data% (m n) ((1 lda) (1 *)) abd-%offset%) 0.0d0)
-       (setf info n))
+      (if (= (f2cl-lib:fref abd-%data% (m n) ((1 lda) (1 *)) abd-%offset%) 0.0)
+          (setf info n))
       (go end_label)
      end_label
       (return (values nil nil nil nil nil nil info)))))

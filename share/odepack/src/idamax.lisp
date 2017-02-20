@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
 ;;;  "macros.l,v 1409c1352feb 2013/03/24 20:44:50 toy $")
 
-;;; Using Lisp CMU Common Lisp snapshot-2013-11 (20E Unicode)
+;;; Using Lisp CMU Common Lisp snapshot-2017-01 (21B Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "ODEPACK")
 
@@ -22,7 +22,7 @@
            (type (f2cl-lib:integer4) incx n))
   (f2cl-lib:with-multi-array-data
       ((dx double-float dx-%data% dx-%offset%))
-    (prog ((i 0) (ix 0) (dmax 0.0d0) (xmag 0.0d0) (idamax 0))
+    (prog ((i 0) (ix 0) (dmax 0.0) (xmag 0.0) (idamax 0))
       (declare (type (double-float) xmag dmax)
                (type (f2cl-lib:integer4) idamax ix i))
       (setf idamax 0)

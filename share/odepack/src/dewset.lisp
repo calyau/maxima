@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
 ;;;  "macros.l,v 1409c1352feb 2013/03/24 20:44:50 toy $")
 
-;;; Using Lisp CMU Common Lisp snapshot-2013-11 (20E Unicode)
+;;; Using Lisp CMU Common Lisp snapshot-2017-01 (21B Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
-;;;           (:coerce-assigns :as-needed) (:array-type ':array)
+;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "ODEPACK")
 
@@ -20,64 +20,55 @@
 (defun dewset (n itol rtol atol ycur ewt)
   (declare (type (array double-float (*)) ewt ycur atol rtol)
            (type (f2cl-lib:integer4) itol n))
-  (f2cl-lib:with-multi-array-data
-      ((rtol double-float rtol-%data% rtol-%offset%)
-       (atol double-float atol-%data% atol-%offset%)
-       (ycur double-float ycur-%data% ycur-%offset%)
-       (ewt double-float ewt-%data% ewt-%offset%))
-    (prog ((i 0))
-      (declare (type (f2cl-lib:integer4) i))
-      (f2cl-lib:computed-goto (label10 label20 label30 label40) itol)
-     label10
-      (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                    ((> i n) nil)
-        (tagbody
-         label15
-          (setf (f2cl-lib:fref ewt-%data% (i) ((1 n)) ewt-%offset%)
-                  (+
-                   (* (f2cl-lib:fref rtol-%data% (1) ((1 *)) rtol-%offset%)
-                      (abs
-                       (f2cl-lib:fref ycur-%data% (i) ((1 n)) ycur-%offset%)))
-                   (f2cl-lib:fref atol-%data% (1) ((1 *)) atol-%offset%)))))
-      (go end_label)
-     label20
-      (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                    ((> i n) nil)
-        (tagbody
-         label25
-          (setf (f2cl-lib:fref ewt-%data% (i) ((1 n)) ewt-%offset%)
-                  (+
-                   (* (f2cl-lib:fref rtol-%data% (1) ((1 *)) rtol-%offset%)
-                      (abs
-                       (f2cl-lib:fref ycur-%data% (i) ((1 n)) ycur-%offset%)))
-                   (f2cl-lib:fref atol-%data% (i) ((1 *)) atol-%offset%)))))
-      (go end_label)
-     label30
-      (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                    ((> i n) nil)
-        (tagbody
-         label35
-          (setf (f2cl-lib:fref ewt-%data% (i) ((1 n)) ewt-%offset%)
-                  (+
-                   (* (f2cl-lib:fref rtol-%data% (i) ((1 *)) rtol-%offset%)
-                      (abs
-                       (f2cl-lib:fref ycur-%data% (i) ((1 n)) ycur-%offset%)))
-                   (f2cl-lib:fref atol-%data% (1) ((1 *)) atol-%offset%)))))
-      (go end_label)
-     label40
-      (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                    ((> i n) nil)
-        (tagbody
-         label45
-          (setf (f2cl-lib:fref ewt-%data% (i) ((1 n)) ewt-%offset%)
-                  (+
-                   (* (f2cl-lib:fref rtol-%data% (i) ((1 *)) rtol-%offset%)
-                      (abs
-                       (f2cl-lib:fref ycur-%data% (i) ((1 n)) ycur-%offset%)))
-                   (f2cl-lib:fref atol-%data% (i) ((1 *)) atol-%offset%)))))
-      (go end_label)
-     end_label
-      (return (values nil nil nil nil nil nil)))))
+  (prog ((i 0))
+    (declare (type (f2cl-lib:integer4) i))
+    (f2cl-lib:computed-goto (label10 label20 label30 label40) itol)
+   label10
+    (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
+                  ((> i n) nil)
+      (tagbody
+       label15
+        (setf (f2cl-lib:fref ewt (i) ((1 n)))
+                (+
+                 (* (f2cl-lib:fref rtol (1) ((1 *)))
+                    (abs (f2cl-lib:fref ycur (i) ((1 n)))))
+                 (f2cl-lib:fref atol (1) ((1 *)))))))
+    (go end_label)
+   label20
+    (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
+                  ((> i n) nil)
+      (tagbody
+       label25
+        (setf (f2cl-lib:fref ewt (i) ((1 n)))
+                (+
+                 (* (f2cl-lib:fref rtol (1) ((1 *)))
+                    (abs (f2cl-lib:fref ycur (i) ((1 n)))))
+                 (f2cl-lib:fref atol (i) ((1 *)))))))
+    (go end_label)
+   label30
+    (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
+                  ((> i n) nil)
+      (tagbody
+       label35
+        (setf (f2cl-lib:fref ewt (i) ((1 n)))
+                (+
+                 (* (f2cl-lib:fref rtol (i) ((1 *)))
+                    (abs (f2cl-lib:fref ycur (i) ((1 n)))))
+                 (f2cl-lib:fref atol (1) ((1 *)))))))
+    (go end_label)
+   label40
+    (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
+                  ((> i n) nil)
+      (tagbody
+       label45
+        (setf (f2cl-lib:fref ewt (i) ((1 n)))
+                (+
+                 (* (f2cl-lib:fref rtol (i) ((1 *)))
+                    (abs (f2cl-lib:fref ycur (i) ((1 n)))))
+                 (f2cl-lib:fref atol (i) ((1 *)))))))
+    (go end_label)
+   end_label
+    (return (values nil nil nil nil nil nil))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))

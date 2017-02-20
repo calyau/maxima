@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
 ;;;  "macros.l,v 1409c1352feb 2013/03/24 20:44:50 toy $")
 
-;;; Using Lisp CMU Common Lisp snapshot-2013-11 (20E Unicode)
+;;; Using Lisp CMU Common Lisp snapshot-2017-01 (21B Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "ODEPACK")
 
@@ -25,7 +25,7 @@
       ((a double-float a-%data% a-%offset%)
        (b double-float b-%data% b-%offset%)
        (ipvt f2cl-lib:integer4 ipvt-%data% ipvt-%offset%))
-    (prog ((k 0) (kb 0) (l 0) (nm1 0) (t$ 0.0d0))
+    (prog ((k 0) (kb 0) (l 0) (nm1 0) (t$ 0.0))
       (declare (type (double-float) t$) (type (f2cl-lib:integer4) nm1 l kb k))
       (setf nm1 (f2cl-lib:int-sub n 1))
       (if (/= job 0) (go label50))

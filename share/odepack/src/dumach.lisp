@@ -7,28 +7,28 @@
 ;;;  "f2cl6.l,v 1d5cbacbb977 2008/08/24 00:56:27 rtoy $"
 ;;;  "macros.l,v 1409c1352feb 2013/03/24 20:44:50 toy $")
 
-;;; Using Lisp CMU Common Lisp snapshot-2013-11 (20E Unicode)
+;;; Using Lisp CMU Common Lisp snapshot-2017-01 (21B Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "ODEPACK")
 
 
 (defun dumach ()
-  (prog ((u 0.0d0) (comp 0.0d0) (dumach 0.0d0))
+  (prog ((u 0.0) (comp 0.0) (dumach 0.0))
     (declare (type (double-float) dumach comp u))
-    (setf u 1.0d0)
+    (setf u 1.0)
    label10
-    (setf u (* u 0.5d0))
+    (setf u (* u 0.5))
     (multiple-value-bind (var-0 var-1 var-2)
-        (dumsum 1.0d0 u comp)
+        (dumsum 1.0 u comp)
       (declare (ignore var-0 var-1))
       (setf comp var-2))
-    (if (/= comp 1.0d0) (go label10))
-    (setf dumach (* u 2.0d0))
+    (if (/= comp 1.0) (go label10))
+    (setf dumach (* u 2.0))
     (go end_label)
    end_label
     (return (values dumach))))
