@@ -1,5 +1,75 @@
 ;;; -*- Mode: lisp -*-
 
+(mk:defsystem odepack-package
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "odepack")
+  :source-extension "lisp"
+  :components
+  ((:module "package"
+    :source-pathname ""
+    :components
+    ((:file "package")))
+   (:module "common-block"
+    :source-pathname "src"
+    :source-extension "cmn"
+    ::components
+    ((:file "dls001")))))
+
+(mk:defsystem odepack-dlsode
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "odepack")
+  :source-extension "lisp"
+  :depends-on ("odepack-package")
+  :components
+  ((:module "src"
+    :components
+    ((:file "dlsode"
+      :depends-on ("dstode"))
+     (:file "dintdy"
+      :depends-on ("xerrwd"))
+     (:file "dstode")
+     (:file "dcfode")
+     (:file "dprepj")
+     (:file "dsolsy")
+     (:file "dewset")
+     (:file "dvnorm")
+     (:file "dsrcom")
+     (:file "dgefa"
+      :depends-on ("idamax" "dscal" "daxpy"))
+     (:file "dgesl"
+      :depends-on ("daxpy" "ddot"))
+     (:file "dgbsl"
+      :depends-on ("daxpy"))
+     (:file "dscal")
+     (:file "ddot")
+     (:file "idamax")
+     (:file "dumach"
+      :depends-on ("dumsum"))
+     (:file "xerrwd"
+      :depends-on ("ixsav"))
+     (:file "xsetun")
+     (:file "xsetf")
+     (:file "ixsav")
+     (:file "iumach")
+     (:file "daxpy")
+     (:file "dumsum")))))
+
+(mk:defsystem maxima-odepack
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "odepack")
+  :depends-on ("odepack")
+  :components
+  ((:file "dlsode-interface")))
+
+(mk:defsystem maxima-dlsode
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "odepack")
+  :depends-on ("odepack-dlsode")
+  :source-extension "lisp"
+  :components
+  ((:file "dlsode-interface")))
+
+#+nil
 (mk:defsystem odepack
   :source-pathname (maxima::maxima-load-pathname-directory)
   :binary-pathname (maxima::maxima-objdir "share" "odepack")
@@ -146,65 +216,8 @@
 	     (:file "xsetf")
 	     (:file "xsetun")))))
 
-(mk:defsystem odepack-package
-  :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "odepack")
-  :components
-  ((:file "package")))
-
-(mk:defsystem odepack-dlsode
-  :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "odepack")
-  :depends-on ("odepack-package")
-  :components
-  ((:module "src"
-    :components
-    ((:file "dlsode"
-      :depends-on ("dstode"))
-     (:file "dintdy"
-      :depends-on ("xerrwd"))
-     (:file "dstode")
-     (:file "dcfode")
-     (:file "dprepj")
-     (:file "dsolsy")
-     (:file "dewset")
-     (:file "dvnorm")
-     (:file "dsrcom")
-     (:file "dgefa"
-      :depends-on ("idamax" "dscal" "daxpy"))
-     (:file "dgesl"
-      :depends-on ("daxpy" "ddot"))
-     (:file "dgbsl"
-      :depends-on ("daxpy"))
-     (:file "dscal")
-     (:file "ddot")
-     (:file "idamax")
-     (:file "dumach"
-      :depends-on ("dumsum"))
-     (:file "xerrwd"
-      :depends-on ("ixsav"))
-     (:file "xsetun")
-     (:file "xsetf")
-     (:file "ixsav")
-     (:file "iumach")
-     (:file "daxpy")
-     (:file "dumsum")))))
-
-(mk:defsystem maxima-odepack
-  :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "odepack")
-  :depends-on ("odepack")
-  :components
-  ((:file "dlsode-interface")))
-
-(mk:defsystem maxima-dlsode
-  :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "odepack")
-  :depends-on ("odepack-dlsode")
-  :components
-  ((:file "dlsode-interface")))
-
 
+#|
 ;;; Demo programs
 ;;;
 ;;; Note: Each of the demos should probably be run in a separate Lisp
@@ -380,3 +393,4 @@
     :depends-on ("odepack")
     :components
     ((:file "opkdemo9")))
+|#
