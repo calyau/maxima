@@ -1,20 +1,21 @@
 #!/bin/bash
 
 # compiliation-script for nightly builds
-# should be copied to a private location, so that
+# should be copied to a private location (~/bin), so that
 # git changes to that script can be reviewed before.
 #
 # expects the git checkout in ~/maxima-code
 #
 # calling from a cronjob does not work (don't know why),
-# so call it from a screen session and do everything in a loop
+# so call it from a screen session (which you can detach)
+# and do everything in a loop
 
 
 buildinformation () {
     echo "Build information"
     echo "-----------------"
     echo
-    echo "Operating system:"
+    echo "Operating system: "
     lsb_release  -d
     echo -n "Maxima GIT Version: "
     git describe
@@ -53,9 +54,9 @@ sleepuntil () {
 LANG=C
 export LANG
 
-CMAKE=/opt/cmake-3.7.1-Linux-x86_64/bin/cmake
+CMAKE=/opt/cmake-3.7.2-Linux-x86_64/bin/cmake
 
-cd ~/Software/maxima-code/crosscompile-windows/build || exit
+cd ~/maxima-code/crosscompile-windows/build || exit
 
 while true; do
 
@@ -64,6 +65,6 @@ while true; do
     buildprocess "win32" 2>&1 | tee ~/buildlog-win32
     buildprocess "win64" 2>&1 | tee ~/buildlog-win64
 
+    scp -i ~/.ssh/maximakopierkey ~/maxima-clisp-sbcl-current-win32.exe ~/maxima-clisp-sbcl-current-win64.exe ~/buildlog-win32 ~/buildlog-win64 maxima@ns1.dautermann.at:/var/www/wolfgang.dautermann.at/maxima/nightlybuild/
     sleepuntil 23:00
 done
-
