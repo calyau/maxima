@@ -49,19 +49,29 @@
       (truncate (1- (expt temp (1+ (cadr l))))
                 (1- temp))))))))
 
+;; totient computes the euler totient function
+;; i.e. the count of numbers relatively prime to n between 1 and n.
+
 (defmfun $totient (n)
-  (cond 
-    ((integerp n)
-      (setq n (abs n))
-      (cond 
-        ((< n 1) 0)
-        ((equal n 1) 1)
-        (t (do ((factors (let ($intfaclim) (cfactorw n))
-                  (cddr factors))
-                (total 1 (* total (1- (car factors))
-                  (expt (car factors) (1- (cadr factors))))))
-               ((null factors) total)))))
-    (t (list '($totient) n))))
+  (if (integerp n)
+      (totient (abs n))
+      (list '($totient) n)))
+
+;; totient assumes its argument to be an integer.
+;; the exponents in the prime factorization of n are assumed to be
+;; fixnums (anything else would exceed memory).
+
+(defun totient (n)
+  (declare (type (integer 0) n) (optimize (speed 3)))
+  (let (($intfaclim nil))
+    (if (< n 2)
+        n
+        (reduce #'* (get-factor-list n)
+                :key #'(lambda (pe)
+                         (let ((p (car pe)) (e (cadr pe)))
+                           (declare (type (integer 2) p)
+                                    (type (integer 1 (#.most-positive-fixnum)) e))
+                           (* (1- p) (expt p (1- e)))))))))
 
 ;;; JACOBI symbol and Gaussian factoring
 
