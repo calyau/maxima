@@ -6,11 +6,10 @@
 #
 # a working directory is ~/maxima-test
 
-
-# The git repo would usually be https://git.code.sf.net/p/maxima/code
-# but it is already there from the nightly Windows build
-# ==> no need to get it again from Sourceforge.
-MAXIMAGITREPOSITORY=~/maxima-code
+MAXIMAGITREPOSITORY=https://git.code.sf.net/p/maxima/code
+# if there is already a local repository (from the nightly Windows build),
+# clone from that git repository
+test -d ~/maxima-code/.git && MAXIMAGITREPOSITORY=~/maxima-code
 
 mkdir -p ~/maxima-test
 
@@ -34,7 +33,7 @@ make install VERBOSE=1 >logfile-makeinstall.txt 2>&1
 make dist VERBOSE=1 >logfile-makedist.txt 2>&1
 
 ~/maxima-test/installroot/bin/maxima --run-string="build_info();" >logfile-buildinfo.txt
-for lisp in clisp ecl sbcl gcl ccl ; do
+for lisp in clisp ecl sbcl gcl ccl64 ; do
       ~/maxima-test/installroot/bin/maxima --lisp=$lisp --run-string="run_testsuite();" >logfile-testsuite-$lisp.txt
       echo "$lisp summary" >>logfile-summary.txt
       sed -n -e '/^Error summary\|^No unexpected errors/,$p' logfile-testsuite-$lisp.txt >>logfile-summary.txt
