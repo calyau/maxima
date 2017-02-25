@@ -2958,7 +2958,7 @@
 (defun eval-deriv (deriv var pt)
   (let ((errorsw t))
     (declare (special errorsw))
-    (let ((ans (catch 'errorsw (eval `(meval '(($at) ,deriv ((mequal) ,var ,pt)))))))
+    (let ((ans (catch 'errorsw (meval `(($at) ,deriv ((mequal) ,var ,pt))))))
       (if (eq ans t) 
 	  deriv
 	ans))))
