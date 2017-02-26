@@ -1242,32 +1242,26 @@
             (let ((items sublst) (item 'nil))
 	      ;; Search for the item in sublist that is the undefined variable
 	      (while items
-		(if
-		    (not
-		     (or (numberp (car items)) (eq (car items) t) (eq (car items) nil)))
-		    (setq item (car items))
-		  )
-		(setq items (cdr items))
-		)
-	      (merror "draw2d (explicit): non defined variable in term: ~M" item)
-	      )
-	    )
-
+		(when (not (or (numberp (car items))
+                               (eq (car items) t)
+                               (eq (car items) nil)))
+		    (setq item (car items)) )
+		(setq items (cdr items)) )
+	      (merror "draw2d (explicit): non defined variable in term: ~M" item) ) )
 
           (when (not (null result))
             (setf sublst (cddr sublst)))
           (do ((lst sublst (cddr lst)))
               ((null lst) 'done)
-            (setf result (append result
-                                 (list
-                                   (if (and (get-option '$logx)
-                                            (numberp (first lst)))
-                                     (exp (first lst))
-                                     (first lst))
-                                   (if (and (get-option '$logy)
-                                            (numberp (second lst)))
-                                     (exp (second lst))
-                                     (second lst)))))))))
+            (setf result (cons (if (and (get-option '$logy) (numberp (second lst)))
+                                 (exp (second lst))
+                                 (second lst))
+                               result)) 
+            (setf result (cons (if (and (get-option '$logx) (numberp (first lst)))
+                                 (exp (first lst))
+                                 (first lst))
+                               result)) ) )))
+
     ; reset x extremes to original values
     (when (get-option '$logx)
       (setf xmin (exp xmin))

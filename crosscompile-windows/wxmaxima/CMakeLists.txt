@@ -13,34 +13,47 @@ set(WXMAXIMAVERSION "16.12.2")
 
 set(WXMAXIMA_MD5    "d06af1ba334b84921b3fe070765a1c7e")
 
-set(WXMAXIMA_URL  "http://sourceforge.net/projects/wxmaxima/files/wxMaxima/${WXMAXIMAVERSION}/wxmaxima-${WXMAXIMAVERSION}.tar.gz")
+set(WXMAXIMA_URL    "http://sourceforge.net/projects/wxmaxima/files/wxMaxima/${WXMAXIMAVERSION}/wxmaxima-${WXMAXIMAVERSION}.tar.gz")
 
-set(WXMAXIMA_GIT "https://github.com/andrejv/wxmaxima.git")
+set(WXMAXIMA_GIT    "https://github.com/andrejv/wxmaxima.git")
 
 if(USE_WXMAXIMA_GIT)
+    find_package(Git REQUIRED)
+    message(STATUS "Cloning or updating local wxmaxima git repository.")
+    execute_process(COMMAND mkdir -p ${CMAKE_SOURCE_DIR}/downloads/wxmaxima-git
+		    COMMAND sh -c "test -d wxmaxima-git/.git || \"${GIT_EXECUTABLE}\" clone \"${WXMAXIMA_GIT}\" wxmaxima-git"
+		    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/downloads)
+		        
+    execute_process(COMMAND sh -c "test -d .git && \"${GIT_EXECUTABLE}\" pull"
+		    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/downloads/wxmaxima-git)
+
     externalproject_add(wxmaxima-git
-        GIT_REPOSITORY ${WXMAXIMA_GIT}
+        GIT_REPOSITORY ${CMAKE_SOURCE_DIR}/downloads/wxmaxima-git
         DEPENDS wxwidgets
         PATCH_COMMAND  ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/acinclude.m4
               COMMAND ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/bootstrap
+              COMMAND mkdir -p ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/builddir
+        BINARY_DIR ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/builddir
         CONFIGURE_COMMAND  ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets-build/wx-config --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
               COMMAND $(MAKE) allmo
               COMMAND $(MAKE) wxMaxima.win
        INSTALL_COMMAND ""
     )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima-git/wxmaxima-git-prefix/src/wxmaxima-git-build/wxMaxima/ DESTINATION wxMaxima)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/builddir/wxMaxima/ DESTINATION wxMaxima)
 else()
     externalproject_add(wxmaxima
         URL "${WXMAXIMA_URL}"
         DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
         URL_MD5 ${WXMAXIMA_MD5}
         DEPENDS wxwidgets
+        PATCH_COMMAND mkdir -p ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima/builddir
+        BINARY_DIR ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima/builddir
         CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets-build/wx-config --prefix=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
               COMMAND $(MAKE) allmo
               COMMAND $(MAKE) wxMaxima.win
         INSTALL_COMMAND ""
     )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima-build/wxMaxima/ DESTINATION wxMaxima)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima/builddir/wxMaxima/ DESTINATION wxMaxima)
 endif()
