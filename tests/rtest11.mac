@@ -295,6 +295,11 @@ true$
 freeof (x, lambda ([['x]], x));
 true$
 
+freeof (x, 'block ([x], x));
+true$
+freeof (x, 'block ([x : foo], x));
+true$
+
 /* It would be nice to test foreign language characters here.
  * Is there a way to make such tests independent of environment stuff like $LANG ??
  */

@@ -389,7 +389,13 @@
         ;; Check for a local variable in a block.
         ((and (eq (caar e) 'mprog)
               ($listp (cadr e))
-              (member var (cdadr e) :test #'eq))
+              ; Check if var appears in the variable list alone or
+              ; in an assignment
+              (some (lambda (v)
+                      (or (eq v var)
+                          (and (msetqp v)
+                               (eq (cadr v) var))))
+                    (cdadr e)))
          t)
         ;; Check for a loop variable.
         ((and (eq (caar e) 'mdo) (alike1 var (cadr e))) t)
