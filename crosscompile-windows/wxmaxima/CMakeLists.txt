@@ -13,13 +13,22 @@ set(WXMAXIMAVERSION "16.12.2")
 
 set(WXMAXIMA_MD5    "d06af1ba334b84921b3fe070765a1c7e")
 
-set(WXMAXIMA_URL  "http://sourceforge.net/projects/wxmaxima/files/wxMaxima/${WXMAXIMAVERSION}/wxmaxima-${WXMAXIMAVERSION}.tar.gz")
+set(WXMAXIMA_URL    "http://sourceforge.net/projects/wxmaxima/files/wxMaxima/${WXMAXIMAVERSION}/wxmaxima-${WXMAXIMAVERSION}.tar.gz")
 
-set(WXMAXIMA_GIT "https://github.com/andrejv/wxmaxima.git")
+set(WXMAXIMA_GIT    "https://github.com/andrejv/wxmaxima.git")
 
 if(USE_WXMAXIMA_GIT)
+    find_package(Git REQUIRED)
+    message(STATUS "Cloning or updating local wxmaxima git repository.")
+    execute_process(COMMAND mkdir -p ${CMAKE_SOURCE_DIR}/downloads/wxmaxima-git
+		    COMMAND sh -c "test -d wxmaxima-git/.git || \"${GIT_EXECUTABLE}\" clone \"${WXMAXIMA_GIT}\" wxmaxima-git"
+		    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/downloads)
+		        
+    execute_process(COMMAND sh -c "test -d .git && \"${GIT_EXECUTABLE}\" pull"
+		    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/downloads/wxmaxima-git)
+
     externalproject_add(wxmaxima-git
-        GIT_REPOSITORY ${WXMAXIMA_GIT}
+        GIT_REPOSITORY ${CMAKE_SOURCE_DIR}/downloads/wxmaxima-git
         DEPENDS wxwidgets
         PATCH_COMMAND  ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/acinclude.m4
               COMMAND ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/bootstrap
