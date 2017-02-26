@@ -1745,3 +1745,12 @@ true;
 constantp (ratsimp (subst([c1=tau1, c2=tau2, c3=tau3], I_c) - I_tau));
 true;
 
+/* following was incorrect (returned 0) at some point in recent past
+ * ensure that it stays correct
+ * from sage-support 2017-02-22
+ */
+
+errcatch (integrate(x/(1+x^2),x,0,inf));
+[];
+
+
