@@ -387,7 +387,10 @@
                     (cdadr e)))
          t)
         ;; Check for a local variable in a block.
-        ((and (eq (caar e) 'mprog) (member var (cdadr e) :test #'eq)) t)
+        ((and (eq (caar e) 'mprog)
+              ($listp (cadr e))
+              (member var (cdadr e) :test #'eq))
+         t)
         ;; Check for a loop variable.
         ((and (eq (caar e) 'mdo) (alike1 var (cadr e))) t)
 	(argsfreeofp (freeofl var (margs e)))
