@@ -2143,7 +2143,9 @@
     #+gcl (load eval)
     #-gcl (:load-toplevel :execute)
     (let (($context '$global) (context '$global))
-      (meval '(($declare) %erf_generalized $antisymmetric))))
+      (meval '(($declare) %erf_generalized $antisymmetric))
+      ;; Let's remove built-in symbols from list for user-defined properties.
+      (setq $props (remove '%erf_generalized $props))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -2912,7 +2914,9 @@
 ;    #+gcl (load eval)
 ;    #-gcl (:load-toplevel :execute)
 ;    (let (($context '$global) (context '$global))
-;      (meval '(($declare) %fresnel_s $oddfun))))
+;      (meval '(($declare) %fresnel_s $oddfun))
+;      ;; Let's remove built-in symbols from list for user-defined properties.
+;      (setq $props (remove '%fresnel_s $props))))
 
 (defprop %fresnel_s odd-function-reflect reflection-rule)
 
@@ -3223,7 +3227,9 @@
     #+gcl (load eval)
     #-gcl (:load-toplevel :execute)
     (let (($context '$global) (context '$global))
-      (meval '(($declare) $beta $symmetric))))
+      (meval '(($declare) $beta $symmetric))
+      ;; Let's remove built-in symbols from list for user-defined properties.
+      (setq $props (remove '$beta $props))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

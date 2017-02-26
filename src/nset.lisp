@@ -16,6 +16,8 @@
 (macsyma-module nset)
 
 ($put '$nset 1.21 '$version)
+;; Let's remove built-in symbols from list for user-defined properties.
+(setq $props (remove '$nset $props))
 
 ;; Display sets as { .. }.
 
@@ -43,6 +45,9 @@
 ;No RPOS
 
 (def-operator "{" '$any nil '$any nil nil nil nil '(nud . parse-matchfix) 'msize-matchfix 'dimension-match "}")
+;; Let's remove built-in operators from list for user-defined properties.
+(setq $props (remove "{" $props :test #'equal))
+(setq $props (remove "}" $props :test #'equal))
 
 ;; DEF-OPERATOR makes "{" map to ${, but it needs to map to $SET.
 ;; Just clobber whatever DEF-OPERATOR put into *OPR-TABLE*.

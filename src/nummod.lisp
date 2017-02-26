@@ -31,7 +31,9 @@
 ;; Let's have version numbers 1,2,3,...
 
 (eval-when (:load-toplevel :execute)
-  ($put '$nummod 3 '$version))
+  ($put '$nummod 3 '$version)
+  ;; Let's remove built-in symbols from list for user-defined properties.
+  (setq $props (remove '$nummod $props)))
 
 (defmacro opcons (op &rest args)
   `(simplify (list (list ,op) ,@args)))
