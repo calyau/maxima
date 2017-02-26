@@ -377,7 +377,14 @@
         ((and (eq (caar e) 'lambda)
               (not (member 'array (cdar e) :test #'eq))
               ($listp (cadr e))
-              (member var (cdadr e) :test #'eq))
+              ; Check if var appears in the lambda list in any of the
+              ; following ways: var, 'var, [var] or ['var].
+              (some (lambda (v)
+                      (or (eq v var)
+                          (alike1 v `((mquote) ,var))
+                          (alike1 v `((mlist) ,var))
+                          (alike1 v `((mlist) ((mquote) ,var)))))
+                    (cdadr e)))
          t)
         ;; Check for a local variable in a block.
         ((and (eq (caar e) 'mprog) (member var (cdadr e) :test #'eq)) t)
