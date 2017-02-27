@@ -129,6 +129,13 @@ done;
  * has several built-in symbols before and after kill(all)
  */
 
+/* this test fails due to bug in kill(rules); see SF bug #3289 */
 (kill(all), props);
 [];
+
+/* workaround bug #3289 */
+(kill(all),
+ not some (lambda ([x], member (x, props)),
+           ['conjugate, nounify ('erf_generalized), 'beta, 'nset, 'trylevel, 'maxmin, 'nummod]));
+true;
 
