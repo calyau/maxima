@@ -4115,7 +4115,7 @@
     (gf-x2p (gf-normal *gf-char* *gf-exp* #'gf-normal-p)) ))
 
 (defmfun $ef_normal () 
-  (ef-field? "gf_normal")
+  (ef-field? "ef_normal")
   (let ((*ef-arith?* t)) 
     (gf-x2p (gf-normal *gf-card* *ef-exp* #'ef-normal-p)) ))
 
@@ -4295,7 +4295,7 @@
     (apply #'*f-matmult `($gf_mult ,@args)) )) 
 
 (defmfun $ef_matmult (&rest args) 
-  (ef-red? "gf_matmult")
+  (ef-red? "ef_matmult")
   (let ((*ef-arith?* t)) 
     (apply #'*f-matmult `($ef_mult ,@args)) )) 
 
