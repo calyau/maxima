@@ -3773,3 +3773,16 @@ true;
 closeto (gamma_greek(1b0, 10), 0.9999546000702375b0, 1b-15);
 true;
 
+/* complex float and complex bfloat */
+
+/* yikes */
+closeto (ev (gamma_greek(10, 1 + %i), numer), 7.992250288513467e-1*%i + 1.011121671734864e0, 1e-7);
+true;
+
+/* ditto */
+closeto (gamma_greek(10, 1.0 + %i), 7.992250288513467e-1*%i + 1.011121671734864e0, 1e-7);
+true;
+
+closeto (gamma_greek(10, 1b0 + %i), 7.992250288513467b-1*%i + 1.011121671734864b0, 1b-10);
+true;
+
