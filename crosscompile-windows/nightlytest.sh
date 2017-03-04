@@ -25,7 +25,7 @@ export PATH=/opt/ccl:$PATH
 
 ./bootstrap >logfile-bootstrap.txt 2>&1
 
-./configure --enable-clisp --enable-ecl --enable-sbcl --enable-gcl --enable-ccl64 --with-ccl64=lx86cl64 --prefix=$(pwd)/installroot >logfile-configure.txt 2>&1
+./configure --enable-clisp --enable-ecl --enable-sbcl --enable-gcl --enable-ccl64 --with-ccl64=lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-21b/bin/lisp --with-cmucl-runtime=/opt/cmucl-21b/bin/lisp --enable-acl --with-acl=/opt/acl100express/alisp --prefix=$(pwd)/installroot >logfile-configure.txt 2>&1
 
 make VERBOSE=1 >logfile-make.txt 2>&1
 make pdf VERBOSE=1 >logfile-makepdf.txt 2>&1
@@ -33,7 +33,7 @@ make install VERBOSE=1 >logfile-makeinstall.txt 2>&1
 make dist VERBOSE=1 >logfile-makedist.txt 2>&1
 
 ~/maxima-test/installroot/bin/maxima --run-string="build_info();" >logfile-buildinfo.txt
-for lisp in clisp ecl sbcl gcl ccl64 ; do
+for lisp in clisp ecl sbcl gcl ccl64 cmucl acl ; do
       ~/maxima-test/installroot/bin/maxima --lisp=$lisp --run-string="run_testsuite();" >logfile-testsuite-$lisp.txt
       echo "$lisp summary" >>logfile-summary.txt
       sed -n -e '/^Error summary\|^No unexpected errors/,$p' logfile-testsuite-$lisp.txt >>logfile-summary.txt

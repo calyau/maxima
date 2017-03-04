@@ -8,6 +8,12 @@ rem Uncomment the line below and set required value to MAXIMA_LANG_SUBDIR
 rem to get localized describe in command line Maxima
 rem set MAXIMA_LANG_SUBDIR=es
 
+rem The variable LANGUAGE is usually not set on Windows, but if Maxima is running in
+rem Wine/Linux (e.g. for testing purposes) it is inherited from the Linux environment
+rem and causes troubles (at least with Clisp, maybe other Lisps too),
+rem so unset this variable.
+set LANGUAGE=
+
 set lisp=@DEFAULTLISP@
 set lisp_options=
 set version=@VERSION@
