@@ -20,6 +20,7 @@ all:
                  -I net.sourceforge.maxima            \
                  macosx/script $(MAXIMA_APP)
 	make install
+	ln -s share/info $(PREFIX)/info
 	install -c macosx/maxima.sh $(APPRESOURCES)
 	install -c macosx/xmaxima.sh $(APPRESOURCES)
 	install -c $(LISP_PROGRAM) $(BINDIR)
