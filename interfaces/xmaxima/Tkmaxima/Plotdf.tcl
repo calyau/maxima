@@ -50,7 +50,7 @@ set plotdfOptions {
     {psfile "" "A filename where the graph will be saved in PostScript."}
     {nobox 0 "if not zero, do not draw the box around the plot."}
     {axes "xy" "if zero, no axes are drawn. x, y or xy to draw the axes."}
-    {number_of_arrows 225 "Approximate. Think a square number, the number of arrows to draw"}
+    {number_of_arrows 225 "Approximate. Choose a square number as the number of arrows to draw"}
     {nolegend 0 "if not zero, do not write down the legend."}
 }
 
@@ -82,12 +82,12 @@ proc swapChoose {win msg winchoose } {
     if { "$msg" == "dydt" } {
 	pack $winchoose.dxdt -before $winchoose.dydt -side bottom
 	oset $win dydx ""
-	$winchoose.dydt.lab config -text "dy/dt"
+	$winchoose.dydt.lab config -text "dy/dt:"
     } else {
 	pack forget $winchoose.dxdt
 	oset $win dxdt 1
 	oset $win dydx " "
-	$winchoose.dydt.lab config -text "dy/dx"
+	$winchoose.dydt.lab config -text "dy/dx:"
     }
 }
 
