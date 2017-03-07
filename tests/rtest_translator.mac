@@ -455,4 +455,37 @@ map (?fboundp, [foo, baz, quux]);
 [bar(5), umm(5), mumble(5)];
 [16, 26, 6];
 
+/* mailing list 2017-03-04: "An example that is broken by compile()"
+ * translated code tickles a bug elsewhere (bug not in translator)
+ */
+
+(kill(fun, trigfunc, t1),
+ fun():=block([trigfunc],
+        trigfunc:lambda([cur],cur>t1),
+        apply('trigfunc,[1])),
+ 0);
+0;
+
+/* I (Robert Dodier) believe this result should be trigfunc(1),
+ * but, in any event, interpreted and compiled code should agree.
+ * But if MAPPLY1 is ever changed, we can adjust these results.
+ */
+fun();
+1 > t1;
+
+(compile(fun), fun());
+1 > t1;
+
+(kill(fun, trigfunc, t1),
+ fun():=block([trigfunc],
+        trigfunc:lambda([cur],cur>t1),
+        apply(trigfunc,[1])),
+ 0);
+0;
+
+fun();
+1 > t1;
+
+(compile(fun), fun());
+1 > t1;
 
