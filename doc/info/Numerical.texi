@@ -855,6 +855,9 @@ The default vertical range is from -10 to 10.
 @item
 @dfn{yaxislabel} will be used to identify the vertical axis. Its default value is the name of the second state variable.
 
+@item
+@dfn{number_of_arrows} should be set to a square number and defines the approximate
+density of the arrows being drawn. The default value is 225.
 @end itemize
 
 @strong{Examples:}
