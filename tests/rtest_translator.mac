@@ -316,6 +316,10 @@ true;
  
 /* compile_file */
 
+/* skip this test (and fail) if Lisp = ECL because stream i/o causes "stack smashing" error
+ * see: https://sourceforge.net/p/maxima/bugs/3291/
+ */
+if build_info()@lisp_name # "ECL" then
 (kill (all),
  lisp_name : ssubst ("_", " ", build_info()@lisp_name),
  maxima_filename : sconcat (maxima_tempdir, "/tmp-rtest_translator-compile_file-", lisp_name, ".mac"),
@@ -339,6 +343,10 @@ true;
 
 /* translate_file */
 
+/* skip this test (and fail) if Lisp = ECL because stream i/o causes "stack smashing" error
+ * see: https://sourceforge.net/p/maxima/bugs/3291/
+ */
+if build_info()@lisp_name # "ECL" then
 (kill (all),
  lisp_name : ssubst ("_", " ", build_info()@lisp_name),
  maxima_filename : sconcat (maxima_tempdir, "/tmp-rtest_translator-translate_file-", lisp_name, ".mac"),
@@ -367,6 +375,10 @@ true;
    file (which contains messages from the translator) and checks that
    there aren't any warnings.
 */
+/* skip this test (and fail) if Lisp = ECL because stream i/o causes "stack smashing" error
+ * see: https://sourceforge.net/p/maxima/bugs/3291/
+ */
+if build_info()@lisp_name # "ECL" then
 (kill (all),
  lisp_name : ssubst ("_", " ", build_info()@lisp_name),
  basename: sconcat (maxima_tempdir, "/tmp-rtest_translator-2934-", lisp_name),
