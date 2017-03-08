@@ -411,10 +411,10 @@ is EQ to FNNAME if the latter is non-NIL."
      (mapply1 (caar form) (mevalargs (cdr form)) (caar form) form))))
 
 (defun getl-lm-fcn-prop (sym props &aux fn typ)
-  (check-arg sym symbolp "symbol")
   (setq fn sym)
   (cond ((functionp fn)
 	 (setq typ 'subr))
+	((not (symbolp sym))) ;; eventually return nil if not a symbol
 	((macro-function sym)
 	 (setq typ 'macro))
 	((setq fn (symbol-array sym))

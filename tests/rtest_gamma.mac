@@ -3744,3 +3744,45 @@ true;
 every (lambda ([x1, e1], sign(x1) = sign(e1)), x, L2);
 true;
 
+/* SF bug #3277: "no numerical evaluation for gamma_greek" */
+
+expand (gamma_greek(10, 1));
+362880-986410*%e^-1;
+
+/* numerical value not very accurate; perhaps it is being computed naively via preceding formula? */
+closeto (ev (gamma_greek(10, 1), numer), 4.043407757955496e-2, 1e-10);
+true;
+
+/* this one is way off the mark ... sheesh. */
+closeto (gamma_greek(10, 1.0), 4.043407757955496e-2, 1e-8);
+true;
+
+(reset (fpprec),
+ closeto (gamma_greek(10, 1b0), 4.043407757955496b-2, 1b-10));
+true;
+
+gamma_greek(1, 10);
+1 - %e^-10;
+
+closeto (ev (gamma_greek(1, 10), numer), 0.9999546000702375e0, 1e-15);
+true;
+
+closeto (gamma_greek(1.0, 10), 0.9999546000702375e0, 1e-15);
+true;
+
+closeto (gamma_greek(1b0, 10), 0.9999546000702375b0, 1b-15);
+true;
+
+/* complex float and complex bfloat */
+
+/* yikes */
+closeto (ev (gamma_greek(10, 1 + %i), numer), 7.992250288513467e-1*%i + 1.011121671734864e0, 1e-7);
+true;
+
+/* ditto */
+closeto (gamma_greek(10, 1.0 + %i), 7.992250288513467e-1*%i + 1.011121671734864e0, 1e-7);
+true;
+
+closeto (gamma_greek(10, 1b0 + %i), 7.992250288513467b-1*%i + 1.011121671734864b0, 1b-10);
+true;
+
