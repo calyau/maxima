@@ -50,6 +50,7 @@ Creating a .dmg file with maxima and wxMaxima
  - In case that the gnuplot project doesn't build a gnuplot image in a format we
    can include besides maxima and wxMaxima a suitable gnuplot may be found at
    http://ricardo.ecn.wfu.edu/pub/gnuplot.
+ - Add "How to install.rtf" to the image.
  - Create a symlink to /Applications in the folder containing the three
    applications
  - Switch the window to icon view and arrange icons as needed.
