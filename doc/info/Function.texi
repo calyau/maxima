@@ -662,6 +662,7 @@ apply: found false where a function was expected.
 @end example
 
 How to convert a nested list into a matrix:
+
 @c ===beg===
 @c a:[[1,2],[3,4]];
 @c apply(matrix,a);
