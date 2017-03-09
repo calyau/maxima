@@ -497,16 +497,12 @@ random_exp(m,[num]) :=
 pdf_lognormal(x,m,s) :=
    if maybe(s > 0) = false
      then error("pdf_lognormal: parameter s must be greater than 0")
-   elseif maybe(x > 0) = false
-     then 0
-     else exp(-(log(x)-m)^2/(2*s^2))/(sqrt(2*%pi)*s*x) $
+     else exp(-(log(x)-m)^2/(2*s^2))/(sqrt(2*%pi)*s*x) * unit_step(x) $
 
 cdf_lognormal(x,m,s) :=
    if maybe(s > 0) = false
      then error("cdf_lognormal: parameter s must be greater than 0")
-   elseif maybe(x>0) = false
-     then 0
-     else 1/2+erf((log(x)-m)/(s*sqrt(2)))/2 $
+     else 1/2+erf((log(x)-m)/(s*sqrt(2)))/2 * unit_step(x) $
 
 /* R: qlnorm(p,m,s)*/
 quantile_lognormal(q,m,s) :=
@@ -1246,7 +1242,7 @@ pdf_poisson(x,m) :=
   if maybe(m >= 0) = false
      then error("pdf_poisson: m must be positive")
   elseif sign(m) = 'zero
-     then if sign(x) = 'zero then 1 else 0
+     then kron_delta(0,x)
   elseif sign(x) = 'neg or numberp(x) and x-floor(x) > 0
      then 0
      else exp(-m)*m^x/x! $
