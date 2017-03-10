@@ -3,9 +3,6 @@
 @setfilename abs_integrate.info
 @settitle abs_integrate
 
-@c Do not automatically break urls at every '.'
-@urefbreakstyle none
-
 @ifinfo 
 @macro var {expr}
 <\expr\>
