@@ -478,7 +478,11 @@ wrapper for this."
 			"Expected a maxima function designator but got NIL.")
 		(merror (intl:gettext "~M arguments supplied to ~M; found: ~M")
 			(if vars (intl:gettext "Too few") (intl:gettext "Too many"))
-			(cons (ncons fnname) lamvars)
+			(if (and (consp fnname)
+				 (consp (car fnname))
+				 (eq (caar fnname) 'lambda))
+			    fnname
+			    (cons (ncons fnname) lamvars))
 			(cons '(mlist) fnargs)))))
     (let ((var (car vars)))
       (if (not (symbolp var))

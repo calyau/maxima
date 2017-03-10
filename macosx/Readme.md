@@ -47,7 +47,12 @@ Creating a .dmg file with maxima and wxMaxima
    compressing the image it won't use up much disk space any more)
  - Double-click on it and open the newly-mounted .dmg in the Finder.
  - Move maxima and wxMaxima into the finder window.
- - Create a symlink to /Applications in this folder
+ - In case that the gnuplot project doesn't build a gnuplot image in a format we
+   can include besides maxima and wxMaxima a suitable gnuplot may be found at
+   http://ricardo.ecn.wfu.edu/pub/gnuplot.
+ - Add "How to install.rtf" to the image.
+ - Create a symlink to /Applications in the folder containing the three
+   applications
  - Switch the window to icon view and arrange icons as needed.
  - Go to the "view options" and add a maxima Logo as the background
  - re-enter the Disk Utility

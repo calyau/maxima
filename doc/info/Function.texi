@@ -662,6 +662,7 @@ apply: found false where a function was expected.
 @end example
 
 How to convert a nested list into a matrix:
+
 @c ===beg===
 @c a:[[1,2],[3,4]];
 @c apply(matrix,a);
@@ -1753,6 +1754,7 @@ function.
 (%o2)                          a
 @end group
 @end example
+
 @itemize @bullet
 @item
 A lambda expression may appear in contexts in which a function evaluation is expected.
@@ -1780,6 +1782,7 @@ A lambda expression may appear in contexts in which a function evaluation is exp
 (%o3)                 [a , b , c , d , e ]
 @end group
 @end example
+
 @itemize @bullet
 @item
 Argument variables are local variables.
@@ -1824,6 +1827,7 @@ unless some special evaluation is forced by some means, such as @code{'@w{}'}.
                                2
 @end group
 @end example
+
 @itemize @bullet
 @item
 Lambda expressions may be nested.  Local variables within the outer lambda
@@ -1849,6 +1853,7 @@ variables of the same names.
                                2
 @end group
 @end example
+
 @itemize @bullet
 @item
 Since @code{lambda} quotes its arguments, lambda expression @code{i} below does
@@ -1889,6 +1894,7 @@ via @code{buildq}, as in lambda expression @code{i2} below.
                                 2
 @end group
 @end example
+
 @itemize @bullet
 @item
 A lambda expression may take a variable number of arguments,
