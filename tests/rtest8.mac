@@ -805,3 +805,18 @@ matrix([foo,-1,0,0,1,0,0,0],
        [0,0,2,2*foo,1,0,-foo,1],
        [0,0,0,0,2*foo,2,0,0]);
 
+/* mailing list 2017-02-27: "Small diff bug?" */
+
+(kill(I_Out, t),
+ depends(I_Out,t),
+ diff(I_Out,t),
+ float(%%));
+'diff(I_Out, t, 1);
+
+(kill(f, x, y),
+ float (diff (f(x, y), x, 1, y, 2)));
+'diff (f(x, y), x, 1, y, 2);
+
+float (diff (f(x + 3/2, %pi*y), x, 1, y, 2));
+'diff (f(x + 1.5, 3.141592653589793*y), x, 1, y, 2);
+

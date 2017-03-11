@@ -29,7 +29,10 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   ($put '$trylevel 1 '$maxmin)  ;; Default: only use basic simplification rules
-  ($put '$maxmin 1 '$version))  ;; Let's have version numbers 1,2,3,...
+  ($put '$maxmin 1 '$version)   ;; Let's have version numbers 1,2,3,...
+  ;; Let's remove built-in symbols from list for user-defined properties.
+  (setq $props (remove '$trylevel $props))
+  (setq $props (remove '$maxmin $props)))
 
 ;; Return true if there is pi in the CL list p and qi in the CL lisp q such that
 ;; x is between pi and qi.  This means that either pi <= x <= qi or

@@ -9,12 +9,12 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(SBCLVERSION "1.3.12")
-
 if(BUILD_64BIT)
-    set(SBCL_MD5           "93996a0d4537c624286f1428af98b9e3")
+    set(SBCLVERSION "1.3.15")
+    set(SBCL_MD5           "d692ddf9f68670df0551be7779ab8aa8")
     set(SBCL_INSTALLERNAME "sbcl-${SBCLVERSION}-x86-64-windows-binary.msi")
 else()
+    set(SBCLVERSION "1.3.12")
     set(SBCL_MD5           "918fb23e00645e56c8687df4e06c30ae")
     set(SBCL_INSTALLERNAME "sbcl-${SBCLVERSION}-x86-windows-binary.msi")
 endif()

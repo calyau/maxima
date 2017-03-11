@@ -1,5 +1,6 @@
 *.t2p
 *.info
+*.html
 integration-index.lisp
 abs_integrate.pdf
 texinfo.tex

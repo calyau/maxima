@@ -3,9 +3,6 @@
 @setfilename abs_integrate.info
 @settitle abs_integrate
 
-@c Do not automatically break urls at every '.'
-@urefbreakstyle none
-
 @ifinfo 
 @macro var {expr}
 <\expr\>
@@ -187,7 +184,7 @@ that does not fail (or a pure noun form if all methods fail).
 
 @end defvr
 
-@deffn {Function} intfudu(@var{e}, @var{x})
+@deffn {Function} intfudu (@var{e}, @var{x})
 
 This function uses the derivative divides rule for integrands of the
 form @math{f(w(x)) * diff(w(x),x)} When @code{infudu} is unable to find

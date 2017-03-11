@@ -316,6 +316,10 @@ true;
  
 /* compile_file */
 
+/* skip this test (and fail) if Lisp = ECL because stream i/o causes "stack smashing" error
+ * see: https://sourceforge.net/p/maxima/bugs/3291/
+ */
+if build_info()@lisp_name # "ECL" then
 (kill (all),
  lisp_name : ssubst ("_", " ", build_info()@lisp_name),
  maxima_filename : sconcat (maxima_tempdir, "/tmp-rtest_translator-compile_file-", lisp_name, ".mac"),
@@ -339,6 +343,10 @@ true;
 
 /* translate_file */
 
+/* skip this test (and fail) if Lisp = ECL because stream i/o causes "stack smashing" error
+ * see: https://sourceforge.net/p/maxima/bugs/3291/
+ */
+if build_info()@lisp_name # "ECL" then
 (kill (all),
  lisp_name : ssubst ("_", " ", build_info()@lisp_name),
  maxima_filename : sconcat (maxima_tempdir, "/tmp-rtest_translator-translate_file-", lisp_name, ".mac"),
@@ -367,6 +375,10 @@ true;
    file (which contains messages from the translator) and checks that
    there aren't any warnings.
 */
+/* skip this test (and fail) if Lisp = ECL because stream i/o causes "stack smashing" error
+ * see: https://sourceforge.net/p/maxima/bugs/3291/
+ */
+if build_info()@lisp_name # "ECL" then
 (kill (all),
  lisp_name : ssubst ("_", " ", build_info()@lisp_name),
  basename: sconcat (maxima_tempdir, "/tmp-rtest_translator-2934-", lisp_name),
@@ -455,4 +467,37 @@ map (?fboundp, [foo, baz, quux]);
 [bar(5), umm(5), mumble(5)];
 [16, 26, 6];
 
+/* mailing list 2017-03-04: "An example that is broken by compile()"
+ * translated code tickles a bug elsewhere (bug not in translator)
+ */
+
+(kill(fun, trigfunc, t1),
+ fun():=block([trigfunc],
+        trigfunc:lambda([cur],cur>t1),
+        apply('trigfunc,[1])),
+ 0);
+0;
+
+/* I (Robert Dodier) believe this result should be trigfunc(1),
+ * but, in any event, interpreted and compiled code should agree.
+ * But if MAPPLY1 is ever changed, we can adjust these results.
+ */
+fun();
+1 > t1;
+
+(compile(fun), fun());
+1 > t1;
+
+(kill(fun, trigfunc, t1),
+ fun():=block([trigfunc],
+        trigfunc:lambda([cur],cur>t1),
+        apply(trigfunc,[1])),
+ 0);
+0;
+
+fun();
+1 > t1;
+
+(compile(fun), fun());
+1 > t1;
 

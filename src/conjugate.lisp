@@ -12,6 +12,8 @@
 (macsyma-module conjugate)
 
 ($put '$conjugate 1 '$version)
+;; Let's remove built-in symbols from list for user-defined properties.
+(setq $props (remove '$conjugate $props))
 
 (defprop $conjugate tex-postfix tex)
 (defprop $conjugate ("^\\star") texsym)
@@ -22,7 +24,9 @@
     #+gcl (load eval)
     #-gcl (:load-toplevel :execute)
     (let (($context '$global) (context '$global))
-      (meval '(($declare) $conjugate $complex))))
+      (meval '(($declare) $conjugate $complex))
+      ;; Let's remove built-in symbols from list for user-defined properties.
+      (setq $props (remove '$conjugate $props))))
 
 ;; When a function commutes with the conjugate, give the function the
 ;; commutes-with-conjugate property. The log function commutes with

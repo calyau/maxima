@@ -1291,6 +1291,8 @@
 	 ;; Handle like erf(%i).  float(%i) (via recur-apply below)
 	 ;; just returns %i, so we never numerically evaluate it.
 	 (complexify (complex-erf (complex 0 1d0))))
+	((or (eq (caar e) '%derivative) (eq (caar e) '$diff))
+	 (append (list (remove 'simp (first e)) ($float (second e))) (rest (rest e))))
 	(t (recur-apply #'$float e))))
 
 (defmfun $coeff (e x &optional (n 1))

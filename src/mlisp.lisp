@@ -411,10 +411,10 @@ is EQ to FNNAME if the latter is non-NIL."
      (mapply1 (caar form) (mevalargs (cdr form)) (caar form) form))))
 
 (defun getl-lm-fcn-prop (sym props &aux fn typ)
-  (check-arg sym symbolp "symbol")
   (setq fn sym)
   (cond ((functionp fn)
 	 (setq typ 'subr))
+	((not (symbolp sym))) ;; eventually return nil if not a symbol
 	((macro-function sym)
 	 (setq typ 'macro))
 	((setq fn (symbol-array sym))
@@ -478,7 +478,11 @@ wrapper for this."
 			"Expected a maxima function designator but got NIL.")
 		(merror (intl:gettext "~M arguments supplied to ~M; found: ~M")
 			(if vars (intl:gettext "Too few") (intl:gettext "Too many"))
-			(cons (ncons fnname) lamvars)
+			(if (and (consp fnname)
+				 (consp (car fnname))
+				 (eq (caar fnname) 'lambda))
+			    fnname
+			    (cons (ncons fnname) lamvars))
 			(cons '(mlist) fnargs)))))
     (let ((var (car vars)))
       (if (not (symbolp var))
@@ -1812,56 +1816,7 @@ wrapper for this."
 ;; whereas if it is false they are stored in the function cell
 (defmvar $use_fast_arrays nil)
 
-(defmfun arrstore (l r &aux tem index)
-  (cond ($use_fast_arrays
-	 (cond ((and (boundp (caar l)) (setq tem (symbol-value (caar l))))
-		(setq index (mevalargs (cdr l)))
-		(let ((the-type (ml-typep tem)))
-		  (cond ((eq the-type 'array)
-			 (setf (apply #'aref tem index)  r))
-			((eq the-type 'hash-table)
-             ;; SINCE A "FAST ARRAY" IS JUST A HASH TABLE, SEEMS LIKE THESE !!
-             ;; TESTS ON THE NUMBER OF INDICES OBSTRUCTS LEGITIMATE HASH TABLE !!
-             ;; USE; I RECOMMEND CUTTING THEM OUT !!
-			 (cond ((gethash 'dim1 tem)
-				(if (cdr index)
-				    (merror (intl:gettext "assignment: array has one dimension, but two or more indices supplied."))))
-			       (t (or (cdr index)
-				      (merror (intl:gettext "assignment: array has two or more dimensions, but one index supplied.")))))
-			 (setf (gethash	(if (cdr index)
-					    index
-					    (car index))
-					tem) r))
-			((eq the-type 'list)
-			 (cond ((eq (caar tem) 'mlist)
-				(setq index (car index))
-				(setf (nth index tem) r)
-				r)
-			       ((eq (caar tem) '$matrix)
-				(setf (nth (second index) (nth (first index) tem)) r)
-				r)
-			       (t
-				(merror (intl:gettext "assignment: ~A is not a hash table, an array, Maxima list, or a matrix.")
-                        (caar l)))))
-			(t
-			 (cond ((eq tem (caar l))
-				(meval* `((mset) ,(caar l)
-					  ,(make-equal-hash-table
-					    (cdr (mevalargs (cdr l))))))
-				(arrstore l r))
-			       (t
-				(merror (intl:gettext "assignment: ~A is not a hash table, an array, a Maxima list, or a matrix.")
-                        (caar l))))))))
-	       (t
-		(cond ((mget (caar l) 'hashar)
-		       (let ($use_fast_arrays)
-			 (arrstore l r)))
-		      (t
-		       (meval* `((mset) ,(caar l)
-				 ,(make-equal-hash-table
-				   (cdr (mevalargs (cdr l))))))
-		       (arrstore l r))))))
-	(t
+(defmfun arrstore (l r)
 	 (let ((fun (caar l)) ary sub (lispsub 0) hashl mqapplyp)
 	   (cond ((setq ary (mget fun 'array))
 		  (dimcheck fun (setq sub (mapcar #'meval (cdr l))) t)
@@ -1905,13 +1860,19 @@ wrapper for this."
 		                    (typep ary 'hash-table)
 		                    (eq (type-of ary) 'mgenarray)))))
 		  (if (member fun '(mqapply $%) :test #'eq) (merror (intl:gettext "assignment: cannot assign to ~M") l))
+		  (if $use_fast_arrays
+		    (progn
+		      (format t "ARRSTORE: use_fast_arrays=true; allocate a new value hash table for ~S~%" fun)
+		      (meval* `((mset) ,fun ,(make-equal-hash-table (cdr (mevalargs (cdr l)))))))
+		    (progn
+		      (format t "ARRSTORE: use_fast_arrays=false; allocate a new property hash table for ~S~%" fun)
 		  (add2lnc fun $arrays)
 		  (setq ary (gensym))
 		  (mputprop fun ary 'hashar)
 		  (setf (symbol-array ary) (make-array 7 :initial-element nil))
 		  (setf (aref (symbol-array ary) 0) 4)
 		  (setf (aref (symbol-array ary) 1) 0)
-		  (setf (aref (symbol-array ary) 2) (length (cdr l)))
+		  (setf (aref (symbol-array ary) 2) (length (cdr l)))))
 		  (arrstore l r))
 	         ((or (arrayp ary)
 	              (typep ary 'hash-table)
@@ -1933,7 +1894,7 @@ wrapper for this."
 		 (t (if (not (= (length l) 3))
 			(merror (intl:gettext "assignment: matrix must have two indices; found: ~M") (cons '(mlist) (cdr l))))
 		    ($setelmx r (meval (cadr l)) (meval (caddr l)) ary)
-		    r))))))
+		    r))))
 
 (defun arrfunp (x)
   (or (and $transrun (getl x '(a-expr))) (mgetl x '(aexpr))))

@@ -81,3 +81,61 @@ block ([use_fast_arrays : true,
   sort (listarray (foo)));
 [x, z];
 
+/* kill(all) erases display properties for conjugate
+ * mailing list 2017-02-24: "kill(all) results in non-default display options in wxMaxima"
+ * Verify here that properties list for conjugate and friends is not reset by kill(all),
+ * but it is reset by kill(foo) where foo = conjugate or friend.
+ */
+
+(?putprop ('conjugate, 111, 'foo),
+ ?putprop (nounify ('erf_generalized), 222, 'bar),
+ ?putprop ('beta, 333, 'baz),
+ ?putprop ('nset, 444, 'quux),
+ ?putprop ('trylevel, 555, 'mumble),
+ ?putprop ('maxmin, 666, 'blurf),
+ ?putprop ('nummod, 777, 'barf),
+ 0);
+0;
+
+kill(all);
+done;
+
+[?get ('conjugate, 'foo),
+ ?get (nounify ('erf_generalized), 'bar),
+ ?get ('beta, 'baz),
+ ?get ('nset, 'quux),
+ ?get ('trylevel, 'mumble),
+ ?get ('maxmin, 'blurf),
+ ?get ('nummod, 'barf)];
+[111, 222, 333, 444, 555, 666, 777];
+
+(kill (conjugate),
+ apply (kill, [nounify ('erf_generalized)]),
+ kill (beta),
+ kill (nset, trylevel, maxmin, nummod),
+ 0);
+0;
+
+[?get ('conjugate, 'foo),
+ ?get (nounify ('erf_generalized), 'bar),
+ ?get ('beta, 'baz),
+ ?get ('nset, 'quux),
+ ?get ('trylevel, 'mumble),
+ ?get ('maxmin, 'blurf),
+ ?get ('nummod, 'barf)];
+[false, false, false, false, false, false, false];
+
+/* verify that props is empty after kill(all) -- pre-bugfix behavior is that props
+ * has several built-in symbols before and after kill(all)
+ */
+
+/* this test fails due to bug in kill(rules); see SF bug #3289 */
+(kill(all), props);
+[];
+
+/* workaround bug #3289 */
+(kill(all),
+ not some (lambda ([x], member (x, props)),
+           ['conjugate, nounify ('erf_generalized), 'beta, 'nset, 'trylevel, 'maxmin, 'nummod]));
+true;
+

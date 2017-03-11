@@ -50,6 +50,7 @@ set plotdfOptions {
     {psfile "" "A filename where the graph will be saved in PostScript."}
     {nobox 0 "if not zero, do not draw the box around the plot."}
     {axes "xy" "if zero, no axes are drawn. x, y or xy to draw the axes."}
+    {number_of_arrows 225 "Approximate. Choose a square number as the number of arrows to draw"}
     {nolegend 0 "if not zero, do not write down the legend."}
 }
 
@@ -81,12 +82,12 @@ proc swapChoose {win msg winchoose } {
     if { "$msg" == "dydt" } {
 	pack $winchoose.dxdt -before $winchoose.dydt -side bottom
 	oset $win dydx ""
-	$winchoose.dydt.lab config -text "dy/dt"
+	$winchoose.dydt.lab config -text "dy/dt:"
     } else {
 	pack forget $winchoose.dxdt
 	oset $win dxdt 1
 	oset $win dydx " "
-	$winchoose.dydt.lab config -text "dy/dx"
+	$winchoose.dydt.lab config -text "dy/dx:"
     }
 }
 
@@ -141,7 +142,7 @@ proc doIntegrateScreen { win sx sy  } {
 proc doIntegrate { win x0 y0 } {
     # global xradius yradius c tstep  nsteps
     #    puts "dointegrate $win $x0 $y0"
-    makeLocal $win xradius yradius c tstep  nsteps direction linewidth tinitial versus_t xmin xmax ymin ymax
+    makeLocal $win xradius yradius c tstep  nsteps direction linewidth tinitial versus_t xmin xmax ymin ymax number_of_arrows
     linkLocal $win didLast trajectoryStarts
     set rtosx rtosx$win ; set rtosy rtosy$win
     set x1 [$rtosx $xmin]
@@ -349,13 +350,13 @@ proc drawArrowScreen { c atx aty dfx dfy color } {
 
 proc drawDF { win tinitial } {
     global axisGray
-    makeLocal  $win xmin xmax xcenter ycenter c ymin ymax transform vectors xaxislabel yaxislabel
+    makeLocal  $win xmin xmax xcenter ycenter c ymin ymax transform vectors xaxislabel yaxislabel number_of_arrows
     linkLocal $win nobox axes
 
     # flush stdout
     set rtosx rtosx$win ; set rtosy rtosy$win
     set storx   storx$win  ;   set story   story$win
-    set stepsize 30
+    set stepsize [expr  { 420.0/sqrt($number_of_arrows) }]
     set min 100000000000.0
     set max 0.0
     set t0 $tinitial
@@ -525,7 +526,7 @@ proc replotdf { win } {
 	set data ""
 	
     }
-    makeLocal $win c dxdt dydt tinitial nsteps xfun trajectory_at parameters
+    makeLocal $win c dxdt dydt tinitial nsteps xfun trajectory_at parameters number_of_arrows
     setUpTransforms $win 0.8
     setXffYff $dxdt $dydt $parameters
     $c delete all
@@ -574,7 +575,7 @@ proc doConfigdf { win } {
     pack $frdydx.dxdt  $frdydx.dydt -side bottom  -fill x -expand 1
     pack $frdydx.dydxbut $frdydx.dydtbut -side left -fill x -expand 1
 
-    foreach w {parameters xfun linewidth xradius yradius xcenter ycenter tinitial versus_t nsteps direction curves vectors fieldlines } {
+    foreach w {number_of_arrows parameters xfun linewidth xradius yradius xcenter ycenter tinitial versus_t nsteps direction curves vectors fieldlines } {
 	mkentry $wb1.$w [oloc $win $w] $w $buttonFont
 	pack $wb1.$w -side bottom -expand 1 -fill x
     }
