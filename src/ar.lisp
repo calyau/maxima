@@ -117,7 +117,10 @@
     ;; speed and simplicity we want anyway. Ah me. Also, passing the single
     ;; unconsed index IND1 around is a dubious optimization, which causes
     ;; extra consing in the case of hashed arrays.
-    ((array) (apply #'aref aarray ind1 inds))
+    ((array)
+     (unless (and (integerp ind1) (every #'integerp inds))
+       (bad-index-error (cons ind1 inds)))
+     (apply #'aref aarray ind1 inds))
     ((hash-table) (gethash (if inds (cons ind1 inds) ind1) aarray))
     (($functional)
      (let ((value (let ((evarrp t))
@@ -139,9 +142,23 @@
     (t
      (marray-type-unknown aarray))))
 
+;; INDICES is a Lisp list, not a Maxima list.
+(defun bad-index-error (indices)
+  (let ((m-indices (cons '(mlist) indices)))
+    (cond
+      ((every #'(lambda (x) (or ($ratp x) (integerp x))) indices)
+       (merror (intl::gettext "array: indices cannot be special expressions (CRE or Taylor); found: ~M") m-indices))
+      ((every #'(lambda (x) (or ($mapatom x) (integerp x))) indices)
+       (merror (intl::gettext "array: indices cannot be plain or subscripted symbols; found: ~M") m-indices))
+      (t
+        (merror (intl::gettext "array: indices must be literal integers; found: ~M") m-indices)))))
+
 (defun marrayset-gensub (val aarray ind1 inds)
   (case (marray-type aarray)
-    ((array) (setf (apply #'aref aarray ind1 inds) val))
+    ((array)
+     (unless (and (integerp ind1) (every #'integerp inds))
+       (bad-index-error (cons ind1 inds)))
+     (setf (apply #'aref aarray ind1 inds) val))
     ((hash-table) (setf (gethash (if inds (cons ind1 inds) ind1) aarray) val))
     (($functional)
      (marrayset-gensub val (mgenarray-content aarray) ind1 inds))
