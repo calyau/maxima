@@ -228,4 +228,6 @@ DeleteRegKey HKCR \\\".wxmx\\\\ShellNew\\\"
 ")
 
 
+SET(CPACK_NSIS_INSTALLER_MUI_ICON_CODE "
+  !define MUI_WELCOMEFINISHPAGE_BITMAP \\\"${CMAKE_SOURCE_DIR}/maxima-installerimage.bmp\\\"") 
 include(CPack)
