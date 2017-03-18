@@ -65,14 +65,18 @@ Installing the package
 ======================
 
 Of course just by double-clicking/executing the generated EXE on
-Windows. This Maxima installer installs into C:\maxima-VERSION, you
-can not change this directory.
+Windows. This Maxima installer installs into C:\maxima-VERSION,
+changing this directory is not recommended (because special characters
+or foreign language characters might cause problems).
 
 If you want to do an *unattended* installation (e.g. if you plan to
 install Maxima on many computers in a school, university or company),
 this installer (and uninstaller) understands the command line switch
 "/S" (for 'silent install').
 
+To select a installation directory for a unattended installation, use
+"/D=directory", e.g. to install to C:\maxima the command would be:
+maxima-clisp-sbcl-VERSION-win32.exe /S /D=C:\maxima
 
 Testing the installed package:
 ==============================
