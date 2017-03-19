@@ -22,32 +22,35 @@
 
 ;;; Sum of divisors and Totient functions
 
-(defmfun $divsum (n &optional (k 1))
-  (let (($intfaclim nil))
-    (if (and (integerp k) (integerp n))
-      (let ((n (abs n)))
-        (cond 
-          ((= n 1) 1)
-          ((zerop n) 1)
-          ((zerop k)
-            (do ((l (cfactorw n) (cddr l))
-                 (a 1 (* a (1+ (cadr l)))))
-                ((null l) a)))
-          ((minusp k)
-            `((rat) ,(divsum (cfactorw n) (- k)) ,(expt n (- k))))
-          (t
-            (divsum (cfactorw n) k))))
-      (list '($divsum) n k))))
+;; compute the sum of the k'th powers of the divisors of the absolute
+;; value of n
 
-(defun divsum (l k)
-  (do ((l l (cddr l))
-       (ans 1))
-      ((null l) ans)
-    (unless (eql (car l) 1)
-      (let ((temp (expt (car l) k)))
-    (setq ans (* ans
-      (truncate (1- (expt temp (1+ (cadr l))))
-                (1- temp))))))))
+(defmfun $divsum (n &optional (k 1))
+   (if (and (integerp k) (integerp n))
+      (let ((n (abs n)))
+        (if (minusp k)
+            (list '(rat) (divsum n (- k)) (expt n (- k)))
+            (divsum n k)))
+      (list '($divsum) n k)))
+
+;; divsum assumes its arguments to be non-negative integers.
+
+(defun divsum (n k)
+  (declare (type (integer 0) n k) (optimize (speed 3)))
+  (let (($intfaclim nil))               ;get-factor-list returns list
+                                        ;of (p_rime e_xponent) pairs
+                                        ;e is a fixnum
+    (cond ((<= n 1) 1)
+          ((zerop k) (reduce #'* (get-factor-list n) ; product over e+1
+                             :key #'(lambda (pe) (1+ (the fixnum (cadr pe)))))) 
+          (t (reduce #'* (get-factor-list n) ; product over ((p^k)^(e+1)-1)/(p^k-1)
+                             :key #'(lambda (pe)
+                                      (let ((p (car pe)) (e (cadr pe)))
+                                        (declare (type (integer 2) p)
+                                                 (type (integer 1 (#.most-positive-fixnum)) e))
+                                        (let ((tmp (expt p k)))
+                                          (truncate (1- (expt tmp (1+ e)))
+                                                    (1- tmp))))))))))
 
 ;; totient computes the euler totient function
 ;; i.e. the count of numbers relatively prime to n between 1 and n.
