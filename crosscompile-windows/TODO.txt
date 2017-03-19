@@ -3,10 +3,11 @@ Improvements / TODOs for the crosscompiling script
 
 And some reasons why I did make some decisions...
 
-1. The fixed installation directory (C:\Maxima-VERSION)
--------------------------------------------------------
+1. The default installation directory (C:\Maxima-VERSION)
+---------------------------------------------------------
 
-That was chosen, because of four reasons:
+The default installation directory is C:\maxima-VERSION.
+Users are dicouraged to change the path, because that may cause problems:
 
 - The default installation root ("C:\Program files") contains a space, which
   might cause issues, because one needs to escape it.
@@ -23,11 +24,6 @@ That was chosen, because of four reasons:
   (e.g. UTF8 chars in another language, special characters), which might
   cause problems.
 
-So making the installation directory fixed, solves these potential issues.
-
-
-Letting the user select his installation directory might be nice, but might
-lead to trouble.
 
 
 2. Using other LISPs
