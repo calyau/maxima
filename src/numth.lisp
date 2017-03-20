@@ -129,19 +129,15 @@
                 (setf a (rem b r))
                 (setf b r)))))))
 
-(defvar *incl* (let ((l (list 2 4))) (nconc l l)))
-
 (defun imodp (p)
-  (cond 
-    ((not (= (rem p 4) 1)) nil)
-    ((= (rem p 8) 5) (imodp1 2 p))
-    ((= (rem p 24) 17) (imodp1 3 p)) ;p=2(mod 3)
-    (t (do ((i 5 (+ i (car j)))      ;p=1(mod 24)
-            (j *incl* (cdr j)))
-           ((= (jacobi i p) -1) (imodp1 i p))))))
-
-(defun imodp1 (i modulus)
-  (abs (cexpt i (ash (1- modulus) -2) )))
+  (declare (integer p) (optimize (speed 3)))
+  (cond ((not (= (rem p 4) 1)) nil)
+        ((= (rem p 8) 5)   (power-mod 2 (ash (1- p) -2) p))
+        ((= (rem p 24) 17) (power-mod 3 (ash (1- p) -2) p)) ;p=2(mod 3)
+        (t (do ((i 5 (+ i j))      ;p=1(mod 24)
+                (j 2 (- 6 j)))
+               ((= (jacobi i p) -1) (power-mod i (ash (1- p) -2) p))
+             (declare (integer i) ())))))
 
 (defun psumsq (p)
   (let ((x (imodp p)))
