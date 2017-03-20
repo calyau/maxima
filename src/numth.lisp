@@ -158,20 +158,20 @@
         (t (do ((i 5 (+ i j))      ;p=1(mod 24)
                 (j 2 (- 6 j)))
                ((= (jacobi i p) -1) (power-mod i (ash (1- p) -2) p))
-             (declare (integer i) ())))))
+             (declare (integer i) (fixnum j))))))
 
 (defun psumsq (p)
-  (let ((x (imodp p)))
-    (cond 
-      ((equal p 2) (list 1 1))
-      ((null x) nil)
-      (t (psumsq1 p x)))))
-
-(defun psumsq1 (p x)
-  (do ((sp ($isqrt p))
-       (r1 p r2)
-       (r2 x (rem r1 r2)))
-      ((not (> r1 sp)) (list r1 r2))))
+  (declare (integer p) (optimize (speed 3)))
+  (if (= p 2)
+      (list 1 1)
+      (let ((x (imodp p)))
+        (if (null x)
+            nil
+            (do ((sp (isqrt p))
+                 (r1 p r2)
+                 (r2 x (rem r1 r2)))
+                ((not (> r1 sp)) (list r1 r2))
+              (declare (integer r1 r2)))))))
 
 (defun gctimes (a b c d)
   (list (- (* a c) (* b d))
@@ -259,12 +259,12 @@
       do (setq answ (list (* (first answ) term) (* (second answ) term)))
       (show answ)
     else
-      do (setq answ (apply 'gctimes (append answ (gcexpt term exp))))
+      do (setq answ (apply #'gctimes (append answ (gcexpt term exp))))
     finally (return answ)))
 
 (defun gcexpt (a n)
   (cond ((zerop n) '(1 0))
-        ((equal n 1) a)
+        ((= n 1) a)
         ((evenp n) (gcexpt (gctime1 a a) (truncate n 2)))
         (t (gctime1 a (gcexpt (gctime1 a a) (truncate n 2))))))
 
