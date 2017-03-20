@@ -129,6 +129,27 @@
                 (setf a (rem b r))
                 (setf b r)))))))
 
+
+;; factor over the gaussian primes
+
+(defmfun $gcfactor (n)
+  (let ((n (cdr ($totaldisrep ($bothcoef ($rat ($rectform n) '$%i) '$%i)))))
+    (if (not (and (integerp (car n)) (integerp (cadr n))))
+      (gcdisp (nreverse n))
+      (do ((factors (gcfactor (cadr n) (car n)) (cddr factors))
+           (res nil))
+          ((null factors)
+            (cond 
+              ((null res) 1)
+              ((null (cdr res)) (car res))
+              (t (cons '(mtimes simp) (nreverse res)))))
+        (let ((term (car factors))
+              (exp (cadr factors)))
+          (push (if (= exp 1)
+                  (gcdisp term)
+                  (pow (gcdisp term) exp))
+                res))))))
+
 (defun imodp (p)
   (declare (integer p) (optimize (speed 3)))
   (cond ((not (= (rem p 4) 1)) nil)
@@ -155,24 +176,6 @@
 (defun gctimes (a b c d)
   (list (- (* a c) (* b d))
         (+ (* a d) (* b c))))
-
-(defmfun $gcfactor (n)
-  (let ((n (cdr ($totaldisrep ($bothcoef ($rat n '$%i) '$%i)))))
-    (if (not (and (integerp (car n)) (integerp (cadr n))))
-      (gcdisp (nreverse n))
-      (do ((factors (gcfactor (cadr n) (car n)) (cddr factors))
-           (res nil))
-          ((null factors)
-            (cond 
-              ((null res) 1)
-              ((null (cdr res)) (car res))
-              (t (cons '(mtimes simp) (nreverse res)))))
-        (let ((term (car factors))
-              (exp (cadr factors)))
-          (push (if (= exp 1)
-                  (gcdisp term)
-                  (pow (gcdisp term) exp))
-            res))))))
 
 (defun gcdisp (term)
   (cond 
