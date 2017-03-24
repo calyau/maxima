@@ -36,10 +36,15 @@ false;
 [odelin,0];
 
 /* Kamke 2. 405  */ 
-/* CHECKME:  Takes a long time
+assume(notequal(a,9));
+[notequal(a,9)];
 (pn_(405),ans:contrib_ode(eqn:'diff(y,x,2)=(2*x^2+1)*'diff(y,x,1)/x^3-(a*x^4+10*x^2+1)*y/(4*x^6),y,x));
-false;
-*/
+[y = %k2*x^(sqrt(9-a)/2+3/2)*%e^-(1/(4*x^2))
+    +%k1*x^(3/2-sqrt(9-a)/2)*%e^-(1/(4*x^2))];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
+forget(notequal(a,9));
+[notequal(a,9)];
 
 /* Kamke 2. 406  */
 (pn_(406),ans:contrib_ode(eqn:'diff(y,x,2)=-27*x*y/(16*(x^3-1)^2),y,x));
