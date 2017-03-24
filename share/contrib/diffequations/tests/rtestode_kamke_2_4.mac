@@ -216,10 +216,10 @@ false;
 */
 
 /* Kamke 2. 331  */ 
-/* CHECKME:  Takes a long time
 (pn_(331),ans:contrib_ode(eqn:'diff(y,x,2)=(x-4)*'diff(y,x,1)/(2*(x-2)*x)-(x-3)*y/(2*(x-2)*x^2),y,x));
-false;
-*/
+[y = %k2*sqrt(x-2)*sqrt(x)+%k1*sqrt(x)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 332  */ 
 (pn_(332),ans:contrib_ode(eqn:'diff(y,x,2)='diff(y,x,1)/(x+1)-(3*x+1)*y/(4*x^2*(x+1)),y,x));
@@ -352,7 +352,10 @@ false;
 /* Kamke 2. 348  */ 
 /* CHECKME - Takes a long time
 (pn_(348),ans:contrib_ode(eqn:'diff(y,x,2)=-'diff(y,x,1)/x-(a*(x^4+1)+b*x^2)*y/x^4,y,x));
-false;
+[y=(spherodialwave_b(-1/2,2*a-b,a,(x^2+1)/(2*x))*%k2*sqrt(abs(x)))/sqrt(x)
+  +(spherodialwave_a(-1/2,2*a-b,a,(x^2+1)/(2*x))*%k1*sqrt(abs(x)))/sqrt(x)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 */
 
 /* Kamke 2. 349  */ 
@@ -653,21 +656,46 @@ forget(a>0);
 [kovacic,0];
 
 /* Kamke 2. 382  */ 
-/* CHECKME - Takes a long time
-(pn_(382),ans:contrib_ode(eqn:'diff(y,x,2)=c*y/((x-a)^2*(x-b)^2),y,x));
-false;
+(pn_(382),ans:contrib_ode(eqn:'diff(y,x,2)=c*y/((x-a)^2*(x-b)^2),y,x),done);
+done;
+/*
+[y = %k2*(x-a)^(sqrt(4*c+b^2-2*a*b+a^2)/(2*b-2*a)
+                      +b/(2*b-2*a)-a/(2*b-2*a))
+               *(x-b)^((-sqrt(4*c+b^2-2*a*b+a^2)/(2*b-2*a))
+                      +b/(2*b-2*a)-a/(2*b-2*a))
+               *'integrate((x-a)^((-sqrt(4*c+b^2-2*a*b+a^2)/(b-a))
+                                 -b/(b-a)+a/(b-a))
+                            *(x-b)^(sqrt(4*c+b^2-2*a*b+a^2)/(b-a)
+                                   -b/(b-a)+a/(b-a)),x)
+          +%k1*(x-a)^(sqrt(4*c+b^2-2*a*b+a^2)/(2*b-2*a)
+                     +b/(2*b-2*a)-a/(2*b-2*a))
+              *(x-b)^((-sqrt(4*c+b^2-2*a*b+a^2)/(2*b-2*a))
+                     +b/(2*b-2*a)-a/(2*b-2*a))]
 */
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 383  */ 
-/*(pn_(383),ans:contrib_ode(eqn:'diff(y,x,2)=(-(-beta-alpha+1)*(x-a)*(x-b)^2-(beta+alpha+1)*(x-a)^2*(x-b))*'diff(y,x,1)/((x-a)^2*(x-b)^2)-alpha*(a-b)^2*beta*y/((x-a)^2*(x-b)^2),y,x));
+(pn_(383),ans:contrib_ode(eqn:'diff(y,x,2)=(-(-beta-alpha+1)*(x-a)*(x-b)^2-(beta+alpha+1)*(x-a)^2*(x-b))*'diff(y,x,1)/((x-a)^2*(x-b)^2)-alpha*(a-b)^2*beta*y/((x-a)^2*(x-b)^2),y,x));
 [y = %k2*(x-a)^beta/(x-b)^beta+%k1*(x-a)^alpha/(x-b)^alpha];
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
-*/
 
 /* Kamke 2. 384  */ 
-/* This equation presents a problem - runs forever */ 
-/*(pn_(384),ans:contrib_ode(eqn:'diff(y,x,2)=-(-(a^2-1)*x^2+2*(a+3)*b*x-b^2)*y/(4*x^2),y,x));*/
+(pn_(384),ans:contrib_ode(eqn:'diff(y,x,2)=-(-(a^2-1)*x^2+2*(a+3)*b*x-b^2)*y/(4*x^2),y,x),done);
+done;
+/*
+[y = %k2*kummer_u(((a^2-1)*sqrt(b^2+1)+sqrt(a-1)*sqrt(a+1)*(a+3)*b+a^2
+                                             -1)
+                          /(2*(a^2-1)),sqrt(b^2+1)+1,-sqrt(a-1)*sqrt(a+1)*x)
+               *(-x)^(sqrt(b^2+1)/2+1/2)*%e^((sqrt(a-1)*sqrt(a+1)*x)/2)
+    +%k1*kummer_m(((a^2-1)*sqrt(b^2+1)+sqrt(a-1)*sqrt(a+1)*(a+3)*b+a^2
+                                            -1)
+                         /(2*(a^2-1)),sqrt(b^2+1)+1,-sqrt(a-1)*sqrt(a+1)*x)
+              *(-x)^(sqrt(b^2+1)/2+1/2)*%e^((sqrt(a-1)*sqrt(a+1)*x)/2)];
+*/
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 385  */ 
 (pn_(385),ans:contrib_ode(eqn:'diff(y,x,2)=-(a*x^2+a-3)*y/(4*(x^2+1)^2),y,x),0);
@@ -733,7 +761,7 @@ false;
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
 
-/* Kamke 2. 392  */ 
+/* Kamke 2. 392  */
 /* CHECKME - Takes a long time
 (pn_(392),ans:contrib_ode(eqn:'diff(y,x,2)=-b*x*'diff(y,x,1)/(a*(x^2-1))-(c*x^2+d*x+e)*y/(a*(x^2-1)^2),y,x));
 false;
@@ -759,14 +787,26 @@ false;
 */
 
 /* Kamke 2. 396  */ 
-/* Error "Quotient by a polynomial of higher degree"
 (assume(4*a*c-b^2>0),done);
 done;
-(pn_(396),ans:contrib_ode(eqn:'diff(y,x,2)=-y*A/(a*x^2+b*x+c)^2,y,x));
-false;
+(pn_(396),ans:contrib_ode(eqn:'diff(y,x,2)=-y*A/(a*x^2+b*x+c)^2,y,x),done);
+done;
+/*
+[y = %k2*sqrt(a*x^2+b*x+c)
+               *%e^((sqrt((-4*a*c)+b^2-4*A)*atan((2*a*x+b)/sqrt(4*a*c-b^2)))
+                   /sqrt(4*a*c-b^2))
+               *'integrate(%e^-((2*sqrt((-4*a*c)+b^2-4*A)
+                                  *atan((2*a*x+b)/sqrt(4*a*c-b^2)))
+                              /sqrt(4*a*c-b^2))
+                            /(a*x^2+b*x+c),x)
+          +%k1*sqrt(a*x^2+b*x+c)
+              *%e^((sqrt((-4*a*c)+b^2-4*A)*atan((2*a*x+b)/sqrt(4*a*c-b^2)))
+                  /sqrt(4*a*c-b^2))];
+*/
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 (forget(4*a*c-b^2>0),done);
 done;
-*/
 
 /* Kamke 2. 397  */ 
 (pn_(397),ans:contrib_ode(eqn:'diff(y,x,2)=y/x^5-'diff(y,x,1)/x^4,y,x));
@@ -775,10 +815,8 @@ done;
 [odelin,0];
 
 /* Kamke 2. 398  */
-/*
 (pn_(398),ans:contrib_ode(eqn:'diff(y,x,2)=-(3*x^2-1)*'diff(y,x,1)/(x*(x^2-1))-(x^2-(2*v+1)^2-1)*y/(x^2-1)^2,y,x));
 false;
-*/
 
 /* Kamke 2. 399  */ 
 (pn_(399),ans:contrib_ode(eqn:'diff(y,x,2)=(3*x+1)*'diff(y,x,1)/((x-1)*(x+1))-36*(x+1)^2*y/((x-1)^2*(3*x+5)^2),y,x));
