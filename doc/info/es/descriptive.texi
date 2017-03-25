@@ -1515,6 +1515,122 @@ Véase también @code{quantile}.
 
 
 
+@deffn {Función} km (@var{list}, @var{option} ...)
+@deffnx {Función} km (@var{matrix}, @var{option} ...)
+
+Estimador Kaplan-Meier de la función de supervivencia o fiabilidad @math{S(x)=1-F(x)}.
+
+Los datos se pueden introducir como una lista de pares de números o como una
+matriz de dos columnas. La primera componente es el tiempo observado y la 
+segunda componente es el índice de censura (1 = no censurado, 0 = censurado por
+la derecha).
+
+El argumento opcional es el nombre de la variable en la expresión devuelta, la cual
+es @var{x} por defecto.
+
+Ejemplos:
+
+Muestra como una lista de pares.
+
+@c ===beg===
+@c load (descriptive)$
+@c S: km([[2,1], [3,1], [5,0], [8,1]]);
+@c load (draw)$
+@c draw2d(
+@c   line_width = 3, grid = true,
+@c   explicit(S, x, -0.1, 10))$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+@group
+(%i2) S: km([[2,1], [3,1], [5,0], [8,1]]);
+                       charfun((3 <= x) and (x < 8))
+(%o2) charfun(x < 0) + -----------------------------
+                                     2
+                3 charfun((2 <= x) and (x < 3))
+              + ------------------------------- 
+                               4
+              + charfun((0 <= x) and (x < 2))
+@end group
+(%i3) load (draw)$
+@group
+(%i4) draw2d(
+        line_width = 3, grid = true,
+        explicit(S, x, -0.1, 10))$
+@end group
+@end example
+
+Estimación de probabilidades de supervivencia.
+
+@c ===beg===
+@c load (descriptive)$
+@c S(t):= ''(km([[2,1], [3,1], [5,0], [8,1]], t)) $
+@c S(6);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) S(t):= ''(km([[2,1], [3,1], [5,0], [8,1]], t)) $
+@group
+(%i3) S(6);
+                            1
+(%o3)                       -
+                            2
+@end group
+@end example
+
+@end deffn
+
+
+
+@deffn {Función} cdf_empirical (@var{list}, @var{option} ...)
+@deffnx {Función} cdf_empirical (@var{matrix}, @var{option} ...)
+
+Función de distribución empírica @math{F(x)}.
+
+Los datos se pueden introducir como una lista de números o como una matriz
+columna.
+
+El argumento opcional es el nombre de la variable en la expresión devuelta, la cual
+es @var{x} por defecto.
+
+Ejemplo:
+
+Función de distribución empírica.
+
+@c ===beg===
+@c load (descriptive)$
+@c F(x):= ''(cdf_empirical([1,3,3,5,7,7,7,8,9]));
+@c F(6);
+@c load(draw)$
+@c draw2d(
+@c    line_width = 3,
+@c    grid       = true,
+@c    explicit(F(z), z, -2, 12)) $
+@c ===end===
+@example
+(%i1) load (descriptive)$
+@group
+(%i2) F(x):= ''(cdf_empirical([1,3,3,5,7,7,7,8,9]));
+(%o2) F(x) := (charfun(x >= 9) + charfun(x >= 8)
+               + 3 charfun(x >= 7) + charfun(x >= 5)
+               + 2 charfun(x >= 3) + charfun(x >= 1))/9
+@end group
+@group
+(%i3) F(6);
+                           4
+(%o3)                      -
+                           9
+@end group
+(%i4) load(draw)$
+(%i5) draw2d(
+        line_width = 3,
+        grid       = true,
+        explicit(F(z), z, -2, 12)) $
+@end example
+
+@end deffn
+
+
 
 @deffn {Función} cov (@var{matrix})
 Es la matriz de covarianzas de una muestra multivariante, definida como
