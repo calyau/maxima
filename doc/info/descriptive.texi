@@ -1775,6 +1775,131 @@ See also function @mrefdot{quantile}
 
 
 
+@anchor{km}
+@deffn {Function} km @
+@fname{km} (@var{list}, @var{option} ...) @
+@fname{km} (@var{matrix}, @var{option} ...)
+
+Kaplan Meier estimator of the survival, or reliability, function @math{S(x)=1-F(x)}.
+
+Data can be introduced as a list of pairs, or as a two column matrix. The first
+component is the observed time, and the second component a censoring index 
+(1 = non censored, 0 = right censored).
+
+The optional argument is the name of the variable in the returned expression,
+which is @var{x} by default.
+
+Examples:
+
+Sample as a list of pairs.
+
+@c ===beg===
+@c load (descriptive)$
+@c S: km([[2,1], [3,1], [5,0], [8,1]]);
+@c load (draw)$
+@c draw2d(
+@c   line_width = 3, grid = true,
+@c   explicit(S, x, -0.1, 10))$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+@group
+(%i2) S: km([[2,1], [3,1], [5,0], [8,1]]);
+                       charfun((3 <= x) and (x < 8))
+(%o2) charfun(x < 0) + -----------------------------
+                                     2
+                3 charfun((2 <= x) and (x < 3))
+              + ------------------------------- 
+                               4
+              + charfun((0 <= x) and (x < 2))
+@end group
+(%i3) load (draw)$
+@group
+(%i4) draw2d(
+        line_width = 3, grid = true,
+        explicit(S, x, -0.1, 10))$
+@end group
+@end example
+
+Estimate survival probabilities.
+
+@c ===beg===
+@c load (descriptive)$
+@c S(t):= ''(km([[2,1], [3,1], [5,0], [8,1]], t)) $
+@c S(6);
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) S(t):= ''(km([[2,1], [3,1], [5,0], [8,1]], t)) $
+@group
+(%i3) S(6);
+                            1
+(%o3)                       -
+                            2
+@end group
+@end example
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
+@anchor{cdf_empirical}
+@deffn {Function} cdf_empirical @
+@fname{cdf_empirical} (@var{list}, @var{option} ...) @
+@fname{cdf_empirical} (@var{matrix}, @var{option} ...)
+
+Empirical distribution function @math{F(x)}.
+
+Data can be introduced as a list of numbers, or as a one column matrix.
+
+The optional argument is the name of the variable in the returned expression,
+which is @var{x} by default.
+
+Example:
+
+Empirical distribution function.
+
+@c ===beg===
+@c load (descriptive)$
+@c F(x):= ''(cdf_empirical([1,3,3,5,7,7,7,8,9]));
+@c F(6);
+@c load(draw)$
+@c draw2d(
+@c    line_width = 3,
+@c    grid       = true,
+@c    explicit(F(z), z, -2, 12)) $
+@c ===end===
+@example
+(%i1) load (descriptive)$
+@group
+(%i2) F(x):= ''(cdf_empirical([1,3,3,5,7,7,7,8,9]));
+(%o2) F(x) := (charfun(x >= 9) + charfun(x >= 8)
+               + 3 charfun(x >= 7) + charfun(x >= 5)
+               + 2 charfun(x >= 3) + charfun(x >= 1))/9
+@end group
+@group
+(%i3) F(6);
+                           4
+(%o3)                      -
+                           9
+@end group
+(%i4) load(draw)$
+(%i5) draw2d(
+        line_width = 3,
+        grid       = true,
+        explicit(F(z), z, -2, 12)) $
+@end example
+
+@opencatbox
+@category{Package descriptive}
+@closecatbox
+@end deffn
+
+
+
 @anchor{cov}
 @deffn {Function} cov (@var{matrix})
 The covariance matrix of the multivariate sample, defined as
