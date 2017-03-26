@@ -346,7 +346,7 @@ fourier_elim([min(x,y) < max(x,y)],[x,y]);
 [x<y] or [y<x]$
 
 fourier_elim([min(x,y) <= max(x,y)],[x,y]);
-[x=y] or [x<y] or [y<x]$ 
+[x=y] or [x<y] or [y<x]$
 
 fourier_elim([0>=x,0=z],[x,z]);
 [x=0,z=0] or [z=0,x<0]$
@@ -463,24 +463,3 @@ fourier_elim([x<=3.14],[x]);
 
 
 /* end of known bugs */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
