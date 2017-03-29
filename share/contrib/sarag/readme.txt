@@ -4,7 +4,7 @@
 
        SOME ALGORITHMS IN REAL ALGEBRAIC GEOMETRY
 
-                       Version 1.1
+                       Version 1.3
 
 ---------------------------------------------------------------
 maintained and developed by Fabrizio Caruso 
@@ -19,29 +19,32 @@ further developed
 
 at the University of Pisa, Italy
 
-The code for the multivariate certificate of positivy
+The code for the multivariate certificate of positivity
 
 has been developed by Richard Leroy.
+
+The code for quick sign determination has been developed
+
+by Mathieu Kohli.
 
 ---------------------------------------------------------------
 
 Please report bugs to: 
-fabrizio.caruso@posso.dm.unipi.it
-caruso@dm.unipi.it
 caruso@science.unitn.it
+marie-francoise.roy@univ-rennes1.fr
 
 ---------------------------------------------------------------
-Also part of the free interactive book
+Also part of the book
 
 "Algorithms in Real Algebraic Geometry"
 
 by Saugata Basu, Richard Pollack, Marie-Françoise Roy
 
-Springer-Verlag, Berlin, 2003
+Springer-Verlag, Berlin, 2003 (second edition 2006)
 
 which together with SARAG is available for download at 
 
-http://perso.univ-rennes1.fr/marie-francoise.roy/bpr-ed2-posted2.html
+http://perso.univ-rennes1.fr/marie-francoise.roy/bpr-ed2-posted3.html
 
 ---------------------------------------------------------------
 ---------------------------------------------------------------
@@ -54,9 +57,9 @@ real algebraic geometry.
 As of this version it focuses on 
 univariate real root counting and isolation, 
 topology of bivariate polynomials and 
-certificate (computer-generated simple proof 
-for the positivity/negativity of a univariate polynomial 
-in a given interval)
+certificates of positivity (computer-generated simple proof 
+for the positivity/negativity of a univariate and multivariate
+polynomial)
 
 
 In particular SARAG provides functions for 
@@ -66,7 +69,8 @@ In particular SARAG provides functions for
 (4) isolation of real roots,
 (5) sign determination and Thom encodings,
 (6) study of the topology of bivariate polynomials
-(7) certificate of positivity for univariate polynomials
+(7) certificate of positivity for univariate and
+multivariate polynomials
 
 ---------------------------------------------------------------
 ---------------------------------------------------------------
@@ -82,11 +86,10 @@ SARAG with the only exception of plotting
 The latest version of Maxima is available on line at
 http://maxima.sourceforge.net/
 
-- GNUPLOT (3.7.x, 4.0.x or above)
+- GNUPLOT (5.0 or above for SARAG 1.3 and 3.7.x, 4.0.x for previous versions of SARAG)
 The function "drawTopology" in this library uses 
 Gnuplot for plotting graphs
-and it has been tested successfully on Gnuplot 3.7.x 
-and 4.0.x.
+and it has been tested successfully on Gnupolot 5.0.
 
 
 ---------------------------------------------------------------
@@ -109,9 +112,11 @@ sarag_linear_algebra.mac (linear algebra and matrix manipulation)
 rootCounting.mac (real root counting)
 rootIsolation.mac (root isolation by De Casteljau method)
 signDetermination.mac (sign determination)
+quickSignDetermination.mac (quick sign determination)
 intervalArithmetic.mac (interval arithmetic)
 topology.mac (topology of curves)
-certificateOfPositivity.mac (certificate of positivity)
+certificateOfPositivity.mac (univariate certificate of positivity)
+multiCertificateOfPositivity.mac (multivariate certificate of positivity)
 
 arag_test.mac (test file for "Alg. in Real Alg. Geom.")
 hard_test.mac (heavy test files with mostly topology computations)
@@ -121,14 +126,13 @@ readme.txt (this manual)
 
 This library is included in the latest versions of Maxima
 and it is simply loaded by the command
-load(sarag);
+load(sarag).
 
-For previous versions of the library
-either load each single file
-with the "LOAD" Maxima command
-or edit a file that takes care of loading all the files 
-or load the file "sarag.mac" that will load the files 
-if they are in the current directory.
+The last version on line can be found on
+http://perso.univ-rennes1.fr/marie-francoise.roy/bpr-ed2-posted3.html
+in the compressed directory saragcur and loaded by
+load("./saragcur/saragcur.mac").
+
 
 In order to test the library use:
 batch(<path>/arag_test.mac,test);
@@ -151,15 +155,18 @@ For more details and for the theory behind the algorithms
 we refer to "Algorithms in Real Algebraic Geometry"
 by S. Basu, R. Pollack, M.-F. Roy
 which together with SARAG is available for download at 
-http://name.math.univ-rennes1.fr/marie-francoise.roy/bpr-posted1.html 
+http://perso.univ-rennes1.fr/marie-francoise.roy/bpr-ed2-posted3.html 
+or to a few specific papers quoted inside the text.
 
+A more detailed manual with examples, saragmanuel.pdf,  can also be 
+downloaded there.
 
 ATTENTION: 
 
-(*) Items marked with this symbol are not fully tested
+(-) Items marked with this symbol are not fully tested
 or are missing some minor features.
 
-(**) These items are not available, yet, but will
+(--) These items are not available, yet, but will
 be included soon.
 
 ---------------------------------------------------------------
@@ -173,7 +180,7 @@ The library contains some settings in the file "settings.mac".
 
 The main settings and their default values are:
 
-- DEFAULT_VERBOSITY [0 (non-verbose)] (**)
+- DEFAULT_VERBOSITY [0 (non-verbose)] (--)
 Verbosity level of the commands.
 
 - LINEAR_SOLVER [linsolve (built-in Maxima linear solver)]
@@ -304,7 +311,7 @@ Form of the Output
 
 The output of all functions of the library is a Maxima expression. 
 Maxima uses brakets "[", "]" to describe couples and lists
-(e.g. an open inteval ]a,b[ is described by a couple
+(e.g. an open inteval (a,b) is described by a couple
 containing the ends, which in Maxima is "[a,b]")
 
 
@@ -333,7 +340,7 @@ Main functions
 - det(m)
 INPUT : m is a list of lists representing the rows of a matrix 
 METHOD : 
--- gauss [Gaussian elimination with no pivot optimization], 
+-- gauss [basic Gaussian elimination], 
 -- bareiss [Bareiss method]
 OUTPUT : the determinant
 
@@ -342,7 +349,7 @@ OUTPUT : the determinant
 INPUT : m is a list of lists representing the rows of a matrix
 METHOD : 
 -- gauss [Gaussian elimination with no pivot optimization], 
--- bareiss [Bareiss method] (**)
+-- bareiss [Bareiss method] (--)
 OUTPUT : [t,c,z]
 where 
 1) t is an upper triangular equivalent form of m
@@ -375,8 +382,8 @@ Main functions
 INPUT : A is a list of lists representing the rows of a matrix,
 an indeterminate var
 METHOD : 
--- gauss [Gaussian elimination with no pivot optimization], (**) 
--- bareiss [Bareiss method], (**)
+-- gauss [basic Gaussian elimination], (--) 
+-- bareiss [Bareiss method], (--)
 -- babyGiant [baby step, giant step trace-based method]
 OUTPUT : the characteristic polynomial of A in the indeterminate var
 
@@ -426,7 +433,7 @@ OUTPUT : [sSubRes,s,u,v] where
 --------------------------------------
 GCD and GCD-free part by subresultants
 
-- gcdFreePart(P,Q,var) (*)
+- gcdFreePart(P,Q,var) (-)
 INPUT : polynomials P,Q in var
 OUTPUT : a couple [g,f]
 where g is gcd(P,Q) and
@@ -438,7 +445,7 @@ to a constant multiple
 ROOTS COUNTING
 
 rootCouting.mac
-rootIsolation.mac (for De Casteljau-based's method) 
+rootIsolation.mac (De Casteljau-based method) 
 -----------------------------------------------------------------
 
 
@@ -476,13 +483,14 @@ METHOD :
 -- sRem [signed remainder sequence]
 -- sSubRes [signed subresultants]
 -- deCasteljau [De Casteljau method for isolation]
--- monomial [monomial method for isolation] (**)
+-- monomial [monomial method for isolation] (--)
 OUTPUT : number of real roots of p
 
 --------------------------------------------------
 Cauchy Index on an open interval
 
 Remark: Here we assume that a and b are not roots
+of the denominator of the rational function
 
 
 - cauchyIndexBetween(num,den,x,a,b)
@@ -507,14 +515,14 @@ a,b are either real or -INFINITY or +INFINITY
 METHOD :
 -- sRem [signed remainder sequence]
 -- sSubRes [signed subresultants]
--- deCasteljau [De Casteljau method for isolation] (**)
--- monomial [monomial method for isolation] (**)
+-- deCasteljau [De Casteljau method for isolation] (--)
+-- monomial [monomial method for isolation] (--)
 OUTPUT : number of real roots of p in the interval ]a,b[
 
 -----------------
 Hankel Signature
 
-- hankelSignature(seq) (*)
+- hankelSignature(seq) (-)
 INPUT : sequence seq of odd length of elements of an integral domain
 OUTPUT : signature of the Hankel quadratic form for seq
 
@@ -611,7 +619,7 @@ Main functions
 INPUT : polynomial pol in x
 METHOD:
 -- deCasteljau [De Casteljau method for root isolation]
--- monomial [root isolation in the monomial basis] (**)
+-- monomial [root isolation in the monomial basis] (--)
 MODIFIER: 
 -- withZ : it only computes integer Bernstein coefficients
 OUTPUT : list of elements  
@@ -620,14 +628,14 @@ a) [pt]
 describing the real root pt 
 or 
 b) [a,b]
-describing the open interval "]a,b["   
+describing the open interval "(a,b)"   
 
 
 - isolateRootsBetween[withZ](pol,x,search_interval)
 INPUT : polynomial pol in x, the open interval search_interval
 METHOD:
 -- deCasteljau [De Casteljau method for root isolation]
--- monomial [root isolation in the monomial basis] (**)
+-- monomial [root isolation in the monomial basis] (--)
 MODIFIER: 
 -- withZ : it only computes integer Bernstein coefficients
 OUTPUT : list of elements
@@ -637,7 +645,7 @@ a) [pt]
 describing the real root pt 
 or 
 b) [a,b]
-describing the open interval "]a,b["  
+describing the open interval "(a,b)"  
 
 
 
@@ -646,7 +654,7 @@ describing the open interval "]a,b["
 INPUT : polynomial pol in x, threshold for the intervals
 METHOD:
 -- deCasteljau [De Casteljau method for root isolation]
--- monomial [root isolation in the monomial basis] (**)
+-- monomial [root isolation in the monomial basis] (--)
 MODIFIER: 
 -- withZ : it only computes integer Bernstein coefficients 
 OUTPUT : list of elements  
@@ -655,14 +663,14 @@ a) [pt]
 describing the real root pt 
 or 
 b) [a,b]
-describing the open interval "]a,b[" smaller then threshold
+describing the open interval (a,b) smaller then threshold
 
 
 - findRootsBetween[withZ](pol,x,threshold)
 INPUT : polynomial pol in x, threshold for the intervals
 METHOD:
 -- deCasteljau [De Casteljau method for root isolation]
--- monomial [root isolation in the monomial basis] (**)
+-- monomial [root isolation in the monomial basis] (--)
 MODIFIER: 
 -- withZ : it only computes integer Bernstein coefficients 
 OUTPUT : list of elements describing roots in the 
@@ -672,7 +680,7 @@ a) [pt]
 describing the real root pt 
 or 
 b) [a,b]
-describing the open interval "]a,b[" smaller then threshold
+describing the open interval "(a,b)" smaller then threshold
 
 
 - rootsSign(isInt,p,q,x)
@@ -681,7 +689,7 @@ isolating list isInt for the real roots of p in the
 same form as in the output of "isolateRealRoots"
 METHOD:
 -- deCasteljau [De Casteljau method for root isolation]
--- monomial [root isolation in the monomial basis] (**)
+-- monomial [root isolation in the monomial basis] (--)
 OUTPUT : [[nCPtList,nCIntList],[cPtList,cIntList]]
 where 
 1) nCPtList, cPtList are lists of couples
@@ -696,7 +704,7 @@ at this root
 INPUT : polynomials p,q in x
 METHOD:
 -- deCasteljau [De Casteljau method for root isolation]
--- monomial [root isolation in the monomial basis] (**)
+-- monomial [root isolation in the monomial basis] (--)
 OUTPUT : [com,signNComP,signNComQ]
 where
 1) com is an isolating list for the common real roots
@@ -713,6 +721,7 @@ empty intersection among themselves.
 SIGN DETERMINATION
 
 signDetermination.mac
+quickSignDetermination.mac
 -----------------------------------------------------------------
 
 NOTE: When we refer to an algorithm that computes the
@@ -752,11 +761,34 @@ with respect to ptSet
 METHOD :
 -- naive [brute force method on a huge matrix of signs]
 -- smart [a method that uses much smaller matrices of signs]
+-- quick [an optimization of smart]
 OUTPUT : a list representing 
 a subset of  the all elements of {0,-1,1}^polList
 describing the possible signs of the polynomials 
 in polList at ptSet
 
+And similar functions for zero-nonzero determination
+based on results in D. Perrucci, M.-F. Roy. Zero-nonzero and real-nonreal sign determination, Linear
+Algebra and Its Applications 439 (2013), no. 10, pp. 3016-3030 (preliminary version,arXiv:1305.4131).
+The main ones are
+
+- invertibilityQuery(q,p,x)
+INPUT : q,p polynomials in the x indeterminate,
+METHOD :
+-- gcd
+OUTPUT : number of complex roots of p where q is nonzero
+
+- zerononzeroDetermination(polylist,p,Qu,var)
+INPUT : list polList of polynomials in var, a description of a finite set of points, an algorithm Qu to compute the Invertibility
+query
+OUTPUT : a list representing a subset of the all elements of {0,-1,1}^polList describing the possible zero nonzero conditions
+of the polynomials in polList at the complex zeroes of p
+
+- zerononzeroDeterminationwithcardinals(polylist,p,Qu,var)
+INPUT : list polList of polynomials in var, a description of a finite set of points, an algorithm Qu to compute the Invertibility
+query
+OUTPUT : a list representing a subset of the all elements of {0,-1,1}^polList describing the possible zero nonzero conditions
+of the polynomials in polList at the complex zeroes of p and the corresponding cardinals
 
 -----------------------------------------------------------------
 THOM ENCODINGS
@@ -843,10 +875,11 @@ that has the same input/output format as
 -----------------------------------------------------------------
 Main functions
 
-- archimedianTopology(P,isolAlg,x,y)
+- archimedeanTopology(P,isolAlg,x,y) 
 INPUT : a square free polynomial P in x and y, 
 algorithm "isolAlg" for the
 isolation of real roots in an archimedean real closed field
+FLAG: "DRAW_TOPOLOGY" (set to false by default) when set to true it will trigger "drawTopology" to display the topology diagram automatically. Remark: if a diagram is displayed, you need to close the pop-up window to get the result. 
 OUTPUT : a couple containing 
 
 i) the number "a" of changes of 
@@ -863,16 +896,16 @@ ii.1) the numbers describe the number of intersections
 of the curve with projections to the x-axis in intervals
 between critical points
 
-ii.2) the couples contain:
-ii.2.1) the number of intersections
+ii.2) the couples (numInt, critPos) contain:
+ii.2.1) the number of intersections numInt
 with projections to the x-axis on critical points
-ii.2.2) the position of the critical on the projection
+ii.2.2) the position critPos of the critical point on the projection
 (in bottom-up order).
 
 
--drawTopology(tpg) (*)
+-drawTopology(tpg) (-)
 INPUT : the topology of the curve (as in the second
-element of the output of archimedean topology)
+element of the output of archimedean topology or alternatively since SARAG 1.3 as the full output of archimedean topology)
 OUTPUT : number of critical points 
 EFFECT: it uses gnuplot (3.7.x, 4.0.x or above) to draw the topological graph
 corresponding to description in tpg
@@ -881,7 +914,7 @@ corresponding to description in tpg
 -----------------------------------------------------------------
 INTERVAL ARITHMETIC
 
-intervalArithmetic.mac (*)
+intervalArithmetic.mac (-)
 -----------------------------------------------------------------
 
 - evaluatePolAt(P,var,interval) 
@@ -894,6 +927,8 @@ CERTIFICATE OF POSITIVITY
 
 certificateOfPositivity.mac
 -----------------------------------------------------------------
+Based on F. Boudaoud, F. Caruso M.-F. Roy Certificates of positivity in the
+Bernstein basis, Discrete and Computational Geometry 39 4 639-655 (2008)
 
 Note:
 
@@ -949,7 +984,9 @@ Main functions
 
 - certificate(pol,var)
 INPUT : polynomial in var
-MODIFIER : certificateBetween
+OPTINAL PARAMETERS: 
+- if 3 parameters are used, the third parameter specifies the interval;
+- if 4 parameters are used they are interpreted as the left and right end of the interval;
 OUTPUT : list of local "certificates" of positivity/negativity
 that cover entirely the default interval ([-1,1]).
 
@@ -958,13 +995,16 @@ that cover entirely the default interval ([-1,1]).
 INPUT : a polynomial in var, a search interval (ex. [-1,-1])         
 OUTPUT : number of subintervals used for proving the positivity/negativity 
 EFFECT : it prints a formal proof of positivity/negativity of pol in    
-search_interval or of the existence of a root
+search_interval or of the existence of a root.
 
 
 -----------------------------------------------------------------
 MULTIVARIATE CERTIFICATE OF POSITIVITY
 
 multivariateCertificateOfPositivity.mac
+
+Based on R. Leroy, Certificats de positivité et minimisation polynomiale dans
+la base de Bernstein multivariée http://tel.archives-ouvertes.fr/tel-00349444/fr/
 -----------------------------------------------------------------
 
 - multiCertificate(P,V,vars,d,sub,cert)

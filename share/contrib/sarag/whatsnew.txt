@@ -1,3 +1,53 @@
+
+SARAG 1.3
+
+Feb 2017 (Merge with fork developed at the Univ. of Rennes 1 + fixes and minor extra features by Fabrizio Caruso)
+
+1. Merge of a separate branch of the SARAG packaged developed at the Univ. of Rennes 1: 
+- Univariate certificate is now computed as in Maxima with its usual output format.
+- All other files use the updated code developed at the Univ. of Rennes1.
+
+2. Fix multivariate certificate of positivity.
+Multivariate certificate is now working and enabled.
+No warnings about deprecated gnuplot attributes are any longer displayed by "drawMultiCerticificate".
+Moreover a bug on a global variable was fixed in "standard_mid".
+Unit-tests have been added into arag_test.mac and 1 computationally heavy test has been added
+into hard_test.mac.
+
+3. DRAW_TOPOLOGY (false by default) when set to true, will trigger the display of the topology diagram. 
+Remark: When DRAW_TOPOLOGY set to true and you compute a topology, you will need first to close the pop-up windonw to get the result.
+
+4. In order to further simply its use "drawTopology" works with the second output of "topology" as well as the full output of topology
+
+5. New "revRowsCount" function (sign change after i-th row switch) from Maxima version.
+
+6. Verbosity parameters have been removed in almost of functions.
+
+7. Fix of many local variables that were not declared as such.
+
+8. Removed unused files (examples.mac, topology_examples.mac, whichversion.txti, etc.)
+
+9. Fix of multiple misspellings.
+
+---------------------------------------------------------
+---------------------------------------------------------
+
+SARAG 1.2
+
+22 may 2016
+
+Merge with external code developed at the Univ. of Rennes 1
+by Matthieu Kohli new file quickSignDetermination.mac
+
+slight modification of discriminant 
+
+sylvesterResultant in the case of two polynomials of equal degree fixed
+ 
+coefficients in certificates of positivity changed
+
+newtonFromPoly(pol,var,len) now takes three arguments:
+and  computes a sequence of Newton sums of length "len"
+
 ---------------------------------------------------
 ---------------------------------------------------
 SARAG 1.1
@@ -46,14 +96,6 @@ SARAG 1.0
 (2) sRem and sSubRes compute sequences that
 are now longer by one element
 
----------------------------------------------------
-SARAG beta 0.4
-
-(1) newtonFromPoly(pol,var,len) now takes three arguments:
-it computes a sequence of Newton sums of length "len"
-
-(2) code clean up ("subRes"-> "sSubRes", "sSubResSignChanges"-> "genPermMVar")
-
 
 ---------------------------------------------------
 SARAG beta 0.3
@@ -81,5 +123,6 @@ more computation  (mostly topology computations)
 
 (4) updated "readme.txt"
 
---------------------------------------------------
+
+
 

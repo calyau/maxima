@@ -1,13 +1,25 @@
 /*-------------------------------------
 
-Package relatif aux polynomes de Berntein multivaries
+Package : Certificates of positivity in the simplicial Bernstein basis
 
-Auteur: Richard Leroy
+Author: Richard Leroy
 
-Cree le 01/07/07
+First version : 07/01/07
 
------------------------------------------*/
+Updated : 09/01/11
 
+Updated again: 01/02/2017 (fix on standard_mid global m in standard_mid)
+--------------------------------------*/
+
+/*-------------------------------------
+
+Procedure: nonneg
+
+Input: List L of the Bernstein expansion of a polynomial P of degree d in k variables
+
+Output: True if all the Bernstein coefficients are nonnegative, else false.
+
+--------------------------------------*/
 
 nonneg(L,d,k):=
   block([i,bool],
@@ -23,11 +35,12 @@ nonneg(L,d,k):=
 
 Procedure : pos
 
-Entree : 	Liste L des coefficients de Bernstein d'un polynome P
-		degre d de P
-		dimension k
+Input: List L of the Bernstein expansion of a polynomial P of degree d in k variables
 
-Sortie :	True si L verifie le certificat de positivite, false sinon
+Output: True if the Bernstein coefficients satisfy the certificates of positivity, else false.
+
+Reminder: the certificate of positivy says that all the Bernstein coefficients are nonnegative, 
+and the coefficients corresponding to the vertices of the simplex are positive.
 
 ---------------------------------------*/
 
@@ -46,7 +59,39 @@ pos(L,d,k):=
   return(bool)
   );
 
+/*-------------------------------------
 
+Procedure: monmin2
+
+Input: list L
+
+Output: the minimum of L, together with a corresponding index.
+
+--------------------------------------*/  
+
+monmin2(L):=
+  block([m,i,j],
+  m:L[1],
+  j:1,
+  for i:2 thru length(L) do
+  (
+  if L[i]<m then
+	(m:L[i],
+  	j:i)
+  ),
+  return([m,j])
+  );  
+  
+/*-------------------------------------
+
+Procedure: compositions_leq
+
+Input: multiindex gamm
+
+Output: list of all the (weak) compositions of the same size as alpha 
+that are lower or equal to gamm componentwise (wrt lexicographic order).
+
+--------------------------------------*/
 
 compositions_leq(gamm):=
   block([k,l],
@@ -58,8 +103,18 @@ compositions_leq(gamm):=
 	)
   );
 
+/*-------------------------------------
+
+Procedure: compositions
+
+Input: nonnegative integers n,k
+
+Output: list of all the (weak) compositions of n in k nonnegative integers (wrt lexicographic order).
+
+--------------------------------------*/  
+
 compositions(n,k):=
-  block([i,res,l],
+  block([i,res,l,par],
   if k=1 then return([[n]]) else
   res:[],
     for i : 0 thru n do
@@ -70,8 +125,16 @@ compositions(n,k):=
   return(res)
   );
 
+/*-------------------------------------
 
+Procedure: mulcoeff
 
+Input: a polynomial pol in the variables vars, and a multiindex alpha.
+
+Output: coefficient of pol corresponding to the monomial of degree alpha
+
+--------------------------------------*/  
+ 
 mulcoeff(pol,vars,alpha):=
   block([par,res,coe],
   if length(vars)=1 then return(coeff(pol,vars[1],alpha[1])) else
@@ -80,9 +143,18 @@ mulcoeff(pol,vars,alpha):=
   	)
   );
 
+/*-------------------------------------
+
+Procedure: simplex2bar
+
+Input: a simplex simpl, given as an ordered list of vertices, and a list a variables vars
+
+Output: list of the barycentric coordinates associated to simpl (expressed in the variables vars).
+
+--------------------------------------*/  
 
 simplex2bar(simpl,vars):= 
-  block([i,j,len,res,l],
+  block([i,j,len,res,l,eq],
   res:[],
   len: length(simpl[1]),
   for i : 1 thru len do
@@ -95,22 +167,18 @@ simplex2bar(simpl,vars):=
   return(makelist(second(res[j]),j,1,len+1))
   );
 
-
-
-
 /*-------------------------------------
 
-Procedure : dominant
+Procedure: dominant
 
-Entree : 	polynome P
-		liste vars des variables
+Input: polynomial P in the variables vars
 
-Sortie :	exposant du monome dominant de P (pour l'ordre lexicographique sur les variables)	
+Output: degree (given as a multiindex) of the dominant coefficient of P wrt lexicographic order on the variables vars
 
----------------------------------------*/
+--------------------------------------*/
 
 dominant(P,vars):=
-  block([i,l,expo,c,d],
+  block([i,l,expo,c,d,expo],
   l:length(vars),
   expo:[],
   c:P,
@@ -122,20 +190,19 @@ dominant(P,vars):=
   	),
   return(expo)
   );
-
+  
 /*-------------------------------------
 
-Procedure : sparse_pol
+Procedure: sparse_pol
 
-Entree : 	polynome P
-		liste vars des variables
+Input: a polynomial P in the variables vars
 
-Sortie :	liste des exposants des monomes intervenant dans P
+Output: list of all the monomials that appear in P with a nonzero coefficient
 
----------------------------------------*/
+--------------------------------------*/
 
 sparse_pol(P,vars):=
-  block([i,k,reste,d,mon,c],
+  block([i,k,reste,d,mon,c,expo],
   k:length(vars),
   reste:P,
   expo:[],
@@ -149,11 +216,18 @@ sparse_pol(P,vars):=
   return(expo)
   );
 
+/*-------------------------------------
 
+Procedure: sparse_standard2bern
 
+Input: a polynomial P in the variables vars, a nonnegative integer d
+
+Output: Bernstein expansion of degree d of P wrt the standard simplex (uses the previous procedure)
+
+--------------------------------------*/
 
 sparse_standard2bern(P,vars,d):=
-  block([alph,bet,gamm,i,deg,coeff,res,k,mon,multg,multa],
+  block([alph,bet,gamm,i,deg,coeff,res,k,mon,multg,multa,expo],
   k:length(vars),
   res:[],
   expo:sparse_pol(P,vars),
@@ -176,30 +250,54 @@ sparse_standard2bern(P,vars,d):=
   return(res)
   );
 
+/*-------------------------------------
+
+Procedure: monom2bern
+
+Input: a polynomial P in the variables vars, a nonnegative integer d and a simplex V (given as the list of its vertices)
+
+Output: Bernstein expansion of degree d of P wrt the simplex V (uses the previous procedure)
+
+--------------------------------------*/  
 
 monom2bern(P,V,vars,d):=
 	block([i,j,k,aff,g,varbis,vc],
 	k:length(vars),
 	varbis:makelist(concat(vc,i),i,1,k),
-	aff:transpose(apply(matrix,rest(V,1))).varbis+V[1],
+	aff:transpose(apply(matrix,rest(V,1)))-transpose(apply(matrix,makelist(V[1],i,1,k))),
+	aff:aff.varbis+V[1],
 	g:expand(subst(makelist(vars[i]=aff[i,1],i,1,k),P)),
 	return(sparse_standard2bern(g,varbis,d))
 	);
 
+/*-------------------------------------
+
+Procedure: bern2monom
+
+Input: the list L of the Bernstein expansion of degree d of a polynomial P (expressed in the variables vars) wrt a simplex V
+
+Output: expression of P in the monomial basis
+
+--------------------------------------*/
+
+bern2monom(L,V,vars,d):=
+	block([k,i,j,D,P],
+	k:length(vars),
+	/*D:concat(makelist(0,i,0,k),makelist(flatten([makelist(0,i,0,j-1),[1],makelist(0,i,j+1,k)]),j,0,k)),*/
+	P:deCasteljau(V,L,d,vars),
+	P:expand(P[1][2][1])
+	);
 
 /*-------------------------------------
 
-Procedure : deCasteljau
+Procedure: deCasteljau
 
-Entree : 	polynome dans la base de bernstein
-		simplexe
-		degre
-		point interieur M du simplexe
+Input: the Bernstein expansion ber of degree deg of a polynomial P wrt to a simplex simpl, and an point M.
 
-Sortie :	liste des ecritures du polynome dans les bases de Berstein associee aux
-		sous-simplexes definis par M
+Output: list of all the items [V,B] where V is a subsimplex of simpl and B the corresponding Bernstein expansion of P, 
+for all subsimplices V of simpl defined by the point M.
 
----------------------------------------*/
+--------------------------------------*/
 
 deCasteljau(simpl,ber,deg,M):=
   block([i,j,k,alpha,bet,var,l,cmp,res],local(bcastel),
@@ -222,31 +320,22 @@ deCasteljau(simpl,ber,deg,M):=
                          rest(alpha,i+1))],i,0,k)
        )
     ),
-   /*
-   res:makelist([subst([simpl[j+1]=M],simpl),makelist(bcastel[append(rest(alpha,-length(alpha)+j),[0],rest(alpha,j+1))],alpha,compositions(deg,k+1))],j,0,k),
-   */
    res:makelist([subst([simpl[j+1]=M],simpl),makelist(bcastel[append(makelist(alpha[i],i,1,j),[0],makelist(alpha[i],i,j+2,k+1))],alpha,compositions(deg,k+1))],j,0,k),
   return(res)
   );
 
 /*-------------------------------------
 
-Procedure : deCasteljauarete
+Procedure: deCasteljauarete
 
-Entree : 	polynome dans la base de bernstein
-		simplexe
-		degre
-		indiices i,j des points M_i, M_j definissant une arete du simplexe
-		nombre reel dans ]0,1[ : le point situe sur l'arete est
-		M = (1-x)*M_i + x*M_j
+Input: the Bernstein expansion ber of degree deg of a polynomial P wrt a simplex simpl = [V_0,...,V_k], indices i,j corresponding to two vertices M_i, M_j of simpl, and a real 0<x<1.
 
-Sortie :	liste des ecritures du polynome dans les bases de Berstein associee aux deux
-		sous-simplexes definis par M
+Output: list of the Bernstein expansion of degree deg of P wrt the two simplices resulted from the subdivision of simpl at the point M = (1-x)*M_i + x*M_j.
 
----------------------------------------*/
+--------------------------------------*/
 
 deCasteljauarete(simpl,ber,deg,i,j,x):=
-  block([k,alpha,bet,gamm,l,cmp,res,M,p,l,L,dprime,indi,resi,resj],local(bcastel),
+  block([k,alpha,bet,gamm,l,cmp,res,M,p,l,L,dprime,indi,resi,resj,C],local(bcastel),
   k:length(simpl)-1,
   M:(1-x)*simpl[i]+x*simpl[j],
   if k<2 then return(deCasteljau(simpl,ber,deg,M)),
@@ -283,15 +372,14 @@ deCasteljauarete(simpl,ber,deg,i,j,x):=
 
 /*-------------------------------------
 
-Procedure : sommets
+Procedure: sommets
 
-Entree : 	degre d
-		dimension k
+Input: two nonnegative integers d and k
 
-Sortie :	liste des indiices correspondant aux d*e_i dans la liste des alpha parcourue
-		dans l'ordre lexicographique
+Output: list of the multiindices labelling the Bernstein coefficients corresponding to the vertices of a simplex 
+among the Bernstein expansion of degree d of a polynomial in k variables (wrt the lexicographic order)
 
----------------------------------------*/
+--------------------------------------*/
 
 sommets(d,k):=
   block([i,j,som,indii],
@@ -307,13 +395,13 @@ sommets(d,k):=
 
 /*-------------------------------------
 
-Procedure : norm
+Procedure: norm
 
-Entree : 	vecteur u d'un R^k
+Input: vector u of IR^k
 
-Sortie :	||u||^2
+Output: the square of the Euclidean norm of u: ||u||^2
 
----------------------------------------*/
+--------------------------------------*/
 
 norm(u):=
   block([i],
@@ -322,13 +410,13 @@ norm(u):=
 
 /*-------------------------------------
 
-Procedure : diam
+Procedure: diam
 
-Entree : 	Simplexe V
+Input: simplex V
 
-Sortie :	Indice des sommets de V qui realisent le diametre de V
+Output: indices of two vertices of V that realize the diameter of V
 
----------------------------------------*/
+--------------------------------------*/
 
 diam(V):=
   block([i,j,k,m,L,indi,r,q],
@@ -349,80 +437,225 @@ diam(V):=
   if r = 0 then return([min(k+1,q),max(k+1,q)]) else return([min(r,q+1),max(r,q+1)])
   );
 
-monmin2(L):=
-  block([m,i,j],
-  m:L[1],
-  j:1,
-  for i:2 thru length(L) do
-  (
-  if L[i]<m then
-	(m:L[i],
-  	j:i)
-  ),
-  return([m,j])
-  );
+/*-------------------------------------
+
+Procedure: bound
+
+Input: a polynomial P of degree d in the variables var
+
+Output: theoritical lower bound on the minimum of P over the standard simplex, if P is positive on it.
+
+--------------------------------------*/
+
+bound(P,var,d):=
+	block([i,j,k,c,tau],
+	k:length(var),
+	c:coeffs(P,var,d),
+	tau:length(num2list(max(apply(max,c),-apply(min,c)),2)),
+	return(2^(-(tau+1)*d^(k+1))*d^(-(k+1)*d^k)*binomial(d+k,k+1)^(-d^k*(d-1)))
+	);
 
 /*-------------------------------------
 
-Procedure : random_color
+Procedure: coeffs
 
-Entree : 	aucune
+Input: a polynomial P of degree D in variables var
 
-Sortie :	code d'une couleur aleatoire
+Output: list of all the coefficients of P (wrt the lexicographic order on the variables).
 
----------------------------------------*/
+--------------------------------------*/
 
-random_color():=
-  block([randcol],
-  randcol:['1,'2,'3,'4,'5,'6,'7,'8,'9,'0,'A,'B,'C,'D,'E,'F],
-    concat("#",randcol[random(16)+1],randcol[random(16)+1],randcol[random(16)+1],randcol[random(16)+1],randcol[random(16)+1],randcol[random(16)+1])
-  );
+coeffs(P,var,D):=
+	block([i,j,a,k,v],
+	k:length(var),
+	apply(append,makelist(makelist(subst(makelist(v=0,v,var),ratcoeff(P,product(var[i]^(a[i]),i,1,k))),a,compositions(D-j,k)),j,0,D)
+	));
 
 /*-------------------------------------
 
-Procedure : visual
+Procedure: multiCertificate
 
-Entree : 	Sortie de "certificat" ou de "minimum" en dimension 2,
-		Simplexe utilise en entree dans "certificat" ou "minimum"
+Input: a polynomial P in the variables vars, a simplex V, a nonnegative integer d, a subdivision method sub (e.g. bisection, bisection_castel, standard_triang2),
+and a choice for the certificate (pos for a certificate of positivity, nonneg for a certificate of nonnegativity).
 
-Sortie :	Visualisation graphique du decoupage du simplexe
-		Nombre de sous-simplexes impliques dans l'entree.
+Output:
 
----------------------------------------*/
-load(draw);
+- if P is positive on the standard simplex :a certificate of positivity for P expressed as a list of items [V,B], 
+where the collection of subsimplices V covers the standard simplex, 
+and B is the corresponding Berstein expansion of degree d of P on each W
 
+- if not, an item [M,v] where M is a point of the standard simplex and v is a the value of P at M that is lower than the theoritical bound 
+on the minimum of a positive polynomial
 
+Warning: if P is nonnegative but not positive, the computation can take a very long time, due to the theoritical bound, which can be very small.
 
+--------------------------------------*/
 
-
-drawMultiCertificate(L,s):=
-  block([gone],
-  if length(L[1]) = 2 then
+multiCertificate(P,V,vars,d,sub,cert):=
+  block([k,bool,actif,passif,alpha,a,v,arete,w,Delta,m,N0,L,s,res,value,value_new,N,W,l],
+  k:length(V)-1,
+  res:[],
+  L:monom2bern(P,V,vars,d),
+  s:sommets(d,k),
+  actif:[[V,L]],
+  passif:[],
+  if cert=pos then m:bound(P,vars,d) else m:0,
+  value:[0,m+1],
+  while length(actif)>0 and value[2]>=m do
   (
-  gone:append([pic_width=s,pic_height=s,xtics=false,ytics=false,axis_bottom=false,axis_left=false,axis_top=false,axis_right=false,colorbox=false],flatten(makelist([fill_color=random_color(),polygon(L[i][1])],i,1,length(L))))
-  )
-  else
-  (
-  gone:append([pic_width=s,pic_height=s,xtics=false,ytics=false,axis_bottom=false,axis_left=false,axis_top=false,axis_right=false,colorbox=false,fill_color=red],flatten(makelist([polygon(L[i])],i,1,length(L))))
-  ),
-  apply(draw2d,gone),
-  concat(length(L)," subsimplices.")
-  );
+  a:[],
+  for v in actif do
+  	(
+  	if apply(cert,[v[2],d,k]) then passif:endcons(v,passif)
+  	else
+  	(
+	for i:1 thru k+1 do
+		(
+		l:v[2][s[i]],
+		if not(apply(cert,[[l],0,0])) then
+			(
+			res:([v[1][i],l]),
+			return()
+			)
+		),
+	if length(res)>0 then
+		(
+		return()
+		),
+	W:apply(sub,[v[1],v[2],d]),
+	
+	for w in W do
+		(
+		alpha:monmin2(w[2])[2],
+		alpha:compositions(d,k+1)[alpha],
+		N:sum(alpha[i]*w[1][i],i,1,k+1)/d,
+		value_new:subst(makelist(vars[i]=N[i],i,1,k),P),
+		if value_new<value[2] then value:[N,value_new]
+		),
 
+	a:append(a,W)	
+	)
+	),
+	actif:a
+ ),
+ if length(res)>0 then 
+    return(res),
+ if length(actif)=0 then  
+    return(passif)
+ else 
+    return(value)
+ );
+ 
+/*-------------------------------------
 
-wxdrawMultiCertificate(L,s):=
-  block([gone],
-  if length(L[1]) = 2 then
-  (
-  gone:append([pic_width=s,pic_height=s,xtics=false,ytics=false,axis_bottom=false,axis_left=false,axis_top=false,axis_right=false,colorbox=false],flatten(makelist([fill_color=random_color(),polygon(L[i][1])],i,1,length(L))))
-  )
-  else
-  (
-  gone:append([pic_width=s,pic_height=s,xtics=false,ytics=false,axis_bottom=false,axis_left=false,axis_top=false,axis_right=false,colorbox=false,fill_color=red],flatten(makelist([polygon(L[i])],i,1,length(L))))
-  ),
-  apply(wxdraw2d,gone),
-  concat(length(L)," subsimplices.")
-  );
+Procedure: bisection_castel
+
+Input: the Bernstein expansion L of degree d of a polynomial P wrt a simplex V
+
+Output: list of the items [W,B] where B is the Bernstein expansion of degree d of P wrt the simplex W,
+for all the subsimplices W of V generated by the bisection of V at the control point corresponding to 
+the multiindex associated to a minimal Berstein coefficient among L.
+
+--------------------------------------*/
+
+bisection_castel(V,L,d):=
+	block([arete,w,k,c,j,alpha,N,W,w,res,C],
+	res:[],
+	k:length(V)-1,
+	c:compositions(d,k+1),
+	i:monmin2(L)[2],
+	alpha:c[i],
+	j:[],
+	for l:1 thru length(alpha) do
+		(
+		if not(alpha[l]=0) then j:endcons([l,alpha[l]],j)
+		),
+	if length(j)=2 then return(deCasteljauarete(V,L,d,j[1][1],j[2][1],j[1][2]/d))
+	else
+	(
+	N:sum(alpha[i]*V[i],i,1,k+1)/d,
+	return(deCasteljau(V,L,d,N))
+	)		
+	);
+
+/*-------------------------------------
+
+Procedure: bisection
+
+Input: the Bernstein expansion L of degree d of a polynomial P wrt a simplex V
+
+Output: list of the items [W,B] where B is the Bernstein expansion of degree d of P wrt the simplex W,
+for the two subsimplices W of V generated by the bisection of V at the midpoint of a diameter of V.
+
+--------------------------------------*/
+
+bisection(V,L,d):=	
+	block([arete],
+	arete:diam(V),
+	return(deCasteljauarete(V,L,d,min(arete[1],arete[2]),max(arete[1],arete[2]),1/2))
+	);
+
+/*-------------------------------------
+
+Procedure: bisection_max
+
+Input: the Bernstein expansion L of degree d of a polynomial P wrt a simplex V
+
+Output: list of the items [W,B] where B is the Bernstein expansion of degree d of P wrt the simplex W,
+for the two subsimplices W of V generated by the bisection of V at a point of a diameter of V
+"maximizing" the volume of one subsimplex satisfying the certificate of positivity (cert= pos) or nonnegativity (cert=nonneg)
+
+--------------------------------------*/	
+
+bisection_max(V,L,d,cert):=
+	block([arete,W,i,n,k,bool,res],
+	arete:diam(V),
+	i:1,
+	n:20,
+	k:length(V)-1,
+	res:[V,L],
+	bool:apply(cert,[L,d,k]),
+	while ((not bool) and i<n/2) do
+		(
+		W:deCasteljauarete(V,L,d,min(arete[1],arete[2]),max(arete[1],arete[2]),i/n),
+		if (apply(cert,[W[1][2],d,k])) then
+			(bool:true,
+			res:W
+			)
+		else
+			(
+			W:deCasteljauarete(V,L,d,min(arete[1],arete[2]),max(arete[1],arete[2]),(n-i)/n),
+			if (apply(cert,[W[2][2],d,k])) then
+				(bool:true,
+				res:W
+				)
+			),
+		i:i+1
+		),
+	if i>=n/2 then return(deCasteljauarete(V,L,d,min(arete[1],arete[2]),max(arete[1],arete[2]),1/2)) else return(res)
+	);
+
+bisection_max_pos(V,L,d):=	
+	block(
+	return(bisection_max(V,L,d,pos))
+	);
+	
+
+bisection_max_nonneg(V,L,d):=	
+	block(
+	return(bisection_max(V,L,d,nonneg))
+	);
+
+	
+/*-------------------------------------
+
+Procedure: num2list
+
+Input: two nonnegative integers n and b
+
+Output: the expression of n in base b.
+
+--------------------------------------*/  
 
 num2list(n,b):=block([lst:[],a:n],
  for i:1 while a#0 do (
@@ -430,10 +663,21 @@ num2list(n,b):=block([lst:[],a:n],
    a:(a-lst[1])/b
    ),
  return(lst)
-);
+ );
+
+/*-------------------------------------
+
+Procedure: standard_triang2
+
+Input: list L of the Bernstein expansion of degree d of a polynomial P wrt to a simplex V
+
+Output: list of all the items [W,B] where W is a subsimplex of V and B the corresponding Bernstein expansion of degree d of P, 
+for all the subsimplices W of the standard triangulation of degree 2 of V.
+
+--------------------------------------*/
 
 standard_mid(k,d):=
-	block([M,m,n,y,i,j,color,t,s],
+	block([M,m:make_array('any,d,k+1),n,y,i,j,color,t,s],
 	t:[],
 	s:matrix(makelist(1/d,i,1,d)),
 	for n:0 thru d^k-1 do
@@ -462,7 +706,6 @@ standard(V,d):=
 	return(makelist(makelist(sum(V[t[i,j]+1],i,1,d)/2,j,1,k+1),t,T))
 	);
 
-
 standard_triang(V,P,vars,d,l):=
 	block([i,j,k,T,L,res,t],
 	k:length(V)-1,
@@ -475,24 +718,24 @@ standard_triang(V,P,vars,d,l):=
 		),
 	return(res)
 	);
-	
-bound(P,var,d):=
-	block([i,j,k,c,tau],
-	k:length(var),
-	c:coeffs(P,var,d),
-	tau:length(num2list(max(apply(max,c),-apply(min,c)),2)),
-	return(2^(-(tau+1)*d^(k+1))*d^(-(k+1)*d^k)*binomial(d+k,k+1)^(-d^k*(d-1)))
-	);
 
+standard_triang2(V,L,d):=
+	block([P,k,varbis,vc],
+	k:length(V)-1,
+	varbis::makelist(concat(vc,i),i,1,k),
+	P:bern2monom(L,V,varbis,d),
+	return(standard_triang(V,P,varbis,d,2))
+	);	
 
-coeffs(P,var,D):=
-	block([i,j,a,k,v],
-	k:length(var),
-	apply(append,makelist(makelist(subst(makelist(v=0,v,var),ratcoeff(P,product(var[i]^(a[i]),i,1,k))),a,compositions(D-j,k)),j,0,D)
-	));
+/*-------------------------------------
 
+Procedure: sec_diff
 
+Input: Bernstein expansion B of degree d of a polynomial P wrt a simplex V
 
+Output: List of all the second differences of P.
+
+--------------------------------------*/
 
 sec_diff(V,B,d):=
 	block([i,j,k,alpha,bet,gam,var,l,cmp,res,e],local(bcastel),
@@ -527,124 +770,71 @@ sec_diff(V,B,d):=
 	return(res)
 	);
 
+/*-------------------------------------
 
+Procedure: random_color
 
+Input: none
 
+Output: code of a random color
 
+--------------------------------------*/
+
+random_color():=
+  block([randcol],
+  randcol:['1,'2,'3,'4,'5,'6,'7,'8,'9,'0,'A,'B,'C,'D,'E,'F],
+    concat("#",randcol[random(16)+1],randcol[random(16)+1],randcol[random(16)+1],randcol[random(16)+1],randcol[random(16)+1],randcol[random(16)+1])
+  );
+  
+/*-------------------------------------
+
+Procedure: drawMultiCerticificate
+
+Input: Output L of multiCertificate in dimension 2 when a polynomial P has been proven to be positive, and an integer s
+
+Output: Vizualization of the subsimplices generated by multiCertificate.
+The size of the image is defined by s (usually 500).
+
+--------------------------------------*/  
+
+load(draw);
+
+drawMultiCertificate(L,s):=
+  block([gone,t],
+  t:concat(length(L)," subsimplices"),
+  if length(L[1]) = 2 then
+  (
+  gone:append([dimensions=[s,s],xtics=false,ytics=false,axis_bottom=false,axis_left=false,axis_top=false,axis_right=false,colorbox=false,title=t],flatten(makelist([fill_color=random_color(),polygon(L[i][1])],i,1,length(L))))
+  )
+  else
+  (
+  gone:append([dimensions=[s,s],xtics=false,ytics=false,axis_bottom=false,axis_left=false,axis_top=false,axis_right=false,colorbox=false,fill_color=red, title=t],flatten(makelist([polygon(L[i])],i,1,length(L))))
+  ),
+  apply(draw2d,gone)
+  );
 
 /*-------------------------------------
 
-Procedure : certificat
+Procedure: wxdrawMultiCerticificate
 
-Entree : 	Liste L des coefficients de Bernstein d'un polynome P positif sur V
-		degre d de P
-		simplexe V
+Same procedure as drawMultiCertificate, except that the vizualization is generated inside wxMaxima
 
-Sortie :	Certificat de positivite de P sur V
+--------------------------------------*/ 
 
----------------------------------------*/
-
-multiCertificate(P,V,vars,d,sub,cert):=
-  block([k,bool,actif,passif,alpha,a,v,arete,w,N,Delta,m,N0,L,s,res],
-  k:length(V)-1,
-  res:[],
-  L:monom2bern(P,V,vars,d),
-  bool:apply(cert,[L,d,k]),
-  if bool then return([[V,L]]),
-  N:0,
-  s:sommets(d,k),
-  actif:[[V,L]],
-  passif:[],
-  Delta:sec_diff(V,L,d),
-  m:bound(P,vars,d),
-  N0:sqrt(d)*k*(k+2)*sqrt(k*(k+1)*(k+3))*sqrt(Delta)/(24*sqrt(m)),
-  while length(actif)>0 and 2^N <= N0 do
+wxdrawMultiCertificate(L,s):=
+  block([gone,t],
+  t:concat(length(L)," subsimplices"),
+  if length(L[1]) = 2 then
   (
-  a:[],
-  for v in actif do
-  	(
-  	if apply(cert,[v[2],d,k]) then passif:endcons(v,passif)
-  	else
-  	(
-	for i:1 thru k+1 do
-		(
-		l:v[2][s[i]],
-		if l<=0 then
-			(
-			res:([v[1][i],l]),
-			return()
-			)
-		),
-	if length(res)>0 then
-		(
-		return()
-		),
-	W:apply(sub,[v[1],v[2],d]),
-	a:append(a,W)	
-	)
-	),
-	actif:a,
-	N:N+1
- ),
-if length(res)>0 then return(res),
-if length(actif)=0 then return(passif)
-else
-	(
-	v:actif[1][1],
-	alpha:monmin2(actif[1][2])[2],
-	alpha:compositions(d,k+1)[alpha],
-	N:sum(alpha[i]*v[i],i,1,k+1)/d,
-	return([N,subst(makelist(vars[i]=N[i],i,1,k),P)])
-	)
-);
-
-
-bisection_castel(V,L,d):=
-	block([arete,w,k,c,j,alpha,N,W,w,res],
-	res:[],
-	k:length(V)-1,
-	c:compositions(d,k+1),
-	i:monmin2(L)[2],
-	alpha:c[i],
-	j:[],
-	for l:1 thru length(alpha) do
-		(
-		if not(alpha[l]=0) then j:endcons([l,alpha[l]],j)
-		),
-	if length(j)=2 then return(deCasteljauarete(V,L,d,j[1][1],j[2][1],j[1][2]/d))
-	else
-	(
-	N:sum(alpha[i]*V[i],i,1,k+1)/d,
-	return(deCasteljau(V,L,d,N))
-	)		
-	);
-
-
-
-
-
-
-
-bisection(V,L,d):=	
-	block([arete,w],
-	arete:diam(V),
-	return(deCasteljauarete(V,L,d,min(arete[1],arete[2]),max(arete[1],arete[2]),1/2))
-	);
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  gone:append([dimensions=[s,s],xtics=false,ytics=false,axis_bottom=false,axis_left=false,axis_top=false,axis_right=false,colorbox=false,color=black],flatten(makelist([fill_color=white,polygon(L[i][1])],i,1,length(L))))
+  )
+  else
+  (
+  gone:append([dimensions=[s,s],xtics=false,ytics=false,axis_bottom=false,axis_left=false,axis_top=false,axis_right=false,colorbox=false,fill_color=white,color=black],flatten(makelist([polygon(L[i])],i,1,length(L))))
+  ),
+  apply(wxdraw2d,gone),
+  return(t)
+  );
 
 
 
