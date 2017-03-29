@@ -562,13 +562,11 @@ km(x,[var]):=
         then x: args(x),
     s: sort(x),
     ss: length(x),
-    t: append(
-        [0],
-        listify(
-          setify(
-            first(
-              transpose(
-                subsample(s,lambda([z], second(z)=1),1)))))),
+    t: subsample(s,lambda([z], second(z)=1),1),
+    if length(t) = 0
+      then /* only censored data */
+           return(1),
+    t: append([0],listify(setify(first(transpose(t))))),
     st: length(t),
     n: makelist(0,k,st),
     d: makelist(0,k,st),
