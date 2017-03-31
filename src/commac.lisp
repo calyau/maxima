@@ -670,8 +670,10 @@ values")
       ;; timezone offset has only minutes and seconds.
       (if (/= (mod tz 1/60) 0)
         ($timedate time-integer (/ (round (- tz) 1/60) 60))
-        (let
-          ((tz-offset (if dst-p (- 1 tz) (- tz))))
+        (let ((tz-offset
+	       #-gcl (if dst-p (- 1 tz) (- tz))
+	       #+gcl (- tz)	; bug in gcl https://savannah.gnu.org/bugs/?50570
+	       ))
           (multiple-value-bind
             (tz-hours tz-hour-fraction)
             (truncate tz-offset)
