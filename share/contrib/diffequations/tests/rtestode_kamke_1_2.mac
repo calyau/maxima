@@ -653,9 +653,9 @@ forget(a>0);
 method;
 riccati; */
 
-/*  185  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 185 ),ans:contrib_ode(eqn: x^7*'diff(y,x,1)+2*(x^2+1)*y^3+5*x^3*y^2 ,y,x)); */ 
+/*  185  */
+(pn_( 185 ),ans:contrib_ode(eqn: x^7*'diff(y,x,1)+2*(x^2+1)*y^3+5*x^3*y^2 ,y,x));
+false;
 
 /*  186  */ 
 (pn_(186),ans:contrib_ode(eqn:x^n*'diff(y,x,1)+y^2+(1-n)*x^(n-1)*y+x^(2*n-2),y,x));
@@ -685,9 +685,15 @@ genhom;
 kill(a,b,n);
 done;
 
-/*  189  */ 
-/* This equation presents a problem - asks question */ 
-/* (pn_( 189 ),ans:contrib_ode(eqn: x^(n+m*(n-1))*'diff(y,x,1)-a*y^n-b*x^((m+1)*n) ,y,x)); */ 
+/*  189  */
+declare(n,integer);
+done;
+(pn_(189),ans:contrib_ode(eqn:x^(n+m*(n-1))*'diff(y,x,1)-a*y^n-b*x^((m+1)*n),y,x),done);
+done;
+method;
+lie;
+remove(n,integer);
+done;
 
 /*  190  */ 
 (pn_(190),ans:contrib_ode(eqn:sqrt(x^2-1)*'diff(y,x,1)-sqrt(y^2-1),y,x));
