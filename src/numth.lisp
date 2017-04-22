@@ -132,6 +132,8 @@
 
 ;; factor over the gaussian primes
 
+(declaim (inline gctimes))
+
 (defmfun $gcfactor (n)
   (let ((n (cdr ($totaldisrep ($bothcoef ($rat ($rectform n) '$%i) '$%i)))))
     (if (not (and (integerp (car n)) (integerp (cadr n))))
@@ -174,18 +176,19 @@
               (declare (integer r1 r2)))))))
 
 (defun gctimes (a b c d)
+  (declare (integer a b c d) (optimize (speed 3)))
   (list (- (* a c) (* b d))
         (+ (* a d) (* b c))))
 
 (defun gcdisp (term)
-  (cond 
-    ((atom term) term)
-    ((let ((rp (car term))
-           (ip (cadr term)))
-      (setq ip (if (equal ip 1) '$%i (list '(mtimes) ip '$%i)))
-      (if (equal rp 0)
-         ip
-         (list '(mplus) rp ip))))))
+  (if (atom term)
+      term
+      (let ((rp (car term))
+            (ip (cadr term)))
+        (setq ip (if (= ip 1) '$%i (list '(mtimes) ip '$%i)))
+        (if (zerop rp)
+            ip
+            (list '(mplus) rp ip)))))
 
 (defun gcfactor (a b)
   (prog (gl cd dc econt p e1 e2 ans plis nl $intfaclim )
@@ -265,8 +268,8 @@
 (defun gcexpt (a n)
   (cond ((zerop n) '(1 0))
         ((= n 1) a)
-        ((evenp n) (gcexpt (gctime1 a a) (truncate n 2)))
-        (t (gctime1 a (gcexpt (gctime1 a a) (truncate n 2))))))
+        ((evenp n) (gcexpt (gctime1 a a) (ash n -1)))
+        (t (gctime1 a (gcexpt (gctime1 a a) (ash n -1))))))
 
 (defun gctime1 (a b)
   (gctimes (car a) (cadr a) (car b) (cadr b)))
