@@ -254,17 +254,6 @@
     (setq ans (nconc plis ans))
     (return ans)))
 
-(defun multiply-gcfactors (lis)
-  (loop for (term exp) on (cddr lis) by #'cddr
-    with answ = (cond ((numberp (car lis))(list (pexpt (car lis) (second lis)) 0))
-                      (t(gcexpt (car lis) (second lis))))
-    when (numberp term)
-      do (setq answ (list (* (first answ) term) (* (second answ) term)))
-      (show answ)
-    else
-      do (setq answ (apply #'gctimes (append answ (gcexpt term exp))))
-    finally (return answ)))
-
 (defun gcexpt (a n)
   (cond ((zerop n) '(1 0))
         ((= n 1) a)
