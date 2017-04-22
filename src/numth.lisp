@@ -136,21 +136,17 @@
 
 (defmfun $gcfactor (n)
   (let ((n (cdr ($totaldisrep ($bothcoef ($rat ($rectform n) '$%i) '$%i)))))
-    (if (not (and (integerp (car n)) (integerp (cadr n))))
-      (gcdisp (nreverse n))
-      (do ((factors (gcfactor (cadr n) (car n)) (cddr factors))
-           (res nil))
-          ((null factors)
-            (cond 
-              ((null res) 1)
-              ((null (cdr res)) (car res))
-              (t (cons '(mtimes simp) (nreverse res)))))
-        (let ((term (car factors))
-              (exp (cadr factors)))
-          (push (if (= exp 1)
-                  (gcdisp term)
-                  (pow (gcdisp term) exp))
-                res))))))
+    (if (not (and (integerp (first n)) (integerp (second n))))
+        (gcdisp (nreverse n))
+        (loop for (term exp) on (gcfactor (second n) (first n)) by #'cddr
+         with res = () do
+           (push (if (= exp 1)
+                     (gcdisp term)
+                     (pow (gcdisp term) exp))
+                 res)
+         finally (return (cond ((null res) 1)
+                               ((null (cdr res)) (car res))
+                               (t `((mtimes simp) ,@(nreverse res)))))))))
 
 (defun imodp (p)
   (declare (integer p) (optimize (speed 3)))
@@ -185,10 +181,10 @@
       term
       (let ((rp (car term))
             (ip (cadr term)))
-        (setq ip (if (= ip 1) '$%i (list '(mtimes) ip '$%i)))
-        (if (zerop rp)
+        (setq ip (if (= ip 1) '$%i `((mtimes) ,ip $%i)))
+        (if (eql 0 rp)
             ip
-            (list '(mplus) rp ip)))))
+            `((mplus) ,rp ,ip)))))
 
 (defun gcfactor (a b)
   (prog (gl cd dc econt p e1 e2 ans plis nl $intfaclim )
