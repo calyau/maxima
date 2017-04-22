@@ -132,7 +132,7 @@
 
 ;; factor over the gaussian primes
 
-(declaim (inline gctimes))
+(declaim (inline gctimes gctime1))
 
 (defmfun $gcfactor (n)
   (let ((n (cdr ($totaldisrep ($bothcoef ($rat ($rectform n) '$%i) '$%i)))))
@@ -254,15 +254,21 @@
     (setq ans (nconc plis ans))
     (return ans)))
 
-(defun gcexpt (a n)
-  (cond ((zerop n) '(1 0))
-        ((= n 1) a)
-        ((evenp n) (gcexpt (gctime1 a a) (ash n -1)))
-        (t (gctime1 a (gcexpt (gctime1 a a) (ash n -1))))))
+(defun gcsqr (a)
+   (declare (optimize (speed 3)))
+   (let ((r (first a))
+         (i (second a)))
+     (declare (integer r i))
+     (list (+ (* r r) (* i i)) (ash (* r i) 1))))
 
 (defun gctime1 (a b)
   (gctimes (car a) (cadr a) (car b) (cadr b)))
 
+(defun gcexpt (a n)
+  (cond ((zerop n) '(1 0))
+        ((= n 1) a)
+        ((evenp n) (gcexpt (gcsqr a) (ash n -1)))
+        (t (gctime1 a (gcexpt (gcsqr a) (ash n -1))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
