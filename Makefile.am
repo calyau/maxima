@@ -9,8 +9,8 @@ EXTRA_DIST = \
   README.lisps README.rpms README.i18n README.external README.developers-howto \
   INSTALL.win32 INSTALL.lisp INSTALL.git INSTALL.win32nogcl \
   configure.lisp  maxima-local.in xmaxima-local.in \
-  macosx/Makefile macosx/Readme.txt macosx/maxima.sh macosx/script \
-  macosx/xmaxima.sh macosx/appIcon.icns \
+  macosx/Makefile macosx/Readme.md macosx/maxima.sh macosx/script \
+  macosx/xmaxima.sh macosx/appIcon.icns macosx/How_to_install.rtf \
   ChangeLog-5.9.2 ChangeLog-5.9.3 ChangeLog-5.10.0 ChangeLog-5.11.0 \
   ChangeLog-5.12.0 ChangeLog-5.13.0 ChangeLog-5.14.0 ChangeLog-5.15.0 \
   ChangeLog-5.16 ChangeLog-5.17 ChangeLog-5.17-special-functions \
