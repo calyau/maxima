@@ -8,6 +8,6 @@
       <match type="string" offset="0" value="(%i1) " />
     </magic>
     <sub-class-of type="text/plain"/>
-    <generic-icon name="text-x-maximasession"/>
+    <generic-icon name="text-x-maxima-out"/>
   </mime-type>
 </mime-info>
