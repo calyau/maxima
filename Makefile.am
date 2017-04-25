@@ -20,7 +20,7 @@ EXTRA_DIST = \
   ChangeLog-5.28 ChangeLog-5.29 ChangeLog-5.30 ChangeLog-5.31 ChangeLog-5.32 \
   ChangeLog-5.33 ChangeLog-5.34 ChangeLog-5.35 ChangeLog-5.36.md ChangeLog-5.37.md \
   ChangeLog-5.38.md ChangeLog-5.39.md LICENSES/getopt-license.txt
-  
+
 include common.mk
 
 extradocinstall:
