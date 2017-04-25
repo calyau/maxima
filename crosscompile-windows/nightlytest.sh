@@ -6,6 +6,9 @@
 #
 # a working directory is ~/maxima-test
 
+# do everything in english
+export LANG=C
+
 MAXIMAGITREPOSITORY=https://git.code.sf.net/p/maxima/code
 # if there is already a local repository (from the nightly Windows build),
 # clone from that git repository
