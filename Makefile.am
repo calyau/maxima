@@ -6,7 +6,7 @@ SUBDIRS = admin crosscompile-windows src lisp-utils tests doc interfaces share d
 
 EXTRA_DIST = \
   common.mk maxima.iss.in x-mac.xml x-maxima-out.xml \
-  text-x-maximasession.svg text-x-maxima-out.svg \
+  text-x-maximasession.svg text-x-maxima-out.svg  maxima \
   README.lisps README.rpms README.i18n README.external README.developers-howto \
   INSTALL.win32 INSTALL.lisp INSTALL.git INSTALL.win32nogcl \
   configure.lisp  maxima-local.in xmaxima-local.in \
@@ -166,3 +166,6 @@ dist_mimedata_DATA = x-mac.xml x-maxima-out.xml
 
 appicondir = $(datarootdir)/pixmaps
 dist_appicon_DATA = text-x-maximasession.svg text-x-maxima-out.svg
+
+bashcompletiondir = ${datarootdir}/bash-completion/completions
+bashcompletion_DATA = maxima
