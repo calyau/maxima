@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=xmaxima
+GenericName=GUI for Maxima, a Computer Algebra system
+Comment=A graphical interface to the Maxima, the Computer Algebra System
+Exec=xmaxima
+Icon=maxima-new
+Type=Application
+Terminal=false
+Categories=Education;Math;
+Keywords=maths;cas;algebra;education;engineering;physics;
