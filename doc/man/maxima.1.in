@@ -17,9 +17,14 @@
 Maxima \- Common Lisp version of MACSYMA symbolic mathematics package
 released under the GNU Public License
 .LP
+rmaxima \- A version of maxima that supports command autocompletion
+.LP
 Xmaxima \- A graphical version of Maxima
 .SH SYNOPSIS
 .B maxima
+[\fIoptions\fR]
+.LP
+.B rmaxima
 [\fIoptions\fR]
 .LP
 .B xmaxima 
