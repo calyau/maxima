@@ -147,9 +147,16 @@ forget(x^2+(4*a-2*b)*x+b^2>0);
 [odelin,0];
 
 /* Kamke 2. 119  */
-/* CHECKME: Takes a long time
+/* This causes 2.160 to fail for no obvious reason.  Result is OK */
+/*
+assume(notequal(b,-1/2));
+[notequal(b,-1/2)];
 (pn_(119),ans:contrib_ode(eqn:x*'diff(y,x,2)-2*(a*x+b)*'diff(y,x,1)+(a^2*x+2*a*b)*y,y,x));
-false;
+[y = %k2*x^(2*b+1)*%e^(a*x)+%k1*%e^(a*x)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
+forget(notequal(b,-1/2));
+[notequal(b,-1/2)];
 */
 
 /* Kamke 2. 120  */ 

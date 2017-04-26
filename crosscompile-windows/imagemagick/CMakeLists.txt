@@ -9,13 +9,13 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(IMAGEMAGICKVERSION "7.0.5-0-portable-Q16")
+set(IMAGEMAGICKVERSION "7.0.5-4-portable-Q16")
 
 if(BUILD_64BIT)
-    set(IMAGEMAGICK_MD5 "77aed9fe5ef31e9863435308d0381e98")
+    set(IMAGEMAGICK_MD5 "51abf36b4a8ce33a7eed57f2a477e0c6")
     set(IMAGEMAGICK_URL "https://www.imagemagick.org/download/binaries/ImageMagick-${IMAGEMAGICKVERSION}-x64.zip")
 else()
-    set(IMAGEMAGICK_MD5 "63d30d452fcc4fe1326fd48a274473c7")
+    set(IMAGEMAGICK_MD5 "91399ad9ac5fcf2d63daf3004994a38f")
     set(IMAGEMAGICK_URL "https://www.imagemagick.org/download/binaries/ImageMagick-${IMAGEMAGICKVERSION}-x86.zip")
 endif()
 
@@ -29,3 +29,4 @@ externalproject_add(imagemagick
   INSTALL_COMMAND ""
 )
 install(FILES ${CMAKE_BINARY_DIR}/imagemagick/imagemagick-prefix/src/imagemagick/convert.exe DESTINATION wxMaxima)
+

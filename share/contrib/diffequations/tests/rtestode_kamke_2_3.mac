@@ -700,12 +700,16 @@ variationofparameters;
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
 
-/* Kamke 2. 283  */ 
+/* Kamke 2. 283  */
+assume(x>0);
+[x>0];
 (pn_(283),ans:contrib_ode(eqn:4*x^2*'diff(y,x,2)+4*x^2*log(x)*'diff(y,x,1)+(x^2*log(x)^2+2*x-8)*y-4*x^2*%e^(x/2)/sqrt(x^x),y,x));
 [y = (3*x^2*%e^(x/2)*log(x)-x^2*%e^(x/2))/(9*x^(x/2))
     +%k2*x^(2-x/2)*%e^(x/2)+%k1*x^((-x/2)-1)*%e^(x/2)];
 [method,radcan(ode_check(eqn,ans[1]))];
 [kovacic,0];
+forget(x>0);
+[x>0];
 	  
 /* Kamke 2. 284  */ 
 (pn_(284),ans:contrib_ode(eqn:(2*x+1)^2*'diff(y,x,2)-2*(2*x+1)*'diff(y,x,1)-12*y-3*x-1,y,x));
@@ -776,8 +780,11 @@ forget(x>0);
 [odelin,0];
 
 /* Kamke 2. 292  */ 
-/* This equation presents a problem - asks question */ 
-/*(pn_(292),ans:contrib_ode(eqn:50*(x-1)*x*'diff(y,x,2)+25*(2*x-1)*'diff(y,x,1)-2*y,y,x));*/
+(pn_(292),ans:contrib_ode(eqn:50*(x-1)*x*'diff(y,x,2)+25*(2*x-1)*'diff(y,x,1)-2*y,y,x));
+[y = %i*%k1*sinh(log(5*2^(3/2)*sqrt(50*x^2-50*x)+100*x-50)/5)
+       +%k2*cosh(log(5*2^(3/2)*sqrt(50*x^2-50*x)+100*x-50)/5)];
+[method,ode_check(eqn,ans[1])];
+[xformtoconstcoeff,0];
 
 /* Kamke 2. 293  */ 
 (pn_(293),ans:contrib_ode(eqn:144*(x-1)*x*'diff(y,x,2)+(120*x-48)*'diff(y,x,1)+y,y,x));

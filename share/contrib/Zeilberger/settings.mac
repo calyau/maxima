@@ -1,3 +1,8 @@
+/* It makes the linear solver non-verbose */
+/* This is an external option used by the linear solver */
+linsolvewarn : false;
+
+
 /* --------------------------------------------------------------------- */ 
 /* Maxium order of the recurrence equation searched in Zeilberger's alg. */
 max_ord: 5;

@@ -122,7 +122,7 @@ makeGosperFormPrHypCheckVerboseOpt(expr,k,mode) :=
    constIntLinNum, constIntLinDen, constSep, 
    normIntLinNum, normNonIntLinNum, normIntLinDen, normNonIntLinDen,
    numItem, denItem,
-   numExp,denExp,minExp,diff,candListSplit,item,hyp_flag],
+   numExp,denExp,minExp,diff,candListSplit,item,hyp_flag, candNumList, candDenList, intLinNumConst, intLinDenConst, nonIntLinNumConst, nonIntLinDenConst],
 
   hyp_flag : true,
   if(expr=1) then 

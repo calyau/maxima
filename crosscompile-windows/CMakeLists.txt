@@ -29,8 +29,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/ ${CMAKE_BINARY_D
 file(READ ${CMAKE_ROOT}/Modules/NSIS.template.in MYNSISTEMPLATE)
 string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel user" 
         MYNSISTEMPLATE "${MYNSISTEMPLATE}")
-string(REPLACE "!insertmacro MUI_PAGE_DIRECTORY" "; page directory disabled: !insertmacro MUI_PAGE_DIRECTORY" 
-        MYNSISTEMPLATE "${MYNSISTEMPLATE}")
 file(WRITE ${CMAKE_BINARY_DIR}/NSIS.template.in "${MYNSISTEMPLATE}")
 message (STATUS "Copied and patched ${CMAKE_ROOT}/Modules/NSIS.template.in to ${CMAKE_BINARY_DIR}/NSIS.template.in")
 
@@ -230,4 +228,6 @@ DeleteRegKey HKCR \\\".wxmx\\\\ShellNew\\\"
 ")
 
 
+SET(CPACK_NSIS_INSTALLER_MUI_ICON_CODE "
+  !define MUI_WELCOMEFINISHPAGE_BITMAP \\\"${CMAKE_SOURCE_DIR}/maxima-installerimage.bmp\\\"") 
 include(CPack)

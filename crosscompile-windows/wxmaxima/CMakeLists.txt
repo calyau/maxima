@@ -23,7 +23,7 @@ if(USE_WXMAXIMA_GIT)
     execute_process(COMMAND mkdir -p ${CMAKE_SOURCE_DIR}/downloads/wxmaxima-git
 		    COMMAND sh -c "test -d wxmaxima-git/.git || \"${GIT_EXECUTABLE}\" clone \"${WXMAXIMA_GIT}\" wxmaxima-git"
 		    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/downloads)
-		        
+
     execute_process(COMMAND sh -c "test -d .git && \"${GIT_EXECUTABLE}\" pull"
 		    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/downloads/wxmaxima-git)
 
@@ -31,16 +31,10 @@ if(USE_WXMAXIMA_GIT)
         GIT_REPOSITORY ${CMAKE_SOURCE_DIR}/downloads/wxmaxima-git
         DEPENDS wxwidgets
         PATCH_COMMAND  ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/acinclude.m4
-              COMMAND ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/bootstrap
-              COMMAND mkdir -p ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/builddir
-        BINARY_DIR ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/builddir
-        CONFIGURE_COMMAND  ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets-build/wx-config --prefix=C:/maxima-${MAXIMAVERSION}
+        CMAKE_ARGS -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER} -DCMAKE_RC_COMPILER=${CMAKE_RC_COMPILER} -DwxWidgets_CONFIG_EXECUTABLE=${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets-build/wx-config -DCMAKE_INSTALL_PREFIX=C:/maxima-${MAXIMAVERSION} -DCMAKE_BUILD_TYPE=DEBUG
         BUILD_COMMAND $(MAKE)
-              COMMAND $(MAKE) allmo
-              COMMAND $(MAKE) wxMaxima.win
-       INSTALL_COMMAND ""
     )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/builddir/wxMaxima/ DESTINATION wxMaxima)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git-build/wxMaxima/ DESTINATION wxMaxima)
 else()
     externalproject_add(wxmaxima
         URL "${WXMAXIMA_URL}"

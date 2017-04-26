@@ -1,8 +1,14 @@
 /* Code by Fabrizio Caruso */
 
+/*modified by Alexandre Le Meur and Marie-Françoise Roy */
+/*modified by Mathieu Kohli (addition of quickSignDetermination)*/
+/*merged with forked developed at the Univ. of Rennes 1 by Fabrizio Caruso */
+
 dir : "./sarag/";
 
+
 modLoad(modName) :=
+
   load(concat(dir,modName));
 
 modLoad("sarag_initialization.mac");
@@ -10,8 +16,6 @@ modLoad("sarag_initialization.mac");
 modLoad("settings.mac");
 
 modLoad("aliases.mac");
-
-modLoad("constants.mac");
 
 modLoad("lowLevel.mac");
 
@@ -27,8 +31,11 @@ modLoad("intervalArithmetic.mac");
 
 modLoad("topology.mac");
 
+modLoad("quickSignDetermination.mac");
+
 modLoad("certificateOfPositivity.mac");
 
 modLoad("multiCertificateOfPositivity.mac");
+
 
 

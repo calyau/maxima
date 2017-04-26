@@ -16,201 +16,272 @@
 
 (macsyma-module numth)
 
-(declare-top (special $intfaclim))
+(declare-top (special $intfaclim modulus))
 
 (load-macsyma-macros rzmac)
 
 ;;; Sum of divisors and Totient functions
 
-(defmfun $divsum (n &optional (k 1))
-  (let (($intfaclim nil))
-    (if (and (integerp k) (integerp n))
-      (let ((n (abs n)))
-        (cond 
-          ((= n 1) 1)
-          ((zerop n) 1)
-          ((zerop k)
-            (do ((l (cfactorw n) (cddr l))
-                 (a 1 (* a (1+ (cadr l)))))
-                ((null l) a)))
-          ((minusp k)
-            `((rat) ,(divsum (cfactorw n) (- k)) ,(expt n (- k))))
-          (t
-            (divsum (cfactorw n) k))))
-      (list '($divsum) n k))))
+;; compute the sum of the k'th powers of the divisors of the absolute
+;; value of n
 
-(defun divsum (l k)
-  (do ((l l (cddr l))
-       (ans 1))
-      ((null l) ans)
-    (unless (eql (car l) 1)
-      (let ((temp (expt (car l) k)))
-    (setq ans (* ans
-      (truncate (1- (expt temp (1+ (cadr l))))
-                (1- temp))))))))
+(defmfun $divsum (n &optional (k 1))
+   (if (and (integerp k) (integerp n))
+      (let ((n (abs n)))
+        (if (minusp k)
+            (list '(rat) (divsum n (- k)) (expt n (- k)))
+            (divsum n k)))
+      (list '($divsum) n k)))
+
+;; divsum assumes its arguments to be non-negative integers.
+
+(defun divsum (n k)
+  (declare (type (integer 0) n k) (optimize (speed 3)))
+  (let (($intfaclim nil))               ;get-factor-list returns list
+                                        ;of (p_rime e_xponent) pairs
+                                        ;e is a fixnum
+    (cond ((<= n 1) 1)
+          ((zerop k) (reduce #'* (get-factor-list n) ; product over e+1
+                             :key #'(lambda (pe) (1+ (the fixnum (cadr pe)))))) 
+          (t (reduce #'* (get-factor-list n) ; product over ((p^k)^(e+1)-1)/(p^k-1)
+                             :key #'(lambda (pe)
+                                      (let ((p (car pe)) (e (cadr pe)))
+                                        (declare (type (integer 2) p)
+                                                 (type (integer 1 (#.most-positive-fixnum)) e))
+                                        (let ((tmp (expt p k)))
+                                          (truncate (1- (expt tmp (1+ e)))
+                                                    (1- tmp))))))))))
+
+;; totient computes the euler totient function
+;; i.e. the count of numbers relatively prime to n between 1 and n.
 
 (defmfun $totient (n)
-  (cond 
-    ((integerp n)
-      (setq n (abs n))
-      (cond 
-        ((< n 1) 0)
-        ((equal n 1) 1)
-        (t (do ((factors (let ($intfaclim) (cfactorw n))
-                  (cddr factors))
-                (total 1 (* total (1- (car factors))
-                  (expt (car factors) (1- (cadr factors))))))
-               ((null factors) total)))))
-    (t (list '($totient) n))))
+  (if (integerp n)
+      (totient (abs n))
+      (list '($totient) n)))
 
+;; totient assumes its argument to be an integer.
+;; the exponents in the prime factorization of n are assumed to be
+;; fixnums (anything else would exceed memory).
+
+(defun totient (n)
+  (declare (type (integer 0) n) (optimize (speed 3)))
+  (let (($intfaclim nil))
+    (if (< n 2)
+        n
+        (reduce #'* (get-factor-list n)
+                :key #'(lambda (pe)
+                         (let ((p (car pe)) (e (cadr pe)))
+                           (declare (type (integer 2) p)
+                                    (type (integer 1 (#.most-positive-fixnum)) e))
+                           (* (1- p) (expt p (1- e)))))))))
 
 ;;; JACOBI symbol and Gaussian factoring
 
-(declare-top (special modulus $intfaclim))
+;; $jacobi/jacobi implement the Kronecker-Jacobi symbol, a light
+;; generalization of the Legendre/Jacobi symbols.
+;; (for a prime b, $jacobi(a b) is the Legendre symbol).
+;;
+;; The implementation follows algorithm 1.4.10 in 'A Course in
+;; Computational Algebraic Number Theory' by H. Cohen
 
-(defvar *incl* (let ((l (list 2 4))) (nconc l l)))
+(defun $jacobi (a b)
+  (if (and (integerp a) (integerp b))
+      (jacobi a b)
+      `(($jacobi) ,a ,b)))
+
+(defun jacobi (a b)
+  (declare (integer a b) (optimize (speed 3)))
+  (cond ((zerop b)
+         (if (= 1 (abs a)) 1 0))
+        ((and (evenp a) (evenp b))
+         0)
+        (t
+         (let ((k 1)
+               (tab2 (make-array 8 :element-type '(integer -1 1)
+                                   :initial-contents #(0 1 0 -1 0 -1 0 1))))
+           (declare (type (integer -1 1) k))
+
+           (loop for v fixnum = 0 then (1+ v) ;remove 2's from b
+                 while (evenp b) do (setf b (ash b -1))
+                 finally (when (oddp v)
+                           (setf k (aref tab2 (logand a 7))))) ; (-1)^(a^2-1)/8
+           
+           (when (minusp b)
+             (setf b (- b))
+             (when (minusp a)
+               (setf k (- k))))
+
+           (loop
+              (when (zerop a)
+                (return-from jacobi (if (> b 1) 0 k)))
+
+              (loop for v fixnum = 0 then (1+ v)
+                    while (evenp a) do (setf a (ash a -1))
+                    finally (when (oddp v)
+                              (when (minusp (aref tab2 (logand b 7))); (-1)^(b^2-1)/8
+                                (setf k (- k)))))
+
+              (when (plusp (logand a b 2)) ;compute (-1)^(a-1)(b-1)/4
+                (setf k (- k)))
+
+              (let ((r (abs a)))
+                (setf a (rem b r))
+                (setf b r)))))))
+
+
+;; factor over the gaussian primes
+
+(declaim (inline gctimes gctime1))
+
+(defmfun $gcfactor (n)
+  (let ((n (cdr ($totaldisrep ($bothcoef ($rat ($rectform n) '$%i) '$%i)))))
+    (if (not (and (integerp (first n)) (integerp (second n))))
+        (gcdisp (nreverse n))
+        (loop for (term exp) on (gcfactor (second n) (first n)) by #'cddr
+         with res = () do
+           (push (if (= exp 1)
+                     (gcdisp term)
+                     (pow (gcdisp term) exp))
+                 res)
+         finally (return (cond ((null res) 1)
+                               ((null (cdr res)) (car res))
+                               (t `((mtimes simp) ,@(nreverse res)))))))))
 
 (defun imodp (p)
-  (cond 
-    ((not (= (rem p 4) 1)) nil)
-    ((= (rem p 8) 5) (imodp1 2 p))
-    ((= (rem p 24) 17) (imodp1 3 p)) ;p=2(mod 3)
-    (t (do ((i 5 (+ i (car j)))      ;p=1(mod 24)
-            (j *incl* (cdr j)))
-           ((= (jacobi i p) -1) (imodp1 i p))))))
-
-(defun imodp1 (i modulus)
-  (abs (cexpt i (ash (1- modulus) -2) )))
+  (declare (integer p) (optimize (speed 3)))
+  (cond ((not (= (rem p 4) 1)) nil)
+        ((= (rem p 8) 5)   (power-mod 2 (ash (1- p) -2) p))
+        ((= (rem p 24) 17) (power-mod 3 (ash (1- p) -2) p)) ;p=2(mod 3)
+        (t (do ((i 5 (+ i j))      ;p=1(mod 24)
+                (j 2 (- 6 j)))
+               ((= (jacobi i p) -1) (power-mod i (ash (1- p) -2) p))
+             (declare (integer i) (fixnum j))))))
 
 (defun psumsq (p)
-  (let ((x (imodp p)))
-    (cond 
-      ((equal p 2) (list 1 1))
-      ((null x) nil)
-      (t (psumsq1 p x)))))
-
-(defun psumsq1 (p x)
-  (do ((sp ($isqrt p))
-       (r1 p r2)
-       (r2 x (rem r1 r2)))
-      ((not (> r1 sp)) (list r1 r2))))
+  (declare (integer p) (optimize (speed 3)))
+  (if (= p 2)
+      (list 1 1)
+      (let ((x (imodp p)))
+        (if (null x)
+            nil
+            (do ((sp (isqrt p))
+                 (r1 p r2)
+                 (r2 x (rem r1 r2)))
+                ((not (> r1 sp)) (list r1 r2))
+              (declare (integer r1 r2)))))))
 
 (defun gctimes (a b c d)
+  (declare (integer a b c d) (optimize (speed 3)))
   (list (- (* a c) (* b d))
         (+ (* a d) (* b c))))
 
-(defmfun $gcfactor (n)
-  (let ((n (cdr ($totaldisrep ($bothcoef ($rat n '$%i) '$%i)))))
-    (if (not (and (integerp (car n)) (integerp (cadr n))))
-      (gcdisp (nreverse n))
-      (do ((factors (gcfactor (cadr n) (car n)) (cddr factors))
-           (res nil))
-          ((null factors)
-            (cond 
-              ((null res) 1)
-              ((null (cdr res)) (car res))
-              (t (cons '(mtimes simp) (nreverse res)))))
-        (let ((term (car factors))
-              (exp (cadr factors)))
-          (push (if (= exp 1)
-                  (gcdisp term)
-                  (pow (gcdisp term) exp))
-            res))))))
-
 (defun gcdisp (term)
-  (cond 
-    ((atom term) term)
-    ((let ((rp (car term))
-           (ip (cadr term)))
-      (setq ip (if (equal ip 1) '$%i (list '(mtimes) ip '$%i)))
-      (if (equal rp 0)
-         ip
-         (list '(mplus) rp ip))))))
+  (if (atom term)
+      term
+      (let ((rp (car term))
+            (ip (cadr term)))
+        (setq ip (if (= ip 1) '$%i `((mtimes) ,ip $%i)))
+        (if (eql 0 rp)
+            ip
+            `((mplus) ,rp ,ip)))))
 
 (defun gcfactor (a b)
-  (prog (gl cd dc econt p e1 e2 ans plis nl $intfaclim )
-    (setq e1 0
-          e2 0
-          econt 0
-          gl (gcd a b)
-          a (quotient a gl)
-          b (quotient b gl)
-          nl (cfactorw (+ (* a a) (* b b)))
-          gl (cfactorw gl))
-    (and (equal 1 (car gl)) (setq gl nil))
-    (and (equal 1 (car nl)) (setq nl nil))
-    loop
-    (cond ((null gl)
-            (cond ((null nl) (go ret))
-                  ((setq p (car nl)))))
-          ((null nl) (setq p (car gl)))
-          (t (setq p (max (car gl) (car nl)))))
-    (setq cd (psumsq p))
-    (cond ((null cd)
-            (setq plis (cons p (cons (cadr gl) plis)))
-            (setq gl (cddr gl)) 
-            (go loop))
-          ((equal p (car nl))
-            (cond ((zerop (rem (+ (* a (car cd)) ;gcremainder
-                                  (* b (cadr cd)))
-                               p))     ;remainder(real((a+bi)cd~),p)
-                                       ;z~ is complex conjugate
-                    (setq e1 (cadr nl)) (setq dc cd))
-                  (t (setq e2 (cadr nl))
+  (declare (integer a b) (optimize (speed 3)))
+  (let* (($intfaclim nil)
+         (e1 0)
+         (e2 0)
+         (econt 0)
+         (g (gcd a b))
+         (a (truncate a g))
+         (b (truncate b g))
+         (p 0)
+         (nl (cfactorw (+ (* a a) (* b b))))
+         (gl (cfactorw g))
+         (cd nil)
+         (dc nil)
+         (ans nil)
+         (plis nil))
+    (declare (integer e1 e2 econt g a b))
+    (when (= 1 (the integer (car gl))) (setq gl nil))
+    (when (= 1 (the integer (car nl))) (setq nl nil))
+    (tagbody
+     loop
+       (cond ((null gl)
+              (if (null nl)
+                  (go ret)
+                  (setq p (car nl))))
+             ((null nl)
+              (setq p (car gl)))
+             (t
+              (setq p (max (the integer (car gl))
+                           (the integer (car nl))))))
+       (setq cd (psumsq p))
+       (cond ((null cd)
+              (setq plis (list* p (cadr gl) plis))
+              (setq gl (cddr gl)) 
+              (go loop))
+             ((equal p (car nl))
+              (cond ((zerop (rem (+ (* a (the integer (car cd))) ; gcremainder
+                                    (* b (the integer (cadr cd))))
+                                 (the integer p)))       ; remainder(real((a+bi)cd~),p)
+                                                         ; z~ is complex conjugate
+                     (setq e1 (cadr nl))
+                     (setq dc cd))
+                    (t
+                     (setq e2 (cadr nl))
                      (setq dc (reverse cd))))
-            (setq dc (gcexpt dc (cadr nl)) ;
-                  dc (gctimes a b (car dc) (- (cadr dc)))
-                  a (quotient (car dc) p)
-                  b (quotient (cadr dc) p)
-                  nl (cddr nl))))
-    (cond ((equal p (car gl))
-            (setq econt (+ econt (cadr gl)))
-            (cond ((equal p 2)
-                    (setq e1 (+ e1 (* 2 (cadr gl)))))
-                  (t (setq e1 (+ e1 (cadr gl))
-                           e2 (+ e2 (cadr gl)))))
-            (setq gl (cddr gl))))
-    (and (not (zerop e1))
-         (setq ans (cons cd (cons e1 ans)))
+              (setq dc (gcexpt dc (the integer (cadr nl)))
+                    dc (gctimes a b (the integer (car dc)) (- (the integer (cadr dc))))
+                    a (truncate (the integer (car dc)) (the integer p))
+                    b (truncate (the integer (cadr dc)) (the integer p))
+                    nl (cddr nl))))
+       (when (equal p (car gl))
+         (incf econt (the integer (cadr gl)))
+         (cond ((equal p 2)
+                (incf e1 (* 2 (the integer (cadr gl)))))
+               (t
+                (incf e1 (the integer (cadr gl)))
+                (incf e2 (the integer (cadr gl)))))
+         (setq gl (cddr gl)))
+       (unless (zerop e1)
+         (setq ans (list* cd e1 ans))
          (setq e1 0))
-    (and (not (zerop e2))
-         (setq ans (cons (reverse cd) (cons e2 ans)))
+       (unless (zerop e2)
+         (setq ans (list* (reverse cd) e2 ans))
          (setq e2 0))
-    (go loop)
-    ret    
-    (setq cd (gcexpt (list 0 -1)
-                     (rem econt 4)))
-    (setq a (gctimes a b (car cd) (cadr cd)))
-    ;;a hasn't been divided by p yet..
-    (setq a (mapcar 'signum a))
-    #+cl (assert (or (zerop (car a))(zerop (second a))))
-    (cond ((or (equal (car a) -1) (equal (cadr a) -1))
-            (setq plis (cons -1 (cons 1 plis)))))
-    (cond ((equal (car a) 0)
-            (setq ans (cons '(0 1) (cons 1 ans)))))
-    (setq ans (nconc plis ans))
-    (return ans)))
+       (go loop)
 
-(defun multiply-gcfactors (lis)
-  (loop for (term exp) on (cddr lis) by #'cddr
-    with answ = (cond ((numberp (car lis))(list (pexpt (car lis) (second lis)) 0))
-                      (t(gcexpt (car lis) (second lis))))
-    when (numberp term)
-      do (setq answ (list (* (first answ) term) (* (second answ) term)))
-      (show answ)
-    else
-      do (setq answ (apply 'gctimes (append answ (gcexpt term exp))))
-    finally (return answ)))
+     ret    
+       (let* ((cd (gcexpt (list 0 -1) (rem econt 4)))
+              (rcd (first cd))
+              (icd (second cd))
+              (l (mapcar #'signum (gctimes a b rcd icd)))
+              (r (first l))
+              (i (second l)))
+         (declare (integer r i rcd icd))
+         (assert (or (zerop r) (zerop i)))
+         (when (or (= r -1) (= i -1))
+           (setq plis (list* -1 1 plis)))
+         (when (zerop r)
+           (setq ans (list* '(0 1) 1 ans)))
+         (return-from gcfactor (append plis ans))))))
 
-(defun gcexpt (a n)
-  (cond ((zerop n) '(1 0))
-        ((equal n 1) a)
-        ((evenp n) (gcexpt (gctime1 a a) (truncate n 2)))
-        (t (gctime1 a (gcexpt (gctime1 a a) (truncate n 2))))))
+(defun gcsqr (a)
+   (declare (optimize (speed 3)))
+   (let ((r (first a))
+         (i (second a)))
+     (declare (integer r i))
+     (list (+ (* r r) (* i i)) (ash (* r i) 1))))
 
 (defun gctime1 (a b)
   (gctimes (car a) (cadr a) (car b) (cadr b)))
 
+(defun gcexpt (a n)
+  (cond ((zerop n) '(1 0))
+        ((= n 1) a)
+        ((evenp n) (gcexpt (gcsqr a) (ash n -1)))
+        (t (gctime1 a (gcexpt (gcsqr a) (ash n -1))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
