@@ -301,9 +301,9 @@ See comments to $adjust_external_format below for a detailed description.
       #- (or ccl clisp cmucl gcl sbcl) enc ) ;; ECL and others
       ;;
     (t ;; get encoding:
-      #+ (or ccl gcl) :utf-8 ;; ignored by GCL
+      #+ (or ecl ccl gcl) :utf-8 ;; ignored by GCL
       #+sbcl sb-impl::*default-external-format*
-      #- (or ccl gcl sbcl) (stream-external-format *standard-output*) )))
+      #- (or ecl ccl gcl sbcl) (stream-external-format *standard-output*) )))
                           ;; cmucl: format of *standard-input* remains 'default' when changed to utf-8
 
 (defun is-ignored (enc name adds)
