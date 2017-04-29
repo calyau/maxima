@@ -2,10 +2,10 @@ if ENABLE_GETTEXT
    LOCALE_DIR = locale
 endif
 
-SUBDIRS = admin crosscompile-windows src lisp-utils tests doc interfaces share demo plotting $(LOCALE_DIR)
+SUBDIRS = admin crosscompile-windows src lisp-utils tests doc interfaces share demo plotting desktopintegration $(LOCALE_DIR)
 
 EXTRA_DIST = \
-  common.mk maxima.iss.in x-mac.xml\
+  common.mk maxima.iss.in \
   README.lisps README.rpms README.i18n README.external README.developers-howto \
   INSTALL.win32 INSTALL.lisp INSTALL.git INSTALL.win32nogcl \
   configure.lisp  maxima-local.in xmaxima-local.in \
@@ -19,7 +19,7 @@ EXTRA_DIST = \
   ChangeLog-5.28 ChangeLog-5.29 ChangeLog-5.30 ChangeLog-5.31 ChangeLog-5.32 \
   ChangeLog-5.33 ChangeLog-5.34 ChangeLog-5.35 ChangeLog-5.36.md ChangeLog-5.37.md \
   ChangeLog-5.38.md ChangeLog-5.39.md LICENSES/getopt-license.txt
-  
+
 include common.mk
 
 extradocinstall:
@@ -159,6 +159,3 @@ endif # GCC331
 iss: win32-lisp-runtime wxmaxima gnuplot extradocinstall
 
 endif # WIN32
-
-mimedatadir = $(datarootdir)/mime/packages
-dist_mimedata_DATA = x-mac.xml

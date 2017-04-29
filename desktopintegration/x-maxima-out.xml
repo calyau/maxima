@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="text/x-maxima-out">
+    <comment>Maxima session including Output</comment>
+    <comment xml:lang="de">Maxima-Sitzung inklusive Ausgabezeilen</comment>
+    <glob pattern="*.out"/>
+    <magic>
+      <match type="string" offset="0" value="(%i1) " />
+    </magic>
+    <sub-class-of type="text/plain"/>
+    <generic-icon name="text-x-maxima-out"/>
+  </mime-type>
+</mime-info>

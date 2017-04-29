@@ -1,0 +1,29 @@
+# maxima(1) completion                                     -*- shell-script -*-
+
+_xmaxima()
+{
+    local cur prev words cword split
+    _init_completion -s || return
+
+    case $prev in
+        -help|-h)
+            return
+            ;;
+        -url)
+            _filedir '@(html)'
+            return
+            ;;
+        -use-version|-u)
+            return
+            ;;
+        -lisp|-l)
+            return
+            ;;
+    esac
+
+    $split && return 0
+
+    _filedir '@(tcl)'
+} && complete -F _xmaxima xmaxima
+
+# ex: ts=4 sw=4 et filetype=sh

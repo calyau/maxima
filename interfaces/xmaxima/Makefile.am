@@ -16,7 +16,10 @@ endif
 
 genericdir = $(xmaximadir)
 
-genericdirDATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png maxima-new.gif maxima-icon.ico maxima-icon.png maxima-icon.gif
+genericdirDATA = demos.html examples.html intro.html plotmaxima.html maxima-new.png maxima-new.svg maxima-new.gif maxima-icon.ico maxima-icon.png maxima-icon.gif 
+
+appicondir = $(datarootdir)/pixmaps
+dist_appicon_DATA = maxima-new.png maxima-new.svg
 
 bin_SCRIPTS = xmaxima
 
