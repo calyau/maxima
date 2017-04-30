@@ -47,11 +47,12 @@
 ;; (PARSE-STRING S)  --  parse the string as a Maxima expression.
 ;; Do not evaluate the parsed expression.
 
-(defun parse-string (s)
-  (declare (special *mread-prompt*))
-  (with-input-from-string
-    (ss (ensure-terminator s))
-    (third (let ((*mread-prompt*)) (mread ss)))))
+(defun parse-string (s) 
+  (declare (special *mread-prompt* *parse-string-input-stream*))
+  (setq *parse-string-input-stream* 
+    (make-string-input-stream (ensure-terminator s)))
+  (let ((*mread-prompt*)) 
+    (third (mread *parse-string-input-stream*)) ))
 
 ;; (ENSURE-TERMINATOR S)  -- if the string S does not contain dollar sign `$' or semicolon `;'
 ;; then append a dollar sign to the end of S.
