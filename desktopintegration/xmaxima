@@ -23,7 +23,14 @@ _xmaxima()
 
     $split && return 0
 
-    _filedir '@(tcl)'
+    if [[ "$cur" == -* ]]; then
+        local opts="$( _parse_help "$1" )"
+        [[ $opts ]] || opts="$( _parse_usage "$1" )"
+        COMPREPLY=( $( compgen -W "$opts" -- "$cur" ) )
+        [[ $COMPREPLY == *= ]] && compopt -o nospace
+    else
+	_filedir '@(tcl)'
+    fi
 } && complete -F _xmaxima xmaxima
 
 # ex: ts=4 sw=4 et filetype=sh
