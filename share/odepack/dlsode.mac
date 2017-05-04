@@ -1,5 +1,30 @@
 load("load-dlsode.lisp");
 
+/*
+ * Simple interface to ODEPACK dlsode
+ *
+ * f       - list of the derivatives
+ * yvars   - list of the dependent variables (symbols)
+ * trange  - list of the form [tvar, start, stop, step]
+ *           where tvar is the independent variable and
+ *           start, stop, step means the solutions are determined
+ *           for tvar = start + k*step while tvar < stop.
+ * rtol    - desired relative error in the solution
+ * atol    - desired absolute error in the solution.  If atol is a scalar
+ *           this is error for all dependent variables.  If a list, its
+ *           length should be the same as the number of dependent variables
+ *           and is the desired local absolute error of the solution for the 
+ *           dependent variable
+ * mf      - method flag, only 22 has been tested
+ *             10 - Nonstiff (Adams) method, no Jacobian used.
+ *             21 - Stiff (BDF) method, user-supplied full Jacobian.
+ *             22 - Stiff method, internally generated full Jacobian.
+ *             24 - Stiff method, user-supplied banded Jacobian.
+ *             25 - Stiff method, internally generated banded Jacobian.
+ *
+ * The output is a list of values of the form [t, y1, y2, y3, ...] which is 
+ * the solution of the system at time t with the values y1, y2, y3, ....
+ */
 dlsode(f, yvars, inity, trange, rtol, atol, mf) :=
   block([state: dlsode_init(f, mf),
          tvar: trange[1],
@@ -15,5 +40,3 @@ dlsode(f, yvars, inity, trange, rtol, atol, mf) :=
         istate: r[3]),
     return(reverse(result))
   );
-
-      
