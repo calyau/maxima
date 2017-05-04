@@ -527,7 +527,7 @@ For each instance of @mref{eval} in the arguments, steps (3) and (4) are
 repeated.
 @end enumerate
 
-See also @mxrefdot{quote-quote, ''}
+See also @mxrefcomma{quote-quote, ''} @mref{at} and @mrefdot{subst}
 
 Examples:
 
