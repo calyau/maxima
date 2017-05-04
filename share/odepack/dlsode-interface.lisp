@@ -1,6 +1,6 @@
 (in-package #:maxima)
 
-(defun $dlsode_init (f mf)
+(defun-checked $dlsode_init ((f mf))
   ;; Verify values of mf.
   (unless (member mf '(10 21 22) :test #'eql)
     (merror "MF must be 10, 21, or 22"))
@@ -25,7 +25,7 @@
      (make-mlist '$rwork rwork)
      (make-mlist '$iwork iwork))))
 
-(defun $dlsode_step (f vars init-y tt tout rtol atol istate state)
+(defun-checked $dlsode_step ((f vars init-y tt tout rtol atol istate state))
   (let ((mf ($assoc '$mf state))
 	(neq ($assoc '$neq state))
 	(lrw ($assoc '$lrw state))
