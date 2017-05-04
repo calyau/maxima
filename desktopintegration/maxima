@@ -84,7 +84,14 @@ _maxima()
 
     $split && return 0
 
-    _filedir '@(mac|wxm)'
+    if [[ "$cur" == -* ]]; then
+        local opts="$( _parse_help "$1" )"
+        [[ $opts ]] || opts="$( _parse_usage "$1" )"
+        COMPREPLY=( $( compgen -W "$opts" -- "$cur" ) )
+        [[ $COMPREPLY == *= ]] && compopt -o nospace
+    else
+	_filedir '@(mac|wxm)'
+    fi
 } && complete -F _maxima maxima
 
 # ex: ts=4 sw=4 et filetype=sh
