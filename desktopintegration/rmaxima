@@ -1,6 +1,6 @@
-# maxima(1) completion                                     -*- shell-script -*-
+# rmaxima(1) completion                                     -*- shell-script -*-
 
-_maxima()
+_rmaxima()
 {
     local cur prev words cword split
     _init_completion -s || return
@@ -85,6 +85,6 @@ _maxima()
     $split && return 0
 
     _filedir '@(mac|wxm)'
-} && complete -F _maxima maxima
+} && complete -F _rmaxima rmaxima
 
 # ex: ts=4 sw=4 et filetype=sh
