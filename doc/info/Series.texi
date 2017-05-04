@@ -420,9 +420,18 @@ independently.
 
 Example:
 
+@c ===beg===
+@c sumexpand: false$
+@c cauchysum: false$
+@c s: sum (f(i), i, 0, inf) * sum (g(j), j, 0, inf);
+@c sumexpand: true$
+@c cauchysum: true$
+@c expand(s,0,0);
+@c ===end===
 @example
 (%i1) sumexpand: false$
 (%i2) cauchysum: false$
+@group
 (%i3) s: sum (f(i), i, 0, inf) * sum (g(j), j, 0, inf);
                       inf         inf
                       ====        ====
@@ -431,9 +440,11 @@ Example:
                       /           /
                       ====        ====
                       i = 0       j = 0
+@end group
 (%i4) sumexpand: true$
 (%i5) cauchysum: true$
-(%i6) ''s;
+@group
+(%i6) expand(s,0,0);
                  inf     i1
                  ====   ====
                  \      \
@@ -441,6 +452,7 @@ Example:
                  /      /
                  ====   ====
                  i1 = 0 i2 = 0
+@end group
 @end example
 
 @opencatbox
