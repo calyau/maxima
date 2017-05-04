@@ -1,9 +1,196 @@
 @menu
+* Introduction to Simplification::
 * Functions and Variables for Simplification::  
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Simplification,  , Simplification, Simplification
+@node Introduction to Simplification, Functions and Variables for Simplification,  , Simplification
+@section Introduction to Simplification
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+Maxima performs a cycle of actions in response to each new user-typed command. This 
+consists of four steps: reading or "parsing" the input, evaluation, simplification 
+and output. Parsing converts a syntactically valid sequence of typed characters into 
+a data structure to be used for the rest of the operations. Evaluation includes 
+replacing names with their assigned values. Simplification means rewriting an 
+expression to be easier for the user or other programs to understand. Output includes 
+displaying computational results in a variety of different formats and notations.
+
+Evaluation and simplification sometimes appear to have similar functionality as they 
+both have the goal of removing "complexity" and system designers have sometimes divided a 
+task so that it is performed partly in each. For example, @code{integrate(x,x)} evaluates 
+the answer as @code{x*x/2}, which is then simplified to @code{x^2/2}.
+
+Evaluation is always present: it is the consequence of having a programming system with 
+functions, subroutines, variables, values, loops, assignments and so on. In the 
+evaluation step, built-in or user-defined function names are replaced by their definitions, 
+variables are replaced by their values. This is largely the same as activities of a 
+conventional programming language, but extended to work with symbolic mathematical data. 
+Because of the generality of the mathematics at hand, there are different possible models 
+of evaluation and so the systems has optional "flags" that can steer the process of 
+evaluation. @xref{Functions and Variables for Evaluation}.
+
+By contrast, the intent of simplification is to maintain the value of an expression 
+while re-formulating its representation to be smaller, simpler to understand, or to 
+conform to particular specifications (like factored, expanded). For
+example, @code{sin(0)} to @code{0} or @code{x+x to 2*x}.
+There are several powerful tools to alter the results 
+of simplification, since it is largely in this part of the system that a user can 
+incorporate knowledge of newly introduced functions or symbolic notation into Maxima.
+
+Simplification is generally done at four different levels:
+@itemize @bullet
+@item The internal, built-in automated simplifier,
+@item Built-in simplification routines that can be explicitly called by the user
+      at selected places in a program or command sequence,
+@item User-written simplification routines, linked to the simplifier by using
+      "tellsimp" or "tellsimpafter" and called automatically,
+@item User-written routines that can be explicitly called by the user at selected 
+      places in a program or command sequence.
+@end itemize
+The internal simplifier belongs to the heart of Maxima. It is a large and 
+complicated collection of programs, and it has been refined over many years and by 
+thousands of users. Nevertheless, especially if you are trying out novel ideas or 
+unconventional notation, you may find it helpful to make small (or large) changes 
+to the program yourself. For details see for example the paper at the end of
+@url{https://people.eecs.berkeley.edu/~fateman/papers/intro5.txt}.
+
+Maxima internally represents expressions as "trees" with operators or "roots"
+like @code{+}, @code{*} , @code{=} and operands ("leaves") which are variables like
+@var{x}, @var{y}, @var{z}, functions
+or sub-trees, like @code{x*y}. Each operator has a simplification program
+associated with it.  @code{+} (which also covers binary @code{-} since
+@code{a-b = a+(-1)*b)} and @code{*} (which also covers @code{/} 
+since @code{a/b = a*b^(-1)}) have rather elaborate simplification programs. These 
+simplification programs (simplus, simptimes, simpexpt, etc.) are called whenever 
+the simplifier encounters the respective arithmetic operators in an expression 
+tree to be analyzed. 
+
+The structure of the simplifier dates back to 1965, and many hands have worked 
+on it through the years. The structure turns out to be, in modern jargon, data-
+directed, or object-oriented. The program dispatches to the appropriate routine 
+depending on the root of some sub-tree of the expression, recursively. This general
+notion means you can make modifications to the simplification process by very local 
+changes to the program. In many cases it is conceptually straightforward to add an 
+operator and add its simplification routine without disturbing existing code.
+
+We note that in addition to this general simplifier operating on algebraic 
+expression trees, there are several other representations of expressions in 
+Maxima which have separate methods and simplifiers. For example, the
+@code{rat()} function converts polynomials to vectors of coefficients to
+assist in rapid manipulation of such forms. Other representations include
+Taylor series and the (rarely used) Poisson series.
+
+All operators introduced by the user initially have no simplification
+programs associated with them.  Maxima does not know anything about
+function "f"  and so typing @code{f(a,b)} will result in simplifying
+@var{a},@var{b}, but not @code{f}. 
+Even some built-in operators have no simplifications. For example,
+@code{=} does not "simplify" -- it is a place-holder with no
+simplification semantics other 
+than to simplify its two arguments, in this case referred to as the left and 
+right sides. Other parts of Maxima such as the solve program take special 
+note of equations, that is, trees with @code{=} as the root. 
+(Note -- in Maxima, the assignment operation is @code{:} . That is, @code{q: 4}
+sets the value of the symbol @var{q} to @code{4}.
+Function definition is done with @code{:=}. )
+
+The general simplifier returns results with an internal flag indicating the 
+expression and each sub-expression has been simplified. This does not 
+guarantee that it is unique over all possible equivalent expressions. That's 
+too hard (theoretically, not possible given the generality of what can be 
+expressed in Maxima). However, some aspects of the expression, such as the 
+ordering of terms in a sum or product, are made uniform. This is important 
+for the other programs to work properly.
+
+You can set a number of option variables which direct Maxima's processing to 
+favor particular kinds of patterns as being goals. You can even use the most 
+extreme option which is to turn the simplifier off by simp:false. We do not 
+recommend this since many internal routines expect their arguments to be 
+simplified. (About the only time it seems plausible to turn off the simplifier 
+is in the rare case that you want to over-ride a built-in simplification. 
+In that case  you might temporarily disable the simplifier, put in the new 
+transformation via @mrefcomma{tellsimp} and then re-enable the simplifier
+by @code{simp:true}.)
+
+It is more plausible for you to associate user-defined symbolic function names 
+or operators with properties (@mrefcomma{additive}
+@mrefcomma{lassociative} @mrefcomma{oddfun} @mrefcomma{antisymmetric}
+@mrefcomma{linear} @mrefcomma{outative} @mrefcomma{commutative} 
+@mrefcomma{multiplicative} @mrefcomma{rassociative} @mrefcomma{evenfun}
+@mref{nary} and @mref{symmetric}). These options steer 
+the simplifier processing in systematic directions.
+
+For example, @code{declare(f,oddfun)} specifies that @code{f} is an odd function.
+Maxima will simplify @code{f(-x)} to @code{-f(x)}. In the case of an even
+function, that is @code{declare(g,evenfun)}, 
+Maxima will simplify @code{g(-x)} to @code{g(x)}. You can also associate a
+programming function with a name such as @code{h(x):=x^2+1}. In that case the
+evaluator will immediately replace 
+@code{h(3)} by @code{10}, and @code{h(a+1)} by @code{(a+1)^2+1}, so any properties
+of @code{h} will be ignored.
+
+In addition to these directly related properties set up by the user, facts and 
+properties from the actual context may have an impact on the simplifier's behavior, 
+too. @xref{Introduction to Maximas Database}.
+
+Example: @code{sin(n*%pi)} is simplified to zero, if @var{n} is an integer.
+
+@c ===beg===
+@c sin(n*%pi);
+@c declare(n, integer);
+@c sin(n*%pi);
+@c ===end===
+@example
+@group
+(%i1) sin(n*%pi);
+(%o1)                      sin(%pi n)
+@end group
+@group
+(%i2) declare(n, integer);
+(%o2)                         done
+@end group
+@group
+(%i3) sin(n*%pi);
+(%o3)                           0
+@end group
+@end example
+
+If automated simplification is not sufficient, you can consider a variety of 
+built-in, but explicitly called simplfication functions (@mrefcomma{ratsimp}
+@mrefcomma{expand} @mrefcomma{factor} @mref{radcan} and others). There are
+also flags that will push simplification into one or another direction.
+Given @code{demoivre:true} the simplifier rewrites 
+complex exponentials as trigonometric forms. Given @code{exponentialize:true}
+the  simplifier tries to do the reverse: rewrite trigonometric forms as complex 
+exponentials.
+
+As everywhere in Maxima, by writing your own functions (be it in the Maxima 
+user language or in the implementation language Lisp) and explicitly calling them 
+at selected places in the program, you can respond to your individual 
+simplification needs. Lisp gives you a handle on all the internal mechanisms, but 
+you rarely need this full generality. "Tellsimp" is designed to generate much 
+of the Lisp internal interface into the simplifier automatically.
+See @xref{Rules and Patterns}.
+
+Over the years (Maxima/Macsyma's origins date back to about 1966!) users have 
+contributed numerous application packages and tools to extend or alter its 
+functional behavior. Various non-standard and "share" packages exist to modify 
+or extend simplification as well. You are invited to look into this more 
+experimental material where work is still in progress. @xref{simplification-pkg}
+
+The following appended material is optional on a first reading, and reading it 
+is not necessary for productive use of Maxima. It is for the curious user who 
+wants to understand what is going on, or the ambitious programmer who might 
+wish to change the (open-source) code. Experimentation with redefining Maxima 
+Lisp code is easily possible: to change the definition of a Lisp program (say 
+the one that simplifies @code{cos()}, named @code{simp%cos}), you simply
+load into Maxima a text file that will overwrite the @code{simp%cos} function
+from the maxima package.
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Simplification,  , Introduction to Simplification, Simplification
 @section Functions and Variables for Simplification
 @c -----------------------------------------------------------------------------
 

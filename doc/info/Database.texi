@@ -262,6 +262,7 @@ Tells Maxima to simplify @var{a_i} expressions by the substitution
 @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
 The substitution is carried out on the first argument only.
 
+@anchor{nary}
 @item nary
 Tells Maxima to recognize @var{a_i} as an n-ary function.
 
