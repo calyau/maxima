@@ -13,7 +13,7 @@
 	 (rwork (make-array lrw :element-type 'flonum))
 	 (liw (ecase mf
 		(10
-		 10)
+		 20)
 		((21 22)
 		 (+ 20 neq))))
 	 (iwork (make-array liw :element-type 'f2cl-lib:integer4)))
