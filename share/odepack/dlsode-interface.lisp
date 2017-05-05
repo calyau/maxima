@@ -1,5 +1,25 @@
 (in-package #:maxima)
 
+;; Initialize for DLSODE.  This must be called before running DLSODE_STEP.
+;;
+;; Parameters:
+;;   f    - list of differential equations to be solved
+;;   vars - list of the independent variable and the dependent
+;;          variables.  The order of the dependent variables must be
+;;          in the same order as the equations in f.
+
+;;   mf   - method to be used.  It should be one of the following
+;;          values:
+
+;;            10  Nonstiff (Adams) method, no Jacobian used.
+;;            21  Stiff (BDF) method, user-supplied full Jacobian.
+;;            22  Stiff method, internally generated full
+;;                Jacobian.
+;;           The Fortran version of DLSODE supports additional
+;;           methods, but these are not supported here.
+;; Output:
+;;   A state object is created that should be used as the state
+;;   parameter in DLSODE_STEP.  The user must not modify these.
 (defun-checked $dlsode_init ((f vars mf))
   ;; Verify values of mf.
   (unless (member mf '(10 21 22) :test #'eql)
