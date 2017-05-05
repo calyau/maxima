@@ -1,6 +1,6 @@
 (in-package #:maxima)
 
-(defun-checked $dlsode_init ((f mf))
+(defun-checked $dlsode_init ((f vars mf))
   ;; Verify values of mf.
   (unless (member mf '(10 21 22) :test #'eql)
     (merror "MF must be 10, 21, or 22"))
@@ -16,14 +16,21 @@
 		 20)
 		((21 22)
 		 (+ 20 neq))))
-	 (iwork (make-array liw :element-type 'f2cl-lib:integer4)))
+	 (iwork (make-array liw :element-type 'f2cl-lib:integer4))
+	 (fjac (when (= mf 21)
+		 ;; Jacobian is needed only for mf = 21, so compute only then.
+		 (compile nil
+			  (coerce-float-fun
+			   (meval `(($jacobian) ,f ,(list* '(mlist) (cddr vars))))
+			   vars)))))
     (make-mlist
      (make-mlist '$mf mf)
      (make-mlist '$neq neq)
      (make-mlist '$lrw lrw)
      (make-mlist '$liw liw)
      (make-mlist '$rwork rwork)
-     (make-mlist '$iwork iwork))))
+     (make-mlist '$iwork iwork)
+     (make-mlist '$fjac fjac))))
 
 (defun-checked $dlsode_step ((f vars init-y tt tout rtol atol istate state))
   (let ((mf ($assoc '$mf state))
@@ -31,7 +38,8 @@
 	(lrw ($assoc '$lrw state))
 	(liw ($assoc '$liw state))
 	(rwork ($assoc '$rwork state))
-	(iwork ($assoc '$iwork state)))
+	(iwork ($assoc '$iwork state))
+	(fjac ($assoc '$fjac state)))
     ;; Verify that we got something from state.  (Do we need more validation?)
     (unless (and mf neq lrw liw rwork iwork)
       (merror "State appears to be invalid"))
@@ -44,10 +52,6 @@
       (merror "Expected ~M variables but go ~M: ~M"
 	      (1+ neq) ($length vars) vars))
     (let* ((ff (compile nil (coerce-float-fun f vars)))
-	   (fjac (compile nil
-			  (coerce-float-fun
-			   (meval `(($jacobian) ,f ,(list* '(mlist) (cddr vars))))
-			   vars)))
 	   (itol (if (listp atol)
 		     2
 		     1))

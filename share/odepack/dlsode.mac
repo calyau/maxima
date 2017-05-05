@@ -26,14 +26,15 @@ load("load-dlsode.lisp");
  * the solution of the system at time t with the values y1, y2, y3, ....
  */
 dlsode(f, yvars, inity, trange, rtol, atol, mf) :=
-  block([state: dlsode_init(f, mf),
-         tvar: trange[1],
+  block([tvar: trange[1],
          tstart: float(trange[2]),
          tend: float(trange[3]),
          tstep: float(trange[4]),
          result: [],
          istate: 1,
-         vars: cons(trange[1], yvars)],
+         vars: cons(trange[1], yvars),
+	 state],
+    state: dlsode_init(f, vars, mf),
     for tout: tstart step tstep thru tend do
       block([r : dlsode_step(f, vars, inity, tstart, tout, rtol, atol, istate, state)],
         result: cons(cons(r[1], r[2]), result),
