@@ -36,6 +36,11 @@
 (defvar *mread-eof-obj* ()    "Bound by `mread' for use by `mread-raw'")
 (defvar *current-line-info* nil)
 
+(defvar *parse-string-input-stream*             ;; reference to the input stream 
+  (let ((stream (make-string-input-stream ""))) ;;   used by parse-string
+    (close stream)                              ;;   in share/stringroc/eval_string.lisp
+    stream ))                                   ;; (see also add-lineinfo below)
+
 (defmvar $report_synerr_line t "If T, report line number where syntax error occurs; otherwise, report FILE-POSITION of error.")
 (defmvar $report_synerr_info t "If T, report the syntax error details from all sources; otherwise, only report details from standard-input.")
 
@@ -1747,9 +1752,12 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 
 
 (defun add-lineinfo (lis)
-  (if (or (atom lis) (and (eq *parse-window* *standard-input*)
-			  (not (find-stream *parse-stream*))))
-			  lis
+  (if (or (atom lis) 
+          (eq *parse-stream* *parse-string-input-stream*) ;; avoid consing *parse-string-input-stream* 
+                                                          ;;   via get-instream to *stream-alist* 
+          (and (eq *parse-window* *standard-input*)
+               (not (find-stream *parse-stream*)) ))
+    lis
     (let* ((st (get-instream *parse-stream*))
  	   (n (instream-line st))
 	   (nam (instream-name st)))

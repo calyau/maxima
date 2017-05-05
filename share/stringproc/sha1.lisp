@@ -262,7 +262,7 @@
 
 (defvar *k2* 
   (coerce               ;; the first 32 bits of the fractional parts of ..
-    (mapcar #'(lambda (i) (floor (* (rem (expt (coerce i 'real) 1/3) 1.0) #x100000000))) 
+    (mapcar #'(lambda (i) (floor (* (rem (expt (coerce i 'double-float) 1/3) 1.0) #x100000000))) 
             (subseq *small-primes* 0 64.) ) ;; .. the cube roots of the first 64 primes (2,..,311)
     'vector ))
 

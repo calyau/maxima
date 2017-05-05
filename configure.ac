@@ -1191,6 +1191,7 @@ src/share-subdirs.lisp \
 lisp-utils/Makefile tests/Makefile doc/Makefile \
 crosscompile-windows/Makefile \
 doc/emaxima/Makefile doc/info/Makefile doc/info/include-maxima.texi \
+desktopintegration/Makefile \
 doc/info/texi2html.init \
 doc/info/figures/Makefile \
 doc/info/de/Makefile \

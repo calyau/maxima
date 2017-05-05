@@ -225,7 +225,7 @@ definitions, lambda expressions, and expressions quoted by single quote
 
 Quote-quote is recognized by @mref{batch} and @mrefdot{load}
 
-See also the single-quote operator @mxref{quote, '} and @mrefdot{nouns}
+See also @mrefcomma{ev} the single-quote operator @mxref{quote, '} and @mrefdot{nouns}
 
 Examples:
 
@@ -526,6 +526,8 @@ evaluated and that @code{ev(F(x))} thus may behave like @code{F(ev(x))}.
 For each instance of @mref{eval} in the arguments, steps (3) and (4) are
 repeated.
 @end enumerate
+
+See also @mxrefcomma{quote-quote, ''} @mref{at} and @mrefdot{subst}
 
 Examples:
 

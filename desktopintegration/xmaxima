@@ -1,0 +1,36 @@
+# maxima(1) completion                                     -*- shell-script -*-
+
+_xmaxima()
+{
+    local cur prev words cword split
+    _init_completion -s || return
+
+    case $prev in
+        -help|-h)
+            return
+            ;;
+        -url)
+            _filedir '@(html)'
+            return
+            ;;
+        -use-version|-u)
+            return
+            ;;
+        -lisp|-l)
+            return
+            ;;
+    esac
+
+    $split && return 0
+
+    if [[ "$cur" == -* ]]; then
+        local opts="$( _parse_help "$1" )"
+        [[ $opts ]] || opts="$( _parse_usage "$1" )"
+        COMPREPLY=( $( compgen -W "$opts" -- "$cur" ) )
+        [[ $COMPREPLY == *= ]] && compopt -o nospace
+    else
+	_filedir '@(tcl)'
+    fi
+} && complete -F _xmaxima xmaxima
+
+# ex: ts=4 sw=4 et filetype=sh

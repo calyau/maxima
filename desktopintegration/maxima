@@ -1,0 +1,97 @@
+# maxima(1) completion                                     -*- shell-script -*-
+
+_maxima()
+{
+    local cur prev words cword split
+    _init_completion -s || return
+
+    case $prev in
+        --help|-h|--version|-v)
+            return
+            ;;
+        --batch|-b)
+            _filedir '@(mac|wxm)'
+            return
+            ;;
+        --batch-lisp)
+            _filedir lisp
+            return
+            ;;
+        --batch-string)
+            return
+            ;;
+	--directories|-d)
+            _filedir -d
+            return
+            ;;	    
+	--disable-readline)
+            return
+            ;;
+	--enable-lisp-debugger|-g)
+            return
+            ;;	    
+	--userdir)
+            _filedir -d
+            return
+            ;;	    
+	--init)
+            _filedir '@(mac|wxm|lisp)'
+            return
+            ;;
+	--init-mac)
+            _filedir mac
+            return
+            ;;
+	--init-lisp)
+            _filedir lisp
+            return
+            ;;
+	-l|--lisp)
+            return
+            ;;
+	--list-avail)
+            return
+            ;;
+	-p)
+            _filedir lisp
+            return
+            ;;
+	-q|--quiet)
+            return
+            ;;
+	-r|--run-string)
+            return
+            ;;	    
+	-s|--server)
+            return
+            ;;
+	-u|--use-version)
+            return
+            ;;
+	-v|--verbose)
+            return
+            ;;
+	--version)
+            return
+            ;;
+	--very-quiet)
+            return
+            ;;
+	-X|--lisp-options=)
+            return
+            ;;
+    esac
+
+    $split && return 0
+
+    if [[ "$cur" == -* ]]; then
+        local opts="$( _parse_help "$1" )"
+        [[ $opts ]] || opts="$( _parse_usage "$1" )"
+        COMPREPLY=( $( compgen -W "$opts" -- "$cur" ) )
+        [[ $COMPREPLY == *= ]] && compopt -o nospace
+    else
+	_filedir '@(mac|wxm)'
+    fi
+} && complete -F _maxima maxima
+
+# ex: ts=4 sw=4 et filetype=sh
