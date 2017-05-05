@@ -152,15 +152,12 @@ configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine
 configure_file("${CMAKE_SOURCE_DIR}/wine-sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-sbcl.sh")
 
 
-configure_file("${CMAKE_SOURCE_DIR}/setup-imaxima-imath.el-patch.tmpl" "${CMAKE_BINARY_DIR}/setup-imaxima-imath.el-patch" NEWLINE_STYLE WIN32)
-
 externalproject_add(maxima
   # first copy the maxima source to a build directory, since out-of-source-builds do not work
   DOWNLOAD_COMMAND rsync -a --exclude=crosscompile-windows/build/ "${CMAKE_SOURCE_DIR}/../"  "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima"
   DEPENDS clisp sbcl tcl tk
   BUILD_IN_SOURCE 1
-  PATCH_COMMAND patch --binary -p0 < ${CMAKE_BINARY_DIR}/setup-imaxima-imath.el-patch
-        COMMAND sh -c "test \"${BUILD_64BIT}\" != \"OFF\" && patch --binary -p1 < ${CMAKE_SOURCE_DIR}/maxima.bat.in-patch || exit 0"
+  PATCH_COMMAND sh -c "test \"${BUILD_64BIT}\" != \"OFF\" && patch --binary -p1 < ${CMAKE_SOURCE_DIR}/maxima.bat.in-patch || exit 0"
   CONFIGURE_COMMAND sh -c "test -x ./bootstrap && ./bootstrap || return 0"
             COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=C:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...
