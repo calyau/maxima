@@ -338,8 +338,8 @@ Examples:
 @c tellsimpafter (foo (x, y), bar (x) + baz (y));
 @c tellsimpafter (x + y, special_add (x, y));
 @c defmatch (quux, mumble (x));
-@c disprule (foorule1, "+rule1", quux);
-@c ''%;
+@c disprule (foorule1, ?\+rule1, quux);
+@c ev(%);
 @c ===end===
 @example
 (%i1) tellsimpafter (foo (x, y), bar (x) + baz (y));
@@ -348,7 +348,7 @@ Examples:
 (%o2)                   [+rule1, simplus]
 (%i3) defmatch (quux, mumble (x));
 (%o3)                         quux
-(%i4) disprule (foorule1, "+rule1", quux);
+(%i4) disprule (foorule1, ?\+rule1, quux);
 (%t4)        foorule1 : foo(x, y) -> baz(y) + bar(x)
 
 (%t5)          +rule1 : y + x -> special_add(x, y)
@@ -356,7 +356,7 @@ Examples:
 (%t6)                quux : mumble(x) -> []
 
 (%o6)                    [%t4, %t5, %t6]
-(%i6) ''%;
+(%i6) ev(%);
 (%o6) [foorule1 : foo(x, y) -> baz(y) + bar(x), 
      +rule1 : y + x -> special_add(x, y), quux : mumble(x) -> []]
 @end example
