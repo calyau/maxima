@@ -1,0 +1,46 @@
+/*
+ * This is an example of how to use dlsode from the comments in
+ * share/odepack/fortran.dlsode.f.  This is a straightforward
+ * translation of the code.
+ *
+ * The expected output (from the code) which was generated from a
+ * Cray-1 in single precision (which seems to have a 49 bit mantissa,
+ * so almost as precise as IEEE double)
+
+C     At t =  4.0000e-01   y =  9.851726e-01  3.386406e-05  1.479357e-02
+C     At t =  4.0000e+00   y =  9.055142e-01  2.240418e-05  9.446344e-02
+C     At t =  4.0000e+01   y =  7.158050e-01  9.184616e-06  2.841858e-01
+C     At t =  4.0000e+02   y =  4.504846e-01  3.222434e-06  5.495122e-01
+C     At t =  4.0000e+03   y =  1.831701e-01  8.940379e-07  8.168290e-01
+C     At t =  4.0000e+04   y =  3.897016e-02  1.621193e-07  9.610297e-01
+C     At t =  4.0000e+05   y =  4.935213e-03  1.983756e-08  9.950648e-01
+C     At t =  4.0000e+06   y =  5.159269e-04  2.064759e-09  9.994841e-01
+C     At t =  4.0000e+07   y =  5.306413e-05  2.122677e-10  9.999469e-01
+C     At t =  4.0000e+08   y =  5.494530e-06  2.197825e-11  9.999945e-01
+C     At t =  4.0000e+09   y =  5.129458e-07  2.051784e-12  9.999995e-01
+C     At t =  4.0000e+10   y = -7.170603e-08 -2.868241e-13  1.000000e+00
+C
+C     No. steps = 330,  No. f-s = 405,  No. J-s = 69
+ */
+
+y: [1d0, 0d0, 0d0];
+t: 0d0;
+rtol : 1d-4;
+atol: [1d-6, 1d-10, 1d-6];
+istate: 1;
+mf: 21;
+
+f1: -.04d0*y1 + 1d4*y2*y3;
+f3: 3d7*y2*y2;
+fex: [f1, -f1-f3, f3];
+t:0d0;
+tout:.4d0;
+
+result :[];
+state : dlsode_init(fex, ['t,y1,y2,y3], mf);
+for k : 1 thru 12 do
+  block([],
+    result: dlsode_step(y, t, tout, rtol, atol, istate, state),
+    printf(true, "At t = ~12,4,2e   y = ~{~14,6,2e~}~%", result[1], result[2]),
+    istate : result[3],
+    tout : tout * 10);

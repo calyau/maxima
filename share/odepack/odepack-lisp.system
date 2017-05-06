@@ -1,0 +1,121 @@
+;;;; -*- Mode: lisp -*-
+
+;;;; Defsystem to convert the original ODEPACK Fortran files to lisp
+;;;; for use by maxima.  This only supports the routines necessary to
+;;;; run dlsode.
+;;;;
+;;;; This requires that f2cl be loaded.
+(mk:define-language :f2cl
+    :compiler #'f2cl:f2cl
+    :loader #'identity
+    :source-extension "f"
+    :binary-extension "lisp")
+
+;; Create a logical pathname for our files.
+(let ((base (make-pathname :directory (pathname-directory *load-pathname*))))
+  (setf (logical-pathname-translations "odepack")
+	(list (list "**;*.*.*"
+		    (merge-pathnames
+		     (make-pathname
+		      :directory '(:relative :wild-inferiors)
+		      :name :wild :type :wild)
+		     base)))))
+
+(mk:defsystem odepack-package
+  :source-pathname (translate-logical-pathname "odepack:")
+  :binary-pathname (translate-logical-pathname "odepack:src")
+  :components
+  ((:module "package"
+    :source-pathname ""
+    :load-only t
+    :components
+    ((:file "package")))))
+
+
+(mk:defsystem odepack-blas-util
+  :source-pathname (translate-logical-pathname "odepack:fortran")
+  :binary-pathname (translate-logical-pathname "odepack:src")
+  :depends-on ("odepack-package")
+  :language :f2cl
+  ;; At least dgefa and idamax are passed slices of arrays.  Thus, we
+  ;; can't declare arrays as simple-arrays.  For simplicity, skip that
+  ;; for all files in this system.
+  :compiler-options (:common-as-array t
+		     :float-format double-float
+		     :package "ODEPACK")
+  :components
+  ((:module "blas"
+    :source-pathname ""
+    :source-extension "f"
+    :components
+    (
+     (:file "dgesl"
+      :depends-on ("daxpy"
+		   "ddot"))
+     (:file "dgbsl"
+      :depends-on ("daxpy"))
+     (:file "dgefa"
+      :depends-on ("idamax"
+		   "dscal"
+		   "daxpy"))
+     (:file "dgbfa"
+      :depends-on ("idamax"
+		   "dscal"
+		   "daxpy"))
+     (:file "idamax")
+     (:file "dscal")
+     (:file "daxpy")
+     (:file "ddot")
+     (:file "dcopy")))
+   (:module "util"
+    :source-pathname ""
+    :source-extension "f"
+    :language :f2cl
+    :components
+    ((:file "xerrwd"
+      :depends-on ("ixsav"))
+     (:file "ixsav"
+      :depends-on ("iumach"))
+     (:file "iumach")
+     (:file "dumach"
+      :depends-on ("dumsum"))
+     (:file "dumsum")))))
+
+(mk:defsystem odepack-lsode
+  :source-pathname (translate-logical-pathname "odepack:fortran")
+  :binary-pathname (translate-logical-pathname "odepack:src")
+  :source-extension "f"
+  :language :f2cl
+  :compiler-options (:common-as-array t
+                     :float-format double-float
+		     :array-type :simple-array
+		     :package "ODEPACK")
+  :depends-on ("odepack-blas-util")
+  :components
+  ((:module "lsode"
+    :source-pathname ""
+    :source-extension "f"
+    :components
+    ((:file "dlsode"
+      :compiler-options (:common-as-array t
+                         :declare-common t
+			 :common-block-file t
+			 :float-format double-float
+			 :array-type :simple-array
+			 :package "ODEPACK")
+      :depends-on ("dstode"
+		   "dewset"
+		   "dvnorm"
+		   "dintdy"
+		   "dsolsy"))
+     (:file "dsolsy")
+     (:file "dewset")
+     (:file "dvnorm")
+     (:file "dintdy")
+     (:file "dstode"
+      :depends-on ("dcfode"
+		   "dvnorm"
+		   "dprepj"))
+     (:file "dcfode")
+     (:file "dprepj")))))
+
