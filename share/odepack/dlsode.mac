@@ -24,6 +24,22 @@ load("load-dlsode.lisp");
  *
  * The output is a list of values of the form [t, y1, y2, y3, ...] which is 
  * the solution of the system at time t with the values y1, y2, y3, ....
+ *
+ * Here is one example give in documentation for rk:
+ *
+ *   dx/dt = 4-x^2-4*y^2     dy/dt = y^2-x^2+1
+ *
+ * for t between 0 and 4, and with values of -1.25 and 0.75 for x and
+ * y at t=0:
+ *
+ * sol: rk([4-x^2-4*y^2,y^2-x^2+1],[x,y],[-1.25,0.75],[t,0,4,0.02])$
+ * plot2d ([discrete,makelist([p[1],p[3]],p,sol)], [xlabel,"t"],[ylabel,"y"])$
+ *
+ * To do the same with dlsode:
+ *
+ * sol2:dlsode([4-x^2-4*y^2,y^2-x^2+1],[x,y],[-1.25,0.75],[t,0,4,0.02], 1e-5, 1e-5, 10)$
+ * plot2d ([discrete,makelist([p[1],p[3]],p,sol2)], [xlabel,"t"],[ylabel,"y"])$
+ *
  */
 dlsode(f, yvars, inity, trange, rtol, atol, mf) :=
   block([tvar: trange[1],

@@ -19,7 +19,10 @@
 ;;           methods, but these are not supported here.
 ;; Output:
 ;;   A state object is created that should be used as the state
-;;   parameter in DLSODE_STEP.  The user must not modify these.
+;;   parameter in DLSODE_STEP.  The user must not modify these. The
+;;   output includes the equations, the set of variables, the mf
+;;   parameter, and various work arrays that must be modified between
+;;   calls to dlsode_step.
 (defun-checked $dlsode_init ((f vars mf))
   ;; Verify values of mf.
   (unless (member mf '(10 21 22) :test #'eql)
@@ -54,6 +57,52 @@
      (make-mlist '$iwork iwork)
      (make-mlist '$fjac fjac))))
 
+;; Main DLSODE routine to compute each output point.  Must be called
+;; after DLSODE_INIT.
+;;
+;; For full details see comments in fortran/dlsode.f
+;;
+;; Parameters:
+;;
+;;   init-y - For the first call (when istate = 1), the initial values
+;;   tt     - Value of the independent value
+;;   tout   - Next point where output is desired (/= tt)
+;;   rtol   - relative tolerance parameter
+
+;;   atol   - Absolute tolerance parameter, scalar of vector.  If
+;;            scalar, it applies to all dependent variables.
+;;            Otherwise it must be the tolerance for each dependent
+;;            variable.
+;;
+;;            Use rtol = 0 for pure absolute error and use atol = 0
+;;            for pure relative error.
+;;            
+;;   istate - 1 for the first call to dlsode, 2 for subsequent calls.
+;;   state  - state returned by dlsode-init.
+;;
+;; Output:
+;;   A list consisting of the following items:
+;;     t      - independent variable value
+;;     y      - list of values of the dependent variables at time t.
+;;     istate - Integration status:
+;;                 1 - no work because tout = tt
+;;                 2 - successful result
+;;                -1 - Excess work done on this call
+;;                -2 - Excess accuracy requested
+;;                -3 - Illegal input detected
+;;                -4 - Repeated error test failures
+;;                -5 - Repeated convergence failures (perhaps bad
+;;                     Jacobian or wrong choice of mf or tolerances)
+;;                -6 - Error weight becase zero during problem
+;;                     (solution component i vanishded and atol(i) = 0.
+;;     info   - association list of various bits of information:
+;;                n_steps      - total steps taken thus far
+;;                n_f_eval     - total number of function evals
+;;                n_j_eval     - total number of Jacobian evals
+;;                method_order - method order
+;;                len_rwork    - Actual length used for real work array
+;;                len_iwork    - Actual length used for integer work array
+;;
 (defun-checked $dlsode_step ((init-y tt tout rtol atol istate state))
   (let ((f ($assoc '$f state))
 	(vars ($assoc '$vars state))
