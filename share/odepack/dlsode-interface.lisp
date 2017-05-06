@@ -153,7 +153,7 @@
 			(type double-float tt)
 			(type (cl:array double-float (*)) y)
 			(type (cl:array double-float *) pd)
-			(ignore neq))
+			(ignore neq ml mu))
 	       #+nil
 	       (progn
 		 (format t "jex: tt = ~S; y = ~S~%" tt y)
