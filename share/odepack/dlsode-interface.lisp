@@ -1,4 +1,4 @@
-(in-package #:maxima)
+(in-package #-gcl #:maxima #+gcl "MAXIMA")
 
 ;; Initialize for DLSODE.  This must be called before running DLSODE_STEP.
 ;;
