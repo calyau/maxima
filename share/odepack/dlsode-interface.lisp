@@ -44,6 +44,8 @@
 			   (meval `(($jacobian) ,f ,(list* '(mlist) (cddr vars))))
 			   vars)))))
     (make-mlist
+     (make-mlist '$f f)
+     (make-mlist '$vars vars)
      (make-mlist '$mf mf)
      (make-mlist '$neq neq)
      (make-mlist '$lrw lrw)
@@ -52,8 +54,10 @@
      (make-mlist '$iwork iwork)
      (make-mlist '$fjac fjac))))
 
-(defun-checked $dlsode_step ((f vars init-y tt tout rtol atol istate state))
-  (let ((mf ($assoc '$mf state))
+(defun-checked $dlsode_step ((init-y tt tout rtol atol istate state))
+  (let ((f ($assoc '$f state))
+	(vars ($assoc '$vars state))
+	(mf ($assoc '$mf state))
 	(neq ($assoc '$neq state))
 	(lrw ($assoc '$lrw state))
 	(liw ($assoc '$liw state))
@@ -61,7 +65,7 @@
 	(iwork ($assoc '$iwork state))
 	(fjac ($assoc '$fjac state)))
     ;; Verify that we got something from state.  (Do we need more validation?)
-    (unless (and mf neq lrw liw rwork iwork)
+    (unless (and f vars mf neq lrw liw rwork iwork)
       (merror "State appears to be invalid"))
     ;; Make sure neq is consistent with the number of elements in f
     ;; and vars
@@ -142,7 +146,8 @@
 				(make-array (1- (length atol))
 					    :element-type 'double-float
 					    :initial-contents (rest ($float atol)))
-				($float atol))
+				(make-array 1 :element-type 'double-float
+					    :initial-element ($float atol)))
 			    1 ;;  itask
 			    istate
 			    0 ;; iopt

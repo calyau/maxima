@@ -36,7 +36,7 @@ dlsode(f, yvars, inity, trange, rtol, atol, mf) :=
 	 state],
     state: dlsode_init(f, vars, mf),
     for tout: tstart step tstep thru tend do
-      block([r : dlsode_step(f, vars, inity, tstart, tout, rtol, atol, istate, state)],
+      block([r : dlsode_step(inity, tstart, tout, rtol, atol, istate, state)],
         result: cons(cons(r[1], r[2]), result),
         istate: r[3]),
     return(reverse(result))
