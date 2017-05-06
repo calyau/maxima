@@ -220,3 +220,21 @@
 		 (make-mlist '$method_order (aref iwork 13))
 		 (make-mlist '$len_rwork (aref iwork 16))
 		 (make-mlist '$len_iwork (aref iwork 17)))))))))
+
+(defun-checked $dlsode ((f yvars inity trange rtol atol mf))
+  (let* ((tvar (elt trange 1))
+	 (tstart ($float (elt trange 2)))
+	 (tend ($float (elt trange 3)))
+	 (tstep ($float (elt trange 4)))
+	 (vars ($cons tvar yvars))
+	 (state ($dlsode_init f vars mf))
+	 result)
+    (loop for tout from tstart upto tend by tstep
+	  do
+	     (let ((r ($dlsode_step inity tstart tout rtol atol 1 state)))
+	       (when (minusp (elt r 3))
+		 (merror))
+	       (push (list '(mlist) (elt r 1) (elt r 2))
+		     result)))
+    (list* '(mlist)
+	   (nreverse result))))
