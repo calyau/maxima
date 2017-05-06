@@ -234,7 +234,7 @@
 	     (let ((r ($dlsode_step inity tstart tout rtol atol 1 state)))
 	       (when (minusp (elt r 3))
 		 (merror))
-	       (push (list '(mlist) (elt r 1) (elt r 2))
+	       (push ($cons (elt r 1) (elt r 2))
 		     result)))
     (list* '(mlist)
 	   (nreverse result))))
