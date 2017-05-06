@@ -46,8 +46,13 @@
 			  (coerce-float-fun
 			   (meval `(($jacobian) ,f ,(list* '(mlist) (cddr vars))))
 			   vars)))))
+    ;; Make sure neq is consistent with the number of elements in f
+    ;; and vars
+    (unless (= (1+ neq) ($length vars))
+      (merror "Expected ~M variables but got ~M: ~M"
+	      (1+ neq) ($length vars) vars))
     (make-mlist
-     (make-mlist '$f f)
+     (make-mlist '$f (compile nil (coerce-float-fun f vars)))
      (make-mlist '$vars vars)
      (make-mlist '$mf mf)
      (make-mlist '$neq neq)
@@ -116,15 +121,7 @@
     ;; Verify that we got something from state.  (Do we need more validation?)
     (unless (and f vars mf neq lrw liw rwork iwork)
       (merror "State appears to be invalid"))
-    ;; Make sure neq is consistent with the number of elements in f
-    ;; and vars
-    (unless (= neq ($length f))
-      (merror "Expected ~M equations but got ~M: ~M"
-	      neq ($length f) f))
-    (unless (= (1+ neq) ($length vars))
-      (merror "Expected ~M variables but go ~M: ~M"
-	      (1+ neq) ($length vars) vars))
-    (let* ((ff (compile nil (coerce-float-fun f vars)))
+    (let* ((ff f)
 	   (itol (if (listp atol)
 		     2
 		     1))
