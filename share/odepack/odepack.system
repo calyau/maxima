@@ -6,13 +6,13 @@
   :source-extension "lisp"
   :components
   ((:module "package"
-    :source-pathname ""
+    :source-pathname "."
     :components
     ((:file "package")))
    (:module "common-block"
     :source-pathname "src"
     :source-extension "cmn"
-    ::components
+    :components
     ((:file "dls001")))))
 
 (mk:defsystem odepack-dlsode
