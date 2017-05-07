@@ -24,13 +24,16 @@
   ((:module "src"
     :components
     ((:file "dlsode"
-      :depends-on ("dstode"))
+      :depends-on ("dstode" "xerrwd" "dintdy" "dvnorm" "dewset"))
      (:file "dintdy"
       :depends-on ("xerrwd"))
-     (:file "dstode")
+     (:file "dstode"
+      :depends-on ("dvnorm" "dcfode")))
      (:file "dcfode")
-     (:file "dprepj")
-     (:file "dsolsy")
+     (:file "dprepj"
+      :depends-on ("dgbfa" "dgefa" "dvnorm"))
+     (:file "dsolsy"
+      :depends-on ("dgbsl" "dgesl"))
      (:file "dewset")
      (:file "dvnorm")
      (:file "dsrcom")
@@ -39,7 +42,7 @@
      (:file "dgesl"
       :depends-on ("daxpy" "ddot"))
      (:file "dgbsl"
-      :depends-on ("daxpy"))
+      :depends-on ("daxpy" "ddot"))
      (:file "dscal")
      (:file "ddot")
      (:file "idamax")
@@ -47,8 +50,10 @@
       :depends-on ("dumsum"))
      (:file "xerrwd"
       :depends-on ("ixsav"))
-     (:file "xsetun")
-     (:file "xsetf")
+     (:file "xsetun"
+      :depends-on ("ixsav"))
+     (:file "xsetf"
+      :depends-on ("ixsav"))
      (:file "ixsav")
      (:file "iumach")
      (:file "daxpy")
