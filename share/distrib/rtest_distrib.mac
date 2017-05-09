@@ -229,10 +229,7 @@ pdf_laplace(2.5,-5,3);
 0.01368083310398313;
 
 cdf_laplace(2/5,-5,30);
-1-%e^-(9/50)/2;
-
-cdf_laplace(2/5,-5,30);
-1-%e^-(9/50)/2;
+(2-%e^-(9/50))/2
 
 random_laplace(-12,17,3);
 [12.6464246671848,-28.88305575541671,-25.390527331018];
@@ -360,7 +357,7 @@ quantile_negative_binomial(1/8,9,6/17);
 9;
 
 quantile_negative_binomial(7/1000,2,1/17);
-1;
+1.0;
 
 random_negative_binomial(6,3/5,3);
 [5,8,9];
