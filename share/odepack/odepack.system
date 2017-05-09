@@ -28,7 +28,9 @@
      (:file "dintdy"
       :depends-on ("xerrwd"))
      (:file "dstode"
-      :depends-on ("dvnorm" "dcfode")))
+      :depends-on ("dvnorm" "dcfode"))
+     (:file "dgbfa"
+      :depends-on ("idamax" "dscal" "dvnorm"))
      (:file "dcfode")
      (:file "dprepj"
       :depends-on ("dgbfa" "dgefa" "dvnorm"))
