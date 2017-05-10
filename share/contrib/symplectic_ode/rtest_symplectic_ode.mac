@@ -1,0 +1,213 @@
+(load("symplectic_ode"),0);
+0$
+
+(reset(), display2d : false, 0);
+0$
+
+([pp, qq] : symplectic_ode (p^2/2 + 42*q^4/4,[p], [q], [po],[qo], dt, 2, 'symplectic_euler, 'any),0);
+0$
+
+expand( poisson_bracket(first(last(pp)), first(last(qq)),[po],[qo]));
+-1$
+
+([pp, qq] : symplectic_ode (p^2/2 + 42*q^4/4,p,q,po,qo, dt, 2, 'symplectic_euler, 'any),0);
+0$
+
+expand( poisson_bracket(last(pp), last(qq),po,qo));
+-1$
+
+([pp, qq] : symplectic_ode(p1^2/2 + p2^2/2 + 42*q1^2 - q1*q2 + q2^4,[p1,p2], 
+     [q1,q2], [p10, p20],[q10, q20], dt, 2, 'symplectic_euler, 'any),0);
+0$
+
+(pp : last(pp), qq : last(qq),0);
+0$
+
+expand(outermap(lambda([f,g],  poisson_bracket(f,g, [p10,p20],[q10,q20])), pp,qq));
+[[-1,0],[0,-1]]$
+
+ratsimp(expand(outermap(lambda([f,g],  poisson_bracket(f,g, [p10,p20],[q10,q20])), pp,pp)));
+[[0,0],[0,0]]$
+
+ratsimp(expand(outermap(lambda([f,g],  poisson_bracket(f,g, [p10,p20],[q10,q20])), qq,qq)));
+[[0,0],[0,0]]$
+
+/* check for correct order */
+
+([pp,qq] : symplectic_ode (p^2/2 + q^2/2,[p], [q],  [po],[qo], dt,  4, 'symplectic_euler, 'any),0);
+0$
+
+taylor(first(last(pp)) - (po * cos(4 *dt) - qo * sin(4 *dt)),dt,0,2);
+2*po*dt^2$
+
+taylor(first(last(qq)) - (qo * cos(4 *dt)  + po  * sin(4 *dt)),dt,0,2);
+-2*qo*dt^2$
+
+/* Test verlet method */
+
+([pp, qq] : symplectic_ode(p^2/2 + q^4/4,[p],[q],[po],[qo],dt,1, 'verlet, 'any),0);
+0$
+
+expand( poisson_bracket(first(last(pp)), first(last(qq)),[po],[qo]));
+-1$
+
+([pp, qq] : symplectic_ode(p1^2/2 + p2^2/2 + 42*q1^2 - q1*q2 + q2^4,[p1,p2], 
+     [q1,q2], [p10, p20],[q10, q20], dt, 2, 'verlet, 'any),0);
+0$
+
+(pp : last(pp), qq : last(qq),0);
+0$
+
+expand(outermap(lambda([f,g],  poisson_bracket(f,g, [p10,p20],[q10,q20])), pp,qq));
+[[-1,0],[0,-1]]$
+
+expand(outermap(lambda([f,g],  poisson_bracket(f,g, [p10,p20],[q10,q20])), pp,pp));
+[[0,0],[0,0]]$
+
+expand(outermap(lambda([f,g],  poisson_bracket(f,g, [p10,p20],[q10,q20])), qq,qq));
+[[0,0],[0,0]]$
+
+([pp,qq] : symplectic_ode (p^2/2 + q^2/2,[p], [q],  [po],[qo], dt, 4, 'verlet, 'any),0);
+0$
+
+taylor(first(last(pp)) - (po * cos(4 *dt) - qo * sin(4 *dt)),dt,0,4);
+-(2*qo*dt^3)/3-(2*po*dt^4)/3$
+
+taylor(first(last(qq)) - (qo * cos(4 *dt)  + po  * sin(4 *dt)),dt,0,4);
+-(po*dt^3)/3-(2*qo*dt^4)/3$
+
+/* Test a third order method */
+
+([pp, qq] : symplectic_ode (p^2/2 + q^4/4,[p],[q],[po],[qo],dt,1, 'symplectic_third_order, 'any),0);
+0$
+
+expand( poisson_bracket(first(last(pp)), first(last(qq)),[po],[qo]));
+-1$
+
+([pp, qq] : symplectic_ode (p1^2/2 + p2^2/2 + 42*q1^2 - q1*q2 + q2^4,[p1,p2], 
+     [q1,q2], [p10, p20],[q10, q20], dt, 2, 'verlet, 'any),0);
+0$
+
+(pp : last(pp), qq : last(qq),0);
+0$
+
+expand(outermap(lambda([f,g],  poisson_bracket(f,g,[p10,p20],[q10,q20])), pp,qq));
+[[-1,0],[0,-1]]$
+
+expand(outermap(lambda([f,g],  poisson_bracket(f,g,[p10,p20],[q10,q20])), pp,pp));
+[[0,0],[0,0]]$
+
+expand(outermap(lambda([f,g],  poisson_bracket(f,g,[p10,p20],[q10,q20])), qq,qq));
+[[0,0],[0,0]]$
+
+([pp,qq] : symplectic_ode (p^2/2 + q^2/2,[p], [q],[po],[qo], dt, 4, 'symplectic_third_order, 'any),0);
+0$
+
+taylor(first(last(pp)) - (po * cos(4 *dt) - qo * sin(4 *dt)),dt,0,5);
+-(po*dt^4)/9-(qo*dt^5)/45$
+
+taylor(first(last(qq)) - (qo * cos(4 *dt)  + po  * sin(4 *dt)),dt,0,5);
+(qo*dt^4)/9-(37*po*dt^5)/2160$
+
+/* Test a fourth order method */
+
+(algebraic : true,0);
+0$
+
+([pp, qq] : symplectic_ode (p^2/2,[p],[q],[po],[qo],dt,1, 'symplectic_fourth_order, 'any),0);
+0$
+
+expand( poisson_bracket(first(last(pp)), first(last(qq)),[po],[qo]));
+-1$
+
+([pp, qq] : symplectic_ode (p1^2/2 + p2^2/2 + q1*q2,[p1,p2], 
+     [q1,q2], [p10, p20],[q10, q20], dt, 2, 'symplectic_fourth_order, 'any),0);
+0$
+
+(pp : last(pp), qq : last(qq),0);
+0$
+
+ratsimp(expand(outermap(lambda([f,g],  poisson_bracket(f,g,[p10,p20],[q10,q20])), pp,qq)));
+[[-1,0],[0,-1]]$
+
+ratsimp(expand(outermap(lambda([f,g],  poisson_bracket(f,g,[p10,p20],[q10,q20])), pp,pp)));
+[[0,0],[0,0]]$
+
+ratsimp(expand(outermap(lambda([f,g],  poisson_bracket(f,g,[p10,p20],[q10,q20])), qq,qq)));
+[[0,0],[0,0]]$
+
+([pp,qq] : symplectic_ode(p^2/2 + q^2/2,[p], [q],[po],[qo], dt, 4, 'symplectic_fourth_order, 'any),0);
+0$
+
+taylor(first(last(pp)) - (po * cos(4 *dt) - qo * sin(4 *dt)),dt,0,5);
+((3*(2^(1/3))^8-5*(2^(1/3))^7-5*(2^(1/3))^4+18)*qo*dt^5)/(225*(2^(1/3))^10-585*(2^(1/3))^8+1440)$
+
+taylor(first(last(qq)) - (qo * cos(4 *dt)  + po  * sin(4 *dt)),dt,0,5);
+-((19*(2^(1/3))^8-155*(2^(1/3))^4-85*(2^(1/3))^2+325*2^(1/3)-6)*po*dt^5)/(225*(2^(1/3))^7-585*(2^(1/3))^5+720)$
+
+/* type tests */
+
+([pp, qq] : symplectic_ode (p^2/2 + 42*q^4/4,[p], [q], [1],[0], 1/10, 57, 'symplectic_euler, 'float),0);
+0$
+
+every('floatnump, xreduce('append, pp)) and every('floatnump, xreduce('append, qq));
+true$
+
+([pp, qq] : symplectic_ode (p^2/2 + 42*q^4/4, p, q, 1, 0, 1/10, 5, 'symplectic_euler, 'rational),0)$
+0$
+
+every('ratnump, pp) and every('ratnump, qq);
+true$
+
+([pp, qq] : symplectic_ode (p^2/2 + 42*q^4/4, p, q, 1, 0, 1/10, 5, 'symplectic_euler, 'bfloat),0);
+0$
+
+every('bfloatp, pp) and every('bfloatp, qq);
+true$
+
+/*  poisson Brackets */
+
+ poisson_bracket(p,p,[p],[q]);
+0$
+
+ poisson_bracket(p,q,[p],[q]);
+-1$
+
+ poisson_bracket(p^2,q^2,[p],[q]);
+-4*p*q$
+
+ poisson_bracket(p^2,q^2,p,q);
+-4*p*q$
+
+/* bogus argument errors */
+
+errcatch(symplectic_ode(p^2/2+(42*q^4)/4,[p],q,1,0, 1/10,2));
+[]$
+
+errcatch(symplectic_ode(p^2/2+(42*q^4)/4,p,[q],1,0, 1/10,2));
+[]$
+
+errcatch(symplectic_ode(p^2/2+(42*q^4)/4,p,q,[1],0, 1/10,2));
+[]$
+
+errcatch(symplectic_ode(p^2/2+(42*q^4)/4,p,q,1,[0], 1/10,2));
+[]$
+
+errcatch(symplectic_ode(p^2/2+(42*q^4)/4,p,q,1,0, [1/10],2));
+[]$
+
+errcatch(symplectic_ode(p^2/2+(42*q^4)/4,p,q,1,0,1/10,8.8));
+[]$
+
+errcatch( poisson_bracket(p^2,q^2,p,[q]));
+[]$
+
+errcatch( poisson_bracket(p^2,q^2,[p],q));
+[]$
+
+/* make a mess? Clean it up.*/
+(remvalue(pp,qq), reset(algebraic, display2d),0);
+0$
+
+
+

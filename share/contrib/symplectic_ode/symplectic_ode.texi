@@ -1,0 +1,82 @@
+#!/bin/sh
+#
+# Change the definition of CCL_DEFAULT_DIRECTORY below to refer to
+# your Clozure CL installation directory.  The lisp will use this
+# environment variable to set up translations for the CCL: logical
+# host.
+
+# Any definition of CCL_DEFAULT_DIRECTORY already present in the
+# environment takes precedence over definition made below.
+
+if [ -z "$CCL_DEFAULT_DIRECTORY" ]; then
+  CCL_DEFAULT_DIRECTORY=/usr/local/src/ccl
+fi
+
+# If you don't want to guess the name of the OpenMCL kernel on
+# every invocation (or if you want to use a kernel with a
+# non-default name), you might want to uncomment and change
+# the following line:
+#OPENMCL_KERNEL=some_name
+
+if [ -z "$OPENMCL_KERNEL" ]; then
+  case `uname -s` in
+    Darwin)
+    case `arch` in
+      ppc*)
+      OPENMCL_KERNEL=dppccl64
+      ;;
+      i386|x86_64)
+      OPENMCL_KERNEL=dx86cl64
+      ;;
+    esac
+    ;;
+    Linux)
+    case `uname -m` in
+      ppc64)
+      OPENMCL_KERNEL=ppccl64
+      ;;
+      x86_64)
+      OPENMCL_KERNEL=lx86cl64
+      ;;
+      *)
+      echo "Can't determine machine architecture.  Fix this."
+      exit 1
+      ;;
+    esac
+    ;;
+    FreeBSD)
+    case `uname -m` in
+      amd64)
+      OPENMCL_KERNEL=fx86cl64
+      ;;
+      *)
+      echo "unsupported architecture"
+      exit 1
+      ;;
+    esac
+    ;;
+    SunOS)
+    case `uname -m` in
+      i86pc)
+      OPENMCL_KERNEL=sx86cl64
+      ;;
+      *)
+      echo "unsupported architecture"
+      exit 1
+      ;;
+    esac
+    ;;
+    CYGWIN*)
+    OPENMCL_KERNEL=wx86cl64.exe
+    CCL_DEFAULT_DIRECTORY="/home/willisb/ccl"
+    ;;
+    *)
+    echo "Can't determine host OS.  Fix this."
+    exit 1
+    ;;
+  esac
+fi
+
+export CCL_DEFAULT_DIRECTORY
+exec ${CCL_DEFAULT_DIRECTORY}/${OPENMCL_KERNEL} "$@"
+
