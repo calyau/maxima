@@ -230,7 +230,22 @@
 	  do
 	     (let ((r ($dlsode_step inity tstart tout rtol atol 1 state)))
 	       (when (minusp (elt r 3))
-		 (merror))
+		 ;; See dlsode.f for the definitions for these values.
+		 (merror "Error ~M: ~M"
+			 (elt r 3)
+			 (ecase (elt r 3)
+			   (-1
+			    "Excess work done on this call (perhaps wrong MF")
+			   (-2
+			    "Excess accuracy requested (tolerances too small)")
+			   (-3
+			    "Illegal input detected (see printed message)")
+			   (-4
+			    "Repeated error test failures (check all inputs)")
+			   (-5
+			    "Repeated convergence failures (perhaps bad Jacobian supplied or wrong choice of MF or tolerances)")
+			   (-6
+			    "Error weight became zero during problem (solution component i vanished, and ATOL or ATOL(i) = 0.)"))))
 	       (push ($cons (elt r 1) (elt r 2))
 		     result)))
     (list* '(mlist)
