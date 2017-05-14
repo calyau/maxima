@@ -10,4 +10,4 @@ EXTRA_DIST =\
  xmaxima.bat downloads/.keep build/.keep\
  gnuplot/CMakeLists.txt imagemagick/CMakeLists.txt sbcl/CMakeLists.txt tcltk/CMakeLists.txt\
  vtk/CMakeLists.txt wine/CMakeLists.txt wxmaxima/CMakeLists.txt wxwidgets/CMakeLists.txt\
- wxwidgets/wxwidgets-libname-correction.sh.tmpl
+ wxwidgets/wxwidgets-libname-correction.sh.tmpl wxwidgets/wxwidgets-install-translations-for-wxmaxima.sh.tmpl

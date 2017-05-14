@@ -35,6 +35,8 @@ if(USE_WXMAXIMA_GIT)
         BUILD_COMMAND $(MAKE)
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git-build/C\:/maxima-current/ DESTINATION .)
+    # install wxWidgets locale files
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-translations/wxMaxima DESTINATION .)
 else()
     externalproject_add(wxmaxima
         URL "${WXMAXIMA_URL}"
