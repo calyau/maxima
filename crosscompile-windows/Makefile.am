@@ -4,7 +4,6 @@ EXTRA_DIST =\
  README.txt TODO.txt\
  maxima-icon.bmp\
  wine-clisp.sh.tmpl wine-lisp.sh.tmpl wine-sbcl.sh.tmpl\
- setup-imaxima-imath.el-patch.tmpl\
  sbcl.sh licenses.html\
  lispselector.bat lispselector.tcl\
  xmaxima.bat downloads/.keep build/.keep\
