@@ -614,6 +614,285 @@ map (parse_timedate,
  false, false, false, false, false,
  false, false];
 
+/* test cases adapted from similar examples for timedate/parse_timedate */
+
+decode_time (0, 0);
+[1900, 1, 1, 0, 0, 0, tz_offset = 0];
+
+decode_time (86400, -1927/225);
+[1900, 1, 1, 15, 26, 8, tz_offset = -1927/225];
+
+decode_time (86400, 1927/225);
+[1900, 1, 2, 8, 33, 52, tz_offset = 1927/225];
+
+decode_time (0, float (0));
+[1900, 1, 1, 0, 0, 0, tz_offset = 0];
+
+decode_time (86400, float (-1927/225));
+[1900, 1, 1, 15, 26, 8, tz_offset = -1927/225];
+
+decode_time (86400, float (1927/225));
+[1900, 1, 2, 8, 33, 52, tz_offset = 1927/225];
+
+encode_time (1951, 2, 28, 5, 39, 56, 'tz_offset = -8);
+1614433196;
+
+decode_time (1614433196, -8);
+[1951, 2, 28, 5, 39, 56, tz_offset = -8];
+
+encode_time (2029, 11, 3, 15, 29, 53, 'tz_offset = 0);
+4097402993;
+
+decode_time (4097402993, 0);
+[2029, 11, 3, 15, 29, 53, tz_offset = 0];
+
+map (lambda ([l], apply (encode_time, l)),
+[[1900, 1, 2, 0, 0, 0, 'tz_offset = +24],
+ [1900, 1, 1, 23, 0, 0, 'tz_offset = +23],
+ [1900, 1, 1, 22, 0, 0, 'tz_offset = +22],
+ [1900, 1, 1, 21, 0, 0, 'tz_offset = +21],
+ [1900, 1, 1, 20, 0, 0, 'tz_offset = +20],
+ [1900, 1, 1, 19, 0, 0, 'tz_offset = +19],
+ [1900, 1, 1, 18, 0, 0, 'tz_offset = +18],
+ [1900, 1, 1, 17, 0, 0, 'tz_offset = +17],
+ [1900, 1, 1, 16, 0, 0, 'tz_offset = +16],
+ [1900, 1, 1, 15, 0, 0, 'tz_offset = +15],
+ [1900, 1, 1, 14, 0, 0, 'tz_offset = +14],
+ [1900, 1, 1, 13, 0, 0, 'tz_offset = +13],
+ [1900, 1, 1, 12, 0, 0, 'tz_offset = +12],
+ [1900, 1, 1, 11, 0, 0, 'tz_offset = +11],
+ [1900, 1, 1, 10, 0, 0, 'tz_offset = +10],
+ [1900, 1, 1, 9, 0, 0, 'tz_offset = +09],
+ [1900, 1, 1, 8, 0, 0, 'tz_offset = +08],
+ [1900, 1, 1, 7, 0, 0, 'tz_offset = +07],
+ [1900, 1, 1, 6, 0, 0, 'tz_offset = +06],
+ [1900, 1, 1, 5, 0, 0, 'tz_offset = +05],
+ [1900, 1, 1, 4, 0, 0, 'tz_offset = +04],
+ [1900, 1, 1, 3, 0, 0, 'tz_offset = +03],
+ [1900, 1, 1, 2, 0, 0, 'tz_offset = +02],
+ [1900, 1, 1, 1, 0, 0, 'tz_offset = +01],
+ [1900, 1, 1, 0, 0, 0, 'tz_offset = +00],
+ [1900, 1, 1, 0, 0, 0, 'tz_offset = -00],
+ [1899, 12, 31, 23, 0, 0, 'tz_offset = -01],
+ [1899, 12, 31, 22, 0, 0, 'tz_offset = -02],
+ [1899, 12, 31, 21, 0, 0, 'tz_offset = -03],
+ [1899, 12, 31, 20, 0, 0, 'tz_offset = -04],
+ [1899, 12, 31, 19, 0, 0, 'tz_offset = -05],
+ [1899, 12, 31, 18, 0, 0, 'tz_offset = -06],
+ [1899, 12, 31, 17, 0, 0, 'tz_offset = -07],
+ [1899, 12, 31, 16, 0, 0, 'tz_offset = -08],
+ [1899, 12, 31, 15, 0, 0, 'tz_offset = -09],
+ [1899, 12, 31, 14, 0, 0, 'tz_offset = -10],
+ [1899, 12, 31, 13, 0, 0, 'tz_offset = -11],
+ [1899, 12, 31, 12, 0, 0, 'tz_offset = -12],
+ [1899, 12, 31, 11, 0, 0, 'tz_offset = -13],
+ [1899, 12, 31, 10, 0, 0, 'tz_offset = -14],
+ [1899, 12, 31, 9, 0, 0, 'tz_offset = -15],
+ [1899, 12, 31, 8, 0, 0, 'tz_offset = -16],
+ [1899, 12, 31, 7, 0, 0, 'tz_offset = -17],
+ [1899, 12, 31, 6, 0, 0, 'tz_offset = -18],
+ [1899, 12, 31, 5, 0, 0, 'tz_offset = -19],
+ [1899, 12, 31, 4, 0, 0, 'tz_offset = -20],
+ [1899, 12, 31, 3, 0, 0, 'tz_offset = -21],
+ [1899, 12, 31, 2, 0, 0, 'tz_offset = -22],
+ [1899, 12, 31, 1, 0, 0, 'tz_offset = -23],
+ [1899, 12, 31, 0, 0, 0, 'tz_offset = -24]]);
+[0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0,
+ 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0,
+ 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0,
+ 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0,
+ 0, 0];
+
+map (lambda ([tz], decode_time (0, tz)),
+     append (makelist (24 - h, h, 0, 24), makelist (-h, h, 0, 24)));
+[[1900, 1, 2, 0, 0, 0, tz_offset = +24],
+ [1900, 1, 1, 23, 0, 0, tz_offset = +23],
+ [1900, 1, 1, 22, 0, 0, tz_offset = +22],
+ [1900, 1, 1, 21, 0, 0, tz_offset = +21],
+ [1900, 1, 1, 20, 0, 0, tz_offset = +20],
+ [1900, 1, 1, 19, 0, 0, tz_offset = +19],
+ [1900, 1, 1, 18, 0, 0, tz_offset = +18],
+ [1900, 1, 1, 17, 0, 0, tz_offset = +17],
+ [1900, 1, 1, 16, 0, 0, tz_offset = +16],
+ [1900, 1, 1, 15, 0, 0, tz_offset = +15],
+ [1900, 1, 1, 14, 0, 0, tz_offset = +14],
+ [1900, 1, 1, 13, 0, 0, tz_offset = +13],
+ [1900, 1, 1, 12, 0, 0, tz_offset = +12],
+ [1900, 1, 1, 11, 0, 0, tz_offset = +11],
+ [1900, 1, 1, 10, 0, 0, tz_offset = +10],
+ [1900, 1, 1, 9, 0, 0, tz_offset = +09],
+ [1900, 1, 1, 8, 0, 0, tz_offset = +08],
+ [1900, 1, 1, 7, 0, 0, tz_offset = +07],
+ [1900, 1, 1, 6, 0, 0, tz_offset = +06],
+ [1900, 1, 1, 5, 0, 0, tz_offset = +05],
+ [1900, 1, 1, 4, 0, 0, tz_offset = +04],
+ [1900, 1, 1, 3, 0, 0, tz_offset = +03],
+ [1900, 1, 1, 2, 0, 0, tz_offset = +02],
+ [1900, 1, 1, 1, 0, 0, tz_offset = +01],
+ [1900, 1, 1, 0, 0, 0, tz_offset = +00],
+ [1900, 1, 1, 0, 0, 0, tz_offset = -00],
+ [1899, 12, 31, 23, 0, 0, tz_offset = -01],
+ [1899, 12, 31, 22, 0, 0, tz_offset = -02],
+ [1899, 12, 31, 21, 0, 0, tz_offset = -03],
+ [1899, 12, 31, 20, 0, 0, tz_offset = -04],
+ [1899, 12, 31, 19, 0, 0, tz_offset = -05],
+ [1899, 12, 31, 18, 0, 0, tz_offset = -06],
+ [1899, 12, 31, 17, 0, 0, tz_offset = -07],
+ [1899, 12, 31, 16, 0, 0, tz_offset = -08],
+ [1899, 12, 31, 15, 0, 0, tz_offset = -09],
+ [1899, 12, 31, 14, 0, 0, tz_offset = -10],
+ [1899, 12, 31, 13, 0, 0, tz_offset = -11],
+ [1899, 12, 31, 12, 0, 0, tz_offset = -12],
+ [1899, 12, 31, 11, 0, 0, tz_offset = -13],
+ [1899, 12, 31, 10, 0, 0, tz_offset = -14],
+ [1899, 12, 31, 9, 0, 0, tz_offset = -15],
+ [1899, 12, 31, 8, 0, 0, tz_offset = -16],
+ [1899, 12, 31, 7, 0, 0, tz_offset = -17],
+ [1899, 12, 31, 6, 0, 0, tz_offset = -18],
+ [1899, 12, 31, 5, 0, 0, tz_offset = -19],
+ [1899, 12, 31, 4, 0, 0, tz_offset = -20],
+ [1899, 12, 31, 3, 0, 0, tz_offset = -21],
+ [1899, 12, 31, 2, 0, 0, tz_offset = -22],
+ [1899, 12, 31, 1, 0, 0, tz_offset = -23],
+ [1899, 12, 31, 0, 0, 0, tz_offset = -24]];
+
+map (lambda ([tz], decode_time (3017516508, tz)), makelist (h, h, -12, 12));
+[[1995, 8, 15, 11, 1, 48, tz_offset = -12],
+ [1995, 8, 15, 12, 1, 48, tz_offset = -11],
+ [1995, 8, 15, 13, 1, 48, tz_offset = -10],
+ [1995, 8, 15, 14, 1, 48, tz_offset = -09],
+ [1995, 8, 15, 15, 1, 48, tz_offset = -08],
+ [1995, 8, 15, 16, 1, 48, tz_offset = -07],
+ [1995, 8, 15, 17, 1, 48, tz_offset = -06],
+ [1995, 8, 15, 18, 1, 48, tz_offset = -05],
+ [1995, 8, 15, 19, 1, 48, tz_offset = -04],
+ [1995, 8, 15, 20, 1, 48, tz_offset = -03],
+ [1995, 8, 15, 21, 1, 48, tz_offset = -02],
+ [1995, 8, 15, 22, 1, 48, tz_offset = -01],
+ [1995, 8, 15, 23, 1, 48, tz_offset = +00],
+ [1995, 8, 16, 0, 1, 48, tz_offset = +01],
+ [1995, 8, 16, 1, 1, 48, tz_offset = +02],
+ [1995, 8, 16, 2, 1, 48, tz_offset = +03],
+ [1995, 8, 16, 3, 1, 48, tz_offset = +04],
+ [1995, 8, 16, 4, 1, 48, tz_offset = +05],
+ [1995, 8, 16, 5, 1, 48, tz_offset = +06],
+ [1995, 8, 16, 6, 1, 48, tz_offset = +07],
+ [1995, 8, 16, 7, 1, 48, tz_offset = +08],
+ [1995, 8, 16, 8, 1, 48, tz_offset = +09],
+ [1995, 8, 16, 9, 1, 48, tz_offset = +10],
+ [1995, 8, 16, 10, 1, 48, tz_offset = +11],
+ [1995, 8, 16, 11, 1, 48, tz_offset = +12]];
+
+map (lambda ([tz], decode_time (3017516508, tz)),
+     append (makelist (-(12 - h + 7/60), h, 0, 11),
+             makelist (+(h + 7/60), h, 0, 12)));
+[[1995, 8, 15, 10, 54, 48, tz_offset = -12 - 7/60],
+ [1995, 8, 15, 11, 54, 48, tz_offset = -11 - 7/60],
+ [1995, 8, 15, 12, 54, 48, tz_offset = -10 - 7/60],
+ [1995, 8, 15, 13, 54, 48, tz_offset = -09 - 7/60],
+ [1995, 8, 15, 14, 54, 48, tz_offset = -08 - 7/60],
+ [1995, 8, 15, 15, 54, 48, tz_offset = -07 - 7/60],
+ [1995, 8, 15, 16, 54, 48, tz_offset = -06 - 7/60],
+ [1995, 8, 15, 17, 54, 48, tz_offset = -05 - 7/60],
+ [1995, 8, 15, 18, 54, 48, tz_offset = -04 - 7/60],
+ [1995, 8, 15, 19, 54, 48, tz_offset = -03 - 7/60],
+ [1995, 8, 15, 20, 54, 48, tz_offset = -02 - 7/60],
+ [1995, 8, 15, 21, 54, 48, tz_offset = -01 - 7/60],
+ [1995, 8, 15, 23, 8, 48, tz_offset = +00 + 7/60],
+ [1995, 8, 16, 0, 8, 48, tz_offset = +01 + 7/60],
+ [1995, 8, 16, 1, 8, 48, tz_offset = +02 + 7/60],
+ [1995, 8, 16, 2, 8, 48, tz_offset = +03 + 7/60],
+ [1995, 8, 16, 3, 8, 48, tz_offset = +04 + 7/60],
+ [1995, 8, 16, 4, 8, 48, tz_offset = +05 + 7/60],
+ [1995, 8, 16, 5, 8, 48, tz_offset = +06 + 7/60],
+ [1995, 8, 16, 6, 8, 48, tz_offset = +07 + 7/60],
+ [1995, 8, 16, 7, 8, 48, tz_offset = +08 + 7/60],
+ [1995, 8, 16, 8, 8, 48, tz_offset = +09 + 7/60],
+ [1995, 8, 16, 9, 8, 48, tz_offset = +10 + 7/60],
+ [1995, 8, 16, 10, 8, 48, tz_offset = +11 + 7/60],
+ [1995, 8, 16, 11, 8, 48, tz_offset = +12 + 7/60]];
+
+map (lambda ([l], apply (encode_time, l)),
+[[2016, 8, 6, 20, 30, 39, 'tz_offset = -7], [1939, 4, 7, 3, 37, 19, 'tz_offset = -8],
+ [1905, 12, 14, 8, 56, 45, 'tz_offset = -8], [1904, 7, 9, 13, 46, 49, 'tz_offset = -8],
+ [1907, 10, 12, 18, 35, 2, 'tz_offset = -8], [2023, 2, 5, 13, 3, 42, 'tz_offset = -8],
+ [1971, 12, 28, 15, 31, 52, 'tz_offset = -8], [1929, 6, 5, 17, 51, 35, 'tz_offset = -8],
+ [1929, 2, 17, 15, 26, 28, 'tz_offset = -8], [1997, 8, 16, 10, 17, 57, 'tz_offset = -7]]);
+[3679529439, 1239017839, 187808205, 142638409, 245471702,
+ 3884619822, 2271799912, 928633895, 919293988, 3080740677];
+
+map (lambda ([l], apply (decode_time, l)),
+[[3679529439, -7], [1239017839, -8], [187808205, -8], [142638409, -8], [245471702, -8],
+ [3884619822, -8], [2271799912, -8], [928633895, -8], [919293988, -8], [3080740677, -7]]);
+[[2016, 8, 6, 20, 30, 39, tz_offset = -7], [1939, 4, 7, 3, 37, 19, tz_offset = -8],
+ [1905, 12, 14, 8, 56, 45, tz_offset = -8], [1904, 7, 9, 13, 46, 49, tz_offset = -8],
+ [1907, 10, 12, 18, 35, 2, tz_offset = -8], [2023, 2, 5, 13, 3, 42, tz_offset = -8],
+ [1971, 12, 28, 15, 31, 52, tz_offset = -8], [1929, 6, 5, 17, 51, 35, tz_offset = -8],
+ [1929, 2, 17, 15, 26, 28, tz_offset = -8], [1997, 8, 16, 10, 17, 57, tz_offset = -7]];
+
+/* encode_time and decode_time should be inverses, for a given timezone offset. */
+
+(unix_epoch_seconds : parse_timedate ("1970-01-01 00:00:00+00:00"),
+ encode_decode_test_with_tz_offset () :=
+   block ([t, m, t_decoded, t_decoded_encoded, tz_offset],
+     t : random (2^32 + unix_epoch_seconds),
+     m : random (3),
+     tz_offset : random (48*60^m) / 60^m - 24,
+     t_decoded : decode_time (t, tz_offset),
+     t_decoded_encoded : apply (encode_time, t_decoded),
+     if t_decoded_encoded = t
+       then true
+       else ('apply (encode_time, 'decode_time (t, 'tz_offset = tz_offset)) = t_decoded_encoded) # t),
+  sublist (makelist (encode_decode_test_with_tz_offset (), 200), lambda ([e], e # true)));
+[];
+
+(encode_decode_test_with_tz_default () :=
+   block ([t, t_decoded, t_decoded_encoded],
+     t : random (2^32 + unix_epoch_seconds),
+     t_decoded : decode_time (t),
+     t_decoded_encoded : apply (encode_time, t_decoded),
+     if t_decoded_encoded = t
+       then true
+       else ('apply (encode_time, 'decode_time (t)) = t_decoded_encoded) # t),
+  sublist (makelist (encode_decode_test_with_tz_default (), 200), lambda ([e], e # true)));
+[];
+
+(decode_encode_test_with_tz_offset () :=
+   block ([m, args_mins, args_maxs, args_scale, n, tz_offset, a, a_encoded, a_encoded_decoded],
+     m : random (3),
+     args_mins : [1901, 1,  1,  0,  0,  0],
+     args_maxs : [ 200,12, 28, 24, 60, 60*10^m],
+     args_scale: [   1, 1,  1,  1,  1, 10^m],
+     n : 1 + random (6),
+     tz_offset : random (48*60^m) / 60^m - 24,
+     a : append (makelist (args_mins[i] + random (args_maxs[i])/args_scale[i], i, 1, n),
+                 makelist (args_mins[i], i, n + 1, 6),
+                 ['tz_offset = tz_offset]),
+     a_encoded : apply (encode_time, a),
+     a_encoded_decoded : decode_time (a_encoded, tz_offset),
+     if a_encoded_decoded = a
+        then true
+        else ('decode_time (funmake (encode_time, a), tz_offset) = a_encoded_decoded) # a),
+  sublist (makelist (decode_encode_test_with_tz_offset (), 200), lambda ([e], e # true)));
+[];
+
+(decode_encode_test_with_tz_default () :=
+   block ([m, args_mins, args_maxs, args_scale, n, a, a_encoded, a_encoded_decoded],
+     m : random (3),
+     args_mins : [1901, 1,  1,  0,  0,  0],
+     args_maxs : [ 200,12, 28, 24, 60, 60*10^m],
+     args_scale: [   1, 1,  1,  1,  1, 10^m],
+     n : 1 + random (6),
+     a : append (makelist (args_mins[i] + random (args_maxs[i])/args_scale[i], i, 1, n),
+                 makelist (args_mins[i], i, n + 1, 6)),
+     a_encoded : apply (encode_time, a),
+     a_encoded_decoded : decode_time (a_encoded),
+     if firstn (a_encoded_decoded, 6) = a
+        then true
+        else ('decode_time (funmake (encode_time, a)) = a_encoded_decoded) # a),
+  sublist (makelist (decode_encode_test_with_tz_default (), 200), lambda ([e], e # true)));
+[];
+
 /* Do the right thing when listarray and arrayinfo are called within
  * a function and the name of the formal argument coincides with the
  * name of the actual argument. (Was a bug in ARRAYINFO-AUX.)
