@@ -216,8 +216,8 @@
 
         (cond 
           (scalar-case
-            (setq po (reduce #'append (reverse po)))
-            (setq qo (reduce #'append (reverse qo))))
+            (setq po (mapcar #'car (reverse po)))
+            (setq qo (mapcar #'car (reverse qo))))
           (t
            (setq po (mapcar #'(lambda (x) (push xmlist x)) (reverse po)))
            (setq qo (mapcar #'(lambda (x) (push xmlist x)) (reverse qo)))))  
