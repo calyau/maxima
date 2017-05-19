@@ -775,32 +775,19 @@ values")
          ;; DO WE NEED TO ENSURE THAT TZ IS NONNULL HERE ??
          (encode-universal-time seconds-integer minutes hours day month year tz))))
 
-(defun $encode_time (&rest args)
-  (let* (tz-eqn tz-offset (last-arg (first (last args))))
-    (when (and (consp last-arg) (eq (caar last-arg) 'mequal))
-      (setq tz-eqn last-arg)
-      (unless (eq ($lhs tz-eqn) '$tz_offset)
-        (merror (intl:gettext "encode_time: last argument not tz_offset = <value>; found: ~M") tz-eqn))
-      (setq tz-offset (sub 0 ($rhs tz-eqn)))
+(defun $encode_time (year month day hours minutes seconds &optional tz-offset)
+    (when tz-offset
+      (setq tz-offset (sub 0 tz-offset))
       (cond
         ((and (consp tz-offset) (eq (caar tz-offset) 'rat))
          (setq tz-offset (/ (second tz-offset) (third tz-offset))))
         ((floatp tz-offset)
          (setq tz-offset (rationalize tz-offset))))
-      (setq tz-offset (/ (round tz-offset 1/3600) 3600))
-      (setq args (subseq args 0 (1- (length args)))))
-    (multiple-value-bind (year month day hours minutes seconds)
-      (values-list args)
-      (when (null year) (setq year 1900))
-      (when (null month) (setq month 1))
-      (when (null day) (setq day 1))
-      (when (null hours) (setq hours 0))
-      (when (null minutes) (setq minutes 0))
-      (when (null seconds) (setq seconds 0))
+      (setq tz-offset (/ (round tz-offset 1/3600) 3600)))
       (let*
         ((seconds-integer (mfuncall '$floor seconds))
          (seconds-fraction (sub seconds seconds-integer)))
-        (encode-time-with-all-parts year month day hours minutes seconds-integer seconds-fraction tz-offset)))))
+        (encode-time-with-all-parts year month day hours minutes seconds-integer seconds-fraction tz-offset)))
 
 (defun $decode_time (seconds &optional tz)
   (cond
@@ -819,12 +806,11 @@ values")
       (if tz (decode-universal-time seconds-integer (- tz))
         (decode-universal-time seconds-integer))
       ;; HMM, CAN DECODE-UNIVERSAL-TIME RETURN TZ = NIL ??
-      (let*
+      (let
         ((tz-offset
            #-gcl (if dst-p (- 1 tz) (- tz))
-           #+gcl (- tz))  ; bug in gcl https://savannah.gnu.org/bugs/?50570
-         (tz-eqn (list '(mequal) '$tz_offset ($ratsimp tz-offset))))
-        (list '(mlist) year month day hours minutes (add seconds seconds-fraction) tz-eqn)))))
+           #+gcl (- tz)))  ; bug in gcl https://savannah.gnu.org/bugs/?50570
+        (list '(mlist) year month day hours minutes (add seconds seconds-fraction) ($ratsimp tz-offset))))))
 
 ;;Some systems make everything functionp including macros:
 (defun functionp (x)
