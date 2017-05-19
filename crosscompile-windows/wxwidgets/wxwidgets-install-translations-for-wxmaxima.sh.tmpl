@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Since wxwidgets is not installed (the inplace-... wx-config file is used for compiling wxMaxima)
+# create the directory structure with the wxwidgets translation files,
+# which will (during the wxmaxima crosscompiliation be installed in the wxMaxima tree.
+
+for i in @CMAKE_BINARY_DIR@/wxwidgets/wxwidgets-prefix/src/wxwidgets/locale/*.mo ; do
+    L=$(echo $i | sed 's/.*locale.//' | sed 's/\.mo//')
+    mkdir -p "@CMAKE_BINARY_DIR@/wxMaxima-translations/wxMaxima/locale/$L/LC_MESSAGES"
+    cp "@CMAKE_CURRENT_BINARY_DIR@/wxwidgets-prefix/src/wxwidgets/locale/$L.mo" "@CMAKE_BINARY_DIR@/wxMaxima-translations/wxMaxima/locale/$L/LC_MESSAGES/wxMaxima-wxstd.mo"
+done
+

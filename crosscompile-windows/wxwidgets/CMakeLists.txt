@@ -18,6 +18,7 @@ set(WXWIDGETS_URL "https://github.com/wxWidgets/wxWidgets/releases/download/v${W
 # work around a problem, where wxwidgets names the libraries wrong
 # e.g. libwx_baseu-3.1-i686-w64-mingw32.a instead of libwx_baseu-3.1.a
 configure_file("${CMAKE_SOURCE_DIR}/wxwidgets/wxwidgets-libname-correction.sh.tmpl" "${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-libname-correction.sh")
+configure_file("${CMAKE_SOURCE_DIR}/wxwidgets/wxwidgets-install-translations-for-wxmaxima.sh.tmpl" "${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-install-translations-for-wxmaxima.sh")
 
 # Build wxWidgets static library (required for wxMaxima)
 externalproject_add(wxwidgets
@@ -27,5 +28,6 @@ externalproject_add(wxwidgets
   CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/configure --disable-shared --disable-compat28 --with-zlib=builtin --with-libjpeg=builtin --without-libtiff --with-libpng=builtin --with-expat=builtin --host=${HOST}
   BUILD_COMMAND $(MAKE)
         COMMAND ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-libname-correction.sh
+        COMMAND ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-install-translations-for-wxmaxima.sh
   INSTALL_COMMAND ""
 )
