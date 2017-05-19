@@ -1,82 +1,149 @@
-#!/bin/sh
-#
-# Change the definition of CCL_DEFAULT_DIRECTORY below to refer to
-# your Clozure CL installation directory.  The lisp will use this
-# environment variable to set up translations for the CCL: logical
-# host.
+\input texinfo
 
-# Any definition of CCL_DEFAULT_DIRECTORY already present in the
-# environment takes precedence over definition made below.
+@setfilename symplectic_ode.info
+@settitle symplectic_ode
 
-if [ -z "$CCL_DEFAULT_DIRECTORY" ]; then
-  CCL_DEFAULT_DIRECTORY=/usr/local/src/ccl
-fi
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
 
-# If you don't want to guess the name of the OpenMCL kernel on
-# every invocation (or if you want to use a kernel with a
-# non-default name), you might want to uncomment and change
-# the following line:
-#OPENMCL_KERNEL=some_name
+@node Top, Introduction to symplectic_ode, (dir), (dir)
+@top
+@menu
+* Introduction to symplectic_ode::
+* Definitions for symplectic_ode::
+* Function and variable index::
+@end menu
+@chapter symplectic_ode
 
-if [ -z "$OPENMCL_KERNEL" ]; then
-  case `uname -s` in
-    Darwin)
-    case `arch` in
-      ppc*)
-      OPENMCL_KERNEL=dppccl64
-      ;;
-      i386|x86_64)
-      OPENMCL_KERNEL=dx86cl64
-      ;;
-    esac
-    ;;
-    Linux)
-    case `uname -m` in
-      ppc64)
-      OPENMCL_KERNEL=ppccl64
-      ;;
-      x86_64)
-      OPENMCL_KERNEL=lx86cl64
-      ;;
-      *)
-      echo "Can't determine machine architecture.  Fix this."
-      exit 1
-      ;;
-    esac
-    ;;
-    FreeBSD)
-    case `uname -m` in
-      amd64)
-      OPENMCL_KERNEL=fx86cl64
-      ;;
-      *)
-      echo "unsupported architecture"
-      exit 1
-      ;;
-    esac
-    ;;
-    SunOS)
-    case `uname -m` in
-      i86pc)
-      OPENMCL_KERNEL=sx86cl64
-      ;;
-      *)
-      echo "unsupported architecture"
-      exit 1
-      ;;
-    esac
-    ;;
-    CYGWIN*)
-    OPENMCL_KERNEL=wx86cl64.exe
-    CCL_DEFAULT_DIRECTORY="/home/willisb/ccl"
-    ;;
-    *)
-    echo "Can't determine host OS.  Fix this."
-    exit 1
-    ;;
-  esac
-fi
 
-export CCL_DEFAULT_DIRECTORY
-exec ${CCL_DEFAULT_DIRECTORY}/${OPENMCL_KERNEL} "$@"
+@node Introduction to symplectic_ode, Definitions for symplectic_ode, Top, Top
+@section Introduction to symplectic_ode
 
+For a hamiltonian of the form F(p) + G(q), the function @code{symplectic_ode} numerically solves
+Hamilton's equations of motion @math{p' = -dH/dq, q' = dH/dp}, where @math{H} is the 
+hamiltonian. The method preserves the Poisson bracket of p and q. One time step is accomplished with the loop
+@*
+@sp 1
+@verbatim
+for k = 1 ... n 
+   q <-  q + c(k)*diff(H,p)*dt ;update momentum p
+   p <-  p - d(k)*diff(H,q)*dt ;use updated position q 
+@end verbatim
+@*
+@sp 1
+where @math{c1, c2, @dots{}, cn} and @math{d1, d2, @dots{}, dn} are constants and @math{H} is the hamiltonian. 
+
+This code has built-in methods for the symplectic Euler, the Verlet method, and third and fourth order methods 
+that are due to Ronald Ruth. For a complete description of these methods, see 
+@uref{https://en.wikipedia.org/wiki/Symplectic_integrator}.
+
+The function @code{symplectic_ode} creates and compiles functions for updating @var{p} & @var{q}. 
+The arguments to these functions are modedeclared to have type given by an optional argument 
+(defaults to float).  Of course, hand coding of these functions could increase speed or accuracy, 
+but the automatically generated functions are convenient.
+
+Unlike adaptive methods such as RK45, @code{symplectic_ode} uses a fixed step size. Generally 
+symplectic methods that use an adaptive step size lose their advantages over non-symplectic methods.
+
+@node Definitions for symplectic_ode, Function and variable index, Introduction to symplectic_ode, Top
+@section Definitions for symplectic_ode
+
+@deffn{Function} poisson_bracket poisson_bracket(@var{f}, @var{g}, @var{p}, @var{q}) 
+poisson_bracket(@var{f}, @var{g}, [@var{p1},@dots{}, @var{pn}], [@var{q1},@dots{}, @var{qn}]) 
+
+Compute the Poisson bracket of the expressions @var{f} and @var{g} with respect to the canonical 
+coordinates @var{p} and @var{q} (or @var{p1}, @var{p2},@dots{}, @var{pn} and @var{p1},  
+@var{p2},@dots{}, @var{pn}).
+
+@b{Examples:}
+@example
+(%i1) load("symplectic_ode")$
+(%i2) poisson_bracket(p,p^2/2+q^4,p,q);
+(%o2) -4*q^3
+
+(%i3) poisson_bracket(q,p^2/2+q^4,p,q);
+(%o3) p
+
+(%i4) poisson_bracket(q1,p1^2/2+p2^2/2+q1^4+q2^4,[p1,p2],[q1,q2]);
+(%o4) p1
+
+(%i5) poisson_bracket(p1,p1^2/2+p2^2/2+q1^4+q2^4,[p1,p2],[q1,q2]);
+(%o5) -4*q1^3
+
+@end example
+@end deffn
+
+
+@deffn{Function} symplectic_ode symplectic_ode(ham,p,q,po,qo,dt,N)
+     symplectic_ode(ham,p,q,po,qo,dt,N,method) 
+     symplectic_ode(ham,p,q,po,qo,dt,N,method,type) 
+
+Numerically solve Hamilton's equations of motion using a symplectic method. Specifically:
+@*
+@sp 1
+@itemize @bullet
+
+@item The hamiltonian is the Maxima expression @var{ham} that depends on the canonical coordinates 
+@var{p} and @var{q}. The hamiltonian must be time independent. The method is symplectic when the 
+hamiltonian is separable; that is when it has the form @code{f(p) + g(q)}.
+   
+@item The canonical coordinates are @var{p} and @var{q}. The arguments @var{p} and @var{q} should be 
+mapatoms or equal length lists of mapatoms.
+
+@item The arguments @var{po} and @var{q0} are the initial values of @var{p} and @var{q}, respectively. 
+These should be mapatoms or equal length lists of mapatoms.
+  
+@item @var{dt} is the fixed time step.
+
+@item @var{N} is the number of time steps.
+
+@item The optional argument @var{method} determines the integration method. It must be either 
+symplectic_euler (default), verlet, symplectic_third_order, or symplectic_fourth_order. For 
+an explanation of these methods, see https://en.wikipedia.org/wiki/Symplectic_integrator.
+     
+ @item The optional argument @var{type} determines the value for mode_declare for various 
+       automatically generated functions. The value @var{type} must be one of float (default), 
+      rational, or any (no type). Since @var{float} is a Maxima option variable, the @var{type} 
+      variable should be quoted, especially for type @var{float}.
+  
+  @end itemize
+  @*
+@sp 1
+ 
+For both the scalar case (both @var{p} and @var{q} are mapatoms) and the nonscalar case 
+(both @var{p} and @var{q} are lists of mapatoms), @code{symplectic_ode} returns a list 
+of two lists. For the scalar case, the first list is a list of the values of @var{p} at 
+the times @code{0, dt, 2*dt,@dots{}, N*dt} and similarly for the second list.
+For a nonscalar case, the first list is a list of the form @math{[p1, p2,@dots{}, pn]} at 
+the times @code{0, dt, 2*dt,@dots{}, N*dt}.
+
+@b{Examples:}
+@example
+
+(%i2) load("symplectic_ode")$
+(%i3) symplectic_ode(p^2/2 + q^4/4,p,q,1,0,1/10,2);
+(%o3) [[1.0,1.0,0.9999],[0.0,0.1,0.19999]]
+
+(%i4) symplectic_ode(p^2/2 + q^4/4,[p],[q],[1],[0],1/10,2);
+(%o4) [[[1.0],[1.0],[0.9999]],[[0.0],[0.1],[0.19999]]]
+
+(%i5) symplectic_ode(p^2/2 + q^4/4,p,q,1,0,1/10,2,verlet);
+(%o5) [[1.0,0.9999875,0.9996500084374297],[0.0,0.099999375,0.1999812504218715]]
+
+(%i6) symplectic_ode(p^2/2 + q^4/4,p,q,1.0b0,0.0b0, 0.1b0,2,verlet,'any);
+(%o6) [[1.0b0,9.999875b-1,9.996500084374297b-1],[0.0b0,9.9999375b-2,1.999812504218715b-1]]
+
+@end example
+
+
+@end deffn
+
+@node Function and variable index,  , Definitions for symplectic_ode, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
+@bye

@@ -143,7 +143,7 @@
 ;;; users need to remember to quote float. Of course, hand coding of these functions could increase 
 ;;; speed or accuracy, but the automatically generated functions are convenient.
 
-(defun $symplectic_ode (ham p q po qo dt N &optional (sym-method '$symplectic_euler) (ntype '$float))
+(defun $symplectic_ode (ham p q po qo dt NN &optional (sym-method '$symplectic_euler) (ntype '$float))
   "symplectic ode solver: Usage: (non scalar or scalar version)
        symplectic_ode(ham, [p1,..., pn], [q1, ... , qn], [p01, ... p0n], 
              [q01, ... q0n], dt, N, [method], [ntype]) 
@@ -160,9 +160,11 @@
   verlet, symplectic_third_order, symplectic_fourth_order
   ntype = optional number type (default float)--can be float, rational, or any (no type)"
 
-  (declare (type fixnum N))
-  (let* ((update-p) (update-q) (cfs) (ddt (gensym)) (args) (poo) (qoo) (xmlist (get 'mlist 'msimpind)) (scalar-case))
 
+  (let* ((update-p) (update-q) (cfs) (ddt (gensym)) (args) (poo) (qoo) 
+         (xmlist (get 'mlist 'msimpind)) (scalar-case) (N (mcoerce NN 'fixnum)))
+        
+        (declare (type fixnum N))
         (cond 
           ((every #'$listp (list p q po qo)) ;Maxima to CL list conversion
            (setq scalar-case nil)
@@ -214,8 +216,8 @@
 
         (cond 
           (scalar-case
-            (setq po (reduce #'append (reverse po)))
-            (setq qo (reduce #'append (reverse qo))))
+            (setq po (mapcar #'car (reverse po)))
+            (setq qo (mapcar #'car (reverse qo))))
           (t
            (setq po (mapcar #'(lambda (x) (push xmlist x)) (reverse po)))
            (setq qo (mapcar #'(lambda (x) (push xmlist x)) (reverse qo)))))  
