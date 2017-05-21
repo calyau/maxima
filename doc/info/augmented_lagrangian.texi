@@ -59,7 +59,7 @@ Examples:
 
 @c ===beg===
 @c load ("lbfgs");
-@c load (augmented_lagrangian);
+@c load ("augmented_lagrangian");
 @c FOM: x^2 + 2*y^2;
 @c xx: [x, y];
 @c C: [x + y - 1];
@@ -72,7 +72,7 @@ Examples:
 (%o1)  /home/gunter/src/maxima-code/share/lbfgs/lbfgs.mac
 @end group
 @group
-(%i2) load (augmented_lagrangian);
+(%i2) load ("augmented_lagrangian");
 (%o2) /home/gunter/src/maxima-code/share/contrib/augmented_lagra\
 ngian.mac
 @end group
@@ -104,7 +104,7 @@ Same example as before, but this time the gradient is supplied as an argument.
 
 @c ===beg===
 @c load ("lbfgs")$
-@c load (augmented_lagrangian)$
+@c load ("augmented_lagrangian")$
 @c FOM: x^2 + 2*y^2;
 @c xx: [x, y];
 @c grad : [2*x, 4*y];
@@ -115,7 +115,7 @@ Same example as before, but this time the gradient is supplied as an argument.
 @c ===end===
 @example
 (%i1) load ("lbfgs")$
-(%i2) load (augmented_lagrangian)$
+(%i2) load ("augmented_lagrangian")$
 @group
 (%i3) FOM: x^2 + 2*y^2;
                                2    2

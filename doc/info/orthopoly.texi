@@ -40,7 +40,7 @@ is released under the GNU General Public License (GPL).
 
 @subsection Getting Started with orthopoly
 
-@code{load (orthopoly)} loads the @code{orthopoly} package.
+@code{load ("orthopoly")} loads the @code{orthopoly} package.
 
 To find the third-order Legendre polynomial,
 

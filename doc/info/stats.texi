@@ -58,7 +58,7 @@ will be displayed. The @code{'diagonal} is stored in this object, but it is
 not displayed; to access its value, make use of function @code{take_inference}.
 
 @c ===beg===
-@c load (inference_result)$
+@c load ("inference_result")$
 @c b: 3$ h: 2$
 @c inference_result("Rectangle",
 @c                  ['base=b,
@@ -135,7 +135,7 @@ but only the second is displayed. The @code{items_inference} function returns th
 of all items, no matter they are displayed or not.
 
 @c ===beg===
-@c load (inference_result)$
+@c load ("inference_result")$
 @c inference_result("Hi", ['pi=%pi,'e=%e],[2]);
 @c items_inference(%);
 @c ===end===
@@ -178,7 +178,7 @@ Given an @code{inference_result} object, function @code{take_inference} is
 called in order to extract some information stored in it.
 
 @c ===beg===
-@c load (inference_result)$
+@c load ("inference_result")$
 @c b: 3$ h: 2$
 @c sol:inference_result("Rectangle",
 @c                      ['base=b,
@@ -332,7 +332,7 @@ according to the results, the @math{p}-value is too great, there are no
 evidence for rejecting @math{H_0}.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c data: [78,64,35,45,45,75,43,74,42,42]$
 @c test_mean(data,'conflevel=0.9,'alternative='less,'mean=50);
 @c ===end===
@@ -366,7 +366,7 @@ favor of the alternative @math{H_1}. Note that, as indicated by the @code{Method
 this procedure should be applied to large samples.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c test_mean([36,118,52,87,35,256,56,178,57,57,89,34,25,98,35,
 @c         98,41,45,198,54,79,63,35,45,44,75,42,75,45,45,
 @c         45,51,123,54,151],
@@ -499,7 +499,7 @@ the populations means; variances are unknown and supposed to be different.
 @c t.test(x,y,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
 @c test_means_difference(x,y,'alternative='greater);
@@ -537,7 +537,7 @@ equal.
 @c t.test(x,y,var.equal=T,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
 @c test_means_difference(x,y,'alternative='greater,
@@ -639,7 +639,7 @@ It is tested whether the variance of a population with unknown mean
 is equal to or greater than 200.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [203,229,215,220,223,233,208,228,20]$
 @c test_variance(x,'alternative='greater,'variance=200);
 @c ===end===
@@ -752,7 +752,7 @@ against the alternative that the first is greater than the second.
 @c var.test(x,y,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
 @c test_variance_ratio(x,y,'alternative='greater);
@@ -860,7 +860,7 @@ Performs an exact test. The null hypothesis
 is @math{H_0: p=1/2} against the one sided alternative @math{H_1: p<1/2}.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c test_proportion(45, 103, alternative = less);
 @c ===end===
 @example
@@ -888,7 +888,7 @@ is @math{H_0: p=1/2} against the one sided alternative @math{H_1: p<1/2}.
 A two sided asymptotic test. Confidence level is 99/100.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c fpprintprec:7$
 @c test_proportion(45, 103, 
 @c               conflevel = 99/100, asymptotic=true);
@@ -998,7 +998,7 @@ article to be defective before and after maintenance. According to
 the p value, there is not enough evidence to accept the alternative.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c fpprintprec:7$
 @c test_proportions_difference(10, 250, 4, 150,
 @c                             alternative = greater);
@@ -1106,7 +1106,7 @@ Checks whether the population from which the sample was taken has median 6,
 against the alternative @math{H_1: median > 6}.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [2,0.1,7,1.8,4,2.3,5.6,7.4,5.1,6.1,6]$
 @c test_sign(x,'median=6,'alternative='greater);
 @c ===end===
@@ -1197,7 +1197,7 @@ there are no ties.
 @c wilcox.test(x,mu=15,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [17.1,15.9,13.7,13.4,15.5,17.6]$
 @c test_signed_rank(x,median=15,alternative=greater);
 @c ===end===
@@ -1229,7 +1229,7 @@ since there are ties.
 @c wilcox.test(y,mu=2.5)
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c y:[1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1]$
 @c test_signed_rank(y,median=2.5);
 @c ===end===
@@ -1311,7 +1311,7 @@ are small and an exact test is made.
 @c wilcox.test(x,y)
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x:[12,15,17,38,42,10,23,35,28]$
 @c y:[21,18,25,14,52,65,40,43]$
 @c test_rank_sum(x,y);
@@ -1344,7 +1344,7 @@ normal approximation. The alternative hypothesis is
 @c wilcox.test(x,y,alternative="less")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [39,42,35,13,10,23,15,20,17,27]$
 @c y: [20,52,66,19,41,32,44,25,14,39,43,35,19,56,27,15]$
 @c test_rank_sum(x,y,'alternative='less);
@@ -1412,7 +1412,7 @@ Checks for the normality of a population, based on a sample of size 9.
 @c shapiro.test(x)
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x:[12,15,17,38,42,10,23,35,28]$
 @c test_normality(x);
 @c ===end===

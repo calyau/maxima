@@ -117,7 +117,7 @@ higher degree function.  E.g.,
 
 A double-integral routine which was written in
 top-level Maxima and then translated and compiled to machine code.
-Use @code{load (dblint)} to access this package.  It uses the Simpson's rule
+Use @code{load ("dblint")} to access this package.  It uses the Simpson's rule
 method in both the x and y directions to calculate
 
 @tex
