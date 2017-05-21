@@ -112,7 +112,7 @@ first line often contains the description of the columns):
 @example
 s : openr("data.txt");
 readline(s);  /* skip the first line */
-M : read_matrix(s, comma);  /* read the following (comma-separated) lines into matrix M */
+M : read_matrix(s, 'comma);  /* read the following (comma-separated) lines into matrix M */
 close(s);
 @end example
 
