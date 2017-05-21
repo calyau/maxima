@@ -442,6 +442,137 @@ Midnight, January 1, 1900, GMT, in different indicated time zones.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{encode_time}
+@deffn {Function} encode_time @
+@fname{encode_time} (@var{year}, @var{month}, @var{day}, @var{hours}, @var{minutes}, @var{seconds}, @var{tz_offset}) @
+@fname{encode_time} (@var{year}, @var{month}, @var{day}, @var{hours}, @var{minutes}, @var{seconds})
+
+Given a time and date specified by
+@var{year}, @var{month}, @var{day}, @var{hours}, @var{minutes}, and @var{seconds},
+@code{encode_time} returns the number of seconds (possibly including a fractional part)
+since midnight, January 1, 1900 GMT.
+
+@var{year} must be an integer greater than or equal to 1899.
+However, 1899 is allowed only if the resulting encoded time is greater than or equal to 0.
+
+@var{month} must be an integer from 1 to 12, inclusive.
+
+@var{day} must be an integer from 1 to @var{n}, inclusive,
+where @var{n} is the number of days in the month specified by @var{month}.
+
+@var{hours} must be an integer from 0 to 23, inclusive.
+
+@var{minutes} must be an integer from 0 to 59, inclusive.
+
+@var{seconds} must be an integer, rational, or float
+greater than or equal to 0 and less than 60.
+When @var{seconds} is not an integer,
+@code{encode_time} returns a rational,
+such that the fractional part of the return value is equal to the fractional part of @var{seconds}.
+Otherwise, @var{seconds} is an integer, and the return value is likewise an integer.
+
+@var{tz_offset} measures the offset of the time zone, in hours,
+east (positive) or west (negative) of GMT.
+@var{tz_offset} must be an integer, rational, or float between -24 and 24, inclusive.
+If @var{tz_offset} is not a multiple of 1/3600, 
+it is rounded to the nearest multiple of 1/3600.
+
+If @var{tz_offset} is not present, the offset of the local time zone is assumed.
+
+See also @mrefdot{decode_time}
+
+Examples:
+
+@c ===beg===
+@c encode_time (1900, 1, 1, 0, 0, 0, 0);
+@c encode_time (1970, 1, 1, 0, 0, 0, 0);
+@c encode_time (1970, 1, 1, 8, 30, 0, 8.5);
+@c encode_time (1969, 12, 31, 16, 0, 0, -8);
+@c encode_time (1969, 12, 31, 16, 0, 1/1000, -8);
+@c % - 2208988800;
+@c ===end===
+@example
+(%i1) encode_time (1900, 1, 1, 0, 0, 0, 0);
+(%o1)                           0
+(%i2) encode_time (1970, 1, 1, 0, 0, 0, 0);
+(%o2)                      2208988800
+(%i3) encode_time (1970, 1, 1, 8, 30, 0, 8.5);
+(%o3)                      2208988800
+(%i4) encode_time (1969, 12, 31, 16, 0, 0, -8);
+(%o4)                      2208988800
+(%i5) encode_time (1969, 12, 31, 16, 0, 1/1000, -8);
+                          2208988800001
+(%o5)                     -------------
+                              1000
+(%i6) % - 2208988800;
+                               1
+(%o6)                         ----
+                              1000
+@end example
+
+@opencatbox
+@category{Time and date functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{decode_time}
+@deffn {Function} decode_time @
+@fname{decode_time} (@var{T}, @var{tz_offset}) @
+@fname{decode_time} (@var{T})
+
+Given the number of seconds (possibly including a fractional part)
+since midnight, January 1, 1900 GMT,
+returns the date and time as represented by a list comprising
+the year, month, day of the month, hours, minutes, seconds, and time zone offset.
+
+@var{tz_offset} measures the offset of the time zone, in hours,
+east (positive) or west (negative) of GMT.
+@var{tz_offset} must be an integer, rational, or float between -24 and 24, inclusive.
+If @var{tz_offset} is not a multiple of 1/3600, 
+it is rounded to the nearest multiple of 1/3600.
+
+If @var{tz_offset} is not present, the offset of the local time zone is assumed.
+
+See also @mrefdot{encode_time}
+
+Examples:
+
+@c ===beg===
+@c decode_time (0, 0);
+@c decode_time (0);
+@c decode_time (2208988800, 9.25);
+@c decode_time (2208988800);
+@c decode_time (2208988800 + 1729/1000, -6);
+@c decode_time (2208988800 + 1729/1000);
+@c ===end===
+@example
+(%i1) decode_time (0, 0);
+(%o1)               [1900, 1, 1, 0, 0, 0, 0]
+(%i2) decode_time (0);
+(%o2)             [1899, 12, 31, 16, 0, 0, - 8]
+(%i3) decode_time (2208988800, 9.25);
+                                          37
+(%o3)              [1970, 1, 1, 9, 15, 0, --]
+                                          4
+(%i4) decode_time (2208988800);
+(%o4)             [1969, 12, 31, 16, 0, 0, - 8]
+(%i5) decode_time (2208988800 + 1729/1000, -6);
+                                      1729
+(%o5)           [1969, 12, 31, 18, 0, ----, - 6]
+                                      1000
+(%i6) decode_time (2208988800 + 1729/1000);
+                                      1729
+(%o6)           [1969, 12, 31, 16, 0, ----, - 8]
+                                      1000
+@end example
+
+@opencatbox
+@category{Time and date functions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{absolute_real_time}
 @deffn {Function} absolute_real_time ()
 
