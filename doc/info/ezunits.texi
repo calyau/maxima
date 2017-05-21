@@ -202,11 +202,11 @@ Examples:
 The list of all symbols which have the @code{physical_constant} property.
 
 @c ===beg===
-@c load (physical_constants)$
+@c load ("physical_constants")$
 @c propvars (physical_constant);
 @c ===end===
 @example
-(%i1) load (physical_constants)$
+(%i1) load ("physical_constants")$
 (%i2) propvars (physical_constant);
 (%o2) [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar, %m_P, %T_P, %l_P, 
 %t_P, %%e, %Phi_0, %G_0, %K_J, %R_K, %mu_B, %mu_N, %alpha, 
@@ -217,7 +217,7 @@ The list of all symbols which have the @code{physical_constant} property.
 Properties of the physical constant @code{%c}.
 
 @c ===beg===
-@c load (physical_constants)$
+@c load ("physical_constants")$
 @c constantp (%c);
 @c get (%c, description);
 @c constvalue (%c);
@@ -225,7 +225,7 @@ Properties of the physical constant @code{%c}.
 @c tex (%c);
 @c ===end===
 @example
-(%i1) load (physical_constants)$
+(%i1) load ("physical_constants")$
 (%i2) constantp (%c);
 (%o2)                         true
 (%i3) get (%c, description);
@@ -245,7 +245,7 @@ The energy equivalent of 1 pound-mass.
 The symbol @code{%c} persists until its value is fetched by @code{constvalue}.
 
 @c ===beg===
-@c load (physical_constants)$
+@c load ("physical_constants")$
 @c m * %c^2;
 @c %, m = 1 ` lbm;
 @c constvalue (%);
@@ -254,7 +254,7 @@ The symbol @code{%c} persists until its value is fetched by @code{constvalue}.
 @c float (%);
 @c ===end===
 @example
-(%i1) load (physical_constants)$
+(%i1) load ("physical_constants")$
 (%i2) m * %c^2;
                                 2
 (%o2)                         %c  m
@@ -316,14 +316,14 @@ Examples:
 SI (Systeme Internationale) units.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c foo : 10 ` m;
 @c qty (foo);
 @c units (foo);
 @c dimensions (foo);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) foo : 10 ` m;
 (%o2)                        10 ` m
 (%i3) qty (foo);
@@ -337,13 +337,13 @@ SI (Systeme Internationale) units.
 "Customary" units.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c bar : x ` acre;
 @c dimensions (bar);
 @c fundamental_units (bar);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) bar : x ` acre;
 (%o2)                       x ` acre
 (%i3) dimensions (bar);
@@ -357,14 +357,14 @@ SI (Systeme Internationale) units.
 Units ad hoc.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c baz : 3 ` sheep + 8 ` goat + 1 ` horse;
 @c subst ([sheep = 3*goat, horse = 10*goat], baz);
 @c baz2 : 1000`gallon/fortnight;
 @c subst (fortnight = 14*day, baz2);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) baz : 3 ` sheep + 8 ` goat + 1 ` horse;
 (%o2)           8 ` goat + 3 ` sheep + 1 ` horse
 (%i3) subst ([sheep = 3*goat, horse = 10*goat], baz);
@@ -382,7 +382,7 @@ Units ad hoc.
 Arithmetic operations on dimensional quantities.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c 100 ` kg + 200 ` kg;
 @c 100 ` m^3 - 100 ` m^3;
 @c (10 ` kg) * (17 ` m/s^2);
@@ -390,7 +390,7 @@ Arithmetic operations on dimensional quantities.
 @c (a ` m)^2;
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) 100 ` kg + 200 ` kg;
 (%o2)                       300 ` kg
 (%i3) 100 ` m^3 - 100 ` m^3;
@@ -443,12 +443,12 @@ Examples:
 The set of known unit conversions.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c display2d : false$
 @c known_unit_conversions;
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) display2d : false$
 (%i3) known_unit_conversions;
 (%o3) @{acre = 4840*yard^2,Btu = 1055*J,cfm = feet^3/minute,
@@ -495,7 +495,7 @@ The set of known unit conversions.
 Elementary unit conversions.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c 1 ` ft `` m;
 @c %, numer; 
 @c 1 ` kg `` lbm; 
@@ -508,7 +508,7 @@ Elementary unit conversions.
 @c %, numer;
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) 1 ` ft `` m;
 Computing conversions to base units; may take a moment. 
                             381
@@ -546,7 +546,7 @@ Computing conversions to base units; may take a moment.
 Coercing quantities in feet and meters to one or the other.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c 100 ` m + 100 ` ft;
 @c (100 ` m + 100 ` ft) `` ft;
 @c %, numer;
@@ -554,7 +554,7 @@ Coercing quantities in feet and meters to one or the other.
 @c %, numer;
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) 100 ` m + 100 ` ft;
 (%o2)                  100 ` m + 100 ` ft
 (%i3) (100 ` m + 100 ` ft) `` ft;
@@ -575,7 +575,7 @@ Computing conversions to base units; may take a moment.
 Dimensional analysis to find fundamental dimensions and fundamental units.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c foo : 1 ` acre * ft;
 @c dimensions (foo);
 @c fundamental_units (foo);
@@ -583,7 +583,7 @@ Dimensional analysis to find fundamental dimensions and fundamental units.
 @c %, numer;
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) foo : 1 ` acre * ft;
 (%o2)                      1 ` acre ft
 (%i3) dimensions (foo);
@@ -605,7 +605,7 @@ Computing conversions to base units; may take a moment.
 Declared unit conversions.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W);
 @c declare_unit_conversion (kWh = kW*hour, MWh = 1000*kWh, 
 @c                          bell = 1800*s);
@@ -613,7 +613,7 @@ Declared unit conversions.
 @c 1 ` kW/m^2 `` MMBtu/bell/ft^2;
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W);
 (%o2)                         done
 (%i3) declare_unit_conversion (kWh = kW*hour, MWh = 1000*kWh,
@@ -652,12 +652,12 @@ recognized by @code{constantp}.
 Example:
 
 @c ===beg===
-@c load (physical_constants)$
+@c load ("physical_constants")$
 @c constvalue (%G);
 @c get ('%G, 'description);
 @c ===end===
 @example
-(%i1) load (physical_constants)$
+(%i1) load ("physical_constants")$
 (%i2) constvalue (%G);
                                      3
                                     m
@@ -682,13 +682,13 @@ function should be loaded with @code{load(ezunits)}.
 Example:
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c declare_constvalue (FOO, 100 ` lbm / acre);
 @c FOO * (50 ` acre);
 @c constvalue (%);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) declare_constvalue (FOO, 100 ` lbm / acre);
                                  lbm
 (%o2)                      100 ` ----
@@ -730,7 +730,7 @@ This function should be loaded with @code{load(ezunits)}.
 Example:
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c foo : 100 ` kg;
 @c bar : x ` m/s;
 @c units (foo);
@@ -740,7 +740,7 @@ Example:
 @c units (foo^2);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) foo : 100 ` kg;
 (%o2)                       100 ` kg
 (%i3) bar : x ` m/s;
@@ -781,7 +781,7 @@ where @var{u} is an expression. This function should be loaded with
 Example:
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c units (aa);
 @c declare_units (aa, J);
 @c units (aa);
@@ -790,7 +790,7 @@ Example:
 @c units (aa * foo);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) units (aa);
 (%o2)                           1
 (%i3) declare_units (aa, J);
@@ -825,7 +825,7 @@ This function should be loaded with @code{load(ezunits)}.
 Example:
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c foo : 100 ` kg;
 @c qty (foo);
 @c bar : v ` m/s;
@@ -833,7 +833,7 @@ Example:
 @c qty (foo * bar);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) foo : 100 ` kg;
 (%o2)                       100 ` kg
 (%i3) qty (foo);
@@ -865,7 +865,7 @@ with @code{load(ezunits)}.
 Example:
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c declare_qty (aa, xx);
 @c qty (aa);
 @c qty (aa^2);
@@ -873,7 +873,7 @@ Example:
 @c qty (aa * foo);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) declare_qty (aa, xx);
 (%o2)                          xx
 (%i3) qty (aa);
@@ -908,11 +908,11 @@ Examples:
 @code{unitp} applied to a literal dimensional expression.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c unitp (100 ` kg);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) unitp (100 ` kg);
 (%o2)                         true
 @end example
@@ -920,13 +920,13 @@ Examples:
 @code{unitp} applied to a symbol declared dimensional.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c unitp (foo);
 @c declare (foo, dimensional);
 @c unitp (foo);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) unitp (foo);
 (%o2)                         false
 (%i3) declare (foo, dimensional);
@@ -938,13 +938,13 @@ Examples:
 @code{unitp} applied to an expression in which the main operator is declared dimensional.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c unitp (bar (x, y, z));
 @c declare (bar, dimensional);
 @c unitp (bar (x, y, z));
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) unitp (bar (x, y, z));
 (%o2)                         false
 (%i3) declare (bar, dimensional);
@@ -984,13 +984,13 @@ Examples:
 Unit conversions expressed by equations of multiplicative terms.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c declare_unit_conversion (nautical_mile = 1852 * m, 
 @c                          fortnight = 14 * day);
 @c 100 ` nautical_mile / fortnight `` m/s;
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) declare_unit_conversion (nautical_mile = 1852 * m,
                                fortnight = 14 * day);
 (%o2)                         done
@@ -1004,13 +1004,13 @@ Computing conversions to base units; may take a moment.
 Unit conversions expressed by equations of literal dimensional expressions.
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c declare_unit_conversion (1 ` fluid_ounce = 2 ` tablespoon);
 @c declare_unit_conversion (1 ` tablespoon = 3 ` teaspoon);
 @c 15 ` fluid_ounce `` teaspoon;
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) declare_unit_conversion (1 ` fluid_ounce = 2 ` tablespoon);
 (%o2)                         done
 (%i3) declare_unit_conversion (1 ` tablespoon = 3 ` teaspoon);
@@ -1040,13 +1040,13 @@ If it is a list, then every symbol in @var{a_k} is declared to have dimension @v
 Examples:
 
 @c ===beg===
-@c load (ezunits) $
+@c load ("ezunits") $
 @c declare_dimensions ([x, y, z], length, [t, u], time);
 @c dimensions (y^2/u);
 @c fundamental_units (y^2/u);
 @c ===end===
 @example
-(%i1) load (ezunits) $
+(%i1) load ("ezunits") $
 (%i2) declare_dimensions ([x, y, z], length, [t, u], time);
 (%o2)                         done
 (%i3) dimensions (y^2/u);
@@ -1098,7 +1098,7 @@ By default, the list comprises several physical dimensions.
 Examples:
 
 @c ===beg===
-@c load (ezunits) $
+@c load ("ezunits") $
 @c fundamental_dimensions;
 @c declare_fundamental_dimensions (money, cattle, happiness);
 @c fundamental_dimensions;
@@ -1106,7 +1106,7 @@ Examples:
 @c fundamental_dimensions;
 @c ===end===
 @example
-(%i1) load (ezunits) $
+(%i1) load ("ezunits") $
 (%i2) fundamental_dimensions;
 (%o2) [length, mass, time, current, temperature, quantity]
 (%i3) declare_fundamental_dimensions (money, cattle, happiness);
@@ -1145,7 +1145,7 @@ and @code{fundamental_units(@var{d_k})} returns @var{u_k} for each argument @var
 Examples:
 
 @c ===beg===
-@c load (ezunits) $
+@c load ("ezunits") $
 @c declare_fundamental_dimensions (money, cattle, happiness);
 @c declare_fundamental_units (dollar, money, goat, cattle,
 @c                            smile, happiness);
@@ -1154,7 +1154,7 @@ Examples:
 @c fundamental_units (money*cattle/happiness);
 @c ===end===
 @example
-(%i1) load (ezunits) $
+(%i1) load ("ezunits") $
 (%i2) declare_fundamental_dimensions (money, cattle, happiness);
 (%o2)                         done
 (%i3) declare_fundamental_units (dollar, money, goat, cattle,
@@ -1198,13 +1198,13 @@ corresponding base dimension in the dimensions of @var{x}.
 Examples:
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c dimensions (1000 ` kg*m^2/s^3);
 @c declare_units (foo, acre*ft/hour);
 @c dimensions (foo);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) dimensions (1000 ` kg*m^2/s^3);
                                 2
                           length  mass
@@ -1223,14 +1223,14 @@ Examples:
 @end example
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c fundamental_dimensions;
 @c dimensions_as_list (1000 ` kg*m^2/s^3);
 @c declare_units (foo, acre*ft/hour);
 @c dimensions_as_list (foo);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) fundamental_dimensions;
 (%o2)  [length, mass, time, charge, temperature, quantity]
 (%i3) dimensions_as_list (1000 ` kg*m^2/s^3);
@@ -1270,14 +1270,14 @@ as declared by @code{declare_fundamental_units}.
 Examples:
 
 @c ===beg===
-@c load (ezunits)$
+@c load ("ezunits")$
 @c fundamental_units ();
 @c fundamental_units (100 ` mile/hour);
 @c declare_units (aa, g/foot^2);
 @c fundamental_units (aa);
 @c ===end===
 @example
-(%i1) load (ezunits)$
+(%i1) load ("ezunits")$
 (%i2) fundamental_units ();
 (%o2)                 [m, kg, s, A, K, mol]
 (%i3) fundamental_units (100 ` mile/hour);
@@ -1313,11 +1313,11 @@ from a list @var{L} of dimensional quantities.
 Examples:
 
 @c ===beg===
-@c load (ezunits) $
+@c load ("ezunits") $
 @c dimensionless ([x ` m, y ` m/s, z ` s]);
 @c ===end===
 @example
-(%i1) load (ezunits) $
+(%i1) load ("ezunits") $
 (%i2) dimensionless ([x ` m, y ` m/s, z ` s]);
 0 errors, 0 warnings
 0 errors, 0 warnings
@@ -1331,13 +1331,13 @@ Note that the first element on the list
 is proportional to the fine-structure constant.
 
 @c ===beg===
-@c load (ezunits) $
-@c load (physical_constants) $
+@c load ("ezunits") $
+@c load ("physical_constants") $
 @c dimensionless([%h_bar, %m_e, %m_P, %%e, %c, %e_0]);
 @c ===end===
 @example
-(%i1) load (ezunits) $
-(%i2) load (physical_constants) $
+(%i1) load ("ezunits") $
+(%i2) load ("physical_constants") $
 (%i3) dimensionless([%h_bar, %m_e, %m_P, %%e, %c, %e_0]);
 0 errors, 0 warnings
 0 errors, 0 warnings

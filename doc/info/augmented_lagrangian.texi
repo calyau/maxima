@@ -44,7 +44,7 @@ This implementation minimizes the augmented Lagrangian by
 applying the limited-memory BFGS (LBFGS) algorithm,
 which is a quasi-Newton algorithm.
 
-@code{load(augmented_lagrangian)} loads this function.
+@code{load("augmented_lagrangian")} loads this function.
 
 See also @ref{lbfgs-pkg}
 
@@ -58,8 +58,8 @@ References:
 Examples:
 
 @c ===beg===
-@c load (lbfgs);
-@c load (augmented_lagrangian);
+@c load ("lbfgs");
+@c load ("augmented_lagrangian");
 @c FOM: x^2 + 2*y^2;
 @c xx: [x, y];
 @c C: [x + y - 1];
@@ -67,30 +67,44 @@ Examples:
 @c augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
 @c ===end===
 @example
-(%i1) load (lbfgs);
-(%o1)     /maxima/share/lbfgs/lbfgs.mac
-(%i2) load (augmented_lagrangian);
-(%o2) 
-   /maxima/share/contrib/augmented_lagrangian.mac
+@group
+(%i1) load ("lbfgs");
+(%o1)  /home/gunter/src/maxima-code/share/lbfgs/lbfgs.mac
+@end group
+@group
+(%i2) load ("augmented_lagrangian");
+(%o2) /home/gunter/src/maxima-code/share/contrib/augmented_lagra\
+ngian.mac
+@end group
+@group
 (%i3) FOM: x^2 + 2*y^2;
                                2    2
 (%o3)                       2 y  + x
+@end group
+@group
 (%i4) xx: [x, y];
 (%o4)                        [x, y]
+@end group
+@group
 (%i5) C: [x + y - 1];
 (%o5)                      [y + x - 1]
+@end group
+@group
 (%i6) yy: [1, 1];
 (%o6)                        [1, 1]
+@end group
+@group
 (%i7) augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
-(%o7) [[x = 0.66665984108002, y = 0.33334027245545],
-                                 %lambda = [- 1.333337940892525]]
+(%o7) [[x = 0.666659841080023, y = 0.333340272455448], 
+                                 %lambda = [- 1.333337940892518]]
+@end group
 @end example
 
 Same example as before, but this time the gradient is supplied as an argument.
 
 @c ===beg===
-@c load (lbfgs)$
-@c load (augmented_lagrangian)$
+@c load ("lbfgs")$
+@c load ("augmented_lagrangian")$
 @c FOM: x^2 + 2*y^2;
 @c xx: [x, y];
 @c grad : [2*x, 4*y];
@@ -100,26 +114,35 @@ Same example as before, but this time the gradient is supplied as an argument.
 @c                              iprint = [-1, 0]);
 @c ===end===
 @example
-(%i1) load (lbfgs)$
-(%i2) load (augmented_lagrangian)$
+(%i1) load ("lbfgs")$
+(%i2) load ("augmented_lagrangian")$
+@group
 (%i3) FOM: x^2 + 2*y^2;
                                2    2
 (%o3)                       2 y  + x
-(%i4) FOM: x^2 + 2*y^2;
-                               2    2
-(%o4)                       2 y  + x
-(%i5) xx: [x, y];
-(%o5)                        [x, y]
-(%i6) grad : [2*x, 4*y];
-(%o6)                      [2 x, 4 y]
-(%i7) C: [x + y - 1];
-(%o7)                      [y + x - 1]
-(%i8) yy: [1, 1];
-(%o8)                        [1, 1]
-(%i9) augmented_lagrangian_method ([FOM, grad], xx, C, yy,
-                                   iprint = [-1, 0]);
-(%o9) [[x = 0.666659841080025, y = .3333402724554462], 
-                                 %lambda = [- 1.333337940892543]]
+@end group
+@group
+(%i4) xx: [x, y];
+(%o4)                        [x, y]
+@end group
+@group
+(%i5) grad : [2*x, 4*y];
+(%o5)                      [2 x, 4 y]
+@end group
+@group
+(%i6) C: [x + y - 1];
+(%o6)                      [y + x - 1]
+@end group
+@group
+(%i7) yy: [1, 1];
+(%o7)                        [1, 1]
+@end group
+@group
+(%i8) augmented_lagrangian_method ([FOM, grad], xx, C, yy,
+                             iprint = [-1, 0]);
+(%o8) [[x = 0.6666598410800247, y = 0.3333402724554464], 
+                                 %lambda = [- 1.333337940892525]]
+@end group
 @end example
 
 @opencatbox

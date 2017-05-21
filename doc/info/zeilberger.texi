@@ -15,7 +15,7 @@ summation.
 
 @code{zeilberger} was developed by Fabrizio Caruso.
 
-@code{load (zeilberger)} loads this package.
+@code{load ("zeilberger")} loads this package.
 
 @opencatbox
 @category{Sums and products} @category{Share packages} @category{Package zeilberger}
@@ -143,7 +143,7 @@ Otherwise, @code{GosperSum} returns @code{nongosper_summable}.
 Examples:
 
 @c ===beg===
-@c load (zeilberger)$
+@c load ("zeilberger")$
 @c GosperSum ((-1)^k*k / (4*k^2 - 1), k, 1, n);
 @c GosperSum (1 / (4*k^2 - 1), k, 1, n);
 @c GosperSum (x^k, k, 1, n);
@@ -153,7 +153,7 @@ Examples:
 @c GosperSum (1 / ((a - k)!*k!), k, 1, n);
 @c ===end===
 @example
-(%i1) load (zeilberger)$
+(%i1) load ("zeilberger")$
 @group
 (%i2) GosperSum ((-1)^k*k / (4*k^2 - 1), k, 1, n);
 Dependent equations eliminated:  (1)

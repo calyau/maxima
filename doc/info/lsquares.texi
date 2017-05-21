@@ -72,14 +72,14 @@ Examples:
 A problem for which an exact solution is found.
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c         [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c lsquares_estimates (
 @c          M, [z,x,y], (z+D)^2 = A*x+B*y+C, [A,B,C,D]);
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
         [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
@@ -108,13 +108,13 @@ A problem for which no exact solution is found,
 so @code{lsquares_estimates} resorts to numerical approximation.
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix ([1, 1], [2, 7/4], [3, 11/4], [4, 13/4]);
 @c lsquares_estimates (
 @c   M, [x,y], y=a*x^b+c, [a,b,c], initial=[3,3,3], iprint=[-1,0]);
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix ([1, 1], [2, 7/4], [3, 11/4], [4, 13/4]);
                             [ 1  1  ]
                             [       ]
@@ -142,7 +142,7 @@ In case that fitting to them fails it might be possible to get rid of the
 exponential function using an logarithm.
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c yvalues:[1,3,5,60,200,203,80]$
 @c time:[1,2,4,5,6,8,10]$
 @c f:y=a*exp(b*t);
@@ -156,7 +156,7 @@ exponential function using an logarithm.
 @c  );
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) yvalues:[1,3,5,60,200,203,80]$
 (%i3) time:[1,2,4,5,6,8,10]$
 @group
@@ -228,14 +228,14 @@ and @mref{lsquares_residual_mse}.
 Example:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c mse : lsquares_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C);
 @c lsquares_estimates_exact (mse, [A, B, C, D]);
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
@@ -311,7 +311,7 @@ and @mref{lsquares_residual_mse}.
 Example:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c mse : lsquares_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C);
@@ -319,7 +319,7 @@ Example:
 @c         mse, [A, B, C, D], iprint = [-1, 0]);
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
@@ -390,7 +390,7 @@ evaluated with the variables in @var{x} assigned values from the @code{i}-th dat
 Example:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c mse : lsquares_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C);
@@ -398,7 +398,7 @@ Example:
 @c ''mse, nouns;
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
@@ -523,7 +523,7 @@ and assigning any remaining free variables from @var{a}.
 Example:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c a : lsquares_estimates (
@@ -532,7 +532,7 @@ Example:
 @c           M, [z,x,y], (z+D)^2 = A*x+B*y+C, first(a));
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
@@ -602,7 +602,7 @@ and assigning any remaining free variables from @var{a}.
 Example:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c a : lsquares_estimates (
@@ -611,7 +611,7 @@ Example:
 @c        M, [z,x,y], (z + D)^2 = A*x + B*y + C, first (a));
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]

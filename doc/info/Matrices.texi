@@ -1116,13 +1116,13 @@ Example:
 Gram-Schmidt algorithm using default inner product function.
 
 @c ===beg===
-@c load (eigen)$
+@c load ("eigen")$
 @c x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
 @c y: gramschmidt (x);
 @c map (innerproduct, [y[1], y[2], y[3]], [y[2], y[3], y[1]]);
 @c ===end===
 @example
-(%i1) load (eigen)$
+(%i1) load ("eigen")$
 (%i2) x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
                          [ 1   2   3  ]
                          [            ]
@@ -1141,13 +1141,13 @@ Gram-Schmidt algorithm using default inner product function.
 Gram-Schmidt algorithm using a specified inner product function.
 
 @c ===beg===
-@c load (eigen)$
+@c load ("eigen")$
 @c ip (f, g) := integrate (f * g, u, a, b);
 @c y : gramschmidt ([1, sin(u), cos(u)], ip), a= -%pi/2, b=%pi/2;
 @c map (ip, [y[1], y[2], y[3]], [y[2], y[3], y[1]]), a= -%pi/2, b=%pi/2;
 @c ===end===
 @example
-(%i1) load (eigen)$
+(%i1) load ("eigen")$
 (%i2) ip (f, g) := integrate (f * g, u, a, b);
 (%o2)          ip(f, g) := integrate(f g, u, a, b)
 (%i3) y : gramschmidt([1, sin(u), cos(u)], ip), a= -%pi/2, b=%pi/2;

@@ -115,7 +115,7 @@ The same FOM as computed by FGCOMPUTE in the program sdrive.f in the LBFGS packa
 Note that the variables in question are subscripted variables.
 The FOM has an exact minimum equal to zero at @math{u[k] = 1} for @math{k = 1, ..., 8}.
 @c ===beg===
-@c load (lbfgs)$
+@c load ("lbfgs")$
 @c t1[j] := 1 - u[j];
 @c t2[j] := 10*(u[j + 1] - u[j]^2);
 @c n : 8;
@@ -125,7 +125,7 @@ The FOM has an exact minimum equal to zero at @math{u[k] = 1} for @math{k = 1, .
 @c ===end===
 
 @example
-(%i1) load (lbfgs)$
+(%i1) load ("lbfgs")$
 (%i2) t1[j] := 1 - u[j];
 (%o2)                     t1  := 1 - u
                             j         j
@@ -255,7 +255,7 @@ The function @math{F} is a bounded monotone function (a so-called "sigmoidal" fu
 In this example, @code{lbfgs} computes approximate values for the parameters of @math{F}
 and @code{plot2d} displays a comparison of @math{F} with the observed data.
 @c ===beg===
-@c load (lbfgs)$
+@c load ("lbfgs")$
 @c FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1, 
 @c                                                 length(X)));
 @c X : [1, 2, 3, 4, 5];
@@ -267,7 +267,7 @@ and @code{plot2d} displays a comparison of @math{F} with the observed data.
 @c ===end===
 
 @example
-(%i1) load (lbfgs)$
+(%i1) load ("lbfgs")$
 (%i2) FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1,
                                                 length(X)));
                                2
@@ -348,7 +348,7 @@ Gradient of FOM is specified (instead of computing it automatically).
 Both the FOM and its gradient are passed as functions to @code{lbfgs}.
 
 @c ===beg===
-@c load (lbfgs)$
+@c load ("lbfgs")$
 @c F(a, b, c) := (a - 5)^2 + (b - 3)^4 + (c - 2)^6;
 @c define(F_grad(a, b, c),
 @c        map (lambda ([x], diff (F(a, b, c), x)), [a, b, c]));
@@ -356,7 +356,7 @@ Both the FOM and its gradient are passed as functions to @code{lbfgs}.
 @c                    [a, b, c], [0, 0, 0], 1e-4, [1, 0]);
 @c ===end===
 @example
-(%i1) load (lbfgs)$
+(%i1) load ("lbfgs")$
 (%i2) F(a, b, c) := (a - 5)^2 + (b - 3)^4 + (c - 2)^6$
 (%i3) define(F_grad(a, b, c),
              map (lambda ([x], diff (F(a, b, c), x)), [a, b, c]))$

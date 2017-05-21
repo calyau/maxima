@@ -4975,7 +4975,7 @@ Examples:
 
 One tridimensional sample,
 @example
-(%i1) load (numericalio)$
+(%i1) load ("numericalio")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) draw3d(title = "Daily average wind speeds",
              point_size = 2,
@@ -4984,7 +4984,7 @@ One tridimensional sample,
 
 Two tridimensional samples,
 @example
-(%i1) load (numericalio)$
+(%i1) load ("numericalio")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) draw3d(
          title = "Daily average wind speeds. Two data sets",

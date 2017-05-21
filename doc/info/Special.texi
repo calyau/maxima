@@ -2052,14 +2052,14 @@ See also @mrefdot{hgfred}
 Examples:
 
 @c ===beg===
-@c load (hypergeometric) $
+@c load ("hypergeometric") $
 @c foo : [hypergeometric([1,1], [2], z), hypergeometric([1/2], [1], z)];
 @c hypergeometric_simp (foo);
 @c bar : hypergeometric([n], [m], z + 1);
 @c hypergeometric_simp (bar);
 @c ===end===
 @example
-(%i1) load (hypergeometric) $
+(%i1) load ("hypergeometric") $
 (%i2) foo : [hypergeometric([1,1], [2], z), hypergeometric([1/2], [1], z)];
 (%o2) [hypergeometric([1, 1], [2], z), 
                                                      1

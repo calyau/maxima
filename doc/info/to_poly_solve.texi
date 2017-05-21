@@ -1420,11 +1420,11 @@ as determined by @code{to_poly_solve}.
 In many cases, a solution is a list of equations.
 
 @c ===beg===
-@c load (to_poly_solve) $
+@c load ("to_poly_solve") $
 @c to_poly_solve ([sqrt(x^2 - y^2), x + y], [x, y]);
 @c ===end===
 @example
-(%i1) load (to_poly_solve) $
+(%i1) load ("to_poly_solve") $
 (%i2) to_poly_solve ([sqrt(x^2 - y^2), x + y], [x, y]);
 (%o2)    %union([x = 0, y = 0], [x = %c13, y = - %c13])
 @end example
@@ -1432,11 +1432,11 @@ In many cases, a solution is a list of equations.
 @code{%union()} represents the empty set.
 
 @c ===beg===
-@c load (to_poly_solve) $
+@c load ("to_poly_solve") $
 @c to_poly_solve (abs(x) = -1, x);
 @c ===end===
 @example
-(%i1) load (to_poly_solve) $
+(%i1) load ("to_poly_solve") $
 (%i2) to_poly_solve (abs(x) = -1, x);
 (%o2)                       %union()
 @end example
@@ -1445,13 +1445,13 @@ The solution set sometimes involves simplifing versions of various
 of logical operators.
 
 @c ===beg===
-@c load (to_poly_solve) $
+@c load ("to_poly_solve") $
 @c sol : to_poly_solve (abs(x) = a, x);
 @c subst (a = 42, sol);
 @c subst (a = -42, sol);
 @c ===end===
 @example
-(%i1) load (to_poly_solve) $
+(%i1) load ("to_poly_solve") $
 (%i2) sol : to_poly_solve (abs(x) = a, x);
 (%o2) %union(%if(isnonnegative_p(a), [x = - a], %union()), 
                       %if(isnonnegative_p(a), [x = a], %union()))

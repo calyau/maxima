@@ -1796,13 +1796,13 @@ Sample as a list of pairs.
 @c ===beg===
 @c load (descriptive)$
 @c S: km([[2,1], [3,1], [5,0], [8,1]]);
-@c load (draw)$
+@c load ("draw")$
 @c draw2d(
 @c   line_width = 3, grid = true,
 @c   explicit(S, x, -0.1, 10))$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 @group
 (%i2) S: km([[2,1], [3,1], [5,0], [8,1]]);
                        charfun((3 <= x) and (x < 8))
@@ -1813,7 +1813,7 @@ Sample as a list of pairs.
                                4
               + charfun((0 <= x) and (x < 2))
 @end group
-(%i3) load (draw)$
+(%i3) load ("draw")$
 @group
 (%i4) draw2d(
         line_width = 3, grid = true,
@@ -1824,12 +1824,12 @@ Sample as a list of pairs.
 Estimate survival probabilities.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c S(t):= ''(km([[2,1], [3,1], [5,0], [8,1]], t)) $
 @c S(6);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) S(t):= ''(km([[2,1], [3,1], [5,0], [8,1]], t)) $
 @group
 (%i3) S(6);
@@ -1863,7 +1863,7 @@ Example:
 Empirical distribution function.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c F(x):= ''(cdf_empirical([1,3,3,5,7,7,7,8,9]));
 @c F(6);
 @c load(draw)$
@@ -1873,7 +1873,7 @@ Empirical distribution function.
 @c    explicit(F(z), z, -2, 12)) $
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 @group
 (%i2) F(x):= ''(cdf_empirical([1,3,3,5,7,7,7,8,9]));
 (%o2) F(x) := (charfun(x >= 9) + charfun(x >= 8)
@@ -1924,13 +1924,13 @@ where @math{X_j} is the @math{j}-th row of the sample matrix.
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c fpprintprec : 7$  /* change precision for pretty output */
 @c cov (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) fpprintprec : 7$  /* change precision for pretty output */
 @group
@@ -1980,13 +1980,13 @@ where @math{X_j} is the @math{j}-th row of the sample matrix.
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c fpprintprec : 7$ /* change precision for pretty output */
 @c cov1 (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) fpprintprec : 7$ /* change precision for pretty output */
 @group
@@ -2047,12 +2047,12 @@ matrix (symmetric) must be given, instead of the data.
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c global_variances (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i3) global_variances (s2);
@@ -2064,13 +2064,13 @@ Example:
 Calculate the @code{global_variances} from the covariance matrix.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
 @c global_variances (s, data=false);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) s : cov1 (s2)$
 @group
@@ -2108,13 +2108,13 @@ matrix (symmetric) must be given, instead of the data.
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c fpprintprec : 7 $
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c cor (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) fpprintprec : 7 $
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 @group
@@ -2134,14 +2134,14 @@ Example:
 Calculate de correlation matrix from the covariance matrix.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c fpprintprec : 7 $
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
 @c cor (s, data=false); /* this is faster */
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) fpprintprec : 7 $
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) s : cov1 (s2)$
@@ -2242,7 +2242,7 @@ matrix (symmetric) must be given, instead of the data.
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c z : list_correlations (s2)$
 @c fpprintprec : 5$ /* for pretty output */
@@ -2251,7 +2251,7 @@ Example:
 @c z[3];  /* partial correlation matrix */
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) z : list_correlations (s2)$
 (%i4) fpprintprec : 5$ /* for pretty output */
@@ -2329,7 +2329,7 @@ In this sample, the first component explains 83.13 per cent of total
 variance.
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) fpprintprec:4 $
 (%i4) res: principal_components(s2);
@@ -2373,7 +2373,7 @@ In case de covariance matrix is known, it can be passed to the function,
 but option @code{data=false} must be used.
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) S: matrix([1,-2,0],[-2,5,0],[0,0,2]);
                                 [  1   - 2  0 ]
                                 [             ]
@@ -2480,7 +2480,7 @@ Examples:
 Univariate sample in matrix form. Absolute frequencies.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c m : read_matrix (file_search ("biomed.data"))$
 @c barsplot(
 @c   col(m,2),
@@ -2490,7 +2490,7 @@ Univariate sample in matrix form. Absolute frequencies.
 @c   fill_density = 3/4)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) m : read_matrix (file_search ("biomed.data"))$
 @group
 (%i3) barsplot(
@@ -2506,7 +2506,7 @@ Two samples of different sizes, with
 relative frequencies and user declared colors.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c l1:makelist(random(10),k,1,50)$
 @c l2:makelist(random(10),k,1,100)$
 @c barsplot(
@@ -2518,7 +2518,7 @@ relative frequencies and user declared colors.
 @c    sample_keys = ["A", "B"])$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) l1:makelist(random(10),k,1,50)$
 (%i3) l2:makelist(random(10),k,1,100)$
 @group
@@ -2535,7 +2535,7 @@ relative frequencies and user declared colors.
 Four non numeric samples of equal size.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c barsplot(
 @c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
 @c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
@@ -2548,7 +2548,7 @@ Four non numeric samples of equal size.
 @c   ordering = ordergreatp)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 @group
 (%i2) barsplot(
         makelist([Yes, No, Maybe][random(3)+1],k,1,50),
@@ -2566,7 +2566,7 @@ Four non numeric samples of equal size.
 Stacked bars.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c barsplot(
 @c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
 @c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
@@ -2579,7 +2579,7 @@ Stacked bars.
 @c   ordering = ordergreatp)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 @group
 (%i2) barsplot(
         makelist([Yes, No, Maybe][random(3)+1],k,1,50),
@@ -2612,7 +2612,7 @@ graphic objects.
 Example: @code{barsplot} in a multiplot context.
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) l1:makelist(random(10),k,1,50)$
 (%i3) l2:makelist(random(10),k,1,100)$
 (%i4) bp1 : 
@@ -2699,7 +2699,7 @@ Examples:
 Box-and-whisker diagram from a multivariate sample.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix(file_search("wind.data"))$
 @c boxplot(s2,
 @c   box_width  = 0.2,
@@ -2709,7 +2709,7 @@ Box-and-whisker diagram from a multivariate sample.
 @c   line_width = 2)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix(file_search("wind.data"))$
 @group
 (%i3) boxplot(s2,
@@ -2724,7 +2724,7 @@ Box-and-whisker diagram from a multivariate sample.
 Box-and-whisker diagram from three samples of different sizes.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c A :
 @c  [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
 @c   [8, 10, 7, 9, 12, 8, 10],
@@ -2732,7 +2732,7 @@ Box-and-whisker diagram from three samples of different sizes.
 @c boxplot (A, box_orientation = horizontal)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 @group
 (%i2) A :
        [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
@@ -2745,7 +2745,7 @@ Box-and-whisker diagram from three samples of different sizes.
 Option @var{range} can be used to handle outliers.
 
 @c ===beg===
-@c  load (descriptive)$
+@c  load ("descriptive")$
 @c  B: [[7, 15, 5, 8, 6, 5, 7, 3, 1],
 @c      [10, 8, 12, 8, 11, 9, 20],
 @c      [23, 17, 19, 7, 22, 19]] $
@@ -2763,7 +2763,7 @@ Option @var{range} can be used to handle outliers.
 @c ===end===
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) B: [[7, 15, 5, 8, 6, 5, 7, 3, 1],
           [10, 8, 12, 8, 11, 9, 20],
           [23, 17, 19, 7, 22, 19]] $
@@ -2860,7 +2860,7 @@ Examples:
 A simple with eight classes:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c histogram (
 @c      s1,
@@ -2872,7 +2872,7 @@ A simple with eight classes:
 @c      fill_density = 0.6)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) histogram (
            s1,
@@ -2888,7 +2888,7 @@ Setting the limits of the histogram to -2 and 12, with 3 classes.
 Also, we introduce predefined tics:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c histogram (
 @c      s1,
@@ -2899,7 +2899,7 @@ Also, we introduce predefined tics:
 @c      fill_density = 0.6)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) histogram (
            s1,
@@ -2913,12 +2913,12 @@ Also, we introduce predefined tics:
 Bounds for varying bin widths.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c histogram (s1, nclasses = {0,3,6,7,11})$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) histogram (s1, nclasses = @{0,3,6,7,11@})$
 @end example
@@ -2926,12 +2926,12 @@ Bounds for varying bin widths.
 Freedmann - Diakonis robust method for optimal search of the number of classes.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c histogram histogram(s1, nclasses=fd) $
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) histogram(s1, nclasses=fd) $
 @end example
@@ -2950,7 +2950,7 @@ graphic objects. We make use of @code{histogram_description} for setting
 the @code{xrange} and adding an explicit curve into the scene:
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) ( load("distrib"),
         m: 14, s: 2,
         s2: random_normal(m, s, 1000) ) $
@@ -3015,7 +3015,7 @@ creating embedded histograms in interfaces wxMaxima and iMaxima.
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c piechart(
 @c   s1,
@@ -3024,7 +3024,7 @@ Example:
 @c   title  = "Digit frequencies in pi")$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) piechart(
         s1,
@@ -3072,8 +3072,8 @@ Examples:
 Univariate scatter diagram from a simulated Gaussian sample. 
 
 @c ===beg===
-@c load (descriptive)$
-@c load (distrib)$
+@c load ("descriptive")$
+@c load ("distrib")$
 @c scatterplot(
 @c   random_normal(0,1,200),
 @c   xaxis      = true,
@@ -3081,8 +3081,8 @@ Univariate scatter diagram from a simulated Gaussian sample.
 @c   dimensions = [600,150])$
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (distrib)$
+(%i1) load ("descriptive")$
+(%i2) load ("distrib")$
 @group
 (%i3) scatterplot(
         random_normal(0,1,200),
@@ -3095,7 +3095,7 @@ Univariate scatter diagram from a simulated Gaussian sample.
 Two dimensional scatter plot.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c scatterplot(
 @c  submatrix(s2, 1,2,3),
@@ -3105,7 +3105,7 @@ Two dimensional scatter plot.
 @c  color      = blue)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i3) scatterplot(
@@ -3120,12 +3120,12 @@ Two dimensional scatter plot.
 Three dimensional scatter plot.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c scatterplot(submatrix (s2, 1,2), nclasses=4)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) scatterplot(submatrix (s2, 1,2), nclasses=4)$
 @end example
@@ -3133,7 +3133,7 @@ Three dimensional scatter plot.
 Five dimensional scatter plot, with five classes histograms.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c scatterplot(
 @c   s2,
@@ -3144,7 +3144,7 @@ Five dimensional scatter plot, with five classes histograms.
 @c   xtics        = 5)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i3) scatterplot(
@@ -3235,7 +3235,7 @@ Plot based on absolute frequencies.
 Location and radius defined by the user. 
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) l1: makelist(random(10),k,1,50)$
 (%i3) l2: makelist(random(10),k,1,200)$
 @group
@@ -3287,7 +3287,7 @@ power of 10.
 Example:
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) load(distrib)$
 @group
 (%i3) stemplot(

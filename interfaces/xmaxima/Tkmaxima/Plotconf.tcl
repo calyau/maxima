@@ -283,7 +283,7 @@ proc reConfigure { c width height  } {
     set oldy [$c canvasy [expr {$oldCheight/2.0}]]
     doZoomXY $w [expr {1.0*$width/$oldCwidth}] [expr {1.0*$height/$oldCheight}]
 
-    scrollPointTo $c $oldx $oldy [expr {$width/2.0}] [expr {$height/2.0}]
+    scrollPointTo $c [expr {-15+$width/2.0}] [expr {15+$height/2.0}]  [expr {$width/2.0}] [expr {$height/2.0}]
     # update
     oset $w oldCwidth $width
     oset $w oldCheight $height
