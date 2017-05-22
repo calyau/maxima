@@ -146,9 +146,9 @@ while (<>) {
                             shift @example_result_buf;
                         }
 
-                        print "\@group\n" if scalar @group ge 2;
+                        print "\@group\n" if scalar @group >= 2;
                         print @group;
-                        print "\@end group\n" if scalar @group ge 2;
+                        print "\@end group\n" if scalar @group => 2;
                     }
 
                     print "\@end example\n";
