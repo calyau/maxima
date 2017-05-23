@@ -38,7 +38,8 @@ where @math{c1, c2, @dots{}, cn} and @math{d1, d2, @dots{}, dn} are constants an
 
 This code has built-in methods for the symplectic Euler, the Verlet method, and third and fourth order methods 
 that are due to Ronald Ruth. For a complete description of these methods, see 
-@uref{https://en.wikipedia.org/wiki/Symplectic_integrator}.
+@uref{https://en.wikipedia.org/wiki/Symplectic_integrator}. Additionally, there is a fifth order method that is
+due to Kostas Tselios and T. E. Simos.
 
 The function @code{symplectic_ode} creates and compiles functions for updating @var{p} & @var{q}. 
 The arguments to these functions are modedeclared to have type given by an optional argument 
@@ -101,8 +102,8 @@ These should be mapatoms or equal length lists of mapatoms.
 @item @var{N} is the number of time steps.
 
 @item The optional argument @var{method} determines the integration method. It must be either 
-symplectic_euler (default), verlet, symplectic_third_order, or symplectic_fourth_order. For 
-an explanation of these methods, see https://en.wikipedia.org/wiki/Symplectic_integrator.
+symplectic_euler (default), verlet, symplectic_third_order, symplectic_fourth_order, or 
+symplectic_fifth_order. For an explanation of these methods, see https://en.wikipedia.org/wiki/Symplectic_integrator.
      
  @item The optional argument @var{type} determines the value for mode_declare for various 
        automatically generated functions. The value @var{type} must be one of float (default), 

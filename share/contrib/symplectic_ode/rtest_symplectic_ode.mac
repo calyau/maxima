@@ -1,4 +1,4 @@
-(load("symplectic_ode"),0);
+(load("symplectic_ode"),ty : elapsed_real_time(), 0);
 0$
 
 (reset(), display2d : false, 0);
@@ -179,6 +179,55 @@ true$
  poisson_bracket(p^2,q^2,p,q);
 -4*p*q$
 
+(ham : lambda([p,q], p^2/2 + q^4-q^2),dt : 1/10^4, N : 10^4, 0);
+0$
+
+(x : symplectic_ode(ham(p,q), p,q,1,0,dt,N,'symplectic_euler, 'float),
+ z : symplectic_ode(ham(p,q), p,q,1,0,dt, N, 'verlet, 'float),
+ block([listarith : true], is(lmax(map('abs, xreduce('append,x-z))) < 2.0e-4)));
+true$ 
+
+(z : symplectic_ode(ham(p,q),p,q,1,0,dt,N, 'symplectic_third_order, 'float),
+ block([listarith : true], is(lmax(map('abs, xreduce('append,x-z))) < 2.0e-4)));
+true$
+
+(z : symplectic_ode(ham(p,q), p,q,1,0,dt,N, 'symplectic_fourth_order, 'float),
+ block([listarith : true], is(lmax(map('abs, xreduce('append,x-z))) < 2.0e-4)));
+true$
+
+(z : symplectic_ode(ham(p,q), p,q,1,0,dt,N,'symplectic_fifth_order, 'float),
+ block([listarith : true], is(lmax(map('abs, xreduce('append,x-z))) < 2.0e-4)));
+true$
+
+/* How well does each method conserve energy? */
+(ham : lambda([p,q], p^2/2 + q^4-q^2),dt : 1/10, N : 10^4, 0);
+0$
+
+(x : symplectic_ode(ham(p,q),p,q,1,0,dt,N,'symplectic_euler, 'float),
+ x : map(ham,first(x),second(x)),
+ is(lmax(x)-lmin(x) < 3.0e-1));
+ true$
+ 
+ (x : symplectic_ode(ham(p,q), p,q,1,0,dt,N,'verlet, 'float),
+  x : map(ham,first(x),second(x)),
+  is(lmax(x)-lmin(x) < 2.0e-2));
+ true$
+ 
+ (x : symplectic_ode(ham(p,q), p,q,1,0,dt,N,'symplectic_third_order, 'float),
+  x : map(ham,first(x),second(x)),
+  is(lmax(x)-lmin(x) < 2.0e-3));
+ true$
+ 
+ (x : symplectic_ode(ham(p,q), p,q,1,0,dt,N,'symplectic_fourth_order, 'float),
+  x : map(ham,first(x),second(x)),
+  is(lmax(x)-lmin(x) < 5.0e-4));
+ true$
+ 
+ (x : symplectic_ode(ham(p,q), p,q,1,0,dt,N,'symplectic_fifth_order, 'float),
+  x : map(ham,first(x),second(x)),
+  is(lmax(x)-lmin(x) < 2.0e-6));
+ true$
+ 
 /* bogus argument errors */
 
 errcatch(symplectic_ode(p^2/2+(42*q^4)/4,[p],q,1,0, 1/10,2));
@@ -205,6 +254,8 @@ errcatch( poisson_bracket(p^2,q^2,p,[q]));
 errcatch( poisson_bracket(p^2,q^2,[p],q));
 []$
 
+(print("Runtime was ", elapsed_real_time()-ty," seconds."),0);
+0$
 /* make a mess? Clean it up.*/
 (remvalue(pp,qq), reset(algebraic, display2d),0);
 0$
