@@ -46,7 +46,7 @@ else()
         CMAKE_ARGS -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER} -DCMAKE_RC_COMPILER=${CMAKE_RC_COMPILER} -DwxWidgets_CONFIG_EXECUTABLE=${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets-build/wx-config -DCMAKE_INSTALL_PREFIX=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
     )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima-build/C\:/maxima-${MAXIMAVERSION}/ DESTINATION wxMaxima)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima-build/C\:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 endif()
 
 # install wxWidgets locale files
