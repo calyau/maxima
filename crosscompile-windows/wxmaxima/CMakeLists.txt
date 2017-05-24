@@ -9,11 +9,11 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(WXMAXIMAVERSION "16.12.2")
+set(WXMAXIMAVERSION "17.05.0")
 
-set(WXMAXIMA_MD5    "d06af1ba334b84921b3fe070765a1c7e")
+set(WXMAXIMA_MD5    "8da93f6b9cf2446c3e288ef49db37233")
 
-set(WXMAXIMA_URL    "http://sourceforge.net/projects/wxmaxima/files/wxMaxima/${WXMAXIMAVERSION}/wxmaxima-${WXMAXIMAVERSION}.tar.gz")
+set(WXMAXIMA_URL    "https://github.com/andrejv/wxmaxima/archive/Version-${WXMAXIMAVERSION}.tar.gz")
 
 set(WXMAXIMA_GIT    "https://github.com/andrejv/wxmaxima.git")
 
@@ -34,22 +34,20 @@ if(USE_WXMAXIMA_GIT)
         CMAKE_ARGS -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER} -DCMAKE_RC_COMPILER=${CMAKE_RC_COMPILER} -DwxWidgets_CONFIG_EXECUTABLE=${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets-build/wx-config -DCMAKE_INSTALL_PREFIX=C:/maxima-${MAXIMAVERSION} -DCMAKE_BUILD_TYPE=DEBUG
         BUILD_COMMAND $(MAKE)
     )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git-build/C\:/maxima-current/ DESTINATION .)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git-build/C\:/maxima-${MAXIMAVERSION}/ DESTINATION .)
     # install wxWidgets locale files
     install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-translations/wxMaxima DESTINATION .)
 else()
     externalproject_add(wxmaxima
         URL "${WXMAXIMA_URL}"
         DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
+        DOWNLOAD_NAME wxmaxima-${WXMAXIMAVERSION}.tar.gz
         URL_MD5 ${WXMAXIMA_MD5}
         DEPENDS wxwidgets
-        PATCH_COMMAND mkdir -p ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima/builddir
-        BINARY_DIR ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima/builddir
-        CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima/configure --host=${HOST} --with-wx-config=${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets-build/wx-config --prefix=C:/maxima-${MAXIMAVERSION}
+	PATCH_COMMAND  ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima/acinclude.m4
+        CMAKE_ARGS -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER} -DCMAKE_RC_COMPILER=${CMAKE_RC_COMPILER} -DwxWidgets_CONFIG_EXECUTABLE=${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets-build/wx-config -DCMAKE_INSTALL_PREFIX=C:/maxima-${MAXIMAVERSION}
         BUILD_COMMAND $(MAKE)
-              COMMAND $(MAKE) allmo
-              COMMAND $(MAKE) wxMaxima.win
         INSTALL_COMMAND ""
     )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima/builddir/wxMaxima/ DESTINATION wxMaxima)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima-build/C\:/maxima-${MAXIMAVERSION}/ DESTINATION wxMaxima)
 endif()
