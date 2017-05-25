@@ -266,11 +266,11 @@ d7 = 0.47501834514453949720351208570106713494289203770372938037
 
         (setq cfs (mapcar #'(lambda (x) (cons (mcoerce (mul dt (car x)) ntype) 
                                               (mcoerce (mul dt (cdr x)) ntype))) cfs))
-
+        
+        (setq poo (car po))
+        (setq qoo (car qo))
         (while (> N 0)
                (decf N 1)   
-               (setq poo (first po))
-               (setq qoo (first qo))   
                (dolist (cx cfs)
                  (setq args (append poo qoo (list (car cx))))
                  (setq poo (mapcar #'(lambda (fk) (apply fk args)) update-p))
