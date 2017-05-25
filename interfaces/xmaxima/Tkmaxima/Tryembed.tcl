@@ -34,7 +34,7 @@ proc makeEmbedWin { parent width height } {
     set fr [frame $win -width $width -height $height -container 1]
     set slave tclet$maxima_priv(counter)
     safe::interpCreate $slave
-    # make it exist somehow the autoload stuff doesnt make it a command
+    # make it exist somehow the autoload stuff doesn't make it a command
     if { [info exists auto_index(::safe::allowTk) ]  } {
 	::safe::allowTk $slave [list -use [winfo id $fr]]
 	::safe::TkInit $slave

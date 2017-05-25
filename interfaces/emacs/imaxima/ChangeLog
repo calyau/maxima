@@ -12,7 +12,7 @@
 	file directory and the name of the file path containing the
 	character "_". This is fixed in this version.
 	* Special treatment of greek character gamma is removed from
-	imaxima.el and commited to maxima mactex.lisp.
+	imaxima.el and committed to maxima mactex.lisp.
 
 2009-02-07 Yasuaki Honda <yasuaki.honda@gmail.com>
 	* As for inline graph, if the emacs buffer window is too small for
@@ -97,7 +97,7 @@
 
 2004-03-12  Jesper Harder  <harder@ifa.au.dk>
 
-	* imaxima.lisp ($kappa): Dont use \varkappa.  Reported by Fr,Ai(Bd,Ai(Bric
+	* imaxima.lisp ($kappa): Don't use \varkappa.  Reported by Fr,Ai(Bd,Ai(Bric
 	Petit <frederic.petit@univ-rennes1.fr>.
 
 2004-03-07  Jesper Harder  <harder@ifa.au.dk>

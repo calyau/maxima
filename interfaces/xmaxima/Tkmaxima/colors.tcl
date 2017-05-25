@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2009, Jaime E. Villate <villate@fe.up.pt>
 #
-# Procedures to work wih colors
+# Procedures to work with colors
 # (the license information can be found in COPYING.tcl)
 
 # transform a (hue, saturation, value) set into a (red, green, blue) set

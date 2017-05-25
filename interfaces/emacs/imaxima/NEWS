@@ -48,7 +48,7 @@ and all the non-white space chars are concatenated. This version
 fixes this so that all the white space including newline chars are
 treated appropriately.
 
-** When you pass numbers to print function, an error occured.
+** When you pass numbers to print function, an error occurred.
 This is fixed and appropriate value is now printed nicely.
 
 ** When imaxima is used with maxima mode i.e.,

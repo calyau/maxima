@@ -3,7 +3,7 @@
 #       $Id: $
 #
 AUTOMAKE_OPTIONS = no-dependencies
-CC = gcc # to supress automake warning
+CC = gcc # to suppress automake warning
 
 include $(top_srcdir)/common.mk
 

@@ -111,7 +111,7 @@ zooms in the opposite direction. To resume computing trajectories click \
 on Integrate.
 
 Clicking on Config will open a menu where several settings can be changed, \
-such as the differential equations being solved, the intial point for the \
+such as the differential equations being solved, the initial point for the \
 trajectory to be computed, the direction of integration for that trajectory, \
 the time step for each integration interval and the number of integration \
 steps (nsteps). Replot is used to update the plot with the \

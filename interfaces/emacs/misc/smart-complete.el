@@ -36,7 +36,7 @@
 
 ;; also if the command is a lisp sexp and this would be longer than the
 ;; current line, it grabs the whole thing.  sometimes we have different
-;; prompts, for different programs and we dont want to confuse the input
+;; prompts, for different programs and we don't want to confuse the input
 ;; from one with input for another.  Generally the prompt matches a
 ;; previous prompt, with numbers matching any number, and if there are
 ;; '/' then match anything up to a shell prompt terminator.  Note it does

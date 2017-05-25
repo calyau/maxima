@@ -1792,7 +1792,7 @@ which is in a comment which begins on a previous line."
     (newline-and-indent)))
 
 (defun maxima-insert-long-comment ()
-  "Insert a comment enviroment"
+  "Insert a comment environment"
   (interactive)
   (indent-for-tab-command)
   (insert "/*")

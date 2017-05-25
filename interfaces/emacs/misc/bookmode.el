@@ -217,7 +217,7 @@ so editing after it would mean all offsets would likely be incorrect.
   )
 
 ;;;
-;;; hack. It is extremly easy to get clicked twice on
+;;; hack. It is extremely easy to get clicked twice on
 ;;; an expression. This little hack record down the time
 ;;; of the last mouse-eval and ignore the current click if
 ;;; it is less than  time-between-mouse-evals  apart, the 
