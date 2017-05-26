@@ -767,13 +767,22 @@ values")
   ; Clisp/Windows case:
   (defun encode-time-with-all-parts (year month day hours minutes seconds-integer seconds-fraction tz)
     (add seconds-fraction
-         ;; DO WE NEED TO ENSURE THAT TZ IS NONNULL HERE ??
-         (sub (encode-universal-time seconds-integer minutes hours day month (add year 400) tz) 12622780800)))
+         ;; Some Lisps allow TZ to be null but CLHS doesn't explicitly allow it,
+         ;; so work around null TZ here.
+         (let
+           ((foo
+              (if tz
+                (encode-universal-time seconds-integer minutes hours day month (add year 400) tz)
+                (encode-universal-time seconds-integer minutes hours day month (add year 400)))))
+           (sub foo 12622780800))))
   ; other Lisp / OS versions:
   (defun encode-time-with-all-parts (year month day hours minutes seconds-integer seconds-fraction tz)
     (add seconds-fraction
-         ;; DO WE NEED TO ENSURE THAT TZ IS NONNULL HERE ??
-         (encode-universal-time seconds-integer minutes hours day month year tz))))
+         ;; Some Lisps allow TZ to be null but CLHS doesn't explicitly allow it,
+         ;; so work around null TZ here.
+         (if tz
+           (encode-universal-time seconds-integer minutes hours day month year tz)
+           (encode-universal-time seconds-integer minutes hours day month year)))))
 
 (defun $encode_time (year month day hours minutes seconds &optional tz-offset)
     (when tz-offset
