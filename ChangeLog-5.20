@@ -106,7 +106,7 @@
    2808568: Reserved words that aren't reserved
    2802006: integrate(1/(sqrt(x)+1), x, 0, 1);
    2770575: rtestsum test 226
-   2636628: solve_rat_ineq doesnt find all soloutions
+   2636628: solve_rat_ineq doesn't find all solutions
    2609426: integrate(cos(a)/sqrt((tan(a))^2+1), a,-%pi/2,%pi/2);
    2148461: docs for factor refer to "the field of integers"
    2018842: unsimplified result from jacobi_p

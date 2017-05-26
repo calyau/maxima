@@ -1163,7 +1163,7 @@ Look there for changes in recent versions.
 	  kill(all) removes properties that are set in the initial maxima
 	  image.  This affects trigsimp() for example.
 
-	  Replace all occurences of kill(all) with kill(allbut(props)).
+	  Replace all occurrences of kill(all) with kill(allbut(props)).
 	  Add a kill(g) to rtest11.mac.
 
 2004-03-16 06:15  vvzhy
@@ -2504,7 +2504,7 @@ Look there for changes in recent versions.
 2003-09-25 08:16  amundson
 
 	* doc/maximabook/Makefile: Fixes.  (1) Set texinputs to find local
-	  version of tex input files.  (2) Only procede to the next step in
+	  version of tex input files.  (2) Only proceed to the next step in
 	  the tex process if the previous step succeeded.
 
 2003-09-24 22:23  wjenkner
@@ -3246,7 +3246,7 @@ Look there for changes in recent versions.
 
 2003-03-18 17:04  starseeker
 
-	* doc/maximabook/basics/basics.tex: Coverted one example to tex now
+	* doc/maximabook/basics/basics.tex: Converted one example to tex now
 	  that breqn functionality is present
 
 2003-03-18 17:03  starseeker
@@ -4604,7 +4604,7 @@ Look there for changes in recent versions.
 
 2002-09-19 12:28  mikeclarkson
 
-	* interfaces/bin/xmaxima.iss: Change bat to exe and andd manual
+	* interfaces/bin/xmaxima.iss: Change bat to exe and and manual
 	  link
 
 2002-09-19 11:26  mikeclarkson
@@ -4789,7 +4789,7 @@ Look there for changes in recent versions.
 2002-09-12 01:58  mikeclarkson
 
 	* interfaces/xmaxima/xmaxima-paths.tcl: Look for maxima.exe on
-	  windows in lib/ - need autoconf(lisp) so we dont need to use glob
+	  windows in lib/ - need autoconf(lisp) so we don't need to use glob
 
 2002-09-11 09:38  amundson
 
@@ -4798,7 +4798,7 @@ Look there for changes in recent versions.
 
 2002-09-10 20:19  mikeclarkson
 
-	* interfaces/xmaxima/xmaxima-paths.tcl: Dont set MAXIMA_DIRECTORY
+	* interfaces/xmaxima/xmaxima-paths.tcl: Don't set MAXIMA_DIRECTORY
 	  by default - only 5.5 layout
 
 2002-09-10 20:09  mikeclarkson
@@ -4948,7 +4948,7 @@ Look there for changes in recent versions.
 2002-09-07 18:17  mikeclarkson
 
 	* interfaces/xmaxima/xmaxima-paths.tcl: Bring constants derived
-	  from enviroment variables up to setMaxDir
+	  from environment variables up to setMaxDir
 
 2002-09-07 09:43  billingd
 
@@ -6299,7 +6299,7 @@ Look there for changes in recent versions.
 
 	  (C1) batch("jordan.dem");
 
-	  or usualy load("diag.mc") .
+	  or usually load("diag.mc") .
 
 	  -------------------------------
 
@@ -7697,7 +7697,7 @@ Look there for changes in recent versions.
 
 	* src/init-cl.lisp: 1) Delete redunant loads.  2) Rename getenv to
 	  maxima-getenv to avoid infinite loop! 3) Get MAXIMA_DIRECTORY
-	  from autoconf setting if enviroment variabled undefined.
+	  from autoconf setting if environment variabled undefined.
 
 2002-02-02 16:33  amundson
 
@@ -8103,7 +8103,7 @@ Look there for changes in recent versions.
 
 2001-11-08 16:20  belanger
 
-	* doc/emaxima/EMaximaIntro.tex: Inital commit of an introduction to
+	* doc/emaxima/EMaximaIntro.tex: Initial commit of an introduction to
 	  EMaxima.  (source)
 
 2001-11-08 16:19  belanger
