@@ -3,7 +3,7 @@ Maxima 5.38 change log
 
 New items in core:
 ------------------
- * commit [ae11414]: Images in the HTML manual now are automatically shrinked to fit within the browser window, if neeeded.
+ * commit [ae11414]: Images in the HTML manual now are automatically shrunk to fit within the browser window, if neeeded.
  * commit [d817ac5]: A singlepage HTML manual (doc/info/maxima_singlepage.html)
 
  * commit [2b0f8c4]: Docu/Creating a release: Added a request to inform the wxMaxima team that aims to make a simultaneous release.

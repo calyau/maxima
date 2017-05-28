@@ -45,7 +45,7 @@ Bug fixes:
 * [#2934]: dotscrules and antisymmetric
 * [#2929]: misformatting in debugger help message
 * [#2905]: Assigning variable twice yields different results
-* [#2620]: atan2(y,x)+atan2(-y,x) doesnt always return 0
+* [#2620]: atan2(y,x)+atan2(-y,x) doesn't always return 0
 * [#2230]: abs(x)^(2*int) doesn't simplify
 * [#2211]: rtest_sign #77
 * [#2183]: eigenvectors of a 10 x 10

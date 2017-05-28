@@ -321,7 +321,7 @@ algsys([2*k*y+2*h*x+s^2-k^2-h^2-d^2,
  *   also #3212 ALGSYS throws error
  *
  * Note: %nrum is the counter for the %r variables introduced
- *       by algsys.  Set it to 0 for reproducable results
+ *       by algsys.  Set it to 0 for reproducible results
  */
 block([%rnum:0], algsys([
  4*y*(y^2-28),
