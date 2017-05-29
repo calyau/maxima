@@ -49,11 +49,11 @@ Building a 64 bit installer
 
 By default a 32 bit installer (which works on 32 and 64 bit Windows) will be
 generated. If you want to crosscompile a 64 bit installer, install the 64 bit
-crosscompiler package (g++-mingw-w64-x86-64) and a recent 'wine' (version 2.0).
-(e.g. wine-devel from https://launchpad.net/~wine/+archive/ubuntu/wine-builds
-which installs in /opt/wine-devel (remember that additional PPAs might impact
-your system security). That will not be necessary in future, when Wine 2.0 is
-part of the standard distributions.)
+crosscompiler package (g++-mingw-w64-x86-64) and a recent 64 bit 'wine'.
+(see https://www.winehq.org/download how to get a development version
+for your Linux distribution). For the 64bit crosscompiliation procedure wine64
+will be searched in /opt/wine-devel - where the packages from the wine team
+will install their packages.
 
 Then use the following commands to build a 64 bit installer:
 cmake -DBUILD_64BIT=YES ..
