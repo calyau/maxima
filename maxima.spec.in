@@ -257,6 +257,10 @@ rm -rf $RPM_BUILD_ROOT
 %if %{enable_lang_pt_br_utf}
 %exclude %{_datadir}/maxima/%{version}/doc/html/pt_BR.utf8
 %endif
+%{_datadir}/applications
+%{_datadir}/bash-completion
+%{_datadir}/pixmaps
+%{_datadir}/mime
 %dir %{_libexecdir}/maxima
 %{_libexecdir}/maxima/%{version}
 %{_infodir}/*
@@ -283,7 +287,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/maxima
 %{_bindir}/rmaxima
 %exclude %{_datadir}/mime/packages/x-mac.xml
-%doc AUTHORS COPYING INSTALL INSTALL.lisp NEWS x-mac.xml
+%doc AUTHORS COPYING INSTALL INSTALL.lisp NEWS desktopintegration/x-mac.xml
 %doc README README.lisps README.rpms README.external README.i18n
 
 %files xmaxima
