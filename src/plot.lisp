@@ -92,30 +92,33 @@ sin(y)*(10.0+6*cos(x)),
 (defvar $gnuplot_command "gnuplot")
 
 (defun start-gnuplot-process (path)
-  #+clisp (setq *gnuplot-stream* (ext:make-pipe-output-stream path))
+  #+clisp (let (gnuplot-stream (ext:make-pipe-output-stream path))
+	    (setq *gnuplot-stream* (cadr gnuplot-stream))
+	    (make-echo-stream (caddr gnuplot-stream) *error-output*))
+  ;; TODO: Forward gnuplot's stderr stream to maxima's stderr output
   #+lispworks (setq *gnuplot-stream* (system:open-pipe path))
   #+cmu (setq *gnuplot-stream*
               (ext:process-input (ext:run-program path nil :input :stream
-                                                  :output nil :wait nil)))
+                                                  :output *error-output* :wait nil)))
   #+scl (setq *gnuplot-stream*
               (ext:process-input (ext:run-program path nil :input :stream
-                                                  :output nil :wait nil)))
+                                                  :output *error-output* :wait nil)))
   #+sbcl (setq *gnuplot-stream*
                (sb-ext:process-input (sb-ext:run-program path nil
                                                          :input :stream
-                                                         :output nil :wait nil
+                                                         :output *error-output* :wait nil
                                                          :search t)))
   #+gcl (setq *gnuplot-stream*
               (open (concatenate 'string "| " path) :direction :output))
   #+ecl (progn
-          (setq *gnuplot-stream* (ext:run-program path nil :input :stream :output t :error :output :wait nil)))
+          (setq *gnuplot-stream* (ext:run-program path nil :input :stream :output *error-output* :error :output :wait nil)))
   #+ccl (setf *gnuplot-stream*
               (ccl:external-process-input-stream
                (ccl:run-program path nil
-                                :wait nil :output nil
+                                :wait nil :output *error-output*
                                 :input :stream)))
   #+allegro (setf *gnuplot-stream* (excl:run-shell-command
-                    path :input :stream :output nil :wait nil))
+                    path :input :stream :output *error-output* :wait nil))
   #+abcl (setq *gnuplot-stream* (system::process-input (system::run-program path nil :wait nil)))
   #-(or clisp cmu sbcl gcl scl lispworks ecl ccl allegro abcl)
   (merror (intl:gettext "plotting: I don't know how to tell this Lisp to run Gnuplot."))
