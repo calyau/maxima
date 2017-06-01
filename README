@@ -2,9 +2,8 @@ Maxima is a symbolic computation program.  It is full featured,
 doing symbolic manipulation of polynomials, matrices, rational
 functions, integration, Todd-coxeter, graphing, bigfloats.  It has a
 symbolic debugger source level debugger for maxima code.  Maxima is
-based on the original Macsyma developed at MIT in the 1970's.  It is
-quite reliable, and has good garbage collection, and no memory leaks.
-It comes with hundreds of self tests.
+based on the original Macsyma developed at MIT in the 1970's.
+It comes with more than 10000 self test steps.
 
 Maxima is distributed under the GNU General Public License, with some
 export restrictions from the U.S. Department of Energy. See the file
@@ -13,6 +12,24 @@ COPYING.
 Installation information is available in the file INSTALL. Summary
 information about this release can be found in the file NEWS. Detailed
 change information is available in the ChangeLog.
+
+A simple usage example:
+
+(%i1)	pyth:a^2+b^2=c^2$
+
+(%i2)	solve(pyth,a);sol1:%[2];
+(%o2)	[a=-sqrt(c^2-b^2),a=sqrt(c^2-b^2)]
+(%o3)	a=sqrt(c^2-b^2)
+
+(%i4)	integrate(sol1,b);
+(%o4)	a*b=(c^2*asin(b/abs(c)))/2+(b*sqrt(c^2-b^2))/2+%c1
+
+(%i5)	val:[c=15,b=10];
+(%o5)	[c=15,b=10]
+
+(%i6)	subst(val,sol1);
+(%o6)	a=5^(3/2)
+
 
 For more information on Maxima, see the Maxima web site,
 <http://maxima.sourceforge.net>.
