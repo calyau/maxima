@@ -125,13 +125,6 @@
 (defmacro maxima-error (datum &rest args)
   `(cerror "without any special action" ,datum ,@args))
 
-(defmacro safe-value (sym)
-  (cond ((symbolp sym)
-	 `(cond ((symbolp ',sym)
-		 (and (boundp ',sym) ,sym))
-	   (t ,sym)))
-	(t nil)))
-
 (defmacro show (&rest l)
   (loop for v in l
 	 collecting `(format t "~%The value of ~A is ~A" ',v ,v) into tem
