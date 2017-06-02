@@ -406,9 +406,6 @@ values")
   (loop for v in (coerce (print-invert-case symb) 'list)
      collect (intern (string v))))
 
-(defvar *string-for-implode*
-  (make-array 20 :fill-pointer 0 :adjustable t :element-type '#.(array-element-type "a")))
-
 ;;; If the 'string is all the same case, invert the case.  Otherwise,
 ;;; do nothing.
 #-(or scl allegro)
@@ -503,19 +500,13 @@ values")
 	       converted-str)))
 	(t (princ-to-string sym))))
 
-(defun implode (lis)
-  (let ((ar *string-for-implode*)
-	(leng (length lis)))
-    (unless (> (array-total-size ar) leng)
-      (setq ar (adjust-array ar (+ leng 20))))
-    (setf (fill-pointer ar) leng)
-    (loop for v in lis
-       for i below leng
-       do
-	 (setf (aref ar i) (cond ((characterp v) v)
-				 ((symbolp v) (char (symbol-name v) 0))
-				 ((numberp v) (code-char v)))))
-    (intern-invert-case ar)))
+(defun implode (list)
+  (intern-invert-case (map 'string #'(lambda (v)
+                                       (etypecase v
+                                         (character v)
+                                         (symbol (char (symbol-name v) 0))
+                                         (integer (code-char v))))
+                           list)))
 
 ;; Note:  symb can also be a number, not just a symbol.
 (defun explode (symb)
