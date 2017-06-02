@@ -1,4 +1,4 @@
-.TH MAXIMA 1L "September 10, 2005"
+.TH MAXIMA 1 "September 10, 2005"
 .ds Ps P\s-2OST\s+2S\s-2CRIPT\s+2
 .ds Ts T\s-2RAN\s+2S\s-2CRIPT\s+2
 .if t .ds Te T\\h'-0.1667m'\\v'0.20v'E\\v'-0.20v'\\h'-0.125m'X
