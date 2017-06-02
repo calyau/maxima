@@ -501,6 +501,7 @@ values")
 	(t (princ-to-string sym))))
 
 (defun implode (list)
+  (declare (optimize (speed 3)))
   (intern-invert-case (map 'string #'(lambda (v)
                                        (etypecase v
                                          (character v)
@@ -510,8 +511,8 @@ values")
 
 ;; Note:  symb can also be a number, not just a symbol.
 (defun explode (symb)
-  (loop for v in (coerce (format nil "~S" symb) 'list)
-     collect (intern (string v))))
+  (declare (optimize (speed 3)))
+  (map 'list #'(lambda (v) (intern (string v))) (format nil "~a" symb)))
 
 (defun getcharn (symb i)
   (let ((strin (string symb)))
