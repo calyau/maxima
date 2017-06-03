@@ -1452,7 +1452,7 @@
         ((and (member $logexpand '($all $super))
               (consp y)
               (member (caar y) '(%product $product)))
-         (let ((new-op (if (eql (getcharn (caar y) 1) #\%) '%sum '$sum)))
+         (let ((new-op (if (char= (getcharn (caar y) 1) #\%) '%sum '$sum)))
            (simplifya `((,new-op) ((%log) ,(cadr y)) ,@(cddr y)) t)))
         ((and $lognegint
               (maxima-integerp y)

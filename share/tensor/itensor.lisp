@@ -190,7 +190,7 @@
 
 (defun getcon (e)
   ;; Helper to obtain contractions on both the noun and verb form of E
-	(cond ((and (symbolp e) (eql (getcharn e 1) #\%))  (zl-get ($verbify e) 'contractions))
+	(cond ((and (symbolp e) (char= (getcharn e 1) #\%))  (zl-get ($verbify e) 'contractions))
 		(t (zl-get e 'contractions))
 	)
 )

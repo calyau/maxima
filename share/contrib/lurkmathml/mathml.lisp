@@ -91,7 +91,7 @@
 
 	      ((and
 		itsalabel ;; but is it a user-command-label?
-		(eql (getcharn $inchar 2) (getcharn mexplabel 2)))
+		(char= (getcharn $inchar 2) (getcharn mexplabel 2)))
 	       ;; aha, this is a C-line: do the grinding:
 	       (format texport "<pre>~%~a " mexplabel) 
                ;; need to get rid of "<" signs
@@ -402,7 +402,7 @@
 		   (expon (caddr x)) ;; this is the exponent
 		   (doit (and
 			  f ; there is such a function
-			  (member (getcharn f 1) '(#\% #\$)) ;; insist it is a % or $ function
+			  (member (getcharn f 1) '(#\% #\$) :test #'char=) ;; insist it is a % or $ function
                           (not (member f '(%sum %product %derivative %integrate %at
 					      %lsum %limit) :test #'eq)) ;; what else? what a hack...
 			  (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
