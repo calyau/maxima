@@ -1427,3 +1427,83 @@ sum(a[s]*x^(N-1-s), s, 0, N-1);
 leftmatrix . A . rightmatrix $
 matrix([-3,0,0],[0,-3,0],[0,0,0])$
 
+/* following trigsimp tests comprise the examples in demo(trgsmp),
+ * with expected output = output produced by Maxima 5.39.0.
+ */
+
+(check_points(a, b) := 
+ /* keep check points away from multiples of pi/2 */
+ (makelist (0.05 + random (float(%pi/2) - 0.1), 100),
+  map (lambda ([x1], (random(4) - 2)*float (%pi/2) + x1), %%),
+  lmax (map (lambda ([x1], ev (abs (a - b), x = x1)), %%)),
+  if %% < 1e-8 then true else %%),
+ 0);
+0;
+
+(foo:((1-sin(x)^2)*cos(x))/cos(x)^2+tan(x)*sec(x)^2,
+ bar:trigsimp(%%));
+(sin(x)+cos(x)^4)/cos(x)^3;
+
+check_points (foo, bar);
+true;
+
+(foo:tan(x)^2+sec(x)^2/(1-tan(x)*sec(x)),
+ bar:trigsimp(%%));
+(sin(x)^4+sin(x)^3-1)/(cos(x)^2*sin(x)-cos(x)^4);
+
+check_points (foo, bar);
+true;
+
+(foo:(sin(x)^4-6*cos(x)^2*sin(x)^2+4*(cos(x)^2-sin(x)^2)+8*sin(x)+cos(x)^4+3)
+ /(8*cos(x)^3),
+ bar:trigsimp(%%));
+(sin(x)+cos(x)^4)/cos(x)^3;
+
+check_points (foo, bar);
+true;
+
+(foo:(sech(x)^2*sinh(x)*tanh(x))/coth(x)^2
+ +(cosh(x)^2*sech(x)^2*tanh(x))/coth(x)^2+(sech(x)^2*tanh(x))/coth(x)^2,
+ bar:trigsimp(%%));
+(sinh(x)^5+sinh(x)^4+2*sinh(x)^3)/cosh(x)^5;
+
+check_points (foo, bar);
+true;
+
+(foo:((-sech(x)^5)*(sinh(x)^5+2*(sinh(x)^4+6*cosh(x)^2*sinh(x)^2+cosh(x)^4)
+                             +(-13)*(sinh(x)^3+3*cosh(x)^2*sinh(x))
+                             +10*cosh(x)^2*sinh(x)^3
+                             +(-8)*(sinh(x)^2+cosh(x)^2)+5*cosh(x)^4*sinh(x)
+                             +34*sinh(x)+6)) /16,
+ bar:trigsimp(%%));
+-((sinh(x)^5+sinh(x)^4-2*sinh(x)^3)/cosh(x)^5);
+
+check_points (foo, bar);
+true;
+
+(foo:cos(x)*(sec(x)^2*tan(x)+1)-sec(x)^2*sin(x)-cos(x),
+ bar:trigsimp(%%));
+0;
+
+check_points (foo, bar);
+true;
+
+(foo:v*cos(x)*sec(x)^2*tan(x)+((-v)*sec(x)^2-2*'diff(v,x))*sin(x)
+                             +'diff(v,x)*cos(x)*sec(x)+'diff(v,x,2)*cos(x),
+ bar:trigsimp(%%));
+(-2*'diff(v,x,1)*sin(x))+'diff(v,x,2)*cos(x)+'diff(v,x,1);
+
+/* bug reported to mailing list 2017-06-03: "trigsimp() bug?" */
+
+trigsimp (1 - cos(x)^2);
+sin(x)^2;
+
+trigsimp (cos(x)^2 - 1);
+-sin(x)^2;
+
+trigsimp (1 - sin(x)^2);
+cos(x)^2;
+
+trigsimp (sin(x)^2 - 1);
+-cos(x)^2;
+

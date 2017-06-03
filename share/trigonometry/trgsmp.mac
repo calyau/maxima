@@ -165,7 +165,7 @@ update(form, complement):=block(
         else ans)$
 
 expnlength(expr):=block(
-  [inflag:true],
+  [inflag:false],
   if atom(expr)
   then 1
   else 1+argslength(args(expr)))$
