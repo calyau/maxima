@@ -573,8 +573,8 @@
 	((numberp x) x)
 	((null x) 'false)
 	((eq x t) 'true)
-    ((member (getcharn x 1) '(#\$ #\%))
-     (intern (subseq (string x) 1)))
+        ((member (getcharn x 1) '(#\$ #\%) :test #'char=)
+         (intern (subseq (string x) 1)))
 	(t x)))
 
 (defmfun fullstrip (x)
