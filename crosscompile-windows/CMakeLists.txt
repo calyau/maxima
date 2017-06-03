@@ -39,8 +39,6 @@ option(USE_VTK "Use VTK." YES)
 # sets the installation directory to C:\maxima-current
 option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 
-option(BUILD_64BIT "Build a 64 bit installer." NO)
-
 
 
 # If you want to use a updated version of a program,
