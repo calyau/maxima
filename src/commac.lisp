@@ -514,11 +514,10 @@ values")
   (declare (optimize (speed 3)))
   (map 'list #'(lambda (v) (intern (string v))) (format nil "~a" symb)))
 
-(defun getcharn (symb i)
-  (let ((strin (string symb)))
-    (if (<= 1 i (length strin))
-	(char strin (1- i))
-    nil)))
+;;; return the first character of the name of a symbol or a string or char
+(defun get-first-char (symb)
+  (declare (optimize (speed 3)))
+  (char (string symb) 0))
 
 (defun getchar (symb i)
   (let ((str (string symb)))

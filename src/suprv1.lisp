@@ -544,9 +544,6 @@
   (cond ((nonsymchk x '$alias))
 	((nonsymchk y '$alias))
         ((eq x y) y) ; x is already the alias of y
-; Not needed. We return the alias immediately if we already have one.
-;	((not (eql (getcharn x 1) #\$))
-;	 (merror "-ed symbols may not be aliased. ~M" x))
 	((get x 'reversealias)
 	 (if (not (eq x y))
 	     (merror (intl:gettext "alias: ~M already has an alias.") x)))
@@ -573,7 +570,7 @@
 	((numberp x) x)
 	((null x) 'false)
 	((eq x t) 'true)
-        ((member (getcharn x 1) '(#\$ #\%) :test #'char=)
+        ((member (get-first-char x) '(#\$ #\%) :test #'char=)
          (intern (subseq (string x) 1)))
 	(t x)))
 

@@ -321,7 +321,7 @@ is EQ to FNNAME if the latter is non-NIL."
          (setq u
                (or (safe-getl (caar form) '(noun))
                    (and *nounsflag*
-                        (and (symbolp (caar form)) (char= (getcharn (caar form) 1) #\%))
+                        (and (symbolp (caar form)) (char= (get-first-char (caar form)) #\%))
                         (not (or (getl-lm-fcn-prop (caar form) '(subr))
                               (safe-getl (caar form) '(mfexpr*))))
                         (prog2 ($verbify (caar form))

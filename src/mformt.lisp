@@ -76,7 +76,7 @@
     (push-text-temp)
   (push (cons '(text-string)
 	      (mapl #'(lambda (c)
-			(rplaca c (getcharn (car c) 1)))
+			(rplaca c (get-first-char (car c))))
 		    (explode (pop-mformat-arg))))
 	text))
 

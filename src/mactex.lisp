@@ -581,7 +581,7 @@
        (doit (and
 	      f ; there is such a function
 	      (tex-mexpt-trig-like-fn-p f) ; f is trig-like
-	      (member (getcharn f 1) '(#\% #\$) :test #'char=) ;; insist it is a % or $ function
+	      (member (get-first-char f) '(#\% #\$) :test #'char=) ;; insist it is a % or $ function
 	      (not (member 'array (cdar fx) :test #'eq)) ; fix for x[i]^2
 	      (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
 		  (and (atom expon) (numberp expon) (> expon 0))))))
