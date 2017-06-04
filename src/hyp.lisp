@@ -36,8 +36,6 @@
     #-gcl (:execute :compile-toplevel)
     (defmacro simp (x) `(simplifya ,x ()))
 
-    (defmacro simp-list (l) `(mapcar #'(lambda (x) (simp x)) ,l))
-
     ;; The macro MABS has been renamed to HYP-MABS in order to
     ;; avoid conflict with the Maxima symbol MABS. The other
     ;; M* macros defined here should probably be similarly renamed
@@ -66,10 +64,6 @@
     (defmacro merf (x) `(simp `((%erf) ,,x)))
 
     (defmacro =1//2 (x) `(alike1 ,x 1//2))
-
-    (defmacro =3//2 (x) `(alike1 ,x 3//2))
-
-    (defmacro =-1//2 (x) `(alike1 ,x -1//2))
     )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
