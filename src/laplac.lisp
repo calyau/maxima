@@ -36,12 +36,6 @@
 	((cdr rest) (cons '(mtimes) rest))
 	(t (car rest))))
 
-(defmacro posint (x)
-  `(and (integerp ,x) (> ,x 0)))
-
-(defmacro negint (x)
-  `(and (integerp ,x) (< ,x 0)))
-
 (defun isquadraticp (e x)
   (let ((b (sdiff e x)))
     (cond ((zerop1 b) (list 0 0 e))

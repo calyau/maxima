@@ -551,8 +551,7 @@ nor Gnuplot is not recognized by maxima"))))
 		      ((memq answer '($unknown $uk)) '$unknown)))
     (setq answer (retrieve
 		  `((mtext) "Is  " ,object 
-		    ,(if (member (getcharn property 1)
-				 '(#\a #\e #\i #\o #\u)
+		    ,(if (member (get-first-char property) '(#\a #\e #\i #\o #\u)
 				 :test #'char-equal)
 			 '"  an "
 			 '"  a ")

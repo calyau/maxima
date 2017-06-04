@@ -173,12 +173,22 @@
 (defun firstn (n lis)
   (subseq lis 0 n))
 
-(declaim (inline fixnump))
+(declaim (inline fixnump bignump posint negint))
 (defun fixnump (n)
+  (declare (optimize (speed 3)))
   (typep n 'fixnum))
 
 (defun  bignump (x)
+  (declare (optimize (speed 3)))
   (typep x 'bignum))
+
+(defun posint (x)
+  (declare (optimize (speed 3)))
+  (and (integerp x) (> x 0)))
+
+(defun negint (x)
+  (declare (optimize (speed 3)))
+  (and (integerp x) (< x 0)))
 
 ;;actually this was for lists too.
 

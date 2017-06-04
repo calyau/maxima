@@ -154,7 +154,7 @@
     ;;	 (d-hbar nil w)
     ;;	 (cursorpos* (f- oldrow d 1) oldcol)
     ;;	 (d-matrix nil 'right (f1+ h) (f1+ d)))
-    (t (setq char #\- #+nil(getcharn $boxchar 2))
+    (t (setq char #\-)
        (setq dmstr
 	     `((0 ,h (d-hbar ,(f+ 2 w) ,char))
 	       (,(f- (f+ w 2)) 0)

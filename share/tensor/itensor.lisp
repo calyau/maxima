@@ -188,12 +188,11 @@
 			      (setq $contractions (delete e $contractions :test #'eq)))
 			  a)))
 
-(defun getcon (e)
   ;; Helper to obtain contractions on both the noun and verb form of E
-	(cond ((and (symbolp e) (eql (getcharn e 1) #\%))  (zl-get ($verbify e) 'contractions))
-		(t (zl-get e 'contractions))
-	)
-)
+(defun getcon (e)
+  (if (and (symbolp e) (char= (get-first-char e) #\%))
+      (zl-get ($verbify e) 'contractions)
+      (zl-get e 'contractions)))
 
 (defun rpobj (e)                  ;"True" if an indexed object and not a matrix
        (cond ((and (not (atom e)) (eq (caar e) 'mqapply)) (rpobj (cdr e)))

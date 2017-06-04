@@ -242,7 +242,7 @@
 		 (expon (caddr x)) ;; this is the exponent
 		 (doit (and
 			f		; there is such a function
-			(member (getcharn f 1) '(#\% #\$)) ;; insist it is a % or $ function
+			(member (get-first-char f) '(#\% #\$) :test #'char=) ;; insist it is a % or $ function
 			(not (member 'array (cdar fx) :test #'eq))	; fix for x[i]^2
 					; Jesper Harder <harder@ifa.au.dk>
 			(not (member f '(%sum %product %derivative %integrate %at
