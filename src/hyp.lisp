@@ -34,8 +34,6 @@
 (eval-when
     #+gcl (eval compile)
     #-gcl (:execute :compile-toplevel)
-    (defmacro fixp (x) `(typep ,x 'fixnum))
-
     (defmacro simp (x) `(simplifya ,x ()))
 
     (defmacro simp-list (l) `(mapcar #'(lambda (x) (simp x)) ,l))
