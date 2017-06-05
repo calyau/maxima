@@ -114,7 +114,6 @@ rem Allow ccl as an alias of openmcl
 if "%lisp%" == "ccl" set lisp="openmcl"
 if "%lisp%" == "openmcl" goto doopenmcl
 if "%lisp%" == "sbcl" goto dosbcl
-if "%lisp%" == "openmcl" goto doccl
 
 @echo Maxima error: lisp %lisp% not known.
 goto end
