@@ -17,17 +17,20 @@ set LANGUAGE=
 set lisp=@DEFAULTLISP@
 set lisp_options=
 set version=@VERSION@
-set prefix=%~dp0\..
-set maxima_prefix=%~dp0\..
+set prefix=%~dp0/..
+rem change "\" to "/" in that path. Works too and causes less troubles (e.g. with xmaxima).
+set "prefix=%prefix:\=/%"
+set maxima_prefix=%prefix%
 set package=@PACKAGE@
 set verbose=false
-set path=%maxima_prefix%\gnuplot;%maxima_prefix%\gnuplot\bin;%maxima_prefix%\bin;%path%
+set path=%maxima_prefix%/gnuplot;%maxima_prefix%/gnuplot/bin;%maxima_prefix%/bin;%path%
 
-if not defined MAXIMA_USERDIR set MAXIMA_USERDIR=%USERPROFILE%\maxima
-if not defined MAXIMA_TEMPDIR set MAXIMA_TEMPDIR=%TEMP%
+rem set userdir and tempdir - replace "\" with "/"
+if not defined MAXIMA_USERDIR set MAXIMA_USERDIR=%USERPROFILE:\=/%/maxima
+if not defined MAXIMA_TEMPDIR set MAXIMA_TEMPDIR=%TEMP:\=/%
 rem there were reports, that the tempdir could not be found (maybe because of special characters, ut8-chars, ...)
 rem so set a fallback (as it was before)
-if not exist "%MAXIMA_TEMPDIR%"\ set MAXIMA_TEMPDIR=%USERPROFILE%
+if not exist "%MAXIMA_TEMPDIR%"/ set MAXIMA_TEMPDIR=%USERPROFILE:\=/%
 
 rem read maximarc and set the lisp type, if the user did specify MAXIMA_LISP
 rem currently no comments or other (Unix shell) commands are understood
@@ -86,57 +89,57 @@ set layout_autotools=@default_layout_autotools@
 
 if "%MAXIMA_PREFIX%" == "" goto defaultvars
 if "%layout_autotools%" == "true" goto maxim_autotools
-set maxima_imagesdir=%MAXIMA_PREFIX%\src
+set maxima_imagesdir=%MAXIMA_PREFIX%/src
 goto endsetupvars
 
 :maxim_autotools
-set maxima_imagesdir=%MAXIMA_PREFIX%\lib\%package%\%version%
+set maxima_imagesdir=%MAXIMA_PREFIX%/lib/%package%/%version%
 goto endsetupvars
 
 :defaultvars
 if "%layout_autotools%" == "true" goto defmaxim_autotools
-set maxima_imagesdir=%prefix%\src
+set maxima_imagesdir=%prefix%/src
 goto endsetupvars
 
 :defmaxim_autotools
-set maxima_imagesdir=%prefix%\lib\%package%\%version%
+set maxima_imagesdir=%prefix%/lib/%package%/%version%
 goto endsetupvars
 
 :endsetupvars
 
-set maxima_image_base=%maxima_imagesdir%\binary-%lisp%\maxima
+set maxima_image_base=%maxima_imagesdir%/binary-%lisp%/maxima
 
 if "%verbose%" == "true" @echo on
 if "%lisp%" == "gcl" goto dogcl
 if "%lisp%" == "clisp" goto doclisp
 if "%lisp%" == "ecl" goto doecl
 rem Allow ccl as an alias of openmcl
-if "%lisp%" == "ccl" set lisp="openmcl"
+if "%lisp%" == "ccl" set lisp=openmcl
 if "%lisp%" == "openmcl" goto doopenmcl
 if "%lisp%" == "sbcl" goto dosbcl
 
-@echo Maxima error: lisp %lisp% not known.
+@echo Maxima error: Lisp %lisp% not known.
 goto end
 
 :dogcl
-set path=%maxima_prefix%\lib\gcc-lib\mingw32\@GCCVER@;%path
-"%maxima_imagesdir%\binary-gcl\maxima.exe" -eval "(cl-user::run)" %lisp_options% -f -- %*
+set path=%maxima_prefix%/lib/gcc-lib/mingw32/@GCCVER@;%path
+"%maxima_imagesdir%/binary-gcl/maxima.exe" -eval "(cl-user::run)" %lisp_options% -f -- %*
 goto end
 
 :doclisp
-if exist "%maxima_imagesdir%\binary-clisp\maxima.exe" goto doclisp_exec
+if exist "%maxima_imagesdir%/binary-clisp/maxima.exe" goto doclisp_exec
 
 if "%layout_autotools%" == "true" goto clisp_autotools
 clisp %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
 goto end
 
 :clisp_autotools
-set path=%maxima_imagesdir%\binary-clisp;%maxima_prefix%\clisp-2.49\base;%path%
+set path=%maxima_imagesdir%/binary-clisp;%maxima_prefix%/clisp-2.49/base;%path%
 lisp.exe %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
 goto end
 
 :clisp_exec
-"%maxima_imagesdir%\binary-clisp\maxima.exe" %lisp_options% -q "" -- %*
+"%maxima_imagesdir%/binary-clisp/maxima.exe" %lisp_options% -q "" -- %*
 goto end
 
 :doecl
@@ -146,16 +149,16 @@ goto end
 rem SBCL Steel Bank Common Lisp
 :dosbcl
 rem run executable image if it exists
-if exist "%maxima_imagesdir%\binary-sbcl\maxima.exe" goto dosbcl_exec
+if exist "%maxima_imagesdir%/binary-sbcl/maxima.exe" goto dosbcl_exec
 if "%MAXIMA_SIGNALS_THREAD%" == "" (
   set start_maxima="(cl-user::run)"
 ) else ( 
   set start_maxima="(progn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
 )
-sbcl.exe --core "%maxima_imagesdir%\binary-sbcl\maxima.core" --noinform %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options %*
+sbcl.exe --core "%maxima_imagesdir%/binary-sbcl/maxima.core" --noinform %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options %*
 goto end
 :dosbcl_exec
-"%maxima_imagesdir%\binary-sbcl\maxima.exe" %lisp_options% --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options %*
+"%maxima_imagesdir%/binary-sbcl/maxima.exe" %lisp_options% --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options %*
 goto end
 
 :doopenmcl
