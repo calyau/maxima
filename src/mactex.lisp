@@ -954,13 +954,11 @@
 				   (make-list ord :initial-element var))
 			       vars ords)))))))
 
-(defun odds(n c)
-  ;; if c=1, get the odd terms  (first, third...)
-  (cond ((null n) nil)
-	((= c 1)(cons (car n)(odds (cdr n) 0)))
-	((= c 0)(odds (cdr n) 1))))
+(defun odds (list c)
+  (ecase c
+    (1 (loop for e in list by #'cddr collect e))         ;; get the odd terms  (first, third...)
+    (0 (loop for e in (cdr list) by #'cddr collect e)))) ;; get the (second, fourth ... ) element
 
-;;
 ;; The format of MCOND expressions is documented above the definition
 ;; of DIM-MCOND in displa.lisp.  Here are some examples:
 ;;
