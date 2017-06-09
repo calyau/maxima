@@ -181,8 +181,10 @@ is EQ to FNNAME if the latter is non-NIL."
 	(decf mlambda-pointer 5)))))
 
 (defun mlambda (fn args fnname noeval form)
-  (cond ((not ($listp (cadr fn)))
-	 (merror (intl:gettext "lambda: first argument must be a list; found: ~M") (cadr fn))))
+  ; We assume that the lambda expression handed to us has been simplified,
+  ; or at least that it's well-formed.  This is because various checks are
+  ; performed during simplification instead of every time lambda expressions
+  ; are applied to arguments.
   (setq noevalargs nil)
   (let ((params  (cdadr fn))( mlocp  t))
     (setq loclist (cons nil loclist))

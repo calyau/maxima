@@ -1909,6 +1909,22 @@
 
 (defmfun simplambda (x vestigial simp-flag)
   (declare (ignore vestigial simp-flag))
+  ; Check for malformed lambda expressions.
+  ; We verify that we have a valid list of parameters and a non-empty body.
+  (let ((params (cadr x)))
+    (unless ($listp params)
+      (merror (intl:gettext "lambda: first argument must be a list; found: ~M") params))
+    (do ((params (cdr params) (cdr params)))
+        ((null params))
+      (when (mdeflistp params)
+        (setq params (cdar params)))
+      (let ((p (car params)))
+        (unless (or (symbolp p)
+                    (and (op-equalp p 'mquote)
+                         (symbolp (cadr p))))
+          (merror (intl:gettext "lambda: formal argument must be a symbol or quoted symbol; found: ~M") p)))))
+  (when (null (cddr x))
+    (merror (intl:gettext "lambda: no body present")))
   (cons '(lambda simp) (cdr x)))
 
 (defmfun simpmdef (x vestigial simp-flag)

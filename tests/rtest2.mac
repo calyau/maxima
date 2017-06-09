@@ -586,6 +586,31 @@ m(1);
 kill (functions, arrays);
 done;
 
+/* Verify that we catch malformed lambda expressions when they are simplified.
+ * These used to only be checked for if/when lambda expressions were applied
+ * to arguments.
+ */
+
+/* no parameter list */
+errcatch (lambda ())$
+[];
+
+/* empty body */
+errcatch (lambda ([x]))$
+[];
+
+/* non-symbol in parameter list */
+errcatch (lambda ([42], 'foo))$
+[];
+
+/* misplaced list parameter (for optional arguments) */
+errcatch (lambda ([[l], x], 'foo))$
+[];
+
+/* invalid list parameter (for optional arguments) */
+errcatch (lambda ([[l1, l2]], 'foo))$
+[];
+
 /* try to verify that save(...) handles arrays correctly */
 
 (kill (all),
