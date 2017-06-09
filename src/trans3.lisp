@@ -275,7 +275,7 @@
 ;;; we keep a pointer to the original FORM so that we can
 ;;; generate messages with it if need be.
 
-(defun gen-tr-lambda (form &aux arg-info frees t-form)
+(defun gen-tr-lambda (form &aux arg-info frees t-form dup)
   (setq arg-info (mapcar #'(lambda (v)
 			     (cond ((atom v) nil)
 				   ((and (eq (caar v) 'mlist)
@@ -287,6 +287,10 @@
 	     (and (member t arg-info :test #'eq)
 		  (cdr (member t arg-info :test #'eq)))) ;;; the &REST is not the last one.
 	 (tr-format (intl:gettext "error: unsupported argument list ~:M in lambda expression.~%") (cadr form))
+	 (setq tr-abort t)
+	 nil)
+	((setq dup (find-duplicate (cdadr form) :test #'eq :key #'mparam))
+	 (tr-format (intl:gettext "error: ~M occurs more than once in lambda expression parameter list") (mparam dup))
 	 (setq tr-abort t)
 	 nil)
 	(t

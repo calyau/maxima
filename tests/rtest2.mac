@@ -611,6 +611,64 @@ errcatch (lambda ([[l], x], 'foo))$
 errcatch (lambda ([[l1, l2]], 'foo))$
 [];
 
+/* Verify that the parameter/variable lists of functions, lambda expressions,
+ * macros and blocks cannot contain duplicate variables.  Lots of cases...
+ */
+
+errcatch (foo (x, x) := x)$
+[];
+
+errcatch (foo (x, 'x) := x)$
+[];
+
+errcatch (foo (x, [x]) := x)$
+[];
+
+errcatch (foo (x, ['x]) := x)$
+[];
+
+errcatch (foo [x, x] := x)$
+[];
+
+errcatch (foo [x] (y, y) := y)$
+[];
+
+errcatch (foo [x] (y, 'y) := y)$
+[];
+
+errcatch (foo [x] (y, [y]) := y)$
+[];
+
+errcatch (foo [x] (y, ['y]) := y)$
+[];
+
+errcatch (foo [x, x] (y) := y)$
+[];
+
+errcatch (lambda ([x, x], x))$
+[];
+
+errcatch (lambda ([x, 'x], x))$
+[];
+
+errcatch (lambda ([x, [x]], x))$
+[];
+
+errcatch (lambda ([x, ['x]], x))$
+[];
+
+errcatch (foo (x, x) ::= x)$
+[];
+
+errcatch (foo (x, [x]) ::= x)$
+[];
+
+errcatch (block ([x, x], x))$
+[];
+
+errcatch (block ([x, x:foo], x))$
+[];
+
 /* try to verify that save(...) handles arrays correctly */
 
 (kill (all),

@@ -436,12 +436,16 @@ is EQ to FNNAME if the latter is non-NIL."
 	  (nosimp (if aryp new (cons (cons (caar new) '(simp)) newargs)))
 	  (t (cons (cons (caar new) aryp) newargs)))))
 
+(defun mparam (var)
+  (cond ((atom var)
+         var)
+        ((atom (cadr var))
+         (cadr var))
+        (t
+         (cadadr var))))
+
 (defun mparams (vars)
-  (mapcar #'(lambda (x)
-	      (cond ((atom x) x)
-		    ((atom (cadr x)) (cadr x))
-		    (t (cadadr x))))
-	  (cdr vars)))
+  (mapcar #'mparam (cdr vars)))
 
 (defmfun mop (form)
   (if (eq (caar form) 'mqapply)
@@ -2073,6 +2077,9 @@ wrapper for this."
   (list '(lambda) (cons '(mlist) args) body))
 
 (defun mdefchk (fun args ary mqdef)
+  (let ((dup (find-duplicate args :test #'eq :key #'mparam)))
+    (when dup
+      (merror (intl:gettext "define: ~M occurs more than once in the parameter list") (mparam dup))))
   (do ((l args (cdr l)) (mfex) (mlex))
       ((null l) (and mfex (not mqdef) (mputprop fun mfex 'mfexprp))
        (and mlex (not mqdef) (mputprop fun mlex 'mlexprp)))
@@ -2264,6 +2271,9 @@ wrapper for this."
 					 v))))
 			   vars)
 	      vars (mapcar #'(lambda (v) (if (atom v) v (cadr v))) vars)))
+    (let ((dup (find-duplicate vars :test #'eq)))
+      (when dup
+        (merror (intl:gettext "block: ~M occurs more than once in the variable list") dup)))
     (mbinding (vars vals)
 	      (do ((prog prog (cdr prog)) (mprogp prog)
 		   (bindl bindlist) (val '$done) (retp) (x) ($%% '$%%))
