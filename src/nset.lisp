@@ -1345,11 +1345,10 @@
   (setq n (simpcheck (cadr n) z))
   (cond ((or ($listp n) ($setp n) ($matrixp n) (mequalp n))
 	 (thread y (cdr n) (caar n)))
-	((and (integerp n) (not (= n 0)))
-	 (let (($intfaclim))
-	   (setq n (abs n))
-	   `(($set simp) ,@(sort (mapcar #'(lambda (x) (car x)) 
-					 (divisors (cfactorw n))) '$orderlessp))))
+	((and (integerp n) (not (zerop n)))
+	 (let (($intfaclim nil)
+               (n (abs n)))
+	   `(($set simp) ,@(sort (mapcar #'car (divisors (cfactorw n))) #'<))))
 	(t `(($divisors simp) ,n))))
 
 ;; The Moebius function; it threads over lists, sets, matrices, and equalities.
