@@ -1359,14 +1359,15 @@
   (oneargcheck n)
   (setq y (caar n))
   (setq n (simpcheck (cadr n) z))
-  (cond ((and (integerp n) (> n 0))
-	 (cond ((= n 1) 1)
-	       (t
-		(let (($intfaclim))
-		  (setq n (cfactorw n))
-		  (if (every #'(lambda (x) (= 1 x)) (odds n 0))
-		      (if (evenp (ash (length n) -1)) 1 -1)
-		    0)))))
+  (cond ((posint n)
+	 (if (= n 1)
+             1
+             (let (($intfaclim nil)
+                   (pfl (get-factor-list n))) ; pfl is a list of (prime exponent) pairs
+               (if (every #'(lambda (x) (= 1 (second x))) pfl) ; if n is not
+                                                          ; squarefree return 0
+                   (if (evenp (length pfl)) 1 -1)         ; else (-1)^(number of prime factors)
+                   0))))
 	((or ($listp n) ($setp n) ($matrixp n) (mequalp n))
 	 (thread y (cdr n) (caar n)))
 	(t `(($moebius simp) ,n))))
