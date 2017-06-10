@@ -240,8 +240,8 @@
 
 (defun diagmatrix (n var fn)
   (prog (i ans)
-     (if (or (not (eq (ml-typep n) 'fixnum)) (minusp n))
-	 (improper-arg-err n fn))
+     (when (or (not (fixnump n)) (minusp n))
+       (improper-arg-err n fn))
      (setq i n)
      loop (if (zerop i) (return ans))
      (setq ans (cons (onen i n var 0) ans) i (1- i))
