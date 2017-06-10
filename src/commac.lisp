@@ -797,12 +797,13 @@ values")
       ;; Some Lisps allow TZ to be null but CLHS doesn't explicitly allow it,
       ;; so work around null TZ here.
       (if tz (decode-universal-time seconds-integer (- tz))
-        (decode-universal-time seconds-integer))
+          (decode-universal-time seconds-integer))
+      (declare (ignore day-of-week #+gcl dst-p))
       ;; HMM, CAN DECODE-UNIVERSAL-TIME RETURN TZ = NIL ??
-      (let
-        ((tz-offset
+      (let ((tz-offset
            #-gcl (if dst-p (- 1 tz) (- tz))
-           #+gcl (- tz)))  ; bug in gcl https://savannah.gnu.org/bugs/?50570
+           #+gcl (- tz)  ; bug in gcl https://savannah.gnu.org/bugs/?50570
+           ))
         (list '(mlist) year month day hours minutes (add seconds seconds-fraction) ($ratsimp tz-offset))))))
 
 ;;Some systems make everything functionp including macros:
