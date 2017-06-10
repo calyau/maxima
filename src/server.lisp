@@ -17,6 +17,12 @@
 (defvar $old_stdout)
 (defvar $old_stderr)
 
+#+ecl (defvar *old-stdin*)
+#+ecl (defvar *old-stdout*)
+#+ecl (defvar *old-sterr*)
+#+ecl (defvar *old-term-io*)
+#+ecl (defvar *old-debug-io*)
+
 (defun setup-client (port &optional (host "localhost"))
   ;; The following command has to be executed on windows before
   ;; the connection is opened. If it isn't the first unicode 
@@ -33,10 +39,10 @@
     (setq *socket-connection* sock)
     (setq $old_stderr *error-output*
 	  $old_stdout *standard-output*)
-    #+ecl (setq *old-stdin* *standard-input*
-		*old-stdout* *standard-output*
-		*old-stderr* *error-output*
-		*old-term-io* *terminal-io*
+    #+ecl (setq *old-stdin*    *standard-input*
+		*old-stdout*   *standard-output*
+		*old-sterr*    *error-output*
+		*old-term-io*  *terminal-io*
 		*old-debug-io* *debug-io*)
     (setq *standard-input* sock)
     (setq *standard-output* sock)
@@ -49,11 +55,11 @@
   (values))
 
 (defun close-client ()
-  #+ecl (setq *standard-input* *old-stdin*
+  #+ecl (setq *standard-input*  *old-stdin*
 	      *standard-output* *old-stdout*
-	      *error-output* *old-stderr*
-	      *terminal-io* *old-term-io*
-	      *debug-io* *old-debug-io*)
+	      *error-output*    *old-sterr*
+	      *terminal-io*     *old-term-io*
+	      *debug-io*        *old-debug-io*)
   #+ecl (close *socket-connection*))
 
 ;;; from CLOCC: <http://clocc.sourceforge.net>
