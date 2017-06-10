@@ -27,7 +27,7 @@
 
 (defun $decsym (name ncov ncontr covl contrl)               ;DEClare SYMmetries
        (prog (tensor)
-	     (cond ((not (eq (ml-typep name) 'symbol))
+	     (cond ((not (symbolp name))
 		    (merror "First argument must be a possible tensor name"))
 		   ((not (and (fixnump ncov)
                           (fixnump ncontr)

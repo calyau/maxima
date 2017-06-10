@@ -789,7 +789,7 @@
 (defmfun $arraymake (ary subs)
   (cond ((or (not ($listp subs)) (null (cdr subs)))
 	 (merror (intl:gettext "arraymake: second argument must be a list of one or more elements; found ~M") subs))
-	((eq (ml-typep ary) 'symbol)
+	((symbolp ary)
 	 (cons (cons (getopr ary) '(array)) (cdr subs)))
 	(t (cons '(mqapply array) (cons ary (cdr subs))))))
 
