@@ -449,7 +449,7 @@
 	       ((eq '%coth op) (cot-plus (cdr arg) '%coth 1))
 	       ((eq '%csch op) (csc/sec-plus (cdr arg) 1 '%csch '%sech 1))
 	       ((eq '%sech op) (csc/sec-plus (cdr arg) 0 '%csch '%sech 1))))
-	((and $trigexpandtimes (eq 'mtimes (caar arg)) (eq (ml-typep (cadr arg)) 'fixnum))
+	((and $trigexpandtimes (eq 'mtimes (caar arg)) (fixnump (cadr arg)))
 	 (cond ((eq '%sin op) (sin/cos-times (cddr arg) 1 (cadr arg) '%sin '%cos -1))
 	       ((eq '%cos op) (sin/cos-times (cddr arg) 0 (cadr arg) '%sin '%cos -1))
 	       ((eq '%tan op) (tan-times (cddr arg) (cadr arg) '%tan -1))

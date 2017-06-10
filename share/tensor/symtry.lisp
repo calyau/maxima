@@ -27,12 +27,12 @@
 
 (defun $decsym (name ncov ncontr covl contrl)               ;DEClare SYMmetries
        (prog (tensor)
-	     (cond ((not (eq (ml-typep name) 'symbol))
+	     (cond ((not (symbolp name))
 		    (merror "First argument must be a possible tensor name"))
-		   ((not (and (eq (ml-typep ncov) 'fixnum)
-			      (eq (ml-typep ncontr) 'fixnum)
-			      (signp ge ncov)
-			      (signp ge ncontr)))
+		   ((not (and (fixnump ncov)
+                          (fixnump ncontr)
+                          (signp ge ncov)
+                          (signp ge ncontr)))
 	            (merror
 		     "2nd and 3rd arguments must be non-negative integers"))
 		   ((not (and (eq (caar covl) 'mlist)
@@ -84,7 +84,7 @@
 			    (merror "Only one distinct index in symmetry property declaration"))
 			   (t (sort ans '<))))
 	   (setq c (car l))
-	   (cond ((not (and (eq (ml-typep c) 'fixnum) (> c 0) (< c n)))
+	   (cond ((not (and (fixnump c) (< 0 c n)))
 		  (merror "Bad argument encountered for symmetry operator"))
 		 ((not (member c ans :test #'equal)) (setq ans (cons c ans))))))
 
@@ -431,7 +431,7 @@
 	   ((null x))
 	   (setq a (car x) b (car y))
 	   (and (not (equal a b)) (return
-				   (cond ((eq (ml-typep a) 'fixnum) (< a b))
+				   (cond ((fixnump a) (< a b))
 					 ((and (listp a) (listp b)) (tensorpred a b))
 					 ((null a) t)
 					 ((null b) nil)

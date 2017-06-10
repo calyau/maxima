@@ -93,8 +93,9 @@
 
 (defmfun $reveal (e lev)
   (setq e (format1 e))
-  (cond ((and (eq (ml-typep lev) 'fixnum) (> lev 0)) (reveal e 1 lev))
-	(t (merror (intl:gettext "reveal: second argument must be a positive integer; found: ~M") lev))))
+  (if (and (fixnump lev) (plusp lev))
+      (reveal e 1 lev)
+      (merror (intl:gettext "reveal: second argument must be a positive integer; found: ~M") lev)))
 
 (defun simple (x)
   (or (atom x) (member (caar x) '(rat bigfloat) :test #'eq)))

@@ -274,7 +274,7 @@
 	 (setq p e
 	       mm* 1
 	       cargs (if mp? (list mp) nil))
-	 (when (eq (ml-typep p) 'symbol) (return p))
+	 (when (symbolp p) (return p))
 	 (when ($numberp p)
 	   (return (let (($factorflag (not scanmapp)))
 		     (factornumber p))))
@@ -301,7 +301,7 @@
 		(setq fn t)))
 	 (unless scanmapp (setq p (let (($ratfac t)) (sratsimp p))))
 	 (newvar p)
-	 (when (eq (ml-typep p) 'symbol) (return p))
+	 (when (symbolp p) (return p))
 	 (when (numberp p)
 	   (return (let (($factorflag (not scanmapp)))
 		     (factornumber p))))
