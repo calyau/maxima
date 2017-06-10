@@ -647,7 +647,7 @@ values")
       ;; so work around null TZ here.
       (if tz (decode-universal-time time-integer (- tz))
         (decode-universal-time time-integer))
-      (declare (ignore day-of-week))
+      (declare (ignore day-of-week #+gcl dst-p))
       ;; DECODE-UNIVERSAL-TIME might return a timezone offset
       ;; which is a multiple of 1/3600 but not 1/60.
       ;; We need a multiple of 1/60 because our formatted
