@@ -49,7 +49,7 @@ done
 # currently not possible using a ./configure option, so do the Lisp only build.
 # (and testing the Lisp build system does not hurt...)
 
-ABCL_JAR=/opt/abcl-bin-1.4.0/abcl.jar
+ABCL_JAR=/opt/abcl-bin-1.5.0/abcl.jar
 JAVA=$(which java)
 ABCL="$JAVA -server -Xrs -cp $ABCL_JAR org.armedbear.lisp.Main"
 
