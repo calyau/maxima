@@ -23,7 +23,7 @@ parShift(f,n,parName,degree) ::=
 
 /* It normalizes a solution by clearing the denominators */
 normalizeGZ(Gsol,Zsol) :=
-  block([i,lcm,Gres,Zres,lcm],
+  block([i,lcm,Gres,Zres],
   lcm : 1,
   for i : 1 thru length(Gsol) do
     (
@@ -154,7 +154,6 @@ parGosperVerboseOpt(f,k,n,ZAnsatzDegree,mode) :=
    _z,              /* Zeilberger Ansatz coefficients */
    allSols,
    i,
-   GosperSol,
    test_Gpoly,
    constantPart,
    GSol,

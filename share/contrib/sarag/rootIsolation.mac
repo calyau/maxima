@@ -525,7 +525,7 @@ intermidiatePoint(lhs,rhs,poly,var) :=
 
 deCasteljauRootsSign(isolListForP,p,q,var) := 
   block([sfP,sfQ,g,commonPtList,nonCommonPtList,commonInList,nonCommonInList,
-         candList,nCom,sfPCoeffList,gCoeffList,candList,
+         candList,nCom,sfPCoeffList,gCoeffList,
          bound,i,l,c,k,
          leftEnd,rightEnd,midPt,item,bernG, bernSfP, bernQ,
          sgnM,sgnL,sgnR, bernSplitSfP, bernSplitG],
@@ -711,7 +711,7 @@ removeSign(inList) :=
 
 /* Interval Intersection */
 intersectIn(inList1,inList2) := 
-  block([i,len1,len1,len2, leftEnd1,rightEnd1,leftEnd2,rightEnd2,res],
+  block([i,len1,len2, leftEnd1,rightEnd1,leftEnd2,rightEnd2,res],
 
   len1 : length(inList1),
   len2 : length(inList2),

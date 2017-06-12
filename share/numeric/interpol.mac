@@ -190,7 +190,7 @@ linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults,ratprint:fals
 /*    point_size = 3,                                                                  */
 /*    points(p)) $                                                                     */
 cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
-                               qn, un, a, b, s:0, aj, bj, cj, dj, aux,ratprint:false,tab2],
+                               qn, un, a, b, s:0, aj, bj, cj, dj, ratprint:false,tab2],
    tab2: interpol_check_input(tab,"cspline"),
    options:  ['d1, 'dn, 'varname],
    defaults: ['unknown, 'unknown, 'x],
