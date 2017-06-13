@@ -506,6 +506,18 @@ fun();
  * be added here.
  */
 
+/* no parameter list */
+(kill (f),
+ f () := lambda (),
+ translate (f))$
+[];
+
+/* empty body */
+(kill (f),
+ f () := lambda ([x]),
+ translate (f))$
+[];
+
 /* non-symbol in parameter list */
 (kill (f),
  f () := lambda ([42], 'foo),
@@ -515,6 +527,12 @@ fun();
 /* misplaced "rest" parameter */
 (kill (f),
  f () := lambda ([[l], x], 'foo),
+ translate (f))$
+[];
+
+/* invalid "rest" parameter */
+(kill (f),
+ f () := lambda ([[l1, l2]], 'foo),
  translate (f))$
 [];
 
