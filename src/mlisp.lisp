@@ -2094,7 +2094,7 @@ wrapper for this."
 	(merror (intl:gettext "define: in definition of ~:M, found bad argument ~M") fun (car l)))))
 
 (defun mdefparam (x)
-  (and (atom x) (not (maxima-constantp x)) (not (stringp x))))
+  (and (symbolp x) (not (kindp x '$constant))))
 
 (defun mdeflistp (l)
   (and (null (cdr l)) ($listp (car l)) (cdar l) (null (cddar l))))
