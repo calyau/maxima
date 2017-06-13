@@ -277,9 +277,9 @@
 
 (defun gen-tr-lambda (form &aux arg-info frees t-form dup)
   (setq arg-info (mapcar #'(lambda (v)
-			     (cond ((atom v) nil)
-				   ((and (eq (caar v) 'mlist)
-					 (atom (cadr v)))
+			     (cond ((mdefparam v) nil)
+				   ((and (op-equalp v 'mlist)
+					 (mdefparam (cadr v)))
 				    t)
 				   (t '*bad*)))
 			 (cdr (cadr form))))

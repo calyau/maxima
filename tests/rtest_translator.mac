@@ -501,6 +501,19 @@ fun();
 (compile(fun), fun());
 1 > t1;
 
+/* Verify that we catch malformed lambda expressions during translation.
+ * More checks need to be added to the translator and more tests need to
+ * be added here.
+ */
+
+/* attempting to bind a constant */
+block ([c, f],
+  local (c, f),
+  declare (c, constant),
+  f () := lambda ([c], c),
+  translate (f))$
+[];
+
 /* Verify that parameter/variable lists cannot contain duplicate variables.
  *
  * We only test a couple of cases here.  Many more tests for non-translated
