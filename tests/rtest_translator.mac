@@ -506,6 +506,18 @@ fun();
  * be added here.
  */
 
+/* non-symbol in parameter list */
+(kill (f),
+ f () := lambda ([42], 'foo),
+ translate (f))$
+[];
+
+/* misplaced "rest" parameter */
+(kill (f),
+ f () := lambda ([[l], x], 'foo),
+ translate (f))$
+[];
+
 /* attempting to bind a constant */
 block ([c, f],
   local (c, f),
