@@ -310,7 +310,7 @@
   (cond ((and (symbolp form) (get form atom-context))
 	 (funcall (get form atom-context) form result))
 	((stringp form) (dimension-string (makestring form) result))
-	((ml-typep form 'array)
+	((arrayp form)
 	 (dimension-array-object form result))
     ((and (symbolp form) (symbol-package form) (not (equal (symbol-package form) *package*)))   ; NEW
      ;; !! THE FOLLOWING DOES NOT DISPLAY NESTED PACKAGES CORRECTLY (ONLY THE INNERMOST IS DISPLAYED)
