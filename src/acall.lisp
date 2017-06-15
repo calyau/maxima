@@ -100,46 +100,49 @@
     (merror (intl:gettext "arraysetapply: second argument must be a list; found ~M") inds))
   (apply #'marrayset val ar (cdr inds)))
 
-(defmfun marrayset (val aarray &rest all-inds &aux ap (ind1 (first all-inds)) (inds (cdr all-inds)))
-  (case (ml-typep aarray)
-    ((array)
-     (case (array-element-type aarray)
-       ((fixnum flonum t)
-	(setf (apply #'aref aarray ind1 inds) val))
-       (t
-	(merror (intl:gettext "MARRAYSET: encountered array ~M of unknown type.") aarray))))
-    ((hash-table)
-     (setf (gethash (if (cdr all-inds)
-			(copy-list all-inds)
-			(car all-inds))
-		    aarray) val))
-    ((symbol)
-     (cond ((setq ap (get aarray 'array))
-	    (if (null inds)
-		(setf (aref ap ind1) val)
-		(setf (apply #'aref ap all-inds) val)))
-	   ((setq ap (mget aarray 'array))
-	    ;; the macsyma ARRAY frob is NOT an array pointer, it
-	    ;; is a GENSYM with a lisp array property, don't
-	    ;; ask me why.
-	    (if (null inds)
-		(setf (aref (symbol-array ap) ind1) val)
-		(setf (apply #'aref (symbol-array ap) all-inds) val)))
-	   ((setq ap (mget aarray 'hashar))
-	    (arrstore `((,aarray ,'array)
-			,@(mapcar #'(lambda (u) `((mquote simp) ,u)) all-inds))
-		      val))
-	   ((eq aarray 'mqapply)
-	    (apply #'marrayset val ind1 inds))
-	   (t
-	    (arrstore `((,aarray ,'array)
-			,@(mapcar #'(lambda (u) `((mquote simp) ,u)) all-inds))
-		      val))))
-    (list (if (member (caar aarray) '(mlist $matrix) :test #'eq)
-	      (list-ref aarray all-inds t val)
-	      (merror (intl:gettext "MARRAYSET: cannot assign to an element of ~M") aarray)))
-    (t
-     (merror (intl:gettext "MARRAYSET: ~M is not an array.") aarray)))
+(defmfun marrayset (val aarray &rest all-inds)
+  (let ((ind1 (first all-inds))
+        (inds (rest all-inds)))
+    (typecase aarray
+      (cl:array
+       (case (array-element-type aarray)
+         ((fixnum flonum t)
+          (setf (apply #'aref aarray ind1 inds) val))
+         (t
+          (merror (intl:gettext "MARRAYSET: encountered array ~M of unknown type.") aarray))))
+      (cl:hash-table
+       (setf (gethash (if (cdr all-inds)
+                          (copy-list all-inds)
+                          (car all-inds))
+                      aarray) val))
+      (cl:symbol
+       (let (ap)
+         (cond ((setq ap (get aarray 'array))
+                (if (null inds)
+                    (setf (aref ap ind1) val)
+                    (setf (apply #'aref ap all-inds) val)))
+               ((setq ap (mget aarray 'array))
+                ;; the macsyma ARRAY frob is NOT an array pointer, it
+                ;; is a GENSYM with a lisp array property, don't
+                ;; ask me why.
+                (if (null inds)
+                    (setf (aref (symbol-array ap) ind1) val)
+                    (setf (apply #'aref (symbol-array ap) all-inds) val)))
+               ((setq ap (mget aarray 'hashar))
+                (arrstore `((,aarray ,'array)
+                            ,@(mapcar #'(lambda (u) `((mquote simp) ,u)) all-inds))
+                          val))
+               ((eq aarray 'mqapply)
+                (apply #'marrayset val ind1 inds))
+               (t
+                (arrstore `((,aarray ,'array)
+                            ,@(mapcar #'(lambda (u) `((mquote simp) ,u)) all-inds))
+                          val)))))
+      (cl:list (if (member (caar aarray) '(mlist $matrix) :test #'eq)
+                   (list-ref aarray all-inds t val)
+                   (merror (intl:gettext "MARRAYSET: cannot assign to an element of ~M") aarray)))
+      (t
+       (merror (intl:gettext "MARRAYSET: ~M is not an array.") aarray)))      )
   val)
 
 ;;; Note that all these have HEADERS on the list. The CAR of a list I
