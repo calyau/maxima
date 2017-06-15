@@ -331,8 +331,8 @@
 ;; Some functions for even faster calling of arrays.
 
 (defun marrayref1$ (aarray index)
-  (case (ml-typep aarray)
-    ((aarray)
+  (typecase aarray
+    (cl:array
      (case (array-element-type aarray)
        ((flonum) (aref aarray index))
        (t (merror (intl:gettext "MARRAYREF1$: array must be an array of floats; found ~M") aarray))))
@@ -340,8 +340,8 @@
      (marrayref aarray index))))
 
 (defun marrayset1$ (value aarray index)
-  (case (ml-typep aarray)
-    ((aarray)
+  (typecase aarray
+    (cl:array
      (case (array-element-type aarray)
        ((flonum) (setf (aref aarray index) value))
        (t (merror (intl:gettext "MARRAYSET1$: array must be an array of floats; found ~M") aarray))))
