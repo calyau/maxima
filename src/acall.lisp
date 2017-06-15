@@ -37,16 +37,16 @@
 
 (defmfun marrayref (aarray ind1 &rest inds)
   (declare (special fixunbound flounbound))
-  (case (ml-typep aarray)
-    ((array)
+  (typecase aarray
+    (cl:array
      (case (array-element-type aarray)
        ((flonum fixnum t)
 	(apply #'aref aarray ind1 inds))
        (t
 	(merror (intl:gettext "MARRAYREF: encountered array ~M of unknown type.") aarray))))
-    ((hash-table)
+    (cl:hash-table
      (gethash (if inds (cons ind1 inds) inds) aarray))
-    ((symbol)
+    (cl:symbol
      (if $use_fast_arrays
          (let ((tem (and (boundp aarray) (symbol-value aarray))))
            (simplify (cond ((arrayp tem)
@@ -62,7 +62,7 @@
                            (t
                             (error "unknown type of array for use_fast_arrays. ~
 			       the value cell should have the array or hash table")))))
-         (let (ap)  ; no fast arrays
+         (let (ap)                      ; no fast arrays
            (simplify (cond ((setq ap (get aarray 'array))
                             (let ((val (if (null inds)
                                            (aref ap ind1)
@@ -83,7 +83,7 @@
                             (apply #'marrayref ind1 inds))
                            (t
                             `((,aarray  array) ,ind1  ,@inds)))))))
-    ((list)
+    (cl:list
      (simplify (if (member (caar aarray) '(mlist $matrix) :test #'eq)
 		   (list-ref aarray (cons ind1 inds))
 		   `((mqapply aarray) ,aarray ,ind1 ,@inds))))
