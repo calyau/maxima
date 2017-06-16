@@ -29,18 +29,22 @@
 
 (defun pquocof (p q)
   (let ((qq (testdivide p q)))
-    (cond (qq (list q qq 1))
-	  ((list 1 p q)))))
+    (if qq
+        (list q qq 1)
+        (list 1 p q))))
 
 (defun polyst (a)
-  (cond ((pcoefp a) (list a))
-	(t (cons (cons (car a) (cadr a)) (polyst (caddr a))))))
+  (if (pcoefp a)
+      (list a)
+      (cons (cons (car a) (cadr a)) (polyst (caddr a)))))
 
 (defun cdinf (a b both)
-  (cond ((or (pcoefp a) (pcoefp b)) (list 1 a b))
-	(t (setq a (ncons (copy-tree a))
-		 b (ncons (cond (both (copy-tree b))(t b))))
-	   (list (cd1 a b both) (car a) (car b)))))
+  (cond ((or (pcoefp a) (pcoefp b))
+         (list 1 a b))
+	(t
+         (setq a (ncons (copy-tree a))
+               b (ncons (if both (copy-tree b) b)))
+         (list (cd1 a b both) (car a) (car b)))))
 
 (defun cd1 (a b both)
   (cond ((or (pcoefp (car a)) (pcoefp (car b))) 1)
@@ -65,16 +69,20 @@
   (setq l (lmake p l))
   (mapc #'(lambda (x) (rplaca x (getunhack (car x))))
 	(cdr l))
-  (cond ((equal (car l) 1) (cdr l))
-	(t (rplaca l (cons (car l) 1)))))
+  (if (equal (car l) 1)
+      (cdr l)
+      (rplaca l (cons (car l) 1))))
 
 
 (defun pmake (l)
-  (cond ((null l) 1)
-	((= 0 (cdar l)) (pmake (cdr l)))
+  (cond ((null l)
+         1)
+	((zerop (cdar l))
+         (pmake (cdr l)))
 	((numberp (caar l))	     ;CLAUSE SHOULD BE ELIMINATED ASAP
 	 (ptimes (cexpt (caar l) (cdar l)) (pmake (cdr l))))
-	(t (ptimes (list (caar l) (cdar l) 1) (pmake (cdr l))))))
+	(t
+         (ptimes (list (caar l) (cdar l) 1) (pmake (cdr l))))))
 
 (defun facmgcd (pl)            ;GCD OF POLY LIST FOR EZGCD WITH RATFAC
   (do ((l (cdr pl) (cdr l))
@@ -85,7 +93,8 @@
     (cond ((equal (car gcd) 1) (return (cons 1 pl)))
 	  ((null ans) (setq ans (list (cadr gcd))))
 	  ((not (equal (cadr gcd) 1))
-	   (do ((l2 ans (cdr l2))) ((null l2))
+	   (do ((l2 ans (cdr l2)))
+               ((null l2))
 	     (rplaca l2 (ptimes (cadr gcd) (car l2))))))))
 
 
@@ -153,13 +162,16 @@
      (return (list g a b))))
 
 (defun makprodg (p sw)
-  (cond ((pcoefp p) p)
-	(t (car (makprod p sw)))))
+  (if (pcoefp p)
+      p
+      (car (makprod p sw))))
 
 (defun dopgcdcofacts (x y)
-  (let (($gcd
-	 $gcd)( $ratfac nil)) (or (member $gcd *gcdl* :test #'eq) (setq $gcd '$ez))
-	 (pgcdcofacts x y)))
+  (let (($gcd $gcd)
+        ($ratfac nil))
+    (unless (member $gcd *gcdl* :test #'eq)
+      (setq $gcd '$ez))
+    (pgcdcofacts x y)))
 
 (defun facrplus (x y)
   (let ((a (car x))
@@ -201,9 +213,9 @@
 		   (ptimeschk (car h) (ptimeschk (caddr x) (caddr y))))))))
 
 (defun pfacprod (poly) 			;FOR RAT3D
-  (cond ((pcoefp poly) (cfactor poly))
-	(t (nconc (pfacprod (caddr poly))
-		  (list (pget (car poly)) (cadr poly))))))
+  (if (pcoefp poly)
+      (cfactor poly)
+      (nconc (pfacprod (caddr poly)) (list (pget (car poly)) (cadr poly)))))
 
 (defun fpcontent (poly)
   (let (($ratfac nil))			;algebraic uses
@@ -219,7 +231,7 @@
 
 ;; LOWDEG written to compute the lowest degree of a polynomial. - RZ
 
-(defmfun lowdeg (p)
+(defun lowdeg (p)
   (do ((l p (cddr l)))
       ((null (cddr l)) (car l))))
 
@@ -272,10 +284,8 @@
 		(a (cdddr p) (cddr a))
 		(ans (pflat1 (caddr p))))
 	       ((null a) (ptimes ans (pexpt val ld)))
-	     (setq ans
-		   (pplus (ptimes ans
-				  (pexpt val (- ld (car a))))
-			  (pflat1 (cadr a))))))))
+	     (setq ans (pplus (ptimes ans (pexpt val (- ld (car a))))
+                              (pflat1 (cadr a))))))))
 
 (defun pirredp (x)
   (and (setq x (get x 'disrep))
