@@ -2272,26 +2272,30 @@ wrapper for this."
       (when dup
         (merror (intl:gettext "block: ~M occurs more than once in the variable list") dup)))
     (setq loclist (cons nil loclist))
-    (mbinding (vars vals)
-	      (do ((prog prog (cdr prog)) (mprogp prog)
-		   (bindl bindlist) (val '$done) (retp) (x) ($%% '$%%))
-		  ((null prog) (munlocal) val)
-		(cond ((atom (car prog))
-		       (if (null (cdr prog))
-			   (setq retp t val (meval (car prog)))))
-		      ((null (setq x (catch 'mprog
-				       (prog2 (setq val (setq $%% (meval (car prog))))
-					   nil)))))
-		      ((not (eq bindl bindlist))
-		       (if (not (atom x))
-                 ;; DUNNO WHAT'S "ILLEGAL" HERE
-			   (merror (intl:gettext "block: illegal 'return': ~M") (car x))
-                 ;; DUNNO WHAT'S "ILLEGAL" HERE
-			   (merror (intl:gettext "block: illegal 'go': ~M") x)))
-		      ((not (atom x)) (setq retp t val (car x)))
-		      ((not (setq prog (member x mprogp :test #'equal)))
-		       (merror (intl:gettext "block: no such tag: ~:M") x)))
-		(if retp (setq prog '(nil)))))))
+    ; Ensure that MUNLOCAL gets called so that we don't leak local
+    ; properties if we run into an error
+    (unwind-protect
+	(mbinding (vars vals)
+		  (do ((prog prog (cdr prog)) (mprogp prog)
+		       (bindl bindlist) (val '$done) (retp) (x) ($%% '$%%))
+		      ((null prog) val)
+		    (cond ((atom (car prog))
+			   (if (null (cdr prog))
+			       (setq retp t val (meval (car prog)))))
+			  ((null (setq x (catch 'mprog
+					   (prog2 (setq val (setq $%% (meval (car prog))))
+					       nil)))))
+			  ((not (eq bindl bindlist))
+			   (if (not (atom x))
+			       ;; DUNNO WHAT'S "ILLEGAL" HERE
+			       (merror (intl:gettext "block: illegal 'return': ~M") (car x))
+			       ;; DUNNO WHAT'S "ILLEGAL" HERE
+			       (merror (intl:gettext "block: illegal 'go': ~M") x)))
+			  ((not (atom x)) (setq retp t val (car x)))
+			  ((not (setq prog (member x mprogp :test #'equal)))
+			   (merror (intl:gettext "block: no such tag: ~:M") x)))
+		    (if retp (setq prog '(nil)))))
+      (munlocal))))
 
 (defmfun mreturn (&optional (x nil) &rest args)
   (cond 
