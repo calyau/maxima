@@ -14,20 +14,11 @@
 
 (load-macsyma-macros rzmac ratmac)
 
-;; (defun newsym2 (p e)
-;;   (let ((g (gensym)))
-;;     (putprop g e 'disrep)
-;;     (valput g (1- (valget (car genvar))))
-;;     (push g genvar)
-;;     (push e varlist)
-;;     (putprop g p 'unhacked)
-;;     g))
+(defun getunhack (gen)
+  (or (get gen 'unhacked) (pget gen)))
 
-(defun getunhack (gen) (or (get gen 'unhacked) (pget gen)))
-
-(defmacro getdis (x) `(get ,x 'disrep))
-
-(defun frpoly? (r) (equal 1 (cdr r)))
+(defun frpoly? (r)
+  (equal 1 (cdr r)))
 
 (defmacro setcall (&rest l)
   (setq l (cons 'setcall l))
@@ -290,16 +281,16 @@
 			  (pflat1 (cadr a))))))))
 
 (defun pirredp (x)
-  (and (setq x (getdis x))
-       (or (atom x) (member 'irreducible (cdar x) :test #'eq))))
+  (and (setq x (get x 'disrep))
+     (or (atom x) (member 'irreducible (cdar x) :test #'eq))))
 
 (defun knownfactors (d)
-  (prog (h)
-     (cond ((pcoefp d) (return d)))
-     (setq h (getdis (car d)))
-     (return (cond ((or (atom h) (not (eq (caar h) 'mtimes)))
-		    (ptimes (knownfactors (caddr d))
-			    (list (car d) (cadr d) 1)))
-		   (t (setq h (getunhack (car d)))
-		      (ptimes (knownfactors (caddr d))
-			      (pexpt (knownfactors h) (cadr d))))))))
+  (when (pcoefp d)
+    (return-from knownfactors d))
+  (let ((h (get (car d) 'disrep)))
+    (cond ((or (atom h) (not (eq (caar h) 'mtimes)))
+           (ptimes (knownfactors (caddr d))
+                   (list (car d) (cadr d) 1)))
+          (t (setq h (getunhack (car d)))
+             (ptimes (knownfactors (caddr d))
+                     (pexpt (knownfactors h) (cadr d)))))))
