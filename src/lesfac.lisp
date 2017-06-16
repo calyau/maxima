@@ -206,14 +206,13 @@
 		  (list (pget (car poly)) (cadr poly))))))
 
 (defun fpcontent (poly)
-  (let (($ratfac
-	 nil))				;algebraic uses
+  (let (($ratfac nil))			;algebraic uses
     (setq poly (oldcontent poly))	;rattimes?
     (let ((a (lowdeg (cdadr poly))))	;main var. content
-      (cond ((> a 0) (setq a (list (caadr poly) a 1))
-	     (setq poly
-		   (list (ptimes (car poly) a)
-			 (pquotient (cadr poly) a))))))
+      (when (plusp a)
+        (setq a (list (caadr poly) a 1))
+        (setq poly (list (ptimes (car poly) a)
+                         (pquotient (cadr poly) a)))))
     (if (pminusp (cadr poly))
 	(list (pminus (car poly)) (pminus (cadr poly)))
 	poly)))
@@ -256,15 +255,13 @@
       (pget (maksym p))))
 
 (defun pflatten (h)
-  (prog (m)
-     (setq m (listovars h))
-     checkmore
-     (cond ((null m) (return h))
-	   ((not (let ((p (getunhack (car m))))
-		   (or (null p) (eq (car m) (car p)))))
-	    (go redo))
-	   (t (setq m (cdr m)) (go checkmore)))
-     redo (return (let ($ratfac) (pflat1 h)))))
+  (do ((m (listovars h) (cdr m)))
+      ((null m) (return-from pflatten h))
+    (unless (let ((p (getunhack (car m))))
+              (or (null p) (eq (car m) (car p))))
+     (return-from pflatten (let (($ratfac nil)) (pflat1 h)))))
+  (let (($ratfac nil))
+    (pflat1 h)))
 
 (defun pflat1 (p)
   (cond ((pcoefp p) p)
@@ -283,4 +280,3 @@
 (defun pirredp (x)
   (and (setq x (get x 'disrep))
      (or (atom x) (member 'irreducible (cdar x) :test #'eq))))
-
