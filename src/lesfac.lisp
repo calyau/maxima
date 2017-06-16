@@ -20,12 +20,11 @@
 (defun frpoly? (r)
   (equal 1 (cdr r)))
 
-(defmacro setcall (&rest l)
-  (setq l (cons 'setcall l))
-  (sublis (list (cons 'fncall (cdr l))
-		(cons 'a (caddr l))
-		(cons 'b (cadddr l)))
-	  '(prog1 (car (setq a fncall)) (setq b (caddr a) a (cadr a)))))
+(defmacro setcall (fn a b &rest args)
+  `(prog1
+       (first (setq ,a (,fn ,a ,b ,@args)))
+     (setq ,b (third ,a)
+           ,a (second ,a))))
 
 (defun pquocof (p q)
   (let ((qq (testdivide p q)))
