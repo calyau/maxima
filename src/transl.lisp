@@ -928,7 +928,12 @@ APPLY means like APPLY.")
   '($any . nil))
 
 (def%tr mdefmacro (form)
-  (meval form) ;; HMM, THIS HAS A SIDE EFFECT AT THE TIME OF TRANSLATION !!
+  (tr-format (intl:gettext "warning: globally defining macro ~:M now to ensure correct macro expansions.~%") (caaadr form))
+  ; Define the macro now to ensure that it's defined when it's time
+  ; to expand it.  It's a bug that this definition occurs during
+  ; translation without being cleaned it up afterward, but simply
+  ; removing this breaks things.
+  (meval form)
   `($any . (meval ',form)))
 
 (def%tr $local (form)
