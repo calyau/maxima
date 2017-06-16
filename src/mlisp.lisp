@@ -2257,7 +2257,6 @@ wrapper for this."
   (setq prog (cdr prog))
   (let (vars vals (mlocp t))
     (if ($listp (car prog)) (setq vars (cdar prog) prog (cdr prog)))
-    (setq loclist (cons nil loclist))
     (do ((l vars (cdr l))) ((null l) (setq vals vars))
       (if (not (atom (car l))) (return (setq vals t))))
     (if (eq vals t)
@@ -2272,6 +2271,7 @@ wrapper for this."
     (let ((dup (find-duplicate vars :test #'eq)))
       (when dup
         (merror (intl:gettext "block: ~M occurs more than once in the variable list") dup)))
+    (setq loclist (cons nil loclist))
     (mbinding (vars vals)
 	      (do ((prog prog (cdr prog)) (mprogp prog)
 		   (bindl bindlist) (val '$done) (retp) (x) ($%% '$%%))
