@@ -14,19 +14,18 @@
 
 (load-macsyma-macros rzmac ratmac)
 
-(defun newsym2 (p e &aux (g (gensym)))
-  (putprop g e 'disrep)
-  (valput g (1- (valget (car genvar))))
-  (setq genvar (cons g genvar))
-  (setq varlist (cons e varlist))
-  (putprop g p 'unhacked)
-  g)
+;; (defun newsym2 (p e)
+;;   (let ((g (gensym)))
+;;     (putprop g e 'disrep)
+;;     (valput g (1- (valget (car genvar))))
+;;     (push g genvar)
+;;     (push e varlist)
+;;     (putprop g p 'unhacked)
+;;     g))
 
 (defun getunhack (gen) (or (get gen 'unhacked) (pget gen)))
 
 (defmacro getdis (x) `(get ,x 'disrep))
-
-(defmacro cons1 (x) `(cons ,x 1))
 
 (defun frpoly? (r) (equal 1 (cdr r)))
 
@@ -251,11 +250,19 @@
     (and (alike1 p (car v)) (return (pget (car g))))))
 
 (defun maksym (p)
-  (newsym2 p (pdis p)))
+  (let ((g (gensym))
+        (e (pdis p)))
+    (putprop g e 'disrep)
+    (valput g (1- (valget (car genvar))))
+    (push g genvar)
+    (push e varlist)
+    (putprop g p 'unhacked)
+    g))
 
 (defun maksymp (p)
-  (cond ((atom p) p)
-	(t (pget (maksym p)))))
+  (if (atom p)
+      p
+      (pget (maksym p))))
 
 (defun pflatten (h)
   (prog (m)
