@@ -284,13 +284,3 @@
   (and (setq x (get x 'disrep))
      (or (atom x) (member 'irreducible (cdar x) :test #'eq))))
 
-(defun knownfactors (d)
-  (when (pcoefp d)
-    (return-from knownfactors d))
-  (let ((h (get (car d) 'disrep)))
-    (cond ((or (atom h) (not (eq (caar h) 'mtimes)))
-           (ptimes (knownfactors (caddr d))
-                   (list (car d) (cadr d) 1)))
-          (t (setq h (getunhack (car d)))
-             (ptimes (knownfactors (caddr d))
-                     (pexpt (knownfactors h) (cadr d)))))))
