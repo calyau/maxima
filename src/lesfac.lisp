@@ -29,8 +29,8 @@
 (defun pquocof (p q)
   (let ((qq (testdivide p q)))
     (if qq
-        (list q qq 1)
-        (list 1 p q))))
+        (values q qq 1)
+        (values 1 p q))))
 
 (defun polyst (a)
   (if (pcoefp a)
@@ -112,7 +112,7 @@
 ;;	INTEGER COEF GCD=1 AND LEADCOEF. IS POS.
 
 (defun lgcd1 (a b)
-  (prog (ptlist g bj c t1 d1 d2)
+  (prog (ptlist g bj c t1 d1 d2 dummy)
      (setq ptlist (mapcar #'(lambda (ig) (declare (ignore ig)) b) a))
      (do ((a a (cdr a))
 	  (ptlist ptlist (cdr ptlist)))
@@ -124,16 +124,20 @@
 	 (setq d1 1 d2 1)
 	 (setq bj (getunhack (caar b)))
 	 (setq c (cond ((pirredp (caar a))
-			(cond ((pirredp (caar b)) 1)
-			      (t (setcall pquocof bj ai))))
-		       ((pirredp (caar b)) (setcall pquocof ai bj))
-		       (t (setcall pgcdcofacts ai bj))))
+			(if (pirredp (caar b))
+                            1
+                            (multiple-value-setq (dummy bj ai) (pquocof bj ai))))
+		       ((pirredp (caar b))
+                        (multiple-value-setq (dummy ai bj) (pquocof ai bj)))
+		       (t
+                        (setcall pgcdcofacts ai bj))))
 	 (cond ((equal c 1) (go nextb))
 	       ((equal ai 1) (go bloop)))
 	aloop
-	 (cond ((setq t1 (testdivide ai c))
-		(setq ai t1 d1 (1+ d1))
-		(go aloop)))
+	 (when (setq t1 (testdivide ai c))
+           (setq ai t1)
+           (incf d1)
+           (go aloop))
 	bloop
 	 (and (= d1 1)
 	      (not (equal bj 1))
