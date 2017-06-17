@@ -277,9 +277,7 @@
       ((null m) (return-from pflatten h))
     (unless (let ((p (getunhack (car m))))
               (or (null p) (eq (car m) (car p))))
-     (return-from pflatten (let (($ratfac nil)) (pflat1 h)))))
-  (let (($ratfac nil))
-    (pflat1 h)))
+     (return-from pflatten (let (($ratfac nil)) (pflat1 h))))))
 
 (defun pflat1 (p)
   (cond ((pcoefp p) p)
