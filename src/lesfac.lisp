@@ -39,11 +39,11 @@
 
 (defun cdinf (a b both)
   (cond ((or (pcoefp a) (pcoefp b))
-         (list 1 a b))
+         (values 1 a b))
 	(t
          (setq a (ncons (copy-tree a))
                b (ncons (if both (copy-tree b) b)))
-         (list (cd1 a b both) (car a) (car b)))))
+         (values (cd1 a b both) (car a) (car b)))))
 
 (defun cd1 (a b both)
   (cond ((or (pcoefp (car a)) (pcoefp (car b))) 1)
@@ -183,16 +183,17 @@
 	(d (cdr y)))
     (setq x (setcall dopgcdcofacts a c)
 	  y (setcall fpgcdco b d))
-    (setq a (makprod
-	     (pplus (pflatten (ptimeschk a d))
-		    (pflatten (ptimeschk b c))) nil))
+    (setq a (makprod (pplus (pflatten (ptimeschk a d))
+                            (pflatten (ptimeschk b c))) nil))
     (setq b (ptimeschk b d))
-    (cond ($algebraic (setq y (ptimeschk y b))
-		      (setcall fpgcdco y a) ;for unexpected gcd
-		      (cons (ptimes x a) y))
-	  (t (setq c (setcall cdinf y b nil))
-	     (setcall fpgcdco y a)
-	     (cons (ptimes x a) (ptimeschk y (ptimeschk c b)))))))
+    (cond ($algebraic
+           (setq y (ptimeschk y b))
+           (setcall fpgcdco y a) ;for unexpected gcd
+           (cons (ptimes x a) y))
+	  (t
+           (multiple-value-setq (c y b) (cdinf y b nil))
+           (setcall fpgcdco y a)
+           (cons (ptimes x a) (ptimeschk y (ptimeschk c b)))))))
 
 (defun mfacpplus (l)
   (let (($gcd (or $gcd '$ez))
@@ -206,14 +207,15 @@
 	       ((null ll) (ptimes g (makprod a nil))))))))
 
 (defun  facrtimes (x y gcdsw)
-  (cond ((not gcdsw)
-	 (cons (ptimes (car x) (car y)) (ptimeschk (cdr x) (cdr y))))
-	(t (let ((g (cdinf (car x) (car y) t))
-		 (h (cdinf (cdr x) (cdr y) t)))
-	     (setq x (fpgcdco (cadr g) (caddr h)))
-	     (setq y (fpgcdco (caddr g) (cadr h)))
-	     (cons (ptimes (car g) (ptimes (cadr x) (cadr y)))
-		   (ptimeschk (car h) (ptimeschk (caddr x) (caddr y))))))))
+  (if (not gcdsw)
+      (cons (ptimes (car x) (car y)) (ptimeschk (cdr x) (cdr y)))
+      ;; gcdsw = true
+      (multiple-value-bind (g1 g2 g3) (cdinf (car x) (car y) t)
+        (multiple-value-bind (h1 h2 h3) (cdinf (cdr x) (cdr y) t)
+          (setq x (fpgcdco g2 h3))
+          (setq y (fpgcdco g3 h2))
+          (cons (ptimes g1 (ptimes (cadr x) (cadr y)))
+                (ptimeschk h1 (ptimeschk (caddr x) (caddr y))))))))
 
 (defun pfacprod (poly) 			;FOR RAT3D
   (if (pcoefp poly)
@@ -243,7 +245,8 @@
 	((null (cdddr poly))
 	 (ptimes (list (car poly) (cadr poly) 1)
 		 (makprod (caddr poly) contswitch)))
-	(contswitch (makprod1 poly))
+	(contswitch
+         (makprod1 poly))
 	(t (setq poly (fpcontent poly))
 	   (ptimes (makprod (car poly) contswitch) (makprod1 (cadr poly))))))
 
