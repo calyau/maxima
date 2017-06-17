@@ -58,20 +58,20 @@
 	(t (cd1 a (cddar b) both))))
 
 (defun lmake (p l)
-  (cond ((pcoefp p) (cons p l))
+  (cond ((pcoefp p)
+         (cons p l))
 	((get (car p) 'unhacked)
 	 (lmake (caddr p) (cons (cons (car p) (cadr p)) l)))
-	(t (setq l (lmake (caddr p) l))
-	   (rplaca l (list (car p) (cadr p) (car l))))))
+	(t
+         (setq l (lmake (caddr p) l))
+         (rplaca l (list (car p) (cadr p) (car l))))))
 
 (defun lmake2 (p l)
   (setq l (lmake p l))
-  (mapc #'(lambda (x) (rplaca x (getunhack (car x))))
-	(cdr l))
+  (mapc #'(lambda (x) (rplaca x (getunhack (car x)))) (cdr l))
   (if (equal (car l) 1)
       (cdr l)
       (rplaca l (cons (car l) 1))))
-
 
 (defun pmake (l)
   (cond ((null l)
@@ -82,6 +82,18 @@
 	 (ptimes (cexpt (caar l) (cdar l)) (pmake (cdr l))))
 	(t
          (ptimes (list (caar l) (cdar l) 1) (pmake (cdr l))))))
+
+(defun fpgcdco (p q)
+  (let ($ratfac gcdl)			;FACTORED PGCDCOFACTS
+    (cond ((or (pcoefp p) (pcoefp q))
+           (pgcdcofacts p q))
+	  (t
+           (list (ptimeschk (setcall pgcdcofacts p q)
+                            (car (setq p (lmake p nil)
+                                       q (lmake q nil)
+                                       gcdl (mapcar #'pmake (lgcd1 (cdr p) (cdr q))))))
+                 (ptimeschk (car p) (cadr gcdl))
+                 (ptimeschk (car q) (caddr gcdl)))))))
 
 (defun facmgcd (pl)            ;GCD OF POLY LIST FOR EZGCD WITH RATFAC
   (do ((l (cdr pl) (cdr l))
@@ -95,18 +107,6 @@
 	   (do ((l2 ans (cdr l2)))
                ((null l2))
 	     (rplaca l2 (ptimes (cadr gcd) (car l2))))))))
-
-
-(defun fpgcdco (p q)
-  (let ($ratfac gcdl)			;FACTORED PGCDCOFACTS
-    (cond ((or (pcoefp p) (pcoefp q)) (pgcdcofacts p q))
-	  (t (list (ptimeschk
-		    (setcall pgcdcofacts p q)
-		    (car (setq p (lmake p nil)
-			       q (lmake q nil)
-			       gcdl (mapcar 'pmake (lgcd1 (cdr p) (cdr q)) ))))
-		   (ptimeschk (car p) (cadr gcdl))
-		   (ptimeschk (car q) (caddr gcdl)))))))
 
 ;;	NOTE: ITEMS ON VARLIST ARE POS. NORMAL
 ;;	INTEGER COEF GCD=1 AND LEADCOEF. IS POS.
