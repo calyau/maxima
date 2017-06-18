@@ -35,54 +35,55 @@
 
 ;;; ((MQAPPLY ARRAY) X Y) is a strange form, meaning (X)[Y].
 
-(defmfun marrayref (aarray ind1 &rest inds &aux ap tem)
+(defmfun marrayref (aarray ind1 &rest inds)
   (declare (special fixunbound flounbound))
-  (case (ml-typep aarray)
-    ((array)
+  (typecase aarray
+    (cl:array
      (case (array-element-type aarray)
        ((flonum fixnum t)
 	(apply #'aref aarray ind1 inds))
        (t
 	(merror (intl:gettext "MARRAYREF: encountered array ~M of unknown type.") aarray))))
-    ((hash-table)
+    (cl:hash-table
      (gethash (if inds (cons ind1 inds) inds) aarray))
-    ((symbol)
-     (cond ($use_fast_arrays
-	    (setq tem (and (boundp aarray) (symbol-value aarray)))
-	    (simplify (cond ((arrayp tem) (apply 'aref tem ind1 inds))
-			    ((hash-table-p tem)
-			     (gethash (if inds (cons ind1 inds) inds)
-				      tem))
-			    ((eq aarray 'mqapply)
-			     (apply #'marrayref ind1 inds))
-			    ((mget aarray 'hashar)
-			     (harrfind `((,aarray array) ,ind1 ,@inds)))
-			    ((symbolp tem)
-			     `((,tem array) ,ind1 ,@inds))
-			    (t (error "unknown type of array for use_fast_arrays. ~
+    (cl:symbol
+     (if $use_fast_arrays
+         (let ((tem (and (boundp aarray) (symbol-value aarray))))
+           (simplify (cond ((arrayp tem)
+                            (apply #'aref tem ind1 inds))
+                           ((hash-table-p tem)
+                            (gethash (if inds (cons ind1 inds) inds) tem))
+                           ((eq aarray 'mqapply)
+                            (apply #'marrayref ind1 inds))
+                           ((mget aarray 'hashar)
+                            (harrfind `((,aarray array) ,ind1 ,@inds)))
+                           ((symbolp tem)
+                            `((,tem array) ,ind1 ,@inds))
+                           (t
+                            (error "unknown type of array for use_fast_arrays. ~
 			       the value cell should have the array or hash table")))))
-	   (t
-	    (simplify (cond ((setq ap (get aarray 'array))
-			     (let ((val (if (null inds)
-					    (aref ap ind1)
-					    (apply #'aref (append (list ap ind1) inds)))))
-			       ;; Check for KLUDGING array function implementation.
-			       (if (case (array-element-type ap)
-				     ((flonum) (= val flounbound))
-				     ((fixnum) (= val fixunbound))
-				     ((t) (eq val munbound))
-				     (t (merror (intl:gettext "MARRAYREF: encountered array pointer ~S of unknown type.") ap)))
-				   (arrfind `((,aarray ,aarray) ,ind1 ,@inds))
-				   val)))
-			    ((setq ap (mget aarray 'array))
-			     (arrfind `((,aarray array) ,ind1 ,@inds)))
-			    ((setq ap (mget aarray 'hashar))
-			     (harrfind `((,aarray array) ,ind1  ,@inds)))
-			    ((eq aarray 'mqapply)
-			     (apply #'marrayref ind1 inds))
-			    (t
-			     `((,aarray  array) ,ind1  ,@inds)))))))
-    ((list)
+         (let (ap)                      ; no fast arrays
+           (simplify (cond ((setq ap (get aarray 'array))
+                            (let ((val (if (null inds)
+                                           (aref ap ind1)
+                                           (apply #'aref (append (list ap ind1) inds)))))
+                              ;; Check for KLUDGING array function implementation.
+                              (if (case (array-element-type ap)
+                                    ((flonum) (= val flounbound))
+                                    ((fixnum) (= val fixunbound))
+                                    ((t) (eq val munbound))
+                                    (t (merror (intl:gettext "MARRAYREF: encountered array pointer ~S of unknown type.") ap)))
+                                  (arrfind `((,aarray ,aarray) ,ind1 ,@inds))
+                                  val)))
+                           ((setq ap (mget aarray 'array))
+                            (arrfind `((,aarray array) ,ind1 ,@inds)))
+                           ((setq ap (mget aarray 'hashar))
+                            (harrfind `((,aarray array) ,ind1  ,@inds)))
+                           ((eq aarray 'mqapply)
+                            (apply #'marrayref ind1 inds))
+                           (t
+                            `((,aarray  array) ,ind1  ,@inds)))))))
+    (cl:list
      (simplify (if (member (caar aarray) '(mlist $matrix) :test #'eq)
 		   (list-ref aarray (cons ind1 inds))
 		   `((mqapply aarray) ,aarray ,ind1 ,@inds))))
@@ -99,46 +100,49 @@
     (merror (intl:gettext "arraysetapply: second argument must be a list; found ~M") inds))
   (apply #'marrayset val ar (cdr inds)))
 
-(defmfun marrayset (val aarray &rest all-inds &aux ap (ind1 (first all-inds)) (inds (cdr all-inds)))
-  (case (ml-typep aarray)
-    ((array)
-     (case (array-element-type aarray)
-       ((fixnum flonum t)
-	(setf (apply #'aref aarray ind1 inds) val))
-       (t
-	(merror (intl:gettext "MARRAYSET: encountered array ~M of unknown type.") aarray))))
-    ((hash-table)
-     (setf (gethash (if (cdr all-inds)
-			(copy-list all-inds)
-			(car all-inds))
-		    aarray) val))
-    ((symbol)
-     (cond ((setq ap (get aarray 'array))
-	    (if (null inds)
-		(setf (aref ap ind1) val)
-		(setf (apply #'aref ap all-inds) val)))
-	   ((setq ap (mget aarray 'array))
-	    ;; the macsyma ARRAY frob is NOT an array pointer, it
-	    ;; is a GENSYM with a lisp array property, don't
-	    ;; ask me why.
-	    (if (null inds)
-		(setf (aref (symbol-array ap) ind1) val)
-		(setf (apply #'aref (symbol-array ap) all-inds) val)))
-	   ((setq ap (mget aarray 'hashar))
-	    (arrstore `((,aarray ,'array)
-			,@(mapcar #'(lambda (u) `((mquote simp) ,u)) all-inds))
-		      val))
-	   ((eq aarray 'mqapply)
-	    (apply #'marrayset val ind1 inds))
-	   (t
-	    (arrstore `((,aarray ,'array)
-			,@(mapcar #'(lambda (u) `((mquote simp) ,u)) all-inds))
-		      val))))
-    (list (if (member (caar aarray) '(mlist $matrix) :test #'eq)
-	      (list-ref aarray all-inds t val)
-	      (merror (intl:gettext "MARRAYSET: cannot assign to an element of ~M") aarray)))
-    (t
-     (merror (intl:gettext "MARRAYSET: ~M is not an array.") aarray)))
+(defmfun marrayset (val aarray &rest all-inds)
+  (let ((ind1 (first all-inds))
+        (inds (rest all-inds)))
+    (typecase aarray
+      (cl:array
+       (case (array-element-type aarray)
+         ((fixnum flonum t)
+          (setf (apply #'aref aarray ind1 inds) val))
+         (t
+          (merror (intl:gettext "MARRAYSET: encountered array ~M of unknown type.") aarray))))
+      (cl:hash-table
+       (setf (gethash (if (cdr all-inds)
+                          (copy-list all-inds)
+                          (car all-inds))
+                      aarray) val))
+      (cl:symbol
+       (let (ap)
+         (cond ((setq ap (get aarray 'array))
+                (if (null inds)
+                    (setf (aref ap ind1) val)
+                    (setf (apply #'aref ap all-inds) val)))
+               ((setq ap (mget aarray 'array))
+                ;; the macsyma ARRAY frob is NOT an array pointer, it
+                ;; is a GENSYM with a lisp array property, don't
+                ;; ask me why.
+                (if (null inds)
+                    (setf (aref (symbol-array ap) ind1) val)
+                    (setf (apply #'aref (symbol-array ap) all-inds) val)))
+               ((setq ap (mget aarray 'hashar))
+                (arrstore `((,aarray ,'array)
+                            ,@(mapcar #'(lambda (u) `((mquote simp) ,u)) all-inds))
+                          val))
+               ((eq aarray 'mqapply)
+                (apply #'marrayset val ind1 inds))
+               (t
+                (arrstore `((,aarray ,'array)
+                            ,@(mapcar #'(lambda (u) `((mquote simp) ,u)) all-inds))
+                          val)))))
+      (cl:list (if (member (caar aarray) '(mlist $matrix) :test #'eq)
+                   (list-ref aarray all-inds t val)
+                   (merror (intl:gettext "MARRAYSET: cannot assign to an element of ~M") aarray)))
+      (t
+       (merror (intl:gettext "MARRAYSET: ~M is not an array.") aarray)))      )
   val)
 
 ;;; Note that all these have HEADERS on the list. The CAR of a list I
@@ -327,8 +331,8 @@
 ;; Some functions for even faster calling of arrays.
 
 (defun marrayref1$ (aarray index)
-  (case (ml-typep aarray)
-    ((aarray)
+  (typecase aarray
+    (cl:array
      (case (array-element-type aarray)
        ((flonum) (aref aarray index))
        (t (merror (intl:gettext "MARRAYREF1$: array must be an array of floats; found ~M") aarray))))
@@ -336,8 +340,8 @@
      (marrayref aarray index))))
 
 (defun marrayset1$ (value aarray index)
-  (case (ml-typep aarray)
-    ((aarray)
+  (typecase aarray
+    (cl:array
      (case (array-element-type aarray)
        ((flonum) (setf (aref aarray index) value))
        (t (merror (intl:gettext "MARRAYSET1$: array must be an array of floats; found ~M") aarray))))

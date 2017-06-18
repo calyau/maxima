@@ -178,7 +178,7 @@ Output: degree (given as a multiindex) of the dominant coefficient of P wrt lexi
 --------------------------------------*/
 
 dominant(P,vars):=
-  block([i,l,expo,c,d,expo],
+  block([i,l,expo,c,d],
   l:length(vars),
   expo:[],
   c:P,
@@ -335,7 +335,7 @@ Output: list of the Bernstein expansion of degree deg of P wrt the two simplices
 --------------------------------------*/
 
 deCasteljauarete(simpl,ber,deg,i,j,x):=
-  block([k,alpha,bet,gamm,l,cmp,res,M,p,l,L,dprime,indi,resi,resj,C],local(bcastel),
+  block([k,alpha,bet,gamm,l,cmp,res,M,p,L,dprime,indi,resi,resj,C],local(bcastel),
   k:length(simpl)-1,
   M:(1-x)*simpl[i]+x*simpl[j],
   if k<2 then return(deCasteljau(simpl,ber,deg,M)),

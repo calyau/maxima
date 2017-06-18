@@ -586,6 +586,96 @@ m(1);
 kill (functions, arrays);
 done;
 
+/* Verify that we catch malformed lambda expressions when they are simplified.
+ * These used to only be checked for if/when lambda expressions were applied
+ * to arguments.
+ */
+
+/* no parameter list */
+errcatch (lambda ())$
+[];
+
+/* empty body */
+errcatch (lambda ([x]))$
+[];
+
+/* non-symbol in parameter list */
+errcatch (lambda ([42], 'foo))$
+[];
+
+/* misplaced list parameter (for optional arguments) */
+errcatch (lambda ([[l], x], 'foo))$
+[];
+
+/* invalid list parameter (for optional arguments) */
+errcatch (lambda ([[l1, l2]], 'foo))$
+[];
+
+/* attempting to bind a constant */
+block ([c],
+  local (c),
+  declare (c, constant),
+  errcatch (lambda ([c], c)))$
+[];
+
+/* Verify that the parameter/variable lists of functions, lambda expressions,
+ * macros and blocks cannot contain duplicate variables.  Lots of cases...
+ */
+
+errcatch (foo (x, x) := x)$
+[];
+
+errcatch (foo (x, 'x) := x)$
+[];
+
+errcatch (foo (x, [x]) := x)$
+[];
+
+errcatch (foo (x, ['x]) := x)$
+[];
+
+errcatch (foo [x, x] := x)$
+[];
+
+errcatch (foo [x] (y, y) := y)$
+[];
+
+errcatch (foo [x] (y, 'y) := y)$
+[];
+
+errcatch (foo [x] (y, [y]) := y)$
+[];
+
+errcatch (foo [x] (y, ['y]) := y)$
+[];
+
+errcatch (foo [x, x] (y) := y)$
+[];
+
+errcatch (lambda ([x, x], x))$
+[];
+
+errcatch (lambda ([x, 'x], x))$
+[];
+
+errcatch (lambda ([x, [x]], x))$
+[];
+
+errcatch (lambda ([x, ['x]], x))$
+[];
+
+errcatch (foo (x, x) ::= x)$
+[];
+
+errcatch (foo (x, [x]) ::= x)$
+[];
+
+errcatch (block ([x, x], x))$
+[];
+
+errcatch (block ([x, x:foo], x))$
+[];
+
 /* try to verify that save(...) handles arrays correctly */
 
 (kill (all),

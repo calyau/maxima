@@ -70,6 +70,25 @@
       ((null l))
     (when (alike1 x (car l)) (return l))))
 
+;;; Return the first duplicate element of the list LIST, or NIL if there
+;;; are no duplicates present in LIST.  The function KEY is applied to
+;;; each element of the list before comparison (or uses the element itself
+;;; if KEY is NIL), and the comparison is done with the function TEST.
+;;;
+;;; This was written with "small" lists in mind.  The original use case
+;;; was finding duplicates in parameter lists of functions, etc.
+;;;    - Kris Katterjohn 06/2017
+(defun find-duplicate (list &key (test #'eql) key)
+  (declare (optimize (speed 3)))
+  (declare (type (or function null) key)
+           (type function test))
+  (let ((seen nil))
+    (dolist (e list)
+      (let ((i (if key (funcall key e) e)))
+        (when (member i seen :test test)
+          (return-from find-duplicate e))
+        (push i seen)))))
+
 ;; Return a Maxima gensym.
 (defun $gensym (&optional x)
   (when (and x

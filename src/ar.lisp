@@ -91,9 +91,9 @@
         (msize-atom (format nil "{Lisp Array: ~A}" x) l r))))
 
 (defun marray-check (a)
-  (if (eq (ml-typep a) 'array)
+  (if (arrayp a)
       (case (marray-type a)
-	(($fixnum $float art-q) a)
+	(($fixnum $float) a)
 	(($any) (mgenarray-content a))
 	(($hashed $functional)
 	 ;; BUG: It does have a number of dimensions! Gosh. -GJC

@@ -48,9 +48,7 @@
 
 (defun d-matrixz (linear? direction h d)
   (declare (fixnum h d))
-  (d-vbar linear? h d 
-	  (getcharn (if (eq direction 'right) " " "|" ) 1)))  ; <- right and left characters
-
+  (d-vbar linear? h d (if (eq direction 'right) #\space #\|)))  ; <- right and left characters
 
 (defun matoutz (dmstr cstr rstr result)
   (push `(d-matrixz left ,height ,depth) result)

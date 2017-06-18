@@ -1452,7 +1452,7 @@
         ((and (member $logexpand '($all $super))
               (consp y)
               (member (caar y) '(%product $product)))
-         (let ((new-op (if (eql (getcharn (caar y) 1) #\%) '%sum '$sum)))
+         (let ((new-op (if (char= (get-first-char (caar y)) #\%) '%sum '$sum)))
            (simplifya `((,new-op) ((%log) ,(cadr y)) ,@(cddr y)) t)))
         ((and $lognegint
               (maxima-integerp y)
@@ -1909,6 +1909,27 @@
 
 (defmfun simplambda (x vestigial simp-flag)
   (declare (ignore vestigial simp-flag))
+  ; Check for malformed lambda expressions.
+  ; We verify that we have a valid list of parameters and a non-empty body.
+  (let ((params (cadr x)))
+    (unless ($listp params)
+      (merror (intl:gettext "lambda: first argument must be a list; found: ~M") params))
+    (do ((params (cdr params) (cdr params))
+         (seen-params nil))
+        ((null params))
+      (when (mdeflistp params)
+        (setq params (cdar params)))
+      (let ((p (car params)))
+        (unless (or (mdefparam p)
+                    (and (op-equalp p 'mquote)
+                         (mdefparam (cadr p))))
+          (merror (intl:gettext "lambda: parameter must be a non-constant symbol; found: ~M") p))
+        (setq p (mparam p))
+        (when (member p seen-params :test #'eq)
+          (merror (intl:gettext "lambda: ~M occurs more than once in the parameter list") p))
+        (push p seen-params))))
+  (when (null (cddr x))
+    (merror (intl:gettext "lambda: no body present")))
   (cons '(lambda simp) (cdr x)))
 
 (defmfun simpmdef (x vestigial simp-flag)

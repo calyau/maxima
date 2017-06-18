@@ -89,11 +89,10 @@
                        (string-substitute "&lt;" #\< (get-output-stream-string tmpport)))
 	       (format texport ";~%</pre>"))
 
-	      ((and
-		itsalabel ;; but is it a user-command-label?
-		(eql (getcharn $inchar 2) (getcharn mexplabel 2)))
+	      ((and itsalabel ;; but is it a user-command-label?
+                  (char= (char (string $inchar) 1) (char (string mexplabel) 1)))
 	       ;; aha, this is a C-line: do the grinding:
-	       (format texport "<pre>~%~a " mexplabel) 
+	       (format texport "<pre>~%~a " mexplabel)
                ;; need to get rid of "<" signs
                (setq tmpport (make-string-output-stream))
                (mgrind mexp tmpport)
@@ -402,9 +401,9 @@
 		   (expon (caddr x)) ;; this is the exponent
 		   (doit (and
 			  f ; there is such a function
-			  (member (getcharn f 1) '(#\% #\$)) ;; insist it is a % or $ function
+			  (member (get-first-char f) '(#\% #\$) :test #'char=) ;; insist it is a % or $ function
                           (not (member f '(%sum %product %derivative %integrate %at
-					      %lsum %limit) :test #'eq)) ;; what else? what a hack...
+                                         %lsum %limit) :test #'eq)) ;; what else? what a hack...
 			  (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
 			      (and (atom expon) (numberp expon) (> expon 0))))))
 			      ; f(x)^3 is ok, but not f(x)^-1, which could

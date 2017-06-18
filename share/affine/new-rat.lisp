@@ -520,13 +520,13 @@ into genvar ordering and adds to genpairs"
   (declare (special radlist expsumsplit vlist))
        ;; when flag is t, call returns ratform
        (prog (topexp)
-	     (cond ((and (fixp e) (not flag))
+	     (cond ((and (fixnump e) (not flag))
 		    (return (newvar1 (cadr x)))))
 	     (setq topexp 1)
 	top  (cond
 
 	      ;; x=b^n for n a number
-	      ((fixp e)
+	      ((fixnump e)
 	       (setq topexp (* topexp e))
 	       (setq x (cadr x)))
 	      ((atom e) nil)
@@ -551,7 +551,7 @@ into genvar ordering and adds to genpairs"
 
 		     ;; x=b^(n *c)
 		     (and (atom (cadr e))
-			  (fixp (cadr e))
+			  (fixnump (cadr e))
 			  (setq topexp (* topexp (cadr e)))
 			  (setq e (cddr e)))
 

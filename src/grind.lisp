@@ -264,7 +264,7 @@
 (defprop bigfloat msz-bigfloat grind)
 
 (defun msz-bigfloat (x l r)
-  (msz (mapcar #'(lambda (l) (getcharn l 1)) (fpformat x)) l r))
+  (msz (mapcar #'get-first-char (fpformat x)) l r))
 
 (defprop mprogn msize-matchfix grind)
 (defprop mprogn ((#\( ) #\) ) strsym)

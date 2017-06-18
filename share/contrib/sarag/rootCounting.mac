@@ -99,7 +99,7 @@ revRowsCount(i) := (-1)^(i*(i-1)/2);
 
 
 sSubResPol(p,q,var) :=
-  block([pp,qq,degA,degB,i,j,k,h,lcA,lcB,delta,h,
+  block([pp,qq,degA,degB,i,j,k,h,lcA,lcB,delta,
          SR,s,sOld,res],
     
     pp : expandIf(p),

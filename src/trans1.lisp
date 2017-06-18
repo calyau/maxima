@@ -22,9 +22,9 @@
 ;;; APPLY(F,[X]) is an idiom for funcall.
 
 (defun quoted-symbolp (form)
-  (and (eq (ml-typep form) 'list)
-       (eq 'quote (car form))
-       (symbolp (cadr form))))
+  (and (consp form)
+     (eq 'quote (car form))
+     (symbolp (cadr form))))
 
 (def%tr $apply (form)
   (let* ((fun (dtranslate (cadr form)))

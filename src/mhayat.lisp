@@ -52,7 +52,9 @@
 
 ;; subtitle hayat macros
 
-(defmacro pszero (var pw) var pw ''(0 . 1)) ; until constants are fixed
+(defmacro pszero (var pw)
+  (declare (ignore var pw))
+  ''(0 . 1))                            ; until constants are fixed
 
 (defmacro psp (e) `(eq (car ,e) 'ps))
 

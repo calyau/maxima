@@ -47,7 +47,7 @@ ceilFract(num,den) :=
 /* nBlockRows, nBlockCols : number of rows/cols in the blocks */
 /* inBlockRowIndex, inBlockColIndex : row/col in the block */
 blockMatrix(descr) :=
-  block([nRows,rCols,nBlockRows, nBlockRows,i,j,rowRes,res,
+  block([nRows,rCols,nBlockRows,i,j,rowRes,res,
          blockRow,blockCol,inBlockRows, inBlockCols,
          inBlockRowIndex,inBlockColIndex, nCols],
      nBlockRows : length(descr),

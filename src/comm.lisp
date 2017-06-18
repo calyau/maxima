@@ -45,7 +45,7 @@
     (and (symbolp x) (remprop x 'opr))
     (and (stringp x) (remhash x *opr-table*))))
 
-;; Store build-in operators, which get additional properties.
+;; Store built-in operators, which get additional properties.
 ;; These operators aren't killed by the function kill-operator.
 (defvar *mopl* nil)
 
@@ -416,7 +416,7 @@
 		(t (go noun)))
      doit (cond ((nonvarcheck (cadr z) '$diff))
 		((null (cddr z)) (wna-err '$diff))
-		((not (eq (ml-typep (caddr z)) 'fixnum)) (go noun))
+		((not (fixnump (caddr z))) (go noun))
 		((minusp (setq count (caddr z)))
 		 (merror (intl:gettext "diff: order of derivative must be a nonnegative integer; found ~M") count)))
      loop1(cond ((zerop count) (rplacd z (cdddr z)) (go loop2))

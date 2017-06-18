@@ -125,13 +125,6 @@
 (defmacro maxima-error (datum &rest args)
   `(cerror "without any special action" ,datum ,@args))
 
-(defmacro safe-value (sym)
-  (cond ((symbolp sym)
-	 `(cond ((symbolp ',sym)
-		 (and (boundp ',sym) ,sym))
-	   (t ,sym)))
-	(t nil)))
-
 (defmacro show (&rest l)
   (loop for v in l
 	 collecting `(format t "~%The value of ~A is ~A" ',v ,v) into tem
@@ -413,9 +406,6 @@ values")
   (loop for v in (coerce (print-invert-case symb) 'list)
      collect (intern (string v))))
 
-(defvar *string-for-implode*
-  (make-array 20 :fill-pointer 0 :adjustable t :element-type '#.(array-element-type "a")))
-
 ;;; If the 'string is all the same case, invert the case.  Otherwise,
 ;;; do nothing.
 #-(or scl allegro)
@@ -510,30 +500,24 @@ values")
 	       converted-str)))
 	(t (princ-to-string sym))))
 
-(defun implode (lis)
-  (let ((ar *string-for-implode*)
-	(leng (length lis)))
-    (unless (> (array-total-size ar) leng)
-      (setq ar (adjust-array ar (+ leng 20))))
-    (setf (fill-pointer ar) leng)
-    (loop for v in lis
-       for i below leng
-       do
-	 (setf (aref ar i) (cond ((characterp v) v)
-				 ((symbolp v) (char (symbol-name v) 0))
-				 ((numberp v) (code-char v)))))
-    (intern-invert-case ar)))
+(defun implode (list)
+  (declare (optimize (speed 3)))
+  (intern-invert-case (map 'string #'(lambda (v)
+                                       (etypecase v
+                                         (character v)
+                                         (symbol (char (symbol-name v) 0))
+                                         (integer (code-char v))))
+                           list)))
 
 ;; Note:  symb can also be a number, not just a symbol.
 (defun explode (symb)
-  (loop for v in (coerce (format nil "~S" symb) 'list)
-     collect (intern (string v))))
+  (declare (optimize (speed 3)))
+  (map 'list #'(lambda (v) (intern (string v))) (format nil "~a" symb)))
 
-(defun getcharn (symb i)
-  (let ((strin (string symb)))
-    (if (<= 1 i (length strin))
-	(char strin (1- i))
-    nil)))
+;;; return the first character of the name of a symbol or a string or char
+(defun get-first-char (symb)
+  (declare (optimize (speed 3)))
+  (char (string symb) 0))
 
 (defun getchar (symb i)
   (let ((str (string symb)))
@@ -564,10 +548,10 @@ values")
   (length (exploden sym)))
 
 (defmacro safe-zerop (x)
-  (cond((symbolp x)
-	`(and (numberp ,x) (zerop ,x)))
-       (t `(let ((.x. ,x))
-	    (and (numberp .x.) (zerop .x.))))))
+  (if (symbolp x)
+      `(and (numberp ,x) (zerop ,x))
+      `(let ((.x. ,x))
+         (and (numberp .x.) (zerop .x.)))))
 
 (defmacro signp (sym x)
   (cond ((atom x)
@@ -663,7 +647,7 @@ values")
       ;; so work around null TZ here.
       (if tz (decode-universal-time time-integer (- tz))
         (decode-universal-time time-integer))
-      (declare (ignore day-of-week))
+      (declare (ignore day-of-week #+gcl dst-p))
       ;; DECODE-UNIVERSAL-TIME might return a timezone offset
       ;; which is a multiple of 1/3600 but not 1/60.
       ;; We need a multiple of 1/60 because our formatted
@@ -822,12 +806,13 @@ values")
       ;; Some Lisps allow TZ to be null but CLHS doesn't explicitly allow it,
       ;; so work around null TZ here.
       (if tz (decode-universal-time seconds-integer (- tz))
-        (decode-universal-time seconds-integer))
+          (decode-universal-time seconds-integer))
+      (declare (ignore day-of-week #+gcl dst-p))
       ;; HMM, CAN DECODE-UNIVERSAL-TIME RETURN TZ = NIL ??
-      (let
-        ((tz-offset
+      (let ((tz-offset
            #-gcl (if dst-p (- 1 tz) (- tz))
-           #+gcl (- tz)))  ; bug in gcl https://savannah.gnu.org/bugs/?50570
+           #+gcl (- tz)  ; bug in gcl https://savannah.gnu.org/bugs/?50570
+           ))
         (list '(mlist) year month day hours minutes (add seconds seconds-fraction) ($ratsimp tz-offset))))))
 
 ;;Some systems make everything functionp including macros:

@@ -31,18 +31,18 @@
 		    (merror "IC_CONVERT requires an equation as an argument"))
 		   ((equal (setq free ($indices e)) empty)
 		    (return (cons '(msetq) (cdr e))))
-		   ((or (eq (ml-typep (cadr e)) 'symbol)           ;If a symbol or
+		   ((or (symbolp (cadr e))           ;If a symbol or
 			(and (rpobj (cadr e))  ;an indexed object with no dummy
 			     (null (cdaddr ($indices2 (cadr e))))))    ;indices
 		    (setq lhs (cadr e) rhs (caddr e)))
-		   ((or (eq (ml-typep (caddr e)) 'symbol)
+		   ((or (symbolp (caddr e))
 			(and (rpobj (caddr e))
 			     (null (cdaddr ($indices2 (caddr e))))))
 		    (setq lhs (caddr e) rhs (cadr e)))
 		   (t (merror "At least one side of the equation must be a~
 			      ~%symbol or a single indexed object")))
-	     (cond ((and (not (eq (ml-typep lhs) 'symbol))
-			 (not (null (cdddr lhs))))
+	     (cond ((and (not (symbolp lhs))
+                       (not (null (cdddr lhs))))
 		    (merror "Cannot assign to indexed objects with derivative ~
 			    indices:~%~M"
 			    (ishow lhs))))
@@ -62,7 +62,7 @@
 IC_CONVERT cannot currently handle indexed objects of the same name~
 ~%with different numbers of covariant and//or contravariant indices:~%~M"
 				(car q)))))
-	     (cond ((not (eq (ml-typep lhs) 'symbol))
+	     (cond ((not (symbolp lhs))
 		    (do ((test) (flag) (name))
 			(flag)
 			(setq test (list (caar lhs) (length (cdadr lhs))
@@ -77,10 +77,7 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 ~%indices appears on the other side of the equation. To avoid array name~
 ~%conflicts, choose a new name for this object:~%"
 				      (ishow lhs))
-                               (cond ((not (eq (ml-typep
-						(setq name
-						      (retrieve nil nil)))
-					       'symbol))
+                               (cond ((not (symbolp (setq name (retrieve nil nil))))
 				      (merror "Name not an atom")))
 			       (setq lhs (cons (ncons name) (cdr lhs))))))))
 	     (return (do ((free free (cdr free))
@@ -298,7 +295,7 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 (add2lnc '(($average) $tensor) $funcs)
 
 (defun $conmetderiv (e g)
-       (cond ((not (eq (ml-typep g) 'symbol))
+       (cond ((not (symbolp g))
 	      (merror "Invalid metric name: ~M" g))
 	     (t (conmetderiv e g ((lambda (l) (append (cdadr l) (cdaddr l)))
 				  ($indices e))))))
@@ -339,7 +336,7 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 (add2lnc '(($conmetderiv) $exp $name) $funcs)
 
 (defun $flush1deriv (e g)
-       (cond ((not (eq (ml-typep g) 'symbol))
+       (cond ((not (symbolp g))
 	      (merror "Invalid metric name: ~M" g))
 	     (t (flush1deriv e g))))
 

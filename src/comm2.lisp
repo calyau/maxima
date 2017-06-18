@@ -63,11 +63,11 @@
 (defmfun diffncexpt (e x)
   (let ((base* (cadr e))
 	(pow (caddr e)))
-    (cond ((and (mnump pow) (or (not (eq (ml-typep pow) 'fixnum)) (< pow 0))) ; POW cannot be 0
+    (cond ((and (mnump pow) (or (not (fixnump pow)) (< pow 0))) ; POW cannot be 0
 	   (diff%deriv (list e x 1)))
 	  ((and (atom base*) (eq base* x) (free pow base*))
 	   (mul2* pow (list '(mncexpt) base* (add2 pow -1))))
-	  ((ml-typep pow 'fixnum)
+	  ((fixnump pow)
 	   (let ((deriv (sdiff base* x))
 		 (ans nil))
 	     (do ((i 0 (1+ i))) ((= i pow))
@@ -103,7 +103,7 @@
 	   (add2 (ncmuln (cons (stotaldiff (cadr e)) (cddr e)) t)
 		 (ncmul2 (cadr e) (stotaldiff (ncmuln (cddr e) t))))))
 	((eq (caar e) 'mncexpt)
-	 (if (and (ml-typep (caddr e) 'fixnum) (> (caddr e) 0))
+	 (if (and (fixnump (caddr e)) (> (caddr e) 0))
 	     (stotaldiff (list '(mnctimes) (cadr e)
 			       (ncpower (cadr e) (1- (caddr e)))))
 	     (list '(%derivative) e)))
@@ -789,7 +789,7 @@
 (defmfun $arraymake (ary subs)
   (cond ((or (not ($listp subs)) (null (cdr subs)))
 	 (merror (intl:gettext "arraymake: second argument must be a list of one or more elements; found ~M") subs))
-	((eq (ml-typep ary) 'symbol)
+	((symbolp ary)
 	 (cons (cons (getopr ary) '(array)) (cdr subs)))
 	(t (cons '(mqapply array) (cons ary (cdr subs))))))
 

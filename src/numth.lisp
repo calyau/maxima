@@ -299,11 +299,10 @@
 (defmvar $zn_primroot_verbose nil "Print message when `zn_primroot_limit' is reached." boolean)
 (defmvar $zn_primroot_pretest nil "`zn_primroot' pretests whether (Z/nZ)* is cyclic." boolean)
 
-
+(declaim (inline zn-quo))
 (defun zn-quo (n d p)
-  (declare (inline))
+  (declare (integer n d p) (optimize (speed 3)))
   (mod (* n (inv-mod d p)) p) )
-
 
 ;; compute the order of x in (Z/nZ)*
 ;;

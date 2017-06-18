@@ -501,3 +501,62 @@ fun();
 (compile(fun), fun());
 1 > t1;
 
+/* Verify that we catch malformed lambda expressions during translation.
+ * More checks need to be added to the translator and more tests need to
+ * be added here.
+ */
+
+/* no parameter list */
+(kill (f),
+ f () := lambda (),
+ translate (f))$
+[];
+
+/* empty body */
+(kill (f),
+ f () := lambda ([x]),
+ translate (f))$
+[];
+
+/* non-symbol in parameter list */
+(kill (f),
+ f () := lambda ([42], 'foo),
+ translate (f))$
+[];
+
+/* misplaced "rest" parameter */
+(kill (f),
+ f () := lambda ([[l], x], 'foo),
+ translate (f))$
+[];
+
+/* invalid "rest" parameter */
+(kill (f),
+ f () := lambda ([[l1, l2]], 'foo),
+ translate (f))$
+[];
+
+/* attempting to bind a constant */
+block ([c, f],
+  local (c, f),
+  declare (c, constant),
+  f () := lambda ([c], c),
+  translate (f))$
+[];
+
+/* Verify that parameter/variable lists cannot contain duplicate variables.
+ *
+ * We only test a couple of cases here.  Many more tests for non-translated
+ * code are in rtest2.  Do we want to test them all here as well?
+ */
+
+(kill(f),
+ f () := lambda ([x, [x]], x),
+ translate (f))$
+[];
+
+(kill(f),
+ f () := block ([x, x:'foo], x),
+ translate (f))$
+[];
+

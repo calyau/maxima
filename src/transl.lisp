@@ -928,7 +928,12 @@ APPLY means like APPLY.")
   '($any . nil))
 
 (def%tr mdefmacro (form)
-  (meval form) ;; HMM, THIS HAS A SIDE EFFECT AT THE TIME OF TRANSLATION !!
+  (tr-format (intl:gettext "warning: globally defining macro ~:M now to ensure correct macro expansions.~%") (caaadr form))
+  ; Define the macro now to ensure that it's defined when it's time
+  ; to expand it.  It's a bug that this definition occurs during
+  ; translation without being cleaned it up afterward, but simply
+  ; removing this breaks things.
+  (meval form)
   `($any . (meval ',form)))
 
 (def%tr $local (form)
@@ -1067,15 +1072,20 @@ APPLY means like APPLY.")
 			      ;;  X or ((MSETQ) X Y)
 			      (if (atom u) u (cadr u)))
 			  arglist))
-    (setq form
-	  (tr-lambda
-	   ;; [2] call the lambda translator.
-	   `((lambda) ((mlist) ,@arglist) ,@body)
-	   ;; [3] supply our own body translator.
-	   #'tr-mprog-body
-	   val-list
-	   arglist))
-    (cons (car form) `(,(cdr form) ,@val-list))))
+    (let ((dup (find-duplicate arglist :test #'eq)))
+      (when dup
+        (tr-format (intl:gettext "error: ~M occurs more than once in block variable list") dup)
+        (setq tr-abort t)))
+    (unless tr-abort
+      (setq form
+	    (tr-lambda
+	     ;; [2] call the lambda translator.
+	     `((lambda) ((mlist) ,@arglist) ,@body)
+	     ;; [3] supply our own body translator.
+	     #'tr-mprog-body
+	     val-list
+	     arglist))
+      (cons (car form) `(,(cdr form) ,@val-list)))))
 
 (defun tr-mprog-body (body val-list arglist
 		      &aux 
