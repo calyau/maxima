@@ -762,27 +762,36 @@ values")
 ; (= parse_timedate("2300-01-01Z") (Lisp starts with 1900-01-01) in timezone
 ; GMT) afterwards.
 ; see discussion on mailing list circa 2015-04-21: "parse_timedate error"
+;
+; Nota bene that this approach is correct only if the daylight saving time flag
+; is the same for the given date and date + 400 years. That is true for
+; dates before 1970-01-01 and after 2038-01-18, for Clisp at least,
+; which ignores daylight saving time for all dates in those ranges,
+; effectively making them all standard time.
 
-(if (and (string= (lisp-implementation-type) "CLISP") (string= *autoconf-windows* "true"))
-  ; Clisp/Windows case:
-  (defun encode-time-with-all-parts (year month day hours minutes seconds-integer seconds-fraction tz)
-    (add seconds-fraction
-         ;; Some Lisps allow TZ to be null but CLHS doesn't explicitly allow it,
-         ;; so work around null TZ here.
-         (let
-           ((foo
-              (if tz
-                (encode-universal-time seconds-integer minutes hours day month (add year 400) tz)
-                (encode-universal-time seconds-integer minutes hours day month (add year 400)))))
-           (sub foo 12622780800))))
-  ; other Lisp / OS versions:
-  (defun encode-time-with-all-parts (year month day hours minutes seconds-integer seconds-fraction tz)
+#+(and clisp win32)
+(defun encode-time-with-all-parts (year month day hours minutes seconds-integer seconds-fraction tz)
+  ;; Experimenting with Clisp 2.49 for Windows seems to show that the bug
+  ;; is triggered when local time zone is east of UTC, for times before
+  ;; 1970-01-01 00:00:00 UTC + the number of hours of the time zone.
+  ;; So apply the bug workaround to all times < 1970-01-02.
+  (if (or (< year 1970) (and (= year 1970) (= day 1)))
+    (sub (encode-time-with-all-parts (add year 400) month day hours minutes seconds-integer seconds-fraction tz) 12622780800)
     (add seconds-fraction
          ;; Some Lisps allow TZ to be null but CLHS doesn't explicitly allow it,
          ;; so work around null TZ here.
          (if tz
            (encode-universal-time seconds-integer minutes hours day month year tz)
            (encode-universal-time seconds-integer minutes hours day month year)))))
+
+#-(and clisp win32)
+(defun encode-time-with-all-parts (year month day hours minutes seconds-integer seconds-fraction tz)
+  (add seconds-fraction
+       ;; Some Lisps allow TZ to be null but CLHS doesn't explicitly allow it,
+       ;; so work around null TZ here.
+       (if tz
+         (encode-universal-time seconds-integer minutes hours day month year tz)
+         (encode-universal-time seconds-integer minutes hours day month year))))
 
 (defun $encode_time (year month day hours minutes seconds &optional tz-offset)
     (when tz-offset
