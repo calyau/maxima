@@ -154,7 +154,7 @@
 	(hg-type nil) (dig) (return-type) ($domain '$complex))
     
     (cond ((or (not ($listp a)) (not ($listp b))) 
-	   (mtell "Warning: The first two arguments to 'hypergeometric' must be lists.~%")
+	   (mtell "warning: The first two arguments to 'hypergeometric' must be lists.~%")
 	   `(($hypergeometric simp) ,(tsimpcheck a z) ,(tsimpcheck b z) ,(tsimpcheck x z)))
 	  (t
 	   

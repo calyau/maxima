@@ -1169,7 +1169,7 @@ wrapper for this."
 	        ;; modulus must be an integer > 0. Give a warning if not
 	        ;; a prime number.
 	        (if (not (primep y))
-	            (mtell (intl:gettext "Warning: assigning ~:M, a non-prime, to 'modulus'~&") y)))
+	            (mtell (intl:gettext "warning: assigning ~:M, a non-prime, to 'modulus'~&") y)))
 	       (t (mseterr x y))))
 	((eq x '$setcheck)
 	 (if (not (or (member y '($all t nil) :test #'eq) ($listp y))) (mseterr x y)))
@@ -2000,7 +2000,7 @@ wrapper for this."
 			 fnname (caar fun))
 		   (if (and (not (mgetl fnname '(hashar array)))
 			    (get fnname 'specsimp))
-		       (mtell (intl:gettext "define: Warning: redefining built-in subscripted function ~:M~%")
+		       (mtell (intl:gettext "define: warning: redefining built-in subscripted function ~:M~%")
 			      fnname)))
 	    ((prog2 (setq fnname (caar fun))
 		 (or (mopp fnname) (member fnname '($all $allbut $%) :test #'eq)))
@@ -2047,7 +2047,7 @@ wrapper for this."
 			  (getl-lm-fcn-prop fnname '(subr)))
 		      (not (get fnname 'translated)))
 		 (mopp fnname)))
-    (format t (intl:gettext "define: Warning: redefining the built-in ~:[function~;operator~] ~a~%")
+    (format t (intl:gettext "define: warning: redefining the built-in ~:[function~;operator~] ~a~%")
 	    (getl fnname '(verb operators))
 	    (print-invert-case (stripdollar fnname)))
     t))
