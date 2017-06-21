@@ -2833,7 +2833,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
     (cond
       (
         (memberl (cdr cov) deriv)
-	    (mtell "Warning - there are indices that are both covariant ~
+	    (mtell "Warning: There are indices that are both covariant ~
                 and derivative%")
       )
     )

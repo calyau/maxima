@@ -755,7 +755,7 @@
             (cond
               (lavd
                (f2cl-lib:f2cl-set-string msg
-                                         "DLSODKR- Warning. Poor iterative algorithm performance seen "
+                                         "DLSODKR: Warning: Poor iterative algorithm performance seen "
                                          (string 60))
                (xerrwd msg 60 111 0 0 0 0 0 0.0d0 0.0d0)))
             (cond
@@ -767,7 +767,7 @@
             (cond
               (lcfn
                (f2cl-lib:f2cl-set-string msg
-                                         "DLSODKR- Warning. Poor iterative algorithm performance seen "
+                                         "DLSODKR: Warning: Poor iterative algorithm performance seen "
                                          (string 60))
                (xerrwd msg 60 112 0 0 0 0 0 0.0d0 0.0d0)))
             (cond
@@ -779,7 +779,7 @@
             (cond
               (lcfl
                (f2cl-lib:f2cl-set-string msg
-                                         "DLSODKR- Warning. Poor iterative algorithm performance seen "
+                                         "DLSODKR: Warning: Poor iterative algorithm performance seen "
                                          (string 60))
                (xerrwd msg 60 113 0 0 0 0 0 0.0d0 0.0d0)))
             (cond
@@ -849,7 +849,7 @@
             (setf nhnil (f2cl-lib:int-add nhnil 1))
             (if (> nhnil mxhnil) (go label290))
             (f2cl-lib:f2cl-set-string msg
-                                      "DLSODKR-  Warning.. Internal T(=R1) and H(=R2) are"
+                                      "DLSODKR: Warning: Internal T(=R1) and H(=R2) are"
                                       (string 60))
             (xerrwd msg 50 101 0 0 0 0 0 0.0d0 0.0d0)
             (f2cl-lib:f2cl-set-string msg

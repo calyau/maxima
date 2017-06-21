@@ -1985,7 +1985,7 @@
       ; what we now call elevation_grid
       ((and (= (length row) 5)
             ($matrixp (first row)))
-        (print "WARNING: Seems like you want to draw an elevation_grid object...")
+        (print "Warning: Seems like you want to draw an elevation_grid object...")
         (print "         Please, see documentation for object elevation_grid.")
         (apply #'elevation_grid row))
       (t

@@ -250,7 +250,7 @@
   (let ((f (get-one-factor n)))
     (if (= f n)
 	(progn
-	  (when $ifactor_verbose (format t "WARNING: could not find factors of composite:~%~A~%" n))
+	  (when $ifactor_verbose (format t "Warning: could not find factors of composite:~%~A~%" n))
 	  (list n))
 	(append (get-large-factors f) (get-large-factors (/ n f))))))
 

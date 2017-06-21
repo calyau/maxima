@@ -440,7 +440,7 @@
 (defmacro spsafe (&rest ll)
   (loop for u in ll
 	do
-	(cond ((get u 'special)(format t "~%***Warning**** ~A is a special" u))
+	(cond ((get u 'special)(format t "~%Warning: ~A is a special" u))
 	      (t (format t "~%~A is not special" u)))))
 
 ;;used &quote before but since never use old method of relations now.

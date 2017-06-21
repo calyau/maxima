@@ -264,7 +264,7 @@
             (setf insufr 2)
             (setf lewt (f2cl-lib:int-add len1c 1))
             (f2cl-lib:f2cl-set-string msg
-                                      "DLSODA-  Warning.. RWORK length is sufficient for now, but  "
+                                      "DLSODA: Warning: RWORK length is sufficient for now, but  "
                                       (string 60))
             (xerrwd msg 60 103 0 0 0 0 0 0.0d0 0.0d0)
             (f2cl-lib:f2cl-set-string msg
@@ -282,7 +282,7 @@
             (if (>= liw leniw) (go label70))
             (setf insufi 2)
             (f2cl-lib:f2cl-set-string msg
-                                      "DLSODA-  Warning.. IWORK length is sufficient for now, but  "
+                                      "DLSODA: Warning: IWORK length is sufficient for now, but  "
                                       (string 60))
             (xerrwd msg 60 104 0 0 0 0 0 0.0d0 0.0d0)
             (f2cl-lib:f2cl-set-string msg
@@ -620,7 +620,7 @@
             (setf nhnil (f2cl-lib:int-add nhnil 1))
             (if (> nhnil mxhnil) (go label290))
             (f2cl-lib:f2cl-set-string msg
-                                      "DLSODA-  Warning..Internal T (=R1) and H (=R2) are"
+                                      "DLSODA: Warning: Internal T (=R1) and H (=R2) are"
                                       (string 60))
             (xerrwd msg 50 101 0 0 0 0 0 0.0d0 0.0d0)
             (f2cl-lib:f2cl-set-string msg

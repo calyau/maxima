@@ -166,7 +166,7 @@ One extra decimal digit in actual representation for rounding purposes.")
       (setq l (cons (cons (caar l) (cons 'simp (cdar l))) (cdr l))))
   (cond ((equal (cadr l) 0)
 	 (if (not (equal (caddr l) 0))
-	     (mtell "FPFORMAT: warning: detected an incorrect form of 0.0b0: ~M, ~M~%"
+	     (mtell "FPFORMAT: Warning: detected an incorrect form of 0.0b0: ~M, ~M~%"
 		    (cadr l) (caddr l)))
 	 (list '|0| '|.| '|0| '|b| '|0|))
 	(t ;; L IS ALWAYS POSITIVE FP NUMBER

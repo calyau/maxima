@@ -161,7 +161,7 @@
               (setf first$ f2cl-lib:%true%)
               (f2cl-lib:fformat 6
                                 ("~%" "~%"
-                                 " WARNING. The value EMIN may be incorrect:-"
+                                 "Warning: The value EMIN may be incorrect:-"
                                  "  EMIN = " 1 (("~8D")) "~%"
                                  " If, after inspection, the value EMIN looks"
                                  " acceptable please comment out " "~%"

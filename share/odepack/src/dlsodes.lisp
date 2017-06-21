@@ -764,7 +764,7 @@
             (setf nhnil (f2cl-lib:int-add nhnil 1))
             (if (> nhnil mxhnil) (go label290))
             (f2cl-lib:f2cl-set-string msg
-                                      "DLSODES- Warning..Internal T (=R1) and H (=R2) are"
+                                      "DLSODES: Warning: Internal T (=R1) and H (=R2) are"
                                       (string 60))
             (xerrwd msg 50 101 0 0 0 0 0 0.0d0 0.0d0)
             (f2cl-lib:f2cl-set-string msg

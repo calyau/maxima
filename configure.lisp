@@ -61,7 +61,7 @@
          temp)
         ((eq line 'eof)
          (when (string= version "")
-           (format t "WARNING: No version information found.~%~%"))
+           (format t "Warning: No version information found.~%~%"))
          version)
       (when (search "AC_INIT([maxima]," line)
         (setq line (string-trim '(#\Return) line))
@@ -72,7 +72,7 @@
         (when (or (string= temp line)
                   (string= temp version))
           ; Failed substitution
-          (format t "WARNING: Problem parsing version information. ")
+          (format t "Warning: Problem parsing version information. ")
           (format t "Found: \"~a\"~%~%" version))))))
 
 (defvar *maxima-lispname* #+clisp "clisp"

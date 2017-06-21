@@ -1719,28 +1719,28 @@
 
       ; DEPRECATED OPTIONS
       ($tube_extremes
-        ($print "WARNING: 'tube_extremes' is deprecated, using 'capping' instead...")
+        ($print "Warning: 'tube_extremes' is deprecated, using 'capping' instead...")
         (update-capping (substitute nil '$open (substitute t '$closed val))))
       ($file_bgcolor
-        ($print "WARNING: 'file_bgcolor' is deprecated, using 'background_color' instead...")
+        ($print "Warning: 'file_bgcolor' is deprecated, using 'background_color' instead...")
         (update-color '$background_color val))
       ($rot_vertical
-        ($print "WARNING: 'rot_vertical' is deprecated, using 'view' instead...")
+        ($print "Warning: 'rot_vertical' is deprecated, using 'view' instead...")
         (update-view (list '(mlist) val (second (gethash '$view *gr-options*)))))
       ($rot_horizontal
-        ($print "WARNING: 'rot_horizontal' is deprecated, using 'view' instead...")
+        ($print "Warning: 'rot_horizontal' is deprecated, using 'view' instead...")
         (update-view (list '(mlist) (first (gethash '$view *gr-options*)) val)))
       ($pic_width
-        ($print "WARNING: 'pic_width' is deprecated, using 'dimensions' instead...")
+        ($print "Warning: 'pic_width' is deprecated, using 'dimensions' instead...")
         (update-dimensions (list '(mlist) val (second (gethash '$dimensions *gr-options*)))))
       ($pic_height
-        ($print "WARNING: 'pic_height' is deprecated, using 'dimensions' instead...")
+        ($print "Warning: 'pic_height' is deprecated, using 'dimensions' instead...")
         (update-dimensions (list '(mlist) (first (gethash '$dimensions *gr-options*)) val)))
       (($eps_width $pdf_width)
-        ($print "WARNING: 'eps_width' is deprecated, using 'dimensions' instead...")
+        ($print "Warning: 'eps_width' is deprecated, using 'dimensions' instead...")
         (update-dimensions (list '(mlist) (* 100 val) (second (gethash '$dimensions *gr-options*)))))
       (($eps_height $pdf_height)
-        ($print "WARNING: 'eps_height' is deprecated, using 'dimensions' instead...")
+        ($print "Warning: 'eps_height' is deprecated, using 'dimensions' instead...")
         (update-dimensions (list '(mlist) (first (gethash '$dimensions *gr-options*)) (* 100 val))))
 
       (otherwise (merror "draw: unknown option ~M " opt))  ) )

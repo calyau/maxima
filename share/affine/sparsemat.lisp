@@ -1109,7 +1109,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 		  (cond ((not ($zerop  (aref (sp-constants-column sp-mat) i)))
 			 (format t "~%~%  ******************************~%")
 			 (format	  t "~%Row ~D has no pivot but the (sp-constants-column sp-mat) has entry ~D.
-		   ~%WARNING.  The equations were INCONSISTENT.
+		   ~%Warning: The equations were INCONSISTENT.
 		   ~%The special-solution is NOT VALID.
 		   ~%  ******************************" i (aref  (sp-constants-column sp-mat) i)))))
 	   (show (sp-type-of-entries sp-mat))

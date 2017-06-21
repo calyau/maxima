@@ -125,7 +125,7 @@ call."
      expansion)
     (($displace)
      (mmacro-displace form expansion))
-    (t (mtell (intl:gettext "warning: unrecognized value of 'macroexpansion'.")))))
+    (t (mtell (intl:gettext "Warning: unrecognized value of 'macroexpansion'.")))))
 
 
 (defun mmacro-displace (form expansion)

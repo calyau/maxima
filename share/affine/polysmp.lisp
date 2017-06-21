@@ -378,7 +378,7 @@ substituting them to be zero."
 				   ))
 	   (cond ((and (not (numberp (denom rat-monom)))
 		       (not (constant-functionp (denom rat-monom))))
-		  (format t "*****Warning a denominator was discared which might take the value 0*****" nil)))
+		  (format t "Warning: a denominator was discared which might take the value 0" nil)))
 	   (setq replacement (ratreduce replacement-num cof))
 ;	   (format t "~%Adding to simplifications..")
 ;         (sh (convert-deg-sequence-to-monomial seq))(format t "  ==>  ") (sh replacement)
