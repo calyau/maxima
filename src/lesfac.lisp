@@ -14,43 +14,36 @@
 
 (load-macsyma-macros rzmac ratmac)
 
-(defun newsym2 (p e &aux (g (gensym)))
-  (putprop g e 'disrep)
-  (valput g (1- (valget (car genvar))))
-  (setq genvar (cons g genvar))
-  (setq varlist (cons e varlist))
-  (putprop g p 'unhacked)
-  g)
+(defun getunhack (gen)
+  (or (get gen 'unhacked) (pget gen)))
 
-(defun getunhack (gen) (or (get gen 'unhacked) (pget gen)))
+(defun frpoly? (r)
+  (equal 1 (cdr r)))
 
-(defmacro getdis (x) `(get ,x 'disrep))
-
-(defmacro cons1 (x) `(cons ,x 1))
-
-(defun frpoly? (r) (equal 1 (cdr r)))
-
-(defmacro setcall (&rest l)
-  (setq l (cons 'setcall l))
-  (sublis (list (cons 'fncall (cdr l))
-		(cons 'a (caddr l))
-		(cons 'b (cadddr l)))
-	  '(prog1 (car (setq a fncall)) (setq b (caddr a) a (cadr a)))))
+(defmacro setcall (fn a b &rest args)
+  `(prog1
+       (first (setq ,a (,fn ,a ,b ,@args)))
+     (setq ,b (third ,a)
+           ,a (second ,a))))
 
 (defun pquocof (p q)
   (let ((qq (testdivide p q)))
-    (cond (qq (list q qq 1))
-	  ((list 1 p q)))))
+    (if qq
+        (values q qq 1)
+        (values 1 p q))))
 
 (defun polyst (a)
-  (cond ((pcoefp a) (list a))
-	(t (cons (cons (car a) (cadr a)) (polyst (caddr a))))))
+  (if (pcoefp a)
+      (list a)
+      (cons (cons (car a) (cadr a)) (polyst (caddr a)))))
 
 (defun cdinf (a b both)
-  (cond ((or (pcoefp a) (pcoefp b)) (list 1 a b))
-	(t (setq a (ncons (copy-tree a))
-		 b (ncons (cond (both (copy-tree b))(t b))))
-	   (list (cd1 a b both) (car a) (car b)))))
+  (cond ((or (pcoefp a) (pcoefp b))
+         (values 1 a b))
+	(t
+         (setq a (ncons (copy-tree a))
+               b (ncons (if both (copy-tree b) b)))
+         (values (cd1 a b both) (car a) (car b)))))
 
 (defun cd1 (a b both)
   (cond ((or (pcoefp (car a)) (pcoefp (car b))) 1)
@@ -65,56 +58,65 @@
 	(t (cd1 a (cddar b) both))))
 
 (defun lmake (p l)
-  (cond ((pcoefp p) (cons p l))
+  (cond ((pcoefp p)
+         (cons p l))
 	((get (car p) 'unhacked)
 	 (lmake (caddr p) (cons (cons (car p) (cadr p)) l)))
-	(t (setq l (lmake (caddr p) l))
-	   (rplaca l (list (car p) (cadr p) (car l))))))
+	(t
+         (setq l (lmake (caddr p) l))
+         (rplaca l (list (car p) (cadr p) (car l))))))
 
 (defun lmake2 (p l)
   (setq l (lmake p l))
-  (mapc #'(lambda (x) (rplaca x (getunhack (car x))))
-	(cdr l))
-  (cond ((equal (car l) 1) (cdr l))
-	(t (rplaca l (cons (car l) 1)))))
-
+  (mapc #'(lambda (x) (rplaca x (getunhack (car x)))) (cdr l))
+  (if (equal (car l) 1)
+      (cdr l)
+      (rplaca l (cons (car l) 1))))
 
 (defun pmake (l)
-  (cond ((null l) 1)
-	((= 0 (cdar l)) (pmake (cdr l)))
+  (cond ((null l)
+         1)
+	((zerop (cdar l))
+         (pmake (cdr l)))
 	((numberp (caar l))	     ;CLAUSE SHOULD BE ELIMINATED ASAP
 	 (ptimes (cexpt (caar l) (cdar l)) (pmake (cdr l))))
-	(t (ptimes (list (caar l) (cdar l) 1) (pmake (cdr l))))))
+	(t
+         (ptimes (list (caar l) (cdar l) 1) (pmake (cdr l))))))
+
+(defun fpgcdco (p q)
+  (let (($ratfac nil)
+        (gcdl nil))                        ;FACTORED PGCDCOFACTS
+    (if (or (pcoefp p) (pcoefp q))
+        (values-list (pgcdcofacts p q))
+        (values (ptimeschk (setcall pgcdcofacts p q)
+                           (car (setq p (lmake p nil)
+                                      q (lmake q nil)
+                                      gcdl (mapcar #'pmake (lgcd1 (cdr p) (cdr q))))))
+                (ptimeschk (car p) (cadr gcdl))
+                (ptimeschk (car q) (caddr gcdl))))))
 
 (defun facmgcd (pl)            ;GCD OF POLY LIST FOR EZGCD WITH RATFAC
   (do ((l (cdr pl) (cdr l))
-       (ans nil (cons (caddr gcd) ans))
-       (gcd (car pl) (car gcd)))
+       (ans nil)
+       (gcd (car pl)))
       ((null l) (cons gcd (nreverse ans)))
-    (setq gcd (fpgcdco gcd (car l)))
-    (cond ((equal (car gcd) 1) (return (cons 1 pl)))
-	  ((null ans) (setq ans (list (cadr gcd))))
-	  ((not (equal (cadr gcd) 1))
-	   (do ((l2 ans (cdr l2))) ((null l2))
-	     (rplaca l2 (ptimes (cadr gcd) (car l2))))))))
+    (multiple-value-bind (g x y) (fpgcdco gcd (car l))
+      (cond ((equal g 1)
+             (return (cons 1 pl)))
+            ((null ans)
+             (setq ans (list x)))
+            ((not (equal x 1))
+             (do ((l2 ans (cdr l2)))
+                 ((null l2))
+               (rplaca l2 (ptimes x (car l2))))))
+      (push y ans)
+      (setq gcd g))))
 
-
-(defun fpgcdco (p q)
-  (let ($ratfac gcdl)			;FACTORED PGCDCOFACTS
-    (cond ((or (pcoefp p) (pcoefp q)) (pgcdcofacts p q))
-	  (t (list (ptimeschk
-		    (setcall pgcdcofacts p q)
-		    (car (setq p (lmake p nil)
-			       q (lmake q nil)
-			       gcdl (mapcar 'pmake (lgcd1 (cdr p) (cdr q)) ))))
-		   (ptimeschk (car p) (cadr gcdl))
-		   (ptimeschk (car q) (caddr gcdl)))))))
-
-;;	NOTE: ITEMS ON VARLIST ARE POS. NORMAL
-;;	INTEGER COEF GCD=1 AND LEADCOEF. IS POS.
+;;; NOTE: ITEMS ON VARLIST ARE POS. NORMAL
+;;; INTEGER COEF GCD=1 AND LEADCOEF. IS POS.
 
 (defun lgcd1 (a b)
-  (prog (ptlist g bj c t1 d1 d2)
+  (prog (ptlist g bj c t1 d1 d2 dummy)
      (setq ptlist (mapcar #'(lambda (ig) (declare (ignore ig)) b) a))
      (do ((a a (cdr a))
 	  (ptlist ptlist (cdr ptlist)))
@@ -126,16 +128,20 @@
 	 (setq d1 1 d2 1)
 	 (setq bj (getunhack (caar b)))
 	 (setq c (cond ((pirredp (caar a))
-			(cond ((pirredp (caar b)) 1)
-			      (t (setcall pquocof bj ai))))
-		       ((pirredp (caar b)) (setcall pquocof ai bj))
-		       (t (setcall pgcdcofacts ai bj))))
+			(if (pirredp (caar b))
+                            1
+                            (multiple-value-setq (dummy bj ai) (pquocof bj ai))))
+		       ((pirredp (caar b))
+                        (multiple-value-setq (dummy ai bj) (pquocof ai bj)))
+		       (t
+                        (setcall pgcdcofacts ai bj))))
 	 (cond ((equal c 1) (go nextb))
 	       ((equal ai 1) (go bloop)))
 	aloop
-	 (cond ((setq t1 (testdivide ai c))
-		(setq ai t1 d1 (1+ d1))
-		(go aloop)))
+	 (when (setq t1 (testdivide ai c))
+           (setq ai t1)
+           (incf d1)
+           (go aloop))
 	bloop
 	 (and (= d1 1)
 	      (not (equal bj 1))
@@ -163,31 +169,36 @@
      (return (list g a b))))
 
 (defun makprodg (p sw)
-  (cond ((pcoefp p) p)
-	(t (car (makprod p sw)))))
+  (if (pcoefp p)
+      p
+      (car (makprod p sw))))
 
 (defun dopgcdcofacts (x y)
-  (let (($gcd
-	 $gcd)( $ratfac nil)) (or (member $gcd *gcdl* :test #'eq) (setq $gcd '$ez))
-	 (pgcdcofacts x y)))
+  (let (($gcd $gcd)
+        ($ratfac nil))
+    (unless (member $gcd *gcdl* :test #'eq)
+      (setq $gcd '$ez))
+    (values-list (pgcdcofacts x y))))
 
 (defun facrplus (x y)
   (let ((a (car x))
 	(b (cdr x))
 	(c (car y))
-	(d (cdr y)))
-    (setq x (setcall dopgcdcofacts a c)
-	  y (setcall fpgcdco b d))
-    (setq a (makprod
-	     (pplus (pflatten (ptimeschk a d))
-		    (pflatten (ptimeschk b c))) nil))
+	(d (cdr y))
+        dummy)
+    (multiple-value-setq (x a c) (dopgcdcofacts a c))
+    (multiple-value-setq (y b d) (fpgcdco b d))
+    (setq a (makprod (pplus (pflatten (ptimeschk a d))
+                            (pflatten (ptimeschk b c))) nil))
     (setq b (ptimeschk b d))
-    (cond ($algebraic (setq y (ptimeschk y b))
-		      (setcall fpgcdco y a) ;for unexpected gcd
-		      (cons (ptimes x a) y))
-	  (t (setq c (setcall cdinf y b nil))
-	     (setcall fpgcdco y a)
-	     (cons (ptimes x a) (ptimeschk y (ptimeschk c b)))))))
+    (cond ($algebraic
+           (setq y (ptimeschk y b))
+           (multiple-value-setq (dummy y a) (fpgcdco y a)) ;for unexpected gcd
+           (cons (ptimes x a) y))
+	  (t
+           (multiple-value-setq (c y b) (cdinf y b nil))
+           (multiple-value-setq (dummy y a) (fpgcdco y a))
+           (cons (ptimes x a) (ptimeschk y (ptimeschk c b)))))))
 
 (defun mfacpplus (l)
   (let (($gcd (or $gcd '$ez))
@@ -201,36 +212,36 @@
 	       ((null ll) (ptimes g (makprod a nil))))))))
 
 (defun  facrtimes (x y gcdsw)
-  (cond ((not gcdsw)
-	 (cons (ptimes (car x) (car y)) (ptimeschk (cdr x) (cdr y))))
-	(t (let ((g (cdinf (car x) (car y) t))
-		 (h (cdinf (cdr x) (cdr y) t)))
-	     (setq x (fpgcdco (cadr g) (caddr h)))
-	     (setq y (fpgcdco (caddr g) (cadr h)))
-	     (cons (ptimes (car g) (ptimes (cadr x) (cadr y)))
-		   (ptimeschk (car h) (ptimeschk (caddr x) (caddr y))))))))
+  (if (not gcdsw)
+      (cons (ptimes (car x) (car y)) (ptimeschk (cdr x) (cdr y)))
+      ;; gcdsw = true
+      (multiple-value-bind (g1 g2 g3) (cdinf (car x) (car y) t)
+        (multiple-value-bind (h1 h2 h3) (cdinf (cdr x) (cdr y) t)
+          (multiple-value-bind (x1 x2 x3) (fpgcdco g2 h3) 
+            (multiple-value-bind (y1 y2 y3) (fpgcdco g3 h2)
+              (cons (ptimes g1 (ptimes x2 y2))
+                    (ptimeschk h1 (ptimeschk x3 y3)))))))))
 
 (defun pfacprod (poly) 			;FOR RAT3D
-  (cond ((pcoefp poly) (cfactor poly))
-	(t (nconc (pfacprod (caddr poly))
-		  (list (pget (car poly)) (cadr poly))))))
+  (if (pcoefp poly)
+      (cfactor poly)
+      (nconc (pfacprod (caddr poly)) (list (pget (car poly)) (cadr poly)))))
 
 (defun fpcontent (poly)
-  (let (($ratfac
-	 nil))				;algebraic uses
+  (let (($ratfac nil))			;algebraic uses
     (setq poly (oldcontent poly))	;rattimes?
     (let ((a (lowdeg (cdadr poly))))	;main var. content
-      (cond ((> a 0) (setq a (list (caadr poly) a 1))
-	     (setq poly
-		   (list (ptimes (car poly) a)
-			 (pquotient (cadr poly) a))))))
+      (when (plusp a)
+        (setq a (list (caadr poly) a 1))
+        (setq poly (list (ptimes (car poly) a)
+                         (pquotient (cadr poly) a)))))
     (if (pminusp (cadr poly))
 	(list (pminus (car poly)) (pminus (cadr poly)))
 	poly)))
 
 ;; LOWDEG written to compute the lowest degree of a polynomial. - RZ
 
-(defmfun lowdeg (p)
+(defun lowdeg (p)
   (do ((l p (cddr l)))
       ((null (cddr l)) (car l))))
 
@@ -239,7 +250,8 @@
 	((null (cdddr poly))
 	 (ptimes (list (car poly) (cadr poly) 1)
 		 (makprod (caddr poly) contswitch)))
-	(contswitch (makprod1 poly))
+	(contswitch
+         (makprod1 poly))
 	(t (setq poly (fpcontent poly))
 	   (ptimes (makprod (car poly) contswitch) (makprod1 (cadr poly))))))
 
@@ -251,22 +263,26 @@
     (and (alike1 p (car v)) (return (pget (car g))))))
 
 (defun maksym (p)
-  (newsym2 p (pdis p)))
+  (let ((g (gensym))
+        (e (pdis p)))
+    (putprop g e 'disrep)
+    (valput g (1- (valget (car genvar))))
+    (push g genvar)
+    (push e varlist)
+    (putprop g p 'unhacked)
+    g))
 
 (defun maksymp (p)
-  (cond ((atom p) p)
-	(t (pget (maksym p)))))
+  (if (atom p)
+      p
+      (pget (maksym p))))
 
 (defun pflatten (h)
-  (prog (m)
-     (setq m (listovars h))
-     checkmore
-     (cond ((null m) (return h))
-	   ((not (let ((p (getunhack (car m))))
-		   (or (null p) (eq (car m) (car p)))))
-	    (go redo))
-	   (t (setq m (cdr m)) (go checkmore)))
-     redo (return (let ($ratfac) (pflat1 h)))))
+  (do ((m (listovars h) (cdr m)))
+      ((null m) (return-from pflatten h))
+    (unless (let ((p (getunhack (car m))))
+              (or (null p) (eq (car m) (car p))))
+     (return-from pflatten (let (($ratfac nil)) (pflat1 h))))))
 
 (defun pflat1 (p)
   (cond ((pcoefp p) p)
@@ -277,22 +293,9 @@
 		(a (cdddr p) (cddr a))
 		(ans (pflat1 (caddr p))))
 	       ((null a) (ptimes ans (pexpt val ld)))
-	     (setq ans
-		   (pplus (ptimes ans
-				  (pexpt val (- ld (car a))))
-			  (pflat1 (cadr a))))))))
+	     (setq ans (pplus (ptimes ans (pexpt val (- ld (car a))))
+                              (pflat1 (cadr a))))))))
 
 (defun pirredp (x)
-  (and (setq x (getdis x))
-       (or (atom x) (member 'irreducible (cdar x) :test #'eq))))
-
-(defun knownfactors (d)
-  (prog (h)
-     (cond ((pcoefp d) (return d)))
-     (setq h (getdis (car d)))
-     (return (cond ((or (atom h) (not (eq (caar h) 'mtimes)))
-		    (ptimes (knownfactors (caddr d))
-			    (list (car d) (cadr d) 1)))
-		   (t (setq h (getunhack (car d)))
-		      (ptimes (knownfactors (caddr d))
-			      (pexpt (knownfactors h) (cadr d))))))))
+  (and (setq x (get x 'disrep))
+     (or (atom x) (member 'irreducible (cdar x) :test #'eq))))
