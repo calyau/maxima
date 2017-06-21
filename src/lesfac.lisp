@@ -84,32 +84,36 @@
          (ptimes (list (caar l) (cdar l) 1) (pmake (cdr l))))))
 
 (defun fpgcdco (p q)
-  (let ($ratfac gcdl)			;FACTORED PGCDCOFACTS
-    (cond ((or (pcoefp p) (pcoefp q))
-           (pgcdcofacts p q))
-	  (t
-           (list (ptimeschk (setcall pgcdcofacts p q)
-                            (car (setq p (lmake p nil)
-                                       q (lmake q nil)
-                                       gcdl (mapcar #'pmake (lgcd1 (cdr p) (cdr q))))))
-                 (ptimeschk (car p) (cadr gcdl))
-                 (ptimeschk (car q) (caddr gcdl)))))))
+  (let (($ratfac nil)
+        (gcdl nil))                        ;FACTORED PGCDCOFACTS
+    (if (or (pcoefp p) (pcoefp q))
+        (values-list (pgcdcofacts p q))
+        (values (ptimeschk (setcall pgcdcofacts p q)
+                           (car (setq p (lmake p nil)
+                                      q (lmake q nil)
+                                      gcdl (mapcar #'pmake (lgcd1 (cdr p) (cdr q))))))
+                (ptimeschk (car p) (cadr gcdl))
+                (ptimeschk (car q) (caddr gcdl))))))
 
 (defun facmgcd (pl)            ;GCD OF POLY LIST FOR EZGCD WITH RATFAC
   (do ((l (cdr pl) (cdr l))
-       (ans nil (cons (caddr gcd) ans))
-       (gcd (car pl) (car gcd)))
+       (ans nil)
+       (gcd (car pl)))
       ((null l) (cons gcd (nreverse ans)))
-    (setq gcd (fpgcdco gcd (car l)))
-    (cond ((equal (car gcd) 1) (return (cons 1 pl)))
-	  ((null ans) (setq ans (list (cadr gcd))))
-	  ((not (equal (cadr gcd) 1))
-	   (do ((l2 ans (cdr l2)))
-               ((null l2))
-	     (rplaca l2 (ptimes (cadr gcd) (car l2))))))))
+    (multiple-value-bind (g x y) (fpgcdco gcd (car l))
+      (cond ((equal g 1)
+             (return (cons 1 pl)))
+            ((null ans)
+             (setq ans (list x)))
+            ((not (equal x 1))
+             (do ((l2 ans (cdr l2)))
+                 ((null l2))
+               (rplaca l2 (ptimes x (car l2))))))
+      (push y ans)
+      (setq gcd g))))
 
-;;	NOTE: ITEMS ON VARLIST ARE POS. NORMAL
-;;	INTEGER COEF GCD=1 AND LEADCOEF. IS POS.
+;;; NOTE: ITEMS ON VARLIST ARE POS. NORMAL
+;;; INTEGER COEF GCD=1 AND LEADCOEF. IS POS.
 
 (defun lgcd1 (a b)
   (prog (ptlist g bj c t1 d1 d2 dummy)
@@ -180,19 +184,20 @@
   (let ((a (car x))
 	(b (cdr x))
 	(c (car y))
-	(d (cdr y)))
+	(d (cdr y))
+        dummy)
     (multiple-value-setq (x a c) (dopgcdcofacts a c))
-    (setq y (setcall fpgcdco b d))
+    (multiple-value-setq (y b d) (fpgcdco b d))
     (setq a (makprod (pplus (pflatten (ptimeschk a d))
                             (pflatten (ptimeschk b c))) nil))
     (setq b (ptimeschk b d))
     (cond ($algebraic
            (setq y (ptimeschk y b))
-           (setcall fpgcdco y a) ;for unexpected gcd
+           (multiple-value-setq (dummy y a) (fpgcdco y a)) ;for unexpected gcd
            (cons (ptimes x a) y))
 	  (t
            (multiple-value-setq (c y b) (cdinf y b nil))
-           (setcall fpgcdco y a)
+           (multiple-value-setq (dummy y a) (fpgcdco y a))
            (cons (ptimes x a) (ptimeschk y (ptimeschk c b)))))))
 
 (defun mfacpplus (l)
@@ -212,10 +217,10 @@
       ;; gcdsw = true
       (multiple-value-bind (g1 g2 g3) (cdinf (car x) (car y) t)
         (multiple-value-bind (h1 h2 h3) (cdinf (cdr x) (cdr y) t)
-          (setq x (fpgcdco g2 h3))
-          (setq y (fpgcdco g3 h2))
-          (cons (ptimes g1 (ptimes (cadr x) (cadr y)))
-                (ptimeschk h1 (ptimeschk (caddr x) (caddr y))))))))
+          (multiple-value-bind (x1 x2 x3) (fpgcdco g2 h3) 
+            (multiple-value-bind (y1 y2 y3) (fpgcdco g3 h2)
+              (cons (ptimes g1 (ptimes x2 y2))
+                    (ptimeschk h1 (ptimeschk x3 y3)))))))))
 
 (defun pfacprod (poly) 			;FOR RAT3D
   (if (pcoefp poly)

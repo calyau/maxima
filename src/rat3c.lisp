@@ -102,7 +102,7 @@
 	((pcoefp y) (cond ((zerop y) (list x 1 y))
 			  (t (list (pcontent1 (cdr x) y)))))
 	((equal x y) (list x 1 1))
-	($ratfac (fpgcdco x y))
+	($ratfac (multiple-value-list (fpgcdco x y)))
 	((not (eq (p-var x) (p-var y)))
 	 (list (if (pointergp (p-var x) (p-var y))
 		   (oldcontent1 (p-terms x) y)
