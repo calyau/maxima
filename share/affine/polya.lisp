@@ -2447,7 +2447,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 (defvar *show-entry-type* t)
 
 (defun $determinant_of_equations (eqn &optional variables &aux answer )
-  (cond ((eq (typeof $poly_vector) 'polynomial-vectors) nil)
+  (cond ((eq (type-of $poly_vector) 'polynomial-vectors) nil)
 	(t (setq $poly_vector (make-polynomial-vectors))))
   (setf (pv-type-of-entries $poly_vector) $type_of_entries_for_poly_vector)
   (cond (variables ( pv-get-rows-from-macsyma-equations-and-variables $poly_vector
