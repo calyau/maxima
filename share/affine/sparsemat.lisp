@@ -1133,7 +1133,7 @@ something is wrong" (length (sp-list-of-all-columns-occurring sp-mat)) number-of
 			   (vector-push
 			    (aref (sp-column-used-in-row sp-mat) nn) a-special-solution)
 			   (vector-push  a-new-entry a-special-solution)))))))
-    (cond ((and  (sp-solutions sp-mat) (eq (typeof (sp-solutions sp-mat)) 'sparse-matrix))))
+    (cond ((and  (sp-solutions sp-mat) (eq (typeof (sp-solutions sp-mat)) 'sparse-matrix)))
 	  (t (setf (sp-solutions sp-mat) (make-sparse-matrix ))))
     (sp-set-rows (sp-solutions sp-mat) solution-rows)
     (sp-set-type-of-entries (sp-solutions sp-mat)
