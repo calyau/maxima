@@ -148,12 +148,21 @@ sin(y)*(10.0+6*cos(x)),
         (close *gnuplot-stream*)
         (setq *gnuplot-stream* nil))))
 
-(defun send-gnuplot-command (command)
+(defun send-gnuplot-command (command &optional recursive)
   (if (null *gnuplot-stream*)
       (start-gnuplot-process $gnuplot_command))
-  (when (not (null command))
-    (format *gnuplot-stream* "~a ~%" command)
-    (force-output *gnuplot-stream*)))
+  (handler-case (unless (null command)
+		  (format *gnuplot-stream* "~a ~%" command)
+		  (force-output *gnuplot-stream*))
+    (error (e)
+      ;; allow gnuplot to restart if stream-error, or just an error is signaled
+      ;; only try to restart once, to prevent an infinite loop 
+      (cond (recursive
+	     (error e))
+	    (t
+	     (warn "~a~%Trying new stream.~%" e)
+	     (setq *gnuplot-stream* nil)
+	     (send-gnuplot-command command t))))))
 
 (defun $gnuplot_reset ()
   (send-gnuplot-command "unset output")
