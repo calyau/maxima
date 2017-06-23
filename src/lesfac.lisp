@@ -217,8 +217,10 @@
       ;; gcdsw = true
       (multiple-value-bind (g1 g2 g3) (cdinf (car x) (car y) t)
         (multiple-value-bind (h1 h2 h3) (cdinf (cdr x) (cdr y) t)
-          (multiple-value-bind (x1 x2 x3) (fpgcdco g2 h3) 
+          (multiple-value-bind (x1 x2 x3) (fpgcdco g2 h3)
+            (declare (ignore x1))
             (multiple-value-bind (y1 y2 y3) (fpgcdco g3 h2)
+              (declare (ignore y1))
               (cons (ptimes g1 (ptimes x2 y2))
                     (ptimeschk h1 (ptimeschk x3 y3)))))))))
 
