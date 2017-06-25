@@ -159,7 +159,7 @@
 
     (mapc #'(lambda (q)  (sp1sincos q t)) *trigbuckets*)
     (mapc #'(lambda (q) (sp1sincos q nil)) *hyperbuckets*)
-    (setq fr (cons (m^ (1//2) (m+l *lin)) fr)
+    (setq fr (cons (m^ 1//2 (m+l *lin)) fr)
 	  *lin nil)
     (setq tr (cons '* (mapcan #'sp1untrep *trigbuckets*)))
     (setq g (nconc (sp1tlin tr t) (sp1tplus *lin t) g)

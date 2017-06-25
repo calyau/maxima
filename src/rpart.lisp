@@ -337,7 +337,7 @@
 (defun risplit-expt-sqrt-pow (base sp power)
   ;; n = abs(2*power) is a non-negative integer
   (destructuring-bind (real . imag) sp
-    (let* ((abs2 (spabs sp)) (abs (power abs2 (1//2)))
+    (let* ((abs2 (spabs sp)) (abs (power abs2 1//2))
            (n (abs (cadr power)))
            (pos? (> (cadr power) -1))
            (imag-sign ($sign imag)))
@@ -366,9 +366,9 @@
          ;; correct, write out the 2x2 truth table...
          (divcarcdr
           (expanintexpt
-           (cons (power (add abs real) (1//2))
+           (cons (power (add abs real) 1//2)
                  (porm (eq (eq imag-sign '$pos) pos?)
-                       (power (sub abs real) (1//2))))
+                       (power (sub abs real) 1//2)))
            n)
           (if pos?
               (power 2 (div n 2))
