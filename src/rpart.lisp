@@ -775,7 +775,7 @@
 		  (t (powers ($expand (add (powers (car ris) 2)
 					   (powers (cdr ris) 2))
 				      1 0)
-			     (half)))))))))
+			     1//2))))))))
 
 (defun genatan (num den)
   (let ((arg (take '($atan2) num den)))
