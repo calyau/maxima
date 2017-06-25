@@ -234,11 +234,11 @@
 (defun oldget (plist indic)
   (cond ((symbolp plist)
 	 (setq plist (symbol-plist plist)))
-	((consp plist) (setq plist (cdr plist)))
-	(t (return-from oldget nil)))
-  (loop for tail on plist by #'cddr
-	 when (eq (car tail) indic)
-	 do (return (second tail))))
+	((consp plist)
+         (setq plist (cdr plist)))
+	(t
+         (return-from oldget nil)))
+  (getf plist indic))
 
 (defun safe-get (sym prop)
   (and (symbolp sym) (get sym prop)))
