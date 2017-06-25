@@ -8,9 +8,6 @@
 
 (in-package :maxima)
 
-(defun memq (x lis)
-  (member x lis :test #'eq))
-
 ;;this will make operators which declare the type and result of numerical operations
 (eval-when (:compile-toplevel :load-toplevel :execute)
 
@@ -170,10 +167,7 @@
     (setq ar (symbol-array ar)))
   (cons (array-element-type ar) (array-dimensions ar)))
 
-(defun firstn (n lis)
-  (subseq lis 0 n))
-
-(declaim (inline fixnump bignump posint negint))
+(declaim (inline fixnump bignump posint negint memq firstn))
 (defun fixnump (n)
   (declare (optimize (speed 3)))
   (typep n 'fixnum))
@@ -189,6 +183,15 @@
 (defun negint (x)
   (declare (optimize (speed 3)))
   (and (integerp x) (< x 0)))
+
+(defun memq (x lis)
+  (declare (optimize (speed 3)))
+  (member x lis :test #'eq))
+
+(defun firstn (n lis)
+  (declare (type (integer 0 (#.most-positive-fixnum)) n)
+           (optimize (speed 3)))
+  (subseq lis 0 n))
 
 ;;actually this was for lists too.
 
