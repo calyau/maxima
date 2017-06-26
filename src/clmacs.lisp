@@ -235,12 +235,6 @@
   (cond ((symbolp sym) (get sym tag))
 	((consp sym) (getf (cdr sym) tag))))
 
-(defun safe-get (sym prop)
-  (and (symbolp sym) (get sym prop)))
-
-(defmacro safe-getl (sym prop)
-  `(and (symbolp ,sym) (getl ,sym ,prop)))
-
 (defun getl (plist indicator-list )
   (cond ((symbolp plist)
 	 (setq plist (symbol-plist plist)))
@@ -249,6 +243,13 @@
   (loop for tail on plist by #'cddr
 	 when (member (car tail) indicator-list :test #'eq)
 	 do (return tail)))
+
+(declaim (inline safe-get safe-getl))
+(defun safe-get (sym prop)
+  (and (symbolp sym) (get sym prop)))
+
+(defun safe-getl (sym prop)
+  (and (symbolp sym) (getl sym prop)))
 
 (defmacro ncons (x)
   `(cons ,x nil)) ;;can one optimize this??
