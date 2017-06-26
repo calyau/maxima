@@ -25,9 +25,9 @@
 (defun unknown (f)
   (and (not (mapatom f))
        (cond ((and (eq (caar f) 'mqapply)
-		   (not (oldget (caaadr f) 'specsimp)))
+		   (not (zl-get (caaadr f) 'specsimp)))
 	      (throw 'unknown t))
-	     ((not (oldget (caar f) 'operators)) (throw 'unknown t))
+	     ((not (zl-get (caar f) 'operators)) (throw 'unknown t))
 	     (t (mapc #'unknown (cdr f)) nil))))
 
 (defmfun $listofvars (e) 

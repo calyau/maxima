@@ -3139,7 +3139,7 @@
 	      (a nil (cons (term (prep1 (car l)) (srconvert1 (cadr l))) a)))
 	     ((null l)
 	      (make-ps (cons (car p) (symbol-value (car p)))
-		       (tay-order (oldget trunclist (car p))) a))))))
+		       (tay-order (zl-get trunclist (car p))) a))))))
 
 ;;;		 subtitle error handling
 

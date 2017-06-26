@@ -2262,10 +2262,10 @@
 
 (defun idiffgrad (e x)
   (let ((fun (caar e)) grad args)
-    (cond ((and (eq fun 'mqapply) (oldget (caaadr e) 'grad))
+    (cond ((and (eq fun 'mqapply) (zl-get (caaadr e) 'grad))
        (idiffgrad (cons (cons (caaadr e) nil) (append (cdadr e) (cddr e)))
               x))
-      ((or (eq fun 'mqapply) (null (setq grad (oldget fun 'grad))))
+      ((or (eq fun 'mqapply) (null (setq grad (zl-get fun 'grad))))
        (if (not (depends e x)) 0 (idiff%deriv (list e x 1))))
       ((not (= (length (cdr e)) (length (car grad))))
        (merror "Wrong number of arguments for ~:M" fun))

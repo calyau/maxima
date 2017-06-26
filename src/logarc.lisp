@@ -50,7 +50,7 @@
 	 (div (sub (take '(%log) (add 1 x)) (take '(%log) (sub 1 x))) 2))
     	((member f '(%asec %acsc %acot %asech %acsch %acoth) :test #'eq)
 	 ;; asec(x) = acos(1/x), and etc.
-	 (logarc (oldget (oldget (get f '$inverse) 'recip) '$inverse) (inv x)))
+	 (logarc (zl-get (zl-get (get f '$inverse) 'recip) '$inverse) (inv x)))
 	(t (merror "LOGARC: unrecognized argument: ~M" f))))
 
 (defmfun halfangle (f a)

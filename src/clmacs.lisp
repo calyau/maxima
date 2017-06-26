@@ -231,14 +231,9 @@
 (defun fset (sym val)
   (setf (symbol-function sym) val))
 
-(defun oldget (plist indic)
-  (cond ((symbolp plist)
-	 (setq plist (symbol-plist plist)))
-	((consp plist)
-         (setq plist (cdr plist)))
-	(t
-         (return-from oldget nil)))
-  (getf plist indic))
+(defun zl-get (sym tag)
+  (cond ((symbolp sym) (get sym tag))
+	((consp sym) (getf (cdr sym) tag))))
 
 (defun safe-get (sym prop)
   (and (symbolp sym) (get sym prop)))

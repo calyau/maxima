@@ -12,10 +12,6 @@
 
 (macsyma-module mrgmac macro)
 
-(defun zl-get (sym tag)
-  (cond ((symbolp sym) (get sym tag))
-	((consp sym) (getf (cdr sym) tag))))
-
 (defun define-macro (name lambda-exp)
   (cond ((symbolp lambda-exp)
 	 (setq lambda-exp (symbol-function lambda-exp))))
