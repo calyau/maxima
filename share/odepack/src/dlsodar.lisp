@@ -279,7 +279,7 @@
             (setf insufr 2)
             (setf lewt (f2cl-lib:int-add len1c 1))
             (f2cl-lib:f2cl-set-string msg
-                                      "DLSODAR: Warning: RWORK length is sufficient for now, but "
+                                      "DLSODAR-  Warning.. RWORK length is sufficient for now, but "
                                       (string 60))
             (xerrwd msg 60 103 0 0 0 0 0 0.0d0 0.0d0)
             (f2cl-lib:f2cl-set-string msg
@@ -297,7 +297,7 @@
             (if (>= liw leniw) (go label70))
             (setf insufi 2)
             (f2cl-lib:f2cl-set-string msg
-                                      "DLSODAR: Warning: IWORK length is sufficient for now, but "
+                                      "DLSODAR-  Warning.. IWORK length is sufficient for now, but "
                                       (string 60))
             (xerrwd msg 60 104 0 0 0 0 0 0.0d0 0.0d0)
             (f2cl-lib:f2cl-set-string msg
