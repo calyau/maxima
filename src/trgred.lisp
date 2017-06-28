@@ -159,7 +159,7 @@
 
     (mapc #'(lambda (q)  (sp1sincos q t)) *trigbuckets*)
     (mapc #'(lambda (q) (sp1sincos q nil)) *hyperbuckets*)
-    (setq fr (cons (m^ (1//2) (m+l *lin)) fr)
+    (setq fr (cons (m^ 1//2 (m+l *lin)) fr)
 	  *lin nil)
     (setq tr (cons '* (mapcan #'sp1untrep *trigbuckets*)))
     (setq g (nconc (sp1tlin tr t) (sp1tplus *lin t) g)
@@ -287,7 +287,7 @@
   (let* ((n (cond ((eq (caar e) 'mexpt)
                    (cond ((= (signum1 (caddr e)) -1)
                           (prog1 (m- (caddr e))
-                            (setq e (cons (list (oldget (caaadr e) 'recip)) (cdadr e)))))
+                            (setq e (cons (list (zl-get (caaadr e) 'recip)) (cdadr e)))))
                          ((prog1 (caddr e) (setq e (cadr e))))))
                   ( 1 )))
          (arg (sp1kget (cadr e)))
@@ -320,7 +320,7 @@
     (cond ((eq f (caadr buc))		;SAME FUNCTION
 	   (return
 	     (rplacd (cadr buc) (m+ n (cdadr buc))))) ;SO BOOST EXPONENT
-	  ((eq (caadr buc) (oldget f 'recip)) ;RECIPROCAL FUNCTIONS
+	  ((eq (caadr buc) (zl-get f 'recip)) ;RECIPROCAL FUNCTIONS
 	   (setq n (m- (cdadr buc) n))
 	   (return
 	     (cond ((signp e n) (rplacd buc (cddr buc)))
@@ -328,7 +328,7 @@
 		    (rplaca (cadr buc) f)
 		    (rplacd (cadr buc) (neg n)))
 		   (t (rplacd (cadr buc) n)))))
-	  (t (let* ((nf (oldget (oldget *laws* (caadr buc)) f))
+	  (t (let* ((nf (zl-get (zl-get *laws* (caadr buc)) f))
                     (m nil))
 	       (cond ((null nf))	;NO SIMPLIFICATIONS HERE
 		     ((equal n (cdadr buc)) ;EXPONENTS MATCH
@@ -450,7 +450,7 @@
 	((and (consp b) (consp (car b)) (member (caar b) '(%sin %cos %tan %cot %sec %csc
 								%sinh %cosh %tanh %coth %sech %csch) :test #'eq))
 	 (cond ((= (signum1 e) -1)
-		(sp1expt (list (list (oldget (caar b) 'recip)) (cadr b))
+		(sp1expt (list (list (zl-get (caar b) 'recip)) (cadr b))
 			 (neg e)))
 	       ((and (signp g e)
 		     (member (caar b) '(%sin %cos %sinh %cosh) :test #'eq))
@@ -562,8 +562,8 @@
 
 (defun sp1trig (e)
   (cond ((atom (cadr e)) (simplify e))
-	((eq (caaadr e) (oldget (caar e) '$inverse)) (sp1 (cadadr e)))
-	((eq (caaadr e) (oldget (oldget (caar e) 'recip) '$inverse))
+	((eq (caaadr e) (zl-get (caar e) '$inverse)) (sp1 (cadadr e)))
+	((eq (caaadr e) (zl-get (zl-get (caar e) 'recip) '$inverse))
 	 (sp1 (m// (cadadr e))))
 	((and (null *trigred) (null *noexpand) (eq (caaadr e) 'mplus))
 	 (sp1trigex e))
@@ -620,7 +620,7 @@
 (defun sp1atrig (fn exp)
   (cond ((atom exp)
 	 (sp1atrig2 fn exp))
-	((eq fn (oldget (cadr exp) '$inverse))
+	((eq fn (zl-get (cadr exp) '$inverse))
 	 (sp1 (cadr exp)))
 	(t (sp1atrig2 fn exp))))
 

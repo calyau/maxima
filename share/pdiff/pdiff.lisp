@@ -150,7 +150,7 @@
 	  
 	    ;; We disallow positional derivatives of subscripted functions and lambda forms.
     
-	    ((and $use_pdiff (null (oldget fun 'grad)) (not ($subvarp (cadr e)))
+	    ((and $use_pdiff (null (zl-get fun 'grad)) (not ($subvarp (cadr e)))
 		  (not (memq fun '(mlessp mleqp mequal mgeqp mgreaterp mcond lambda))))
 	     (setq args (cdr e))
 	     (setq fun (caar e))

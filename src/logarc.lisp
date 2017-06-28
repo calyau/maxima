@@ -50,7 +50,7 @@
 	 (div (sub (take '(%log) (add 1 x)) (take '(%log) (sub 1 x))) 2))
     	((member f '(%asec %acsc %acot %asech %acsch %acoth) :test #'eq)
 	 ;; asec(x) = acos(1/x), and etc.
-	 (logarc (oldget (oldget (get f '$inverse) 'recip) '$inverse) (inv x)))
+	 (logarc (zl-get (zl-get (get f '$inverse) 'recip) '$inverse) (inv x)))
 	(t (merror "LOGARC: unrecognized argument: ~M" f))))
 
 (defmfun halfangle (f a)
@@ -63,12 +63,12 @@
   (let ((sw (member f '(%cos %cot %coth %cosh) :test #'eq)))
     (cond ((member f '(%sin %cos) :test #'eq)
            (mul (halfangleaux-factor f a)
-                (power (div (add 1 (porm sw (take '(%cos) a))) 2) (1//2))))
+                (power (div (add 1 (porm sw (take '(%cos) a))) 2) 1//2)))
           ((member f '(%tan %cot) :test #'eq)
            (div (add 1 (porm sw (take '(%cos) a))) (take '(%sin) a)))
           ((member f '(%sinh %cosh) :test #'eq)
            (mul (halfangleaux-factor f a)
-                (power (div (add (take '(%cosh) a) (porm sw 1)) 2) (1//2))))
+                (power (div (add (take '(%cosh) a) (porm sw 1)) 2) 1//2)))
 	  ((member f '(%tanh %coth) :test #'eq)
 	   (div (add (take '(%cosh) a) (porm sw 1)) (take '(%sinh) a)))
 	  ((member f '(%sec %csc %sech %csch) :test #'eq)

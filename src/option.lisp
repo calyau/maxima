@@ -49,9 +49,9 @@
 	(t (setq history (cons node history) options opts)
 	   (menu options))))
 
-(defun downs (node) (oldget node 'subc))
+(defun downs (node) (zl-get node 'subc))
 
-(defun ups (node) (oldget node 'supc))
+(defun ups (node) (zl-get node 'supc))
 
 (defun decode (node)
   (cond ((not (integerp node)) node)
@@ -61,7 +61,7 @@
 (defun menu (opts)
   (do ((l opts (cdr l)) (i 1 (f1+ i))) ((null l))
     (princ i) (princ " - ") (princ (fullstrip1 (car l)))
-    (cond ((oldget (car l) 'kind) (write-char #\space) (princ (oldget (car l) 'kind))))
+    (cond ((zl-get (car l) 'kind) (write-char #\space) (princ (zl-get (car l) 'kind))))
     (terpri)))
 
 
@@ -91,7 +91,7 @@
       ((> i indent))
     (write-char #\tab))
   (princ (fullstrip1 node))
-  (cond ((oldget node 'kind) (write-char #\space) (princ (oldget node 'kind))))
+  (cond ((zl-get node 'kind) (write-char #\space) (princ (zl-get node 'kind))))
   (mapc #'(lambda (l) (prnet l (1+ indent))) (downs node)))
 
 ;;Copyright 1980, Massachusetts Institute of Technology

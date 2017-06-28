@@ -116,11 +116,6 @@
 (defmacro take* (operator &rest args)
   `(simplifya (list ,operator ,@args) nil))
 
-(defmacro min%i () ''((mtimes simp) -1 $%i)) ;-%I
-(defmacro 1//2 () ''((rat simp) 1 2))	;1/2
-(defmacro half () ''((rat simp) 1 2))	;1/2
-(defmacro i//2 () ''((mtimes simp) ((rat simp) 1 2) $%i)) ;%I/2
-
 (declaim (inline simplify))
 (defun simplify (x)
   (simplifya x nil))

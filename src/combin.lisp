@@ -1440,11 +1440,11 @@
 		 (progn
 		   (setq op (caar fun))
 		   (when (cdr fun) (setq param (cadr fun)))
-		   (or (and (oldget op 'op) (not (eq op 'mfactorial)))
+		   (or (and (zl-get op 'op) (not (eq op 'mfactorial)))
 		       (not (atom (cadr fun)))
 		       (not (= (length fun) 2))))))
      (merror (intl:gettext "deftaylor: don't know how to handle this function: ~M") fun))
-   (when (oldget op 'sp2)
+   (when (zl-get op 'sp2)
      (mtell (intl:gettext "deftaylor: redefining ~:M.~%") op))
    (when param (setq series (subst 'sp2var param series)))
    (setq series (subsum '*index series))

@@ -89,7 +89,7 @@
   (putprop x t 'mark))
 
 (defmfun markp (x)
-  (and (symbolp x) (zl-get x 'mark)))
+  (and (symbolp x) (get x 'mark)))
 
 (defun zl-remprop (sym indicator)
   (if (symbolp sym)
@@ -484,7 +484,7 @@
 	   (member (caar x) '(rat bigfloat) :test #'eq))))
 
 (defun semant (pat)
-  (cond ((symbolp pat) (or (zl-get pat 'var) pat))
+  (cond ((symbolp pat) (or (get pat 'var) pat))
 	((db-mnump pat) (dintnum pat))
 	(t (mapcar #'semant pat))))
 
