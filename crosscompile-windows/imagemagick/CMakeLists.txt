@@ -9,14 +9,14 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(IMAGEMAGICKVERSION "7.0.5-10-portable-Q16")
+set(IMAGEMAGICKVERSION "7.0.6-0-portable-Q16")
 
 # Hash values for current releases are available from: https://www.imagemagick.org/download/binaries/digest.rdf
 if(BUILD_64BIT)
-    set(IMAGEMAGICK_SHA256 "82f2c7e46c25ccbf0d62d3c0bc2fd395dc9a3d8e908c9cf6e24c26123299c955")
+    set(IMAGEMAGICK_SHA256 "ea03bec02e75a631c95623fe9fd4ab3ac290cddb9085b9862d22935cfcd4718e")
     set(IMAGEMAGICK_URL    "https://www.imagemagick.org/download/binaries/ImageMagick-${IMAGEMAGICKVERSION}-x64.zip")
 else()
-    set(IMAGEMAGICK_SHA256 "3f2cd04a2db94686fcbd4ee3dd8c340a3a2aa5772c1f2fab8170cd84d16e1b27")
+    set(IMAGEMAGICK_SHA256 "cf1fdaaa6db2483dd37f66a2c74dc9671b2f8375641b172d4febc6affb341cfb")
     set(IMAGEMAGICK_URL    "https://www.imagemagick.org/download/binaries/ImageMagick-${IMAGEMAGICKVERSION}-x86.zip")
 endif()
 
