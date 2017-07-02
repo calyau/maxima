@@ -32,11 +32,12 @@ rem there were reports, that the tempdir could not be found (maybe because of sp
 rem so set a fallback (as it was before)
 if not exist "%MAXIMA_TEMPDIR%"/ set MAXIMA_TEMPDIR=%USERPROFILE:\=/%
 
-rem read maximarc and set the lisp type, if the user did specify MAXIMA_LISP
-rem currently no comments or other (Unix shell) commands are understood
-if EXIST "%MAXIMA_USERDIR%/maximarc" (
+rem read maximarc and set the Lisp type, if the user did specify MAXIMA_LISP
+rem currently no comments or other (Unix shell) commands are understood, only (e.g):
+rem LISP=sbcl
+if EXIST %MAXIMA_USERDIR%/maximarc (
     setlocal enabledelayedexpansion
-    for /F %%L in (%MAXIMA_USERDIR%/maximarc) do (
+    for /F usebackq %%L in ("%MAXIMA_USERDIR%/maximarc") do (
         set %%L
         set lisp=!MAXIMA_LISP!
     )
