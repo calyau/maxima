@@ -1433,8 +1433,8 @@ ignoring dummy variables and array indices."
   (destructuring-let (((n . d) (lhop-numden n d))
 		      const nconst dconst)
     (setq lhp? (and (null ind) (cons n d)))
-    (desetq (nconst . n) (var-or-const n))
-    (desetq (dconst . d) (var-or-const d))
+    (multiple-value-setq (nconst n) (var-or-const n))
+    (multiple-value-setq (dconst d) (var-or-const d))
 
     (setq n (stirling0 n))	;; replace factorial and %gamma
     (setq d (stirling0 d))  	;;  with approximations
@@ -1594,9 +1594,9 @@ ignoring dummy variables and array indices."
          (cons 1 (cons numer denom)))
         (t
          (let ((const 1))
-           (destructuring-bind (num-consts . num-vars)
+           (multiple-value-bind (num-consts num-vars)
                (var-or-const numer)
-             (destructuring-bind (denom-consts . denom-vars)
+             (multiple-value-bind (denom-consts denom-vars)
                  (var-or-const denom)
                (if (not (mtimesp num-vars))
                    (setq num-vars (list num-vars))
@@ -1638,20 +1638,20 @@ ignoring dummy variables and array indices."
   (setq expr ($factor expr))
   (cond ((atom expr)
 	 (if (eq expr var)
-             (cons 1 expr)
-             (cons expr 1)))
+             (values 1 expr)
+             (values expr 1)))
 	((free expr var)
-         (cons expr 1))
+         (values expr 1))
 	((mtimesp expr)
 	 (do ((l (cdr expr) (cdr l))
 	      (const 1)
               (varl 1))
-	     ((null l) (cons const varl))
+	     ((null l) (values const varl))
 	   (if (free (car l) var)
                (setq const (m* (car l) const))
                (setq varl (m* (car l) varl)))))
 	(t
-         (cons 1 expr))))
+         (values 1 expr))))
 
 ;; if term goes to non-zero constant, replace with constant
 (defun lhsimp (term var val)
