@@ -1424,41 +1424,39 @@ ignoring dummy variables and array indices."
 
 (defun lhospital (n d ind)
   (declare (special val lhp?))
-  (if (mtimesp n)
-      (setq n (m*l (mapcar #'(lambda (term) (lhsimp term var val))
-			   (cdr n)))))
-  (if (mtimesp d)
-      (setq d (m*l (mapcar #'(lambda (term) (lhsimp term var val))
-			   (cdr d)))))
-  (destructuring-let (((n . d) (lhop-numden n d))
-		      const nconst dconst)
-    (setq lhp? (and (null ind) (cons n d)))
-    (multiple-value-setq (nconst n) (var-or-const n))
-    (multiple-value-setq (dconst d) (var-or-const d))
+  (when (mtimesp n)
+    (setq n (m*l (mapcar #'(lambda (term) (lhsimp term var val)) (cdr n)))))
+  (when (mtimesp d)
+    (setq d (m*l (mapcar #'(lambda (term) (lhsimp term var val)) (cdr d)))))
+  (multiple-value-bind (n d)
+      (lhop-numden n d)
+    (let (const nconst dconst)
+      (setq lhp? (and (null ind) (cons n d)))
+      (multiple-value-setq (nconst n) (var-or-const n))
+      (multiple-value-setq (dconst d) (var-or-const d))
 
-    (setq n (stirling0 n))	;; replace factorial and %gamma
-    (setq d (stirling0 d))  	;;  with approximations
+      (setq n (stirling0 n))	;; replace factorial and %gamma
+      (setq d (stirling0 d))  	;;  with approximations
 
-    (setq n (sdiff n var)	;; take derivatives for l'hospital
-	  d (sdiff d var))
+      (setq n (sdiff n var)	;; take derivatives for l'hospital
+            d (sdiff d var))
 
-    (if (or (not (free n '%derivative)) (not (free d '%derivative)))
-	(throw 'lhospital ()))
-    (setq n (expand-trigs (tansc n) var))
-    (setq d (expand-trigs (tansc d) var))
+      (if (or (not (free n '%derivative)) (not (free d '%derivative)))
+          (throw 'lhospital ()))
+      (setq n (expand-trigs (tansc n) var))
+      (setq d (expand-trigs (tansc d) var))
 
-    (desetq (const . (n . d)) (remove-singularities n d))
-    (setq const (m* const (m// nconst dconst)))
-    (simpinf
-     (let ((ans (if ind
-                    (limit2 n d var val)
-                    (limit-numden n d val))))
-
-       ;; When the limit function returns, it's possible that it will return NIL
-       ;; (gave up without finding a limit). It's also possible that it will
-       ;; return something containing UND. We treat that as a failure too.
-       (when (and ans (freeof '$und ans))
-         (m* const ans))))))
+      (desetq (const . (n . d)) (remove-singularities n d))
+      (setq const (m* const (m// nconst dconst)))
+      (simpinf
+       (let ((ans (if ind
+                      (limit2 n d var val)
+                      (limit-numden n d val))))
+         ;; When the limit function returns, it's possible that it will return NIL
+         ;; (gave up without finding a limit). It's also possible that it will
+         ;; return something containing UND. We treat that as a failure too.
+         (when (and ans (freeof '$und ans))
+           (m* const ans)))))))
 
 ;; Try to compute the limit of a quotient NUM/DEN, trying to massage the input
 ;; into a convenient form for LIMIT on the way.
@@ -1537,7 +1535,7 @@ ignoring dummy variables and array indices."
 	((or (oscip num) (oscip denom)))
 	((frac num)
 	 (psetq num (m^ denom -1) denom (m^ num -1))))
-  (cons num denom))
+  (values num denom))
 
 ;;i don't know what to do here for some cases, may have to be refined.
 (defun num-of-logs (exp)
