@@ -152,6 +152,15 @@ diff(t,x);
 'diff(f,x,1)*'diff(t,f,1)$
 kill(f,x,t);
 done;
+
+/* Bug #2356: diff(...,%pi) doesn't give an error */
+
+errcatch (diff (%pi, %pi));
+[]$
+
+errcatch (diff (x, rat (2/3)));
+[]$
+
 /* -------------------------------------------------------------------------- */
 
 gradef(f(x,y),x^2,g(x,y));

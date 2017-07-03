@@ -739,6 +739,7 @@
 (defmfun nonvarcheck (e fn)
   (if (or (mnump e)
 	  (maxima-integerp e)
+	  ($constantp e)
 	  (and (not (atom e)) (not (eq (caar e) 'mqapply)) (mopp1 (caar e))))
       (merror (intl:gettext "~:M: second argument must be a variable; found ~M") fn e)))
 
