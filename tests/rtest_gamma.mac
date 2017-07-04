@@ -3654,25 +3654,25 @@ fpprec:24;
 relerror(
  erf(inverse_erf(2b0)),
  2b0,
- 7.8b-24);
+ 5.9b-24);
 true;
 
 relerror(
  erf(inverse_erf(-2b0)),
  -2b0,
- 7.8b-24);
+ 5.9b-24);
 true;
 
 relerror(
  erf(inverse_erf(2b0+2b0*%i)),
  2b0+2b0*%i,
- 8.3b-25);
+ 6.6b-25);
 true;
 
 relerror(
  erf(inverse_erf(-2b0-2b0*%i)),
  -2b0-2b0*%i,
- 8.3b-25);
+ 6.6b-25);
 true;
 
 relerror(

@@ -678,6 +678,8 @@
 ;; x or -x if the sign of x must be known for some other reason.  These
 ;; techniques, however, are not perfect.
 
+(defmacro half () ''((rat simp) 1 2))  ;1/2
+
 (defun absarg (l &optional (absflag nil))
 ;; Commenting out the the expansion of the expression l. It seems to be not
 ;; necessary, but can cause expression swelling (DK 01/2010).
@@ -775,7 +777,7 @@
 		  (t (powers ($expand (add (powers (car ris) 2)
 					   (powers (cdr ris) 2))
 				      1 0)
-			     1//2))))))))
+			     (half)))))))))
 
 (defun genatan (num den)
   (let ((arg (take '($atan2) num den)))
