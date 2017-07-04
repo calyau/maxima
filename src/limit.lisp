@@ -737,14 +737,12 @@ ignoring dummy variables and array indices."
          (return (limit2 n dn var val))))))
 
 (defun /#alike (e f)
-  (cond ((alike1 e f)
-	 t)
-	(t (let ((deriv (sdiff (m// e f) var)))
-	     (cond ((=0 deriv)
-		    t)
-		   ((=0 ($ratsimp deriv))
-		    t)
-		   (t nil))))))
+  (if (alike1 e f)
+      t
+      (let ((deriv (sdiff (m// e f) var)))
+        (cond ((=0 deriv) t)
+              ((=0 ($ratsimp deriv)) t)
+              (t nil)))))
 
 (defun limit2 (n dn var val)
   (prog (n1 d1 lim-sign gcp sheur-ans)
@@ -1441,17 +1439,16 @@ ignoring dummy variables and array indices."
       (setq n (expand-trigs (tansc n) var))
       (setq d (expand-trigs (tansc d) var))
 
-      (desetq (const . (n . d)) (remove-singularities n d))
+      (multiple-value-setq (const n d) (remove-singularities n d))
       (setq const (m* const (m// nconst dconst)))
-      (simpinf
-       (let ((ans (if ind
-                      (limit2 n d var val)
-                      (limit-numden n d val))))
-         ;; When the limit function returns, it's possible that it will return NIL
-         ;; (gave up without finding a limit). It's also possible that it will
-         ;; return something containing UND. We treat that as a failure too.
-         (when (and ans (freeof '$und ans))
-           (m* const ans)))))))
+      (simpinf (let ((ans (if ind
+                              (limit2 n d var val)
+                              (limit-numden n d val))))
+                 ;; When the limit function returns, it's possible that it will return NIL
+                 ;; (gave up without finding a limit). It's also possible that it will
+                 ;; return something containing UND. We treat that as a failure too.
+                 (when (and ans (freeof '$und ans))
+                   (m* const ans)))))))
 
 ;; Try to compute the limit of a quotient NUM/DEN, trying to massage the input
 ;; into a convenient form for LIMIT on the way.
@@ -1584,7 +1581,7 @@ ignoring dummy variables and array indices."
             (atom numer) (atom denom)
             (not (mtimesp numer))		;Leave this here for a while.
             (not (mtimesp denom)))
-         (cons 1 (cons numer denom)))
+         (values 1 numer denom))
         (t
          (let ((const 1))
            (multiple-value-bind (num-consts num-vars)
@@ -1601,8 +1598,9 @@ ignoring dummy variables and array indices."
                     (num-list (copy-list num-vars ))
                     (den-list denom-vars den-list-temp)
                     (den-list-temp (copy-list denom-vars)))
-                   ((null nl) (cons (m* const (m// num-consts denom-consts))
-                                    (cons (m*l num-list) (m*l den-list-temp))))
+                   ((null nl) (values (m* const (m// num-consts denom-consts))
+                                      (m*l num-list)
+                                      (m*l den-list-temp)))
                  (do ((dl den-list (cdr dl)))
                      ((null dl) t)
                    (if (or (%einvolve (car nl)) (%einvolve (car nl)))
