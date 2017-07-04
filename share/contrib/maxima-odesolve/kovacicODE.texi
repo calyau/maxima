@@ -13,6 +13,11 @@
 @end ifinfo
 
 
+@dircategory Mathematics/Maxima
+@direntry
+* kovacicODE: (maxima/kovacicODE).           Maxima share package kovacicODE: Kovacic's method for differential equations.
+@end direntry
+
 @node Top, Introduction to kovacicODE, (dir), (dir)
 @top
 @menu

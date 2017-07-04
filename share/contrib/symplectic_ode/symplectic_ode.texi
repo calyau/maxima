@@ -9,6 +9,11 @@
 @end macro
 @end ifinfo
 
+@dircategory Mathematics/Maxima
+@direntry
+* symplectic_ode: (maxima/symplectic_ode).           Maxima share package symplectic_ode for solving Hamilton's equations.
+@end direntry
+
 @node Top, Introduction to symplectic_ode, (dir), (dir)
 @top
 @menu

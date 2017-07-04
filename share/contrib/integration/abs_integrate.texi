@@ -9,6 +9,11 @@
 @end macro
 @end ifinfo
 
+@dircategory Mathematics/Maxima
+@direntry
+* abs_integrate: (maxima/abs_integrate).           Maxima share package abs_integrate for integrating absolute value and friends.
+@end direntry
+
 @node Top, Introduction to abs_integrate, (dir), (dir)
 @top
 @menu

@@ -13,6 +13,11 @@
 @end macro
 @end ifinfo
 
+@dircategory Mathematics/Maxima
+@direntry
+* drawutils: (maxima/drawutils).           Maxima share package drawutils: additional drawing functions for package draw.
+@end direntry
+
 @node Top, Introduction to drawutils, (dir), (dir)
 @top
 @menu

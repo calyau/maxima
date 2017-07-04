@@ -28,6 +28,11 @@
 @c    @include NEXTTOPIC.texi
 
 
+@dircategory Mathematics/Maxima
+@direntry
+* MYTOPIC: (maxima/mytopic).           Maxima share package MYTOPIC for foo bar baz quux.
+@end direntry
+
 @menu
 * Introduction to MYTOPIC::
 * Definitions for MYTOPIC::

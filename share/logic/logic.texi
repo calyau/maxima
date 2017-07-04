@@ -32,6 +32,11 @@
 @end macro
 @end ifinfo
 
+@dircategory Mathematics/Maxima
+@direntry
+* logic: (maxima/logic).           Maxima share package logic for operations on Boolean variables.
+@end direntry
+
 @node Top, Introduction to logic, (dir), (dir)
 @top
 @menu

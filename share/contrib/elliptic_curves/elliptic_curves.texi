@@ -23,6 +23,11 @@
 @end macro
 @end ifinfo
 
+@dircategory Mathematics/Maxima
+@direntry
+* elliptic_curves: (maxima/elliptic_curves).           Maxima share package elliptic_curves: elliptic curves over prime fields.
+@end direntry
+
 @node Top, Introduction to elliptic_curves, (dir), (dir)
 @top
 @menu

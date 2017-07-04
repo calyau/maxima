@@ -21,6 +21,11 @@
 @end macro
 @end ifinfo
 
+@dircategory Mathematics/Maxima
+@direntry
+* MYTOPIC: (maxima/mytopic).           Maxima share package MYTOPIC for foo bar baz quux.
+@end direntry
+
 @node Top, Introduction to MYTOPIC, (dir), (dir)
 @top
 @menu
