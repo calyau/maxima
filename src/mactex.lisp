@@ -271,49 +271,51 @@
   (if (eql x #\|) "\\mbox{\\verb/|/}"
       (concatenate 'string "\\mbox{\\verb|" (string x) "|}")))
 
-(defvar *tex-translations* nil)
-;; '(("ab" . "a")("x" . "x")) would cause  AB12 and X3 C4 to print a_{12} and x_3 C_4
-
 ;; Read forms from file F1 and output them to F2
 (defun tex-forms (f1 f2 &aux tem (eof *mread-eof-obj*))
   (with-open-file (st f1)
     (loop while (not (eq (setq tem (mread-raw st eof)) eof))
 	   do (tex1 (third tem) f2))))
 
-(defun tex-stripdollar (x)
-  (let ((s (maybe-invert-string-case (symbol-name (tex-stripdollar0 x)))))
-    (if (> (length s) 1)
-      (concatenate 'string "{\\it " s "}")
-      s)))
+;; Detect and extract groups of trailing digits, e.g. foo_mm_nn.
+;; and then punt foo[mm, nn] to TEX-ARRAY.
+;; Otherwise, treat SYM as a simple symbol.
 
-(defun tex-stripdollar0 (sym)
-  (or (symbolp sym) (return-from tex-stripdollar0  sym))
-  (let* ((pname (quote-% (stripdollar sym)))
-	 (l (length pname))
-	 (begin-sub
-	  (loop for i downfrom (1- l)
-		 when (not (digit-char-p (aref pname i)))
-		 do (return (1+ i))))
-	 (tem  (make-array (+ l 4) :element-type ' #.(array-element-type "abc") :fill-pointer 0)))
-    (loop for i below l
-	   do
-	   (cond ((eql i begin-sub)
-		  (let ((a (assoc tem  *tex-translations* :test 'equal)))
-		    (cond (a
-			   (setq a (cdr a))
-			   (setf (fill-pointer tem) 0)
-			   (loop for i below (length a)
-				  do
-				  (vector-push (aref a i) tem)))))
-		  (vector-push #\_ tem)
-		  (unless (eql i (- l 1))
-		    (vector-push #\{ tem)
-		    (setq begin-sub t))))
-		  (vector-push (aref pname i) tem)
-	   finally
-	   (cond ((eql begin-sub t)
-		  (vector-push #\} tem))))
-    (intern tem)))
+(defun tex-stripdollar (sym)
+  (let
+    ((nn-list (extract-trailing-digits (symbol-name sym))))
+    (if nn-list
+      ;; SYM matches foo_mm_nn.
+      (apply #'concatenate 'string (tex-array `((,(intern (first nn-list)) 'array) ,@(rest nn-list)) nil nil))
+      ;; SYM is a simple symbol.
+      (let ((s (maybe-invert-string-case (quote-% (stripdollar sym)))))
+        (if (> (length s) 1)
+          (concatenate 'string "{\\it " s "}")
+          s)))))
+
+;; Given a string foo_mm_nn, return foo, mm, and nn,
+;; where mm and nn are integers (not strings of digits).
+;; Return NIL if argument doesn't have trailing digits.
+
+(defun extract-trailing-digits (s)
+  (let (nn-list)
+    ;; OK (loop while (funcall #.(maxima-nregex::regex-compile "[^_](__*)([0-9][0-9]*)$") s)
+    ;; NOPE (loop while (funcall #.(maxima-nregex::regex-compile "[^0-9_](_*)([0-9][0-9]*)$") s)
+    (loop with nn-string while
+          (or (and
+                (funcall #.(maxima-nregex::regex-compile "[^_](__*)([0-9][0-9]*)$") s)
+                (let*
+                  ((group-_ (aref maxima-nregex::*regex-groups* 1))
+                   (group-nn (aref maxima-nregex::*regex-groups* 2)))
+                  (setq nn-string (subseq s (first group-nn) (second group-nn)))
+                  (setq s (subseq s 0 (first group-_)))))
+              (and
+                (funcall #.(maxima-nregex::regex-compile "[^_]([0-9][0-9]*)$") s)
+                (let* ((group-nn (aref maxima-nregex::*regex-groups* 1)))
+                  (setq nn-string (subseq s (first group-nn) (second group-nn)))
+                  (setq s (subseq s 0 (first group-nn))))))
+          do (push (parse-integer nn-string) nn-list))
+    (and nn-list (cons s nn-list))))
 
 (defun strcat (&rest args)
   (apply #'concatenate 'string (mapcar #'string args)))
