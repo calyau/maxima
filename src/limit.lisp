@@ -715,35 +715,26 @@ ignoring dummy variables and array indices."
 ;;Used by tlimit also.
 (defmfun limit1 (exp var val)
   (prog ()
-     (let ((lhprogress? lhp?)  (lhp? ())  (ans ()))
-       (cond ((setq ans (and (not (atom exp))
-			     (getlimval exp)))
+     (let ((lhprogress? lhp?)
+           (lhp? ())
+           (ans ()))
+       (cond ((setq ans (and (not (atom exp)) (getlimval exp)))
 	      (return ans))
-	     ((and (not (infinityp val))
-		   (setq ans (simplimsubst val exp)))
+	     ((and (not (infinityp val)) (setq ans (simplimsubst val exp)))
 	      (return ans))
 	     (t nil))
-
-;;;NUMDEN* => (numerator . denominator)
-       (destructuring-let (((n . dn) (numden* exp)))
-	 (cond
-	   ((not (among var dn))
-	    (return (simplimit (m// (simplimit n var val) dn)
-			       var
-			       val)))
-	   ((not (among var n))
-	    (return (simplimit (m* n
-				   (simplimexpt dn
-						-1
-						(simplimit dn var val)
-						-1))
-			       var
-			       val)))
-	   ((and lhprogress?
-		 (/#alike n (car lhprogress?))
-		 (/#alike dn (cdr lhprogress?)))
-	    (throw 'lhospital nil)))
-	 (return (limit2 n dn var val))))))
+;;;NUMDEN* => (values numerator denominator)
+       (multiple-value-bind (n dn)
+           (numden* exp)
+         (cond ((not (among var dn))
+                (return (simplimit (m// (simplimit n var val) dn) var val)))
+               ((not (among var n))
+                (return (simplimit (m* n (simplimexpt dn -1 (simplimit dn var val) -1)) var val)))
+               ((and lhprogress?
+                   (/#alike n (car lhprogress?))
+                   (/#alike dn (cdr lhprogress?)))
+                (throw 'lhospital nil)))
+         (return (limit2 n dn var val))))))
 
 (defun /#alike (e f)
   (cond ((alike1 e f)
@@ -946,11 +937,11 @@ ignoring dummy variables and array indices."
 	      new-exp))))
 
 (defun unrat (exp)			;RETURNS UNRATTED EXPRESION
-  (let ((n-dn (numden* exp)))
-    (let ((tem ($divide (car n-dn) (cdr n-dn))))
+  (multiple-value-bind (n d)
+      (numden* exp)
+    (let ((tem ($divide n d)))
       (m+ (cadr tem)
-	  (m// (caddr tem)
-	       (cdr n-dn))))))
+	  (m// (caddr tem) d)))))
 
 (defun get-newexp&factors (exp degree var) ;RETURNS (CONS NEWEXP FACTORS)
   (do ((terms (cond ((mtimesp exp)(cdr exp)) ; SUCH THAT
@@ -984,9 +975,9 @@ ignoring dummy variables and array indices."
   (ratlim (m// rat (m^ var (ratdegree rat)))))
 
 (defun ratdegree (rat)
-  (let ((n-dn (numden* rat)))
-    (- (deg (car n-dn))
-       (deg (cdr n-dn)))))
+  (multiple-value-bind (n d)
+      (numden* rat)
+    (- (deg n) (deg d))))
 
 (defun limfact2 (n d var val)
   (let ((n1 (reflect0 n var val))
@@ -1112,23 +1103,27 @@ ignoring dummy variables and array indices."
 ;;;returns (cons numerator denominator)
 (defun numden* (e)
   (let ((e (factor (simplify e)))
-	(numer ())  (denom ()))
+	(numer ())
+        (denom ()))
     (cond ((atom e)
 	   (push e numer))
 	  ((mtimesp e)
-	   (mapc 'forq (cdr e)))
-	  (t (forq e)))
+	   (mapc #'forq (cdr e)))
+	  (t
+           (forq e)))
     (cond ((null numer)
-	   (setq numer 1.))
+	   (setq numer 1))
 	  ((null (cdr numer))
 	   (setq numer (car numer)))
-	  (t (setq numer (m*l numer))))
+	  (t
+           (setq numer (m*l numer))))
     (cond ((null denom)
-	   (setq denom 1.))
+	   (setq denom 1))
 	  ((null (cdr denom))
 	   (setq denom (car denom)))
-	  (t (setq denom (m*l denom))))
-    (cons (factor numer) (factor denom))))
+	  (t
+           (setq denom (m*l denom))))
+    (values (factor numer) (factor denom))))
 
 ;;;FACTOR OR QUOTIENT
 ;;;Setq's the special vars numer and denom from numden*
