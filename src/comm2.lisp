@@ -409,10 +409,11 @@
 	     ((null x)
 	      (cond ((null roots) (subst0 (cons '(mtimes) (nreverse notroots)) e))
 		    (t (if $rootsconmode
-			   (destructuring-let (((min gcd lcm) (rtc-getinfo roots)))
+			   (multiple-value-bind (min gcd lcm)
+                               (rtc-getinfo roots)
 			     (cond ((and (= min gcd) (not (= gcd 1))
-					 (not (= min lcm))
-					 (not (eq $rootsconmode '$all)))
+                                       (not (= min lcm))
+                                       (not (eq $rootsconmode '$all)))
 				    (setq roots
 					  (rt-separ
 					   (list gcd
@@ -461,11 +462,14 @@
       (push (list '(mexpt) (muln (cdar x) nil) (quotient lcm (caar x)))
 	    root1))))
 
-(defun rtc-getinfo (llist)
-  (let ((m (caar llist)) (g (caar llist)) (l (caar llist)))
-    (do ((x (cdr llist) (cdr x)))
-	((null x) (list m g l))
-      (setq m (min m (caar x)) g (gcd g (caar x)) l (lcm l (caar x))))))
+(defun rtc-getinfo (list)
+  (let ((m (caar list))
+        (g (caar list))
+        (l (caar list)))
+    (dolist (x (cdr list) (values m g l))
+      (setq m (min m (car x))
+            g (gcd g (car x))
+            l (lcm l (car x))))))
 
 (defun rtc-fixitup (roots notroots)
   (mapcar #'(lambda (x) (rplacd x (list (sratsimp (muln (cdr x) (not $rootsconmode))))))
