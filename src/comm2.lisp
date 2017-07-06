@@ -139,7 +139,9 @@
 	  ((or (atom exp) (and (eq (caar exp) '%derivative) (atom (cadr exp))))
 	   (improper-arg-err exp '$atvalue)))
     (cond ((not (eq (caar exp) '%derivative))
-	   (setq fun (caar exp) vl (cdr exp) dl (listof0s vl)))
+	   (setq fun (caar exp)
+                 vl (cdr exp)
+                 dl (make-list (length vl) :initial-element 0)))
 	  (t (setq fun (caaadr exp) vl (cdadr exp))
 	     (dolist (v vl)
 	       (setq dl (nconc dl (ncons (or (getf (cddr exp) v) 0)))))))
@@ -233,7 +235,7 @@
         (t (recur-apply #'(lambda (x) (atscan x ateqs)) expr))))
 
 (defun at1 (expr)
-  (atfind (caar expr) (cdr expr) (listof0s (cdr expr))))
+  (atfind (caar expr) (cdr expr) (make-list (length (cdr expr)) :initial-element 0)))
 
 (defun atfind (fun vl dl)
   (do ((atvalues (mget fun 'atvalues) (cdr atvalues)))
@@ -247,10 +249,6 @@
          (return (prog2
                     (atvarschk vl)
                     (substitutel vl atvars (caddar atvalues)))))))
-
-(defun listof0s (llist)
-  (do ((llist llist (cdr llist)) (l nil (cons 0 l)))
-      ((null llist) l)))
 
 (declare-top (special $ratfac genvar varlist $keepfloat))
 
