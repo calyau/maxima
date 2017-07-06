@@ -362,11 +362,6 @@
 
 (declare-top (special vlist lians degree))
 
-;; (defun getfnsplit (l)
-;;   (let (coef fn)
-;;     (mapc #'(lambda (x) (if (free x intvar) (push x coef) (push x fn))) l)
-;;     (values (muln coef nil) (muln fn nil))))
-
 (defun getfnsplit (l)
   (let (coef fn)
     (dolist (x l (values (muln coef nil) (muln fn nil)))
