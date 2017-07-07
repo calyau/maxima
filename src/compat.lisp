@@ -28,5 +28,5 @@
 
 ;; make a symbol out of the printed representations of all args
 (defun concat (&rest args)
-  (intern (format nil "~{~A~^~}" args)))
+  (intern (format nil "~{~A~}" args)))
 
