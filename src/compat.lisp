@@ -14,19 +14,14 @@
 
 ;; Run time stuff
 
-(defun symbolconc (&rest syms)
+(defun symbolconc (&rest args)
+  "make a symbol out of the printed representations of all args"
   (intern (apply #'concatenate 'string
-		 (mapcar #'(lambda (sym)
-			     (cond ((floatp sym)
-				    (format nil "~S" sym))
-				   ((integerp sym)
-				    (format nil "~D" sym))
-				   ((symbolp sym)
-				    (symbol-name sym))
-				   (t sym)))
-			 syms))))
-
-;; make a symbol out of the printed representations of all args
-(defun concat (&rest args)
-  (intern (format nil "~{~A~^~}" args)))
+		 (mapcar #'(lambda (s)
+                             (typecase s
+                               (integer (format nil "~d" s))
+                               (symbol (symbol-name s))
+                               (string s)
+                               (t (format nil "~a" s))))
+			 args))))
 

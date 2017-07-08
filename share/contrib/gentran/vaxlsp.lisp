@@ -207,7 +207,7 @@
     (prog (dnum)
 	(cond ((floatp num)
 	       (setq dnum (append (explode num) '(d 0)))
-	       (return (apply 'concat dnum)))
+	       (return (apply #'symbolconc dnum)))
 	      (t (return (intern (format nil "~a.D0" num)))))))
 
 (defun gcomplex (num)
@@ -215,7 +215,7 @@
 	(cond ((floatp num)
 	       (setq cnum (append (explode num) '( |,| 0 |.| 0 |)|)))
 	       (setq cnum (cons '|(| cnum ))
-	       (return (apply 'concat cnum)))
+	       (return (apply #'symbolconc cnum)))
 	      (t (return (intern (format nil "(~a.0,0.0)" num)))))))
 
 (defun simptimes1 (terms fp)

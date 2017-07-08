@@ -24,7 +24,7 @@
                                                      (caddr var))
                                                  '$%i 1))))
 		   (setq $lexp (cons var $lexp))
-		   (setq var  (concat "$_" (car lg)))
+		   (setq var  (symbolconc "$_" (car lg)))
 		   (setq $lg (cons var $lg))
 		   (rplaca lvar var)))))
 
