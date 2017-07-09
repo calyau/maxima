@@ -92,9 +92,8 @@ sin(y)*(10.0+6*cos(x)),
 (defvar $gnuplot_command "gnuplot")
 
 (defun start-gnuplot-process (path)
-  #+clisp (let (gnuplot-stream (ext:make-pipe-output-stream path))
-	    (setq *gnuplot-stream* (cadr gnuplot-stream))
-	    (make-echo-stream (caddr gnuplot-stream) *error-output*))
+  ;; TODO: Forward gnuplot's stderr stream to maxima's stderr output
+  #+clisp (setq *gnuplot-stream* (ext:make-pipe-output-stream path))
   ;; TODO: Forward gnuplot's stderr stream to maxima's stderr output
   #+lispworks (setq *gnuplot-stream* (system:open-pipe path))
   #+cmu (setq *gnuplot-stream*
