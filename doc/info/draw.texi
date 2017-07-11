@@ -2571,7 +2571,7 @@ Single 2D plot.
         color = blue,
         line_width = 4,
         ellipse(0,0,2,1/2,0,360),
-        proportional_axes = xy) $
+        proportional_axes = 'xy) $
 @end example
 @figure{draw_proportional_axis}
 
@@ -2580,12 +2580,12 @@ Multiplot.
 @example
 (%i1) draw(
         terminal = wxt,
-        gr2d(proportional_axes = xy,
+        gr2d(proportional_axes = 'xy,
              explicit(x^2,x,0,1)),
         gr2d(explicit(x^2,x,0,1),
              xrange = [0,1],
              yrange = [0,2],
-             proportional_axes=xy),
+             proportional_axes='xy),
         gr2d(explicit(x^2,x,0,1)))$
 @end example
 @figure{draw_proportional_axis2}
@@ -4393,7 +4393,7 @@ Vertical and horizontal error bars.
 
 @example
 (%i1) draw2d(
-        error_type = xy,
+        error_type = 'xy,
         points_joined = true,
         color = blue,
         errors([[1,2,1,2], [3,5,2,1], [10,3,1,1], [17,6,1/2,2]])); 

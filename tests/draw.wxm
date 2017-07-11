@@ -1096,36 +1096,6 @@ load("../doc/info/figures/draw_xaxis_secondary.mac")$
 
 
 /* [wxMaxima: input   start ] */
-load("../doc/info/figures/worldmap_geomap.mac")$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-load("../doc/info/figures/worldmap_geomap2.mac")$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-load("../doc/info/figures/worldmap_geomap3.mac")$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-load("../doc/info/figures/worldmap_geomap4.mac")$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-load("../doc/info/figures/worldmap_geomap5.mac")$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-load("../doc/info/figures/worldmap_geomap6.mac")$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
 load("../doc/info/figures/worldmap_make_poly_continent.mac")$
 /* [wxMaxima: input   end   ] */
 
