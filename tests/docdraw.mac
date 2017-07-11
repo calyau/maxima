@@ -1,0 +1,3 @@
+docdraw2d(name,[x]):=apply('wxdraw2d,x);
+docdraw3d(name,[x]):=apply('wxdraw3d,x);
+docdraw(name,[x]):=apply('wxdraw,x);

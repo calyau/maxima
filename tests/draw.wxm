@@ -1,0 +1,775 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 17.04.0 ] */
+/* [wxMaxima: title   start ]
+A simple manual testbench for draw
+   [wxMaxima: title   end   ] */
+
+
+/* [wxMaxima: section start ]
+The concept
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+We don't have an automatic testbench for gnuplot. But we can at least run all gnuplot examples and ask the user to check if they show what they should.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: section start ]
+The setup
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: section start ]
+The test cases
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+A 3D graph without axis
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_axis3d.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A diagram without a bottom axis
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_axis_bottom.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Bars, Group B has a dashed border, if gnuplot is using pngcairo as terminal
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_bars.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Two triangles, the right one without border
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_border.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A colorful 3D plot with a legend telling which color means which Z coordinate
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_cbrange.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+The same as above, but the color range ranges from "Low" over "Medium" to "High"
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_cbtics.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+One centered label and curves with different colors
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_color.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Two clored boxes, the upper one with a legend sorting the colors from black (0) to yellow (200)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_colorbox.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A colorful 3D diagram with the legend called "Magnitude"
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_colorbox2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A plot with an ellipse (left) and a plot with a triangle (right)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_columns.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A contour plot with height lines
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_contour.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Only the height lines seen from above
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_contour2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A 3d cylinder
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_cylindrical.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A 3D mesh with random 3D pixels
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_elevation_grid.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A filled 3/4 circle and a quarter of a non-filled circle
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_ellipse.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A 3d diagram in grayscale; The color equals the x coordinate; black is left
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_enhanced3d.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Colorful big points in a 3D space, blue means: x=0, yellow means: x=1
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_enhanced3d10.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_enhanced3d11.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_enhanced3d2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_enhanced3d3.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_enhanced3d4.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_enhanced3d5.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_enhanced3d6.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_enhanced3d7.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_enhanced3d8.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_enhanced3d9.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_equiv.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_errors.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_errors2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_explicit.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_explicit2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_explicit3.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_filledfunc.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_filledfunc2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_grid.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_grid2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_head_angle.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_head_both.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_head_length.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_head_type.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_image.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_image2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_image3.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_image4.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_image5.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_image6.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_implicit.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_implicit2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_interpolate_color.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_interpolate_color2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_interpolate_color3.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_interpolate_color4.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_interpolate_color5.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_interpolate_color6.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_key.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_key_pos.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_key_pos2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_label.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_label2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_label_alignment.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_label_orientation.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_line_type.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_line_width.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_logcb.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_logx_secondary.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_mesh.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_mesh2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_mesh3.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_nticks.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_palette.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_palette2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_palette3.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_palette4.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_palette5.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_parametric.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_parametric2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_parametric3.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_point_size.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_point_type.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_points.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_points2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_points3.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_points4.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_points5.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_points6.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_points7.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_points8.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_points_joined.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_polar.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_polygon.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_proportional_axis.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_proportional_axis2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_quadrilateral.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_rectangle.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_region.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_scene.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_spherical.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_surface_hide.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_title.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_transform.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_transform2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_transparent.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_triangle.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_tube.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_tube_extremes.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_unit_vectors.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_user_preamble.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_user_preamble2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_vector.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_vector2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_view.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_view2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_wired_surface.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_xaxis.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_xaxis_secondary.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/worldmap_geomap.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/worldmap_geomap2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/worldmap_geomap3.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/worldmap_geomap4.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/worldmap_geomap5.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/worldmap_geomap6.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/worldmap_make_poly_continent.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/worldmap_make_poly_continent2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/worldmap_make_poly_country.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/worldmap_make_polygon.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/worldmap_region_boundaries.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/worldmap_region_boundaries_plus.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_allocation.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_allocation2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_color2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_xugrid.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/draw_ylabel_secondary.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
