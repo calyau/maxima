@@ -16,11 +16,6 @@ We don't have an automatic testbench for gnuplot. But we can at least run all gn
 
 
 /* [wxMaxima: section start ]
-The setup
-   [wxMaxima: section end   ] */
-
-
-/* [wxMaxima: section start ]
 The test cases
    [wxMaxima: section end   ] */
 
