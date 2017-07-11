@@ -925,6 +925,11 @@ load("../doc/info/figures/draw_proportional_axis.mac")$
 /* [wxMaxima: input   end   ] */
 
 
+/* [wxMaxima: comment start ]
+Three plots, the first two having the x axis scaled in the same scale as the y axis.
+   [wxMaxima: comment end   ] */
+
+
 /* [wxMaxima: input   start ] */
 load("../doc/info/figures/draw_proportional_axis2.mac")$
 /* [wxMaxima: input   end   ] */
