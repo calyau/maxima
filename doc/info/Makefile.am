@@ -600,6 +600,8 @@ warn_texinfo:
 	[ -z  "$$bad_files" ] || ( echo "WARNING: The following files have unexpanded Tabs: $$bad_files" ; \
 	echo "Run /doc/info/fix_tab to fix the problem." )
 
+distclean-local:
+	rm -f figures/Makefile
 
 
 .PHONY: check_texinfo warn_texinfo
