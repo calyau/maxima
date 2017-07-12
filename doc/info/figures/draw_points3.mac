@@ -4,3 +4,4 @@ a: make_array (flonum, 100) $
 for i:0 thru 99 do a[i]: random(1.0) $
 docdraw2d("figures/draw_points3",
 	points(a))$
+kill(a)$
