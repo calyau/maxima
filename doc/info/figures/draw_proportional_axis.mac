@@ -6,5 +6,5 @@ docdraw2d("figures/draw_proportional_axis",
 	color = blue,
 	line_width = 4,
 	ellipse(0,0,2,1/2,0,360),
-	proportional_axes = xy
+	proportional_axes = 'xy
 ) $

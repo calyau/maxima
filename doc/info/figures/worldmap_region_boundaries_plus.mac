@@ -1,5 +1,5 @@
 load("docdraw.mac");
 
 load(worldmap)$
-region_boundaries_plus(10.4,41.5,20.7,35.4);
-docdraw2d("figures/worldmap_region_boundaries_plus",geomap(%))$
+tmp:region_boundaries_plus(10.4,41.5,20.7,35.4);
+docdraw2d("figures/worldmap_region_boundaries_plus",geomap(tmp))$

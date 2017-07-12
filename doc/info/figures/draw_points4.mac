@@ -8,3 +8,4 @@ for i:0 thru 99 do (
     y[i]: random(10) ) $
 docdraw2d("figures/draw_points4",
 	points(x,y))$
+kill(x)$kill(y)$

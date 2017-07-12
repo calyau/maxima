@@ -1,7 +1,7 @@
 load("docdraw.mac");
 
 docdraw2d("figures/draw_errors2",
-	error_type = xy,
+	error_type = 'xy,
 	points_joined = true,
 	color = blue,
 	errors([[1,2,1,2], [3,5,2,1], [10,3,1,1], [17,6,1/2,2]]));

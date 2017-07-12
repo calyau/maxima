@@ -9,3 +9,4 @@ for i:0 thru 9 do (
     z[i]: random(10) ) $
 docdraw3d("figures/draw_points6",
 	points(x,y,z))$
+kill(x)$kill(y)$kill(z)$
