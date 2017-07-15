@@ -1,3 +1,23 @@
-docdraw2d(name,[x]):=apply('wxdraw2d,x);
-docdraw3d(name,[x]):=apply('wxdraw3d,x);
-docdraw(name,[x]):=apply('wxdraw,x);
+docdraw2d(name,[x]):=if wxplot_size # 'wxplot_size then
+	apply('wxdraw2d,x)
+else
+	(
+		apply('draw2d,x),
+		readline(stdin)
+	)$
+
+docdraw3d(name,[x]):=if wxplot_size # 'wxplot_size then
+	apply('wxdraw3d,x)
+else
+	(
+		apply('draw3d,x),
+		readline(stdin)
+	)$
+
+docdraw(name,[x]):=if wxplot_size # 'wxplot_size then
+	apply('wxdraw,x)
+else
+	(
+		apply('draw,x),
+		readline(stdin)
+	)$
