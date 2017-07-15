@@ -3,6 +3,7 @@ docdraw2d(name,[x]):=if wxplot_size # 'wxplot_size then
 else
 	(
 		apply('draw2d,x),
+		print("Press <enter> to continue."),
 		readline(stdin)
 	)$
 
@@ -11,6 +12,7 @@ docdraw3d(name,[x]):=if wxplot_size # 'wxplot_size then
 else
 	(
 		apply('draw3d,x),
+		print("Press <enter> to continue."),
 		readline(stdin)
 	)$
 
@@ -19,5 +21,6 @@ docdraw(name,[x]):=if wxplot_size # 'wxplot_size then
 else
 	(
 		apply('draw,x),
+		print("Press <enter> to continue."),
 		readline(stdin)
 	)$
