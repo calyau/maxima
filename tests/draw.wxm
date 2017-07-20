@@ -15,6 +15,15 @@ We don't have an automatic testbench for gnuplot. But we can at least run all gn
    [wxMaxima: comment end   ] */
 
 
+/* [wxMaxima: input   start ] */
+if wxplot_size = 'wxplot_size then
+    (
+        print("Maxima will now try to display draw scenes and tell what they should contain."),
+        print("The test if this is actually true has to be done manually, though.")
+    )$
+/* [wxMaxima: input   end   ] */
+
+
 /* [wxMaxima: section start ]
 The test cases
    [wxMaxima: section end   ] */
