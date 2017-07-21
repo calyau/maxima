@@ -116,4 +116,8 @@ Tkmaxima/tclIndex: $(TKSOURCES)
            $(TCLSH)) || \
          touch Tkmaxima/tclIndex
 
+clean-local:
+	rm -f xmaxima
+	rm -f Tkmaxima/tclIndex
+
 FORCE:

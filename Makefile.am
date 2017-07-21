@@ -159,3 +159,7 @@ endif # GCC331
 iss: win32-lisp-runtime wxmaxima gnuplot extradocinstall
 
 endif # WIN32
+
+clean-local:
+	rm -rf bin
+	rm -rf binary

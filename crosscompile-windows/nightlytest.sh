@@ -51,33 +51,12 @@ done
 
 ABCL_JAR=/opt/abcl-bin-1.5.0/abcl.jar
 JAVA=$(which java)
-ABCL="$JAVA -server -Xrs -cp $ABCL_JAR org.armedbear.lisp.Main"
+ABCL="$JAVA -jar $ABCL_JAR"
 
-(
-cat <<ABCL1
-(load "configure.lisp")
-(configure :interactive nil)
-(quit)
-ABCL1
-) >/tmp/abcl-configure
-$ABCL --noinit --load /tmp/abcl-configure
+$ABCL --noinit --eval '(load "configure.lisp")' --eval '(configure :interactive nil)' --eval '(quit)'
 cd src
-(
-cat <<ABCL2
-(load "maxima-build.lisp")
-(maxima-compile)
-(quit)
-ABCL2
-) >/tmp/abcl-compile
-$ABCL --noinit --load /tmp/abcl-compile
-(
-cat <<ABCL3
-(load "maxima-build.lisp")
-(maxima-load)
-(cl-user::run)
-ABCL3
-) >/tmp/abcl-run
-echo "run_testsuite(); quit();" | $ABCL --noinit --load /tmp/abcl-run >../logfile-testsuite-abcl.txt
+$ABCL --noinit --eval '(load "maxima-build.lisp")' --eval '(maxima-compile)' --eval '(quit)'
+echo "run_testsuite(); quit();" | $ABCL --noinit --eval '(load "maxima-build.lisp")' --eval "(maxima-load)" --eval "(cl-user::run)" >../logfile-testsuite-abcl.txt
 cd ..
 
 echo "abcl summary" >>logfile-summary.txt

@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 17.04.0 ] */
+/* [ Created with wxMaxima version 17.07.0 ] */
 /* [wxMaxima: title   start ]
 A simple manual testbench for draw
    [wxMaxima: title   end   ] */
@@ -15,907 +15,556 @@ We don't have an automatic testbench for gnuplot. But we can at least run all gn
    [wxMaxima: comment end   ] */
 
 
+/* [wxMaxima: input   start ] */
+if wxplot_size = 'wxplot_size then
+    (
+        print("Maxima will now try to display draw scenes and tell what they should contain."),
+        print("The test if this is actually true has to be done manually, though.")
+    )$
+/* [wxMaxima: input   end   ] */
+
+
 /* [wxMaxima: section start ]
 The test cases
    [wxMaxima: section end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3D graph without axis
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3D graph without axis")$
 load("../doc/info/figures/draw_axis3d.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A diagram without a bottom axis
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A diagram without a bottom axis")$
 load("../doc/info/figures/draw_axis_bottom.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Bars, Group B has a dashed border, if gnuplot is using pngcairo as terminal
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Bars, Group B has a dashed border, if gnuplot is using pngcairo as terminal")$
 load("../doc/info/figures/draw_bars.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Two triangles, the right one without border
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Two triangles, the right one without border")$
 load("../doc/info/figures/draw_border.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A colorful 3D plot with a legend telling which color means which Z coordinate
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A colorful 3D plot with a legend telling which color means which Z coordinate")$
 load("../doc/info/figures/draw_cbrange.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-The same as above, but the color range ranges from "Low" over "Medium" to "High"
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("The same as above, but the color range ranges from \"Low\" over \"Medium\" to \"High\"")$
 load("../doc/info/figures/draw_cbtics.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-One centered label and curves with different colors
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("One centered label and curves with different colors")$
 load("../doc/info/figures/draw_color.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Two clored boxes, the upper one with a legend sorting the colors from black (0) to yellow (200)
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Two clored boxes, the upper one with a legend sorting the colors from black (0) to yellow (200)")$
 load("../doc/info/figures/draw_colorbox.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A colorful 3D diagram with the legend called "Magnitude"
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A colorful 3D diagram with the legend called \"Magnitude\"")$
 load("../doc/info/figures/draw_colorbox2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A plot with an ellipse (left) and a plot with a triangle (right)
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A plot with an ellipse (left) and a plot with a triangle (right)")$
 load("../doc/info/figures/draw_columns.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A contour plot with height lines
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A contour plot with height lines")$
 load("../doc/info/figures/draw_contour.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Only the height lines seen from above
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Only the height lines seen from above")$
 load("../doc/info/figures/draw_contour2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3d cylinder
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3d cylinder")$
 load("../doc/info/figures/draw_cylindrical.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3D mesh with random 3D pixels
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3D mesh with random 3D pixels")$
 load("../doc/info/figures/draw_elevation_grid.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A filled 3/4 circle and a quarter of a non-filled circle
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A filled 3/4 circle and a quarter of a non-filled circle")$
 load("../doc/info/figures/draw_ellipse.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3d diagram in grayscale; The color equals the x coordinate; black is left
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3d diagram in grayscale; The color equals the x coordinate; black is left")$
 load("../doc/info/figures/draw_enhanced3d.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Colorful big points in a 3D space, blue means: x=0, yellow means: x=1
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Colorful big points in a 3D space, blue means: x=0, yellow means: x=1")$
 load("../doc/info/figures/draw_enhanced3d10.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Colored dots, more or less chaotic colors and a color scale.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Colored dots, more or less chaotic colors and a color scale.")$
 load("../doc/info/figures/draw_enhanced3d11.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A colored surface, the colors show 1/x isoclines.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A colored surface, the colors show 1/x isoclines.")$
 load("../doc/info/figures/draw_enhanced3d2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Parabolae in a3d space. One side of the line is black, the other yellow.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Parabolae in a3d space. One side of the line is black, the other yellow.")$
 load("../doc/info/figures/draw_enhanced3d3.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A colored curve.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A colored curve.")$
 load("../doc/info/figures/draw_enhanced3d4.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A surface with a 1/(x*y) color pattern
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A surface with a 1/(x*y) color pattern")$
 load("../doc/info/figures/draw_enhanced3d5.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A gray 3d tube
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A gray 3d tube")$
 load("../doc/info/figures/draw_enhanced3d6.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
- colored 3d tube.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print(" colored 3d tube.")$
 load("../doc/info/figures/draw_enhanced3d7.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3d tube with one closed end
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3d tube with one closed end")$
 load("../doc/info/figures/draw_enhanced3d8.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Two colored easter eggs.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Two colored easter eggs.")$
 load("../doc/info/figures/draw_enhanced3d9.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3d surface
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3d surface")$
 load("../doc/info/figures/draw_equiv.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Two error lines with markers in the end and one marker in the middle each.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Two error lines with markers in the end and one marker in the middle each.")$
 load("../doc/info/figures/draw_errors.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Two error crosses where the centers of the crosses being connected
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Two error crosses where the centers of the crosses being connected")$
 load("../doc/info/figures/draw_errors2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A wide parabola
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A wide parabola")$
 load("../doc/info/figures/draw_explicit.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A filled area below a parabola
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A filled area below a parabola")$
 load("../doc/info/figures/draw_explicit2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3d parabola and a plane that intersect each other.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3d parabola and a plane that intersect each other.")$
 load("../doc/info/figures/draw_explicit3.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-The area below a sinus filled with red
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("The area below a sinus filled with red")$
 load("../doc/info/figures/draw_filledfunc.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-The area between two curves.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("The area between two curves.")$
 load("../doc/info/figures/draw_filledfunc2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A plot with a background grid.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A plot with a background grid.")$
 load("../doc/info/figures/draw_grid.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A plot with a fine background grid
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A plot with a fine background grid")$
 load("../doc/info/figures/draw_grid2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Vertical arrows with one head each
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Vertical arrows with one head each")$
 load("../doc/info/figures/draw_head_angle.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A double- and a single-headed arrow.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A double- and a single-headed arrow.")$
 load("../doc/info/figures/draw_head_both.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Arrows with differently-sized heads
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Arrows with differently-sized heads")$
 load("../doc/info/figures/draw_head_length.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Arrows with three head types
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Arrows with three head types")$
 load("../doc/info/figures/draw_head_type.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A random bitmap and a color scale
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A random bitmap and a color scale")$
 load("../doc/info/figures/draw_image.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-The same bitmap with a black-and-white palette
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("The same bitmap with a black-and-white palette")$
 load("../doc/info/figures/draw_image2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A different palette
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A different palette")$
 load("../doc/info/figures/draw_image3.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Another palette
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Another palette")$
 load("../doc/info/figures/draw_image4.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-a 6-pixel image in color
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("a 6-pixel image in color")$
 load("../doc/info/figures/draw_image5.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-And the same with a black-and-white palette
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("And the same with a black-and-white palette")$
 load("../doc/info/figures/draw_image6.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A typical implicit plot
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A typical implicit plot")$
 load("../doc/info/figures/draw_implicit.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Two 3D easter eggs as implicit plot
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Two 3D easter eggs as implicit plot")$
 load("../doc/info/figures/draw_implicit2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3d plot with each mesh rectangle being filled with a solid color
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3d plot with each mesh rectangle being filled with a solid color")$
 load("../doc/info/figures/draw_interpolate_color.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3d plot with smooth colors
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3d plot with smooth colors")$
 load("../doc/info/figures/draw_interpolate_color2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3d Plot with colors only smoothed in z direction.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3d Plot with colors only smoothed in z direction.")$
 load("../doc/info/figures/draw_interpolate_color3.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A irregular mesh with each rectangle filled with a solid color
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A irregular mesh with each rectangle filled with a solid color")$
 load("../doc/info/figures/draw_interpolate_color4.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A irregular mesh with interpolated colors as an ugly example
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A irregular mesh with interpolated colors as an ugly example")$
 load("../doc/info/figures/draw_interpolate_color5.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-An even more ugly example of this mesh
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("An even more ugly example of this mesh")$
 load("../doc/info/figures/draw_interpolate_color6.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A plot with a  key
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A plot with a  key")$
 load("../doc/info/figures/draw_key.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A key at the top left
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A key at the top left")$
 load("../doc/info/figures/draw_key_pos.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Two transparent grids
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Two transparent grids")$
 load("../doc/info/figures/draw_key_pos2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-4 horizontally centered Labels
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("4 horizontally centered Labels")$
 load("../doc/info/figures/draw_label.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Labels around a 3d surface
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Labels around a 3d surface")$
 load("../doc/info/figures/draw_label2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Aligned labels
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Aligned labels")$
 load("../doc/info/figures/draw_label_alignment.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Rotation of labels
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Rotation of labels")$
 load("../doc/info/figures/draw_label_orientation.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Two line types
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Two line types")$
 load("../doc/info/figures/draw_line_type.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Three line widths
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Three line widths")$
 load("../doc/info/figures/draw_line_width.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-3d plot with logarithmic color key
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("3d plot with logarithmic color key")$
 load("../doc/info/figures/draw_logcb.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-linear x, logarighmic secondary x axis
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("linear x, logarighmic secondary x axis")$
 load("../doc/info/figures/draw_logx_secondary.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A transparent 3d mesh
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A transparent 3d mesh")$
 load("../doc/info/figures/draw_mesh.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3d triangle (transparent)
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3d triangle (transparent)")$
 load("../doc/info/figures/draw_mesh2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Two 4-point-polygons, filled with white
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Two 4-point-polygons, filled with white")$
 load("../doc/info/figures/draw_mesh3.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A curve, half smooth, half polygon
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A curve, half smooth, half polygon")$
 load("../doc/info/figures/draw_nticks.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Two intersecting planes in weird colors
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Two intersecting planes in weird colors")$
 load("../doc/info/figures/draw_palette.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Random dots, palette #1
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Random dots, palette #1")$
 load("../doc/info/figures/draw_palette2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Random dots, palette #2
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Random dots, palette #2")$
 load("../doc/info/figures/draw_palette3.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Random dots, palette #3
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Random dots, palette #3")$
 load("../doc/info/figures/draw_palette4.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3d surface with a nonstandard palette
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3d surface with a nonstandard palette")$
 load("../doc/info/figures/draw_palette5.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A parametric and a normal curve
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A parametric and a normal curve")$
 load("../doc/info/figures/draw_parametric.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3d surface, filled with white
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3d surface, filled with white")$
 load("../doc/info/figures/draw_parametric2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 3d slug, filled with white
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 3d slug, filled with white")$
 load("../doc/info/figures/draw_parametric3.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Points of two sizes
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Points of two sizes")$
 load("../doc/info/figures/draw_point_size.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Point types
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Point types")$
 load("../doc/info/figures/draw_point_type.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Different point types, sometypes connected with lines
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Different point types, sometypes connected with lines")$
 load("../doc/info/figures/draw_points.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Vertical lines of different lengths
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Vertical lines of different lengths")$
 load("../doc/info/figures/draw_points2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Random points
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Random points")$
 load("../doc/info/figures/draw_points3.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Points at discrete y coordinates
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Points at discrete y coordinates")$
 load("../doc/info/figures/draw_points4.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Points at discrete y coordinates
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Points at discrete y coordinates")$
 load("../doc/info/figures/draw_points5.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Random points in a 3d space
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Random points in a 3d space")$
 load("../doc/info/figures/draw_points6.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Connected random points in a 3d space + a color key
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Connected random points in a 3d space + a color key")$
 load("../doc/info/figures/draw_points7.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Colored dots on a curve
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Colored dots on a curve")$
 load("../doc/info/figures/draw_points8.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Points joined by lines with different line styles
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Points joined by lines with different line styles")$
 load("../doc/info/figures/draw_points_joined.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A hyperbolic spiral
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A hyperbolic spiral")$
 load("../doc/info/figures/draw_polar.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Two polygons, one with border
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Two polygons, one with border")$
 load("../doc/info/figures/draw_polygon.mac")$
 /* [wxMaxima: input   end   ] */
 
@@ -925,32 +574,20 @@ load("../doc/info/figures/draw_proportional_axis.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Three plots, the first two having the x axis scaled in the same scale as the y axis.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Three plots, the first two having the x axis scaled in the same scale as the y axis.")$
 load("../doc/info/figures/draw_proportional_axis2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A 4-point polygon
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A 4-point polygon")$
 load("../doc/info/figures/draw_quadrilateral.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-One filled and a non-filled rectangles, different border styles
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("One filled and a non-filled rectangles, different border styles")$
 load("../doc/info/figures/draw_rectangle.mac")$
 /* [wxMaxima: input   end   ] */
 
@@ -975,12 +612,8 @@ load("../doc/info/figures/draw_surface_hide.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A plot with a title
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A plot with a title")$
 load("../doc/info/figures/draw_title.mac")$
 /* [wxMaxima: input   end   ] */
 
@@ -995,22 +628,14 @@ load("../doc/info/figures/draw_transform2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Two triangles, one filled with transparency
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Two triangles, one filled with transparency")$
 load("../doc/info/figures/draw_transparent.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-One triangle
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("One triangle")$
 load("../doc/info/figures/draw_triangle.mac")$
 /* [wxMaxima: input   end   ] */
 
@@ -1025,22 +650,14 @@ load("../doc/info/figures/draw_tube_extremes.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A few lines with heads
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A few lines with heads")$
 load("../doc/info/figures/draw_unit_vectors.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A japonese flag
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A japonese flag")$
 load("../doc/info/figures/draw_user_preamble.mac")$
 /* [wxMaxima: input   end   ] */
 
@@ -1050,22 +667,14 @@ load("../doc/info/figures/draw_user_preamble2.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-Vectors with different head and line styles
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("Vectors with different head and line styles")$
 load("../doc/info/figures/draw_vector.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-3D Vectors with wide but short heads
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("3D Vectors with wide but short heads")$
 load("../doc/info/figures/draw_vector2.mac")$
 /* [wxMaxima: input   end   ] */
 
@@ -1145,12 +754,8 @@ load("../doc/info/figures/draw_xugrid.mac")$
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: comment start ]
-A plot with primary and secondary y axis including axis titles.
-   [wxMaxima: comment end   ] */
-
-
 /* [wxMaxima: input   start ] */
+print("A plot with primary and secondary y axis including axis titles.")$
 load("../doc/info/figures/draw_ylabel_secondary.mac")$
 /* [wxMaxima: input   end   ] */
 

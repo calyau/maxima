@@ -1,5 +1,5 @@
 load("docdraw.mac");
 
 docdraw3d("figures/draw_tube_extremes",
-	tube_extremes = [open, closed],
+	capping = [false, true],
 	tube(0, 0, a, 1, a, 0, 8) )$
