@@ -96,6 +96,6 @@ endif
 clean:
 	rm -f ecl-test.sh openmcl-test.sh acl-test.sh gcl-test.sh scl-test.sh sbcl-test.sh cmucl-test.sh clisp-test.sh
 genericdir = $(insttestsdir)
-genericdirDATA = $(wildcard $(addprefix $(srcdir)/, README.how-to mcond_display_elseif.out *.mac *.lisp wester_problems/*))
+genericdirDATA = $(wildcard $(addprefix $(srcdir)/, README.how-to mcond_display_elseif.out *.mac *.lisp *.wxm wester_problems/*))
 
 EXTRA_DIST = $(genericdirDATA) test.sh.in
