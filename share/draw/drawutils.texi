@@ -33,7 +33,7 @@
 Package @code{drawutils} contains user contributed code based on the @code{draw} package.
 
 
-@node Vector fields, Function and variable index, Introduction to drawutils, Top
+@node Vector fields, Venn diagrams, Introduction to drawutils, Top
 @chapter Vector fields
 
 By Donald J. Bindner (2010)
