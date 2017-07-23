@@ -1,0 +1,42 @@
+name: maxima
+version: 5.40post
+summary: A full-fledged computer algebra system
+description: |
+  A full featured computer algebra system,
+  doing symbolic manipulation of polynomials, matrices, rational
+  functions, integration, Todd-coxeter, graphing, bigfloats.  It has a
+  symbolic debugger source level debugger for maxima code.  Maxima is
+  based on the original Macsyma developed at MIT in the 1970's.
+  It comes with extensive self tests.
+
+grade: devel
+confinement: devmode # use 'strict' once you have the right plugs and slots
+
+ 
+apps:
+  maxima:
+    command: maxima
+  rmaxima:
+    command: rmaxima
+  xmaxima:
+    command: xmaxima
+
+parts:
+  maxima:
+    plugin: autotools
+    source: .
+    configflags:
+     - --enable-sbcl
+     - --enable-clisp
+    stage-packages:
+     - sbcl
+     - clisp
+     - texinfo
+     - libreadline-dev
+     - locales
+     - automake
+     - autoconf
+     - gawk
+     - texlive-latex-recommended
+     - tex-common
+     - python
