@@ -28,7 +28,7 @@ parts:
     configflags:
      - --enable-sbcl
      - --enable-clisp
-    stage-packages:
+    build-packages:
      - sbcl
      - clisp
      - texinfo
@@ -40,3 +40,6 @@ parts:
      - texlive-latex-recommended
      - tex-common
      - python
+    stage-packages:
+     - sbcl
+     - clisp
