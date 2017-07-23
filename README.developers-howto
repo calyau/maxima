@@ -60,6 +60,10 @@
           "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
 
+      --  If the change affects the plotting routines: Verify that
+          tests/testbench_draw_manual.wxm still holds the right
+	  results.
+	  
       --  Merge your work onto master and push the changes as in 1.
 
 
@@ -74,6 +78,10 @@
           "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
 
+      --  If the change affects the plotting routines: Verify that
+          tests/testbench_draw_manual.wxm still holds the right
+	  results.
+	  
       --  Merge your work onto master and push the changes as in 1.
 
 
