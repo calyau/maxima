@@ -39,7 +39,7 @@ apps:
      - home
      - removable-media
      - optical-drive
-    desktop: desktopintegration/xmaxima.desktop
+    desktop: usr/share/applications/xmaxima.desktop
 
 parts:
   maxima:
