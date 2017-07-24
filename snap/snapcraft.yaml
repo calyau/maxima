@@ -16,10 +16,30 @@ confinement: strict
 apps:
   maxima:
     command: maxima
+    plugs:
+     - network
+     - network-bind
+     - home
+     - removable-media
+     - optical-drive
+
   rmaxima:
     command: rmaxima
+    plugs:
+     - network
+     - network-bind
+     - home
+     - removable-media
+     - optical-drive
+
   xmaxima:
     command: xmaxima
+    plugs:
+     - network
+     - home
+     - removable-media
+     - optical-drive
+
 
 parts:
   maxima:
@@ -43,10 +63,3 @@ parts:
     stage-packages:
      - sbcl
      - clisp
-    plugs:
-     - network
-     - network-bind
-     - home
-     - removable-media
-     - optical-drive
-
