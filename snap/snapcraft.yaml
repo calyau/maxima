@@ -11,7 +11,7 @@ description: |
 
 grade: devel
 confinement: strict
-
+icon: interfaces/xmaxima/maxima-new.svg
  
 apps:
   maxima:
