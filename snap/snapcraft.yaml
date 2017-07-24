@@ -43,3 +43,10 @@ parts:
     stage-packages:
      - sbcl
      - clisp
+    plugs:
+     - network
+     - network-bind
+     - home
+     - removable-media
+     - optical-drive
+
