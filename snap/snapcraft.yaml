@@ -10,7 +10,7 @@ description: |
   It comes with extensive self tests.
 
 grade: devel
-confinement: devmode # use 'strict' once you have the right plugs and slots
+confinement: strict
 
  
 apps:
