@@ -63,3 +63,4 @@ parts:
     stage-packages:
      - sbcl
      - clisp
+     - gnuplot
