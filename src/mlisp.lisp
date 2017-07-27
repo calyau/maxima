@@ -1438,29 +1438,29 @@ wrapper for this."
     (unless (or (symbolp var) (stringp var))
       (merror (intl:gettext "declare: argument must be a symbol or a string; found: ~M") var))
 
-	  (if (eq mpropp '$alphabetic)
-       ; Explode var into characters and put each one on the *alphabet* list,
-       ; which is used by src/nparse.lisp .
-       (dolist (1-char (coerce var 'list))
-         (add2lnc 1-char *alphabet*))
-       (progn
-    (setq var (getopr var))
-    (cond ((eq mpropp 'kind) (declarekind var prop))
-	  ((eq mpropp 'opers)
-	   (putprop (setq var (linchk var)) t prop) (putprop var t 'opers)
-	   (if (and (symbolp var) (not (get var 'operators)))
-         (putprop var 'simpargs1 'operators)))
-	  (mpropp
-	   (if (and (member prop '($scalar $nonscalar) :test #'eq)
-		    (mget var (if (eq prop '$scalar) '$nonscalar '$scalar)))
-	       (merror (intl:gettext "declare: inconsistent declaration ~:M") `(($declare) ,var ,prop)))
-	   (mputprop var val prop))
-	  (t (putprop var val prop)))
-    (if (and (safe-get var 'op) (operatorp1 var)
-	     (not (member (setq var (get var 'op)) (cdr $props) :test #'eq)))
-	(setq *mopl* (cons var *mopl*)))
-    (add2lnc (getop var) $props)))
-))
+      (if (eq mpropp '$alphabetic)
+        ; Explode var into characters and put each one on the *alphabet* list,
+        ; which is used by src/nparse.lisp .
+        (dolist (1-char (coerce var 'list))
+          (add2lnc 1-char *alphabet*))
+        (progn
+          (setq var (getopr var))
+          (cond
+            ((eq mpropp 'kind) (declarekind var prop))
+            ((eq mpropp 'opers)
+             (putprop (setq var (linchk var)) t prop) (putprop var t 'opers)
+             (if (and (symbolp var) (not (get var 'operators)))
+               (putprop var 'simpargs1 'operators)))
+            (mpropp
+              (if (and (member prop '($scalar $nonscalar) :test #'eq)
+                       (mget var (if (eq prop '$scalar) '$nonscalar '$scalar)))
+                (merror (intl:gettext "declare: inconsistent declaration ~:M") `(($declare) ,var ,prop)))
+              (mputprop var val prop))
+            (t (putprop var val prop)))
+          (if (and (safe-get var 'op) (operatorp1 var)
+                   (not (member (setq var (get var 'op)) (cdr $props) :test #'eq)))
+            (setq *mopl* (cons var *mopl*)))
+          (add2lnc (getop var) $props)))))
 
 (defun linchk (var)
   (if (member var '($sum $integrate $limit $diff $transpose) :test #'eq)
