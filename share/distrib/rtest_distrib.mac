@@ -311,7 +311,8 @@ quantile_poisson(1/9,10);
 random_poisson(110,3);
 [105,132,104];
 
-
+random_poisson(0);
+0;
 
 
 /* geometric distribution */

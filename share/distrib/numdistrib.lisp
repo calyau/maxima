@@ -1180,6 +1180,12 @@
 (defvar *rpos-pp* (make-array 35 :initial-element 0.0 :element-type 'flonum))
 (defun rndpoisson-ahrens (mu)
    (declare (type flonum mu))
+   
+   ;; This algorithm doesn't handle MU = 0 correctly; *RPOS-S* and friends aren't initialized.
+   ;; So just handle the special case here and bail out.
+   (if (= mu 0.0)
+     (return-from rndpoisson-ahrens 0))
+
    (let ( ignpoi j kflag del difmuk e fk fx fy g px py tt u v x xx
           (a0 -0.5) (a1 0.3333333) (a2 -0.2500068) (a3 0.2000118)
           (a4 -0.1661269) (a5 0.1421878) (a6 -0.1384794) (a7 0.125006)
