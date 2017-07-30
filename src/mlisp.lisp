@@ -1536,6 +1536,9 @@ wrapper for this."
         (if (and (stringp (car vars)) (eq prop '$op) (getopr0 (car vars)))
           (kill-operator (getopr0 (car vars))))
 
+		(if (and (eq prop '$alphabetic) (stringp (car vars)))
+	    (dolist (1-char (coerce (car vars) 'list))
+	      (setf *alphabet* (delete 1-char *alphabet* :count 1 :test #'equal)))
 	   (let ((var  (getopr (car vars)))( flag  nil))
 	     (cond (mpropp (mremprop var prop)
 			   (when (member prop '(mexpr mmacro) :test #'eq)
@@ -1544,9 +1547,6 @@ wrapper for this."
 			     (remprop var 'lineinfo)
 			     (if (mget var 'trace)
 				 (macsyma-untrace var))))
-		   ((and (eq prop '$alphabetic) (stringp var))
-	    (dolist (1-char (coerce var 'list))
-	      (setf *alphabet* (delete 1-char *alphabet* :count 1 :test #'equal))))
 		   ((eq prop '$transfun)
 		    (remove-transl-fun-props var)
 		    (remove-transl-array-fun-props var))
@@ -1561,7 +1561,7 @@ wrapper for this."
 		   (funp
 		    (mfunction-delete var info))
 		   (t
-		    (setf info (delete var info :count 1 :test #'eq)))))))))
+		    (setf info (delete var info :count 1 :test #'eq))))))))))
 
 (defun remove-transl-fun-props (fun)
   (if (mget fun 'trace)
