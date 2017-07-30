@@ -322,6 +322,45 @@ done;
 [member ('alphabetic, properties ("|")), member ('alphabetic, properties ("`")), member ('alphabetic, properties ("~"))];
 [false, false, false];
 
+/* SF bug #3320: "Cannot declare string of one character as alphabetic"
+ */
+
+kill (a, b, c, foo, bar, baz);
+done;
+
+[foo, bar, baz] : [a\+b, a+b, a + b];
+[a\+b, b + a, b + a];
+
+[is(foo = bar), is(foo = baz), is(bar = baz)];
+[false, false, true];
+
+[symbolp(foo), symbolp(bar), symbolp(baz)];
+[true, false, false];
+
+declare ("+", alphabetic);
+done;
+
+[foo, bar, baz] : [a\+b, a+b, a + b];
+[a\+b, a\+b, b + a];
+
+[is(foo = bar), is(foo = baz), is(bar = baz)];
+[true, false, false];
+
+[symbolp(foo), symbolp(bar), symbolp(baz)];
+[true, true, false];
+
+remove ("+", alphabetic);
+done;
+
+[foo, bar, baz] : [a\+b, a+b, a + b];
+[a\+b, b + a, b + a];
+
+[is(foo = bar), is(foo = baz), is(bar = baz)];
+[false, false, true];
+
+[symbolp(foo), symbolp(bar), symbolp(baz)];
+[true, false, false];
+
 /* Verify that time functions are defined and return numbers.
  * Don't bother trying to verify if the values are reasonable.
  */
