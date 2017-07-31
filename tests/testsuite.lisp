@@ -23,7 +23,7 @@
         "rtest9" 
         "rtest9a"
         ((mlist simp) "rtest10" 24 25)
-        ((mlist) "rtest11" #+(or gcl cmucl ccl64) 144 #+(or gcl cmucl ccl64) 160 #+gcl 161)
+        ((mlist) "rtest11" #+(or gcl cmucl ccl64) 156 #+(or gcl cmucl ccl64) 172 #+gcl 173)
         "rtest13" "rtest13s"
         "rtest14"
         "rtest15"
