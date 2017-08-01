@@ -63,6 +63,10 @@
       --  If the change affects the plotting routines: Verify that
           tests/testbench_draw_manual.wxm still holds the right
 	  results.
+
+      --  If the change affects drawdf() or plotdf(): Verify that
+          tests/testbench_drawdf_manual.wxm still holds the right
+	  results.
 	  
       --  Merge your work onto master and push the changes as in 1.
 
