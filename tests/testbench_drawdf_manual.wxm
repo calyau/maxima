@@ -6,7 +6,7 @@ A manual testbench for drawdf
 
 
 /* [wxMaxima: comment start ]
-Maxima cannot check if the output of this testbench matches the expected results. But it at least can issue commands that test most of plotdf's features.
+Maxima cannot check if the output of this testbench matches the expected results. But it at least can issue commands that test most of drawdf's features.
    [wxMaxima: comment end   ] */
 
 
@@ -121,11 +121,6 @@ drawdf([x-x*y/2, (x*y - 3*y)/4],
 
 /* [wxMaxima: input   start ] */
     scene(cone)$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-    plotdf([-y,x],[trajectory_at,5,0])$
 /* [wxMaxima: input   end   ] */
 
 
