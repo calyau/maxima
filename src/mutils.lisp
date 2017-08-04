@@ -89,7 +89,15 @@
           (return-from find-duplicate e))
         (push i seen)))))
 
-;; Return a Maxima gensym.
+;;; Return a Maxima gensym.
+;;;
+;;; N.B. Maxima gensyms are interned, so they are not Lisp gensyms.
+;;; This function can return the same symbol multiple times, it can
+;;; return a symbol that was created and used elsewhere, etc.
+;;;
+;;; Maxima produces some expressions that contain Maxima gensyms, so
+;;; the use of uninterned symbols instead can cause confusion (since
+;;; these print like any other symbol).
 (defun $gensym (&optional x)
   (typecase x
     (null
