@@ -91,14 +91,17 @@
 
 ;; Return a Maxima gensym.
 (defun $gensym (&optional x)
-  (when (and x
-             (not (or (and (integerp x)
-                           (not (minusp x)))
-                      (stringp x))))
-    (merror
-     (intl:gettext
-      "gensym: Argument must be a nonnegative integer or a string. Found: ~M") x))
-  (when (stringp x) (setq x (maybe-invert-string-case x)))
-  (if x
-      (cadr (dollarify (list (gensym x))))
-      (cadr (dollarify (list (gensym))))))
+  (typecase x
+    (null
+     (intern (symbol-name (gensym "$G")) :maxima))
+    (string
+     (intern
+       (symbol-name (gensym (format nil "$~a" (maybe-invert-string-case x))))
+       :maxima))
+    ((integer 0)
+     (let ((*gensym-counter* x))
+       (intern (symbol-name (gensym "$G")) :maxima)))
+    (t
+     (merror
+       (intl:gettext
+         "gensym: Argument must be a nonnegative integer or a string. Found: ~M") x))))
