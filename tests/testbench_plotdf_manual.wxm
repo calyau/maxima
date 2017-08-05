@@ -1,0 +1,60 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 17.07.0 ] */
+/* [wxMaxima: title   start ]
+A manual testbench for plotdf
+   [wxMaxima: title   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima cannot check if the output of this testbench matches the expected results. But it at least can issue commands that test most of plotdf's features.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+plotdf(exp(-x)+y,[trajectory_at,2,-0.1])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],
+         [trajectory_at,-1,3], [direction,forward],
+         [y,-5,5], [x,-4,16])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+plotdf([v,-k*z/m], [z,v], [parameters,"m=2,k=2"],
+           [sliders,"m=1:5"], [trajectory_at,6,0])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+plotdf([y,-(k*x + c*y + b*x^3)/m],
+             [parameters,"k=-1,m=1.0,c=0,b=1"],
+             [sliders,"k=-2:2,m=-1:1"],[tstep,0.1])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+plotdf([w,-g*sin(a)/l - b*w/m/l], [a,w],
+        [parameters,"g=9.8,l=0.5,m=0.3,b=0.05"],
+        [trajectory_at,1.05,-9],[tstep,0.01],
+        [a,-10,2], [w,-14,14], [direction,forward],
+        [nsteps,300], [sliders,"m=0.1:1"], [versus_t,1])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+V: 900/((x+1)^2+y^2)^(1/2)-900/((x-1)^2+y^2)^(1/2)$
+ploteq(V,[x,-2,2],[y,-2,2],[fieldlines,"blue"])$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+plotdf([-y,x],[trajectory_at,5,0])$
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

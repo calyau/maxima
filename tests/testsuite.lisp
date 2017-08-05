@@ -23,7 +23,7 @@
         "rtest9" 
         "rtest9a"
         ((mlist simp) "rtest10" 24 25)
-        ((mlist) "rtest11" #+(or gcl cmucl ccl64) 144 #+(or gcl cmucl ccl64) 160 #+gcl 161)
+        ((mlist) "rtest11" #+(or gcl cmucl ccl64) 156 #+(or gcl cmucl ccl64) 172 #+gcl 173)
         "rtest13" "rtest13s"
         "rtest14"
         "rtest15"
@@ -50,7 +50,7 @@
         "rtestifactor"
         ((mlist simp) "rtest_equal" 157 160)
         "rtest_abs"
-        ((mlist simp) "rtest_taylor" #+gcl 23 88 91 94 99 123 124 #+gcl 129)
+        ((mlist simp) "rtest_taylor" 88 91 94 99 123 124)
         ((mlist simp) "rtest_dot")
         "rtest_mset"
         "rtest_boolean"

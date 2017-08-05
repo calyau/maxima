@@ -405,13 +405,14 @@ proc drawDF { win tinitial } {
 		
 		
 		set len [lindex $all [incr i]]
-	
-		set fac [expr {$s1/$len + $s2}]
 		set dfx [lindex $all [incr i]]
 		set dfy [lindex $all [incr i]]
-		#puts "[$storx $x] [$story $y] x=$x y=$y dfx=$dfx dfy=$dfy fac=$fac"
+		#puts "[$storx $x] [$story $y] x=$x y=$y dfx=$dfx dfy=$dfy
 		# puts "$len $dfx $dfy"
-		drawArrowScreen $c $x $y [expr {$fac * $dfx}] [expr {$fac * $dfy} ] $vectors
+                if {$len != 0.0} {
+                    set fac [expr {$s1/$len + $s2}]
+                    drawArrowScreen $c $x $y [expr {$fac * $dfx}] [expr {$fac * $dfy} ] $vectors
+                }
 	    }
 	}
     }
