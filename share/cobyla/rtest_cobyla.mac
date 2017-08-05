@@ -1,7 +1,10 @@
 (kill(all), 'done);
 'done$
 
-(load(fmin_cobyla), float_approx_equal_tolerance : 1e-12, 'done);
+(load(fmin_cobyla),
+  float_approx_equal_tolerance : 1e-12,
+  fpprec: 32,
+  'done);
 'done$
 
 /* the following tests are copied from share/cobyla/ex */
@@ -314,3 +317,6 @@ c43 = .01999999589953518, c44 = .02000000095933785, c45 = .01999999967419817,
 c51 = .05200000159627225, c52 = .05199999448887869, c53 = 0.0519999846606873, 
 c54 = .05199999603531405, c55 = .05200001066267089], - 3.141900424608619, 
 944, 0]$  
+
+(reset(fpprec), 'done);
+'done$

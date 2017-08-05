@@ -1130,23 +1130,23 @@
 
 && syntax  
 
-   matchfix("{","}");
+   matchfix("@{","@}");
    infix("|");
-   {x|x>0};
-   {x|x<2};
+   @{x|x>0@};
+   @{x|x<2@};
    infix(".u.")$
    infix(".i.")$
    %th(4).u.%th(3);
    %th(5).u.%th(4);
-   {1,2,3}$
-   {3,4,5}$
+   @{1,2,3@}$
+   @{3,4,5@}$
    %th(2).u.%th(2).u.%;
    infix(".u.",100,100)$
    infix(".i.",120,120)$
    %th(5).u.%th(5).u.%;
    remove(".u.",operator)$
    errcatch(%th(7).u.%th(3));
-   remove(["{","}",".i.",".u."],operator)$
+   remove(["@{","@}",".i.",".u."],operator)$
 
 && taylor
 
