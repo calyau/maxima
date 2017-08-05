@@ -12,6 +12,10 @@ AC_INIT([maxima], [5.40post])
 AC_CONFIG_SRCDIR([src/macsys.lisp])
 AM_INIT_AUTOMAKE([-Wno-portability tar-ustar])
 
+# On debian-based systems this makes us use the right gcl version out-of-the box.
+# On other systems it doesn't hurt.
+export GCL_ANSI=t
+
 AM_PATH_LISPDIR
 
 AC_CANONICAL_HOST
