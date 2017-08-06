@@ -49,9 +49,10 @@ substantially slower than on Lisps compiled to machine instructions.
 On the other hand, Clisp contains code from CLN <http://www.ginac.de/CLN/>,
 a library for efficient computations with all kinds of numbers in 
 arbitrary precision. Another advantage of clisp is that byte code 
-resulting in compiling a program on one system normally works on
-completely different systems and clisp versions. Also clisp has a
-extremely efficient memory handling.
+resulting in compiling a program on one computer might work on a
+computer running a different Clisp version. Also Clisp uses an
+extremely efficient memory handling which means it might not run
+out of memory where ECL, SBCL and GCL do.
 
 There are Clisp implementations for many platforms including 
 MS Windows and Unix-like systems. 
