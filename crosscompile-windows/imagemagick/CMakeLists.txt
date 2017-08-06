@@ -20,14 +20,17 @@ else()
     set(IMAGEMAGICK_URL    "https://www.imagemagick.org/download/binaries/ImageMagick-${IMAGEMAGICKVERSION}-x86.zip")
 endif()
 
-# Imagemagick "convert" is needed for wxMaxima (already a binary package just extract it...)
-externalproject_add(imagemagick
-    URL "${IMAGEMAGICK_URL}"
-    DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-    URL_HASH SHA256=${IMAGEMAGICK_SHA256}
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
-)
-install(FILES ${CMAKE_BINARY_DIR}/imagemagick/imagemagick-prefix/src/imagemagick/convert.exe DESTINATION wxMaxima)
+# the current git version of wxMaxima no longer needs Imagemagick's "convert"
+if(NOT USE_WXMAXIMA_GIT)
+    # Imagemagick "convert" is needed for wxMaxima (already a binary package just extract it...)
+    externalproject_add(imagemagick
+        URL "${IMAGEMAGICK_URL}"
+        DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
+        URL_HASH SHA256=${IMAGEMAGICK_SHA256}
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        INSTALL_COMMAND ""
+    )
+    install(FILES ${CMAKE_BINARY_DIR}/imagemagick/imagemagick-prefix/src/imagemagick/convert.exe DESTINATION wxMaxima)
+endif()
 
