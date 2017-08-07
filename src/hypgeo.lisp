@@ -642,7 +642,7 @@
         ((coeffpp) (a zerp)))))
 
 ;; Recognize gamma_greek(w1,w2), gamma(a)-gamma_incomplete(w1,w2)
-(defun m2-onegammagreek (expr var)
+(defun m2-onegamma-incomplete-lower (expr var)
   (m2 expr
       `((mplus)
         ((coeffpt)
@@ -1962,12 +1962,12 @@
 		  rest (cdras 'u l))
 	    (return (lt1j rest arg1 index1))))
      
-     ;; Laplace transform of Gamma greek function
-     (cond ((setq l (m2-onegammagreek u *var*))
+     ;; Laplace transform of lower incomplete Gamma function
+     (cond ((setq l (m2-onegamma-incomplete-lower u *var*))
 	    (setq arg1 (cdras 'w1 l)
 		  arg2 (cdras 'w2 l)
 		  rest (cdras 'u l))
-	    (return (lt1gammagreek rest arg1 arg2))))
+	    (return (lt1gamma-incomplete-lower rest arg1 arg2))))
         
      ;; Laplace transform of Hankel 1 function
      (cond ((setq l (m2-hankel_1 u *var*))
@@ -2664,7 +2664,7 @@
 			 ((eq flg 'kbateman)
 			  (kbatemantw i1 a1))
 			 ((eq flg 'gamma_incomplete)
-			  (gamma_incomplete-to-gammagreek a1 i1))
+			  (gamma_incomplete-to-gamma-incomplete-lower a1 i1))
 			 ((eq flg 'kti)
 			  (kti i1 a1))
 			 ((eq flg 'erfc)
@@ -2877,21 +2877,21 @@
        (power '$%e (div x -2))
        (wwhit x (div (sub a 1) 2)(div a 2))))
 
-;;; Incomplete Gamma function in terms of Gammagreek function
+;;; Incomplete Gamma function in terms of lower incomplete Gamma function
 ;;;
 ;;; Only for a=0 we use the general representation as a Whittaker W function:
 ;;;
 ;;;   gamma_incomplete(a,x) = x^((a-1)/2)*exp(-x/2)*W[(a-1)/2,a/2](x)
 ;;;
-;;; In all other cases we transform to a Gammagreek function:
+;;; In all other cases we transform to a lower incomplete Gamma function:
 ;;;
 ;;;   gamma_incomplete(a,x) = gamma(a)- gamma_greek(a,x)
 ;;;
-;;; The Gammagreek function will be further transformed to a Hypergeometric 1F1
+;;; The lower incomplete Gamma function will be further transformed to a Hypergeometric 1F1
 ;;; representation. With this change we get more simple and correct results for
 ;;; the Laplace transform of the Incomplete Gamma function.
 
-(defun gamma_incomplete-to-gammagreek (a x)
+(defun gamma_incomplete-to-gamma-incomplete-lower (a x)
   (if (or (eq ($sign a) '$zero)
           (and (integerp a) (< a 0)))
     ;; The representation as a Whittaker W function for a=0 or a negative 
@@ -2899,7 +2899,7 @@
     (mul (power x (div (sub a 1) 2))
          (power '$%e (div x -2))
          (wwhit x (div (sub a 1) 2) (div a 2)))
-    ;; In all other cases the representation as a Gammagreek function
+    ;; In all other cases the representation as a lower incomplete Gamma function
     (sub (take '(%gamma) a)
          (list '($gamma_greek simp) a x))))
 
@@ -3169,8 +3169,8 @@
          (lt-ltp 'twoj rest arg (list 'list index index)))))
 
 ;; Laplace transform of Incomplete Gamma function
-(defun lt1gammagreek (rest arg1 arg2)
-  (lt-ltp 'gammagreek rest arg2 arg1))
+(defun lt1gamma-incomplete-lower (rest arg1 arg2)
+  (lt-ltp 'gamma-incomplete-lower rest arg2 arg1))
 
 ;; Laplace transform of Whittaker M function
 (defun lt1m (r a i1 i2)
@@ -3271,7 +3271,7 @@
     (onem (mtf (car index) (cadr index) arg))
     (hyp-onep (ptf (car index) (cadr index) arg))
     (oneq (qtf (car index) (cadr index) arg))
-    (gammagreek (gammagreektf index arg))
+    (gamma-incomplete-lower (gamma-incomplete-lower-tf index arg))
     (onepjac (pjactf (car index) (cadr index) (caddr index) arg))
     (asin (asintf arg))
     (atan (atantf arg))
@@ -3406,7 +3406,7 @@
                  (list (add n '((rat simp) 3 2)))
                  (power z -2))))
 
-;; Gammagreek in terms of hypergeometric function
+;; Incomplete lower Gamma in terms of hypergeometric function
 ;;
 ;; A&S 13.6.10:
 ;;
@@ -3414,7 +3414,7 @@
 ;;
 ;; gamma_greek(a,x) = x^a/a*M(a,a+1,-x)
 
-(defun gammagreektf (a x)
+(defun gamma-incomplete-lower-tf (a x)
   (list (mul (inv a) (power x a))
 	(ref-fpq (list a)
 		 (list (add a 1))

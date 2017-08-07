@@ -493,7 +493,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defprop %gamma_greek simp-gamma-greek operators)
+(defprop %gamma_greek simp-gamma-incomplete-lower operators)
 
 ;;; distribute over bags (aggregates)
 
@@ -505,7 +505,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun simp-gamma-greek (expr ignored simpflag)
+(defun simp-gamma-incomplete-lower (expr ignored simpflag)
   (declare (ignore ignored))
   (twoargcheck expr)
   (let ((a (simpcheck (cadr expr) simpflag))
@@ -518,7 +518,7 @@
          (complex-bigfloat-numerical-eval-p a z))
        (take '(%gamma_incomplete_generalized) a 0 z))
       (t
-        (gammagreek a z)))))
+        (gamma-incomplete-lower a z)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

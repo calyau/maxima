@@ -2625,7 +2625,7 @@
 ;; Incomplete gamma function
 ;;
 ;; gamma_greek(a,x) = integrate(t^(a-1)*exp(-t),t,0,x)
-(defun gammagreek (a z)
+(defun gamma-incomplete-lower (a z)
   (cond ((and (integerp a) (eql a 1))
 	 ;; gamma_greek(0, x) = 1-exp(x)
 	 (sub 1 (mexpt (neg z))))
@@ -2641,7 +2641,7 @@
 	 ;;
 	 ;; gamma_greek(a,x) = (a-1)*gamma_greek(a-1,x)-x^(a-1)*exp(-x)
 	 (let ((a-1 (sub a 1)))
-	   (sub (mul a-1 (gammagreek a-1 z))
+	   (sub (mul a-1 (gamma-incomplete-lower a-1 z))
 		(mul (m^t z a-1)
 		     (mexpt (neg z))))))
 	((=1//2 a)
@@ -2659,11 +2659,11 @@
 	 ;; above.
 	 (if (ratgreaterp a 0)
 	     (let ((a-1 (sub a 1)))
-	       (sub (mul a-1 (gammagreek a-1 z))
+	       (sub (mul a-1 (gamma-incomplete-lower a-1 z))
 		    (mul (m^t z a-1)
 			 (mexpt (neg z)))))
 	     (let ((a+1 (add a 1)))
-	       (div (add (gammagreek a+1 z)
+	       (div (add (gamma-incomplete-lower a+1 z)
 			 (mul (power z a)
 			      (mexpt (neg z))))
 		    a))))
@@ -2683,7 +2683,7 @@
     (if (not $prefer_gamma_incomplete)
         (mul a
              (power -z (mul -1 a))
-             (gammagreek a -z))
+             (gamma-incomplete-lower a -z))
         (mul a
              (power -z (mul -1 a))
              (sub (take '(%gamma) a)
