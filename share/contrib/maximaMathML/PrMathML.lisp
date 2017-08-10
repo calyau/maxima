@@ -958,7 +958,7 @@
 (setf (get '%gamma_incomplete 'chchr) '"&Gamma;")
 (setf (get '%gamma_incomplete_generalized 'chchr) '"&Gamma;")
 (setf (get '%gamma_incomplete_regularized 'chchr) '"Q")
-(setf (get '$gamma_greek 'chchr) '"&gamma;")
+(setf (get '$gamma_incomplete_lower 'chchr) '"&gamma;")
 (setf (get '$delta 'chchr) '"&delta;")
 (setf (get '$epsilon 'chchr) '"&epsilon;")
 (setf (get '$varepsilon 'chchr) '"&varepsilon;")

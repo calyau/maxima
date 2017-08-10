@@ -50,7 +50,7 @@ enthalten:
 
 @example
 (%i1) apropos("gamma");
-(%o1) [%gamma, gamma, gammalim, gamma_expand, gamma_greek, 
+(%o1) [%gamma, gamma, gammalim, gamma_expand, gamma_incomplete_lower, 
 gamma_incomplete, gamma_incomplete_generalized, 
 gamma_incomplete_regularized, Gamma, log_gamma, makegamma, 
 prefer_gamma_incomplete, 

@@ -641,13 +641,13 @@
          ((%gamma_incomplete) (w1 free ,var) (w2 has ,var)))
         ((coeffpp) (a zerp)))))
 
-;; Recognize gamma_greek(w1,w2), gamma(a)-gamma_incomplete(w1,w2)
+;; Recognize gamma_incomplete_lower(w1,w2), gamma(a)-gamma_incomplete(w1,w2)
 (defun m2-onegamma-incomplete-lower (expr var)
   (m2 expr
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($gamma_greek) (w1 free ,var) (w2 has ,var)))
+         (($gamma_incomplete_lower) (w1 free ,var) (w2 has ,var)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize Struve H function.
@@ -1642,7 +1642,7 @@
   (let ((-a (mul -1 a)))
     (mul c
          (power -a (mul -1 *par*))
-         `(($gamma_greek simp) ,*par* ,-a))))
+         `(($gamma_incomplete_lower simp) ,*par* ,-a))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -2885,7 +2885,7 @@
 ;;;
 ;;; In all other cases we transform to a lower incomplete Gamma function:
 ;;;
-;;;   gamma_incomplete(a,x) = gamma(a)- gamma_greek(a,x)
+;;;   gamma_incomplete(a,x) = gamma(a)- gamma_incomplete_lower(a,x)
 ;;;
 ;;; The lower incomplete Gamma function will be further transformed to a Hypergeometric 1F1
 ;;; representation. With this change we get more simple and correct results for
@@ -2901,7 +2901,7 @@
          (wwhit x (div (sub a 1) 2) (div a 2)))
     ;; In all other cases the representation as a lower incomplete Gamma function
     (sub (take '(%gamma) a)
-         (list '($gamma_greek simp) a x))))
+         (list '($gamma_incomplete_lower simp) a x))))
 
 ;; Bessel Y in terms of Bessel J
 ;;
@@ -3410,9 +3410,9 @@
 ;;
 ;; A&S 13.6.10:
 ;;
-;; M(a,a+1,-x) = a*x^(-a)*gamma_greek(a,x)
+;; M(a,a+1,-x) = a*x^(-a)*gamma_incomplete_lower(a,x)
 ;;
-;; gamma_greek(a,x) = x^a/a*M(a,a+1,-x)
+;; gamma_incomplete_lower(a,x) = x^a/a*M(a,a+1,-x)
 
 (defun gamma-incomplete-lower-tf (a x)
   (list (mul (inv a) (power x a))

@@ -741,9 +741,9 @@ g1
 gamma
 %gamma
 gamma_expand
-gamma_greek
 gamma_incomplete
 gamma_incomplete_generalized
+gamma_incomplete_lower
 gamma_incomplete_regularized
 gammalim
 gauss

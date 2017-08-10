@@ -193,7 +193,7 @@ exp (- b*v/a) / abs (a);
  */
 
 laplace (exp (-a * exp (-u)), u, v);
-gamma_greek(v,a)/a^v$
+gamma_incomplete_lower(v,a)/a^v$
 
 /* Algorithm 1.5: Laplace transform of exp(exp(t))
  * exp(-a*exp(t))
@@ -237,7 +237,7 @@ a^v * gamma_incomplete (-v, a);
  * Laplace transform of Incomplete Gamma function
  * Laplace transform of Batemann function
  * Laplace transform of Bessel J function
- * Laplace transform of Gamma greek function
+ * Laplace transform of lower incomplete Gamma function
  * Laplace transform of Hankel 1 function
  * Laplace transform of Hankel 2 function
  * Laplace transform of Whittaker M function

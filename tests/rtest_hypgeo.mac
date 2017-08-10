@@ -1295,14 +1295,14 @@ gamma_incomplete(nu+1,a*s)*s^(-nu-1)*%e^(a*s);
 
 /* Problem 162: No. 14 Ok New
    With 
-     gamma_incomplete(-v,a*s) = gamma(-v,a*s) - gamma_greek(-v,a*s) and
+     gamma_incomplete(-v,a*s) = gamma(-v,a*s) - gamma_incomplete_lower(-v,a*s) and
      gamma(v+1) = v * gamma(v) 
    the result of Maxima can be shown to be equivalent ot the
    tabulated result: a^nu*gamma(nu+1)*e^(a*s)*gamma_incomplete(-nu,a*s);
 */
 
 radcan(specint(%e^(-s*t)*t^nu*(t+a)^(-1),t));
-(a^nu*gamma(-nu)*gamma(nu+1)-a^nu*nu*gamma_greek(-nu,a*s)*gamma(nu))*%e^(a*s);
+(a^nu*gamma(-nu)*gamma(nu+1)-a^nu*nu*gamma_incomplete_lower(-nu,a*s)*gamma(nu))*%e^(a*s);
 
 /*******************************************************************************
 

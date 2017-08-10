@@ -65,7 +65,7 @@ gamma\\_incomplete\\_regularized(a, z) (gamma\\_incomplete normalized by gamma(z
 gamma\\_incomplete\\_generalized(a, z[1], z[2]) (upper minus lower incomplete gamma function),
 gamma\\_greek(a, z) (lower incomplete gamma function):"),
     tex ([gamma (z), gamma_incomplete (a, z), gamma_incomplete_regularized (a, z),
-          gamma_incomplete_generalized (a, z[1], z[2]), gamma_greek (a, z)]),
+          gamma_incomplete_generalized (a, z[1], z[2]), gamma_incomplete_lower (a, z)]),
 
     /* Maxima tex function doesn't escape special characters in symbol names,
      * so don't bother with these unless TEX-STRIPDOLLAR is revised or something like that.

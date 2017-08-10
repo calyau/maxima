@@ -731,20 +731,18 @@ a^(v/2)*p^(-v-1)*%e^-(a/p)$
  * (31)
  * t^(-v/2)*bessel_j(v,2*sqrt(a)*sqrt(t)) ->
  *    exp(%i*v*%pi)*p^(v-1)/a^(v/2)/gamma(v)*exp(-a/p)*
- *     gamma_greek(v,a/p*exp(-%i*%pi)
- *
- * gamma_greek is the incomplete gamma function.
+ *     gamma_incomplete_lower(v,a/p*exp(-%i*%pi)
  */
 specint(t^(-v/2)*bessel_j(v,2*sqrt(a)*sqrt(t))*exp(-p*t),t);
-p^(v-1)*%e^-(a/p)*v*gamma_greek(v,-a/p)/(a^(v/2)*(-1)^v*gamma(v+1))$
+p^(v-1)*%e^-(a/p)*v*gamma_incomplete_lower(v,-a/p)/(a^(v/2)*(-1)^v*gamma(v+1))$
 
 /*
  * (32)
  * t^(v/2-1)*bessel_j(v,2*sqrt(a)*sqrt(t)) ->
- *    a^(-v/2)*gamma_greek(v,a/p)
+ *    a^(-v/2)*gamma_incomplete_lower(v,a/p)
  */
 specint(t^(v/2-1)*bessel_j(v,2*sqrt(a)*sqrt(t))*exp(-p*t),t);
-v*gamma(v)*gamma_greek(v,a/p)/(a^(v/2)*gamma(v+1))$
+v*gamma(v)*gamma_incomplete_lower(v,a/p)/(a^(v/2)*gamma(v+1))$
 
 /*
  * (34)

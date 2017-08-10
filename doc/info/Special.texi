@@ -34,7 +34,7 @@ assoc_legendre_q[v,u] (z)      Legendre function, 2nd kind
 
 %f[p,q] ([], [], expr)         Generalized Hypergeometric function
 gamma (z)                      Gamma function
-gamma_greek (a,z)              Incomplete gamma function
+gamma_incomplete_lower (a,z)   Lower incomplete gamma function
 gamma_incomplete (a,z)         Tail of incomplete gamma function
 hypergeometric (l1, l2, z)     Hypergeometric function
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
@@ -622,19 +622,19 @@ The natural logarithm of the gamma function.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} gamma_greek (@var{a}, @var{z})
+@deffn {Function} gamma_incomplete_lower (@var{a}, @var{z})
 
 The lower incomplete gamma function (A&S 6.5.2):
 
 @ifnottex
 @example
-                         z
-                        /
-                        [  a - 1   - t
-    gamma_greek(a, z) = I t      %e    dt
-                        ]
-                        /
-                         0
+                                    z
+                                   /
+                                   [  a - 1   - t
+    gamma_incomplete_lower(a, z) = I t      %e    dt
+                                   ]
+                                   /
+                                    0
 @end example
 @end ifnottex
 @tex

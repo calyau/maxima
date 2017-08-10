@@ -34,7 +34,7 @@ assoc_legendre_q[v,u] (z)      第二種ルジャンドル関数
 
 %f[p,q] ([], [], expr)         一般化超幾何関数
 gamma()                        ガンマ関数
-gammagreek(a,z)                第一種不完全ガンマ関数
+gamma_incomplete_lower(a,z)    第一種不完全ガンマ関数
 gammaincomplete(a,z)           第二種不完全ガンマ関数
 hypergeometric(l1, l2, z)      超幾何関数
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES

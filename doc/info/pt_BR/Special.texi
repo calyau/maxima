@@ -22,7 +22,7 @@ hstruve[n] (z)                 Fun@value{cedilha}@~{a}o H de Struve H
 lstruve[n] (z)                 Fun@value{cedilha}@~{a}o L de Struve
 %f[p,q] ([], [], expr)         Fun@value{cedilha}@~{a}o Hipergeom@'{e}trica Generalizada
 gamma()                        Fun@value{cedilha}@~{a}o Gamma
-gammagreek(a,z)                Fun@value{cedilha}@~{a}o gama incompleta
+gamma_incomplete_lower(a,z)    Fun@value{cedilha}@~{a}o gama incompleta inferior
 gammaincomplete(a,z)           Final da fun@value{cedilha}@~{a}o gama incompleta
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
 slommel

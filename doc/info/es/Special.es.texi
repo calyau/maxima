@@ -30,7 +30,7 @@ struve_l (v,z)            Función L de Struve
 %q[u,v] (z)               Función de Legendre de segunda especie
 %f[p,q] ([], [], expr)    Función hipergeométrica generalizada
 gamma(z)                  Función Gamma
-gammagreek(a,z)           Función Gamma incompleta
+gamma_incomplete_lower(a,z) Función Gamma incompleta inferior
 gamma_incomplete (a,z)    Extremo de la función Gamma incompleta
 hypergeometric(l1, l2, z) Función hipergeométrica
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
@@ -528,19 +528,19 @@ Logaritmo natural de la función gamma.
 
 
 
-@deffn {Función} gamma_greek (@var{a}, @var{z})
+@deffn {Función} gamma_incomplete_lower (@var{a}, @var{z})
 
 Función gamma incompleta inferior (A&S 6.5.2):
 
 @ifnottex
 @example
-                         z
-                        /
-                        [  a - 1   - t
-    gamma_greek(a, z) = I t      %e    dt
-                        ]
-                        /
-                         0
+                                    z
+                                   /
+                                   [  a - 1   - t
+    gamma_incomplete_lower(a, z) = I t      %e    dt
+                                   ]
+                                   /
+                                    0
 @end example
 @end ifnottex
 @tex

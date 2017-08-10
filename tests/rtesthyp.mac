@@ -162,13 +162,13 @@ exp(z);
 
 /* A&S 13.6.10 */
 hgfred([a],[a+1],-z);
-a*z^(-a)*gamma_greek(a,z);
+a*z^(-a)*gamma_incomplete_lower(a,z);
 
 hgfred([a],[a+1],-z),prefer_gamma_incomplete:true;
 (a*gamma_incomplete(a,z)-a*gamma(a))/-z^a;
 
 hgfred([a],[a+2],-z);
-z^(-a-1)*((a^2+a)*gamma_greek(a,z)*z+(-a^2-a)*gamma_greek(a+1,z));
+z^(-a-1)*((a^2+a)*gamma_incomplete_lower(a,z)*z+(-a^2-a)*gamma_incomplete_lower(a+1,z));
 
 hgfred([a],[a+2],-z),prefer_gamma_incomplete:true;
 -z^(-a-1)*(((a^2+a)*gamma_incomplete(a,z)+(-a^2-a)*gamma(a))*z
@@ -1520,7 +1520,7 @@ true$
 /* Table of Integral Transforms */
 /* Formula 36, p 147 */
 specint(exp(-a*exp(-t))*exp(-p*t),t);
-a^(-p)*gamma_greek(p,a)$
+a^(-p)*gamma_incomplete_lower(p,a)$
 
 /* Formula 37, p 147 */
 specint(exp(-a*exp(t))*exp(-p*t),t);
@@ -1589,12 +1589,12 @@ ratsimp(rectform(specint(cos(a*t)*expintegral_ei(-t)*exp(-p*t),t)));
 /*
  * Formula 34, p. 179
  *
- * exp(b*t)*gamma_greek(v,a*t)
+ * exp(b*t)*gamma_incomplete_lower(v,a*t)
  * -> gamma(v)*a^v*(p-b)^(-1)*(p+a-b)^(-v)
  */
 (assume(p>b,v>-1),0);
 0;
-radcan(specint(exp(b*t)*gamma_greek(v,a*t)*exp(-p*t),t));
+radcan(specint(exp(b*t)*gamma_incomplete_lower(v,a*t)*exp(-p*t),t));
 a^v*gamma(v+1)/((p-b)*(p-b+a)^v*v);
 
 /*

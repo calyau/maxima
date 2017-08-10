@@ -47,7 +47,7 @@ struve_l (v, z)                Struve-Funktion L[v](z)
 
 %f[p,q] ([], [], z)            Hypergeometrische Funktion
 gamma()                        Gammafunktion
-gammagreek(a, z)               unvollst@"andige Gamma-Funktion
+gamma_incomplete_lower(a, z)   unvollst@"andige Gamma-Funktion der unteren Grenze
 gammaincomplete(a,z)           unvollst@"andige Gamma-Funktion
 hypergeometric(l1, l2, z)      Hypergeometrische Funktion
 

@@ -480,28 +480,28 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $gamma_greek (a z)
-  (simplify (list '(%gamma_greek) a z)))
+(defun $gamma_incomplete_lower (a z)
+  (simplify (list '(%gamma_incomplete_lower) a z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defprop $gamma_greek %gamma_greek alias)
-(defprop $gamma_greek %gamma_greek verb)
+(defprop $gamma_incomplete_lower %gamma_incomplete_lower alias)
+(defprop $gamma_incomplete_lower %gamma_incomplete_lower verb)
 
-(defprop %gamma_greek $gamma_greek reversealias)
-(defprop %gamma_greek $gamma_greek noun)
+(defprop %gamma_incomplete_lower $gamma_incomplete_lower reversealias)
+(defprop %gamma_incomplete_lower $gamma_incomplete_lower noun)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defprop %gamma_greek simp-gamma-incomplete-lower operators)
+(defprop %gamma_incomplete_lower simp-gamma-incomplete-lower operators)
 
 ;;; distribute over bags (aggregates)
 
-(defprop %gamma_greek (mlist $matrix mequal) distribute_over)
+(defprop %gamma_incomplete_lower (mlist $matrix mequal) distribute_over)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (defprop %gamma_greek ??? grad) WHAT TO PUT HERE ??
+;; (defprop %gamma_incomplete_lower ??? grad) WHAT TO PUT HERE ??
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

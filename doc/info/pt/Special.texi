@@ -21,7 +21,7 @@ hstruve[n] (z)                 Função H de Struve H
 lstruve[n] (z)                 Função de L Struve
 %f[p,q] ([], [], expr)         Função Hipergeométrica Generalizada
 gamma()                        Função Gamma
-gammagreek(a,z)                Função gama incompleta
+gamma_incomplete_lower(a,z)    Função gama incompleta inferior
 gammaincomplete(a,z)           Final da função gama incompleta
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
 slommel
