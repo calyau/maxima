@@ -9,25 +9,28 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(IMAGEMAGICKVERSION "7.0.6-0-portable-Q16")
+set(IMAGEMAGICKVERSION "7.0.6-5-portable-Q16")
 
 # Hash values for current releases are available from: https://www.imagemagick.org/download/binaries/digest.rdf
 if(BUILD_64BIT)
-    set(IMAGEMAGICK_SHA256 "ea03bec02e75a631c95623fe9fd4ab3ac290cddb9085b9862d22935cfcd4718e")
+    set(IMAGEMAGICK_SHA256 "662c5f468a98ae656c0c1f02c7fd656f1e8915b2aefbdfbcb3dbaac8b0ee3d87")
     set(IMAGEMAGICK_URL    "https://www.imagemagick.org/download/binaries/ImageMagick-${IMAGEMAGICKVERSION}-x64.zip")
 else()
-    set(IMAGEMAGICK_SHA256 "cf1fdaaa6db2483dd37f66a2c74dc9671b2f8375641b172d4febc6affb341cfb")
+    set(IMAGEMAGICK_SHA256 "8bf36d0f8083ea77aaf642b7d2bd2a52fab18c5fe83827b9ea413ef16a684156")
     set(IMAGEMAGICK_URL    "https://www.imagemagick.org/download/binaries/ImageMagick-${IMAGEMAGICKVERSION}-x86.zip")
 endif()
 
-# Imagemagick "convert" is needed for wxMaxima (already a binary package just extract it...)
-externalproject_add(imagemagick
-    URL "${IMAGEMAGICK_URL}"
-    DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-    URL_HASH SHA256=${IMAGEMAGICK_SHA256}
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
-)
-install(FILES ${CMAKE_BINARY_DIR}/imagemagick/imagemagick-prefix/src/imagemagick/convert.exe DESTINATION wxMaxima)
+# the current git version of wxMaxima no longer needs Imagemagick's "convert"
+if(NOT USE_WXMAXIMA_GIT)
+    # Imagemagick "convert" is needed for wxMaxima (already a binary package just extract it...)
+    externalproject_add(imagemagick
+        URL "${IMAGEMAGICK_URL}"
+        DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
+        URL_HASH SHA256=${IMAGEMAGICK_SHA256}
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        INSTALL_COMMAND ""
+    )
+    install(FILES ${CMAKE_BINARY_DIR}/imagemagick/imagemagick-prefix/src/imagemagick/convert.exe DESTINATION wxMaxima)
+endif()
 

@@ -1,3 +1,7 @@
+# On debian-based systems this makes us use the right gcl version out-of-the box.
+# On other systems it doesn't hurt.
+export GCL_ANSI=t
+
 if ENABLE_GETTEXT
    LOCALE_DIR = locale
 endif

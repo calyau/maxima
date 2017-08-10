@@ -48,10 +48,14 @@ Clisp is compiled to bytecodes, so Maxima running on Clisp is
 substantially slower than on Lisps compiled to machine instructions. 
 On the other hand, Clisp contains code from CLN <http://www.ginac.de/CLN/>,
 a library for efficient computations with all kinds of numbers in 
-arbitrary precision.
+arbitrary precision. Another advantage of clisp is that byte code 
+resulting in compiling a program on one computer might work on a
+computer running a different Clisp version. Also Clisp uses an
+extremely efficient memory handling which means it might not run
+out of memory where ECL, SBCL and GCL do.
 
 There are Clisp implementations for many platforms including 
-MS Windows and Unix-like systems.
+MS Windows and Unix-like systems. 
 
 --------------------------------------------------------------------
 CMUCL <http://www.cons.org/cmucl/>
@@ -83,7 +87,8 @@ GCL <http://savannah.gnu.org/projects/gcl/>
 
 	GCL versions starting with 2.4.3 can be built with readline
 support, so Maxima has advanced command-line editing facilities
-when built with it. GCL produces a fast Maxima exectuable.
+when built with it. GCL produces a fast Maxima exectuable that
+profit from GCL's fast bignum algorithms.
 
 Only the ANSI-enabled version of GCL works with Maxima, i.e.,
 when GCL is built, it must be configured with the --enable-ansi flag,
@@ -103,6 +108,8 @@ SBCL <http://www.sbcl.org>
 
 	SBCL is a fork of CMUCL which differs in some minor details,
 but most notably, it is simpler to rebuild SBCL than CMUCL.
+For many tasks a maxima compiled with SBCL is considerably faster than
+GCL. For other tasks GCL is faster than SBCL.
 
 rmaxima is recommended for use with SBCL. See CMUCL above.
 
@@ -125,7 +132,9 @@ the 64-bit version passes all tests.
 ECL <https://common-lisp.net/project/ecl/>
     
 	ECL is known to work with maxima and passes the testsuite.  ECL
-runs on many platforms and OSes.
+runs on many platforms and OSes. It is faster than CLISP, but seems to
+tend more towards fragmenting the available memory. ECL tends to be slower 
+than GCL or SBCL but faster than CLISP.
 
 ECL must be configured to use the C compiler, building Maxima with the
 ECL bytecode compiler is (currently) not possible.  So do *not* use the
