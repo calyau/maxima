@@ -63,7 +63,7 @@ with_stdout ("tmp-rtest-1.tex",
     tex_text ("Functions: gamma(z) (gamma function), gamma\\_incomplete(a, z) (upper incomplete gamma function),
 gamma\\_incomplete\\_regularized(a, z) (gamma\\_incomplete normalized by gamma(z)),
 gamma\\_incomplete\\_generalized(a, z[1], z[2]) (upper minus lower incomplete gamma function),
-gamma\\_greek(a, z) (lower incomplete gamma function):"),
+gamma\\_incomplete\\_lower(a, z) (lower incomplete gamma function):"),
     tex ([gamma (z), gamma_incomplete (a, z), gamma_incomplete_regularized (a, z),
           gamma_incomplete_generalized (a, z[1], z[2]), gamma_incomplete_lower (a, z)]),
 
