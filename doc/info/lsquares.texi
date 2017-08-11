@@ -58,6 +58,10 @@ This includes numeric constants such as @code{%pi} and @code{%e} as well as lite
 Numerical calculations are carried out with ordinary floating-point arithmetic,
 so all other kinds of numbers are converted to ordinary floats for calculations.
 
+If @code{lsquares_estimates} needs excessive amounts of time or runs out of memory
+@mrefcomma{lsquares_estimates_approximate} which skips the attempt to find an exact 
+solution, might still succeed.
+
 @code{load(lsquares)} loads this function.
 
 See also
