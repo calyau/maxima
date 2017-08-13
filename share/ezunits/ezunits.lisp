@@ -29,7 +29,7 @@
                             (concatenate
                               'string
                               "\\mathrm{"
-                              (maybe-invert-string-case (symbol-name (tex-stripdollar0 s)))
+                              (maybe-invert-string-case (symbol-name (stripdollar s)))
                               "}")
                             'texword)
                           g)))
