@@ -3480,7 +3480,7 @@
 
     (cond ((or isanimatedgif ismultipage)  ; this is an animated gif or multipage plot file
              (if isanimatedgif
-               (format cmdstorage "~%quit~%~%")
+               (format cmdstorage "~%unset output~%quit~%~%")
                (format cmdstorage "~%set term dumb~%~%") )
              (close cmdstorage)
 	     #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
@@ -3501,11 +3501,16 @@
                               "set print \"~a\" append~%bind x \"print MOUSE_X,MOUSE_Y\"~%"
                               (get-option '$xy_file))) )
 
-             ; in svg and pdfcairo terminals, unset output to force
-             ; Gnuplot to write </svg> at the end of the file (what about pdf?)
-             (when (or (equal (get-option '$terminal) '$svg)
-                       (equal (get-option '$terminal) '$pdfcairo))
-                (format cmdstorage "unset output~%"))
+             ; in svg and pdfcairo terminals it is necessary to unset output to force
+	     ; Gnuplot to write the last few bytes ("</svg>" in the svg case)
+	     ; at the end of the file. On windows in all other terminals that write
+	     ; to files if the output isn't unset the file isn't closed and therefore
+	     ; cannot be moved or removed after a plot is finished.
+	     ; 
+	     ; If the plot isn't written to a file the variable "output" is empty and
+	     ; unused and unsetting it a second time doesn't change anything
+	     ; => It is always save to unset the output at the end of a scene.
+             (format cmdstorage "unset output~%")
              (close cmdstorage)
              ; get the plot
              (cond
