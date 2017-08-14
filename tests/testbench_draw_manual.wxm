@@ -25,7 +25,7 @@ if wxplot_size = 'wxplot_size then
 
 
 /* [wxMaxima: section start ]
-The test cases
+The test cases for things that can be embedded/displayed on the screen.
    [wxMaxima: section end   ] */
 
 
@@ -757,6 +757,60 @@ load("../doc/info/figures/draw_xugrid.mac")$
 /* [wxMaxima: input   start ] */
 print("A plot with primary and secondary y axis including axis titles.")$
 load("../doc/info/figures/draw_ylabel_secondary.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Test cases for file output
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: input   start ] */
+print("an animated gif named animated_gif.gif");
+draw(
+        delay     = 100,
+        file_name = "animated_gif",
+        terminal  = 'animated_gif,
+        gr2d(explicit(x^2,x,-1,1)),
+        gr2d(explicit(x^3,x,-1,1)),
+        gr2d(explicit(x^4,x,-1,1)));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+print("300.png and 600.png are 300x300 or 600x600 pixel png files");
+draw2d(
+        dimensions = [300,300],
+        file_name="300",
+        terminal   = 'png,
+        explicit(x^4,x,-1,1)) $
+draw2d(
+        dimensions = [600,600],
+        file_name="600",
+        terminal   = 'png,
+        explicit(x^4,x,-1,1)) $
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+print("An a4 portrait file named a4portrait.eps");
+A4portrait: 100*[21, 29.7]$
+draw3d(
+        file_name="a4portrait",
+        dimensions = A4portrait,
+        terminal   = 'eps,
+        explicit(x^2-y^2,x,-2,2,y,-2,2)) $
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+print("multipage.eps contains a multipage eps file");
+draw(
+        file_name = "multipage.eps",
+        terminal  = multipage_eps,
+        dimensions = 100*[10,10],
+        gr2d(explicit(x^2,x,-1,1)),
+        gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1))) $
 /* [wxMaxima: input   end   ] */
 
 

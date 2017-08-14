@@ -1,3 +1,7 @@
 *.log
 *-test.sh*
 test-suite.log
+300.png
+600.png
+animated_gif.gif
+multipage.eps
