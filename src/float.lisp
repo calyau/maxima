@@ -158,6 +158,11 @@ One extra decimal digit in actual representation for rounding purposes.")
   (let (($lispdisp nil))
     (dimension-atom (maknam (fpformat form)) result)))
 
+;; Assume that X has the form ((BIGFLOAT ... <prec>) ...).
+;; Return <prec>.
+(defun bigfloat-prec (x)
+  (car (last (car x))))
+
 ;; Converts the bigfloat L to list of digits including |.| and the
 ;; exponent marker |b|. The number of significant digits is controlled
 ;; by $fpprintprec.
@@ -171,12 +176,12 @@ One extra decimal digit in actual representation for rounding purposes.")
 	 (list '|0| '|.| '|0| '|b| '|0|))
 	(t ;; L IS ALWAYS POSITIVE FP NUMBER
 	 (let* ((extradigs (floor (1+ (quotient (integer-length (caddr l)) #.(/ (log 10.0) (log 2.0))))))
-		    (fpprec (+ extradigs (decimalsin (- (caddar l) 2))))
+		    (fpprec (+ extradigs (decimalsin (- (bigfloat-prec l) 2))))
 	        (*m 1)
 	        (*cancelled 0))
 	   (setq l
 		 (let ((*decfp t)
-		       (of (caddar l))
+		       (of (bigfloat-prec l))
 		       (l (cdr l))
 		       (expon nil))
 		   (setq expon (- (cadr l) of))
@@ -598,23 +603,24 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; zero.
 (defun bigfloatp (x)
   ;; A bigfloat object looks like '((bigfloat simp <prec>) <mantissa> <exp>)
-  (prog nil
+  ;; Note bene that the simp flag is optional -- don't count on its presence.
+  (prog (x-prec)
      (cond ((not ($bfloatp x)) (return nil))
-	   ((= fpprec (caddar x))
+	   ((= fpprec (setq x-prec (bigfloat-prec x)))
 	    ;; Precision matches.  (Should we fix up bogus bigfloat
 	    ;; zeros?)
 	    (return x))
-	   ((> fpprec (caddar x))
+	   ((> fpprec x-prec)
 	    ;; Current precision is higher than bigfloat precision.
 	    ;; Scale up mantissa and adjust exponent to get the
 	    ;; correct precision.
-	    (setq x (bcons (list (fpshift (cadr x) (- fpprec (caddar x)))
+	    (setq x (bcons (list (fpshift (cadr x) (- fpprec x-prec))
 				 (caddr x)))))
 	   (t
 	    ;; Current precision is LOWER than bigfloat precision.
 	    ;; Round the number to the desired precision.
 	    (setq x (bcons (list (fpround (cadr x))
-				 (+ (caddr x) *m fpprec (- (caddar x))))))))
+				 (+ (caddr x) *m fpprec (- x-prec)))))))
      ;; Fix up any bogus zeros that we might have created.
      (return (if (equal (cadr x) 0) (bcons (list 0 0)) x))))
 
@@ -718,7 +724,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 
 ;; Convert a bigfloat into a floating point number.
 (defmfun fp2flo (l)
-  (let ((precision (caddar l))
+  (let ((precision (bigfloat-prec l))
 	(mantissa (cadr l))
 	(exponent (caddr l))
 	(fpprec machine-mantissa-precision)
@@ -1204,7 +1210,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; value because 1 is always an exact bfloat.
 (defun fpone ()
   (cond (*decfp (intofp 1))
-	((= fpprec (caddar bigfloatone)) (cdr bigfloatone))
+	((= fpprec (bigfloat-prec bigfloatone)) (cdr bigfloatone))
 	(t (intofp 1))))
 
 ;;----------------------------------------------------------------------------;;
@@ -1881,7 +1887,7 @@ One extra decimal digit in actual representation for rounding purposes.")
       (cons (- (car x)) (cdr x))))
 
 (defmfun fpentier (f)
-  (let ((fpprec (caddar f)))
+  (let ((fpprec (bigfloat-prec f)))
     (fpintpart (cdr f))))
 
 ;; Calculate the integer part of a floating point number that is represented as
