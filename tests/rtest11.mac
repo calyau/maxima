@@ -300,6 +300,10 @@ true$
 freeof (x, 'block ([x : foo], x));
 true$
 
+/* Check the loop variable */
+freeof (x, '(for x thru 3 do print (x)));
+true$
+
 /* It would be nice to test foreign language characters here.
  * Is there a way to make such tests independent of environment stuff like $LANG ??
  */
