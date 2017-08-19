@@ -389,5 +389,12 @@ plot3d([sin(t), cos(t), t], [t,-5,5], [y,-5,5], [grid,100,2], [gnuplot_pm3d,fals
 
 plot3d (a[x]^2 - x[a]^3, [a[x], -1, 1], [x[a], -1, 1]);
 
+/* from wxMaxima forum 2013-02-16: "plot2d: expression evaluates to non-numeric value everywhere in plotting range"
+ * https://sourceforge.net/p/wxmaxima/discussion/435775/thread/d89ea980/
+ */
+
+F(omega) := abs((%i * omega + 2E4)^2);
+plot2d(F(omega), [omega, 0.01, 2E5]);
+
 "FINIS" $
 

@@ -323,3 +323,162 @@ x^(2*floor(z))$
 
 (remove(n, integer, e, even), 0);
 0$
+
+/* SF bug #3152: "invalid simplification of abs(foo)^2 when foo is a complex expression"
+ */
+
+(kill(a, foo), declare(a, complex));
+done;
+
+domain:real;
+real;
+
+foo:abs((a + 1)^2);
+abs(a + 1)^2;
+
+foo, a=%i;
+2;
+
+abs(a^2);
+abs(a)^2;
+
+domain:complex;
+complex;
+
+foo:abs((a + 1)^2);
+abs(a + 1)^2;
+
+foo, a=%i;
+2;
+
+abs(a^2);
+abs(a)^2;
+
+/* SF bug #2901: "incorrect simplification of abs((a + b*%i)^2) with a, b real"
+ * SF bug #2550: "abs((%i+x)^2) evaluates to (x + %i)^2"
+ */
+
+kill(x, y, a, b);
+done;
+
+domain:real;
+real;
+
+(abs(x + %i * y))^2;
+abs(x + %i*y)^2;
+
+abs((x + %i * y)^2);
+abs(x + %i*y)^2;
+
+(cabs(x + %i * y))^2;
+x^2 + y^2;
+
+cabs((x + %i * y)^2);
+x^2 + y^2;
+
+declare ([a, b], real);
+done;
+
+abs((a + b*%i)^2);
+abs(a + b*%i)^2;
+
+abs((%i+x)^2);
+abs(%i + x)^2;
+
+abs(%i^2);
+1;
+
+abs((%i+x)^2 + 1);
+abs((%i + x)^2 + 1);
+
+domain:complex;
+complex;
+
+(abs(x + %i * y))^2;
+abs(x + %i*y)^2;
+
+abs((x + %i * y)^2);
+abs(x + %i*y)^2;
+
+(cabs(x + %i * y))^2;
+x^2 + y^2;
+
+cabs((x + %i * y)^2);
+x^2 + y^2;
+
+abs((a + b*%i)^2);
+abs(a + b*%i)^2;
+
+abs((%i+x)^2);
+abs(%i + x)^2;
+
+abs(%i^2);
+1;
+
+abs((%i+x)^2 + 1);
+abs((%i + x)^2 + 1);
+
+(reset(domain), 0);
+0;
+
+/* SF bug #2549: "function sqrt gives incorrect result"
+ */
+
+(kill(z, f), declare (z, complex));
+done;
+
+foo:diff(z(q),q)^2*conjugate(diff(z(q),q))^2;
+('diff(z(q),q,1))^2*conjugate('diff(z(q),q,1))^2;
+
+sqrt(foo);
+/* a better result would be abs('diff(z(q),q,1))^2 but at least this result is not incorrect */
+abs('diff(z(q),q,1))*sqrt(conjugate('diff(z(q),q,1))^2);
+
+sqrt(f(z)^2*conjugate(f(z))^2);
+abs(f(z))*sqrt(conjugate(f(z))^2);
+
+/* SF bug #2480: "function abs has bug"
+ */
+
+kill(t, u);
+done;
+
+abs(u-%e^(%i*t)) ^2;
+abs(u-%e^(%i*t)) ^2;
+
+/* SF bug #2063: "abs(x^2) with domain:complex"
+ */
+
+kill(x, z);
+done;
+
+declare (z, complex);
+done;
+
+domain:real;
+real;
+
+abs(x)^2;
+x^2;
+
+abs(x^2);
+x^2;
+
+abs(z^2);
+abs(z)^2;
+
+domain:complex;
+complex;
+
+abs(x)^2;
+abs(x)^2;
+
+abs(x^2);
+abs(x)^2;
+
+abs(z^2);
+abs(z)^2;
+
+(reset(domain), 0);
+0;
+

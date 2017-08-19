@@ -2266,15 +2266,15 @@
            ((and (eq (caar gr) 'mabs)
                  (or (evnump pot)
                      (mevenp pot))
-                 (or (and (eq $domain '$real) (not (decl-complexp (cadr gr))))
-                     (and (eq $domain '$complex) (decl-realp (cadr gr)))))
+                 (or (and (eq $domain '$real) (not (apparently-complex-to-judge-by-$csign-p (cadr gr))))
+                     (and (eq $domain '$complex) (apparently-real-to-judge-by-$csign-p (cadr gr)))))
             (return (power (cadr gr) pot)))
            ((and (eq (caar gr) 'mabs)
                  (integerp pot)
                  (oddp pot)
                  (not (equal pot -1))
-                 (or (and (eq $domain '$real) (not (decl-complexp (cadr gr))))
-                     (and (eq $domain '$complex) (decl-realp (cadr gr)))))
+                 (or (and (eq $domain '$real) (not (apparently-complex-to-judge-by-$csign-p (cadr gr))))
+                     (and (eq $domain '$complex) (apparently-real-to-judge-by-$csign-p (cadr gr)))))
             ;; abs(x)^(2*n+1) -> abs(x)*x^(2*n), n an integer number
             (if (plusp pot)
                 (return (mul (power (cadr gr) (add pot -1))
@@ -2500,7 +2500,7 @@
            ((and (eq $domain '$real)
                  (free gr '$%i)
                  $radexpand
-                 (not (decl-complexp (cadr gr)))
+                 (not (apparently-complex-to-judge-by-$csign-p (cadr gr)))
                  (evnump (caddr gr)))
             ;; Simplify (x^a)^b -> abs(x)^(a*b)
             (setq pot (mul pot (caddr gr))
@@ -2513,6 +2513,14 @@
                   gr (power (cadr gr) (neg (caddr gr)))))
            (t (go up)))
      (go cont)))
+
+(defun apparently-complex-to-judge-by-$csign-p (e)
+  (let ((s ($csign e)))
+    (member s '($complex $imaginary))))
+
+(defun apparently-real-to-judge-by-$csign-p (e)
+  (let ((s ($csign e)))
+    (member s '($pos $neg $zero $pn $pnz $pz $nz))))
 
 ;; Basically computes log of m base b.  Except if m is not a power
 ;; of b, we return nil.  m is a positive integer and base an integer
