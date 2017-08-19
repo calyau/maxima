@@ -398,7 +398,9 @@
                     (cdadr e)))
          t)
         ;; Check for a loop variable.
-        ((and (eq (caar e) 'mdo) (alike1 var (cadr e))) t)
+        ((and (member (caar e) '(mdo mdoin) :test #'eq)
+              (alike1 var (cadr e)))
+         t)
 	(argsfreeofp (freeofl var (margs e)))
 	(t (freeofl var (cdr e)))))
 
