@@ -25,7 +25,7 @@ externalproject_add(wxwidgets
   URL "${WXWIDGETS_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${WXWIDGETS_MD5}
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/configure --disable-shared --disable-compat28 --with-zlib=builtin --with-libjpeg=builtin --without-libtiff --with-libpng=builtin --with-expat=builtin --host=${HOST}
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/configure --disable-shared --disable-compat28 --with-zlib=builtin --with-libjpeg=builtin --without-libtiff --with-libpng=builtin --with-expat=builtin --host=${HOST} --enable-accessibility
   BUILD_COMMAND $(MAKE)
         COMMAND ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-libname-correction.sh
         COMMAND ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-install-translations-for-wxmaxima.sh
