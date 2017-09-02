@@ -938,7 +938,7 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
   (do ((ol (mapcar #'char-code (coerce str 'list)))
         ch m-chars )
       ((null ol) 
-        (eval `(concatenate 'string ,@m-chars)) )
+       (reduce #'(lambda (s0 s1) (concatenate 'string s0 s1)) m-chars :initial-value ""))
     (multiple-value-setq (ol ch) (rm-first-utf-8-char ol))
     (push (utf-8-m-char (length ch) ch) m-chars) ))
 
@@ -1161,10 +1161,8 @@ the optional second argument must be `clessp' or `cgreaterp'." ) alt )))
   (do ((ol (coerce (string-to-raw-bytes str) 'list))
         utf8 code-pts ) 
       ((null ol) 
-        (eval 
-          `(concatenate 'string
-            ,@(mapcar #'(lambda (n) ($unicode n))
-                      (stable-sort code-pts test) ))))
+       (let ((l (mapcar #'(lambda (n) ($unicode n)) (stable-sort code-pts test))))
+         (reduce #'(lambda (s0 s1) (concatenate 'string s0 s1)) l :initial-value "")))
     (multiple-value-setq (ol utf8) (rm-first-utf-8-char ol))
     (push (utf8-to-uc utf8) code-pts) ))
 

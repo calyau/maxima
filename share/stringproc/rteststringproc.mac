@@ -169,6 +169,17 @@ sremove("DO ", %, 'sequalignore);
 "I like coffee."$
 sreverse("einnegermitgazellezagtimregennie");
 "einnegermitgazellezagtimregennie"$
+
+/* SF bug report #3329: "Simplode overlimited at Maxima with GCL"
+ * (same bug in sreverse; ensure it works OK for long strings
+ */
+sreverse ("dCBCba1A310acBaACAD0DB13dA2200c32AbADA0aB0cAa2D2aDB12AdABa030Ba03c3d0DbA\
+3aBba2c00a10DA3C3AAa1a00bc1BCa33bBDb1da0baBBaAa01D11AA0adcaaB13323A33Ac3DCdcAC\
+1131bCdB1d1BddaCaAD0Ab131bad2d30abBaca0D2bccd2Ccd2");
+"2dcC2dccb2D0acaBba03d2dab131bA0DAaCaddB1d1BdCb1311CAcdCD3cA33A32331Baacd\
+a0AA11D10aAaBBab0ad1bDBb33aCB1cb00a1aAA3C3AD01a00c2abBa3AbD0d3c30aB030aBAdA21B\
+Da2D2aAc0Ba0ADAbA23c0022Ad31BD0DACAaBca013A1abCBCd";
+
 ssearch("~s", "~{~S ~}~%", 'sequalignore);
 3$
 ssearch ("foo", "bar");
@@ -177,6 +188,17 @@ ssort("I don't like Mondays.");
 "   '.IMaddeiklnnoosty"$
 block([us_ascii_only:true], ssort("I don't like Mondays.", 'cgreaterpignore));
 "ytsoonnMlkIiedda.'   "$   
+
+/* SF bug report #3329: "Simplode overlimited at Maxima with GCL"
+ * (same bug in ssort; ensure it works OK for long strings
+ */
+ssort ("fTgTgHZyfUfYOWTTWezffIITTfQxwWaWyTdaIfyeawITRfaTfywaIgWdePTefegfIaOeIWT\
+WgOgHfOIddgOTdZIdIwwPTfOaIITeyygxdddTWdfyWOOOOTZPHfTHHydIaTTdTeggwwHZHWHTfeHfZ\
+IOydPgTTeHORaweaZPIHaefHTgXaTwdTgZyOReTyfIaZZeZeyfPTHHZfWage");
+"HHHHHHHHHHHHHHIIIIIIIIIIIIIIIIOOOOOOOOOOOOOPPPPPPQRRRTTTTTTTTTTTTTTTTTT\
+TTTTTTTTTTUWWWWWWWWWWWXYZZZZZZZZZZZaaaaaaaaaaaaaaddddddddddddddeeeeeeeeeeeeeee\
+efffffffffffffffffffffggggggggggggggwwwwwwwwwxxyyyyyyyyyyyyz";
+
 ssubst("like", "hate", "I hate Thai food. I hate green tea.");
 "I like Thai food. I like green tea."$
 ssubst("Black", "Green", "Green light. Green tea. Greenwich.", 'sequal, 10, 20);
