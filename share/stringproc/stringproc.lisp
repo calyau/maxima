@@ -1153,7 +1153,7 @@ the optional second argument must be `clessp' or `cgreaterp'." ) alt )))
         "`ssort': optional second argument must be one of ~%clessp[ignore], cgreaterp[ignore]" ))))
   (setq test (stripdollar test))
   (let ((copy (copy-seq str)))
-    (if *parse-utf-8-input* (utf-8-ssort copy test) (sort copy test)) ))
+    (if *parse-utf-8-input* (utf-8-ssort copy test) (stable-sort copy test)) ))
 ;;
 (defun utf-8-ssort (str &optional (test 'clessp)) 
   (setq test 
@@ -1164,7 +1164,7 @@ the optional second argument must be `clessp' or `cgreaterp'." ) alt )))
         (eval 
           `(concatenate 'string
             ,@(mapcar #'(lambda (n) ($unicode n))
-                      (sort code-pts test) ))))
+                      (stable-sort code-pts test) ))))
     (multiple-value-setq (ol utf8) (rm-first-utf-8-char ol))
     (push (utf8-to-uc utf8) code-pts) ))
 
