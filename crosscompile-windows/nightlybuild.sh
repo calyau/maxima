@@ -50,21 +50,26 @@ sleepuntil () {
     sleep $(( (24*60*60 + $(date -d "$1" +%s) - $(date +%s) ) % (24*60*60) ))
 }
 
-# do everything in english:
+# do everything in English:
 LANG=C
 export LANG
 
-CMAKE=/opt/cmake-3.7.2-Linux-x86_64/bin/cmake
+CMAKE=/opt/cmake-3.8.2-Linux-x86_64/bin/cmake
+
+test -x $CMAKE || exit
 
 cd ~/maxima-code/crosscompile-windows/build || exit
 
 while true; do
 
+    rm -f ~/maxima-clisp-sbcl-current-win32.exe ~/maxima-clisp-sbcl-current-win64.exe ~/buildlog-win32 ~/buildlog-win64
     git pull
 
     buildprocess "win32" 2>&1 | tee ~/buildlog-win32
     buildprocess "win64" 2>&1 | tee ~/buildlog-win64
 
-    scp -i ~/.ssh/maximakopierkey ~/maxima-clisp-sbcl-current-win32.exe ~/maxima-clisp-sbcl-current-win64.exe ~/buildlog-win32 ~/buildlog-win64 maxima@ns1.dautermann.at:/var/www/wolfgang.dautermann.at/maxima/nightlybuild/
+    for i in ~/maxima-clisp-sbcl-current-win32.exe ~/maxima-clisp-sbcl-current-win64.exe ~/buildlog-win32 ~/buildlog-win64 ; do
+        test -r $i && scp -i ~/.ssh/maximakopierkey $i maxima@ns1.dautermann.at:/var/www/wolfgang.dautermann.at/maxima/nightlybuild/
+    done
     sleepuntil 23:00
 done
