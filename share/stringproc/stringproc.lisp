@@ -898,7 +898,7 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
       (do (acc) (())
         (push ($sconcat (pop li)) acc)
         (when (null li)
-          (return (eval `(concatenate 'string ,@(nreverse acc)))) )
+          (return (reduce #'(lambda (s0 s1) (concatenate 'string s0 s1)) (nreverse acc) :initial-value "")))
         (push ds acc) ))))
 
 
