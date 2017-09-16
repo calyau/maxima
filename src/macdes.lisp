@@ -93,20 +93,19 @@
 	       l (cddr l))
 	 (unless (symbolp var1) (merror (intl:gettext "create_list: expected a symbol; found: ~A") var1))
  	 (setq lis (meval* lis))
-	 (progv (list var1)
-	     (list nil)
+	 (mbinding ((list var1))
 	   (cond ((and (numberp lis)
 		       (progn
 			 (setq top (car l) l (cdr l))
 			 (setq top (meval* top))
 			 (numberp top)))
 		  (loop for i from lis to top
-		     do (setf (symbol-value var1) i)
+		     do (mset var1 i)
 		     append
 		     (apply #'create-list1 form l)))
 		 (($listp lis)
 		  (loop for v in (cdr lis)
-		     do (setf (symbol-value var1) v)
+		     do (mset var1 v)
 		     append
 		     (apply #'create-list1 form l)))
 		 (t (merror (intl:gettext "create_list: unexpected arguments."))))))))

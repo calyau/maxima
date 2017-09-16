@@ -2340,3 +2340,13 @@ radcan(exponentialize(map(lambda([f], f(x) - diff(integrate(f(x), x), x)), [sin,
 /* Bug #3258: integrate's answer contains diff operator with negative order */
 freeof(diff, integrate(%e^(c*x-r^2/(4*x))/x^(3/2),x));
 true$
+
+/* Bug #3220: create_list doesn't bind variables properly */
+errcatch (create_list (%i, %i, [1, 2, 3]));
+[]$
+
+create_list (bfloat (1 - 10^-50) - 1, fpprec, [16, 100]);
+[0.0b0, -1.0b-50]$
+
+create_list (bfloat (3.14), fpprec, 1, 3);
+[3.0b0, 3.1b0, 3.14b0]$
