@@ -28,7 +28,7 @@
 ;; leave a conditional here.
 (defun mfunction1 (fun)
   (if (functionp fun)
-      fun
+      (lambda (x y) (mevalp (funcall fun x y)))
       #+(or cmu scl)
       (lambda (x y) (mevalp `((,fun) ((mquote) ,x) ((mquote) ,y))))
       #-(or cmu scl)

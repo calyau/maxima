@@ -988,3 +988,26 @@ baz[k](a, 3, %pi, b, -2, %e, z, 0, %phi);
 errcatch (lastn (bazexpr, -4));
 [];
 
+/* bug reported to mailing list 2017-09-05: "compiling a function including sorting" */
+
+(kill(test), test(L):=sort(L,lambda([s,t],s[2]>t[2])), 0);
+0;
+
+(L:[[b,2],[a,1],[d,4],[c,3]], test (L));
+[[d,4],[c,3],[b,2],[a,1]];
+
+(compile (test), test (L));
+[[d,4],[c,3],[b,2],[a,1]];
+
+(mycmp (s, t) := s[2]>t[2], 0);
+0;
+
+sort (L, mycmp);
+[[d,4],[c,3],[b,2],[a,1]];
+
+(compile (mycmp), is (?fboundp (mycmp) # false));
+true;
+
+sort (L, mycmp);
+[[d,4],[c,3],[b,2],[a,1]];
+

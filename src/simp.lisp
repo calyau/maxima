@@ -3029,7 +3029,7 @@
 		      ((mget x '$mainvar)
 		       (cond ((mget y '$mainvar) (alphalessp y x)) (t t)))
 		      (t (or (maxima-constantp y) (mget y '$scalar)
-			     (and (not (mget y '$mainvar)) (alphalessp y x))))))
+			     (and (not (mget y '$mainvar)) (not (null (alphalessp y x))))))))
 	       (t (not (ordfna y x)))))
 	((atom y) (ordfna x y))
 	((eq (caar x) 'rat)

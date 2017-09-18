@@ -638,4 +638,11 @@ true;
 kill (K);
 done;
 
+/* ensure that GREAT returns only T or NIL, not an integer, when its arguments are strings. */
+
+?great ("foo", "bar");
+true;
+
+?great ("bar", "foo");
+false;
 
