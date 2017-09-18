@@ -366,9 +366,10 @@ SBCL(terminal) reads UCS-2LE and the input is UCS-2LE. Do nothing.
 
 SBCL(wxMaxima) reads cp1252 but the input is UTF-8. Adjustment needed. 
   Switch to UTF-8 via Lisp command in init file.
+  Update (Maxima 5.40.0): SBCL(wxMaxima) reads UTF-8 and the input is UTF-8. Do nothing.
 
-Observations based on Maxima 5.36.1(ccl), 5.37.2(clisp), 5.37.3(gcl), 5.37.2(sbcl)
-in Windows 7.
+Observations based on Maxima 5.36.1(ccl), 5.37.2/5.40.0(clisp), 5.37.3(gcl), 
+5.37.2/5.40.0(sbcl) in Windows 7.
 
 TODO: Comments on Xmaxima in Windows.
 |#

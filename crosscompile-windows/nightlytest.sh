@@ -35,6 +35,9 @@ make pdf VERBOSE=1 >logfile-makepdf.txt 2>&1
 make install VERBOSE=1 >logfile-makeinstall.txt 2>&1
 make dist VERBOSE=1 >logfile-makedist.txt 2>&1
 
+# limit GCLs memory consumption to 20% of the main memory:
+export GCL_MEM_MULTIPLE=0.2
+
 ~/maxima-test/installroot/bin/maxima --run-string="build_info();" >logfile-buildinfo.txt
 for lisp in clisp ecl sbcl gcl ccl64 cmucl acl ; do
       ~/maxima-test/installroot/bin/maxima --lisp=$lisp --run-string="run_testsuite();" >logfile-testsuite-$lisp.txt
