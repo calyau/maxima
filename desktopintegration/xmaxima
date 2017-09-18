@@ -32,5 +32,3 @@ _xmaxima()
 	_filedir '@(tcl)'
     fi
 } && complete -F _xmaxima xmaxima
-
-# ex: ts=4 sw=4 et filetype=sh
