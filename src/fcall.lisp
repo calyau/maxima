@@ -56,11 +56,13 @@
 		   (t
 		    (putprop f t (car tabl))
 		    (terpri)
+		    (force-output)
 		    (princ "Warning: ")
 		    (mgrind f nil)
 		    (princ " has a function or macro call which has not been translated properly.")
 		    (cond ((cdr tabl)
 			   (terpri)
+			   (force-output)
 			   (princ (cadr tabl)))))))))))
 
 (defun mapcar-eval (x)

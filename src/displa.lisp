@@ -111,7 +111,7 @@
 (defun linear-displa (form)
   (fresh-line *standard-output*)
   (mgrind form *standard-output*)
-  (terpri))
+  (mterpri))
 
 (defmvar $display_format_internal nil
   "Setting this TRUE can help give the user a greater understanding

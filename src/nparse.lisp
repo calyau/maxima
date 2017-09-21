@@ -98,6 +98,7 @@
 	       (format t "~%~{~c~}~%~vt^" some (- (length some) 2))
 	       (read-line *parse-stream* nil nil))))
       (terpri)
+      (force-output)
       (throw-macsyma-top))))
 
 (defun tyi-parse-int (stream eof)
@@ -331,6 +332,7 @@
 			 (map nil #'princ x))
 		 (reverse numlist))
 	    (terpri)
+	    (force-output)
 	    (unless (equalp true fast)
 	      (incf failures)
 	      (format t "NUM:  ~A~%  TRUE: ~S~%  FAST: ~S~%"

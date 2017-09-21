@@ -630,7 +630,8 @@
   (if *prin1*
       (funcall *prin1* form)
       (prin1 form))
-  (terpri))
+  (terpri)
+  (force-output))
 
 ;; 9:02pm  Monday, 18 May 1981 -GJC
 ;; A function benchmark facility using trace utilities.

@@ -89,6 +89,7 @@
 	 (fresh-line *standard-output*)
 	 ($backtrace 3)
 	 (format t (intl:gettext "~& -- an error. To debug this try: debugmode(true);~%"))
+	 (force-output)
 	 (throw 'macsyma-quit 'maxima-error))))
 
 (defmacro with-$error (&body body)

@@ -627,7 +627,8 @@ Command      Description~%~
 		       tem))
 		  (:show
 		   (when tem (show-break-point i)
-			 (terpri))
+			 (terpri)
+			 (force-output))
 		   tem)))))))
 
 ;; get the most recent function on the stack with step info.
