@@ -93,5 +93,3 @@ _rmaxima()
 	_filedir '@(mac|wxm)'
     fi
 } && complete -F _rmaxima rmaxima
-
-# ex: ts=4 sw=4 et filetype=sh
