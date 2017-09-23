@@ -11,7 +11,7 @@ The concept
 
 
 /* [wxMaxima: comment start ]
-We don't have an automatic testbench for gnuplot. But we can at least run all gnuplot examples and ask the user to check if they show what they should.
+We don't have an automatic testbench for gnuplot. But we can at least run all gnuplot examples and accompy every image with the information what to check for manually.
    [wxMaxima: comment end   ] */
 
 
