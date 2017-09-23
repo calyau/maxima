@@ -294,16 +294,35 @@
 
     At this point you now have maxima-5.mm.nn.tar.gz.
     
-    Binaries for Linux are created by RPM. It can be argued that Debian
-    packages would be more widely useful. Feel free to create Debian
-    packages instead of RPMs. If, in addition, you can create MacOS 
-    binaries, so much the better.
+    Binaries for Linux are traditionally created by RPM.
 
     I'll assume you know how to build stuff with RPM. Copy the tar.gz
     to <path to rpm build tree>/SOURCES/. Then:
 
     $ rpmbuild -ba maxima.spec
 
+    Debian packages can be built the following way:
+
+    - checkout the branch DebianPackaging
+    - Update the changelog contained in its debian directory: From there the
+      e-mail address of the packager and the version number info from the debian
+      package are taken. It also is important that gpg knows the private key
+      for the e-mail address mentioned in the ChangeLog
+    - copy the debian directory into the directory containing the contents of
+      the release tarball.
+    - cd into this directory and type:
+      $ debuild
+    - debuild will now complain that the source is missing and tell under which
+      names it will accept the tarball. Rename the tarball to this name and start
+      debuild again.
+    - a few minutes later gpg will ask for the key's password in order to sign
+      the newly built packages.
+
+    Unfortunately the debian package builders included in autotools or cmake won't
+    split maxima into the packages the rest of the debian infrastructure will
+    accept so there is no drastically easier method to generate debian packages
+    that work with maxima's frontends.
+    
   9.6  Uploading files
 
     $ sftp mysfusername,maxima@frs.sourceforge.net
