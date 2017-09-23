@@ -115,6 +115,9 @@ lines should be translated into:
 @image{../figures/plotting2, 8cm}
 @end ifnotinfo
 
+In order to ease the use of the figures found in the manual as a testbench
+for the plotting functions all new plot commands should be added to
+the .wxm files in the "tests" directory of the maxima source tree.
 
 ------------
 Jaime Villate, March 29, 2007.
