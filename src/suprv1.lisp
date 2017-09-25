@@ -809,7 +809,8 @@
 ;; File-processing stuff.
 
 (defmfun mterpri ()
-   (terpri))
+   (terpri)
+   (force-output))
 
 (defmspec $status (form)
   (setq form (cdr form))

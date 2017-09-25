@@ -86,7 +86,8 @@
     #+cmu (sys:make-fd-stream (ext:connect-to-inet-socket host port)
 			      :input t :output t :element-type
 			      (if bin '(unsigned-byte 8) 'character)
-			      #+unicode :external-format #+unicode :utf-8)
+			      #+unicode :external-format #+unicode :utf-8
+			      :buffering :line)
     #+(or ecl sbcl) (let ((socket (make-instance 'sb-bsd-sockets:inet-socket
 					:type :stream :protocol :tcp)))
 	     (sb-bsd-sockets:socket-connect

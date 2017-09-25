@@ -270,7 +270,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
 		(other (- (cadr area-after) (cadr area-before)))
 		(gctime (- (caddr area-after) (caddr area-before))))
 	    (if (= 0 gctime) nil (format t (intl:gettext " including GC time ~s s,") (* 0.001 gctime)))
-	    (format t (intl:gettext " using ~s cons-cells and ~s other bytes.~%") conses other)))
+	    (format t (intl:gettext " using ~s cons-cells and ~s other bytes.~%") conses other))
+	  (force-output))
 	(unless $nolabels
           (putprop '$% (cons time-used 0) 'time)
 	  (putprop d-tag (cons time-used  0) 'time))
@@ -337,7 +338,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
          (format-prompt t ""))
 	((atom msg)
          (format-prompt t "~A" msg)
-	 (terpri))
+	 (mterpri))
 	((eq flag t)
          (format-prompt t "~{~A~}" (cdr msg))
 	 (mterpri))
@@ -643,6 +644,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
   (declare (ignore me-or-my-encapsulation))
   (format t (intl:gettext "~&Maxima encountered a Lisp error:~%~% ~A") condition)
   (format t (intl:gettext "~&~%Automatically continuing.~%To enable the Lisp debugger set *debugger-hook* to nil.~%"))
+  (force-output)
   (throw 'return-from-debugger t))
 
 (let ((t0-real 0) (t0-run 0)

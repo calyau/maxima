@@ -62,6 +62,7 @@
         (with-slots (message) e
           (when message
             (terpri)
+            (force-output)
             (apply #'mtell message))))
       `((%powerseries) ,expr ,var ,pt))))
 
@@ -126,6 +127,7 @@ integration / differentiation variable."))
   (let ((w (sratsimp (sp1 e))))
     (when $verbose
       (terpri)
+      (force-output)
       (mtell (intl:gettext "powerseries: first simplification returned ~%"))
       (show-exp w))
     w))
@@ -375,7 +377,8 @@ integration / differentiation variable."))
     (mtell (intl:gettext
             "powerseries: attempt partial fraction expansion of "))
     (show-exp (list '(mquotient) n d))
-    (terpri))
+    (terpri)
+    (force-output))
 
   ;; *RATEXP serves as a recursion guard: if SRATEXPND is about to call us
   ;; *recursively, the flag will be set and it gives up instead.
@@ -414,7 +417,8 @@ integration / differentiation variable."))
 	   (show-exp (list '(mexpt) var gcd))
 	 (mtell (intl:gettext "in"))
 	 (show-exp (list '(mquotient) num den))
-	 (terpri)))
+	 (terpri)
+	 (force-output)))
   (funcall #'(lambda (var* *var)
 	       (setq num (maxima-substitute (m^ var* (m^ gcd -1)) *var num)
 		     den (maxima-substitute (m^ var* (m^ gcd -1)) *var den))

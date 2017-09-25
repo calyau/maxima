@@ -272,7 +272,8 @@
 				(poiscdecode (cadr m))
 				(list '(%sin) (poisdecodec (car m))))
 			  t))
-       (terpri))
+       (terpri)
+       (force-output))
 
      ;; DO COSINES
      (do ((m
@@ -284,7 +285,8 @@
 				(cond ((equal (car m) poishift) 1.)
 				      (t (list '(%cos) (poisdecodec (car m))))))
 			  t))
-       (terpri))
+       (terpri)
+       (force-output))
      (return '$done)))
 
 

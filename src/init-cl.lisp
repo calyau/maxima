@@ -411,6 +411,7 @@ When one changes, the other does too."
   ;;    (format t "processing maxima args = ")
   ;;    (mapc #'(lambda (x) (format t "\"~a\"~%" x)) (get-application-args))
   ;;    (terpri)
+  ;;    (force-output)
   (let ((maxima-options nil))
     ;; Note: The current option parsing code expects every short
     ;; option to have an equivalent long option.  No check is made for
@@ -657,6 +658,7 @@ When one changes, the other does too."
   (declare (ignore me-or-my-encapsulation))
   (format t "~&Maxima encountered a Lisp error:~%~% ~A" condition)
   (format t "~&~%Automatically continuing.~%To reenable the Lisp debugger set *debugger-hook* to nil.~%")
+  (force-output)
   (throw 'to-maxima-repl t))
 
 (defvar $help "type `describe(topic);' or `example(topic);' or `? topic'")
