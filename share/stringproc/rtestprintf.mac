@@ -263,3 +263,23 @@ true;
  if sequalignore (%%, "1.000e+00") then true else %%);
 true;
 
+
+/* changing fpprec should not change the printed result
+ */
+
+(fpprec: 22,
+ bf: 1.23456789012345678901234567890b-10,
+ a1: printf(false, "~,42,,0h~%", bf),
+ a2: printf(false, "~,42,,10h~%", bf),
+ a3: printf(false, "~,42,,-10h~%", bf),
+ fpprec: 42,
+ b1: printf(false, "~,42,,0h~%", bf),
+ b2: printf(false, "~,42,,10h~%", bf),
+ b3: printf(false, "~,42,,-10h~%", bf),
+ reset(fpprec),
+ is(a1=b1) and is(a2=b2) and is(a3=b3) );
+true$
+
+(remvalue(args,bf,a1,a2,b1,b2,c1,c2), 0); 
+0;
+

@@ -450,16 +450,17 @@ if non-us-ascii characters are used as arguments to ~s and ~a directives.
            (ms* (len ie) (make-string len :initial-element ie)) )  ;;   some parts of the code 
           (declare (inline cs* ms*))
 ;;
-    (and xp (not (zerop xp))
-      (setq bf (bcons (if (minusp xp) 
-                        (fptimes* (cdr bf) (intofp (expt 10. (- xp))))
-                        (fpquotient (cdr bf) (intofp (expt 10. xp))) ))))
-;;  
-    (and dd
-      (let ((m (intofp (expt 10. dd))))
-        (setq bf (fptimes* (cdr bf) m)
-              bf (meval `((%round) ,(bcons bf)))
-              bf (bcons (fpquotient (intofp bf) m)) ))) 
+    (let ((fpprec (caddar bf))) ;; keep old fpprec in case it differs to current fpprec
+      (and xp (not (zerop xp))
+        (setq bf (bcons (if (minusp xp) 
+                           (fptimes* (cdr bf) (intofp (expt 10. (- xp))))
+                           (fpquotient (cdr bf) (intofp (expt 10. xp))) ))))
+;;    
+      (and dd
+        (let ((m (intofp (expt 10. dd))))
+          (setq bf (fptimes* (cdr bf) m)
+                bf (meval `((%round) ,(bcons bf)))
+                bf (bcons (fpquotient (intofp bf) m)) )))) 
 ;;  
     (let* ((s (string-left-trim "-" ($sconcat bf)))
            (sgn (signum (cadr bf)))
