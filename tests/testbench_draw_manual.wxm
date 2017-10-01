@@ -806,7 +806,7 @@ draw3d(
 /* [wxMaxima: input   start ] */
 print("multipage.eps contains a multipage eps file");
 draw(
-        file_name = "multipage.eps",
+        file_name = "multipage",
         terminal  = multipage_eps,
         dimensions = 100*[10,10],
         gr2d(explicit(x^2,x,-1,1)),
