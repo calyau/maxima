@@ -361,12 +361,13 @@ When one changes, the other does too."
 	       (not (probe-file (combine-path *maxima-infodir* *maxima-lang-subdir* "maxima-index.lisp"))))
        (setq *maxima-lang-subdir* nil))))
 
-(defun get-dirs (path)
-  #+(or :clisp :sbcl :ecl :openmcl)
-  (directory (concatenate 'string (namestring path) "/*/")
-	     #+openmcl :directories #+openmcl t)
-  #-(or :clisp :sbcl :ecl :openmcl)
-  (directory (concatenate 'string (namestring path) "/*")))
+(defun get-dirs (path &aux (ns (namestring path)))
+  (directory (concatenate 'string
+                          ns
+                          (if (eql #\/ (char ns (1- (length ns)))) "" "/")
+                          "*"
+                          #+(or :clisp :sbcl :ecl :openmcl :gcl) "/")
+             #+openmcl :directories #+openmcl t))
 
 (defun unix-like-basename (path)
   (let* ((pathstring (namestring path))
