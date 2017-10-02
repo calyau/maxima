@@ -256,14 +256,8 @@ functions, including the currently active function.
 @deffnx {Special operator} next
 @deffnx {Special operator} in
 
-The @code{do} statement is used for performing iteration.  Due to its
-great generality the @code{do} statement will be described in two parts.
-First the usual form will be given which is analogous to that used in
-several other programming languages (Fortran, Algol, PL/I, etc.); then
-the other features will be mentioned.
-
-There are three variants of this form that differ only in their
-terminating conditions.  They are:
+The @code{do} statement is used for performing iteration. The general
+form of the @code{do} statements maxima supports is:
 
 @itemize @bullet
 @item
@@ -275,14 +269,24 @@ terminating conditions.  They are:
 @item
 @code{for @var{variable}: @var{initial_value} step @var{increment}
       unless @var{condition} do @var{body}}
+@item
+@code{for @var{variable} in @var{list} do @var{body}}
 @end itemize
 
-@c UGH. DO WE REALLY NEED TO MENTION THIS??
-(Alternatively, the @code{step} may be given after the termination condition
-or limit.)
+If the loop is expected to generate a list as output the command
+@mref{makelist} may be the appropriate command to use instead,
+@xref{Performance considerations for Lists}.
 
 @var{initial_value}, @var{increment}, @var{limit}, and @var{body} can be any
-expressions.  If the increment is 1 then "@code{step 1}" may be omitted.
+expression. @var{list} is a list.  If the increment is 1 then "@code{step 1}"
+may be omitted; As always, if @code{body} needs to contain more than one command
+these commands can be specified as a comma-separated list surrounded
+by parenthesis or as a @mrefdot{block}
+Due to its great generality the @code{do} statement will be described in two parts.
+The first form of the @code{do} statement (which is shown in the first three
+items above) is analogous to that used in
+several other programming languages (Fortran, Algol, PL/I, etc.); then
+the other features will be mentioned.
 
 The execution of the @code{do} statement proceeds by first assigning
 the @var{initial_value} to the @var{variable} (henceforth called the
