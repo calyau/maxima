@@ -130,8 +130,6 @@ add_subdirectory("sbcl/")
 
 add_subdirectory("gnuplot/")
 
-add_subdirectory("imagemagick/")
-
 add_subdirectory("tcltk/")
 
 add_subdirectory("wxwidgets/")

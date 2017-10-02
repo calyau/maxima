@@ -286,6 +286,10 @@ When one changes, the other does too."
                          (concatenate 'string *maxima-userdir* "/binary"))
                        "/" (maxima-version1) "/" *maxima-lispname* "/" (lisp-implementation-version1)))
 
+    ;; On ECL the testbench fails mysteriously if this directory doesn't exist =>
+    ;; let's create it by hand as a workaround.
+    #+ecl (ensure-directories-exist (concatenate 'string *maxima-objdir* "/"))
+    
     ; On Windows Vista gcc requires explicit include
     #+gcl
     (when (string= *autoconf-windows* "true")
