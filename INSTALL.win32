@@ -245,11 +245,11 @@ After building it, you can (and should) test the new Maxima installation package
 Install it on Windows and check that the installation (and later the deinstallation)
 works properly. To test Maxima, try the following:
 
- o Run the maxima testsuite: run_testsuite()
+ o Run the maxima testsuite: run_testsuite();
  o Try compiling a function.  This has been a problem in the past
-    - f(x):=x+2;
-    - compile(f);
-    - f(2);
+    f(x):=x+2;
+    compile(f);
+    f(2);
  o Test the graphics systems in both xmaxima and wxmaxima
     plot2d(sin(x),[x,0,10]);
     plot2d(sin(x),[x,0,10],[plot_format,xmaxima]);
@@ -264,7 +264,7 @@ works properly. To test Maxima, try the following:
                        theta, 0, %pi, phi, 0, 2 * %pi))$
  o Check that plotting to Postscript works
     plot2d(sin(x),[x,0,10],[ps_file,"ps_test.ps"]);
- o Try out the on-line help: describe(sin)
+ o Try out the on-line help: describe(sin);
  o Try out, if external packages (e.g. lapack) work:
    load(lapack);
    fpprintprec : 6;
