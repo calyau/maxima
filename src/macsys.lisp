@@ -642,9 +642,25 @@ DESTINATION is an actual stream (rather than nil for a string)."
 
 (defun maxima-lisp-debugger (condition me-or-my-encapsulation)
   (declare (ignore me-or-my-encapsulation))
-  (format t (intl:gettext "~&Maxima encountered a Lisp error:~%~% ~A") condition)
-  (format t (intl:gettext "~&~%Automatically continuing.~%To enable the Lisp debugger set *debugger-hook* to nil.~%"))
-  (force-output)
+  ;; If outputting an error message creates an error this has the potential to trigger
+  ;; another error message - which causes an endless loop.
+  ;;
+  ;; If maxima is connected to a frontend (for example wxMaxima) using a local network
+  ;; socket and the frontend suddently crashes the network connection drops -which
+  ;; has the potential to cause this endless loop to happen.
+  ;;
+  ;; most lisps (at least gcl, sbcl and clisp) are intelligent enough to call (bye)
+  ;; if the socket connected to stdin, stdout and stderr drops.
+  ;; ECL 16.3.1 ran into an endless loop, though => if maxima runs into an error 
+  ;; and cannot output an error message something is wrong enough to justify maxima
+  ;; to quit.
+  (handler-case
+    (progn
+      (format t (intl:gettext "~&Maxima encountered a Lisp error:~%~% ~A") condition)
+      (format t (intl:gettext "~&~%Automatically continuing.~%To enable the Lisp debugger set *debugger-hook* to nil.~%"))
+      (force-output)
+    )
+    (error () (ignore-errors (bye))))
   (throw 'return-from-debugger t))
 
 (let ((t0-real 0) (t0-run 0)
