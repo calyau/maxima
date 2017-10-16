@@ -205,7 +205,7 @@ block([r,sum, realonly: true],
 )$
 
 /*
-Calculate de present value of a value series to evaluate the viability in a
+Calculate the present value of a value series to evaluate the viability in a
 project.
 */
 npv(rate,flowValues):=
