@@ -476,7 +476,7 @@ When one changes, the other does too."
 	   (make-cl-option :names '("--userdir")
 			   :argument "<directory>"
 			   :action nil
-			   :help-string "Use  <directory> for user directory (default is $HOME/maxima for Windows, and $HOME/.maxima for others)")
+			   :help-string "Use  <directory> for user directory (default is %USERPROFILE%/maxima for Windows, and $HOME/.maxima for other operating systems).")
  	   (make-cl-option :names '("--init")
 			   :argument "<file>"
 			   :action #'(lambda (file)
