@@ -916,12 +916,16 @@
   (unless (and (integerp start) (integerp end))
     (merror (intl:gettext "primes: arguments must be integers; found: ~M, ~M") start end))
   (let ((primes nil))
-    ;; take primes from *small-primes* if possible
-    (dolist (n *small-primes*)
-      (when (<= start n end)
-	(push n primes)
-	(setq start (1+ n))))
+    (cond 
+      ;; take primes from *small-primes* if possible
+      ((<= start *largest-small-prime*)
+        (dolist (n *small-primes*)
+          (when (<= start n end) 
+            (push n primes) ))
+        (setq start *largest-small-prime*) ) 
+      (t 
+        (decf start) )) ; $next_prime returns a value >= argument + 1
     ;; search for the rest of primes
-    (do ((n ($next_prime (1- start)) ($next_prime (1+ n))))
-	((> n end) (cons '(mlist) (reverse primes)))
-      (push n primes))))
+    (do ((n ($next_prime start) ($next_prime (1+ n))))
+        ((> n end) (cons '(mlist) (reverse primes)))
+      (push n primes) )))
