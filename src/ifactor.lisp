@@ -917,11 +917,11 @@
     (merror (intl:gettext "primes: arguments must be integers; found: ~M, ~M") start end))
   (let ((primes nil))
     ;; take primes from *small-primes* if possible
-    (dolist (n *small-primes* (incf start))
+    (dolist (n *small-primes*)
       (when (<= start n end)
 	(push n primes)
-	(setq start n)))
+	(setq start (1+ n))))
     ;; search for the rest of primes
-    (do ((n ($next_prime start) ($next_prime (1+ n))))
+    (do ((n ($next_prime (1- start)) ($next_prime (1+ n))))
 	((> n end) (cons '(mlist) (reverse primes)))
       (push n primes))))
