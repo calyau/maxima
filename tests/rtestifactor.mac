@@ -36,6 +36,10 @@ next_prime(100002100000);
 prev_prime(100002100042);
 100002099971;
 
+/* Bug reported on mailing list by Walter Faxon on October 25th, 2017: "Bug in Maxima function primes()" */
+[primes(10005, 10009), primes(10006, 10009), primes(10007, 10009), primes(10008, 10009), primes(10009, 10009), primes(10010, 10010), primes(9972, 10007), primes(9973, 10007), primes(1, 2), primes(2, 2), primes(2, 3)];
+[[10007, 10009], [10007, 10009], [10007, 10009], [10009], [10009], [], [9973, 10007], [9973, 10007], [2], [2], [2, 3]]$
+
 /* FACTORING TESTS */
 
 ifactors(1);
