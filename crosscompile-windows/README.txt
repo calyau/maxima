@@ -3,23 +3,26 @@ Crosscompiling Maxima for Windows
 
 On a Ubuntu/Debian System just install some tools for crosscompiling:
 
-apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync p7zip-full tcl-dev tk-dev texlive g++ libgl1-mesa-dev gettext
+apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync p7zip-full texlive g++ gettext
 
 (If you are using a 64 bit operating system, it might be necessary to add
 the i386 architecture (https://wiki.debian.org/Multiarch/HOWTO) before).
+
+Currently you will need CMake >= 3.6 and < 3.9, if that is not included
+in your distribution, download CMake 3.8.2 from https://cmake.org/files/v3.8/
 
 Then you can extract the Maxima sourcecode or clone the git repository
 and start the crosscompiling-process:
 
 
 cd crosscompile-windows/build # change to the build directory
-cmake ..
+cmake ..  # use the right CMake executable (CMake >= 3.6 and < 3.9)
 make
 make package
 
-This will download the required Software (CLISP, Gnuplot, wxMaxima,
-wxWidgets, Tcl, Tk, jsMath TeX Fonts, SBCL, VTK) from the Internet
-into the directory "crosscompile-windows/download".
+This will download the required Software (CLISP, SBCL, Gnuplot, wxMaxima,
+wxWidgets, Tcl, Tk, VTK) from the Internet into the directory
+"crosscompile-windows/download".
 
 The packages will be compiled (if necessary) and a Windows 
 installer for Maxima is generated.
@@ -114,8 +117,6 @@ the deinstallation) works properly. To test Maxima, try the following:
    should return the eigenvalues of M (and false, false since we did
    not compute eigenvectors: [[7.54331, 12.4067], false, false]
 
- o Check that the windows help files work from the Start menu 
-   and from within xmaxima and wxmaxima
  o Try if double-clicking on a .wxmx file opens it
  o The wxMaxima source comes with a file (test/testbench_simple.wxmx)
    that tries to trigger everything that has gone wrong in previous
