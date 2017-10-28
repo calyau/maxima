@@ -8,15 +8,15 @@ apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync p7zip-
 (If you are using a 64 bit operating system, it might be necessary to add
 the i386 architecture (https://wiki.debian.org/Multiarch/HOWTO) before).
 
-Currently you will need CMake >= 3.6 and < 3.9, if that is not included
-in your distribution, download CMake 3.8.2 from https://cmake.org/files/v3.8/
+You will need CMake >= 3.6, if that is not included in your distribution,
+download a recent CMake from https://cmake.org/files/
 
 Then you can extract the Maxima sourcecode or clone the git repository
 and start the crosscompiling-process:
 
 
 cd crosscompile-windows/build # change to the build directory
-cmake ..  # use the right CMake executable (CMake >= 3.6 and < 3.9)
+cmake ..  # use the right CMake executable (CMake >= 3.6)
 make
 make package
 
