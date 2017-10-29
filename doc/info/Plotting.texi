@@ -1227,6 +1227,8 @@ Sets the number of grid points to use in the x- and y-directions for
 three-dimensional plotting or for the @mref{julia} and @mref{mandelbrot}
 programs.
 
+For a way to actually draw a grid See @mrefdot{grid2d}
+
 @opencatbox
 @category{Plotting}
 @closecatbox
@@ -1241,6 +1243,8 @@ Shows a grid of lines on the xy plane. The points where the grid lines
 are placed are the same points where tics are marked in the x and y
 axes, which can be controlled with the @mref{xtics} and @mref{ytics}
 options.
+
+See also @mrefdot{grid}
 
 @opencatbox
 @category{Plotting}
