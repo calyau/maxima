@@ -159,7 +159,6 @@
 (defvar *step-next* nil)
 
 (defun step-into (&optional (n 1))
-  ;;FORM is the next form about to be evaluated.
   n
   (or *break-points* (init-break-points))
   (setq *break-step* 'break-step-into)
