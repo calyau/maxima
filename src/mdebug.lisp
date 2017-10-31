@@ -159,7 +159,7 @@
 (defvar *step-next* nil)
 
 (defun step-into (&optional (n 1))
-  n
+  (declare (ignore n))
   (or *break-points* (init-break-points))
   (setq *break-step* 'break-step-into)
   :resume)
