@@ -165,7 +165,6 @@
   :resume)
 
 (defun step-next (&optional (n 1))
-  n
   (let ((fun (current-step-fun)))
     (setq *step-next* (cons n fun))
     (or *break-points* (init-break-points))
