@@ -303,6 +303,7 @@
 
     Debian packages can be built the following way:
 
+    - Install clisp, sbcl and ecl
     - checkout the branch DebianPackaging
     - Update the changelog contained in its debian directory: From there the
       e-mail address of the packager and the version number info from the debian
