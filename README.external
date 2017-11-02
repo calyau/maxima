@@ -18,6 +18,8 @@ The following external tools are needed to build and/or use Maxima:
    plotting program it is required by some commands (plotdf, ploteq
    and scene).
 
-6) The scene command requires Vtk and its bindings for Tcl/Tk.
+6) drawdf requires Vtk and its bindings for Tcl/Tk.
  
-7) Building Maxima from GIT additionally requires the GNU autotools.
+7) The scene command requires python-vtk
+ 
+8) Building Maxima from GIT additionally requires the GNU autotools.
