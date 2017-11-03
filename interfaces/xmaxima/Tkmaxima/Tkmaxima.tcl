@@ -3,13 +3,22 @@
 #       $Id: Tkmaxima.tcl,v 1.7 2011-03-21 09:17:17 villate Exp $
 #
 
+# The Header.tcl is created by autoconf to make the xmaxima script
+# auto executable. After the header the various tcl pieces are put together:
+
 #mike The following files are prepended, and could be sourced instead.
 # The only problem about sourcing them is that the way of finding
 # the directory they're in may differ in a wrapped executable.
 # Note that the order of required files may be important.
 
-# Source Tkmaxima/Constants.tcl 	;# required - must not be autoloaded
+# Source Tkmaxima/COPYING.tcl           ;# license info
 # Source Tkmaxima/Cygwin.tcl 		;# required - must not be autoloaded
+# Source Utils/FileDlg.tcl
+# Source Utils/Messages.tcl
+# Source Utils/Misc.tcl
+# Source ObjTcl/Object.tcl
+# Source ObjTcl/Feedback.tcl
+# Source Tkmaxima/Constants.tcl 	;# required - must not be autoloaded
 # Source Tkmaxima/Preamble.tcl 		;# required - must not be autoloaded
 # Source Tkmaxima/Readdata.tcl 		;# can be autoloaded
 # Source Tkmaxima/Getdata1.tcl 		;# can be autoloaded
@@ -18,6 +27,7 @@
 # Source Tkmaxima/Send-some.tcl 	;# sets global variables
 # Source Tkmaxima/Plotting.tcl 		;# sets global variables
 # Source Tkmaxima/Fonts.tcl 		;# sets global variables
+# Source Tkmaxima/colors.tcl
 # Source Tkmaxima/Private.tcl 		;# can be autoloaded
 # Source Tkmaxima/Getopt.tcl 		;# can be autoloaded
 # Source Tkmaxima/Parse.tcl 		;# sets global variables
@@ -27,10 +37,12 @@
 # Source Tkmaxima/Plotconf.tcl 		;# can be autoloaded
 # Source Tkmaxima/Adams.tcl 		;# can be autoloaded
 # Source Tkmaxima/Rk.tcl 		;# can be autoloaded
+# Source Tkmaxima/rk4.tcl
 # Source Tkmaxima/Plotdf.tcl 		;# can be autoloaded
 # Source Tkmaxima/Plot2d.tcl 		;# defined globals
 # Source Tkmaxima/Matrix.tcl 		;# can be autoloaded
 # Source Tkmaxima/Plot3d.tcl 		;# defined globals
+# Source Tkmaxima/scene.tcl 		;# can be autoloaded
 # Source Tkmaxima/NPlot3d.tcl 		;# can be autoloaded
 # Source Tkmaxima/EOctave.tcl 		;# can be autoloaded
 # Source Tkmaxima/EOpenplot.tcl 	;# can be autoloaded
@@ -50,7 +62,6 @@
 # Source Tkmaxima/String.tcl 		;# can be autoloaded
 # Source Tkmaxima/Prefs.tcl 		;# can be autoloaded
 # Source Tkmaxima/RunMaxima.tcl		;# can be autoloaded
-
 # Source Tkmaxima/Menu.tcl
 # Source Tkmaxima/Paths.tcl
 # Source Tkmaxima/Gui.tcl
