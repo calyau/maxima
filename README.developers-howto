@@ -303,12 +303,12 @@
 
     Debian packages can be built the following way:
 
-    - Install clisp, sbcl and ecl
+    - Install clisp, sbcl, gcl, ecl and debhelper.
     - checkout the branch DebianPackaging
     - Update the changelog contained in its debian directory: From there the
-      e-mail address of the packager and the version number info from the debian
+      e-mail address of the packager and the version number of the debian
       package are taken. It also is important that gpg knows the private key
-      for the e-mail address mentioned in the ChangeLog
+      for the e-mail address mentioned in the last ChangeLog entry.
     - copy the debian directory into the directory containing the contents of
       the release tarball.
     - cd into this directory and type:
@@ -319,10 +319,9 @@
     - a few minutes later gpg will ask for the key's password in order to sign
       the newly built packages.
 
-    Unfortunately the debian package builders included in autotools or cmake won't
-    split maxima into the packages the rest of the debian infrastructure will
-    accept so there is no drastically easier method to generate debian packages
-    that work with maxima's frontends.
+    Unfortunately just using the debian package included in the autotools won't
+    equip the maxima package it generates with the metadata that allows to
+    install the wxMaxima package shipped with debian and ubuntu.
     
   9.6  Uploading files
 
