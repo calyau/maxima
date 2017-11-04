@@ -74,7 +74,7 @@ Options:
    --help, -help, -h             Display this message
    -url site                     Start browser at site 
    -use-version ver, -u ver      Launch maxima version ver
-   -lisp flavor, -l flavor       Use lisp implementation flavor
+   --lisp flavor, -l flavor      Use lisp implementation flavor
 "]
     # Originally this program output a graphical message box instead of a message
     # on stdout - which looked nice, but is nonstandard => Replaced it by a
