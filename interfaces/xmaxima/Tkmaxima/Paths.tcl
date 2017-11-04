@@ -421,19 +421,8 @@ proc vMAXSetMaximaCommand {} {
 	}
     }
 
-    # FIXME: More gruesome windows hacks.  db: 2004-07-02
-    # Q. What if there is a space in the path component of exe? 
-    # A. Convert it to a shortname.
-    # Q. Why does that fail?
-    # A. The name is surrounded by {}.  Just rip these out. Yuk
-    if {$tcl_platform(platform) == "windows"} {
-	if {[string first " " $exe] >= 0} {
-            regsub -all "\[\{\}\]" $exe "" exe
-	    if {$tcl_platform(osVersion) < 5} {
-		set exe [file attrib $exe -shortname]
-	    }
-        }
-    }
+    # Support maxima directories with spaces
+    regsub -all " " $exe "\\ " exe
 
     set command {}
     lappend command $exe
