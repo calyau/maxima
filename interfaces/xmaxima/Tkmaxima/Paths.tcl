@@ -439,27 +439,7 @@ proc vMAXSetMaximaCommand {} {
     lappend command $exe
     eval lappend command $maxima_priv(opts)
 
-    # FIXME: This is gcl specific so -lisp option is bogus
-    if {$tcl_platform(os) == "Windows 95"} {
-	# A gruesome hack. Normally, we communicate to the
-	# maxima image through the maxima shell script, as
-	# above. If the maxima script is not available,
-	# as may happen on windows, directly talk to the GCL
-	# saved image. jfa 04/28/2002
-	#mike FIXME: this means xmaxima on windows is GCL only
-        # vvz: We need this only on Windows 9X/ME
-
-	lappend command -eval "(maxima::start-client PORT)" -eval "(run)" -f
-    } else { 
-        # vvz: Windows NT/2000/XP
-	if {$tcl_platform(platform) == "windows"} {
-	  lappend command -s PORT
-        # vvz: Unix. Should be as above but we need this due to
-        # weird behaviour with some lisps - Why?
-	} else {
-          lappend command -r ":lisp (start-client PORT)"
-        }
-    }
+    lappend command -s PORT
 
     lappend command &
     set maxima_priv(localMaximaServer) $command
