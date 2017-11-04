@@ -73,7 +73,7 @@ proc vMaxUsage {script {error {}}} {
 Options:
    --help, -help, -h             Display this message
    -url site                     Start browser at site 
-   -use-version ver, -u ver      Launch maxima version ver
+   --use-version ver, -u ver     Launch maxima version ver
    --lisp flavor, -l flavor      Use lisp implementation flavor
 "]
     # Originally this program output a graphical message box instead of a message
