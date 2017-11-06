@@ -327,7 +327,13 @@ proc setMaxDir {} {
 
 	set maxima_priv(firstUrl) ""
     } else {
-       regsub -all " " $file "\\ " file
+	if {$tcl_platform(platform) == "windows"} {
+	    if {$tcl_platform(osVersion) < 5 } {
+		set file [file attrib $file -shortname]
+	    }
+	    # convert to unix
+	    set file [file dir $file]/[file tail $file]
+	}
 	# FIXME: This is bogus - need a FileToUrl
 	set maxima_priv(firstUrl) file:/$file
     }
