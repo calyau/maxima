@@ -262,11 +262,7 @@ proc vMAXAddSystemMenu {fr text} {
     set xfile [file join $maxima_priv(maxima_verpkgdatadir) xmaxima html xmaxima.html]
     if {[file isfile $xfile]} {
 	set xstate normal
-	if {$tcl_platform(platform) == "windows" && $tcl_platform(osVersion) < 5 } {
-	    # decodeURL is broken and needs fixing
-	    # This is a workaround
-	    set xfile [file attrib $xfile -shortname]
-	}
+        regsub -all " " $xfile "\\ " xfile
     } else {
 	set xstate disabled
     }
@@ -275,11 +271,7 @@ proc vMAXAddSystemMenu {fr text} {
     set file $maxima_priv(pReferenceToc)
     if {[file isfile $file]} {
 	set state normal
-	if {$tcl_platform(platform) == "windows"} {
-	    # decodeURL is broken and needs fixing
-	    # This is a workaround
-	    set file [file attrib $file -shortname]
-	}
+        regsub -all " " $file "\\ " file
     } else {
 	set state disabled
     }
