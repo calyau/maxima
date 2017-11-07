@@ -390,8 +390,7 @@ proc vMAXSetMaximaCommand {} {
     } elseif { [info exists env(XMAXIMA_MAXIMA)] } {
 	set maxima_priv(xmaxima_maxima) $env(XMAXIMA_MAXIMA)
 	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
-	    tide_failure [M [concat [mc "Error: maxima executable not found."] "\n%s\nXMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA)"]] \
-			      [file native $maxima_priv(xmaxima_maxima)]]
+	    tide_failure [M [concat [mc "Error2: maxima executable not found."] "\n%s\nXMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA)"]]
 	    return
 	}
     } else {
