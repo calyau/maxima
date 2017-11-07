@@ -45,7 +45,7 @@
 # Source Tkmaxima/scene.tcl 		;# can be autoloaded
 # Source Tkmaxima/NPlot3d.tcl 		;# can be autoloaded
 # Source Tkmaxima/EOctave.tcl 		;# can be autoloaded
-# Source Tkmaxima/EOpenplot.tcl 	;# can be autoloaded
+# Source Tkmaxima/EOpenplot.tcl  	;# can be autoloaded
 # Source Tkmaxima/EMaxima.tcl 		;# can be autoloaded
 # Source Tkmaxima/EHref.tcl 		;# can be autoloaded
 # Source Tkmaxima/Browser.tcl 		;# defines globals
@@ -71,12 +71,12 @@ proc vMaxUsage {script {error {}}} {
     set msg [mc "$error\n\nUsage: $script \[options\] \[filenames\]
 
 Options:
-   --help, -help, -h             Display this message
-   -url site                     Start browser at site 
-   --use-version ver, -u ver     Launch maxima version ver
-   --lisp flavor, -l flavor      Use lisp implementation flavor
-   --lisp-options <Lisp options>, -X <Lisp options>
-      			         Options to be given to the underlying Lisp
+   -h, --help                       Display this message
+   --url <site>                     Start browser at site 
+   -u <ver>, --use-version <ver>    Launch maxima version ver
+   -l <flavor> --lisp <flavor>,     Use lisp implementation flavor
+   -X <Lisp options>, --lisp-options <Lisp options>
+       Options to be given to the underlying Lisp
 "]
     # Originally this program output a graphical message box instead of a message
     # on stdout - which looked nice, but is nonstandard => Replaced it by a
@@ -98,7 +98,7 @@ proc lMaxInitSetOpts {} {
 		switch -regexp -- $arg {
 		    {^--help$}         {vMaxUsage $argv0}
 		    {^-h(elp)?$}       {vMaxUsage $argv0}
-		    {^-url$}           {set state url}
+		    {^-(-)?url$}       {set state url}
 		    {^-u(se-version)?$} {set state version}
 		    {^--use-version$}  {set state version}
 		    {^-l(isp)?$}       {set state lisp}
