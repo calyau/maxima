@@ -420,10 +420,6 @@ proc vMAXSetMaximaCommand {} {
 	    }
 	}
     }
-
-    # Support maxima directories with spaces
-    regsub -all " " $exe "\\ " exe
-
     set command {}
     lappend command $exe
     eval lappend command $maxima_priv(opts)
