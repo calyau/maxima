@@ -71,12 +71,17 @@ proc vMaxUsage {script {error {}}} {
     set msg [mc "$error\n\nUsage: $script \[options\] \[filenames\]
 
 Options:
-   -h, --help                       Display this message
+   -h, 
+   --help                           Display this message
    --url <site>                     Start browser at site 
-   -u <ver>, --use-version <ver>    Launch maxima version ver
-   -l <flavor> --lisp <flavor>,     Use lisp implementation flavor
-   -X <Lisp options>, --lisp-options <Lisp options>
-       Options to be given to the underlying Lisp
+   -u <ver>, 
+   --use-version <ver>              Launch maxima version ver
+   -l <flavor>, 
+   --lisp <flavor>                  Use lisp implementation flavor
+   -X <Lisp options>
+   --lisp-options <Lisp options>    Options to be given to the underlying Lisp.
+                                    Option lines containing spaces have to be
+                                    quoted to be passed to the lisp as a whole.
 "]
     # Originally this program output a graphical message box instead of a message
     # on stdout - which looked nice, but is nonstandard => Replaced it by a
