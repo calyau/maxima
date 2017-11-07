@@ -353,9 +353,6 @@ proc setMaxDir {} {
 	if {![info exists env(MAXIMA_USERDIR)]} {
 	    set env(MAXIMA_USERDIR) "$maxima_priv(maxima_prefix)/user"
 	}
-	if {![info exists env(MAXIMA_TEMPDIR)]} {
-	    set env(MAXIMA_TEMPDIR) "$maxima_priv(maxima_prefix)"
-	}
     }
 
     # jfa: extend path so that gcl can see gcc in windows package
