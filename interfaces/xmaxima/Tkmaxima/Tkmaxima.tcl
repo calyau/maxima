@@ -75,7 +75,7 @@ Options:
    -url site                     Start browser at site 
    --use-version ver, -u ver     Launch maxima version ver
    --lisp flavor, -l flavor      Use lisp implementation flavor
-   --lisp-options=<Lisp options>, -X <Lisp options>
+   --lisp-options <Lisp options>, -X <Lisp options>
       			         Options to be given to the underlying Lisp
 "]
     # Originally this program output a graphical message box instead of a message
@@ -103,6 +103,8 @@ proc lMaxInitSetOpts {} {
 		    {^--use-version$}  {set state version}
 		    {^-l(isp)?$}       {set state lisp}
 		    {^--lisp$}         {set state lisp}
+		    {^--lisp-options$} {set state lispoptions}
+		    {^-X$}             {set state lispoptions}
 		    {^--$}             {set state noopts}
 		    {^-.*}             {vMaxUsage $argv0 "Unknown option $arg"}
 		    default {
@@ -120,6 +122,7 @@ proc lMaxInitSetOpts {} {
 	    url     {set maxima_priv(firstUrl) $arg; set state key}
 	    version {lappend maxima_priv(opts) -u $arg; set state key}
 	    lisp    {lappend maxima_priv(opts) -l $arg; set state key}
+	    lispoptions  {lappend maxima_priv(opts) [format " -X \"%s\" " $arg]}
 	    noopts  {lappend file $arg}
 	}
     }
