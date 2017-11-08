@@ -1,14 +1,18 @@
 ;;;; COMBINATORICS package for Maxima
 ;;;;
 ;;;; Functions to work with permutations.
-;;;;    $cyclep               : predicate function for cycles
-;;;;    $permutationp         : predicate function for permutations
-;;;;    $permult              : permutations product
-;;;;    $invert_permutation   : inverse of a permutation
-;;;;    $apply_permutation    : permutes a list according to a permutation
-;;;;    $apply_cycles         : permutes a list according to a list of cycles
-;;;;    $permutation_undecomp : converts a list of cycles into a permutation
-;;;;    $permutation_cycles   : decomposes a permutation into cycles
+;;;;  $cyclep               : predicate function for cycles
+;;;;  $permutationp         : predicate function for permutations
+;;;;  $permult              : permutations product
+;;;;  $invert_permutation   : inverse of a permutation
+;;;;  $apply_permutation    : permutes a list according to a permutation
+;;;;  $apply_cycles         : permutes a list according to a list of cycles
+;;;;  $permutation_undecomp : converts a list of cycles into a permutation
+;;;;  $permutation_cycles   : decomposes a permutation into cycles
+;;;;  $permutation_lex_rank : permutation's position in lexicographic sequence
+;;;;  $permutation_index    : minimum number of adjacent transpositions
+;;;;  $permutation_decomp   : minimum set of adjacent transpositions to get p
+;;;;  $permutation_parity   : parity of a permutation (0 or 1)
 ;;;;
 ;;;; Copyright (C) 2017 Jaime Villate
 ;;;;
@@ -36,16 +40,12 @@
   ;; a cycle must be a maxima list
   (or (and (integerp n) (> n 1)) (return-from $cyclep nil))
   (or ($listp c) (return-from $cyclep nil))
-  (let ((p (rest c)) (j))
-    (dolist (i p)
-      ;; cycle elements must be positive integers, less or to n
-      (or (and (integerp i) (plusp i) (<= i n)) (return-from $cyclep nil)))
-    (while (not (null p))
-      (setq j (first p))
-      (setq p (rest p))
-      ;; cycle elements cannot be repeated
-      (and (remove-if-not #'(lambda (i) (= i j)) p) (return-from $cyclep nil)))
-    t))
+  (dolist (i (rest c))
+    ;; cycle elements must be positive integers, less or equal to n
+    (or (and (integerp i) (plusp i) (<= i n)) (return-from $cyclep nil))
+    ;; and cannot be repeated
+    (or (< (count i (rest c)) 2) (return-from $cyclep nil)))
+    t)
 
 ;;; $permutationp returns true if its argument is a maxima list of lenght n,
 ;;; whose elements are the integers 1, 2, ...n, without repetitions.
@@ -133,8 +133,7 @@
       (let ((i (first (last c))))
         (setq prod (copy-list result))
         (dolist (j (rest c))
-          (setf (nth i prod) (nth j result))
-          (setq i j)))
+          (setf (nth i prod) (nth j result) i j)))
       (setq result (copy-list prod)))
     result))
 
@@ -149,26 +148,78 @@
 ;; $permutation_cycles decomposes permutation p into a product of canonical
 ;; cycles: with lower indices first.
 (defun $permutation_cycles (p)
-  (check-permutation p "permutation_cycles") 
+  (check-permutation p "permutation_cycles")
   (let* ((i) (j) (k) (cycle) (n ($length p)) (result '((mlist simp)))
          (v (make-array n :element-type 'bit :initial-element 1)))
     ;; the i'th bit in bit array v equal to 1 means index i+1 has not been
     ;; added to any cycles. The next cycle will then start where the first
     ;; value of 1 is found in v
     (while (position 1 v)
-      (setq i (position 1 v))
-      (setf (bit v i) 0)
+      (setf i (position 1 v) (bit v i) 0)
       ;; i= v index where a 1 was found. j=i+1 first index in the current
       ;; cycle. k=next index in the current cycle
-      (setq j (1+ i))
-      (setq k j)
-      (setq cycle `((mlist simp) ,j))
+      (setq j (1+ i) k j cycle `((mlist simp) ,j))
       ;; if p[k] is different from k, there's a non-trivial cycle
       (while (/= (nth k p) j)
-        (setq k (nth k p))
-        (setq cycle (append cycle `(,k)))
-        (setf (bit v (1- k)) 0))
+        (setf k (nth k p) cycle (append cycle (list k)) (bit v (1- k)) 0))
       ;; a trivial cycle with just one index (length 2) will not be saved
-      (and (> (length cycle) 2) (setq result (append result `(,cycle)))))
+      (and (> (length cycle) 2) (setq result (append result (list cycle)))))
     result))
 
+;; $permutation_lex_rank finds the position of the given permutation in
+;; the lexicographic ordering of permutations (from 0 to n!-1).
+;; Algorithm 2.15 from Kreher & Stinson (1999). Combinatorial Algorithms.
+(defun $permutation_lex_rank (p)
+  (check-permutation p "permutation_lex_rank") 
+  (let ((r 0) (n ($length p)))
+    (do ((j 1 (1+ j)))
+        ((> j n) r)
+      (incf r (* (1- (nth j p)) (factorial (- n j))))
+      (do ((i (1+ j) (1+ i)))
+          ((> i n))
+        (when (> (nth i p) (nth j p))
+          (setf (nth i p) (1- (nth i p))))))))
+
+;; $permutation_index finds the minimum number of adjacent transpositions
+;; necessary to write permutation p as a product of adjacent transpositions.
+(defun $permutation_index (p)
+  (check-permutation p "permutation_index") 
+  (let ((d 0) (n ($length p)))
+    (do ((j 1 (1+ j)))
+        ((> j n) d)
+      (incf d (* (1- (nth j p))))
+      (do ((i (1+ j) (1+ i)))
+          ((> i n))
+        (when (> (nth i p) (nth j p))
+          (setf (nth i p) (1- (nth i p))))))))
+
+
+;; $permutation_decomp finds the minimum set of adjacent transpositions
+;; whose product equals permutation p.
+(defun $permutation_decomp (p)
+  (check-permutation p "permutation_decomp") 
+  (let ((trans) (n ($length p)))
+    (do ((j 1 (1+ j)))
+        ((>= j n) (cons '(mlist simp) trans))
+      (when (>= (1- (nth j p)) 1)
+        (do ((i (+ (- (nth j p) 2) j) (1- i)))
+            ((< i j))
+          (setq trans (cons `((mlist simp) ,i ,(1+ i)) trans))))
+      (do ((k (1+ j) (1+ k)))
+          ((> k n))
+        (when (> (nth k p) (nth j p))
+          (setf (nth k p) (1- (nth k p))))))))
+
+;; $permutation_parity finds the parity of permutation p (0 or 1).
+;; Algorithm 2.19 from Kreher & Stinson (1999). Combinatorial Algorithms.
+(defun $permutation_parity (p)
+  (check-permutation p "permutation_parity") 
+  (let* ((i) (c 0) (n ($length p)) (q (rest p)) 
+         (a (make-array n :element-type 'bit :initial-element 0)))
+    (dotimes (j n)
+      (when (= (bit a j) 0)
+        (incf c)
+        (setf (bit a j) 1 i j)
+        (while (/= (1- (nth i q)) j)
+          (setf i (1- (nth i q)) (bit a i) 1))))
+    (mod (- n c) 2)))
