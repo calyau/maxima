@@ -1,9 +1,13 @@
 #!/bin/sh
 #  -*- mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*- \
 exec @WISH@ "$0" -- "$@"
-#
-#       $Id: Header.tcl.in,v 1.2 2006-06-27 13:28:05 villate Exp $
-#
-# Header to allow for Unix execution
-#
 
+#
+# Xmaxima is created from the files in the directory interfaces/xmaxima/Tkmaxima/
+# in maxima's source tree. For creating this program maxima
+# version @VERSION@ was used.
+#
+# The main purpose of this header is to tell un*x-based systems how to execute
+# the program. 
+#
+#
