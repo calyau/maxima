@@ -129,10 +129,6 @@
                            (franz.remprop 'var_expo yi))))
                 coef)))))
 
-; surement inutile desormais
-(defun makelist (nb list)
-     (mapcar #'(lambda (x) nb) list))
-
 ; Representation MACSYMA, mmon, de x**i : 
 ;  x            si i=1 
 ; ((mexpt) x i) sinon

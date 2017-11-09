@@ -584,7 +584,7 @@
   (let ((card (car lcomp)) (rlelem (list (cadr lcomp) (car lcomp))))
     (if (< card max); forcement numerique (cf $debut)
         (nconc (c_calbaselem 2 card rlelem lcomp)
-               (makelist
+               (make-list
                    (- max card)
                     :initial-element 0))  
         (c_calbaselem 2 max rlelem lcomp))))
