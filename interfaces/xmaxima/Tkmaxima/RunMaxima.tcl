@@ -115,7 +115,7 @@ proc openMaxima { win filter } {
 	    #puts env(MAXIMA_INT_INPUT_STRING)=$env(MAXIMA_INT_INPUT_STRING)
 	}
 	#puts com=$com
-	lappend command  $com
+	set command [concat $command  $com]
 	if { [catch $command err ] } {
 	    #mike Must return an error to stop runOneMaxima from continuing
 	    return -code error [concat [mc "Can't execute"] "$com\n$err"]

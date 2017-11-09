@@ -353,9 +353,6 @@ proc setMaxDir {} {
 	if {![info exists env(MAXIMA_USERDIR)]} {
 	    set env(MAXIMA_USERDIR) "$maxima_priv(maxima_prefix)/user"
 	}
-	if {![info exists env(MAXIMA_TEMPDIR)]} {
-	    set env(MAXIMA_TEMPDIR) "$maxima_priv(maxima_prefix)"
-	}
     }
 
     # jfa: extend path so that gcl can see gcc in windows package
@@ -390,8 +387,7 @@ proc vMAXSetMaximaCommand {} {
     } elseif { [info exists env(XMAXIMA_MAXIMA)] } {
 	set maxima_priv(xmaxima_maxima) $env(XMAXIMA_MAXIMA)
 	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
-	    tide_failure [M [concat [mc "Error: maxima executable not found."] "\n%s\nXMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA)"]] \
-			      [file native $maxima_priv(xmaxima_maxima)]]
+	    tide_failure [M [concat [mc "Error2: maxima executable not found."] "\n%s\nXMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA)"]]
 	    return
 	}
     } else {
@@ -420,46 +416,11 @@ proc vMAXSetMaximaCommand {} {
 	    }
 	}
     }
-
-    # FIXME: More gruesome windows hacks.  db: 2004-07-02
-    # Q. What if there is a space in the path component of exe? 
-    # A. Convert it to a shortname.
-    # Q. Why does that fail?
-    # A. The name is surrounded by {}.  Just rip these out. Yuk
-    if {$tcl_platform(platform) == "windows"} {
-	if {[string first " " $exe] >= 0} {
-            regsub -all "\[\{\}\]" $exe "" exe
-	    if {$tcl_platform(osVersion) < 5} {
-		set exe [file attrib $exe -shortname]
-	    }
-        }
-    }
-
     set command {}
     lappend command $exe
     eval lappend command $maxima_priv(opts)
 
-    # FIXME: This is gcl specific so -lisp option is bogus
-    if {$tcl_platform(os) == "Windows 95"} {
-	# A gruesome hack. Normally, we communicate to the
-	# maxima image through the maxima shell script, as
-	# above. If the maxima script is not available,
-	# as may happen on windows, directly talk to the GCL
-	# saved image. jfa 04/28/2002
-	#mike FIXME: this means xmaxima on windows is GCL only
-        # vvz: We need this only on Windows 9X/ME
-
-	lappend command -eval "(maxima::start-client PORT)" -eval "(run)" -f
-    } else { 
-        # vvz: Windows NT/2000/XP
-	if {$tcl_platform(platform) == "windows"} {
-	  lappend command -s PORT
-        # vvz: Unix. Should be as above but we need this due to
-        # weird behaviour with some lisps - Why?
-	} else {
-          lappend command -r ":lisp (start-client PORT)"
-        }
-    }
+    lappend command -s PORT
 
     lappend command &
     set maxima_priv(localMaximaServer) $command

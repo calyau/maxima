@@ -303,11 +303,12 @@
 
     Debian packages can be built the following way:
 
+    - Install clisp, sbcl, gcl, ecl and debhelper.
     - checkout the branch DebianPackaging
     - Update the changelog contained in its debian directory: From there the
-      e-mail address of the packager and the version number info from the debian
+      e-mail address of the packager and the version number of the Debian
       package are taken. It also is important that gpg knows the private key
-      for the e-mail address mentioned in the ChangeLog
+      for the e-mail address mentioned in the last ChangeLog entry.
     - copy the debian directory into the directory containing the contents of
       the release tarball.
     - cd into this directory and type:
@@ -318,10 +319,9 @@
     - a few minutes later gpg will ask for the key's password in order to sign
       the newly built packages.
 
-    Unfortunately the debian package builders included in autotools or cmake won't
-    split maxima into the packages the rest of the debian infrastructure will
-    accept so there is no drastically easier method to generate debian packages
-    that work with maxima's frontends.
+    Unfortunately just using the Debian package included in the autotools won't
+    equip the Maxima package it generates with the metadata that allows to
+    install the wxMaxima package shipped with Debian and Ubuntu.
     
   9.6  Uploading files
 
@@ -346,9 +346,9 @@
     to create another release) feel free to announce it in other forums,
     e.g. sage-devel.
 
-    Since wxMaxima does do a simultaneous release with maxima and
+    Since wxMaxima does do a simultaneous release with Maxima and
     windows installers containing wxMaxima and maxima are usually
-    published within hours of the new maxima release the wxMaxima
+    published within hours of the new Maxima release the wxMaxima
     developers beg to be informed in advance about the planned release
     date. Filing a ticket at http://andrejv.github.com/wxmaxima/
     or sending the project maintainer an email should be sufficient

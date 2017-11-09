@@ -60,7 +60,6 @@ set(CLISPVERSION       2.49)
 
 # MD5 checksums for the current program versions.
 set(CLISP_MD5       "8d58d64f83dd7ad01c054aecc16c1f52")
-set(TEXFONTS_MD5    "8101a6feca2c43a6b9218195df9e7c35")
 
 if(BUILD_CURRENT)
     set(USE_WXMAXIMA_GIT YES)
@@ -76,13 +75,6 @@ endif()
 
 # download URLs
 set(CLISP_URL     "http://downloads.sourceforge.net/project/clisp/clisp/${CLISPVERSION}/clisp-${CLISPVERSION}-win32-mingw-big.zip")
-
-# No license at the homepage, but the TeX fonts are public domain according to:
-# http://archive.debian.net/changelogs/pool/main/t/ttf-jsmath/ttf-jsmath_0.01-2/copyright
-# https://www.mail-archive.com/sage-devel@googlegroups.com/msg09750.html
-# https://www.mail-archive.com/sage-devel@googlegroups.com/msg09748.html
-set(TEXFONTS_URL  "http://www.math.union.edu/~dpvc/jsMath/download/TeX-fonts-25.zip")
-
 
 
 # Where are libgcc and libstdc++?
@@ -137,17 +129,6 @@ add_subdirectory("wxwidgets/")
 add_subdirectory("wxmaxima/")
 
 add_subdirectory("vtk/")
-
-# TeX Fonts (a binary package just extract it...)
-externalproject_add(texfonts
-  URL "${TEXFONTS_URL}"
-  DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-  URL_MD5 ${TEXFONTS_MD5}
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND ""
-  INSTALL_COMMAND ""
-)
-install(DIRECTORY ${CMAKE_BINARY_DIR}/texfonts-prefix/src/texfonts/ DESTINATION wxMaxima/fonts)
 
 
 set(CLISPROOT "${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp")

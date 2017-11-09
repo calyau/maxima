@@ -20,8 +20,12 @@ card_stab([1,1,2,3,3],"=");
 
 expand(comp2ele(3,[4,g1]));
 [4,g1,g1^2-h2,h3-2*g1*h2+g1^3]$
+expand(comp2ele(3,[2]));
+[2,h1,h1^2-h2,0]$
 expand(comp2pui(3,[4,g]));
 [4,g,2*h2-g^2,3*h3-3*g*h2+g^3]$
+comp2ele(3,[2]);
+[2,h1,h1^2-h2,0]$
 
 /* The examples omit trailing zeros, but according to the general
   definition they are left in the list (cf. subsection

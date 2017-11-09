@@ -25,39 +25,39 @@
 (macsyma-module cgb-maxima)
 
 ;; Macros for making lists with iterators - an exammple of GENSYM
-;; MAKELIST-1 makes a list with one iterator, while MAKELIST accepts an
+;; GROBNER-MAKELIST-1 makes a list with one iterator, while GROBNER-MAKELIST accepts an
 ;; arbitrary number of iterators
 
 ;; Sample usage:
 ;; Without a step:
-;; >(makelist-1 (* 2 i) i 0 10)
+;; >(grobner-makelist-1 (* 2 i) i 0 10)
 ;; (0 2 4 6 8 10 12 14 16 18 20)
 ;; With a step of 3:
-;; >(makelist-1 (* 2 i) i 0 10 3)
+;; >(grobner-makelist-1 (* 2 i) i 0 10 3)
 ;; (0 6 12 18)
 
 ;; Generate sums of squares of numbers between 1 and 4:
-;; >(makelist (+ (* i i) (* j j)) (i 1 4) (j 1 i))
+;; >(grobner-makelist (+ (* i i) (* j j)) (i 1 4) (j 1 i))
 ;; (2 5 8 10 13 18 17 20 25 32)
-;; >(makelist (list i j '---> (+ (* i i) (* j j))) (i 1 4) (j 1 i))
+;; >(grobner-makelist (list i j '---> (+ (* i i) (* j j))) (i 1 4) (j 1 i))
 ;; ((1 1 ---> 2) (2 1 ---> 5) (2 2 ---> 8) (3 1 ---> 10) (3 2 ---> 13)
 ;; (3 3 ---> 18) (4 1 ---> 17) (4 2 ---> 20) (4 3 ---> 25) (4 4 ---> 32))
 
 ;; Evaluate expression expr with variable set to lo, lo+1,... ,hi
 ;; and put the results in a list.
-(defmacro makelist-1 (expr var lo hi &optional (step 1))
+(defmacro grobner-makelist-1 (expr var lo hi &optional (step 1))
   (let ((l (gensym)))
     `(do ((,var ,lo (+ ,var ,step))
 	  (,l nil (cons ,expr ,l)))
 	 ((> ,var ,hi) (reverse ,l))
        (declare (fixnum ,var)))))
 
-(defmacro makelist (expr (var lo hi &optional (step 1)) &rest more)
+(defmacro grobner-makelist (expr (var lo hi &optional (step 1)) &rest more)
   (if (endp more)
-      `(makelist-1 ,expr ,var ,lo ,hi ,step)
+      `(grobner-makelist-1 ,expr ,var ,lo ,hi ,step)
     (let* ((l (gensym)))
       `(do ((,var ,lo (+ ,var ,step))
-	    (,l nil (nconc ,l `,(makelist ,expr ,@more))))
+	    (,l nil (nconc ,l `,(grobner-makelist ,expr ,@more))))
 	   ((> ,var ,hi) ,l)
 	 (declare (fixnum ,var))))))
 
@@ -1184,7 +1184,7 @@ criterion: for every two polynomials h1 and h2 in G the S-polynomial
 S(h1,h2) reduces to 0 modulo G."
   (every
    #'poly-zerop
-   (makelist (normal-form ring (spoly ring (elt g i) (elt g j)) g nil)
+   (grobner-makelist (normal-form ring (spoly ring (elt g i) (elt g j)) g nil)
 	     (i 0 (- (length g) 2))
 	     (j (1+ i) (1- (length g))))))
 
@@ -1196,7 +1196,7 @@ upon success and NIL otherwise."
 	(stat1 (buchberger-criterion ring g))
 	(stat2
 	  (every #'poly-zerop
-		 (makelist (normal-form ring (copy-tree (elt f i)) g nil)
+		 (grobner-makelist (normal-form ring (copy-tree (elt f i)) g nil)
 			   (i 0 (1- (length f)))))))
     (unless stat1 (error "~&Buchberger criterion failed."))
     (unless stat2
@@ -1259,9 +1259,9 @@ in the pair queue.")
 (defun pair-queue-initialize (pq f start
 			      &aux
 			      (s (1- (length f)))
-			      (b (nconc (makelist (make-pair (elt f i) (elt f j))
+			      (b (nconc (grobner-makelist (make-pair (elt f i) (elt f j))
 						 (i 0 (1- start)) (j start s))
-					(makelist (make-pair (elt f i) (elt f j))
+					(grobner-makelist (make-pair (elt f i) (elt f j))
 						 (i start (1- s)) (j (1+ i) s)))))
   "Initializes the priority for critical pairs. F is the initial list of polynomials.
 START is the first position beyond the elements which form a partial
