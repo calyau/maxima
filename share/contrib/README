@@ -20,16 +20,6 @@ Zeilberger/     This is Fabrizio Caruso's implementation of
 		summation and Gosper's algorithm for indefinite 
 		hypergeometric summation.
 
-descriptive/    Mario Rodriguez Riotorto's descriptive statistics
-		package from http://www.telefonica.net/web2/biomates/
-
-distrib/        Mario Rodriguez Riotorto's probability distributions
-		package from http://www.telefonica.net/web2/biomates/
-
-diffequations/  This directory contains additional methods for
-		solving ordinary differential equations. Written
-		by David Billinghurst.
-
 format/         This directory contains most of Bruce Miller's
                 Format package.
 		http://math.nist.gov/~BMiller/computer-algebra/
@@ -51,17 +41,11 @@ nset/           This is nset by Barton Willis and Stavros
                 Macrakis.  This package has been incorporated
                 into Maxima proper now.
 
-numericalio/	Robert Dodier's package for reading and writing 
-                numerical data.
-
 operatingsystem/ Some functions for tasks like accessing the
                 Environment, handling of directories and files, etc.
                 (perhaps a better name might be 'filesystem'?)
                 Added to Maxima by Wolfgang Dautermann (mostly code 
                 from http://clocc.sourceforge.net/)
-
-pdiff/          This is Barton Willis's pdiff package from
-                http://www.unk.edu/acad/math/people/willisb/
 
 rand/           Code from books and papers by Richard H. Rand
 		(http://tam.cornell.edu/Rand.html)
@@ -69,15 +53,6 @@ rand/           Code from books and papers by Richard H. Rand
 sarag/		Fabrizio Caruso's implementation of Some Algorithms
                 in Real Algebraic Geometry
 
-simplex/        Andrej Vodopivec's code for the two-phase standard simplex
-                method.
-
-solve_rec/      Andrej Vodopivec's code for solving recurrence equations
-                with polynomial coefficients. It uses Petkovsek's hyper
-                algorithm and Abramov's algorithm.
-
 state/          This is Dan Stanger's state variable code.
 
-stringproc/     A Maxima string package by Volker van Nek.
-                
 unit/		A new unit package by Cliff Yapp, still under development.

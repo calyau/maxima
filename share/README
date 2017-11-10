@@ -1,0 +1,39 @@
+Filename share/README
+
+Packages in the contrib directory are considered external to Maxima;
+see the README file in that directory.
+The remaining directories and packages might be part of the Maxima
+distribution but are placed here because they are considered additional
+packages not used very often, or because they are still in the
+development phase. Once they are stable they might be moved to the
+main distribution or the may be made automatically loadable when needed.
+
+Notes on specific packages:
+
+combinatorics/  Package for combinatorial algorithms: permutations,
+                partitions, tableaux, etc. By Jaime Villate.
+
+descriptive/    Mario Rodriguez Riotorto's descriptive statistics
+		package from http://www.telefonica.net/web2/biomates/
+
+distrib/        Mario Rodriguez Riotorto's probability distributions
+		package from http://www.telefonica.net/web2/biomates/
+
+diffequations/  This directory contains additional methods for
+		solving ordinary differential equations. Written
+		by David Billinghurst.
+
+numericalio/	Robert Dodier's package for reading and writing 
+                numerical data.
+
+pdiff/          This is Barton Willis's pdiff package from
+                http://www.unk.edu/acad/math/people/willisb/
+
+simplex/        Andrej Vodopivec's code for the two-phase standard simplex
+                method.
+
+solve_rec/      Andrej Vodopivec's code for solving recurrence equations
+                with polynomial coefficients. It uses Petkovsek's hyper
+                algorithm and Abramov's algorithm.
+
+stringproc/     A Maxima string package by Volker van Nek.
