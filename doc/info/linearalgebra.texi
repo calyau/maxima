@@ -584,6 +584,91 @@ When @code{@var{M} = lu_factor (@var{A}, @var{field})},
 then @code{lu_backsub (@var{M}, @var{b})} solves the linear
 system @code{@var{A} @var{x} = @var{b}}.
 
+The @var{n} by @var{m} matrix @code{@var{b}}, with @var{n} the number of 
+rows of the matrix @code{@var{A}}, contains one right hand side per column. If 
+there is only one right hand side then @code{@var{b}} must be a @var{n} by 1
+matrix.
+
+Each column of the matrix @code{@var{x}=lu_backsub (@var{M}, @var{b})} is the 
+solution corresponding to the respective column of @code{@var{b}}.
+
+Examples:
+
+@c ===beg===
+@c A : matrix ([1 - z, 3], [3, 8 - z]);
+@c M : lu_factor (A,generalring);
+@c b : matrix([a],[c]);
+@c x : lu_backsub(M,b);
+@c ratsimp(A . x - b);
+@c B : matrix([a,d],[c,f]);
+@c x : lu_backsub(M,B);
+@c ratsimp(A . x - B);
+@c ===end===
+@example
+(%i1) A : matrix ([1 - z, 3], [3, 8 - z]);
+                               [ 1 - z    3   ]
+(%o1)                          [              ]
+                               [   3    8 - z ]
+(%i2) M : lu_factor (A,generalring);
+               [ 1 - z          3         ]
+               [                          ]
+(%o2)         [[   3              9       ], [1, 2], generalring]
+               [ -----  (- z) - ----- + 8 ]
+               [ 1 - z          1 - z     ]
+(%i3) b : matrix([a],[c]);
+                                     [ a ]
+(%o3)                                [   ]
+                                     [ c ]
+(%i4) x : lu_backsub(M,b);
+                           [               3 a     ]
+                           [       3 (c - -----)   ]
+                           [              1 - z    ]
+                           [ a - ----------------- ]
+                           [               9       ]
+                           [     (- z) - ----- + 8 ]
+                           [             1 - z     ]
+                           [ --------------------- ]
+(%o4)                      [         1 - z         ]
+                           [                       ]
+                           [            3 a        ]
+                           [       c - -----       ]
+                           [           1 - z       ]
+                           [   -----------------   ]
+                           [             9         ]
+                           [   (- z) - ----- + 8   ]
+                           [           1 - z       ]
+(%i5) ratsimp(A . x - b);
+                                     [ 0 ]
+(%o5)                                [   ]
+                                     [ 0 ]
+(%i6) B : matrix([a,d],[c,f]);
+                                   [ a  d ]
+(%o6)                              [      ]
+                                   [ c  f ]
+(%i7) x : lu_backsub(M,B);
+               [               3 a                    3 d     ]
+               [       3 (c - -----)          3 (f - -----)   ]
+               [              1 - z                  1 - z    ]
+               [ a - -----------------  d - ----------------- ]
+               [               9                      9       ]
+               [     (- z) - ----- + 8      (- z) - ----- + 8 ]
+               [             1 - z                  1 - z     ]
+               [ ---------------------  --------------------- ]
+(%o7)          [         1 - z                  1 - z         ]
+               [                                              ]
+               [            3 a                    3 d        ]
+               [       c - -----              f - -----       ]
+               [           1 - z                  1 - z       ]
+               [   -----------------      -----------------   ]
+               [             9                      9         ]
+               [   (- z) - ----- + 8      (- z) - ----- + 8   ]
+               [           1 - z                  1 - z       ]
+(%i8) ratsimp(A . x - B);
+                                   [ 0  0 ]
+(%o8)                              [      ]
+                                   [ 0  0 ]
+@end example
+
 @opencatbox
 @category{Package linearalgebra}
 @closecatbox
