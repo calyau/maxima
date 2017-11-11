@@ -10,17 +10,22 @@ I have added a package that implements some of the permutations
 functions of Macsyma and will implement many other functions.
 
 Some differences with Macsyma: permutation_decomp has been named here
-permutation_cycles (permutation_decomp will be used for decomposition
-into the generators of the permutation group) and it returns only
-non-trivial cycles; i.e, [[1,4,5],[3,6]] instead of [[1,4,5],[2],[3,6]].
+permutation_cycles and permutation_decomp is used for decomposition
+into the generators of the permutation group (adjacent transpositions).
+permutation_cycles returns only non-trivial cycles; i.e, [[1,4,5],[3,6]]
+instead of [[1,4,5],[2],[3,6]].
 
 permutation_undecomp does not require a complete set of cycles, such
 as [[1,4,5],[2],[3,6],[7]]; it accepts just [[1,4,5],[3,6]], but it
 needs an extra parameter, namely, the order of the group. For example:
      permutation_undecomp([[1,4,5],[3,6]],7)
 
+permutations_lex returns the list of permutations of order n, in
+lexicographic order, but unlike Macsyma's version, the argument should
+be just an integer (n) and not a permutation.
 
-Unlike Macsyma, the permutations() function from nset.lisp gives the list
-of permutations as a set and in lexicographic order. It also accepts lists
-with repeated elements, given distinct permutations in its output. The
-result can be turned into a list with the listify() function.
+Notice that the functions permutations and random_permutation from
+from package nset give different orderings of a set of objects, but
+not permutations the way they are understood here: namely, a list of
+the first n positive integers without repetitions.
+

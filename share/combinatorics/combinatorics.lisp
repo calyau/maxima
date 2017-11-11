@@ -13,6 +13,8 @@
 ;;;;  $permutation_index    : minimum number of adjacent transpositions
 ;;;;  $permutation_decomp   : minimum set of adjacent transpositions to get p
 ;;;;  $permutation_parity   : parity of a permutation (0 or 1)
+;;;;  $permutations_lex     : lexicographic list of the order n permutations
+;;;;  $permutation_lex_next : finds next permutation in lexicographic ordering
 ;;;;
 ;;;; Copyright (C) 2017 Jaime Villate
 ;;;;
@@ -32,7 +34,7 @@
 ;;;; MA  02110-1301, USA
 
 (in-package :maxima)
-(macsyma-module permutations)
+(macsyma-module combinatorics)
 
 ;;; $cyclep returns true if its argument is a maxima list of lenght n or
 ;;; lower, whose elements are integers between 1 and n, without repetitions.
@@ -57,29 +59,29 @@
 
     (defun check-permutation (p msg)
   (or ($permutationp p)
-      (merror (intl:gettext "~M: expecting a permutation; found: ~M") msg p)))
+      (merror (intl:gettext "~M: argument should be a permutation; found: ~M") msg p)))
 
 (defun check-cycle (c n msg)
   (or ($cyclep c n)
-      (merror (intl:gettext "~M: expecting a cycle of degree ~M; found: ~M")
+      (merror (intl:gettext "~M: argument should be a cycle of degree ~M; found: ~M")
               msg n c)))
 
 (defun check-list-or-set (l msg)
   (or ($listp l) ($setp l)
-      (merror (intl:gettext "~M: expecting a list or set; found: ~M") msg l)))
+      (merror (intl:gettext "~M: argument should be a list or set; found: ~M") msg l)))
 
 (defun check-list (l msg)
   (or ($listp l)
-      (merror (intl:gettext "~M: expecting a list; found: ~M") msg l)))
+      (merror (intl:gettext "~M: argument should be a list; found: ~M") msg l)))
 
 (defun check-list-length (l n msg)
   (or (eql ($length l) n)
-      (merror (intl:gettext "~M: expecting a list of length ~M; found: ~M")
+      (merror (intl:gettext "~M: argument should be a list of length ~M; found: ~M")
               msg n l)))
 
-(defun check-length (n msg)
-  (or (and (integerp n) (> n 1))
-      (merror (intl:gettext "~M: expecting an integer > 1; found: ~M") msg n)))
+(defun check-pos-integer (n msg)
+  (or (and (integerp n) (> n 0))
+      (merror (intl:gettext "~M: argument must be a positive integer; found: ~M") msg n)))
 
 ;;; $permult multiplies permutation p1 by the permutations in list ps
 (defun $permult (p1 &rest ps)
@@ -137,16 +139,16 @@
       (setq result (copy-list prod)))
     result))
 
-;; $permutation_undecomp converts a list of cycles into a permutation,
-;; equal to their product, by applying $apply_cycles to [1, 2,..., n]
+;;; $permutation_undecomp converts a list of cycles into a permutation,
+;;; equal to their product, by applying $apply_cycles to [1, 2,..., n]
 (defun $permutation_undecomp (cl n)
   (check-list cl "permutation_undecomp")
-  (check-length n "permutation_undecomp")
+  (check-pos-integer n "permutation_undecomp")
   ($apply_cycles
-   cl (cons '(mlist simp) (loop for i from 1 to n collecting i))))
+   cl `((mlist simp) ,@(loop for i from 1 to n collecting i))))
 
-;; $permutation_cycles decomposes permutation p into a product of canonical
-;; cycles: with lower indices first.
+;;; $permutation_cycles decomposes permutation p into a product of canonical
+;;; cycles: with lower indices first.
 (defun $permutation_cycles (p)
   (check-permutation p "permutation_cycles")
   (let* ((i) (j) (k) (cycle) (n ($length p)) (result '((mlist simp)))
@@ -166,9 +168,9 @@
       (and (> (length cycle) 2) (setq result (append result (list cycle)))))
     result))
 
-;; $permutation_lex_rank finds the position of the given permutation in
-;; the lexicographic ordering of permutations (from 0 to n!-1).
-;; Algorithm 2.15 from Kreher & Stinson (1999). Combinatorial Algorithms.
+;;; $permutation_lex_rank finds the position of the given permutation in
+;;; the lexicographic ordering of permutations (from 0 to n!-1).
+;;; Algorithm 2.15: from Kreher & Stinson (1999). Combinatorial Algorithms.
 (defun $permutation_lex_rank (p)
   (check-permutation p "permutation_lex_rank") 
   (let ((r 0) (n ($length p)))
@@ -180,38 +182,37 @@
         (when (> (nth i p) (nth j p))
           (setf (nth i p) (1- (nth i p))))))))
 
-;; $permutation_index finds the minimum number of adjacent transpositions
-;; necessary to write permutation p as a product of adjacent transpositions.
+;;; $permutation_index finds the minimum number of adjacent transpositions
+;;; necessary to write permutation p as a product of adjacent transpositions.
 (defun $permutation_index (p)
   (check-permutation p "permutation_index") 
-  (let ((d 0) (n ($length p)))
+  (let ((d 0) (n ($length p)) (q (copy-list p)))
     (do ((j 1 (1+ j)))
         ((> j n) d)
-      (incf d (* (1- (nth j p))))
+      (incf d (* (1- (nth j q))))
       (do ((i (1+ j) (1+ i)))
           ((> i n))
-        (when (> (nth i p) (nth j p))
-          (setf (nth i p) (1- (nth i p))))))))
+        (when (> (nth i q) (nth j q))
+          (setf (nth i q) (1- (nth i q))))))))
 
-
-;; $permutation_decomp finds the minimum set of adjacent transpositions
-;; whose product equals permutation p.
+;;; $permutation_decomp finds the minimum set of adjacent transpositions
+;;; whose product equals permutation p.
 (defun $permutation_decomp (p)
   (check-permutation p "permutation_decomp") 
-  (let ((trans) (n ($length p)))
+  (let ((trans) (n ($length p)) (q (copy-list p)))
     (do ((j 1 (1+ j)))
         ((>= j n) (cons '(mlist simp) trans))
-      (when (>= (1- (nth j p)) 1)
-        (do ((i (+ (- (nth j p) 2) j) (1- i)))
+      (when (>= (1- (nth j q)) 1)
+        (do ((i (+ (- (nth j q) 2) j) (1- i)))
             ((< i j))
           (setq trans (cons `((mlist simp) ,i ,(1+ i)) trans))))
       (do ((k (1+ j) (1+ k)))
           ((> k n))
-        (when (> (nth k p) (nth j p))
-          (setf (nth k p) (1- (nth k p))))))))
+        (when (> (nth k q) (nth j q))
+          (setf (nth k q) (1- (nth k q))))))))
 
-;; $permutation_parity finds the parity of permutation p (0 or 1).
-;; Algorithm 2.19 from Kreher & Stinson (1999). Combinatorial Algorithms.
+;;; $permutation_parity finds the parity of permutation p (0 or 1).
+;;; Algorithm 2.19 from Kreher & Stinson (1999). Combinatorial Algorithms.
 (defun $permutation_parity (p)
   (check-permutation p "permutation_parity") 
   (let* ((i) (c 0) (n ($length p)) (q (rest p)) 
@@ -223,3 +224,53 @@
         (while (/= (1- (nth i q)) j)
           (setf i (1- (nth i q)) (bit a i) 1))))
     (mod (- n c) 2)))
+
+;;; $permutations_lex returns a list of the permutations of order n in
+;;; lexicographic order
+(defun $permutations_lex (n)
+  (check-pos-integer n "permutations_lex")
+  (let ((p (make-array (1+ n) :element-type 'fixnum)) (q) (ppp))
+    (dotimes (i (1+ n))
+      (setf (aref p i) i))
+    (while (not (null p))
+      (setq q nil)
+      (dotimes (j n)
+        (setq q (cons (aref p (1+ j)) q)))
+      (setq ppp (cons `((mlist simp) ,@(nreverse q)) ppp))
+      (setq p (permutation-lex-next n p)))
+    `((mlist simp) ,@(nreverse ppp))))
+
+;;; permutation_lex_next finds next permutation in the lexicographic order.
+;;; Based on Algorithm 2.14 from Kreher & Stinson (1999). Combinatorial
+;;; Algorithms.
+(defun permutation-lex-next (n p)
+  (declare (type (simple-array fixnum *) p))
+  (declare (type fixnum n))
+  (let ((i (1- n)) (j n) (r) (tm))
+    (while (< (aref p (1+ i)) (aref p i))
+      (decf i))
+    (when (= i 0) (return-from permutation-lex-next nil))
+    (while (< (aref p j) (aref p i))
+      (decf j))
+    (setq tm (aref p j))
+    (setf (aref p j) (aref p i))
+    (setf (aref p i) tm)
+    (dotimes (k (floor (/ (- n i) 2)))
+      (setq r (aref p (+ k i 1)))
+      (setf (aref p (+ k i 1)) (aref p (- n k)))
+      (setf (aref p (- n k)) r))
+    p))
+
+;;; $permutation_lex_next finds the next permutation in lexicographic order
+(defun $permutation_lex_next (p)
+  (check-permutation p "permutation_lex_next") 
+  (let* ((n (length p)) (pa (make-array n :element-type 'fixnum)) (q) (k 0))
+    (setf (car p) 0)
+    (dolist (i p)
+      (setf (aref pa k) i)
+      (incf k))
+    (setq pa (permutation-lex-next (1- n) pa))
+    (when (null pa) (return-from $permutation_lex_next nil))
+    (dotimes (j (1- n))
+      (setq q (cons (aref pa (1+ j)) q)))
+    `((mlist simp) ,@(nreverse q))))
