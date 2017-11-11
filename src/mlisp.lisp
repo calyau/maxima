@@ -1870,10 +1870,10 @@ wrapper for this."
 		  (if (member fun '(mqapply $%) :test #'eq) (merror (intl:gettext "assignment: cannot assign to ~M") l))
 		  (if $use_fast_arrays
 		    (progn
-		      (format t "ARRSTORE: use_fast_arrays=true; allocate a new value hash table for ~S~%" fun)
+		      ;; (format t "ARRSTORE: use_fast_arrays=true; allocate a new value hash table for ~S~%" fun)
 		      (meval* `((mset) ,fun ,(make-equal-hash-table (cdr (mevalargs (cdr l)))))))
 		    (progn
-		      (format t "ARRSTORE: use_fast_arrays=false; allocate a new property hash table for ~S~%" fun)
+		      ;; (format t "ARRSTORE: use_fast_arrays=false; allocate a new property hash table for ~S~%" fun)
 		  (add2lnc fun $arrays)
 		  (setq ary (gensym))
 		  (mputprop fun ary 'hashar)
