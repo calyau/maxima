@@ -140,15 +140,17 @@
 		      (t (return-from complete-prop
 			   (car all)))))))
 
-(defun $backtrace (&optional (n 30))
+(defun $backtrace (&optional (n 0 n-p))
   (unless (typep n '(integer 0))
     (merror
       (intl:gettext "backtrace: number of frames must be a nonnegative integer; got ~M~%")
       n))
   (let ($display2d)
-    (loop for i below n
-	   for j from *current-frame*
-	   while (print-one-frame j t))))
+    (loop for i from 0
+          for j from *current-frame*
+          when (and n-p (= i n))
+            return nil
+          while (print-one-frame j t))))
 
 ;; if this is NIL then nothing more is checked in eval
 
