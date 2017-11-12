@@ -141,6 +141,10 @@
 			   (car all)))))))
 
 (defun $backtrace (&optional (n 30))
+  (unless (typep n '(integer 0))
+    (merror
+      (intl:gettext "backtrace: number of frames must be a nonnegative integer; got ~M~%")
+      n))
   (let ($display2d)
     (loop for i below n
 	   for j from *current-frame*
