@@ -178,7 +178,7 @@ constructs such as @code{go}.
 Prints the call stack, that is, the list of functions which
 called the currently active function.
 
-@code{backtrace()} prints the entire call stack.
+@code{backtrace ()} prints the entire call stack.
 
 @code{backtrace (@var{n})} prints the @var{n} most recent 
 functions, including the currently active function.
@@ -192,7 +192,7 @@ Examples:
 
 @itemize @bullet
 @item
-@code{backtrace()} prints the entire call stack.
+@code{backtrace ()} prints the entire call stack.
 
 @example
 (%i1) h(x) := g(x/7)$
