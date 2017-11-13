@@ -9,8 +9,8 @@
 # --with-ccl=lx86cl
 %define enable_cmucl 0
 %define cmucl_flags --disable-cmucl
-%define enable_sbcl 0
-%define sbcl_flags --disable-sbcl
+%define enable_sbcl 1
+%define sbcl_flags --enable-sbcl-exec
 %define enable_gcl 0
 %define gcl_flags --disable-gcl
 
