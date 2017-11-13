@@ -3,7 +3,7 @@
 # By default, this spec file will generate RPMs for clisp
 # This can be changed by modifying the variables below.
 %define enable_clisp 1
-%define clisp_flags --enable-clisp
+%define clisp_flags --enable-clisp-exec
 %define enable_ccl 0
 %define ccl_flags --disable-ccl
 # --with-ccl=lx86cl
