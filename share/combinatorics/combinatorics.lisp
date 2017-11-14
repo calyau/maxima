@@ -173,14 +173,14 @@
 ;;; Algorithm 2.15: from Kreher & Stinson (1999). Combinatorial Algorithms.
 (defun $permutation_lex_rank (p)
   (check-permutation p "permutation_lex_rank") 
-  (let ((r 0) (n ($length p)))
+  (let ((r 0) (n ($length p)) (q (copy-list p)))
     (do ((j 1 (1+ j)))
         ((> j n) r)
-      (incf r (* (1- (nth j p)) (factorial (- n j))))
+      (incf r (* (1- (nth j q)) (factorial (- n j))))
       (do ((i (1+ j) (1+ i)))
           ((> i n))
-        (when (> (nth i p) (nth j p))
-          (setf (nth i p) (1- (nth i p))))))))
+        (when (> (nth i q) (nth j q))
+          (setf (nth i q) (1- (nth i q))))))))
 
 ;;; $permutation_index finds the minimum number of adjacent transpositions
 ;;; necessary to write permutation p as a product of adjacent transpositions.
@@ -264,11 +264,10 @@
 ;;; $permutation_lex_next finds the next permutation in lexicographic order
 (defun $permutation_lex_next (p)
   (check-permutation p "permutation_lex_next") 
-  (let* ((n (length p)) (pa (make-array n :element-type 'fixnum)) (q) (k 0))
-    (setf (car p) 0)
-    (dolist (i p)
-      (setf (aref pa k) i)
-      (incf k))
+  (let* ((n (length p)) (pa (make-array n :element-type 'fixnum)) (q))
+    (setf (aref pa 0) 0)
+    (dotimes (i (1- n))
+      (setf (aref pa (1+ i)) (nth (1+ i) p)))
     (setq pa (permutation-lex-next (1- n) pa))
     (when (null pa) (return-from $permutation_lex_next nil))
     (dotimes (j (1- n))
