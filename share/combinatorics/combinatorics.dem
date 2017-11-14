@@ -61,6 +61,6 @@ map (permutation_lex_rank, [p1, p2, p3]);
 
 "The parity of a permutation, given in this package by 0 or 1, tells
       whether the index of a permutation is even or odd. The product of
-      an even permutation by an odd one gives another even permutation:"$ 
+      an even permutation by an odd one gives another odd permutation:"$ 
 
 map (permutation_parity, [p1, p2, p3]);
