@@ -2327,8 +2327,8 @@ sign(2^(500000*t)-2^(500007*t));
 neg$
 sign(2^(500007*t)-2^(500000*t));
 pos$
-kill(t);
-done$
+forget(t>0);
+[t>0]$
 
 /* Bug #3246: Integrating u'(x) * f(u(x) + c) fails for f any inverse trigonometric/hyperbolic function */
 /* Also make sure that all the antiderivatives of (inverse) trigonometric/hyperbolic functions are correct. */
