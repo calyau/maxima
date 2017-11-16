@@ -57,7 +57,7 @@
     ;; a permutation of degree n is also a valid cycle of degree n
     ($cyclep p n)))
 
-    (defun check-permutation (p msg)
+(defun check-permutation (p msg)
   (or ($permutationp p)
       (merror (intl:gettext "~M: argument should be a permutation; found: ~M") msg p)))
 
@@ -84,21 +84,21 @@
       (merror (intl:gettext "~M: argument must be a positive integer; found: ~M") msg n)))
 
 ;;; $permult multiplies permutation p1 by the permutations in list ps
-(defun $permult (p1 &rest ps)
-  (check-permutation p1 "permult") 
-  (let ((n ($length p1)) (result p1))
-    ;; multiplies the current result by each of the permutations in ps
+(defun $permult (p0 &rest ps)
+  (check-permutation p0 "permult") 
+  (let ((n ($length p0)) (rp p0))
+    ;; multiplies the current product, rp, by each of the permutations in ps
     (dolist (p ps)
       (check-list-length p n "permult")
       (check-permutation p "permult") 
-      ;; the current product "result" times the permutation p is the
-      ;; permutation [result[p[1]], result[p[2]], ..., result[p[n]]]
-      (let ((prod nil))
-        (dolist (j (reverse (rest p)))
-          (setq prod (cons (nth (1- j) (rest result)) prod)))
-        ;; makes result*prod the new current product
-        (setq result (cons '(mlist simp) prod))))
-    result))
+      ;; the new product, tp, will be the current product, rp, times
+      ;; permutation p: tp = [p[rp[1]], p[rp[2]], ..., p[rp[n]]]
+      (let ((tp nil))
+        (dolist (j (reverse (rest rp)))
+          (setq tp (cons (nth (1- j) (rest p)) tp)))
+        ;; makes tp the new current product rp
+        (setq rp (cons '(mlist simp) tp))))
+    rp))
 
 ;;; $invert_permutation computes the inverse of permutation p
 (defun $invert_permutation (p)
