@@ -1386,7 +1386,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	  ((eq sign '$neg) (setq s (flip s) m (not m)))
 	  ((prog2 (setq m (not (eq m minus)) o (nconc odds o) e (nconc evens e))
 	       nil))
-	  ((eq s sign))
+	  ((eq s sign) (when (eq s '$nz) (setq s '$pz)))
 	  ((eq s '$pos) (setq s sign))
 	  ((eq s '$neg) (setq s (flip sign)))
 	  ((or (and (eq s '$pz) (eq sign '$nz))
