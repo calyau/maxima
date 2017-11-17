@@ -560,6 +560,8 @@ defeats quotation.
 @code{kill (@var{symbol})} unbinds all properties of @var{symbol}.  In contrast,
 the functions @mrefcomma{remvalue} @mrefcomma{remfunction}@w{}
 @mrefcomma{remarray} and @mref{remrule} unbind a specific property.
+Note that facts declared by @mref{assume} aren't properties of the symbol they
+apply to and therefore aren't affected by @code{kill}.
 
 @code{kill} always returns @code{done}, even if an argument has no binding.
 
