@@ -2374,3 +2374,26 @@ map('sign,
 ];
 forget(apos > 0, aneg < 0, apz >= 0, anz <= 0, notequal(apn, 0), bpos > 0, bneg < 0, bpz >= 0, bnz <= 0, notequal(bpn, 0));
 [apos > 0, aneg < 0, apz >= 0, anz <= 0, notequal(apn, 0), bpos > 0, bneg < 0, bpz >= 0, bnz <= 0, notequal(bpn, 0)]$
+
+/* test cases mentioned in bug report #3356 */
+
+(kill (a, b), assume(a<=0, b<=0), sign(a*b));
+pz;
+
+(kill (q, r), assume(q<0, r<0), sign(q*r));
+pos;
+
+sign(a*r);
+pz;
+
+sign(a*-2);
+pz;
+
+sign(a*q*r);
+nz;
+
+sign(a*b*q);
+nz;
+
+(forget (a <= 0, b <= 0, q < 0, r < 0), 0);
+0;
