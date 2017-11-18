@@ -2352,8 +2352,8 @@ create_list (bfloat (3.14), fpprec, 1, 3);
 [3.0b0, 3.1b0, 3.14b0]$
 
 /* Bug #3356: sign(nz * nz) = nz */
-assume(apos > 0, aneg < 0, apz >= 0, anz <= 0, notequal(apn, 0), bpos > 0, bneg < 0, bpz >= 0, bnz <= 0, notequal(bpn, 0));
-[apos > 0, aneg < 0, apz >= 0, anz <= 0, notequal(apn, 0), bpos > 0, bneg < 0, bpz >= 0, bnz <= 0, notequal(bpn, 0)]$
+assume(apos > 0, aneg < 0, apz >= 0, anz <= 0, notequal(apn, 0), bpos > 0, bneg < 0, bpz >= 0, bnz <= 0, notequal(bpn, 0));
+[apos > 0, aneg < 0, apz >= 0, anz <= 0, notequal(apn, 0), bpos > 0, bneg < 0, bpz >= 0, bnz <= 0, notequal(bpn, 0)]$
 map('sign,
 	[
 		apos * bpos, apos * bneg, apos * bpz, apos * bnz, apos * bpn, apos * bpnz,
@@ -2372,8 +2372,8 @@ map('sign,
 	'pn, 'pn, 'pnz, 'pnz, 'pn, 'pnz,
 	'pnz, 'pnz, 'pnz, 'pnz, 'pnz, 'pnz
 ];
-forget(apos > 0, aneg < 0, apz >= 0, anz <= 0, notequal(apn, 0), bpos > 0, bneg < 0, bpz >= 0, bnz <= 0, notequal(bpn, 0));
-[apos > 0, aneg < 0, apz >= 0, anz <= 0, notequal(apn, 0), bpos > 0, bneg < 0, bpz >= 0, bnz <= 0, notequal(bpn, 0)]$
+forget(apos > 0, aneg < 0, apz >= 0, anz <= 0, notequal(apn, 0), bpos > 0, bneg < 0, bpz >= 0, bnz <= 0, notequal(bpn, 0));
+[apos > 0, aneg < 0, apz >= 0, anz <= 0, notequal(apn, 0), bpos > 0, bneg < 0, bpz >= 0, bnz <= 0, notequal(bpn, 0)]$
 
 /* test cases mentioned in bug report #3356 */
 
