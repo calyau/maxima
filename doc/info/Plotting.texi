@@ -1705,7 +1705,12 @@ automatically.
 
 In a 2d plot, it defines the ratio of the total size of the Window to
 the size that will be used for the plot. The two numbers given as
-arguments are the scale factors for the x and y axes. 
+arguments are the scale factors for the x and y axes.
+
+This option does not change the size of the graphic window or the placement
+of the graph in the window. If you want to change the aspect ratio of the
+plot, it is better to use option @mrefdot{yx_ratio} For instance,
+@code{[yx_ratio, 10]} instead of @code{[xy_scale, 0.1, 1]}.
 
 @opencatbox
 @category{Plotting}

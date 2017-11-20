@@ -339,7 +339,9 @@
           (format dest "set size ratio -1~%")
           (if (getf plot-options :yx_ratio)
               (format dest "set size ratio ~,8f~%" (getf plot-options :yx_ratio))
-              (format dest "set size ratio 0.75~%")))
+              (if (not (getf plot-options :xy_scale))
+                  ;; emit the default only if there is no xy_scale specified.
+                  (format dest "set size ratio 0.75~%"))))
       (if (and (getf plot-options :xy_scale)
                (listp (getf plot-options :xy_scale)))
           (format dest "set size ~{~,8f~^, ~}~%" (getf plot-options :xy_scale))))
