@@ -767,19 +767,15 @@ sin(y)*(10.0+6*cos(x)),
 (defmvar $use_adaptive_parametric_plot t
   "If true, parametric plots use adaptive plotting")
 
-(defun draw2d-parametric (param range1 plot-options &aux range tem)
+(defun draw2d-parametric (param options &aux range tem)
   (cond ((and ($listp (setq tem (nth 4 param)))
               (symbolp (cadr tem))
               (eql ($length tem) 3))
          ;; sure looks like a range
          (setq range (check-range tem))))
-  (let* ((options 
-          (plot-options-parser
-           (if range1 (cons range1 (cddddr param)) (cddddr param))
-           plot-options))
-         (nticks (getf options :nticks))
-         (trange (or (cddr range) (getf options :t)))
-         (tvar (or (cadr range) '$t))
+  (let* ((nticks (getf options :nticks))
+         (trange (cddr range))
+         (tvar (second tem))
          (xrange (or (getf options :x) (getf options :xbounds)))
          (yrange (or (getf options :y) (getf options :ybounds)))
          (tmin (coerce-float (first trange)))
@@ -817,19 +813,15 @@ sin(y)*(10.0+6*cos(x)),
            )))
   )
 
-(defun draw2d-parametric-adaptive (param range1 plot-options &aux range tem)
+(defun draw2d-parametric-adaptive (param options &aux range tem)
   (cond ((and ($listp (setq tem (nth 4 param)))
               (symbolp (cadr tem))
               (eql ($length tem) 3))
          ;; sure looks like a range
          (setq range (check-range tem))))
-  (let* ((options 
-          (plot-options-parser
-           (if range1 (cons range1 (cddddr param)) (cddddr param))
-           plot-options))
-         (nticks (getf options :nticks))
-         (trange (or (cddr range) (getf options :t)))
-         (tvar (or (cadr range) '$t))
+  (let* ((nticks (getf options :nticks))
+         (trange (cddr range))
+         (tvar (second tem))
          (xrange (or (getf options :x) (getf options :xbounds)))
          (yrange (or (getf options :y) (getf options :ybounds)))
          (tmin (coerce-float (first trange)))
@@ -1186,8 +1178,8 @@ sin(y)*(10.0+6*cos(x)),
   (if (and ($listp fcn) (equal '$parametric (cadr fcn)))
       (return-from draw2d
         (if $use_adaptive_parametric_plot
-            (draw2d-parametric-adaptive fcn range plot-options)
-            (draw2d-parametric fcn range plot-options))))
+            (draw2d-parametric-adaptive fcn plot-options)
+            (draw2d-parametric fcn plot-options))))
   (if (and ($listp fcn) (equal '$discrete (cadr fcn)))
       (return-from draw2d (draw2d-discrete fcn)))
   (let* ((nticks (getf plot-options :nticks))
@@ -1777,16 +1769,10 @@ sin(y)*(10.0+6*cos(x)),
     ;; that can be expressions (simple functions) and maxima lists (parametric
     ;; functions or discrete sets of points).
 
-    ;; If there is a single parametric function use its range as the range for
-    ;; the plot and put it inside another maxima list
+    ;; A single parametric or discrete plot is placed inside a maxima list
     (setf (getf options :type) "plot2d")
-    (when (and (consp fun) (eq (second fun) '$parametric))
-      (unless range
-        (setq range (check-range (nth 4 fun))))
-      (setq fun `((mlist) ,fun)))
-
-    ;; If there is a single set of discrete points put it inside a maxima list
-    (when (and (consp fun) (eq (second fun) '$discrete))
+    (when (and (consp fun)
+               (or (eq (second fun) '$parametric) (eq (second fun) '$discrete)))
       (setq fun `((mlist) ,fun)))
 
     ;; If at this point fun is not a maxima list, it is then a single function
