@@ -387,11 +387,11 @@
 
     ;; axes ranges and style
     (when (and (getf plot-options :x) (listp (getf plot-options :x)))
-      (format dest "set xrange [~{~,8f~^ : ~}]~%" (getf plot-options :x)))
+      (format dest "set xrange [~{~g~^ : ~}]~%" (getf plot-options :x)))
     (when (and (getf plot-options :y) (listp (getf plot-options :y)))
-      (format dest "set yrange [~{~,8f~^ : ~}]~%" (getf plot-options :y)))
+      (format dest "set yrange [~{~g~^ : ~}]~%" (getf plot-options :y)))
     (when (and (getf plot-options :z) (listp (getf plot-options :z)))
-      (format dest "set zrange [~{~,8f~^ : ~}]~%" (getf plot-options :z)))
+      (format dest "set zrange [~{~g~^ : ~}]~%" (getf plot-options :z)))
     (when (and (string= (getf plot-options :type) "plot2d")
                (member :axes plot-options))
       (if (getf plot-options :axes)

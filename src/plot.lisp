@@ -1968,11 +1968,11 @@ sin(y)*(10.0+6*cos(x)),
             (setq output-file (gnuplot-print-header st options))
             (format st "plot")
             (when (getf options :x)
-              (format st " [~{~,8f~^ : ~}]" (getf options :x)))
+              (format st " [~{~g~^ : ~}]" (getf options :x)))
             (when (getf options :y)
               (unless (getf options :x)
                 (format st " []")) 
-              (format st " [~{~,8f~^ : ~}]" (getf options :y))))
+              (format st " [~{~g~^ : ~}]" (getf options :y))))
            ($gnuplot_pipes
             (check-gnuplot-process)
             ($gnuplot_reset)
@@ -1983,7 +1983,7 @@ sin(y)*(10.0+6*cos(x)),
                *gnuplot-command*
                ($sconcat
                 *gnuplot-command* 
-                (format nil " [~{~,8f~^ : ~}]" (getf options :x)))))
+                (format nil " [~{~g~^ : ~}]" (getf options :x)))))
             (when (getf options :y) 
               (unless (getf options :x)
                 (setq *gnuplot-command*
@@ -1992,7 +1992,7 @@ sin(y)*(10.0+6*cos(x)),
                *gnuplot-command*
                ($sconcat
                 *gnuplot-command* 
-                (format nil " [~{~,8f~^ : ~}]"  (getf options :y)))))))
+                (format nil " [~{~g~^ : ~}]"  (getf options :y)))))))
          (let ((legend (getf options :legend))
                (colors (getf options :color))
                (types (getf options :point_type))
@@ -2109,7 +2109,7 @@ sin(y)*(10.0+6*cos(x)),
                            (first (getf options :x))
                            (first (getf options :y)))
                       (format
-                       st "~,8f ~,8f ~%"
+                       st "~g ~g ~%"
                        (first (getf options :x))
                        (first (getf options :y))))))))))
     
