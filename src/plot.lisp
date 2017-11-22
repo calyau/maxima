@@ -762,15 +762,16 @@ sin(y)*(10.0+6*cos(x)),
 ;; parametric ; [parametric,xfun,yfun,[t,tlow,thigh],[nticks ..]]
 ;; the rest of the parametric list after the list will add to the plot options
 
-(defun draw2d-parametric-adaptive (param options &aux range tem)
-  (cond ((and ($listp (setq tem (nth 4 param)))
-              (symbolp (cadr tem))
-              (eql ($length tem) 3))
-         ;; sure looks like a range
-         (setq range (check-range tem))))
+(defun draw2d-parametric-adaptive (param options &aux range)
+  (or (= ($length param) 4)
+      (merror (intl:gettext "plot2d: parametric plots must include two expressions and an interval")))
+  (setq range (nth 4 param))
+  (or (and ($listp range) (symbolp (second range)) (eql ($length range) 3))
+      (merror (intl:gettext "plot2d: wrong interval for parametric plot: ~M") range))
+  (setq range (check-range range))
   (let* ((nticks (getf options :nticks))
          (trange (cddr range))
-         (tvar (second tem))
+         (tvar (second range))
          (xrange (or (getf options :x) (getf options :xbounds)))
          (yrange (or (getf options :y) (getf options :ybounds)))
          (tmin (coerce-float (first trange)))
