@@ -762,57 +762,6 @@ sin(y)*(10.0+6*cos(x)),
 ;; parametric ; [parametric,xfun,yfun,[t,tlow,thigh],[nticks ..]]
 ;; the rest of the parametric list after the list will add to the plot options
 
-;; TODO: This should be removed after some time, once adaptive
-;; plotting has received enough testing and debugging.
-(defmvar $use_adaptive_parametric_plot t
-  "If true, parametric plots use adaptive plotting")
-
-(defun draw2d-parametric (param options &aux range tem)
-  (cond ((and ($listp (setq tem (nth 4 param)))
-              (symbolp (cadr tem))
-              (eql ($length tem) 3))
-         ;; sure looks like a range
-         (setq range (check-range tem))))
-  (let* ((nticks (getf options :nticks))
-         (trange (cddr range))
-         (tvar (second tem))
-         (xrange (or (getf options :x) (getf options :xbounds)))
-         (yrange (or (getf options :y) (getf options :ybounds)))
-         (tmin (coerce-float (first trange)))
-         (tmax (coerce-float (second trange)))
-         (xmin (coerce-float (first xrange)))
-         (xmax (coerce-float (second xrange)))
-         (ymin (coerce-float (first yrange)))
-         (ymax (coerce-float (second yrange)))
-         (x 0.0)         ; have to initialize to some floating point..
-         (y 0.0)
-         (tt tmin)
-         (eps (/ (- tmax tmin) (- nticks 1)))
-         f1 f2 in-range-y in-range-x in-range last-ok 
-         )
-    (declare (type flonum x y tt ymin ymax xmin xmax tmin tmax eps))
-    (setq f1 (coerce-float-fun (third param) `((mlist), tvar)))
-    (setq f2 (coerce-float-fun (fourth param) `((mlist), tvar)))
-    (cons '(mlist simp)    
-          (loop 
-           do 
-           (setq x (funcall f1 tt))
-           (setq y (funcall f2 tt))
-           (setq in-range-y (and (<= y ymax) (>= y ymin)))
-           (setq in-range-x  (and  (<= x xmax) (>= x xmin)))
-           (setq in-range (and in-range-x in-range-y))
-           when (and (not in-range) (not last-ok))
-           collect  'moveto and collect 'moveto
-           do
-           (setq last-ok in-range)
-           collect (if in-range-x x (if (> x xmax) xmax xmin))
-           collect (if in-range-y y (if (> y ymax) ymax ymin))
-           when (>= tt tmax) do (loop-finish)
-           do (setq tt (+ tt eps))
-           (if (>= tt tmax) (setq tt tmax))
-           )))
-  )
-
 (defun draw2d-parametric-adaptive (param options &aux range tem)
   (cond ((and ($listp (setq tem (nth 4 param)))
               (symbolp (cadr tem))
@@ -1177,9 +1126,7 @@ sin(y)*(10.0+6*cos(x)),
 (defun draw2d (fcn range plot-options)
   (if (and ($listp fcn) (equal '$parametric (cadr fcn)))
       (return-from draw2d
-        (if $use_adaptive_parametric_plot
-            (draw2d-parametric-adaptive fcn plot-options)
-            (draw2d-parametric fcn plot-options))))
+        (draw2d-parametric-adaptive fcn plot-options)))
   (if (and ($listp fcn) (equal '$discrete (cadr fcn)))
       (return-from draw2d (draw2d-discrete fcn)))
   (let* ((nticks (getf plot-options :nticks))
