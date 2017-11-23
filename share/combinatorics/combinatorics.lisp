@@ -1,6 +1,6 @@
 ;;;; COMBINATORICS package for Maxima
 ;;;;
-;;;; Functions to work with permutations.
+;;;; Maxima functions to work with permutations.
 ;;;;  $cyclep               : predicate function for cycles
 ;;;;  $permutationp         : predicate function for permutations
 ;;;;  $permult              : permutations product
@@ -13,7 +13,8 @@
 ;;;;  $permutation_index    : minimum number of adjacent transpositions
 ;;;;  $permutation_decomp   : minimum set of adjacent transpositions to get p
 ;;;;  $permutation_parity   : parity of a permutation (0 or 1)
-;;;;  $permutations_lex     : lexicographic list of the order n permutations
+;;;;  $permutations_lex     : lexicographic list of n-degree permutations
+;;;;                          or one or more permutations within that sequence
 ;;;;  $permutation_lex_next : finds next permutation in lexicographic ordering
 ;;;;
 ;;;; Copyright (C) 2017 Jaime Villate
@@ -83,6 +84,10 @@
   (or (and (integerp n) (> n 0))
       (merror (intl:gettext "~M: argument must be a positive integer; found: ~M") msg n)))
 
+(defun check-integer-n1-n2 (r n1 n2 msg)
+  (or (and (integerp r) (>= r n1) (<= r n2))
+      (merror (intl:gettext "~M: argument must be an integer between ~M and ~M; found: ~M") msg n1 n2 r)))
+
 ;;; $permult multiplies permutation p1 by the permutations in list ps
 (defun $permult (p0 &rest ps)
   (check-permutation p0 "permult") 
@@ -126,16 +131,15 @@
 (defun $apply_cycles (cl ls)
   (check-list cl "apply_cycles")
   (check-list-or-set ls "apply_cycles")
-  (let ((n ($length ls)) (result (copy-list ls)) (prod))
+  (let ((n ($length ls)) (result (copy-list ls)) (prod) (i))
     ;; iterate the cycles, the last in the list first
     (dolist (c (reverse (rest cl)))
       (check-cycle c n "apply_cycles")
       ;; ls[i] will be moved to ls[j], starting with i equal to the last
       ;; element of the cycle and j equal the first cycle element
-      (let ((i (first (last c))))
-        (setq prod (copy-list result))
-        (dolist (j (rest c))
-          (setf (nth i prod) (nth j result) i j)))
+      (setq i (first (last c)) prod (copy-list result))
+      (dolist (j (rest c))
+        (setf (nth i prod) (nth j result) i j))
       (setq result (copy-list prod)))
     result))
 
@@ -169,13 +173,13 @@
     result))
 
 ;;; $permutation_lex_rank finds the position of the given permutation in
-;;; the lexicographic ordering of permutations (from 0 to n!-1).
+;;; the lexicographic ordering of permutations (from 1 to n!).
 ;;; Algorithm 2.15: from Kreher & Stinson (1999). Combinatorial Algorithms.
 (defun $permutation_lex_rank (p)
   (check-permutation p "permutation_lex_rank") 
   (let ((r 0) (n ($length p)) (q (copy-list p)))
     (do ((j 1 (1+ j)))
-        ((> j n) r)
+        ((> j n) (1+ r))
       (incf r (* (1- (nth j q)) (factorial (- n j))))
       (do ((i (1+ j) (1+ i)))
           ((> i n))
@@ -227,18 +231,37 @@
 
 ;;; $permutations_lex returns a list of the permutations of order n in
 ;;; lexicographic order
-(defun $permutations_lex (n)
+(defun $permutations_lex (n &optional r0 rf)
   (check-pos-integer n "permutations_lex")
-  (let ((p (make-array (1+ n) :element-type 'fixnum)) (q) (ppp))
-    (dotimes (i (1+ n))
-      (setf (aref p i) i))
-    (while (not (null p))
-      (setq q nil)
-      (dotimes (j n)
-        (setq q (cons (aref p (1+ j)) q)))
-      (setq ppp (cons `((mlist simp) ,@(nreverse q)) ppp))
-      (setq p (permutation-lex-next n p)))
-    `((mlist simp) ,@(nreverse ppp))))
+  (when r0 (check-integer-1-n r0 (factorial n) "permutations_lex"))
+  (when rf (check-integer-n1-n2 rf r0 (factorial n) "permutations_lex"))
+  (let ((p (make-array (1+ n) :element-type 'fixnum)) q ppp)
+    (if r0
+        (progn
+          (unless rf (setq rf r0))
+          (setq p (permutation-lex-unrank n r0 p))
+          (dotimes (i n)
+            (setq q (cons (aref p (1+ i)) q)))
+          (setq ppp (cons `((mlist simp) ,@(nreverse q)) ppp))
+          (when rf
+            (dotimes (j (- rf r0))
+              (setq q nil)
+              (setq p (permutation-lex-next n p))
+              (dotimes (j n)
+                (setq q (cons (aref p (1+ j)) q)))
+              (setq ppp (cons `((mlist simp) ,@(nreverse q)) ppp)))))
+        (progn
+          (dotimes (i (1+ n))
+            (setf (aref p i) i))
+          (while (not (null p))
+            (setq q nil)
+            (dotimes (j n)
+              (setq q (cons (aref p (1+ j)) q)))
+            (setq ppp (cons `((mlist simp) ,@(nreverse q)) ppp))
+            (setq p (permutation-lex-next n p)))))
+    (if (> (length ppp) 1)
+        `((mlist simp) ,@(nreverse ppp))
+        (first ppp))))
 
 ;;; permutation_lex_next finds next permutation in the lexicographic order.
 ;;; Based on Algorithm 2.14 from Kreher & Stinson (1999). Combinatorial
@@ -259,6 +282,27 @@
       (setq r (aref p (+ k i 1)))
       (setf (aref p (+ k i 1)) (aref p (- n k)))
       (setf (aref p (- n k)) r))
+    p))
+
+;;; $permutation_lex_unrank returns permutation of order n in the r position
+;;; (from 1 to n!) in the lexicographic ordering of permutations.
+;;; Algorithm 2.16: from Kreher & Stinson (1999). Combinatorial Algorithms.
+(defun permutation-lex-unrank (n r p)
+  (declare (type (simple-array fixnum *) p))
+  (declare (type fixnum n))
+  (declare (type fixnum r))
+  (let (d)
+    (decf r)
+    (setf (aref p n) 1)
+    (do ((j 1 (1+ j)))
+        ((> j (1- n)))
+      (setq d (/ (mod r (factorial (1+ j))) (factorial j)))
+      (decf r (* d (factorial j)))
+      (setf (aref p (- n j)) (1+ d))
+      (do ((i (1+ (- n j)) (1+ i)))
+          ((> i n))
+        (when (> (aref p i) d)
+          (setf (aref p i) (1+ (aref p i))))))
     p))
 
 ;;; $permutation_lex_next finds the next permutation in lexicographic order
