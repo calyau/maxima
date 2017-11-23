@@ -2308,6 +2308,39 @@ following example:
 @end group
 @end example
 
+Since subst does search for literal occurrences of an expression it won't find a literal
+@code{(x-1)} in the following equation. In such a case rearranging the substituent might
+convert it to something subst can find:
+@c ===beg===
+@c gl:x^3-3*x^2+3*x-1;
+@c subst(a=x-1,gl);
+@c subst(solve(a=x-1,x),gl);
+@c ratsimp(%);
+@c ===end===
+@example
+@group
+(%i1) gl:x^3-3*x^2+3*x-1;
+                        3      2
+(%o1)                  x  - 3 x  + 3 x - 1
+@end group
+@group
+(%i2) subst(a=x-1,gl);
+                        3      2
+(%o2)                  x  - 3 x  + 3 x - 1
+@end group
+@group
+(%i3) subst(solve(a=x-1,x),gl);
+                     3            2
+(%o3)         (a + 1)  - 3 (a + 1)  + 3 (a + 1) - 1
+@end group
+@group
+(%i4) ratsimp(%);
+                                3
+(%o4)                          a
+@end group
+@end example
+
+
 @noindent
 For further examples, do @code{example (subst)}.
 
