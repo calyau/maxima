@@ -233,7 +233,7 @@
 ;;; lexicographic order
 (defun $permutations_lex (n &optional r0 rf)
   (check-pos-integer n "permutations_lex")
-  (when r0 (check-integer-1-n r0 (factorial n) "permutations_lex"))
+  (when r0 (check-integer-n1-n2 r0 1 (factorial n) "permutations_lex"))
   (when rf (check-integer-n1-n2 rf r0 (factorial n) "permutations_lex"))
   (let ((p (make-array (1+ n) :element-type 'fixnum)) q ppp)
     (if r0
