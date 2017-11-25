@@ -172,7 +172,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
   (if (eql batch-or-demo-flag :demo)
       (format t
         (intl:gettext
-          "~%At the '~A' prompt, type <enter> to proceed with the demonstration.~&To abort the demostration, type end or eof and then <enter>.~%")
+          "~%At the '~A' prompt, type ';' and <enter> to proceed with the demonstration.~&To abort the demostration, type 'end;' or 'eof;' and then <enter>.~%")
         (print-invert-case (stripdollar $prompt))))
   (catch 'abort-demo
     (do ((r)
