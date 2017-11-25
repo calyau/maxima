@@ -17,6 +17,26 @@
 ;;;;                          or one or more permutations within that sequence
 ;;;;  $permutation_lex_next : finds next permutation in lexicographic ordering
 ;;;;
+;;;; NOTATION
+;;;;  pm    : a permutation as a maxima list
+;;;;  pa    : a permutation as a lisp array
+;;;;  lpm   : a lisp list of pm's (in reverse order)
+;;;;  lmpm  : a maxima list of pm's
+;;;;  cm    : a cycle as a maxima list
+;;;;  ca    : a cycle as a lisp array
+;;;;  lcm   : a lisp list of cycles as maxima lists
+;;;;  lmcm  : a maxima list of cycles as maxima lists
+;;;;
+;;;; USEFULL COMMANDS
+;;;;  Turning a pa into a pm:
+;;;;       (concatenate 'list `((mlist simp)) pa)
+;;;;
+;;;;  Turning a pa into a pm and pushing it to the top of a lpm
+;;;;       (push-array-mlist pa lpm)    (macro defined in this package)
+;;;;
+;;;;  Turning a lpm into a maxima list
+;;;;       `((mlist simp) ,@(nreverse lpm))
+;;;;
 ;;;; Copyright (C) 2017 Jaime Villate
 ;;;;
 ;;;; This program is free software; you can redistribute it and/or
@@ -37,125 +57,127 @@
 (in-package :maxima)
 (macsyma-module combinatorics)
 
+(defmacro push-array-mlist (pa lpm)
+  `(push (concatenate (quote list) (quote ((mlist simp))) ,pa) ,lpm))
+
 ;;; $cyclep returns true if its argument is a maxima list of lenght n or
 ;;; lower, whose elements are integers between 1 and n, without repetitions.
-(defun $cyclep (c n)
+(defun $cyclep (cm n)
   ;; a cycle must be a maxima list
   (or (and (integerp n) (> n 1)) (return-from $cyclep nil))
-  (or ($listp c) (return-from $cyclep nil))
-  (dolist (i (rest c))
+  (or ($listp cm) (return-from $cyclep nil))
+  (dolist (i (rest cm))
     ;; cycle elements must be positive integers, less or equal to n
     (or (and (integerp i) (plusp i) (<= i n)) (return-from $cyclep nil))
     ;; and cannot be repeated
-    (or (< (count i (rest c)) 2) (return-from $cyclep nil)))
+    (or (< (count i (rest cm)) 2) (return-from $cyclep nil)))
     t)
 
 ;;; $permutationp returns true if its argument is a maxima list of lenght n,
 ;;; whose elements are the integers 1, 2, ...n, without repetitions.
-(defun $permutationp (p)
-  (or ($listp p) (return-from $permutationp nil))
-  (let ((n ($length p)))
+(defun $permutationp (pm)
+  (or ($listp pm) (return-from $permutationp nil))
+  (let ((n ($length pm)))
     ;; a permutation of degree n is also a valid cycle of degree n
-    ($cyclep p n)))
+    ($cyclep pm n)))
 
-(defun check-permutation (p msg)
-  (or ($permutationp p)
-      (merror (intl:gettext "~M: argument should be a permutation; found: ~M") msg p)))
+(defun check-permutation (pm caller)
+  (let ((s "~M: argument should be a permutation; found: ~M"))
+    (or ($permutationp pm) (merror (intl:gettext s) caller pm))))
 
-(defun check-cycle (c n msg)
-  (or ($cyclep c n)
-      (merror (intl:gettext "~M: argument should be a cycle of degree ~M; found: ~M")
-              msg n c)))
+(defun check-cycle (cm n caller)
+  (let ((s "~M: argument should be a cycle of degree ~M; found: ~M"))
+    (or ($cyclep cm n) (merror (intl:gettext s) caller n cm))))
 
-(defun check-list-or-set (l msg)
-  (or ($listp l) ($setp l)
-      (merror (intl:gettext "~M: argument should be a list or set; found: ~M") msg l)))
+(defun check-list-or-set (lsm caller)
+  (let ((s "~M: argument should be a list or set; found: ~M"))
+    (or ($listp lsm) ($setp lsm) (merror (intl:gettext s) caller lsm))))
 
-(defun check-list (l msg)
-  (or ($listp l)
-      (merror (intl:gettext "~M: argument should be a list; found: ~M") msg l)))
+(defun check-list (lm caller)
+  (let ((s "~M: argument should be a list; found: ~M"))
+  (or ($listp lm) (merror (intl:gettext s) caller lm))))
 
-(defun check-list-length (l n msg)
-  (or (eql ($length l) n)
-      (merror (intl:gettext "~M: argument should be a list of length ~M; found: ~M")
-              msg n l)))
+(defun check-list-length (lm n caller)
+  (let ((s "~M: argument should be a list of length ~M; found: ~M"))
+  (or (eql ($length lm) n) (merror (intl:gettext s) caller n lm))))
 
-(defun check-pos-integer (n msg)
-  (or (and (integerp n) (> n 0))
-      (merror (intl:gettext "~M: argument must be a positive integer; found: ~M") msg n)))
+(defun check-pos-integer (n caller)
+  (let ((s "~M: argument must be a positive integer; found: ~M"))
+  (or (and (integerp n) (> n 0)) (merror (intl:gettext s) caller n))))
 
-(defun check-integer-n1-n2 (r n1 n2 msg)
-  (or (and (integerp r) (>= r n1) (<= r n2))
-      (merror (intl:gettext "~M: argument must be an integer between ~M and ~M; found: ~M") msg n1 n2 r)))
+(defun check-integer-n1-n2 (r n1 n2 caller)
+  (let ((s "~M: argument must be an integer between ~M and ~M; found: ~M"))
+    (or (and (integerp r) (>= r n1) (<= r n2))
+        (merror (intl:gettext s) caller n1 n2 r))))
 
-;;; $permult multiplies permutation p1 by the permutations in list ps
-(defun $permult (p0 &rest ps)
-  (check-permutation p0 "permult") 
-  (let ((n ($length p0)) (rp p0))
-    ;; multiplies the current product, rp, by each of the permutations in ps
-    (dolist (p ps)
-      (check-list-length p n "permult")
-      (check-permutation p "permult") 
+;;; $permult multiplies permutation pm by the permutations in list lmpm
+(defun $permult (pm &rest lmpm)
+  (check-permutation pm "permult") 
+  (let ((n ($length pm)) (rp pm))
+    ;; multiplies the current product, rp, by each of the permutations in lmpm
+    (dolist (qm lmpm)
+      (check-list-length qm n "permult")
+      (check-permutation qm "permult") 
       ;; the new product, tp, will be the current product, rp, times
-      ;; permutation p: tp = [p[rp[1]], p[rp[2]], ..., p[rp[n]]]
+      ;; permutation pm: tp = [pm[rp[1]], pm[rp[2]], ..., pm[rp[n]]]
       (let ((tp nil))
         (dolist (j (reverse (rest rp)))
-          (setq tp (cons (nth (1- j) (rest p)) tp)))
+          (setq tp (cons (nth (1- j) (rest qm)) tp)))
         ;; makes tp the new current product rp
         (setq rp (cons '(mlist simp) tp))))
     rp))
 
 ;;; $invert_permutation computes the inverse of permutation p
-(defun $invert_permutation (p)
-      (check-permutation p "invert_permutation") 
-  (let ((inverse (copy-list p)))
-    ;; if the element p[j] of the permutation is equal to i, then
+(defun $invert_permutation (pm)
+      (check-permutation pm "invert_permutation") 
+  (let ((inverse (copy-list pm)))
+    ;; if the element pm[j] of the permutation is equal to i, then
     ;; the element inverse[i] of the inverse should be equal to j.
-    (dotimes (j ($length p))
-      (setf (nth (nth (1+ j) p) inverse) (1+ j)))
+    (dotimes (j ($length pm))
+      (setf (nth (nth (1+ j) pm) inverse) (1+ j)))
     inverse))
 
-;;; $apply_permutation permutes the elements of list l according to the
-;;; permutation p
-(defun $apply_permutation (p l)
-  (check-permutation p "apply_permutation") 
-  (check-list-or-set l "apply_permutation")
-  (check-list-length l ($length p) "apply_permutation")
+;;; $apply_permutation permutes the elements of list (or set) lsm according
+;;; to the permutation pm
+(defun $apply_permutation (pm lsm)
+  (check-permutation pm "apply_permutation") 
+  (check-list-or-set lsm "apply_permutation")
+  (check-list-length lsm ($length pm) "apply_permutation")
   (let ((result nil))
-    (dolist (j (reverse (rest p)))
-      (setq result (cons (nth j l) result)))
-    (cons (car l) result)))
+    (dolist (j (reverse (rest pm)))
+      (setq result (cons (nth j lsm) result)))
+    (cons (car lsm) result)))
 
-;;; $apply_cycles permutes the elements of list l according to the
-;;; list of cycles cl, applying the cycles on the end of the list first
-(defun $apply_cycles (cl ls)
-  (check-list cl "apply_cycles")
-  (check-list-or-set ls "apply_cycles")
-  (let ((n ($length ls)) (result (copy-list ls)) (prod) (i))
+;;; $apply_cycles permutes the elements of list (or set) lsm according to the
+;;; list of cycles lmcm, applying the cycles on the end of the list first
+(defun $apply_cycles (lmcm lsm)
+  (check-list lmcm "apply_cycles")
+  (check-list-or-set lsm "apply_cycles")
+  (let ((n ($length lsm)) (result (copy-list lsm)) prod i)
     ;; iterate the cycles, the last in the list first
-    (dolist (c (reverse (rest cl)))
-      (check-cycle c n "apply_cycles")
-      ;; ls[i] will be moved to ls[j], starting with i equal to the last
+    (dolist (cm (reverse (rest lmcm)))
+      (check-cycle cm n "apply_cycles")
+      ;; lsm[i] will be moved to lsm[j], starting with i equal to the last
       ;; element of the cycle and j equal the first cycle element
-      (setq i (first (last c)) prod (copy-list result))
-      (dolist (j (rest c))
+      (setq i (first (last cm)) prod (copy-list result))
+      (dolist (j (rest cm))
         (setf (nth i prod) (nth j result) i j))
       (setq result (copy-list prod)))
     result))
 
 ;;; $permutation_undecomp converts a list of cycles into a permutation,
 ;;; equal to their product, by applying $apply_cycles to [1, 2,..., n]
-(defun $permutation_undecomp (cl n)
-  (check-list cl "permutation_undecomp")
+(defun $permutation_undecomp (lmcm n)
+  (check-list lmcm "permutation_undecomp")
   (check-pos-integer n "permutation_undecomp")
   ($apply_cycles
-   cl `((mlist simp) ,@(loop for i from 1 to n collecting i))))
+   lmcm `((mlist simp) ,@(loop for i from 1 to n collecting i))))
 
 ;;; $permutation_cycles decomposes permutation p into a product of canonical
 ;;; cycles: with lower indices first.
-(defun $permutation_cycles (p)
-  (check-permutation p "permutation_cycles")
-  (let* ((i) (j) (k) (cycle) (n ($length p)) (result '((mlist simp)))
+(defun $permutation_cycles (pm)
+  (check-permutation pm "permutation_cycles")
+  (let* (i j k cm (n ($length pm)) (result '((mlist simp)))
          (v (make-array n :element-type 'bit :initial-element 1)))
     ;; the i'th bit in bit array v equal to 1 means index i+1 has not been
     ;; added to any cycles. The next cycle will then start where the first
@@ -164,62 +186,59 @@
       (setf i (position 1 v) (bit v i) 0)
       ;; i= v index where a 1 was found. j=i+1 first index in the current
       ;; cycle. k=next index in the current cycle
-      (setq j (1+ i) k j cycle `((mlist simp) ,j))
+      (setq j (1+ i) k j cm `((mlist simp) ,j))
       ;; if p[k] is different from k, there's a non-trivial cycle
-      (while (/= (nth k p) j)
-        (setf k (nth k p) cycle (append cycle (list k)) (bit v (1- k)) 0))
+      (while (/= (nth k pm) j)
+        (setf k (nth k pm) cm (append cm (list k)) (bit v (1- k)) 0))
       ;; a trivial cycle with just one index (length 2) will not be saved
-      (and (> (length cycle) 2) (setq result (append result (list cycle)))))
+      (and (> (length cm) 2) (setq result (append result (list cm)))))
     result))
 
 ;;; $permutation_lex_rank finds the position of the given permutation in
 ;;; the lexicographic ordering of permutations (from 1 to n!).
 ;;; Algorithm 2.15: from Kreher & Stinson (1999). Combinatorial Algorithms.
-(defun $permutation_lex_rank (p)
-  (check-permutation p "permutation_lex_rank") 
-  (let ((r 0) (n ($length p)) (q (copy-list p)))
+(defun $permutation_lex_rank (pm)
+  (check-permutation pm "permutation_lex_rank") 
+  (let ((r 0) (n ($length pm)) (qm (copy-list pm)))
     (do ((j 1 (1+ j)))
         ((> j n) (1+ r))
-      (incf r (* (1- (nth j q)) (factorial (- n j))))
+      (incf r (* (1- (nth j qm)) (factorial (- n j))))
       (do ((i (1+ j) (1+ i)))
           ((> i n))
-        (when (> (nth i q) (nth j q))
-          (setf (nth i q) (1- (nth i q))))))))
+        (when (> (nth i qm) (nth j qm))
+          (setf (nth i qm) (1- (nth i qm))))))))
 
 ;;; $permutation_index finds the minimum number of adjacent transpositions
 ;;; necessary to write permutation p as a product of adjacent transpositions.
-(defun $permutation_index (p)
-  (check-permutation p "permutation_index") 
-  (let ((d 0) (n ($length p)) (q (copy-list p)))
-    (do ((j 1 (1+ j)))
-        ((> j n) d)
-      (incf d (* (1- (nth j q))))
-      (do ((i (1+ j) (1+ i)))
-          ((> i n))
-        (when (> (nth i q) (nth j q))
-          (setf (nth i q) (1- (nth i q))))))))
+(defun $permutation_index (pm)
+  (check-permutation pm "permutation_index") 
+  (let ((d 0) (n ($length pm)) (qm (copy-list pm)))
+    (loop for j from 1 to n do
+         (incf d (* (1- (nth j qm))))
+      (loop for i from (1+ j) to n do
+        (when (> (nth i qm) (nth j qm))
+          (setf (nth i qm) (1- (nth i qm))))))
+    d))
 
 ;;; $permutation_decomp finds the minimum set of adjacent transpositions
-;;; whose product equals permutation p.
-(defun $permutation_decomp (p)
-  (check-permutation p "permutation_decomp") 
-  (let ((trans) (n ($length p)) (q (copy-list p)))
-    (do ((j 1 (1+ j)))
-        ((>= j n) (cons '(mlist simp) trans))
-      (when (>= (1- (nth j q)) 1)
-        (do ((i (+ (- (nth j q) 2) j) (1- i)))
-            ((< i j))
-          (setq trans (cons `((mlist simp) ,i ,(1+ i)) trans))))
-      (do ((k (1+ j) (1+ k)))
-          ((> k n))
-        (when (> (nth k q) (nth j q))
-          (setf (nth k q) (1- (nth k q))))))))
+;;; whose product equals permutation pm.
+(defun $permutation_decomp (pm)
+  (check-permutation pm "permutation_decomp") 
+  (let (lcm (n ($length pm)) (qm (copy-list pm)))
+    (loop for j from 1 to (1- n) do
+         (when (>= (1- (nth j qm)) 1)
+           (loop for i from (+ (- (nth j qm) 2) j) downto j do
+                (setq lcm (cons `((mlist simp) ,i ,(1+ i)) lcm))))
+         (loop for k from (1+ j) to n do
+              (when (> (nth k qm) (nth j qm))
+                (setf (nth k qm) (1- (nth k qm))))))
+    (cons '(mlist simp) lcm)))
 
 ;;; $permutation_parity finds the parity of permutation p (0 or 1).
 ;;; Algorithm 2.19 from Kreher & Stinson (1999). Combinatorial Algorithms.
-(defun $permutation_parity (p)
-  (check-permutation p "permutation_parity") 
-  (let* ((i) (c 0) (n ($length p)) (q (rest p)) 
+(defun $permutation_parity (pm)
+  (check-permutation pm "permutation_parity") 
+  (let* (i (c 0) (n ($length pm)) (q (rest pm)) 
          (a (make-array n :element-type 'bit :initial-element 0)))
     (dotimes (j n)
       (when (= (bit a j) 0)
@@ -235,85 +254,104 @@
   (check-pos-integer n "permutations_lex")
   (when r0 (check-integer-n1-n2 r0 1 (factorial n) "permutations_lex"))
   (when rf (check-integer-n1-n2 rf r0 (factorial n) "permutations_lex"))
-  (let ((p (make-array (1+ n) :element-type 'fixnum)) q ppp)
+  (let ((pa (make-array n :element-type 'fixnum)) lpm)
     (if r0
         (progn
           (unless rf (setq rf r0))
-          (setq p (permutation-lex-unrank n r0 p))
-          (dotimes (i n)
-            (setq q (cons (aref p (1+ i)) q)))
-          (setq ppp (cons `((mlist simp) ,@(nreverse q)) ppp))
+          (permutation-lex-unrank n r0 pa)
+          (push-array-mlist pa lpm)
           (when rf
             (dotimes (j (- rf r0))
-              (setq q nil)
-              (setq p (permutation-lex-next n p))
-              (dotimes (j n)
-                (setq q (cons (aref p (1+ j)) q)))
-              (setq ppp (cons `((mlist simp) ,@(nreverse q)) ppp)))))
+              (permutation-lex-next n pa)
+              (push-array-mlist pa lpm))))
         (progn
-          (dotimes (i (1+ n))
-            (setf (aref p i) i))
-          (while (not (null p))
-            (setq q nil)
-            (dotimes (j n)
-              (setq q (cons (aref p (1+ j)) q)))
-            (setq ppp (cons `((mlist simp) ,@(nreverse q)) ppp))
-            (setq p (permutation-lex-next n p)))))
-    (if (> (length ppp) 1)
-        `((mlist simp) ,@(nreverse ppp))
-        (first ppp))))
+          (dotimes (i n)
+            (setf (aref pa i) (1+ i)))
+          (push-array-mlist pa lpm)
+          (while (permutation-lex-next n pa)
+            (push-array-mlist pa lpm))))
+    (if (> (length lpm) 1)
+        `((mlist simp) ,@(nreverse lpm))
+        (first lpm))))
+
+;;; $permutation_lex_next finds the next permutation in lexicographic order
+(defun $permutation_lex_next (pm)
+  (check-permutation pm "permutation_lex_next") 
+  (let* ((n ($length pm)) (pa (make-array n :element-type 'fixnum)))
+    (dotimes (i n)
+      (setf (aref pa i) (nth (1+ i) pm)))
+    (unless (permutation-lex-next n pa)
+      (return-from $permutation_lex_next nil))
+    (concatenate 'list '((mlist simp)) pa)))
 
 ;;; permutation_lex_next finds next permutation in the lexicographic order.
 ;;; Based on Algorithm 2.14 from Kreher & Stinson (1999). Combinatorial
 ;;; Algorithms.
-(defun permutation-lex-next (n p)
-  (declare (type (simple-array fixnum *) p))
+(defun permutation-lex-next (n pa)
+  (declare (type (simple-array fixnum *) pa))
   (declare (type fixnum n))
-  (let ((i (1- n)) (j n) (r) (tm))
-    (while (< (aref p (1+ i)) (aref p i))
+  (let ((i (1- n)) (j n))
+    (while (and (> i 0) (< (aref pa i) (aref pa (1- i))))
       (decf i))
     (when (= i 0) (return-from permutation-lex-next nil))
-    (while (< (aref p j) (aref p i))
+    (while (< (aref pa (1- j)) (aref pa (1- i)))
       (decf j))
-    (setq tm (aref p j))
-    (setf (aref p j) (aref p i))
-    (setf (aref p i) tm)
+    (array-cycle pa i j)
     (dotimes (k (floor (/ (- n i) 2)))
-      (setq r (aref p (+ k i 1)))
-      (setf (aref p (+ k i 1)) (aref p (- n k)))
-      (setf (aref p (- n k)) r))
-    p))
+      (array-cycle pa (+ k i 1) (- n k)))
+    t))
 
 ;;; $permutation_lex_unrank returns permutation of order n in the r position
 ;;; (from 1 to n!) in the lexicographic ordering of permutations.
 ;;; Algorithm 2.16: from Kreher & Stinson (1999). Combinatorial Algorithms.
-(defun permutation-lex-unrank (n r p)
-  (declare (type (simple-array fixnum *) p))
+(defun permutation-lex-unrank (n r pa)
+  (declare (type (simple-array fixnum *) pa))
   (declare (type fixnum n))
   (declare (type fixnum r))
   (let (d)
     (decf r)
-    (setf (aref p n) 1)
-    (do ((j 1 (1+ j)))
-        ((> j (1- n)))
-      (setq d (/ (mod r (factorial (1+ j))) (factorial j)))
-      (decf r (* d (factorial j)))
-      (setf (aref p (- n j)) (1+ d))
-      (do ((i (1+ (- n j)) (1+ i)))
-          ((> i n))
-        (when (> (aref p i) d)
-          (setf (aref p i) (1+ (aref p i))))))
-    p))
-
-;;; $permutation_lex_next finds the next permutation in lexicographic order
-(defun $permutation_lex_next (p)
-  (check-permutation p "permutation_lex_next") 
-  (let* ((n (length p)) (pa (make-array n :element-type 'fixnum)) (q))
-    (setf (aref pa 0) 0)
-    (dotimes (i (1- n))
-      (setf (aref pa (1+ i)) (nth (1+ i) p)))
-    (setq pa (permutation-lex-next (1- n) pa))
-    (when (null pa) (return-from $permutation_lex_next nil))
+    (setf (aref pa (1- n)) 1)
     (dotimes (j (1- n))
-      (setq q (cons (aref pa (1+ j)) q)))
-    `((mlist simp) ,@(nreverse q))))
+      (setq d (/ (mod r (factorial (+ j 2))) (factorial (1+ j))))
+      (decf r (* d (factorial (1+ j))))
+      (setf (aref pa (- n j 2)) (1+ d))
+      (loop for i from (- n j 1) to (1- n) do
+        (when (> (aref pa i) d)
+          (setf (aref pa i) (1+ (aref pa i))))))
+    t))
+
+;;; array-cycle applies the adjacent transposition [i,i+1] to the
+;;; permutation array pa. If more than two arguments are given, the first
+;;; one is a permutation array and the following indices are a cycle to be
+;;; applied to the permutation.
+(defun array-cycle (pa i &rest c)
+  (if (null c)
+      (let ((tmp (aref pa (1- i))))
+        (setf (aref pa (1- i)) (aref pa i) (aref pa i) tmp))
+      (progn
+        (push i c)
+        (let ((n (length c)) (tmp (aref pa (1- (first c)))))
+          (dotimes (j (1- n))
+            (setf (aref pa (1- (nth j c))) (aref pa (1- (nth (1+ j) c)))))
+          (setf (aref pa (1- (nth (1- n) c))) tmp)))))
+
+;;; $permutations_list returns a list of the n-degree permutations where each
+;;; permutation differs from the previous one by an adjacent transposition 
+(defun $permutations_list (n)
+  (check-pos-integer n "permutations_path")
+  (when (= n 1) (return-from $permutations_list #$[[1]]$))
+  (when (= n 2) (return-from $permutations_list #$[[1,2],[2,1]]$))
+  (let (f l s lpm (pa (make-array n :element-type 'fixnum)))
+    (setf (aref pa 0) 2 (aref pa 1) 1)
+    (dotimes (i (- n 2))
+      (setf (aref pa (+ i 2)) (+ i 3)))
+    (dotimes (j (factorial (1- n)))
+      (if (= (mod j 2) 1)
+          (setq f 1 l (1- n) s 1)
+          (setq f (1- n) l 1 s -1))
+      (array-cycle pa l)
+      (push-array-mlist pa lpm)
+      (do ((k f (+ k s))) ((= k (+ l s)))
+        (array-cycle pa k)
+        (push-array-mlist pa lpm)))
+    `((mlist simp) ,@(nreverse lpm))))
