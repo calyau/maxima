@@ -28,14 +28,21 @@
 ;;;;  lmcm  : a maxima list of cycles as maxima lists
 ;;;;
 ;;;; USEFULL COMMANDS
-;;;;  Turning a pa into a pm:
+;;;;  Turn a pa into a pm:
 ;;;;       (concatenate 'list `((mlist simp)) pa)
 ;;;;
-;;;;  Turning a pa into a pm and pushing it to the top of a lpm
-;;;;       (push-array-mlist pa lpm)    (macro defined in this package)
-;;;;
-;;;;  Turning a lpm into a maxima list
+;;;;  Turn an lpm into a maxima list
 ;;;;       `((mlist simp) ,@(nreverse lpm))
+;;;;
+;;;; MACROS
+;;;;  Apply transposition [i,j] to a pa (i and j from 1 to n)
+;;;;       (array-transposition pa i j)
+;;;;
+;;;;  Apply transposition [i,i+1] to a pa (i from 1 to n-1)
+;;;;       (array-adjacent-transposition pa i)
+;;;;
+;;;;  Turn a pa into a pm and push it to the top of an lpm
+;;;;       (push-array-mlist pa lpm)
 ;;;;
 ;;;; Copyright (C) 2017 Jaime Villate
 ;;;;
@@ -59,6 +66,12 @@
 
 (defmacro push-array-mlist (pa lpm)
   `(push (concatenate (quote list) (quote ((mlist simp))) ,pa) ,lpm))
+
+(defmacro array-adjacent-transposition (pa i)
+  `(rotatef (aref ,pa (1- ,i)) (aref ,pa ,i)))
+
+(defmacro array-transposition (pa i j)
+  `(rotatef (aref ,pa (1- ,i)) (aref ,pa (1- ,j))))
 
 ;;; $cyclep returns true if its argument is a maxima list of lenght n or
 ;;; lower, whose elements are integers between 1 and n, without repetitions.
@@ -113,19 +126,16 @@
 ;;; $permult multiplies permutation pm by the permutations in list lmpm
 (defun $permult (pm &rest lmpm)
   (check-permutation pm "permult") 
-  (let ((n ($length pm)) (rp pm))
-    ;; multiplies the current product, rp, by each of the permutations in lmpm
+  (let ((n ($length pm)) (rm (copy-list pm)))
+    ;; multiplies the current product, rm, by each of the permutations in lmpm
     (dolist (qm lmpm)
       (check-list-length qm n "permult")
       (check-permutation qm "permult") 
-      ;; the new product, tp, will be the current product, rp, times
-      ;; permutation pm: tp = [pm[rp[1]], pm[rp[2]], ..., pm[rp[n]]]
-      (let ((tp nil))
-        (dolist (j (reverse (rest rp)))
-          (setq tp (cons (nth (1- j) (rest qm)) tp)))
-        ;; makes tp the new current product rp
-        (setq rp (cons '(mlist simp) tp))))
-    rp))
+      ;; the new product, rm, is the current product, rm, times
+      ;; permutation qm: rm = [qm[rm[1]], qm[rm[2]], ..., qm[rm[n]]]
+      (loop for j from 1 to n do
+           (setf (nth j rm) (nth (nth j rm) qm))))
+    rm))
 
 ;;; $invert_permutation computes the inverse of permutation p
 (defun $invert_permutation (pm)
@@ -153,17 +163,16 @@
 (defun $apply_cycles (lmcm lsm)
   (check-list lmcm "apply_cycles")
   (check-list-or-set lsm "apply_cycles")
-  (let ((n ($length lsm)) (result (copy-list lsm)) prod i)
+  (let ((n ($length lsm)) (r (copy-list lsm)) m tmp)
     ;; iterate the cycles, the last in the list first
     (dolist (cm (reverse (rest lmcm)))
       (check-cycle cm n "apply_cycles")
-      ;; lsm[i] will be moved to lsm[j], starting with i equal to the last
-      ;; element of the cycle and j equal the first cycle element
-      (setq i (first (last cm)) prod (copy-list result))
-      (dolist (j (rest cm))
-        (setf (nth i prod) (nth j result) i j))
-      (setq result (copy-list prod)))
-    result))
+      (setq m ($length cm))
+      (setq tmp (nth (nth 1 cm) r))
+      (loop for i from 1 to (1- m) do
+           (setf (nth (nth i cm) r) (nth (nth (1+ i) cm) r)))
+      (setf (nth (nth m cm) r) tmp))
+    r))
 
 ;;; $permutation_undecomp converts a list of cycles into a permutation,
 ;;; equal to their product, by applying $apply_cycles to [1, 2,..., n]
@@ -199,14 +208,13 @@
 ;;; Algorithm 2.15: from Kreher & Stinson (1999). Combinatorial Algorithms.
 (defun $permutation_lex_rank (pm)
   (check-permutation pm "permutation_lex_rank") 
-  (let ((r 0) (n ($length pm)) (qm (copy-list pm)))
-    (do ((j 1 (1+ j)))
-        ((> j n) (1+ r))
+  (let ((r 1) (n ($length pm)) (qm (copy-list pm)))
+    (loop for j from 1 to n do
       (incf r (* (1- (nth j qm)) (factorial (- n j))))
-      (do ((i (1+ j) (1+ i)))
-          ((> i n))
+      (loop for i from (1+ j) to n do
         (when (> (nth i qm) (nth j qm))
-          (setf (nth i qm) (1- (nth i qm))))))))
+          (setf (nth i qm) (1- (nth i qm))))))
+    r))
 
 ;;; $permutation_index finds the minimum number of adjacent transpositions
 ;;; necessary to write permutation p as a product of adjacent transpositions.
@@ -296,9 +304,9 @@
     (when (= i 0) (return-from permutation-lex-next nil))
     (while (< (aref pa (1- j)) (aref pa (1- i)))
       (decf j))
-    (array-cycle pa i j)
+    (array-transposition pa i j)
     (dotimes (k (floor (/ (- n i) 2)))
-      (array-cycle pa (+ k i 1) (- n k)))
+      (array-transposition pa (+ k i 1) (- n k)))
     t))
 
 ;;; $permutation_lex_unrank returns permutation of order n in the r position
@@ -309,31 +317,15 @@
   (declare (type fixnum n))
   (declare (type fixnum r))
   (let (d)
-    (decf r)
     (setf (aref pa (1- n)) 1)
     (dotimes (j (1- n))
-      (setq d (/ (mod r (factorial (+ j 2))) (factorial (1+ j))))
+      (setq d (/ (mod (1- r) (factorial (+ j 2))) (factorial (1+ j))))
       (decf r (* d (factorial (1+ j))))
       (setf (aref pa (- n j 2)) (1+ d))
       (loop for i from (- n j 1) to (1- n) do
         (when (> (aref pa i) d)
           (setf (aref pa i) (1+ (aref pa i))))))
     t))
-
-;;; array-cycle applies the adjacent transposition [i,i+1] to the
-;;; permutation array pa. If more than two arguments are given, the first
-;;; one is a permutation array and the following indices are a cycle to be
-;;; applied to the permutation.
-(defun array-cycle (pa i &rest c)
-  (if (null c)
-      (let ((tmp (aref pa (1- i))))
-        (setf (aref pa (1- i)) (aref pa i) (aref pa i) tmp))
-      (progn
-        (push i c)
-        (let ((n (length c)) (tmp (aref pa (1- (first c)))))
-          (dotimes (j (1- n))
-            (setf (aref pa (1- (nth j c))) (aref pa (1- (nth (1+ j) c)))))
-          (setf (aref pa (1- (nth (1- n) c))) tmp)))))
 
 ;;; $permutations_list returns a list of the n-degree permutations where each
 ;;; permutation differs from the previous one by an adjacent transposition 
@@ -349,9 +341,9 @@
       (if (= (mod j 2) 1)
           (setq f 1 l (1- n) s 1)
           (setq f (1- n) l 1 s -1))
-      (array-cycle pa l)
+      (array-adjacent-transposition pa l)
       (push-array-mlist pa lpm)
       (do ((k f (+ k s))) ((= k (+ l s)))
-        (array-cycle pa k)
+        (array-adjacent-transposition pa k)
         (push-array-mlist pa lpm)))
     `((mlist simp) ,@(nreverse lpm))))
