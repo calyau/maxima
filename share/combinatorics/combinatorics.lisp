@@ -1,21 +1,25 @@
 ;;;; COMBINATORICS package for Maxima
 ;;;;
 ;;;; Maxima functions to work with permutations.
-;;;;  $cyclep               : predicate function for cycles
-;;;;  $permutationp         : predicate function for permutations
-;;;;  $permult              : permutations product
-;;;;  $invert_permutation   : inverse of a permutation
-;;;;  $apply_permutation    : permutes a list according to a permutation
-;;;;  $apply_cycles         : permutes a list according to a list of cycles
-;;;;  $permutation_undecomp : converts a list of cycles into a permutation
-;;;;  $permutation_cycles   : decomposes a permutation into cycles
-;;;;  $permutation_lex_rank : permutation's position in lexicographic sequence
-;;;;  $permutation_index    : minimum number of adjacent transpositions
-;;;;  $permutation_decomp   : minimum set of adjacent transpositions to get p
-;;;;  $permutation_parity   : parity of a permutation (0 or 1)
+;;;;  $cyclep               : predicate function for cycles.
+;;;;  $permutationp         : predicate function for permutations.
+;;;;  $permult              : permutations product.
+;;;;  $invert_permutation   : inverse of a permutation.
+;;;;  $apply_permutation    : permutes a list according to a permutation.
+;;;;  $apply_cycles         : permutes a list according to a list of cycles.
+;;;;  $permutation_undecomp : converts a list of cycles into a permutation.
+;;;;  $permutation_cycles   : decomposes a permutation into cycles.
+;;;;  $permutation_lex_rank : permutation's position in lexicographic sequence.
+;;;;  $permutation_index    : minimum number of adjacent transpositions.
+;;;;  $permutation_decomp   : minimum set of adjacent transpositions to get p.
+;;;;  $permutation_parity   : parity of a permutation (0 or 1).
 ;;;;  $permutations_lex     : lexicographic list of n-degree permutations
-;;;;                          or one or more permutations within that sequence
-;;;;  $permutation_lex_next : finds next permutation in lexicographic ordering
+;;;;                          or one or more permutations within that sequence.
+;;;;  $permutation_lex_next : finds next permutation in lexicographic ordering.
+;;;;  $permutations_tj      : List of n-degree permutations in mimimum-change
+;;;;                          ordering (Trotter-Johnson), or one or more
+;;;;                          permutations within that sequence.
+;;;;  $permutation_tj_next  : finds next permutation in Trotter-Johnson ordering
 ;;;;
 ;;;; NOTATION
 ;;;;  pm    : a permutation as a maxima list
@@ -210,10 +214,10 @@
   (check-permutation pm "permutation_lex_rank") 
   (let ((r 1) (n ($length pm)) (qm (copy-list pm)))
     (loop for j from 1 to n do
-      (incf r (* (1- (nth j qm)) (factorial (- n j))))
-      (loop for i from (1+ j) to n do
-        (when (> (nth i qm) (nth j qm))
-          (setf (nth i qm) (1- (nth i qm))))))
+         (incf r (* (1- (nth j qm)) (factorial (- n j))))
+         (loop for i from (1+ j) to n do
+              (when (> (nth i qm) (nth j qm))
+                (setf (nth i qm) (1- (nth i qm))))))
     r))
 
 ;;; $permutation_index finds the minimum number of adjacent transpositions
@@ -246,16 +250,20 @@
 ;;; Algorithm 2.19 from Kreher & Stinson (1999). Combinatorial Algorithms.
 (defun $permutation_parity (pm)
   (check-permutation pm "permutation_parity") 
-  (let* (i (c 0) (n ($length pm)) (q (rest pm)) 
-         (a (make-array n :element-type 'bit :initial-element 0)))
+  (permutation-parity ($length pm) (rest pm)))
+
+;;; permutation-parity finds the parity of n first elements of p (lisp list)
+;;; Algorithm 2.19 from Kreher & Stinson (1999). Combinatorial Algorithms.
+(defun permutation-parity (n p)
+  (let (i (c 0) (a (make-array n :element-type 'bit :initial-element 0)))
     (dotimes (j n)
       (when (= (bit a j) 0)
         (incf c)
         (setf (bit a j) 1 i j)
-        (while (/= (1- (nth i q)) j)
-          (setf i (1- (nth i q)) (bit a i) 1))))
+        (while (/= (1- (nth i p)) j)
+          (setf i (1- (nth i p)) (bit a i) 1))))
     (mod (- n c) 2)))
-
+          
 ;;; $permutations_lex returns a list of the permutations of order n in
 ;;; lexicographic order
 (defun $permutations_lex (n &optional r0 rf)
@@ -265,7 +273,6 @@
   (let ((pa (make-array n :element-type 'fixnum)) lpm)
     (if r0
         (progn
-          (unless rf (setq rf r0))
           (permutation-lex-unrank n r0 pa)
           (push-array-mlist pa lpm)
           (when rf
@@ -273,8 +280,7 @@
               (permutation-lex-next n pa)
               (push-array-mlist pa lpm))))
         (progn
-          (dotimes (i n)
-            (setf (aref pa i) (1+ i)))
+          (dotimes (i n) (setf (aref pa i) (1+ i)))
           (push-array-mlist pa lpm)
           (while (permutation-lex-next n pa)
             (push-array-mlist pa lpm))))
@@ -309,8 +315,8 @@
       (array-transposition pa (+ k i 1) (- n k)))
     t))
 
-;;; $permutation_lex_unrank returns permutation of order n in the r position
-;;; (from 1 to n!) in the lexicographic ordering of permutations.
+;;; permutation-lex-unrank finds the n-degree permutation of in position
+;;; r (from 1 to n!) in the lexicographic ordering of permutations.
 ;;; Algorithm 2.16: from Kreher & Stinson (1999). Combinatorial Algorithms.
 (defun permutation-lex-unrank (n r pa)
   (declare (type (simple-array fixnum *) pa))
@@ -323,27 +329,103 @@
       (decf r (* d (factorial (1+ j))))
       (setf (aref pa (- n j 2)) (1+ d))
       (loop for i from (- n j 1) to (1- n) do
-        (when (> (aref pa i) d)
-          (setf (aref pa i) (1+ (aref pa i))))))
+           (when (> (aref pa i) d)
+             (setf (aref pa i) (1+ (aref pa i))))))
     t))
 
-;;; $permutations_list returns a list of the n-degree permutations where each
-;;; permutation differs from the previous one by an adjacent transposition 
-(defun $permutations_list (n)
-  (check-pos-integer n "permutations_path")
-  (when (= n 1) (return-from $permutations_list #$[[1]]$))
-  (when (= n 2) (return-from $permutations_list #$[[1,2],[2,1]]$))
-  (let (f l s lpm (pa (make-array n :element-type 'fixnum)))
-    (setf (aref pa 0) 2 (aref pa 1) 1)
-    (dotimes (i (- n 2))
-      (setf (aref pa (+ i 2)) (+ i 3)))
-    (dotimes (j (factorial (1- n)))
-      (if (= (mod j 2) 1)
-          (setq f 1 l (1- n) s 1)
-          (setq f (1- n) l 1 s -1))
-      (array-adjacent-transposition pa l)
-      (push-array-mlist pa lpm)
-      (do ((k f (+ k s))) ((= k (+ l s)))
-        (array-adjacent-transposition pa k)
-        (push-array-mlist pa lpm)))
-    `((mlist simp) ,@(nreverse lpm))))
+;;; $permutations_tj returns a list of the permutations of order n
+;;; using Trotter-Johnson ordering
+(defun $permutations_tj (n &optional r0 rf)
+  (check-pos-integer n "permutations_tj")
+  (when r0 (check-integer-n1-n2 r0 1 (factorial n) "permutations_tj"))
+  (when rf (check-integer-n1-n2 rf r0 (factorial n) "permutations_tj"))
+  (let ((pa (make-array n :element-type 'fixnum)) lpm)
+    (if r0
+        (progn
+          (permutation-tj-unrank n r0 pa)
+          (push-array-mlist pa lpm)
+          (when rf
+            (dotimes (j (- rf r0))
+              (permutation-tj-next n pa)
+              (push-array-mlist pa lpm))))
+        (progn
+          (dotimes (i n) (setf (aref pa i) (1+ i)))
+          (push-array-mlist pa lpm)
+          (while (permutation-tj-next n pa)
+            (push-array-mlist pa lpm))))
+    (if (> (length lpm) 1)
+        `((mlist simp) ,@(nreverse lpm))
+        (first lpm))))
+
+;;; $permutation_rank finds the position of the given permutation in
+;;; the Trotter-Johnson ordering of permutations (from 1 to n!).
+;;; Algorithm 2.17: from Kreher & Stinson (1999). Combinatorial Algorithms.
+(defun $permutation_tj_rank (pm)
+  (check-permutation pm "permutation_rank") 
+  (let (i k (r 1) (n ($length pm)))
+    (loop for j from 2 to n do
+         (setq k 1 i 1)
+         (while (/= (nth i pm) j)
+           (and (< (nth i pm) j) (incf k))
+           (incf i))
+         (if (= (mod r 2) 1)
+             (setq r (- (+ (* j r) 1) k))
+             (setq r (+ (* j (1- r)) k))))
+    r))
+
+;;; permutation-tj-unrank returns the n-degree permutation in position r
+;;; (from 1 to n!) in the Trotter-Johnson ordering of permutations.
+;;; Algorithm 2.18: from Kreher & Stinson (1999). Combinatorial Algorithms.
+(defun permutation-tj-unrank (n r pa)
+  (declare (type (simple-array fixnum *) pa))
+  (declare (type fixnum n))
+  (declare (type fixnum r))
+  (let (r1 (r2 0) k)
+    (setf (aref pa 0) 1)
+    (loop for j from 2 to n do
+         (setq r1 (floor (/ (* (1- r) (factorial j)) (factorial n))))
+         (setq k (- r1 (* j r2)))
+         (if (= (mod r2 2) 0)
+             (progn
+               (loop for i from (1- j) downto (- j k) do
+                    (setf (aref pa i) (aref pa (1- i))))
+               (setf (aref pa (- j k 1)) j)) 
+             (progn
+               (loop for i from (1- j) downto (1+ k) do
+                    (setf (aref pa i) (aref pa (1- i))))
+               (setf (aref pa k) j)))
+         (setq r2 r1))))
+ 
+;;; permutation_tj_next finds next permutation in the Trotter-Johnson
+;;; ordering. Algorithm 2.20 from Kreher & Stinson (1999). Combinatorial
+;;; Algorithms.
+(defun permutation-tj-next (n pa)
+  (let ((q (concatenate 'list pa)) (st 0) (m n) d done)
+    (while (and (> m 1) (not done))
+      (setq d 1)
+      (while (/= (nth (1- d) q) m) (incf d))
+      (loop for i from d to (1- m) do (setf (nth (1- i) q) (nth i q)))
+      (if (= (permutation-parity (1- m) q) 1)
+          (if (= d m)
+              (decf m)
+              (progn
+                (array-adjacent-transposition pa (+ st d))
+                (setq done t)))
+          (if (= d 1)
+              (progn
+                (decf m)
+                (incf st))
+              (progn
+                (array-adjacent-transposition pa (+ st (1- d)))
+                (setq done t)))))
+    (if (= m 1) nil t)))
+
+;;; $permutation_tj_next finds the next permutation in Trotter-Johnson ordering
+(defun $permutation_tj_next (pm)
+  (check-permutation pm "permutation_tj_next") 
+  (let* ((n ($length pm)) (pa (make-array n :element-type 'fixnum)))
+    (dotimes (i n)
+      (setf (aref pa i) (nth (1+ i) pm)))
+    (unless (permutation-tj-next n pa)
+      (return-from $permutation_tj_next nil))
+    (concatenate 'list '((mlist simp)) pa)))
