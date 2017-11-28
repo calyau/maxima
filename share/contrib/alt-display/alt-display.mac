@@ -20,7 +20,7 @@ define_alt_display(f,body) ::= buildq(
     linear_displa='?linear\-displa
     ],
     body)],
-  f := block([simp:false], body));
+  f := body);
 
 define_alt_display(info_display(x),block([alt_display1d:false,alt_display2d:false],linear_displa(x)));
 define_alt_display(tex_display(x),block([alt_display1d:false,alt_display2d:false],printf(true,"~a",tex_displa(x))));
