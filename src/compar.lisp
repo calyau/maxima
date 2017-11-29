@@ -943,7 +943,7 @@ sign of the square, so any negative results are converted to positive."
             (found-sign (if squared (fifth hit) (fourth hit))))
         (funcall registrar expression)
         (setq sign
-              (if (and minus (not squared)) (flip found-sign) found-sign))))))
+              (if minus (flip found-sign) found-sign))))))
 
 (defun ensure-sign (expr &optional domain squared)
   "Try to determine the sign of EXPR. If DOMAIN is not one of the special values
