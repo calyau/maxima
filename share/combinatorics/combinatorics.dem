@@ -22,7 +22,7 @@ permutation_cycles (p1);
 
 permutation_index (p1);
 
-"Let's find that product of 12 transposition and save it in t1."$
+"Let's find that product of 12 transpositions and save it in t1."$
 t1: permutation_decomp(p1);
 
 "Suppose we have a list with 8 elements:"$

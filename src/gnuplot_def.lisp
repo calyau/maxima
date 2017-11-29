@@ -339,7 +339,9 @@
           (format dest "set size ratio -1~%")
           (if (getf plot-options :yx_ratio)
               (format dest "set size ratio ~,8f~%" (getf plot-options :yx_ratio))
-              (format dest "set size ratio 0.75~%")))
+              (if (not (getf plot-options :xy_scale))
+                  ;; emit the default only if there is no xy_scale specified.
+                  (format dest "set size ratio 0.75~%"))))
       (if (and (getf plot-options :xy_scale)
                (listp (getf plot-options :xy_scale)))
           (format dest "set size ~{~,8f~^, ~}~%" (getf plot-options :xy_scale))))
@@ -385,11 +387,11 @@
 
     ;; axes ranges and style
     (when (and (getf plot-options :x) (listp (getf plot-options :x)))
-      (format dest "set xrange [~{~,8f~^ : ~}]~%" (getf plot-options :x)))
+      (format dest "set xrange [~{~g~^ : ~}]~%" (getf plot-options :x)))
     (when (and (getf plot-options :y) (listp (getf plot-options :y)))
-      (format dest "set yrange [~{~,8f~^ : ~}]~%" (getf plot-options :y)))
+      (format dest "set yrange [~{~g~^ : ~}]~%" (getf plot-options :y)))
     (when (and (getf plot-options :z) (listp (getf plot-options :z)))
-      (format dest "set zrange [~{~,8f~^ : ~}]~%" (getf plot-options :z)))
+      (format dest "set zrange [~{~g~^ : ~}]~%" (getf plot-options :z)))
     (when (and (string= (getf plot-options :type) "plot2d")
                (member :axes plot-options))
       (if (getf plot-options :axes)

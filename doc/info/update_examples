@@ -148,7 +148,7 @@ while (<>) {
 
                         print "\@group\n" if scalar @group >= 2;
                         print @group;
-                        print "\@end group\n" if scalar @group => 2;
+                        print "\@end group\n" if scalar @group >= 2;
                     }
 
                     print "\@end example\n";

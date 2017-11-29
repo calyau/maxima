@@ -104,19 +104,16 @@ Set a time-stamp on each prompt:
 
 (%i3) define_alt_display(time_stamp(x),
                    block([alt_display1d:false,alt_display2d:false],
-                         simp:true,
                          prompt_prefix:printf(false,"~a~%",timedate()),
                          displa(x)));
 
-(%o3) time_stamp(x):=block([simp:false],
-                 block([?\*alt\-display1d\*:false,?\*alt\-display2d\*:false],
-                       simp:true,
-                       ?\*prompt\-prefix\*:printf(false,"~a~%",timedate()),
-                       ?displa(x)))
+(%o3) time_stamp(x):=block([\*alt\-display1d\*:false,
+                            \*alt\-display2d\*:false],
+                 \*prompt\-prefix\*:printf(false,"~a~%",timedate()),displa(x))
 (%i4) set_alt_display(1,time_stamp);
 
 (%o4) done
-2016-10-03 09:49:27-05:00
+2017-11-27 16:15:58-06:00
 (%i5) 
 @end example
 

@@ -762,74 +762,16 @@ sin(y)*(10.0+6*cos(x)),
 ;; parametric ; [parametric,xfun,yfun,[t,tlow,thigh],[nticks ..]]
 ;; the rest of the parametric list after the list will add to the plot options
 
-;; TODO: This should be removed after some time, once adaptive
-;; plotting has received enough testing and debugging.
-(defmvar $use_adaptive_parametric_plot t
-  "If true, parametric plots use adaptive plotting")
-
-(defun draw2d-parametric (param range1 plot-options &aux range tem)
-  (cond ((and ($listp (setq tem (nth 4 param)))
-              (symbolp (cadr tem))
-              (eql ($length tem) 3))
-         ;; sure looks like a range
-         (setq range (check-range tem))))
-  (let* ((options 
-          (plot-options-parser
-           (if range1 (cons range1 (cddddr param)) (cddddr param))
-           plot-options))
-         (nticks (getf options :nticks))
-         (trange (or (cddr range) (getf options :t)))
-         (tvar (or (cadr range) '$t))
-         (xrange (or (getf options :x) (getf options :xbounds)))
-         (yrange (or (getf options :y) (getf options :ybounds)))
-         (tmin (coerce-float (first trange)))
-         (tmax (coerce-float (second trange)))
-         (xmin (coerce-float (first xrange)))
-         (xmax (coerce-float (second xrange)))
-         (ymin (coerce-float (first yrange)))
-         (ymax (coerce-float (second yrange)))
-         (x 0.0)         ; have to initialize to some floating point..
-         (y 0.0)
-         (tt tmin)
-         (eps (/ (- tmax tmin) (- nticks 1)))
-         f1 f2 in-range-y in-range-x in-range last-ok 
-         )
-    (declare (type flonum x y tt ymin ymax xmin xmax tmin tmax eps))
-    (setq f1 (coerce-float-fun (third param) `((mlist), tvar)))
-    (setq f2 (coerce-float-fun (fourth param) `((mlist), tvar)))
-    (cons '(mlist simp)    
-          (loop 
-           do 
-           (setq x (funcall f1 tt))
-           (setq y (funcall f2 tt))
-           (setq in-range-y (and (<= y ymax) (>= y ymin)))
-           (setq in-range-x  (and  (<= x xmax) (>= x xmin)))
-           (setq in-range (and in-range-x in-range-y))
-           when (and (not in-range) (not last-ok))
-           collect  'moveto and collect 'moveto
-           do
-           (setq last-ok in-range)
-           collect (if in-range-x x (if (> x xmax) xmax xmin))
-           collect (if in-range-y y (if (> y ymax) ymax ymin))
-           when (>= tt tmax) do (loop-finish)
-           do (setq tt (+ tt eps))
-           (if (>= tt tmax) (setq tt tmax))
-           )))
-  )
-
-(defun draw2d-parametric-adaptive (param range1 plot-options &aux range tem)
-  (cond ((and ($listp (setq tem (nth 4 param)))
-              (symbolp (cadr tem))
-              (eql ($length tem) 3))
-         ;; sure looks like a range
-         (setq range (check-range tem))))
-  (let* ((options 
-          (plot-options-parser
-           (if range1 (cons range1 (cddddr param)) (cddddr param))
-           plot-options))
-         (nticks (getf options :nticks))
-         (trange (or (cddr range) (getf options :t)))
-         (tvar (or (cadr range) '$t))
+(defun draw2d-parametric-adaptive (param options &aux range)
+  (or (= ($length param) 4)
+      (merror (intl:gettext "plot2d: parametric plots must include two expressions and an interval")))
+  (setq range (nth 4 param))
+  (or (and ($listp range) (symbolp (second range)) (eql ($length range) 3))
+      (merror (intl:gettext "plot2d: wrong interval for parametric plot: ~M") range))
+  (setq range (check-range range))
+  (let* ((nticks (getf options :nticks))
+         (trange (cddr range))
+         (tvar (second range))
          (xrange (or (getf options :x) (getf options :xbounds)))
          (yrange (or (getf options :y) (getf options :ybounds)))
          (tmin (coerce-float (first trange)))
@@ -1185,9 +1127,7 @@ sin(y)*(10.0+6*cos(x)),
 (defun draw2d (fcn range plot-options)
   (if (and ($listp fcn) (equal '$parametric (cadr fcn)))
       (return-from draw2d
-        (if $use_adaptive_parametric_plot
-            (draw2d-parametric-adaptive fcn range plot-options)
-            (draw2d-parametric fcn range plot-options))))
+        (draw2d-parametric-adaptive fcn plot-options)))
   (if (and ($listp fcn) (equal '$discrete (cadr fcn)))
       (return-from draw2d (draw2d-discrete fcn)))
   (let* ((nticks (getf plot-options :nticks))
@@ -1777,16 +1717,10 @@ sin(y)*(10.0+6*cos(x)),
     ;; that can be expressions (simple functions) and maxima lists (parametric
     ;; functions or discrete sets of points).
 
-    ;; If there is a single parametric function use its range as the range for
-    ;; the plot and put it inside another maxima list
+    ;; A single parametric or discrete plot is placed inside a maxima list
     (setf (getf options :type) "plot2d")
-    (when (and (consp fun) (eq (second fun) '$parametric))
-      (unless range
-        (setq range (check-range (nth 4 fun))))
-      (setq fun `((mlist) ,fun)))
-
-    ;; If there is a single set of discrete points put it inside a maxima list
-    (when (and (consp fun) (eq (second fun) '$discrete))
+    (when (and (consp fun)
+               (or (eq (second fun) '$parametric) (eq (second fun) '$discrete)))
       (setq fun `((mlist) ,fun)))
 
     ;; If at this point fun is not a maxima list, it is then a single function
@@ -1982,11 +1916,11 @@ sin(y)*(10.0+6*cos(x)),
             (setq output-file (gnuplot-print-header st options))
             (format st "plot")
             (when (getf options :x)
-              (format st " [~{~,8f~^ : ~}]" (getf options :x)))
+              (format st " [~{~g~^ : ~}]" (getf options :x)))
             (when (getf options :y)
               (unless (getf options :x)
                 (format st " []")) 
-              (format st " [~{~,8f~^ : ~}]" (getf options :y))))
+              (format st " [~{~g~^ : ~}]" (getf options :y))))
            ($gnuplot_pipes
             (check-gnuplot-process)
             ($gnuplot_reset)
@@ -1997,7 +1931,7 @@ sin(y)*(10.0+6*cos(x)),
                *gnuplot-command*
                ($sconcat
                 *gnuplot-command* 
-                (format nil " [~{~,8f~^ : ~}]" (getf options :x)))))
+                (format nil " [~{~g~^ : ~}]" (getf options :x)))))
             (when (getf options :y) 
               (unless (getf options :x)
                 (setq *gnuplot-command*
@@ -2006,7 +1940,7 @@ sin(y)*(10.0+6*cos(x)),
                *gnuplot-command*
                ($sconcat
                 *gnuplot-command* 
-                (format nil " [~{~,8f~^ : ~}]"  (getf options :y)))))))
+                (format nil " [~{~g~^ : ~}]"  (getf options :y)))))))
          (let ((legend (getf options :legend))
                (colors (getf options :color))
                (types (getf options :point_type))
@@ -2123,7 +2057,7 @@ sin(y)*(10.0+6*cos(x)),
                            (first (getf options :x))
                            (first (getf options :y)))
                       (format
-                       st "~,8f ~,8f ~%"
+                       st "~g ~g ~%"
                        (first (getf options :x))
                        (first (getf options :y))))))))))
     
