@@ -7,25 +7,32 @@ function in maxima/src/nset.lisp.
 Jaime Villate, November 2017:
 -----------------------------
 I have added a package that implements some of the permutations
-functions of Macsyma and will implement many other functions.
+functions of Macsyma (with different names) and will implement many
+more functions.
+
+Since Maxima's nset package already includes functions permutations
+and random_permutation which return permuted arrangements of a set or
+list, I have used the name "perm" for permutations written as a list
+of the first n positive integers without repetitions. Thus, perms(int)
+will give the list of permutations of degree n, in contrast to
+permutations(set) which gives that list of permutations applied to the
+elements of a set.
 
 Some differences with Macsyma: permutation_decomp has been named here
-permutation_cycles and permutation_decomp is used for decomposition
-into the generators of the permutation group (adjacent transpositions).
-permutation_cycles returns only non-trivial cycles; i.e, [[1,4,5],[3,6]]
-instead of [[1,4,5],[2],[3,6]].
+perm_cycles and perm_decomp is used for decomposition into the
+generators of the permutation group (adjacent transpositions).
+perm_cycles returns only cycles and no fixed points; i.e,
+[[1,4,5],[3,6]] instead of [[1,4,5],[2],[3,6]].
 
-permutation_undecomp does not require a complete set of cycles, such
-as [[1,4,5],[2],[3,6],[7]]; it accepts just [[1,4,5],[3,6]], but it
-needs an extra parameter, namely, the order of the group. For example:
-     permutation_undecomp([[1,4,5],[3,6]],7)
+perm_undecomp does not require a complete set of cycles and fixed
+points, such as [[1,4,5],[2],[3,6],[7]]; it accepts just
+[[1,4,5],[3,6]], but it needs an extra parameter, namely, the degree
+of the group. For example: perm_undecomp([[1,4,5],[3,6]],7)
 
-permutations_lex returns the list of permutations of order n, in
-lexicographic order, but unlike Macsyma's version, the argument should
-be just an integer (n) and not a permutation.
-
-Notice that the functions permutations and random_permutation from
-from package nset give different orderings of a set of objects, but
-not permutations the way they are understood here: namely, a list of
-the first n positive integers without repetitions.
+perms_lex returns the list of permutations of degree n in
+lexicographic order, but unlike Macsyma's permutations_lex, the
+argument should be just an integer (n) and not a permutation.
+perms(n) gives tht complete list of permutations using a
+minimum-change ordering, in which is permutation differs from the
+previous one by just one adjacent transposition.
 

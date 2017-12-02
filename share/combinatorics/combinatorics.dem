@@ -5,33 +5,33 @@
 load ("combinatorics.lisp");
 
 "This gives the 24 permutations of order 4, in lexicographic order:"$
-permutations_lex (4);
+perms_lex (4);
 
 "Let's get the permutation of order 8 given by the cycles [1,4] and
        [2,6,5,7]:"$
 
-p1: permutation_undecomp ([[1,4], [2,6,5,7]], 8);
+p1: perm_undecomp ([[1,4], [2,6,5,7]], 8);
 
 "The inverse operation, representing the permutation by cycles, is:"$
 
-permutation_cycles (p1);
+perm_cycles (p1);
 
 "Any permutation can also be decomposed into a product of adjacent
       transpositions (cycles with only two consecutive integers). The
-      index of a permutation is the minimum number of such transpositions:"$ 
+      length of a permutation is the minimum number of such transpositions:"$ 
 
-permutation_index (p1);
+perm_length (p1);
 
-"Let's find that product of 12 transpositions and save it in t1."$
-t1: permutation_decomp(p1);
+"Let's find that product of 12 adjacent transpositions and save it in t1."$
+t1: perm_decomp(p1);
 
 "Suppose we have a list with 8 elements:"$
 
 lis1: [a, b*c^2, 4, z, x/y, 1/2, ff23(x), 0];
 
-"We can apply a permutation of order 8 to it:"$
+"We can permute its elements according to a permutation of degree 8:"$
 
-lis2: apply_permutation (p1, lis1);
+lis2: permute (p1, lis1);
 
 "A list of cycles can also be applied to the list. In the case of t1
       above the inverse of the permutation is obtained just by inverting
@@ -44,7 +44,7 @@ apply_cycles (reverse(t1), lis2);
 "Let's save in p2 the permutation that goes after p1 in lexicographic
       order:"$
 
-p2: permutation_lex_next (p1);
+p2: perm_lex_next (p1);
 
 "Two or several permutations can be multiplied together:"$
 
@@ -52,15 +52,15 @@ p3: permult (p1, p2);
 
 "The product of any permutation times its inverse gives the identity:"$
 
-permult (p3, invert_permutation (p3));
+permult (p3, perm_inverse (p3));
 
 "The rank of a permutation is the order in which it appears in the
       lexicographic sequence:"$
 
-map (permutation_lex_rank, [p1, p2, p3]);
+map (perm_lex_rank, [p1, p2, p3]);
 
 "The parity of a permutation, given in this package by 0 or 1, tells
       whether the index of a permutation is even or odd. The product of
       an even permutation by an odd one gives another odd permutation:"$ 
 
-map (permutation_parity, [p1, p2, p3]);
+map (perm_parity, [p1, p2, p3]);
