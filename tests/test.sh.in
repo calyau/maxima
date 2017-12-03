@@ -18,7 +18,7 @@ set -e
 #
 # Before we run the testsuite we add the interactive tests which
 # we feed with input over a pipe.
-$LOCAL_MAXIMA --lisp=$LISP --batch-string="load("testsuite.lisp");testsuite_files:cons("rtest_ask.mac",testsuite_files);run_testsuite();" \
+$LOCAL_MAXIMA --lisp=$LISP --batch-string='load("testsuite.lisp");testsuite_files:cons("rtest_ask.mac",testsuite_files);run_testsuite();' \
   < rtest_ask_input.mac 2>&1 | tee "$OUTPUT_LOG"
 
 grep -q 'No unexpected errors' <"$OUTPUT_LOG"
