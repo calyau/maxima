@@ -184,6 +184,11 @@
   (declare (optimize (speed 3)))
   (and (integerp x) (< x 0)))
 
+;; if x is in the list, return the sublist with element, else nil.
+;;
+;; At least at the time memq was designed it was (at least in many cases) faster
+;; than the lisp's built-in function "member", see:
+;; https://people.eecs.berkeley.edu/~fateman/papers/lispoptim.pdf
 (defun memq (x lis)
   (declare (optimize (speed 3)))
   (member x lis :test #'eq))
