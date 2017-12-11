@@ -491,6 +491,8 @@ returns the empty list @code{[]} without evaluating any more arguments.
 is useful in @code{batch} files where one suspects an error might occur which
 would terminate the @code{batch} if the error weren't caught.
 
+See also @mrefdot{errormsg}
+
 @opencatbox
 @category{Programming}
 @closecatbox
