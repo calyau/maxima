@@ -660,11 +660,11 @@
 (defprop $matrix tex-matrix tex)
 
 (defun tex-matrix(x l r) ;;matrix looks like ((mmatrix)((mlist) a b) ...)
-  (append l `("\\pmatrix{")
+  (append l `("\\begin{pmatrix}")
 	  (mapcan #'(lambda(y)
 		      (tex-list (cdr y) nil (list "\\cr ") "&"))
 		  (cdr x))
-	  '("}") r))
+	  '("\\end{pmatrix}") r))
 
 ;; macsyma sum or prod is over integer range, not  low <= index <= high
 ;; TeX is lots more flexible .. but
