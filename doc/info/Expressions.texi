@@ -1916,7 +1916,8 @@ the function itself.
 In distinction from @code{subst} the function @code{psubst} makes parallel 
 substitutions, if the first argument @var{list} is a list of equations.
 
-See also @mref{sublis} for making parallel substitutions.
+See also @mref{sublis} for making parallel substitutions and @mref{let} and
+@mref{letsimp} for others ways to do substitutions.
 
 Example:
 
@@ -2232,7 +2233,8 @@ When @code{opsubst} is @code{false},
 @code{subst} will not attempt to substitute into the operator of an expression.
 E.g. @code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
 
-See also @mrefcomma{at} @mref{ev} and @mrefdot{psubst}
+See also @mrefcomma{at} @mref{ev} and @mrefcomma{psubst} as well as @mref{let}
+and @mrefdot{letsimp}
 
 Examples:
 

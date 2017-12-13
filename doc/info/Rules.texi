@@ -536,6 +536,9 @@ until no further change is made to @var{expr}.
 is equivalent to @code{letsimp (@var{expr}, @var{package_name_1})},
 followed by @code{letsimp (%, @var{package_name_2})}, and so on.
 
+See also @mrefdot{let}
+For other ways to do substitutions see also @mrefcomma{subst}
+@mrefcomma{psubst} @mref{at} and @mrefdot{ratsubst}
 @c NEEDS EXAMPLES
 @opencatbox
 @category{Rules and patterns}
