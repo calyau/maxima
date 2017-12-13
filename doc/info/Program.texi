@@ -614,7 +614,7 @@ and @code{errormsg} formats and prints it.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{option_errormsg}
+@anchor{errormsg}
 @defvr {Option variable} errormsg
 Default value: @code{true}
 
