@@ -28,7 +28,7 @@ export PATH=/opt/ccl:$PATH
 
 ./bootstrap >logfile-bootstrap.txt 2>&1
 
-./configure --enable-clisp --enable-ecl --with-ecl=/opt/ecl-16.1.3/bin/ecl --enable-sbcl --with-sbcl=/opt/sbcl-1.4.2-x86-64-linux/run-sbcl.sh --enable-gcl --enable-ccl64 --with-ccl64=lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-21b/bin/lisp --with-cmucl-runtime=/opt/cmucl-21b/bin/lisp --enable-acl --with-acl=/opt/acl10.1express/alisp --prefix=$(pwd)/installroot >logfile-configure.txt 2>&1
+./configure --enable-clisp --enable-ecl --with-ecl=/opt/ecl-16.1.3/bin/ecl --enable-sbcl --with-sbcl=/opt/sbcl-1.4.2-x86-64-linux/run-sbcl.sh --enable-gcl --enable-ccl64 --with-ccl64=lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-21c/bin/lisp --with-cmucl-runtime=/opt/cmucl-21c/bin/lisp --enable-acl --with-acl=/opt/acl10.1express/alisp --prefix=$(pwd)/installroot >logfile-configure.txt 2>&1
 
 make VERBOSE=1 >logfile-make.txt 2>&1
 make pdf VERBOSE=1 >logfile-makepdf.txt 2>&1
