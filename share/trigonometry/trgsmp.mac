@@ -51,8 +51,9 @@ eval_when([translate,batch,demo],
 /* Predicates */
 
 trigonometricp(exp):=
-  is(get(inpart(exp,0),'type)='trigonometric
-     or get(piece,'type)='hyper_trigonometric)$
+  if not atom(exp) and symbolp(inpart(exp, 0))
+    then is(get(inpart(exp,0),'type)='trigonometric
+              or get(piece,'type)='hyper_trigonometric)$
 
 /* Rules */
 

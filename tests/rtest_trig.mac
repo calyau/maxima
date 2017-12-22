@@ -634,4 +634,19 @@ atan2 (-p, r);
 forget (n < 0, p > 0);
 [n < 0, p > 0];
 
+/* mailing list 2017-11-27: "trigsimp fails with pderivop" */
 
+(load (pdiff),
+ kill (f, y),
+ expr:pderivop(f,1)((y))^2);
+pderivop(f,1)(y)^2;
+
+trigsimp (expr);
+pderivop(f,1)(y)^2;
+
+(reset (use_pdiff), 0); /* disables pdiff */
+0;
+
+(kill (foo, x),
+ trigsimp (foo(1)(x)^3));
+foo(1)(x)^3;
