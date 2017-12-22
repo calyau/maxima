@@ -9,14 +9,14 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(TCLVERSION  "8.6.7")
-set(TKVERSION   "8.6.7")
+set(TCLVERSION  "8.6.8")
+set(TKVERSION   "8.6.8")
 
-set(TCL_MD5         "5673aaf45b5de5d8dd80bb3daaeb8838")
-set(TK_MD5          "46ea9c0165c515d87393700f4891ab6f")
+set(TCL_MD5     "81656d3367af032e0ae6157eff134f89")
+set(TK_MD5      "5e0faecba458ee1386078fb228d008ba")
 
-set(TCL_URL       "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
-set(TK_URL        "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
+set(TCL_URL     "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
+set(TK_URL      "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
 
 if(BUILD_64BIT)
     set(CONFIGURE64BIT "--enable-64bit")
@@ -30,7 +30,7 @@ externalproject_add(tcl
   URL "${TCL_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${TCL_MD5}
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcltk/tcl-prefix/src/tcl/win/configure --host=${HOST} ${CONFIGURE64BIT} --prefix=C:/maxima-${MAXIMAVERSION}
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcltk/tcl-prefix/src/tcl/win/configure --build=${BUILDHOST} --host=${HOST} ${CONFIGURE64BIT} --prefix=C:/maxima-${MAXIMAVERSION}
   BUILD_COMMAND $(MAKE)
         COMMAND $(MAKE) install
 )
@@ -41,7 +41,7 @@ externalproject_add(tk
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${TK_MD5}
   DEPENDS tcl
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcltk/tk-prefix/src/tk/win/configure --host=${HOST} ${CONFIGURE64BIT} --with-tcl=${CMAKE_BINARY_DIR}/tcltk/tcl-prefix/src/tcl-build/C:/maxima-${MAXIMAVERSION}/lib --prefix=C:/maxima-${MAXIMAVERSION}
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcltk/tk-prefix/src/tk/win/configure --build=${BUILDHOST} --host=${HOST} ${CONFIGURE64BIT} --with-tcl=${CMAKE_BINARY_DIR}/tcltk/tcl-prefix/src/tcl-build/C:/maxima-${MAXIMAVERSION}/lib --prefix=C:/maxima-${MAXIMAVERSION}
   BUILD_COMMAND $(MAKE)
         COMMAND $(MAKE) install
 )
