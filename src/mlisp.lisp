@@ -1740,7 +1740,9 @@ wrapper for this."
 
 (defmspec $array (x)
   (setq x (cdr x))
-  (cond ($use_fast_arrays
+  (cond
+	((symbolp (car x))
+     (if $use_fast_arrays
          (let ((type (if (symbolp (cadr x)) (cadr x) '$any))
                (name (car x))
                (diml (if (symbolp (cadr x)) (cddr x) (cdr x))))
@@ -1750,8 +1752,7 @@ wrapper for this."
                         (mapcar #'(lambda (dim)
                                   ;; let make_array catch bad vals
                                     (add 1 (meval dim)))
-                                diml)))))
-	((symbolp (car x))
+                                diml))))
 	 (let ((compp (assoc (cadr x) '(($complete . t) ($integer . fixnum) ($fixnum . fixnum)
 					($float . flonum) ($flonum . flonum)))))
 	   (let ((fun (car x))
@@ -1808,11 +1809,9 @@ wrapper for this."
 	       (putprop fun '$fixnum 'array-mode))
 	     (when (eq compp 'flonum)
 	       (putprop fun '$float 'array-mode))
-	     fun)))
+	     fun))))
 	(($listp (car x))
-	 (dolist (u (cdar x))
-	   (meval `(($array) ,u ,@(cdr x))))
-	 (car x))
+	 (cons '(mlist) (mapcar #'(lambda (u) (meval `(($array) ,u ,@(cdr x)))) (cdar x))))
 	(t
 	 (merror (intl:gettext "array: first argument must be a symbol or a list; found: ~M") (car x)))))
 

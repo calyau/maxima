@@ -1011,3 +1011,25 @@ true;
 sort (L, mycmp);
 [[d,4],[c,3],[b,2],[a,1]];
 
+
+/* bug reported to mailing list 2017-12-21: "array() with use_fast_arrays: true" */
+
+(use_fast_arrays : true,
+ kill (a, b, a0, a1),
+ array ([a, b], 1),
+ map (?arrayp, %%));
+[true, true];
+
+map (?length, [a, b]);
+[2, 2];
+
+(a[0] : a0,
+ a[1] : a1,
+ listarray (a));
+[a0, a1];
+
+listarray (b);
+[false, false];
+
+(reset (), 0);
+0;
