@@ -193,7 +193,7 @@ elif [ "$MAXIMA_LISP" = "ccl64" ]; then
     if [ -x "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" ]; then
       exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" $MAXIMA_LISP_OPTIONS -e '(cl-user::run)' -- "$@"
     else
-      exec "@CCL64_NAME@" -I "$maxima_image_base" $MAXIMA_LISP_OPTIONS -e '(cl-user::run)' -- "$@"
+      exec "@CCL64_NAME@" -I "$maxima_image_base.image" $MAXIMA_LISP_OPTIONS -e '(cl-user::run)' -- "$@"
    fi
 
 elif [ "$MAXIMA_LISP" = "ecl" ]; then
