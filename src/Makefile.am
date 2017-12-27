@@ -359,7 +359,7 @@ $(OPENMCL_MAXIMA):
 	$(EXECUTEOPENMCL) \
 	  '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
 	$(EXECUTEOPENMCL) \
-	  '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(opcl_flag)) (ccl::quit))'
+	  '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit))'
 
 clean-openmcl:
 	rm -rf binary-openmcl
@@ -405,7 +405,7 @@ $(CCL64_MAXIMA):
 	$(EXECUTECCL64) \
 	  '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
 	$(EXECUTECCL64) \
-	  '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(opcl_flag)) (ccl::quit))'
+	  '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit))'
 
 clean-ccl64:
 	rm -rf binary-ccl64
