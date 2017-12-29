@@ -26,6 +26,10 @@ cmake_minimum_required(VERSION 3.6)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/ ${CMAKE_BINARY_DIR}/)
 
 
+# On which windows drive (C:, D:, ...) will be the default installation path?
+set(WINDOWS_DRIVELETTER "C")
+
+
 # What is the build system?
 execute_process(COMMAND gcc -dumpmachine OUTPUT_VARIABLE BUILDHOST OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "Build system: ${BUILDHOST}")
@@ -44,7 +48,7 @@ option(USE_WXMAXIMA_GIT "Use wxMaxima development snapshot." NO)
 option(USE_VTK "Use VTK." YES)
 # the following option is used for nightly builds of the installer.
 # it builds the current Maxima/wxMaxima Git versions and also
-# sets the installation directory to C:\maxima-current
+# sets the installation directory to ${WINDOWS_DRIVELETTER}:\maxima-current
 option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 
 
@@ -144,7 +148,7 @@ externalproject_add(maxima
   BUILD_IN_SOURCE 1
   PATCH_COMMAND sh -c "test \"${BUILD_64BIT}\" != \"OFF\" && patch --binary -p1 < ${CMAKE_SOURCE_DIR}/maxima.bat.in-patch || exit 0"
   CONFIGURE_COMMAND sh -c "test -x ./bootstrap && ./bootstrap || return 0"
-            COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=C:/maxima-${MAXIMAVERSION}
+            COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
   # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...
   BUILD_COMMAND LANG=C $(MAKE) -C src clisp-depends.mk
         COMMAND sed -i s+\\\\+/+g src/clisp-depends.mk
@@ -161,7 +165,7 @@ target_link_libraries(winkill winkill_lib)
 install(TARGETS winkill winkill_lib RUNTIME DESTINATION bin LIBRARY DESTINATION bin)
 install(FILES "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/win_signals.lisp" DESTINATION bin/)
 
-install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/C:/maxima-${MAXIMAVERSION}/ DESTINATION .)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 install(FILES "${CMAKE_SOURCE_DIR}/xmaxima.bat" DESTINATION bin/)
 install(FILES "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima/doc/info/maxima.pdf" DESTINATION share/doc/)
 install(FILES "${CMAKE_SOURCE_DIR}/lispselector.tcl" DESTINATION bin/)
@@ -183,7 +187,7 @@ set(CPACK_PACKAGE_VENDOR "Maxima Team")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/../README")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/../COPYING")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "maxima-${CPACK_PACKAGE_VERSION}")
-set(CPACK_NSIS_INSTALL_ROOT "C:")
+set(CPACK_NSIS_INSTALL_ROOT "${WINDOWS_DRIVELETTER}:")
 set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/maxima-icon.bmp")
 set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima\\\\maxima-icon.ico")
