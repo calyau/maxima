@@ -1944,7 +1944,7 @@ When @code{laplace} fails to find a Laplace transform, @code{specint} is called.
 Because @code{laplace} knows more general rules for Laplace transforms, it is 
 preferable to use @code{laplace} and not @code{specint}.
 
-@code{demo(hypgeo)} displays several examples of Laplace transforms computed by 
+@code{demo("hypgeo")} displays several examples of Laplace transforms computed by 
 @code{specint}.
 
 Examples:

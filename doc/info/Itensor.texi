@@ -140,7 +140,7 @@ as they are encountered... until then, caveat emptor!
 @c -----------------------------------------------------------------------------
 
 The indicial tensor manipulation package may be loaded by
-@code{load(itensor)}. Demos are also available: try @code{demo(tensor)}.
+@code{load("itensor")}. Demos are also available: try @code{demo("tensor")}.
 
 In @code{itensor} a tensor is represented as an "indexed object" .  This is a
 function of 3 groups of indices which represent the covariant,

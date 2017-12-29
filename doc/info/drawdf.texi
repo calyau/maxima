@@ -11,7 +11,7 @@ Ordinary Differential Equation (ODE) or a system of two autonomous
 first-order ODE's.
 
 Since this is an additional package, in order to use it you must first
-load it with @code{load(drawdf)}.  Drawdf is built upon the @code{draw}
+load it with @code{load("drawdf")}.  Drawdf is built upon the @code{draw}
 package, which requires Gnuplot 4.2.
 
 To plot the direction field of a single ODE, the ODE must be written in
@@ -138,12 +138,12 @@ Users of wxMaxima or Imaxima may optionally use @code{wxdrawdf}, which
 is identical to @code{drawdf} except that the graphics are drawn
 within the notebook using @code{wxdraw}.
 
-To make use of this function, write first @code{load(drawdf)}.
+To make use of this function, write first @code{load("drawdf")}.
 
 Examples:
 
 @example
-(%i1) load(drawdf)$
+(%i1) load("drawdf")$
 (%i2) drawdf(exp(-x)+y)$        /* default vars: x,y */
 (%i3) drawdf(exp(-t)+y, [t,y])$ /* default range: [-10,10] */
 (%i4) drawdf([y,-9*sin(x)-y/5], [x,1,5], [y,-2,2])$
