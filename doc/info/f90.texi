@@ -20,7 +20,7 @@ Fortran 90: there is no special attention to column positions.
 Long lines are split at a fixed width with the ampersand @code{&} continuation
 character.
 
-@code{load(f90)} loads this function.  See also the function @mrefdot{fortran}
+@code{load("f90")} loads this function.  See also the function @mrefdot{fortran}
 
 Examples:
 

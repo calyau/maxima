@@ -14,8 +14,8 @@ The built-in units include Systeme Internationale (SI) and US customary units,
 and other units can be declared.
 See also @mrefcomma{physical_constants} a collection of physical constants.
 
-@code{load(ezunits)} loads this package.
-@code{demo(ezunits)} displays several examples.
+@code{load("ezunits")} loads this package.
+@code{demo("ezunits")} displays several examples.
 The convenience function @code{known_units} returns a list of
 the built-in and user-declared units,
 while @code{display_known_unit_conversions} displays
@@ -94,7 +94,7 @@ but other fundamental dimensions and units can be declared.
 @code{physical_constants} is a collection of physical constants,
 copied from CODATA 2006 recommended values
 (@url{http://physics.nist.gov/constants}).
-@code{load(physical_constants)} loads this package,
+@code{load ("physical_constants")} loads this package,
 and loads @code{ezunits} also, if it is not already loaded.
 
 A physical constant is represented as a symbol which has a property
@@ -309,7 +309,7 @@ conventional rules for such operations.
 @code{ezunits} does not require that units in a sum have the same dimensions;
 such terms are not added together, and no error is reported.
 
-@code{load(ezunits)} enables this operator.
+@code{load ("ezunits")} enables this operator.
 
 Examples:
 
@@ -436,7 +436,7 @@ unless conversion is explicitly indicated.
 (milli-, centi-, deci-, etc)
 unless such conversion is explicitly indicated.
 
-@code{load(ezunits)} enables this operator.
+@code{load ("ezunits")} enables this operator.
 
 Examples:
 
@@ -677,7 +677,7 @@ Example:
 @deffn {Function} declare_constvalue (@var{a}, @var{x})
 
 Declares the value of a constant to be used in package @code{ezunits}. This
-function should be loaded with @code{load(ezunits)}. 
+function should be loaded with @code{load ("ezunits")}. 
 
 Example:
 
@@ -708,7 +708,7 @@ Example:
 @deffn {Function} remove_constvalue (@var{a})
 
 Reverts the effect of @mrefdot{declare_constvalue} This function should be
-loaded with @code{load(ezunits)}.
+loaded with @code{load ("ezunits")}.
 
 @opencatbox
 @category{Package ezunits}
@@ -725,7 +725,7 @@ or returns 1 if @var{x} is nondimensional.
 a symbol with declared units via @code{declare_units}, 
 or an expression containing either or both of those.
 
-This function should be loaded with @code{load(ezunits)}.
+This function should be loaded with @code{load ("ezunits")}.
 
 Example:
 
@@ -776,7 +776,7 @@ Example:
 
 Declares that @mref{units} should return units @var{u} for @var{a},
 where @var{u} is an expression. This function should be loaded with
-@code{load(ezunits)}.
+@code{load ("ezunits")}.
 
 Example:
 
@@ -820,7 +820,7 @@ or returns @var{x} if @var{x} is nondimensional.
 a symbol with declared quantity, 
 or an expression containing either or both of those.
 
-This function should be loaded with @code{load(ezunits)}.
+This function should be loaded with @code{load ("ezunits")}.
 
 Example:
 
@@ -860,7 +860,7 @@ Example:
 
 Declares that @mref{qty} should return @var{x} for symbol @var{a}, where
 @var{x} is a nondimensional quantity. This function should be loaded
-with @code{load(ezunits)}.
+with @code{load ("ezunits")}.
 
 Example:
 
@@ -901,7 +901,7 @@ a symbol declared dimensional,
 or an expression in which the main operator is declared dimensional.
 @code{unitp} returns @code{false} otherwise.
 
-@code{load(ezunits)} loads this function.
+@code{load ("ezunits")} loads this function.
 
 Examples:
 
@@ -977,7 +977,7 @@ This limitation might be relaxed in future versions.
 
 @code{known_unit_conversions} is the list of known unit conversions.
 
-This function should be loaded with @code{load(ezunits)}.
+This function should be loaded with @code{load ("ezunits")}.
 
 Examples:
 
@@ -1035,7 +1035,7 @@ Declares @var{a_1}, ..., @var{a_n} to have dimensions @var{d_1}, ...,
 Each @var{a_k} is a symbol or a list of symbols.
 If it is a list, then every symbol in @var{a_k} is declared to have dimension @var{d_k}.
 
-@code{load(ezunits)} loads these functions.
+@code{load ("ezunits")} loads these functions.
 
 Examples:
 
@@ -1071,7 +1071,7 @@ Examples:
 @deffn {Function} remove_dimensions (@var{a_1}, ..., @var{a_n})
 
 Reverts the effect of @code{declare_dimensions}. This function should be
-loaded with @code{load(ezunits)}.
+loaded with @code{load ("ezunits")}.
 
 
 @opencatbox
@@ -1093,7 +1093,7 @@ fundamental dimensions, if they are not already on the list.
 @code{fundamental_dimensions} is the list of fundamental dimensions.
 By default, the list comprises several physical dimensions.
 
-@code{load(ezunits)} loads these functions.
+@code{load ("ezunits")} loads these functions.
 
 Examples:
 
@@ -1140,7 +1140,7 @@ and @code{fundamental_units(@var{d_k})} returns @var{u_k} for each argument @var
 
 @code{remove_fundamental_units} reverts the effect of @code{declare_fundamental_units}.
 
-@code{load(ezunits)} loads these functions.
+@code{load ("ezunits")} loads these functions.
 
 Examples:
 
@@ -1193,7 +1193,7 @@ as an expression comprising products and powers of base dimensions.
 as a list, in which each element is an integer which indicates the power of the
 corresponding base dimension in the dimensions of @var{x}.
 
-@code{load(ezunits)} loads these functions.
+@code{load ("ezunits")} loads these functions.
 
 Examples:
 
@@ -1265,7 +1265,7 @@ or an expression containing either or both of those.
 @code{fundamental_units()} returns the list of all known fundamental units,
 as declared by @code{declare_fundamental_units}.
 
-@code{load(ezunits)} loads this function.
+@code{load ("ezunits")} loads this function.
 
 Examples:
 
@@ -1308,7 +1308,7 @@ Examples:
 Returns a basis for the dimensionless quantities which can be formed
 from a list @var{L} of dimensional quantities.
 
-@code{load(ezunits)} loads this function.
+@code{load ("ezunits")} loads this function.
 
 Examples:
 
@@ -1360,7 +1360,7 @@ is proportional to the fine-structure constant.
 Finds exponents @var{e_1}, ..., @var{e_n} such that
 @code{dimension(@var{expr}) = dimension(@var{v_1}^@var{e_1} ... @var{v_n}^@var{e_n})}.
 
-@code{load(ezunits)} loads this function.
+@code{load ("ezunits")} loads this function.
 
 Examples:
 

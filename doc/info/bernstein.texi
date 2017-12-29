@@ -17,7 +17,7 @@ controls the expansion of the Bernstein polynomials into its explicit form;
 example:
 
 @example
-(%i1) load(bernstein)$
+(%i1) load("bernstein")$
 
 (%i2) bernstein_poly(k,n,x);
 (%o2)                bernstein_poly(k, n, x)

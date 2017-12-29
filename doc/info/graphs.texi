@@ -23,7 +23,7 @@ algorithm. @code{draw_graph} can also use graphviz programs available
 from @url{http://www.graphviz.org}. @code{draw_graph} is based on the maxima
 @code{draw} package.
 
-To use the @code{graphs} package, first load it with @code{load(graphs)}.
+To use the @code{graphs} package, first load it with @code{load("graphs")}.
 
 @opencatbox
 @category{Share packages} @category{Package graphs}
@@ -452,13 +452,13 @@ If @var{directed} is not @var{false}, then the graph will be directed.
 
 Example 1:
 @c ===beg===
-@c load(graphs)$
+@c load("graphs")$
 @c g : make_graph(powerset({1,2,3,4,5}, 2), disjointp)$
 @c is_isomorphic(g, petersen_graph());
 @c get_vertex_label(1, g);
 @c ===end===
 @example
-(%i1) load(graphs)$
+(%i1) load("graphs")$
 (%i2) g : make_graph(powerset(@{1,2,3,4,5@}, 2), disjointp)$
 (%i3) is_isomorphic(g, petersen_graph());
 (%o3)                         true
@@ -468,14 +468,14 @@ Example 1:
 
 Example 2:
 @c ===beg===
-@c load(graphs)$
+@c load("graphs")$
 @c f(i, j) := is (mod(j, i)=0)$
 @c g : make_graph(20, f, directed=true)$
 @c out_neighbors(4, g);
 @c in_neighbors(18, g);
 @c ===end===
 @example
-(%i1) load(graphs)$
+(%i1) load("graphs")$
 (%i2) f(i, j) := is (mod(j, i)=0)$
 (%i3) g : make_graph(20, f, directed=true)$
 (%i4) out_neighbors(4, g);
@@ -3016,12 +3016,12 @@ Example 4:
 Example 5:
 
 @c ===beg===
-@c load(graphs)$
+@c load("graphs")$
 @c g: petersen_graph(20, 2);
 @c draw_graph(g, redraw=true, program=planar_embedding);
 @c ===end===
 @example
-(%i1) load(graphs)$
+(%i1) load("graphs")$
 (%i2) g: petersen_graph(20, 2);
 (%o2)                         GRAPH
 (%i3) draw_graph(g, redraw=true, program=planar_embedding);
@@ -3035,13 +3035,13 @@ Example 5:
 Example 6:
 
 @c ===beg===
-@c load(graphs)$
+@c load("graphs")$
 @c t: tutte_graph();
 @c draw_graph(t, redraw=true, 
 @c               fixed_vertices=[1,2,3,4,5,6,7,8,9]);
 @c ===end===
 @example
-(%i1) load(graphs)$
+(%i1) load("graphs")$
 (%i2) t: tutte_graph();
 (%o2)                         GRAPH
 (%i3) draw_graph(t, redraw=true, 

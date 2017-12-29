@@ -109,7 +109,7 @@ Example:
 
 batching /home/wfs/maxima/share/simplification/disol.dem
  At the _ prompt, type ';' followed by enter to get next demo
-(%i2)                      load(disol)
+(%i2)                      load("disol")
 
 _
 (%i3)           exp1 : a (e (g + f) + b (d + c))

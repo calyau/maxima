@@ -7,7 +7,7 @@
 @section Introduction to atensor
 
 @code{atensor} is an algebraic tensor manipulation package. To use @code{atensor},
-type @code{load(atensor)}, followed by a call to the @code{init_atensor}
+type @code{load("atensor")}, followed by a call to the @code{init_atensor}
 function.
 
 The essence of @code{atensor} is a set of simplification rules for the
@@ -30,7 +30,7 @@ quaternion algebra, it is not used in this example, in which we
 endeavour to build the quaternion multiplication table as a matrix:
 
 @example
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) init_atensor(clifford,0,0,2);
 (%o2)                                done
@@ -272,7 +272,7 @@ corresponding value from the matrix @code{aform}.
 For instance:
 
 @example
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) adim:3;
 (%o2)                                  3

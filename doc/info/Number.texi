@@ -501,12 +501,12 @@ must be integers.
 
 @code{igcdex} implements the Euclidean algorithm.  See also @mrefdot{gcdex}
 
-The command @code{load(gcdex)} loads the function.
+The command @code{load("gcdex")} loads the function.
 
 Examples:
 
 @example
-(%i1) load(gcdex)$
+(%i1) load("gcdex")$
 
 (%i2) igcdex(30,18);
 (%o2)                      [- 1, 2, 6]

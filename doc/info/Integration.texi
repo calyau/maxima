@@ -161,7 +161,7 @@ time-consuming, you will have to wait for re-computation if you change anything
 either translated or compiled prior to calling @code{dblint}.  This will result
 in orders of magnitude speed improvement over interpreted code in many cases!
 
-@code{demo (dblint)} executes a demonstration of @code{dblint} applied to an
+@code{demo ("dblint")} executes a demonstration of @code{dblint} applied to an
 example problem.
 @c demo (dblint_1) FAILS WITH Could not find `fltdfnk.mc' -- DON'T BOTHER TO MENTION IT. !!!
 @c @code{demo (dblint_1)} executes another demonstration.

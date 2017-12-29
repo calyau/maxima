@@ -9,7 +9,7 @@
 @code{solve_rec} is a package for solving linear recurrences with polynomial
 coefficients.
 
-A demo is available with @code{demo(solve_rec);}.
+A demo is available with @code{demo("solve_rec");}.
 
 Example:
 

@@ -89,7 +89,7 @@ transform of @code{abs}: see @mrefdot{laplace}
                            ]
                            /
 
-(%i12) load(abs_integrate)$
+(%i12) load("abs_integrate")$
 (%i13) integrate(x*abs(x),x);
                       2           3
                      x  abs(x)   x  signum(x)
@@ -2343,7 +2343,7 @@ for inverse trigonometric functions.  Together with rules
 already known to Maxima, the following angles are fully implemented:
 @code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, and @code{%pi/2}.
 Corresponding angles in the other three quadrants are also available.
-Do @code{load(atrig1);} to use them.
+Do @code{load("atrig1");} to use them.
 
 @opencatbox
 @category{Trigonometric functions} @category{Package atrig1}

@@ -7,7 +7,7 @@
 @section Introduction to ctensor
 
 @code{ctensor} is a component tensor manipulation package.  To use the @code{ctensor}
-package, type @code{load(ctensor)}.
+package, type @code{load("ctensor")}.
 To begin an interactive session with @code{ctensor}, type @code{csetup()}.  You are
 first asked to specify the dimension of the manifold. If the dimension
 is 2, 3 or 4 then the list of coordinates defaults to @code{[x,y]}, @code{[x,y,z]}
@@ -33,7 +33,7 @@ solution) as an example. Many of the functions in @code{ctensor} will be
 displayed for the standard metric as examples.
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)      /share/tensor/ctensor.mac
 (%i2) csetup();
 Enter the dimension of the coordinate system:
@@ -223,7 +223,7 @@ you can specify a spherical metric as follows:
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
       r*sin(theta),[r,theta,phi]]);
@@ -247,7 +247,7 @@ Transformation functions can also be used when @code{cframe_flag} is @code{true}
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) cframe_flag:true;
 (%o2)                                true
@@ -548,7 +548,7 @@ complex:
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
 (%o2)                                true
@@ -761,7 +761,7 @@ For example, the following demonstrates how to obtain the Petrov-classification
 of the Kerr metric:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) (cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
 (%o2)                                true
@@ -939,7 +939,7 @@ below, @code{findde} gives the following independent differential equations:
 
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -999,7 +999,7 @@ the user to choose the corresponding vector name as the example
 below for the Schwarzschild metric illustrates:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -1031,7 +1031,7 @@ computes the tensor d'Alembertian of the scalar function once
 dependencies have been declared upon the function. For example:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -1182,7 +1182,7 @@ as a list of 2-dimensional matrices. For instance, the Riemann-tensor of
 the Schwarzschild metric can be viewed as:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
 (%o2)                                true
