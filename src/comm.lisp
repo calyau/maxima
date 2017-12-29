@@ -56,7 +56,7 @@
 	(mnotequal "#") (mand "and") (mor "or") (mnot "not") (msetq ":")
 	(mdefine ":=") (mdefmacro "::=") (mquote "'") (mlist "[")
 	(mset "::") (mfactorial "!") (marrow "-->") (mprogn "(")
-	(mcond "if")))
+	(mcond "if") (mdo "do") (mdoin "do_in")))
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'op))
       '((mqapply $subvar) (bigfloat $bfloat)))

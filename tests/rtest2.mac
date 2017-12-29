@@ -1033,3 +1033,26 @@ listarray (b);
 
 (reset (), 0);
 0;
+
+/* mailing list 2017-12-28: "op('(do 1))" */
+
+(e : '(for i:111 thru 114 do push(i, L)),
+ [op(e), args(e)]);
+["do", [i,111,false,false,114,false,push(i,L)]];
+
+e1 : apply (funmake, ["do", '[i,111,false,false,114,false,push(i,L)]]);
+for i:111 thru 114 do push(i, L);
+
+block ([L:[]], ev(e1), L);
+[114, 113, 112, 111];
+
+(e : '(for x in [100, 200, 300] do push(x - 1, M)),
+ [op(e), args(e)]);
+["do_in", [x,[100,200,300],false,false,false,false,push(x-1,M)]];
+
+e1 : apply (funmake, ["do_in", '[x,[100,200,300],false,false,false,false,push(x-1,M)]]);
+for x in [100, 200, 300] do push(x - 1, M);
+
+block ([M:[]], ev(e1), M);
+[299, 199, 99];
+
