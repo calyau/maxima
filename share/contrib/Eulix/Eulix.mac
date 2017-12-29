@@ -1,7 +1,8 @@
+/* load("./Eulix.mac")$ */
 /*
  * (C) Helmut Jarausch
  *
- * @version 0.9 Date May 28th, 2014
+ * @version 1.0 Date August 29th, 2017
  *
  * @author Helmut Jarausch
  *         RWTH Aachen University
@@ -45,11 +46,15 @@ SiEuler(t,h,n_step,nd,y,Rhs,fy,ft,J,MassMatrix):= block(
       on return:  YT(:,nd1-j) contains the j-th DiffQuot
     */
    [Dim:length(y),dy,hi,j,k,l,Jhq,Q,R,nd1,YT],
-   local(A,Q,R,range,S,v,x,y,Col,Householder,MyQR,BackSolve,YT),
+
+   local(Col,Householder,MyQR,BackSolve,YT,mynumer,n_step,nd,nd1,Dim,k,l),
    mode_declare(n_step,fixnum,nd,fixnum,nd1,fixnum,Dim,fixnum,k,fixnum,l,fixnum),
+
    nd1:nd+1,
+   mynumer: if fpprec <= 16 then 'float else 'bfloat, declare(mynumer,evfun),
    
    Col(A,c,[range]):= block( [i0,i1], /* A[1..n,c] or  A[rg[0]..n,c] or A[rg[0]...rg[1],c] */
+     local(c,i0,i1),
      mode_declare(c,fixnum,i0,fixnum,i1,fixnum),
      if not matrixp(A) then error("Col:A must be a matrix"),
      i0:1, i1:length(A),
@@ -57,7 +62,6 @@ SiEuler(t,h,n_step,nd,y,Rhs,fy,ft,J,MassMatrix):= block(
      if length(range)>=1 then i0:range[1],
      genmatrix(lambda([i,j],A[i,j]),i1,c,i0,c)
    ),
-
    Householder(x):= block([beta,v:copymatrix(x)],
      v[1,1]:v[1,1]*(1+sqrt(dotproduct(x,x))/cabs(v[1,1])),
      beta:2/dotproduct(v,v),
@@ -65,7 +69,6 @@ SiEuler(t,h,n_step,nd,y,Rhs,fy,ft,J,MassMatrix):= block(
    ),
 
    MyQR(A):= block([b,betas,c,j,k,m,n,Q,R:copymatrix(A),v,vtr,vtq],
-     local(Q,R,v),
      [m,n]:matrix_size(A),
      Q:ident(m),
      for c thru n do (
@@ -85,6 +88,7 @@ SiEuler(t,h,n_step,nd,y,Rhs,fy,ft,J,MassMatrix):= block(
    ),
 
    BackSolve(R,x):= block([j,k,n],
+     local(j,k,n),
      mode_declare(j,fixnum,k,fixnum,n,fixnum),
      n:length(R),
      x[n,1]: x[n,1]/R[n,n],
@@ -102,7 +106,7 @@ SiEuler(t,h,n_step,nd,y,Rhs,fy,ft,J,MassMatrix):= block(
      dy: dy+h*ft,
      y: y + if matrixp(MassMatrix) then BackSolve(R,Q.dy) else h*dy,
      t: t+h,
-     dy: apply(Rhs,[t,y])
+     dy: ev(apply(Rhs,[t,y]),mynumer)
    ),
    for k:1 thru nd1 do (
      dy: dy+h*ft,
@@ -111,16 +115,16 @@ SiEuler(t,h,n_step,nd,y,Rhs,fy,ft,J,MassMatrix):= block(
      for l:k-1 step -1 thru 1 do /* compute difference quotients */
         for j thru Dim do YT[j,l]: (YT[j,l+1]-YT[j,l])/h,
      t: t+h,
-     if k < nd1 then dy: apply(Rhs,[t,y])
+     if k < nd1 then dy: ev(apply(Rhs,[t,y]),mynumer)
    ),
    YT
 )$
 
 Eulix_Row(Rhs,level,Tab,t,h,hlv,nlv,dout, y,fy,ft,J,MassMatrix,Tol,work,swork):= block(
-    [maxreduction:0.1,max_fac:4,m:length(y),mf,jd,lv,nd,Err,Err_min,YT],
-    local(A,hlv,nlv,work,swork,Tab,y,Float),
-    Float(arg):= if fpprec <= 16 then float(arg) else bfloat(arg),
-    mf:Float(m),
+    [maxreduction:0.1,max_fac:4,m:length(y),mf,jd,lv,nd,Err,Err_min,YT,A,mynumer],
+    local(mynumer),
+    mynumer: if fpprec <= 16 then 'float else 'bfloat, declare(mynumer,evfun),
+    mf:ev(m,mynumer),
     nd: if dout then level else 0,
     YT:SiEuler(t,h,nlv[level],nd,y,Rhs,fy,ft,J,MassMatrix),
     /* here  i-th derivative (0 <= i <=nd) is in   YT(:,nd+1-i) */
@@ -128,9 +132,9 @@ Eulix_Row(Rhs,level,Tab,t,h,hlv,nlv,dout, y,fy,ft,J,MassMatrix,Tol,work,swork):=
       Tab[level,jd1]:copymatrix(S),
       if jd < level then 
         for lv:level-1 step -1 thru max(1,jd) do
-          block([SS:copymatrix(Tab[lv,jd1]),F1,F2],
-                F2:Float(nlv[level]/nlv[lv]), F1: F2/(F2-1), F2:1/(F2-1), 
-                S:F1*S-F2*SS,
+          block([F1,F2],
+                F2:ev(nlv[level]/nlv[lv],mynumer), F1: F2/(F2-1), F2:1/(F2-1), 
+                S:F1*S-F2*Tab[lv,jd1],
                 Tab[lv,jd1]:copymatrix(S)
                )
      ),
@@ -169,9 +173,13 @@ Eulix_Step(y,t,Rhs,Rhs_Time,Rhs_Jac,h,me,[options]):= block(
   [gain1:0.7, gain2:0.9, /* some tuning constants */
    l, m, me: max(3,me), mxp, max_ex, 
    nlv, hlv, work, swork,  fy, ft, Tol, rejected:false, reject_cnt:0, J, Tab, Err,
-   dout, WkEst, atol, rtol, Debug,OK,
+   dout, WkEst, atol, rtol, Debug, OK, DO_DQ,
    scalarmatrixp:false,keepfloat:true,nolabels:true],
-   local(DO_DQ,hlv,nlv,work,WkEst,swork,Tab),
+
+   local(scalarmatrixp,keepfloat,nolabels,allnumberp,mynumer,
+         me,l,m,mxp,reject_cnt),
+
+   mynumer: if fpprec <= 16 then 'float else 'bfloat, declare(mynumer,evfun),
    max_ex: assoc('maximum_order,options,20), /* max_ex	max. extrapolation tableau size */
    mxp: max(4,max_ex+1),
    /* dout  if true, enable dense output: Newton DDs in DO_DQ */
@@ -187,9 +195,15 @@ Eulix_Step(y,t,Rhs,Rhs_Time,Rhs_Jac,h,me,[options]):= block(
    atol:  assoc('absolute_tolerance,options,1e-6),
    rtol:  assoc('relative_tolerance,options,1e-6),
    Debug   : assoc('check_parameters,options,true),
+   
+   allnumberp(E):= if matrixp(E) then apply("and",maplist(numberp,list_matrix_entries(E)))
+                                else numberp(E),
+
    if Debug then (
-     if not (matrixp(y) and length(first(y)) = 1 and every(numberp,y)) then
+     if not (matrixp(y) and length(first(y)) = 1 and allnumberp(y)) then
        error("first parameter of Eulix must be a numeric column"),
+     if not (numberp(t) and numberp(h)) then
+       error("time (t) and stepsize(h) must be numbers"),
      if not nonneginterp(me) then error("order (me) must be a positive integer"),
      if not nonneginterp(max_ex) then error("maximum_order must be a positive integer"),
      if me > max_ex then error("the order (me) must not be greater than maximum_order")
@@ -207,16 +221,16 @@ Eulix_Step(y,t,Rhs,Rhs_Time,Rhs_Jac,h,me,[options]):= block(
    if Debug then (
      if not is(MassMatrix='false) then
        if not (matrixp(MassMatrix) and length(MassMatrix)=m and length(first(MassMatrix)) = m
-          and every(numberp,MassMatrix)) then
+          and allnumberp(MassMatrix)) then
           error(simplode(["The mass_matrix parameter must be either 'false or a square ",
                            m,"x",m," numeric matrix"]))
    ),
-   fy:apply(Rhs,[t,y]),
-   ft: apply(Rhs_Time,[t,y]),
+   fy:ev(apply(Rhs,[t,y]),mynumer),
+   ft: ev(apply(Rhs_Time,[t,y]),mynumer),
    if Debug then (
-     if not (matrixp(fy) and length(first(fy)) = 1 and length(fy)=m and every(numberp,fy)) then
+     if not (matrixp(fy) and length(first(fy)) = 1 and length(fy)=m and allnumberp(fy)) then
        error("third parameter (Rhs) of Eulix must return a numeric column - got",fy),
-     if not (matrixp(ft) and length(first(ft)) = 1 and length(ft)=m and every(numberp,ft)) then
+     if not (matrixp(ft) and length(first(ft)) = 1 and length(ft)=m and allnumberp(ft)) then
        error("fifth parameter (Rhs_Time) of Eulix must return a numeric column - got",ft)
    ),
    Tab: if dout then zeromatrix(mxp+2,mxp+2)
@@ -230,9 +244,9 @@ Eulix_Step(y,t,Rhs,Rhs_Time,Rhs_Jac,h,me,[options]):= block(
    swork[1]: 1.0e30, /* large number */
    
    if matrixp(MassMatrix) then (
-      J:apply(Rhs_Jac,[t,y]),
+      J:ev(apply(Rhs_Jac,[t,y]),mynumer),
       if Debug then
-        if not (matrixp(J) and length(J)=m and length(first(J)) = m and every(numberp,J)) then
+        if not (matrixp(J) and length(J)=m and length(first(J)) = m and allnumberp(J)) then
           error("Jacobian must be a square numeric matrix within - got",J)
    ) else J:0,
    
@@ -291,7 +305,7 @@ Eulix_Step(y,t,Rhs,Rhs_Time,Rhs_Jac,h,me,[options]):= block(
          for k:1 thru (nderiv+1) do S: (S-DO_DQ[k])/(-h),
          DO_DQ[nderiv+2]: S
        ) else
-         DO_DQ: copymatrix(Tab[1,1]),  /* y */
+         DO_DQ:makelist(copymatrix(Tab[1,1])),  /* y */
        
 
 
@@ -327,11 +341,14 @@ Eulix_Step(y,t,Rhs,Rhs_Time,Rhs_Jac,h,me,[options]):= block(
                  h: hlv[c_me] * work[opt_me]/work[c_me],
          me: opt_me
        ),
+       if logging then
+         printf(true,"accepted at t=~11,3e  error=~11,3e  new order ~d  new step=~11,3e~%",
+                                 t,         Err,            me,           hlv[me]),
        OK:true
      )
   ),
   
-  failed: ev(reject_cnt > 10),
+  failed: ev(reject_cnt > 10,pred),
   [DO_DQ,t,h,me,failed]
 )$
 
@@ -341,7 +358,6 @@ Eulix_Step(y,t,Rhs,Rhs_Time,Rhs_Jac,h,me,[options]):= block(
 
 Eulix_Dense_Out(dt,DO_DQ):= block(
   [nd2:length(DO_DQ), y],
-  local(DO_DQ),
   y:copymatrix(DO_DQ[nd2]),
   for k :nd2-1 step -1 thru 1 do
     y: y*dt + DO_DQ[k],
@@ -350,7 +366,6 @@ Eulix_Dense_Out(dt,DO_DQ):= block(
 
 Eulix_Dense_Deriv(dt,DO_DQ):= block(
   [nd2:length(DO_DQ), yt],
-  local(DO_DQ),
   yt:(nd2-1)*copymatrix(DO_DQ[nd2]),
   for k :nd2-1 step -1 thru 2 do yt: yt*dt + (k-1)*DO_DQ[k],
   yt
@@ -358,11 +373,15 @@ Eulix_Dense_Deriv(dt,DO_DQ):= block(
 
 Eulix_Table(t0,y0,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,Roots,[options]):= block(
   [i,t,dout:false,h,h_sign,y,T,Y,
-   DO_DQ,tn,hn,me,root_eps,logging,tabular,gen_table,full_table:false,failed,ttab,
+   DO_DQ,tn,yn,yd,hn,me,root_eps,logging,tabular,gen_table,full_table:false,failed,ttab,
    NumRootConds,find_root:false,State,active_roots,
    rt, Root_Found, Root_Solution,atol, Debug,
-   keepfloat:true,scalarmatrixp:false,nolabels:true],
-  local(DO_DQ,Roots,Root_Solution,rt,Newton_Root,Float),
+   keepfloat:true,scalarmatrixp:false,nolabels:true,RetVal:[],
+   Newton_Root,t_left,t_right,f_norm,mynumer,Newton_failure],
+
+   local(keepfloat,scalarmatrixp,nolabels,Newton_Root,mynumer),
+
+  mynumer: if fpprec <= 16 then 'float else 'bfloat, declare(mynumer,evfun),
 
   h       : assoc('initial_step_size,options,0),
   me      : assoc('initial_order,options,6),
@@ -385,28 +404,48 @@ Eulix_Table(t0,y0,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,Roots,[options]):= block(
       error("Eulix: (t_end-t0) must be of same sign as delta_t"),
   if delta_t # 0 then ( dout:true,  options:cons('dense_output=true,options) )
                  else ( dout:false, options:cons('dense_output=false,options) ),
-  NumRootConds: length(Roots),
-  find_root: NumRootConds > 0,
 
-  /* local Float function */
-  Float(arg):= if fpprec <= 16 then float(arg) else bfloat(arg),
+  NumRootConds: length(Roots),
+  find_root: ev(NumRootConds > 0,pre),
+  
+  if find_root and not dout then (
+     dout: true,
+     if delta_t = 0 then delta_t: (t_end-t0)*0.01
+  ),
+
 
   /* local Newton function */
   Newton_Root(tl,tr,fct,fctprime,root_eps):= block(
-    [fl:fct(tl), fr:fct(tr), t:(tl+tr)/2, f, it:0],
+    [fl:fct(tl), fr:fct(tr), t:(tl+tr)/2, dt, f, fp, tmp, N_fail, it:0],
     /* fl * fr <= 0 when called */
-    f:fct((tl+tr)/2),
+    if fl*fr >= 0 then throw(printf(false,
+       "Newton no inclusion tl=~14,8f  fl=~17,10e  tr=~14,8f  fr=~17,10e~%",tl,fl,tr,fr)),
+    if tl > tr then (
+      tmp:tl, tl:tr, tr:tmp,
+      tmp:fl, fl:fr, fr:tmp
+    ),
+
+    f:fct(t),
     while it < 100 and abs(f) > root_eps do (
       it: it+1,
-      t: t - f/fctprime(t),
-      if (tr-tl)*(t-tl) < 0  or  (tr-tl)*(tr-t) < 0 then  t:(tl+tr)/2,
-      f: fct(t),
+      fp:fctprime(t),
+      /* check if new t would be outside [tl,tr] 
+         t-tl < f/fp   or  t-tr > f/fp
+       */
+      if   (fp > 0   and ((t-tl)*fp < f  or  (t-tr)*fp > f ))
+        or (fp <= 0  and ((t-tl)*fp > f  or  (t-tr)*fp < f )) then (
+        /* Newton step would be outside [tl,tr] > take a bisection step */
+        t:(tl+tr)/2
+      ) else   t: t-f/fp,
+
+      f:fct(t),
       if fl*f < 0 then (tr:t, fr:f)
                   else (tl:t, fl:f)
     ),
     if abs(f) > root_eps then throw(simplode(["Newton failed at t=",t])),
-    t
-  ),
+
+  t),
+
   t:t0,
   y:copymatrix(y0),
   if h=0 then block([atol_me,f0,f_bnd],
@@ -414,44 +453,51 @@ Eulix_Table(t0,y0,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,Roots,[options]):= block(
         see Gladwell, Shampine, Brankin "Automatic selection of the initial
         step size for an ODE solver", J Comput Appl Math 18(1987) pp175-192 */
     atol_me: exp(log(atol)/(me+1)),
-    f0: Rhs(t,y),
-    h: Float(atol_me/mat_norm(f0,'inf)),
-    if  not is(assoc('mass_matrix,options,0)='false) then (
-      f_bnd: mat_norm(Rhs_t(t,y),'inf)+ mat_norm(Rhs_jac(t,y).f0,'inf),
-      h: Float(sqrt(2/f_bnd)*atol_me)
+    f0: ev(apply(Rhs,[t,y]),mynumer),
+    f_norm: mat_norm(f0,'inf),
+    if abs(f_norm) < atol then 
+      h: abs((t_end-t0))*0.01
+    else (
+      if  not is(assoc('mass_matrix,options,0)='false) then (
+        f_bnd: f_norm + mat_norm(ev(apply(Rhs_jac,[t,y]).f0,mynumer),'inf),
+        h: ev(sqrt(2/f_bnd)*atol_me,mynumer)
+      )
+      else h: atol_me/f_norm
     ),
     if t_end < t then h: -h,
     if logging then print("computed initial step size=",h)
   ),
 
   h_sign: signum(h),
-  if logging then  print("options in effect:",options),
+  if logging then  print("Eulix_Table : options in effect:",options),
   if gen_table then ( T:[t], Y:[y] ) else (T:[], Y:[]),
   if dout then ttab:t+delta_t,
   Root_Found: false,
   if find_root then  (
-    rt:makelist(first(Roots[i])(t,y),i,1,NumRootConds),
+    rt:makelist(apply(first(Roots[i]),[t,y]),i,1,NumRootConds),
     State:[t,y,copylist(rt)],
     Root_Solution:[0,0,0]
   ),
+
   while not Root_Found and (t_end-t)*h_sign > 0 do (
     h: h_sign*min(abs(h),abs(t_end-t)),
-    if logging then  printf(true,"at t= ~10,4f  h= ~11,3e  me= ~2d~%",t,h,me),
+    if logging then  (printf(true,"at t= ~10,4f  h= ~11,3e  me= ~2d~%",t,h,me), print(transpose(y))),
     [DO_DQ,tn,hn,me,failed]: apply(Eulix_Step,append([y,t,Rhs,Rhs_t,Rhs_jac,h,me],options)),
+    /* tn, DO_DQ */
+    yn:first(DO_DQ),
     h: tn-t,  /* <<<< in case of reject within Eulix */
     if  Debug then  ( /* check parameters on the first call at most */
      options: delete('check_parameters=true,options),  Debug: false
     ),
     if failed then (
       throw(simplode(["Eulix failed - too many rejected steps at",
-                     t,if dout then DO_DQ[1] else DO_DQ]))
+                     t,first(DO_DQ)]))
     ),
-    if dout then (
-      while not Root_Found and (tn-ttab)*h_sign >= 0 do (
-        y:Eulix_Dense_Out(ttab-tn,DO_DQ),
-        if gen_table then ( T:cons(ttab,T), Y:cons(y,Y) ),
+
+    if dout then (   /* find_root  implies dout */
+      if (tn-ttab)*h_sign <= 0 then (  /* tn <= ttab  => no extra dense steps */
         if find_root then (
-          rt:makelist(first(Roots[i])(t,y),i,1,NumRootConds),
+          rt:makelist(apply(first(Roots[i]),[tn,yn]),i,1,NumRootConds),
           if root_eps <= 0 then (
             root_eps: (if root_eps < 0 then abs(root_eps) else 1E-8)*apply('max,abs(rt)),
             if logging then print("root_eps=",root_eps)
@@ -462,69 +508,87 @@ Eulix_Table(t0,y0,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,Roots,[options]):= block(
               active_roots: endcons(i,active_roots)
             )
           ),
-          Root_Found: length(active_roots) > 0,
-          if not Root_Found then State:[ttab,y,copylist(rt)]
-        ),
-        ttab: ttab+delta_t
-      ),
-      if  not (find_root and Root_Found) then (
-        y:copymatrix(DO_DQ[1]),
-        if full_table then ( T:cons(tn,T), Y:cons(y,Y) )
-      )
-    ) else ( /* no dense output */
-      y:copymatrix(DO_DQ),
-      if find_root then (
-        rt:makelist(first(Roots[i])(tn,y),i,1,NumRootConds),
-        if root_eps <= 0 then (
-          root_eps: (if root_eps < 0 then abs(root_eps) else 1E-8)*apply('max,abs(rt)),
-          if logging then print("root_eps=",root_eps)
-        ),
-        active_roots:[],
-        for i:1 thru NumRootConds do (
-          if rt[i]*third(State)[i] <= 0 then (
-            active_roots: endcons(i,active_roots)
-          )
-        ),
-        Root_Found: length(active_roots) > 0,
-        if not Root_Found then State:[tn,y,copylist(rt)]
-      ) else if gen_table then ( T:cons(tn,T), Y:cons(y,Y) )
+          Root_Found: ev(length(active_roots) > 0,pred),
+          t_left:t, t_right:tn,
+          if not Root_Found then State:[tn,yn,rt]
+        )
+
+      ) else  (  /* dense output  extra steps to produce solution at ttab(s) */
+
+        while not Root_Found and (tn-ttab)*h_sign > 0 do (
+          yd:Eulix_Dense_Out(ttab-tn,DO_DQ),   /*  DO_DQ is at  (tn,yn)  */
+          if gen_table then ( T:cons(ttab,T), Y:cons(yd,Y) ),
+          if find_root then (
+            /* check sign change between t and ttab : State is at t */
+            t_left:t, t_right:ttab,
+            rt:makelist(apply(first(Roots[i]),[ttab,yd]),i,1,NumRootConds),
+            if root_eps <= 0 then (
+              root_eps: (if root_eps < 0 then abs(root_eps) else 1E-8)*apply('max,abs(rt)),
+              if logging then print("root_eps=",root_eps)
+            ),
+            active_roots:[],
+            for i:1 thru NumRootConds do (
+              if rt[i]*third(State)[i] <= 0 then (
+                active_roots: endcons(i,active_roots)
+              )
+            ),
+            Root_Found: ev(length(active_roots) > 0,pred),
+            t_left:t, t_right:tn
+          ),
+          ttab: ttab+delta_t
+        )
+      ) /* end of dense extra steps */
     ),
-    if  Root_Found  then block( [nr,eq,RT,RTprime,th,a_roots_init: false],
-      for nr in active_roots do (
-        RT: buildq([tn,Eq:first(Roots[nr])],
-                   lambda([tau],Eq(tau,Eulix_Dense_Out(tau-tn,DO_DQ)))),
-        RTprime: buildq([tn,Eq_y:second(Roots[nr]),Eq_t:third(Roots[nr])],
-                        lambda([tau],block([Y:Eulix_Dense_Out(tau-tn,DO_DQ)],
-                               dotproduct(Eq_y(tau,Y),Eulix_Dense_Deriv(tau-tn,DO_DQ))
-                               + Eq_t(tau,Y))
-                        )
-                       ),
-        th:Newton_Root(first(State),ttab,RT,RTprime,root_eps),
+    y:copymatrix(first(DO_DQ)),
+    if gen_table then ( T:cons(tn,T), Y:cons(y,Y) ),
+    t: tn,  h: hn
+  ),
+  if  Root_Found  then block( [nr,eq,RT,RTprime,th,a_roots_init:false],
+    for nr in active_roots do (
+      RT: buildq([tn,Eq:first(Roots[nr])],
+                 lambda([tau],Eq(tau,Eulix_Dense_Out(tau-tn,DO_DQ)))),
+      RTprime: buildq([tn,Eq_y:second(Roots[nr]),Eq_t:third(Roots[nr])],
+                      lambda([tau],block([Y:Eulix_Dense_Out(tau-tn,DO_DQ)],
+                             dotproduct(Eq_y(tau,Y),Eulix_Dense_Deriv(tau-tn,DO_DQ))
+                             + Eq_t(tau,Y))
+                      )
+                     ),
+      th:catch (Newton_Root(t_left,t_right,RT,RTprime,root_eps)),
+      if not numberp(th) then (
+        print("*** Newton failed at",t_left,"  error:",th),
+        Root_Solution:[0,t_left,first(DO_DQ)]
+      ) else (
         if a_roots_init then (
-           if  h_sign*(second(th - Root_Solution)) < 0  then 
+           if  h_sign*(th - second(Root_Solution)) < 0  then 
              Root_Solution:[nr,th,Eulix_Dense_Out(th-tn,DO_DQ)]
         ) else (Root_Solution:[nr,th,Eulix_Dense_Out(th-tn,DO_DQ)], a_roots_init:true)
       )
+    )
+
+  ) else (
+      y:if matrixp(first(DO_DQ))  then copymatrix(first(DO_DQ)) else first(DO_DQ),
+      if full_table then ( T:cons(tn,T), Y:cons(y,Y) )
     ),
-    t: tn,  h: hn
-  ),
   if not gen_table then ( T:cons(tn,T), Y:cons(y,Y) ), /* store final time/state */
-  if  Root_found then (T:cons(Root_Solution[2],T), Y:cons(Root_Solution[3],Y))
-  else if dout and full_table then (T:cons(t,T), Y:cons(y,Y)),
+  if find_root then
+    if  Root_Found then (T:cons(Root_Solution[2],T), Y:cons(Root_Solution[3],Y))
+      else              Root_Solution:[0,t_end,Y[length(T)]]
+  else 
+    if dout and full_table then (T:cons(t,T), Y:cons(y,Y)),
+
   T: reverse(T), Y: reverse(Y),
-  if gen_table then (
-    if find_root then [Root_Solution,[T,Y]]
-                 else [T,Y]
-  ) else
-    if find_root then [Root_Solution,first(Y)]
-       else  first(Y)
+  if gen_table then
+    RetVal: if find_root then [Root_Solution,[T,Y]]  else [T,Y]
+  else
+    RetVal: if find_root then [Root_Solution,first(Y)]  else  first(Y),
+
+  RetVal
 
 )$
 
 defstruct(Eulix_Spline_Type(t_left,t_right,NewtonPoly))$
 
 Eulix_SplineEval(t,Spls):= block([degree,d,dir,dt,SPL,Spl,TP,y],
-  local(TP),
   /* search the interval containig t 
      assuming ODE has been integrated in positive t-direction
    */
@@ -546,7 +610,7 @@ Eulix_Spline(t0,y0,t_end,Rhs,Rhs_t,Rhs_jac,[options]):= block(
   [i,t,tn, h,hn,h_sign, me,logging,atol,Debug,y,
    failed, Splines:[], Spl, DO_DQ,
    keepfloat:true,scalarmatrixp:false,nolabels:true],
-  local(DO_DQ,Float),
+  local(keepfloat,scalarmatrixp,nolabels,mynumer),
   h       : assoc('initial_step_size,options,0),
   me      : assoc('initial_order,options,6),
   logging    : assoc('logging,options,false),
@@ -555,8 +619,7 @@ Eulix_Spline(t0,y0,t_end,Rhs,Rhs_t,Rhs_jac,[options]):= block(
   options:delete('dense_output=false,delete('dense_output=true,options)),
   options:cons('dense_output=true,options),
 
-  /* local Float function */
-  Float(arg):= if fpprec <= 16 then float(arg) else bfloat(arg),
+  mynumer: if fpprec <= 16 then 'float else 'bfloat, declare(mynumer,evfun),
 
   t:t0,
   y:copymatrix(y0),
@@ -565,18 +628,18 @@ Eulix_Spline(t0,y0,t_end,Rhs,Rhs_t,Rhs_jac,[options]):= block(
         see Gladwell, Shampine, Brankin "Automatic selection of the initial
         step size for an ODE solver, J Comput Appl Math 18(1987) pp175-192 */
     atol_me: exp(log(atol)/(me+1)),
-    f0: Rhs(t,y),
-    h: Float(atol_me/mat_norm(f0,'inf)),
+    f0: ev(apply(Rhs,[t,y]),mynumer),
+    h: ev(atol_me/mat_norm(f0,'inf),mynumer),
     if  not is(assoc('mass_matrix,options,0)='false) then (
-      f_bnd: mat_norm(Rhs_t(t,y),'inf)+ mat_norm(Rhs_jac(t,y).f0,'inf),
-      h: Float(sqrt(2/f_bnd)*atol_me)
+      f_bnd: mat_norm(ev(apply(Rhs_t,[t,y]),mynumer),'inf)+ mat_norm(ev(apply(Rhs_jac,[t,y]).f0,mynumer),'inf),
+      h: ev(sqrt(2/f_bnd)*atol_me,mynumer)
     ),
     if t_end < t then h: -h,
     if logging then print("computed initial step size=",h)
   ),
 
   h_sign: signum(h),
-  if logging then  print("options in effect:",options),
+  if logging then  print("Eulix_Spline : options in effect:",options),
 
   while (t_end-t)*h_sign > 0 do (
     h: h_sign*min(abs(h),abs(t_end-t)),
@@ -588,14 +651,14 @@ Eulix_Spline(t0,y0,t_end,Rhs,Rhs_t,Rhs_jac,[options]):= block(
     ),
     if failed then (
       throw(simplode(["Eulix failed - too many rejected steps at",
-                     t,if dout then DO_DQ[1] else DO_DQ]))
+                     t,if dout then first(DO_DQ) else DO_DQ]))
     ),
 
     Spl:new(Eulix_Spline_Type),
     Spl@t_left:t, Spl@t_right:tn,
     Spl@NewtonPoly:makelist(copymatrix(DO_DQ[i]),i,1,length(DO_DQ)),
     Splines:cons(Spl,Splines),
-    y:copymatrix(DO_DQ[1]),
+    y:copymatrix(first(DO_DQ)),
     t: tn,  h: hn
   ),
   reverse(Splines)
@@ -608,23 +671,24 @@ Eulix(Expressions,Vars,initials,range,[options]):= block(
   [NumExpr,NumVars,MassMatrix,i,t0,t_end,delta_t,x,col2list,
    DO_DQ,Rhs,Rhs_jac,RootExpressions,tabular,gen_table:true,combined_t_y_list,
    Results,Root_Solution,tlist,ylist,
-   keepfloat:true,scalarmatrixp:false,nolabels:true],
-  local(Espressions,Vars,initials,MassMatrix,range,V,y,col2list,
-        gen_rhs,gen_jacobian,gen_fct,gen_grad, Rhs_t),
+   keepfloat:true,scalarmatrixp:false,nolabels:true,RetVal:[],
+   V,y, gen_rhs,gen_jacobian,gen_fct,gen_grad, Rhs_t],
+
+   local(keepfloat,scalarmatrixp,nolabels,
+   gen_rhs,gen_jacobian,gen_fct,gen_grad, Rhs_t,
+         col2list,mynumer,MassMatrix),
+
   x:range[1],
-  gen_rhs (Expr, V, X) := block([Ex:Expr,%_y:gensym()],
-    local(V,_y),
+
+  mynumer: if fpprec <= 16 then 'float else 'bfloat, declare(mynumer,evfun),
+
+  gen_rhs (_Expr, _V, X) := block([Ex:_Expr,V:_V,%_y:gensym(),_y],
     Ex:maplist(lambda([E],if atom(E) then E
                       else if op(E)#"=" then E
-                           else if is(rhs(E)=0) then lhs(E) else rhs(E)),Expr),
+                           else if is(rhs(E)=0) then lhs(E) else rhs(E)),Ex),
     subst (makelist (V[i] = %_y[i, 1], i, 1, length (V)), Ex),
-     buildq ([MList : makelist ([e], e, %%),t:X,_y:%_y],
+     buildq ([MList : makelist ([ev(e,mynumer,nouns)], e, %%),t:X,_y:%_y],
              lambda ([t, _y], matrix (splice (MList))))),
-
-  gen_fct(Ex, V, X) := block([%_y:gensym()],
-    local(V,_y),
-    Ex:subst (makelist (V[i] = %_y[i, 1], i, 1, length (V)), Ex),
-    buildq([Fct:%%,t:X,_y:%_y], lambda ([t, _y], Fct))),
 
   tabular          : assoc('tabular,options,'all),
   combined_t_y_list: assoc('combined_t_y_list,options,true),
@@ -642,22 +706,30 @@ Eulix(Expressions,Vars,initials,range,[options]):= block(
   /* local col2list function */
   col2list(L):= block(
     if  listp(L) then  maplist(lambda([v],transpose(v)[1]),L)
-    else               transpose(L)[1]
+    else transpose(L)[1]
   ),
+
+  gen_fct(_Expr, _V, X) := block([Ex:_Expr,V:_V,%_y:gensym(),_y],
+    local(V,_y),
+    subst (makelist (V[i] = %_y[i, 1], i, 1, length (V)), ev(Ex,nouns,mynumer)),
+    buildq([Fct:%%,t:X,_y:%_y], lambda ([t, _y], Fct))),
+
 
   gen_grad(F,xx,NVars)::= block([i,n:ev(NVars),J,X:ev(xx)],
-    J: genmatrix(lambda([i,j],diff(F(X,y),y[i,1])),n,1),
+    local(_y),
+       J: genmatrix(lambda([i,j],diff(F(X,y),y[i,1])),n,1),
+    J: genmatrix(lambda([i,j],ev(diff(F(X,_y),_y[i,1]),diff,mynumer)),n,1),
      buildq([J,t:X],lambda([t,y],J))
   ),
 
-
   gen_jacobian(F,xx,Fdim)::= block([i,n:ev(Fdim),J,X:ev(xx)],
-    J: genmatrix(lambda([i,j],diff(F(X,y)[i,1],y[j,1])),n,n),
-     buildq([J,t:X],lambda([t,y],J))
+    local(_y),
+    J: genmatrix(lambda([i,j],ev(diff(F(X,_y)[i,1],_y[j,1]),diff,mynumer)),n,n),
+     buildq([J,t:X],lambda([t,_y],J))
   ),
 
   Rhs:gen_rhs(Expressions,Vars,x),
-  define(Rhs_t(x,'y),diff(Rhs(x,'y),x)),
+  define(Rhs_t(x,'y),diff(apply(Rhs,[x,'y]),x)),
   Rhs_jac:gen_jacobian(Rhs,x,length(Expressions)),
 
   t0:range[2], t_end:range[3],
@@ -677,33 +749,37 @@ Eulix(Expressions,Vars,initials,range,[options]):= block(
     )
   ),
   options:cons('check_parameters=false, options),
+  if logging then  print("Eulix : options in effect:",options),
+
   Results: apply(Eulix_Table,append([t0,transpose(matrix(initials)),delta_t,t_end,
                                   Rhs,Rhs_t,Rhs_jac,Roots],options)),
-  
+
   if length(Roots) > 0 then (
     if gen_table then (
       [Root_Solution,[tlist,ylist]]: Results,
       ylist: col2list(ylist),
-      Root_Solution[3]:col2list(Root_Solution[3]),
-      if combined_t_y_list then (
-        [Root_Solution,
-         maplist(lambda([t,yl],cons(t,yl)),tlist,ylist)
-        ]
-      ) else [Root_Solution,[tlist,ylist]]
-    ) else [Results[1],col2list(Results[2])]
+      if Root_Solution[1] > 0  then Root_Solution[3]:col2list(Root_Solution[3]),
+      RetVal : if combined_t_y_list then (
+                 [Root_Solution,
+                  maplist(lambda([t,yl],cons(t,yl)),tlist,ylist)
+                 ]
+               ) else [Root_Solution,[tlist,ylist]]
+    ) else RetVal :[Results[1],col2list(Results[2])]
   ) else 
       if gen_table then (
         [tlist,ylist]: Results,
+
         ylist: col2list(ylist),
-        if combined_t_y_list then (
-          maplist(lambda([t,yl],cons(t,yl)),tlist,ylist)
-        ) else [tlist,ylist]
-      ) else col2list(Results)
+        RetVal : if combined_t_y_list then (
+                   maplist(lambda([t,yl],cons(t,yl)),tlist,ylist)
+                 ) else [tlist,ylist]
+      ) else RetVal :col2list(Results),
+  RetVal
 )$
+
+
 
 eval_when(loadfile,
   compile(SiEuler,Eulix_Row,Eulix_Step,Eulix_Dense_Out,Eulix_Dense_Deriv,
           Eulix_Table,Eulix_SplineEval,Eulix_Spline,Eulix)
 )$
-
-

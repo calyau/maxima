@@ -13,9 +13,12 @@ Rhs(t,y):= matrix([ 2*t*y[1,1]*log(y[2,1])],
 define(Rhs_Time('t,'y),diff(Rhs('t,'y),'t))$
 
 gen_jacobian(F,xx,Fdim)::= block([i,n:ev(Fdim),J,X:ev(xx)],
-  J: genmatrix(lambda([i,j],diff(F(X,y)[i,1],y[j,1])),n,n),
-   buildq([J,t:X],lambda([t,y],J))
+  local(_y,mynumer),
+  mynumer: if fpprec <= 16 then 'float else 'bfloat, declare(mynumer,evfun),
+  J: genmatrix(lambda([i,j],ev(diff(F(X,_y)[i,1],_y[j,1]),diff,mynumer)),n,n),
+   buildq([J,t:X],lambda([t,_y],J))
 )$
+
 Rhs_Jac:gen_jacobian(Rhs,t,2)$
 
 compile(Rhs,Rhs_Time)$

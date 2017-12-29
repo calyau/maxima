@@ -19,12 +19,14 @@ for i:1 thru length(RR) do block([ty:RR[i],t,y],
   printf(true,"at t= ~7,4f  err= ~10,3e~%",t,(y-solution(t,-1,1/(1+alpha))))
 );
 
+Logging:false$
+
 print("Eulix errors:")$
-ER: Eulix(-2*t*y^2,y,[1/(1+alpha)],[t,-1,1],logging=true)$
+ER: Eulix(-2*t*y^2,y,[1/(1+alpha)],[t,-1,1],logging=Logging)$
 for i:1 thru length(ER) do block([ty:ER[i],t,y],
   t:first(ty),y:second(ty),
   printf(true,"at t= ~7,4f  err= ~10,3e~%",t,(y-solution(t,-1,1/(1+alpha))))
 );
-timer_info();  /* rkf45: 0.041 sec   Eulix: 0.898 sec */
+timer_info();  /* rkf45: 0.177 sec   Eulix: 0.945 sec */
 
 

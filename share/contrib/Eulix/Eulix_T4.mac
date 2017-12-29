@@ -15,7 +15,6 @@ Start:elapsed_real_time()$
                      [y1,y2,y3,y4,y5], [1,0,0,0,0], [t,0,10,0.1],
                      combined_t_y_list=false)$
 print("I've used ",elapsed_real_time()-Start,"seconds for computing the pendulum DAE")$
-/* I've used  3.24 seconds for computing the pendulum DAE */
 plot2d([[discrete,tlist,map(lambda([z],z[1]),ylist)],[discrete,tlist,map(lambda([z],z[3]),ylist)]],
        [legend,"y1","y3"],[title,"Pendulum Index 1"])$
 read("enter ; or $ to quit");

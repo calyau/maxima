@@ -35,8 +35,10 @@ if high_precision then (
 
 /* debugmode:true$ */
 
+Logging:false$
+
 [tlist,ylist]:Eulix([2*t*y*log(z),-2*t*z*log(y)],[y,z],y0,[t,t0,sqrt(float(%pi)),0.5],
-                    logging=true,'absolute_tolerance=atol,'relative_tolerance=rtol,
+                    logging=Logging,'absolute_tolerance=atol,'relative_tolerance=rtol,
                     combined_t_y_list=false)$
 maxabs(L1,L2):= max(abs(first(L1)-first(L2)),abs(second(L1)-second(L2)))$
 for i:1 thru length(tlist) do (

@@ -1,0 +1,25 @@
+load("Eulix.mac")$
+odes:[U,V,6*U*V*sin(v)/(3*cos(v) + 5),-U*U*(cos(v)+5/3)*sin(v)]$
+Vars:[u, v, U, V]$
+initial:[1, -1, 0.1, -0.1]$
+interval: ['s, 0, 45,1.0]$
+/* interval: ['s, 0, 1]; */
+
+Logging:false$
+
+/* debug_mode(true)$
+[tlist,ylist]:Eulix(odes,Vars,initial,interval,
+            absolute_tolerance=1E-10, 
+            logging=Logging, check_parameters=true, combined_t_y_list=false)$
+*/
+[tlist,ylist]:Eulix(odes,Vars,initial,interval,
+            absolute_tolerance=1E-10, 
+            check_parameters=true, combined_t_y_list=false)$
+/* tlist;
+ylist;
+*/
+
+for i:1 thru length(tlist) do (
+  printf(true,"at t= ~10,4f solution=~%",tlist[i]),
+  print(ylist[i])
+)$

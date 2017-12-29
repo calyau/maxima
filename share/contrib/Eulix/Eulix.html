@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.13.1: http://docutils.sourceforge.net/" />
 <title></title>
 <style type="text/css">
 
@@ -80,7 +80,9 @@ interface provided by <cite>rk</cite> and <cite>rkf45</cite>,
 and two intermediate level interfaces, <a class="reference internal" href="#eulix-table">Eulix_Table</a> and <a class="reference internal" href="#eulix-spline">Eulix_Spline</a>.
 Lastly, there is a low-level interface <a class="reference internal" href="#eulix-step">Eulix_Step</a> which computes a single time step.
 <br/> All four interfaces allow for a number of options, see the chapter on <a class="reference internal" href="#options">Options</a> below.</p>
-<p><strong>Eulix</strong></p>
+</div>
+<div class="section" id="eulix">
+<h2>Eulix</h2>
 <p><cite>Eulix</cite> is called as:</p>
 <pre class="literal-block">
 Eulix(Expressions,Vars,initials,range,[options])
@@ -115,14 +117,18 @@ the ODE is integrated <strong>backwards</strong> in time.</td>
 </tr>
 <tr class="field"><th class="field-name"><tt class="docutils literal">range[4]</tt>:</th><td class="field-body">is called <tt class="docutils literal">delta_t</tt> (if present). Depending on an option
 given below, this determines the exact or maximum distance of time values in the
-list of results which <cite>Eulix</cite> returns. If <tt class="docutils literal">delta_t=0</tt> only the
-natural time steps are returned.</td>
+list of results which <cite>Eulix</cite> returns. A small value of delta_t isn't expensive
+since it has to evaluate a polynomial only.
+If <tt class="docutils literal">delta_t=0</tt> only the  natural time steps are returned.</td>
 </tr>
 <tr class="field"><th class="field-name"><tt class="docutils literal">range[5]</tt>:</th><td class="field-body">is a single  <cite>root condition</cite> or a list of <cite>root conditions</cite> (if present).
 <br/> A <cite>root condition</cite> is a real-valued expression which depends on the dependent variables
 (see <cite>Vars</cite>) as well as on the independent variable <tt class="docutils literal">range[1]</tt>.
 The integration stops if either one of the <cite>root conditions</cite> evaluates to zero
-or if the final time <tt class="docutils literal">range[3]</tt> is reached.</td>
+or if the final time <tt class="docutils literal">range[3]</tt> is reached. A root condition implies <cite>dense output</cite>.
+If <tt class="docutils literal">delta_t</tt> (<tt class="docutils literal">range[4]</tt>) is zero it is reset to <tt class="docutils literal"><span class="pre">(range[3]-range[2])/100</span></tt> .
+<br/> Hint: A <cite>root condition</cite> might need quite a small value of <tt class="docutils literal">delta_t</tt> since <tt class="docutils literal">Eulix_Table</tt> might miss
+the sign change in a <cite>root condition</cite> otherwise.</td>
 </tr>
 </tbody>
 </table>
@@ -152,7 +158,9 @@ you have to give a vector-valued function which returns the value of the derivat
 right-hand-side w.r.t. time. In addition, you have to give a Jacobian matrix of the
 right-hand-side; this might be an approximation only. The mass-matrix (even if trivial) has to
 specified by the option <tt class="docutils literal">mass_matrix</tt> (see <a class="reference internal" href="#options">Options</a> below).</p>
-<p id="eulix-table"><strong>Eulix_Table</strong></p>
+</div>
+<div class="section" id="id1">
+<span id="eulix-table"></span><h2>Eulix_Table</h2>
 <p><cite>Eulix_Table</cite> is called as:</p>
 <pre class="literal-block">
 Eulix_Table(t0,y0,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,Roots,[options])
@@ -166,9 +174,10 @@ Eulix_Table(t0,y0,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,Roots,[options])
 <tr class="field"><th class="field-name">y0:</th><td class="field-body">initial state (a <cite>vector</cite>)</td>
 </tr>
 <tr class="field"><th class="field-name">delta_t:</th><td class="field-body">time increment for the generated list of solutions values. Due to <cite>dense output</cite>
-this is independent of the time step used by the integrator. If <cite>delta_t</cite> is zero, only
-the natural time steps or even only the final state are output, depending on the
-option <tt class="docutils literal">tabular</tt> (see  <a class="reference internal" href="#options">Options</a> below).</td>
+this is independent of the time step used by the integrator. A small value of delta_t
+isn't expensive since it has to evaluate a polynomial only.
+If <cite>delta_t</cite> is zero, only   the natural time steps or even only the final state are output,
+depending on the  option <tt class="docutils literal">tabular</tt> (see  <a class="reference internal" href="#options">Options</a> below).</td>
 </tr>
 <tr class="field"><th class="field-name">t_end:</th><td class="field-body">final time. If <tt class="docutils literal">t_end</tt> &lt; <tt class="docutils literal">t0</tt> a negative time step is used. In that case <tt class="docutils literal">delta_t</tt>
 must be negative, as well.</td>
@@ -181,7 +190,11 @@ of the ODE system</td>
 <tr class="field"><th class="field-name">Rhs_jac:</th><td class="field-body">a matrix-valued function of (t,y), which gives the exact or approximate Jacobian
 of the right-hand-side w.r.t. the state vector y</td>
 </tr>
-<tr class="field"><th class="field-name">Roots:</th><td class="field-body">a list of scalar-valued functions R(t,y). If R(t,y(t))=0 the integration stops</td>
+<tr class="field"><th class="field-name">Roots:</th><td class="field-body">a list of scalar-valued functions R(t,y). If R(t,y(t))=0 the integration stops.
+A <cite>root condition</cite> implies dense output. If <tt class="docutils literal">delta_t</tt> isn't specified or is set to zero,
+it is reset to <tt class="docutils literal"><span class="pre">(range[3]-range[2])/100</span></tt> .
+<br/> Hint: A <cite>root condition</cite> might need quite a small value of <tt class="docutils literal">delta_t</tt> since Eulix_Table might miss
+the sign change in a <cite>root condition</cite> otherwise.</td>
 </tr>
 <tr class="field"><th class="field-name">options:</th><td class="field-body">see <a class="reference internal" href="#options">Options</a> below</td>
 </tr>
@@ -196,7 +209,9 @@ is returned</td>
 </tr>
 </tbody>
 </table>
-<p id="eulix-spline"><strong>Eulix_Spline</strong></p>
+</div>
+<div class="section" id="id2">
+<span id="eulix-spline"></span><h2>Eulix_Spline</h2>
 <p><cite>Eulix_Spline</cite> is called as:</p>
 <pre class="literal-block">
 Eulix_Spline(t0,y0,t_end,Rhs,Rhs_t,Rhs_jac,[options])
@@ -220,7 +235,9 @@ derivative(s) of this spline w.r.t. time. For this, one should write a function 
 </tr>
 </tbody>
 </table>
-<p id="eulix-step"><strong>Eulix_Step</strong></p>
+</div>
+<div class="section" id="id3">
+<span id="eulix-step"></span><h2>Eulix_Step</h2>
 <p><cite>Eulix_Step</cite> is called as:</p>
 <pre class="literal-block">
 [DO_DQ,tn,hn,me,failed]: Eulix_Step(y,t,Rhs,Rhs_t,Rhs_jac,h,me,[options])
@@ -273,7 +290,9 @@ discontinuous or if the values delivered by <cite>Rhs_t</cite> or <cite>Rhs_jac<
 </tr>
 </tbody>
 </table>
-<p id="options"><strong>Options</strong></p>
+</div>
+<div class="section" id="id4">
+<span id="options"></span><h2>Options</h2>
 <p>Some options are only applicable to some of the interface functions above.
 The following abbreviations are used to indicate for which function an
 option is effective: <cite>Eul</cite> for <cite>Eulix</cite>, <cite>Tab</cite> for <cite>Eulix_Table</cite>, <cite>Spl</cite> for
@@ -283,17 +302,17 @@ option is effective: <cite>Eul</cite> for <cite>Eulix</cite>, <cite>Tab</cite> f
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">absolute_tolerance:</th><td class="field-body"><p class="first">= 1E-6 &nbsp; <tt class="docutils literal">[Eul,Tab,Spl,Stp]</tt></p>
+<tr class="field"><th class="field-name">absolute_tolerance:</th><td class="field-body"><p class="first">= 1E-6 &nbsp; <tt class="docutils literal">[Eul,Tab,Stp,Spl]</tt></p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">relative_tolerance:</th><td class="field-body"><p class="first">= 1E-6 &nbsp; <tt class="docutils literal">[Eul,Tab,Spl,Stp]</tt>
+<tr class="field"><th class="field-name">relative_tolerance:</th><td class="field-body"><p class="first">= 1E-6 &nbsp; <tt class="docutils literal">[Eul,Tab,Stp,Spl]</tt>
 <br/> The (local) <strong>required tolerance</strong> is computed as (with the state vector <tt class="docutils literal">y</tt>):</p>
 <pre class="literal-block">
 absolute_tolerance + relative_tolerance *  mat_norm(y,'inf)
 </pre>
 </td>
 </tr>
-<tr class="field"><th class="field-name">root_tolerance:</th><td class="field-body"><p class="first">= 0 &nbsp; This defines the tolerance for Newton's method to
+<tr class="field"><th class="field-name">root_tolerance:</th><td class="field-body"><p class="first">= 0 &nbsp; <tt class="docutils literal">[Eul,Tab]</tt> This defines the tolerance for Newton's method to
 determine a zero of a <cite>root condition</cite>.
 <br/> If this is negative or zero (equivalent to -1E-6), the tolerance is
 a relative tolerance according to:</p>
@@ -304,40 +323,41 @@ abs(root_eps)*max(mat_norm(y_left,'inf),mat_norm(y_right,'inf))
 start interval for Newton's method.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">maximum_order:</th><td class="field-body"><p class="first">= 20 &nbsp; <tt class="docutils literal">[Stp]</tt> &nbsp; This is the maximum tableau width
+<tr class="field"><th class="field-name">maximum_order:</th><td class="field-body"><p class="first">= 20 &nbsp; <tt class="docutils literal">[Eul,Tab,Stp]</tt> &nbsp; This is the maximum tableau width
 that is used by <cite>Eulix_Step</cite></p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">dense_output:</th><td class="field-body"><p class="first">= true &nbsp; <tt class="docutils literal">[Stp]</tt> &nbsp; This makes <cite>Eulix_Step</cite> compute the
-dense output information <tt class="docutils literal">DO_DQ</tt>.</p>
+<tr class="field"><th class="field-name">dense_output:</th><td class="field-body"><p class="first">= true &nbsp; <tt class="docutils literal">[Stp,Spl]</tt> &nbsp; This makes <cite>Eulix_Step</cite> compute the
+dense output information <tt class="docutils literal">DO_DQ</tt>. This can be triggered in a call to <cite>Eulix</cite>
+and <cite>Eulix_Table</cite> by other means.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">work_estimates:</th><td class="field-body"><p class="first">= [1,1,0] &nbsp; <tt class="docutils literal">[Eul,Tab,Spl,Stp]</tt> &nbsp; For computing
+<tr class="field"><th class="field-name">work_estimates:</th><td class="field-body"><p class="first">= [1,1,0] &nbsp; <tt class="docutils literal">[Eul,Tab,Stp,Spl]</tt> &nbsp; For computing
 the optimal step size and order for the next step, <cite>Eulix_Step</cite> needs
 a relative amount of work to evaluate the right-hand-side <cite>Rhs</cite> and
 <cite>Rhs_t</cite>,   to compute the Jacobian <cite>Rhs_jac</cite> and to decompose the Jacobian
 into a <cite>Q-R-decomposition</cite>.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">check_parameters:</th><td class="field-body"><p class="first">= true &nbsp; <tt class="docutils literal">[Tab,Spl,Stp]</tt> &nbsp; If this is true,
+<tr class="field"><th class="field-name">check_parameters:</th><td class="field-body"><p class="first">= true &nbsp; <tt class="docutils literal">[Eul,Tab,Stp,Spl]</tt> &nbsp; If this is true,
 several checks to the parameters are performed. The functions
 <tt class="docutils literal">Eulix_Table</tt> and <tt class="docutils literal">Eulix_Spline</tt> set this to false after the first
 call to <tt class="docutils literal">Eulix_Step</tt>.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">mass_matrix:</th><td class="field-body"><p class="first">= <tt class="docutils literal">ident(dim)</tt> &nbsp; This parameter should take a matrix
+<tr class="field"><th class="field-name">mass_matrix:</th><td class="field-body"><p class="first">= <tt class="docutils literal">ident(dim)</tt> &nbsp; <tt class="docutils literal">[Stp,Spl]</tt> This parameter should take a matrix
 of the size of the differential system or <tt class="docutils literal">false</tt>.
 <br/> If it has the value <tt class="docutils literal">false</tt>, an extrapolated <strong>explicit</strong> Euler scheme
 is used. In this case, the function <cite>Rhs_jac</cite> will not be called.
 <br/> If it has the value of a (square) matrix <tt class="docutils literal">M</tt>, the (possibly)
 implicit ODE &nbsp; <tt class="docutils literal">M <span class="pre">y'(t)</span> = f(t,y(t))</tt> &nbsp; is solved. This matrix need not
 be regular. Indeed, for an algebraic equation, the corressponding row of
-<tt class="docutils literal">M</tt> should be zero.
+<tt class="docutils literal">M</tt> should be zero. This can be triggered on a call to <cite>Eulix</cite>, as well.
 <br/> If <cite>mass_matrix</cite> has the value of a matrix, the <strong>implicit</strong> (extrapolated)
 Euler scheme will be used.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">initial_step_size:</th><td class="field-body"><p class="first">= 0`` &nbsp; <tt class="docutils literal">[Eul,Tab,Spl]</tt> defines
+<tr class="field"><th class="field-name">initial_step_size:</th><td class="field-body"><p class="first">= 0 &nbsp; <tt class="docutils literal">[Eul,Tab,Spl]</tt> defines
 the very first step size; for integration backwards in time, this should
 have a negative value. If it has the (default) value 0, an estimate
 is computed. This depends on the right-hand-side as well as on the option
@@ -349,13 +369,13 @@ is computed. This depends on the right-hand-side as well as on the option
 tableau.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">logging:</th><td class="field-body"><p class="first">= <tt class="docutils literal">false</tt> &nbsp; <tt class="docutils literal">[Tab,Spl,Stp]</tt> &nbsp; If this is true,
+<tr class="field"><th class="field-name">logging:</th><td class="field-body"><p class="first">= <tt class="docutils literal">false</tt> &nbsp; <tt class="docutils literal">[Eul,Tab,Stp,Spl]</tt> &nbsp; If this is true,
 some internal information is printed, e.g. rejected steps, the initial
 step size, options which are in effect and for each time step the values
 of the current time, step size and tableau width (order).</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">tabular:</th><td class="field-body"><p class="first">= <tt class="docutils literal">all</tt> &nbsp; <tt class="docutils literal">[Tab]</tt> &nbsp; This option can have the values
+<tr class="field"><th class="field-name">tabular:</th><td class="field-body"><p class="first">= <tt class="docutils literal">all</tt> &nbsp; <tt class="docutils literal">[Eul,Tab]</tt> &nbsp; This option can have the values
 <tt class="docutils literal">all</tt> (default), <tt class="docutils literal">none</tt> and <tt class="docutils literal">tabular</tt>.
 <br/> If it has the value <tt class="docutils literal">none</tt>, only the final state is returned
 or a list <strong>[Solution,y_final]</strong> when <cite>root conditions</cite> have been specified.
@@ -408,6 +428,10 @@ Here we demonstrate the <cite>root finding</cite> feature.</td>
 <tr class="field"><th class="field-name">Table_T5:</th><td class="field-body">This same model as <tt class="docutils literal">T5</tt> but this time using the <cite>Eulix_Table</cite>
 interface. Here we demonstrate the <cite>root finding</cite> feature.</td>
 </tr>
+<tr class="field"><th class="field-name">T6:</th><td class="field-body">Simple test with a highly non-linear right hand side</td>
+</tr>
+<tr class="field"><th class="field-name">T7:</th><td class="field-body">Simple test of the quality of dense output using the exact solution exp(-t*t).</td>
+</tr>
 <tr class="field"><th class="field-name">TP:</th><td class="field-body">Here we solve a system of 2 equations with a tolerance of 1E-30.
 Since the exact solution is known, we can check the tolerance achieved.</td>
 </tr>
@@ -425,6 +449,13 @@ see Hairer/Wanner Solving ODE II .</td>
 contain comparisons with <cite>rkf45</cite>.</p>
 </div>
 </div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<a class="reference external" href="Eulix.rst">View document source</a>.
+Generated on: 2017-08-27 10:17 UTC.
+Generated by <a class="reference external" href="http://docutils.sourceforge.net/">Docutils</a> from <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> source.
+
 </div>
 </body>
 </html>

@@ -1,0 +1,40 @@
+load("Eulix.mac")$
+
+
+A:-(U^2+V^2)*sinh(u)/(cosh(u)^3-cosh(u));
+B:2*U*V*sinh(u)/cosh(u);
+
+/*
+dA_du:(-V^2-U^2)*cosh(u)-(-V^2-U^2)*sinh(u)*(3*cosh(u)^2*sinh(u)-sinh(u))/(cosh(u)^3-cosh(u))^2;
+dA_du:-(U^2+V^2)*(cosh(u)-sinh(u)*(3*cosh(u)^2*sinh(u)-sinh(u))/(cosh(u)^3-cosh(u))^2);
+dB_du:2*U*V*(1-sinh(u)^2/cosh(u)^2);
+*/
+
+
+
+odes:[U,V,A,B]$
+funcs:[u,v,U,V]$
+
+/* stop if  u-3e-2 = 0  OR  u+3e-2 = 0 */
+
+interval:[s,0,0.4,0.002,[u-3e-2,u+3e-2]]$
+/* this doesn't find the root : interval:[s,0,0.4,0.01,[u-3e-2,u+3e-2]] */
+
+initial:[1,0,20,5];
+
+/* debug_mode(true); */
+
+
+[Root_at,eusol]:Eulix(odes,funcs,initial,interval,
+                absolute_tolerance=1E-8,combined_t_y_list=false,
+                check_parameters=true)$
+if first(Root_at) > 0 then
+  print("root at ",second(Root_at),"   triggered by condition ",first(Root_at),
+        "root solution=
+",third(Root_at))
+else (
+  print("no root condition was triggered"),
+  [tlist,ylist]:eusol,
+  print("Final Solution=
+  ", ylist[length(tlist)])
+);

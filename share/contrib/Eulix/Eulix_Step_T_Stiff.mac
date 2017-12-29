@@ -1,0 +1,64 @@
+load("Eulix.mac")$
+
+/* 
+  y1' = -0.04*y1 + 1E4*y2*y3             y1(0)= 1
+  y2' =  0.04*y1 - 1E4*y2*y3 -3E7*y2^2   y2(0)= 0
+  y3' =                       3E7*y2^2   y3(0)= 0
+*/
+
+Rhs(t,y):= matrix([ -0.04*y[1,1] + 1E4*y[2,1]*y[3,1]],
+                  [  0.04*y[1,1] - 1E4*y[2,1]*y[3,1] -3E7*y[2,1]^2],
+                  [                       3E7*y[2,1]^2])$
+
+define(Rhs_Time('t,'y),diff(Rhs('t,'y),'t))$
+
+gen_jacobian(F,xx,Fdim)::= block([i,n:ev(Fdim),J,X:ev(xx)],
+  local(_y,mynumer),
+  mynumer: if fpprec <= 16 then 'float else 'bfloat, declare(mynumer,evfun),
+  J: genmatrix(lambda([i,j],ev(diff(F(X,_y)[i,1],_y[j,1]),diff,mynumer)),n,n),
+   buildq([J,t:X],lambda([t,_y],J))
+)$
+
+Rhs_Jac:gen_jacobian(Rhs,t,3)$
+
+compile(Rhs,Rhs_Time)$
+
+
+t:0$
+y0:matrix([1],[0],[0])$
+atol:1e-6$  rtol:1e-4$
+h:0.1$
+mass_matrix: ident(3)$ /* must be either 'false or a square mass matrix 
+                       = ident(dim) for an ODE with trivial mass matrix */
+me:6$
+
+y: copymatrix(y0)$
+t_end: 0.3;
+Check_Parm:true$
+Start:elapsed_real_time()$
+dense_out:true$
+debugmode:true$
+
+while t < t_end do (
+  h: min(h,t_end-t),
+  [DO_DQ,tn,hn,me,failed]: Eulix_Step(y,t,Rhs,Rhs_Time,Rhs_Jac,h,me, dense_output=dense_out,
+                                      absolute_tolerance=atol,relative_tolerance=rtol,
+                                      'mass_matrix=mass_matrix,check_parameters=Check_Parm,
+                                      logging=true),
+  Check_Parm: false,
+  h: tn-t,  /* <<<< in case of reject within Eulix */
+  if failed then (
+    printf(true,"Eulix failed at t: ~7,4f~%",t),
+    throw('failed)
+  ),
+  if dense_out then (  /* dense_output=true */
+    printf(true,"t: ~7,4f hn: ~10,8f  me:~2d y1=~13,6e  y2=~13,6e y3=~13,6e~%",
+                 tn,      hn,     me,  y[1,1],    y[2,1],   y[3,1]),
+    y:copymatrix(DO_DQ[1])
+  ) else y:copymatrix(DO_DQ),
+  printf(true,"t: ~7,4f hn: ~10,8f  me:~2d y1=~13,6e  y2=~13,6e y3=~13,6e~%",
+               tn,      hn,     me,  y[1,1],    y[2,1],   y[3,1]),
+  t: tn,  h: hn
+)$
+
+

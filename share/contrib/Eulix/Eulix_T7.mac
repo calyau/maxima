@@ -1,0 +1,20 @@
+load("Eulix.mac")$
+
+/* y'(t)= -2*t*y  y(0)=1  ==> exact solution  yex(t)= exp(-t*t) */
+
+[tlist,ylist]:Eulix([-2*'t*'y],['y],[1],['t,0,10,0.1],
+                    relative_tolerance=1E-5,
+                    check_parameters=true, combined_t_y_list=false)$
+
+yex(t):= exp(-t*t)$
+max_error:0$
+max_error_t:0$
+
+for i:1 thru length(tlist) do (
+  er:abs((ylist[i]-yex(tlist[i]))[1]),
+  if er > max_error then (
+    max_error: er,  max_error_t: tlist[i]
+  )
+)$
+
+printf(true,"maximal error at t= ~10,4f  is  ~12,5e~%",max_error_t,max_error)$

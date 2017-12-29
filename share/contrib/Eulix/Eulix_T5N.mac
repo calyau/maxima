@@ -14,24 +14,27 @@ debugmode(true)$
 /* :break Eulix$ */
 t_final: 12*365+4$
 
-[Solution,y_root]: Eulix([p - sx*x -rx*x*v +g(v)*x,
+Logging:false$
+
+[Root_at,y_root]: Eulix([p - sx*x -rx*x*v +g(v)*x,
                           rx*x*v -sy*y -g(v)*y,
                           n*g(v)*y +f(v) -sv*v -(rx+rv)*x*v],[x,y,v],
                           [1000.0,0,1.0],[t,0.0,t_final,1,v-t-245.0],
-                          initial_step_size=1,absolute_tolerance=1e-8,logging=true,
+                          initial_step_size=1,absolute_tolerance=1e-8,logging=Logging,
                           'tabular='none)$
-print("I've used ",elapsed_real_time()-Start,"seconds for computing the AIDS model")$
-/* I've used  3.329 seconds for computing the AIDS model */
-print("Solution triggered by condition",first(Solution)," at time ",second(Solution),
-      "  and state:",third(Solution))$
-print("y_root=",y_root)$
-t1:second(Solution)$
-y_final: Eulix([p - sx*x -rx*x*v +g(v)*x,
-                rx*x*v -sy*y -g(v)*y,                                                                          
-                n*g(v)*y +f(v) -sv*v -(rx+rv)*x*v],
-                [x,y,v],y_root,[t,t1,t_final,1],         
-                absolute_tolerance=1e-8,logging=true,
-                'tabular='none)$                                     
+if first(Root_at) > 0 then (
+  print("I've used ",elapsed_real_time()-Start,"seconds for computing the AIDS model"),
+  print("Solution triggered by condition",first(Root_at)," at time ",second(Root_at),
+        "  and state:",third(Root_at)),
+  print("y_root=",y_root),
+  t1:second(Root_at),
+  y_final: Eulix([p - sx*x -rx*x*v +g(v)*x,
+                  rx*x*v -sy*y -g(v)*y,
+                  n*g(v)*y +f(v) -sv*v -(rx+rv)*x*v],
+                  [x,y,v],y_root,[t,t1,t_final,1],
+                  absolute_tolerance=1e-8,logging=true,
+                  'tabular='none),
 
-print("solution at final time",t_final," is ",y_final)$
+  print("solution at final time",t_final," is ",y_final)
+) else print("no root condition has been triggered")$
 

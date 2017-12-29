@@ -12,9 +12,12 @@ Rhs(t,y):= block([alpha:0.1,beta:0.015,gamma:0.0225,delta:0.02],
              matrix([y[1,1]*(alpha-beta*y[2,1])],[-y[2,1]*(gamma-delta*y[1,1])]))$
 
 define(Rhs_t('t,'y),diff(Rhs('t,'y),'t))$
+
 gen_jacobian(F,xx,Fdim)::= block([i,n:ev(Fdim),J,X:ev(xx)],
-  J: genmatrix(lambda([i,j],diff(F(X,y)[i,1],y[j,1])),n,n),
-   buildq([J,t:X],lambda([t,y],J))
+  local(_y,mynumer),
+  mynumer: if fpprec <= 16 then 'float else 'bfloat, declare(mynumer,evfun),
+  J: genmatrix(lambda([i,j],ev(diff(F(X,_y)[i,1],_y[j,1]),diff,mynumer)),n,n),
+   buildq([J,t:X],lambda([t,_y],J))
 )$
 
 Rhs_jac:gen_jacobian(Rhs,t,length(Rhs('t,'y)))$

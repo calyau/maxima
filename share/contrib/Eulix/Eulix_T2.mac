@@ -30,4 +30,4 @@ for i:1 thru length(ER) do block([ty:ER[i],tt,yt],
   tt:first(ty),yt:second(ty),
   printf(true,"at t= ~7,4f  err= ~10,3e~%",tt,(yt-solution(tt,y0)))
 );
-timer_info();  /* rkf45: 0.419 sec   Eulix: 0.896 sec */
+timer_info();  /* rkf45: 0.487 sec   Eulix: 0.906 sec */

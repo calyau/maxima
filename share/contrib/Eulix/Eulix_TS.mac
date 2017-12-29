@@ -10,11 +10,13 @@ debugmode:true$
 delta:0.00001$
 timer(rkf45,Eulix)$
 
+Logging:false$
+
 RR:rkf45(y^2-y^3,y,delta,[t,0,2/delta],
          report=true,max_iterations=40000,absolute_tolerance=5E-8)$
 
 [tlist,ylist]: Eulix(y^2-y^3,y,delta,[t,0,2/delta],
-                     logging=true,absolute_tolerance=5E-8,combined_t_y_list=false)$
+                     logging=Logging,absolute_tolerance=5E-8,combined_t_y_list=false)$
 timer_info();  /* rkf45: 37.376 sec   Eulix: 2.192 sec */
 
 plot2d([discrete,tlist,map(lambda([z],z[1]),ylist)],

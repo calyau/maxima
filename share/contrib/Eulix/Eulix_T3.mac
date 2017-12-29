@@ -35,7 +35,7 @@ ER: Eulix([y1*(alpha-beta*y2),-y2*(gamma-delta*y1)],[y1,y2],[1,1],['t,0,198])$
 [t,y1t,y2t]: ER[length(ER)]$
 print("Eulix 1E-6 error:",max(abs(y1t-y1_198),abs(y2t-y2_198)))$  /* 4.43e-5  */
 
-timer_info(rkf45,Eulix); /*  rkf45 ; 0.031 sec     Eulix : 1.228 sec  */
+timer_info(rkf45,Eulix); /*  rkf45 ; 0.036 sec     Eulix : 1.222 sec  */
 
 ER: Eulix([y1*(alpha-beta*y2),-y2*(gamma-delta*y1)],[y1,y2],[1,1],['t,0,198],
           absolute_tolerance=1e-10,relative_tolerance=1e-10)$

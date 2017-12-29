@@ -36,10 +36,11 @@ mass_matrix: ident(3)$
 
 define(Rhs_t('t,'y),diff(Rhs('t,'y),'t))$
 
-gen_jacobian(F,xx,num_funcs)::= block([i,n:ev(num_funcs),J,X:ev(xx)],
-    local(F,y),
-    J:jacobian(makelist(F(X,y)[i,1],i,n),makelist(y[i,1],i,n)),
-    buildq([J,t:X],lambda([t,y],J))
+gen_jacobian(F,xx,Fdim)::= block([i,n:ev(Fdim),J,X:ev(xx)],
+  local(_y,mynumer),
+  mynumer: if fpprec <= 16 then 'float else 'bfloat, declare(mynumer,evfun),
+  J: genmatrix(lambda([i,j],ev(diff(F(X,_y)[i,1],_y[j,1]),diff,mynumer)),n,n),
+   buildq([J,t:X],lambda([t,_y],J))
 )$
 
 Rhs_jac:gen_jacobian(Rhs,t,length(Rhs('t,'y)))$
@@ -58,26 +59,31 @@ Roots:[[root_1,root_1_y,root_1_x]]$
 Start:elapsed_real_time()$
 debugmode:true$
 
-[Solution,[tlist,ylist]]:Eulix_Table(t0,y0,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,Roots,
-                                     'mass_matrix=mass_matrix,check_parameters=true,
-                                     combined_t_y_list=false,logging=true)$
-print("I've used ",elapsed_real_time()-Start,"seconds for computing the AIDS model")$
-print("Solution triggered by condition",first(Solution)," at time ",second(Solution),
-      "  and state:",third(Solution))$
-t1:second(Solution)$
-y1init:third(Solution)$
-[tlist2,ylist2]: Eulix_Table(t1,y1init,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,[],
-                             logging=true,combined_t_y_list=false)$ 
+Logging:false$
 
-tlist:append(tlist,tlist2)$
-ylist:append(ylist,ylist2)$
-tlist:tlist/365.25$  t1:t1/365.25$
-cut(z):=max(z,0.1)$
-plot2d([[discrete,tlist,map(lambda([z],cut(z[1,1])),ylist)],
-        [discrete,tlist,map(lambda([z],cut(z[2,1])),ylist)],
-        [discrete,tlist,map(lambda([z],cut(z[3,1])),ylist)],
-        [discrete,[t1,t1],[0.1,1E5]]], [logy,true],
-       [legend,"healthy","infected","AIDS-viruses","root location"],[title,"An AIDS model"])$
-read("enter ; or $ to quit");
+[Root_at,[tlist,ylist]]:Eulix_Table(t0,y0,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,Roots,
+                                     'mass_matrix=mass_matrix,check_parameters=true,
+                                     combined_t_y_list=false,logging=Logging)$
+if first(Root_at) > 0 then (
+  print("I've used ",elapsed_real_time()-Start,"seconds for computing the AIDS model"),
+  print("Solution triggered by condition",first(Root_at)," at time ",second(Root_at),
+        "  and state:",third(Root_at)),
+  t1:second(Root_at),
+  y1init:third(Root_at),
+  [tlist2,ylist2]: Eulix_Table(t1,y1init,delta_t,t_end,Rhs,Rhs_t,Rhs_jac,[],
+                               logging=true,combined_t_y_list=false), 
+
+  tlist:append(tlist,tlist2),
+  ylist:append(ylist,ylist2),
+  tlist:tlist/365.25,  t1:t1/365.25,
+  cut(z):=max(z,0.1),
+  plot2d([[discrete,tlist,map(lambda([z],cut(z[1,1])),ylist)],
+          [discrete,tlist,map(lambda([z],cut(z[2,1])),ylist)],
+          [discrete,tlist,map(lambda([z],cut(z[3,1])),ylist)],
+          [discrete,[t1,t1],[0.1,1E5]]], [logy,true],
+         [legend,"healthy","infected","AIDS-viruses","root location"],[title,"An AIDS model"]),
+  read("enter ; or $ to quit")
+) else print("no root condition has been triggered")$
+
 
 
