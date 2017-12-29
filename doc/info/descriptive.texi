@@ -20,13 +20,13 @@ For comments, bugs or suggestions, please contact me at @var{'riotorto AT yahoo 
 Here is a simple example on how the descriptive functions in @code{descriptive} do they work, depending on the nature of their arguments, lists or matrices,
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c /* univariate sample */   mean ([a, b, c]);
 @c matrix ([a, b], [c, d], [e, f]);
 @c /* multivariate sample */ mean (%);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 @group
 (%i2) /* univariate sample */   mean ([a, b, c]);
                             c + b + a
@@ -54,11 +54,11 @@ Note that in multivariate samples the mean is calculated for each column.
 In case of several samples with possible different sizes, the Maxima function @code{map} can be used to get the desired results for each sample,
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c map (mean, [[a, b, c], [d, e]]);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 @group
 (%i2) map (mean, [[a, b, c], [d, e]]);
                         c + b + a  e + d
@@ -219,13 +219,13 @@ Examples:
 Univariate frequency table.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c sam1: build_sample([[6,1], [j,2], [2,1]]);
 @c mean(sam1);
 @c barsplot(sam1) $
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) sam1: build_sample([[6,1], [j,2], [2,1]]);
                        [ 6 ]
                        [   ]
@@ -244,13 +244,13 @@ Univariate frequency table.
 Multivariate frequency table.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c sam2: build_sample([[6,3,1], [5,6,2], [u,2,1],[6,8,2]]) ;
 @c cov(sam2);
 @c barsplot(sam2, grouping=stacked) $
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) sam2: build_sample([[6,3,1], [5,6,2], [u,2,1],[6,8,2]]) ;
                            [ 6  3 ]
                            [      ]
@@ -306,12 +306,12 @@ the second the corresponding counts: there are 16 digits inside
 the interval @code{[0, 1.8]}, 24 digits in @code{(1.8, 3.6]}, and so on.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c continuous_freq (s1, 5);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) continuous_freq (s1, 5);
 (%o3) [[0, 1.8, 3.6, 5.4, 7.2, 9.0], [16, 24, 18, 17, 25]]
@@ -321,12 +321,12 @@ Optional argument indicates we want 7 classes with limits
 -2 and 12:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c continuous_freq (s1, [-2,12,7]);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) continuous_freq (s1, [-2,12,7]);
 (%o3) [[- 2, 0, 2, 4, 6, 8, 10, 12], [8, 20, 22, 17, 20, 13, 0]]
@@ -336,12 +336,12 @@ Optional argument indicates we want the default number of classes with limits
 -2 and 12:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c continuous_freq (s1, [-2,12]);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) continuous_freq (s1, [-2,12]);
                 3  4  11  18     32  39  46  53
@@ -353,14 +353,14 @@ Optional argument indicates we want the default number of classes with limits
 The first argument may be an array.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c a1 : make_array (fixnum, length (s1)) $
 @c fillarray (a1, s1);
 @c continuous_freq (a1);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) a1 : make_array (fixnum, length (s1)) $
 (%i4) fillarray (a1, s1);
@@ -389,12 +389,12 @@ Counts absolute frequencies in discrete samples, both numeric and categorical. I
 or 1-dimensional array (as created by @code{make_array}).
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c discrete_freq (s1);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) discrete_freq (s1);
@@ -408,14 +408,14 @@ The first list gives the sample values and the second their absolute frequencies
 The argument may be an array.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c a1 : make_array (fixnum, length (s1)) $
 @c fillarray (a1, s1);
 @c discrete_freq (a1);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) a1 : make_array (fixnum, length (s1)) $
 (%i4) fillarray (a1, s1);
@@ -470,12 +470,12 @@ in the first meteorological station were greater than 18.
 See that in the lambda expression the @var{i}-th component is
 referred to as @code{v[i]}.
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c subsample (s2, lambda([v], v[1] > 18));
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i3) subsample (s2, lambda([v], v[1] > 18));
@@ -495,13 +495,13 @@ in station number 1 and less than 25 knots in station number 4. The sample
 contains only data from stations 1, 2 and 5. In this case,
 the predicate function is defined as an ordinary Maxima function.
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c g(x):= x[1] >= 16 and x[4] < 25$
 @c subsample (s2, g, 1, 2, 5);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) g(x):= x[1] >= 16 and x[4] < 25$
 @group
@@ -520,13 +520,13 @@ Here is an example with the categorical variables of @code{biomed.data}.
 We want the records corresponding to those patients in group @code{B}
 who are older than 38 years.
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c h(u):= u[1] = B and u[2] > 38 $
 @c subsample (s3, h);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 (%i3) h(u):= u[1] = B and u[2] > 38 $
 @group
@@ -551,13 +551,13 @@ who are older than 38 years.
 
 Probably, the statistical analysis will involve only the blood measures,
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c subsample (s3, lambda([v], v[1] = B and v[2] > 38),
 @c            3, 4, 5, 6);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 @group
 (%i3) subsample (s3, lambda([v], v[1] = B and v[2] > 38),
@@ -582,12 +582,12 @@ Probably, the statistical analysis will involve only the blood measures,
 
 This is the multivariate mean of @code{s3},
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c mean (s3);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 @group
 (%i3) mean (s3);
@@ -602,13 +602,13 @@ This is the multivariate mean of @code{s3},
 
 Here, the first component is meaningless, since @code{A} and @code{B} are categorical, the second component is the mean age of individuals in rational form, and the fourth and last values exhibit some strange behaviour. This is because symbol @code{NA} is used here to indicate @var{non available} data, and the two means are nonsense. A possible solution would be to take out from the matrix those rows with @code{NA} symbols, although this deserves some loss of information.
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c g(v):= v[4] # NA and v[6] # NA $
 @c mean (subsample (s3, g, 3, 4, 5, 6));
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 (%i3) g(v):= v[4] # NA and v[6] # NA $
 @group
@@ -641,7 +641,7 @@ The second argument assigns names to the three columns. With these names,
 a list of expressions define the transformation of the sample.
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) data: matrix([3,2,7],[3,7,2],[8,2,4],[5,2,4]) $
 @group
 (%i3) transform_sample(data, [a,b,c], [c, a*b, log(a)]);
@@ -658,7 +658,7 @@ a list of expressions define the transformation of the sample.
 Add a constant column and remove the third variable.
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) data: matrix([3,2,7],[3,7,2],[8,2,4],[5,2,4]) $
 (%i3) transform_sample(data, [a,b,c], [makelist(1,k,length(data)),a,b]);
 @group
@@ -712,7 +712,7 @@ $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c mean (s1);
 @c %, numer;
@@ -720,7 +720,7 @@ Example:
 @c mean (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) mean (s1);
@@ -772,12 +772,12 @@ $${{1}\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c var (s1), numer;
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) var (s1), numer;
@@ -820,14 +820,14 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c var1 (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c var1 (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) var1 (s1), numer;
@@ -860,14 +860,14 @@ This is the square root of the function @code{var}, the variance with denominato
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c std (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c std (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) std (s1), numer;
@@ -900,14 +900,14 @@ This is the square root of the function @mrefcomma{var1} the variance with denom
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c std1 (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c std1 (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) std1 (s1), numer;
@@ -956,14 +956,14 @@ $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c noncentral_moment (s1, 1), numer; /* the mean */
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c noncentral_moment (s2, 5);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) noncentral_moment (s1, 1), numer; /* the mean */
@@ -1014,14 +1014,14 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c central_moment (s1, 2), numer; /* the variance */
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c central_moment (s2, 3);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) central_moment (s1, 2), numer; /* the variance */
@@ -1052,14 +1052,14 @@ See also functions @mref{central_moment} and @mrefdot{mean}
 The variation coefficient is the quotient between the sample standard deviation (@mref{std}) and the @mrefcomma{mean}
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c cv (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c cv (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) cv (s1), numer;
@@ -1093,14 +1093,14 @@ a list containing the minimum values of the columns,
 which are associated to statistical variables.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c smin (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c smin (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) smin (s1);
@@ -1133,14 +1133,14 @@ a list containing the maximum values of the columns,
 which are associated to statistical variables.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c smax (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c smax (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) smax (s1);
@@ -1172,14 +1172,14 @@ The range is the difference between the extreme values.
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c range (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c range (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) range (s1);
@@ -1210,7 +1210,7 @@ Although there are several definitions for the sample quantile (Hyndman, R. J., 
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c /* 1st and 3rd quartiles */ 
 @c          [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
@@ -1218,7 +1218,7 @@ Example:
 @c quantile (s2, 1/4);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) /* 1st and 3rd quartiles */
@@ -1249,14 +1249,14 @@ Once the sample is ordered, if the sample size is odd the median is the central 
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c median (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c median (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) median (s1);
@@ -1290,14 +1290,14 @@ See also function @mrefdot{quantile}
 The interquartilic range is the difference between the third and first quartiles, @code{quantile(@var{list},3/4) - quantile(@var{list},1/4)},
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c qrange (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c qrange (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) qrange (s1);
@@ -1348,14 +1348,14 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c mean_deviation (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c mean_deviation (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) mean_deviation (s1);
@@ -1407,14 +1407,14 @@ where @code{med} is the median of @var{list}.
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c median_deviation (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c median_deviation (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) median_deviation (s1);
@@ -1466,14 +1466,14 @@ $${{n}\over{\sum_{i=1}^{n}{{{1}\over{x_{i}}}}}}$$
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @c harmonic_mean (y), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c harmonic_mean (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @group
 (%i3) harmonic_mean (y), numer;
@@ -1523,14 +1523,14 @@ $$\left(\prod_{i=1}^{n}{x_{i}}\right)^{{{1}\over{n}}}$$
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @c geometric_mean (y), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c geometric_mean (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @group
 (%i3) geometric_mean (y), numer;
@@ -1579,14 +1579,14 @@ $${{1\over{n s^4}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^4}}-3}$$
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c kurtosis (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c kurtosis (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) kurtosis (s1), numer;
@@ -1635,14 +1635,14 @@ $${{1\over{n s^3}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}}$$
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c skewness (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) skewness (s1), numer;
@@ -1689,14 +1689,14 @@ where @var{med} is the median of @var{list}.
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c pearson_skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c pearson_skewness (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) pearson_skewness (s1), numer;
@@ -1745,14 +1745,14 @@ where @math{c_p} is the @var{p}-quantile of sample @var{list}.
 Example:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c quartile_skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c quartile_skewness (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) quartile_skewness (s1), numer;
@@ -1794,7 +1794,7 @@ Examples:
 Sample as a list of pairs.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c S: km([[2,1], [3,1], [5,0], [8,1]]);
 @c load ("draw")$
 @c draw2d(

@@ -1109,7 +1109,7 @@ sublists, some sublists of the return value are zero.
 @mref{factor} is called at each stage of the algorithm to simplify intermediate
 results.  As a consequence, the return value may contain factored integers.
 
-@code{load(eigen)} loads this function.
+@code{load("eigen")} loads this function.
 
 Example:
 
