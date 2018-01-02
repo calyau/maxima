@@ -649,5 +649,48 @@ block([%rnum:0],
  [a =  sqrt(-%r3*%r4), b = %r3, c = %r4, d = -sqrt(-%r3*%r4)],
  [a =  0,              b = %r5, c = 0,   d = 0]];
 
-(kill(eqt,eqs,F,G,p,p1,p2),done)$
+
+/* SF bug 3321 - apparent regression from 5.38.1
+
+   In fact, correct solution depends on the signs of constants g and h.
+   Version 5.38.1 returns wrong solution when g>0 and h<0.
+   Would be better if algsys asked for signs, but ...
+ */
+
+eqs:[y-x=0, g*x*y-h=0, z+(x+1)/y-x-1=0];
+[y-x=0, g*x*y-h=0, z+(x+1)/y-x-1=0];
+
+(assume(h>0),0);
+0;
+s:algsys(eqs,[x,y,z]);
+[[x = sqrt(h)/sqrt(g),
+  y = ((sqrt(g)*sqrt(h)+g)*h)/(g*h+g^(3/2)*sqrt(h)),
+  z = (sqrt(g)*h^(3/2)-g^(3/2)*sqrt(h))/(g*h)],
+ [x = -(sqrt(h)/sqrt(g)),
+  y = ((g-sqrt(g)*sqrt(h))*h)/(g*h-g^(3/2)*sqrt(h)),
+  z = -((sqrt(g)*h^(3/2)-g^(3/2)*sqrt(h))/(g*h))]];
+ratsimp(subst(s[1],eqs));
+[0=0, 0=0, 0=0];
+ratsimp(subst(s[2],eqs));
+[0=0, 0=0, 0=0];
+(forget(h>0),0);
+0;
+
+(assume(h<0),0);
+0;
+s:algsys(eqs,[x,y,z]);
+[[x = -((%i*sqrt(-h))/sqrt(g)),
+  y = ((g-%i*sqrt(g)*sqrt(-h))*h)/(g*h-%i*g^(3/2)*sqrt(-h)),
+  z = -((%i*sqrt(g)*sqrt(-h)*h-%i*g^(3/2)*sqrt(-h))/(g*h))],
+ [x = (%i*sqrt(-h))/sqrt(g),
+  y = ((%i*sqrt(g)*sqrt(-h)+g)*h)/(g*h+%i*g^(3/2)*sqrt(-h)),
+  z = (%i*sqrt(g)*sqrt(-h)*h-%i*g^(3/2)*sqrt(-h))/(g*h)]];
+ratsimp(subst(s[1],eqs));
+[0=0, 0=0, 0=0];
+ratsimp(subst(s[2],eqs));
+[0=0, 0=0, 0=0];
+(forget(h<0),0);
+0;
+
+(kill(eqt,eqs,F,G,p,p1,p2,s),done)$
 done;

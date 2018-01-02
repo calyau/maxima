@@ -866,7 +866,6 @@ Examples:
 @c fullratsubst (b*a, a^2, a^3);
 @c fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
 @c fullratsubst (a^2 = b*a, a^3);
-@c errcatch (fullratsubst (b*a^2, a^2, a^3));
 @example
 (%i1) load ("lrats")$
 @end example
@@ -1600,6 +1599,7 @@ Examples:
 @c rat (%, y, a, x);
 @c ===end===
 @example
+@group
 (%i1) ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /
       (4*y^2 + x^2);
                                            4
@@ -1610,6 +1610,7 @@ Examples:
 (%o1)         ------------------------------------
                               2    2
                            4 y  + x
+@end group
 @group
 (%i2) rat (%, y, a, x);
                             2 a + 2 y
