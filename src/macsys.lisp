@@ -225,7 +225,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 			  (t (go top)))))
 	     (cond ((and (consp r) (keywordp (car r)))
 		    (break-call (car r) (cdr r) 'break-command)
-		    #+sbcl
+		    #+(or sbcl cmu)
 		    (if (and (not batch-or-demo-flag)
 			     (not (eq input-stream *standard-input*)))
 			(setq input-stream *standard-input*))
@@ -241,7 +241,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	      etime-before (get-internal-real-time))
 	(setq area-before (used-area))
 	(setq $% (toplevel-macsyma-eval $__))
-	#+sbcl
+	#+(or sbcl cmu)
 	(if (and (not batch-or-demo-flag)
 		 (not (eq input-stream *standard-input*)))
 	    (setq input-stream *standard-input*))
@@ -291,8 +291,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	  (let (quitting)
 	    (loop
 	      ;;those are common lisp characters you're reading here
-	      (case (read-char #+sbcl *standard-input*
-			       #-sbcl *terminal-io*)
+	      (case (read-char #+(or sbcl cmu) *standard-input*
+			       #-(or sbcl cmu) *terminal-io*)
                 ((#\page)
                  (fresh-line)
                  (princ (break-prompt))
@@ -354,8 +354,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	(t
          (format-prompt t "~M" msg)
 	 (mterpri)))
-  (let ((res (mread-noprompt #+sbcl *standard-input*
-                             #-sbcl *query-io* nil)))
+  (let ((res (mread-noprompt #+(or sbcl cmu) *standard-input*
+                             #-(or sbcl cmu) *query-io* nil)))
     (princ *general-display-prefix*)
     res))
 
@@ -369,8 +369,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
 				(with-output-to-string (*standard-output*) (apply #'$print l)))
 	     "")))
     (setf *mread-prompt* (format-prompt nil "~A" *mread-prompt*))
-    (third (mread #+sbcl *standard-input*
-                  #-sbcl *query-io*))))
+    (third (mread #+(or sbcl cmu) *standard-input*
+                  #-(or sbcl cmu) *query-io*))))
 
 ;; FUNCTION BATCH APPARENTLY NEVER CALLED. OMIT FROM GETTEXT SWEEP AND DELETE IT EVENTUALLY
 (defun batch (filename &optional demo-p
@@ -526,16 +526,16 @@ DESTINATION is an actual stream (rather than nil for a string)."
 (defun throw-macsyma-top ()
   (throw 'macsyma-quit t))
 
-#-sbcl
+#-(or sbcl cmu)
 (defmfun $writefile (x)
   (let ((msg (dribble (maxima-string x))))
     (format t "~&~A~&" msg)
     '$done))
 
 (defvar $appendfile nil )
-(defvar *appendfile-data* #+sbcl nil)
+(defvar *appendfile-data* #+(or sbcl cmu) nil)
 
-#-sbcl
+#-(or sbcl cmu)
 (defmfun $appendfile (name)
   (if (and (symbolp name)
 	   (char= (char (symbol-name name) 0) #\$))
@@ -556,7 +556,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	      name year month day hour min sec))
     '$done))
 
-#-sbcl
+#-(or sbcl cmu)
 (defmfun $closefile ()
   (cond ($appendfile
 	 (cond ((eq $appendfile *terminal-io*)
@@ -571,7 +571,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
              (format t "~&~A~&" msg))))
   '$done)
 
-#+sbcl
+#+(or sbcl cmu)
 (defun start-dribble (name)
   (let ((msg (dribble (maxima-string name))))
     (format t "~&~A~&" msg)
@@ -582,19 +582,19 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	      name year month day hour min sec))
     '$done))
 
-#+sbcl
+#+(or sbcl cmu)
 (defmfun $writefile (name)
   (if (member name *appendfile-data* :test #'string=)
       (merror (intl:gettext "writefile: already in writefile, you must call closefile first.")))
   (start-dribble name))
 
-#+sbcl
+#+(or sbcl cmu)
 (defmfun $appendfile (name)
   (if (member name *appendfile-data* :test #'string=)
       (merror (intl:gettext "appendfile: already in appendfile, you must call closefile first.")))
   (start-dribble name))
 
-#+sbcl
+#+(or sbcl cmu)
 (defmfun $closefile ()
   (cond (*appendfile-data*
 	 (let ((msg (dribble)))

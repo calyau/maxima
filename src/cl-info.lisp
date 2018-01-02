@@ -15,7 +15,7 @@
 
 (defun parse-user-choice (nitems)
   (loop
-   with line = (read-line #+sbcl *standard-input*) and nth and pos = 0
+   with line = (read-line #+(or sbcl cmu) *standard-input*) and nth and pos = 0
    while (multiple-value-setq (nth pos)
 	   (parse-integer line :start pos :junk-allowed t))
    if (or (minusp nth) (>= nth nitems))
@@ -141,10 +141,10 @@
                           (finish-output *debug-io*)
                           (print-prompt prompt-count)
                           (force-output)
-                          #-sbcl (clear-input)
+                          #-(or sbcl cmu) (clear-input)
                           (select-info-items
                             (parse-user-choice nitems) items-list)))
-              #-sbcl (clear-input))
+              #-(or sbcl cmu) (clear-input))
             items-list))
     (finish-output *debug-io*)
     (when (consp wanted)

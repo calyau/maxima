@@ -77,8 +77,8 @@
 (defun mread-noprompt (&rest read-args)
   (let ((*mread-prompt* "") (*prompt-on-read-hang*))
     (declare (special *mread-prompt* *prompt-on-read-hang*))
-    (unless read-args (setq read-args (list #+sbcl *standard-input*
-                                            #-sbcl *query-io*)))
+    (unless read-args (setq read-args (list #+(or sbcl cmu) *standard-input*
+                                            #-(or sbcl cmu) *query-io*)))
     (caddr (apply #'mread read-args))))
 
 ;; Some list creation utilities.
