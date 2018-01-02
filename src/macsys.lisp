@@ -225,6 +225,10 @@ DESTINATION is an actual stream (rather than nil for a string)."
 			  (t (go top)))))
 	     (cond ((and (consp r) (keywordp (car r)))
 		    (break-call (car r) (cdr r) 'break-command)
+		    #+sbcl
+		    (if (and (not batch-or-demo-flag)
+			     (not (eq input-stream *standard-input*)))
+			(setq input-stream *standard-input*))
 		    (go top)))))
 	(format t "~a" *general-display-prefix*)
 	(if (eq r eof) (return '$done))
@@ -237,6 +241,10 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	      etime-before (get-internal-real-time))
 	(setq area-before (used-area))
 	(setq $% (toplevel-macsyma-eval $__))
+	#+sbcl
+	(if (and (not batch-or-demo-flag)
+		 (not (eq input-stream *standard-input*)))
+	    (setq input-stream *standard-input*))
 	(setq etime-after (get-internal-real-time)
 	      time-after (get-internal-run-time))
 	(setq area-after (used-area))
@@ -283,7 +291,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	  (let (quitting)
 	    (loop
 	      ;;those are common lisp characters you're reading here
-	      (case (read-char *terminal-io*)
+	      (case (read-char #+sbcl *standard-input*
+			       #-sbcl *terminal-io*)
                 ((#\page)
                  (fresh-line)
                  (princ (break-prompt))
@@ -345,7 +354,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	(t
          (format-prompt t "~M" msg)
 	 (mterpri)))
-  (let ((res (mread-noprompt *query-io* nil)))
+  (let ((res (mread-noprompt #+sbcl *standard-input*
+                             #-sbcl *query-io* nil)))
     (princ *general-display-prefix*)
     res))
 
@@ -359,7 +369,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
 				(with-output-to-string (*standard-output*) (apply #'$print l)))
 	     "")))
     (setf *mread-prompt* (format-prompt nil "~A" *mread-prompt*))
-    (third (mread *query-io*))))
+    (third (mread #+sbcl *standard-input*
+                  #-sbcl *query-io*))))
 
 ;; FUNCTION BATCH APPARENTLY NEVER CALLED. OMIT FROM GETTEXT SWEEP AND DELETE IT EVENTUALLY
 (defun batch (filename &optional demo-p
@@ -515,14 +526,16 @@ DESTINATION is an actual stream (rather than nil for a string)."
 (defun throw-macsyma-top ()
   (throw 'macsyma-quit t))
 
+#-sbcl
 (defmfun $writefile (x)
   (let ((msg (dribble (maxima-string x))))
     (format t "~&~A~&" msg)
     '$done))
 
 (defvar $appendfile nil )
-(defvar *appendfile-data*)
+(defvar *appendfile-data* #+sbcl nil)
 
+#-sbcl
 (defmfun $appendfile (name)
   (if (and (symbolp name)
 	   (char= (char (symbol-name name) 0) #\$))
@@ -543,6 +556,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	      name year month day hour min sec))
     '$done))
 
+#-sbcl
 (defmfun $closefile ()
   (cond ($appendfile
 	 (cond ((eq $appendfile *terminal-io*)
@@ -555,6 +569,41 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	 (setq *appendfile-data* nil $appendfile nil))
 	(t (let ((msg (dribble)))
              (format t "~&~A~&" msg))))
+  '$done)
+
+#+sbcl
+(defun start-dribble (name)
+  (let ((msg (dribble (maxima-string name))))
+    (format t "~&~A~&" msg)
+    (setq *appendfile-data* (cons name *appendfile-data*))
+    (multiple-value-bind (sec min hour day month year)
+	(get-decoded-time)
+      (format t (intl:gettext "~&/* Starts dribbling to ~A (~d/~d/~d, ~2,'0d:~2,'0d:~2,'0d).*/~&")
+	      name year month day hour min sec))
+    '$done))
+
+#+sbcl
+(defmfun $writefile (name)
+  (if (member name *appendfile-data* :test #'string=)
+      (merror (intl:gettext "writefile: already in writefile, you must call closefile first.")))
+  (start-dribble name))
+
+#+sbcl
+(defmfun $appendfile (name)
+  (if (member name *appendfile-data* :test #'string=)
+      (merror (intl:gettext "appendfile: already in appendfile, you must call closefile first.")))
+  (start-dribble name))
+
+#+sbcl
+(defmfun $closefile ()
+  (cond (*appendfile-data*
+	 (let ((msg (dribble)))
+	   (format t "~&~A~&" msg))
+	 (multiple-value-bind (sec min hour day month year)
+	     (get-decoded-time)
+	   (format t (intl:gettext "~&/* Quits dribbling to ~A (~d/~d/~d, ~2,'0d:~2,'0d:~2,'0d).*/~&")
+		   (car *appendfile-data*) year month day hour min sec))
+	 (setq *appendfile-data* (cdr *appendfile-data*))))
   '$done)
 
 (defmfun $ed (x)

@@ -1287,7 +1287,7 @@
 	   n (car line))
      (setf (aref linearray i) nil)
      (tyotbsp n)
-     (loop for v in (cdr line) do (write-char v))
+     (loop for v in (cdr line) do (write-char v #+sbcl *standard-output*))
      (mterpri)))
 
 ;; Move the cursor over N spaces to the left by outputting spaces.
@@ -1298,7 +1298,7 @@
 (defun tyotbsp (n)
   (do ()
       ((< n 1))
-    (write-char #\space)
+    (write-char #\space #+sbcl *standard-output*)
     (decf n)))
 
 (defun draw-linear (dmstr oldrow oldcol)
