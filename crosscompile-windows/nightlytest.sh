@@ -41,6 +41,7 @@ export GCL_MEM_MULTIPLE=0.2
 ~/maxima-test/installroot/bin/maxima --run-string="build_info();" >logfile-buildinfo.txt
 for lisp in clisp ecl sbcl gcl ccl64 cmucl acl ; do
       ~/maxima-test/installroot/bin/maxima --lisp=$lisp --run-string="run_testsuite();" >logfile-testsuite-$lisp.txt
+      ~/maxima-test/installroot/bin/maxima --lisp=$lisp --run-string="run_testsuite(share_tests=only);" >logfile-share-testsuite-$lisp.txt
       echo "$lisp summary" >>logfile-summary.txt
       sed -n -e '/^Error summary\|^No unexpected errors/,$p' logfile-testsuite-$lisp.txt >>logfile-summary.txt
       echo >>logfile-summary.txt
@@ -60,6 +61,7 @@ $ABCL --noinit --eval '(load "configure.lisp")' --eval '(configure :interactive 
 cd src
 $ABCL --noinit --eval '(load "maxima-build.lisp")' --eval '(maxima-compile)' --eval '(quit)'
 echo "run_testsuite(); quit();" | $ABCL --noinit --eval '(load "maxima-build.lisp")' --eval "(maxima-load)" --eval "(cl-user::run)" >../logfile-testsuite-abcl.txt
+echo "run_testsuite(share_tests=only); quit();" | $ABCL --noinit --eval '(load "maxima-build.lisp")' --eval "(maxima-load)" --eval "(cl-user::run)" >../logfile-share-testsuite-abcl.txt
 cd ..
 
 echo "abcl summary" >>logfile-summary.txt
