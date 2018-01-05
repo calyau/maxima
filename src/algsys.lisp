@@ -563,7 +563,7 @@
 (defun simplify-after-subst (expr)
   "Simplify expression after substitution"
   (let (($keepfloat t) ($algebraic t) (e expr)
-	e1 e2 tmp(growth-factor 1.2)
+	e1 e2 tmp (growth-factor 1.2)
 	(genvar nil) (varlist nil)
 	($rootsconmode t) ($radexpand t))
     ;; Try two approaches
