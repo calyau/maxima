@@ -191,13 +191,13 @@ block( [%rnum:0],
   algsys([g526+((sqrt(a^2+4)-a)/2+a)*g525,
           ((sqrt(a^2+4)-a)*g526)/2+g525],
 	 [g525,g526]));
-[[g525 = %r1,g526 = -(%r1*(sqrt(a^2+4)+a))/2]];
+[[g525 = %r1,g526 = -((%r1*sqrt(a^2+4)+%r1*a)/2)]];
 
 block( [%rnum:0],
   algsys([g625+(a-(sqrt(a^2+4)+a)/2)*g624,
            g624-((sqrt(a^2+4)+a)*g625)/2],
 	   [g624,g625]));
-[[g624 = %r1,g625 = (%r1*(sqrt(a^2+4)-a))/2]];
+[[g624 = %r1,g625 = (%r1*sqrt(a^2+4)-%r1*a)/2]];
 
 /* Working example from bug #3150 */
 algsys([x^2+y^2=1, x^2+(y-3)^2=9],[x,y]);
@@ -467,10 +467,10 @@ eqs:[x*y=p,x-y=3]$
 [x*y = p,x-y = 3];
 
 algsys(subst(p=1/(1-cos(1)),eqs),[x,y])$
-[[x =   ((-sqrt(9*cos(1)^2-22*cos(1)+13))+3*cos(1)-3)/(2*cos(1)-2),
-  y =   -((sqrt(9*cos(1)^2-22*cos(1)+13) +3*cos(1)-3)/(2*cos(1)-2))],
- [x =     (sqrt(9*cos(1)^2-22*cos(1)+13)+ 3*cos(1)-3)/(2*cos(1)-2),
-  y = -(((-sqrt(9*cos(1)^2-22*cos(1)+13))+3*cos(1)-3)/(2*cos(1)-2))]];
+[[x =   -((sqrt(9*cos(1)^2-22*cos(1)+13)-3*cos(1)+3)/(2*cos(1)-2)),
+  y =   -((sqrt(9*cos(1)^2-22*cos(1)+13)+3*cos(1)-3)/(2*cos(1)-2))],
+ [x =     (sqrt(9*cos(1)^2-22*cos(1)+13)+3*cos(1)-3)/(2*cos(1)-2),
+  y =     (sqrt(9*cos(1)^2-22*cos(1)+13)-3*cos(1)+3)/(2*cos(1)-2)]];
 
 float(%)$
 [[x =  3.603649840080336, y =  0.603649840080336],
@@ -514,13 +514,13 @@ algsys(
  2*y*z+((-4*a*c)-2*b^2)*z+2*c^2*x+2*A*b*c,z^2-2*b*c*z+c^2*y+A*c^2],
  [w,x,y,z]);
 [[w = a^2,
-  x = (a*(3*b-sqrt((-4*a*c)+b^2-4*A)))/2,
-  y = (a*c*(sqrt((-4*a*c)+b^2-4*A)+3*b)+2*A*b)/(sqrt((-4*a*c)+b^2-4*A)+b),
-  z = (c*(b-sqrt((-4*a*c)+b^2-4*A)))/2],
+  x = -((a*sqrt((-4*a*c)+b^2-4*A)-3*a*b)/2),
+  y = -((b*sqrt((-4*a*c)+b^2-4*A)-2*a*c-b^2)/2),
+  z = -((c*sqrt((-4*a*c)+b^2-4*A)-b*c)/2)],
  [w = a^2,
-  x = (a*(sqrt((-4*a*c)+b^2-4*A)+3*b))/2,
-  y = (a*c*(3*b-sqrt((-4*a*c)+b^2-4*A))+2*A*b)/(b-sqrt((-4*a*c)+b^2-4*A)),
-  z = (c*(sqrt((-4*a*c)+b^2-4*A)+b))/2]];
+  x = (a*sqrt((-4*a*c)+b^2-4*A)+3*a*b)/2,
+  y = (b*sqrt((-4*a*c)+b^2-4*A)+2*a*c+b^2)/2,
+  z = (c*sqrt((-4*a*c)+b^2-4*A)+b*c)/2]];
 
 /* Solved by odelin for Kamke ODE 2.119. */
  algsys([x^2-x-b^2-b,2*x*y-2*y,y^2],[x,y]);
@@ -541,15 +541,13 @@ algsys([
  z^2+(2*a*b^2+2*a^2*b)*z+a^2*b^2*y-a^2*b^2*c],
 [w,x,y,z]);
 [[w = 1,
- x = -((sqrt(4*c+b^2-2*a*b+a^2)+3*b+3*a)/2),
- y = -((b*(a*sqrt(4*c+b^2-2*a*b+a^2)-3*a^2)+(2*b+2*a)*c-3*a*b^2)
-       /((-sqrt(4*c+b^2-2*a*b+a^2))+b+a)),
- z = -((b*(a*sqrt(4*c+b^2-2*a*b+a^2)+a^2)+a*b^2)/2)],
+ x = -((sqrt(4*c+b^2-(2*a*b)+a^2)+3*b+3*a)/2),
+ y = ((b+a)*sqrt(4*c+b^2-(2*a)*b+a^2)+b^2+4*a*b+a^2)/2,
+ z = -((a*b*sqrt(4*c+b^2-(2*a*b)+a^2)+a*b^2+a^2*b)/2)],
 [w = 1,
- x = -(((-sqrt(4*c+b^2-2*a*b+a^2))+3*b+3*a)/2),
- y = -((b*((-a*sqrt(4*c+b^2-2*a*b+a^2))-3*a^2)+(2*b+2*a)*c-3*a*b^2)
-       /(sqrt(4*c+b^2-2*a*b+a^2)+b+a)),
- z = -((b*(a^2-a*sqrt(4*c+b^2-2*a*b+a^2))+a*b^2)/2)]];
+ x = (sqrt(4*c+b^2-(2*a*b)+a^2)-3*b-3*a)/2,
+ y = -(((b+a)*sqrt(4*c+b^2-2*a*b+a^2)-b^2-4*a*b-a^2)/2),
+ z = (a*b*sqrt(4*c+b^2-2*a*b+a^2)-a*b^2-a^2*b)/2]];
 
 /* Solved by odelin for Kamke ODE 2.383. */
 algsys([
@@ -664,11 +662,11 @@ eqs:[y-x=0, g*x*y-h=0, z+(x+1)/y-x-1=0];
 0;
 s:algsys(eqs,[x,y,z]);
 [[x = sqrt(h)/sqrt(g),
-  y = ((sqrt(g)*sqrt(h)+g)*h)/(g*h+g^(3/2)*sqrt(h)),
-  z = (sqrt(g)*h^(3/2)-g^(3/2)*sqrt(h))/(g*h)],
+  y = sqrt(h)/sqrt(g),
+  z = (h-g)/(sqrt(g)*sqrt(h))],
  [x = -(sqrt(h)/sqrt(g)),
-  y = ((g-sqrt(g)*sqrt(h))*h)/(g*h-g^(3/2)*sqrt(h)),
-  z = -((sqrt(g)*h^(3/2)-g^(3/2)*sqrt(h))/(g*h))]];
+  y = -(sqrt(h)/sqrt(g)),
+  z = -((h-g)/(sqrt(g)*sqrt(h)))]];
 ratsimp(subst(s[1],eqs));
 [0=0, 0=0, 0=0];
 ratsimp(subst(s[2],eqs));
@@ -680,17 +678,32 @@ ratsimp(subst(s[2],eqs));
 0;
 s:algsys(eqs,[x,y,z]);
 [[x = -((%i*sqrt(-h))/sqrt(g)),
-  y = ((g-%i*sqrt(g)*sqrt(-h))*h)/(g*h-%i*g^(3/2)*sqrt(-h)),
-  z = -((%i*sqrt(g)*sqrt(-h)*h-%i*g^(3/2)*sqrt(-h))/(g*h))],
+  y = -((%i*sqrt(-h))/sqrt(g)),
+  z = -((sqrt(-h)*(%i*h-%i*g))/(sqrt(g)*h))],
  [x = (%i*sqrt(-h))/sqrt(g),
-  y = ((%i*sqrt(g)*sqrt(-h)+g)*h)/(g*h+%i*g^(3/2)*sqrt(-h)),
-  z = (%i*sqrt(g)*sqrt(-h)*h-%i*g^(3/2)*sqrt(-h))/(g*h)]];
+  y = (%i*sqrt(-h))/sqrt(g),
+  z = (sqrt(-h)*(%i*h-%i*g))/(sqrt(g)*h)]];
 ratsimp(subst(s[1],eqs));
 [0=0, 0=0, 0=0];
 ratsimp(subst(s[2],eqs));
 [0=0, 0=0, 0=0];
 (forget(h<0),0);
 0;
+
+/* SF bug 3375.  Failure to calculate eigenvalues
+   Solution is ugly, so just check it contains %r1 */
+block([%rnum:0], s:algsys(eqs:[
+  y/10-(((-(sqrt(3)*%i)/2)-1/2)*((sqrt(37)*%i)/(8*3^(3/2))+1/8)^(1/3)
+   +((sqrt(3)*%i)/2-1/2)/(3*((sqrt(37)*%i)/(8*3^(3/2))+1/8)^(1/3)))*z,
+  x/20-(((-(sqrt(3)*%i)/2)-1/2)*((sqrt(37)*%i)/(8*3^(3/2))+1/8)^(1/3)
+   +((sqrt(3)*%i)/2-1/2)/(3*((sqrt(37)*%i)/(8*3^(3/2))+1/8)^(1/3)))*y,
+  50*z+20*y+((-((-(sqrt(3)*%i)/2)-1/2)*((sqrt(37)*%i)/(8*3^(3/2))+1/8)^(1/3))
+   -((sqrt(3)*%i)/2-1/2)/(3*((sqrt(37)*%i)/(8*3^(3/2))+1/8)^(1/3)))*x],
+  [x,y,z]),0);
+0;
+/* Solution of homogeneous eqns must have free parameter */ 
+freeof(%r1,s);
+false;
 
 (kill(eqt,eqs,F,G,p,p1,p2,s),done)$
 done;
