@@ -563,19 +563,27 @@
 (defun simplify-after-subst (expr)
   "Simplify expression after substitution"
   (let (($keepfloat t) ($algebraic t) (e expr)
-	e2 (growth-factor 1.2)
+	e1 e2 tmp (growth-factor 1.2)
+	(genvar nil) (varlist nil)
 	($rootsconmode t) ($radexpand t))
-    (when ($constantp e)
+    ;; Try two approaches
+    ;; 1) ratsimp
+    ;; 2) if $constantp(e) sqrtdenest + rectform + rootscontract + ratsimp
+    ;; take smallest expression
+    (setq e1 (sratsimp e))
+    (if ($constantp e)
       (progn
 	(setq e (sqrtdenest e))
 	;; Rectform does more than is wanted.  A function that denests and
 	;; rationalizes nested complex radicals would be better.
 	;; Limit expression growth.  The factor is based on trials.
-	(setq e2 ($rectform e))
-	(when (< (conssize e2) (* growth-factor (conssize e)))
-	  (setq e e2))
-	(setq e ($rootscontract e))))
-    ($ratsimp e)))
+	(setq tmp ($rectform e))
+	(when (< (conssize tmp) (* growth-factor (conssize e)))
+	  (setq e tmp))
+	(setq e ($rootscontract e))
+	(setq e2 (sratsimp e))
+	(if (< (conssize e1) (conssize e2)) e1 e2))
+      e1)))
 
 ;; (BAKALEVEL SOLNL LHSL VAR)
 ;;

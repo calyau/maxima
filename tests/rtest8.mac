@@ -125,7 +125,7 @@ block([realonly:true],algsys([x^2+1],[x]))$
 []$
 /* see https://sourceforge.net/tracker/index.php?func=detail&aid=2786017&group_id=4933&atid=104933 */
 algsys([x^4+1],[x])$
-[[x = (-1)^(1/4)],[x = -sqrt(-%i)],[x = -(-1)^(1/4)],[x = sqrt(-%i)]]$
+[[x = (-1)^(1/4)],[x = -(-1)^(1/4)*%i],[x = -(-1)^(1/4)],[x = sqrt(-%i)]]$
 block([realonly:true],algsys([x^4+1],[x]))$
 []$
 algsys([x^4-1],[x])$
