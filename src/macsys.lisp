@@ -168,7 +168,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
 
 (defun continue (&optional (input-stream *standard-input*)
 		 batch-or-demo-flag)
-  (declare (special *socket-connection*))
+  (declare (special *socket-connection* *maxima-run-string*))
+  (if *maxima-run-string* (setq batch-or-demo-flag :batch))
   (if (eql batch-or-demo-flag :demo)
       (format t
         (intl:gettext
@@ -311,6 +312,11 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	     (do ((char)) (())
 	       (setq char (read-char input-stream nil nil))
 	       (when (null char)
+		 (when *maxima-run-string*
+		   (setq batch-or-demo-flag nil
+			 *maxima-run-string* nil
+			 input-stream *standard-input*)
+		   (throw 'return-from-debugger t))
 		 (throw 'macsyma-quit nil))
 	       (unless (member char '(#\space #\newline #\return #\tab) :test #'equal)
 		 (unread-char char input-stream)
@@ -484,6 +490,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
 (declare-top (special *maxima-initmac* *maxima-initlisp*))
 
 (defvar *maxima-quiet* nil)
+
+(defvar *maxima-run-string* nil)
 
 (defun macsyma-top-level (&optional (input-stream *standard-input*) batch-flag)
   (let ((*package* (find-package :maxima)))

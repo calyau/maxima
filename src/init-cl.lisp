@@ -512,6 +512,8 @@ When one changes, the other does too."
 	   (make-cl-option :names '("-r" "--run-string")
 			   :argument "<string>"
 			   :action #'(lambda (string)
+				       (declare (special *maxima-run-string*))
+				       (setq *maxima-run-string* t)
 				       (setf input-stream
 					     (make-string-input-stream string))
 				       (setf batch-flag nil))
