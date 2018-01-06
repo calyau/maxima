@@ -1507,3 +1507,18 @@ cos(x)^2;
 trigsimp (sin(x)^2 - 1);
 -cos(x)^2;
 
+/* Bug 3375: missing eigenvectors
+   Results are ugly.  Just check that no eigenvectors are []
+ */
+([[vals,mult],vects]:eigenvectors(matrix([0,20,50],[1/20,0,0],[0,1/10,0])),
+ some(emptyp,vects));
+false;
+
+([[vals,mult],vects]:eigenvectors(matrix([0,1,0],[1,0,1],[2,0,1])),
+ some(emptyp,vects));
+false;
+
+kill(vals,mult,vects);
+done;
+
+
