@@ -262,7 +262,7 @@ local(a),
 
 
 /*this block implements the first order method*/
-varc2(e,g,u,n,k,iv):=block([h,p,v,c,sol,sj,si,pn,hi,ap,p],
+varc2(e,g,u,n,k,iv):=block([h,p,v,c,sol,sj,si,pn,hi,ap],
      p:(-1)*coeff(e,u(n))/coeff(e,u(n+1)),
      v:g/coeff(e,u(n+1)),
      sj:subst(j,n,p),
