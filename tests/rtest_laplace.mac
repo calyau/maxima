@@ -650,3 +650,6 @@ FOO (x);
 
 (remove (n, integer), killcontext (mycontext));
 done;
+
+(assume_pos_pred:false, assume_pos:false, 0);
+0;
