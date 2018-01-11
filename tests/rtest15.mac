@@ -1518,6 +1518,11 @@ false;
  some(emptyp,vects));
 false;
 
+/* Bug 1820: missing eigenvectors */
+([[vals,mult],vects]:eigenvectors(matrix([-1.8890437,-0.3],[1,0])),
+ some(emptyp,vects));
+false;
+
 kill(vals,mult,vects);
 done;
 
