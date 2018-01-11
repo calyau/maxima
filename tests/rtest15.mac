@@ -1521,4 +1521,5 @@ false;
 kill(vals,mult,vects);
 done;
 
-
+(reset(use_fast_arrays),1);
+1;

@@ -1057,3 +1057,6 @@ foo : sum (if equal (xx, 1) then aa else bb, xx, 1, nn);
 
 ev (foo, nouns, nn=3);
 aa + 2*bb;
+
+(reset(assume_pos),1);
+1;

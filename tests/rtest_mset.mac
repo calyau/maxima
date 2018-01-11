@@ -374,3 +374,5 @@ true;
 listarray (h2[blurf]);
 [0, 789, 555, 0, 0, 456];
 
+(reset(use_fast_arrays),1);
+1;
