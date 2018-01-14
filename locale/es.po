@@ -4,45 +4,46 @@
 # Francisco Serrador <serrador@tecknolabs.com>, 2017.
 msgid ""
 msgstr ""
-"Project-Id-Version: maxima 5.39.0\n"
-"Report-Msgid-Bugs-To: serrador@tecknolabs.com\n"
-"POT-Creation-Date: 2014-12-10 16:46+0000\n"
-"PO-Revision-Date: 2017-04-15 16:50+0200\n"
-"Last-Translator: Francisco Serrador <serrador@tecknolabs.com>\n"
+"Project-Id-Version: maxima 5.41.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-09 01:29+0100\n"
+"PO-Revision-Date: 2018-01-09 03:14+0100\n"
+"Last-Translator: Francisco Javier Serrador <fserrador@gmail.com>\n"
 "Language-Team: Spanish Team <math@tecknolabs.com>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
-#: ../src/mload.lisp:374
+#: ../src/mload.lisp:380
 #, lisp-format
 msgid "   using ~,3F seconds (~,3F elapsed).~%"
 msgstr "   empleando ~,3F segundos (~,3F elapsado).~%"
 
-#: ../src/suprv1.lisp:508
+#: ../src/suprv1.lisp:517
 #, lisp-format
 msgid "  GC time = ~A seconds"
 msgstr "  GC hora = ~A segundos"
 
-#: ../src/cl-info.lisp:71
+#: ../src/cl-info.lisp:76
 #, lisp-format
 msgid ""
 "  No exact match found for topic `~a'.~%  Try `?? ~a' (inexact match) "
 "instead.~%~%"
 msgstr ""
-"  Cotejo encontrado no exacto para tópico `~a'.~%  Pruebe `?? ~a' ("
-"coincidencia indexada) sustituido. ~%~%"
+"  Cotejo encontrado no exacto para tópico `~a'.~%  Pruebe `?? "
+"~a' (coincidencia indexada) sustituido. ~%~%"
 
-#: ../src/macsys.lisp:291
+#: ../src/macsys.lisp:294
 #, lisp-format
 msgid "  Pausing. Type a ';' and <enter> to continue demo.~%"
 msgstr ""
 "  En pausa. Teclee ';' y pulse <entrar> para continuar con la demostración.~%"
 
-#: ../src/cl-info.lisp:76
+#: ../src/cl-info.lisp:81
 #, lisp-format
 msgid ""
 "  There are also some inexact matches for `~a'.~%  Try `?? ~a' to see them."
@@ -51,10 +52,15 @@ msgstr ""
 "  También hay algunas coincidencias inexactas para `~a'.~%  Pruebe `?? ~a' "
 "para verlos.~%~%"
 
-#: ../src/mload.lisp:372
+#: ../src/mload.lisp:378
 #, lisp-format
 msgid " (not counting ~a expected errors)"
 msgstr " (no contando ~a errores esperados)"
+
+#: ../src/mdebug.lisp:85
+#, lisp-format
+msgid " (~a line ~a)"
+msgstr " (~a línea ~a)"
 
 #: ../src/merror.lisp:81
 #, lisp-format
@@ -65,11 +71,11 @@ msgstr ""
 " -- un error.  Introduciendo el depurador de Maxima.~%~\n"
 "                       Introduzca ':h' para ayuda.~%"
 
-#: ../src/mtrace.lisp:458
+#: ../src/mtrace.lisp:462
 msgid " Enter "
 msgstr " Introducir "
 
-#: ../src/mtrace.lisp:471
+#: ../src/mtrace.lisp:478
 msgid " Exit  "
 msgstr " Salir  "
 
@@ -81,11 +87,11 @@ msgstr " argumento."
 msgid " arguments."
 msgstr " argumentos."
 
-#: ../src/compar.lisp:742
+#: ../src/compar.lisp:733
 msgid " equal to "
 msgstr " igual a "
 
-#: ../src/macsys.lisp:270
+#: ../src/macsys.lisp:272
 #, lisp-format
 msgid " including GC time ~s s,"
 msgstr " incluyendo tiempo GC ~s s,"
@@ -94,91 +100,95 @@ msgstr " incluyendo tiempo GC ~s s,"
 msgid " takes no less than "
 msgstr " no toma nada menor que "
 
-#: ../src/macsys.lisp:262
+#: ../src/macsys.lisp:264
 #, lisp-format
 msgid " using ~,3F KB.~%"
 msgstr " se usaron ~,3F KB.~%"
 
-#: ../src/macsys.lisp:259
+#: ../src/macsys.lisp:261
 #, lisp-format
 msgid " using ~,3F MB.~%"
 msgstr " empleando ~,3F MB.~%"
 
-#: ../src/macsys.lisp:264
+#: ../src/macsys.lisp:266
 #, lisp-format
 msgid " using ~:D bytes.~%"
 msgstr " empleando ~:D bytes.~%"
 
-#: ../src/macsys.lisp:271
+#: ../src/macsys.lisp:273
 #, lisp-format
 msgid " using ~s cons-cells and ~s other bytes.~%"
 msgstr " empleando ~s celdas constante y otros ~s bytes.~%"
 
-#: ../src/suprv1.lisp:726
+#: ../src/suprv1.lisp:733
 msgid "%th: no such previous output: ~M"
 msgstr "%t: sin salida anterior: ~M"
 
-#: ../src/hayat.lisp:3158
+#: ../src/hayat.lisp:3165
 msgid "'taylordepth' exceeded while expanding:"
 msgstr "'taylordepth' excedido durante expansión:"
 
-#: ../src/mdebug.lisp:81
+#: ../src/mload.lisp:619
 #, lisp-format
-msgid "(~a line ~a)"
-msgstr "(~a línea ~a)"
+msgid "(~A) "
+msgstr "(~A) "
 
-#: ../src/mdebug.lisp:381
+#: ../src/mdebug.lisp:382
 #, lisp-format
-msgid "(~a ~a~@[ in ~a~])"
-msgstr "(~a ~a~@[ en ~a~])"
+msgid "(~a line ~a~@[, in function ~a~])"
+msgstr "(~a línea ~a~@[, en función ~a~])"
 
-#: ../src/mload.lisp:356
+#: ../src/mload.lisp:362
 #, lisp-format
 msgid "/* Erroneous Result?:~%"
 msgstr "/* ¿Resultados Erróneos?:~%"
 
-#: ../src/mload.lisp:359
+#: ../src/mload.lisp:365
 #, lisp-format
 msgid "/* Expected result: */~%"
 msgstr "/* Resultado esperado: */~%"
 
-#: ../src/mload.lisp:352
+#: ../src/mload.lisp:357
 #, lisp-format
-msgid "/* Problem ~A */~%"
-msgstr "/* Problema ~A */~%"
+msgid "/* Problem ~A~A*/~%"
+msgstr "/* Problema ~A~A*/~%"
 
-#: ../src/transs.lisp:281
+#: ../src/mload.lisp:644
+msgid ": test file not found."
+msgstr ": test fichero no encontrado."
+
+#: ../src/transs.lisp:265
 #, lisp-format
 msgid ";;** Translator flags were: **~%~%"
 msgstr ";;** Marcajes de movimiento fueron: **~%~%"
 
-#: ../src/transs.lisp:275
+#: ../src/transs.lisp:259
 #, lisp-format
 msgid ";;; Lisp implementation: ~A~%"
 msgstr ";;; Implementación Lisp: ~A~%"
 
-#: ../src/transs.lisp:276
+#: ../src/transs.lisp:260
 #, lisp-format
 msgid ";;; Lisp version: ~A~%"
 msgstr ";;; Versión Lisp: ~A~%"
 
-#: ../src/transs.lisp:274
+#: ../src/transs.lisp:258
 #, lisp-format
 msgid ";;; Maxima version: ~A~%"
 msgstr ";;; Versión Maxima: ~A~%"
 
-#: ../src/transs.lisp:272
+#: ../src/transs.lisp:256
 #, lisp-format
 msgid ";;; Translated on: ~D-~2,'0D-~2,'0D ~2,'0D:~2,'0D:~2,'0D~A~%"
 msgstr ";;; Traducido el: ~D-~2,'0D-~2,'0D ~2,'0D:~2,'0D:~2,'0D~A~%"
 
-#: ../src/compar.lisp:742
+#: ../src/compar.lisp:733
 msgid "?"
 msgstr "?"
 
 #. allow foo@3
 #. field->integer
-#: ../src/mlisp.lisp:780 ../src/mlisp.lisp:783
+#: ../src/mlisp.lisp:788 ../src/mlisp.lisp:791
 msgid "@: no such field: ~M @ ~M"
 msgstr "@: sin campo ~M @ ~M"
 
@@ -186,69 +196,65 @@ msgstr "@: sin campo ~M @ ~M"
 msgid "ADDMATRIX1: attempt to add nonconformable matrices."
 msgstr "ADDMATRIX1: intenta añadir matrices no conformables."
 
-#: ../src/compar.lisp:750
+#: ../src/compar.lisp:741
 #, lisp-format
 msgid "Acceptable answers are yes, y, Y, no, n, N. ~%"
 msgstr "Las respuestas aceptables son sí, s, S, no, n, N. ~%"
 
-#: ../src/numth.lisp:3866
+#: ../src/numth.lisp:4241
 msgid "Argument to `ef_normal_basis' must be a normal element."
 msgstr "Un argumento para `ef_normal_basis' deben ser un elemento común."
 
-#: ../src/numth.lisp:1650
+#: ../src/numth.lisp:2028
 msgid "Argument to `ef_set_again' must be a return value of `ef_set_data'."
 msgstr ""
-"Un argumento para `ef_set_again' debe ser un valor de devolución de "
-"tipo `ef_set_data'."
+"Un argumento para `ef_set_again' debe ser un valor de devolución de tipo "
+"`ef_set_data'."
 
-#: ../src/numth.lisp:3858
+#: ../src/numth.lisp:4233
 msgid "Argument to `gf_normal_basis' must be a normal element."
 msgstr "Un argumento para `gt_normal_basis' debe ser un elemento común."
 
-#: ../src/numth.lisp:1628
+#: ../src/numth.lisp:2006
 msgid "Argument to `gf_set_again' must be a return value of `gf_set_data'."
 msgstr ""
 "Un argumento para `gf_set_again' debe tener un valor de retorno de "
 "`gf_set_data'."
 
-#: ../src/numth.lisp:842
+#: ../src/numth.lisp:1120
 msgid "Argument to `~m' must be a small fixnum greater than 1."
 msgstr "Un argumento para `~m' debe ser un número fijo pequeño mayor que 1."
 
-#: ../src/numth.lisp:3970
+#: ../src/numth.lisp:4345
 msgid "Arguments to `~m' must have same formal structure."
 msgstr "Unos argumentos para `~m' deben tener el mismo formato estructural."
 
-#: ../src/mlisp.lisp:1985
+#: ../src/mlisp.lisp:1956
 msgid "Array ~:M has dimensions ~:M, but was called with ~:M"
 msgstr "Unimatriz ~:M tiene dimensiones ~:M, pero se ha llamado con ~:M"
 
-#: ../src/numth.lisp:413
-msgid "At least one argument to `chinese' was an empty list."
-msgstr "Al menos un argumento en `chino' ha sido una lista vacía."
-
-#: ../src/numeric.lisp:1606
+#: ../src/numeric.lisp:1611
 msgid "BIGFLOAT: unable to convert ~M to a CL or BIGFLOAT number."
 msgstr "BIGFLOAT: incapaz de convertir ~M a un CL o número BIGFLOAT."
 
-#: ../src/mdebug.lisp:446
+#: ../src/mdebug.lisp:447
 #, lisp-format
 msgid "Back to level ~:@(~S~)."
 msgstr "Vuelve al nivel ~:@(~S~)."
 
-#: ../src/mload.lisp:628
+#: ../src/mload.lisp:696
 msgid "Badly formed keyword option: ~M"
 msgstr "Opción de tecla formada errónea: ~M"
 
-#: ../src/plot.lisp:502
+#: ../src/plot.lisp:518
 msgid "COERCE-FLOAT-FUN: no such Lisp or Maxima function: ~M"
 msgstr "COERCE-FLOAT-FUN: sin dicha función Lisp o Maxima: ~M"
 
-#: ../src/matcom.lisp:204
+#: ../src/matcom.lisp:205
 msgid "COMPILEPLUS: warning: '+' within '+' in: ~M~%"
 msgstr "COMPILEPLUS: advirtiendo: '+' dentro '+' en: ~M~%"
 
-#: ../src/matcom.lisp:301
+#: ../src/matcom.lisp:302
 msgid "COMPILETIMES: warning: '*' within '*' in: ~M~%"
 msgstr "COMPILETIMES: advertencia: '*' dentro de '*' en: ~M~%"
 
@@ -269,7 +275,7 @@ msgstr "CPBG0: traza incorrecta."
 msgid "CRECIP: attempted inverse of zero (mod ~M)"
 msgstr "CRECIP: se ha intentado invertir el cero (mod ~M)"
 
-#: ../src/series.lisp:163
+#: ../src/series.lisp:165
 msgid ""
 "Can't substitute the value~%~M~%~\n"
 "                    into another expansion because it isn't a monomial in "
@@ -280,12 +286,12 @@ msgstr ""
 "                    dentro de otra expresión porque no es un monomio en la~\n"
 "                    expansión variable."
 
-#: ../src/server.lisp:85
+#: ../src/server.lisp:110
 #, lisp-format
 msgid "Connecting Maxima to server on port ~a~%"
 msgstr "Conectando Maxima al servidor en el puerto ~a~%"
 
-#: ../src/series.lisp:493
+#: ../src/series.lisp:497
 msgid ""
 "Couldn't expand binomial~%~M~%~\n"
 "                    as we didn't know which terms were nonzero."
@@ -293,28 +299,44 @@ msgstr ""
 "No pudo expandir binomialmente~%~M~%~\n"
 "                    como no conocimos qué términos eran distintos de cero."
 
-#: ../src/matrix.lisp:602
+#: ../src/matrix.lisp:604
 msgid "DELETEROW: matrix is null, or index is negative."
 msgstr "DELETEROW: matriz nula, o indexación negativa."
 
-#: ../src/compar.lisp:2176
+#: ../src/compar.lisp:2207
 msgid "DMARK: marking ~M ~M"
 msgstr "DMARK: marcando ~M ~M"
 
-#: ../src/macsys.lisp:504
+#: ../src/macsys.lisp:509
 #, lisp-format
 msgid "Dedicated to the memory of William Schelter.~%"
 msgstr "Dedicado a la memoria de William Schelter.~%"
 
-#: ../src/simp.lisp:1851
+#: ../src/simp.lisp:1799
 msgid "Division by 0"
 msgstr "División entre 0"
 
-#: ../src/trigi.lisp:916
+#: ../src/trigi.lisp:908
 msgid "Division by zero attempted."
 msgstr "Ha intentado dividir entre cero."
 
-#: ../src/series.lisp:885
+#: ../share/contrib/symplectic_ode/symplectic_ode.lisp:248
+msgid ""
+"Either the second through fifth arguments must all be lists or all must be "
+"mapatoms"
+msgstr ""
+"O desde el segundo hasta el quinto argumento todos deben ser listas o todos "
+"deben ser ‘maptoms’"
+
+#: ../share/contrib/symplectic_ode/symplectic_ode.lisp:73
+msgid ""
+"Either the third and fourth arguments to poisson_bracket must (i) both be "
+"lists or (ii) both be mapatoms"
+msgstr ""
+"O los argumentos tercero y cuarto a poisson_bracket deben ambos (i) ser "
+"listas o (ii) ambos ser ‘mapatoms’"
+
+#: ../src/series.lisp:892
 msgid ""
 "Endpoints of definite integral ~M are not monomials in ~\n"
 "                         the expansion variable."
@@ -331,22 +353,27 @@ msgstr "Introduce números esperados por espacio, `todo' o `nada': "
 msgid "Error in printing prompt; reverting to default.~%~a"
 msgstr "Error en la tecleo del cursor; volviendo al predefinido.~%~a"
 
-#: ../src/mload.lisp:590
+#: ../src/server.lisp:36
+#, lisp-format
+msgid "Error: ~A~%"
+msgstr "Error: ~A~%"
+
+#: ../src/mload.lisp:659
 #, lisp-format
 msgid "Error~a found in ~a, problem~a:~%~a~%"
 msgstr "Error~a encontrado en ~a, probablemente~a:~%~a~%"
 
 #. we don't distinguish showtime:all?? /RJF
-#: ../src/macsys.lisp:252
+#: ../src/macsys.lisp:254
 #, lisp-format
 msgid "Evaluation took ~,4F seconds (~,4F elapsed)"
 msgstr "La evaluación demoró ~,4F segundos (~,4F esperado)"
 
-#: ../src/numth.lisp:1773
+#: ../src/numth.lisp:2151
 msgid "Exponents are limited to fixnums."
 msgstr "Exponentes limitados para números fijos."
 
-#: ../src/numeric.lisp:1823
+#: ../src/numeric.lisp:1828
 msgid "FP2SINGLE: floating point overflow converting ~:M to float."
 msgstr "FP2SINGLE: coma flotante sobredesborda la conversión ~:M a real."
 
@@ -354,26 +381,26 @@ msgstr "FP2SINGLE: coma flotante sobredesborda la conversión ~:M a real."
 msgid "Failed to expand ~M with respect to ~M at ~M.~%"
 msgstr "Fallado al expandir ~M respecto al ~M en ~M.~%"
 
-#: ../src/numth.lisp:1567
+#: ../src/numth.lisp:1945
 msgid "First argument to `gf_minimal_set' must be a prime number."
 msgstr "Primer argumento para `gf_minimal_set' debería ser un número primo."
 
-#: ../src/numth.lisp:4517
+#: ../src/numth.lisp:4887
 msgid "First argument to `~m' must be `all' or a small fixnum."
 msgstr "Primer argumento para `~m' debe ser `all' o un número fijo pequeño."
 
-#: ../src/numth.lisp:481
+#: ../src/numth.lisp:570
 msgid ""
 "Fourth argument to `zn_log' must be of the form [[p1, e1], ..., [pk, ek]]."
 msgstr ""
 "Argumento cuarto de `zn_log' debería ser del formato tipo [[p1, e1], ..., "
 "[pk, ek]]."
 
-#: ../src/asum.lisp:968
+#: ../src/asum.lisp:956
 msgid "Function declared 'even' takes exactly one argument; found ~M"
 msgstr "Función definida 'par' toma exactamente un argumento; ha encontrado ~M"
 
-#: ../src/asum.lisp:974
+#: ../src/asum.lisp:962
 msgid "Function declared 'odd' takes exactly one argument; found ~M"
 msgstr ""
 "Función definida 'impar' toma exactamente un argumento; ha encontrado ~M"
@@ -387,43 +414,43 @@ msgstr "GET!: propiedad ~a del símbolo ~a no definido."
 msgid "GFSPLIT: unknown error."
 msgstr "GFSPLIT: error desconocido."
 
-#: ../src/macsys.lisp:442
+#: ../src/macsys.lisp:448
 #, lisp-format
 msgid "Host type: ~a"
 msgstr "Tipo de servidor: ~a"
 
-#: ../src/acall.lisp:227
+#: ../src/acall.lisp:231
 msgid ""
 "INSURE-ARRAY-PROPS: array ~:@M already defined with different dimensions."
 msgstr ""
 "INSURE-ARRAY-PROPS: unimatriz ~:@M ya definida con una dimensión distinta."
 
-#: ../src/clmacs.lisp:610
+#: ../src/clmacs.lisp:619
 msgid "Incorrect number of"
 msgstr "Número no correcto de"
 
-#: ../src/compar.lisp:742
+#: ../src/compar.lisp:733
 msgid "Is "
 msgstr "Es "
 
-#: ../src/asum.lisp:878
+#: ../src/asum.lisp:866
 msgid "LINEARIZE3: undefined form 0*inf: ~M"
 msgstr "LINEARIZE3: forma indefinida 0*inf: ~M"
 
-#: ../src/acall.lisp:149
+#: ../src/acall.lisp:153
 msgid "LIST-REF: argument must be a list; found ~M"
 msgstr "LIST-REF: un argumento debe ser una lista; se ha encontrado ~M"
 
-#: ../src/acall.lisp:159 ../src/acall.lisp:166
+#: ../src/acall.lisp:163 ../src/acall.lisp:170
 msgid "LIST-REF: invalid subscript: ~M"
 msgstr "LIST-REF: subíndice no válido: ~M"
 
-#: ../src/macsys.lisp:444
+#: ../src/macsys.lisp:450
 #, lisp-format
 msgid "Lisp implementation type: ~a"
 msgstr "Tipo de implementación de Lisp: ~a"
 
-#: ../src/macsys.lisp:446
+#: ../src/macsys.lisp:452
 #, lisp-format
 msgid "Lisp implementation version: ~a"
 msgstr "Versión de la implementación de Lisp: ~a"
@@ -446,15 +473,15 @@ msgstr "MARRAY-CHECK: no es una unimatriz: ~M"
 msgid "MARRAY-TYPE-UNKNOWN: array type ~S not recognized."
 msgstr "MARRAY-TYPE-UNKNOWN: tipo de unimatriz ~S no reconocido."
 
-#: ../src/acall.lisp:334
+#: ../src/acall.lisp:338
 msgid "MARRAYREF1$: array must be an array of floats; found ~M"
 msgstr "MARRAYREF1$: una unimatriz debe ser de tipo real; se ha encontrado ~M"
 
-#: ../src/acall.lisp:90
+#: ../src/acall.lisp:91
 msgid "MARRAYREF: cannot retrieve an element of ~M"
 msgstr "MARRAYREF: no puedo obtener un elemento de ~M"
 
-#: ../src/acall.lisp:74
+#: ../src/acall.lisp:75
 #, lisp-format
 msgid "MARRAYREF: encountered array pointer ~S of unknown type."
 msgstr ""
@@ -464,19 +491,20 @@ msgstr ""
 msgid "MARRAYREF: encountered array ~M of unknown type."
 msgstr "MARRAYREF: se ha encontrado una unimatriz ~M de tipo desconocido."
 
-#: ../src/acall.lisp:343
+#: ../src/acall.lisp:347
 msgid "MARRAYSET1$: array must be an array of floats; found ~M"
-msgstr "MARRAYSET1$: una unimatriz debe ser de número real; se ha encontrado ~M"
+msgstr ""
+"MARRAYSET1$: una unimatriz debe ser de número real; se ha encontrado ~M"
 
-#: ../src/acall.lisp:139
+#: ../src/acall.lisp:143
 msgid "MARRAYSET: cannot assign to an element of ~M"
 msgstr "MARRAYSET: no puede asignar a un elemento de ~M"
 
-#: ../src/acall.lisp:109
+#: ../src/acall.lisp:112
 msgid "MARRAYSET: encountered array ~M of unknown type."
 msgstr "MARRAYSET: se ha encontrado una unimatriz ~M de tipo desconocido."
 
-#: ../src/acall.lisp:141
+#: ../src/acall.lisp:145
 msgid "MARRAYSET: ~M is not an array."
 msgstr "MARRAYSET: ~M no es una unimatriz."
 
@@ -484,22 +512,22 @@ msgstr "MARRAYSET: ~M no es una unimatriz."
 msgid "MULTIPLYMATRICES: attempt to multiply nonconformable matrices."
 msgstr "MULTIPLYMATRICES: intentaba multiplicar matrices no conformables."
 
-#: ../src/macsys.lisp:440
+#: ../src/macsys.lisp:446
 #, lisp-format
 msgid "Maxima build date: ~a"
 msgstr "Fecha de compilación de Maxima: ~a"
 
-#: ../src/macsys.lisp:474
+#: ../src/macsys.lisp:480
 #, lisp-format
 msgid "Maxima restarted.~%"
 msgstr "Maxima ha sido reiniciado.~%"
 
-#: ../src/macsys.lisp:438
+#: ../src/macsys.lisp:444
 #, lisp-format
 msgid "Maxima version: ~a"
 msgstr "Versión de Maxima: ~a"
 
-#: ../src/numth.lisp:2786
+#: ../src/numth.lisp:3158
 #, lisp-format
 msgid ""
 "No irreducible polynomial found.~%~\n"
@@ -509,7 +537,7 @@ msgstr ""
 "                                    `gf_coeff_limit' puede ser demasiado "
 "pequeño.~%"
 
-#: ../src/numth.lisp:3823
+#: ../src/numth.lisp:4198
 #, lisp-format
 msgid ""
 "No normal element found.~%~\n"
@@ -519,7 +547,7 @@ msgstr ""
 "                                    `gt_coeff_limit' quizá es demasiado "
 "pequeño.~%"
 
-#: ../src/numth.lisp:3237
+#: ../src/numth.lisp:3609
 #, lisp-format
 msgid ""
 "No primitive polynomial found.~%~\n"
@@ -529,17 +557,20 @@ msgstr ""
 "                                      `gf_coeff_limit' puede ser demasiado "
 "pequeño.~%"
 
-#: ../src/mlisp.lisp:487
+#: ../share/stringproc/cryptools.lisp:233
+msgid "No valid OID: ~m"
+msgstr "OID no válido: -m"
+
+#. Can't actually handle this case for lack of HOSTENT-NAME and RESOLVE-HOST-IPADDR.
+#. (integer (hostent-name (resolve-host-ipaddr host)))))
+#: ../src/server.lisp:76
+msgid "OPEN-SOCKET: can't handle integer host argument (host=~M)~%"
+msgstr ""
+"OPEN-SOCKET: no puede manipular argumento hospedador entero (host=~M)~%"
+
+#: ../src/mlisp.lisp:495
 msgid "Only symbols can be bound; found: ~M"
 msgstr "Únicamente los símbolos pueden ser enlazado; se ha encontrado: ~M"
-
-#: ../src/numth.lisp:659
-msgid ""
-"Optional fourth argument to `zn_nth_root' must be of the form [[p1, "
-"e1], ..., [pk, ek]]."
-msgstr ""
-"Cuatro argumentos opcionales para `zn_nth_root' deberían ser de formato [["
-"p1, e1], ..., [pk, ek]]."
 
 #: ../src/matrun.lisp:196
 msgid "PART*: two or more pattern variables match anything."
@@ -549,29 +580,34 @@ msgstr "PART*: dos o más patrones variables coinciden con cualquiera."
 msgid "PART+: two or more pattern variables match anything."
 msgstr "PART+: dos o más patrones variables coinciden con cualquiera."
 
-#: ../src/series.lisp:409
+#: ../src/series.lisp:412
 msgid "Partial fraction expansion failed"
 msgstr "Expansión fraccional parcial fallada"
 
-#: ../src/macsys.lisp:398
+#: ../src/mdebug.lisp:132
+#, lisp-format
+msgid "Perhaps you meant one of the following: ~(~{~s~^, ~}~)."
+msgstr "Quizá significa uno de lo siguiente: ~(~{~s~^, ~}~)."
+
+#: ../src/macsys.lisp:397
 #, lisp-format
 msgid "Please include the following information with your bug report:~%"
 msgstr "Incluya la información seguida con su estado defectuoso:~%"
 
-#: ../src/specfn.lisp:247
+#: ../src/specfn.lisp:258
 msgid "Pole encountered in: ~M"
 msgstr "Polo encontrado dentro de: ~M"
 
-#: ../src/series.lisp:869
+#: ../src/series.lisp:876
 msgid "Recursion when trying to expand the definite integral: ~M"
 msgstr "Recursión cuando trata expandir la definición integral: ~M"
 
-#: ../src/mload.lisp:553
+#: ../src/mload.lisp:614
 #, lisp-format
 msgid "Running tests in ~a: "
 msgstr "Ejecutando prueba en ~a: "
 
-#: ../src/simp.lisp:666
+#: ../src/simp.lisp:664
 msgid "SIMPARGS: subscripted variable found with no subscripts."
 msgstr "SIMPARGS: encontrada una variable suscritada sin ninguna suscripción."
 
@@ -579,37 +615,35 @@ msgstr "SIMPARGS: encontrada una variable suscritada sin ninguna suscripción."
 msgid "SOLVECUBIC: arithmetic overflow."
 msgstr "SOLVECUBIC: sobredesbordamiento aritmético."
 
-#: ../src/suprv1.lisp:563
+#: ../src/suprv1.lisp:569
 msgid "STRIPDOLLAR: argument must be an atom; found: ~M"
 msgstr "STRIPDOLLAR: un argumento debe ser un átomo; encontrado: ~M"
 
-#: ../src/numth.lisp:4325
+#: ../share/contrib/elliptic_curves/ec2.lisp:90
+msgid "Second and third argument to `~m' must be an integer."
+msgstr "Segundo y tercer argumento a `~m' debe ser un entero."
+
+#: ../src/numth.lisp:4697
 msgid "Second argument to `ef_nth_root' must be a positive integer. Found ~m."
 msgstr ""
 "Un segundo argumento para `ef_nth_root' debe ser entero positivo. Encontrado "
 "~m."
 
-#: ../src/numth.lisp:1968
+#: ../src/numth.lisp:2349
 msgid "Second argument to `gf_exp' must be an integer."
 msgstr "Un segundo argumento para `gf_exp' debe ser un entero."
 
-#: ../src/numth.lisp:4333
+#: ../src/numth.lisp:4705
 msgid "Second argument to `gf_nth_root' must be a positive integer. Found ~m."
 msgstr ""
 "Un segundo argumento para `gf_nth_root' debe ser entero positivo. Encontrado "
 "~m"
 
-#: ../src/numth.lisp:488
+#: ../src/numth.lisp:577
 msgid "Second argument to `zn_log' must be a generator of (Z/~MZ)*."
 msgstr "Un segundo argumento para `zn_log' debe ser un generador de (Z/~MZ)*."
 
-#: ../src/numth.lisp:880
-msgid "Second argument to `zn_power_table' must be `all' or a small fixnum."
-msgstr ""
-"Un segundo argumento para `zn_power_table' debe ser `todo' o un número fijo "
-"pequeño."
-
-#: ../src/numth.lisp:371
+#: ../src/numth.lisp:457
 msgid ""
 "Second argument to `zn_primroot' must be of the form [[p1, e1], ..., [pk, "
 "ek]]."
@@ -617,7 +651,7 @@ msgstr ""
 "Un segundo argumento para `zn_primroot' debe ser de formato [[p1, e1], ..., "
 "[pk, ek]]."
 
-#: ../src/numth.lisp:4161
+#: ../src/numth.lisp:4536
 msgid "Second argument to `~m' must be a primitive element."
 msgstr "Un segundo argumento de `~m' debe ser un elemento primitivo."
 
@@ -630,7 +664,12 @@ msgstr "Solución:~%"
 msgid "Still waiting: "
 msgstr "Aún esperando: "
 
-#: ../src/macsys.lisp:402
+#. ban complex numbers
+#: ../share/contrib/cgrind.lisp:102 ../share/contrib/cgrind.lisp:129
+msgid "Take real and imaginary parts"
+msgstr "Toma partes real e imaginaria"
+
+#: ../src/macsys.lisp:403
 #, lisp-format
 msgid ""
 "The above information is also reported by the function 'build_info()'.~%~%"
@@ -638,12 +677,16 @@ msgstr ""
 "La información de arriba está también obtenida por la función 'build_info()'."
 "~%~%"
 
-#: ../src/macsys.lisp:505
+#: ../src/macsys.lisp:510
 #, lisp-format
 msgid "The function bug_report() provides bug reporting information.~%"
 msgstr "La función bug_report() proporciona informes de defectos.~%"
 
-#: ../src/nset.lisp:299
+#: ../share/contrib/symplectic_ode/symplectic_ode.lisp:265
+msgid "The method must be a member of ~M, but found ~M"
+msgstr "El método debe ser un miembro de ~M; pero encontrado ~M"
+
+#: ../src/nset.lisp:309
 msgid "The second argument to powerset must be an integer; found ~:M"
 msgstr ""
 "El segundo argumento de conjunto de potencia debe ser entero; se ha "
@@ -653,14 +696,14 @@ msgstr ""
 msgid "The ~:M argument of the function '~:M' must be the name of a ring"
 msgstr "El argumento ~:M de la función '~:M' debe ser el nombre de un anillo"
 
-#: ../src/numth.lisp:256
+#: ../src/numth.lisp:331
 msgid ""
 "Third argument to `zn_order' must be of the form [[p1, e1], ..., [pk, ek]]."
 msgstr ""
 "El tercer argumento para `zn_order' debe ser del formato [[p1, e1], ..., "
 "[pk, ek]]."
 
-#: ../src/numth.lisp:334
+#: ../src/numth.lisp:420
 msgid ""
 "Third argument to `zn_primroot_p' must be of the form [[p1, e1], ..., [pk, "
 "ek]]."
@@ -668,7 +711,13 @@ msgstr ""
 "El tercer argumento para `zn_primroot_p' debe ser de formato [[p1, e1], ..., "
 "[pk, ek]]."
 
-#: ../src/transs.lisp:278
+#: ../share/contrib/elliptic_curves/ec2.lisp:333
+#: ../share/contrib/elliptic_curves/elliptic_curves.lisp:367
+msgid "Third argument to `~m' must be of the form [[p1, e1], ..., [pk, ek]]."
+msgstr ""
+"Tercer argumento para `m' debe ser del formato [[p1, e1], ..., [pk, ek]]."
+
+#: ../src/transs.lisp:262
 #, lisp-format
 msgid "This is the unlisp file for ~A~%"
 msgstr "Esto es el fichero no lisp para ~A~%"
@@ -677,16 +726,16 @@ msgstr "Esto es el fichero no lisp para ~A~%"
 msgid "Time = "
 msgstr "Hora = "
 
-#: ../src/macsys.lisp:397
+#: ../src/macsys.lisp:396
 #, lisp-format
 msgid "To report a bug, you must have a Sourceforge account.~%"
 msgstr "Para reportar un defecto, debe tener una cuenta en Sourceforge.~%"
 
-#: ../src/mlisp.lisp:482 ../src/clmacs.lisp:606
+#: ../src/mlisp.lisp:486 ../src/clmacs.lisp:615
 msgid "Too few"
 msgstr "Escasos"
 
-#: ../src/mlisp.lisp:482 ../src/clmacs.lisp:609
+#: ../src/mlisp.lisp:486 ../src/clmacs.lisp:618
 msgid "Too many"
 msgstr "Múltiples"
 
@@ -694,34 +743,58 @@ msgstr "Múltiples"
 msgid "Total time = "
 msgstr "Tiempo total = "
 
+#: ../share/contrib/symplectic_ode/symplectic_ode.lisp:53
+msgid "Type ~M is unknown to the compiler; changing to type any."
+msgstr "Tipo ~M es desconocido para el compilador; cambiando a cualquier tipo."
+
 #: ../src/polyrz.lisp:43
 msgid "UNIPOLY: argument must be a univariate polynomial; found: ~M"
 msgstr "UNIPOLY: un argumento debe ser polinomial univariante; encontrado: ~M"
 
-#: ../src/compar.lisp:495
+#: ../share/contrib/symplectic_ode/symplectic_ode.lisp:42
+msgid "Unable to convert ~M to type ~M"
+msgstr "Incapaz de convertir ~M a tipo ~M"
+
+#: ../src/compar.lisp:486
 msgid "Unable to evaluate predicate ~M"
 msgstr "Incapaz de evaluar el predicado ~M"
 
-#: ../src/mload.lisp:640
+#: ../share/contrib/symplectic_ode/symplectic_ode.lisp:40
+msgid "Unknown type ~M"
+msgstr "Tipo ~M desconocido"
+
+#: ../src/mload.lisp:708
 msgid "Unrecognized keyword: ~M"
 msgstr "Tecla no reconocida: ~M"
+
+#: ../src/numth.lisp:500
+msgid "Unsuitable arguments to `chinese': ~m ~m"
+msgstr "Argumentos no concluyente  a `chinese': ~m ~m"
+
+#: ../share/stringproc/sha1.lisp:241
+msgid "Unsuitable arguments to `mgf1_sha1': ~m, ~m"
+msgstr "Argumentos no concluyente a `mgf1_sha1': ~m, ~m"
+
+#: ../share/stringproc/sregex.lisp:106
+msgid "Unsuitable arguments to `~m'."
+msgstr "Argumentos no concluyente  a `~m'."
 
 #: ../src/sloop.lisp:3
 msgid "Using deprecated macro 'sloop'. Use 'loop' instead."
 msgstr "Empleando macro 'sloop' obsoleta. Emplee en su lugar 'loop'."
 
 #. some points have non-real values
-#: ../src/plot.lisp:964
+#: ../src/plot.lisp:980
 msgid "Warning: excluding ~M points with non-numerical values.~%"
 msgstr "Cuidado: excluyendo ~M comas con valores no numéricos.~%"
 
 #. none of the points have real values
-#: ../src/plot.lisp:967
+#: ../src/plot.lisp:983
 #, lisp-format
 msgid "Warning: none of the points have numerical values.~%"
 msgstr "Cuidado: ninguna de las comas tiene valores numéricos.~%"
 
-#: ../src/plot.lisp:1553
+#: ../src/plot.lisp:1576
 msgid ""
 "Wrong argument for plot option \"gnuplot_term\". Expecting a string or a "
 "symbol but found \"~M\"."
@@ -729,13 +802,13 @@ msgstr ""
 "Argumento equivocado para opción gráfica \"gnuplot_term\". Esperaba una "
 "cadena o un símbolo pero ha encontrado \"~M\"."
 
-#: ../src/plot.lisp:1615 ../src/plot.lisp:1640
+#: ../src/plot.lisp:1638 ../src/plot.lisp:1663
 msgid "Wrong argument for plot option \"~M\". Expecting ~M but found \"~M\"."
 msgstr ""
 "Argumento equivocado para una opción gráfica \"~M\". Esperaba \n"
 "~M pero se ha encontrado \"~M\"."
 
-#: ../src/plot.lisp:1635
+#: ../src/plot.lisp:1658
 msgid ""
 "Wrong argument for plot option \"~M\". Expecting ~M, true or false but found "
 "\"~M\"."
@@ -743,16 +816,16 @@ msgstr ""
 "Argumento equivocado para una opción gráfica \"~M\". Esperaba\n"
 "~M, verdadero o falso, pero encontrado \"~M\"."
 
-#: ../src/plot.lisp:1665
+#: ../src/plot.lisp:1688
 msgid ""
 "Wrong argument ~M for option ~M. Must be either [label,\"text\",x,y] or "
 "[label, [\"text 1\",x1,y1],...,[\"text n\",xn,yn]]"
 msgstr ""
-"Argumento ~M equivocado para la opción ~M. Debe ser o bien [etiqueta,\""
-"texto\",x,y] o bien [etiqueta,\n"
+"Argumento ~M equivocado para la opción ~M. Debe ser o bien [etiqueta,\"texto"
+"\",x,y] o bien [etiqueta,\n"
 "[\"texto 1\",x1,y1],...,[\"texto n\",xn,yn]]"
 
-#: ../src/plot.lisp:1677
+#: ../src/plot.lisp:1700
 msgid ""
 "Wrong argument ~M for option ~M. Must one of the following symbols: "
 "geomview, gnuplot, mgnuplot, xmaxima (or gnuplot_pipes in Unix)"
@@ -761,19 +834,15 @@ msgstr ""
 "símbolos: geoview, gnuplot,\n"
 "mgmuplot, xmaxima (o gnuplot_pipes en Unix)"
 
-#: ../src/plot.lisp:1696
+#: ../src/plot.lisp:1719
 msgid "Wrong argument ~M for option ~M. Not a valid palette."
 msgstr "Argumento ~M equivocado para una opción ~M. No una paleta válida."
 
-#: ../src/plot.lisp:1709
+#: ../src/plot.lisp:1738
 msgid "Wrong argument ~M for option ~M. Not a valid style"
 msgstr "Argumento ~M equivocado por la opción ~M. No un estilo válido"
 
-#: ../src/plot.lisp:1718
-msgid "Wrong argument ~M for option ~M. Not a valid style."
-msgstr "Argumento ~M equivocado para la opción ~M. Sin estilo válido."
-
-#: ../src/plot.lisp:1731
+#: ../src/plot.lisp:1750
 msgid ""
 "Wrong argument ~M for option ~M. Should be either false or the name of "
 "function for the transformation"
@@ -781,7 +850,7 @@ msgstr ""
 "Argumento ~M equivocado para opción ~M. Debería ser o bien\n"
 "falso o bien el nombre de función para la transformación"
 
-#: ../src/plot.lisp:1610 ../src/plot.lisp:1628
+#: ../src/plot.lisp:1633 ../src/plot.lisp:1651
 msgid ""
 "Wrong number of arguments for plot option \"~M\". Expecting ~M but found ~M."
 msgstr ""
@@ -792,31 +861,78 @@ msgstr ""
 msgid "Wrong number of array indices: ~M"
 msgstr "Número equivocado de índices de unimatriz: ~M"
 
-#: ../src/numth.lisp:2030
+#: ../share/stringproc/stringproc.lisp:550
+msgid ""
+"`ascii': argument must be a non-negative integer less than 128.\n"
+"Please use `unicode' for code points larger than 127."
+msgstr ""
+"àscii': argumento debe ser un entero no negativo menor que 128.\n"
+"Emplee ùnicode' para puntos de códigos mayores que 127."
+
+#: ../share/stringproc/base64.lisp:88
+msgid ""
+"`base64': Argument must be a string, a non-negative integer or a list of "
+"octets."
+msgstr ""
+"`base64': argumento debe ser una cadena textual, un entero no negativo o una "
+"lista de octetos."
+
+#: ../share/stringproc/base64.lisp:151
+msgid "`base64_decode': Optional argument must be 'list, 'number or 'string."
+msgstr "`base64_decode': argumento opcional debe ser 'list, 'number o 'string."
+
+#: ../share/stringproc/stringproc.lisp:538
+msgid "`cint': argument must be a Maxima character."
+msgstr "`cint': argumento debe ser un carácter Maxima."
+
+#: ../share/stringproc/cryptools.lisp:299
+msgid "`crc24sum': Argument must be a list of octets."
+msgstr "`crc24sum': argumento debe ser una lista de octetos."
+
+#: ../share/stringproc/cryptools.lisp:297
+msgid "`crc24sum': Optional argument must be 'list, 'number or 'string."
+msgstr ""
+"`crc24sum': argumento opcional debe ser 'lista, 'número, o 'cadena de texto."
+
+#. Mueller 10.1, step 4
+#: ../share/contrib/elliptic_curves/elliptic_curves.lisp:1891
+msgid "`ec_trace': Not enough modular polynomials."
+msgstr "èc_trace': sin sucicientes modulos polinomiales."
+
+#: ../share/contrib/elliptic_curves/elliptic_curves.lisp:1988
+#: ../share/contrib/elliptic_curves/elliptic_curves.lisp:2042
+msgid "`ec_trace': unexpected failure"
+msgstr "`ec_trace': fallo inesperado"
+
+#: ../src/numth.lisp:2411
 msgid "`ef_div' needs at least two arguments."
 msgstr "`ef_div' requiere al menos dos argumentos."
 
-#: ../src/numth.lisp:2057
+#: ../src/numth.lisp:2222
+msgid "`ef_eval': The argument must be an expanded polynomial."
+msgstr "`ef:eval': el argumeno debe ser un polinomial expandido."
+
+#: ../src/numth.lisp:2438
 msgid "`ef_exp': Resulting exponent won't be a fixnum."
 msgstr "`ef_exp': exponente resultante no sería un número fijo."
 
-#: ../src/numth.lisp:2047
+#: ../src/numth.lisp:2428
 msgid "`ef_exp': Unknown reduction polynomial."
 msgstr "`ef_exp': reducción polinomial desconocida."
 
-#: ../src/numth.lisp:3363
+#: ../src/numth.lisp:3735
 msgid "`ef_factor': Polynomial must be univariate."
 msgstr "`ef_factor': polinomial debe ser univariante."
 
-#: ../src/numth.lisp:2765
+#: ../src/numth.lisp:3137
 msgid "`ef_irreducible' needs an integer."
 msgstr "`ef_irreducible' requiere un entero."
 
-#: ../src/numth.lisp:2013
+#: ../src/numth.lisp:2394
 msgid "`ef_mult': Resulting exponent won't be a fixnum."
 msgstr "`ef_mult': resultado exponente no sería un número fijo."
 
-#: ../src/numth.lisp:972
+#: ../src/numth.lisp:1272
 #, lisp-format
 msgid ""
 "`gf_coeff_limit': Assignment ignored. Value must be an integer greater than "
@@ -825,192 +941,484 @@ msgstr ""
 "`gf_coeff_limit': asignación ignorada. Un valor debe ser un entero mayor que "
 "1.~%"
 
-#: ../src/numth.lisp:1945
+#: ../src/numth.lisp:2326
 msgid "`gf_div' needs at least two arguments."
 msgstr "`gf_div' requiere por lo menos dos argumentos."
 
-#: ../src/numth.lisp:1966
+#: ../src/numth.lisp:2347
 msgid "`gf_exp' needs two arguments."
 msgstr "`gf_exp' requiere dos argumentos."
 
-#: ../src/numth.lisp:1983
+#: ../src/numth.lisp:2364
 msgid "`gf_exp': Resulting exponent won't be a fixnum."
 msgstr "`ef_exp': resultado exponencial no sería un número fijo."
 
-#: ../src/numth.lisp:1971
+#: ../src/numth.lisp:2352
 msgid "`gf_exp': Unknown reduction polynomial."
 msgstr "`ef_exp': reducción polinomial desconocida."
 
-#: ../src/numth.lisp:3312
+#: ../src/numth.lisp:3684
 msgid "`gf_factor': Polynomial must be univariate."
 msgstr "`gf_factor': polinomial debe ser univariante."
 
-#: ../src/numth.lisp:3304
+#: ../src/numth.lisp:3676
 msgid "`gf_factor': Second argument must be a prime number."
 msgstr "`gf_factor': el segundo argumento debe ser un número primo."
 
-#: ../src/numth.lisp:3526
+#: ../src/numth.lisp:3898
 msgid "`gf_gcd': Polynomials must be univariate."
 msgstr "`gf_gcd': polinomiales deben ser univariado."
 
-#: ../src/numth.lisp:3520
+#: ../src/numth.lisp:3892
 msgid "`gf_gcd': ~m is not a prime number."
 msgstr "`gf_gcd': ~m no es un número primo."
 
-#: ../src/numth.lisp:2755
+#: ../src/numth.lisp:3127
 msgid "`gf_irreducible' needs a prime number and an integer."
 msgstr "`gf_irreducible' requiere un número primo y un entero."
 
-#: ../src/numth.lisp:2712
+#: ../src/numth.lisp:3084
 msgid "`gf_irreducible_p': Second argument must be a prime number."
 msgstr "`gf_irreducible_p': el segundo argumento debe ser un número primo."
 
-#: ../src/numth.lisp:1682
+#: ../src/numth.lisp:2060
 msgid "`gf_make_logs': group order must be a fixnum."
 msgstr "`gf_make_logs': grupo ordenante debe ser un número fijo."
 
-#: ../src/numth.lisp:1928
+#: ../src/numth.lisp:2309
 msgid "`gf_mult': Resulting exponent won't be a fixnum."
 msgstr "`gf_mult': resultado exponencial no sería un número fijo."
 
-#: ../src/numth.lisp:2568
+#: ../src/numth.lisp:2940
 msgid "`gf_n2p': missing modulus."
 msgstr "`gf_n2p': módulo ausente."
 
-#: ../src/numth.lisp:2538
+#: ../src/numth.lisp:2910
 msgid "`gf_p2n': missing modulus."
 msgstr "`gf_p2n': módulo ausente."
 
-#: ../src/numth.lisp:3196
+#: ../src/numth.lisp:3568
 msgid "`gf_primitive_poly' needs a prime number and an integer."
 msgstr "`gf_primitive_poly' requiere un número primo y un entero."
 
-#: ../src/numth.lisp:3112
+#: ../src/numth.lisp:3484
 msgid "`gf_primitive_poly_p': ~m is not a prime number."
 msgstr "`gf_primitive_poly_p': ~m no es un número primo."
 
-#: ../src/numth.lisp:1339
+#: ../src/numth.lisp:1715
 msgid "`gf_set_data': Field characteristic must be a prime number."
 msgstr "`gf_set_data': un campo característico debe ser un número primo."
 
-#: ../src/numth.lisp:1347
+#: ../src/numth.lisp:1723
 msgid "`gf_set_data': The exponent must be a positive fixnum."
 msgstr "`gf_set_data': el exponente debe ser un número fijo positivo."
 
-#: ../src/numth.lisp:600
-msgid "`zn_characteristic_factors': Argument must be an integer."
-msgstr "`zn_characteristic_factors': un argumento debe ser un entero."
+#: ../share/stringproc/md5.lisp:192
+msgid ""
+"`md5sum': Argument must be a string, a non-negative integer or a list of "
+"octets."
+msgstr ""
+"`md5sum': argumento debe ser una cadena textual, un entero no negativo "
+"(natural) o una lista de octetos."
 
-#: ../src/numth.lisp:652
+#: ../share/stringproc/md5.lisp:211
+msgid "`md5sum': Optional argument must be 'list, 'number or 'string."
+msgstr ""
+"`md5sum': argumento opcional debe ser 'lista, 'número o 'cadena textual."
+
+#: ../share/stringproc/sha1.lisp:258
+msgid "`mgf1_sha1': Optional argument must be 'number or 'list."
+msgstr "`mgf1': argumento opcional debe ser 'lista o 'número."
+
+#: ../share/stringproc/cryptools.lisp:196
+msgid "`number_to_octets': Argument must be a non-negative integer."
+msgstr "`number_to_octets': argumento debe ser un número natural."
+
+#: ../share/stringproc/cryptools.lisp:202
+msgid "`octets_to_number': Argument must be a list of octets."
+msgstr "`octets_to_number': argumento debe ser una lista de octetos."
+
+#: ../share/stringproc/cryptools.lisp:155
+msgid "`octets_to_string': argument must be a list of octets."
+msgstr "`octets_to_string': argumento debe ser una lista de octetos."
+
+#: ../share/stringproc/stringproc.lisp:164
+msgid "`openr': file does not exist: ~m"
+msgstr "`openr': fichero no existente: ~m"
+
+#: ../share/stringproc/stringproc.lisp:1001
+msgid "`parse-utf-8-header': ~m is no utf-8 header"
+msgstr "`parse-utf-8-header': ~m no es cabecera utf-8"
+
+#: ../share/stringproc/printf.lisp:424
+msgid "`printf': argument can't be supplied to d-directive: ~m"
+msgstr "`printf': argumento no puede ser suministrado a d-directiva: ~m"
+
+#: ../share/stringproc/printf.lisp:386
+msgid "`printf': argument can't be supplied to h-directive: ~m"
+msgstr "`printf': argumento no puede ser suministrado a h-directiva: ~m"
+
+#: ../share/stringproc/printf.lisp:412
+msgid "`printf': argument can't be supplied to ~m-directive: ~m"
+msgstr "`printf': argumento no puede ser suministrado a ~m-directiva: ~m"
+
+#: ../share/stringproc/printf.lisp:78
+msgid "`printf': arguments exhausted."
+msgstr "`printf': argumentos agotados."
+
+#: ../share/stringproc/printf.lisp:56
+msgid "`printf': first argument must be `true', `false' or a stream."
+msgstr "`printf': primer argumento debe ser `true', `false' o un flujo."
+
+#: ../share/stringproc/printf.lisp:172
+msgid "`printf': illegal directive ~~~m?"
+msgstr "`printf': directiva no legal: ~~~m?"
+
+#: ../share/stringproc/printf.lisp:176
+msgid "`printf': illegal directive ~~~m^"
+msgstr "`printf': directiva no legal: ~~~m^"
+
+#: ../share/stringproc/printf.lisp:113
+msgid "`printf': illegal radix in r-directive: ~m"
+msgstr "`printf': radio no legal en r-directiva: ~m"
+
+#: ../share/stringproc/printf.lisp:155
+msgid "`printf': not supported directive ~~~m["
+msgstr "`printf': directiva no compatible ~~~m["
+
+#: ../share/stringproc/printf.lisp:58
+msgid "`printf': second argument must be a string."
+msgstr "`printf': el segundo argumento debe ser una cadena textual."
+
+#: ../share/stringproc/stringproc.lisp:231
+msgid "`readbyte': argument must be a binary stream."
+msgstr "`readbyte': argumento debe ser un flujo binario."
+
+#: ../share/stringproc/sha1.lisp:215
+msgid ""
+"`sha1sum': Argument must be a string, a non-negative integer or a list of "
+"octets."
+msgstr "`sha1sum': argumento debe ser un natural o una lista de octetos."
+
+#: ../share/stringproc/sha1.lisp:233
+msgid "`sha1sum': Optional argument must be 'list, 'number or 'string."
+msgstr ""
+"`sha1sum': argumento opcional debe ser 'lista, 'número, o 'cadena textual."
+
+#: ../share/stringproc/sha1.lisp:332
+msgid ""
+"`sha256sum': Argument must be a string, a non-negative integer or a list of "
+"octets."
+msgstr ""
+"`sha256sum': argumento debe ser una cadena, un natural o una lista de "
+"octetos."
+
+#: ../share/stringproc/sha1.lisp:351
+msgid "`sha256sum': Optional argument must be 'list, 'number or 'string."
+msgstr ""
+"`sha256sum': argumento opcional debe ser 'lista, 'número, o 'cadena textual."
+
+#: ../share/stringproc/stringproc.lisp:891
+msgid "`simplode': first argument must be a list."
+msgstr "`simplode': primer argumento debe ser una lista."
+
+#: ../share/stringproc/stringproc.lisp:771
+msgid "`smake': first argument must be an integer."
+msgstr "`smake': primer argumento debe ser un entero."
+
+#: ../share/stringproc/stringproc.lisp:773
+msgid "`smake': second argument must be a Maxima character."
+msgstr "`smake': segundo argumento debe ser un carácter Maxima."
+
+#: ../share/stringproc/stringproc.lisp:1008
+msgid ""
+"`smismatch': optional third argument must be `sequal' or `sequalignore'."
+msgstr ""
+"`smismatch': tercer argumento opcional debe ser `sequal' o `sequalignore'."
+
+#: ../share/stringproc/stringproc.lisp:860
+msgid "`split': unsuitable optional arguments."
+msgstr "`split': argumentos opcionales no concluyentes."
+
+#: ../share/stringproc/stringproc.lisp:925
+msgid "`sposition': first argument must be a Maxima character."
+msgstr "`sposition': primer argumento debe ser un carácter Maxima."
+
+#: ../share/stringproc/stringproc.lisp:1154
+#, lisp-format
+msgid ""
+"`ssort': optional second argument must be one of ~%clessp[ignore], "
+"cgreaterp[ignore]"
+msgstr ""
+"`ssort': segundo argumento opcional debe ser uno de ~%clessp[ignora], "
+"cgreaterp[ignora]"
+
+#: ../share/stringproc/stringproc.lisp:1150
+#, lisp-format
+msgid ""
+"`ssort': when us_ascii_only is false ~a \n"
+"the optional second argument must be `clessp' or `cgreaterp'."
+msgstr ""
+"`ssort': cuando us_ascii_only es falso ~a \n"
+"el seguno argumento opcional debe ser `clessp' o `cgreaterp'."
+
+#: ../share/stringproc/cryptools.lisp:128
+msgid "`string_to_octets': argument must be a string."
+msgstr "`string_to_octets': argumento debe ser una secuencia de caracteres."
+
+#: ../share/stringproc/sregex.lisp:185
+msgid "`string_to_regex': Argument must be a string."
+msgstr "`string_to_regex': argumento debe ser una cadena textual."
+
+#: ../share/stringproc/stringproc.lisp:820
+#, lisp-format
+msgid ""
+"`tokens': optional second argument must be one of ~%\n"
+"constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, "
+"charp"
+msgstr ""
+"`tokens': segundo argumento opcional debe ser uno de ~%\n"
+"constitutuyendo, alfanuméricop, alfacaracterp, dígitop, minúsculap, "
+"mayúsculap, caracterp"
+
+#: ../share/stringproc/stringproc.lisp:574
+msgid "`unicode': argument must be a string or a non-negative integer."
+msgstr "`unicode': argumento debe ser una cadena textual o un natural."
+
+#: ../share/stringproc/stringproc.lisp:584
+msgid "`unicode_to_utf8': argument must be a non-negative integer."
+msgstr "`unicode_to_utf8': argumento debe ser un natural."
+
+#: ../share/stringproc/stringproc.lisp:589
+msgid ""
+"`utf8_to_unicode': argument must be a list of octets representing a single "
+"character."
+msgstr ""
+"`utf8_to_unicode': argumento debe ser una lista de octetos representando un "
+"único carácter."
+
+#: ../share/stringproc/stringproc.lisp:238
+msgid "`writebyte': argument must be a binary stream."
+msgstr "`writebyte': argumento debe ser un flujo binario."
+
+#: ../src/numth.lisp:707
+msgid "`zn_carmichael_lambda': Argument must be a positive integer."
+msgstr "`zn_carmichael_lambda': argumento debe ser un entero positivo."
+
+#: ../src/numth.lisp:699
+msgid ""
+"`zn_characteristic_factors': Argument must be an integer greater than 1."
+msgstr "`zn_characteristic_factors': argumento debe ser un entero mayor que 1."
+
+#: ../src/numth.lisp:760
+msgid "`zn_factor_generators': Argument must be an integer greater or equal 2."
+msgstr ""
+"`zn_factor_generators': argumento debe ser un entero mayor o igual a 2."
+
+#: ../src/numth.lisp:1142
+msgid "`zn_mult_table': The opt second arg must be `all' or a small fixnum."
+msgstr ""
+"`zn_mult_table': el segundo argumento opt debe ser `todo' o un número fijo "
+"pequeño."
+
+#: ../src/numth.lisp:857
 msgid "`zn_nth_root' needs three integer arguments. Found ~m, ~m, ~m."
 msgstr ""
 "`zn_nth_root' requiere tres argumentos enteros. Encontrados ~m, ~m y ~m."
 
-#: ../src/numth.lisp:654
-msgid ""
-"`zn_nth_root': Second and third argument must be a positive integers. Found "
-"~m, ~m."
+#: ../src/numth.lisp:860
+msgid "`zn_nth_root': Second and third arg must be pos integers. Found ~m, ~m."
 msgstr ""
 "`zn_nth_root': los argumentos segundo y tercero deben ser enteros positivos. "
 "Encontrado ~m, ~m."
 
-#: ../src/numth.lisp:1399
+#: ../src/numth.lisp:865
+msgid ""
+"`zn_nth_root': The opt fourth arg must be of the form [[p1, e1], ..., [pk, "
+"ek]]."
+msgstr ""
+"`md5sum': El cuarto argumento opcional debe ser de formato [[p1, e1], ..., "
+"[pk, ek]]."
+
+#: ../src/numth.lisp:1171
+msgid "`zn_power_table': The opt second arg must be `all' or a small fixnum."
+msgstr ""
+"`zn_power_table': el segundo argumento opt debe ser `todo' o un número fijo "
+"pequeño."
+
+#: ../src/numth.lisp:1176
+msgid "`zn_power_table': The opt third arg must be a small fixnum."
+msgstr ""
+"`zn_power_table': el tercer argumento opt debe ser un número fijo pequeño."
+
+#: ../src/numth.lisp:1777
 msgid "`~m': A monic reduction polynomial is assumed."
 msgstr "`~m': una reducción monomial está asumida."
 
-#: ../src/numth.lisp:2628
+#: ../src/numth.lisp:3000
 msgid "`~m': Argument must be a list of integers."
 msgstr "`~m': un argumento debe ser una lista de enteros."
 
-#: ../src/numth.lisp:3639
+#: ../share/contrib/elliptic_curves/elliptic_curves.lisp:84
+msgid "`~m': Arguments must be a integers."
+msgstr "`~m': argumentos deben ser enteros."
+
+#: ../share/contrib/elliptic_curves/elliptic_curves.lisp:87
+msgid "`~m': First argument must be a prime number greater than 3. Found ~m."
+msgstr ""
+"`~m': Primer argumento debe ser número primo mayor que 3. Encontrado ~m."
+
+#: ../share/contrib/elliptic_curves/elliptic_curves.lisp:141
+msgid "`~m': First argument must be an integer."
+msgstr "`~m': el primer argumento debe ser un entero."
+
+#: ../src/numth.lisp:4014
 msgid "`~m': Leading exponent must be smaller than ~m."
 msgstr "`~m': para dejar un exponente debe ser menor que ~m."
 
-#: ../src/numth.lisp:2556
+#: ../src/numth.lisp:2928
 msgid "`~m': Not an integer: ~m"
 msgstr "`~m': no un entero: ~m"
 
-#: ../src/numth.lisp:1394
+#: ../src/numth.lisp:1772
 msgid "`~m': Not suitable as reduction polynomial: ~m"
 msgstr "`~m': no ajustable como reducción polinomial: ~m"
 
-#: ../src/numth.lisp:2974
+#: ../share/contrib/elliptic_curves/ec2.lisp:327
+#: ../share/contrib/elliptic_curves/elliptic_curves.lisp:361
+msgid "`~m': Second argument must be a positive integer. Found ~m."
+msgstr "`~m': segundo argumento debe ser un entero positivo; encontrado: ~M"
+
+#: ../src/numth.lisp:3346
 msgid "`~m': Second argument must be an integer."
 msgstr "`~m': el segundo argumento debe ser un entero."
 
-#: ../src/numth.lisp:1017
+#: ../src/numth.lisp:1317
 msgid "`~m': The base field is not defined yet."
 msgstr "`~m': el campo de base no está aún definido."
 
-#: ../src/numth.lisp:1000
+#: ../src/numth.lisp:1300
 msgid "`~m': The characteristic is not defined yet."
 msgstr "`~m': la característica aún no está definida."
 
-#: ../src/numth.lisp:1851
+#: ../share/contrib/elliptic_curves/elliptic_curves.lisp:392
+msgid "`~m': The characteristic should not exceed a length of 36 bit."
+msgstr "`~m': la característica debería no excede una longitud de 36 bit."
+
+#: ../share/contrib/elliptic_curves/ec2.lisp:101
+#: ../share/contrib/elliptic_curves/elliptic_curves.lisp:98
+msgid "`~m': The curve is not defined yet."
+msgstr "`~m': la curva aún no está definida."
+
+#: ../src/numth.lisp:2232
 msgid "`~m': The exponent is expected to be a fixnum."
 msgstr "`~m': el exponente está especificado para ser un número fijo."
 
-#: ../src/numth.lisp:1397
+#: ../src/numth.lisp:1775
 msgid "`~m': The exponent must be a positive fixnum."
 msgstr "`~m': el exponente debe ser un número fijo positivo."
 
-#: ../src/numth.lisp:1029
+#: ../src/numth.lisp:1329
 msgid "`~m': The extension is no field."
 msgstr "`~m': la expresión no es campo."
 
-#: ../src/numth.lisp:1004 ../src/numth.lisp:1021
+#: ../src/numth.lisp:1304 ../src/numth.lisp:1321
 msgid "`~m': The reduction polynomial is not defined yet."
 msgstr "`~m': la reducción polinomial aún no está definido."
 
-#: ../src/numth.lisp:1012
+#: ../src/numth.lisp:1312
 msgid "`~m': The reduction polynomial is not irreducible."
 msgstr "`~m': la reducción polinomial no es irreducible."
 
-#: ../src/numth.lisp:4156
+#: ../share/contrib/elliptic_curves/ec2.lisp:121
+#: ../share/contrib/elliptic_curves/elliptic_curves.lisp:110
+msgid "`~m': Unsuitable argument: ~m"
+msgstr "`~m': argumento no concluyente: ~m"
+
+#: ../share/contrib/elliptic_curves/ec2.lisp:324
+#: ../share/contrib/elliptic_curves/elliptic_curves.lisp:358
+msgid "`~m': [~m,~m] is no curve point."
+msgstr "`~m': [~m,~m]  no es punto curva."
+
+#: ../src/numth.lisp:4531
 msgid "`~m': a primitive element is not known."
 msgstr "`~m': un elemento primitivo no es conocido."
 
-#: ../src/numth.lisp:4026
+#: ../src/numth.lisp:4401
 msgid "`~m': attempt to multiply non conformable matrices."
 msgstr "`~m': intenta multiplicar matrices no conformables."
 
-#: ../src/numth.lisp:1025
+#: ../src/numth.lisp:1325
 msgid "`~m': ef_set_data called?"
 msgstr "`~m': ¿llamó al conjunto de datos ef_set_data?"
 
-#: ../src/numth.lisp:1008
+#: ../share/stringproc/sregex.lisp:104
+msgid "`~m': first arg must be a compiled regex or a string."
+msgstr "`~m': primer arg debe ser una expreg compilada o una cadena textual."
+
+#: ../src/numth.lisp:1308
 msgid "`~m': gf_set_data called?"
 msgstr "`~m': ¿llamó al conjunto de datos gf_set_data?"
 
-#: ../src/numth.lisp:4154
+#: ../share/stringproc/sregex.lisp:111
+msgid "`~m': improper start or end index."
+msgstr "`~m': inicio o final de indexado impropio."
+
+#: ../share/stringproc/stringproc.lisp:262
+msgid "`~m': the optional second argument must be a string."
+msgstr "`~m': el segundo argumento opcional debe ser una cadena textual."
+
+#: ../src/numth.lisp:4529
 msgid "`~m': there is no primitive element."
 msgstr "`~m': no hay ningún elemento primitivo."
 
-#: ../src/numth.lisp:4052
+#: ../share/stringproc/stringproc.lisp:120
+msgid "`~m': unsuitable position index ~m"
+msgstr "`~m': posición indexada no concluyente ~m"
+
+#: ../share/stringproc/stringproc.lisp:123
+msgid "`~m': unsuitable start or end position."
+msgstr "`~m': posición inicial o final no concluyente."
+
+#: ../share/stringproc/stringproc.lisp:111
+msgid "`~m': ~m argument must be a stream."
+msgstr "`~m': argumento ~m debe ser un flujo."
+
+#: ../share/stringproc/stringproc.lisp:114
+msgid "`~m': ~m argument must be a string."
+msgstr "`~m': argumento ~m debe ser una cadena."
+
+#: ../src/numth.lisp:4427
 msgid "`~m': ~m argument must be prime number."
 msgstr "`~m': argumento ~m debe ser un número primo."
 
-#: ../src/compar.lisp:109
+#: ../share/stringproc/stringproc.lisp:117
+msgid "`~m': ~m arguments must be strings."
+msgstr "`~m': ~m argumentos deben ser cadenas textuales."
+
+#: ../src/compar.lisp:100
 msgid "activate: no such context ~:M"
 msgstr "activar: sin contexto ~:M"
 
-#: ../src/comm2.lisp:740
+#: ../src/comm2.lisp:772
 msgid "addcol: first argument must be a matrix; found ~M"
-msgstr "añadircol: el primer argumento debe ser una matriz; se ha encontrado ~M"
+msgstr ""
+"añadircol: el primer argumento debe ser una matriz; se ha encontrado ~M"
 
-#: ../src/comm2.lisp:747
+#: ../src/comm2.lisp:779
 msgid "addrow or addcol: argument must be a matrix or list; found ~M"
 msgstr ""
 "añadirfila o añadircol: el argumento debe ser una matriz o una lista; se ha "
 "encontrado ~M"
 
-#: ../src/comm2.lisp:754
+#: ../src/comm2.lisp:786
 msgid "addrow or addcol: incompatible structure."
 msgstr "añadirfil o añadircol: estructura incompatible."
 
-#: ../src/comm2.lisp:730
+#: ../src/comm2.lisp:762
 msgid "addrow: first argument must be a matrix; found ~M"
-msgstr "añadirfil: el primer argumento debe ser una matriz; se ha encontrado ~M"
+msgstr ""
+"añadirfil: el primer argumento debe ser una matriz; se ha encontrado ~M"
 
 #. MEANING OF NEXT MESSAGE IS UNCLEAR
 #: ../src/nalgfa.lisp:154
@@ -1022,6 +1430,11 @@ msgstr "algfac: no algebraicos."
 msgid "algfac: too many algebraics."
 msgstr "algfac: demasiado algebraicos."
 
+#: ../src/algsys.lisp:734
+msgid "algsys: Couldn't reduce system to a polynomial in one variable."
+msgstr ""
+"algsys: no pudo reducir sistema a un polinomial dentro de una variable."
+
 #: ../src/algsys.lisp:75
 msgid "algsys: first argument must be a list; found ~M"
 msgstr "algsys: el primer argumento debe ser una lista; se ha encontrado ~M"
@@ -1031,27 +1444,19 @@ msgid "algsys: second argument must be a list; found ~M"
 msgstr "algsys: el segundo argumento debe ser una lista; se ha encontrado ~M"
 
 #. SHOULD TRY TO BE MORE SPECIFIC: "TOO COMPLICATED" IN WHAT SENSE??
-#: ../src/algsys.lisp:488
+#: ../src/algsys.lisp:754
 msgid "algsys: system too complicated; give up."
 msgstr "algsys: sistema demasiado complicado; abandono."
-
-#: ../src/algsys.lisp:468
-msgid ""
-"algsys: tried and failed to reduce system to a polynomial in one variable; "
-"give up."
-msgstr ""
-"algsys: fallo al intentar reducir el sistema a un polinomio en una variable; "
-"abandono."
 
 #: ../src/algsys.lisp:101
 msgid "algsys: variable cannot be a number; found ~M"
 msgstr "algsys: la variable no puede ser un número; ha encontrado ~M"
 
-#: ../src/suprv1.lisp:528
+#: ../src/suprv1.lisp:537
 msgid "alias: expected an even number of arguments."
 msgstr "alias: esperaba un número par de argumentos."
 
-#: ../src/suprv1.lisp:543
+#: ../src/suprv1.lisp:549
 msgid "alias: ~M already has an alias."
 msgstr "alias: ~M ya tiene un alias."
 
@@ -1078,11 +1483,11 @@ msgstr "todasraices: solo ~S de ~S raíces encontradas.~%"
 msgid "allroots: unexpected error; treat results with caution.~%"
 msgstr "todasraices: error inesperado; utilice los resultados con cuidado.~%"
 
-#: ../src/comm.lisp:1019
+#: ../src/comm.lisp:1043
 msgid "append: operators of arguments must all be the same."
 msgstr "agregación: los operadores de los argumentos deben ser todos iguales."
 
-#: ../src/macsys.lisp:525
+#: ../src/macsys.lisp:530
 msgid "appendfile: already in appendfile, you must call closefile first."
 msgstr ""
 "ficheroaplicación: ya agregando al fichero, debe llamar primero a un cierre "
@@ -1092,21 +1497,21 @@ msgstr ""
 msgid "apply1: no such rule: ~:M"
 msgstr "aplicación: sin regla establecida: ~:M"
 
-#: ../src/fcall.lisp:82
+#: ../src/fcall.lisp:84
 msgid "apply: expected symbol or function; found: ~M"
 msgstr "aplicación: se esperaba un símbolo o una función; encontrado: ~M"
 
-#: ../src/mlisp.lisp:459
+#: ../src/mlisp.lisp:463
 msgid "apply: found ~M evaluates to ~M where a function was expected."
 msgstr ""
 "aplicación: encontradas ~M evaluaciones para ~M donde se estaba esperando "
 "una función."
 
-#: ../src/mlisp.lisp:460
+#: ../src/mlisp.lisp:464
 msgid "apply: found ~M where a function was expected."
 msgstr "aplicación: encontradas ~M donde se esperada una función."
 
-#: ../src/fcall.lisp:93
+#: ../src/fcall.lisp:95
 msgid "apply: function ~:@M undefined after loading file ~A"
 msgstr "aplicación: función ~:@M indefinida después de cargar el fichero ~A"
 
@@ -1114,11 +1519,11 @@ msgstr "aplicación: función ~:@M indefinida después de cargar el fichero ~A"
 msgid "apply: no such ~M element: ~M"
 msgstr "aplicación: sin elemento especificado ~M: ~M"
 
-#: ../src/acall.lisp:240
+#: ../src/acall.lisp:244
 msgid "apply: second argument must be a list; found ~M"
 msgstr "aplicación: segundo argumento debe ser una lista; se ha encontrado ~M"
 
-#: ../src/mlisp.lisp:2147
+#: ../src/mlisp.lisp:2120
 msgid "apply: second argument must be a list; found: ~M"
 msgstr ""
 "aplicación: el segundo argumento debe ser una lista; se ha encontrado ~M"
@@ -1131,105 +1536,109 @@ msgstr "aplicación: el subíndice debe ser un entero; se ha encontrado: ~M"
 msgid "apply: wrong number of indices; found: ~M"
 msgstr "aplicación: número de índices equivocado; se ha encontrado: ~M"
 
-#: ../src/macdes.lisp:163
+#: ../src/macdes.lisp:162
 msgid "apropos: argument must be a string; found: ~M"
 msgstr "propósito: argumento debe ser una cadena; se ha encontrado: ~M"
 
-#: ../src/mlisp.lisp:1760
+#: ../src/mlisp.lisp:1774
 msgid "array: all dimensions must be integers."
 msgstr "unimatriz: todas las dimensiones deben ser enteros."
 
-#: ../src/mlisp.lisp:1773
+#: ../src/mlisp.lisp:1787
 msgid "array: array ~:M must have ~:M dimensions; found: ~M"
 msgstr "unimatriz: unimatriz ~:M debe tener ~:M dimensiones; encontradas: ~M"
 
-#: ../src/mlisp.lisp:1783
+#: ../src/mlisp.lisp:1797
 msgid "array: existing elements must be ~M; found: ~M"
 msgstr "unimatriz: elementos existentes deben ser ~M; encontrado: ~M"
 
-#: ../src/mlisp.lisp:1803
+#: ../src/mlisp.lisp:1817
 msgid "array: first argument must be a symbol or a list; found: ~M"
 msgstr ""
 "unimatriz: el primer argumento debe ser un símbolo o una lista: encontrado ~M"
 
-#: ../src/mlisp.lisp:1789
+#: ../src/mlisp.lisp:1803
 msgid "array: index must be nonnegative integer less than ~M; found: ~M"
 msgstr ""
-"unimatriz: el índice debe ser un entero no negativo menor que ~M; encontrado:"
-" ~M"
+"unimatriz: el índice debe ser un entero no negativo menor que ~M; "
+"encontrado: ~M"
 
-#: ../src/mlisp.lisp:1757
+#: ../src/ar.lisp:152
+msgid "array: indices cannot be plain or subscripted symbols; found: ~M"
+msgstr ""
+"unimatriz: indexados no pueden ser simple o símbolos subscript; encontrado: "
+"~M"
+
+#: ../src/ar.lisp:150
+msgid "array: indices cannot be special expressions (CRE or Taylor); found: ~M"
+msgstr ""
+"unimatriz: índices no pueden ser expresiones especiales (CRE o Taylor); "
+"concontrado: ~M"
+
+#: ../src/ar.lisp:154
+msgid "array: indices must be literal integers; found: ~M"
+msgstr "unimatriz: índices deben ser enteros literales; encontrado: ~M"
+
+#: ../src/mlisp.lisp:1772
 msgid "array: number of dimensions must be 5 or less; found: ~M"
 msgstr ""
 "unimatriz: número de dimensiones debe ser 5 o menor; se han encontrado: ~M"
 
-#: ../src/acall.lisp:94
+#: ../src/acall.lisp:95
 msgid "arrayapply: second argument must be a list; found ~M"
 msgstr ""
 "arrayapply: el segundo argumento debe ser una lista; se ha encontrado ~M"
 
-#: ../src/comm2.lisp:797
+#: ../src/comm2.lisp:829
 msgid "arrayinfo: ~M is not an array."
 msgstr "infounimatriz: ~M no es una unimatriz."
 
-#: ../src/comm2.lisp:761
+#: ../src/comm2.lisp:793
 msgid ""
 "arraymake: second argument must be a list of one or more elements; found ~M"
 msgstr ""
 "crearunimatriz: el segundo argumento debe ser una lista de uno o más "
 "elementos; se han encontrado ~M"
 
-#: ../src/acall.lisp:99
+#: ../src/acall.lisp:100
 msgid "arraysetapply: second argument must be a list; found ~M"
 msgstr ""
 "arraysetapply: el segundo argumento debe ser una lista; se ha encontrado ~M"
 
-#: ../src/compar.lisp:857
+#: ../src/compar.lisp:848
 msgid "asksign: internal error."
 msgstr "asksign: error interno."
 
-#: ../src/mlisp.lisp:1169 ../src/mlisp.lisp:1177
+#: ../src/mlisp.lisp:1181 ../src/mlisp.lisp:1189
 msgid ""
 "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time."
 msgstr ""
 "asignación: 'ratfac' y 'ratwtlvl' no pueden ser utilizados ambos a la vez."
 
-#: ../src/mlisp.lisp:1194
+#: ../src/mlisp.lisp:1206
 msgid "assignment: '~:M must be a positive integer. Found: ~:M"
 msgstr "asignación: '~:M debe ser un entero positivo. Se ha encontrado: ~:M"
 
-#: ../src/mlisp.lisp:1826
-msgid "assignment: array has one dimension, but two or more indices supplied."
-msgstr ""
-"asignación: una unimatriz tiene una dimensión, pero han suministrados dos o "
-"más."
-
-#: ../src/mlisp.lisp:1828
-msgid "assignment: array has two or more dimensions, but one index supplied."
-msgstr ""
-"asignación: una unimatriz tiene dos o más dimensiones, pero se ha suministró "
-"solo un índice."
-
-#: ../src/mlisp.lisp:1872
+#: ../src/mlisp.lisp:1837
 msgid "assignment: array ~:M has dimension ~:M, but it was called by ~:M"
 msgstr ""
 "asignación: unimatriz ~:M tiene ~:M dimensiones, pero fue llamado por ~:M"
 
-#: ../src/mlisp.lisp:652
+#: ../src/mlisp.lisp:660
 msgid "assignment: assigning to option ~M"
 msgstr "asignación: asignando como opción ~M"
 
-#: ../src/merror.lisp:116
+#: ../src/merror.lisp:117
 msgid "assignment: assignment to ~M must be a list of symbols; found: ~M"
 msgstr ""
 "asignación: una asignación para ~M debe ser una lista de símbolos; "
 "encontrado: ~M"
 
-#: ../src/mlisp.lisp:1868
+#: ../src/mlisp.lisp:1833
 msgid "assignment: attempt to assign ~M to an array of type ~M."
 msgstr "asignación: ha intentado asignar ~M para una unimatriz de tipo ~M."
 
-#: ../src/merror.lisp:167
+#: ../src/merror.lisp:168
 msgid "assignment: attempting to assign read-only variable ~:M the value ~M"
 msgstr ""
 "asignación: intentando asignar una variable de solo lectura ~:M de valor ~M"
@@ -1250,42 +1659,43 @@ msgstr ""
 "llamada 'let' para crear\n"
 "paquetes de reglas."
 
-#: ../src/mlisp.lisp:1187
+#: ../src/mlisp.lisp:1199
 msgid "assignment: cannot assign to ~:M"
 msgstr "asignación: no puedo asignar a ~:M"
 
-#: ../src/mlisp.lisp:642 ../src/mlisp.lisp:684 ../src/mlisp.lisp:1905
+#: ../src/mlisp.lisp:650 ../src/mlisp.lisp:692 ../src/mlisp.lisp:1870
 msgid "assignment: cannot assign to ~M"
 msgstr "asignación: no puedo asignar a ~M"
 
-#: ../src/mlisp.lisp:641
+#: ../src/mlisp.lisp:649
 msgid "assignment: cannot assign to ~M; it is a declared numeric quantity."
 msgstr ""
 "asignación: no puede asignar a ~M; es una declaración cuantitativamente "
 "numérica."
 
-#: ../src/mlisp.lisp:1121
+#: ../src/mlisp.lisp:1134
 msgid "assignment: cannot assign ~M to ~:M"
 msgstr "asignación: no puedo asignar ~M para ~:M"
 
-#: ../src/mlisp.lisp:909
+#: ../src/mlisp.lisp:919
 msgid "assignment: lists must be the same length; found: ~M, ~M"
 msgstr "asignación: listas deben ser de la misma longitud: encontradas: ~M, ~M"
 
-#: ../src/mlisp.lisp:1932
+#: ../src/mlisp.lisp:1903
 msgid "assignment: matrix must have two indices; found: ~M"
 msgstr "asignación: una matriz debe tener dos índices; encontrado: ~M"
 
-#: ../src/mlisp.lisp:1926
+#: ../src/mlisp.lisp:1897
 msgid "assignment: matrix row index must be an integer; found: ~M"
-msgstr "asignación: índice de fila de matriz debe ser un entero; encontrado: ~M"
+msgstr ""
+"asignación: índice de fila de matriz debe ser un entero; encontrado: ~M"
 
-#: ../src/mlisp.lisp:1929
+#: ../src/mlisp.lisp:1900
 #, lisp-format
 msgid "assignment: matrix row index ~A out of range."
 msgstr "asignación: índice ~A de fila matricial fuera del rango."
 
-#: ../src/mlisp.lisp:1921
+#: ../src/mlisp.lisp:1892
 msgid ""
 "assignment: matrix row must be a list, and same length as first row;~%found:~"
 "%~M"
@@ -1293,34 +1703,19 @@ msgstr ""
 "asignación: fila matricial debe ser una lista, y de misma longitud que la "
 "primera fila;~%encontrado:~%~M"
 
-#: ../src/mlisp.lisp:1923
+#: ../src/mlisp.lisp:1894
 msgid "assignment: matrix row must have one index; found: ~M"
 msgstr "asignación: fila matricial debe tener un índice; encontrado: ~M"
 
-#: ../src/init-cl.lisp:64
+#: ../src/init-cl.lisp:65
 msgid "assignment: must assign a string to ~:M; found: ~M"
 msgstr "asignación: debe asignar una cadena a ~:M; encontrado: ~M"
 
 #. allow foo@3, also
 #. field->integer
-#: ../src/mlisp.lisp:740 ../src/mlisp.lisp:742
+#: ../src/mlisp.lisp:748 ../src/mlisp.lisp:750
 msgid "assignment: no such field: ~M @ ~M"
 msgstr "asignación: sin dicho campo: ~M @ ~M"
-
-#: ../src/mlisp.lisp:1842
-#, lisp-format
-msgid "assignment: ~A is not a hash table, an array, Maxima list, or a matrix."
-msgstr ""
-"asignación: ~A no es una tabla hash, una unimatriz, lista de Maxima, o una "
-"matriz."
-
-#: ../src/mlisp.lisp:1851
-#, lisp-format
-msgid ""
-"assignment: ~A is not a hash table, an array, a Maxima list, or a matrix."
-msgstr ""
-"asignación: ~A no es una tabla hash, una unimatriz, lista Maxima, o una "
-"matriz."
 
 #: ../src/nisimp.lisp:48
 msgid "assignment: ~M is not a rule package."
@@ -1338,35 +1733,35 @@ msgstr ""
 msgid "assoc: second argument must be a list; found: ~:M"
 msgstr "asociación: segundo argumento debe ser una lista; encontrado: ~:M"
 
-#: ../src/trpred.lisp:188 ../src/compar.lisp:542
+#: ../src/compar.lisp:533 ../src/trpred.lisp:188
 msgid ""
 "assume: argument cannot be a '#' expression; found ~M~%assume: maybe you "
 "want 'not equal'."
 msgstr ""
-"asumido: el argumento no puede ser una expresión '#'; se ha encontrado "
-"~M~%assume: tal vez quieras utilizar 'not equal' ('distinto de')."
+"asumido: el argumento no puede ser una expresión '#'; se ha encontrado ~M~"
+"%assume: tal vez quieras utilizar 'not equal' ('distinto de')."
 
-#: ../src/trpred.lisp:186 ../src/compar.lisp:540
+#: ../src/compar.lisp:531 ../src/trpred.lisp:186
 msgid ""
 "assume: argument cannot be an '=' expression; found ~M~%assume: maybe you "
 "want 'equal'."
 msgstr ""
-"asumido: el argumento no puede ser una expresión '='; se ha encontrado "
-"~M~%assume: tal vez quieras utilizar 'equal' ('igual')."
+"asumido: el argumento no puede ser una expresión '='; se ha encontrado ~M~"
+"%assume: tal vez quieras utilizar 'equal' ('igual')."
 
-#: ../src/trpred.lisp:184 ../src/compar.lisp:538
+#: ../src/compar.lisp:529 ../src/trpred.lisp:184
 msgid "assume: argument cannot be an 'or' expression; found ~M"
 msgstr ""
 "asumido: el argumento no puede ser una expresión 'or' ('o'); se ha "
 "encontrado ~M"
 
-#: ../src/float.lisp:967
+#: ../src/float.lisp:964
 msgid "atan2: atan2(0, 0) is undefined."
 msgstr "atan2: atan2(0, 0) no está definido."
 
 #. Unfortunately, we'll rarely get here.  For example,
 #. assume(equal(x,0)) atan2(x,x) simplifies via the alike1 case above
-#: ../src/comm2.lisp:481 ../src/comm2.lisp:543
+#: ../src/comm2.lisp:513 ../src/comm2.lisp:575
 msgid "atan2: atan2(0,0) is undefined."
 msgstr "atan2: atan2(0,0) no está definido."
 
@@ -1375,7 +1770,7 @@ msgstr "atan2: atan2(0,0) no está definido."
 msgid "attempted quotient by zero."
 msgstr "intentado dividir entre cero."
 
-#: ../src/mload.lisp:319
+#: ../src/mload.lisp:323
 msgid "batch: missing expected result in test script."
 msgstr "batch: resultado esperado faltante en el script de prueba."
 
@@ -1388,7 +1783,7 @@ msgstr ""
 "batch: un segundo argumento debe ser 'demo', 'batch' o 'test'; encontrado ~A "
 "y se asumió 'batch'~%"
 
-#: ../src/bessel.lisp:861 ../src/bessel.lisp:867
+#: ../src/bessel.lisp:863 ../src/bessel.lisp:869
 msgid "bessel_i: bessel_i(~:M,~:M) is undefined."
 msgstr "bessel_i(~:M,~:M) no está definido."
 
@@ -1396,11 +1791,11 @@ msgstr "bessel_i(~:M,~:M) no está definido."
 msgid "bessel_j: bessel_j(~:M,~:M) is undefined."
 msgstr "bessel_j(~:M,~:M) no está definido."
 
-#: ../src/bessel.lisp:1201
+#: ../src/bessel.lisp:1205
 msgid "bessel_k: bessel_k(~:M,~:M) is undefined."
 msgstr "bessel_k(~:M,~:M) no está definido."
 
-#: ../src/bessel.lisp:517
+#: ../src/bessel.lisp:518
 msgid "bessel_y: bessel_y(~:M,~:M) is undefined."
 msgstr "bessel_y(~:M,~:M) no está definido."
 
@@ -1408,39 +1803,43 @@ msgstr "bessel_y(~:M,~:M) no está definido."
 msgid "beta: expected nonzero arguments; found ~M, ~M"
 msgstr "esperaba argumentos distintos de cero; encontrado ~M, ~M"
 
-#: ../src/gamma.lisp:3299 ../src/gamma.lisp:3328
+#: ../src/gamma.lisp:3377 ../src/gamma.lisp:3406
 msgid "beta_incomplete: beta_incomplete(~:M,~:M,~:M) is undefined."
 msgstr "beta_incomplete(~:M,~:M,~:M) no está definido."
 
-#: ../src/gamma.lisp:3504
+#: ../src/gamma.lisp:3582
 msgid ""
 "beta_incomplete: continued fractions failed for beta_incomplete(~:M, ~:M, ~:"
 "M)."
 msgstr "fallaron fracciones continuadas para beta_incomplete(~:M, ~:M, ~:M)."
 
-#: ../src/gamma.lisp:3700 ../src/gamma.lisp:3713
+#: ../src/gamma.lisp:3778 ../src/gamma.lisp:3791
 msgid ""
 "beta_incomplete_generalized: beta_incomplete_generalized(~:M,~:M,~:M,~:M) is "
 "undefined."
 msgstr "beta_incomplete_generalized(~:M,~:M),~:M,~:M) no está definido."
 
-#: ../src/gamma.lisp:3965
+#: ../src/gamma.lisp:4043
 msgid ""
 "beta_incomplete_regularized: beta_incomplete_regularized(~:M,~:M,~:M) is "
 "undefined."
 msgstr "beta_incomplete_regularized(~:M,~:M,~:M) no está definido."
 
-#: ../src/gamma.lisp:2721 ../src/gamma.lisp:2781
+#: ../src/gamma.lisp:2795
 msgid "bf-inverse-erf: inverse_erf(~M) is undefined"
 msgstr "inverse_erf(~M) no está definido"
 
-#: ../src/gamma.lisp:2831
+#: ../src/gamma.lisp:2855
+msgid "bf-inverse-erfc: inverse_erfc(~M) is undefined"
+msgstr "bf-inverse-erfc: inverse_erfc(~:M) no está definido"
+
+#: ../src/gamma.lisp:2905
 msgid ""
 "bf-newton: failed to converge after ~M iterations: delta = ~S,  x = ~S eps = "
 "~S"
 msgstr ""
-"bt-newton: ha fallado en la convergencia después de ~M iteraciones: delta = ~"
-"S, x = ~S, eps = ~S"
+"bt-newton: ha fallado en la convergencia después de ~M iteraciones: delta = "
+"~S, x = ~S, eps = ~S"
 
 #: ../src/cpoly.lisp:1329
 msgid "bfallroots: expected a polynomial in one variable; found variables ~M"
@@ -1464,41 +1863,41 @@ msgstr "encontrado solo un ~S externo de ~S raíces.~%"
 msgid "bfallroots: unexpected error; treat results with caution.~%"
 msgstr "error no esperado; trate los resultados con precaución.~%"
 
-#: ../src/gamma.lisp:2703
+#: ../src/gamma.lisp:2777
 msgid "bfloat-newton: Newton does not converge for ~:M"
 msgstr "Newton no converge para ~:M"
 
-#: ../src/float.lisp:709
+#: ../src/float.lisp:706
 #, lisp-format
 msgid "bfloat: attempted conversion of floating point NaN (not-a-number).~%"
 msgstr ""
 "trataba una conversión de coma flotante “NaN” (not-a-number, no un número).~%"
 
-#: ../src/float.lisp:711
+#: ../src/float.lisp:708
 #, lisp-format
 msgid "bfloat: attempted conversion of floating-point infinity.~%"
 msgstr "bfloat: trataba una conversión de coma flotante infinita.~%"
 
-#: ../src/float.lisp:713
+#: ../src/float.lisp:710
 #, lisp-format
 msgid "bfloat: converting float ~S to bigfloat.~%"
 msgstr "bfloat: conversión de ~S real a real grande.~%"
 
 #. DUNNO WHAT'S "ILLEGAL" HERE
-#: ../src/mlisp.lisp:2317
+#: ../src/mlisp.lisp:2296
 msgid "block: illegal 'go': ~M"
 msgstr "'go' no legal: ~M"
 
 #. DUNNO WHAT'S "ILLEGAL" HERE
-#: ../src/mlisp.lisp:2315
+#: ../src/mlisp.lisp:2294
 msgid "block: illegal 'return': ~M"
 msgstr "'return', retorno, no legal: ~M"
 
-#: ../src/mlisp.lisp:2320
+#: ../src/mlisp.lisp:2299
 msgid "block: no such tag: ~:M"
 msgstr "Falta una etiqueta: ~:M"
 
-#: ../src/mlisp.lisp:2298
+#: ../src/mlisp.lisp:2270
 msgid ""
 "block: variable list must comprise only atoms and assignment expressions; "
 "found: ~M"
@@ -1506,8 +1905,12 @@ msgstr ""
 "bloque: lista de variable sólo debe coincidir átomos y expresiones de "
 "asignación: encontrado: ~M"
 
+#: ../src/mlisp.lisp:2276
+msgid "block: ~M occurs more than once in the variable list"
+msgstr "bloque: ~M ocurre más que una vez dentro de listado variable"
+
 #. CAN'T TELL WHAT BROUGHT US TO THIS POINT, SORRY
-#: ../src/nrat4.lisp:331
+#: ../src/nrat4.lisp:332
 msgid "bothcoef: invalid arguments."
 msgstr "bothcoef: argumentos no válidos."
 
@@ -1531,45 +1934,53 @@ msgstr ""
 "encontrado ~M"
 
 #. A non integer
-#: ../src/combin.lisp:1030
+#: ../src/combin.lisp:1035
 msgid "cf: argument of sqrt must be an integer; found ~M"
 msgstr ""
 "Un argumento de la raíz cuadrada debe ser un entero; se ha encontrado ~M"
 
-#: ../src/combin.lisp:887
+#: ../src/combin.lisp:892
 msgid "cf: can't raise continued fraction to non-integral power ~M"
 msgstr "No puedo elevar una fracción continuada a una potencia no entera ~M"
 
-#: ../src/combin.lisp:792
+#: ../src/combin.lisp:797
 msgid "cf: continued fractions must be lists or integers; found ~M"
 msgstr ""
 "Las fracciones continuadas deben ser listas o enteros; se ha encontrado ~M"
 
-#: ../src/combin.lisp:833 ../src/combin.lisp:858
+#: ../src/combin.lisp:838 ../src/combin.lisp:863
 msgid "cf: ~:M is not a continued fraction."
 msgstr "cf: ~:M no es una fracción continuada."
 
-#: ../src/combin.lisp:773
+#: ../src/combin.lisp:778
 msgid "cfdisrep: argument must be a list; found ~M"
 msgstr "cfdisrep: el argumento debe ser una lista; se ha encontrado ~M"
 
-#: ../src/outmis.lisp:337
+#: ../share/contrib/cgrind.lisp:81
+msgid "cgrindmx: first argument must be a symbol; found: ~M"
+msgstr "cgrindmx: primer argumento debe ser un símbolo; encontrado: ~M"
+
+#: ../share/contrib/cgrind.lisp:83
+msgid "cgrindmx: second argument must be a matrix; found: ~M"
+msgstr "cgrindmx: segundo argumento debe ser una matriz; encontrado: ~M"
+
+#: ../src/outmis.lisp:342
 msgid "changevar: failed to solve for ~M in ~M"
 msgstr "changevar: ha fallado resolver ~M en ~M"
 
-#: ../src/outmis.lisp:329
+#: ../src/outmis.lisp:333
 msgid "changevar: fourth argument must be an atom; found: ~M"
 msgstr "changevar: el cuarto argumento debe ser un átomo; encontrado: ~M"
 
-#: ../src/outmis.lisp:350
+#: ../src/outmis.lisp:378
 msgid "changevar: illegal change in summation or product"
 msgstr "changevar: cambio no legal en sumatorio o producto"
 
-#: ../src/outmis.lisp:327
+#: ../src/outmis.lisp:329
 msgid "changevar: second argument must not be an atom; found: ~M"
 msgstr "changevar: el segundo argumento no debe ser un átomo; encontrado: ~M"
 
-#: ../src/outmis.lisp:328
+#: ../src/outmis.lisp:331
 msgid "changevar: third argument must be an atom; found: ~M"
 msgstr "changevar: el tercer argumento debe ser un átomo; encontrado: ~M"
 
@@ -1583,7 +1994,7 @@ msgstr ""
 "coefmatrix: las variables no pueden ser expresiones '+' o '*'; se ha "
 "encontrado ~M"
 
-#: ../src/transs.lisp:334
+#: ../src/transs.lisp:318
 msgid ""
 "compfile: failed to translate ~:@M.~\n"
 "\t    ~A will continue, but file output will be aborted.~%"
@@ -1591,23 +2002,23 @@ msgstr ""
 "compfile: fallaba al trasladar ~:@M.~\n"
 "\t    ~A continuará, pero el fichero de salida será abortado.~%"
 
-#: ../src/transs.lisp:76
+#: ../src/transs.lisp:60
 msgid "compfile: no functions specified; I refuse to create an empty file."
 msgstr "compfile: sin función especificada; rechaza crear un fichero vacío."
 
-#: ../src/comm2.lisp:854
+#: ../src/comm2.lisp:886
 msgid "concat: argument must be an atom; found ~M"
 msgstr "concat: un argumento debe ser un átomo; se ha encontrado ~M"
 
-#: ../src/comm2.lisp:852
+#: ../src/comm2.lisp:884
 msgid "concat: there must be at least one argument."
 msgstr "concat: debe haber por lo menos un argumento."
 
-#: ../src/db.lisp:624
+#: ../src/db.lisp:628
 msgid "context: too many contexts."
 msgstr "context: demasiados contextos."
 
-#: ../src/plot.lisp:2268
+#: ../src/plot.lisp:2291
 #, lisp-format
 msgid ""
 "contour_plot: plot_format = ~a not recognized; must be a gnuplot format.~%"
@@ -1615,15 +2026,15 @@ msgstr ""
 "diagrama_contorno: formato de diagrama = ~a no reconocido; debe ser un "
 "formato gnuplot.~%"
 
-#: ../src/plot.lisp:744
+#: ../src/plot.lisp:760
 msgid "copy_pts: unrecognized first argument: ~M"
 msgstr "primer argumento no reconocido: ~M"
 
-#: ../src/comm2.lisp:718
+#: ../src/comm2.lisp:750
 msgid "copylist: argument must be a list; found ~M"
 msgstr "copylist: el argumento debe ser una lista; se ha encontrado ~M"
 
-#: ../src/comm2.lisp:713
+#: ../src/comm2.lisp:745
 msgid "copymatrix: argument must be a matrix; found ~M"
 msgstr "copymatrix: el argumento debe ser una matriz; se ha encontrado ~M"
 
@@ -1632,42 +2043,42 @@ msgstr "copymatrix: el argumento debe ser una matriz; se ha encontrado ~M"
 msgid "create_list: expected a symbol; found: ~A"
 msgstr "crear_lista: esperaba un símbolo; encontrado: ~A"
 
-#: ../src/macdes.lisp:112
+#: ../src/macdes.lisp:111
 msgid "create_list: unexpected arguments."
 msgstr "crear_lista: argumentos no esperados."
 
-#: ../src/compar.lisp:120
+#: ../src/compar.lisp:111
 msgid "deactivate: no such context ~:M"
 msgstr "desactivar: no tal contexto ~:M"
 
-#: ../src/mlisp.lisp:1428
+#: ../src/mlisp.lisp:1439
 msgid "declare: argument must be a symbol or a string; found: ~M"
 msgstr ""
 "declaración: argumento debe ser un símbolo o una cadena; encontrado: ~M"
 
-#: ../src/db.lisp:401
+#: ../src/db.lisp:405
 msgid "declare: argument must be a symbol; found ~M"
 msgstr "declaración: argumento debe ser un símbolo; encontrado: ~M"
 
-#: ../src/mlisp.lisp:1444 ../src/compar.lisp:2336
+#: ../src/mlisp.lisp:1457 ../src/compar.lisp:2367
 msgid "declare: inconsistent declaration ~:M"
 msgstr "declaración: declaración inconsistente ~:M"
 
-#: ../src/mlisp.lisp:1399
+#: ../src/mlisp.lisp:1411
 msgid "declare: number of arguments must be a multiple of 2."
 msgstr "declara: el número de argumentos deben ser un múltiplo de 2."
 
-#: ../src/mlisp.lisp:1422
+#: ../src/mlisp.lisp:1434
 msgid "declare: unknown property ~:M"
 msgstr "declara: propiedad desconocida ~:M"
 
 #: ../src/transl.lisp:917
 msgid "declare_translated: arguments must be symbols or strings; found: ~:M"
 msgstr ""
-"declare_translated: unos argumento deben ser símbolos o cadenas: encontrados:"
-" ~:M"
+"declare_translated: unos argumento deben ser símbolos o cadenas: "
+"encontrados: ~:M"
 
-#: ../src/mlisp.lisp:2028
+#: ../src/mlisp.lisp:1998
 msgid ""
 "define: argument cannot be an atom or a subscripted memoizing function; "
 "found: ~M"
@@ -1675,11 +2086,11 @@ msgstr ""
 "definición: un argumento no puede ser un átomo o una función memorizada "
 "subscript; encontrada: ~M"
 
-#: ../src/mlisp.lisp:2031
+#: ../src/mlisp.lisp:2001
 msgid "define: expected a subscripted expression; found: ~M"
 msgstr "definición: se esperaba una expresión con subscript; encontrado ~M"
 
-#: ../src/mlisp.lisp:2040
+#: ../src/mlisp.lisp:2010
 msgid ""
 "define: function name cannot be a built-in operator or special symbol; "
 "found: ~:@M"
@@ -1688,27 +2099,31 @@ msgstr ""
 "símbolo especial; se ha\n"
 "encontrado ~:@M"
 
-#: ../src/mlisp.lisp:2124
+#: ../src/mlisp.lisp:2097
 msgid "define: in definition of ~:M, found bad argument ~M"
 msgstr ""
 "definición: dentro de una definición de ~:M, se ha encontrado un argumento "
 "incorrecto ~M"
 
-#: ../src/mlisp.lisp:2036
+#: ../src/mlisp.lisp:2006
 msgid "define: warning: redefining built-in subscripted function ~:M~%"
 msgstr ""
 "definición: cuidado: redefiniendo una función subscriptada interna ~:M~%"
 
-#: ../src/mlisp.lisp:2083
+#: ../src/mlisp.lisp:2053
 #, lisp-format
 msgid "define: warning: redefining the built-in ~:[function~;operator~] ~a~%"
 msgstr ""
 "definición: cuidado: redefiniendo la creación interna ~:[función~;operador~] "
 "~a~%"
 
-#: ../src/mlisp.lisp:2062
+#: ../src/mlisp.lisp:2032
 msgid "define: ~:M already defined with different number of subscripts."
 msgstr "definición: ~:M ya definido con diferente número de subscript."
+
+#: ../src/mlisp.lisp:2083
+msgid "define: ~M occurs more than once in the parameter list"
+msgstr "definición: ~M ocurre más que una vez dentro del listado paramétrico"
 
 #: ../src/trmode.lisp:79
 msgid "define_variable: expected three arguments; found: ~M"
@@ -1719,7 +2134,7 @@ msgid "define_variable: first argument must be a symbol; found: ~M"
 msgstr ""
 "define_variable: el primer argumento debe ser un símbolo; encontrado: ~M"
 
-#: ../src/defint.lisp:3443
+#: ../src/defint.lisp:3460
 msgid "defint: failed to order limits of integration:~%~M"
 msgstr "defint: fallado al operar límites de integración:~%~M"
 
@@ -1727,7 +2142,7 @@ msgstr "defint: fallado al operar límites de integración:~%~M"
 msgid "defint: integral is divergent."
 msgstr "defint: la integral es divergente."
 
-#: ../src/defint.lisp:1374
+#: ../src/defint.lisp:1392
 #, lisp-format
 msgid "defint: keyhole integration failed.~%"
 msgstr "defint: límite de integración fallada.~%"
@@ -1750,26 +2165,26 @@ msgid ""
 "defint: variable of integration must be a simple or subscripted variable.~"
 "%defint: found ~M"
 msgstr ""
-"defint: variable de integración debe ser simple o variable "
-"subscriptada.~%definit: encontrado ~M"
+"defint: variable de integración debe ser simple o variable subscriptada.~"
+"%definit: encontrado ~M"
 
-#: ../src/matcom.lisp:322
+#: ../src/matcom.lisp:323
 msgid "defmatch: evaluation of atomic pattern yields: ~M~%"
 msgstr "defmatch: evaluación de patrón producciones atómicas: ~M~%"
 
-#: ../src/matcom.lisp:81 ../src/matcom.lisp:329
+#: ../src/matcom.lisp:81 ../src/matcom.lisp:330
 msgid "defmatch: failed to compile match for pattern ~M"
 msgstr "defmatch: fallado para compilar cotejo por patrón ~M"
 
-#: ../src/matcom.lisp:324
+#: ../src/matcom.lisp:325
 msgid "defmatch: some pattern variables are not atoms."
 msgstr "defmatch: algunas variables de patrón no son átomos."
 
-#: ../src/matcom.lisp:548
+#: ../src/matcom.lisp:542
 msgid "defrule: failed to compile match for pattern ~M"
 msgstr "defrule: falló al compilar coincidiendo por patrón ~M"
 
-#: ../src/matcom.lisp:543
+#: ../src/matcom.lisp:537
 msgid ""
 "defrule: rule name must be a symbol, and not an operator or 'all' or '%'; "
 "found: ~M"
@@ -1777,35 +2192,39 @@ msgstr ""
 "defrule: nombre de regla debe ser un símbolo, y no un operador o 'todo' o "
 "'%'; encontrado: ~M"
 
-#: ../src/mlisp.lisp:822 ../src/mlisp.lisp:829
+#: ../src/mlisp.lisp:832 ../src/mlisp.lisp:839
 msgid "defstruct: expected a record initializer; found: ~M"
 msgstr "defstruct: esperaba una inicialización de registro; encontrado: ~M"
 
-#: ../src/combin.lisp:1454
+#: ../src/mlisp.lisp:818
+msgid "defstruct: expected a structure template; found ~M"
+msgstr "defstruct: esperaba una plantilla estructural; encontrado ~M"
+
+#: ../src/combin.lisp:1464
 msgid "deftaylor: argument must be a power series at 0."
 msgstr "deftaylor: un argumento debe ser una serie de potencias a 0."
 
-#: ../src/combin.lisp:1436
+#: ../src/combin.lisp:1446
 msgid "deftaylor: don't know how to handle this function: ~M"
 msgstr "deftaylor: no sé como manipular esta función: ~M"
 
-#: ../src/combin.lisp:1438
+#: ../src/combin.lisp:1448
 msgid "deftaylor: redefining ~:M.~%"
 msgstr "deftaylor: redefiniendo ~:M.~%"
 
 #. if n is set, it must be a nonneg fixnum
-#: ../src/comm.lisp:1105
+#: ../src/comm.lisp:1147
 msgid ""
 "delete: third argument, if present, must be a nonnegative integer; found ~M"
 msgstr ""
 "borrar: el tercer argumento, si está presente, debe ser un entero no "
 "negativo; se ha encontrado ~M"
 
-#: ../src/macsys.lisp:390
+#: ../src/macsys.lisp:389
 msgid "demo: could not find ~M in ~M."
 msgstr "demo: no fue posible encontrar ~M en ~M."
 
-#: ../src/csimp.lisp:56
+#: ../src/csimp.lisp:61
 msgid "demoivre: 'demoivre' and 'exponentialize' cannot both be true."
 msgstr ""
 "demoivre: 'demoivre' y 'exponencializar' no pueden ser ambos verdaderos."
@@ -1816,16 +2235,16 @@ msgstr ""
 "dependencia: un argumento no puede ser una expresión con subíndices; "
 "encontrado ~M"
 
-#: ../src/comm.lisp:318 ../share/tensor/itensor.lisp:3058
+#: ../src/comm.lisp:341 ../share/tensor/itensor.lisp:3058
 msgid "depends: argument must be a non-atomic expression; found ~M"
 msgstr ""
 "dependencia: un argumento debe ser una expresión no atómica; encontrado ~M"
 
-#: ../src/comm.lisp:333
+#: ../src/comm.lisp:356
 msgid "depends: argument must be a symbol; found ~M"
 msgstr "dependencia: un argumento debe ser un símbolo; se ha encontrado ~M"
 
-#: ../src/comm.lisp:296
+#: ../src/comm.lisp:319
 msgid "depends: number of arguments must be even."
 msgstr "dependencia: un número de los argumentos debe ser par."
 
@@ -1844,33 +2263,33 @@ msgstr ""
 "determinante: una matriz debe ser cuadrada; encontradas ~M filas, ~M "
 "columnas."
 
-#: ../src/comm.lisp:398
+#: ../src/comm.lisp:421
 msgid "diff: order of derivative must be a nonnegative integer; found ~M"
 msgstr ""
 "difer: la operación de la derivada debe ser un entero no negativo; "
 "encontrado ~M"
 
-#: ../src/simp.lisp:2029
+#: ../src/simp.lisp:1998
 msgid "diff: variable must not be a number; found: ~M"
 msgstr "difer: una variable no es un numero; encontrado: ~M"
 
-#: ../src/comm.lisp:796
+#: ../src/comm.lisp:820
 msgid "dispform: second argument, if present, must be 'all'; found ~M"
 msgstr ""
 "dispform: el segundo argumento, si está presente, debe ser 'todo'; "
 "encontrado ~M"
 
 #. MEANING OF FOLLOWING MESSAGE IS OBSCURE.
-#: ../src/displa.lisp:1185
+#: ../src/displa.lisp:1193
 msgid "display: 'checkbreak' not found."
 msgstr "enseñar: 'checkbreak' no encontrado."
 
 #. I suppose we could reallocate LINEARRAY to some larger size and keep going here ...
-#: ../src/displa.lisp:1256
+#: ../src/displa.lisp:1264
 msgid "display: expression is too tall to be displayed."
 msgstr "enseñar: expresión excesivamente larga para ser vista."
 
-#: ../src/displa.lisp:1178
+#: ../src/displa.lisp:1186
 #, lisp-format
 msgid ""
 "display: failed to break up a long expression.~%display: change 'linel' "
@@ -1879,7 +2298,7 @@ msgstr ""
 "enseñar: fallado al romper una expresión larga.enseñar ~%d: cambie 'lineal' "
 "levemente y pruébelo."
 
-#: ../src/displa.lisp:1167
+#: ../src/displa.lisp:1175
 #, lisp-format
 msgid "display: not a well-formed Maxima expression: ~S"
 msgstr "enseñar: expresión Maxima sin formato correcto: ~S"
@@ -1888,45 +2307,46 @@ msgstr "enseñar: expresión Maxima sin formato correcto: ~S"
 msgid "disprule: ~:M is not a user rule."
 msgstr "disprule: ~:M no es una regla del usuario."
 
-#: ../src/mlisp.lisp:2257 ../src/mlisp.lisp:2280
+#: ../src/mlisp.lisp:2230 ../src/mlisp.lisp:2253
 msgid "do loop: 'go' not within 'block': ~M"
 msgstr "hacer bucle: 'ir' no interno a 'bloque': ~M"
 
-#: ../src/mlisp.lisp:2266
+#: ../src/mlisp.lisp:2239
 msgid "do loop: 'in' argument must be a nonatomic expression; found: ~M"
-msgstr "hacer bucle: argumento 'interno' debe ser un no-atómica; encontrado: ~M"
+msgstr ""
+"hacer bucle: argumento 'interno' debe ser un no-atómica; encontrado: ~M"
 
-#: ../src/mlisp.lisp:2259 ../src/mlisp.lisp:2282
+#: ../src/mlisp.lisp:2232 ../src/mlisp.lisp:2255
 msgid "do loop: illegal 'return': ~M"
 msgstr "hacer bucle: 'devolver' no legal: ~M"
 
-#: ../src/gamma.lisp:248
+#: ../src/gamma.lisp:275
 msgid "double_factorial: double_factorial(~:M) is undefined."
 msgstr "double_factorial: factorial doble (~:M) no está definido."
 
 #. x is not a list
-#: ../src/plot.lisp:956
+#: ../src/plot.lisp:972
 msgid ""
 "draw2d-discrete: Expecting a list of x coordinates or points; found ~M~%"
 msgstr "Esperando una lista de coordenadas x o puntos; encontrada ~M~%"
 
 #. x1 is not a 2D point
-#: ../src/plot.lisp:936
+#: ../src/plot.lisp:952
 msgid "draw2d-discrete: Expecting a point with 2 coordinates; found ~M~%"
 msgstr "Esperando una punto con 2 coordenadas; encontrado ~M~%"
 
 #. y1 is a list
-#: ../src/plot.lisp:946
+#: ../src/plot.lisp:962
 msgid "draw2d-discrete: Expecting a y coordinate; found ~M~%"
 msgstr "Esperando una coordenada y; encontrado ~M~%"
 
 #. wrong
-#: ../src/plot.lisp:952
+#: ../src/plot.lisp:968
 #, lisp-format
 msgid "draw2d-discrete: The number of x and y coordinates do not match.~%"
 msgstr "El número de coordenadas x e y no coinciden.~%"
 
-#: ../src/numth.lisp:1106 ../src/numth.lisp:1177
+#: ../src/numth.lisp:1406 ../src/numth.lisp:1481
 msgid "ef coefficient inversion: Quotient by zero"
 msgstr "inversión de coeficiente ef: cociente entre cero"
 
@@ -1942,15 +2362,15 @@ msgstr "eliminación: no puede eliminar desde únicamente una ecuación."
 msgid "eliminate: more variables than equations."
 msgstr "eliminación: más variables que ecuaciones."
 
-#: ../src/ellipt.lisp:1562
+#: ../src/ellipt.lisp:1601
 msgid "elliptic_f: elliptic_f(~:M, ~:M) is undefined."
 msgstr "elliptic_f(~:M, ~:M) no está definida."
 
-#: ../src/ellipt.lisp:1298 ../src/ellipt.lisp:2158
+#: ../src/ellipt.lisp:1330 ../src/ellipt.lisp:2338
 msgid "elliptic_kc: elliptic_kc(1) is undefined."
 msgstr "elliptic_kc(1) no está definida."
 
-#: ../src/ellipt.lisp:1669
+#: ../src/ellipt.lisp:1714
 msgid "elliptic_kc: elliptic_kc(~:M) is undefined."
 msgstr "elliptic_kc(~:M) no está definida."
 
@@ -1958,11 +2378,11 @@ msgstr "elliptic_kc(~:M) no está definida."
 msgid "ematrix: arguments must be positive integers; found ~M"
 msgstr "ematrix: argumentos deben ser enteros positivos; se ha encontrado ~M"
 
-#: ../src/hayat.lisp:3149
+#: ../src/hayat.lisp:3156
 msgid "encountered an essential singularity in:"
 msgstr "encontrado una singularidad esencial en:"
 
-#: ../src/hayat.lisp:3152
+#: ../src/hayat.lisp:3159
 msgid "encountered an unfamiliar singularity in:"
 msgstr "encontrado una singularidad no familiar en:"
 
@@ -1971,9 +2391,13 @@ msgid "entermatrix: arguments must be integers; found ~M, ~M"
 msgstr ""
 "introducirmatriz: los argumentos deben ser enteros; se ha encontrado ~M, ~M"
 
-#: ../src/nset.lisp:628
+#: ../src/nset.lisp:638
 msgid "equiv_classes: ~:M(~:M, ~:M) evaluates to a non-boolean."
 msgstr "equiv_classes: ~:M(~:M, ~:M) evalúa a un no booleano."
+
+#: ../share/stringproc/stringproc.lisp:706
+msgid "error while encoding"
+msgstr "error mientras codificando"
 
 #: ../src/trmode.lisp:67
 msgid "error: 'define_variable' must have 3 arguments; found: ~:M~%"
@@ -1984,13 +2408,24 @@ msgid "error: 'eval-when' argument must be a list or atom; found: ~:M~%"
 msgstr ""
 "error: argumento 'eval-when' debe ser una lista o átomo; encontrado: ~:M~%"
 
-#: ../src/transs.lisp:353
+#: ../src/transs.lisp:337
 msgid "error: 'translate' argument must be an atom; found: ~M~%"
 msgstr "error: argumento de 'translate' debe ser un átomo; encontrado: ~M~%"
+
+#: ../src/trans3.lisp:284
+#, lisp-format
+msgid "error: empty body in lambda expression.~%"
+msgstr "error: cuerpo vacío en expresión de lambda.~%"
 
 #: ../src/transl.lisp:525 ../src/transl.lisp:592
 msgid "error: failed to translate ~:@M~%"
 msgstr "error: fallado al trasladar ~:@M~%"
+
+#: ../src/trans3.lisp:280
+msgid "error: first argument of lambda expression must be a list; found ~M"
+msgstr ""
+"error: primer argumento de expresión lambda debe ser una lista; encontrado: "
+"~M"
 
 #: ../src/transl.lisp:925
 msgid "error: found 'eval_when' in a function or expression: ~:M~%"
@@ -2015,13 +2450,13 @@ msgstr "error: encontrado MEVAL no enlazado; me retiro.~%"
 msgid "error: found unhandled variable ~:M in 'buildq'.~%"
 msgstr "error: encontrada variable ~:M no manipulada en 'buildq'.~%"
 
-#: ../src/transl.lisp:1174
+#: ../src/transl.lisp:1181
 msgid "error: quote or list arguments are not allowed in MQAPPLY; found: ~:M~%"
 msgstr ""
 "error: argumentos de entrecomillado o lista no son permitidos en MQAPPLY; "
 "encontrado ~:M~%"
 
-#: ../src/transl.lisp:939
+#: ../src/transl.lisp:941
 #, lisp-format
 msgid "error: there is already a 'local' in this block.~%"
 msgstr "error: hay preparado un 'local' en este bloque.~%"
@@ -2046,7 +2481,7 @@ msgid "error: unhandled special operator ~:@M~%"
 msgstr "error: operación especial no manipulada ~:@M~%"
 
 #. the &REST is not the last one.
-#: ../src/trans3.lisp:289
+#: ../src/trans3.lisp:298
 msgid "error: unsupported argument list ~:M in lambda expression.~%"
 msgstr "error: lista de argumento incompatible ~:M en expresión de lambda.~%"
 
@@ -2054,11 +2489,20 @@ msgstr "error: lista de argumento incompatible ~:M en expresión de lambda.~%"
 msgid "error: unsupported side effects on ~:M in expression ~M~%"
 msgstr "error: efectos laterales incompatibles en ~:M con la expresión ~M~%"
 
+#: ../src/transl.lisp:1077
+msgid "error: ~M occurs more than once in block variable list"
+msgstr "error: ~M ocurre más que una vez en listado variable de bloque"
+
+#: ../src/trans3.lisp:302
+msgid "error: ~M occurs more than once in lambda expression parameter list"
+msgstr ""
+"error: ~M ocurre más que una vez en listado paramétrico de expresión lambda"
+
 #: ../src/evalw.lisp:30
 msgid "eval_when: incorrect arguments; found: ~M"
 msgstr "eval_when: argumentos incorrectos; encontrado: ~M"
 
-#: ../src/mlisp.lisp:1685
+#: ../src/mlisp.lisp:1700
 msgid "evaluation: array ~:M must have ~:M indices; found: ~M"
 msgstr "evaluación: unimatriz ~:M debe tener ~:M índices; encontrados: ~M"
 
@@ -2067,11 +2511,11 @@ msgid "evaluation: unbound variable ~:M"
 msgstr "evaluación: variable desenlazada ~:M"
 
 #: ../src/mlisp.lisp:290
-msgid "evaluation: ~:M has a value.~%"
-msgstr "evaluación: ~:M tiene un valor.~%"
+msgid "evaluation: ~:M has the value ~:M.~%"
+msgstr "evaluación: ~:M tiene el valor ~:M.~%"
 
 #. NOT CLEAR FROM PRECEDING CODE WHAT IS "INVALID" HERE
-#: ../src/nset.lisp:1286
+#: ../src/nset.lisp:1297
 msgid "every: invalid arguments."
 msgstr "todos: argumentos inválidos."
 
@@ -2086,15 +2530,15 @@ msgstr ""
 "ejemplo: ~M no encontrado. 'example();' devuelve la lista de ejemplos "
 "conocidos.~%"
 
-#: ../src/simp.lisp:3419
+#: ../src/simp.lisp:3395
 msgid "expand: expon must be a nonnegative integer; found: ~M"
 msgstr "expansión: “expon” debe ser un entero no negativo: encontrado: ~M"
 
-#: ../src/simp.lisp:3417
+#: ../src/simp.lisp:3393
 msgid "expand: expop must be a nonnegative integer; found: ~M"
 msgstr "expansión: “expop” debe ser un entero no negativo: encontrado: ~M"
 
-#: ../src/hayat.lisp:3155
+#: ../src/hayat.lisp:3162
 msgid "expansion to infinite order?"
 msgstr "expansión a la operación infinita?"
 
@@ -2132,27 +2576,31 @@ msgstr "expintegral_ei(~:M) no está definida."
 msgid "expintegral_li: expintegral_li(~:M) is undefined."
 msgstr "expintegral_li(~:M) no está definida."
 
-#: ../src/simp.lisp:2253 ../src/simp.lisp:2267
+#: ../src/simp.lisp:2215 ../src/simp.lisp:2229
 msgid "expt: undefined: 0 to a complex exponent."
 msgstr "expt: no definido: desde 0 a una exponenciación compleja."
 
 #. A negative exponent. Maxima error.
-#: ../src/simp.lisp:2246
+#: ../src/simp.lisp:2208
 msgid "expt: undefined: 0 to a negative exponent."
 msgstr "expt: no definido: desde 0 a un exponente negativo."
 
-#: ../src/simp.lisp:2257
+#: ../src/simp.lisp:2219
 msgid "expt: undefined: 0^0"
 msgstr "expt: no definido 0^0"
 
-#: ../src/simp.lisp:2126
+#: ../src/simp.lisp:2095
 msgid "expt: undefined: ~M"
 msgstr "expt: no definido: ~M"
 
-#: ../src/nset.lisp:605
+#: ../src/nset.lisp:615
 msgid "extremal_subset: third argument must be 'max or 'min; found: ~:M"
 msgstr ""
 "extremal_subset: tercer argumento debe ser un 'max o un 'min; encontrado: ~:M"
+
+#: ../src/numth.lisp:1558 ../src/numth.lisp:1570
+msgid "f2 arithmetic: Quotient by zero"
+msgstr "aritmético f2: cociente entre cero"
 
 #: ../src/factor.lisp:747
 msgid "factor: not enough choices for substitution."
@@ -2179,7 +2627,7 @@ msgstr ""
 msgid "factorial: factorial of negative integer ~:M not defined."
 msgstr "factorial de un entero negativo ~:M no está definido."
 
-#: ../src/outmis.lisp:495
+#: ../src/outmis.lisp:546
 msgid "factorout: at least two arguments required."
 msgstr "al menos se requieren dos argumentos."
 
@@ -2188,9 +2636,10 @@ msgid "fasttimes: arguments must be CRE polynomials with same variables."
 msgstr ""
 "fasttimes: argumentos deben ser polinomiales CRE con las mismas variables."
 
-#: ../src/compar.lisp:1845
+#: ../src/compar.lisp:1876
 msgid "featurep: second argument must be a symbol; found ~M"
-msgstr "featurep: el segundo argumento debe ser un símbolo; se ha encontrado ~M"
+msgstr ""
+"featurep: el segundo argumento debe ser un símbolo; se ha encontrado ~M"
 
 #: ../src/mload.lisp:77
 msgid "file_search1: ~M not found in ~A."
@@ -2218,19 +2667,23 @@ msgstr "segundo argumento debe ser una unimatriz o lista; encontrado: ~M"
 msgid "find_root: function has same sign at endpoints: ~M, ~M"
 msgstr "find_root: función tiene el mismo signo que los puntos finales: ~M, ~M"
 
-#: ../src/comm.lisp:1043
+#: ../src/comm.lisp:1067
 msgid "first: empty argument."
 msgstr "primero: argumento vacío."
 
-#: ../src/gamma.lisp:2690
+#: ../src/comm.lisp:1126
+msgid "firstn: second argument must be a nonnegative integer; found: ~M"
+msgstr "firstn: un segundo argumento debe ser un natural; encontrado: ~M"
+
+#: ../src/gamma.lisp:2764
 msgid "float-newton: Newton does not converge for ~:M"
 msgstr "flotante-newton: Newton no converge para ~:M"
 
-#: ../src/float.lisp:749
+#: ../src/float.lisp:746 ../share/numeric/decfp-core.lisp:266
 msgid "float: floating point overflow converting ~:M"
 msgstr "flotante: sobredesbordamiento de coma flotante convirtiendo ~:M"
 
-#: ../src/compar.lisp:658
+#: ../src/compar.lisp:649
 msgid "forget: argument cannot be an 'or' expression; found ~M"
 msgstr "un argumento no puede ser una expresión 'or' ; encontrado ~M"
 
@@ -2242,7 +2695,7 @@ msgstr "argumento primero debe ser un símbolo; encontrado: ~M"
 msgid "fortmx: second argument must be a list or matrix; found: ~M"
 msgstr "argumento segundo debe ser una lista; encontró: ~M"
 
-#: ../src/float.lisp:1949
+#: ../src/float.lisp:1958
 msgid "fplog: argument must be positive; found: ~M"
 msgstr "argumento debe ser positivo; encontrado: ~M"
 
@@ -2250,39 +2703,39 @@ msgstr "argumento debe ser positivo; encontrado: ~M"
 msgid "fpprec: value must be a positive integer; found: ~M"
 msgstr "valor debe ser un entero positivo; encontrado: ~M"
 
-#: ../src/gamma.lisp:2955
+#: ../src/gamma.lisp:3031
 msgid "fresnel: series expansion failed for (COMPLEX-BFLOAT-FRESNEL ~:M)."
 msgstr "expansión de serie fallada para (COMPLEX-BFLOAT-FRESNEL ~:M)."
 
-#: ../src/mlisp.lisp:1276 ../src/mlisp.lisp:1287
+#: ../src/mlisp.lisp:1288 ../src/mlisp.lisp:1299
 msgid "fullmap: arguments must have same formal structure."
 msgstr ""
 "distribución-completa: argumento debe tener una misma estructura formal."
 
-#: ../src/mlisp.lisp:1302
+#: ../src/mlisp.lisp:1314
 msgid "fullmap: arguments must have same operators."
 msgstr "distribución-completa: argumento debe tener mismos operadores."
 
-#: ../src/mlisp.lisp:1303
+#: ../src/mlisp.lisp:1315
 #, lisp-format
 msgid "fullmap: calling 'apply'.~%"
 msgstr "distribución-completa: llamada 'aplicar'.~%"
 
-#: ../src/mlisp.lisp:1278 ../src/mlisp.lisp:1288
+#: ../src/mlisp.lisp:1290 ../src/mlisp.lisp:1300
 #, lisp-format
 msgid "fullmap: truncating one or more arguments.~%"
 msgstr "distribución-completa: truncando uno o más argumentos.~%"
 
-#: ../src/mlisp.lisp:1318
+#: ../src/mlisp.lisp:1330
 msgid "fullmapl: argument must be a list or matrix; found: ~M"
 msgstr ""
 "distribución-completa: argumento debe ser una lista o matriz; encontrado: ~M"
 
-#: ../src/mlisp.lisp:2189
+#: ../src/mlisp.lisp:2162
 msgid "fundef: no such function: ~:M"
 msgstr "fundef: sin dicha función: ~:M"
 
-#: ../src/mlisp.lisp:2209
+#: ../src/mlisp.lisp:2182
 msgid ""
 "funmake: first argument must be a symbol, subscripted symbol, string, or "
 "lambda expression; found: ~M"
@@ -2290,7 +2743,7 @@ msgstr ""
 "funmake: primer argumento debe ser un símbolo, símbolo subscriptado, cadena, "
 "o expresión lambda; encontrado: ~M"
 
-#: ../src/mlisp.lisp:2210
+#: ../src/mlisp.lisp:2183
 msgid "funmake: second argument must be a list; found: ~M"
 msgstr "funmake: el segundo argumento debe ser una lista; encontrado: ~M"
 
@@ -2308,23 +2761,23 @@ msgstr "gamma: sobredesbordamiento en GAMMA-LANCZOS."
 msgid "gamma: overflow in GAMMAFLOAT."
 msgstr "gamma: sobredesbordamiento en GAMMAFLOAT."
 
-#: ../src/gamma.lisp:897 ../src/gamma.lisp:953 ../src/gamma.lisp:1061
+#: ../src/gamma.lisp:967 ../src/gamma.lisp:1023 ../src/gamma.lisp:1131
 msgid ""
 "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M)."
 msgstr "fracciones continuadas falladas para gamma_incomplete(~:M, ~:M)."
 
-#: ../src/gamma.lisp:475
+#: ../src/gamma.lisp:543
 msgid "gamma_incomplete: gamma_incomplete(~:M,~:M) is undefined."
 msgstr "gamma_incomplete: gamma_incomplete(~:M,~:M) no definido."
 
-#: ../src/gamma.lisp:917 ../src/gamma.lisp:1004 ../src/gamma.lisp:1112
+#: ../src/gamma.lisp:987 ../src/gamma.lisp:1074 ../src/gamma.lisp:1182
 msgid ""
 "gamma_incomplete: series expansion failed for gamma_incomplete(~:M, ~:M)."
 msgstr ""
-"gamma_incomplete: fallaban expansión de series para gamma_incomplete(~:M, "
-"~:M)."
+"gamma_incomplete: fallaban expansión de series para gamma_incomplete(~:M, ~:"
+"M)."
 
-#: ../src/gamma.lisp:1441
+#: ../src/gamma.lisp:1512
 msgid ""
 "gamma_incomplete_regularized: gamma_incomplete_regularized(~:M,~:M) is "
 "undefined."
@@ -2338,47 +2791,47 @@ msgstr "variable 'gcd' no puede ser de uno de ~M; encontrado: ~M"
 msgid "genfact: generalized factorial not defined for given arguments."
 msgstr "factorial generalizado no esta definido para los argumentos dados."
 
-#: ../src/comm2.lisp:692
+#: ../src/comm2.lisp:724
 msgid "genmatrix: bounds must be integers; found ~M, ~M, ~M, ~M"
 msgstr "los bordes deben ser enteros; se ha encontrado ~M, ~M, ~M, ~M"
 
-#: ../src/comm2.lisp:695
+#: ../src/comm2.lisp:727
 msgid ""
 "genmatrix: upper bounds must be greater than or equal to lower bounds; found "
 "~M, ~M, ~M, ~M"
 msgstr ""
-"bordes superiores deben ser mayores o iguales a los inferiores; encontrados ~"
-"M, ~M, ~M, ~M"
+"bordes superiores deben ser mayores o iguales a los inferiores; encontrados "
+"~M, ~M, ~M, ~M"
 
-#: ../src/mutils.lisp:69
+#: ../src/mutils.lisp:115
 msgid "gensym: Argument must be a nonnegative integer or a string. Found: ~M"
 msgstr "Argumento debe ser un entero no negativo o una cadena. Encontrado: ~M"
 
-#: ../src/numth.lisp:1063
+#: ../src/numth.lisp:1363
 msgid "gf coefficient inversion: Quotient by zero"
 msgstr "Cociente entre cero."
 
-#: ../src/numth.lisp:1785 ../src/numth.lisp:1864
+#: ../src/numth.lisp:2163 ../src/numth.lisp:2245
 msgid "gf: polynomials must be univariate."
 msgstr "gf: polinomiales deben ser univariantes."
 
-#: ../src/plot.lisp:162
+#: ../src/plot.lisp:175
 msgid "gnuplot_replot: Gnuplot is not running."
 msgstr "Gnuplot no está ejecutándose."
 
-#: ../src/plot.lisp:169
+#: ../src/plot.lisp:182
 msgid "gnuplot_replot: argument, if present, must be a string; found: ~M"
 msgstr "argumento, si está presente, debe ser una cadena; encontrado: ~M"
 
-#: ../src/mlisp.lisp:2335
+#: ../src/mlisp.lisp:2315
 msgid "go: argument must be an atom; found: ~M"
 msgstr "argumento debe ser un átomo; encontrado: ~M"
 
-#: ../src/mlisp.lisp:2333
+#: ../src/mlisp.lisp:2313
 msgid "go: not within 'block'"
 msgstr "no interno a 'bloque'"
 
-#: ../src/comm.lisp:356
+#: ../src/comm.lisp:379
 msgid ""
 "gradef: argument cannot be a built-in operator or subscripted expression; "
 "found ~M"
@@ -2386,120 +2839,112 @@ msgstr ""
 "argumento no puede ser un operador intrínseco o una expresión subencadenada; "
 "encontrado ~M"
 
-#: ../src/comm.lisp:361
+#: ../src/comm.lisp:384
 msgid "gradef: argument must be a symbol; found ~M"
 msgstr "argumento debe ser un símbolo; se ha encontrado ~M"
 
-#: ../src/comm.lisp:344
+#: ../src/comm.lisp:367
 msgid "gradef: expected exactly three arguments."
 msgstr "exactamente tres argumentos esperados."
 
-#: ../share/contrib/graph2d.lisp:4
+#: ../share/contrib/graph2d.lisp:5
 msgid "graph2d is deprecated. Please use plot2d instead"
 msgstr "graph2d es obsoleta. En su lugar emplee plot2d"
 
-#: ../src/limit.lisp:3302
+#: ../src/limit.lisp:3352
 msgid "gruntz: direction must be 'plus' or 'minus'"
 msgstr "una dirección debe ser 'sumar' o 'restar'"
 
-#: ../src/limit.lisp:3333
+#: ../src/limit.lisp:3383
 msgid "gruntz: direction must be 'plus' or 'minus'; found: ~M"
 msgstr "una dirección debe ser 'sumar' o 'restar'; encontrado: ~M"
 
-#: ../src/limit.lisp:3297 ../src/limit.lisp:3317
+#: ../src/limit.lisp:3347 ../src/limit.lisp:3367
 msgid "gruntz: too many arguments; expected just 3 or 4"
 msgstr "demasiados argumentos; esperaba tan solo 3 o 4"
 
-#: ../src/bessel.lisp:1701
+#: ../src/bessel.lisp:1706
 msgid "hankel_1: hankel_1(~:M,~:M) is undefined."
 msgstr "hankel_1(~:M,~:M) no está definido."
 
-#: ../src/bessel.lisp:1801
+#: ../src/bessel.lisp:1808
 msgid "hankel_2: hankel_2(~:M,~:M) is undefined."
 msgstr "hankel_2(~:M,~:M) no está definido."
 
-#: ../src/mlisp.lisp:1951
+#: ../src/mlisp.lisp:1922
 msgid "hash function: cannot hash a special expression (CRE or Taylor)."
 msgstr "no puede calcular un hash de una expresión especial (CRE o Taylor)."
 
-#: ../src/hyp.lisp:332
+#: ../src/hyp.lisp:324
 msgid "hgfred: 1F1(~M; ~M; ~M) not defined."
 msgstr "1F1(~M; ~M; ~M) no definida."
 
-#: ../src/hyp.lisp:125
+#: ../src/hyp.lisp:117
 msgid "hgfred: first argument must be a list; found: ~:M"
 msgstr "primer argumento debe ser una lista; se ha encontrado: ~:M"
 
-#: ../src/hyp.lisp:127
+#: ../src/hyp.lisp:119
 msgid "hgfred: second argument must be a list; found: ~:M"
 msgstr "segundo argumento debe ser una lista; encontrado: ~:M"
 
-#: ../src/ifactor.lisp:160
+#: ../src/ifactor.lisp:159
 msgid "ifactors: argument must be a positive integer; found: ~M"
 msgstr "argumento debe ser un entero positivo; encontrado: ~M"
 
-#: ../src/series.lisp:415
+#: ../src/series.lisp:418
 msgid "in"
 msgstr "dentro de"
 
-#: ../src/nparse.lisp:84
+#: ../src/nparse.lisp:94
 msgid "incorrect syntax: "
 msgstr "sintaxis no correcta: "
 
-#: ../src/sin.lisp:209
-msgid "integrate: invalid argument: ~M"
-msgstr "argumento no válido: ~M"
-
-#: ../src/sin.lisp:1613
+#: ../src/sin.lisp:1650
 msgid "integrate: variable must not be a number; found: ~:M"
 msgstr "variable debe no ser un número; encontrado: ~:M"
 
-#: ../src/simp.lisp:1915
+#: ../src/simp.lisp:1863
 msgid "integrate: variable must not be a number; found: ~M"
 msgstr "variable no debe ser un número; encontrado: ~M"
 
-#: ../src/simp.lisp:1912
+#: ../src/simp.lisp:1860
 msgid "integrate: wrong number of arguments."
 msgstr "número de argumentos equivocado."
 
-#: ../src/ifactor.lisp:465
+#: ../src/ifactor.lisp:464
 msgid "inv_mod: arguments must be integers; found: ~M, ~M"
 msgstr "argumentos deben ser enteros; encontrados: ~M, ~M"
 
-#: ../src/gamma.lisp:2569
+#: ../src/gamma.lisp:2643
 msgid "inverse_erf: inverse_erf(~:M) is undefined."
 msgstr "inverse_erf(~:M) no está definido."
 
-#: ../src/gamma.lisp:2664
+#: ../src/gamma.lisp:2738
 msgid "inverse_erfc: inverse_erfc(~:M) is undefined."
-msgstr "inverse_erfc(~:M) no esta definido."
+msgstr "inverse_erfc(~:M) no está definido."
 
 #: ../src/matrix.lisp:305
 msgid "invert: matrix must be square; found ~M rows, ~M columns."
 msgstr "matriz debe ser cuadrada; encontrados ~M filas, ~M columnas."
 
-#: ../src/compar.lisp:347
+#: ../src/compar.lisp:338
 #, lisp-format
 msgid "is() expects a single argument. Found ~A"
 msgstr "is() espera un argumento simple. Encontrados ~A"
-
-#: ../src/rat3c.lisp:433
-msgid "jacobi: zero denominator."
-msgstr "denominador a cero."
 
 #: ../src/plot.lisp:37
 msgid "join: both arguments must be lists."
 msgstr "ambos argumentos deben ser listas."
 
-#: ../src/mlisp.lisp:760 ../src/mlisp.lisp:762
+#: ../src/mlisp.lisp:768 ../src/mlisp.lisp:770
 msgid "kill: no such field: ~M @ ~M"
 msgstr "sin ningún campo: ~M @ ~M"
 
-#: ../src/compar.lisp:247
+#: ../src/compar.lisp:238
 msgid "killcontext: context ~M is currently active."
 msgstr "contexto ~M ahora está activo."
 
-#: ../src/compar.lisp:240
+#: ../src/compar.lisp:231
 msgid "killcontext: no such context ~M."
 msgstr "no existe el contexto ~M."
 
@@ -2507,33 +2952,49 @@ msgstr "no existe el contexto ~M."
 msgid "lambda: cannot apply lambda as an array function."
 msgstr "no puede aplicar lambda como una función unimatriz."
 
-#: ../src/mlisp.lisp:185
+#: ../src/simp.lisp:1916
 msgid "lambda: first argument must be a list; found: ~M"
 msgstr "un primer argumento debe ser una lista; encontrada: ~M"
 
-#: ../src/mlisp.lisp:200
+#: ../src/mlisp.lisp:202
 msgid "lambda: formal argument must be a symbol or quoted symbol; found: ~M"
 msgstr ""
-"un argumento formal debe ser un símbolo o símbolo entrecomillado; encontrado:"
-" ~M"
+"un argumento formal debe ser un símbolo o símbolo entrecomillado; "
+"encontrado: ~M"
 
-#: ../src/mlisp.lisp:221
+#: ../src/simp.lisp:1932
+msgid "lambda: no body present"
+msgstr "lambda: ningún cuerpo presente."
+
+#: ../src/mlisp.lisp:222
 msgid "lambda: no body present."
 msgstr "ningún cuerpo presente."
 
-#: ../src/comm.lisp:1096
+#: ../src/simp.lisp:1926
+msgid "lambda: parameter must be a non-constant symbol; found: ~M"
+msgstr "lambda: parámetro debe ser un símbolo no constante; encontrado: ~M"
+
+#: ../src/simp.lisp:1929
+msgid "lambda: ~M occurs more than once in the parameter list"
+msgstr "lambda: ~M ocurre más que una vez dentro del listado paramétrico"
+
+#: ../src/comm.lisp:1120
 msgid "last: empty argument."
 msgstr "argumento vacío."
 
-#: ../src/comm.lisp:1125
+#: ../src/comm.lisp:1135
+msgid "lastn: second argument must be a nonnegative integer; found: ~M"
+msgstr "lastn: segundo argumento debe ser un natural; encontrado: ~M"
+
+#: ../src/comm.lisp:1167
 msgid "length: argument cannot be a number; found ~:M"
 msgstr "un argumento no puede ser un número; se ha encontrado ~:M"
 
-#: ../src/comm.lisp:1121
+#: ../src/comm.lisp:1163
 msgid "length: argument cannot be a symbol; found ~:M"
 msgstr "un argumento no puede ser un símbolo; se ha encontrado ~:M"
 
-#: ../src/nrat4.lisp:347
+#: ../src/nrat4.lisp:348
 msgid "lfreeof: first argument must be a list; found: ~M"
 msgstr "un primer argumento debe ser una lista; encontrado: ~M"
 
@@ -2541,20 +3002,20 @@ msgstr "un primer argumento debe ser una lista; encontrado: ~M"
 msgid "li: li[~:M](~:M) is undefined."
 msgstr "li[~:M](~:M) no está definido."
 
-#: ../src/simp.lisp:1899
+#: ../src/simp.lisp:1847
 msgid "limit: direction must be either 'plus' or 'minus': ~M"
 msgstr "una dirección debe ser o 'suma' o 'resta': ~M"
 
-#: ../src/limit.lisp:150
+#: ../src/limit.lisp:158
 msgid "limit: direction must be either 'plus' or 'minus'; found: ~M"
 msgstr "una dirección debe ser o 'suma' o 'resta'; encontrado: ~M"
 
-#: ../src/limit.lisp:136
+#: ../src/limit.lisp:144
 msgid "limit: second argument must be a variable, not a constant; found: ~M"
 msgstr ""
 "el segundo argumento debe ser una variable, no una constante; encontrado: ~M"
 
-#: ../src/limit.lisp:145
+#: ../src/limit.lisp:153
 msgid ""
 "limit: third argument must be a finite value or one of: inf, minf, infinity; "
 "found: ~M"
@@ -2562,17 +3023,17 @@ msgstr ""
 "el tercer argumento debe ser un valor finito o uno de tipo: entero, minf, "
 "infinito; encontrado: ~M"
 
-#: ../src/limit.lisp:138
+#: ../src/limit.lisp:146
 msgid "limit: variable must be a symbol or subscripted symbol; found: ~M"
 msgstr ""
 "una variable debe ser al menos un símbolo o un símbolo subencadenado: "
 "encontrado: ~M"
 
-#: ../src/simp.lisp:1901
+#: ../src/simp.lisp:1849
 msgid "limit: variable must not be a number; found: ~M"
 msgstr "una variable debe no ser un numero; encontrado: ~M"
 
-#: ../src/simp.lisp:1896
+#: ../src/simp.lisp:1844
 msgid "limit: wrong number of arguments."
 msgstr "número de argumentos equivocado."
 
@@ -2584,7 +3045,7 @@ msgstr "no puede calcular una ecuación no lineal."
 msgid "list"
 msgstr "lista"
 
-#: ../src/matrix.lisp:689
+#: ../src/matrix.lisp:691
 msgid "list_matrix_entries: argument must be a matrix; found: ~M"
 msgstr "un argumento debe ser una matriz; encontrado: ~M"
 
@@ -2592,7 +3053,7 @@ msgstr "un argumento debe ser una matriz; encontrado: ~M"
 msgid "listarray: argument must be an array; found: ~M"
 msgstr "un argumento debe ser una unimatriz; encontrado: ~M"
 
-#: ../src/suprv1.lisp:215
+#: ../src/suprv1.lisp:216
 #, lisp-format
 msgid "loadfile: failed to load ~A"
 msgstr "fallado al cargar ~A"
@@ -2605,27 +3066,27 @@ msgstr "cargando ~A.~%"
 
 #. HMM. I DON'T UNDERSTAND WHY DECLARED ARRAYS ARE OFF-LIMITS:
 #. THE ARRAY IS JUST A PROPERTY LIKE ANY OTHER, IS IT NOT ??
-#: ../src/mlisp.lisp:567
+#: ../src/mlisp.lisp:575
 msgid "local: argument cannot be a declared array; found: ~M"
 msgstr "argumento no puede ser una unimatriz declarada; se ha encontrado: ~M"
 
-#: ../src/mlisp.lisp:559
+#: ../src/mlisp.lisp:567
 msgid "local: must be called within a block or lambda."
 msgstr "debe ser llamado dentro de un bloque o lambda."
 
-#: ../src/simp.lisp:1466
+#: ../src/simp.lisp:1408
 msgid "log: encountered log(0)."
 msgstr "encontraba un log(0)."
 
-#: ../src/gamma.lisp:1629
+#: ../src/gamma.lisp:1700
 msgid "log_gamma: log_gamma(~:M) is undefined."
 msgstr "log_gamma(~:M) no está definido."
 
-#: ../src/asum.lisp:428
+#: ../src/asum.lisp:431
 msgid "lsum: second argument must be a variable; found ~M"
 msgstr "segundo argumento debe ser una variable; se ha encontrado ~M"
 
-#: ../src/mmacro.lisp:75
+#: ../src/mmacro.lisp:78
 msgid "macro definition: bad argument: ~M"
 msgstr "argumento equivocado: ~M"
 
@@ -2637,11 +3098,16 @@ msgstr "definición no legal: ~M"
 msgid "macro definition: must have exactly two arguments; found: ~M"
 msgstr "debe tener exactamente dos argumentos; encontrados: ~M"
 
-#: ../src/mmacro.lisp:151
+#: ../src/mmacro.lisp:66
+msgid "macro definition: ~M occurs more than once in the parameter list"
+msgstr ""
+"definición macro: ~M ocurre más que una vez dentro de listado paramétrico"
+
+#: ../src/mmacro.lisp:154
 msgid "macroexpand1: must have exactly one argument; found: ~M"
 msgstr "debe tener exactamente un argumento; encontrados: ~M"
 
-#: ../src/mmacro.lisp:145
+#: ../src/mmacro.lisp:148
 msgid "macroexpand: must have exactly one argument; found: ~M"
 msgstr "debe tener exactamente un argumento; encontrados: ~M"
 
@@ -2685,11 +3151,11 @@ msgstr ""
 "5 argumentos máximos permitidos; encontrados: ~M.~%makelist: para crear una "
 "lista con sublistas, utilice operaciones   anidadas de listas de creación.~%"
 
-#: ../src/trans1.lisp:215 ../src/mstuff.lisp:60
+#: ../src/mstuff.lisp:60 ../src/trans1.lisp:215
 msgid "makelist: second argument must evaluate to a number; found: ~M"
 msgstr "un segundo argumento debe evaluar a un número; encontrado: ~M"
 
-#: ../src/trans1.lisp:263 ../src/mstuff.lisp:87
+#: ../src/mstuff.lisp:87 ../src/trans1.lisp:263
 msgid ""
 "makelist: the fourth argument minus the third one must evaluate to a number; "
 "found: ~M"
@@ -2697,7 +3163,7 @@ msgstr ""
 "el cuarto argumento menos el tercero debe evaluarse a un número; encontrado: "
 "~M"
 
-#: ../src/trans1.lisp:284 ../src/mstuff.lisp:99
+#: ../src/mstuff.lisp:99 ../src/trans1.lisp:284
 msgid ""
 "makelist: the fourth argument minus the third one, divided by the fifth one "
 "must evaluate to a number; found: ~M"
@@ -2706,30 +3172,30 @@ msgstr ""
 "a un número;\n"
 "encontrado: ~M"
 
-#: ../src/trans1.lisp:243 ../src/mstuff.lisp:78
+#: ../src/mstuff.lisp:78 ../src/trans1.lisp:243
 msgid "makelist: third argument must be a number or a list; found: ~M"
 msgstr "el tercer argumento debe ser un número o lista; encontrado: ~M"
 
-#: ../src/nset.lisp:1311
+#: ../src/nset.lisp:1322
 msgid "makeset: second argument must be a list of symbols; found: ~:M"
 msgstr ""
 "el segundo argumento debe ser una lista de símbolos; se han encontrado: ~:M"
 
-#: ../src/mlisp.lisp:1245
+#: ../src/mlisp.lisp:1257
 msgid "map: arguments must be the same length."
 msgstr "distribución: los argumentos debe ser de la misma longitud."
 
-#: ../src/mlisp.lisp:1224
+#: ../src/mlisp.lisp:1236
 msgid "map: arguments must have same main operator; found: ~M, ~M"
 msgstr ""
 "distribución: los argumentos deben ser del mismo operador principal; "
 "encontrado: ~M, ~M"
 
-#: ../src/mlisp.lisp:1220
+#: ../src/mlisp.lisp:1232
 msgid "map: calling 'apply'"
 msgstr "distribución: llamando 'apply'"
 
-#: ../src/mlisp.lisp:1246
+#: ../src/mlisp.lisp:1258
 msgid "map: truncating one or more arguments."
 msgstr "distribución: truncando uno o más argumentos."
 
@@ -2741,11 +3207,11 @@ msgstr "debe ser par un número par de argumentos."
 msgid "matrix"
 msgstr "matriz"
 
-#: ../src/mlisp.lisp:1679
+#: ../src/mlisp.lisp:1694
 msgid "matrix: all rows must be the same length."
 msgstr "todas las filas deben ser de la misma longitud."
 
-#: ../src/mlisp.lisp:1672
+#: ../src/mlisp.lisp:1687
 msgid "matrix: row must be a list; found: ~M"
 msgstr "una fila debe ser una lista; encontrada: ~M"
 
@@ -2764,15 +3230,19 @@ msgid ""
 msgstr ""
 "~M no es un tipo constructivo; asumiendo es un tipo de extensión Maxima."
 
-#: ../src/mlisp.lisp:840 ../src/mlisp.lisp:848
+#: ../src/mlisp.lisp:844
+msgid "new: expected exactly one argument; found: ~M"
+msgstr "nuevo: esperaba exactamente un argumento; se han encontrado: ~M"
+
+#: ../src/mlisp.lisp:850 ../src/mlisp.lisp:858
 msgid "new: no such structure ~M"
 msgstr "sin dicha estructura ~M"
 
-#: ../src/mlisp.lisp:851
+#: ../src/mlisp.lisp:861
 msgid "new: wrong number of arguments in initializer; expected ~M, not ~M."
 msgstr "número equivocado de argumentos en inicializador; esperaba ~M, no ~M."
 
-#: ../src/compar.lisp:192
+#: ../src/compar.lisp:183
 msgid "newcontext: context ~M already exists."
 msgstr "contexto ~M ya existe."
 
@@ -2790,11 +3260,15 @@ msgstr "una matriz debe ser 50 x 50 o menor; tamaño encontrado: ~M"
 msgid "newinv: matrix is singular."
 msgstr "una matriz es simple."
 
-#: ../src/ifactor.lisp:813
+#: ../src/ifactor.lisp:861
 msgid "next_prime: argument must be an integer; found: ~M"
 msgstr "argumento debe ser un entero; encontrado: ~M"
 
-#: ../src/mdot.lisp:276
+#: ../src/sumcon.lisp:128
+msgid "niceindicespref: value must be a nonempty list; found: ~:M"
+msgstr "niceindicespref: valor debe ser una lista no vacía; encontrada: ~M"
+
+#: ../src/mdot.lisp:275
 msgid "noncommutative exponent: ~M is undefined."
 msgstr "exponente no conmutativo: ~M está indefinido."
 
@@ -2806,8 +3280,8 @@ msgstr "no una matriz: ~M"
 #, lisp-format
 msgid "note: 'eval_when' can appear only at the top level in a file.~%"
 msgstr ""
-"nota: 'eval_when' puede parecer solo en el nivel máximo dentro de un "
-"fichero.~%"
+"nota: 'eval_when' puede parecer solo en el nivel máximo dentro de un fichero."
+"~%"
 
 #: ../src/transl.lisp:279
 #, lisp-format
@@ -2818,7 +3292,7 @@ msgstr "nota: 'modedeclare' declara tipos por transición.~%"
 msgid "note: instead I'll translate it as: ~:M~%"
 msgstr "nota: vez de trasladarlo como: ~:M~%"
 
-#: ../src/transl.lisp:1324
+#: ../src/transl.lisp:1330
 #, lisp-format
 msgid "note: just keep going and hope for the best.~%"
 msgstr "nota: únicamente conserva yendo y esperando por el mejor.~%"
@@ -2840,7 +3314,7 @@ msgstr "nota: trasladando ~:@M~%"
 msgid "note: variable ~:M being given a default assignment ~:M~%"
 msgstr "nota: variable ~:M siendo dada una asignación predeterminada ~:M~%"
 
-#: ../src/suprv1.lisp:595
+#: ../src/suprv1.lisp:601
 msgid "nounify: argument must be a symbol or a string; found: ~M"
 msgstr "argumento debe ser un símbolo o una cadena; encontrado: ~M"
 
@@ -2852,15 +3326,15 @@ msgstr "nªraíz: ~M no es un entero positivo"
 msgid "nthroot: ~M is not a ~M power"
 msgstr "nªraíz: ~M no es una potencia de ~M"
 
-#: ../src/comm2.lisp:563
+#: ../src/comm2.lisp:595
 msgid "numerval: cannot declare a value because ~M is bound."
 msgstr "numerval: no puede declarar un valor porque ~M no esta asociado."
 
-#: ../src/comm2.lisp:561
+#: ../src/comm2.lisp:593
 msgid "numerval: expected a symbol; found ~M"
 msgstr "numerval: esperaba un símbolo; se ha encontrado ~M"
 
-#: ../src/comm2.lisp:559
+#: ../src/comm2.lisp:591
 msgid "numerval: expected an even number of arguments."
 msgstr "numerval: esperaba un número par de argumentos."
 
@@ -2870,11 +3344,11 @@ msgstr ""
 "optimizar: encontrado un formato especial; el resultado puede estar "
 "equivocado."
 
-#: ../src/comm2.lisp:824
+#: ../src/comm2.lisp:856
 msgid "ordergreat: reordering is not allowed."
 msgstr "orden-mayor: reordenamiento no está permitido."
 
-#: ../src/comm2.lisp:828
+#: ../src/comm2.lisp:860
 msgid "orderless: reordering is not allowed."
 msgstr "orden-menor: reordenamiento no está permitido."
 
@@ -2882,47 +3356,40 @@ msgstr "orden-menor: reordenamiento no está permitido."
 msgid "pade: first argument must be a Taylor series; found: ~M"
 msgstr "primer argumento debe ser una serie de Taylor; encontrado: ~M"
 
-#: ../src/gnuplot_def.lisp:156 ../src/xmaxima_def.lisp:114
+#: ../src/xmaxima_def.lisp:114 ../src/gnuplot_def.lisp:156
 msgid "palette: gray must be followed by two numbers."
 msgstr "gris debe ser seguido por dos números."
 
-#: ../src/gnuplot_def.lisp:227 ../src/xmaxima_def.lisp:169
+#: ../src/xmaxima_def.lisp:169 ../src/gnuplot_def.lisp:227
 msgid ""
 "palette: wrong keyword ~M. Must be hue, saturation, value, gray or gradient."
 msgstr ""
 "teclado ~M equivocado. Debe tener matiz, saturación, valor, gris o gradiente."
 
-#: ../src/gnuplot_def.lisp:167 ../src/xmaxima_def.lisp:126
+#: ../src/xmaxima_def.lisp:126 ../src/gnuplot_def.lisp:167
 msgid "palette: ~M must be followed by four numbers."
 msgstr "~M debe ser seguido por cuatro números."
 
-#: ../src/nparse.lisp:559
+#: ../src/nparse.lisp:571
 msgid "parser: end of file in comment."
 msgstr "análisis: final de fichero dentro del comentario."
 
-#: ../src/nparse.lisp:522
+#: ../src/nparse.lisp:533
 msgid "parser: end of file while scanning expression."
 msgstr "análisis: final de fichero mientras se analiza expresión."
 
-#. We're trying to parse the exponent part of a number,
-#. and we didn't get a value after the exponent marker.
-#. That's an error.
-#: ../src/nparse.lisp:412
-msgid "parser: incomplete number; missing exponent?"
-msgstr "análisis: número incompleto; ¿falta exponente?"
-
-#: ../src/comm.lisp:927
+#: ../src/comm.lisp:951
 msgid "part: invalid index of list or matrix."
 msgstr "análisis: índice de lista o matriz no válida."
 
-#: ../src/csimp.lisp:96
+#: ../src/csimp.lisp:101
 msgid ""
 "partition: first argument must be a list or '+' or '*' expression; found ~M"
 msgstr ""
 "primer argumento debe ser una lista o una expresión '+' o '*'; se ha "
 "encontrado ~M"
 
-#: ../src/nset.lisp:265
+#: ../src/nset.lisp:275
 msgid "partition_set: ~:M(~:M) evaluates to a non-boolean."
 msgstr "~:M(~:M) evalúa a un no booleano."
 
@@ -2946,30 +3413,30 @@ msgstr "se ha encontrado un atan(0/0)."
 msgid "plog: plog(0) is undefined."
 msgstr "plog(0) no está definido."
 
-#: ../src/plot.lisp:1650
+#: ../src/plot.lisp:1673
 msgid "plot option ~M must be either true or false."
 msgstr "opción ~M gráfica debe ser o verdadera o falsa."
 
-#: ../src/plot.lisp:1382
+#: ../src/plot.lisp:1405
 msgid ""
 "plot-options-parser: Expecting a symbol for the option name, found: \"~M\""
 msgstr "Esperando un símbolo para el nombre de opción, encontrado: \"~M\""
 
-#: ../src/plot.lisp:1556
+#: ../src/plot.lisp:1579
 msgid "plot-options-parser: unknown plot option: ~M"
 msgstr "opción desconocida del gráfico: ~M"
 
-#: ../src/plot.lisp:912 ../src/plot.lisp:1295
+#: ../src/plot.lisp:928 ../src/plot.lisp:1311
 #, lisp-format
 msgid "plot2d: all values are non-numeric, or clipped.~%"
 msgstr "todos los valores son no numéricos, o recortados.~%"
 
-#: ../src/plot.lisp:906 ../src/plot.lisp:1291
+#: ../src/plot.lisp:922 ../src/plot.lisp:1307
 #, lisp-format
 msgid "plot2d: all values were clipped.~%"
 msgstr "todos los valores fueron recortados.~%"
 
-#: ../src/plot.lisp:909 ../src/plot.lisp:1293
+#: ../src/plot.lisp:925 ../src/plot.lisp:1309
 #, lisp-format
 msgid ""
 "plot2d: expression evaluates to non-numeric value everywhere in plotting "
@@ -2978,7 +3445,7 @@ msgstr ""
 "evaluaciones de expresiones para valor no numérico donde sea en el rango de "
 "gráfico.~%"
 
-#: ../src/plot.lisp:916 ../src/plot.lisp:1298
+#: ../src/plot.lisp:932 ../src/plot.lisp:1314
 #, lisp-format
 msgid ""
 "plot2d: expression evaluates to non-numeric value somewhere in plotting "
@@ -2987,7 +3454,7 @@ msgstr ""
 "evaluaciones de expresiones para valor no numérico en algún lugar en el "
 "rango del gráfico.~%"
 
-#: ../src/plot.lisp:1845
+#: ../src/plot.lisp:1864
 msgid ""
 "plot2d: lower bound must be positive when 'logx' in effect.~%plot2d: "
 "assuming lower bound = ~M instead of ~M"
@@ -2995,7 +3462,7 @@ msgstr ""
 "asociación inferior debe ser positiva cuando 'logx' en resuelto.~%plot2d: "
 "asumido ligadura inferior = ~M"
 
-#: ../src/plot.lisp:1856
+#: ../src/plot.lisp:1875
 msgid ""
 "plot2d: lower bound must be positive when 'logy' in effect.~%plot2d: "
 "assuming lower bound = ~M instead of ~M"
@@ -3003,27 +3470,27 @@ msgstr ""
 "asociación inferior debe ser positiva cuando 'logy' esté resuelto.~%plot2d: "
 "asumir asociación más inferior = ~M en lugar de ~M"
 
-#: ../src/plot.lisp:1868
+#: ../src/plot.lisp:1887
 #, lisp-format
 msgid "plot2d: nothing to plot.~%"
 msgstr "plot2d: nada para gráfico.~%"
 
-#: ../src/plot.lisp:918 ../src/plot.lisp:1300
+#: ../src/plot.lisp:934 ../src/plot.lisp:1316
 #, lisp-format
 msgid "plot2d: some values were clipped.~%"
 msgstr "algunos valores fueron recortados.~%"
 
-#: ../src/plot.lisp:1848
+#: ../src/plot.lisp:1867
 msgid "plot2d: upper bound must be positive when 'logx' in effect; found: ~M"
 msgstr ""
 "asociación superior debe ser positiva al 'logx' efectiva; encontrado: ~M"
 
-#: ../src/plot.lisp:1858
+#: ../src/plot.lisp:1877
 msgid "plot2d: upper bound must be positive when 'logy' in effect; found: ~M"
 msgstr ""
 "asociación superior debe ser positiva al 'logy' efectiva; encontrado: ~M"
 
-#: ../src/plot.lisp:2334
+#: ../src/plot.lisp:2357
 msgid ""
 "plot3d: Usage.\n"
 "To plot a single function f of 2 variables v1 and v2:\n"
@@ -3041,23 +3508,23 @@ msgstr ""
 "Algunas funciones dependiendo en las dos variables v1 y v2:\n"
 "  plot3d ([f1, f2, ..., fn, [v1, mín, máx], [v2, mín, máx]], opciones)"
 
-#: ../src/plot.lisp:2416
+#: ../src/plot.lisp:2439
 msgid "plot3d: argument must be a list of three expressions; found: ~M"
 msgstr ""
 "plot3d: un argumento debe ser una lista de tres expresiones; encontrado: ~M"
 
-#: ../src/plot.lisp:2566
+#: ../src/plot.lisp:2596
 #, lisp-format
 msgid "plot3d: expected <expr. of v1 and v2>, [v1, min, max], [v2, min, max]~%"
 msgstr ""
 "plot3d: esperado una <expr. de v1 y v2>, [v1, min, max], [v2, min, max]~%"
 
-#: ../src/plot.lisp:2567
+#: ../src/plot.lisp:2597
 #, lisp-format
 msgid "plot3d: keep going and hope for the best.~%"
 msgstr "plot3d: conserva únicamente y espera por lo mejor.~%"
 
-#: ../src/plot.lisp:2399
+#: ../src/plot.lisp:2422
 msgid "plot3d: there must be at most two variables; found: ~M"
 msgstr "plot3d: debe haber como máximo dos variables; encontrado: ~M"
 
@@ -3091,21 +3558,26 @@ msgstr ""
 "plotdf: primer argumento debe ser o una expresión o una lista con dos "
 "expresiones."
 
-#: ../src/plot.lisp:122
+#: ../src/plot.lisp:123
 msgid "plotting: I don't know how to tell this Lisp to run Gnuplot."
 msgstr "No se conoce cómo decirle a este Lisp que se ejecute en Gnuplot."
 
-#: ../src/plot.lisp:2171
+#: ../src/plot.lisp:126
+#, lisp-format
+msgid "plotting: I tried to execute ~s but *GNUPLOT-STREAM* is still null.~%"
+msgstr "trazando: Ententado ejecutar ~s pero *GNUPLOT-STREAM* es nulo aún.~%"
+
+#: ../src/plot.lisp:2191
 msgid ""
 "plotting: no range given; must supply range of the form [variable, min, max]"
 msgstr ""
 "plotting: sin rango dado; debe dar un rango de la forma [variable, mín, máx]"
 
-#: ../src/plot.lisp:1364
+#: ../src/plot.lisp:1387
 msgid "plotting: option 'gnuplot_out_file' not defined."
 msgstr "plotting: opción 'gnuplot_out_file' no definida."
 
-#: ../src/plot.lisp:2168
+#: ../src/plot.lisp:2188
 msgid "plotting: range must be of the form [variable, min, max]; found: ~M"
 msgstr ""
 "plotting: rango debe ser de formato [variable, min, max]; encontrado: ~M"
@@ -3131,11 +3603,11 @@ msgstr ""
 "poly_discriminant: primer argumento debe ser polinomial en ~:M; se "
 "encontraron: ~M"
 
-#: ../src/combin.lisp:1474
+#: ../src/combin.lisp:1484
 msgid "polydecomp: cannot apply 'polydecomp' to a rational function."
 msgstr "polydecomp: no puedo aplicar 'polydecomp' a una función racional."
 
-#: ../src/combin.lisp:1468
+#: ../src/combin.lisp:1478
 msgid "polydecomp: second argument must be an atom; found ~M"
 msgstr "polydecomp: argumento segundo debe ser un átomo; se encontraron ~M"
 
@@ -3144,48 +3616,49 @@ msgid "polymod: modulus must be a nonzero integer; found: ~M"
 msgstr ""
 "polymod: módulo deben ser un entero distinto de cero; se encontraron: ~M"
 
-#: ../src/ifactor.lisp:707
+#: ../src/ifactor.lisp:718
 msgid "power_mod: arguments must be integers; found: ~M, ~M, ~M"
-msgstr "potencia_mod: los argumentos deben ser enteros; encontrados: ~M, ~M, ~M"
+msgstr ""
+"potencia_mod: los argumentos deben ser enteros; encontrados: ~M, ~M, ~M"
 
-#: ../src/series.lisp:501
+#: ../src/series.lisp:505
 #, lisp-format
 msgid "powerseries: apply rule for expressions of ~%"
 msgstr "series-potencia: aplica regla para expresiones de ~%"
 
-#: ../src/series.lisp:376
+#: ../src/series.lisp:378
 msgid "powerseries: attempt partial fraction expansion of "
 msgstr "series-potencia: tratar una expansión de fracción parcial de "
 
-#: ../src/series.lisp:172
+#: ../src/series.lisp:174
 msgid "powerseries: attempt rational function expansion of~%~M"
 msgstr "series-potencia: tratar una expansión de función racional de ~%~M"
 
-#: ../src/series.lisp:358
+#: ../src/series.lisp:360
 #, lisp-format
 msgid "powerseries: first derivative of denominator at root =~%"
 msgstr "series-potencia: primera derivada del denominador de raíz =~%"
 
-#: ../src/series.lisp:129
+#: ../src/series.lisp:131
 #, lisp-format
 msgid "powerseries: first simplification returned ~%"
 msgstr "series-potencia: primera simplificación devuelta ~%"
 
-#: ../src/series.lisp:354
+#: ../src/series.lisp:356
 #, lisp-format
 msgid "powerseries: for root:~%"
 msgstr "series-potencia: por raíz:~%"
 
-#: ../src/series.lisp:504
+#: ../src/series.lisp:508
 msgid "powerseries: here we have"
 msgstr "series-potencia: aquí tenemos"
 
-#: ../src/series.lisp:356
+#: ../src/series.lisp:358
 #, lisp-format
 msgid "powerseries: numerator at root =~%"
 msgstr "series-potencia: numerador en raíz =~%"
 
-#: ../src/series.lisp:402
+#: ../src/series.lisp:405
 #, lisp-format
 msgid ""
 "powerseries: partial fraction expansion failed, ~\n"
@@ -3194,56 +3667,61 @@ msgstr ""
 "expansión de fracción parcial fallada, ~\n"
 "                  expandiendo denominado únicamente.~%"
 
-#: ../src/series.lisp:282
+#: ../src/series.lisp:284
 #, lisp-format
 msgid "powerseries: preparing to fold sums~%"
 msgstr "series-potencia: preparando encarpetar sumatorios~%"
 
-#: ../src/series.lisp:413
+#: ../src/series.lisp:416
 msgid "powerseries: substituting for the occurrences of"
 msgstr "series-potencia: sustituyendo para la ocurrencia de"
 
-#: ../src/float.lisp:1132
+#: ../src/float.lisp:1129 ../share/numeric/decfp-core.lisp:504
 msgid "pquotient: attempted quotient by zero."
 msgstr "p-cociente: intentado hacer un cociente a cero."
 
-#: ../src/ifactor.lisp:821
+#: ../src/ifactor.lisp:869
 msgid "prev_prime: argument must be an integer greater than 2; found: ~M"
 msgstr "argumento debe ser un entero mayor que 2; encontrado: ~M"
 
-#: ../src/ifactor.lisp:637
+#: ../src/ifactor.lisp:636
 msgid "primep: argument must be an integer; found: ~M"
 msgstr "argumento debe ser un entero; encontrado: ~M"
 
-#: ../src/ifactor.lisp:870
+#: ../src/ifactor.lisp:917
 msgid "primes: arguments must be integers; found: ~M, ~M"
 msgstr "argumentos deben ser enteros; encontrados: ~M, ~M"
 
-#: ../src/outmis.lisp:237
+#: ../src/outmis.lisp:238
 msgid "printprops: requires two arguments."
 msgstr "requiere dos argumentos."
 
-#: ../src/outmis.lisp:250
+#: ../src/outmis.lisp:251
 msgid "printprops: unknown property ~:M"
 msgstr "propiedad desconocida ~:M"
 
-#: ../src/combin.lisp:1369
+#: ../src/combin.lisp:1379
 msgid "product: expected exactly four arguments."
 msgstr "esperaba exactamente cuatro argumentos."
 
-#: ../src/asum.lisp:698
+#: ../src/asum.lisp:686
 msgid "product: index must be a symbol; found ~M"
 msgstr "un índice debe ser un símbolo; se ha encontrado ~M"
 
-#: ../src/asum.lisp:705
+#: ../src/asum.lisp:693
 msgid "product: lower bound ~M greater than upper bound ~M"
 msgstr "extremo inferior ~M es mayor que el extremo superior ~M"
 
-#: ../src/outmis.lisp:128
+#: ../src/outmis.lisp:129
 msgid "properties: argument must be a symbol or a string."
 msgstr "argumento debe ser un símbolo o secuencia de caracteres."
 
-#: ../src/combin.lisp:1046
+#: ../src/suprv1.lisp:807
+#, lisp-format
+msgid "quit: No known quit function for this Lisp.~%"
+msgstr "quit: Ninguna conocida función ‘quit’ para este Lisp.~%"
+
+#: ../src/combin.lisp:1051
 msgid "qunit: Argument must be a positive non quadratic integer."
 msgstr "Argumento debe ser un entero positivo no cuadrado entero."
 
@@ -3290,22 +3768,23 @@ msgstr "la unimatriz debe tener el mismo número de subscript."
 
 #: ../src/nregex.lisp:239
 #, lisp-format
-msgid "regex: ranges must be in acending order; found: \"~A-~A\""
-msgstr "los rangos deben estar en orden ascendiente; encontrado: “~A-~A”"
+msgid "regex: ranges must be in ascending order; found: \"~A-~A\""
+msgstr ""
+"exreg: los rangos deben estar en orden ascendiente; encontrado: “~A-~A”"
 
 #: ../src/nisimp.lisp:179
 msgid "remlet: no rule found: ~M"
 msgstr "no se ha encontrado ninguna regla: ~M"
 
-#: ../src/mlisp.lisp:1468 ../src/mlisp.lisp:1516
+#: ../src/mlisp.lisp:1481 ../src/mlisp.lisp:1529
 msgid "remove: argument must be a symbol or a string; found: ~M"
 msgstr "un argumento debe ser un símbolo o una cadena; encontrado: ~M"
 
-#: ../src/mlisp.lisp:1462
+#: ../src/mlisp.lisp:1475
 msgid "remove: number of arguments must be a multiple of 2."
 msgstr "el número de argumentos debe ser un múltiplo de 2."
 
-#: ../src/mlisp.lisp:1499
+#: ../src/mlisp.lisp:1512
 msgid "remove: unknown property ~:M"
 msgstr "propiedad desconocida ~:M"
 
@@ -3317,76 +3796,81 @@ msgstr "sin reglas conocidas para operador ~:@M"
 msgid "remrule: no such rule: ~:M"
 msgstr "sin regla establecida: ~:M"
 
-#: ../src/suprv1.lisp:399
+#: ../src/suprv1.lisp:408
 msgid ""
 "remvalue: ~M doesn't appear to be a known variable; just unbind it anyway.~%"
 msgstr ""
-"~M no aparece para ser una variable conocida; tan solo desenlaza "
-"cualquiera.~%"
+"~M no aparece para ser una variable conocida; tan solo desenlaza cualquiera.~"
+"%"
 
 #: ../src/residu.lisp:290
 msgid "residue: taylor failed."
 msgstr "taylor equivocado."
 
-#: ../src/comm.lisp:1079
+#: ../src/comm.lisp:1103
 msgid "rest: fell off the end."
 msgstr "salió más allá del final."
 
-#: ../src/comm.lisp:1073
+#: ../src/comm.lisp:1097
 msgid "rest: second argument, if present, must be an integer; found ~M"
 msgstr ""
 "el segundo argumento, si esta presente, debe ser un entero; se ha encontrado "
 "~M"
 
-#: ../src/result.lisp:86
+#: ../src/result.lisp:91
 msgid "resultant: no such algorithm: ~M"
 msgstr "sin algoritmo: ~M"
 
-#: ../src/mlisp.lisp:2328
+#: ../src/mlisp.lisp:2308
 msgid "return: not within 'block'"
 msgstr "no dentro de 'bloque'"
 
-#: ../src/mlisp.lisp:2326
+#: ../src/mlisp.lisp:2306
 msgid "return: too many arguments; found: ~M"
 msgstr "demasiados argumentos; encontrados: ~M"
 
-#: ../src/outmis.lisp:97
+#: ../src/outmis.lisp:98
 msgid "reveal: second argument must be a positive integer; found: ~M"
 msgstr "segundo argumento debe ser un entero positivo; encontrado: ~M"
 
-#: ../src/risch.lisp:120
+#: ../src/risch.lisp:121
 msgid "risch: attempt to integrate wrt a number: ~:M"
 msgstr "intenta integrar ‘wrt’ un número: ~:M"
 
-#: ../share/dynamics/complex_dynamics.lisp:172
-#: ../share/dynamics/complex_dynamics.lisp:174
+#: ../share/dynamics/complex_dynamics.lisp:182
+#: ../share/dynamics/complex_dynamics.lisp:184
 msgid "rk: variable name expected; found: ~M"
 msgstr "nombre de variable esperada: encontrado: ~M"
 
-#: ../src/plot.lisp:358
+#: ../src/plot.lisp:374
 msgid "rotate_pts: second argument must be a matrix."
 msgstr "segundo argumento debe ser una matriz."
 
-#: ../src/mload.lisp:527
+#: ../src/mload.lisp:550
 msgid "run_testsuite: display_all must be true or false; found: ~M"
 msgstr "la función ‘display_all’ debe ser verdadero o falso; encontrado: ~M"
 
-#: ../src/mload.lisp:525
+#: ../src/mload.lisp:548
 msgid "run_testsuite: display_known_bugs must be true or false; found: ~M"
 msgstr ""
 "la función ‘display_known_bugs’ debe ser verdadero o falso; encontrado: ~M"
 
-#: ../src/mload.lisp:529
+#: ../src/mload.lisp:555
+msgid "run_testsuite: share_tests must be true, false or only: found ~M"
+msgstr ""
+"run_testsuite: share_tests deben ser verdadero, falso solo: encontrado ~M"
+
+#: ../src/mload.lisp:552
 msgid "run_testsuite: time must be true, false, or all; found: ~M"
 msgstr ""
 "la hora de ‘run_testsuite’ debe ser verdadera, falsa o completa; encontrado: "
 "~M"
 
-#: ../src/comm2.lisp:634
+#: ../src/comm2.lisp:666
 msgid "scanmap: cannot apply 'rat'."
 msgstr "no puedo aplicar 'rat'."
 
-#: ../src/comm2.lisp:637
+#: ../src/comm2.lisp:669
 msgid "scanmap: third argument must be 'bottomup', if present; found ~M"
 msgstr ""
 "scanmap: el tercer argumento debe ser 'bottomup' ('del fondo hacia arriba'), "
@@ -3416,51 +3900,51 @@ msgstr "Valor equivocado en listado de animación: ~M"
 msgid "scene: ~M cannot be animated."
 msgstr "~M no puede ser animados."
 
-#: ../src/nset.lisp:700
+#: ../src/nset.lisp:710
 msgid "set_partitions: second argument must be a positive integer; found: ~:M"
 msgstr "segundo argumento debe ser un entero positivo; se ha encontrado: ~:M"
 
-#: ../src/matrix.lisp:618
+#: ../src/matrix.lisp:620
 msgid "setelmx: indices must be integers; found: ~M, ~M"
 msgstr "índices deben ser enteros; se han encontrado: ~M, ~M"
 
-#: ../src/matrix.lisp:620
+#: ../src/matrix.lisp:622
 msgid "setelmx: last argument must be a matrix; found: ~M"
 msgstr "último argumento debe ser una matriz; se ha encontrado: ~M"
 
-#: ../src/matrix.lisp:622
+#: ../src/matrix.lisp:624
 msgid "setelmx: no such element [~M, ~M]"
 msgstr "sin dicho elemento [~M, ~M]"
 
-#: ../src/compar.lisp:886
+#: ../src/compar.lisp:877
 msgid "sign or asksign: insufficient data."
 msgstr "datos insuficientes."
 
-#: ../src/compar.lisp:877
+#: ../src/compar.lisp:868
 msgid "sign or asksign: insufficient information."
 msgstr "información insuficiente."
 
-#: ../src/compar.lisp:1821
+#: ../src/compar.lisp:1852
 msgid "sign: argument cannot be imaginary; found ~M"
 msgstr "argumento no puede ser imaginario; se ha encontrado ~M"
 
-#: ../src/compar.lisp:1825
+#: ../src/compar.lisp:1856
 msgid "sign: division by zero in ~M"
 msgstr "signo: división entre cero en ~M"
 
-#: ../src/compar.lisp:1242
+#: ../src/compar.lisp:1246
 msgid "sign: sign of ~:M is undefined."
 msgstr "signo: signo de ~:M no esta definido."
 
-#: ../src/simp.lisp:571
+#: ../src/simp.lisp:564
 msgid "simplifya: I don't know how to simplify this operator: ~M"
 msgstr "simplificar-a: no se como simplificar este operador: ~M"
 
-#: ../src/simp.lisp:533
+#: ../src/simp.lisp:530
 msgid "simplifya: malformed expression (atomic cdr)."
 msgstr "simplificar-a: expresión mal formada (cdr atómica)."
 
-#: ../src/simp.lisp:555
+#: ../src/simp.lisp:548
 #, lisp-format
 msgid "simplifya: operator is neither an atom nor a lambda expression: ~S"
 msgstr "simplificar-a: operador que ni es átomo ni expresión lambda: ~S"
@@ -3493,12 +3977,12 @@ msgstr ""
 "\t\t  ~%Desconocidos dados:  ~%~M~\n"
 "\t\t  ~%Ecuaciones dadas  :  ~%~M"
 
-#: ../src/mat.lisp:441
+#: ../src/mat.lisp:451
 #, lisp-format
 msgid "solve: multiplicity ~A~%"
 msgstr "resultado: multiplicidad ~A~%"
 
-#: ../src/mat.lisp:356
+#: ../src/mat.lisp:366
 msgid "solve: singular matrix."
 msgstr "resultado: matriz singular."
 
@@ -3522,7 +4006,7 @@ msgid "solve: variable must not be a number; found: ~M"
 msgstr "resultado: una variable no debe ser un número; encontrado: ~M"
 
 #. NOT CLEAR FROM PRECEDING CODE WHAT IS "INVALID" HERE
-#: ../src/nset.lisp:1302
+#: ../src/nset.lisp:1313
 msgid "some: invalid arguments."
 msgstr "resultado: argumentos no válidos."
 
@@ -3536,32 +4020,32 @@ msgstr "resultado: primer argumento debe ser una lista; encontrado: ~M"
 msgid "splice: encountered 'splice' in an unexpected place: ~M"
 msgstr "splice: se ha encontrado 'splice' en un lugar inesperado: ~M"
 
-#: ../src/suprv1.lisp:840
+#: ../src/suprv1.lisp:839
 msgid "sstatus: unknown argument: ~M"
 msgstr "estado-s: argumento desconocido: ~M"
 
-#: ../src/suprv1.lisp:821
+#: ../src/suprv1.lisp:820
 msgid "status: first argument must be a symbol; found: ~M"
 msgstr "estado: primer argumento debe ser un símbolo; encontrado: ~M"
 
-#: ../src/suprv1.lisp:824
+#: ../src/suprv1.lisp:823
 msgid "status: second argument must be symbol or a string; found: ~M"
 msgstr ""
 "estado: segundo argumento debe ser un símbolo o una cadena; encontrado: ~M"
 
-#: ../src/suprv1.lisp:832
+#: ../src/suprv1.lisp:831
 msgid "status: unknown argument: ~M"
 msgstr "estado: argumento desconocido: ~M"
 
-#: ../src/suprv1.lisp:712
+#: ../src/suprv1.lisp:719
 msgid "stringout: unspecified error."
 msgstr "cadena externa: error no especificado."
 
-#: ../src/bessel.lisp:1922
+#: ../src/bessel.lisp:1933
 msgid "struve_h: struve_h(~:M,~:M) is undefined."
 msgstr "struve_h(~:M,~:M) no está definida."
 
-#: ../src/bessel.lisp:2167
+#: ../src/bessel.lisp:2185
 msgid "struve_l: struve_l(~:M,~:M) is undefined."
 msgstr "struve_l(~:M,~:M) no está definida."
 
@@ -3587,7 +4071,7 @@ msgstr "expresión mal formada (car atómico)."
 msgid "sublist: first argument must be a list; found: ~M"
 msgstr "primer argumento debe ser una lista; se ha encontrado: ~M"
 
-#: ../src/nset.lisp:248
+#: ../src/nset.lisp:258
 msgid "subset: ~:M(~:M) evaluates to a non-boolean."
 msgstr "~:M(~:M) evalúa a un no booleano."
 
@@ -3595,36 +4079,36 @@ msgstr "~:M(~:M) evalúa a un no booleano."
 msgid "subst: cannot substitute ~M for operator ~M in expression ~M"
 msgstr "no puedo substituir ~M por el operador ~M en la expresión ~M"
 
-#: ../src/asum.lisp:449
+#: ../src/asum.lisp:452
 msgid "sum: index must be a symbol; found ~M"
 msgstr "índice ha de ser un símbolo; se ha encontrado ~M"
 
-#: ../src/combin.lisp:1116
+#: ../src/combin.lisp:1121
 msgid "sum: lower bound ~M greater than upper bound ~M"
 msgstr "extremo inferior ~M es mayor que el extremo superior ~M"
 
-#: ../src/combin.lisp:1169
+#: ../src/combin.lisp:1174
 msgid "sum: sum is divergent."
 msgstr "sumatorio es divergente."
 
-#: ../src/compar.lisp:209
+#: ../src/compar.lisp:200
 msgid "supcontext: context ~M already exists."
 msgstr "supcontext: el contexto ~M ya existe."
 
 #. make up a name and try again
-#: ../src/compar.lisp:206
+#: ../src/compar.lisp:197
 msgid "supcontext: found more than two arguments."
 msgstr "esperaba más que dos argumentos."
 
-#: ../src/compar.lisp:211
+#: ../src/compar.lisp:202
 msgid "supcontext: no such context ~M"
 msgstr "sin contexto ~M"
 
-#: ../src/nparse.lisp:1628
+#: ../src/nparse.lisp:1640
 msgid "syntax extension: binding powers must be integers; found: ~M"
 msgstr "enlazando potencias debe ser enteros: se ha encontrado: ~M"
 
-#: ../src/trigi.lisp:616
+#: ../src/trigi.lisp:612
 msgid "tan: ~M isn't in the domain of tan."
 msgstr "~M no está dentro del dominio de tan."
 
@@ -3634,52 +4118,52 @@ msgstr "~M no está dentro del dominio de tan."
 msgid "taylor: 0^0 is undefined."
 msgstr "0^0 no está definido."
 
-#: ../src/hayat.lisp:1318
+#: ../src/hayat.lisp:1323
 msgid "taylor: Unhandled multivar datum comparison."
 msgstr "Comparación de datos multivariable no manipulado."
 
-#: ../src/hayat.lisp:1331 ../src/hayat.lisp:1335
+#: ../src/hayat.lisp:1338 ../src/hayat.lisp:1342
 msgid "taylor: Unhandled var in stronger-var?"
 msgstr "“var” no manipulada en “stronger-var”?"
 
-#: ../src/hayat.lisp:1322
+#: ../src/hayat.lisp:1327
 msgid "taylor: Unhandled var in stronger-var?."
 msgstr "“var” no manipulada en “stronger-var”?"
 
-#: ../src/mhayat.lisp:261
+#: ../src/mhayat.lisp:263
 msgid "taylor: assumed to be zero: ~M~%"
 msgstr "asumido para ser cero: ~M~%"
 
-#: ../src/hayat.lisp:2000
+#: ../src/hayat.lisp:2007
 msgid "taylor: attempt to expand ~M at a point depending on ~M."
 msgstr "vinculado para expandir ~M como un punto dependiendo sobre ~M."
 
-#: ../src/hayat.lisp:2174
+#: ../src/hayat.lisp:2181
 msgid "taylor: cannot combine expressions expanded at different points."
 msgstr "no puede combinar expresiones expandidas en puntos diferentes."
 
-#: ../src/hayat.lisp:2286
+#: ../src/hayat.lisp:2293
 msgid "taylor: cannot create an asymptotic expansion at infinity."
 msgstr "no puedo crear una expansión asíncrona como infinita."
 
-#: ../src/hayat.lisp:1890
+#: ../src/hayat.lisp:1897
 msgid "taylor: expansion order must be a number; found: ~:M"
 msgstr "operación de expansión debe ser un número; se ha encontrado: ~:M"
 
-#: ../src/hayat.lisp:835
+#: ../src/hayat.lisp:834
 msgid "taylor: expected an integer, instead found: ~:M"
 msgstr "taylor: esperaba un entero, en su lugar encontrado: ~:M"
 
-#: ../src/hayat.lisp:1704
+#: ../src/hayat.lisp:1711
 #, lisp-format
 msgid "taylor: incorrect number of subscripts to the deftaylor'd function ~A"
 msgstr "número incorrecto de subescriptorio a la función deftaylor ~A"
 
-#: ../src/hayat.lisp:1652
+#: ../src/hayat.lisp:1659
 msgid "taylor: log(0) encountered while processing ~:M"
 msgstr "log(0) encontrado mientras procesaba ~:M"
 
-#: ../src/hayat.lisp:1968
+#: ../src/hayat.lisp:1975
 msgid ""
 "taylor: multiple dependent variables must all have the same order of "
 "expansion."
@@ -3687,28 +4171,28 @@ msgstr ""
 "múltiples variables dependientes deben todas tener la misma función de "
 "expansión."
 
-#: ../src/hayat.lisp:1697
+#: ../src/hayat.lisp:1704
 #, lisp-format
 msgid "taylor: power series unavailable for function ~A"
 msgstr "series de potencia no disponible para una función ~A"
 
-#: ../src/hayat.lisp:1284 ../src/hayat.lisp:1292
+#: ../src/hayat.lisp:1283 ../src/hayat.lisp:1291
 msgid "taylor: stronger-var? called on equal vars."
 msgstr "¿stronger-var? llamado en variables iguales."
 
-#: ../src/hayat.lisp:1899
+#: ../src/hayat.lisp:1906
 msgid "taylor: variable of expansion cannot be a number: ~M"
 msgstr "variable de expansión no puede ser un numero: ~M"
 
-#: ../src/hayat.lisp:2164
+#: ../src/hayat.lisp:2171
 msgid "taylor: ~M cannot be a variable."
 msgstr "~M no puede ser una variable."
 
-#: ../src/plot.lisp:2128
+#: ../src/plot.lisp:2148
 msgid "tcl_ouput: second argument must be an integer; found ~M"
 msgstr "argumento segundo debe ser un entero; encontrado ~M"
 
-#: ../src/plot.lisp:2132
+#: ../src/plot.lisp:2152
 msgid "tcl_output: first argument must be a list; found ~M"
 msgstr "primer argumento debe ser una lista; encontrado ~M"
 
@@ -3720,62 +4204,62 @@ msgstr "argumento debe ser un polinomio; encontrado: ~M"
 msgid "tellrat: minimal polynomial must be monic."
 msgstr "mínimo polinomial debe ser monómico."
 
-#: ../src/matcom.lisp:369
+#: ../src/matcom.lisp:363
 msgid "tellsimp: circular rule attempted."
 msgstr "regla circular intentada."
 
-#: ../src/matcom.lisp:377
+#: ../src/matcom.lisp:371
 msgid "tellsimp: failed to compile match for pattern ~M"
 msgstr "falló para compilar coincidencia por patrón ~M"
 
-#: ../src/matcom.lisp:372
+#: ../src/matcom.lisp:366
 #, lisp-format
 msgid ""
 "tellsimp: main operator of pattern must not be match variable; found: ~A"
 msgstr ""
 "operador principal de patrón debe no ser variable coincidente; encontrado: ~A"
 
-#: ../src/matcom.lisp:370
+#: ../src/matcom.lisp:364
 #, lisp-format
 msgid "tellsimp: pattern must not be an atom; found: ~A"
 msgstr "patrón debe ser no ser un átomo; encontrado: ~A"
 
-#: ../src/matcom.lisp:374
+#: ../src/matcom.lisp:368
 msgid ""
 "tellsimp: warning: rule will treat '~M' as noncommutative and nonassociative."
 "~%"
 msgstr "advertencia: regla tratará '~M' como no conmutativo y no asociativo.~%"
 
-#: ../src/matcom.lisp:464
+#: ../src/matcom.lisp:458
 msgid "tellsimpafter: circular rule attempted."
 msgstr "regla circular intentada."
 
-#: ../src/matcom.lisp:472
+#: ../src/matcom.lisp:466
 msgid "tellsimpafter: failed to compile match for pattern ~M"
 msgstr "falló para compilar cotejo por patrón"
 
-#: ../src/matcom.lisp:467
+#: ../src/matcom.lisp:461
 #, lisp-format
 msgid ""
 "tellsimpafter: main operator of pattern must not be match variable; found: ~A"
 msgstr ""
 "operador principal de patrón debe no ser variable coincidente; encontrado: ~A"
 
-#: ../src/matcom.lisp:465
+#: ../src/matcom.lisp:459
 #, lisp-format
 msgid "tellsimpafter: pattern must not be an atom; found: ~A"
 msgstr "patrón debe no ser un átomo; encontrado: ~A"
 
-#: ../src/mactex.lisp:1104
+#: ../src/mactex.lisp:1109
 #, lisp-format
 msgid "tex: function ~s did not return a string.~%"
 msgstr "función ~s no devolvió una cadena.~%"
 
-#: ../src/mactex.lisp:1149
+#: ../src/mactex.lisp:1154
 msgid "texput: expected a list of two items for matchfix operator."
 msgstr "esperaba una lista de dos elementos para fijar y cotejar operador."
 
-#: ../src/mactex.lisp:1132
+#: ../src/mactex.lisp:1137
 msgid "texput: first argument must be a string or a symbol; found: ~M"
 msgstr "primer argumento debe ser una cadena o un símbolo; encontrado ~M"
 
@@ -3783,7 +4267,7 @@ msgstr "primer argumento debe ser una cadena o un símbolo; encontrado ~M"
 msgid "throw: not within 'catch'."
 msgstr "marco de captura para la etiqueta "
 
-#: ../src/suprv1.lisp:776
+#: ../src/suprv1.lisp:783
 msgid "throw: not within 'catch'; expression: ~M"
 msgstr "no dentro 'catch'; expresión: ~M"
 
@@ -3813,7 +4297,7 @@ msgstr "traza: función ~@:M ya está trazado.~%"
 msgid "trace: ~@:M cannot be traced.~%"
 msgstr "traza: ~@:M no puede ser trazado.~%"
 
-#: ../src/mtrace.lisp:552
+#: ../src/mtrace.lisp:559
 msgid "trace: ~@:M has no functional properties after autoloading.~%"
 msgstr "traza: ~@:M no tiene propiedades funcionales tras autocarga.~%"
 
@@ -3833,11 +4317,11 @@ msgstr ""
 msgid "trace: ~@:M is an unknown type of function.~%"
 msgstr "traza: ~@:M es un tipo de función desconocido.~%"
 
-#: ../src/transs.lisp:341
+#: ../src/transs.lisp:325
 msgid "translate: call 'translate_file' to translate a file; found: ~M"
 msgstr "llamada 'translate_file' para traducir un fichero; encontró ~M"
 
-#: ../src/transs.lisp:284
+#: ../src/transs.lisp:268
 #, lisp-format
 msgid "translator: begin translating ~A.~%"
 msgstr "inicio de traslación ~A.~%"
@@ -3854,7 +4338,7 @@ msgstr "sin dicho modo de declaración: ~:M~%"
 msgid "translator: ~:M was declared with mode ~:M, but it has value: ~M"
 msgstr "~:M fue declarado con modo ~:M, pero tiene valor: ~M"
 
-#: ../src/nset.lisp:1160
+#: ../src/nset.lisp:1171
 msgid "tree_reduce: either a nonempty set or initial value must be given."
 msgstr "o bien un conjunto no vacío o bien un valor inicial deben darse."
 
@@ -3867,7 +4351,7 @@ msgstr "fallado para expandir.~%~%"
 msgid "trigreduce: try again after applying rule:~2%~M~%~%"
 msgstr "prueba otra vez tras aplicar regla:~2%~M~%~%"
 
-#: ../src/hayat.lisp:3146
+#: ../src/hayat.lisp:3153
 msgid "unable to expand at a point specified in:"
 msgstr "incapaz de expandir en un punto especificado a:"
 
@@ -3879,24 +4363,24 @@ msgstr "argumento es aparentemente no una función o operador: ~M~%"
 msgid "untrace: ~@:M is not traced.~%"
 msgstr "~@:M no puede ser trazado.~%"
 
-#: ../src/macsys.lisp:498
+#: ../src/macsys.lisp:504
 #, lisp-format
 msgid "using Lisp ~a ~a"
 msgstr "usando Lisp ~a ~a"
 
-#: ../src/suprv1.lisp:610
+#: ../src/suprv1.lisp:616
 msgid "verbify: argument must be a symbol or a string; found: ~M"
 msgstr "un argumento debe ser un símbolo o una cadena:; encontrado: ~M"
 
-#: ../src/transl.lisp:1150
+#: ../src/transl.lisp:1157
 msgid "warning: 'go' not within 'block' or 'do': ~:M~%"
 msgstr "cuidado: 'ir' no dentro de 'bloque' o 'hacer': ~:M~%"
 
-#: ../src/transl.lisp:1152
+#: ../src/transl.lisp:1159
 msgid "warning: 'go' tag must be a symbol: ~:M~%"
 msgstr "cuidado: etiqueta 'go' debe ser un símbolo: ~:M~%"
 
-#: ../src/transl.lisp:1138
+#: ../src/transl.lisp:1145
 msgid "warning: 'return' not within 'block' or 'do': ~:M~%"
 msgstr "cuidado: 'devolver' no dentro de 'bloque' o 'hacer': ~:M~%"
 
@@ -3908,7 +4392,7 @@ msgstr ""
 "cuidado: he creado un bucle ~A veces en la expansión de la macro; "
 "simplemente párame y devuelve ~:@M~%"
 
-#: ../src/mlisp.lisp:1160
+#: ../src/mlisp.lisp:1172
 msgid "warning: assigning ~:M, a non-prime, to 'modulus'~&"
 msgstr "cuidado: asignando ~:M, un no primo, para 'módulos'~&"
 
@@ -3916,8 +4400,8 @@ msgstr "cuidado: asignando ~:M, un no primo, para 'módulos'~&"
 msgid ""
 "warning: calling ~:M in compiled code might not have the desired effect.~%"
 msgstr ""
-"cuidado: llamando ~:M en código compilado puede no tener este efecto "
-"deseado.~%"
+"cuidado: llamando ~:M en código compilado puede no tener este efecto deseado."
+"~%"
 
 #: ../src/transl.lisp:289
 msgid "warning: emit call to MEVAL for expression: ~:M~%"
@@ -3927,12 +4411,20 @@ msgstr "cuidado: emite llamada a MEVAL por expresión: ~:M~%"
 msgid "warning: encountered undefined variable ~:M in translation.~%"
 msgstr "cuidado: encuentra variable no definida ~:M en transición.~%"
 
-#: ../src/cl-info.lisp:215
+#: ../src/transl.lisp:931
+msgid ""
+"warning: globally defining macro ~:M now to ensure correct macro expansions.~"
+"%"
+msgstr ""
+"advertencia: definiendo macro globalmente ~:M ahra para asegurar expansiones "
+"macro correctas.~%"
+
+#: ../src/cl-info.lisp:231
 #, lisp-format
 msgid "warning: ignoring an empty documentation index in ~a~%"
 msgstr "cuidado: ignora un índice de documento vacío en ~a~%"
 
-#: ../src/transl.lisp:1323
+#: ../src/transl.lisp:1329
 msgid "warning: no assignment operator known for ~:M~%"
 msgstr "cuidado: cuidado: ningún operador de asignación conocido para ~:M~%"
 
@@ -3941,7 +4433,7 @@ msgid "warning: no type declaration for ~:M; assume type is 'any'.~%"
 msgstr ""
 "cuidado: sin declaración de tipo para ~:M; tipo asumido es 'cualquiera'.~%"
 
-#: ../src/mmacro.lisp:125
+#: ../src/mmacro.lisp:128
 msgid "warning: unrecognized value of 'macroexpansion'."
 msgstr "cuidado: valor no reconocido de 'macroexpansion'."
 
@@ -3949,7 +4441,7 @@ msgstr "cuidado: valor no reconocido de 'macroexpansion'."
 msgid "warning: variable ~:M (declared type ~:M) assigned type ~:M.~%"
 msgstr "cuidado: variable ~:M (tipo declarado ~:M) asignado tipo ~:M.~%"
 
-#: ../src/transl.lisp:1417
+#: ../src/transl.lisp:1423
 msgid "warning: ~:M cannot be used as a variable.~%"
 msgstr "cuidado: ~:M no puede ser utilizado como una variable.~%"
 
@@ -3965,7 +4457,7 @@ msgid "warning: ~:M is a special function without a full Lisp translation.~%"
 msgstr ""
 "cuidado: ~:M es una función especial sin una transición Lisp completa.~%"
 
-#: ../src/series.lisp:391
+#: ../src/series.lisp:394
 #, lisp-format
 msgid "which is ~%"
 msgstr "la cual es ~%"
@@ -3974,7 +4466,7 @@ msgstr "la cual es ~%"
 msgid "zeta: zeta(~:M) is undefined."
 msgstr "zeta(~:M) no está definido."
 
-#: ../src/mdebug.lisp:466
+#: ../src/mdebug.lisp:468
 #, lisp-format
 msgid ""
 "~\n"
@@ -3990,7 +4482,7 @@ msgstr ""
 "Operación    Descripción~%~\n"
 "---------    ----------------------------------------------"
 
-#: ../src/series.lisp:98
+#: ../src/series.lisp:99
 #, lisp-format
 msgid ""
 "~\n"
@@ -4000,21 +4492,21 @@ msgid ""
 msgstr ""
 "~\n"
 "No pudo hacer una sustitución para evaluar en el punto dado porque el~%~\n"
-"expansión de series de potencia contuvo la variable de expansión como una~%~"
-"\n"
+"expansión de series de potencia contuvo la variable de expansión como "
+"una~%~\n"
 "integración / diferenciación variable."
 
-#: ../src/merror.lisp:158
+#: ../src/merror.lisp:159
 #, lisp-format
 msgid "~%** error while printing error message **~%~A~%"
 msgstr "~%** error mientras ve el mensaje de error **~%~A~%"
 
-#: ../src/mload.lisp:327
+#: ../src/mload.lisp:331
 #, lisp-format
-msgid "~%********************** Problem ~A ***************"
-msgstr "~%********************* Problema ~A ***************"
+msgid "~%********************** Problem ~A~A***************"
+msgstr "~%********************** Problema ~A~A***************"
 
-#: ../src/mload.lisp:340
+#: ../src/mload.lisp:345
 #, lisp-format
 msgid ""
 "~%... Which was correct, but was expected to be wrong due to a known bug "
@@ -4023,81 +4515,87 @@ msgstr ""
 "~%... La cual fue correcta, pero expresada para ser duda\n"
 "equivocada para un defecto conocido en~% Maxima.~%"
 
-#: ../src/mload.lisp:342
+#: ../src/mload.lisp:347
 #, lisp-format
 msgid "~%... Which was correct.~%"
 msgstr "~%... La cual fue correcta.~%"
 
-#: ../src/mload.lisp:292
+#: ../src/mload.lisp:293
 #, lisp-format
 msgid "~%/* Maxima error log from tests in ~A"
-msgstr "~%/* Estado de error de Maxima desde pruebas en ~A"
+msgstr "~%/* Registro de error de Maxima desde pruebas en ~A"
 
-#: ../src/macsys.lisp:174
+#: ../src/macsys.lisp:175
 #, lisp-format
 msgid "~%At the '~A' prompt, type ';' and <enter> to get next demonstration.~&"
 msgstr ""
 "~%Cuando aparezca el cursor '~A', escriba ';' y <enter> para pasar a la "
 "siguiente demostración.~&"
 
-#: ../src/mload.lisp:575
+#: ../src/mload.lisp:638
 #, lisp-format
-msgid "~%Caused an error break: ~a~%"
-msgstr "~%Ha causado un error de ruptura: ~a~%"
+msgid "~%Caused an error break: ~a"
+msgstr "~%Causado un error de ruptura: ~a"
 
-#: ../src/macsys.lisp:503
+#: ../src/macsys.lisp:508
 #, lisp-format
 msgid "~%Distributed under the GNU Public License. See the file COPYING.~%"
 msgstr ""
 "~%Distribuido bajo la Licencia Pública GNU. Consulte el fichero de DERECHO "
 "DE REPRODUCCIÓN.~%"
 
-#: ../src/macsys.lisp:315
+#: ../src/macsys.lisp:318
 #, lisp-format
 msgid "~%Entering a Maxima break point. Type 'exit;' to resume."
 msgstr ""
 "~%Entrando en un punto de corte de Maxima. Escriba 'exit;' para continuar."
 
-#: ../src/mload.lisp:584
+#: ../src/mload.lisp:653
 #, lisp-format
 msgid "~%Error summary:~%"
 msgstr "~%Error sumario:~%"
 
-#: ../src/mload.lisp:328
+#: ../src/mload.lisp:333
 #, lisp-format
 msgid "~%Input:~%"
 msgstr "~%Entrada:~%"
 
-#: ../src/macsys.lisp:395
+#: ../src/macsys.lisp:394
 #, lisp-format
 msgid "~%Please report bugs to:~%"
 msgstr "~%Por favor informe acerca de los defectos a:~%"
 
-#: ../src/mload.lisp:389
+#: ../src/mload.lisp:395
 #, lisp-format
 msgid "~%The following ~A problem~A failed: ~A~%"
 msgstr "~%El siguiente problema ~A ~A ha fallado: ~A~%"
 
-#: ../src/mload.lisp:348
+#: ../src/mload.lisp:353
 #, lisp-format
 msgid "~%This differed from the expected result:~%"
 msgstr "~%Esta diferencia desde el resultado esperado:~%"
 
-#: ../src/mload.lisp:346
+#: ../src/mload.lisp:351
 #, lisp-format
 msgid "~%This is a known error in Maxima. The correct result is:~%"
 msgstr "~%Esto es un error conocido en Maxima. El resultado correcto es:~%"
 
-#: ../src/mload.lisp:334
+#: ../src/mload.lisp:339
 #, lisp-format
 msgid "~%Time:  ~,3F sec (~,3F elapsed)"
 msgstr "~%Hora:  ~,3F seg (~,3F elapsado)"
 
-#: ../src/transs.lisp:116
+#: ../src/transs.lisp:100
 msgid "~%Translating ~:@M"
 msgstr "~%Trasladando ~:@M"
 
-#: ../src/mload.lisp:291
+#. It appears that we were unable to open a socket or connect to the
+#. specified port.
+#: ../src/server.lisp:35
+msgid "~%Unable to connect Maxima to port ~:M.~%"
+msgstr "~%Incapaz de conectar Maxima al puerto ~M.~%"
+
+#: ../src/mload.lisp:292
 #, lisp-format
 msgid "~%batch: write error log to ~a"
 msgstr "~%batch: registro de error escrito a ~a"
@@ -4107,17 +4605,17 @@ msgstr "~%batch: registro de error escrito a ~a"
 msgid "~%read and interpret file: ~A~%"
 msgstr "~%leer e interpretar fichero: ~A~%"
 
-#: ../src/mload.lisp:581
+#: ../src/mload.lisp:650
 #, lisp-format
 msgid "~%~%No unexpected errors found out of ~:d tests.~%"
 msgstr "~%~%Ningunos errores inesperados fuera de ~:d pruebas.~%"
 
-#: ../src/mload.lisp:330
+#: ../src/mload.lisp:335
 #, lisp-format
 msgid "~%~%Result:~%"
 msgstr "~%~%Resultado:~%"
 
-#: ../src/mload.lisp:385
+#: ../src/mload.lisp:391
 #, lisp-format
 msgid "~%~a/~a tests passed~a~%~A"
 msgstr "~%~a/~a pruebas aprobadas~a~%~A"
@@ -4127,25 +4625,30 @@ msgstr "~%~a/~a pruebas aprobadas~a~%~A"
 msgid "~& -- an error. To debug this try: debugmode(true);~%"
 msgstr "~& -- un error. Para depurar esto pruebe: debugmode(true);~%"
 
-#: ../src/numth.lisp:994
+#: ../src/numth.lisp:1294
 #, lisp-format
 msgid "~& -- an error.~%"
 msgstr "~& -- un error.~%"
 
-#: ../src/mdebug.lisp:131
+#: ../src/macsys.lisp:542
 #, lisp-format
-msgid "~& No such break command: ~a"
-msgstr "~& Sin dicha ruptura de operación: ~a"
+msgid "~&/* Starts dribbling to ~A (~d/~d/~d, ~2,'0d:~2,'0d:~2,'0d).*/~&"
+msgstr "~&/* Comienza dribbling a ~A (~d/~d/~d, ~2,'0d:~2,'0d:~2,'0d).*/~&"
 
-#: ../src/macsys.lisp:537
-#, lisp-format
-msgid "~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/~&"
-msgstr "~&/* Iniciar control para ~A (~d/~d/~d, ~d:~d:~d).*/~&"
-
-#: ../src/macsys.lisp:544
+#: ../src/macsys.lisp:549
 #, lisp-format
 msgid "~&/*Finished dribbling to ~A.*/~&"
 msgstr "~&/*Control terminado para ~A.*/~&"
+
+#: ../src/mdebug.lisp:137
+#, lisp-format
+msgid "~&Break command '~(~s~)' does not exist."
+msgstr "~&Orden interrumpida '~(~s~)' no existe."
+
+#: ../src/mdebug.lisp:129
+#, lisp-format
+msgid "~&Break command '~(~s~)' is ambiguous.~%"
+msgstr "~&orden de ruptura '~(~s~)' es ambigua.~%"
 
 #: ../src/cl-info.lisp:22
 #, lisp-format
@@ -4157,17 +4660,12 @@ msgstr "~&Descartando número no válido ~d."
 msgid "~&Ignoring trailing garbage in input."
 msgstr "~&Ignorando arrastre de basura en la entrada."
 
-#: ../src/macsys.lisp:629
+#: ../src/macsys.lisp:645
 #, lisp-format
 msgid "~&Maxima encountered a Lisp error:~%~% ~A"
 msgstr "~&Maxima encontró un error de Lisp:~%~% ~A"
 
-#: ../src/mdebug.lisp:127
-#, lisp-format
-msgid "~&Not unique with property ~(~a: ~{~s~^, ~}~)."
-msgstr "~&No único con propiedad ~(~a: ~{~s~^, ~}~)."
-
-#: ../src/mdebug.lisp:448
+#: ../src/mdebug.lisp:449
 #, lisp-format
 msgid "~&Top level."
 msgstr "~&Nivel máximo."
@@ -4206,12 +4704,12 @@ msgstr ""
 msgid "~&solve: variable list is empty, continuing anyway.~%"
 msgstr "~&solve: lista variable está vacía, continuando de todos modos.~%"
 
-#: ../src/transs.lisp:242
+#: ../src/transs.lisp:226
 #, lisp-format
 msgid "~&translator: see the 'unlisp' file for possible optimizations.~%"
 msgstr "~&traslator: vea el fichero 'unlisp' para optimizaciones posible.~%"
 
-#: ../src/macsys.lisp:630
+#: ../src/macsys.lisp:646
 #, lisp-format
 msgid ""
 "~&~%Automatically continuing.~%To enable the Lisp debugger set *debugger-"
@@ -4220,17 +4718,17 @@ msgstr ""
 "~&~%Automáticamente continuando.~%Para activar la depuración de Lisp ponga "
 "*debugger-hook* a nil.~%"
 
-#: ../src/mload.lisp:598
+#: ../src/mload.lisp:667
 #, lisp-format
 msgid "~&~:d test~p failed out of ~:d total tests.~%"
 msgstr "~&~:d test~p fallado fuera del ~:d test total.~%"
 
-#: ../src/mdebug.lisp:106
+#: ../src/mdebug.lisp:110
 #, lisp-format
 msgid "~&~S is an undefined break command.~%"
 msgstr "~&~S es una ruptura de operación no definida.~%"
 
-#: ../src/transs.lisp:232
+#: ../src/transs.lisp:216
 #, lisp-format
 msgid ""
 "~2%/* The compiler might be able to optimize some function calls if you "
@@ -4240,105 +4738,110 @@ msgstr ""
 "funciones si preprocesa la declaración siguiente al subcódigo ‘Maxima’ "
 "código: */~%"
 
-#: ../src/transs.lisp:237
+#: ../src/transs.lisp:221
 #, lisp-format
 msgid "~2%/* The following functions are not known to be translated:~%"
-msgstr "~2%/* Las siguientes funciones no son conocidas para ser trasladadas:~%"
+msgstr ""
+"~2%/* Las siguientes funciones no son conocidas para ser trasladadas:~%"
 
-#: ../src/transs.lisp:108
+#: ../src/transs.lisp:92
 msgid "~2%;; Function ~:@M~%"
 msgstr "~2%;; Función ~:@M~%"
 
-#: ../src/simp.lisp:350
+#: ../src/simp.lisp:344
 msgid "~:@M: wrong number of arguments or subscripts."
 msgstr "~:@M: número equivocado de argumentos o subscripts."
 
-#: ../src/simp.lisp:342
+#: ../src/simp.lisp:336
 msgid "~:@M: wrong number of arguments."
 msgstr "~:@M: número de argumentos equivocados."
 
-#: ../src/comm.lisp:871 ../src/comm.lisp:882
+#: ../src/mlisp.lisp:637
+msgid "~:M is being set to ~:M.~%"
+msgstr "~:M está siendo establecido a ~:M.~%"
+
+#: ../src/comm.lisp:895 ../src/comm.lisp:906
 msgid "~:M: argument cannot be a number; found ~M"
 msgstr "~:M: un argumento no puede ser un número; se ha encontrado ~M"
 
-#: ../src/nset.lisp:69
+#: ../src/nset.lisp:79
 msgid "~:M: argument must be a list or a set; found: ~:M"
 msgstr "~:M: un argumento debe ser una o un conjunto; encontrado: ~:M"
 
-#: ../src/nset.lisp:61
+#: ../src/nset.lisp:71
 msgid "~:M: argument must be a list; found: ~:M"
 msgstr "~:M: un argumento debe ser una lista; encontrado: ~:M"
 
-#: ../src/comm.lisp:859
+#: ../src/comm.lisp:883
 msgid "~:M: argument must be a non-atomic expression; found ~:M"
 msgstr ""
 "~:M: un argumento debe ser una expresión no-atómica; se ha encontrado ~:M"
 
-#: ../src/nset.lisp:53
+#: ../src/nset.lisp:63
 msgid "~:M: argument must be a set; found: ~:M"
 msgstr "~:M: un argumento debe ser un conjunto; encontrado: ~:M"
 
-#: ../src/mlisp.lisp:1381
+#: ../src/mlisp.lisp:1393
 msgid "~:M: argument must be a symbol or a string; found: ~M"
 msgstr ""
 "~:M: un argumento debe ser un símbolo o una cadena; se ha encontrado ~M"
 
-#: ../src/suprv1.lisp:455
+#: ../src/suprv1.lisp:464
 msgid "~:M: argument must be a symbol; found: ~M"
 msgstr "~:M: un argumento debe ser un símbolo; encontrado: ~M"
 
-#: ../src/comm.lisp:907 ../src/comm.lisp:941
+#: ../src/comm.lisp:931 ../src/comm.lisp:965
 msgid "~:M: argument must be an integer; found ~M"
 msgstr "~:M: un argumento debe ser un entero; se ha encontrado ~M"
 
-#: ../src/comm.lisp:539
+#: ../src/comm.lisp:562
 msgid "~:M: expected exactly ~M arguments."
 msgstr "~:M: esperaba exactamente ~M argumentos."
 
-#: ../src/suprv1.lisp:450
+#: ../src/suprv1.lisp:459
 msgid "~:M: expected just one argument; found: ~M"
 msgstr "~:M: esperaba solo un argumento; se ha encontrado: ~M"
 
-#: ../src/mlisp.lisp:1199
+#: ../src/mlisp.lisp:1211
 msgid "~:M: expected two or more arguments; found: ~M"
 msgstr "~:M: esperaba dos o más argumentos; se ha encontrado: ~M"
 
-#: ../src/comm.lisp:929
+#: ../src/comm.lisp:953
 msgid "~:M: fell off the end."
 msgstr "~:M: cayó fuera del final."
 
-#: ../src/simp.lisp:345
+#: ../src/simp.lisp:339
 msgid "~:M: improper argument: ~M"
 msgstr "~:M: argumento no propio: ~M"
 
-#: ../src/asum.lisp:487 ../src/asum.lisp:560
+#: ../src/asum.lisp:490 ../src/asum.lisp:563
 msgid "~:M: index must be a symbol; found ~M"
 msgstr "~:M: el índice debe ser un símbolo; se ha encontrado ~M"
 
-#: ../src/comm.lisp:949
+#: ../src/comm.lisp:973
 msgid "~:M: index must be in range 1 to ~M, inclusive; found ~M"
 msgstr ""
 "~:M: el índice debe estar en el rango de 1 a ~M, incluidos; se ha encontrado "
 "~M"
 
-#: ../src/mlisp.lisp:1383
+#: ../src/mlisp.lisp:1395
 msgid "~:M: indicator must be a symbol or a string; found: ~M"
 msgstr "~:M: indicador debe ser un símbolo o una cadena; se ha encontrado: ~M"
 
 #. NOT CLEAR WHAT IS INVALID HERE. OH WELL.
-#: ../src/comm.lisp:876
+#: ../src/comm.lisp:900
 msgid "~:M: invalid operator."
 msgstr "~:M: operador no válido."
 
-#: ../src/comm.lisp:1054
+#: ../src/comm.lisp:1078
 msgid "~:M: no such element in ~M"
 msgstr "~:M: sin tal elemento en ~M"
 
-#: ../src/comm.lisp:720
+#: ../src/comm.lisp:744
 msgid "~:M: second argument must be a variable; found ~M"
 msgstr "~:M: segundo argumento debe ser una variable; se ha encontrado ~M"
 
-#: ../src/comm.lisp:1034
+#: ../src/comm.lisp:1058
 msgid "~:M: ~Margument must be a non-atomic expression; found ~M"
 msgstr ""
 "~:M: argumento ~M debe ser una expresión no atómica; se ha encontrado ~M"
@@ -4347,12 +4850,12 @@ msgstr ""
 msgid "~@:M: lower bound ~M is greater than upper bound ~M"
 msgstr "~@:M: borde inferior ~M es mayor que el borde superior ~M"
 
-#: ../src/numerical/slatec/quadpack.lisp:17
+#: ../src/numerical/slatec/quadpack.lisp:22
 #, lisp-format
 msgid "~A is not a real floating-point number"
 msgstr "~A no es un número real de coma flotante"
 
-#: ../src/suprv1.lisp:507
+#: ../src/suprv1.lisp:516
 #, lisp-format
 msgid "~A seconds"
 msgstr "~A segundos"
@@ -4361,62 +4864,147 @@ msgstr "~A segundos"
 msgid "~A: argument ~:M isn't in the domain of ~A."
 msgstr "~A: el argumento ~:M no está dentro del dominio de ~A."
 
-#: ../src/trigi.lisp:920
+#: ../src/trigi.lisp:912
 #, lisp-format
 msgid "~A: division by zero attempted."
 msgstr "~A: se ha intentado una división entre cero."
 
-#: ../src/clmacs.lisp:604
+#: ../src/clmacs.lisp:613
 msgid "~M arguments supplied to ~M: found ~M"
 msgstr "~M argumentos suministrado a ~M: se han encontrado ~M"
 
-#: ../src/mlisp.lisp:481
+#: ../src/mlisp.lisp:485
 msgid "~M arguments supplied to ~M; found: ~M"
 msgstr "~M argumentos suministrado a ~M: se han encontrado ~M"
 
-#: ../src/numerical/slatec/quadpack.lisp:31
+#: ../src/numerical/slatec/quadpack.lisp:36
 msgid "~M: Cannot numerically evaluate ~M at ~M"
 msgstr "~M: No puede evaluar numéricamente ~M en ~M"
 
-#: ../src/compar.lisp:267
+#: ../src/compar.lisp:258
 msgid "~M: context name must be a symbol; found ~M"
 msgstr "~M: el nombre del contexto debe ser un símbolo; se ha encontrado ~M"
 
-#: ../src/mload.lisp:379
+#: ../src/mload.lisp:385
 #, lisp-format
 msgid "~a/~a tests passed~a~%~A"
 msgstr "~a/~a pruebas aprobadas~a~%~A"
 
-#: ../src/nset.lisp:1095
+#: ../src/nset.lisp:1106
 #, lisp-format
 msgid "~a: either a nonempty set or initial value must be given."
 msgstr "~a: debe darse o un conjunto no vacío o un valor inicial."
 
-#: ../src/dskfn.lisp:53
+#: ../src/dskfn.lisp:68
 msgid "~a: first argument must be a string; found: ~M"
 msgstr "~a: el primer argumento debe ser una cadena; se ha encontrado: ~M"
 
-#: ../src/numth.lisp:2407 ../src/numth.lisp:2414 ../src/numth.lisp:2482
-#: ../src/numth.lisp:2500
+#: ../src/numth.lisp:2779 ../src/numth.lisp:2786 ../src/numth.lisp:2854
+#: ../src/numth.lisp:2872
 msgid "~m arithmetic: Quotient by zero"
 msgstr "~m aritmético: Cociente entre cero"
 
-#: ../src/mlisp.lisp:834
-msgid "~new: expected exactly one argument; found: ~M"
-msgstr "~nuevo: esperaba exactamente un argumento; se han encontrado: ~M"
+#: ../share/stringproc/stringproc.lisp:1050
+msgid "~m: unsuitable optional arguments."
+msgstr "~:m: argumentos opcionales no concluyente."
 
-# Copyright (C) 2009 Ismael Garrido, 2014 Maxima Developers
-# This file is distributed under the same license as the Maxima package.
-# msgid ""
-# msgstr ""
-# "Project-Id-Version: Maxima 5.17.1\n"
-# "Report-Msgid-Bugs-To: \n"
-# "POT-Creation-Date: 2014-12-10 16:46+0000\n"
-# "PO-Revision-Date: 2014-12-10 16:54:39+0100\n"
-# "Last-Translator: Jaime Villate <villate@fe.up.pt>\n"
-# "Language-Team:  Spanish\n"
-# "Language: es\n"
-# "MIME-Version: 1.0\n"
-# "Content-Type: text/plain; charset=UTF-8\n"
-# "Content-Transfer-Encoding: 8bit\n"
-# "X-Poedit-Language: Spanish\n"
+#~ msgid "(~a line ~a)"
+#~ msgstr "(~a línea ~a)"
+
+#~ msgid "(~a ~a~@[ in ~a~])"
+#~ msgstr "(~a ~a~@[ en ~a~])"
+
+#~ msgid "/* Problem ~A */~%"
+#~ msgstr "/* Problema ~A */~%"
+
+#~ msgid "At least one argument to `chinese' was an empty list."
+#~ msgstr "Al menos un argumento en `chino' ha sido una lista vacía."
+
+#~ msgid ""
+#~ "Optional fourth argument to `zn_nth_root' must be of the form [[p1, "
+#~ "e1], ..., [pk, ek]]."
+#~ msgstr ""
+#~ "Cuatro argumentos opcionales para `zn_nth_root' deberían ser de formato "
+#~ "[[p1, e1], ..., [pk, ek]]."
+
+#~ msgid "Second argument to `zn_power_table' must be `all' or a small fixnum."
+#~ msgstr ""
+#~ "Un segundo argumento para `zn_power_table' debe ser `todo' o un número "
+#~ "fijo pequeño."
+
+#~ msgid "Wrong argument ~M for option ~M. Not a valid style."
+#~ msgstr "Argumento ~M equivocado para la opción ~M. Sin estilo válido."
+
+#~ msgid "`zn_characteristic_factors': Argument must be an integer."
+#~ msgstr "`zn_characteristic_factors': un argumento debe ser un entero."
+
+#~ msgid ""
+#~ "`zn_nth_root': Second and third argument must be a positive integers. "
+#~ "Found ~m, ~m."
+#~ msgstr ""
+#~ "`zn_nth_root': los argumentos segundo y tercero deben ser enteros "
+#~ "positivos. Encontrado ~m, ~m."
+
+#~ msgid ""
+#~ "algsys: tried and failed to reduce system to a polynomial in one "
+#~ "variable; give up."
+#~ msgstr ""
+#~ "algsys: fallo al intentar reducir el sistema a un polinomio en una "
+#~ "variable; abandono."
+
+#~ msgid ""
+#~ "assignment: array has one dimension, but two or more indices supplied."
+#~ msgstr ""
+#~ "asignación: una unimatriz tiene una dimensión, pero han suministrados dos "
+#~ "o más."
+
+#~ msgid ""
+#~ "assignment: array has two or more dimensions, but one index supplied."
+#~ msgstr ""
+#~ "asignación: una unimatriz tiene dos o más dimensiones, pero se ha "
+#~ "suministró solo un índice."
+
+#~ msgid ""
+#~ "assignment: ~A is not a hash table, an array, Maxima list, or a matrix."
+#~ msgstr ""
+#~ "asignación: ~A no es una tabla hash, una unimatriz, lista de Maxima, o "
+#~ "una matriz."
+
+#~ msgid ""
+#~ "assignment: ~A is not a hash table, an array, a Maxima list, or a matrix."
+#~ msgstr ""
+#~ "asignación: ~A no es una tabla hash, una unimatriz, lista Maxima, o una "
+#~ "matriz."
+
+#~ msgid "evaluation: ~:M has a value.~%"
+#~ msgstr "evaluación: ~:M tiene un valor.~%"
+
+#~ msgid "integrate: invalid argument: ~M"
+#~ msgstr "argumento no válido: ~M"
+
+#~ msgid "jacobi: zero denominator."
+#~ msgstr "denominador a cero."
+
+#~ msgid "parser: incomplete number; missing exponent?"
+#~ msgstr "análisis: número incompleto; ¿falta exponente?"
+
+#~ msgid "regex: ranges must be in acending order; found: \"~A-~A\""
+#~ msgstr "los rangos deben estar en orden ascendiente; encontrado: “~A-~A”"
+
+#~ msgid "~%********************** Problem ~A ***************"
+#~ msgstr "~%********************* Problema ~A ***************"
+
+#~ msgid "~%Caused an error break: ~a~%"
+#~ msgstr "~%Ha causado un error de ruptura: ~a~%"
+
+#~ msgid "~& No such break command: ~a"
+#~ msgstr "~& Sin dicha ruptura de operación: ~a"
+
+#~ msgid "~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/~&"
+#~ msgstr "~&/* Iniciar control para ~A (~d/~d/~d, ~d:~d:~d).*/~&"
+
+#~ msgid "~&Not unique with property ~(~a: ~{~s~^, ~}~)."
+#~ msgstr "~&No único con propiedad ~(~a: ~{~s~^, ~}~)."
+
+#~ msgid "~new: expected exactly one argument; found: ~M"
+#~ msgstr "~nuevo: esperaba exactamente un argumento; se han encontrado: ~M"
