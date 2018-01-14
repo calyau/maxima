@@ -1056,3 +1056,5 @@ for x in [100, 200, 300] do push(x - 1, M);
 block ([M:[]], ev(e1), M);
 [299, 199, 99];
 
+(reset(use_fast_arrays),1);
+1;

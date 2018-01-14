@@ -98,6 +98,27 @@ eigenvalues(mat):=
 		listall:endcons(multiplicities,[listall]),
 		return(listall))$
 
+/* EIGENVECTORS - Compute eigenvectors of the matrix mat.
+
+  The return value is a list of two elements. The first is a list of the
+  eigenvalues of mat and a list of the multiplicities of the eigenvalues,
+  found by calling eigenvalues().  The second is a list of lists of
+  eigenvectors. There is one list of eigenvectors for each eigenvalue.
+  There may be one or more eigenvectors in each list.
+
+  The following flags are used:
+
+  nondiagonalizable is set to true when the matrix is nondiagonalizable
+  after eigenvectors returns, or false otherwise.
+
+  hermitianmatrix when true, causes the degenerate eigenvectors of the
+  Hermitian matrix to be orthogonalized using the Gram-Schmidt algorithm.
+
+  knowneigvals when true causes the eigen package to assume the eigenvalues
+  of the matrix are known to the user and stored under the global name
+  listeigvals. listeigvals should be set to a list similar to the output
+  eigenvalues.
+ */
 eigenvectors(mat):=
 		block([eigvecs,equations,unknowns,solution,eigvals,dimnsn,
 		count,vectr,index3,index4,index2,index1,matrx,mmatrx,notknwn,
@@ -108,6 +129,7 @@ eigenvectors(mat):=
                              [vectr,matrx,mmatrx,intern,notknwn],any),
                 unknowns:[],dimnsn:mi(length(mat)),
                 count:mi(dimnsn),notknwn:?gensym(),
+		mat:rationalize(mat),
 		if knowneigvals then eigvals:listeigvals
 		else eigvals:eigenvalues(mat),
 		if eigvals=[] then (nondiagonalizable:true,return(eigvals))

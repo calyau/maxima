@@ -139,3 +139,5 @@ done;
            ['conjugate, nounify ('erf_generalized), 'beta, 'nset, 'trylevel, 'maxmin, 'nummod]));
 true;
 
+(reset(use_fast_arrays),1);
+1;

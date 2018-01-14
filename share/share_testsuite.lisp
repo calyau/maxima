@@ -48,7 +48,7 @@
     "rtest_numericalio"
     ((mlist simp) "rtest_simplify_sum" 57)
     "rtest_solve_rec"
-    ((mlist simp) "rteststringproc" 12 14)
+    "rtest_stringproc"
     "rtest_opproperties"
     "rtest_stats"
     "rtest_distrib"

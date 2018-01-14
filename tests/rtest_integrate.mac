@@ -6277,4 +6277,12 @@ integrate(z^3*%e^(f*z)*(b*c^(d*z)+a)^p,z);
 integrate(z^4*%e^(f*z)*(b*c^(d*z)+a)^p,z);
 'integrate((b*c^(d*z)+a)^p*z^4*%e^(f*z),z);
 
+/* Tidy up */
+(reset(),
+ forget(n>0,notequal(v,0)),
+ remove(z,complex,n,integer),
+ kill(all),
+ 0);
+0;
+
 /* ----- End of file -------------------------------------------------------- */
