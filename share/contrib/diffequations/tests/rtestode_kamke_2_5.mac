@@ -1,3 +1,6 @@
+(load("contrib_ode"),0);
+0$
+
 /* ODE tests - Second order linear equations 401-445
 
   Reference:

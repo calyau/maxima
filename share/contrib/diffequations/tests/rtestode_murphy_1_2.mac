@@ -1,3 +1,6 @@
+(load("contrib_ode"),0);
+0$
+
 /* ODE tests - Murphy equations 1.101 - 1.200
 
   Reference: 

@@ -1,3 +1,6 @@
+(load("contrib_ode"),0);
+0$
+
 /* Test cases for symtest() function */
 
 use_pdiff:true;

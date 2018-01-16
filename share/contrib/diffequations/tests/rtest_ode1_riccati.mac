@@ -1,3 +1,6 @@
+(load("contrib_ode"),0);
+0$
+
 /* Test cases for ode1_riccati.mac functions */
 
 /* Test cases with n=2*a   ode1_riccati_special(a,b,c,n,y,x)*/

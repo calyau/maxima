@@ -1,3 +1,6 @@
+(load("contrib_ode"),0);
+0$
+
 /* ODE tests - Equations 1.401-1.500
 
   Reference:
