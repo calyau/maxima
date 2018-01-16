@@ -151,3 +151,6 @@ errcatch(if grad a then 1 else 0);
 []$
 
 */
+
+(reset(tr_bound_function_applyp,vect_cross,dotexptsimp,dotassoc,dotscrules),0);
+0$

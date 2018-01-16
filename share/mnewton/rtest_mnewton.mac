@@ -112,3 +112,6 @@ true $
 
 kill(all)$
 done $
+
+(reset(algexact),0);
+0$

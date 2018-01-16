@@ -36,3 +36,6 @@ lbr(u,v):=u.v-v.u;
 lbr(u,v):=u.v-v.u;
 atensimp(lbr(u,lbr(v,w)))+atensimp(lbr(v,lbr(w,u)))+atensimp(lbr(w,lbr(u,v)));
 0;
+
+(reset(dotscrules,dotexptsimp,dotdistrib),0);
+0$

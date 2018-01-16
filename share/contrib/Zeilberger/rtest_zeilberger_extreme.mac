@@ -24,3 +24,6 @@ h12: binomial(n, k)^2 * binomial( 2*k, k) * binomial(2*k,n-k);
 binomial(n, k)^2 * binomial( 2*k, k) * binomial(2*k,n-k)$
 zb_prove(h12,k,n,parGosper(h12,k,n,5));
 true$
+
+(reset(verbose),reset(linsolvewarn),0);
+0;

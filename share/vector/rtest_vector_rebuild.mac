@@ -93,5 +93,5 @@ block([vector_factor: true, M, M_1],
   vector_simp(M.M_1));
 matrix([1,0],[0,1])$
 
-(kill(v), 'done);
+(kill(v), reset(listarith,doallmxops,domxmxops,dotexptsimp), 'done);
 'done$

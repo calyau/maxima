@@ -120,3 +120,6 @@ romberg (x^(2 * z) - 5, x, 0.0, 200.0);
  + integrate (e3, x,2,5/2)
  + integrate (e4, x,3/2,2)
  + integrate (e5, x,1,3/2), keepfloat));
+
+(reset(float_approx_equal_tolerance),0);
+0$

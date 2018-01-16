@@ -1,6 +1,5 @@
 (kill (all),
  load (interpol),
- save_tolerance : float_approx_equal_tolerance,
  float_approx_equal_tolerance : 1e-8,
  dat1: matrix([6.5,3],[1.8,-8],[9,2],[-2,4],[1/8,1],[9/12,3],[10,%pi]),
  dat2: [[2,4],[7,1],[-7,2/7],[5,9],[8,4/9],[9,4]],
@@ -156,6 +155,5 @@ true;
 is (equal (ratinterpol (subst (b=5/7, h), 2), subst (b=5/7, ratinterpol (h, 2))));
 true;
 
-(float_approx_equal_tolerance : save_tolerance,
- 0);
-0;
+(reset(float_approx_equal_tolerance),0);
+0$

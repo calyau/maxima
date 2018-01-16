@@ -157,3 +157,6 @@ Dp*Dq$
 ratsimp(f_star([p1,q1,p2,q2,p3,q3],(depends([f,g,h],[p1,q1,p2,q2,p3,q3]),
       p_braket(f*g,h)-f*p_braket(g,h)-g*p_braket(f,h))));
 0$
+
+(reset(matrix_element_mult),0);
+0$

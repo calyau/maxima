@@ -622,3 +622,5 @@ ratsimp (simplify_sum(sum(1/((n+1)*(2*n-1)), n, 1,inf)) -simplify_sum(sum(1/((n+
 ratsimp (simplify_sum(sum(1/((2*n+1)^2-4)^2, n, 0, inf)));
 1/64*%pi^2;
 
+(reset(verbose,linsolvewarn),0);
+0$

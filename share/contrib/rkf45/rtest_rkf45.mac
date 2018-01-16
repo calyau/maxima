@@ -70,4 +70,7 @@ errcatch (rkf45(y,y,1,t,0,1));
 is( abs(last(last(rkf45 (-t*y,y,1,[t,0,1,0.01]))) - exp(-0.5)) < 1e-6 );
 true $
 
+(reset(float_approx_equal_tolerance),0);
+0$
+
 /* batch("/pap/Maxima/rkf45/rtest_rkf45.mac",'test); */

@@ -415,3 +415,6 @@ false;
 
 (errcatch(bf_inverse_fft([1,2,3])), error);
 ["bf_inverse_fft: size of input must be a power of 2, not ~M",3];
+
+(reset(float_approx_equal_tolerance),0);
+0$
