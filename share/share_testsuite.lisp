@@ -76,7 +76,7 @@
     "arag_test"
     "rtest_pdiff"
     "rtest_to_poly"
-    ((mlist simp) "rtestprintf" 27 29 38 39 40 47 48 54)
+    ((mlist simp) "rtestprintf" 38)
     "rtest_simplex"
     "rtest_graphs"
     "rtest_abs_integrate"
