@@ -72,7 +72,8 @@
     "rtest_wilcoxon"
     "rtest_bitwise"
     "gf_test"
-    ((mlist simp) "rtest_namespaces" 7)
+#+sbcl    ((mlist simp) "rtest_namespaces" 7)
+#-sbcl    "rtest_namespaces"
     "arag_test"
     ((mlist simp) "rtest_pdiff" 62)
     ((mlist simp) "rtest_to_poly" 13 14 15 16 17 18 19 20 25)
