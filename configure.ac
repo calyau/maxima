@@ -16,6 +16,11 @@ AM_INIT_AUTOMAKE([-Wno-portability tar-ustar])
 # On other systems it doesn't hurt.
 export GCL_ANSI=t
 
+# This enables running the testbench for "make check" on gcl versions with the old
+# memory management (Which in January 2018 includes all Versions shipped with debian
+# and Ubuntu)
+export GCL_MEM_MULTIPLE=0.1
+
 AM_PATH_LISPDIR
 
 AC_CANONICAL_HOST
