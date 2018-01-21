@@ -417,6 +417,19 @@ todd_coxeter (symet (5));
 (put ("*", 'bar, 'foo), kill (all), string (a*b));
 "a*b";
 
+/* SF bug #3387: kill(all) looses mtime's "nary" property
+ * (tickled by the preceding test)
+ */
+
+xreduce ("*", []);
+1;
+
+(put ("+", 'baz, 'quux), kill (all));
+done;
+
+xreduce ("+", []);
+0;
+
 /* reported to mailing list 2015-01-05: "order of operands is changed due to source information" */
 
 block([simp:false], ?cons(?list('?mplus),?cdr([1,5,3])), string(%%));

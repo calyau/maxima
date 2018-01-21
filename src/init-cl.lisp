@@ -700,6 +700,21 @@ When one changes, the other does too."
       (setf (gethash s *builtin-symbol-props*)
 	    (copy-tree (symbol-plist s))))))
 
+;; Also store the property lists for symbols associated with operators;
+;; e.g. MPLUS, MTIMES, etc.
+;; Here we find them via the MHEADER property, which is used by the parser.
+;; I don't know any better way to find these properties.
+
+(let ((maxima-package (find-package :maxima)))
+  (do-symbols (s maxima-package)
+    (let ((h (get s 'mheader)))
+      (when h
+        (let ((s1 (first h)))
+          (unless (gethash s1 *builtin-symbol-props*)
+            (push s1 *builtin-symbols*)
+            (setf (gethash s1 *builtin-symbol-props*)
+                  (copy-tree (symbol-plist s1)))))))))
+
 ;; Initialize assume database for $%pi, $%e, etc
 (dolist (c *builtin-numeric-constants*)
   (initialize-numeric-constant c))
