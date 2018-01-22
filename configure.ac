@@ -1056,14 +1056,14 @@ AC_ARG_WITH(default-lisp,
 			AC_MSG_ERROR(Unknown argument ${DEFAULTLISP} to --with-default-lisp) 
 			;;
      	esac],
-	[if test x"${clisp}" = xtrue ; then
-		DEFAULTLISP=clisp
+	[if test x"${sbcl}" = xtrue ; then
+		DEFAULTLISP=sbcl
 	elif test x"${cmucl}" = xtrue ; then
 		DEFAULTLISP=cmucl
 	elif test x"${scl}" = xtrue ; then
 		DEFAULTLISP=scl
-	elif test x"${sbcl}" = xtrue ; then
-	   	DEFAULTLISP=sbcl
+	elif test x"${clisp}" = xtrue ; then
+	   	DEFAULTLISP=clisp
 	elif test x"${gcl}" = xtrue ; then
 	   	DEFAULTLISP=gcl
 	elif test x"${acl}" = xtrue ; then
