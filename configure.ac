@@ -16,6 +16,11 @@ AM_INIT_AUTOMAKE([-Wno-portability tar-ustar])
 # On other systems it doesn't hurt.
 export GCL_ANSI=t
 
+# This enables running the testbench for "make check" on gcl versions with the old
+# memory management (Which in January 2018 includes all Versions shipped with debian
+# and Ubuntu)
+export GCL_MEM_MULTIPLE=0.1
+
 AM_PATH_LISPDIR
 
 AC_CANONICAL_HOST
@@ -1051,14 +1056,14 @@ AC_ARG_WITH(default-lisp,
 			AC_MSG_ERROR(Unknown argument ${DEFAULTLISP} to --with-default-lisp) 
 			;;
      	esac],
-	[if test x"${clisp}" = xtrue ; then
-		DEFAULTLISP=clisp
+	[if test x"${sbcl}" = xtrue ; then
+		DEFAULTLISP=sbcl
 	elif test x"${cmucl}" = xtrue ; then
 		DEFAULTLISP=cmucl
 	elif test x"${scl}" = xtrue ; then
 		DEFAULTLISP=scl
-	elif test x"${sbcl}" = xtrue ; then
-	   	DEFAULTLISP=sbcl
+	elif test x"${clisp}" = xtrue ; then
+	   	DEFAULTLISP=clisp
 	elif test x"${gcl}" = xtrue ; then
 	   	DEFAULTLISP=gcl
 	elif test x"${acl}" = xtrue ; then

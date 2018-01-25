@@ -6277,6 +6277,10 @@ integrate(z^3*%e^(f*z)*(b*c^(d*z)+a)^p,z);
 integrate(z^4*%e^(f*z)*(b*c^(d*z)+a)^p,z);
 'integrate((b*c^(d*z)+a)^p*z^4*%e^(f*z),z);
 
+/* From the mailing list/20180123 */
+integrate(1/(r^2+1),r);
+atan(r);
+
 /* Tidy up */
 (reset(),
  forget(n>0,notequal(v,0)),
