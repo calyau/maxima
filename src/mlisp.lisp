@@ -1448,9 +1448,7 @@ wrapper for this."
           (cond
             ((eq mpropp 'kind) (declarekind var prop))
             ((eq mpropp 'opers)
-             (putprop (setq var (linchk var)) t prop) (putprop var t 'opers)
-             (if (and (symbolp var) (not (get var 'operators)))
-               (putprop var 'simpargs1 'operators)))
+             (putprop (setq var (linchk var)) t prop) (putprop var t 'opers))
             (mpropp
               (if (and (member prop '($scalar $nonscalar) :test #'eq)
                        (mget var (if (eq prop '$scalar) '$nonscalar '$scalar)))

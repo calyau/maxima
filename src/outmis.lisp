@@ -172,7 +172,7 @@
   	   (nconc l (ncons (cdr prop))))
   	  ((setq prop (member (car y) opers :test #'eq)) 
   	   (nconc l (list (car prop))))
-  	  ((and (eq (car y) 'operators) (not (eq (cadr y) 'simpargs1)))
+  	  ((and (eq (car y) 'operators) (not (or (eq (cadr y) 'simpargs1) (eq (cadr y) nil))))
   	   (nconc l (list '$rule)))
   	  ((and (member (car y) '(fexpr fsubr mfexpr*s mfexpr*) :test #'eq)
   		(nconc l (ncons "special evaluation form"))
