@@ -3036,8 +3036,6 @@
 	 (cond ((eq (caar y) 'rat)
 		(> (* (caddr y) (cadr x)) (* (caddr x) (cadr y))))))
 	((eq (caar y) 'rat))
-	((member (caar x) '(mbox mlabox) :test #'eq) (great (cadr x) y))
-	((member (caar y) '(mbox mlabox) :test #'eq) (great x (cadr y)))
 	((or (member (caar x) '(mtimes mplus mexpt %del) :test #'eq)
 	     (member (caar y) '(mtimes mplus mexpt %del) :test #'eq))
 	 (ordfn x y))

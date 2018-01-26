@@ -154,3 +154,16 @@ ratsubst (z, sqrt(x + 1), 1 + (x + 1)^(3/2)), radsubstflag=false;
 ratsubst (z, sqrt(x + 1), 1 + (x + 1)^(3/2)), radsubstflag=true;
 1 + z^3;
 
+/* SF bug #2012: "Lisp stack overflow with dpart." */
+
+dpart(cos(a+b),1);
+cos(?mbox(a+b));
+
+/* SF bug #3390: "?great mishandles box" */
+
+?great(box(x+t),-box(x+t));
+true;
+
+?great(-box(x+t),box(x+t));
+false;
+
