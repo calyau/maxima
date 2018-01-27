@@ -35,15 +35,17 @@ igeowedge_flag:false;
   else if not atom(body) and op(body)="-" then -(any~(-body))
   else if not atom(any) and op(any)="*" then
   (
-    if numberp(first(any)) then first(any)*(second(any)~body)
-    else (first(any)~body)*second(any)
+    if atom(first(any)) then first(any)*(rest(any)~body)
+    else if atom(last(any)) then last(any)*(rest(any,-1)~body)
+    else (first(any)~body)*rest(any)
   )
   else if not atom(body) and op(body)="*" then
   (
-    if numberp(first(body)) then first(body)*(any~second(body))
-    else (any~first(body))*second(body)
+    if atom(first(body)) then first(body)*(any~rest(body))
+    else if atom(last(body)) then last(body)*(any~rest(body,-1))
+    else (any~first(body))*rest(body)
   )
-  else if atom(any) and atom(body) then
+  else if atom(any) or atom(body) then
   (
     if any=body then 0
     else nounify("~")(any,body)
