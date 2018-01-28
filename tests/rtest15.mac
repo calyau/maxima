@@ -1201,6 +1201,21 @@ map('pop, '[l1,l2,l3]);
 (remove("[", symmetric),0);
 0$
 
+/* ensure that remove("[", symmetric) doesn't interfere with other stuff --
+ * bug previously caused rtest_levin to fail if executed after this one.
+ */
+
+?mopp (?mlist);
+true;
+
+constantp ([1.0, 2.0]);
+true;
+
+member ("[", props);
+false;
+
+/* resume other tests */
+
 (aa[1] : [1], push(aa[1],aa[1]), [aa[1],pop(aa[1]), aa[1]]);
 [[[1],1],[1],[1]]$
 

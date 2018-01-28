@@ -1556,7 +1556,7 @@ wrapper for this."
                (if (not (getl var (delete prop (copy-list opers) :count 1 :test #'eq)))
                  (zl-remprop var 'opers)))
               (t (zl-remprop var prop)))
-            (cond ((eq info t) (rempropchk var))
+            (cond ((eq info t) (rempropchk (car vars)))
                   ((eq info 'foo))
                   (funp
                     (mfunction-delete var info))
