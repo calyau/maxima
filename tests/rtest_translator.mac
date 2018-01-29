@@ -560,3 +560,17 @@ block ([c, f],
  translate (f))$
 [];
 
+/* ensure that a null OPERATORS property doesn't interfere with
+ * translation of local variable used as a function name.
+ * This is the bug that caused failures in rtest_fractals when executed after run_testsuite.
+ */
+
+(kill(aa, foobarbaz, mumbleblurf, hhh),
+ matchdeclare (aa, all),
+ tellsimp (mumbleblurf(aa), 1 - aa),
+ kill (mumbleblurf), /* as of 2018-01-28, this leaves (OPERATORS NIL) in property list */
+ hhh(mumbleblurf, u) := mumbleblurf(u),
+ foobarbaz(x) := 100 + x,
+ translate (hhh),
+ hhh (foobarbaz, 11));
+111;

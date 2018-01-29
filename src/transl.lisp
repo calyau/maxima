@@ -752,7 +752,7 @@ APPLY means like APPLY.")
 	((setq temp (macsyma-special-op-p (caar form)))
 	 ;; a special form not handled yet! foobar!
 	 (attempt-translate-random-special-op form temp))
-	((getl (caar form) '(noun operators))
+	((or (get (caar form) 'noun) (get (caar form) 'operators))
 	 ;; puntastical case. the weird ones are presumably taken care
 	 ;; of by TRANSLATE properties by now.
 	 (tr-infamous-noun-form form))
