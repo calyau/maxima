@@ -28,6 +28,8 @@ components(h([],[i,j]),e([],[i,j])/p([],[]));
 done;
 h([],[a,b]);
 e([],[a,b])/p([],[]);
+(kill(h),remcomps(h));
+done;
 /* Contractions */
 defcon(e,f,g);
 done;
