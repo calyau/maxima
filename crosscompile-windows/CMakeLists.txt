@@ -16,7 +16,7 @@ else()
     set(HOST i686-w64-mingw32)
     set(INSTALLERSUFFIX "win32")
 endif()
-    
+
 set(CMAKE_C_COMPILER   ${HOST}-gcc)
 set(CMAKE_CXX_COMPILER ${HOST}-g++)
 set(CMAKE_RC_COMPILER  ${HOST}-windres)
@@ -39,10 +39,9 @@ message(STATUS "Host system: ${HOST}")
 
 
 file(READ ${CMAKE_ROOT}/Modules/NSIS.template.in MYNSISTEMPLATE)
-string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel user" 
-        MYNSISTEMPLATE "${MYNSISTEMPLATE}")
+string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel user" MYNSISTEMPLATE "${MYNSISTEMPLATE}")
 file(WRITE ${CMAKE_BINARY_DIR}/NSIS.template.in "${MYNSISTEMPLATE}")
-message (STATUS "Copied and patched ${CMAKE_ROOT}/Modules/NSIS.template.in to ${CMAKE_BINARY_DIR}/NSIS.template.in")
+message(STATUS "Copied and patched ${CMAKE_ROOT}/Modules/NSIS.template.in to ${CMAKE_BINARY_DIR}/NSIS.template.in")
 
 option(USE_WXMAXIMA_GIT "Use wxMaxima development snapshot." NO)
 option(USE_VTK "Use VTK." YES)
@@ -214,6 +213,6 @@ DeleteRegKey HKCR \\\".wxmx\\\\ShellNew\\\"
 ")
 
 
-SET(CPACK_NSIS_INSTALLER_MUI_ICON_CODE "
-  !define MUI_WELCOMEFINISHPAGE_BITMAP \\\"${CMAKE_SOURCE_DIR}/maxima-installerimage.bmp\\\"") 
+set(CPACK_NSIS_INSTALLER_MUI_ICON_CODE "
+  !define MUI_WELCOMEFINISHPAGE_BITMAP \\\"${CMAKE_SOURCE_DIR}/maxima-installerimage.bmp\\\"")
 include(CPack)
