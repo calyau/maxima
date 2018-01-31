@@ -30,7 +30,6 @@ if(USE_WXMAXIMA_GIT)
     externalproject_add(wxmaxima-git
         GIT_REPOSITORY ${CMAKE_SOURCE_DIR}/downloads/wxmaxima-git
         DEPENDS wxwidgets
-        PATCH_COMMAND  ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-git-prefix/src/wxmaxima-git/acinclude.m4
         # search wx-config here - do not use the host wx-config
         # had to set CMAKE_LIBRARY_PATH=/usr/${HOST}/lib - libraries for mingw are installed there, but CMake (>3.8)
         # tries to check all the libraries reported by wx-config, but does not check this directory...
@@ -46,7 +45,6 @@ else()
         DOWNLOAD_NAME wxmaxima-${WXMAXIMAVERSION}.tar.gz
         URL_MD5 ${WXMAXIMA_MD5}
         DEPENDS wxwidgets
-        PATCH_COMMAND  ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/wxwidgets/wxwidgets-prefix/src/wxwidgets/wxwin.m4 ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima/acinclude.m4
         # search wx-config here - do not use the host wx-config
         # had to set CMAKE_LIBRARY_PATH=/usr/${HOST}/lib - libraries for mingw are installed there, but CMake (>3.8)
         # tries to check all the libraries reported by wx-config, but does not check this directory...
