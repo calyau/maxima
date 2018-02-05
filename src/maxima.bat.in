@@ -44,7 +44,7 @@ if not exist "%MAXIMA_TEMPDIR%"/ set "MAXIMA_TEMPDIR=%USERPROFILE:\=/%"
 rem read maximarc and set the Lisp type, if the user did specify MAXIMA_LISP
 rem currently no comments or other (Unix shell) commands are understood, only (e.g):
 rem LISP=sbcl
-if EXIST %MAXIMA_USERDIR%/maximarc (
+if EXIST "%MAXIMA_USERDIR%/maximarc" (
     setlocal enabledelayedexpansion
     for /F usebackq %%L in ("%MAXIMA_USERDIR%/maximarc") do (
         set %%L
