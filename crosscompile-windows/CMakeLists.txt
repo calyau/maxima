@@ -164,6 +164,13 @@ target_link_libraries(winkill winkill_lib)
 install(TARGETS winkill winkill_lib RUNTIME DESTINATION bin LIBRARY DESTINATION bin)
 install(FILES "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/win_signals.lisp" DESTINATION bin/)
 
+# convert windows short names to long names (e.g.
+# "C:/Users/TESTTE~1/AppData/Local/Temp" to "C:/Users/test test/AppData/Local/Temp")
+# CLISP can (currently not handle short names.
+add_executable(maxima_longnames maxima_longnames.c)
+install(FILES "${CMAKE_BINARY_DIR}/maxima_longnames.exe" DESTINATION bin/)
+
+
 install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/ DESTINATION .)
 install(FILES "${CMAKE_SOURCE_DIR}/xmaxima.bat" DESTINATION bin/)
 install(FILES "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima/doc/info/maxima.pdf" DESTINATION share/doc/)
