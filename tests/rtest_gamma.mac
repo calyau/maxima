@@ -3786,3 +3786,84 @@ true;
 closeto (gamma_incomplete_lower(10, 1b0 + %i), 7.992250288513467b-1*%i + 1.011121671734864b0, 1b-10);
 true;
 
+/* mailing list 2018-02-04: "Bug in beta_incomplete_regularized." */
+
+(kill(f, g, x, y),
+ f(x) := beta_incomplete_regularized(2,2,x/(1+x)),
+ g(x) := beta_incomplete(2,2,x),
+ should_be_equal(a, b) := if equal(a, b) then true else notequal(a, b),
+ 0);
+0;
+
+f(1/y);
+(2*(1-1/((1/y+1)*y))+1)/((1/y+1)^2*y^2);
+
+f(1/x);
+(2*(1-1/((1/x+1)*x))+1)/((1/x+1)^2*x^2);
+
+should_be_equal (f(1/x), subst (y = 1/x, f(y)));
+true;
+
+g(-y);
+(y^2*(2*(y+1)+1))/6;
+
+g(-x);
+(x^2*(2*(x+1)+1))/6;
+
+should_be_equal (g(-x), subst (y = -x, g(y)));
+true;
+
+(kill(a, h, i, j, k, u, v, w),
+ h(u) := gamma_incomplete(3, u),
+ i(v, w) := gamma_incomplete_generalized(3 + a, v, w),
+ j(u) := gamma_incomplete_regularized(4, u),
+ k(v, w) := beta_incomplete_regularized(2, v, w),
+ 0);
+0;
+
+gamma_expand : true;
+true;
+
+should_be_equal (h(u), integrate (t^2*exp(-t),t,u,inf));
+true;
+
+[h(u), h(-u)];
+[2*(u^2/2+u+1)*%e^-u,2*(u^2/2-u+1)*%e^u];
+
+should_be_equal (h(-u), subst (v = -u, h(v)));
+true;
+
+should_be_equal (i(2*v, 4*w), a*(a+1)*(a+2)
+                               *((-((4^(a+2)*w^(a+2))/(a*(a+1)*(a+2))+(4^(a+1)*w^(a+1))/(a*(a+1))
+                                                                     +(4^a*w^a)/a)
+                                *%e^-(4*w))
+                                +((2^(a+2)*v^(a+2))/(a*(a+1)*(a+2))+(2^(a+1)*v^(a+1))/(a*(a+1))+(2^a*v^a)/a)
+                                 *%e^-(2*v)+gamma_incomplete_generalized(a,2*v,4*w))); /* FOR SURE ?? */
+true;
+
+should_be_equal (i(2*v, 4*w), subst ([x = 2*v, y = 4*w], i(x, y)));
+true;
+
+should_be_equal (j(u), integrate (t^3*exp(-t),t,u,inf)/gamma(4));
+true;
+
+should_be_equal (j(1 + u), ((u+1)^3/6+(u+1)^2/2+u+2)*%e^((-u)-1));
+true;
+
+should_be_equal (j(1 + u), subst (v = 1 + u, j(v)));
+true;
+
+block ([foo, bar, l:[0.1, 0.25, 0.5, 0.8, 0.9, 0.95]],
+       foo : makelist (k(4, x), x, l),
+       bar : ev (makelist (first (quad_qags (t^(a-1)*(1-t)^(b-1), t, 0, x))/beta(a, b), x, l), a=2, b=4),
+       if lmax (abs (foo - bar)) < 1e-8 then true else notequal (foo, bar));
+true;
+
+k(1 - w, 2*v);
+1-(1-2*v)^(1-w)*(2*v*(1-w)+1); /* assuming k(v, w) = 1-(1-w)^v*(v*w+1) */
+
+should_be_equal (k(1 - v, 2*w), subst ([x = 1 - v, y = 2*w], k(x, y)));
+true;
+
+reset (gamma_expand);
+[gamma_expand];

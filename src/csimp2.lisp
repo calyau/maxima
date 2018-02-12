@@ -20,7 +20,7 @@
 (defmvar $gammalim 10000
   "Controls simplification of gamma for rational number arguments.")
 
-(defvar $gamma_expand nil
+(defmvar $gamma_expand nil
   "Expand gamma(z+n) for n an integer when T.") 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
