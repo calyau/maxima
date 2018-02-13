@@ -45,7 +45,7 @@ with the command @code{load("combinatorics")}.
 @closecatbox
 
 @node Functions and Variables for Combinatorics,  , Package combinatorics, combinatorics-pkg
-@section Functions and Variables for Sets
+@section Functions and Variables for Combinatorics
 
 @anchor{apply_cycles}
 @deffn {Function} apply_cycles (@var{cl},@var{l})
