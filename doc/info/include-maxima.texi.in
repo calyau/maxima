@@ -810,7 +810,7 @@ Understanding maxima's output
 @chapter cobyla
 @include cobyla.texi
 
-@node combinatorics-pkg
+@node combinatorics-pkg, contrib_ode-pkg, cobyla-pkg, Top
 @chapter combinatorics
 @include combinatorics.texi
 
