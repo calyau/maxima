@@ -1,0 +1,710 @@
+@menu
+* Combinatorics Package::       
+* Functions and Variables for Combinatorics::       
+@end menu
+
+@node Combinatorics Package, Functions and Variables for Combinatorics, combinatorics-pkg, combinatorics-pkg
+@section Combinatorics Package
+
+The combinatorics package provides several functions to work with
+permutations and to permute elements of a list. The permutations of
+degree @emph{n} are all the @emph{n}! possible orderings of the first
+@emph{n} positive integers, 1, 2, @dots{}, @emph{n}. The functions in this
+packages expect a permutation to be represented by a list of those
+integers.
+
+Cycles should also be represented two or more integers @emph{i_1},
+@emph{i_2}, @dots{}, @emph{i_m}, all different. It represents a permutation
+where the integer @emph{i_2} appears in the @emph{i_1}th position, the
+integer @emph{i_3} appears in the @emph{i_2}th position and so on, until
+the integer @emph{i_1}, which appears in the @emph{i_m}th position.
+
+For instance, [4, 2, 1, 3] is one of the 24 permutations of degree for,
+which can also be represented bay the cycle [1, 4, 3]. The functions
+where cycles are used to represent permutations will also require the
+order of the permutation to avoid ambiguity. For instance, the same
+cycle [1,4,3] could refer to the permutation of order 6: [4, 2, 1, 3, 5,
+6]. A product of cycles must be represented by a list of cycles; the
+cycles at the end of the list are applied first. For example, [[2,
+4],[1, 3, 6, 5]] is equivalent to the permutation [3, 4, 6, 2, 1, 5].
+
+A cycle can be written in several ways. for instance, [1, 3, 6, 5], [3,
+6, 5, 1] and [6, 5, 1, 3] are all equivalent. The canonical for used in
+the package is the one that places the lowest index in the first
+place. A cycle with only two indices is also called a transposition and
+if the two indices are consecutive, it is called an adjacent
+transposition.
+
+To run an interactive tutorial, use the command @code{demo
+(combinatorics)}. Since this is an additional package, it must be loaded
+with the command @code{load("combinatorics")}.
+
+
+@opencatbox
+@category{Share packages} @category{Combinatorics Package}
+@closecatbox
+
+@node Functions and Variables for Combinatorics,  , Combinatorics Package, combinatorics-pkg
+@section Functions and Variables for Sets
+
+@anchor{apply_cycles}
+@deffn {Function} apply_cycles (@var{cl},@var{l})
+
+Permutes the list or set @var{l} applying to it the list of cycles
+@var{cl}. The cycles at the end of the list are applied first and the
+first cycle in the list @var{cl} is the last one to be applied.
+
+See also @mrefdot{permute}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c lis1:[a,b*c^2,4,z,x/y,1/2,ff23(x),0];
+@c apply_cycles ([[1, 6], [2, 6, 5, 7]], lis1);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) lis1:[a,b*c^2,4,z,x/y,1/2,ff23(x),0];
+                        2        x  1
+(%o2)            [a, b c , 4, z, -, -, ff23(x), 0]
+                                 y  2
+@end group
+@group
+(%i3) apply_cycles ([[1, 6], [2, 6, 5, 7]], lis1);
+                  x  1                       2
+(%o3)            [-, -, 4, z, ff23(x), a, b c , 0]
+                  y  2
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{cyclep}
+@deffn {Function} cyclep (@var{c}, @var{n})
+
+Returns true if @var{c} is a valid cycle of order @var{n} namely, a list
+of non-repeated positive integers less or equal to @var{n}. Otherwise,
+it returns false.
+
+See also @mrefdot{permp}
+
+Examples:
+
+@c ===beg===
+@c load("combinatorics")$
+@c cyclep ([-2,3,4], 5);
+@c cyclep ([2,3,4,2], 5);
+@c cyclep ([6,3,4], 5);
+@c cyclep ([6,3,4], 6);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) cyclep ([-2,3,4], 5);
+(%o2)                          false
+@end group
+@group
+(%i3) cyclep ([2,3,4,2], 5);
+(%o3)                          false
+@end group
+@group
+(%i4) cyclep ([6,3,4], 5);
+(%o4)                          false
+@end group
+@group
+(%i5) cyclep ([6,3,4], 6);
+(%o5)                          true
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perm_cycles}
+@deffn {Function} perm_cycles (@var{p})
+
+Writes permutation @var{p} as a product of cycles. The cycles are
+written in a canonical form, in which the lowest index in the cycle is
+placed in the first position.
+
+See also @mrefdot{perm_decomp}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perm_cycles ([4, 6, 3, 1, 7, 5, 2, 8]);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perm_cycles ([4, 6, 3, 1, 7, 5, 2, 8]);
+(%o2)                 [[1, 4], [2, 6, 5, 7]]
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perm_decomp}
+@deffn {Function} perm_decomp (@var{p})
+
+Returns the minimum set of adjacent transpositions whose product equals
+the given permutation @var{p}.
+
+See also @mrefdot{perm_cycles}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perm_decomp ([4, 6, 3, 1, 7, 5, 2, 8]);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perm_decomp ([4, 6, 3, 1, 7, 5, 2, 8]);
+(%o2) [[6, 7], [5, 6], [6, 7], [3, 4], [4, 5], [2, 3], [3, 4], 
+                            [4, 5], [5, 6], [1, 2], [2, 3], [3, 4]]
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perm_inverse}
+@deffn {Function} perm_inverse (@var{p})
+
+Returns the inverse of a permutation of @var{p}, namely, a permutation
+@var{q} such that the products @var{pq} and @var{qp} are equal to the
+identity permutation: [1, 2, 3, @dots{}, @var{n}], where @var{n} is the
+length of @var{p}.
+
+See also @mrefdot{permult}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perm_inverse ([4, 6, 3, 1, 7, 5, 2, 8]);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perm_inverse ([4, 6, 3, 1, 7, 5, 2, 8]);
+(%o2)                [4, 7, 3, 1, 6, 2, 5, 8]
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perm_length}
+@deffn {Function} perm_length (@var{p})
+
+Determines the minimum number of adjacent transpositions necessary to
+write permutation @var{p} as a product of adjacent transpositions. An
+adjacent transposition is a cycle with only two numbers, which are
+consecutive integers.
+
+See also @mrefdot{perm_decomp}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perm_length ([4, 6, 3, 1, 7, 5, 2, 8]);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perm_length ([4, 6, 3, 1, 7, 5, 2, 8]);
+(%o2)                           12
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perm_lex_next}
+@deffn {Function} perm_lex_next (@var{p})
+
+Returns the permutation that comes after the given permutation @var{p},
+in the sequence of permutations in lexicographic order.
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perm_lex_next ([4, 6, 3, 1, 7, 5, 2, 8]);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perm_lex_next ([4, 6, 3, 1, 7, 5, 2, 8]);
+(%o2)                [4, 6, 3, 1, 7, 5, 8, 2]
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perm_lex_rank}
+@deffn {Function} perm_lex_rank (@var{p})
+
+Finds the position of permutation @var{p}, an integer from 1 to the
+degree @var{n} of the permutation, in the sequence of permutations in
+lexicographic order.
+
+See also @mref{perm_lex_unrank} and @mrefdot{perms_lex}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perm_lex_rank ([4, 6, 3, 1, 7, 5, 2, 8]);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perm_lex_rank ([4, 6, 3, 1, 7, 5, 2, 8]);
+(%o2)                          18255
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perm_lex_unrank}
+@deffn {Function} perm_lex_unrank (@var{n}, @var{i})
+
+Returns the @emph{n}-degree permutation at position @var{i} (from 1 to
+@emph{n}!) in the lexicographic ordering of permutations.
+
+See also @mref{perm_lex_rank} and @mrefdot{perms_lex}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perm_lex_unrank (8, 18255);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perm_lex_unrank (8, 18255);
+(%o2)                [4, 6, 3, 1, 7, 5, 2, 8]
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perm_next}
+@deffn {Function} perm_next (@var{p})
+
+Returns the permutation that comes after the given permutation @var{p},
+in the sequence of permutations in Trotter-Johnson order.
+
+See also @mrefdot{perms}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perm_next ([4, 6, 3, 1, 7, 5, 2, 8]);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perm_next ([4, 6, 3, 1, 7, 5, 2, 8]);
+(%o2)                [4, 6, 3, 1, 7, 5, 8, 2]
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perm_parity}
+@deffn {Function} perm_parity (@var{p})
+
+Finds the parity of permutation @var{p}: 0 if the minimum number of
+adjacent transpositions necessary to write permutation @var{p} as a
+product of adjacent transpositions is even or 1 if that number is odd.
+
+See also @mrefdot{perm_decomp}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perm_parity ([4, 6, 3, 1, 7, 5, 2, 8]);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perm_parity ([4, 6, 3, 1, 7, 5, 2, 8]);
+(%o2)                            0
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perm_rank}
+@deffn {Function} perm_rank (@var{p})
+
+Finds the position of permutation @var{p}, an integer from 1 to the
+degree @var{n} of the permutation, in the sequence of permutations in
+lexicographic order.
+
+See also @mref{perm_unrank} and @mrefdot{perms}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perm_rank ([4, 6, 3, 1, 7, 5, 2, 8]);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perm_rank ([4, 6, 3, 1, 7, 5, 2, 8]);
+(%o2)                          19729
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perm_undecomp}
+@deffn {Function} perm_undecomp (@var{cl}, @var{n})
+
+Converts the list of cycles @var{cl} of degree @var{n} into an @var{n}
+degree permutation, equal to their product.
+
+See also @mrefdot{perm_decomp}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perm_undecomp ([[1,6],[2,6,5,7]], 8);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perm_undecomp ([[1,6],[2,6,5,7]], 8);
+(%o2)                [5, 6, 3, 4, 7, 1, 2, 8]
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perm_unrank}
+@deffn {Function} perm_unrank (@var{n}, @var{i})
+
+Returns the @emph{n}-degree permutation at position @var{i} (from 1 to
+@emph{n}!) in the Trotter-Johnson ordering of permutations.
+
+See also @mref{perm_rank} and @mrefdot{perms}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perm_unrank (8, 19729);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perm_unrank (8, 19729);
+(%o2)                [4, 6, 3, 1, 7, 5, 2, 8]
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{permp}
+@deffn {Function} permp (@var{p})
+
+Returns true if @var{p} is a valid permutation namely, a list of length
+@var{n}, whose elements are all the positive integers from 1 to @var{n},
+without repetitions. Otherwise, it returns false.
+
+Examples:
+
+@c ===beg===
+@c load("combinatorics")$
+@c permp ([2,0,3,1]);
+@c permp ([2,1,4,3]);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) permp ([2,0,3,1]);
+(%o2)                          false
+@end group
+@group
+(%i3) permp ([2,1,4,3]);
+(%o3)                          true
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perms}
+@deffn {Function} perms @
+@fname{perms} (@var{n}) @
+@fname{perms} (@var{n}, @var{i}) @
+@fname{perms} (@var{n}, @var{i}, @var{j})
+
+With only one argument @var{n}, it produces a list of all
+@emph{n}-degree permutations in the so-called Trotter-Johnson order. With
+two arguments, @var{n} and @var{i}, it returns the @emph{n}-degree
+permutation which is at the @emph{i}th position (from 1 to @emph{n}!) in
+the lexicographic ordering of the permutations. With three arguments,
+@var{n}, @var{i} and @var{j}, it returns a list of the @emph{n}-degree
+permutations between positions @var{i} and @var{j} in the lexicographic
+ordering of the permutations.
+
+The sequence of permutations in Trotter-Johnson order starts with the
+identity permutation and each consecutive permutation can be obtained
+from the previous one a by single adjacent transposition.
+
+See also @mref{perm_next}, @mref{perm_rank} and @mrefdot{perm_unrank}
+
+Examples:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perms (4);
+@c perms (4, 12);
+@c perms (4, 12, 14);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perms (4);
+(%o2) [[1, 2, 3, 4], [1, 2, 4, 3], [1, 4, 2, 3], [4, 1, 2, 3], 
+[4, 1, 3, 2], [1, 4, 3, 2], [1, 3, 4, 2], [1, 3, 2, 4], 
+[3, 1, 2, 4], [3, 1, 4, 2], [3, 4, 1, 2], [4, 3, 1, 2], 
+[4, 3, 2, 1], [3, 4, 2, 1], [3, 2, 4, 1], [3, 2, 1, 4], 
+[2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 3, 1], [4, 2, 3, 1], 
+[4, 2, 1, 3], [2, 4, 1, 3], [2, 1, 4, 3], [2, 1, 3, 4]]
+@end group
+@group
+(%i3) perms (4, 12);
+(%o3)                     [[4, 3, 1, 2]]
+@end group
+@group
+(%i4) perms (4, 12, 14);
+(%o4)       [[4, 3, 1, 2], [4, 3, 2, 1], [3, 4, 2, 1]]
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{perms_lex}
+@deffn {Function} perms_lex @
+@fname{perms_lex} (@var{n}) @
+@fname{perms_lex} (@var{n}, @var{i}) @
+@fname{perms_lex} (@var{n}, @var{i}, @var{j})
+
+With only one argument @var{n}, it produces a list of all
+@emph{n}-degree permutations in the so-called lexicographic order. With
+two arguments, @var{n} and @var{i}, it returns the @emph{n}-degree
+permutation which is at the @emph{i}th position (from 1 to @emph{n}!) in
+the lexicographic ordering of the permutations. With three arguments,
+@var{n}, @var{i} and @var{j}, it returns a list of the @emph{n}-degree
+permutations between positions @var{i} and @var{j} in the lexicographic
+ordering of the permutations.
+
+The sequence of permutations in lexicographic order starts with all the
+permutations with the lowest index, 1, followed by all permutations
+starting with the following index, 2, and so on. The permutations
+starting by an index @emph{i} are the permutations of the first @emph{n}
+integers different from @emph{i} and they are also placed in
+lexicographic order, where the permutations with the lowest of those
+integers are placed first and so on.
+
+See also @mref{perm_lex_next}, @mref{perm_lex_rank} and
+@mrefdot{perm_lex_unrank}
+
+Examples:
+
+@c ===beg===
+@c load("combinatorics")$
+@c perms_lex (4);
+@c perms_lex (4, 12);
+@c perms_lex (4, 12, 14);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) perms_lex (4);
+(%o2) [[1, 2, 3, 4], [1, 2, 4, 3], [1, 3, 2, 4], [1, 3, 4, 2], 
+[1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4], [2, 1, 4, 3], 
+[2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1], 
+[3, 1, 2, 4], [3, 1, 4, 2], [3, 2, 1, 4], [3, 2, 4, 1], 
+[3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], 
+[4, 2, 1, 3], [4, 2, 3, 1], [4, 3, 1, 2], [4, 3, 2, 1]]
+@end group
+@group
+(%i3) perms_lex (4, 12);
+(%o3)                     [[2, 4, 3, 1]]
+@end group
+@group
+(%i4) perms_lex (4, 12, 14);
+(%o4)       [[2, 4, 3, 1], [3, 1, 2, 4], [3, 1, 4, 2]]
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{permult}
+@deffn {Function} permult (@var{p_1}, @dots{}, @var{p_m})
+
+Finds the product of two or more permutations @var{p_1}, @dots{}, @var{p_m}.
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c permult ([2,3,1], [3,1,2], [2,1,3]);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) permult ([2,3,1], [3,1,2], [2,1,3]);
+(%o2)                        [2, 1, 3]
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{permute}
+@deffn {Function} permute (@var{p}, @var{l})
+
+Applies the permutation @var{p} to the elements of the list (or set)
+@var{l}.
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c lis1: [a,b*c^2,4,z,x/y,1/2,ff23(x),0];
+@c permute ([4, 6, 3, 1, 7, 5, 2, 8], lis1);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) lis1: [a,b*c^2,4,z,x/y,1/2,ff23(x),0];
+                        2        x  1
+(%o2)            [a, b c , 4, z, -, -, ff23(x), 0]
+                                 y  2
+@end group
+@group
+(%i3) permute ([4, 6, 3, 1, 7, 5, 2, 8], lis1);
+                     1                 x     2
+(%o3)            [z, -, 4, a, ff23(x), -, b c , 0]
+                     2                 y
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+
+@anchor{random_perm}
+@deffn {Function} random_perm (@var{n})
+
+Returns a random permutation of degree @var{n}.
+
+See also @mrefdot{random_permutation}
+
+Example:
+
+@c ===beg===
+@c load("combinatorics")$
+@c random_perm (7);
+@c ===end===
+@example
+(%i1) load("combinatorics")$
+@group
+(%i2) random_perm (7);
+(%o2)                  [6, 3, 4, 7, 5, 1, 2]
+@end group
+@end example
+
+@opencatbox
+@category{Combinatorics Package}
+@closecatbox
+
+@end deffn
+

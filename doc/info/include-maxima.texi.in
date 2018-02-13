@@ -159,6 +159,7 @@ and develop DOE Macsyma, now called Maxima.
 * celine-pkg::                      Sister Celine's method 
 * clebsch_gordan-pkg::              Clebsch-Gordan and Wigner coefficients
 * cobyla-pkg::                      Nonlinear optimization with inequality constraints.
+* combinatorics-pkg::               Functions to work with permutations.
 * contrib_ode-pkg::                 Additional routines for ODEs
 * descriptive-pkg::                 Descriptive statistics.
 * diag-pkg::                        Jordan matrices.
@@ -428,6 +429,10 @@ cobyla
 * Introduction to cobyla::
 * Functions and Variables for cobyla::
 * Examples for cobyla::
+
+combinatorics
+* Combinatorics Package::       
+* Functions and Variables for Combinatorics::       
 
 contrib_ode
 * Introduction to contrib_ode::
@@ -804,6 +809,10 @@ Understanding maxima's output
 @node cobyla-pkg, contrib_ode-pkg, clebsch_gordan-pkg, Top
 @chapter cobyla
 @include cobyla.texi
+
+@node combinatorics-pkg
+@chapter combinatorics
+@include combinatorics.texi
 
 @node contrib_ode-pkg, descriptive-pkg, cobyla-pkg, Top
 @chapter contrib_ode
