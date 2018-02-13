@@ -22,6 +22,7 @@
 ;;;;  $perms           : n-degree permutations in mimimum-change order
 ;;;;                     (Trotter-Johnson) or permutations within some ranks.
 ;;;;  $perm_next       : finds next permutation in Trotter-Johnson order.
+;;;;  $random_perm     : generates a random permutation of degree n.
 ;;;;
 ;;;; NOTATION
 ;;;;  pm    : a permutation as a maxima list
@@ -157,7 +158,7 @@
 ;;; to the permutation pm
 (defun $permute (pm lsm)
   (check-perm pm "permute") 
-  (check-list-or-set lsm "permute")
+;  (check-list-or-set lsm "permute")
   (check-list-length lsm ($length pm) "permute")
   (let ((result nil))
     (dolist (j (reverse (rest pm)))
@@ -351,7 +352,7 @@
           (perm-unrank n r0 pa)
           (push-array-mlist pa lpm)
           (when rf
-            (loop for r from r0 to (- rf r0 1) do
+            (loop for r from r0 to (- rf 1) do
                  (array-adjacent-transposition pa (transposition-next n r))
                  (push-array-mlist pa lpm))))
         (progn
@@ -418,9 +419,9 @@
                (setf (aref pa k) j)))
          (setq r2 r1))))
  
-;;; finds the first index of the adjacent transposition that must be applied
-;;; to the n-degree permutation of Trotter-Johnson rank r, in order to
-;;; get the permutation of rank r+1 (r must be between 1 and n!-1)
+;;; transposition-next finds the first index of the adjacent transposition
+;;; to be applied to the n-degree permutation of Trotter-Johnson rank r, in
+;;; order to get the permutation of rank r+1 (r must be between 1 and n!-1)
 (defun transposition-next (n r)
   (let ((d 0) m k)
     (setf (values m k) (floor r n))
@@ -433,10 +434,12 @@
         (+ (- n k) d)
         (+ k d))))
 
+;;; $random_perm generates a random permutation of degree n, using algorithm
+;;; 5.4 from Reingold, Nievergelt and Deo. Combinatorial algorithms: theory and
+;;; practice. 1977
 (defun $random_perm (n)
   (check-pos-integer n "random_perm")
-  (let ((p (loop for i from 1 to n collecting i)) j)
-    (dotimes (i n)
-      (setq j (+ i ($random (- n i))))
-      (rotatef (nth i p) (nth j p)))
-    `((mlist) ,@p)))
+  (let ((pm (cons '(mlist) (loop for i from 1 to n collecting i))))
+    (loop for i from n downto 2 do
+         (rotatef (nth i pm) (nth (1+ ($random i)) pm)))
+    pm))
