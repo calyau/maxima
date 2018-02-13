@@ -1,12 +1,12 @@
 @menu
-* Combinatorics Package::       
+* Package combinatorics::
 * Functions and Variables for Combinatorics::       
 @end menu
 
-@node Combinatorics Package, Functions and Variables for Combinatorics, combinatorics-pkg, combinatorics-pkg
-@section Combinatorics Package
+@node Package combinatorics, Functions and Variables for Combinatorics, combinatorics-pkg, combinatorics-pkg
+@section Package combinatorics
 
-The combinatorics package provides several functions to work with
+The @code{combinatorics} package provides several functions to work with
 permutations and to permute elements of a list. The permutations of
 degree @emph{n} are all the @emph{n}! possible orderings of the first
 @emph{n} positive integers, 1, 2, @dots{}, @emph{n}. The functions in this
@@ -41,10 +41,10 @@ with the command @code{load("combinatorics")}.
 
 
 @opencatbox
-@category{Share packages} @category{Combinatorics Package}
+@category{Share packages} @category{Package combinatorics}
 @closecatbox
 
-@node Functions and Variables for Combinatorics,  , Combinatorics Package, combinatorics-pkg
+@node Functions and Variables for Combinatorics,  , Package combinatorics, combinatorics-pkg
 @section Functions and Variables for Sets
 
 @anchor{apply_cycles}
@@ -80,7 +80,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -124,7 +124,7 @@ Examples:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -153,7 +153,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -182,7 +182,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -212,7 +212,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -242,7 +242,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -268,7 +268,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -297,7 +297,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -325,7 +325,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -353,7 +353,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -382,7 +382,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -411,7 +411,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -439,7 +439,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -467,7 +467,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -499,7 +499,7 @@ Examples:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -555,7 +555,7 @@ Examples:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -616,7 +616,7 @@ Examples:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -641,7 +641,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -676,7 +676,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
@@ -703,7 +703,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Combinatorics Package}
+@category{Package combinatorics}
 @closecatbox
 
 @end deffn
