@@ -16,7 +16,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Dot, Vectors, Introduction to Matrices and Linear Algebra, Introduction to Matrices and Linear Algebra
+@node Dot, Matrices, Introduction to Matrices and Linear Algebra, Introduction to Matrices and Linear Algebra
 @subsection Dot
 @c -----------------------------------------------------------------------------
 

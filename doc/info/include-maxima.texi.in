@@ -785,23 +785,23 @@ Understanding maxima's output
 @chapter Bernstein
 @include bernstein.texi
 
-@node bitwise-pkg
+@node bitwise-pkg, bode-pkg, Bernstein-pkg, Top
 @chapter bitwise
 @include bitwise.texi
 
-@node bode-pkg
+@node bode-pkg, celine-pkg, bitwise-pkg, Top
 @chapter bode
 @include bode.texi
 
-@node celine-pkg
+@node celine-pkg, clebsch_gordan-pkg, bode-pkg, Top
 @chapter celine
 @include celine.texi
 
-@node clebsch_gordan-pkg
+@node clebsch_gordan-pkg, cobyla-pkg, celine-pkg, Top
 @chapter clebsch_gordan
 @include clebsch_gordan.texi
 
-@node cobyla-pkg
+@node cobyla-pkg, contrib_ode-pkg, clebsch_gordan-pkg, Top
 @chapter cobyla
 @include cobyla.texi
 
