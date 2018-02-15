@@ -132,7 +132,7 @@ Examples:
 @anchor{perm_cycles}
 @deffn {Function} perm_cycles (@var{p})
 
-Writes permutation @var{p} as a product of cycles. The cycles are
+Returns permutation @var{p} as a product of cycles. The cycles are
 written in a canonical form, in which the lowest index in the cycle is
 placed in the first position.
 
@@ -363,7 +363,7 @@ Example:
 
 Finds the parity of permutation @var{p}: 0 if the minimum number of
 adjacent transpositions necessary to write permutation @var{p} as a
-product of adjacent transpositions is even or 1 if that number is odd.
+product of adjacent transpositions is even, or 1 if that number is odd.
 
 See also @mrefdot{perm_decomp}
 
@@ -510,12 +510,14 @@ Examples:
 @fname{perms} (@var{n}, @var{i}) @
 @fname{perms} (@var{n}, @var{i}, @var{j})
 
-With only one argument @var{n}, it produces a list of all
-@emph{n}-degree permutations in the so-called Trotter-Johnson order. With
-two arguments, @var{n} and @var{i}, it returns the @emph{n}-degree
+@code{perms(@var{n})} returns a list of all
+@emph{n}-degree permutations in the so-called Trotter-Johnson order.
+
+@code{perms(@var{n}, @var{i})} returns the @emph{n}-degree
 permutation which is at the @emph{i}th position (from 1 to @emph{n}!) in
-the lexicographic ordering of the permutations. With three arguments,
-@var{n}, @var{i} and @var{j}, it returns a list of the @emph{n}-degree
+the lexicographic ordering of the permutations.
+
+@code{perms(@var{n}, @var{i}, @var{j})} returns a list of the @emph{n}-degree
 permutations between positions @var{i} and @var{j} in the lexicographic
 ordering of the permutations.
 
@@ -566,12 +568,14 @@ Examples:
 @fname{perms_lex} (@var{n}, @var{i}) @
 @fname{perms_lex} (@var{n}, @var{i}, @var{j})
 
-With only one argument @var{n}, it produces a list of all
-@emph{n}-degree permutations in the so-called lexicographic order. With
-two arguments, @var{n} and @var{i}, it returns the @emph{n}-degree
+@code{perms_lex(@var{n})} returns a list of all
+@emph{n}-degree permutations in the so-called lexicographic order.
+
+@code{perms_lex(@var{n}, @var{i})} returns the @emph{n}-degree
 permutation which is at the @emph{i}th position (from 1 to @emph{n}!) in
-the lexicographic ordering of the permutations. With three arguments,
-@var{n}, @var{i} and @var{j}, it returns a list of the @emph{n}-degree
+the lexicographic ordering of the permutations.
+
+@code{perms_lex(@var{n}, @var{i}, @var{j})} returns a list of the @emph{n}-degree
 permutations between positions @var{i} and @var{j} in the lexicographic
 ordering of the permutations.
 
@@ -624,7 +628,7 @@ Examples:
 @anchor{permult}
 @deffn {Function} permult (@var{p_1}, @dots{}, @var{p_m})
 
-Finds the product of two or more permutations @var{p_1}, @dots{}, @var{p_m}.
+Returns the product of two or more permutations @var{p_1}, @dots{}, @var{p_m}.
 
 Example:
 
