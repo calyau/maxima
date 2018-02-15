@@ -13,23 +13,23 @@ degree @emph{n} are all the @emph{n}! possible orderings of the first
 packages expect a permutation to be represented by a list of those
 integers.
 
-Cycles should also be represented two or more integers @emph{i_1},
-@emph{i_2}, @dots{}, @emph{i_m}, all different. It represents a permutation
+Cycles are represented as a list of two or more integers @emph{i_1},
+@emph{i_2}, @dots{}, @emph{i_m}, all different. Such a list represents a permutation
 where the integer @emph{i_2} appears in the @emph{i_1}th position, the
 integer @emph{i_3} appears in the @emph{i_2}th position and so on, until
 the integer @emph{i_1}, which appears in the @emph{i_m}th position.
 
-For instance, [4, 2, 1, 3] is one of the 24 permutations of degree for,
-which can also be represented bay the cycle [1, 4, 3]. The functions
-where cycles are used to represent permutations will also require the
+For instance, [4, 2, 1, 3] is one of the 24 permutations of degree four,
+which can also be represented by the cycle [1, 4, 3]. The functions
+where cycles are used to represent permutations also require the
 order of the permutation to avoid ambiguity. For instance, the same
-cycle [1,4,3] could refer to the permutation of order 6: [4, 2, 1, 3, 5,
+cycle [1, 4, 3] could refer to the permutation of order 6: [4, 2, 1, 3, 5,
 6]. A product of cycles must be represented by a list of cycles; the
 cycles at the end of the list are applied first. For example, [[2,
-4],[1, 3, 6, 5]] is equivalent to the permutation [3, 4, 6, 2, 1, 5].
+4], [1, 3, 6, 5]] is equivalent to the permutation [3, 4, 6, 2, 1, 5].
 
 A cycle can be written in several ways. for instance, [1, 3, 6, 5], [3,
-6, 5, 1] and [6, 5, 1, 3] are all equivalent. The canonical for used in
+6, 5, 1] and [6, 5, 1, 3] are all equivalent. The canonical form used in
 the package is the one that places the lowest index in the first
 place. A cycle with only two indices is also called a transposition and
 if the two indices are consecutive, it is called an adjacent
