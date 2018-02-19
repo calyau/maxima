@@ -580,6 +580,11 @@ When one changes, the other does too."
   #+sbcl (setq sb-ext:*muffled-warnings* 'sb-kernel:redefinition-with-defun)
   #+clisp (setq custom:*suppress-check-redefinition* t)
 
+  ;; Suppress compiler output messages.
+  ;; These include the "0 errors, 0 warnings" message output from Clisp,
+  ;; and maybe other messages from other Lisps.
+  (setq *compile-verbose* nil)
+
   (setf *debugger-hook* #'maxima-lisp-debugger)
   ;; See discussion on the maxima list
   ;; http://www.math.utexas.edu/pipermail/maxima/2011/024014.html.
