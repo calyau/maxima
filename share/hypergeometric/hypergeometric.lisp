@@ -589,9 +589,6 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 (defun float-or-bigfloat-p (x)
   (or (floatp x) ($bfloatp x)))
 
-(defun float-or-rational-p (x)
-  (or (floatp x) ($ratnump x)))
-
 ;; Return true iff it is possible to evaluate hypergeometric(a,b,x) using (exact)
 ;; rational arithmetic. Thus (1) x and every member of a and b (Common Lisp lists) must be
 ;; a $ratnump and (2) some member of a must be an explicit negative integer. When $numer
