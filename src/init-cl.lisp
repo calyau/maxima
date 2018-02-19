@@ -578,6 +578,7 @@ When one changes, the other does too."
   ;; reworking autoload to not trigger them. I don't have enough
   ;; motivation to attempt that right now.
   #+sbcl (setq sb-ext:*muffled-warnings* 'sb-kernel:redefinition-with-defun)
+  #+sbcl (declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
   #+clisp (setq custom:*suppress-check-redefinition* t)
 
   ;; Suppress compiler output messages.
