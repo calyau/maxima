@@ -1313,9 +1313,11 @@ APPLY means like APPLY.")
 	   (cons mode
 		 (if (setq assign (get var 'assign))
 		     (let ((tn (tr-gensym)))
-		       (lambda-wrap1 tn val `(progn (,assign ',var ,tn)
+		       (lambda-wrap1 tn val `(let nil
+					      (declare (special ,var ,(teval var)))
+					      (,assign ',var ,tn)
 					      (setq ,(teval var) ,tn))))
-                     `(progn
+                     `(let nil (declare (special ,(teval var)))
                         (if (not (boundp ',(teval var)))
                             (add2lnc ',(teval var) $values))
                         (,(if *macexpr-top-level-form-p*

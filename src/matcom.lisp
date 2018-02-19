@@ -331,7 +331,7 @@
 	   (t (meta-fset name
 			 (list 'lambda
 			       (cons a args)
-			       `(declare (special ,a ,@ args))
+			       `(declare (special ,a ,@ boundlist))
 			       (list 'catch ''match
 				     (nconc (list 'prog)
 					    (list (setq tem  (cdr (reverse topreflist))))
