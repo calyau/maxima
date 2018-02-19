@@ -806,7 +806,7 @@ Understanding maxima's output
 @chapter clebsch_gordan
 @include clebsch_gordan.texi
 
-@node cobyla-pkg, contrib_ode-pkg, clebsch_gordan-pkg, Top
+@node cobyla-pkg, combinatorics-pkg, clebsch_gordan-pkg, Top
 @chapter cobyla
 @include cobyla.texi
 
@@ -814,7 +814,7 @@ Understanding maxima's output
 @chapter combinatorics
 @include combinatorics.texi
 
-@node contrib_ode-pkg, descriptive-pkg, cobyla-pkg, Top
+@node contrib_ode-pkg, descriptive-pkg, combinatorics-pkg, Top
 @chapter contrib_ode
 @include contrib_ode.texi
 

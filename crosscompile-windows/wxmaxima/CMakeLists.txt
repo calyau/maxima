@@ -9,9 +9,9 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(WXMAXIMAVERSION "17.10.1")
+set(WXMAXIMAVERSION "18.02.0")
 
-set(WXMAXIMA_MD5    "89cbf027a90f711aa66951ffaa081551")
+set(WXMAXIMA_MD5    "4dacf99285b766fec723fa3fe3228bdb")
 
 set(WXMAXIMA_URL    "https://github.com/andrejv/wxmaxima/archive/Version-${WXMAXIMAVERSION}.tar.gz")
 
@@ -45,6 +45,7 @@ else()
         DOWNLOAD_NAME wxmaxima-${WXMAXIMAVERSION}.tar.gz
         URL_MD5 ${WXMAXIMA_MD5}
         DEPENDS wxwidgets
+        PATCH_COMMAND patch -p1 < "${CMAKE_CURRENT_SOURCE_DIR}/wxmathml.patch"
         # search wx-config here - do not use the host wx-config
         # had to set CMAKE_LIBRARY_PATH=/usr/${HOST}/lib - libraries for mingw are installed there, but CMake (>3.8)
         # tries to check all the libraries reported by wx-config, but does not check this directory...
