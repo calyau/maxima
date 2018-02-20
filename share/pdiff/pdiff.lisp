@@ -288,7 +288,10 @@
 	       ($use_pdiff nil)
 	       (vk) (gk)
 	       (at-list nil))
-	   (dolist (vs v) (declare (ignore vs)) (push (gensym) g))
+	   ;; Work around bug in Clozure CL: https://github.com/Clozure/ccl/issues/109
+	   ;; If ever it's fixed, this conditionalization can be removed.
+	   #+ccl (mapcar #'(lambda (vs) (declare (ignore vs)) (push (gensym) g)) v)
+	   #-ccl (dolist (vs v) (declare (ignore vs)) (push (gensym) g))
 	   (setq e (mapply f g nil))
 	   (setq e (apply '$diff (cons e (mapcan #'list g n))))
 	   (while v
