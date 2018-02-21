@@ -1923,7 +1923,7 @@
         (unless (or (mdefparam p)
                     (and (op-equalp p 'mquote)
                          (mdefparam (cadr p))))
-          (merror (intl:gettext "lambda: parameter must be a non-constant symbol; found: ~M") p))
+          (merror (intl:gettext "lambda: parameter must be a symbol and must not be a system constant; found: ~M") p))
         (setq p (mparam p))
         (when (member p seen-params :test #'eq)
           (merror (intl:gettext "lambda: ~M occurs more than once in the parameter list") p))

@@ -2091,10 +2091,10 @@ wrapper for this."
 					(mdefparam (cadr (cadar l)))
 					(setq mfex t)))
 			       (setq mlex t))))))
-	(merror (intl:gettext "define: in definition of ~:M, found bad argument ~M") fun (car l)))))
+	(merror (intl:gettext "define: in definition of ~:M, parameter must be a symbol and must not be a system constant; found: ~M") fun (car l)))))
 
 (defun mdefparam (x)
-  (and (symbolp x) (not (kindp x '$constant))))
+  (and (symbolp x) (not (get x 'sysconst))))
 
 (defun mdeflistp (l)
   (and (null (cdr l)) ($listp (car l)) (cdar l) (null (cddar l))))

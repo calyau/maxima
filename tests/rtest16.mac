@@ -2397,3 +2397,17 @@ nz;
 
 (forget (a <= 0, b <= 0, q < 0, r < 0), 0);
 0;
+
+/* Bug #3403: Function/lambda parameters declared constant cause error */
+declare(c, constant);
+done$
+emptyp(errcatch(f(c) := c));
+false$
+emptyp(lambda([c], c));
+false$
+emptyp(errcatch(f(%e) := %e));
+true$
+emptyp(errcatch(lambda([%e], %e)));
+true$
+kill(c, f);
+done$
