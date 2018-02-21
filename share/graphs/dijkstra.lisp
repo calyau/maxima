@@ -43,8 +43,9 @@
       (progn
 	;; resize the queue if needed
 	(when (= (graphs-pqueue-max queue) (graphs-pqueue-last queue))
-	  (adjust-array (graphs-pqueue-data queue)
-			(1+ (* (graphs-pqueue-max queue) 2)))
+	  (let ((new-array (adjust-array (graphs-pqueue-data queue)
+									 (1+ (* (graphs-pqueue-max queue) 2)))))
+		(setf (graphs-pqueue-data queue) new-array))
 	  (setf (graphs-pqueue-max queue)
 		(* (graphs-pqueue-max queue) 2)))
 	;; insert the element

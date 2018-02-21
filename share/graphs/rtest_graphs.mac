@@ -343,3 +343,10 @@ edge_coloring(petersen_graph());
   [[7,9],2],[[2,3],2],[[3,8],3],[[5,8],2],[[3,4],1],[[4,9],4],[[6,9],3],
   [[0,4],2]]]$
 
+/* larger example which triggers ADJUST-ARRAY
+ * this example is to ensure that result of shortest_weighted_path doesn't change
+ */
+block ([g200_20 : petersen_graph(200, 20)],
+       for e in edges(g200_20) do set_edge_weight(e, e[1]+e[2], g200_20),
+       shortest_weighted_path(0, 100, g200_20));
+[3100, [0, 200, 220, 240, 260, 280, 300, 100]];
