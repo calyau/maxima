@@ -305,9 +305,6 @@
 (defun 1f0-numeric (a x)
   (/ 1 (expt (- 1 x) a)))
    	  
-(defun gamma (x)
-  (bigfloat (maxima::$bfloat (maxima::take '(maxima::%gamma) (maxima::to x)))))
-
 ;; This is DLMF: http://dlmf.nist.gov/15.15#E1 with zo = 1/2. Also here is Maxima code that
 ;; sums the first n+1 terms of the sum. The CL function 2f1-numeric-alt uses a running
 ;; error and it sums until three consecutive partial sums have a modified relative difference

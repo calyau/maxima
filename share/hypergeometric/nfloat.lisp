@@ -90,6 +90,9 @@
   (bigfloat (maxima::$rectform (maxima::mfuncall 'maxima::$bfpsi0 (maxima::$bfloat (maxima::to x))
 						 maxima::$fpprec))))
 
+(defun gamma (x)
+  (bigfloat (maxima::$bfloat (maxima::take '(maxima::%gamma) (maxima::to x)))))
+
 ;; gamma(x + ex) = gamma(x) + ex * gamma(x) * psi[0](x) + ..
 (defun running-error-gamma (x)
   (setq x (first x))
@@ -374,4 +377,4 @@
 		  (setq f (nfloat e subs digits max-digits))
 		  (if (complex-number-p f 'bigfloat-or-number-p) f 
 		    `(($nfloat simp) ,e ,subs ,digits ,$max_fpprec)))))
-	  (t  `(($nfloat simp) ,e ,subs ,digits ,$max_fpprec))))) 
+	  (t  `(($nfloat simp) ,e ,subs ,digits ,$max_fpprec)))))
