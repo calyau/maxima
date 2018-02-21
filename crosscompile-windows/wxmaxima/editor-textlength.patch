@@ -1,0 +1,13 @@
+diff --git a/src/EditorCell.cpp b/src/EditorCell.cpp
+index 67572e6b..d3b8a2b8 100644
+--- a/src/EditorCell.cpp
++++ b/src/EditorCell.cpp
+@@ -4351,7 +4351,7 @@ int EditorCell::ReplaceAll(wxString oldString, wxString newString, bool IgnoreCa
+         newText += src.Left(pos);        
+         newText += newString;
+         src_LowerCase = src_LowerCase.Right(src_LowerCase.Length()-pos-newString.Length());
+-        src = src.Right(src.Length()-pos-newString.Length());
++        src = src.Right(src.Length()-pos-oldString.Length());
+         count ++;
+       }
+     } while((pos != wxNOT_FOUND) && (src != wxEmptyString));
