@@ -611,12 +611,12 @@ errcatch (lambda ([[l], x], 'foo))$
 errcatch (lambda ([[l1, l2]], 'foo))$
 [];
 
-/* attempting to bind a constant */
+/* attempting to bind a constant is allowed */
 block ([c],
   local (c),
   declare (c, constant),
   errcatch (lambda ([c], c)))$
-[];
+[lambda([c], c)];
 
 /* Verify that the parameter/variable lists of functions, lambda expressions,
  * macros and blocks cannot contain duplicate variables.  Lots of cases...
