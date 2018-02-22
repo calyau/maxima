@@ -2403,7 +2403,7 @@ declare(c, constant);
 done$
 emptyp(errcatch(f(c) := c));
 false$
-emptyp(lambda([c], c));
+emptyp(errcatch(lambda([c], c)));
 false$
 emptyp(errcatch(f(%e) := %e));
 true$
