@@ -25,8 +25,8 @@ This variable allows to temporarily switch off engineering-format.
 @example
 @group
 (%i1) load("engineering-format");
-(%o1) 
-    /maxima/share/contrib/engineering-format.lisp
+(%o1) /home/gunter/src/maxima-code/share/contrib/engineering-for\
+mat.lisp
 @end group
 @group
 (%i2) float(sin(10)/10000);
@@ -39,12 +39,68 @@ This variable allows to temporarily switch off engineering-format.
 @end group
 @end example
 
-See also @mref{fpprintprec} and @mref{float}.
+See also @mref{fpprintprec} and @mrefdot{float}
 
 @opencatbox
 @category{Display functions} @category{Global flags} @category{Share packages}
 @closecatbox
 @end defvr
+
+@anchor{engineering_format_min}
+@defvr {Option variable} engineering_format_min
+Default value: @code{0.0} 
+
+The minimum absolute value that isn't automatically converted to the engineering format.
+See also @mref{engineering_format_max} and @mrefdot{engineering_format_floats}
+
+@c ===beg===
+@c lst: float([.05,.5,5,500,5000,500000]);
+@c load("engineering-format");
+@c lst;
+@c engineering_format_min:.1$
+@c engineering_format_max:1000$
+@c lst;
+@c ===end===
+@example
+@group
+(%i1) lst: float([.05,.5,5,500,5000,500000]);
+(%o1)       [0.05, 0.5, 5.0, 500.0, 5000.0, 500000.0]
+@end group
+@group
+(%i2) load("engineering-format");
+(%o2) /home/gunter/src/maxima-code/share/contrib/engineering-for\
+mat.lisp
+@end group
+@group
+(%i3) lst;
+(%o3) [50.0e-3, 500.0e-3, 5.0e+0, 500.0e+0, 5.0e+3, 500.0e+3]
+@end group
+(%i4) engineering_format_min:.1$
+(%i5) engineering_format_max:1000$
+@group
+(%i6) lst;
+(%o6)     [50.0e-3, 0.5, 5.0, 500.0, 5.0e+3, 500.0e+3]
+@end group
+@end example
+
+@opencatbox
+@category{Display functions} @category{Global flags} @category{Share packages}
+@closecatbox
+@end defvr
+
+
+@anchor{engineering_format_max}
+@defvr {Option variable} engineering_format_max
+Default value: @code{0.0} 
+
+The maximum absolute value that isn't automatically converted to the engineering format.
+See also @mref{engineering_format_min} and @mrefdot{engineering_format_floats}
+
+@opencatbox
+@category{Display functions} @category{Global flags} @category{Share packages}
+@closecatbox
+@end defvr
+
 
 @c -----------------------------------------------------------------------------
 @node Known bugs in engineering-format, , Functions and Variables for engineering-format, engineering-format-pkg
