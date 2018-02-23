@@ -1,9 +1,19 @@
 ;; copyright 2014 by Robert Dodier
 ;; I release this work under terms of the GNU GPL
+;; Small additions 2018 by Gunter Königsmann
 
 ;; Format floats for display with exponent which is a multiple of 3.
 ;; fpprintprec is honored. The global flag engineering_format_floats
-;; (true by default) enables this format.
+;; (true by default) enables this format which can be disabled for
+;; certain number ranges using engineering_format_min and
+;; engineering_format_max.
+;;
+;; If engineering format floats aren't welcome for numbers
+;; between 0.01 and 1000 this can be signalled to engineering-format
+;; by setting
+;;
+;;   engineering_format_min: .01$
+;;   engineering_format_max: 1000$
 ;;
 ;; Example:
 ;;
@@ -28,6 +38,8 @@
 ;; 314.159E+6, 3.14159E+9, 31.4159E+9] 
 
 (defmvar $engineering_format_floats t)
+(defmvar $engineering_format_min 0.0)
+(defmvar $engineering_format_max 0.0)
 
 (defun engineering-format (x)
   (if (= x 0.0)
@@ -42,7 +54,9 @@
 
 (let ((foo (symbol-function 'exploden)))
   (defun exploden (x)
-    (if (and (floatp x) $engineering_format_floats)
+    (if (and (floatp x) $engineering_format_floats
+	     (or (< (abs x) $engineering_format_min)
+	         (> (abs x) $engineering_format_max)))
       (let ((s (engineering-format x)) s1)
         (declare (special *exploden-strip-float-zeros*))
         (setq s1 (if *exploden-strip-float-zeros* (or (strip-float-zeros s) s) s))
