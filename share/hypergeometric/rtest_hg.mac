@@ -676,7 +676,8 @@ true$
 close_p(hypergeometric([-1/4,1/4],[1],16.0/25), 0.95126303911614, 15);
 true$
 
-(time : (absolute_real_time ()- start), print(time), is(time < 40));
+/* clisp isn't very fast => with is(time < 40) we got build failures on launchpad. */
+(time : (absolute_real_time ()- start), print(time), is(time < 400));
 true$
 
 (remvalue(start), reset(domain, fpprec, expand_hypergeometric, max_fpprec), 
