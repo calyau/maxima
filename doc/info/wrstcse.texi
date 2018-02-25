@@ -1,0 +1,338 @@
+@menu
+* Introduction to wrstcse::
+* Functions and Variables for wrstcse::
+@end menu
+
+@node Introduction to wrstcse, Functions and Variables for wrstcse, wrstcse-pkg, wrstcse-pkg
+@section Introduction to wrstcse
+
+@code{wrstcse} is a naive go at interval arithmetics is powerful enough to
+perform worst case calculations that appear in engineering by applying
+all combinations of tolerances to all parameters.
+
+This approach isn't guaranteed to find the exact combination of parameters
+that results in the worst-case. But it avoids the problems that make a true
+interval arithmetics affected by the halting problem as an equation can have
+an infinite number of local minima and maxima and it might be impossible to
+algorithmically determine which one is the global one.
+
+Tolerances are applied to parameters by providing the parameter with a @var{tol[n]}
+that wrstcase will vary between -1 and 1. Using the same @var{n} for two parameters
+will make both parameters tolerate in the same way.
+
+@code{load ("wrstcse")} loads this package.
+
+@opencatbox
+@category{Share packages} @category{Package wrstcse}
+@closecatbox
+
+@node Functions and Variables for wrstcse, , Introduction to wrstcse, wrstcse-pkg
+@section Functions and Variables for wrstcse
+
+@anchor{wc_typicalvalues}
+@deffn {Function} wc_typicalvalues (@var{expression}, [@var{num}])
+
+Returns what happens if all tolerances (that are represented by tol [n] that can
+vary from 0 to 1) happen to be 0.
+
+Example:
+@c ===beg===
+@c load("wrstcse")$
+@c vals: [
+@c    R_1= 1000.0*(1+tol[1]*.01),
+@c    R_2= 2000.0*(1+tol[2]*.01)
+@c  ];
+@c divider:U_Out=U_In*R_1/(R_1+R_2);
+@c wc_typicalvalues(vals);
+@c wc_typicalvalues(subst(vals,divider));
+@c ===end===
+@example
+(%i1) load("wrstcse")$
+@group
+(%i2) vals: [
+   R_1= 1000.0*(1+tol[1]*.01),
+   R_2= 2000.0*(1+tol[2]*.01)
+ ];
+(%o2) [R_1 = 1000.0 (0.01 tol  + 1), 
+                             1
+                                    R_2 = 2000.0 (0.01 tol  + 1)]
+                                                          2
+@end group
+@group
+(%i3) divider:U_Out=U_In*R_1/(R_1+R_2);
+                                R_1 U_In
+(%o3)                   U_Out = ---------
+                                R_2 + R_1
+@end group
+@group
+(%i4) wc_typicalvalues(vals);
+(%o4)             [R_1 = 1000.0, R_2 = 2000.0]
+@end group
+@group
+(%i5) wc_typicalvalues(subst(vals,divider));
+(%o5)            U_Out = 0.3333333333333333 U_In
+@end group
+@end example
+@end deffn
+
+@anchor{wc_inputvalueranges}
+@deffn {Function} wc_inputvalueranges (@var{expression}, [@var{num}])
+
+Convenience function: Displays a list which parameter can vary between
+which values.
+
+Example:
+@c ===beg===
+@c load("wrstcse")$
+@c vals: [
+@c    R_1= 1000.0*(1+tol[1]*.01),
+@c    R_2= 2000.0*(1+tol[2]*.01)
+@c  ];
+@c wc_inputvalueranges(vals);
+@c ===end===
+@example
+(%i1) load("wrstcse")$
+@group
+(%i2) vals: [
+   R_1= 1000.0*(1+tol[1]*.01),
+   R_2= 2000.0*(1+tol[2]*.01)
+ ];
+(%o2) [R_1 = 1000.0 (0.01 tol  + 1), 
+                             1
+                                    R_2 = 2000.0 (0.01 tol  + 1)]
+                                                          2
+@end group
+@group
+(%i3) wc_inputvalueranges(vals);
+        [ R_1  min = 990.0   typ = 1000.0  max = 1010.0 ]
+(%o3)   [                                               ]
+        [ R_2  min = 1980.0  typ = 2000.0  max = 2020.0 ]
+@end group
+@end example
+@end deffn
+
+@anchor{wc_systematic}
+@deffn {Function} wc_systematic (@var{expression}, [@var{num}])
+
+Systematically introduces @var{num} values per parameter into @var{expression}
+and returns a list of the result. If no @var{num} is given, @var{num} defaults
+to 3.
+
+See also @mrefdot{wc_montecarlo}
+
+Example:
+@c ===beg===
+@c load("wrstcse")$
+@c vals: [
+@c    R_1= 1000.0*(1+tol[1]*.01),
+@c    R_2= 2000.0*(1+tol[2]*.01)
+@c  ];
+@c divider: U_Out=U_In*(R_1)/(R_1+R_2);
+@c wc_systematic(subst(vals,rhs(divider)));
+@c ===end===
+@example
+(%i1) load("wrstcse")$
+@group
+(%i2) vals: [
+   R_1= 1000.0*(1+tol[1]*.01),
+   R_2= 2000.0*(1+tol[2]*.01)
+ ];
+(%o2) [R_1 = 1000.0 (0.01 tol  + 1), 
+                             1
+                                    R_2 = 2000.0 (0.01 tol  + 1)]
+                                                          2
+@end group
+@group
+(%i3) divider: U_Out=U_In*(R_1)/(R_1+R_2);
+                                R_1 U_In
+(%o3)                   U_Out = ---------
+                                R_2 + R_1
+@end group
+@group
+(%i4) wc_systematic(subst(vals,rhs(divider)));
+(%o4) [0.3333333333333334 U_In, 0.3311036789297659 U_In, 
+0.3289036544850498 U_In, 0.3355704697986577 U_In, 
+0.3333333333333333 U_In, 0.3311258278145696 U_In, 
+0.3377926421404682 U_In, 0.3355481727574751 U_In, 
+0.3333333333333333 U_In]
+@end group
+@end example
+@end deffn
+
+@anchor{wc_montecarlo}
+@deffn {Function} wc_montecarlo (@var{expression}, @var{num})
+
+Introduces @var{num} gauss-distributed values per parameter into
+@var{expression} and returns a list of the result.
+
+See also @mrefdot{wc_systematic}
+
+Example:
+@c ===beg===
+@c load("wrstcse")$
+@c vals: [
+@c    R_1= 1000.0*(1+tol[1]*.01),
+@c    R_2= 2000.0*(1+tol[2]*.01)
+@c  ];
+@c divider: U_Out=U_In*(R_1)/(R_1+R_2);
+@c wc_montecarlo(subst(vals,rhs(divider)),10);
+@c ===end===
+@example
+(%i1) load("wrstcse")$
+@group
+(%i2) vals: [
+   R_1= 1000.0*(1+tol[1]*.01),
+   R_2= 2000.0*(1+tol[2]*.01)
+ ];
+(%o2) [R_1 = 1000.0 (0.01 tol  + 1), 
+                             1
+                                    R_2 = 2000.0 (0.01 tol  + 1)]
+                                                          2
+@end group
+@group
+(%i3) divider: U_Out=U_In*(R_1)/(R_1+R_2);
+                                R_1 U_In
+(%o3)                   U_Out = ---------
+                                R_2 + R_1
+@end group
+@group
+(%i4) wc_montecarlo(subst(vals,rhs(divider)),10);
+(%o4) [0.3365488313167528 U_In, 0.3339089445851889 U_In, 
+0.314651402884122 U_In, 0.3447359711624277 U_In, 
+0.3294005710066001 U_In, 0.3330897542463686 U_In, 
+0.3397591863729343 U_In, 0.3227030530673181 U_In, 
+0.3385512773502185 U_In, 0.314764470912582 U_In]
+@end group
+@end example
+@end deffn
+
+@anchor{wc_mintypmax}
+@deffn {Function} wc_mintypmax (@var{expr}, [@var{n}])
+
+Prints the minimum, maximum and typical value of @var{expr}. If @var{n}
+is positive, @var{n} values for each parameter will be tried systematically.
+If @var{n} is negative, @var{-n} gauss-distributed values are used instead.
+If no @var{n} is given, 3 is assumed.
+
+Example:
+@c ===beg===
+@c load("wrstcse")$
+@c ratprint:false$
+@c vals: [
+@c    R_1= 1000.0*(1+tol[1]*.01),
+@c    R_2= 1000.0*(1+tol[2]*.01)
+@c  ];
+@c assume(U_In>0);
+@c divider:U_Out=U_In*R_1/(R_1+R_2);
+@c lhs(divider)=wc_mintypmax(subst(vals,rhs(divider)));
+@c ===end===
+@example
+(%i1) load("wrstcse")$
+(%i2) ratprint:false$
+@group
+(%i3) vals: [
+   R_1= 1000.0*(1+tol[1]*.01),
+   R_2= 1000.0*(1+tol[2]*.01)
+ ];
+(%o3) [R_1 = 1000.0 (0.01 tol  + 1), 
+                             1
+                                    R_2 = 1000.0 (0.01 tol  + 1)]
+                                                          2
+@end group
+@group
+(%i4) assume(U_In>0);
+(%o4)                      [U_In > 0]
+@end group
+@group
+(%i5) divider:U_Out=U_In*R_1/(R_1+R_2);
+                                R_1 U_In
+(%o5)                   U_Out = ---------
+                                R_2 + R_1
+@end group
+@group
+(%i6) lhs(divider)=wc_mintypmax(subst(vals,rhs(divider)));
+(%o6) U_Out = [min = 0.495 U_In, typ = 0.5 U_In, 
+                                                max = 0.505 U_In]
+@end group
+@end example
+@end deffn
+
+@anchor{wc_tolappend}
+@deffn {Function} wc_tolappend (@var{list})
+
+Appends two list of parameters with tolerances renumbering the tolerances of
+both lists so they don't coincide.
+
+Example:
+@c ===beg===
+@c load("wrstcse")$
+@c val_a: [
+@c    R_1= 1000.0*(1+tol[1]*.01),
+@c    R_2= 1000.0*(1+tol[2]*.01)
+@c  ];
+@c val_b: [
+@c    R_3= 1000.0*(1+tol[1]*.01),
+@c    R_4= 1000.0*(1+tol[2]*.01)
+@c  ];
+@c wc_tolappend(val_a,val_b);
+@c ===end===
+@example
+(%i1) load("wrstcse")$
+@group
+(%i2) val_a: [
+   R_1= 1000.0*(1+tol[1]*.01),
+   R_2= 1000.0*(1+tol[2]*.01)
+ ];
+(%o2) [R_1 = 1000.0 (0.01 tol  + 1), 
+                             1
+                                    R_2 = 1000.0 (0.01 tol  + 1)]
+                                                          2
+@end group
+@group
+(%i3) val_b: [
+   R_3= 1000.0*(1+tol[1]*.01),
+   R_4= 1000.0*(1+tol[2]*.01)
+ ];
+(%o3) [R_3 = 1000.0 (0.01 tol  + 1), 
+                             1
+                                    R_4 = 1000.0 (0.01 tol  + 1)]
+                                                          2
+@end group
+@group
+(%i4) wc_tolappend(val_a,val_b);
+(%o4) [R_1 = 1000.0 (0.01 tol  + 1), 
+                             2
+R_2 = 1000.0 (0.01 tol  + 1), R_3 = 1000.0 (0.01 tol  + 1), 
+                      1                             4
+R_4 = 1000.0 (0.01 tol  + 1)]
+                      3
+@end group
+@end example
+@end deffn
+
+@anchor{wc_mintypmax2tol}
+@deffn {Function} wc_mintypmax2tol (@var{tolname}, @var{minval}, @var{typval}, @var{maxval})
+
+Generates a parameter that uses the tolerance @var{tolname} that tolerates between the
+given values.
+
+Example:
+@c ===beg===
+@c load("wrstcse")$
+@c V_F: U_Diode=wc_mintypmax2tol(tol[1],.5,.75,.82);
+@c lhs(V_F)=wc_mintypmax(rhs(V_F));
+@c ===end===
+@example
+(%i1) load("wrstcse")$
+@group
+(%i2) V_F: U_Diode=wc_mintypmax2tol(tol[1],.5,.75,.82);
+                                          2
+(%o2) U_Diode = (- 0.09000000000000002 tol ) + 0.16 tol  + 0.75
+                                          1            1
+@end group
+@group
+(%i3) lhs(V_F)=wc_mintypmax(rhs(V_F));
+(%o3) U_Diode = [min = 0.5, typ = 0.75, max = 0.8199999999999998]
+@end group
+@end example
+@end deffn

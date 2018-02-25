@@ -199,6 +199,7 @@ and develop DOE Macsyma, now called Maxima.
 * stringproc-pkg::                  String processing.
 * to_poly_solve-pkg::               to_poly_solve package.
 * unit-pkg::                        Units and dimensions package.
+* wrstcse-pkg::                     Worstcase calculations for engineering.
 * zeilberger-pkg::                  Functions for hypergeometric summation.
 
 @b{Understanding maxima's output}
@@ -966,11 +967,15 @@ Understanding maxima's output
 @chapter to_poly_solve
 @include to_poly_solve.texi
 
-@node unit-pkg, zeilberger-pkg, to_poly_solve-pkg, Top
+@node unit-pkg, wrstcse-pkg, to_poly_solve-pkg, Top
 @chapter unit
 @include unit.texi
 
-@node zeilberger-pkg, Error and warning messages, unit-pkg, Top
+@node wrstcse-pkg, zeilberger-pkg, unit-pkg, Top
+@chapter wrstcse
+@include wrstcse.texi
+
+@node zeilberger-pkg, Error and warning messages, wrstcse-pkg, Top
 @chapter zeilberger
 @include zeilberger.texi
 

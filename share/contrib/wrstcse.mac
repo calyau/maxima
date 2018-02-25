@@ -1,0 +1,153 @@
+load("distrib")$
+
+/* %wc_tols lists all tol[n] contained in the list, nested list 
+or equation it gets as its argument. */
+
+%wc_tols(wc_x):=block([vars,retval:[]],
+    /* A list of all variables contained in wc_x */
+    vars:listofvars(wc_x),
+    for i in vars do 
+        if not(freeof('tol,i)) then
+            push(i,retval),
+    return(retval)
+);
+
+/* %wc_tolrenumber renumbers all tol[n] contained in wc_x to start
+with n=startnum */
+
+%wc_tolrenumber(wc_x,startnum):=block(
+    [
+        oldtols:%wc_tols(wc_x)
+    ],
+    startnum:startnum-1,
+    psubst(
+        makelist(
+            i=tol[startnum:startnum+1],
+            i,
+            oldtols
+        ),
+        wc_x
+    )
+    
+);
+
+/* wc_tolappend appends a list of element values to another renumbering all tol[] found in both lists
+so they won't conflict. */
+
+wc_tolappend([wc_args]):=block([wc_retval:[],wc_numberoftols:1],
+    for wc_i in wc_args do
+    (
+        wc_retval:append(wc_retval,%wc_tolrenumber(wc_i,wc_numberoftols)),
+        wc_numberoftols:wc_numberoftols+length(%wc_tols(wc_i))
+    ),
+    wc_retval
+);
+
+/* wc_systematic returns a list of the results of all combinations one can get by assigning every tol[n] wc_valuespertol 
+values between -1 and 1. */
+
+wc_systematic(wc_x,[wc_valuespertol]):=block(
+    [
+        %wc_tols:%wc_tols(wc_x),
+        /* The index x of the tol[x] being currently assigned a value to */
+        wc_tolnum,
+        wc_numoftols
+    ],
+    wc_numoftols:length(%wc_tols),
+    
+    /* Default the number of values per tolerance parameter to 3 */
+    if wc_valuespertol=[] then wc_valuespertol:3 else wc_valuespertol:first(wc_valuespertol),
+    makelist(
+        (
+            subst(
+                (
+                    wc_tolnum:-1,
+                    makelist(
+                        (
+                            wc_tolnum:wc_tolnum+1,
+                            wc_tol=((floor(mod(wc_num/(wc_valuespertol^wc_tolnum),wc_valuespertol)))/
+                                (wc_valuespertol-1)*2-1)
+                        ),
+                        wc_tol,%wc_tols
+                    )
+                ),
+                wc_x
+            )
+        ),
+        wc_num,0,wc_valuespertol^wc_numoftols-1
+    )    
+    
+);
+
+wc_montecarlo(wc_x,wc_samples,[wc_s]):=block(
+    [
+        %wc_tols:%wc_tols(wc_x),
+        wc_numoftols
+    ],
+    wc_numoftols:length(%wc_tols),
+    
+    /* Default the number of values per tolerance parameter to 3 */
+    if wc_s=[] then wc_s:[3],
+    makelist(
+        (
+            subst(
+                makelist(
+                    (
+                        wc_tol=random_normal(0,inpart(wc_s,1))
+                    ),
+                    wc_tol,%wc_tols
+                ),
+                wc_x
+            )
+        ),
+        wc_num,1,wc_samples
+    )    
+    
+);
+
+/* Calculates the typical values of wc_x */
+
+wc_typicalvalues(wc_x):=
+    subst(
+        makelist(i=0,i,%wc_tols(wc_x)),
+        wc_x
+    );
+
+/* Convenience function: Get the minimum, the typical and the maximal value */
+
+wc_mintypmax(wc_x,[wc_params]):=block([wc_allvalues,wc_param1,min,wc_typ,max],
+    if length(wc_params) < 1 then
+        wc_param1:3
+    else
+        wc_param1:inpart(wc_params,1),
+    
+    if wc_param1 > 0 then
+        wc_allvalues:wc_systematic(wc_x,wc_param1)
+    else
+    (
+        if length(wc_params) < 2 then
+            wc_allvalues:wc_montecarlo(wc_x,-wc_param1,.5)
+        else
+            wc_allvalues:wc_montecarlo(wc_x,-wc_param1,inpart(wc_params,2))
+    
+    ),
+    min:apply('min,wc_allvalues),
+    wc_typ:wc_typicalvalues(wc_x),
+    max:apply('max,wc_allvalues),
+        ['min=min,'typ=wc_typ,'max=max]
+);
+/* Make this function map over equations */
+ ?putprop('mintypmax, ?cdr([?mlist,?mequal]), '?distribute_over)$
+
+/* A function that pretty-prints the value ranges the input values are in */
+wc_inputvalueranges(wc_x):=apply('matrix,
+    makelist(
+        append([lhs(wc_i)],wc_mintypmax(rhs(wc_i))),
+        wc_i,wc_x
+    )
+);
+
+/* A function that generates an equation out of the min, typ and maximum value for an element */
+
+wc_mintypmax2tol(wc_tol,wc_min,wc_typ,wc_max):=
+    ((-2*wc_typ+wc_min+wc_max)*wc_tol^2)/2-((wc_min-wc_max)*wc_tol)/2+wc_typ;
