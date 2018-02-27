@@ -37,5 +37,5 @@ if(USE_VTK)
         DEPENDEES download
         DEPENDERS patch
     )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin DESTINATION .)
+    install(DIRECTORY "${CMAKE_BINARY_DIR}/vtk/$_OUTDIR/bin/" DESTINATION vtk/)
 endif()
