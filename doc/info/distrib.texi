@@ -3292,10 +3292,20 @@ See also @mrefdot{random} To make use of this function, write first @code{load("
 
 @end deffn
 
-
 @anchor{pdf_geometric}
 @deffn {Function} pdf_geometric (@var{x},@var{p})
-Returns the value at @var{x} of the probability function of a @math{Geometric(p)} random variable, with @math{0 < p \leq 1}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the probability function of a @math{Geometric(p)} random variable, with
+@ifnottex
+@math{0 < p <= 1}.
+@end ifnottex
+@tex
+@math{0 < p \leq 1}.
+@end tex
+
+The probability function is defined as @math{p (1 - p)^x}.
+This is interpreted as the probability of @math{x} failures before the first success.
+
+@code{load("distrib")} loads this function.
 
 @opencatbox
 @category{Package distrib}
@@ -3306,7 +3316,18 @@ Returns the value at @var{x} of the probability function of a @math{Geometric(p)
 
 @anchor{cdf_geometric}
 @deffn {Function} cdf_geometric (@var{x},@var{p})
-Returns the value at @var{x} of the distribution function of a @math{Geometric(p)} random variable, with @math{0 < p \leq 1}. To make use of this function, write first @code{load("distrib")}.
+Returns the value at @var{x} of the distribution function of a @math{Geometric(p)} random variable, with
+@ifnottex
+@math{0 < p <= 1}.
+@end ifnottex
+@tex
+@math{0 < p \leq 1}.
+@end tex
+
+The probability from which the distribution function is derived is defined as @math{p (1 - p)^x}.
+This is interpreted as the probability of @math{x} failures before the first success.
+
+@code{load("distrib")} loads this function.
 
 @opencatbox
 @category{Package distrib}
@@ -3317,7 +3338,20 @@ Returns the value at @var{x} of the distribution function of a @math{Geometric(p
 
 @anchor{quantile_geometric}
 @deffn {Function} quantile_geometric (@var{q},@var{p})
-Returns the @var{q}-quantile of a @math{Geometric(p)} random variable, with @math{0 < p \leq 1}; in other words, this is the inverse of @code{cdf_geometric}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load("distrib")}.
+Returns the @var{q}-quantile of a @math{Geometric(p)} random variable, with
+@ifnottex
+@math{0 < p <= 1};
+@end ifnottex
+@tex
+@math{0 < p \leq 1};
+@end tex
+in other words, this is the inverse of @code{cdf_geometric}.
+Argument @var{q} must be an element of @math{[0,1]}.
+
+The probability from which the quantile is derived is defined as @math{p (1 - p)^x}.
+This is interpreted as the probability of @math{x} failures before the first success.
+
+@code{load("distrib")} loads this function.
 
 @opencatbox
 @category{Package distrib}
@@ -3328,7 +3362,18 @@ Returns the @var{q}-quantile of a @math{Geometric(p)} random variable, with @mat
 
 @anchor{mean_geometric}
 @deffn {Function} mean_geometric (@var{p})
-Returns the mean of a @math{Geometric(p)} random variable, with @math{0 < p \leq 1}. To make use of this function, write first @code{load("distrib")}.
+Returns the mean of a @math{Geometric(p)} random variable, with
+@ifnottex
+@math{0 < p <= 1}.
+@end ifnottex
+@tex
+@math{0 < p \leq 1}.
+@end tex
+
+The probability from which the mean is derived is defined as @math{p (1 - p)^x}.
+This is interpreted as the probability of @math{x} failures before the first success.
+
+@code{load("distrib")} loads this function.
 
 @opencatbox
 @category{Package distrib}
@@ -3339,7 +3384,18 @@ Returns the mean of a @math{Geometric(p)} random variable, with @math{0 < p \leq
 
 @anchor{var_geometric}
 @deffn {Function} var_geometric (@var{p})
-Returns the variance of a @math{Geometric(p)} random variable, with @math{0 < p \leq 1}. To make use of this function, write first @code{load("distrib")}.
+Returns the variance of a @math{Geometric(p)} random variable, with
+@ifnottex
+@math{0 < p <= 1}.
+@end ifnottex
+@tex
+@math{0 < p \leq 1}.
+@end tex
+
+The probability from which the variance is derived is defined as @math{p (1 - p)^x}.
+This is interpreted as the probability of @math{x} failures before the first success.
+
+@code{load("distrib")} loads this function.
 
 @opencatbox
 @category{Package distrib}
@@ -3350,7 +3406,18 @@ Returns the variance of a @math{Geometric(p)} random variable, with @math{0 < p 
 
 @anchor{std_geometric}
 @deffn {Function} std_geometric (@var{p})
-Returns the standard deviation of a @math{Geometric(p)} random variable, with @math{0 < p \leq 1}. To make use of this function, write first @code{load("distrib")}.
+Returns the standard deviation of a @math{Geometric(p)} random variable, with
+@ifnottex
+@math{0 < p <= 1}.
+@end ifnottex
+@tex
+@math{0 < p \leq 1}.
+@end tex
+
+The probability from which the standard deviation is derived is defined as @math{p (1 - p)^x}.
+This is interpreted as the probability of @math{x} failures before the first success.
+
+@code{load("distrib")} loads this function.
 
 @opencatbox
 @category{Package distrib}
@@ -3361,7 +3428,18 @@ Returns the standard deviation of a @math{Geometric(p)} random variable, with @m
 
 @anchor{skewness_geometric}
 @deffn {Function} skewness_geometric (@var{p})
-Returns the skewness coefficient of a @math{Geometric(p)} random variable, with @math{0 < p \leq 1}. To make use of this function, write first @code{load("distrib")}.
+Returns the skewness coefficient of a @math{Geometric(p)} random variable, with
+@ifnottex
+@math{0 < p <= 1}.
+@end ifnottex
+@tex
+@math{0 < p \leq 1}.
+@end tex
+
+The probability from which the skewness is derived is defined as @math{p (1 - p)^x}.
+This is interpreted as the probability of @math{x} failures before the first success.
+
+@code{load("distrib")} loads this function.
 
 @opencatbox
 @category{Package distrib}
@@ -3372,7 +3450,18 @@ Returns the skewness coefficient of a @math{Geometric(p)} random variable, with 
 
 @anchor{kurtosis_geometric}
 @deffn {Function} kurtosis_geometric (@var{p})
-Returns the kurtosis coefficient of a geometric random variable  @math{Geo(p)}, with @math{0 < p \leq 1}. To make use of this function, write first @code{load("distrib")}.
+Returns the kurtosis coefficient of a geometric random variable  @math{Geometric(p)}, with
+@ifnottex
+@math{0 < p <= 1}.
+@end ifnottex
+@tex
+@math{0 < p \leq 1}.
+@end tex
+
+The probability from which the kurtosis is derived is defined as @math{p (1 - p)^x}.
+This is interpreted as the probability of @math{x} failures before the first success.
+
+@code{load("distrib")} loads this function.
 
 @opencatbox
 @category{Package distrib}
@@ -3385,11 +3474,23 @@ Returns the kurtosis coefficient of a geometric random variable  @math{Geo(p)}, 
 @deffn {Function} random_geometric (@var{p}) @
 @fname{random_geometric} (@var{p},@var{n})
 
-Returns a @math{Geometric(p)} random variate, with @math{0 < p \leq 1}. Calling @code{random_geometric} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
+@code{random_geometric(@var{p})} returns one random sample from a @math{Geometric(p)} distribution, with
+@ifnottex
+@math{0 < p <= 1}.
+@end ifnottex
+@tex
+@math{0 < p \leq 1}.
+@end tex
+
+@code{random_geometric(@var{p}, @var{n})} returns a list of @var{n} random samples.
 
 The algorithm is based on simulation of Bernoulli trials.
 
-To make use of this function, write first @code{load("distrib")}.
+The probability from which the random sample is derived is defined as @math{p (1 - p)^x}.
+This is interpreted as the probability of @math{x} failures before the first success.
+
+@code{load("distrib")} loads this function.
+
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
