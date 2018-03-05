@@ -132,9 +132,11 @@
    name command groups points)
 
 (defun make-obj-title (str)
-  (if (> (length str) 80)
+  (if (= (length str) 0)
+    "notitle"
+    (if (> (length str) 80)
       (concatenate 'string "t '" (subseq str 0 75) " ...'")
-      (concatenate 'string "t '" str "'")))
+      (concatenate 'string "t '" str "'"))))
 
 
 
