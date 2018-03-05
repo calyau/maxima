@@ -620,7 +620,7 @@
 (defun sp1atrig (fn exp)
   (cond ((atom exp)
 	 (sp1atrig2 fn exp))
-	((eq fn (zl-get (cadr exp) '$inverse))
+	((eq fn (zl-get (caar exp) '$inverse))
 	 (sp1 (cadr exp)))
 	(t (sp1atrig2 fn exp))))
 

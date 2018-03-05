@@ -1543,3 +1543,19 @@ done;
 
 (reset(use_fast_arrays),1);
 1;
+
+/* SF bug #3399: "trigreduce gives malformed property list error" */
+
+trigreduce (atan (tan (x + y + z)));
+x + y + z;
+
+/* this is the original example from the bug report;
+ * verify that it doesn't trigger an error, but do not inspect the result itself
+ */
+block ([expr, A, B, a, b, x, y],
+  expr:-(2*(B*atan(((A*b+A*a-B)*(cos(B*x)*sin(A*y)+sin(B*x)*cos(A*y)))/(sqrt(A^2*b^2-2*A*B*b-A^2*a^2+B^2)*(sin(B*x)*sin(A*y)-cos(B*x)*cos(A*y)-1)))
+    +sqrt(A^2*b^2-2*A*B*b-A^2*a^2+B^2)*atan((cos(B*x)*sin(A*y)+sin(B*x)*cos(A*y))/(sin(B*x)*sin(A*y)-cos(B*x)*cos(A*y)-1))))
+     /(A*B*sqrt(A^2*b^2-2*A*B*b-A^2*a^2+B^2)),
+  errcatch (trigreduce(expr)),
+  if %% = [] then 'failed('trigreduce(expr)) else true);
+true;
