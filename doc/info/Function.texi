@@ -2268,15 +2268,28 @@ described.
 @anchor{mode_declare}
 @deffn {Function} mode_declare (@var{y_1}, @var{mode_1}, @dots{}, @var{y_n}, @var{mode_n})
 
-@code{mode_declare} is used to declare the modes of variables and functions for
-subsequent translation or compilation of functions.  @code{mode_declare} is
-typically placed at the beginning of a function definition, at the beginning of
-a Maxima script, or executed at the interactive prompt.
+@code{mode_declare} is used to declare the type of variables and functions for
+subsequent translation or compilation of the current function: Declaring the
+type of a variable in advance avoids having to generate very generic (and thus 
+potentially slow) code.  @code{mode_declare} is typically placed at the
+beginning of a function definition, at the beginning of a Maxima script, or 
+executed at the interactive prompt.
 
 The arguments of @code{mode_declare} are pairs consisting of a variable and a
 mode which is one of @code{boolean}, @code{fixnum}, @code{number},
 @code{rational}, or @code{float}.  Each variable may also be a list of variables
 all of which are declared to have the same mode.
+
+Some types of variables maxima supports are:
+@example
+array            an declared array (see the detailed description below)
+string           a string
+boolean          true or false
+integer          integers (including arbitrary-size integers)
+fixnum           integers (excluding arbitrary-size integers)
+float            machine-size floating-point numbers
+real             machine-size floating-point or integer
+@end example
 
 @c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
 If a variable is an array, and if every element of the array which is
@@ -2320,6 +2333,36 @@ single-word integers.
 
 @code{modedeclare} is a synonym for @code{mode_declare}.
 
+See @mref{mode_identity} for declaring the type of lists.
+
+Example:
+@c ===beg===
+@c square_float(f):=(
+@c      mode_declare(f,float),
+@c      f*f
+@c  );
+@c compile(square_float);
+@c square_float(100.0);
+@c ===end===
+@example
+@group
+(%i1) square_float(f):=(
+     mode_declare(f,float),
+     f*f
+ );
+(%o1)   square_float(f) := (mode_declare(f, float), f f)
+@end group
+@group
+(%i2) compile(square_float);
+(%o2)                    [square_float]
+@end group
+@group
+(%i3) square_float(100.0);
+(%o3)                        10000.0
+@end group
+@end example
+
+
 @opencatbox
 @category{Translation and compilation}
 @closecatbox
@@ -2332,7 +2375,7 @@ single-word integers.
 @anchor{mode_identity}
 @deffn {Function} mode_identity (@var{arg_1}, @var{arg_2})
 
-A special form used with @code{mode_declare} and @code{macros} to declare, e.g.,
+A special form used with @mref{mode_declare} and @code{macros} to declare, e.g.,
 a list of lists of flonums, or other compound data object.  The first argument
 to @code{mode_identity} is a primitive value mode name as given to
 @code{mode_declare} (i.e., one of @code{float}, @code{fixnum}, @code{number},
