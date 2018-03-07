@@ -216,7 +216,7 @@ APPLY means like APPLY.")
 
 (defun specialp (var)
   (cond ((or (optionp var)
-	     (get var 'special))
+	     (tr-get-special var))
 	 (if $transcompile (pushnew var specials :test #'eq))
 	 t)))
 
@@ -1020,11 +1020,11 @@ APPLY means like APPLY.")
       
       ;; When a variable is declared special, be sure to declare it
       ;; special here.
-      (when (and localp (get (car l) 'special))
+      (when (and localp (tr-get-special (car l)))
 	(push (car l) specs))
       
       (when (or (not localp)
-		(not (get (car l) 'special)))
+		(not (tr-get-special (car l))))
 	;; don't output local declarations on special variables.
 	(setq var (teval (car l)) mode (value-mode var))
 	(setq specs (cons var specs))
@@ -1239,7 +1239,7 @@ APPLY means like APPLY.")
       (specialp var)
       (tbind var)
       (setq init (if (caddr form) (translate (caddr form)) '($fixnum . 1)))
-      (cond ((not (setq varmode (get var 'mode)))
+      (cond ((not (setq varmode (tr-get-mode var)))
 	     (declvalue var (car init) t)))
       (setq next (translate (cond ((cadddr form) (list '(mplus) (cadddr form) var))
 				  ((car (cddddr form)))
@@ -1377,7 +1377,7 @@ APPLY means like APPLY.")
 	(t '$any)))
 
 (defun value-mode (var)
-  (cond ((get var 'mode))
+  (cond ((tr-get-mode var))
 	(t
 	 (warn-undeclared var)
 	 '$any)))
@@ -1395,15 +1395,38 @@ APPLY means like APPLY.")
   (cond ((get f 'function-mode)) (t '$any)))
 
 (defun function-mode-@ (f)
-  (ass-eq-ref (get f 'val-modes) 'function-mode '$any))
+  (ass-eq-ref (tr-get-val-modes f) 'function-mode '$any))
 
 (defun array-mode-@ (f)
-  (ass-eq-ref (get f 'val-modes) 'array-mode '$any))
+  (ass-eq-ref (tr-get-val-modes f) 'array-mode '$any))
 
 
 (defvar $tr_bind_mode_hook nil
   "A hack to allow users to key the modes of variables
   off of variable spelling, and other things like that.")
+
+;; TBIND, below, copies the MODE, VAL-MODES, and SPECIAL properties
+;; into the a table named TSTACK, and then removes those properties.
+;; So if TBIND has been called, we will need to look for those
+;; properties in TSTACK instead of the symbol property list.
+
+(defun tr-get-mode (a)
+  (or (get a 'mode)
+      (and (get a 'tbind)
+           (let ((my-slot (cdr (assoc a tstack))))
+             (tstack-slot-mode my-slot)))))
+
+(defun tr-get-val-modes (a)
+  (or (get a 'val-modes)
+      (and (get a 'tbind)
+           (let ((my-slot (cdr (assoc a tstack))))
+             (tstack-slot-val-modes my-slot)))))
+
+(defun tr-get-special (a)
+  (or (get a 'special)
+      (and (get a 'tbind)
+           (let ((my-slot (cdr (assoc a tstack))))
+             (tstack-slot-special my-slot)))))
 
 (defstruct (tstack-slot (:conc-name tstack-slot-))
   mode 
@@ -1480,7 +1503,7 @@ APPLY means like APPLY.")
 
 (defun tboundp (var)
   ;; really LEXICAL-VARP.
-  (and (symbolp var) (get var 'tbind) (not (get var 'special))))
+  (and (symbolp var) (get var 'tbind) (not (tr-get-special var))))
 
 (defun teval (var)
   (or (and (symbolp var) (get var 'tbind)) var))

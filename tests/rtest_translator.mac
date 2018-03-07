@@ -576,3 +576,17 @@ block ([c, f],
  translate (hhh),
  hhh (foobarbaz, 11));
 111;
+
+/* SF bug report #3402: "Unbinding defined variable generates error in compiled functions" */
+
+define_variable (zorble, 0, fixnum);
+0;
+
+(kill(f), f() := block ([zorble], 42), f());
+42;
+
+translate(f);
+[f];
+
+f();
+42;
