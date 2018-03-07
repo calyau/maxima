@@ -905,7 +905,7 @@ have it.
 
 @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
 The removed properties may be system-defined properties such as
-@code{function}, @code{macro}, or @code{mode_declare}.
+@code{function}, @code{macro}, or @mrefdot{mode_declare}
 @code{remove} does not remove properties defined by @mrefdot{put}
 
 @c VERIFY THAT THIS WORKS AS ADVERTISED
