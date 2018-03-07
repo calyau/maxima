@@ -536,13 +536,15 @@ fun();
  translate (f))$
 [];
 
-/* attempting to bind a constant */
+/* attempting to bind a constant;
+ * now OK, after commit 0517895
+ */
 block ([c, f],
   local (c, f),
   declare (c, constant),
   f () := lambda ([c], c),
   translate (f))$
-[];
+[f];
 
 /* Verify that parameter/variable lists cannot contain duplicate variables.
  *
