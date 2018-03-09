@@ -103,5 +103,6 @@
     "rtest_rfft"
 #-gcl    "rtest_decfp"
 #+gcl    ((mlist simp) "rtest_decfp" 1 2 3 4)
+    "rtest_wrstcse"
     )
   )
