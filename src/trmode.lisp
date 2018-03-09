@@ -22,7 +22,7 @@
   (or (not (boundp x)) (eq (symbol-value x) x)))
 
 (defmfun assign-mode-check (var value)
-  (let ((mode (get var 'mode))
+  (let ((mode (tr-get-mode var))
 	(user-level ($get var '$value_check)))
     (when mode
       (let (($mode_check_warnp t)
@@ -190,7 +190,7 @@
 (defun declvalue (v mode trflag)
   (when trflag (setq v (teval v)))
   (add2lnc v $props)
-  (putprop v mode 'mode))
+  (setf (tr-get-mode v) mode))
 
 (defun chekvalue (my-v mode &optional (val (meval1 my-v) val-givenp))
   (cond ((or val-givenp (not (eq my-v val)))
@@ -223,7 +223,7 @@
 			  
 (defun put-mode (name mode type)
   (if (get name 'tbind)
-      (setf (get name 'val-modes) (ass-eq-set mode (get name 'val-modes) type))
+      (setf (tr-get-val-modes name) (ass-eq-set mode (tr-get-val-modes name) type))
       (setf (get name type) mode)))
 
 (defun declarray (ar mode)

@@ -716,6 +716,9 @@
 ;;  share_tests          Whether to include the share testsuite or not
 ;;  debug                Set to enable some debugging prints.
 (defun $run_testsuite (&rest options)
-  (apply #'run-testsuite
-	 (lispify-maxima-keyword-options options '($display_all $display_known_bugs $tests $time
-						   $share_tests $debug))))
+  (enable-some-lisp-warnings)
+  (prog1
+    (apply #'run-testsuite
+           (lispify-maxima-keyword-options options '($display_all $display_known_bugs $tests $time
+                                                                  $share_tests $debug)))
+    (disable-some-lisp-warnings)))

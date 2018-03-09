@@ -212,7 +212,7 @@
       ((null free-varl) (list free free&s))
     (let ((v (pop free-varl)))
       (cond ((and (tboundp (car v))
-		  (not (get (car v) 'special)))
+		  (not (tr-get-special (car v))))
 	     (push (car v) free)
 	     (cond ((cdr v)
 		    (push (car v) free&s))))))))

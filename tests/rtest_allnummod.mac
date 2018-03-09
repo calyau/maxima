@@ -386,6 +386,8 @@ subst(x = 0,p);
 (remvalue(p),0);
 0$
 
+block ([prederror : true], charfun (x < 1));
+charfun(x < 1)$
 
 
 

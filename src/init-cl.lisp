@@ -567,9 +567,7 @@ When one changes, the other does too."
 	 (with-simple-restart (macsyma-quit "Maxima top-level")
 	   (macsyma-top-level input-stream batch-flag))))))
 
-(defun initialize-runtime-globals ()
-  (setf *load-verbose* nil)
-
+(defun disable-some-lisp-warnings ()
   ;; Suppress warnings about redefining functions;
   ;; it appears that only Clisp and SBCL emit these warnings
   ;; (ECL, GCL, CMUCL, and Clozure CL apparently do not).
@@ -577,14 +575,26 @@ When one changes, the other does too."
   ;; I guess it is plausible that we could also avoid the warnings by
   ;; reworking autoload to not trigger them. I don't have enough
   ;; motivation to attempt that right now.
-  #+sbcl (setq sb-ext:*muffled-warnings* 'sb-kernel:redefinition-with-defun)
+  #+sbcl (setq sb-ext:*muffled-warnings* '(or sb-kernel:redefinition-with-defun sb-kernel:uninteresting-redefinition))
   #+sbcl (declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
   #+clisp (setq custom:*suppress-check-redefinition* t)
 
   ;; Suppress compiler output messages.
   ;; These include the "0 errors, 0 warnings" message output from Clisp,
   ;; and maybe other messages from other Lisps.
-  (setq *compile-verbose* nil)
+  (setq *compile-verbose* nil))
+
+(defun enable-some-lisp-warnings ()
+  ;; SB-KERNEL:UNINTERESTING-REDEFINITION appears to be the default value.
+  #+sbcl (setq sb-ext:*muffled-warnings* 'sb-kernel:uninteresting-redefinition)
+  #+sbcl (declaim (sb-ext:unmuffle-conditions sb-ext:compiler-note))
+  #+clisp (setq custom:*suppress-check-redefinition* nil)
+  (setq *compile-verbose* t))
+
+(defun initialize-runtime-globals ()
+  (setf *load-verbose* nil)
+
+  (disable-some-lisp-warnings)
 
   (setf *debugger-hook* #'maxima-lisp-debugger)
   ;; See discussion on the maxima list

@@ -27,7 +27,7 @@
       (eq $define_variable '$no_default)
       ;; $MODE is same, but double-checks with the declarations available.
       (and (eq $define_variable '$mode)
-	   (get var 'mode))
+	   (tr-get-mode var))
       (do ((l *pre-transl-forms* (cdr l)))
 	  ((null l)
 	   ;; push one with a priority of 1, which will be over-rided
