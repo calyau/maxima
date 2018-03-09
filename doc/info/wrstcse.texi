@@ -162,7 +162,7 @@ Example:
 @anchor{wc_montecarlo}
 @deffn {Function} wc_montecarlo (@var{expression}, @var{num})
 
-Introduces @var{num} gauss-distributed values per parameter into
+Introduces @var{num} random values per parameter into
 @var{expression} and returns a list of the result.
 
 See also @mrefdot{wc_systematic}
@@ -211,7 +211,7 @@ Example:
 
 Prints the minimum, maximum and typical value of @var{expr}. If @var{n}
 is positive, @var{n} values for each parameter will be tried systematically.
-If @var{n} is negative, @var{-n} gauss-distributed values are used instead.
+If @var{n} is negative, @var{-n} random values are used instead.
 If no @var{n} is given, 3 is assumed.
 
 Example:

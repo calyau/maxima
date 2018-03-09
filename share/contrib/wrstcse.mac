@@ -1,5 +1,3 @@
-load("distrib")$
-
 /* %wc_tols lists all tol[n] contained in the list, nested list 
 or equation it gets as its argument. */
 
@@ -79,21 +77,19 @@ wc_systematic(wc_x,[wc_valuespertol]):=block(
     
 );
 
-wc_montecarlo(wc_x,wc_samples,[wc_s]):=block(
+wc_montecarlo(wc_x,wc_samples):=block(
     [
         %wc_tols:%wc_tols(wc_x),
         wc_numoftols
     ],
     wc_numoftols:length(%wc_tols),
     
-    /* Default the number of values per tolerance parameter to 3 */
-    if wc_s=[] then wc_s:[3],
     makelist(
         (
             subst(
                 makelist(
                     (
-                        wc_tol=random_normal(0,inpart(wc_s,1))
+                        wc_tol=(random(2000*wc_samples+1)/(1000*wc_samples))
                     ),
                     wc_tol,%wc_tols
                 ),
@@ -125,11 +121,7 @@ wc_mintypmax(wc_x,[wc_params]):=block([wc_allvalues,wc_param1,min,wc_typ,max],
         wc_allvalues:wc_systematic(wc_x,wc_param1)
     else
     (
-        if length(wc_params) < 2 then
-            wc_allvalues:wc_montecarlo(wc_x,-wc_param1,.5)
-        else
-            wc_allvalues:wc_montecarlo(wc_x,-wc_param1,inpart(wc_params,2))
-    
+        wc_allvalues:wc_montecarlo(wc_x,-wc_param1)    
     ),
     min:apply('min,wc_allvalues),
     wc_typ:wc_typicalvalues(wc_x),
