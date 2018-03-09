@@ -378,11 +378,11 @@ Examples:
 @end group
 @group
 (%i11) A2 : make_array (fixnum, 10);
-(%o11)        @@{Lisp Array: #(0 0 0 0 0 0 0 0 0 0)@@}
+(%o11)          @{Array:  #(0 0 0 0 0 0 0 0 0 0)@}
 @end group
 @group
 (%i12) fillarray (A2, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-(%o12)        @@{Lisp Array: #(1 2 3 4 5 6 7 8 9 10)@@}
+(%o12)          @{Array:  #(1 2 3 4 5 6 7 8 9 10)@}
 @end group
 @group
 (%i13) arraymake ('A2, [8]);
@@ -444,7 +444,7 @@ Examples:
 @end group
 @group
 (%i4) dd : make_array ('any, 7);
-(%o4)     @@{Lisp Array: #(NIL NIL NIL NIL NIL NIL NIL)@@}
+(%o4)       @{Array:  #(NIL NIL NIL NIL NIL NIL NIL)@}
 @end group
 @group
 (%i5) arrays;
@@ -531,19 +531,19 @@ the extra elements are ignored.
 @example
 @group
 (%i1) a2 : make_array (fixnum, 8);
-(%o1)           @@{Lisp Array: #(0 0 0 0 0 0 0 0)@@}
+(%o1)             @{Array:  #(0 0 0 0 0 0 0 0)@}
 @end group
 @group
 (%i2) fillarray (a2, [1, 2, 3, 4, 5]);
-(%o2)           @@{Lisp Array: #(1 2 3 4 5 5 5 5)@@}
+(%o2)             @{Array:  #(1 2 3 4 5 5 5 5)@}
 @end group
 @group
 (%i3) fillarray (a2, [4]);
-(%o3)           @@{Lisp Array: #(4 4 4 4 4 4 4 4)@@}
+(%o3)             @{Array:  #(4 4 4 4 4 4 4 4)@}
 @end group
 @group
 (%i4) fillarray (a2, makelist (i, i, 1, 100));
-(%o4)           @@{Lisp Array: #(1 2 3 4 5 6 7 8)@@}
+(%o4)             @{Array:  #(1 2 3 4 5 6 7 8)@}
 @end group
 @end example
 
@@ -558,19 +558,19 @@ Multple-dimension arrays are filled in row-major order.
 @example
 @group
 (%i1) a3 : make_array (fixnum, 2, 5);
-(%o1)      @@{Lisp Array: #2A((0 0 0 0 0) (0 0 0 0 0))@@}
+(%o1)        @{Array:  #2A((0 0 0 0 0) (0 0 0 0 0))@}
 @end group
 @group
 (%i2) fillarray (a3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-(%o2)      @@{Lisp Array: #2A((1 2 3 4 5) (6 7 8 9 10))@@}
+(%o2)        @{Array:  #2A((1 2 3 4 5) (6 7 8 9 10))@}
 @end group
 @group
 (%i3) a4 : make_array (fixnum, 5, 2);
-(%o3)   @@{Lisp Array: #2A((0 0) (0 0) (0 0) (0 0) (0 0))@@}
+(%o3)     @{Array:  #2A((0 0) (0 0) (0 0) (0 0) (0 0))@}
 @end group
 @group
 (%i4) fillarray (a4, a3);
-(%o4)   @@{Lisp Array: #2A((1 2) (3 4) (5 6) (7 8) (9 10))@@}
+(%o4)     @{Array:  #2A((1 2) (3 4) (5 6) (7 8) (9 10))@}
 @end group
 @end example
 
@@ -795,7 +795,7 @@ Examples:
 @example
 @group
 (%i1) A1 : make_array (fixnum, 10);
-(%o1)         @@{Lisp Array: #(0 0 0 0 0 0 0 0 0 0)@@}
+(%o1)           @{Array:  #(0 0 0 0 0 0 0 0 0 0)@}
 @end group
 @group
 (%i2) A1 [8] : 1729;
@@ -803,11 +803,11 @@ Examples:
 @end group
 @group
 (%i3) A1;
-(%o3)        @@{Lisp Array: #(0 0 0 0 0 0 0 0 1729 0)@@}
+(%o3)          @{Array:  #(0 0 0 0 0 0 0 0 1729 0)@}
 @end group
 @group
 (%i4) A2 : make_array (flonum, 10);
-(%o4) @@{Lisp Array: #(0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0)@@}
+(%o4) @{Array:  #(0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0)@}
 @end group
 @group
 (%i5) A2 [2] : 2.718281828;
@@ -816,34 +816,31 @@ Examples:
 @group
 (%i6) A2;
 (%o6) 
- @@{Lisp Array: #(0.0 0.0 2.718281828 0.0 0.0 0.0 0.0 0.0 0.0 0.0)@@}
+     @{Array:  #(0.0 0.0 2.718281828 0.0 0.0 0.0 0.0 0.0 0.0 0.0)@}
 @end group
 @group
 (%i7) A3 : make_array (any, 10);
-(%o7) @@{Lisp Array: #(NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL)@@}
+(%o7) @{Array:  #(NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL)@}
 @end group
 @group
 (%i8) A3 [4] : x - y - z;
-(%o8)                     (- z) - y + x
+(%o8)                      - z - y + x
 @end group
 @group
 (%i9) A3;
-(%o9) @@{Lisp Array: #(NIL NIL NIL NIL
-               ((MPLUS SIMP) $X ((MTIMES SIMP) -1 $Y) ((MTIMES S\
-IMP) -1 $Z))
-               NIL NIL NIL NIL NIL)@@}
+(%o9) @{Array:  #(NIL NIL NIL NIL ((MPLUS SIMP) $X ((MTIMES SIMP)\
+ -1 $Y) ((MTIMES SIMP) -1 $Z))
+  NIL NIL NIL NIL NIL)@}
 @end group
 @group
 (%i10) A4 : make_array (fixnum, 2, 3, 5);
-(%o10) @@{Lisp Array: #3A(((0 0 0 0 0) (0 0 0 0 0) (0 0 0 0 0))
-                 ((0 0 0 0 0) (0 0 0 0 0) (0 0 0 0 0)))@@}
+(%o10) @{Array:  #3A(((0 0 0 0 0) (0 0 0 0 0) (0 0 0 0 0)) ((0 0 \
+0 0 0) (0 0 0 0 0) (0 0 0 0 0)))@}
 @end group
 @group
 (%i11) fillarray (A4, makelist (i, i, 1, 2*3*5));
-(%o11) @@{Lisp Array: #3A(((1 2 3 4 5) (6 7 8 9 10) (11 12 13 14 1\
-5))
-                 ((16 17 18 19 20) (21 22 23 24 25) (26 27 28 29\
- 30)))@@}
+(%o11) @{Array:  #3A(((1 2 3 4 5) (6 7 8 9 10) (11 12 13 14 15))
+    ((16 17 18 19 20) (21 22 23 24 25) (26 27 28 29 30)))@}
 @end group
 @group
 (%i12) A4 [0, 2, 1];
