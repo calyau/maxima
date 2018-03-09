@@ -47,14 +47,15 @@ sub rem_codes {
 
     $res =~ s/$strip_topdir//g;
 
+    # Escape "@" to "@@", as an unescaped at-sign might be interpreted as the
+    # beginning of a command.
+    $res =~s/\@/\@\@/g;
+
     $res =~ s/\{/\@\{/g;
     $res =~ s/\}/\@\}/g;
 
     $res = expand($res);
 
-    # Escape "@" to "@@", as an unescaped at-sign might be interpreted as the
-    # beginning of a command.
-    $res =~s/\@/\@\@/g;
     return $res;
 }
 
