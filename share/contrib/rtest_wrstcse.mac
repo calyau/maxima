@@ -1,0 +1,27 @@
+(load("wrstcse"),done);
+done;
+(val1:a=wc_mintypmax2tol(tol[1],a,b,c),done);
+done;
+ratsimp(subst(tol[1]=-1,rhs(val1)));
+a;
+ratsimp(subst(tol[1]=0,rhs(val1)));
+b;
+ratsimp(subst(tol[1]=1,rhs(val1)));
+c;
+(vals:wc_tolappend([val1],[b=2+tol[1]]),done);
+done;
+length(unique(sort(listofvars(vals))));
+5;
+wc_typicalvalues(vals);
+[a=b,b=2];
+ratsimp(wc_inputvalueranges(vals));
+matrix(
+	[a,	min=min(a,b,c),	typ=b,	max=max(a,b,c)],
+	[b,	min=1,	typ=2,	max=3]
+);
+wc_mintypmax(subst(vals,b));
+[min=1,typ=2,max=3];
+ratsimp(wc_systematic(vals));
+[[a=a,b=1],[a=a,b=2],[a=a,b=3],[a=b,b=1],[a=b,b=2],[a=b,b=3],[a=c,b=1],[a=c,b=2],[a=c,b=3]];
+(kill(val1),done);
+done;

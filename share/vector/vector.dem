@@ -1,3 +1,4 @@
+load("vector");
 
 /* *****  This DEMO appears to be broken.  Please use the VECT 
 package on the SHARE directory. - JPG 6/5/78  ***** */

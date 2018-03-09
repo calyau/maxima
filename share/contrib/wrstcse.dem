@@ -1,0 +1,48 @@
+load("wrstcse")$ratprint:false$
+load("engineering-format")$
+engineering_format_min: .01$engineering_format_max: 1100$fpprintprec: 6$
+
+printf(false,"The output voltage of a voltage divider");
+div1:I=U_In/(R_1+R_2);
+div2:U_Out=I*R_2;
+div:subst(div1,div2);
+
+printf(false,"Every store keeps 1% resistors or better.");
+
+vals_discrete:[
+    R_1=10e3*(1+.01*tol[1]),    
+    R_2=1e3* (1+.01*tol[2])
+];
+wc_inputvalueranges(vals_discrete);
+
+assume(U_In>0);
+wc_typicalvalues(subst(vals_discrete,div));
+lhs(div)=wc_mintypmax(subst(vals_discrete,rhs(div)));
+printf(false,"Trying more values per resistor to verify this result:");
+lhs(div)=wc_mintypmax(subst(vals_discrete,rhs(div)),40);
+printf(false,"Trying 100 random values per resistor to verify this result:");
+lhs(div)=wc_mintypmax(subst(vals_discrete,rhs(div)),-100);
+
+printf(false,"Inside a semiconductor tolerances are big but tightly coupled:");
+vals_ic:[
+    R_1=10e3*(1+.2*tol[1]+.0001*tol[2]),    
+    R_2=1e3* (1+.2*tol[1]+.0001*tol[3])
+];
+wc_inputvalueranges(vals_ic);
+lhs(div)=wc_mintypmax(subst(vals_ic,rhs(div)));
+
+printf(false,"An asymmetric tolerance range:");
+
+vals_t:[
+    R_1=10e3*(1+.01*tol[1]),    
+    U_BE=wc_mintypmax2tol(tol[2],.6,.75,.85)
+];
+wc_inputvalueranges(%);
+ib:I_B=(U_In-U_BE)/R_1;
+
+lhs(ib)=wc_mintypmax(subst(vals_t,rhs(ib)));
+printf(false,"This result is correct. An additional assumption makes it simpler:");
+assume(U_In>10);
+lhs(ib)=wc_mintypmax(subst(vals_t,rhs(ib)));
+wc_systematic(subst(vals_t,rhs(ib)));
+apply('min,%);

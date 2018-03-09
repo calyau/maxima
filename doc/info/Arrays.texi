@@ -4,6 +4,51 @@
 @section Arrays
 @c -----------------------------------------------------------------------------
 
+Maxima supports 3 array-like constructs:
+@itemize
+@item If one tries to write to an indexed variable without creating a list first an
+      undeclared array (also named hash array) is created that grows dynamically and
+      allows numbers, symbols and strings as indices:
+@c ===beg===
+@c a["feww"]:1;
+@c a[qqwdqwd]:3;
+@c a[5]:99;
+@c a[qqwdqwd];
+@c a[5];
+@c a["feww"];
+@c ===end===
+@example
+@group
+(%i1) a["feww"]:1;
+(%o1)                           1
+@end group
+@group
+(%i2) a[qqwdqwd]:3;
+(%o2)                           3
+@end group
+@group
+(%i3) a[5]:99;
+(%o3)                          99
+@end group
+@group
+(%i4) a[qqwdqwd];
+(%o4)                           3
+@end group
+@group
+(%i5) a[5];
+(%o5)                          99
+@end group
+@group
+(%i6) a["feww"];
+(%o6)                           1
+@end group
+@end example
+@item Lists (see @mref{makelist} allow for fast addition and removal
+      of elements, can be created without knowing their final size.
+@item Declared arrays that allow fast access to random elements
+      (@xref{Performance considerations for Lists})
+@end itemize
+
 @menu
 * Functions and Variables for Arrays::  
 @end menu
@@ -35,19 +80,7 @@ for integers of limited size or @code{flonum} for floating-point numbers.
 creates @math{m} arrays, all of the same dimensions.
 @c SAME TYPE AS WELL ??
 
-@c THIS DISCUSSION OF UNDECLARED ARRAYS REALLY WANTS TO BE SOMEWHERE ELSE
-If the user assigns to a subscripted variable before declaring the
-corresponding array, an undeclared array is created.
-Undeclared arrays, otherwise known as hashed arrays (because hash
-coding is done on the subscripts), are more general than declared
-arrays.  The user does not declare their maximum size, and they grow
-dynamically by hashing as more elements are assigned values.  The
-subscripts of undeclared arrays need not even be numbers.  However,
-unless an array is rather sparse, it is probably more efficient to
-declare it when possible than to leave it undeclared.  The @code{array}
-function can be used to transform an undeclared array into a declared
-array.
-@c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
+See also @mrefcomma{arraymake} @mref{arrayinfo} and @mrefdot{make_array}
 
 @opencatbox
 @category{Arrays}
@@ -201,6 +234,30 @@ Examples:
                               z  v
 (%o5)                        [-, -]
                               4  u
+@end group
+@end example
+
+
+Using @code{arrayinfo} in order to convert an undeclared array to a declared array:
+
+@c ===beg===
+@c for i:0 thru 10 do a[i]:i^2$
+@c indices:map(first,rest(rest(arrayinfo(a))));
+@c array(A,fixnum,length(indices)-1)$
+@c fillarray(A,map(lambda([x],a[x]),indices))$
+@c listarray(A);
+@c ===end===
+@example
+(%i1) for i:0 thru 10 do a[i]:i^2$
+@group
+(%i2) indices:map(first,rest(rest(arrayinfo(a))));
+(%o2)          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+@end group
+(%i3) array(A,fixnum,length(indices)-1)$
+(%i4) fillarray(A,map(lambda([x],a[x]),indices))$
+@group
+(%i5) listarray(A);
+(%o5)       [0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 @end group
 @end example
 
