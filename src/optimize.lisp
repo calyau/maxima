@@ -9,8 +9,9 @@
 
 (in-package :maxima)
 
-(import '(compiler::inline-unsafe compiler::inline-always compiler::boolean
-	  compiler::definline ) 'cl-maxima)
+(eval-when (compile load eval)
+          (import '(compiler::inline-unsafe compiler::inline-always compiler::boolean
+                                            compiler::definline ) 'cl-maxima))
 
 (macsyma-module rat3f)
 
