@@ -1410,24 +1410,6 @@ APPLY means like APPLY.")
 ;; So if TBIND has been called, we will need to look for those
 ;; properties in TSTACK instead of the symbol property list.
 
-(defun tr-get-mode (a)
-  (or (get a 'mode)
-      (and (get a 'tbind)
-           (let ((my-slot (cdr (assoc a tstack))))
-             (tstack-slot-mode my-slot)))))
-
-(defun tr-get-val-modes (a)
-  (or (get a 'val-modes)
-      (and (get a 'tbind)
-           (let ((my-slot (cdr (assoc a tstack))))
-             (tstack-slot-val-modes my-slot)))))
-
-(defun tr-get-special (a)
-  (or (get a 'special)
-      (and (get a 'tbind)
-           (let ((my-slot (cdr (assoc a tstack))))
-             (tstack-slot-special my-slot)))))
-
 (defstruct (tstack-slot (:conc-name tstack-slot-))
   mode 
   tbind
@@ -1436,6 +1418,60 @@ APPLY means like APPLY.")
   ;; about APPLY(VAR,[X]), ARRAYAPPLY(F,[X]) etc.
   special)
 
+(defun tr-get-mode (a)
+  (if (get a 'tbind)
+    (let ((my-slot (cdr (assoc a tstack))))
+      (tstack-slot-mode my-slot))
+    (get a 'mode)))
+
+#-gcl (defun (setf tr-get-mode) (b a)
+  (if (get a 'tbind)
+    (let ((my-slot (cdr (assoc a tstack))))
+      (setf (tstack-slot-mode my-slot) b))
+    (setf (get a 'mode) b)))
+
+#+gcl (defsetf tr-get-mode (a) (b)
+ `(if (get ,a 'tbind)
+    (let ((my-slot (cdr (assoc ,a tstack))))
+      (setf (tstack-slot-mode my-slot) ,b))
+    (setf (get ,a 'mode) ,b)))
+
+(defun tr-get-val-modes (a)
+  (if (get a 'tbind)
+    (let ((my-slot (cdr (assoc a tstack))))
+      (tstack-slot-val-modes my-slot))
+    (get a 'val-modes)))
+
+#-gcl (defun (setf tr-get-val-modes) (b a)
+  (if (get a 'tbind)
+    (let ((my-slot (cdr (assoc a tstack))))
+      (setf (tstack-slot-val-modes my-slot) b))
+    (setf (get a 'val-modes) b)))
+
+#+gcl (defsetf tr-get-val-modes (a) (b)
+ `(if (get ,a 'tbind)
+    (let ((my-slot (cdr (assoc ,a tstack))))
+      (setf (tstack-slot-val-modes my-slot) ,b))
+    (setf (get ,a 'val-modes) ,b)))
+
+(defun tr-get-special (a)
+  (if (get a 'tbind)
+    (let ((my-slot (cdr (assoc a tstack))))
+      (tstack-slot-special my-slot))
+    (get a 'special)))
+
+#-gcl (defun (setf tr-get-special) (b a)
+  (if (get a 'tbind)
+    (let ((my-slot (cdr (assoc a tstack))))
+      (setf (tstack-slot-special my-slot) b))
+    (setf (get a 'special) b)))
+
+#+gcl (defsetf tr-get-special (a) (b)
+ `(if (get ,a 'tbind)
+    (let ((my-slot (cdr (assoc ,a tstack))))
+      (setf (tstack-slot-special my-slot) ,b))
+    (setf (get ,a 'special) ,b)))
+;;;
 ;;; should be a macro (TBINDV <var-list> ... forms)
 ;;; so that TUNBIND is assured, and also so that the stupid ASSQ doesn't
 ;;; have to be done on the darn TSTACK. This will have to wait till
