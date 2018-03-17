@@ -58,7 +58,13 @@
         ((mlist simp) "rtest_map" 2 3 4)
         ((mlist simp) "rtest_sign" 21 25 30 40 65 72 79)
         "rtest_algebraic"
-        "rtest_gamma"
+	;; Using the gcl version that is shipped with Ubuntu 16.04 (Long term Support)
+	;; test 307 of rtest_gamma results in an error-catch on i386, but not in
+	;; i64.
+	;; Unfortunately many gcl versions have the same version number so we cannot
+	;; test for the buggy version in order to get full support for the lts version.
+	#-gcl   "rtest_gamma"	
+	#+gcl   ((mlist simp) "rtest_gamma" 307)
         "rtest_expintegral"
         "rtest_signum"
         "rtest_lambert_w"
