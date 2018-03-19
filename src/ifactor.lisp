@@ -155,7 +155,10 @@
         factor-list)))
 
 (defun $ifactors (n)
-  (unless (and (integerp n) (plusp n))
+  (unless (and (or (integerp n) 
+                   (and ($integerp n)
+                        (setq n ($fix n)) ))
+               (plusp n) )
     (merror (intl:gettext "ifactors: argument must be a positive integer; found: ~M") n))
   (let* (($intfaclim)
 	 (factor-list (get-factor-list n))
