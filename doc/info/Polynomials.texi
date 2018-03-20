@@ -398,6 +398,7 @@ See also @mref{num}
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{divide}
 @deffn {Function} divide (@var{p_1}, @var{p_2}, @var{x_1}, @dots{}, @var{x_n})
 
 computes the quotient and remainder
@@ -428,6 +429,7 @@ Note that @code{y} is the main variable in the second example.
 @closecatbox
 @end deffn
 
+@anchor{eliminate}
 @c -----------------------------------------------------------------------------
 @deffn {Function} eliminate ([@var{eqn_1}, @dots{}, @var{eqn_n}], [@var{x_1}, @dots{}, @var{x_k}])
 
@@ -1539,7 +1541,7 @@ Returns the polynomial @var{p_1} divided by the polynomial @var{p_2}.  The
 arguments @var{x_1}, @dots{}, @var{x_n} are interpreted as in @code{ratvars}.
 
 @code{quotient} returns the first element of the two-element list returned by
-@code{divide}.
+@mref{divide}.
 
 @c NEED SOME EXAMPLES HERE
 @opencatbox
