@@ -726,11 +726,33 @@ Note that although @code{concat (1, 2)} looks like a number, it is a string.
 Concatenates its arguments into a string.  Unlike @mrefcomma{concat} the
 arguments do @i{not} need to be atoms.
 
-See also @mref{concat} and @mrefdot{eval_string}
+See also @mrefcomma{concat} and @mrefdot{eval_string}
+For complex string conversions see also @mref{printf}.
 
+@c ===beg===
+@c sconcat ("xx[", 3, "]:", expand ((x+y)^3));
+@c ===end===
 @example
+@group
 (%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));
-(%o1)               xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
+(%o1)             xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
+@end group
+@end example
+
+Another purpose for @code{sconcat} is to convert arbitrary objects to strings. 
+@c ===beg===
+@c sconcat (x);
+@c stringp(%);
+@c ===end===
+@example
+@group
+(%i1) sconcat (x);
+(%o1)                           x
+@end group
+@group
+(%i2) stringp(%);
+(%o2)                         true
+@end group
 @end example
 
 @opencatbox
