@@ -79,5 +79,6 @@
   #+ccl (ccl:lookup-character-encoding e)
   #+clisp (equal (symbol-package e) (find-package :charset))
   #+cmucl (member e (ext:list-all-external-formats))
-  ;; SBCL ?? dunno how to check encoding at run time
-  #-(or ecl ccl clisp cmucl) t) ;; say it's OK and hope for the best!
+  #+sbcl (gethash e sb-impl::*external-formats*)
+  #+gcl nil ;; GCL 2.6.12 does not recognize :external-format in OPEN
+  #-(or ecl ccl clisp cmucl sbcl gcl) t) ;; say it's OK and hope for the best!
