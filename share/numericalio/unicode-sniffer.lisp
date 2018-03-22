@@ -94,16 +94,17 @@
 ;; Expose CHECK-ENCODING to Maxima user.
 ;; Argument is an encoding symbol name, such as that returned by $INFERRED_ENCODING.
 ;; Returns true if the encoding is recognized by the Lisp implementation,
-;; false if the encoding is not recognized;
+;; false if the encoding is not recognized or the argument is null;
 ;; if there is no known method to check the encoding, print an error message.
 
 (defun $recognized_encoding_p (e)
-  (let ((s (find-symbol e #+clisp :charset #-clisp :keyword)))
-    (if (not s)
-      (merror (intl:gettext "recognized_encoding_p: ~M can't be the name of an encoding.") e)
-      (let ((x (check-encoding s)))
-        (cond
-          ((eq x 'unknown)
-           (merror (intl:gettext "recognized_encoding_p: I don't know how to verify encoding for this Lisp implementation.")))
-          (t
-            (not (null x))))))))
+  (when e
+    (let ((s (find-symbol e #+clisp :charset #-clisp :keyword)))
+      (if (not s)
+        (merror (intl:gettext "recognized_encoding_p: ~M can't be the name of an encoding for this Lisp implementation.") e)
+        (let ((x (check-encoding s)))
+          (cond
+            ((eq x 'unknown)
+             (merror (intl:gettext "recognized_encoding_p: I don't know how to verify encoding for this Lisp implementation.")))
+            (t
+              (not (null x)))))))))
