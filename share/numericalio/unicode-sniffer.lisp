@@ -11,11 +11,11 @@
   (sort
     '(((#xEF #xBB #xBF) . #+clisp charset:utf-8 #-clisp :utf-8)
 
-      ((#xFE #xFF) . #+clisp charset:unicode-16-big-endian #+ecl :|utf-16be| #-(or clisp ecl) :utf-16be)
-      ((#xFF #xFE) . #+clisp charset:unicode-16-little-endian #+ecl :|utf-16le| #-(or clisp ecl) :utf-16le)
+      ((#xFE #xFF) . #+clisp charset:unicode-16-big-endian #+ecl :|utf-16be| #+cmucl :utf-16-be #-(or clisp ecl cmucl) :utf-16be)
+      ((#xFF #xFE) . #+clisp charset:unicode-16-little-endian #+ecl :|utf-16le| #+cmucl :utf-16-le #-(or clisp ecl cmucl) :utf-16le)
 
-      ((#x00 #x00 #xFE #xFF) . #+clisp charset:unicode-32-big-endian #+ecl :|utf-32be| #-(or clisp ecl) :utf-32be)
-      ((#xFF #xFE #x00 #x00) . #+clisp charset:unicode-32-little-endian #+ecl :|utf-32le| #-(or clisp ecl) :utf-32le)
+      ((#x00 #x00 #xFE #xFF) . #+clisp charset:unicode-32-big-endian #+ecl :|utf-32be| #+cmucl :utf-32-be #-(or clisp ecl cmucl) :utf-32be)
+      ((#xFF #xFE #x00 #x00) . #+clisp charset:unicode-32-little-endian #+ecl :|utf-32le| #+cmucl :utf-32-le #-(or clisp ecl cmucl) :utf-32le)
 
       ;; UTF-7 not known to SBCL, CCL, ECL, or CMUCL
       ((#x2B #x2F #x76 #x38) . #+clisp charset:utf-7 #-clisp :utf-7)
@@ -68,17 +68,42 @@
        (initial-bytes (loop repeat signature-length-max collect (read-byte s nil))))
       (sniffer-match-search initial-bytes))))
 
+;; Expose UNICODE-SNIFFER to Maxima user.
+;; Returns the symbol name (i.e., a string) of the encoding,
+;; if any was found, otherwise false.
+
+(defun $inferred_encoding (f)
+  (let ((e (unicode-sniffer f)))
+    (when e (symbol-name e))))
+
 ;; Try to verify that the inferred encoding is among
 ;; the encodings known to this Lisp implementation.
 ;; If there is no known method to check the encoding
-;; for this Lisp implementation, return T.
+;; for this Lisp implementation, return 'UNKNOWN.
 ;; Otherwise this function returns a generalized Boolean.
 
 (defun check-encoding (e)
   #+ecl (member e (ext:all-encodings))
   #+ccl (ccl:lookup-character-encoding e)
   #+clisp (equal (symbol-package e) (find-package :charset))
-  #+cmucl (member e (ext:list-all-external-formats))
+  #+cmucl (assoc e (ext:list-all-external-formats))
   #+sbcl (gethash e sb-impl::*external-formats*)
   #+gcl nil ;; GCL 2.6.12 does not recognize :external-format in OPEN
-  #-(or ecl ccl clisp cmucl sbcl gcl) t) ;; say it's OK and hope for the best!
+  #-(or ecl ccl clisp cmucl sbcl gcl) 'unknown)
+
+;; Expose CHECK-ENCODING to Maxima user.
+;; Argument is an encoding symbol name, such as that returned by $INFERRED_ENCODING.
+;; Returns true if the encoding is recognized by the Lisp implementation,
+;; false if the encoding is not recognized;
+;; if there is no known method to check the encoding, print an error message.
+
+(defun $recognized_encoding_p (e)
+  (let ((s (find-symbol e #+clisp :charset #-clisp :keyword)))
+    (if (not s)
+      (merror (intl:gettext "recognized_encoding_p: ~M can't be the name of an encoding.") e)
+      (let ((x (check-encoding s)))
+        (cond
+          ((eq x 'unknown)
+           (merror (intl:gettext "recognized_encoding_p: I don't know how to verify encoding for this Lisp implementation.")))
+          (t
+            (not (null x))))))))
