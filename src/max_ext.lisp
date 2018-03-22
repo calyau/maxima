@@ -219,7 +219,9 @@
     $read_maxima_array
     $read_nested_list
     $write_binary_data
-    $write_data))
+    $write_data
+    $inferred_encoding
+    $recognized_encoding_p))
   (setf (get f 'autoload) "numericalio"))
 
 (dolist (f       
