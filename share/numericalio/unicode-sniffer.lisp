@@ -83,7 +83,8 @@
 ;; Otherwise this function returns a generalized Boolean.
 
 (defun check-encoding (e)
-  #+ecl (member e (ext:all-encodings))
+  ;; work around ECL bug #435: "UCS-4LE not on list of basic encodings"
+  #+ecl (or (eq e ':ucs-4le) (member e (ext:all-encodings)))
   #+ccl (ccl:lookup-character-encoding e)
   #+clisp (equal (symbol-package e) (find-package :charset))
   #+cmucl (assoc e (ext:list-all-external-formats))
