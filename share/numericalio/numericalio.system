@@ -6,5 +6,4 @@
   :source-extension "lisp"
   :components
   ((:file "encode-decode-float")
-   (:file "unicode-sniffer")
    (:file "numericalio")))
