@@ -11,11 +11,11 @@
   (sort
     '(((#xEF #xBB #xBF) . #+clisp charset:utf-8 #-clisp :utf-8)
 
-      ((#xFE #xFF) . #+clisp charset:unicode-16-big-endian #+ecl :|utf-16be| #+cmucl :utf-16-be #-(or clisp ecl cmucl) :utf-16be)
-      ((#xFF #xFE) . #+clisp charset:unicode-16-little-endian #+ecl :|utf-16le| #+cmucl :utf-16-le #-(or clisp ecl cmucl) :utf-16le)
+      ((#xFE #xFF) . #+clisp charset:unicode-16-big-endian #+ecl :UCS-2BE #+cmucl :utf-16-be #-(or clisp ecl cmucl) :utf-16be)
+      ((#xFF #xFE) . #+clisp charset:unicode-16-little-endian #+ecl :UCS-2LE #+cmucl :utf-16-le #-(or clisp ecl cmucl) :utf-16le)
 
-      ((#x00 #x00 #xFE #xFF) . #+clisp charset:unicode-32-big-endian #+ecl :|utf-32be| #+cmucl :utf-32-be #-(or clisp ecl cmucl) :utf-32be)
-      ((#xFF #xFE #x00 #x00) . #+clisp charset:unicode-32-little-endian #+ecl :|utf-32le| #+cmucl :utf-32-le #-(or clisp ecl cmucl) :utf-32le)
+      ((#x00 #x00 #xFE #xFF) . #+clisp charset:unicode-32-big-endian #+ecl :UCS-4BE #+cmucl :utf-32-be #-(or clisp ecl cmucl) :utf-32be)
+      ((#xFF #xFE #x00 #x00) . #+clisp charset:unicode-32-little-endian #+ecl :UCS-4LE #+cmucl :utf-32-le #-(or clisp ecl cmucl) :utf-32le)
 
       ;; UTF-7 not known to SBCL, CCL, ECL, or CMUCL
       ((#x2B #x2F #x76 #x38) . #+clisp charset:utf-7 #-clisp :utf-7)
