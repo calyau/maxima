@@ -39,7 +39,7 @@
 
       ;; :CP936 is a subset of :GB-18030 according to Wikipedia, so this is a "best fit"
       ;; GB-18030 and CP936 not known to CMUCL
-      ((#x84 #x31 #x95 #x33) . #+clisp charset:cp936 #+(or ccl sbcl) :cp936 #+ecl :|cp936| #-(or clisp ccl sbcl ecl) :gb-18030))
+      ((#x84 #x31 #x95 #x33) . #+clisp charset:cp936 #+(or ccl sbcl) :cp936 #+ecl :|cp936| #+abcl :gb18030 #-(or clisp ccl sbcl ecl abcl) :gb-18030))
     #'(lambda (a b) (> (length (car a)) (length (car b))))))
 
 (defun sniffer-match (initial-bytes signature-bytes)
@@ -90,7 +90,9 @@
   #+cmucl (assoc e (ext:list-all-external-formats))
   #+sbcl (gethash e sb-impl::*external-formats*)
   #+gcl nil ;; GCL 2.6.12 does not recognize :external-format in OPEN
-  #-(or ecl ccl clisp cmucl sbcl gcl) 'unknown)
+  ;; work around ABCL bug reported to armedbear-devel@common-lisp.net 2018-03-24: "available encodings symbols strangeness"
+  #+abcl (member (symbol-name e) (mapcar #'symbol-name (system:available-encodings)) :test #'string=)
+  #-(or ecl ccl clisp cmucl sbcl gcl abcl) 'unknown)
 
 ;; Expose CHECK-ENCODING to Maxima user.
 ;; Argument is an encoding symbol name, such as that returned by $INFERRED_ENCODING.
