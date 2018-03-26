@@ -163,7 +163,25 @@ See comments to $adjust_external_format below for a detailed description.
   (unless (probe-file file)
     (gf-merror (intl:gettext "`openr': file does not exist: ~m") file) )
   #+gcl (open file)
-  #-gcl (open file :external-format (get-encoding enc "openr")) )
+  #-gcl (let (encoding-to-use inferred-encoding encoding-from-argument)
+          (declare (ignorable inferred-encoding encoding-from-argument))
+          (if enc
+            (setq encoding-to-use (setq encoding-from-argument (get-encoding enc "openr")))
+            (progn
+              (setq inferred-encoding (unicode-sniffer file))
+              (if inferred-encoding
+                (let ((checked-encoding (check-encoding inferred-encoding)))
+                  (when (null checked-encoding)
+                    (merror (intl:gettext "openr: inferred encoding ~M for file ~M is not recognized by this Lisp implementation.") inferred-encoding file))
+                  (when (eq checked-encoding 'unknown)
+                    (mtell (intl:gettext "openr: warning: I don't know how to verify encoding for this Lisp implementation."))
+                    (mtell (intl:gettext "openr: warning: go ahead with inferred encoding ~M and hope for the best.") inferred-encoding))
+                  (setq encoding-to-use inferred-encoding))
+                (setq encoding-to-use (setq encoding-from-argument (get-encoding enc "openr"))))))
+          (let ((s (open file :external-format encoding-to-use)))
+            (when (eql (peek-char nil s nil) #+clisp #\ZERO_WIDTH_NO-BREAK_SPACE #+abcl #\UFEFF #-(or clisp abcl) #\U+FEFF)
+              (read-char s))
+            s)))
 
 
 (defun $make_string_input_stream (str &optional (start 1) (end nil)) ;; use 1-indexing
