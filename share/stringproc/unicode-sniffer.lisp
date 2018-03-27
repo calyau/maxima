@@ -90,7 +90,7 @@
   #+cmucl (assoc e (ext:list-all-external-formats))
   #+sbcl (gethash e sb-impl::*external-formats*)
   #+gcl nil ;; GCL 2.6.12 does not recognize :external-format in OPEN
-  ;; work around ABCL bug reported to armedbear-devel@common-lisp.net 2018-03-24: "available encodings symbols strangeness"
+  ;; work around ABCL bug: "SYSTEM:AVAILABLE-ENCODINGS symbols strangeness" (https://github.com/armedbear/abcl/issues/82)
   #+abcl (member (symbol-name e) (mapcar #'symbol-name (system:available-encodings)) :test #'string=)
   #-(or ecl ccl clisp cmucl sbcl gcl abcl) 'unknown)
 
