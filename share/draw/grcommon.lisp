@@ -185,8 +185,8 @@
       (gethash '$transform *gr-options*) '$none
 
       ; 3d options
-      (gethash '$xu_grid *gr-options*)           30
-      (gethash '$yv_grid *gr-options*)           30
+      (gethash '$xu_grid *gr-options*)           50
+      (gethash '$yv_grid *gr-options*)           50
       (gethash '$surface_hide *gr-options*)      nil
       (gethash '$interpolate_color *gr-options*) "depthorder"
       (gethash '$enhanced3d *gr-options*)        '$none
