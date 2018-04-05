@@ -278,6 +278,10 @@ See comments to $adjust_external_format below for a detailed description.
       (unless (stringp enc) 
         (gf-merror (intl:gettext 
           "`~m': the optional second argument must be a string." ) name ))
+
+      ;; All Lisps must recognize :default, per CLHS.
+      (when (string= enc "DEFAULT") (return-from get-encoding :default))
+
       (setq enc (intern (string-upcase enc) :keyword))
       ;;
       #+ccl (progn

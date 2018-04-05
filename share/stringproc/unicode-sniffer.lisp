@@ -74,7 +74,7 @@
 
 (defun $inferred_encoding (f)
   (let ((e (unicode-sniffer f)))
-    (when e (symbol-name e))))
+    (if e (symbol-name e) "DEFAULT")))
 
 ;; Try to verify that the inferred encoding is among
 ;; the encodings known to this Lisp implementation.
@@ -101,7 +101,8 @@
 ;; if there is no known method to check the encoding, print an error message.
 
 (defun $recognized_encoding_p (e)
-  (when e
+  (or
+    (not (null (string= e "DEFAULT")))
     (let ((s (find-symbol e #+clisp :charset #-clisp :keyword)))
       (if (not s)
         (merror (intl:gettext "recognized_encoding_p: ~M can't be the name of an encoding for this Lisp implementation.") e)
