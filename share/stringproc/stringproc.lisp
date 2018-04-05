@@ -150,11 +150,23 @@ See comments to $adjust_external_format below for a detailed description.
 (defun $opena (file &optional enc)
   #+gcl (declare (ignore enc))
   (unless (stringp file) (s-error1 "opena" "the"))
-  (open file
-        :direction :output
-        #-gcl :external-format #-gcl (get-encoding enc "opena")
-        :if-exists :append
-        :if-does-not-exist :create ))
+  #+gcl (open file :direction :output :if-exists :append :if-does-not-exist :create)
+  #-gcl (let (encoding-to-use inferred-encoding encoding-from-argument)
+          (declare (ignorable inferred-encoding encoding-from-argument))
+          (if enc
+            (setq encoding-to-use (setq encoding-from-argument (get-encoding enc "opena")))
+            (progn
+              (setq inferred-encoding (unicode-sniffer file))
+              (if inferred-encoding
+                (let ((checked-encoding (check-encoding inferred-encoding)))
+                  (when (null checked-encoding)
+                    (merror (intl:gettext "opena: inferred encoding ~M for file ~M is not recognized by this Lisp implementation.") inferred-encoding file))
+                  (when (eq checked-encoding 'unknown)
+                    (mtell (intl:gettext "opena: warning: I don't know how to verify encoding for this Lisp implementation."))
+                    (mtell (intl:gettext "opena: warning: go ahead with inferred encoding ~M and hope for the best.") inferred-encoding))
+                  (setq encoding-to-use inferred-encoding))
+                (setq encoding-to-use (setq encoding-from-argument (get-encoding enc "opena"))))))
+          (open file :direction :output :if-exists :append :if-does-not-exist :create :external-format encoding-to-use)))
 
 
 (defun $openr (file &optional enc) 
