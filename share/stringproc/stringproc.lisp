@@ -191,7 +191,9 @@ See comments to $adjust_external_format below for a detailed description.
                   (setq encoding-to-use inferred-encoding))
                 (setq encoding-to-use (setq encoding-from-argument (get-encoding enc "openr"))))))
           (let ((s (open file :external-format encoding-to-use)))
-            (when (eql (peek-char nil s nil) #+clisp #\ZERO_WIDTH_NO-BREAK_SPACE #+abcl #\UFEFF #-(or clisp abcl) #\U+FEFF)
+            (when (eql (peek-char nil s nil) #+clisp #\ZERO_WIDTH_NO-BREAK_SPACE 
+                                             #+(or abcl sbcl) #\UFEFF 
+                                             #-(or clisp abcl sbcl) #\U+FEFF)
               (read-char s))
             s)))
 
