@@ -101,6 +101,7 @@
 ;; if there is no known method to check the encoding, print an error message.
 
 (defun $recognized_encoding_p (e)
+  (setq e (string-upcase e))
   (or
     (not (null (string= e "DEFAULT")))
     (let ((s (find-symbol e #+clisp :charset #-clisp :keyword)))
