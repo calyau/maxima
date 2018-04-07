@@ -35,7 +35,10 @@ block ([some_streams, some_lists],
    [AA40,7,25,40,3.15,7.54,6.11]]]];
 
 (tempfile(number, suffix) := sconcat (maxima_tempdir, "/tmp", number, "-", suffix),
- temp_encodings : ["DEFAULT", "UTF-8", "UTF-16LE", "UTF-16BE", "UTF-32LE", "UTF-32BE"],
+ temp_encodings : 
+   if build_info()@lisp_name = "CMU Common Lisp" then 
+     ["DEFAULT", "UTF-8", "UTF-16-LE", "UTF-16-BE", "UTF-32-LE", "UTF-32-BE"]
+   else ["DEFAULT", "UTF-8", "UTF-16LE", "UTF-16BE", "UTF-32LE", "UTF-32BE"],
  n : 1000 + random(9000),
  temp_files : map (lambda ([s], tempfile(n, s)), temp_encodings),
  temp_streams : map (lambda ([f, e], openw (f, e)), temp_files, temp_encodings),

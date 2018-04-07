@@ -48,7 +48,8 @@ See comments to $adjust_external_format below for a detailed description.
 ;;
 #-gcl (eval-when (:load-toplevel :execute)
   #+cmucl 
-    (unless (eq (stream-external-format *standard-output*) :utf-8) 
+    (unless (or (eq (stream-external-format *standard-input*) :utf-8) 
+                (eq (stream-external-format *standard-output*) :utf-8) ) 
       (stream:set-system-external-format :utf-8) )
   ;;
   #+ (and clisp (not unix))
@@ -315,9 +316,10 @@ See comments to $adjust_external_format below for a detailed description.
                ef ))))
       ;;
       #+cmucl (progn
-        #+unix (let ((ef (stream-external-format *standard-output*))) ;; input format remains 'default'
+        #+unix (let ((ef (stream-external-format *standard-output*)) ;; input format remains 'default'
+                     (ef2 (stream-external-format *standard-input*)) ) ;; in test-batch input format is UTF-8
           (cond 
-            ((eq ef :utf-8) enc)
+            ((or (eq ef :utf-8) (eq ef2 :utf-8)) enc)
             (t (is-ignored enc name "to enable the encoding argument") 
                ef )))
         #-unix enc )
