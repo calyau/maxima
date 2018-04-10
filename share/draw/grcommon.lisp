@@ -1442,7 +1442,9 @@
          ($short_short_long_dashes (setf (gethash opt *gr-options*) 5))
          ($dot_dash                (setf (gethash opt *gr-options*) 6))
          ($tube                    (setf (gethash opt *gr-options*) -8))
-         (otherwise  (merror "draw: illegal line type: ~M" val) )))
+         (otherwise
+	  (if (numberp val)
+	      (setf (gethash opt *gr-options*) val) (merror "draw: illegal line type: ~M" val)))))
     ((and ($listp val)
           (= ($length val) 2)
           (equal ($first val) '$tube)
