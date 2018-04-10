@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 17.07.0 ] */
+/* [ Created with wxMaxima version 17.10.x.unofficial ] */
 /* [wxMaxima: title   start ]
 A simple manual testbench for draw
    [wxMaxima: title   end   ] */
@@ -814,6 +814,17 @@ draw(
 /* [wxMaxima: input   end   ] */
 
 
+/* [wxMaxima: input   start ] */
+print("A solid sine and a dashed cosine");
+docdraw2d("numericLineType",
+    line_type=1,
+    explicit(sin(x),x,0,10),
+    line_type=2,
+    explicit(cos(x),x,0,10)
+);
+/* [wxMaxima: input   end   ] */
 
-/* Maxima can't load/batch files which end with a comment! */
-"Created with wxMaxima"$
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 17.10.x.unofficial"$
