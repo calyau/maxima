@@ -50,7 +50,7 @@
       ($screen
         ($multiplot_mode '$none)
         (send-gnuplot-command
-          (format nil "set terminal x11 dashed ~a~%set multiplot~%" (write-font-type)))
+          (format nil "set terminal x11 dashed ~a replotonresize~%set multiplot~%" (write-font-type)))
         (setf *multiplot-is-active* t))
       ($wxt
         ($multiplot_mode '$none)
@@ -3327,7 +3327,7 @@
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
-        ($x11 (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a, ~a~%"
+        ($x11 (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a replotonresize, ~a~%"
                            *draw-terminal-number*
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
@@ -3340,7 +3340,7 @@
                           (round (first (get-option '$dimensions)))
                           (round (second (get-option '$dimensions)))))
             (t  ; other platforms
-              (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a, ~a~%"
+              (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a replotonresize, ~a~%"
                            *draw-terminal-number*
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
