@@ -35,10 +35,13 @@
 
 (defvar *windows-OS* (string= *autoconf-windows* "true") )
 
-(defmacro write-font-type ()
-   '(if (string= (get-option '$font) "")
-      ""
-      (format nil "font '~a,~a'" (get-option '$font) (get-option '$font_size))))
+(defun write-font-type ()
+   (if (and (string= (get-option '$font) "") (not (eq (get-option '$font_size) 10)))
+     (mwarning "Cannot set the gnuplot font size without a font name."))
+
+   (if (string= (get-option '$font) "")
+     ""
+     (format nil "font '~a,~a'" (get-option '$font) (get-option '$font_size))))
 
 
 ;; one-window multiplot: consecutive calls
@@ -50,7 +53,7 @@
       ($screen
         ($multiplot_mode '$none)
         (send-gnuplot-command
-          (format nil "set terminal x11 dashed ~a~%set multiplot~%" (write-font-type)))
+          (format nil "set terminal x11 dashed ~a replotonresize~%set multiplot~%" (write-font-type)))
         (setf *multiplot-is-active* t))
       ($wxt
         ($multiplot_mode '$none)
@@ -3327,7 +3330,7 @@
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
-        ($x11 (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a, ~a~%"
+        ($x11 (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a replotonresize, ~a~%"
                            *draw-terminal-number*
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
@@ -3340,7 +3343,7 @@
                           (round (first (get-option '$dimensions)))
                           (round (second (get-option '$dimensions)))))
             (t  ; other platforms
-              (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a, ~a~%"
+              (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a replotonresize, ~a~%"
                            *draw-terminal-number*
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
