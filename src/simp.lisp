@@ -3504,6 +3504,21 @@
 
 (declare-top (special var))
 
+;; (BPROG U V) appears to return A and B (as ((A1 . A2) B1 . B2) with A = A1/A2, B = B1/B2)
+;; such that B/U + A/V = 1/(U*V), where U, V are polynomials represented as a list of
+;; exponents and coefficients, (<gensym> E1 C1 E2 C2 ...) = C1*<gensym>^E1 + C2*<gensym>^E2 + ....
+;; Example:
+;; (%i73) partfrac ((2*x^2-3)/(x^4-3*x^2+2), x);
+;; 1. Trace: (PARTFRAC '((#:X16910 2 2 0 -3) #:X16910 4 1 2 -3 0 2) '#:X16910)
+;; 2. Trace: (BPROG '(#:X16910 2 1 0 -2) '(#:X16910 2 1 0 -1))
+;; 2. Trace: BPROG ==> ((-1 . 1) 1 . 1)
+;; 2. Trace: (BPROG '(#:X16910 1 1 0 1) '(#:X16910 1 1 0 -1))
+;; 2. Trace: BPROG ==> ((1 . 2) -1 . 2)
+;; 2. Trace: (BPROG '(#:X16910 1 1 0 -1) '1)
+;; 2. Trace: BPROG ==> ((0 . 1) 1 . 1)
+;; 1. Trace: PARTFRAC ==> ((0 . 1) ((1 . 2) (#:X16910 1 1 0 -1) 1) ((-1 . 2) (#:X16910 1 1 0 1) 1) ((1 . 1) (#:X16910 2 1 0 -2) 1))
+;; (%o73) 1/(x^2-2)-1/(2*(x+1))+1/(2*(x-1))
+
 (defun bprog (r s)
   (prog (p1b p2b coef1r coef2r coef1s coef2s f1 f2 a egcd)
      (setq r (ratfix r))
