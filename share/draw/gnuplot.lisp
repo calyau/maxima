@@ -35,10 +35,13 @@
 
 (defvar *windows-OS* (string= *autoconf-windows* "true") )
 
-(defmacro write-font-type ()
-   '(if (string= (get-option '$font) "")
-      ""
-      (format nil "font '~a,~a'" (get-option '$font) (get-option '$font_size))))
+(defun write-font-type ()
+   (if (and (string= (get-option '$font) "") (not (eq (get-option '$font_size) 10)))
+     (mwarning "Cannot set the gnuplot font size without a font name."))
+
+   (if (string= (get-option '$font) "")
+     ""
+     (format nil "font '~a,~a'" (get-option '$font) (get-option '$font_size))))
 
 
 ;; one-window multiplot: consecutive calls
