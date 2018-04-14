@@ -521,6 +521,21 @@ This is effectively reprinting the most recent error message.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{warning}
+@deffn  {Function} warning (@var{expr_1}, @dots{}, @var{expr_n})
+
+Evaluates and prints @var{expr_1}, @dots{}, @var{expr_n},
+as a warning message tat is formatted in a standard way so a maxima front-end
+may be able to recognize the warning and to format it accordingly.
+
+The function @code{warning} always returns false.
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{error_size}
 @defvr {Option variable} error_size
 Default value: 10
