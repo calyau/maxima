@@ -1150,8 +1150,18 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
     (cond ((eq '|$)| (first-c)) (parse-err))		  ; () is illegal
 	  ((or (null (setq right (prsmatch '|$)| '$any))) ; No args to MPROGN??
 	       (cdr right))				  ;  More than one arg.
+	  (when (suspicious-mprogn-p right)
+	    (mtell (intl:gettext "warning: parser: I'll let it stand, but (...) doesn't recognize local variables.~%"))
+	    (mtell (intl:gettext "warning: parser: did you mean to say: block(~M, ...) ?~%") (car right)))
 	   (cons '$any (cons hdr right)))	  ; Return an MPROGN
 	  (t (cons '$any (car right))))))		  ; Optimize out MPROGN
+
+(defun suspicious-mprogn-p (right)
+  ;; Look for a Maxima list of symbols or assignments to symbols.
+  (and ($listp (car right))
+       (every #'(lambda (e) (or (symbolp e)
+                                (and (consp e) (eq (caar e) 'msetq) (symbolp (second e)))))
+              (rest (car right)))))
 
 (def-led (|$(| 200.) (op left)
   (setq left (convert left '$any))		        ;De-reference LEFT
