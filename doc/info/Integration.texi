@@ -11,13 +11,13 @@
 @c -----------------------------------------------------------------------------
 
 Maxima has several routines for handling integration.
-The @code{integrate} function makes use of most of them.  There is also the
-@code{antid} package, which handles an unspecified function (and its
+The @mref{integrate} function makes use of most of them.  There is also the
+@mref{antid} package, which handles an unspecified function (and its
 derivatives, of course).  For numerical uses,
-there is a set of adaptive integrators from QUADPACK, named @code{quad_qag},
-@code{quad_qags}, etc., which are described under the heading @code{QUADPACK}.
+there is a set of adaptive integrators from QUADPACK, named @mrefcomma{quad_qag}
+@mrefcomma{quad_qags} etc., which are described under the heading @code{QUADPACK}.
 Hypergeometric functions are being worked on,
-see @code{specint} for details.
+see @mref{specint} for details.
 Generally speaking, Maxima only handles integrals which are
 integrable in terms of the "elementary functions" (rational functions,
 trigonometrics, logs, exponentials, radicals, etc.) and a few
@@ -183,7 +183,7 @@ Thus from the user's point of view, it is sufficient to call @code{integrate}.
 @c SHOULD WE BOTHER TO DOCUMENT defint ??? NO FUNCTIONALITY HERE THAT IS NOT ALREADY PRESENT IN integrate !!!
 
 @code{defint} returns a symbolic expression, either the computed integral or the
-noun form of the integral.  See @code{quad_qag} and related functions for
+noun form of the integral.  See @mref{quad_qag} and related functions for
 numerical approximation of definite integrals.
 
 @opencatbox
@@ -335,9 +335,9 @@ not contain @var{x}, although @code{integrate} does not enforce this
 restriction.  @var{a} need not be less than @var{b}.
 If @var{b} is equal to @var{a}, @code{integrate} returns zero.
 
-See @code{quad_qag} and related functions for numerical approximation of
-definite integrals.  See @code{residue} for computation of residues
-(complex integration).  See @code{antid} for an alternative means of computing
+See @mref{quad_qag} and related functions for numerical approximation of
+definite integrals.  See @mref{residue} for computation of residues
+(complex integration).  See @mref{antid} for an alternative means of computing
 indefinite integrals.
 
 The integral (an expression free of @code{integrate}) is returned if
@@ -356,10 +356,10 @@ where @var{i} is the noun form of interest.
 @c BEGIN EXPOSITION ON HEURISTICS
 @code{integrate} handles definite integrals separately from indefinite, and
 employs a range of heuristics to handle each case.  Special cases of definite
-integrals include limits of integration equal to zero or infinity (@code{inf} or
-@code{minf}), trigonometric functions with limits of integration equal to zero
+integrals include limits of integration equal to zero or infinity (@mref{inf} or
+@mref{minf}), trigonometric functions with limits of integration equal to zero
 and @code{%pi} or @code{2 %pi}, rational functions, integrals related to the
-definitions of the @code{beta} and @code{psi} functions, and some logarithmic
+definitions of the @mref{beta} and @mref{psi} functions, and some logarithmic
 and trigonometric integrals.  Processing rational functions may include
 computation of residues.  If an applicable special case is not found, an attempt
 will be made to compute the indefinite integral and evaluate it at the limits of
@@ -379,7 +379,7 @@ This search may make use of derivatives defined by the @code{gradef} function.
 See also @mref{changevar} and @mrefdot{antid}
 
 If none of the preceding heuristics find the indefinite integral, the Risch
-algorithm is executed.  The flag @mref{risch} may be set as an @code{evflag},
+algorithm is executed.  The flag @mref{risch} may be set as an @mrefcomma{evflag}
 in a call to @code{ev} or on the command line, e.g.,
 @code{ev (integrate (@var{expr}, @var{x}), risch)} or
 @code{integrate (@var{expr}, @var{x}), risch}.  If @code{risch} is present,
@@ -389,10 +389,10 @@ first.  See also @mrefdot{risch}
 
 @code{integrate} works only with functional relations represented explicitly
 with the @code{f(x)} notation.  @code{integrate} does not respect implicit
-dependencies established by the @code{depends} function.
+dependencies established by the @mref{depends} function.
 
 @code{integrate} may need to know some property of a parameter in the integrand.
-@code{integrate} will first consult the @code{assume} database,
+@code{integrate} will first consult the @mref{assume} database,
 and, if the variable of interest is not there,
 @code{integrate} will ask the user.
 Depending on the question,
@@ -461,7 +461,7 @@ neg;
 
 @item
 Change of variable.  There are two changes of variable in this example:
-one using a derivative established by @code{gradef}, and one using the
+one using a derivative established by @mrefcomma{gradef} and one using the
 derivation @code{diff(r(x))} of an unspecified function @code{r(x)}.
 
 @example
@@ -486,7 +486,7 @@ derivation @code{diff(r(x))} of an unspecified function @code{r(x)}.
 @item
 Return value contains the @code{'integrate} noun form.  In this example, Maxima
 can extract one factor of the denominator of a rational function, but cannot
-factor the remainder or otherwise find its integral.  @code{grind} shows the
+factor the remainder or otherwise find its integral.  @mref{grind} shows the
 noun form @code{'integrate} in the result.  See also
 @mref{integrate_use_rootsof} for more on integrals of rational functions.
 
@@ -660,7 +660,7 @@ Examples:
 Default value: @code{false}
 
 When @code{integrate_use_rootsof} is @code{true} and the denominator of
-a rational function cannot be factored, @code{integrate} returns the integral
+a rational function cannot be factored, @mref{integrate} returns the integral
 in a form which is a sum over the roots (not yet known) of the denominator.
 
 For example, with @code{integrate_use_rootsof} set to @code{false},
@@ -724,13 +724,13 @@ Sometimes this will help Maxima obtain a more useful result.
 @anchor{ldefint}
 @deffn {Function} ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 
-Attempts to compute the definite integral of @var{expr} by using @code{limit}
+Attempts to compute the definite integral of @var{expr} by using @mref{limit}
 to evaluate the indefinite integral of @var{expr} with respect to @var{x}
 at the upper limit @var{b} and at the lower limit @var{a}.
 If it fails to compute the definite integral,
 @code{ldefint} returns an expression containing limits as noun forms.
 
-@code{ldefint} is not called from @code{integrate}, so executing
+@code{ldefint} is not called from @mrefcomma{integrate} so executing
 @code{ldefint (@var{expr}, @var{x}, @var{a}, @var{b})} may yield a different
 result than @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
 @code{ldefint} always uses the same method to evaluate the definite integral,
@@ -800,7 +800,7 @@ Integrates @var{expr} with respect to @var{x} using the
 transcendental case of the Risch algorithm.  (The algebraic case of
 the Risch algorithm has not been implemented.)  This currently
 handles the cases of nested exponentials and logarithms which the main
-part of @code{integrate} can't do.  @code{integrate} will automatically apply
+part of @code{integrate} can't do.  @mref{integrate} will automatically apply
 @code{risch} if given these cases.
 
 @code{erfflag}, if @code{false}, prevents @code{risch} from introducing the
@@ -882,25 +882,25 @@ Berlin: Springer-Verlag, 1983, ISBN 0387125531.}.
 @c -----------------------------------------------------------------------------
 
 @table @code
-@item quad_qag
+@item @mref{quad_qag}
 Integration of a general function over a finite interval.
-@code{quad_qag} implements a simple globally adaptive integrator using the
+@mref{quad_qag} implements a simple globally adaptive integrator using the
 strategy of Aind (Piessens, 1973).
 The caller may choose among 6 pairs of Gauss-Kronrod quadrature
 formulae for the rule evaluation component.
 The high-degree rules are suitable for strongly oscillating integrands.
 
-@item quad_qags
+@item @mref{quad_qags}
 Integration of a general function over a finite interval.
-@code{quad_qags} implements globally adaptive interval subdivision with
+@mref{quad_qags} implements globally adaptive interval subdivision with
 extrapolation (de Doncker, 1978) by the Epsilon algorithm (Wynn, 1956).
 
-@item quad_qagi
+@item @mref{quad_qagi}
 Integration of a general function over an infinite or semi-infinite interval.
 The interval is mapped onto a finite interval and
 then the same strategy as in @code{quad_qags} is applied.
 
-@item quad_qawo
+@item @mref{quad_qawo}
 @ifnottex
 Integration of @math{cos(omega x) f(x)} or @math{sin(omega x) f(x)} over a
 finite interval, where @math{omega} is a constant.
@@ -911,16 +911,16 @@ $\sin\left(\omega \, x\right) \, f\left(x\right)$ over a finite interval,
 where $\omega$ is a constant.
 @end tex
 The rule evaluation component is based on the modified Clenshaw-Curtis
-technique.  @code{quad_qawo} applies adaptive subdivision with extrapolation,
-similar to @code{quad_qags}.
+technique.  @mref{quad_qawo} applies adaptive subdivision with extrapolation,
+similar to @mrefdot{quad_qags}
 
-@item quad_qawf
+@item @mref{quad_qawf}
 Calculates a Fourier cosine or Fourier sine transform on a semi-infinite
-interval.  The same approach as in @code{quad_qawo} is applied on successive
+interval.  The same approach as in @mref{quad_qawo} is applied on successive
 finite intervals, and convergence acceleration by means of the Epsilon algorithm
 (Wynn, 1956) is applied to the series of the integral contributions.
 
-@item quad_qaws
+@item @mref{quad_qaws}
 @ifnottex
 Integration of @math{w(x) f(x)} over a finite interval @math{[a, b]}, where
 @math{w} is a function of the form @math{(x - a)^alpha (b - x)^beta v(x)} and
@@ -940,15 +940,15 @@ A globally adaptive subdivision strategy is applied, with modified
 Clenshaw-Curtis integration on the subintervals which contain @math{a}
 or @math{b}.
 
-@item quad_qawc
+@item @mref{quad_qawc}
 Computes the Cauchy principal value of @math{f(x)/(x - c)} over a finite
 interval @math{(a, b)} and specified @math{c}.
 The strategy is globally adaptive, and modified
 Clenshaw-Curtis integration is used on the subranges
 which contain the point @math{x = c}.
 
-@item quad_qagp
-Basically the same as @code{quad_qags} but points of singularity or
+@item @mref{quad_qagp}
+Basically the same as @mref{quad_qags} but points of singularity or
 discontinuity of the integrand must be supplied.  This makes it easier
 for the integrator to produce a good solution.
 @end table
