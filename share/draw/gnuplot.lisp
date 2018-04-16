@@ -3330,7 +3330,7 @@
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
-        ($x11 (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a replotonresize, ~a~%"
+        ($x11 (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a, ~a replotonresize~%"
                            *draw-terminal-number*
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
@@ -3343,7 +3343,7 @@
                           (round (first (get-option '$dimensions)))
                           (round (second (get-option '$dimensions)))))
             (t  ; other platforms
-              (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a replotonresize, ~a~%"
+              (format cmdstorage "set terminal x11 dashed enhanced ~a ~a size ~a, ~a replotonresize~%"
                            *draw-terminal-number*
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
