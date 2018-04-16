@@ -2788,7 +2788,7 @@ charsets_tefactor ( f,as,ord,var):=block(
                   last:factor ( last), secondLast:last,
                    [ last:charsets_qqfactor ( last,  [ vf ] )  ],
                   if  charsets_operatorp(secondLast, setify1([ "*", "^" ])) and max ( last:map(charsets_degree ( last[i], vf)))  < df then (
-                         [ last:map(part( part(  [ charsets_fcnormal (  [ as[1], last[i] ], ord, 2)  ], 1), 2)) ],
+                        last:map(part( part(  [ charsets_fcnormal (  [ as[1], last[i] ], ord, 2)  ], 1), 2)),
                         return ( charsets_prod ( map(last,charsets_newfactoras,as, ord)) )))),
       inf : lcoeff ( f, vf), secondLast:last,last:inf,
       for i : 1 thru nv do charsets_m[i] : 1,

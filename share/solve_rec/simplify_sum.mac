@@ -98,7 +98,6 @@ simplify_sum(expr) :=
 
   /* Check for sum(expr, var, minf, hi) */
   else if part(expr, 3)=-inf or part(expr, 3)=minf then (
-    [summand, var_, lo, hi],
     simplify_sum(apply('sum, [subst(var_=-var_, summand), var_, -hi, inf])))
 
   /* Trigonometric sums */
