@@ -39,5 +39,3 @@ ode2(%, f(z), z);
 /* If we set %k1 = 0 and %k2 = 1/(2 sqrt(pi)) in the previous expression,
    we will obtain the usual fundamental solution of the heat equation */
 subst([%k1 = 0, %k2 = 1/(2*sqrt(%pi))], %);
-/* ---------- Quit ---------- */
-quit();

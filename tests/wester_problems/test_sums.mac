@@ -99,5 +99,3 @@ closedform(%);
 /* => pi/2   [Knopp, p. 269] */
 'sum('product(k/(2*k - 1), k, 1, m), m, 2, inf);
 closedform(%);
-/* ---------- Quit ---------- */
-quit();

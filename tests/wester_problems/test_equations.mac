@@ -213,5 +213,3 @@ eqn3: 2*y*z^2 - z^2 - 1 = 0;
 solve([eqn1, eqn2, eqn3], [x, y, z]);
 rectform(sfloat(%[1..5]));
 remvalue(eqn1, eqn2, eqn3)$
-/* ---------- Quit ---------- */
-quit();

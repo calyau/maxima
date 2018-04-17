@@ -93,5 +93,3 @@ errcatch(apply('min_function, endcons(f, %[1])));
 lp_by_simplex(-(4*x1 - x2 + 2*x3 - 2*x4), [2*x1 + x2 + x3 + x4 <= 10,
               x1 - 2*x2 - x3 + x4 >= 4, x1 + x2 + 3*x3 - x4 >= 4],
               [x1, x2, x3, x4]);
-/* ---------- Quit ---------- */
-quit();

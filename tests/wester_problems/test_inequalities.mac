@@ -71,5 +71,3 @@ forget(abs(2*%r9*(cos(t) - 1) + 1) <= 1)$
 ineq_linsolve(A^2*(cos(t) - 4)^2*sin(t)^2 < 9, A);
 /* => |x| < y */
 ineq_linsolve([x + y > 0, x - y < 0], [x, y]);
-/* ---------- Quit ---------- */
-quit();

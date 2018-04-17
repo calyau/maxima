@@ -100,5 +100,3 @@ fourier_series(x, x, p);
    - (2 p / pi^2) sum( [1 - (-1)^n] cos(n pi x / p) / n^2, n = 1..infinity ) */
 fourier_series(abs(x), x, p);
 forget(p > 0)$
-/* ---------- Quit ---------- */
-quit();

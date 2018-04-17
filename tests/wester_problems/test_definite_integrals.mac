@@ -131,5 +131,3 @@ forget(not(equal(x, 0)), x^2 < 2)$
                       y, 0, b*(1 - x/a)),
            x, 0, a);
 ev(%, integrate);
-/* ---------- Quit ---------- */
-quit();

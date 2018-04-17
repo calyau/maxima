@@ -51,5 +51,3 @@ subst(v, v(r, theta), %);
 pl_symmetry([lhs(%) - rhs(%)], [v], [r, theta], [], ['diff(v, theta, 2)]);
 pl_sksol;
 remfunction(pde_solns)$
-/* ---------- Quit ---------- */
-quit();

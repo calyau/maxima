@@ -96,5 +96,3 @@ limit(%);
 /* 2^aleph_0 => aleph_1 */
 2^inf;
 limit(%);
-/* ---------- Quit ---------- */
-quit();
