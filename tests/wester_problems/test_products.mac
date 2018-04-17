@@ -39,5 +39,3 @@ closedform(%);
 /* => -1   [Knopp, p. 436] */
 'product((k*(k +  1) + 1 + %i)/(k*(k + 1) + 1 - %i), k, 0, inf);
 closedform(%);
-/* ---------- Quit ---------- */
-quit();

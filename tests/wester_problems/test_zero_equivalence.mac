@@ -52,5 +52,3 @@ radcan(%);
 /* [Gradshteyn and Ryzhik 9.535(3)] */
 2^(1 - z)*gamma(z)*zeta(z)*cos(z*%pi/2) - %pi^z*zeta(1 - z);
 ratsimp(%);
-/* ---------- Quit ---------- */
-quit();

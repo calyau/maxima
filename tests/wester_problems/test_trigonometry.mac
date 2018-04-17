@@ -65,5 +65,3 @@ limit(expr, x, 0);
 /* What is the derivative? */
 diff(expr, x);
 remvalue(expr)$
-/* ---------- Quit ---------- */
-quit();

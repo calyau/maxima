@@ -59,5 +59,3 @@ ishow(covdiff(icurvature([@h, i, j, k]), l) +
       covdiff(icurvature([@h, i, k, l]), j) +
       covdiff(icurvature([@h, i, l, j]), k));
 canform(%);
-/* ---------- Quit ---------- */
-quit();

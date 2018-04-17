@@ -63,5 +63,3 @@ limit(x * integrate(exp(-t^2), t, 0, x)/(1 - exp(-x^2)), x, 0);
 [limit(x/abs(x), x, 0, minus), limit(x/abs(x), x, 0, plus)];
 /* => pi/2   [Richard Q. Chen] */
 limit(atan(-log(x)), x, 0, plus);
-/* ---------- Quit ---------- */
-quit();

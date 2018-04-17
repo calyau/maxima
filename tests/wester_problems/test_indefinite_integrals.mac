@@ -88,5 +88,3 @@ integrate(cos(5*x)*cos_int(2*x), x);
 /* => 1/2 [f(x) - g(x)]/[f(x) + g(x)]   [Gradshteyn and Ryzhik 2.02(25)] */
 integrate(('diff(f(x), x)*g(x) - f(x)*'diff(g(x), x))/(f(x)^2 - g(x)^2), x);
 logcontract(antidiff(part(%, 1), x, f(x)));
-/* ---------- Quit ---------- */
-quit();

@@ -136,5 +136,3 @@ comm2(A, B);
 comm3(A, B, C) + comm3(B, C, A) + comm3(C, A, B);
 expand(%);
 remfunction(comm2, comm3)$
-/* ---------- Quit ---------- */
-quit();

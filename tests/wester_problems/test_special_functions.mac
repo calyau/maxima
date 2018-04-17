@@ -86,5 +86,3 @@ declare(f, antisymmetric)$
 /* Test it out => [-f(a, b, c), 0] */
 [f(c, b, a), f(c, b, c)];
 remove(f, antisymmetric)$
-/* ---------- Quit ---------- */
-quit();

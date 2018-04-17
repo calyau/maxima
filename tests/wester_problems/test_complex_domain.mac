@@ -134,5 +134,3 @@ ratsimp(expr);
 radcan(expr);
 remvalue(w, expr)$
 remove(z, complex)$
-/* ---------- Quit ---------- */
-quit();

@@ -119,5 +119,3 @@ declare(x, complex)$
 y = sqrt((exp(x^2) + exp(-x^2))/(sqrt(3)*x - sqrt(2)));
 tex(%);
 remove(x, complex)$
-/* ---------- Quit ---------- */
-quit();

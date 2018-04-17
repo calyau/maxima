@@ -26,5 +26,3 @@ setdifference(%[1], %[2]);
 remvalue(x, y, z)$
 /* Cartesian product of sets => {(a, c), (a, d), (b, c), (b, d)} */
 apply('append, outermap("[", [a, b], [c, d]));
-/* ---------- Quit ---------- */
-quit();
