@@ -73,11 +73,7 @@ and @mrefdot{draw2d}
 @c  );
 @c ===end===
 @example
-@group
-(%i1) load("draw");
-(%o1)     /maxima/share/draw/draw.lisp
-@end group
-(%i2) draw(
+(%i1) draw(
     gr2d(
         key="sin (x)",grid=[2,2],
         explicit(
@@ -93,7 +89,7 @@ and @mrefdot{draw2d}
         )
     )
  );
-(%o2)           [gr2d(explicit), gr2d(explicit)]
+(%o1)           [gr2d(explicit), gr2d(explicit)]
 @end example
 @figure{draw_scene}
 
@@ -4593,9 +4589,8 @@ example, a level picture object is built by hand and then rendered.
 
 An xpm file is read and then rendered.
 @example
-(%i1) load(draw)$
-(%i2) im: read_xpm("myfile.xpm")$
-(%i3) draw2d(image(im,0,0,10,7))$
+(%i1) im: read_xpm("myfile.xpm")$
+(%i2) draw2d(image(im,0,0,10,7))$
 @end example
 
 See also @mrefcomma{make_level_picture}  @mref{make_rgb_picture} and @mrefdot{read_xpm}
@@ -5611,10 +5606,6 @@ Example:
 
 @node Functions and Variables for worldmap,  , Functions and Variables for pictures, draw-pkg
 @section Functions and Variables for worldmap
-
-
-This package automatically loads package @mrefdot{draw}
-
 
 @subsection Variables and Functions
 
