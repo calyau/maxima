@@ -2411,3 +2411,30 @@ emptyp(errcatch(lambda([%e], %e)));
 true$
 kill(c, f);
 done$
+
+/*        Bug #3009: factoring exponentials causes MAKE-ARRAY error */
+/* a.k.a. Bug #3146: max() runs out of memory when comparing exponential functions */
+sign(((-1)-%e^-(4.075321792706671E-4*d_1))*%e^-(4.075321792706671E-4*d_2)+%e^-(8.150643585413342E-4*d_2)-%e^-(4.075321792706671E-4*d_1)+%e^-(8.150643585413342E-4*d_1)+1);
+pnz$
+factor(a^1000000+a+1);
+a^1000000+a+1$
+max(2.0325-6.9825*%e^-(492380.0*t),2.103-7.053*%e^-(406810.0*t));
+'max(2.0325-6.9825*%e^-(492380.0*t),2.103-7.053*%e^-(406810.0*t))$
+sign(exp(-492380*t)-2793);
+pnz$
+
+/* Bug #3147: sign of expressions with exponents crashes */
+assume(t>0);
+[t>0]$
+sign(2^(500005*t)-2^(500001*t));
+pos$
+kill(t);
+done$
+
+/* Test factor_max_degree. */
+block([factor_max_degree : 0], [factor(x^2+2*x+1), factor(x^2-1), factor(x^2+3*x+2), factor(x^2000+x^1999)]);
+[(x+1)^2, (x-1)*(x+1), (x+1)*(x+2), x^1999*(x+1)]$
+block([factor_max_degree : 1, factor_max_degree_print_warning : false], [factor(x^2+2*x+1), factor(x^2-1), factor(x^2+3*x+2), factor(x^2000+x^1999)]);
+[(x+1)^2, x^2-1, x^2+3*x+2, x^1999*(x+1)]$
+block([factor_max_degree : 2], [factor(x^2+2*x+1), factor(x^2-1), factor(x^2+3*x+2), factor(x^2000+x^1999)]);
+[(x+1)^2, (x-1)*(x+1), (x+1)*(x+2), x^1999*(x+1)]$
