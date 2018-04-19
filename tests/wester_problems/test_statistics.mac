@@ -123,5 +123,3 @@ lsq_nonlinear(q[1], q[2], b0 + b1*2.0^(- days/th), [days], [b0, b1, th],
               [90, 95, 120]);
 sfloat(1/141.9105);
 remvalue(q)$
-/* ---------- Quit ---------- */
-quit();

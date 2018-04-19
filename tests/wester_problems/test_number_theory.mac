@@ -86,5 +86,3 @@ errcatch(cf((exp(1/x) - 1)/(exp(1/x) + 1)));
 /* => 1/(2 x + 1/(2 x + 1/(2 x + ...   (Re x > 0)   From Liyang Xu, ``Method
       Derived from Continued Fraction Approximations'', draft. */
 errcatch(cf(sqrt(x^2 + 1) - x));
-/* ---------- Quit ---------- */
-quit();

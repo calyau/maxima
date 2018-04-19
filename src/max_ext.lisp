@@ -186,7 +186,9 @@
        $octets_to_string
        $string_to_octets
        $sha1sum
-       $sha256sum ))
+       $sha256sum
+       $inferred_encoding
+       $recognized_encoding_p))
   (setf (get f 'autoload) "stringproc"))
 
 

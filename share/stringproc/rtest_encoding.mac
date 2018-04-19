@@ -1,0 +1,60 @@
+block ([use_fast_arrays : true],
+       kill (foo_table),
+       foo_table["CMU Common Lisp"]: ["DEFAULT", "UTF-8", "UTF-16-LE", "UTF-16-BE", "UTF-32-LE", "UTF-32-BE"],
+       foo_table["CLISP"]: ["DEFAULT", "UTF-8", "UNICODE-16-LITTLE-ENDIAN", "UNICODE-16-BIG-ENDIAN",
+                            "UNICODE-32-LITTLE-ENDIAN", "UNICODE-32-BIG-ENDIAN"],
+       foo_table["ECL"]  : ["DEFAULT", "UTF-8", "UCS-2LE", "UCS-2BE", "UCS-4LE", "UCS-4BE"],
+       others : ["DEFAULT", "UTF-8", "UTF-16LE", "UTF-16BE", "UTF-32LE", "UTF-32BE"],
+       some_files : map (file_search, ["rectangular.csv", "rectangular.csv-utf-8", "rectangular.csv-utf-16le",
+                                       "rectangular.csv-utf-16be", "rectangular.csv-utf-32le", "rectangular.csv-utf-32be"]),
+       0);
+0;
+
+inferred_encodings : map (inferred_encoding, some_files);
+''(foo_table[build_info()@lisp_name], if %% = false then others else %%);
+
+map (lambda ([e], errcatch (recognized_encoding_p (e))), inferred_encodings);
+''(if build_info()@lisp_name = "GCL" then [[false], [false], [false], [false], [false], [false]]
+                                     else [[true], [true], [true], [true], [true], [true]]);
+
+block ([some_streams, some_lists],
+       some_streams : map (openr, some_files),
+       some_lists : map (lambda ([s], errcatch (read_nested_list (s, 'comma))), some_streams),
+       map (close, some_streams),
+       unique (some_lists));
+[[[[KEY,XX,YY,ZZ,FOO,Bar,baz],
+   [aa46,7,7,16,FOO3,2.71,2.88],
+   [aA31,31,61,25,916,6.1,741],
+   [AA22,61,40,13,32.75,Bar2,9.12],
+   [AA16,19,25,31,FOO7,4.8,697],
+   [AA16,13,49,7,5.67,2.54,4.54],
+   [AA58,19,28,43,4.04,0.9,baz8],
+   [AA34,16,22,19,4.87,4.9,2.85],
+   [AA52,28,34,7,FOO9,Bar4,293],
+   [AA52,10,43,13,12.125,5.69,0.0],
+   [AA40,7,25,40,3.15,7.54,6.11]]]];
+
+(tempfile(number, suffix) := sconcat (maxima_tempdir, "/tmp", number, "-", suffix),
+ temp_encodings : 
+   if build_info()@lisp_name = "CMU Common Lisp" then 
+     ["DEFAULT", "UTF-8", "UTF-16-LE", "UTF-16-BE", "UTF-32-LE", "UTF-32-BE"]
+   else ["DEFAULT", "UTF-8", "UTF-16LE", "UTF-16BE", "UTF-32LE", "UTF-32BE"],
+ n : 1000 + random(9000),
+ temp_files : map (lambda ([s], tempfile(n, s)), temp_encodings),
+ temp_streams : map (lambda ([f, e], openw (f, e)), temp_files, temp_encodings),
+ BOM : unicode ("ZERO_WIDTH_NO-BREAK_SPACE"),
+ map (lambda ([e, s], if e # "DEFAULT" then printf (s, "~a", BOM)), temp_encodings, temp_streams),
+ map (close, temp_streams));
+[true, true, true, true, true, true];
+
+map (inferred_encoding, temp_files);
+''(foo_table[build_info()@lisp_name], if %% = false then others else %%);
+
+(temp_streams : map (opena, temp_files),
+ map (lambda ([s], printf (s, "17 29 1729~%1 1 2 3 5~%")), temp_streams),
+ map (lambda ([s], close (s)), temp_streams),
+ unique (map (lambda ([f], block ([s:openr(f), stuff], stuff:read_nested_list(s), close(s), stuff)), temp_files)));
+[[[17, 29, 1729], [1, 1, 2, 3, 5]]];
+
+map (inferred_encoding, temp_files);
+''(foo_table[build_info()@lisp_name], if %% = false then others else %%);

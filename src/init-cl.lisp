@@ -554,18 +554,34 @@ When one changes, the other does too."
     (process-args (get-application-args) maxima-options))
   (values input-stream batch-flag))
 
+;; A list of temporary files that can be deleted on leaving maxima
+(defvar *temp-files-list* (make-hash-table :test 'equal))
+
+;; Delete all files *temp-files-list* contains.
+(defun delete-temp-files ()
+  (maphash #'(lambda(filename param)
+	       (declare (ignore param))
+	       (let ((file (ignore-errors (probe-file filename))))
+		 (if file
+		     (if (not (apparently-a-directory-p file))
+			 (delete-file file)))))
+	   *temp-files-list*))
+
 (defun cl-user::run ()
   "Run Maxima in its own package."
   (in-package :maxima)
   (initialize-runtime-globals)
   (let ((input-stream *standard-input*)
 	(batch-flag nil))
-    (catch 'to-lisp
-      (setf (values input-stream batch-flag)
-	    (process-maxima-args input-stream batch-flag))
-      (loop
-	 (with-simple-restart (macsyma-quit "Maxima top-level")
-	   (macsyma-top-level input-stream batch-flag))))))
+    (unwind-protect
+	(catch 'to-lisp
+	  (setf (values input-stream batch-flag)
+		(process-maxima-args input-stream batch-flag))
+	  (loop
+	   (with-simple-restart (macsyma-quit "Maxima top-level")
+				(macsyma-top-level input-stream batch-flag))))
+      (delete-temp-files)
+    )))
 
 (defun disable-some-lisp-warnings ()
   ;; Suppress warnings about redefining functions;

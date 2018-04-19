@@ -27,5 +27,3 @@ sum(k, k, 1, 4);
 product(k, k, 1, 3);
 errcatch(limit(k, k, 0));
 errcatch(integrate(k, k, 0, 1));
-/* ---------- Quit ---------- */
-quit();

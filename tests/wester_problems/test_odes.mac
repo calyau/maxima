@@ -168,5 +168,3 @@ system: [diff(x(t), t, 2) = 2*w*diff(y(t), t),
          diff(y(t), t, 2) = -2*w*diff(x(t), t) + 3*w^2*y(t)];
 odelinsys(system, [x(t), y(t)]);
 remvalue(system)$
-/* ---------- Quit ---------- */
-quit();

@@ -38,5 +38,3 @@ numpartitions(4);
 /*stirling1(5, 2);*/
 /* Euler's totient function => 576 */
 totient(1776);
-/* ---------- Quit ---------- */
-quit();

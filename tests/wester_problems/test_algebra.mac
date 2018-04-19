@@ -11,58 +11,92 @@
  * "Computer Algebra Systems: A Practical Guide", edited by Michael J. Wester
  * and published by John Wiley and Sons, Chichester, United Kingdom, 1999.
  */
-/* ----------[ M a c s y m a ]---------- */
-/* ---------- Initialization ---------- */
-showtime: all$
-prederror: false$
 /* ---------- Algebra ---------- */
 /* One would think that the simplification 2 2^n => 2^(n + 1) would happen
    automatically or at least easily ... */
 2*2^n;
-subst(a = 2, subst(2 = a, %));
+2^(n+1)$
+
+subst(a = 2, subst(2 = a, 2*2^n));
+2^(n+1)$
+
 /* And how about 4 2^n => 2^(n + 2)?   [Richard Fateman] */
 4*2^n;
-map(factor, %);
-/* (-1)^[n (n + 1)] => 1 for integer n */
-declare(n, integer)$
+2^(n + 2)$
+
+(declare(n,integer),0);
+0$
+
+map('factor, 2^(n + 2));
+2^n$
+
 (-1)^(n*(n + 1));
-remove(n, integer)$
-/* Also easy => 2 (3 x - 5) */
+1$
+
+(remove(n, integer),0)
+0$
+
 factor(6*x - 10);
+2*(3*x - 5)$
+
 /* Univariate gcd: gcd(p1, p2) => 1, gcd(p1 q, p2 q) => q   [Richard Liska] */
-p1: 64*x^34 - 21*x^47 - 126*x^8 - 46*x^5 - 16*x^60 - 81$
-p2: 72*x^60 - 25*x^25 - 19*x^23 - 22*x^39 - 83*x^52 + 54*x^10 + 81$
-q: 34*x^19 - 25*x^16 + 70*x^7 + 20*x^3 - 91*x - 86$
-gcd(p1, p2);
+(p1: 64*x^34 - 21*x^47 - 126*x^8 - 46*x^5 - 16*x^60 - 81,
+p2: 72*x^60 - 25*x^25 - 19*x^23 - 22*x^39 - 83*x^52 + 54*x^10 + 81,
+q: 34*x^19 - 25*x^16 + 70*x^7 + 20*x^3 - 91*x - 86,
+gcd(p1, p2));
+1$
+
 gcd(expand(p1*q), expand(p2*q)) - q;
-/* resultant(p1 q, p2 q) => 0 */
+0$
+
 resultant(expand(p1*q), expand(p2*q), x);
+0$;
+
 /* How about factorization? => p1 * p2 */
 factor(expand(p1 * p2));
-remvalue(p1, p2, q)$
+p1*p2$
+
+(remvalue(p1, p2, q),0);
+0$
+
 /* Multivariate gcd: gcd(p1, p2) => 1, gcd(p1 q, p2 q) => q */
-p1: 24*x*y^19*z^8 - 47*x^17*y^5*z^8 + 6*x^15*y^9*z^2 - 3*x^22 + 5$
-p2: 34*x^5*y^8*z^13 + 20*x^7*y^7*z^7 + 12*x^9*y^16*z^4 + 80*y^14*z$
-q: 11*x^12*y^7*z^13 - 23*x^2*y^8*z^10 + 47*x^17*y^5*z^8$
-gcd(p1, p2);
+(p1: 24*x*y^19*z^8 - 47*x^17*y^5*z^8 + 6*x^15*y^9*z^2 - 3*x^22 + 5,
+p2: 34*x^5*y^8*z^13 + 20*x^7*y^7*z^7 + 12*x^9*y^16*z^4 + 80*y^14*z,
+q: 11*x^12*y^7*z^13 - 23*x^2*y^8*z^10 + 47*x^17*y^5*z^8,
+gcd(p1, p2));
+1$
+
 gcd(expand(p1*q), expand(p2*q)) - q;
+q;
+
 /* How about factorization? => p1 * p2 */
 factor(expand(p1 * p2));
-remvalue(p1, p2, q)$
+p1*p2$
+
+(remvalue(p1, p2, q),0);
+0$
+
 /* => x^n for n > 0   [Chris Hurlburt] */
 gcd(2*x^(n + 4) - x^(n + 2), 4*x^(n + 1) + 3*x^n);
+x^n$
+
 /* Resultants.  If the resultant of two polynomials is zero, this implies they
    have a common factor.  See Keith O. Geddes, Stephen R. Czapor and George
    Labahn, _Algorithms for Computer Algebra_, Kluwer Academic Publishers, 1992,
    p. 286 => 0 */
 resultant(3*x^4 + 3*x^3 + x^2 - x - 2, x^3 - 3*x^2 + x + 5, x);
+0$
+
 /* Numbers are nice, but symbols allow for variability---try some high school
    algebra: rational simplification => (x - 2)/(x + 2) */
-(x^2 - 4)/(x^2 + 4*x + 4);
-ratsimp(%);
+((x^2 - 4)/(x^2 + 4*x + 4),
+ratsimp(%));
+0$
+
 /* This example requires more sophistication => e^(x/2) - 1 */
-[(%e^x - 1)/(%e^(x/2) + 1), (exp(x) - 1)/(exp(x/2) + 1)];
-radcan(%);
+radcan([(%e^x - 1)/(%e^(x/2) + 1), (exp(x) - 1)/(exp(x/2) + 1)]);
+0$
+
 /* Expand and factor polynomials */
 (x + 1)^20;
 expand(%);
@@ -136,5 +170,3 @@ comm2(A, B);
 comm3(A, B, C) + comm3(B, C, A) + comm3(C, A, B);
 expand(%);
 remfunction(comm2, comm3)$
-/* ---------- Quit ---------- */
-quit();

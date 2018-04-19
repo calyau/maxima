@@ -527,7 +527,7 @@ that you have gs in your path or customize the value of
 		""))))
     (set-process-filter imaxima-gs-process 'imaxima-gs-filter)
     (imaxima-gs-wait)
-    (process-kill-without-query imaxima-gs-process nil)
+    (set-process-query-on-exit-flag imaxima-gs-process nil)
     (unless (eq (process-status imaxima-gs-process) 'run)
       (setq output (shell-command-to-string (concat imaxima-gs-program " -h")))
       (cond

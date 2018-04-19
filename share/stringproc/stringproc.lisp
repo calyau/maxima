@@ -48,7 +48,8 @@ See comments to $adjust_external_format below for a detailed description.
 ;;
 #-gcl (eval-when (:load-toplevel :execute)
   #+cmucl 
-    (unless (eq (stream-external-format *standard-output*) :utf-8) 
+    (unless (or (eq (stream-external-format *standard-input*) :utf-8) 
+                (eq (stream-external-format *standard-output*) :utf-8) ) 
       (stream:set-system-external-format :utf-8) )
   ;;
   #+ (and clisp (not unix))
@@ -150,11 +151,23 @@ See comments to $adjust_external_format below for a detailed description.
 (defun $opena (file &optional enc)
   #+gcl (declare (ignore enc))
   (unless (stringp file) (s-error1 "opena" "the"))
-  (open file
-        :direction :output
-        #-gcl :external-format #-gcl (get-encoding enc "opena")
-        :if-exists :append
-        :if-does-not-exist :create ))
+  #+gcl (open file :direction :output :if-exists :append :if-does-not-exist :create)
+  #-gcl (let (encoding-to-use inferred-encoding encoding-from-argument)
+          (declare (ignorable inferred-encoding encoding-from-argument))
+          (if enc
+            (setq encoding-to-use (setq encoding-from-argument (get-encoding enc "opena")))
+            (progn
+              (setq inferred-encoding (unicode-sniffer file))
+              (if inferred-encoding
+                (let ((checked-encoding (check-encoding inferred-encoding)))
+                  (when (null checked-encoding)
+                    (merror (intl:gettext "opena: inferred encoding ~M for file ~M is not recognized by this Lisp implementation.") inferred-encoding file))
+                  (when (eq checked-encoding 'unknown)
+                    (mtell (intl:gettext "opena: warning: I don't know how to verify encoding for this Lisp implementation."))
+                    (mtell (intl:gettext "opena: warning: go ahead with inferred encoding ~M and hope for the best.") inferred-encoding))
+                  (setq encoding-to-use inferred-encoding))
+                (setq encoding-to-use (setq encoding-from-argument (get-encoding enc "opena"))))))
+          (open file :direction :output :if-exists :append :if-does-not-exist :create :external-format encoding-to-use)))
 
 
 (defun $openr (file &optional enc) 
@@ -163,7 +176,27 @@ See comments to $adjust_external_format below for a detailed description.
   (unless (probe-file file)
     (gf-merror (intl:gettext "`openr': file does not exist: ~m") file) )
   #+gcl (open file)
-  #-gcl (open file :external-format (get-encoding enc "openr")) )
+  #-gcl (let (encoding-to-use inferred-encoding encoding-from-argument)
+          (declare (ignorable inferred-encoding encoding-from-argument))
+          (if enc
+            (setq encoding-to-use (setq encoding-from-argument (get-encoding enc "openr")))
+            (progn
+              (setq inferred-encoding (unicode-sniffer file))
+              (if inferred-encoding
+                (let ((checked-encoding (check-encoding inferred-encoding)))
+                  (when (null checked-encoding)
+                    (merror (intl:gettext "openr: inferred encoding ~M for file ~M is not recognized by this Lisp implementation.") inferred-encoding file))
+                  (when (eq checked-encoding 'unknown)
+                    (mtell (intl:gettext "openr: warning: I don't know how to verify encoding for this Lisp implementation."))
+                    (mtell (intl:gettext "openr: warning: go ahead with inferred encoding ~M and hope for the best.") inferred-encoding))
+                  (setq encoding-to-use inferred-encoding))
+                (setq encoding-to-use (setq encoding-from-argument (get-encoding enc "openr"))))))
+          (let ((s (open file :external-format encoding-to-use)))
+            (when (eql (peek-char nil s nil) #+clisp #\ZERO_WIDTH_NO-BREAK_SPACE 
+                                             #+(or abcl sbcl) #\UFEFF 
+                                             #-(or clisp abcl sbcl) #\U+FEFF)
+              (read-char s))
+            s)))
 
 
 (defun $make_string_input_stream (str &optional (start 1) (end nil)) ;; use 1-indexing
@@ -260,6 +293,10 @@ See comments to $adjust_external_format below for a detailed description.
       (unless (stringp enc) 
         (gf-merror (intl:gettext 
           "`~m': the optional second argument must be a string." ) name ))
+
+      ;; All Lisps must recognize :default, per CLHS.
+      (when (string= enc "DEFAULT") (return-from get-encoding :default))
+
       (setq enc (intern (string-upcase enc) :keyword))
       ;;
       #+ccl (progn
@@ -279,9 +316,10 @@ See comments to $adjust_external_format below for a detailed description.
                ef ))))
       ;;
       #+cmucl (progn
-        #+unix (let ((ef (stream-external-format *standard-output*))) ;; input format remains 'default'
+        #+unix (let ((ef (stream-external-format *standard-output*)) ;; input format remains 'default'
+                     (ef2 (stream-external-format *standard-input*)) ) ;; in test-batch input format is UTF-8
           (cond 
-            ((eq ef :utf-8) enc)
+            ((or (eq ef :utf-8) (eq ef2 :utf-8)) enc)
             (t (is-ignored enc name "to enable the encoding argument") 
                ef )))
         #-unix enc )

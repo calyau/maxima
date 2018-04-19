@@ -45,5 +45,3 @@ dif(e, x):= block([oper, n],
    );
 /* Now, try it out! => b + 2 c u + 3 d e (e u + f)^2 + g exp(h u) (1 + h u) */
 dif(expr, u);
-/* ---------- Quit ---------- */
-quit();

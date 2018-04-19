@@ -724,6 +724,8 @@ Examples:
 
 Solves the list of simultaneous linear equations for the list of variables.
 The expressions must each be polynomials in the variables and may be equations.
+If the length of the list of variables doesn't match the number of
+linearly-independent equations to solve the result will be an empty list.
 
 When @mref{globalsolve} is @code{true}, each solved-for variable is bound to
 its value in the solution of the equations.
@@ -741,6 +743,9 @@ system of equations with some variables expressed in terms of others.
 When @mref{programmode} is @code{false}, @code{linsolve} displays the solution
 with intermediate expression (@code{%t}) labels, and returns the list of labels.
 
+See also @mrefcomma{algsys} @mrefdot{eliminate} and @mrefdot{solve}
+
+Examples:
 @c ===beg===
 @c e1: x + z = y;
 @c e2: 2*a*x - y = 2*a^2;
@@ -1251,7 +1256,7 @@ if their purpose is not clear.
 @code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
 solves a system of simultaneous (linear or non-linear) polynomial equations by
 calling @mref{linsolve} or @mref{algsys} and returns a list of the solution
-lists in the variables.  In the case of @code{linsolve} this list would contain
+lists in the variables.  In the case of @mref{linsolve} this list would contain
 a single list of solutions.  It takes two lists as arguments.  The first list
 represents the equations to be solved; the second list is a
 list of the unknowns to be determined.  If the total number of

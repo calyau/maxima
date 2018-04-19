@@ -73,5 +73,3 @@ forget(0 < s, s < 1)$
    */
 unit_step(t - 3);
 unit_step(t - m);
-/* ---------- Quit ---------- */
-quit();

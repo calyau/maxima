@@ -279,5 +279,3 @@ MYhessian(r^2*sin(t), [r, t]);
 MYwronskian(f, x):= block([n: length(f)],
    genmatrix(lambda([i, j], diff(f[j], x, i-1)), n, n))$
 MYwronskian([cos(t), sin(t)], t);
-/* ---------- Quit ---------- */
-quit();

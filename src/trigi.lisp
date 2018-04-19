@@ -387,12 +387,13 @@
 
 (defun flonum-eval (op z)
   (let ((op (gethash op *flonum-op*)))
-    (when (and op (complex-number-p z 'float-or-rational-p))
-      (let ((x ($realpart z)) (y ($imagpart z)))
-	(when (or $numer (floatp x) (floatp y))
-	  (setq x ($float x))
-	  (setq y ($float y))
-	  (complexify (funcall op (if (zerop y) x (complex x y)))))))))
+    (when op
+      (multiple-value-bind (bool R I)
+        (complex-number-p z #'float-or-rational-p)
+        (when (and bool (or $numer (floatp R) (floatp I)))
+          (setq R ($float R))
+          (setq I ($float I))
+          (complexify (funcall op (if (zerop I) R (complex R I)))))))))
 
 ;; For now, big float evaluation of trig-like functions for complex
 ;; big floats uses rectform.  I suspect that for some functions (not

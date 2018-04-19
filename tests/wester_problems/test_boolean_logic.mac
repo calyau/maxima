@@ -61,5 +61,3 @@ errcatch(boolsimp(%));
 /*thereExists y in C, thereExists n in C, thereExists e in R suchThat
   {realpart(y) > 0 and realpart(n) < 0 and y + A*%i*e - B*n = 0
       and a*n + b = 0};*/
-/* ---------- Quit ---------- */
-quit();

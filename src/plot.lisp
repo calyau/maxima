@@ -1281,9 +1281,13 @@ sin(y)*(10.0+6*cos(x)),
 (defvar $xmaxima_plot_command "xmaxima")
 
 (defun plot-temp-file (file)
-  (if *maxima-tempdir* 
-    (format nil "~a/~a" *maxima-tempdir* file)
-    file))
+  (let ((filename 
+	 (if *maxima-tempdir* 
+	     (format nil "~a/~a" *maxima-tempdir* file)
+	   file)))
+    (setf (gethash filename *temp-files-list*) t)
+    (format nil "~a" filename)
+    ))
 
 ;; If no file path is given, uses temporary directory path
 (defun plot-file-path (file)

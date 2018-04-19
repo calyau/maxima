@@ -586,25 +586,26 @@
 
 ;; Is argument u a complex number with real and imagpart satisfying predicate ntypep?
 (defun complex-number-p (u &optional (ntypep 'numberp))
-  (labels ((a1 (x) (cadr x))
-	   (a2 (x) (caddr x))
-	   (a3+ (x) (cdddr x))
-	   (N (x) (funcall ntypep x))	     ; N
-	   (i (x) (and (eq x '$%i) (N 1)))   ; %i
-	   (N+i (x) (and (null (a3+ x))	     ; mplus test is precondition
-			 (N (a1 x))
-			 (or (i (a2 x))
-			     (and (mtimesp (a2 x)) (N*i (a2 x))))))
-	   (N*i (x) (and (null (a3+ x))	     ; mtimes test is precondition
-			 (N (a1 x))
-			 (eq (a2 x) '$%i))))
-    (declare (inline a1 a2 a3+ N i N+i N*i))
-    (cond ((N u))			     ;2.3
-	  ((atom u) (i u))		     ;%i
-	  ((mplusp u) (N+i u))		     ;N+%i, N+N*%i
-	  ((mtimesp u) (N*i u))		     ;N*%i
-	  (t nil))))
-	
+  (let ((R 0) (I 0))
+    (labels ((a1 (x) (cadr x))
+             (a2 (x) (caddr x))
+             (a3+ (x) (cdddr x))
+             (N (x) (funcall ntypep x)) ; N
+             (i (x) (and (eq x '$%i) (N 1))) ; %i
+             (N+i (x) (and (null (a3+ x)) ; mplus test is precondition
+                           (N (setq R (a1 x)))
+                           (or (and (i (a2 x)) (setq I 1) t)
+                               (and (mtimesp (a2 x)) (N*i (a2 x))))))
+             (N*i (x) (and (null (a3+ x))               ; mtimes test is precondition
+                           (N (setq I (a1 x)))
+                           (eq (a2 x) '$%i))))
+      (declare (inline a1 a2 a3+ N i N+i N*i))
+      (cond ((N u) (values t u 0)) ;2.3
+            ((atom u) (if (i u) (values t 0 1))) ;%i
+            ((mplusp u) (if (N+i u) (values t R I))) ;N+%i, N+N*%i
+            ((mtimesp u) (if (N*i u) (values t R I))) ;N*%i
+            (t nil)))))
+
 (defun complexify (x)
   ;; Convert a Lisp number to a maxima number
   (cond ((realp x) x)

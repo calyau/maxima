@@ -7,7 +7,7 @@
   (format t "sys = ~A~%" (merge-pathnames (make-pathname :name "odepack" :type "system")
 					  *load-truename*)))
 
-#+ecl ($load "lisp-utils/defsystem.lisp")
+#+(or ecl abcl) ($load "lisp-utils/defsystem.lisp")
 
 (let ((path (merge-pathnames (make-pathname :name "odepack" :type
 					    "system")

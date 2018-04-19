@@ -1,4 +1,5 @@
 load("eval_string.lisp")$
+load("unicode-sniffer.lisp")$
 load("stringproc.lisp")$
 load("printf.lisp")$
 load("cryptools.lisp")$

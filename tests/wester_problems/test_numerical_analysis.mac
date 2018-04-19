@@ -70,5 +70,3 @@ count_ops(%);
    (f[i, j+1] - f[i, j])/dt = (f[i+1, j] - 2 f[i, j] + f[i-1, j])/dx^2 */
 diff(f(x, t), t) = diff(f(x, t), x, 2);
 difference_pde(%, f(x, t), x, f, dx, 'central, t, dt, 'exp_euler);
-/* ---------- Quit ---------- */
-quit();

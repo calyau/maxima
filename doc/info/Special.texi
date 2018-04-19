@@ -803,6 +803,7 @@ See also @mrefdot{makefact}
 @closecatbox
 @end deffn
 
+@anchor{beta}
 @c -----------------------------------------------------------------------------
 @deffn {Function} beta (@var{a}, @var{b})
 The beta function is defined as @code{gamma(a) gamma(b)/gamma(a+b)} 

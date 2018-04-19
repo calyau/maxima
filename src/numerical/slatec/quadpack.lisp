@@ -41,6 +41,8 @@
 		 (limit 200)
 		 (epsabs 0.0))
   (quad_argument_check fun var a b) 
+  (unless (and (integerp key) (>= key 1) (<= key 6))
+    (merror (intl:gettext "quad_qag: key must be 1, 2, 3, 4, 5, or 6; found: ~M") key))
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
