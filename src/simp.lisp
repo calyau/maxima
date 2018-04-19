@@ -3559,7 +3559,7 @@
 	 ;; Catch an endless loop by keeping track of (p1b, p2b) combinations seen.
 	 ;; Without this, rat(1/(x^(2/3)+1)) with algebraic = true loops forever.
 	 (when (member (setq state (cons p1b p2b)) seen-state :test #'equal)
-	   (rat-error "`bprog' failed"))
+	   (rat-error (intl:gettext "BPROG: Failed to apply Bezout's identity")))
 	 (push state seen-state)
      (go b1)))
 
