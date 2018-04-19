@@ -2438,3 +2438,13 @@ block([factor_max_degree : 1, factor_max_degree_print_warning : false], [factor(
 [(x+1)^2, x^2-1, x^2+3*x+2, x^1999*(x+1)]$
 block([factor_max_degree : 2], [factor(x^2+2*x+1), factor(x^2-1), factor(x^2+3*x+2), factor(x^2000+x^1999)]);
 [(x+1)^2, (x-1)*(x+1), (x+1)*(x+2), x^1999*(x+1)]$
+
+/*        Bug #2928: Loops forever: ev(ratexpand(1/(x^(2/3)+1)), algebraic:true); */
+/* a.k.a. Bug #2994: Infinite loop: ratsimp(x/(sqrt(x^(2/3)+1)),x),algebraic; */
+/* a.k.a. Bug #3419: Endless loop in BPROG (rat(1/(x^(2/3)+1)), algebraic) */
+ratdisrep(rat(1/(x^(2/3)+1))), algebraic;
+1/(x^(2/3)+1)$
+ratdisrep(rat(1/((x-1)^(2/3)+1))), algebraic;
+1/((x-1)^(2/3)+1)$
+ratsimp(x/(sqrt(x^(2/3)+1)), x), algebraic;
+x/sqrt(x^(2/3)+1)$
