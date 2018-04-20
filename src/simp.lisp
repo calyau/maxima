@@ -3520,7 +3520,7 @@
 ;; (%o73) 1/(x^2-2)-1/(2*(x+1))+1/(2*(x-1))
 
 (defun bprog (r s)
-  (prog (p1b p2b coef1r coef2r coef1s coef2s f1 f2 a egcd)
+  (prog (p1b p2b coef1r coef2r coef1s coef2s f1 f2 a egcd state seen-state)
      (setq r (ratfix r))
      (setq s (ratfix s))
      (setq coef2r (setq coef1s 0))
@@ -3529,6 +3529,7 @@
      (setq p1b (car r))
      (unless (zerop (pdegree p1b var)) (setq egcd (pgcdexpon p1b)))
      (setq p2b (car s))
+	 (setq seen-state nil)
      (unless (or (zerop (pdegree p2b var)) (= egcd 1))
        (setq egcd (gcd egcd (pgcdexpon p2b)))
        (setq p1b (pexpon*// p1b egcd nil)
@@ -3555,6 +3556,11 @@
 					     (ptimes f2 coef2s))
 				a))
      (setq a f1)
+	 ;; Catch an endless loop by keeping track of (p1b, p2b) combinations seen.
+	 ;; Without this, rat(1/(x^(2/3)+1)) with algebraic = true loops forever.
+	 (when (member (setq state (cons p1b p2b)) seen-state :test #'equal)
+	   (rat-error (intl:gettext "BPROG: Failed to apply Bezout's identity")))
+	 (push state seen-state)
      (go b1)))
 
 (defmfun ratdifference (a b) (ratplus a (ratminus b)))
