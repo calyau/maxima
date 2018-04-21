@@ -758,6 +758,10 @@ warning message when the factoring of a polynomial is prevented because
 its degree exceeds the value of factor_max_degree.
 
 See also: @mref{factor_max_degree}
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end defvr 
 
 @anchor{factorflag}
