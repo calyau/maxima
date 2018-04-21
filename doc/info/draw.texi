@@ -59,8 +59,8 @@ Example:
 
 You need Gnuplot 4.2 or newer to run draw; If you are using wxMaxima as a
 front end @code{wxdraw}, @code{wxdraw2d} and @code{wxdraw3d} are drop-in
-replacements for draw that do the same as @mrefcomma{wxdraw} @mref{wxdraw2d} and
-@mref{wxdraw3d} but embed the resulting plot in the worksheet.
+replacements for draw that do the same as @mrefcomma{draw} @mref{draw2d} and
+@mref{draw3d} but embed the resulting plot in the worksheet.
 
 @opencatbox
 @category{Plotting} @category{Share packages} @category{Package draw}
