@@ -719,22 +719,25 @@ Example:
 @c factor(x^101-1);
 @c ===end===
 @example
+(%i1) factor_max_degree : 100$
 @group
-(%i1) errormsg;
-(%o1)                         true
+(%i2) factor(x^100-1);
+                        2        4    3    2
+(%o2) (x - 1) (x + 1) (x  + 1) (x  - x  + x  - x + 1)
+   4    3    2            8    6    4    2
+ (x  + x  + x  + x + 1) (x  - x  + x  - x  + 1)
+   20    15    10    5        20    15    10    5
+ (x   - x   + x   - x  + 1) (x   + x   + x   + x  + 1)
+   40    30    20    10
+ (x   - x   + x   - x   + 1)
 @end group
 @group
-(%i2) sin(a,b);
-sin: wrong number of arguments.
- -- an error. To debug this try: debugmode(true);
-@end group
-@group
-(%i3) errormsg:false;
-(%o3)                         false
-@end group
-@group
-(%i4) sin(a,b);
- -- an error. To debug this try: debugmode(true);
+(%i3) factor(x^101-1);
+                               101
+Refusing to factor polynomial x    - 1
+               because its degree exceeds factor_max_degree (100)
+                             101
+(%o3)                       x    - 1
 @end group
 @end example
 
@@ -1266,6 +1269,7 @@ Examples:
 @example
 @group
 (%i1) rat(x/2.0);
+
 rat: replaced 0.5 by 1/2 = 0.5
                                 x
 (%o1)/R/                        -
@@ -1285,6 +1289,7 @@ rat: replaced 0.5 by 1/2 = 0.5
 @example
 @group
 (%i1) solve(1.0-x,x), keepfloat;
+
 rat: replaced 1.0 by 1/1 = 1.0
 (%o1)                        [x = 1]
 @end group
