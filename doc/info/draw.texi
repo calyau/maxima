@@ -54,7 +54,8 @@ Example:
           explicit(sin(x),x,1,10),
           color=blue,line_type=dots,key="A cosinus",
           explicit(cos(x),x,1,10)
-)$@end example
+)$
+@end example
 @figure{draw_intro}
 
 You need Gnuplot 4.2 or newer to run draw; If you are using wxMaxima as a
