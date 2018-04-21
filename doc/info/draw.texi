@@ -4471,7 +4471,9 @@ Vertical and horizontal error bars.
 
 @anchor{explicit}
 @deffn  {Graphic object} explicit @
+@fname{explicit} (@var{expr},@var{var},@var{minval},@var{maxval}) @
 @fname{explicit} (@var{fcn},@var{var},@var{minval},@var{maxval}) @
+@fname{explicit} (@var{expr},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2}) @
 @fname{explicit} (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
 
 Draws explicit functions in 2D and 3D.
