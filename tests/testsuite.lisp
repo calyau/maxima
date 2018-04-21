@@ -19,7 +19,8 @@
                  ,@(and (boundp '*autoconf-lisp-only-build*)
                         (symbol-value '*autoconf-lisp-only-build*)
                         (list 78 80)))
-        "rtest6" "rtest6a" "rtest6b" "rtest7"
+        ((mlist) "rtest6" #+ecl 46) ;; ECL bug #437: mishandling float format
+        "rtest6a" "rtest6b" "rtest7"
         "rtest9" 
         "rtest9a"
         ((mlist simp) "rtest10" 24 25)

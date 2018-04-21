@@ -147,3 +147,25 @@ string ([ (foo[1](z)) ]);
 
 (kill(t, R), integrate(sqrt(sin(t)^2*R^2+(1-cos(t))^2*R^2),t,0,2*%pi));
 8*R;
+
+/* SF bug #2845: "Avoid initialization-time compile in commac.lisp"
+ * Ensure that functions to strip trailing zero digits continue to work.
+ */
+
+string (25.0);
+"25.0";
+
+string(1/16.0);
+"0.0625";
+
+(string(2e7), %% = "2.0e+7" or %% = "2.0E+7" or %%);
+true;
+
+(string(2e-7), %% = "2.0e-7" or %% = "2.0E-7" or %%);
+true;
+
+(string(12345000000.0), %% = "1.2345e+10" or %% = "1.2345E+10" or %%);
+true;
+
+(string(1/1024.0), %% = "9.765625e-4" or %% = "9.765625E-4" or %%);
+true;
