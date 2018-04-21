@@ -305,7 +305,10 @@ write @code{multiplot_mode(none)}.
 When multiplot mode is enabled, global option @code{terminal} is blocked and you
 have to disable this working mode before changing to another terminal.
 
-This feature does not work in Windows platforms.
+This feature does not work in Windows platforms. Note, though, that just
+plotting multiple expressions into the same plot doesn't require multiplot:
+It can be done by just issuing multiple @mref{explicit} or similar commands
+in a row.
 
 Example:
 
