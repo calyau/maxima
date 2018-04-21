@@ -59,6 +59,7 @@ draw_interpolate_color4.pdf\
 draw_interpolate_color5.pdf\
 draw_interpolate_color6.pdf\
 draw_interpolate_color.pdf\
+draw_intro.pdf\
 draw_key.pdf\
 draw_key_pos2.pdf\
 draw_key_pos.pdf\
@@ -193,6 +194,7 @@ draw_interpolate_color4.gif\
 draw_interpolate_color5.gif\
 draw_interpolate_color6.gif\
 draw_interpolate_color.gif\
+draw_intro.gif\
 draw_key.gif\
 draw_key_pos2.gif\
 draw_key_pos.gif\
@@ -339,6 +341,8 @@ draw_head_length.gif: draw_head_length.mac ../docdraw.mac
 draw_head_length.pdf: draw_head_length.mac ../docdraw.mac
 draw_head_type.gif: draw_head_type.mac ../docdraw.mac
 draw_head_type.pdf: draw_head_type.mac ../docdraw.mac
+draw_intro.gif: draw_intro.mac ../docdraw.mac
+draw_intro.pdf: draw_intro.mac ../docdraw.mac
 draw_interpolate_color.gif: draw_interpolate_color.mac ../docdraw.mac
 draw_interpolate_color.pdf: draw_interpolate_color.mac ../docdraw.mac
 draw_interpolate_color2.gif: draw_interpolate_color2.mac ../docdraw.mac

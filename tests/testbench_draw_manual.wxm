@@ -318,6 +318,12 @@ load("../doc/info/figures/draw_implicit2.mac")$
 
 
 /* [wxMaxima: input   start ] */
+print("A sinus and a cosinus with grid, two line styles and colors")$
+load("../doc/info/figures/draw_intro.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
 print("A 3d plot with each mesh rectangle being filled with a solid color")$
 load("../doc/info/figures/draw_interpolate_color.mac")$
 /* [wxMaxima: input   end   ] */

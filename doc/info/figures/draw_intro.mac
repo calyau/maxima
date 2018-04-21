@@ -1,0 +1,11 @@
+load("docdraw.mac");
+
+docdraw2d("figures/draw_intro",
+          title="Two simple plots",
+	  xlabel="x",ylabel="y",grid=true,
+
+	  color=red,key="A sinus",
+          explicit(sin(x),x,1,10),
+          color=blue,line_type=dots,key="A cosinus",
+          explicit(cos(x),x,1,10)
+)$

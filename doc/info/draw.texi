@@ -14,14 +14,53 @@
 @code{draw} is a Maxima-Gnuplot and a Maxima-vtk interface.
 
 There are three main functions to be used at Maxima level: 
-@code{draw2d}, @code{draw3d} and @code{draw}.
+@itemize @bullet
+@item @mrefcomma{draw2d} draws a single 2D scene.
+@item @mrefcomma{draw3d} draws a single 3D scene.
+@item @mrefcomma{draw} can be filled with multiple @mref{gr2d} and @mref{gr3d}
+      commands that each creates a draw scene all sharing the same window.
+@end itemize      
+Each scene can contain any number of objects and @code{key=value} pairs
+with options for the scene or the following objects.
 
-Follow these links for more elaborated examples of this package:
+A selection of useful objects a scene can be made up from are:
+@itemize @bullet
+@item @mref{explicit} plots a function.
+@item @mref{implicit} plots all points an equation is true at.
+@item @mref{points} plots points that are connected by lines if the option
+      @mref{points_joined} was set to @code{true} in a previous line of the
+      current scene.
+@item @mref{parametric} allows to specify separate expressions that calculate
+      the x, y (and in 3d plots also for the z) variable.
+@end itemize
+
+A short description of all draw commands and options including example plots
+(in the html and pdf version of this manual) can be found in the section
+@xref{Functions and Variables for draw}. A online version of the html manual can be
+found at @url{maxima.sourceforge.net/docs/manual/maxima_singlepage.html#draw}. 
+More elaborated examples of this package can be found at the following locations:
 
 @url{http://tecnostats.net/Maxima/gnuplot} @*
 @url{http://tecnostats.net/Maxima/vtk} 
 
-You need Gnuplot 4.2 or newer to run this program.
+Example:
+
+@example
+(%i1) draw2d(
+          title="Two simple plots",
+          xlabel="x",ylabel="y",grid=true,
+
+          color=red,key="A sinus",
+          explicit(sin(x),x,1,10),
+          color=blue,line_type=dots,key="A cosinus",
+          explicit(cos(x),x,1,10)
+)$@end example
+@figure{draw_intro}
+
+You need Gnuplot 4.2 or newer to run draw; If you are using wxMaxima as a
+front end @code{wxdraw}, @code{wxdraw2d} and @code{wxdraw3d} are drop-in
+replacements for draw that do the same as @mrefcomma{wxdraw} @mref{wxdraw2d} and
+@mref{wxdraw3d} but embed the resulting plot in the worksheet.
 
 @opencatbox
 @category{Plotting} @category{Share packages} @category{Package draw}
