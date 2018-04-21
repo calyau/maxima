@@ -2945,7 +2945,7 @@ Tell Gnuplot to draw axes and grid on top of graphics objects,
 Tell gnuplot to draw all contour lines in black
 
 @example
-(%i1) wxdraw3d(
+(%i1) draw3d(
           contour=both,
           surface_hide=true,enhanced3d=true,wired_surface=true,
           contour_levels=10,
