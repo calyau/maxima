@@ -14,14 +14,54 @@
 @code{draw} is a Maxima-Gnuplot and a Maxima-vtk interface.
 
 There are three main functions to be used at Maxima level: 
-@code{draw2d}, @code{draw3d} and @code{draw}.
+@itemize @bullet
+@item @mrefcomma{draw2d} draws a single 2D scene.
+@item @mrefcomma{draw3d} draws a single 3D scene.
+@item @mrefcomma{draw} can be filled with multiple @mref{gr2d} and @mref{gr3d}
+      commands that each creates a draw scene all sharing the same window.
+@end itemize      
+Each scene can contain any number of objects and @code{key=value} pairs
+with options for the scene or the following objects.
 
-Follow these links for more elaborated examples of this package:
+A selection of useful objects a scene can be made up from are:
+@itemize @bullet
+@item @mref{explicit} plots a function.
+@item @mref{implicit} plots all points an equation is true at.
+@item @mref{points} plots points that are connected by lines if the option
+      @mref{points_joined} was set to @code{true} in a previous line of the
+      current scene.
+@item @mref{parametric} allows to specify separate expressions that calculate
+      the x, y (and in 3d plots also for the z) variable.
+@end itemize
+
+A short description of all draw commands and options including example plots
+(in the html and pdf version of this manual) can be found in the section
+@xref{Functions and Variables for draw}. A online version of the html manual can be
+found at @url{maxima.sourceforge.net/docs/manual/maxima_singlepage.html#draw}. 
+More elaborated examples of this package can be found at the following locations:
 
 @url{http://tecnostats.net/Maxima/gnuplot} @*
 @url{http://tecnostats.net/Maxima/vtk} 
 
-You need Gnuplot 4.2 or newer to run this program.
+Example:
+
+@example
+(%i1) draw2d(
+          title="Two simple plots",
+          xlabel="x",ylabel="y",grid=true,
+
+          color=red,key="A sinus",
+          explicit(sin(x),x,1,10),
+          color=blue,line_type=dots,key="A cosinus",
+          explicit(cos(x),x,1,10)
+)$
+@end example
+@figure{draw_intro}
+
+You need Gnuplot 4.2 or newer to run draw; If you are using wxMaxima as a
+front end @code{wxdraw}, @code{wxdraw2d} and @code{wxdraw3d} are drop-in
+replacements for draw that do the same as @mrefcomma{draw} @mref{draw2d} and
+@mref{draw3d} but embed the resulting plot in the worksheet.
 
 @opencatbox
 @category{Plotting} @category{Share packages} @category{Package draw}
@@ -73,11 +113,7 @@ and @mrefdot{draw2d}
 @c  );
 @c ===end===
 @example
-@group
-(%i1) load("draw");
-(%o1)     /maxima/share/draw/draw.lisp
-@end group
-(%i2) draw(
+(%i1) draw(
     gr2d(
         key="sin (x)",grid=[2,2],
         explicit(
@@ -93,7 +129,7 @@ and @mrefdot{draw2d}
         )
     )
  );
-(%o2)           [gr2d(explicit), gr2d(explicit)]
+(%o1)           [gr2d(explicit), gr2d(explicit)]
 @end example
 @figure{draw_scene}
 
@@ -270,7 +306,10 @@ write @code{multiplot_mode(none)}.
 When multiplot mode is enabled, global option @code{terminal} is blocked and you
 have to disable this working mode before changing to another terminal.
 
-This feature does not work in Windows platforms.
+This feature does not work in Windows platforms. Note, though, that just
+plotting multiple expressions into the same plot doesn't require multiplot:
+It can be done by just issuing multiple @mref{explicit} or similar commands
+in a row.
 
 Example:
 
@@ -2907,7 +2946,7 @@ Tell Gnuplot to draw axes and grid on top of graphics objects,
 Tell gnuplot to draw all contour lines in black
 
 @example
-(%i1) wxdraw3d(
+(%i1) draw3d(
           contour=both,
           surface_hide=true,enhanced3d=true,wired_surface=true,
           contour_levels=10,
@@ -4433,7 +4472,9 @@ Vertical and horizontal error bars.
 
 @anchor{explicit}
 @deffn  {Graphic object} explicit @
+@fname{explicit} (@var{expr},@var{var},@var{minval},@var{maxval}) @
 @fname{explicit} (@var{fcn},@var{var},@var{minval},@var{maxval}) @
+@fname{explicit} (@var{expr},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2}) @
 @fname{explicit} (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
 
 Draws explicit functions in 2D and 3D.
@@ -4593,9 +4634,8 @@ example, a level picture object is built by hand and then rendered.
 
 An xpm file is read and then rendered.
 @example
-(%i1) load(draw)$
-(%i2) im: read_xpm("myfile.xpm")$
-(%i3) draw2d(image(im,0,0,10,7))$
+(%i1) im: read_xpm("myfile.xpm")$
+(%i2) draw2d(image(im,0,0,10,7))$
 @end example
 
 See also @mrefcomma{make_level_picture}  @mref{make_rgb_picture} and @mrefdot{read_xpm}
@@ -5611,10 +5651,6 @@ Example:
 
 @node Functions and Variables for worldmap,  , Functions and Variables for pictures, draw-pkg
 @section Functions and Variables for worldmap
-
-
-This package automatically loads package @mrefdot{draw}
-
 
 @subsection Variables and Functions
 

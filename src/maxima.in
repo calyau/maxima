@@ -82,6 +82,33 @@ if [ -z "$MAXIMA_DIRECTORY" ]; then
   unset MAXIMA_DIRECTORY
 fi
 
+# GCL in its default settings tends to run out of memory frequently quickly.
+# For example 8 Gigabytes of RAM aren't enough to run the testbench when sbcl
+# and clisp need <0,5 Gigabytes by default.
+# The following lines make GCL's garbage collector more aggressive by default.
+if [ -z "$GCL_GC_PAGE_THRESH" ]; then
+    export GCL_GC_PAGE_THRESH=0.05
+fi;
+if [ -z "$GCL_GC_ALLOC_MIN" ]; then
+    export GCL_GC_ALLOC_MIN=0.01
+fi;
+if [ -z "$GCL_GC_PAGE_MAX" ]; then
+    export GCL_GC_PAGE_MAX=0.05
+fi;
+
+
+# GCL also by default tells the garbage collector to limit the memory usage to
+# allocate half of the physical RAM installed in the current machine.
+# Which works fine in a single-user system and even takes in account the amount
+# of memory the other gcl processes use but is too far in the multitasking versus
+# speed tradeoff for us.
+#
+# See also:
+# https://lists.gnu.org/archive/html/gcl-devel/2017-09/msg00000.html
+if [ -z "$GCL_MEM_MULTIPLE" ]; then
+    export GCL_MEM_MULTIPLE=0.2
+fi;
+
 # process the command line arguments. This must be done in a function, because
 # "shift" should only shift the function parameters, not the global parameters.
 process_commandline_arguments() {
