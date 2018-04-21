@@ -371,11 +371,12 @@
     (cond (error-log
 	   (or (streamp *collect-errors*)
 	       (close error-log))))
-    (let
-      ((expected-errors-trailer
-	(if (or (null expected-errors) (= (length expected-errors) 0))
+    (let*
+      ((n-expected-errors (length expected-errors))
+       (expected-errors-trailer
+	 (if (= n-expected-errors 0)
 	    ""
-	    (format nil (intl:gettext " (not counting ~a expected errors)") (length expected-errors))))
+	    (format nil (intl:gettext " (not counting ~a expected errors)") n-expected-errors)))
        (time (if showtime
 		 (format nil (intl:gettext "   using ~,3F seconds (~,3F elapsed).~%")
 			 (float (/ (- end-run-time start-run-time) internal-time-units-per-second))
@@ -383,13 +384,13 @@
 		 "")))
       (cond ((null all-differences)
 	     (format t (intl:gettext "~a/~a tests passed~a~%~A")
-		     num-problems num-problems
+		     (- num-problems n-expected-errors) (- num-problems n-expected-errors)
 		     expected-errors-trailer
 		     time)
 	     (values '((mlist)) num-problems))
 	    (t
 	     (format t (intl:gettext "~%~a/~a tests passed~a~%~A")
-		     (- num-problems (length all-differences)) num-problems expected-errors-trailer
+		     (- num-problems n-expected-errors (length all-differences)) (- num-problems n-expected-errors) expected-errors-trailer
 		     time)
 	     (let ((s (if (> (length all-differences) 1) "s" "")))
 	       (format t (intl:gettext "~%The following ~A problem~A failed: ~A~%")
