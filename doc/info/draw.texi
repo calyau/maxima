@@ -190,18 +190,30 @@ when only one scene is required, in two or three dimensions, respectively.
 
 See also @mref{gr2d} and @mrefdot{gr3d}
 
-Example:
+Examples:
 
 @example
 (%i1) scene1: gr2d(title="Ellipse",
-                   nticks=30,
+                   nticks=300,
                    parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
 (%i2) scene2: gr2d(title="Triangle",
                    polygon([4,5,7],[6,4,2]))$
 (%i3) draw(scene1, scene2, columns = 2)$
 @end example
+@figure{draw_intro2}
 
-The two draw sentences are equivalent:
+@example
+(%i1) scene1: gr2d(title="A sinus",
+        grid=true,
+        explicit(sin(t),t,0,2*%pi))$
+(%i2) scene2: gr2d(title="A cosinus",
+        grid=true,
+        explicit(cos(t),t,0,2*%pi))$
+(%i3) draw(scene1, scene2)$
+@end example
+@figure{draw_intro3}
+
+The following two draw sentences are equivalent:
 @example
 (%i1) draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)));
 (%o1)                          [gr3d(explicit)]
@@ -209,7 +221,7 @@ The two draw sentences are equivalent:
 (%o2)                          [gr3d(explicit)]
 @end example
 
-An animated gif file:
+Creating an animated gif file:
 @example
 (%i1) draw(
         delay     = 100,
@@ -236,10 +248,10 @@ See also @mrefcomma{gr2d} @mrefcomma{gr3d} @mref{draw2d} and @mrefdot{draw3d}
 @anchor{draw2d}
 @deffn {Function} draw2d (@var{argument_1}, ...)
 
-This function is a short cut for
+This function is a shortcut for
 @code{draw(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
 
-It can be used to plot a unique scene in 2d.
+It can be used to plot a unique scene in 2d, as can be seen in most examples below.
 
 See also @mref{draw} and @mrefdot{gr2d}
 
@@ -256,10 +268,10 @@ See also @mref{draw} and @mrefdot{gr2d}
 @anchor{draw3d}
 @deffn {Function} draw3d (@var{argument_1}, ...)
 
-This function is a short cut for
+This function is a shortcut for
 @code{draw(gr3d(@var{options}, ..., @var{graphic_object}, ...))}.
 
-It can be used to plot a unique scene in 3d.
+It can be used to plot a unique scene in 3d, as can be seen in many examples below.
 
 See also @mref{draw} and @mrefdot{gr3d}
 

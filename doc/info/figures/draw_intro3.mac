@@ -1,0 +1,11 @@
+load("docdraw.mac");
+
+scene1: gr2d(title="A sinus",
+    grid=true,
+    explicit(sin(t),t,0,2*%pi))$
+scene2: gr2d(title="A cosinus",
+    grid=true,
+    explicit(cos(t),t,0,2*%pi))$
+
+docdraw("figures/draw_intro3",
+    scene1, scene2)$
