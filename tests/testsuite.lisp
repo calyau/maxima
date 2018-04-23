@@ -30,7 +30,8 @@
         "rtest15"
 	;; ccl versions 1.11 and earlier fail test 50.  Mark it as a
 	;; known failure.  Presumably 1.12 will have this fixed.
-        ((mlist simp) "rtest16" #+ccl 50)
+    ;; Test 561 tickles bug in ECL if signed zero enabled; see ECL bug #329. Fixed post-16.1.3.
+        ((mlist simp) "rtest16" #+ccl 50 #+ecl 561)
         "rtestode" "rtestode_zp"
         "rtest3" "rtest8"
         ((mlist simp) "rtest12" 76 78)
