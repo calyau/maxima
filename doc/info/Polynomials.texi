@@ -542,7 +542,7 @@ rationals with an element adjoined whose minimum polynomial is @var{p}.
 @mref{factorflag} if @code{false} suppresses the factoring of integer factors
 of rational expressions.
 
-@code{dontfactor} may be set to a list of variables with respect to which
+@mref{dontfactor} may be set to a list of variables with respect to which
 factoring is not to occur.  (It is initially empty).  Factoring also
 will not take place with respect to any variables which are less
 important (using the variable ordering assumed for CRE form) than
@@ -557,7 +557,7 @@ same factors.
 be used otherwise the Berlekamp algorithm, which is the default, will
 be used.
 
-@code{intfaclim} if @code{true} maxima will give up factorization of
+@mref{intfaclim} if @code{true} maxima will give up factorization of
 integers if no factor is found after trial divisions and Pollard's rho
 method.  If set to @code{false} (this is the case when the user calls
 @code{factor} explicitly), complete factorization of the integer will be
@@ -758,6 +758,10 @@ warning message when the factoring of a polynomial is prevented because
 its degree exceeds the value of factor_max_degree.
 
 See also: @mref{factor_max_degree}
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end defvr 
 
 @anchor{factorflag}
@@ -1223,6 +1227,7 @@ Examples:
 
 @c I SUSPECT THE FOLLOWING TEXT IS OUTDATED DUE TO CHANGES IN INTEGER FACTORING CODE
 
+@anchor{intfaclim}
 @c -----------------------------------------------------------------------------
 @defvr {Option variable} intfaclim
 Default value: true

@@ -324,6 +324,18 @@ load("../doc/info/figures/draw_intro.mac")$
 
 
 /* [wxMaxima: input   start ] */
+print("A diagram with a circle and a diagram with a triangle next to each other")$
+load("../doc/info/figures/draw_intro2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+print("A diagram with a sinus above a diagram with a cosinus ")$
+load("../doc/info/figures/draw_intro3.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
 print("A 3d plot with each mesh rectangle being filled with a solid color")$
 load("../doc/info/figures/draw_interpolate_color.mac")$
 /* [wxMaxima: input   end   ] */
