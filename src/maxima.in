@@ -224,7 +224,7 @@ elif [ "$MAXIMA_LISP" = "ccl64" ]; then
    fi
 
 elif [ "$MAXIMA_LISP" = "ecl" ]; then
-   exec "$maxima_image_base"  $MAXIMA_LISP_OPTIONS -- "$@"
+   exec "$maxima_image_base" --frame-stack 4096 --lisp-stack 65536 $MAXIMA_LISP_OPTIONS -- "$@"
 
 elif [ "$MAXIMA_LISP" = "sbcl" ]; then
 # Use executable image if it exists.
