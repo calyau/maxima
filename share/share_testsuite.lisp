@@ -79,7 +79,8 @@
 #+(or clisp sbcl)    ((mlist simp) "rtest_namespaces" 7)
 #-(or clisp sbcl)    "rtest_namespaces"
     "arag_test"
-    ((mlist simp) "rtest_pdiff" 62)
+#-ecl ((mlist simp) "rtest_pdiff" 62)
+#+ecl ((mlist simp) "rtest_pdiff" 38 61 62 63 65 69)
     ((mlist simp) "rtest_to_poly" 13 14 15 16 17 18 19 20 25)
 #+ecl               ((mlist simp) "rtestprintf" 38 54 61 63 65 66 69 70)
 #+clisp             ((mlist simp) "rtestprintf" 27 38 61 63 65 69)
