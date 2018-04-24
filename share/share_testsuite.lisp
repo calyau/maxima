@@ -81,7 +81,7 @@
     "arag_test"
     ((mlist simp) "rtest_pdiff" 62)
     ((mlist simp) "rtest_to_poly" 13 14 15 16 17 18 19 20 25)
-#+ecl               ((mlist simp) "rtestprintf" 54 66 70)
+#+ecl               ((mlist simp) "rtestprintf" 38 54 61 63 65 66 69 70)
 #+clisp             ((mlist simp) "rtestprintf" 27 38 61 63 65 69)
 #+gcl               ((mlist simp) "rtestprintf" 7 29 38 39 40 47 48 61 63 65 69 70)
 #-(or clisp gcl ecl)    ((mlist simp) "rtestprintf" 38 61 63 65 69)
