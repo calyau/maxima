@@ -1559,3 +1559,14 @@ block ([expr, A, B, a, b, x, y],
   errcatch (trigreduce(expr)),
   if %% = [] then 'failed('trigreduce(expr)) else true);
 true;
+
+/* SF bug #3413: "false in definite integral of rational"
+ * SF bug #2644: "integrate(1/(1+s^7),s,0,%pi) includes a 'false' term"
+ * obviously we can update these next two results if someday Maxima can compute these integrals
+ */
+
+integrate(1/(x^8+x+1),x,0,1);
+'integrate(1/(x^8+x+1),x,0,1);
+
+integrate(1/(1+s^7),s,0,%pi);
+'integrate(1/(1+s^7),s,0,%pi);
