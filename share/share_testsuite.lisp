@@ -48,13 +48,15 @@
     "rtest_numericalio"
     ((mlist simp) "rtest_simplify_sum" 57)
     "rtest_solve_rec"
-#-gcl    "rtest_stringproc"
+#-(or gcl ecl)    "rtest_stringproc"
 #+gcl    ((mlist simp) "rtest_stringproc" 14)
+#+ecl    ((mlist simp) "rtest_stringproc" 12 66)
     "rtest_opproperties"
     "rtest_stats"
     "rtest_distrib"
-#-gcl    "rtest_descriptive"
+#-(or gcl ecl)   "rtest_descriptive"
 #+gcl    ((mlist simp) "rtest_descriptive" 86 97)
+#+ecl    ((mlist simp) "rtest_descriptive" 86 97)
     "rtest_interpol"
     "rtest_levin"
     "rtest_fractals"
@@ -77,11 +79,13 @@
 #+(or clisp sbcl)    ((mlist simp) "rtest_namespaces" 7)
 #-(or clisp sbcl)    "rtest_namespaces"
     "arag_test"
-    ((mlist simp) "rtest_pdiff" 62)
+#-ecl ((mlist simp) "rtest_pdiff" 62)
+#+ecl ((mlist simp) "rtest_pdiff" 38 61 62 63 65 69)
     ((mlist simp) "rtest_to_poly" 13 14 15 16 17 18 19 20 25)
+#+ecl               ((mlist simp) "rtestprintf" 38 54 61 63 65 66 69 70)
 #+clisp             ((mlist simp) "rtestprintf" 27 38 61 63 65 69)
 #+gcl               ((mlist simp) "rtestprintf" 7 29 38 39 40 47 48 61 63 65 69 70)
-#-(or clisp gcl)    ((mlist simp) "rtestprintf" 38 61 63 65 69)
+#-(or clisp gcl ecl)    ((mlist simp) "rtestprintf" 38 61 63 65 69)
     "rtest_simplex"
     "rtest_graphs"
     ((mlist simp) "rtest_abs_integrate" 66 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 123 125 126 127 164 178)
@@ -97,8 +101,9 @@
     "rtest_antid"
     "rtest_bffac"
     "rtest_grobner"
-#-gcl    "rtest_finance"
+#-(or gcl ecl)    "rtest_finance"
 #+gcl    ((mlist simp) "rtest_finance" 9 10 11)
+#+ecl    ((mlist simp) "rtest_finance" 9 10 11)
     "rtest_fft"
     "rtest_rfft"
 #-gcl    "rtest_decfp"

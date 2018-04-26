@@ -19,21 +19,24 @@
                  ,@(and (boundp '*autoconf-lisp-only-build*)
                         (symbol-value '*autoconf-lisp-only-build*)
                         (list 78 80)))
-        ((mlist) "rtest6" #+ecl 46) ;; ECL bug #437: mishandling float format
+        ((mlist) "rtest6" #+ecl 44 46) ;; ECL bug #437: mishandling float format
         "rtest6a" "rtest6b" "rtest7"
         "rtest9" 
         "rtest9a"
         ((mlist simp) "rtest10" 24 25)
         ((mlist) "rtest11" #+(or gcl cmucl ccl64) 158 #+(or gcl cmucl ccl64) 174 #+gcl 175)
         "rtest13" "rtest13s"
-        "rtest14"
+#-ecl   "rtest14"
+#+ecl   ((mlist simp) "rtest14" 201 234 249 250 251 252 267 298 307 310 312 315 319)
         "rtest15"
 	;; ccl versions 1.11 and earlier fail test 50.  Mark it as a
 	;; known failure.  Presumably 1.12 will have this fixed.
     ;; Test 561 tickles bug in ECL if signed zero enabled; see ECL bug #329. Fixed post-16.1.3.
-        ((mlist simp) "rtest16" #+ccl 50 #+ecl 561)
+        ((mlist simp) "rtest16" #+ccl 50 #+ecl 50 561)
         "rtestode" "rtestode_zp"
-        "rtest3" "rtest8"
+        "rtest3"
+#-ecl	"rtest8"
+#+ecl   ((mlist simp) "rtest8" 104)
         ((mlist simp) "rtest12" 76 78)
         "rexamples"
         ((mlist simp) "rtesthyp" 105 112 113 123 124 128)

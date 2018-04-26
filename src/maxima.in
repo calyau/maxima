@@ -33,14 +33,33 @@ setup_vars() {
   else
       MAXIMA_IMAGESDIR="$MAXIMA_DEFAULT_IMAGESDIR"
   fi
-  MAXIMA_DEFAULT_LISP=@DEFAULTLISP@
   # If the the binary directory for the default lisp is not present,
   # choose the first one we find.
   if [ ! -d "$MAXIMA_IMAGESDIR/binary-$MAXIMA_DEFAULT_LISP" ]; then
     MAXIMA_DEFAULT_LISP=`ls -1 $MAXIMA_IMAGESDIR 2>/dev/null | head -n 1 | sed 's/binary-//'`
   fi
   if [ -z "$MAXIMA_LISP" ]; then
-    MAXIMA_LISP=$MAXIMA_DEFAULT_LISP
+    if [ -x "$MAXIMA_IMAGESDIR/binary-sbcl" ]; then
+	MAXIMA_LISP="sbcl"
+    elif [ -x "$MAXIMA_IMAGESDIR/binary-clisp" ]; then
+	MAXIMA_LISP="clisp"
+    elif [ -x "$MAXIMA_IMAGESDIR/binary-cmucl" ]; then
+	MAXIMA_LISP="cmucl"
+    elif [ -x "$MAXIMA_IMAGESDIR/binary-scl" ]; then
+	MAXIMA_LISP="scl"
+    elif [ -x "$MAXIMA_IMAGESDIR/binary-gcl" ]; then
+	MAXIMA_LISP="gcl"
+    elif [ -x "$MAXIMA_IMAGESDIR/binary-acl" ]; then
+	MAXIMA_LISP="acl"
+    elif [ -x "$MAXIMA_IMAGESDIR/binary-openmcl" ]; then
+	MAXIMA_LISP="openmcl"
+    elif [ -x "$MAXIMA_IMAGESDIR/binary-ccl64" ]; then
+	MAXIMA_LISP="ccl64"
+    elif [ -x "$MAXIMA_IMAGESDIR/binary-ecl" ]; then
+	MAXIMA_LISP="ecl"
+    else
+	MAXIMA_LISP=@DEFAULTLISP@
+    fi
   fi
 }
 
@@ -96,7 +115,6 @@ if [ -z "$GCL_GC_PAGE_MAX" ]; then
     export GCL_GC_PAGE_MAX=0.05
 fi;
 
-
 # GCL also by default tells the garbage collector to limit the memory usage to
 # allocate half of the physical RAM installed in the current machine.
 # Which works fine in a single-user system and even takes in account the amount
@@ -107,6 +125,12 @@ fi;
 # https://lists.gnu.org/archive/html/gcl-devel/2017-09/msg00000.html
 if [ -z "$GCL_MEM_MULTIPLE" ]; then
     export GCL_MEM_MULTIPLE=0.2
+fi;
+
+# Will be promoted to be gcl's default. But for the time being: Allow concurrent
+# gcl processes to communicate about how much memory each of them can use.
+if [ -z "$GCL_MULTIPROCESS_MEMORY_POOL" ]; then
+    export GCL_MULTIPROCESS_MEMORY_POOL=t
 fi;
 
 # process the command line arguments. This must be done in a function, because
@@ -224,7 +248,7 @@ elif [ "$MAXIMA_LISP" = "ccl64" ]; then
    fi
 
 elif [ "$MAXIMA_LISP" = "ecl" ]; then
-   exec "$maxima_image_base"  $MAXIMA_LISP_OPTIONS -- "$@"
+   exec "$maxima_image_base" --frame-stack 4096 --lisp-stack 65536 $MAXIMA_LISP_OPTIONS -- "$@"
 
 elif [ "$MAXIMA_LISP" = "sbcl" ]; then
 # Use executable image if it exists.
