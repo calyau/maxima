@@ -27,6 +27,7 @@
         ((mlist) "rtest11" #+(or gcl cmucl ccl64) 158 #+(or gcl cmucl ccl64) 174 #+gcl 175)
         "rtest13" "rtest13s"
 #-ecl   "rtest14"
+;; A sporadic failure occurred on 20180428 on Ubuntu 14.04 in test #233
 #+ecl   ((mlist simp) "rtest14" 201 234 249 250 251 252 267 297 298 307 310 312 315 319)
         "rtest15"
 	;; ccl versions 1.11 and earlier fail test 50.  Mark it as a
