@@ -33,33 +33,14 @@ setup_vars() {
   else
       MAXIMA_IMAGESDIR="$MAXIMA_DEFAULT_IMAGESDIR"
   fi
+  MAXIMA_DEFAULT_LISP=@DEFAULTLISP@
   # If the the binary directory for the default lisp is not present,
   # choose the first one we find.
   if [ ! -d "$MAXIMA_IMAGESDIR/binary-$MAXIMA_DEFAULT_LISP" ]; then
     MAXIMA_DEFAULT_LISP=`ls -1 $MAXIMA_IMAGESDIR 2>/dev/null | head -n 1 | sed 's/binary-//'`
   fi
   if [ -z "$MAXIMA_LISP" ]; then
-    if [ -x "$MAXIMA_IMAGESDIR/binary-sbcl" ]; then
-	MAXIMA_LISP="sbcl"
-    elif [ -x "$MAXIMA_IMAGESDIR/binary-clisp" ]; then
-	MAXIMA_LISP="clisp"
-    elif [ -x "$MAXIMA_IMAGESDIR/binary-cmucl" ]; then
-	MAXIMA_LISP="cmucl"
-    elif [ -x "$MAXIMA_IMAGESDIR/binary-scl" ]; then
-	MAXIMA_LISP="scl"
-    elif [ -x "$MAXIMA_IMAGESDIR/binary-gcl" ]; then
-	MAXIMA_LISP="gcl"
-    elif [ -x "$MAXIMA_IMAGESDIR/binary-acl" ]; then
-	MAXIMA_LISP="acl"
-    elif [ -x "$MAXIMA_IMAGESDIR/binary-openmcl" ]; then
-	MAXIMA_LISP="openmcl"
-    elif [ -x "$MAXIMA_IMAGESDIR/binary-ccl64" ]; then
-	MAXIMA_LISP="ccl64"
-    elif [ -x "$MAXIMA_IMAGESDIR/binary-ecl" ]; then
-	MAXIMA_LISP="ecl"
-    else
-	MAXIMA_LISP=@DEFAULTLISP@
-    fi
+    MAXIMA_LISP=$MAXIMA_DEFAULT_LISP
   fi
 }
 
@@ -114,6 +95,7 @@ fi;
 if [ -z "$GCL_GC_PAGE_MAX" ]; then
     export GCL_GC_PAGE_MAX=0.05
 fi;
+
 
 # GCL also by default tells the garbage collector to limit the memory usage to
 # allocate half of the physical RAM installed in the current machine.
