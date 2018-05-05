@@ -16,8 +16,6 @@
 
 (declare-top (special $rules $props boundlist reflist topreflist program))
 
-(defvar *afterflag nil)
-
 (defmvar $announce_rules_firing nil)
 
 (defmspec $matchdeclare (form)
@@ -451,7 +449,7 @@
 
 (defun proc-$tellsimpafter (l) 
   (prog (pt rhs boundlist reflist topreflist a program name oldstuff plustimes pgname oname tem
-	 rulenum) 
+	 rulenum my*afterflag) 
      (setq pt (copy-tree (simplifya (car l) nil)))
      (setq name pt)
      (setq rhs (copy-tree (simplifya (cadr l) nil)))
@@ -470,6 +468,9 @@
      (setq oname (getop name))
      (setq pgname (implode (append (%to$ (explodec oname))
 				   '(|r| |u| |l| |e|) (mexploden rulenum))))
+     (setq my*afterflag (gensym "*AFTERFLAG-"))
+     (proclaim `(special ,my*afterflag))
+     (setf (symbol-value my*afterflag) nil)
      (meta-mputprop pgname name 'ruleof)
      (meta-add2lnc pgname '$rules)
      (meta-mputprop name (f1+ rulenum) 'rulenum)
@@ -483,12 +484,12 @@
          (list 'setq 'x (list 'simpargs1 'x 'ans 'a3)))
        (list
 	'cond
-	'(*afterflag x)
+	`(,my*afterflag x)
 	(list 't
 	      (nconc (list 'prog)
-		     (list (cons a '(*afterflag rule-hit)))
-		     `((declare (special ,a *afterflag)))
-		     (list '(setq *afterflag t))
+		     (list (cons a `(,my*afterflag rule-hit)))
+		     `((declare (special ,a ,my*afterflag)))
+		     (list `(setq ,my*afterflag t))
 		     (cond (oldstuff (subst (list 'quote name)
 					    'name
 					    '((cond ((or (atom x) (not (eq (caar x) name)))
