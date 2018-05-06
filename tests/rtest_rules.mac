@@ -462,9 +462,7 @@ BLURF1 (1729 - 100, 100 - 17, 0, 29 - 100);
  0);
 0;
 
-/* tellsimp-defined rules are applied one after another.
- * Not so with tellsimpafter -- *AFTERFLAG prevents successive simplifications.
- * I suppose the difference is just an accident of history.
+/* Verify that tellsimp-defined rules are applied one after another.
  */
 
 baz (%pi, %i);
@@ -609,3 +607,95 @@ g(1);
  f(y):=y+3,
  [fundef (f), f (10)]);
 [f(y) := y + 3, 13];
+
+/* Verify that tellsimpafter rules are all applied.
+ * This is a test for commit 801a0bb which creates one *AFTERFLAG per rule.
+ * For good measure, verify that tellsimp and defrule work the same way.
+ */
+
+(simp:false,
+ kill (f, g, h, i, j, rj1, rj2, rj3),
+ tellsimpafter (f(1), f(0)),
+ tellsimpafter (f(2), f(1)),
+ tellsimpafter (f(3), f(2)),
+ tellsimpafter (g(3), g(2)),
+ tellsimpafter (g(2), g(1)),
+ tellsimpafter (g(1), g(0)),
+ tellsimp (h(1), h(0)),
+ tellsimp (h(2), h(1)),
+ tellsimp (h(3), h(2)),
+ tellsimp (i(3), i(2)),
+ tellsimp (i(2), i(1)),
+ tellsimp (i(1), i(0)),
+ defrule (rj1, j(1), j(0)),
+ defrule (rj2, j(2), j(1)),
+ defrule (rj3, j(3), j(2)),
+ simp:true);
+true;
+ 
+[f(1), f(2), f(3)];
+[f(0), f(0), f(0)];
+
+[g(1), g(2), g(3)];
+[g(0), g(0), g(0)];
+
+[h(1), h(2), h(3)];
+[h(0), h(0), h(0)];
+
+[i(1), i(2), i(3)];
+[i(0), i(0), i(0)];
+
+/* apply1 applies rj1 until it fails, then rj2, then rj3.
+ * Since apply1 doesn't go back and try rj1 after rj2, or rj2 after rj3,
+ * it's expected that the result of apply1 isn't maximally simplified.
+ */
+apply1 ([j(1), j(2), j(3)], rj1, rj2, rj3);
+[j(0), j(1), j(2)];
+
+/* apply1 with rules in reverse order does produce j(0) in each case here.
+ */
+apply1 ([j(1), j(2), j(3)], rj3, rj2, rj1);
+[j(0), j(0), j(0)];
+
+/* apply2 reapplies earlier rules if a later one succeeds.
+ * So it's expected that the results will be maximally simplified,
+ * with rules in either order.
+ */
+apply2 ([j(1), j(2), j(3)], rj1, rj2, rj3);
+[j(0), j(0), j(0)];
+
+apply2 ([j(1), j(2), j(3)], rj3, rj2, rj1);
+[j(0), j(0), j(0)];
+
+/* applyb1, like apply1, doesn't reapply rules,
+ * so it's expected results depend on the order of the rules.
+ */
+applyb1 ([j(1), j(2), j(3)], rj1, rj2, rj3);
+[j(0), j(1), j(2)];
+
+applyb1 ([j(1), j(2), j(3)], rj3, rj2, rj1);
+[j(0), j(0), j(0)];
+
+/* Another test for commit 801a0bb. This time it's expected that *AFTERFLAG
+ * prevents repeated application of the same tellsimpafter rule,
+ * but a tellsimp rule is applied repeatedly (because it has no *AFTERFLAG).
+ */
+
+(kill(nn, k, l),
+ matchdeclare (nn, lambda ([e], integerp(e) and e > 0)),
+ tellsimpafter (k(nn), nn + k(nn - 1)),
+ tellsimp (l(nn), nn + l(nn - 1)),
+ 0);
+0;
+
+/* It's difficult to test the result of k(4) because k(3) + 4 is not maximally simplified
+ * and the test mechanism applies simplification to both the actual and expected results.
+ * See SIMPLE-EQUAL-P and APPROX-ALIKE in src/mload.lisp.
+ */
+string (k(4));
+"k(3)+4";
+
+/* On the other hand, l(0) is maximally simplified, so there's no difficulty here.
+ */
+l(4);
+10 + l(0);
