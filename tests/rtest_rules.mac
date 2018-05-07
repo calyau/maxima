@@ -699,3 +699,18 @@ string (k(4));
  */
 l(4);
 10 + l(0);
+
+/* Another test for commit 801a0bb.
+ * Tellsimpafter rules change operator from f, to g, to h, to i.
+ */
+
+(kill(f, g, h, i),
+ simp:false,
+ tellsimpafter(f(1), g(1)),
+ tellsimpafter(g(1), h(1)),
+ tellsimpafter(h(1), i(1)),
+ simp:true);
+true;
+
+f(1);
+i(1);
