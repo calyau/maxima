@@ -152,5 +152,72 @@ errcatch(if grad a then 1 else 0);
 
 */
 
+/* SF bug #3337: "Wrong scalefactor for cartesian2d" */
+
+(scalefactors (cartesian2d), sf);
+[1, 1];
+
+(scalefactors (cartesian3d), sf);
+[1, 1, 1];
+
+/* Additional tests for #3337. These are weak in the sense that
+ * they aren't testing for specific values, but we would have to
+ * work out what is the correct result in each case.
+ */
+
+(scalefactors (polar), is (length(sf) = length(first(polar))));
+true;
+
+(scalefactors (polarcylindrical), is (length(sf) = length(first(polarcylindrical))));
+true;
+
+(scalefactors (spherical), is (length(sf) = length(first(spherical))));
+true;
+
+(scalefactors (elliptic), is (length(sf) = length(first(elliptic))));
+true;
+
+(scalefactors (ellipticcylindrical), is (length(sf) = length(first(ellipticcylindrical))));
+true;
+
+(scalefactors (confocalelliptic), is (length(sf) = length(first(confocalelliptic))));
+true;
+
+(scalefactors (prolatespheroidalsqrt), is (length(sf) = length(first(prolatespheroidalsqrt))));
+true;
+
+(scalefactors (oblatespheroidalsqrt), is (length(sf) = length(first(oblatespheroidalsqrt))));
+true;
+
+(scalefactors (parabolic), is (length(sf) = length(first(parabolic))));
+true;
+
+(scalefactors (paraboliccylindrical), is (length(sf) = length(first(paraboliccylindrical))));
+true;
+
+(scalefactors (paraboloidal), is (length(sf) = length(first(paraboloidal))));
+true;
+
+(scalefactors (prolatespheroidal), is (length(sf) = length(first(prolatespheroidal))));
+true;
+
+(scalefactors (oblatespheroidal), is (length(sf) = length(first(oblatespheroidal))));
+true;
+
+(scalefactors (bipolar), is (length(sf) = length(first(bipolar))));
+true;
+
+(scalefactors (bipolarcylindrical), is (length(sf) = length(first(bipolarcylindrical))));
+true;
+
+(scalefactors (toroidal), is (length(sf) = length(first(toroidal))));
+true;
+
+(scalefactors (conical), is (length(sf) = length(first(conical))));
+true;
+
+(scalefactors (confocalellipsoidal), is (length(sf) = length(first(confocalellipsoidal))));
+true;
+
 (reset(tr_bound_function_applyp,vect_cross,dotexptsimp,dotassoc,dotscrules),0);
 0$
