@@ -1166,3 +1166,8 @@ diff (e3 * sin (u), u);
 
 (reset(use_fast_arrays),1);
 1;
+
+/* ensure that remove(..., rule) works OK when applied to a string */
+
+remove ("ierieidkkcmxc", rule);
+done;

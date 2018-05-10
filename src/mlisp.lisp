@@ -1487,7 +1487,7 @@ wrapper for this."
 	  ((eq (cadr l) '$array) (meval `(($remarray) ,@vars)))
 	  ((member (cadr l) '($alias $noun) :test #'eq) (remalias1 vars (eq (cadr l) '$alias)))
 	  ((eq (cadr l) '$matchdeclare) (remove1 vars 'matchdeclare t t nil))
-	  ((eq (cadr l) '$rule) (remrule vars))
+	  ((eq (cadr l) '$rule) (remrule (mapcar #'(lambda (v) (if (stringp v) ($verbify v) v)) vars)))
 	  ((member (cadr l) '($evfun $evflag $nonarray $bindtest
 			    $autoload $assign) :test #'eq)
 	   (remove1 vars (stripdollar (cadr l)) nil t nil))
