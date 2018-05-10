@@ -61,7 +61,7 @@
     (push-text-temp)
   (let ((arg (pop-mformat-arg)))
     (and |@-FLAG| (atom arg) 
-	 (setq arg (or (get arg 'op) arg)))
+	 (setq arg (or (and (symbolp arg) (get arg 'op)) arg)))
     (cond (|:-FLAG|
 	   (push (cons '(text-string) (mstring arg)) text))
 	  (t
