@@ -1,5 +1,4 @@
 /*-*-MACSYMA-*-*/
-eval_when(batch,ttyoff:true)$
 /* Or use the BATCHLOAD command to load this with TTYOFF:TRUE */
 /*  NOTE:  THE CURRENT VERSION OF VECT IS THE ONE DUE TO STOUTEMYER.
 IT WILL BE REPLACED SOON BY AN EXTENDED VERSION WHICH HANDLES BOTH
@@ -31,6 +30,30 @@ declare(order,commutative,
         ordern,nary,
         ["grad","div","curl","laplacian"],outative,
         "curl",nonscalar)$
+
+/* Protect against "circular rule" error in case vect.mac is loaded twice.
+ * Most of these operators are defined here in vect.mac, so it's unlikely
+ * to cause trouble by removing their rules. But "." is a built-in operator
+ * and someone might define a rule for some purpose other than vect.mac,
+ * so removing rules for "." is a little heavy-handed, but I don't know
+ * how protect against circular rule errors except by removing rules.
+ */
+
+/* No easy way to determine if an operator has rules ... Well, this works. */
+existing_rules_ops : map (?getop, map (lambda ([x], ?mget (x, '?ruleof)), rules));
+has_rules (op) := member (op, existing_rules_ops);
+
+if has_rules (".") then
+ (print ("vect: warning: removing existing rule or rules for \".\"."),
+  remove (".", rule));
+if has_rules ("~") then remove ("~", rule);
+if has_rules ("grad") then remove ("grad", rule);
+if has_rules ("div") then remove ("div", rule);
+if has_rules ("curl") then remove ("curl", rule);
+if has_rules ("laplacian") then remove ("laplacian", rule);
+if has_rules (vectorpotential) then remove (vectorpotential, rule);
+if has_rules (express) then remove (express, rule);
+if has_rules (potential) then remove (potential, rule);
 
 tellsimpafter(0~etrue, 0) $
 tellsimpafter(etrue~0, 0) $
@@ -455,4 +478,3 @@ evlimit(expr,var,lim):=block([temp],
   if member(temp,'[inf,minf,und,ind,infinity]) then return(false),
   if freeof(nounify('limit),temp) then temp)$
 
-eval_when(batch,ttyoff:false)$
