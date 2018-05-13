@@ -256,12 +256,128 @@ g(x,y) / g(y,x);
 (remove(f, symmetric, g, antisymmetric),0);
 0$
 
+(define_opproperty (identity, simplify_identity),
+ simplify_identity(e) := first(e),
+ kill(f, g),
+ declare ([f, g], identity));
+done;
 
+f(t + 10);
+t + 10;
 
+g(3*u) - f(2*u);
+u;
 
+/* same as identity property, but with lambda expression */
+define_opproperty (identity1, lambda ([e], first(e)));
+done;
 
+(kill (f1, g1), declare ([f1, g1], identity1));
+done;
 
+[f1(t + 10), g1(3*u) - f1(2*u)];
+[t + 10, u];
 
+/* tests for bilinear declaration */
 
+kill("foo");
+done;
 
+(kill(foo),
+ infix(foo),
+ if not member (bilinear, opproperties) then load (bilinear),
+ declare ("foo", bilinear));
+done;
 
+(kill(a, b, c, d, e, f),
+ (a + b) foo (c + d));
+a foo c + a foo d + b foo c + b foo d;
+
+(%pi*a - c/2) foo (d - 2*e - f^^2);
+%pi*(a foo d) - 2*%pi*(a foo e) - %pi*(a foo (f^^2)) - (c foo d)/2 + (c foo e) + (c foo (f^^2))/2;
+
+declare ("foo", symmetric);
+done;
+
+b foo a;
+a foo b;
+
+declare ("foo", scalar);
+done;
+
+((a foo b)*c) foo ((c foo d)*e);
+(a foo b)*(c foo d)*(c foo e);
+
+/* verify later declarations don't interfere with earlier ones */
+
+(%pi*a - c/2) foo (d - 2*e - f^^2);
+%pi*(a foo d) - 2*%pi*(a foo e) - %pi*(a foo (f^^2)) - (c foo d)/2 + (c foo e) + (c foo (f^^2))/2;
+
+b foo a;
+a foo b;
+
+/* bilinear, symmetric, scalar all together */
+
+(c/(a foo f)) foo ((c foo (a + b))*e);
+((a foo c) + (b foo c))*(c foo e)/(a foo f);
+
+(3*a - c/(a foo f)) foo ((c foo (a + b))*e);
+3*((a foo c) + (b foo c))*(a foo e) - ((a foo c) + (b foo c))*(c foo e)/(a foo f);
+
+(3*a + c/(a foo f)) foo (d + (c foo (a + b))*e);
+3*(a foo d) + (c foo d)/(a foo f) + 3*((a foo c) + (b foo c))*(a foo e) + ((a foo c) + (b foo c))*(c foo e)/(a foo f);
+
+(kill (S), declare (S, scalar));
+done;
+
+/* I want to test 1234 + 5*(3*a - c/(a foo f)) foo (d - (c foo (a + b))*e)
+ * Work up to it step by step.
+ */
+
+/* F */
+(3*a) foo d;
+3*(a foo d);
+
+/* O */
+(3*a) foo (S*((c foo (a + b))*e));
+3*S*(c foo a + c foo b)*(a foo e);
+
+/* F + O */
+(3*a) foo (d + S*((c foo (a + b))*e));
+3*(a foo d) + 3*S*(c foo a + c foo b)*(a foo e);
+
+/* I */
+(S*(c/(a foo f))) foo d;
+S*(c foo d)/(a foo f);
+
+/* L */
+(S*(c/(a foo f))) foo (S*((c foo (a + b))*e));
+S^2*(c foo a + c foo b)*(c foo e)/(a foo f);
+
+/* I + L */
+
+(S*(c/(a foo f))) foo (d + (S*((c foo (a + b))*e)));
+S*(c foo d)/(a foo f) + S^2*(c foo a + c foo b)*(c foo e)/(a foo f);
+
+/* F + O + I + L */
+
+(3*a + (S*(c/(a foo f)))) foo (d + (S*((c foo (a + b))*e)));
+3*(a foo d) + 3*S*(c foo a + c foo b)*(a foo e) + S*(c foo d)/(a foo f) + S^2*(c foo a + c foo b)*(c foo e)/(a foo f);
+
+/* same as preceding, but with fewer parentheses */
+(3*a + S*c/(a foo f)) foo (d + S*(c foo (a + b))*e);
+3*(a foo d) + 3*S*(c foo a + c foo b)*(a foo e) + S*(c foo d)/(a foo f) + S^2*(c foo a + c foo b)*(c foo e)/(a foo f);
+
+/* same as preceding, now let S = -1 */
+subst (S = -1, (3*a + S*c/(a foo f)) foo (d + S*(c foo (a + b))*e));
+''(myfoilsubst : subst (S = -1, 3*(a foo d) + 3*S*(c foo a + c foo b)*(a foo e) + S*(c foo d)/(a foo f) + S^2*(c foo a + c foo b)*(c foo e)/(a foo f)));
+
+/* same as preceding, rewrite with minus signs;
+ * test via ratsimp since I can't get simplified forms to agree
+ */
+ratsimp ((3*a - c/(a foo f)) foo (d - (c foo (a + b))*e) - myfoilsubst);
+0;
+
+/* what I was trying to test to start with */
+ratsimp (1234 + 5*(3*a - c/(a foo f)) foo (d - (c foo (a + b))*e) - (1234 + 5*myfoilsubst));
+0;

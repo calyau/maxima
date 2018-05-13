@@ -803,6 +803,36 @@ summation when necessary."
 	(t (let ((opers-list (cdr opers-list)))
 	     (oper-apply e z)))))
 
+;; Define an operator simplification, the same as antisymmetric, commutative, linear, etc.
+;; Here OP = operator name, FN = function of 1 argument to carry out operator-specific simplification.
+;; 1. push operator name onto OPERS
+;; 2. update $OPPROPERTIES
+;; 3. push operator name and glue code onto *OPERS-LIST
+;; 4. declare operator name as a feature, so declare(..., <op>) is recognized
+
+(defun $define_opproperty (op fn)
+  (unless (symbolp op)
+    (merror "define_opproperty: first argument must be a symbol; found: ~M" op))
+  (unless (or (symbolp fn) (and (consp fn) (eq (caar fn) 'lambda)))
+    (merror "define_opproperty: second argument must be a symbol or lambda expression; found: ~M" fn))
+  (push op opers)
+  (setq $opproperties (cons '(mlist simp) (reverse opers)))
+  (let
+    ((fn-glue (coerce (if (symbolp fn)
+                        `(lambda (e z)
+                           (declare (ignorable z))
+                           (if (or (fboundp ',fn) (mget ',fn 'mexpr))
+                             (let ((e1 (let ($simp) (mfuncall ',fn e))))
+                               (if ($mapatom e1) e1 (oper-apply e1 nil)))
+                             (list '(,fn) (let ((*opers-list (cdr *opers-list))) (oper-apply e z)))))
+                        `(lambda (e z)
+                           (declare (ignore z))
+                           (let ((e1 (let ($simp) (mfuncall ',fn e))))
+                             (if ($mapatom e1) e1 (oper-apply e1 nil)))))
+                      'function)))
+    (push `(,op . ,fn-glue) *opers-list))
+  (mfuncall '$declare op '$feature))
+
 (defun linearize1 (e z)		; z = t means args already simplified.
   (linearize2 (cons (car e) (mapcar #'(lambda (q) (simpcheck q z)) (cdr e)))
 	      nil))

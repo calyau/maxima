@@ -1,0 +1,32 @@
+/* bilinear.mac -- define a new opproperty, bilinear
+ * copyright 2018 by Robert Dodier
+ * I release this work under terms of the GNU General Public License
+ */
+
+define_opproperty (bilinear, expand_bilinear);
+/* Note that defining the simplification with a Maxima function makes
+ * this operator property susceptible to kill(functions) or kill(all) ...
+ */
+expand_bilinear (e) := apply1 (e, rule_bilinear_1a, rule_bilinear_1b,
+                                  rule_bilinear_2a, rule_bilinear_2b,
+                                  rule_bilinear_3a, rule_bilinear_3b,
+                                  rule_bilinear_4a, rule_bilinear_4b);
+
+matchdeclare (bb, lambda ([e], featurep (e, bilinear)));
+matchdeclare (aa, all, xx, lambda ([e], not atom(e) and op(e) = "+"));
+defrule (rule_bilinear_1a, bb(xx, aa), map (lambda ([x], bb(x, aa)), xx));
+defrule (rule_bilinear_1b, bb(aa, xx), map (lambda ([x], bb(aa, x)), xx));
+
+matchdeclare ([aa1, aa2], all, ss, lambda ([e], scalarp(e) and e#1));
+simp:false $
+defrule (rule_bilinear_2a, bb(-aa1, aa2), -bb(aa1, aa2));
+defrule (rule_bilinear_2b, bb(aa1, -aa2), -bb(aa1, aa2));
+simp:true $
+
+defrule (rule_bilinear_3a, bb(ss*aa1, aa2), ss*bb(aa1, aa2));
+defrule (rule_bilinear_3b, bb(aa1, ss*aa2), ss*bb(aa1, aa2));
+
+simp:false $
+defrule (rule_bilinear_4a, bb(aa1/ss, aa2), bb(aa1, aa2)/ss);
+defrule (rule_bilinear_4b, bb(aa1, aa2)/ss, bb(aa1, aa2)/ss);
+simp:true $

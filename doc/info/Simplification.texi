@@ -1206,7 +1206,9 @@ Example:
 @defvr {System variable} opproperties
 
 @code{opproperties} is the list of the special operator properties recognized
-by the Maxima simplifier:
+by the Maxima simplifier.
+
+Items are added to the @code{opproperties} list by the function @code{define_opproperty}.
 
 Example:
 
@@ -1223,11 +1225,74 @@ lassociative, rassociative]
 @end example
 
 @opencatbox
-@category{Global variables} @category{Operators}
+@category{Global variables} @category{Operators} @category{Simplification}
 @closecatbox
 @end defvr
 
 @c NEEDS EXAMPLES
+
+@c -----------------------------------------------------------------------------
+@anchor{define_opproperty}
+@deffn {Function} define_opproperty (@var{property_name}, @var{simplifier_fn})
+
+Declares the symbol @var{property_name} to be an operator property,
+which is simplified by @var{simplifier_fn},
+which may be the name of a Maxima or Lisp function or a lambda expression.
+After @code{define_opproperty} is called,
+functions and operators may be declared to have the @var{property_name} property,
+and @var{simplifier_fn} is called to simplify them.
+
+@var{simplifier_fn} must be a function of one argument,
+which is an expression in which the main operator is declared to have the @var{property_name} property.
+
+@var{simplifier_fn} is called with the global flag @code{simp} disabled.
+Therefore @var{simplifier_fn} must be able to carry out its simplification
+without making use of the general simplifier.
+
+@code{define_opproperty} appends @var{property_name} to the
+global list @code{opproperties}.
+
+@code{define_opproperty} returns @code{done}.
+
+Example:
+
+Declare a new property, @code{identity}, which is simplified by @code{simplify_identity}.
+Declare that @code{f} and @code{g} have the new property.
+
+@c ===beg===
+@c define_opproperty (identity, simplify_identity);
+@c simplify_identity(e) := first(e);
+@c declare ([f, g], identity);
+@c f(10 + t);
+@c g(3*u) - f(2*u);
+@c ===end===
+@example
+@group
+(%i1) define_opproperty (identity, simplify_identity);
+(%o1)                         done
+@end group
+@group
+(%i2) simplify_identity(e) := first(e);
+(%o2)           simplify_identity(e) := first(e)
+@end group
+@group
+(%i3) declare ([f, g], identity);
+(%o3)                         done
+@end group
+@group
+(%i4) f(10 + t);
+(%o4)                        t + 10
+@end group
+@group
+(%i5) g(3*u) - f(2*u);
+(%o5)                           u
+@end group
+@end example
+
+@opencatbox
+@category{Operators} @category{Simplification}
+@closecatbox
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{outative}
