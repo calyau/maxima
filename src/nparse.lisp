@@ -1714,6 +1714,12 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;; any Common lisp implementation.
 
 #-gcl
+(defstruct instream
+  stream
+  (line 0 :type fixnum)
+  stream-name)
+
+#-gcl
 (defvar *stream-alist* nil)
 
 #-gcl
@@ -1725,12 +1731,6 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 (defun instream-name (instr)
   (or (instream-stream-name instr)
       (stream-name (instream-stream instr))))
-
-#-gcl
-(defstruct instream
-  stream
-  (line 0 :type fixnum)
-  stream-name)
 
 ;; (closedp stream) checks if a stream is closed.
 ;; how to do this in common lisp!!
