@@ -164,8 +164,8 @@
 (defvar *break-step* nil)
 (defvar *step-next* nil)
 
-(defun step-into (&optional (n 1))
-  (declare (ignore n))
+(defun step-into (&optional ignored)
+  (declare (ignore ignored))
   (or *break-points* (init-break-points))
   (setq *break-step* 'break-step-into)
   :resume)
