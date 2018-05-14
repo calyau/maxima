@@ -638,6 +638,7 @@
             ,@(loop
                  for var in vars
                  collecting `(,var (cdr (assoc ',var ,alist-sym :test #'eq)))))
+       (declare (ignorable ,alist-sym))
        ,@body)))
 
 ;; Factor out the common logic to write a COND statement that uses the Schatchen
