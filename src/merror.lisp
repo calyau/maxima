@@ -96,8 +96,8 @@
 	 (force-output)
 	 (throw 'macsyma-quit 'maxima-error))))
 
-(defun mwarning (sstring &rest l)
-  (format t "Warning: ~a~%" ($sconcat sstring)))
+(defun mwarning (&rest l)
+  (format t "Warning: ~{~a~^ ~}~%" (mapcar #'$sconcat l)))
 
 (defmacro with-$error (&body body)
   "Let MERROR signal a MAXIMA-$ERROR condition."
