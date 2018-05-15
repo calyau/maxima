@@ -525,7 +525,7 @@ This is effectively reprinting the most recent error message.
 @deffn  {Function} warning (@var{expr_1}, @dots{}, @var{expr_n})
 
 Evaluates and prints @var{expr_1}, @dots{}, @var{expr_n},
-as a warning message tat is formatted in a standard way so a maxima front-end
+as a warning message that is formatted in a standard way so a maxima front-end
 may be able to recognize the warning and to format it accordingly.
 
 The function @code{warning} always returns false.
