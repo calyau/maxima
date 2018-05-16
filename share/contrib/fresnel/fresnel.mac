@@ -5,7 +5,7 @@ uses the asymptotic series.  This routine could be improved by using
 lazy evaluation to increase speed in the initialization.
 */
 
-load("e:\\fresnel\\fresnel_linear_values.mac")$
+load("fresnel_linear_values.mac")$
 define_variable(FRESNEL_ASYMPTOTIC,4.0d0,any_check,
    "Point to switch to asymptotic series")$
 define_variable(FRESNEL_DIVISION,100,any_check,
