@@ -5,7 +5,7 @@
 #  (at your option) any later version.                
 */
 
-/*to find integral factor for a diff form,if posiible */
+/* to find integral factor for a diff form, if possible */
 trans_toexact(_w):= block([anorm_table,a,b,c],
     if d(_w)@ _w # 0 then return("no answer")
     else (
