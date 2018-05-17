@@ -148,7 +148,7 @@ setup_vars
 
 if [ ! -d "$MAXIMA_IMAGESDIR" ]; then
 # Have we been moved?
-  MAXIMA_PREFIX=`(cd \`dirname $0\` 1>/dev/null 2>/dev/null; dirname \`pwd\`)`
+  MAXIMA_PREFIX=`(cd "\`dirname "$0"\`" 1>/dev/null 2>/dev/null; dirname "\`pwd\`")`
   export MAXIMA_PREFIX
   unsetup_vars
   setup_vars

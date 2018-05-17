@@ -2,7 +2,7 @@
 # This should be written for a classic Bourne shell.  Therefore avoid
 # things like $() and other bash-isms and ksh-isms that don't work
 # with a classic Bourne shell.
-top_srcdir=`(cd \`dirname $0\` > /dev/null 2>&1 ; pwd)`
+top_srcdir=`(cd "\`dirname "$0"\`" > /dev/null 2>&1 ; pwd)`
 MAXIMA_PREFIX="$top_srcdir"
 export MAXIMA_PREFIX
 MAXIMA_LAYOUT_AUTOTOOLS=false
