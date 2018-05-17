@@ -3,7 +3,7 @@ defrule(fg1,cfresnel(mv),(1/2+f(mv)*sin((%pi/2)*mv^2)-g(mv)*cos((%pi/2)*mv^2)))$
 defrule(fg2,sfresnel(mv),(1/2-f(mv)*cos((%pi/2)*mv^2)-g(mv)*sin((%pi/2)*mv^2)))$
 defrule(ga,g(mv),1/((%pi*mv)*(%pi*(mv)^2)))$
 defrule(fa,f(mv),1/(%pi*mv)+3/(%pi*(mv^2))^2)$
-batch("c:\randi.mac")$
+batch("randi.mac")$
 randi:apply1(randi,fg1)$
 randi:apply1(randi,fg2)$
 randi:expand(randi)$
