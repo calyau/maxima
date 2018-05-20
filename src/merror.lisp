@@ -77,7 +77,7 @@
 
 (defun merror (sstring &rest l)
   (declare (special errcatch *mdebug*))
-  (setq $error `((mlist) ,sstring ,@ l))
+  (setq $error `((mlist simp) ,sstring ,@ l))
   (and $errormsg ($errormsg))
   (cond (*mdebug*
 	 (let ((dispflag t) ret)

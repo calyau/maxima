@@ -2454,3 +2454,9 @@ test(x/(sqrt(x^(2/3)+1)));
 true$
 kill(expr);
 done$
+
+/* Bug #3431: error system variable holds unsimplified list, causing errors to be repeated when trying to access it */
+errcatch(0^0);
+[]$
+errcatch(print(error), true);
+[true]$
