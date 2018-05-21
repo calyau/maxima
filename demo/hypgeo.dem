@@ -62,15 +62,15 @@ factor(radcan(%));
 t^(3/2)*bessel_y(1, a*t)*%e^(-t);
 specint(%,t);
 
-t^(3/2)*%h[1/2,1](t)*%e^(-p*t);
+t^(3/2)*hankel_1(1/2,t)*%e^(-p*t);
 specint(%,t);
 factor(radcan(%));
 
-t^(1/2)*%h[3/4,2](t)*%e^(-p*t);
+t^(1/2)*hankel_2(3/4,t)*%e^(-p*t);
 specint(%,t);
 ratsimp(%);
 
-t*%h[2/3,1](t^(1/2))*%e^(-p*t);
+t*hankel_1(2/3,t^(1/2))*%e^(-p*t);
 specint(%,t);
 ratsimp(%);
 
@@ -108,11 +108,11 @@ specint(%,t);
 
 /* struve functions. */
 
-t^(3/2)*hstruve[1](t^(1/2))*%e^(-p*t);
+t^(3/2)*struve_h(1,t^(1/2))*%e^(-p*t);
 specint(%,t);
 radcan(%);
 
-t*hstruve[1](t)*%e^(-p*t);
+t*struve_h(1,t)*%e^(-p*t);
 specint(%,t);
 radcan(%);
 
