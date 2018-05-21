@@ -659,12 +659,14 @@
 
 (defprop $matrix tex-matrix tex)
 
+;; Tex dialects either offer a \pmatrix command or a pmatrix environment
+;; so we let the TeX decide which one to use.
 (defun tex-matrix(x l r) ;;matrix looks like ((mmatrix)((mlist) a b) ...)
-  (append l `("\\pmatrix{")
+  (append l `("\\ifx\\endpmatrix\\undefined\\pmatrix{\\else\\begin{pmatrix}\\fi ")
 	  (mapcan #'(lambda(y)
 		      (tex-list (cdr y) nil (list "\\cr ") "&"))
 		  (cdr x))
-	  '("}") r))
+	  '("\\ifx\\endpmatrix\\undefined}\\else\\end{pmatrix}\\fi ") r))
 
 ;; macsyma sum or prod is over integer range, not  low <= index <= high
 ;; TeX is lots more flexible .. but
