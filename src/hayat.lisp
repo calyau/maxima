@@ -203,8 +203,6 @@
   to avoid identically-zero constant terms which involve log's. When FALSE,
   only expansions necessary to produce a formal series will be executed.")
 
-;Note!  The value of this must be a symbol, because it is checked with
-; FBOUNDP.
 (defmvar $taylor_simplifier 'simplify
  "A function of one argument which TAYLOR uses to simplify coefficients
   of power series.")
@@ -1996,9 +1994,13 @@
 	      log-1 '((%log simp) -1) log%i '((%log simp) $%i)
 	      tvars (mapcar 'car tlist) varlist (copy-list tvars))
 	 (when $taylor_simplifier
+	    ; This symbolp/fboundp check is presumably for efficiency (so it
+	    ; can be directly funcalled).
 	    (setq taylor_simplifier
-		  (if (fboundp $taylor_simplifier) $taylor_simplifier
-		     'taylor_simplifier_caller)))
+		  (if (and (symbolp $taylor_simplifier)
+			   (fboundp $taylor_simplifier))
+		      $taylor_simplifier
+		      'taylor_simplifier_caller)))
 	;; Ensure that the expansion points don't depend on the expansion vars.
 	;; This could cause an infinite loop, e.g. taylor(x,x,x,1).
 	(do ((tl tlist (cdr tl)))

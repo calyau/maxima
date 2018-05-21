@@ -539,3 +539,23 @@ ev(%,nouns);
  + 2856700692480*x^2  + 3370143559680*x + 2386516803584)],
  pade (t, 5, 5), is (equal (%%, foo)));
 true;
+
+/* Bug #2116: lambda form for taylor_simplifier */
+
+(kill (f), f : lambda ([s], s), 0);
+0;
+
+/* This worked... */
+block ([taylor_simplifier : 'f],
+  taylor (sin (x), x, 0, 4));
+x - x^3 / 3!$
+
+/* ...but this failed since the value of taylor_simplifier
+ * was previously required to be a symbol.
+ */
+block ([taylor_simplifier : f],
+  taylor (sin (x), x, 0, 4));
+x - x^3 / 3!$
+
+(kill (f), 0);
+0;
