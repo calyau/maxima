@@ -1753,4 +1753,26 @@ true;
 errcatch (integrate(x/(1+x^2),x,0,inf));
 [];
 
+/* Bug #3368: integrate('limit(...),...) internal error */
 
+/* Original test cases from bug report: */
+
+integrate('limit(x,x,0),x);
+x*'limit(x,x,0);
+
+integrate('limit(x,x,y),x);
+x*'limit(x,x,y);
+
+integrate('limit(x,x,x),x);
+'integrate('limit(x,x,x),x);
+
+/* Some more: */
+
+integrate('at(x,x=1), x);
+x*'at(x,x=1);
+
+integrate('sum(x,x,1,1), x);
+x*'sum(x,x,1,1);
+
+integrate('product(x,x,1,1), x);
+x*'product(x,x,1,1);

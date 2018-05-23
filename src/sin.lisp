@@ -420,7 +420,7 @@
      
      ;; At this point, we have EXP as a product of terms.  Make Y a
      ;; list of the terms of the product.
-     (setq y (cond ((eq (caar exp) 'mtimes)
+     (setq y (cond ((mtimesp exp)
 		    (cdr exp))
 		   (t
 		    (list exp))))
