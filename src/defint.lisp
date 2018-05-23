@@ -1887,6 +1887,15 @@ in the interval of integration.")
 	 (r (add a (mul -1 (mul q 2 '$%pi)))))
     (cons q r)))
 
+; returns cons of (integer_part . fractional_part) of a
+(defun lower-infr (a)
+  ;; I think we really want to compute how many full periods are in a
+  ;; and the remainder.
+  (let* (;(q (igprt (div a (mul 2 '$%pi))))
+	 (q (mfuncall '$ceiling (div a (mul 2 '$%pi))))
+	 (r (add a (mul -1 (mul q 2 '$%pi)))))
+    (cons q r)))
+
 
 ;; Return the integer part of r.
 (defun igprt (r)
@@ -1981,6 +1990,11 @@ in the interval of integration.")
 	      (go out)))
        ;; Compute p and d for the lower limit a.
        (setq l (infr l))
+       ;; avoid an extra trip around the circle - helps skip principal values
+       (if (ratgreaterp (car b) (car l))		; if q > p
+	   (setq l (cons (add 1 (car l))		;   p += 1
+			 (add (mul -1 %pi2) (cdr l))))) ;   d -= 2*%pi
+       
        ;; Compute -integrate(f,x,0,d)
        (setq int-zero-to-d
 	     (cond ((setq ans (try-intsc e (cdr l) var))
