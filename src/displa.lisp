@@ -75,7 +75,9 @@
 	     (cond (*alt-display2d* (apply *alt-display2d* form ()))
 		   (t
 		    (let ((displayp t)
-			  (linearray (if displayp (make-array 80.) linearray))
+			  (linearray (if displayp
+					 (make-array 80. :initial-element nil)
+					 linearray))
 			  (mratp (checkrat form))
 			  (maxht     1) (maxdp   0) (width   0)
 			  (height    0) (depth   0) (level   0) (size   2)
