@@ -537,7 +537,7 @@
     ((1)
      (cons 'retry largs))
     ((2)
-     (cons 'retry (let (($trace_break_arg `((mlist) ,largs)))
+     (cons 'retry (let (($trace_break_arg `((mlist) ,@largs)))
 		    (cdr (pred-$read '$listp
 				     (list
 				      "Enter new argument list for"
