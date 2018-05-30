@@ -19,8 +19,3 @@
       (format *error-output* "~S~%~A~%" (type-of e) e)
       (when errset
 	(let ((*debugger-hook* nil)) (si::default-debugger e))))))
-
-;;a generic one if you have no error handling 
-;;at all, that caught no errors but at least
-;;returned a list in the normal case would be 
-;; (defmacro errset (&rest l) `(list ,(car l)))
