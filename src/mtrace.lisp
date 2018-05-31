@@ -153,6 +153,20 @@
 ;; functions).  I think that this has to be fixed somewhere in the
 ;; translation package. -wj
 
+;; Maxima offers no user-level mechanism for manipulating multiple
+;; return values; however, multiple (lisp) return values need to be
+;; handled and returned correctly in traced or timed functions.
+;; For example, if a user traces or times a rule created by defrule
+;; then the second return value must be propagated so apply1 and
+;; friends know when the rule hits (the documentation states that
+;; these rules can be treated as functions, so it seems reasonable
+;; to want to trace or time them).
+;;
+;; We still pretend like there is only one return value when we
+;; print the trace, pass the value to a trace option predicate or
+;; allow the user to set a new return value at a breakpoint.  This
+;; is both for backward-compatibility (particularly in predicates)
+;; and because Maxima doesn't actually support multiple values anyway.
 
 ;;; Structures.
 
@@ -389,7 +403,7 @@
 	    (level))
 	(setq level (1+ (symbol-value level-sym)))
 	(bind-sym level-sym level
-		  (do ((ret-val)
+		  (do ((ret-vals)
 		       (continuation)
 		       (predicate-arglist))
 		      (nil)
@@ -397,25 +411,24 @@
 		    (setq largs (trace-enter-break fun level largs))
 		    (trace-enter-print fun level largs)
 		    (cond ((trace-option-p fun '$errorcatch)
-			   (setq ret-val (macsyma-errset (trace-apply fun largs)))
-			   (cond ((null ret-val)
-				  (setq ret-val (trace-error-break fun level largs))
-				  (setq continuation (car ret-val)
-					ret-val (cdr ret-val)))
+			   (setq ret-vals (macsyma-errset (trace-apply fun largs)))
+			   (cond ((null ret-vals)
+				  (setq ret-vals (trace-error-break fun level largs))
+				  (setq continuation (car ret-vals)
+					ret-vals (cdr ret-vals)))
 				 (t
-				  (setq continuation 'exit
-					ret-val (car ret-val)))))
+				  (setq continuation 'exit))))
 			  (t
 			   (setq continuation 'exit
-				 ret-val (trace-apply fun largs))))
+				 ret-vals (multiple-value-list (trace-apply fun largs)))))
 		    (case continuation
 		      ((exit)
-		       (setq predicate-arglist `(,level $exit ,fun ,ret-val))
-		       (setq ret-val (trace-exit-break fun level ret-val))
-		       (trace-exit-print fun level ret-val)
-		       (return ret-val))
+		       (setq predicate-arglist `(,level $exit ,fun ,(car ret-vals)))
+		       (setq ret-vals (trace-exit-break fun level ret-vals))
+		       (trace-exit-print fun level (car ret-vals))
+		       (return (values-list ret-vals)))
 		      ((retry)
-		       (setq largs ret-val)
+		       (setq largs ret-vals)
 		       (mtell "TRACE-HANDLER: reapplying the function ~:@M~%" fun))
 		      ((maxima-error)
 		       (merror "~%TRACE-HANDLER: signaling 'maxima-error' for function ~:@M~%" fun))))))))
@@ -493,13 +506,27 @@
 	       (mtell "TRACE-ENTER-BREAK: 'trace_break_arg' must be a list.~%"))))
       largs))
 
-(defun trace-exit-break (fun lev ret-val)
+(defun trace-exit-break (fun lev ret-vals)
   (if (trace-option-p fun '$break)
-      (let (($trace_break_arg ret-val)
+      (let (($trace_break_arg (car ret-vals))
+	    (trace-break-arg-set nil)
 	    (return-to-trace-handle nil))
-	($break "Trace exiting" fun "level" lev)
-	$trace_break_arg)
-      ret-val))
+	; Users can specify a different return value by setting
+	; trace_break_arg here.  This assign hack is to preserve
+	; all of the return values from the original function
+	; unless the user actually sets trace_break_arg.
+	(putprop '$trace_break_arg
+		 (lambda (x y)
+		   (declare (ignore x y))
+		   (setq trace-break-arg-set t))
+		 'assign)
+	(unwind-protect
+	    ($break "Trace exiting" fun "level" lev)
+	  (remprop '$trace_break_arg 'assign))
+	(if trace-break-arg-set
+	    (list $trace_break_arg)
+	    ret-vals))
+      ret-vals))
 
 (defun pred-$read (predicate argl bad-message)
   (do ((ans))(nil)
@@ -545,7 +572,7 @@
 				     "please enter a list.")))))
 
     ((3)
-     (cons 'exit ($read "Enter value to return")))))
+     (cons 'exit (list ($read "Enter value to return"))))))
 
 ;;; application dispatch, and the consing up of the trace hook.
 
@@ -707,7 +734,7 @@
 	(gctime (status gctime))
 	(old-runtime-devalue runtime-devalue)
 	(old-gctime-devalue gctime-devalue))
-    (prog1 (trace-apply fun largs)
+    (multiple-value-prog1 (trace-apply fun largs)
       (setq old-runtime-devalue (- runtime-devalue old-runtime-devalue))
       (setq old-gctime-devalue (- gctime-devalue old-gctime-devalue))
       (setq runtime (- (get-internal-run-time) runtime old-runtime-devalue))
