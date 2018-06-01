@@ -112,6 +112,6 @@
 #-gcl    "rtest_decfp"
 #+gcl    ((mlist simp) "rtest_decfp" 1 2 3 4)
     "rtest_wrstcse"
-#-ecl    "rtest_draw"
+    "rtest_draw"
     )
   )
