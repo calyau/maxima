@@ -67,7 +67,7 @@
        (setf *multiplot-is-active* t))
       ($none
         (send-gnuplot-command
-          (format nil "unset multiplot~%"))
+          (format nil "unset multiplot~%unset output~%"))
         (setf *multiplot-is-active* nil))
       (otherwise
         (merror "draw: ~M is not recognized as a multiplot mode" term)))))
@@ -3506,7 +3506,7 @@
              ; command file maxout.gnuplot is now ready
              (format cmdstorage "~%")
              (cond ((> (length scenes) 1)
-                      (format cmdstorage "unset multiplot~%"))
+                      (format cmdstorage "unset multiplot~%unset output ~%"))
                    ; if we want to save the coordinates in a file,
                    ; print them when hitting the x key after clicking the mouse button
                    ((not (string= (get-option '$xy_file) ""))
@@ -3523,7 +3523,8 @@
 	     ; If the plot isn't written to a file the variable "output" is empty and
 	     ; unused and unsetting it a second time doesn't change anything
 	     ; => It is always save to unset the output at the end of a scene.
-             (format cmdstorage "unset output~%")
+             (when (not *multiplot-is-active*) ; not in a one window multiplot
+                 (format cmdstorage "unset output~%"))
              (close cmdstorage)
              ; get the plot
              (cond
