@@ -509,23 +509,22 @@
 (defun trace-exit-break (fun lev ret-vals)
   (if (trace-option-p fun '$break)
       (let (($trace_break_arg (car ret-vals))
-	    (trace-break-arg-set nil)
 	    (return-to-trace-handle nil))
-	; Users can specify a different return value by setting
-	; trace_break_arg here.  This assign hack is to preserve
-	; all of the return values from the original function
-	; unless the user actually sets trace_break_arg.
-	(putprop '$trace_break_arg
-		 (lambda (x y)
-		   (declare (ignore x y))
-		   (setq trace-break-arg-set t))
-		 'assign)
-	(unwind-protect
-	    ($break "Trace exiting" fun "level" lev)
-	  (remprop '$trace_break_arg 'assign))
-	(if trace-break-arg-set
-	    (list $trace_break_arg)
-	    ret-vals))
+	($break "Trace exiting" fun "level" lev)
+	; If trace_break_arg is the same (in the sense of eq) now
+	; as when we started the breakpoint, then return all of the
+	; original return values from the function.  This means if
+	; the user sets trace_break_arg but its value is eq to its
+	; original value (which is only the primary return value
+	; from the original function) then we still return the extra
+	; values (if there are any).  I (kjak) don't think this is
+	; strictly correct, but we can try to fix it up later if
+	; anyone ever really cares about this corner case involving
+	; multiple return values, exit breakpoints and setting
+	; trace_break_arg to the same value it started with.
+	(if (eq $trace_break_arg (car ret-vals))
+	    ret-vals
+	    (list $trace_break_arg)))
       ret-vals))
 
 (defun pred-$read (predicate argl bad-message)
