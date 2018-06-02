@@ -1,4 +1,4 @@
-\input texinfo
+\input ../texinfo
 @setfilename  maxima.info
 @ifnottex
 @documentencoding ISO-8859-1

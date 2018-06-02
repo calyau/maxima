@@ -1,4 +1,4 @@
-\input texinfo @c -*-texinfo-*-
+\input ../texinfo @c -*-texinfo-*-
 @setfilename  maxima.info
 @finalout
 @include include-maxima.texi

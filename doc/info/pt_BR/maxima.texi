@@ -1,4 +1,4 @@
-\input texinfo
+\input ../texinfo
 @c /maxima.texi/1.49/Sat Jun  2 00:13:25 2007/-ko/
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c -*-texinfo-*-
