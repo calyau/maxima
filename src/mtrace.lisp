@@ -326,7 +326,44 @@
 
 (defun trace-fshadow (fun type value)
   (let ((shadow (get! type 'shadow)))
-    (cond ((member shadow '(expr subr) :test #'eq)
+    (cond ((and (eq type 'mexpr)
+		(mget fun 'mfexprp))
+	   ; We're tracing an mexpr with special evaluation rules (mfexpr).
+	   ; Let's put a Maxima lambda expression on the plist that calls
+	   ; the trace hook.  Then in the evaluator we can just have mlambda
+	   ; do the work for us.
+	   ;
+	   ; If there is not a rest argument in the mexpr's lambda list
+	   ; then this newly-constructed lambda expression just does a
+	   ; funcall.  If there is a rest argument then it requires a
+	   ; little more work.
+	   (putprop fun
+		    (let* ((lambda-list (cadr (mget fun 'mexpr)))
+			   (params (mparams lambda-list)))
+		      `((lambda) ,lambda-list
+			 ,(if (mget fun 'mlexprp)
+			      (flet ((call-hook (restarg &rest nonrestargs)
+				       (apply value (append nonrestargs
+							    (cdr restarg)))))
+				; This is the mfexpr+mlexpr case (we have at
+				; least one quoted arg and a rest arg).
+				;
+				; The use of call-hook here is basically like
+				;
+				; `(($apply) ,value
+				;            (($append)
+				;              ((mlist) ,@(butlast params))
+				;              ,(car (last params))))
+				;
+				; but faster.  We just have to construct
+				; things so simplifya doesn't barf on any
+				; intermediate expressions.
+				`((funcall) ,#'call-hook
+					    ,(car (last params))
+					    ,@(butlast params)))
+			      `((funcall) ,value ,@params))))
+		    'mfexpr))
+	  ((member shadow '(expr subr) :test #'eq)
 	   (setf (trace-oldfun fun) (and (fboundp fun) (symbol-function fun)))
 	   (setf (symbol-function fun) value))
 	  (t
@@ -334,7 +371,10 @@
 
 (defun trace-unfshadow (fun type)
   ;; At this point, we know that FUN is traced.
-  (cond ((member type '(expr subr) :test #'eq)
+  (cond ((and (eq type 'mexpr)
+	      (safe-get fun 'mfexpr))
+	 (remprop fun 'mfexpr))
+	((member type '(expr subr) :test #'eq)
 	 (let ((oldf (trace-oldfun fun)))
 	   (if (not (null oldf))
 	       (setf (symbol-function  fun)  oldf)

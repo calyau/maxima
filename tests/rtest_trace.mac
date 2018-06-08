@@ -1,0 +1,314 @@
+/* Tests for Maxima's trace and timer */
+
+(kill (all),
+ 0);
+0;
+
+/* Bug #3247: Maxima's trace and timer handle rules incorrectly */
+
+(kill (r),
+ defrule (r, foo, bar),
+ 0)$
+0;
+
+(trace (r),
+ trace_options (r, noprint),
+ 0)$
+0;
+
+/* This used to return foo */
+apply1 (foo, r);
+'bar;
+
+untrace (r)$
+[r];
+
+timer (r)$
+[r];
+
+/* This also used to return foo */
+apply1 (foo, r);
+'bar;
+
+(untimer (r),
+ kill (r),
+ 0);
+0;
+
+/* Bug #2803: trace/timer do not work for functions with quoted arguments
+ *
+ * Here we test some traced and timed functions that have different
+ * combinations of quoted and rest args.  The timer tests are actually
+ * redundant since trace and timer didn't require separate fixes.
+ */
+
+/* Watch out for extra evaluations */
+([a, b, c, d] : [u, v, w, x],
+ [u, v, w, x] : [1, 2, 3, 4],
+ 0)$
+0;
+
+(f1 ('x) := x,
+ 0);
+0;
+
+(trace (f1),
+ trace_options (f1, noprint),
+ 0);
+0;
+
+f1 (a);
+'a;
+
+f1 (error ());
+'(error ());
+
+(untrace (f1),
+ 0);
+0;
+
+(timer (f1),
+ 0);
+0;
+
+f1 (a);
+'a;
+
+f1 (error ());
+'(error ());
+
+(kill (f1),
+ 0);
+0;
+
+(f2 (['x]) := x,
+ 0);
+0;
+
+(trace (f2),
+ trace_options (f2, noprint),
+ 0);
+0;
+
+f2 ();
+[];
+
+f2 (a, b, c, d);
+['a, 'b, 'c, 'd];
+
+f2 (error (), error (), error (), error ());
+['(error ()), '(error ()), '(error ()), '(error ())];
+
+(untrace (f2),
+ 0);
+0;
+
+(timer (f2),
+ 0);
+0;
+
+f2 ();
+[];
+
+f2 (a, b, c, d);
+['a, 'b, 'c, 'd];
+
+f2 (error (), error (), error (), error ());
+['(error ()), '(error ()), '(error ()), '(error ())];
+
+(kill (f2),
+ 0);
+0;
+
+(f3 ('x, y, z) := [x, y, z],
+ 0);
+0;
+
+(trace (f3),
+ trace_options (f3, noprint),
+ 0);
+0;
+
+f3 (a, b, c);
+['a, 'v, 'w];
+
+f3 (error (), b, c);
+['(error ()), 'v, 'w];
+
+(untrace (f3),
+ 0);
+0;
+
+(timer (f3),
+ 0);
+0;
+
+f3 (a, b, c);
+['a, 'v, 'w];
+
+f3 (error (), b, c);
+['(error ()), 'v, 'w];
+
+(kill (f3),
+ 0);
+0;
+
+(f4 ('x, y, [z]) := [x, y, z],
+ 0);
+0;
+
+(trace (f4),
+ trace_options (f4, noprint),
+ 0);
+0;
+
+f4 (a, b);
+['a, 'v, []];
+
+f4 (a, b, c, d);
+['a, 'v, ['w, 'x]];
+
+f4 (error (), b, c, d);
+['(error ()), 'v, ['w, 'x]];
+
+(untrace (f4),
+ 0);
+0;
+
+(timer (f4),
+ 0);
+0;
+
+f4 (a, b);
+['a, 'v, []];
+
+f4 (a, b, c, d);
+['a, 'v, ['w, 'x]];
+
+f4 (error (), b, c, d);
+['(error ()), 'v, ['w, 'x]];
+
+(kill (f4),
+ 0);
+0;
+
+(f5 (x, 'y, [z]) := [x, y, z],
+ 0);
+0;
+
+(trace (f5),
+ trace_options (f5, noprint),
+ 0);
+0;
+
+f5 (a, b);
+['u, 'b, []];
+
+f5 (a, b, c, d);
+['u, 'b, ['w, 'x]];
+
+f5 (a, error (), c, d);
+['u, '(error ()), ['w, 'x]];
+
+(untrace (f5),
+ 0);
+0;
+
+(timer (f5),
+ 0);
+0;
+
+f5 (a, b);
+['u, 'b, []];
+
+f5 (a, b, c, d);
+['u, 'b, ['w, 'x]];
+
+f5 (a, error (), c, d);
+['u, '(error ()), ['w, 'x]];
+
+(kill (f5),
+ 0);
+0;
+
+(f6 (x, y, ['z]) := [x, y, z],
+ 0);
+0;
+
+(trace (f6),
+ trace_options (f6, noprint),
+ 0);
+0;
+
+f6 (a, b);
+['u, 'v, []];
+
+f6 (a, b, c, d);
+['u, 'v, ['c, 'd]];
+
+f6 (a, b, error (), error ());
+['u, 'v, ['(error ()), '(error ())]];
+
+(untrace (f6),
+ 0);
+0;
+
+(timer (f6),
+ 0);
+0;
+
+f6 (a, b);
+['u, 'v, []];
+
+f6 (a, b, c, d);
+['u, 'v, ['c, 'd]];
+
+f6 (a, b, error (), error ());
+['u, 'v, ['(error ()), '(error ())]];
+
+(kill (f6),
+ 0);
+0;
+
+(f7 ('x, 'y, ['z]) := [x, y, z],
+ 0);
+0;
+
+(trace (f7),
+ trace_options (f7, noprint),
+ 0);
+0;
+
+f7 (a, b);
+['a, 'b, []];
+
+f7 (a, b, c, d);
+['a, 'b, ['c, 'd]];
+
+f7 (error (), error (), error (), error ());
+['(error ()), '(error ()), ['(error ()), '(error ())]];
+
+(untrace (f7),
+ 0);
+0;
+
+(timer (f7),
+ 0);
+0;
+
+f7 (a, b);
+['a, 'b, []];
+
+f7 (a, b, c, d);
+['a, 'b, ['c, 'd]];
+
+f7 (error (), error (), error (), error ());
+['(error ()), '(error ()), ['(error ()), '(error ())]];
+
+(kill (f7),
+ 0);
+0;
+
+(kill (a, b, c, d, u, v, w, x),
+ 0);
+0;

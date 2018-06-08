@@ -714,34 +714,3 @@ true;
 
 f(1);
 i(1);
-
-/* Bug #3247: Maxima's trace and timer handle rules incorrectly */
-
-(kill (r),
- defrule (r, foo, bar),
- 0)$
-0;
-
-(trace (r),
- trace_options (r, noprint),
- 0)$
-0;
-
-/* This used to return foo */
-apply1 (foo, r);
-'bar;
-
-untrace (r)$
-[r];
-
-timer (r)$
-[r];
-
-/* This also used to return foo */
-apply1 (foo, r);
-'bar;
-
-(untimer (r),
- kill (r),
- 0);
-0;
