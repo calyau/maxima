@@ -340,7 +340,7 @@ is EQ to FNNAME if the latter is non-NIL."
                                        (not (safe-mget (caar form) 'local-fun))
                                        (setq transp t)
                                        (caar form))))
-                        (getl-lm-fcn-prop u '(subr)))
+                        (getl-lm-fcn-prop u '(subr mfexpr)))
                    (cond (aryp (safe-mgetl (caar form) '(hashar array)))
                          ((safe-mgetl (caar form) '(mexpr mmacro)))
                          (t
@@ -373,6 +373,8 @@ is EQ to FNNAME if the latter is non-NIL."
                  ((eq (car u) 'mfexpr*)
                   (setq noevalargs nil)
                   (apply (cadr u) (ncons form)))
+                 ((eq (car u) 'mfexpr)
+                  (mlambda (cadr u) (cdr form) (caar form) noevalargs form))
                  ((eq (car u) 'macro)
                   (setq noevalargs nil)
                   (setq form (cons(caar form) (cdr form)))
@@ -422,7 +424,9 @@ is EQ to FNNAME if the latter is non-NIL."
 	((setq fn (symbol-array sym))
 	 (setq typ 'array))
 	((setq fn (get sym 'mfexpr*))
-	 (setq typ 'mfexpr*)))
+	 (setq typ 'mfexpr*))
+	((setq fn (get sym 'mfexpr))
+	 (setq typ 'mfexpr)))
   (and typ (member typ props :test #'eq) (list typ fn)))
 
 
