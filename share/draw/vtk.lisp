@@ -165,8 +165,11 @@
         (if zrange
           (format nil "mib[4]=~a~%mxb[5]=~a~%" (car zrange) (cadr zrange))
           "")))
-    (format nil "~a~%~a~%~a~%~a~%~a~a~%~%"
-      "trb = zip(*bounds)"
+    (format nil "~a~%~a~%~a~%~a~%~a~%~a~%~a~%~a~a~%~%"
+      "if sys.version_info[0] < 3:"
+      "    trb = zip(*bounds)"
+      "else:"
+      "    trb = list(zip(*bounds))"
       "mib = [min(i) for i in trb]"
       "mxb = [max(i) for i in trb]"
       "ranges = vtk.vtkBox()"
@@ -3106,10 +3109,11 @@
       (merror "draw: Cannot create file '~a'. Probably maxima_tempdir doesn't point to a writable directory." gfn))
 
     ;; pull in requiered packages
-    (format cmdstorage "~a~%~a~%~%~a~%~%~a~%~%"
+    (format cmdstorage "~a~%~a~%~%~a~%~a~%~%~a~%~%"
       "#!/usr/bin/env python"
       "# -*- coding: UTF-8 -*-"
       "import vtk"
+      "import sys"
       "bounds=[]")
 
     ;: write scenes
@@ -3126,6 +3130,8 @@
     #+(or windows win32 win64)
     ($system "vtkpython " gfn)
     #-(or windows win32 win64)
-    ($system (format nil "(python \"~a\")&" gfn))
+    (if (member $draw_renderer '($vtk $vtk6))
+      ($system (format nil "(python \"~a\")&" gfn))
+      ($system (format nil "(python3 \"~a\")&" gfn)))
 
     '$done))
