@@ -2984,7 +2984,7 @@
   (simplifya (list '(mabs) e) t))
 
 (defmfun simpmqapply (exp y z)
-  (let ((simpfun (and (not (atom (cadr exp))) (get (caaadr exp) 'specsimp))) u)
+  (let ((simpfun (and (not (atom (cadr exp))) (safe-get (caaadr exp) 'specsimp))) u)
     (if simpfun
 	(funcall simpfun exp y z)
 	(progn (setq u (simpargs exp z))
