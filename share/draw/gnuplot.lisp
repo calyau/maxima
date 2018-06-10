@@ -3330,9 +3330,6 @@
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
-
-
-
         ($x11 (format cmdstorage "if(GPVAL_VERSION >= 5.0){set terminal x11 dashed enhanced ~a ~a size ~a, ~a replotonresize} else {set terminal x11 dashed enhanced ~a ~a size ~a, ~a}~%"
                            *draw-terminal-number*
                            (write-font-type)
