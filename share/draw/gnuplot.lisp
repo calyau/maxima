@@ -1388,7 +1388,7 @@
          (err (* 0.02 (min dx dy)))
          (xarr (make-array (list (1+ nx) (1+ ny)) :element-type 'flonum))
          (yarr (make-array (list (1+ nx) (1+ ny)) :element-type 'flonum))
-         (barr (make-array (list (1+ nx) (1+ ny)) :element-type 'boolean))
+         (barr (make-array (list (1+ nx) (1+ ny)) :initial-element nil :element-type 'boolean))
          (pts '())
          pltcmd grouping x y)
 
@@ -3330,11 +3330,15 @@
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
+
+
+
         ($x11 (format cmdstorage "if(GPVAL_VERSION >= 5.0){set terminal x11 dashed enhanced ~a ~a size ~a, ~a replotonresize} else {set terminal x11 dashed enhanced ~a ~a size ~a, ~a}~%"
                            *draw-terminal-number*
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))
+                           *draw-terminal-number*
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
