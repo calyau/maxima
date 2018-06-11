@@ -38,7 +38,8 @@
 ;; Possible draw renderers:
 ;;      gnuplot_pipes (default)
 ;;      gnuplot
-;;      vtk
+;;      vtk or vtk6
+;;      vtk7
 (defvar $draw_renderer '$gnuplot_pipes)
 
 (defvar $draw_use_pngcairo nil "If true, use pngcairo terminal when png is requested.")
@@ -194,7 +195,7 @@
       (gethash '$wired_surface *gr-options*)     nil
       (gethash '$contour *gr-options*)           '$none ; other options are: $base, $surface, $both and $map
       (gethash '$contour_levels *gr-options*)     5     ; 1-50, [lowest_level,step,highest_level] or {e1,e2,...}
-      (gethash '$isolines_levels *gr-options*)    5     ; 1-50, [lowest_level_fraction,step,highest_level_fraction],
+      (gethash '$isolines_levels *gr-options*)    10    ; 1-50, [lowest_level_fraction,step,highest_level_fraction],
                                                         ; or {e1_fraction,e2_fraction,...}. Only for VTK.
       (gethash '$colorbox *gr-options*)           t       ; in pm3d mode, always show colorbox
       (gethash '$palette  *gr-options*)           '$color ; '$color is a short cut for [7,5,15]
@@ -881,6 +882,7 @@
       (gethash "darkblue" *color-table*) "#00008B" 
       (gethash "darkcyan" *color-table*) "#008B8B" 
       (gethash "darkmagenta" *color-table*) "#8B008B" 
+      (gethash "lightred" *color-table*) "#f03232" 
       (gethash "darkred" *color-table*) "#8B0000" 
       (gethash "lightgreen" *color-table*) "#90EE90")
 
@@ -1150,8 +1152,8 @@
         (setf (gethash '$isolines *gr-options*) model
               *draw-isolines-type* 3
               *draw-isolines-fun* (coerce-float-fun
-                              ($first model)
-                              (list '(mlist) ($second model) ($third model) ($fourth model))))))
+                                    ($first model)
+                                    (list '(mlist) ($second model) ($third model) ($fourth model))))))
     ((and ($listp val)
           ($subsetp ($setify ($listofvars ($first val)))
                     ($setify ($rest val))))
@@ -2176,10 +2178,9 @@
 ;;                            => png file with two plots (2d and 3d) side by side
 ;; See bellow for $draw2d and $draw3d
 (defun $draw (&rest args)
-  (cond ((or (equal $draw_renderer '$gnuplot)
-             (equal $draw_renderer '$gnuplot_pipes))
+  (cond ((member $draw_renderer '($gnuplot $gnuplot_pipes))
            (apply 'draw_gnuplot args))
-        ((equal $draw_renderer '$vtk)
+        ((member $draw_renderer '($vtk $vtk6 $vtk7))
            (apply 'draw_vtk args))
         (t
            (merror "draw: unknown renderer ~M" $draw_renderer))))
@@ -2190,10 +2191,9 @@
 
 ;; Equivalent to draw3d(opt & obj)
 (defun $draw3d (&rest args)
-  (cond ((or (equal $draw_renderer '$gnuplot)
-             (equal $draw_renderer '$gnuplot_pipes))
+  (cond ((member $draw_renderer '($gnuplot $gnuplot_pipes))
            (draw_gnuplot (cons '($gr3d) args)))
-        ((equal $draw_renderer '$vtk)
+        ((member $draw_renderer '($vtk $vtk6 $vtk7))
            (draw_vtk (cons '($gr3d) args)))
         (t
            (merror "draw: unknown renderer ~M" $draw_renderer))))
