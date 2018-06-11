@@ -106,7 +106,8 @@
 (defun $inverse_real_fft (input)
   (multiple-value-bind (ft from-lisp)
       (maxima-fft:find-irfft-converters input)
-    (declare (type (simple-array (complex double-float) (*)) ft))
+    ;; declarations + (SPEED 3) tickles bug: https://bugs.launchpad.net/sbcl/+bug/1776091
+    #-sbcl (declare (type (simple-array (complex double-float) (*)) ft))
     (let* ((n (1- (length ft))))
       (when (< n 2)
 	;; Just use the regular inverse fft to compute these values
@@ -115,13 +116,13 @@
       (let* ((order (maxima-fft:log-base2 n))
 	     (sincos (maxima-fft:sincos-table (1+ order)))
 	     (z (make-array n :element-type '(complex double-float))))
-	(declare (type (simple-array (complex double-float) (*)) sincos))
+	#-sbcl (declare (type (simple-array (complex double-float) (*)) sincos))
 
 	(unless (= n (ash 1 order))
 	  (merror "inverse_real_fft: input length must be one more than a power of two, not ~M" (1+ n)))
 
 	(locally
-	    (declare (optimize (speed 3)))
+	    #+sbcl nil #-sbcl (declare (optimize (speed 3)))
 	  (loop for k from 0 below n
 		do
 		   (let ((evenpart (+ (aref ft k)
