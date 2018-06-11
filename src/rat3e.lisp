@@ -378,6 +378,8 @@
      (when (and ($ratp y) (setq formflag t) (integerp (cadr y)) (equal (cddr y) 1))
        (setq y (cadr y)))
      (when (and (integerp x) (integerp y))
+       (when (zerop y)
+         (merror (intl:gettext "divide: Quotient by zero")))
        (return (cons '(mlist) (multiple-value-list (truncate x y)))))
      (setq varlist vars)
      (mapc #'newvar (reverse (cdr $ratvars)))
