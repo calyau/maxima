@@ -119,11 +119,6 @@ drawdf([x-x*y/2, (x*y - 3*y)/4],
 /* [wxMaxima: input   end   ] */
 
 
-/* [wxMaxima: input   start ] */
-    scene(cone)$
-/* [wxMaxima: input   end   ] */
 
-
-
-/* Maxima can't load/batch files which end with a comment! */
-"Created with wxMaxima"$
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 18.02.0.unofficial"$
