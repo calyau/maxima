@@ -17,3 +17,4 @@ maxima.ky
 *.html
 maxima-index.lisp
 maxima.info-*
+texinfo.tex
