@@ -626,7 +626,7 @@
 	 (cons (car exp) (mapcar #'(lambda (u) ($partfrac u var)) (cdr exp))))
 	((and (atom var) (not (among var exp))) exp)
 	(t (let (($savefactors t) (checkfactors ()) (varlist (list var))
-		 $ratfac $algebraic ratform genvar)
+		 $ratfac $algebraic $keepfloat ratform genvar)
 	     (desetq (ratform . exp) (taychk2rat exp))
 	     (setq var (caadr (ratf var)))
 	     (setq exp (partfrac exp var))

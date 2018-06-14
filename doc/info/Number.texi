@@ -706,6 +706,9 @@ factors of the original denominator) are relatively prime.  The
 numerators can be written as linear combinations of denominators, and
 the expansion falls out.
 
+@code{partfrac} ignores the value @code{true} of the option variable
+@code{keepfloat}.
+
 @example
 (%i1) 1/(1+x)^2 - 2/(1+x) + 2/(2+x);
                       2       2        1
