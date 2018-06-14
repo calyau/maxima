@@ -32,7 +32,7 @@ if test $? -ne 0 ; then
     # so there's no point in leaving the greppable one lying around.
     rm "$OUTPUT_LOG"
     rm "$OUTPUT_SHARE_LOG"
-    exit -1
+    exit 1
 fi;  
 
 grep -q 'No unexpected errors' <"$OUTPUT_SHARE_LOG"
