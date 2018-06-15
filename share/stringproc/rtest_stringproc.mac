@@ -145,6 +145,15 @@ ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD\
 ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD\
 ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD";
 
+/* Bug #3439: Simplode output on empty list */
+
+simplode ([], "");
+""$
+
+/* This used to return the string "false" */
+simplode ([], " ");
+""$
+
 s : "A submarine.";
 "A submarine."$
 sconcat (substring(s, 1, 3), "yellow ", substring(s, 3));

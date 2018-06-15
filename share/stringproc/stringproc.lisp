@@ -931,6 +931,8 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
     (s-error1 "simplode" "optional second") )
   (setq li (cdr li))
   (cond 
+    ((null li)
+      ($sconcat) )
     ((string= ds "")
       (reduce #'$sconcat li) )
     (t
