@@ -154,6 +154,10 @@ simplode ([], "");
 simplode ([], " ");
 ""$
 
+/* This used to return the symbol foo */
+simplode (['foo]);
+"foo"$
+
 s : "A submarine.";
 "A submarine."$
 sconcat (substring(s, 1, 3), "yellow ", substring(s, 3));

@@ -933,6 +933,8 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
   (cond 
     ((null li)
       ($sconcat) )
+    ((null (cdr li))
+      ($sconcat (car li)) )
     ((string= ds "")
       (reduce #'$sconcat li) )
     (t
