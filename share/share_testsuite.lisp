@@ -50,7 +50,7 @@
     "rtest_solve_rec"
 #-(or gcl ecl)    "rtest_stringproc"
 #+gcl    ((mlist simp) "rtest_stringproc" 14)
-#+ecl    ((mlist simp) "rtest_stringproc" 12 66)
+#+ecl    ((mlist simp) "rtest_stringproc" 12 69)
     "rtest_opproperties"
     "rtest_stats"
     "rtest_distrib"
