@@ -1634,7 +1634,7 @@
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: illegal head type for vectors: ~M" val)))
       ($contour ; defined as $none, $base, $surface, $both and $map
-            (if (member val '($base $surface $both $map))
+            (if (member val '($none $base $surface $both $map))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: illegal contour allocation: ~M" val)))
       ($proportional_axes ; defined as $none, $xy and $xyz
