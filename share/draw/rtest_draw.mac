@@ -1,0 +1,90 @@
+/* Define a function that tests if the gnuplot file created by draw contains
+   a set of lines.
+*/
+(
+    file_name_base:sconcat("test_",random(10^10)),
+    file_name_svg:sconcat(maxima_tempdir,"/",file_name_base),
+    file_name_gnuplot:sconcat(file_name_base,".gnuplot"),
+    gnuplot_contains([x]):=block(
+        [
+            infile:openr(sconcat(maxima_tempdir,"/",file_name_gnuplot)),
+            line,
+            lines:[]
+        ],
+        while(stringp(line:readline(infile))) do
+            push(line,lines),
+        return (emptyp(
+                setdifference(
+                    setify(x),
+                    setify(lines)
+                )
+            )
+        )
+    ),
+    0
+);
+0$
+
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    explicit(sin(x),x,1,10)
+),0);
+0$
+gnuplot_contains("set title ''");
+true$
+
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    title="Test",
+    explicit(sin(x),x,1,10)
+),0);
+0$
+gnuplot_contains("set title 'Test'");
+true$
+
+(draw3d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    contour='none,
+    explicit(sin(x*y),x,1,10,y,1,10)
+),0);
+0$
+
+(draw3d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    contour='base,
+    explicit(sin(x*y),x,1,10,y,1,10)
+),0);
+0$
+gnuplot_contains("set contour base;set cntrparam levels 5");
+true$
+
+(draw3d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    contour='both,
+    explicit(sin(x*y),x,1,10,y,1,10)
+),0);
+0$
+gnuplot_contains("set contour both;set cntrparam levels 5");
+true$
+
+(draw3d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    contour='surface,
+    explicit(sin(x*y),x,1,10,y,1,10)
+),0);
+0$
+gnuplot_contains("set contour surface;set cntrparam levels 5");
+true$
+
+(draw3d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    contour='map,
+    explicit(sin(x*y),x,1,10,y,1,10)
+),0);
+0$
+gnuplot_contains("set contour base","unset surface");
+true$
+
+/* Clean up */
+kill(file_name_base, file_name_svg, file_name_gnuplot, file_name_svg, gnuplot_contains);
+done$
