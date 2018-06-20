@@ -118,8 +118,8 @@ topology.mac (topology of curves)
 certificateOfPositivity.mac (univariate certificate of positivity)
 multiCertificateOfPositivity.mac (multivariate certificate of positivity)
 
-arag_test.mac (test file for "Alg. in Real Alg. Geom.")
-hard_test.mac (heavy test files with mostly topology computations)
+rtest_arag.mac (test file for "Alg. in Real Alg. Geom.")
+rtest_arag_hard.mac (heavy test files with mostly topology computations)
 other_test.mac (test of functions not included in the book)
 
 readme.txt (this manual)
@@ -135,9 +135,9 @@ load("./saragcur/saragcur.mac").
 
 
 In order to test the library use:
-batch(<path>/arag_test.mac,test);
+batch(<path>/rtest_arag.mac,test);
 and
-batch(<path>/hard_test.mac,test);
+batch(<path>/rtest_arag_hard.mac,test);
 and
 batch(<path>/other_test.mac,test);
 

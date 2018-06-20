@@ -66,19 +66,19 @@
     "rtest_itensor"
     ((mlist simp) "rtest_fourier_elim" 146 147 148 149)
     ((mlist simp) "rtest_sequence" 55)
-    "test-cholesky"
-    "test-eigens-by-jacobi"
-    "test-lu"
-    "test-linalg"
-    "test-polynomialp"
-    "test-matrixexp"
+    "rtest_cholesky"
+    "rtest_eigens_by_jacobi"
+    "rtest_lu"
+    "rtest_linalg"
+    "rtest_polynomialp"
+    "rtest_matrixexp"
     ((mlist simp) "rtest_romberg" 18 20)
     "rtest_wilcoxon"
     "rtest_bitwise"
-    "gf_test"
+    "rtest_gf"
 #+(or clisp sbcl)    ((mlist simp) "rtest_namespaces" 7)
 #-(or clisp sbcl)    "rtest_namespaces"
-    "arag_test"
+    "rtest_arag"
 #-ecl ((mlist simp) "rtest_pdiff" 62)
 #+ecl ((mlist simp) "rtest_pdiff" 38 61 62 63 65 69)
     ((mlist simp) "rtest_to_poly" 13 14 15 16 17 18 19 20 25)

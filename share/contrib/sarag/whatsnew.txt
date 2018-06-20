@@ -1,3 +1,8 @@
+After SARAG 1.3
+
+In order to enforce naming rules the following changes were made:
+1.) arag_test.mac was renamed to rtest_arag.mac
+2.) hard_test.mac was renamed to rtest_arag_hard.mac
 
 SARAG 1.3
 
