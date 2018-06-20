@@ -3034,11 +3034,11 @@
                   (second (get-option '$cbrange)) )
                (format nil "set cbrange [*:*]~%") )
             (case (get-option '$contour)
-               ($surface (format nil "set contour surface;set cntrparam levels ~a~%"
+               ($surface (format nil "set contour surface~%set cntrparam levels ~a~%"
                                       (get-option '$contour_levels) ))
-               ($base    (format nil "set contour base;set cntrparam levels ~a~%"
+               ($base    (format nil "set contour base~%set cntrparam levels ~a~%"
                                       (get-option '$contour_levels) ))
-               ($both    (format nil "set contour both;set cntrparam levels ~a~%"
+               ($both    (format nil "set contour both~%set cntrparam levels ~a~%"
                                       (get-option '$contour_levels) ))
                ($map     (format nil "set contour base~%unset surface~%set cntrparam levels ~a~%"
                                       (get-option '$contour_levels))) )

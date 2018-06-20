@@ -55,7 +55,7 @@ true$
     explicit(sin(x*y),x,1,10,y,1,10)
 ),0);
 0$
-gnuplot_contains("set contour base;set cntrparam levels 5");
+gnuplot_contains("set contour base");
 true$
 
 (draw3d(
@@ -64,7 +64,7 @@ true$
     explicit(sin(x*y),x,1,10,y,1,10)
 ),0);
 0$
-gnuplot_contains("set contour both;set cntrparam levels 5");
+gnuplot_contains("set contour both");
 true$
 
 (draw3d(
@@ -73,7 +73,7 @@ true$
     explicit(sin(x*y),x,1,10,y,1,10)
 ),0);
 0$
-gnuplot_contains("set contour surface;set cntrparam levels 5");
+gnuplot_contains("set contour surface");
 true$
 
 (draw3d(
