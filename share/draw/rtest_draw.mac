@@ -85,6 +85,62 @@ true$
 gnuplot_contains("set contour base","unset surface");
 true$
 
+(draw3d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    axis_3d=false,
+    explicit(sin(x*y),x,1,10,y,1,10)
+),0);
+0$
+gnuplot_contains("unset xtics", "unset ytics", "unset ztics", "set border 0");
+true$
+(draw3d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    axis_3d=true,
+    explicit(sin(x*y),x,1,10,y,1,10)
+),0);
+0$
+gnuplot_contains("unset xtics");
+false$
+gnuplot_contains("unset ytics");
+false$
+gnuplot_contains("unset ztics");
+false$
+gnuplot_contains("set border 0");
+false$
+
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    axis_bottom = false,
+    explicit(sin(x),x,1,10)
+),0);
+0$
+gnuplot_contains("set border 14");
+true$
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    axis_top = false,
+    explicit(sin(x),x,1,10)
+),0);
+0$
+gnuplot_contains("set border 11");
+true$
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    axis_left = false,
+    explicit(sin(x),x,1,10)
+),0);
+0$
+gnuplot_contains("set border 13");
+true$
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    axis_right = false,
+    explicit(sin(x),x,1,10)
+),0);
+0$
+gnuplot_contains("set border 7");
+true$
+
 /* Clean up */
 kill(file_name_base, file_name_svg, file_name_gnuplot, file_name_svg, gnuplot_contains);
 done$
