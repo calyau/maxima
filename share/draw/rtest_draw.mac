@@ -9,17 +9,19 @@
         [
             infile:openr(sconcat(maxima_tempdir,"/",file_name_gnuplot)),
             line,
+	    retval,
             lines:[]
         ],
         while(stringp(line:readline(infile))) do
             push(line,lines),
-        return (emptyp(
-                setdifference(
-                    setify(x),
-                    setify(lines)
-                )
+        retval:emptyp(
+            setdifference(
+                setify(x),
+                setify(lines)
             )
-        )
+        ),
+	close(infile),
+	return(retval)
     ),
     /* Define a function that tests if the gnuplot file created by draw contains
        a string.
@@ -31,6 +33,7 @@
         ],
         while(stringp(line:readline(infile))) do
             if numberp(ssearch(x,line)) then retval:true,
+	close(infile),
 	return(retval)
     ),
     0
