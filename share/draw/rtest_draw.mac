@@ -1,10 +1,10 @@
-/* Define a function that tests if the gnuplot file created by draw contains
-   a set of lines.
-*/
 (
     file_name_base:sconcat("test_",random(10^10)),
     file_name_svg:sconcat(maxima_tempdir,"/",file_name_base),
     file_name_gnuplot:sconcat(file_name_base,".gnuplot"),
+    /* Define a function that tests if the gnuplot file created by draw contains
+       a set of lines.
+       */
     gnuplot_contains([x]):=block(
         [
             infile:openr(sconcat(maxima_tempdir,"/",file_name_gnuplot)),
@@ -20,6 +20,18 @@
                 )
             )
         )
+    ),
+    /* Define a function that tests if the gnuplot file created by draw contains
+       a string.
+       */
+    gnuplot_contains_string(x):=block(
+        [
+            infile:openr(sconcat(maxima_tempdir,"/",file_name_gnuplot)),
+            line,retval:false
+        ],
+        while(stringp(line:readline(infile))) do
+            if numberp(ssearch(x,line)) then retval:true,
+	return(retval)
     ),
     0
 );
@@ -141,6 +153,38 @@ true$
 gnuplot_contains("set border 7");
 true$
 
+
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    border = true, transparent = true,
+    polygon([[3,2],[7,2],[5,5]])
+),0);
+0$
+gnuplot_contains_string("lt ");
+true$
+gnuplot_contains_string("filledcurves ");
+false$
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    border = false, transparent = false,
+    polygon([[3,2],[7,2],[5,5]])
+),0);
+0$
+gnuplot_contains_string("lt ");
+false$
+gnuplot_contains_string("filledcurves ");
+true$
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    border = true, transparent = false,
+    polygon([[3,2],[7,2],[5,5]])
+),0);
+0$
+gnuplot_contains_string("lt ");
+true$
+gnuplot_contains_string("filledcurves ");
+true$
+
 /* Clean up */
-kill(file_name_base, file_name_svg, file_name_gnuplot, file_name_svg, gnuplot_contains);
+kill(file_name_base, file_name_svg, file_name_gnuplot, file_name_svg, gnuplot_contains, gnuplot_contains_string);
 done$
