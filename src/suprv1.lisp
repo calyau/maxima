@@ -768,11 +768,22 @@
 	c)))
 
 (defmspec $errcatch (form)
-  (let ((errcatch (cons bindlist loclist)) ret)
-    (if (null (setq ret (let (*mdebug*)
-			  (errset (rat-error-to-merror (mevaln (cdr form))) lisperrprint))))
-	(errlfun1 errcatch))
-    (cons '(mlist) ret)))
+  (let ((errcatch (cons bindlist loclist))
+        (*mdebug* nil))
+    (handler-case (list '(mlist) (rat-error-to-merror (mevaln (cdr form))))
+      (maxima-$error ()
+        ; merror already set the error variable and printed the error
+        ; message if errormsg is true, so we just need to clean up.
+        (errlfun1 errcatch)
+        (list '(mlist simp)))
+      (error (e)
+        ; We store the error report message in the error variable and
+        ; print the message if errormsg is true.  Then we clean up.
+        (setq $error (list '(mlist simp) (princ-to-string e)))
+        (when $errormsg
+          ($errormsg))
+        (errlfun1 errcatch)
+        (list '(mlist simp))))))
 
 (defmspec $catch (form)
   (let ((mcatch (cons bindlist loclist)))
