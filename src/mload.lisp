@@ -312,7 +312,8 @@
 		(progn
 		  (setq test-start-run-time (get-internal-run-time))
 		  (setq test-start-real-time (get-internal-real-time))
-		  (setq result (meval* `(($errcatch) ,(third expr))))
+		  (let (($errormsg t))
+		    (setq result (meval* `(($errcatch) ,(third expr)))))
 		  (setq result (if ($emptyp result) 'error-catch (second result)))
 		  (setq test-end-run-time (get-internal-run-time))
 		  (setq test-end-real-time (get-internal-real-time))
