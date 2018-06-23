@@ -36,7 +36,13 @@
 
 (macsyma-module f90)
 
-(defvar *f90-output-line-length-max* 65.)
+(defmvar *f90-output-line-length-max* 65.)
+
+(defvar $f90_output_line_length_max *f90-output-line-length-max*)
+
+(progn
+  (putprop '$f90_output_line_length_max '*f90-output-line-length-max* 'alias)
+  (putprop '*f90-output-line-length-max* '$f90_output_line_length_max 'reversealias))
 
 (defun f90-print (x
 		  &aux

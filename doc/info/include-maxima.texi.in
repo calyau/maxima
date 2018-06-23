@@ -477,7 +477,7 @@ ezunits
 * Functions and Variables for ezunits::
 
 f90
-* Functions and Variables for f90::
+* Package f90::
 
 finance
 * Introduction to finance::
