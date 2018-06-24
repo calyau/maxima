@@ -26,8 +26,9 @@
         ((mlist simp) "rtest10" 24 25)
         ((mlist) "rtest11" #+(or gcl cmucl ccl64) 158 #+(or gcl cmucl ccl64) 174 #+gcl 175)
         "rtest13" "rtest13s"
-#-ecl   "rtest14"
-#+ecl   ((mlist simp) "rtest14" 201 233 234 249 250 251 252 267 297 298 307 310 312 315 319)
+	"rtest14"
+;;#-ecl   "rtest14"
+;;#+ecl   ((mlist simp) "rtest14" 201 233 234 249 250 251 252 267 297 298 307 310 312 315 319)
         "rtest15"
 	;; ccl versions 1.11 and earlier fail test 50.  Mark it as a
 	;; known failure.  Presumably 1.12 will have this fixed.
