@@ -178,9 +178,10 @@ berlekamp_massey(seq) := block([x, m, r,r0,r1, v,v0,v1, q, h, d, p],
 
 
 
-/* ricerca binaria in una lista ordinata crescente - complessità massima ?integer\-length(length(list)) accessi           */
-/* l'allocazione di liste non è ancora abbastanza efficiente da permettere un'implementazione parziale di un crivello ... */
-/* comunque può essere utilizzata per accelerare il gf_ind originario                                                     */
+/* Binary search in a sorted [by rising values] binary list, still using
+   ?integer\-length(length(list)) for accessing list elements and therefore 
+   less efficient than it could be but still utilizabile for speeding up
+   the original gf_ind  */
 binsearch(elem, list) := block([l:length(list), l2, pos, k:1, check],
    l2 : ?integer\-length(l) - 1, 
    pos : ?ash(2, l2 - 1),
