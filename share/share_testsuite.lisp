@@ -76,8 +76,8 @@
     "rtest_wilcoxon"
     "rtest_bitwise"
     "rtest_gf"
-#+(or clisp sbcl)    ((mlist simp) "rtest_namespaces" 7)
-#-(or clisp sbcl)    "rtest_namespaces"
+#+(or clisp sbcl ccl)    ((mlist simp) "rtest_namespaces" 7)
+#-(or clisp sbcl ccl)    "rtest_namespaces"
     "rtest_arag"
 #-ecl ((mlist simp) "rtest_pdiff" 62)
 #+ecl ((mlist simp) "rtest_pdiff" 38 61 62 63 65 69)
@@ -86,7 +86,8 @@
 #+clisp             ((mlist simp) "rtestprintf" 27 38 61 63 65 69)
 #+gcl               ((mlist simp) "rtestprintf" 7 29 38 39 40 47 48 61 63 65 69 70)
 #+abcl              ((mlist simp) "rtestprintf" 40)
-#-(or clisp gcl ecl abcl)    ((mlist simp) "rtestprintf" 38 61 63 65 69)
+#+ccl              ((mlist simp) "rtestprintf" 27)
+#-(or clisp gcl ecl abcl ccl)    ((mlist simp) "rtestprintf" 38 61 63 65 69)
     "rtest_simplex"
     "rtest_graphs"
     ((mlist simp) "rtest_abs_integrate" 66 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 123 125 126 127 164 178)
