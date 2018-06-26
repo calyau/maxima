@@ -343,7 +343,7 @@
 			  (float (/ (- test-end-real-time test-start-real-time)
 				    internal-time-units-per-second)))))
 	      (cond ((and correct expected-error)
-		     (format t (intl:gettext "~%... Which was correct, but was expected to be wrong due to a known bug in~% Maxima.~%")))
+		     (format t (intl:gettext "~%... Which was correct, but was expected to be wrong due to a known bug in~% Maxima or in the Lisp it was compiled with.~%")))
 		    (correct
 		     (if show-all (format t (intl:gettext "~%... Which was correct.~%"))))
 		    ((and (not correct) expected-error)
