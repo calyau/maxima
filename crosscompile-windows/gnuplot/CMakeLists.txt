@@ -30,4 +30,4 @@ externalproject_add(gnuplot
   BUILD_COMMAND ""
   INSTALL_COMMAND ""
 )
-install(DIRECTORY ${CMAKE_BINARY_DIR}/gnuplot/gnuplot-prefix/src/gnuplot/ DESTINATION gnuplot)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/gnuplot/gnuplot-prefix/src/gnuplot/ DESTINATION gnuplot COMPONENT Gnuplot)

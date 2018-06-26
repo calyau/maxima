@@ -80,6 +80,17 @@ this installer (and uninstaller) understands the command line switch
 To select a installation directory for a unattended installation, use
 "/D=directory", e.g. to install to C:\maxima the command would be:
 maxima-clisp-sbcl-VERSION-win32.exe /S /D=C:\maxima
+This parameter must be the last one.
+
+The installer supports components, you can deselect (by default a full
+installation is done) some parts either during the installation process
+or using the command line switches:
+- VTK using the command line option /no_vtk
+- Gnuplot using /no_gnuplot (installation is strongly recommended!)
+- wxMaxima using /no_wxmaxima (installation is strongly recommended!)
+
+These switches are mainly useful for an unattended installation.
+
 
 Testing the installed package:
 ==============================

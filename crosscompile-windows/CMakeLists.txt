@@ -39,7 +39,28 @@ message(STATUS "Host system: ${HOST}")
 
 
 file(READ ${CMAKE_ROOT}/Modules/NSIS.template.in MYNSISTEMPLATE)
-string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel user" MYNSISTEMPLATE "${MYNSISTEMPLATE}")
+string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel user
+!include \"${CMAKE_SOURCE_DIR}\\\\\\\\FileAssociation.nsh\"
+!include FileFunc.nsh
+!include LogicLib.nsh
+" MYNSISTEMPLATE "${MYNSISTEMPLATE}")
+
+string(REPLACE "Function .onInit" "
+Function .onInit
+\${GetParameters} \$0
+\${GetOptions} \$0 \"/no_vtk\" \$1
+\${IfNot} \${Errors}
+    !insertmacro UnselectSection \${vtk}
+\${EndIf}
+\${GetOptions} \$0 \"/no_gnuplot\" \$1
+\${IfNot} \${Errors}
+    !insertmacro UnselectSection \${gnuplot}
+\${EndIf}
+\${GetOptions} \$0 \"/no_wxmaxima\" \$1
+\${IfNot} \${Errors}
+    !insertmacro UnselectSection \${wxmaxima}
+\${EndIf}
+" MYNSISTEMPLATE "${MYNSISTEMPLATE}")
 file(WRITE ${CMAKE_BINARY_DIR}/NSIS.template.in "${MYNSISTEMPLATE}")
 message(STATUS "Copied and patched ${CMAKE_ROOT}/Modules/NSIS.template.in to ${CMAKE_BINARY_DIR}/NSIS.template.in")
 
@@ -49,6 +70,7 @@ option(USE_VTK "Use VTK." YES)
 # it builds the current Maxima/wxMaxima Git versions and also
 # sets the installation directory to ${WINDOWS_DRIVELETTER}:\maxima-current
 option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
+
 
 
 
@@ -119,7 +141,7 @@ externalproject_add(clisp
   BUILD_COMMAND ""
   INSTALL_COMMAND ""
 )
-install(DIRECTORY ${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp/ DESTINATION clisp-${CLISPVERSION})
+install(DIRECTORY ${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp/ DESTINATION clisp-${CLISPVERSION} COMPONENT Clisp)
 
 add_subdirectory("sbcl/")
 
@@ -138,7 +160,6 @@ set(CLISPROOT "${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp")
 configure_file("${CMAKE_SOURCE_DIR}/wine-clisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-clisp.sh")
 configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-lisp.sh")
 configure_file("${CMAKE_SOURCE_DIR}/wine-sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-sbcl.sh")
-
 
 externalproject_add(maxima
   # first copy the maxima source to a build directory, since out-of-source-builds do not work
@@ -161,29 +182,29 @@ add_library(winkill_lib SHARED ${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/w
 add_executable(winkill ${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/winkill.c)
 set_target_properties(winkill_lib PROPERTIES PREFIX "") # remove 'lib' prefix from libwinkill_lib.dll
 target_link_libraries(winkill winkill_lib)
-install(TARGETS winkill winkill_lib RUNTIME DESTINATION bin LIBRARY DESTINATION bin)
-install(FILES "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/win_signals.lisp" DESTINATION bin/)
+install(TARGETS winkill winkill_lib COMPONENT Maxima RUNTIME DESTINATION bin LIBRARY DESTINATION bin/)
+install(FILES "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/win_signals.lisp" DESTINATION bin/ COMPONENT Maxima)
 
 # convert windows short names to long names (e.g.
 # "C:/Users/TESTTE~1/AppData/Local/Temp" to "C:/Users/test test/AppData/Local/Temp")
 # CLISP can (currently not handle short names.
 add_executable(maxima_longnames maxima_longnames.c)
-install(FILES "${CMAKE_BINARY_DIR}/maxima_longnames.exe" DESTINATION bin/)
+install(FILES "${CMAKE_BINARY_DIR}/maxima_longnames.exe" DESTINATION bin/ COMPONENT Maxima)
 
 
-install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/ DESTINATION .)
-install(FILES "${CMAKE_SOURCE_DIR}/xmaxima.bat" DESTINATION bin/)
-install(FILES "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima/doc/info/maxima.pdf" DESTINATION share/doc/)
-install(FILES "${CMAKE_SOURCE_DIR}/lispselector.tcl" DESTINATION bin/)
-install(FILES "${CMAKE_SOURCE_DIR}/lispselector.bat" DESTINATION bin/)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/ DESTINATION . COMPONENT Maxima)
+install(FILES "${CMAKE_SOURCE_DIR}/xmaxima.bat" DESTINATION bin/ COMPONENT Maxima)
+install(FILES "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima/doc/info/maxima.pdf" DESTINATION share/doc/ COMPONENT Maxima)
+install(FILES "${CMAKE_SOURCE_DIR}/lispselector.tcl" DESTINATION bin/ COMPONENT Maxima)
+install(FILES "${CMAKE_SOURCE_DIR}/lispselector.bat" DESTINATION bin/ COMPONENT Maxima)
 
 
 
 # Include DLLs from the current Mingw environment.
-install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION wxMaxima/)
-install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION bin/)
+install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION wxMaxima/ COMPONENT wxMaxima)
+install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION bin/ COMPONENT Maxima)
 
-install(FILES "licenses.html" DESTINATION share/doc/)
+install(FILES "licenses.html" DESTINATION share/doc/ COMPONENT Maxima)
 
 
 set(CPACK_GENERATOR "NSIS;ZIP")
@@ -204,22 +225,43 @@ set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.
 set(CPACK_PACKAGE_FILE_NAME "maxima-clisp-sbcl-${CPACK_PACKAGE_VERSION}-${INSTALLERSUFFIX}")
 set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
 
-# File associations:
-set(CPACK_NSIS_DEFINES "!include ${CMAKE_SOURCE_DIR}\\\\FileAssociation.nsh")
-set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-\\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima.exe\\\" \\\".wxm\\\" \\\"wxMaxima Document\\\"
-\\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima.exe\\\" \\\".wxmx\\\" \\\"wxMaxima XML Document\\\"
-\\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima.exe\\\" \\\".mac\\\" \\\"Maxima Batch file\\\"
-WriteRegStr HKCR \\\".wxmx\\\\ShellNew\\\" \\\"NullFile\\\" \\\"\\\"
-")
-set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
-\\\${unregisterExtension} \\\".wxm\\\" \\\"wxMaxima Document\\\"
-\\\${unregisterExtension} \\\".wxmx\\\" \\\"wxMaxima XML Document\\\"
-\\\${unregisterExtension} \\\".mac\\\" \\\"Maxima Batch File\\\"
-DeleteRegKey HKCR \\\".wxmx\\\\ShellNew\\\"
-")
-
+if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "wxMaxima")
+    #File associations:
+    set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+    \\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima.exe\\\" \\\".wxm\\\" \\\"wxMaxima Document\\\"
+    \\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima.exe\\\" \\\".wxmx\\\" \\\"wxMaxima XML Document\\\"
+    \\\${registerExtension} \\\"\\\$INSTDIR\\\\wxMaxima\\\\wxmaxima.exe\\\" \\\".mac\\\" \\\"Maxima Batch file\\\"
+    WriteRegStr HKCR \\\".wxmx\\\\ShellNew\\\" \\\"NullFile\\\" \\\"\\\"
+    ")
+    set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
+    \\\${unregisterExtension} \\\".wxm\\\" \\\"wxMaxima Document\\\"
+    \\\${unregisterExtension} \\\".wxmx\\\" \\\"wxMaxima XML Document\\\"
+    \\\${unregisterExtension} \\\".mac\\\" \\\"Maxima Batch File\\\"
+    DeleteRegKey HKCR \\\".wxmx\\\\ShellNew\\\"
+    ")
+endif()
 
 set(CPACK_NSIS_INSTALLER_MUI_ICON_CODE "
   !define MUI_WELCOMEFINISHPAGE_BITMAP \\\"${CMAKE_SOURCE_DIR}/maxima-installerimage.bmp\\\"")
 include(CPack)
+
+cpack_add_component(Maxima
+                    DESCRIPTION "The Maxima computer algebra system.\nRequired."
+                    REQUIRED)
+
+cpack_add_component(VTK
+                    DESCRIPTION "VTK is an advanced graphic toolkit for draw().")
+
+cpack_add_component(Gnuplot
+                    DESCRIPTION "Gnuplot is the main graphic toolkit.\nInstallation is strongly recommended.")
+
+cpack_add_component(wxMaxima
+                    DESCRIPTION "wxMaxima is an advanced GUI for Maxima.\nInstallation is strongly recommended.")
+
+cpack_add_component(Clisp
+                    DESCRIPTION "The CLISP Lisp compiler.\nRequired."
+                    REQUIRED)
+
+cpack_add_component(SBCL
+                    DESCRIPTION "The SBCL Lisp compiler.\nRequired."
+                    REQUIRED)
