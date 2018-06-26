@@ -1083,19 +1083,23 @@
            (not ($listp arg2))
            (not (= ($length arg2) 2)))
        (merror "draw (vector): coordinates are not correct"))
-   (let* ((x ($float (cadr arg1)))
-          (y ($float (caddr arg1)))
-          (dx ($float (cadr arg2)))
-          (dy ($float (caddr arg2)))
-          xdx ydy)
+   (let ((xo ($float (cadr arg1)))
+         (yo ($float (caddr arg1)))
+         (dx ($float (cadr arg2)))
+         (dy ($float (caddr arg2)))
+         xdx ydy x y)
       (when (and (get-option '$unit_vectors)
                  (or (/= dx 0) (/= dy 0)))
          (let ((module (sqrt (+ (* dx dx) (* dy dy)))))
             (setf dx (/ dx module)
-                  dy (/ dy module)  )))
-      (setf xdx ($float (+ x dx))
-            ydy ($float (+ y dy)))
-      (update-ranges-2d (min x xdx) (max x xdx) (min y ydy) (max y ydy))
+                  dy (/ dy module) )))
+      (setf xdx ($float (+ xo dx))
+            ydy ($float (+ yo dy)))
+      ;; apply geometric transformation before plotting
+      (setf x (list xo xdx)
+            y (list yo ydy))
+      (transform-lists 2)
+      (update-ranges-2d (apply 'min x) (apply 'max x) (apply 'min y) (apply 'max y))
       (make-gr-object
          :name 'vector
          :command (format nil " ~a w vect ~a size ~a, ~a ~a lw ~a lt ~a lc ~a axis ~a"
@@ -1113,7 +1117,10 @@
                               (axes-to-plot) )
          :groups '((4 0))
          :points `(,(make-array 4 :element-type 'flonum
-                                  :initial-contents (list x y dx dy))) ) ))
+                                  :initial-contents (list (car x)
+                                                          (car y)
+                                                          (- (cadr x) (car x))
+                                                          (- (cadr y) (car y))))) ) ))
 
 
 
@@ -1140,23 +1147,28 @@
            (not ($listp arg2))
            (not (= ($length arg2) 3)))
        (merror "draw (vector): coordinates are not correct"))
-   (let* ((x ($float (cadr arg1)))
-          (y ($float (caddr arg1)))
-          (z ($float (cadddr arg1)))
-          (dx ($float (cadr arg2)))
-          (dy ($float (caddr arg2)))
-          (dz ($float (cadddr arg2)))
-          xdx ydy zdz )
+   (let ((xo ($float (cadr arg1)))
+         (yo ($float (caddr arg1)))
+         (zo ($float (cadddr arg1)))
+         (dx ($float (cadr arg2)))
+         (dy ($float (caddr arg2)))
+         (dz ($float (cadddr arg2)))
+         xdx ydy zdz x y z)
       (when (and (get-option '$unit_vectors)
                  (or (/= dx 0) (/= dy 0) (/= dz 0)))
          (let ((module (sqrt (+ (* dx dx) (* dy dy) (* dz dz)))))
             (setf dx (/ dx module)
                   dy (/ dy module)
                   dz (/ dz module)  )))
-      (setf xdx ($float (+ x dx))
-            ydy ($float (+ y dy))
-            zdz ($float (+ z dz)) )
-      (update-ranges-3d (min x xdx) (max x xdx) (min y ydy) (max y ydy) (min z zdz) (max z zdz))
+      (setf xdx ($float (+ xo dx))
+            ydy ($float (+ yo dy))
+            zdz ($float (+ zo dz)) )
+      ;; apply geometric transformation before plotting
+      (setf x (list xo xdx)
+            y (list yo ydy)
+            z (list zo zdz))
+      (transform-lists 3)
+      (update-ranges-3d (apply 'min x) (apply 'max x) (apply 'min y) (apply 'max y) (apply 'min z) (apply 'max z))
       (make-gr-object
          :name 'vector
          :command (format nil " ~a w vect ~a size ~a, ~a ~a lw ~a lt ~a lc ~a"
@@ -1173,7 +1185,12 @@
                               (hex-to-rgb (get-option '$color)) )
          :groups '((6 0))
          :points `(,(make-array 6 :element-type 'flonum
-                                  :initial-contents (list x y z dx dy dz))) ) ))
+                                  :initial-contents (list (car x)
+                                                          (car y)
+                                                          (car z)
+                                                          (- (cadr x) (car x))
+                                                          (- (cadr y) (car y))
+                                                          (- (cadr z) (car z))))) ) ))
 
 
 
