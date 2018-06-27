@@ -76,8 +76,8 @@
     "rtest_wilcoxon"
     "rtest_bitwise"
     "rtest_gf"
-#+(or clisp sbcl ccl)    ((mlist simp) "rtest_namespaces" 7)
-#-(or clisp sbcl ccl)    "rtest_namespaces"
+#+(or clisp sbcl ccl cmucl)    ((mlist simp) "rtest_namespaces" 7)
+#-(or clisp sbcl ccl cmucl)    "rtest_namespaces"
     "rtest_arag"
 #-ecl ((mlist simp) "rtest_pdiff" 62)
 #+ecl ((mlist simp) "rtest_pdiff" 38 61 62 63 65 69)
