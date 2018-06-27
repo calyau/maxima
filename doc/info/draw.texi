@@ -1162,9 +1162,6 @@ This option affects objects @mref{explicit} and @mref{parametric} in 2D and 3D, 
 @mrefdot{parametric_surface}
 
 Example:
-
-Option @code{draw_realpart} affects objects @mref{explicit} and @mrefdot{parametric}
-
 @example
 (%i1) draw2d(
         draw_realpart = false,
