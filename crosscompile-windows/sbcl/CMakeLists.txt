@@ -38,6 +38,6 @@ ExternalProject_Add_Step(sbcl extract
   DEPENDERS patch
 )
 
-install(FILES ${CMAKE_BINARY_DIR}/sbcl/sbcl.exe ${CMAKE_BINARY_DIR}/sbcl/sbcl.core DESTINATION bin)
-install(DIRECTORY ${CMAKE_BINARY_DIR}/sbcl/contrib DESTINATION bin)
+install(FILES ${CMAKE_BINARY_DIR}/sbcl/sbcl.exe ${CMAKE_BINARY_DIR}/sbcl/sbcl.core DESTINATION bin COMPONENT SBCL)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/sbcl/contrib DESTINATION bin COMPONENT SBCL)
 
