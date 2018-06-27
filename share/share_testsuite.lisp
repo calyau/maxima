@@ -113,7 +113,7 @@
 #-gcl    "rtest_decfp"
 #+gcl    ((mlist simp) "rtest_decfp" 1 2 3 4)
     "rtest_wrstcse"
-    "rtest_draw"
+#-ecl    "rtest_draw"
 #-(or sbcl ccl)    "rtest_engineering_format"
 #+sbcl    ((mlist simp) "rtest_engineering_format" 6)
 #+ccl    ((mlist simp) "rtest_engineering_format" 6 8 10 12)
