@@ -79,14 +79,15 @@
 #+(or clisp sbcl ccl cmucl)    ((mlist simp) "rtest_namespaces" 7)
 #-(or clisp sbcl ccl cmucl)    "rtest_namespaces"
     "rtest_arag"
-#-ecl ((mlist simp) "rtest_pdiff" 62)
+#-(or ccl ecl) ((mlist simp) "rtest_pdiff" 62)
+#+ccl "rtest_pdiff"
 #+ecl ((mlist simp) "rtest_pdiff" 38 61 62 63 65 69)
     ((mlist simp) "rtest_to_poly" 13 14 15 16 17 18 19 20 25)
 #+ecl               ((mlist simp) "rtestprintf" 38 54 61 63 65 66 69 70)
 #+clisp             ((mlist simp) "rtestprintf" 27 38 61 63 65 69)
 #+gcl               ((mlist simp) "rtestprintf" 7 29 38 39 40 47 48 61 63 65 69 70)
 #+abcl              ((mlist simp) "rtestprintf" 40)
-#+ccl              ((mlist simp) "rtestprintf" 27)
+#+ccl              ((mlist simp) "rtestprintf" 27 61)
 #-(or clisp gcl ecl abcl ccl)    ((mlist simp) "rtestprintf" 38 61 63 65 69)
     "rtest_simplex"
     "rtest_graphs"
@@ -113,7 +114,8 @@
 #+gcl    ((mlist simp) "rtest_decfp" 1 2 3 4)
     "rtest_wrstcse"
     "rtest_draw"
-#-sbcl    "rtest_engineering_format"
+#-(or sbcl ccl)    "rtest_engineering_format"
 #+sbcl    ((mlist simp) "rtest_engineering_format" 6)
+#+ccl    ((mlist simp) "rtest_engineering_format" 6 8 10 12)
     )
   )
