@@ -188,6 +188,80 @@ true$
 gnuplot_contains_string("filledcurves ");
 true$
 
+
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    line_width=50,
+    color="#FF0000",
+    explicit(sin(x),x,0,10),
+    color="#0000FF80",
+    explicit(cos(x),x,0,10)
+),0);
+0$
+gnuplot_contains_string("lw 50");
+true$
+gnuplot_contains_string("lw 50");
+true$
+gnuplot_contains_string("lc rgb '#800000ff'");
+true$
+gnuplot_contains_string("lc rgb '#ff0000'");
+true$
+
+(draw(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    gr2d(image(apply('matrix,
+        makelist(makelist(random(200),i,1,30),i,1,30)),0,0,30,30))
+),0);
+0$
+gnuplot_contains("set colorbox");
+true$
+gnuplot_contains("unset colorbox");
+false$
+(draw(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    gr2d(colorbox = false, image(apply('matrix,
+        makelist(makelist(random(200),i,1,30),i,1,30)),0,0,30,30))
+),0);
+0$
+gnuplot_contains("set colorbox");
+false$
+gnuplot_contains("unset colorbox");
+true$
+
+(draw(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    gr2d(nticks=30,
+        parametric(2*cos(t),5*sin(t),t,0,2*%pi)),
+    gr2d(polygon([4,5,7],[6,4,2])),
+    columns=2),
+    0
+)$
+0$
+gnuplot_contains("set size 1.0, 0.5");
+false$
+gnuplot_contains("set size 0.5, 1.0");
+true$
+
+(draw(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    gr2d(title="Ellipse",
+        nticks=30,
+        parametric(2*cos(t),5*sin(t),t,0,2*%pi)),
+    gr2d(title="Triangle",
+        polygon([4,5,7],[6,4,2])),
+    columns=1),
+    0
+)$
+0$
+gnuplot_contains("set size 1.0, 0.5");
+true$
+gnuplot_contains("set size 0.5, 1.0");
+false$
+gnuplot_contains("set title 'Ellipse'");
+true$
+gnuplot_contains("set title 'Triangle'");
+true$
+
 /* Clean up */
 kill(file_name_base, file_name_svg, file_name_gnuplot, file_name_svg, gnuplot_contains, gnuplot_contains_string);
 done$
