@@ -262,6 +262,38 @@ true$
 gnuplot_contains("set title 'Triangle'");
 true$
 
+(draw(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    dimensions=[1123,1124],
+    gr2d(
+        explicit(x^2,x,-1,1)),
+    gr2d(
+        allocation = [[1/4, 1/4],[1/2, 1/2]],
+        explicit(x^3,x,-1,1),
+        grid = true)
+    ),
+    0
+);
+0$
+gnuplot_contains("set size 0.5, 0.5");
+true$
+gnuplot_contains("set origin 0.25, 0.25");
+true$
+gnuplot_contains_string("size 1123, 1124");
+true$
+
+(draw(
+    terminal='animated_gif,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    delay     = 100,
+    gr2d(explicit(x^2,x,-1,1)),
+    gr2d(explicit(x^3,x,-1,1)),
+    gr2d(explicit(x^4,x,-1,1))),0);
+0$
+gnuplot_contains_string("delay 100");
+true$
+gnuplot_contains_string("set terminal gif enhanced animate");
+true$
+
 /* Clean up */
 kill(file_name_base, file_name_svg, file_name_gnuplot, file_name_svg, gnuplot_contains, gnuplot_contains_string);
 done$
