@@ -344,6 +344,11 @@ read_nested_list(file_name_data);
 
 
 /* Clean up.*/
-
-kill(file_name_base, file_name_data, file_name_svg, file_name_gnuplot, file_name_svg, gnuplot_contains, gnuplot_contains_string);
+(load("operatingsystem"),0);
+0$
+(delete_file(sconcat(file_name_svg,".svg")),0);
+0$
+(delete_file(sconcat(file_name_svg,".gif")),0);
+0$
+kill(file_name_base, file_name_data, file_name_data_gnuplot, file_name_svg, file_name_gnuplot, file_name_svg, gnuplot_contains, gnuplot_contains_string);
 done$
