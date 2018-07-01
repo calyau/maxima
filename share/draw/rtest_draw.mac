@@ -42,6 +42,7 @@
 );
 0$
 
+/* Test if "title=" affects the gnuplot file. */
 (draw2d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     explicit(sin(x),x,1,10)
@@ -59,13 +60,13 @@ true$
 gnuplot_contains("set title 'Test'");
 true$
 
+/* Test "contour=". */
 (draw3d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     contour='none,
     explicit(sin(x*y),x,1,10,y,1,10)
 ),0);
 0$
-
 (draw3d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     contour='base,
@@ -74,7 +75,6 @@ true$
 0$
 gnuplot_contains("set contour base");
 true$
-
 (draw3d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     contour='both,
@@ -83,7 +83,6 @@ true$
 0$
 gnuplot_contains("set contour both");
 true$
-
 (draw3d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     contour='surface,
@@ -92,7 +91,6 @@ true$
 0$
 gnuplot_contains("set contour surface");
 true$
-
 (draw3d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     contour='map,
@@ -102,6 +100,7 @@ true$
 gnuplot_contains("set contour base","unset surface");
 true$
 
+/* Test "axis_3d=". */
 (draw3d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     axis_3d=false,
@@ -125,6 +124,7 @@ false$
 gnuplot_contains("set border 0");
 false$
 
+/* test the other axis_* commands */
 (draw2d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     axis_bottom = false,
@@ -159,6 +159,7 @@ gnuplot_contains("set border 7");
 true$
 
 
+/* test all combination of border and transparent */
 (draw2d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     border = true, transparent = true,
@@ -190,7 +191,7 @@ true$
 gnuplot_contains_string("filledcurves ");
 true$
 
-
+/* test line_width and line colors including semi-transparent ones */
 (draw2d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     line_width=50,
@@ -209,6 +210,7 @@ true$
 gnuplot_contains_string("lc rgb '#ff0000'");
 true$
 
+/* test colorbox */
 (draw(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     gr2d(image(apply('matrix,
@@ -230,6 +232,7 @@ false$
 gnuplot_contains("unset colorbox");
 true$
 
+/* test "columns=" */
 (draw(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     gr2d(nticks=30,
@@ -243,7 +246,6 @@ gnuplot_contains("set size 1.0, 0.5");
 false$
 gnuplot_contains("set size 0.5, 1.0");
 true$
-
 (draw(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     gr2d(title="Ellipse",
@@ -264,6 +266,7 @@ true$
 gnuplot_contains("set title 'Triangle'");
 true$
 
+/* test "allocation=" */
 (draw(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     dimensions=[1123,1124],
@@ -284,6 +287,7 @@ true$
 gnuplot_contains_string("size 1123, 1124");
 true$
 
+/* test "delay=" */
 (draw(
     terminal='animated_gif,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     delay     = 100,
@@ -296,6 +300,9 @@ true$
 gnuplot_contains_string("set terminal gif enhanced animate");
 true$
 
+/* test "enhanced3d=". In this instance we don't look at the .gnuplot file
+   but at the data this file causes gnuplot to plot instead.
+*/
 (draw3d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     enhanced3d='none,data_file_name=file_name_data_gnuplot,
@@ -335,7 +342,8 @@ read_nested_list(file_name_data);
 0);
 0$
 
-    
-/* Clean up */
+
+/* Clean up.*/
+
 kill(file_name_base, file_name_data, file_name_svg, file_name_gnuplot, file_name_svg, gnuplot_contains, gnuplot_contains_string);
 done$
