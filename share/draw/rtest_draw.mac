@@ -306,6 +306,14 @@ read_nested_list(file_name_data);
 [[1.0,3.0,1.0],[2.0,5.0,7.0],[3.0,3.0,5.0],[4.0,1.0,3.0],[],[]]$
 (draw3d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    enhanced3d=false,data_file_name=file_name_data_gnuplot,
+    points([1,2,3,4],[3,5,3,1],[1,7,5,3])),
+0);
+0$
+read_nested_list(file_name_data);
+[[1.0,3.0,1.0],[2.0,5.0,7.0],[3.0,3.0,5.0],[4.0,1.0,3.0],[],[]]$
+(draw3d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
     enhanced3d = [x-z/10,x,y,z],data_file_name=file_name_data_gnuplot,
     points([1,2,3,4],[3,5,3,1],[1,7,5,3])),
 0);
