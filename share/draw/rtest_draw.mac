@@ -191,6 +191,35 @@ true$
 gnuplot_contains_string("filledcurves ");
 true$
 
+/* test background_color */
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    line_width=50,
+    background_color="#FF0000",
+    explicit(sin(x),x,0,10)
+),0);
+0$
+gnuplot_contains_string("obj 1 fc rgb '#ff0000'");
+true$
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    line_width=50,
+    background_color="#00FF0080",
+    explicit(sin(x),x,0,10)
+),0);
+0$
+gnuplot_contains_string("obj 1 fc rgb '#00ff0080'");
+true$
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    line_width=50,
+    background_color='yellow,
+    explicit(sin(x),x,0,10)
+),0);
+0$
+gnuplot_contains_string("obj 1 fc rgb '#FFFF00'");
+true$
+
 /* test line_width and line colors including semi-transparent ones */
 (draw2d(
     terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
