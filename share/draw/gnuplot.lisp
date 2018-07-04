@@ -2887,7 +2887,7 @@
 	    
 	    ( if (equal (car (get-option '$grid)) 0)
 		(format nil "unset grid~%")
-	        (format nil "set grid xtics ytics mxtics mytics~%set mxtics ~a~%set mytics ~d~%"
+	        (format nil "set grid xtics ytics mxtics mytics~%set mxtics ~d~%set mytics ~d~%"
 		      (car  (get-option '$grid))
 		      (cadr (get-option '$grid))
 		      )
@@ -3083,7 +3083,7 @@
                (format nil "unset logscale cb~%") )
 	    (if (equal (car (get-option '$grid)) 0)
 		(format nil "unset grid~%")
-	        (format nil "set grid xtics ytics ztics mxtics mytics mztics~%set mxtics ~a~%set mytics ~d~%"
+	        (format nil "set grid xtics ytics ztics mxtics mytics mztics~%set mxtics ~d~%set mytics ~d~%"
 		      (car  (get-option '$grid))
 		      (cadr (get-option '$grid))
 		      )

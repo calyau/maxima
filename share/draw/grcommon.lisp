@@ -1709,7 +1709,7 @@
 			      (< fval2 1))
                             (merror "grid: illegal grid lines specification"))
                          (t
-			   (setf (gethash opt *gr-options*) (list fval1 fval2)) )
+			   (setf (gethash opt *gr-options*) (list ($round fval1) ($round fval2))) )
 			 )  ))) )
       (($ip_grid $ip_grid_in)
        (if (not ($listp val))

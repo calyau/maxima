@@ -457,6 +457,77 @@ true$
 gnuplot_contains_string("lc rgb '#00FF00'");
 true$
 
+/* Test if drawing a grid works */
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    explicit(sin(x),x,0,10),
+    grid=true
+),0);
+0$
+gnuplot_contains("set grid xtics ytics mxtics mytics");
+true$
+gnuplot_contains("set mxtics 1");
+true$
+gnuplot_contains("set mytics 1");
+true$
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    explicit(sin(x),x,0,10),
+    grid=[10,1]
+),0);
+0$
+gnuplot_contains("set grid xtics ytics mxtics mytics");
+true$
+gnuplot_contains("set mxtics 10");
+true$
+gnuplot_contains("set mytics 1");
+true$
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    explicit(sin(x),x,0,10),
+    grid=[1,10]
+),0);
+0$
+gnuplot_contains("set grid xtics ytics mxtics mytics");
+true$
+gnuplot_contains("set mxtics 1");
+true$
+gnuplot_contains("set mytics 10");
+true$
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    explicit(sin(x),x,0,10),
+    grid=[1.2,10.6]
+),0);
+0$
+gnuplot_contains("set grid xtics ytics mxtics mytics");
+true$
+gnuplot_contains("set mxtics 1");
+true$
+gnuplot_contains("set mytics 11");
+true$
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    explicit(sin(x),x,0,10),
+    grid=[1.6,10.4]
+),0);
+0$
+gnuplot_contains("set grid xtics ytics mxtics mytics");
+true$
+gnuplot_contains("set mxtics 2");
+true$
+gnuplot_contains("set mytics 10");
+true$
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    explicit(sin(x),x,0,10),
+    grid=false
+),0);
+0$
+gnuplot_contains("unset grid");
+true$
+
+
 /* Clean up.*/
 (load("operatingsystem"),0);
 0$
