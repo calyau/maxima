@@ -310,7 +310,7 @@ Example:
 
 This function enables Maxima to work in one-window multiplot mode with terminal
 @var{term}; accepted arguments for this function are @code{screen}, 
-@code{wxt}, @code{aquaterm} and @code{none}.
+@code{wxt}, @code{aquaterm}, @code{windows} and @code{none}.
 
 When multiplot mode is enabled, each call to @code{draw} sends a new plot to the
 same window, without erasing the previous ones. To disable the multiplot mode,
@@ -319,10 +319,10 @@ write @code{multiplot_mode(none)}.
 When multiplot mode is enabled, global option @code{terminal} is blocked and you
 have to disable this working mode before changing to another terminal.
 
-This feature does not work in Windows platforms. Note, though, that just
-plotting multiple expressions into the same plot doesn't require multiplot:
-It can be done by just issuing multiple @mref{explicit} or similar commands
-in a row.
+On Windows this feature requires Gnuplot 5.0 or newer.
+Note, that just plotting multiple expressions into the same plot doesn't require
+multiplot: It can be done by just issuing multiple @mref{explicit} or similar
+commands in a row.
 
 Example:
 
@@ -2709,7 +2709,8 @@ Selects the terminal to be used by Gnuplot; possible values are:
 @code{wxt}, @code{animated_gif}, @code{multipage_pdfcairo}, @code{multipage_pdf}, 
 @code{multipage_eps}, @code{multipage_eps_color}, and @code{aquaterm}.
 
-Terminals @code{screen}, @code{wxt} and @code{aquaterm} can be also defined as a list
+Terminals @code{screen}, @code{wxt}, @code{windows} and @code{aquaterm} can
+be also defined as a list
 with two elements: the name of the terminal itself and a non negative integer number.
 In this form, multiple windows can be opened at the same time, each with its
 corresponding number. This feature does not work in Windows platforms.

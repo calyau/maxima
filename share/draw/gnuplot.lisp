@@ -32,14 +32,11 @@
 (defvar $draw_version 2)
 
 
-
-(defvar *windows-OS* (string= *autoconf-windows* "true") )
-
 (defun write-font-type ()
    (if (and (string= (get-option '$font) "") (not (eq (get-option '$font_size) 10)))
      (mwarning "Cannot set the gnuplot font size without a font name."))
 
-   (if (string= (get-option '$font) "")
+   (if (or (eq (get-option '$font) nil) (string= (get-option '$font) ""))
      ""
      (format nil "font '~a,~a'" (get-option '$font) (get-option '$font_size))))
 
@@ -48,29 +45,33 @@
 ;; to draw allways plot on the same window
 (defvar *multiplot-is-active* nil)
 (defun $multiplot_mode (term)
-  (when (not *windows-OS*)
-    (case term
-      ($screen
-        ($multiplot_mode '$none)
-        (send-gnuplot-command
-          (format nil "if(GPVAL_VERSION >= 5.0){set terminal x11 dashed ~a replotonresize~%set multiplot~%} else {set terminal x11 dashed ~a~%set multiplot~%}" (write-font-type) (write-font-type)))
-        (setf *multiplot-is-active* t))
-      ($wxt
-        ($multiplot_mode '$none)
-        (send-gnuplot-command
-          (format nil "set terminal wxt dashed ~a~%set multiplot~%" (write-font-type)))
-        (setf *multiplot-is-active* t))
-      ($qt
-        ($multiplot_mode '$none)
-       (send-gnuplot-command
-         (format nil "set terminal qt dashed ~a~%set multiplot~%" (write-font-type)))
-       (setf *multiplot-is-active* t))
-      ($none
-        (send-gnuplot-command
-          (format nil "unset multiplot~%unset output~%"))
-        (setf *multiplot-is-active* nil))
-      (otherwise
-        (merror "draw: ~M is not recognized as a multiplot mode" term)))))
+  (case term
+    ($screen
+      ($multiplot_mode '$none)
+      (send-gnuplot-command
+        (format nil "if(GPVAL_VERSION >= 5.0){set terminal x11 dashed ~a replotonresize~%set multiplot~%} else {set terminal x11 dashed ~a~%set multiplot~%}" (write-font-type) (write-font-type)))
+      (setf *multiplot-is-active* t))
+    ($wxt
+      ($multiplot_mode '$none)
+      (send-gnuplot-command
+        (format nil "set terminal wxt dashed ~a~%set multiplot~%" (write-font-type)))
+      (setf *multiplot-is-active* t))
+    ($qt
+      ($multiplot_mode '$none)
+     (send-gnuplot-command
+       (format nil "set terminal qt dashed ~a~%set multiplot~%" (write-font-type)))
+     (setf *multiplot-is-active* t))
+    ($windows
+      ($multiplot_mode '$none)
+     (send-gnuplot-command
+       (format nil "set terminal windows dashed ~a~%set multiplot~%" (write-font-type)))
+     (setf *multiplot-is-active* t))
+    ($none
+      (send-gnuplot-command
+        (format nil "unset multiplot~%unset output~%"))
+      (setf *multiplot-is-active* nil))
+    (otherwise
+      (merror "draw: ~M is not recognized as a multiplot mode" term))))
 
 
 
@@ -3356,10 +3357,17 @@
                            (write-font-type)
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
+	($windows (format cmdstorage "set terminal windows enhanced ~a ~a size ~a, ~a~%"
+                           *draw-terminal-number*
+                           (write-font-type)
+                           (round (first (get-option '$dimensions)))
+                           (round (second (get-option '$dimensions)))))
+
         (otherwise ; default screen output
           (cond
-            (*windows-OS*  ; running on windows operating system
-              (format cmdstorage "set terminal windows enhanced ~a size ~a, ~a~%"
+            ((string= *autoconf-windows* "true")  ; running on windows operating system
+              (format cmdstorage "set terminal windows enhanced ~a ~a size ~a, ~a~%"
+                          *draw-terminal-number*
                           (write-font-type)
                           (round (first (get-option '$dimensions)))
                           (round (second (get-option '$dimensions)))))
@@ -3546,8 +3554,7 @@
              ; get the plot
              (cond
                 ; connect to gnuplot via pipes
-                ((and (not *windows-OS*)
-                      (member (get-option '$terminal) '($screen $aquaterm $wxt $x11 $qt))
+                ((and (member (get-option '$terminal) '($screen $aquaterm $wxt $x11 $qt $windows))
                       (equal $draw_renderer '$gnuplot_pipes))
                    (check-gnuplot-process)
                    (when (not *multiplot-is-active*) ; not in a one window multiplot
@@ -3559,11 +3566,11 @@
                 (t
 
 		 #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
-		 (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11 $qt))
+		 (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11 $qt $windows))
 		     ($system $gnuplot_command "-persist" gfn)
 		     ($system $gnuplot_command gfn))
 		 #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
-		 ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11 $qt))
+		 ($system (if (member (get-option '$terminal) '($screen $aquaterm $wxt $x11 $qt $windows))
 			      (format nil "~a ~a"
 				      $gnuplot_command
 				      (format nil $gnuplot_view_args gfn))
@@ -3663,8 +3670,6 @@
              (not (integerp num))
              (< num 0) )
       (merror "draw: Incorrect terminal or window number"))
-   (when *windows-OS*
-      (merror "draw: Multiple windows are not allowed in Windows systems"))
    (let (str)
       (case term
          ($wxt      (setf str "wxt"))

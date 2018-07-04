@@ -959,7 +959,7 @@
 (defun update-terminal (val)
   (let ((terms '($screen $png $pngcairo $jpg $gif $eps $eps_color $canvas
                  $epslatex $epslatex_standalone $svg $x11 $qt
-                 $dumb $dumb_file $pdf $pdfcairo $wxt $animated_gif
+                 $dumb $dumb_file $pdf $pdfcairo $wxt $animated_gif $windows
                  $multipage_pdfcairo $multipage_pdf $multipage_eps 
                  $multipage_eps_color $aquaterm $tiff $vrml $obj $stl $pnm $ply)))
      (cond
@@ -970,7 +970,7 @@
                 *draw-terminal-number* ""))
        ((and ($listp val)
              (= ($length val) 2)
-             (member (cadr val) '($screen $wxt $aquaterm $qt))
+             (member (cadr val) '($screen $wxt $aquaterm $qt $windows))
              (integerp (caddr val))
              (>= (caddr val) 0))
           (setf (gethash '$terminal *gr-options*) (cadr val)
