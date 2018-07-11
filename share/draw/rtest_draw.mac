@@ -527,6 +527,55 @@ true$
 gnuplot_contains("unset grid");
 true$
 
+/* Tests for head_length, head_angle, head_both and head_type */
+(draw2d(
+    terminal='svg,file_name=file_name_svg,gnuplot_file_name=file_name_gnuplot,
+    xrange      = [0,10],
+    yrange      = [0,9],
+    head_length = 0.7,
+    head_angle  = 10,
+    head_both   = false,
+    vector([1,1],[0,6]),
+    head_angle  = 20,
+    vector([2,1],[0,6]),
+    head_angle  = 30,
+    vector([3,1],[0,6]),
+    head_angle  = 40,
+    vector([4,1],[0,6]),
+    head_angle  = 60,
+    vector([5,1],[0,6]),
+    head_angle  = 90,
+    head_both   = true,
+    vector([6,1],[0,6]),
+    head_angle  = 120,
+    head_type='filled,
+    vector([7,1],[0,6]),
+    head_angle  = 160,
+    head_type='empty,
+    vector([8,1],[0,6]),
+    head_angle  = 180,
+    head_length = 0.3,
+    head_type='nofilled,
+    vector([9,1],[0,6]) ),0);
+0$
+gnuplot_contains_string("vect head size 0.7, 10.0");
+true$
+gnuplot_contains_string("vect head size 0.7, 20.0");
+true$
+gnuplot_contains_string("vect head size 0.7, 30.0");
+true$
+gnuplot_contains_string("vect head size 0.7, 40.0");
+true$
+gnuplot_contains_string("vect head size 0.7, 60.0");
+true$
+gnuplot_contains_string("vect heads size 0.7, 90.0");
+true$
+gnuplot_contains_string("vect heads size 0.7, 120.0 filled");
+true$
+gnuplot_contains_string("vect heads size 0.7, 160.0 empty");
+true$
+gnuplot_contains_string("vect heads size 0.3, 180.0 nofilled");
+true$
 
 /* Clean up.*/
 (load("operatingsystem"),0);
