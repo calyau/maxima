@@ -152,7 +152,7 @@ block([fpprec : 25], close_p(nfloat('(product(sin(k*x),k,1,28)),[x = 0.1b0], 25)
    1.909750489550340725818861b-6, 24));
 true$
 
-(time : (absolute_real_time ()- start), print(time), is(time < 2));
+(time : (absolute_real_time ()- start), print(time), is(time < 4));
 true$
 
 nfloat(%i,[], 57);

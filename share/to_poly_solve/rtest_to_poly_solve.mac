@@ -1225,7 +1225,7 @@ string (a %and b %and c %and d);
 "a %and b %and c %and d";
 
 /* clean up */
-(print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 200));
+(print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 400));
 true$
 
 (reset(algexact), forget(z,complex,a,complex,b,complex), remvalue(sol,%time,eq,eqn1,eqn2,eqn3),0);
