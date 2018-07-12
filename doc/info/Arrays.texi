@@ -547,7 +547,7 @@ the extra elements are ignored.
 @end group
 @end example
 
-Multple-dimension arrays are filled in row-major order.
+Multiple-dimension arrays are filled in row-major order.
 
 @c ===beg===
 @c a3 : make_array (fixnum, 2, 5);
