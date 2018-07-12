@@ -349,7 +349,7 @@
 		    ((and (not correct) expected-error)
 		     (if (or show-all show-expected)
 			 (progn
-			   (format t (intl:gettext "~%This is a known error in Maxima or in the lisp is was compiled with. The correct result is:~%"))
+			   (format t (intl:gettext "~%This is a known error in Maxima or in the Lisp it was compiled with. The correct result is:~%"))
 			   (displa next-result))))
 		    (t (format t (intl:gettext "~%This differed from the expected result:~%"))
 		       (push i all-differences)
