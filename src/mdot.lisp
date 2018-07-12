@@ -283,7 +283,7 @@ is no need to rely on the setting of this switch.")
 	  ((and (onep1 factor) $dot1simp) factor)
 	  ((and (or $doallmxops $domxmxops)
 		(mxorlistp1 factor)
-		(fixnump power) 'fixnum)
+		(fixnump power))
 	   (let (($scalarmatrixp (or ($listp factor) $scalarmatrixp)))
 	     (simplify (powerx factor power))))
 
