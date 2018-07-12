@@ -1381,9 +1381,9 @@ equation may be given as first argument.
 @defvr {Option variable} modulus
 Default value: @code{false}
 
-When @code{modulus} is a positive number @var{p}, operations on rational numbers
-(as returned by @code{rat} and related functions) are carried out modulo
-@var{p}, using the so-called "balanced" modulus system in which @code{@var{n}
+When @code{modulus} is a positive number @var{p}, operations on canonical rational
+expressions (CREs, as returned by @code{rat} and related functions) are carried out
+modulo @var{p}, using the so-called "balanced" modulus system in which @code{@var{n}
 modulo @var{p}} is defined as an integer @var{k} in
 @code{[-(@var{p}-1)/2, ..., 0, ..., (@var{p}-1)/2]} when @var{p} is odd, or
 @code{[-(@var{p}/2 - 1), ..., 0, ...., @var{p}/2]} when @var{p} is even, such
