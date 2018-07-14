@@ -666,3 +666,8 @@ true;
 
 gf_unset();
 true;
+
+/* Bug #3427: gcfactor(3+4*%i) => error */
+
+gcfactor(3+4*%i);
+(2+%i)^2;

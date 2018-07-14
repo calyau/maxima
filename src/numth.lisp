@@ -260,7 +260,6 @@
               (r (first l))
               (i (second l)))
          (declare (integer r i rcd icd))
-         (assert (or (zerop r) (zerop i)))
          (when (or (= r -1) (= i -1))
            (setq plis (list* -1 1 plis)))
          (when (zerop r)
