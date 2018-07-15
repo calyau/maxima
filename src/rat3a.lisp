@@ -210,7 +210,7 @@
 ;;
 ;; Valid values for M are either a positive integer or NULL.
 (defun set-modulus (m)
-  (if (or (null m) (typep m '(integer 0)))
+  (if (or (null m) (typep m '(integer 1)))
       (setq modulus m)
       (error "modulus must be a positive number or nil"))
   (values))
