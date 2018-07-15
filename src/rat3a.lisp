@@ -118,8 +118,8 @@
        until (= remainder 1)
 
        when (zerop remainder) do
-         (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)")
-                 mod)
+         (merror (intl:gettext "CRECIP: ~M does not have an inverse with modulus=~M")
+                 n modulus)
        doing
          (multiple-value-bind (quot rem)
              (truncate mod remainder)
@@ -159,8 +159,8 @@
        until (= remainder 1)
 
        when (zerop remainder) do
-         (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)")
-                 mod)
+         (merror (intl:gettext "CRECIP: ~M does not have an inverse with modulus=~M")
+                 n modulus)
        doing
          (let ((quotient (truncate mod remainder)))
            (psetf mod remainder
