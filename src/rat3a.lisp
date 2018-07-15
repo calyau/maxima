@@ -212,7 +212,7 @@
 (defun set-modulus (m)
   (if (or (null m) (typep m '(integer 1)))
       (setq modulus m)
-      (error "modulus must be a positive number or nil"))
+      (error "modulus must be a positive integer or nil"))
   (values))
 
 ;; PCOEFADD
