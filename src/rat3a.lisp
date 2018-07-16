@@ -118,8 +118,8 @@
        until (= remainder 1)
 
        when (zerop remainder) do
-         (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)")
-                 mod)
+         (merror (intl:gettext "CRECIP: ~M does not have an inverse with modulus=~M")
+                 n modulus)
        doing
          (multiple-value-bind (quot rem)
              (truncate mod remainder)
@@ -159,8 +159,8 @@
        until (= remainder 1)
 
        when (zerop remainder) do
-         (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)")
-                 mod)
+         (merror (intl:gettext "CRECIP: ~M does not have an inverse with modulus=~M")
+                 n modulus)
        doing
          (let ((quotient (truncate mod remainder)))
            (psetf mod remainder
@@ -210,9 +210,9 @@
 ;;
 ;; Valid values for M are either a positive integer or NULL.
 (defun set-modulus (m)
-  (if (or (null m) (typep m '(integer 0)))
+  (if (or (null m) (typep m '(integer 1)))
       (setq modulus m)
-      (error "modulus must be a positive number or nil"))
+      (error "modulus must be a positive integer or nil"))
   (values))
 
 ;; PCOEFADD
