@@ -16,8 +16,7 @@
 
 (defmfun load-and-tell (filename)
   (loadfile filename t ;; means this is a lisp-level call, not user-level.
-	    $loadprint)
-    #+sbcl (sb-ext:gc))
+	    $loadprint))
        
 (defun errset-namestring (x)
   (let ((errset nil))
@@ -63,8 +62,7 @@
 		   (setq  expr (let (*prompt-on-read-hang*) (mread in-stream nil)))
 		   (consp expr))
 	 do (meval* (third expr)))
-      (cl:namestring (truename in-stream))))
-    #+sbcl (sb-ext:gc))
+      (cl:namestring (truename in-stream)))))
 
 ;;returns appropriate error or existing pathname.
 ;; the second argument is a maxima list of variables
