@@ -64,6 +64,8 @@ When one changes, the other does too."
     (t
       (merror (intl:gettext "assignment: must assign a string to ~:M; found: ~M") var value))))
 
+#+sbcl (setf (sb-ext:bytes-consed-between-gcs) (* 1 1024 1024))
+
 (defun print-directories ()
   (format t "maxima-prefix=~a~%" *maxima-prefix*)
   (format t "maxima-topdir=~a~%" *maxima-topdir*)
