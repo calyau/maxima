@@ -620,7 +620,7 @@
 	   (setq a (cdr a))
 	   (dolist (ai a)
 	     (setq x (mul s (mfuncall f ai)))
-	     (cond ((is-boole-check (mgrp x mx))
+	     (cond ((mevalp_tr (mgrp x mx) t nil)
 		    (setq mx x
 			  max-subset `(,ai)))
 		   ((like x mx)

@@ -920,8 +920,11 @@ extremal_subset(set(1+%i,sqrt(2),1-%i),abs, max);
 set(1+%i,sqrt(2),1-%i)$
 
 extremal_subset(set(a,a+b,1.4b0,sqrt(28)),lambda([x],if atom(x) then 0 else 1), max);
-
 set(a+b,sqrt(28))$
+
+/* Bug #3410: extremal_subset gives bogus result with undefined predicate */
+errcatch(extremal_subset({a, b, c}, abs, max));
+[]$
 
 cartesian_product();
 set([])$
