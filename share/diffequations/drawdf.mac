@@ -37,7 +37,8 @@ default_horiz_arrow_spots: 30 $
 
 vec_mag(v) := sqrt(v.v)$
 normalize_vec(v) := v/sqrt(v.v)$
-translate(normalize_vec);
+if drawdf_translate='drawdf_translate then drawdf_translate:false;
+if drawdf_translate then translate(normalize_vec);
 
 make_f_rk_4(dxdt_expr, dydt_expr, x_var, y_var, x_min, x_max, y_min, y_max, partition_expr) := (
   define(funmake('f_rk_4,vars),
@@ -53,7 +54,7 @@ make_f_rk_4(dxdt_expr, dydt_expr, x_var, y_var, x_min, x_max, y_min, y_max, part
         dydt_var:dydt_expr,
         if imagpart(dxdt_var)^2 > 0 or imagpart(dydt_var)^2 > 0 then error(),
         [dxdt_var,dydt_var]))),
-  translate(f_rk_4)) $
+  if drawdf_translate then translate(f_rk_4)) $
 
 /* Derived from rk in dynamics.mac by Jaime E. Villate <villate@fe.up.pt> */
 calc_soln_curve(derivs, vars, init, mins, maxs, max_step, max_tstep, min_tstep, duration, max_nsteps, partition_expr) :=
@@ -95,7 +96,7 @@ block (
       xxx: nxxx,
       ddd: cons(xxx, ddd))),
   reverse(ddd))$
-translate(calc_soln_curve);
+if drawdf_translate then translate(calc_soln_curve);
 
 /*
  * Note: if dir='reverse, this will return the curve in
@@ -152,7 +153,7 @@ solution_arrows(curve) := block(
 
   define(funmake('f_calc_dv,[x_var,y_var]),
     float(grid_step_vec * normalize_vec([dxdt,dydt] / grid_step_vec))),
-  translate(f_calc_dv),
+  if drawdf_translate then translate(f_calc_dv),
 
   last_arrow_dist:spacing - start_space,
   for pt in curve do (
@@ -416,7 +417,7 @@ df_graphics(derivs_spec, [params]) := block(
     if field_degree=1 then (
       define(funmake('f_calc_dv,[x_var,y_var]),
         float(grid_step_vec * normalize_vec([dxdt,dydt] / grid_step_vec))),
-      translate(f_calc_dv),
+      if drawdf_translate then translate(f_calc_dv),
       for x: (x_min + x_step/2 + field_horiz_offset) step x_step thru x_max do (
         for y: (y_min + y_step/2 + field_vert_offset) step y_step thru y_max do (
           the_graphics: append(
@@ -435,8 +436,8 @@ df_graphics(derivs_spec, [params]) := block(
         float([dxdt,dydt])),
       define(funmake('f_calc_dv2,[x_var,y_var]),
         float([dxdt2,dydt2])),
-      translate(f_calc_dv),
-      translate(f_calc_dv2),
+      if drawdf_translate then translate(f_calc_dv),
+      if drawdf_translate then translate(f_calc_dv2),
       for x: (x_min + x_step/2 + field_horiz_offset) step x_step thru x_max do (
         for y: (y_min + y_step/2 + field_vert_offset) step y_step thru y_max do (
           the_graphics: append(
