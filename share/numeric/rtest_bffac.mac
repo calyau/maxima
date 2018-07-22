@@ -40,5 +40,18 @@ bfzeta (%i, fpp);
 float_near_zero (bfzeta (1/2+%i*14.13472514173469379045b0, 16));
 true$
 
+/* SF bug report #3426: "Algorithm precision problem for small positive values in bfpsi0" */
+bfpsi0(1e-10, 1);
+-1b10;
+
+bfpsi0(1e-10, 6);
+-1b10;
+
+bfpsi0(1e-10, 16);
+-10000000000.577215665b0;
+
+bfpsi0(1e-10, 32);
+-10000000000.577215665b0;
+
 (reset(float_approx_equal_tolerance),0);
 0$

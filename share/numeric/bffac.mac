@@ -176,23 +176,30 @@ cbffac(z,fpprec):=rectform(
 
 /* psi[0](z) - digamma function
  *
- * A&S 6.3.7:  Reflection formula
+ * A&S 6.3.5:  Recurrence formula
  *
- *   psi[0](1-z) = psi[0](z) + %pi*cot(%pi*z)
+ *   psi[0](1+z) = 1/z+psi[0](z)
  *
  * A&S 6.3.6:  Recurrence formula
  *
  *   psi[0](n+z) = 1/(z+n-1)+1/(z+n-2)+...+1/(z+2)+1/(1+z)+psi[0](1+z)
  *
- * A&S 6.3.8:  Asymptotic formula
+ * A&S 6.3.7:  Reflection formula
+ *
+ *   psi[0](1-z) = psi[0](z) + %pi*cot(%pi*z)
+ *
+ * A&S 6.3.18:  Asymptotic formula
  *
  *   psi[0](z) ~ log(z) - sum(bern(2*n)/(2*n*z^(2*n)), n, 1, inf)
  *
  * So use reflection formula if z < 0.  For z > 0, use the recurrence
  * formula to increase the argument and then apply the asymptotic formula.
  *
+ * For small z with absolute value < 1E-6 use formula 6.3.5
+ *
  */
 bfpsi0(z,fpprec):=if z < 0 then bfloat(%pi*cot(%pi*(-z)))+bfpsi0(1-z,fpprec)
+        elseif 0 < realpart(z) and cabs(z) < 1E-6 then bfloat(rectform(bfpsi0(1+z,fpprec) - 1/z))
         else block([k:2*(entier(0.41*fpprec)+1)],
 		   block([m:0,y:(z+k)^2,x:0.0b0],
 			 for i thru k/2 do
