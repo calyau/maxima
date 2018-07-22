@@ -147,14 +147,15 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 @end deffn
 
-@deffn {Function} read_hashed_array @
-@fname{read_hashed_array} (@var{S}, @var{A}) @
-@fname{read_hashed_array} (@var{S}, @var{A}, @var{separator_flag})
+@anchor{read_hash_table}
+@deffn {Function} read_hash_table @
+@fname{read_hash_table} (@var{S}, @var{A}) @
+@fname{read_hash_table} (@var{S}, @var{A}, @var{separator_flag})
 
-Reads the source @var{S} and returns its entire content as a hashed array.
+Reads the source @var{S} and returns its entire content as a hash table.
 The source @var{S} may be a file name or a stream.
 
-@code{read_hashed_array} treats the first item on each line as a hash key,
+@code{read_hash_table} treats the first item on each line as a hash key,
 and associates the remainder of the line (as a list) with the key.
 For example,
 the line @code{567 12 17 32 55} is equivalent to @code{A[567]: [12, 17, 32, 55]$}.
@@ -164,6 +165,18 @@ The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+
+@end deffn
+
+@anchor{read_hashed_array}
+@deffn {Function} read_hashed_array @
+@fname{read_hashed_array} (@var{S}, @var{A}) @
+@fname{read_hashed_array} (@var{S}, @var{A}, @var{separator_flag})
+
+An alias for @mrefcomma{read_hash_table} provided for backwards compatibility.
 @opencatbox
 @category{Package numericalio} @category{File input}
 @closecatbox
@@ -348,7 +361,7 @@ Other kinds of numbers are coerced to 8-byte floats.
 
 The object @var{X} may be a list, a nested list, a matrix,
 or an array created by @code{array} or @code{make_array};
-@var{X} cannot be an undeclared array or any other type of object.
+@var{X} cannot be a hash table or any other type of object.
 @code{write_binary_data} writes nested lists, matrices, and arrays in row-major order.
 
 The destination @var{D} may be a file name or a stream.

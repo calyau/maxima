@@ -457,7 +457,7 @@ created by @mref{:} or @mref{::} or functional binding.
 @item functions
 All user-defined functions, created by @mref{:=} or @mrefdot{define}
 @item arrays
-All declared and undeclared arrays, created by @code{:}, @code{::}, or
+All arrays and hash tables, created by @code{:}, @code{::}, or
 @code{:=}.
 @c AREN'T THERE OTHER MEANS OF CREATING ARRAYS ??
 @item macros

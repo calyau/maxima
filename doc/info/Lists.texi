@@ -65,13 +65,13 @@ itself, since after it has been through the simplifier the list would become
 @code{[} and @code{]} mark the beginning and end, respectively, of a list.
 
 @code{[} and @code{]} also enclose the subscripts of
-a list, array, hash array, or array function. Note that
+a list, array, hash table, or array function. Note that
 other than for arrays accessing the @code{n}th element of a list
 may need an amount of time that is roughly proportional to  @code{n},
 @xref{Performance considerations for Lists}.
 
 Note that if an element of a subscripted variable is written to before
-a list or an array is declared an undeclared array (aka hash array,
+a list or an array of this name is declared a hash table
 @xref{Arrays}) is created, not a list.
 
 Examples:

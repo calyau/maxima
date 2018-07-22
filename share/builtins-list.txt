@@ -1795,6 +1795,7 @@ read_binary_matrix
 readbyte
 readchar
 read_hashed_array
+read_hash_table
 readline
 read_list
 read_matrix

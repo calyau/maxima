@@ -6,9 +6,9 @@
 
 Maxima supports 3 array-like constructs:
 @itemize
-@item If one tries to write to an indexed variable without creating a list first an
-      undeclared array (also named hash array) is created that grows dynamically and
-      allows numbers, symbols and strings as indices:
+@item If one tries to write to an indexed variable without creating a list first a
+      hash table is created that grows dynamically and that allows arbitrary numbers,
+      symbols and strings as indices:
 @c ===beg===
 @c a["feww"]:1;
 @c a[qqwdqwd]:3;
@@ -43,9 +43,12 @@ Maxima supports 3 array-like constructs:
 (%o6)                           1
 @end group
 @end example
+Since lisp handles hash tables similar to arrays many of the array functions
+can be applied to hash tables, as well.
 @item Lists (see @mref{makelist} allow for fast addition and removal
       of elements, can be created without knowing their final size.
-@item Declared arrays that allow fast access to random elements
+@item Arrays that allow fast access to random elements at the cost that their
+      size needs to be known at construction time.
       (@xref{Performance considerations for Lists})
 @end itemize
 
@@ -107,15 +110,15 @@ instead of a function.
 @deffn {Function} arrayinfo (@var{A})
 
 Returns information about the array @var{A}.
-The argument @var{A} may be a declared array, an undeclared (hashed) array,
+The argument @var{A} may be an array, a hash table,
 an array function, or a subscripted function.
 
-For declared arrays, @code{arrayinfo} returns a list comprising the atom
+For arrays, @code{arrayinfo} returns a list comprising the atom
 @code{declared}, the number of dimensions, and the size of each dimension.
 The elements of the array, both bound and unbound, are returned by
 @code{listarray}.
 
-For undeclared arrays (hashed arrays), @code{arrayinfo} returns a list
+For hash tables @code{arrayinfo} returns a list
 comprising the atom @code{hashed}, the number of subscripts,
 and the subscripts of every element which has a value.
 The values are returned by @code{listarray}.
@@ -134,7 +137,7 @@ See also @mrefdot{listarray}
 
 Examples:
 
-@code{arrayinfo} and @code{listarray} applied to a declared array.
+@code{arrayinfo} and @code{listarray} applied to an array.
 
 @c ===beg===
 @c array (aa, 2, 3);
@@ -167,7 +170,7 @@ Examples:
 @end group
 @end example
 
-@code{arrayinfo} and @code{listarray} applied to an undeclared (hashed) array.
+@code{arrayinfo} and @code{listarray} applied to an hash table.
 
 @c ===beg===
 @c bb [FOO] : (a + b)^2;
@@ -238,7 +241,7 @@ Examples:
 @end example
 
 
-Using @code{arrayinfo} in order to convert an undeclared array to a declared array:
+Using @code{arrayinfo} in order to convert a hash table to an array:
 
 @c ===beg===
 @c for i:0 thru 10 do a[i]:i^2$
@@ -406,7 +409,7 @@ Examples:
 Default value: @code{[]}
 
 @code{arrays} is a list of arrays that have been allocated.
-These comprise arrays declared by @code{array}, hashed arrays constructed by
+These comprise arrays declared by @code{array}, hash tables constructed by
 implicit definition (assigning something to an array element),
 and array functions defined by @code{:=} and @code{define}.
 Arrays defined by @mref{make_array} are not included.
@@ -584,7 +587,7 @@ Multiple-dimension arrays are filled in row-major order.
 @deffn {Function} listarray (@var{A})
 
 Returns a list of the elements of the array @var{A}.
-The argument @var{A} may be a declared array, an undeclared (hashed) array,
+The argument @var{A} may be an array, an hash table,
 an array function, or a subscripted function.
 
 Elements are listed in row-major order.
@@ -592,19 +595,19 @@ That is, elements are sorted according to the first index, then according to
 the second index, and so on.  The sorting order of index values is the same as
 the order established by @mrefdot{orderless}
 
-For undeclared arrays, array functions, and subscripted functions,
+For hash tables, array functions, and subscripted functions,
 the elements correspond to the index values returned by @mrefdot{arrayinfo}
 
-Unbound elements of declared general arrays (that is, not @code{fixnum} and not
+Unbound elements of general arrays (that is, not @code{fixnum} and not
 @code{flonum}) are returned as @code{#####}.
-Unbound elements of declared @code{fixnum} or @code{flonum} arrays
+Unbound elements of @code{fixnum} or @code{flonum} arrays
 are returned as 0 or 0.0, respectively.
-Unbound elements of undeclared arrays, array functions,
+Unbound elements of hash tables, array functions,
 and subscripted functions are not returned.
 
 Examples:
 
-@code{listarray} and @code{arrayinfo} applied to a declared array.
+@code{listarray} and @code{arrayinfo} applied to an array.
 
 @c ===beg===
 @c array (aa, 2, 3);
@@ -637,7 +640,7 @@ Examples:
 @end group
 @end example
 
-@code{listarray} and @code{arrayinfo} applied to an undeclared (hashed) array.
+@code{listarray} and @code{arrayinfo} applied to an hash table.
 
 @c ===beg===
 @c bb [FOO] : (a + b)^2;
@@ -882,14 +885,14 @@ changed.
 @fname{remarray} (all)
 
 Removes arrays and array associated functions and frees the storage occupied.
-The arguments may be declared arrays, undeclared (hashed) arrays, array
+The arguments may be arrays, hash tables, array
 functions, and subscripted functions.
 
 @code{remarray (all)} removes all items in the global list @mrefdot{arrays}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
 It may be necessary to use this function if it is
-desired to redefine the values in a hashed array.
+desired to redefine the values in a hash tables.
 
 @code{remarray} returns the list of arrays removed.
 
@@ -971,14 +974,16 @@ Returns @code{true} if @var{expr} is a subscripted variable, for example
 Default value: @code{false}
 
 When @code{use_fast_arrays} is @code{true},
-undeclared arrays and arrays declared by @code{array} are values instead of properties,
-and undeclared arrays are implemented as Lisp hash tables.
+arrays declared by @code{array} are values instead of properties,
+and hash tables are implemented as Lisp hash tables.
 
 When @code{use_fast_arrays} is @code{false},
-undeclared arrays and arrays declared by @code{array} are properties,
-and undeclared arrays are implemented with Maxima's own hash table implementation.
+arrays declared by @code{array} are properties,
+and hash tables are implemented with Maxima's own hash table implementation.
 
-Arrays created by @code{make_array} are not affected by @code{use_fast_arrays}.
+Note that the code @code{use_fast_arrays} switches to is not necessarily faster
+than the default one; Arrays created by @code{make_array} are not affected by
+@code{use_fast_arrays}.
 
 See also @mrefdot{translate_fast_arrays}
 
