@@ -190,7 +190,8 @@
         (if (not (null in))
           (read-hash-table-from-stream in A sep-ch-flag)
           (merror "read_hashed_array no such file `~a'" file-name))))))
-(setf (fdefinition '$read_hashed_array) #'$read_hash_table)
+(defun $read_hashed_array (stream-or-filename A &optional sep-ch-flag)
+  ($read_hash_table stream-or-filename A sep-ch-flag))
 
 (defun read-hash-table-from-stream (in A sep-ch-flag)
   (let (key L (sep-ch (get-input-sep-ch sep-ch-flag in)))
@@ -205,9 +206,10 @@
            (arrstore (list (list A 'array) key) nil)
            (arrstore (list (list A 'array) key) ($rest L)))))))
   A)
-;; I quess read-hashed-array-from-stream was never used by any 3rd party code
+;; I guess read-hashed-array-from-stream was never used by any 3rd party code
 ;; but if I rename it it still feels better to provide a fallback function.
-(setf (fdefinition 'read-hashed-array-from-stream) #'read-hash-table-from-stream)
+(defun read-hashed-array-from-stream (in A sep-ch-flag)
+    (read-hash-table-from-stream in A sep-ch-flag))
 
 ;; ---- functions to read a list or nested list
 

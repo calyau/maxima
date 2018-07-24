@@ -1328,7 +1328,7 @@ Returns the main operator of the expression @var{expr}.
 prefix, binary or n-ary infix, postfix, matchfix, or nofix operator.
 Otherwise, if @var{expr} is a subscripted function expression, @code{op}
 returns the subscripted function; in this case the return value is not an atom.
-Otherwise, @var{expr} is an array function or ordinary function expression,
+Otherwise, @var{expr} is a @mref{memoizing function} or ordinary function expression,
 and @code{op} returns a symbol.
 
 @code{op} observes the value of the global flag @mrefdot{inflag}

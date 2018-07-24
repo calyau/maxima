@@ -6,6 +6,10 @@
 
 Maxima supports 3 array-like constructs:
 @itemize
+@anchor{hash table}
+@anchor{hash tables}
+@anchor{Hash table}
+@anchor{Hash tables}
 @item If one tries to write to an indexed variable without creating a list first a
       hash table is created that grows dynamically and that allows arbitrary numbers,
       symbols and strings as indices:
@@ -43,8 +47,8 @@ Maxima supports 3 array-like constructs:
 (%o6)                           1
 @end group
 @end example
-Since lisp handles hash tables similar to arrays many of the array functions
-can be applied to hash tables, as well.
+Since lisp handles hash tables and @mref{memoizing functions} similar to arrays
+many of the  functions that can be applied to arrays can be applied to them, as well.
 @item Lists (see @mref{makelist} allow for fast addition and removal
       of elements, can be created without knowing their final size.
 @item Arrays that allow fast access to random elements at the cost that their
@@ -110,34 +114,34 @@ instead of a function.
 @deffn {Function} arrayinfo (@var{A})
 
 Returns information about the array @var{A}.
-The argument @var{A} may be an array, a hash table,
-an array function, or a subscripted function.
+The argument @var{A} may be an array, a @mrefcomma{hash table}
+a @mrefcomma{memoizing function} or a subscripted function.
 
 For arrays, @code{arrayinfo} returns a list comprising the atom
 @code{declared}, the number of dimensions, and the size of each dimension.
 The elements of the array, both bound and unbound, are returned by
-@code{listarray}.
+@mrefdot{listarray}
 
 For hash tables @code{arrayinfo} returns a list
 comprising the atom @code{hashed}, the number of subscripts,
 and the subscripts of every element which has a value.
-The values are returned by @code{listarray}.
+The values are returned by @mrefdot{listarray}
 
-For array functions, @code{arrayinfo} returns a list comprising the atom
+For @mrefcomma{memoizing functions} @code{arrayinfo} returns a list comprising the atom
 @code{hashed}, the number of subscripts,
 and any subscript values for which there are stored function values.
-The stored function values are returned by @code{listarray}.
+The stored function values are returned by @mrefdot{listarray}
 
 For subscripted functions, @code{arrayinfo} returns a list comprising the atom
 @code{hashed}, the number of subscripts,
 and any subscript values for which there are lambda expressions.
-The lambda expressions are returned by @code{listarray}.
+The lambda expressions are returned by @mrefdot{listarray}
 
 See also @mrefdot{listarray}
 
 Examples:
 
-@code{arrayinfo} and @code{listarray} applied to an array.
+@code{arrayinfo} and @mref{listarray} applied to an array.
 
 @c ===beg===
 @c array (aa, 2, 3);
@@ -170,7 +174,7 @@ Examples:
 @end group
 @end example
 
-@code{arrayinfo} and @code{listarray} applied to an hash table.
+@code{arrayinfo} and @mref{listarray} applied to a @mrefdot{hash table}
 
 @c ===beg===
 @c bb [FOO] : (a + b)^2;
@@ -200,7 +204,7 @@ Examples:
 @end group
 @end example
 
-@code{arrayinfo} and @code{listarray} applied to an array function.
+@code{arrayinfo} and @mref{listarray} applied to a @mrefdot{memoizing function}
 
 @c ===beg===
 @c cc [x, y] := y / x;
@@ -241,7 +245,7 @@ Examples:
 @end example
 
 
-Using @code{arrayinfo} in order to convert a hash table to an array:
+Using @code{arrayinfo} in order to convert a @mref{hash table} to an array:
 
 @c ===beg===
 @c for i:0 thru 10 do a[i]:i^2$
@@ -264,7 +268,7 @@ Using @code{arrayinfo} in order to convert a hash table to an array:
 @end group
 @end example
 
-@code{arrayinfo} and @code{listarray} applied to a subscripted function.
+@code{arrayinfo} and @mref{listarray} applied to a subscripted function.
 
 @c ===beg===
 @c dd [x] (y) := y ^ x;
@@ -409,9 +413,10 @@ Examples:
 Default value: @code{[]}
 
 @code{arrays} is a list of arrays that have been allocated.
-These comprise arrays declared by @code{array}, hash tables constructed by
-implicit definition (assigning something to an array element),
-and array functions defined by @code{:=} and @code{define}.
+These comprise arrays declared by @mrefcomma{array} @mref{hash tables} that can be
+constructed by implicit definition (assigning something to an element that isn't yet
+declared as a list or an array),
+and @mref{memoizing functions} defined by @code{:=} and @mrefdot{define}
 Arrays defined by @mref{make_array} are not included.
 
 See also
@@ -587,27 +592,27 @@ Multiple-dimension arrays are filled in row-major order.
 @deffn {Function} listarray (@var{A})
 
 Returns a list of the elements of the array @var{A}.
-The argument @var{A} may be an array, an hash table,
-an array function, or a subscripted function.
+The argument @var{A} may be an array, a  @mref{hash table},
+a @mrefcomma{memoizing function} or a subscripted function.
 
 Elements are listed in row-major order.
 That is, elements are sorted according to the first index, then according to
 the second index, and so on.  The sorting order of index values is the same as
 the order established by @mrefdot{orderless}
 
-For hash tables, array functions, and subscripted functions,
+For @mrefcomma{hash tables} @mrefcomma{memoizing functions} and subscripted functions,
 the elements correspond to the index values returned by @mrefdot{arrayinfo}
 
 Unbound elements of general arrays (that is, not @code{fixnum} and not
 @code{flonum}) are returned as @code{#####}.
 Unbound elements of @code{fixnum} or @code{flonum} arrays
 are returned as 0 or 0.0, respectively.
-Unbound elements of hash tables, array functions,
+Unbound elements of hash tables, @mrefcomma{memoizing functions}
 and subscripted functions are not returned.
 
 Examples:
 
-@code{listarray} and @code{arrayinfo} applied to an array.
+@code{listarray} and @mref{arrayinfo} applied to an array.
 
 @c ===beg===
 @c array (aa, 2, 3);
@@ -640,7 +645,7 @@ Examples:
 @end group
 @end example
 
-@code{listarray} and @code{arrayinfo} applied to an hash table.
+@code{listarray} and @mref{arrayinfo} applied to a @mrefdot{hash table}
 
 @c ===beg===
 @c bb [FOO] : (a + b)^2;
@@ -670,7 +675,7 @@ Examples:
 @end group
 @end example
 
-@code{listarray} and @code{arrayinfo} applied to an array function.
+@code{listarray} and @mref{arrayinfo} applied to an @mrefdot{memoizing function}
 
 @c ===beg===
 @c cc [x, y] := y / x;
@@ -710,7 +715,7 @@ Examples:
 @end group
 @end example
 
-@code{listarray} and @code{arrayinfo} applied to a subscripted function.
+@code{listarray} and @mref{arrayinfo} applied to a subscripted function.
 
 @c ===beg===
 @c dd [x] (y) := y ^ x;
@@ -885,14 +890,13 @@ changed.
 @fname{remarray} (all)
 
 Removes arrays and array associated functions and frees the storage occupied.
-The arguments may be arrays, hash tables, array
+The arguments may be arrays, @mrefcomma{hash tables} array
 functions, and subscripted functions.
 
 @code{remarray (all)} removes all items in the global list @mrefdot{arrays}
 
-@c WHAT DOES THIS MEAN EXACTLY ??
 It may be necessary to use this function if it is
-desired to redefine the values in a hash tables.
+desired to clear the cache of a @mrefdot{memoizing function}
 
 @code{remarray} returns the list of arrays removed.
 
@@ -975,17 +979,19 @@ Default value: @code{false}
 
 When @code{use_fast_arrays} is @code{true},
 arrays declared by @code{array} are values instead of properties,
-and hash tables are implemented as Lisp hash tables.
+and @mref{hash tables} are implemented as Lisp hash tables.
 
 When @code{use_fast_arrays} is @code{false},
 arrays declared by @code{array} are properties,
 and hash tables are implemented with Maxima's own hash table implementation.
 
 Note that the code @code{use_fast_arrays} switches to is not necessarily faster
-than the default one; Arrays created by @code{make_array} are not affected by
+than the default one; Arrays created by @mref{make_array} are not affected by
 @code{use_fast_arrays}.
 
 See also @mrefdot{translate_fast_arrays}
+
+tttttttttttttttttttttt
 
 @opencatbox
 @category{Arrays} @category{Global flags}

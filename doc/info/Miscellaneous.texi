@@ -198,7 +198,7 @@ referenced and not yet defined, @var{filename} is loaded via @code{load}.
 @var{filename} usually contains definitions for the functions specified,
 although that is not enforced.
 
-@code{setup_autoload} does not work for array functions.
+@code{setup_autoload} does not work for @mrefdot{memoizing functions}
 
 @code{setup_autoload} quotes its arguments.
 
