@@ -152,7 +152,7 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 @fname{read_hash_table} (@var{S}, @var{A}) @
 @fname{read_hash_table} (@var{S}, @var{A}, @var{separator_flag})
 
-Reads the source @var{S} and returns its entire content as a hash table.
+Reads the source @var{S} and returns its entire content as a @mrefdot{hash table}
 The source @var{S} may be a file name or a stream.
 
 @code{read_hash_table} treats the first item on each line as a hash key,
