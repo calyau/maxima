@@ -507,7 +507,7 @@ switches are not both @code{true}.
 During step (1), a list is made of the non-subscripted variables appearing on
 the left side of equations in the arguments or in the value of some arguments
 if the value is an equation.  The variables (subscripted variables which do not
-have associated array functions as well as non-subscripted variables) in the
+have associated @mref{memoizing functions} as well as non-subscripted variables) in the
 expression @var{expr} are replaced by their global values, except for those
 appearing in this list.  Usually, @var{expr} is just a label or @code{%} (as in
 @code{%i2} in the example below), so this step simply retrieves the expression

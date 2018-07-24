@@ -43,8 +43,8 @@ Maxima supports 3 array-like constructs:
 (%o6)                           1
 @end group
 @end example
-Since lisp handles hash tables similar to arrays many of the array functions
-can be applied to hash tables, as well.
+Since lisp handles hash tables and @mref{memoizing functions} similar to arrays
+many of the  functions that can be applied to arrays can be applied to them, as well.
 @item Lists (see @mref{makelist} allow for fast addition and removal
       of elements, can be created without knowing their final size.
 @item Arrays that allow fast access to random elements at the cost that their
@@ -111,7 +111,7 @@ instead of a function.
 
 Returns information about the array @var{A}.
 The argument @var{A} may be an array, a hash table,
-an array function, or a subscripted function.
+a @mrefcomma{memoizing function} or a subscripted function.
 
 For arrays, @code{arrayinfo} returns a list comprising the atom
 @code{declared}, the number of dimensions, and the size of each dimension.
@@ -123,7 +123,7 @@ comprising the atom @code{hashed}, the number of subscripts,
 and the subscripts of every element which has a value.
 The values are returned by @code{listarray}.
 
-For array functions, @code{arrayinfo} returns a list comprising the atom
+For @mrefcomma{memoizing functions} @code{arrayinfo} returns a list comprising the atom
 @code{hashed}, the number of subscripts,
 and any subscript values for which there are stored function values.
 The stored function values are returned by @code{listarray}.
@@ -200,7 +200,7 @@ Examples:
 @end group
 @end example
 
-@code{arrayinfo} and @code{listarray} applied to an array function.
+@code{arrayinfo} and @code{listarray} applied to a @mrefdot{memoizing function}
 
 @c ===beg===
 @c cc [x, y] := y / x;
@@ -411,7 +411,7 @@ Default value: @code{[]}
 @code{arrays} is a list of arrays that have been allocated.
 These comprise arrays declared by @code{array}, hash tables constructed by
 implicit definition (assigning something to an array element),
-and array functions defined by @code{:=} and @code{define}.
+and @mref{memoizing functions} defined by @code{:=} and @code{define}.
 Arrays defined by @mref{make_array} are not included.
 
 See also
@@ -587,22 +587,22 @@ Multiple-dimension arrays are filled in row-major order.
 @deffn {Function} listarray (@var{A})
 
 Returns a list of the elements of the array @var{A}.
-The argument @var{A} may be an array, an hash table,
-an array function, or a subscripted function.
+The argument @var{A} may be an array, a hash table,
+a @mrefcomma{memoizing function} or a subscripted function.
 
 Elements are listed in row-major order.
 That is, elements are sorted according to the first index, then according to
 the second index, and so on.  The sorting order of index values is the same as
 the order established by @mrefdot{orderless}
 
-For hash tables, array functions, and subscripted functions,
+For hash tables, @mrefcomma{memoizing functions} and subscripted functions,
 the elements correspond to the index values returned by @mrefdot{arrayinfo}
 
 Unbound elements of general arrays (that is, not @code{fixnum} and not
 @code{flonum}) are returned as @code{#####}.
 Unbound elements of @code{fixnum} or @code{flonum} arrays
 are returned as 0 or 0.0, respectively.
-Unbound elements of hash tables, array functions,
+Unbound elements of hash tables, @mrefcomma{memoizing functions}
 and subscripted functions are not returned.
 
 Examples:
@@ -670,7 +670,7 @@ Examples:
 @end group
 @end example
 
-@code{listarray} and @code{arrayinfo} applied to an array function.
+@code{listarray} and @code{arrayinfo} applied to an @mrefdot{memoizing function}
 
 @c ===beg===
 @c cc [x, y] := y / x;

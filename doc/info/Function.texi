@@ -141,6 +141,10 @@ Inside functions, when the right hand side of a definition,
 may be computed at runtime, it is useful to use @code{define} and
 possibly @code{buildq}.
 
+@anchor{memoizing function}
+@anchor{memoizing functions}
+@anchor{Memoizing function}
+@anchor{Memoizing functions}
 @c -----------------------------------------------------------------------------
 @subsection Memoizing Functions
 @c -----------------------------------------------------------------------------
@@ -635,8 +639,8 @@ Examples
 Constructs and evaluates an expression @code{@var{F}(@var{arg_1}, ...,
 @var{arg_n})}.
 
-@code{apply} does not attempt to distinguish array functions from ordinary
-functions; when @var{F} is the name of an array function, @code{apply} evaluates
+@code{apply} does not attempt to distinguish a @mref{memoizing function} from an ordinary 
+function; when @var{F} is the name of a memoizing function, @code{apply} evaluates
 @code{@var{F}(...)} (that is, a function call with parentheses instead of square
 brackets).  @code{arrayapply} evaluates a function call with square brackets in
 this case.
@@ -974,7 +978,7 @@ to limit the code's functionality are the following:
 Defines a function named @var{f} with arguments @var{x_1}, @dots{}, @var{x_n}
 and function body @var{expr}.  @code{define} always evaluates its second
 argument (unless explicitly quoted).  The function so defined may be an ordinary
-Maxima function (with arguments enclosed in parentheses) or an array function
+Maxima function (with arguments enclosed in parentheses) or a @mref{memoizing function}
 (with arguments enclosed in square brackets).
 
 When the last or only function argument @var{x_n} is a list of one element,
@@ -1038,8 +1042,8 @@ Examples:
 @end group
 @end example
 
-The function defined by @code{define} may be an ordinary Maxima function or an
-array function.
+The function defined by @code{define} may be an ordinary Maxima function or a
+@mref{memoizing function}.
 
 @c ===beg===
 @c define (G1 (x, y), x.y - y.x);
@@ -1490,7 +1494,7 @@ An ordinary function is a function constructed by
 A function may be defined at the Maxima prompt
 or in a Maxima file loaded by @code{load} or @code{batch}.
 
-Array functions (called with square brackets, e.g., @code{F[x]}) and subscripted
+@mref{Memoizing functions} (called with square brackets, e.g., @code{F[x]}) and subscripted
 functions (called with square brackets and parentheses, e.g., @code{F[x](y)})
 are listed by the global variable @code{arrays}, and not by @code{functions}.
 
@@ -1571,7 +1575,7 @@ The argument may be
 @itemize @bullet
 @item the name of a macro (defined with @code{::=}),
 @item an ordinary function (defined with @code{:=} or @code{define}),
-@item an array function (defined with @code{:=} or @code{define}, but enclosing arguments in square brackets @code{[ ]}),
+@item a @mref{memoizing function} (defined with @code{:=} or @code{define}, but enclosing arguments in square brackets @code{[ ]}),
 @item a subscripted function (defined with @code{:=} or @code{define},
 but enclosing some arguments in square brackets and others in parentheses
 @code{( )}),
@@ -1601,8 +1605,8 @@ Returns an expression @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
 The return value is simplified, but not evaluated,
 so the function @var{F} is not called, even if it exists.
 
-@code{funmake} does not attempt to distinguish array functions from ordinary
-functions; when @var{F} is the name of an array function,
+@code{funmake} does not attempt to distinguish @mref{memoizing functions} from ordinary 
+functions; when @var{F} is the name of a memoizing function,
 @code{funmake} returns @code{@var{F}(...)}
 (that is, a function call with parentheses instead of square brackets).
 @code{arraymake} returns a function call with square brackets in this case.
@@ -2497,7 +2501,7 @@ The arguments may be the names of ordinary functions (created by @mref{:=} or
 definition was unbound.  @code{false} is returned in place of any symbol for
 which there is no function definition.
 
-@code{remfunction} does not apply to array functions or subscripted functions.
+@code{remfunction} does not apply to @mref{memoizing functions} or subscripted functions.
 @mref{remarray} applies to those types of functions.
 
 @opencatbox

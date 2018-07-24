@@ -65,7 +65,7 @@ itself, since after it has been through the simplifier the list would become
 @code{[} and @code{]} mark the beginning and end, respectively, of a list.
 
 @code{[} and @code{]} also enclose the subscripts of
-a list, array, hash table, or array function. Note that
+a list, array, hash table, or @mrefdot{memoizing function} Note that
 other than for arrays accessing the @code{n}th element of a list
 may need an amount of time that is roughly proportional to  @code{n},
 @xref{Performance considerations for Lists}.

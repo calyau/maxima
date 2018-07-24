@@ -1206,15 +1206,16 @@ The function definition operator.
 evaluated by quote-quote @code{'@w{}'}).
 The function body is evaluated every time the function is called.
 
-@code{@var{f}[@var{x_1}, ..., @var{x_n}] := @var{expr}} defines a so-called array function.
+@code{@var{f}[@var{x_1}, ..., @var{x_n}] := @var{expr}} defines a so-called
+@mrefdot{memoizing function}
 Its function body is evaluated just once for each distinct value of its arguments,
 and that value is returned, without evaluating the function body,
 whenever the arguments have those values again.
-(A function of this kind is commonly known as a ``memoizing function''.)
+(A function of this kind is also known as a ``array function''.)
 
 @code{@var{f}[@var{x_1}, ..., @var{x_n}](@var{y_1}, ..., @var{y_m}) := @var{expr}}
-is a special case of an array function.
-@code{@var{f}[@var{x_1}, ..., @var{x_n}]} is an array function which returns a lambda expression
+is a special case of a @mrefdot{memoizing function}
+@code{@var{f}[@var{x_1}, ..., @var{x_n}]} is a @mref{memoizing function} which returns a lambda expression
 with arguments @code{@var{y_1}, ..., @var{y_m}}.
 The function body is evaluated once for each distinct value of @code{@var{x_1}, ..., @var{x_n}},
 and the body of the lambda expression is that value.
@@ -1281,7 +1282,7 @@ Evaluating G1 for x= [1, a] and y= [2, b]
 (%o3)                           0
 @end example
 
-@code{f[@var{x_1}, ..., @var{x_n}] := ...} defines an array function.
+@code{f[@var{x_1}, ..., @var{x_n}] := ...} defines a @mrefdot{memoizing function}
 
 @c ===beg===
 @c G2[a] := (print ("Evaluating G2 for a=", a), a^2);
@@ -1311,7 +1312,7 @@ Evaluating G2 for a= 2345
 @end example
 
 @code{@var{f}[@var{x_1}, ..., @var{x_n}](@var{y_1}, ..., @var{y_m}) := @var{expr}}
-is a special case of an array function.
+is a special case of a @mrefdot{memoizing function}
 
 @c ===beg===
 @c G3[n](x) := (print ("Evaluating G3 for n=", n), diff (sin(x)^2, x, n));
