@@ -176,6 +176,81 @@ However, there is no way to remove all of the stored values at once,
 except for @code{kill(@var{a})} or @code{remarray(@var{a})},
 which also remove the function definition.
 
+
+Examples
+
+If evaluating the function needs much time and only a limited number of points
+is ever evaluated (which means not much time is spent looking up results in a
+long list of cached results) Memoizing functions can speed up calculations
+considerably.
+@c ===beg===
+@c showtime:true$
+@c a[x]:=float(sum(sin(x*t),t,1,10000));
+@c a[1];
+@c a[1];
+@c ===end===
+@example
+@group
+(%i1) showtime:true$
+Evaluation took 0.0000 seconds (0.0000 elapsed) using 0 bytes.
+@end group
+@group
+(%i2) a[x]:=float(sum(sin(x*t),t,1,10000));
+Evaluation took 0.0000 seconds (0.0000 elapsed) using 0 bytes.
+(%o2)        a  := float(sum(sin(x t), t, 1, 10000))
+              x
+@end group
+@group
+(%i3) a[1];
+Evaluation took 5.1250 seconds (5.1260 elapsed) using 775.250 MB.
+(%o3)                   1.633891021792447
+@end group
+@group
+(%i4) a[1];
+Evaluation took 0.0000 seconds (0.0000 elapsed) using 0 bytes.
+(%o4)                   1.633891021792447
+@end group
+@end example
+
+As the memoizing function is only evaluated once for each input value
+changes in variables the memoizing function uses are not considered
+for values that are already cached:
+@c ===beg===
+@c a[x]:=b*x;
+@c b:1;
+@c a[2];
+@c b:2;
+@c a[1];
+@c a[2];
+@c ===end===
+@example
+@group
+(%i1) a[x]:=b*x;
+(%o1)                       a  := b x
+                             x
+@end group
+@group
+(%i2) b:1;
+(%o2)                           1
+@end group
+@group
+(%i3) a[2];
+(%o3)                           2
+@end group
+@group
+(%i4) b:2;
+(%o4)                           2
+@end group
+@group
+(%i5) a[1];
+(%o5)                           2
+@end group
+@group
+(%i6) a[2];
+(%o6)                           2
+@end group
+@end example
+
 @c -----------------------------------------------------------------------------
 @node Macros, Functions and Variables for Function Definition, Function, Function Definition
 @section Macros
