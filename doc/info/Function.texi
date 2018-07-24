@@ -142,15 +142,15 @@ may be computed at runtime, it is useful to use @code{define} and
 possibly @code{buildq}.
 
 @c -----------------------------------------------------------------------------
-@subsection Array functions
+@subsection Memoizing Functions
 @c -----------------------------------------------------------------------------
 
-An array function stores the function value the first time it is called with a
+A @i{memoizing function} caches the result the first time it is called with a
 given argument, and returns the stored value, without recomputing it, when that
-same argument is given.  Such a function is often called a
-@i{memoizing function}.
+same argument is given.  Memoizing functions are often called
+@i{array function} and are in fact handled like arrays in many ways:
 
-Array function names are appended to the global list @code{arrays}
+The names of memoizing functions are appended to the global list @code{arrays}
 (not the global list @code{functions}).  @code{arrayinfo} returns the list of
 arguments for which there are stored values, and @code{listarray} returns the
 stored values.  @code{dispfun} and @code{fundef} return the array function
