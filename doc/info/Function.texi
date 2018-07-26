@@ -2305,10 +2305,54 @@ x + 99 is equal to x
 @defvr {Option variable} mode_checkp
 Default value: @code{true}
 
-@c WHAT DOES THIS MEAN ??
-When @code{mode_checkp} is @code{true}, @code{mode_declare} checks the modes
-of bound variables.
-@c NEED SOME EXAMPLES HERE.
+When @code{mode_checkp} is @code{true}, @mref{mode_declare} does not only define
+which type a variable will be of so the compiler can generate more efficient code,
+but will also create a runtime warning if the variable isn't of the variable type
+the code was compiled to deal with.
+
+@c ===beg===
+@c mode_checkp:true;
+@c square(f):=(
+@c	    mode_declare(f,float),
+@c	    f^2);
+@c	compile(square);
+@c	square(2.3);
+@c	square(4);
+@c ===end===
+@example
+@group
+(%i1) mode_checkp:true;
+(%o1)                         true
+@end group
+@group
+(%i2) square(f):=(
+    mode_declare(f,float),
+    f^2);
+                                                   2
+(%o2)       square(f) := (mode_declare(f, float), f )
+@end group
+@group
+(%i3) compile(square);
+(%o3)                       [square]
+@end group
+@group
+(%i4) square(2.3);
+(%o4)                   5.289999999999999
+@end group
+@group
+(%i5) square(4);
+Maxima encountered a Lisp error:
+
+ The value
+   4
+ is not of type
+   DOUBLE-FLOAT
+ when binding $F
+
+Automatically continuing.
+To enable the Lisp debugger set *debugger-hook* to nil.
+@end group
+@end example
 
 @opencatbox
 @category{Translation flags and variables}
