@@ -2364,7 +2364,6 @@ To enable the Lisp debugger set *debugger-hook* to nil.
 @defvr {Option variable} mode_check_errorp
 Default value: @code{false}
 
-@c WHAT DOES THIS MEAN ??
 When @code{mode_check_errorp} is @code{true}, @code{mode_declare} calls
 error.
 @c NEED SOME EXAMPLES HERE.
@@ -2412,6 +2411,9 @@ integer          integers (including arbitrary-size integers)
 fixnum           integers (excluding arbitrary-size integers)
 float            machine-size floating-point numbers
 real             machine-size floating-point or integer
+@c DOES NUMBER INCLUDE BFLOATS AND ARBITRARY-SIZE INTS?
+number           Numbers
+any              any kind of object (useful for arrays of any)
 @end example
 
 A function parameter named @code{t} can be declared as an array filled with elements
@@ -2493,37 +2495,43 @@ Example:
 @closecatbox
 @end deffn
 
-@c WHAT IS THIS ABOUT ??
-@c NEEDS CLARIFICATION AND EXAMPLES
-
+@c NEEDS MORE EXAMPLES?
 @c -----------------------------------------------------------------------------
 @anchor{mode_identity}
 @deffn {Function} mode_identity (@var{arg_1}, @var{arg_2})
 
-A special form used with @mref{mode_declare} and @code{macros} to declare, e.g.,
-a list of lists of flonums, or other compound data object.  The first argument
-to @code{mode_identity} is a primitive value mode name as given to
-@code{mode_declare} (i.e., one of @code{float}, @code{fixnum}, @code{number},
-@code{list}, or @code{any}), and the second argument is an expression which is
-evaluated and returned as the value of @code{mode_identity}.  However, if the
-return value is not allowed by the mode declared in the first
-argument, an error or warning is signalled.  The important thing is
-that the mode of the expression as determined by the Maxima to Lisp
-translator, will be that given as the first argument, independent of
-anything that goes on in the second argument.
-E.g., @code{x: 3.3; mode_identity (fixnum, x);} yields an error.
-@code{mode_identity (flonum, x)} returns 3.3 .
-This has a number of uses, e.g., if you knew that @code{first (l)} returned a
-number then you might write @code{mode_identity (number, first (l))}.  However,
-a more efficient way to do it would be to define a new primitive,
+@code{mode_identity} works similar to @mref{mode_declare}, but is used for
+informing the compiler that a thing like a @code{macro} or a list operation
+will only return a specific type of object. The purpose of doing so is that
+maxima supports many objects: Machine integers, arbitrary length integers,
+equations, machine floats, big floats, which means that for everything that
+deals with return values of operations that can result in any object the
+compiler needs to output generic (and therefore potentially slow) code.
+
+The first argument to @code{mode_identity} is the type of return value
+something will return (for possible types see @mref{mode_declare}).
+(i.e., one of @code{float}, @code{fixnum}, @code{number},
+The second argument is the expression that will return an object of this
+type.
+
+If the the return value of this expression is of a type the code was not
+compiled for error or warning is signalled.
+@c ARE THE MODE_DECLARE VARIABLES FOR TURNING OFF THIS ERROR OR WARNING
+@c EFFECTIVE HERE, TOO?
+
+If you knew that @code{first (l)} returned a number then you could write
 
 @example
-firstnumb (x) ::= buildq ([x], mode_identity (number, first(x)));
+@code{mode_identity (number, first (l))}.
 @end example
-
-and use @code{firstnumb}
-every time you take the first of a list of numbers.
-
+However, if you need this construct more often it would be more efficient
+to define a function that returns a number fist:
+@example
+firstnumb (x) ::= buildq ([x], mode_identity (number, first(x)));
+compile(firstnumb)
+@end example
+@code{firstnumb} now can be used every time you need the first element
+of a list that is guaranteed to be filled with numbers.
 @opencatbox
 @category{Translation and compilation}
 @closecatbox
