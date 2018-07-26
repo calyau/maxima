@@ -1245,6 +1245,7 @@ translator: foo was declared with mode boolean
 @group
 (%i5) bar: 1440;
 1440 is not prime.
+#0: prime_test(y=1440)
  -- an error. To debug this try: debugmode(true);
 @end group
 @group
@@ -1289,6 +1290,7 @@ The mode @code{any_check} is like @code{any}, but @code{any_check} enables the
 @group
 (%i5) baz_quux: sqrt(2);
 Cannot assign to `baz_quux'.
+#0: lambda([y],if y # 'baz_quux then error("Cannot assign to `baz_quux'."))(y=sqrt(2))
  -- an error. To debug this try: debugmode(true);
 @end group
 @group
@@ -2341,25 +2343,21 @@ described.
 @closecatbox
 @end defvr
 
-@c NEEDS CLARIFICATION AND EXAMPLES
+@c NEEDS AN EXAMPLE FOR DECLARING THE RETURN TYPE
 
 @c -----------------------------------------------------------------------------
 @anchor{mode_declare}
+@anchor{modedeclare}
 @deffn {Function} mode_declare (@var{y_1}, @var{mode_1}, @dots{}, @var{y_n}, @var{mode_n})
 
-@code{mode_declare} is used to declare the type of variables and functions for
-subsequent translation or compilation of the current function: Declaring the
-type of a variable in advance avoids having to generate very generic (and thus 
-potentially slow) code.  @code{mode_declare} is typically placed at the
-beginning of a function definition, at the beginning of a Maxima script, or 
-executed at the interactive prompt.
+A @code{mode_declare} informs the compiler which type (lisp programmers name the type:
+``mode'') a function parameter or its return value will be of. This can greatly
+boost the efficiency of the code the compiler generates: Without knowing the type of
+all variables and knowing the return value of all functions a function uses
+in advance very generic (and thus potentially slow) code needs to be generated.
 
-The arguments of @code{mode_declare} are pairs consisting of a variable and a
-mode which is one of @code{boolean}, @code{fixnum}, @code{number},
-@code{rational}, or @code{float}.  Each variable may also be a list of variables
-all of which are declared to have the same mode.
-
-Some types of variables maxima supports are:
+The arguments of @code{mode_declare} are pairs consisting of a variable (or a list
+of variables all having the same mode) and a mode. Available modes (``types'') are:
 @example
 array            an declared array (see the detailed description below)
 string           a string
@@ -2370,43 +2368,39 @@ float            machine-size floating-point numbers
 real             machine-size floating-point or integer
 @end example
 
-@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
-If a variable is an array, and if every element of the array which is
-referenced has a value then @code{array (yi, complete, dim1, dim2, ...)}
-rather than
+A function parameter named @code{t} can be declared as an array filled with elements
+of the type @code{t} the following way:
 @example
-array(yi, dim1, dim2, ...)
+mode_declare (a, array(t, dim1, dim2, ...))
 @end example
-should be used when first declaring the bounds of the array.
-@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
-If all the elements of the array are of mode @code{fixnum} (@code{float}), use
-@code{fixnum} (@code{float}) instead of @code{complete}.
-@c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
-Also if every element of the array is of the same mode, say @code{m}, then
-
+If it is known that all elements of the array @code{a} are guaranteed to have already
+been assigned a value additional code can be omitted by declaring this fact, too:
 @example
-mode_declare (completearray (yi), m))
+mode_declare (a, array (t, complete, dim1, dim2, ...))
+@end example
+The @code{complete} has no effect if all array elements are of the type
+@code{fixnum} or @code{float}: Machine-sized numbers inevitably contain a value
+(and will automatically be initialized to 0 in most lisp implementations).
+
+Another way to tell that all entries of the array @code{a} are of the type
+(``mode'') @code{m} and have been assigned a value to would be:
+@example
+mode_declare (completearray (a), m))
 @end example
 
-should be used for efficient translation.
-
-Numeric code using arrays might run faster
-by declaring the expected size of the array, as in:
-
+Numeric code using arrays might run faster still if the size of the array is
+known at compile time, as well, as in:
 @example
 mode_declare (completearray (a [10, 10]), float)
 @end example
+for a floating point number array named @code{a} which is 10 x 10.
 
-for a floating point number array which is 10 x 10.
-
-One may declare the mode of the result of a function by using
-@code{function (f_1, f_2, ...)} as an argument; here @code{f_1}, @code{f_2},
-@dots{} are the names of functions.  For example the expression,
-
+@code{mode_declare} also can be used in order to declare the mode of the result
+of a function. In this case the function compilation needs to be preceded by
+another @code{mode_declare} statement. For example the expression,
 @example
 mode_declare ([function (f_1, f_2, ...)], fixnum)
 @end example
-
 declares that the values returned by @code{f_1}, @code{f_2}, @dots{} are
 single-word integers.
 
@@ -2420,6 +2414,7 @@ Example:
 @c      mode_declare(f,float),
 @c      f*f
 @c  );
+@c mode_declare([function(f)],float);
 @c compile(square_float);
 @c square_float(100.0);
 @c ===end===
@@ -2432,12 +2427,16 @@ Example:
 (%o1)   square_float(f) := (mode_declare(f, float), f f)
 @end group
 @group
-(%i2) compile(square_float);
-(%o2)                    [square_float]
+(%i2) mode_declare([function(f)],float);
+(%o2)                    [[function(f)]]
 @end group
 @group
-(%i3) square_float(100.0);
-(%o3)                        10000.0
+(%i3) compile(square_float);
+(%o3)                    [square_float]
+@end group
+@group
+(%i4) square_float(100.0);
+(%o4)                        10000.0
 @end group
 @end example
 
