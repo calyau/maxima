@@ -1131,17 +1131,19 @@ When the first argument is an expression with operator @code{funmake},
 @deffn {Function} define_variable (@var{name}, @var{default_value}, @var{mode})
 
 Introduces a global variable into the Maxima environment.
-@c IMPORT OF FOLLOWING STATEMENT UNCLEAR: IN WHAT WAY IS define_variable
-@c MORE USEFUL IN TRANSLATED CODE ??
 @code{define_variable} is useful in user-written packages, which are often
-translated or compiled.
+translated or compiled as it gives the compiler hints of the type (``mode'')
+of a variable and therefore avoids requiring it to generate generic code that
+can deal with every variable being an integer, float, maxima object, array etc.
 
 @code{define_variable} carries out the following steps:
 
 @enumerate
 @item
-@code{mode_declare (@var{name}, @var{mode})} declares the mode of @var{name} to
-the translator.  See @code{mode_declare} for a list of the possible modes.
+@code{mode_declare (@var{name}, @var{mode})} declares the mode (``type'') of
+@var{name} to the translator which can considerably speed up compiled code as
+it allows having to create generic code. See @mref{mode_declare} for a list of
+the possible modes.
 
 @item
 If the variable is unbound, @var{default_value} is assigned to @var{name}.
@@ -2406,7 +2408,8 @@ single-word integers.
 
 @code{modedeclare} is a synonym for @code{mode_declare}.
 
-See @mref{mode_identity} for declaring the type of lists.
+See @mref{mode_identity} for declaring the type of lists and @mref{define_variable} for
+declaring the type of all global variables compiled code uses, as well.
 
 Example:
 @c ===beg===
