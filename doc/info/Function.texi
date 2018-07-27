@@ -2301,6 +2301,120 @@ x + 99 is equal to x
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{mode_declare}
+@anchor{modedeclare}
+@deffn {Function} mode_declare (@var{y_1}, @var{mode_1}, @dots{}, @var{y_n}, @var{mode_n})
+
+A @code{mode_declare} informs the compiler which type (lisp programmers name the type:
+``mode'') a function parameter or its return value will be of. This can greatly
+boost the efficiency of the code the compiler generates: Without knowing the type of
+all variables and knowing the return value of all functions a function uses
+in advance very generic (and thus potentially slow) code needs to be generated.
+
+The arguments of @code{mode_declare} are pairs consisting of a variable (or a list
+of variables all having the same mode) and a mode. Available modes (``types'') are:
+@example
+array            an declared array (see the detailed description below)
+string           a string
+boolean          true or false
+integer          integers (including arbitrary-size integers)
+fixnum           integers (excluding arbitrary-size integers)
+float            machine-size floating-point numbers
+real             machine-size floating-point or integer
+@c DOES NUMBER, EVEN AND ODD INCLUDE BFLOATS AND ARBITRARY-SIZE INTS?
+number           Numbers
+even             Even integers
+odd              Odd integers
+any              any kind of object (useful for arrays of any)
+@end example
+
+A function parameter named @code{a} can be declared as an array filled with elements
+of the type @code{t} the following way:
+@example
+mode_declare (a, array(t, dim1, dim2, ...))
+@end example
+If none of the elements of the array @code{a} needs to be checked if it still doesn't
+contain a value additional code can be omitted by declaring this fact, too:
+@example
+mode_declare (a, array (t, complete, dim1, dim2, ...))
+@end example
+The @code{complete} has no effect if all array elements are of the type
+@code{fixnum} or @code{float}: Machine-sized numbers inevitably contain a value
+(and will automatically be initialized to 0 in most lisp implementations).
+
+Another way to tell that all entries of the array @code{a} are of the type
+(``mode'') @code{m} and have been assigned a value to would be:
+@example
+mode_declare (completearray (a), m))
+@end example
+
+Numeric code using arrays might run faster still if the size of the array is
+known at compile time, as well, as in:
+@example
+mode_declare (completearray (a [10, 10]), float)
+@end example
+for a floating point number array named @code{a} which is 10 x 10.
+
+@code{mode_declare} also can be used in order to declare the type of the result
+of a function. In this case the function compilation needs to be preceded by
+another @code{mode_declare} statement. For example the expression,
+@example
+mode_declare ([function (f_1, f_2, ...)], fixnum)
+@end example
+declares that the values returned by @code{f_1}, @code{f_2}, @dots{} are
+single-word integers.
+
+@code{modedeclare} is a synonym for @code{mode_declare}.
+
+If the type of function parameters and results doesn't match the declaration by
+@code{mode_declare} the function may misbehave or a warning or an error might
+occur, see @mrefcomma{mode_checkp} @mref{mode_check_errorp} and
+@mrefdot{mode_check_warnp}
+
+See @mref{mode_identity} for declaring the type of lists and @mref{define_variable} for
+declaring the type of all global variables compiled code uses, as well.
+
+Example:
+@c ===beg===
+@c square_float(f):=(
+@c      mode_declare(f,float),
+@c      f*f
+@c  );
+@c mode_declare([function(f)],float);
+@c compile(square_float);
+@c square_float(100.0);
+@c ===end===
+@example
+@group
+(%i1) square_float(f):=(
+     mode_declare(f,float),
+     f*f
+ );
+(%o1)   square_float(f) := (mode_declare(f, float), f f)
+@end group
+@group
+(%i2) mode_declare([function(f)],float);
+(%o2)                    [[function(f)]]
+@end group
+@group
+(%i3) compile(square_float);
+(%o3)                    [square_float]
+@end group
+@group
+(%i4) square_float(100.0);
+(%o4)                        10000.0
+@end group
+@end example
+
+
+@opencatbox
+@category{Translation and compilation}
+@closecatbox
+@end deffn
+
+@c NEEDS MORE EXAMPLES?
+
+@c -----------------------------------------------------------------------------
 @anchor{mode_checkp}
 @defvr {Option variable} mode_checkp
 Default value: @code{true}
@@ -2390,112 +2504,6 @@ described.
 
 @c NEEDS AN EXAMPLE FOR DECLARING THE RETURN TYPE
 
-@c -----------------------------------------------------------------------------
-@anchor{mode_declare}
-@anchor{modedeclare}
-@deffn {Function} mode_declare (@var{y_1}, @var{mode_1}, @dots{}, @var{y_n}, @var{mode_n})
-
-A @code{mode_declare} informs the compiler which type (lisp programmers name the type:
-``mode'') a function parameter or its return value will be of. This can greatly
-boost the efficiency of the code the compiler generates: Without knowing the type of
-all variables and knowing the return value of all functions a function uses
-in advance very generic (and thus potentially slow) code needs to be generated.
-
-The arguments of @code{mode_declare} are pairs consisting of a variable (or a list
-of variables all having the same mode) and a mode. Available modes (``types'') are:
-@example
-array            an declared array (see the detailed description below)
-string           a string
-boolean          true or false
-integer          integers (including arbitrary-size integers)
-fixnum           integers (excluding arbitrary-size integers)
-float            machine-size floating-point numbers
-real             machine-size floating-point or integer
-@c DOES NUMBER INCLUDE BFLOATS AND ARBITRARY-SIZE INTS?
-number           Numbers
-any              any kind of object (useful for arrays of any)
-@end example
-
-A function parameter named @code{t} can be declared as an array filled with elements
-of the type @code{t} the following way:
-@example
-mode_declare (a, array(t, dim1, dim2, ...))
-@end example
-If it is known that all elements of the array @code{a} are guaranteed to have already
-been assigned a value additional code can be omitted by declaring this fact, too:
-@example
-mode_declare (a, array (t, complete, dim1, dim2, ...))
-@end example
-The @code{complete} has no effect if all array elements are of the type
-@code{fixnum} or @code{float}: Machine-sized numbers inevitably contain a value
-(and will automatically be initialized to 0 in most lisp implementations).
-
-Another way to tell that all entries of the array @code{a} are of the type
-(``mode'') @code{m} and have been assigned a value to would be:
-@example
-mode_declare (completearray (a), m))
-@end example
-
-Numeric code using arrays might run faster still if the size of the array is
-known at compile time, as well, as in:
-@example
-mode_declare (completearray (a [10, 10]), float)
-@end example
-for a floating point number array named @code{a} which is 10 x 10.
-
-@code{mode_declare} also can be used in order to declare the mode of the result
-of a function. In this case the function compilation needs to be preceded by
-another @code{mode_declare} statement. For example the expression,
-@example
-mode_declare ([function (f_1, f_2, ...)], fixnum)
-@end example
-declares that the values returned by @code{f_1}, @code{f_2}, @dots{} are
-single-word integers.
-
-@code{modedeclare} is a synonym for @code{mode_declare}.
-
-See @mref{mode_identity} for declaring the type of lists and @mref{define_variable} for
-declaring the type of all global variables compiled code uses, as well.
-
-Example:
-@c ===beg===
-@c square_float(f):=(
-@c      mode_declare(f,float),
-@c      f*f
-@c  );
-@c mode_declare([function(f)],float);
-@c compile(square_float);
-@c square_float(100.0);
-@c ===end===
-@example
-@group
-(%i1) square_float(f):=(
-     mode_declare(f,float),
-     f*f
- );
-(%o1)   square_float(f) := (mode_declare(f, float), f f)
-@end group
-@group
-(%i2) mode_declare([function(f)],float);
-(%o2)                    [[function(f)]]
-@end group
-@group
-(%i3) compile(square_float);
-(%o3)                    [square_float]
-@end group
-@group
-(%i4) square_float(100.0);
-(%o4)                        10000.0
-@end group
-@end example
-
-
-@opencatbox
-@category{Translation and compilation}
-@closecatbox
-@end deffn
-
-@c NEEDS MORE EXAMPLES?
 @c -----------------------------------------------------------------------------
 @anchor{mode_identity}
 @deffn {Function} mode_identity (@var{arg_1}, @var{arg_2})
