@@ -462,10 +462,12 @@ is EQ to FNNAME if the latter is non-NIL."
       (cdr form)))
 
 (defun badfunchk (name val flag)
+  (declare (special aryp))
   (if (or flag (numberp val) (member val '(t nil $%e $%pi $%i) :test #'eq))
-      (if (and (atom name) (not (equal val name)))
-        (merror (intl:gettext "apply: found ~M evaluates to ~M where a function was expected.") name val)
-        (merror (intl:gettext "apply: found ~M where a function was expected.") val))))
+      (let ((type (if aryp (intl:gettext "an array") (intl:gettext "a function"))))
+        (if (and (atom name) (not (equal val name)))
+            (merror (intl:gettext "apply: found ~M evaluates to ~M where ~M was expected.") name val type)
+            (merror (intl:gettext "apply: found ~M where ~M was expected.") val type)))))
 
 ;; To store the value of $errormsg in mbind. This value is looked up in the
 ;; routine mbind-doit. This is a hack to get the expected behavior, when the
