@@ -14,7 +14,7 @@
 ;;   read_matrix (source, M, sep_ch_flag)
 ;;   A : read_array (source, sep_ch_flag)
 ;;   read_array (source, A, sep_ch_flag)
-;;   read_hash_table (source, A, sep_ch_flag)
+;;   read_hashed_array (source, A, sep_ch_flag)
 ;;   L: read_nested_list (source, sep_ch_flag)
 ;;   L: read_list (source, sep_ch_flag)
 ;;   read_list (source, L, sep_ch_flag)
@@ -182,18 +182,16 @@
 
 ;; ---- functions to read a Maxima undeclared array
 
-(defun $read_hash_table (stream-or-filename A &optional sep-ch-flag)
+(defun $read_hashed_array (stream-or-filename A &optional sep-ch-flag)
   (if (streamp stream-or-filename)
-    (read-hash-table-from-stream stream-or-filename A sep-ch-flag)
+    (read-hashed-array-from-stream stream-or-filename A sep-ch-flag)
     (let ((file-name (require-string stream-or-filename)))
       (with-open-file (in file-name :if-does-not-exist nil)
         (if (not (null in))
-          (read-hash-table-from-stream in A sep-ch-flag)
+          (read-hashed-array-from-stream in A sep-ch-flag)
           (merror "read_hashed_array no such file `~a'" file-name))))))
-(defun $read_hashed_array (stream-or-filename A &optional sep-ch-flag)
-  ($read_hash_table stream-or-filename A sep-ch-flag))
 
-(defun read-hash-table-from-stream (in A sep-ch-flag)
+(defun read-hashed-array-from-stream (in A sep-ch-flag)
   (let (key L (sep-ch (get-input-sep-ch sep-ch-flag in)))
     (loop
       (setq L (read-line in nil 'eof))
@@ -206,10 +204,6 @@
            (arrstore (list (list A 'array) key) nil)
            (arrstore (list (list A 'array) key) ($rest L)))))))
   A)
-;; I guess read-hashed-array-from-stream was never used by any 3rd party code
-;; but if I rename it it still feels better to provide a fallback function.
-(defun read-hashed-array-from-stream (in A sep-ch-flag)
-    (read-hash-table-from-stream in A sep-ch-flag))
 
 ;; ---- functions to read a list or nested list
 

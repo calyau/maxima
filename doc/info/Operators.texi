@@ -916,7 +916,7 @@ Maxima array, or Lisp array, the right-hand side is assigned to that element.
 The subscript must name an existing element; such objects cannot be extended by
 naming nonexistent elements.
 
-When the left-hand side is a subscripted element of a @mrefcomma{hash table}
+When the left-hand side is a subscripted element of a @mrefcomma{hashed array}
 the right-hand side is assigned to that element, if it already exists,
 or a new element is allocated, if it does not already exist.
 
@@ -962,7 +962,7 @@ Assignment to an element of a list.
 @end example
 
 Assignment to a variable that neither is the name of a list nor of an array
-creates a @mrefdot{hash table}
+creates a @mrefdot{hashed array}
 
 @c ===beg===
 @c c[99] : 789;

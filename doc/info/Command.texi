@@ -457,7 +457,7 @@ created by @mref{:} or @mref{::} or functional binding.
 @item functions
 All user-defined functions, created by @mref{:=} or @mrefdot{define}
 @item arrays
-All arrays, @mref{hash tables} and @mref{memoizing functions}.
+All arrays, @mref{hashed arrays} and @mref{memoizing functions}.
 @item macros
 All user-defined macro functions, created by @mrefdot{::=}
 @item myoptions

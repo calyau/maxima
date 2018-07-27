@@ -1102,7 +1102,7 @@ Returns a matrix generated from @var{a}, taking element
 @code{@var{a}[@var{i_1}, @var{j_1}]} as the upper-left element and
 @code{@var{a}[@var{i_2}, @var{j_2}]} as the lower-right element of the matrix.
 Here @var{a} is a declared array (created by @code{array} but not by
-@mref{make_array}) or a @mrefcomma{hash table} or a @mrefcomma{memoizing function} or a lambda
+@mref{make_array}) or a @mrefcomma{hashed array} or a @mrefcomma{memoizing function} or a lambda
 expression of two arguments.  (A @mref{memoizing function} is created like other functions
 with @mref{:=} or @mrefcomma{define} but arguments are enclosed in square
 brackets instead of parentheses.)

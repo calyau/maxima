@@ -215,7 +215,6 @@
     $read_binary_list
     $read_binary_matrix
     $read_hashed_array
-    $read_hash_table
     $read_lisp_array
     $read_list
     $read_matrix
