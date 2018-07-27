@@ -26,7 +26,7 @@ extend the built-in simplification rules for the @code{abs} and @code{signum}
 functions.
 @code{absimp} respects relations
 established with the built-in @code{assume} function and by declarations such
-as  @code{modedeclare (m, even, n, odd)}  for even or odd integers.
+as  @code{mode_declare (m, even, n, odd)}  for even or odd integers.
 
 @code{absimp} defines @code{unitramp} and @code{unitstep} functions
 in terms of @code{abs} and @code{signum}.
