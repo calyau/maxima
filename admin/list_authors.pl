@@ -105,39 +105,42 @@ for (my $y=$year; $y >= 2000; $y--) {
         $authors[$i] =~ s/^andrejv$/Andrej Vodopivec/;
         $authors[$i] =~ s/^are_muc$/Andreas Eder/;
         $authors[$i] =~ s/^Andreas Eder \(are_muc\)$/Andreas Eder/;
-        # unknown: Author: belanger <belanger>
-        # unknown: Author: beshenov <beshenov>
+        $authors[$i] =~ s/^belanger$/Jay Belanger/;
+        $authors[$i] =~ s/^beshenov$/Alexey Beshenov/;
         $authors[$i] =~ s/^billingd$/David Billinghurst/;
         $authors[$i] =~ s/^crategus$/Dieter Kaiser/;
         $authors[$i] =~ s/^dgildea$/Dan Gildea/;
         $authors[$i] =~ s/^dstang$/Dan Stanger/;
-        $authors[$i] =~ s/^dtc$/Douglas/;  # Incomplete. Does someone know the complete name?
+        $authors[$i] =~ s/^dtc$/Douglas Crosher/;
+        $authors[$i] =~ s/^fabriziocaruso$/Fabrizio Caruso/;
+        $authors[$i] =~ s/^FabrizioCaruso$/Fabrizio Caruso/;
+        $authors[$i] =~ s/^Fabrizio CARUSO$/Fabrizio Caruso/;
         $authors[$i] =~ s/^ficmatinfmag$/Jorge Barros de Abreu/;
         # unknown: Author: grozin <grozin>
-        # unknown: Author: hgeyer <hgeyer>
+        $authors[$i] =~ s/^hgeyer$/Harald Geyer/;
         $authors[$i] =~ s/^jpromerobx-max$/Juan Pablo Romero Bernal/;
         $authors[$i] =~ s/^l_butler$/Leo Butler/;
         $authors[$i] =~ s/^macrakis$/Stavros Macrakis/;
         $authors[$i] =~ s/^mhw2$/Mark H. Weaver/;
         $authors[$i] =~ s/^Mark H Weaver$/Mark H. Weaver/; # same spelling as above.
-        $authors[$i] =~ s/^mikeclarkson$/Mike Clarkson/; # unknown, just hope, that the name is really 'Mike Clarkson'
+        $authors[$i] =~ s/^mikeclarkson$/Mike Clarkson/;
         $authors[$i] =~ s/^riotorto$/Mario Rodriguez Riotorto/;
         $authors[$i] =~ s/^Mario Rodriguez$/Mario Rodriguez Riotorto/; # same spelling as above
         $authors[$i] =~ s/^robert_dodier$/Robert Dodier/;
         $authors[$i] =~ s/^Robert$/Robert Dodier/;  # unknown, git log entry was: Robert <robert@robert-laptop.(none)> - perhaps Robert Dodier?
         $authors[$i] =~ s/^rtoy$/Raymond Toy/;
-        # unknown: Author: starseeker <starseeker>
+        $authors[$i] =~ s/^starseeker$/Cliff Yapp/;
         $authors[$i] =~ s/^van_nek$/Volker van Nek/;
         $authors[$i] =~ s/^villate$/Jaime E. Villate/;
         $authors[$i] =~ s/^Jaime Villate$/Jaime E. Villate/; # same spelling as above
         $authors[$i] =~ s/^vttoth$/Viktor T. Toth/;
-        # unknown: Author: vvzhy <vvzhy>
+        $authors[$i] =~ s/^vvzhy$/Vadim V. Zhytnikov/;
         $authors[$i] =~ s/^wfs$/William F. Schelter/; # unknown (Author: wfs <wfs>), I assume, that is William F. Schelter?
         $authors[$i] =~ s/^willisbl$/Barton Willis/;
-        # unknown: Author: wjenkner <wjenkner>
+        $authors[$i] =~ s/^wjenkner$/Wolfgang Jenkner/;
         # unknown: Author: xefe <xefe@xefe.(none)>
         $authors[$i] =~ s/^yasu-honda$/Yasuaki Honda/;
-        # unknown: Author: yycamm <yycamm>
+        $authors[$i] =~ s/^yycamm$/Camm Maguire/;
     }
     @authors=sort(@authors);
     @authors=uniq(@authors);
