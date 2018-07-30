@@ -54,7 +54,7 @@ sleepuntil () {
 LANG=C
 export LANG
 
-CMAKE=/opt/cmake-3.11.3-Linux-x86_64/bin/cmake
+CMAKE=/opt/cmake-3.12.0/Linux-x86_64/bin/cmake
 
 test -x $CMAKE || exit
 
