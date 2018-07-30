@@ -2427,11 +2427,11 @@ the code was compiled to deal with.
 @c ===beg===
 @c mode_checkp:true;
 @c square(f):=(
-@c	    mode_declare(f,float),
-@c	    f^2);
-@c	compile(square);
-@c	square(2.3);
-@c	square(4);
+@c          mode_declare(f,float),
+@c          f^2);
+@c      compile(square);
+@c      square(2.3);
+@c      square(4);
 @c ===end===
 @example
 @group

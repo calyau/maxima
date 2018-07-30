@@ -209,7 +209,7 @@ whenever necessary.
 for CRT consoles, which is best at speeds of 1200 baud or greater.
 The interface it presents is close to that of the EMACS editor used
 on the TOPS-20 and ITS operating systems.  Doing
-	TEACH_STEVE();
+        TEACH_STEVE();
 will run a tutorial on the editor.   At this time it is unfortunately
 not possible to either "zap" an expression from a command line into
 the editor, nor to "zap" an edited expression back to MACSYMA for

@@ -306,8 +306,8 @@ function returns a conditional expression for the antiderivative.
 
 (%i2) conditional_integrate(cos(m*x)*cos(x),x);
 (%o2) %if((m-1 # 0) %and (m+1 # 0),
-	  ((m-1)*sin((m+1)*x)+((-m)-1)*sin((1-m)*x))/(2*m^2-2),
-	  (sin(2*x)+2*x)/4)
+          ((m-1)*sin((m+1)*x)+((-m)-1)*sin((1-m)*x))/(2*m^2-2),
+          (sin(2*x)+2*x)/4)
 
 (%i3) sublis([m=6],%);
 (%o3) -(5*cos(7*x)+7*cos(5*x))/70
