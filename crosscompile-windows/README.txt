@@ -41,6 +41,10 @@ cmake -DUSE_VTK=NO ..
 (Attention: The size of the installer will approximately be 50% larger
 than without VTK).
 
+If you want to change the default Lisp, which will be used, you can
+use the option "-DWITH_DEFAULT_LISP=sbcl" in the cmake call (otherwise
+Clisp would be the default).
+
 
 In case a new release of a software is released (and no new patches are needed),
 it should be sufficient to just increase the version number and MD5-checksum
