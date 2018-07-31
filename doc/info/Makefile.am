@@ -149,6 +149,7 @@ figures/draw_colorbox2.gif\
 figures/draw_colorbox.gif\
 figures/draw_color.gif\
 figures/draw_color2.gif\
+figures/draw_color3.gif\
 figures/draw_columns.gif\
 figures/draw_contour2.gif\
 figures/draw_contour.gif\
@@ -194,6 +195,9 @@ figures/draw_interpolate_color4.gif\
 figures/draw_interpolate_color5.gif\
 figures/draw_interpolate_color6.gif\
 figures/draw_interpolate_color.gif\
+figures/draw_intro.gif\
+figures/draw_intro3.gif\
+figures/draw_intro2.gif\
 figures/draw_key.gif\
 figures/draw_key_label_alignment.gif\
 figures/draw_key_label_orientation.gif\
@@ -365,6 +369,7 @@ figures/draw_colorbox2.pdf\
 figures/draw_colorbox.pdf\
 figures/draw_color.pdf\
 figures/draw_color2.pdf\
+figures/draw_color3.pdf\
 figures/draw_columns.pdf\
 figures/draw_contour2.pdf\
 figures/draw_contour.pdf\
@@ -410,6 +415,9 @@ figures/draw_interpolate_color4.pdf\
 figures/draw_interpolate_color5.pdf\
 figures/draw_interpolate_color6.pdf\
 figures/draw_interpolate_color.pdf\
+figures/draw_intro.pdf\
+figures/draw_intro3.pdf\
+figures/draw_intro2.pdf\
 figures/draw_key.pdf\
 figures/draw_key_label_alignment.pdf\
 figures/draw_key_label_orientation.pdf\
