@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2012-2017 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2012-2018 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -176,7 +176,7 @@
       code
       "ranges.SetBounds(mib[0],mxb[1],mib[2],mxb[3],mib[4],mxb[5])") ))
 
-(defun vtkappendpolydata-code (an)
+(defun vtkappendpolydata-code (an fe fl)
   (let ((str (make-array 0 
                 :element-type 'character 
                 :adjustable t 
@@ -202,7 +202,7 @@
               "          arr.SetValue(i, (arr.GetValue(i)-mini)/(maxi-mini))"
               "   return;" ))
     (format str "~a=vtk.vtkAppendPolyData()~%" an)
-    (loop for n from 1 to *vtk-extract-counter* do
+    (loop for n from fe to *vtk-extract-counter* do
       (format str "~%extract~a.SetImplicitFunction(ranges)~%" n)
       (format str "extract~a.SetInputConnection(filter~a.GetOutputPort())~%" n n)
       (format str "mapper~a.SetInputConnection(extract~a.GetOutputPort())~%" n n)
@@ -211,7 +211,7 @@
         (remhash n *enhanced3d-or-isolines-code*))
       (format str "actor~a.SetMapper(mapper~a)~%" n n)
       (format str "~a.AddInputConnection(extract~a.GetOutputPort())~%" an n))
-    (loop for n from 1 to *vtk-label-counter* do
+    (loop for n from fl to *vtk-label-counter* do
       (format str "~a.AddInputConnection(label~a.GetOutputPort())~%" an n))
     (format str "~%~a.Update()~%~%" an)
     str))
@@ -264,7 +264,7 @@
     (format nil "~a.SetYLabel(\"~a\")~%"   can (get-option '$ylabel))
     (format nil "~a.SetZLabel(\"~a\")~%~%" can (get-option '$zlabel)) ))
 
-(defun vtkrenderer3d-code (rn an on bgcol cn rv rh)
+(defun vtkrenderer3d-code (rn an on bgcol cn rv rh fa fl)
   (let* ((k 0.0174532925199433) ; %pi/180
          (rvk (* k rv))
          (rhk (* k rh))
@@ -280,12 +280,10 @@
     (format str "~a.SetPosition(~a,~a,~a)~%" cn x y z)
     (format str "~a=vtk.vtkRenderer()~%" rn)
     (format str "~a.SetBackground(~a,~a,~a)~%" rn (first colist) (second colist) (third colist))
-    (loop for n from 1 to *vtk-actor-counter* do
+    (loop for n from fa to *vtk-actor-counter* do
       (format str "~a.AddActor(actor~a)~%" rn n))
-
-    (loop for n from 1 to *vtk-labelactor-counter* do
+    (loop for n from fl to *vtk-labelactor-counter* do
       (format str "~a.AddActor(labelactor~a)~%" rn n))
-
     (format str "~a.SetCamera(~a.GetActiveCamera())~%" an rn)
     (when (get-option '$axis_3d)
       (format str "~a.AddActor(~a)~%" rn on)     ; add box
@@ -2951,6 +2949,10 @@
         (cubeaxesactor2d-name (get-cubeaxesactor2d-name))
         (renderer-name        (get-renderer-name))
         (camera-name          (get-camera-name))
+        (first-actor          (+ *vtk-actor-counter* 1))
+        (first-labelactor     (+ *vtk-labelactor-counter* 1))
+        (first-extract        (+ *vtk-extract-counter* 1))
+        (first-label          (+ *vtk-label-counter* 1))
         largs obj)
     (ini-gr-options)
     (ini-local-option-variables)
@@ -3024,7 +3026,7 @@
       (if (> *vtk-extract-counter* 0)
         (scenebounds)
         "")
-      (vtkappendpolydata-code appenddata-name)
+      (vtkappendpolydata-code appenddata-name first-extract first-label)
       (vtkoutlinefilter-code outline-name appenddata-name)
       (vtkpolydatamapper-code polydatamapper-name outline-name t)
       (vtkactor-code outlineactor-name polydatamapper-name "#ff0000" 1 1 nil)
@@ -3037,7 +3039,9 @@
         (get-option '$background_color)
         camera-name
         (car  (get-option '$view))
-        (cadr (get-option '$view)) ) )))
+        (cadr (get-option '$view))
+        first-actor
+        first-labelactor ) )))
 
 
 
