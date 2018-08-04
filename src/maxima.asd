@@ -409,7 +409,6 @@
 			:components ((:file "rat3a") 
 				     (:file "rat3b") 
 				     (:file "rat3d") 
-				     (:file "numth") 
 				     (:file "rat3c") 
 				     (:file "rat3e") 
 				     (:file "nrat4") 
@@ -504,6 +503,7 @@
 			:components ((:file "solve") 
 				     (:file "psolve") 
 				     (:file "algsys") 
+                                     (:file "sqrtdenest")
 				     (:file "polyrz") 
 				     (:file "cpoly")))
 	       (:module debugging :pathname ""
@@ -518,6 +518,7 @@
 				     (:file "mdot") 
 				     (:file "irinte") 
 				     (:file "series") 
+                                     (:file "numth")
 				     (:file "laplac") 
 				     (:file "pade") 
 				     (:file "homog") 
@@ -556,5 +557,3 @@
 				     (:file "init-cl"))))
   :serial t
   :depends-on ())
-  
-  
