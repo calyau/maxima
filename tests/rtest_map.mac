@@ -366,3 +366,49 @@ baralias(a);
 barfun()(a);
 baralias(a);
 
+/* bug reported to mailing list 2018-07-22: "mapatom(-4)" */
+
+(kill (x), map (mapatom, [-1, 1/2, -1/2, -1.0, -1b0, 1, 1.0, 1b0, x[1]]));
+[true, true, true, true, true, true, true, true, true];
+
+(kill (f), errcatch (map (f, -1)));
+[];
+
+errcatch (map (f, 1/2));
+[];
+
+errcatch (map (f, -1/2));
+[];
+
+errcatch (map (f, -1.0));
+[];
+
+errcatch (map (f, -1b0));
+[];
+
+errcatch (map (f, 1));
+[];
+
+errcatch (map (f, 1.0));
+[];
+
+errcatch (map (f, 1b0));
+[];
+
+errcatch (map (f, x[1]));
+[];
+
+(kill (a, b), map (mapatom, [-a, a/b, -a/b, x(1)));
+[false, false, false, false];
+
+map (f, -a);
+-f(a);
+
+map (f, a/b);
+f(a)/f(b);
+
+map (f, -a/b);
+-f(a/b);
+
+map (f, x(1));
+x(f(1));
