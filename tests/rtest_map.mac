@@ -398,7 +398,7 @@ errcatch (map (f, 1b0));
 errcatch (map (f, x[1]));
 [];
 
-(kill (a, b), map (mapatom, [-a, a/b, -a/b, x(1)));
+(kill (a, b), map (mapatom, [-a, a/b, -a/b, x(1)]));
 [false, false, false, false];
 
 map (f, -a);
