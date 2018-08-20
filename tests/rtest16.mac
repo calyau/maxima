@@ -2460,3 +2460,145 @@ errcatch(0^0);
 []$
 errcatch(print(error), true);
 [true]$
+
+/* SF bug #3458: "does not interpret addcol as it should but instead interprets same as addrow" */
+
+addcol (matrix (), [11, 22, 33]);
+matrix ([11], [22], [33]);
+
+/* additional tests for addcol and addrow */
+
+addcol (matrix (), [11, 22, 33], [111, 222, 333]);
+matrix ([11, 111], [22, 222], [33, 333]);
+
+addcol (matrix (), [11, 22, 33], [111, 222, 333], [1111, 2222, 3333]);
+matrix ([11, 111, 1111], [22, 222, 2222], [33, 333, 3333]);
+
+addcol (matrix ([1, 2, 3]), [11, 22, 33]);
+matrix ([1, 2, 3, 11, 22, 33]);
+
+addcol (matrix ([1, 2, 3]), [11, 22, 33], [111, 222, 333]);
+matrix ([1, 2, 3, 11, 22, 33, 111, 222, 333]);
+
+addcol (matrix ([1, 2, 3]), [11, 22, 33], [111, 222, 333], [1111, 2222, 3333]);
+matrix ([1, 2, 3, 11, 22, 33, 111, 222, 333, 1111, 2222, 3333]);
+
+addcol (matrix ([1], [2], [3]), [11, 22, 33]);
+matrix ([1, 11], [2, 22], [3, 33]);
+
+addcol (matrix ([1], [2], [3]), [11, 22, 33], [111, 222, 333]);
+matrix ([1, 11, 111], [2, 22, 222], [3, 33, 333]);
+
+addcol (matrix ([1], [2], [3]), [11, 22, 33], [111, 222, 333], [1111, 2222, 3333]);
+matrix ([1, 11, 111, 1111], [2, 22, 222, 2222], [3, 33, 333, 3333]);
+
+addrow (matrix (), [11, 22, 33]);
+matrix ([11, 22, 33]);
+
+addrow (matrix (), [11, 22, 33], [111, 222, 333]);
+matrix ([11, 22, 33], [111, 222, 333]);
+
+addrow (matrix (), [11, 22, 33], [111, 222, 333], [1111, 2222, 3333]);
+matrix ([11, 22, 33], [111, 222, 333], [1111, 2222, 3333]);
+
+addrow (matrix ([1, 2, 3]), [11, 22, 33]);
+matrix ([1, 2, 3], [11, 22, 33]);
+
+addrow (matrix ([1, 2, 3]), [11, 22, 33], [111, 222, 333]);
+matrix ([1, 2, 3], [11, 22, 33], [111, 222, 333]);
+
+addrow (matrix ([1, 2, 3]), [11, 22, 33], [111, 222, 333], [1111, 2222, 3333]);
+matrix ([1, 2, 3], [11, 22, 33], [111, 222, 333], [1111, 2222, 3333]);
+
+/*
+ * Seems like these should succeed, but they fail
+ * with error about "incompatible structure", although similar calls succeed.
+ * Just omit these tests unless addrow/addcol are ever revised for greater consistency.
+ *
+addrow (matrix ([1], [2], [3]), [11, 22, 33]);
+matrix ([1], [2], [3], [11], [22], [33]);
+
+addrow (matrix ([1], [2], [3]), [11, 22, 33], [111, 222, 333]);
+matrix ([1], [2], [3], [11], [22], [33], [111], [222], [333]);
+
+addrow (matrix ([1], [2], [3]), [11, 22, 33], [111, 222, 333], [1111, 2222, 3333]);
+matrix ([1], [2], [3], [11], [22], [33], [111], [222], [333], [1111], [2222], [3333]);
+ *
+ */
+
+addcol (matrix (), matrix ([11], [22], [33]));
+matrix ([11], [22], [33]);
+
+addcol (matrix (), matrix ([11, 22, 33]));
+matrix ([11, 22, 33]);
+
+addcol (matrix (), matrix ([11], [22], [33]), matrix ([111], [222], [333]));
+matrix ([11, 111], [22, 222], [33, 333]);
+
+addcol (matrix (), matrix ([11, 22, 33]), matrix ([111, 222, 333]));
+matrix ([11, 22, 33, 111, 222, 333]);
+
+addcol (matrix (), matrix ([11], [22], [33]), matrix ([111], [222], [333]), matrix ([1111], [2222], [3333]));
+matrix ([11, 111, 1111], [22, 222, 2222], [33, 333, 3333]);
+
+addcol (matrix (), matrix ([11, 22, 33]), matrix ([111, 222, 333]), matrix ([1111, 2222, 3333]));
+matrix ([11, 22, 33, 111, 222, 333, 1111, 2222, 3333]);
+
+addcol (matrix ([1, 2, 3]), matrix ([11, 22, 33]));
+matrix ([1, 2, 3, 11, 22, 33]);
+
+addcol (matrix ([1, 2, 3]), matrix ([11, 22, 33]), matrix ([111, 222, 333]));
+matrix ([1, 2, 3, 11, 22, 33, 111, 222, 333]);
+
+addcol (matrix ([1, 2, 3]), matrix ([11, 22, 33]), matrix ([111, 222, 333]), matrix ([1111, 2222, 3333]));
+matrix ([1, 2, 3, 11, 22, 33, 111, 222, 333, 1111, 2222, 3333]);
+
+addrow (matrix (), matrix ([11], [22], [33]));
+matrix ([11], [22], [33]);
+
+addrow (matrix (), matrix ([11, 22, 33]));
+matrix ([11, 22, 33]);
+
+addrow (matrix (), matrix ([11], [22], [33]), matrix ([111], [222], [333]));
+matrix ([11], [22], [33], [111], [222], [333]);
+
+addrow (matrix (), matrix ([11, 22, 33]), matrix ([111, 222, 333]));
+matrix ([11, 22, 33], [111, 222, 333]);
+
+addrow (matrix (), matrix ([11], [22], [33]), matrix ([111], [222], [333]), matrix ([1111], [2222], [3333]));
+matrix ([11], [22], [33], [111], [222], [333], [1111], [2222], [3333]);
+
+addrow (matrix (), matrix ([11, 22, 33]), matrix ([111, 222, 333]), matrix ([1111, 2222, 3333]));
+matrix ([11, 22, 33], [111, 222, 333], [1111, 2222, 3333]);
+
+addrow (matrix ([1, 2, 3]), [11, 22, 33]);
+matrix ([1, 2, 3], [11, 22, 33]);
+
+addrow (matrix ([1, 2, 3]), [11, 22, 33], [111, 222, 333]);
+matrix ([1, 2, 3], [11, 22, 33], [111, 222, 333]);
+
+addrow (matrix ([1, 2, 3]), [11, 22, 33], [111, 222, 333], [1111, 2222, 3333]);
+matrix ([1, 2, 3], [11, 22, 33], [111, 222, 333], [1111, 2222, 3333]);
+
+/* addrow/addcol that should fail */
+
+errcatch (addrow (matrix ([1], [2], [3]), [11, 22, 33]));
+[];
+
+/*
+ * Seems like these should fail, but they succeed.
+ * Just omit these tests unless addrow/addcol are ever revised for greater consistency.
+ *
+errcatch (addrow (matrix ([1], [2], [3]), matrix ([11, 22, 33])));
+[];
+
+errcatch (addrow (matrix ([1, 2, 3]), matrix ([1], [2], [3])));
+[];
+
+errcatch (addcol (matrix ([1, 2, 3]), matrix ([1], [2], [3])));
+[];
+
+errcatch (addcol (matrix ([1], [2], [3]), matrix ([11, 22, 33])));
+[];
+ *
+ */

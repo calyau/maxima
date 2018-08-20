@@ -771,9 +771,16 @@
   (declare (dynamic-extent cols))
   (cond ((not ($matrixp m)) (merror (intl:gettext "addcol: first argument must be a matrix; found ~M") m))
 	((null cols) m)
+	((null (cdr m))
+	 (apply '$addcol (cons (ensure-matrix-column (first cols)) (rest cols))))
 	(t (let ((m ($transpose m)))
 	     (dolist (c cols ($transpose m))
 	       (setq m (addrow m ($transpose c))))))))
+
+(defun ensure-matrix-column (a)
+  (if ($matrixp a) a
+    ;; otherwise must be a MLIST.
+    `(($matrix) ,@(mapcar #'(lambda (e) `((mlist) ,e)) (cdr a)))))
 
 (defun addrow (m r)
   (cond ((not (mxorlistp r)) (merror (intl:gettext "addrow or addcol: argument must be a matrix or list; found ~M") r))
