@@ -595,7 +595,7 @@ limit(x/sin(x)^2,x,inf);
 und;
 
 /* Bug ID: #3459 Wrong limit calculation */
-limit(x / (x+cos(x)),x,-inf);
+limit(x / (x+2^x+cos(x)),x,-inf);
 1;
 
 /* Bug ID: 811522 - redundant question in limit
