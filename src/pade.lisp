@@ -43,7 +43,7 @@
 (defmacro psmake (p tpf)
   `(make-ps (gvar-o ,tpf) (poly-data ,tpf) (reverse ,p)))
 
-(defmfun $pade (taylor-form n-bound d-bound)
+(defmfun-checked $pade (taylor-form n-bound d-bound)
   (cond ((not (and ($ratp taylor-form) (member 'trunc (car taylor-form) :test #'eq)))
 	 (merror (intl:gettext "pade: first argument must be a Taylor series; found: ~M") taylor-form)))
   (destructuring-let (((nil nil varlist genvar tlist) (car taylor-form)))

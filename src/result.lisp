@@ -16,7 +16,7 @@
 
 (load-macsyma-macros ratmac)
 
-(defmfun $poly_discriminant (poly var)
+(defmfun-checked $poly_discriminant (poly var)
   (let* ((varlist (list var))
 	 ($ratfac nil)
 	 (genvar ())
@@ -32,7 +32,7 @@
 		    (pquotient (resultant poly (pderivative poly rvar))
 			       (p-lc poly))))))))
 
-(defmfun $resultant (a b mainvar)
+(defmfun-checked $resultant (a b mainvar)
   (let ((varlist (list mainvar)) (genvar nil)
         ($ratfac t) ($keepfloat nil)
         formflag res (ans 1))
@@ -266,7 +266,7 @@
 ;; *** NOTE THAT MATRIX PRODUCED IS ALWAYS SYMETRIC
 ;; *** ABOUT THE MINOR DIAGONAL.
 
-(defmfun $bezout (p q var)
+(defmfun-checked $bezout (p q var)
   (let ((varlist (list var)) genvar)
     (newvar p)
     (newvar q)

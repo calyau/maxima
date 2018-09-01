@@ -48,7 +48,7 @@
        by #'cddr
        do  (putprop a b '$inverse) (putprop b a '$inverse))
 
-(defmfun $demoivre (exp)
+(defmfun-checked $demoivre (exp)
   (let ($exponentialize nexp)
     (cond ((atom exp) exp)
 	  ((and (eq (caar exp) 'mexpt) (eq (cadr exp) '$%e)
@@ -74,7 +74,7 @@
     (if (freeof var1 a)
         (cons a (maxima-substitute 0 var1 expr)))))
 
-(defmfun $partition (e var1)
+(defmfun-checked $partition (e var1)
   (let ((e (mratcheck e))
         (var1 (getopr var1)))
     (cond
@@ -243,7 +243,7 @@
      '(mdefine mdefmacro msetq mset marrow
        %mdefine %mdefmacro %msetq %mset %marrow)))
 
-  (defmfun $rhs (rel)
+  (defmfun-checked $rhs (rel)
      (if (atom rel)
        0
        (if (or (member (caar rel) (append relational-ops other-infix-ops) :test #'eq)
@@ -252,7 +252,7 @@
 	 (caddr rel)
 	 0)))
 
-  (defmfun $lhs (rel)
+  (defmfun-checked $lhs (rel)
      (if (atom rel)
        rel
        (if (or (member (caar rel) (append relational-ops other-infix-ops) :test #'eq)

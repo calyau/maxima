@@ -78,7 +78,7 @@
      (cond ((equal r 0)(return t))
 	   (t (return nil)))))
 
-(defmfun $poissimp (x)
+(defmfun-checked $poissimp (x)
   (if (mbagp x)
       (cons (car x) (mapcar #'$poissimp (cdr x)))
       ($outofpois x)))
@@ -91,13 +91,13 @@
 
 (defprop mpois (lambda (x) x) mfexpr*)
 
-(defmfun $poisplus (a b)
+(defmfun-checked $poisplus (a b)
   (setq a (intopois a) b (intopois b))
   (list '(mpois simp) (poismerge22 (cadr a) (cadr b)) (poismerge22 (caddr a) (caddr b))))
 
 (declare-top (special *b *fn))
 
-(defmfun $poismap (p sinfn cosfn)
+(defmfun-checked $poismap (p sinfn cosfn)
   (prog (*b *fn)
      (setq p (intopois p))
      (setq *fn (list sinfn))
@@ -131,7 +131,7 @@
   (cond ((poisnegpred m) (list '(mpois simp) (list (poischangesign m) -1) nil))
 	(t (list '(mpois simp) (list m 1) nil))))
 
-(defmfun $intopois (x)
+(defmfun-checked $intopois (x)
   (let (*a)
     (intopois x)))
 
@@ -230,10 +230,10 @@
 ;;; THIS PROGRAM MULTIPLIES A POISSON SERIES P BY A NON-SERIES, C,
 ;;; WHICH IS FREE OF SINES AND COSINES .
 
-(defmfun $poisctimes (c p)
+(defmfun-checked $poisctimes (c p)
   (list '(mpois simp) (poisctimes1 (setq c (intopoisco c)) (cadr p)) (poisctimes1 c (caddr p))))
 
-(defmfun $outofpois (p)
+(defmfun-checked $outofpois (p)
   (prog (ans)
      (cond ((or (atom p) (not (eq (caar p) 'mpois))) (setq p (intopois p))))
 
@@ -259,7 +259,7 @@
 		       ans)))
      (return (cond ((null ans) 0.) (t (simplifya (cons '(mplus) ans) nil))))))
 
-(defmfun $printpois (p)
+(defmfun-checked $printpois (p)
   (prog nil
      (setq p (intopois p))
 
@@ -293,7 +293,7 @@
 ;;; $POISDIFF DIFFERENTIATES A POISSON SERIES WRT X, Y, Z, U, V, W, OR A COEFF VAR.
 
 
-(defmfun $poisdiff (p m)
+(defmfun-checked $poisdiff (p m)
   (declare (special m))
   (cond ((member m '($u $v $w $x $y $z) :test #'eq)
 	 (list (car p) (cosdif (caddr p) m) (sindif (cadr p) m)))
@@ -506,7 +506,7 @@
 	       (poisxcoef m '$y)
 	       (poisxcoef m '$z))))
 
-(defmfun $poistimes (a b)
+(defmfun-checked $poistimes (a b)
   (prog (slc clc temp ae aa zero trim t1 t2 f1 f2)
      (setq a (intopois a) b (intopois b))
      (cond ((or (getl-lm-fcn-prop '$poistrim '(expr subr))
@@ -577,7 +577,7 @@
 		       (or f2 (poismergecx temp t2 clc))))))))
      (return (list '(mpois simp) (untree slc) (untree clc)))))
 
-(defmfun $poisexpt (p n)
+(defmfun-checked $poisexpt (p n)
   (prog (u h)
      (cond ((oddp n) (setq u p)) (t (setq u (setq h (intopois 1.)))))
      a    (setq n (ash n -1))
@@ -586,7 +586,7 @@
      (cond ((oddp n) (setq u (cond ((equal u h) p) (t ($poistimes u p))))))
      (go a)))
 
-(defmfun $poissquare (a) ($poisexpt a 2))
+(defmfun-checked $poissquare (a) ($poisexpt a 2))
 
 ;;; $POISINT INTEGRATES A POISSON SERIES WRT X,Y, Z, U, V, W.  THE VARIABLE OF
 ;;; INTEGRATION MUST OCCUR ONLY IN THE ARGUMENTS OF SIN OR COS,
@@ -594,7 +594,7 @@
 
 ;;; NON-PERIODIC TERMS ARE REMOVED.
 
-(defmfun $poisint (p m)
+(defmfun-checked $poisint (p m)
   (declare (special m))
   (prog (b*)
      (setq p (intopois p))
@@ -652,7 +652,7 @@
 (defun argsubst (c)
   (+ c (* h* (poisxcoef c b*))))
 
-(defmfun $poissubst (aa bb cc &optional dd nn)
+(defmfun-checked $poissubst (aa bb cc &optional dd nn)
   (if (and dd nn)
       (fancypoissubst aa bb (intopois cc) (intopois dd) nn)
       (let ((a* aa) (b* bb) (c (intopois cc)))

@@ -1,0 +1,282 @@
+;;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
+
+(in-package :maxima)
+
+;; We got this code from cmucl, so we don't actually need all of this.
+#+cmucl
+(defun parse-lambda-list (list)
+  (kernel:parse-lambda-list list))
+
+#-cmucl
+(eval-when (:compile-toplevel :load-toplevel :execute)
+;;;; Borrowed from cmucl src/code/extensions.lisp.  Used in parsing
+;;;; lambda lists.
+
+;;;; The Collect macro:
+
+;;; Collect-Normal-Expander  --  Internal
+;;;
+;;;    This function does the real work of macroexpansion for normal collection
+;;; macros.  N-Value is the name of the variable which holds the current
+;;; value.  Fun is the function which does collection.  Forms is the list of
+;;; forms whose values we are supposed to collect.
+;;;
+(defun collect-normal-expander (n-value fun forms)
+  `(progn
+    ,@(mapcar #'(lambda (form) `(setq ,n-value (,fun ,form ,n-value))) forms)
+    ,n-value))
+
+;;; Collect-List-Expander  --  Internal
+;;;
+;;;    This function deals with the list collection case.  N-Tail is the pointer
+;;; to the current tail of the list, which is NIL if the list is empty.
+;;;
+(defun collect-list-expander (n-value n-tail forms)
+  (let ((n-res (gensym)))
+    `(progn
+      ,@(mapcar #'(lambda (form)
+		    `(let ((,n-res (cons ,form nil)))
+		       (cond (,n-tail
+			      (setf (cdr ,n-tail) ,n-res)
+			      (setq ,n-tail ,n-res))
+			     (t
+			      (setq ,n-tail ,n-res  ,n-value ,n-res)))))
+		forms)
+      ,n-value)))
+
+
+;;; Collect  --  Public
+;;;
+;;;    The ultimate collection macro...
+;;;
+(defmacro collect (collections &body body)
+  "Collect ({(Name [Initial-Value] [Function])}*) {Form}*
+  Collect some values somehow.  Each of the collections specifies a bunch of
+  things which collected during the evaluation of the body of the form.  The
+  name of the collection is used to define a local macro, a la MACROLET.
+  Within the body, this macro will evaluate each of its arguments and collect
+  the result, returning the current value after the collection is done.  The
+  body is evaluated as a PROGN; to get the final values when you are done, just
+  call the collection macro with no arguments.
+
+  Initial-Value is the value that the collection starts out with, which
+  defaults to NIL.  Function is the function which does the collection.  It is
+  a function which will accept two arguments: the value to be collected and the
+  current collection.  The result of the function is made the new value for the
+  collection.  As a totally magical special-case, the Function may be Collect,
+  which tells us to build a list in forward order; this is the default.  If an
+  Initial-Value is supplied for Collect, the stuff will be rplacd'd onto the
+  end.  Note that Function may be anything that can appear in the functional
+  position, including macros and lambdas."
+
+  (let ((macros ())
+	(binds ()))
+    (dolist (spec collections)
+      (unless (<= 1 (length spec) 3)
+	(error (intl:gettext "Malformed collection specifier: ~S.") spec))
+      (let ((n-value (gensym))
+	    (name (first spec))
+	    (default (second spec))
+	    (kind (or (third spec) 'collect)))
+	(push `(,n-value ,default) binds)
+	(if (eq kind 'collect)
+	    (let ((n-tail (gensym)))
+	      (if default
+		  (push `(,n-tail (last ,n-value)) binds)
+		  (push n-tail binds))
+	      (push `(,name (&rest args)
+			    (collect-list-expander ',n-value ',n-tail args))
+		    macros))
+	    (push `(,name (&rest args)
+			  (collect-normal-expander ',n-value ',kind args))
+		  macros))))
+    `(macrolet ,macros (let* ,(nreverse binds) ,@body))))
+
+;;; Borrowed from cmucl src/compiler/proclaim.lisp
+
+;;; Parse-Lambda-List  --  Interface
+;;;
+;;;    Break a lambda-list into its component parts.  We return eleven values:
+;;;  1] A list of the required args.
+;;;  2] A list of the optional arg specs.
+;;;  3] True if a rest arg was specified.
+;;;  4] The rest arg.
+;;;  5] A boolean indicating whether keywords args are present.
+;;;  6] A list of the keyword arg specs.
+;;;  7] True if &allow-other-keys was specified.
+;;;  8] A list of the &aux specifiers.
+;;;  9] True if a more arg was specified.
+;;; 10] The &more context var
+;;; 11] The &more count var
+;;;
+;;; The top-level lambda-list syntax is checked for validity, but the arg
+;;; specifiers are just passed through untouched.  If something is wrong, we
+;;; use Compiler-Error, aborting compilation to the last recovery point.
+;;;
+(defun parse-lambda-list (list)
+  (declare (list list)
+	   (values list list boolean t boolean list boolean list boolean t t))
+  (collect ((required)
+	    (optional)
+	    (keys)
+	    (aux))
+    (flet ((compiler-error (&rest args)
+	     (apply #'error args))
+	   (compiler-note (&rest args)
+	     (apply #'warn args)))
+      (let ((restp nil)
+	    (rest nil)
+	    (morep nil)
+	    (more-context nil)
+	    (more-count nil)
+	    (keyp nil)
+	    (allowp nil)
+	    (state :required))
+	(dolist (arg list)
+	  ;; check for arguments that have the syntactic form of a
+	  ;; keyword argument without being a recognized lambda-list keyword
+	  (when (and (symbolp arg)
+		     (let ((name (symbol-name arg)))
+		       (and (/= (length name) 0)
+			    (char= (char name 0) #\&))))
+	    (unless (member arg lambda-list-keywords)
+	      (compiler-note
+	       "~S uses lambda-list keyword naming convention, but is not a recognized lambda-list keyword."
+	       arg)))
+	  (if (member arg lambda-list-keywords)
+	      (ecase arg
+		(&optional
+		 (unless (eq state :required)
+		   (compiler-error "Misplaced &optional in lambda-list: ~S." list))
+		 (setq state '&optional))
+		(&rest
+		 (unless (member state '(:required &optional))
+		   (compiler-error "Misplaced &rest in lambda-list: ~S." list))
+		 (setq state '&rest))
+		(&more
+		 (unless (member state '(:required &optional))
+		   (compiler-error "Misplaced &more in lambda-list: ~S." list))
+		 (setq morep t  state '&more-context))
+		(&key
+		 (unless (member state '(:required &optional :post-rest
+					 :post-more))
+		   (compiler-error "Misplaced &key in lambda-list: ~S." list))
+		 (setq keyp t)
+		 (setq state '&key))
+		(&allow-other-keys
+		 (unless (eq state '&key)
+		   (compiler-error "Misplaced &allow-other-keys in lambda-list: ~S." list))
+		 (setq allowp t  state '&allow-other-keys))
+		(&aux
+		 (when (member state '(&rest &more-context &more-count))
+		   (compiler-error "Misplaced &aux in lambda-list: ~S." list))
+		 (setq state '&aux)))
+	      (case state
+		(:required (required arg))
+		(&optional (optional arg))
+		(&rest
+		 (setq restp t  rest arg  state :post-rest))
+		(&more-context
+		 (setq more-context arg  state '&more-count))
+		(&more-count
+		 (setq more-count arg  state :post-more))
+		(&key (keys arg))
+		(&aux (aux arg))
+		(t
+		 (compiler-error "Found garbage in lambda-list when expecting a keyword: ~S." arg)))))
+
+	(when (eq state '&rest)
+	  (compiler-error "&rest not followed by required variable."))
+      
+	(values (required) (optional) restp rest keyp (keys) allowp (aux)
+		morep more-context more-count)))))
+)
+
+
+;; Like DEFMFUN but we check that the number of arguments supplied to
+;; NAME are correct.  If too few or too many are given we throw a
+;; maxima error informing the user about the problem.
+;;
+;; The function name NAME must start with #\$ which indicates this is
+;; an explicitly exposed lisp function to the user.
+;;
+;; Two functions are created: NAME and NAME-IMPL (without the leading
+;; $).  NAME is the user function that checks for the argument count
+;; and NAME-IMPL is the actual implementation..
+;;
+;; The lambda-list supports &optional and &rest args.  Keyword args
+;; are an error.
+(defmacro defmfun-checked (name lambda-list &body body)
+  (unless (char= #\$ (aref (string name) 0))
+    (error "First character of function name must start with $: ~S~%" name))
+  (multiple-value-bind (required-args
+			optional-args
+			restp
+			rest-arg
+			keywords-present-p)
+      (parse-lambda-list lambda-list)
+    (declare (ignore rest-arg))
+
+    (when keywords-present-p
+      (error "Keyword arguments are not supported"))
+
+    (let* ((required-len (length required-args))
+	   (optional-len (length optional-args))
+	   (impl-name (intern (concatenate 'string
+					   (subseq (string name) 1)
+					   "-IMPL"))))
+    `(progn
+       (defun ,impl-name ,lambda-list
+	 (block ,name
+	   (locally 
+	       ,@body)))
+       (defprop ,name t translated)
+       (defun ,name (&rest args)
+	 (let ((nargs (length args)))
+	   ,@(cond (restp
+		    ;; When a rest arg is given, there's no upper
+		    ;; limit to the number of args.  Just check that
+		    ;; we have enough args to satisfy the required
+		    ;; args.
+		    (unless (null required-args)
+		      `((when (< nargs ,required-len)
+			  (merror (intl:gettext "~M: expected at least ~M arguments but got ~M")
+				  ',name
+				  ,required-len
+				  nargs)))))
+		   (optional-args
+		    ;; There are optional args (but no rest
+		    ;; arg). Verify that we don't have too many args,
+		    ;; and that we still have all the required args.
+		    `(
+		      (when (> nargs ,(+ required-len optional-len))
+			(merror (intl:gettext "~M: expected at most ~M arguments but got ~M")
+				',name
+				,(+ required-len optional-len)
+				nargs))
+		      (when (< nargs ,required-len)
+			(merror (intl:gettext "~M: expected at least ~M arguments but got ~M")
+				',name
+				,required-len
+				nargs))))
+		   (t
+		    ;; We only have required args.
+		    `((unless (= nargs ,required-len)
+			(merror (intl:gettext "~M: expected exactly ~M arguments but got ~M")
+				',name
+				,required-len
+				nargs)))))
+	 (apply #',impl-name args)))))))
+
+;; Examples:
+;; (defmfun-checked $foobar (a b) (list '(mlist) a b))
+;; (defmfun-checked $foobar1 (a b &optional c) (list '(mlist) a b c))
+;; (defmfun-checked $foobar1a (a b &optional (c 99)) (list '(mlist) a b c))
+;; (defmfun-checked $foobar2 (a b &rest c) (list '(mlist) a b (list* '(mlist) c)))
+;; (defmfun-checked $foobar3 (a b &optional c &rest d) "foobar3 function" (list '(mlist) a b c (list* '(mlist) d)))
+;;
+;; This works by accident, kind of:
+;; (defmfun-checked $baz (a &aux (b (1+ a))) (list '(mlist) a b))
+
+;; This should produce compile errors
+;; (defmfun-checked $zot (a &key b) (list '(mlist) a b))

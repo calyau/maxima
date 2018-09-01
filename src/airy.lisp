@@ -27,7 +27,7 @@
 (declaim (special *flonum-op*))
 
 ;; Airy Ai function 
-(defmfun $airy_ai (z)
+(defmfun-checked $airy_ai (z)
   "Airy function Ai(z)"
   (simplify (list '(%airy_ai) (resimplify z))))
 
@@ -98,7 +98,7 @@
 
 
 ;; Derivative dAi/dz of Airy function Ai(z)
-(defmfun $airy_dai (z)
+(defmfun-checked $airy_dai (z)
   "Derivative dAi/dz of Airy function Ai(z)"
   (simplify (list '(%airy_dai) (resimplify z))))
 
@@ -146,7 +146,7 @@
 	  (t (eqtest (list '(%airy_dai) z) form)))))
 
 ;; Airy Bi function 
-(defmfun $airy_bi (z)
+(defmfun-checked $airy_bi (z)
   "Airy function Bi(z)"
   (simplify (list '(%airy_bi) (resimplify z))))
 
@@ -217,7 +217,7 @@
 	  (t (eqtest (list '(%airy_bi) z) form)))))
 
 ;; Derivative dBi/dz of Airy function Bi(z)
-(defmfun $airy_dbi (z)
+(defmfun-checked $airy_dbi (z)
   "Derivative dBi/dz of Airy function Bi(z)"
   (simplify (list '(%airy_dbi) (resimplify z))))
 

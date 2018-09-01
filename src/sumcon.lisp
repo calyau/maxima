@@ -14,7 +14,7 @@
 
 (declare-top (special $genindex $niceindicespref $sumexpand))
 
-(defmfun $sumcontract (e)	       ; e is assumed to be simplified
+(defmfun-checked $sumcontract (e)	       ; e is assumed to be simplified
   (cond ((atom e) e)
 	((eq (caar e) 'mplus)
 	 (do ((x (cdr e) (cdr x)) (sums) (notsums) (car-x))
@@ -34,7 +34,7 @@
 		 (t (setq notsums (cons car-x notsums))))))
 	(t (recur-apply #'$sumcontract e))))
 
-(defmfun $intosum (e)		       ; e is assumed to be simplified
+(defmfun-checked $intosum (e)		       ; e is assumed to be simplified
   (let (($sumexpand t))
     (cond ((atom e) e)
 	  ((eq (caar e) 'mtimes)	;puts outside product inside
@@ -140,7 +140,7 @@
 	(setq try (intern (format nil "~a~d" (cadr $niceindicespref) n)))
 	(if (free llist try) (return try)))))
 
-(defmfun $bashindices (e)	       ; e is assumed to be simplified
+(defmfun-checked $bashindices (e)	       ; e is assumed to be simplified
   (if (atom e)
     e
     (let (($genindex '$j)
@@ -150,7 +150,7 @@
 	     (sumconsimp (subst (gensumindex) (caddr e) e)))
 	    (t e)))))
 
-(defmfun $niceindices (e)
+(defmfun-checked $niceindices (e)
   (if (atom e)
       e
       (let ((e (recur-apply #'$niceindices e)))

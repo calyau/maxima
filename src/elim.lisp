@@ -2,7 +2,7 @@
 
 (in-package :maxima)
 
-(defmfun $eliminate (eqns vars)
+(defmfun-checked $eliminate (eqns vars)
   (let ((sv nil)
 	(l ($length eqns))
 	(flag nil)

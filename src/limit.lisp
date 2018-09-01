@@ -94,7 +94,7 @@
 	  ()
 	  ans))))
 
-(defmfun $limit (&rest args)
+(defmfun-checked $limit (&rest args)
   (let ((first-try (apply #'toplevel-$limit args)))
     (if (and (consp first-try) (eq (caar first-try) '%limit))
       (let ((*getsignl-asksign-ok* t))
@@ -3039,7 +3039,7 @@ ignoring dummy variables and array indices."
 
 ;;;     FOLLOWING CODE MAKES $LDEFINT WORK
 
-(defmfun $ldefint (exp var ll ul &aux $logabs ans a1 a2)
+(defmfun-checked $ldefint (exp var ll ul &aux $logabs ans a1 a2)
   (setq $logabs t ans (sinint exp var)
 	a1 (toplevel-$limit ans var ul '$minus)
 	a2 (toplevel-$limit ans var ll '$plus))
@@ -3342,7 +3342,7 @@ ignoring dummy variables and array indices."
 ;; direction must be specified if limit point is not infinite
 ;; The arguments are checked and a failure of taylor is catched.
 
-(defmfun $gruntz (expr var val &rest rest)
+(defmfun-checked $gruntz (expr var val &rest rest)
   (let (ans dir)
     (when (> (length rest) 1)
       (merror

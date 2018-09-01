@@ -22,7 +22,7 @@
   (let ((errset nil))
     (errset (pathname x) nil)))
 
-(defmfun $filename_merge (&rest file-specs)
+(defmfun-checked $filename_merge (&rest file-specs)
   (when (or (null file-specs) (cddr file-specs))
     (wna-err '$filename_merge))
   (setq file-specs (mapcar #'macsyma-namestring-sub file-specs))
@@ -78,7 +78,7 @@
 		name
 		(string-trim "[]" ($sconcat search-lists))))))
 
-(defmfun $load (filename)
+(defmfun-checked $load (filename)
   "This is the generic file loading function.
   LOAD(filename) will either BATCHLOAD or LOADFILE the file,
   depending on wether the file contains Macsyma, Lisp, or Compiled

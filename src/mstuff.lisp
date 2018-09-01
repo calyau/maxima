@@ -12,7 +12,7 @@
 
 (macsyma-module mstuff)
 
-(defmfun $sort (l &optional (f 'lessthan))
+(defmfun-checked $sort (l &optional (f 'lessthan))
   (let ((llist l) comparfun bfun ($prederror t))
     (unless ($listp llist)
       (merror (intl:gettext "sort: first argument must be a list; found: ~M") llist))
@@ -122,7 +122,7 @@
       ((> m k) (nreverse ans))
     (push nn ans)))
 
-(defmfun $sublist (a f)
+(defmfun-checked $sublist (a f)
   (unless ($listp a)
     (merror (intl:gettext "sublist: first argument must be a list; found: ~M") a) )
   (do ((a (cdr a) (cdr a))

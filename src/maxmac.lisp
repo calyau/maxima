@@ -130,7 +130,7 @@
 (defmacro old-get (plist tag)
   `(getf (cdr ,plist) ,tag))
 
-(defmfun $get (atom ind)
+(defmfun-checked $get (atom ind)
   (prop1 '$get atom nil ind))
 
 (defsetf $get (sym tag) (value)

@@ -831,7 +831,7 @@
 	((integerp y) (maxima-reduce (cadr x) (* (caddr x) y)))
 	(t (maxima-reduce (* (cadr x) (caddr y)) (* (caddr x) (cadr y))))))
 
-(defmfun $exponentialize (exp)
+(defmfun-checked $exponentialize (exp)
   (let ($demoivre)
     (cond ((atom exp) exp)
 	  ((trigp (caar exp))

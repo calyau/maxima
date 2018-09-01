@@ -37,7 +37,7 @@
 (defvar *tr-runtime-warned* nil
   "This is an alist of warnings which have been given")
 
-(defmfun $tr_warnings_get ()
+(defmfun-checked $tr_warnings_get ()
   `((mlist) ,@(mapcar #'(lambda (u) `((mlist) ,(car u) ,(cdr u)))  *tr-runtime-warned*)))
 
 (defun mfunction-call-warn (f type)

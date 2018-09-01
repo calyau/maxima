@@ -68,7 +68,7 @@
      (when (null val) (errlfun1 unbind))
      val))
 
-(defmfun $algsys (lhslist varxlist &aux varlist genvar)
+(defmfun-checked $algsys (lhslist varxlist &aux varlist genvar)
   ;;  (declare (special varxlist)) ;;??
   (setq $%rnum_list (list '(mlist)))
   (cond ((not ($listp lhslist))

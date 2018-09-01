@@ -951,7 +951,7 @@
 
 ;;; $specint is the Maxima User function
 
-(defmfun $specint (expr var)
+(defmfun-checked $specint (expr var)
   (prog ($radexpand checkcoefsignlist)
      (setq $radexpand '$all)
      (return (defintegrate expr var))))

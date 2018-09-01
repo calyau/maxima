@@ -16,12 +16,12 @@
 
 ;; TOP LEVEL FUNCTION(S): $TLIMIT $TLDEFINT
 
-(defmfun $tlimit (&rest args)
+(defmfun-checked $tlimit (&rest args)
   (let ((limit-using-taylor t))
     (declare (special limit-using-taylor))
     (apply #'$limit args)))
 
-(defmfun $tldefint (exp var ll ul)
+(defmfun-checked $tldefint (exp var ll ul)
   (let ((limit-using-taylor t))
     (declare (special limit-using-taylor))
     ($ldefint exp var ll ul)))

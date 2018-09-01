@@ -42,7 +42,7 @@
     (if rule (list '(msetq simp) x (cons '(marrow simp) (cdr rule)))
 	(merror (intl:gettext "disprule: ~:M is not a user rule.") x))))
 
-(defmfun $remrule (op rule) 
+(defmfun-checked $remrule (op rule) 
   (prog (rules) 
      (setq op (getopr op))
      (cond ((not (eq rule '$all))

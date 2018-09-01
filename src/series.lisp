@@ -23,7 +23,7 @@
 ;;				driver 	stage
 ;;******************************************************************************
 
-(defmfun $powerseries (expr var pt)
+(defmfun-checked $powerseries (expr var pt)
   (when (and (atom var) (not (symbolp var)))
     (improper-arg-err var '$powerseries))
   (powerseries expr var pt))

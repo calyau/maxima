@@ -31,7 +31,7 @@ sin(y)*(10.0+6*cos(x)),
     ((symbolp x) (print-invert-case (stripdollar x)))
     (t (maybe-invert-string-case (string (implode (strgrind x)))))))
 
-(defmfun $join (x y)
+(defmfun-checked $join (x y)
   (if (and ($listp x) ($listp y))
       (cons '(mlist) (loop for w in (cdr x) for u in (cdr y) collect w collect u))
       (merror (intl:gettext "join: both arguments must be lists."))))

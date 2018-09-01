@@ -33,7 +33,7 @@
 
 ;;; Realpart gives the real part of an expr.
 
-(defmfun $realpart (xx) (car (trisplit xx)))
+(defmfun-checked $realpart (xx) (car (trisplit xx)))
 
 (defprop $realpart %realpart verb)
 (defprop %realpart $realpart noun)
@@ -67,7 +67,7 @@
 
 ;;; Imagpart gives the imaginary part of an expr.
 
-(defmfun $imagpart (xx) (cdr (trisplit xx)))
+(defmfun-checked $imagpart (xx) (cdr (trisplit xx)))
 
 (defprop $imagpart %imagpart verb)
 (defprop %imagpart $imagpart noun)
@@ -90,13 +90,13 @@
 
 ;;; Rectform gives a result of the form a+b*%i.
 
-(defmfun $rectform (xx)
+(defmfun-checked $rectform (xx)
   (let ((ris (trisplit xx)))
     (add (car ris) (mul (cdr ris) '$%i))))
 
 ;;; Polarform gives a result of the form a*%e^(%i*b).
 
-(defmfun $polarform (xx)
+(defmfun-checked $polarform (xx)
   (cond ((mbagp xx)
 	 (cons (car xx) (mapcar #'$polarform (cdr xx))))
 	(t
@@ -107,7 +107,7 @@
 ;;; be syntactically real without being real (e.g. sqrt(x), x<0).  Thus
 ;;; Cabs must lead an independent existence from Abs.
 
-(defmfun $cabs (xx) (cabs xx))
+(defmfun-checked $cabs (xx) (cabs xx))
 
 (defprop $cabs %cabs verb)
 (defprop %cabs $cabs noun)
@@ -133,7 +133,7 @@
 
 ;;; Carg gives the complex argument.
 
-(defmfun $carg (xx)
+(defmfun-checked $carg (xx)
   (cond ((mbagp xx)
 	 (cons (car xx) (mapcar #'$carg (cdr xx))))
 	(t (cdr (absarg xx)))))

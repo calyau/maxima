@@ -264,7 +264,7 @@
 
 (setq sn* nil sd* nil)
 
-(defmfun $residue (e var p)
+(defmfun-checked $residue (e var p)
   (cond (($unknown e)
 	 ($nounify '$residue)
 	 (list '(%residue) e var p))

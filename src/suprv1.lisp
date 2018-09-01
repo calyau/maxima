@@ -417,7 +417,7 @@
 	(and (setq l (get op 'rules))
 	     (member rule l :test #'equal) op))))
 
-(defmfun $debugmode (x)
+(defmfun-checked $debugmode (x)
   (setq $debugmode x)
   (debugmode1 nil x))
 
@@ -464,7 +464,7 @@
   (unless (symbolp x)
     (merror (intl:gettext "~:M: argument must be a symbol; found: ~M") fn x)))
 
-(defmfun $print (&rest args)
+(defmfun-checked $print (&rest args)
   (if (null args)
       '((mlist simp))
       (let ((l args) $stringdisp) ;; Don't print out strings with quotation marks!
@@ -597,7 +597,7 @@
 ;;; been written assuming the '|M| prefix is not stripped so this test has
 ;;; been disabled for now.
 ;;;
-(defmfun $nounify (x)
+(defmfun-checked $nounify (x)
   (if (not (or (symbolp x) (stringp x)))
     (merror (intl:gettext "nounify: argument must be a symbol or a string; found: ~M") x))
   (setq x (amperchk x))
@@ -612,7 +612,7 @@
 		  (putprop y x 'noun) (putprop x y 'verb))
 		 (t x))))))
 
-(defmfun $verbify (x)
+(defmfun-checked $verbify (x)
   (if (not (or (symbolp x) (stringp x)))
     (merror (intl:gettext "verbify: argument must be a symbol or a string; found: ~M") x))
   (setq x (amperchk x))
@@ -720,11 +720,11 @@
 	    (if maxima-error (let ((errset 'errbreak1)) (merror (intl:gettext "stringout: unspecified error."))))
 	    (cl:namestring truename)))))
 
-(defmfun $labels (label-prefix)
+(defmfun-checked $labels (label-prefix)
   (nonsymchk label-prefix '$labels)
   (cons '(mlist simp) (nreverse (getlabels* label-prefix nil))))
 
-(defmfun $%th (x)
+(defmfun-checked $%th (x)
   (prog (l outchar)
      (if (or (not (fixnump x)) (zerop x))
 	 (improper-arg-err x '$%th))
@@ -791,7 +791,7 @@
 	(catch 'mcatch (rat-error-to-merror (mevaln (cdr form))))
       (errlfun1 mcatch))))
 
-(defmfun $throw (exp)
+(defmfun-checked $throw (exp)
   (if (null mcatch) (merror (intl:gettext "throw: not within 'catch'; expression: ~M") exp))
   (throw 'mcatch exp))
 
@@ -813,7 +813,7 @@
       (incf thistime (- (get-internal-run-time) tim))))
 
 
-(defmfun $quit ()
+(defmfun-checked $quit ()
   (princ *maxima-epilog*)
   (bye)
   (mtell (intl:gettext "quit: No known quit function for this Lisp.~%")))

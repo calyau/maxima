@@ -25,7 +25,7 @@
 ;; compute the sum of the k'th powers of the divisors of the absolute
 ;; value of n
 
-(defmfun $divsum (n &optional (k 1))
+(defmfun-checked $divsum (n &optional (k 1))
    (if (and (integerp k) (integerp n))
       (let ((n (abs n)))
         (if (minusp k)
@@ -55,7 +55,7 @@
 ;; totient computes the euler totient function
 ;; i.e. the count of numbers relatively prime to n between 1 and n.
 
-(defmfun $totient (n)
+(defmfun-checked $totient (n)
   (if (integerp n)
       (totient (abs n))
       (list '($totient) n)))
@@ -134,7 +134,7 @@
 
 (declaim (inline gctimes gctime1))
 
-(defmfun $gcfactor (n)
+(defmfun-checked $gcfactor (n)
   (let ((n (cdr ($totaldisrep ($bothcoef ($rat ($rectform n) '$%i) '$%i)))))
     (if (not (and (integerp (first n)) (integerp (second n))))
         (gcdisp (nreverse n))
@@ -309,7 +309,7 @@
 ;;    block([factors_only:false], ifactors(totient(n)))
 ;;    e.g. [[2, 3], [3, 1], ... ]
 ;;
-(defmfun $zn_order (x n &optional fs-phi) 
+(defmfun-checked $zn_order (x n &optional fs-phi) 
   (unless (and (integerp x) (integerp n))
     (return-from $zn_order 
       (if fs-phi 
@@ -398,7 +398,7 @@
 ;;
 ;; optional argument: ifactors of totient(n)
 ;;
-(defmfun $zn_primroot_p (x n &optional fs-phi)
+(defmfun-checked $zn_primroot_p (x n &optional fs-phi)
   (unless (and (integerp x) (integerp n))
     (return-from $zn_primroot_p 
       (if fs-phi 
@@ -434,7 +434,7 @@
 ;;
 ;; optional argument: ifactors of totient(n)
 ;;
-(defmfun $zn_primroot (n &optional fs-phi)
+(defmfun-checked $zn_primroot (n &optional fs-phi)
   (unless (integerp n)
     (return-from $zn_primroot 
       (if fs-phi 
@@ -489,7 +489,7 @@
 ;;
 ;; Chinese Remainder Theorem
 ;;
-(defmfun $chinese (rems mods &optional (return-lcm? nil)) 
+(defmfun-checked $chinese (rems mods &optional (return-lcm? nil)) 
   (cond 
     ((not (and ($listp rems) ($listp mods)))
       (list '($chinese) rems mods) )
@@ -547,7 +547,7 @@
 ;;
 ;; optional argument: ifactors of totient(n)
 ;;
-(defmfun $zn_log (a g n &optional fs-phi)
+(defmfun-checked $zn_log (a g n &optional fs-phi)
   (unless (and (integerp a) (integerp g) (integerp n))
     (return-from $zn_log 
       (if fs-phi 
@@ -692,13 +692,13 @@
 
 ;; characteristic factors:
 
-(defmfun $zn_characteristic_factors (m)
+(defmfun-checked $zn_characteristic_factors (m)
   (unless (and (integerp m) (> m 1)) ;; according to Shanks no result for m = 1
     (gf-merror (intl:gettext 
       "`zn_characteristic_factors': Argument must be an integer greater than 1." )))
   (cons '(mlist simp) (zn-characteristic-factors m)) )
 
-(defmfun $zn_carmichael_lambda (m)
+(defmfun-checked $zn_carmichael_lambda (m)
   (cond 
     ((integerp m)
       (if (= m 1) 1 (zn-characteristic-factors m t)) )
@@ -753,7 +753,7 @@
 
 ;; factor generators:
 
-(defmfun $zn_factor_generators (m) 
+(defmfun-checked $zn_factor_generators (m) 
   (unless (and (integerp m) (> m 1))
     (gf-merror (intl:gettext 
       "`zn_factor_generators': Argument must be an integer greater or equal 2." )))
@@ -850,7 +850,7 @@
 ;; If the residue class a is an r-th power modulo n and contained in a multiplication 
 ;; subgroup of (Z/nZ), return all r-th roots from this subgroup and false otherwise.
 ;;
-(defmfun $zn_nth_root (a r n &optional fs-n)
+(defmfun-checked $zn_nth_root (a r n &optional fs-n)
   (unless (and (integerp a) (integerp r) (integerp n)) 
     (gf-merror (intl:gettext 
       "`zn_nth_root' needs three integer arguments. Found ~m, ~m, ~m." ) a r n))
@@ -1118,7 +1118,7 @@
     (gf-merror (intl:gettext 
       "Argument to `~m' must be a small fixnum greater than 1." ) fun )))
 
-(defmfun $zn_add_table (n)
+(defmfun-checked $zn_add_table (n)
   (zn-table-errchk n "zn_add_table")
   (do ((i 0 (1+ i)) res)
       ((= i n) 
@@ -1130,7 +1130,7 @@
 ;;  The optional g allows to choose subsets of (Z/nZ). Show i with gcd(i,n) = g resp. all i#0.
 ;;  If n # 1 add row and column headings for better readability.
 ;;
-(defmfun $zn_mult_table (n &optional g)
+(defmfun-checked $zn_mult_table (n &optional g)
   (zn-table-errchk n "zn_mult_table")
   (let ((i0 1) all header choice res)
     (cond 
@@ -1159,7 +1159,7 @@
 ;;
 ;;  The optional g allows to choose subsets of (Z/nZ). Show i with gcd(i,n) = g resp. all i.
 ;;
-(defmfun $zn_power_table (n &optional g e)
+(defmfun-checked $zn_power_table (n &optional g e)
   (zn-table-errchk n "zn_power_table")
   (let (all)
     (cond 
@@ -1699,7 +1699,7 @@
 ;; setting the finite field and retrieving basic informations ------------------
 ;;
 
-(defmfun $gf_set (p &optional a1 a2 a3) ;; deprecated
+(defmfun-checked $gf_set (p &optional a1 a2 a3) ;; deprecated
   (format t "`gf_set' is deprecated. ~%~\
              The user is asked to use `gf_set_data' instead.~%" )
   (when a2
@@ -1707,7 +1707,7 @@
   ($gf_set_data p a1 a2 a3) )
 
 
-(defmfun $gf_set_data (p &optional a1 a2 a3) ;; opt: *gf-exp*, *gf-red*, *gf-fs-ord*
+(defmfun-checked $gf_set_data (p &optional a1 a2 a3) ;; opt: *gf-exp*, *gf-red*, *gf-fs-ord*
   (declare (ignore a2 a3)) ;; remove a2 a3 in next versions
   (let ((*ef-arith?*))
     (unless (and (integerp p) (primep p))
@@ -1777,7 +1777,7 @@
     x ))
 
 
-(defmfun $ef_set_data (red) 
+(defmfun-checked $ef_set_data (red) 
   (ef-gf-field? "ef_set_data")
   ($ef_unset)
   (let ((*ef-arith?* t)) 
@@ -1810,7 +1810,7 @@
                                           ;; terminal should return this too
 
 ;; returns a struct containing all data necessary to use gf_set_again (see below)
-(defmfun $gf_get_data () 
+(defmfun-checked $gf_get_data () 
   (gf-data? "gf_get_data")
   (make-gf-data
     :char *gf-char*                ; characteristic 
@@ -1835,7 +1835,7 @@
 (defstruct1 '(($ef_data) 
   $exponent $reduction $primitive $cardinality $order $factors_of_order ))
 
-(defmfun $ef_get_data () 
+(defmfun-checked $ef_get_data () 
   (ef-data? "ef_get_data")
   (make-ef-data
     :exp *ef-exp*                  ; exponent 
@@ -1848,7 +1848,7 @@
     :fsx-base-q *ef-fsx-base-q*    ; extended factors in base q
     :x^q-powers *ef-x^q-powers* )) ; pre-calculated powers
 
-(defmfun $gf_info (&optional (t? t))
+(defmfun-checked $gf_info (&optional (t? t))
   (gf-data? "gf_info")
   (let ((no-prim (or (null *gf-prim*) (equal *gf-prim* '$unknown)))
         (*ef-arith?*) ) 
@@ -1875,7 +1875,7 @@
       (setq p (car f) e (cadr f))
       (setq phi (* phi (1- p) (expt p (1- e)))) )))
 
-(defmfun $gf_infolist () ;; enables testing gf_set_data in rtest
+(defmfun-checked $gf_infolist () ;; enables testing gf_set_data in rtest
   (gf-data? "gf_infolist")
   (let ((*ef-arith?*)) 
     `((mlist simp)
@@ -1887,7 +1887,7 @@
       ,*gf-card*
       ,*gf-ord* )))
 
-(defmfun $ef_info (&optional (t? t))
+(defmfun-checked $ef_info (&optional (t? t))
   (ef-data? "ef_info")
   (let ((no-prim (or (null *ef-prim*) (equal *ef-prim* '$unknown)))
         (*ef-arith?* t) )
@@ -1906,7 +1906,7 @@
       *ef-ord* (or t? no-prim) (not no-prim)
       (totient-by-fs-n *ef-fs-ord*) )))
 
-(defmfun $ef_infolist () ;; enables testing ef_set_data in rtest
+(defmfun-checked $ef_infolist () ;; enables testing ef_set_data in rtest
   (ef-data? "ef_infolist")
   (let ((*ef-arith?* t)) 
     `((mlist simp)
@@ -1918,7 +1918,7 @@
       ,*ef-ord* )))
 
 
-(defmfun $gf_unset ()
+(defmfun-checked $gf_unset ()
   (setq $gf_powers nil $gf_logs nil $gf_zech_logs nil *gf-powers* nil *gf-logs?* nil
         $gf_rat nil
         $ef_coeff_mult nil $ef_coeff_add nil $ef_coeff_inv nil $ef_coeff_exp nil
@@ -1929,7 +1929,7 @@
         *gf-char?* nil *gf-red?* nil *gf-irred?* nil *gf-data?* nil ) 
   t )
 
-(defmfun $ef_unset ()
+(defmfun-checked $ef_unset ()
   (setq *ef-exp* 0 *ef-ord* 0 *ef-card* 0 
         *ef-red* nil *ef-prim* nil 
         *ef-fs-ord* nil *ef-fsx* nil *ef-fsx-base-q* nil *ef-x^q-powers* nil
@@ -1939,7 +1939,7 @@
 
 ;; Minimal set
 ;; Just set characteristic and reduction poly to allow basic arithmetics on the fly.
-(defmfun $gf_minimal_set (p &optional (red))
+(defmfun-checked $gf_minimal_set (p &optional (red))
   (unless (and (integerp p) (primep p))
     (gf-merror (intl:gettext "First argument to `gf_minimal_set' must be a prime number.")) )
   ($gf_unset)
@@ -1956,7 +1956,7 @@
       (if red (mfuncall '$string (gf-x2p *gf-red*)) "false") )))
 
 
-(defmfun $ef_minimal_set (red) 
+(defmfun-checked $ef_minimal_set (red) 
   (ef-gf-field? "ef_minimal_set")
   ($ef_unset)
   (let ((*ef-arith?* t)) 
@@ -1968,38 +1968,38 @@
       (if red (mfuncall '$string (gf-x2p *ef-red*)) "false") )))
 
 
-(defmfun $gf_characteristic () 
+(defmfun-checked $gf_characteristic () 
   (gf-char? "gf_characteristic") 
   *gf-char* )
 
-(defmfun $gf_exponent () 
+(defmfun-checked $gf_exponent () 
   (gf-red? "gf_exponent") 
   *gf-exp* )
 
-(defmfun $gf_reduction () 
+(defmfun-checked $gf_reduction () 
   (gf-red? "gf_reduction") 
   (when *gf-red* (let ((*ef-arith?*)) (gf-x2p *gf-red*))) )
 
-(defmfun $gf_cardinality () 
+(defmfun-checked $gf_cardinality () 
   (gf-data? "gf_cardinality") 
   *gf-card* )
 
 
-(defmfun $ef_exponent () 
+(defmfun-checked $ef_exponent () 
   (ef-red? "ef_exponent") 
   *ef-exp* )
 
-(defmfun $ef_reduction () 
+(defmfun-checked $ef_reduction () 
   (ef-red? "ef_reduction") 
   (when *ef-red* (let ((*ef-arith?* t)) (gf-x2p *ef-red*))) )
 
-(defmfun $ef_cardinality () 
+(defmfun-checked $ef_cardinality () 
   (ef-data? "ef_cardinality") 
   *ef-card* )
 
 
 ;; Reuse data and results from a previous gf_set_data
-(defmfun $gf_set_again (data) 
+(defmfun-checked $gf_set_again (data) 
   (unless (gf-data-p data)
     (gf-merror (intl:gettext 
       "Argument to `gf_set_again' must be a return value of `gf_set_data'." )))
@@ -2020,7 +2020,7 @@
         *gf-red?* t
         *gf-data?* t ))
  
-(defmfun $ef_set_again (data) 
+(defmfun-checked $ef_set_again (data) 
   (ef-gf-field? "ef_set_again")
   (unless (ef-data-p data)
     (gf-merror (intl:gettext 
@@ -2045,12 +2045,12 @@
 ;; lookup tables ---------------------------------------------------------------
 ;;
 
-(defmfun $gf_make_arrays () 
+(defmfun-checked $gf_make_arrays () 
   (format t "`gf_make_arrays' is deprecated. ~%~\
              The user is asked to use `gf_make_logs' instead.~%" )
   ($gf_make_logs) )
 
-(defmfun $gf_make_logs () ;; also zech-logs and antilogs
+(defmfun-checked $gf_make_logs () ;; also zech-logs and antilogs
   (gf-field? "gf_make_logs")
   (let ((*ef-arith?*)) (gf-make-logs)) )
 
@@ -2210,11 +2210,11 @@
 
 ;; an arbitrary polynomial is evaluated in a given field
 
-(defmfun $gf_eval (a) 
+(defmfun-checked $gf_eval (a) 
   (gf-char? "gf_eval") 
   (let ((*ef-arith?*)) (gf-eval a *gf-red* "gf_eval")) )
 
-(defmfun $ef_eval (a) 
+(defmfun-checked $ef_eval (a) 
   (ef-gf-field? "ef_eval")
   (let ((*ef-arith?* t)) 
     (unless (equal a ($expand a))
@@ -2281,24 +2281,24 @@
 
 ;; gf:
 
-(defmfun $gf_neg (a) 
+(defmfun-checked $gf_neg (a) 
   (gf-char? "gf_neg")
   (let ((*ef-arith?*))
     (gf-x2p (gf-nminus (gf-p2x a))) ))
 
-(defmfun $gf_add (&rest args) 
+(defmfun-checked $gf_add (&rest args) 
   (gf-char? "gf_add")
   (let ((*ef-arith?*))
     (setq args (mapcar #'gf-p2x args))
     (gf-x2p (reduce #'gf-plus args)) ))
 
-(defmfun $gf_sub (&rest args) 
+(defmfun-checked $gf_sub (&rest args) 
   (gf-char? "gf_sub")
   (let ((*ef-arith?*))
     (setq args (mapcar #'gf-p2x args))
     (gf-x2p (gf-plus (car args) (gf-minus (reduce #'gf-plus (cdr args))))) ))
 
-(defmfun $gf_mult (&rest args) 
+(defmfun-checked $gf_mult (&rest args) 
   (gf-char? "gf_mult")
   (let ((*ef-arith?*))
     (setq args (mapcar #'gf-p2x args))
@@ -2308,18 +2308,18 @@
          (gf-merror (intl:gettext "`gf_mult': Resulting exponent won't be a fixnum.")) )
     (gf-x2p (reduce #'(lambda (x y) (gf-times x y *gf-red*)) args)) )) 
 
-(defmfun $gf_reduce (a b) 
+(defmfun-checked $gf_reduce (a b) 
   (gf-char? "gf_reduce")
   (let ((*ef-arith?*))
     (gf-x2p (gf-nrem (gf-p2x a) (gf-p2x b))) ))
 
-(defmfun $gf_inv (a) 
+(defmfun-checked $gf_inv (a) 
   (gf-red? "gf_inv") 
   (let ((*ef-arith?*))
     (setq a (gf-inv (gf-p2x a) *gf-red*))
     (when a (gf-x2p a)) )) ;; a is nil in case the inverse does not exist
       
-(defmfun $gf_div (&rest args) 
+(defmfun-checked $gf_div (&rest args) 
   (gf-red? "gf_div")
   (unless (cadr args)
     (gf-merror (intl:gettext "`gf_div' needs at least two arguments." )) )
@@ -2338,7 +2338,7 @@
       (t ;; a / b = a * b^-1 :
         (gf-x2p (reduce #'(lambda (x y) (gf-times x y *gf-red*)) a2)) )))) 
 
-(defmfun $gf_exp (a n)
+(defmfun-checked $gf_exp (a n)
   (gf-char? "gf_exp") 
   (let ((*ef-arith?*))
     (cond 
@@ -2365,24 +2365,24 @@
 
 ;; ef:
 
-(defmfun $ef_neg (a) 
+(defmfun-checked $ef_neg (a) 
   (ef-gf-field? "ef_neg")
   (let ((*ef-arith?* t))
     (gf-x2p (gf-nminus (gf-p2x a))) ))
 
-(defmfun $ef_add (&rest args) 
+(defmfun-checked $ef_add (&rest args) 
   (ef-gf-field? "ef_add")
   (let ((*ef-arith?* t))
     (setq args (mapcar #'gf-p2x args))
     (gf-x2p (reduce #'gf-plus args)) ))
 
-(defmfun $ef_sub (&rest args) 
+(defmfun-checked $ef_sub (&rest args) 
   (ef-gf-field? "ef_sub")
   (let ((*ef-arith?* t))
     (setq args (mapcar #'gf-p2x args))
     (gf-x2p (gf-plus (car args) (gf-minus (reduce #'gf-plus (cdr args))))) ))
 
-(defmfun $ef_mult (&rest args) 
+(defmfun-checked $ef_mult (&rest args) 
   (ef-gf-field? "ef_mult")
   (let ((*ef-arith?* t) 
         (red *ef-red*) )
@@ -2393,18 +2393,18 @@
          (gf-merror (intl:gettext "`ef_mult': Resulting exponent won't be a fixnum.")) )
     (gf-x2p (reduce #'(lambda (x y) (gf-times x y red)) args)) )) 
 
-(defmfun $ef_reduce (a b) 
+(defmfun-checked $ef_reduce (a b) 
   (ef-gf-field? "ef_reduce")
   (let ((*ef-arith?* t))
     (gf-x2p (gf-nrem (gf-p2x a) (gf-p2x b))) ))
 
-(defmfun $ef_inv (a) 
+(defmfun-checked $ef_inv (a) 
   (ef-red? "ef_inv")
   (let ((*ef-arith?* t))
     (setq a (gf-inv (gf-p2x a) *ef-red*))
     (when a (gf-x2p a)) ))
 
-(defmfun $ef_div (&rest args) 
+(defmfun-checked $ef_div (&rest args) 
   (ef-red? "ef_div")
   (unless (cadr args)
     (gf-merror (intl:gettext "`ef_div' needs at least two arguments." )) )
@@ -2418,7 +2418,7 @@
       ((some #'null (cdr args)) nil)
       (t (gf-x2p (reduce #'(lambda (x y) (gf-times x y red)) args))) ))) 
 
-(defmfun $ef_exp (a n) 
+(defmfun-checked $ef_exp (a n) 
   (ef-gf-field? "ef_exp")
   (let ((*ef-arith?* t))
     (cond 
@@ -2894,11 +2894,11 @@
 
 ;; poly 2 number:
 
-(defmfun $ef_p2n (p)
+(defmfun-checked $ef_p2n (p)
   (gf-data? "ef_p2n")
   (let ((*ef-arith?* t)) (gf-x2n (gf-p2x p))) )
 
-(defmfun $gf_p2n (p &optional gf-char) 
+(defmfun-checked $gf_p2n (p &optional gf-char) 
   (let ((*ef-arith?*)) 
     (cond 
       (gf-char
@@ -2926,7 +2926,7 @@
   (unless (integerp n)
     (gf-merror (intl:gettext "`~m': Not an integer: ~m") fun n) ))
 
-(defmfun $gf_n2p (n &optional gf-char) 
+(defmfun-checked $gf_n2p (n &optional gf-char) 
   (gf-n2p-errchk "gf_n2p" n)
   (let ((*ef-arith?*)) 
     (cond 
@@ -2938,7 +2938,7 @@
       (t
         (gf-merror (intl:gettext "`gf_n2p': missing modulus.")) ))))
 
-(defmfun $ef_n2p (n)
+(defmfun-checked $ef_n2p (n)
   (gf-data? "ef_n2p")
   (gf-n2p-errchk "ef_n2p" n)
   (let ((*ef-arith?* t)) (gf-x2p (gf-n2x n))) )
@@ -2958,12 +2958,12 @@
 
 ;; poly 2 list:
 
-(defmfun $ef_p2l (p &optional (len 0))
+(defmfun-checked $ef_p2l (p &optional (len 0))
   (declare (fixnum len))
   (let ((*ef-arith?* t))
     (cons '(mlist simp) (gf-x2l (gf-p2x-raw p) len)) )) ;; more flexibility ...
 
-(defmfun $gf_p2l (p &optional (len 0)) ;; len = 0 : no padding
+(defmfun-checked $gf_p2l (p &optional (len 0)) ;; len = 0 : no padding
   (declare (fixnum len))
   (let ((*ef-arith?*))
     (cons '(mlist simp) (gf-x2l (gf-p2x-raw p) len)) )) ;; ... by omitting mod reduction
@@ -2986,11 +2986,11 @@
 
 ;; list 2 poly:
 
-(defmfun $ef_l2p (l)
+(defmfun-checked $ef_l2p (l)
   (gf-l2p-errchk l "ef_l2p")
   (let ((*ef-arith?* t)) (gf-x2p (gf-l2x (cdr l)))) )
 
-(defmfun $gf_l2p (l)
+(defmfun-checked $gf_l2p (l)
   (gf-l2p-errchk l "gf_l2p")
   (let ((*ef-arith?*)) (gf-x2p (gf-l2x (cdr l)))) )
 
@@ -3012,12 +3012,12 @@
 
 ;; list 2 number:
 
-(defmfun $gf_l2n (l) 
+(defmfun-checked $gf_l2n (l) 
   (gf-char? "gf_l2n")
   (gf-l2p-errchk l "gf_l2n")
   (let ((*ef-arith?*)) (gf-l2n (cdr l))) )
 
-(defmfun $ef_l2n (l) 
+(defmfun-checked $ef_l2n (l) 
   (gf-data? "ef_l2n")
   (gf-l2p-errchk l "ef_l2n")
   (let ((*ef-arith?* t)) (gf-l2n (cdr l))) )
@@ -3035,7 +3035,7 @@
 
 ;; number 2 list:
 
-(defmfun $gf_n2l (n &optional (len 0)) ;; in case of len = 0 the list isn't padded or truncated
+(defmfun-checked $gf_n2l (n &optional (len 0)) ;; in case of len = 0 the list isn't padded or truncated
   (declare (integer n) (fixnum len))
   (gf-char? "gf_n2l")
   (gf-n2p-errchk "gf_n2l" n)
@@ -3043,7 +3043,7 @@
     (let ((*ef-arith?*)) 
       (if (= 0 len) (gf-n2l n) (gf-n2l-twoargs n len)) )))
 
-(defmfun $ef_n2l (n &optional (len 0)) ;; in case of len = 0 the list isn't padded or truncated
+(defmfun-checked $ef_n2l (n &optional (len 0)) ;; in case of len = 0 the list isn't padded or truncated
   (declare (integer n) (fixnum len))
   (gf-data? "ef_n2l")
   (gf-n2p-errchk "ef_n2l" n)
@@ -3076,7 +3076,7 @@
 ;; irreducibility (Ben-Or algorithm) -------------------------------------------
 ;;
 
-(defmfun $gf_irreducible_p (a &optional p) 
+(defmfun-checked $gf_irreducible_p (a &optional p) 
   (cond
     (p (unless (and (integerp p) (primep p))
          (gf-merror (intl:gettext 
@@ -3092,7 +3092,7 @@
       ((= 1 n) t)
       (t (gf-irr-p x p (car x))) )))
 
-(defmfun $ef_irreducible_p (a) 
+(defmfun-checked $ef_irreducible_p (a) 
   (ef-gf-field? "ef_irreducible_p")
   (let ((*ef-arith?* t))
     (setq a (gf-p2x a)) 
@@ -3121,7 +3121,7 @@
 ;;
 ;; gf_irreducible is independent from any settings
 ;;
-(defmfun $gf_irreducible (p n)  ;; p,n : desired characteristic and degree
+(defmfun-checked $gf_irreducible (p n)  ;; p,n : desired characteristic and degree
   (unless (and (integerp p) (primep p) (integerp n))
     (gf-merror (intl:gettext "`gf_irreducible' needs a prime number and an integer.")) )
   (gf-set-rat-header)
@@ -3130,7 +3130,7 @@
          (irr (gf-irr p n)) )
     (when irr (gf-x2p irr)) ))
 
-(defmfun $ef_irreducible (n) ;; n : desired degree
+(defmfun-checked $ef_irreducible (n) ;; n : desired degree
   (ef-gf-field? "ef_irreducible")
   (unless (integerp n)
     (gf-merror (intl:gettext "`ef_irreducible' needs an integer.")) )
@@ -3169,7 +3169,7 @@
 
 ;; Tests if an element is primitive in the field 
 
-(defmfun $gf_primitive_p (a)
+(defmfun-checked $gf_primitive_p (a)
   (gf-data? "gf_primitive_p") ;; --> precomputations are performed
   (let* ((*ef-arith?*)
          (x (gf-p2x a)) 
@@ -3181,7 +3181,7 @@
       (t 
         (gf-prim-p x) ))))
 
-(defmfun $ef_primitive_p (a) 
+(defmfun-checked $ef_primitive_p (a) 
   (ef-data? "ef_primitive_p") ;; --> precomputations are performed
   (let ((*ef-arith?* t)) 
     (setq a (gf-p2x a))
@@ -3272,7 +3272,7 @@
 
 ;; generalized Jacobi-symbol (Bach-Shallit, Theorem 6.7.1)
 ;;
-(defmfun $gf_jacobi (a b) 
+(defmfun-checked $gf_jacobi (a b) 
   (gf-char? "gf_jacobi")
   (let* ((*ef-arith?*)
          (x (gf-p2x a))
@@ -3281,7 +3281,7 @@
       (if (null (gf-rem x y)) 0 1)
       (gf-jacobi x y *gf-char*) )))
 ;;
-(defmfun $ef_jacobi (a b) 
+(defmfun-checked $ef_jacobi (a b) 
   (ef-gf-field? "ef_jacobi")
   (let* ((*ef-arith?* t)
          (x (gf-p2x a))
@@ -3312,12 +3312,12 @@
 ;; modular composition (uses Horner and square and multiply)
 ;; y(x) mod red
 
-(defmfun $gf_compose (a b)
+(defmfun-checked $gf_compose (a b)
   (gf-red? "gf_compose")
   (let ((*ef-arith?*)) 
     (gf-x2p (gf-compose (gf-p2x a) (gf-p2x b) *gf-red*)) ))
 
-(defmfun $ef_compose (a b)
+(defmfun-checked $ef_compose (a b)
   (ef-red? "ef_compose")
   (let ((*ef-arith?* t)) 
     (gf-x2p (gf-compose (gf-p2x a) (gf-p2x b) *ef-red*)) ))
@@ -3344,13 +3344,13 @@
   (unless (integerp n)
     (gf-merror (intl:gettext "`~m': Second argument must be an integer.") fun) ))
 
-(defmfun $gf_at (a n) ;; integer n
+(defmfun-checked $gf_at (a n) ;; integer n
   (gf-char? "gf_at")
   (gf-at-errchk n "gf_at")
   (let ((*ef-arith?*)) 
     (gf-at (gf-p2x a) n) ))
 
-(defmfun $ef_at (a n) ;; poly a, integer n
+(defmfun-checked $ef_at (a n) ;; poly a, integer n
   (ef-gf-field? "ef_at")
   (gf-at-errchk n "ef_at")
   (let ((*ef-arith?* t)) 
@@ -3371,7 +3371,7 @@
 
 ;; find a primitive element:
 ;;
-(defmfun $gf_primitive () 
+(defmfun-checked $gf_primitive () 
   (gf-data? "gf_primitive")
   (let ((*ef-arith?*)) 
     (cond
@@ -3381,7 +3381,7 @@
         (unless (null *gf-prim*) (gf-x2p *gf-prim*)) )
       (t (gf-x2p *gf-prim*)) )))
 
-(defmfun $ef_primitive () 
+(defmfun-checked $ef_primitive () 
   (ef-data? "ef_primitive")
   (let ((*ef-arith?* t)) 
     (cond
@@ -3477,7 +3477,7 @@
 
 ;; test if a is a primitive polynomial over Fq
 
-(defmfun $gf_primitive_poly_p (a &optional p) 
+(defmfun-checked $gf_primitive_poly_p (a &optional p) 
   (cond
     (p (unless (and (integerp p) (primep p))
          (gf-merror (intl:gettext "`gf_primitive_poly_p': ~m is not a prime number.") p) ))
@@ -3489,7 +3489,7 @@
          (n (car y)) )
     (gf-primpoly-p y p n) ))
 
-(defmfun $ef_primitive_poly_p (y) 
+(defmfun-checked $ef_primitive_poly_p (y) 
   (ef-gf-field? "ef_primitive_poly_p")
   (let ((*ef-arith?* t))
     (setq y (gf-p2x y))
@@ -3562,14 +3562,14 @@
 
 ;; find a primitive polynomial
 ;;
-(defmfun $gf_primitive_poly (p n) 
+(defmfun-checked $gf_primitive_poly (p n) 
   (unless (and (integerp p) (primep p) (integerp n))
     (gf-merror (intl:gettext "`gf_primitive_poly' needs a prime number and an integer.")) )
   (gf-set-rat-header)
   (let ((*ef-arith?*) (*gf-char* p)) ;; gf-x2p needs *gf-char*
     (gf-x2p (gf-primpoly p n)) ))
 
-(defmfun $ef_primitive_poly (n) 
+(defmfun-checked $ef_primitive_poly (n) 
   (ef-gf-field? "ef_primitive_poly")
   (let ((*ef-arith?* t))
     (gf-x2p (gf-primpoly *gf-card* n)) ))
@@ -3640,7 +3640,7 @@
 
 ;; Produces a random element within the given environment 
 
-(defmfun $gf_random (&optional p n) 
+(defmfun-checked $gf_random (&optional p n) 
   (let ((*ef-arith?* t)) 
     (cond
       (n (let ((*gf-char* p))
@@ -3649,7 +3649,7 @@
       (t (gf-data? "gf_random") 
          (gf-x2p (gf-random *gf-char* *gf-exp*)) ))))
 
-(defmfun $ef_random (&optional q n) 
+(defmfun-checked $ef_random (&optional q n) 
   (let ((*ef-arith?* t)) 
     (cond
       (n (let ((*gf-char* q)) (gf-x2p (gf-random q n))))
@@ -3669,7 +3669,7 @@
 ;; factoring -------------------------------------------------------------------
 ;;
 
-(defmfun $gf_factor (a &optional p) ;; set p to switch to another modulus
+(defmfun-checked $gf_factor (a &optional p) ;; set p to switch to another modulus
   (cond
     (p (unless (and (integerp p) (primep p))
          (gf-merror (intl:gettext "`gf_factor': Second argument must be a prime number.")) )
@@ -3726,7 +3726,7 @@
                   ((= 1 e) (cons (gf-disrep (gf-np2smod fac)) p))
                   (t (cons `((mexpt simp) ,(gf-disrep (gf-np2smod fac)) ,e) p)) ))))))
 
-(defmfun $ef_factor (a)
+(defmfun-checked $ef_factor (a)
   (ef-gf-field? "ef_factor")
   (let ((*ef-arith?* t))
     (setq a (let ((modulus)) ($rat a)))
@@ -3879,12 +3879,12 @@
 ;; gcd, gcdex and test of invertibility ----------------------------------------
 ;;
 
-(defmfun $ef_gcd (a b) 
+(defmfun-checked $ef_gcd (a b) 
   (ef-gf-field? "ef_gcd")
   (let ((*ef-arith?* t))
     (gf-x2p (gf-gcd (gf-p2x a) (gf-p2x b))) ))
 
-(defmfun $gf_gcd (a b &optional p) 
+(defmfun-checked $gf_gcd (a b &optional p) 
   (let ((*ef-arith?*))
     (cond
       (p (unless (and (integerp p) (primep p))
@@ -3900,25 +3900,25 @@
          (gf-x2p (gf-gcd (gf-p2x a) (gf-p2x b))) ))))
 
 
-(defmfun $gf_gcdex (a b) 
+(defmfun-checked $gf_gcdex (a b) 
   (gf-red? "gf_gcdex")
   (let ((*ef-arith?*))
     (cons '(mlist simp) 
       (mapcar #'gf-x2p (gf-gcdex (gf-p2x a) (gf-p2x b) *gf-red*)) )))
 
-(defmfun $ef_gcdex (a b) 
+(defmfun-checked $ef_gcdex (a b) 
   (ef-red? "ef_gcdex")
   (let ((*ef-arith?* t))
     (cons '(mlist simp) 
       (mapcar #'gf-x2p (gf-gcdex (gf-p2x a) (gf-p2x b) *gf-red*)) )))
 
 
-(defmfun $gf_unit_p (a) 
+(defmfun-checked $gf_unit_p (a) 
   (gf-red? "gf_unit_p")
   (let ((*ef-arith?*))
     (gf-unit-p (gf-p2x a) *gf-red*) ))
 
-(defmfun $ef_unit_p (a) 
+(defmfun-checked $ef_unit_p (a) 
   (ef-red? "ef_unit_p")
   (let ((*ef-arith?* t))
     (gf-unit-p (gf-p2x a) *ef-red*) ))
@@ -3934,7 +3934,7 @@
 
 ;; group/element order
 
-(defmfun $gf_order (&optional a) 
+(defmfun-checked $gf_order (&optional a) 
   (gf-data? "gf_order") 
   (cond 
     (a (let ((*ef-arith?*))
@@ -3943,7 +3943,7 @@
            (gf-ord a *gf-ord* *gf-fs-ord* *gf-red*) ))) 
     (t *gf-ord*) ))
 
-(defmfun $ef_order (&optional a) 
+(defmfun-checked $ef_order (&optional a) 
   (ef-data? "ef_order")
   (cond 
     (a (let ((*ef-arith?* t))
@@ -4012,14 +4012,14 @@
   (when (and (not (null a)) (>= (car a) n))
     (gf-merror (intl:gettext "`~m': Leading exponent must be smaller than ~m.") fun n) ))
 
-(defmfun $gf_degree (a) 
+(defmfun-checked $gf_degree (a) 
   (gf-field? "gf_degree")
   (let ((*ef-arith?*)) 
     (setq a (gf-p2x a))
     (gf-degree-errchk a *gf-exp* "gf_degree")
     (*f-deg a *gf-exp* *gf-red* *gf-x^p-powers*) ))
 
-(defmfun $ef_degree (a) 
+(defmfun-checked $ef_degree (a) 
   (ef-field? "ef_degree") 
   (let ((*ef-arith?* t)) 
     (setq a (gf-p2x a))
@@ -4036,14 +4036,14 @@
 
 ;; produce the minimal polynomial 
 
-(defmfun $gf_minimal_poly (a)
+(defmfun-checked $gf_minimal_poly (a)
   (gf-field? "gf_minimal_poly")
   (let ((*ef-arith?*))
     (setq a (gf-p2x a))
     (gf-degree-errchk a *gf-exp* "gf_minimal_poly")
     (gf-minpoly a *gf-red* *gf-x^p-powers*) ))
 
-(defmfun $ef_minimal_poly (a) 
+(defmfun-checked $ef_minimal_poly (a) 
   (ef-field? "ef_minimal_poly")
   (let ((*ef-arith?* t))
     (setq a (gf-p2x a))
@@ -4130,12 +4130,12 @@
 ;;            1 + q + q + .. + q         (q - 1)/(q - 1)        q   q         q
 ;; norm(a) = a                        = a                = a * a * a  * .. * a  
 
-(defmfun $gf_norm (a)
+(defmfun-checked $gf_norm (a)
   (gf-field? "gf_norm")
   (let ((*ef-arith?*))
     (gf-norm (gf-p2x a) *gf-red* *gf-x^p-powers*) ))
 
-(defmfun $ef_norm (a)
+(defmfun-checked $ef_norm (a)
   (ef-field? "ef_norm")
   (let ((*ef-arith?* t)) 
     (gf-norm (gf-p2x a) *ef-red* *ef-x^q-powers*) ))
@@ -4155,7 +4155,7 @@
 
 ;; Tests if an element is normal 
 
-(defmfun $gf_normal_p (a) 
+(defmfun-checked $gf_normal_p (a) 
   (gf-field? "gf_normal_p")
   (let ((*ef-arith?*)) (gf-normal-p (gf-p2x a))) )
 
@@ -4165,7 +4165,7 @@
           (mat (gf-maybe-normal-basis x)) )
       (equal ($rank mat) *gf-exp*) )))
 
-(defmfun $ef_normal_p (a) 
+(defmfun-checked $ef_normal_p (a) 
   (ef-field? "ef_normal_p")
   (let ((*ef-arith?* t)) (ef-normal-p (gf-p2x a))) )
 
@@ -4178,12 +4178,12 @@
 ;; Finds a normal element e in the field; that is, 
 ;; an element for which the list [e, e^q, e^(q^2), ... , e^(q^(n-1))] is a basis 
 
-(defmfun $gf_normal () 
+(defmfun-checked $gf_normal () 
   (gf-field? "gf_normal")
   (let ((*ef-arith?*)) 
     (gf-x2p (gf-normal *gf-char* *gf-exp* #'gf-normal-p)) ))
 
-(defmfun $ef_normal () 
+(defmfun-checked $ef_normal () 
   (ef-field? "ef_normal")
   (let ((*ef-arith?* t)) 
     (gf-x2p (gf-normal *gf-card* *ef-exp* #'ef-normal-p)) ))
@@ -4203,7 +4203,7 @@
 ;; Finds a normal element in the field by producing random elements and checking 
 ;; if each one is normal 
 
-(defmfun $gf_random_normal ()
+(defmfun-checked $gf_random_normal ()
   (gf-field? "gf_random_normal")
   (let ((*ef-arith?*)) (gf-x2p (gf-random-normal))) )
   
@@ -4211,7 +4211,7 @@
   (do ((x (gf-random *gf-char* *gf-exp*) (gf-random *gf-char* *gf-exp*))) 
       ((gf-normal-p x) x) ))
 
-(defmfun $ef_random_normal ()
+(defmfun-checked $ef_random_normal ()
   (ef-field? "ef_random_normal")
   (let ((*ef-arith?* t)) (gf-x2p (ef-random-normal))) )
   
@@ -4222,7 +4222,7 @@
 ;; Produces a normal basis as a matrix; 
 ;; the columns are the coefficients of the powers e^(q^i) of the normal element 
 
-(defmfun $gf_normal_basis (a)
+(defmfun-checked $gf_normal_basis (a)
   (gf-field? "gf_normal_basis")
   (let* ((*ef-arith?*) 
          (x (gf-p2x a))
@@ -4232,7 +4232,7 @@
       (gf-merror (intl:gettext "Argument to `gf_normal_basis' must be a normal element.")) )
     mat ))
 
-(defmfun $ef_normal_basis (a)
+(defmfun-checked $ef_normal_basis (a)
   (ef-field? "ef_normal_basis")
   (let* ((*ef-arith?* t)
          (mat (ef-maybe-normal-basis (gf-p2x a))) )
@@ -4278,12 +4278,12 @@
 ;; Needs the inverted normal basis as the second argument 
 ;; (the inversion might be time consuming) 
 
-(defmfun $gf_normal_basis_rep (a m-inv)
+(defmfun-checked $gf_normal_basis_rep (a m-inv)
   (gf-field? "gf_normal_basis_rep")
   (let ((*ef-arith?*))
     (gf-normal-basis-rep (gf-p2x a) m-inv *gf-exp* '$gf_matmult) ))
 
-(defmfun $ef_normal_basis_rep (a m-inv)
+(defmfun-checked $ef_normal_basis_rep (a m-inv)
   (ef-field? "ef_normal_basis_rep")
   (let ((*ef-arith?* t))
     (gf-normal-basis-rep (gf-p2x a) m-inv *ef-exp* '$ef_matmult) ))
@@ -4299,22 +4299,22 @@
 ;; functions for matrices ------------------------------------------------------
 ;;
 
-(defmfun $gf_matneg (m) 
+(defmfun-checked $gf_matneg (m) 
   (gf-char? "gf_matneg")
   (mfuncall '$matrixmap '$gf_neg m) )
 
-(defmfun $ef_matneg (m) 
+(defmfun-checked $ef_matneg (m) 
   (ef-gf-field? "ef_matneg")
   (mfuncall '$matrixmap '$ef_neg m) )
 
 
 ;; matrix addition (convenience: mat, list or poly possible as argument)
 
-(defmfun $gf_matadd (&rest args) 
+(defmfun-checked $gf_matadd (&rest args) 
   (let ((*ef-arith?*)) 
     (reduce #'(lambda (m1 m2) (gf-matadd m1 m2 '$gf_add)) args) ))
 
-(defmfun $ef_matadd (&rest args) 
+(defmfun-checked $ef_matadd (&rest args) 
   (gf-data? "ef_matadd")
   (let ((*ef-arith?* t)) 
     (reduce #'(lambda (m1 m2) (gf-matadd m1 m2 '$ef_add)) args) ))
@@ -4358,12 +4358,12 @@
 
 ;; matrix multiplication (convenience: mat, list or poly possible as argument)
 
-(defmfun $gf_matmult (&rest args) 
+(defmfun-checked $gf_matmult (&rest args) 
   (gf-red? "gf_matmult")
   (let ((*ef-arith?*)) 
     (apply #'*f-matmult `($gf_mult ,@args)) )) 
 
-(defmfun $ef_matmult (&rest args) 
+(defmfun-checked $ef_matmult (&rest args) 
   (ef-red? "ef_matmult")
   (let ((*ef-arith?* t)) 
     (apply #'*f-matmult `($ef_mult ,@args)) )) 
@@ -4440,27 +4440,27 @@
         (close redirect) )
       (return-from try-lu-and-call res) )))
 
-(defmfun $zn_invert_by_lu (m p) 
+(defmfun-checked $zn_invert_by_lu (m p) 
   (zn-p-errchk p "zn_invert_by_lu" "Second")
   (let ((*ef-arith?*) (*gf-char* p)) 
     (try-lu-and-call '$invert_by_lu m 'gf-coeff-ring) ))
 
-(defmfun $gf_matinv (m) 
+(defmfun-checked $gf_matinv (m) 
   (format t "`gf_matinv' is deprecated. ~%~\
              The user is asked to use `gf_invert_by_lu' instead.~%" )
   ($gf_invert_by_lu m) )
 
-(defmfun $gf_invert_by_lu (m) 
+(defmfun-checked $gf_invert_by_lu (m) 
   (gf-field? "gf_invert_by_lu")
   (let ((*ef-arith?*)) (try-lu-and-call '$invert_by_lu m 'gf-ring)) )
 
-(defmfun $ef_invert_by_lu (m) 
+(defmfun-checked $ef_invert_by_lu (m) 
   (ef-field? "ef_invert_by_lu")
   (let ((*ef-arith?* t)) (try-lu-and-call '$invert_by_lu m 'ef-ring)) )
 
 ;; determinant
 
-(defmfun $zn_determinant (m p) 
+(defmfun-checked $zn_determinant (m p) 
   (zn-p-errchk p "zn_determinant" "Second")
   (let* ((*ef-arith?*) 
          (*gf-char* p)
@@ -4468,7 +4468,7 @@
     (if det det
       (mod (mfuncall '$determinant m) p) )))
 
-(defmfun $gf_determinant (m) 
+(defmfun-checked $gf_determinant (m) 
   (gf-field? "gf_determinant")
   (let* ((*ef-arith?*)
          (det (try-lu-and-call '$determinant_by_lu m 'gf-ring)) )
@@ -4476,7 +4476,7 @@
       (let (($matrix_element_mult '$gf_mult) ($matrix_element_add '$gf_add))
         (mfuncall '$determinant m) ))))
 
-(defmfun $ef_determinant (m) 
+(defmfun-checked $ef_determinant (m) 
   (ef-field? "ef_determinant")
   (let* ((*ef-arith?* t)
          (det (try-lu-and-call '$determinant_by_lu m 'ef-ring)) )
@@ -4492,7 +4492,7 @@
 
 ;; solve g^x = a in Fq^n, where g a generator of (Fq^n)*
 
-(defmfun $gf_index (a) 
+(defmfun-checked $gf_index (a) 
   (gf-data? "gf_index")
   (gf-log-errchk1 *gf-prim* "gf_index")
   (let ((*ef-arith?*)) 
@@ -4500,7 +4500,7 @@
       ($zn_log a (gf-x2n *gf-prim*) *gf-char*)
       (gf-dlog (gf-p2x a)) )))
 
-(defmfun $ef_index (a) 
+(defmfun-checked $ef_index (a) 
   (ef-data? "ef_index")
   (gf-log-errchk1 *ef-prim* "ef_index")
   (let ((*ef-arith?* t)) 
@@ -4509,7 +4509,7 @@
       (let ((*ef-arith?*)) (gf-dlog (gf-n2x (cadr a))))
       (ef-dlog a) )))
 
-(defmfun $gf_log (a &optional b) 
+(defmfun-checked $gf_log (a &optional b) 
   (gf-data? "gf_log")
   (gf-log-errchk1 *gf-prim* "gf_log")
   (let ((*ef-arith?*))
@@ -4534,7 +4534,7 @@
     (gf-merror (intl:gettext 
       "Second argument to `~m' must be a primitive element." ) fun )))
 
-(defmfun $ef_log (a &optional b) 
+(defmfun-checked $ef_log (a &optional b) 
   (ef-data? "ef_log")
   (gf-log-errchk1 *ef-prim* "ef_log")
   (let ((*ef-arith?* t))
@@ -4690,7 +4690,7 @@
 ;; nth root in Galois Fields ---------------------------------------------------
 ;;
 
-(defmfun $ef_nth_root (a r) 
+(defmfun-checked $ef_nth_root (a r) 
   (ef-field? "ef_nth_root")
   (unless (and (integerp r) (> r 0))
     (gf-merror (intl:gettext "Second argument to `ef_nth_root' must be a positive integer. Found ~m.") a r) )
@@ -4698,7 +4698,7 @@
          (rts (gf-nrt (gf-p2x a) r *ef-red* *ef-ord*)) )
     (gf-nrt-exit rts) ))
 
-(defmfun $gf_nth_root (a r) 
+(defmfun-checked $gf_nth_root (a r) 
   (gf-field? "gf_nth_root")
   (unless (and (integerp r) (> r 0))
     (gf-merror (intl:gettext "Second argument to `gf_nth_root' must be a positive integer. Found ~m.") a r) )
@@ -4810,11 +4810,11 @@
 ;; tables of small fields ------------------------------------------------------
 ;;
 
-(defmfun $gf_add_table ()
+(defmfun-checked $gf_add_table ()
   (gf-data? "gf_add_table")
   (let ((*ef-arith?*)) (gf-add-table *gf-card*)) )
 
-(defmfun $ef_add_table ()
+(defmfun-checked $ef_add_table ()
   (ef-data? "ef_add_table")
   (let ((*ef-arith?* t)) (gf-add-table *ef-card*)) )
 
@@ -4825,12 +4825,12 @@
     card 
     card ))
 
-(defmfun $gf_mult_table (&optional all?)
+(defmfun-checked $gf_mult_table (&optional all?)
   (gf-data? "gf_mult_table")
   (let ((*ef-arith?*))
     (gf-mult-table *gf-red* *gf-irred?* *gf-card* all?) ))
 
-(defmfun $ef_mult_table (&optional all?)
+(defmfun-checked $ef_mult_table (&optional all?)
   (ef-data? "ef_mult_table")
   (let ((*ef-arith?* t))
     (gf-mult-table *ef-red* *ef-irred?* *ef-card* all?) ))
@@ -4856,7 +4856,7 @@
               (mapcar #'(lambda (y) (gf-x2n (gf-times x y red))) units) )
             res ) )) )))
 
-(defmfun $gf_power_table (&rest args)
+(defmfun-checked $gf_power_table (&rest args)
   (gf-data? "gf_power_table")
   (let ((*ef-arith?*) all? cols)
     (multiple-value-setq (all? cols) 
@@ -4866,7 +4866,7 @@
       (when all? (incf cols)) )
     (gf-power-table *gf-red* *gf-irred?* *gf-card* cols all? ) ))
 
-(defmfun $ef_power_table (&rest args)
+(defmfun-checked $ef_power_table (&rest args)
   (ef-data? "ef_power_table")
   (let ((*ef-arith?* t) all? cols)
     (multiple-value-setq (all? cols) 

@@ -63,7 +63,7 @@
   (destructuring-let (((a . b) x) ((c . d) y))
     (cons (r+ a c) (append b d))))
 
-(defmfun $risch (exp var)
+(defmfun-checked $risch (exp var)
   (let ((*integrator-level* 0))
     (declare (special *integrator-level*))
     (with-new-context (context)

@@ -23,7 +23,7 @@
 
 ;; minfactorial and factcomb stuff
 
-(defmfun $makefact (e)
+(defmfun-checked $makefact (e)
   (let ((makef t)) (if (atom e) e (simplify (makefact1 e)))))
 
 (defun makefact1 (e)
@@ -45,10 +45,10 @@
 				    ((mexpt) ((%gamma) ((mplus) x y)) -1))))))
 	(t (recur-apply #'makefact1 e))))
 
-(defmfun $makegamma (e)
+(defmfun-checked $makegamma (e)
   (if (atom e) e (simplify (makegamma1 ($makefact e)))))
 
-(defmfun $minfactorial (e)
+(defmfun-checked $minfactorial (e)
   (let (*mfactl *factlist)
     (if (specrepp e) (setq e (specdisrep e)))
     (getfact e)
@@ -95,7 +95,7 @@
 						  (list '(mtimes) -1 (caar al)))) 1)
 		           (list '(mfactorial) (caar al))))))))
 
-(defmfun $factcomb (e)
+(defmfun-checked $factcomb (e)
   (let ((varlist varlist ) genvar $ratfac (ratrep (and (not (atom e)) (eq (caar e) 'mrat))))
     (and ratrep (setq e (ratdisrep e)))
     (setq e (factcomb e)
@@ -335,7 +335,7 @@
 (putprop '*eu* 11 'lim)
 (putprop 'bern 16 'lim)
 
-(defmfun $euler (s)
+(defmfun-checked $euler (s)
   (setq s
 	(let ((%n 0) $float)
 	  (cond ((or (not (fixnump s)) (< s 0)) (list '($euler) s))
@@ -379,7 +379,7 @@
 	($euler u)
 	(eqtest (list '($euler) u) x))))
 
-(defmfun $bern (s)
+(defmfun-checked $bern (s)
   (setq s
 	(let ((%n 0) $float)
 	  (cond ((or (not (fixnump s)) (< s 0)) (list '($bern) s))
@@ -721,7 +721,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun $fib (n)
+(defmfun-checked $fib (n)
   (cond ((fixnump n) (ffib n))
 	(t (setq $prevfib `(($fib) ,(add2* n -1)))
 	   `(($fib) ,n))))
@@ -746,7 +746,7 @@
 		    f2 (+ f2 $prevfib)))
 	   f2))))
 
-(defmfun $lucas (n)
+(defmfun-checked $lucas (n)
   (cond 
     ((fixnump n) (lucas n))
 	 (t (setq $next_lucas `(($lucas) ,(add2* n 1)))
@@ -773,7 +773,7 @@
 
 ;; continued fraction stuff
 
-(defmfun $cfdisrep (a)
+(defmfun-checked $cfdisrep (a)
   (cond ((not ($listp a))
 	 (merror (intl:gettext "cfdisrep: argument must be a list; found ~M") a))
 	((null (cddr a)) (cadr a))
@@ -1042,7 +1042,7 @@
 	     ((> i $cflength) (cons '(mlist simp) n))
 	   (setq n (nconc n (copy-tree a)))))))
 
-(defmfun $qunit (n)
+(defmfun-checked $qunit (n)
   (let ((isqrtn ($isqrt n)))
     (when (or (not (integerp n))
               (minusp n)
@@ -1087,7 +1087,7 @@
 	       (setq a (cons (truncate x y) a) x y y b)))
    (go a)))
 
-(defmfun $cfexpand (x)
+(defmfun-checked $cfexpand (x)
   (cond ((null ($listp x)) x)
 	((cons '($matrix) (cfexpand (cdr x))))))
 
@@ -1392,7 +1392,7 @@
 	     (simplifya (cadddr x) z)
 	     (simplifya (cadr (cdddr x)) z)))
 
-(defmfun $taytorat (e)
+(defmfun-checked $taytorat (e)
   (cond ((mbagp e) (cons (car e) (mapcar #'$taytorat (cdr e))))
 	((or (atom e) (not (member 'trunc (cdar e) :test #'eq))) (ratf e))
 	((catch 'srrat (srrat e)))
@@ -1467,7 +1467,7 @@
 
 (declare-top (special varlist genvar $factorflag $ratfac *p* *var* *l* *x*))
 
-(defmfun $polydecomp (e v)
+(defmfun-checked $polydecomp (e v)
   (let ((varlist (list v))
 	(genvar nil)
 	*var* p den $factorflag $ratfac)

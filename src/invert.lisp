@@ -2,7 +2,7 @@
 
 (in-package :maxima)
 
-(defmfun $adjoint (mat)
+(defmfun-checked $adjoint (mat)
   (let* ((n ($length mat))
 	 (adj (simplify ($ident n))))
     (unless (like n 1)
@@ -15,7 +15,7 @@
 		 adj i j))))
     adj))
 
-(defmfun $invert_by_adjoint (mat)
+(defmfun-checked $invert_by_adjoint (mat)
   (let*
     ((adj (simplify ($adjoint mat)))
      (det (let (($scalarmatrixp t))

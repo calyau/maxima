@@ -63,7 +63,7 @@
 (defmvar $factlim 100000) ; set to a big integer which will work (not -1)
 (defvar makef nil)
 
-(defmfun $genfact (&rest l)
+(defmfun-checked $genfact (&rest l)
   (cons '(%genfact) l))
 
 (defun gfact (n %m i)

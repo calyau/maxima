@@ -90,7 +90,7 @@ relational knowledge is contained in the default context GLOBAL.")
 
 ;;; This "turns on" a context, making its facts visible.
 
-(defmfun $activate (&rest args)
+(defmfun-checked $activate (&rest args)
   (dolist (c args)
     (cond ((not (symbolp c)) (nc-err '$activate c))
 	  ((member c (cdr $activecontexts) :test #'eq))
@@ -102,7 +102,7 @@ relational knowledge is contained in the default context GLOBAL.")
 
 ;;; This "turns off" a context, keeping the facts, but making them invisible
 
-(defmfun $deactivate (&rest args)
+(defmfun-checked $deactivate (&rest args)
   (dolist (c args)
     (cond ((not (symbolp c)) (nc-err '$deactivate c))
 	  ((member c (cdr $contexts) :test #'eq)
@@ -114,7 +114,7 @@ relational knowledge is contained in the default context GLOBAL.")
 ;;; This function prints out a list of the facts in the specified context.
 ;;; No argument implies the current context.
 
-(defmfun $facts (&optional (ctxt $context))
+(defmfun-checked $facts (&optional (ctxt $context))
   (if (member ctxt (cdr $contexts))
       (facts1 ctxt)
       (facts2 ctxt)))
@@ -171,7 +171,7 @@ relational knowledge is contained in the default context GLOBAL.")
 ;;; It also switches contexts to the newly created one.
 ;;; If no argument supplied, then invent a name via gensym and use that.
 
-(defmfun $newcontext (&rest args)
+(defmfun-checked $newcontext (&rest args)
   (if (null args)
     ($newcontext ($gensym "context")) ;; make up a name and try again
     (if (> (length args) 1)
@@ -206,7 +206,7 @@ relational knowledge is contained in the default context GLOBAL.")
 
 ;;; This function kills a context or a list of contexts
 
-(defmfun $killcontext (&rest args)
+(defmfun-checked $killcontext (&rest args)
   (dolist (c args)
     (if (symbolp c)
 	(killcontext c)
@@ -741,7 +741,7 @@ relational knowledge is contained in the default context GLOBAL.")
 		  (mtell (intl:gettext "Acceptable answers are yes, y, Y, no, n, N. ~%"))
 		  ($askequal a b)))))))
 	   
-(defmfun $asksign (exp)
+(defmfun-checked $asksign (exp)
   (let (sign minus odds evens factored)
     (asksign01 (cond (limitp (restorelim exp))
 		     ((among '$%i exp) ($rectform exp))
@@ -775,7 +775,7 @@ relational knowledge is contained in the default context GLOBAL.")
         (limitp nil))
     ($sign z)))
 
-(defmfun $sign (x)
+(defmfun-checked $sign (x)
   (let ((x (specrepcheck x))
 	sign minus odds evens factored)
     (sign01 (cond (limitp (restorelim x))
@@ -1869,7 +1869,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; change allows things like featurep(rat(n),integer) --> true when n has
 ;; been declared an integer.
 
-(defmfun $featurep (e ind)
+(defmfun-checked $featurep (e ind)
   (setq e ($ratdisrep e))
   (cond ((not (symbolp ind))
          (merror 

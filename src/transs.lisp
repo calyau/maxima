@@ -128,7 +128,7 @@
 (defun maxima-string (symb)
   (print-invert-case symb))
 
-(defmfun $translate_file (input-file &optional output-file)
+(defmfun-checked $translate_file (input-file &optional output-file)
   (setq input-file (maxima-string input-file))
   (cond (output-file (setq output-file (maxima-string output-file))))
   (translate-file input-file output-file))

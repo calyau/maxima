@@ -24,7 +24,7 @@
 ;; equivalent, but which uses local variables to store the results of computing
 ;; common subexpressions.  These subexpressions are found by hashing them.
 
-(defmfun $optimize (x0)
+(defmfun-checked $optimize (x0)
   (let (($optimwarn $optimwarn)
 	*setqs*
 	vars
@@ -86,7 +86,7 @@
 		(t (list (car x) *base exp))))
     (if (alike1 x xnew) x xnew)))
 
-(defmfun $collapse (x)
+(defmfun-checked $collapse (x)
   (fill *subexp* nil)
   (prog1 (collapse x) (fill *subexp* nil)))
 

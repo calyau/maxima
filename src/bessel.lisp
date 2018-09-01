@@ -49,7 +49,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun $bessel_j (v z)
+(defmfun-checked $bessel_j (v z)
   (simplify (list '(%bessel_j) v z)))
 
 (defprop $bessel_j %bessel_j alias)
@@ -376,7 +376,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun $bessel_y (v z)
+(defmfun-checked $bessel_y (v z)
   (simplify (list '(%bessel_y) v z)))
 
 (defprop $bessel_y %bessel_y alias)
@@ -719,7 +719,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun $bessel_i (v z)
+(defmfun-checked $bessel_i (v z)
   (simplify (list '(%bessel_i) v z)))
 
 (defprop $bessel_i %bessel_i alias)
@@ -1050,7 +1050,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun $bessel_k (v z)
+(defmfun-checked $bessel_k (v z)
   (simplify (list '(%bessel_k) v z)))
 
 (defprop $bessel_k %bessel_k alias)
