@@ -58,6 +58,8 @@ if EXIST "%MAXIMA_USERDIR%/maximarc" (
     )
 )
 
+if defined MAXIMA_PWD cd "%MAXIMA_PWD"
+
 :startparseargs
 if x%1 == x-l goto foundlisp
 if x%1 == x--lisp goto foundlisp
