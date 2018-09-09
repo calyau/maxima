@@ -269,12 +269,7 @@
 	      (impl-doc (format nil "Implementation for ~S" name))
 	      (nargs (gensym "NARGS-"))
 	      (args (gensym "REST-ARG-"))
-	      (compiler-macro-def
-	       ;; Defines a compiler macro that expands calls to the
-	       ;; function to the implementation.
-	       (let ((rest-name (gensym "REST-ARGS")))
-	       `((define-compiler-macro ,name (&rest ,rest-name)
-		   `(,',impl-name ,@,rest-name))))))
+	      (rest-name (gensym "REST-ARGS")))
 
 	 (multiple-value-bind (forms decls doc-string)
 	     (parse-body body nil t)
@@ -323,8 +318,8 @@
 				       ,required-len
 				       ,nargs)))))
 		  (apply #',impl-name ,args)))
-	      ,@compiler-macro-def
-	      )))))))
+	      (define-compiler-macro ,name (&rest ,rest-name)
+		`(,',impl-name ,@,rest-name)))))))))
 
 ;; Examples:
 ;; (defmfun-checked $foobar (a b) (list '(mlist) a b))
