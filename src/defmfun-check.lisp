@@ -12,7 +12,7 @@
 )
 
 #-cmucl
-(eval-when (:compile-toplevel :load-toplevel :execute)
+(eval-when (compile load eval)
 ;;;; Borrowed from cmucl src/code/extensions.lisp.  Used in parsing
 ;;;; lambda lists.
 
