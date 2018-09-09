@@ -207,66 +207,75 @@
 ;; The lambda-list supports &optional and &rest args.  Keyword args
 ;; are an error.
 (defmacro defmfun-checked (name lambda-list &body body)
-  (unless (char= #\$ (aref (string name) 0))
-    (error "First character of function name must start with $: ~S~%" name))
-  (multiple-value-bind (required-args
-			optional-args
-			restp
-			rest-arg
-			keywords-present-p)
-      (parse-lambda-list lambda-list)
-    (declare (ignore rest-arg))
+  (cond
+    ((atom lambda-list)
+	 ;; Support MacLisp narg syntax:  (defun foo a ...)
+	 `(progn
+	    (defprop ,name t translated)
+	    (defun ,name (&rest narg-rest-argument
+			  &aux (,lambda-list (length narg-rest-argument)))
+	      ,@body)))
+    (t
+     (unless (char= #\$ (aref (string name) 0))
+       (error "First character of function name must start with $: ~S~%" name))
+     (multiple-value-bind (required-args
+			   optional-args
+			   restp
+			   rest-arg
+			   keywords-present-p)
+	 (parse-lambda-list lambda-list)
+       (declare (ignore rest-arg))
 
-    (when keywords-present-p
-      (error "Keyword arguments are not supported"))
+       (when keywords-present-p
+	 (error "Keyword arguments are not supported"))
 
-    (let* ((required-len (length required-args))
-	   (optional-len (length optional-args))
-	   (impl-name (intern (concatenate 'string
-					   (subseq (string name) 1)
-					   "-IMPL"))))
-    `(progn
-       (defun ,impl-name ,lambda-list
-	 (block ,name
-	   (locally 
-	       ,@body)))
-       (defprop ,name t translated)
-       (defun ,name (&rest args)
-	 (let ((nargs (length args)))
-	   ,@(cond (restp
-		    ;; When a rest arg is given, there's no upper
-		    ;; limit to the number of args.  Just check that
-		    ;; we have enough args to satisfy the required
-		    ;; args.
-		    (unless (null required-args)
-		      `((when (< nargs ,required-len)
-			  (merror (intl:gettext "~M: expected at least ~M arguments but got ~M")
-				  ',name
-				  ,required-len
-				  nargs)))))
-		   (optional-args
-		    ;; There are optional args (but no rest
-		    ;; arg). Verify that we don't have too many args,
-		    ;; and that we still have all the required args.
-		    `(
-		      (when (> nargs ,(+ required-len optional-len))
-			(merror (intl:gettext "~M: expected at most ~M arguments but got ~M")
-				',name
-				,(+ required-len optional-len)
-				nargs))
-		      (when (< nargs ,required-len)
-			(merror (intl:gettext "~M: expected at least ~M arguments but got ~M")
-				',name
-				,required-len
-				nargs))))
-		   (t
-		    ;; We only have required args.
-		    `((unless (= nargs ,required-len)
-			(merror (intl:gettext "~M: expected exactly ~M arguments but got ~M")
-				',name
-				,required-len
-				nargs)))))
-	 (apply #',impl-name args)))))))
+       (let* ((required-len (length required-args))
+	      (optional-len (length optional-args))
+	      (impl-name (intern (concatenate 'string
+					      (subseq (string name) 1)
+					      "-IMPL"))))
+	 `(progn
+	    (defun ,impl-name ,lambda-list
+	      (block ,name
+		(locally 
+		    ,@body)))
+	    (defprop ,name t translated)
+	    (defun ,name (&rest args)
+	      (let ((nargs (length args)))
+		,@(cond (restp
+			 ;; When a rest arg is given, there's no upper
+			 ;; limit to the number of args.  Just check that
+			 ;; we have enough args to satisfy the required
+			 ;; args.
+			 (unless (null required-args)
+			   `((when (< nargs ,required-len)
+			       (merror (intl:gettext "~M: expected at least ~M arguments but got ~M")
+				       ',name
+				       ,required-len
+				       nargs)))))
+			(optional-args
+			 ;; There are optional args (but no rest
+			 ;; arg). Verify that we don't have too many args,
+			 ;; and that we still have all the required args.
+			 `(
+			   (when (> nargs ,(+ required-len optional-len))
+			     (merror (intl:gettext "~M: expected at most ~M arguments but got ~M")
+				     ',name
+				     ,(+ required-len optional-len)
+				     nargs))
+			   (when (< nargs ,required-len)
+			     (merror (intl:gettext "~M: expected at least ~M arguments but got ~M")
+				     ',name
+				     ,required-len
+				     nargs))))
+			(t
+			 ;; We only have required args.
+			 `((unless (= nargs ,required-len)
+			     (merror (intl:gettext "~M: expected exactly ~M arguments but got ~M")
+				     ',name
+				     ,required-len
+				     nargs)))))
+		(apply #',impl-name args)))))))))
 
 ;; Examples:
 ;; (defmfun-checked $foobar (a b) (list '(mlist) a b))
