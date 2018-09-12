@@ -158,6 +158,8 @@ if [ ! -d "$MAXIMA_IMAGESDIR" ]; then
   fi
 fi
 
+# This step should only be necessary in order to be in sync with the windows
+# version of maxima.
 if [ -d "$MAXIMA_INITIAL_FOLDER" ]; then
     cd $MAXIMA_INITIAL_FOLDER
 fi
