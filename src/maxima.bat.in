@@ -58,7 +58,16 @@ if EXIST "%MAXIMA_USERDIR%/maximarc" (
     )
 )
 
-if defined MAXIMA_PWD cd "%MAXIMA_PWD"
+rem In order to allow maxima to find out where its files are on MS Windows maxima needs
+rem to be started in the directory it can be found in. Which in the case of
+rem maxima-portable might be a different folder every time.
+rem The user, though, might want it to start in the folder the worksheet lies in, as
+rem read_matrix, write_data etc. should be relative to that folder.
+rem common lisp doesn't provide such a function and clisp has problems with shortnames
+rem while sbcl has problems with non-ascii-non-unicode folder names.
+rem The variable MAXIMA_INITIAL_FOLDER tells which folder to start maxima in
+rem after searching for the files it is composed of.
+if defined MAXIMA_INITIAL_FOLDER cd "%MAXIMA_INITIAL_FOLDER%"
 
 :startparseargs
 if x%1 == x-l goto foundlisp
