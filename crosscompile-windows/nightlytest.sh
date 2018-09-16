@@ -4,9 +4,9 @@
 # should be copied to a private location (~/bin), so that
 # git changes to that script can be reviewed before.
 #
-# a working directory is ~/maxima-test
+# the working directory is ~/maxima-test - attention: it will be deleted and recreated.
 
-# do everything in english
+# do everything in English
 export LANG=C
 
 MAXIMAGITREPOSITORY=https://git.code.sf.net/p/maxima/code
@@ -14,59 +14,60 @@ MAXIMAGITREPOSITORY=https://git.code.sf.net/p/maxima/code
 # clone from that git repository
 test -d ~/maxima-code/.git && MAXIMAGITREPOSITORY=~/maxima-code
 
-mkdir -p ~/maxima-test
+rm -rf ~/maxima-test
 
+git clone $MAXIMAGITREPOSITORY ~/maxima-test
 cd ~/maxima-test || exit
-
-rm -rf -- * .git*
-
-
-git clone $MAXIMAGITREPOSITORY .
 
 ./bootstrap >logfile-bootstrap.txt 2>&1
 
-./configure --enable-clisp --enable-ecl --with-ecl=/opt/ecl-16.1.3/bin/ecl --enable-sbcl --with-sbcl=/opt/sbcl-1.4.10-x86-64-linux/run-sbcl.sh --enable-gcl --enable-ccl64 --with-ccl64=/opt/ccl/lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-21c/bin/lisp --with-cmucl-runtime=/opt/cmucl-21c/bin/lisp --enable-acl --with-acl=/opt/acl10.1express/alisp --prefix=$(pwd)/installroot >logfile-configure.txt 2>&1
+echo "./configure"
+./configure --enable-clisp --enable-ecl --with-ecl=/opt/ecl-16.1.3/bin/ecl --enable-sbcl --with-sbcl=/opt/sbcl-1.4.10-x86-64-linux/run-sbcl.sh --enable-gcl --enable-ccl64 --with-ccl64=/opt/ccl/lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-21c/bin/lisp --with-cmucl-runtime=/opt/cmucl-21c/bin/lisp --enable-acl --with-acl=/opt/acl10.1express/alisp --prefix="$(pwd)/installroot" >logfile-configure.txt 2>&1
 
+echo "make"
 make VERBOSE=1 >logfile-make.txt 2>&1
+echo "make pdf"
 make pdf VERBOSE=1 >logfile-makepdf.txt 2>&1
+echo "make install"
 make install VERBOSE=1 >logfile-makeinstall.txt 2>&1
+echo "make dist"
 make dist VERBOSE=1 >logfile-makedist.txt 2>&1
 
 # limit GCLs memory consumption to 20% of the main memory:
 export GCL_MEM_MULTIPLE=0.2
 
 ~/maxima-test/installroot/bin/maxima --batch-string="build_info();" >logfile-buildinfo.txt
+commands=$(
 for lisp in clisp ecl sbcl gcl ccl64 cmucl acl ; do
-      echo "Testing Maxima with Lisp: $lisp"
-      ~/maxima-test/installroot/bin/maxima --lisp=$lisp --batch-string="run_testsuite();" >logfile-testsuite-$lisp.txt
-      ~/maxima-test/installroot/bin/maxima --lisp=$lisp --batch-string="run_testsuite(share_tests=only);" >logfile-share-testsuite-$lisp.txt
-      echo "$lisp summary" >>logfile-summary.txt
-      sed -n -e '/^Error summary\|^No unexpected errors/,$p' logfile-testsuite-$lisp.txt >>logfile-summary.txt
-      echo >>logfile-summary.txt
-      echo >>logfile-summary.txt
-      echo >>logfile-summary.txt
+      echo "echo Running Maxima testsuite with $lisp ; ~/maxima-test/installroot/bin/maxima --lisp=$lisp --batch-string='run_testsuite();' >logfile-testsuite-$lisp.txt 2>&1"
+      echo "echo Running Maxima share testsuite with $lisp ; ~/maxima-test/installroot/bin/maxima --lisp=$lisp --batch-string='run_testsuite(share_tests=only);' >logfile-share-testsuite-$lisp.txt 2>&1"
 done
+)
+echo "$commands" | parallel --no-notice
+
 
 # Test ABCL
 # currently not possible using a ./configure option, so do the Lisp only build.
 # (and testing the Lisp build system does not hurt...)
 
 ABCL_JAR=/opt/abcl-bin-1.5.0/abcl.jar
-JAVA=$(which java)
-ABCL="$JAVA -jar $ABCL_JAR"
+ABCL="java -jar $ABCL_JAR --noinit"
 
-$ABCL --noinit --eval '(load "configure.lisp")' --eval '(configure :interactive nil)' --eval '(quit)'
+$ABCL --eval '(load "configure.lisp")' --eval '(configure :interactive nil)' --eval '(quit)' >../logfile-build-abcl.txt 2>&1
 cd src
-$ABCL --noinit --eval '(load "maxima-build.lisp")' --eval '(maxima-compile)' --eval '(quit)'
-echo "run_testsuite(); quit();" | $ABCL --noinit --eval '(load "maxima-build.lisp")' --eval "(maxima-load)" --eval "(cl-user::run)" >../logfile-testsuite-abcl.txt
-echo "run_testsuite(share_tests=only); quit();" | $ABCL --noinit --eval '(load "maxima-build.lisp")' --eval "(maxima-load)" --eval "(cl-user::run)" >../logfile-share-testsuite-abcl.txt
+$ABCL --eval '(load "maxima-build.lisp")' --eval '(maxima-compile)' --eval '(quit)' >>../logfile-build-abcl.txt 2>&1
+echo "Running Maxima testsuite with ABCL"
+echo "run_testsuite(); quit();" | $ABCL --noinit --eval '(load "maxima-build.lisp")' --eval "(maxima-load)" --eval "(cl-user::run)" >../logfile-testsuite-abcl.txt 2>&1
+echo "Running Maxima share testsuite with ABCL"
+echo "run_testsuite(share_tests=only); quit();" | $ABCL --eval '(load "maxima-build.lisp")' --eval "(maxima-load)" --eval "(cl-user::run)" >../logfile-share-testsuite-abcl.txt 2>&1
 cd ..
 
-echo "abcl summary" >>logfile-summary.txt
-sed -n -e '/^Error summary\|^No unexpected errors/,$p' logfile-testsuite-abcl.txt >>logfile-summary.txt
-echo >>logfile-summary.txt
-echo >>logfile-summary.txt
-echo >>logfile-summary.txt
 
+rm -f logfile-summary.txt
+for lisp in clisp ecl sbcl gcl ccl64 cmucl acl abcl ; do
+      echo "$lisp summary" >>logfile-summary.txt
+      sed -n -e '/^Error summary\|^No unexpected errors/,$p' logfile-testsuite-$lisp.txt >>logfile-summary.txt
+      echo -e "\n\n" >>logfile-summary.txt
+done
 
 scp -i ~/.ssh/maximakopierkey ~/maxima-test/logfile-*.txt maxima@ns1.dautermann.at:/var/www/wolfgang.dautermann.at/maxima/nightlybuild/
