@@ -545,6 +545,8 @@
   (let ((test-file)
 	(expected-failures)
 	(test-file-path))
+    (format t "Testsuite run for ~a ~a:~%"
+	    (lisp-implementation-type) (lisp-implementation-version))
     ;; Allow only T and NIL for display_known_bugs and display_all
     (unless (member display_known_bugs '(t nil))
       (merror (intl:gettext "run_testsuite: display_known_bugs must be true or false; found: ~M") display_known_bugs))
