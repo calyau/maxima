@@ -15,6 +15,8 @@ Changes in core:
  * test bench failures that resulted in "error-catch" now show a
    more descriptive error message
  * a warning() command that works similar to error()
+ * Windows installer: support components (one can deselect optional components
+   like VTK, wxMaxima or Gnuplot during the installation to save space)
 
 Changes in share:
 --------------
@@ -32,3 +34,5 @@ Bug fixes:
 
 Unnumbered bugs:
 ----------------
+ * Windows installer: Fix the plotting problem with Clisp/Windows and long user names.
+ * Windows installer: Fix reading maximarc on Windows, when the username contains a space.
