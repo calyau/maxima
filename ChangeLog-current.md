@@ -9,11 +9,17 @@ New items in core:
  * The variable $factor_max_degree (+ $factor_max_degree_print_warning) 
    that prevents certain polynomials from being factored if their degree 
    exceeds that value instead of letting factorization cause an out-of-memory. 
+ * A test bench for maxima's interactive functions.
+
 New items in share:
 -------------------
  * A test bench for draw
  * timeout.lisp
- 
+ * new version of package share/contrib/Eulix
+ * Trotter-Johnson algorithms
+ * combinatorics.lisp 
+ * A new README file for the share directory.
+
 Changes in core:
 ----------------
  * "make check" now runs both the normal and the share test bench
@@ -38,6 +44,19 @@ Changes in core:
  * emacs > 26.1 compatibility.
  * Maxima now deletes its temp files on exit.
  * Automatic file encoding detection if the file begins in a BOM.
+ * Improved the behavior of the exterior product operator when acting on ordinary products.
+ * Updated the spanish translation
+ * The functions that work with permutations, given as lists of consecutive
+   integers from 1 to n, will now use the prefix "perm", to distinguish
+   them from those that permute any arbitrary list or set, which use the
+   prefix "permutation". The name of permutation_index was changed to
+   perm_length and apply_permutation became permute.
+ * On Windows Maxima now autodetects the directory it finds its files in.
+ * Ask the user to use ; at the demo promt, to make it work also in Xmaxima.
+ * Check for correct syntax of parametric plots.
+ * Removed the old non-adaptive parametric plotter
+ * Typecheck backtrace's argument
+ * Better desktop integration for Linux systems
  
 Changes in share:
 --------------
@@ -61,9 +80,11 @@ Changes in share:
  * Draw: Allow to specify numeric line types
  * Draw: A finer default grid
  * Enable remove(x, rule) to succeed when x is a string.
- * vector.dem now can be loaded.
+ * vector.dem and qual.dem now can be loaded.
+ * Xmaxima now accepts more of the standard options. 
+ * Vtk (except of the plot routines) now is migrated to vtk-python which is 
+   actively supported in favour of the no-more working tcl-vtk
  
-  
 Bug fixes:
 ----------
  * #3459 Wrong limit calculation
@@ -96,6 +117,20 @@ Bug fixes:
  * #3422: li[2] and li[3] numerical evaluation fails for complex not in rectangular form
  * #3402: Unbinding defined variable generates error in compiled functions
  * #3406: pdf_geometric appears to be incorrect and/or poorly documented 
+ * #3403: Function/lambda parameters declared constant cause error
+ * #2012: Lisp stack overflow with dpart
+ * #3390: ?great mishandles box
+ * #3387: kill(all) looses mtime's "nary" property
+ * #1820 missing eigenvectors
+ * #3373 Running the test suite twice causes errors
+ * #3379: recur.mac correct bug in varc2
+ * #3375: algsys failure on homogeneous linear equations
+ * #3293: derivatives don't format correctly using alt-display TeX
+ * #3238: plot fails with small x-range due to rounding
+ * #2835: Parametric ploting failed if the variable was not t
+ * #3356: sign(nz * nz) = nz
+ * #3349 Using VTK on windows gives 'vtkpythonC:' error 
+ * #3344 Conflict between sym package and grobner package 
  
 Unnumbered bugs:
 ----------------
@@ -117,3 +152,19 @@ Unnumbered bugs:
  * Fixed some shell quoting issues
  * Many translator improvements
  * Fix charfun when prederror is true
+ * Quieted many irrelevant warnings on loading packages, for example caused by autoload.
+ * Fixed a bug in perms, when called with three arguments
+ * beta_incomplete now works correctly with sums.
+ * Windows: Fixed reading maximarc on Windows, when the username contains a space.
+ * Lapack now can be compiled out-of-the-box on sbcl on windows.
+ * running rtest_levin after rtest15 causes some failures
+   because MLIST is not recognized as an operator.
+ * Process command line option --run-string correctly
+ * changes to stream handling for SBCL, which improve
+   writefile, appendfile, asksign, describe, and entermatrix.
+ * trigsimp fails with pderivop
+ * In $ARRAY, handle list argument + use_fast_arrays correctly.
+ * Resolved many potential variable name clashes with user-specified variables
+ * Xmaxima: Resolved an error message that caused a crash
+ * Xmaxima: Removed Win98 workarounds that made problems with modern Windows systems
+ * Xmaxima now supports file and directory names with spaces in them.
