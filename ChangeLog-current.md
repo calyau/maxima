@@ -17,7 +17,8 @@ Changes in core:
  * a warning() command that works similar to error()
  * Windows installer: support components (one can deselect optional components
    like VTK, wxMaxima or Gnuplot during the installation to save space)
-
+ * MAPATOM returns true for mapatom(-4)
+ 
 Changes in share:
 --------------
  * Draw/MS Windows: Gnuplot now supports multiplot
@@ -31,6 +32,11 @@ Changes in share:
 
 Bug fixes:
 ----------
+ * #3459 Wrong limit calculation
+ * #3458 addcol
+ * #3457 true[2] gives wrong error
+ * #3426 Precision problem for small positive values in bfpsi0
+ * #3410 extremal_subst gives bogus results with undefined predicate
 
 Unnumbered bugs:
 ----------------
