@@ -203,3 +203,4 @@ Additional improvements:
  * A script that tests loading packages twice or package combinations
  * A few files that didn't need an "executable" flag were marked
    as executable.
+ * Updated all references to wxMaxima to wxMaxima's new URL.
