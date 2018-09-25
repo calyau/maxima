@@ -4,14 +4,14 @@ Maxima 5.42 change log
 New items in core:
 ------------------
  * New function define_opproperty to define an operator simplification
- * The environment MAXIMA_INITIAL_FOLDER if set tells maxima which
+ * The environment MAXIMA_INITIAL_FOLDER if set tells Maxima which
    folder to start in.
  * The variable $factor_max_degree that prevents certain polynomials
    from being factored if their degree exceeds that value instead of
    letting factorization cause an out-of-memory.
  * The variable factor_max_degree_print_warning that tells if to
    output an warning in this case.
- * A test bench for maxima's interactive functions.
+ * A test bench for Maxima's interactive functions.
 
 New items in share:
 -------------------
@@ -40,11 +40,11 @@ Changes in core:
  * Add support for multiple return values to the ERRSET macro
  * scene() is dropped from plot() as it depends on tcl/vtk which is no
    more actively supported and currently is broken.
- * gcl: concurrent maxima processes now can negotiate which can use
+ * gcl: concurrent Maxima processes now can negotiate which can use
    how much memory.
  * Emit warning from parser when a list is constructed and then
    discarded in ([a,b,c], ...).
- * emacs > 26.1 compatibility.
+ * Emacs > 26.1 compatibility.
  * Maxima now deletes its temp files on exit.
  * Automatic file encoding detection if the file begins in a BOM.
  * Improved the behavior of the exterior product operator when acting
@@ -58,7 +58,7 @@ Changes in core:
    became permute. 
  * On Windows Maxima now autodetects the directory it finds its files
    in. 
- * Ask the user to use ; at the demo promt, to make it work also in
+ * Ask the user to use ; at the demo prompt, to make it work also in
    Xmaxima. 
  * Check for correct syntax of parametric plots.
  * Removed the old non-adaptive parametric plotter
@@ -106,15 +106,15 @@ Bug fixes:
  * 3363: Documentation of modulus incorrectly says it applies to all
          rational numbers 
  * 3439: Simplode output on empty list
- * 3023: divide(1,0) gave a Lisp error instead of a maxima one
- * 1581: sublis & sublis_apply_lambda:true causing lisp errors
+ * 3023: divide(1,0) gave a Lisp error instead of a Maxima one
+ * 1581: sublis & sublis_apply_lambda:true causing Lisp errors
  * 2803: trace/timer do not work for functions with quoted arguments
  * 3247: Maxima's trace and timer handle rules incorrectly
  * 3368: integrate('limit(...),...) internal error
  * 2880: integral of secant shouldn't need principal value
  * 2116: lambda form for taylor_simplifier
  * 3431: error system variable holds unsimplified list, causing errors
-          to be repeated when trying to access it
+         to be repeated when trying to access it
  * 3423: tellsimpafter: circular rule attempted when loading package
          vect twice 
  * 3337: Wrong scalefactor for cartesian2d
@@ -144,7 +144,7 @@ Bug fixes:
  * 3375: algsys failure on homogeneous linear equations
  * 3293: derivatives don't format correctly using alt-display TeX
  * 3238: plot fails with small x-range due to rounding
- * 2835: Parametric ploting failed if the variable was not t
+ * 2835: Parametric plotting failed if the variable was not t
  * 3356: sign(nz * nz) = nz
  * 3349: Using VTK on windows gives 'vtkpythonC:' error 
  * 3344: Conflict between sym package and grobner package 
@@ -155,7 +155,7 @@ Unnumbered bugs:
    long user names. 
  * Windows installer: Fix reading maximarc on Windows, when the
    username contains a space. 
- * Garbage Collector Defaults for gcl that allow maxima to be able to
+ * Garbage Collector Defaults for gcl that allow Maxima to be able to
    run the testbench without getting an out-of-memory
  * Many error messages now are easier to understand
  * Some share tests contained timeouts that were set to values that
@@ -166,11 +166,10 @@ Unnumbered bugs:
  * If keepfloat was true partfrac often resulted in errors. Now
    keepfloat is false during partfrac().
  * 'make pdf' now works for de and pt.
- * A lisp error appeared when display2d:true and there are nested
+ * A Lisp error appeared when display2d:true and there are nested
    DISPLA calls
  * tex(): The output for matrices is now upwards compatible to
-   amsmath.sty 
- * A script that tests loading packages twice or package combinations
+   amsmath.sty
  * Fixed some shell quoting issues
  * Many translator improvements
  * Fix charfun when prederror is true
@@ -180,7 +179,7 @@ Unnumbered bugs:
  * beta_incomplete now works correctly with sums.
  * Windows: Fixed reading maximarc on Windows, when the username
    contains a space.
- * Lapack now can be compiled out-of-the-box on sbcl on windows.
+ * Lapack now can be compiled out-of-the-box on SBCL on Windows.
  * running rtest_levin after rtest15 causes some failures
    because MLIST is not recognized as an operator.
  * Process command line option --run-string correctly
@@ -201,5 +200,6 @@ Additional improvements:
  * Performance improvements
  * Much work on the manual including many hyperlinks, clarifications 
    and additional information on how to speed up user functions.
+ * A script that tests loading packages twice or package combinations
  * A few files that didn't need an "executable" flag were marked
    as executable.
