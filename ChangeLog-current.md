@@ -194,3 +194,10 @@ Unnumbered bugs:
  * Xmaxima: Removed Win98 workarounds that made problems with modern
    Windows systems 
  * Xmaxima now supports file and directory names with spaces in them.
+
+Additional improvements:
+------------------------
+ * Additional bug fixes
+ * Performance improvements
+ * Much work on the manual including many hyperlinks, clarifications 
+   and additional information on how to speed up user functions.
