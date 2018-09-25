@@ -38,7 +38,7 @@ Changes in core:
  * A file with test cases for plot
  * errcatch() now produced meaningful error messages.
  * Add support for multiple return values to the ERRSET macro
- * scene() is dropped from plot() as it depends on tcl/vtk which is no
+ * scene() is dropped from plot() as it depends on Tcl/VTK which is no
    more actively supported and currently is broken.
  * gcl: concurrent Maxima processes now can negotiate which can use
    how much memory.
@@ -49,7 +49,7 @@ Changes in core:
  * Automatic file encoding detection if the file begins in a BOM.
  * Improved the behavior of the exterior product operator when acting
    on ordinary products. 
- * Updated the spanish translation
+ * Updated the Spanish translation
  * The functions that work with permutations, given as lists of
    consecutive integers from 1 to n, will now use the prefix "perm",
    to distinguish them from those that permute any arbitrary list or
@@ -179,7 +179,7 @@ Unnumbered bugs:
  * beta_incomplete now works correctly with sums.
  * Windows: Fixed reading maximarc on Windows, when the username
    contains a space.
- * Lapack now can be compiled out-of-the-box on SBCL on Windows.
+ * Lapack now can be compiled out-of-the-box on SBCL on Windows (64Bit).
  * running rtest_levin after rtest15 causes some failures
    because MLIST is not recognized as an operator.
  * Process command line option --run-string correctly
