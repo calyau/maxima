@@ -98,7 +98,7 @@ Changes in share:
 Bug fixes:
 ----------
  * 3459: Wrong limit calculation
- * 3458: addcol
+ * 3458: addcol mishandles empty matrix as first argument
  * 3457: true[2] gives wrong error
  * 3426: Precision problem for small positive values in bfpsi0
  * 3410: extremal_subst gives bogus results with undefined predicate
