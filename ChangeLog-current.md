@@ -87,50 +87,50 @@ Changes in share:
  
 Bug fixes:
 ----------
- * #3459 Wrong limit calculation
- * #3458 addcol
- * #3457 true[2] gives wrong error
- * #3426 Precision problem for small positive values in bfpsi0
- * #3410 extremal_subst gives bogus results with undefined predicate
- * #2822: After load("diff_form") `functions' fails
- * #3363: Documentation of modulus incorrectly says it applies to all rational numbers
- * #3439: Simplode output on empty list
- * #3023: divide(1,0) gave a Lisp error instead of a maxima one
- * #1581: sublis & sublis_apply_lambda:true causing lisp errors
- * #2803: trace/timer do not work for functions with quoted arguments
- * #3247: Maxima's trace and timer handle rules incorrectly
- * #3368: integrate('limit(...),...) internal error
- * #2880: integral of secant shouldn't need principal value
- * #2116: lambda form for taylor_simplifier
- * #3431: error system variable holds unsimplified list, causing errors 
+ * 3459: Wrong limit calculation
+ * 3458: addcol
+ * 3457: true[2] gives wrong error
+ * 3426: Precision problem for small positive values in bfpsi0
+ * 3410: extremal_subst gives bogus results with undefined predicate
+ * 2822: After load("diff_form") `functions' fails
+ * 3363: Documentation of modulus incorrectly says it applies to all rational numbers
+ * 3439: Simplode output on empty list
+ * 3023: divide(1,0) gave a Lisp error instead of a maxima one
+ * 1581: sublis & sublis_apply_lambda:true causing lisp errors
+ * 2803: trace/timer do not work for functions with quoted arguments
+ * 3247: Maxima's trace and timer handle rules incorrectly
+ * 3368: integrate('limit(...),...) internal error
+ * 2880: integral of secant shouldn't need principal value
+ * 2116: lambda form for taylor_simplifier
+ * 3431: error system variable holds unsimplified list, causing errors 
           to be repeated when trying to access it
- * #3423: tellsimpafter: circular rule attempted when loading package vect twice
- * #3337: Wrong scalefactor for cartesian2d
- * #2644: integrate(1/(1+s^7),s,0,%pi) includes a false term
- * #3413: false in definite integral of rational
- * #2845: Avoid initialization-time compile in commac.lisp
- * #3416: limit gives limit(x^r,x,inf)=>0 when "Is r pnz" is answered zero
- * #2928, #2994 and #3419: Detect an endless loop in BPROG (simp.lisp) and throw 
+ * 3423: tellsimpafter: circular rule attempted when loading package vect twice
+ * 3337: Wrong scalefactor for cartesian2d
+ * 2644: integrate(1/(1+s^7),s,0,%pi) includes a false term
+ * 3413: false in definite integral of rational
+ * 2845: Avoid initialization-time compile in commac.lisp
+ * 3416: limit gives limit(x^r,x,inf)=>0 when "Is r pnz" is answered zero
+ * 2928, 2994 and 3419: Detect an endless loop in BPROG (simp.lisp) and throw 
           rat-error. rat(1/(x^(2/3)+1)), algebraic and similar expressions no 
 		  longer loop forever. 
- * #3009, #3146 and #3147: Certain polynomials when factored caused an out-of-memory
- * #3422: li[2] and li[3] numerical evaluation fails for complex not in rectangular form
- * #3402: Unbinding defined variable generates error in compiled functions
- * #3406: pdf_geometric appears to be incorrect and/or poorly documented 
- * #3403: Function/lambda parameters declared constant cause error
- * #2012: Lisp stack overflow with dpart
- * #3390: ?great mishandles box
- * #3387: kill(all) looses mtime's "nary" property
- * #1820 missing eigenvectors
- * #3373 Running the test suite twice causes errors
- * #3379: recur.mac correct bug in varc2
- * #3375: algsys failure on homogeneous linear equations
- * #3293: derivatives don't format correctly using alt-display TeX
- * #3238: plot fails with small x-range due to rounding
- * #2835: Parametric ploting failed if the variable was not t
- * #3356: sign(nz * nz) = nz
- * #3349 Using VTK on windows gives 'vtkpythonC:' error 
- * #3344 Conflict between sym package and grobner package 
+ * 3009, 3146 and 3147: Certain polynomials when factored caused an out-of-memory
+ * 3422: li[2] and li[3] numerical evaluation fails for complex not in rectangular form
+ * 3402: Unbinding defined variable generates error in compiled functions
+ * 3406: pdf_geometric appears to be incorrect and/or poorly documented 
+ * 3403: Function/lambda parameters declared constant cause error
+ * 2012: Lisp stack overflow with dpart
+ * 3390: ?great mishandles box
+ * 3387: kill(all) looses mtime's "nary" property
+ * 1820: missing eigenvectors
+ * 3373: Running the test suite twice causes errors
+ * 3379: recur.mac correct bug in varc2
+ * 3375: algsys failure on homogeneous linear equations
+ * 3293: derivatives don't format correctly using alt-display TeX
+ * 3238: plot fails with small x-range due to rounding
+ * 2835: Parametric ploting failed if the variable was not t
+ * 3356: sign(nz * nz) = nz
+ * 3349: Using VTK on windows gives 'vtkpythonC:' error 
+ * 3344: Conflict between sym package and grobner package 
  
 Unnumbered bugs:
 ----------------
