@@ -201,3 +201,5 @@ Additional improvements:
  * Performance improvements
  * Much work on the manual including many hyperlinks, clarifications 
    and additional information on how to speed up user functions.
+ * A few files that didn't need an "executable" flag were marked
+   as executable.
