@@ -204,3 +204,6 @@ Additional improvements:
  * A few files that didn't need an "executable" flag were marked
    as executable.
  * Updated all references to wxMaxima to wxMaxima's new URL.
+ * The wxMaxima version the Windows Installer comes with now is 
+   Version 18.10.0
+ 
