@@ -6,16 +6,13 @@
 %define clisp_flags --enable-clisp-exec
 %define enable_ccl 0
 %define ccl_flags --disable-ccl
-#%define ccl_flags --enable-ccl-exec
-# --with-ccl=lx86cl
+# ccl_flags --enable-ccl-exec --with-ccl=lx86cl
 %define enable_cmucl 0
 %define cmucl_flags --disable-cmucl
-#%define cmucl_flags --enable-cmucl-exec
-%define enable_sbcl 1
-%define sbcl_flags --enable-sbcl-exec
+%define enable_sbcl 0
+%define sbcl_flags --disable-sbcl-exec
 %define enable_gcl 0
 %define gcl_flags --disable-gcl
-#%define gcl_flags --enable-gcl-exec
 
 # Options to build language packs
 #  Spanish 

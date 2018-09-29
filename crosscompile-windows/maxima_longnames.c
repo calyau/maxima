@@ -1,4 +1,12 @@
-
+/*
+    Clisp has problems with generated Windows 'short names' e.g.
+    echo %TMP%
+    C:\Users\TESTTE~1\AppData\Local\Temp
+    Windows generates a short name for the temporary dir, when the
+    username contains spaces and is longer than 8 chars.
+    This program converts that path name to the 'long version', so that Clisp has
+    no problems with long user names and plotting commands.
+*/
 #include <windows.h>
 #include <tchar.h>
 #include <stdio.h>

@@ -1,3 +1,4 @@
+#!/bin/sh
 TARGET=$1
 if [ "x$TARGET" = "x" ]; then
   echo USAGE: sh $0 '<TARGET>'

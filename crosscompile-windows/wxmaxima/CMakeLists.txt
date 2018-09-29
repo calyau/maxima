@@ -9,13 +9,13 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(WXMAXIMAVERSION "18.02.0")
+set(WXMAXIMAVERSION "18.10.1")
 
-set(WXMAXIMA_MD5    "4dacf99285b766fec723fa3fe3228bdb")
+set(WXMAXIMA_MD5    "332e2fb88563a4bf665204adcde0bd60")
 
-set(WXMAXIMA_URL    "https://github.com/andrejv/wxmaxima/archive/Version-${WXMAXIMAVERSION}.tar.gz")
+set(WXMAXIMA_URL    "https://github.com/wxmaxima-developers/wxmaxima/archive/Version-${WXMAXIMAVERSION}.tar.gz")
 
-set(WXMAXIMA_GIT    "https://github.com/andrejv/wxmaxima.git")
+set(WXMAXIMA_GIT    "https://github.com/wxmaxima-developers/wxmaxima.git")
 
 if(USE_WXMAXIMA_GIT)
     find_package(Git REQUIRED)
@@ -45,8 +45,6 @@ else()
         DOWNLOAD_NAME wxmaxima-${WXMAXIMAVERSION}.tar.gz
         URL_MD5 ${WXMAXIMA_MD5}
         DEPENDS wxwidgets
-        PATCH_COMMAND patch -p1 < "${CMAKE_CURRENT_SOURCE_DIR}/wxmathml.patch"
-              COMMAND patch -p1 < "${CMAKE_CURRENT_SOURCE_DIR}/editor-textlength.patch"
         # search wx-config here - do not use the host wx-config
         # had to set CMAKE_LIBRARY_PATH=/usr/${HOST}/lib - libraries for mingw are installed there, but CMake (>3.8)
         # tries to check all the libraries reported by wx-config, but does not check this directory...
