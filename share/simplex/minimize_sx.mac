@@ -27,7 +27,7 @@
  *                                                                           *
  * load("simplex");                                                          *
  * minimize_lp(x, [y>=x-1, y>=-x-1, y<=x+1, y<=1-x, y=x/2]);                 *
- * => [-3/2, [x=-2/3, y=-1/3]]                                               *
+ * => [-2/3, [x=-2/3, y=-1/3]]                                               *
  *                                                                           *
  *                                                                           *
  * 2) If any variable is known to be positive, you should add an optional    *
@@ -85,13 +85,13 @@ minimize_lp(target, constraints, [pozitive]) := block(
   A : zeromatrix(length(constraints), length(var)+nonpozitive+inequalities),
   count : 0,
   for i:1 thru length(constraints) do (
-    eq : expand(part(constraints[i],1)-part(constraints[i],2)),
+    eq : lhs(part(constraints,i))-rhs(part(constraints,i)),
     j : 1,
     for v in var do (
       A[i,j] : ratcoeff(eq, v),
-      if not(floatp_sx(A[i,j])) then
-        error("Error: constraint not linear (1)."),
-      eq : eq-A[i,j]*v,
+      if not(constantp(A[i,j])) then
+        error("Error: constraint not linear (1).",A[i,j]),
+      eq : subst(v=0,eq),
       j : j+1,
       if not(member(v,pozitive)) then (
         A[i,j] : -A[i,j-1],
@@ -109,8 +109,8 @@ minimize_lp(target, constraints, [pozitive]) := block(
     else if op(constraints[i])#"=" then
       error("Error: not a proper constraint:", constraints[i]),
     b[i] : -eq,
-    if not(floatp_sx(b[i])) then
-      error("Error: constraint not linear (2).")
+    if not(constantp(b[i])) then
+      error("Error: constraint not linear (2).",b[i])
   ),
   
 /*******************************************************************
@@ -121,9 +121,9 @@ minimize_lp(target, constraints, [pozitive]) := block(
   j : 1,
   for v in var do (
     c[j] : ratcoeff(t, v),
-    if not(floatp_sx(c[j])) then
+    if not(constantp(c[j])) then
       error("Error: cost function not linear."),
-    t : t-c[j]*v,
+    t : subst(v=0,t),
     j : j+1,
     if not(member(v,pozitive)) then (
       c[j] : -c[j-1],
@@ -131,7 +131,7 @@ minimize_lp(target, constraints, [pozitive]) := block(
     )
   ),
 
-  if not(floatp_sx(t)) then
+  if not(constantp(t)) then
     error("Error: cost function not linear in constrained variables."),
 
   if return_input_lp then return([A, b, c]),
@@ -161,12 +161,6 @@ minimize_lp(target, constraints, [pozitive]) := block(
       [sol[2]+t, s]
     )
   )
-)$
-
-floatp_sx(x) := block(
-  [xx],
-  xx : ev(float(x), numer),
-  floatnump(xx)
 )$
 
 maximize_lp(target, constraints, [pozitive]) := block(

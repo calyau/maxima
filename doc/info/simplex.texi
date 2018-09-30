@@ -52,9 +52,10 @@ apply(linear_program, klee_minty(10));
 
 @subsubsection NETLIB
 
-Some smaller problems from netlib (@url{http://www.netlib.org/lp/data/}) test
-suite are converted to a format, readable by Maxima. Problems are @code{adlittle},
-@code{afiro}, @code{kb2} and @code{sc50a}. Each problem has three input files in CSV format for
+Some smaller problems from netlib (@url{http://www.netlib.org/lp/data/})
+test suite are converted to a format, readable by Maxima. Problems are
+@code{adlittle}, @code{afiro}, @code{kb2}, @code{sc50a} and
+@code{share2b}. Each problem has three input files in CSV format for
 matrix @var{A} and vectors @var{b} and @var{c}.
 
 Example:
@@ -64,18 +65,31 @@ A : read_matrix("adlittle_A.csv", 'csv)$
 b : read_list("adlittle_b.csv", 'csv)$
 c : read_list("adlittle_c.csv", 'csv)$
 linear_program(A, b, c)$
-%[2]
-=> 225494.963126615
+%[2];
+=> 225494.9631623802
 @end example
 
 Results:
 
+@c see simplex/Tests/netlib.mac
 @example
-PROBLEM        MINIMUM                SCALING
-adlittle       225494.963126615       no
-afiro          - 464.7531428571429    no
-kb2            - 1749.900129055996    yes
-sc50a          - 64.5750770585645     no
+PROBLEM        MINIMUM                  SCALING
+adlittle       +2.2549496316E+05        false
+afiro          -4.6475314286E+02        false
+kb2            -1.7499001299E+03        true
+sc50a          -6.4575077059E+01        false
+share2b        -4.1573518187E+02        false
+@end example
+
+The Netlib website @url{http://www.netlib.org/lp/data/readme} lists the values as
+
+@example
+PROBLEM        MINIMUM
+adlittle       +2.2549496316E+05
+afiro          -4.6475314286E+02
+kb2            -1.7499001299E+03
+sc50a          -6.4575077059E+01
+share2b        -4.1573224074E+02
 @end example
 
 @node Functions and Variables for simplex,  , Introduction to simplex, simplex-pkg
@@ -85,9 +99,31 @@ sc50a          - 64.5750770585645     no
 @defvr {Option variable} epsilon_lp
 Default value: @code{10^-8}
 
-Epsilon used for numerical computations in @code{linear_program}.
+Epsilon used for numerical computations in @code{linear_program}; it is
+set to 0 in @code{linear_program} when all inputs are rational.
 
-See also: @mref{linear_program}.
+Example:
+
+@c ===beg===
+@c load(simplex)$
+@c minimize_lp(-x, [1e-9*x + y <= 1], [x,y]);
+@c minimize_lp(-x, [10^-9*x + y <= 1], [x,y]);
+@c minimize_lp(-x, [1e-9*x + y <= 1], [x,y]), epsilon_lp=0;
+@c ===end===
+@example
+(%i1) load(simplex)$
+
+(%i2) minimize_lp(-x, [1e-9*x + y <= 1], [x,y]);
+Warning: linear_program(A,b,c): non-rat inputs found, epsilon_lp= 1.0e-8
+Warning: Solution may be incorrect.
+(%o2)                        Problem not bounded!
+(%i3) minimize_lp(-x, [10^-9*x + y <= 1], [x,y]);
+(%o3)               [- 1000000000, [y = 0, x = 1000000000]]
+(%i4) minimize_lp(-x, [1e-9*x + y <= 1], [x,y]), epsilon_lp=0;
+(%o4)     [- 9.999999999999999e+8, [y = 0, x = 9.999999999999999e+8]]
+@end example
+
+See also: @mref{linear_program}, @mref{ratnump}.
 
 @opencatbox
 @category{Package simplex}

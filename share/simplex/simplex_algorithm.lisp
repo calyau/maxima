@@ -94,6 +94,10 @@
 (defmvar $scale_lp         nil  "Should we scale the input."         boolean)
 (defmvar $warn_rank_sx     nil  "Print warnings about rank."         boolean)
 
+;; type checkers
+(defun lp-rat-mlist-p (x) (and (listp x) (every #'$ratnump (cdr x))))
+(defun lp-rat-matrix-p (x) (and ($matrixp x) (every #'lp-rat-mlist-p (cdr x))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                           ;;
 ;; Two-phase standard simplex method for solving linear program in standard  ;;
@@ -119,7 +123,12 @@
          (Tab (make-array `(,(+ 2 m) ,(1+ n)))) ; Tableau
          (basis ())      ; which columns are in current basis
          (sc-fac ())     ; scaling factors
+	 ($epsilon_lp (if (and (lp-rat-mlist-p b) (lp-rat-mlist-p c) (lp-rat-matrix-p A))
+			  0 $epsilon_lp))
 	 ($ratprint nil))
+    (cond ((lp-mlsp 0 $epsilon_lp)
+	   (mwarning (format nil "linear_program(A,b,c): non-rat inputs found, epsilon_lp=~e." $epsilon_lp))
+	   (mwarning "Solution may be incorrect.")))
     
     (setq $pivot_count_sx 0)
 
