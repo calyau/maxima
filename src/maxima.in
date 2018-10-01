@@ -161,7 +161,7 @@ fi
 # This step should only be necessary in order to be in sync with the windows
 # version of maxima.
 if [ -d "$MAXIMA_INITIAL_FOLDER" ]; then
-    cd $MAXIMA_INITIAL_FOLDER
+    cd "$MAXIMA_INITIAL_FOLDER"
 fi
 
 maxima_image_base="$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima"
