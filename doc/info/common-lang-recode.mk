@@ -89,11 +89,13 @@ uninstall-maxima-html:
 clean-local: clean-info clean-html clean-texi
 
 clean-info:
+	rm -f maxima.info
 	rm -f maxima.info*
 	rm -f maxima-index.lisp
 
 clean-html:
 	rm -f maxima.html maxima_*.html
+	rm -f maxima_singlepage.html
 	rm -f contents.hhc
 	rm -f index.hhk
 

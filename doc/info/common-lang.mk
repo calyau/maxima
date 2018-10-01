@@ -37,11 +37,13 @@ include $(top_srcdir)/common-html.mk
 clean-local: clean-info clean-html $(CLEAN_CHM)
 
 clean-info:
+	rm -f maxima.info
 	rm -f maxima.info*
 	rm -f maxima-index.lisp
 
 clean-html:
 	rm -f maxima.html maxima_*.html
+	rm -f maxima_singlepage.html
 	rm -f contents.hhc
 	rm -f index.hhk
 
