@@ -87,7 +87,7 @@ fi
 # and clisp need <0,5 Gigabytes by default.
 # The following lines make GCL's garbage collector more aggressive by default.
 if [ -z "$GCL_GC_PAGE_THRESH" ]; then
-    export GCL_GC_PAGE_THRESH=0.05
+    export GCL_GC_PAGE_THRESH=0.2
 fi;
 if [ -z "$GCL_GC_ALLOC_MIN" ]; then
     export GCL_GC_ALLOC_MIN=0.01
