@@ -168,3 +168,44 @@ maximize_lp(target, constraints, [pozitive]) := block(
   if not(listp(sol)) then sol
   else [-sol[1], sol[2]]
 )$
+
+
+/*****************************************************************************
+*                                                                           *
+* %functions are for debugging purposes.                                    *
+*                                                                           *
+*****************************************************************************/
+
+%prepare_standard_form_lp(target,constraints,pozitive) := block([listconstvars : false,
+  vars, slack_vars, nonpozitive_vars, nonpozitive_vars0, nonpozitive_subs, slack_vars0, nonpozitive_subs0, vars0],
+  vars : listofvars(append([target],constraints)),
+  slack_vars : map(lambda([e],gensym()), constraints),
+  nonpozitive_vars : sublist(vars,lambda([e], not(member(e,pozitive)))),
+  nonpozitive_subs : block([mgensym : lambda([x], gensym(printf(false,"~a_",x)))],
+    map(lambda([x], x=mgensym(x)-mgensym(x)), nonpozitive_vars)),
+  constraints : block([ltoreq : lambda([l,r], -l >= -r)],
+    subst(["<"=ltoreq, "<="=ltoreq], constraints)),
+  constraints : map(lambda([e,s], if op(e)="=" then e else lhs(e)-s-rhs(e)),constraints,slack_vars),
+  slack_vars0 : block([cv:listofvars(constraints)],
+    sublist(slack_vars, lambda([x],member(x,cv)))),
+  nonpozitive_vars0 : listofvars(map('rhs,nonpozitive_subs)),
+  vars0 : block([vars:vars,nonpozitive_subs1:map('lhs,nonpozitive_subs)],
+    for v in nonpozitive_subs1 do vars:delete(v,vars), vars),
+  [target, constraints] : subst("="="-", subst(nonpozitive_subs, [target,constraints])),
+  [target, constraints, vars0, nonpozitive_subs, nonpozitive_vars0, slack_vars0]
+  )$
+%minimize_lp(target, constraints, [pozitive]) := block([A, b, c, vars0, vars, tgt, vals, lp,
+  nonpozitive_subs, nonpozitive_vars0, slack_vars0, mcoefmatrix],
+  local(mcoefmatrix),
+  mcoefmatrix(l,v) := apply('matrix,outermap(coeff,l,v)),
+  pozitive : if pozitive=[] then [] else if listp(part(pozitive,1)) then part(pozitive,1) else if part(pozitive,1)='all or nonegative_lp then copylist(block([listconstvars:false], listofvars(constraints))) else error("Unrecognized input."),
+  [target, constraints, vars0, nonpozitive_subs, nonpozitive_vars0, slack_vars0] : %prepare_standard_form_lp(target, constraints, pozitive),
+  vars : append(vars0, nonpozitive_vars0, slack_vars0),
+  lp : linear_program(mcoefmatrix(constraints,vars), -subst(map(lambda([x],x=0),vars), constraints), first(args(mcoefmatrix([target],vars)))),
+  if atom(lp) then lp else ([vals,tgt] : lp,
+    block([maperror:false, mapprint:false],
+      [tgt, append(map("=",vars0,vals),subst(map("=",nonpozitive_vars0,rest(vals,length(vars0))),nonpozitive_subs))])));
+%maximize_lp(target, constraints, [pozitive]) := block([tgt, vals, lp],
+  lp : %minimize_lp(-target, constraints,first(pozitive)),
+  if atom(lp) then lp else ([tgt,vals] : lp,
+    [-tgt, vals]))$
