@@ -97,6 +97,15 @@
 ;; type checkers
 (defun lp-rat-mlist-p (x) (and (listp x) (every #'$ratnump (cdr x))))
 (defun lp-rat-matrix-p (x) (and ($matrixp x) (every #'lp-rat-mlist-p (cdr x))))
+;; comparison
+(defun lp-mlsp (a b)
+  (let ((x (mlsp a b)))
+    (cond ((or (eq x t) (eq x nil)) x)
+	  (t
+	   (let ((s ($asksign (cadr x) nil)))
+	     (cond ((eq s '$pos) t)
+		   (t nil)))))))
+(defun lp-mgqp (a b) (or (meqp a b) (lp-mlsp b a)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                           ;;
@@ -141,7 +150,7 @@
 ;; If b[i]<0 multiply b[i] and A[i] by -1 (required for phase 1).  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (dotimes (i m)
-      (if (mlsp (maref b (1+ i)) 0)
+      (if (lp-mlsp (maref b (1+ i)) 0)
           (progn
             (dotimes (j n)
               (setf (aref Tab i j) (neg (maref A (1+ i) (1+ j)))))
@@ -185,7 +194,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-    (if (mlsp $epsilon_lp (aref Tab (1+ m) n))
+    (if (lp-mlsp $epsilon_lp (aref Tab (1+ m) n))
         "Problem not feasible!"
         (let ((is-bounded))
 
@@ -248,11 +257,11 @@
       (setq tmp (aref Tab (1- m) 0))
       (setq jp 0)
       (dotimes (j (- n 1))
-        (if (mlsp tmp (aref Tab (1- m) j))
+        (if (lp-mlsp tmp (aref Tab (1- m) j))
             (progn
               (setq tmp (aref Tab (1- m) j))
               (setq jp j))))
-      (if (mgqp $epsilon_lp tmp)
+      (if (lp-mgqp $epsilon_lp tmp)
           (progn
             (setq is-bounded t)
             (setq have-solution t))
@@ -265,8 +274,8 @@
             (setq tmp nil)
             (setq ip 0)
             (dotimes (i Am)
-              (if (mlsp $epsilon_lp (aref Tab i jp))
-                  (if (or (null tmp) (mlsp (div (aref Tab i (1- n))
+              (if (lp-mlsp $epsilon_lp (aref Tab i jp))
+                  (if (or (null tmp) (lp-mlsp (div (aref Tab i (1- n))
                                                 (aref Tab i jp))
                                            tmp))
                       (progn
@@ -352,10 +361,10 @@
       (setq r 0)
       (dotimes (j n)
         (let* ((tij (aref Tab i j))
-               (ta (if (mlsp tij 0) (neg tij) tij)))
-          (if (mlsp r ta)
+               (ta (if (lp-mlsp tij 0) (neg tij) tij)))
+          (if (lp-mlsp r ta)
               (setq r ta))))
-      (if (mlsp $epsilon_lp r)
+      (if (lp-mlsp $epsilon_lp r)
           (dotimes (j n)
             (setf (aref Tab i j) (div (aref Tab i j) r)))))
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -365,10 +374,10 @@
       (setq r 0)
       (dotimes (i (- m 2))
         (let* ((tij (aref Tab i j))
-               (ta (if (mlsp tij 0) (neg tij) tij)))
-          (if (mlsp r ta)
+               (ta (if (lp-mlsp tij 0) (neg tij) tij)))
+          (if (lp-mlsp r ta)
               (setq r ta))))
-      (if (mlsp $epsilon_lp r)
+      (if (lp-mlsp $epsilon_lp r)
           (progn
             (dotimes (i m)
               (setf (aref Tab i j) (div (aref Tab i j) r)))

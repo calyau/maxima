@@ -239,6 +239,44 @@ Examples:
 (%o4)                Problem not bounded!
 @end example
 
+There is also a limited ability to solve linear programs with symbolic
+constants.
+
+@example
+(%i1) declare(c,constant)$
+(%i2) maximize_lp(x+y, [y<=-x/c+3, y<=-x+4], [x, y]), epsilon_lp=0;
+Is (c-1)*c positive, negative or zero?
+p;
+Is c*(2*c-1) positive, negative or zero?
+p;
+Is c positive or negative?
+p;
+Is c-1 positive, negative or zero?
+p;
+Is 2*c-1 positive, negative or zero?
+p;
+Is 3*c-4 positive, negative or zero?
+p;
+                                 1                1
+(%o2)                 [4, [x = -----, y = 3 - ---------]]
+                                   1               1
+                               1 - -          (1 - -) c
+                                   c               c
+@end example
+
+@c ===beg===
+@c (assume(c>4/3), declare(c,constant))$
+@c maximize_lp(x+y, [y<=-x/c+3, y<=-x+4], [x, y]), epsilon_lp=0;
+@c ===end===
+@example
+(%i1) (assume(c>4/3), declare(c,constant))$
+(%i2) maximize_lp(x+y, [y<=-x/c+3, y<=-x+4], [x, y]), epsilon_lp=0;
+                                 1                1
+(%o2)                 [4, [x = -----, y = 3 - ---------]]
+                                   1               1
+                               1 - -          (1 - -) c
+                                   c               c
+@end example
 
 See also: @mref{maximize_lp}, @mref{nonegative_lp}, @mref{epsilon_lp}.
 

@@ -91,5 +91,9 @@ block([solutionpoly_lmad,f,sol5,sol6,sol5f,sol6f,checkerr],
   );
 [true,true,true,true,false,false] $
 
-(kill(nonegative_lp,return_input_lp), 0)$
+(assume(c>4/3), declare(c,constant),
+  ratsimp(maximize_lp(x+y, [y<=-x/c+3, y<=-x+4], [x, y]) - [4,[x = c/(c-1),y = (3*c-4)/(c-1)]])), epsilon_lp=0 $
+[0,[0 = 0,0 = 0]] $
+
+(forget(c>4/3), remove(c,constant), kill(nonegative_lp,return_input_lp), 0)$
 0 $
