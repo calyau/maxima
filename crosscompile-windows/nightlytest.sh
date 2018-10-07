@@ -63,11 +63,14 @@ echo "run_testsuite(share_tests=only); quit();" | $ABCL --eval '(load "maxima-bu
 cd ..
 
 
-rm -f logfile-summary.txt
+rm -f logfile-summary.txt logfile-share-summary.txt
 for lisp in clisp ecl sbcl gcl ccl64 cmucl acl abcl ; do
       echo "$lisp summary" >>logfile-summary.txt
+      echo "$lisp summary" >>logfile-share-summary.txt
       sed -n -e '/^Error summary\|^No unexpected errors/,$p' logfile-testsuite-$lisp.txt >>logfile-summary.txt
+      sed -n -e '/^Error summary\|^No unexpected errors/,$p' logfile-share-testsuite-$lisp.txt >>logfile-share-summary.txt
       echo -e "\n\n" >>logfile-summary.txt
+      echo -e "\n\n" >>logfile-share-summary.txt
 done
 
 scp -i ~/.ssh/maximakopierkey ~/maxima-test/logfile-*.txt maxima@ns1.dautermann.at:/var/www/wolfgang.dautermann.at/maxima/nightlybuild/
