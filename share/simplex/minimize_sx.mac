@@ -41,8 +41,9 @@
  *                                                                           *
  *****************************************************************************/
 
-define_variable(nonegative_lp,   false, boolean,
-               "Assume all variables are nonegative!")$
+define_variable(nonnegative_lp,   false, boolean,
+               "Assume all variables are non-negative!")$
+alias(nonegative_lp, nonnegative_lp)$
 define_variable(return_input_lp, false, boolean,
                "Return the input to linear program, not solution!")$
 
@@ -71,7 +72,7 @@ minimize_lp(target, constraints, [pozitive]) := block(
     if listp(pozitive[1]) then pozitive : pozitive[1]
     else if pozitive[1]='all then pozitive : copylist(var)
   )
-  else if nonegative_lp=true then
+  else if nonnegative_lp=true then
     pozitive : copylist(var),
 
   for v in var do
@@ -198,7 +199,7 @@ maximize_lp(target, constraints, [pozitive]) := block(
   nonpozitive_subs, nonpozitive_vars0, slack_vars0, mcoefmatrix],
   local(mcoefmatrix),
   mcoefmatrix(l,v) := apply('matrix,outermap(coeff,l,v)),
-  pozitive : if pozitive=[] then [] else if listp(part(pozitive,1)) then part(pozitive,1) else if part(pozitive,1)='all or nonegative_lp then copylist(block([listconstvars:false], listofvars(constraints))) else error("Unrecognized input."),
+  pozitive : if pozitive=[] then [] else if listp(part(pozitive,1)) then part(pozitive,1) else if part(pozitive,1)='all or nonnegative_lp then copylist(block([listconstvars:false], listofvars(constraints))) else error("Unrecognized input."),
   [target, constraints, vars0, nonpozitive_subs, nonpozitive_vars0, slack_vars0] : %prepare_standard_form_lp(target, constraints, pozitive),
   vars : append(vars0, nonpozitive_vars0, slack_vars0),
   lp : linear_program(mcoefmatrix(constraints,vars), -subst(map(lambda([x],x=0),vars), constraints), first(args(mcoefmatrix([target],vars)))),

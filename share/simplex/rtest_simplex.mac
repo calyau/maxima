@@ -13,7 +13,7 @@ maximize_lp(x+y, [y<=-x/2+3, y<=-x+4], [x, y]);
 maximize_lp(x+y, [y<=-x/2+3, y<=-x+4], all);
 [4, [x = 2, y = 2]];
 
-maximize_lp(x+y, [y<=-x/2+3, y<=-x+4]), nonegative_lp=true;
+maximize_lp(x+y, [y<=-x/2+3, y<=-x+4]), nonnegative_lp=true;
 [4, [x = 2, y = 2]];
 
 maximize_lp(10*x1 - 57*x2 - 9*x3 - 24*x4,
@@ -95,5 +95,5 @@ block([solutionpoly_lmad,f,sol5,sol6,sol5f,sol6f,checkerr],
   ratsimp(maximize_lp(x+y, [y<=-x/c+3, y<=-x+4], [x, y]) - [4,[x = c/(c-1),y = (3*c-4)/(c-1)]])), epsilon_lp=0 $
 [0,[0 = 0,0 = 0]] $
 
-(forget(c>4/3), remove(c,constant), kill(nonegative_lp,return_input_lp), 0)$
+(forget(c>4/3), remove(c,constant), kill(nonnegative_lp,return_input_lp), 0)$
 0 $
