@@ -14,4 +14,3 @@ semantic.cache
 
 *-depends.mk
 /sys-proclaim.lisp
-share-subdirs.lisp
