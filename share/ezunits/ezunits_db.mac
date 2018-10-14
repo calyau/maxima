@@ -189,7 +189,7 @@ declare_unit_conversion
     pS = S/10^12,
     nS = S/10^9,
     microS = S/10^6,
-    microsievert = microS,
+    microsiemens = microS,
     mS = S/1000,
     kS = 1000*S,
     MS = 1000000*S,
@@ -308,7 +308,7 @@ texput (microV, "\\mu \\mathrm{V}");
 texput (microfarad, "\\mu \\mathrm{F}");
 texput (microF, "\\mu \\mathrm{F}");
 texput (microOhm, "\\mu \\Omega");
-texput (microsievert, "\\mu \\mathrm{S}");
+texput (microsiemens, "\\mu \\mathrm{S}");
 texput (microS, "\\mu \\mathrm{S}");
 texput (microweber, "\\mu \\mathrm{Wb}");
 texput (microWb, "\\mu \\mathrm{Wb}");

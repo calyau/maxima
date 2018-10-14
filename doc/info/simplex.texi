@@ -206,11 +206,12 @@ problem is not bounded, @code{minimize_lp} returns "Problem not
 bounded!" and if the problem is not feasible, it returns "Problem not
 feasible!".
 
-The decision variables are not assumed to be nonegative by default. If
-all decision variables are nonegative, set @code{nonegative_lp} to
-@code{true}.  If only some of decision variables are positive, list
-them in the optional argument @var{pos} (note that this is more
-efficient than adding constraints).
+The decision variables are not assumed to be non-negative by default. If
+all decision variables are non-negative, set @code{nonnegative_lp} to
+@code{true} or include @code{all} in the optional argument @var{pos}. If
+only some of decision variables are positive, list them in the optional
+argument @var{pos} (note that this is more efficient than adding
+constraints).
 
 @code{minimize_lp} uses the simplex algorithm which is implemented in
 maxima @code{linear_program} function.
@@ -222,8 +223,9 @@ Examples:
 
 @c ===beg===
 @c minimize_lp(x+y, [3*x+y=0, x+2*y>2]);
-@c minimize_lp(x+y, [3*x+y>0, x+2*y>2]), nonegative_lp=true;
-@c minimize_lp(x+y, [3*x+y=0, x+2*y>2]), nonegative_lp=true;
+@c minimize_lp(x+y, [3*x+y>0, x+2*y>2]), nonnegative_lp=true;
+@c minimize_lp(x+y, [3*x+y>0, x+2*y>2], all);
+@c minimize_lp(x+y, [3*x+y=0, x+2*y>2]), nonnegative_lp=true;
 @c minimize_lp(x+y, [3*x+y>0]);
 @c ===end===
 @example
@@ -231,12 +233,15 @@ Examples:
                       4       6        2
 (%o1)                [-, [y = -, x = - -]]
                       5       5        5
-(%i2) minimize_lp(x+y, [3*x+y>0, x+2*y>2]), nonegative_lp=true;
+(%i2) minimize_lp(x+y, [3*x+y>0, x+2*y>2]), nonnegative_lp=true;
 (%o2)                [1, [y = 1, x = 0]]
-(%i3) minimize_lp(x+y, [3*x+y=0, x+2*y>2]), nonegative_lp=true;
-(%o3)                Problem not feasible!
-(%i4) minimize_lp(x+y, [3*x+y>0]);
-(%o4)                Problem not bounded!
+(%i3) minimize_lp(x+y, [3*x+y>0, x+2*y>2], all);
+(%o3)                         [1, [y = 1, x = 0]]
+(%i4) minimize_lp(x+y, [3*x+y=0, x+2*y>2]), nonnegative_lp=true;
+(%o4)                Problem not feasible!
+(%i5) minimize_lp(x+y, [3*x+y>0]);
+(%o5)                Problem not bounded!
+
 @end example
 
 There is also a limited ability to solve linear programs with symbolic
@@ -278,7 +283,7 @@ p;
                                    c               c
 @end example
 
-See also: @mref{maximize_lp}, @mref{nonegative_lp}, @mref{epsilon_lp}.
+See also: @mref{maximize_lp}, @mref{nonnegative_lp}, @mref{epsilon_lp}.
 
 @opencatbox
 @category{Package simplex} @category{Numerical methods}
@@ -286,13 +291,15 @@ See also: @mref{maximize_lp}, @mref{nonegative_lp}, @mref{epsilon_lp}.
 
 @end deffn
 
-@anchor{nonegative_lp}
-@defvr {Option variable} nonegative_lp
+@anchor{nonnegative_lp}
+@defvr {Option variable} nonnegative_lp
+@defvrx {Option variable} nonegative_lp
 Default value: @code{false}
 
-If @code{nonegative_lp} is true all decision variables to
-@code{minimize_lp} and @code{maximize_lp} are assumed to be positive.
-
+If @code{nonnegative_lp} is true all decision variables to
+@code{minimize_lp} and @code{maximize_lp} are assumed to be non-negative.
+@code{nonegative_lp} is a deprecated alias.
+                   
 See also: @mref{minimize_lp}.
 
 @opencatbox
