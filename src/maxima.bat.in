@@ -44,7 +44,9 @@ if not exist "%MAXIMA_TEMPDIR%"/ set "MAXIMA_TEMPDIR=%USERPROFILE:\=/%"
 rem change 'short names' (e.g. "C:/Users/TESTTE~1/AppData/Local/Temp" to
 rem long names (e.g. "C:/Users/test test/AppData/Local/Temp" - 
 rem CLISP has a problem with these short names.
-for /F "tokens=* USEBACKQ" %%F in (`maxima_longnames.exe "%MAXIMA_TEMPDIR%"`) do set "MAXIMA_TEMPDIR=%%F"
+rem Do this only if maxima_longnames.exe exists in the Maxima binary dir.
+rem (it is not compiled and installed for example when a Lisp-only build is done).
+if exist "%maxima_prefix%/bin/maxima_longnames.exe" for /F "tokens=* USEBACKQ" %%F in (`maxima_longnames.exe "%MAXIMA_TEMPDIR%"`) do set "MAXIMA_TEMPDIR=%%F"
 
 
 rem read maximarc and set the Lisp type, if the user did specify MAXIMA_LISP
