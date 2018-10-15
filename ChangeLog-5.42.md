@@ -151,6 +151,16 @@ Bug fixes:
  
 Unnumbered bugs:
 ----------------
+ * Windows installer: include 2 missing files in the with 'make dist'
+   generated tar file. Allows building the crosscompiled installer
+   from a released tar and solves a problem with SBCL and Lapack.
+   (was missing in the 5.42.0 source release, discovered during
+   building the Windows installer and already included in the
+   5.42.0 installer)
+ * Windows installer: Fixed the link to SBCL in the information about
+   bundled software. (was missing in the 5.42.0 source release,
+   discovered during building the Windows installer and already
+   included in the 5.42.0 installer)
  * Windows installer: Fix the plotting problem with Clisp/Windows and
    long user names. 
  * Windows installer: Fix reading maximarc on Windows, when the
