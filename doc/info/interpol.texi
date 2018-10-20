@@ -129,7 +129,57 @@ Examples:
 
 @anchor{charfun2}
 @deffn {Function} charfun2 (@var{x}, @var{a}, @var{b})
-Returns @code{true} if number @var{x} belongs to the interval @math{[a, b)}, and @code{false} otherwise.
+
+The characteristic or indicator function on the half-open interval @math{[@var{a}, @var{b})},
+that is, including @var{a} and excluding @var{b}.
+
+When @math{@var{x} >= @var{a}} and @math{@var{x} < @var{b}} evaluates to @code{true} or @code{false},
+@code{charfun2} returns 1 or 0, respectively.
+
+Otherwise, @code{charfun2} returns a partially-evaluated result in terms of @code{charfun}.
+
+Package @code{interpol} loads this function.
+
+See also @mrefdot{charfun}
+
+Examples:
+
+When @math{@var{x} >= @var{a}} and @math{@var{x} < @var{b}} evaluates to @code{true} or @code{false},
+@code{charfun2} returns 1 or 0, respectively.
+
+@c ===beg===
+@c load ("interpol") $
+@c charfun2 (5, 0, 100);
+@c charfun2 (-5, 0, 100);
+@c ===end===
+@example
+(%i1) load ("interpol") $
+(%i2) charfun2 (5, 0, 100);
+(%o2)                           1
+(%i3) charfun2 (-5, 0, 100);
+(%o3)                           0
+@end example
+
+Otherwise, @code{charfun2} returns a partially-evaluated result in terms of @code{charfun}.
+
+@c ===beg===
+@c load ("interpol") $
+@c charfun2 (t, 0, 100);
+@c charfun2 (5, u, v);
+@c assume (v > u, u > 5);
+@c charfun2 (5, u, v);
+@c ===end===
+@example
+(%i1) load ("interpol") $
+(%i2) charfun2 (t, 0, 100);
+(%o2)            charfun((0 <= t) and (t < 100))
+(%i3) charfun2 (5, u, v);
+(%o3)             charfun((u <= 5) and (5 < v))
+(%i4) assume (v > u, u > 5);
+(%o4)                    [v > u, u > 5]
+(%i5) charfun2 (5, u, v);
+(%o5)                           0
+@end example
 
 @opencatbox
 @category{Package interpol}
