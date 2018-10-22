@@ -215,5 +215,5 @@ Additional improvements:
    as executable.
  * Updated all references to wxMaxima to wxMaxima's new URL.
  * The wxMaxima version the Windows Installer comes with now is 
-   Version 18.10.1
+   Version 18.10.2
  
