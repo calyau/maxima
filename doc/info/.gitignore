@@ -25,3 +25,4 @@ maxima.vr
 bin
 texi2html.init
 mk.sh
+tmp_html
