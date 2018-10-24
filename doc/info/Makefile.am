@@ -548,7 +548,7 @@ maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 	$(file >> mk.sh,  perl $(abs_srcdir)/texi2html --split_chapter --lang=$(INFOLANG) --output=. \
 	  -I . -I .. -I $(abs_srcdir) \
 	  --css-include=$(abs_srcdir)/manual.css \
-	  --init-file $(abs_srcdir)/texi2html.init \
+	  --init-file texi2html.init \
 	  maxima.texi )
 	$(file >> mk.sh,  for f in *.html; do $(SED) \
 	  -e 's/^&middot;$$//' \
