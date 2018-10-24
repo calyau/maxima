@@ -1,8 +1,12 @@
+info_TEXINFOS = maxima.texi
 if CHM
 MAXIMA_CHM = maxima.chm
 INSTALL_CHM = install-chm
 UNINSTALL_CHM = uninstall-chm
 CLEAN_CHM = clean-chm
+genericdir = $(dochtmldir)$(langsdir)
+genericdirDATA = \
+contents.hhc index.hhk header.hhp maxima.hhp
 endif
 
 all-local: maxima-index.lisp maxima.html contents.hhc $(MAXIMA_CHM)
@@ -26,12 +30,9 @@ contents.hhc: maxima.html
 	perl ../create_index
 
 include $(top_srcdir)/common.mk
-genericdir = $(dochtmldir)/$(langsdir)
-genericdirDATA = \
-contents.hhc index.hhk header.hhp maxima.hhp
 
 htmlname = maxima
-htmlinstdir = $(dochtmldir)/$(langsdir)
+htmlinstdir = $(dochtmldir)$(langsdir)
 include $(top_srcdir)/common-html.mk
 
 clean-local: clean-info clean-html $(CLEAN_CHM)
@@ -62,8 +63,8 @@ maxima.chm: maxima.html maxima.hhp contents.hhc index.hhk
 	mv chm/maxima.chm .
 
 install-chm: maxima.chm
-	test -z "$(DESTDIR)$(docchmdir)/$(langsdir)" || mkdir -p -- "$(DESTDIR)$(docchmdir)/$(langsdir)"
-	$(INSTALL_DATA) maxima.chm "$(DESTDIR)$(docchmdir)/$(langsdir)/maxima.chm"
+	test -z "$(DESTDIR)$(docchmdir)$(langsdir)" || mkdir -p -- "$(DESTDIR)$(docchmdir)$(langsdir)"
+	$(INSTALL_DATA) maxima.chm "$(DESTDIR)$(docchmdir)$(langsdir)/maxima.chm"
 
 uninstall-chm:
 	rm -f "$(DESTDIR)$(docchmdir)"

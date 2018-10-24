@@ -1,4 +1,7 @@
-BEGIN { print "categories = {}" }
+BEGIN {
+    FS="@@@###@@@";
+    print "categories = {}";
+}
 
 {for (i=1; i<=NF; i++) print $i;}
 

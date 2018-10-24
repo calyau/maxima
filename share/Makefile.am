@@ -1,7 +1,7 @@
 include $(top_srcdir)/common.mk
 genericdir =$(sharedir)
 
-sharefiles = $(shell find . -type f | \
+sharefiles = $(shell find $(VPATH) -type f | \
 egrep -v '\.ERR$$' | \
 egrep -v 'CVS|Makefile(\.in|\.am)?|^\./Makefile|\.gitignore|\.gitattributes' | \
 egrep -v '/fortran/' | \
