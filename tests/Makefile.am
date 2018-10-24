@@ -1,5 +1,7 @@
 include $(top_srcdir)/common.mk
-MAXIMA = @POSIX_SHELL@ $(top_builddir)/maxima-local
+MAXIMA = $(abs_top_builddir)/maxima-local
+MAXIMA_LAYOUT_AUTOTOOLS = true
+export
 
 TESTS =
 CLEANFILES = 

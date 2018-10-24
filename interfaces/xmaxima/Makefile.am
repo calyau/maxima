@@ -84,8 +84,7 @@ TKSOURCES = \
 XMAXIMA_FILES = $(TKSOURCES)
 XMAXIMASOURCES = Tkmaxima/Header.tcl $(TKSOURCES) autoconf-variables.tcl xmaxima-trailer.tcl
 
-
-xmaxima: $(XMAXIMASOURCES) Tkmaxima/tclIndex
+xmaxima: $(XMAXIMASOURCES)
 	rm -f xmaxima && \
 	cat Tkmaxima/Header.tcl > xmaxima && \
 	(cd "$(abs_top_srcdir)/interfaces/xmaxima/" ; cat $(XMAXIMA_FILES)) >> xmaxima && \

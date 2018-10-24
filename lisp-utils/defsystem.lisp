@@ -2508,7 +2508,7 @@ D
 			 :type *system-extension*))
 
          (lib-file-pathname
-	  (make-pathname :directory (list :relative module-string-name)
+	  (make-pathname ;:directory (list :relative module-string-name)
                          :name module-string-name
 			 :type *system-extension*))
          )
