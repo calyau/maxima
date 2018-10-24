@@ -136,7 +136,7 @@ that is, including @var{a} and excluding @var{b}.
 When @math{@var{x} >= @var{a}} and @math{@var{x} < @var{b}} evaluates to @code{true} or @code{false},
 @code{charfun2} returns 1 or 0, respectively.
 
-Otherwise, @code{charfun2} returns a partially-evaluated result in terms of @code{charfun}.
+Otherwise, @code{charfun2} returns a partially-evaluated result in terms of @mref{charfun}.
 
 Package @code{interpol} loads this function.
 
@@ -160,7 +160,7 @@ When @math{@var{x} >= @var{a}} and @math{@var{x} < @var{b}} evaluates to @code{t
 (%o3)                           0
 @end example
 
-Otherwise, @code{charfun2} returns a partially-evaluated result in terms of @code{charfun}.
+Otherwise, @code{charfun2} returns a partially-evaluated result in terms of @mref{charfun}.
 
 @c ===beg===
 @c load ("interpol") $
