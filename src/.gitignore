@@ -11,6 +11,9 @@ maxout.openmath
 rmaxima
 semantic.cache
 *.fasl
+*.fas
+*.o
+gcl-command.lisp
 
 *-depends.mk
 /sys-proclaim.lisp
