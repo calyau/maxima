@@ -545,17 +545,17 @@ maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 	$(file >> mk.sh,  $(SED) -e 's/^@bye/@node Documentation Categories\n@chapter Documentation Categories/' \
 	  $(abs_srcdir)/maxima.texi > maxima.texi )
 	$(file >> mk.sh,  ( for f in Category-*.texi; do echo '@include' $$f; done ; echo @bye ) >> maxima.texi )
-	$(file >> mk.sh,  perl $(abs_srcdir)/texi2html --split_chapter --lang=$(INFOLANG) --output=. \
+	$(file >> mk.sh,  perl $(abs_srcdir)/texi2html --split_chapter --lang=$(INFOLANG) --output=$(abs_builddir)/tmp_html \
 	  -I . -I .. -I $(abs_srcdir) \
 	  --css-include=$(abs_srcdir)/manual.css \
-	  --init-file texi2html.init \
+	  --init-file ../texi2html.init \
 	  maxima.texi )
 	$(file >> mk.sh,  for f in *.html; do $(SED) \
 	  -e 's/^&middot;$$//' \
 	  -e 's/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' \
 	  -e 's/<a href="\(.*\)">Category: \(.*\)<\/a>/<a href="\1">\2<\/a>/' \
 	  -e 's/<a href="\(.*\)">Item: \(.*\)<\/a>/<a href="\1">\2<\/a>/' \
-	  -i $$f && $(INSTALL) $$f .. ; done )
+	  -i $$f && $(INSTALL) $$f $(abs_builddir) ; done )
 	chmod +x mk.sh && ./mk.sh
 	$(RM) -r tmp_html
 
@@ -620,8 +620,8 @@ clean-chm:
 	rm -rf chm
 endif
 
-EXTRA_DIST = texi2html manual.css texi2html.init \
-    $(genericdirDATA) $(pdffigures) $(macfiles) \
+EXTRA_DIST = texi2html manual.css texi2html.init maxima.texi \
+    $(genericdirDATA) $(pdffigures) $(macfiles) $(maxima_TEXINFOS) $(figurefiles) \
     create_index build_index.pl maxima-index.lisp docdraw.mac \
     extract_categories1.awk extract_categories1.sed extract_categories.sh check_tab fix_tab \
     figures/Makefile.am figures/Makefile.in figures/README \
