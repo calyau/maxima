@@ -133,7 +133,7 @@
 			:components (#-gcl
 				     (:file "maxima-package")
 				     #+ecl (:file "ecl-port")
-				     (:file "autoconf-variables")))
+				     (:private-file "autoconf-variables")))
 	       (:module intl :source-pathname ""
 			:components (
 				     ;; Some versions of CMUCL already
