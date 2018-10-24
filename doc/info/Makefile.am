@@ -545,7 +545,7 @@ maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 	$(file >> mk.sh,  $(SED) -e 's/^@bye/@node Documentation Categories\n@chapter Documentation Categories/' \
 	  $(abs_srcdir)/maxima.texi > maxima.texi )
 	$(file >> mk.sh,  ( for f in Category-*.texi; do echo '@include' $$f; done ; echo @bye ) >> maxima.texi )
-	$(file >> mk.sh,  perl $(abs_srcdir)/texi2html --split_chapter --lang=$(INFOLANG) --output=$(abs_builddir)/tmp_html \
+	$(file >> mk.sh,  perl $(abs_srcdir)/texi2html --split chapter --lang=$(INFOLANG) --output=$(abs_builddir)/tmp_html \
 	  -I . -I .. -I $(abs_srcdir) \
 	  --css-include=$(abs_srcdir)/manual.css \
 	  --init-file ../texi2html.init \
