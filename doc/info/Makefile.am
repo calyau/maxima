@@ -550,6 +550,11 @@ maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 	  --css-include=$(abs_srcdir)/manual.css \
 	  --init-file ../texi2html.init \
 	  maxima.texi )
+	$(file >> mk.sh,  perl $(abs_srcdir)/texi2html --split none --lang=$(INFOLANG) --output=$(abs_builddir)/maxima_singlepage.html \
+	  -I . -I .. -I $(abs_srcdir) \
+	  --css-include=$(abs_srcdir)/manual.css \
+	  --init-file ../texi2html.init \
+	  maxima.texi )
 	$(file >> mk.sh,  for f in *.html; do $(SED) \
 	  -e 's/^&middot;$$//' \
 	  -e 's/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' \
