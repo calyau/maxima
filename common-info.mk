@@ -1,10 +1,11 @@
 # Installation/uninstallation and distribution for .html files.
-# htmlname    -- html base name (e.g. maxima or xmaxima)
-# htmlinstdir -- html installation directory  
+# infoname -- info base name (e.g. maxima or xmaxima)
+# infodir  -- info installation directory
+# langsdir -- info installation subdirectory
 
-install-data-local: install-maxima-html
-install-maxima-html: $(wildcard $(htmlname).html $(htmlname)_*.html)
-	@d=$(DESTDIR)$(htmlinstdir); \
+install-data-local: install-maxima-info
+install-maxima-info: $(wildcard $(infoname).info* $(infoname)-index.lisp)
+	@d=$(DESTDIR)$(infodir)$(langsdir); \
 	test -d $$d && $(mkinstalldirs) $$d; \
 	list="$^"; for p in $$list; do \
 	  b=$${p#$(builddir)/}; \
@@ -27,18 +28,16 @@ install-maxima-html: $(wildcard $(htmlname).html $(htmlname)_*.html)
 	  fi; \
 	done
 
-uninstall-local: uninstall-maxima-html
-uninstall-maxima-html:
-	rm -f $(DESTDIR)$(htmlinstdir)/$(htmlname).html 
-	rm -f $(DESTDIR)$(htmlinstdir)/$(htmlname)_*.html
+uninstall-local: uninstall-maxima-info
+uninstall-maxima-info:
+	rm -f $(DESTDIR)$(infodir)$(langsdir)/$(infoname).info*
+	rm -f $(DESTDIR)$(infodir)$(langsdir)/$(infoname)-index.lisp
 
-dist-hook: dist-maxima-html
-dist-maxima-html: $(wildcard $(htmlname).html $(htmlname)_*.html)
-	@builddirstrip=`echo "$(builddir)" | sed 's|.|.|g'`; \
-	list="$^" ; \
+dist-hook: dist-maxima-info
+dist-maxima-info:
+	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
+	list="$(srcdir)/$(infoname).info*" ; \
 	for p in $$list; do \
-	  f=`echo "$$p" | sed "s|^$$builddirstrip/||"`; \
-	  test -f $(distdir)/$$f || cp -p $(builddir)/$$f $(distdir)/$$f; \
+	  f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`; \
+	  test -f $(distdir)/$$f || cp -p $(srcdir)/$$f $(distdir)/$$f; \
 	done
-
-
