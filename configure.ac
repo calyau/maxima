@@ -1191,6 +1191,7 @@ AM_PATH_PYTHON
 # Configure these files and make them executable
 AC_CONFIG_FILES([maxima-local], chmod +x maxima-local)
 AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
+AC_CONFIG_FILES([tests/test.sh.in], chmod +x tests/test.sh.in)
 
 # Convert maxima.bat to DOS line ending
 # sed-3.02 in old mingw distribution doesn't support -i or \r
