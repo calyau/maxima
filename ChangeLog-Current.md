@@ -4,6 +4,8 @@ Maxima next change log
 New items in core:
 ------------------
  * nonnegative_lp now replaces nonegative_lp which now is merely an alias.
+ * The environment variable MAXIMA_DOCDIR that allows to override the
+   location the documentation is searched for.
 
 New items in share:
 -------------------

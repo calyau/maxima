@@ -24,7 +24,7 @@ setup_vars() {
   else
       MAXIMA_DEFAULT_IMAGESDIR=$top_srcdir/src
   fi  
-  if [ -n "$MAXIMA_PREFIX" ]; then
+  if [ -n "$MAXIMA_IMAGESDIR" ]; then
       if [ "$layout_autotools" = "true" ]; then
 	  MAXIMA_IMAGESDIR=`unixize "$MAXIMA_PREFIX"`/lib/$PACKAGE/$MAXIMA_VERSION
       else

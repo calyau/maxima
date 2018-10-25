@@ -1166,6 +1166,9 @@ dnl around it.
 default_sharedirs=`cd $srcdir;find share -type d | sort | egrep -v 'share$|CVS|/fortran' | sed 's;share/\(.*\);"\1";' | tr '\n' ' '`
 
 AC_SUBST(top_srcdir)
+AC_SUBST(abs_top_builddir)
+AC_SUBST(abs_top_srcdir)
+AC_SUBST(top_builddir)
 AC_SUBST(expanded_top_srcdir)
 AC_SUBST(expanded_exec_prefix)
 AC_SUBST(expanded_libdir)

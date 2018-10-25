@@ -125,7 +125,7 @@ When one changes, the other does too."
 		 "/"
 		 (apply #'combine-path (rest (pathname-directory str))))))
 
-(defun set-pathnames-with-autoconf (maxima-prefix-env)
+(defun set-pathnames-with-autoconf (maxima-prefix-env maxima-docdir-env)
   (let (libdir libexecdir datadir infodir
 	(package-version (combine-path *autoconf-package* *autoconf-version*))
 	(binary-subdirectory (concatenate 'string "binary-" *maxima-lispname*)))
@@ -151,10 +151,13 @@ When one changes, the other does too."
     (setq *maxima-htmldir*   (combine-path datadir package-version "doc" "html"))
     (setq *maxima-plotdir*   (combine-path libexecdir package-version))))
 
-(defun set-pathnames-without-autoconf (maxima-prefix-env)
+(defun set-pathnames-without-autoconf (maxima-prefix-env maxima-docdir-env)
   (let ((maxima-prefix (if maxima-prefix-env
 			   maxima-prefix-env
 			   (maxima-parse-dirstring *autoconf-prefix*)))
+	(maxima-doc-prefix (if maxima-docdir-env
+			   maxima-docdir-env
+			   maxima-prefix))
 	(binary-subdirectory (concatenate 'string "binary-" *maxima-lispname*)))
 
     (setq *maxima-topdir*    maxima-prefix)
@@ -163,9 +166,9 @@ When one changes, the other does too."
     (setq *maxima-srcdir*    (combine-path maxima-prefix "src"))
     (setq *maxima-demodir*   (combine-path maxima-prefix "demo"))
     (setq *maxima-testsdir*  (combine-path maxima-prefix "tests"))
-    (setq *maxima-docdir*    (combine-path maxima-prefix "doc"))
-    (setq *maxima-infodir*   (combine-path maxima-prefix "doc" "info"))
-    (setq *maxima-htmldir*   (combine-path maxima-prefix "doc" "html"))
+    (setq *maxima-docdir*    (combine-path maxima-doc-prefix "doc"))
+    (setq *maxima-infodir*   (combine-path maxima-doc-prefix "doc" "info"))
+    (setq *maxima-htmldir*   (combine-path maxima-doc-prefix "doc" "html"))
     (setq *maxima-plotdir*   (combine-path maxima-prefix "plotting"))))
 
 (defun default-userdir ()
@@ -253,6 +256,7 @@ When one changes, the other does too."
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
 	(maxima-userdir-env (maxima-getenv "MAXIMA_USERDIR"))
+	(maxima-docdir-env (maxima-getenv "MAXIMA_DOCDIR"))
 	(maxima-tempdir-env (maxima-getenv "MAXIMA_TEMPDIR"))
 	(maxima-objdir-env (maxima-getenv "MAXIMA_OBJDIR")))
     ;; MAXIMA_DIRECTORY is a deprecated substitute for MAXIMA_PREFIX
@@ -267,8 +271,8 @@ When one changes, the other does too."
 	(setq *maxima-layout-autotools*
 	      (string-equal *maxima-default-layout-autotools* "true")))
     (if *maxima-layout-autotools*
-	(set-pathnames-with-autoconf maxima-prefix-env)
-	(set-pathnames-without-autoconf maxima-prefix-env))
+	(set-pathnames-with-autoconf maxima-prefix-env maxima-docdir-env)
+	(set-pathnames-without-autoconf maxima-prefix-env maxima-docdir-env))
     (if maxima-userdir-env
 	(setq *maxima-userdir* (maxima-parse-dirstring maxima-userdir-env))
 	(setq *maxima-userdir* (default-userdir)))
