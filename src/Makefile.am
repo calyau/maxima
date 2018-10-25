@@ -367,20 +367,17 @@ EXECUTEOPENMCL = $(OPENMCL_NAME)
 BUILT_FILES += $(OPENMCL_MAXIMA)
 CLEAN_TARGETS += clean-openmcl
 
-COMPILE_OMCL = $(EXECUTEOPENMCL) \
- '(require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit)'
-WRITE_OMCL = $(EXECUTEOPENMCL) \
- '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)'
+COMPILE_OMCL = echo '(require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTEOPENMCL)
+WRITE_OMCL = echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)' | $(EXECUTEOPENMCL)
 BUILD_OMCL = $(COMPILE_OMCL) && $(WRITE_OMCL)
 
 openmcl: $(OPENMCL_MAXIMA)
 
 $(OPENMCL_MAXIMA):
 	$(BUILD_OMCL)
-	$(EXECUTEOPENMCL) \
-	  '(require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit)' && \
-	$(EXECUTEOPENMCL) \
-	  '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit)'
+	echo '(require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTEOPENMCL) \
+	   && \
+	echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit)' | $(EXECUTEOPENMCL)
 
 clean-openmcl:
 	rm -rf binary-openmcl
@@ -413,20 +410,17 @@ EXECUTECCL64 = $(CCL64_NAME)
 BUILT_FILES += $(CCL64_MAXIMA)
 CLEAN_TARGETS += clean-ccl64
 
-COMPILE_CCL64 = $(EXECUTECCL64) \
- '(require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit)'
-WRITE_CCL64 = $(EXECUTECCL64) \
- '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)'
+COMPILE_CCL64 = echo '(require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTECCL64)
+WRITE_CCL64 = echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)' | $(EXECUTECCL64)
 BUILD_CCL64 = $(COMPILE_CCL64) && $(WRITE_CCL64)
 
 ccl64: $(CCL64_MAXIMA)
 
 $(CCL64_MAXIMA):
 	$(BUILD_CCL64)
-	$(EXECUTECCL64) \
-	  '(require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit)' && \
-	$(EXECUTECCL64) \
-	  '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit)'
+	echo '(require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTECCL64) \
+	   && \
+	echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit)' | $(EXECUTECCL64)
 
 clean-ccl64:
 	rm -rf binary-ccl64
