@@ -127,7 +127,7 @@
 				     (:file "command-line")
 				     (:file "nregex")
 				     #+gcl-working-proclaims
-				     (:file "sys-proclaim")))
+				     (:private-file "sys-proclaim")))
 	       (:module package :source-pathname ""
 			#-ecl :load-only #-ecl t
 			:components (#-gcl
