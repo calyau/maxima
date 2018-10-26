@@ -256,7 +256,7 @@ When one changes, the other does too."
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
 	(maxima-userdir-env (maxima-getenv "MAXIMA_USERDIR"))
-	(maxima-docdir-env (maxima-getenv "MAXIMA_DOCDIR"))
+	(maxima-docdir-env (maxima-getenv "MAXIMA_DOC_PREFIX"))
 	(maxima-tempdir-env (maxima-getenv "MAXIMA_TEMPDIR"))
 	(maxima-objdir-env (maxima-getenv "MAXIMA_OBJDIR")))
     ;; MAXIMA_DIRECTORY is a deprecated substitute for MAXIMA_PREFIX

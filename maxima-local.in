@@ -4,8 +4,8 @@
 # with a classic Bourne shell.
 MAXIMA_PREFIX="@abs_top_srcdir@"
 export MAXIMA_PREFIX
-MAXIMA_DOCDIR="@abs_top_builddir@"
-export MAXIMA_DOCDIR
+MAXIMA_DOC_PREFIX="@abs_top_builddir@"
+export MAXIMA_DOC_PREFIX
 MAXIMA_LAYOUT_AUTOTOOLS=false
 export MAXIMA_LAYOUT_AUTOTOOLS
 MAXIMA_OBJDIR="@abs_top_builddir@/binary"
