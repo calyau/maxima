@@ -662,5 +662,5 @@
 			#-ecl :load-only #-ecl t
 			:components ((:file "autol")
 				     (:file "max_ext")
-				     (:file "share-subdirs")
+				     (:private-file "share-subdirs")
 				     (:file "init-cl")))))
