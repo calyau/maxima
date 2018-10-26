@@ -125,7 +125,7 @@ When one changes, the other does too."
 		 "/"
 		 (apply #'combine-path (rest (pathname-directory str))))))
 
-(defun set-pathnames-with-autoconf (maxima-prefix-env maxima-docdir-env)
+(defun set-pathnames-with-autoconf (maxima-prefix-env maxima-docprefix-env)
   (let (libdir libexecdir datadir infodir
 	(package-version (combine-path *autoconf-package* *autoconf-version*))
 	(binary-subdirectory (concatenate 'string "binary-" *maxima-lispname*)))
@@ -151,12 +151,12 @@ When one changes, the other does too."
     (setq *maxima-htmldir*   (combine-path datadir package-version "doc" "html"))
     (setq *maxima-plotdir*   (combine-path libexecdir package-version))))
 
-(defun set-pathnames-without-autoconf (maxima-prefix-env maxima-docdir-env)
+(defun set-pathnames-without-autoconf (maxima-prefix-env maxima-docprefix-env)
   (let ((maxima-prefix (if maxima-prefix-env
 			   maxima-prefix-env
 			   (maxima-parse-dirstring *autoconf-prefix*)))
-	(maxima-doc-prefix (if maxima-docdir-env
-			   maxima-docdir-env
+	(maxima-doc-prefix (if maxima-docprefix-env
+			   maxima-docprefix-env
 			   maxima-prefix))
 	(binary-subdirectory (concatenate 'string "binary-" *maxima-lispname*)))
 
@@ -256,7 +256,7 @@ When one changes, the other does too."
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
 	(maxima-userdir-env (maxima-getenv "MAXIMA_USERDIR"))
-	(maxima-docdir-env (maxima-getenv "MAXIMA_DOC_PREFIX"))
+	(maxima-docprefix-env (maxima-getenv "MAXIMA_DOC_PREFIX"))
 	(maxima-tempdir-env (maxima-getenv "MAXIMA_TEMPDIR"))
 	(maxima-objdir-env (maxima-getenv "MAXIMA_OBJDIR")))
     ;; MAXIMA_DIRECTORY is a deprecated substitute for MAXIMA_PREFIX
@@ -271,8 +271,8 @@ When one changes, the other does too."
 	(setq *maxima-layout-autotools*
 	      (string-equal *maxima-default-layout-autotools* "true")))
     (if *maxima-layout-autotools*
-	(set-pathnames-with-autoconf maxima-prefix-env maxima-docdir-env)
-	(set-pathnames-without-autoconf maxima-prefix-env maxima-docdir-env))
+	(set-pathnames-with-autoconf maxima-prefix-env maxima-docprefix-env)
+	(set-pathnames-without-autoconf maxima-prefix-env maxima-docprefix-env))
     (if maxima-userdir-env
 	(setq *maxima-userdir* (maxima-parse-dirstring maxima-userdir-env))
 	(setq *maxima-userdir* (default-userdir)))
