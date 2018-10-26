@@ -367,8 +367,8 @@ EXECUTEOPENMCL = $(OPENMCL_NAME)
 BUILT_FILES += $(OPENMCL_MAXIMA)
 CLEAN_TARGETS += clean-openmcl
 
-COMPILE_OMCL = echo '(require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTEOPENMCL)
-WRITE_OMCL = echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)' | $(EXECUTEOPENMCL)
+COMPILE_OMCL = echo '(require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTEOPENMCL)
+WRITE_OMCL = echo '(require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)' | $(EXECUTEOPENMCL)
 BUILD_OMCL = $(COMPILE_OMCL) && $(WRITE_OMCL)
 
 openmcl: $(OPENMCL_MAXIMA)
@@ -410,8 +410,8 @@ EXECUTECCL64 = $(CCL64_NAME)
 BUILT_FILES += $(CCL64_MAXIMA)
 CLEAN_TARGETS += clean-ccl64
 
-COMPILE_CCL64 = echo '(require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTECCL64)
-WRITE_CCL64 = echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)' | $(EXECUTECCL64)
+COMPILE_CCL64 = echo '(require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTECCL64)
+WRITE_CCL64 = echo '(require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)' | $(EXECUTECCL64)
 BUILD_CCL64 = $(COMPILE_CCL64) && $(WRITE_CCL64)
 
 ccl64: $(CCL64_MAXIMA)
