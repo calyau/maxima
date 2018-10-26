@@ -1,7 +1,6 @@
 ; -*- Lisp -*-
 (in-package :maxima)
 
-(defparameter *autoconf-variables-set* "@variables_set@")
 (defparameter *autoconf-prefix* "@prefix@")
 (defparameter *autoconf-exec_prefix* "@expanded_exec_prefix@")
 (defparameter *autoconf-package* "@PACKAGE@")
