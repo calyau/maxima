@@ -14,7 +14,8 @@ New items in share:
 
 Changes in core:
 ----------------
- * Much work on allowing out-of-tree-builds
+ * Made out-of-tree-builds work except for ECL (see src/maxima.system for 
+   details about the ECL bug)
  * The build system now uses /usr/bin/perl instead of /usr/local/bin/perl
  * Tweaked the memory management for GCL towards big maxima projects by default
 Changes in share:

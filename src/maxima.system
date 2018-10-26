@@ -133,7 +133,14 @@
 			:components (#-gcl
 				     (:file "maxima-package")
 				     #+ecl (:file "ecl-port")
-				     (:private-file "autoconf-variables")))
+				     ;; ECL seems not to load the autoconf-variables if
+				     ;; it is declared as a private-file that is to be taken
+				     ;; from the build tree, not from the source tree
+				     ;; => dropping out-of-source building support for ECL
+				     ;; for now.
+				     #-ecl (:private-file "autoconf-variables")
+				     #+ecl (:file "autoconf-variables")
+				     ))
 	       (:module intl :source-pathname ""
 			:components (
 				     ;; Some versions of CMUCL already
