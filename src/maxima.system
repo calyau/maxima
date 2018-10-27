@@ -669,5 +669,8 @@
 			#-ecl :load-only #-ecl t
 			:components ((:file "autol")
 				     (:file "max_ext")
-				     (:private-file "share-subdirs")
+				     ;; ECL depending on its version doesn't like private
+				     ;; files here, neither.
+				     #-ecl (:private-file "share-subdirs")
+				     #+ecl (:file "share-subdirs")
 				     (:file "init-cl")))))
