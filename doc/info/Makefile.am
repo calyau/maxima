@@ -545,12 +545,12 @@ maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 	$(file >> mk.sh,  $(SED) -e 's/^@bye/@node Documentation Categories\n@chapter Documentation Categories/' \
 	  $(abs_srcdir)/maxima.texi > maxima.texi )
 	$(file >> mk.sh,  ( for f in Category-*.texi; do echo '@include' $$f; done ; echo @bye ) >> maxima.texi )
-	$(file >> mk.sh,  perl $(abs_srcdir)/texi2html --split chapter --lang=$(INFOLANG) --output=$(abs_builddir)/tmp_html \
+	$(file >> mk.sh,  perl $(abs_srcdir)/texi2html --split chapter --lang=$(INFOLANG) --output="$(abs_builddir)/tmp_html" \
 	  -I . -I .. -I $(abs_srcdir) \
 	  --css-include=$(abs_srcdir)/manual.css \
 	  --init-file ../texi2html.init \
 	  maxima.texi )
-	$(file >> mk.sh,  perl $(abs_srcdir)/texi2html --split none --lang=$(INFOLANG) --output=$(abs_builddir)/maxima_singlepage.html \
+	$(file >> mk.sh,  perl $(abs_srcdir)/texi2html --split none --lang=$(INFOLANG) --output="$(abs_builddir)/maxima_singlepage.html" \
 	  -I . -I .. -I $(abs_srcdir) \
 	  --css-include=$(abs_srcdir)/manual.css \
 	  --init-file ../texi2html.init \
@@ -560,7 +560,7 @@ maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 	  -e 's/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' \
 	  -e 's/<a href="\(.*\)">Category: \(.*\)<\/a>/<a href="\1">\2<\/a>/' \
 	  -e 's/<a href="\(.*\)">Item: \(.*\)<\/a>/<a href="\1">\2<\/a>/' \
-	  -i $$f && $(INSTALL) $$f $(abs_builddir) ; done )
+	  -i $$f && $(INSTALL) $$f "$(abs_builddir)" ; done )
 	chmod +x mk.sh && ./mk.sh
 	$(RM) -r tmp_html
 
