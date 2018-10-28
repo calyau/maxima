@@ -1,4 +1,5 @@
 #!/bin/sh
+mkdir tmp_html
 cd tmp_html
 for f in @abs_srcdir@/*.texi; do sed -e 's/^@\(deffn\|defvr\)  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: \2}\n&/;' -e 's/^@node  *\([^,]*\).*/@anchor{Item: \1}\n&/' $f > $(basename $f); done 
 cat *.texi | gawk -e '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/)' | sed -f @abs_srcdir@/extract_categories1.sed | gawk -f @abs_srcdir@/extract_categories1.awk > make-categories.py 
@@ -8,3 +9,5 @@ sed -e 's/^@bye/@node Documentation Categories\n@chapter Documentation Categorie
 perl @abs_srcdir@/texi2html --split chapter --lang=en --output="@abs_builddir@/tmp_html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
 perl @abs_srcdir@/texi2html --split none --lang=en --output="@abs_builddir@/maxima_singlepage.html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
 for f in *.html; do sed -e 's/^&middot;$//' -e 's/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' -e 's/<a href="\(.*\)">Category: \(.*\)<\/a>/<a href="\1">\2<\/a>/' -e 's/<a href="\(.*\)">Item: \(.*\)<\/a>/<a href="\1">\2<\/a>/' -i $f && install -c $f "@abs_builddir@" ; done 
+cd ..
+rm -r -f tmp_html

@@ -532,9 +532,7 @@ DOLLAR_SIGN = $$
 
 maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 	@: sh $(srcdir)/extract_categories.sh maxima
-	$(MKDIR_P) tmp_html
 	./build_html.sh
-	$(RM) -r tmp_html
 
 maxima.epub: maxima.html
 	ebook-convert maxima_singlepage.html maxima.epub --breadth-first "--title=Maxima @manual_version@ Manual" "--authors=Maxima Team" --language=en
