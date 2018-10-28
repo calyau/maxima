@@ -528,39 +528,41 @@ html: maxima.html contents.hhc
 maxima-index.lisp: build_index.pl maxima.info
 	perl $^ ':crlf' > $@
 
+DOLLAR_SIGN = $$
+
 maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 	@: sh $(srcdir)/extract_categories.sh maxima
 	$(MKDIR_P) tmp_html
-	$(file  > mk.sh,  cd tmp_html)
-	$(file >> mk.sh,  for f in $(filter-out maxima.texi, $(abs_srcdir)/*.texi); do $(SED) \
-	  -e 's/^@\(deffn\|defvr\)  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: \2}\n&/;' \
-	  -e 's/^@node  *\([^,]*\).*/@anchor{Item: \1}\n&/' \
-	  $$f > $$(basename $$f); done )
-	$(file >> mk.sh,  $(CAT) $(notdir $(filter-out maxima.texi, $(abs_srcdir)/*.texi)) | \
-	$(AWK) -e '!/^@c / && !/^@c$$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ \
-		   || /^@end defvr/ || /@category/ || /@node/)' | \
-	$(SED) -f $(abs_srcdir)/extract_categories1.sed | \
-	$(AWK) -f $(abs_srcdir)/extract_categories1.awk > make-categories.py )
-	$(file >> mk.sh,  $(PYTHON) make-categories.py )
-	$(file >> mk.sh,  $(SED) -e 's/^@bye/@node Documentation Categories\n@chapter Documentation Categories/' \
-	  $(abs_srcdir)/maxima.texi > maxima.texi )
-	$(file >> mk.sh,  ( for f in Category-*.texi; do echo '@include' $$f; done ; echo @bye ) >> maxima.texi )
-	$(file >> mk.sh,  perl $(abs_srcdir)/texi2html --split chapter --lang=$(INFOLANG) --output="$(abs_builddir)/tmp_html" \
-	  -I . -I .. -I $(abs_srcdir) \
-	  --css-include=$(abs_srcdir)/manual.css \
-	  --init-file ../texi2html.init \
-	  maxima.texi )
-	$(file >> mk.sh,  perl $(abs_srcdir)/texi2html --split none --lang=$(INFOLANG) --output="$(abs_builddir)/maxima_singlepage.html" \
-	  -I . -I .. -I $(abs_srcdir) \
-	  --css-include=$(abs_srcdir)/manual.css \
-	  --init-file ../texi2html.init \
-	  maxima.texi )
-	$(file >> mk.sh,  for f in *.html; do $(SED) \
-	  -e 's/^&middot;$$//' \
-	  -e 's/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' \
-	  -e 's/<a href="\(.*\)">Category: \(.*\)<\/a>/<a href="\1">\2<\/a>/' \
-	  -e 's/<a href="\(.*\)">Item: \(.*\)<\/a>/<a href="\1">\2<\/a>/' \
-	  -i $$f && $(INSTALL) $$f "$(abs_builddir)" ; done )
+	echo "  cd tmp_html" > mk.sh
+	echo "  for f in $(filter-out maxima.texi, $(abs_srcdir)/*.texi); do $(SED) \
+-e 's/^@\(deffn\|defvr\)  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: \2}\n&/;' \
+-e 's/^@node  *\([^,]*\).*/@anchor{Item: \1}\n&/' \
+\$(DOLLAR_SIGN)f > \$(DOLLAR_SIGN)(basename \$(DOLLAR_SIGN)f); done " >> mk.sh
+	echo "  $(CAT) $(notdir $(filter-out maxima.texi, $(abs_srcdir)/*.texi)) | \
+$(AWK) -e '!/^@c / && !/^@c\$(DOLLAR_SIGN)/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ \
+|| /^@end defvr/ || /@category/ || /@node/)' | \
+$(SED) -f $(abs_srcdir)/extract_categories1.sed | \
+$(AWK) -f $(abs_srcdir)/extract_categories1.awk > make-categories.py " >> mk.sh
+	echo "  $(PYTHON) make-categories.py " >> mk.sh
+	echo "  $(SED) -e 's/^@bye/@node Documentation Categories\n@chapter Documentation Categories/' \
+$(abs_srcdir)/maxima.texi > maxima.texi " >> mk.sh
+	echo "  ( for f in Category-*.texi; do echo '@include' \$(DOLLAR_SIGN)f; done ; echo @bye ) >> maxima.texi " >> mk.sh
+	echo "  perl $(abs_srcdir)/texi2html --split chapter --lang=$(INFOLANG) --output=\"$(abs_builddir)/tmp_html\" \
+-I . -I .. -I $(abs_srcdir) \
+--css-include=$(abs_srcdir)/manual.css \
+--init-file ../texi2html.init \
+maxima.texi " >> mk.sh
+	echo "  perl $(abs_srcdir)/texi2html --split none --lang=$(INFOLANG) --output=\"$(abs_builddir)/maxima_singlepage.html\" \
+-I . -I .. -I $(abs_srcdir) \
+--css-include=$(abs_srcdir)/manual.css \
+--init-file ../texi2html.init \
+maxima.texi " >> mk.sh
+	echo "  for f in *.html; do $(SED) \
+-e 's/^&middot;\$(DOLLAR_SIGN)//' \
+-e 's/<p>\(<a href=\".*\">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' \
+-e 's/<a href=\"\(.*\)\">Category: \(.*\)<\/a>/<a href=\"\1\">\2<\/a>/' \
+-e 's/<a href=\"\(.*\)\">Item: \(.*\)<\/a>/<a href=\"\1\">\2<\/a>/' \
+-i \$(DOLLAR_SIGN)f && $(INSTALL) \$(DOLLAR_SIGN)f \"$(abs_builddir)\" ; done " >> mk.sh
 	chmod +x mk.sh && ./mk.sh
 	$(RM) -r tmp_html
 
