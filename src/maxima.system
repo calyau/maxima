@@ -129,6 +129,9 @@
 				     #+gcl-working-proclaims
 				     (:private-file "sys-proclaim")))
 	       (:module package :source-pathname ""
+			;; On ECL all runtime alterations to the system (i.e from repl)
+			;; at runtime are not part of the final executable if they aren't.
+			;; compiled.
 			#-ecl :load-only #-ecl t
 			:components (#-gcl
 				     (:file "maxima-package")
@@ -665,7 +668,10 @@
 			:components ((:file "gnuplot_def")
 				     (:file "xmaxima_def")))
 	       (:module final :source-pathname ""
-			;; These are not compiled, for whatever reason
+			;; These are not compiled, for whatever reason, except on ecl:
+			;; On ECL all runtime alterations to the system (i.e from repl)
+			;; at runtime are not part of the final executable if they aren't.
+			;; compiled.
 			#-ecl :load-only #-ecl t
 			:components ((:file "autol")
 				     (:file "max_ext")
