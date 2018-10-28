@@ -567,7 +567,7 @@ maxima.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
 maxima.epub: maxima.html
 	ebook-convert maxima_singlepage.html maxima.epub --breadth-first "--title=Maxima @manual_version@ Manual" "--authors=Maxima Team" --language=en
 
-maxima.pdf: maxima.texi $(maxima_TEXINFOS) $(pdffigures)
+maxima.pdf: maxima_pdf.texi $(maxima_TEXINFOS) $(pdffigures)
 	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf $<
 	rm maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
 	maxima.toc maxima.fn maxima.aux maxima.log
@@ -590,6 +590,7 @@ include $(top_srcdir)/common-html.mk
 
 all-local: warn_texinfo
 dist-hook: check_texinfo html
+pdf-local: maxima.pdf
 
 install-data-local: install-maxima-index $(INSTALL_CHM)
 uninstall-local: uninstall-maxima-index $(UNINSTALL_CHM)
