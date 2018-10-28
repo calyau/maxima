@@ -16,6 +16,8 @@ Changes in core:
 ----------------
  * Made out-of-tree-builds work except for ECL (see src/maxima.system for 
    details about the ECL bug)
+ * Part of the build process for the documentation is now off-loaded to 
+   doc/info/build_html.sh 
  * The build system now uses /usr/bin/perl instead of /usr/local/bin/perl
  * Tweaked the memory management for GCL towards big maxima projects by default
 Changes in share:
