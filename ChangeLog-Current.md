@@ -14,6 +14,8 @@ New items in share:
 
 Changes in core:
 ----------------
+ * Removed the unused variable "variables_set" that wasn't assigned a meaningful
+   value to by the build system anyway.
  * Made out-of-tree-builds work except for ECL (see src/maxima.system for 
    details about the ECL bug)
  * Part of the build process for the documentation is now off-loaded to 
