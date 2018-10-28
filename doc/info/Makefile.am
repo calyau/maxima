@@ -569,7 +569,7 @@ maxima.epub: maxima.html
 
 maxima.pdf: maxima_pdf.texi $(maxima_TEXINFOS) $(pdffigures)
 	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf $<
-	rm maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
+	rm -f maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
 	maxima.toc maxima.fn maxima.aux maxima.log
 
 contents.hhc index.hhk: maxima.html
