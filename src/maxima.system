@@ -136,11 +136,11 @@
 			:components (#-gcl
 				     (:file "maxima-package")
 				     #+ecl (:file "ecl-port")
-				     ;; ECL seems not to load the autoconf-variables if
-				     ;; it is declared as a private-file that is to be taken
-				     ;; from the build tree, not from the source tree
-				     ;; => dropping out-of-source building support for ECL
-				     ;; for now.
+				     ;; If a file is declared as private-file it is loaded
+				     ;; from the build tree (which makes an out-of-tree
+				     ;; build possible), but not compiled (which makes
+				     ;; with ECL it won't end up in the final image)
+				     ;; => no out-of-tree build for ECL.
 				     #-ecl (:private-file "autoconf-variables")
 				     #+ecl (:file "autoconf-variables")
 				     ))
@@ -675,8 +675,11 @@
 			#-ecl :load-only #-ecl t
 			:components ((:file "autol")
 				     (:file "max_ext")
-				     ;; ECL depending on its version doesn't like private
-				     ;; files here, neither.
+				     ;; If a file is declared as private-file it is loaded
+				     ;; from the build tree (which makes an out-of-tree
+				     ;; build possible), but not compiled (which makes
+				     ;; with ECL it won't end up in the final image)
+				     ;; => no out-of-tree build for ECL.
 				     #-ecl (:private-file "share-subdirs")
 				     #+ecl (:file "share-subdirs")
 				     (:file "init-cl")))))

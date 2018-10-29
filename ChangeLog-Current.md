@@ -16,8 +16,8 @@ Changes in core:
 ----------------
  * Removed the unused variable "variables_set" that wasn't assigned a meaningful
    value to by the build system anyway.
- * Made out-of-tree-builds work except for ECL (see src/maxima.system for 
-   details about the ECL bug)
+ * out-of-tree-builds now should work if maxima isn't compiled using ECL 
+   (see src/maxima.system for details about the reason)
  * Part of the build process for the documentation is now off-loaded to 
    doc/info/build_html.sh 
  * The build system now uses /usr/bin/perl instead of /usr/local/bin/perl
