@@ -1276,7 +1276,12 @@ if test x"${ccl64_exec}" = xtrue ; then
    echo "CCL64 executable image enabled for maxima."
 fi
 if test x"${ecl}" = xtrue ; then
-	echo "ECL enabled. Executable name: \"${ECL_NAME}\""
+	if test x"$srcdir" = x"." ; then
+		echo "ECL enabled. Executable name: \"${ECL_NAME}\""
+	else
+		echo "ECL enabled. Executable name: \"${ECL_NAME}\""
+		AC_MSG_ERROR(For ECL out-of-tree builds aren't supported. See src/maxima.system for details.)
+	fi
 fi
 echo "default lisp: $DEFAULTLISP"
 echo "wish executable name: \"${WISH}\""
