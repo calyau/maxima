@@ -119,14 +119,14 @@ clisp: $(CLISP_MAXIMA)
 
 $(CLISP_MAXIMA):
 	$(MAKE) bd
-	echo '$(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE)' | $(EXECUTECLISP) 
-	echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run) $(clispexeflag))' |$(EXECUTECLISP) 
+	$(EXECUTECLISP) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE)
+	$(EXECUTECLISP) $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run) $(clispexeflag))
 
 clean-clisp:
 	rm -rf binary-clisp
 
 clisp-depends.mk: maxima.system
-	echo $(call MAKE_DEPENDS,"$(CLISP_MAXIMA)",clisp-depends.mk) | $(EXECUTECLISP)
+	$(EXECUTECLISP) $(call MAKE_DEPENDS,"$(CLISP_MAXIMA)",clisp-depends.mk)
 
 -include clisp-depends.mk
 endif CLISP
