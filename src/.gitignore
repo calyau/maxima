@@ -17,3 +17,5 @@ gcl-command.lisp
 
 *-depends.mk
 /sys-proclaim.lisp
+clisp-command.lisp
+clisp-command2.lisp
