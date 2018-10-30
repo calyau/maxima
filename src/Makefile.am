@@ -1,3 +1,13 @@
+## Lisp normally uses ASDF for compiling big projects, an extensible make-like utility.
+## ASDF also allows to build maxima on systems that don't contain autotools.
+## It therefore is natural to use make only for initiating the build process
+## and to use the autotools for setting up all files, but to use the standard lisp
+## tools for the actual build.
+##
+## The ASDF equivalent of a makefile is named maxima.system.
+## For details about its syntax see
+## https://common-lisp.net/project/asdf/asdf/The-defsystem-form.html
+
 include $(top_srcdir)/common.mk
 
 if WIN32
