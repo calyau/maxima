@@ -1283,7 +1283,7 @@ if test x"${ccl64_exec}" = xtrue ; then
 fi
 if test x"${ecl}" = xtrue ; then
 	if test x"$srcdir" = x"." ; then
-		echo "ECL enabled. Executable name: \"${ECL_NAME}\""
+		echo "Compiling maxima using \"${ECL_NAME}\""
 	else
 		echo "ECL enabled. Executable name: \"${ECL_NAME}\""
 		AC_MSG_ERROR(For ECL out-of-tree builds aren't supported. See src/maxima.system for details.)
