@@ -1,14 +1,17 @@
 #!/bin/sh
-
+#
+# This script expects one command line argument: The name of the lisp.
+#
+#
 # This is the general driver used by the testsuite to run tests by
 # "make check" in the tests directory. It gets processed by a
 # simple-minded sed script to fill in the lisp implementation etc
 # below and turns into <lispname>-test.sh
 
-LOCAL_MAXIMA="!LOCAL_MAXIMA!"
-OUTPUT_LOG="!OUTPUT_LOG!"
-OUTPUT_SHARE_LOG="!OUTPUT_SHARE_LOG!"
-LISP="!LISPNAME!"
+LOCAL_MAXIMA=@top_builddir@/maxima-local
+OUTPUT_LOG="$1.log"
+OUTPUT_SHARE_LOG="$1_share.log"
+LISP=$1
 
 # Die if a command fails
 set -e

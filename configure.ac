@@ -1191,7 +1191,7 @@ AM_PATH_PYTHON
 # Configure these files and make them executable
 AC_CONFIG_FILES([maxima-local], chmod +x maxima-local)
 AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
-AC_CONFIG_FILES([tests/test.sh.in], chmod +x tests/test.sh.in)
+AC_CONFIG_FILES([tests/test.sh], chmod +x tests/test.sh)
 AC_CONFIG_FILES([doc/info/build_html.sh], chmod +x doc/info/build_html.sh)
 
 # Convert maxima.bat to DOS line ending
