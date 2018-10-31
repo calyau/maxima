@@ -1231,31 +1231,35 @@ src/lisp)
 echo
 echo "Summary:"
 if test x"${clisp}" = xtrue ; then
-	echo "clisp enabled. Executable name: \"${CLISP_NAME}\""
+	echo "Compiling an maxima image that uses \"${CLISP_NAME}\"",
 	echo "clisp runtime is \"${CLISP_RUNTIME_PATH}\""
+	echo Use "--enable-clisp-exec to build a standalone executable instead."
 fi
 if test x"${clisp_exec}" = xtrue ; then
    echo "clisp executable image enabled for maxima."
 fi
 if test x"${cmucl}" = xtrue ; then
-	echo "CMUCL enabled. Executable name: \"${CMUCL_NAME}\""
+	echo "Compiling an maxima image that uses \"${CMUCL_NAME}\""
 	echo "cmucl runtime is \"${CMUCL_RUNTIME_PATH}\""
+	echo Use "--enable-cmucl-exec to build a standalone executable instead."
 fi
 if test x"${cmucl_exec}" = xtrue; then
 	echo "CMUCL executable image enabled for maxima."
 fi
 if test x"${scl}" = xtrue ; then
-	echo "SCL enabled. Executable name: \"${SCL_NAME}\""
+	echo "SCL enabled, that uses \"${SCL_NAME}\""
 	echo "SCL runtime is \"${SCL_RUNTIME_PATH}\""
 fi
 if test x"${sbcl}" = xtrue ; then
-	echo "SBCL enabled. Executable name: \"${SBCL_NAME}\""
+	echo "Compiling an maxima image that uses \"${SBCL_NAME}\""
+	echo "sbcl runtime is \"${CLISP_RUNTIME_PATH}\""
+	echo Use "--enable-sbcl-exec to build a standalone executable instead."
 fi
 if test x"${sbcl_exec}" = xtrue ; then
    echo "sbcl executable image enabled for maxima."
 fi
 if test x"${gcl}" = xtrue ; then
-	echo "GCL enabled. Executable name: \"${GCL_NAME}\""
+	echo "Compiling an maxima image that uses \"${GCL_NAME}\""
 	if test x"${gcl_alt_link}" = xtrue ; then
 		echo "    GCL alternative linking method enabled."
 	fi
@@ -1264,13 +1268,15 @@ if test x"${acl}" = xtrue ; then
 	echo "ACL enabled. Executable name: \"${ACL_NAME}\""
 fi
 if test x"${openmcl}" = xtrue ; then
-	echo "OpenMCL enabled. Executable name: \"${OPENMCL_NAME}\""
+	echo "Compiling an maxima image that uses \"${OPENMCL_NAME}\""
+	echo Use "--enable-openmcl-exec to build a standalone executable instead."
 fi
 if test x"${openmcl_exec}" = xtrue ; then
    echo "OpenMCL executable image enabled for maxima."
 fi
 if test x"${ccl64}" = xtrue ; then
-	echo "CCL64 enabled. Executable name: \"${CCL64_NAME}\""
+	echo "Compiling an maxima image that uses \"${CCL64_NAME}\""
+	echo Use "--enable-ccl64-exec to build a standalone executable instead."
 fi
 if test x"${ccl64_exec}" = xtrue ; then
    echo "CCL64 executable image enabled for maxima."
