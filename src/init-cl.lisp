@@ -155,9 +155,6 @@ When one changes, the other does too."
   (let ((maxima-prefix (if maxima-prefix-env
 			   maxima-prefix-env
 			   (maxima-parse-dirstring *autoconf-prefix*)))
-	(maxima-doc-prefix (if maxima-docprefix-env
-			   maxima-docprefix-env
-			   maxima-prefix))
 	(binary-subdirectory (concatenate 'string "binary-" *maxima-lispname*)))
 
     (setq *maxima-topdir*    maxima-prefix)
@@ -166,9 +163,12 @@ When one changes, the other does too."
     (setq *maxima-srcdir*    (combine-path maxima-prefix "src"))
     (setq *maxima-demodir*   (combine-path maxima-prefix "demo"))
     (setq *maxima-testsdir*  (combine-path maxima-prefix "tests"))
-    (setq *maxima-docdir*    (combine-path maxima-doc-prefix "doc"))
-    (setq *maxima-infodir*   (combine-path maxima-doc-prefix "doc" "info"))
-    (setq *maxima-htmldir*   (combine-path maxima-doc-prefix "doc" "html"))
+    (let ((maxima-doc-prefix (if maxima-docprefix-env
+				maxima-docprefix-env
+			        maxima-prefix)))
+      (setq *maxima-docdir*    (combine-path maxima-doc-prefix "doc"))
+      (setq *maxima-infodir*   (combine-path maxima-doc-prefix "doc" "info"))
+      (setq *maxima-htmldir*   (combine-path maxima-doc-prefix "doc" "html")))
     (setq *maxima-plotdir*   (combine-path maxima-prefix "plotting"))))
 
 (defun default-userdir ()
