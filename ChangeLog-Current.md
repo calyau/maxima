@@ -14,6 +14,9 @@ New items in share:
 
 Changes in core:
 ----------------
+ * to_cl, a function that outputs the lisp code a maxima function would be 
+   compiled to now is autoloadedx.
+ * A few functions from the linear algebra package weren't autoloaded.
  * Removed the unused variable "variables_set" that wasn't assigned a meaningful
    value to by the build system anyway.
  * out-of-tree-builds now should work if maxima isn't compiled using ECL 
