@@ -68,7 +68,7 @@
 ;; transpose(matrix([])) => matrix(). And that's a bug. 
 
 (defun $matrix_size(m)
-  ($require_matrix m "$first" "$matrix_size")
+  ($require_matrix m '$first '$matrix_size)
   `((mlist) ,($length ($args m)) ,(if ($emptyp ($args m)) 0 ($length ($first ($args m))))))
   
 (defun $require_list (lst pos fun)
@@ -93,7 +93,7 @@
     (funcall fn m)))
 
 (defun $zerofor (mat &optional (fld-name '$generalring))
-  (let* ((fld ($require_ring fld-name "$second" "$zerofor"))
+  (let* ((fld ($require_ring fld-name '$second '$zerofor))
 	(add-id (funcall (mring-mring-to-maxima fld) (funcall (mring-add-id fld)))))
     (zerofor mat add-id)))
 
@@ -109,7 +109,7 @@
 ;; matrix can be blocked to any (finite) depth.
 
 (defun $identfor (mat &optional (fld-name '$generalring))
-  (let* ((fld ($require_ring fld-name "$second" "$zerofor"))
+  (let* ((fld ($require_ring fld-name '$second '$zerofor))
 	 (add-id (funcall (mring-mring-to-maxima fld) (funcall (mring-add-id fld))))
 	 (mult-id (funcall (mring-mring-to-maxima fld) (funcall (mring-mult-id fld)))))
     (if ($matrixp mat) (identfor mat add-id mult-id) mult-id)))

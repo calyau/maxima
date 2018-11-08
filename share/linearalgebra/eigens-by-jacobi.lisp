@@ -29,12 +29,12 @@
       (merror "The field must either be 'floatfield' or 'bigfloatfield'"))
   
   (setq mm (mfuncall '$mat_fullunblocker mm))
-  ($require_real_symmetric_matrix mm "$first" "$eigens_by_jacobi")
+  ($require_real_symmetric_matrix mm '$first '$eigens_by_jacobi)
      
   (let* ((mat) (g) (h) (sweeps 0) (rotations 0) (eps) (change)
 	 (theta) (mpq) (c) (s)  (tee) (tau) (d) (v) (x) (row)
 	 (n ($first ($matrix_size mm))) (continue (> n 1))
-	 (fld ($require_ring fld-name "$second" "$eigens_by_jacobi"))
+	 (fld ($require_ring fld-name '$second '$eigens_by_jacobi))
 	 (one (funcall (mring-mult-id fld)))
 	 (zero (funcall (mring-add-id fld))))
 	

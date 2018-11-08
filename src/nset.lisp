@@ -90,7 +90,7 @@
 ;; isn't a list, signal an error. 
 
 (defun $setify (a)
-  (simplifya `(($set) ,@(require-list a "$setify")) nil))
+  (simplifya `(($set) ,@(require-list a '$setify)) nil))
 
 ;; When a is a list, convert a and all of its elements that are lists
 ;; into sets.  When a isn't a list, return a.
@@ -137,15 +137,15 @@
 ;; Return the cardinality of a set. This function works even when $simp is false.
  
 (defun $cardinality (a)
-  (if $simp (length (require-set a "$cardinality"))
+  (if $simp (length (require-set a '$cardinality))
     (let (($simp t)) ($cardinality (simplify a)))))
 
 ;; Return true iff a is a subset of b. If either argument is a list, first 
 ;; convert it to a set. Signal an error if a or b aren't lists or sets.
 
 (defun $subsetp (a b)
-  (setq a (require-set a "$subsetp"))
-  (setq b (require-set b "$subsetp"))
+  (setq a (require-set a '$subsetp))
+  (setq b (require-set b '$subsetp))
   (and (<= (length a) (length b)) (set-subsetp a b)))
 
 ;; Return true iff sets a and b are equal;  If either argument is a list, first
@@ -153,15 +153,15 @@
 ;; or sets.
 
 (defun $setequalp (a b)
-  (setq a (require-set a "$setequalp"))
-  (setq b (require-set b "$setequalp"))
+  (setq a (require-set a '$setequalp))
+  (setq b (require-set b '$setequalp))
   (and (= (length a) (length b)) (every #'like a b)))
 
 
 ;;  Adjoin x to the list or set a and return a set.
 
 (defun $adjoin (x a)
-  (setq a (require-set a "$adjoin"))
+  (setq a (require-set a '$adjoin))
   (multiple-value-bind (f i b) (b-search-expr x a 0 (length a))
     (if (not f) (setq a (prefixconc a i (cons x b))))
     `(($set simp) ,@a)))
@@ -171,7 +171,7 @@
 ;; however, disjoin should be the fastest way to delete a member from a set.
 
 (defun $disjoin (x a)
- (setq a (require-set a "$disjoin"))
+ (setq a (require-set a '$disjoin))
   (multiple-value-bind (f i b) (b-search-expr x a 0 (length a))
     `(($set simp) ,@(if f (prefixconc a i b) a))))
 
@@ -192,23 +192,23 @@
 (defun $union (&rest a)
   (let ((acc nil))
     (dolist (ai a `(($set simp) ,@acc))
-      (setq acc (set-union acc (require-set ai "$union"))))))
+      (setq acc (set-union acc (require-set ai '$union))))))
 
 ;; Remove elements of b from a. Works on lists or sets.
 
 (defun $setdifference (a b)
-  `(($set simp) ,@(sset-difference (require-set a "$setdifference")
-				   (require-set b "$setdifference"))))
+  `(($set simp) ,@(sset-difference (require-set a '$setdifference)
+				   (require-set b '$setdifference))))
 
 ;; intersection(a1,a2,...an) returns the intersection of the sets 
 ;; a1,a2,...,an. Signal an error if one of the arguments isn't a 
 ;; list or a set. intersection must receive at least one argument.
 
 (defun $intersection (a &rest b)
-  (let ((acc (require-set a "$intersection")))
+  (let ((acc (require-set a '$intersection)))
     (cond ((consp b)
 	   (dolist (bi b)
-	     (setq acc (set-intersect acc (require-set bi "$intersection"))))))
+	     (setq acc (set-intersect acc (require-set bi '$intersection))))))
     `(($set simp) ,@acc)))
     
 ;; intersect is an alias for intersection.
@@ -220,7 +220,7 @@
 ;; to test for equality. Signal an error if a isn't a set or list.
 
 (defun $elementp (x a)
-  (setq a (require-set a "$elementp"))
+  (setq a (require-set a '$elementp))
   (b-search-expr x a 0 (length a)))
  
 ;; Return true if and only if the lists or sets a and b are disjoint;
@@ -228,8 +228,8 @@
 
 #|
 (defun $disjointp-binary-search-version (a b)
-  (setq a (require-set a "$disjointp"))
-  (setq b (require-set b "$disjointp"))
+  (setq a (require-set a '$disjointp))
+  (setq b (require-set b '$disjointp))
   (if (> (length a) (length b)) (rotatef a b))
   (let ((n (length b)))
     (catch 'disjoint 
@@ -239,8 +239,8 @@
 |#
 
 (defun $disjointp (a b)
-  (setq a (require-set a "$disjointp"))
-  (setq b (require-set b "$disjointp"))
+  (setq a (require-set a '$disjointp))
+  (setq b (require-set b '$disjointp))
   (set-disjointp a b))
 
 ;; Return the set of elements of the list or set a for which the predicate 
@@ -249,7 +249,7 @@
 ;; unknown.
 
 (defun $subset (a f)
-  (setq a (require-set a "$subset"))
+  (setq a (require-set a '$subset))
   (let ((acc nil) (b))
     (dolist (x a `(($set simp) ,@(nreverse acc)))
       (setq b (mfuncall f x))
@@ -263,7 +263,7 @@
 ;; for which f evaluates to unknown.
 
 (defun $partition_set (a f)
-  (setq a (require-set a "$partition_set"))
+  (setq a (require-set a '$partition_set))
   (let ((t-acc) (f-acc) (b))
     (dolist (x a `((mlist simp) 
 		   (($set simp) ,@(nreverse f-acc)) 
@@ -280,7 +280,7 @@
 (defun $symmdifference (&rest l)
   (let ((acc nil))
     (dolist (lk l (cons '($set simp) acc))
-      (setq acc (set-symmetric-difference acc (require-set lk "$symmdifference"))))))
+      (setq acc (set-symmetric-difference acc (require-set lk '$symmdifference))))))
             
 ;; Return {x | x in exactly one set l1, l2, ...}
 
@@ -289,7 +289,7 @@
   ;; r = members that are in two or more l1, l2, ...
   (let ((u nil) (r nil))
     (dolist (lk l)
-      (setq lk (require-set lk "$in_exactly_one"))
+      (setq lk (require-set lk '$in_exactly_one))
       (setq r (set-union r (set-intersect u lk)))
       (setq u (set-union u lk)))
     (cons '($set simp) (sset-difference u r))))
@@ -358,7 +358,7 @@
   (cond (($listp a) 
 	 (setq a (sort (copy-list (cdr a)) '$orderlessp)))
 	(t
-	 (setq a (require-set a "$permutations"))))
+	 (setq a (require-set a '$permutations))))
   
   (let* ((n (length a)) (p (make-array (+ n 1) :element-type 'fixnum))
 	 (r (make-array (+ n 1) :initial-element 0 :element-type 'fixnum))
@@ -423,7 +423,7 @@
 (defun $random_permutation (a)
   (if ($listp a)
     (setq a (copy-list (cdr a)))
-    (setq a (copy-list (require-set a "$random_permutation"))))
+    (setq a (copy-list (require-set a '$random_permutation))))
 
   (let ((n (length a)))
     (dotimes (i n)
@@ -603,7 +603,7 @@
 ;; Signal an error when s isn't $max or $min.
 
 (defun $extremal_subset (a f s)
-  (setq a (require-set a "$extremal_subset"))
+  (setq a (require-set a '$extremal_subset))
   (cond ((null a) 
 	 `(($set simp)))
 	(t
@@ -646,7 +646,7 @@
 ;; The lists acc and tail share structure.
            
 (defun $equiv_classes (l f)
-  (setq l (require-set l "$equiv_classes"))
+  (setq l (require-set l '$equiv_classes))
   (do ((l l (cdr l))
        (acc)
        (tail)
@@ -674,11 +674,11 @@
          `(($set) ((mlist simp))))
 	(t
 	 (let ((a) 
-	       (acc (mapcar #'list (require-set (car b) "$cartesian_product"))))
+	       (acc (mapcar #'list (require-set (car b) '$cartesian_product))))
 	   (setq b (cdr b))
 	   (dolist (bi b)
 	     (setq a nil)
-	     (setq bi (require-set bi "$cartesian_product"))
+	     (setq bi (require-set bi '$cartesian_product))
 	     (dolist (bij bi (setq acc a))
 	       (setq a (append a (mapcar #'(lambda (x) (cons bij x)) acc)))))
 	   (cons '($set simp) 
@@ -696,7 +696,7 @@
 ;; Thus set() is a partition of set().
 
 (defun $set_partitions (a &optional n-sub)
-  (setq a (require-set a "$set_partitions"))
+  (setq a (require-set a '$set_partitions))
   (cond ((and (integerp n-sub) (> n-sub -1))
 	 `(($set) ,@(set-partitions a n-sub)))
 	((null n-sub)
@@ -1089,13 +1089,13 @@
 ;; Thus rreduce(f,[0,1,2]) -> f(0,f(1,2)). The second argument must be a list.
 
 (defun $rreduce (f s &optional (init 'no-init))
-  (rl-reduce f s t init "$rreduce"))
+  (rl-reduce f s t init '$rreduce))
   
 ;; Extend a function f : S x S -> S to n arguments using left associativity.
 ;; Thus lreduce(f,[0,1,2]) -> f(f(0,1),2). The second argument must be a list.
 
 (defun $lreduce (f s &optional (init 'no-init))
-  (rl-reduce f s nil init "$lreduce"))
+  (rl-reduce f s nil init '$lreduce))
 
 (defun rl-reduce (f s left init fn)
   (setq s (require-list s fn))
@@ -1117,11 +1117,11 @@
 (defun xappend (s)
   #+(or cmu scl)
   (cons '(mlist) (apply 'append (mapcar #'(lambda (x)
-                        (require-list x "$append")) s)))
+                        (require-list x '$append)) s)))
   #-(or cmu scl)
   (let ((acc))
     (dolist (si (reverse s) (cons '(mlist) acc))
-      (setq acc (append (require-list si "$append") acc)))))
+      (setq acc (append (require-list si '$append) acc)))))
 
 (def-nary 'mand (s) (mevalp (cons '(mand) s)) t)
 (def-nary 'mor (s)  (mevalp (cons '(mor) s)) nil)
@@ -1144,7 +1144,7 @@
 	 (opfn  (if (consp op-props) (car op-props) nil)))
   
     (cond (opfn
-	   (setq s (require-list-or-set s "$xreduce"))
+	   (setq s (require-list-or-set s '$xreduce))
 	   (if (not (equal init 'no-init))
 	       (setq s (cons init s)))
 	  
@@ -1157,7 +1157,7 @@
 	   ($apply f ($listify s)))
 	  
 	  (t
-	   (rl-reduce f ($listify s) nil init "$xreduce")))))
+	   (rl-reduce f ($listify s) nil init '$xreduce)))))
 
 
 ;; Extend a function f : S x S -> S to n arguments using a minimum depth tree.
@@ -1165,7 +1165,7 @@
 ;; difficult to describe -- for an odd number of arguments, we favor the left side of the tree.
 	 
 (defun $tree_reduce (f a &optional (init 'no-init))
-  (setq a (require-list-or-set a "$tree_reduce"))
+  (setq a (require-list-or-set a '$tree_reduce))
   (if (not (equal init 'no-init)) (push init a))
   (if (null a)
       (merror (intl:gettext "tree_reduce: either a nonempty set or initial value must be given.")))
@@ -1320,7 +1320,7 @@
     (if l (wna-err fn))
     (if (or (not ($listp v)) (not (every #'(lambda (x) (or ($symbolp x) ($subvarp x))) (cdr v))))
    	(merror (intl:gettext "makeset: second argument must be a list of symbols; found: ~:M") v))
-    (setq s (require-list-or-set (meval s) "$makeset"))
+    (setq s (require-list-or-set (meval s) '$makeset))
     (setq f (list (list 'lambda) v f))
     (setq v (margs v))
     (dolist (sk v) (setq f (subst (gensym) sk f :test #'alike1)))
@@ -1377,7 +1377,7 @@
 ; Released under terms of GNU GPL v2 with Bill's approval.
 
 (defun $sublist_indices (items pred)
-  (let ((items (require-list items "$sublist_indices")))
+  (let ((items (require-list items '$sublist_indices)))
     (do ((i 0 (1+ i))
          (xs items (cdr xs))
          (acc '() (if (definitely-so (mfuncall pred (car xs))) (cons (1+ i) acc) acc)))
