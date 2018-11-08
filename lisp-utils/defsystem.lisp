@@ -2729,7 +2729,7 @@ the system definition, if provided."
 (defvar *source-pathnames-table* (make-hash-table :test #'equal)
   "Table which maps from components to full source pathnames.")
 (defvar *binary-pathnames-table* (make-hash-table :test #'equal)
-  "Table which maps from components to full binary pathnames.")
+  "Table which maps from cosmponents to full binary pathnames.")
 (defparameter *reset-full-pathname-table* t
   "If T, clears the full-pathname tables before each call to
    OPERATE-ON-SYSTEM. Setting this to NIL may yield faster performance

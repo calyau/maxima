@@ -87,6 +87,15 @@ ecl-test.sh: test.sh Makefile
 	chmod +x "$@"
 endif
 
+if ABCL
+TESTS += abcl-test.sh
+CLEANFILES += abcl-test.sh abcl.log abcl_share.log
+abcl-test.sh: test.sh Makefile
+	echo "#!/bin/sh" > $@
+	echo "./test.sh abcl" >> $@
+	chmod +x "$@"
+endif
+
 genericdir = $(insttestsdir)
 genericdirDATA = $(wildcard $(addprefix $(srcdir)/, README.how-to mcond_display_elseif.out *.mac *.lisp *.wxm wester_problems/*))
 

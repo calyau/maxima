@@ -142,7 +142,11 @@ option "--with-cmp=no" when building ECL.
 
 --------------------------------------------------------------------
 Armed Bear Common Lisp (ABCL) <https://common-lisp.net/project/armedbear/>
-    Maxima can also compiled with ABCL - but currently not with
-a 'configure'-option but only with the purely Lisp-based procedure.
-(see INSTALL.lisp)
+
+ABCL's main feature is that is tightly integrated into java.
+That also means that it is an interpreter running in a virtual machine
+which makes it even slower than clisp. Also java doesn't automatically
+convert tail-recursive function calls to loops which means that in a
+few functions might run out of stack space faster than other lisps.
+
 

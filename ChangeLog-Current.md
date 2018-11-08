@@ -26,6 +26,7 @@ Changes in core:
  * The build system now uses /usr/bin/perl instead of /usr/local/bin/perl
  * Tweaked the memory management for GCL towards big maxima projects by default
  * Compatibility for newer autotools.
+ * configure now has an --enable-abcl switch.
 Changes in share:
 --------------
  * 

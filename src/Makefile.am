@@ -55,7 +55,7 @@ clean-local: $(CLEAN_TARGETS)
 ## Tell make clean to delete all the <foo>-depends.mk files.
 DEPENDS_FILES = \
   clisp-depends.mk cmucl-depends.mk scl-depends.mk acl-depends.mk \
-  sbcl-depends.mk gcl-depends.mk openmcl-depends.mk ecl-depends.mk
+  sbcl-depends.mk gcl-depends.mk openmcl-depends.mk ecl-depends.mk abcl-depends.mk
 CLEANFILES = $(DEPENDS_FILES) sys-proclaim.lisp
 
 ## Similarly, we do something hacky with the install rule. Most of the
@@ -471,5 +471,62 @@ ecl-depends.mk: maxima.system
 	echo $(call MAKE_DEPENDS,"binary-ecl/maxima",ecl-depends.mk,(quit)) | $(EXECUTEECL)
 
 -include ecl-depends.mk
+endif
 
+## ABCL ########################################################################
+if ABCL
+
+# ABCL compiles the individual files maxima is comprised of. But they aren't 
+# compiled into a single .jar archive, but need to be loaded by abcl in the
+# right order => We need to copy all the stuff defsystem needs into the binary
+# folder and need to use defsystem for loading all the files in the Right Order.
+
+abcllibdir = $(verpkglibdir)/binary-abcl
+EXTRA_SCRIPTS += binary-abcl/maxima
+abcllib_SCRIPTS = binary-abcl/maxima
+
+EXECUTEABCL = $(JRE) -jar $(ABCL_JAR) --noinit
+BUILT_FILES += binary-abcl/maxima
+CLEAN_TARGETS += clean-abcl
+
+WEIRD_INSTALL_TARGETS += install-abcl-folder
+WEIRD_UNINSTALL_TARGETS += uninstall-abcl-folder
+
+install-abcl-folder:
+	$(mkinstalldirs) $(DESTDIR)$(abcllibdir)
+	cp -r binary-abcl/* "$(DESTDIR)$(abcllibdir)"
+	chmod +x $(DESTDIR)$(abcllibdir)/maxima
+uninstall-abcl-folder:
+	rm -f "$(DESTDIR)$(abcllibdir)/*"
+
+abcl:binary-abcl/maxima
+
+
+binary-abcl/maxima: Makefile.am startmaxima_abcl.sh
+	$(MAKE) bd
+if QUIET_BUILD
+	$(EXECUTEABCL) --eval (setf *compile-print* nil) --eval '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")' --eval '(mk:add-registry-location "$(top_srcdir)/src/")' --eval '($(DS_OOS) :compile :verbose nil)' --eval '(quit)'
+else
+	$(EXECUTEABCL) --eval '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")' --eval '(mk:add-registry-location "$(top_srcdir)/src/")' --eval '($(DS_OOS) :compile :verbose t)' --eval '(quit)'
+endif
+	cat $(srcdir)/maxima.system | sed -e 's#"binary-abcl"#(ext:getenv "MAXIMA_IMAGESDIR_BIN")#g' > binary-abcl/maxima.system
+	cp $(srcdir)/maxima-package.lisp binary-abcl
+	cp $(srcdir)/autol.lisp binary-abcl
+	cp $(srcdir)/init-cl.lisp binary-abcl
+	cp $(srcdir)/max_ext.lisp binary-abcl
+	cp $(srcdir)/share-subdirs.lisp binary-abcl
+	cp $(srcdir)/autoconf-variables.lisp binary-abcl
+	cp $(ABCL_JAR) binary-abcl/abcl.jar
+	cp $(srcdir)/../lisp-utils/defsystem.lisp binary-abcl
+	cp -a startmaxima_abcl.sh binary-abcl/maxima
+	touch binary-abcl/maxima
+	chmod +x binary-abcl/maxima
+
+clean-abcl:
+	rm -rf binary-abcl libmaxima.a
+
+abcl-depends.mk: maxima.system
+	echo $(call MAKE_DEPENDS,"binary-abcl/maxima",abcl-depends.mk,(quit)) | $(EXECUTEABCL)
+
+-include abcl-depends.mk
 endif
