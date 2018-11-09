@@ -9,7 +9,7 @@ New items in core:
 
 New items in share:
 -------------------
- * Many improvements to the simplex algorithm incluing the ability to handle
+ * Many improvements to the simplex algorithm including the ability to handle
    symbolic inputs
 
 Changes in core:
