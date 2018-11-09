@@ -64,6 +64,13 @@
     "rtest_atensor"
     "rtest_ctensor"
     "rtest_itensor"
+;; on ecl we get a
+;; (ARRAY DOUBLE-FLOAT (*)) is not a valid type specifier.
+;; error-catch
+;; as soon as we try to use lapack after loading it, tested
+;; with ecl 16.1.2 on linux.
+#-ecl    "rtest_dgeqrf"
+#-ecl    "rtest_dgesv"
     ((mlist simp) "rtest_fourier_elim" 146 147 148 149)
     ((mlist simp) "rtest_sequence" 55)
     "rtest_cholesky"
