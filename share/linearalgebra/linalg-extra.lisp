@@ -177,7 +177,12 @@
     (simplify `(($matrix) ,@(reverse mat)))))
 
 (defun $krylov_matrix (v mat &optional (n 'no-value))
-  ($require_matrix mat '$second '$krylov_matrix)
+  ($require_square_matrix mat '$second '$krylov_matrix)
+  (and ($listp v) (setq v ($transpose v)))
+  (if (not
+       (and ($matrixp v)
+       (= ($first ($matrix_size v)) ($second ($matrix_size mat)))))
+      (merror "Incompatible matrix sizes"))
   (if (eq n 'no-value) (setq n ($first ($matrix_size mat))))
   ($require_posinteger n  '$third '$krylov_matrix)
   (let ((acc v))
