@@ -497,7 +497,7 @@ install-abcl-folder:
 	cp -r binary-abcl/* "$(DESTDIR)$(abcllibdir)"
 	chmod +x $(DESTDIR)$(abcllibdir)/maxima
 uninstall-abcl-folder:
-	rm -f "$(DESTDIR)$(abcllibdir)/*"
+	if test x"$(abcllibdir)" = x"" ; then echo "Error: No known maxima version"; exit -1; else rm -f "$(DESTDIR)$(abcllibdir)/*"; fi
 
 abcl:binary-abcl/maxima
 
