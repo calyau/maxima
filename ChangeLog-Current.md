@@ -14,6 +14,7 @@ New items in share:
 
 Changes in core:
 ----------------
+ * Many strings in error messages weren't properly formatted
  * to_cl, a function that outputs the lisp code a maxima function would be 
    compiled to now is autoloadedx.
  * A few functions from the linear algebra package weren't autoloaded.
@@ -29,8 +30,9 @@ Changes in core:
  * configure now has an --enable-abcl switch.
 Changes in share:
 --------------
- * 
- 
+ *  The the arguments to Krylov matrix are now checked for being of the 
+    correct type.
+
 Bug fixes:
 ----------
  * #3470: 
