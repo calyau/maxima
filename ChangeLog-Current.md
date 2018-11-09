@@ -16,7 +16,7 @@ Changes in core:
 ----------------
  * Many strings in error messages weren't properly formatted
  * to_cl, a function that outputs the lisp code a maxima function would be 
-   compiled to now is autoloadedx.
+   compiled to now is autoloaded.
  * A few functions from the linear algebra package weren't autoloaded.
  * Removed the unused variable "variables_set" that wasn't assigned a meaningful
    value to by the build system anyway.
