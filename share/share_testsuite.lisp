@@ -94,7 +94,8 @@
 #+(or clisp sbcl ccl cmucl)    ((mlist simp) "rtest_namespaces" 7)
 #-(or clisp sbcl ccl cmucl)    "rtest_namespaces"
     "rtest_arag"
-#-(or ccl ecl) ((mlist simp) "rtest_pdiff" 62)
+#-(or ccl ecl sbcl) ((mlist simp) "rtest_pdiff" 62)
+#+sbcl "rtest_pdiff"
 #+ccl "rtest_pdiff"
 #+ecl ((mlist simp) "rtest_pdiff" 38 61 62 63 65 69)
     ((mlist simp) "rtest_to_poly" 13 14 15 16 17 18 19 20 25)
