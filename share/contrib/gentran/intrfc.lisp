@@ -261,11 +261,6 @@
 
 (defun gentranin (inlist outlist)
   (prog (holdich)
-	(foreach inf in (setq inlist (preproc inlist)) do
-		 (cond ((listp inf)
-			(gentranerr 'e inf "wrong type of arg" nil))
-		       ((and (not (filep (mkfil inf))) (not (eq inf 't)))
-			(gentranerr 'e inf "nonexistent input file" nil))))
 	(cond (outlist
 	       (eval (list 'gentranoutpush (list 'quote outlist) nil))))
 	(setq holdich (rds nil))
@@ -279,7 +274,7 @@
 				     "template file already open for input"
 				     nil))
 			(t
-			 (pushinstk (cons inf (infile (mkfil inf))))))
+			 (pushinstk (cons inf (open inf :direction :input)))))
 		  (rds (cdr *currin*))
 		  (cond ((eq *gentranlang 'ratfor) (procrattem))
 			((eq *gentranlang 'c) (procctem))
