@@ -1116,5 +1116,13 @@ sqrt(z);
 (reset(domain), done);
 done;
 
-/* ---------- End of file rtest_sqrt.mac ------------------------------------ */
+/* bug reported to mailing list 2018-11-01: "radcan(sqrt(-1/(sqrt(-3)+1))*sqrt(2))" */
 
+radcan (sqrt(-1/(sqrt(-3)+1))*sqrt(2));
+sqrt(2)/sqrt(-sqrt(3)*%i - 1);
+
+radcan (sqrt(-1/(sqrt(-3)+1)));
+1/sqrt(-sqrt(3)*%i - 1);
+
+radcan (sqrt(1/(sqrt(-3)+1))*sqrt(2));
+sqrt(2)/sqrt((sqrt(3)*%i + 1));
