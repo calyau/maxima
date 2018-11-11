@@ -147,23 +147,38 @@
 			     (c)))))
 	(go loop)))
 
+(defun make-line-for-mread (st)
+  (coerce (reverse (cons #\$ st)) 'string))
+
+(defun readvexp-parse (st)
+  (if (equal st (list '#\>))
+      st
+      (let (*prompt-on-read-hang*)
+	(mread (make-string-input-stream  (make-line-for-mread st)) nil))))
+
+(defun readvexp-end-comment-p (ch1 ch2)
+  (or (and (equal ch1 #\*) (equal ch2 #\/))
+      (equal ch2 #\NULL)))
+
+(defun readvexp-start-comment-p (st ch1)
+  (and (equal ch1 #\*)
+       st
+       (equal (car st) #\/)))
+
 (defun readvexp (in)
-  ;  readvexp is the parser for expressions and statements        ;
+  ;  $readvexp is the parser for expressions and statements        ;
   ;  inside "<<" and ">>" within the template file.                ;
   ;                                                                ;
   ;  "/*  ...  */" can be used for comments inside "<<" and ">>".  ;
   (prog (test oldst st iport)
       (setq iport (cdr in))
    loop (setq test (tyi iport))
-   c    (cond ((and (equal test #\*)
-		    st
-		    (equal (car st) #\/))
-	        (do ((ch1 (tyi iport) ch2) (ch2))
-		   ((or (and (equal ch1 #\*) (equal ch2 #\/))
-			(equal ch2 #\NULL))
-		    (setq st (cdr st)))
-		   (setq ch2 (tyi iport)))
-	        (go loop))
+   c    (cond ((readvexp-start-comment-p st test)
+	       (do ((ch1 (tyi iport) ch2)
+		     (ch2 nil (tyi iport)))
+		    ((readvexp-end-comment-p ch1 ch2)
+		     (setq st (cdr st))))
+	       (go loop))
 	      ((member test '(#\space #\tab #\linefeed))
 	       (cond ((null st) (go loop))))
 	      ((and (equal test #\>)
@@ -184,6 +199,7 @@
 	       (go loop)))
 	(setq oldst st)
 	(cond ((null st) (return nil))
-	      ((setq test (let (*prompt-on-read-hang*) (mread iport nil))) (return (third test))))
+	      ((setq test (readvexp-parse st))
+	       (return (third test))))
 	(setq test (tyi iport))
 	(go c)))
