@@ -274,7 +274,7 @@
 				     "template file already open for input"
 				     nil))
 			(t
-			 (pushinstk (cons inf (open inf :direction :input)))))
+			 (pushinstk (mkfilpr inf))))
 		  (rds (cdr *currin*))
 		  (cond ((eq *gentranlang 'ratfor) (procrattem))
 			((eq *gentranlang 'c) (procctem))
