@@ -138,7 +138,7 @@
   ;  procactive reads vaxima expressions and statements inside "<<" and ">>"  ;
   ;  and mevals each.                                                         ;
   (prog (vexp vexptrm c)
-   loop (setq vexp ($readvexp *currin*))
+   loop (setq vexp (readvexp *currin*))
 	(setq vexptrm *vexptrm)
 	(meval vexp)
 	(cond ((member vexptrm '(#\NULL #\>))
@@ -147,8 +147,8 @@
 			     (c)))))
 	(go loop)))
 
-(defun $readvexp (in)
-  ;  $readvexp is the parser for expressions and statements        ;
+(defun readvexp (in)
+  ;  readvexp is the parser for expressions and statements        ;
   ;  inside "<<" and ">>" within the template file.                ;
   ;                                                                ;
   ;  "/*  ...  */" can be used for comments inside "<<" and ">>".  ;

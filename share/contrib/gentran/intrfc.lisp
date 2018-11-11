@@ -395,7 +395,7 @@
 					     (explode lang)))))
 	(while (eval flag)
 	       (progn
-		(setq exp (gentranswitch1 (list ($readvexp (cons nil *currin*))
+		(setq exp (gentranswitch1 (list (readvexp (cons nil *currin*))
 						                   )))
 		(eval (list 'gentran (list 'quote exp) 'nil))))
 	(setq *gentranlang hlang)))
