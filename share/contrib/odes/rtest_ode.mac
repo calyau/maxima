@@ -1,5 +1,8 @@
+kill(all);
+'done$
+
 (load('odes), 'done);
-done$
+'done$
 
 block([eq, sol],
   eq: x^3*'diff(y, x, 3) + x*'diff(y, x) - y = x,
