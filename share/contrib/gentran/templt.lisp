@@ -67,12 +67,12 @@
 	(while (not (eq c '$eof$))
 	       (cond ((eq c '|#|)
 		      (setq c (procratcomm)))
-                     ((eq c '<)
+                     ((eq c #\<)
 		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eq c '<)
+		      (cond ((eq c #\<)
 			     (setq c (procactive)))
 			    (t
-			     (pprin2 '<)
+			     (pprin2 #\<)
 			     (pprin2 c)
 			     (setq c (read-char nil nil '$eof$)))))
 		     (t
@@ -98,12 +98,12 @@
 	(while (not (eq c '$eof$))
 	       (cond ((eq c *slash*)
 		      (setq c (procccomm)))
-                     ((eq c '<)
+                     ((eq c #\<)
 		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eq c '<)
+		      (cond ((eq c #\<)
 			     (setq c (procactive)))
 			    (t
-			     (pprin2 '<)
+			     (pprin2 #\<)
 			     (pprin2 c)
 			     (setq c (read-char nil nil '$eof$)))))
 		     (t
