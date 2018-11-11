@@ -34,12 +34,12 @@
 	       (cond ((eq c *cr*)
 		      (progn (pprin2 *cr*)
 			     (setq c (procfortcomm))))
-                     ((eq c '<)
+                     ((eq c #\<)
 		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eq c '<)
+		      (cond ((eq c #\<)
 			     (setq c (procactive)))
 			    (t
-			     (pprin2 '<)
+			     (pprin2 #\<)
 			     (pprin2 c)
 			     (setq c (read-char nil nil '$eof$)))))
 		     (t
