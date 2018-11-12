@@ -11,6 +11,7 @@ New items in share:
 -------------------
  * Many improvements to the simplex algorithm including the ability to handle
    symbolic inputs
+ * The ode package now has a testbench.
 
 Changes in core:
 ----------------
@@ -28,10 +29,18 @@ Changes in core:
  * Tweaked the memory management for GCL towards big maxima projects by default
  * Compatibility for newer autotools.
  * configure now has an --enable-abcl switch.
+ * Many improvements for gentran, a translator from maxima to efficient
+   c, ratfor or fortran code.
+ * Maxima.bat now autodetects 64-bit Systems and does the necessary 
+   modifications for making lapack work in sbcl it this test is positive.
+
 Changes in share:
 --------------
  *  The the arguments to Krylov matrix are now checked for being of the 
     correct type.
+ *  Added the existing lapack checks to the share testsuite for all lisps
+    except ECL (in ECL a try to use lapack results in an error message)
+	and SBCL (recieves an out-of-memory, depending on the system).
 
 Bug fixes:
 ----------
@@ -41,12 +50,12 @@ Bug fixes:
     -Correct spelling of non-negative in documentation.
     -Document the undocumented optional input <all> to min/maximize_lp.
  * #3463: mention epsilon_lp more explicitly in minimize_lp
-
  
 Unnumbered bugs:
 ----------------
  * ezUnits: microS is microSiemens, not microSievert.
-
+ * radcan(sqrt(-1/(sqrt(-3)+1))*sqrt(2)) runs out-of-memory
+ 
 Additional improvements:
 ------------------------
  * Updated the external utilities for the Windows Installer
