@@ -77,6 +77,7 @@
 ;; Floating-point exception with ECL 16.1.2    
 #+ecl    ((mlist simp) "rtest_dgeqrf" 6)
 #-sbcl    "rtest_dgesv"
+    "rtest_dlsode"
     ((mlist simp) "rtest_fourier_elim" 146 147 148 149)
     ((mlist simp) "rtest_sequence" 55)
     "rtest_cholesky"

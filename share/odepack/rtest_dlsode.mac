@@ -1,0 +1,53 @@
+(load("dlsode"),0);
+0$
+(closeto(value,compare,tol):=
+  block(
+    [abse],
+    abse:abs(value-compare),if(abse<tol) then true else abse),
+    done);
+done$
+y: [1.0, 0.0, 0.0];
+[1.0,0.0,0.0]$
+t: 0.0;
+0.0$
+rtol : 1e-4;
+1.0*10^-4$
+atol: [1e-6, 1e-10, 1e-6];
+[1.0*10^-6,1.0*10^-10,1.0*10^-6]$
+istate: 1;
+1$
+mf: 21;
+21$
+f1: -.04*y1 + 1e4*y2*y3;
+10000.0*y2*y3-0.04*y1$
+f3: 3e7*y2*y2;
+3.0*10^7*y2^2$
+fex: [f1, -f1-f3, f3];
+[10000.0*y2*y3-0.04*y1,-10000.0*y2*y3-3.0*10^7*y2^2+0.04*y1,3.0*10^7*y2^2]$
+t:0.0;
+0.0$
+tout:.4;
+0.4$
+result :[];
+[]$
+(state : dlsode_init(fex, ['t,y1,y2,y3], mf),0);
+0$
+for k : 1 thru 12 do
+  block([],
+    result: dlsode_step(y, t, tout, rtol, atol, istate, state),
+    printf(true, "At t = ~12,4,2e   y = ~{~14,6,2e~}~%", result[1], result[2]),
+    istate : result[3],
+    tout : tout * 10);
+done$
+closeto(result[1],4.0*10^10,1e-10);
+true$
+closeto(result[2][1],-7.170560923964532*10^-8,1e-10);
+true$
+closeto(result[2][2],-2.868223874302304*10^-13,1e-10);
+true$
+closeto(result[2][3],1.000000071705913,1e-10);
+true$
+closeto(result[3],2,1e-10);
+true$
+(kill(closeto),0)$
+0$

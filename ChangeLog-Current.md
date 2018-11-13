@@ -43,6 +43,7 @@ Changes in share:
     except ECL (in ECL a try to use lapack results in an error message)
 	and SBCL (recieves an out-of-memory, depending on the system).
  *  ODEPACK now works in conjunction with ECL, too.
+ *  A primitive testsuite for ODEPACK that tests if it works at all.
 
 Bug fixes:
 ----------
