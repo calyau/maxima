@@ -1,6 +1,7 @@
 Since version 5.10.0 there exists a "ChangeLog-VERSION" file for the
-changes in each Maxima version.
-Look there for changes in recent versions.
+changes in each Maxima version. Additionally in development versions
+of maxima ChangeLog-Current.md collects the list of changes in the
+current version. The changes up to 2005-03-13 were:
 
 2005-03-13 12:00  robert_dodier
 
