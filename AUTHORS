@@ -88,6 +88,7 @@ Ole Rohne
 Thomas A. Russ
 Marek Rychlik
 Gunter Königsmann
+Wolfgang Dautermann
 
 Starting with version 5.9.0, Maxima uses mk::defsystem and (slightly
 modified) run-lisp from the Common Lisp Open Code Collection,
