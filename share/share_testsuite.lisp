@@ -75,9 +75,10 @@
 ;; for ECL.    
 #-(or sbcl ecl)    "rtest_dgeqrf"
 ;; Floating-point exception with ECL 16.1.2    
-#+ecl    ((mlist simp) "rtest_dgeqrf" 6)
+#+ecl    ((mlist simp) "rtest_dgeqrf" 4 7 8 9 10 12)
 #-sbcl    "rtest_dgesv"
-    "rtest_dlsode"
+;; (ARRAY F2CL-LIB:INTEGER4 (*)) is not a valid type specifier with ECL 16.1.2 and earlier
+#-ecl    "rtest_dlsode"
     ((mlist simp) "rtest_fourier_elim" 146 147 148 149)
     ((mlist simp) "rtest_sequence" 55)
     "rtest_cholesky"
