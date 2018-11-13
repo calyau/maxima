@@ -38,6 +38,7 @@ Changes in share:
 --------------
  *  The the arguments to Krylov matrix are now checked for being of the 
     correct type.
+ *  LAPACK now works in conjunction with ECL, too.
  *  Added the existing lapack checks to the share testsuite for all lisps
     except ECL (in ECL a try to use lapack results in an error message)
 	and SBCL (recieves an out-of-memory, depending on the system).
