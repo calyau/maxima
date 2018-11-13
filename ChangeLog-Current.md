@@ -42,6 +42,7 @@ Changes in share:
  *  Added the existing lapack checks to the share testsuite for all lisps
     except ECL (in ECL a try to use lapack results in an error message)
 	and SBCL (recieves an out-of-memory, depending on the system).
+ *  ODEPACK now works in conjunction with ECL, too.
 
 Bug fixes:
 ----------
