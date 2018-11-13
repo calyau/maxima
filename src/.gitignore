@@ -19,3 +19,4 @@ gcl-command.lisp
 /sys-proclaim.lisp
 clisp-command.lisp
 clisp-command2.lisp
+startmaxima_abcl.sh
