@@ -63,3 +63,5 @@ Additional improvements:
    Version 18.10.2
  * Nightly Test: A summary of the share tests
  * Crosscompiling: Add 'maxima_longnames.c' to automake
+ * Documentation Updates
+
