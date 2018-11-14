@@ -6,12 +6,7 @@
 
 set(CMAKE_SYSTEM_NAME Windows)
 
-
 option(BUILD_64BIT "Build a 64 bit installer." NO)
-
-# another option (option() can not be used, it is only boolean...)
-set (WITH_DEFAULT_LISP "clisp" CACHE STRING "Which Lisp should be used by default (clisp/sbcl)?")
-set_property(CACHE WITH_DEFAULT_LISP PROPERTY STRINGS "clisp" "sbcl")
 
 if(BUILD_64BIT)
     set(HOST x86_64-w64-mingw32)
@@ -76,7 +71,17 @@ option(USE_VTK "Use VTK." YES)
 option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 
 
+option(WITH_ABCL "Include ABCL in the installer." NO)
+set(WITH_ABCL_JAR "/opt/abcl-bin-1.5.0/abcl.jar" CACHE FILEPATH "Path to the ABCL installation (abcl.jar).")
 
+# another option (option() can not be used, it is only boolean...)
+if(WITH_ABCL)
+    set (WITH_DEFAULT_LISP "clisp" CACHE STRING "Which Lisp should be used by default (clisp/sbcl/abcl)?")
+    set_property(CACHE WITH_DEFAULT_LISP PROPERTY STRINGS "clisp" "sbcl" "abcl")
+else()
+    set (WITH_DEFAULT_LISP "clisp" CACHE STRING "Which Lisp should be used by default (clisp/sbcl)?")
+    set_property(CACHE WITH_DEFAULT_LISP PROPERTY STRINGS "clisp" "sbcl")
+endif()
 
 # If you want to use a updated version of a program,
 # update the version number and the checksum.
@@ -159,6 +164,9 @@ add_subdirectory("wxmaxima/")
 
 add_subdirectory("vtk/")
 
+if(WITH_ABCL)
+    add_subdirectory("abcl/")
+endif()
 
 set(CLISPROOT "${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp")
 configure_file("${CMAKE_SOURCE_DIR}/wine-clisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-clisp.sh")
@@ -269,3 +277,8 @@ cpack_add_component(Clisp
 cpack_add_component(SBCL
                     DESCRIPTION "The SBCL Lisp compiler.\nRequired."
                     REQUIRED)
+
+if(WITH_ABCL)
+    cpack_add_component(ABCL
+			DESCRIPTION "The ABCL Lisp compiler.\nA Java installation is required.\nOptional.")
+endif()
