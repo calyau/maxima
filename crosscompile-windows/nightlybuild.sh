@@ -33,9 +33,9 @@ buildprocess () {
     echo "$1 build log:"
     if [ "$1" == "win64" ]
     then
-        $CMAKE -DBUILD_CURRENT=YES -DBUILD_64BIT=YES ..
+        $CMAKE -DBUILD_CURRENT=YES -DWITH_ABCL=YES -DWITH_ABCL_JAR=/opt/abcl-bin-1.5.0/abcl.jar -DBUILD_64BIT=YES ..
     else
-        $CMAKE -DBUILD_CURRENT=YES ..
+        $CMAKE -DBUILD_CURRENT=YES -DWITH_ABCL=YES -DWITH_ABCL_JAR=/opt/abcl-bin-1.5.0/abcl.jar ..
     fi
     make
     make package
