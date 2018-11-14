@@ -73,12 +73,19 @@
 ;; On sbcl 1.4.10 we still get out-of-memory errors on many
 ;; computers on loading lapack => commented these tests out
 ;; for ECL.    
-#-(or sbcl ecl)    "rtest_dgeqrf"
-;; Floating-point exception with ECL 16.1.2    
-#+ecl    ((mlist simp) "rtest_dgeqrf" 4 7 8 9 10 12)
-#-sbcl    "rtest_dgesv"
+;;
+;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
+;;  and abcl 1.5.0
+#-(or sbcl ecl gcl abcl)    "rtest_dgeqrf"
+;; Floating-point exception with ECL 16.1.2 in 4 7 8 9 10 12
+;; On another computer that used the same lisp test step 15 resulted in an error-catch
+;; without making further information visible in the log.
+#+ecl    ((mlist simp) "rtest_dgeqrf" 4 7 8 9 10 12 15)
+#-(or sbcl ecl gcl abcl)    "rtest_dgesv"
 ;; (ARRAY F2CL-LIB:INTEGER4 (*)) is not a valid type specifier with ECL 16.1.2 and earlier
-#-ecl    "rtest_dlsode"
+;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
+;;  and abcl 1.5.0
+#-(or ecl gcl abcl gcl)    "rtest_dlsode"
     ((mlist simp) "rtest_fourier_elim" 146 147 148 149)
     ((mlist simp) "rtest_sequence" 55)
     "rtest_cholesky"
