@@ -78,6 +78,7 @@ set(WITH_ABCL_JAR "/opt/abcl-bin-1.5.0/abcl.jar" CACHE FILEPATH "Path to the ABC
 if(WITH_ABCL)
     set (WITH_DEFAULT_LISP "clisp" CACHE STRING "Which Lisp should be used by default (clisp/sbcl/abcl)?")
     set_property(CACHE WITH_DEFAULT_LISP PROPERTY STRINGS "clisp" "sbcl" "abcl")
+    set(ABCL_LICENSE_INFORMATION "<li><a href=\"http://www.abcl.org/\">ABCL Website</a>, <a href=\"https://abcl.org/faq.shtml#license\">ABCL license</a></li>")
 else()
     set (WITH_DEFAULT_LISP "clisp" CACHE STRING "Which Lisp should be used by default (clisp/sbcl)?")
     set_property(CACHE WITH_DEFAULT_LISP PROPERTY STRINGS "clisp" "sbcl")
@@ -216,7 +217,8 @@ install(FILES "${CMAKE_SOURCE_DIR}/lispselector.bat" DESTINATION bin/ COMPONENT 
 install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION wxMaxima/ COMPONENT wxMaxima)
 install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION bin/ COMPONENT Maxima)
 
-install(FILES "licenses.html" DESTINATION share/doc/ COMPONENT Maxima)
+configure_file("${CMAKE_SOURCE_DIR}/licenses.html" "${CMAKE_BINARY_DIR}/licenses.html")
+install(FILES "${CMAKE_BINARY_DIR}/licenses.html" DESTINATION share/doc/ COMPONENT Maxima)
 
 
 set(CPACK_GENERATOR "NSIS;ZIP")
