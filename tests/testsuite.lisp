@@ -47,7 +47,9 @@
         "rtest_allnummod"
         "rtestconjugate"
         ((mlist simp) "rtestsum" 3 4 18 75)
-        "rtest_trig"
+	#-allegro   "rtest_trig"
+;; Tested with acl 10.1
+#+allegro   ((mlist simp) "rtest_trig" 58)
         "rtest_zeta"
         "rtest_diff_invtrig"
         "rtest_scalarp"
@@ -85,7 +87,8 @@
         ((mlist simp) "rtest_power" 19 20 26 58 65)
         "rtestdefstruct"
 #-allegro   "rtest_limit"
-#+allegro   ((mlist simp) "rtest_limit" 184)
+;; Tested with acl 10.1
+#+allegro   ((mlist simp) "rtest_limit" 184 185)
         "rtest_powerseries"
         ((mlist) "rtest_laplace" 29 49 50 51 54 59 60 61 62 78 80)
         "rtest_plotoptions"
