@@ -1083,6 +1083,13 @@ AC_ARG_WITH(default-lisp,
 				AC_MSG_ERROR(ccl64 not enabled)
 			fi
 			;;		
+		abcl)		
+			if test x"${abcl}" = xtrue ; then
+				DEFAULTLISP=abcl
+			else
+				AC_MSG_ERROR(abcl not enabled)
+			fi
+			;;		
 		*) 
 			AC_MSG_ERROR(Unknown argument ${DEFAULTLISP} to --with-default-lisp) 
 			;;
