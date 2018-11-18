@@ -82,12 +82,12 @@ to subsitute their knowledge of defsystem for the following steps.
 
     That should bring up the Maxima input prompt.
 
-(9b) As an alternative to executing maxima right away most Lisps support
+(9b) As an alternative to executing maxima immediately, most Lisps support
     dumping the compiled application as an image that can later be loaded in
     one piece. Often Lisp implementations additionally allow to specify a
     start-up function that runs the application contained in the image on
     loading it. In the case of maxima the start-up function that does this
-    is USER::RUN.
+    is CL-USER::RUN.
 
     There is a function MAXIMA-DUMP in src/maxima-build.lisp to dump an image.
     At present it works for Clisp, SBCL, GCL, CMUCL, Scieneer, Allegro and CCL.
@@ -96,8 +96,7 @@ to subsitute their knowledge of defsystem for the following steps.
     Some Lisp implementations (SBCL, GCL, CMUCL, Scieneer, maybe others)
     terminate after saving the image.
 
-    In order to use this function instead of doing an (cl-user::run) execute
-    the following function:
+    In order to save an image, enter the following at the Lisp input prompt:
 
     (maxima-dump)
 
