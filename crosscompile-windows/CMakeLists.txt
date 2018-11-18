@@ -76,12 +76,14 @@ set(WITH_ABCL_JAR "/opt/abcl-bin-1.5.0/abcl.jar" CACHE FILEPATH "Path to the ABC
 
 # another option (option() can not be used, it is only boolean...)
 if(WITH_ABCL)
-    set (WITH_DEFAULT_LISP "clisp" CACHE STRING "Which Lisp should be used by default (clisp/sbcl/abcl)?")
+    set(WITH_DEFAULT_LISP "clisp" CACHE STRING "Which Lisp should be used by default (clisp/sbcl/abcl)?")
     set_property(CACHE WITH_DEFAULT_LISP PROPERTY STRINGS "clisp" "sbcl" "abcl")
     set(ABCL_LICENSE_INFORMATION "<li><a href=\"http://www.abcl.org/\">ABCL Website</a>, <a href=\"https://abcl.org/faq.shtml#license\">ABCL license</a></li>")
+    set(ABCL_ENABLED 1)
 else()
-    set (WITH_DEFAULT_LISP "clisp" CACHE STRING "Which Lisp should be used by default (clisp/sbcl)?")
+    set(WITH_DEFAULT_LISP "clisp" CACHE STRING "Which Lisp should be used by default (clisp/sbcl)?")
     set_property(CACHE WITH_DEFAULT_LISP PROPERTY STRINGS "clisp" "sbcl")
+    set(ABCL_ENABLED 0)
 endif()
 
 # If you want to use a updated version of a program,
@@ -208,7 +210,8 @@ install(FILES "${CMAKE_BINARY_DIR}/maxima_longnames.exe" DESTINATION bin/ COMPON
 install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/ DESTINATION . COMPONENT Maxima)
 install(FILES "${CMAKE_SOURCE_DIR}/xmaxima.bat" DESTINATION bin/ COMPONENT Maxima)
 install(FILES "${CMAKE_BINARY_DIR}/maxima-prefix/src/maxima/doc/info/maxima.pdf" DESTINATION share/doc/ COMPONENT Maxima)
-install(FILES "${CMAKE_SOURCE_DIR}/lispselector.tcl" DESTINATION bin/ COMPONENT Maxima)
+configure_file("${CMAKE_SOURCE_DIR}/lispselector.tcl" "${CMAKE_BINARY_DIR}/lispselector.tcl")
+install(FILES "${CMAKE_BINARY_DIR}/lispselector.tcl" DESTINATION bin/ COMPONENT Maxima)
 install(FILES "${CMAKE_SOURCE_DIR}/lispselector.bat" DESTINATION bin/ COMPONENT Maxima)
 
 
@@ -282,5 +285,5 @@ cpack_add_component(SBCL
 
 if(WITH_ABCL)
     cpack_add_component(ABCL
-			DESCRIPTION "The ABCL Lisp compiler.\nA Java installation is required.\nOptional.")
+                        DESCRIPTION "The ABCL Lisp compiler.\nA Java installation is required.\nOptional.")
 endif()
