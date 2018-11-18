@@ -70,9 +70,7 @@ option(USE_VTK "Use VTK." YES)
 # sets the installation directory to ${WINDOWS_DRIVELETTER}:\maxima-current
 option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 
-
 option(WITH_ABCL "Include ABCL in the installer." NO)
-set(WITH_ABCL_JAR "/opt/abcl-bin-1.5.0/abcl.jar" CACHE FILEPATH "Path to the ABCL installation (abcl.jar).")
 
 # another option (option() can not be used, it is only boolean...)
 if(WITH_ABCL)
