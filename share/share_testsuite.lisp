@@ -81,8 +81,8 @@
 ;; On a different computer with ECL 16.1.2 test 5 failed, too. No idea why.
 ;; On another computer that used the same ECL version test step 15 resulted in an
 ;; error-catch without making further information visible in the log.
-;; ECL 13.5.1 errored out in 6-12,14+15
-#+ecl    ((mlist simp) "rtest_dgeqrf" 4 5 6 7 8 9 10 11 12 14 15)
+;; ECL 13.5.1 errored out in 6-12,14+15 and sporadically errors out in step 13.
+#+ecl    ((mlist simp) "rtest_dgeqrf" 4 5 6 7 8 9 10 11 12 13 14 15)
 #-(or sbcl ecl gcl abcl)    "rtest_dgesv"
 ;; (ARRAY F2CL-LIB:INTEGER4 (*)) is not a valid type specifier with ECL 16.1.2 and earlier
 ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
