@@ -72,7 +72,10 @@
 	;; i64.
 	;; Unfortunately many gcl versions have the same version number so we cannot
 	;; test for the buggy version in order to get full support for the lts version.
-	#-(or gcl allegro)   "rtest_gamma"	
+	;;
+	;; On ECL 15.3.7 (but not on ECL versions from 2014 or 2016) rtest_gamma
+	;; most of the times crashes on ia32 and sometimes crashes on x64.
+	#-(or gcl allegro ecl)   "rtest_gamma"	
 	#+gcl   ((mlist simp) "rtest_gamma" 307)
 	#+allegro   ((mlist simp) "rtest_gamma" 48 198 663 745)
         "rtest_expintegral"
