@@ -1,5 +1,3 @@
-# Gnuplot (already a binary package just extract it...)
-
 set(ABCL_VERSION 1.5.0)
 set(ABCL_MD5   "7c221baabe2dc763fe8ee584e5c6a256")
 set(ABCL_URL   "https://abcl.org/releases/${ABCL_VERSION}/abcl-bin-${ABCL_VERSION}.tar.gz")
