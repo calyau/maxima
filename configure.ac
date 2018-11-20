@@ -1333,6 +1333,15 @@ if test x"${ecl}" = xtrue ; then
 	fi
 fi
 
+if test x"${abcl}" = xtrue ; then
+	if test x"$srcdir" = x"." ; then
+		echo "Compiling maxima using \"${ABCL_NAME}\""
+	else
+		echo "ABCL enabled. Executable name: \"${ABCL_NAME}\""
+		AC_MSG_ERROR(For ABCL out-of-tree builds aren't supported. See src/maxima.system for details.)
+	fi
+fi
+
 echo "default lisp: $DEFAULTLISP"
 echo "wish executable name: \"${WISH}\""
 
