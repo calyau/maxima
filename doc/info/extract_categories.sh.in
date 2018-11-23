@@ -22,7 +22,7 @@ for f in *.texi; do
   if [ $f = "maxima.texi" ]
     then echo SKIP OVER $f
     else
-      sed 's/^@deffn  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: \1}\
+      @SED@ 's/^@deffn  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: \1}\
 &/; s/^@defvr  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: \1}\
 &/; s/^@node  *\([^,]*\).*/@anchor{Item: \1}\
 &/' "$f" > tmp.texi
@@ -32,15 +32,15 @@ done
 
 cat *.texi\
   | awk '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/)'\
-  | sed 's/\$/---endofline---/'\
-  | sed -f "$d/extract_categories1.sed" \
+  | @SED@ 's/\$/---endofline---/'\
+  | @SED@ -f "$d/extract_categories1.sed" \
   | awk -F'$' -f "$d/extract_categories1.awk" \
-  | sed 's/---endofline---/$/'\
+  | @SED@ 's/---endofline---/$/'\
   > tmp-make-categories.py
 
 ${PYTHONBIN:-python} tmp-make-categories.py
 
-sed 's/^@bye//' $TARGET_TEXI > tmp-target.texi
+@SED@ 's/^@bye//' $TARGET_TEXI > tmp-target.texi
 echo '@node Documentation Categories' >> tmp-target.texi
 echo '@chapter Documentation Categories' >> tmp-target.texi
 for f in Category-*.texi; do echo '@include' $f; done >> tmp-target.texi
@@ -62,7 +62,7 @@ do
     grep -q '<a href=".*">Category: .*</a>' $f
     if [ $? = 0 ]; then
         echo FIX UP CATEGORY BOXES IN $f
-        sed 's/^&middot;$//; s/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' $f > tmp.html
+        @SED@ 's/^&middot;$//; s/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' $f > tmp.html
         mv tmp.html $f
     fi
 done
@@ -72,7 +72,7 @@ do
     grep -q '<a href=".*">Category: .*</a>' $f
     if [ $? = 0 ]; then
         echo FIX UP CATEGORY HREFS IN $f
-        sed 's/<a href="\(.*\)">Category: \(.*\)<\/a>/<a href="\1">\2<\/a>/' $f > tmp.html
+        @SED@ 's/<a href="\(.*\)">Category: \(.*\)<\/a>/<a href="\1">\2<\/a>/' $f > tmp.html
         mv tmp.html $f
     fi
 done
@@ -82,7 +82,7 @@ do
     grep -q '<a href=".*">Item: .*</a>' $f
     if [ $? = 0 ]; then
         echo FIX UP ITEM HREFS IN $f
-        sed 's/<a href="\(.*\)">Item: \(.*\)<\/a>/<a href="\1">\2<\/a>/' $f > tmp.html
+        @SED@ 's/<a href="\(.*\)">Item: \(.*\)<\/a>/<a href="\1">\2<\/a>/' $f > tmp.html
         mv tmp.html $f
     fi
 done
