@@ -63,7 +63,7 @@ Additional improvements:
 ------------------------
  * Updated the external utilities for the Windows Installer
  * The wxMaxima version the Windows Installer comes with now is 
-   Version 18.10.2
+   Version 18.11.0
  * Nightly Test: A summary of the share tests
  * Crosscompiling: Add 'maxima_longnames.c' to automake
  * Documentation Updates
