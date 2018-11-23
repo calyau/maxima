@@ -1229,6 +1229,7 @@ AC_PATH_PROG([CAT],[cat])
 AC_PROG_SED
 AC_PROG_AWK
 AM_PATH_PYTHON
+AC_SUBST(SED)
 
 # Configure these files and make them executable
 AC_CONFIG_FILES([maxima-local], chmod +x maxima-local)

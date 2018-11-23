@@ -16,10 +16,10 @@ install-data-local: $(INSTALL_CHM)
 uninstall-local: $(UNINSTALL_CHM)
 
 maxima-index.lisp: maxima.info ../build_index.pl
-	perl ../build_index.pl maxima.info ':crlf' > maxima-index.lisp
+	/usr/bin/env perl ../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
 maxima.html: maxima.texi $(maxima_TEXINFOS)
-	perl ../texi2html -split_chapter --lang=$(lang) --output=. --css-include=../manual.css --init-file texi2html.init maxima.texi 
+	/usr/bin/env perl ../texi2html -split_chapter --lang=$(lang) --output=. --css-include=../manual.css --init-file texi2html.init maxima.texi 
 
 maxima.pdf: maxima_pdf.texi maxima.texi $(maxima_TEXINFOS)
 	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf maxima_pdf.texi
@@ -27,7 +27,7 @@ maxima.pdf: maxima_pdf.texi maxima.texi $(maxima_TEXINFOS)
 	maxima_pdf.toc maxima_pdf.fn maxima_pdf.aux maxima_pdf.log maxima_pdf.vrs
 
 contents.hhc: maxima.html
-	perl ../create_index
+	/usr/bin/env perl ../create_index
 
 include $(top_srcdir)/common.mk
 

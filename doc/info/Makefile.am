@@ -526,7 +526,7 @@ maxima.info : maxima.texi $(maxima_TEXINFOS)
 html: maxima.html contents.hhc
 
 maxima-index.lisp: build_index.pl maxima.info
-	perl $^ ':crlf' > $@
+	/usr/bin/env perl $^ ':crlf' > $@
 
 DOLLAR_SIGN = $$
 
@@ -543,7 +543,7 @@ maxima.pdf: maxima_pdf.texi $(maxima_TEXINFOS) $(pdffigures)
 	maxima.toc maxima.fn maxima.aux maxima.log
 
 contents.hhc index.hhk: maxima.html
-	perl $(srcdir)/create_index
+	/usr/bin/env perl $(srcdir)/create_index
 
 # Squash error on exit from hhc
 maxima.chm: maxima.hhp contents.hhc index.hhk

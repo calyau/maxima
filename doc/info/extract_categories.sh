@@ -49,9 +49,9 @@ mv tmp-target.texi $TARGET_TEXI
 
 # Show these two commands because this is where many warnings come from.
 set -x
-perl "$d/texi2html" --lang=en --output=maxima_singlepage.html \
+/usr/bin/env perl "$d/texi2html" --lang=en --output=maxima_singlepage.html \
  --css-include="$d/manual.css" --init-file "$d/texi2html.init" $TARGET_TEXI
-perl "$d/texi2html" -split_chapter --lang=en --output=. \
+/usr/bin/env perl "$d/texi2html" -split_chapter --lang=en --output=. \
  --css-include="$d/manual.css" --init-file "$d/texi2html.init" $TARGET_TEXI
 set +x
 

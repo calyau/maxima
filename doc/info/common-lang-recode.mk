@@ -26,7 +26,7 @@ fhtmlcharset = iso-8859-1
 thtmlcharset = utf-8
 
 maxima-index.lisp: $(top_srcdir)/doc/info/build_index.pl maxima.info
-	perl $^ ':utf8' > $@
+	/usr/bin/env perl $^ ':utf8' > $@
 
 include $(top_srcdir)/common.mk
 
@@ -49,7 +49,7 @@ maxima.info: $(LANGSRCDIR)/maxima.texi
 	done
 
 contents.hhc: maxima.html
-	perl $(top_srcdir)/doc/info/create_index
+	/usr/bin/env perl $(top_srcdir)/doc/info/create_index
 
 infoname = maxima
 include $(top_srcdir)/common-info.mk
@@ -62,7 +62,7 @@ maxima.html: $(LANGSRCDIR)/maxima.texi
 	@: $(MAKEINFOHTML) $(AM_MAKEINFOHTMLFLAGS) $(MAKEINFOHTMLFLAGS) \
 	  -I $(LANGSRCDIR) -I $(LANGBUILDDIR) --init-file=$(srcdir)/../texi2html.init \
 	   --split=chapter --output=. --css-include=../manual.css $<
-	perl $(srcdir)/../texi2html --split_chapter --lang=$(INFOLANGOPT) --output=. \
+	/usr/bin/env perl $(srcdir)/../texi2html --split_chapter --lang=$(INFOLANGOPT) --output=. \
 	  --css-include=$(srcdir)/../manual.css \
 	  -I $(LANGSRCDIR) -I $(LANGBUILDDIR) \
 	  --init-file $(srcdir)/../texi2html.init \

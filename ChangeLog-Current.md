@@ -33,6 +33,7 @@ Changes in core:
    c, ratfor or fortran code.
  * Maxima.bat now autodetects 64-bit Systems and does the necessary 
    modifications for making lapack work in sbcl it this test is positive.
+ * perl is now uniformly called as /usr/bin/env perl
 
 Changes in share:
 --------------

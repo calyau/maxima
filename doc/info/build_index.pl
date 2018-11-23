@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # -----------------------------
 #  Perl 5.8 or later required
 # -----------------------------
