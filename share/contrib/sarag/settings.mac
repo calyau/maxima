@@ -84,5 +84,8 @@ DEFAULT_RIGHT_END : 1;
 
 /* compression of the certificate */
 COMPRESS_CERTIFICATE : true;
- 
+
+/* square free algorithm */ 
+SQUARE_FREE_ALGORITHM : squareFree;
+
 
