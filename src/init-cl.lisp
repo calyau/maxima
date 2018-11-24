@@ -126,6 +126,7 @@ When one changes, the other does too."
 		 (apply #'combine-path (rest (pathname-directory str))))))
 
 (defun set-pathnames-with-autoconf (maxima-prefix-env maxima-docprefix-env)
+  (declare (ignore maxima-docprefix-env))
   (let (libdir libexecdir datadir infodir
 	(package-version (combine-path *autoconf-package* *autoconf-version*))
 	(binary-subdirectory (concatenate 'string "binary-" *maxima-lispname*)))
