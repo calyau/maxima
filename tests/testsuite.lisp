@@ -26,7 +26,7 @@
 #-allegro   "rtest9a"
 #+allegro   ((mlist simp) "rtest9a" 24 27 30 31 35 36 47 48 51 52 55 56 59 60 63 64 67 68 71 72)
         ((mlist simp) "rtest10" 24 25)
-        ((mlist) "rtest11" #+allegro 136 #+allegro 137 #+(or gcl cmucl ccl64 allegro) 158 #+(or gcl cmucl ccl64 allegro) 174 #+gcl 175)
+        ((mlist) "rtest11" #+allegro 136 #+allegro 137 #+(or gcl ccl64 allegro) 158 #+(or gcl ccl64 allegro) 174 #+gcl 175)
         "rtest13" "rtest13s"
 #-ecl   "rtest14"
 #+ecl   ((mlist simp) "rtest14" 201 233 234 249 250 251 252 267 297 298 307 310 312 315 319)
