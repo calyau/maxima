@@ -271,7 +271,7 @@ cpack_add_component(Gnuplot
                     DESCRIPTION "Gnuplot is the main graphic toolkit.\nInstallation is strongly recommended.")
 
 cpack_add_component(wxMaxima
-                    DESCRIPTION "wxMaxima is an advanced GUI for Maxima.\nInstallation is strongly recommended.")
+                    DESCRIPTION "wxMaxima is an advanced GUI for Maxima based on wxWidgets.\nInstallation is strongly recommended.")
 
 cpack_add_component(Clisp
                     DESCRIPTION "The CLISP Lisp compiler.\nRequired."
@@ -281,6 +281,10 @@ cpack_add_component(SBCL
                     DESCRIPTION "The SBCL Lisp compiler.\nRequired."
                     REQUIRED)
 
+cpack_add_component(TclTk
+                    DISPLAY_NAME "Tcl/Tk"
+                    DESCRIPTION "The TCL/TK scripting language.\nRequired."
+                    REQUIRED)
 if(WITH_ABCL)
     cpack_add_component(ABCL
                         DESCRIPTION "The ABCL Lisp compiler.\nA Java installation is required.\nOptional.")
