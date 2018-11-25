@@ -84,10 +84,9 @@
 ;; ECL 13.5.1 errored out in 6-12,14+15 and sporadically errors out in step 13.
 #+ecl    ((mlist simp) "rtest_dgeqrf" 4 5 6 7 8 9 10 11 12 13 14 15)
 #-(or sbcl ecl gcl abcl)    "rtest_dgesv"
-;; (ARRAY F2CL-LIB:INTEGER4 (*)) is not a valid type specifier with ECL 16.1.2 and earlier
 ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
 ;;  and abcl 1.5.0
-#-(or ecl gcl abcl gcl)    "rtest_dlsode"
+#-(or gcl abcl gcl)    "rtest_dlsode"
     ((mlist simp) "rtest_fourier_elim" 146 147 148 149)
     ((mlist simp) "rtest_sequence" 55)
     "rtest_cholesky"
