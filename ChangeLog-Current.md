@@ -34,12 +34,18 @@ Changes in core:
  * Maxima.bat now autodetects 64-bit Systems and does the necessary 
    modifications for making lapack work in sbcl it this test is positive.
  * perl is now uniformly called as /usr/bin/env perl
+ * The Windows installer can now include ABCL
 
 Changes in share:
 --------------
  *  The the arguments to Krylov matrix are now checked for being of the 
     correct type.
+ *  ODEPAK now works in conjunction with ECL.
  *  LAPACK now works in conjunction with ECL, too.
+ *  Sarag: Fix the missing definition of SQUARE_FREE_ALGORITHM used in the 
+    certificate code.. It adds explicit details while proving the sign of 
+	a polynomial in a given interval
+ *  Sarag: Make ceritifcate proof more explicit (verify certificate)
  *  Added the existing lapack checks to the share testsuite for all lisps
     except ECL (in ECL a try to use lapack results in an error message)
 	and SBCL (recieves an out-of-memory, depending on the system).
