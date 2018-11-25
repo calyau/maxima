@@ -8,6 +8,6 @@ python make-categories.py
 ( for f in Category-*.texi; do echo '@include' $f; done ; echo @bye ) >> maxima.texi 
 /usr/bin/env perl @abs_srcdir@/texi2html --split chapter --lang=en --output="@abs_builddir@/tmp_html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
 /usr/bin/env perl @abs_srcdir@/texi2html --split none --lang=en --output="@abs_builddir@/maxima_singlepage.html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
-for f in *.html; do @SED@ -e 's/^&middot;$//' -e 's/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' -e 's/<a href="\(.*\)">Category: \(.*\)<\/a>/<a href="\1">\2<\/a>/' -e 's/<a href="\(.*\)">Item: \(.*\)<\/a>/<a href="\1">\2<\/a>/' $f >tmpfile && mv tmpfile $f && install -c $f "@abs_builddir@" ; done 
+for f in *.html; do cat $f | @SED@ -e 's/^&middot;$//' -e 's/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' -e 's/<a href="\(.*\)">Category: \(.*\)<\/a>/<a href="\1">\2<\/a>/' -e 's/<a href="\(.*\)">Item: \(.*\)<\/a>/<a href="\1">\2<\/a>/' >tmpfile && mv tmpfile $f && install -c $f "@abs_builddir@" ; done 
 cd ..
 rm -r -f tmp_html
