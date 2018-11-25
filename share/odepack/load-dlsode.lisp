@@ -9,12 +9,16 @@
 
 #+(or ecl abcl) ($load "lisp-utils/defsystem.lisp")
 
-(let ((path (merge-pathnames (make-pathname :name "odepack" :type
-					    "system")
-			     #-gcl *load-pathname*
-			     #+gcl sys:*load-pathname*)))
+(let ((path (merge-pathnames (make-pathname :name "odepack" :type "system")
+			     (maxima-load-pathname-directory))))
   #+(or)
   (format t "loading = ~S~%" path)
   (load path))
+
+;; Fix for ecl thinking that ARRAY in declarations is not from the CL
+;; package.  This seems like a bug in ecl, and this works around it.
+;; Same fix as used for lapack.
+#+ecl
+(in-package #:common-lisp)
 
 (mk:oos "maxima-dlsode" :compile)
