@@ -33,3 +33,7 @@ tags
 TAGS
 
 parts
+build
+abcl.jar
+\#*
+.\#*

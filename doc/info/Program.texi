@@ -10,7 +10,8 @@
 @section Lisp and Maxima
 @c -----------------------------------------------------------------------------
 
-Maxima is written in Lisp, and it is easy to access Lisp functions and variables
+Maxima is a fairly complete programming language. But since it is written in
+Lisp, it additionally can provide easy access to Lisp functions and variables
 from Maxima and vice versa.  Lisp and Maxima symbols are distinguished by a
 naming convention.  A Lisp symbol which begins with a dollar sign @code{$}
 corresponds to a Maxima symbol without the dollar sign.

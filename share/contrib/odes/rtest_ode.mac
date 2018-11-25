@@ -1,0 +1,12 @@
+kill(all);
+'done$
+
+(load('odes), 'done);
+'done$
+
+block([eq, sol],
+  eq: x^3*'diff(y, x, 3) + x*'diff(y, x) - y = x,
+  odecv(x = exp(t), eq, y, x),
+  odeL(%%, y, t),
+  sol: subst(t = log(x), %%));
+y = (x*log(x)^3)/6+C3*x*log(x)^2+C2*x*log(x)+C1*x$

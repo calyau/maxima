@@ -13,7 +13,7 @@ maximize_lp(x+y, [y<=-x/2+3, y<=-x+4], [x, y]);
 maximize_lp(x+y, [y<=-x/2+3, y<=-x+4], all);
 [4, [x = 2, y = 2]];
 
-maximize_lp(x+y, [y<=-x/2+3, y<=-x+4]), nonegative_lp=true;
+maximize_lp(x+y, [y<=-x/2+3, y<=-x+4]), nonnegative_lp=true;
 [4, [x = 2, y = 2]];
 
 maximize_lp(10*x1 - 57*x2 - 9*x3 - 24*x4,
@@ -32,7 +32,7 @@ minimize_lp(x, [x<1, y>0], all);
 minimize_lp(x, [x<1, y<-1], all);
 "Problem not feasible!";
 
-(
+block([A,b,c],
   A : read_matrix(file_search("Tests/afiro_A.csv"), 'csv),
   b : read_list(file_search("Tests/afiro_b.csv"), 'csv),
   c : read_list(file_search("Tests/afiro_c.csv"), 'csv),
@@ -40,10 +40,60 @@ minimize_lp(x, [x<1, y<-1], all);
 );
 true;
 
-(
+block([A,b,c],
   A : read_matrix(file_search("Tests/sc50a_A.csv"), 'csv),
   b : read_list(file_search("Tests/sc50a_b.csv"), 'csv),
   c : read_list(file_search("Tests/sc50a_c.csv"), 'csv),
   is (abs(second(linear_program(A, b, c) + 64.5750770585645))<10^-4)
 );
 true;
+
+minimize_lp(-x, [1e-9*x + y <= 1], [x,y])$
+"Problem not bounded!"$
+
+is(abs(first(minimize_lp(-x, [1e-9*x + y <= 1], [x,y])) + 1e9) < 1e-5), epsilon_lp=0 $
+true;
+
+minimize_lp(-x, [10^-9*x + y <= 1], [x,y])$
+[- 1000000000, [y = 0, x = 1000000000]]$
+
+/* Thanks to Michael Soegtrop
+* https://sourceforge.net/p/maxima/mailman/message/36414030/
+*
+* Do max-norm interpolation of a polynomial (x^3) on an interval
+* ([3/4,1]) with a quintic and sextic at 10 points. Using rational
+* arithmetic, we should get x^3; using floating point arithmetic and the
+* default value of epsilon_lp, we do for the quintic (1.0*x^3) but not
+* the sextic.
+*
+*/
+
+block([solutionpoly_lmad,f,sol5,sol6,sol5f,sol6f,checkerr],
+  local(solutionpoly_lmad,f,checkerr),
+  solutionpoly_lmad(f,degree,npoints,xmin,xmax,float_coerce):=block([xp,gep,gem,ineq,sol,yp,ydiff],
+    xp:float_coerce(makelist(xmin+(xmax-xmin)*(i-1)/(npoints-1),i,1,npoints)),
+    yp:makelist(apply(f,[xp[i]]),i,1,npoints),
+    ydiff:makelist(yp[i]-sum(a[k]*xp[i]^k,k,0,degree),i,1,npoints),
+    gep:makelist(umax>=ydiff[i],i,1,npoints),
+    gem:makelist(umax>=-ydiff[i],i,1,npoints),
+    ineq:append(gep,gem),
+    sol:second(minimize_lp(umax,ineq)),
+    /*[at(sum(a[i]*'x^i,i,0,degree),sol),at(umax,sol),sol]*/
+    at(umax,sol)
+    ),
+  f(x):=x^3,
+  sol5:solutionpoly_lmad(f,5,10,3/4,1,identity),
+  sol6:solutionpoly_lmad(f,6,10,3/4,1,identity),
+  sol5f:solutionpoly_lmad(f,5,10,3/4,1,'float),
+  sol6f:solutionpoly_lmad(f,6,10,3/4,1,'float),
+  checkerr(u,v) := is(abs(u)<=v),
+  map(checkerr, [sol5,sol6,sol5f,sol6f,sol6f,sol6f],[0,0,1e-16,1e-7,1e-10,sol5f])
+  );
+[true,true,true,true,false,false] $
+
+(assume(c>4/3), declare(c,constant),
+  ratsimp(maximize_lp(x+y, [y<=-x/c+3, y<=-x+4], [x, y]) - [4,[x = c/(c-1),y = (3*c-4)/(c-1)]])), epsilon_lp=0 $
+[0,[0 = 0,0 = 0]] $
+
+(forget(c>4/3), remove(c,constant), kill(nonnegative_lp,return_input_lp), 0)$
+0 $

@@ -34,7 +34,7 @@
 (defun $matrixexp (mat &optional (x 1))
   (let ((sp) (d) (p) (id) (n ($length ($args mat))) (f))
     ($ratvars)
-    ($require_square_matrix mat "$first" "$matrixexp")
+    ($require_square_matrix mat '$first '$matrixexp)
     (setq mat ($spectral_rep mat))
     (setq sp ($first mat))
     (setq p ($second mat))
@@ -63,8 +63,8 @@
   (let ((z (gensym)) (expr) (var) (sp) (d) (p) (di) 
 	(n ($length ($args mat))) (f 0))
 
-    ($require_square_matrix mat "$second" "$matrixexp")
-    (setq expr (require-lambda lamexpr 1 "$first" "$matrixfun"))
+    ($require_square_matrix mat '$second '$matrixexp)
+    (setq expr (require-lambda lamexpr 1 '$first '$matrixfun))
     (setq var (nth 0 (nth 0 expr)))
     (setq expr (nth 1 expr))
     ($ratvars)
@@ -108,7 +108,7 @@
 
 
 (defun $spectral_rep (mat)
-  ($require_square_matrix mat "$first" "$spectral_rep")
+  ($require_square_matrix mat '$first '$spectral_rep)
   (let (($gcd '$spmod) ($algebraic t) ($resultant '$subres) (ord) (zi)
 	($ratfac nil) (z (gensym)) (res) (m) (n ($length ($args mat))) 
 	(p) (p1) (p2) (sp) (proj))

@@ -127,13 +127,23 @@
 				     (:file "command-line")
 				     (:file "nregex")
 				     #+gcl-working-proclaims
-				     (:file "sys-proclaim")))
+				     (:private-file "sys-proclaim")))
 	       (:module package :source-pathname ""
+			;; On ECL all runtime alterations to the system (i.e from repl)
+			;; at runtime are not part of the final executable if they aren't.
+			;; compiled.
 			#-ecl :load-only #-ecl t
 			:components (#-gcl
 				     (:file "maxima-package")
 				     #+ecl (:file "ecl-port")
-				     (:file "autoconf-variables")))
+				     ;; If a file is declared as private-file it is loaded
+				     ;; from the build tree (which makes an out-of-tree
+				     ;; build possible), but not compiled (which means
+				     ;; with ECL or ABCL it won't end up in the final image)
+				     ;; => no out-of-tree build for ECL.
+				     #-(or ecl abcl) (:private-file "autoconf-variables")
+				     #+(or ecl abcl) (:file "autoconf-variables")
+				     ))
 	       (:module intl :source-pathname ""
 			:components (
 				     ;; Some versions of CMUCL already
@@ -659,9 +669,18 @@
 			:components ((:file "gnuplot_def")
 				     (:file "xmaxima_def")))
 	       (:module final :source-pathname ""
-			;; These are not compiled, for whatever reason
+			;; These are not compiled, for whatever reason, except on ecl:
+			;; On ECL all runtime alterations to the system (i.e from repl)
+			;; at runtime are not part of the final executable if they aren't.
+			;; compiled.
 			#-ecl :load-only #-ecl t
 			:components ((:file "autol")
 				     (:file "max_ext")
-				     (:file "share-subdirs")
+				     ;; If a file is declared as private-file it is loaded
+				     ;; from the build tree (which makes an out-of-tree
+				     ;; build possible), but not compiled (which means
+				     ;; that with ECL or ABCL it won't end up in the final image)
+				     ;; => no out-of-tree build for ECL.
+				     #-(or ecl abcl) (:private-file "share-subdirs")
+				     #+(or ecl abcl) (:file "share-subdirs")
 				     (:file "init-cl")))))

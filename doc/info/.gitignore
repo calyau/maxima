@@ -24,3 +24,7 @@ maxima.vr
 *chm
 bin
 texi2html.init
+build_html.sh
+tmp_html
+extract_categories.sh
+tmpfile

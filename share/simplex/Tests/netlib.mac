@@ -1,0 +1,51 @@
+/* -*- Mode: maxima; Package: MAXIMA -*- */
+/*
+ * $Id:$
+ *
+ * Author: Leo Butler (l_butler@users.sourceforge.net)
+ *
+ * This file is Maxima code (http://maxima.sourceforge.net/)
+ * 
+ * It is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or (at your
+ * option) any later version.
+ * 
+ * This software is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this file. If not, see http://www.gnu.org/licenses/. 
+ */
+
+%simplex_netlib_case(opts) := block([A,b,c,csv_file,root,scale_sx],
+  [root,scale_sx] : opts,
+  csv_file : lambda([x],printf(false,"Tests/~a_~a.csv",root,x)),
+  A : read_matrix(csv_file('A),'csv),
+  b : read_list(csv_file('b),'csv),
+  c : read_list(csv_file('c),'csv),
+  cons(root,cons(scale_sx,linear_program(A,b,c))))$
+simplex_netlib() := block([cases : [[adlittle,false], [afiro,false], [kb2,true], [sc50a,false], [share2b,false]]],
+  map(%simplex_netlib_case,cases))$
+/* print table simpex.texi */
+print_simplex_netlib() := block([results : simplex_netlib(), printer],
+  /* BUG in the ~< directive makes us print both the case and min-value as strings before justification */
+  printer : lambda([x], printf(false,"~2,15,,' <~a~;~a~>        ~a~%",
+      printf(false,"~a",part(x,1)),printf(false,"~16,10,2,1,,,'E@E",part(x,4)),printf(false,"~a",part(x,2)))),
+  printf(true,"~%PROBLEM         MINIMUM                 SCALING~%~{~a~}",map(printer,results)))$
+print_simplex_netlib();
+
+/* from http://www.netlib.org/lp/data/readme */
+netlib_results : [
+[adlittle,2.2549496316E+05],
+[afiro,- 4.6475314286E+02],
+[kb2,- 1.7499001299E+03],
+[sc50a,- 6.4575077059E+01],
+[share2b,- 4.1573224074E+02]
+];
+simplex_results : map(lambda([x],[first(x),last(x)]),simplex_netlib());
+(simplex_results - netlib_results)/netlib_results;
+
+/* end of netlib.mac */

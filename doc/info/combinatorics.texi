@@ -392,7 +392,7 @@ Example:
 
 Finds the position of permutation @var{p}, an integer from 1 to the
 degree @var{n} of the permutation, in the sequence of permutations in
-lexicographic order.
+Trotter-Johnson order.
 
 See also @mref{perm_unrank} and @mrefdot{perms}
 
@@ -515,10 +515,10 @@ Examples:
 
 @code{perms(@var{n}, @var{i})} returns the @emph{n}-degree
 permutation which is at the @emph{i}th position (from 1 to @emph{n}!) in
-the lexicographic ordering of the permutations.
+the Trotter-Johnson ordering of the permutations.
 
 @code{perms(@var{n}, @var{i}, @var{j})} returns a list of the @emph{n}-degree
-permutations between positions @var{i} and @var{j} in the lexicographic
+permutations between positions @var{i} and @var{j} in the Trotter-Johnson
 ordering of the permutations.
 
 The sequence of permutations in Trotter-Johnson order starts with the

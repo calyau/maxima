@@ -1,0 +1,3 @@
+load("gentran")$
+gentranlang(fortran)$
+gentranin("det.tem", ["det.f"])$

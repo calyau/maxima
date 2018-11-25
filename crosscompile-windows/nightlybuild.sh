@@ -33,9 +33,9 @@ buildprocess () {
     echo "$1 build log:"
     if [ "$1" == "win64" ]
     then
-        $CMAKE -DBUILD_CURRENT=YES -DBUILD_64BIT=YES ..
+        $CMAKE -DBUILD_CURRENT=YES -DWITH_ABCL=YES -DBUILD_64BIT=YES ..
     else
-        $CMAKE -DBUILD_CURRENT=YES ..
+        $CMAKE -DBUILD_CURRENT=YES -DWITH_ABCL=YES ..
     fi
     make
     make package

@@ -17,12 +17,12 @@ FUNCTIONS
     m. The return value is [x, val] where x is the minimizing vector and
     val=c'.x. This function is defined in the file simplex.lisp.
 
-- minimize_sx(ex, const, pos): minimizes expression ex subject to
+- minimize_lp(ex, const, pos): minimizes expression ex subject to
     constraints in the list const. pos is an optional arguments which lists
     non-negative variables. This function is defined in the file
     minimize_sx.
 
-- maximize_sx(ex, const, pos): maximizes expression ex subject to
+- maximize_lp(ex, const, pos): maximizes expression ex subject to
     constraints in the list const. pos is an optional arguments which lists
     non-negative variables. This function is defined in the file
     minimize_sx.
@@ -31,12 +31,12 @@ FUNCTIONS
 VARIABLES
 ==========
 
-- epsilon_sx:     epsilon for numerical computation (float)
-- scale_sx:       scale input (boolean)
+- epsilon_lp:     epsilon for numerical computation (float)
+- scale_lp:       scale input (boolean)
 - pivot_count_sx: the number of pivots in last computation (fixnum)
 - pivot_max_sx:   maximum number of pivots allowed (fixnum)
-- nonegative_sx:  assume all variables to minimize_sx/maximize_sx are
-                  nonegative (boolean)
+- nonnegative_lp: assume all variables to minimize_lp/maximize_lp are
+                  non-negative (boolean)
 
 DEMO
 =====
@@ -47,7 +47,7 @@ DEMO
 (%i4) linear_program(A, b, c);
 (%o4) [[13/2, 4, 19/2, 0], -3/2]
 
-(%i1) minimize_sx(x+y, [3*x+y>4, x+4*y>4]), nonegative_sx=true;
+(%i1) minimize_lp(x+y, [3*x+y>4, x+4*y>4]), nonnegative_lp=true;
 (%o1) [20/11, [x = 12/11, y = 8/11]]
 
 

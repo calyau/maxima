@@ -282,60 +282,77 @@ deCasteljauCertificateBetween(pol,var,search_interval) :=
            deCasteljauNoCheckCertificateBetween(exPol,var,
            search_interval)
            )
-
  );
 
 
 
 
-localBernsteinProof(poly,local_cert,printFlag):=
-  block([cert_sgn,sgnCh],
- sgnCh:signChanges(local_cert[3]),
- if sgnCh=0 then
+localBernsteinProof(poly,var,local_cert,printFlag):=
+  block([cert_sgn,sgnCh,bernCoeffList,i, verifySum],
+  
+  sgnCh:signChanges(local_cert[3]),
+  bernCoeffList: (1/local_cert[2])*(local_cert[3]),
+  
+  if sgnCh=0 then
    cert_sgn:sgn(local_cert[3][1])
- else
-   cert_sgn:0,
+  else
+    cert_sgn:0,
   if cert_sgn=0 then
     (
     if printFlag then
       (
-      sprint("It has a zero in ",local_cert[1]),
-      print("because in this interval it has ")
-      )
-    else
-      print("since in this interval it has "),
+      sprint("It has a zero in ",local_cert[1])
+      ),
+    print("because in this interval it has "),
     print("the following Bernstein coefficients ", 
-            (1/local_cert[2])*local_cert[3])
+            bernCoeffList)
     )
   else
+    (
     if cert_sgn= 1 then
       (
       if printFlag then
         (
-        sprint("It is positive in ",local_cert[1]),
-        print("because in this interval it has ")
-        )
-      else
-        print("because in this interval it has "),
+        sprint("It is positive in ",local_cert[1])
+        ),
+      print("because in this interval it has "),
+	  
       print("the following Bernstein coefficients ", 
-            (1/local_cert[2])*local_cert[3])
+            bernCoeffList)
       )
     else
+	  (
       if cert_sgn=-1 then
         (
         if printFlag then
           (
-          sprint("It is negative in ",local_cert[1]),
-          print("because in this interval it has ")
-          )
-        else
-          print("because in this interval it has "),
+          sprint("It is negative in ",local_cert[1])
+          ),
+        print("because in this interval it has "),
         print("the following Bernstein coefficients ",
-              (1/local_cert[2])*local_cert[3])
-        ),
+              bernCoeffList)
+        )
+	  ),
+	  print("as we see below: "),
+	  for i: 0 thru length(bernCoeffList) - 2 do
+	    (
+			print(bernCoeffList[i+1], bernstein(length(bernCoeffList)-1,i, local_cert[1][1], local_cert[1][2],var), "+")
+	    ),
+	  print(bernCoeffList[length(bernCoeffList)], bernstein(length(bernCoeffList) - 1, length(bernCoeffList) - 1, local_cert[1][1], local_cert[1][2],var), "="),
+	  for i: 0 thru length(bernCoeffList) - 2 do
+	    (
+			print(bernCoeffList[i+1] * ratsimp(bernstein(length(bernCoeffList)-1,i, local_cert[1][1], local_cert[1][2],var)), "+")
+	    ),
+	  print(bernCoeffList[length(bernCoeffList)] * ratsimp(bernstein(length(bernCoeffList) - 1, length(bernCoeffList) - 1, local_cert[1][1], local_cert[1][2],var)), "="),
+      verifySum : 0,	
+	  for i: 0 thru length(bernCoeffList) - 1 do
+	    (
+		    verifySum : verifySum + bernCoeffList[i+1] * ratsimp(bernstein(length(bernCoeffList)-1,i, local_cert[1][1], local_cert[1][2],var))
+		),
+	  print(ratsimp(verifySum))	
+    ),
   return(true)
   );
-
 
 
 bernsteinProof(poly,var,search_interval,cert):=
@@ -382,11 +399,11 @@ bernsteinProof(poly,var,search_interval,cert):=
         for i: 1 thru length(cert[2]) do
           (
           sprint("(",i,")"),
-          localBernsteinProof(poly,cert[2][i],true)
+          localBernsteinProof(poly,var,cert[2][i],true)
           )
         )
       else
-        localBernsteinProof(poly,cert[2][1],false)
+        localBernsteinProof(poly,var,cert[2][1],false)
       )
     else
       (
@@ -399,11 +416,11 @@ bernsteinProof(poly,var,search_interval,cert):=
         for i: 1 thru length(cert[2]) do
           (
           sprint("(",i,")"),
-          localBernsteinProof(poly,cert[2][i],true)
+          localBernsteinProof(poly,var,cert[2][i],true)
           )
         )
       else
-        localBernsteinProof(poly,cert[2][1],false)      
+        localBernsteinProof(poly,var,cert[2][1],false)      
       ),
   print(""),
  

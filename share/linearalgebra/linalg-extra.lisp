@@ -10,7 +10,7 @@
 ($put '$linalgextra 1 '$version)
 
 (defun $circulant (lst)
-  ($require_list lst "$first" "$circulant")
+  ($require_list lst '$first '$circulant)
   (let ((q) (n ($length lst)))
     (setq lst (rest lst))
     (setq q (list lst))
@@ -22,8 +22,8 @@
     (push '($matrix) q)))
 
 (defun $cauchy_matrix (p &optional q)
-  ($require_list p "$first" "$cauchy_matrix")
-  (if q ($require_list q "$second" "$cauchy_matrix") (setq q p))
+  ($require_list p '$first '$cauchy_matrix)
+  (if q ($require_list q '$second '$cauchy_matrix) (setq q p))
   (let ((row) (mat))
     (setq p (margs p))
     (setq q (margs q))
@@ -59,7 +59,7 @@
 
 (defun $vandermonde_matrix (l)
   (let ((x) (q) (row) (acc nil) (n))
-    (setq l (require-list l "$vandermonde_matrix"))
+    (setq l (require-list l '$vandermonde_matrix))
     (setq n (- (length l) 1))
     (while l
       (setq q 1)
@@ -177,7 +177,12 @@
     (simplify `(($matrix) ,@(reverse mat)))))
 
 (defun $krylov_matrix (v mat &optional (n 'no-value))
-  ($require_matrix mat '$second '$krylov_matrix)
+  ($require_square_matrix mat '$second '$krylov_matrix)
+  (and ($listp v) (setq v ($transpose v)))
+  (if (not
+       (and ($matrixp v)
+       (= ($first ($matrix_size v)) ($second ($matrix_size mat)))))
+      (merror "Incompatible matrix sizes"))
   (if (eq n 'no-value) (setq n ($first ($matrix_size mat))))
   ($require_posinteger n  '$third '$krylov_matrix)
   (let ((acc v))

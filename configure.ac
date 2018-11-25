@@ -66,6 +66,39 @@ AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
 explicit_lisp=false
 lisps_enabled=""
 
+dnl Compiling with abcl requires a jre and the path to abcl.jar
+AC_ARG_ENABLE(abcl,
+	[  --enable-abcl                Use abcl, requires --with-abcl-jar],
+     	[case "${enableval}" in
+       		yes) abcl=true 
+		     lisps_enabled="${lisps_enabled} abcl"
+                     explicit_lisp=true ;;
+       		no)  abcl=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-abcl) ;;
+     	esac
+	explicit_lisp=true],
+	[abcl=false])
+ABCL_JAR=`pwd`/"abcl.jar"
+AC_ARG_WITH(abcl-jar,
+	[  --with-abcl-jar=<jarfile>    Use <jarfile> as abcl install (default ./abcl.jar)],
+	[abcl=true
+	lisps_enabled="${lisps_enabled} abcl"
+	explicit_lisp=true
+	ABCL_JAR="${withval}"])
+	
+AC_ARG_WITH(jre,
+ 	[  --with-jre=<jre>             When compiling with abcl: use <jre> as Java interpreter],
+ 	[JRE="${withval}"],
+ 	[JRE="java"])
+
+if test x"${abcl}" = xtrue ; then
+     if test -e "${ABCL_JAR}" ; then
+          echo Using abcl found in ${ABCL_JAR}
+     else
+        AC_MSG_ERROR(${ABCL_JAR} not found.)
+     fi
+fi
+
 dnl n.b. clisp_default_name is hardcoded in "with" message
 clisp_default_name=clisp
 AC_ARG_ENABLE(clisp,
@@ -859,14 +892,12 @@ if test x"${explicit_lisp}" = xfalse ; then
 	elif test x"${ecl_found}" = xtrue ; then
 		ecl=true
 		lisps_enabled="${lisps_enabled} ecl"
-        elif test x"${ccl64_found}" = xtrue; then
-                ccl64=true
-                lisps_enabled="${lisps_enabled} ccl64"
 	else
 		AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL),${scl_default_name}(SCL),${sbcl_default_name}(SBCL),${acl_default_name}(ACL),${openmcl_default_name}(OpenMCL),${ecl_default_name}(ECL)] were found in PATH)
 	fi
 fi
 
+AM_CONDITIONAL(ABCL, test x$abcl = xtrue)
 AM_CONDITIONAL(CLISP, test x$clisp = xtrue)
 AM_CONDITIONAL(CLISP_EXEC, test x$clisp_exec = xtrue)
 AM_CONDITIONAL(GCL, test x$gcl = xtrue)
@@ -1052,6 +1083,13 @@ AC_ARG_WITH(default-lisp,
 				AC_MSG_ERROR(ccl64 not enabled)
 			fi
 			;;		
+		abcl)		
+			if test x"${abcl}" = xtrue ; then
+				DEFAULTLISP=abcl
+			else
+				AC_MSG_ERROR(abcl not enabled)
+			fi
+			;;		
 		*) 
 			AC_MSG_ERROR(Unknown argument ${DEFAULTLISP} to --with-default-lisp) 
 			;;
@@ -1074,6 +1112,8 @@ AC_ARG_WITH(default-lisp,
 		DEFAULTLISP=ecl
 	elif test x"${ccl64}" = xtrue ; then
 		DEFAULTLISP=ccl64
+	elif test x"${abcl}" = xtrue ; then
+		DEFAULTLISP=abcl
 	else
 		AC_MSG_ERROR(Internal error. No lisp enabled. Please contact maintainer.)
 	fi])
@@ -1097,6 +1137,8 @@ AC_SUBST(CCL64_NAME)
 AC_SUBST(DEFAULTLISP)
 AC_SUBST(HHC)
 AC_SUBST(lisps_enabled)
+AC_SUBST(ABCL_JAR)
+AC_SUBST(JRE)
 
 AC_ARG_WITH(posix-shell,
 	[  --with-posix-shell=<path>    Use <shell> for maxima script (default /bin/sh)],
@@ -1163,8 +1205,12 @@ dnl Remove the leading "share" part of the path, and add double-quotes
 dnl around it.
 
 #default_sharedirs=`find share -type d | sort | egrep -v 'share$|CVS|/fortran' | sed 's;share/\(.*\);        "\1" \\\\;' | sed '$s;\\\\;;'`
-default_sharedirs=`find share -type d | sort | egrep -v 'share$|CVS|/fortran|\.t2p' | sed 's;share/\(.*\);"\1";' | tr '\n' ' '`
+default_sharedirs=`cd $srcdir;find share -type d | sort | egrep -v 'share$|CVS|/fortran' | sed 's;share/\(.*\);"\1";' | tr '\n' ' '`
 
+AC_SUBST(top_srcdir)
+AC_SUBST(abs_top_builddir)
+AC_SUBST(abs_top_srcdir)
+AC_SUBST(top_builddir)
 AC_SUBST(expanded_top_srcdir)
 AC_SUBST(expanded_exec_prefix)
 AC_SUBST(expanded_libdir)
@@ -1183,19 +1229,25 @@ AC_PATH_PROG([CAT],[cat])
 AC_PROG_SED
 AC_PROG_AWK
 AM_PATH_PYTHON
+AC_SUBST(SED)
 
 # Configure these files and make them executable
 AC_CONFIG_FILES([maxima-local], chmod +x maxima-local)
+AC_CONFIG_FILES([src/startmaxima_abcl.sh], chmod +x src/startmaxima_abcl.sh)
 AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
+AC_CONFIG_FILES([tests/test.sh], chmod +x tests/test.sh)
+AC_CONFIG_FILES([doc/info/build_html.sh], chmod +x doc/info/build_html.sh)
+AC_CONFIG_FILES([doc/info/extract_categories.sh], chmod +x doc/info/extract_categories.sh)
 
 # Convert maxima.bat to DOS line ending
 # sed-3.02 in old mingw distribution doesn't support -i or \r
 # dos2unix may not be present, but perl is required elsewhere
 # perl -i interferes with binmode so need to use a temporary file
 AC_CONFIG_FILES([src/maxima.bat], (perl -ne 'BEGIN{binmode(STDOUT,":crlf")};' -e 'print' < src/maxima.bat > src/maxima.bat.tmp; mv src/maxima.bat.tmp src/maxima.bat))
+AC_CONFIG_FILES([src/maxima], chmod +x src/maxima)
 
 AC_OUTPUT(Makefile maxima.spec maxima.iss \
-admin/Makefile src/Makefile src/maxima src/rmaxima src/autoconf-variables.lisp \
+admin/Makefile src/Makefile src/rmaxima src/autoconf-variables.lisp \
 src/share-subdirs.lisp \
 lisp-utils/Makefile tests/Makefile doc/Makefile \
 crosscompile-windows/Makefile \
@@ -1224,31 +1276,37 @@ src/lisp)
 echo
 echo "Summary:"
 if test x"${clisp}" = xtrue ; then
-	echo "clisp enabled. Executable name: \"${CLISP_NAME}\""
+	echo "Compiling an maxima image that uses \"${CLISP_NAME}\"",
 	echo "clisp runtime is \"${CLISP_RUNTIME_PATH}\""
-fi
-if test x"${clisp_exec}" = xtrue ; then
-   echo "clisp executable image enabled for maxima."
+	if test x"${clisp_exec}" = xtrue ; then
+		echo "clisp executable image enabled for maxima."
+	else
+		echo Use "--enable-clisp-exec to build a standalone executable instead."
+	fi
 fi
 if test x"${cmucl}" = xtrue ; then
-	echo "CMUCL enabled. Executable name: \"${CMUCL_NAME}\""
+	echo "Compiling an maxima image that uses \"${CMUCL_NAME}\""
 	echo "cmucl runtime is \"${CMUCL_RUNTIME_PATH}\""
-fi
-if test x"${cmucl_exec}" = xtrue; then
-	echo "CMUCL executable image enabled for maxima."
+	if test x"${cmucl_exec}" = xtrue; then
+		echo "CMUCL executable image enabled for maxima."
+	else
+		echo Use "--enable-cmucl-exec to build a standalone executable instead."
+	fi
 fi
 if test x"${scl}" = xtrue ; then
-	echo "SCL enabled. Executable name: \"${SCL_NAME}\""
+	echo "SCL enabled, that uses \"${SCL_NAME}\""
 	echo "SCL runtime is \"${SCL_RUNTIME_PATH}\""
 fi
 if test x"${sbcl}" = xtrue ; then
-	echo "SBCL enabled. Executable name: \"${SBCL_NAME}\""
-fi
-if test x"${sbcl_exec}" = xtrue ; then
-   echo "sbcl executable image enabled for maxima."
+	echo "Compiling an maxima image that uses \"${SBCL_NAME}\""
+	if test x"${sbcl_exec}" = xtrue ; then
+	   	echo "sbcl executable image enabled for maxima."
+	else
+		echo Use "--enable-sbcl-exec to build a standalone executable instead."
+	fi
 fi
 if test x"${gcl}" = xtrue ; then
-	echo "GCL enabled. Executable name: \"${GCL_NAME}\""
+	echo "Compiling an maxima image that uses \"${GCL_NAME}\""
 	if test x"${gcl_alt_link}" = xtrue ; then
 		echo "    GCL alternative linking method enabled."
 	fi
@@ -1257,20 +1315,40 @@ if test x"${acl}" = xtrue ; then
 	echo "ACL enabled. Executable name: \"${ACL_NAME}\""
 fi
 if test x"${openmcl}" = xtrue ; then
-	echo "OpenMCL enabled. Executable name: \"${OPENMCL_NAME}\""
-fi
-if test x"${openmcl_exec}" = xtrue ; then
-   echo "OpenMCL executable image enabled for maxima."
+	echo "Compiling an maxima image that uses \"${OPENMCL_NAME}\""
+	if test x"${openmcl_exec}" = xtrue ; then
+		echo "OpenMCL executable image enabled for maxima."
+	else
+		echo Use "--enable-openmcl-exec to build a standalone executable instead."
+	fi
 fi
 if test x"${ccl64}" = xtrue ; then
-	echo "CCL64 enabled. Executable name: \"${CCL64_NAME}\""
+	echo "Compiling an maxima image that uses \"${CCL64_NAME}\""
+	if test x"${ccl64_exec}" = xtrue ; then
+	   	echo "CCL64 executable image enabled for maxima."
+	else
+	   	echo Use "--enable-ccl64-exec to build a standalone executable instead."
+	fi
 fi
-if test x"${ccl64_exec}" = xtrue ; then
-   echo "CCL64 executable image enabled for maxima."
-fi
+
 if test x"${ecl}" = xtrue ; then
-	echo "ECL enabled. Executable name: \"${ECL_NAME}\""
+	if test x"$srcdir" = x"." ; then
+		echo "Compiling maxima using \"${ECL_NAME}\""
+	else
+		echo "ECL enabled. Executable name: \"${ECL_NAME}\""
+		AC_MSG_ERROR(For ECL out-of-tree builds aren't supported. See src/maxima.system for details.)
+	fi
 fi
+
+if test x"${abcl}" = xtrue ; then
+	if test x"$srcdir" = x"." ; then
+		echo "Compiling maxima using \"${ABCL_NAME}\""
+	else
+		echo "ABCL enabled. Executable name: \"${ABCL_NAME}\""
+		AC_MSG_ERROR(For ABCL out-of-tree builds aren't supported. See src/maxima.system for details.)
+	fi
+fi
+
 echo "default lisp: $DEFAULTLISP"
 echo "wish executable name: \"${WISH}\""
 

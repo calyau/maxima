@@ -7,4 +7,4 @@ s/^@end defvr/items = []/
 s/^@node  *\([^,]*\).*/items = ["\1"] # extracted from node/
 s/@opencatbox//
 s/@closecatbox//
-s/@category{\([^}]*\)}\s*/\$foo = []\$for x in items: foo.append ([items[0], x])\$try: categories ["\1"] . extend (foo)\$except KeyError: categories ["\1"] = foo\$/g
+s/@category{\([^}]*\)}\s*/@@@###@@@foo = []@@@###@@@for x in items: foo.append ([items[0], x])@@@###@@@try: categories ["\1"] . extend (foo)@@@###@@@except KeyError: categories ["\1"] = foo@@@###@@@/g

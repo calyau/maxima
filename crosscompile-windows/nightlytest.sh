@@ -22,7 +22,7 @@ cd ~/maxima-test || exit
 ./bootstrap >logfile-bootstrap.txt 2>&1
 
 echo "./configure"
-./configure --enable-clisp --enable-ecl --with-ecl=/opt/ecl-16.1.3/bin/ecl --enable-sbcl --with-sbcl=/opt/sbcl-1.4.10-x86-64-linux/run-sbcl.sh --enable-gcl --enable-ccl64 --with-ccl64=/opt/ccl/lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-snapshot-2018-03/bin/lisp --with-cmucl-runtime=/opt/cmucl-snapshot-2018-03/bin/lisp --enable-acl --with-acl=/opt/acl10.1express/alisp --prefix="$(pwd)/installroot" >logfile-configure.txt 2>&1
+./configure --enable-clisp --enable-ecl --with-ecl=/opt/ecl-16.1.3/bin/ecl --enable-sbcl --with-sbcl=/opt/sbcl-1.4.13-x86-64-linux/run-sbcl.sh --enable-gcl --enable-ccl64 --with-ccl64=/opt/ccl/lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-snapshot-2018-03/bin/lisp --with-cmucl-runtime=/opt/cmucl-snapshot-2018-03/bin/lisp --enable-acl --with-acl=/opt/acl10.1express/alisp --enable-abcl --with-abcl-jar=/opt/abcl-bin-1.5.0/abcl.jar --prefix="$(pwd)/installroot" >logfile-configure.txt 2>&1
 
 echo "make"
 make VERBOSE=1 >logfile-make.txt 2>&1
@@ -38,36 +38,31 @@ export GCL_MEM_MULTIPLE=0.2
 
 ~/maxima-test/installroot/bin/maxima --batch-string="build_info();" >logfile-buildinfo.txt
 commands=$(
-for lisp in clisp ecl sbcl gcl ccl64 cmucl acl ; do
-      echo "echo Running Maxima testsuite with $lisp ; ~/maxima-test/installroot/bin/maxima --lisp=$lisp --batch-string='run_testsuite();' >logfile-testsuite-$lisp.txt 2>&1"
-      echo "echo Running Maxima share testsuite with $lisp ; ~/maxima-test/installroot/bin/maxima --lisp=$lisp --batch-string='run_testsuite(share_tests=only);' >logfile-share-testsuite-$lisp.txt 2>&1"
+for lisp in abcl clisp ecl sbcl gcl ccl64 cmucl acl ; do
+      echo "echo Running Maxima testsuite with $lisp ; /usr/bin/time --portability --output=logfile-timing-testsuite-$lisp.txt ~/maxima-test/installroot/bin/maxima --lisp=$lisp --batch-string='run_testsuite();' >logfile-testsuite-$lisp.txt 2>&1"
+      echo "echo Running Maxima share testsuite with $lisp ; /usr/bin/time --portability --output=logfile-timing-share-testsuite-$lisp.txt ~/maxima-test/installroot/bin/maxima --lisp=$lisp --batch-string='run_testsuite(share_tests=only);' >logfile-share-testsuite-$lisp.txt 2>&1"
 done
 )
 echo "$commands" | parallel --no-notice
 
 
-# Test ABCL
-# currently not possible using a ./configure option, so do the Lisp only build.
-# (and testing the Lisp build system does not hurt...)
-
-ABCL_JAR=/opt/abcl-bin-1.5.0/abcl.jar
-ABCL="java -jar $ABCL_JAR --noinit"
-
-$ABCL --eval '(load "configure.lisp")' --eval '(configure :interactive nil)' --eval '(quit)' >../logfile-build-abcl.txt 2>&1
-cd src
-$ABCL --eval '(load "maxima-build.lisp")' --eval '(maxima-compile)' --eval '(quit)' >>../logfile-build-abcl.txt 2>&1
-echo "Running Maxima testsuite with ABCL"
-echo "run_testsuite(); quit();" | $ABCL --noinit --eval '(load "maxima-build.lisp")' --eval "(maxima-load)" --eval "(cl-user::run)" >../logfile-testsuite-abcl.txt 2>&1
-echo "Running Maxima share testsuite with ABCL"
-echo "run_testsuite(share_tests=only); quit();" | $ABCL --eval '(load "maxima-build.lisp")' --eval "(maxima-load)" --eval "(cl-user::run)" >../logfile-share-testsuite-abcl.txt 2>&1
-cd ..
-
-
-rm -f logfile-summary.txt
+rm -f logfile-summary.txt logfile-share-summary.txt logfile-timings-summary.txt
 for lisp in clisp ecl sbcl gcl ccl64 cmucl acl abcl ; do
       echo "$lisp summary" >>logfile-summary.txt
+      echo "$lisp summary" >>logfile-share-summary.txt
+      echo -e "$lisp summary" >>logfile-timings-summary.txt
+      echo -e "\nMain testsuite"  >>logfile-timings-summary.txt
+      cat logfile-timing-testsuite-$lisp.txt >>logfile-timings-summary.txt
+      echo -e "\nShare testsuite"  >>logfile-timings-summary.txt
+      cat logfile-timing-share-testsuite-$lisp.txt >>logfile-timings-summary.txt
       sed -n -e '/^Error summary\|^No unexpected errors/,$p' logfile-testsuite-$lisp.txt >>logfile-summary.txt
+      sed -n -e '/^Error summary\|^No unexpected errors/,$p' logfile-share-testsuite-$lisp.txt >>logfile-share-summary.txt
       echo -e "\n\n" >>logfile-summary.txt
+      echo -e "\n\n" >>logfile-share-summary.txt
+      echo -e "\n\n-----------------------------------\n" >>logfile-timings-summary.txt
 done
 
+# remove the single timing files before copying to the server
+# every information is in the logfile-timings-summary.txt file.
+rm logfile-timing-*
 scp -i ~/.ssh/maximakopierkey ~/maxima-test/logfile-*.txt maxima@ns1.dautermann.at:/var/www/wolfgang.dautermann.at/maxima/nightlybuild/

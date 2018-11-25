@@ -25,6 +25,7 @@
 
    Bug fixes:
 
+ * 2627 asksign / integrate fails in Maxima 5.30.0
  * 2622 base64 type warnings
  * 2619 Function inverse_erf - error in numerical evaluation
  * 2612 known_units() broken

@@ -15,6 +15,9 @@ htmlname = xmaxima
 htmlinstdir = $(xmaximadir)/html
 include $(top_srcdir)/common-html.mk
 
+
+CLEANFILES = xmaxima_toc.html xmaxima.html
+
 clean-local:
 	rm -f xmaxima.info*
 	rm -f xmaxima*.html

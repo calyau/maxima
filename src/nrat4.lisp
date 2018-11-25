@@ -183,6 +183,7 @@
 
 (defun allsubst00 (a b c)
   (cond ((equal a b) c)
+	((not (equal (cdr b) 1)) c)
 	(t (ratquotient (everysubst00 a (car b) (car c))
 			(everysubst00 a (car b) (cdr c))))))
 

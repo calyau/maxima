@@ -14,11 +14,14 @@ download a recent CMake from https://cmake.org/files/
 Then you can extract the Maxima sourcecode or clone the git repository
 and start the crosscompiling-process:
 
-
+mkdir crosscompile-windows/build
 cd crosscompile-windows/build # change to the build directory
 cmake ..  # use the right CMake executable (CMake >= 3.6)
 make
 make package
+
+The build directory should be called "build", because the Maxima code
+is copied during the build and this directory will be excluded.
 
 This will download the required Software (CLISP, SBCL, Gnuplot, wxMaxima,
 wxWidgets, Tcl, Tk, VTK) from the Internet into the directory
@@ -38,8 +41,11 @@ cmake -DUSE_WXMAXIMA_GIT=YES ..
 
 If you want to exclude VTK, use
 cmake -DUSE_VTK=NO ..
-(Attention: The size of the installer will approximately be 50% larger
+(The size of the installer with VTK will approximately be 50% larger
 than without VTK).
+
+One can also include ABCL - a Java based lisp compiler - with the option
+-DWITH_ABCL=YES
 
 If you want to change the default Lisp, which will be used, you can
 use the option "-DWITH_DEFAULT_LISP=sbcl" in the cmake call (otherwise

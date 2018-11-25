@@ -246,7 +246,9 @@
        $cauchy_matrix
        $hessian
        $jacobian
+       $krylov_matrix
        $matrix_sign
+       $sylvester_matrix
        $vandermonde_matrix
        
        $blockmatrixp           ; linalg-utilities.lisp
@@ -257,6 +259,7 @@
        $require_matrix
        $require_nonempty_matrix 
        $require_posinteger
+       $require_real_symmetric_matrix
        $require_selfadjoint_matrix
        $require_square_matrix
        $require_symmetric_matrix
@@ -264,8 +267,8 @@
        $zerofor
        $zeromatrixp
        
-       $get_lu_factors         ; lu.lisp
-       $determinant_by_lu 
+       $determinant_by_lu        ; lu.lisp
+       $get_lu_factors 
        $invert_by_lu 
        $linsolve_by_lu
        $lu_backsub
@@ -278,7 +281,6 @@
        
        $addmatrices            ; mring.lisp
        $require_ring
-       $ringeval
        
        $nonnegintegerp         ; polynomialp.lisp
        $polynomialp ))
@@ -296,18 +298,19 @@
        $hilbert_matrix
        $hipow_gzero
        $kronecker_product
+       $linalg_rank
        $locate_matrix_entry
        $mat_fullunblocker
        $mat_norm
        $mat_trace
        $mat_unblocker
+       $moore_penrose_pseudoinverse
        $nullity
        $nullspace
        $orthogonal_complement
        $polytocompanion
        $ptriangularize
        $ptriangularize_with_proviso
-       $linalg_rank
        $request_rational_matrix
        $require_integer
        $require_symbol
@@ -379,3 +382,9 @@
 
 (defprop $hypergeometric simp-hypergeometric operators)
 (autof 'simp-hypergeometric "hypergeometric")
+
+(dolist (f
+  '($cl_eval
+    $common_lisp    
+    $to_cl))
+  (setf (get f 'autoload) "tocl"))

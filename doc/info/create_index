@@ -1,8 +1,10 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 #
 # Creating contents.hhc ...
 #
+
+use warnings;
 
 open(CONTENTS, ">./contents.hhc") || die "Can't create contents.hhc";
 open(MAXIMA_TOC, "./maxima_toc.html") || die "Can't open maxima_toc.html";

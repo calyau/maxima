@@ -1,9 +1,9 @@
 ;; It seems that the current liszt does not compile the
-;; function $readvexp correctly
+;; function readvexp correctly
 ;; The interpretive version works -- pwang 10/17/88
 
-(defun $readvexp (in)
-  ;  $readvexp is the parser for expressions and statements        ;
+(defun readvexp (in)
+  ;  readvexp is the parser for expressions and statements        ;
   ;  inside "<<" and ">>" within the template file.                ;
   ;                                                                ;
   ;  "/*  ...  */" can be used for comments inside "<<" and ">>".  ;

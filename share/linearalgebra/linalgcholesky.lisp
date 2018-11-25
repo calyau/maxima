@@ -9,11 +9,11 @@
 
 ($put '$cholesky 1 '$version)
 	(defun $cholesky (m &optional (fld-name '$generalring))
-  ($require_nonempty_matrix m "$first" "$cholesky")
-  ($require_selfadjoint_matrix m "$first" "$cholesky")
+  ($require_nonempty_matrix m '$first '$cholesky)
+  ($require_selfadjoint_matrix m '$first '$cholesky)
 
   (let* ((n ($first ($matrix_size m))) (lii) (lii-inv) (l) (acc) (mat) (row)
-	 (fld ($require_ring fld-name "$second" "$cholesky")))
+	 (fld ($require_ring fld-name '$second '$cholesky)))
 	 ;;(zero (funcall (mring-add-id fld))))
 
     (flet

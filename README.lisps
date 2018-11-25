@@ -132,8 +132,9 @@ the 64-bit version passes all tests.
 ECL <https://common-lisp.net/project/ecl/>
     
 	ECL is known to work with maxima and passes the testsuite.  ECL
-runs on many platforms and OSes. It is faster than CLISP, but seems to
-tend more towards fragmenting the available memory. ECL tends to be slower 
+runs on many platforms and OSes and is the lisp compiler used for
+maxima on android. It is faster than CLISP, but seems to tend more
+towards fragmenting the available memory. ECL tends to be slower 
 than GCL or SBCL but faster than CLISP.
 
 ECL must be configured to use the C compiler, building Maxima with the
@@ -142,7 +143,11 @@ option "--with-cmp=no" when building ECL.
 
 --------------------------------------------------------------------
 Armed Bear Common Lisp (ABCL) <https://common-lisp.net/project/armedbear/>
-    Maxima can also compiled with ABCL - but currently not with
-a 'configure'-option but only with the purely Lisp-based procedure.
-(see INSTALL.lisp)
+
+ABCL's main feature is that is tightly integrated into java.
+That also means that it is an interpreter running in a virtual machine
+which makes it even slower than clisp. Also java doesn't automatically
+convert tail-recursive function calls to loops which means that in a
+few functions might run out of stack space faster than other lisps.
+
 

@@ -222,7 +222,10 @@
   ; open output channel & return filepair (fname . chan#) ;
   (cons fname (if (streamp fname)
 		  fname
-		  (open fname :direction :output :if-exists :append :if-does-not-exist :create))))
+		(open fname
+		      :direction :output
+		      :if-does-not-exist :create
+		      :if-exists :overwrite))))
 
 (defun pfilpr (flist stk)
   ; retrieve flist's "parallel" filepair from stack stk ;

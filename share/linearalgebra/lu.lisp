@@ -57,9 +57,9 @@
 			(array-to-row-list mat #'(lambda (s) (abs (funcall fn s)))))))
 
 (defun $lu_factor (mat &optional (fld '$generalring))
-  ($require_square_matrix mat "$first" "$lu_factor")
-  ($require_nonempty_matrix mat "$first" "$lu_factor")
-  (setq fld ($require_ring fld "$second" "$lu_factor"))
+  ($require_square_matrix mat '$first '$lu_factor)
+  ($require_nonempty_matrix mat '$first '$lu_factor)
+  (setq fld ($require_ring fld '$second '$lu_factor))
   
   (let* ((c ($length mat)) (perm (make-array c)) (cnd) (fn))
     ;(setq mat (full-matrix-map (mring-maxima-to-mring fld) mat))
@@ -192,7 +192,7 @@
       (values d-max z-max))))
       
 (defun $lu_backsub(m b1)
-  ($require_list m "$first" "$lu_backsub")
+  ($require_list m '$first '$lu_backsub)
   (if (< ($length m) 3) (merror "The first argument to 'lu_backsub' must be a list with at least 3 members"))
   
   (let* ((mat) (n) (r) (c) (bb) (acc) (perm) (id-perm) (b) 
@@ -241,7 +241,7 @@
     bb))
 
 (defun $invert_by_lu (m  &optional (fld '$generalring))
-  ($require_square_matrix m "$first" "$invert_by_lu")
+  ($require_square_matrix m '$first '$invert_by_lu)
   ($lu_backsub ($lu_factor m fld) ($identfor m)))
   					
 ;; Return a Lisp list of two elements, the determinant, and the inverse of M.
@@ -254,9 +254,9 @@
    (list d ($lu_backsub m1 i))))
   					
 (defun $determinant_by_lu (m &optional (fld-name '$generalring))
-  ($require_square_matrix m "$first" "$determinant_by_lu")
+  ($require_square_matrix m '$first '$determinant_by_lu)
  
-  (let ((fld ($require_ring fld-name "$second" "$determinant_by_lu")))
+  (let ((fld ($require_ring fld-name '$second '$determinant_by_lu)))
     (setq m ($lu_factor m fld-name))
     (determinant-by-lu-factors m fld)))
 
@@ -281,14 +281,14 @@
     (funcall (mring-mring-to-maxima fld) (if sign (funcall (mring-negate fld) acc) acc))))
 
 (defun $mat_cond (m p)
-  ($require_square_matrix m "$first" "$mat_cond")
+  ($require_square_matrix m '$first '$mat_cond)
   (mul (mfuncall '$mat_norm m p) (mfuncall '$mat_norm ($invert_by_lu m) p)))
 
 (defun $linsolve_by_lu (m b &optional (fld '$generalring))
-  ($require_square_matrix m "$first" "$linsolve_by_lu")
+  ($require_square_matrix m '$first '$linsolve_by_lu)
   (setq b (if ($listp b) ($transpose b) b))
-  ($require_matrix b "$second" "$linsolve_by_lu")
-  ($require_ring fld "$third" "$linsolve_by_lu")
+  ($require_matrix b '$second '$linsolve_by_lu)
+  ($require_ring fld '$third '$linsolve_by_lu)
   (if (= ($second ($matrix_size m)) ($first ($matrix_size b))) t
     (merror "Incompatible matrix sizes"))
   

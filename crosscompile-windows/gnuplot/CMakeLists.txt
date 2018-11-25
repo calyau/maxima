@@ -9,16 +9,16 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(GNUPLOTVERSION     5.2.4)
+set(GNUPLOTVERSION     5.2.5)
 
 string(REPLACE "." "" GNUPLOTVERSIONWITHOUTDOTS "${GNUPLOTVERSION}")
 
 if(BUILD_64BIT)
-    set(GNUPLOT_MD5   "be3002d65a6d4577d5a4d18717402125")
-    set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPLOTVERSION}/gp${GNUPLOTVERSIONWITHOUTDOTS}-win64-mingw_3.7z")
+    set(GNUPLOT_MD5   "727d9b4932e1c6f1d9f90dd1e8b38289")
+    set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPLOTVERSION}/gp${GNUPLOTVERSIONWITHOUTDOTS}-win64-mingw.7z")
 else()
-    set(GNUPLOT_MD5   "c32e6a881ece96ff20cd5719c6fc4217")
-    set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPLOTVERSION}/gp${GNUPLOTVERSIONWITHOUTDOTS}-win32-mingw_3.7z")
+    set(GNUPLOT_MD5   "b9b1608c4f8d9abdb36bb06e02a5cfe0")
+    set(GNUPLOT_URL   "http://sourceforge.net/projects/gnuplot/files/gnuplot/${GNUPLOTVERSION}/gp${GNUPLOTVERSIONWITHOUTDOTS}-win32-mingw.7z")
 endif()
 
 # Gnuplot (already a binary package just extract it...)

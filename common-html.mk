@@ -1,43 +1,44 @@
 # Installation/uninstallation and distribution for .html files.
-# htmlname -- html base name (e.g. maxima or xmaxima)
+# htmlname    -- html base name (e.g. maxima or xmaxima)
 # htmlinstdir -- html installation directory  
 
 install-data-local: install-maxima-html
-install-maxima-html: $(htmlname).html
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(htmlinstdir)
-	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
-	list="$(srcdir)/$(htmlname).html $(srcdir)/$(htmlname)_*.html" ; \
-	for p in $$list; do \
-	  f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`; \
-	  if test -f $(srcdir)/$$f; then \
-            if test ! -d `dirname $(DESTDIR)$(htmlinstdir)/$$f`; then \
-              $(mkinstalldirs) `dirname $(DESTDIR)$(htmlinstdir)/$$f`; \
-            fi; \
-	    echo " $(INSTALL_DATA) $(srcdir)/$$f $(DESTDIR)$(htmlinstdir)/$$f"; \
-	    $(INSTALL_DATA) $(srcdir)/$$f $(DESTDIR)$(htmlinstdir)/$$f; \
-	  else if test -f $$f; then \
-            if test ! -d `dirname $(DESTDIR)$(htmlinstdir)/$$f`; then \
-              $(mkinstalldirs) `dirname $(DESTDIR)$(htmlinstdir)/$$f`; \
-            fi; \
-	    echo " $(INSTALL_DATA) $$f $(DESTDIR)$(htmlinstdir)/$$f"; \
-	    $(INSTALL_DATA) $$f $(DESTDIR)$(htmlinstdir)/$$f; \
-	  fi; fi; \
+install-maxima-html: $(wildcard $(htmlname).html $(htmlname)_*.html)
+	@d=$(DESTDIR)$(htmlinstdir); \
+	test -d $$d && $(mkinstalldirs) $$d; \
+	list="$^"; for p in $$list; do \
+	  b=$${p#$(builddir)/}; \
+	  s=$${p#$(srcdir)/}; \
+	  if test -f $(builddir)/$$b; then \
+	    t=`dirname $$d/$$b`; \
+            test -d $$t || $(mkinstalldirs) $$t; \
+	    echo " $(INSTALL_DATA) BUILDDIR/$$b $$d/$$b"; \
+	    $(INSTALL_DATA) $(builddir)/$$b $$d/$$b; \
+	  elif test -f $(srcdir)/$$s; then \
+	    t=`dirname $$d/$$s`; \
+            test -d $$t || $(mkinstalldirs) $$t; \
+	    echo " $(INSTALL_DATA) SRCDIR/$$s $$d/$$s"; \
+	    $(INSTALL_DATA) $(srcdir)/$$s $$d/$$s; \
+	  elif test -f $$p; then \
+	    t=`dirname $$d/$$p`; \
+            test -d $$t || $(mkinstalldirs) $$t; \
+	    echo " $(INSTALL_DATA) $$p $$d/$$p"; \
+	    $(INSTALL_DATA) $$p $$d/$$p; \
+	  fi; \
 	done
 
 uninstall-local: uninstall-maxima-html
 uninstall-maxima-html:
-	@$(NORMAL_UNINSTALL)
 	rm -f $(DESTDIR)$(htmlinstdir)/$(htmlname).html 
 	rm -f $(DESTDIR)$(htmlinstdir)/$(htmlname)_*.html
 
 dist-hook: dist-maxima-html
-dist-maxima-html: $(htmlname).html
-	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
-	list="$(srcdir)/$(htmlname).html $(srcdir)/$(htmlname)_*.html" ; \
+dist-maxima-html: $(wildcard $(htmlname).html $(htmlname)_*.html)
+	@builddirstrip=`echo "$(builddir)" | sed 's|.|.|g'`; \
+	list="$^" ; \
 	for p in $$list; do \
-	  f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`; \
-	  test -f $(distdir)/$$f || cp -p $(srcdir)/$$f $(distdir)/$$f; \
+	  f=`echo "$$p" | sed "s|^$$builddirstrip/||"`; \
+	  test -f $(distdir)/$$f || cp -p $(builddir)/$$f $(distdir)/$$f; \
 	done
 
 

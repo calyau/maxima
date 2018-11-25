@@ -1378,7 +1378,7 @@ nofix
 nolabels
 nonarray
 noncentral_moment
-nonegative_lp
+nonnegative_lp
 noninteger
 nonmetricity
 nonnegintegerp

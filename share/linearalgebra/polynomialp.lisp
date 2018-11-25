@@ -30,7 +30,7 @@
   (and (integerp n) (>= n 0)))
 
 (defun $polynomialp (p vars &optional (coeffp '$constantp) (exponp '$nonnegintegerp))
-  (setq vars (require-list-or-set vars "$polynomialp"))
+  (setq vars (require-list-or-set vars '$polynomialp))
   (setq vars (mapcar '$ratdisrep vars))
   (if (every #'(lambda (s) (or ($symbolp s) ($subvarp s))) vars)
       (polynomialp ($ratdisrep p) vars coeffp exponp)

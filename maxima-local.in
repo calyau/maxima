@@ -2,12 +2,13 @@
 # This should be written for a classic Bourne shell.  Therefore avoid
 # things like $() and other bash-isms and ksh-isms that don't work
 # with a classic Bourne shell.
-top_srcdir=`(cd "\`dirname "$0"\`" > /dev/null 2>&1 ; pwd)`
-MAXIMA_PREFIX="$top_srcdir"
+MAXIMA_PREFIX="@abs_top_srcdir@"
 export MAXIMA_PREFIX
+MAXIMA_DOC_PREFIX="@abs_top_builddir@"
+export MAXIMA_DOC_PREFIX
 MAXIMA_LAYOUT_AUTOTOOLS=false
 export MAXIMA_LAYOUT_AUTOTOOLS
-MAXIMA_OBJDIR="$top_srcdir/binary"
+MAXIMA_OBJDIR="@abs_top_builddir@/binary"
 export MAXIMA_OBJDIR
 
 # report the compiled in Lisp versions
@@ -22,13 +23,13 @@ if [ x"$1" = "x--list-avail" ]; then
 fi;
 
 # quick fix for plotting with plot_format=openmath (bug 3052)
-if [ ! -d "$top_srcdir/bin" ]; then
-    mkdir -p "$top_srcdir/bin"
-    ln -sf "$top_srcdir/xmaxima-local" "$top_srcdir/bin/xmaxima"
-    ln -sf "$top_srcdir/doc" "$top_srcdir/bin/doc"
-    ln -sf "$top_srcdir/src" "$top_srcdir/bin/src"
-    ln -sf "$top_srcdir/interfaces" "$top_srcdir/bin/interfaces"
+if [ ! -d "@abs_top_srcdir@/bin" ]; then
+    mkdir -p "bin"
+    ln -sf "@abs_top_srcdir@/xmaxima-local" bin/xmaxima
+    ln -sf "@abs_top_srcdir@/doc" bin/doc
+    ln -sf "@abs_top_srcdir@/src" bin/src
+    ln -sf "@abs_top_srcdir@/interfaces" bin/interfaces
 fi
 
 POSIX_SHELL=@POSIX_SHELL@
-exec $POSIX_SHELL "$top_srcdir/src/maxima" "$@"
+exec $POSIX_SHELL "@abs_top_builddir@/src/maxima" "$@"
