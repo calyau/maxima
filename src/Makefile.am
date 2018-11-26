@@ -316,7 +316,7 @@ gcllibdir = $(verpkglibdir)/binary-gcl
 EXTRA_SCRIPTS += binary-gcl/maxima
 gcllib_SCRIPTS = binary-gcl/maxima
 
-EXECUTEGCL = echo "(system:quit)" | $(GCL_NAME) -load 
+EXECUTEGCL = echo "(system::quit)" | $(GCL_NAME) -load 
 BUILT_FILES += binary-gcl/maxima
 CLEAN_TARGETS += clean-gcl
 
