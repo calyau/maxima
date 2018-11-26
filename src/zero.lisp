@@ -14,7 +14,7 @@
 
 (declare-top (special $numer $listconstvars varlist genvar))
 
-(defmfun-checked $zeroequiv (exp var)
+(defmfun $zeroequiv (exp var)
   (declare (special var ))
   (prog (r s v varlist genvar)
      (declare (special s v))

@@ -22,7 +22,7 @@
 ;;	PACKAGE FOR FINDING REAL ZEROS OF UNIVARIATE POLYNOMIALS
 ;;	WITH INTEGER COEFFICIENTS USING STURM SEQUENCES.
 
-(defmfun-checked $realroots (exp &optional (eps $rootsepsilon) &aux exp1)
+(defmfun $realroots (exp &optional (eps $rootsepsilon) &aux exp1)
   (setq exp1 (meqhk exp))
   (when ($ratp exp1)
     (setq exp1 ($ratdisrep exp1)))
@@ -171,7 +171,7 @@
 	(t (makrat (let (($numer t))
 		     (meval pt))))))
 
-(defmfun-checked $nroots (exp &optional (l '$minf) (r '$inf))
+(defmfun $nroots (exp &optional (l '$minf) (r '$inf))
   (let (varlist $keepfloat $ratfac)
     (nroots (unipoly exp (meqhk exp)) (makpoint l) (makpoint r))))
 

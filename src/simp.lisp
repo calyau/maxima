@@ -266,9 +266,9 @@
 
 (defmfun mratcheck (e) (if ($ratp e) (ratdisrep e) e))
 
-(defmfun-checked $numberp (e) (or ($ratnump e) ($floatnump e) ($bfloatp e)))
+(defmfun $numberp (e) (or ($ratnump e) ($floatnump e) ($bfloatp e)))
 
-(defmfun-checked $integerp (x)
+(defmfun $integerp (x)
   (or (integerp x)
       (and ($ratp x)
 	   (not (member 'trunc (car x)))
@@ -278,19 +278,19 @@
 ;; The call to $INTEGERP in the following two functions checks for a CRE
 ;; rational number with an integral numerator and a unity denominator.
 
-(defmfun-checked $oddp (x)
+(defmfun $oddp (x)
   (cond ((integerp x) (oddp x))
 	(($integerp x) (oddp (cadr x)))))
 
-(defmfun-checked $evenp (x)
+(defmfun $evenp (x)
   (cond ((integerp x) (evenp x))
 	(($integerp x) (not (oddp (cadr x))))))
 
-(defmfun-checked $floatnump (x)
+(defmfun $floatnump (x)
   (or (floatp x)
       (and ($ratp x) (floatp (cadr x)) (onep1 (cddr x)))))
 
-(defmfun-checked $ratnump (x)
+(defmfun $ratnump (x)
   (or (integerp x)
       (ratnump x)
       (and ($ratp x)
@@ -298,12 +298,12 @@
 	   (integerp (cadr x))
 	   (integerp (cddr x)))))
 
-(defmfun-checked $ratp (x)
+(defmfun $ratp (x)
   (and (not (atom x))
        (consp (car x))
        (eq (caar x) 'mrat)))
 
-(defmfun-checked $taylorp (x)
+(defmfun $taylorp (x)
   (and (not (atom x))
        (eq (caar x) 'mrat)
        (member 'trunc (cdar x) :test #'eq) t))
@@ -320,7 +320,7 @@
   (cond ((eq (caar e) 'mrat) (ratdisrep e))
 	(t ($outofpois e))))
 
-(defmfun-checked $polysign (x)
+(defmfun $polysign (x)
   (setq x (cadr (ratf x)))
   (cond ((equal x 0) 0) ((pminusp x) -1) (t 1)))
 
@@ -362,7 +362,7 @@
 
 (defmfun subfunargs (exp) (cddr exp))
 
-(defmfun-checked $numfactor (x)
+(defmfun $numfactor (x)
   (setq x (specrepcheck x))
   (cond ((mnump x) x)
 	((atom x) 1)
@@ -373,7 +373,7 @@
 (defun scalar-or-constant-p (x flag)
   (if flag (not ($nonscalarp x)) ($scalarp x)))
 
-(defmfun-checked $constantp (x)
+(defmfun $constantp (x)
   (cond ((atom x) (or ($numberp x) (kindp x '$constant)))
 	((member (caar x) '(rat bigfloat) :test #'eq) t)
 	((specrepp x) ($constantp (specdisrep x)))
@@ -394,9 +394,9 @@
 
 (defun consttermp (x) (and ($constantp x) (not ($nonscalarp x))))
 
-(defmfun-checked $scalarp (x) (or (consttermp x) (eq (scalarclass x) '$scalar)))
+(defmfun $scalarp (x) (or (consttermp x) (eq (scalarclass x) '$scalar)))
 
-(defmfun-checked $nonscalarp (x) (eq (scalarclass x) '$nonscalar))
+(defmfun $nonscalarp (x) (eq (scalarclass x) '$nonscalar))
 
 (defun scalarclass (exp) ;  Returns $SCALAR, $NONSCALAR, or NIL (unknown).
   (cond ((mnump exp)
@@ -2939,12 +2939,12 @@
 	((or (floatp r1) (floatp r2)) 0.0)
 	(t 0)))
 
-(defmfun-checked $orderlessp (a b)
+(defmfun $orderlessp (a b)
   (setq a ($totaldisrep (specrepcheck a))
         b ($totaldisrep (specrepcheck b)))
   (and (not (alike1 a b)) (great b a) t))
 
-(defmfun-checked $ordergreatp (a b)
+(defmfun $ordergreatp (a b)
   (setq a ($totaldisrep (specrepcheck a))
         b ($totaldisrep (specrepcheck b)))
   (and (not (alike1 a b)) (great a b) t))
@@ -3202,7 +3202,7 @@
 	((mnump (caddr x)) (great (cadr x) y))
 	(t (great (simpln1 x) (simpln (list '(%log) y) 1 t)))))
 
-(defmfun-checked $multthru (e1 &optional e2)
+(defmfun $multthru (e1 &optional e2)
   (let (arg1 arg2)
     (cond (e2				;called with two args
 	   (setq arg1 (specrepcheck e1)
@@ -3393,7 +3393,7 @@
     (merror (intl:gettext "expand: expon must be a nonnegative integer; found: ~M") $expon))
   (resimplify (specrepcheck exp)))
 
-(defmfun-checked $expand (exp &optional (expop $maxposex) (expon $maxnegex))
+(defmfun $expand (exp &optional (expop $maxposex) (expon $maxnegex))
   (expand1 exp expop expon))
 
 (defun fixexpand (a)
@@ -3470,7 +3470,7 @@
 
 (declare-top (special var $ratfac ratform context))
 
-(defmfun-checked $integrate (expr x &optional lo hi)
+(defmfun $integrate (expr x &optional lo hi)
   (let ($ratfac)
     (if (not hi)
 	(with-new-context (context)

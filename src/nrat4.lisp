@@ -31,7 +31,7 @@
 
 (setq radcanp nil)
 
-(defmfun-checked $ratcoef (e x &optional (n 1))
+(defmfun $ratcoef (e x &optional (n 1))
   (ratcoeff e x n)) ; The spelling "ratcoeff" is nicer.
 
 (defmfun ratcoeff (a b c)
@@ -109,7 +109,7 @@
 
 (setq *radsubst nil)
 
-(defmfun-checked $ratsubst (a b c)              ; NEEDS CODE FOR FAC. FORM
+(defmfun $ratsubst (a b c)              ; NEEDS CODE FOR FAC. FORM
   (prog (varlist newvarlist dontdisrepit $ratfac genvar $keepfloat)
      ;; hard to maintain user ordering info.
      (if ($ratp c) (setq dontdisrepit t))
@@ -310,7 +310,7 @@
 	   (null (cdddr x))
 	   (pureprod (caddr x)))))
 
-(defmfun-checked $bothcoef (r var)
+(defmfun $bothcoef (r var)
   (prog (*var h varlist genvar $ratfac)
      (unless ($ratp r)
        (return `((mlist)
@@ -344,14 +344,14 @@
   (let ((argsfreeofp t)) (freeof var e)))
 
 ;;; This is a version of freeof for a list first argument
-(defmfun-checked $lfreeof (l e) "`freeof' for a list first argument"
+(defmfun $lfreeof (l e) "`freeof' for a list first argument"
 	 (unless ($listp l)
            (merror (intl:gettext "lfreeof: first argument must be a list; found: ~M") l))
 	 (let ((exp ($totaldisrep e)))
 	   (dolist (var (margs l) t)
 	     (unless (freeof ($totaldisrep var) exp) (return nil)))))
 
-(defmfun-checked $freeof (&rest args)
+(defmfun $freeof (&rest args)
   (prog (l e)
      (setq l (mapcar #'$totaldisrep (nreverse args))
 	   e (car l))
@@ -413,7 +413,7 @@
 
 ;; subtitle radcan
 
-(defmfun-checked $radcan (exp)
+(defmfun $radcan (exp)
   (cond ((mbagp exp) (cons (car exp) (mapcar '$radcan (cdr exp))))
 	(t (let (($ratsimpexpons t))
 	     (simplify (let (($expop 0) ($expon 0))

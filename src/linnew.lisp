@@ -174,7 +174,7 @@
 	   ((> j m))
 	 (setf (aref *a2* k j) (cdr (ratrep* (aref *a2* k j))))))))
 
-(defmfun-checked $tmnewdet (mat &optional (dim nil dim?))
+(defmfun $tmnewdet (mat &optional (dim nil dim?))
   (prog (*aa* r vlist n)
      (cond (dim?
 	    (unless (integerp dim)
@@ -255,7 +255,7 @@
 		     vars)
 	     (return (reverse l)))))
 
-(defmfun-checked $tmlin (*aa* n m nx)
+(defmfun $tmlin (*aa* n m nx)
   (prog (r vlist)
      (setq *a2* (make-array (list (1+ n) (+ 1 m n)) :initial-element nil))
      (show *a2*)
@@ -375,7 +375,7 @@
 (defun tm$kill (e)
   (kill1 e))
 
-(defmfun-checked $tminverse (*aa*)
+(defmfun $tminverse (*aa*)
   (prog (r vlist n m nx)
      (setq n (length (cdr *aa*)) m n nx n)
      (setq *a2* (make-array (list (1+ n) (+ 1 m n)) :initial-element nil))

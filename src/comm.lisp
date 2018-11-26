@@ -76,7 +76,7 @@
   "If TRUE allows DIFF(X~Y,T) to work where ~ is defined in
 	  SHARE;VECT where VECT_CROSS is set to TRUE.")
 
-(defmfun-checked $substitute (old new &optional (expr nil three-arg?))
+(defmfun $substitute (old new &optional (expr nil three-arg?))
   (cond (three-arg? (maxima-substitute old new expr))
 	(t
 	 (let ((l old) (z new))
@@ -314,7 +314,7 @@
 		 (simplifya (cons (cons (caar e) (member 'array (cdar e) :test #'eq)) newargs)
 			    nil))))))
 
-(defmfun-checked $depends (&rest args)
+(defmfun $depends (&rest args)
   (when (oddp (length args))
     (merror (intl:gettext "depends: number of arguments must be even.")))
   (do ((args args (cddr args))
@@ -393,13 +393,13 @@
 	     (or (cdr $gradefs) (setq $gradefs (copy-list '((mlist simp)))))
 	     (add2lnc (cons (cons (caar z) nil) (cdr z)) $gradefs) z))))
 
-(defmfun-checked $diff (&rest args)
+(defmfun $diff (&rest args)
   #-gcl
   (declare (dynamic-extent args))
   (let (derivlist)
     (deriv args)))
 
-(defmfun-checked $del (e)
+(defmfun $del (e)
   (stotaldiff e))
 
 (defun deriv (e)
@@ -729,7 +729,7 @@
 (defmfun remsimp (e)
   (if (atom e) e (cons (delsimp (car e)) (mapcar #'remsimp (cdr e)))))
 
-(defmfun-checked $trunc (e)
+(defmfun $trunc (e)
   (cond ((atom e) e)
 	((eq (caar e) 'mplus) (cons (append (car e) '(trunc)) (cdr e)))
 	((mbagp e) (cons (car e) (mapcar #'$trunc (cdr e))))
@@ -746,7 +746,7 @@
 (defmspec $ldisplay (form)
   (disp1 (cdr form) t t))
 
-(defmfun-checked $ldisp (&rest args)
+(defmfun $ldisp (&rest args)
   #-gcl
   (declare (dynamic-extent args))
   (disp1 args t nil))
@@ -754,7 +754,7 @@
 (defmspec $display (form)
   (disp1 (cdr form) nil t))
 
-(defmfun-checked $disp (&rest args)
+(defmfun $disp (&rest args)
   #-gcl
   (declare (dynamic-extent args))
   (disp1 args nil nil))
@@ -802,7 +802,7 @@
   (setf (symbol-value *linelabel*) e)
   *linelabel*)
 
-(defmfun-checked $dispterms (e)
+(defmfun $dispterms (e)
   (cond ((or (atom e) (eq (caar e) 'bigfloat)) (displa e))
 	((specrepp e) ($dispterms (specdisrep e)))
 	(t (let (($dispflag t))
@@ -815,7 +815,7 @@
 	   (mterpri)))
   '$done)
 
-(defmfun-checked $dispform (e &optional (flag nil flag?))
+(defmfun $dispform (e &optional (flag nil flag?))
   (when (and flag? (not (eq flag '$all)))
     (merror (intl:gettext "dispform: second argument, if present, must be 'all'; found ~M") flag))
   (if (or (atom e)
@@ -829,20 +829,20 @@
 
 ;;; These functions implement the Macsyma functions $op and $operatorp.
 ;;; Dan Stanger
-(defmfun-checked $op (expr)
+(defmfun $op (expr)
   ($part expr 0))
 
-(defmfun-checked $operatorp (expr oplist)
+(defmfun $operatorp (expr oplist)
   (if ($listp oplist)
       ($member ($op expr) oplist)
       (equal ($op expr) oplist)))
 
-(defmfun-checked $part (&rest args)
+(defmfun $part (&rest args)
   #-gcl
   (declare (dynamic-extent args))
   (mpart args nil nil $inflag '$part))
 
-(defmfun-checked $inpart (&rest args)
+(defmfun $inpart (&rest args)
   #-gcl
   (declare (dynamic-extent args))
   (mpart args nil nil t '$inpart))
@@ -1009,24 +1009,24 @@
 (defmfun getop (x)
   (or (and (symbolp x) (get x 'op)) x))
 
-(defmfun-checked $listp (x)
+(defmfun $listp (x)
   (and (not (atom x))
        (not (atom (car x)))
        (eq (caar x) 'mlist)))
 
-(defmfun-checked $cons (x e)
+(defmfun $cons (x e)
   (atomchk (setq e (format1 e)) '$cons t)
   (mcons-exp-args e (cons x (margs e))))
 
-(defmfun-checked $endcons (x e)
+(defmfun $endcons (x e)
   (atomchk (setq e (format1 e)) '$endcons t)
   (mcons-exp-args e (append (margs e) (ncons x))))
 
-(defmfun-checked $reverse (e)
+(defmfun $reverse (e)
   (atomchk (setq e (format1 e)) '$reverse nil)
   (mcons-exp-args e (reverse (margs e))))
 
-(defmfun-checked $append (&rest args)
+(defmfun $append (&rest args)
   (if (null args)
       '((mlist simp))
       (let ((arg1 (specrepcheck (first args))) op arrp)
@@ -1049,7 +1049,7 @@
       (list* (delsimp (car e)) (cadr e) args)
       (cons (delsimp (car e)) args)))
 
-(defmfun-checked $member (x e)
+(defmfun $member (x e)
   (atomchk (setq e ($totaldisrep e)) '$member t)
   (if (memalike ($totaldisrep x) (margs e)) t))
 
@@ -1062,7 +1062,7 @@
 	($inflag (specrepcheck e))
 	(t (nformat e))))
 
-(defmfun-checked $first (e)
+(defmfun $first (e)
   (atomchk (setq e (format1 e)) '$first nil)
   (if (null (cdr e)) (merror (intl:gettext "first: empty argument.")))
   (car (margs e)))
@@ -1088,7 +1088,7 @@
   (make-nth ninth   9)
   (make-nth tenth  10))
 
-(defmfun-checked $rest (e &optional (n 1 n?))
+(defmfun $rest (e &optional (n 1 n?))
   (prog (m fun fun1 revp)
      (when (and n? (equal n 0))
        (return e))
@@ -1114,13 +1114,13 @@
        (return (cons (car m) (cons fun1 (cdr m)))))
      (return m)))
 
-(defmfun-checked $last (e)
+(defmfun $last (e)
   (atomchk (setq e (format1 e)) '$last nil)
   (when (null (cdr e))
     (merror (intl:gettext "last: empty argument.")))
   (car (last e)))
 
-(defmfun-checked $firstn (e n)
+(defmfun $firstn (e n)
   (atomchk (setq e (format1 e)) '$firstn nil)
   (if (or (not (fixnump n)) (minusp n))
     (merror (intl:gettext "firstn: second argument must be a nonnegative integer; found: ~M") n))
@@ -1129,7 +1129,7 @@
       ($rest e 0)
       ($rest e (- n m)))))
 
-(defmfun-checked $lastn (e n)
+(defmfun $lastn (e n)
   (atomchk (setq e (format1 e)) '$lastn nil)
   (if (or (not (fixnump n)) (minusp n))
     (merror (intl:gettext "lastn: second argument must be a nonnegative integer; found: ~M") n))
@@ -1138,11 +1138,11 @@
       ($rest e 0)
       ($rest e (- m n)))))
 
-(defmfun-checked $args (e)
+(defmfun $args (e)
   (atomchk (setq e (format1 e)) '$args nil)
 	 (cons '(mlist) (margs e)))
 
-(defmfun-checked $delete (x l &optional (n -1 n?))
+(defmfun $delete (x l &optional (n -1 n?))
   (when (and n? (or (not (fixnump n)) (minusp n))) ; if n is set, it must be a nonneg fixnum
     (merror (intl:gettext "delete: third argument, if present, must be a nonnegative integer; found ~M") n))
   (atomchk (setq l (specrepcheck l)) '$delete t)
@@ -1156,7 +1156,7 @@
 	  (rplacd l1 (cddr l1)))
 	(setq l1 (cdr l1)))))
 
-(defmfun-checked $length (e)
+(defmfun $length (e)
   (setq e (cond (($listp e) e)
 		((or $inflag (not ($ratp e))) (specrepcheck e))
 		(t ($ratdisrep e))))
@@ -1170,13 +1170,13 @@
 	 (if (and (alike1 (caddr e) '((rat simp) 1 2)) $sqrtdispflag) 1 2))
 	(t (length (cdr (nformat e))))))
 
-(defmfun-checked $atom (x)
+(defmfun $atom (x)
   (setq x (specrepcheck x)) (or (atom x) (eq (caar x) 'bigfloat)))
 
-(defmfun-checked $symbolp (x)
+(defmfun $symbolp (x)
   (setq x (specrepcheck x)) (symbolp x))
 
-(defmfun-checked $num (e)
+(defmfun $num (e)
   (let (x)
     (cond ((atom e) e)
 	  ((eq (caar e) 'mrat) ($ratnumer e))
@@ -1187,7 +1187,7 @@
 	   (simplify (list '(mtimes) -1 (cadr x))))
 	  (t e))))
 
-(defmfun-checked $denom (e)
+(defmfun $denom (e)
   (cond ((atom e) 1)
 	((eq (caar e) 'mrat) ($ratdenom e))
 	((eq (caar e) 'rat) (caddr e))
@@ -1197,9 +1197,9 @@
 	 (simplify (caddr e)))
 	(t 1)))
 
-(defmfun-checked $entier (e) (take '($floor) e))
+(defmfun $entier (e) (take '($floor) e))
 
-(defmfun-checked $fix (e) (take '($floor) e))
+(defmfun $fix (e) (take '($floor) e))
 
 ;; Evaluate THUNK ignoring any error that might occur.  If the THUNK
 ;; returns a good number (not infinity or NaN), then return the
@@ -1220,7 +1220,7 @@
 	    nil
 	    (car result))))))
 	    
-(defmfun-checked $float (e)
+(defmfun $float (e)
   (cond ((numberp e)
 	 (let ((e1 (float e))) (if (float-inf-p e1) (signal 'floating-point-overflow) e1)))
 	((and (symbolp e) (mget e '$numer)))
@@ -1296,7 +1296,7 @@
 	 (append (list (remove 'simp (first e)) ($float (second e))) (rest (rest e))))
 	(t (recur-apply #'$float e))))
 
-(defmfun-checked $coeff (e x &optional (n 1))
+(defmfun $coeff (e x &optional (n 1))
   (if (equal n 0)
       (coeff e x 0)
       (coeff e (power x n) 1)))
@@ -1333,12 +1333,12 @@
 (let (my-powers my-num my-flag)
   (declare (special my-powers my-num my-flag))
 
-  (defmfun-checked $hipow (e var)
+  (defmfun $hipow (e var)
     (findpowers e t var))
   
   ;; These work best on expanded "simple" expressions.
   
-  (defmfun-checked $lopow (e var)
+  (defmfun $lopow (e var)
     (findpowers e nil var))
   
   (defun findpowers (e hiflg var)

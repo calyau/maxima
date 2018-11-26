@@ -27,7 +27,7 @@
 ;;; false.
 ;;; Author Dan Stanger 12/1/02
 
-(defmfun-checked $assoc (key ielist &optional default)
+(defmfun $assoc (key ielist &optional default)
   (let ((elist (if (listp ielist)
                    (margs ielist)
                    (merror 

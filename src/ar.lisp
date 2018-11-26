@@ -102,7 +102,7 @@
 	 (marray-type-unknown a)))
       (merror (intl:gettext "MARRAY-CHECK: not an array: ~M") a)))
 
-(defmfun-checked $array_dimension_n (n a)
+(defmfun $array_dimension_n (n a)
   (array-dimension (marray-check a) n))
 
 (defun marray-type-unknown (x)

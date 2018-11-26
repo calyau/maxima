@@ -238,7 +238,7 @@
 ;;
 ;; The lambda-list supports &optional and &rest args.  Keyword args
 ;; are an error.
-(defmacro defmfun-checked (name lambda-list &body body)
+(defmacro defmfun (name lambda-list &body body)
   (cond
     ((and (symbolp lambda-list) (not (null lambda-list)))
 	 ;; Support MacLisp narg syntax:  (defun foo a ...)
@@ -249,7 +249,7 @@
 	      ,@body)))
     (t
      (unless (char= #\$ (aref (string name) 0))
-       (error "First character of function name must start with $: ~S~%" name))
+       (warn "First character of function name must start with $: ~S~%" name))
      (multiple-value-bind (required-args
 			   optional-args
 			   restp
@@ -263,7 +263,7 @@
        (let* ((required-len (length required-args))
 	      (optional-len (length optional-args))
 	      (impl-name (intern (concatenate 'string
-					      (subseq (string name) 1)
+					      (string name)
 					      "-IMPL")))
 	      (impl-doc (format nil "Implementation for ~S" name))
 	      (nargs (gensym "NARGS-"))
@@ -336,14 +336,14 @@
 		`(,',impl-name ,@,rest-name)))))))))
 
 ;; Examples:
-;; (defmfun-checked $foobar (a b) (list '(mlist) a b))
-;; (defmfun-checked $foobar1 (a b &optional c) (list '(mlist) a b c))
-;; (defmfun-checked $foobar1a (a b &optional (c 99)) (list '(mlist) a b c))
-;; (defmfun-checked $foobar2 (a b &rest c) (list '(mlist) a b (list* '(mlist) c)))
-;; (defmfun-checked $foobar3 (a b &optional c &rest d) "foobar3 function" (list '(mlist) a b c (list* '(mlist) d)))
+;; (defmfun $foobar (a b) (list '(mlist) a b))
+;; (defmfun $foobar1 (a b &optional c) (list '(mlist) a b c))
+;; (defmfun $foobar1a (a b &optional (c 99)) (list '(mlist) a b c))
+;; (defmfun $foobar2 (a b &rest c) (list '(mlist) a b (list* '(mlist) c)))
+;; (defmfun $foobar3 (a b &optional c &rest d) "foobar3 function" (list '(mlist) a b c (list* '(mlist) d)))
 ;;
 ;; This works by accident, kind of:
-;; (defmfun-checked $baz (a &aux (b (1+ a))) (list '(mlist) a b))
+;; (defmfun $baz (a &aux (b (1+ a))) (list '(mlist) a b))
 
 ;; This should produce compile errors
-;; (defmfun-checked $zot (a &key b) (list '(mlist) a b))
+;; (defmfun $zot (a &key b) (list '(mlist) a b))

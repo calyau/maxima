@@ -424,7 +424,7 @@
 ;;POLYNOMIAL   (OR N*M FOR DIFFERENT SIZES).  FOR THIS
 ;;CASE, N IS APPX. THE SIZE OF LARGER.
 
-(defmfun-checked $fasttimes (x y)
+(defmfun $fasttimes (x y)
   (cond ((and (not (atom x)) (not (atom y))
 	      (equal (car x) (car y)) (equal (caar x) 'mrat)
 	      (equal (cddr x) 1) (equal (cddr y) 1))
@@ -474,7 +474,7 @@
 ;;; TO TRUNCATE ON E, DO RATWEIGHT(E,1);
 ;;;THEN DO RATWTLVL:N.  ALL POWERS >N GO TO 0.
 
-(defmfun-checked $ratweight (&rest args)
+(defmfun $ratweight (&rest args)
   (when (oddp (length args))
     (merror (intl:gettext "ratweight: number of arguments must be a multiple of 2.")))
   (do ((l args (cddr l)))
@@ -582,7 +582,7 @@
 	   (wtptimes xn2 xn2 0)))
 	(t (wtptimes x (wtpexpt x (1- n)) 0))))
 
-(defmfun-checked $horner (e &rest l)
+(defmfun $horner (e &rest l)
   (let (($ratfac nil)
 	(varlist (cdr $ratvars))
 	genvar
@@ -621,7 +621,7 @@
 		      ratform
 		      wholepart parnumer varlist n))
 
-(defmfun-checked $partfrac (exp var)
+(defmfun $partfrac (exp var)
   (cond ((mbagp exp)
 	 (cons (car exp) (mapcar #'(lambda (u) ($partfrac u var)) (cdr exp))))
 	((and (atom var) (not (among var exp))) exp)
@@ -690,7 +690,7 @@
 
 (declare-top (special varlist genvar x))
 
-(defmfun-checked $ratdiff (p x)
+(defmfun $ratdiff (p x)
   (if ($ratp p)
       (setq p (minimize-varlist
 	       (if (member 'trunc (cdar p) :test #'eq) ($taytorat p) p))))
@@ -709,7 +709,7 @@
 
 (declare-top (special $pfeformat varlist $factorflag m v dosimp))
 
-(defmfun-checked $pfet (m)
+(defmfun $pfet (m)
   (prog (listov $pfeformat varlist $factorflag)
      (setq $pfeformat t)
      (newvar m)

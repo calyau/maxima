@@ -763,7 +763,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defun bcons (s)
   `((bigfloat simp ,fpprec) . ,s))
 
-(defmfun-checked $bfloat (x)
+(defmfun $bfloat (x)
   (let (y)
     (cond ((bigfloatp x))
 	  ((or (numberp x)

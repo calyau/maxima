@@ -541,7 +541,7 @@ wrapper for this."
 ;;; For testing purposes
 
 #+ignore
-(defmfun-checked $show_mbind_data ()
+(defmfun $show_mbind_data ()
   (format t "~&~{~a = ~a~%~}"
 	  (mapcan #'(lambda (x) (list x (symbol-value x)))
 		  '(bindlist mspeclist $values *mlambda-call-stack*)))
@@ -1131,7 +1131,7 @@ wrapper for this."
 (defmspec mquote (form)
   (cadr form))
 
-(defmfun-checked $subvarp (x)
+(defmfun $subvarp (x)
   (and (not (atom x)) (member 'array (cdar x) :test #'eq) t))
 
 (defmfun mseterr (x y)
@@ -1271,7 +1271,7 @@ wrapper for this."
   (or (symbolp x) (mnump x) ($subvarp x) (stringp x)
       (and (consp x) (eq (caar x) 'mminus) (mnump (cadr x)))))
 
-(defmfun-checked $mapatom (x)
+(defmfun $mapatom (x)
   (if (mapatom (specrepcheck x)) t))
 
 (defmspec $fullmap (l)
@@ -1387,10 +1387,10 @@ wrapper for this."
     (wna-err '$qput))
   ($put (car l) (cadr l) (caddr l)))
 
-(defmfun-checked $rem (atom ind)
+(defmfun $rem (atom ind)
   (prop1 '$rem atom nil ind))
 
-(defmfun-checked $put (atom val ind)
+(defmfun $put (atom val ind)
   (prog1
       (prop1 '$put atom val ind)
     (add2lnc atom $props)))
@@ -1821,7 +1821,7 @@ wrapper for this."
 	 (merror (intl:gettext "array: first argument must be a symbol or a list; found: ~M") (car x)))))
 
 
-(defmfun-checked $show_hash_array (x)
+(defmfun $show_hash_array (x)
   (maphash #'(lambda (k v) (format t "~%~A-->~A" k v)) x))
 
 ;; If this is T then arrays are stored in the value cell,
@@ -2180,7 +2180,7 @@ wrapper for this."
 			       (caddr (cadr fun)))))))))
 
 
-(defmfun-checked $funmake (fun args)
+(defmfun $funmake (fun args)
   (if (not (or (stringp fun) (symbolp fun) ($subvarp fun)
 	       (and (not (atom fun)) (eq (caar fun) 'lambda))))
       (merror (intl:gettext "funmake: first argument must be a symbol, subscripted symbol, string, or lambda expression; found: ~M") fun))
@@ -2338,7 +2338,7 @@ wrapper for this."
     (setq bf (cons (list* (caar bf) 'simp (cdar bf)) (cdr bf))))
   (if $float ($float bf) bf))
 
-(defmfun-checked $allbut (&rest args)
+(defmfun $allbut (&rest args)
   (cons '($allbut) args))
 
 (defquote dsksetq (&rest l)

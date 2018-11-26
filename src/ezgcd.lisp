@@ -305,7 +305,7 @@
        (setq allvars (union* allvars (car l))))
      (return allvars)))
 
-(defmfun-checked $ezgcd (&rest args)
+(defmfun $ezgcd (&rest args)
   (prog (pfl allvars presult flag genvar denom pfl2)
      ;;need if genvar doesn't shrink
      (when (null args)

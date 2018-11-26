@@ -24,7 +24,7 @@
 (defmvar $exptisolate nil)
 (defmvar $isolate_wrt_times nil)
 
-(defmfun-checked $isolate (e *xvar)
+(defmfun $isolate (e *xvar)
   (iso1 e (getopr *xvar)))
 
 (defun iso1 (e *xvar)
@@ -82,7 +82,7 @@
 	     (setq r (catch 'errorsw (div item2ev item1)))
 	     (and (mnump r) (not (zerop1 r)) (div item2 r))))))
 
-(defmfun-checked $pickapart (x lev)
+(defmfun $pickapart (x lev)
   (setq x (format1 x))
   (cond ((not (fixnump lev))
 	 (merror (intl:gettext "pickapart: second argument must be an integer; found: ~M") lev))
@@ -91,7 +91,7 @@
 	((and (atom (cdr x)) (cdr x)) x)
 	(t (cons (car x) (mapcar #'(lambda (y) ($pickapart y (1- lev))) (cdr x))))))
 
-(defmfun-checked $reveal (e lev)
+(defmfun $reveal (e lev)
   (setq e (format1 e))
   (if (and (fixnump lev) (plusp lev))
       (reveal e 1 lev)
@@ -321,7 +321,7 @@
 
 (declare-top (special $programmode *roots *failures varlist genvar $ratfac))
 
-(defmfun-checked $changevar (expr trans nvar ovar)
+(defmfun $changevar (expr trans nvar ovar)
   (let ($ratfac)
     (cond ((or (atom expr) (eq (caar expr) 'rat) (eq (caar expr) 'mrat))
 	   expr)
@@ -434,10 +434,10 @@
 
 (declare-top (special $listconstvars facfun))
 
-(defmfun-checked $factorsum (e)
+(defmfun $factorsum (e)
   (factorsum0 e '$factor))
 
-(defmfun-checked $gfactorsum (e)
+(defmfun $gfactorsum (e)
   (factorsum0 e '$gfactor))
 
 (defun factorsum0 (e facfun)
@@ -509,7 +509,7 @@
 
 (defmvar $combineflag t)
 
-(defmfun-checked $combine (e)
+(defmfun $combine (e)
   (cond ((or (atom e) (eq (caar e) 'rat)) e)
 	((eq (caar e) 'mplus) (combine (cdr e)))
 	(t (recur-apply #'$combine e))))
@@ -540,7 +540,7 @@
     ln ld)
    (return (addn (if xl (cons xl r) r) nil))))
 
-(defmfun-checked $factorout (e &rest vl)
+(defmfun $factorout (e &rest vl)
   (prog (el fl cl l f x)
      (when (null vl)
        (merror (intl:gettext "factorout: at least two arguments required.")))

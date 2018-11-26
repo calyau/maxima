@@ -265,6 +265,7 @@ values")
 	((zerop n) nil)
 	(t (subseq narg-rest-argument 0 n))))
 
+#+nil
 (defmacro defmfun (function &body  rest &aux .n.)
   (cond ((and (car rest) (symbolp (car rest)))
 	 ;;old maclisp narg syntax

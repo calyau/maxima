@@ -45,7 +45,7 @@
 
 ;;;INITIALIZES SOME GLOBAL VARIABLES THEN CALLS THE DISPATCHING FUNCTION
 
-(defmfun-checked $laplace (fun var parm)
+(defmfun $laplace (fun var parm)
   (setq fun (mratcheck fun))
   (cond ((or *nounsflag* (member '%laplace *nounl* :test #'eq))
          (setq fun (remlaplace fun))))
@@ -667,7 +667,7 @@
 
 (declare-top (special varlist ratform ils ilt))
 
-(defmfun-checked $ilt (exp ils ilt)
+(defmfun $ilt (exp ils ilt)
  ;;;EXP IS F(S)/G(S) WHERE F AND G ARE POLYNOMIALS IN S AND DEGR(F) < DEGR(G)
   (let (varlist ($savefactors t) checkfactors $ratfac $keepfloat)
 		;;; MAKES ILS THE MAIN VARIABLE

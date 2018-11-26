@@ -57,7 +57,7 @@
 	       (merror (intl:gettext "listarray: argument must be an array; found: ~M")
 	               ary)))))
 
-(defmfun-checked $fillarray (ary1 ary2)
+(defmfun $fillarray (ary1 ary2)
   (let ((ary
 	 (or (mget ary1 'array)
 	     (and (arrayp ary1) ary1)

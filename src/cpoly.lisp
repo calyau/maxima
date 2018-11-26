@@ -37,7 +37,7 @@
 (defmvar $polyfactor nil
   "When T factor the polynomial over the real or complex numbers.")
 
-(defmfun-checked $allroots (expr)
+(defmfun $allroots (expr)
   (prog (degree *nn* var res $partswitch $keepfloat $demoivre $listconstvars
 	 $algebraic complex $ratfac den expr1)
      (setq $keepfloat t $listconstvars t $algebraic t)
@@ -1316,7 +1316,7 @@
     *nn*))
 
 
-(defmfun-checked $bfallroots (expr)
+(defmfun $bfallroots (expr)
   (prog (degree *nn* var res $partswitch
 	 ($keepfloat t)
 	 $demoivre

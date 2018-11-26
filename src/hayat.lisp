@@ -1859,7 +1859,7 @@
 
 ;;; [var, pt, order, asymp]
 
-(defmfun-checked $taylor (e &rest args)
+(defmfun $taylor (e &rest args)
   (when (not ($ratp e))
     ;; Not a mrat expression. Remove the special representation.
     (setq e (specrepcheck e)))

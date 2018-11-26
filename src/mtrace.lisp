@@ -203,13 +203,13 @@
 (defmspec $trace (form)
   (mlistcan-$all #'macsyma-trace (cdr form) $trace))
 
-(defmfun-checked $trace_it (function)
+(defmfun $trace_it (function)
   `((mlist) ,@(macsyma-trace function)))
 
 (defmspec $untrace (form)
   `((mlist) ,@(mapcan #'macsyma-untrace (or (cdr form) (cdr $trace)))))
 
-(defmfun-checked $untrace_it (function)
+(defmfun $untrace_it (function)
   `((mlist) ,@(macsyma-untrace function)))
 
 (defmspec $trace_options (form)

@@ -1578,21 +1578,21 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 (define-symbol "@") 
 
 ;;; User extensibility:
-(defmfun-checked $prefix (operator &optional (rbp  180.)
+(defmfun $prefix (operator &optional (rbp  180.)
 			             (rpos '$any)
 				     (pos  '$any))
   (def-operator operator pos ()  ()     rbp rpos () t
 		'(nud . parse-prefix) 'msize-prefix 'dimension-prefix ()   )
   operator)
 
-(defmfun-checked $postfix (operator &optional (lbp  180.)
+(defmfun $postfix (operator &optional (lbp  180.)
 			             (lpos '$any)
 				     (pos  '$any))
   (def-operator operator pos lbp lpos   ()  ()   t  ()
 		'(led . parse-postfix) 'msize-postfix 'dimension-postfix  ()   )
   operator)
 
-(defmfun-checked $infix  (operator &optional (lbp  180.)
+(defmfun $infix  (operator &optional (lbp  180.)
 			             (rbp  180.)
 				     (lpos '$any)
 				     (rpos '$any)
@@ -1601,14 +1601,14 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 		'(led . parse-infix) 'msize-infix 'dimension-infix () )
   operator)
 
-(defmfun-checked $nary   (operator &optional (bp     180.)
+(defmfun $nary   (operator &optional (bp     180.)
 			             (argpos '$any)
 				     (pos    '$any))
   (def-operator operator pos bp  argpos bp  ()   t t
 		'(led . parse-nary) 'msize-nary 'dimension-nary () )
   operator)
 
-(defmfun-checked $matchfix (operator
+(defmfun $matchfix (operator
 		    match  &optional (argpos '$any)
 				     (pos    '$any))
   ;shouldn't MATCH be optional?
@@ -1616,7 +1616,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 		'(nud . parse-matchfix) 'msize-matchfix 'dimension-match match)
   operator)
 
-(defmfun-checked $nofix  (operator &optional (pos '$any))
+(defmfun $nofix  (operator &optional (pos '$any))
   (def-operator operator pos ()  ()     ()  () () ()
 		'(nud . parse-nofix) 'msize-nofix 'dimension-nofix ()   )
   operator)

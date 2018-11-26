@@ -147,7 +147,7 @@
 ;; or, when the second argument is a list,
 ;;  NAME(I) = <list element>
 
-(defmfun-checked $fortmx (name mat &optional (stream *standard-output*) &aux ($loadprint nil))
+(defmfun $fortmx (name mat &optional (stream *standard-output*) &aux ($loadprint nil))
   (cond ((not (symbolp name))
 	 (merror (intl:gettext "fortmx: first argument must be a symbol; found: ~M") name))
 	((not (or ($matrixp mat) ($listp mat)))

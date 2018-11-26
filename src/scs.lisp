@@ -12,7 +12,7 @@
 
 (macsyma-module scs)
 
-(defmfun-checked $scsimp (expr &rest rules)
+(defmfun $scsimp (expr &rest rules)
   (scs expr (mapcar #'meqhk rules)))
 
 (defun scs (x zrs)
@@ -38,7 +38,7 @@
 (defun dstrb (x l nl)
   (revappend (mapcar #'(lambda (u) (mul x u)) l) nl))
 
-(defmfun-checked $distrib (exp)
+(defmfun $distrib (exp)
   (cond ((or (mnump exp) (symbolp exp)) exp)
 	((eq 'mtimes (caar exp))
 	 (setq exp (mapcar '$distrib (cdr exp)))
@@ -54,7 +54,7 @@
 	((eq 'mrat (caar exp)) ($distrib (ratdisrep exp)))
 	(t exp)))
 
-(defmfun-checked $facout (x y)
+(defmfun $facout (x y)
   (if (mplusp y)
       (mul x (addn (mapcar #'(lambda (l) (div l x)) (cdr y)) t))
       y))

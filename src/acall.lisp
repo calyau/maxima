@@ -90,12 +90,12 @@
     (t
      (merror (intl:gettext "MARRAYREF: cannot retrieve an element of ~M") aarray))))
 
-(defmfun-checked $arrayapply (ar inds)
+(defmfun $arrayapply (ar inds)
   (unless ($listp inds)
     (merror (intl:gettext "arrayapply: second argument must be a list; found ~M") inds))
   (apply #'marrayref ar (cdr inds)))
 
-(defmfun-checked $arraysetapply (ar inds val)
+(defmfun $arraysetapply (ar inds val)
   (unless ($listp inds)
     (merror (intl:gettext "arraysetapply: second argument must be a list; found ~M") inds))
   (apply #'marrayset val ar (cdr inds)))

@@ -133,7 +133,7 @@
 ;;dummy-variable-operators is defined in COMM, which uses it inside of SUBST1.
 (declare-top (special atvars *atp* munbound dummy-variable-operators))
 
-(defmfun-checked $atvalue (exp eqs val)
+(defmfun $atvalue (exp eqs val)
   (let (dl vl fun)
     (cond ((notloreq eqs) (improper-arg-err eqs '$atvalue))
 	  ((or (atom exp) (and (eq (caar exp) '%derivative) (atom (cadr exp))))
@@ -211,7 +211,7 @@
       (if (eql ($length v) 1)
         (at-not-dependent-find-vars-1 ($first v) arg)))))
 
-(defmfun-checked $at (expr ateqs)
+(defmfun $at (expr ateqs)
   (if (notloreq ateqs) (improper-arg-err ateqs '$at))
   (atscan (let ((*atp* t)) ($psubstitute ateqs expr)) ateqs))
 
@@ -254,7 +254,7 @@
 
 (defmvar $logconcoeffp nil)
 
-(defmfun-checked $logcontract (e)
+(defmfun $logcontract (e)
   (lgcreciprocal (logcon e))) ; E is assumed to be simplified.
 
 (defun logcon (e)
@@ -481,7 +481,7 @@
   (mapcar #'(lambda (x) (rplaca x (quotient (car x) gcd))) llist)
   llist)
 
-(defmfun-checked $nterms (e)
+(defmfun $nterms (e)
   (cond ((zerop1 e) 0)
 	((atom e) 1)
 	((eq (caar e) 'mtimes)
@@ -577,7 +577,7 @@
 
 ;;;; ARITHF
 
-(defmfun-checked $fibtophi (e &optional (lnorecurse nil))
+(defmfun $fibtophi (e &optional (lnorecurse nil))
   (cond ((atom e) e)
 	((eq (caar e) '$fib)
 	 (setq e (cond (lnorecurse (cadr e)) (t ($fibtophi (cadr e) lnorecurse))))
@@ -600,7 +600,7 @@
 (let (my-powers)
   (declare (special my-powers))
 
-  (defmfun-checked $derivdegree (e depvar var)
+  (defmfun $derivdegree (e depvar var)
     (let (my-powers) (declare (special my-powers)) (derivdeg1 e depvar var) (if (null my-powers) 0 (maximin my-powers '$max))))
 
   (defun derivdeg1 (e depvar var)
@@ -618,13 +618,13 @@
 (defprop mbox $box reversealias)
 (defprop mlabox $box reversealias)
 
-(defmfun-checked $dpart (&rest args)
+(defmfun $dpart (&rest args)
   (mpart args nil t nil '$dpart))
 
-(defmfun-checked $lpart (e &rest args)
+(defmfun $lpart (e &rest args)
   (mpart args nil (list e) nil '$lpart))
 
-(defmfun-checked $box (e &optional (l nil l?))
+(defmfun $box (e &optional (l nil l?))
   (if l?
       (list '(mlabox) e (box-label l))
       (list '(mbox) e)))
@@ -639,7 +639,7 @@
       x
       (coerce (mstring x) 'string)))
 
-(defmfun-checked $rembox (e &optional (l nil l?))
+(defmfun $rembox (e &optional (l nil l?))
   (let ((label (if l? (box-label l) '(nil))))
     (rembox1 e label)))
 
@@ -714,7 +714,7 @@
 
 ;;;; GENMAT
 
-(defmfun-checked $genmatrix (a i2 &optional (j2 i2) (i1 1) (j1 i1))
+(defmfun $genmatrix (a i2 &optional (j2 i2) (i1 1) (j1 i1))
   (let ((f) (l (ncons '($matrix))))
     (setq f (if (or (symbolp a) (hash-table-p a) (arrayp a))
 		#'(lambda (i j) (meval (list (list a 'array) i j)))
@@ -740,22 +740,22 @@
 ; Resolves SF bug report [ 1224960 ] sideeffect with copylist.
 ; An optimization would be to call COPY-TREE only on mutable expressions.
 
-(defmfun-checked $copymatrix (x)
+(defmfun $copymatrix (x)
   (unless ($matrixp x)
     (merror (intl:gettext "copymatrix: argument must be a matrix; found ~M") x))
   (copy-tree x))
 
-(defmfun-checked $copylist (x)
+(defmfun $copylist (x)
   (unless ($listp x)
     (merror (intl:gettext "copylist: argument must be a list; found ~M") x))
   (copy-tree x))
 
-(defmfun-checked $copy (x)
+(defmfun $copy (x)
   (copy-tree x))
 
 ;;;; ADDROW
 
-(defmfun-checked $addrow (m &rest rows)
+(defmfun $addrow (m &rest rows)
   (declare (dynamic-extent rows))
   (cond ((not ($matrixp m))
          (merror
@@ -767,7 +767,7 @@
            (dolist (r rows m)
              (setq m (addrow m r)))))))
 
-(defmfun-checked $addcol (m &rest cols)
+(defmfun $addcol (m &rest cols)
   (declare (dynamic-extent cols))
   (cond ((not ($matrixp m)) (merror (intl:gettext "addcol: first argument must be a matrix; found ~M") m))
 	((null cols) m)
@@ -795,7 +795,7 @@
 
 ;;;; ARRAYF
 
-(defmfun-checked $arraymake (ary subs)
+(defmfun $arraymake (ary subs)
   (cond ((or (not ($listp subs)) (null (cdr subs)))
 	 (merror (intl:gettext "arraymake: second argument must be a list of one or more elements; found ~M") subs))
 	((symbolp ary)
@@ -875,7 +875,7 @@
 	   (implode (nconc (ncons char) (mexploden n)
 			   (exploden (stripdollar (car l))))))))
 
-(defmfun-checked $unorder ()
+(defmfun $unorder ()
   (let ((l (delete nil
 		 (cons '(mlist simp)
 		       (nconc (mapcar #'(lambda (x) (remalias (getalias x))) lessorder)

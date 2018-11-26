@@ -428,7 +428,7 @@
 
 (declare-top (special $trigexpandplus $trigexpandtimes))
 
-(defmfun-checked $trigexpand (e)
+(defmfun $trigexpand (e)
   (cond ((atom e) e)
 	((specrepp e) ($trigexpand (specdisrep e)))
 	((trigexpand (caar e) (cadr e)))

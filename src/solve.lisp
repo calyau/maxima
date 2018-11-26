@@ -87,7 +87,7 @@
 ;; Checks for consistency between the number of unknowns and equations.
 ;; Calls SOLVEX for simultaneous equations and SSOLVE for a single equation.
 
-(defmfun-checked $solve (*eql &optional (varl nil varl-p))
+(defmfun $solve (*eql &optional (varl nil varl-p))
   (setq $multiplicities (make-mlist))
   (prog (eql                            ; Equations to solve
          $keepfloat $ratfac             ; In case user has set these
@@ -897,7 +897,7 @@
    (setq fm (cddr fm))
    (go loop)))
 
-(defmfun-checked $linsolve (eql varl)
+(defmfun $linsolve (eql varl)
   (let (($ratfac))
     (setq eql (if ($listp eql) (cdr eql) (ncons eql)))
     (setq varl (if ($listp varl)

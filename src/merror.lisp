@@ -23,11 +23,11 @@
 (defmvar $errormsg 't
   "If `false' then no maxima-error message is printed!")
 
-(defmfun-checked $error (&rest l)
+(defmfun $error (&rest l)
   "Signals a Maxima user error."
   (apply #'merror (fstringc l)))
 
-(defmfun-checked $warning (&rest l)
+(defmfun $warning (&rest l)
   "Signals a Maxima warning."
   (apply #'mwarning l))
 
@@ -150,7 +150,7 @@
 	    (t
 	     (push form new-argl))))))
 
-(defmfun-checked $errormsg ()
+(defmfun $errormsg ()
   "errormsg() redisplays the maxima-error message while in a `maxima-error' break."
   ;; Don't optimize out call to PROCESS-ERROR-ARGL in case of
   ;; multiple calls to $ERRORMSG, because the user may have changed

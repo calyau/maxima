@@ -118,7 +118,7 @@
 	((ratreduce (pctimes (cadr p) (car r))
 		    (cdr r)))))
 
-(defmfun-checked $algtrace (r p var)
+(defmfun $algtrace (r p var)
   (let ((varlist (list var))
 	(genvar nil))
     (rdis* (algtrace (rform r) (car (rform p))))))
@@ -132,7 +132,7 @@
 (defun bad-form (l) ;;good -> bad
   (mapcar #'(lambda (q) (list (cdr q) (car q))) l))
 
-(defmfun-checked $algfac (a1 &optional (a2 nil a2?) (a3 nil a3?))
+(defmfun $algfac (a1 &optional (a2 nil a2?) (a3 nil a3?))
   (if a3?
       ($pfactoralg a1 a2 a3)
       (let ((varlist))
@@ -153,7 +153,7 @@
                         ;; MEANING OF NEXT MESSAGE IS UNCLEAR
 			(merror (intl:gettext "algfac: no algebraics.")))))))))
 
-(defmfun-checked $pfactoralg (f p alg)
+(defmfun $pfactoralg (f p alg)
   (let ((varlist (list alg))
 	(genvar) (vlist) (tellratlist) ($ratfac)
 	($gcd '$algebraic)
@@ -249,7 +249,7 @@
 
 
 
-(defmfun-checked $splitfield (p var)
+(defmfun $splitfield (p var)
   (let ((varlist)
 	(genvar)
 	(genpairs)
@@ -386,7 +386,7 @@
 (defun algnorm (f p)
   (presult f p (car p)))
 
-(defmfun-checked $algnorm (r p var)
+(defmfun $algnorm (r p var)
   (let ((varlist (list var))
 	(genvar))
     (setq r (ratf r)
@@ -436,7 +436,7 @@
 
 ;; discriminant of a basis
 
-(defmfun-checked $bdiscr (&rest args)
+(defmfun $bdiscr (&rest args)
   (let ((varlist) (genvar))
     (xcons (bdiscr (mapcar #'rform (butlast args))
 		   (car (rform (car (last args)))))

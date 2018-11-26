@@ -69,10 +69,10 @@
 	((eq (caar x) '$matrix) x)
 	((eq (caar x) 'mlist) (list '($matrix) x)))) 
 
-(defmfun-checked $matrixp (x)
+(defmfun $matrixp (x)
   (and (not (atom x)) (eq (caar x) '$matrix)))
 
-(defmfun-checked $charpoly (mat var) 
+(defmfun $charpoly (mat var) 
   (setq mat (check mat))
   (unless (= (length mat) (length (cadr mat)))
     (merror (intl:gettext "charpoly: matrix must be square; found ~M rows, ~M columns.") (length mat) (length (cadr mat))))
@@ -142,7 +142,7 @@
       (mapcar #'(lambda (i j) (simplus (list '(mplus) i j) 1 nil)) a b)
       (mapcar #'ratplus a b))) 
 
-(defmfun-checked $determinant (mat)
+(defmfun $determinant (mat)
   (cond ((not (or (mbagp mat) ($matrixp mat))) 
          (if ($scalarp mat) mat (list '(%determinant) mat)))
 	(t (setq mat (check mat))
@@ -232,10 +232,10 @@
 		 (sprdet '*mat* (length x)))
 	(t (treedet x))))
 
-(defmfun-checked $ident (n)
+(defmfun $ident (n)
   (cons '($matrix) (mxc (diagmatrix n 1 '$ident))))
  
-(defmfun-checked $diagmatrix (n var)
+(defmfun $diagmatrix (n var)
   (cons '($matrix) (mxc (diagmatrix n var '$diagmatrix))))
 
 (defun diagmatrix (n var fn)
@@ -268,7 +268,7 @@
      (push (or d '(0 . 1)) row)
      (go loop2)))
 
-(defmfun-checked $invert_by_gausselim (k) 
+(defmfun $invert_by_gausselim (k) 
   (let ((*inv* t) *det* top* mul* ($ratmx t) (ratmx $ratmx) $ratfac $sparse)
     (cond ((atom k) ($nounify '$inverx) (list '(%inverx) k))
 	  (t (newvarmat1 (setq k (check k)))
@@ -384,7 +384,7 @@
       (setf (aref name i j) (car row)))))
 
 
-(defmfun-checked $echelon (x)
+(defmfun $echelon (x)
   (let (($ratmx t))
     (newvarmat1 (setq x (check x))))
   (let ((*ech* t) ($algebraic $algebraic))
@@ -558,7 +558,7 @@
 ;; RANK(MATRIX([1-SQRT(5),2],[-2,1+SQRT(5)])); will give 1.
 ;; - JPG and BMT
  
-(defmfun-checked $rank (x)
+(defmfun $rank (x)
   (let ((*rank* t) ($ratmx t) ($algebraic $algebraic))
     (newvarmat1 (setq x (check x)))
     (and (not $algebraic) (some #'algp varlist) (setq $algebraic t))
@@ -582,7 +582,7 @@
      (setq row (cdr row))
      (go loop)))
  
-(defmfun-checked $triangularize (x) 
+(defmfun $triangularize (x) 
   (let (($ratmx t))
     (newvarmat1 (setq x (check x))))
   (let (($algebraic $algebraic))
@@ -590,7 +590,7 @@
     (setq x (cons '($matrix) (mxc (disreplist1 (triang (replist1 (mcx (cdr x)))))))))
   (if $ratmx x ($totaldisrep x)))
 
-(defmfun-checked $col (mat n)
+(defmfun $col (mat n)
   (cons '($matrix) (mxc (transpose (list (nthcol (mcx (cdr (check mat))) n)))))) 
 
 (defun deletecol (n x)
@@ -605,16 +605,16 @@
 	((= i 1) (cdr m)) 
 	(t (cons (car m) (deleterow (1- i) (cdr m)))))) 
  
-(defmfun-checked $minor (mat m n)
+(defmfun $minor (mat m n)
   (cons '($matrix) (mxc (minor m n (mcx (cdr (check mat)))))))
  
 (defun minor (i j m)
   (deletecol j (deleterow i m))) 
 
-(defmfun-checked $row (mat m)
+(defmfun $row (mat m)
   (cons '($matrix) (mxc (list (ith (mcx (cdr (check mat))) m)))))
 
-(defmfun-checked $setelmx (elm m n mat) 
+(defmfun $setelmx (elm m n mat) 
   (cond
     ((not (and (integerp m) (integerp n)))
 	 (merror (intl:gettext "setelmx: indices must be integers; found: ~M, ~M") m n))
@@ -631,7 +631,7 @@
 
 
 
-(defmfun-checked $transpose (mat)
+(defmfun $transpose (mat)
   (cond ((not (mxorlistp mat))
 	 (cond ((and (not (atom mat)) (member (mop mat) '($transpose %transpose) :test #'eq))
 		(cadr mat))
@@ -667,7 +667,7 @@
 	 (meval `((,(getopr $matrix_element_transpose)) ((mquote simp) ,elem))))))
 
 
-(defmfun-checked $submatrix (&rest x)
+(defmfun $submatrix (&rest x)
   (prog (r c)
      l1   (when (numberp (car x))
 	    (push (car x) r)

@@ -27,7 +27,7 @@
 ;;;  parallel, so having occurrences of sym1 in form2, etc. will have
 ;;;  the `desired' (non-interfering) effect.
 
-(defmfun-checked $sublis (substitutions form)
+(defmfun $sublis (substitutions form)
   (cond (($listp substitutions)
 	 (do ((l (cdr substitutions) (cdr l))
 	      (nl ())

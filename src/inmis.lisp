@@ -20,7 +20,7 @@
 
 (defmvar $listdummyvars t)
 
-(defmfun-checked $unknown (f) (catch 'unknown (unknown (specrepcheck f))))
+(defmfun $unknown (f) (catch 'unknown (unknown (specrepcheck f))))
 
 (defun unknown (f)
   (and (not (mapatom f))
@@ -30,7 +30,7 @@
 	     ((not (zl-get (caar f) 'operators)) (throw 'unknown t))
 	     (t (mapc #'unknown (cdr f)) nil))))
 
-(defmfun-checked $listofvars (e) 
+(defmfun $listofvars (e) 
   (let ((listofvars (ncons '(mlist))))
     (when ($ratp e)
       (and (member 'trunc (cddar e) :test #'eq) (setq e ($taytorat e)))

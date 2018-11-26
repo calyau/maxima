@@ -60,14 +60,14 @@
 
 (defprop mrat mrateval mfexpr*)
 
-(defmfun-checked $ratnumer (x)
+(defmfun $ratnumer (x)
   (cond ((mbagp x)
          (cons (car x) (mapcar '$ratnumer (cdr x))))
         (t
          (setq x (taychk2rat x))
          (cons (car x) (cons (cadr x) 1)))))
 
-(defmfun-checked $ratdenom (x)
+(defmfun $ratdenom (x)
   (cond ((mbagp x)
          (cons (car x) (mapcar '$ratdenom (cdr x))))
         (t
@@ -93,13 +93,13 @@
 			   (pdisrep! (car p) var))
 		 (trdisp1 (cddr p) var)))))
 
-(defmfun-checked $untellrat (&rest args)
+(defmfun $untellrat (&rest args)
   (dolist (x args)
     (if (setq x (assol x tellratlist))
 	(setq tellratlist (remove x tellratlist :test #'equal))))
   (cons '(mlist) (mapcar #'tellratdisp tellratlist)))
 
-(defmfun-checked $tellrat (&rest args)
+(defmfun $tellrat (&rest args)
   (mapc #'tellrat1 args)
   (unless (null args) (add2lnc 'tellratlist $myoptions))
   (cons '(mlist) (mapcar #'tellratdisp tellratlist)))
@@ -121,17 +121,17 @@
   (push algvar tellratlist))
 
 
-(defmfun-checked $printvarlist ()
+(defmfun $printvarlist ()
   (cons '(mlist) (copy-tree varlist)))
 
-(defmfun-checked $showratvars (e)
+(defmfun $showratvars (e)
   (cons '(mlist simp)
 	(cond (($ratp e)
 	       (if (member 'trunc (cdar e) :test #'eq) (setq e ($taytorat e)))
 	       (caddar (minimize-varlist e)))
 	      (t (let (varlist) (lnewvar e) varlist)))))
 
-(defmfun-checked $ratvars (&rest args)
+(defmfun $ratvars (&rest args)
   (add2lnc '$ratvars $myoptions)
   (setq $ratvars (cons '(mlist simp) (setq varlist (mapfr1 args varlist)))))
 
@@ -140,7 +140,7 @@
 
 (defmvar inratsimp nil)
 
-(defmfun-checked $fullratsimp (exp &rest argl)
+(defmfun $fullratsimp (exp &rest argl)
   (prog (exp1)
      loop (setq exp1 (simplify (apply #'$ratsimp (cons exp argl))))
      (when (alike1 exp exp1) (return exp))
@@ -155,7 +155,7 @@
     (setq l ($totaldisrep l))
     (fr1 l varlist)))
 
-(defmfun-checked $totaldisrep (l)
+(defmfun $totaldisrep (l)
   (cond ((atom l) l)
 	((not (among 'mrat l)) l)
 	((eq (caar l) 'mrat) (ratdisrep l))
@@ -167,7 +167,7 @@
   (mapc #'(lambda (z) (unless (memalike z varlist) (push z varlist)))
 	(reverse (mapfr1 cdrl nil))))
 
-(defmfun-checked $rat (e &rest vars)
+(defmfun $rat (e &rest vars)
   (cond ((not (null vars))
 	 (let (varlist)
 	   (joinvarlist vars)
@@ -182,7 +182,7 @@
       (cons (car exp) (mapcar #'rat0 (cdr exp)))
       (ratf exp)))
 
-(defmfun-checked $ratsimp (e &rest vars)
+(defmfun $ratsimp (e &rest vars)
   (cond ((not (null vars))
 	 (let (varlist)
 	   (joinvarlist vars)
@@ -194,7 +194,7 @@
 
 ;;;PSQFR HAS NOT BEEN CHANGED TO MAKE USE OF THE SQFR FLAGS YET
 
-(defmfun-checked $sqfr (x)
+(defmfun $sqfr (x)
   (let ((varlist (cdr $ratvars)) genvar $keepfloat $ratfac)
     (sublis '((factored . sqfred) (irreducible . sqfr))
 	    (ffactor x #'psqfr))))
@@ -242,14 +242,14 @@
 		       alpha p)))
 
 
-(defmfun-checked $gfactor (p &aux (gauss t))
+(defmfun $gfactor (p &aux (gauss t))
   (when ($ratp p) (setq p ($ratdisrep p)))
   (setq p ($factor (subst '%i '$%i p) '((mplus) 1 ((mexpt) %i 2))))
   (setq p (sublis '((factored . gfactored) (irreducible . irreducibleg)) p))
   (let (($expop 0) ($expon 0) $negdistrib)
     (maxima-substitute '$%i '%i p)))
 
-(defmfun-checked $factor (e &optional (mp nil mp?))
+(defmfun $factor (e &optional (mp nil mp?))
   (let ($intfaclim (varlist (cdr $ratvars)) genvar ans)
     (setq ans (if mp? (factor e mp) (factor e)))
     (if (and factorresimp $negdistrib
@@ -353,7 +353,7 @@
 
 (declare-top (unspecial var))
 
-(defmfun-checked $polymod (p &optional (m 0 m?))
+(defmfun $polymod (p &optional (m 0 m?))
   (let ((modulus modulus))
     (when m?
       (setq modulus m)
@@ -371,7 +371,7 @@
 	(setq e (cons (car e) (ratreduce (pmod (cadr e)) (pmod (cddr e)))))
 	(cond (formflag e) (t (ratdisrep e))))))
 
-(defmfun-checked $divide (x y &rest vars)
+(defmfun $divide (x y &rest vars)
   (prog (h varlist tt ty formflag $ratfac)
      (when (and ($ratp x) (setq formflag t) (integerp (cadr x)) (equal (cddr x) 1))
        (setq x (cadr x)))
@@ -400,13 +400,13 @@
      (setq h (list '(mlist) (cons h (car x)) (cons h (cadr x))))
      (return (if formflag h ($totaldisrep h)))))
 
-(defmfun-checked $quotient (&rest args)
+(defmfun $quotient (&rest args)
   (cadr (apply '$divide args)))
 
-(defmfun-checked $remainder (&rest args)
+(defmfun $remainder (&rest args)
   (caddr (apply '$divide args)))
 
-(defmfun-checked $gcd (x y &rest vars)
+(defmfun $gcd (x y &rest vars)
   (prog (h varlist genvar $keepfloat formflag)
      (setq formflag ($ratp x))
      (and ($ratp y) (setq formflag t))
@@ -426,7 +426,7 @@
      (setq h (cons h x))
      (return (if formflag h (ratdisrep h)))))
 
-(defmfun-checked $content (x &rest vars)
+(defmfun $content (x &rest vars)
   (prog (y h varlist formflag)
      (setq formflag ($ratp x))
      (setq varlist vars)
@@ -949,7 +949,7 @@
 ;; XY + Y + X + 1  OTHERWISE, AS (X+1)Y + X + 1
 (defmvar $ratexpand nil)
 
-(defmfun-checked $ratexpand (x)
+(defmfun $ratexpand (x)
   (if (mbagp x)
       (cons (car x) (mapcar '$ratexpand (cdr x)))
       (let (($ratexpand t) ($ratfac nil))
@@ -975,7 +975,7 @@
 
 (defmvar $ratdenomdivide t)
 
-(defmfun-checked $ratdisrep (x)
+(defmfun $ratdisrep (x)
   (cond ((mbagp x)
          ;; Distribute over lists, equations, and matrices.
          (cons (car x) (mapcar #'$ratdisrep (cdr x))))

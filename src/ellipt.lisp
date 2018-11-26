@@ -1558,9 +1558,9 @@ first kind:
        ((mtimes simp) -1 (($elliptic_f simp) phi m)))))
   grad)
 		    
-(defmfun-checked $elliptic_f (phi m)
+(defmfun $elliptic_f (phi m)
   (simplify (list '($elliptic_f) (resimplify phi) (resimplify m))))
-(defmfun-checked $elliptic_e (phi m)
+(defmfun $elliptic_e (phi m)
   (simplify (list '($elliptic_e) (resimplify phi) (resimplify m))))
 
 (defmfun simp-$elliptic_f (form unused z)
@@ -1675,9 +1675,9 @@ first kind:
 ;;
 ;; elliptic_ec(m) = elliptic_e(%pi/2, m)
 ;;
-(defmfun-checked $elliptic_kc (m)
+(defmfun $elliptic_kc (m)
   (simplify (list '(%elliptic_kc) (resimplify m))))
-(defmfun-checked $elliptic_ec (m)
+(defmfun $elliptic_ec (m)
   (simplify (list '(%elliptic_ec) (resimplify m))))
 
 
@@ -1843,7 +1843,7 @@ first kind:
 ;;
 (defprop $elliptic_pi simp-$elliptic_pi operators)
 
-(defmfun-checked $elliptic_pi (n phi m)
+(defmfun $elliptic_pi (n phi m)
   (simplify (list '($elliptic_pi)
 		  (resimplify n) (resimplify phi) (resimplify m))))
 
@@ -4427,7 +4427,7 @@ first kind:
 	(t
 	 (recur-apply #'make-elliptic-f e))))
 
-(defmfun-checked $make_elliptic_f (e)
+(defmfun $make_elliptic_f (e)
   (if (atom e)
       e
       (simplify (make-elliptic-f e))))
@@ -4441,7 +4441,7 @@ first kind:
 	(t
 	 (recur-apply #'make-elliptic-e e))))
 
-(defmfun-checked $make_elliptic_e (e)
+(defmfun $make_elliptic_e (e)
   (if (atom e)
       e
       (simplify (make-elliptic-e e))))
@@ -4530,12 +4530,12 @@ first kind:
 	  (t
 	   (eqtest `(($elliptic_eu) ,u ,m) form)))))
 
-(defmfun-checked $elliptic_eu (u m)
+(defmfun $elliptic_eu (u m)
   (simplify `(($elliptic_eu) ,(resimplify u) ,(resimplify m))))
 
 (defprop %jacobi_am simp-%jacobi_am operators)
 
-(defmfun-checked $jacobi_am (u m)
+(defmfun $jacobi_am (u m)
   (simplify `((%jacobi_am) ,(resimplify u) ,(resimplify m))))
 
 (defmfun simp-%jacobi_am (form unused z)

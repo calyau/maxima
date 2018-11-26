@@ -363,13 +363,13 @@
 
 (in-package :maxima)
 
-(defmfun-checked $set_random_state (x)
+(defmfun $set_random_state (x)
   "Copy the argument, and assign the copy to MT19937::*RANDOM-STATE*.
   Returns '$done."
   (setq mt19937::*random-state* (mt19937::make-random-state x))
   '$done)
 
-(defmfun-checked $make_random_state (x)
+(defmfun $make_random_state (x)
   "Returns a new random state object. If argument is an integer or array,
   use argument to initialize random state. Otherwise punt to MT19937::MAKE-RANDOM-STATE."
   (cond
@@ -378,7 +378,7 @@
     (t
       (mt19937::make-random-state x))))
 
-(defmfun-checked $random (x)
+(defmfun $random (x)
   "Returns the next number from this generator.
   Punt to MT19937::RANDOM."
   (if (and (or (integerp x) (floatp x))

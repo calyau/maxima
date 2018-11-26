@@ -365,10 +365,10 @@ DESTINATION is an actual stream (rather than nil for a string)."
     (princ *general-display-prefix*)
     res))
 
-(defmfun-checked $read (&rest l)
+(defmfun $read (&rest l)
   (meval (apply #'$readonly l)))
 
-(defmfun-checked $readonly (&rest l)
+(defmfun $readonly (&rest l)
   (let ((*mread-prompt*
 	 (if l
 	     (string-right-trim '(#\n)
@@ -407,7 +407,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 		    (car arg-list) '$file_search_demo))
     ($batch tem	'$demo)))
 
-(defmfun-checked $bug_report ()
+(defmfun $bug_report ()
   (format t (intl:gettext "~%Please report bugs to:~%"))
   (format t "    https://sourceforge.net/p/maxima/bugs~%")
   (format t (intl:gettext "To report a bug, you must have a Sourceforge account.~%"))
@@ -427,7 +427,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 
 (defvar *maxima-build-info* nil)
 
-(defmfun-checked $build_info ()
+(defmfun $build_info ()
   (or
     *maxima-build-info*
     (setq
@@ -535,7 +535,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
   (throw 'macsyma-quit t))
 
 #-(or sbcl cmu)
-(defmfun-checked $writefile (x)
+(defmfun $writefile (x)
   (let ((msg (dribble (maxima-string x))))
     (format t "~&~A~&" msg)
     '$done))
@@ -544,7 +544,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 (defvar *appendfile-data* #+(or sbcl cmu) nil)
 
 #-(or sbcl cmu)
-(defmfun-checked $appendfile (name)
+(defmfun $appendfile (name)
   (if (and (symbolp name)
 	   (char= (char (symbol-name name) 0) #\$))
       (setq name (maxima-string name)))
@@ -565,7 +565,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
     '$done))
 
 #-(or sbcl cmu)
-(defmfun-checked $closefile ()
+(defmfun $closefile ()
   (cond ($appendfile
 	 (cond ((eq $appendfile *terminal-io*)
 		(format t (intl:gettext "~&/*Finished dribbling to ~A.*/~&")
@@ -591,19 +591,19 @@ DESTINATION is an actual stream (rather than nil for a string)."
     '$done))
 
 #+(or sbcl cmu)
-(defmfun-checked $writefile (name)
+(defmfun $writefile (name)
   (if (member name *appendfile-data* :test #'string=)
       (merror (intl:gettext "writefile: already in writefile, you must call closefile first.")))
   (start-dribble name))
 
 #+(or sbcl cmu)
-(defmfun-checked $appendfile (name)
+(defmfun $appendfile (name)
   (if (member name *appendfile-data* :test #'string=)
       (merror (intl:gettext "appendfile: already in appendfile, you must call closefile first.")))
   (start-dribble name))
 
 #+(or sbcl cmu)
-(defmfun-checked $closefile ()
+(defmfun $closefile ()
   (cond (*appendfile-data*
 	 (let ((msg (dribble)))
 	   (format t "~&~A~&" msg))
@@ -614,7 +614,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	 (setq *appendfile-data* (cdr *appendfile-data*))))
   '$done)
 
-(defmfun-checked $ed (x)
+(defmfun $ed (x)
   (ed (maxima-string x)))
 
 (defun nsubstring (x y)

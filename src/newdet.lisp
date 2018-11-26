@@ -26,7 +26,7 @@
 (defvar *binom*)
 (defvar *input*)
 
-(defmfun-checked $newdet (mat)
+(defmfun $newdet (mat)
   (cond ((not (or (mbagp mat) ($matrixp mat)))
          (if ($scalarp mat) mat (list '(%newdet simp) mat)))
         (t
@@ -39,7 +39,7 @@
             (length (cdadr mat))))
          (newdet mat (length (cdr mat)) nil))))
 
-(defmfun-checked $permanent (mat)
+(defmfun $permanent (mat)
   (cond ((not (or (mbagp mat) ($matrixp mat)))
          (if ($scalarp mat) mat (list '(%permanent simp) mat)))
         (t

@@ -13,7 +13,7 @@
 
 ;;;  Logarc and Halfangles
 
-(defmfun-checked $logarc (exp)
+(defmfun $logarc (exp)
   (cond ((atom exp) exp)
 	((arcp (caar exp)) (logarc (caar exp) ($logarc (cadr exp))))
 	((eq (caar exp) '$atan2)

@@ -603,9 +603,9 @@
 
 (declare-top (special $numer $trigsign))
 
-(defmfun-checked $zeromatrix (m n) ($ematrix m n 0 1 1))
+(defmfun $zeromatrix (m n) ($ematrix m n 0 1 1))
 
-(defmfun-checked $ematrix (m n var i j)
+(defmfun $ematrix (m n var i j)
   (prog (ans row) 
      (cond ((equal m 0) (return (ncons '($matrix simp))))
 	   ((and (equal n 0) (fixnump m) (> m 0))
@@ -629,9 +629,9 @@
 
 (declare-top (special $ratmx))
 
-(defmfun-checked $coefmatrix (eql varl) (coefmatrix eql varl nil))
+(defmfun $coefmatrix (eql varl) (coefmatrix eql varl nil))
 
-(defmfun-checked $augcoefmatrix (eql varl) (coefmatrix eql varl t))
+(defmfun $augcoefmatrix (eql varl) (coefmatrix eql varl t))
 
 (defun coefmatrix (eql varl ind)
   (prog (ans row a b elem)
@@ -655,7 +655,7 @@
 (defun const1 (e varl)
   (dolist (v varl) (setq e (maxima-substitute 0 v e))) e)
 
-(defmfun-checked $entermatrix (rows columns)
+(defmfun $entermatrix (rows columns)
   (prog (row column vector matrix sym symvector)
      (cond ((or (not (fixnump rows))
 		(not (fixnump columns)))
@@ -703,7 +703,7 @@
 
 (declare-top (special sn* sd* rsn*))
 
-(defmfun-checked $xthru (e)
+(defmfun $xthru (e)
   (cond ((atom e) e)
 	((mtimesp e) (muln (mapcar '$xthru (cdr e)) nil))
 	((mplusp e) (simplify (comdenom (mapcar '$xthru (cdr e)) t)))

@@ -247,9 +247,9 @@
 	     (modulus (list p))    ;NEED TO TAKE SQRT(INT. MOD P) LCF.
 	     (t (setq *irreds (nconc *irreds (list p)))nil)))))
 
-(defmfun-checked $isqrt (x) ($inrt x 2))
+(defmfun $isqrt (x) ($inrt x 2))
 
-(defmfun-checked $inrt (x n)
+(defmfun $inrt (x n)
   (cond ((not (integerp (setq x (mratcheck x))))
 	 (cond ((equal n 2) (list '($isqrt) x)) (t (list '($inrt) x n))))
 	((zerop x) x)
@@ -266,7 +266,7 @@
 	   (cond ((signp le (setq bk (- x (truncate a (setq xn (expt x n1))))))
 		  (return (list x (- a (* x xn))))))))))
 
-(defmfun-checked $nthroot (p n)
+(defmfun $nthroot (p n)
   (if (and (integerp n) (> n 0))
       (let ((k (pnthrootp (cadr ($rat p)) n)))
 	(if k (pdis k) (merror (intl:gettext "nthroot: ~M is not a ~M power") p (format nil "~:r" n))))
