@@ -316,7 +316,7 @@ gcllibdir = $(verpkglibdir)/binary-gcl
 EXTRA_SCRIPTS += binary-gcl/maxima
 gcllib_SCRIPTS = binary-gcl/maxima
 
-EXECUTEGCL = echo "(system::quit)" | $(GCL_NAME) -load 
+EXECUTEGCL = $(GCL_NAME)
 BUILT_FILES += binary-gcl/maxima
 CLEAN_TARGETS += clean-gcl
 
@@ -327,35 +327,26 @@ sys-proclaim.lisp:
 	rm -rf binary-gcl
 	touch sys-proclaim.lisp
 	$(MAKE) bd
-	echo '(load "generate-sys-proclaim.lisp")' > gcl-command.lisp
-	$(EXECUTEGCL) gcl-command.lisp
+	echo '(load "generate-sys-proclaim.lisp") (system::quit)' | $(EXECUTEGCL)
 	rm -rf binary-gcl
-	rm gcl-command.lisp
 
 gcl: binary-gcl/maxima
 
 binary-gcl/maxima: $(sys_proc_dependency) gcl-depends.mk
 	$(MAKE) bd
 if GCL_ALT_LINK
-	echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE)' > gcl-command.lisp
-	$(EXECUTEGCL) gcl-command.lisp
-	echo '(let ((com (quote (progn (defvar compiler::*gazonk-prefix* "gazonk") (defun compiler::gazonk-name (&aux tem)(dotimes (i 1000) (unless (probe-file (setq tem (merge-pathnames (format nil "~d~d.lsp" compiler::*gazonk-prefix* i))))(return-from compiler::gazonk-name (pathname tem))))(error "1000 gazonk names used already!"))(let ((compiler::*gazonk-prefix* "maxima_gazonk")(compiler::*keep-gaz* t))$(LOADDEFSYSTEM)$(DEFSYSTEMLOAD))))))(let ((si::*collect-binary-modules* t))(eval com)(let ((compiler::*default-system-p* t))(dolist (l (directory "maxima_gazonk*.lsp")) (compile-file l) (delete-file l)))(compiler::link si::*binary-modules* "binary-gcl/maxima" (format nil "~S" com) "" nil)(dolist (l (directory "maxima_gazonk*.lsp")) (delete-file l))))' > gcl-command.lisp
-	$(EXECUTEGCL) gcl-command.lisp
+	echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (system::quit)' | $(EXECUTEGCL)
+	echo '(let ((com (quote (progn (defvar compiler::*gazonk-prefix* "gazonk") (defun compiler::gazonk-name (&aux tem)(dotimes (i 1000) (unless (probe-file (setq tem (merge-pathnames (format nil "~d~d.lsp" compiler::*gazonk-prefix* i))))(return-from compiler::gazonk-name (pathname tem))))(error "1000 gazonk names used already!"))(let ((compiler::*gazonk-prefix* "maxima_gazonk")(compiler::*keep-gaz* t))$(LOADDEFSYSTEM)$(DEFSYSTEMLOAD))))))(let ((si::*collect-binary-modules* t))(eval com)(let ((compiler::*default-system-p* t))(dolist (l (directory "maxima_gazonk*.lsp")) (compile-file l) (delete-file l)))(compiler::link si::*binary-modules* "binary-gcl/maxima" (format nil "~S" com) "" nil)(dolist (l (directory "maxima_gazonk*.lsp")) (delete-file l)))) (system::quit)' | $(EXECUTEGCL)
 else
-	echo '$(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE)' >gcl-command.lisp
-	$(EXECUTEGCL) gcl-command.lisp
-	echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (when (fboundp (quote si::sgc-on))(si::sgc-on t)) (si:save-system "binary-gcl/maxima")' >gcl-command.lisp
-	$(EXECUTEGCL) gcl-command.lisp
+	echo '$(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (system::quit)' | $(EXECUTEGCL)
+	echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (when (fboundp (quote si::sgc-on))(si::sgc-on t)) (si:save-system "binary-gcl/maxima") (system::quit)'  | $(EXECUTEGCL)
 endif
-	rm gcl-command.lisp
 
 clean-gcl:
-	rm -rf binary-gcl gcl-command.lisp
+	rm -rf binary-gcl
 
 gcl-depends.mk: maxima.system
-	echo $(call MAKE_DEPENDS,$(gcl_depends_targets),gcl-depends.mk) > gcl-command.lisp
-	$(EXECUTEGCL) gcl-command.lisp
-	rm gcl-command.lisp
+	echo $(call MAKE_DEPENDS,$(gcl_depends_targets),gcl-depends.mk) '(system::quit)' | $(EXECUTEGCL)
 
 -include gcl-depends.mk
 
