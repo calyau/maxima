@@ -240,14 +240,20 @@
 ;; are an error.
 (defmacro defmfun (name lambda-list &body body)
   (cond
-    ((and (symbolp lambda-list) (not (null lambda-list)))
-	 ;; Support MacLisp narg syntax:  (defun foo a ...)
-	 `(progn
-	    (defprop ,name t translated)
-	    (defun ,name (&rest narg-rest-argument
-			  &aux (,lambda-list (length narg-rest-argument)))
-	      ,@body)))
+    ((char/= #\$ (aref (string name) 0))
+     (cond ((and (symbolp lambda-list) (not (null lambda-list)))
+	    ;; Support MacLisp narg syntax:  (defun foo a ...)
+	    `(progn
+	       (defprop ,name t translated)
+	       (defun ,name (&rest narg-rest-argument
+			     &aux (,lambda-list (length narg-rest-argument)))
+		 ,@body)))
+	   (t
+	    `(progn
+	       (defprop ,name t translated)
+	       (defun ,name ,lambda-list ,@body)))))
     (t
+     #+nil
      (unless (char= #\$ (aref (string name) 0))
        (warn "First character of function name must start with $: ~S~%" name))
      (multiple-value-bind (required-args
