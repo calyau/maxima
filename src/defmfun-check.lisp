@@ -229,18 +229,20 @@
 ;; NAME are correct.  If too few or too many are given we throw a
 ;; maxima error informing the user about the problem.
 ;;
-;; The function name NAME must start with #\$ which indicates this is
-;; an explicitly exposed lisp function to the user.
-;;
-;; Two functions are created: NAME and NAME-IMPL (without the leading
-;; $).  NAME is the user function that checks for the argument count
-;; and NAME-IMPL is the actual implementation..
+;; If the function name NAME starts with #\$ we check the number of
+;; arguments.  In this case, two functions are created: NAME and
+;; NAME-IMPL (without the leading $).  NAME is the user function that
+;; checks for the argument count and NAME-IMPL is the actual
+;; implementation..
 ;;
 ;; The lambda-list supports &optional and &rest args.  Keyword args
 ;; are an error.
 (defmacro defmfun (name lambda-list &body body)
   (cond
     ((char/= #\$ (aref (string name) 0))
+     ;; If NAME doesn't start with $, it's an internal function not
+     ;; directly exposed to the user.  Basically define the function
+     ;; as is, taking care to support the Maclisp narg syntax.
      (cond ((and (symbolp lambda-list) (not (null lambda-list)))
 	    ;; Support MacLisp narg syntax:  (defun foo a ...)
 	    `(progn
@@ -253,6 +255,9 @@
 	       (defprop ,name t translated)
 	       (defun ,name ,lambda-list ,@body)))))
     (t
+     ;; Function name begins with $, so it's exposed to the user;
+     ;; carefully check the number of arguments and print a nice
+     ;; message if the number doesn't match the expected number.
      #+nil
      (unless (char= #\$ (aref (string name) 0))
        (warn "First character of function name must start with $: ~S~%" name))
