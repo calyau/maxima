@@ -1342,9 +1342,9 @@ fi
 
 if test x"${abcl}" = xtrue ; then
 	if test x"$srcdir" = x"." ; then
-		echo "Compiling maxima using \"${ABCL_NAME}\""
+		echo "Compiling maxima using \"${ABCL_JAR}\""
 	else
-		echo "ABCL enabled. Executable name: \"${ABCL_NAME}\""
+		echo "ABCL enabled. ABCL jarfile: \"${ABCL_JAR}\""
 		AC_MSG_ERROR(For ABCL out-of-tree builds aren't supported. See src/maxima.system for details.)
 	fi
 fi
