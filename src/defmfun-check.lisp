@@ -225,15 +225,16 @@
 )
 
 
-;; Like DEFMFUN but we check that the number of arguments supplied to
-;; NAME are correct.  If too few or too many are given we throw a
-;; maxima error informing the user about the problem.
+;; Define user-exposed functions that are written in Lisp.
 ;;
 ;; If the function name NAME starts with #\$ we check the number of
 ;; arguments.  In this case, two functions are created: NAME and
 ;; NAME-IMPL (without the leading $).  NAME is the user function that
 ;; checks for the argument count and NAME-IMPL is the actual
 ;; implementation..
+;;
+;; If the function name doesn't start with $, we still allow it, but
+;; these should be replaced with plain defun eventually.
 ;;
 ;; The lambda-list supports &optional and &rest args.  Keyword args
 ;; are an error.
