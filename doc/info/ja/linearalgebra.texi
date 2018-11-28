@@ -1160,7 +1160,7 @@ Toeplitz行列 @var{T}を返します。
 @c ===beg===
 @c toeplitz([1,2,3],[x,y,z]);
 @c toeplitz([1,1+%i]);
-@c ==end===
+@c ===end===
 @example
 (%i1)  toeplitz([1,2,3],[x,y,z]);
 @group
