@@ -62,7 +62,7 @@
 
 (defvar linearray (make-array 80. :initial-element nil))
 
-(defmfun maxima-display (form &key (stream *standard-output*) )
+(defun maxima-display (form &key (stream *standard-output*) )
   (let ((*standard-output* stream))
     (displa form)))
 
