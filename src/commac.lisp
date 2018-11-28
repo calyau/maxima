@@ -265,6 +265,10 @@ values")
 	((zerop n) nil)
 	(t (subseq narg-rest-argument 0 n))))
 
+;; This has been replaced by src/defmfun-check.lisp.  I'm leaving this
+;; here for now until we finish up fixing everything like using defun
+;; for internal functions and updating user-exposed functions to use
+;; defmfun instead of defun.
 #+nil
 (defmacro defmfun (function &body  rest &aux .n.)
   (cond ((and (car rest) (symbolp (car rest)))
