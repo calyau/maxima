@@ -118,8 +118,7 @@
 ;;; use Compiler-Error, aborting compilation to the last recovery point.
 ;;;
 (defun parse-lambda-list (list)
-  (declare (list list)
-	   (values list list boolean t boolean list boolean list boolean t t))
+  (declare (list list))
   (collect ((required)
 	    (optional)
 	    (keys)
@@ -305,6 +304,7 @@
 	      (defun ,name (&rest ,args)
 		,@doc-string
 		(let ((,nargs (length ,args)))
+		  (declare (ignorable ,nargs))
 		  ,@(cond
 		      (restp
 		       ;; When a rest arg is given, there's no upper
