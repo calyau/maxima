@@ -17,7 +17,7 @@
 (defstruct (bkpt (:type list)) form file file-line function)
 
 ;; This function is not documented and not used in Maxima core or share.
-(defun $bt()
+(defmfun $bt()
   (loop for v in *baktrcl*
 	 do 
 	 (and (consp v)
@@ -140,7 +140,7 @@
 		      (t (return-from complete-prop
 			   (car all)))))))
 
-(defun $backtrace (&optional (n 0 n-p))
+(defmfun $backtrace (&optional (n 0 n-p))
   (unless (typep n '(integer 0))
     (merror
       (intl:gettext "backtrace: number of frames must be a nonnegative integer; got ~M~%")

@@ -49,7 +49,7 @@
 (defmvar $load_pathname nil
   "The full pathname of the file being loaded")
 
-(defun $batchload (filename &aux expr (*mread-prompt* ""))
+(defmfun $batchload (filename &aux expr (*mread-prompt* ""))
   (declare (special *mread-prompt* *prompt-on-read-hang*))
   (setq filename ($file_search1 filename '((mlist) $file_search_maxima)))
   (let (($load_pathname filename) (noevalargs nil) (*read-base* 10.))
@@ -68,7 +68,7 @@
 ;; the second argument is a maxima list of variables
 ;; each of which contains a list of paths.   This is
 ;; so users can correct the variable..
-(defun $file_search1 (name search-lists &aux lis)
+(defmfun $file_search1 (name search-lists &aux lis)
   (if (pathnamep name)
       (setq name (namestring name)))
   (setq lis (apply '$append (mapcar 'symbol-value (cdr search-lists))))
@@ -112,7 +112,7 @@
 (defmvar $file_type_maxima
     (list '(mlist) "mac" "mc" "demo" "dem" "dm1" "dm2" "dm3" "dmt" "wxm"))
 
-(defun $file_type (fil)
+(defmfun $file_type (fil)
   (let ((typ ($pathname_type fil)))
     (cond
       ((member typ (cdr $file_type_lisp) :test #'string=)
@@ -122,15 +122,15 @@
       (t
        '$object))))
 
-(defun $pathname_directory (path)
+(defmfun $pathname_directory (path)
   (let ((pathname (pathname path)))
     (namestring (make-pathname :directory (pathname-directory pathname)))))
 
-(defun $pathname_name (path)
+(defmfun $pathname_name (path)
   (let ((pathname (pathname path)))
     (pathname-name pathname)))
 
-(defun $pathname_type (path)
+(defmfun $pathname_type (path)
   (let ((pathname (pathname path)))
     (pathname-type pathname)))
   
@@ -141,7 +141,7 @@
 
 ;;;; batch & demo search hacks
 
-(defun $batch (filename &optional (demo :batch)
+(defmfun $batch (filename &optional (demo :batch)
 	       &aux tem   (possible '(:demo :batch :test)))
   "giving a second argument makes it use demo mode, ie pause after evaluation
    of each command line"
@@ -173,7 +173,7 @@
 
 (defmvar $float_approx_equal_tolerance (* 16 flonum-epsilon))
 
-(defun $float_approx_equal (a b)
+(defmfun $float_approx_equal (a b)
   (setq a (if (floatp a) a ($float a)))
   (setq b (if (floatp b) b ($float b)))
   (and
@@ -189,7 +189,7 @@
 ;; the test suite gives a few errors with a factor of 16. These errors might be due to 
 ;; float / big float comparisons.
 
-(defun $bfloat_approx_equal (a b)
+(defmfun $bfloat_approx_equal (a b)
   (setq a (if ($bfloatp a) a ($bfloat a)))
   (setq b (if ($bfloatp b) b ($bfloat b)))
   (let ((m) (bits))
@@ -411,7 +411,7 @@
 ;; the empty parts are filled successively from defaults in templates in
 ;; the path.   A template may use multiple {a,b,c} constructions to indicate
 ;; multiple possibilities.  eg foo.l{i,}sp or foo.{dem,dm1,dm2}
-(defun $file_search (name &optional paths)
+(defmfun $file_search (name &optional paths)
   (if (and (symbolp name)
 	   (char= (char (symbol-name name) 0) #\$))
       (setq name (subseq (print-invert-case name) 1)))
@@ -485,7 +485,7 @@
 	   (format st "$"))))
 
 
-(defun $printfile (file)
+(defmfun $printfile (file)
   (setq file ($file_search1 file '((mlist) $file_search_usage)))
   (with-open-file (st file)
     (loop
@@ -719,7 +719,7 @@
 ;;  time                 Display time to run each test entry
 ;;  share_tests          Whether to include the share testsuite or not
 ;;  debug                Set to enable some debugging prints.
-(defun $run_testsuite (&rest options)
+(defmfun $run_testsuite (&rest options)
   (enable-some-lisp-warnings)
   (prog1
     (apply #'run-testsuite

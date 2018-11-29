@@ -681,7 +681,7 @@ When one changes, the other does too."
 
 (import 'cl-user::run)
 
-(defun $to_lisp ()
+(defmfun $to_lisp ()
   (format t "~&Type (to-maxima) to restart, ($quit) to quit Maxima.~%")
   (let ((old-debugger-hook *debugger-hook*))
     (catch 'to-maxima
@@ -718,7 +718,7 @@ When one changes, the other does too."
 
 (defvar $help "type `describe(topic);' or `example(topic);' or `? topic'")
 
-(defun $help (&rest dummy)
+(defmfun $help (&rest dummy)
   (declare (ignore dummy))
   $help)
 

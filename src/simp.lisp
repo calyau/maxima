@@ -185,7 +185,7 @@
 (defprop $equal t binary)
 (defprop $notequal t binary)
 
-(defun $bfloatp (x)
+(defmfun $bfloatp (x)
   (and (consp x)
        (consp (car x))
        (eq (caar x) 'bigfloat)))
@@ -1477,7 +1477,7 @@
 
 (defprop %sqrt simp-sqrt operators)
 
-(defun $sqrt (z)
+(defmfun $sqrt (z)
   (simplify (list '(%sqrt) z)))
 
 (defmfun simp-sqrt (x ignored z)
@@ -1519,7 +1519,7 @@
 (defprop mabs (mlist $matrix mequal) distribute_over)
 
 ;; Define a verb function $abs
-(defun $abs (x)
+(defmfun $abs (x)
   (simplify (list '(mabs) x)))
 
 ;; The abs function is a simplifying function.
@@ -1892,12 +1892,12 @@
 
 (defprop %exp simp-exp operators)
 
-(defun $exp (z)
+(defmfun $exp (z)
   (simplify (list '(%exp) z)))
 
 ;; Support a function for code,
 ;; which depends on an unsimplified noun form. 
-(defun $exp-form (z)
+(defmfun $exp-form (z)
   (list '(mexpt) '$%e z))
 
 (defun simp-exp (x ignored z)
@@ -2952,7 +2952,7 @@
 ;; Test function to order a and b by magnitude. If it is not possible to
 ;; order a and b by magnitude they are ordered by great. This function
 ;; can be used by sort, e.g. sort([3,1,7,x,sin(1),minf],ordermagnitudep)
-(defun $ordermagnitudep (a b)
+(defmfun $ordermagnitudep (a b)
   (let (sgn)
     (setq a ($totaldisrep (specrepcheck a))
           b ($totaldisrep (specrepcheck b)))

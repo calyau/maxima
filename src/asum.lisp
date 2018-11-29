@@ -810,7 +810,7 @@ summation when necessary."
 ;; 3. push operator name and glue code onto *OPERS-LIST
 ;; 4. declare operator name as a feature, so declare(..., <op>) is recognized
 
-(defun $define_opproperty (op fn)
+(defmfun $define_opproperty (op fn)
   (unless (symbolp op)
     (merror "define_opproperty: first argument must be a symbol; found: ~M" op))
   (unless (or (symbolp fn) (and (consp fn) (eq (caar fn) 'lambda)))

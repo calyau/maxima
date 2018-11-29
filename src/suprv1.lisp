@@ -181,7 +181,7 @@
   (loadfile (namestring (maxima-string (meval (cadr form)))) nil
 	    (not (member $loadprint '(nil $autoload) :test #'equal))))
 
-(defun $setup_autoload (filename &rest functions)
+(defmfun $setup_autoload (filename &rest functions)
   (let ((file ($file_search filename)))
     (dolist (func functions)
       (nonsymchk func '$setup_autoload)
@@ -216,7 +216,7 @@
     (or tem (merror (intl:gettext "loadfile: failed to load ~A") (namestring path)))
     (namestring path)))
 
-(defun $directory (path)
+(defmfun $directory (path)
   (cons '(mlist) (mapcar 'namestring (directory ($filename_merge path)))))
 
 (defmspec $kill (form)

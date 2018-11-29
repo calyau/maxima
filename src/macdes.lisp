@@ -123,7 +123,7 @@
 	(cl-info::info-inexact topic))))
 
 ; The old implementation
-;(defun $apropos (s)
+;(defmfun $apropos (s)
 ;  (cons '(mlist) (apropos-list s :maxima)))
 
 ;;; Utility function for apropos to filter a list LST with a function FN

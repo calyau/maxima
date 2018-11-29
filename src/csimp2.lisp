@@ -120,7 +120,7 @@
 ;;; Implementation of the Binomial coefficient
 
 ;; Verb function for the Binomial coefficient
-(defun $binomial (x y)
+(defmfun $binomial (x y)
   (simplify (list '(%binomial) x y)))
 
 ;; Binomial has Mirror symmetry

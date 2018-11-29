@@ -81,7 +81,7 @@
 ;; When a is a list, return a list of the unique elements of a.
 ;; Otherwise just return a.
 
-(defun $unique (x)
+(defmfun $unique (x)
   (if ($listp x)
     `((mlist) ,@(sorted-remove-duplicates (sort (copy-list (cdr x)) '$orderlessp)))
     x))
@@ -89,13 +89,13 @@
 ;; When a is a list, setify(a) is equivalent to apply(set, a). When a 
 ;; isn't a list, signal an error. 
 
-(defun $setify (a)
+(defmfun $setify (a)
   (simplifya `(($set) ,@(require-list a '$setify)) nil))
 
 ;; When a is a list, convert a and all of its elements that are lists
 ;; into sets.  When a isn't a list, return a.
 
-(defun $fullsetify (a)
+(defmfun $fullsetify (a)
   (cond (($listp a) 
 	 `(($set) ,@(mapcar '$fullsetify (cdr a))))
 	(t a)))
@@ -103,12 +103,12 @@
 ;; If a is a set, convert the top-level set to a list; when a isn't a
 ;; list, return a.
 
-(defun $listify (a)
+(defmfun $listify (a)
   (if ($setp a) `((mlist simp) ,@(cdr a)) a))
 
 ;; full_listify(a) converts all sets in a into lists.
 
-(defun $full_listify (a)
+(defmfun $full_listify (a)
   (setq a ($ratdisrep a))
   (cond (($mapatom a) a)
 	(($setp a) (simplify (cons (list 'mlist) (mapcar #'$full_listify (cdr a)))))
@@ -126,24 +126,24 @@
 
 ;; Return true iff a is an empty set or list
 
-(defun $emptyp (a)
+(defmfun $emptyp (a)
   (or (like a `(($set))) (like a `((mlist))) (and ($matrixp a) (every '$emptyp (margs a)))))
 
 ;; Return true iff the operator of a is set.
 
-(defun $setp (a)
+(defmfun $setp (a)
   (and (consp a) (consp (car a)) (eq (caar a) '$set)))
 
 ;; Return the cardinality of a set. This function works even when $simp is false.
  
-(defun $cardinality (a)
+(defmfun $cardinality (a)
   (if $simp (length (require-set a '$cardinality))
     (let (($simp t)) ($cardinality (simplify a)))))
 
 ;; Return true iff a is a subset of b. If either argument is a list, first 
 ;; convert it to a set. Signal an error if a or b aren't lists or sets.
 
-(defun $subsetp (a b)
+(defmfun $subsetp (a b)
   (setq a (require-set a '$subsetp))
   (setq b (require-set b '$subsetp))
   (and (<= (length a) (length b)) (set-subsetp a b)))
@@ -152,7 +152,7 @@
 ;; convert convert it to a set. Signal an error if either a or b aren't lists
 ;; or sets.
 
-(defun $setequalp (a b)
+(defmfun $setequalp (a b)
   (setq a (require-set a '$setequalp))
   (setq b (require-set b '$setequalp))
   (and (= (length a) (length b)) (every #'like a b)))
@@ -160,7 +160,7 @@
 
 ;;  Adjoin x to the list or set a and return a set.
 
-(defun $adjoin (x a)
+(defmfun $adjoin (x a)
   (setq a (require-set a '$adjoin))
   (multiple-value-bind (f i b) (b-search-expr x a 0 (length a))
     (if (not f) (setq a (prefixconc a i (cons x b))))
@@ -170,7 +170,7 @@
 ;; setify(a). For a set a, disjoin(x,a) == delete(x,a) == setdifference(a,set(x)); 
 ;; however, disjoin should be the fastest way to delete a member from a set.
 
-(defun $disjoin (x a)
+(defmfun $disjoin (x a)
  (setq a (require-set a '$disjoin))
   (multiple-value-bind (f i b) (b-search-expr x a 0 (length a))
     `(($set simp) ,@(if f (prefixconc a i b) a))))
@@ -189,14 +189,14 @@
 ;; if one of the arguments isn't a list or a set. When union receives 
 ;; no arguments, it returns the empty set.
 
-(defun $union (&rest a)
+(defmfun $union (&rest a)
   (let ((acc nil))
     (dolist (ai a `(($set simp) ,@acc))
       (setq acc (set-union acc (require-set ai '$union))))))
 
 ;; Remove elements of b from a. Works on lists or sets.
 
-(defun $setdifference (a b)
+(defmfun $setdifference (a b)
   `(($set simp) ,@(sset-difference (require-set a '$setdifference)
 				   (require-set b '$setdifference))))
 
@@ -204,7 +204,7 @@
 ;; a1,a2,...,an. Signal an error if one of the arguments isn't a 
 ;; list or a set. intersection must receive at least one argument.
 
-(defun $intersection (a &rest b)
+(defmfun $intersection (a &rest b)
   (let ((acc (require-set a '$intersection)))
     (cond ((consp b)
 	   (dolist (bi b)
@@ -213,13 +213,13 @@
     
 ;; intersect is an alias for intersection.
 
-(defun $intersect (a &rest b)
+(defmfun $intersect (a &rest b)
   (apply '$intersection (cons a b)))
 
 ;; Return true iff x as an element of the set or list a.  Use like 
 ;; to test for equality. Signal an error if a isn't a set or list.
 
-(defun $elementp (x a)
+(defmfun $elementp (x a)
   (setq a (require-set a '$elementp))
   (b-search-expr x a 0 (length a)))
  
@@ -227,7 +227,7 @@
 ;; signal an error if a or b aren't lists or sets.
 
 #|
-(defun $disjointp-binary-search-version (a b)
+(defmfun $disjointp-binary-search-version (a b)
   (setq a (require-set a '$disjointp))
   (setq b (require-set b '$disjointp))
   (if (> (length a) (length b)) (rotatef a b))
@@ -238,7 +238,7 @@
       t)))
 |#
 
-(defun $disjointp (a b)
+(defmfun $disjointp (a b)
   (setq a (require-set a '$disjointp))
   (setq b (require-set b '$disjointp))
   (set-disjointp a b))
@@ -248,7 +248,7 @@
 ;; signal an error if the function f doesn't evaluate to true, false, or
 ;; unknown.
 
-(defun $subset (a f)
+(defmfun $subset (a f)
   (setq a (require-set a '$subset))
   (let ((acc nil) (b))
     (dolist (x a `(($set simp) ,@(nreverse acc)))
@@ -262,7 +262,7 @@
 ;; for which f evaluates to false, and the third is the subset of a
 ;; for which f evaluates to unknown.
 
-(defun $partition_set (a f)
+(defmfun $partition_set (a f)
   (setq a (require-set a '$partition_set))
   (let ((t-acc) (f-acc) (b))
     (dolist (x a `((mlist simp) 
@@ -277,14 +277,14 @@
 ;; The symmetric difference of sets, that is (A-B) union (B - A), is associative.
 ;; Thus the symmetric difference extends unambiguously to n-arguments.
 
-(defun $symmdifference (&rest l)
+(defmfun $symmdifference (&rest l)
   (let ((acc nil))
     (dolist (lk l (cons '($set simp) acc))
       (setq acc (set-symmetric-difference acc (require-set lk '$symmdifference))))))
             
 ;; Return {x | x in exactly one set l1, l2, ...}
 
-(defun $in_exactly_one (&rest l)
+(defmfun $in_exactly_one (&rest l)
   ;; u = union of l1, l2,...
   ;; r = members that are in two or more l1, l2, ...
   (let ((u nil) (r nil))
@@ -298,7 +298,7 @@
 ;; that have exactly k elements; when k is nil, return the power set
 ;; of a. Signal an error if the first argument isn't a list or a set.
 
-(defun $powerset (a &optional k)
+(defmfun $powerset (a &optional k)
   (setq a (require-set a "powerset"))
   (cond ((null k)
 	 (cons `($set simp) 
@@ -354,7 +354,7 @@
 ;; determines if acc needs to be simplified. Initially, p = (0,1,2,..,n);
 ;; the 
 
-(defun $permutations (a)
+(defmfun $permutations (a)
   (cond (($listp a) 
 	 (setq a (sort (copy-list (cdr a)) '$orderlessp)))
 	(t
@@ -420,7 +420,7 @@
 	     (incf j))
 	   p))))
 
-(defun $random_permutation (a)
+(defmfun $random_permutation (a)
   (if ($listp a)
     (setq a (copy-list (cdr a)))
     (setq a (copy-list (require-set a '$random_permutation))))
@@ -513,7 +513,7 @@
 ;; defined for zero or more arguments;  if this isn't the case, 
 ;; Maxima can halt with an error. So be it.
 
-(defun $flatten (e)
+(defmfun $flatten (e)
   (cond ((or (specrepp e) (mapatom e)) e)
 	(t (mcons-op-args (mop e) (flattenl-op (margs e) (mop e))))))
 
@@ -525,7 +525,7 @@
 	  e))
 
 ; doesn't work on f[1](f[1](x)).
-;(defun $flatten (e)
+;(defmfun $flatten (e)
 ;  (if (or (specrepp e) (mapatom e)) e
 ;    (cons `(,(mop e)) (total-nary e))))
 
@@ -602,7 +602,7 @@
 ;; when s = $min, return  { x in a | f(x) = minimum of f on a}.
 ;; Signal an error when s isn't $max or $min.
 
-(defun $extremal_subset (a f s)
+(defmfun $extremal_subset (a f s)
   (setq a (require-set a '$extremal_subset))
   (cond ((null a) 
 	 `(($set simp)))
@@ -645,7 +645,7 @@
 
 ;; The lists acc and tail share structure.
            
-(defun $equiv_classes (l f)
+(defmfun $equiv_classes (l f)
   (setq l (require-set l '$equiv_classes))
   (do ((l l (cdr l))
        (acc)
@@ -669,7 +669,7 @@
 ;; After completing the dolist (bi b), the list a doesn't have duplicate 
 ;; members -- thus we can get by with  only sorting a.
 
-(defun $cartesian_product (&rest b)
+(defmfun $cartesian_product (&rest b)
   (cond ((null b)
          `(($set) ((mlist simp))))
 	(t
@@ -695,7 +695,7 @@
 ;;   (3) union(x | x in P) = S.
 ;; Thus set() is a partition of set().
 
-(defun $set_partitions (a &optional n-sub)
+(defmfun $set_partitions (a &optional n-sub)
   (setq a (require-set a '$set_partitions))
   (cond ((and (integerp n-sub) (> n-sub -1))
 	 `(($set) ,@(set-partitions a n-sub)))
@@ -738,7 +738,7 @@
 ;; argument len is defined, only generate the partitions with exactly len
 ;; members, including 0.
 
-(defun $integer_partitions (n &optional len)
+(defmfun $integer_partitions (n &optional len)
   (let ((acc))
     (cond ((and (integerp n) (>= n 0))
 	   (setq acc (cond ((= n 0) nil)
@@ -788,7 +788,7 @@
 ;; the number of partitions of 1,2,3, ... , n.  If n isn't a nonnegative
 ;; integer, return a noun form.
 
-(defun $num_partitions (n &optional lst)
+(defmfun $num_partitions (n &optional lst)
   (cond ((equal n 0) 1)
 	((and (integerp n) (> n -1))
 	 (let ((p (make-array (+ n 1)))
@@ -823,7 +823,7 @@
 	(t (if lst `(($num_partitions simp) ,n ,lst) 
 	     `(($num_partitions simp) ,n)))))
 
-(defun $num_distinct_partitions (n &optional lst)
+(defmfun $num_distinct_partitions (n &optional lst)
   (cond ((eql n 0) 1)
 	((and (integerp n) (> n -1))
 	 (let ((p (make-array (+ n 1)))
@@ -879,7 +879,7 @@
 (setf (get '%kron_delta 'verb) '$kron_delta)
 (setf (get '$kron_delta 'alias) '%kron_delta)
 (setf (get '%kron_delta 'reversealias) '$kron_delta)
-(defun $kron_delta (&rest x) (simplifya `((%kron_delta) ,@x) t))
+(defmfun $kron_delta (&rest x) (simplifya `((%kron_delta) ,@x) t))
 (setf (get '%kron_delta 'real-valued) t) ;; conjugate(kron_delta(xxx)) --> kron_delta(xxx)
 (setf (get '%kron_delta 'integer-valued) t) ;; featurep(kron_delta(xxx), integer) --> true
 (mputprop '%kron_delta t '$scalar) ;; same effect as declare(kron_delta, scalar)
@@ -1078,7 +1078,7 @@
 ;; multinomial_coeff; we make this simplification as well.  If
 ;; b is nil following (remove 0 b), something has gone wrong.
 
-(defun $multinomial_coeff (&rest a)
+(defmfun $multinomial_coeff (&rest a)
   (let ((n 0) (d 1))
     (dolist (ai a)
       (setq n (add n ai))
@@ -1088,13 +1088,13 @@
 ;; Extend a function f : S x S -> S to n arguments using right associativity.
 ;; Thus rreduce(f,[0,1,2]) -> f(0,f(1,2)). The second argument must be a list.
 
-(defun $rreduce (f s &optional (init 'no-init))
+(defmfun $rreduce (f s &optional (init 'no-init))
   (rl-reduce f s t init '$rreduce))
   
 ;; Extend a function f : S x S -> S to n arguments using left associativity.
 ;; Thus lreduce(f,[0,1,2]) -> f(f(0,1),2). The second argument must be a list.
 
-(defun $lreduce (f s &optional (init 'no-init))
+(defmfun $lreduce (f s &optional (init 'no-init))
   (rl-reduce f s nil init '$lreduce))
 
 (defun rl-reduce (f s left init fn)
@@ -1139,7 +1139,7 @@
 ;; returns nil) we give up and use rl-reduce with left-associativity.
 
 
-(defun $xreduce (f s &optional (init 'no-init))
+(defmfun $xreduce (f s &optional (init 'no-init))
   (let* ((op-props (get (if (atom f) ($verbify f) nil) '$nary))
 	 (opfn  (if (consp op-props) (car op-props) nil)))
   
@@ -1164,7 +1164,7 @@
 ;; The function f should be nary (associative); otherwise, the result is somewhat 
 ;; difficult to describe -- for an odd number of arguments, we favor the left side of the tree.
 	 
-(defun $tree_reduce (f a &optional (init 'no-init))
+(defmfun $tree_reduce (f a &optional (init 'no-init))
   (setq a (require-list-or-set a '$tree_reduce))
   (if (not (equal init 'no-init)) (push init a))
   (if (null a)
@@ -1186,7 +1186,7 @@
 ;; An identity function -- may see some use in things like
 ;;     every(identity, [true, true, false, ..]).
 
-(defun $identity (x) x)
+(defmfun $identity (x) x)
 
 ;; Maxima 'some' and 'every' functions.  The first argument should be
 ;; a predicate (a function that evaluates to true, false, or unknown).
@@ -1280,7 +1280,7 @@
     (declare (special errcatch))
     (errset (mfuncall f x) lisperrprint)))
 
-(defun $every (f &rest x)
+(defmfun $every (f &rest x)
   (cond ((or (null x) (and (null (cdr x)) ($emptyp (first x)))) t)
    
  ((or ($listp (first x)) (and ($setp (first x)) (null (cdr x))))
@@ -1296,7 +1296,7 @@
    ;; NOT CLEAR FROM PRECEDING CODE WHAT IS "INVALID" HERE
    (merror (intl:gettext "every: invalid arguments.")))))
 
-(defun $some (f &rest x)
+(defmfun $some (f &rest x)
   (cond ((or (null x) (and (null (cdr x)) ($emptyp (first x)))) nil)
 
  ((or ($listp (first x)) (and ($setp (first x)) (null (cdr x))))
@@ -1376,7 +1376,7 @@
 ; Thanks to Bill Wood (william.wood3@comcast.net) for his help.
 ; Released under terms of GNU GPL v2 with Bill's approval.
 
-(defun $sublist_indices (items pred)
+(defmfun $sublist_indices (items pred)
   (let ((items (require-list items '$sublist_indices)))
     (do ((i 0 (1+ i))
          (xs items (cdr xs))

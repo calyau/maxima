@@ -192,7 +192,7 @@ relational knowledge is contained in the default context GLOBAL.")
 ;;; supercontext and the rest are the subcontexts.
 ;;; If no arguments supplied, then invent a name via gensym and use that.
 
-(defun $supcontext (&rest x)
+(defmfun $supcontext (&rest x)
   (cond ((null x) ($supcontext ($gensym "context"))) ;; make up a name and try again
 	((caddr x) (merror (intl:gettext "supcontext: found more than two arguments.")))
 	((not (symbolp (car x))) (nc-err '$supcontext (car x)))
@@ -725,7 +725,7 @@ relational knowledge is contained in the default context GLOBAL.")
 
 (setq limitp nil)
 
-(defun $askequal (a b)
+(defmfun $askequal (a b)
   (let ((answer (meqp (sratsimp a) (sratsimp b)))) ; presumably handles mbags and extended reals.
     (cond ((eq answer t) '$yes)
 	  ((eq answer nil) '$no)
@@ -770,7 +770,7 @@ relational knowledge is contained in the default context GLOBAL.")
 ;;; mode. In complex mode complex and imaginary expressions give the results
 ;;; imagarinary or complex.
 
-(defun $csign (z)
+(defmfun $csign (z)
   (let ((*complexsign* t)
         (limitp nil))
     ($sign z)))

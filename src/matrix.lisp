@@ -686,7 +686,7 @@
      (go b)))
 
 
-(defun $list_matrix_entries (m)
+(defmfun $list_matrix_entries (m)
   (unless ($matrixp m)
     (merror (intl:gettext "list_matrix_entries: argument must be a matrix; found: ~M") m))
   (cons (if (null (cdr m)) '(mlist) (caadr m))

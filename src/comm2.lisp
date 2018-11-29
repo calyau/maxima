@@ -395,7 +395,7 @@
 
 (defmvar $rootsconmode t)
 
-(defun $rootscontract (e)	       ; E is assumed to be simplified
+(defmfun $rootscontract (e)	       ; E is assumed to be simplified
   (let ((radpe (and $radexpand (not (eq $radexpand '$all)) (eq $domain '$real)))
 	($radexpand nil))
     (rtcon e radpe)))
@@ -886,7 +886,7 @@
 
 ;;;; CONCAT
 
-(defun $concat (&rest l)
+(defmfun $concat (&rest l)
   (when (null l)
     (merror (intl:gettext "concat: there must be at least one argument.")))
   (let ((result-is-a-string (or (numberp (car l)) (stringp (car l)))))

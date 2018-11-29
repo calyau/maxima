@@ -85,7 +85,7 @@
 ;; The implementation follows algorithm 1.4.10 in 'A Course in
 ;; Computational Algebraic Number Theory' by H. Cohen
 
-(defun $jacobi (a b)
+(defmfun $jacobi (a b)
   (if (and (integerp a) (integerp b))
       (jacobi a b)
       `(($jacobi) ,a ,b)))
@@ -4108,12 +4108,12 @@
 ;;                 q   q         q
 ;; trace(a) = a + a + a  + .. + a  
 
-(defun $gf_trace (a)
+(defmfun $gf_trace (a)
   (gf-field? "gf_trace")
   (let ((*ef-arith?*))
     (gf-trace (gf-p2x a) *gf-red* *gf-x^p-powers*) ))
 
-(defun $ef_trace (a)
+(defmfun $ef_trace (a)
   (ef-field? "ef_trace")
   (let ((*ef-arith?* t)) 
     (gf-trace (gf-p2x a) *ef-red* *ef-x^q-powers*) ))

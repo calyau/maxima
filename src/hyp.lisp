@@ -109,7 +109,7 @@
 ;; F(a1,a2,a3,...;b1,b2,b3;z)
 ;;
 ;; L1 is a (maxima) list of an's, L2 is a (maxima) list of bn's.
-(defun $hgfred (arg-l1 arg-l2 arg)
+(defmfun $hgfred (arg-l1 arg-l2 arg)
   (flet ((arg-ok (a)
 	   (and (listp a)
 		(eq (caar a) 'mlist))))
@@ -519,7 +519,7 @@
 ;; Expand the hypergeometric function as a polynomial.  No real checks
 ;; are made to ensure the hypergeometric function reduces to a
 ;; polynomial.
-(defun $hgfpoly (arg-l1 arg-l2 arg)
+(defmfun $hgfpoly (arg-l1 arg-l2 arg)
   (let ((var arg)
 	(*par* arg)
 	(n (hyp-negp-in-l (cdr arg-l1))))

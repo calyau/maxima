@@ -154,7 +154,7 @@
         (append (convert-list (get-large-factors large-part)) factor-list)
         factor-list)))
 
-(defun $ifactors (n)
+(defmfun $ifactors (n)
   (unless (and (or (integerp n) 
                    (and ($integerp n)
                         (setq n ($fix n)) ))
@@ -462,7 +462,7 @@
       (psetq u1 v1 v1 (- u1 (* q v1)))
       (setq u2 v2 v2 r) )))
 
-(defun $inv_mod (a m)
+(defmfun $inv_mod (a m)
   (unless (and (integerp a) (integerp m))
       (merror (intl:gettext "inv_mod: arguments must be integers; found: ~M, ~M") a m))
   (unless (= 0 a) (inv-mod a m)) )
@@ -633,7 +633,7 @@
 ;;;                                                                       ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $primep (n)
+(defmfun $primep (n)
   (if (integerp n)
       (primep (abs n))
       (merror (intl:gettext "primep: argument must be an integer; found: ~M") n)))
@@ -716,7 +716,7 @@
         (when (= y 1) (return)) )))) ;; n prime => last y must have been 1 or -1
 
 
-(defun $power_mod (b e m)
+(defmfun $power_mod (b e m)
   (unless (and (integerp b) (integerp e) (integerp m))
     (merror (intl:gettext "power_mod: arguments must be integers; found: ~M, ~M, ~M") b e m) )
   (if (>= e 0)
@@ -859,7 +859,7 @@
 ;;; product of primes in [59..2897]
 (defvar bigprimemultiple 6805598092615180737440235028147472981586738014295015027644884201753964648883910180850814465749532893719128055374719237806417537893593625321589379773764981786235326314555704406245399180879758341371676681401881451390195684863765326592983982964414393796690715805513465774520452671995927595391575142047776807977863591126244782181086547150369260177339043045082132788709080989495477932949788444703905327686499493503904132269141007955089790798876488207574072278769735865653223865994494346936718462923487228576140267887355548289736131557613540186975875834980017431190021254898173201223012171417763388931502928376549397638685218312217808199405294916194758171476025904777185780125034583816795375331627264462778001498062163759312245245590800878057927864359433868165604228946307536835897173733369926842890411102870160854438921809703357774373318146115616129588245083207631664167515206143659538759733110973189757163548882116479710800109577584318611988710048552969742803870964125788279451564113232340649434743105271873797620278073136369295820926294656549976175331880139356684249842712956493849288710258349886914201056170180503844749859595207139766052196982574437241716274871254310342540993006427120762049161745282399431514257565489)
 
-(defun $next_prime (n)
+(defmfun $next_prime (n)
   (unless (and (integerp n))
     (merror (intl:gettext "next_prime: argument must be an integer; found: ~M") n))
   (cond ((< n 2) 2)
@@ -867,7 +867,7 @@
 	((< n 100000) (return-from $next_prime (next-prime-det n deltaprimes_next)))
 	(t (next-prime-prob n deltaprimes_next))))
 
-(defun $prev_prime (n)
+(defmfun $prev_prime (n)
   (unless (and (integerp n) (> n 2))
     (merror (intl:gettext "prev_prime: argument must be an integer greater than 2; found: ~M") n))
   (if (<= n 11) (return-from $prev_prime (aref *prev_prime_ar* n)))
@@ -915,7 +915,7 @@
 
 ;;; return a list of all primes between start and end
 
-(defun $primes (start end)
+(defmfun $primes (start end)
   (unless (and (integerp start) (integerp end))
     (merror (intl:gettext "primes: arguments must be integers; found: ~M, ~M") start end))
   (let ((primes nil))

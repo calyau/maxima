@@ -180,9 +180,9 @@ Perhaps you meant to enter `~a'.~%"
 	 ;; wrong number of args
 	 (wna-err name))))))
 
-(defun $find_root (fun-or-expr &rest args)
+(defmfun $find_root (fun-or-expr &rest args)
   (%find-root '$find_root fun-or-expr args))
 
 ;; Like find_root but operates on bfloats and returns a bfloat result.
-(defun $bf_find_root (fun-or-expr &rest args)
+(defmfun $bf_find_root (fun-or-expr &rest args)
   (%find-root '$bf_find_root fun-or-expr args))

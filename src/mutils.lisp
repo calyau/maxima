@@ -98,7 +98,7 @@
 ;;; Maxima produces some expressions that contain Maxima gensyms, so
 ;;; the use of uninterned symbols instead can cause confusion (since
 ;;; these print like any other symbol).
-(defun $gensym (&optional x)
+(defmfun $gensym (&optional x)
   (typecase x
     (null
      (intern (symbol-name (gensym "$G")) :maxima))

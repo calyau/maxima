@@ -27,7 +27,7 @@
         ((hash-table-p x) 'hash-table)
         ((eq (type-of x) 'mgenarray) (mgenarray-type x))))
 
-(defun $make_array (type &rest diml)
+(defmfun $make_array (type &rest diml)
   (let ((ltype (assoc type '(($float . flonum)
                              ($flonum . flonum)
                              ($fixnum . fixnum)))))

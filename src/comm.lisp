@@ -95,7 +95,7 @@
 ;; $psubstitute is similar to $substitute. In distinction from $substitute
 ;; the function $psubstitute does parallel substitution, if the first argument
 ;; is a list of equations.
-(defun $psubstitute (old new &optional (expr nil three-arg?))
+(defmfun $psubstitute (old new &optional (expr nil three-arg?))
   (cond (three-arg? (maxima-substitute old new expr))
         (t
          (let ((l old) (z new))

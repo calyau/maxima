@@ -322,7 +322,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 		 (unread-char char input-stream)
 		 (return nil))))))))
 
-(defun $break (&rest arg-list)
+(defmfun $break (&rest arg-list)
   (prog1 (apply #'$print arg-list)
     (mbreak-loop)))
 
@@ -401,7 +401,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
   (continue (make-echo-stream fileobj *standard-output*)
 	    (if demo-p ':demo ':batch)))
 
-(defun $demo (&rest arg-list)
+(defmfun $demo (&rest arg-list)
   (let ((tem ($file_search (car arg-list) $file_search_demo)))
     (or tem (merror (intl:gettext "demo: could not find ~M in ~M.")
 		    (car arg-list) '$file_search_demo))
@@ -649,7 +649,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
                  (setq result (meval* v)))
                result)))))))
 
-(defun $sconcat (&rest x)
+(defmfun $sconcat (&rest x)
   (let ((ans "") )
     (dolist (v x)
       (setq ans (concatenate 'string ans
@@ -659,7 +659,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 				    (coerce (mstring v) 'string))))))
     ans))
 
-(defun $system (&rest args)
+(defmfun $system (&rest args)
   ;; If XMaxima is running, direct output from command into *SOCKET-CONNECTION*.
   ;; From what I can tell, GCL, ECL, and Clisp cannot redirect the output into an existing stream. Oh well.
   (let ((s (and (boundp '*socket-connection*) *socket-connection*))
@@ -692,7 +692,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
     #+abcl (extensions::run-shell-command (apply '$sconcat args) :output (or s *standard-output*))
     #+lispworks (system:run-shell-command (apply '$sconcat args) :wait t)))
 
-(defun $room (&optional (arg nil arg-p))
+(defmfun $room (&optional (arg nil arg-p))
   (if (and arg-p (member arg '(t nil) :test #'eq))
       (room arg)
       (room)))
@@ -727,12 +727,12 @@ DESTINATION is an actual stream (rather than nil for a string)."
     (setq t0-real (get-internal-real-time))
     (setq t0-run (get-internal-run-time)))
 
-  (defun $absolute_real_time () (get-universal-time))
+  (defmfun $absolute_real_time () (get-universal-time))
 
-  (defun $elapsed_real_time ()
+  (defmfun $elapsed_real_time ()
     (let ((elapsed-real-time (- (get-internal-real-time) t0-real)))
       (/ elapsed-real-time float-units)))
 
-  (defun $elapsed_run_time ()
+  (defmfun $elapsed_run_time ()
     (let ((elapsed-run-time (- (get-internal-run-time) t0-run)))
       (/ elapsed-run-time float-units))))

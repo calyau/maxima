@@ -453,7 +453,7 @@
 ;;; $zerobern is bound to true.
 ;;; ----------------------------------------------------------------------------
 
-(defun $bernpoly (x s)
+(defmfun $bernpoly (x s)
   (let ((%n 0) ($zerobern t))
     (cond ((not (fixnump s)) (list '($bernpoly) x s))
 	  ((> (setq %n s) -1)
@@ -487,7 +487,7 @@
 ;;; The coeffizients E[k] are the Euler numbers.
 ;;; ----------------------------------------------------------------------------
 
-(defun $eulerpoly (x s)
+(defmfun $eulerpoly (x s)
   (let ((n 0) ($zerobern t) (y 0))
     (cond ((not (fixnump s)) (list '($eulerpoly) x s))
           ((> (setq n s) -1)
@@ -516,7 +516,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $zeta (z)
+(defmfun $zeta (z)
   (simplify (list '(%zeta) z)))
 
 ;;; Set properties to give full support to the parser and display

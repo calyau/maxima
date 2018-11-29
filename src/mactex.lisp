@@ -60,23 +60,23 @@
 
 (defvar *tex-environment-default* '("$$" . "$$"))
 
-(defun $set_tex_environment_default (env-open env-close)
+(defmfun $set_tex_environment_default (env-open env-close)
   (setq env-open ($sconcat env-open))
   (setq env-close ($sconcat env-close))
   (setq *tex-environment-default* `(,env-open . ,env-close))
   ($get_tex_environment_default))
 
-(defun $get_tex_environment_default ()
+(defmfun $get_tex_environment_default ()
   `((mlist) ,(car *tex-environment-default*) ,(cdr *tex-environment-default*)))
 
-(defun $set_tex_environment (x env-open env-close)
+(defmfun $set_tex_environment (x env-open env-close)
   (setq env-open ($sconcat env-open))
   (setq env-close ($sconcat env-close))
   (if (getopr x) (setq x (getopr x)))
   (setf (get x 'tex-environment) `(,env-open . ,env-close))
   ($get_tex_environment x))
 
-(defun $get_tex_environment (x)
+(defmfun $get_tex_environment (x)
   (if (getopr x) (setq x (getopr x)))
   (let ((e (get-tex-environment x)))
     `((mlist) ,(car e) ,(cdr e))))
@@ -1081,7 +1081,7 @@
   (append l (cons (format nil "\\hspace{~dmm}" (* 3 (cadr x))) r)))
 
 ;; run some code initialize file before $tex is run
-(defun $texinit(file)
+(defmfun $texinit(file)
 (declare (ignore file))
   '$done)
 
@@ -1089,7 +1089,7 @@
 ;; probably have no trouble spotting, and will generally be unnecessary, since
 ;; we anticipate almost all use of tex would be involved in inserting this
 ;; stuff into larger files that would have their own \\end or equivalent.
-(defun $texend(filename)
+(defmfun $texend(filename)
   (with-open-file (st (stripdollar filename)  :direction :output
 		      :if-exists :append :if-does-not-exist :create)
     (format st "\\end~%"))
@@ -1117,7 +1117,7 @@
 ;; Convenience function to allow user to process expression X
 ;; and get a string (TeX output for X) in return.
 
-(defun $tex1 (x) (reduce #'strcat (tex x nil nil 'mparen 'mparen)))
+(defmfun $tex1 (x) (reduce #'strcat (tex x nil nil 'mparen 'mparen)))
 
 ;; Undone and trickier:
 ;; handle reserved symbols stuff, just in case someone
@@ -1130,7 +1130,7 @@
 
 ;;  The texput function was written by Barton Willis.
 
-(defun $texput (e s &optional tx)
+(defmfun $texput (e s &optional tx)
 
   (cond
     ((stringp e)

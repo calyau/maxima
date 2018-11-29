@@ -3203,7 +3203,7 @@
 		  (setq q (taylor-info q))
 		  (if (null q) (list acc) (append q (list acc)))))))))
 
-(defun $taylorinfo (x)
+(defmfun $taylorinfo (x)
   (if (and (consp x) (member 'trunc (first x) :test #'eq))
       (cons '(mlist) (taylor-info (mrat-tlist x)))
       nil))

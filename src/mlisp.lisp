@@ -782,7 +782,7 @@ wrapper for this."
      (e ($@-function (meval a) b)))
     (if (eq e b) L e)))
 
-(defun $@-function (in fn)
+(defmfun $@-function (in fn)
   (cond
     ((not (listp in))
      (list '(%@) in fn)) ;; noun form
@@ -1346,7 +1346,7 @@ wrapper for this."
 	argl
 	(cons header (cdr argl)))))
 
-(defun $outermap (x y &rest z)
+(defmfun $outermap (x y &rest z)
   (if z
     (apply #'outermap1 x y z)
     (fmapl1 x y)))
@@ -1679,7 +1679,7 @@ wrapper for this."
 #+gcl (mputprop '$matrix t 'mlexprp)
 #+gcl (mputprop '$matrix '$matrix 'pname)
 
-#-gcl (defun $matrix (&rest rows) (matrixhelper rows))
+#-gcl (defmfun $matrix (&rest rows) (matrixhelper rows))
 
 ;; Call ONLY from $matrix
 (defun matrixhelper (rows)
@@ -2119,7 +2119,7 @@ wrapper for this."
 (defun mapply (a b c)
   (mapply1 a b c nil))
 
-(defun $apply (fun arg)
+(defmfun $apply (fun arg)
   (unless ($listp arg)
     (merror (intl:gettext "apply: second argument must be a list; found: ~M") arg))
   (let ((fun-opr (getopr fun)))

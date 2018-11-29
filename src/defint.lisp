@@ -181,7 +181,7 @@ in the interval of integration.")
 ;; KEYHOLE, and POLELIST.
 (defvar *semirat* nil)
 
-(defun $defint (exp var ll ul)
+(defmfun $defint (exp var ll ul)
 
   ;; Distribute $defint over equations, lists, and matrices.
   (cond ((mbagp exp)

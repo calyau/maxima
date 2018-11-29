@@ -102,7 +102,7 @@
     (cond (tr-abort  nil)
 	  (t fun))))
 
-(defun $compile_file (input-file &optional bin-file translation-output-file &aux result)
+(defmfun $compile_file (input-file &optional bin-file translation-output-file &aux result)
   (setq input-file (maxima-string input-file))
   (and bin-file(setq  bin-file (maxima-string bin-file)))
   (and translation-output-file
