@@ -1707,7 +1707,7 @@ Maximaのアトムや式のすべては、@code{ordergreatp}と@code{orderlessp}
 
 @example
 
-@c === beg ===
+@c ===beg===
 @c e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
 @c reveal (e, 1);
 @c reveal (e, 2);
@@ -1715,7 +1715,7 @@ Maximaのアトムや式のすべては、@code{ordergreatp}と@code{orderlessp}
 @c reveal (e, 4);
 @c reveal (e, 5);
 @c reveal (e, 6);
-@c === end ===
+@c ===end===
 (%i1) e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
                           2            2
                          b  - 2 a b + a

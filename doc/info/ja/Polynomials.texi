@@ -1983,13 +1983,13 @@ MaximaはLisp変数@code{VARLIST}の中に有理式の主変数の内部リス�
 もし @code{ratvarswitch}が@code{true}, すべての評価は
 新しいリスト@code{VARLIST}で始まります。
 
-@c === beg ===
+@c ===beg===
 @c ratvarswitch:true$
 @c rat(2*x+y^2);
 @c :lisp varlist
 @c rat(2*a+b^2);
 @c :lisp varlist
-@c === end ===
+@c ===end===
 @example
 (%i1) ratvarswitch:true$
 
@@ -2010,13 +2010,13 @@ MaximaはLisp変数@code{VARLIST}の中に有理式の主変数の内部リス�
 もし@code{ratvarswitch}が@code{false}なら、
 直前の評価からの主変数はまだ存在しています。
 
-@c === beg ===
+@c ===beg===
 @c ratvarswitch:false$
 @c rat(2*x+y^2);
 @c :lisp varlist
 @c rat(2*a+b^2);
 @c :lisp varlist
-@c === end ===
+@c ===end===
 @example
 (%i4) ratvarswitch:false$
 
