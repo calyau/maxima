@@ -16,6 +16,9 @@ New items in share:
 Changes in core:
 ----------------
  * Many strings in error messages weren't properly formatted
+ * The error message on calling a command with the wrong number of arguments
+   now in most cases tells which command the error was raised by.
+   error message that didn't tell which command the error was caused by.
  * to_cl, a function that outputs the lisp code a maxima function would be 
    compiled to now is autoloaded.
  * A few functions from the linear algebra package weren't autoloaded.
@@ -35,6 +38,8 @@ Changes in core:
    modifications for making lapack work in SBCL it this test is positive.
  * perl is now uniformly called as /usr/bin/env perl
  * The Windows installer can now include ABCL
+ * Corrected many markers that tell if an example can be updated using the 
+   doc/info/update_example scripts.
 
 Changes in share:
 --------------
