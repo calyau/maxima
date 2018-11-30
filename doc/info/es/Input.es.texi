@@ -265,9 +265,9 @@ Véase también @code{pathname_type}.
 
 Ejemplos:
 
-@c === beg ===
+@c ===beg===
 @c map('file_type,["test.lisp", "test.mac", "test.dem", "test.txt"]);
-@c === end ===
+@c ===end===
 @example
 (%i2) map('file_type,["test.lisp", "test.mac", "test.dem", "test.txt"]);
 (%o2)            [lisp, maxima, maxima, object]
@@ -412,11 +412,11 @@ Estas funciones devuelven las componentes de @var{pathname}.
 
 Ejemplos:
 
-@c === beg ===
+@c ===beg===
 @c pathname_directory("/home/usuario/maxima/changelog.txt");
 @c pathname_name("/home/usuario/maxima/changelog.txt");
 @c pathname_type("/home/usuario/maxima/changelog.txt");
-@c === end ===
+@c ===end===
 @example 
 (%i1) pathname_directory("/home/usuario/maxima/changelog.txt");
 (%o1)                 /home/usuario/maxima/

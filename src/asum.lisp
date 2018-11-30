@@ -345,7 +345,7 @@
 
 (defmfun simpgfact (x vestigial z)
   (declare (ignore vestigial))
-  (if (not (= (length x) 4)) (wna-err '$genfact))
+  (arg-count-check 3 x)
   (setq z (mapcar #'(lambda (q) (simpcheck q z)) (cdr x)))
   (let ((a (car z)) (b (take '($floor) (cadr z))) (c (caddr z)))
     (cond ((and (fixnump a)
@@ -416,14 +416,15 @@ summation when necessary."
   `(cadr (cdddr ,sum)))
 
 (defmspec $sum (l)
+  (arg-count-check 4 l)
   (setq l (cdr l))
-  (if (= (length l) 4)
-      (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t :evaluate-summand t)
-      (wna-err '$sum)))
+  (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t :evaluate-summand t))
+
 
 (defmspec $lsum (l)
+  (arg-count-check 3 l)
   (setq l (cdr l))
-  (or (= (length l) 3) (wna-err '$lsum))
+  ;;(or (= (length l) 3) (wna-err '$lsum))
   (let ((form (car l))
 	(ind (cadr l))
 	(lis (meval (caddr l)))

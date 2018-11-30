@@ -56,7 +56,8 @@
                                      (:file "commac")))
                (:module prerequisites :pathname ""
                         :components ((:file "mormac") 
-                                     (:file "compat")))
+                                     (:file "compat")
+				     (:file "defmfun-check")))
 	       (:module maxima-language-compiler-macros :pathname ""
 			:components ((:file "transm")))
 	       (:module getopt :pathname ""

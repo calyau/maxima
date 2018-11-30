@@ -1544,13 +1544,13 @@ Ejemplos:
 Cuando @code{ratvarswitch} vale @code{true}, su valor por defecto, cada 
 evaluación comienza con la lista @code{VARLIST} vacía.
 
-@c === beg ===
+@c ===beg===
 @c ratvarswitch:true$
 @c rat(2*x+y^2);
 @c :lisp varlist
 @c rat(2*a+b^2);
 @c :lisp varlist
-@c === end ===
+@c ===end===
 @example
 (%i1) ratvarswitch:true$
 
@@ -1571,13 +1571,13 @@ evaluación comienza con la lista @code{VARLIST} vacía.
 Cuando @code{ratvarswitch} vale @code{false}, las variables principales
 de las expresiones anteriores se mantienen en lista @code{VARLIST}.
 
-@c === beg ===
+@c ===beg===
 @c ratvarswitch:false$
 @c rat(2*x+y^2);
 @c :lisp varlist
 @c rat(2*a+b^2);
 @c :lisp varlist
-@c === end ===
+@c ===end===
 @example
 (%i4) ratvarswitch:false$
 

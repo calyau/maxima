@@ -1292,7 +1292,7 @@
 
 (defun simp-gamma-incomplete-generalized (expr ignored simpflag)
   (declare (ignore ignored))
-  (if (not (= (length expr) 4)) (wna-err '$gamma_incomplete_generalized))
+  (arg-count-check 3 expr)
   (let ((a  (simpcheck (cadr expr)   simpflag))
         (z1 (simpcheck (caddr expr)  simpflag))
         (z2 (simpcheck (cadddr expr) simpflag))
@@ -3359,7 +3359,7 @@
 
 (defun simp-beta-incomplete (expr ignored simpflag)
   (declare (ignore ignored))
-  (if (not (= (length expr) 4)) (wna-err '$beta_incomplete))
+  (arg-count-check 3 expr)
   (let ((a (simpcheck (cadr expr)   simpflag))
         (b (simpcheck (caddr expr)  simpflag))
         (z (simpcheck (cadddr expr) simpflag))
@@ -3765,7 +3765,7 @@
 
 (defun simp-beta-incomplete-generalized (expr ignored simpflag)
   (declare (ignore ignored))
-  (if (not (= (length expr) 5)) (wna-err '$beta_incomplete_generalized))
+  (arg-count-check 4 expr)
   (let ((a  (simpcheck (second expr) simpflag))
         (b  (simpcheck (third expr)  simpflag))
         (z1 (simpcheck (fourth expr) simpflag))
@@ -4032,7 +4032,7 @@
 
 (defun simp-beta-incomplete-regularized (expr ignored simpflag)
   (declare (ignore ignored))
-  (if (not (= (length expr) 4)) (wna-err '$beta_incomplete_regularized))
+  (arg-count-check 3 expr)
   (let ((a (simpcheck (second expr) simpflag))
         (b (simpcheck (third expr)  simpflag))
         (z (simpcheck (fourth expr) simpflag))
