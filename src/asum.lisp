@@ -345,7 +345,6 @@
 
 (defmfun simpgfact (x vestigial z)
   (declare (ignore vestigial))
-  ;;(if (not (= (length x) 4)) (wna-err '$genfact))
   (arg-count-check 3 x)
   (setq z (mapcar #'(lambda (q) (simpcheck q z)) (cdr x)))
   (let ((a (car z)) (b (take '($floor) (cadr z))) (c (caddr z)))
