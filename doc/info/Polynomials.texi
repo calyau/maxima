@@ -2301,13 +2301,13 @@ Examples:
 If @code{ratvarswitch} is @code{true}, every evaluation starts with a fresh
 list @code{VARLIST}.
 
-@c === beg ===
+@c ===beg===
 @c ratvarswitch:true$
 @c rat(2*x+y^2);
 @c :lisp varlist
 @c rat(2*a+b^2);
 @c :lisp varlist
-@c === end ===
+@c ===end===
 @example
 (%i1) ratvarswitch:true$
 
@@ -2328,13 +2328,13 @@ list @code{VARLIST}.
 If @code{ratvarswitch} is @code{false}, the main variables from the last 
 evaluation are still present.
 
-@c === beg ===
+@c ===beg===
 @c ratvarswitch:false$
 @c rat(2*x+y^2);
 @c :lisp varlist
 @c rat(2*a+b^2);
 @c :lisp varlist
-@c === end ===
+@c ===end===
 @example
 (%i4) ratvarswitch:false$
 

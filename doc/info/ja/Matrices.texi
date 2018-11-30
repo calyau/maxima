@@ -184,10 +184,10 @@ Maximaは、パッケージを自動的にロードします。
 
 例:
 
-@c === beg ===
+@c ===beg===
 @c cauchy_matrix([x1,x2],[y1,y2]);
 @c cauchy_matrix([x1,x2]);
-@c === end ===
+@c ===end===
 @example
 (%i1) cauchy_matrix([x1,x2],[y1,y2]);
 @group

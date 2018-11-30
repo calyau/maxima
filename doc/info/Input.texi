@@ -360,10 +360,10 @@ See @mref{file_type_maxima} and @mref{file_type_lisp} for the default values.
 
 Examples:
 
-@c === beg ===
+@c ===beg===
 @c map('file_type,
 @c     ["test.lisp", "test.mac", "test.dem", "test.txt"]);
-@c === end ===
+@c ===end===
 @example
 (%i2) map('file_type,
           ["test.lisp", "test.mac", "test.dem", "test.txt"]);
@@ -554,11 +554,11 @@ These functions return the components of @var{pathname}.
 
 Examples:
 
-@c === beg ===
+@c ===beg===
 @c pathname_directory("/home/dieter/maxima/changelog.txt");
 @c pathname_name("/home/dieter/maxima/changelog.txt");
 @c pathname_type("/home/dieter/maxima/changelog.txt");
-@c === end ===
+@c ===end===
 @example 
 (%i1) pathname_directory("/home/dieter/maxima/changelog.txt");
 (%o1)                 /home/dieter/maxima/

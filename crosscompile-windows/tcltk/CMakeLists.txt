@@ -12,7 +12,7 @@
 set(TCLVERSION  "8.6.9")
 set(TKVERSION   "8.6.9.1")
 
-set(TCL_MD5     "95f11aa853a4557dd98c7a0c29032cd1")
+set(TCL_MD5     "aa0a121d95a0e7b73a036f26028538d4")
 set(TK_MD5      "9efe3976468352dc894dae0c4e785a8e")
 
 set(TCL_URL     "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
