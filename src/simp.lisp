@@ -327,13 +327,32 @@
 ;; These check for the correct number of operands within Macsyma expressions,
 ;; not arguments in a procedure call as the name may imply.
 
-(defmfun oneargcheck (l)
-  (if (or (null (cdr l)) (cddr l)) (wna-err (caar l))))
+(defun arg-count-check (required-arg-count expr)
+  (unless (= required-arg-count (length (rest expr)))
+    (wna-err expr required-arg-count)))
 
-(defmfun twoargcheck (l)
-  (if (or (null (cddr l)) (cdddr l)) (wna-err (caar l))))
+(defun oneargcheck (expr)
+  (arg-count-check 1 expr))
 
-(defmfun wna-err (op) (merror (intl:gettext "~:@M: wrong number of arguments.") op))
+(defun twoargcheck (expr)
+  (arg-count-check 2 expr))
+
+;; WNA-ERR: Wrong Number of Arguments error
+;;
+;; If REQUIRED-ARG-COUNT is non-NIL, then we check that EXPR has the
+;; correct number of arguments. A informative error message is shown
+;; if the number of arguments is not given.
+;;
+;; Otherwise, EXPR must be a symbol and a generic message is printed.
+;; (This is for backward compatibility for existing uses of WNA-ERR.)
+(defun wna-err (exprs &optional required-arg-count)
+  (if required-arg-count
+      (let ((op (caar exprs))
+	    (actual-count (length (rest exprs))))
+	(merror (intl:gettext "~M: expected exactly ~M arguments but got ~M: ~M")
+		op required-arg-count actual-count (list* '(mlist) (rest exprs))))
+      (merror (intl:gettext "~:@M: wrong number of arguments.")
+	      exprs)))
 
 (defmfun improper-arg-err (exp fn)
   (merror (intl:gettext "~:M: improper argument: ~M") fn exp))
