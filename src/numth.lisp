@@ -4332,7 +4332,7 @@
     (t 
       (mfuncall add-fn m1 m2) ) ))
 
-(defmfun gf-matadd1 (m poly add-fn) 
+(defun gf-matadd1 (m poly add-fn) 
   (do ((r (cdr m) (cdr r)) new)
       ((null r) (cons '($matrix simp) (nreverse new)))
     (push (cons '(mlist simp) 
@@ -4344,7 +4344,7 @@
     (intl:gettext "Arguments to `~m' must have same formal structure.")
     (if *ef-arith?* "ef_matadd" "gf_matadd") ))
 
-(defmfun gf-matadd2 (m1 m2 add-fn) 
+(defun gf-matadd2 (m1 m2 add-fn) 
   (setq m1 (cdr m1) m2 (cdr m2))
   (unless (= (length (car m1)) (length (car m2)))
     (gf-matadd2-error) )
@@ -4386,14 +4386,14 @@
     (t 
       (mfuncall mult-fn m1 m2) ) ))
 
-(defmfun gf-matmult1 (m poly mult-fn) 
+(defun gf-matmult1 (m poly mult-fn) 
   (do ((r (cdr m) (cdr r)) new)
       ((null r) (cons '($matrix simp) (nreverse new)))
     (push (cons '(mlist simp) 
                 (mapcar #'(lambda (p) (mfuncall mult-fn p poly)) (cdar r)) ) 
           new )))
 
-(defmfun gf-matmult2 (m1 m2) 
+(defun gf-matmult2 (m1 m2) 
   (setq m1 (cdr m1) m2 (cdr ($transpose m2)))
   (unless (= (length (car m1)) (length (car m2)))
     (gf-merror 

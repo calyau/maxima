@@ -1639,7 +1639,7 @@
 (defmvar $integration_constant '$%c)
 
 ;; This is the top level of the integrator
-(defmfun sinint (exp var)
+(defun sinint (exp var)
   ;; *integrator-level* is a recursion counter for INTEGRATOR.  See
   ;; INTEGRATOR for more details.  Initialize it here.
   (let ((*integrator-level* 0))

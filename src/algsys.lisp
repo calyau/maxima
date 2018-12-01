@@ -772,7 +772,7 @@
 						  (pderivative p x)))))
 		(listovars p))))
 
-(defmfun mycabs (x)
+(defun mycabs (x)
   (and (complexnump x) (cabs x)))
 
 ;;; (DISTREP LOL)

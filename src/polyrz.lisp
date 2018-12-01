@@ -64,7 +64,7 @@
 
 (declare-top (unspecial equations))
 
-(defmfun sturm1 (poly eps &aux b llist)
+(defun sturm1 (poly eps &aux b llist)
   (setq b (cons (root-bound (cdr poly)) 1))
   (setq llist (isolat poly (cons (- (car b)) (cdr b)) b))
   (mapcar #'(lambda (int) (refine poly (car int) (cdr int) eps)) llist))

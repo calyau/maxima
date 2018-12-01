@@ -15,7 +15,7 @@
 
 (declare-top (special $props $dotdistrib))
 
-(defmfun diffint (e x)
+(defun diffint (e x)
   (let (a)
     (cond ((null (cdddr e))
 	   (cond ((alike1 x (caddr e)) (cadr e))
@@ -39,7 +39,7 @@
     (list (if (pzerop u) 0 (mul2 u (maxima-substitute (cadddr e) y (car e))))
 	  (if (pzerop v) 0 (mul3 v (maxima-substitute (caddr e) y (car e)) -1)))))
 
-(defmfun diffsumprod (e x)
+(defun diffsumprod (e x)
   (cond ((or (not ($mapatom x)) (not (free (cadddr e) x)) (not (free (car (cddddr e)) x)))
 	 (diff%deriv (list e x 1)))
 	((eq (caddr e) x) 0)
@@ -50,17 +50,17 @@
 				t))
 	     (if (eq (caar e) '%sum) u (mul2 e u))))))
 
-(defmfun difflaplace (e x)
+(defun difflaplace (e x)
   (cond ((or (not (atom x)) (eq (cadddr e) x)) (diff%deriv (list e x 1)))
 	((eq (caddr e) x) 0)
 	(t ($laplace (sdiff (cadr e) x) (caddr e) (cadddr e)))))
 
-(defmfun diff-%at (e x)
+(defun diff-%at (e x)
   (cond ((freeof x e) 0)
 	((not (freeofl x (hand-side (caddr e) 'r))) (diff%deriv (list e x 1)))
 	(t ($at (sdiff (cadr e) x) (caddr e)))))
 
-(defmfun diffncexpt (e x)
+(defun diffncexpt (e x)
   (let ((base* (cadr e))
 	(pow (caddr e)))
     (cond ((and (mnump pow) (or (not (fixnump pow)) (< pow 0))) ; POW cannot be 0
@@ -88,7 +88,7 @@
 		    index 0 (list '(mplus) pow -1)) nil)))
 	  (t (diff%deriv (list e x 1))))))
 
-(defmfun stotaldiff (e)
+(defun stotaldiff (e)
   (cond ((or (mnump e) (constant e)) 0)
 	((or (atom e) (member 'array (cdar e) :test #'eq))
 	 (let ((w (mget (if (atom e) e (caar e)) 'depends)))
@@ -629,7 +629,7 @@
       (list '(mlabox) e (box-label l))
       (list '(mbox) e)))
 
-(defmfun box (e label)
+(defun box (e label)
   (if (eq label t)
       (list '(mbox) e)
       ($box e (car label))))
@@ -660,7 +660,7 @@
   (let ((scanmapp t))
     (resimplify (apply #'scanmap1 (mmapev l)))))
 
-(defmfun scanmap1 (func e &optional (flag nil flag?))
+(defun scanmap1 (func e &optional (flag nil flag?))
   (let ((arg2 (specrepcheck e)) newarg2)
     (cond ((eq func '$rat)
 	   (merror (intl:gettext "scanmap: cannot apply 'rat'.")))

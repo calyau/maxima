@@ -69,7 +69,7 @@
 (defvar *alt-display2d* nil)
 (defvar *alt-display1d* nil)
 
-(defmfun displa (form &aux #+kcl(form form))
+(defun displa (form &aux #+kcl(form form))
   (if (not #.ttyoff)
       (cond ($display2d
 	     (cond (*alt-display2d* (apply *alt-display2d* form ()))
@@ -147,7 +147,7 @@
 
 ;; Referenced externally by RAT;FLOAT.
 
-(defmfun dimension-atom (form result)
+(defun dimension-atom (form result)
   (cond ((and (symbolp form) (get form atom-context))
 	 (funcall (get form atom-context) form result))
 	((stringp form) (dimension-string (makestring form) result))
@@ -158,7 +158,7 @@
 ;; Referenced externally by anyone who wants to display something as
 ;; a funny looking atom, e.g. Trace, Mformat.
 
-(defmfun dimension-string (dummy result &aux crp)
+(defun dimension-string (dummy result &aux crp)
   (setq width 0 height 1 depth 0)
   (do ((l dummy (cdr l)))
       ((null l))
@@ -180,7 +180,7 @@
 			(incf width))
 		      (setq result (rplacd dummy result))))))))
 
-(defmfun makestring (atom)
+(defun makestring (atom)
   (let (dummy)
     (cond ((numberp atom) (exploden atom))
       ((stringp atom)
@@ -260,7 +260,7 @@
 		    width (+ 2 w width) height (max h height) depth (max d depth))))
      (return result)))
 
-(defmfun dimension-prefix (form result)
+(defun dimension-prefix (form result)
   (prog (dissym (symlength 0))
      (setq dissym (safe-get (caar form) 'dissym)
 	   symlength (length dissym))
@@ -282,7 +282,7 @@
      (setq width w height h depth d)
      (return result)))
 
-(defmfun dimension-infix (form result)
+(defun dimension-infix (form result)
   (unless (= (length (cdr form)) 2)
     (return-from dimension-infix (dimension-function form result)))
   (prog (dissym (symlength 0) (w 0) (h 0) (d 0))
@@ -300,7 +300,7 @@
 	   depth (max d depth))
      (return result)))
 
-(defmfun dimension-nary (form result)
+(defun dimension-nary (form result)
   ;; If only 0 or 1 arguments, then print "*"() or "*"(A)
   (cond ((null (cddr form))
 	 (dimension-function form result))
@@ -414,7 +414,7 @@
       (dimension-paren form result)
       (dimension form result lop rop w right)))
 
-(defmfun dimension-postfix (form result)
+(defun dimension-postfix (form result)
   (prog (dissym (symlength 0))
      (setq dissym (safe-get (caar form) 'dissym)
 	   symlength (length dissym))
@@ -422,7 +422,7 @@
 	   width (+ symlength width))
      (return (revappend dissym result))))
 
-(defmfun dimension-nofix (form result)
+(defun dimension-nofix (form result)
   (setq form (safe-get (caar form) 'dissym)
 	width (length form))
   (revappend form result))
@@ -444,7 +444,7 @@
 	      (setq width (+ (length (cdr dissym)) symlength width))
 	      (return (revappend (cdr dissym) result))))))
 
-(defmfun dimension-superscript (form result)
+(defun dimension-superscript (form result)
   (prog (exp (w 0) (h 0) (d 0) bas)
      (setq exp (let ((size 1))
 		 (dimension (caddr form) nil 'mparen 'mparen nil 0))

@@ -39,23 +39,23 @@
 
 ;;; Arithmetic utilities.
 
-(defmfun sqrt1-x^2 (x)
+(defun sqrt1-x^2 (x)
   (power (sub 1 (power x 2)) 1//2))
 
-(defmfun sqrt1+x^2 (x)
+(defun sqrt1+x^2 (x)
   (power (add 1 (power x 2)) 1//2))
 
-(defmfun sqrtx^2-1 (x)
+(defun sqrtx^2-1 (x)
   (power (add (power x 2) -1) 1//2))
 
-(defmfun sq-sumsq (x y)
+(defun sq-sumsq (x y)
   (power (add (power x 2) (power y 2)) 1//2))
 
-(defmfun trigp (func)
+(defun trigp (func)
   (member func '(%sin %cos %tan %csc %sec %cot %sinh %cosh %tanh %csch %sech %coth)
 	  :test #'eq))
 
-(defmfun arcp (func)
+(defun arcp (func)
   (member func '(%asin %acos %atan %acsc %asec %acot %asinh %acosh %atanh %acsch %asech %acoth)
 	  :test #'eq))
 
@@ -427,7 +427,7 @@
 ;; (simp-%asin ((%asin simp) ...). If the simp flag is ignored, we've
 ;; got trouble.
 
-(defmfun simp-%sin (form y z) 
+(defun simp-%sin (form y z) 
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -451,7 +451,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%sin (neg y))))
 	(t (eqtest (list '(%sin) y) form))))
 
-(defmfun simp-%cos (form y z) 
+(defun simp-%cos (form y z) 
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -533,7 +533,7 @@
   is constant or integer"
   (not (zerop1 (get-const-or-int-terms form var))))
 
-(defmfun simp-%tan (form y z)
+(defun simp-%tan (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -557,7 +557,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%tan (neg y))))
 	(t (eqtest (list '(%tan) y) form))))
 
-(defmfun simp-%cot (form y z)
+(defun simp-%cot (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   
@@ -624,7 +624,7 @@
      ((alike1 1//2 x)
         (neg (cons-exp '%cot zl-rem))))))
 
-(defmfun simp-%csc (form y z)
+(defun simp-%csc (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -649,7 +649,7 @@
 
 	(t (eqtest (list '(%csc) y) form))))
 
-(defmfun simp-%sec (form y z)
+(defun simp-%sec (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -817,13 +817,13 @@
 
 ;; The following four functions are generated in code by TRANSL. - JPG 2/1/81
 
-(defmfun rplus (x y) (addk x y))
+(defun rplus (x y) (addk x y))
 
-(defmfun rdifference (x y) (addk x (timesk -1 y)))
+(defun rdifference (x y) (addk x (timesk -1 y)))
 
-(defmfun rtimes (x y) (timesk x y))
+(defun rtimes (x y) (timesk x y))
 
-(defmfun rremainder (x y)
+(defun rremainder (x y)
   (cond ((equal 0 y) (dbz-err))
 	((integerp x)
 	 (cond ((integerp y) (maxima-reduce x y))
@@ -838,7 +838,7 @@
 	   (exponentialize (caar exp) ($exponentialize (cadr exp))))
 	  (t (recur-apply #'$exponentialize exp)))))
 
-(defmfun exponentialize (op arg)
+(defun exponentialize (op arg)
   (cond ((eq '%sin op)
 	 (div (sub (power '$%e (mul '$%i arg)) (power '$%e (mul -1 '$%i arg)))
 	      (mul 2 '$%i)))
@@ -894,10 +894,10 @@
 (defun linearp (exp var)
   (and (setq exp (islinear exp var)) (not (equal (car exp) 0))))
 
-(defmfun mminusp (x)
+(defun mminusp (x)
   (= -1 (signum1 x)))
 
-(defmfun mminusp* (x)
+(defun mminusp* (x)
   (let (sign)
     (setq sign (csign x))
     (or (member sign '($neg $nz) :test #'eq)

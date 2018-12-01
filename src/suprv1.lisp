@@ -101,7 +101,7 @@
     ;; Clear the facts from asksign and friends.
     (clearsign)))
 
-(defmfun makelabel (x)
+(defun makelabel (x)
   (setq *linelabel* ($concat '|| x $linenum))
   (unless $nolabels
     (when (or (null (cdr $labels))
@@ -111,18 +111,18 @@
       (setq $labels (cons (car $labels) (cons *linelabel* (cdr $labels))))))
   *linelabel*)
 
-(defmfun printlabel ()
+(defun printlabel ()
   (mtell-open "(~A) " (subseq (print-invert-case *linelabel*) 1)))
 
-(defmfun mexploden (x)
+(defun mexploden (x)
   (let (*print-radix*
 	(*print-base* 10))
     (exploden x)))
 
-(defmfun addlabel (label)
+(defun addlabel (label)
   (setq $labels (cons (car $labels) (cons label (delete label (cdr $labels) :count 1 :test #'eq)))))
 
-(defmfun tyi* ()
+(defun tyi* ()
   (clear-input)
   (do ((n (tyi) (tyi))) (nil)
     (cond ((or (char= n #\newline) (and (> (char-code n) 31) (char/= n #\rubout)))
@@ -172,7 +172,7 @@
 
 (defvar autoload 'generic-autoload)
 
-(defmfun load-function (func mexprp)	; The dynamic loader
+(defun load-function (func mexprp)	; The dynamic loader
   (declare (ignore mexprp))
   (let ((file (get func 'autoload)))
     (if file (funcall autoload (cons func file)))))
@@ -189,7 +189,7 @@
       (add2lnc func $props)))
   '$done)
 
-(defmfun dollarify (l)
+(defun dollarify (l)
   (let ((errset 'errbreak1))
     (cons '(mlist simp)
 	  (mapcar #'(lambda (x)
@@ -200,11 +200,11 @@
 			      (t (makealias x)))))
 		  l))))
 
-(defmfun mfboundp (func)
+(defun mfboundp (func)
   (or (mgetl func '(mexpr mmacro))
       (getl func '(translated-mmacro mfexpr* mfexpr*s))))
 
-(defmfun loadfile (file findp printp)
+(defun loadfile (file findp printp)
   (and findp (member $loadprint '(nil $loadfile) :test #'equal) (setq printp nil))
   ;; Should really get the truename of FILE.
   (if printp (format t (intl:gettext "loadfile: loading ~A.~%") file))
@@ -305,7 +305,7 @@
 	(initialize-numeric-constant x))	;; reset db value for $%pi, $%e, etc
       (if z (kill1 z)))))
 
-(defmfun kill1 (x)
+(defun kill1 (x)
   (if (and (stringp x) (not (getopr0 x))) (return-from kill1 nil))
   (funcall
    #'(lambda (z)
@@ -366,7 +366,7 @@
    nil))
 
 
-(defmfun remlabels (n)
+(defun remlabels (n)
   (prog (l x)
      (setq l (list (exploden $inchar)
 		   (exploden $outchar)
@@ -379,7 +379,7 @@
      (decf $linenum)
      (go loop)))
 
-(defmfun remvalue (x fn)
+(defun remvalue (x fn)
   (cond ((not (symbolp x)) (improper-arg-err x fn))
 	((boundp x)
 	 (let (y)
@@ -410,7 +410,7 @@
 		  (makunbound x)
 		  t))))))
 
-(defmfun ruleof (rule)
+(defun ruleof (rule)
   (or (mget rule 'ruleof)
       (let* ((pattern (cadr (mget rule '$rule)))
 	     (op (if (atom pattern) nil (caar pattern))) l)
@@ -434,7 +434,7 @@
   (let ((state-pdl (cons 'lisp-break state-pdl)))
     (break "erst ~S" '(errbrksw))))
 
-(defmfun errlfun1 (mpdls)
+(defun errlfun1 (mpdls)
   (do ((l bindlist (cdr l))
        (l1))
       ((eq l (car mpdls)) (munbind l1))
@@ -443,24 +443,24 @@
       ((eq loclist (cdr mpdls)))
     (munlocal)))
 
-(defmfun getalias (x)
+(defun getalias (x)
   (cond ((get x 'alias))
 	((eq x '$false) nil)
 	(t x)))
 
-(defmfun makealias (x)
+(defun makealias (x)
   (implode (cons #\$ (exploden x))))
 
 ;; (DEFMSPEC $F (FORM) (SETQ FORM (FEXPRCHECK FORM)) ...)
 ;; makes sure that F was called with exactly one argument and
 ;; returns that argument.
 
-(defmfun fexprcheck (form)
+(defun fexprcheck (form)
   (if (or (null (cdr form)) (cddr form))
       (merror (intl:gettext "~:M: expected just one argument; found: ~M") (caar form) form)
       (cadr form)))
 
-(defmfun nonsymchk (x fn)
+(defun nonsymchk (x fn)
   (unless (symbolp x)
     (merror (intl:gettext "~:M: argument must be a symbol; found: ~M") fn x)))
 
@@ -541,7 +541,7 @@
       ((null form)
        `((mlist simp),@(nreverse l)))))
 
-(defmfun alias (x y)
+(defun alias (x y)
   (cond ((nonsymchk x '$alias))
 	((nonsymchk y '$alias))
         ((eq x y) y) ; x is already the alias of y
@@ -553,7 +553,7 @@
 	   (add2lnc y $aliases)
 	   y)))
 
-(defmfun remalias (x &optional remp)
+(defun remalias (x &optional remp)
   (let ((y (and (or remp (member x (cdr $aliases) :test #'equal)) (get x 'reversealias))))
     (cond ((and y (eq x '%derivative))
 	   (remprop x 'reversealias)
@@ -564,7 +564,7 @@
 	     (setf $aliases (delete x $aliases :count 1 :test #'eq))
 	     (remprop (setq x y) 'alias) (remprop x 'verb) x))))
 
-(defmfun stripdollar (x)
+(defun stripdollar (x)
   (cond ((not (atom x))
 	 (cond ((and (eq (caar x) 'bigfloat) (not (minusp (cadr x)))) (implode (fpformat x)))
 	       (t (merror (intl:gettext "STRIPDOLLAR: argument must be an atom; found: ~M") x))))
@@ -575,10 +575,10 @@
          (intern (subseq (string x) 1)))
 	(t x)))
 
-(defmfun fullstrip (x)
+(defun fullstrip (x)
   (mapcar #'fullstrip1 x))
 
-(defmfun fullstrip1 (x)
+(defun fullstrip1 (x)
   (or (and (numberp x) x)
       (let ((y (get x 'reversealias))) (if y (stripdollar y)))
       (stripdollar x)))
@@ -630,14 +630,14 @@
     (setq form (if $grind (strgrind form) (mstring form)))
     (coerce form 'string)))
 
-(defmfun makstring (x)
+(defun makstring (x)
   (setq x (mstring x))
   (do ((l x (cdr l)))
       ((null l))
     (rplaca l (ascii (car l))))
   x)
 
-(defmfun strmeval (x)
+(defun strmeval (x)
   (cond ((atom x) (meval1 x))
 	((member (caar x) '(msetq mdefine mdefmacro) :test #'equal) x)
 	(t (meval x))))
@@ -660,7 +660,7 @@
         ($derivative $diff) ($prod $product)
 	($bothcoeff $bothcoef)))
 
-(defmfun amperchk (name)
+(defun amperchk (name)
   (cond
     ((symbolp name) name)
     ((stringp name)
@@ -738,7 +738,7 @@
      (setq l (cdr l))
      (go loop)))
 
-(defmfun getlabels (n1 n2 flag)	; FLAG = T for STRINGOUT, = NIL for PLAYBACK and SAVE.
+(defun getlabels (n1 n2 flag)	; FLAG = T for STRINGOUT, = NIL for PLAYBACK and SAVE.
   (do ((i n1 (1+ i)) (l1)
        (l (if flag (list (exploden $inchar))
 	      (list (exploden $inchar) (exploden $linechar)
@@ -748,7 +748,7 @@
       (if (boundp (setq z (implode (append (car l) x))))
 	  (setq l1 (cons z l1))))))
 
-(defmfun getlabels* (label-prefix flag)		; FLAG = T only for STRINGOUT
+(defun getlabels* (label-prefix flag)		; FLAG = T only for STRINGOUT
   (let*
     ((label-prefix-name (symbol-name label-prefix))
      (label-prefix-length (length label-prefix-name)))
@@ -761,7 +761,7 @@
               (string= label-name-1 label-prefix-name :end1 label-prefix-length))
             (setq l1 (cons (car l) l1)))))))
 
-(defmfun getlabcharn (label)
+(defun getlabcharn (label)
   (let ((c (char (symbol-name label) 1)))
     (if (char= c #\%)
 	(char (symbol-name label) 2)
@@ -808,7 +808,7 @@
 		 '$unknown))
 	 l)))
 
-(defmfun timeorg (tim)
+(defun timeorg (tim)
   (if (> thistime 0)
       (incf thistime (- (get-internal-run-time) tim))))
 
@@ -820,7 +820,7 @@
 
 ;; File-processing stuff.
 
-(defmfun mterpri ()
+(defun mterpri ()
    (terpri)
    (force-output))
 

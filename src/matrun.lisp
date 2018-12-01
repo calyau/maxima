@@ -92,14 +92,14 @@
     (putprop x y z)
     (remprop x z)))
 
-(defmfun findbe (e)
+(defun findbe (e)
   (cond ((equal e 1) '(1 . 0))
 	((equal e 0) '(0 . 1))
 	((atom e) (cons e 1))
 	((eq (caar e) 'mexpt) (cons (cadr e) (caddr e)))
 	(t (cons e 1))))
 
-(defmfun findfun (e p c)
+(defun findfun (e p c)
   (prog ()
      (cond ((and (null (atom e)) (eq (caar e) p)) (return e))
 	   ((or (atom e) (not (eq (caar e) c))) (matcherr))
@@ -110,7 +110,7 @@
 		((and (not (atom (car e))) (eq (caaar e) p)) (return (car e))))
      (go a)))
 
-(defmfun findexpon (e1 base* c)
+(defun findexpon (e1 base* c)
   (prog (e)
      (setq e e1)
      (cond ((and (mexptp e) (alike1 base* (cadr e)))
@@ -131,7 +131,7 @@
 		((eq c 'mexpt) (matcherr))
 		(t (return 0)))))
 
-(defmfun findbase (e expon c)
+(defun findbase (e expon c)
   (prog ()
      (cond ((equal expon 0)
 	    (if (and (eq c 'mexpt) (not (equal 1 e))) (matcherr))
@@ -151,7 +151,7 @@
 		 (return (cadar e))))
      (go a)))
 
-(defmfun part+ (e p preds) 
+(defun part+ (e p preds) 
   (prog (flag saved val) 
      (if (not (mplusp e)) (matcherr))
      (cond ((> (length p) (length preds))
@@ -189,7 +189,7 @@
      b (setq preds (cdr preds) p (cdr p))
      (go a)))
 
-(defmfun part* (e p preds) 
+(defun part* (e p preds) 
   (prog (flag saved val) 
      (if (not (mtimesp e)) (matcherr))
      (cond ((> (length p) (length preds))
@@ -234,7 +234,7 @@
 	    (mapc #'(lambda (z) (setq expr (apply1 expr z 0))) (cdr l))
 	    expr))
 
-(defmfun apply1 (expr *rule depth) 
+(defun apply1 (expr *rule depth) 
   (cond
     ((> depth $maxapplydepth) expr)
     (t
@@ -259,7 +259,7 @@
 	    (mapc #'(lambda (z) (setq expr (car (apply1hack expr z)))) (cdr l))
 	    expr))
 
-(defmfun apply1hack (expr *rule) 
+(defun apply1hack (expr *rule) 
   (prog (pairs max) 
      (*rulechk *rule)
      (setq max 0)
@@ -291,7 +291,7 @@
 (defmspec $apply2 (l) (setq l (cdr l))
 	  (let ((rulelist (cdr l))) (apply2 rulelist (meval (car l)) 0)))
 
-(defmfun apply2 (rulelist expr depth) 
+(defun apply2 (rulelist expr depth) 
   (cond
     ((> depth $maxapplydepth) expr)
     (t
@@ -319,7 +319,7 @@
 (defmspec $applyb2 (l) (setq l (cdr l))
 	  (let ((rulelist (cdr l))) (car (apply2hack rulelist (meval (car l))))))
 
-(defmfun apply2hack (rulelist e) 
+(defun apply2hack (rulelist e) 
   (prog (pairs max) 
      (setq max 0)
      (cond ((atom e) (return (cons (apply2 rulelist e -1) 0)))

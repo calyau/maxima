@@ -525,7 +525,7 @@ APPLY means like APPLY.")
   (tr-format (intl:gettext "error: failed to translate ~:@M~%") x)
   nil)
 
-(defmfun translate-and-eval-macsyma-expression (form)
+(defun translate-and-eval-macsyma-expression (form)
   ;; this is the hyper-random entry to the transl package!
   ;; it is used by MLISP for TRANSLATE:TRUE ":=".
   (bind-transl-state
@@ -544,7 +544,7 @@ APPLY means like APPLY.")
 ;; specified by ANSI CL.
 (defvar *macexpr-top-level-form-p* nil)
 
-(defmfun translate-macexpr-toplevel (form &aux (*transl-backtrace* nil) tr-abort)
+(defun translate-macexpr-toplevel (form &aux (*transl-backtrace* nil) tr-abort)
   ;; there are very few top-level special cases, I don't
   ;; think it would help the code any to generalize TRANSLATE
   ;; to target levels.

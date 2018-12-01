@@ -27,20 +27,20 @@
 
 (defvar *opr-table* (make-hash-table :test #'equal))
 
-(defmfun getopr0 (x)
+(defun getopr0 (x)
   (or
     (and (symbolp x) (get x 'opr))
     (and (stringp x) (gethash x *opr-table*))))
 
-(defmfun getopr (x)
+(defun getopr (x)
   (or (getopr0 x) x))
 
-(defmfun putopr (x y)
+(defun putopr (x y)
   (or
     (and (symbolp x) (setf (get x 'opr) y))
     (and (stringp x) (setf (gethash x *opr-table*) y))))
 
-(defmfun remopr (x)
+(defun remopr (x)
   (or
     (and (symbolp x) (remprop x 'opr))
     (and (stringp x) (remhash x *opr-table*))))
@@ -135,7 +135,7 @@
                            (let (($simp t)) (resimplify z)))
                         (setq z (maxima-substitute (cdar l) (caar l) z))))))))))
 
-(defmfun maxima-substitute (x y z) ; The args to SUBSTITUTE are assumed to be simplified.
+(defun maxima-substitute (x y z) ; The args to SUBSTITUTE are assumed to be simplified.
   (let ((in-p t) (substp t))
     (if (and (mnump y) (= (signum1 y) 1))
 	(let ($sqrtdispflag ($pfeformat t)) (setq z (nformat-all z))))
@@ -252,7 +252,7 @@
          (apply #'append (loop for v in diff-vars for n in diff-degrees collect (list v (subst1 x y n)))))))
     (t z)))
 
-(defmfun subst0 (new old)
+(defun subst0 (new old)
   (cond ((atom new) new)
 	((alike (cdr new) (cdr old))
 	 (cond ((eq (caar new) (caar old)) old)
@@ -305,7 +305,7 @@
        (or (member (caar z) '(%derivative %del) :test #'eq)
            (member (caar z) dummy-variable-operators :test #'eq))))
 
-(defmfun recur-apply (fun e)
+(defun recur-apply (fun e)
   (cond ((eq (caar e) 'bigfloat) e)
 	((specrepp e) (funcall fun (specdisrep e)))
 	(t (let ((newargs (mapcar fun (cdr e))))
@@ -474,7 +474,7 @@
   (dolist (u l)
     (if (depends u x) (return t))))
 
-(defmfun sdiff (e x) ; The args to SDIFF are assumed to be simplified.
+(defun sdiff (e x) ; The args to SDIFF are assumed to be simplified.
   ;; Remove a special representation from the variable of differentiation
   (setq x (specrepcheck x))
   (cond ((alike1 e x) 1)
@@ -686,21 +686,21 @@
    ((mqapply) (($psi array) ((mplus) 1 n)) x))
   grad)
 
-(defmfun atvarschk (argl)
+(defun atvarschk (argl)
   (do ((largl (length argl) (1- largl))
        (latvrs (length atvars))
        (l))
       ((not (< latvrs largl)) (nconc atvars l))
     (setq l (cons (implode (cons '$ (cons '@ (mexploden largl)))) l))))
 
-(defmfun notloreq (x)
+(defun notloreq (x)
   (or (atom x)
       (not (member (caar x) '(mlist mequal) :test #'eq))
       (and (eq (caar x) 'mlist)
 	   (dolist (u (cdr x))
 	     (if (not (mequalp u)) (return t))))))
 
-(defmfun substitutel (l1 l2 e)
+(defun substitutel (l1 l2 e)
   "l1 is a list of expressions.  l2 is a list of variables. For each 
    element in list l2, substitute corresponding element of l1 into e"
   (do ((l1 l1 (cdr l1))
@@ -708,25 +708,25 @@
       ((null l1) e)
     (setq e (maxima-substitute (car l1) (car l2) e))))
 
-(defmfun union* (a b)
+(defun union* (a b)
   (do ((a a (cdr a))
        (x b))
       ((null a) x)
     (if (not (memalike (car a) b)) (setq x (cons (car a) x)))))
 
-(defmfun intersect* (a b)
+(defun intersect* (a b)
   (do ((a a (cdr a))
        (x))
       ((null a) x)
     (if (memalike (car a) b) (setq x (cons (car a) x)))))
 
-(defmfun nthelem (n e)
+(defun nthelem (n e)
   (car (nthcdr (1- n) e)))
 
-(defmfun delsimp (e)
+(defun delsimp (e)
   (delete 'simp (copy-list e) :count 1 :test #'eq))
 
-(defmfun remsimp (e)
+(defun remsimp (e)
   (if (atom e) e (cons (delsimp (car e)) (mapcar #'remsimp (cdr e)))))
 
 (defmfun $trunc (e)
@@ -736,7 +736,7 @@
 	((specrepp e) ($trunc (specdisrep e)))
 	(t e)))
 
-(defmfun nonvarcheck (e fn)
+(defun nonvarcheck (e fn)
   (if (or (mnump e)
 	  (maxima-integerp e)
 	  ($constantp e)
@@ -795,7 +795,7 @@
 ; Otherwise (if ELABEL were to observe $NOLABELS) it would be
 ; impossible to programmatically refer to intermediate result expression.
 
-(defmfun elabel (e)
+(defun elabel (e)
   (if (not (checklabel $linechar)) (setq $linenum (1+ $linenum)))
   (let (($nolabels nil)) ; <-- This is pretty ugly. MAKELABEL should take another argument.
     (makelabel $linechar))
@@ -855,11 +855,11 @@
   (let ((substp t))
     (mpart (cdr l) t nil t '$substinpart)))
 
-(defmfun part1 (arglist substflag dispflag inflag) ; called only by TRANSLATE
+(defun part1 (arglist substflag dispflag inflag) ; called only by TRANSLATE
   (let ((substp t))
     (mpart arglist substflag dispflag inflag '$substpart)))
 
-(defmfun mpart (arglist substflag dispflag inflag fn)
+(defun mpart (arglist substflag dispflag inflag fn)
   (prog (substitem arg arg1 exp exp1 exp* sevlist count prevcount n specp
 	 lastelem lastcount)
      (setq specp (or substflag dispflag))
@@ -1006,7 +1006,7 @@
 		(t (setq exp exp1)))
      (go sevloop)))
 
-(defmfun getop (x)
+(defun getop (x)
   (or (and (symbolp x) (get x 'op)) x))
 
 (defmfun $listp (x)
@@ -1053,11 +1053,11 @@
   (atomchk (setq e ($totaldisrep e)) '$member t)
   (if (memalike ($totaldisrep x) (margs e)) t))
 
-(defmfun atomchk (e fun 2ndp)
+(defun atomchk (e fun 2ndp)
   (if (or (atom e) (eq (caar e) 'bigfloat))
       (merror (intl:gettext "~:M: ~Margument must be a non-atomic expression; found ~M") fun (if 2ndp "2nd " "") e)))
 
-(defmfun format1 (e)
+(defun format1 (e)
   (cond (($listp e) e)
 	($inflag (specrepcheck e))
 	(t (nformat e))))
@@ -1072,7 +1072,7 @@
 
 (macrolet ((make-nth (si i)
 	     (let ((sim (intern (concatenate 'string "$" (symbol-name si)))))
-	       `(defmfun ,sim (e)
+	       `(defun ,sim (e)
 		  (atomchk (setq e (format1 e)) ',sim nil)
 		  (if (< (length (margs e)) ,i)
 		      (merror (intl:gettext "~:M: no such element in ~M") ',sim e))

@@ -27,7 +27,7 @@
 	((and $keepfloat (or (floatp a) (floatp b))) 1)
 	(t (gcd a b))))
 
-(defmfun pquotientchk (a b)
+(defun pquotientchk (a b)
   (if (equal b 1) a (pquotient a b)))
 
 ;; divides polynomial x by polynomial y
@@ -50,13 +50,13 @@
 	(cdr x))
   nil)
 
-(defmfun pgcd (x y)
+(defun pgcd (x y)
   (setq x (car (pgcda x y nil)))
   (cond ((pminusp x) (pminus x))
 	(modulus (monize x))
 	(t x)))
 
-(defmfun plcm (x y)
+(defun plcm (x y)
   (setq x (pgcdcofacts x y))
   (ptimes (car x) (ptimes (cadr x) (caddr x))))
 
@@ -292,7 +292,7 @@
 	((pcoefp q) (pzero))
 	(t (psimp (p-var p) (pgcd1 (p-terms p) (p-terms q))))))
 
-(defmfun pgcd1 (u v) (caddr (psquorem1 u v nil)))
+(defun pgcd1 (u v) (caddr (psquorem1 u v nil)))
 
 (defun pgcd2 (u v k &aux (i 0))
   (declare (special lcu lcv) (fixnum k i))
@@ -319,7 +319,7 @@
 	(t (setq x (contsort (cdr x)))
 	   (oldcontent2 (cdr x) (car x)))))
 
-(defmfun oldcontent (x)
+(defun oldcontent (x)
   (cond ((pcoefp x) (list x 1))
 	((null (p-red x))
 	 (list (p-lc x) (make-poly (p-var x) (p-le x) 1)))
@@ -385,7 +385,7 @@
 
 ;;;PGCDU IS NOT NOW IN RAT;UFACT >
 
-(defmfun pgcdu (p q)
+(defun pgcdu (p q)
   (do () ((pzerop q) (monize p))
     (psetq p q q (pmodrem p q))))
 
@@ -460,7 +460,7 @@
 (defun norm1 (poly)
   (if (null poly) 0 (+ (norm (cadr poly)) (norm1 (cddr poly)) )) )
 
-(defmfun pdegree (p var)
+(defun pdegree (p var)
   (cond ((pcoefp p) 0)
 	((eq var (p-var p)) (p-le p))
 	((pointergp var (p-var p)) 0)

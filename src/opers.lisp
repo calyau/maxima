@@ -36,7 +36,7 @@
 
 ;; Addition primitives.
 
-(defmfun add2 (x y)
+(defun add2 (x y)
   (cond ((numberp x)
 	 (cond ((numberp y) (+ x y))
                ((=0 x) y)
@@ -44,7 +44,7 @@
         ((=0 y) x)
 	(t (simplifya `((mplus) ,x ,y) t))))
 
-(defmfun add2* (x y)
+(defun add2* (x y)
   (cond
     ((and (numberp x) (numberp y)) (+ x y))
     ((=0 x) (simplifya y nil))
@@ -55,25 +55,25 @@
 ;; for compatibility with the old OPERS package.  The old ADDLIS
 ;; deleted zeros ahead of time.  Is this worth it?
 
-(defmfun addn (terms simp-flag)
+(defun addn (terms simp-flag)
   (cond ((null terms) 0)
 	(t (simplifya `((mplus) . ,terms) simp-flag))))
 
 (declare-top (special $negdistrib))
 
-(defmfun neg (x)
+(defun neg (x)
   (cond ((numberp x) (- x))
 	(t (let (($negdistrib t))
 	     (simplifya `((mtimes) -1 ,x) t)))))
 
-(defmfun sub (x y)
+(defun sub (x y)
   (cond
     ((and (numberp x) (numberp y)) (- x y))
     ((=0 y) x)
     ((=0 x) (neg y))
     (t (add x (neg y)))))
 
-(defmfun sub* (x y)
+(defun sub* (x y)
   (cond
     ((and (numberp x) (numberp y)) (- x y))
     ((=0 y) x)
@@ -84,21 +84,21 @@
 ;; Multiplication primitives -- is it worthwhile to handle the 3-arg
 ;; case specially?  Don't simplify x*0 --> 0 since x could be non-scalar.
 
-(defmfun mul2 (x y)
+(defun mul2 (x y)
   (cond
     ((and (numberp x) (numberp y)) (* x y))
     ((=1 x) y)
     ((=1 y) x)
     (t (simplifya `((mtimes) ,x ,y) t))))
 
-(defmfun mul2* (x y)
+(defun mul2* (x y)
   (cond
     ((and (numberp x) (numberp y)) (* x y))
     ((=1 x) (simplifya y nil))
     ((=1 y) (simplifya x nil))
     (t (simplifya `((mtimes) ,x ,y) nil))))
 
-(defmfun mul3 (x y z)
+(defun mul3 (x y z)
   (cond ((=1 x) (mul2 y z))
 	((=1 y) (mul2 x z))
 	((=1 z) (mul2 x y))
@@ -108,12 +108,12 @@
 ;; for compatibility with the old OPERS package.  The old MULSLIS
 ;; deleted ones ahead of time.  Is this worth it?
 
-(defmfun muln (factors simp-flag)
+(defun muln (factors simp-flag)
   (cond ((null factors) 1)
 	((atom factors) factors)
 	(t (simplifya `((mtimes) . ,factors) simp-flag))))
 
-(defmfun div (x y)
+(defun div (x y)
   (if (=1 x)
       (inv y)
       (cond
@@ -126,7 +126,7 @@
         (t
           (mul x (inv y))))))
 
-(defmfun div* (x y)
+(defun div* (x y)
   (if (=1 x)
       (inv* y)
       (cond
@@ -139,25 +139,25 @@
         (t
           (mul (simplifya x nil) (inv* y))))))
 
-(defmfun ncmul2 (x y)
+(defun ncmul2 (x y)
   (simplifya `((mnctimes) ,x ,y) t))
 
-(defmfun ncmuln (factors flag)
+(defun ncmuln (factors flag)
   (simplifya `((mnctimes) . ,factors) flag))
 
 ;; Exponentiation
 
 ;; Don't use BASE as a parameter name since it is special in MacLisp.
 
-(defmfun power (*base power)
+(defun power (*base power)
   (cond ((=1 power) *base)
 	(t (simplifya `((mexpt) ,*base ,power) t))))
 
-(defmfun power* (*base power)
+(defun power* (*base power)
   (cond ((=1 power) (simplifya *base nil))
 	(t (simplifya `((mexpt) ,*base ,power) nil))))
 
-(defmfun ncpower (x y)
+(defun ncpower (x y)
   (cond ((=0 y) 1)
 	((=1 y) x)
 	(t (simplifya `((mncexpt) ,x ,y) t))))
@@ -169,7 +169,7 @@
 ;; positive (evidently) real expression, viz. sqrt[(sinh-sin) / (sin-sinh)] or
 ;; something.
 
-(defmfun root (x n)
+(defun root (x n)
   (cond ((=0 x) 0)
 	((=1 x) 1)
 	(t (simplifya `((mexpt) ,x ((rat simp) 1 ,n)) t))))
@@ -178,5 +178,5 @@
 ;; otherwise.  Morp is the opposite.  Names stand for "plus or minus"
 ;; and vice versa.
 
-(defmfun porm (s x) (if s x (neg x)))
-(defmfun morp (s x) (if s (neg x) x))
+(defun porm (s x) (if s x (neg x)))
+(defun morp (s x) (if s (neg x) x))

@@ -39,7 +39,7 @@
       (ask-integer x mode)
       (improper-arg-err mode '$askinteger)))
 
-(defmfun ask-integer (x even-odd)
+(defun ask-integer (x even-odd)
   (setq x (sratsimp (sublis '((z** . 0) (*z* . 0)) x)))
   (cond ((ratnump x) '$no)
 	((eq even-odd '$integer) (ask-integerp x))

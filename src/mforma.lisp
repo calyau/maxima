@@ -232,7 +232,7 @@
 	    (t
 	     (push a new))))))
 
-(defmfun mformat-translate-open n
+(defun-maclisp mformat-translate-open n
   (let ((stream (arg 1))
 	(sstring (exploden (arg 2)))
 	(*want-open-compiled-mformat* t)

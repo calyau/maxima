@@ -120,7 +120,7 @@
 (defun styotbsp (n) (declare (fixnum n)) (setq chrps n)
        (do () ((< n 1)) (setq *grind-charlist* (cons #\space *grind-charlist*) n (1- n))))
 
-(defmfun mstring (x)
+(defun mstring (x)
   (nreverse (string1 (msize x nil nil 'mparen 'mparen) nil)))
 
 (defun string1 (x l)

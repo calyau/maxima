@@ -20,7 +20,7 @@
 	 (logarc '%atan2 (list ($logarc (second exp)) ($logarc (third exp)))))
 	(t (recur-apply #'$logarc exp))))
 
-(defmfun logarc (f x)
+(defun logarc (f x)
   ;; Gives the logarithmic form of arc trig and hyperbolic functions
   (cond ((eq f '%acos)
 	 ;; -%i * log(x + %i*sqrt(1-x^2))
@@ -53,7 +53,7 @@
 	 (logarc (zl-get (zl-get (get f '$inverse) 'recip) '$inverse) (inv x)))
 	(t (merror "LOGARC: unrecognized argument: ~M" f))))
 
-(defmfun halfangle (f a)
+(defun halfangle (f a)
   (and (mtimesp a)
        (ratnump (cadr a))
        (equal (caddr (cadr a)) 2)

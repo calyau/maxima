@@ -23,7 +23,7 @@
 
 (setq in-p nil)
 
-(defmfun nformat (form &aux (p nil))
+(defun nformat (form &aux (p nil))
   (cond ((atom form)
 	 (cond ((and (realp form) (minusp form) (not (float-inf-p form))) (list '(mminus) (- form)))
 	       ((eq t form) (if in-p t '$true))
@@ -143,7 +143,7 @@
 ;;      (CONS (DELSIMP (CAR FORM)) (MAPCAR #'NFORMAT-ALL (CDR FORM)))))
 ;;Update from F302
 ;; used only in comm.lisp substitute, mpart.
-(defmfun nformat-all (form)
+(defun nformat-all (form)
   (setq form (nformat form))
   (if (or (atom form) (eq (caar form) 'bigfloat))
       form

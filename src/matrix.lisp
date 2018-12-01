@@ -444,7 +444,7 @@
      (setq row (nconc row (ncons (if (> m j) '(0 . 1) (cons (aref nam m j) 1)))))
      (go loop2)))
 
-(defmfun onen (n i var fill)
+(defun onen (n i var fill)
   (prog (g)
    loop (cond ((= i n) (setq g (cons var g)))
 	      ((zerop i) (return g)) 
@@ -531,10 +531,10 @@
 			 a b)
 		 (getopr $matrix_element_add)))))
 
-(defmfun bbsort (l fn)
+(defun bbsort (l fn)
   (nreverse (sort (copy-list l) fn)))
 
-(defmfun powerx (mat x) 
+(defun powerx (mat x) 
   (prog (n y) 
      (cond ((not (fixnump x))
 	    (return (list '(mncexpt simp) mat x)))

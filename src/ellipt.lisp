@@ -643,7 +643,7 @@
 ;;
 ;; FORM is list containing the actual expression.  I don't really know
 ;; what Y and Z contain.  Most of this modeled after SIMP-%SIN.
-(defmfun simp-%jacobi_sn (form unused z)
+(defun simp-%jacobi_sn (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -793,7 +793,7 @@
        ;; Nothing to do
        (eqtest (list '(%jacobi_sn) u m) form)))))
 
-(defmfun simp-%jacobi_cn (form unused z)
+(defun simp-%jacobi_cn (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -910,7 +910,7 @@
       (t
        (eqtest (list '(%jacobi_cn) u m) form)))))
 
-(defmfun simp-%jacobi_dn (form unused z)
+(defun simp-%jacobi_dn (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -1016,7 +1016,7 @@
 ;; it, but perhaps allow some way to do that transformation if
 ;; desired.
 
-(defmfun simp-%inverse_jacobi_sn (form unused z)
+(defun simp-%inverse_jacobi_sn (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -1088,7 +1088,7 @@
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_sn) u m) form)))))
 
-(defmfun simp-%inverse_jacobi_cn (form unused z)
+(defun simp-%inverse_jacobi_cn (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -1132,7 +1132,7 @@
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_cn) u m) form)))))
 
-(defmfun simp-%inverse_jacobi_dn (form unused z)
+(defun simp-%inverse_jacobi_dn (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -1563,7 +1563,7 @@ first kind:
 (defmfun $elliptic_e (phi m)
   (simplify (list '($elliptic_e) (resimplify phi) (resimplify m))))
 
-(defmfun simp-$elliptic_f (form unused z)
+(defun simp-$elliptic_f (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((phi (simpcheck (cadr form) z))
@@ -1608,7 +1608,7 @@ first kind:
 	   ;; Nothing to do
 	   (eqtest (list '($elliptic_f) phi m) form)))))
 
-(defmfun simp-$elliptic_e (form unused z)
+(defun simp-$elliptic_e (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((phi (simpcheck (cadr form) z))
@@ -1703,7 +1703,7 @@ first kind:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun simp-%elliptic_kc (form yy z)
+(defun simp-%elliptic_kc (form yy z)
   (declare (ignore yy))
   (oneargcheck form)
   (let ((m (simpcheck (cadr form) z))
@@ -1757,7 +1757,7 @@ first kind:
       ((mexpt) m -1)))
   grad)
 
-(defmfun simp-%elliptic_ec (form yy z)
+(defun simp-%elliptic_ec (form yy z)
   (declare (ignore yy))
   (oneargcheck form)
   (let ((m (simpcheck (cadr form) z))
@@ -1847,7 +1847,7 @@ first kind:
   (simplify (list '($elliptic_pi)
 		  (resimplify n) (resimplify phi) (resimplify m))))
 
-(defmfun simp-$elliptic_pi (form yy z)
+(defun simp-$elliptic_pi (form yy z)
   (declare (ignore yy))
   ;;(threeargcheck form)
   (let ((n (simpcheck (cadr form) z))
@@ -2495,7 +2495,7 @@ first kind:
 	   m)))))))
   grad)
 
-(defmfun simp-%jacobi_ns (form unused z)
+(defun simp-%jacobi_ns (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -2624,7 +2624,7 @@ first kind:
 	  (($elliptic_e) ((%asin) ((%jacobi_sn) u m)) m)))))))
   grad)
 
-(defmfun simp-%jacobi_nc (form unused z)
+(defun simp-%jacobi_nc (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -2764,7 +2764,7 @@ first kind:
 	   m)))))))
   grad)
 
-(defmfun simp-%jacobi_nd (form unused z)
+(defun simp-%jacobi_nd (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -2899,7 +2899,7 @@ first kind:
 	    m))))))))
   grad)
 
-(defmfun simp-%jacobi_sc (form unused z)
+(defun simp-%jacobi_sc (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -3040,7 +3040,7 @@ first kind:
 	    m))))))))
   grad)
 
-(defmfun simp-%jacobi_sd (form unused z)
+(defun simp-%jacobi_sd (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -3209,7 +3209,7 @@ first kind:
 	    m))))))))
   grad)
 
-(defmfun simp-%jacobi_cs (form unused z)
+(defun simp-%jacobi_cs (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -3355,7 +3355,7 @@ first kind:
 	    m))))))))
   grad)
 
-(defmfun simp-%jacobi_cd (form unused z)
+(defun simp-%jacobi_cd (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -3511,7 +3511,7 @@ first kind:
 	    m))))))))
   grad)
 
-(defmfun simp-%jacobi_ds (form unused z)
+(defun simp-%jacobi_ds (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -3681,7 +3681,7 @@ first kind:
 	    m))))))))
   grad)
 
-(defmfun simp-%jacobi_dc (form unused z)
+(defun simp-%jacobi_dc (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -3826,7 +3826,7 @@ first kind:
 
 (defprop %inverse_jacobi_ns simp-%inverse_jacobi_ns operators)
 
-(defmfun simp-%inverse_jacobi_ns (form unused z)
+(defun simp-%inverse_jacobi_ns (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -3899,7 +3899,7 @@ first kind:
 
 (defprop %inverse_jacobi_nc simp-%inverse_jacobi_nc operators)
 
-(defmfun simp-%inverse_jacobi_nc (form unused z)
+(defun simp-%inverse_jacobi_nc (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -3955,7 +3955,7 @@ first kind:
 
 (defprop %inverse_jacobi_nd simp-%inverse_jacobi_nd operators)
 
-(defmfun simp-%inverse_jacobi_nd (form unused z)
+(defun simp-%inverse_jacobi_nd (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -4020,7 +4020,7 @@ first kind:
 
 (defprop %inverse_jacobi_sc simp-%inverse_jacobi_sc operators)
 
-(defmfun simp-%inverse_jacobi_sc (form unused z)
+(defun simp-%inverse_jacobi_sc (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -4081,7 +4081,7 @@ first kind:
 
 (defprop %inverse_jacobi_sd simp-%inverse_jacobi_sd operators)
 
-(defmfun simp-%inverse_jacobi_sd (form unused z)
+(defun simp-%inverse_jacobi_sd (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -4141,7 +4141,7 @@ first kind:
 
 (defprop %inverse_jacobi_cs simp-%inverse_jacobi_cs operators)
 
-(defmfun simp-%inverse_jacobi_cs (form unused z)
+(defun simp-%inverse_jacobi_cs (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -4196,7 +4196,7 @@ first kind:
 
 (defprop %inverse_jacobi_cd simp-%inverse_jacobi_cd operators)
 
-(defmfun simp-%inverse_jacobi_cd (form unused z)
+(defun simp-%inverse_jacobi_cd (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -4251,7 +4251,7 @@ first kind:
 
 (defprop %inverse_jacobi_ds simp-%inverse_jacobi_ds operators)
 
-(defmfun simp-%inverse_jacobi_ds (form unused z)
+(defun simp-%inverse_jacobi_ds (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -4317,7 +4317,7 @@ first kind:
 
 (defprop %inverse_jacobi_dc simp-%inverse_jacobi_dc operators)
 
-(defmfun simp-%inverse_jacobi_dc (form unused z)
+(defun simp-%inverse_jacobi_dc (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -4512,7 +4512,7 @@ first kind:
      )
   grad)
 
-(defmfun simp-$elliptic_eu (form unused z)
+(defun simp-$elliptic_eu (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))
@@ -4538,7 +4538,7 @@ first kind:
 (defmfun $jacobi_am (u m)
   (simplify `((%jacobi_am) ,(resimplify u) ,(resimplify m))))
 
-(defmfun simp-%jacobi_am (form unused z)
+(defun simp-%jacobi_am (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
   (let ((u (simpcheck (cadr form) z))

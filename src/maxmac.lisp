@@ -120,7 +120,7 @@
 
 ;; Setf hacking.
 
-(defmfun mget (atom ind)
+(defun mget (atom ind)
   (let ((props (and (symbolp atom) (get atom 'mprops))))
     (and props (getf (cdr props) ind))))
 
@@ -139,7 +139,7 @@
 (defmacro  mdefprop (sym val indicator)
   `(mputprop ',sym ',val ',indicator))
 
-(defmfun mputprop (atom val ind)
+(defun mputprop (atom val ind)
   (let ((props (get atom 'mprops)))
     (if (null props) (putprop atom (setq props (ncons nil)) 'mprops))
     (putprop props val ind)))
