@@ -27,7 +27,7 @@
 
 (defmvar flag4 nil)
 
-(defmfun solvecubic (x) 
+(defun solvecubic (x) 
   (prog (s1 a0 a1 a2 discr lcoef adiv3 omega^2 pdiv3 qdiv-2
 	 omega y1 u y2) 
     
@@ -105,7 +105,7 @@
 		    (add  adiv3 (mul omega u)  (mul -1 pdiv3 omega^2 (power u -1)))
 		    (add  adiv3 (mul omega^2 u)(mul -1 pdiv3 omega   (power u -1))))))))))
 
-(defmfun solvequartic (x) 
+(defun solvequartic (x) 
   (prog (a0 a1 a2 b1 b2 b3 b0 lcoef z1 r tr1 tr2 d d1 e sqb3) 
      (setq x (cdr x) lcoef (cadr x))
    (setq b3 (rdis(ratreduce (ptterm x 3) lcoef)))

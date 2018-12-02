@@ -230,7 +230,7 @@
 
 ;; Factors expression and reduces exponents by their gcd (via solventhp)
 
-(defmfun solve (*exp *var mult &aux (genvar nil) ($derivsubst nil)
+(defun solve (*exp *var mult &aux (genvar nil) ($derivsubst nil)
 		     (exp (float2rat (mratcheck *exp)))
 		     (*myvar *var) ($savefactors t))
   (prog (factors *has*var genpairs $dontfactor temp symbol *g checkfactors 

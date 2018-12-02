@@ -14,7 +14,7 @@
 
 (load-macsyma-macros mrgmac)
 
-(defmfun simp-%sinh (form y z) 
+(defun simp-%sinh (form y z) 
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -45,7 +45,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%sinh (neg y))))
 	(t (eqtest (list '(%sinh) y) form))))
 
-(defmfun simp-%cosh (form y z) 
+(defun simp-%cosh (form y z) 
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -79,7 +79,7 @@
 	;((and $trigsign (mminusp* y)) (cons-exp '%cosh (neg y)))
 	(t (eqtest (list '(%cosh) y) form))))
 
-(defmfun simp-%tanh (form y z)
+(defun simp-%tanh (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -109,7 +109,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%tanh (neg y))))
 	(t (eqtest (list '(%tanh) y) form))))
 
-(defmfun simp-%coth (form y z)
+(defun simp-%coth (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -125,7 +125,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%coth (neg y))))
 	(t (eqtest (list '(%coth) y) form))))
 
-(defmfun simp-%csch (form y z)
+(defun simp-%csch (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -141,7 +141,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%csch (neg y))))
 	(t (eqtest (list '(%csch) y) form))))
 
-(defmfun simp-%sech (form y z)
+(defun simp-%sech (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -157,7 +157,7 @@
 	;((and $trigsign (mminusp* y)) (cons-exp '%sech (neg y)))
 	(t (eqtest (list '(%sech) y) form))))
 
-(defmfun simp-%asin (form y z) 
+(defun simp-%asin (form y z) 
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -204,7 +204,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%asin (neg y))))
 	(t (eqtest (list '(%asin) y) form))))
 
-(defmfun simp-%acos (form y z)
+(defun simp-%acos (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -249,7 +249,7 @@
 	;((and $trigsign (mminusp* y)) (sub '$%pi (cons-exp '%acos (neg y))))
 	(t (eqtest (list '(%acos) y) form))))
 
-(defmfun simp-%acot (form y z)
+(defun simp-%acot (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -282,7 +282,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%acot (neg y))))
 	(t (eqtest (list '(%acot) y) form))))
 
-(defmfun simp-%acsc (form y z)
+(defun simp-%acsc (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -311,7 +311,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%acsc (neg y))))
 	(t (eqtest (list '(%acsc) y) form))))
 
-(defmfun simp-%asec (form y z)
+(defun simp-%asec (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -338,7 +338,7 @@
 	;;((and $trigsign (mminusp* y)) (sub '$%pi (cons-exp '%asec (neg y))))
 	(t (eqtest (list '(%asec) y) form))))
 
-(defmfun simp-%asinh (form y z)
+(defun simp-%asinh (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -353,7 +353,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%asinh (neg y))))
 	(t (eqtest (list '(%asinh) y) form))))
 
-(defmfun simp-%acosh (form y z)
+(defun simp-%acosh (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -365,7 +365,7 @@
 	($logarc (logarc '%acosh y))
 	(t (eqtest (list '(%acosh) y) form))))
 
-(defmfun simp-%atanh (form y z)
+(defun simp-%atanh (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -381,7 +381,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%atanh (neg y))))
 	(t (eqtest (list '(%atanh) y) form))))
 
-(defmfun simp-%acoth (form y z)
+(defun simp-%acoth (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -396,7 +396,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%acoth (neg y))))
 	(t (eqtest (list '(%acoth) y) form))))
 
-(defmfun simp-%acsch (form y z)
+(defun simp-%acsch (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -411,7 +411,7 @@
 	;((and $trigsign (mminusp* y)) (neg (cons-exp '%acsch (neg y))))
 	(t (eqtest (list '(%acsch) y) form))))
 
-(defmfun simp-%asech (form y z)
+(defun simp-%asech (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
@@ -434,7 +434,7 @@
 	((trigexpand (caar e) (cadr e)))
 	(t (recur-apply #'$trigexpand e))))
 
-(defmfun trigexpand (op arg)
+(defun trigexpand (op arg)
   (cond ((atom arg) nil)
 	((and $trigexpandplus (eq 'mplus (caar arg)))
 	 (cond ((eq '%sin op) (sin/cos-plus (cdr arg) 1 '%sin '%cos -1))

@@ -27,7 +27,7 @@
 
 ;;; Implementation of the plog function
 
-(defmfun simpplog (x vestigial z)
+(defun simpplog (x vestigial z)
   (declare (ignore vestigial))
   (prog (varlist dd check y)
      (oneargcheck x)
@@ -172,7 +172,7 @@
       (ncons u)
       (list* u (list '(mexpt) v -1) (bincomp1 (add2 -1 u) (1- v)))))
 
-(defmfun binocomp (u v) 
+(defun binocomp (u v) 
   (prog (ans) 
      (setq ans 1)
      loop (if (zerop v) (return ans))
@@ -191,7 +191,7 @@
 ;;; The Beta function has mirror symmetry
 (defprop $beta t commutes-with-conjugate)
 
-(defmfun simpbeta (x vestigial z &aux check)
+(defun simpbeta (x vestigial z &aux check)
   (declare (ignore vestigial))
   (twoargcheck x)
   (setq check x)
@@ -359,7 +359,7 @@
 
 ;;; Implementation of the Gamma function
 
-(defmfun simpgamma (x vestigial z)
+(defun simpgamma (x vestigial z)
   (declare (ignore vestigial))
   (oneargcheck x)
   (let ((j (simpcheck (cadr x) z)))

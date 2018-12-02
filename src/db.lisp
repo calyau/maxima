@@ -85,10 +85,10 @@
 (defvar conunmrk (make-array (1+ *connumber*) :initial-element nil))
 (defvar conmark  (make-array (1+ *connumber*) :initial-element nil))
 
-(defmfun mark (x)
+(defun mark (x)
   (putprop x t 'mark))
 
-(defmfun markp (x)
+(defun markp (x)
   (and (symbolp x) (get x 'mark)))
 
 (defun zl-remprop (sym indicator)
@@ -97,7 +97,7 @@
       (unless (atom sym)
         (remf (cdr sym) indicator))))
 
-(defmfun unmrk (x)
+(defun unmrk (x)
   (zl-remprop x 'mark))
 
 (defun marks (x)
@@ -215,7 +215,7 @@
 (defun onpu (lab fact)
   (subp lab (ulabz fact)))
 
-(defmfun visiblep (dat)
+(defun visiblep (dat)
   (and (not (ulabs dat)) (cntp dat)))
 
 (defun cancel (lab dat)
@@ -344,7 +344,7 @@
 		     -sm nil
 		     -sl nil))))))
 
-(defmfun clear ()
+(defun clear ()
   (when dbtrace
     (format *trace-output* "~%CLEAR: clearing ~A" *marks*))
   (mapc #'(lambda (sym) (push+sto (sel sym +labs) nil)) +labs)
@@ -366,7 +366,7 @@
 	ulabs nil)
   (contextmark))
 
-(defmfun truep (pat)
+(defun truep (pat)
   (clear)
   (cond ((atom pat) pat)
 	((prog2 (setq pat (mapcar #'semant pat)) nil))
@@ -380,14 +380,14 @@
 	 (beg (car pat) (lpr 1 2))
 	 (propg))))
 
-(defmfun falsep (pat)
+(defun falsep (pat)
   (clear)
   (cond ((eq (car pat) 'kind)
 	 (beg (cadr pat) 1)
 	 (beg (caddr pat) 1)
 	 (propg))))
 
-(defmfun isp (pat)
+(defun isp (pat)
   (let ((isp 'unknown) #+ccl (err t))
     (ignore-errors
       (setq isp
@@ -400,7 +400,7 @@
       (setq +labs nil))
     isp))
 
-(defmfun kindp (x y)
+(defun kindp (x y)
   (unless (symbolp x)
     (merror (intl:gettext "declare: argument must be a symbol; found ~M") x))
   (clear)
@@ -411,25 +411,25 @@
 	(return t)
 	(mark+ p (+labs p)))))
 
-(defmfun true* (pat)
+(defun true* (pat)
   (let ((dum (semant pat)))
     (if dum
 	(cntxt (ind (ncons dum)) context))))
 
-(defmfun fact (fun arg val)
+(defun fact (fun arg val)
   (cntxt (ind (datum (list fun arg val))) context))
 
-(defmfun kind (x y &aux #+kcl (y y))
+(defun kind (x y &aux #+kcl (y y))
   (setq y (datum (list 'kind x y)))
   (cntxt y context)
   (addf y x))
 
-(defmfun par (s y)
+(defun par (s y)
   (setq y (datum (list 'par s y)))
   (cntxt y context)
   (mapc #'(lambda (lis) (addf y lis)) s))
 
-(defmfun datum (pat)
+(defun datum (pat)
   (ncons pat))
 
 (defun ind (dat)
@@ -449,10 +449,10 @@
       (unmrk nd)
       (mapc #'ind2 nd)))
 
-(defmfun addf (dat nd)
+(defun addf (dat nd)
   (push+sto (sel nd data) (cons dat (sel nd data))))
 
-(defmfun maxima-remf (dat nd)
+(defun maxima-remf (dat nd)
   (push+sto (sel nd data) (fdel dat (sel nd data))))
 
 (defun fdel (fact data)
@@ -488,12 +488,12 @@
 	((db-mnump pat) (dintnum pat))
 	(t (mapcar #'semant pat))))
 
-(defmfun dinternp (x)
+(defun dinternp (x)
   (cond ((mnump x) (dintnum x))
 	((atom x) x)
 	((assol x dobjects))))
 
-(defmfun dintern (x)
+(defun dintern (x)
   (cond ((mnump x) (dintnum x))
 	((atom x) x)
 	((assol x dobjects))
@@ -535,13 +535,13 @@
 		  (rplacd lis (cons x (cdr lis)))
 		  (return x)))))))
 
-(defmfun doutern (x)
+(defun doutern (x)
   (if (atom x) x (car x)))
 
-(defmfun untrue (pat)
+(defun untrue (pat)
   (kill (car pat) (semant (cadr pat)) (semant (caddr pat))))
 
-(defmfun kill (fun arg val)
+(defun kill (fun arg val)
   (kill2 fun arg val arg)
   (kill2 fun arg val val))
 
@@ -568,12 +568,12 @@
 		  (rplacd ds (cddr ds)) (return t))))
 	 data)))
 
-(defmfun unkind (x y)
+(defun unkind (x y)
   (setq y (car (datum (list 'kind x y))))
   (kcntxt y context)
   (maxima-remf y x))
 
-(defmfun remov (fact)
+(defun remov (fact)
   (remov4 fact (cadar fact))
   (remov4 fact (caddar fact)))
 
@@ -596,7 +596,7 @@
 					;fact, and we want to REMOV4 FACT from
 					;the parts of the fact.
 
-(defmfun killframe (cl)
+(defun killframe (cl)
   (mapc #'remov (sel cl data))
   (zl-remprop cl '+labs)
   (zl-remprop cl '-labs)
@@ -605,13 +605,13 @@
   (zl-remprop cl 'fact)
   (zl-remprop cl 'wn))
 
-(defmfun activate (&rest l)
+(defun activate (&rest l)
   (dolist (e l)
     (cond ((member e contexts :test #'eq) nil)
 	  (t (push e contexts)
 	     (cmark e)))))
 
-(defmfun deactivate (&rest l)
+(defun deactivate (&rest l)
   (dolist (e l)
     (cond ((not (member e contexts :test #'eq))
 	   nil)
@@ -638,7 +638,7 @@
 	   (setf (aref conmark *conindex*) (aref conmark i))
 	   (incf *conindex*)))))
 
-(defmfun cntxt (dat con)
+(defun cntxt (dat con)
   (unless (atom con)
     (setq con (cdr con)))
   (putprop con (cons dat (zl-get con 'data)) 'data)
@@ -646,7 +646,7 @@
     (putprop dat con 'con))
   dat)
 
-(defmfun kcntxt (fact con)
+(defun kcntxt (fact con)
   (unless (atom con)
     (setq con (cdr con)))
   (putprop con (fdel fact (zl-get con 'data)) 'data)
@@ -659,7 +659,7 @@
 	((setq f (zl-get f 'cmark))
 	 (> f 0))))
 
-(defmfun contextmark ()
+(defun contextmark ()
   (let ((con context))
     (unless (eq current con)
       (cunmrk current)
@@ -680,7 +680,7 @@
     (cond (cm (putprop con (1- cm) 'cmark)))
     (mapc #'cunmrk (zl-get con 'subc))))
 
-(defmfun killc (con)
+(defun killc (con)
   (contextmark)
   (unless (null con)
     (mapc #'remov (zl-get con 'data))

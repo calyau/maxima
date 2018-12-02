@@ -85,7 +85,7 @@
 	   ; Handle other cases with the function simplifier
 	   (simplify (list '(%airy_ai) z))))))
 
-(defmfun simp-%airy_ai (form unused x)
+(defun simp-%airy_ai (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
   (let ((z (simpcheck (cadr form) x)))
@@ -134,7 +134,7 @@
 	   ; Handle other cases with the function simplifier
 	   (simplify (list '(%airy_dai) z))))))
 
-(defmfun simp-%airy_dai (form unused x)
+(defun simp-%airy_dai (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
   (let ((z (simpcheck (cadr form) x)))
@@ -205,7 +205,7 @@
 	   ; Handle other cases with the function simplifier
 	   (simplify (list '(%airy_bi) z))))))
 
-(defmfun simp-%airy_bi (form unused x)
+(defun simp-%airy_bi (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
   (let ((z (simpcheck (cadr form) x)))
@@ -253,7 +253,7 @@
 	   ; Handle other cases with the function simplifier
 	   (simplify (list '(%airy_dbi) z))))))
 
-(defmfun simp-%airy_dbi (form unused x)
+(defun simp-%airy_dbi (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
   (let ((z (simpcheck (cadr form) x)))

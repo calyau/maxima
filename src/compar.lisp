@@ -352,7 +352,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	ans
 	'$unknown)))
 
-(defmfun is (pred)
+(defun is (pred)
   (let (($prederror t))
     (mevalp pred)))
 
@@ -443,7 +443,7 @@ relational knowledge is contained in the default context GLOBAL.")
 ;; on some stuff in here.  Check it out in the transl module
 ;; ACALL before proceeding.
 
-(defmfun mevalp (pat)
+(defun mevalp (pat)
   (let* ((x (mevalp1 pat))
 	 (ans (car x))
 	 (patevalled (cadr x)))
@@ -471,7 +471,7 @@ relational knowledge is contained in the default context GLOBAL.")
                           (caddr patevalled)))))
     (list ans patevalled)))
 
-(defmfun mevalp2 (patevalled pred arg1 arg2)
+(defun mevalp2 (patevalled pred arg1 arg2)
   (cond ((eq 'mequal pred) (like arg1 arg2))
 	((eq '$equal pred) (meqp arg1 arg2))
 	((eq 'mnotequal pred) (not (like arg1 arg2)))
@@ -482,7 +482,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	((eq 'mleqp pred) (mgqp arg2 arg1))
 	(t (isp (munformat patevalled)))))
 
-(defmfun pre-err (pat)
+(defun pre-err (pat)
   (merror (intl:gettext "Unable to evaluate predicate ~M") pat))
 
 (defun is-mnot (pred)
@@ -491,7 +491,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	((not pred))
 	(t (pred-reverse pred))))
 
-(defmfun pred-reverse (pred)
+(defun pred-reverse (pred)
   (take '(mnot) pred))
  
 (defun is-mand (pl)
@@ -534,7 +534,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	  (t (push (assume (meval (car x))) nl)))
     (setq x (cdr x))))
 
-(defmfun assume (pat)
+(defun assume (pat)
   (if (and (not (atom pat))
 	   (eq (caar pat) 'mnot)
 	   (eq (caaadr pat) '$equal))
@@ -545,7 +545,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	  ((atom dummy) '$meaningless)
 	  (t (learn pat t)))))
 
-(defmfun learn (pat flag)
+(defun learn (pat flag)
   (cond ((atom pat))
         ;; Check for abs function in pattern.
         ((and (not limitp)
@@ -650,7 +650,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	  (t (push (forget (meval (car x))) nl)))
     (setq x (cdr x))))
 
-(defmfun forget (pat)
+(defun forget (pat)
   (cond (($listp pat)
 	 (cons '(mlist simp) (mapcar #'forget1 (cdr pat))))
 	(t (forget1 pat))))
@@ -662,7 +662,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	 (setq pat `(($notequal) ,@(cdadr pat)))))
   (learn pat nil))
 
-(defmfun restore-facts (factl)		; used by SAVE
+(defun restore-facts (factl)		; used by SAVE
   (dolist (fact factl)
     (cond ((eq (caar fact) '$kind)
 	   (declarekind (cadr fact) (caddr fact))
@@ -673,10 +673,10 @@ relational knowledge is contained in the default context GLOBAL.")
 (defmacro compare (a b)
   `(sign1 (sub* ,a ,b)))
 
-(defmfun maximum (l)
+(defun maximum (l)
   (maximin l '$max))
 
-(defmfun minimum (l)
+(defun minimum (l)
   (maximin l '$min))
 
 (defmspec mand (form)
@@ -747,7 +747,7 @@ relational knowledge is contained in the default context GLOBAL.")
 		     ((among '$%i exp) ($rectform exp))
 		     (t exp)))))
 
-(defmfun asksign-p-or-n (e)
+(defun asksign-p-or-n (e)
   (unwind-protect (prog2
 		      (assume `(($notequal) ,e 0))
 		      ($asksign e))
@@ -762,7 +762,7 @@ relational knowledge is contained in the default context GLOBAL.")
 
 ;; csign returns t if x appears to be complex.
 ;; Else, it returns the sign.
-(defmfun csign (x)
+(defun csign (x)
   (or (not (free x '$%i))
       (let (sign-imag-errp limitp) (catch 'sign-imag-err ($sign x)))))
 
@@ -819,7 +819,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	       (has-int-symbols (cdr e))))))
 
 ;;; Do substitutions for special symbols.
-(defmfun nmr (a)
+(defun nmr (a)
   (unless (free a '$zeroa) (setq a ($limit a '$zeroa 0 '$plus)))
   (unless (free a '$zerob) (setq a ($limit a '$zerob 0 '$minus)))
   (unless (free a 'z**) (setq a ($limit a 'z** 0 '$plus)))
@@ -991,7 +991,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
           ((eq '$nz sgn) (daddgq nil (neg x))))))
     (setf *local-signs* nil)))
 
-(defmfun like (x y)
+(defun like (x y)
   (alike1 (specrepcheck x) (specrepcheck y)))
 
 (setf (get '$und 'sysconst) t)
@@ -1220,7 +1220,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
   (let (sign minus odds evens)
     (sign1 x)))
 
-(defmfun infsimp* (e)
+(defun infsimp* (e)
   (if (or (atom e) (and (free e '$inf) (free e '$minf)))
       e
       (infsimp e)))
@@ -1321,7 +1321,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	 (list '$li #'(lambda (x) 
 			(let ((z (first (margs x))) (n (cadadr x)))
 			  (if (and (mnump n) (eq t (mgrp z 0)) (eq t (mgrp 1 z))) (sign z) (sign-any x)))))))
-(defmfun sign (x)
+(defun sign (x)
   (cond ((mnump x) (setq sign (rgrp x 0) minus nil odds nil evens nil))
 	((and *complexsign* (symbolp x) (eq x '$%i))
 	 ;; In Complex Mode the sign of %i is $imaginary.
@@ -2040,12 +2040,12 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defun intp (l)
   (every #'maxima-integerp (cdr l)))
 
-(defmfun mevenp (e)
+(defun mevenp (e)
   (cond ((integerp e) (not (oddp e)))
 	((mnump e) nil)
 	(t (eq '$even (evod e)))))
 
-(defmfun moddp (e)
+(defun moddp (e)
   (cond ((integerp e) (oddp e))
 	((mnump e) nil)
 	(t (eq '$odd (evod e)))))
@@ -2053,7 +2053,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; An extended evod that recognizes that abs(even) is even and
 ;; abs(odd) is odd.
 
-(defmfun evod (e)
+(defun evod (e)
   (cond ((integerp e) (if (oddp e) '$odd '$even))
 	((mnump e) nil)
         ((atom e)
@@ -2313,7 +2313,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; each argument is assumed to be a float, bigfloat, integer, or Maxima rational.
 ;; Convert Maxima rationals to Lisp rationals to make them comparable to others.
 
-(defmfun rgrp (x y)
+(defun rgrp (x y)
   (when (or ($bfloatp x) ($bfloatp y))
     (setq
           x (let (($float2bf t))
@@ -2349,7 +2349,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
       form
       (cons (caar form) (mapcar #'munformat (cdr form)))))
 
-(defmfun declarekind (var prop)	; This function is for $DECLARE to use.
+(defun declarekind (var prop)	; This function is for $DECLARE to use.
   (let (prop2)
     (cond ((truep (list 'kind var prop)) t)
 	  ((or (falsep (list 'kind var prop))

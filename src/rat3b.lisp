@@ -113,7 +113,7 @@
 				       (subst (car v) (quote foo) x)
 				       t))))))
 
-(defmfun ratderivative (rat  var)
+(defun ratderivative (rat  var)
   (let ((num (car rat))
 	(denom (cdr rat)))
     (cond ((equal 1 denom) (cons (pderivative num var) 1))
@@ -127,10 +127,10 @@
 		   (t (rplacd num (ptimes (cdr num)
 					  (pexpt (cadr denom) 2)))))))))
 
-(defmfun ratdif (x y)
+(defun ratdif (x y)
   (ratplus x (ratminus y))) 
 
-(defmfun ratfact (x fn)
+(defun ratfact (x fn)
   (cond ((and $keepfloat (or (pfloatp (car x)) (pfloatp (cdr x)))
 	      (setq fn 'floatfact) nil))
 	((not (equal (cdr x) 1))
@@ -153,7 +153,7 @@
 	 ((pminusp (car y)) (cons (pminus (cdr y)) (pminus (car y))))
 	 (t (cons (cdr y) (car y))))))
 
-(defmfun ratminus (x)
+(defun ratminus (x)
   (cons (pminus (car x)) (cdr x)))
 	 
 (defun ratalgdenom (x)
@@ -165,7 +165,7 @@
                           (rainv (cdr x)) t))))
 	(t x)))
 
-(defmfun ratreduce (x y &aux b)
+(defun ratreduce (x y &aux b)
   (cond ((pzerop y) (rat-error "`quotient' by `zero'"))
 	((pzerop x) (rzero))
 	((equal y 1) (cons x 1))
@@ -183,7 +183,7 @@
   (cond ($ratwtlvl (wtptimes p q 0))
 	(t (ptimes p q))))
 
-(defmfun rattimes (x y gcdsw)
+(defun rattimes (x y gcdsw)
   (cond ($ratfac (facrtimes x y gcdsw))
 	((and $algebraic gcdsw (ralgp x) (ralgp y))
 	 (let ((w  (rattimes x y nil)))
@@ -199,7 +199,7 @@
 		 (t (cons (ptimes* (car x) (car y))
 			  (ptimes* (cdr x) (cdr y))))))))
 	  
-(defmfun ratexpt (x n)
+(defun ratexpt (x n)
   (cond ((equal n 0) '(1 . 1))
 	((equal n 1) x)
 	((minusp n) (ratinvert (ratexpt x (- n))))
@@ -207,7 +207,7 @@
 	($algebraic (ratreduce (pexpt (car x) n) (pexpt (cdr x) n)))
 	(t (cons (pexpt (car x) n) (pexpt (cdr x) n)))))
 
-(defmfun ratplus (x y &aux q n)
+(defun ratplus (x y &aux q n)
   (cond ($ratfac (facrplus x y))
 	($ratwtlvl
 	 (ratreduce
@@ -235,7 +235,7 @@
 		      (ptimes (car q)
 			      (ptimes (cadr q) (caddr q)))))))
 
-(defmfun ratquotient (x y)
+(defun ratquotient (x y)
   (rattimes x (ratinvert y) t)) 
 
 ;;	THIS IS THE END OF THE NEW RATIONAL FUNCTION PACKAGE PART 2.

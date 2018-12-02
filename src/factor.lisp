@@ -72,7 +72,7 @@
 	  ((equal (cddr p) '(1 0 -1))
 	   (factxn-1 (cadr p))))))
 
-(defmfun cfactorw (n) (let (($factorflag t)) (cfactor n)))
+(defun cfactorw (n) (let (($factorflag t)) (cfactor n)))
 
 (defun factxn-1 (n)
   (cond ((evenp n)
@@ -211,7 +211,7 @@
 (defun zerolp (a)
   (every #'zerop1 a))
 
-(defmfun testdivide (x y)
+(defun testdivide (x y)
   (if algfac*
       (algtestd x y)
       (eztestdivide x y)))

@@ -157,7 +157,7 @@
 ;;; ... argn) is attempted.  If this succeeds, ((name . 1) is
 ;;; appended.
 
-(defmfun schatchen (e p)
+(defun schatchen (e p)
   (m2 e p))
 
 ;;THE RESTORE FUNCTIONS RESTORE THE SPEC-VAR ANS
@@ -174,7 +174,7 @@
 
 (defvar *splist*)
 
-(defmfun m2 (e p)
+(defun m2 (e p)
   (let ((ans (list nil))
         (*splist* nil))
     (declare (special *splist*))
@@ -186,7 +186,7 @@
   (preserve x)
   (rplacd x (cddr x)))
 
-(defmfun m1 (e p)
+(defun m1 (e p)
   (cond ((equal e p) t)
 	((atom p) nil)
 	((var-pat p)

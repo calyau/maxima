@@ -423,7 +423,7 @@
   (prog (rootfactor pardenom parnumer logptdx wholepart switch1)
      (return (addn (cons (dprog rat*) (mapcar #'eprog logptdx)) nil))))
 
-(defmfun ratint (exp var)
+(defun ratint (exp var)
   (prog (genvar checkfactors varlist ratarg ratform $keepfloat)
      (setq varlist (list var))
      (setq ratarg (ratf exp))

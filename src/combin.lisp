@@ -371,7 +371,7 @@
      (incf e (* nom ($euler %k)))
      (go a)))
 
-(defmfun simpeuler (x vestigial z)
+(defun simpeuler (x vestigial z)
   (declare (ignore vestigial))
   (oneargcheck x)
   (let ((u (simpcheck (cadr x) z)))
@@ -427,7 +427,7 @@
      (setq a (*red a b) b (denom1 a) a (num1 a))
      (go a)))
 
-(defmfun simpbern (x vestigial z)
+(defun simpbern (x vestigial z)
   (declare (ignore vestigial))
   (oneargcheck x)
   (let ((u (simpcheck (cadr x) z)))
@@ -1107,7 +1107,7 @@
 (defun adusum (e)
   (push (simplify e) usum))
 
-(defmfun simpsum2 (exp i lo hi)
+(defun simpsum2 (exp i lo hi)
   (prog (*plus *times $simpsum u)
      (setq *plus (list 0) *times 1)
      (when (or (and (eq hi '$inf) (eq lo '$minf))

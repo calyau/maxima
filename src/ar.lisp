@@ -167,9 +167,9 @@
 
 ;; Extensions to MEVAL.
 
-(defmfun meval1-extend (form)
+(defun meval1-extend (form)
   (let ((l (mevalargs (cdr form))))
     (marrayref-gensub (caar form) (car l) (cdr l))))
 
-(defmfun arrstore-extend (a l r)
+(defun arrstore-extend (a l r)
   (marrayset-gensub r a (car l) (cdr l)))

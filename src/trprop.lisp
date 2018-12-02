@@ -26,22 +26,22 @@
   ;; to compose tellsimps. so eval it always.
   (eval form))
 
-(defmfun meta-add2lnc (item ssymbol)
+(defun meta-add2lnc (item ssymbol)
   (if meta-prop-p
       (meta-output `(add2lnc ',item ,ssymbol))
       (add2lnc item (symbol-value ssymbol))))
 
-(defmfun meta-putprop (ssymbol item key)
+(defun meta-putprop (ssymbol item key)
   (if meta-prop-p
       (prog1 item (meta-output `(defprop ,ssymbol ,item ,key)))
       (putprop ssymbol item key)))
 
-(defmfun meta-mputprop (ssymbol item key)
+(defun meta-mputprop (ssymbol item key)
   (if meta-prop-p
       (prog1 item (meta-output `(mdefprop ,ssymbol ,item ,key)))
       (mputprop ssymbol item key)))
 
-(defmfun meta-fset (ssymbol definition)
+(defun meta-fset (ssymbol definition)
   (if meta-prop-p
       (prog1 definition (meta-output
 			 `(fset ',ssymbol (coerce ',definition 'function))))

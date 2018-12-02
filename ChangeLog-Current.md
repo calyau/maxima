@@ -40,6 +40,8 @@ Changes in core:
  * The Windows installer can now include ABCL
  * Corrected many markers that tell if an example can be updated using the 
    doc/info/update_example scripts.
+ * user-visible functions are now defined using defmfun, only internally-used
+   ones by defun.
 
 Changes in share:
 --------------
