@@ -343,13 +343,19 @@
 			  (float (/ (- test-end-real-time test-start-real-time)
 				    internal-time-units-per-second)))))
 	      (cond ((and correct expected-error)
-		     (format t (intl:gettext "~%... Which was correct, but was expected to be wrong due to a known bug in~% Maxima or in the Lisp it was compiled with.~%")))
+		     (format t
+			     (intl:gettext "~%... Which was correct, but was expected ~
+                              to be wrong due to a known bug in~% Maxima or ~A.~%")
+			     (lisp-implementation-type)))
 		    (correct
 		     (if show-all (format t (intl:gettext "~%... Which was correct.~%"))))
 		    ((and (not correct) expected-error)
 		     (if (or show-all show-expected)
 			 (progn
-			   (format t (intl:gettext "~%This is a known error in Maxima or in the Lisp it was compiled with. The correct result is:~%"))
+			   (format t
+				   (intl:gettext "~%This is a known error in Maxima or in ~A. ~
+                                    The correct result is:~%")
+				   (lisp-implementation-type))
 			   (displa next-result))))
 		    (t (format t (intl:gettext "~%This differed from the expected result:~%"))
 		       (push i all-differences)
