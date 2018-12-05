@@ -618,7 +618,20 @@
 				(setf expected-failures nil))
 			      (progn
 				(setf test-file (second testentry))
-				(setf expected-failures (cdaddr testentry))))
+				(setf expected-failures
+				      ;; Support the expected failures list in
+				      ;; two formats:
+				      ;;
+				      ;; ((mlist) "test" 1 2 3)
+				      ;; ((mlist) "test" ((mlist) 1 2 3))
+				      ;;
+				      ;; The first is the old style whereas the
+				      ;; second is the new style.  We support
+				      ;; the old style for backward
+				      ;; compatibility.
+				      (if (consp (caddr testentry))
+					  (cdaddr testentry)
+					  (cddr testentry)))))
 		          (setf test-file-path ($file_search test-file $file_search_tests))
 			  (format t
 				  (intl:gettext "Running tests in ~a: ")
