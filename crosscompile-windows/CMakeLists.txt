@@ -138,7 +138,6 @@ endif()
 include(ExternalProject)
 
 
-
 # Clisp (already a binary package just extract it...)
 #
 # What is the difference between clisp-2.49-win32-mingw-big.zip and clisp-2.49-win32-mingw-small.zip?
@@ -163,7 +162,9 @@ add_subdirectory("wxwidgets/")
 
 add_subdirectory("wxmaxima/")
 
-add_subdirectory("vtk/")
+if(USE_VTK)
+    add_subdirectory("vtk/")
+endif()
 
 if(WITH_ABCL)
     add_subdirectory("abcl/")
@@ -264,8 +265,10 @@ cpack_add_component(Maxima
                     DESCRIPTION "The Maxima computer algebra system.\nRequired."
                     REQUIRED)
 
-cpack_add_component(VTK
-                    DESCRIPTION "VTK is an advanced graphic toolkit for draw().")
+if(USE_VTK)
+    cpack_add_component(VTK
+                        DESCRIPTION "VTK is an advanced graphic toolkit for draw().\nOptional.")
+endif()
 
 cpack_add_component(Gnuplot
                     DESCRIPTION "Gnuplot is the main graphic toolkit.\nInstallation is strongly recommended.")

@@ -21,21 +21,27 @@ endif()
 
 set(VTK_URL       "http://www.vtk.org/files/release/6.3/${VTK_INSTALLERNAME}")
 
-if(USE_VTK)
-    externalproject_add(vtk
-        URL "${VTK_URL}"
-        DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-        DOWNLOAD_NO_EXTRACT 1
-        URL_MD5 ${VTK_MD5}
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        INSTALL_COMMAND ""
-    )
-    ExternalProject_Add_Step(vtk extract
-        COMMENT "Performing extraction step for 'VTK'"
-        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/vtk && cd ${CMAKE_BINARY_DIR}/vtk && ${SEVENZIP_EXE} x -y ${CMAKE_SOURCE_DIR}/downloads/${VTK_INSTALLERNAME}
-        DEPENDEES download
-        DEPENDERS patch
-    )
+
+
+externalproject_add(vtk
+    URL "${VTK_URL}"
+    DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
+    DOWNLOAD_NO_EXTRACT 1
+    URL_MD5 ${VTK_MD5}
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+)
+ExternalProject_Add_Step(vtk extract
+    COMMENT "Performing extraction step for 'VTK'"
+    COMMAND mkdir -p ${CMAKE_BINARY_DIR}/vtk && cd ${CMAKE_BINARY_DIR}/vtk && ${SEVENZIP_EXE} x -y ${CMAKE_SOURCE_DIR}/downloads/${VTK_INSTALLERNAME}
+    DEPENDEES download
+    DEPENDERS patch
+)
+# older versions of 7z extract the contents of the vtk installer
+# into the directory "$_OUTDIR/bin/" newer into "bin/". Don't know why.
+if(EXISTS "${CMAKE_BINARY_DIR}/vtk/$_OUTDIR/bin/")
     install(DIRECTORY "${CMAKE_BINARY_DIR}/vtk/$_OUTDIR/bin/" DESTINATION vtk/ COMPONENT VTK)
+else()
+    install(DIRECTORY "${CMAKE_BINARY_DIR}/vtk/bin/" DESTINATION vtk/ COMPONENT VTK)
 endif()
