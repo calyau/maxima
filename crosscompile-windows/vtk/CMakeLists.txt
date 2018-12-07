@@ -40,7 +40,7 @@ ExternalProject_Add_Step(vtk extract
 )
 # older versions of 7z extract the contents of the vtk installer
 # into the directory "$_OUTDIR/bin/" newer into "bin/". Don't know why.
-if(EXISTS "${CMAKE_BINARY_DIR}/vtk/$_OUTDIR/bin/")
+if(EXISTS "${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin/")
     install(DIRECTORY "${CMAKE_BINARY_DIR}/vtk/$_OUTDIR/bin/" DESTINATION vtk/ COMPONENT VTK)
 else()
     install(DIRECTORY "${CMAKE_BINARY_DIR}/vtk/bin/" DESTINATION vtk/ COMPONENT VTK)
