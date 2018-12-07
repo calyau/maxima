@@ -273,13 +273,31 @@
 			    &key (out *standard-output*) (show-expected nil)
 			    (show-all nil) (showtime nil))
 
-  (let ((result) (next-result) (next) (error-log) (all-differences nil) ($ratprint nil) (strm)
-	(*mread-prompt* "") (*read-base* 10.)
-	(expr) (num-problems 0) (problem-lineinfo) (problem-lineno) (tmp-output) (save-output) (i 0)
-	(start-run-time 0) (end-run-time 0)
-	(start-real-time 0) (end-real-time 0)
-	(test-start-run-time 0) (test-end-run-time 0)
-	(test-start-real-time 0) (test-end-real-time 0))
+  (let (result
+	next-result
+	next
+	error-log
+	all-differences
+	unexpected-pass
+	strm
+	expr
+	problem-lineinfo
+	problem-lineno
+	tmp-output
+	save-output
+	($ratprint nil)
+	(*mread-prompt* "")
+	(*read-base* 10.)
+	(num-problems 0)
+	(i 0)
+	(start-run-time 0)
+	(end-run-time 0)
+	(start-real-time 0)
+	(end-real-time 0)
+	(test-start-run-time 0)
+	(test-end-run-time 0)
+	(test-start-real-time 0)
+	(test-end-real-time 0))
     
     (cond (*collect-errors*
 	   (setq error-log
@@ -343,6 +361,9 @@
 			  (float (/ (- test-end-real-time test-start-real-time)
 				    internal-time-units-per-second)))))
 	      (cond ((and correct expected-error)
+		     (push i unexpected-pass)
+		     (format t "*** i = ~A unexpected-pass = ~A~%"
+			     i unexpected-pass)
 		     (format t
 			     (intl:gettext "~%... Which was correct, but was expected ~
                               to be wrong due to a known bug in~% Maxima or ~A.~%")
@@ -350,13 +371,12 @@
 		    (correct
 		     (if show-all (format t (intl:gettext "~%... Which was correct.~%"))))
 		    ((and (not correct) expected-error)
-		     (if (or show-all show-expected)
-			 (progn
-			   (format t
-				   (intl:gettext "~%This is a known error in Maxima or in ~A. ~
+		     (when (or show-all show-expected)
+		       (format t
+			       (intl:gettext "~%This is a known error in Maxima or in ~A. ~
                                     The correct result is:~%")
-				   (lisp-implementation-type))
-			   (displa next-result))))
+			       (lisp-implementation-type))
+		       (displa next-result)))
 		    (t (format t (intl:gettext "~%This differed from the expected result:~%"))
 		       (push i all-differences)
 		       (displa next-result)
@@ -394,6 +414,13 @@
 		     (- num-problems n-expected-errors) (- num-problems n-expected-errors)
 		     expected-errors-trailer
 		     time)
+	     (when unexpected-pass
+	       (multiple-value-bind (plural was-were)
+		 (if (> (length unexpected-pass) 1)
+		     (values "s" "were")
+		     (values "" "was"))
+	       (format t (intl:gettext "~%The following ~A problem~A passed but ~A expected to fail: ~A~%")
+		       (length unexpected-pass) plural was-were (reverse unexpected-pass))))
 	     (values '((mlist)) num-problems))
 	    (t
 	     (format t (intl:gettext "~%~a/~a tests passed~a~%~A")
@@ -402,7 +429,16 @@
 	     (let ((s (if (> (length all-differences) 1) "s" "")))
 	       (format t (intl:gettext "~%The following ~A problem~A failed: ~A~%")
 		       (length all-differences) s (reverse all-differences)))
-	     (values `((mlist) ,filename ,@(reverse all-differences)) num-problems))))))
+	     (multiple-value-bind (plural was-were)
+		 (if (> (length unexpected-pass) 1)
+		     (values "s" "were")
+		     (values "" "was"))
+	       (format t (intl:gettext "~%The following ~A problem~A passed but ~A expected to fail: ~A~%")
+		       (length unexpected-pass) plural was-were (reverse unexpected-pass)))
+	     (values `((mlist) ,filename
+		       ((mlist) ,@(reverse all-differences))
+		       ((mlist) ,@(reverse unexpected-pass)))
+		     num-problems))))))
        
 ;;to keep track of global values during the error:
 (defun list-variable-bindings (expr &optional str &aux tem)
@@ -611,6 +647,7 @@
 	  (flet
 	      ((testsuite ()
 		 (loop with errs = 'nil
+		       with unexpected-pass = nil
 		       for testentry in tests-to-run
 		       do (if (atom testentry)
 			      (progn
@@ -661,13 +698,13 @@
 				      (intl:gettext "~%Caused an error break: ~a")
 				      test-file)
 			      ;; If the test failed because we
-			      ;; couldn't find the file, make a noe of
+			      ;; couldn't find the file, make a note of
 			      ;; that.
 			      (unless test-file-path
 				(format t (intl:gettext ": test file not found.")))
 			      (format t "~%")))
 		       finally (cond
-				 ((null errs)
+				 ((and (null errs) (null unexpected-pass))
 				  (format t
 					  (intl:gettext
 					   "~%~%No unexpected errors found out of ~:d tests.~%")
