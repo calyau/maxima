@@ -32,16 +32,15 @@ externalproject_add(vtk
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
 )
+# older versions of 7z extract the contents of the vtk installer
+# into the directory "$_OUTDIR/bin/" newer into "bin/". Don't know why.
+# To make this uniform, test if the directory "${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin/"
+# exists, and rename the directory.
 ExternalProject_Add_Step(vtk extract
     COMMENT "Performing extraction step for 'VTK'"
-    COMMAND mkdir -p ${CMAKE_BINARY_DIR}/vtk && cd ${CMAKE_BINARY_DIR}/vtk && ${SEVENZIP_EXE} x -y ${CMAKE_SOURCE_DIR}/downloads/${VTK_INSTALLERNAME}
+    COMMAND mkdir -p "${CMAKE_BINARY_DIR}/vtk" && cd "${CMAKE_BINARY_DIR}/vtk" && ${SEVENZIP_EXE} x -y "${CMAKE_SOURCE_DIR}/downloads/${VTK_INSTALLERNAME}" && test -d "${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin/" && mv "${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin/" "${CMAKE_BINARY_DIR}/vtk/bin/" || exit 0
     DEPENDEES download
     DEPENDERS patch
 )
-# older versions of 7z extract the contents of the vtk installer
-# into the directory "$_OUTDIR/bin/" newer into "bin/". Don't know why.
-if(EXISTS "${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin/")
-    install(DIRECTORY "${CMAKE_BINARY_DIR}/vtk/$_OUTDIR/bin/" DESTINATION vtk/ COMPONENT VTK)
-else()
-    install(DIRECTORY "${CMAKE_BINARY_DIR}/vtk/bin/" DESTINATION vtk/ COMPONENT VTK)
-endif()
+
+install(DIRECTORY "${CMAKE_BINARY_DIR}/vtk/bin/" DESTINATION vtk/ COMPONENT VTK)
