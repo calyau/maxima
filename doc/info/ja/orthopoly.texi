@@ -467,7 +467,7 @@ orhtopolyのバグを疑う前に、
 @c fpprec : 50$
 @c y0 : jacobi_p (100, 2, 3, 0.2);
 @c y1 : bfloat (jacobi_p (100, 2, 3, 1/5));
-@c ===end==
+@c ===end===
 
 @example
 (%i1) fpprec : 50$

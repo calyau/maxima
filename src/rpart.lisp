@@ -161,7 +161,7 @@
            (eqtest (list '(%carg) z) expr)))))
 
 ;; The internal cabs, used by other Macsyma programs.
-(defmfun cabs (xx) (car (absarg xx t)))
+(defun cabs (xx) (car (absarg xx t)))
 
 ;; Some objects can only appear at the top level of a legal simplified
 ;; expression: CRE forms and equations in particular.

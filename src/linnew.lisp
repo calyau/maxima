@@ -192,7 +192,7 @@
      (tmrearray n)
      (return r)))
 
-(defun $tmlinsolve (&rest arglist)
+(defmfun $tmlinsolve (&rest arglist)
   (prog (equations vars outvars result *aa*)
      (setq equations (cdar arglist)
 	   vars (cdadr arglist)

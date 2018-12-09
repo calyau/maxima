@@ -115,7 +115,7 @@
 ;; the first arg is an alist of pairs:  (<variable> . <value>)
 ;; the second arg is the macsyma expression to substitute into.
 
-(defmfun mbuildq-subst (alist expression)
+(defun mbuildq-subst (alist expression)
   (prog (new-car)
      (cond ((atom expression)
 	    (return (mbuildq-associate expression alist)))

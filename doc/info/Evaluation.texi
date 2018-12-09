@@ -285,12 +285,12 @@ Applied to a general expression @var{expr}, quote-quote causes the value of
 Applied to the operator of an expression, quote-quote changes the operator from
 a noun to a verb (if it is not already a verb).
 
-@c ===beg==
+@c ===beg===
 @c declare (foo, noun);
 @c foo (x) := x - 1729;
 @c foo (100);
 @c ''foo (100);
-@c ===end==
+@c ===end===
 @example
 (%i1) declare (foo, noun);
 (%o1)                         done

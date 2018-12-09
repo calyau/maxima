@@ -823,13 +823,13 @@
 (defmacro coef (pol)
   `(disrep (ratqu (polcoef (car p) ,pol) (cdr p))))
 
-(defmfun lapsum (&rest args)
+(defun lapsum (&rest args)
   (cons '(mplus) args))
 
-(defmfun lapprod (&rest args)
+(defun lapprod (&rest args)
   (cons '(mtimes) args))
 
-(defmfun expo (&rest args)
+(defun expo (&rest args)
   (cons '(mexpt) args))
 
 ;;;INVERTS P(S)/Q(S) WHERE Q(S) IS IRREDUCIBLE

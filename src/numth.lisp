@@ -85,7 +85,7 @@
 ;; The implementation follows algorithm 1.4.10 in 'A Course in
 ;; Computational Algebraic Number Theory' by H. Cohen
 
-(defun $jacobi (a b)
+(defmfun $jacobi (a b)
   (if (and (integerp a) (integerp b))
       (jacobi a b)
       `(($jacobi) ,a ,b)))
@@ -4108,12 +4108,12 @@
 ;;                 q   q         q
 ;; trace(a) = a + a + a  + .. + a  
 
-(defun $gf_trace (a)
+(defmfun $gf_trace (a)
   (gf-field? "gf_trace")
   (let ((*ef-arith?*))
     (gf-trace (gf-p2x a) *gf-red* *gf-x^p-powers*) ))
 
-(defun $ef_trace (a)
+(defmfun $ef_trace (a)
   (ef-field? "ef_trace")
   (let ((*ef-arith?* t)) 
     (gf-trace (gf-p2x a) *ef-red* *ef-x^q-powers*) ))
@@ -4332,7 +4332,7 @@
     (t 
       (mfuncall add-fn m1 m2) ) ))
 
-(defmfun gf-matadd1 (m poly add-fn) 
+(defun gf-matadd1 (m poly add-fn) 
   (do ((r (cdr m) (cdr r)) new)
       ((null r) (cons '($matrix simp) (nreverse new)))
     (push (cons '(mlist simp) 
@@ -4344,7 +4344,7 @@
     (intl:gettext "Arguments to `~m' must have same formal structure.")
     (if *ef-arith?* "ef_matadd" "gf_matadd") ))
 
-(defmfun gf-matadd2 (m1 m2 add-fn) 
+(defun gf-matadd2 (m1 m2 add-fn) 
   (setq m1 (cdr m1) m2 (cdr m2))
   (unless (= (length (car m1)) (length (car m2)))
     (gf-matadd2-error) )
@@ -4386,14 +4386,14 @@
     (t 
       (mfuncall mult-fn m1 m2) ) ))
 
-(defmfun gf-matmult1 (m poly mult-fn) 
+(defun gf-matmult1 (m poly mult-fn) 
   (do ((r (cdr m) (cdr r)) new)
       ((null r) (cons '($matrix simp) (nreverse new)))
     (push (cons '(mlist simp) 
                 (mapcar #'(lambda (p) (mfuncall mult-fn p poly)) (cdar r)) ) 
           new )))
 
-(defmfun gf-matmult2 (m1 m2) 
+(defun gf-matmult2 (m1 m2) 
   (setq m1 (cdr m1) m2 (cdr ($transpose m2)))
   (unless (= (length (car m1)) (length (car m2)))
     (gf-merror 

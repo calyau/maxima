@@ -15,7 +15,7 @@
 				    $system)))
     (and tem #-sbcl (load tem) #+sbcl (with-compilation-unit nil (load tem)))))
 
-(defun $aload_mac (file &aux *load-verbose* tem)
+(defmfun $aload_mac (file &aux *load-verbose* tem)
   (let (($system  (list  '(mlist)
 			 #+kcl (concatenate 'string si::*system-directory*
 					    "../{src,share,share1,sharem}/foo.{mc,mac}"))))
@@ -59,7 +59,7 @@
 	      'mexpr)))
 
 ;;foo(x,y):=..
-(defun $auto_mexpr (fun file)
+(defmfun $auto_mexpr (fun file)
   (unless (mget fun 'mexpr)
     (mputprop fun
               `((lambda) ((mlist) ((mlist) |_l|))

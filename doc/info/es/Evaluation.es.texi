@@ -349,12 +349,12 @@ Aplicado al operador de una expresión, la
 doble comilla simple hace que el operador
 pase de ser nominal a verbal, a menos que ya sea un verbo.
 
-@c ===beg==
+@c ===beg===
 @c declare (foo, noun);
 @c foo (x) := x - 1729;
 @c foo (100);
 @c ''foo (100);
-@c ===end==
+@c ===end===
 @example
 (%i1) declare (foo, noun);
 (%o1)                         done

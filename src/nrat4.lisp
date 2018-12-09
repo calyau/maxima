@@ -19,7 +19,7 @@
   "`radsubstflag' `t' makes `ratsubs' call `radcan' when it appears useful")
 
 
-(defmfun pdis (x) ($ratdisrep (pdis* x)))
+(defun pdis (x) ($ratdisrep (pdis* x)))
 
 (defun pdis* (x) `((mrat simp ,varlist ,genvar) ,x . 1))
 
@@ -34,7 +34,7 @@
 (defmfun $ratcoef (e x &optional (n 1))
   (ratcoeff e x n)) ; The spelling "ratcoeff" is nicer.
 
-(defmfun ratcoeff (a b c)
+(defun ratcoeff (a b c)
   (let* ((formflag ($ratp a))
 	 (taylorform (and formflag (member 'trunc (cdar a) :test #'eq))))
     (cond ((zerop1 b) (improper-arg-err b '$ratcoeff))
@@ -340,7 +340,7 @@
 
 (defvar argsfreeofp nil)
 
-(defmfun argsfreeof (var e)
+(defun argsfreeof (var e)
   (let ((argsfreeofp t)) (freeof var e)))
 
 ;;; This is a version of freeof for a list first argument
@@ -407,7 +407,7 @@
 
 (defun freeofl (var l) (loop for x in l always (freeof var x)))
 
-(defmfun hand-side (e flag)
+(defun hand-side (e flag)
   (setq e (if (eq (caar e) 'mequal) (ncons e) (cdr e)))
   (mapcar #'(lambda (u) (if (eq flag 'l) (cadr u) (caddr u))) e))
 

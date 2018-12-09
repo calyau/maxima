@@ -132,15 +132,15 @@ sin(y)*(10.0+6*cos(x)),
   (if (null *gnuplot-stream*)
       (start-gnuplot-process $gnuplot_command)))
 
-(defun $gnuplot_close ()
+(defmfun $gnuplot_close ()
   (stop-gnuplot-process)
   "")
 
-(defun $gnuplot_start ()
+(defmfun $gnuplot_start ()
   (check-gnuplot-process)
   "")
 
-(defun $gnuplot_restart ()
+(defmfun $gnuplot_restart ()
   ($gnuplot_close)
   ($gnuplot_start))
 
@@ -166,11 +166,11 @@ sin(y)*(10.0+6*cos(x)),
 	     (setq *gnuplot-stream* nil)
 	     (send-gnuplot-command command t))))))
 
-(defun $gnuplot_reset ()
+(defmfun $gnuplot_reset ()
   (send-gnuplot-command "unset output")
   (send-gnuplot-command "reset"))
 
-(defun $gnuplot_replot (&optional s)
+(defmfun $gnuplot_replot (&optional s)
   (if (null *gnuplot-stream*)
       (merror (intl:gettext "gnuplot_replot: Gnuplot is not running.")))
   (cond ((null s)
@@ -184,7 +184,7 @@ sin(y)*(10.0+6*cos(x)),
 
 ;; allow this to be set in a system init file (sys-init.lsp)
 
-(defun $get_plot_option (&optional name n)
+(defmfun $get_plot_option (&optional name n)
   (let (options)
     ;; Converts the options property list into a Maxima list
     (do* ((list (copy-tree *plot-options*) (cddr list))
@@ -218,11 +218,11 @@ sin(y)*(10.0+6*cos(x)),
                        `(,val))))
     (ensure-string (nth (mod (- index 1) (length val-list)) val-list))))
 
-(defun $set_plot_option (&rest value)
+(defmfun $set_plot_option (&rest value)
   (setq *plot-options* (plot-options-parser value *plot-options*))
   ($get_plot_option))
 
-(defun $remove_plot_option (name)
+(defmfun $remove_plot_option (name)
   (remf *plot-options*
         (case name
           ($adapt_depth :adapt_depth) ($axes :axes) ($azimuth :azimuth)
@@ -355,7 +355,7 @@ sin(y)*(10.0+6*cos(x)),
            )
     tem))
 
-(defun $rotation1 (phi th)
+(defmfun $rotation1 (phi th)
   (let ((sinph (sin phi))
         (cosph (cos phi))
         (sinth (sin th))
@@ -370,7 +370,7 @@ sin(y)*(10.0+6*cos(x)),
        ,cosph))))
    
 ;; pts is a vector of bts [x0,y0,z0,x1,y1,z1,...] and each tuple xi,yi,zi is rotated
-#-abcl (defun $rotate_pts(pts rotation-matrix)
+#-abcl (defmfun $rotate_pts(pts rotation-matrix)
   (or ($matrixp rotation-matrix) (merror (intl:gettext "rotate_pts: second argument must be a matrix.")))
   (let* ((rot *rot*)
          (l (length pts))
@@ -394,12 +394,12 @@ sin(y)*(10.0+6*cos(x)),
                   (setf (aref pts (+ j i )) a))
            (setf j (+ j 3)))))
 
-(defun $rotate_list (x)
+(defmfun $rotate_list (x)
   (cond ((and ($listp x) (not (mbagp (second x))))
          ($list_matrix_entries (ncmul2  $rot x)))
         ((mbagp x) (cons (car x) (mapcar '$rotate_list (cdr x))))))
 
-(defun $get_range (pts k &aux (z 0.0) (max most-negative-flonum) (min most-positive-flonum))
+(defmfun $get_range (pts k &aux (z 0.0) (max most-negative-flonum) (min most-positive-flonum))
   (declare (type flonum z max min))
   (declare (type (vector flonum) pts))
   (loop for i from k below (length pts) by 3
@@ -408,7 +408,7 @@ sin(y)*(10.0+6*cos(x)),
          (cond ((> z max) (setq max z))))
   (list min max (- max min)))
 
-(defun $polar_to_xy (pts &aux (r 0.0) (th 0.0))
+(defmfun $polar_to_xy (pts &aux (r 0.0) (th 0.0))
   (declare (type flonum r th))
   (declare (type (cl:array t) pts))
   (assert (typep pts '(vector t)))
@@ -424,7 +424,7 @@ sin(y)*(10.0+6*cos(x)),
 ;; where expr gives the value of r in terms of the inclination (th)
 ;; and azimuth (ph).
 ;;
-(defun $spherical_to_xyz (pts &aux (r 0.0) (th 0.0) (ph 0.0)) 
+(defmfun $spherical_to_xyz (pts &aux (r 0.0) (th 0.0) (ph 0.0)) 
   (declare (type flonum r th ph))
   (declare (type (cl:array t) pts))
   (assert (typep pts '(vector t)))
@@ -439,7 +439,7 @@ sin(y)*(10.0+6*cos(x)),
 
 ;; return a function suitable for the transform function in plot3d.
 ;; FX, FY, and FZ are functions of three arguments.
-(defun $make_transform (lvars fx fy fz)
+(defmfun $make_transform (lvars fx fy fz)
   (setq fx (coerce-float-fun fx lvars))
   (setq fy (coerce-float-fun fy lvars))
   (setq fz (coerce-float-fun fz lvars))
@@ -719,7 +719,7 @@ sin(y)*(10.0+6*cos(x)),
          (setq i2 (+ i2 1))))
 
 
-(defun $concat_polygons (pl1 pl2 &aux tem new)
+(defmfun $concat_polygons (pl1 pl2 &aux tem new)
   (setq new
         (loop for v in pl1 
                for w in pl2
@@ -746,7 +746,7 @@ sin(y)*(10.0+6*cos(x)),
          with arnew =  (polygon-edges new)
          do (setf (aref arnew i) (+ lpts1 (aref ar2 j)))))
 
-(defun $copy_pts(lis vec start)
+(defmfun $copy_pts(lis vec start)
   (declare (fixnum start))
   (let ((tem vec))
     (declare (type (cl:array flonum) tem))
@@ -1712,7 +1712,7 @@ sin(y)*(10.0+6*cos(x)),
 ;; plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], [box, false], [color, red],
 ;;          [ylabel, "x^2-1"], [plot_format, xmaxima])$
 
-(defun $plot2d (fun &optional range &rest extra-options)
+(defmfun $plot2d (fun &optional range &rest extra-options)
   (let (($display2d nil) (*plot-realpart* *plot-realpart*)
         (options (copy-tree *plot-options*)) (i 0)
         output-file gnuplot-term gnuplot-out-file file points-lists)
@@ -2080,7 +2080,7 @@ sin(y)*(10.0+6*cos(x)),
   (and (symbolp x) (char= (char (symbol-value x) 0) #\$)))
 
 
-(defun $tcl_output (lis i &optional (skip 2))
+(defmfun $tcl_output (lis i &optional (skip 2))
   (when (not (typep i 'fixnum))
     (merror
       (intl:gettext "tcl_ouput: second argument must be an integer; found ~M")
@@ -2129,7 +2129,7 @@ sin(y)*(10.0+6*cos(x)),
            (intl:gettext "plotting: no range given; must supply range of the form [variable, min, max]"))))
   `((mlist) ,(car tem) ,(float a) ,(float b)))
 
-(defun $zero_fun (x y) x y 0.0)
+(defmfun $zero_fun (x y) x y 0.0)
 
 (defun output-points (pl &optional m)
   "If m is supplied print blank line every m lines"
@@ -2206,7 +2206,7 @@ sin(y)*(10.0+6*cos(x)),
 ;;   contour_plot (F, [u, -4, 4], [v, -4, 4]); => error: must be gnuplot format
 ;;   contour_plot (F, [u, -4, 4], [v, -4, 4], [plot_format, gnuplot]);
 
-(defun $contour_plot (expr &rest optional-args)
+(defmfun $contour_plot (expr &rest optional-args)
   (let*
       ((plot-format-in-options (getf *plot-options* :plot_format))
        (plot-format-in-arguments
@@ -2283,7 +2283,7 @@ sin(y)*(10.0+6*cos(x)),
 ;; plot3d ( V, [x, -2, 2], [y, -2, 2], [z, -4, 4])$
 
 
-(defun $plot3d
+(defmfun $plot3d
     (fun &rest extra-options
      &aux
        lvars trans xrange yrange

@@ -300,14 +300,18 @@ endif
 #
 # For gcl we execute all commands from a temp file for the following motive:
 #
-# If gcl is instructed to execute commands from command-line it will add a
-# progn around them that breaks defsystem.
-# If it is instructed to execute commands from a pipe instead it closes
-# immediately at the end of data from the pipe, not at the end of the last
-# command => we need a temp file gcl can execute commands from.
-#
-# GCL doesn't automatically close at the end of the lisp file, but crashes
-# if it reaches a (quit). Providing this (quit) from stdin works, though.
+# Some versions of GCL 2.6.12 don't automatically close at the end of a lisp
+# file that contains the commands needed for compiling maxima and crash if
+# they reach a (quit). In newer versions of 2.6.12 sending the (quit) from the
+# command-line causes a crash.
+# GCL's --eval switch adds an implicit (progn) that breaks defsystem's
+# (mk:add-registry-location).
+# And when executing commands from stdin some GCL versions get the
+# end-of-file from the end of the command list too early and therefore close
+# before the last command has been processed.
+# Providing all commands from the command-line and ending them with a
+# (quit) so it doesn't matter if lisp automatically closes at the last
+# or the second last command seems to work, though.
 
 if GCL
 

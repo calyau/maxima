@@ -352,7 +352,7 @@
 		  (or new-value 0)
 		  (if new-value t nil))))
 
-(defun $quad_control (parameter &rest new-value)
+(defmfun $quad_control (parameter &rest new-value)
   (quad-control parameter (if new-value (car new-value))))
 
 

@@ -21,7 +21,7 @@
 (defun mseemingly-unbound (x)
   (or (not (boundp x)) (eq (symbol-value x) x)))
 
-(defmfun assign-mode-check (var value)
+(defun assign-mode-check (var value)
   (let ((mode (tr-get-mode var))
 	(user-level ($get var '$value_check)))
     (when mode
@@ -119,13 +119,13 @@
       ((null l))
     (declmode (car l) (ir-or-extend (cadr l)) t)))
 
-(defmfun ass-eq-ref (table key &optional dflt)
+(defun ass-eq-ref (table key &optional dflt)
   (let ((val (assoc key table :test #'eq)))
     (if val
 	(cdr val)
 	dflt)))
 
-(defmfun ass-eq-set (val table key)
+(defun ass-eq-set (val table key)
   (let ((cell (assoc key table :test #'eq)))
     (if cell
 	(setf (cdr cell) val)

@@ -224,7 +224,7 @@
 ;;
 ;; The function doesn't check that EXPONENT is higher than the highest exponent
 ;; in REMAINDER, so you have to do this yourself.
-(defmfun pcoefadd (exponent coeff remainder)
+(defun pcoefadd (exponent coeff remainder)
   (if (pzerop coeff)
       remainder
       (cons exponent (cons coeff remainder))))
@@ -232,7 +232,7 @@
 ;; PPLUS
 ;;
 ;; Add together two polynomials.
-(defmfun pplus (x y)
+(defun pplus (x y)
   (cond ((pcoefp x) (pcplus x y))
 	((pcoefp y) (pcplus y x))
 	((eq (p-var x) (p-var y))
@@ -288,7 +288,7 @@
 ;; PDIFFERENCE
 ;;
 ;; Compute the difference of two polynomials
-(defmfun pdifference (x y)
+(defun pdifference (x y)
   (cond
     ;; If Y is a coefficient, it's a number, so we can just add -Y to X using
     ;; pcplus. If, however, X is the coefficient, we have to negate all the
@@ -467,7 +467,7 @@
 ;; PDERIVATIVE
 ;;
 ;; Compute the derivative of the polynomial P with respect to the variable VARI.
-(defmfun pderivative (p vari)
+(defun pderivative (p vari)
   (cond
     ;; The derivative of a constant is zero.
     ((pcoefp p) 0)
@@ -520,7 +520,7 @@
 ;;
 ;; The result is a list of two elements (Q R). Each is a rational function (a
 ;; cons pair of polynomials), representing an element of F[V].
-(defmfun pdivide (x y)
+(defun pdivide (x y)
   (cond
     ((pzerop y) (rat-error "PDIVIDE: Quotient by zero"))
     ;; If Y is a coefficient, it doesn't matter what X is: we can always do the
@@ -562,7 +562,7 @@
 ;;
 ;; Polynomial exponentiation. Raise the polynomial P to the power N (which
 ;; should be an integer)
-(defmfun pexpt (p n)
+(defun pexpt (p n)
   (cond
     ;; p^0 = 1; p^1 = p
     ((= n 0) 1)
@@ -630,14 +630,14 @@
 ;;
 ;;   (pminusp '(y 1 -1 0 (x 1 1))) => T     but
 ;;   (pminusp '(x 1 1 0 (y 1 -1))) => NIL
-(defmfun pminusp (p)
+(defun pminusp (p)
   (if (realp p) (minusp p)
       (pminusp (p-lc p))))
 
 ;; PMINUS
 ;;
 ;; Unary negation for polynomials.
-(defmfun pminus (p)
+(defun pminus (p)
   (if (pcoefp p) (cminus p)
       (cons (p-var p) (ptminus (p-terms p)))))
 
@@ -651,7 +651,7 @@
 ;; PMOD
 ;;
 ;; Reduce a polynomial modulo the current value of MODULUS.
-(defmfun pmod (p)
+(defun pmod (p)
   (if (pcoefp p) (cmod p)
       (psimp (car p)
 	     (loop for (exp coef) on (p-terms p) by #'cddr
@@ -662,7 +662,7 @@
 ;;
 ;; Calculate x/y in the polynomial ring over the integers. Y should divide X
 ;; without remainder.
-(defmfun pquotient (x y)
+(defun pquotient (x y)
   (cond ((pcoefp x)
 	 (cond ((pzerop x) (pzero))
 	       ((pcoefp y) (cquotient x y))
@@ -847,7 +847,7 @@
     (cond ((< (pt-le x) n) (return (pzero)))
 	  ((= (pt-le x) n) (return (pt-lc x))))))
 
-(defmfun ptimes (x y)
+(defun ptimes (x y)
   (cond ((pcoefp x) (if (pzerop x) (pzero) (pctimes x y)))
 	((pcoefp y) (if (pzerop y) (pzero) (pctimes y x)))
 	((eq (p-var x) (p-var y))
@@ -930,7 +930,7 @@
        (ptptplus (pctimes1 kernel p) a))
     (rplaca a (- (pt-le a) deg))))
 
-(defmfun monize (p) 
+(defun monize (p) 
   (cond ((pcoefp p) (if (pzerop p) p 1))
 	(t (cons (p-var p) (pmonicize (copy-list (p-terms p)))))))
 

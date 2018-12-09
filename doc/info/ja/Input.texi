@@ -363,10 +363,10 @@ Maximaが起動した時にファイル検索パスが自動的に割り当て�
 
 例:
 
-@c === beg ===
+@c ===beg===
 @c map('file_type,
 @c     ["test.lisp", "test.mac", "test.dem", "test.txt"]);
-@c === end ===
+@c ===end===
 @example
 (%i2) map('file_type,
           ["test.lisp", "test.mac", "test.dem", "test.txt"]);
@@ -555,11 +555,11 @@ Maxima初期化ファイルを生成するにも役に立ちます。
 
 例:
 
-@c === beg ===
+@c ===beg===
 @c pathname_directory("/home/dieter/maxima/changelog.txt");
 @c pathname_name("/home/dieter/maxima/changelog.txt");
 @c pathname_type("/home/dieter/maxima/changelog.txt");
-@c === end ===
+@c ===end===
 @example 
 (%i1) pathname_directory("/home/dieter/maxima/changelog.txt");
 (%o1)                 /home/dieter/maxima/

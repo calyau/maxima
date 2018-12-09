@@ -41,7 +41,7 @@
    degree is larger than $factor_max_degree?"
   boolean)
 
-(defmfun listovars (q)
+(defun listovars (q)
   (cond ((pcoefp q) nil)
 	(t (let ((ans nil))
 	     (declare (special ans))
@@ -300,7 +300,7 @@
 	(t (rat-error "cnthroot error2 (should have been caught"))))
 
 
-(defmfun pabs (x) (cond ((pminusp x) (pminus x)) (t x)))
+(defun pabs (x) (cond ((pminusp x) (pminus x)) (t x)))
 
 (defun pfactorlin (p l)
   (do ((degl l (cdr degl))
@@ -353,7 +353,7 @@
 	 (list nil p))
 	(t (factorout1 (pmindegvec p) p))))
 
-(defmfun pfactor (p &aux ($algebraic algfac*))
+(defun pfactor (p &aux ($algebraic algfac*))
   (cond ((pcoefp p) (cfactor p))
 	($ratfac (pfacprod p))
 	(t (setq p (factorout p))

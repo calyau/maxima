@@ -32,7 +32,7 @@
 ;;; used for USE_FAST_ARRAYS:FALSE) results in an array which is
 ;;; simultaneously of type (1) and (1m).
 
-(defun $listarray (ary)
+(defmfun $listarray (ary)
   (cons '(mlist)
 	(cond ((mget ary 'hashar)
 	       (mapcar #'(lambda (subs) ($arrayapply ary subs))

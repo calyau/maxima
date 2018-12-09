@@ -21,21 +21,26 @@ endif()
 
 set(VTK_URL       "http://www.vtk.org/files/release/6.3/${VTK_INSTALLERNAME}")
 
-if(USE_VTK)
-    externalproject_add(vtk
-        URL "${VTK_URL}"
-        DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
-        DOWNLOAD_NO_EXTRACT 1
-        URL_MD5 ${VTK_MD5}
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        INSTALL_COMMAND ""
-    )
-    ExternalProject_Add_Step(vtk extract
-        COMMENT "Performing extraction step for 'VTK'"
-        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/vtk && cd ${CMAKE_BINARY_DIR}/vtk && ${SEVENZIP_EXE} x -y ${CMAKE_SOURCE_DIR}/downloads/${VTK_INSTALLERNAME}
-        DEPENDEES download
-        DEPENDERS patch
-    )
-    install(DIRECTORY "${CMAKE_BINARY_DIR}/vtk/$_OUTDIR/bin/" DESTINATION vtk/ COMPONENT VTK)
-endif()
+
+
+externalproject_add(vtk
+    URL "${VTK_URL}"
+    DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
+    DOWNLOAD_NO_EXTRACT 1
+    URL_MD5 ${VTK_MD5}
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+)
+# older versions of 7z extract the contents of the vtk installer
+# into the directory "$_OUTDIR/bin/" newer into "bin/". Don't know why.
+# To make this uniform, test if the directory "${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin/"
+# exists, and rename the directory.
+ExternalProject_Add_Step(vtk extract
+    COMMENT "Performing extraction step for 'VTK'"
+    COMMAND mkdir -p "${CMAKE_BINARY_DIR}/vtk" && cd "${CMAKE_BINARY_DIR}/vtk" && ${SEVENZIP_EXE} x -y "${CMAKE_SOURCE_DIR}/downloads/${VTK_INSTALLERNAME}" && test -d "${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin/" && mv "${CMAKE_BINARY_DIR}/vtk/\$_OUTDIR/bin/" "${CMAKE_BINARY_DIR}/vtk/bin/" || exit 0
+    DEPENDEES download
+    DEPENDERS patch
+)
+
+install(DIRECTORY "${CMAKE_BINARY_DIR}/vtk/bin/" DESTINATION vtk/ COMPONENT VTK)

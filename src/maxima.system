@@ -166,6 +166,7 @@
 				     (:file "clmacs")))
                (:module compatibility-macros :source-pathname ""
                         :components (#+gcl (:file "gcl-compat")
+				     (:file "defmfun-check")
                                      (:file "commac")))
                (:module prerequisites :source-pathname ""
                         :components ((:file "mormac") 

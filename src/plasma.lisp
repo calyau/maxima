@@ -58,7 +58,7 @@
 	     (setq im (- (* r1 (cos r2)) im))))
     `((mlist simp) ,re ,im)))
 
-(defun $nzeta (z)
+(defmfun $nzeta (z)
   (let ((x ($realpart z))
 	(y ($imagpart z)))
      (if (and (numberp x) (numberp y))
@@ -66,14 +66,14 @@
 	   (simplify `((mplus) ,(second w) ,(simplify `((mtimes) $%i ,(third w))))))
 	 `(($nzeta simp) ,z))))
 
-(defun $nzetar (z)
+(defmfun $nzetar (z)
   (let ((x ($realpart z))
 	(y ($imagpart z)))
      (if (and (numberp x) (numberp y))
 	 (second (z-function (float x) (float y)))
 	 `(($nzetar simp) ,z))))
 
-(defun $nzetai (z)
+(defmfun $nzetai (z)
   (let ((x ($realpart z))
 	(y ($imagpart z)))
      (if (and (numberp x) (numberp y))

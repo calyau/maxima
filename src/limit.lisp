@@ -101,7 +101,7 @@
         (apply #'toplevel-$limit args))
       first-try)))
 
-(defmfun toplevel-$limit (&rest args)
+(defun toplevel-$limit (&rest args)
   (let ((limit-assumptions ())
 	(old-integer-info ())
 	($keepfloat t)
@@ -237,7 +237,7 @@
   (setq exp (restorelim exp))
   (if preserve-direction exp (ridofab exp)))
 
-(defmfun limit-list (exp1 &rest rest)
+(defun limit-list (exp1 &rest rest)
   (if (mbagp exp1)
       `(,(car exp1) ,@(mapcar #'(lambda (x) (apply #'toplevel-$limit `(,x ,@rest))) (cdr exp1)))
       ()))
@@ -574,7 +574,7 @@ ignoring dummy variables and array indices."
     
 
 ;;;*I* INDICATES: T => USE LIMIT1,THINK, NIL => USE SIMPLIMIT.
-(defmfun limit (exp var val *i*)
+(defun limit (exp var val *i*)
   (cond
     ((among '$und exp)  '$und)
     ((eq var exp)  val)
@@ -713,7 +713,7 @@ ignoring dummy variables and array indices."
   (resimplify ex))
 
 ;;Used by tlimit also.
-(defmfun limit1 (exp var val)
+(defun limit1 (exp var val)
   (prog ()
      (let ((lhprogress? lhp?)
            (lhp? ())
@@ -1791,7 +1791,7 @@ ignoring dummy variables and array indices."
 	 (or (equal 1. bl) (equal bl -1.)))
 	(t (equal (getsignl (m1- `((mabs) ,bl))) 0))))
 
-(defmfun simplimit (exp var val &aux op)
+(defun simplimit (exp var val &aux op)
   (cond
     ((eq var exp) val)
     ((or (atom exp) (mnump exp)) exp)
@@ -2097,7 +2097,7 @@ ignoring dummy variables and array indices."
 	(t l)))
 
 ;; get rid of zeroa and zerob
-(defmfun ridofab (e)
+(defun ridofab (e)
   (if (among '$zeroa e) (setq e (maxima-substitute 0 '$zeroa e)))
   (if (among '$zerob e) (setq e (maxima-substitute 0 '$zerob e)))
   e)

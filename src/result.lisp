@@ -81,7 +81,7 @@
 
 (defvar *resultlist '($subres $mod $red))
 
-(defmfun resultant (p1 p2)		;assumes same main var
+(defun resultant (p1 p2)		;assumes same main var
   (if (> (p-le p2) (p-le p1))
       (presign (* (p-le p1) (p-le p2)) (resultant p2 p1))
       (case $resultant

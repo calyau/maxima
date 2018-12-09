@@ -200,7 +200,7 @@
 ;; I think compare(asin(x), asin(x) + 1) should evaluate to < without
 ;; being quizzed about the sign of x. Thus the call to lenient-extended-realp.
 
-(defun $compare (a b)
+(defmfun $compare (a b)
   ;; Simplify expressions with infinities, indeterminates, or infinitesimals
   (when (amongl '($ind $und $inf $minf $infinity $zeroa $zerob) a)
     (setq a ($limit a)))
@@ -243,7 +243,7 @@
 
 ;; Convert all floats and big floats in e to an exact rational representation. 
 
-(defun $rationalize (e)
+(defmfun $rationalize (e)
   (setq e (ratdisrep e))
   (cond ((floatp e) 
 	 (let ((significand) (expon) (sign))

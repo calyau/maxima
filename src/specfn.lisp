@@ -542,7 +542,7 @@
 ;;
 ;; See also http://en.wikipedia.org/wiki/Lambert's_W_function
 
-(defun $lambert_w (z)
+(defmfun $lambert_w (z)
   (simplify (list '(%lambert_w) (resimplify z))))
 
 ;;; Set properties to give full support to the parser and display
@@ -797,7 +797,7 @@
 ;;; Generalized Lambert W function
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $generalized_lambert_w (k z)
+(defmfun $generalized_lambert_w (k z)
   (simplify (list '(%generalized_lambert_w) (resimplify k) (resimplify z))))
 
 ;;; Set properties to give full support to the parser and display

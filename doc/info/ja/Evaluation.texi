@@ -223,12 +223,12 @@ Maximaは組み込み数学関数による浮動小数点演算を整理とみ�
 
 式の演算子にクォートクォートを用いると、（もし動詞でないなら）演算子は名詞から動詞に変わります。
 
-@c ===beg==
+@c ===beg===
 @c declare (foo, noun);
 @c foo (x) := x - 1729;
 @c foo (100);
 @c ''foo (100);
-@c ===end==
+@c ===end===
 @example
 (%i1) declare (foo, noun);
 (%o1)                         done

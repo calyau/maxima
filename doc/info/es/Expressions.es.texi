@@ -1404,7 +1404,7 @@ La función @code{reveal} evalúa sus argumentos y devuelve la expresión con las m
 
 Ejemplo:
 
-@c === beg ===
+@c ===beg===
 @c e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
 @c reveal (e, 1);
 @c reveal (e, 2);
@@ -1412,7 +1412,7 @@ Ejemplo:
 @c reveal (e, 4);
 @c reveal (e, 5);
 @c reveal (e, 6);
-@c === end ===
+@c ===end===
 @example
 (%i1) e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
                           2            2

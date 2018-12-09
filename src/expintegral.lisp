@@ -126,7 +126,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $expintegral_e (v z)
+(defmfun $expintegral_e (v z)
   (simplify (list '(%expintegral_e) v z)))
 
 ;;; Set properties to give full support to the parser and display
@@ -856,7 +856,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $expintegral_e1 (z)
+(defmfun $expintegral_e1 (z)
   (simplify (list '(%expintegral_e1) z)))
 
 ;;; Set properties to give full support to the parser and display
@@ -997,7 +997,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $expintegral_ei (z)
+(defmfun $expintegral_ei (z)
   (simplify (list '(%expintegral_ei) z)))
 
 ;;; Set properties to give full support to the parser and display
@@ -1184,7 +1184,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $expintegral_li (z)
+(defmfun $expintegral_li (z)
   (simplify (list '(%expintegral_li) z)))
 
 ;;; Set properties to give full support to the parser and display
@@ -1337,7 +1337,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $expintegral_si (z)
+(defmfun $expintegral_si (z)
   (simplify (list '(%expintegral_si) z)))
 
 ;;; Set properties to give full support to the parser and display
@@ -1501,7 +1501,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $expintegral_shi (z)
+(defmfun $expintegral_shi (z)
   (simplify (list '(%expintegral_shi) z)))
 
 ;;; Set properties to give full support to the parser and display
@@ -1671,7 +1671,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $expintegral_ci (z)
+(defmfun $expintegral_ci (z)
   (simplify (list '(%expintegral_ci) z)))
 
 ;;; Set properties to give full support to the parser and display
@@ -1856,7 +1856,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $expintegral_chi (z)
+(defmfun $expintegral_chi (z)
   (simplify (list '(%expintegral_chi) z)))
 
 ;;; Set properties to give full support to the parser and display
@@ -2039,7 +2039,7 @@
 ;;
 ;; Exponential integral E1(x).  The Cauchy principal value is used for
 ;; negative x.
-(defun $expint (x)
+(defmfun $expint (x)
   (cond ((numberp x)
 	 (values (slatec:de1 (float x))))
 	(t

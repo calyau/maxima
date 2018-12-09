@@ -114,7 +114,7 @@
 
 (defmvar $%rnum 0)
 
-(defmfun make-param ()
+(defun make-param ()
   (let ((param (intern (format nil "~A~D" '$%r (incf $%rnum)))))
     (tuchus $%rnum_list param)
     param))
@@ -454,7 +454,7 @@
 
 ;; Displays an expression and returns its linelabel.
 
-(defmfun displine (exp)
+(defun displine (exp)
   (let ($nolabels (tim 0))
     (elabel exp)
     (cond ($dispflag (remprop *linelabel* 'nodisp)

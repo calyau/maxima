@@ -100,7 +100,7 @@
 
 (defprop mfactorial t commutes-with-conjugate)
 
-(defmfun simpfact (x y z)
+(defun simpfact (x y z)
   (oneargcheck x)
   (setq y (simpcheck (cadr x) z))
   (cond ((and (mnump y)
@@ -343,9 +343,9 @@
 		e)))
 	(t (recur-apply #'makegamma1 e))))
 
-(defmfun simpgfact (x vestigial z)
+(defun simpgfact (x vestigial z)
   (declare (ignore vestigial))
-  (if (not (= (length x) 4)) (wna-err '$genfact))
+  (arg-count-check 3 x)
   (setq z (mapcar #'(lambda (q) (simpcheck q z)) (cdr x)))
   (let ((a (car z)) (b (take '($floor) (cadr z))) (c (caddr z)))
     (cond ((and (fixnump a)
@@ -416,14 +416,15 @@ summation when necessary."
   `(cadr (cdddr ,sum)))
 
 (defmspec $sum (l)
+  (arg-count-check 4 l)
   (setq l (cdr l))
-  (if (= (length l) 4)
-      (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t :evaluate-summand t)
-      (wna-err '$sum)))
+  (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t :evaluate-summand t))
+
 
 (defmspec $lsum (l)
+  (arg-count-check 3 l)
   (setq l (cdr l))
-  (or (= (length l) 3) (wna-err '$lsum))
+  ;;(or (= (length l) 3) (wna-err '$lsum))
   (let ((form (car l))
 	(ind (cadr l))
 	(lis (meval (caddr l)))
@@ -438,7 +439,7 @@ summation when necessary."
 	   ans)
 	  (t `((%lsum) ,form ,ind ,lis)))))
     
-(defmfun simpsum (x y z)
+(defun simpsum (x y z)
   (let (($ratsimpexpons t))
     (setq y (simplifya (sum-arg x) z)))
   (simpsum1 y (sum-index x) (simplifya (sum-lower x) z)
@@ -810,7 +811,7 @@ summation when necessary."
 ;; 3. push operator name and glue code onto *OPERS-LIST
 ;; 4. declare operator name as a feature, so declare(..., <op>) is recognized
 
-(defun $define_opproperty (op fn)
+(defmfun $define_opproperty (op fn)
   (unless (symbolp op)
     (merror "define_opproperty: first argument must be a symbol; found: ~M" op))
   (unless (or (symbolp fn) (and (consp fn) (eq (caar fn) 'lambda)))
@@ -981,13 +982,13 @@ summation when necessary."
 (setq opers (cons '$oddfun opers)
       *opers-list (cons '($oddfun . oddfun) *opers-list))
 
-(defmfun evenfun (e z)
+(defun evenfun (e z)
   (if (or (null (cdr e)) (cddr e))
       (merror (intl:gettext "Function declared 'even' takes exactly one argument; found ~M") e))
   (let ((arg (simpcheck (cadr e) z)))
     (oper-apply (list (car e) (if (mminusp arg) (neg arg) arg)) t)))
 
-(defmfun oddfun (e z)
+(defun oddfun (e z)
   (if (or (null (cdr e)) (cddr e))
       (merror (intl:gettext "Function declared 'odd' takes exactly one argument; found ~M") e))
   (let ((arg (simpcheck (cadr e) z)))
@@ -1000,7 +1001,7 @@ summation when necessary."
 (setq opers (cons '$symmetric opers)
       *opers-list (cons '($symmetric . commutative1) *opers-list))
 
-(defmfun commutative1 (e z)
+(defun commutative1 (e z)
   (oper-apply (cons (car e)
 		    (reverse
 		     (sort (mapcar #'(lambda (q) (simpcheck q z))
@@ -1011,7 +1012,7 @@ summation when necessary."
 (setq opers (cons '$antisymmetric opers)
       *opers-list (cons '($antisymmetric . antisym) *opers-list))
 
-(defmfun antisym (e z)
+(defun antisym (e z)
   (when (and $dotscrules (mnctimesp e))
     (let ($dotexptsimp)
       (setq e (simpnct e 1 nil))))
@@ -1067,7 +1068,7 @@ summation when necessary."
 (setq opers (cons '$lassociative opers)
       *opers-list (cons '($lassociative . lassociative) *opers-list))
 
-(defmfun lassociative (e z)
+(defun lassociative (e z)
   (let*
     ((ans0 (oper-apply (cons (car e) (total-nary e)) z))
      (ans (if (consp ans0) (cdr ans0))))
@@ -1080,7 +1081,7 @@ summation when necessary."
 (setq opers (cons '$rassociative opers)
       *opers-list (cons '($rassociative . rassociative) *opers-list))
 
-(defmfun rassociative (e z)
+(defun rassociative (e z)
   (let*
     ((ans0 (oper-apply (cons (car e) (total-nary e)) z))
      (ans (if (consp ans0) (cdr ans0))))
@@ -1091,7 +1092,7 @@ summation when necessary."
 		  (ans (cddr ans) (cdr ans)))
 		 ((null ans) newans))))))
 
-(defmfun total-nary (e)
+(defun total-nary (e)
   (do ((l (cdr e) (cdr l)) (ans))
       ((null l) (nreverse ans))
     (setq ans (if (and (not (atom (car l))) (eq (caaar l) (caar e)))

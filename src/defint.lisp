@@ -181,7 +181,7 @@ in the interval of integration.")
 ;; KEYHOLE, and POLELIST.
 (defvar *semirat* nil)
 
-(defun $defint (exp var ll ul)
+(defmfun $defint (exp var ll ul)
 
   ;; Distribute $defint over equations, lists, and matrices.
   (cond ((mbagp exp)
@@ -302,7 +302,7 @@ in the interval of integration.")
 	  (t (simplify ans)))))
 
 ;; This routine tries to take a limit a couple of ways.
-(defmfun get-limit (exp var val &optional (dir '$plus dir?))
+(defun get-limit (exp var val &optional (dir '$plus dir?))
   (let ((ans (if dir?
 		 (funcall #'limit-no-err exp var val dir)
 		 (funcall #'limit-no-err exp var val))))

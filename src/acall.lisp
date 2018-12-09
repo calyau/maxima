@@ -22,10 +22,10 @@
 
 (macsyma-module acall)
 
-(defmfun interval-error (fun low high)
+(defun interval-error (fun low high)
   (merror (intl:gettext "~@:M: lower bound ~M is greater than upper bound ~M") fun low high))
 
-(defmfun mfuncall (f &rest l)
+(defun mfuncall (f &rest l)
   (cond ((functionp f)
 	 (apply f l))
 	((and (symbolp f) (or (macro-function f) (special-operator-p f)))
@@ -35,7 +35,7 @@
 
 ;;; ((MQAPPLY ARRAY) X Y) is a strange form, meaning (X)[Y].
 
-(defmfun marrayref (aarray ind1 &rest inds)
+(defun marrayref (aarray ind1 &rest inds)
   (declare (special fixunbound flounbound))
   (typecase aarray
     (cl:array
@@ -100,7 +100,7 @@
     (merror (intl:gettext "arraysetapply: second argument must be a list; found ~M") inds))
   (apply #'marrayset val ar (cdr inds)))
 
-(defmfun marrayset (val aarray &rest all-inds)
+(defun marrayset (val aarray &rest all-inds)
   (let ((ind1 (first all-inds))
         (inds (rest all-inds)))
     (typecase aarray
@@ -176,7 +176,7 @@
 
 (declare-top (special $dispflag))
 
-(defmfun display-for-tr (labelsp equationsp &rest argl)
+(defun display-for-tr (labelsp equationsp &rest argl)
   (declare (special *linelabel*))
   (do ((argl argl (cdr argl))
        (lablist nil)
@@ -206,7 +206,7 @@
       (timeorg tim))))
 
 
-(defmfun insure-array-props (fnname ignore-mode number-of-args &aux ary)
+(defun insure-array-props (fnname ignore-mode number-of-args &aux ary)
   (declare (ignore ignore-mode))
   ;; called during load or eval time by the defining forms
   ;; for translated array-functions.
@@ -239,18 +239,18 @@
 
 ;;; An entry point to $APPLY for translated code.
 
-(defmfun mapply-tr (fun list)
+(defun mapply-tr (fun list)
   (unless ($listp list)
     (merror (intl:gettext "apply: second argument must be a list; found ~M") list))
   (mapply1 fun (cdr list) '|the first arg to a translated `apply'| list))
 
-(defmfun assign-check (var val)
+(defun assign-check (var val)
   (let ((a (get var 'assign)))
     (if a (funcall a var val))))
 
 (declare-top (special maplp))
 
-(defmfun maplist_tr (fun  l1 &rest l)
+(defun maplist_tr (fun  l1 &rest l)
   (setq l (cons l1 (copy-list l)))
   (simplify (let ((maplp t) res)
 	      (setq res (apply #'map1 (getopr fun) l))
@@ -270,14 +270,14 @@
 ;;; better to simply modify the code in COMPAR! However, mumble...
 ;;; Anyway, be careful of changes to COMPAR that break this code.
 
-(defmfun is-boole-check (form)
+(defun is-boole-check (form)
   (cond ((null form) nil)
 	((eq form t) t)
 	(t
 	 ;; We check for T and NIL quickly, otherwise go for the database.
 	 (mevalp_tr form $prederror nil))))
 
-(defmfun maybe-boole-check (form)
+(defun maybe-boole-check (form)
   (mevalp_tr form nil nil))
 
 (defun mevalp_tr (pat error? meval?)
@@ -350,7 +350,7 @@
      (marrayset value aarray index))))
 
 
-(defmfun application-operator (form &rest ign)
+(defun application-operator (form &rest ign)
   (declare (ignore ign))
   (apply (caar form) (cdr form)))
 
@@ -361,7 +361,7 @@
       (- x)
       (simplify (list '(mminus) x))))
 
-(defmfun retlist_tr (&rest args)
+(defun retlist_tr (&rest args)
   (do ((j (- (length args) 2) (- j 2))
        (l () (cons (list '(mequal simp) (nth j args) (nth (1+ j) args)) l)))
       ((< j 0) (cons '(mlist simp) l))))

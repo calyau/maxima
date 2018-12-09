@@ -207,7 +207,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $double_factorial (z)
+(defmfun $double_factorial (z)
   (simplify (list '(%double_factorial) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -359,7 +359,7 @@
 
 (defvar *debug-gamma* nil)
 
-(defun $gamma_incomplete (a z)
+(defmfun $gamma_incomplete (a z)
   (simplify (list '(%gamma_incomplete) a z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -480,7 +480,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $gamma_incomplete_lower (a z)
+(defmfun $gamma_incomplete_lower (a z)
   (simplify (list '(%gamma_incomplete_lower) a z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1199,7 +1199,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $gamma_incomplete_generalized (a z1 z2)
+(defmfun $gamma_incomplete_generalized (a z1 z2)
   (simplify (list '(%gamma_incomplete_generalized) a z1 z2)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1292,7 +1292,7 @@
 
 (defun simp-gamma-incomplete-generalized (expr ignored simpflag)
   (declare (ignore ignored))
-  (if (not (= (length expr) 4)) (wna-err '$gamma_incomplete_generalized))
+  (arg-count-check 3 expr)
   (let ((a  (simpcheck (cadr expr)   simpflag))
         (z1 (simpcheck (caddr expr)  simpflag))
         (z2 (simpcheck (cadddr expr) simpflag))
@@ -1417,7 +1417,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $gamma_incomplete_regularized (a z)
+(defmfun $gamma_incomplete_regularized (a z)
   (simplify (list '(%gamma_incomplete_regularized) a z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1659,7 +1659,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $log_gamma (z)
+(defmfun $log_gamma (z)
   (simplify (list '(%log_gamma) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1901,7 +1901,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $erf (z)
+(defmfun $erf (z)
   (simplify (list '(%erf) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2161,7 +2161,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $erf_generalized (z1 z2)
+(defmfun $erf_generalized (z1 z2)
   (simplify (list '(%erf_generalized) z1 z2)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2305,7 +2305,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $erfc (z)
+(defmfun $erfc (z)
   (simplify (list '(%erfc) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2432,7 +2432,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $erfi (z)
+(defmfun $erfi (z)
   (simplify (list '(%erfi) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2567,7 +2567,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $inverse_erf (z)
+(defmfun $inverse_erf (z)
   (simplify (list '(%inverse_erf) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2657,7 +2657,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $inverse_erfc (z)
+(defmfun $inverse_erfc (z)
   (simplify (list '(%inverse_erfc) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2921,7 +2921,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $fresnel_s (z)
+(defmfun $fresnel_s (z)
   (simplify (list '(%fresnel_s) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3139,7 +3139,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $fresnel_c (z)
+(defmfun $fresnel_c (z)
   (simplify (list '(%fresnel_c) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3287,7 +3287,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $beta_incomplete (a b z)
+(defmfun $beta_incomplete (a b z)
   (simplify (list '(%beta_incomplete) a b z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3359,7 +3359,7 @@
 
 (defun simp-beta-incomplete (expr ignored simpflag)
   (declare (ignore ignored))
-  (if (not (= (length expr) 4)) (wna-err '$beta_incomplete))
+  (arg-count-check 3 expr)
   (let ((a (simpcheck (cadr expr)   simpflag))
         (b (simpcheck (caddr expr)  simpflag))
         (z (simpcheck (cadddr expr) simpflag))
@@ -3629,7 +3629,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $beta_incomplete_generalized (a b z1 z2)
+(defmfun $beta_incomplete_generalized (a b z1 z2)
   (simplify (list '(%beta_incomplete_generalized) a b z1 z2)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3765,7 +3765,7 @@
 
 (defun simp-beta-incomplete-generalized (expr ignored simpflag)
   (declare (ignore ignored))
-  (if (not (= (length expr) 5)) (wna-err '$beta_incomplete_generalized))
+  (arg-count-check 4 expr)
   (let ((a  (simpcheck (second expr) simpflag))
         (b  (simpcheck (third expr)  simpflag))
         (z1 (simpcheck (fourth expr) simpflag))
@@ -3950,7 +3950,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $beta_incomplete_regularized (a b z)
+(defmfun $beta_incomplete_regularized (a b z)
   (simplify (list '(%beta_incomplete_regularized) a b z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -4032,7 +4032,7 @@
 
 (defun simp-beta-incomplete-regularized (expr ignored simpflag)
   (declare (ignore ignored))
-  (if (not (= (length expr) 4)) (wna-err '$beta_incomplete_regularized))
+  (arg-count-check 3 expr)
   (let ((a (simpcheck (second expr) simpflag))
         (b (simpcheck (third expr)  simpflag))
         (z (simpcheck (fourth expr) simpflag))

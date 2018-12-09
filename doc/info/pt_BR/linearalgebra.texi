@@ -825,7 +825,7 @@ padr@~{a}o para @var{lin} @'{e} o conjugado complexo de @var{col}. Exemplo:
 @c ===beg===
 @c toeplitz([1,2,3],[x,y,z]);
 @c toeplitz([1,1+%i]);
-@c ==end===
+@c ===end===
 @example
 (%i1)  toeplitz([1,2,3],[x,y,z]);
 

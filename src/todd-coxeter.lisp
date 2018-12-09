@@ -267,7 +267,7 @@
 ;; on 3 elements.
 ;; todd_coxeter([a^^8,b^^7,a.b.a.b,(a^^-1 . b)^^3],[a^^2, a^^-1 . b]); gives 448
 
-(defun $todd_coxeter (rels &optional (subgp '((mlist))))
+(defmfun $todd_coxeter (rels &optional (subgp '((mlist))))
   (let ((vars ($sort ($listofvars rels)))
 	(neg 1))
     (todd-coxeter

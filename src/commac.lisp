@@ -185,11 +185,7 @@
 (defvar *sharp-read-buffer*
   (make-array 140 :element-type ' #.(array-element-type "a") :fill-pointer 0 :adjustable t))
 
-(defun x$-cl-macro-read (stream sub-char arg)
-  (declare (ignore arg))
-  ($-read-aux sub-char stream))
-
-(defun $-read-aux (arg stream &aux (meval-flag t) (*mread-prompt* ""))
+(defmfun $-read-aux (arg stream &aux (meval-flag t) (*mread-prompt* ""))
   (declare (special *mread-prompt*)
 	   (ignore arg))
   (setf (fill-pointer *sharp-read-buffer*) 0)
@@ -205,6 +201,10 @@
   (if meval-flag
       (list 'meval* (list 'quote (macsyma-read-string *sharp-read-buffer*)))
       (list 'quote (macsyma-read-string *sharp-read-buffer*))))
+
+(defun x$-cl-macro-read (stream sub-char arg)
+  (declare (ignore arg))
+  ($-read-aux sub-char stream))
 
 (set-dispatch-macro-character #\# #\$ #'x$-cl-macro-read)
 
@@ -237,7 +237,7 @@ values")
 	    ,(first val-and-doc)))
     (defvar ,var ,@val-and-doc)))
 
-(defun $mkey (variable)
+(defmfun $mkey (variable)
   "($mkey '$demo)==>:demo"
   (intern (string-left-trim "$" (string variable)) 'keyword))
 
@@ -265,6 +265,11 @@ values")
 	((zerop n) nil)
 	(t (subseq narg-rest-argument 0 n))))
 
+;; This has been replaced by src/defmfun-check.lisp.  I'm leaving this
+;; here for now until we finish up fixing everything like using defun
+;; for internal functions and updating user-exposed functions to use
+;; defmfun instead of defun.
+#+nil
 (defmacro defmfun (function &body  rest &aux .n.)
   (cond ((and (car rest) (symbolp (car rest)))
 	 ;;old maclisp narg syntax
@@ -277,7 +282,18 @@ values")
     (defun ,function . ,rest)))
 
 ;;sample usage
-;;(defmfun foo a (show a )(show (listify a)) (show (arg 3)))
+;;(defun foo a (show a )(show (listify a)) (show (arg 3)))
+
+(defmacro defun-maclisp (function &body  rest &aux .n.)
+  (cond ((and (car rest) (symbolp (car rest)))
+	 ;;old maclisp narg syntax
+	 (setq .n. (car rest))
+	 (setf (car rest)
+	       `(&rest narg-rest-argument &aux (, .n. (length narg-rest-argument))))))
+  `(progn
+    ;; I (rtoy) think we can consider all defmfun's as translated functions.
+    (defprop ,function t translated)
+    (defun ,function . ,rest)))
 
 (defun exploden (symb)
   (let* (#+(and gcl (not gmp)) (big-chunk-size 120)
@@ -627,7 +643,7 @@ values")
 
 (defvar ^w nil)
 
-(defun $timedate (&optional (time (get-universal-time)) tz)
+(defmfun $timedate (&optional (time (get-universal-time)) tz)
   (cond
     ((and (consp tz) (eq (caar tz) 'rat))
      (setq tz (/ (second tz) (third tz))))
@@ -693,7 +709,7 @@ values")
 (defun match-tz-hh (s) (funcall #.(maxima-nregex::regex-compile "^([+-])([0-9][0-9])$") s))
 (defun match-tz-Z (s) (funcall #.(maxima-nregex::regex-compile "^Z$") s))
 
-(defun $parse_timedate (s)
+(defmfun $parse_timedate (s)
   (setq s (string-trim '(#\Space #\Tab #\Newline #\Return) s))
   (let (year month day
        (hours 0) (minutes 0) (seconds 0)
@@ -777,7 +793,7 @@ values")
          (encode-universal-time seconds-integer minutes hours day month year tz)
          (encode-universal-time seconds-integer minutes hours day month year))))
 
-(defun $encode_time (year month day hours minutes seconds &optional tz-offset)
+(defmfun $encode_time (year month day hours minutes seconds &optional tz-offset)
     (when tz-offset
       (setq tz-offset (sub 0 tz-offset))
       (cond
@@ -791,7 +807,7 @@ values")
          (seconds-fraction (sub seconds seconds-integer)))
         (encode-time-with-all-parts year month day hours minutes seconds-integer seconds-fraction tz-offset)))
 
-(defun $decode_time (seconds &optional tz)
+(defmfun $decode_time (seconds &optional tz)
   (cond
     ((and (consp tz) (eq (caar tz) 'rat))
      (setq tz (/ (second tz) (third tz))))

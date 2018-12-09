@@ -91,7 +91,7 @@ call."
 ;;; EVALUATING A MACRO CALL ;;;
 
 
-(defmfun mmacro-apply (defn form)
+(defun mmacro-apply (defn form)
   (mmacroexpansion-check form
 			 (if (and (atom defn)
 				  (not (symbolp defn)))
@@ -196,7 +196,7 @@ call."
 (defprop mdefmacro simpmdefmacro operators)
 
 ;; emulating simpmdef (for mdefine) in jm;simp
-(defmfun simpmdefmacro (x ignored simp-flag)
+(defun simpmdefmacro (x ignored simp-flag)
   (declare (ignore ignored simp-flag))
   (cons '(mdefmacro simp) (cdr x)))
 
