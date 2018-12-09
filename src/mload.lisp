@@ -421,7 +421,10 @@
 		     (values "" "was"))
 	       (format t (intl:gettext "~%The following ~A problem~A passed but ~A expected to fail: ~A~%")
 		       (length unexpected-pass) plural was-were (reverse unexpected-pass))))
-	     (values '((mlist)) num-problems))
+	     (values (when unexpected-pass filename)
+		     nil
+		     unexpected-pass
+		     num-problems))
 	    (t
 	     (format t (intl:gettext "~%~a/~a tests passed~a~%~A")
 		     (- num-problems n-expected-errors (length all-differences)) (- num-problems n-expected-errors) expected-errors-trailer
@@ -435,9 +438,9 @@
 		     (values "" "was"))
 	       (format t (intl:gettext "~%The following ~A problem~A passed but ~A expected to fail: ~A~%")
 		       (length unexpected-pass) plural was-were (reverse unexpected-pass)))
-	     (values `((mlist) ,filename
-		       ((mlist) ,@(reverse all-differences))
-		       ((mlist) ,@(reverse unexpected-pass)))
+	     (values filename
+		     `((mlist) ,@(reverse all-differences))
+		     `((mlist) ,@(reverse unexpected-pass))
 		     num-problems))))))
        
 ;;to keep track of global values during the error:
@@ -635,12 +638,14 @@
 	    (mformat t "$testsuite_files = ~M~%" $testsuite_files)
 	    (mformat t "$file_search_tests = ~M~%" $file_search_tests)))
 	(let ((error-break-file)
-	      (testresult)
 	      (tests-to-run (intersect-tests (cond ((consp tests) tests)
 						   (tests (list '(mlist) tests)))))
 	      (test-count 0)
 	      (total-count 0)
-	      (error-count 0))
+	      (error-count 0)
+	      filename
+	      diff
+	      upass)
 	  (when debug
 	    (let (($stringdisp t))
 	      (mformat t "tests-to-run = ~M~%" tests-to-run)))
@@ -680,20 +685,31 @@
 			  (or
 			    (errset
 			      (progn
-				(multiple-value-setq (testresult test-count)
+				(multiple-value-setq (filename diff upass test-count)
 				  (test-batch test-file-path
 					      expected-failures :show-expected display_known_bugs
 					      :show-all display_all :showtime time))
-				(setf testresult (rest testresult))
+				;;(setf testresult (rest testresult))
 				(incf total-count test-count)
-				(when testresult
-				  (incf error-count (length (cdr testresult)))
-				  (setq errs (append errs (list testresult))))))
+				;;(format t "testresult = ~A~%" testresult)
+				(when filename
+				  (incf error-count (length (rest diff)))
+				  #+nil
+				  (setq errs (append errs (list testresult)))
+				  (push (list* filename (rest diff))
+					errs)
+				  (push (list* filename (rest upass))
+					unexpected-pass)
+				  (format t "***errs = ~A~%" errs)
+				  (format t "***unexpected-pass = ~A~%" unexpected-pass))))
 			    (progn
 			      (setq error-break-file (format nil "~a" test-file))
+			      #+nil
 			      (setq errs
 				    (append errs
 					    (list (list error-break-file "error break"))))
+			      (push (list error-break-file "error break")
+				    errs)
 			      (format t
 				      (intl:gettext "~%Caused an error break: ~a")
 				      test-file)
@@ -705,12 +721,16 @@
 			      (format t "~%")))
 		       finally (cond
 				 ((and (null errs) (null unexpected-pass))
+				  (format t "errs = ~A~%" errs)
+				  (format t "unxpected-pass = ~A~%" unexpected-pass)
 				  (format t
 					  (intl:gettext
 					   "~%~%No unexpected errors found out of ~:d tests.~%")
 					  total-count))
 				 (t
 				  (format t (intl:gettext "~%Error summary:~%"))
+				  (format t "errs = ~A~%" errs)
+				  (format t "unxpected-pass = ~A~%" unexpected-pass)
 				  (mapcar
 				   #'(lambda (x)
 				       (let ((s (if (> (length (rest x)) 1) "s" "")))
@@ -721,7 +741,18 @@
 						 (first x)
 						 s
 						 (sort (rest x) #'<))))
-				   errs)
+				   (reverse errs))
+				  (when unexpected-pass
+				    (mapcar
+				     #'(lambda (x)
+					 (let ((s (if (> (length (rest x)) 1) "s" "")))
+					   (format t
+						   (intl:gettext
+						    "Unexpected passes found in ~a, problem~a:~%~a~%")
+						   (first x)
+						   s
+						   (sort (rest x) #'<))))
+				     (reverse unexpected-pass)))
 				  (format t
 					  (intl:gettext
 					   "~&~:d test~p failed out of ~:d total tests.~%")
