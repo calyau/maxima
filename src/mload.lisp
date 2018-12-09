@@ -727,13 +727,9 @@
 				(test-batch test-file-path
 					    expected-failures :show-expected display_known_bugs
 					    :show-all display_all :showtime time))
-			      ;;(setf testresult (rest testresult))
 			      (incf total-count test-count)
-			      ;;(format t "testresult = ~A~%" testresult)
 			      (when filename
 				(incf error-count (length (rest diff)))
-				#+nil
-				(setq errs (append errs (list testresult)))
 				(when (rest diff)
 				  (push (list* filename (rest diff))
 					errs))
@@ -742,10 +738,6 @@
 					unexpected-pass)))))
 			  (progn
 			    (setq error-break-file (format nil "~a" test-file))
-			    #+nil
-			    (setq errs
-				  (append errs
-					  (list (list error-break-file "error break"))))
 			    (push (list error-break-file "error break")
 				  errs)
 			    (format t
