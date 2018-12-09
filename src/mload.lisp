@@ -362,8 +362,6 @@
 				    internal-time-units-per-second)))))
 	      (cond ((and correct expected-error)
 		     (push i unexpected-pass)
-		     (format t "*** i = ~A unexpected-pass = ~A~%"
-			     i unexpected-pass)
 		     (format t
 			     (intl:gettext "~%... Which was correct, but was expected ~
                               to be wrong due to a known bug in~% Maxima or ~A.~%")
@@ -423,7 +421,7 @@
 		       (length unexpected-pass) plural was-were (reverse unexpected-pass))))
 	     (values (when unexpected-pass filename)
 		     nil
-		     unexpected-pass
+		     `((mlist) ,@(reverse unexpected-pass))
 		     num-problems))
 	    (t
 	     (format t (intl:gettext "~%~a/~a tests passed~a~%~A")
@@ -696,12 +694,12 @@
 				  (incf error-count (length (rest diff)))
 				  #+nil
 				  (setq errs (append errs (list testresult)))
-				  (push (list* filename (rest diff))
-					errs)
-				  (push (list* filename (rest upass))
-					unexpected-pass)
-				  (format t "***errs = ~A~%" errs)
-				  (format t "***unexpected-pass = ~A~%" unexpected-pass))))
+				  (when (rest diff)
+				    (push (list* filename (rest diff))
+					  errs))
+				  (when (rest upass)
+				    (push (list* filename (rest upass))
+					  unexpected-pass)))))
 			    (progn
 			      (setq error-break-file (format nil "~a" test-file))
 			      #+nil
@@ -721,34 +719,32 @@
 			      (format t "~%")))
 		       finally (cond
 				 ((and (null errs) (null unexpected-pass))
-				  (format t "errs = ~A~%" errs)
-				  (format t "unxpected-pass = ~A~%" unexpected-pass)
 				  (format t
 					  (intl:gettext
 					   "~%~%No unexpected errors found out of ~:d tests.~%")
 					  total-count))
 				 (t
 				  (format t (intl:gettext "~%Error summary:~%"))
-				  (format t "errs = ~A~%" errs)
-				  (format t "unxpected-pass = ~A~%" unexpected-pass)
-				  (mapcar
-				   #'(lambda (x)
-				       (let ((s (if (> (length (rest x)) 1) "s" "")))
-					 (format t
-						 (intl:gettext
-						  "Error~a found in ~a, problem~a:~%~a~%")
-						 s
-						 (first x)
-						 s
-						 (sort (rest x) #'<))))
-				   (reverse errs))
-				  (when unexpected-pass
+				  (when errs
 				    (mapcar
 				     #'(lambda (x)
 					 (let ((s (if (> (length (rest x)) 1) "s" "")))
 					   (format t
 						   (intl:gettext
-						    "Unexpected passes found in ~a, problem~a:~%~a~%")
+						    "Error~a found in ~a, problem~a:~%~a~%")
+						   s
+						   (first x)
+						   s
+						   (sort (rest x) #'<))))
+				     (reverse errs)))
+				  (when unexpected-pass
+				    (format t (intl:gettext "Tests that were expected to fail but passed:~%"))
+				    (mapcar
+				     #'(lambda (x)
+					 (let ((s (if (> (length (rest x)) 1) "s" "")))
+					   (format t
+						   (intl:gettext
+						    "~a, problem~a:~%~a~%")
 						   (first x)
 						   s
 						   (sort (rest x) #'<))))
