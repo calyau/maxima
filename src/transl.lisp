@@ -993,7 +993,8 @@ APPLY means like APPLY.")
 			     ,@(mapcan #'(lambda (var val)
 					   (let ((assign (get var 'assign)))
 					     (if assign
-						 (list `(,assign ',var ,val)))))
+					       (let ((assign-fn (if (symbolp assign) (symbol-function assign) (coerce assign 'function))))
+						 (list `(funcall ,assign-fn ',var ,val))))))
 				       arglist temps)
 			     ;; [2] do the binding.
 			     ((lambda ,(tunbinds arglist)
@@ -1004,11 +1005,12 @@ APPLY means like APPLY.")
 			,@(mapcan #'(lambda (var)
 				      (let ((assign (get var 'assign)))
 					(if assign
-					    (list `(,assign ',var
+					  (let ((assign-fn (if (symbolp assign) (symbol-function assign) (coerce assign 'function))))
+					    (list `(funcall ,assign-fn ',var
 						    ;; use DTRANSLATE to
 						    ;; catch global
 						    ;; scoping if any.
-						    ,(dtranslate var))))))
+						    ,(dtranslate var)))))))
 				  arglist))))))))
 
 
@@ -1312,10 +1314,11 @@ APPLY means like APPLY.")
 	       (setq val (dconv val mode)))
 	   (cons mode
 		 (if (setq assign (get var 'assign))
-		     (let ((tn (tr-gensym)))
+		     (let ((tn (tr-gensym))
+		           (assign-fn (if (symbolp assign) (symbol-function assign) (coerce assign 'function))))
 		       (lambda-wrap1 tn val `(let nil
 					      (declare (special ,var ,(teval var)))
-					      (,assign ',var ,tn)
+					      (funcall ,assign-fn ',var ,tn)
 					      (setq ,(teval var) ,tn))))
                      `(let nil (declare (special ,(teval var)))
                         (if (not (boundp ',(teval var)))

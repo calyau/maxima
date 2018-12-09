@@ -590,3 +590,59 @@ translate(f);
 
 f();
 42;
+
+/* bug reported to mailing list 2018-12-03: "error in compiling function with global variable" */
+
+(test_f():= block( [a,b,c,d], niceindicespref:[a,b,c,d], disp("ciao"), return() ),
+ 0);
+0;
+
+(test_f (), niceindicespref);
+[a,b,c,d];
+
+(reset (niceindicespref),
+ niceindicespref);
+[i,j,k,l,m,n];
+
+(translate (test_f),
+ test_f (),
+ niceindicespref);
+[a,b,c,d];
+
+(reset (niceindicespref), 0);
+0;
+
+/* additional tests with variables which have ASSIGN property */
+
+(set_error_stuff_permanently () :=
+  block (error_syms : '[myerr1, myerr2, myerr3], error_size : 40),
+ set_error_stuff_temporarily() :=
+   block([error_syms : '[myerror1, myerror2, myerror3], error_size : 55],
+         [error_syms, error_size]),
+ 0);
+0;
+
+(reset (error_syms, error_size),
+ set_error_stuff_permanently (),
+ [error_syms, error_size]);
+[[myerr1, myerr2, myerr3], 40];
+
+(reset (error_syms, error_size),
+ translate (set_error_stuff_permanently),
+ set_error_stuff_permanently (),
+ [error_syms, error_size]);
+[[myerr1, myerr2, myerr3], 40];
+
+(reset (error_syms, error_size),
+ set_error_stuff_temporarily());
+[[myerror1, myerror2, myerror3], 55];
+
+[error_syms, error_size];
+[[errexp1, errexp2, errexp3], 60];
+
+(translate (set_error_stuff_temporarily),
+ set_error_stuff_temporarily());
+[[myerror1, myerror2, myerror3], 55];
+
+[error_syms, error_size];
+[[errexp1, errexp2, errexp3], 60];
