@@ -583,6 +583,46 @@
 		  (t
 		   (cdr $testsuite_files))))))
 
+(defun print-testsuite-summary (errs unexpected-pass error-count total-count)
+  (cond
+    ((and (null errs) (null unexpected-pass))
+     (format t
+	     (intl:gettext
+	      "~%~%No unexpected errors found out of ~:d tests.~%")
+	     total-count))
+    (t
+     (format t (intl:gettext "~%Error summary:~%"))
+     (when errs
+       (mapcar
+	#'(lambda (x)
+	    (let ((s (if (> (length (rest x)) 1) "s" "")))
+	      (format t
+		      (intl:gettext
+		       "Error~a found in ~a, problem~a:~%~a~%")
+		      s
+		      (first x)
+		      s
+		      (sort (rest x) #'<))))
+	(reverse errs)))
+     (when unexpected-pass
+       (format t (intl:gettext "Tests that were expected to fail but passed:~%"))
+       (mapcar
+	#'(lambda (x)
+	    (let ((s (if (> (length (rest x)) 1) "s" "")))
+	      (format t
+		      (intl:gettext
+		       "~a, problem~a:~%~a~%")
+		      (first x)
+		      s
+		      (sort (rest x) #'<))))
+	(reverse unexpected-pass)))
+     (format t
+	     (intl:gettext
+	      "~&~:d test~p failed out of ~:d total tests.~%")
+	     error-count
+	     error-count
+	     total-count))))
+
 (defun run-testsuite (&key display_known_bugs display_all tests time share_tests debug)
   (declare (special $file_search_tests))
   (let ((test-file)
@@ -717,44 +757,8 @@
 			      (unless test-file-path
 				(format t (intl:gettext ": test file not found.")))
 			      (format t "~%")))
-		       finally (cond
-				 ((and (null errs) (null unexpected-pass))
-				  (format t
-					  (intl:gettext
-					   "~%~%No unexpected errors found out of ~:d tests.~%")
-					  total-count))
-				 (t
-				  (format t (intl:gettext "~%Error summary:~%"))
-				  (when errs
-				    (mapcar
-				     #'(lambda (x)
-					 (let ((s (if (> (length (rest x)) 1) "s" "")))
-					   (format t
-						   (intl:gettext
-						    "Error~a found in ~a, problem~a:~%~a~%")
-						   s
-						   (first x)
-						   s
-						   (sort (rest x) #'<))))
-				     (reverse errs)))
-				  (when unexpected-pass
-				    (format t (intl:gettext "Tests that were expected to fail but passed:~%"))
-				    (mapcar
-				     #'(lambda (x)
-					 (let ((s (if (> (length (rest x)) 1) "s" "")))
-					   (format t
-						   (intl:gettext
-						    "~a, problem~a:~%~a~%")
-						   (first x)
-						   s
-						   (sort (rest x) #'<))))
-				     (reverse unexpected-pass)))
-				  (format t
-					  (intl:gettext
-					   "~&~:d test~p failed out of ~:d total tests.~%")
-					  error-count
-					  error-count
-					  total-count))))))
+		       finally
+			  (print-testsuite-summary errs unexpected-pass error-count total-count))))
 	    (time (testsuite)))))))
   '$done)
 
