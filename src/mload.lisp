@@ -592,30 +592,21 @@
 	     total-count))
     (t
      (format t (intl:gettext "~%Error summary:~%"))
-     (when errs
-       (mapcar
-	#'(lambda (x)
+     (flet
+	 ((problem-summary (x)
 	    (let ((s (if (> (length (rest x)) 1) "s" "")))
 	      (format t
 		      (intl:gettext
-		       "Error~a found in ~a, problem~a:~%~a~%")
-		      s
+		       "  ~a problem~a:~%    ~a~%")
 		      (first x)
 		      s
-		      (sort (rest x) #'<))))
-	(reverse errs)))
-     (when unexpected-pass
-       (format t (intl:gettext "Tests that were expected to fail but passed:~%"))
-       (mapcar
-	#'(lambda (x)
-	    (let ((s (if (> (length (rest x)) 1) "s" "")))
-	      (format t
-		      (intl:gettext
-		       "~a, problem~a:~%~a~%")
-		      (first x)
-		      s
-		      (sort (rest x) #'<))))
-	(reverse unexpected-pass)))
+		      (sort (rest x) #'<)))))
+       (when errs
+	 (format t (intl:gettext "Error(s) found:~%"))
+	 (mapcar #'problem-summary (reverse errs)))
+       (when unexpected-pass
+	 (format t (intl:gettext "Tests that were expected to fail but passed:~%"))
+	 (mapcar #'problem-summary (reverse unexpected-pass))))
      (format t
 	     (intl:gettext
 	      "~&~:d test~p failed out of ~:d total tests.~%")
