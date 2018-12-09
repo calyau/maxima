@@ -670,96 +670,96 @@
 	   ;; Only the share test files
 	   (values $share_testsuite_files $file_search_maxima)))
       (let (($testsuite_files desired-tests)
-	    ($file_search_tests desired-search-path))
+	    ($file_search_tests desired-search-path)
+	    (error-break-file)
+	    (tests-to-run (intersect-tests (cond ((consp tests) tests)
+						 (tests (list '(mlist) tests)))))
+	    (test-count 0)
+	    (total-count 0)
+	    (error-count 0)
+	    filename
+	    diff
+	    upass)
 	(when debug
 	  (let (($stringdisp t))
 	    (mformat t "$testsuite_files = ~M~%" $testsuite_files)
 	    (mformat t "$file_search_tests = ~M~%" $file_search_tests)))
-	(let ((error-break-file)
-	      (tests-to-run (intersect-tests (cond ((consp tests) tests)
-						   (tests (list '(mlist) tests)))))
-	      (test-count 0)
-	      (total-count 0)
-	      (error-count 0)
-	      filename
-	      diff
-	      upass)
-	  (when debug
-	    (let (($stringdisp t))
-	      (mformat t "tests-to-run = ~M~%" tests-to-run)))
-	  (flet
-	      ((testsuite ()
-		 (loop with errs = 'nil
-		       with unexpected-pass = nil
-		       for testentry in tests-to-run
-		       do (if (atom testentry)
-			      (progn
-				(setf test-file testentry)
-				(setf expected-failures nil))
-			      (progn
-				(setf test-file (second testentry))
-				(setf expected-failures
-				      ;; Support the expected failures list in
-				      ;; two formats:
-				      ;;
-				      ;; ((mlist) "test" 1 2 3)
-				      ;; ((mlist) "test" ((mlist) 1 2 3))
-				      ;;
-				      ;; The first is the old style whereas the
-				      ;; second is the new style.  We support
-				      ;; the old style for backward
-				      ;; compatibility.
-				      (if (consp (caddr testentry))
-					  (cdaddr testentry)
-					  (cddr testentry)))))
-		          (setf test-file-path ($file_search test-file $file_search_tests))
-			  (format t
-				  (intl:gettext "Running tests in ~a: ")
-				  (if (symbolp test-file)
-				      (subseq (print-invert-case test-file) 1)
-				      test-file))
-			  (when debug
-			    (format t (intl:gettext "(~A) ") test-file-path))
-			  (or
-			    (errset
-			      (progn
-				(multiple-value-setq (filename diff upass test-count)
-				  (test-batch test-file-path
-					      expected-failures :show-expected display_known_bugs
-					      :show-all display_all :showtime time))
-				;;(setf testresult (rest testresult))
-				(incf total-count test-count)
-				;;(format t "testresult = ~A~%" testresult)
-				(when filename
-				  (incf error-count (length (rest diff)))
-				  #+nil
-				  (setq errs (append errs (list testresult)))
-				  (when (rest diff)
-				    (push (list* filename (rest diff))
-					  errs))
-				  (when (rest upass)
-				    (push (list* filename (rest upass))
-					  unexpected-pass)))))
+	(when debug
+	  (let (($stringdisp t))
+	    (mformat t "tests-to-run = ~M~%" tests-to-run)))
+	(flet
+	    ((testsuite ()
+	       (loop with errs = 'nil
+		     with unexpected-pass = nil
+		     for testentry in tests-to-run
+		     do (if (atom testentry)
 			    (progn
-			      (setq error-break-file (format nil "~a" test-file))
-			      #+nil
-			      (setq errs
-				    (append errs
-					    (list (list error-break-file "error break"))))
-			      (push (list error-break-file "error break")
-				    errs)
-			      (format t
-				      (intl:gettext "~%Caused an error break: ~a")
-				      test-file)
-			      ;; If the test failed because we
-			      ;; couldn't find the file, make a note of
-			      ;; that.
-			      (unless test-file-path
-				(format t (intl:gettext ": test file not found.")))
-			      (format t "~%")))
-		       finally
-			  (print-testsuite-summary errs unexpected-pass error-count total-count))))
-	    (time (testsuite)))))))
+			      (setf test-file testentry)
+			      (setf expected-failures nil))
+			    (progn
+			      (setf test-file (second testentry))
+			      (setf expected-failures
+				    ;; Support the expected failures list in
+				    ;; two formats:
+				    ;;
+				    ;; ((mlist) "test" 1 2 3)
+				    ;; ((mlist) "test" ((mlist) 1 2 3))
+				    ;;
+				    ;; The first is the old style whereas the
+				    ;; second is the new style.  We support
+				    ;; the old style for backward
+				    ;; compatibility.
+				    (if (consp (caddr testentry))
+					(cdaddr testentry)
+					(cddr testentry)))))
+			(setf test-file-path ($file_search test-file $file_search_tests))
+			(format t
+				(intl:gettext "Running tests in ~a: ")
+				(if (symbolp test-file)
+				    (subseq (print-invert-case test-file) 1)
+				    test-file))
+			(when debug
+			  (format t (intl:gettext "(~A) ") test-file-path))
+			(or
+			  (errset
+			    (progn
+			      (multiple-value-setq (filename diff upass test-count)
+				(test-batch test-file-path
+					    expected-failures :show-expected display_known_bugs
+					    :show-all display_all :showtime time))
+			      ;;(setf testresult (rest testresult))
+			      (incf total-count test-count)
+			      ;;(format t "testresult = ~A~%" testresult)
+			      (when filename
+				(incf error-count (length (rest diff)))
+				#+nil
+				(setq errs (append errs (list testresult)))
+				(when (rest diff)
+				  (push (list* filename (rest diff))
+					errs))
+				(when (rest upass)
+				  (push (list* filename (rest upass))
+					unexpected-pass)))))
+			  (progn
+			    (setq error-break-file (format nil "~a" test-file))
+			    #+nil
+			    (setq errs
+				  (append errs
+					  (list (list error-break-file "error break"))))
+			    (push (list error-break-file "error break")
+				  errs)
+			    (format t
+				    (intl:gettext "~%Caused an error break: ~a")
+				    test-file)
+			    ;; If the test failed because we
+			    ;; couldn't find the file, make a note of
+			    ;; that.
+			    (unless test-file-path
+			      (format t (intl:gettext ": test file not found.")))
+			    (format t "~%")))
+		     finally
+			(print-testsuite-summary errs unexpected-pass error-count total-count))))
+	  (time (testsuite))))))
   '$done)
 
 ;; Convert a list of Maxima "keyword" arguments into the corresponding
