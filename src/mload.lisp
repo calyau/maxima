@@ -269,6 +269,21 @@
 
 (defvar *collect-errors* t)
 
+;; Execute the code in FILENAME as a batch file.  If EXPECTED-ERRORS
+;; is non-NIL, it is a list of numbers denoting which tests in this
+;; file are expected to fail.  OUT specifies the stream where any
+;; output goes (defaulting to *standard-output*).  SHOW-EXPECTED is
+;; non-NIL if the expected results should also be printed.  SHOW-ALL
+;; is non-NIL if all tests (including expected failures) should be
+;; shown.  Finally, SHOWTIME is non-NIL if the execution time should
+;; be displayed.
+;;
+;; This function returns four values:
+;;   1.  the filename
+;;   2.  NIL or a Maxima list of test numbers that failed
+;;   3.  NIL or a Maxima list of test numbers that were expected to
+;;       fail but actually passed.
+;;   4.  Total number of tests in the file
 (defun test-batch (filename expected-errors
 			    &key (out *standard-output*) (show-expected nil)
 			    (show-all nil) (showtime nil))
