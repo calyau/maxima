@@ -675,17 +675,17 @@
 	  ($only
 	   ;; Only the share test files
 	   (values $share_testsuite_files $file_search_maxima)))
-      (let (($testsuite_files desired-tests)
-	    ($file_search_tests desired-search-path)
-	    (error-break-file)
-	    (tests-to-run (intersect-tests (cond ((consp tests) tests)
-						 (tests (list '(mlist) tests)))))
-	    (test-count 0)
-	    (total-count 0)
-	    (error-count 0)
-	    filename
-	    diff
-	    upass)
+      (let* (($testsuite_files desired-tests)
+	     ($file_search_tests desired-search-path)
+	     (error-break-file)
+	     (tests-to-run (intersect-tests (cond ((consp tests) tests)
+						  (tests (list '(mlist) tests)))))
+	     (test-count 0)
+	     (total-count 0)
+	     (error-count 0)
+	     filename
+	     diff
+	     upass)
 	(when debug
 	  (let (($stringdisp t))
 	    (mformat t "$testsuite_files = ~M~%" $testsuite_files)
