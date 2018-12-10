@@ -22,7 +22,7 @@
                         (list* '(mlist simp) (list 78 80))))
 	 ;; 46 = ECL bug #437: mishandling float format
         ((mlist simp) "rtest6"
-	 #+ecl ((mlist simp) 44 46))
+	 #+ecl ((mlist simp) 46))
         "rtest6a"
 	"rtest6b"
 	"rtest7"
@@ -37,7 +37,7 @@
         "rtest13"
 	"rtest13s"
 	((mlist simp) "rtest14"
-	 #+ecl ((mlist simp) 201 233 234 249 250 251 252 267 297 298 307 310 312 315 319))
+	 #+ecl ((mlist simp) 145))
         "rtest15"
 	;; ccl versions 1.11 and earlier fail test 50.  Mark it as a
 	;; known failure.  Presumably 1.12 will have this fixed.
@@ -50,8 +50,7 @@
         "rtestode"
 	"rtestode_zp"
         "rtest3"
-	((mlist simp) "rtest8"
-	 #+ecl ((mlist simp) 104))
+	"rtest8"
         ((mlist simp) "rtest12"
 	 ((mlist simp) 76 78))
         "rexamples"
