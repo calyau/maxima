@@ -23,7 +23,9 @@
 	 ;; 46 = ECL bug #437: mishandling float format
         ((mlist simp) "rtest6"
 	 #+ecl ((mlist simp) 44 46))
-        "rtest6a" "rtest6b" "rtest7"
+        "rtest6a"
+	"rtest6b"
+	"rtest7"
         "rtest9" 
 	((mlist simp) "rtest9a"
 	 #+allegro ((mlist simp) 24 27 30 31 35 36 47 48 51 52 55 56 59 60 63 64 67 68 71 72))
@@ -32,7 +34,8 @@
 	 #+allegro ((mlist simp) 136 137 158 174)
 	 #+ccl64 ((mlist simp) 158 174)
 	 #+gcl ((mlist simp) 158 174 175))
-        "rtest13" "rtest13s"
+        "rtest13"
+	"rtest13s"
 	((mlist simp) "rtest14"
 	 #+ecl ((mlist simp) 201 233 234 249 250 251 252 267 297 298 307 310 312 315 319))
         "rtest15"
@@ -44,7 +47,8 @@
 	 #+ccl ((mlist simp) 50)
 	 #+ecl ((mlist 50 561))
 	 #+allegro ((mlist simp) 50 241))
-        "rtestode" "rtestode_zp"
+        "rtestode"
+	"rtestode_zp"
         "rtest3"
 	((mlist simp) "rtest8"
 	 #+ecl ((mlist simp) 104))
