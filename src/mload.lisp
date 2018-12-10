@@ -609,7 +609,9 @@
      (format t (intl:gettext "~%Error summary:~%"))
      (flet
 	 ((problem-summary (x)
-	    (let ((s (if (> (length (rest x)) 1) "s" "")))
+	    ;; We want to print all the elements in the list.
+	    (let ((*print-length* nil)
+		  (s (if (> (length (rest x)) 1) "s" "")))
 	      (format t
 		      (intl:gettext
 		       "  ~a problem~a:~%    ~a~%")
