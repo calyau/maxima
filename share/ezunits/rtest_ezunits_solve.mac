@@ -106,3 +106,40 @@ float (foo1_early);
 [%T `` K = 325.4890020542776*%i ` K,%T `` K = (-325.4890020542776) ` K,
  %T `` K = (-325.4890020542776*%i) ` K,%T `` K = 325.4890020542776 ` K];
 
+/* from mailing list 2018-12-06: "ezunits: strange multiplication behaviour?" */
+
+(kill (x, dx, t, c1, c2, c3),
+ x : c1*t^2 + c2*t + c3,
+ dx : diff(x,t),
+ 0);
+0;
+
+declare ([c1, c2, c3], dimensional) $
+done;
+
+eqns : [ev(x, t=t0`s) = x0`m, ev(x, t=5`s) = 5`m, ev(dx, t=t0`s) = 1`m/s];
+[c1*(t0^2 ` s^2)+c2*(t0 ` s)+c3 = x0 ` m,
+ c3+(5 ` s)*c2+(25 ` s^2)*c1 = 5 ` m,
+ c1*(2*t0 ` s)+c2 = 1 ` m/s];
+
+/* call ratsimp(foo - bar) to test for equivalence of foo and bar,
+ * since expected result doesn't match; that might or might not
+ * be a bug in simplification or grind or something.
+ */
+(soln: dimensionally (solve (eqns, [c1, c2, c3])),
+ expected: [[c1 = (t0-x0)/(t0^2-10*t0+25) ` m/s^2,
+             c2 = (2*t0*x0-t0^2-10*t0+25)/(t0^2-10*t0+25) ` m/s,
+             c3 = (-((10*t0-25)*x0-10*t0^2+25*t0)/(t0^2-10*t0+25)) ` m]],
+ ratsimp (soln - expected));
+[[0 = 0 ` m/s^2, 0 = 0 ` m/s, 0 = 0 ` m]];
+
+ev (soln, t0=0, x0=0);
+[[c1 = 0 ` m/s^2,c2 = 1 ` m/s,c3 = 0 ` m]];
+
+eqns0 : subst ([t0 = 0, x0 = 0], eqns);
+[c1*(0 ` s^2)+c2*(0 ` s)+c3 = 0 ` m,
+ c3+(5 ` s)*c2+(25 ` s^2)*c1 = 5 ` m,
+ c1*(0 ` s)+c2 = 1 ` m/s];
+
+soln0: dimensionally (solve (eqns0, [c1, c2, c3]));
+[[c1 = 0 ` m/s^2,c2 = 1 ` m/s,c3 = 0 ` m]];

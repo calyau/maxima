@@ -49,20 +49,34 @@
 (defmvar $load_pathname nil
   "The full pathname of the file being loaded")
 
-(defmfun $batchload (filename &aux expr (*mread-prompt* ""))
-  (declare (special *mread-prompt* *prompt-on-read-hang*))
-  (setq filename ($file_search1 filename '((mlist) $file_search_maxima)))
-  (let (($load_pathname filename) (noevalargs nil) (*read-base* 10.))
-    (with-open-file (in-stream filename)
+(defmfun $batchload (filename-or-stream &aux expr (*mread-prompt* ""))
+  (declare (special *mread-prompt*))
+  (if (streamp filename-or-stream)
+      (batchload-stream filename-or-stream)
+    (let
+      ((filename ($file_search1 filename-or-stream '((mlist) $file_search_maxima))))
+      (with-open-file (in-stream filename)
+        (batchload-stream in-stream)))))
+
+(defun batchload-stream (in-stream)
+  (let ($load_pathname)
+    (let
+      ((noevalargs nil)
+       (*read-base* 10.)
+       (in-stream-string-rep
+        (if (subtypep (type-of in-stream) 'file-stream)
+          (setq $load_pathname (cl:namestring (truename in-stream)))
+          (format nil "~A" in-stream))))
+      (declare (special *prompt-on-read-hang*))
       (when $loadprint
-	(format t (intl:gettext "~&read and interpret file: ~A~&") (cl:namestring (truename in-stream))))
+        (format t (intl:gettext "~&read and interpret ~A~&") in-stream-string-rep))
       (cleanup)
       (newline in-stream)
       (loop while (and
-		   (setq  expr (let (*prompt-on-read-hang*) (mread in-stream nil)))
-		   (consp expr))
-	 do (meval* (third expr)))
-      (cl:namestring (truename in-stream)))))
+                    (setq  expr (let (*prompt-on-read-hang*) (mread in-stream nil)))
+                    (consp expr))
+            do (meval* (third expr)))
+      in-stream-string-rep)))
 
 ;;returns appropriate error or existing pathname.
 ;; the second argument is a maxima list of variables
@@ -141,27 +155,39 @@
 
 ;;;; batch & demo search hacks
 
-(defmfun $batch (filename &optional (demo :batch)
-	       &aux tem   (possible '(:demo :batch :test)))
+(defmfun $batch (filename-or-stream &optional (demo :batch)
+               &aux tem   (possible '(:demo :batch :test)))
   "giving a second argument makes it use demo mode, ie pause after evaluation
    of each command line"
-  (cond ((setq tem (member ($mkey demo) possible :test #'eq))
-	 (setq demo (car tem)))
-	(t (format t (intl:gettext "batch: second argument must be 'demo', 'batch' or 'test'; found: ~A, assumed 'batch'~%") demo)))
+  (cond
+    ((setq tem (member ($mkey demo) possible :test #'eq))
+     (setq demo (car tem)))
+    (t (format t (intl:gettext "batch: second argument must be 'demo', 'batch' or 'test'; found: ~A, assumed 'batch'~%") demo)))
+  (if (streamp filename-or-stream)
+    (batch-stream filename-or-stream demo)
+    (let
+      ((filename ($file_search1 filename-or-stream
+                                (if (eql demo :demo)
+                                  '((mlist) $file_search_demo )
+                                  '((mlist) $file_search_maxima)))))
+      (cond
+        ((eq demo :test)
+         (test-batch filename nil :show-all t)) ;; NEED TO ACCEPT INPUT STREAM HERE TOO
+        (t
+          (with-open-file (in-stream filename)
+            (batch-stream in-stream demo)))))))
 
-  (setq filename ($file_search1 filename
-				(if (eql demo :demo)
-				    '((mlist) $file_search_demo )
-				    '((mlist) $file_search_maxima ))))
-  (cond ((eq demo :test)
-	 (test-batch filename nil :show-all t))
-	(t
-	 (let (($load_pathname filename) (*read-base* 10.))
-	   (with-open-file (in-stream filename)
-	     (format t (intl:gettext "~%read and interpret file: ~A~%")
-		     (truename in-stream))
-	     (catch 'macsyma-quit (continue in-stream demo))
-	     (namestring in-stream))))))
+(defun batch-stream (in-stream demo)
+  (let ($load_pathname)
+    (let*
+      ((*read-base 10.)
+       (in-stream-string-rep
+        (if (subtypep (type-of in-stream) 'file-stream)
+          (setq $load_pathname (cl:namestring (truename in-stream)))
+          (format nil "~A" in-stream))))
+      (format t (intl:gettext "~%read and interpret ~A~%") in-stream-string-rep)
+      (catch 'macsyma-quit (continue in-stream demo))
+      in-stream-string-rep)))
 
 ;; Return true if $float converts both a and b to floats and 
 
