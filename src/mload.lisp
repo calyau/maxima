@@ -295,17 +295,50 @@
 
 (defvar *collect-errors* t)
 
+;; Execute the code in FILENAME as a batch file.  If EXPECTED-ERRORS
+;; is non-NIL, it is a list of numbers denoting which tests in this
+;; file are expected to fail.  OUT specifies the stream where any
+;; output goes (defaulting to *standard-output*).  SHOW-EXPECTED is
+;; non-NIL if the expected results should also be printed.  SHOW-ALL
+;; is non-NIL if all tests (including expected failures) should be
+;; shown.  Finally, SHOWTIME is non-NIL if the execution time should
+;; be displayed.
+;;
+;; This function returns four values:
+;;   1.  the filename
+;;   2.  NIL or a Maxima list of test numbers that failed
+;;   3.  NIL or a Maxima list of test numbers that were expected to
+;;       fail but actually passed.
+;;   4.  Total number of tests in the file
 (defun test-batch (filename expected-errors
 			    &key (out *standard-output*) (show-expected nil)
 			    (show-all nil) (showtime nil))
 
-  (let ((result) (next-result) (next) (error-log) (all-differences nil) ($ratprint nil) (strm)
-	(*mread-prompt* "") (*read-base* 10.)
-	(expr) (num-problems 0) (problem-lineinfo) (problem-lineno) (tmp-output) (save-output) (i 0)
-	(start-run-time 0) (end-run-time 0)
-	(start-real-time 0) (end-real-time 0)
-	(test-start-run-time 0) (test-end-run-time 0)
-	(test-start-real-time 0) (test-end-real-time 0))
+  (let (result
+	next-result
+	next
+	error-log
+	all-differences
+	unexpected-pass
+	strm
+	expr
+	problem-lineinfo
+	problem-lineno
+	tmp-output
+	save-output
+	($ratprint nil)
+	(*mread-prompt* "")
+	(*read-base* 10.)
+	(num-problems 0)
+	(i 0)
+	(start-run-time 0)
+	(end-run-time 0)
+	(start-real-time 0)
+	(end-real-time 0)
+	(test-start-run-time 0)
+	(test-end-run-time 0)
+	(test-start-real-time 0)
+	(test-end-real-time 0))
     
     (cond (*collect-errors*
 	   (setq error-log
@@ -326,24 +359,24 @@
 	  (setq start-run-time (get-internal-run-time))
 	  (while (not (eq 'eof (setq expr (mread strm 'eof))))
 	    (incf num-problems)
-        (setq problem-lineinfo (second (first expr)))
-        (setq problem-lineno (if (and (consp problem-lineinfo) (integerp (first problem-lineinfo)))
-                               (1+ (first problem-lineinfo))))
+	    (setq problem-lineinfo (second (first expr)))
+	    (setq problem-lineno (if (and (consp problem-lineinfo) (integerp (first problem-lineinfo)))
+				     (1+ (first problem-lineinfo))))
 	    (incf i)
 	    (setf tmp-output (make-string-output-stream))
 	    (setf save-output *standard-output*)
 	    (setf *standard-output* tmp-output)
 	  
 	    (unwind-protect
-		(progn
-		  (setq test-start-run-time (get-internal-run-time))
-		  (setq test-start-real-time (get-internal-real-time))
-		  (let (($errormsg t))
-		    (setq result (meval* `(($errcatch) ,(third expr)))))
-		  (setq result (if ($emptyp result) 'error-catch (second result)))
-		  (setq test-end-run-time (get-internal-run-time))
-		  (setq test-end-real-time (get-internal-real-time))
-		  (setq $% result))
+		 (progn
+		   (setq test-start-run-time (get-internal-run-time))
+		   (setq test-start-real-time (get-internal-real-time))
+		   (let (($errormsg t))
+		     (setq result (meval* `(($errcatch) ,(third expr)))))
+		   (setq result (if ($emptyp result) 'error-catch (second result)))
+		   (setq test-end-run-time (get-internal-run-time))
+		   (setq test-end-real-time (get-internal-real-time))
+		   (setq $% result))
 	      (setf *standard-output* save-output))
 
 	    (setq next (mread strm 'eof))
@@ -356,7 +389,7 @@
 	      (when (or show-all (not pass) (and correct expected-error)
 			(and expected-error show-expected))
 		(format out (intl:gettext "~%********************** Problem ~A~A***************")
-                    i (if problem-lineno (format nil " (line ~S) " problem-lineno) " "))
+			i (if problem-lineno (format nil " (line ~S) " problem-lineno) " "))
 		(format out (intl:gettext "~%Input:~%"))
 		(displa (third expr))
 		(format out (intl:gettext "~%~%Result:~%"))
@@ -369,6 +402,7 @@
 			  (float (/ (- test-end-real-time test-start-real-time)
 				    internal-time-units-per-second)))))
 	      (cond ((and correct expected-error)
+		     (push i unexpected-pass)
 		     (format t
 			     (intl:gettext "~%... Which was correct, but was expected ~
                               to be wrong due to a known bug in~% Maxima or ~A.~%")
@@ -376,28 +410,27 @@
 		    (correct
 		     (if show-all (format t (intl:gettext "~%... Which was correct.~%"))))
 		    ((and (not correct) expected-error)
-		     (if (or show-all show-expected)
-			 (progn
-			   (format t
-				   (intl:gettext "~%This is a known error in Maxima or in ~A. ~
+		     (when (or show-all show-expected)
+		       (format t
+			       (intl:gettext "~%This is a known error in Maxima or in ~A. ~
                                     The correct result is:~%")
-				   (lisp-implementation-type))
-			   (displa next-result))))
+			       (lisp-implementation-type))
+		       (displa next-result)))
 		    (t (format t (intl:gettext "~%This differed from the expected result:~%"))
-		       (push i all-differences)
-		       (displa next-result)
-		       (cond ((and *collect-errors* error-log)
-			      (format error-log (intl:gettext "/* Problem ~A~A*/~%")
+		     (push i all-differences)
+		     (displa next-result)
+		     (cond ((and *collect-errors* error-log)
+			    (format error-log (intl:gettext "/* Problem ~A~A*/~%")
                                     i (if problem-lineno (format nil " (line ~S) " problem-lineno) " "))
-			      (mgrind (third expr) error-log)
-			      (list-variable-bindings (third expr) error-log)
-			      (format error-log ";~%")
-			      (format error-log (intl:gettext "/* Erroneous Result?:~%"))
-			      (mgrind result error-log) (format error-log " */ ")
-			      (terpri error-log)
-			      (format error-log (intl:gettext "/* Expected result: */~%"))
-			      (mgrind next-result error-log)
-			      (format error-log ";~%~%"))))))))
+			    (mgrind (third expr) error-log)
+			    (list-variable-bindings (third expr) error-log)
+			    (format error-log ";~%")
+			    (format error-log (intl:gettext "/* Erroneous Result?:~%"))
+			    (mgrind result error-log) (format error-log " */ ")
+			    (terpri error-log)
+			    (format error-log (intl:gettext "/* Expected result: */~%"))
+			    (mgrind next-result error-log)
+			    (format error-log ";~%~%"))))))))
       (close strm))
     (setq end-run-time (get-internal-run-time))
     (setq end-real-time (get-internal-real-time))
@@ -420,7 +453,17 @@
 		     (- num-problems n-expected-errors) (- num-problems n-expected-errors)
 		     expected-errors-trailer
 		     time)
-	     (values '((mlist)) num-problems))
+	     (when unexpected-pass
+	       (multiple-value-bind (plural was-were)
+		 (if (> (length unexpected-pass) 1)
+		     (values "s" "were")
+		     (values "" "was"))
+	       (format t (intl:gettext "~%The following ~A problem~A passed but ~A expected to fail: ~A~%")
+		       (length unexpected-pass) plural was-were (reverse unexpected-pass))))
+	     (values (when unexpected-pass filename)
+		     nil
+		     `((mlist) ,@(reverse unexpected-pass))
+		     num-problems))
 	    (t
 	     (format t (intl:gettext "~%~a/~a tests passed~a~%~A")
 		     (- num-problems n-expected-errors (length all-differences)) (- num-problems n-expected-errors) expected-errors-trailer
@@ -428,7 +471,16 @@
 	     (let ((s (if (> (length all-differences) 1) "s" "")))
 	       (format t (intl:gettext "~%The following ~A problem~A failed: ~A~%")
 		       (length all-differences) s (reverse all-differences)))
-	     (values `((mlist) ,filename ,@(reverse all-differences)) num-problems))))))
+	     (multiple-value-bind (plural was-were)
+		 (if (> (length unexpected-pass) 1)
+		     (values "s" "were")
+		     (values "" "was"))
+	       (format t (intl:gettext "~%The following ~A problem~A passed but ~A expected to fail: ~A~%")
+		       (length unexpected-pass) plural was-were (reverse unexpected-pass)))
+	     (values filename
+		     `((mlist) ,@(reverse all-differences))
+		     `((mlist) ,@(reverse unexpected-pass))
+		     num-problems))))))
        
 ;;to keep track of global values during the error:
 (defun list-variable-bindings (expr &optional str &aux tem)
@@ -572,6 +624,39 @@
 		  (t
 		   (cdr $testsuite_files))))))
 
+(defun print-testsuite-summary (errs unexpected-pass error-count total-count)
+  (cond
+    ((and (null errs) (null unexpected-pass))
+     (format t
+	     (intl:gettext
+	      "~%~%No unexpected errors found out of ~:d tests.~%")
+	     total-count))
+    (t
+     (format t (intl:gettext "~%Error summary:~%"))
+     (flet
+	 ((problem-summary (x)
+	    ;; We want to print all the elements in the list.
+	    (let ((*print-length* nil)
+		  (s (if (> (length (rest x)) 1) "s" "")))
+	      (format t
+		      (intl:gettext
+		       "  ~a problem~a:~%    ~a~%")
+		      (first x)
+		      s
+		      (sort (rest x) #'<)))))
+       (when errs
+	 (format t (intl:gettext "Error(s) found:~%"))
+	 (mapcar #'problem-summary (reverse errs)))
+       (when unexpected-pass
+	 (format t (intl:gettext "Tests that were expected to fail but passed:~%"))
+	 (mapcar #'problem-summary (reverse unexpected-pass))))
+     (format t
+	     (intl:gettext
+	      "~&~:d test~p failed out of ~:d total tests.~%")
+	     error-count
+	     error-count
+	     total-count))))
+
 (defun run-testsuite (&key display_known_bugs display_all tests time share_tests debug)
   (declare (special $file_search_tests))
   (let ((test-file)
@@ -618,106 +703,89 @@
 	  ($only
 	   ;; Only the share test files
 	   (values $share_testsuite_files $file_search_maxima)))
-      (let (($testsuite_files desired-tests)
-	    ($file_search_tests desired-search-path))
+      (let* (($testsuite_files desired-tests)
+	     ($file_search_tests desired-search-path)
+	     (error-break-file)
+	     (tests-to-run (intersect-tests (cond ((consp tests) tests)
+						  (tests (list '(mlist) tests)))))
+	     (test-count 0)
+	     (total-count 0)
+	     (error-count 0)
+	     filename
+	     diff
+	     upass)
 	(when debug
 	  (let (($stringdisp t))
 	    (mformat t "$testsuite_files = ~M~%" $testsuite_files)
 	    (mformat t "$file_search_tests = ~M~%" $file_search_tests)))
-	(let ((error-break-file)
-	      (testresult)
-	      (tests-to-run (intersect-tests (cond ((consp tests) tests)
-						   (tests (list '(mlist) tests)))))
-	      (test-count 0)
-	      (total-count 0)
-	      (error-count 0))
-	  (when debug
-	    (let (($stringdisp t))
-	      (mformat t "tests-to-run = ~M~%" tests-to-run)))
-	  (flet
-	      ((testsuite ()
-		 (loop with errs = 'nil
-		       for testentry in tests-to-run
-		       do (if (atom testentry)
-			      (progn
-				(setf test-file testentry)
-				(setf expected-failures nil))
-			      (progn
-				(setf test-file (second testentry))
-				(setf expected-failures
-				      ;; Support the expected failures list in
-				      ;; two formats:
-				      ;;
-				      ;; ((mlist) "test" 1 2 3)
-				      ;; ((mlist) "test" ((mlist) 1 2 3))
-				      ;;
-				      ;; The first is the old style whereas the
-				      ;; second is the new style.  We support
-				      ;; the old style for backward
-				      ;; compatibility.
-				      (if (consp (caddr testentry))
-					  (cdaddr testentry)
-					  (cddr testentry)))))
-		          (setf test-file-path ($file_search test-file $file_search_tests))
-			  (format t
-				  (intl:gettext "Running tests in ~a: ")
-				  (if (symbolp test-file)
-				      (subseq (print-invert-case test-file) 1)
-				      test-file))
-			  (when debug
-			    (format t (intl:gettext "(~A) ") test-file-path))
-			  (or
-			    (errset
-			      (progn
-				(multiple-value-setq (testresult test-count)
-				  (test-batch test-file-path
-					      expected-failures :show-expected display_known_bugs
-					      :show-all display_all :showtime time))
-				(setf testresult (rest testresult))
-				(incf total-count test-count)
-				(when testresult
-				  (incf error-count (length (cdr testresult)))
-				  (setq errs (append errs (list testresult))))))
+	(when debug
+	  (let (($stringdisp t))
+	    (mformat t "tests-to-run = ~M~%" tests-to-run)))
+	(flet
+	    ((testsuite ()
+	       (loop with errs = 'nil
+		     with unexpected-pass = nil
+		     for testentry in tests-to-run
+		     do (if (atom testentry)
 			    (progn
-			      (setq error-break-file (format nil "~a" test-file))
-			      (setq errs
-				    (append errs
-					    (list (list error-break-file "error break"))))
-			      (format t
-				      (intl:gettext "~%Caused an error break: ~a")
-				      test-file)
-			      ;; If the test failed because we
-			      ;; couldn't find the file, make a noe of
-			      ;; that.
-			      (unless test-file-path
-				(format t (intl:gettext ": test file not found.")))
-			      (format t "~%")))
-		       finally (cond
-				 ((null errs)
-				  (format t
-					  (intl:gettext
-					   "~%~%No unexpected errors found out of ~:d tests.~%")
-					  total-count))
-				 (t
-				  (format t (intl:gettext "~%Error summary:~%"))
-				  (mapcar
-				   #'(lambda (x)
-				       (let ((s (if (> (length (rest x)) 1) "s" "")))
-					 (format t
-						 (intl:gettext
-						  "Error~a found in ~a, problem~a:~%~a~%")
-						 s
-						 (first x)
-						 s
-						 (sort (rest x) #'<))))
-				   errs)
-				  (format t
-					  (intl:gettext
-					   "~&~:d test~p failed out of ~:d total tests.~%")
-					  error-count
-					  error-count
-					  total-count))))))
-	    (time (testsuite)))))))
+			      (setf test-file testentry)
+			      (setf expected-failures nil))
+			    (progn
+			      (setf test-file (second testentry))
+			      (setf expected-failures
+				    ;; Support the expected failures list in
+				    ;; two formats:
+				    ;;
+				    ;; ((mlist) "test" 1 2 3)
+				    ;; ((mlist) "test" ((mlist) 1 2 3))
+				    ;;
+				    ;; The first is the old style whereas the
+				    ;; second is the new style.  We support
+				    ;; the old style for backward
+				    ;; compatibility.
+				    (if (consp (caddr testentry))
+					(cdaddr testentry)
+					(cddr testentry)))))
+			(setf test-file-path ($file_search test-file $file_search_tests))
+			(format t
+				(intl:gettext "Running tests in ~a: ")
+				(if (symbolp test-file)
+				    (subseq (print-invert-case test-file) 1)
+				    test-file))
+			(when debug
+			  (format t (intl:gettext "(~A) ") test-file-path))
+			(or
+			  (errset
+			    (progn
+			      (multiple-value-setq (filename diff upass test-count)
+				(test-batch test-file-path
+					    expected-failures :show-expected display_known_bugs
+					    :show-all display_all :showtime time))
+			      (incf total-count test-count)
+			      (when filename
+				(incf error-count (length (rest diff)))
+				(when (rest diff)
+				  (push (list* filename (rest diff))
+					errs))
+				(when (rest upass)
+				  (push (list* filename (rest upass))
+					unexpected-pass)))))
+			  (progn
+			    (setq error-break-file (format nil "~a" test-file))
+			    (push (list error-break-file "error break")
+				  errs)
+			    (format t
+				    (intl:gettext "~%Caused an error break: ~a")
+				    test-file)
+			    ;; If the test failed because we
+			    ;; couldn't find the file, make a note of
+			    ;; that.
+			    (unless test-file-path
+			      (format t (intl:gettext ": test file not found.")))
+			    (format t "~%")))
+		     finally
+			(print-testsuite-summary errs unexpected-pass error-count total-count))))
+	  (time (testsuite))))))
   '$done)
 
 ;; Convert a list of Maxima "keyword" arguments into the corresponding
