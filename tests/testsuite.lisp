@@ -10,7 +10,10 @@
 	((mlist simp) "rtest_rules"
 	 #+allegro ((mlist simp) 11 13))
         "rtestnset" 
-        ((mlist simp) "rtest1" ((mlist simp) 183 185 186))
+        ((mlist simp) "rtest1"
+	 ;; 115 sometimes fails on ECL 16.1.2 on AMD 64/Ubuntu.
+	 #+ecl ((mlist simp) 115 183 185 186)
+	 #-ecl ((mlist simp) 183 185 186))
         ((mlist simp) "rtest1a" ((mlist simp) 33))
         ((mlist simp) "rtest2" ((mlist simp) 86 95))
 	"rtest4"
