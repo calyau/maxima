@@ -84,7 +84,8 @@
 ;; On a different computer with ECL 16.1.2 test 5 failed, too. No idea why.
 ;; On another computer that used the same ECL version test step 15 resulted in an
 ;; error-catch without making further information visible in the log.
-;; ECL 13.5.1 errored out in 6-12,14+15 and sporadically errors out in step 13.
+;; ECL 13.5.1 errored out in 7-12,14+15 and ECL 13.5.1 to 16.1.2
+;; are known to sporadically error out in steps 6 and 13.
     ;;
     ;; But ecl 16.1.3 passes all of these tests
     ((mlist simp) "rtest_dgeqrf")
