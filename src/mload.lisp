@@ -180,7 +180,7 @@
 (defun batch-stream (in-stream demo)
   (let ($load_pathname)
     (let*
-      ((*read-base 10.)
+      ((*read-base* 10.)
        (in-stream-string-rep
         (if (subtypep (type-of in-stream) 'file-stream)
           (setq $load_pathname (cl:namestring (truename in-stream)))
