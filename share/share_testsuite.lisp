@@ -45,8 +45,9 @@
 
     "rtest_odelin"
     "rtestezunits"
-;; ACL 10.1 cannot load stringproc as it has no (get-encoding) function.
-#-allegro    "rtest_numericalio"
+    ;; ACL 10.1 cannot load stringproc as it has no (get-encoding) function.
+    #-allegro
+    "rtest_numericalio"
     ((mlist simp) "rtest_simplify_sum"
      ((mlist simp) 57))
     "rtest_solve_rec"
@@ -58,41 +59,43 @@
     "rtest_opproperties"
     "rtest_stats"
     "rtest_distrib"
-    #-allegro
     ((mlist simp) "rtest_descriptive"
      #+gcl
-     ((mlist simp) "rtest_descriptive" 86 97))
-;; Tests that failed for ACL 10.1
-#+allegro ((mlist simp) "rtest_descriptive" 86 87 97 98)
+     ((mlist simp) "rtest_descriptive" 86 97)
+     ;; Tests that failed for ACL 10.1
+     #+allegro
+     ((mlist simp) 86 87 97 98))
     "rtest_interpol"
-#-allegro    "rtest_levin"
-;; Tested with allegro 10.1
-#+allegro    ((mlist simp) "rtest_levin" 71 75 77)
+    ((mlist simp) "rtest_levin"
+     ;; Tested with allegro 10.1
+     #+allegro ((mlist simp) 71 75 77))
     "rtest_fractals"
     "rtest_bernstein"
     "rtest_atensor"
     "rtest_ctensor"
     "rtest_itensor"
-;; On sbcl 1.4.10 we still get out-of-memory errors on many
-;; computers on loading lapack => commented these tests out
-;; for ECL.    
-;;
-;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
-;;  and abcl 1.5.0
+    ;; On sbcl 1.4.10 we still get out-of-memory errors on many
+    ;; computers on loading lapack => commented these tests out
+    ;; for ECL.    
+    ;;
+    ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
+    ;;  and abcl 1.5.0
 
-;; Floating-point exception with ECL 16.1.2 in 4 7 8 9 10 12
-;; On a different computer with ECL 16.1.2 test 5 failed, too. No idea why.
-;; On another computer that used the same ECL version test step 15 resulted in an
-;; error-catch without making further information visible in the log.
-;; ECL 13.5.1 errored out in 7-12,14+15 and ECL 13.5.1 to 16.1.2
-;; are known to sporadically error out in steps 6 and 13.
+    ;; Floating-point exception with ECL 16.1.2 in 4 7 8 9 10 12
+    ;; On a different computer with ECL 16.1.2 test 5 failed, too. No idea why.
+    ;; On another computer that used the same ECL version test step 15 resulted in an
+    ;; error-catch without making further information visible in the log.
+    ;; ECL 13.5.1 errored out in 7-12,14+15 and ECL 13.5.1 to 16.1.2
+    ;; are known to sporadically error out in steps 6 and 13.
     ;;
     ;; But ecl 16.1.3 passes all of these tests
     ((mlist simp) "rtest_dgeqrf")
-#-(or sbcl ecl gcl abcl)    "rtest_dgesv"
-;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
-;;  and abcl 1.5.0
-#-(or gcl abcl gcl)    "rtest_dlsode"
+    #-(or sbcl ecl gcl abcl)
+    "rtest_dgesv"
+    ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
+    ;;  and abcl 1.5.0
+    #-(or gcl abcl gcl)
+    "rtest_dlsode"
     ((mlist simp) "rtest_fourier_elim" 146 147 148 149)
     ((mlist simp) "rtest_sequence" 55)
     "rtest_cholesky"
@@ -105,8 +108,9 @@
     "rtest_wilcoxon"
     "rtest_bitwise"
     "rtest_gf"
-#+(or clisp sbcl ccl cmucl)    ((mlist simp) "rtest_namespaces" 7)
-#-(or clisp sbcl ccl cmucl)    "rtest_namespaces"
+    ((mlist simp) "rtest_namespaces"
+     #+(or clisp sbcl ccl cmucl)
+     ((mlist simp) 7))
     "rtest_arag"
     ((mlist simp) "rtest_pdiff"
      #-(or ccl cmucl ecl sbcl)
@@ -138,9 +142,9 @@
      ((mlist simp) 38 61 63 65 69)
      )
     "rtest_simplex"
-#-allegro "rtest_graphs"
-;; Tested with acl 10.1
-#+allegro ((mlist simp) "rtest_graphs" 3 4 5)
+    ((mlist simp) "rtest_graphs"
+     ;; Tested with acl 10.1
+     #+allegro ((mlist simp) 3 4 5))
     ((mlist simp) "rtest_abs_integrate"
      #-(or cmucl ccl ecl)
      ((mlist) 66 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 123 125 126 127 164 178)
@@ -169,10 +173,11 @@
      #+ccl
      ((mlist simp)
       48 55 64 74 80 83 102 116 131 133 137 140 141 147 166 167 168 183 184 216 240 242 245 265 293 312 319 320 322))
-#-(or gcl abcl)    ((mlist simp) "rtest_hg" 87)
-#+gcl              ((mlist simp) "rtest_hg" 87 120)
-;; The tests that failed with abcl 1.5.0
-#+abcl             ((mlist simp) "rtest_hg" 87 120)
+    ;; The tests that failed with abcl 1.5.0
+    ((mlist simp) "rtest_hg"
+     #+(or gcl abcl) ((mlist simp) 87 120)
+     #-(or gcl abcl) ((mlist simp) 87))
+    
     ((mlist simp) "rtest_nfloat"
      #-ecl
      ((mlist simp) 25))
@@ -183,28 +188,27 @@
     "rtest_bffac"
     "rtest_diff_form"
     "rtest_grobner"
-    #-allegro
     ((mlist simp) "rtest_finance"
-     #+gcl
+     ;; Tested with acl 10.1
+     #+(or gcl allegro)
      ((mlist simp) 9 10 11))
-;; Tested with acl 10.1
-#+allegro    ((mlist simp) "rtest_finance" 9 10 11)
     "rtest_fft"
     "rtest_rfft"
-#-gcl    "rtest_decfp"
-#+gcl    ((mlist simp) "rtest_decfp" 1 2 3 4)
+    ((mlist simp) "rtest_decfp"
+     #+gcl ((mlist simp) 1 2 3 4))
     "rtest_wrstcse"
-;; ACL 10.1 cannot load stringproc as it has no (get-encoding) function.
-#-(or ecl abcl)    "rtest_draw"
-    #-allegro
+    ;; ACL 10.1 cannot load stringproc as it has no (get-encoding) function.
+    #-(or ecl abcl)
+    "rtest_draw"
     ((mlist simp) "rtest_engineering_format"
      #+sbcl
-     ((mlist simp) "rtest_engineering_format" 6)
+     ((mlist simp) 6)
      #+abcl
-     ((mlist simp) "rtest_engineering_format" 6)
+     ((mlist simp) 6)
      #+ccl
-     ((mlist simp) "rtest_engineering_format" 6 8 10 12))
-;; Tested with acl 10.1
-#+allegro    ((mlist simp) "rtest_engineering_format" 1 6 8 10 12 14)
+     ((mlist simp) 6 8 10 12)
+     ;; Tested with acl 10.1
+     #+allegro
+     ((mlist simp) 1 6 8 10 12 14))
     )
   )
