@@ -182,6 +182,7 @@
 	       (:module getopt :source-pathname ""
 			:components ((:file "getopt")))
                (:module fundamental-macros :source-pathname ""
+			:depends-on ("defmfun")
                         :components ((:file "defcal") 
                                      (:file "maxmac")))
                (:module utility-macros :source-pathname ""
@@ -194,11 +195,12 @@
                                      (:file "displm")
                                      (:file "safe-recursion")))
                (:module rat-macros :source-pathname ""
+			:depends-on ("defmfun")
                         :components ((:file "ratmac") 
                                      (:file "mhayat")))
                #+gcl (:file "optimize") ; jfa check this
                (:module utilities :source-pathname ""
-			:depends-on (utility-macros)
+			:depends-on (defmfun utility-macros)
                         :components ((:file "opers")
                                      (:file "utils") 
                                      (:file "sumcon") 
@@ -209,10 +211,12 @@
                                      (:file "outmis") 
                                      (:file "ar")))
                (:module commands :source-pathname ""
+			:depends-on ("defmfun")
                         :components ((:file "comm")
                                      (:file "comm2"))
 			:depends-on (compatibility-macros1))
                (:module evaluator :source-pathname ""
+			:depends-on ("defmfun")
                         :components ((:file "mlisp") 
                                      (:file "mmacro") 
                                      (:file "buildq")))
@@ -499,6 +503,7 @@
 				   )
 			 )))
                (:module simplification :source-pathname ""
+			:depends-on ("defmfun")
                         :components ((:file "simp") 
                                      (:file "float") 
                                      (:file "csimp") 
@@ -513,12 +518,13 @@
 	       (:module server :source-pathname ""
 			:components ((:file "server")))
                (:module i-o :source-pathname ""
-			:depends-on (compatibility-macros compatibility-macros1)
+			:depends-on (defmfun compatibility-macros compatibility-macros1)
                         :components ((:file "macsys") 
                                      (:file "mload") 
                                      (:file "suprv1")
                                      (:file "dskfn")))
                (:module factoring :source-pathname ""
+			:depends-on ("defmfun")
                         :components ((:file "lesfac") 
                                      (:file "factor") 
                                      (:file "algfac") 
@@ -526,8 +532,10 @@
                                      (:file "ufact") 
                                      (:file "result")))
 	       (:module ifactor :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "ifactor")))
 	       (:module rational-functions :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "rat3a") 
 				     (:file "rat3b") 
 				     (:file "rat3d") 
@@ -537,6 +545,7 @@
 				     (:file "ratout"))
                         :depends-on (rat-macros other-macros compatibility-macros1))
 	       (:module maxima-language-compiler :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "transl") 
 				     (:file "transs") 
 				     (:file "trans1") 
@@ -558,7 +567,7 @@
 				     (:file "mdefun"))
 			:depends-on (maxima-language-compiler-macros))
 	       (:module numerical-functions :source-pathname ""
-			:depends-on (trigonometry)
+			:depends-on (defmfun trigonometry)
 			:components ((:file "bessel")
 				     (:file "ellipt")
 				     (:file "airy"
@@ -566,25 +575,29 @@
 				     (:file "plasma")
 				     (:file "intpol")))
 	       (:module reader :source-pathname ""
-			:depends-on (compatibility-macros compatibility-macros1)
+			:depends-on (defmfun compatibility-macros compatibility-macros1)
 			:components ((:file "nparse")))
 	       (:module display :source-pathname ""
 			:components ((:file "displa") 
 				     (:file "nforma") 
 				     (:file "grind")))
 	       (:module gcd :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "spgcd")
 				     (:file "ezgcd")))
 	       (:module documentation :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "option")
 				     (:file "macdes")))
 	       (:module algebraic-database :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "inmis") 
 				     (:file "db") 
 				     (:file "compar") 
 				     (:file "askp")) ;does this belong here?
 			:depends-on (compatibility-macros1))
 	       (:module integration :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "sinint") 
 				     (:file "sin") 
 				     (:file "risch"))
@@ -592,33 +605,49 @@
 	       (:module taylor-series :source-pathname ""
 			:components ((:file "hayat")))
 	       (:module definite-integration :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "defint") 
 				     (:file "residu")))
 	       (:module trigonometry :source-pathname ""
+			;; These three files do depend on defmfun, but
+			;; if we add this dependendency, we can't
+			;; compile maxima.  There's some error in
+			;; compiling trgred.  I think by putting the
+			;; dependency here, this module is compiled
+			;; now in a different order and there's some
+			;; other dependency that we're missing.
+			#+nil
+			:depends-on ("defmfun")
 			:components ((:file "trigi") 
 				     (:file "trigo") 
 				     (:file "trgred"))
                         :depends-on (pattern-matching))
 	       (:module special-functions :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "specfn")))
 	       (:module matrix-algebra :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "mat") 
-                     (:file "linnew")
+				     (:file "linnew")
 				     (:file "matrix")))
 	       (:module determinants :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "sprdet") 
 				     (:file "newinv") 
 				     (:file "newdet")))
 	       (:module pattern-matching :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "schatc") 
 				     (:file "matcom") 
 				     (:file "matrun") 
 				     (:file "nisimp"))
 			:depends-on (compatibility-macros1))
 	       (:module limits :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "tlimit") 
 				     (:file "limit")))
 	       (:module solve :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "solve") 
 				     (:file "psolve") 
 				     (:file "algsys")
@@ -627,10 +656,12 @@
 				     (:file "cpoly"))
 			:depends-on ("compatibility-macros1"))
 	       (:module debugging :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "mtrace")
 				     (:file "mdebug"))
 			:depends-on ("compatibility-macros1"))
 	       (:module miscellaneous :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "scs") 
 				     (:file "asum") 
 				     (:file "fortra") 
@@ -654,11 +685,13 @@
 				     (:file "mstuff"))
                         :depends-on (pattern-matching compatibility-macros1))
 	       (:module poisson-series :source-pathname ""
+			:depends-on ("defmfun")
 			:components ((:file "pois2") 
 				     (:file "pois3")))
 	       (:module translated-packages :source-pathname ""
 		        :depends-on ("maxima-language-compiler-macros"
-			             "compatibility-macros1")
+			             "compatibility-macros1"
+				     "defmfun")
 			:components
 			((:file "desoln")
 			 (:file "elim")
@@ -672,6 +705,7 @@
 			:components ((:file "gnuplot_def")
 				     (:file "xmaxima_def")))
 	       (:module final :source-pathname ""
+			:depends-on ("defmfun")
 			;; These are not compiled, for whatever reason, except on ecl:
 			;; On ECL all runtime alterations to the system (i.e from repl)
 			;; at runtime are not part of the final executable if they aren't.
