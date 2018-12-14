@@ -76,7 +76,7 @@
     "rtest_itensor"
     ;; On sbcl 1.4.10 we still get out-of-memory errors on many
     ;; computers on loading lapack => commented these tests out
-    ;; for ECL.    
+    ;; for SBCL.    
     ;;
     ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
     ;;  and abcl 1.5.0
@@ -89,8 +89,9 @@
     ;; are known to sporadically error out in steps 6 and 13.
     ;;
     ;; But ecl 16.1.3 passes all of these tests
+    #-sbcl
     ((mlist simp) "rtest_dgeqrf")
-    #-(or sbcl ecl gcl abcl)
+    #-sbcl
     "rtest_dgesv"
     ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
     ;;  and abcl 1.5.0
