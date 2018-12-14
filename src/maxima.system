@@ -164,10 +164,13 @@
                (:module compatibility-macros1 :source-pathname ""
                         :components ((:file "generr")
 				     (:file "clmacs")))
+	       (:module defmfun :source-pathname ""
+			:components ((:file "defmfun-check")))
                (:module compatibility-macros :source-pathname ""
+			:depends-on ("defmfun")
                         :components (#+gcl (:file "gcl-compat")
 				     (:file "defmfun-check")
-                                     (:file "commac" :depends-on ("defmfun-check"))))
+                                     (:file "commac")))
                (:module prerequisites :source-pathname ""
                         :components ((:file "mormac") 
                                      (:file "compat")))
