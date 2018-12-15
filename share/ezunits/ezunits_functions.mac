@@ -102,6 +102,7 @@ matchdeclare
     uu%, unitop_p,
     xx%, nonconstantp);
 
+fooexpr : nd% / pp%; /* simplify this, to be used later */
 simp: false$
 /* tellsimpafter rules are applied in order of declaration; tellsimp, the other way around */
 tellsimp (nd% `` dl%, apply_units_conversion (nd%, dl%));
@@ -111,6 +112,7 @@ tellsimp (pp% `` aa%, apply ("+", map (buildq ([aa%], lambda ([e], e `` aa%)), a
 tellsimp (dd% `` aa%, (qty(dd%) ` units(dd%)) `` aa%);
 tellsimp (aa%*dd% `` bb%, aa% * (qty(dd%) ` units(dd%)) `` bb%);
 tellsimp (qq% `` aa%, map (lambda ([e], e `` aa%), qq%));
+tellsimp (''fooexpr `` aa%, nd%/(pp% `` 1/aa%));
 tellsimpafter (uu%^ccn1%, (qty(uu%)^ccn1%) ` simplify_units (units(uu%)^ccn1%));
 tellsimpafter (aa% * nd% * uu%, aa% * multiply_with_units (nd%, uu%));
 tellsimpafter (aa% + uu%, add_with_units (aa%, uu%));

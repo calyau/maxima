@@ -1040,3 +1040,18 @@ exp (-qty(%%k)*x/y);
 3`ha``m^2;
 30000`m^2;
 
+/* ensure nondimensional/(sum of dimensional) `` whatever = nondimensional/((sum of dimensional) `` 1/whatever)
+ * inspired by mailing list 2018-12-12: "ezunits: strange multiplication behaviour?"
+ */
+
+1/(sqrt(1`henry*1`farad)) `` 1/s;
+1 ` 1/s;
+
+1/(1`s+sqrt(1`henry*1`farad)) `` 1/s;
+1/2 ` 1/s;
+
+/* other examples */
+
+(%e + %pi) / (100 ` hour - 100 ` s + x ` ms) `` Hz;
+(%e + %pi) / (x/1000 + 359900) ` Hz;
+
