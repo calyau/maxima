@@ -14,7 +14,7 @@
 		      system::*gcl-extra-version*)))
   (when (> version-num 20603)
     (pushnew :gcl-working-proclaims *features*)))
-		      
+
 #+cmu
 (setf ext:*gc-verbose* nil)
 
@@ -114,7 +114,7 @@
   "binary-unknownlisp")
 
 (mk:defsystem "maxima"
-  :source-extension "lisp"  
+  :source-extension "lisp"
   :binary-pathname (maxima-binary-pathname)
   #+ecl :compiler-options #+ecl (:system-p t)
   #+ecl :compiler #+ecl do-compile-ecl
@@ -165,7 +165,7 @@
 	    ((:file "sloop")))
    (:module declarations :source-pathname ""
 	    :components
-	    ((:file "lmdcls"))) 
+	    ((:file "lmdcls")))
    (:module destructuring-let :source-pathname ""
 	    :components
 	    ((:file "letmac")))
@@ -184,7 +184,7 @@
 		   (:file "commac")))
    (:module prerequisites :source-pathname ""
 	    :components
-	    ((:file "mormac") 
+	    ((:file "mormac")
 	     (:file "compat")))
    (:module maxima-language-compiler-macros :source-pathname ""
 	    :components
@@ -199,36 +199,36 @@
    (:module fundamental-macros :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
-	    ((:file "defcal") 
+	    ((:file "defcal")
 	     (:file "maxmac")))
    (:module utility-macros :source-pathname ""
 	    :components
-	    ((:file "mopers") 
+	    ((:file "mopers")
 	     (:file "mforma")))
    (:module other-macros :source-pathname ""
 	    :components
-	    ((:file "mrgmac") 
-	     (:file "rzmac")    
-	     (:file "strmac") 
+	    ((:file "mrgmac")
+	     (:file "rzmac")
+	     (:file "strmac")
 	     (:file "displm")
 	     (:file "safe-recursion")))
    (:module rat-macros :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
-	    ((:file "ratmac") 
+	    ((:file "ratmac")
 	     (:file "mhayat")))
    #+gcl (:file "optimize")		; jfa check this
    (:module utilities :source-pathname ""
 	    :depends-on ("defmfun" "utility-macros")
 	    :components
 	    ((:file "opers")
-	     (:file "utils") 
-	     (:file "sumcon") 
-	     (:file "sublis") 
-	     (:file "merror") 
-	     (:file "mformt") 
-	     (:file "mutils") 
-	     (:file "outmis") 
+	     (:file "utils")
+	     (:file "sumcon")
+	     (:file "sublis")
+	     (:file "merror")
+	     (:file "mformt")
+	     (:file "mutils")
+	     (:file "outmis")
 	     (:file "ar")))
    (:module commands :source-pathname ""
 	    :depends-on ("defmfun" "compatibility-macros1")
@@ -238,8 +238,8 @@
    (:module evaluator :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
-	    ((:file "mlisp") 
-	     (:file "mmacro") 
+	    ((:file "mlisp")
+	     (:file "mmacro")
 	     (:file "buildq")))
    ;; The free version of Allegro has a heap limit.  Let's
    ;; not compile these routines so that we can at least
@@ -273,7 +273,7 @@
 			      :depends-on ("j4save"))
 		       (:file "dcsevl"
 			      :depends-on ("xermsg"))
-	     
+
 		       ;; Gamma function
 		       (:file "d9lgmc"
 			      :depends-on ("dcsevl" "initds" "xermsg"))
@@ -284,7 +284,7 @@
 		       (:file "dgamln")
 		       (:file "dlngam"
 			      :depends-on ("d9lgmc" "dgamma" "xermsg"))
-	     
+
 		       ;; Bessel J functions
 		       (:file "d9b0mp"
 			      :depends-on ("dcsevl" "initds" "xermsg"))
@@ -312,7 +312,7 @@
 			      :depends-on ("dasyik" "dlngam" "xermsg"))
 		       (:file "zbesi"
 			      :depends-on ("zabs" "zbinu"))
-	     
+
 		       ;; Bessel J function for complex
 		       ;; arg and real order.
 
@@ -362,7 +362,7 @@
 			      :depends-on ("zabs" "zlog" "zuchk" "zunhj" "zunik"))
 		       (:file "zwrsk"
 			      :depends-on ("zabs" "zbknu" "zrati"))
-	     
+
 		       ;; Bessel Y functions
 		       (:file "dbesy0"
 			      :depends-on ("d9b0mp" "dbesj0" "dcsevl" "initds" "xermsg"))
@@ -373,7 +373,7 @@
 		       (:file "dbsynu"
 			      :depends-on ("dgamma" "xermsg"))
 		       (:file "dyairy")
-	     
+
 		       (:file "zbesy"
 			      :depends-on ("zbesh"))
 		       (:file "zbesh"
@@ -402,7 +402,7 @@
 			      :depends-on ("dgamma" "xermsg"))
 		       (:file "zbesk"
 			      :depends-on ("zabs" "zacon" "zbknu" "zbunk" "zuoik"))
-				   
+
 		       ;; Airy functions
 		       (:file "d9aimp"
 			      :depends-on ("dcsevl" "initds" "xermsg"))
@@ -525,12 +525,12 @@
    (:module simplification :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
-	    ((:file "simp") 
-	     (:file "float") 
-	     (:file "csimp") 
-	     (:file "csimp2") 
+	    ((:file "simp")
+	     (:file "float")
+	     (:file "csimp")
+	     (:file "csimp2")
 	     (:file "zero")
-	     (:file "logarc") 
+	     (:file "logarc")
 	     (:file "rpart")))
    (:module numeric-bigfloat :source-pathname ""
 	    :depends-on (#-gcl "package"
@@ -542,18 +542,18 @@
    (:module i-o :source-pathname ""
 	    :depends-on ("defmfun" "compatibility-macros" "compatibility-macros1")
 	    :components
-	    ((:file "macsys") 
-	     (:file "mload") 
+	    ((:file "macsys")
+	     (:file "mload")
 	     (:file "suprv1")
 	     (:file "dskfn")))
    (:module factoring :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
-	    ((:file "lesfac") 
-	     (:file "factor") 
-	     (:file "algfac") 
-	     (:file "nalgfa") 
-	     (:file "ufact") 
+	    ((:file "lesfac")
+	     (:file "factor")
+	     (:file "algfac")
+	     (:file "nalgfa")
+	     (:file "ufact")
 	     (:file "result")))
    (:module ifactor :source-pathname ""
 	    :depends-on ("defmfun")
@@ -562,34 +562,34 @@
    (:module rational-functions :source-pathname ""
 	    :depends-on ("defmfun" "rat-macros" "other-macros" "compatibility-macros1")
 	    :components
-	    ((:file "rat3a") 
-	     (:file "rat3b") 
-	     (:file "rat3d") 
-	     (:file "rat3c") 
-	     (:file "rat3e") 
-	     (:file "nrat4") 
+	    ((:file "rat3a")
+	     (:file "rat3b")
+	     (:file "rat3d")
+	     (:file "rat3c")
+	     (:file "rat3e")
+	     (:file "nrat4")
 	     (:file "ratout")))
    (:module maxima-language-compiler :source-pathname ""
 	    :depends-on ("defmfun" "maxima-language-compiler-macros")
 	    :components
-	    ((:file "transl") 
-	     (:file "transs") 
-	     (:file "trans1") 
-	     (:file "trans2") 
-	     (:file "trans3") 
-	     (:file "trans4") 
-	     (:file "trans5") 
-	     (:file "transf") 
-	     (:file "troper") 
-	     (:file "trutil") 
-	     (:file "trmode") 
-	     (:file "trdata") 
-	     (:file "trpred") 
-	     (:file "transq") 
+	    ((:file "transl")
+	     (:file "transs")
+	     (:file "trans1")
+	     (:file "trans2")
+	     (:file "trans3")
+	     (:file "trans4")
+	     (:file "trans5")
+	     (:file "transf")
+	     (:file "troper")
+	     (:file "trutil")
+	     (:file "trmode")
+	     (:file "trdata")
+	     (:file "trpred")
+	     (:file "transq")
 	     (:file "acall")
-	     (:file "fcall") 
-	     (:file "evalw") 
-	     (:file "trprop") 
+	     (:file "fcall")
+	     (:file "evalw")
+	     (:file "trprop")
 	     (:file "mdefun")))
    (:module numerical-functions :source-pathname ""
 	    :depends-on ("defmfun" "trigonometry")
@@ -606,8 +606,8 @@
 	    ((:file "nparse")))
    (:module display :source-pathname ""
 	    :components
-	    ((:file "displa") 
-	     (:file "nforma") 
+	    ((:file "displa")
+	     (:file "nforma")
 	     (:file "grind")))
    (:module gcd :source-pathname ""
 	    :depends-on ("defmfun")
@@ -622,29 +622,29 @@
    (:module algebraic-database :source-pathname ""
 	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
-	    ((:file "inmis") 
-	     (:file "db") 
-	     (:file "compar") 
+	    ((:file "inmis")
+	     (:file "db")
+	     (:file "compar")
 	     (:file "askp"))		;does this belong here?
 	    )
    (:module integration :source-pathname ""
 	    :depends-on ("defmfun" "pattern-matching")
 	    :components
-	    ((:file "sinint") 
-	     (:file "sin") 
+	    ((:file "sinint")
+	     (:file "sin")
 	     (:file "risch")))
    (:module taylor-series :source-pathname ""
 	    :components ((:file "hayat")))
    (:module definite-integration :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
-	    ((:file "defint") 
+	    ((:file "defint")
 	     (:file "residu")))
    (:module trigonometry :source-pathname ""
 	    :depends-on ("pattern-matching" "defmfun")
 	    :components
-	    ((:file "trigi") 
-	     (:file "trigo") 
+	    ((:file "trigi")
+	     (:file "trigo")
 	     (:file "trgred")))
    (:module special-functions :source-pathname ""
 	    :depends-on ("defmfun")
@@ -653,34 +653,34 @@
    (:module matrix-algebra :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
-	    ((:file "mat") 
+	    ((:file "mat")
 	     (:file "linnew")
 	     (:file "matrix")))
    (:module determinants :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
-	    ((:file "sprdet") 
-	     (:file "newinv") 
+	    ((:file "sprdet")
+	     (:file "newinv")
 	     (:file "newdet")))
    (:module pattern-matching :source-pathname ""
 	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
-	    ((:file "schatc") 
-	     (:file "matcom") 
-	     (:file "matrun") 
+	    ((:file "schatc")
+	     (:file "matcom")
+	     (:file "matrun")
 	     (:file "nisimp")))
    (:module limits :source-pathname ""
 	    :depends-on ("defmfun")
-	    :components ((:file "tlimit") 
+	    :components ((:file "tlimit")
 			 (:file "limit")))
    (:module solve :source-pathname ""
 	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
-	    ((:file "solve") 
-	     (:file "psolve") 
+	    ((:file "solve")
+	     (:file "psolve")
 	     (:file "algsys")
 	     (:file "sqrtdenest")
-	     (:file "polyrz") 
+	     (:file "polyrz")
 	     (:file "cpoly")))
    (:module debugging :source-pathname ""
 	    :depends-on ("defmfun" "compatibility-macros1")
@@ -690,19 +690,19 @@
    (:module miscellaneous :source-pathname ""
 	    :depends-on ("defmfun" "pattern-matching" "compatibility-macros1")
 	    :components
-	    ((:file "scs") 
-	     (:file "asum") 
-	     (:file "fortra") 
-	     (:file "optim") 
-	     (:file "marray") 
-	     (:file "mdot") 
-	     (:file "irinte") 
-	     (:file "series") 
-	     (:file "numth") 
-	     (:file "laplac") 
-	     (:file "pade") 
-	     (:file "homog") 
-	     (:file "combin") 
+	    ((:file "scs")
+	     (:file "asum")
+	     (:file "fortra")
+	     (:file "optim")
+	     (:file "marray")
+	     (:file "mdot")
+	     (:file "irinte")
+	     (:file "series")
+	     (:file "numth")
+	     (:file "laplac")
+	     (:file "pade")
+	     (:file "homog")
+	     (:file "combin")
 	     (:file "nset")
 	     (:file "rand-mt19937")
 	     (:file "maxmin")
@@ -714,7 +714,7 @@
    (:module poisson-series :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
-	    ((:file "pois2") 
+	    ((:file "pois2")
 	     (:file "pois3")))
    (:module translated-packages :source-pathname ""
 	    :depends-on ("maxima-language-compiler-macros"
