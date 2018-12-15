@@ -180,7 +180,7 @@
 (defun batch-stream (in-stream demo)
   (let ($load_pathname)
     (let*
-      ((*read-base 10.)
+      ((*read-base* 10.)
        (in-stream-string-rep
         (if (subtypep (type-of in-stream) 'file-stream)
           (setq $load_pathname (cl:namestring (truename in-stream)))
@@ -625,37 +625,36 @@
 		   (cdr $testsuite_files))))))
 
 (defun print-testsuite-summary (errs unexpected-pass error-count total-count)
-  (cond
-    ((and (null errs) (null unexpected-pass))
-     (format t
-	     (intl:gettext
-	      "~%~%No unexpected errors found out of ~:d tests.~%")
-	     total-count))
-    (t
-     (format t (intl:gettext "~%Error summary:~%"))
-     (flet
-	 ((problem-summary (x)
-	    ;; We want to print all the elements in the list.
-	    (let ((*print-length* nil)
-		  (s (if (> (length (rest x)) 1) "s" "")))
-	      (format t
-		      (intl:gettext
-		       "  ~a problem~a:~%    ~a~%")
-		      (first x)
-		      s
-		      (sort (rest x) #'<)))))
-       (when errs
-	 (format t (intl:gettext "Error(s) found:~%"))
-	 (mapcar #'problem-summary (reverse errs)))
-       (when unexpected-pass
-	 (format t (intl:gettext "Tests that were expected to fail but passed:~%"))
-	 (mapcar #'problem-summary (reverse unexpected-pass))))
-     (format t
-	     (intl:gettext
-	      "~&~:d test~p failed out of ~:d total tests.~%")
-	     error-count
-	     error-count
-	     total-count))))
+  (flet
+      ((problem-summary (x)
+	 ;; We want to print all the elements in the list.
+	 (let ((*print-length* nil)
+	       (s (if (> (length (rest x)) 1) "s" "")))
+	   (format t
+		   (intl:gettext
+		    "  ~a problem~a:~%    ~a~%")
+		   (first x)
+		   s
+		   (sort (rest x) #'<)))))
+    (if (null errs)
+	(format t
+		(intl:gettext
+		 "~%~%No unexpected errors found out of ~:d tests.~%")
+		total-count)
+	(format t (intl:gettext "~%Error summary:~%")))
+    (when errs
+      (format t (intl:gettext "Error(s) found:~%"))
+      (mapcar #'problem-summary (reverse errs)))
+    (when unexpected-pass
+      (format t (intl:gettext "Tests that were expected to fail but passed:~%"))
+      (mapcar #'problem-summary (reverse unexpected-pass)))
+    (when errs
+      (format t
+	      (intl:gettext
+	       "~&~:d test~p failed out of ~:d total tests.~%")
+	      error-count
+	      error-count
+	      total-count))))
 
 (defun run-testsuite (&key display_known_bugs display_all tests time share_tests debug)
   (declare (special $file_search_tests))
