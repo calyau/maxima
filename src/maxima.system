@@ -190,7 +190,7 @@
 	    :components
 	    ((:file "transm")))
    (:module command-line :source-pathname ""
-	    :depends-on (getopt)
+	    :depends-on ("getopt")
 	    :components
 	    ((:file "command-line")))
    (:module getopt :source-pathname ""
@@ -216,10 +216,10 @@
 	    :depends-on ("defmfun")
 	    :components
 	    ((:file "ratmac") 
-			 (:file "mhayat")))
+	     (:file "mhayat")))
    #+gcl (:file "optimize")		; jfa check this
    (:module utilities :source-pathname ""
-	    :depends-on (defmfun utility-macros)
+	    :depends-on ("defmfun" "utility-macros")
 	    :components
 	    ((:file "opers")
 	     (:file "utils") 
@@ -231,11 +231,10 @@
 	     (:file "outmis") 
 	     (:file "ar")))
    (:module commands :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
 	    ((:file "comm")
-	     (:file "comm2"))
-	    :depends-on (compatibility-macros1))
+	     (:file "comm2")))
    (:module evaluator :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
@@ -255,7 +254,7 @@
 		      :components
 		      ((:file "f2cl-lib")))
 	     (:module slatec :source-pathname "slatec"
-		      :depends-on (f2cl-lib packages)
+		      :depends-on ("f2cl-lib" "packages")
 		      #+allegro-cl-trial :load-only
 		      #+allegro-cl-trial t
 		      :components
@@ -541,7 +540,7 @@
    (:module server :source-pathname ""
 	    :components ((:file "server")))
    (:module i-o :source-pathname ""
-	    :depends-on (defmfun compatibility-macros compatibility-macros1)
+	    :depends-on ("defmfun" "compatibility-macros" "compatibility-macros1")
 	    :components
 	    ((:file "macsys") 
 	     (:file "mload") 
@@ -558,9 +557,10 @@
 	     (:file "result")))
    (:module ifactor :source-pathname ""
 	    :depends-on ("defmfun")
-	    :components ((:file "ifactor")))
+	    :components
+	    ((:file "ifactor")))
    (:module rational-functions :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("defmfun" "rat-macros" "other-macros" "compatibility-macros1")
 	    :components
 	    ((:file "rat3a") 
 	     (:file "rat3b") 
@@ -568,10 +568,9 @@
 	     (:file "rat3c") 
 	     (:file "rat3e") 
 	     (:file "nrat4") 
-	     (:file "ratout"))
-	    :depends-on (rat-macros other-macros compatibility-macros1))
+	     (:file "ratout")))
    (:module maxima-language-compiler :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("defmfun" "maxima-language-compiler-macros")
 	    :components
 	    ((:file "transl") 
 	     (:file "transs") 
@@ -591,10 +590,9 @@
 	     (:file "fcall") 
 	     (:file "evalw") 
 	     (:file "trprop") 
-	     (:file "mdefun"))
-	    :depends-on (maxima-language-compiler-macros))
+	     (:file "mdefun")))
    (:module numerical-functions :source-pathname ""
-	    :depends-on (defmfun trigonometry)
+	    :depends-on ("defmfun" "trigonometry")
 	    :components
 	    ((:file "bessel")
 	     (:file "ellipt")
@@ -603,7 +601,7 @@
 	     (:file "plasma")
 	     (:file "intpol")))
    (:module reader :source-pathname ""
-	    :depends-on (defmfun compatibility-macros compatibility-macros1)
+	    :depends-on ("defmfun" "compatibility-macros" "compatibility-macros1")
 	    :components
 	    ((:file "nparse")))
    (:module display :source-pathname ""
@@ -622,20 +620,19 @@
 	    ((:file "option")
 	     (:file "macdes")))
    (:module algebraic-database :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
 	    ((:file "inmis") 
 	     (:file "db") 
 	     (:file "compar") 
 	     (:file "askp"))		;does this belong here?
-	    :depends-on (compatibility-macros1))
+	    )
    (:module integration :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("defmfun" "pattern-matching")
 	    :components
 	    ((:file "sinint") 
 	     (:file "sin") 
-	     (:file "risch"))
-	    :depends-on (pattern-matching))
+	     (:file "risch")))
    (:module taylor-series :source-pathname ""
 	    :components ((:file "hayat")))
    (:module definite-integration :source-pathname ""
@@ -651,13 +648,11 @@
 	    ;; dependency here, this module is compiled
 	    ;; now in a different order and there's some
 	    ;; other dependency that we're missing.
-
-	    ;; :depends-on ("defmfun")
+	    :depends-on ("pattern-matching" #+nil "defmfun")
 	    :components
 	    ((:file "trigi") 
 	     (:file "trigo") 
-	     (:file "trgred"))
-	    :depends-on (pattern-matching))
+	     (:file "trgred")))
    (:module special-functions :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
@@ -675,35 +670,32 @@
 	     (:file "newinv") 
 	     (:file "newdet")))
    (:module pattern-matching :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
 	    ((:file "schatc") 
 	     (:file "matcom") 
 	     (:file "matrun") 
-	     (:file "nisimp"))
-	    :depends-on (compatibility-macros1))
+	     (:file "nisimp")))
    (:module limits :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components ((:file "tlimit") 
 			 (:file "limit")))
    (:module solve :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
 	    ((:file "solve") 
 	     (:file "psolve") 
 	     (:file "algsys")
 	     (:file "sqrtdenest")
 	     (:file "polyrz") 
-	     (:file "cpoly"))
-	    :depends-on ("compatibility-macros1"))
+	     (:file "cpoly")))
    (:module debugging :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("defmfun" "compatibility-macros1")
 	    :components
 	    ((:file "mtrace")
-	     (:file "mdebug"))
-	    :depends-on ("compatibility-macros1"))
+	     (:file "mdebug")))
    (:module miscellaneous :source-pathname ""
-	    :depends-on ("defmfun")
+	    :depends-on ("defmfun" "pattern-matching" "compatibility-macros1")
 	    :components
 	    ((:file "scs") 
 	     (:file "asum") 
@@ -725,8 +717,7 @@
 	     (:file "conjugate")
 	     (:file "expintegral")
 	     (:file "gamma")
-	     (:file "mstuff"))
-	    :depends-on (pattern-matching compatibility-macros1))
+	     (:file "mstuff")))
    (:module poisson-series :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components
