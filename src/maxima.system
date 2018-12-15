@@ -616,8 +616,8 @@
 			;; dependency here, this module is compiled
 			;; now in a different order and there's some
 			;; other dependency that we're missing.
-			#+nil
-			:depends-on ("defmfun")
+
+			;; :depends-on ("defmfun")
 			:components ((:file "trigi") 
 				     (:file "trigo") 
 				     (:file "trgred"))
