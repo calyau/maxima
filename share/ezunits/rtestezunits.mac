@@ -851,7 +851,7 @@ foo[i];
 (kill (foo, a, b, c), defstruct (foo (a, b, c)), 0);
 0;
 
-(kill (m), block ([x : new (foo ('x1, %pi, 17)) ` m/s], [x@a, x@b, x@c], ev (%%)));
+(block ([x : new (foo ('x1, %pi, 17)) ` m/s], [x@a, x@b, x@c], ev (%%)));
 [x1 ` m/s, %pi ` m/s, 17 ` m/s];
 
 /* realpart/imagpart applied to unitful expressions
@@ -890,13 +890,13 @@ foo[i];
   skewness_x : moment3_x / std_x^3);
 1197/2048;
 
-(kill (y, m), y : [13 ` s*A, 17 ` s*A, 19 ` s*A, 23 ` s*A, 29 ` s*A], m : length (y), is (m = n));
+(kill (y), y : [13 ` s*A, 17 ` s*A, 19 ` s*A, 23 ` s*A, 29 ` s*A], y_length : length (y), is (y_length = n));
 true;
 
-(kill (mean_y), mean_y : apply ("+", y) / m);
+(kill (mean_y), mean_y : apply ("+", y) / y_length);
 101/5 ` s*A;
 
-(kill (mean_y2, var_y, std_y), mean_y2 : sum (y[i]^2, i, 1, m) / m, var_y : mean_y2 - mean_y^2, std_y : sqrt (var_y));
+(kill (mean_y2, var_y, std_y), mean_y2 : sum (y[i]^2, i, 1, y_length) / y_length, var_y : mean_y2 - mean_y^2, std_y : sqrt (var_y));
 2*sqrt(186)/5 ` s*A;
 
 (kill (mean_xy, covar_xy), mean_xy : sum (x[i] * y[i], i, 1, n) / n, covar_xy : mean_xy - mean_x * mean_y);
@@ -976,7 +976,7 @@ foo (a ` b) + c ` d + e ` d + 2 + %pi;
 
 /* test rules for relational expressions */
 
-(kill (a, b, x, m),
+(kill (a, b, x),
  block ([a : 17 ` m, b : x ` mm],
   [a < b, a <= b, a >= b, a > b,
    /* SEE NOTE ABOUT SIMPLIFICATION OF DIMENSIONAL "=" IN EZUNITS_FUNCTIONS !!
