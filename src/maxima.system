@@ -641,14 +641,7 @@
 	    ((:file "defint") 
 	     (:file "residu")))
    (:module trigonometry :source-pathname ""
-	    ;; These three files do depend on defmfun, but
-	    ;; if we add this dependendency, we can't
-	    ;; compile maxima.  There's some error in
-	    ;; compiling trgred.  I think by putting the
-	    ;; dependency here, this module is compiled
-	    ;; now in a different order and there's some
-	    ;; other dependency that we're missing.
-	    :depends-on ("pattern-matching" #+nil "defmfun")
+	    :depends-on ("pattern-matching" "defmfun")
 	    :components
 	    ((:file "trigi") 
 	     (:file "trigo") 
