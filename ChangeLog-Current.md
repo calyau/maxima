@@ -6,6 +6,8 @@ New items in core:
  * nonnegative_lp now replaces nonegative_lp which now is merely an alias.
  * The environment variable MAXIMA_DOC_PREFIX that allows to override the
    location the documentation is searched for.
+ * The lisp function defun-maclisp, a function that allows to define 
+   non-user functions using the maclisp nargs syntax.
 
 New items in share:
 -------------------
@@ -42,7 +44,13 @@ Changes in core:
    doc/info/update_example scripts.
  * user-visible functions are now defined using defmfun, only internally-used
    ones by defun.
-
+ * The testsuite summary now not only which tells unexpectedly failed, but also
+   which ones unexpectedly passed.
+ * The maxima-to-lisp translator now handles the case properly that a list
+   is assigned to a global variable.
+ * ./configure: Tried to make the summary nicer
+ * maxima.asd should mow match maxima.system again.
+ 
 Changes in share:
 --------------
  *  The the arguments to Krylov matrix are now checked for being of the 
@@ -57,6 +65,9 @@ Changes in share:
     except ECL (in ECL a try to use lapack results in an error message)
 	and SBCL (receives an out-of-memory, depending on the system).
  *  A primitive testsuite for ODEPACK that tests if it works at all.
+ *  ezunits: A conversion rule for nondimensional/(sum of dimensional)
+ *  ezunits: 0 now can have a dimension.
+ *  ezunits test script: Avoid kill(m) which kills the unit meter.
 
 Bug fixes:
 ----------
