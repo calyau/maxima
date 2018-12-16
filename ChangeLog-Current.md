@@ -50,6 +50,8 @@ Changes in core:
    is assigned to a global variable.
  * ./configure: Tried to make the summary nicer
  * maxima.asd should mow match maxima.system again.
+ * The lists of test suite files and share test suite files now are maxima lists
+   and therefore can be manipulated without having to resolve to lisp commands.
  
 Changes in share:
 --------------
