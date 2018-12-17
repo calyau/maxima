@@ -203,7 +203,7 @@
     ((mlist simp) "rtest_hg"
      #+(or gcl abcl) ((mlist simp) 87 120)
      #-(or gcl abcl) ((mlist simp) 87))
-    ((mlist simp) "symtest.mac"
+    ((mlist simp) "rtest_sym.mac"
      ((mlist simp) 12 58 64))
 
     ((mlist simp) "rtest_nfloat"
