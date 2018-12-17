@@ -39,8 +39,9 @@
 	 #+gcl ((mlist simp) 158 174 175))
         "rtest13"
 	"rtest13s"
+	;; ECL 16.1.2 still fails in #307 + #310
 	((mlist simp) "rtest14"
-	 #+ecl ((mlist simp) 145))
+	 #+ecl ((mlist simp) 145 307 310))
         "rtest15"
 	;; ccl versions 1.11 and earlier fail test 50.  Mark it as a
 	;; known failure.  Presumably 1.12 will have this fixed.
@@ -52,7 +53,9 @@
         "rtestode"
 	"rtestode_zp"
         "rtest3"
-	"rtest8"
+	;; ECL 16.1.2 still fails in #104
+	((mlist simp) "rtest8"
+	 #+ecl ((mlist 104)))
         ((mlist simp) "rtest12"
 	 ((mlist simp) 76 78))
         "rexamples"
