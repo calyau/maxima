@@ -37,11 +37,28 @@
     ;; "rtestode_murphy_2_3"
     ;; "rtestode_murphy_2_4"
     ;; "rtestode_murphy_2_5"
-    ;; "rtestode_kamke_2_1"
-    ;; "rtestode_kamke_2_2"
-    ;; "rtestode_kamke_2_3"
-    ;; "rtestode_kamke_2_4"
-    ;; "rtestode_kamke_2_5"
+    ;; "rtestode_kamke_1_1.mac"
+    ;; "rtestode_kamke_1_2.mac"
+    ;; "rtestode_kamke_1_3.mac"
+    ;; "rtestode_kamke_1_4.mac" 
+    ;; "rtestode_kamke_1_5.mac"
+    ;; ((mlist simp) "rtestode_kamke_1_6.mac"
+    ;;  ((mlist simp)  20))   ; OK - testsuite issues
+    ;; "rtestode_kamke_2_1.mac"
+    ;; ((mlist simp) "rtestode_kamke_2_2.mac"
+    ;;  ((mlist simp) 132 )) ; OK - testsuite issues
+    ;; ((mlist simp) "rtestode_kamke_2_3.mac"
+    ;;  ((mlist simp) 83 107)) ; OK - testsuite issues
+    ;; "rtestode_kamke_2_4.mac"
+    ;; "rtestode_kamke_2_5.mac"
+    ;; "rtest_sym.mac" 
+    ;; "rtest_sym2.mac"
+    ;; ((mlist simp) "rtest_ode1_riccati.mac"
+    ;;  (mlist simp 138)) ; OK - testsuite issues
+    ;; ((mlist simp) "rtest_ode1_abel.mac"
+    ;;  (mlist simp 45)) ; OK - testsuite issues
+    ;; "rtestode_odelin.mac"
+    ;; "rtestode_utils.mac"
 
     "rtest_odelin"
     "rtestezunits"
@@ -61,7 +78,7 @@
     "rtest_distrib"
     ((mlist simp) "rtest_descriptive"
      #+gcl
-     ((mlist simp) 86 97)
+     ((mlist simp) "rtest_descriptive" 86 97)
      ;; Tests that failed for ACL 10.1
      #+allegro
      ((mlist simp) 86 87 97 98))
@@ -91,26 +108,23 @@
     ;; But ecl 16.1.3 passes all of these tests
     #-sbcl
     ((mlist simp) "rtest_dgeqrf"
-     #+ecl ((mlist simp) 1 4 5 6 7 8 9 10 11 12 13 14 15))
+     #+ecl ((mlist 1 4 5 6 7 8 9 10 11 12 13 14 15)))
     #-sbcl
     ((mlist simp) "rtest_dgesv"
-     #+ecl ((mlist simp) 1 3 4 5 6))
+     #+ecl ((mlist 1 3 4 5 6)))
     ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
     ;;  and abcl 1.5.0
     #-(or gcl abcl gcl)
     "rtest_dlsode"
-    ((mlist simp) "rtest_fourier_elim"
-     ((mlist simp) 146 147 148 149))
-    ((mlist simp) "rtest_sequence"
-     ((mlist simp) 55))
+    ((mlist simp) "rtest_fourier_elim" 146 147 148 149)
+    ((mlist simp) "rtest_sequence" 55)
     "rtest_cholesky"
     "rtest_eigens_by_jacobi"
     "rtest_lu"
     "rtest_linalg"
     "rtest_polynomialp"
     "rtest_matrixexp"
-    ((mlist simp) "rtest_romberg"
-     ((mlist simp) 18 20))
+    ((mlist simp) "rtest_romberg" 18 20)
     "rtest_wilcoxon"
     "rtest_bitwise"
     "rtest_gf"
@@ -189,8 +203,7 @@
      ((mlist simp) 25))
     "rtest_mnewton"
     "rtest_solve_rat_ineq"
-    ((mlist simp) "rtest_vect"
-     ((mlist simp) 4 9 10 13 16 19 20 21 24 25))
+    ((mlist simp) "rtest_vect" 4 9 10 13 16 19 20 21 24 25)
     "rtest_antid"
     "rtest_bffac"
     "rtest_diff_form"
