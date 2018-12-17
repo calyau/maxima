@@ -23,9 +23,10 @@
                  ,@(and (boundp '*autoconf-lisp-only-build*)
                         (symbol-value '*autoconf-lisp-only-build*)
                         (list* '(mlist simp) (list 78 80))))
-	 ;; 46 = ECL bug #437: mishandling float format
+	;; 46 = ECL bug #437: mishandling float format
+	;; 44 fails in ECL 15.3.7 and earlier
         ((mlist simp) "rtest6"
-	 #+ecl ((mlist simp) 46))
+	 #+ecl ((mlist simp) 44 46))
         "rtest6a"
 	"rtest6b"
 	"rtest7"

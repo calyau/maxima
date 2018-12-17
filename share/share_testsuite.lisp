@@ -71,14 +71,16 @@
     ;; ACL 10.1 cannot load stringproc as it has no (get-encoding) function.
     #-allegro
     ((mlist simp) "rtest_stringproc"
-     #+gcl
-     ((mlist simp) 14))
+     ;; 12 fails in ECL 15.3.7, 69 in ECL 13.5.1
+     #+ecl ((mlist simp) 12 69)
+     #+gcl ((mlist simp) 14))
     "rtest_opproperties"
     "rtest_stats"
     "rtest_distrib"
     ((mlist simp) "rtest_descriptive"
-     #+gcl
-     ((mlist simp) "rtest_descriptive" 86 97)
+     ;; 86 and 97 fail in ECL 15.3.7
+     #+(or gcl ecl)
+     ((mlist simp) 86 97)
      ;; Tests that failed for ACL 10.1
      #+allegro
      ((mlist simp) 86 87 97 98))
@@ -149,7 +151,8 @@
       35 37 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 57
       58 59 66 67 68)
      #+ecl
-     ((mlist simp) 38 61 63 65 69)
+     ;; ECL 15.3.7 and earlier fails in 54, 66 and 70
+     ((mlist simp) 38 54 61 63 65 66 69 70)
      #+clisp
      ((mlist simp) 27 38 61 63 65 69)
      #+gcl
@@ -216,7 +219,8 @@
     "rtest_grobner"
     ((mlist simp) "rtest_finance"
      ;; Tested with acl 10.1
-     #+(or gcl allegro)
+     ;; ECL newer than 15.3.7 doesn't fail any more
+     #+(or gcl allegro ecl)
      ((mlist simp) 9 10 11))
     "rtest_fft"
     "rtest_rfft"
@@ -231,6 +235,9 @@
      ((mlist simp) 6)
      #+abcl
      ((mlist simp) 6)
+     ;; ECL > 15.3.7 doesn't fail here any more
+     #+ecl
+     ((mlist simp) 6 8 10 12 14)
      #+ccl
      ((mlist simp) 6 8 10 12)
      ;; Tested with acl 10.1
