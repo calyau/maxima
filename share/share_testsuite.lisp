@@ -90,9 +90,11 @@
     ;;
     ;; But ecl 16.1.3 passes all of these tests
     #-sbcl
-    ((mlist simp) "rtest_dgeqrf")
+    ((mlist simp) "rtest_dgeqrf"
+     #+ecl ((mlist 1 4 5 6 7 8 9 10 11 12 13 14 15)))
     #-sbcl
-    "rtest_dgesv"
+    ((mlist simp) "rtest_dgesv"
+     #+ecl ((mlist 1 3 4 5 6)))
     ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
     ;;  and abcl 1.5.0
     #-(or gcl abcl gcl)
