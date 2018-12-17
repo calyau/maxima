@@ -61,7 +61,7 @@
     "rtest_distrib"
     ((mlist simp) "rtest_descriptive"
      #+gcl
-     ((mlist simp) "rtest_descriptive" 86 97)
+     ((mlist simp) 86 97)
      ;; Tests that failed for ACL 10.1
      #+allegro
      ((mlist simp) 86 87 97 98))
@@ -91,23 +91,26 @@
     ;; But ecl 16.1.3 passes all of these tests
     #-sbcl
     ((mlist simp) "rtest_dgeqrf"
-     #+ecl ((mlist 1 4 5 6 7 8 9 10 11 12 13 14 15)))
+     #+ecl ((mlist simp) 1 4 5 6 7 8 9 10 11 12 13 14 15))
     #-sbcl
     ((mlist simp) "rtest_dgesv"
-     #+ecl ((mlist 1 3 4 5 6)))
+     #+ecl ((mlist simp) 1 3 4 5 6))
     ;;  The following functions were used but not defined: ODEPACK::DUMACH in gcl 2.6.12
     ;;  and abcl 1.5.0
     #-(or gcl abcl gcl)
     "rtest_dlsode"
-    ((mlist simp) "rtest_fourier_elim" 146 147 148 149)
-    ((mlist simp) "rtest_sequence" 55)
+    ((mlist simp) "rtest_fourier_elim"
+     ((mlist simp) 146 147 148 149))
+    ((mlist simp) "rtest_sequence"
+     ((mlist simp) 55))
     "rtest_cholesky"
     "rtest_eigens_by_jacobi"
     "rtest_lu"
     "rtest_linalg"
     "rtest_polynomialp"
     "rtest_matrixexp"
-    ((mlist simp) "rtest_romberg" 18 20)
+    ((mlist simp) "rtest_romberg"
+     ((mlist simp) 18 20))
     "rtest_wilcoxon"
     "rtest_bitwise"
     "rtest_gf"
@@ -186,7 +189,8 @@
      ((mlist simp) 25))
     "rtest_mnewton"
     "rtest_solve_rat_ineq"
-    ((mlist simp) "rtest_vect" 4 9 10 13 16 19 20 21 24 25)
+    ((mlist simp) "rtest_vect"
+     ((mlist simp) 4 9 10 13 16 19 20 21 24 25))
     "rtest_antid"
     "rtest_bffac"
     "rtest_diff_form"

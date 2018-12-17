@@ -48,14 +48,14 @@
 	;; Test 561 tickles bug in ECL if signed zero enabled; see ECL
 	;; bug #329. Fixed post-16.1.3.
         ((mlist simp) "rtest16"
-	 #+ecl ((mlist 50 561))
+	 #+ecl ((mlist simp) 50 561)
 	 #+allegro ((mlist simp) 50 241))
         "rtestode"
 	"rtestode_zp"
         "rtest3"
 	;; ECL 16.1.2 still fails in #104
 	((mlist simp) "rtest8"
-	 #+ecl ((mlist 104)))
+	 #+ecl ((mlist simp) 104))
         ((mlist simp) "rtest12"
 	 ((mlist simp) 76 78))
         "rexamples"
