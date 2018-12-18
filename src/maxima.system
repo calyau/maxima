@@ -542,6 +542,7 @@
 	    :depends-on ("defmfun" "compatibility-macros" "compatibility-macros1")
 	    :components
 	    ((:file "macsys")
+	     (:file "testsuite")
 	     (:file "mload")
 	     (:file "suprv1")
 	     (:file "dskfn")))

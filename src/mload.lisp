@@ -580,15 +580,6 @@
        (princ tem))
     (namestring file)))
 
-  
-;; The default set of tests for the test suite.  This is initialized
-;; by run_testsuite by loading tests/testsuite.lisp.
-(defmvar $testsuite_files nil)
-
-;; The set of tests for the functions in the share directory.  This is
-;; initialized by run_testsuite by loading share/share_testsuite.lisp.
-(defmvar $share_testsuite_files nil)
-
 (defvar *maxima-testsdir*)
 
 (defun intersect-tests (tests)
@@ -675,15 +666,6 @@
       (merror (intl:gettext "run_testsuite: share_tests must be true, false or only: found ~M") share_tests))
     
     (setq *collect-errors* nil)
-    (unless $testsuite_files
-      (let ((*read-base* 10.))
-	(when debug
-	  (format t "Loading testsuite.lisp~%"))
-	(load (concatenate 'string *maxima-testsdir* "/" "testsuite.lisp"))))
-    (when share_tests
-      (when debug
-	(format t "Loading share_testsuite.lisp~%"))
-      (load (concatenate 'string *maxima-sharedir* "/" "share_testsuite.lisp")))
 
     (multiple-value-bind (desired-tests desired-search-path)
 	(ecase share_tests

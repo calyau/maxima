@@ -1,0 +1,13 @@
+This directory contains the files containing the test steps for the maxima core.
+The files with the test steps for the share packages can be found in the share/
+subdirectory.
+
+All test suite files consist of blocks of the following pattern:
+ - <command that is to be executed>;
+ - <expected result>$
+
+If writing new test files please try to make them end with maxima in a state
+that allows it still to run other tests or to run this test again.
+
+In order to make the new file automatically be run by the run_testsuite()
+command please register eventual new test files in src/testsuite.lisp.
