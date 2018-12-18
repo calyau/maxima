@@ -52,6 +52,9 @@ Changes in core:
  * maxima.asd should mow match maxima.system again.
  * The lists of test suite files and share test suite files now are maxima lists
    and therefore can be manipulated without having to resolve to lisp commands.
+ * The lists of core and share test suite files (testsuite_files and 
+   share_testsuite_files) are now available directly after starting maxima and 
+   not only after using or manually loading the test suite.
  
 Changes in share:
 --------------
