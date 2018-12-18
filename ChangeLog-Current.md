@@ -55,7 +55,8 @@ Changes in core:
  * The lists of core and share test suite files (testsuite_files and 
    share_testsuite_files) are now available directly after starting maxima and 
    not only after using or manually loading the test suite.
- 
+ * ./configure --enable-quiet-build now muffles more warnings.
+
 Changes in share:
 --------------
  *  The the arguments to Krylov matrix are now checked for being of the 

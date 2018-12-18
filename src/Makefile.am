@@ -80,7 +80,7 @@ LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp") (mk:add-registr
 LOADMAKEDEPENDS = (load "$(top_srcdir)/lisp-utils/make-depends.lisp")
 DS_OOS = funcall (intern (symbol-name :operate-on-system) :mk) "maxima"
 if QUIET_BUILD
-QUIET=(setf *compile-print* nil)
+QUIET="(setf *compile-print* nil) (setq *compile-verbose* nil)"
 DEFSYSTEMCOMPILE = ($(DS_OOS) :compile :verbose nil)
 DEFSYSTEMLOAD = ($(DS_OOS) :load :verbose nil )
 else
@@ -129,7 +129,7 @@ clisp: $(CLISP_MAXIMA)
 
 $(CLISP_MAXIMA):
 	$(MAKE) bd
-	echo '$(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE)' > clisp-command.lisp
+	echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE)' > clisp-command.lisp
 	$(EXECUTECLISP) clisp-command.lisp
 	echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:saveinitmem "$@" :init-function (function cl-user::run) $(clispexeflag))' > clisp-command.lisp
 	$(EXECUTECLISP) clisp-command.lisp
@@ -276,7 +276,7 @@ EXECUTESBCL = "$(SBCL_NAME)" --noinform --noprint
 BUILT_FILES += $(SBCL_MAXIMA)
 CLEAN_TARGETS += clean-sbcl
 
-COMPILE_SBCL = echo '$(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit)' | $(EXECUTESBCL) 
+COMPILE_SBCL = echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit)' | $(EXECUTESBCL) 
 WRITE_SBCL = echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) $(sb_slad) (sb-ext:quit)' | $(EXECUTESBCL)
 BUILD_SBCL = $(COMPILE_SBCL) && $(WRITE_SBCL)
 
@@ -376,7 +376,7 @@ EXECUTEOPENMCL = $(OPENMCL_NAME)
 BUILT_FILES += $(OPENMCL_MAXIMA)
 CLEAN_TARGETS += clean-openmcl
 
-COMPILE_OMCL = echo '(require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTEOPENMCL)
+COMPILE_OMCL = echo '$(QUIET) (require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTEOPENMCL)
 WRITE_OMCL = echo '(require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)' | $(EXECUTEOPENMCL)
 BUILD_OMCL = $(COMPILE_OMCL) && $(WRITE_OMCL)
 
@@ -419,7 +419,7 @@ EXECUTECCL64 = $(CCL64_NAME)
 BUILT_FILES += $(CCL64_MAXIMA)
 CLEAN_TARGETS += clean-ccl64
 
-COMPILE_CCL64 = echo '(require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTECCL64)
+COMPILE_CCL64 = echo '$(QUIET) (require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTECCL64)
 WRITE_CCL64 = echo '(require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)' | $(EXECUTECCL64)
 BUILD_CCL64 = $(COMPILE_CCL64) && $(WRITE_CCL64)
 
@@ -500,7 +500,7 @@ abcl:binary-abcl/maxima
 binary-abcl/maxima: Makefile.am startmaxima_abcl.sh
 	$(MAKE) bd
 if QUIET_BUILD
-	$(EXECUTEABCL) --eval (setf *compile-print* nil) --eval '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")' --eval '(mk:add-registry-location "$(top_srcdir)/src/")' --eval '($(DS_OOS) :compile :verbose nil)' --eval '(quit)'
+	$(EXECUTEABCL) --eval '(setq *compile-verbose* nil)' --eval '(setf *compile-print* nil)' --eval '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")' --eval '(mk:add-registry-location "$(top_srcdir)/src/")' --eval '($(DS_OOS) :compile :verbose nil)' --eval '(quit)'
 else
 	$(EXECUTEABCL) --eval '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")' --eval '(mk:add-registry-location "$(top_srcdir)/src/")' --eval '($(DS_OOS) :compile :verbose t)' --eval '(quit)'
 endif
