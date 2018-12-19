@@ -1227,9 +1227,9 @@ lisp_only_build="nil"
 AC_SUBST(lisp_only_build)
 dnl Extra files we want to clean from the src dir
 if test x"$srcdir" = x"." ; then
-   DISTCLEAN_EXTRA_SRC_FILES = ""
+   DISTCLEAN_EXTRA_SRC_FILES=""
 else
-   DISTCLEAN_EXTRA_SRC_FILES = share_subdirs.lisp
+   DISTCLEAN_EXTRA_SRC_FILES=share_subdirs.lisp
 fi
 AC_SUBST(DISTCLEAN_EXTRA_SRC_FILES)
 
