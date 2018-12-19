@@ -54,6 +54,10 @@ computer running a different Clisp version. Also Clisp uses an
 extremely efficient memory handling which means it might not run
 out of memory where ECL, SBCL and GCL do.
 
+CLISP version 2.49 has a bug that causes it to output garbled data
+if the front-end is fast enough to acknowledge a data packet while
+the next data packet is still being prepared.
+
 There are Clisp implementations for many platforms including 
 MS Windows and Unix-like systems. 
 
