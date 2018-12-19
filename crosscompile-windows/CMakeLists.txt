@@ -73,13 +73,25 @@ option(BUILD_CURRENT "Build a installer for current Maxima/wxMaxima." NO)
 option(WITH_ABCL "Include ABCL in the installer." NO)
 
 # another option (option() can not be used, it is only boolean...)
+#
+# SBCL and CLISP have both advantages and disadvantages:
+#  - SBCL is fast, but sometimes runs out of memory in places it really shouldn't
+#    (Loading LAPACK on IA32, for example) and isn't too happy with changing to
+#    non-ascii-non-unicode pathnames (which wxMaxima works around by now, though,
+#    and which Xmaxima doesn't evven try to do)
+#  - CLISP is slow. And version 2.49 only sends valid output over the network
+#    if the front-end is slow enough. Test cases: Running a demo, all commands
+#    with loads of compiler output (load("draw"); for the first time) or just
+#    receiving a batch of new autocompletion symbols. Since the libraries the
+#    front-ends use have evolved in the last years it has become easy to
+#    trigger this => Setting SBCL to be the default.
 if(WITH_ABCL)
-    set(WITH_DEFAULT_LISP "clisp" CACHE STRING "Which Lisp should be used by default (clisp/sbcl/abcl)?")
+    set(WITH_DEFAULT_LISP "sbcl" CACHE STRING "Which Lisp should be used by default (clisp/sbcl/abcl)?")
     set_property(CACHE WITH_DEFAULT_LISP PROPERTY STRINGS "clisp" "sbcl" "abcl")
     set(ABCL_LICENSE_INFORMATION "<li><a href=\"http://www.abcl.org/\">ABCL Website</a>, <a href=\"https://abcl.org/faq.shtml#license\">ABCL license</a></li>")
     set(ABCL_ENABLED 1)
 else()
-    set(WITH_DEFAULT_LISP "clisp" CACHE STRING "Which Lisp should be used by default (clisp/sbcl)?")
+    set(WITH_DEFAULT_LISP "sbcl" CACHE STRING "Which Lisp should be used by default (clisp/sbcl)?")
     set_property(CACHE WITH_DEFAULT_LISP PROPERTY STRINGS "clisp" "sbcl")
     set(ABCL_ENABLED 0)
 endif()
