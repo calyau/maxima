@@ -7,6 +7,10 @@
 ;; with the correct values.  The default checked in version is useful
 ;; if you're doing a lisp-only build without configure.  But configure
 ;; is the preferred way to build.
+;;
+;; The file isn't directly created as share-subdirs.lisp but with an
+;; immediate step in order to make the autotools not delete the file
+;; we want to ship with the repo.
 (in-package :maxima)
 
 (defun share-subdirs-list ()
