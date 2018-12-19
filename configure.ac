@@ -1222,6 +1222,10 @@ AC_SUBST(default_layout_autotools)
 AC_SUBST(LDFLAGS)
 AC_SUBST(default_sharedirs)
 
+dnl Tell defsystem that this isn't a lisp-only build
+lisp_only_build="nil"
+AC_SUBST(lisp_only_build)
+
 dnl Look for grep that can handle long lines and -e.
 AC_PROG_EGREP
 AC_SUBST(EGREP)
