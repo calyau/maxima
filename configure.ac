@@ -1273,6 +1273,10 @@ share/contrib/maxima-odesolve/Makefile \
 share/draw/Makefile share/logic/Makefile  doc/info/es/include-maxima.texi \
 src/lisp)
 
+if test x"${clisp}" = xtrue ; then
+   	echo
+	AC_MSG_WARN("CLISP 2.49 is known to sporadically produce garbled data if the front-end is fast enough to acknowledge a data packet while a next data packet is still being prepared.")
+fi
 echo
 echo "Summary:"
 if test x"${clisp}" = xtrue ; then
