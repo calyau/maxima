@@ -1225,6 +1225,14 @@ AC_SUBST(default_sharedirs)
 dnl Tell defsystem that this isn't a lisp-only build
 lisp_only_build="nil"
 AC_SUBST(lisp_only_build)
+dnl Extra files we want to clean from the src dir
+if test x"$srcdir" = x"." ; then
+   DISTCLEAN_EXTRA_SRC_FILES = ""
+else
+   DISTCLEAN_EXTRA_SRC_FILES = share_subdirs.lisp
+fi
+AC_SUBST(DISTCLEAN_EXTRA_SRC_FILES)
+
 
 dnl Look for grep that can handle long lines and -e.
 AC_PROG_EGREP
