@@ -55,8 +55,16 @@ Changes in core:
  * The lists of core and share test suite files (testsuite_files and 
    share_testsuite_files) are now available directly after starting maxima and 
    not only after using or manually loading the test suite.
+ * "make check" manipulates the list of tests now in a more canonical way in order
+   to automatically run the interactive tests, as well.
  * ./configure --enable-quiet-build now muffles more warnings.
-
+ * src/shares_subdirs.lisp is now no more generated directly but using an 
+   immediate file which hinders "make distclean" from automatically deleting it.
+ * documented the clisp bug that if a frontend acknowledges a network packet 
+   while maxima is still preparing the next one the result might be garbled
+   data.
+ * Small improvements for ./configure's --enable-quiet-build switch
+ 
 Changes in share:
 --------------
  *  The the arguments to Krylov matrix are now checked for being of the 
@@ -74,7 +82,10 @@ Changes in share:
  *  ezunits: A conversion rule for nondimensional/(sum of dimensional)
  *  ezunits: 0 now can have a dimension.
  *  ezunits test script: Avoid kill(m) which kills the unit meter.
-
+ *  The tests for the "sym" package are now part of the share testsuite.
+ *  The tests for the "ode" package are now part of the share testsuite, too
+    but have been disabled as they failed.
+ 
 Bug fixes:
 ----------
  * #3470: 
