@@ -909,7 +909,7 @@ Example:
 
 @opencatbox
 @category{Simplification functions} @category{Rational expressions}
-@opencatbox
+@closecatbox
 @end deffn
 
 @c SPELL OUT WHAT fullratsubst DOES INSTEAD OF ALLUDING TO ratsubst AND lratsubst
