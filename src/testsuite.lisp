@@ -48,7 +48,7 @@
 	 #+gcl ((mlist simp) 158 174 175))
         "rtest13"
 	"rtest13s"
-	;; ECL 16.1.2 still fails in #307 + #310
+	;; ECL 16.1.2 still reliably fails in #307 + #310
 	;; and sporadically in 250, 252, 267, 297, 312, 315 and 319
 	((mlist simp) "rtest14"
 	 #+ecl ((mlist simp) 145 250 252 267 297 307 310 312 315 319))
