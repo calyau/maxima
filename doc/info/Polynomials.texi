@@ -9,49 +9,62 @@
 @section Introduction to Polynomials
 @c -----------------------------------------------------------------------------
 
-Polynomials are stored in Maxima either in General Form or as
-Canonical Rational Expressions (CRE) form.  The latter is a standard
-form, and is used internally by operations such as factor, ratsimp, and
+Polynomials are stored in Maxima either in General Form or as Canonical
+Rational Expressions (CRE) form. The latter is a standard form, and is
+used internally by operations such as @mref{factor}, @mref{ratsimp}, and
 so on.
 
 Canonical Rational Expressions constitute a kind of representation
 which is especially suitable for expanded polynomials and rational
 functions (as well as for partially factored polynomials and rational
-functions when RATFAC is set to @code{true}).  In this CRE form an
+functions when @mref{ratfac} is set to @code{true}). In this CRE form an
 ordering of variables (from most to least main) is assumed for each
-expression.  Polynomials are represented recursively by a list
-consisting of the main variable followed by a series of pairs of
-expressions, one for each term of the polynomial.  The first member of
-each pair is the exponent of the main variable in that term and the
-second member is the coefficient of that term which could be a number or
-a polynomial in another variable again represented in this form.  Thus
-the principal part of the CRE form of 3*X^2-1 is (X 2 3 0 -1) and that
-of 2*X*Y+X-3 is (Y 1 (X 1 2) 0 (X 1 1 0 -3)) assuming Y is the main
-variable, and is (X 1 (Y 1 2 0 1) 0 -3) assuming X is the main
-variable.  "Main"-ness is usually determined by reverse alphabetical
-order.  The "variables" of a CRE expression needn't be atomic.  In fact
-any subexpression whose main operator is not + - * / or ^ with integer
-power will be considered a "variable" of the expression (in CRE form) in
-which it occurs.  For example the CRE variables of the expression
-X+SIN(X+1)+2*SQRT(X)+1 are X, SQRT(X), and SIN(X+1).  If the user does
-not specify an ordering of variables by using the RATVARS function
-Maxima will choose an alphabetic one.  In general, CRE's represent
-rational expressions, that is, ratios of polynomials, where the
-numerator and denominator have no common factors, and the denominator is
-positive.  The internal form is essentially a pair of polynomials (the
-numerator and denominator) preceded by the variable ordering list.  If
-an expression to be displayed is in CRE form or if it contains any
-subexpressions in CRE form, the symbol /R/ will follow the line label.
-See the RAT function for converting an expression to CRE form.  An
-extended CRE form is used for the representation of Taylor series.  The
-notion of a rational expression is extended so that the exponents of the
-variables can be positive or negative rational numbers rather than just
-positive integers and the coefficients can themselves be rational
-expressions as described above rather than just polynomials.  These are
-represented internally by a recursive polynomial form which is similar
-to and is a generalization of CRE form, but carries additional
-information such as the degree of truncation.  As with CRE form, the
-symbol /T/ follows the line label of such expressions.
+expression.
+
+Polynomials are represented recursively by a list consisting of the main
+variable followed by a series of pairs of expressions, one for each term
+of the polynomial. The first member of each pair is the exponent of the
+main variable in that term and the second member is the coefficient of
+that term which could be a number or a polynomial in another variable
+again represented in this form. Thus the principal part of the CRE form
+of @code{3*x^2-1} is @code{(X 2 3 0 -1)} and that of @code{2*x*y+x-3}
+is @code{(Y 1 (X 1 2) 0 (X 1 1 0 -3))} assuming @code{y} is the main
+variable, and is @code{(X 1 (Y 1 2 0 1) 0 -3)} assuming @code{x} is the
+main variable. "Main"-ness is usually determined by reverse alphabetical
+order.
+
+The "variables" of a CRE expression needn't be atomic. In fact any
+subexpression whose main operator is not @code{+}, @code{-}, @code{*},
+@code{/} or @code{^} with integer power will be considered a "variable"
+of the expression (in CRE form) in which it occurs. For example the CRE
+variables of the expression @code{x+sin(x+1)+2*sqrt(x)+1} are @code{x},
+@code{sqrt(X)}, and @code{sin(x+1)}. If the user does not specify an
+ordering of variables by using the @mref{ratvars} function Maxima will
+choose an alphabetic one.
+
+In general, CRE's represent rational expressions, that is, ratios of
+polynomials, where the numerator and denominator have no common factors,
+and the denominator is positive. The internal form is essentially a pair
+of polynomials (the numerator and denominator) preceded by the variable
+ordering list. If an expression to be displayed is in CRE form or if it
+contains any subexpressions in CRE form, the symbol @code{/R/} will follow the
+line label.
+
+@c TODO: An example of some code that yields the /R/ form.
+
+See the @mref{rat} function for converting an expression to CRE form.
+
+An extended CRE form is used for the representation of Taylor
+series. The notion of a rational expression is extended so that the
+exponents of the variables can be positive or negative rational numbers
+rather than just positive integers and the coefficients can themselves
+be rational expressions as described above rather than just polynomials.
+These are represented internally by a recursive polynomial form which is
+similar to and is a generalization of CRE form, but carries additional
+information such as the degree of truncation. As with CRE form, the
+symbol @code{/T/} follows the line label of such expressions.
+
+@c TODO: An example of some code that yields the /T/ form.
 
 @opencatbox
 @category{Polynomials} @category{Rational expressions}
@@ -102,6 +115,11 @@ returns a matrix.  @code{determinant} of this matrix is the desired resultant.
 
 Examples:
 
+@c ===beg===
+@c bezout(a*x+b, c*x^2+d, x);
+@c determinant(%);
+@c resultant(a*x+b, c*x^2+d, x);
+@c ===end===
 @example
 (%i1) bezout(a*x+b, c*x^2+d, x);
                          [ b c  - a d ]
@@ -130,12 +148,13 @@ otherwise by @code{coeff}) and whose second member is the remaining part of
 @var{expr}.  That is, @code{[A, B]} where @code{@var{expr} = A*@var{x} + B}.
 
 Example:
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+
+@c ===beg===
 @c islinear (expr, x) := block ([c],
 @c         c: bothcoef (rat (expr, x), x),
 @c         is (freeof (x, c) and c[1] # 0))$
 @c islinear ((r^2 - (x - r)^2)/x, x);
-
+@c ===end===
 @example
 (%i1) islinear (expr, x) := block ([c],
         c: bothcoef (rat (expr, x), x),
@@ -338,9 +357,10 @@ second element is the polynomial @var{p_1} divided by the content.
 @c WHAT ARE THE OTHER VARIABLES x_1 THROUGH x_{n-1} FOR ??
 
 Examples:
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
-@c content (2*x*y + 4*x^2*y^2, y);
 
+@c ===beg===
+@c content (2*x*y + 4*x^2*y^2, y);
+@c ===end===
 @example
 (%i1) content (2*x*y + 4*x^2*y^2, y);
 @group
@@ -411,10 +431,11 @@ The result is a list whose first element is the quotient
 and whose second element is the remainder.
 
 Examples:
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+
+@c ===beg===
 @c divide (x + y, x - y, x);
 @c divide (x + y, x - y);
-
+@c ===end===
 @example
 (%i1) divide (x + y, x - y, x);
 (%o1)                       [1, 2 y]
@@ -445,11 +466,12 @@ the last variable.
 
 Example:
 
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ===beg===
 @c expr1: 2*x^2 + y*x + z;
 @c expr2: 3*x + 5*y - z - 1;
 @c expr3: z^2 + x - y^2 + 5;
 @c eliminate ([expr3, expr2, expr1], [y, z]);
+@c ===end===
 @example
 (%i1) expr1: 2*x^2 + y*x + z;
                                       2
@@ -490,6 +512,13 @@ The three polynomials have the greatest common divisor @code{2*x-3}.  The
 gcd is first calculated with the function @code{gcd} and then with the function
 @code{ezgcd}.
 
+@c ===beg===
+@c p1 : 6*x^3-17*x^2+14*x-3;
+@c p2 : 4*x^4-14*x^3+12*x^2+2*x-3;
+@c p3 : -8*x^3+14*x^2-x-3;
+@c gcd(p1, gcd(p2, p3));
+@c ezgcd(p1, p2, p3);
+@c ===end===
 @example
 (%i1) p1 : 6*x^3-17*x^2+14*x-3;
                         3       2
@@ -573,7 +602,7 @@ See also @mrefdot{collectterms}
 
 Examples:
 
-@c EXAMPLES BELOW ADAPTED FROM examples (factor)
+@c ===beg===
 @c factor (2^63 - 1);
 @c factor (-8*y - 4*x + z^2*(2*y + x));
 @c -1 - 2*x - x^2 + y^2 + 2*x*y^2 + x^2*y^2;
@@ -590,6 +619,7 @@ Examples:
 @c factor (%th(2), %);
 @c factor (1 + x^12);
 @c factor (1 + x^99);
+@c ===end===
 @example
 (%i1) factor (2^63 - 1);
                     2
@@ -823,9 +853,10 @@ common.
 
 Example:
 
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ===beg===
 @c expand ((x + 1)*((u + v)^2 + a*(w + z)^2));
 @c factorsum (%);
+@c ===end===
 @example
 (%i1) expand ((x + 1)*((u + v)^2 + a*(w + z)^2));
            2      2                            2      2
@@ -877,12 +908,13 @@ Sometimes, more than one such call may be necessary.
 arguments similar to @code{ratsimp} and @code{rat}.
 
 Example:
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+
+@c ===beg===
 @c expr: (x^(a/2) + 1)^2*(x^(a/2) - 1)^2/(x^a - 1);
 @c ratsimp (expr);
 @c fullratsimp (expr);
 @c rat (expr);
-
+@c ===end===
 @example
 (%i1) expr: (x^(a/2) + 1)^2*(x^(a/2) - 1)^2/(x^a - 1);
                        a/2     2   a/2     2
@@ -1036,6 +1068,13 @@ See also @mrefcomma{ezgcd} @mrefcomma{gcdex} @mrefcomma{gcdivide} and
 
 Example:
 
+@c ===beg===
+@c p1:6*x^3+19*x^2+19*x+6; 
+@c p2:6*x^5+13*x^4+12*x^3+13*x^2+6*x;
+@c gcd(p1, p2);
+@c p1/gcd(p1, p2), ratsimp;
+@c p2/gcd(p1, p2), ratsimp;
+@c ===end===
 @example
 (%i1) p1:6*x^3+19*x^2+19*x+6; 
                         3       2
@@ -1057,6 +1096,9 @@ Example:
 of the polynomials @var{p_1} and @var{p_2}, and whose remaining elements are
 the polynomials divided by the greatest common divisor.
 
+@c ===beg===
+@c ezgcd(p1, p2);
+@c ===end===
 @example
 (%i6) ezgcd(p1, p2);
                     2                     3
@@ -1166,8 +1208,9 @@ This is like @code{factor (@var{expr}, @var{a}^2+1)} where @var{a} is @code{%i}.
 
 Example:
 
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ===beg===
 @c gfactor (x^4 - 1);
+@c ===end===
 @example
 (%i1) gfactor (x^4 - 1);
 (%o1)           (x - 1) (x + 1) (x - %i) (x + %i)
@@ -1207,6 +1250,13 @@ particular, @code{hipow} does not expand @code{expr}, so
 
 Examples:
 
+@c ===beg===
+@c hipow (y^3 * x^2 + x * y^4, x);
+@c hipow ((x + y)^5, x);
+@c hipow (expand ((x + y)^5), x);
+@c hipow ((x + y)^5, x + y);
+@c hipow (expand ((x + y)^5), x + y);
+@c ===end===
 @example
 (%i1) hipow (y^3 * x^2 + x * y^4, x);
 (%o1)                           2
@@ -1312,6 +1362,9 @@ rat: replaced 1.0 by 1/1 = 1.0
 Returns the lowest exponent of @var{x} which explicitly appears in
 @var{expr}.  Thus
 
+@c ===beg===
+@c lopow ((x+y)^2 + (x+y)^a, x+y);
+@c ===end===
 @example
 (%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
 (%o1)                       min(a, 2)
@@ -1403,6 +1456,16 @@ assigned to @code{modulus}.
 
 Examples:
 
+@c ===beg===
+@c modulus:7;
+@c polymod([0,1,2,3,4,5,6,7]);
+@c modulus:false;
+@c poly:x^6+x^2+1;
+@c factor(poly);
+@c modulus:13;
+@c factor(poly);
+@c polymod(%);
+@c ===end===
 @example
 (%i1) modulus:7;
 (%o1)                           7
@@ -1752,9 +1815,10 @@ the way they were envisioned.
 
 Example:
 
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ===beg===
 @c s: a*x + b*x + 5$
 @c ratcoef (s, a + b);
+@c ===end===
 @example
 (%i1) s: a*x + b*x + 5$
 (%i2) ratcoef (s, a + b);
@@ -1805,6 +1869,15 @@ the numerator of which is the sum of the numerators of each ratio.
 
 Examples:
 
+@c ===beg===
+@c expr: (x^2 + x + 1)/(y^2 + 7);
+@c ratdenomdivide: true$
+@c ratexpand (expr);
+@c ratdenomdivide: false$
+@c ratexpand (expr);
+@c expr2: a^2/(b^2 + 3) + b/(b^2 + 3);
+@c ratexpand (expr2);
+@c ===end===
 @example
 (%i1) expr: (x^2 + x + 1)/(y^2 + 7);
                             2
@@ -1873,13 +1946,14 @@ and ignores any dependencies established by @code{depends}.
 
 Example:
 
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ===beg===
 @c expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
 @c ratdiff (expr, x);
 @c expr: f(x)^3 - f(x)^2 + 7;
 @c ratdiff (expr, f(x));
 @c expr: (a + b)^3 + (a + b)^2;
 @c ratdiff (expr, a + b);
+@c ===end===
 @example
 (%i1) expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
 @group
@@ -1968,11 +2042,12 @@ them are converted to canonical rational expression (CRE) form.
 
 Examples:
 
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ===beg===
 @c ratexpand ((2*x - 3*y)^3);
 @c expr: (x - 1)/(x + 1)^2 + 1/(x - 1);
 @c expand (expr);
 @c ratexpand (expr);
+@c ===end===
 @example
 (%i1) ratexpand ((2*x - 3*y)^3);
                      3         2       2        3
@@ -2109,12 +2184,13 @@ flags which affect @code{ratexpand}.
 
 Examples:
 
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ===beg===
 @c sin (x/(x^2 + x)) = exp ((log(x) + 1)^2 - log(x)^2);
 @c ratsimp (%);
 @c ((x - 1)^(3/2) - (x + 1)*sqrt(x - 1))/sqrt((x - 1)*(x + 1));
 @c ratsimp (%);
 @c x^(a + 1/a), ratsimpexpons: true;
+@c ===end===
 @example
 (%i1) sin (x/(x^2 + x)) = exp ((log(x) + 1)^2 - log(x)^2);
 @group
@@ -2378,12 +2454,13 @@ not both be used at the same time.
 
 Examples:
 
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ===beg===
 @c ratweight (a, 1, b, 1);
 @c expr1: rat(a + b + 1)$
 @c expr1^2;
 @c ratwtlvl: 1$
 @c expr1^2;
+@c ===end===
 @example
 (%i1) ratweight (a, 1, b, 1);
 (%o1)                     [a, 1, b, 1]
@@ -2471,6 +2548,14 @@ returns a matrix.  The determinant of the return value is the desired resultant.
 
 Examples:
 
+@c ===beg===
+@c resultant(2*x^2+3*x+1, 2*x^2+x+1, x);
+@c resultant(x+1, x+1, x);
+@c resultant((x+1)*x, (x+1), x);
+@c resultant(a*x^2+b*x+1, c*x + 2, x);
+@c bezout(a*x^2+b*x+1, c*x+2, x);
+@c determinant(%);
+@c ===end===
 @example
 (%i1) resultant(2*x^2+3*x+1, 2*x^2+x+1, x);
 (%o1)                           8
@@ -2569,9 +2654,10 @@ the derivatives with respect to each variable in the polynomial, all
 factors of degree greater than 1 can be found.
 
 Example:
-@c FOLLOWING GENERATED FROM THIS EXPRESSION
-@c sqfr (4*x^4 + 4*x^3 - 3*x^2 - 4*x - 1);
 
+@c ===beg===
+@c sqfr (4*x^4 + 4*x^3 - 3*x^2 - 4*x - 1);
+@c ===end===
 @example
 (%i1) sqfr (4*x^4 + 4*x^3 - 3*x^2 - 4*x - 1);
                                 2   2
@@ -2625,13 +2711,14 @@ Maxima picks a particular ordering, but if the user wants to specify which, e.g.
 
 Examples:
 
-@c EXAMPLE ADAPTED FROM example (tellrat)
+@c ===beg===
 @c 10*(%i + 1)/(%i + 3^(1/3));
 @c ev (ratdisrep (rat(%)), algebraic);
 @c tellrat (1 + a + a^2);
 @c 1/(a*sqrt(2) - 1) + a/(sqrt(3) + sqrt(2));
 @c ev (ratdisrep (rat(%)), algebraic);
 @c tellrat (y^2 = x^2);
+@c ===end===
 @example
 (%i1) 10*(%i + 1)/(%i + 3^(1/3));
                            10 (%i + 1)

@@ -44,6 +44,11 @@ The new variable is @var{y}.
 The change of variable can also be written @code{@var{f(x)} = @var{g(y)}}.
 
 @c HMM, THIS EXAMPLE YIELDS A CORRECT BUT SLIGHTLY STRANGE RESULT...
+@c ===beg===
+@c assume(a > 0)$
+@c 'integrate (%e**sqrt(a*y), y, 0, 4);
+@c changevar (%, y-z^2/a, z, y);
+@c ===end===
 @example
 (%i1) assume(a > 0)$
 @group
@@ -80,6 +85,10 @@ product.  However, it must be realized that when a change is made in a
 sum or product, this change must be a shift, i.e., @code{i = j+ ...}, not a
 higher degree function.  E.g.,
 
+@c ===beg===
+@c sum (a[i]*x^(i-2), i, 0, inf);
+@c changevar (%, i-2-n, n, i);
+@c ===end===
 @example
 @group
 (%i4) sum (a[i]*x^(i-2), i, 0, inf);
@@ -218,6 +227,12 @@ By using the functions @code{laplace} and @code{ilt} together with the
 @code{solve} or @code{linsolve} functions the user can solve a single
 differential or convolution integral equation or a set of them.
 
+@c ===beg===
+@c 'integrate (sinh(a*x)*f(t-x), x, 0, t) + b*f(t) = t**2;
+@c laplace (%, t, s);
+@c linsolve ([%], ['laplace(f(t), t, s)]);
+@c ilt (rhs (first (%)), s, t);
+@c ===end===
 @example
 @group
 (%i1) 'integrate (sinh(a*x)*f(t-x), x, 0, t) + b*f(t) = t**2;
@@ -410,6 +425,12 @@ Examples:
 @item
 Elementary indefinite and definite integrals.
 
+@c ===beg===
+@c integrate (sin(x)^3, x);
+@c integrate (x/ sqrt (b^2 - x^2), x);
+@c integrate (cos(x)^2 * exp(x), x, 0, %pi);
+@c integrate (x^2 * exp(-x^2), x, minf, inf);
+@c ===end===
 @example
 @group
 (%i1) integrate (sin(x)^3, x);
@@ -441,6 +462,12 @@ Elementary indefinite and definite integrals.
 @item
 Use of @code{assume} and interactive query.
 
+@c ===beg===
+@c assume (a > 1)$
+@c integrate (x**a/(x+1)**(5/2), x, 0, inf);
+@c input:no;
+@c input:neg;
+@c ===end===
 @example
 (%i1) assume (a > 1)$
 @group
@@ -464,6 +491,11 @@ Change of variable.  There are two changes of variable in this example:
 one using a derivative established by @mrefcomma{gradef} and one using the
 derivation @code{diff(r(x))} of an unspecified function @code{r(x)}.
 
+@c ===beg===
+@c gradef (q(x), sin(x**2));
+@c diff (log (q (r (x))), x);
+@c integrate (%, x);
+@c ===end===
 @example
 @group
 (%i3) gradef (q(x), sin(x**2));
@@ -490,6 +522,11 @@ factor the remainder or otherwise find its integral.  @mref{grind} shows the
 noun form @code{'integrate} in the result.  See also
 @mref{integrate_use_rootsof} for more on integrals of rational functions.
 
+@c ===beg===
+@c expand ((x-4) * (x^3+2*x+1));
+@c integrate (1/%, x);
+@c grind (%);
+@c ===end===
 @example
 @group
 (%i1) expand ((x-4) * (x^3+2*x+1));
@@ -519,6 +556,13 @@ example contains the noun form of @code{integrate}.  The quote-quote operator
 @code{'@w{}'} causes the integral to be evaluated, and the result becomes the
 body of @code{f_2}.
 
+@c ===beg===
+@c f_1 (a) := integrate (x^3, x, 1, a);
+@c ev (f_1 (7), nouns);
+@c /* Note parentheses around integrate(...) here */
+      f_2 (a) := ''(integrate (x^3, x, 1, a));
+@c f_2 (7);
+@c ===end===
 @example
 @group
 (%i1) f_1 (a) := integrate (x^3, x, 1, a);
@@ -667,6 +711,10 @@ For example, with @code{integrate_use_rootsof} set to @code{false},
 @code{integrate} returns an unsolved integral of a rational function in noun
 form:
 
+@c ===beg===
+@c integrate_use_rootsof: false$
+@c integrate (1/(1+x+x^5), x);
+@c ===end===
 @example
 (%i1) integrate_use_rootsof: false$
 @group
@@ -685,6 +733,10 @@ Now we set the flag to be true and the unsolved part of the integral will be
 expressed as a summation over the roots of the denominator of the rational
 function:
 
+@c ===beg===
+@c integrate_use_rootsof: true$
+@c integrate (1/(1+x+x^5), x);
+@c ===end===
 @example
 (%i3) integrate_use_rootsof: true$
 @group
@@ -771,6 +823,10 @@ Computes the residue in the complex plane of the expression @var{expr} when the
 variable @var{z} assumes the value @var{z_0}.  The residue is the coefficient of
 @code{(@var{z} - @var{z_0})^(-1)} in the Laurent series for @var{expr}.
 
+@c ===beg===
+@c residue (s/(s**2+a**2), s, a*%i);
+@c residue (sin(a*x)/x**4, x, 0);
+@c ===end===
 @example
 @group
 (%i1) residue (s/(s**2+a**2), s, a*%i);
@@ -807,6 +863,10 @@ part of @code{integrate} can't do.  @mref{integrate} will automatically apply
 @code{erf} function in the answer if there were none in the integrand to begin
 with.
 
+@c ===beg===
+@c risch (x^2*erf(x), x);
+@c diff(%, x), ratsimp;
+@c ===end===
 @example
 @group
 (%i1) risch (x^2*erf(x), x);
@@ -1047,6 +1107,10 @@ if the input is invalid.
 
 Examples:
 
+@c ===beg===
+@c quad_qag (x^(1/2)*log(1/x), x, 0, 1, 3, 'epsrel=5d-8);
+@c integrate (x^(1/2)*log(1/x), x, 0, 1);
+@c ===end===
 @example
 @group
 (%i1) quad_qag (x^(1/2)*log(1/x), x, 0, 1, 3, 'epsrel=5d-8);
@@ -1143,6 +1207,9 @@ if the input is invalid.
 
 Examples:
 
+@c ===beg===
+@c quad_qags (x^(1/2)*log(1/x), x, 0, 1, 'epsrel=1d-10);
+@c ===end===
 @example
 @group
 (%i1) quad_qags (x^(1/2)*log(1/x), x, 0, 1, 'epsrel=1d-10);
@@ -1253,6 +1320,10 @@ if the input is invalid.
 
 Examples:
 
+@c ===beg===
+@c quad_qagi (x^2*exp(-4*x), x, 0, inf, 'epsrel=1d-8);
+@c integrate (x^2*exp(-4*x), x, 0, inf);
+@c ===end===
 @example
 @group
 (%i1) quad_qagi (x^2*exp(-4*x), x, 0, inf, 'epsrel=1d-8);
@@ -1345,6 +1416,13 @@ if the input is invalid.
 
 Examples:
 
+@c ===beg===
+@c quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5,
+                 'epsrel=1d-7);
+@c integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1),
+      x, 0, 5);
+@c ev (%, alpha=5, numer);
+@c ===end===
 @example
 @group
 (%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5,
@@ -1467,6 +1545,11 @@ if the input is invalid.
 
 Examples:
 
+@c ===beg===
+@c quad_qawf (exp(-x^2), x, 0, 1, 'cos, 'epsabs=1d-9);
+@c integrate (exp(-x^2)*cos(x), x, 0, inf);
+@c ev (%, numer);
+@c ===end===
 @example
 @group
 (%i1) quad_qawf (exp(-x^2), x, 0, 1, 'cos, 'epsabs=1d-9);
@@ -1607,6 +1690,12 @@ if the input is invalid.
 
 Examples:
 
+@c ===beg===
+@c quad_qawo (x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
+@c rectform (integrate (x^(-1/2)*exp(-2^(-alpha)*x) * cos(x),
+      x, 0, inf));
+@c ev (%, alpha=2, numer);
+@c ===end===
 @example
 @group
 (%i1) quad_qawo (x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
@@ -1735,6 +1824,13 @@ if the input is invalid.
 
 Examples:
 
+@c ===beg===
+@c quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1,
+                 'epsabs=1d-9);
+@c integrate ((1-x*x)^(-1/2)/(x+1+2^(-alpha)), x, -1, 1);
+@c input:pos;
+@c ev (%, alpha=4, numer);
+@c ===end===
 @example
 @group
 (%i1) quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1,
@@ -1845,6 +1941,10 @@ if the input is invalid.
 
 Examples:
 
+@c ===beg===
+@c quad_qagp(x^3*log(abs((x^2-1)*(x^2-2))),x,0,3,[1,sqrt(2)]);
+@c quad_qags(x^3*log(abs((x^2-1)*(x^2-2))), x, 0, 3);
+@c ===end===
 @example
 @group
 (%i1) quad_qagp(x^3*log(abs((x^2-1)*(x^2-2))),x,0,3,[1,sqrt(2)]);

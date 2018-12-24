@@ -88,6 +88,11 @@ with the function @mrefdot{rationalize}
 
 Example:
 
+@c ===beg===
+@c ratepsilon:1e-4;
+@c rat(bfloat(11111/111111)), bftorat:false;
+@c rat(bfloat(11111/111111)), bftorat:true;
+@c ===end===
 @example
 (%i1) ratepsilon:1e-4;
 (%o1)                         1.e-4
@@ -239,6 +244,17 @@ is declared @code{integer}.
 
 Examples:
 
+@c ===beg===
+@c integerp (0);
+@c integerp (1);
+@c integerp (-17);
+@c integerp (0.0);
+@c integerp (1.0);
+@c integerp (%pi);
+@c integerp (n);
+@c declare (n, integer);
+@c integerp (n);
+@c ===end===
 @example
 (%i1) integerp (0);
 (%o1)                         true
@@ -316,6 +332,16 @@ is a symbolic number such as @code{%pi} or @code{%i}, or declared to be
 
 Examples:
 
+@c ===beg===
+@c numberp (42);
+@c numberp (-13/19);
+@c numberp (3.14159);
+@c numberp (-1729b-4);
+@c map (numberp, [%e, %pi, %i, %phi, inf, minf]);
+@c declare (a, even, b, odd, c, integer, d, rational,
+     e, irrational, f, real, g, imaginary, h, complex);
+@c map (numberp, [a, b, c, d, e, f, g, h]);
+@c ===end===
 @example
 (%i1) numberp (42);
 (%o1)                         true
@@ -677,6 +703,12 @@ evaluation.
 
 See also @mref{sconcat} and @mrefdot{eval_string}
 
+@c ===beg===
+@c y: 7$
+@c z: 88$
+@c concat (y, z/2);
+@c concat ('y, z/2);
+@c ===end===
 @example
 (%i1) y: 7$
 (%i2) z: 88$
@@ -690,6 +722,13 @@ A symbol constructed by @code{concat} may be assigned a value and appear in
 expressions.  The @mref{::} (double colon) assignment operator evaluates its
 left-hand side.
 
+@c ===beg===
+@c a: concat ('y, z/2);
+@c a:: 123;
+@c y44;
+@c b^a;
+@c %, numer;
+@c ===end===
 @example
 (%i5) a: concat ('y, z/2);
 (%o5)                          y44
@@ -709,6 +748,9 @@ left-hand side.
 
 Note that although @code{concat (1, 2)} looks like a number, it is a string.
 
+@c ===beg===
+@c concat (1, 2) + 3;
+@c ===end===
 @example
 (%i10) concat (1, 2) + 3;
 (%o10)                       12 + 3
