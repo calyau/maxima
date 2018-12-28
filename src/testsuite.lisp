@@ -58,6 +58,7 @@
 	;; Test 561 tickles bug in ECL if signed zero enabled; see ECL
 	;; bug #329. Fixed post-16.1.3.
         ((mlist simp) "rtest16"
+	 ((mlist simp) 524 525)
 	 #+ecl ((mlist simp) 50 561)
 	 #+allegro ((mlist simp) 50 241))
         "rtestode"
@@ -85,14 +86,15 @@
         "rtest_diff_invtrig"
         "rtest_scalarp"
         "rtest_everysome"
-        "rtestint"
+        ((mlist simp) "rtestint"
+	 ((mlist simp) 232))
         "rtest_numth"
         "rtestifactor"
         ((mlist simp) "rtest_equal"
 	 ((mlist simp) 157 160))
         "rtest_abs"
         ((mlist simp) "rtest_taylor"
-	 ((mlist simp) 88 91 94 99 123 124))
+	 ((mlist simp) 88 91 94 100 124 125))
         ((mlist simp) "rtest_dot")
         "rtest_mset"
         "rtest_boolean"
