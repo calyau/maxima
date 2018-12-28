@@ -76,8 +76,15 @@ while (<>) {
             $in_example_output = 1;
         }
         elsif ($_ =~ /\@c */) {
+            my $fixed;
+            if (/^\@c input:/) {
+                $fixed = substr($_, 9);
+            }
+            else {
+                $fixed = substr($_, 3);
+            }
             print $_;
-            push @example_input_buf, r_trim(substr($_,3)) ;
+            push @example_input_buf, r_trim($fixed);
         }
         else {
             $warning_cnt++;
