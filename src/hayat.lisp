@@ -1735,6 +1735,27 @@
 		      (setq sign (e* sign chng))))
 	     (go a)))
 
+;; returns series expansion of %expintegral_si
+;; from term x^i to term x^max
+;; sign is sign of term x^i (1 or -1)
+;; ifac is i! (to avoid repeated computation)
+(defun expsi_series (i sign ifac max)
+  (if (> i max)
+      nil	; we have all powers up to max
+      (cons (cons (cons i 1)		; this is i'th term
+		  (cons sign (* i ifac))); i'th coefficient
+	    (expsi_series (+ 2 i)	; advance to next even/odd power
+			  (* -1 sign)	; flip sign
+			  (* (+ 2 i) (+ 1 i) ifac) ; update factorial
+			  max))))	; pass through the max
+
+;; returns series expansion of %expintegral_si up to term with x^pw
+(defun exp_%expintegral_si (pw l)
+  (expsi_series 1
+		1
+		1
+		(/ (float (car pw)) (float (cdr pw)))))
+
 (defun explog-funs (pw l sign chng inc)
        (prog (e lt-l)
 	     (setq e (e l) lt-l (setq l (ncons l)))
@@ -1831,6 +1852,7 @@
   %asinh (expasin-funs ((1 . 1) 1 . 1) -1)
   %gamma (expgam-fun ((-1 . 1) 1 . 1))
   $li    (exp$li-fun li-ord)
+  %expintegral_si (exp_%expintegral_si ((1 . 1) 1 . 1))
   $psi   (expplygam-funs plygam-ord))
   by #'cddr
   do  (putprop fun exp 'exp-form))
@@ -2493,6 +2515,54 @@
   (declare (ignore func))
   (taylor2 `((%gamma) ,(m1+ arg))))
 
+
+(defprop %gamma_incomplete gamma-upper-trans tay-trans)
+(defprop $gamma_incomplete gamma-upper-trans tay-trans)
+(defprop %gamma_incomplete_lower gamma-lower-trans tay-trans)
+(defprop $gamma_incomplete_lower gamma-lower-trans tay-trans)
+
+;; for gamma_incomplete(s,z)
+;; translate into gamma_incomplete_lower if s>0 and z=0
+(defun gamma-upper-trans (arg func)
+  (declare (ignore func))
+  (let ((s (car arg))
+	(z (cadr arg)))
+    (if (and
+	 (eq ($sign s) '$pos)
+	 (zerop1 ($limit z (caar tlist) (exp-pt (car tlist)))))
+	(taylor2 `((mplus) ((%gamma) ,s)
+		   ((mtimes) -1 ((%gamma_incomplete_lower) ,s ,z))))
+	(taylor2 (diff-expand `((,func) . ,arg)
+			      tlist)))))
+	
+;; for gamma_incomplete_lower(s,z)
+;; if z=0, use A&S 6.5.29
+;;;                      	         inf
+;;;	                                 ===    
+;;;	                                 \      (-z)^k
+;;;  gamma_incomplete_lower(s,z) =  z^s * >   ------------ 
+;;;		                         /      (s+k) k!
+;;;	                                 ===
+;;;	                                 k=0
+(defun gamma-lower-trans (arg func)
+  (let ((s (car arg))
+	(z (cadr arg)))
+    (if (zerop1 ($limit z (caar tlist) (exp-pt (car tlist))))
+	(taylor2 `((mtimes)
+		   ((mexpt) ,z ,s)
+		   ((%sum)
+		    ((mtimes)
+		     ((mexpt) ((mtimes) -1 ,z) k)
+		     ((mexpt) ((mtimes) ((mfactorial) k)
+			       ((mplus) ,s k))
+		      -1))
+		    k
+		    0
+		    $inf)))
+	(taylor2 (diff-expand `((,func) . ,arg)
+			      tlist)))))
+
+
 ;;; Not done properly yet
 ;;;
 ;;; (defprop $BETA BETA-TRANS TAY-TRANS)
@@ -2952,18 +3022,11 @@
       (if (eq ans t) (unfam-sing-err) ans))))
 
 ;; evaluate deriv at location var=pt
-;; if this results in division by zero, use unevaluated form of deriv 
-;; in order to get series expansions such as
-;; taylor(gamma_incomplete(1/2, x), x, 0, 5) ->
-;; sqrt(%pi)+97*sqrt(x)/512+113*x^(3/2)/512-2207*x^(5/2)/5120
-;;               +997*x^(7/2)/3072-5845*x^(9/2)/36864
 (defun eval-deriv (deriv var pt)
   (let ((errorsw t))
     (declare (special errorsw))
-    (let ((ans (catch 'errorsw (meval `(($at) ,deriv ((mequal) ,var ,pt))))))
-      (if (eq ans t) 
-	  deriv
-	ans))))
+    (let ((ans (no-sing-err `(meval '(($at) ,deriv ((mequal) ,var ,pt))))))
+      ans)))
 
 (defun check-inf-sing (pt-list) ; don't know behavior of random fun's @ inf
        (and (or (member '$inf pt-list :test #'eq) (member '$minf pt-list :test #'eq))

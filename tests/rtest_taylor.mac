@@ -315,6 +315,9 @@ x + ((x^2)/2) + ((x^3)/3)$
 taylor(li[s](x),x,0,3);
 x + ((x^2)/(2^s)) + ((x^3)/(3^s))$
 
+/*--- expintegral ---*/
+taylor(expintegral_si(z), z, 0, 9);
+z-z^3/18+z^5/600-z^7/35280+z^9/3265920;
 
 /*--- deftaylor ---*/
 (deftaylor(unk(x), sum(x^k / k,k,1,inf)),0);
