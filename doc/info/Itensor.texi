@@ -2563,6 +2563,12 @@ transformed assignment statement can be evaluated by just doing
 @code{ev}. The following examples demonstrate the features of this
 function.
 
+@c Added some ===beg=== and ==end== pairs around some source code
+@c
+@c The tags used here are different. This prevents the Perl parser from
+@c interpreting this section, since the text-based rendering of the output
+@c is pretty much unreadable. The origin example is likely been hand-edited
+@c for readability.
 @c ===begx===
 @c load("itensor");
 @c eqn:ishow(t([i,j],[k])=f([],[])*g([l,m],[])*a([],[m],j)
