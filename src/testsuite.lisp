@@ -57,6 +57,7 @@
 	;; known failure.  Presumably 1.12 will have this fixed.
 	;; Test 561 tickles bug in ECL if signed zero enabled; see ECL
 	;; bug #329. Fixed post-16.1.3.
+	;; Test 50 still sometimes fails in ecl 16.1.2
         ((mlist simp) "rtest16"
 	 ((mlist simp) 524 525)
 	 #+ecl ((mlist simp) 50 561)
