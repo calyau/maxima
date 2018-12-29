@@ -2410,6 +2410,19 @@ For instance:
 
 Compute the Hodge-dual of @var{expr}. For instance:
 
+@c ===beg===
+@c load("itensor");
+@c imetric(g);
+@c idim(4);
+@c icounter:100;
+@c decsym(A,3,0,[anti(all)],[])$
+@c ishow(A([i,j,k],[]))$
+@c ishow(canform(hodge(%)))$
+@c ishow(canform(hodge(%)))$
+@c lc2kdt(%)$
+@c %,kdelta$
+@c ishow(canform(contract(expand(%))))$
+@c ===end===
 @example
 
 (%i1) load("itensor");
@@ -2485,6 +2498,13 @@ to translate tensor expressions into appropriately indexed TeX objects.
 To use the @code{tentex} function, you must first load @code{tentex},
 as in the following example:
 
+@c ===beg===
+@c load("itensor");
+@c load(tentex);
+@c idummyx:m;
+@c ishow(icurvature([j,k,l],[i]))$
+@c tentex(%)$
+@c ===end===
 @example
 (%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
@@ -2543,6 +2563,15 @@ transformed assignment statement can be evaluated by just doing
 @code{ev}. The following examples demonstrate the features of this
 function.
 
+@c ===begx===
+@c load("itensor");
+@c eqn:ishow(t([i,j],[k])=f([],[])*g([l,m],[])*a([],[m],j)
+@c      *b([i],[l,k]))$
+@c ic_convert(eqn);
+@c imetric(g);
+@c metricconvert:true;
+@c ic_convert(eqn);
+@c ===endx===
 @example
 (%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
@@ -2601,4 +2630,3 @@ should not be redefined:
   _lcprod
   _extlc
 @end example
-
