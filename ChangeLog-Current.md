@@ -8,7 +8,10 @@ New items in core:
    location the documentation is searched for.
  * The lisp function defun-maclisp, a function that allows to define 
    non-user functions using the maclisp nargs syntax.
-
+ * Documentation: ./update_examples now interprets lines beginning with 
+   the string "input:" as text that should be sent as input to the 
+   preceeding command.
+  
 New items in share:
 -------------------
  * Many improvements to the simplex algorithm including the ability to handle
@@ -64,6 +67,13 @@ Changes in core:
    while maxima is still preparing the next one the result might be garbled
    data.
  * Small improvements for ./configure's --enable-quiet-build switch
+ * doc/info/update_examples.sh can now be used for more examples of the 
+   documentation including interactive ones.
+ * add series expansion for expintegral_si and gamma_incomplete. This
+   unfortunately breaks the following integrals found in the test suite:
+     integrate(log(cot(x) - 1), x, 0, %pi/4);           /* rtest16  524 */
+     integrate(log(cos(x)), x, 0, %pi/2);               /* rtest16  525 */
+     integrate((log((2-x)/2)+log(2))/(1-x), x, 0, 1);   /* rtestint 232 */
  
 Changes in share:
 --------------
