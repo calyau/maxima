@@ -25,7 +25,7 @@ set -e
 # the lisp's standard input so it isn't taken from the keyboard even
 # if the current lisp defaults to that.
 echo "Running the share testsuite..."
-$LOCAL_MAXIMA --lisp=$LISP --batch-string='build_info();run_testsuite(share_tests=only);' 2>&1 | tee "$OUTPUT_SHARE_LOG"
+$LOCAL_MAXIMA --lisp=$LISP --batch-string='build_info();run_testsuite(share_tests=only);' < @abs_top_srcdir@/tests/quit.lisp 2>&1 | tee "$OUTPUT_SHARE_LOG"
 echo "Running the testsuite for the maxima core..."
 $LOCAL_MAXIMA --lisp=$LISP --batch-string='build_info();testsuite_files:append(["rtest_ask.mac"],testsuite_files);run_testsuite();' < @abs_top_srcdir@/tests/rtest_ask_input.mac 2>&1 | tee "$OUTPUT_LOG"
 
