@@ -306,6 +306,22 @@ taylor(gamma(x),x,1,1);
 taylor(log(gamma(x)),x,0,5);
 (-log(x))+ -%gamma*x+(%pi^2*x^2)/12-(zeta(3)*x^3)/3+(%pi^4*x^4)/360-(zeta(5)*x^5)/5$
 
+taylor(gamma_incomplete(1/2,z), z, 0, 9);
+sqrt(%pi)-2*sqrt(z)+(2*z^(3/2))/3-z^(5/2)/5+z^(7/2)/21-z^(9/2)/108
+                +z^(11/2)/660-z^(13/2)/4680+z^(15/2)/37800-z^(17/2)/342720$
+
+/* should be
+   2*sqrt(z)-(2*z^(3/2))/3+z^(5/2)/5-z^(7/2)/21+z^(9/2)/108-z^(11/2)/660
+                +z^(13/2)/4680-z^(15/2)/37800+z^(17/2)/342720
+   but doesn't work because of simplification rule
+   gamma_incomplete_lower(1/2,z) -> sqrt(%pi)*erf(sqrt(z)) */
+errcatch(taylor(gamma_incomplete_lower(1/2,z), z, 0, 9));
+[]$
+
+taylor(gamma_incomplete_lower(1/3,z), z, 0, 9);
+3*z^(1/3)-(3*z^(4/3))/4+(3*z^(7/3))/14-z^(10/3)/20+z^(13/3)/104
+                -z^(16/3)/640+z^(19/3)/4560-z^(22/3)/36960+z^(25/3)/336000;
+
 taylor(zeta(x),x,0,1);
  -1/2 - (log(%pi) + log(2)) * x / 2$
 
@@ -314,6 +330,9 @@ x + ((x^2)/2) + ((x^3)/3)$
 
 taylor(li[s](x),x,0,3);
 x + ((x^2)/(2^s)) + ((x^3)/(3^s))$
+
+errcatch(taylor(li[2](x), x, 1, 9));
+[]$
 
 /*--- expintegral ---*/
 taylor(expintegral_si(z), z, 0, 9);
