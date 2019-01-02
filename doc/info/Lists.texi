@@ -72,7 +72,7 @@ may need an amount of time that is roughly proportional to  @code{n},
 
 Note that if an element of a subscripted variable is written to before
 a list or an array of this name is declared a @mref{hashed array}
-@xref{Arrays}) is created, not a list.
+(@pxref{Arrays}) is created, not a list.
 
 Examples:
 

@@ -53,7 +53,7 @@ many of the  functions that can be applied to arrays can be applied to them, as 
       of elements, can be created without knowing their final size.
 @item Declared arrays that allow fast access to random elements at the cost that their
       size needs to be known at construction time.
-      (@xref{Performance considerations for Lists})
+      (@xref{Performance considerations for Lists}.)
 @end itemize
 
 @menu
