@@ -571,7 +571,7 @@ by @code{kill}.
 
 @c -----------------------------------------------------------------------------
 @anchor{labels}
-@deffn  {Function} labels (@var{symbol}) @
+@deffn  {Function} labels (@var{symbol})
 
 Returns the list of input, output, or intermediate expression labels which begin
 with @var{symbol}.  Typically @var{symbol} is the value of
@@ -949,7 +949,7 @@ Example:
 
 Define a function and enter the Lisp system under Maxima.  The definition is
 inspected on the property list, then the function definition is extracted,
-factored and stored in the variable $result.  The variable can be used in Maxima
+factored and stored in the variable @code{$result}.  The variable can be used in Maxima
 after returning to Maxima.
 
 @example
