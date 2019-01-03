@@ -246,10 +246,10 @@ and elapsed time with each output line.
 
 @c -----------------------------------------------------------------------------
 @anchor{timedate}
-@deffn  {Function} timedate @
-@fname{timedate} (@var{T}, @var{tz_offset})
-@fname{timedate} (@var{T})
-@fname{timedate} () @
+@deffn {Function} timedate @
+@fname{timedate} (@var{T}, @var{tz_offset}) @
+@fname{timedate} (@var{T}) @
+@fname{timedate} ()
 
 @code{timedate(@var{T}, @var{tz_offset})} returns a string
 representing the time @var{T} in the time zone @var{tz_offset}.
