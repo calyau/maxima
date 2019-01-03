@@ -142,19 +142,6 @@ Symbolic computation tends to create a good deal of garbage (temporary or
 intermediate results that are eventually not used), and effective handling of
 this can be crucial to successful completion of some programs.
 
-@c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
-@c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
-@c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
-Under GCL, on UNIX systems where the mprotect system call is available
-(including SUN OS 4.0 and some variants of BSD) a stratified garbage collection
-is available.  This limits the collection to pages which have been recently
-written to.  See the GCL documentation under ALLOCATE and GBC.  At the Lisp
-level doing (setq si::*notify-gbc* t) will help you determine which areas might
-need more space.
-
-For other Lisps that run Maxima, we refer the reader to the documentation for
-that Lisp on how to control GC.
-
 @c -----------------------------------------------------------------------------
 @node Introduction to Program Flow, Functions and Variables for Program Flow, Garbage Collection, Program Flow
 @section Introduction to Program Flow
