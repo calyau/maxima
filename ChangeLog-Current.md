@@ -11,7 +11,9 @@ New items in core:
  * Documentation: ./update_examples now interprets lines beginning with 
    the string "input:" as text that should be sent as input to the 
    preceeding command.
-  
+ * garbage_collect() which manually triggers the lisp's garbage collector 
+   or returns false.
+
 New items in share:
 -------------------
  * Many improvements to the simplex algorithm including the ability to handle
