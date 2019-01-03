@@ -748,4 +748,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
   (progn (si::gbc t) t)
   #+sbcl
   (progn (sb-ext::gc :full t) t)
-  #-(or allegro clisp ecl gcl sbcl) nil)
+  #+cmucl
+  (progn (ext:gc :full t) t)
+  #-(or allegro clisp ecl gcl sbcl cmucl)
+  nil)
