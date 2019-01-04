@@ -147,9 +147,8 @@ being freed too early, multiple times or not at all).
 
 @c -----------------------------------------------------------------------------
 
-@anchor{garbage-collect}
-@deffn  {garbage-collect} @
-@fname{garbage-collect} ()
+@anchor{garbage_collect}
+@deffn {Function} garbage_collect ()
 
 Tries to manually trigger the lisp's garbage collection. This rarely is necessary
 as the lisp will employ an excellent algorithm for determining when to start
