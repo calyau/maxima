@@ -138,22 +138,40 @@ Some Lisp functions are shadowed in the Maxima package, namely the following.
 @section Garbage Collection
 @c -----------------------------------------------------------------------------
 
-Symbolic computation tends to create a good deal of garbage (temporary or
-intermediate results that are eventually not used), and effective handling of
-this can be crucial to successful completion of some programs.
+One of the advantages of using lisp is that it uses ``Garbage Collection''. In other
+words it automatically takes care of freeing memory occupied for example of
+intermediate results that were used during symbolic computation.
 
-@c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
-@c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
-@c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
-Under GCL, on UNIX systems where the mprotect system call is available
-(including SUN OS 4.0 and some variants of BSD) a stratified garbage collection
-is available.  This limits the collection to pages which have been recently
-written to.  See the GCL documentation under ALLOCATE and GBC.  At the Lisp
-level doing (setq si::*notify-gbc* t) will help you determine which areas might
-need more space.
+Garbage Collection avoids many errors frequently found in C programs (memory
+being freed too early, multiple times or not at all).
 
-For other Lisps that run Maxima, we refer the reader to the documentation for
-that Lisp on how to control GC.
+@c -----------------------------------------------------------------------------
+
+@anchor{garbage-collect}
+@deffn  {garbage-collect} @
+@fname{garbage-collect} ()
+
+Tries to manually trigger the lisp's garbage collection. This rarely is necessary
+as the lisp will employ an excellent algorithm for determining when to start
+garbage collection. A use-case for this function is to tell the lisp chat copious
+amounts of temporary memory have just been allocated by a lengthy calculation and
+now can be freed. 
+
+Running out of RAM early often cannot resolved by changing the frequency of
+garbage collects but is caused by fragmentation due to allocating memory
+in an inept order instead: If space for temporary data and real results is
+allocated alternately it is possible to create a memory layout in which after
+freeing the temporary data the space between the allocated chunks of memory is
+too small for doing serious work. In this case the solution is to change the
+order in which memory is allocated.
+
+If maxima knows how to do manually trigger the garbage collection for the
+current lisp @code{garbage-collect} returns @code{true}, else @code{false}.
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @node Introduction to Program Flow, Functions and Variables for Program Flow, Garbage Collection, Program Flow

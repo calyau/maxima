@@ -736,3 +736,19 @@ DESTINATION is an actual stream (rather than nil for a string)."
   (defmfun $elapsed_run_time ()
     (let ((elapsed-run-time (- (get-internal-run-time) t0-run)))
       (/ elapsed-run-time float-units))))
+
+;; Tries to manually trigger the lisp's garbage collector
+;; and returns true if it knew how to do that.
+(defmfun $garbage_collect ()
+  #+allegro
+  (progn (excl::gc) t)
+  #+(or clisp ecl)
+  (progn (ext::gc) t)
+  #+gcl
+  (progn (si::gbc t) t)
+  #+sbcl
+  (progn (sb-ext::gc :full t) t)
+  #+cmucl
+  (progn (ext:gc :full t) t)
+  #-(or allegro clisp ecl gcl sbcl cmucl)
+  nil)
