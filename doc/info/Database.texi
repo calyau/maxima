@@ -1228,7 +1228,9 @@ Examples:
 @c asksign (foo (a));
 @c asksign (foo (a) + bar (b));
 @c asksign (log (a));
+@c input:p;
 @c asksign (a - b);
+@c input:p;
 @c ===end===
 @example
 (%i1) assume_pos: true$
