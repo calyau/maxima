@@ -1067,6 +1067,7 @@ Examples:
 @c diff (diff (delta (t), t), t);
 @c laplace (%, t, s);
 @c assume(a>0)$
+@c declare(a, integer)$
 @c laplace(gamma_incomplete(a,t),t,s),gamma_expand:true;
 @c factor(laplace(gamma_incomplete(1/2,t),t,s));
 @c assume(exp(%pi*s)>1)$
