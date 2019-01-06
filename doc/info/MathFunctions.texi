@@ -1132,7 +1132,7 @@ evaluated in float or bigfloat precision.
 @c factlim : 10;
 @c [0!, (7/2)!, 8!, 20!];
 @c [4,77!, (1.0+%i)!];
-@c [2.86b0!, 1.0b0+%i)!];
+@c [2.86b0!, (1.0b0+%i)!];
 @c ===end===
 @example
 @group
