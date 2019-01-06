@@ -257,7 +257,39 @@
     the top level "Makefile.am" so that it will be included in the
     release tarball.
 
-  9.4  Git commands for releases
+  9.4  Verifying the functionality of the maxima tarball
+
+    The autotools offer a few make targets that allow to verify the
+    maxima release:
+
+    $ make pdf
+    isn't done automatically on "make all" so it is good to test if this
+    make target works.
+    
+    $ make check
+    runs the standard testsuite, the testsuite for the share packages
+    and the tests for the ask_* functions for all lisps maxima is compiled
+    with and returns an error if any test unexpectedly failed.
+
+    $ make distcheck
+    compiles maxima, builds a release tarball, extracts this tarball,
+    compiles it and runs "make check" on it in order to find out if
+    "make dist" has produced a working tarball no files are missing from.
+
+    $ mkdir build
+    $ ../configure
+    $ make
+    $ make distcleancheck
+    tests if "make disclean" brings maxima back into the original state.
+    this is very handy when building debian packages.
+    
+    make installcheck
+    $ tests if "make install" results in a working maxima release.
+
+    Note that with Ubuntu Cosmic/Disco in Jan 2019 still only the first
+    two of these make targets run without errors.
+
+  9.5  Git commands for releases
 
     Release versions live on a branch named branch-5_mm, and are tagged
     5.mm.0, 5.mm.1, 5.mm.2, etc. The Git tag must be the same as the
@@ -285,7 +317,7 @@
 
     $ git cherry-pick -x <commit hash>
 
-  9.5  Building a release
+  9.6  Building a release
 
     $ git checkout branch-5_mm
     $ sh bootstrap
@@ -323,7 +355,7 @@
     equip the Maxima package it generates with the metadata that allows to
     install the wxMaxima package shipped with Debian and Ubuntu.
     
-  9.6  Uploading files
+  9.7  Uploading files
 
     $ sftp mysfusername,maxima@frs.sourceforge.net
     > cd /home/frs/project/m/ma/maxima
@@ -339,7 +371,7 @@
     > put maxima-5.mm.nn.tar.gz
     > quit
 
-  9.7  Announcements
+  9.8  Announcements
 
     Post an announcement about every 5.mm.nn release to the Maxima
     mailing list. When it seems stable enough (i.e. no immediate plans
