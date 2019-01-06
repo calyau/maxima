@@ -563,7 +563,7 @@ cancellations are unnecessary.
 
 Must be executed before assigning components to a @var{tensor} for which
 a built in value already exists as with @code{ichr1}, @code{ichr2},
-@code{icurvature}. See the example under @code{icurvature}.
+@code{icurvature}. See the example under @mref{icurvature}.
 
 @opencatbox
 @category{Package itensor}

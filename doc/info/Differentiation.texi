@@ -438,7 +438,7 @@ Examples:
 
 The Dirac Delta function.
 
-Currently only @code{laplace} knows about the @code{delta} function.
+Currently only @mref{laplace} knows about the @code{delta} function.
 
 Example:
 
@@ -466,7 +466,7 @@ p;
 @defvrx {Function} dependencies (@var{f_1}, @dots{}, @var{f_n})
 
 The variable @code{dependencies} is the list of atoms which have functional
-dependencies, assigned by @mref{depends}, the function @code{dependencies}, or @code{gradef}.
+dependencies, assigned by @mref{depends}, the function @code{dependencies}, or @mref{gradef}.
 The @code{dependencies} list is cumulative:
 each call to @code{depends}, @code{dependencies}, or @code{gradef} appends additional items.
 The default value of @code{dependencies} is @code{[]}.
@@ -555,13 +555,13 @@ and applies the chain rule in these cases.
 @var{f}.
 
 @code{depends} returns a list of the dependencies established.
-The dependencies are appended to the global variable @code{dependencies}.
+The dependencies are appended to the global variable @mref{dependencies}.
 @code{depends} evaluates its arguments.
 
 @code{diff} is the only Maxima command which recognizes dependencies established
 by @code{depends}.  Other functions (@code{integrate}, @code{laplace}, etc.)
 only recognize dependencies explicitly represented by their arguments.
-For example, @code{integrate} does not recognize the dependence of @code{f} on
+For example, @mref{integrate} does not recognize the dependence of @code{f} on
 @code{x} unless explicitly represented as @code{integrate (f(x), x)}.
 
 @code{depends(@var{f}, [@var{x_1}, @dots{}, @var{x_n}])} is equivalent to @code{dependencies(@var{f}(@var{x_1}, @dots{}, @var{x_n}))}.
@@ -670,7 +670,7 @@ Example:
 @deffn {Function} derivlist (@var{var_1}, @dots{}, @var{var_k})
 
 Causes only differentiations with respect to
-the indicated variables, within the @code{ev} command.
+the indicated variables, within the @mref{ev} command.
 
 @opencatbox
 @category{Differential calculus} @category{Evaluation}
@@ -1028,19 +1028,19 @@ for which partial derivatives have been defined by @code{gradef}.
 Attempts to compute the Laplace transform of @var{expr} with respect to the 
 variable @var{t} and transform parameter @var{s}.
 
-@code{laplace} recognizes in @var{expr} the functions @code{delta}, @code{exp},
-@code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, and @code{erf},
-as well as @code{derivative}, @code{integrate}, @code{sum}, and @code{ilt}.  If
-laplace fails to find a transform the function @code{specint} is called.
+@code{laplace} recognizes in @var{expr} the functions @mrefcomma{delta} @mrefcomma{exp}
+@mrefcomma{log} @mrefcomma{sin} @mrefcomma{cos} @mrefcomma{sinh} @mrefcomma{cosh} and @mrefcomma{erf}
+as well as @code{derivative}, @mrefcomma{integrate} @mrefcomma{sum} and @mrefdot{ilt} If
+laplace fails to find a transform the function @mref{specint} is called.
 @code{specint} can find the laplace transform for expressions with special
-functions like the bessel functions @code{bessel_j}, @code{bessel_i}, @dots{}
-and can handle the @code{unit_step} function.  See also @mrefdot{specint}
+functions like the bessel functions @mrefcomma{bessel_j} @mrefcomma{bessel_i} @dots{}
+and can handle the @mref{unit_step} function.  See also @mrefdot{specint}
 
 If @code{specint} cannot find a solution too, a noun @code{laplace} is returned.
 
 @c REPHRASE THIS
 @var{expr} may also be a linear, constant coefficient differential equation in
-which case @code{atvalue} of the dependent variable is used.
+which case @mref{atvalue} of the dependent variable is used.
 @c "used" -- USED HOW ??
 The required atvalue may be supplied either before or after the transform is
 computed.  Since the initial conditions must be specified at zero, if one has
@@ -1053,11 +1053,11 @@ for them and substituting their values back.
 other kinds of convolutions are not recognized.
 
 Functional relations must be explicitly represented in @var{expr};
-implicit relations, established by @code{depends}, are not recognized.
+implicit relations, established by @mrefcomma{depends} are not recognized.
 That is, if @var{f} depends on @var{x} and @var{y},
 @code{f (x, y)} must appear in @var{expr}.
 
-See also @mrefcomma{ilt}, the inverse Laplace transform.
+See also @mrefcomma{ilt} the inverse Laplace transform.
 
 Examples:
 
