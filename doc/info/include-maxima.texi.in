@@ -186,6 +186,7 @@ and develop DOE Macsyma, now called Maxima.
 * minpack-pkg::                     MINPACK functions for minimization and roots
 * mnewton-pkg::                     Newton's method.
 * numericalio-pkg::                 Reading and writing files.
+* odepack-pkg::                     Numerical ODE solver
 * operatingsystem-pkg::             Common operating system tasks (create/remove dirs+files,...).
 * opsubst-pkg::                     Substitutions utility.
 * orthopoly-pkg::                   Orthogonal polynomials.
@@ -542,6 +543,10 @@ numericalio
 * Introduction to numericalio::
 * Functions and Variables for plain-text input and output::
 * Functions and Variables for binary input and output::
+
+odepack
+* Introduction to ODEPACK::
+* Functions and Variables for odepack::  
 
 operatingsystem
 * Introduction to operatingsystem::
@@ -915,11 +920,15 @@ Understanding maxima's output
 @chapter mnewton
 @include mnewton.texi
 
-@node numericalio-pkg, operatingsystem-pkg, mnewton-pkg, Top
+@node numericalio-pkg
 @chapter numericalio
 @include numericalio.texi
 
-@node operatingsystem-pkg, opsubst-pkg, numericalio-pkg, Top
+@node odepack-pkg
+@chapter odepack
+@include odepack.texi
+
+@node operatingsystem-pkg
 @chapter operatingsystem
 @include operatingsystem.texi
 
