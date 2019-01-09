@@ -1,4 +1,8 @@
 #!/bin/sh
+
+# TEXI2HTML=/usr/bin/env perl @abs_srcdir@/texi2html
+TEXI2HTML=texi2any
+
 mkdir tmp_html
 cd tmp_html
 for f in @abs_srcdir@/*.texi; do @SED@ -e 's/^@\(deffn\|defvr\)  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: \2}\n&/;' -e 's/^@node  *\([^,]*\).*/@anchor{Item: \1}\n&/' $f > $(basename $f); done 
@@ -6,8 +10,16 @@ cat *.texi | gawk -e '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end de
 python make-categories.py 
 @SED@ -e 's/^@bye/@node Documentation Categories\n@chapter Documentation Categories/' @abs_srcdir@/maxima.texi > maxima.texi 
 ( for f in Category-*.texi; do echo '@include' $f; done ; echo @bye ) >> maxima.texi 
-/usr/bin/env perl @abs_srcdir@/texi2html --split chapter --lang=en --output="@abs_builddir@/tmp_html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
-/usr/bin/env perl @abs_srcdir@/texi2html --split none --lang=en --output="@abs_builddir@/maxima_singlepage.html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
+
+set -x
+if [ "$TEXI2HTML" = "texi2any" ];
+then
+    $TEXI2HTML --html --force -e 10000 --split=chapter --no-node-files --document-lang=en --output="@abs_builddir@/tmp_html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
+    $TEXI2HTML --html --force -e 10000 --no-split --document-lang=en --output="@abs_builddir@/maxima_singlepage.html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
+else
+    $TEXI2HTML --split chapter --lang=en --output="@abs_builddir@/tmp_html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
+    $TEXI2HTML --split none --lang=en --output="@abs_builddir@/maxima_singlepage.html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
+fi
 for f in *.html; do cat $f | @SED@ -e 's/^&middot;$//' -e 's/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' -e 's/<a href="\(.*\)">Category: \(.*\)<\/a>/<a href="\1">\2<\/a>/' -e 's/<a href="\(.*\)">Item: \(.*\)<\/a>/<a href="\1">\2<\/a>/' >tmpfile && mv tmpfile $f && install -c $f "@abs_builddir@" ; done 
 cd ..
-rm -r -f tmp_html
+#rm -r -f tmp_html
