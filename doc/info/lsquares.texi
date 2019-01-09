@@ -486,6 +486,7 @@ Example:
            2             2
  + ((D + 1)  - C - B - A) )/5
 @end group
+@end group
 @end example
 
 @opencatbox
