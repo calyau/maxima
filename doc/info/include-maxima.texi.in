@@ -1000,3 +1000,8 @@ Understanding maxima's output
 @appendix Function and Variable Index
 
 @printindex fn
+
+@page
+@ifhtml
+@contents
+@end ifhtml
