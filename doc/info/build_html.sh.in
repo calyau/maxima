@@ -20,6 +20,7 @@ else
     $TEXI2HTML --split chapter --lang=en --output="@abs_builddir@/tmp_html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
     $TEXI2HTML --split none --lang=en --output="@abs_builddir@/maxima_singlepage.html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
 fi
+set +x
 for f in *.html; do cat $f | @SED@ -e 's/^&middot;$//' -e 's/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' -e 's/<a href="\(.*\)">Category: \(.*\)<\/a>/<a href="\1">\2<\/a>/' -e 's/<a href="\(.*\)">Item: \(.*\)<\/a>/<a href="\1">\2<\/a>/' >tmpfile && mv tmpfile $f && install -c $f "@abs_builddir@" ; done 
 cd ..
 #rm -r -f tmp_html
