@@ -14,6 +14,8 @@ python make-categories.py
 set -x
 if [ "$TEXI2HTML" = "texi2any" ];
 then
+    # --no-node-files so we don't have thousands of little html files
+    # --force -e 10000 because the category stuff causes lots of errors.
     $TEXI2HTML --html --force -e 10000 --split=chapter --no-node-files --document-lang=en --output="@abs_builddir@/tmp_html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
     $TEXI2HTML --html --force -e 10000 --no-split --document-lang=en --output="@abs_builddir@/maxima_singlepage.html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
 else
