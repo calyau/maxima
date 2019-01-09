@@ -41,7 +41,8 @@ with the command @code{load("combinatorics")}.
 
 
 @opencatbox
-@category{Share packages} @category{Package combinatorics}
+@category{Share packages}
+@category{Package combinatorics}
 @closecatbox
 
 @node Functions and Variables for Combinatorics,  , Package combinatorics, combinatorics-pkg

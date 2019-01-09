@@ -230,7 +230,9 @@ Extensive debugging traces and messages are displayed if the command
 @code{put('contrib_ode,true,'verbose)} is executed.
 
 @opencatbox
-@category{Differential equations} @category{Share packages} @category{Package contrib_ode}
+@category{Differential equations}
+@category{Share packages}
+@category{Package contrib_ode}
 @closecatbox
 
 

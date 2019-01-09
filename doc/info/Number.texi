@@ -58,7 +58,8 @@ The return value is a big float (bfloat);
 @var{n} is the number of digits in the return value.
 
 @opencatbox
-@category{Number theory} @category{Numerical evaluation}
+@category{Number theory}
+@category{Numerical evaluation}
 @closecatbox
 @end deffn
 
@@ -90,7 +91,8 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
 @code{load ("bffac")} loads this function.
 
 @opencatbox
-@category{Number theory} @category{Numerical evaluation}
+@category{Number theory}
+@category{Numerical evaluation}
 @closecatbox
 @end deffn
 
@@ -772,7 +774,8 @@ pass one Miller-Rabin test is less than 1/4.  Using the default value 25 for
 composite is much smaller that 10^-15.
 
 @opencatbox
-@category{Predicate functions} @category{Number theory}
+@category{Predicate functions}
+@category{Number theory}
 @closecatbox
 @end deffn
 
@@ -1737,7 +1740,8 @@ The optional third argument must be of the same form as the list returned by
 @end example
 
 @opencatbox
-@category{Predicate functions} @category{Number theory}
+@category{Predicate functions}
+@category{Number theory}
 @closecatbox
 @end deffn
 

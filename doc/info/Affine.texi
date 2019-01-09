@@ -10,7 +10,10 @@
 @code{affine} is a package to work with groups of polynomials.
 
 @opencatbox
-@category{Polynomials} @category{Groebner bases} @category{Share packages} @category{Package affine}
+@category{Polynomials}
+@category{Groebner bases}
+@category{Share packages}
+@category{Package affine}
 @closecatbox
 
 

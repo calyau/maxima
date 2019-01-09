@@ -77,7 +77,9 @@ However, subscripted operators are allowed:
 To use this function write first @code{load("opsubst")}.
 
 @opencatbox
-@category{Expressions} @category{Share packages} @category{Package opsubst}
+@category{Expressions}
+@category{Share packages}
+@category{Package opsubst}
 @closecatbox
 
 @end deffn

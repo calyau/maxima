@@ -10,7 +10,10 @@
 Fortran library MINPACK, as obtained from Netlib.
 
 @opencatbox
-@category{Numerical methods}  @category{Optimization} @category{Share packages} @category{Package minpack}
+@category{Numerical methods} 
+@category{Optimization}
+@category{Share packages}
+@category{Package minpack}
 @closecatbox
 
 @node Functions and Variables for minpack,  , Introduction to minpack, minpack-pkg

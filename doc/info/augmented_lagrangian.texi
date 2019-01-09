@@ -146,7 +146,10 @@ Same example as before, but this time the gradient is supplied as an argument.
 @end example
 
 @opencatbox
-@category{Numerical methods} @category{Optimization} @category{Share packages} @category{Package augmented_lagrangian} 
+@category{Numerical methods}
+@category{Optimization}
+@category{Share packages}
+@category{Package augmented_lagrangian} 
 @closecatbox
 
 @end deffn

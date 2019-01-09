@@ -340,7 +340,9 @@ Example:
 @end ifnotinfo
 
 @opencatbox
-@category{Plotting} @category{Share packages} @category{Package implicit_plot}
+@category{Plotting}
+@category{Share packages}
+@category{Package implicit_plot}
 @closecatbox
 @end deffn
 
@@ -392,7 +394,8 @@ corresponding the maximum 36 iterations would not be black.
 
 
 @opencatbox
-@category{Package dynamics} @category{Plotting}
+@category{Package dynamics}
+@category{Plotting}
 @closecatbox
 
 @end deffn
@@ -460,7 +463,8 @@ Example:
 @end ifnotinfo
 
 @opencatbox
-@category{Package dynamics} @category{Plotting}
+@category{Package dynamics}
+@category{Plotting}
 @closecatbox
 
 @end deffn

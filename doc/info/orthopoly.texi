@@ -35,7 +35,9 @@ the @code{orthopoly} package and its documentation. The package
 is released under the GNU General Public License (GPL).
 
 @opencatbox
-@category{Orthogonal polynomials} @category{Share packages} @category{Package orthopoly}
+@category{Orthogonal polynomials}
+@category{Share packages}
+@category{Package orthopoly}
 @closecatbox
 
 @subsection Getting Started with orthopoly
@@ -760,7 +762,8 @@ Reference: Abramowitz and Stegun, equation 22.5.55, page 780.
 Return @code{true} if the input is an interval and return false if it isn't. 
 
 @opencatbox
-@category{Package orthopoly} @category{Predicate functions}
+@category{Package orthopoly}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -955,7 +958,8 @@ is symbolic, @code{pochhammer} returns a noun form.
 @end example
 
 @opencatbox
-@category{Package orthopoly} @category{Gamma and factorial functions}
+@category{Package orthopoly}
+@category{Gamma and factorial functions}
 @closecatbox
 
 @end deffn
@@ -983,7 +987,8 @@ Examples:
 Reference: Abramowitz and Stegun, equation 6.1.16, page 256.
 
 @opencatbox
-@category{Package orthopoly} @category{Gamma and factorial functions}
+@category{Package orthopoly}
+@category{Gamma and factorial functions}
 @closecatbox
 
 @end defvr
@@ -994,7 +999,8 @@ The spherical Bessel function of the first kind.
 Reference: Abramowitz and Stegun, equations 10.1.8, page 437 and 10.1.15, page 439.
 
 @opencatbox
-@category{Package orthopoly} @category{Bessel functions}
+@category{Package orthopoly}
+@category{Bessel functions}
 @closecatbox
 
 @end deffn
@@ -1005,7 +1011,8 @@ The spherical Bessel function of the second kind.
 Reference: Abramowitz and Stegun, equations 10.1.9, page 437 and 10.1.15, page 439.
 
 @opencatbox
-@category{Package orthopoly} @category{Bessel functions}
+@category{Package orthopoly}
+@category{Bessel functions}
 @closecatbox
 
 @end deffn
@@ -1017,7 +1024,8 @@ first kind.
 Reference: Abramowitz and Stegun, equation 10.1.36, page 439.
 
 @opencatbox
-@category{Package orthopoly} @category{Bessel functions}
+@category{Package orthopoly}
+@category{Bessel functions}
 @closecatbox
 
 @end deffn
@@ -1028,7 +1036,8 @@ The spherical Hankel function of the second kind.
 Reference: Abramowitz and Stegun, equation 10.1.17, page 439.
 
 @opencatbox
-@category{Package orthopoly} @category{Bessel functions}
+@category{Package orthopoly}
+@category{Bessel functions}
 @closecatbox
 
 @end deffn
@@ -1053,7 +1062,8 @@ If you want a unit step function that
 takes on the value 1/2 at zero, use @code{(1 + signum (@var{x}))/2}.
 
 @opencatbox
-@category{Package orthopoly} @category{Mathematical functions}
+@category{Package orthopoly}
+@category{Mathematical functions}
 @closecatbox
 
 @end deffn

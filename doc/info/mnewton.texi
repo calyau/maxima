@@ -12,7 +12,9 @@
 equations in one or more variables.
 
 @opencatbox
-@category{Numerical methods} @category{Share packages} @category{Package mnewton}
+@category{Numerical methods}
+@category{Share packages}
+@category{Package mnewton}
 @closecatbox
 
 @c -----------------------------------------------------------------------------

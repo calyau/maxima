@@ -61,8 +61,10 @@ If only one ODE is given, @code{drawdf} will implicitly admit
 equation into a system of two autonomous equations.
 
 @opencatbox
-@category{Differential equations} @category{Plotting}
-@category{Share packages} @category{Package drawdf}
+@category{Differential equations}
+@category{Plotting}
+@category{Share packages}
+@category{Package drawdf}
 @category{Package draw}
 @closecatbox
 

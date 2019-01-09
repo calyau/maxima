@@ -64,7 +64,9 @@ This function is controlled by global variables @var{GGFINFINITY} and @var{GGFCF
 To use this function write first @code{load("ggf")}.
 
 @opencatbox
-@category{Generating functions} @category{Share packages} @category{Package ggf}
+@category{Generating functions}
+@category{Share packages}
+@category{Package ggf}
 @closecatbox
 
 @end deffn

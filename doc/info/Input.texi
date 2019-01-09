@@ -93,7 +93,8 @@ always appended.
 @code{writefile}.
 
 @opencatbox
-@category{File output} @category{Console interaction}
+@category{File output}
+@category{Console interaction}
 @closecatbox
 @end deffn
 
@@ -154,7 +155,8 @@ the tests which have failed.
 See also @mrefcomma{load} @mrefcomma{batchload} and @mrefdot{demo}
 
 @opencatbox
-@category{Session management} @category{File input}
+@category{Session management}
+@category{File input}
 @closecatbox
 @end deffn
 
@@ -181,7 +183,8 @@ See also @mrefcomma{batch} and @mrefdot{load}
 @c WHY NOT GET RID OF batchload ???
 
 @opencatbox
-@category{Session management} @category{File input}
+@category{Session management}
+@category{File input}
 @closecatbox
 @end deffn
 
@@ -192,7 +195,8 @@ See also @mrefcomma{batch} and @mrefdot{load}
 Closes the transcript file opened by @mref{writefile} or @mrefdot{appendfile}
 
 @opencatbox
-@category{File output} @category{Console interaction}
+@category{File output}
+@category{Console interaction}
 @closecatbox
 @end deffn
 
@@ -213,7 +217,8 @@ functions always truncate their output file, and @mref{tex} and
 @c WHAT ABOUT WRITEFILE ??
 
 @opencatbox
-@category{File output} @category{Global flags}
+@category{File output}
+@category{Global flags}
 @closecatbox
 @end defvr
 
@@ -231,7 +236,8 @@ component is simply replaced by @var{filename}.
 The result is a Lisp pathname object.
 
 @opencatbox
-@category{File input} @category{File output}
+@category{File input}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -335,7 +341,8 @@ expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp},
 @end flushleft
 
 @opencatbox
-@category{File input} @category{Global variables}
+@category{File input}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -432,7 +439,8 @@ See @mref{file_search} for more detail about the file search mechanism.
 @code{load} evaluates its argument.
 
 @opencatbox
-@category{Session management} @category{File input}
+@category{Session management}
+@category{File input}
 @closecatbox
 @end deffn
 
@@ -489,7 +497,8 @@ as much of the path as needed to find the file.
 more convenient to use @mref{load} instead of @code{loadfile}.
 
 @opencatbox
-@category{Session management} @category{File input}
+@category{Session management}
+@category{File input}
 @closecatbox
 @end deffn
 
@@ -518,7 +527,8 @@ When @code{loadprint} is @code{false}, never print a message.
 @end itemize
 
 @opencatbox
-@category{File input} @category{Global flags}
+@category{File input}
+@category{Global flags}
 @closecatbox
 @end defvr
 
@@ -589,7 +599,8 @@ attempts to locate the file by appending @var{path} to each of the elements of
 or otherwise the result of a successful filename merge.
 
 @opencatbox
-@category{File input} @category{Console interaction}
+@category{File input}
+@category{Console interaction}
 @closecatbox
 @end deffn
 
@@ -654,7 +665,8 @@ have been assigned new values by the user; see @mrefdot{myoptions}
 @code{save} evaluates @var{filename} and quotes all other arguments.
 
 @opencatbox
-@category{Session management} @category{File output}
+@category{Session management}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -706,7 +718,8 @@ variable, a colon, and its value.  Note that the general form of
 @code{stringout} does not print variables as assignment statements.
 
 @opencatbox
-@category{Session management} @category{File output}
+@category{Session management}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -792,7 +805,8 @@ displayed by @code{playback}.
 @code{appendfile}.
 
 @opencatbox
-@category{File output} @category{Console interaction}
+@category{File output}
+@category{Console interaction}
 @closecatbox
 @end deffn
 
@@ -874,7 +888,8 @@ $$-\cos x$$
 @end example
 
 @opencatbox
-@category{TeX output} @category{File output}
+@category{TeX output}
+@category{File output}
 @closecatbox
 @end deffn
 

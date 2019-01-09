@@ -233,7 +233,8 @@ Warning - you are redefining the Macsyma function legendre_p
 @end example
 
 @opencatbox
-@category{Function definition} @category{File input}
+@category{Function definition}
+@category{File input}
 @closecatbox
 @end deffn
 

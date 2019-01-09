@@ -608,7 +608,8 @@ Example expression is --------------
 @end example
 
 @opencatbox
-@category{Debugging} @category{Display flags and variables}
+@category{Debugging}
+@category{Display flags and variables}
 @closecatbox
 @end defvr
 
@@ -629,7 +630,8 @@ symbol equivalent to @code{concat ('errexp, @var{n})}.
 See also @mref{error} and @mrefdot{error_size}
 
 @opencatbox
-@category{Debugging} @category{Display flags and variables}
+@category{Debugging}
+@category{Display flags and variables}
 @closecatbox
 @end defvr
 
@@ -805,7 +807,8 @@ not                  not         logical prefix
 @end example
 
 @opencatbox
-@category{Programming} @category{Predicate functions}
+@category{Programming}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -958,7 +961,8 @@ however, @code{maybe} is supported in translated code.
 See also @mref{is} and @mrefdot{maybe}
 
 @opencatbox
-@category{Programming} @category{Predicate functions}
+@category{Programming}
+@category{Predicate functions}
 @closecatbox
 
 @end defvr

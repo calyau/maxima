@@ -84,7 +84,9 @@ and the fundamental units are the associated SI units,
 but other fundamental dimensions and units can be declared.
 
 @opencatbox
-@category{Physical units} @category{Share packages} @category{Package ezunits}
+@category{Physical units}
+@category{Share packages}
+@category{Package ezunits}
 @closecatbox
 
 @node Introduction to physical_constants, Functions and Variables for ezunits, Introduction to ezunits, ezunits-pkg
@@ -281,7 +283,9 @@ Computing conversions to base units; may take a moment.
 @end example
 
 @opencatbox
-@category{Physical units} @category{Share packages} @category{Package physical_constants}
+@category{Physical units}
+@category{Share packages}
+@category{Package physical_constants}
 @closecatbox
 
 @node Functions and Variables for ezunits, , Introduction to physical_constants, ezunits-pkg

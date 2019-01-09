@@ -107,7 +107,8 @@ calling @code{desolve} by using @code{atvalue}.
 If @code{desolve} cannot obtain a solution, it returns @code{false}.
 
 @opencatbox
-@category{Differential equations} @category{Laplace transform}
+@category{Differential equations}
+@category{Laplace transform}
 @closecatbox
 @end deffn
 @anchor{ic1}

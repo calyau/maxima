@@ -23,7 +23,8 @@ will make both parameters tolerate in the same way.
 @code{load ("wrstcse")} loads this package.
 
 @opencatbox
-@category{Share packages} @category{Package wrstcse}
+@category{Share packages}
+@category{Package wrstcse}
 @closecatbox
 
 @node Functions and Variables for wrstcse, , Introduction to wrstcse, wrstcse-pkg

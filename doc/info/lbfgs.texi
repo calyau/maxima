@@ -24,7 +24,10 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 [2] @url{http://netlib.org/opt/lbfgs_um.shar}
 
 @opencatbox
-@category{Numerical methods}  @category{Optimization} @category{Share packages} @category{Package lbfgs}
+@category{Numerical methods} 
+@category{Optimization}
+@category{Share packages}
+@category{Package lbfgs}
 @closecatbox
 
 @node Functions and Variables for lbfgs, , Introduction to lbfgs, Top

@@ -66,7 +66,9 @@ was not applied to these two terms.
 To use this function write first @code{load("stirling")}.
 
 @opencatbox
-@category{Gamma and factorial functions} @category{Share packages} @category{Package stirling}
+@category{Gamma and factorial functions}
+@category{Share packages}
+@category{Package stirling}
 @closecatbox
 
 @end deffn

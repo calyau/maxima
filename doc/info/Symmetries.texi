@@ -67,7 +67,10 @@ Springer-Verlag, New York Berlin, 308-320, 1989.
 @end iftex
 
 @opencatbox
-@category{Group theory} @category{Polynomials} @category{Share packages} @category{Package sym}
+@category{Group theory}
+@category{Polynomials}
+@category{Share packages}
+@category{Package sym}
 @closecatbox
 
 
@@ -1655,6 +1658,7 @@ returns the associate multinomial coefficient: if the parts of
 returns the list of permutations of the list @var{L}.
 
 @opencatbox
-@category{Package sym} @category{Lists}
+@category{Package sym}
+@category{Lists}
 @closecatbox
 @end deffn
