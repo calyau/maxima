@@ -76,8 +76,10 @@ and develop DOE Macsyma, now called Maxima.
 
 @end titlepage
 
+@ifnothtml
 @summarycontents
 @contents
+@end ifnothtml
 
 @ifnottex
 @node Top, Introduction to Maxima, (dir), (dir)
