@@ -155,7 +155,7 @@ as the lisp will employ an excellent algorithm for determining when to start
 garbage collection.
 
 If maxima knows how to do manually trigger the garbage collection for the
-current lisp @code{garbage-collect} returns @code{true}, else @code{false}.
+current lisp @code{garbage_collect} returns @code{true}, else @code{false}.
 
 @opencatbox
 @category{Programming}
