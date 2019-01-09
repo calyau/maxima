@@ -221,6 +221,14 @@ Sets up a predefined coordinate system and metric. The argument
 followed by a list containing the coordinate variables. For instance,
 you can specify a spherical metric as follows:
 
+@c ===beg===
+@c load("ctensor");
+@c ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
+@c             r*sin(theta),[r,theta,phi]]);
+@c lg:trigsimp(lg);
+@c ct_coords;
+@c dim;
+@c ===end===
 @example
 
 (%i1) load("ctensor");
@@ -245,6 +253,15 @@ you can specify a spherical metric as follows:
 
 Transformation functions can also be used when @code{cframe_flag} is @code{true}:
 
+@c ===beg===
+@c load("ctensor");
+@c cframe_flag:true;
+@c ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
+@c             r*sin(theta),[r,theta,phi]]);
+@c fri;
+@c cmetric();
+@c lg:trigsimp(lg);
+@c ===end===
 @example
 
 (%i1) load("ctensor");
@@ -938,6 +955,19 @@ is a two dimensional array, if computed for the metric in the example
 below, @code{findde} gives the following independent differential equations:
 
 
+@c ===beg===
+@c load("ctensor");
+@c derivabbrev:true;
+@c dim:4;
+@c lg:matrix([a, 0, 0, 0], [ 0, x^2, 0, 0],
+@c                         [0, 0, x^2*sin(y)^2, 0], [0,0,0,-d]);
+@c depends([a,d],x);
+@c ct_coords:[x,y,z,t];
+@c cmetric();
+@c einstein(false);
+@c findde(ein,2);
+@c deindex;
+@c ===end===
 @example
 (%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
@@ -998,6 +1028,16 @@ Computes the contravariant gradient of a scalar function allowing
 the user to choose the corresponding vector name as the example
 below for the Schwarzschild metric illustrates:
 
+@c ===beg===
+@c load("ctensor");
+@c derivabbrev:true;
+@c ct_coordsys(exteriorschwarzschild,all);
+@c depends(f,r);
+@c cograd(f,g1);
+@c listarray(g1);
+@c contragrad(f,g2);
+@c listarray(g2);
+@c ===end===
 @example
 (%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
@@ -1030,6 +1070,13 @@ below for the Schwarzschild metric illustrates:
 computes the tensor d'Alembertian of the scalar function once
 dependencies have been declared upon the function. For example:
 
+@c ===beg===
+@c load("ctensor");
+@c derivabbrev:true;
+@c ct_coordsys(exteriorschwarzschild,all);
+@c depends(p,r);
+@c factor(dscalar(p));
+@c ===end===
 @example
 (%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac

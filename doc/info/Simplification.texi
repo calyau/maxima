@@ -420,6 +420,12 @@ all sums at that level.
 
 Examples:
 
+@c ===beg===
+@c distrib ((a+b) * (c+d));
+@c multthru ((a+b) * (c+d));
+@c distrib (1/((a+b) * (c+d)));
+@c expand (1/((a+b) * (c+d)), 1, 0);
+@c ===end===
 @example
 (%i1) distrib ((a+b) * (c+d));
 (%o1)                 b d + a d + b c + a c
@@ -592,6 +598,14 @@ the function @code{f} as an even or odd function.
 
 Examples:
 
+@c ===beg===
+@c o (- x) + o (x);
+@c declare (o, oddfun);
+@c o (- x) + o (x);
+@c e (- x) - e (x);
+@c declare (e, evenfun);
+@c e (- x) - e (x);
+@c ===end===
 @example
 (%i1) o (- x) + o (x);
 (%o1)                     o(x) + o(- x)

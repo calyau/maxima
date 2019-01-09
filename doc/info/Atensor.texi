@@ -29,6 +29,19 @@ Although the @code{atensor} package has a built-in definition for the
 quaternion algebra, it is not used in this example, in which we
 endeavour to build the quaternion multiplication table as a matrix:
 
+@c ===beg===
+@c load("atensor");
+@c init_atensor(clifford,0,0,2);
+@c atensimp(v[1].v[1]);
+@c atensimp((v[1].v[2]).(v[1].v[2]));
+@c q:zeromatrix(4,4);
+@c q[1,1]:1;
+@c for i thru adim do q[1,i+1]:q[i+1,1]:v[i];
+@c q[1,4]:q[4,1]:v[1].v[2];
+@c for i from 2 thru 4 do for j from 2 thru 4 do
+@c q[i,j]:atensimp(q[i,1].q[1,j]);
+@c q;
+@c ===end===
 @example
 (%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
@@ -271,6 +284,13 @@ corresponding value from the matrix @code{aform}.
 
 For instance:
 
+@c ===beg===
+@c load("atensor");
+@c adim:3;
+@c aform:matrix([0,3,-2],[-3,0,1],[2,-1,0]);
+@c asymbol:x;
+@c av(x[1],x[2]);
+@c ===end===
 @example
 (%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
