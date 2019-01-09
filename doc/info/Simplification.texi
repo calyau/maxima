@@ -78,7 +78,7 @@ operator and add its simplification routine without disturbing existing code.
 We note that in addition to this general simplifier operating on algebraic 
 expression trees, there are several other representations of expressions in 
 Maxima which have separate methods and simplifiers. For example, the
-@code{rat()} function converts polynomials to vectors of coefficients to
+@mref{rat} function converts polynomials to vectors of coefficients to
 assist in rapid manipulation of such forms. Other representations include
 Taylor series and the (rarely used) Poisson series.
 
@@ -1095,6 +1095,15 @@ noncommutative) over sums.  Since quotients are represented as products
 @var{expr_1} is not itself a sum then this form is equivalent to
 @code{multthru (@var{expr_1}*@var{expr_2})}.
 
+@c ===beg===
+@c x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
+@c multthru ((x-y)^3, %);
+@c ratexpand (%);
+@c ((a+b)^10*s^2 + 2*a*b*s + (a*b)^2)/(a*b*s^2);
+@c multthru (%);  /* note that this does not expand (b+a)^10 */
+@c multthru (a.(b+c.(d+e)+f));
+@c expand (a.(b+c.(d+e)+f));
+@c ===end===
 @example
 (%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
                       1        x         f(x)
@@ -1145,6 +1154,11 @@ expressions, for example, to simplify @code{foo(x, foo(y, z))} to
 
 Example:
 
+@c ===beg===
+@c H (H (a, b), H (c, H (d, e)));
+@c declare (H, nary);
+@c H (H (a, b), H (c, H (d, e)));
+@c ===end===
 @example
 (%i1) H (H (a, b), H (c, H (d, e)));
 (%o1)               H(H(a, b), H(c, H(d, e)))
