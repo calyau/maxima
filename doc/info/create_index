@@ -7,11 +7,11 @@
 use warnings;
 
 open(CONTENTS, ">./contents.hhc") || die "Can't create contents.hhc";
-open(MAXIMA_TOC, "./maxima_toc.html") || die "Can't open maxima_toc.html";
+open(MAXIMA_TOC, "./maxima_92.html") || die "Can't open maxima_toc.html";
 
 while (<MAXIMA_TOC>)  {
 
-    if ( m#.*<ul class="toc"># ) {
+    if ( m#.*<ul class="no-bullet"># ) {
         print CONTENTS "<ul>\n";
     }
 
