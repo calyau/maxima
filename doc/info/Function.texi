@@ -58,6 +58,12 @@ You may also define a function with a variable number of arguments,
 by having a final argument which is assigned to a list of the extra
 arguments:
 
+@c ===beg===
+@c f ([u]) := u;
+@c f (1, 2, 3, 4);
+@c f (a, b, [u]) := [a, b, u];
+@c f (1, 2, 3, 4, 5, 6);
+@c ===end===
 @example
 (%i1) f ([u]) := u;
 (%o1)                      f([u]) := u
@@ -872,6 +878,12 @@ enclosing a @code{throw}, an error message is printed.
 If the evaluation of the arguments does not lead to the evaluation of any
 @code{throw} then the value of @code{catch} is the value of @var{expr_n}.
 
+@c ===beg===
+@c lambda ([x], if x < 0 then throw(x) else f(x))$
+@c g(l) := catch (map (''%, l))$
+@c g ([1, 2, 3, 7]);
+@c g ([1, 2, -3, 7]);
+@c ===end===
 @example
 (%i1) lambda ([x], if x < 0 then throw(x) else f(x))$
 (%i2) g(l) := catch (map (''%, l))$

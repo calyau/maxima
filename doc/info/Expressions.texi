@@ -28,6 +28,12 @@ can be made into an expression by separating them by commas and
 putting parentheses around them.  This is similar to the @b{C}
 @i{comma expression}.
 
+@c ===beg===
+@c x: 3$
+@c (x: x+1, x: x^2);
+@c (if (x > 17) then 2 else 4);
+@c (if (x > 17) then x: 2 else y: 4, y+x);
+@c ===end===
 @example
 (%i1) x: 3$
 (%i2) (x: x+1, x: x^2);
@@ -41,6 +47,10 @@ putting parentheses around them.  This is similar to the @b{C}
 Even loops in Maxima are expressions, although the value they
 return is the not too useful @code{done}.
 
+@c ===beg===
+@c y: (x: 1, for i from 1 thru 10 do (x: x*i))$
+@c y;
+@c ===end===
 @example
 (%i1) y: (x: 1, for i from 1 thru 10 do (x: x*i))$
 (%i2) y;
@@ -50,6 +60,10 @@ return is the not too useful @code{done}.
 Whereas what you really want is probably to include a third
 term in the @i{comma expression} which actually gives back the value.
 
+@c ===beg===
+@c y: (x: 1, for i from 1 thru 10 do (x: x*i), x)$
+@c y;
+@c ===end===
 @example
 (%i3) y: (x: 1, for i from 1 thru 10 do (x: x*i), x)$
 (%i4) y;
@@ -768,6 +782,9 @@ that subexpression as its value, it returns the whole expression with the
 selected subexpression displayed inside a box.  The box is actually part of the
 expression.
 
+@c ===beg===
+@c dpart (x+y/z^2, 1, 2, 1);
+@c ===end===
 @example
 (%i1) dpart (x+y/z^2, 1, 2, 1);
                              y
@@ -884,6 +901,16 @@ Arguments are names of functions, variables, subscripted names, operators, and
 expressions.  @code{freeof (a, b, expr)} is equivalent to 
 @code{freeof (a, expr) and freeof (b, expr)}.
 
+@c ===beg===
+@c expr: z^3 * cos (a[1]) * b^(c+d);
+@c freeof (z, expr);
+@c freeof (cos, expr);
+@c freeof (a[1], expr);
+@c freeof (cos (a[1]), expr);
+@c freeof (b^(c+d), expr);
+@c freeof ("^", expr);
+@c freeof (w, sin, a[2], sin (a[2]), b*(c+d), expr);
+@c ===end===
 @example
 (%i1) expr: z^3 * cos (a[1]) * b^(c+d);
                                  d + c  3
@@ -907,6 +934,11 @@ expressions.  @code{freeof (a, b, expr)} is equivalent to
 
 @code{freeof} evaluates its arguments.
 
+@c ===beg===
+@c expr: (a+b)^5$
+@c c: a$
+@c freeof (c, expr);
+@c ===end===
 @example
 (%i1) expr: (a+b)^5$
 (%i2) c: a$
@@ -917,6 +949,14 @@ expressions.  @code{freeof (a, b, expr)} is equivalent to
 @code{freeof} does not consider equivalent expressions.
 Simplification may yield an equivalent but different expression.
 
+@c ===beg===
+@c expr: (a+b)^5$
+@c expand (expr);
+@c freeof (a+b, %);
+@c freeof (a+b, expr);
+@c exp (x);
+@c freeof (exp, exp (x));
+@c ===end===
 @example
 (%i1) expr: (a+b)^5$
 (%i2) expand (expr);
@@ -936,6 +976,11 @@ Simplification may yield an equivalent but different expression.
 A summation or definite integral is free of its dummy variable.
 An indefinite integral is not free of its variable of integration.
 
+@c ===beg===
+@c freeof (i, 'sum (f(i), i, 0, n));
+@c freeof (x, 'integrate (x^2, x, 0, 1));
+@c freeof (x, 'integrate (x^2, x));
+@c ===end===
 @example
 (%i1) freeof (i, 'sum (f(i), i, 0, n));
 (%o1)                         true
@@ -995,6 +1040,13 @@ For example @code{... if inpart (%o9,0) = "+" then ...}.
 
 Examples:
 
+@c ===beg===
+@c x + y + w*z;
+@c inpart (%, 3, 2);
+@c part (%th (2), 1, 2);
+@c 'limit (f(x)^g(x+1), x, 0, minus);
+@c inpart (%, 1, 2);
+@c ===end===
 @example
 (%i1) x + y + w*z;
 (%o1)                      w z + y + x
@@ -1111,6 +1163,12 @@ and the definite integration variable.)
 
 Example:
 
+@c ===beg===
+@c listdummyvars: true$
+@c listofvars ('sum(f(i), i, 0, n));
+@c listdummyvars: false$
+@c listofvars ('sum(f(i), i, 0, n));
+@c ===end===
 @example
 (%i1) listdummyvars: true$
 (%i2) listofvars ('sum(f(i), i, 0, n));
@@ -1140,6 +1198,9 @@ list it returns if they appear in @var{expr}.  The default is to omit these.
 See also the option variable @mref{listdummyvars} to exclude or include
 "dummy variables" in the list of variables.
 
+@c ===beg===
+@c listofvars (f (x[1]+y) / g^(2+a));
+@c ===end===
 @example
 (%i1) listofvars (f (x[1]+y) / g^(2+a));
 (%o1)                     [g, a, x , y]
@@ -1767,6 +1828,11 @@ or list which do.
 
 Examples:
 
+@c ===beg===
+@c partition (2*a*x*f(x), x);
+@c partition (a+b, x);
+@c partition ([a, b, f(a), c], a);
+@c ===end===
 @example
 (%i1) partition (2*a*x*f(x), x);
 (%o1)                     [2 a, x f(x)]
@@ -2188,6 +2254,10 @@ is given.
 
 See also @mrefdot{subst}
 
+@c ===beg===
+@c subst(100,g,g[x]+2);
+@c subst(100,g,g[x]+2),subnumsimp:true;
+@c ===end===
 @example
 (%i1) subst(100,g,g[x]+2);
 
@@ -2286,6 +2356,9 @@ Single-character Operators like @code{+} and @code{-} have to be quoted in
 order to be replaced by subst. It is to note, though, that @code{a+b-c}
 might be expressed as @code{a+b+(-1*c)} internally.
 
+@c ===beg===
+@c subst(["+"="-"],a+b-c);
+@c ===end===
 @example
 (%i3) subst(["+"="-"],a+b-c);
 (%o3)                                 c-b+a

@@ -152,20 +152,10 @@ being freed too early, multiple times or not at all).
 
 Tries to manually trigger the lisp's garbage collection. This rarely is necessary
 as the lisp will employ an excellent algorithm for determining when to start
-garbage collection. A use-case for this function is to tell the lisp chat copious
-amounts of temporary memory have just been allocated by a lengthy calculation and
-now can be freed. 
-
-Running out of RAM early often cannot resolved by changing the frequency of
-garbage collects but is caused by fragmentation due to allocating memory
-in an inept order instead: If space for temporary data and real results is
-allocated alternately it is possible to create a memory layout in which after
-freeing the temporary data the space between the allocated chunks of memory is
-too small for doing serious work. In this case the solution is to change the
-order in which memory is allocated.
+garbage collection.
 
 If maxima knows how to do manually trigger the garbage collection for the
-current lisp @code{garbage-collect} returns @code{true}, else @code{false}.
+current lisp @code{garbage_collect} returns @code{true}, else @code{false}.
 
 @opencatbox
 @category{Programming}

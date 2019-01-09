@@ -351,6 +351,15 @@ When @code{backsubst} is @code{false}, prevents back substitution in
 be helpful in very big problems where back substitution would cause
 the generation of extremely large expressions.
 
+@c ===beg===
+@c eq1 : x + y + z = 6$
+@c eq2 : x - y + z = 2$
+@c eq3 : x + y - z = 0$
+@c backsubst : false$
+@c linsolve ([eq1, eq2, eq3], [x,y,z]);
+@c backsubst : true$
+@c linsolve ([eq1, eq2, eq3], [x,y,z]);
+@c ===end===
 @example
 (%i1) eq1 : x + y + z = 6$
 (%i2) eq2 : x - y + z = 2$
@@ -497,6 +506,11 @@ or not there exists a rational function @code{@var{g}(@var{t})} satisfying
 @var{eqn}, which must be a first order, linear polynomial in (for this case)
 @code{@var{g}(@var{t})} and @code{@var{g}(@var{t}+1)}
 
+@c ===beg===
+@c eqn: (n + 1)*f(n) - (n + 3)*f(n + 1)/(n + 1) =
+@c      (n - 1)/(n + 2);
+@c funcsolve (eqn, f(n));
+@c ===end===
 @example
 (%i1) eqn: (n + 1)*f(n) - (n + 3)*f(n + 1)/(n + 1) =
       (n - 1)/(n + 2);
@@ -538,6 +552,17 @@ ignores @code{globalsolve}.  Other functions which solve equations (e.g.,
 
 Examples:
 
+@c ===beg===
+@c globalsolve: true$
+@c solve ([x + 3*y = 2, 2*x - y = 5], [x, y]);
+@c x;
+@c y;
+@c globalsolve: false$
+@c kill (x, y)$
+@c solve ([x + 3*y = 2, 2*x - y = 5], [x, y]);
+@c x;
+@c y;
+@c ===end===
 @example
 (%i1) globalsolve: true$
 (%i2) solve ([x + 3*y = 2, 2*x - y = 5], [x, y]);
@@ -875,6 +900,10 @@ interval may be @code{minf} or @code{inf}.
 
 @code{nroots} uses the method of Sturm sequences.
 
+@c ===beg===
+@c p: x^10 - 2*x^4 + 1/2$
+@c nroots (p, -6, 9.1);
+@c ===end===
 @example
 (%i1) p: x^10 - 2*x^4 + 1/2$
 (%i2) nroots (p, -6, 9.1);
@@ -997,7 +1026,6 @@ Examples:
 @c ev (%[1], float);
 @c ev (-1 - x + x^5, %);
 @c ===end===
-
 @example
 (%i1) realroots (-1 - x + x^5, 5e-6);
                                612003
@@ -1013,7 +1041,6 @@ Examples:
 @c realroots (expand ((1 - x)^5 * (2 - x)^3 * (3 - x)), 1e-20);
 @c multiplicities;
 @c ===end===
-
 @example
 (%i1) realroots (expand ((1 - x)^5 * (2 - x)^3 * (3 - x)), 1e-20);
 (%o1)                 [x = 1, x = 2, x = 3]
@@ -1395,6 +1422,9 @@ y = - .1535675710019696]]
 
 The symbols @code{%r} are used to denote arbitrary constants in a solution.
 
+@c ===beg===
+@c solve([x+y=1,2*x+2*y=2],[x,y]);
+@c ===end===
 @example
 (%i1) solve([x+y=1,2*x+2*y=2],[x,y]);
 
