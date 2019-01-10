@@ -13,6 +13,16 @@
 @*\name\
 @end macro
 @end ifinfo
+@c Handle all the cases not handled above (xml, docbook, etc.)
+@ifnothtml
+@ifnottex
+@ifnotinfo
+@macro fname {name}
+@*\name\
+@end macro
+@end ifnotinfo
+@end ifnottex
+@end ifnothtml
 
 @ifhtml
 @macro figure {file}
@@ -29,6 +39,16 @@
 (Figure \file\)
 @end macro
 @end ifinfo
+@c Handle all the cases not handled above (xml, docbook, etc.)
+@ifnothtml
+@ifnottex
+@ifnotinfo
+@macro figure {file}
+(Figure \file\)
+@end macro
+@end ifnotinfo
+@end ifnottex
+@end ifnothtml
 
 @ifhtml
 @macro opencatbox {}
