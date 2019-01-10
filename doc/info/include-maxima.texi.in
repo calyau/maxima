@@ -210,6 +210,9 @@ and develop DOE Macsyma, now called Maxima.
 
 @b{Index}
 * Function and Variable Index:: Index.
+@ifhtml
+* Documentation Categories::        Docuemntation categories
+@end ifhtml
 
 @comment @detailmenu
 @b{ --- The Detailed Node Listing --- }
@@ -996,7 +999,12 @@ Understanding maxima's output
 
 @c end includes
 
+@ifnothtml
 @node Function and Variable Index,  , Error and warning messages, Top
+@end ifnothtml
+@ifhtml
+@node Function and Variable Index, Documentation Categories , Error and warning messages, Top
+@end ifhtml
 @appendix Function and Variable Index
 
 @printindex fn
