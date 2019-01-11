@@ -2236,6 +2236,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{acos}
 @deffn {Function} acos (@var{x})
 
 -- Arc Cosine.
@@ -2246,6 +2247,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{acosh}
 @deffn {Function} acosh (@var{x})
 
 -- Hyperbolic Arc Cosine.
@@ -2256,6 +2258,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{acot}
 @deffn {Function} acot (@var{x})
 
 -- Arc Cotangent.
@@ -2266,6 +2269,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{acoth}
 @deffn {Function} acoth (@var{x})
 
 -- Hyperbolic Arc Cotangent.
@@ -2276,6 +2280,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{acsc}
 @deffn {Function} acsc (@var{x})
 
 -- Arc Cosecant.
@@ -2286,6 +2291,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{acsch}
 @deffn {Function} acsch (@var{x})
 
 -- Hyperbolic Arc Cosecant.
@@ -2296,6 +2302,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{asec}
 @deffn {Function} asec (@var{x})
 
 -- Arc Secant.
@@ -2306,6 +2313,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{asech}
 @deffn {Function} asech (@var{x})
 
 -- Hyperbolic Arc Secant.
@@ -2316,6 +2324,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{asin}
 @deffn {Function} asin (@var{x})
 
 -- Arc Sine.
@@ -2326,6 +2335,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{asinh}
 @deffn {Function} asinh (@var{x})
 
 -- Hyperbolic Arc Sine.
@@ -2336,6 +2346,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{atan}
 @deffn {Function} atan (@var{x})
 
 -- Arc Tangent.
@@ -2358,6 +2369,7 @@ to @code{%pi}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{atanh}
 @deffn {Function} atanh (@var{x})
 
 -- Hyperbolic Arc Tangent.
@@ -2371,6 +2383,7 @@ to @code{%pi}.
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
 
 @c -----------------------------------------------------------------------------
+@anchor{atrig1}
 @defvr {Package} atrig1
 
 The @code{atrig1} package contains several additional simplification rules
@@ -2419,6 +2432,7 @@ Do @code{load("atrig1");} to use them.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{coth}
 @deffn {Function} coth (@var{x})
 
 -- Hyperbolic Cotangent.
@@ -2429,6 +2443,7 @@ Do @code{load("atrig1");} to use them.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{csc}
 @deffn {Function} csc (@var{x})
 
 -- Cosecant.
@@ -2439,6 +2454,7 @@ Do @code{load("atrig1");} to use them.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{csch}
 @deffn {Function} csch (@var{x})
 
 -- Hyperbolic Cosecant.
@@ -2544,6 +2560,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{sec}
 @deffn {Function} sec (@var{x})
 
 -- Secant.
@@ -2554,6 +2571,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{sech}
 @deffn {Function} sech (@var{x})
 
 -- Hyperbolic Secant.
@@ -2586,6 +2604,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{tan}
 @deffn {Function} tan (@var{x})
 
 -- Tangent.
@@ -2596,6 +2615,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{tanh}
 @deffn {Function} tanh (@var{x})
 
 -- Hyperbolic Tangent.
