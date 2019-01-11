@@ -2751,7 +2751,7 @@ and hyperbolic sin's and cos's of @var{x} into those of multiples of @var{x}.
 It also tries to eliminate these functions when they occur in
 denominators.  If @var{x} is omitted then all variables in @var{expr} are used.
 
-See also @code{poissimp}.
+See also @mref{poissimp}.
 
 @c ===beg===
 @c trigreduce(-sin(x)^2+3*cos(x)^2+x);
