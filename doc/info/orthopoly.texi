@@ -1053,6 +1053,7 @@ Reference: Merzbacher 9.64.
 
 @end deffn
 
+@anchor{unit_step}
 @deffn {Function} unit_step (@var{x})
 The left-continuous unit step function; thus
 @code{unit_step (@var{x})} vanishes for @code{@var{x} <= 0} and equals

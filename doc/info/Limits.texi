@@ -13,7 +13,7 @@
 Default value: 4
 
 @code{lhospitallim} is the maximum number of times L'Hospital's
-rule is used in @code{limit}.  This prevents infinite looping in cases like
+rule is used in @mref{limit}.  This prevents infinite looping in cases like
 @code{limit (cot(x)/csc(x), x, 0)}.
 
 @opencatbox
@@ -34,8 +34,8 @@ value @var{val} from the direction @var{dir}.  @var{dir} may have the value
 may be omitted (implying a two-sided limit is to be computed).
 
 @code{limit} uses the following special symbols: @code{inf} (positive infinity)
-and @code{minf} (negative infinity).  On output it may also use @code{und}
-(undefined), @code{ind} (indefinite but bounded) and @code{infinity} (complex
+and @mref{minf} (negative infinity).  On output it may also use @mref{und}
+(undefined), @mref{ind} (indefinite but bounded) and @mref{infinity} (complex
 infinity).
 
 @code{infinity} (complex infinity) is returned when the limit of
@@ -48,14 +48,14 @@ cases where the complex argument oscillates, as in
 argument is different for either side of a two-sided limit, as in
 @code{limit(1/x, x, 0)} and @code{limit(log(x), x, 0)}.
 
-@code{lhospitallim} is the maximum number of times L'Hospital's rule
+@mref{lhospitallim} is the maximum number of times L'Hospital's rule
 is used in @code{limit}.  This prevents infinite looping in cases like
 @code{limit (cot(x)/csc(x), x, 0)}.
 
-@code{tlimswitch} when true will allow the @code{limit} command to use
+@mref{tlimswitch} when true will allow the @code{limit} command to use
 Taylor series expansion when necessary.
 
-@code{limsubst} prevents @code{limit} from attempting substitutions on
+@mref{limsubst} prevents @code{limit} from attempting substitutions on
 unknown forms.  This is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)}
 giving 1.  Setting @code{limsubst} to @code{true} will allow such
 substitutions.
@@ -79,7 +79,7 @@ Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 @defvr {Option variable} limsubst
 Default value: @code{false}
 
-prevents @code{limit} from attempting substitutions on unknown forms.  This is
+prevents @mref{limit} from attempting substitutions on unknown forms.  This is
 to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)} giving 1.  Setting
 @code{limsubst} to @code{true} will allow such substitutions.
 
@@ -108,7 +108,7 @@ at @code{val} from direction @code{dir}.
 @defvr {Option variable} tlimswitch
 Default value: @code{true}
 
-When @code{tlimswitch} is @code{true}, the @code{limit} command will use a
+When @code{tlimswitch} is @code{true}, the @mref{limit} command will use a
 Taylor series expansion if the limit of the input expression cannot be computed
 directly.  This allows evaluation of limits such as
 @code{limit(x/(x-1)-1/log(x),x,1,plus)}.  When @code{tlimswitch} is @code{false}
