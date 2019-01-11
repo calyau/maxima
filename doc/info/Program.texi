@@ -352,6 +352,11 @@ after the @code{do} terminates.
                              a = 25
 @end example
 
+@c ===beg===
+@c s: 0$
+@c for i: 1 while i <= 10 do s: s+i;
+@c s;
+@c ===end===
 @example
 (%i1) s: 0$
 (%i2) for i: 1 while i <= 10 do s: s+i;
@@ -363,6 +368,14 @@ after the @code{do} terminates.
 Note that the condition @code{while i <= 10}
 is equivalent to @code{unless i > 10} and also @code{thru 10}.
 
+@c ===beg===
+@c series: 1$
+@c term: exp (sin (x))$
+@c for p: 1 unless p > 7 do
+@c     (term: diff (term, x)/p, 
+@c      series: series + subst (x=0, term)*x^p)$
+@c series;
+@c ===end===
 @example
 (%i1) series: 1$
 (%i2) term: exp (sin (x))$
@@ -378,6 +391,17 @@ is equivalent to @code{unless i > 10} and also @code{thru 10}.
 
 which gives 8 terms of the Taylor series for @code{e^sin(x)}.
 
+@c ===beg===
+@c poly: 0$
+@c for i: 1 thru 5 do
+@c     for j: i step -1 thru 1 do
+@c         poly: poly + i*x^j$
+@c poly;
+@c guess: -3.0$
+@c for i: 1 thru 10 do
+@c     (guess: subst (guess, x, 0.5*(x + 10/x)),
+@c     if abs (guess^2 - 10) < 0.00005 then return (guess));
+@c ===end===
 @example
 (%i1) poly: 0$
 (%i2) for i: 1 thru 5 do
@@ -426,6 +450,12 @@ to give only the termination conditions omitting the initialization
 and updating information as in the following example to compute the
 square-root of 5 using a poor initial guess.
 
+@c ===beg===
+@c x: 1000$
+@c thru 20 do x: 0.5*(x + 5.0/x)$
+@c x;
+@c sqrt(5), numer;
+@c ===end===
 @example
 (%i1) x: 1000$
 (%i2) thru 20 do x: 0.5*(x + 5.0/x)$
@@ -440,6 +470,13 @@ and just give @code{do @var{body}} which will continue to evaluate the
 @var{body} indefinitely.  In this case the function @code{return}
 should be used to terminate execution of the @code{do}.
 
+@c ===beg===
+@c newton (f, x):= ([y, df, dfx], df: diff (f ('x), 'x),
+@c     do (y: ev(df), x: x - f(x)/y,
+@c         if abs (f (x)) < 5e-6 then return (x)))$
+@c sqr (x) := x^2 - 5.0$
+@c newton (sqr, 1000);
+@c ===end===
 @example
 (%i1) newton (f, x):= ([y, df, dfx], df: diff (f ('x), 'x),
           do (y: ev(df), x: x - f(x)/y, 
@@ -552,7 +589,7 @@ Default value: 10
 which appear in them.  If the size of an expression (as determined by the Lisp
 function @code{ERROR-SIZE}) is greater than @code{error_size}, the expression is
 replaced in the message by a symbol, and the symbol is assigned the expression.
-The symbols are taken from the list @code{error_syms}.
+The symbols are taken from the list @mref{error_syms}.
 
 Otherwise, the expression is smaller than @code{error_size}, and the expression
 is displayed in the message.
@@ -608,7 +645,7 @@ Example expression is --------------
 @defvr {Option variable} error_syms
 Default value: @code{[errexp1, errexp2, errexp3]}
 
-In error messages, expressions larger than @code{error_size} are replaced by
+In error messages, expressions larger than @mref{error_size} are replaced by
 symbols, and the symbols are set to the expressions.  The symbols are taken from
 the list @code{error_syms}.  The first too-large expression is replaced by
 @code{error_syms[1]}, the second by @code{error_syms[2]}, and so on.
@@ -631,7 +668,7 @@ See also @mref{error} and @mrefdot{error_size}
 
 Reprints the most recent error message.
 The variable @code{error} holds the message,
-and @code{errormsg} formats and prints it.
+and @mref{errormsg} formats and prints it.
 
 @opencatbox
 @category{Programming}
@@ -714,7 +751,7 @@ value of errormsg is false
 @anchor{go}
 @deffn {Function} go (@var{tag})
 
-is used within a @code{block} to transfer control to the statement
+is used within a @mref{block} to transfer control to the statement
 of the block which is tagged with the argument to @code{go}.  To tag a
 statement, precede it by an atomic argument as another statement in
 the @code{block}.  For example:
@@ -815,7 +852,7 @@ results of applying @var{f} to the corresponding subparts of the expressions.
 @var{f} is either the name of a function of @math{n} arguments or is a
 @code{lambda} form of @math{n} arguments.
 
-@code{maperror} - if @code{false} will cause all of the mapping
+@mref{maperror} - if @code{false} will cause all of the mapping
 functions to (1) stop when they finish going down the shortest
 @var{expr_i} if not all of the @var{expr_i} are of the same length and
 (2) apply @var{f} to [@var{expr_1}, @var{expr_2}, @dots{}]  if the
@@ -824,7 +861,7 @@ is @code{true} then an error message will be given in the above two
 instances.
 
 One of the uses of this function is to @code{map} a function (e.g.
-@code{partfrac}) onto each term of a very large expression where it ordinarily
+@mref{partfrac}) onto each term of a very large expression where it ordinarily
 wouldn't be possible to use the function on the entire expression due to an
 exhaustion of list storage space in the course of the computation.
 
@@ -832,6 +869,13 @@ See also @mrefcomma{scanmap} @mrefcomma{maplist} @mrefcomma{outermap} @mref{matr
 
 @c IN THESE EXAMPLES, SPELL OUT WHAT IS THE MAIN OPERATOR 
 @c AND SHOW HOW THE RESULT FOLLOWS FROM THE DESCRIPTION STATED IN THE FIRST PARAGRAPH
+
+@c ===beg===
+@c map(f,x+a*y+b*z);
+@c map(lambda([u],partfrac(u,x)),x+1/(x^3+4*x^2+5*x+2));
+@c map(ratsimp, x/(x^2+x)+(y^2+y)/y);
+@c map("=",[a,b],[-0.5,3]);
+@c ===end===
 @example
 (%i1) map(f,x+a*y+b*z);
 (%o1)                        f(b z) + f(a y) + f(x)
@@ -902,11 +946,11 @@ is displayed in the above two instances.
 Default value: @code{true}
 
 When @code{mapprint} is @code{true}, various information messages from
-@code{map}, @code{maplist}, and @code{fullmap} are produced in certain
+@mref{map}, @mref{maplist}, and @mref{fullmap} are produced in certain
 situations.  These include situations where @code{map} would use
-@code{apply}, or @code{map} is truncating on the shortest list.
+@mref{apply}, or @code{map} is truncating on the shortest list.
 
-If @code{mapprint} is @code{false}, these messages are suppressed.
+If @mref{mapprint} is @code{false}, these messages are suppressed.
 
 @opencatbox
 @category{Function application}
@@ -925,7 +969,7 @@ lambda expression.
 
 @code{maplist} differs from @code{map(@var{f}, @var{expr_1}, ..., @var{expr_n})}
 which returns an expression with the same main operator as @var{expr_i} has
-(except for simplifications and the case where @code{map} does an @code{apply}).
+(except for simplifications and the case where @mref{map} does an @mref{apply}).
 
 @opencatbox
 @category{Function application}
@@ -940,7 +984,7 @@ which returns an expression with the same main operator as @var{expr_i} has
 Default value: @code{false}
 
 When @code{prederror} is @code{true}, an error message is displayed whenever the
-predicate of an @code{if} statement or an @code{is} function fails to evaluate
+predicate of an @code{if} statement or an @mref{is} function fails to evaluate
 to either @code{true} or @code{false}.
 
 If @code{false}, @code{unknown} is returned
@@ -1090,7 +1134,7 @@ ways.
 @deffn {Function} throw (@var{expr})
 
 Evaluates @var{expr} and throws the value back to the most recent
-@code{catch}.  @code{throw} is used with @code{catch} as a nonlocal return
+@mref{catch}.  @code{throw} is used with @code{catch} as a nonlocal return
 mechanism.
 
 @opencatbox
@@ -1122,7 +1166,7 @@ the return value.
 
 Note that the effect of @code{outermap} is different from that of applying
 @var{f} to each one of the elements of the outer product returned by
-@code{cartesian_product}.  @code{outermap} preserves the structure of the
+@mref{cartesian_product}.  @code{outermap} preserves the structure of the
 arguments in the return value, while @code{cartesian_product} does not.
 
 @code{outermap} evaluates its arguments.
