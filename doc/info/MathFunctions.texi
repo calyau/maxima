@@ -2351,6 +2351,8 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 -- Arc Tangent.
 
+See also @mref{atan2}.
+
 @opencatbox
 @category{Trigonometric functions}
 @closecatbox
@@ -2362,6 +2364,8 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 -- yields the value of @code{atan(@var{y}/@var{x})} in the interval @code{-%pi}
 to @code{%pi}.
+
+See also @mref{atan}.
 
 @opencatbox
 @category{Trigonometric functions}
