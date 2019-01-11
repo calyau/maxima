@@ -1104,21 +1104,26 @@ row operation @code{R_i <- R_i - theta * R_j}.  If @var{M} doesn't have a row
 
 @end deffn
 
-@deffn {Function} rank (@var{M})
+@deffn {Function} linalg_rank (@var{M})
 
-Return the rank of that matrix @var{M}.  The rank is the dimension of the
-column space.  Example:
+Return the rank of the matrix @var{M}. This function is equivalent to
+function @mref{rank}, but it uses a different algorithm: it finds the
+@mref{columnspace} of the matrix and counts its elements, since the rank
+of a matrix is the dimension of its column space. 
 
 @c ===beg===
-@c rank(matrix([1,2],[2,4]));
-@c rank(matrix([1,b],[c,d]));
+@c linalg_rank(matrix([1,2],[2,4]));
+@c linalg_rank(matrix([1,b],[c,d]));
 @c ===end===
 @example
-(%i1) rank(matrix([1,2],[2,4]));
-(%o1)                                  1
-(%i2) rank(matrix([1,b],[c,d]));
-Proviso:  @{d - b c # 0@}
-(%o2)                                  2
+@group
+(%i1) linalg_rank(matrix([1,2],[2,4]));
+(%o1)                           1
+@end group
+@group
+(%i2) linalg_rank(matrix([1,b],[c,d]));
+(%o2)                           2
+@end group
 @end example
 
 @opencatbox
