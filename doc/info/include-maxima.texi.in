@@ -920,15 +920,15 @@ Understanding maxima's output
 @chapter mnewton
 @include mnewton.texi
 
-@node numericalio-pkg
+@node numericalio-pkg, odepack-pkg, mnewton-pkg, Top
 @chapter numericalio
 @include numericalio.texi
 
-@node odepack-pkg
+@node odepack-pkg, operatingsystem-pkg, numericalio-pkg, Top
 @chapter odepack
 @include odepack.texi
 
-@node operatingsystem-pkg
+@node operatingsystem-pkg, opsubst-pkg, odepack-pkg, Top
 @chapter operatingsystem
 @include operatingsystem.texi
 
