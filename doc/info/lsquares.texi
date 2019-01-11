@@ -480,6 +480,7 @@ Example:
 @end group
 @group
 (%i5) ''mse, nouns;
+@end group
 @group
                2                 2         9 2               2
 (%o5) (((D + 3)  - C - 2 B - 2 A)  + ((D + -)  - C - B - 2 A)
@@ -489,7 +490,6 @@ Example:
                                      2
            2             2
  + ((D + 1)  - C - B - A) )/5
-@end group
 @end group
 @end example
 
