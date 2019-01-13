@@ -7,7 +7,7 @@
 use warnings;
 
 open(CONTENTS, ">./contents.hhc") || die "Can't create contents.hhc";
-open(MAXIMA_TOC, "./maxima_singlepage.html") || die "Can't open maxima_singlepage.html";
+open(MAXIMA_TOC, $ARGV[0]) || die "Can't open " . $ARGV[0];
 
 while (<MAXIMA_TOC>)  {
 
