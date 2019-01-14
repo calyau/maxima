@@ -69,8 +69,13 @@ Changes in core:
    while maxima is still preparing the next one the result might be garbled
    data.
  * Small improvements for ./configure's --enable-quiet-build switch
+ * The one-file-per-chapter version of the html manual now starts in 
+   maxima-1.html, not in maxima.html
+ * The documentation now is build using the standard makeinfo tools
  * doc/info/update_examples.sh can now be used for more examples of the 
    documentation including interactive ones.
+ * Many documentation updates including many hyperrefs and more and better 
+   examples.
  * add series expansion for expintegral_si and gamma_incomplete. This
    unfortunately breaks the following integrals found in the test suite:
      integrate(log(cot(x) - 1), x, 0, %pi/4);           /* rtest16  524 */
