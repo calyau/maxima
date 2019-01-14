@@ -22,7 +22,7 @@ New items in share:
 
 Changes in core:
 ----------------
- * Many strings in error messages weren't properly formatted
+ * Many strings in error messages now are properly formatted
  * The error message on calling a command with the wrong number of arguments
    now in most cases tells which command the error was raised by.
    error message that didn't tell which command the error was caused by.
