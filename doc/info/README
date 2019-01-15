@@ -49,6 +49,9 @@ The newest version of texinfo.tex is always available at
 https://ftp.gnu.org/gnu/texinfo/texinfo.tex - and it probably makes sense
 to update the "texinfo.tex" files shipped with maxima from time to time.
 
+contents.hhc, header.hhp, index.hhk and maxima.hhp are files the help Browser of
+MS Windows and wxMaxima need in order to display the help file as a book and
+in order to get a sidebar containing chapters.
 
 TO DO
 =====
