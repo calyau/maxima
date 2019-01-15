@@ -6,6 +6,10 @@
 
 use warnings;
 
+if(!defined $ARGV[0]){
+    die "create_index: No name of the file containing the index was Specified!\n";
+}
+
 open(CONTENTS, ">./contents.hhc") || die "Can't create contents.hhc";
 open(MAXIMA_TOC, $ARGV[0]) || die "Can't open " . $ARGV[0];
 
