@@ -61,7 +61,8 @@ not displayed; to access its value, make use of function @code{take_inference}.
 
 @c ===beg===
 @c load ("inference_result")$
-@c b: 3$ h: 2$
+@c b: 3$
+@c h: 2$
 @c inference_result("Rectangle",
 @c                  ['base=b,
 @c                   'height=h,
@@ -181,7 +182,8 @@ called in order to extract some information stored in it.
 
 @c ===beg===
 @c load ("inference_result")$
-@c b: 3$ h: 2$
+@c b: 3$
+@c h: 2$
 @c sol:inference_result("Rectangle",
 @c                      ['base=b,
 @c                       'height=h,
