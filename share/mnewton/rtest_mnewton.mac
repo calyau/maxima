@@ -110,6 +110,12 @@ approx_equal(
   )$
 true $
 
+approx_equal(
+  mnewton(diff(acos(x^2+8.363+267)/(sqrt(x^2-4.29*x+1042)*(x^2+12.8102*x+1177)),x),x,5),
+  newtonepsilon
+);
+true $
+
 kill(all)$
 done $
 
