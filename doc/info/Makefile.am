@@ -543,7 +543,7 @@ maxima.pdf: maxima_pdf.texi $(maxima_TEXINFOS) $(pdffigures)
 	maxima.toc maxima.fn maxima.aux maxima.log
 
 contents.hhc index.hhk: maxima_0.html
-	/usr/bin/env perl $(srcdir)/create_index `grep -l 'Table of Contents' maxima_*.html|grep -v singlepage`
+	/usr/bin/env perl $(srcdir)/create_index `grep -l '<h2.*Table of Contents' maxima_[0-9]*.html`
 
 # Squash error on exit from hhc
 maxima.chm: maxima.hhp contents.hhc index.hhk
