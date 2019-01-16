@@ -110,6 +110,23 @@ approx_equal(
   )$
 true $
 
+/* A test for a command that failed in 2010, see
+ https://def.fe.up.pt/pipermail/maxima-discuss/2010/033075.html and
+ https://def.fe.up.pt/pipermail/maxima-discuss/2010/033080.html
+
+ As the maxima-discuss thread "COERCE-FLOAT-FUN in complexfield"
+ in Mid-Jan 2019 shows the remedy for this made the following
+ command slow and space-hungry in sbcl:
+
+     w[i,j] := random (1.0) + %i * random (1.0);
+     showtime : true$
+     M : genmatrix (w, 100, 100)$
+     lu_factor (M, complexfield)$
+     lu_factor (M, generalring)$
+
+ The reason for that was using coerce-float-fun for each matrix
+ entry which created lisp functions sbcl automatically compiled.
+*/
 approx_equal(
   mnewton(diff(acos(x^2+8.363+267)/(sqrt(x^2-4.29*x+1042)*(x^2+12.8102*x+1177)),x),x,5),
   [[x=-1.012828847267113*10^-12*%i-5.626466372928149]],
