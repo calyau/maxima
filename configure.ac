@@ -827,7 +827,7 @@ AC_ARG_ENABLE(mathjax,
   [case "${enableval}" in
       yes) mathjax=true
            mathjax_enable='@set mathjax true'
-           mathjax_script="<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>"
+           mathjax_script='<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>'
 ;;
       no)  mathjax=false
            mathjax_enable='@clear mathjax'
