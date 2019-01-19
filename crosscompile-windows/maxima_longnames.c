@@ -20,7 +20,10 @@ int main(int argc, char *argv[])
 
    if( argc != 2 )
    {
-      _tprintf(TEXT("Usage: %s [file]\n"), argv[0]);
+      _tprintf(TEXT("Usage: maxima_longnames [filename]\n\n"));
+      _tprintf(TEXT("This program converts Windows generated short filenames (ending with \"~\"\n"));
+      _tprintf(TEXT("and a number (8.3 format for compatibility with old Windows/DOS versions))\n"));
+      _tprintf(TEXT("back to the long filename (The short name cause problems with CLISP.)\n"));
       return 1;
    }
 

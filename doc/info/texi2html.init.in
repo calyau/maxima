@@ -1,3 +1,2 @@
-$EXTRA_HEAD = "<link rel=\"icon\" href=\"figures/favicon.ico\">
-@mathjax_script@
-"
+$options->{"EXTRA_HEAD"} = '<link rel="icon" href="figures/favicon.ico">
+@mathjax_script@';
