@@ -9,9 +9,9 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(WXMAXIMAVERSION "19.01.0")
+set(WXMAXIMAVERSION "19.01.1")
 
-set(WXMAXIMA_MD5    "6a5a636bc07ecb1df8d487a266966a06")
+set(WXMAXIMA_MD5    "6a468f8fdc3cad6203a94ba314b27de2")
 
 set(WXMAXIMA_URL    "https://github.com/wxmaxima-developers/wxmaxima/archive/Version-${WXMAXIMAVERSION}.tar.gz")
 

@@ -200,7 +200,7 @@
 ;; in all other cases, return false. See, Knuth, "The Art of Computer Programming," 3rd edition,
 ;; page 233.
 
-(defmvar $float_approx_equal_tolerance (* 16 flonum-epsilon))
+(defmvar $float_approx_equal_tolerance (* 8 flonum-epsilon))
 
 (defmfun $float_approx_equal (a b)
   (setq a (if (floatp a) a ($float a)))
@@ -210,8 +210,8 @@
    (floatp b)
    (<= (abs (- a b)) (* $float_approx_equal_tolerance 
 			(min 
-			 (expt 2 (- (second (multiple-value-list (decode-float a))) 1))
-			 (expt 2 (- (second (multiple-value-list (decode-float b))) 1)))))))
+			 (expt 2 (second (multiple-value-list (decode-float a))))
+			 (expt 2 (second (multiple-value-list (decode-float b)))))))))
 
 ;; Big float version of float_approx_equal. But for bfloat_approx_equal, the tolerance isn't
 ;; user settable; instead, it is 32 / 2^fpprec. The factor of 32 is too large, I suppose. But

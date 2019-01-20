@@ -81,6 +81,7 @@ Changes in core:
      integrate(log(cot(x) - 1), x, 0, %pi/4);           /* rtest16  524 */
      integrate(log(cos(x)), x, 0, %pi/2);               /* rtest16  525 */
      integrate((log((2-x)/2)+log(2))/(1-x), x, 0, 1);   /* rtestint 232 */
+ * float_approx_equal now does what the comments in the code say.
  
 Changes in share:
 --------------
@@ -120,8 +121,8 @@ Unnumbered bugs:
 Additional improvements:
 ------------------------
  * Updated the external utilities for the Windows installer
- * The wxMaxima version the Windows installer comes with now is
-   Version 18.12.0
+ * Updated the wxMaxima version the Windows installer comes with
+   to version 19.01.1
  * Nightly Test: A summary of the share tests
  * Crosscompiling: Add 'maxima_longnames.c' to automake
  * Documentation Updates
