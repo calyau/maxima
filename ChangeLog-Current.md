@@ -81,6 +81,7 @@ Changes in core:
      integrate(log(cot(x) - 1), x, 0, %pi/4);           /* rtest16  524 */
      integrate(log(cos(x)), x, 0, %pi/2);               /* rtest16  525 */
      integrate((log((2-x)/2)+log(2))/(1-x), x, 0, 1);   /* rtestint 232 */
+ * float_approx_equal now does what the comments in the code say.
  
 Changes in share:
 --------------
