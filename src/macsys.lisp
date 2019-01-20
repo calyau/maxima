@@ -166,8 +166,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
   (declare (ignore unused))
   0)
 
-(defun continue (&optional (input-stream *standard-input*)
-		 batch-or-demo-flag)
+(defun continue (&key ((:stream input-stream) *standard-input*) batch-or-demo-flag one-shot)
   (declare (special *socket-connection* *maxima-run-string*))
   (if *maxima-run-string* (setq batch-or-demo-flag :batch))
   (if (eql batch-or-demo-flag :demo)
@@ -187,8 +186,9 @@ DESTINATION is an actual stream (rather than nil for a string)."
 	 (area-after)
 	 (etime-used)
 	 (c-tag)
-	 (d-tag))
-	(nil)
+	 (d-tag)
+         (finish nil one-shot))
+        (finish nil)
       (declare (ignorable area-before area-after))
       (catch 'return-from-debugger
 	(when (or (not (checklabel $inchar))
@@ -398,8 +398,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
 
 
 (defun batch-internal (fileobj demo-p)
-  (continue (make-echo-stream fileobj *standard-output*)
-	    (if demo-p ':demo ':batch)))
+  (continue :stream (make-echo-stream fileobj *standard-output*)
+	    :batch-or-demo-flag (if demo-p ':demo ':batch)))
 
 (defmfun $demo (&rest arg-list)
   (let ((tem ($file_search (car arg-list) $file_search_demo)))
@@ -512,7 +512,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 		#+(or cmu scl sbcl openmcl lispworks) 'continue
 		#-(or kcl cmu scl sbcl openmcl lispworks) nil
 		(catch 'macsyma-quit
-		  (continue input-stream batch-flag)
+		  (continue :stream input-stream :batch-or-demo-flag batch-flag)
 		  (format t *maxima-epilog*)
 		  (bye)))))))
 
