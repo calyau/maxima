@@ -298,7 +298,7 @@ which were defined.
 is a function which, by prompting, allows one to create an indexed
 object called @var{name} with any number of tensorial and derivative
 indices. Either a single index or a list of indices (which may be
-null) is acceptable input (see the example under @code{covdiff}).
+null) is acceptable input (see the example under @mref{covdiff}).
 
 @opencatbox
 @category{Package itensor}
@@ -405,8 +405,8 @@ beginning at the value of @var{count}.  Each dummy index in a product
 will be different. For a sum, @code{rename} will operate upon each term in
 the sum resetting the counter with each term. In this way @code{rename} can
 serve as a tensorial simplifier. In addition, the indices will be
-sorted alphanumerically (if @code{allsym} is @code{true}) with respect to
-covariant or contravariant indices depending upon the value of @code{flipflag}.
+sorted alphanumerically (if @mref{allsym} is @code{true}) with respect to
+covariant or contravariant indices depending upon the value of @mref{flipflag}.
 If @code{flipflag} is @code{false} then the indices will be renamed according
 to the order of the contravariant indices. If @code{flipflag} is @code{true}
 the renaming will occur according to the order of the covariant
@@ -550,9 +550,9 @@ properties from all indexed objects.
 Carries out the tensorial contractions in @var{expr} which may be any
 combination of sums and products. This function uses the information
 given to the @code{defcon} function. For best results, @code{expr}
-should be fully expanded. @code{ratexpand} is the fastest way to expand
+should be fully expanded. @mref{ratexpand} is the fastest way to expand
 products and powers of sums if there are no variables in the denominators
-of the terms. The @code{gcd} switch should be @code{false} if GCD
+of the terms. The @mref{gcd} switch should be @code{false} if GCD
 cancellations are unnecessary.
 
 @opencatbox
@@ -586,7 +586,7 @@ involving other objects with the same free indices as @var{tensor}. When
 used to assign values to the metric tensor wherein the components
 contain dummy indices one must be careful to define these indices to
 avoid the generation of multiple dummy indices. Removal of this
-assignment is given to the function @code{remcomps}.
+assignment is given to the function @mref{remcomps}.
 
 It is important to keep in mind that @code{components} cares only about
 the valence of a tensor, not about any particular index ordering. Thus
@@ -634,7 +634,7 @@ of which involve the use of the @code{components} command:
 
 3) As a function. You can use a Maxima function to specify the
 components of a tensor based on its indices. For instance, the following
-code assigns @code{kdelta} to @code{h} if @code{h} has the same number
+code assigns @mref{kdelta} to @code{h} if @code{h} has the same number
 of covariant and contravariant indices and no derivative indices, and
 @code{g} otherwise:
 
@@ -653,7 +653,7 @@ of covariant and contravariant indices and no derivative indices, and
 @end example
 
 4) Using Maxima's pattern matching capabilities, specifically the
-@code{defrule} and @code{applyb1} commands:
+@mref{defrule} and @mref{applyb1} commands:
 
 @example
 
@@ -688,7 +688,7 @@ of covariant and contravariant indices and no derivative indices, and
 @deffn {Function} remcomps (@var{tensor})
 
 Unbinds all values from @var{tensor} which were assigned with the
-@code{components} function.
+@mref{components} function.
 
 @opencatbox
 @category{Package itensor}
@@ -701,7 +701,7 @@ Unbinds all values from @var{tensor} which were assigned with the
 @anchor{showcomps}
 @deffn {Function} showcomps (@var{tensor})
 
-Shows component assignments of a tensor, as made using the @code{components}
+Shows component assignments of a tensor, as made using the @mref{components}
 command. This function can be particularly useful when a matrix is assigned
 to an indicial tensor using @code{components}, as demonstrated by the
 following example:
@@ -755,10 +755,10 @@ rank higher than 2.
 @anchor{idummy}
 @deffn {Function} idummy ()
 
-Increments @code{icounter} and returns as its value an index of the form
+Increments @mref{icounter} and returns as its value an index of the form
 @code{%n} where n is a positive integer.  This guarantees that dummy indices
 which are needed in forming expressions will not conflict with indices
-already in use (see the example under @code{indices}).
+already in use (see the example under @mref{indices}).
 
 @opencatbox
 @category{Package itensor}
@@ -769,7 +769,7 @@ already in use (see the example under @code{indices}).
 @defvr {Option variable} idummyx
 Default value: @code{%}
 
-Is the prefix for dummy indices (see the example under @code{indices}).
+Is the prefix for dummy indices (see the example under @mref{indices}).
 
 @opencatbox
 @category{Package itensor}
@@ -783,7 +783,7 @@ Default value: @code{1}
 
 Determines the numerical suffix to be used in
 generating the next dummy index in the tensor package.  The prefix is
-determined by the option @code{idummy} (default: @code{%}).
+determined by the option @mref{idummy} (default: @code{%}).
 
 @opencatbox
 @category{Package itensor}
@@ -863,7 +863,7 @@ this function and simply evaluating the Levi-Civita symbol is that direct
 evaluation often results in Kronecker expressions containing numerical
 indices. This is often undesirable as it prevents further simplification.
 The @code{lc2kdt} function avoids this problem, yielding expressions that
-are more easily simplified with @code{rename} or @code{contract}.
+are more easily simplified with @mref{rename} or @mref{contract}.
 
 @example
 
@@ -897,7 +897,7 @@ are more easily simplified with @code{rename} or @code{contract}.
 @end example
 
 The @code{lc2kdt} function sometimes makes use of the metric tensor.
-If the metric tensor was not defined previously with @code{imetric},
+If the metric tensor was not defined previously with @mref{imetric},
 this results in an error.
 
 @example
@@ -944,7 +944,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @anchor{lc_l}
 @deffn {Function} lc_l
 Simplification rule used for expressions containing the unevaluated Levi-Civita
-symbol (@code{levi_civita}). Along with @code{lc_u}, it can be used to simplify
+symbol (@mref{levi_civita}). Along with @mref{lc_u}, it can be used to simplify
 many expressions more efficiently than the evaluation of @code{levi_civita}.
 For example:
 
@@ -978,9 +978,9 @@ For example:
 @deffn {Function} lc_u
 
 Simplification rule used for expressions containing the unevaluated Levi-Civita
-symbol (@code{levi_civita}). Along with @code{lc_u}, it can be used to simplify
+symbol (@mref{levi_civita}). Along with @code{lc_u}, it can be used to simplify
 many expressions more efficiently than the evaluation of @code{levi_civita}.
-For details, see @code{lc_l}.
+For details, see @mref{lc_l}.
 
 @opencatbox
 @category{Package itensor}
@@ -990,15 +990,15 @@ For details, see @code{lc_l}.
 @c -----------------------------------------------------------------------------
 @anchor{canten}
 @deffn {Function} canten (@var{expr})
-Simplifies @var{expr} by renaming (see @code{rename})
+Simplifies @var{expr} by renaming (see @mref{rename})
 and permuting dummy indices. @code{rename} is restricted to sums of tensor
 products in which no derivatives are present. As such it is limited
-and should only be used if @code{canform} is not capable of carrying out the
+and should only be used if @mref{canform} is not capable of carrying out the
 required simplification.
 
 The @code{canten} function returns a mathematically correct result only
 if its argument is an expression that is fully symmetric in its indices.
-For this reason, @code{canten} returns an error if @code{allsym} is not
+For this reason, @code{canten} returns an error if @mref{allsym} is not
 set to @code{true}.
 
 @opencatbox
@@ -1009,7 +1009,7 @@ set to @code{true}.
 @c -----------------------------------------------------------------------------
 @anchor{concan}
 @deffn {Function} concan (@var{expr})
-Similar to @code{canten} but also performs index contraction.
+Similar to @mref{canten} but also performs index contraction.
 
 @opencatbox
 @category{Package itensor}
@@ -1119,10 +1119,10 @@ indices and reordering all indices as dictated by symmetry conditions
 imposed on them. If @code{allsym} is @code{true} then all indices are assumed
 symmetric, otherwise symmetry information provided by @code{decsym}
 declarations will be used. The dummy indices are renamed in the same
-manner as in the @code{rename} function. When @code{canform} is applied to a large
+manner as in the @mref{rename} function. When @code{canform} is applied to a large
 expression the calculation may take a considerable amount of time.
 This time can be shortened by calling @code{rename} on the expression first.
-Also see the example under @code{decsym}. Note: @code{canform} may not be able to
+Also see the example under @mref{decsym}. Note: @code{canform} may not be able to
 reduce an expression completely to its simplest form although it will
 always return a mathematically correct result.
 
@@ -1220,7 +1220,7 @@ field. For example:
 @anchor{rediff}
 @deffn {Function} rediff (@var{ten})
 
-Evaluates all occurrences of the @code{idiff} command in the tensorial
+Evaluates all occurrences of the @mref{idiff} command in the tensorial
 expression @var{ten}.
 
 @opencatbox
@@ -1233,7 +1233,7 @@ expression @var{ten}.
 @deffn {Function} undiff (@var{expr})
 
 Returns an expression equivalent to @var{expr} but with all derivatives
-of indexed objects replaced by the noun form of the @code{idiff} function. Its
+of indexed objects replaced by the noun form of the @mref{idiff} function. Its
 arguments would yield that indexed object if the differentiation were
 carried out.  This is useful when it is desired to replace a
 differentiated indexed object with some function definition resulting
@@ -1249,8 +1249,8 @@ in @var{expr} and then carry out the differentiation by saying
 @anchor{evundiff}
 @deffn {Function} evundiff (@var{expr})
 
-Equivalent to the execution of @code{undiff}, followed by @code{ev} and
-@code{rediff}.
+Equivalent to the execution of @mref{undiff}, followed by @mref{ev} and
+@mref{rediff}.
 
 The point of this operation is to easily evalute expressions that cannot
 be directly evaluated in derivative form. For instance, the following
@@ -1269,7 +1269,7 @@ Automatically continuing.
 To reenable the Lisp debugger set *debugger-hook* to nil.
 @end example
 
-However, if @code{icurvature} is entered in noun form, it can be evaluated
+However, if @mref{icurvature} is entered in noun form, it can be evaluated
 using @code{evundiff}:
 
 @example
@@ -1393,7 +1393,7 @@ removes this property from all indexed objects.
 @c -----------------------------------------------------------------------------
 @anchor{makebox}
 @deffn {Function} makebox (@var{expr})
-Display @var{expr} in the same manner as @code{show}; however,
+Display @var{expr} in the same manner as @mref{show}; however,
 any tensor d'Alembertian occurring in @var{expr} will be indicated using the
 symbol @code{[]}.  For example, @code{[]p([m],[n])} represents
 @code{g([],[i,j])*p([m],[n],i,j)}.
@@ -1473,7 +1473,7 @@ which follows from the symmetries of the Christoffel symbols.
 The @code{simpmetderiv} function takes one optional parameter which, when
 present, causes the function to stop after the first successful
 substitution in a product expression. The @code{simpmetderiv} function
-also makes use of the global variable @var{flipflag} which determines
+also makes use of the global variable @mref{flipflag} which determines
 how to apply a ``canonical'' ordering to the product indices.
 
 Put together, these capabilities can be used to achieve powerful
@@ -1698,7 +1698,7 @@ contravariant index.
 
 Causes undifferentiated Christoffel symbols and
 first derivatives of the metric tensor vanish in @var{expr}. The @var{name}
-in the @code{igeodesic_coords} function refers to the metric @var{name}
+in the @mref{igeodesic_coords} function refers to the metric @var{name}
 (if it appears in @var{expr}) while the connection coefficients must be
 called with the names @code{ichr1} and/or @code{ichr2}. The following example
 demonstrates the verification of the cyclic identity satisfied by the Riemann
@@ -1750,12 +1750,12 @@ These can be orthonormal frames (tetrads, vielbeins) or an arbitrary frame.
 To use frames, you must first set @code{iframe_flag} to @code{true}. This
 causes the Christoffel-symbols, @code{ichr1} and @code{ichr2}, to be replaced
 by the more general frame connection coefficients @code{icc1} and @code{icc2}
-in calculations. Speficially, the behavior of @code{covdiff} and
+in calculations. Speficially, the behavior of @mref{covdiff} and
 @code{icurvature} is changed.
 
-The frame is defined by two tensors: the inverse frame field (@code{ifri},
+The frame is defined by two tensors: the inverse frame field (@mref{ifri},
 the dual basis tetrad),
-and the frame metric @code{ifg}. The frame metric is the identity matrix for
+and the frame metric @mref{ifg}. The frame metric is the identity matrix for
 orthonormal frames, or the Lorentz metric for orthonormal frames in Minkowski
 spacetime. The inverse frame field defines the frame base (unit vectors).
 Contraction properties are defined for the frame field and the frame metric.
@@ -1823,8 +1823,8 @@ the @code{iframe_bracket_form} flag is set to @code{false}:
 @anchor{iframes}
 @deffn {Function} iframes ()
 
-Since in this version of Maxima, contraction identities for @code{ifr} and
-@code{ifri} are always defined, as is the frame bracket (@code{ifb}), this
+Since in this version of Maxima, contraction identities for @mref{ifr} and
+@mref{ifri} are always defined, as is the frame bracket (@mref{ifb}), this
 function does nothing.
 
 @opencatbox
@@ -1892,11 +1892,11 @@ icc1    = ichr1    - ikt1    - inmc1
 
 In this expression, if @code{iframe_flag} is true, the Christoffel-symbol
 @code{ichr1} is replaced with the frame connection coefficient @code{ifc1}.
-If @code{itorsion_flag} is @code{false}, @code{ikt1}
+If @code{itorsion_flag} is @code{false}, @mref{ikt1}
 will be omitted. It is also omitted if a frame base is used, as the
 torsion is already calculated as part of the frame bracket.
 Lastly, of @code{inonmet_flag} is @code{false},
-@code{inmc1} will not be present.
+@mref{inmc1} will not be present.
 
 @opencatbox
 @category{Package itensor}
@@ -1923,7 +1923,7 @@ If @code{itorsion_flag} is @code{false}, @code{ikt2}
 will be omitted. It is also omitted if a frame base is used, as the
 torsion is already calculated as part of the frame bracket.
 Lastly, of @code{inonmet_flag} is @code{false},
-@code{inmc2} will not be present.
+@mref{inmc2} will not be present.
 
 @opencatbox
 @category{Package itensor}
@@ -1960,7 +1960,7 @@ ifc1    = --------------------------------
 
 Frame coefficient of the second kind. This tensor represents the contribution
 of the frame metric to the connection coefficient of the second kind. Defined
-as a permutation of the frame bracket (@code{ifb}) with the appropriate
+as a permutation of the frame bracket (@mref{ifb}) with the appropriate
 indices raised and lowered as necessary:
 
 @example
@@ -1980,8 +1980,8 @@ ifc2   = ifg   ifc1
 @anchor{ifr}
 @defvr {Variable} ifr
 
-The frame field. Contracts with the inverse frame field (@code{ifri}) to
-form the frame metric (@code{ifg}).
+The frame field. Contracts with the inverse frame field (@mref{ifri}) to
+form the frame metric (@mref{ifg}).
 
 @opencatbox
 @category{Package itensor}
@@ -2005,8 +2005,8 @@ frames.
 @anchor{ifg}
 @defvr {Variable} ifg
 
-The frame metric. Defaults to @code{kdelta}, but can be changed using
-@code{components}.
+The frame metric. Defaults to @mref{kdelta}, but can be changed using
+@mref{components}.
 
 @opencatbox
 @category{Package itensor}
@@ -2017,8 +2017,8 @@ The frame metric. Defaults to @code{kdelta}, but can be changed using
 @anchor{ifgi}
 @defvr {Variable} ifgi
 
-The inverse frame metric. Contracts with the frame metric (@code{ifg})
-to @code{kdelta}.
+The inverse frame metric. Contracts with the frame metric (@mref{ifg})
+to @mref{kdelta}.
 
 @opencatbox
 @category{Package itensor}
@@ -2030,7 +2030,7 @@ to @code{kdelta}.
 @defvr {Option variable} iframe_bracket_form
 Default value: @code{true}
 
-Specifies how the frame bracket (@code{ifb}) is computed.
+Specifies how the frame bracket (@mref{ifb}) is computed.
 
 @opencatbox
 @category{Package itensor}
@@ -2082,7 +2082,7 @@ inmc1    = ------------------------------
 
 @end example
 
-(Substitute @code{ifg} in place of @code{g} if a frame metric is used.)
+(Substitute @mref{ifg} in place of @code{g} if a frame metric is used.)
 
 @opencatbox
 @category{Package itensor}
@@ -2107,7 +2107,7 @@ inmc2   = -------------------------------------------
 
 @end example
 
-(Substitute @code{ifg} in place of @code{g} if a frame metric is used.)
+(Substitute @mref{ifg} in place of @code{g} if a frame metric is used.)
 
 @opencatbox
 @category{Package itensor}
@@ -2131,7 +2131,7 @@ ikt1    = ----------------------------------
 
 @end example
 
-(Substitute @code{ifg} in place of @code{g} if a frame metric is used.)
+(Substitute @mref{ifg} in place of @code{g} if a frame metric is used.)
 
 @opencatbox
 @category{Package itensor}
@@ -2153,7 +2153,7 @@ ikt2   = g   ikt1
 
 @end example
 
-(Substitute @code{ifg} in place of @code{g} if a frame metric is used.)
+(Substitute @mref{ifg} in place of @code{g} if a frame metric is used.)
 
 @opencatbox
 @category{Package itensor}
@@ -2277,7 +2277,7 @@ Since @code{itensor} is a tensor algebra package, the first of these two
 definitions appears to be the more natural one. Many applications, however,
 utilize the second definition. To resolve this dilemma, a flag has been
 implemented that controls the behavior of the wedge product: if
-@code{igeowedge_flag} is @code{false} (the default), the first, "tensorial"
+@mref{igeowedge_flag} is @code{false} (the default), the first, "tensorial"
 definition is used, otherwise the second, "geometric" definition will
 be applied.
 
@@ -2293,7 +2293,7 @@ covariant tensors of rank one, or covariant tensors of rank @code{l} that
 have been declared antisymmetric in all covariant indices.
 
 The behavior of the wedge product operator is controlled by the
-@code{igeowedge_flag} flag, as in the following example:
+@mref{igeowedge_flag} flag, as in the following example:
 
 @example
 (%i1) load("itensor");
@@ -2375,7 +2375,7 @@ the results will be incorrect.
 Computes the exterior derivative of @var{expr} with respect to the index
 @var{i}. The exterior derivative is formally defined as the wedge
 product of the partial derivative operator and a differential form. As
-such, this operation is also controlled by the setting of @code{igeowedge_flag}.
+such, this operation is also controlled by the setting of @mref{igeowedge_flag}.
 For instance:
 
 @example
@@ -2492,8 +2492,8 @@ of the volume element.
 
 The @code{itensor} package provides limited support for exporting tensor
 expressions to TeX. Since @code{itensor} expressions appear as function calls,
-the regular Maxima @code{tex} command will not produce the expected
-output. You can try instead the @code{tentex} command, which attempts
+the regular Maxima @mref{tex} command will not produce the expected
+output. You can try instead the @mref{tentex} command, which attempts
 to translate tensor expressions into appropriately indexed TeX objects.
 
 @c -----------------------------------------------------------------------------
@@ -2547,7 +2547,7 @@ NB: This version of the @code{tentex} function is somewhat experimental.
 
 The @code{itensor} package has the ability to generate Maxima code that can
 then be executed in the context of the @code{ctensor} package. The function that performs
-this task is @code{ic_convert}.
+this task is @mref{ic_convert}.
 
 @c -----------------------------------------------------------------------------
 @anchor{ic_convert}
@@ -2558,15 +2558,15 @@ Implied sums over dummy indices are made explicit while indexed
 objects are transformed into arrays (the array subscripts are in the
 order of covariant followed by contravariant indices of the indexed
 objects). The derivative of an indexed object will be replaced by the
-noun form of @code{diff} taken with respect to @code{ct_coords} subscripted
-by the derivative index. The Christoffel symbols @code{ichr1} and @code{ichr2}
+noun form of @mref{diff} taken with respect to @mref{ct_coords} subscripted
+by the derivative index. The Christoffel symbols @mref{ichr1} and @mref{ichr2}
 will be translated to @code{lcs} and @code{mcs}, respectively and if
 @code{metricconvert} is @code{true} then all occurrences of the metric
 with two covariant (contravariant) indices will be renamed to @code{lg}
-(@code{ug}). In addition, @code{do} loops will be introduced summing over
+(@code{ug}). In addition, @mref{do} loops will be introduced summing over
 all free indices so that the
 transformed assignment statement can be evaluated by just doing
-@code{ev}. The following examples demonstrate the features of this
+@mref{ev}. The following examples demonstrate the features of this
 function.
 
 @c Added some ===beg=== and ==end== pairs around some source code

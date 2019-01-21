@@ -115,7 +115,7 @@ If @code{desolve} cannot obtain a solution, it returns @code{false}.
 @deffn {Function} ic1 (@var{solution}, @var{xval}, @var{yval})
 Solves initial value problems for first order differential equations.
 Here @var{solution} is a general solution to the equation, as found by
-@code{ode2}, @var{xval} gives an initial value for the independent
+@mref{ode2}, @var{xval} gives an initial value for the independent
 variable in the form @code{@var{x} = @var{x0}}, and @var{yval} gives the
 initial value for the dependent variable in the form @code{@var{y} =
 @var{y0}}.
@@ -179,9 +179,9 @@ factor used, @code{odeindex} denotes the index for Bernoulli's method or
 for the generalized homogeneous method, and @code{yp} denotes the
 particular solution for the variation of parameters technique.
 
-In order to solve initial value problems (IVP) functions @code{ic1} and
-@code{ic2} are available for first and second order equations, and to
-solve second-order boundary value problems (BVP) the function @code{bc2}
+In order to solve initial value problems (IVP) functions @mref{ic1} and
+@mref{ic2} are available for first and second order equations, and to
+solve second-order boundary value problems (BVP) the function @mref{bc2}
 can be used.
 
 Example:
