@@ -208,10 +208,11 @@
   (and
    (floatp a)
    (floatp b)
-   (<= (abs (- a b)) (* $float_approx_equal_tolerance 
-			(min 
-			 (expt 2 (second (multiple-value-list (decode-float a))))
-			 (expt 2 (second (multiple-value-list (decode-float b)))))))))
+   (or (= a b)
+       (<= (abs (- a b)) (* $float_approx_equal_tolerance
+                            (min
+                             (expt 2 (second (multiple-value-list (decode-float a))))
+                             (expt 2 (second (multiple-value-list (decode-float b))))))))))
 
 ;; Big float version of float_approx_equal. But for bfloat_approx_equal, the tolerance isn't
 ;; user settable; instead, it is 32 / 2^fpprec. The factor of 32 is too large, I suppose. But
