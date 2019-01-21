@@ -189,7 +189,7 @@
           (setq $load_pathname (cl:namestring (truename in-stream)))
           (format nil "~A" in-stream))))
       (format t (intl:gettext "~%read and interpret ~A~%") in-stream-string-rep)
-      (catch 'macsyma-quit (continue in-stream demo))
+      (catch 'macsyma-quit (continue :stream in-stream :batch-or-demo-flag demo))
       in-stream-string-rep)))
 
 ;; Return true if $float converts both a and b to floats and 
