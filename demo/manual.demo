@@ -1004,10 +1004,7 @@
    
 && reverse  
    
-   union(x,y):=if x=[] then y else
-                  if member(t:first(x),y) then union(rest(x),y)
-                  else cons(t,union(rest(x),y))$
-   union([a,b,1,1/2,x^2],[-x^2,a,y,1/2]);
+   union({a,b,1,1/2,x^2},{-x^2,a,y,1/2});
    bernpoly(x,5);
    maplist(numfactor,%);
    apply(min,%);
