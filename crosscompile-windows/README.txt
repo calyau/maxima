@@ -3,7 +3,7 @@ Crosscompiling Maxima for Windows
 
 On a Ubuntu/Debian System just install some tools for crosscompiling:
 
-apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo rsync p7zip-full texlive g++ gettext
+apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo texlive texlive-plain-generic rsync p7zip-full g++ gettext tcl
 
 (If you are using a 64 bit operating system, it might be necessary to add
 the i386 architecture (https://wiki.debian.org/Multiarch/HOWTO) before).
