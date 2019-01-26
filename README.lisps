@@ -134,7 +134,9 @@ but most notably, it is simpler to rebuild SBCL than CMUCL.
 For many tasks a maxima compiled with SBCL is considerably faster than
 GCL. For other tasks GCL is faster than SBCL.
 
-rmaxima is recommended for use with SBCL. See CMUCL above.
+As sbcl doesn't use readline it is recommended to use rmaxima for using
+a command-line maxima with SBCL. For common details of SBCL and CMUCL
+See CMUCL above.
 
 Maxima compiled using a typical linux install using sbcl 1.4.10
 typically depends on:
