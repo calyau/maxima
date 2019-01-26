@@ -1965,7 +1965,10 @@ The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (A&S 19.3.1)
 @deffn {Function} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
 
 Compute the Laplace transform of @var{expr} with respect to the variable @var{t}.
-The integrand @var{expr} may contain special functions. 
+The integrand @var{expr} may contain special functions.   The
+parameter @var{s} maybe be named something else; it is determined
+automatically, as the examples below show where @var{p} is used in
+some places.
 
 The following special functions are handled by @code{specint}: incomplete gamma 
 function, error functions (but not the error function @code{erfi}, it is easy to 
