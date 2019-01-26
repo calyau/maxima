@@ -12,8 +12,8 @@ if you are interested in working on a port.
 When Maxima is recompiled, the Lisp implementation is selected by
 an argument of the form `--enable-foolisp' for the configure script.
 `./configure --help' shows a list of the Lisp types recognized by
-configure (among other options). Always specify the Lisp type(s)
-you want maxima to be built with:
+configure (among other options). It is possible to specify several
+Lisp type(s) you want maxima to be built with at the same time.
 configure tries to autodetect the Lisp type if it is not specified,
 but it has been reported that autodetection can fail.
 
