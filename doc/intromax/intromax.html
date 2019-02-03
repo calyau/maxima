@@ -1,26 +1,28 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
            "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
-<meta name="GENERATOR" content="TtH 3.85">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="GENERATOR" content="TtH 4.03">
  <style type="text/css"> div.p { margin-top: 7pt;}</style>
  <style type="text/css"><!--
  td div.comp { margin-top: -0.6ex; margin-bottom: -1ex;}
  td div.comb { margin-top: -0.6ex; margin-bottom: -.6ex;}
  td div.hrcomp { line-height: 0.9; margin-top: -0.8ex; margin-bottom: -1ex;}
  td div.norm {line-height:normal;}
- pre
- {
- border: 1px solid gray;
- padding-top: 1em;
- padding-bottom: 1em;
- padding-left: 1em;
- padding-right: 1em;
- background-color: #F1F5F9; /* light blue-gray */
- }
  span.roman {font-family: serif; font-style: normal; font-weight: normal;} 
  span.overacc2 {position: relative;  left: .8em; top: -1.2ex;}
  span.overacc1 {position: relative;  left: .6em; top: -1.2ex;} --></style>
+ <style type="text/css"><!--
+ .tiny {font-size:30%;}
+ .scriptsize {font-size:xx-small;}
+ .footnotesize {font-size:x-small;}
+ .smaller {font-size:smaller;}
+ .small {font-size:small;}
+ .normalsize {font-size:medium;}
+ .large {font-size:large;}
+ .larger {font-size:x-large;}
+ .largerstill {font-size:xx-large;}
+ .huge {font-size:300%;}
+ --></style>
  
 
 
@@ -35,7 +37,7 @@ Dept. of Theoretical and Applied Mechanics, Cornell University
 <h3 align="center">  </h3>
 
 <div class="p"><!----></div>
- Copyright (c) 1988-2010 Richard H. Rand.
+Copyright (c) 1988-2010 Richard H. Rand.
 
 <div class="p"><!----></div>
 This document is free; you can redistribute it and/or modify it under
@@ -44,28 +46,8 @@ Software Foundation. See the GNU General Public License for more
 details at http://www.gnu.org/copyleft/gpl.html
 
 <div class="p"><!----></div>
-
-<h1>Contents </h1><a href="#tth_sEc1"
->1&nbsp; Introduction </a><br />
-<a href="#tth_sEc2"
->2&nbsp; Special keys and symbols </a><br />
-<a href="#tth_sEc3"
->3&nbsp; Arithmetic </a><br />
-<a href="#tth_sEc4"
->4&nbsp; Algebra </a><br />
-<a href="#tth_sEc5"
->5&nbsp; Calculus </a><br />
-<a href="#tth_sEc6"
->6&nbsp; Matrix calculations </a><br />
-<a href="#tth_sEc7"
->7&nbsp; Programming in Maxima </a><br />
-<a href="#tth_sEc8"
->8&nbsp; A partial list of Maxima functions</a><br />
-
-
-<div class="p"><!----></div>
- <h2><a name="tth_sEc1">
-1</a>&nbsp;&nbsp;Introduction <a name="sec:introduction">
+ <a name="tth_sEc1"></a><h2>
+1&nbsp;&nbsp;Introduction <a name="sec:introduction">
 </a></h2>
 
 <div class="p"><!----></div>
@@ -107,8 +89,8 @@ names which are lower or upper case or both.  <tt>foo(XY)</tt>, <tt>
   Foo(Xy)</tt>, <tt>FOO(xy)</tt> are all different.
 
 <div class="p"><!----></div>
- <h2><a name="tth_sEc2">
-2</a>&nbsp;&nbsp;Special keys and symbols <a name="sec:keys">
+ <a name="tth_sEc2"></a><h2>
+2&nbsp;&nbsp;Special keys and symbols <a name="sec:keys">
 </a></h2>
 
 <div class="p"><!----></div>
@@ -169,10 +151,7 @@ To&nbsp;enable&nbsp;the&nbsp;Lisp&nbsp;debugger&nbsp;set&nbsp;*debugger-hook*&nb
 </li>
 
 <li> The standard quantities e (natural log base), i (square root
-  of <font face="symbol">-</font
->1) and <font face="symbol">p</font
-> (3.14159<font face="symbol">Â¼</font
->) are respectively referred to as
+  of &#8722;1) and &#960; (3.14159&#8230;) are respectively referred to as
   <tt>%e</tt>, <tt>%i</tt>,
   and <tt>%pi</tt>.  Note that the use of <tt>%</tt> here as a prefix
   is completely unrelated to the use of <tt>%</tt> to refer to the
@@ -188,14 +167,14 @@ To&nbsp;enable&nbsp;the&nbsp;Lisp&nbsp;debugger&nbsp;set&nbsp;*debugger-hook*&nb
 </ol>
 
 <div class="p"><!----></div>
- <h2><a name="tth_sEc3">
-3</a>&nbsp;&nbsp;Arithmetic <a name="sec:arithmetic">
+ <a name="tth_sEc3"></a><h2>
+3&nbsp;&nbsp;Arithmetic <a name="sec:arithmetic">
 </a></h2>
 
 <div class="p"><!----></div>
 The common arithmetic operations are
 
-<dl compact="compact">
+<dl>
  <dt><b><tt>+</tt></b></dt>
 	<dd> addition</dd>
  <dt><b><tt>-</tt></b></dt>
@@ -282,8 +261,8 @@ approximation:
 </pre>
 
 <div class="p"><!----></div>
- <h2><a name="tth_sEc4">
-4</a>&nbsp;&nbsp;Algebra <a name="sec:algebra">
+ <a name="tth_sEc4"></a><h2>
+4&nbsp;&nbsp;Algebra <a name="sec:algebra">
 </a></h2>
 
 <div class="p"><!----></div>
@@ -359,15 +338,15 @@ three unknowns <tt>a</tt>, <tt>b</tt>, <tt>c</tt>:
 (%i8)&nbsp;a&nbsp;+&nbsp;b&nbsp;=&nbsp;5;
 (%o8)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;+&nbsp;a&nbsp;=&nbsp;5
 (%i9)&nbsp;solve&nbsp;([%o6,&nbsp;%o7,&nbsp;%o8],&nbsp;[a,&nbsp;b,&nbsp;c]);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;25&nbsp;sqrt(79)&nbsp;%i&nbsp;+&nbsp;25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;sqrt(79)&nbsp;%i&nbsp;+&nbsp;5
-(%o9)&nbsp;[[a&nbsp;=&nbsp;-------------------,&nbsp;b&nbsp;=&nbsp;-----------------,&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;sqrt(79)&nbsp;%i&nbsp;-&nbsp;34&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sqrt(79)&nbsp;%i&nbsp;+&nbsp;11
-&nbsp;&nbsp;&nbsp;&nbsp;sqrt(79)&nbsp;%i&nbsp;+&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;25&nbsp;sqrt(79)&nbsp;%i&nbsp;-&nbsp;25
-c&nbsp;=&nbsp;---------------],&nbsp;[a&nbsp;=&nbsp;-------------------,&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;sqrt(79)&nbsp;%i&nbsp;+&nbsp;34
-&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;sqrt(79)&nbsp;%i&nbsp;-&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sqrt(79)&nbsp;%i&nbsp;-&nbsp;1
-b&nbsp;=&nbsp;-----------------,&nbsp;c&nbsp;=&nbsp;-&nbsp;---------------]]
-&nbsp;&nbsp;&nbsp;&nbsp;sqrt(79)&nbsp;%i&nbsp;-&nbsp;11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sqrt(79)&nbsp;%i&nbsp;-&nbsp;11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sqrt(79)&nbsp;%i&nbsp;+&nbsp;9
+(%o9)&nbsp;[[a&nbsp;=&nbsp;-&nbsp;----------------,&nbsp;b&nbsp;=&nbsp;---------------,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4
+&nbsp;&nbsp;&nbsp;&nbsp;sqrt(79)&nbsp;%i&nbsp;+&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sqrt(79)&nbsp;%i&nbsp;+&nbsp;11
+c&nbsp;=&nbsp;---------------],&nbsp;[a&nbsp;=&nbsp;----------------,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sqrt(79)&nbsp;%i&nbsp;-&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sqrt(79)&nbsp;%i&nbsp;-&nbsp;1
+b&nbsp;=&nbsp;-&nbsp;---------------,&nbsp;c&nbsp;=&nbsp;-&nbsp;---------------]]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10
 
 </pre>
 Note that the display consists of a "list", i.e., some expression
@@ -416,8 +395,8 @@ and imaginary parts of a complex expression:
 </pre>
 
 <div class="p"><!----></div>
- <h2><a name="tth_sEc5">
-5</a>&nbsp;&nbsp;Calculus <a name="sec:calculus">
+ <a name="tth_sEc5"></a><h2>
+5&nbsp;&nbsp;Calculus <a name="sec:calculus">
 </a></h2>
 
 <div class="p"><!----></div>
@@ -473,7 +452,7 @@ defint:&nbsp;integral&nbsp;is&nbsp;divergent.
 &nbsp;--&nbsp;an&nbsp;error.&nbsp;To&nbsp;debug&nbsp;this&nbsp;try:&nbsp;debugmode(true);
 
 </pre>
-Next we define the simbol <tt>g</tt> in terms of <tt>f</tt> (previously
+Next we define the symbol <tt>g</tt> in terms of <tt>f</tt> (previously
 defined in <tt>%i1</tt>) and the hyperbolic sine function, and find its
 Taylor series expansion (up to, say, order 3 terms) about the point
 <tt>x = 0</tt>:
@@ -548,8 +527,8 @@ Maxima's <tt>ode2</tt> function can solve first and second order ODE's:
 </pre>
 
 <div class="p"><!----></div>
- <h2><a name="tth_sEc6">
-6</a>&nbsp;&nbsp;Matrix calculations <a name="sec:matrix">
+ <a name="tth_sEc6"></a><h2>
+6&nbsp;&nbsp;Matrix calculations <a name="sec:matrix">
 </a></h2>
 
 <div class="p"><!----></div>
@@ -680,8 +659,8 @@ eigenvectors</tt>:
 </pre>
 
 </td></tr></table><!--vbox-->
-</td><td></td></tr></table><!--hboxt--> <h2><a name="tth_sEc7">
-7</a>&nbsp;&nbsp;Programming in Maxima <a name="sec:programming">
+</td><td></td></tr></table><!--hboxt--> <a name="tth_sEc7"></a><h2>
+7&nbsp;&nbsp;Programming in Maxima <a name="sec:programming">
 </a></h2>
 
 <div class="p"><!----></div>
@@ -764,8 +743,8 @@ y&nbsp;=&nbsp;.8697262692814121&nbsp;%i&nbsp;+&nbsp;0.455912070111699]]
 </pre>
 
 <div class="p"><!----></div>
- <h2><a name="tth_sEc8">
-8</a>&nbsp;&nbsp;A partial list of Maxima functions</h2>
+ <a name="tth_sEc8"></a><h2>
+8&nbsp;&nbsp;A partial list of Maxima functions</h2>
 
 <div class="p"><!----></div>
 See the Maxima reference manual <tt>doc/html/maxima_toc.html</tt> (under
@@ -774,7 +753,7 @@ use <tt>describe(<i>function name</i>)</tt>.
 
 <div class="p"><!----></div>
 
-<dl compact="compact">
+<dl>
  <dt><b><tt>allroots(a)</tt></b></dt>
 	<dd> Finds all the (generally complex) roots of
   the polynomial equation <tt>A</tt>, and lists them in <tt>numer</tt>ical
@@ -862,7 +841,7 @@ use <tt>describe(<i>function name</i>)</tt>.
 	<dd> Attempts to find the indefinite
   integral of <tt>a</tt> with respect to <tt>b</tt>. taken from
   <tt>b</tt><tt>=</tt><tt>c</tt> to <tt>b</tt><tt>=</tt><tt>d</tt>.  The limits of integration <tt>c</tt>
-  and <tt>d</tt> may be taken is <tt>inf</tt> (positive infinity) of <tt>
+  and <tt>d</tt> may be taken as <tt>inf</tt> (positive infinity) or <tt>
     minf</tt> (negative infinity).</dd>
  <dt><b><tt>invert(a)</tt></b></dt>
 	<dd> Computes the inverse of the square matrix <tt>
@@ -873,7 +852,7 @@ use <tt>describe(<i>function name</i>)</tt>.
  <dt><b><tt>limit(a,b,c)</tt></b></dt>
 	<dd> Gives the limit of expression <tt>a</tt> as
   variable <tt>b</tt> approaches the value <tt>c</tt>.  The latter may be
-  taken as <tt>inf</tt> of <tt>minf</tt> as in <tt>integrate</tt>.</dd>
+  taken as <tt>inf</tt> or <tt>minf</tt> as in <tt>integrate</tt>.</dd>
  <dt><b><tt>lhs(a)</tt></b></dt>
 	<dd> Gives the left-hand side of the equation <tt>a</tt>.</dd>
  <dt><b><tt>loadfile(a)</tt></b></dt>
@@ -940,8 +919,7 @@ use <tt>describe(<i>function name</i>)</tt>.
  <dt><b><tt>taylor(a,b,c,d)</tt></b></dt>
 	<dd> Expands <tt>a</tt> in a Taylor series in
   <tt>b</tt> about <tt>b</tt><tt>=</tt><tt>c</tt>, up to and including the term
-  <tt>(</tt><tt>b</tt><font face="symbol">-</font
-><tt>c</tt><tt>)</tt><sup><tt>d</tt></sup>.  Maxima also supports Taylor expansions in more
+  <tt>(</tt><tt>b</tt>&#8722;<tt>c</tt><tt>)</tt><sup><tt>d</tt></sup>.  Maxima also supports Taylor expansions in more
   than one independent variable; see the Manual for details.</dd>
  <dt><b><tt>transpose(a)</tt></b></dt>
 	<dd> Gives the transpose of the matrix <tt>a</tt>.</dd>
@@ -966,14 +944,14 @@ use <tt>describe(<i>function name</i>)</tt>.
 <hr /><h3>Footnotes:</h3>
 
 <div class="p"><!----></div>
-<a name="tthFtNtAAB"></a><a href="#tthFrefAAB"><sup>1</sup></a>Adapted from "Perturbation Methods, Bifurcation Theory and Computer Algebra"
-by Rand and Armbruster, Springer, 1987.
-Adapted to <span class="roman">L</span><sup><span class="roman">A</span></sup><span class="roman">T</span><sub><span class="roman">E</span></sub><span class="roman">X</span>&nbsp;and HTML by Nelson L. Dias (nldias@simepar.br), 
-SIMEPAR Technological Institute and Federal University of ParanÃ¡, Brazil.
-Updated by Robert Dodier, August 2005.
+<a name="tthFtNtAAB"></a><a href=" # t t h F r e f A A B ">  <sup> 1 </sup>  </a> A d a p t e d   f r o m   ` ` P e r t u r b a t i o n   M e t h o d s ,   B i f u r c a t i o n   T h e o r y   a n d   C o m p u t e r   A l g e b r a ' ' 
+ b y   R a n d   a n d   A r m b r u s t e r ,   S p r i n g e r ,   1 9 8 7 . 
+ A d a p t e d   t o     <span class="roman">L</span> <sup><span class="roman">A</span></sup> <span class="roman">T</span> <sub><span class="roman">E</span></sub> <span class="roman">X</span>  &nbsp;a n d   H T M L   b y   N e l s o n   L .   D i a s   ( n l d i a s @ s i m e p a r . b r ) ,   
+ S I M E P A R   T e c h n o l o g i c a l   I n s t i t u t e   a n d   F e d e r a l   U n i v e r s i t y   o f   P a r a n Ã ¡ ,   B r a z i l . 
+ U p d a t e d   b y   R o b e r t   D o d i e r ,   A u g u s t   2 0 0 5 . 
 <br /><br /><hr /><small>File translated from
-T<sub><font size="-1">E</font></sub>X
+T<sub><span class="small">E</span></sub>X
 by <a href="http://hutchinson.belmont.ma.us/tth/">
-T<sub><font size="-1">T</font></sub>H</a>,
-version 3.85.<br />On 26 Apr 2010, 00:45.</small>
+T<sub><span class="small">T</span></sub>H</a>,
+version 4.03.<br />On  2 Feb 2019, 17:00.</small>
 </html>

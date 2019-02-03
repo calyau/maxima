@@ -270,15 +270,15 @@ three unknowns {\tt a}, {\tt b}, {\tt c}:
 (%i8) a + b = 5;
 (%o8)                       b + a = 5
 (%i9) solve ([%o6, %o7, %o8], [a, b, c]);
-            25 sqrt(79) %i + 25      5 sqrt(79) %i + 5
-(%o9) [[a = -------------------, b = -----------------, 
-            6 sqrt(79) %i - 34       sqrt(79) %i + 11
-    sqrt(79) %i + 1        25 sqrt(79) %i - 25
-c = ---------------], [a = -------------------, 
-          10               6 sqrt(79) %i + 34
-    5 sqrt(79) %i - 5        sqrt(79) %i - 1
-b = -----------------, c = - ---------------]]
-    sqrt(79) %i - 11               10
+              sqrt(79) %i - 11      sqrt(79) %i + 9
+(%o9) [[a = - ----------------, b = ---------------,
+                     4                     4
+    sqrt(79) %i + 1        sqrt(79) %i + 11
+c = ---------------], [a = ----------------,
+          10                      4
+      sqrt(79) %i - 9        sqrt(79) %i - 1
+b = - ---------------, c = - ---------------]]
+             4                     10
 \end{verbatim}
 Note that the display consists of a ``list'', i.e., some expression
 contained between two brackets {\tt [ \ldots ]}, which itself contains
