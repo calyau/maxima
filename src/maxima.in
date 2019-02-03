@@ -24,14 +24,14 @@ setup_vars() {
   else
       MAXIMA_DEFAULT_IMAGESDIR=$top_srcdir/src
   fi  
-  if [ -n "$MAXIMA_IMAGESDIR" ]; then
+  if [ -d "$MAXIMA_DEFAULT_IMAGESDIR" ]; then
+      MAXIMA_IMAGESDIR="$MAXIMA_DEFAULT_IMAGESDIR"
+  else
       if [ "$layout_autotools" = "true" ]; then
 	  MAXIMA_IMAGESDIR=`unixize "$MAXIMA_PREFIX"`/lib/$PACKAGE/$MAXIMA_VERSION
       else
 	  MAXIMA_IMAGESDIR=`unixize "$MAXIMA_PREFIX"`/src
       fi  
-  else
-      MAXIMA_IMAGESDIR="$MAXIMA_DEFAULT_IMAGESDIR"
   fi
   MAXIMA_DEFAULT_LISP=@DEFAULTLISP@
   # If the the binary directory for the default lisp is not present,

@@ -37,7 +37,7 @@ do
   @SED@ -e 's/^@\(deffn\|defvr\)  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: \2}\n&/;' -e 's/^@node  *\([^,]*\).*/@anchor{Item: \1}\n&/' $f > $(basename $f)
 done 
 
-cat *.texi | gawk -e '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/)' | @SED@ -f @abs_srcdir@/extract_categories1.sed | gawk -f @abs_srcdir@/extract_categories1.awk > make-categories.py 
+cat *.texi | @AWK@ '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/)' | @SED@ -f @abs_srcdir@/extract_categories1.sed | @AWK@ -f @abs_srcdir@/extract_categories1.awk > make-categories.py 
 python make-categories.py 
 @SED@ -e 's/^@bye/@node Documentation Categories, , Function and Variable Index\n@chapter Documentation Categories/' @abs_srcdir@/maxima.texi > maxima.texi 
 ( for f in Category-*.texi; do echo '@include' $f; done ; echo @bye ) >> maxima.texi 
