@@ -114,8 +114,8 @@ _laplacian&&  (laplacian a) := if nonscalarp(a) then grad div a -curl curl a
 	+diff(diff(a,coordvar[2])*scalefactor[1]
 	/scalefactor[2],coordvar[2]))/scalefactor[1]/scalefactor[2]$
 
-_dotdel&&  (v dotdel b) := if  nonscalarp(b) then block([result],
-	result:if last(properties(christsym))=declared\ array
+_dotdel&&  (v dotdel b) := if  nonscalarp(b) then block([result, b:flatten(args(b)), v:flatten(args(v))],
+	result:if member('christsym, arrays)
 	    then  /* use christoffel symbols */
 	    map(lambda([j],
 		sum((diff(b[i]*scalefactor[j],
@@ -124,13 +124,13 @@ _dotdel&&  (v dotdel b) := if  nonscalarp(b) then block([result],
 		    *v[i]/scalefactor[i],i,1,dimension)
 		    /scalefactor[j]),dimension())
 	else  /* vector b, no christoffel symbols */
-	    map(lambda[j],
+	    map(lambda([j],
 		sum(diff(b[i]*scalefactor[j],coordvar[i])
 		    *v[i]/scalefactor[i],i,1,dimension)
-		    /scalefactor[j],dimension()),
+		    /scalefactor[j]),dimension()),
 	type([v,b]))
     else block([result],  /* scalar b case */
-	result:if last(properties(christsym))=declared\ array
+	result:if member('christsym, arrays)
 	    then /* use christoffel symbols */
 	    sum((diff(b,coordvar[i])-b*christsym[1,1,i])
 		*v[i]/scalefactor[i],i,1,dimension)
