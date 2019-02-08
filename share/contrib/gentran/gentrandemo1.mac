@@ -1,0 +1,353 @@
+
+/* Generation of FORTRAN Code
+Using Macsyma's GENTRAN Package
+Basic Demonstration  */
+box("Gentran Demo");
+
+/* 
+1. Translation of Basic Program Statements from Macsyma to FORTRAN */
+(genfloat : true, gentranlang : 'fortran)$
+
+/* 1.1 Translate assignment statements. */
+gentran( p : a*x^2+b*x+c )$
+
+/* C:\MACSYMA2\library2\gentran.fas being loaded.
+      P=A*X**2+B*X+C */
+
+/* 1.2 Translate matrix structures. */
+gentran( m : matrix([u,2*u^2],[-v^2,v]) )$
+
+/*       M(1,1)=U
+      M(1,2)=2.0d0*U**2
+      M(2,1)=-V**2
+      M(2,2)=V */
+
+/* 1.3 Translate iteration loops.
+
+Gentran keeps track of statement labels, to assure uniqueness. */
+gentran( for i step 2 thru 9 do
+      p : p+a[i] )$
+
+/*       DO 25001 I=1,9,2
+          P=P+A(I)
+25001 CONTINUE */
+
+/* Iteration loops with "next" */
+gentran( for n from 2 next n*2 thru 500 do
+      s : s+n )$
+
+/*       N=2.0d0
+25002 IF (N.GT.500.0d0) GOTO 25003
+          S=S+N
+          N=N*2.0d0
+          GOTO 25002
+25003 CONTINUE */
+
+/* Iteration loops with "while" */
+gentran( while f(x) >= 0 do x : x+0.25 )$
+
+/* 25004 IF (.NOT.F(X).GE.0.0d0) GOTO 25005
+          X=X+0.25
+          GOTO 25004
+25005 CONTINUE */
+
+/* Iteration loops with "unless" */
+gentran( unless f(x) >= 0 do x : x+0.25 )$
+
+/* 25006 IF (F(X).GE.0.0d0) GOTO 25007
+          X=X+0.25
+          GOTO 25006
+25007 CONTINUE */
+
+/* 1.4 Translate conditional branching "if-then" statements. */
+gentran( if x > 0 then y : x )$
+
+/*       IF (.NOT.X.GT.0.0d0) GOTO 25008
+          Y=X
+25008 CONTINUE */
+
+/* "If-then-else" statements */
+gentran (if x > 0 then y : x else y : -x )$
+
+/*       IF (.NOT.X.GT.0.0d0) GOTO 25009
+          Y=X
+          GOTO 25010
+25009 CONTINUE
+          Y=-X
+25010 CONTINUE */
+
+/* 1.5 Translate function calls. */
+gentran( calcv(v,x,y,z) )$
+
+/*       CALL CALCV(V,X,Y,Z) */
+
+/* 1.6 Translate Macsyma Programs.
+
+Translate compound statements. */
+gentran( (u1 : x^2, u2 : x-y) )$
+
+/*       U1=X**2
+      U2=X-Y */
+
+/* Translate Macsyma program blocks. */
+gentran( block(u1 : x^2,u2 : x-y) )$
+
+/*       U1=X**2
+      U2=X-Y */
+
+/* Translate statement labels and explicit "go" statements. */
+gentran( block(f : 1, i : 1,
+    loop,
+    f : f*i, i : i+1,
+    if i <= n then go(loop)) )$
+
+/*       F=1.0d0
+      I=1.0d0
+25011 CONTINUE
+      F=F*I
+      I=I+1.0d0
+      IF (.NOT.I.LE.N) GOTO 25012
+          GOTO 25011
+25012 CONTINUE */
+
+/* Translate function definitions into function definitions. */
+gentran( f(a,b,c,x) := block(z : a*b*c+x, return(z)) )$
+
+/*       FUNCTION F(A,B,C,X)
+      Z=A*B*C+X
+      F=Z
+      RETURN
+      END */
+
+/* Translate function definitions into subroutine definitions. */
+gentran( f(a,b,c,x) := block(z : a*b*c+x, print("z = ",z)) )$
+
+/*       SUBROUTINE F(A,B,C,X)
+      Z=A*B*C+X
+      WRITE(*,*) "z = ",Z
+      RETURN
+      END */
+
+/* 1.7 Control evaluation during translation. */
+
+/* 
+(Use the expression F in the following examples.) */
+f : 3*x^2-8*x+4;
+
+/* Control evaluation of symbols and operations. */
+gentran( q : eval(f)/eval(diff(f,x)) )$
+
+/*       Q=(3.0d0*X**2-(8.0d0*X)+4.0d0)/(6.0d0*X-8.0d0) */
+
+/* Tell Gentran to evaluate only the RHS of an assignment statement. */
+gentran( rsetq(deriv, diff(a*x^4-4*b*x^3+3*c*x^2/2,x)) )$
+
+/*       DERIV=4.0d0*A*X**3-(12.0d0*B*X**2)+3.0d0*C*X */
+
+/* Tell Gentran to evaluate only the LHS of an assignment statement. */
+for j thru 4 do
+    gentran ( lsetq(m(j,j),0) )$
+
+/*       M(1,1)=0.0d0
+      M(2,2)=0.0d0
+      M(3,3)=0.0d0
+      M(4,4)=0.0d0 */
+m : matrix([a,0,-1], [a^2,b,a/b], [b^2,0,c]);
+
+/* Tell Gentran to evaluate both the left and right sides of an assignment statement. */
+for j thru 3 do
+  gentran( lrsetq(m[j,j], m[j,j]) )$
+
+/*       M(1,1)=A
+      M(2,2)=B
+      M(3,3)=C */
+
+/* 1.8 Translate comments and other literal strings. */
+gentran ( for i thru n do
+      literal("C",tab,"THIS IS A FORTRAN COMMENT",cr,
+      tab,"WRITE(6,10) (M(I,J),J=1,N)",cr,
+      10,tab,"FORMAT(1X,10(I5,3X))",cr) )$
+
+/* 
+      DO 25013 I=1,N
+C         THIS IS A FORTRAN COMMENT
+          WRITE(6,10) (M(I,J),J=1,N)
+10        FORMAT(1X,10(I5,3X))
+25013 CONTINUE */
+
+/* Clean up after the previous section. */
+remvalue(f, m)$
+
+/* 
+2. Automatic Expression Segmentation and Optimization */
+
+/* 
+2.1 Automatic Expression Segmentation */
+
+/* 
+First, translate with segmentation and optimization turned off. */
+(gentranseg : false, gentranopt : false)$
+
+/* We shall use this rather large expression in our examples. */
+x : expand(a^6+(a+b)^6+(a+b+c)^6);
+
+/* With segmentation turned off, Gentran reproduces large statements. */
+gentran(x : eval(x))$
+
+/*       X=C**6+6.0d0*B*C**5+6.0d0*A*C**5+15.0d0*B**2*C**4+30.0d0*A*B*C**4+
+     . 15.0d0*A**2*C**4+20.0d0*B**3*C**3+60.0d0*A*B**2*C**3+60.0d0*A**2*
+     . B*C**3+20.0d0*A**3*C**3+15.0d0*B**4*C**2+60.0d0*A*B**3*C**2+
+     . 90.0d0*A**2*B**2*C**2+60.0d0*A**3*B*C**2+15.0d0*A**4*C**2+6.0d0*B
+     . **5*C+30.0d0*A*B**4*C+60.0d0*A**2*B**3*C+60.0d0*A**3*B**2*C+
+     . 30.0d0*A**4*B*C+6.0d0*A**5*C+2.0d0*B**6+12.0d0*A*B**5+30.0d0*A**2
+     . *B**4+40.0d0*A**3*B**3+30.0d0*A**4*B**2+12.0d0*A**5*B+3.0d0*A**6 */
+
+/* Turn on segmentation, and set maximum expression length to 100 characters. */
+(gentranseg : true, maxexpprintlen : 100)$
+
+/* With segmentation turned on, Gentran breaks up large expressions into several statements.  It introduces uniquely named 
+dummy variables in this process. */
+gentran(x : eval(x))$
+
+/*       T0=C**6+6.0d0*B*C**5+6.0d0*A*C**5+15.0d0*B**2*C**4+30.0d0*A*B*C**4
+     . +15.0d0*A**2*C**4
+      T0=T0+20.0d0*B**3*C**3+60.0d0*A*B**2*C**3+60.0d0*A**2*B*C**3+
+     . 20.0d0*A**3*C**3
+      T0=T0+15.0d0*B**4*C**2+60.0d0*A*B**3*C**2+90.0d0*A**2*B**2*C**2+
+     . 60.0d0*A**3*B*C**2
+      T0=T0+15.0d0*A**4*C**2+6.0d0*B**5*C+30.0d0*A*B**4*C+60.0d0*A**2*B
+     . **3*C
+      T0=T0+60.0d0*A**3*B**2*C+30.0d0*A**4*B*C+6.0d0*A**5*C+2.0d0*B**6+
+     . 12.0d0*A*B**5
+      X=T0+30.0d0*A**2*B**4+40.0d0*A**3*B**3+30.0d0*A**4*B**2+12.0d0*A**
+     . 5*B+3.0d0*A**6 */
+
+/* 2.2 Automatic Expression Optimization
+
+Translate with segmentation turned of and automatic expression optimization on. */
+(gentranseg : false, gentranopt : true)$
+
+/* When optimization is turned on, Gentran identifies common subexpressions and defines variables for them. */
+gentran( x : eval(x) )$
+
+/* C:\MACSYMA2\library1\optim.fas being loaded.
+      U0=A**5
+      U1=A**4
+      U2=B**2
+      U3=A**3
+      U4=B**3
+      U5=A**2
+      U6=B**4
+      U7=B**5
+      U8=C**2
+      U9=C**3
+      U10=C**4
+      U11=C**5
+      X=C**6+6.0d0*B*U11+6.0d0*A*U11+15.0d0*U2*U10+30.0d0*A*B*U10+15.0d0
+     . *U5*U10+20.0d0*U4*U9+60.0d0*A*U2*U9+60.0d0*U5*B*U9+20.0d0*U3*U9+
+     . 15.0d0*U6*U8+60.0d0*A*U4*U8+90.0d0*U5*U2*U8+60.0d0*U3*B*U8+15.0d0
+     . *U1*U8+6.0d0*U7*C+30.0d0*A*U6*C+60.0d0*U5*U4*C+60.0d0*U3*U2*C+
+     . 30.0d0*U1*B*C+6.0d0*U0*C+2.0d0*B**6+12.0d0*A*U7+30.0d0*U5*U6+
+     . 40.0d0*U3*U4+30.0d0*U1*U2+12.0d0*U0*B+3.0d0*A**6 */
+
+/* Clean up after previous section. */
+(remvalue(x), gentranopt : false, maxexpprintlen : 800)$
+
+/* 
+3. Type Declarations for Functions and Variables */
+
+/* 
+3.1 Explicit Type Declarations
+
+Gentran translates this function into a FORTRAN integer-valued function with integer argument N.  Gentran figures out that 
+the internal variables F and I must be type integer. */
+gentran( fac(n) :=
+    block(type(function,fac),
+      type(integer,fac,n),
+      f : 1,
+      for i thru n do
+        f : f*i,type(integer,f,i),
+      return(f)) )$
+
+/* 
+      INTEGER FUNCTION FAC(N)
+      INTEGER N,F,I
+      F=1.0d0
+      DO 25014 I=1,N
+          F=F*I
+25014 CONTINUE
+      FAC=F
+      RETURN
+      END */
+
+/* 3.2 Implicit Type Declarations
+
+Gentran will declare the types generated dummy variables when this can be determined from the context, or it will declare 
+them to be the type you specify as the value of TEMPVARTYPE. */
+(gentranseg : true, maxexpprintlen : 15, tempvartype : 'real)$
+gentran( type(integer, i),
+    type(real\*8, x, y),
+    x : x1+x2+x3+x4+x5+x6,
+    i : i1*i2*i3*i4*i5*i6,
+    y : y1-y2+y3-y4+y5-y6,
+    z : z1*z2*z3+z4*z5*z6 )$
+
+/* 
+      INTEGER I,T1
+      REAL*8 X,Y,T0
+      REAL T2
+      T0=X1+X2+X3+X4
+      X=T0+X5+X6
+      T1=I1*I2*I3*I4
+      I=T1*I5*I6
+      T0=Y1-Y2+Y3
+      T0=T0-Y4+Y5
+      Y=T0-Y6
+      T2=Z1*Z2*Z3
+      Z=T2+Z4*Z5*Z6 */
+
+/* 
+4. Generation and Marking of Temporary Variables.
+ */
+(tempvartype : false, maxexpprintlen : 800, gentranseg : false)$
+
+/* You can generate a numbered "temporary variable" using the command tempvar. */
+varname : tempvar(false);
+
+/* Invoking tempvar again generates the same variable name. */
+tempvar(false);
+
+/* You can mark a variable name as used with the command markvar . . . */
+markvar(varname);
+
+/* . . . after which another invocation of tempvar returns a new variable name.  */
+tempvar(false);
+
+/* You can unmark a variable name . . . */
+unmarkvar(varname)$
+
+/* . . . and generate the name again. */
+tempvar(false);
+m : matrix([a*(b+c),0,a*c],[-a,a-b,0],[a*c,0,c^2]);
+
+/* Here is an example using tempvar and markvar. */
+for i thru 3 do
+  for j thru 3 do 
+    if m[i,j] # 0 then (
+      var : tempvar(false),
+      markvar(var),
+      gentran( eval(var) : eval(m[i,j]) ),
+      m[i,j] : var)$
+
+/* 
+      T3=A*(C+B)
+      T4=A*C
+      T5=-(1.0d0*A)
+      T6=-(1.0d0*B)+A
+      T7=A*C
+      T8=C**2 */
+m;
+
+/* Clean up after previous section. */
+remvalue(m,varname)$
+
