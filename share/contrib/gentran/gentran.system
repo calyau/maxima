@@ -1,0 +1,13 @@
+;;;; -*- Mode: lisp -*-
+
+;;; System to compile gentran
+
+(in-package #-gcl #:cl-user #+gcl "CL-USER")
+
+
+(mk:defsystem gentran
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "gentran")
+  :components
+  ((:file "allgenfinal2")))
+
