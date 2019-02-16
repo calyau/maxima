@@ -35,7 +35,12 @@
       (mtell (intl:gettext "~%Unable to connect Maxima to port ~:M.~%") port)
       (mtell (intl:gettext "Error: ~A~%") condition)
       ($quit))
+    ;; Some lisps if the front-end dies by default don't quit but output an
+    ;; error message to the front-end that (as the front-end doesn't exist
+    ;; any more) causes an error message that...
     #+gcl (setq si::*sigpipe-action* 'si::bye)
+    #+ecl (ext:set-signal-handler EXT:+SIGPIPE+ 'ext:quit)
+    
     (setq *socket-connection* sock)
     (setq $old_stderr *error-output*
 	  $old_stdout *standard-output*)
