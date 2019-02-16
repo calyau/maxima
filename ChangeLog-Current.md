@@ -82,7 +82,8 @@ Changes in core:
      integrate(log(cos(x)), x, 0, %pi/2);               /* rtest16  525 */
      integrate((log((2-x)/2)+log(2))/(1-x), x, 0, 1);   /* rtestint 232 */
  * float_approx_equal now does what the comments in the code say.
- 
+ * an ecl-based maxima no more enters an endless loop if the front-end dies.
+
 Changes in share:
 --------------
  *  The the arguments to Krylov matrix are now checked for being of the 
