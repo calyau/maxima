@@ -25,7 +25,7 @@
         $fortlinelen $genfloat $genstmtincr $genstmtno $gentranlang $gentranopt
         $gentranparser $gentranseg $implicit $maxexpprintlen $optimvarname
         $ratcurrind $ratlinelen $tablen $tempvarname $tempvarnum $tempvartype
-        $usefortcomplex))
+        $usefortcomplex $geninpath $genoutpath))
 
 
 ;; convmac text follows. garbage redefinition of stuff in lisp.
@@ -974,19 +974,24 @@
 
 (defun implicitp (type)
   (prog (xtype ximp r)
-	(setq xtype (explode2 type))
-	(setq ximp (explode2 'implicit))
+  (cond ((stringp type)
+	(setq xtype (exploden type))
+	(setq ximp (exploden 'implicit)))
+        (t
+        (setq xtype (explode2 type))
+	(setq ximp (explode2 'implicit))))
 	(setq r t)
 	(repeat (setq r (and r (equal (car xtype) (car ximp))))
 		(or (null (setq xtype (cdr xtype)))
 		    (null (setq ximp (cdr ximp)))))
 	(return r)))
+       
 
 (defun inttypep (type)
   (cond ((member type '(integer int long short)))
 	((prog (xtype xint r)
-	       (setq xtype (explode2 type))
-	       (setq xint (explode2 'integer))
+	       (setq xtype (exploden type))
+	       (setq xint (exploden 'integer))
 	       (setq r t)
 	       (repeat (setq r (and r (equal (car xtype) (car xint))))
 		       (or (null (setq xtype (cdr xtype)))
@@ -2313,7 +2318,7 @@
   ; stmtgp  ----->  stmtgp                                    ;
   ; def  ----->  def                                          ;
   (foreach f in forms collect
-	   (cond ((lispexpp f)
+	   (cond ((and (not (equal (car f) 'literal)) (lispexpp f))
 		  (cond ((toolongexpp f)
 			 (segexp f 'unknown))
 			(t
@@ -2958,9 +2963,9 @@
 
 ;; fortdata added by pwang 12/12/88
 (defun fortdata (stmt)
-  (append (list (mkforttab) "data " (cadr stmt) '|//|)
+  (append (list (mkforttab) "data " (cadr stmt) '|/|)
 	  (addcom (cddr stmt))
-	  (list '|//|))
+	  (list '|/|))
 )
 
 (setq COMMA* ",")
