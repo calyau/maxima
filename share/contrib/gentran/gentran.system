@@ -9,5 +9,5 @@
   :source-pathname (maxima::maxima-load-pathname-directory)
   :binary-pathname (maxima::maxima-objdir "share" "gentran")
   :components
-  ((:file "allgenfinal2")))
+  ((:file "allgentran")))
 
