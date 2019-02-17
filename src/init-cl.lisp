@@ -661,6 +661,7 @@ When one changes, the other does too."
           intl::*locale-directories*)))
 
 (defun adjust-character-encoding ()
+  #+sbcl (setf sb-impl::*default-external-format* :utf-8)
   #+cmu
   (handler-bind ((error #'(lambda (c)
 			    ;; If there's a continue restart, restart
