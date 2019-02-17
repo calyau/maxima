@@ -13,6 +13,7 @@ New items in core:
    preceeding command.
  * garbage_collect() which manually triggers the lisp's garbage collector 
    or returns false.
+ * newdet: An determinant algorithm that is optimized on sparse matrices
 
 New items in share:
 -------------------
@@ -83,7 +84,9 @@ Changes in core:
      integrate((log((2-x)/2)+log(2))/(1-x), x, 0, 1);   /* rtestint 232 */
  * float_approx_equal now does what the comments in the code say.
  * an ecl-based maxima no more enters an endless loop if the front-end dies.
-
+ * maxima-sbcl now supports non-ascii user names and install dirs on MacOs 
+   and MS Windows
+ 
 Changes in share:
 --------------
  *  The the arguments to Krylov matrix are now checked for being of the 
