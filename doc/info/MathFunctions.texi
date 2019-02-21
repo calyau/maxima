@@ -1798,18 +1798,27 @@ endpoints is often needed.
 @c NEEDS EXAMPLES
 
 @c -----------------------------------------------------------------------------
+@deffn {Function} logarc (@var{expr})
+
+The function @code{logarc(@var{expr})} carries out the replacement of
+inverse circular and hyperbolic functions with equivalent logarithmic
+functions for an expression @var{expr} without setting the global
+variable @code{logarc}.
+
+@opencatbox
+@category{Exponential and logarithm functions}
+@category{Simplification flags and variables}
+@category{Simplification functions}
+@closecatbox
+@end deffn
+
 @anchor{logarc}
 @defvr  {Option variable} logarc
-@defvrx {Function} logarc (@var{expr})
 
 When the global variable @code{logarc} is @code{true},
 inverse circular and hyperbolic functions are replaced by
 equivalent logarithmic functions.
 The default value of @code{logarc} is @code{false}.
-
-The function @code{logarc(@var{expr})} carries out that replacement for
-an expression @var{expr}
-without setting the global variable @code{logarc}.
 
 @opencatbox
 @category{Exponential and logarithm functions}
