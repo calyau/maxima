@@ -27,7 +27,7 @@ lg:matrix([1/(1-2*m/x),0,0,0],[0,x^2,0,0],
 cmetric();
 ("Compute and display mixed Christoffel symbols")$
 christof(mcs);
-("Compute and rationally simplify the contravariant Ricci tensor")$
+("Compute and rationally simplify the mixed-index Ricci tensor")$
 uricci(true);
 ("Computes scalar curvature")$
 scurvature();
