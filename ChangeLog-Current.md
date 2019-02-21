@@ -20,6 +20,7 @@ New items in share:
  * Many improvements to the simplex algorithm including the ability to handle
    symbolic inputs
  * The ode package now has a testbench.
+ * killing.dem, a demo for Killing vector fields.
 
 Changes in core:
 ----------------
@@ -116,6 +117,8 @@ Bug fixes:
     -Correct spelling of non-negative in documentation.
     -Document the undocumented optional input <all> to min/maximize_lp.
  * #3463: mention epsilon_lp more explicitly in minimize_lp
+ * #3497: Resolved an error in demos concerning the Ricci tensor
+ * #3497: ctensor documentation on the Ricci tensor is inconsistent
  
 Unnumbered bugs:
 ----------------
