@@ -112,7 +112,7 @@ Changes in share:
 Bug fixes:
 ----------
  * #3470: 
-     -Replace the option variable nonegative_lp with nonnegative_lp; the
+    -Replace the option variable nonegative_lp with nonnegative_lp; the
       former is retained as an alias.
     -Correct spelling of non-negative in documentation.
     -Document the undocumented optional input <all> to min/maximize_lp.
