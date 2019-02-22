@@ -975,6 +975,7 @@ For example:
 @c HMM, WHICH CATEGORY DOES THIS FALL INTO -- FUNCTION, VARIABLE, OTHER ??
 
 @c -----------------------------------------------------------------------------
+@anchor{lc_u}
 @deffn {Function} lc_u
 
 Simplification rule used for expressions containing the unevaluated Levi-Civita
@@ -1693,7 +1694,7 @@ contravariant index.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{igeodesic}
+@anchor{igeodesic_coords}
 @deffn {Function} igeodesic_coords (@var{expr}, @var{name})
 
 Causes undifferentiated Christoffel symbols and
