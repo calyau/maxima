@@ -6,6 +6,9 @@ New items in core:
  * nonnegative_lp now replaces nonegative_lp which now is merely an alias.
  * The environment variable MAXIMA_DOC_PREFIX that allows to override the
    location the documentation is searched for.
+ * The environment variable GCL_DISABLE_MULTIPROCESS_MEMORY_POOL disables
+   GCL's ability to share the system memory between gcl-compiled maxima
+   processes.
  * The lisp function defun-maclisp, a function that allows to define 
    non-user functions using the maclisp nargs syntax.
  * Documentation: ./update_examples now interprets lines beginning with 
