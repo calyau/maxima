@@ -90,6 +90,9 @@ Changes in core:
  * an ecl-based maxima no more enters an endless loop if the front-end dies.
  * maxima-sbcl now supports non-ascii user names and install dirs on MacOs 
    and MS Windows
+ * translate() now temporarily sets prederror to true which produces an
+   error message if the translator fails to translate a nested if() 
+   correctly, see Bug #3412.
  
 Changes in share:
 --------------
