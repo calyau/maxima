@@ -67,6 +67,8 @@ Changes in core:
    not only after using or manually loading the test suite.
  * "make check" manipulates the list of tests now in a more canonical way in order
    to automatically run the interactive tests, as well.
+ * "make check" now compiles maxima before running the tests, if maxima still 
+    needs compiling.
  * ./configure --enable-quiet-build now muffles more warnings.
  * src/shares_subdirs.lisp is now no more generated directly but using an 
    immediate file which hinders "make distclean" from automatically deleting it.
