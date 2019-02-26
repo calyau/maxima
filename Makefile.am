@@ -169,3 +169,5 @@ endif # WIN32
 clean-local:
 	rm -rf bin
 	rm -rf binary
+
+check-local: all
