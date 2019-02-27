@@ -49,9 +49,10 @@
         "rtest13"
 	"rtest13s"
 	;; ECL 16.1.2 still reliably fails in #307 + #310
-	;; and sporadically in 201, 234, 250, 251, 252, 267, 297, 312, 315 and 319
+	;; and sporadically in 201, 234, 249, 250, 251, 252, 267, 297, 298, 312, 315
+	;; and 319
 	((mlist simp) "rtest14"
-	 #+ecl ((mlist simp) 145 201 234 250 251 252 267 297 307 310 312 315 319))
+	 #+ecl ((mlist simp) 145 201 234 249 250 251 252 267 297 298 307 310 312 315 319))
         "rtest15"
 	;; ccl versions 1.11 and earlier fail test 50.  Mark it as a
 	;; known failure.  Presumably 1.12 will have this fixed.
