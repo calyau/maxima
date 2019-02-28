@@ -102,7 +102,7 @@
   (let ((x (mlsp a b)))
     (cond ((or (eq x t) (eq x nil)) x)
 	  (t
-	   (let ((s ($asksign (cadr x) nil)))
+	   (let ((s ($asksign (cadr x))))
 	     (cond ((eq s '$pos) t)
 		   (t nil)))))))
 (defun lp-mgqp (a b) (or (meqp a b) (lp-mlsp b a)))
