@@ -111,7 +111,7 @@ fi;
 
 # Will be promoted to be gcl's default. But for the time being: Allow concurrent
 # gcl processes to communicate about how much memory each of them can use.
-if [ -z "$GCL_MULTIPROCESS_MEMORY_POOL" ]; then
+if [ -z "$GCL_DISABLE_MULTIPROCESS_MEMORY_POOL" ]; then
     export GCL_MULTIPROCESS_MEMORY_POOL=t
 fi;
 

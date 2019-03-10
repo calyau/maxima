@@ -1718,7 +1718,7 @@ The contravariant Riemann tensor. Computed by @code{uriemann}.
 @anchor{ric}
 @defvr {Variable} ric
 
-The mixed Ricci-tensor. Computed by @code{ricci}.
+The covariant Ricci-tensor. Computed by @code{ricci}.
 
 @opencatbox
 @category{Package ctensor}
@@ -1729,7 +1729,7 @@ The mixed Ricci-tensor. Computed by @code{ricci}.
 @anchor{uric}
 @defvr {Variable} uric
 
-The contravariant Ricci-tensor. Computed by @code{uricci}.
+The mixed-index Ricci-tensor. Computed by @code{uricci}.
 
 @opencatbox
 @category{Package ctensor}

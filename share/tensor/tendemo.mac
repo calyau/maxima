@@ -89,7 +89,7 @@ print("5. Helicity in hydrodynamics        15. The Friedmann equations"),
 print("6. Magnetic field in plasma         16. Papapetrou's nonsymmetric metric"),
 print("7. Spinor algebra                   17. The Kruskal extension"),
 print("8. The EM field tensor              18. Hydrostatic equilibrium"),
-print("9. The Hodge star operator"),
+print("9. The Hodge star operator          19. The Killing equations"),
 print("A. The Riemann and Weyl tensors"),
 print("B. The Rainich conditions"),
 print("C. The Einstein-Hilbert action"),
@@ -141,6 +141,7 @@ sel:read("Select an option by its number followed by a semicolon (;)"),
    else if sel=16 then demo(papapetrou)
    else if sel=17 then demo(kruskal)
    else if sel=18 then demo(hydro)
+   else if sel=19 then demo(killing)
    else if sel#X and sel#x then print("*** Invalid entry, please try again")
    else sel:0
 )

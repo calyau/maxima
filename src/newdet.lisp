@@ -26,6 +26,82 @@
 (defvar *binom*)
 (defvar *input*)
 
+#|
+  Notes by Michel Talon, 2019-02-05.
+
+  The algorithm in newdet:
+  condider computing the determinant of the 4x4 matrix. The essence of the algorithm
+  is to  store as much intermediary results as possible to avoid recomputation and
+  group stuff to minimise the number of multiplications. The idea is that when
+  matrix elements are rationsl functions, multiplication is expensive, and one first
+  needs to minimize them.
+  
+                          [ a      a      a      a     ]
+                          [  1, 1   1, 2   1, 3   1, 4 ]
+                          [                            ]
+                          [ a      a      a      a     ]
+                          [  2, 1   2, 2   2, 3   2, 4 ]
+  (%o1)                   [                            ]
+                          [ a      a      a      a     ]
+                          [  3, 1   3, 2   3, 3   3, 4 ]
+                          [                            ]
+                          [ a      a      a      a     ]
+                          [  4, 1   4, 2   4, 3   4, 4 ]
+  First one focuses on the first column. One stores the 4 elements
+  a[1,1],a[2,1],a[3,1],a[4,1]  somewhere.
+  Then one focuses on the first and second column and one computes the 6 minors
+  2x2 which are:
+                                 [ a      a     ]
+                                 [  1, 1   1, 2 ]
+  (%o2)                          [              ]
+                                 [ a      a     ]
+                                 [  2, 1   2, 2 ]
+  
+                                 [ a      a     ]
+                                 [  1, 1   1, 2 ]
+  (%o3)                          [              ]
+                                 [ a      a     ]
+                                 [  3, 1   3, 2 ]
+  etc. There are 6 =C(4,2) minors because there are 6 ways to choose 2 rows between 4.
+  Ech minor is computed developing on the last column. So for example the first one is
+  - a[1,2]*a[2,1] + a[2,2]*a[1,1]
+  where a[1,1] and a[2,1] are already stored. This takes 2 multiplications hence in total
+  2*6=12 mukltiplications.
+  Then one focuses on the columns 1,2,3 and compute and store the 4 minors of type 3x3
+  such as
+                              [ a      a      a     ]
+                              [  1, 1   1, 2   1, 3 ]
+                              [                     ]
+  (%o4)                       [ a      a      a     ]
+                              [  2, 1   2, 2   2, 3 ]
+                              [                     ]
+                              [ a      a      a     ]
+                              [  3, 1   3, 2   3, 3 ]
+  For each one develop on the last column, which gives 3 multiplications of
+  a[1,3], a[2,3], a[3,3] by 2x2 minors already computed and stored. In total
+  3*4=12 multiplications. Finally we develop the original determinant on the last column
+  giving 4 multiplications by already stored 3x3 minors.
+  
+  Finally the determinant is computed using 12+12+4=28 multiplications that is
+  n*(2^(n-1)-1) multiplications with n=4. It is easy to see that this formula is general.
+  This has to be compared with the straightforward computation of the determinant in which
+  we have 4! = 24 terms each one requiring 3 multiplications thus 72 multiplications.
+  The gain comes from the fact that intermediate multiplications are hidden in the minors
+  and stored by the algorithm. The algorithm has to manage storing the values of the
+  intermediate minors in arrays of size 4 then 6 then 4 in which one recognizes the fourth row
+  of the Pascal triangle. It also has to keep track of the alternating + and - signs when
+  developing on last column. Finally all computations are done using rational algorithms
+  in maxima in the few following lines:
+   (rattimes (aref *minor1* old loc)
+  			 (cond ((or (= sign 1) perm)
+  				(aref *input* (1+ m) (1+ k)))
+  			       (t (ratminus (aref *input* (1+ m) (1+ k)))))
+  			 t)
+  where *minor1* keeps the precomputed minors, and rattimes does the product. As to
+  Gentleman and Johnson paper, its aim is to show the the procedure described above is optimal
+  with the choice of possible different strategies of grouping.
+ |#
+
 (defmfun $newdet (mat)
   (cond ((not (or (mbagp mat) ($matrixp mat)))
          (if ($scalarp mat) mat (list '(%newdet simp) mat)))

@@ -1227,7 +1227,12 @@ APPLY means like APPLY.")
 					      (atom (cdar l))) nil)
 					(t (list (cdr (car l))))))
 			    form)))))
-     (return (cons mode (cons 'cond form)))))
+     ;; Wrap (LET (($PREDERROR T)) ...) around translation of MCOND.
+     ;; Nested MCOND expressions (e.g. if x > 0 then if y > 0 then ...)
+     ;; will therefore yield nested (LET (($PREDERROR T)) ... (LET (($PREDERROR T)) ...)).
+     ;; I suppose only the topmost one is needed, but there is very little harm
+     ;; in the redundant ones, so I'll let it stand.
+     (return (cons mode (list 'let '(($prederror t)) (cons 'cond form))))))
 
 
 

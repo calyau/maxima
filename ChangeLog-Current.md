@@ -6,6 +6,9 @@ New items in core:
  * nonnegative_lp now replaces nonegative_lp which now is merely an alias.
  * The environment variable MAXIMA_DOC_PREFIX that allows to override the
    location the documentation is searched for.
+ * The environment variable GCL_DISABLE_MULTIPROCESS_MEMORY_POOL disables
+   GCL's ability to share the system memory between gcl-compiled maxima
+   processes.
  * The lisp function defun-maclisp, a function that allows to define 
    non-user functions using the maclisp nargs syntax.
  * Documentation: ./update_examples now interprets lines beginning with 
@@ -13,12 +16,14 @@ New items in core:
    preceeding command.
  * garbage_collect() which manually triggers the lisp's garbage collector 
    or returns false.
+ * newdet: An determinant algorithm that is optimized on sparse matrices
 
 New items in share:
 -------------------
  * Many improvements to the simplex algorithm including the ability to handle
    symbolic inputs
  * The ode package now has a testbench.
+ * killing.dem, a demo for Killing vector fields.
 
 Changes in core:
 ----------------
@@ -62,6 +67,8 @@ Changes in core:
    not only after using or manually loading the test suite.
  * "make check" manipulates the list of tests now in a more canonical way in order
    to automatically run the interactive tests, as well.
+ * "make check" now compiles maxima before running the tests, if maxima still 
+    needs compiling.
  * ./configure --enable-quiet-build now muffles more warnings.
  * src/shares_subdirs.lisp is now no more generated directly but using an 
    immediate file which hinders "make distclean" from automatically deleting it.
@@ -83,6 +90,16 @@ Changes in core:
      integrate((log((2-x)/2)+log(2))/(1-x), x, 0, 1);   /* rtestint 232 */
  * float_approx_equal now does what the comments in the code say.
  * an ecl-based maxima no more enters an endless loop if the front-end dies.
+ * maxima-sbcl now supports non-ascii user names and install dirs on MacOs 
+   and MS Windows
+ * translate() now temporarily sets prederror to true which produces an
+   error message if the translator fails to translate a nested if() 
+   correctly, see Bug #3412.
+ * A workaround for a bug in GCL that makes $load_pathname work again
+ * "make clean" now removes the temporary files for lisps that aren't
+   currently configured.
+ * "make check" now runs the share and the core testsuite in the same
+   maxima session.
 
 Changes in share:
 --------------
@@ -104,15 +121,20 @@ Changes in share:
  *  The tests for the "sym" package are now part of the share testsuite.
  *  The tests for the "ode" package are now part of the share testsuite, too
     but have been disabled as they failed.
- 
+ *  Sarag no more overwrites the function resultant() which means the 
+    share test suite no more kills this function in a kill(all);
+
 Bug fixes:
 ----------
  * #3470: 
-     -Replace the option variable nonegative_lp with nonnegative_lp; the
+    -Replace the option variable nonegative_lp with nonnegative_lp; the
       former is retained as an alias.
     -Correct spelling of non-negative in documentation.
     -Document the undocumented optional input <all> to min/maximize_lp.
  * #3463: mention epsilon_lp more explicitly in minimize_lp
+ * #3497: Resolved an error in demos concerning the Ricci tensor
+ * #3497: ctensor documentation on the Ricci tensor is inconsistent
+ * #3532: Wrong substitution on integrating cos(x)*abs(cos(x))
  
 Unnumbered bugs:
 ----------------
@@ -123,7 +145,7 @@ Additional improvements:
 ------------------------
  * Updated the external utilities for the Windows installer
  * Updated the wxMaxima version the Windows installer comes with
-   to version 19.01.3
+   to version 19.02.1
  * Nightly Test: A summary of the share tests
  * Crosscompiling: Add 'maxima_longnames.c' to automake
  * Documentation Updates

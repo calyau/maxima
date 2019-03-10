@@ -46,6 +46,14 @@
 	    ;; know its small now, so print on same line.
 	    (merror (intl:gettext "filename_merge: unexpected argument: ~:M") user-object)))))
 
+;; Returns the truename corresponding to a stream, or nil (for non-file streams).
+;; Previously we used (subtypep (type-of stream) 'file-stream) to determine whether
+;; a stream is a file stream, but this doesn't work on GCL.
+(defun get-stream-truename (stream)
+  (handler-case
+    (probe-file stream)
+    (error () nil)))
+
 (defmvar $load_pathname nil
   "The full pathname of the file being loaded")
 
@@ -60,12 +68,13 @@
 
 (defun batchload-stream (in-stream)
   (let ($load_pathname)
-    (let
+    (let*
       ((noevalargs nil)
        (*read-base* 10.)
+       (stream-truename (get-stream-truename in-stream))
        (in-stream-string-rep
-        (if (subtypep (type-of in-stream) 'file-stream)
-          (setq $load_pathname (cl:namestring (truename in-stream)))
+        (if stream-truename
+          (setq $load_pathname (cl:namestring stream-truename))
           (format nil "~A" in-stream))))
       (declare (special *prompt-on-read-hang*))
       (when $loadprint
@@ -184,9 +193,10 @@
   (let ($load_pathname)
     (let*
       ((*read-base* 10.)
+      (stream-truename (get-stream-truename in-stream))
        (in-stream-string-rep
-        (if (subtypep (type-of in-stream) 'file-stream)
-          (setq $load_pathname (cl:namestring (truename in-stream)))
+        (if stream-truename
+          (setq $load_pathname (cl:namestring stream-truename))
           (format nil "~A" in-stream))))
       (format t (intl:gettext "~%read and interpret ~A~%") in-stream-string-rep)
       (catch 'macsyma-quit (continue :stream in-stream :batch-or-demo-flag demo))

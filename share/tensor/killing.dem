@@ -1,0 +1,36 @@
+/* Copyright (C) 2019 Viktor T. Toth <https://www.vttoth.com/>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * Deriving the field equations from the action for Brans-Dicke cosmology
+ *
+ */
+("The Killing equations" )$
+if get('ctensor,'version)=false then load(ctensor);
+if get('itensor,'version)=false then load(itensor);
+("The first step is to derive the Killing equations in generic form.")$
+imetric:g;
+("Conversion to ctensor code is needed to solve them in a specific metric.")$
+KE:ic_convert(N([i,j])=covdiff(x([i]),j)+covdiff(x([j]),i));
+("We choose the Schwarzschild metric in this example.")$
+ct_coordsys(exteriorschwarzschild);
+("We expect the Killing field to have the same symmetries as the metric and depend only on the radial coordinate..")$
+depends(x,r);
+cmetric(false);
+christof(false);
+("We preinitialize the matrix N that will hold the LHS of the Killing equations.")$
+N:zeromatrix(4,4);
+ev(KE);
+("The LHS of the Killing equations takes this form:")$
+N;
+("Studying these terms, we can easily eliminate three of the vector components and solve for the fourth:")$
+factor(ode2(ev(N,solve(N[4,4],x[3]),solve(N[4,3],x[4]),solve(N[3,3],x[2]))[1,2],x[1],r));
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

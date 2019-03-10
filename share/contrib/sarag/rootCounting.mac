@@ -411,8 +411,6 @@ sylvesterResultant(p,q,var) :=
 
 
 
-resultant(p,q,var) :=sylvesterResultant(p,q,var);
-
 subDiscr(p,var) :=
   block([pcRes,pRes,cRes],
     pcRes : sSubRes(p,diff(p,var),var),

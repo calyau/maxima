@@ -646,3 +646,60 @@ f();
 
 [error_syms, error_size];
 [[errexp1, errexp2, errexp3], 60];
+
+(kill(all), reset(), 0);
+0;
+
+/* SF bug #3412: "Bug when translating functions that contain an \"if\" (in my case an implicit if)" */
+
+(f(x):=if cabs(1/(x+1)) < 1 then 1/(x+1) else 1,
+ f(x + %i*y));
+if 1/sqrt(y^2+(x+1)^2) < 1 then 1/(%i*y+x+1) else 1;
+
+makelist (f(xy[1] + %i*xy[2]), xy, [[0, 0], [0, 1], [1, 1], [1, 0], [0, 2], [2, 2], [2, 0]]);
+[1, 1/(%i+1), 1/(%i+2), 1/2, 1/(2*%i+1), 1/(2*%i+3), 1/3]$
+
+(compile (f),
+ errcatch (f(x + %i*y)));
+[];
+
+'(f(x + %i*y));
+f(x + %i*y);
+
+makelist (f(xy[1] + %i*xy[2]), xy, [[0, 0], [0, 1], [1, 1], [1, 0], [0, 2], [2, 2], [2, 0]]);
+[1, 1/(%i+1), 1/(%i+2), 1/2, 1/(2*%i+1), 1/(2*%i+3), 1/3]$
+
+(if draw_version = 'draw_version then load (draw),
+ draw3d(contour='map,
+        proportional_axes=xy,
+        nticks=100,
+        contour_levels=20,
+        explicit('(f(x+%i*y)),x,-2,2,y,-2,2)),
+ 0);
+0;
+
+/* nested if example -- note top-level "if" doesn't have an "else" clause, so the result is sometimes 'false' */
+
+(g(a, b, c) := if a + b > c
+                 then (if a > c
+                         then (if b > c
+                                 then (a + b + c)
+                                 elseif b > c/2
+                                   then (a - b - c)
+                                   else (b - a - c))
+                         else (a/2)),
+ 0);
+0;
+
+(aa: [3,9/4,5/4,11/4,1,0,9/4,1/4,5/2,9/4,3,5/2],
+ bb: [3/2,3,1/4,3/4,5/2,7/4,5/2,3/4,1/2,3,13/4,7/2],
+ cc: [7/2,15/4,5/2,5/4,15/4,1,1/4,7/4,2,11/4,1/4,7/4],
+ map (g, aa, bb, cc));
+[3/2,9/8,false,3/4,false,0,5,false,-4,9/8,13/2,31/4]$
+
+(translate (g),
+ map (g, aa, bb, cc));
+[3/2,9/8,false,3/4,false,0,5,false,-4,9/8,13/2,31/4]$
+
+errcatch (g(1, 1, z));
+[];
