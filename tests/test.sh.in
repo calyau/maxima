@@ -10,7 +10,6 @@
 
 LOCAL_MAXIMA=@top_builddir@/maxima-local
 OUTPUT_LOG="$1.log"
-OUTPUT_SHARE_LOG="$1_share.log"
 LISP=$1
 
 # Die if a command fails
@@ -24,23 +23,18 @@ set -e
 # with input over a pipe. ...and we change the input for questions to
 # the lisp's standard input so it isn't taken from the keyboard even
 # if the current lisp defaults to that.
-echo "Running the share testsuite..."
-$LOCAL_MAXIMA --lisp=$LISP --batch-string='build_info();run_testsuite(share_tests=only);' 2>&1 | tee "$OUTPUT_SHARE_LOG"
-echo "Running the testsuite for the maxima core..."
-$LOCAL_MAXIMA --lisp=$LISP --batch-string='build_info();testsuite_files:append(["rtest_ask.mac"],testsuite_files);run_testsuite();' < @abs_top_srcdir@/tests/rtest_ask_input.mac 2>&1 | tee "$OUTPUT_LOG"
+echo "Running the testsuite..."
+$LOCAL_MAXIMA --lisp=$LISP --batch-string='build_info();testsuite_files:append(["rtest_ask.mac"],testsuite_files);run_testsuite(share_tests=true);' < @abs_top_srcdir@/tests/rtest_ask_input.mac 2>&1 | tee "$OUTPUT_LOG"
 
 grep -q 'No unexpected errors' <"$OUTPUT_LOG"
 if test $? -ne 0 ; then
     # We'll have another copy of the log from the output of this script,
     # so there's no point in leaving the greppable one lying around.
     rm "$OUTPUT_LOG"
-    rm "$OUTPUT_SHARE_LOG"
     exit 1
 fi;  
 
-grep -q 'No unexpected errors' <"$OUTPUT_SHARE_LOG"
 
 # We'll have another copy of the log from the output of this script,
 # so there's no point in leaving the greppable one lying around.
 rm "$OUTPUT_LOG"
-rm "$OUTPUT_SHARE_LOG"
