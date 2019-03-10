@@ -134,7 +134,6 @@ EXECUTECLISP = $(CLISP_NAME) -norc -q
 clisplibdir = $(verpkglibdir)/binary-clisp
 
 BUILT_FILES += $(CLISP_MAXIMA)
-CLEAN_TARGETS += clean-clisp
 
 clisp: $(CLISP_MAXIMA)
 
@@ -146,15 +145,16 @@ $(CLISP_MAXIMA):
 	$(EXECUTECLISP) clisp-command.lisp
 	rm clisp-command.lisp
 
-clean-clisp:
-	rm -rf binary-clisp clisp-command.lisp clisp-command2.lisp
-
 clisp-depends.mk: maxima.system
 	echo $(call MAKE_DEPENDS,"$(CLISP_MAXIMA)",clisp-depends.mk) > clisp-command2.lisp
 	$(EXECUTECLISP) clisp-command2.lisp
 
 -include clisp-depends.mk
 endif CLISP
+
+clean-clisp:
+	rm -rf binary-clisp clisp-command.lisp clisp-command2.lisp
+CLEAN_TARGETS += clean-clisp
 
 ## CMUCL #######################################################################
 if CMUCL
@@ -184,7 +184,6 @@ EXECUTECMUCL = $(CMUCL_NAME) -noinit -batch
 
 cmucllibdir = $(verpkglibdir)/binary-cmucl
 BUILT_FILES += $(CMU_MAXIMA)
-CLEAN_TARGETS += clean-cmucl
 
 cmucl: $(CMU_MAXIMA)
 
@@ -192,14 +191,15 @@ $(CMU_MAXIMA):
 	$(MAKE) bd
 	$(CMU_BUILD)
 
-clean-cmucl:
-	rm -rf binary-cmucl
-
 cmucl-depends.mk: maxima.system
 	echo $(call MAKE_DEPENDS,"$(CMU_MAXIMA)",cmucl-depends.mk) | $(EXECUTECMUCL)
 
 -include cmucl-depends.mk
 endif
+
+clean-cmucl:
+	rm -rf binary-cmucl
+CLEAN_TARGETS += clean-cmucl
 
 ## SCL #########################################################################
 if SCL
@@ -208,7 +208,6 @@ scllibdir = $(verpkglibdir)/binary-scl
 
 EXECUTESCL = $(SCL_NAME) -noinit -batch
 BUILT_FILES += binary-scl/maxima.core
-CLEAN_TARGETS += clean-scl
 scllib_DATA = binary-scl/maxima.core
 
 scl: binary-scl/maxima.core
@@ -229,15 +228,16 @@ install-scl-copy:
 uninstall-scl-copy:
 	rm -f "$(DESTDIR)$(scllibdir)/@SCL_RUNTIME@"
 
-clean-scl:
-	rm -rf binary-scl
-
 scl-depends.mk: maxima.system
 	echo $(call MAKE_DEPENDS,"binary-scl/maxima.core",scl-depends.mk) | $(EXECUTESCL)
 
 -include scl-depends.mk
 
 endif
+
+clean-scl:
+	rm -rf binary-scl
+CLEAN_TARGETS += clean-scl
 
 ## ACL #########################################################################
 if ACL
@@ -246,7 +246,6 @@ acllibdir = $(verpkglibdir)/binary-acl
 
 EXECUTEACL = $(ACL_NAME) -batch
 BUILT_FILES += binary-acl/maxima.dxl
-CLEAN_TARGETS += clean-acl
 
 acllib_DATA = binary-acl/maxima.dxl
 
@@ -257,14 +256,15 @@ binary-acl/maxima.dxl:
 	(echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE)' | $(EXECUTEACL)) && \
 	(echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (excl:dumplisp :name "binary-acl/maxima.dxl")' | $(EXECUTEACL))
 
-clean-acl:
-	rm -rf binary-acl
-
 acl-depends.mk: maxima.system
 	echo $(call MAKE_DEPENDS,"binary-acl/maxima.dxl",acl-depends.mk) | $(EXECUTEACL)
 
 -include acl-depends.mk
 endif
+
+clean-acl:
+	rm -rf binary-acl
+CLEAN_TARGETS += clean-acl
 
 ## SBCL ########################################################################
 if SBCL
@@ -285,7 +285,6 @@ endif
 
 EXECUTESBCL = "$(SBCL_NAME)" --noinform --noprint
 BUILT_FILES += $(SBCL_MAXIMA)
-CLEAN_TARGETS += clean-sbcl
 
 COMPILE_SBCL = echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (sb-ext:quit)' | $(EXECUTESBCL) 
 WRITE_SBCL = echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) $(sb_slad) (sb-ext:quit)' | $(EXECUTESBCL)
@@ -297,15 +296,16 @@ $(SBCL_MAXIMA):
 	$(MAKE) bd
 	$(BUILD_SBCL)
 
-clean-sbcl:
-	rm -rf binary-sbcl numerical/binary-sbcl numerical/slatec/binary-sbcl
-
 sbcl-depends.mk: maxima.system
 	echo $(call MAKE_DEPENDS,"$(SBCL_MAXIMA)",sbcl-depends.mk,(sb-ext:quit)) | $(EXECUTESBCL)
 
 -include sbcl-depends.mk
 
 endif
+
+clean-sbcl:
+	rm -rf binary-sbcl numerical/binary-sbcl numerical/slatec/binary-sbcl
+CLEAN_TARGETS += clean-sbcl
 
 ## GCL #########################################################################
 #
@@ -333,7 +333,6 @@ gcllib_SCRIPTS = binary-gcl/maxima
 
 EXECUTEGCL = $(GCL_NAME)
 BUILT_FILES += binary-gcl/maxima
-CLEAN_TARGETS += clean-gcl
 
 sys_proc_dependency = sys-proclaim.lisp
 gcl_depends_targets = (list "binary-gcl/maxima" "sys-proclaim.lisp")
@@ -357,15 +356,16 @@ else
 	echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (when (fboundp (quote si::sgc-on))(si::sgc-on t)) (si:save-system "binary-gcl/maxima") (system::quit)'  | $(EXECUTEGCL)
 endif
 
-clean-gcl:
-	rm -rf binary-gcl
-
 gcl-depends.mk: maxima.system
 	echo $(call MAKE_DEPENDS,$(gcl_depends_targets),gcl-depends.mk) '(system::quit)' | $(EXECUTEGCL)
 
 -include gcl-depends.mk
 
 endif
+
+clean-gcl:
+	rm -rf binary-gcl
+CLEAN_TARGETS += clean-gcl
 
 ## OPENMCL / CCL ###############################################################
 if OPENMCL
@@ -385,7 +385,6 @@ endif
 
 EXECUTEOPENMCL = $(OPENMCL_NAME)
 BUILT_FILES += $(OPENMCL_MAXIMA)
-CLEAN_TARGETS += clean-openmcl
 
 COMPILE_OMCL = echo '$(QUIET) (require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTEOPENMCL)
 WRITE_OMCL = echo '(require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)' | $(EXECUTEOPENMCL)
@@ -399,15 +398,16 @@ $(OPENMCL_MAXIMA):
 	   && \
 	echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit)' | $(EXECUTEOPENMCL)
 
-clean-openmcl:
-	rm -rf binary-openmcl
-
 openmcl-depends.mk: maxima.system
 	echo $(call MAKE_DEPENDS,"$(OPENMCL_MAXIMA)",openmcl-depends.mk,(ccl:quit)) | $(EXECUTEOPENMCL)
 
 -include openmcl-depends.mk
 
 endif
+
+clean-openmcl:
+	rm -rf binary-openmcl
+CLEAN_TARGETS += clean-openmcl
 
 ## CCL64 #######################################################################
 
@@ -428,7 +428,6 @@ endif
 
 EXECUTECCL64 = $(CCL64_NAME)
 BUILT_FILES += $(CCL64_MAXIMA)
-CLEAN_TARGETS += clean-ccl64
 
 COMPILE_CCL64 = echo '$(QUIET) (require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMCOMPILE) (ccl::quit)' | $(EXECUTECCL64)
 WRITE_CCL64 = echo '(require :defsystem) (mk:add-registry-location "$(top_srcdir)/src/") $(DEFSYSTEMLOAD) (ccl:save-application "$@") (ccl::quit)' | $(EXECUTECCL64)
@@ -442,9 +441,6 @@ $(CCL64_MAXIMA):
 	   && \
 	echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit)' | $(EXECUTECCL64)
 
-clean-ccl64:
-	rm -rf binary-ccl64
-
 ccl64-depends.mk: maxima.system
 	echo $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk,(ccl:quit)) | $(EXECUTECCL64)
 
@@ -452,6 +448,10 @@ ccl64-depends.mk: maxima.system
 
 
 endif
+
+clean-ccl64:
+	rm -rf binary-ccl64
+CLEAN_TARGETS += clean-ccl64
 
 ## ECL #########################################################################
 if ECL
@@ -462,7 +462,6 @@ ecllib_SCRIPTS = binary-ecl/maxima
 
 EXECUTEECL = $(ECL_NAME) -norc
 BUILT_FILES += binary-ecl/maxima
-CLEAN_TARGETS += clean-ecl
 
 ecl:binary-ecl/maxima
 
@@ -470,14 +469,15 @@ binary-ecl/maxima:
 	$(MAKE) bd
 	echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (build-maxima-lib) (ext:quit)' | $(EXECUTEECL)
 
-clean-ecl:
-	rm -rf binary-ecl libmaxima.a
-
 ecl-depends.mk: maxima.system
 	echo $(call MAKE_DEPENDS,"binary-ecl/maxima",ecl-depends.mk,(quit)) | $(EXECUTEECL)
 
 -include ecl-depends.mk
 endif
+
+clean-ecl:
+	rm -rf binary-ecl libmaxima.a
+CLEAN_TARGETS += clean-ecl
 
 ## ABCL ########################################################################
 if ABCL
@@ -493,7 +493,6 @@ abcllib_SCRIPTS = binary-abcl/maxima
 
 EXECUTEABCL = $(JRE) -jar $(ABCL_JAR) --noinit
 BUILT_FILES += binary-abcl/maxima
-CLEAN_TARGETS += clean-abcl
 
 WEIRD_INSTALL_TARGETS += install-abcl-folder
 WEIRD_UNINSTALL_TARGETS += uninstall-abcl-folder
@@ -528,11 +527,12 @@ endif
 	touch binary-abcl/maxima
 	chmod +x binary-abcl/maxima
 
-clean-abcl:
-	rm -rf binary-abcl libmaxima.a
-
 abcl-depends.mk: maxima.system
 	echo $(call MAKE_DEPENDS,"binary-abcl/maxima",abcl-depends.mk,(quit)) | $(EXECUTEABCL)
 
 -include abcl-depends.mk
 endif
+
+clean-abcl:
+	rm -rf binary-abcl libmaxima.a
+CLEAN_TARGETS += clean-abcl

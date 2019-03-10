@@ -95,7 +95,10 @@ Changes in core:
  * translate() now temporarily sets prederror to true which produces an
    error message if the translator fails to translate a nested if() 
    correctly, see Bug #3412.
- 
+ * A workaround for a bug in GCL that makes $load_pathname work again
+ * "make clean" now removes the temporary files for lisps that aren't
+   currently configured.
+
 Changes in share:
 --------------
  *  The the arguments to Krylov matrix are now checked for being of the 
@@ -127,6 +130,7 @@ Bug fixes:
  * #3463: mention epsilon_lp more explicitly in minimize_lp
  * #3497: Resolved an error in demos concerning the Ricci tensor
  * #3497: ctensor documentation on the Ricci tensor is inconsistent
+ * #3532: Wrong substitution on integrating cos(x)*abs(cos(x))
  
 Unnumbered bugs:
 ----------------

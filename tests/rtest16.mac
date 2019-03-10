@@ -2602,3 +2602,7 @@ errcatch (addcol (matrix ([1], [2], [3]), matrix ([11, 22, 33])));
 [];
  *
  */
+
+/* Bug #3532: Integrator doesn't use a new variable internally, causing facts on the original variable to be used for the substitution variable */
+is(integrate(cos(x) * abs(cos(x)), x, 0, %pi) = %pi / 2);
+false$
