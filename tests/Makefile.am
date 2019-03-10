@@ -9,7 +9,7 @@ CLEANFILES =
 if CLISP
 TESTS += clisp-test.sh
 CLEANFILES += clisp-test.sh clisp.log clisp_share.log
-clisp-test.sh: test.sh.in Makefile
+clisp-test.sh: test.sh Makefile
 	echo "#!/bin/sh" > $@
 	echo "./test.sh clisp" >> $@
 	chmod +x "$@"
@@ -18,7 +18,7 @@ endif
 if CMUCL
 TESTS += cmucl-test.sh
 CLEANFILES += cmucl-test.sh cmucl.log cmucl_share.log
-cmucl-test.sh: test.sh.in Makefile
+cmucl-test.sh: test.sh Makefile
 	echo "#!/bin/sh" > $@
 	echo "./test.sh cmucl" >> $@
 	chmod +x "$@"
@@ -27,7 +27,7 @@ endif
 if SCL
 TESTS += scl-test.sh
 CLEANFILES += scl-test.sh scl.log scl_share.log
-scl-test.sh: test.sh.in Makefile
+scl-test.sh: test.sh Makefile
 	echo "#!/bin/sh" > $@
 	echo "./test.sh scl" >> $@
 	chmod +x "$@"
@@ -36,7 +36,7 @@ endif
 if SBCL
 TESTS += sbcl-test.sh
 CLEANFILES += sbcl-test.sh sbcl.log sbcl_share.log
-sbcl-test.sh: test.sh.in Makefile
+sbcl-test.sh: test.sh Makefile
 	echo "#!/bin/sh" > $@
 	echo "./test.sh sbcl" >> $@
 	chmod +x "$@"
