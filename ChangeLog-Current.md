@@ -119,7 +119,9 @@ Changes in share:
  *  The tests for the "sym" package are now part of the share testsuite.
  *  The tests for the "ode" package are now part of the share testsuite, too
     but have been disabled as they failed.
- 
+ *  Sarag no more overwrites the function resultant() which means the 
+    share test suite no more kills this function in a kill(all);
+
 Bug fixes:
 ----------
  * #3470: 
