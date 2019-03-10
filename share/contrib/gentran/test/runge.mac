@@ -5,10 +5,10 @@ d : b/2*qdot$
 h : k + u$
 
 /*  Perform Calculations  */
-batch("rk.in");  /* define Runge-Katta method */
-batch("ham.in"); /*  Hamiltonian Calculation  */
+batchload("rk.in");  /* define Runge-Katta method */
+batchload("ham.in"); /*  Hamiltonian Calculation  */
 
 gentranlang : fortran$
-on(gentranfloat)$
+genfloat:true$
 /*  Call Template Processor  */
 gentranin("runge.template", ["runge.f"]);

@@ -21,7 +21,7 @@ mat[3,2] : mat[2,3] : 0$
 
 mat[3,3] : 9*m30*p^2 + j30x$
 
-?maxexpprintlen\* : 300$ /* expression segmentation length */
+maxexpprintlen : 300$ /* expression segmentation length */
 
 gentranout("matrix.f")$
 gentran( literal("c", cr,
@@ -30,3 +30,4 @@ gentran( literal("c", cr,
 for i:1 thru 3 do
 	  for j:i thru 3 do
 	      gentran( lrsetq(mat[i,j], mat[i,j]) )$
+gentranshut("matrix.f")$
