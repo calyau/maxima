@@ -98,6 +98,8 @@ Changes in core:
  * A workaround for a bug in GCL that makes $load_pathname work again
  * "make clean" now removes the temporary files for lisps that aren't
    currently configured.
+ * "make check" now runs the share and the core testsuite in the same
+   maxima session.
 
 Changes in share:
 --------------
