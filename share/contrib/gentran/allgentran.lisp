@@ -25,7 +25,7 @@
         $fortlinelen $genfloat $genstmtincr $genstmtno $gentranlang $gentranopt
         $gentranparser $gentranseg $implicit $maxexpprintlen $optimvarname
         $ratcurrind $ratlinelen $tablen $tempvarname $tempvarnum $tempvartype
-        $usefortcomplex $geninpath $genoutpath))
+        $usefortcomplex $geninpath $genoutpath fnotn))
 
 
 ;; convmac text follows. garbage redefinition of stuff in lisp.
@@ -1292,7 +1292,7 @@
 	((eq (caar exp) 'mtimes)
 	 (simptimes1 (foreach term in (cdr exp) collect
 			      (franzexp term ind exp))
-		      0 ))
+		      ))
 
 	((eq (caar exp) 'mexpt)
 	 ;; ((mexpt) x -1) --> (quotient 1.0 x)                    ;
@@ -1427,7 +1427,7 @@
               (float num)))
 
 
-(defun simptimes1 (terms fp)
+(defun simptimes1 (terms)
   (let ((neg) (denoms))
        (setq terms
 	     (foreach trm in (simptimes2 terms) conc
@@ -1479,11 +1479,11 @@
 	((macgop stmt) (franzgo stmt))
 	((macretp stmt) (franzret stmt))
 	((macprintp stmt) (franzprint stmt))
-	((macstopp stmt) (franzstop stmt))
-	((macendp stmt) (franzend stmt))
+	((macstopp stmt) (franzstop))
+	((macendp stmt) (franzend))
 	((mac$literalp stmt) (franzliteral (stripdollar1 (caar stmt)) stmt))
-	((maccallp stmt) (franzcall stmt))))
-
+;;;	((maccallp stmt) (franzcall stmt)))) must be a mac call if it's nothing else.
+        (t (franzcall stmt))))
 
 (defun mac$literalp (stmt)
   ; is stmt a $literal function? ;
@@ -1705,11 +1705,11 @@
 				  (franzexp elt 0 elt )))
 		(cdr stmt))))
 
-(defun franzstop (stmt)
+(defun franzstop ()
   ; return the franz lisp representation for a stop statement ;
   '(stop))
 
-(defun franzend (stmt)
+(defun franzend ()
   ; return the franz lisp representation for an end statement ;
   '(end))
 
@@ -1807,9 +1807,9 @@
   (atom stmt))
 
 
-(defun maccallp (stmt)
-  ; is stmt a macsyma call statement? ;
-  t)
+;;;(defun maccallp (stmt)
+;;;  ; is stmt a macsyma call statement? ;
+;;;  t)
 
 (defun macretp (stmt)
   ; is stmt a macsyma return statement? ;
@@ -4409,6 +4409,7 @@
 		  (rds holdich)
 		  (cond ((cdr *currin*) (close (cdr *currin*))))
 		  (popinstk)))
+        (setq *gendecs ogendecs) ;;re-enable gendecs --mds
 	(return (cond (outlist
 		       (progn
 			(setq outlist (or (car *currout*)
@@ -4418,7 +4419,6 @@
 		      (t
 		       (or (car *currout*)
 			   (cons '(mlist) (cdr *currout*))))))
-                        (setq *gendecs ogendecs) ;;re-enable gendecs --mds
                            ))
 
 
