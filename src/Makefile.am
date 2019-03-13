@@ -337,7 +337,7 @@ BUILT_FILES += binary-gcl/maxima
 sys_proc_dependency = sys-proclaim.lisp
 gcl_depends_targets = (list "binary-gcl/maxima" "sys-proclaim.lisp")
 
-sys-proclaim.lisp:
+sys-proclaim.lisp: *.lisp maxima.system
 	rm -rf binary-gcl
 	touch sys-proclaim.lisp
 	$(MAKE) bd
