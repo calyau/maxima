@@ -226,6 +226,12 @@ true;
 is (equal (q, a*c));
 true;
 
+/* bug reported in mailing list thread "when might resimplify be needed?"
+ * on 2019-03-16
+ */
+3*(2/3^(3/2))^(2/3);
+2^(2/3);
+
 /* [ 1980715 ] wrong radcan-simplification */
 radcan(3^(1/6)*9^(1/3));
 3^(5/6);
