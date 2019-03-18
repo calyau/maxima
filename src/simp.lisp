@@ -2386,7 +2386,7 @@
      (cond ((null (setq gr (cdr gr)))
             (return (eqtest (testt (cons '(mtimes) res)) check)))
            ((mexptp (car gr))
-            (setq y (list (caar gr) (cadar gr) (mult (caddar gr) pot))))
+            (setq y (power (cadar gr) (mult (caddar gr) pot))))
            ((eq (car gr) '$%i)
             (setq y (%itopot pot)))
            ((mnump (car gr))
