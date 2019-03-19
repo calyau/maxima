@@ -466,8 +466,8 @@ is EQ to FNNAME if the latter is non-NIL."
   (if (or flag (numberp val) (member val '(t nil $%e $%pi $%i) :test #'eq))
       (let ((type (if aryp (intl:gettext "an array") (intl:gettext "a function"))))
         (if (and (atom name) (not (equal val name)))
-            (merror (intl:gettext "apply: found ~M evaluates to ~M where ~M was expected.") name val type)
-            (merror (intl:gettext "apply: found ~M where ~M was expected.") val type)))))
+            (merror (intl:gettext "apply: found ~M evaluates to ~M where ~A was expected.") name val type)
+            (merror (intl:gettext "apply: found ~M where ~A was expected.") val type)))))
 
 ;; To store the value of $errormsg in mbind. This value is looked up in the
 ;; routine mbind-doit. This is a hack to get the expected behavior, when the
@@ -488,7 +488,7 @@ wrapper for this."
 	     ((and (null vars) (null args)))
 	     (t (assert fnname (fnname)
 			"Expected a maxima function designator but got NIL.")
-		(merror (intl:gettext "~M arguments supplied to ~M; found: ~M")
+		(merror (intl:gettext "~A arguments supplied to ~M; found: ~M")
 			(if vars (intl:gettext "Too few") (intl:gettext "Too many"))
 			(if (and (consp fnname)
 				 (consp (car fnname))
