@@ -1375,7 +1375,7 @@
 ;; update string type options
 ;; --------------------------
 (defun update-string (opt val)
-  (setf (gethash opt *gr-options*) val))
+  (setf (gethash opt *gr-options*) ($sconcat val)))
 
 
 
