@@ -191,7 +191,8 @@
 
 (defun msize-array (x l r &aux f)
   (if (eq (caar x) 'mqapply) (setq f (cadr x) x (cdr x)) (setq f (caar x)))
-  (cond ((and (symbolp (caar x)) (get (caar x) 'verb) (get (caar x) 'alias))
+  (cond ((atom (car x)))
+	((and (symbolp (caar x)) (get (caar x) 'verb) (get (caar x) 'alias))
 	 (setq l (revappend '(#\' #\') l)))
 	((and (symbolp (caar x))
 	      (get (caar x) 'noun)
