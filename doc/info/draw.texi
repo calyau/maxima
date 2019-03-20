@@ -830,6 +830,21 @@ Example:
 @end example
 @figure{draw_color3}
 
+@example
+(%i1) draw2d(
+        "figures/draw_color4",
+        makelist(
+            [
+                color=i,
+                key=sconcat("color =",i),
+                explicit(sin(i*x),x,0,1)
+            ],
+            i,0,17
+        )
+    )$
+@end example
+@figure{draw_color4}
+
 
 See also @mrefdot{fill_color}
 

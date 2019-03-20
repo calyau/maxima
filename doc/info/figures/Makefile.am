@@ -14,6 +14,7 @@ draw_colorbox2.pdf\
 draw_colorbox.pdf\
 draw_color.pdf\
 draw_color3.pdf\
+draw_color4.pdf\
 draw_columns.pdf\
 draw_contour2.pdf\
 draw_contour.pdf\
@@ -151,6 +152,7 @@ draw_colorbox2.gif\
 draw_colorbox.gif\
 draw_color.gif\
 draw_color3.gif\
+draw_color4.gif\
 draw_columns.gif\
 draw_contour2.gif\
 draw_contour.gif\
@@ -297,6 +299,8 @@ draw_cbtics.gif: draw_cbtics.mac ../docdraw.mac
 draw_cbtics.pdf: draw_cbtics.mac ../docdraw.mac
 draw_color.gif: draw_color.mac ../docdraw.mac
 draw_color.pdf: draw_color.mac ../docdraw.mac
+draw_color4.gif: draw_color4.mac ../docdraw.mac
+draw_color4.pdf: draw_color4.mac ../docdraw.mac
 draw_colorbox.gif: draw_colorbox.mac ../docdraw.mac
 draw_colorbox.pdf: draw_colorbox.mac ../docdraw.mac
 draw_colorbox2.gif: draw_colorbox2.mac ../docdraw.mac
