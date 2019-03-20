@@ -49,6 +49,8 @@ Changes in core:
  * Maxima.bat now autodetects 64-bit systems and does the necessary
    modifications for making lapack work in SBCL it this test is positive.
  * perl is now uniformly called as /usr/bin/env perl
+ * Resolved the "simplifya: I don't know how to simplify this operator: ~M"
+   error triggered by some array actions.
  * The Windows installer can now include ABCL
  * Corrected many markers that tell if an example can be updated using the 
    doc/info/update_example scripts.
@@ -123,6 +125,7 @@ Changes in share:
     but have been disabled as they failed.
  *  Sarag no more overwrites the function resultant() which means the 
     share test suite no more kills this function in a kill(all);
+ *  Draw now accepts numbers as color specification.
 
 Bug fixes:
 ----------
