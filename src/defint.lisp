@@ -223,7 +223,7 @@ in the interval of integration.")
              (unless (lenient-extended-realp ll)
                (merror (intl:gettext "defint: lower limit of integration must be real; found ~M") ll))
              (unless (lenient-extended-realp ul)
-               (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") ll))
+               (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") ul))
 
 	     (cond ((setq ans (defint exp var ll ul))
 		    (setq ans (subst orig-var var ans))
