@@ -102,6 +102,11 @@ Changes in core:
    currently configured.
  * "make check" now runs the share and the core testsuite in the same
    maxima session.
+ * Fix the error message for an invalid upper limit of integration
+   If the upper limit of integration was invalid, the error message
+   incorrectly printed the lower limit instead.
+ * The feature "nonscalar" was named "nonscalarp" in some places.
+   Now it is named "nonscalar" consistently. 
 
 Changes in share:
 --------------
@@ -125,7 +130,9 @@ Changes in share:
     but have been disabled as they failed.
  *  Sarag no more overwrites the function resultant() which means the 
     share test suite no more kills this function in a kill(all);
- *  Draw now accepts numbers as color specification.
+ *  Draw now accepts numbers as color specification besides the html-style
+    and the gnuplot-style color identifiers it already understood.
+ *  Draw now accepts plot titles even if they aren't strings.
 
 Bug fixes:
 ----------
