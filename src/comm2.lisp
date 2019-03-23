@@ -795,8 +795,20 @@
 
 ;;;; ARRAYF
 
+(defun my-nonatomic-expr-p (e)
+  (and (consp e) (consp (car e)) (symbolp (caar e))))
+
+(defun my-lambda-expr-p (e)
+  (and (consp e) (consp (car e)) (eq 'lambda (caar e))))
+
 (defmfun $arraymake (ary subs)
-  (cond ((or (not ($listp subs)) (null (cdr subs)))
+  (cond
+    ;; We go through some gyrations here to allow as wide a range of inputs as possible.
+    ;; Previously $ARRAYMAKE didn't check the first argument at all;
+    ;; this is an attempt at a minimally-restrictive change.
+	((not (or (symbolp ary) ($subvarp ary) (and (my-nonatomic-expr-p ary) (not (my-lambda-expr-p ary)))))
+	 (merror (intl:gettext "arraymake: first argument must be a symbol, subscripted symbol, or nonatomic expression (but not a lambda expression); found: ~M") ary))
+	((or (not ($listp subs)) (null (cdr subs)))
 	 (merror (intl:gettext "arraymake: second argument must be a list of one or more elements; found ~M") subs))
 	((symbolp ary)
 	 (cons (cons (getopr ary) '(array)) (cdr subs)))
