@@ -234,7 +234,7 @@
 (defun lenient-extended-realp (e)
   (and ($freeof '$infinity '$%i '$und '$ind '$false '$true t nil e) ;; what else?
        (not (mbagp e))
-       (not ($featurep e '$nonscalarp))
+       (not ($featurep e '$nonscalar))
        (not (mrelationp e))
        (not ($member e $arrays))))
 
