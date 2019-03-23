@@ -1860,7 +1860,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defun op-equalp (e &rest op)
   (and (consp e) (consp (car e)) (some #'(lambda (s) (equal (caar e) s)) op)))
 
-;; Return true iff the operator of e is a Maxima relation operator.
+;; Return true iff the operator of a is a Maxima relation operator.
 
 (defun mrelationp (a)
   (op-equalp a 'mlessp 'mleqp 'mequal 'mnotequal 'mgeqp 'mgreaterp))
