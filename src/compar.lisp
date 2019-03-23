@@ -1863,7 +1863,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 ;; Return true iff the operator of e is a Maxima relation operator.
 
 (defun mrelationp (a)
-  (op-equalp a 'mlessp 'mleqp 'mequal 'mgeqp 'mgreaterp))
+  (op-equalp a 'mlessp 'mleqp 'mequal 'mnotequal 'mgeqp 'mgreaterp))
 
 ;; This version of featurep applies ratdisrep to the first argument.  This
 ;; change allows things like featurep(rat(n),integer) --> true when n has
