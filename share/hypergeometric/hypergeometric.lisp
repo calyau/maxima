@@ -121,7 +121,7 @@
 (defun lenient-complex-p (e)
   (and ($freeof '$infinity '$und '$ind '$inf '$minf '$false '$true t nil e) ;; what else?
        (not (mbagp e))
-       (not ($featurep e '$nonscalarp))
+       (not ($featurep e '$nonscalar))
        (not (mrelationp e))
        (not ($member e $arrays))))
 
