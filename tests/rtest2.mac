@@ -937,7 +937,7 @@ a bar 3 bar %pi bar b bar (-2) bar %e bar z bar 0 bar %phi;
 errcatch (lastn (barexpr, -4));
 [];
 
-(kill (baz, k), bazexpr : funmake (baz[k], mylist), 0);
+(kill ("bar", baz, k), bazexpr : funmake (baz[k], mylist), 0);
 0;
 
 firstn (bazexpr, 0);
@@ -1058,3 +1058,38 @@ block ([M:[]], ev(e1), M);
 
 (reset(use_fast_arrays),1);
 1;
+
+/* ensure arraymake cannot create an invalid expression
+ * follow-on work to commit 3140a35
+ */
+
+(kill (foo, bar, baz, quux),
+ arraymake (foo, [bar]));
+foo[bar];
+
+arraymake (foo[bar], [baz]);
+foo[bar][baz];
+
+arraymake (foo[bar][baz], [quux]);
+foo[bar][baz][quux];
+
+arraymake (foo[bar, baz], [111, 222]);
+foo[bar, baz][111, 222];
+
+errcatch (arraymake (1, [bar]));
+[];
+
+errcatch (arraymake ("foo", [bar]));
+[];
+
+errcatch (arraymake (lambda([x], x), [bar]));
+[];
+
+/* slightly unusual constructs which do yield valid expressions, and are therefore permissable */
+
+arraymake (foo + bar, [baz]);
+(foo + bar)[baz];
+
+arraymake (foo(bar), [baz]);
+foo(bar)[baz];
+
