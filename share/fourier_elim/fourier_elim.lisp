@@ -313,7 +313,7 @@
 	  ((op-equalp e 'mor)
 	   (opapply 'mor (mapcar 'standardize-inequality (margs e))))
 
-	  ((or (mrelationp e) (op-equalp e 'mnotequal '$equal))
+	  ((or (mrelationp e) (op-equalp e '$equal))
            (setq a (second e))
            (setq b (third e))
 
