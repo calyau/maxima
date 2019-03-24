@@ -22,8 +22,10 @@ log(q(r(x)));
 ?nformat(?/(1,2)); /* ?/(1,2) equivalent to (/ 1 2) in Lisp */
 1/2$
 
+/* example for now-disable interval struct in src/nforma.lisp
 ?typep(interval(1,2),?ri);
 true$
+ */
 is(part(?complex(1,2),0)="+");
 true$
 
