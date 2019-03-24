@@ -191,9 +191,9 @@
             form)))
 
 ;; something I added for fun
-(defstruct (ri (:constructor $interval (lo hi) ))lo hi)
-(setf (get 'ri 'formatter) ;; in case a structure of type ri  [real interval] is computed
-  #'(lambda(r) (list '($interval simp) (ri-lo r)(ri-hi r)))) ;; this prints it.
+;; (defstruct (ri (:constructor $interval (lo hi) ))lo hi)
+;; (setf (get 'ri 'formatter) ;; in case a structure of type ri  [real interval] is computed
+;;   #'(lambda(r) (list '($interval simp) (ri-lo r)(ri-hi r)))) ;; this prints it.
 
 ;;  so in maxima, we can construct ri structures by typing interval(1,2)
 ;; and if we display it,  it  appear as  interval(1,2).
