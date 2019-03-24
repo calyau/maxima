@@ -107,7 +107,12 @@ Changes in core:
    incorrectly printed the lower limit instead.
  * The feature "nonscalar" was named "nonscalarp" in some places.
    Now it is named "nonscalar" consistently. 
-
+ * Arraymake should now output an error if the result isn't a valid array
+ * interval(a,b) created an interval, but maxima lacked functions to do
+   anything with these intervals => this undocumented function was 
+   commented out.
+ * MRELATIONP now knows how to deal with the "not equal" operator.
+ 
 Changes in share:
 --------------
  *  The the arguments to Krylov matrix are now checked for being of the 
