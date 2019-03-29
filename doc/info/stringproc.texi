@@ -1407,7 +1407,7 @@ alphabetic character. See remarks on @ref{alphacharp}.
 If no delimiter @var{delim} is specified, @code{simplode} uses no delimiter.
 @var{delim} can be any string.
 
-See also @mrefcomma{concat} @mref{sconcat} and @mrefdot{printf}
+See also @mrefcomma{concat} @mrefcomma{sconcat} @mref{string} and @mrefdot{printf}
 
 Examples:
 
