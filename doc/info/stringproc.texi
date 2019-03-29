@@ -515,6 +515,9 @@ The directive ~h has been introduced to handle bigfloats.
 |++++++++++++++++++++|
 @end example
 
+For conversion of objects to strings also see @mrefcomma{concat} @mrefcomma{sconcat}
+@mref{string} and @mrefdot{simplode}
+
 @opencatbox
 @category{File output}
 @category{Package stringproc}
