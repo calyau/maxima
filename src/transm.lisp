@@ -38,7 +38,7 @@
 	     (special tr-abort	    ; set this T if you want to abort.
 		      *translation-msgs-files*)	; the stream to print messages to.
 	     ;; State variables.
-	     (special pre-transl-forms*	; push onto this, gets output first into the transl file.
+	     (special *pre-transl-forms* ; push onto this, gets output first into the transl file.
 		      *warned-un-declared-vars*
 		      *warned-fexprs*
 		      *warned-mode-vars*
@@ -47,7 +47,6 @@
 		      *in-compfile*
 		      *in-translate-file*
 		      *in-translate*
-		      *pre-transl-forms*
 		      *untranslated-functions-called*))
 
 (defmacro bind-transl-state (&rest forms)
