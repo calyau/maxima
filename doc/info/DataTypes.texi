@@ -828,6 +828,9 @@ in.
 The return value of @code{string} is a string, and thus it cannot be used in a
 computation.
 
+See also @mrefcomma{concat} @mrefcomma{sconcat} @mref{simplode} and
+@mrefdot{eval_string}
+
 @opencatbox
 @category{Strings}
 @closecatbox
