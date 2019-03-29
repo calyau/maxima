@@ -51,7 +51,7 @@
 	      (let ((winp nil))
 		(unwind-protect (progn (eval form) (setq winp t))
 		  (unless winp
-		    (barfo "Bad *pre-transl-form*"))))))))
+		    (barfo "Bad *pre-transl-forms*"))))))))
 
 (defun push-autoload-def (old-entry new-entries)
   (and (get old-entry 'autoload)
