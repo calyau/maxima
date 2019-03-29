@@ -712,6 +712,7 @@ value is a symbol if the first argument is a symbol and a string otherwise.
 evaluation.
 
 See also @mrefcomma{sconcat} @mref{simplode} and @mrefdot{eval_string}
+For complex string conversions see also @mref{printf}.
 
 @c ===beg===
 @c y: 7$
