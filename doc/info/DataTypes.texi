@@ -711,7 +711,8 @@ value is a symbol if the first argument is a symbol and a string otherwise.
 @code{concat} evaluates its arguments.  The single quote @code{'} prevents
 evaluation.
 
-See also @mrefcomma{sconcat} @mref{simplode} and @mrefdot{eval_string}
+See also @mrefcomma{sconcat} that works on non-atoms, too,
+@mref{simplode} and @mrefdot{eval_string}
 For complex string conversions see also @mref{printf}.
 
 @c ===beg===
