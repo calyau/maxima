@@ -19,16 +19,7 @@
 ;; case where nil could be returned if an error occurred or if
 ;; the form returned no values.
 
-#-ecldebug
 (defmacro errset (&rest l)
   `(handler-case (or (multiple-value-list ,(car l)) (list nil))
     (error (e) (when errset (error e)))))
-
-#+ecldebug
-(defmacro errset (&rest l)
-  `(handler-case (or (multiple-value-list ,(car l)) (list nil))
-    (error (e)
-      (format *error-output* "~S~%~A~%" (type-of e) e)
-      (when errset
-	(let ((*debugger-hook* nil)) (si::default-debugger e))))))
 
