@@ -112,6 +112,7 @@ Changes in core:
    anything with these intervals => this undocumented function was 
    commented out.
  * MRELATIONP now knows how to deal with the "not equal" operator.
+ * Code clean up.
  
 Changes in share:
 --------------
