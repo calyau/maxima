@@ -32,10 +32,11 @@
                         (symbol-value '*autoconf-lisp-only-build*)
                         (list* '(mlist simp) (list 78 80))))
 	;; 46 = ECL bug #437: mishandling float format
+	;; 45 sporadically fails in all tested ECL versions (15.3.7-16.1.3)
 	;; 44 fails in ECL 15.3.7 and earlier
 	;; 43 fails reliably since March 2019 in all ECL versions. No idea why.
         ((mlist simp) "rtest6"
-	 #+ecl ((mlist simp) 43 44 46))
+	 #+ecl ((mlist simp) 43 44 45 46))
         "rtest6a"
 	"rtest6b"
 	"rtest7"
