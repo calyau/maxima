@@ -45,7 +45,6 @@
 (defvar greatorder nil)
 (defvar *in-translate-file* nil)
 (defvar *linelabel* nil)
-(defvar lisperrprint t)
 
 (defvar state-pdl (ncons 'lisp-toplevel))
 
