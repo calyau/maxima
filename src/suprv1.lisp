@@ -716,7 +716,7 @@
 		     (setq maxima-error t)))
 	      (setq truename (truename savefile))
 	      (terpri savefile))
-	    (if maxima-error (let ((errset 'errbreak1)) (merror (intl:gettext "stringout: unspecified error."))))
+	    (if maxima-error (merror (intl:gettext "stringout: unspecified error.")))
 	    (cl:namestring truename)))))
 
 (defmfun $labels (label-prefix)
