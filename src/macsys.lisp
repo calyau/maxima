@@ -337,7 +337,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 			 (mread *standard-input*))))
 	(case r
 	  (($exit) (throw 'break-exit t))
-	  (t (errset (displa (meval r)) t)))))))
+	  (t (errset (displa (meval r)))))))))
 
 (defun merrbreak (&optional arg)
   (format *debug-io* "~%Merrbreak:~A" arg)

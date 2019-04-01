@@ -28,7 +28,7 @@
 (defmspec $errcatch (form)
   (let ((errcatch (cons bindlist loclist)) ret)
     (if (null (setq ret (let (*mdebug*)
-			  (errset (meval*n (cdr form)) lisperrprint))))
+			  (errset (meval*n (cdr form))))))
 	(errlfun1 errcatch))
     (if (and (consp (car ret)) (eq (caar (car ret)) 'merror))
       (progn

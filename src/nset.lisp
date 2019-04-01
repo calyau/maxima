@@ -1278,7 +1278,7 @@
 (defun ignore-errors-mfuncall (f x)
   (let ((errcatch t))
     (declare (special errcatch))
-    (errset (mfuncall f x) lisperrprint)))
+    (errset (mfuncall f x))))
 
 (defmfun $every (f &rest x)
   (cond ((or (null x) (and (null (cdr x)) ($emptyp (first x)))) t)
