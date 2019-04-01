@@ -63,7 +63,7 @@
   in-core)
 
 (defmacro merrset (l)
-  `(let ((errset 'errbreak1) (unbind (cons bindlist loclist)) val)
+  `(let ((errset t) (unbind (cons bindlist loclist)) val)
      (setq val (errset ,l))
      (when (null val) (errlfun1 unbind))
      val))
