@@ -36,7 +36,6 @@
 (defvar *refchkl* nil)
 (defvar *mdebug* nil)
 (defvar *baktrcl* nil)
-(defvar errbrksw nil)
 (defvar errcatch nil)
 (defvar mcatch nil)
 (defvar brklvl -1)
@@ -423,15 +422,6 @@
 (defun debugmode1 (assign-var y)
   (declare (ignore assign-var))
   (setq *mdebug* y))
-
-(defun errbreak1 (ign)
-  (declare (ignore ign))
-  nil)					; Used to nullify ERRSETBREAKs
-
-(defun errbreak2 (ign) ;; An alternate ERRSET interr. function used by PARSE and DISPLAY
-  (declare (ignore ign))
-  (let ((state-pdl (cons 'lisp-break state-pdl)))
-    (break "erst ~S" '(errbrksw))))
 
 (defun errlfun1 (mpdls)
   (do ((l bindlist (cdr l))
