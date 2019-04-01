@@ -195,7 +195,7 @@
 	  (mapcar #'(lambda (x)
 		      (let (y)
 			(cond ((numberp x) x)
-			      ((numberp (setq y (car (errset (readlist (mexploden x)) nil))))
+			      ((numberp (setq y (car (errset (readlist (mexploden x))))))
 			       y)
 			      (t (makealias x)))))
 		  l))))
