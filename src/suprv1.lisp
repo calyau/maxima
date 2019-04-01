@@ -189,7 +189,7 @@
   '$done)
 
 (defun dollarify (l)
-  (let ((errset 'errbreak1))
+  (let ((errset t))
     (cons '(mlist simp)
 	  (mapcar #'(lambda (x)
 		      (let (y)
@@ -499,7 +499,7 @@
        (do ((i numbp (1- i)) (l2)) ((zerop i) (setq l1 (nconc l1 l2)))
 	 (setq l2 (cons (car l) l2) l (cdr l)))
        loop (if (null l1) (return '$done))
-       (let ((errset 'errbreak2)
+       (let ((errset t)
 	     (incharp (char= (getlabcharn (car l1)) inchar)))
 	 (errset
 	  (cond ((and (not nostringp) incharp)
