@@ -811,7 +811,7 @@
 
 (defun mterpri ()
    (terpri)
-   (force-output))
+   (finish-output))
 
 (defmspec $status (form)
   (setq form (cdr form))

@@ -53,7 +53,7 @@
       (if help-string
 	  (format t "        ~a" help-string))
       (terpri)))
-  (force-output))
+  (finish-output))
 
 ;; Old argument processing.  Leaving this here for now, but if getopts
 ;; works well enough, then these should be removed.
