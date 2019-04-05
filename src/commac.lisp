@@ -599,7 +599,7 @@ values")
 	(progn
 	  (when (and *prompt-on-read-hang* *read-hang-prompt*)
 	    (princ *read-hang-prompt*)
-	    (force-output *standard-output*))
+	    (finish-output *standard-output*))
 	  (read-char stream nil eof-option)))))
 
 (defun tyi (&optional (stream *standard-input*) eof-option)

@@ -648,7 +648,7 @@ One extra decimal digit in actual representation for rounding purposes.")
       (when sign (princ "-"))
       (princ (maknam (fpformat (cons (car x) (fpabs (cdr x))))))
       (terpri)
-      (force-output))
+      (finish-output))
     exp))
 
 (defun fpration1 (x)

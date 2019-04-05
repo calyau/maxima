@@ -273,7 +273,7 @@
 				(list '(%sin) (poisdecodec (car m))))
 			  t))
        (terpri)
-       (force-output))
+       (finish-output))
 
      ;; DO COSINES
      (do ((m
@@ -286,7 +286,7 @@
 				      (t (list '(%cos) (poisdecodec (car m))))))
 			  t))
        (terpri)
-       (force-output))
+       (finish-output))
      (return '$done)))
 
 

@@ -55,7 +55,7 @@
     (setq *terminal-io* sock)
     (setq *trace-output* sock)
     (format t "pid=~a~%" (getpid))
-    (force-output sock)
+    (finish-output sock)
     (setq *debug-io* sock))
   (values))
 
