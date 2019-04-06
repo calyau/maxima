@@ -179,10 +179,6 @@ APPLY means like APPLY.")
 (defmvar $tr_numer nil
   "If `true' numer properties are used for atoms which have them, e.g. %pi")
 
-(defmvar $tr_predicate_brain_damage nil
-  "If TRUE, output possible multiple evaluations in an attempt
-  to interface to the COMPARE package.")
-
 (defvar boolean-object-table
   '(($true . ($boolean . t))
     ($false . ($boolean . nil))

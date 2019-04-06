@@ -94,9 +94,9 @@
 	  $trigexpand $trigexpandplus $trigexpandtimes $triginverses
 	  $trigsign $tr_array_as_ref $tr_bound_function_applyp
 	  $tr_file_tty_messagesp $tr_float_can_branch_complex
-	  $tr_function_call_default $tr_gen_tags $tr_numer
-	  $tr_optimize_max_loop $tr_output_file_default
-	  $tr_predicate_brain_damage $tr_semicompile $tr_state_vars
+	  $tr_function_call_default $tr_numer
+	  $tr_optimize_max_loop
+	  $tr_semicompile $tr_state_vars
 	  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable
