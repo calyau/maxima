@@ -286,7 +286,7 @@
     (progn
       (fresh-line *standard-output*)
       (princ mprompt *standard-output*)
-      (force-output *standard-output*)
+      (finish-output *standard-output*)
       (setf *prompt-on-read-hang* nil))
     (progn
       (setf *prompt-on-read-hang* t)
@@ -632,7 +632,7 @@ Command      Description~%~
 		  (:show
 		   (when tem (show-break-point i)
 			 (terpri)
-			 (force-output))
+			 (finish-output))
 		   tem)))))))
 
 ;; get the most recent function on the stack with step info.

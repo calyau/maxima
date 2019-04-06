@@ -97,7 +97,7 @@
     ;; it can be changed easily.
     (mformat-loop (output-text))
     ;; Keep from getting bitten by buffering.
-    (force-output stream)))
+    (finish-output stream)))
 
 ;;can't change mformat since there are various places where stream = nil means
 ;; standard output not a string  

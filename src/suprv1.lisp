@@ -36,7 +36,6 @@
 (defvar *refchkl* nil)
 (defvar *mdebug* nil)
 (defvar *baktrcl* nil)
-(defvar errbrksw nil)
 (defvar errcatch nil)
 (defvar mcatch nil)
 (defvar brklvl -1)
@@ -45,7 +44,6 @@
 (defvar greatorder nil)
 (defvar *in-translate-file* nil)
 (defvar *linelabel* nil)
-(defvar lisperrprint t)
 
 (defvar state-pdl (ncons 'lisp-toplevel))
 
@@ -190,12 +188,12 @@
   '$done)
 
 (defun dollarify (l)
-  (let ((errset 'errbreak1))
+  (let ((errset t))
     (cons '(mlist simp)
 	  (mapcar #'(lambda (x)
 		      (let (y)
 			(cond ((numberp x) x)
-			      ((numberp (setq y (car (errset (readlist (mexploden x)) nil))))
+			      ((numberp (setq y (car (errset (readlist (mexploden x))))))
 			       y)
 			      (t (makealias x)))))
 		  l))))
@@ -425,15 +423,6 @@
   (declare (ignore assign-var))
   (setq *mdebug* y))
 
-(defun errbreak1 (ign)
-  (declare (ignore ign))
-  nil)					; Used to nullify ERRSETBREAKs
-
-(defun errbreak2 (ign) ;; An alternate ERRSET interr. function used by PARSE and DISPLAY
-  (declare (ignore ign))
-  (let ((state-pdl (cons 'lisp-break state-pdl)))
-    (break "erst ~S" '(errbrksw))))
-
 (defun errlfun1 (mpdls)
   (do ((l bindlist (cdr l))
        (l1))
@@ -500,7 +489,7 @@
        (do ((i numbp (1- i)) (l2)) ((zerop i) (setq l1 (nconc l1 l2)))
 	 (setq l2 (cons (car l) l2) l (cdr l)))
        loop (if (null l1) (return '$done))
-       (let ((errset 'errbreak2)
+       (let ((errset t)
 	     (incharp (char= (getlabcharn (car l1)) inchar)))
 	 (errset
 	  (cond ((and (not nostringp) incharp)
@@ -717,7 +706,7 @@
 		     (setq maxima-error t)))
 	      (setq truename (truename savefile))
 	      (terpri savefile))
-	    (if maxima-error (let ((errset 'errbreak1)) (merror (intl:gettext "stringout: unspecified error."))))
+	    (if maxima-error (merror (intl:gettext "stringout: unspecified error.")))
 	    (cl:namestring truename)))))
 
 (defmfun $labels (label-prefix)
@@ -822,7 +811,7 @@
 
 (defun mterpri ()
    (terpri)
-   (force-output))
+   (finish-output))
 
 (defmspec $status (form)
   (setq form (cdr form))

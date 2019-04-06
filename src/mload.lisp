@@ -20,7 +20,7 @@
        
 (defun errset-namestring (x)
   (let ((errset nil))
-    (errset (pathname x) nil)))
+    (errset (pathname x))))
 
 (defmfun $filename_merge (&rest file-specs)
   (when (or (null file-specs) (cddr file-specs))

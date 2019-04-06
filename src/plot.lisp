@@ -155,7 +155,7 @@ sin(y)*(10.0+6*cos(x)),
       (start-gnuplot-process $gnuplot_command))
   (handler-case (unless (null command)
 		  (format *gnuplot-stream* "~a ~%" command)
-		  (force-output *gnuplot-stream*))
+		  (finish-output *gnuplot-stream*))
     (error (e)
       ;; allow gnuplot to restart if stream-error, or just an error is signaled
       ;; only try to restart once, to prevent an infinite loop 

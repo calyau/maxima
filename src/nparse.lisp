@@ -98,7 +98,7 @@
 	       (format t "~%~{~c~}~%~vt^" some (- (length some) 2))
 	       (read-line *parse-stream* nil nil))))
       (terpri)
-      (force-output)
+      (finish-output)
       (throw-macsyma-top))))
 
 (defun tyi-parse-int (stream eof)
@@ -332,7 +332,7 @@
 			 (map nil #'princ x))
 		 (reverse numlist))
 	    (terpri)
-	    (force-output)
+	    (finish-output)
 	    (unless (equalp true fast)
 	      (incf failures)
 	      (format t "NUM:  ~A~%  TRUE: ~S~%  FAST: ~S~%"
@@ -850,7 +850,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
       (and *parse-window* (setf (car *parse-window*) nil
 				*parse-window* (cdr *parse-window*)))
       (princ *mread-prompt*)
-      (force-output))
+      (finish-output))
     (apply 'mread-raw read-args)))
 
 (defun mread-prompter (stream char)

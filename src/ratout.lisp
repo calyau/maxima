@@ -311,7 +311,7 @@
      (setq *l (car l))
      (setq *p (car p))
      (ignore-rat-err
-       (setq factor (errset (pinterpolate *l *p) nil)))
+       (setq factor (errset (pinterpolate *l *p))))
      (setq l (cdr l))
      (if (atom factor)
 	 (go b)
