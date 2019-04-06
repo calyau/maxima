@@ -372,7 +372,6 @@
    "triginverses"
    "trigsign"
    "ttyoff"
-   "undeclaredwarn"
    "values"
    "vect_cross"
    "verbose"
