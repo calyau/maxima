@@ -18,18 +18,12 @@
 ;;; system dependent part of the code, although certain behavior
 ;;; of RENAMEF/MERGEF/DELETE-FILE is assumed.
 
-(defmvar $tr_output_file_default '$trlisp
-  "This is the second file name to be used for translated lisp
-	 output.")
-
 (defmvar $tr_file_tty_messagesp nil
   "It TRUE messages about translation of the file are sent
 	 to the TTY also.")
 
 (defvar *translation-msgs-files* nil
   "Where the warning and other comments goes.")
-
-(defvar $tr_version (get 'transl-autoload 'version))
 
 (defmvar transl-file nil "output stream of $compfile and $translate_file")
 
@@ -132,9 +126,6 @@
   (setq input-file (maxima-string input-file))
   (cond (output-file (setq output-file (maxima-string output-file))))
   (translate-file input-file output-file))
-
-(defmvar $tr_gen_tags nil
-  "If TRUE, TRANSLATE_FILE generates a TAGS file for use by the text editor")
 
 (defvar *pretty-print-translation* t)
 
