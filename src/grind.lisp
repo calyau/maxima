@@ -271,6 +271,7 @@
 (defprop mprogn ((#\( ) #\) ) strsym)
 
 (defprop mlist msize-matchfix grind)
+(setf (get '%mlist 'grind) (get 'mlist 'grind))
 
 ;;; ----------------------------------------------------------------------------
 
