@@ -112,6 +112,8 @@ Changes in core:
    anything with these intervals => this undocumented function was 
    commented out.
  * MRELATIONP now knows how to deal with the "not equal" operator.
+ * shipped around a clisp bug that caused broken output with fast front-ends
+ * '[x][1]; now is output as a list, too.
  * Code clean up.
  
 Changes in share:
