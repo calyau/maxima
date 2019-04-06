@@ -1000,6 +1000,9 @@
 (displa-def mcomma dimension-nary  ", " 10. 10.)
 (displa-def mabs   dim-mabs)
 
+(setf (get '%mlist 'dissym) (get 'mlist 'dissym))
+(setf (get '%mlist 'dimension) (get 'mlist 'dimension))
+
 (defun dim-mabs (form result &aux arg bar)
   (setq arg (dimension (cadr form) nil 'mparen 'mparen nil 0))
   (cond ((or (> (+ 2 width) linel) (and (= 1 height) (= 0 depth)))

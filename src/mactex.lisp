@@ -452,6 +452,8 @@
 
 (defprop mlist tex-matchfix tex)
 (defprop mlist (("\\left[ ")" \\right] ") texsym)
+(setf (get '%mlist 'tex) (get 'mlist 'tex))
+(setf (get '%mlist 'texsym) (get 'mlist 'texsym))
 
 ;;absolute value
 (defprop mabs tex-matchfix tex)
