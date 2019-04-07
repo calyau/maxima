@@ -191,8 +191,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
         (finish nil)
       (declare (ignorable area-before area-after))
       (catch 'return-from-debugger
-	(when (or (not (checklabel $inchar))
-		  (not (checklabel $outchar)))
+	(unless (checklabel $inchar)
 	  (incf $linenum))
 	(setq c-tag (makelabel $inchar))
 	(let ((*mread-prompt* (if batch-or-demo-flag nil (main-prompt)))
@@ -256,6 +255,8 @@ DESTINATION is an actual stream (rather than nil for a string)."
 			  (float (- etime-after etime-before))
 			  internal-time-units-per-second))
 	(incf accumulated-time time-used)
+	(unless (checklabel $outchar)
+	  (incf $linenum))
 	(setq d-tag (makelabel $outchar))
 	(unless $nolabels (setf (symbol-value d-tag) $%))
 	(setq $_ $__)
