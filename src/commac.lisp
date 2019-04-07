@@ -89,7 +89,6 @@
 (defvar *maxima-arrays* nil
   "Trying to track down any functional arrays in maxima")
 
-;;only remaining calls are for maclisp-type = nil
 (defun *array (name maclisp-type &rest dimlist &aux aarray)
   (cond ((member maclisp-type '(readtable obarray) :test #'eq)
 	 (error " bad type ~S" maclisp-type)))
