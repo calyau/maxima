@@ -2827,7 +2827,10 @@ The variable `tab-width' controls the spacing of tab stops."
   (save-current-buffer
     (set-buffer (process-buffer inferior-maxima-process))
     (goto-char (point-max))
-    (insert string)
+    (let ((start (point)))
+      (insert string)
+      (untabify start (point)))
+    (goto-char (point-max))
     (inferior-maxima-comint-send-input)
     (goto-char (point-max))))
 
