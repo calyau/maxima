@@ -116,6 +116,7 @@ Changes in core:
  * '[x][1]; now is output as a list, too.
  * Maxima no interprets all lines of loaded files right including the very 
    last one.
+ * emaxima now correctly expands tabs in emacs' comint buffer.
  * Code clean up.
  
 Changes in share:
