@@ -117,6 +117,8 @@ Changes in core:
  * Maxima no interprets all lines of loaded files right including the very 
    last one.
  * emaxima now correctly expands tabs in emacs' comint buffer.
+ * "make install" now installs emaxima and imaxima in a place emacs will 
+   find by default.
  * Code clean up.
  
 Changes in share:
