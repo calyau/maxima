@@ -1214,7 +1214,7 @@ wrapper for this."
 
 (defun mmapev (l)
   (if (null (cddr l))
-      (merror (intl:gettext "~:M: expected two or more arguments; found: ~M") (caar l) (cdr l)))
+      (merror (intl:gettext "~:M: expected two or more arguments; found: ~M") (caar l) (cons '(mlist) (cdr l))))
   (let ((op (getopr (meval (cadr l)))))
     (autoldchk op)
     (badfunchk (cadr l) op nil)
