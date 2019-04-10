@@ -2524,7 +2524,6 @@
 ;; for gamma_incomplete(s,z)
 ;; translate into gamma_incomplete_lower if s>0 and z=0
 (defun gamma-upper-trans (arg func)
-  (declare (ignore func))
   (let ((s (car arg))
 	(z (cadr arg)))
     (if (and
