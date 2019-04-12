@@ -114,8 +114,8 @@ Changes in core:
  * MRELATIONP now knows how to deal with the "not equal" operator.
  * shipped around a clisp bug that caused broken output with fast front-ends
  * '[x][1]; now is output as a list, too.
- * Maxima no interprets all lines of loaded files right including the very 
-   last one.
+ * The last output label of a batch file is no more clobbered with the file
+   name.
  * emaxima now correctly expands tabs in emacs' comint buffer.
  * "make install" now installs emaxima and imaxima in a place emacs will 
    find by default.
