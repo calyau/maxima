@@ -313,10 +313,6 @@
 (defprop mfexpr*s mfexpr* shadow)
 (defprop mfexpr* mfexpr* shadow)
 
-(defprop subr t uuolinks)
-(defprop lsubr t uuolinks)
-(defprop fsubr t uuolinks)		; believe it or not.
-
 (defprop mexpr t mget)
 (defprop mexpr expr shadow)
 
