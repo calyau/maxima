@@ -948,7 +948,7 @@
 		((specrepp exp) (setq exp (specdisrep exp))))
      (go start)
      err  (cond ((eq $partswitch 'mapply)
-		 (merror (intl:gettext "part: invalid index of list or matrix.")))
+		 (merror (intl:gettext "part: invalid index ~M of list or matrix.") (car arglist)))
 		($partswitch (return (setq $piece '$end)))
 		(t (merror (intl:gettext "~:M: fell off the end.") fn)))
      bad  (improper-arg-err arg fn)
