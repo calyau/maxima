@@ -145,7 +145,7 @@ $(CLISP_MAXIMA):
 	$(EXECUTECLISP) clisp-command.lisp
 	rm clisp-command.lisp
 
-clisp-depends.mk: maxima.system Makefile
+clisp-depends.mk: maxima.system Makefile *.lisp
 	echo $(call MAKE_DEPENDS,"$(CLISP_MAXIMA)",clisp-depends.mk) > clisp-command2.lisp
 	$(EXECUTECLISP) clisp-command2.lisp
 
@@ -191,7 +191,7 @@ $(CMU_MAXIMA):
 	$(MAKE) bd
 	$(CMU_BUILD)
 
-cmucl-depends.mk: maxima.system Makefile
+cmucl-depends.mk: maxima.system Makefile *.lisp
 	echo $(call MAKE_DEPENDS,"$(CMU_MAXIMA)",cmucl-depends.mk) | $(EXECUTECMUCL)
 
 -include cmucl-depends.mk
@@ -228,7 +228,7 @@ install-scl-copy:
 uninstall-scl-copy:
 	rm -f "$(DESTDIR)$(scllibdir)/@SCL_RUNTIME@"
 
-scl-depends.mk: maxima.system Makefile
+scl-depends.mk: maxima.system Makefile *.lisp
 	echo $(call MAKE_DEPENDS,"binary-scl/maxima.core",scl-depends.mk) | $(EXECUTESCL)
 
 -include scl-depends.mk
@@ -256,7 +256,7 @@ binary-acl/maxima.dxl:
 	(echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE)' | $(EXECUTEACL)) && \
 	(echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (excl:dumplisp :name "binary-acl/maxima.dxl")' | $(EXECUTEACL))
 
-acl-depends.mk: maxima.system Makefile
+acl-depends.mk: maxima.system Makefile *.lisp
 	echo $(call MAKE_DEPENDS,"binary-acl/maxima.dxl",acl-depends.mk) | $(EXECUTEACL)
 
 -include acl-depends.mk
@@ -296,7 +296,7 @@ $(SBCL_MAXIMA):
 	$(MAKE) bd
 	$(BUILD_SBCL)
 
-sbcl-depends.mk: maxima.system Makefile
+sbcl-depends.mk: maxima.system Makefile *.lisp
 	echo $(call MAKE_DEPENDS,"$(SBCL_MAXIMA)",sbcl-depends.mk,(sb-ext:quit)) | $(EXECUTESBCL)
 
 -include sbcl-depends.mk
@@ -356,7 +356,7 @@ else
 	echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (when (fboundp (quote si::sgc-on))(si::sgc-on t)) (si:save-system "binary-gcl/maxima") (system::quit)'  | $(EXECUTEGCL)
 endif
 
-gcl-depends.mk: maxima.system Makefile
+gcl-depends.mk: maxima.system Makefile *.lisp
 	echo $(call MAKE_DEPENDS,$(gcl_depends_targets),gcl-depends.mk) '(system::quit)' | $(EXECUTEGCL)
 
 -include gcl-depends.mk
@@ -398,7 +398,7 @@ $(OPENMCL_MAXIMA):
 	   && \
 	echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit)' | $(EXECUTEOPENMCL)
 
-openmcl-depends.mk: maxima.system Makefile
+openmcl-depends.mk: maxima.system Makefile *.lisp
 	echo $(call MAKE_DEPENDS,"$(OPENMCL_MAXIMA)",openmcl-depends.mk,(ccl:quit)) | $(EXECUTEOPENMCL)
 
 -include openmcl-depends.mk
@@ -441,7 +441,7 @@ $(CCL64_MAXIMA):
 	   && \
 	echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit)' | $(EXECUTECCL64)
 
-ccl64-depends.mk: maxima.system Makefile
+ccl64-depends.mk: maxima.system Makefile *.lisp
 	echo $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk,(ccl:quit)) | $(EXECUTECCL64)
 
 -include ccl64-depends.mk
@@ -469,7 +469,7 @@ binary-ecl/maxima:
 	$(MAKE) bd
 	echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (build-maxima-lib) (ext:quit)' | $(EXECUTEECL)
 
-ecl-depends.mk: maxima.system Makefile
+ecl-depends.mk: maxima.system Makefile *.lisp
 	echo $(call MAKE_DEPENDS,"binary-ecl/maxima",ecl-depends.mk,(quit)) | $(EXECUTEECL)
 
 -include ecl-depends.mk
@@ -527,7 +527,7 @@ endif
 	touch binary-abcl/maxima
 	chmod +x binary-abcl/maxima
 
-abcl-depends.mk: maxima.system Makefile
+abcl-depends.mk: maxima.system Makefile *.lisp
 	echo $(call MAKE_DEPENDS,"binary-abcl/maxima",abcl-depends.mk,(quit)) | $(EXECUTEABCL)
 
 -include abcl-depends.mk
