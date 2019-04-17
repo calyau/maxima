@@ -146,8 +146,9 @@ $(CLISP_MAXIMA):
 	rm clisp-command.lisp
 
 clisp-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"$(CLISP_MAXIMA)",clisp-depends.mk) > clisp-command2.lisp
+	echo $(call MAKE_DEPENDS,"$(CLISP_MAXIMA)",clisp-depends.mk.tmp) > clisp-command2.lisp
 	$(EXECUTECLISP) clisp-command2.lisp
+	cat clisp-depends.mk.tmp | sed -e "s#\\\\#/#g" > clisp-depends.mk
 
 -include clisp-depends.mk
 endif CLISP
@@ -192,7 +193,8 @@ $(CMU_MAXIMA):
 	$(CMU_BUILD)
 
 cmucl-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"$(CMU_MAXIMA)",cmucl-depends.mk) | $(EXECUTECMUCL)
+	echo $(call MAKE_DEPENDS,"$(CMU_MAXIMA)",cmucl-depends.mk.tmp) | $(EXECUTECMUCL)
+	cat cmucl-depends.mk.tmp | sed -e "s#\\\\#/#g" > cmucl-depends.mk
 
 -include cmucl-depends.mk
 endif
@@ -229,7 +231,8 @@ uninstall-scl-copy:
 	rm -f "$(DESTDIR)$(scllibdir)/@SCL_RUNTIME@"
 
 scl-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"binary-scl/maxima.core",scl-depends.mk) | $(EXECUTESCL)
+	echo $(call MAKE_DEPENDS,"binary-scl/maxima.core",scl-depends.mk.tmp) | $(EXECUTESCL)
+	cat scl-depends.mk.tmp | sed -e "s#\\\\#/#g" > scl-depends.mk
 
 -include scl-depends.mk
 
@@ -257,7 +260,8 @@ binary-acl/maxima.dxl:
 	(echo '$(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (excl:dumplisp :name "binary-acl/maxima.dxl")' | $(EXECUTEACL))
 
 acl-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"binary-acl/maxima.dxl",acl-depends.mk) | $(EXECUTEACL)
+	echo $(call MAKE_DEPENDS,"binary-acl/maxima.dxl",acl-depends.mk.tmp) | $(EXECUTEACL)
+	cat acl-depends.mk.tmp | sed -e "s#\\\\#/#g" > acl-depends.mk
 
 -include acl-depends.mk
 endif
@@ -297,7 +301,8 @@ $(SBCL_MAXIMA):
 	$(BUILD_SBCL)
 
 sbcl-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"$(SBCL_MAXIMA)",sbcl-depends.mk,(sb-ext:quit)) | $(EXECUTESBCL)
+	echo $(call MAKE_DEPENDS,"$(SBCL_MAXIMA)",sbcl-depends.mk.tmp,(sb-ext:quit)) | $(EXECUTESBCL)
+	cat sbcl-depends.mk.tmp | sed -e "s#\\\\#/#g" > sbcl-depends.mk
 
 -include sbcl-depends.mk
 
@@ -359,8 +364,8 @@ else
 endif
 
 gcl-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,$(gcl_depends_targets),gcl-depends.mk) '(system::quit)' | $(EXECUTEGCL)
-
+	echo $(call MAKE_DEPENDS,$(gcl_depends_targets),gcl-depends.mk.tmp) '(system::quit)' | $(EXECUTEGCL)
+	cat gcl-depends.mk.tmp | sed -e "s#\\\\#/#g" > gcl-depends.mk
 -include gcl-depends.mk
 
 endif
@@ -401,7 +406,8 @@ $(OPENMCL_MAXIMA):
 	echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit)' | $(EXECUTEOPENMCL)
 
 openmcl-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"$(OPENMCL_MAXIMA)",openmcl-depends.mk,(ccl:quit)) | $(EXECUTEOPENMCL)
+	echo $(call MAKE_DEPENDS,"$(OPENMCL_MAXIMA)",openmcl-depends.mk.tmp,(ccl:quit)) | $(EXECUTEOPENMCL)
+	cat openmcl-depends.mk.tmp | sed -e "s#\\\\#/#g" > openmcl-depends.mk
 
 -include openmcl-depends.mk
 
@@ -444,7 +450,8 @@ $(CCL64_MAXIMA):
 	echo '(require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "$@" $(omcl_flag)) (ccl::quit)' | $(EXECUTECCL64)
 
 ccl64-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk,(ccl:quit)) | $(EXECUTECCL64)
+	echo $(call MAKE_DEPENDS,"$(CCL64_MAXIMA)",ccl64-depends.mk.tmp,(ccl:quit)) | $(EXECUTECCL64)
+	cat ccl64-depends.mk.tmp | sed -e "s#\\\\#/#g" > ccl64-depends.mk
 
 -include ccl64-depends.mk
 
@@ -472,7 +479,8 @@ binary-ecl/maxima:
 	echo '$(QUIET) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (build-maxima-lib) (ext:quit)' | $(EXECUTEECL)
 
 ecl-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"binary-ecl/maxima",ecl-depends.mk,(quit)) | $(EXECUTEECL)
+	echo $(call MAKE_DEPENDS,"binary-ecl/maxima",ecl-depends.mk.tmp,(quit)) | $(EXECUTEECL)
+	cat ecl-depends.mk.tmp | sed -e "s#\\\\#/#g" > ecl-depends.mk
 
 -include ecl-depends.mk
 endif
@@ -530,7 +538,8 @@ endif
 	chmod +x binary-abcl/maxima
 
 abcl-depends.mk: maxima.system Makefile *.lisp
-	echo $(call MAKE_DEPENDS,"binary-abcl/maxima",abcl-depends.mk,(quit)) | $(EXECUTEABCL)
+	echo $(call MAKE_DEPENDS,"binary-abcl/maxima",abcl-depends.mk.tmp,(quit)) | $(EXECUTEABCL)
+	cat abcl-depends.mk.tmp | sed -e "s#\\\\#/#g" > abcl-depends.mk
 
 -include abcl-depends.mk
 endif

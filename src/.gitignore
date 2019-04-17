@@ -14,7 +14,7 @@ semantic.cache
 *.fas
 *.o
 gcl-command.lisp
-
+*.tmp
 *-depends.mk
 /sys-proclaim.lisp
 clisp-command.lisp
