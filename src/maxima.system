@@ -129,7 +129,7 @@
 	     (:file "command-line")
 	     (:file "nregex")
 	     #+gcl-working-proclaims
-	     (:private-file "sys-proclaim")))
+	     (:private-file "tools/sys-proclaim")))
    (:module package :source-pathname ""
 	    ;; On ECL all runtime alterations to the system (i.e from repl)
 	    ;; at runtime are not part of the final executable if they aren't.
