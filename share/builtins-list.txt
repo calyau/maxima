@@ -746,6 +746,7 @@ gamma_incomplete_generalized
 gamma_incomplete_lower
 gamma_incomplete_regularized
 gammalim
+garbage_collect
 gauss
 gauss_a
 gauss_b
@@ -1251,6 +1252,8 @@ maxapplyheight
 max_clique
 max_degree
 max_flow
+maxima_frontend
+maxima_frontend_version
 maxima_tempdir
 maxima_userdir
 maximize_lp
