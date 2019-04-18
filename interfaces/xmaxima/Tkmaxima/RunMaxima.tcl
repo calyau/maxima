@@ -353,6 +353,8 @@ proc runOneMaxima { win } {
     global pdata
     set pdata(maxima,socket) $sock
     fileevent $sock readable  [list maximaFilter $win $sock]
+    sendMaxima $win ":lisp-quiet (setq \$maxima_frontend \"Xmaxima\")\n"
+    sendMaxima $win ":lisp-quiet (setq \$maxima_frontend_version *autoconf-version*)\n"
     return $res
 
 }

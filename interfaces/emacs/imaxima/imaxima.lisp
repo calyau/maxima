@@ -52,6 +52,9 @@
 
 (in-package :maxima)
 
+(setq $maxima_frontend "imaxima")
+(setq $maxima_frontend_version *autoconf-version*)
+
 (defvar *windows-OS* (string= *autoconf-windows* "true"))
 (defmvar $wxplot_size '((mlist simp) 400 250))
 (defmvar $wxplot_old_gnuplot nil)
