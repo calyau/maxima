@@ -204,6 +204,10 @@ In the example, the checkout is 331 commits after the latest GIT tag
 (usually a Maxima (major) release (5.37 in our example)) and the 
 abbreviated commit hash of the last commit was "8322940".
 
+Front-ends for maxima can add information about currently being used
+by setting the variables @code{maxima_frontend} and
+@code{maxima_frontend_version} accordingly.
+
 @opencatbox
 @category{Debugging}
 @closecatbox
