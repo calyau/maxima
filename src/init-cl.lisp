@@ -39,6 +39,8 @@
 (defvar *maxima-lang-subdir* nil)
 (defvar *maxima-demodir*)
 (defvar *maxima-objdir*)		;; Where to store object (fasl) files.
+(defvar $maxima_frontend nil "The frontend maxima is used with.")
+(defvar $maxima_frontend_version nil "The version of the maxima frontend.")
 
 (eval-when (:load-toplevel :compile-toplevel :execute)
   (defmacro def-lisp-shadow (root-name)
