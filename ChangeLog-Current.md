@@ -17,6 +17,8 @@ New items in core:
  * garbage_collect() which manually triggers the lisp's garbage collector 
    or returns false.
  * newdet: An determinant algorithm that is optimized on sparse matrices
+ * maxima_frontend and maxima_frontend_version: Two variables that can be
+   set in order to inform build_info() which frontend is in use.
 
 New items in share:
 -------------------
