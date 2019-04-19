@@ -11,7 +11,6 @@ EXTRA_DIST = imaxima.lisp imaxima.el imath.el imath-example imaxima-autoconf-var
  breqn097a/mathstyle.sty\
  breqn097a/msabm.sym
 
-emacsdir = $(datarootdir)/emacs/site-lisp
 emacs_DATA = imaxima.el imath.el imaxima.lisp imaxima-autoconf-variables.el setup-imaxima-imath.el
 ELCFILES = imaxima.elc imath.elc imaxima-autoconf-variables.elc setup-imaxima-imath.elc
 info_TEXINFOS = imaxima.texi

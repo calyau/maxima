@@ -1222,6 +1222,12 @@ AC_SUBST(default_layout_autotools)
 AC_SUBST(LDFLAGS)
 AC_SUBST(default_sharedirs)
 
+AC_ARG_WITH(emacs-prefix,
+	[  --emacs-prefix=<path>        Where to install the emacs modes to],
+	[EMACSDIR="$withval"],
+	[EMACSDIR="${datarootdir}/emacs/site-lisp"])
+AC_SUBST(EMACSDIR)
+
 dnl Tell defsystem that this isn't a lisp-only build
 lisp_only_build="nil"
 AC_SUBST(lisp_only_build)
