@@ -115,16 +115,6 @@ if [ -z "$GCL_DISABLE_MULTIPROCESS_MEMORY_POOL" ]; then
     export GCL_MULTIPROCESS_MEMORY_POOL=t
 fi;
 
-# SBCL in its default setup sometimes does run out of Thread-Local Storage before
-# it manages to finish
-#
-#     run_testsuite(share_tests=true);
-#
-# => let's increase the default Thread-Local Storage size.
-if [ -z "$TLS_SIZE" ]; then
-    export TLS_SIZE=8192
-fi;
-
 # process the command line arguments. This must be done in a function, because
 # "shift" should only shift the function parameters, not the global parameters.
 process_commandline_arguments() {

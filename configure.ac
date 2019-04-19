@@ -1285,6 +1285,20 @@ share/contrib/maxima-odesolve/Makefile \
 share/draw/Makefile share/logic/Makefile  doc/info/es/include-maxima.texi \
 src/lisp)
 
+# The default of 4096 is sometimes too little for the test suite.
+if test x"${sbcl}" = xtrue ; then
+   AC_MSG_CHECKING(Testing if sbcl complains if we try to enlarge the thread-local storage)
+   echo "(quit)" | ${SBCL_NAME} --tls-limit 8192 > /dev/null 2>&1
+   if test "$?" = "0" ; then
+	SBCL_EXTRA_ARGS="--tls-limit 8192"
+	AC_MSG_RESULT(Yes)
+   else
+	SBCL_EXTRA_ARGS=""
+	AC_MSG_RESULT(No)
+   fi
+fi
+AC_SUBST(SBCL_EXTRA_ARGS)
+
 if test x"${clisp}" = xtrue ; then
    	echo
 	AC_MSG_WARN("CLISP 2.49 is known to sporadically produce garbled data if the front-end is fast enough to acknowledge a data packet while a next data packet is still being prepared.")
@@ -1314,7 +1328,7 @@ if test x"${scl}" = xtrue ; then
 	echo "SCL runtime is \"${SCL_RUNTIME_PATH}\""
 fi
 if test x"${sbcl}" = xtrue ; then
-	echo "Compiling an maxima image that uses \"${SBCL_NAME}\""
+   	echo "Compiling an maxima image that uses \"${SBCL_NAME}\""
 	if test x"${sbcl_exec}" = xtrue ; then
 	   	echo "sbcl executable image enabled for maxima."
 	else
