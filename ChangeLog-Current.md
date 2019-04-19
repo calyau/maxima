@@ -120,7 +120,8 @@ Changes in core:
    name.
  * emaxima now correctly expands tabs in emacs' comint buffer.
  * "make install" now installs emaxima and imaxima in a place emacs will 
-   find by default.
+   find by default. configure's --emacs-prefix= option allows to choose
+   a different directory.
  * Code clean up.
  
 Changes in share:
