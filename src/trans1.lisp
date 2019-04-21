@@ -169,7 +169,7 @@
   (destructuring-let (((mode . body) (translate `((mprogn) . ,(cdr form)))))
     `(,mode . ((lambda ()
 		 ((lambda (mcatch)
-		    (prog2 nil
+		    (prog1
 			(catch
 			    'mcatch ,body)
 		      (errlfun1 mcatch)))

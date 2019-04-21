@@ -704,7 +704,7 @@ summation when necessary."
 				     (list '(mabs) lo))
 			       (cond ((member (asksign hi) '($zero $positive) :test #'eq)
 				      0)
-				     (t (prog2 0
+				     (t (prog1
 					    (m^ -1 (m+ hi lo 1))
 					  (setq hi (list '(mabs) hi)))))
 			       (list '(mfactorial) hi))))))))
