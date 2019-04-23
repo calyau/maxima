@@ -12,5 +12,5 @@ bashcompletiondir = ${datarootdir}/bash-completion/completions
 bashcompletion_DATA = maxima rmaxima xmaxima
 
 desktopdir = $(datarootdir)/applications
-dist_desktop_DATA = xmaxima.desktop
+dist_desktop_DATA = net.sourceforge.maxima.xmaxima.desktop
 
