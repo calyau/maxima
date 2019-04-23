@@ -20,4 +20,5 @@
  * Boston, MA 02110-1301, USA.
  */
 
-if not numberp (logic_mac_version) then load ("logic.lisp")$
+if not numberp (logic_mac_version) then load ("logic.lisp");
+load("Ksimplifier.lisp")$
