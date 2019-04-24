@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>net.sourceforge.maxima.xmaxima</id>
+  <project_license>GPL-2.0</project_license>
+  <name>Xmaxima</name>
+  <summary>A graphical user interface for Maxima, a powerful computer algebra system</summary>
+  <description>
+    <p>
+      Xaxima is a graphical user interface for the computer algebra
+      system Maxima: a program that solves mathematical problems by
+      manipulating equations (and outputting the resulting formula) instead
+      of just calculating a number. Unlike other front-ends Xmaxima is
+      focussed on simplicity.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>maxima.sourceforge.net/Xmaxima.png</image>
+      <caption>Xmaxima</caption>
+    </screenshot>
+  </screenshots>
+  <url type="bugtracker">https://sourceforge.net/p/maxima/bugs/</url>
+  <url type="homepage">https://maxima.sourceforge.net/</url>
+  <url type="help">http://maxima.sourceforge.net/documentation.html</url>
+  <developer_name>wxMaxima Team</developer_name>
+  <kudos>
+    <kudo>ModernToolkit</kudo>
+    <kudo>HiDpiIcon</kudo>
+    <kudo>HighContrast</kudo>
+    <kudo>UserDocs</kudo>
+  </kudos>
+  <launchable type="desktop-id">net.sourceforge.maxima.xmaxima.desktop</launchable>
+  <content_rating type="oars-1.0">
+    <content_attribute id="social-info">mild</content_attribute>
+  </content_rating>
+</component>
