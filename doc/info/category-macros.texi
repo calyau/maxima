@@ -183,4 +183,25 @@
 @tex
 \global\def\linkcolor{0 .5 0}
 \global\def\urlcolor{0 0 .5}
+
+\global\def\setpdfdestname#1{%
+ \turnoffactive
+ \def\pdfdestname{#1}%
+ \txiescapepdf\pdfdestname
+}
+
+\global\def\mmref#1#2{%
+ \ifpdf%
+ \setpdfdestname{#1}
+ {\leavevmode%
+ \startlink attr{/Border [0 0 0]}%
+ goto name{\pdfdestname}%
+ }%
+ \setcolor{\linkcolor}%
+ \fi%
+ #2%
+ \ifpdf%
+ \endlink%
+ \fi%
+}
 @end tex
