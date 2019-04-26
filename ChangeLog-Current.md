@@ -149,6 +149,8 @@ Changes in share:
  *  Draw now accepts numbers as color specification besides the html-style
     and the gnuplot-style color identifiers it already understood.
  *  Draw now accepts plot titles even if they aren't strings.
+ *  wrstcse now gets the ranges and resolution of random numbers for monte
+    carlo analysis right.
 
 Bug fixes:
 ----------
