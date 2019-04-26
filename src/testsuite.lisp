@@ -157,6 +157,7 @@
     "rtest_zeilberger"
     "rtest_boolsimp"
     "rtest_eigen"
+    "rtest_lsquares"
 
     ;; These tests of diff eq code mostly fail.
     ;; Probably it's just a matter of loading the
