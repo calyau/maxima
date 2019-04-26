@@ -1,9 +1,10 @@
+/* TODO: Do all the tolerances I have chosen here make any sense?*/
 (kill (all),
  load (lsquares), 
  save_tolerance : float_approx_equal_tolerance,
- float_approx_equal_tolerance : 1e-12,
+ float_approx_equal_tolerance : 1e-8,
  0);
-0;
+0$
 
 /* Example (1) from lsquares.mac comment header */
 
@@ -18,7 +19,7 @@ a1 : lsquares_estimates (M1, [w, x, y, z], w = a*x + b*y + c*z + d, [a, b, c, d]
 [[a = -19/34, b = -499/425, c = -181/850, d = 798/425]];
 
 lsquares_residuals (M1, [w, x, y, z], w = a*x + b*y + c*z + d, first (a1));
-[3/425, -4/425, -11/850, 23/850, -1/85];
+[3/425, -4/425, -11/850, 23/850, -1/85]$
 
 lsquares_residual_mse (M1, [w, x, y, z], w = a*x + b*y + c*z + d, first (a1));
 1/4250;
@@ -42,7 +43,6 @@ lsquares_residual_mse (M2a, [z, x, y], (z + D)^2 = A*x + B*y + C, first (a2a));
 0;
 
 /* Example (2b) from lsquares.mac comment header */
-
 (M2b : matrix ([1, 1, 1], [3/2, 1, 2], [9/4, 2, 1], [3, 2, 2], [2, 2, 1]),
  mse : lsquares_mse (M2b, [z, x, y], (z + D)^2 = A*x + B*y + C));
 ('sum(((D+'M2b[i,1])^2-C-'M2b[i,3]*B-'M2b[i,2]*A)^2,i,1,5))/5;
@@ -57,15 +57,22 @@ lsquares_residual_mse (M2b, [z, x, y], (z + D)^2 = A*x + B*y + C, first (a2b));
 169/2560;
 
 /* Example (2c) from lsquares.mac comment header */
+(a2c : lsquares_estimates_approximate (mse, [A, B, C, D], iprint = [-1, 0],tol=1e-11),0);
+0$
 
-a2c : lsquares_estimates_approximate (mse, [A, B, C, D], iprint = [-1, 0]);
-[[A = -3.67850494740174, B = -1.683070351177813, C = 10.63469950148635, D = -3.340357993175206]];
+float_approx_equal(subst(a2c,A),-3.6875);
+true$
 
-block ([float_approx_equal_tolerance : 1e-8], float_approx_equal (lsquares_residual_mse (M2b, [z, x, y], (z + D)^2 = A*x + B*y + C, first (a2c)), .06601644230868757));
-true;
+float_approx_equal(subst(a2c,B),-1.6875);
+true$
+
+float_approx_equal(subst(a2c,C),10.66503906);
+true$
+
+float_approx_equal(subst(a2c,D),-3.34375);
+true$
 
 /* Example (3) from lsquares.mac comment header */
-
 (M3 : matrix ([1, 1], [2, 7/4], [3, 11/4], [4, 13/4]),
  mse : lsquares_mse (M3, [x, y], y = a*x^b + c));
 ('sum(('M3[i,2]-a*'M3[i,1]^b-c)^2,i,1,4))/4;
@@ -73,30 +80,45 @@ true;
 ev (mse, nouns);
 ''(((-c-a*4^b+13/4)^2+(-c-a*3^b+11/4)^2+(-c-a*2^b+7/4)^2 +(-c-a+1)^2) /4);
 
-a3 : lsquares_estimates (M3, [x, y], y = a*x^b + c, [a, b, c], initial = [3, 3, 3], iprint = [-1, 0]);
-[[a = 1.387365874920637, b = .7110956639593767, c = -.4142705622439105]];
+(a3 : lsquares_estimates (M3, [x, y], y = a*x^b + c, [a, b, c], initial = [3, 3, 3], iprint = [-1, 0],tol=1e-11),0);
+0;
 
-lsquares_residuals (M3, [x, y], y = a*x^b + c, first (a3));
-[.02690468732327345, -.1069124575272633, .1340805432734378, -.05376258426978886];
+float_approx_equal(subst(a3[1],a),1.38889001796731);
+true$
 
-block ([float_approx_equal_tolerance : 1e-8], float_approx_equal (lsquares_residual_mse (M3, [x, y], y = a*x^b + c, first (a3)), .008255535831587089));
-true;
+float_approx_equal(subst(a3[1],b),0.7106139927150336);
+true$
+
+float_approx_equal(subst(a3[1],c),-0.4158391087045305);
+true$
+
+(a3:lsquares_residuals (M3, [x, y], y = a*x^b + c, first (a3)),0);
+0$
+
+float_approx_equal(a3[1],0.02694909073722052);
+true$
+
+float_approx_equal(a3[2],-0.1070800206548264);
+true$
+
+float_approx_equal(a3[3],0.1339249827507731);
+true$
+
+float_approx_equal(a3[4],-0.05379405286758576);
+true$
 
 /* Example (4) from lsquares.mac comment header */
-
 (M1_padded : transpose (apply (matrix, apply (append, map (lambda ([r], [r, 2*r]), args (transpose (M1)))))),
- lsquares_estimates (M1_padded, [w, w2, x, x2, y, y2, z, z2], w = a*x + b*y + c*z + d, [a, b, c, d]));
+ lsquares_estimates (M1_padded, [w, w2, x, x2, y, y2, z, z2], w = a*x + b*y + c*z + d, [a, b, c, d],tol=1e-11));
 [[a = -19/34, b = -499/425, c = -181/850, d = 798/425]];
 
 /* Example (5) from lsquares.mac comment header */
-
 (p : [4, 2, 1, 3],
  M1_permutation : transpose (apply (matrix, block ([L : args (transpose (M1))], makelist (L[i], i, p)))),
  lsquares_estimates (M1_permutation, [z, x, w, y], w = a*x + b*y + c*z + d, [a, b, c, d]));
 [[a = -19/34, b = -499/425, c = -181/850, d = 798/425]];
 
 /* Example (6a) from lsquares.mac comment header */
-
 (A : matrix ([1, 2, 0], [3, 5, 4], [4, 7, 9], [5, 8, 10]),
  soln : lsquares_estimates (A, [x, y, z], z = a*x*y + b*x + c*y + d, [a, b, c, d]));
 [[a = 1/6, b = -29/6, c = 23/6, d = -19/6]];
@@ -108,7 +130,6 @@ lsquares_residual_mse (A, [x, y, z], z = a*x*y + b*x + c*y + d, soln [1]);
 0;
 
 /* Example (6b) from lsquares.mac comment header */
-
 (kill (n, p, a0, a1, a2, a3, a4),
  A : matrix ([0, 0], [1, 0], [2, 0], [3, 8], [4, 44]),
  soln : lsquares_estimates (A, [n, p], p = a4*n^4 + a3*n^3 + a2*n^2 + a1*n + a0, [a0, a1, a2, a3, a4]));
@@ -121,7 +142,6 @@ lsquares_residual_mse (A, [n, p], p = a4*n^4 + a3*n^3 + a2*n^2 + a1*n + a0, soln
 0;
 
 /* Example (6c) from lsquares.mac comment header */
-
 (A : matrix ([1, 7], [2, 13], [3, 25]),
  soln : lsquares_estimates (A, [x, y], (y + c)^2 = a*x + b, [a, b, c]));
 [[a = - 216, b = 657, c = - 28]];
@@ -133,7 +153,6 @@ lsquares_residual_mse (A, [x, y], (y + c)^2 = a*x + b, soln [1]);
 0;
 
 /* Example (6d) from lsquares.mac comment header */
-
 (A : matrix ([1, 7], [2, 13], [3, 25], [4, 49]),
  soln : lsquares_estimates (A, [x, y], y = a*b^x + c, [a, b, c]));
 [[a = 3, b = 2, c = 1]];
@@ -145,55 +164,86 @@ lsquares_residual_mse (A, [x, y], y = a*b^x + c, soln [1]);
 0;
 
 /* Example (7a) from lsquares.mac comment header */
+((B : matrix ([1.1, 7.1], [2.1, 13.1], [3.1, 25.1], [4.1, 49.1]),
+ soln : lsquares_estimates (B, [x, y], y = a*b^x + c, [a, b, c], initial = [5, 5, 5], tol = 1e-11, iprint = [-1, 0])),0);
+0$
+float_approx_equal(subst(soln[1],a),2.799098974610445);
+true$
 
-(B : matrix ([1.1, 7.1], [2.1, 13.1], [3.1, 25.1], [4.1, 49.1]),
- soln : lsquares_estimates (B, [x, y], y = a*b^x + c, [a, b, c], initial = [5, 5, 5], tol = 1e-8, iprint = [-1, 0]));
-[[a = 2.799098974486688, b = 2.000000000018375, c = 1.100000000358122]];
+float_approx_equal(subst(soln[1],b),2.0);
+true$
 
-block ([float_approx_equal_tolerance : 1e-3], float_approx_equal (lsquares_residual_mse (B, [x, y], y = a*b^x + c, soln [1]), 7.353419577383337E-21));
-true;
+float_approx_equal(subst(soln[1],c),1.1);
+true$
 
 /* Example (7b) from lsquares.mac comment header */
+((B : matrix ([1.1, 4.1], [4.1, 7.1], [9.1, 10.1], [16.1, 13.1]),
+ soln : lsquares_estimates (B, [x, y], y = a*x^b + c, [a, b, c], initial = [4, 1, 2], tol = 1e-11, iprint = [-1, 0])),0);
+0$
 
-(B : matrix ([1.1, 4.1], [4.1, 7.1], [9.1, 10.1], [16.1, 13.1]),
- soln : lsquares_estimates (B, [x, y], y = a*x^b + c, [a, b, c], initial = [4, 1, 2], tol = 1e-8, iprint = [-1, 0]));
-[[a = 3.17731589660838, b = .4878659751689245, c = .7723843418856658]];
+float_approx_equal(subst(soln[1],a),3.177315891104065);
+true$
 
-block ([float_approx_equal_tolerance : 1e-8], float_approx_equal (lsquares_residual_mse (B, [x, y], y = a*x^b + c, soln [1]), 6.822196230278462E-6));
-true;
+float_approx_equal(subst(soln[1],b),0.4878659755913501);
+true$
+
+float_approx_equal(subst(soln[1],c),.7723843418856658);
+true$
 
 /* Example (1) from lsquares.mac comment header */
-
-(kill (A, B),
+((kill (A, B),
  data : matrix ([0, 2, 4], [3, 3, 5], [8, 6, 6]),
- soln : lsquares_estimates (data, [m, n, y], y = (A*m + B*n)^(1/3) + C, [A, B, C], initial = [3, 3, 3], tol = 1e-8, iprint = [-1, 0]));
-[[A = 4.999999920039424, B = 3.999999308815936, C = 2.000000105365426]];
-
-block ([float_approx_equal_tolerance : 1e-6], float_approx_equal (lsquares_residual_mse (data, [m, n, y], y = (A*m + B*n)^(1/3) + C, soln [1]), 1.71963942036564E-16));
-true;
-
-(float_approx_equal_tolerance : save_tolerance, 0);
+ soln : lsquares_estimates (data, [m, n, y], y = (A*m + B*n)^(1/3) + C, [A, B, C], initial = [3, 3, 3], tol = 1e-11, iprint = [-1, 0])),0)
+;
 0;
+
+float_approx_equal(subst(soln[1],A),5);
+true$
+
+float_approx_equal(subst(soln[1],B),4);
+true$
+
+float_approx_equal(subst(soln[1],C),1.999999999931501);
+true$
 
 /* SF bug #3282: "lsquares and lists of list of data to be fitted on" */
 
-(kill(a, b, c, x, y),
+((kill(a, b, c, x, y),
  data:[matrix([0,0],[1,1],[2,2]),
        matrix([2,2],[1,1],[2,2])],
  eqtn:y=a*x^2+b*x+c,
  mse_data_1 : lsquares_mse(data[1],[x,y],eqtn),
- lsquares_estimates_approximate(%%,[a,b,c]));
-[[a = -3.405898581949557E-4, b = 1.000676542954337, c = -1.342533507359797E-4]];
+ soln:lsquares_estimates_approximate(%%,[a,b,c])),0);
+0;
+
+float_approx_equal(subst(soln[1],a),-3.405898581949557*10^-4);
+true$
+
+float_approx_equal(subst(soln[1],b),1.000676542954337);
+true$
+
+float_approx_equal(subst(soln[1],c),-1.342533507359797*10^-4);
+true$
 
 lsquares_estimates_exact (mse_data_1, [a, b, c]);
 [[a = 0, b = 1, c = 0]]; /* preceding approximate result matches this */
 
-(foo(k, z) := data[k]*z,
+((foo(k, z) := data[k]*z,
  mse_foo_2_1_5 : lsquares_mse(foo(2, 1.5), [x, y], eqtn),
- lsquares_estimates_approximate(%%, [a, b, c]));
- [[a = 0.132534631873083, b = 0.4036035745637151, c = 0.5963736563696966]];
+ soln:lsquares_estimates_approximate(%%, [a, b, c])),0);
+0$
+
+float_approx_equal(subst(soln[1],a),0.132534631873083);
+true$
+
+float_approx_equal(subst(soln[1],b),0.4036035745637151);
+true$
+
+float_approx_equal(subst(soln[1],c),0.5963736563696966);
+true$
 
 (reset (%rnum, %rnum_list), /* ensure result contains %r1 */
  lsquares_estimates_exact (mse_foo_2_1_5, [a, b, c]));
 [[a = (2*%r1)/9,b = 1-%r1,c = %r1]]$ /* preceding approximate result matches this */
+
 
