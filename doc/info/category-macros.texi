@@ -189,19 +189,4 @@
  \def\pdfdestname{#1}%
  \txiescapepdf\pdfdestname
 }
-
-\global\def\mmref#1#2{%
- \ifpdf%
- \setpdfdestname{#1}
- {\leavevmode%
- \startlink attr{/Border [0 0 0]}%
- goto name{\pdfdestname}%
- }%
- \setcolor{\linkcolor}%
- \fi%
- #2%
- \ifpdf%
- \endlink%
- \fi%
-}
 @end tex
