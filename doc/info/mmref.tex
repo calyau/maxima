@@ -1,13 +1,14 @@
 \def\mmref#1#2{%
-  \ifpdf%
-    {\leavevmode%
-     \startlink attr{/Border [0 0 0]}%
-     goto file{maxima.pdf} name{#1}%
-    }%
-    \setcolor{\linkcolor}%
-  \fi%
-  #2%
-  \ifpdf%
-    \endlink%
-  \fi%
+ \ifpdf%
+ \setpdfdestname{#1}
+ {\leavevmode%
+ \startlink attr{/Border [0 0 0]}%
+ goto name{\pdfdestname}%
+ }%
+ \setcolor{\linkcolor}%
+ \fi%
+ #2%
+ \ifpdf%
+ \endlink%
+ \fi%
 }
