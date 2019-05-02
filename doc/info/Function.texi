@@ -2344,7 +2344,7 @@ fixnum           integers (excluding arbitrary-size integers)
 float            machine-size floating-point numbers
 real             machine-size floating-point or integer
 @c DOES NUMBER, EVEN AND ODD INCLUDE BFLOATS AND ARBITRARY-SIZE INTS?
-number           Numbers
+number           Numbers. Causes errors on some lisps.
 even             Even integers
 odd              Odd integers
 any              any kind of object (useful for arrays of any)
