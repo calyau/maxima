@@ -127,7 +127,7 @@
 	  preserve-direction prods putl radcanp rd*
 	  real-infinities realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw scanmapp sfindex sign-imag-errp simplimplus-problems
-	  *small-primes* specials sqrt3//2 state-pdl $stringdisp substp
+	  *small-primes* specials sqrt3//2 $stringdisp substp
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
 	  tstack typel user-mesfile varlist wflag
