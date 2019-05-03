@@ -265,10 +265,6 @@ translated."
 	       (mapcar 'namestring
 		       (mapcar 'pathname (list in-stream out-stream warn-stream)))))))))
 
-;; Should be rewritten to use streams.  Barf -- perhaps SPRINTER
-;; doesn't take a stream argument?
-;; Yes Carl SPRINTER is old i/o, but KMP is writing a new one for NIL. -GJC
-
 (defun print* (p)
     (sub-print* p))
 
