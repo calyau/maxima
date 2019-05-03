@@ -26,7 +26,7 @@ or if apply is being used are printed.")
 (declare-top (special derivflag derivlist $labels $values $functions $arrays 
                       $rules $gradefs $dependencies $aliases
 		      $myoptions $props genvar $maxposex $maxnegex $expop $expon
-		      $numer state-pdl *mdebug* *refchkl* *baktrcl*
+		      $numer *mdebug* *refchkl* *baktrcl*
 		      $norepeat $detout $doallmxops $doscmxops opers
 		      *mopl* *alphabet* $%% %e-val
 		      $macros linel $ratfac $ratwtlvl
@@ -2161,8 +2161,8 @@ wrapper for this."
 	   (arryp (setq fun (meval1 (setq name (cons (list (caar x) 'array) (cdr x)))))
 		  (if (or (atom fun) (not (eq (caar fun) 'lambda))) (setq fun nil))))
      (cond ((not fun)
-            (cond (stringp (return x)) 
-                  ((member 'edit state-pdl :test #'eq) (terpri)))
+            (when stringp
+              (return x))
             (merror (intl:gettext "fundef: no such function: ~:M") x)))
      (return
        (cons (if (eq (car fun) 'mmacro) '(mdefmacro simp) '(mdefine simp))
