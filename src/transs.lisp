@@ -287,18 +287,8 @@ translated."
 (defun princ* (form)
   (princ form transl-file))
 
-(defun nprinc* (&rest form)
-  (mapc #'(lambda (x) (princ x transl-file)) form))
-
 (defun terpri* ()
   (terpri transl-file))
-
-(defun print-module (m)
-  (nprinc* " " m " version " (get m 'version)))
-
-(defun new-comment-line ()
-  (terpri*)
-  (princ* ";;;"))
 
 (defun print-abort-msg (fun from)
   (mformat *translation-msgs-files*
