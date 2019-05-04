@@ -175,7 +175,6 @@ Additional improvements:
 ------------------------
  * Updated the external utilities for the Windows installer
  * Updated the wxMaxima version the Windows installer comes with
-   to version 19.02.1
  * Nightly Test: A summary of the share tests
  * Crosscompiling: Add 'maxima_longnames.c' to automake
  * Documentation Updates
