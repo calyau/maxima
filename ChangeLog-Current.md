@@ -26,6 +26,8 @@ New items in share:
    symbolic inputs
  * The ode package now has a testbench.
  * killing.dem, a demo for Killing vector fields.
+ * The logic share package now provides logic_simplify that uses the
+   K-Map reduction method by Quine-Mccluskey, see merge-request #10.
 
 Changes in core:
 ----------------
