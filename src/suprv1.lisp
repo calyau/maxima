@@ -276,6 +276,8 @@
       (remalias x nil)
       (setf $arrays (delete x $arrays :count 1 :test #'eq))
       (rempropchk x)
+      (setf *autoloaded-files*
+	    (delete (assoc x *autoloaded-files* :test #'eq) *autoloaded-files* :count 1 :test #'equal))
       (setf $functions
 	    (delete (assoc (ncons x) $functions :test #'equal) $functions :count 1 :test #'equal))
       (setf $macros
