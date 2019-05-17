@@ -34,7 +34,7 @@
 
 (declare-top (special $algdelta $ratepsilon $algepsilon $keepfloat
 		     varlist genvar *roots *failures $ratprint $numer $ratfac
-		     $rnum $solvefactors $dispflag $breakup
+		     $solvefactors $dispflag $breakup
 		     *tvarxlist* errorsw $programmode *ivar* errset $polyfactor
 		     bindlist loclist $float $infeval))
 

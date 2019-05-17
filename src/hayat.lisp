@@ -120,7 +120,6 @@
 	  genvar		;The list of gensyms corresponding to varlist
 	  modulus		;
 	  *a*			;Temporary special
-	  sub-exprs		;
 	  silent-taylor-flag	;If true indicates that errors will be
 				;returned via a throw to TAY-ERR
 	  tlist			;An association list which contains the
@@ -136,14 +135,8 @@
 	  exact-poly		;Inicates whether polynomials are to be
 				;considered exact or not.  True within SRF,
 				;false within TAYLOR.
-	  ngps			;
-	  num-syms		;
-	  loc-gensym		;
-	  syms			;
 	  tvars			;
-	  pssyms		;
 	  half%pi		;Has pi/2 to save space.
-	  const-funs		;
 	  const-exp-funs	;
 	  tay-const-expand	;For rediculousness like csch(log(x))
 	  $exponentialize	;which we do by exponentiation.

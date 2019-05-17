@@ -30,7 +30,7 @@ or if apply is being used are printed.")
 		      $norepeat $detout $doallmxops $doscmxops opers
 		      *mopl* *alphabet* $%% %e-val
 		      $macros linel $ratfac $ratwtlvl
-		      $operators $partswitch *gcdl*
+		      $partswitch *gcdl*
 		      *builtin-$props* $infolists))
 
 (declare-top (unspecial args))

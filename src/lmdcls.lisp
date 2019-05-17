@@ -48,10 +48,10 @@
 	  $%rnum $%rnum_list $absboxchar $activecontexts $algebraic $algexact
 	  $aliases $arrays $askexp $assumescalar $backsubst $berlefact
 	  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
-	  $breakup $cauchysum $change_filedefaults $compgrind $context
+	  $breakup $cauchysum $compgrind $context
 	  $contexts $current_let_rule_package $debugmode
 	  $default_let_rule_package $demoivre $dependencies $derivabbrev
-	  $derivsubst $detout $dispflag $display2d $displayset
+	  $derivsubst $detout $dispflag $display2d
 	  $display_format_internal $doallmxops $domain $domxexpt $domxmxops
 	  $domxnctimes $domxplus $domxtimes $dontfactor $doscmxops
 	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp $dotassoc
@@ -61,21 +61,21 @@
 	  $facexpand $factorflag $features $file_search
 	  $float $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
-	  $fortspaces $fpprec $fpprintprec $fptrunc $functions $gammalim $gcd
+	  $fortspaces $fpprec $fpprintprec $functions $gammalim $gcd
 	  $genindex $gensumnum $globalsolve $gradefs $halfangles $homog_hack
 	  $inchar $infeval $inflag $intfaclim
 	  $isolate_wrt_times $keepfloat $labels $leftjust $letrat $letvarsimp
 	  $let_rule_packages $liflag $linechar $linenum $linel
 	  $linsolvewarn $linsolve_params $lispdisp $listarith $listconstvars
-	  $lmxchar $logarc $logconcoeffp $logexpand $lognegint $lognumer
+	  $lmxchar $logarc $logconcoeffp $logexpand $lognegint
 	  $logsimp $m1pbranch $macroexpansion $macros $maperror $mapprint
 	  $matrix_element_add $matrix_element_mult $matrix_element_transpose
-	  $maxapplydepth $maxapplyheight $maxnegex $maxposex $maxprime
+	  $maxapplydepth $maxapplyheight $maxnegex $maxposex
 	  $maxtayorder $mode_checkp $mode_check_errorp $mode_check_warnp
-	  $morewait $multiplicities $mx0simp $myoptions $nalgfac $negdistrib
-	  $negsumdispflag $newfac $nolabels $norepeat $noundisp $numer
-	  $numer_pbranch $operators $opsubst $optimprefix $optionset $outchar
-	  $pagepause $parsewindow $partswitch $pfeformat $piece $pointbound
+	  $multiplicities $mx0simp $myoptions $nalgfac $negdistrib
+	  $negsumdispflag $nolabels $norepeat $noundisp $numer
+	  $numer_pbranch $opsubst $optimprefix $optionset $outchar
+	  $parsewindow $partswitch $pfeformat $piece $pointbound
 	  $poislim $powerdisp $prederror $programmode $props
 	  $radexpand $ratalgdenom $ratdenomdivide $ratepsilon $ratexpand
           $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
@@ -87,9 +87,9 @@
 	  $solveradcan $solvetrigwarn $sparse
 	  $sqrtdispflag $stardisp $sublis_apply_lambda
 	  $subnumsimp $sumexpand $sumsplitfact
-	  $suspend $taylor_logexpand
+	  $taylor_logexpand
 	  $taylor_truncate_polynomials $timer $timer_devalue
-	  $to_call_lisp_compiler $trace $trace_break_arg $trace_max_indent
+	  $trace $trace_break_arg $trace_max_indent
 	  $trace_safety $transcompile $translate $transrun
 	  $trigexpand $trigexpandplus $trigexpandtimes $triginverses
 	  $trigsign $tr_array_as_ref $tr_bound_function_applyp
@@ -100,37 +100,37 @@
 	  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
 	  $tr_warn_undefined_variable
-	  $universe $user_mesfile $use_fast_arrays $values $vect_cross
+	  $use_fast_arrays $values $vect_cross
 	  $zerobern %e-val %p%i %pi-val %pi//2 %pi//4 %pi2 *$any-modes*
-	  *alpha *const* *fnewvarsw *gcdl* *in *in-$batchload* *in-compile*
-	  *in-macsyma-indexer* *in-translate-file* *inv* *irreds *min* *mx*
+	  *alpha *const* *fnewvarsw *gcdl* *in *in-compile*
+	  *in-translate-file* *inv* *irreds *min* *mx*
 	  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
 	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
 	  alpha *alphabet* arrays aryp assigns *atp* atvars *baktrcl*
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
-	  bindlist bvars *mdebug*
+	  bindlist *mdebug*
 	  declares defined_variables defintdebug derivflag derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
-	  dumping envlist errorsw evarrp evp expandflag expandp
+	  errorsw evarrp evp expandflag expandp
 	  exprs exptrlsw factlist featurel fexprs fmaplvl
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p infinitesimals infinities inratsimp inside-mprog
 	  integerl *islinp* lexprs limit-answers limitp linel
-	  *linelabel* local loclist low* maplp master-mesfile mdop
+	  *linelabel* local loclist low* maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
-	  mplc* mprogp mproplist mspeclist mspeclist2 msump munbindp
-	  need-prog? negprods negsums nn* noevalargs noitems nonintegerl
+	  mplc* mprogp mproplist mspeclist msump munbindp
+	  need-prog? negprods negsums nn* noevalargs nonintegerl
 	  *nounl* *nounsflag* opers opers-list outargs1 outargs2
-	  preserve-direction prods putl radcanp rd*
+	  preserve-direction prods radcanp
 	  real-infinities realonlyratnum *refchkl* return-mode returns rulefcnl
-	  rulesw scanmapp sfindex sign-imag-errp simplimplus-problems
+	  rulesw scanmapp sign-imag-errp simplimplus-problems
 	  *small-primes* specials sqrt3//2 $stringdisp substp
 	  sums tellratlist timesinp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
-	  tstack typel user-mesfile varlist wflag
+	  tstack typel varlist wflag
 	  $cflength *trunclist $taylordepth
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep
 	  silent-taylor-flag $define_variable $infolists

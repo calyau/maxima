@@ -129,7 +129,7 @@
 		      *ul1* *ll1* *dflag bptu bptd plm* zn
 		      *updn ul ll exp pe* pl* rl* pl*1 rl*1
 		      loopstop* var nn* nd* dn* p*
-		      ind* factors rlm*
+		      factors rlm*
 		      $trigexpandplus $trigexpandtimes
 		      plogabs *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*

@@ -16,7 +16,7 @@
 
 (declare-top (special $breakup $noprincipal varlist
 		      leadcoef var *roots *failures wflag nn*
-		      sn* sd* $tellratlist genvar dn* zn))
+		      sn* sd* genvar dn* zn))
 
 
 ;; Compute the poles (roots) of the polynomial D and return them.
