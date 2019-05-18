@@ -268,12 +268,8 @@ translated."
 (defun print* (p)
     (sub-print* p))
 
-;;; i might as well be real pretty and flatten out PROGN's.
-
 (defun sub-print* (p &aux (flag nil))
   (cond ((atom p))
-	((and (eq (car p) 'progn) (cdr p) (equal (cadr p) ''compile))
-	 (mapc #'sub-print* (cddr p)))
 	(t
 	 (setq flag (and $tr_semicompile
 			 (not (eq (car p) 'eval-when))))
