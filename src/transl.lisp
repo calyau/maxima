@@ -590,12 +590,8 @@ APPLY means like APPLY.")
 		  `(meval* ',form))
 		 (t trl))))
 	((eq 'mprogn (caar form))
-	 ;; flatten out all PROGN's of course COMPLR needs PROGN 'COMPILE to
-	 ;; tell it to flatten. I don't really see the use of that since one
-	 ;; almost allways wants to. flatten.
 	 ;; note that this ignores the $%% crock.
-	 `(progn 'compile
-		 ,@(mapcar #'translate-macexpr-toplevel (cdr form))))
+	 `(progn ,@(mapcar #'translate-macexpr-toplevel (cdr form))))
 	((eq 'msetq (caar form))
 	 ;; Toplevel msetq's should really be defparameter instead of
 	 ;; setq for Common Lisp.  
