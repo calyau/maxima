@@ -677,7 +677,7 @@
 (defmacro def-nud ((op . lbp-rbp) bvl . body)
   (let (( lbp (nth 0 lbp-rbp))
 	( rbp (nth 1 lbp-rbp)))
-    `(progn 'compile 	  ,(make-parser-fun-def op 'nud bvl body)
+    `(progn ,(make-parser-fun-def op 'nud bvl body)
 	    (set-lbp-and-rbp ',op ',lbp ',rbp))))
 
 (defun set-lbp-and-rbp (op lbp rbp)
@@ -716,8 +716,7 @@
 (defmacro def-led((op . lbp-rbp) bvl . body)
   (let (( lbp (nth 0 lbp-rbp))
 	( rbp (nth 1 lbp-rbp)))
-    `(progn 'compile
-	    ,(make-parser-fun-def  op 'led bvl body)
+    `(progn ,(make-parser-fun-def  op 'led bvl body)
 	    (set-lbp-and-rbp ',op ',lbp ',rbp))))
 
 (defmacro def-collisions (op &rest alist)
@@ -725,7 +724,7 @@
 		   (lis  alist (cdr lis))
 		   (nl ()    (cons (cons (caar lis) i) nl)))
 		  ((null lis) nl))))
-    `(progn 'compile
+    `(progn
        (defprop ,op ,(let nil
 			  (copy-tree keys )) keys)
        ,@(mapcar #'(lambda (data)

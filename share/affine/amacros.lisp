@@ -223,8 +223,7 @@
     (setq .fb. (intern (string-append (second defb) (symbol-name '#:-b))))
     (setq .boda. (subst .fa. (second defa) (cdddr defa)))
     (setq .bodb. (subst .fb. (second defb) (cdddr defb)))
-    `(progn 'compile
-	    nil
+    `(progn
 	    (defun , .fa. ,(third defa)
 		   (tim ,@ .boda. ))
 	    (defun , .fb. ,(third defb)
@@ -242,7 +241,7 @@
 		(apply 'values .ansa.))))))
 
 (defmacro compare-recursive-functions (fn-a fn-b &rest assertions)
-  `(progn 'compile
+  `(progn
 	 ,fn-a
 	 ,fn-b
   , `(compare-functions

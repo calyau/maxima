@@ -90,8 +90,7 @@
 
 ;; these are in the system package in gcl...
 #-gcl
-(progn 'compile
-       (defun break-call (key args prop &aux fun)
+(progn (defun break-call (key args prop &aux fun)
 	 (setq fun (complete-prop key 'keyword prop))
 	 (setq key fun)
 	 (or fun (return-from break-call nil))
