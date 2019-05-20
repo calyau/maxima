@@ -201,6 +201,7 @@
           (format nil "~A" in-stream))))
       (format t (intl:gettext "~%read and interpret ~A~%") in-stream-string-rep)
       (catch 'macsyma-quit (continue :stream in-stream :batch-or-demo-flag demo))
+      (incf $linenum)
       in-stream-string-rep)))
 
 ;; Return true if $float converts both a and b to floats and 
