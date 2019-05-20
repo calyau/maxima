@@ -61,7 +61,9 @@
 	     (eq (number-sign f2) (number-sign f3))
 	     (> (first (last f3)) -50)) (number-sign f1) nil)))
        
-(defun cartesian-product (b)
+;; This isn't exactly the same as CARTESIAN-PRODUCT in src/nset.lisp,
+;; so give it a different name to avoid name collision.
+(defun fourier_elim-cartesian-product (b)
   (cond ((null b)
          nil)
         (t
@@ -76,7 +78,7 @@
   (cond (($mapatom e) e)
         ((op-equalp e 'mand)
          (setq e (mapcar #'(lambda (s) (if (op-equalp s 'mor) (margs s) (list s))) (margs e)))
-         (setq e (cartesian-product e))
+         (setq e (fourier_elim-cartesian-product e))
          (setq e (mapcar #'(lambda (s) (opapply 'mand s)) e))
          (opapply 'mor e))
         (t (opapply (mop e) (mapcar 'expand-and-over-or (margs e))))))
@@ -155,7 +157,7 @@
 	  ((op-equalp e 'mplus 'mtimes)
 	   (setq f (if (op-equalp e 'mplus) 'add 'mult))
 	   (setq e (mapcar 'splitify (margs e)))
-	   (setq e (cartesian-product e))
+	   (setq e (fourier_elim-cartesian-product e))
 	   (dolist (ek e acc)
 	     (push
 	      (reduce 
@@ -552,7 +554,7 @@
     ;; m> instead of sub here. But I think it's not needed, and m> is more spendy.
     
     (setq acc (append acc (mapcar #'(lambda (s) (sub (second s) (first s)))
-				  (cartesian-product (list lb-args ub-args)))))
+				  (fourier_elim-cartesian-product (list lb-args ub-args)))))
     
     ;; Return ((lb < x x < ub) acc).
       

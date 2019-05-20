@@ -412,6 +412,8 @@ respectively.
 
 @code{cartesian_product} complains if any argument is not a literal set.
 
+See also @mrefdot{cartesian_product_list}
+
 Examples:
 
 @c ===beg===
@@ -429,6 +431,113 @@ Examples:
 (%o3)                      @{[x, y, z]@}
 (%i4) cartesian_product (@{x@}, @{-1, 0, 1@});
 (%o4)              @{[x, - 1], [x, 0], [x, 1]@}
+@end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
+@end deffn
+
+
+@anchor{cartesian_product_list}
+@deffn {Function} cartesian_product_list (@var{b_1}, ... , @var{b_n})
+Returns a list of lists of the form @code{[@var{x_1}, ..., @var{x_n}]}, where
+@var{x_1}, ..., @var{x_n} are elements of the lists @var{b_1}, ... , @var{b_n}, respectively,
+comprising all possible combinations of the elements of @var{b_1}, ... , @var{b_n}.
+
+The list returned by @code{cartesian_product_list} is equivalent to the
+following recursive definition.
+Let @var{L} be the list returned by @code{cartesian_product_list(@var{b_2}, ..., @var{b_n})}.
+Then @code{cartesian_product_list(@var{b_1}, @var{b_2}, ..., @var{b_n})}
+(i.e., @var{b_1} in addition to @var{b_2}, ..., @var{b_n})
+returns a list comprising each element of @var{L} appended to the first element of @var{b_1},
+each element of @var{L} appended to the second element of @var{b_1},
+each element of @var{L} appended to the third element of @var{b_1}, etc.
+The order of the list returned by @code{cartesian_product_list(@var{b_1}, @var{b_2}, ..., @var{b_n})}
+may therefore be summarized by saying the lesser indices (1, 2, 3, ...) vary more slowly than the greater indices.
+
+The list returned by @code{cartesian_product_list} contains duplicate elements
+if any argument @var{b_1}, ..., @var{b_n} contains duplicates.
+In this respect, @code{cartesian_product_list} differs from @code{cartesian_product},
+which returns no duplicates.
+Also, the ordering of the list returned @code{cartesian_product_list}
+is determined by the order of the elements of @var{b_1}, ..., @var{b_n}.
+Again, this differs from @code{cartesian_product},
+which returns a set (with order determined by @code{orderlessp}).
+
+The length of the list returned by @code{cartesian_product_list}
+is equal to the product of the lengths of the arguments @var{b_1}, ..., @var{b_n}.
+
+See also @mrefdot{cartesian_product}
+
+@code{cartesian_product_list} complains if any argument is not a list.
+
+Examples:
+
+@code{cartesian_product_list} returns a list of lists comprising all possible combinations.
+
+@c ===beg===
+@c cartesian_product_list ([0, 1]);
+@c cartesian_product_list ([0, 1], [0, 1]);
+@c cartesian_product_list ([x], [y], [z]);
+@c cartesian_product_list ([x], [-1, 0, 1]);
+@c cartesian_product_list ([a, h, e], [c, b, 4]);
+@c ===end===
+@example
+(%i1) cartesian_product_list ([0, 1]);
+(%o1)                      [[0], [1]]
+(%i2) cartesian_product_list ([0, 1], [0, 1]);
+(%o2)           [[0, 0], [0, 1], [1, 0], [1, 1]]
+(%i3) cartesian_product_list ([x], [y], [z]);
+(%o3)                      [[x, y, z]]
+(%i4) cartesian_product_list ([x], [-1, 0, 1]);
+(%o4)              [[x, - 1], [x, 0], [x, 1]]
+(%i5) cartesian_product_list ([a, h, e], [c, b, 4]);
+(%o5) [[a, c], [a, b], [a, 4], [h, c], [h, b], [h, 4], [e, c], 
+                                                  [e, b], [e, 4]]
+@end example
+
+The order of the list returned by @code{cartesian_product_list}
+may be summarized by saying the lesser indices vary more slowly than the greater indices.
+
+@c ===beg===
+@c cartesian_product_list ([1, 2, 3], [a, b], [i, ii]);
+@c ===end===
+
+@example
+(%i1) cartesian_product_list ([1, 2, 3], [a, b], [i, ii]);
+(%o1) [[1, a, i], [1, a, ii], [1, b, i], [1, b, ii], [2, a, i], 
+[2, a, ii], [2, b, i], [2, b, ii], [3, a, i], [3, a, ii], 
+[3, b, i], [3, b, ii]]
+@end example
+
+The list returned by @code{cartesian_product_list} contains duplicate elements
+if any argument contains duplicates.
+
+@c ===beg===
+@c cartesian_product_list ([e, h], [3, 7, 3]);
+@c ===end===
+
+@example
+(%i1) cartesian_product_list ([e, h], [3, 7, 3]);
+(%o1)   [[e, 3], [e, 7], [e, 3], [h, 3], [h, 7], [h, 3]]
+@end example
+
+The length of the list returned by @code{cartesian_product_list}
+is equal to the product of the lengths of the arguments.
+
+@c ===beg===
+@c foo: cartesian_product_list ([1, 1, 2, 2, 3], [h, z, h]);
+@c is (length (foo) = 5*3);
+@c ===end===
+
+@example
+(%i1) foo: cartesian_product_list ([1, 1, 2, 2, 3], [h, z, h]);
+(%o1) [[1, h], [1, z], [1, h], [1, h], [1, z], [1, h], [2, h], 
+  [2, z], [2, h], [2, h], [2, z], [2, h], [3, h], [3, z], [3, h]]
+(%i2) is (length (foo) = 5*3);
+(%o2)                         true
 @end example
 
 @opencatbox
