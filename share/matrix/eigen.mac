@@ -58,17 +58,17 @@ unitvector(x):=block([listarith],listarith:true,x/sqrt(innerproduct(x,x)))$
 columnvector(x):=transpose(matrix(x))$
 
 
-gramschmidt(x,[myinnerproduct]):=
+gramschmidt(x%,[myinnerproduct]):=
 		block([listarith,dimnsn,listall,intern,count,denom,unit,index1,
 		index2],
                 if myinnerproduct=[] then myinnerproduct:innerproduct
                 else myinnerproduct:first(myinnerproduct),
                 mode_declare([dimnsn,count,index1,index2],fixnum,
                               [listall],list,[intern,denom,unit],any),
-		listarith:true,dimnsn:mi(length(x)),listall:[part(x,1)],
-		count:1,if dimnsn=1 then return(x)
+		listarith:true,dimnsn:mi(length(x%)),listall:[part(x%,1)],
+		count:1,if dimnsn=1 then return(x%)
 		else (for index1:2 thru dimnsn do
-		(unit:part(x,index1),for index2 thru count do
+		(unit:part(x%,index1),for index2 thru count do
 		(intern:part(listall,index2),denom : apply (myinnerproduct, [intern, intern]),
 		unit:factor(ratsimp(unit - apply (myinnerproduct, [intern, unit])*intern/denom
 		))),
@@ -208,7 +208,7 @@ uvect(x):=unitvector(x)$
 
 covect(x):=columnvector(x)$
 
-gschmit(x, [f]):= if f = [] then gramschmidt(x) else gramschmidt (x, f[1])$
+gschmit(x%, [f]):= if f = [] then gramschmidt(x%) else gramschmidt (x%, f[1])$
 
 eivals(mat):=eigenvalues(mat)$
 
