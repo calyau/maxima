@@ -206,6 +206,7 @@ cardinality
 carg
 cartan
 cartesian_product
+cartesian_product_list
 catch
 cauchy_matrix
 cauchysum
