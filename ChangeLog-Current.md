@@ -19,6 +19,7 @@ New items in core:
  * newdet: An determinant algorithm that is optimized on sparse matrices
  * maxima_frontend and maxima_frontend_version: Two variables that can be
    set in order to inform build_info() which frontend is in use.
+ * cartesian_product_list makes cartesian products between lists.
 
 New items in share:
 -------------------
