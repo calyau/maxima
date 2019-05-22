@@ -206,6 +206,7 @@ cardinality
 carg
 cartan
 cartesian_product
+cartesian_product_list
 catch
 cauchy_matrix
 cauchysum
@@ -2371,6 +2372,7 @@ vertices_to_cycle
 vertices_to_path
 view
 %w
+warning
 warnings
 weyl
 wheel_graph
