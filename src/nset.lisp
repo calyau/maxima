@@ -659,31 +659,50 @@
 	  (t
 	   (setf (car tail) (cons x (car tail)))))))
 
-;; cartesian_product(a,b1,b2,...,bn) returns the set with members
-;; of the form [x0,x1, ..., xn], where x0 in a,  x1 in b1, ... , and 
-;; xn in bn. With just one argument cartesian_product(a) returns the 
+;; cartesian_product(a,b1,b2,...,bn), where a, b1, ..., bn are all sets,
+;; returns the set with members of the form [x0,x1, ..., xn],
+;; where x0 in a,  x1 in b1, ... , and xn in bn.
+;; With just one argument cartesian_product(a) returns the 
 ;; set with members [a1],[a2], ... [an], where a1, ..., an are the members of a.
-
-;; Signal an error when a or any b isn't a list or a set.
-
-;; After completing the dolist (bi b), the list a doesn't have duplicate 
-;; members -- thus we can get by with  only sorting a.
+;; With no arguments, cartesian_product() returns {[]}.
 
 (defmfun $cartesian_product (&rest b)
-  (cond ((null b)
-         `(($set) ((mlist simp))))
-	(t
-	 (let ((a) 
-	       (acc (mapcar #'list (require-set (car b) '$cartesian_product))))
-	   (setq b (cdr b))
-	   (dolist (bi b)
-	     (setq a nil)
-	     (setq bi (require-set bi '$cartesian_product))
-	     (dolist (bij bi (setq acc a))
-	       (setq a (append a (mapcar #'(lambda (x) (cons bij x)) acc)))))
-	   (cons '($set simp) 
-		 (sort (mapcar #'(lambda (x) (cons '(mlist simp) (reverse x))) acc) 
-		       '$orderlessp))))))
+  (if (null b)
+    '(($set) ((mlist)))
+    (if (every #'$setp b)
+      (let ((l (apply #'cartesian-product (mapcar #'cdr b))))
+        (cons '($set) (mapcar #'(lambda (e) (cons '(mlist) e)) l)))
+      ;; MAYBE JUST PRINT THE LIST OF TYPES OR OPERATORS INSTEAD OF B IN ITS ENTIRETY !!
+      (merror (intl:gettext "cartesian_product: all arguments must be sets; found: ~M") (cons '(mlist) b)))))
+
+;; cartesian_product_list(a,b1,b2,...,bn), where a, b1, ..., bn are all lists,
+;; returns the list with elements of the form [x0,x1, ..., xn],
+;; where x0 in a,  x1 in b1, ... , and xn in bn.
+;; With just one argument cartesian_product_list(a) returns the 
+;; list with elements [a1],[a2], ... [an], where a1, ..., an are the elements of a.
+;; With no arguments, cartesian_product_list() returns [[]].
+
+(defmfun $cartesian_product_list (&rest b)
+  (if (null b)
+    '((mlist) ((mlist)))
+    (if (every #'$listp b)
+      (let ((l (apply #'cartesian-product (mapcar #'cdr b))))
+        (cons '(mlist) (mapcar #'(lambda (e) (cons '(mlist) e)) l)))
+      ;; MAYBE JUST PRINT THE LIST OF TYPES OR OPERATORS INSTEAD OF B IN ITS ENTIRETY !!
+      (merror (intl:gettext "cartesian_product_list: all arguments must be lists; found: ~M") (cons '(mlist) b)))))
+
+;; Assume here that B is nonempty; caller has already handled case B = NIL.
+(defun cartesian-product (&rest b)
+  (setq b (reverse b))
+  (let
+    ((a)
+     (acc (mapcar #'list (car b))))
+    (setq b (cdr b))
+    (dolist (bi b)
+      (setq a nil)
+      (dolist (bij bi (setq acc a))
+        (setq a (append a (mapcar #'(lambda (x) (cons bij x)) acc)))))
+    acc))
 
 ;; When n is defined, return a set of partitions of the set or list a
 ;; into n disjoint subsets.  When n isn't defined, return the set of

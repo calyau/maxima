@@ -47,19 +47,6 @@ but re-ordering $opproperties doesn't change the order the rules are applied.
 (defun protected-oper-apply (e z)
   (if ($mapatom e) e (oper-apply e z)))
 	
-;; Code adapted from nset. Used by permission of the author ;)
-     
-(defun cartesian-product (&rest b)
-  (cond ((null b)
-	 nil)
-	(t
-	 (let ((a) (acc (mapcar #'list (car b))))
-	   (setq b (cdr b))
-	   (dolist (bi b acc)
-	     (setq a nil)
-	     (dolist (bij bi (setq acc a))
-	       (setq a (append a (mapcar #'(lambda (x) `(,@x ,bij)) acc)))))))))
-
 (defun multiadditive (e)
   (cond ((and (not ($subvarp e)) (some #'(lambda (s) (op-equalp s 'mplus)) (margs e)))
 	 (let ((op (mop e)) (args (margs e)))

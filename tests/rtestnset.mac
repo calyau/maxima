@@ -927,7 +927,7 @@ errcatch(extremal_subset({a, b, c}, abs, max));
 []$
 
 cartesian_product();
-set([])$
+{[]};
 
 cartesian_product(set());
 set()$
@@ -952,6 +952,95 @@ set([u,1],[n,1],[k,1])$
 
 cartesian_product(set(a,b),set(1,2));
 set([a,1],[a,2],[b,1],[b,2])$
+
+cartesian_product_list();
+[[]];
+
+cartesian_product_list([]);
+[]$
+
+cartesian_product_list([a]);
+[[a]]$
+
+cartesian_product_list([], [], []);
+[];
+
+cartesian_product_list([a], [b]);
+[[a, b]];
+
+cartesian_product_list([u,n,k], []);
+[];
+
+cartesian_product_list([], [u, n, k]);
+[];
+
+cartesian_product_list([u,n,k], [1]);
+[[u,1],[n,1],[k,1]];
+
+cartesian_product_list([a, b], [1, 2]);
+[[a,1],[a,2],[b,1],[b,2]]$
+
+cartesian_product ({11, 22, 33, 11, 11, 22}, {}, {a, a, b, b});
+{};
+
+cartesian_product_list([11, 22, 33, 11, 11, 22], [], [a, a, b, b]);
+[];
+
+cartesian_product ({11, 22, 33, 11, 11, 22}, {u}, {a, a, b, b});
+{[11, u, a], [11, u, b],
+ [22, u, a], [22, u, b],
+ [33, u, a], [33, u, b]};
+
+cartesian_product_list([11, 22, 33, 11, 11, 22], [u], [a, a, b, b]);
+[[11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [22, u, a], [22, u, a], [22, u, b], [22, u, b],
+ [33, u, a], [33, u, a], [33, u, b], [33, u, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [22, u, a], [22, u, a], [22, u, b], [22, u, b]];
+
+cartesian_product ({11, 22, 33, 11, 11, 22}, {u, u, n, u, k, u}, {a, a, b, b});
+{[11, u, a], [11, u, b], [11, n, a], [11, n, b], [11, k, a], [11, k, b],
+ [22, u, a], [22, u, b], [22, n, a], [22, n, b], [22, k, a], [22, k, b],
+ [33, u, a], [33, u, b], [33, n, a], [33, n, b], [33, k, a], [33, k, b]};
+
+cartesian_product_list([11, 22, 33, 11, 11, 22], [u, u, n, u, k, u], [a, a, b, b]);
+[[11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [11, n, a], [11, n, a], [11, n, b], [11, n, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [11, k, a], [11, k, a], [11, k, b], [11, k, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [22, u, a], [22, u, a], [22, u, b], [22, u, b],
+ [22, u, a], [22, u, a], [22, u, b], [22, u, b],
+ [22, n, a], [22, n, a], [22, n, b], [22, n, b],
+ [22, u, a], [22, u, a], [22, u, b], [22, u, b],
+ [22, k, a], [22, k, a], [22, k, b], [22, k, b],
+ [22, u, a], [22, u, a], [22, u, b], [22, u, b],
+ [33, u, a], [33, u, a], [33, u, b], [33, u, b],
+ [33, u, a], [33, u, a], [33, u, b], [33, u, b],
+ [33, n, a], [33, n, a], [33, n, b], [33, n, b],
+ [33, u, a], [33, u, a], [33, u, b], [33, u, b],
+ [33, k, a], [33, k, a], [33, k, b], [33, k, b],
+ [33, u, a], [33, u, a], [33, u, b], [33, u, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [11, n, a], [11, n, a], [11, n, b], [11, n, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [11, k, a], [11, k, a], [11, k, b], [11, k, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [11, n, a], [11, n, a], [11, n, b], [11, n, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [11, k, a], [11, k, a], [11, k, b], [11, k, b],
+ [11, u, a], [11, u, a], [11, u, b], [11, u, b],
+ [22, u, a], [22, u, a], [22, u, b], [22, u, b],
+ [22, u, a], [22, u, a], [22, u, b], [22, u, b],
+ [22, n, a], [22, n, a], [22, n, b], [22, n, b],
+ [22, u, a], [22, u, a], [22, u, b], [22, u, b],
+ [22, k, a], [22, k, a], [22, k, b], [22, k, b],
+ [22, u, a], [22, u, a], [22, u, b], [22, u, b]];
 
 equiv_classes(set(),"=");
 set()$

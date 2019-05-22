@@ -82,13 +82,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun cartesian-product (l1 l2)
-  (if l1
-    (append
-      (mapcar #'(lambda (e) (cons (car l1) e)) l2)
-      (cartesian-product (cdr l1) l2))
-    nil))
-
 (defun replicate (n e)
   (if (and (integerp n) (>= n 0))
     (if (= n 0) nil (cons e (replicate (1- n) e)))

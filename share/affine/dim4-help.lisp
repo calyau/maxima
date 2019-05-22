@@ -282,16 +282,6 @@ list of lists call this function on each of the lists independently."
 
 ;(setq he '(1 2))
 
-(defun cartesian-product (&rest l)
-  (cond ((null l) (list nil))
-	(t
-	 (loop for v in (car l)
-	  append (loop
-		   for w in (apply #'cartesian-product (cdr l)) collect (cons  v w))))))
-
-(defun $cartesian_product(&rest l)
-  (lis (apply #'cartesian-product
-	      (mapcar #'cdr l))))
 
 (defun sublist (l pred)
   (loop for v in l when (apply pred v) collect v))
