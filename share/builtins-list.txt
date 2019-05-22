@@ -2372,6 +2372,7 @@ vertices_to_cycle
 vertices_to_path
 view
 %w
+warning
 warnings
 weyl
 wheel_graph
