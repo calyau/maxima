@@ -1,81 +1,50 @@
-;;;; This file outlines a very basic Maxima-Intermediate Represendation-Python Transpiler, which is capable of handling:
-;;;; 1. Function definition -> f(<list of variables>):=<expression of variables>;
-;;;; 2. + operator -> <expression 1> + <expression 2> + <expression 3>
-;;;; 3. sin operator -> sin(<expression>)
-;;;; 4. exponentiation operator -> <expression 1> ^ <expression 2>
-;;;; It has been tested on SBCL SLIME, with the internal S-exp representation of f(x,t):=x^2+sin(x)+t+t^2+sin(t);
-;;;; transformed to Intermediate Representation:
-;;;;     (DEF "F" ("X" "T") (SUM ((POW ($X 2)) (MATH.SIN ($T)) $T(POW ($T 2)) (MATH.SIN ($T)))))
-;;;; transformed to Python:
-;;;;     def F(X, T):
-;;;;         return(pow(X, 2) + math.sin(T) + T + pow(T, 2) + math.sin(T))
+(defparameter *maxima-to-ir-map* (make-hash-table))
+(setf (gethash 'mtimes *maxima-to-ir-map*) '(op *))
+(setf (gethash 'mplus *maxima-to-ir-map*) '(op +))
+(setf (gethash 'mexpt *maxima-to-ir-map*) '(funcall pow))
+(setf (gethash 'mfactorial *maxima-to-ir-map*) '(funcall math.factorial))
+(setf (gethash 'rat *maxima-to-ir-map*) '(op /))
 
 
-;;; This is a very simple test whether the form f is a function definition
-(defun func_defp (f)
+(defun atom-to-ir (form)
   (cond
-    ((and (consp f)
-      (consp (car f)))
-    (eq (caar f) 'mdefine))
-    (t nil)))
+    ((not (symbolp form)) form)
+    ((eq form '$%i) '(num 0 1)) ; iota complex number
+    ((eq form '$%pi) '(num pi 0)) ; Pi
+    ((eq form '$%e) '(num e 0)) ; Euler's Constant
+    (t (list 'symbol (subseq (symbol-name form) 1)))
+    ))
 
-;;; Test whether the form f is a sum
-(defun sump (f)
+(defun cons-to-ir (form)
   (cond
-    ((and (consp f)
-      (consp (car f))
-      (consp (caar f)) (eq (caaar f) 'mplus)))
-    (t nil)))
+    ((atom (caar form))
+     (progn
+      (setf type (gethash (caar form) *maxima-to-ir-map*))
+      (cond
+       (type (append type (mapcar #'maxima-to-ir (cdr form))))
+			   (t (cons 'no-convert form))
+			   )))))
 
-;;; Test whether the form f is an exponentiation
-(defun expp (form)
+(defun maxima-to-ir (form)
   (cond
-    ((and (consp form)) (eq (caar form) 'mexpt))))
+    ((atom form) (atom-to-ir form))
+    ((and (consp form) (consp (car form))) (cons-to-ir form))
+    (t (cons 'no-convert form))
+    ))
 
-;;; Test whether the form f is a sin operation
-(defun sinp (form)
-  (cond ((and (consp form)) (eq (caar form) '%sin))))
- 
-;;; A very simple Maxima S-exp -> Python IR converter
-(defun m_ir (form)
-  (cond
-    ((func_defp form) 
-     `(def
-          ,(subseq (symbol-name (caaadr form)) 1)
-          ,(mapcar (lambda (x) (subseq x 1)) (mapcar 'symbol-name (cdadr form)))
-          ,(m_ir (cddr form))))
-    ((sump form) `(sum ,(mapcar 'm_ir (cdar form))))
-    ((expp form) `(pow ,(mapcar 'm_ir (cdr form))))
-    ((sinp form) `(math.sin ,(mapcar 'm_ir (cdr form))))
-    (t form)))
+(defun ir-to-python (form)
+  (print form))
 
-;;; Test whether form is an IR function definition
-(defun defp (form)
-  (cond
-    ((consp form) (eq (car form) 'def))))
-
-;;; Test whether form is an IR sum
-(defun sump_ir (form)
-  (cond
-    ((and (consp form) (consp (car form))) (eq (caar form) 'sum))))
-
-;;; A simple IR -> Python source function
-(defun ir_p (form)
-  (cond
-    ((defp form) (format nil "def ~A(~A):~%    return(~A)" (cadr form) (comma-list (caddr form)) (ir_p (cdddr form))))
-    ((sump_ir form) (format nil "~A" (sum-list (mapcar 'ir_p (cadar form)))))
-    ((and (consp form) (consp (cadr form))) (format nil "~A(~A)" (string-downcase (string (car form))) (comma-list (mapcar 'ir_p (cadr form)))))
-    ((symbolp form) (format nil "~A" (subseq (symbol-name form) 1)))
-    (t (format nil "~A" form))))
-
-
-;;; Driver function for the translator, calls the m_ir and then ir_p
+;;; Driver function for the translator, calls the maxima-to-ir and then ir-to-python
 (defun $transpile (form)
-  (ir_p (m_ir form)))
+  (ir-to-python (maxima-to-ir form)))
 
 ;;;Adapted from http://cybertiggyr.com/fmt/fmt.pdf Creates a comma separated list string.
 (defun comma-list (lst) (format nil "~{~A~#[~:;, ~]~}" lst))
 
-;;; Adapted from above. Creates a + separated list.
+;;; Adapted from above. Creates a + separated list.x
 ;;; The 2 forms can be merged into a Macro.
 (defun sum-list (lst) (format nil "~{~A~#[~:; + ~]~}" lst))
+
+(defun $show_form (form)
+  (print form))
