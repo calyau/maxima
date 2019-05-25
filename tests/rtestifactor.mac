@@ -16,7 +16,7 @@ true;
 primep(6);
 false;
 
-/* this are checkd from the list of small primes */
+/* this is checked from the list of small primes */
 primep(1741);
 true;
 
@@ -53,19 +53,46 @@ ifactors(226800);
 ev( ifactors(226800), factors_only:true );
 [2,3,5,7];
 
-/* this should be found by Pollard rho */
+/* this is still found by trialdivision */
 ifactors(5178997768267);
 [[183823,1],[28173829,1]];
 
-/* disable Pollard rho to test ECM */
+/* disable Pollard p-1 to test Pollard rho */
+(save_pm1 : pollard_pm1_tests, pollard_pm1_tests : 0);
+0;
+
+/* this should be found by Pollard rho */
+ifactors(25091429338142886343);
+[[3873703993, 1], [6477373951, 1]];
+
+(pollard_pm1_tests : save_pm1, 0);
+0;
+
 (save_prt : pollard_rho_tests, pollard_rho_tests : 0);
 0;
 
-/* this should be found by ECM */
-ifactors(5178997768267);
-[[183823,1],[28173829,1]];
+/* now this should be found by Pollard p-1 */
+ifactors(25091429338142886343);
+[[3873703993, 1], [6477373951, 1]];
 
 (pollard_rho_tests : save_prt, 0);
+0;
+
+/* disable Pollard rho and p-1 to test ECM */
+(save_prt : pollard_rho_tests, pollard_rho_tests : 0);
+0;
+
+(save_pm1 : pollard_pm1_tests, pollard_pm1_tests : 0);
+0;
+
+/* now this should be found by ECM */
+ifactors(25091429338142886343);
+[[3873703993, 1], [6477373951, 1]];
+
+(pollard_rho_tests : save_prt, 0);
+0;
+
+(pollard_pm1_tests : save_pm1, 0);
 0;
 
 /* MODULAR POWERS AND INVERSE */
@@ -95,4 +122,3 @@ false;
 
 power_mod(3,-1,42);
 false;
-
