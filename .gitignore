@@ -37,3 +37,6 @@ build
 abcl.jar
 \#*
 .\#*
+
+src/tools
+gp_image_01.png
