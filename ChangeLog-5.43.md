@@ -13,7 +13,7 @@ New items in core:
    non-user functions using the maclisp nargs syntax.
  * Documentation: ./update_examples now interprets lines beginning with 
    the string "input:" as text that should be sent as input to the 
-   preceeding command.
+   preceding command.
  * garbage_collect() which manually triggers the lisp's garbage collector 
    or returns false.
  * newdet: An determinant algorithm that is optimized on sparse matrices
@@ -56,7 +56,7 @@ Changes in core:
  * perl is now uniformly called as /usr/bin/env perl
  * Resolved the "simplifya: I don't know how to simplify this operator: ~M"
    error triggered by some array actions.
- * The Windows installer can now include ABCL
+ * The Windows installer can now include ABCL.
  * Corrected many markers that tell if an example can be updated using the 
    doc/info/update_example scripts.
  * user-visible functions are now defined using defmfun, only internally-used
@@ -65,7 +65,7 @@ Changes in core:
    which ones unexpectedly passed.
  * The maxima-to-lisp translator now handles the case properly that a list
    is assigned to a global variable.
- * ./configure: Tried to make the summary nicer
+ * ./configure: Tried to make the summary nicer.
  * maxima.asd should mow match maxima.system again.
  * The lists of test suite files and share test suite files now are maxima lists
    and therefore can be manipulated without having to resolve to lisp commands.
@@ -75,7 +75,7 @@ Changes in core:
  * "make check" manipulates the list of tests now in a more canonical way in order
    to automatically run the interactive tests, as well.
  * "make check" now compiles maxima before running the tests, if maxima still 
-    needs compiling.
+   needs compiling.
  * ./configure --enable-quiet-build now muffles more warnings.
  * src/shares_subdirs.lisp is now no more generated directly but using an 
    immediate file which hinders "make distclean" from automatically deleting it.
@@ -129,31 +129,31 @@ Changes in core:
  
 Changes in share:
 --------------
- *  The the arguments to Krylov matrix are now checked for being of the 
-    correct type.
- *  ODEPAK now works in conjunction with ECL.
- *  LAPACK now works in conjunction with ECL, too.
- *  Sarag: Fix the missing definition of SQUARE_FREE_ALGORITHM used in the 
-    certificate code.. It adds explicit details while proving the sign of 
-	a polynomial in a given interval
- *  Sarag: Make certificate proof more explicit (verify certificate)
- *  Added the existing lapack checks to the share testsuite for all lisps
-    except ECL (in ECL a try to use lapack results in an error message)
-	and SBCL (receives an out-of-memory, depending on the system).
- *  A primitive testsuite for ODEPACK that tests if it works at all.
- *  ezunits: A conversion rule for nondimensional/(sum of dimensional)
- *  ezunits: 0 now can have a dimension.
- *  ezunits test script: Avoid kill(m) which kills the unit meter.
- *  The tests for the "sym" package are now part of the share testsuite.
- *  The tests for the "ode" package are now part of the share testsuite, too
-    but have been disabled as they failed.
- *  Sarag no more overwrites the function resultant() which means the 
-    share test suite no more kills this function in a kill(all);
- *  Draw now accepts numbers as color specification besides the html-style
-    and the gnuplot-style color identifiers it already understood.
- *  Draw now accepts plot titles even if they aren't strings.
- *  wrstcse now gets the ranges and resolution of random numbers for monte
-    carlo analysis right.
+ * The the arguments to Krylov matrix are now checked for being of the 
+   correct type.
+ * ODEPAK now works in conjunction with ECL.
+ * LAPACK now works in conjunction with ECL, too.
+ * Sarag: Fix the missing definition of SQUARE_FREE_ALGORITHM used in the 
+   certificate code.. It adds explicit details while proving the sign of 
+   a polynomial in a given interval
+ * Sarag: Make certificate proof more explicit (verify certificate)
+ * Added the existing lapack checks to the share testsuite for all lisps
+   except ECL (in ECL a try to use lapack results in an error message)
+   and SBCL (receives an out-of-memory, depending on the system).
+ * A primitive testsuite for ODEPACK that tests if it works at all.
+ * ezunits: A conversion rule for nondimensional/(sum of dimensional)
+ * ezunits: 0 now can have a dimension.
+ * ezunits test script: Avoid kill(m) which kills the unit meter.
+ * The tests for the "sym" package are now part of the share testsuite.
+ * The tests for the "ode" package are now part of the share testsuite, too
+   but have been disabled as they failed.
+ * Sarag no more overwrites the function resultant() which means the 
+   share test suite no more kills this function in a kill(all);
+ * Draw now accepts numbers as color specification besides the html-style
+   and the gnuplot-style color identifiers it already understood.
+ * Draw now accepts plot titles even if they aren't strings.
+ * wrstcse now gets the ranges and resolution of random numbers for monte
+   carlo analysis right.
 
 Bug fixes:
 ----------
