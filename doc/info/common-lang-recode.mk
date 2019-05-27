@@ -1,4 +1,4 @@
-TEXINFO_TEX=../texinfo.tex
+TEXINFO_TEX=$(srcdir)/../texinfo.tex
 info_TEXINFOS =
 if CHM
 genericdirDATA = \
@@ -7,7 +7,7 @@ endif
 
 all-local: maxima.info maxima-index.lisp maxima.html contents.hhc
 
-LANGSRCDIR = $(srcdir)/../$(INFOLANG)
+LANGSRCDIR = $(srcdir)/$(srcdir)/../$(INFOLANG)
 LANGBUILDDIR = $(builddir)/../$(INFOLANG)
 langsdir = /$(INFOLANG).utf8
 # pt_BR is not known to texinfo
@@ -60,12 +60,12 @@ include $(top_srcdir)/common-html.mk
 maxima.html: $(LANGSRCDIR)/maxima.texi
 	rm -f maxima*.html 2>/dev/null
 	@: $(MAKEINFOHTML) $(AM_MAKEINFOHTMLFLAGS) $(MAKEINFOHTMLFLAGS) \
-	  -I $(LANGSRCDIR) -I $(LANGBUILDDIR) --init-file=$(srcdir)/../texi2html.init \
-	   --split=chapter --output=. --css-include=../manual.css $<
-	/usr/bin/env perl $(srcdir)/../texi2html --split_chapter --lang=$(INFOLANGOPT) --output=. \
-	  --css-include=$(srcdir)/../manual.css \
+	  -I $(LANGSRCDIR) -I $(LANGBUILDDIR) --init-file=$(srcdir)/$(srcdir)/../texi2html.init \
+	   --split=chapter --output=. --css-include=$(srcdir)/../manual.css $<
+	/usr/bin/env perl $(srcdir)/$(srcdir)/../texi2html --split_chapter --lang=$(INFOLANGOPT) --output=. \
+	  --css-include=$(srcdir)/$(srcdir)/../manual.css \
 	  -I $(LANGSRCDIR) -I $(LANGBUILDDIR) \
-	  --init-file $(srcdir)/../texi2html.init \
+	  --init-file $(srcdir)/$(srcdir)/../texi2html.init \
 	  $<
 	for f in maxima*.html; do \
 	    if test x$(urecode) = xtrue ; then \

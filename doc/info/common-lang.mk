@@ -15,11 +15,11 @@ install-data-local: $(INSTALL_CHM)
 
 uninstall-local: $(UNINSTALL_CHM)
 
-maxima-index.lisp: maxima.info ../build_index.pl
-	/usr/bin/env perl ../build_index.pl maxima.info ':crlf' > maxima-index.lisp
+maxima-index.lisp: maxima.info $(srcdir)/../build_index.pl
+	/usr/bin/env perl $(srcdir)/../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
 maxima.html: maxima.texi $(maxima_TEXINFOS)
-	/usr/bin/env perl ../texi2html -split_chapter --lang=$(lang) --output=. --css-include=../manual.css --init-file texi2html.init maxima.texi 
+	/usr/bin/env perl $(srcdir)/../texi2html -split_chapter --lang=$(lang) --output=. --css-include=$(srcdir)/../manual.css --init-file texi2html.init maxima.texi 
 
 maxima.pdf: maxima_pdf.texi maxima.texi $(maxima_TEXINFOS)
 	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf maxima_pdf.texi
@@ -55,10 +55,10 @@ maxima.chm: maxima.html maxima.hhp contents.hhc index.hhk
 	$(MKDIR_P) chm
 	$(MKDIR_P) chm/figures
 	for hfile in *.html ; do \
-	  sed -e 's|../figures|figures|g' < $$hfile > chm/$$hfile; \
+	  sed -e 's|$(srcdir)/../figures|figures|g' < $$hfile > chm/$$hfile; \
 	done
 	cp maxima.hhp contents.hhc index.hhk chm
-	cp ../figures/*.gif chm/figures
+	cp $(srcdir)/../figures/*.gif chm/figures
 	-(cd chm; "$(HHC)" maxima.hhp)
 	mv chm/maxima.chm .
 
