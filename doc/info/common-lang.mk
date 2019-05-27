@@ -27,7 +27,7 @@ maxima.pdf: maxima_pdf.texi maxima.texi $(maxima_TEXINFOS)
 	maxima_pdf.toc maxima_pdf.fn maxima_pdf.aux maxima_pdf.log maxima_pdf.vrs
 
 contents.hhc: maxima.html
-	/usr/bin/env perl ../create_index
+	/usr/bin/env perl $(srcdir)/../create_index `grep -l name..SEC_Contents maxima*.html`
 
 include $(top_srcdir)/common.mk
 

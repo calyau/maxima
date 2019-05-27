@@ -49,7 +49,7 @@ maxima.info: $(LANGSRCDIR)/maxima.texi
 	done
 
 contents.hhc: maxima.html
-	/usr/bin/env perl $(top_srcdir)/doc/info/create_index
+	/usr/bin/env perl $(srcdir)/../create_index `grep -l name..SEC_Contents maxima*.html`
 
 infoname = maxima
 include $(top_srcdir)/common-info.mk
