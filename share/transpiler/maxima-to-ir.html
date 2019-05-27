@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>maxima-to-ir</title>
+<style type="text/css">
+    body {color: #000000; font-size: 10pt; font-family: "SansSerif", sans-serif; }
+li { list-style: none;  margin: 0; }
+p { margin: 0; }
+
+span.l { color: red; font-weight: bold; }
+
+a.mapnode:link,
+a.mapnode:visited,
+a.mapnode:active,
+a.mapnode:hover {
+    text-decoration: none; color: black;
+}
+a.mapnode:hover { background: #eeeee0; }
+
+</style>
+<!-- ^ Position is not set to relative / absolute here because of Mozilla -->
+</head>
+<body>
+<p><span style="font-size: 18pt; ">maxima-to-ir</span>
+<ul>
+<li>atom
+<ul>
+<li>$%i
+<ul>
+<li>(num 0 1)</li>
+</ul>
+</li>
+<li>$%pi
+<ul>
+<li>(num pi 0)</li>
+</ul>
+</li>
+<li>$%e
+<ul>
+<li>(num e 0)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>(consp form)
+<ul>
+<li>(consp (car form))
+<ul>
+<li>((atom ~) ~)
+<ul>
+<li>(atom (caar form))
+<ul>
+<li>((mtimes ~) exp1 exp2 ~)
+<ul>
+<li>(op * simp-exp1 simp-exp2 ~)</li>
+</ul>
+</li>
+<li>((mplus ~) exp1 exp2 ~)
+<ul>
+<li>(op + simp-exp1 simp-exp2 ~)</li>
+</ul>
+</li>
+<li>((mexpt ~) exp1 exp2)
+<ul>
+<li>(funcall pow simp-exp1 simp-exp2)</li>
+</ul>
+</li>
+<li>((mfactorial ~) exp1)
+<ul>
+<li>(funcall math.factorial simp-exp1)</li>
+</ul>
+</li>
+<li>((rat ~) exp1 exp2)
+<ul>
+<li>(op / simp-exp1 simp-exp2)</li>
+</ul>
+</li>
+<li>((mlist ~) exp1 exp2 ~)
+<ul>
+<li>(struct list simp-exp1 simp-exp2 ~)</li>
+</ul>
+</li>
+<li>((msetq ~) exp1 exp2)
+<ul>
+<li>(op = simp-exp1 simp-exp2)</li>
+</ul>
+</li>
+<li>((mdefine simp) ((atom) atom1 atom2) exp1)
+<ul>
+<li>(func-def (symbol atom1) ((symbol atom2) (symbol atom3) simp-exp1)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</body>
+</html>

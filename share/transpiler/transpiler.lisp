@@ -1,10 +1,17 @@
-(defparameter *maxima-to-ir-map* (make-hash-table))
-(setf (gethash 'mtimes *maxima-to-ir-map*) '(op *))
-(setf (gethash 'mplus *maxima-to-ir-map*) '(op +))
-(setf (gethash 'mexpt *maxima-to-ir-map*) '(funcall pow))
-(setf (gethash 'mfactorial *maxima-to-ir-map*) '(funcall math.factorial))
-(setf (gethash 'rat *maxima-to-ir-map*) '(op /))
+(defparameter *maxima-direct-ir-map* (make-hash-table))
+(setf (gethash 'mtimes *maxima-direct-ir-map*) '(op *))
+(setf (gethash 'mplus *maxima-direct-ir-map*) '(op +))
+(setf (gethash 'mexpt *maxima-direct-ir-map*) '(funcall pow))
+(setf (gethash 'mfactorial *maxima-direct-ir-map*) '(funcall math.factorial))
+(setf (gethash 'rat *maxima-direct-ir-map*) '(op /))
+(setf (gethash 'msetq *maxima-direct-ir-map*) '(op =))
+(setf (gethash 'mlist *maxima-direct-ir-map*) '(struct list))
 
+(defparameter *maxima-special-ir-map* (make-hash-table))
+(setf (gethash 'mdefine *maxima-special-ir-map*) 'func-def-to-ir)
+
+(defun func-def-to-ir (form)
+  `(func-def ,(maxima-to-ir (caaadr form)) ,(mapcar #'maxima-to-ir (cdadr form)) ,(maxima-to-ir (caddr form))))
 
 (defun atom-to-ir (form)
   (cond
@@ -19,11 +26,14 @@
   (cond
     ((atom (caar form))
      (progn
-      (setf type (gethash (caar form) *maxima-to-ir-map*))
-      (cond
-       (type (append type (mapcar #'maxima-to-ir (cdr form))))
-			   (t (cons 'no-convert form))
-			   )))))
+       (setf type (gethash (caar form) *maxima-direct-ir-map*))
+       (cond
+	 (type
+	  (append type (mapcar #'maxima-to-ir (cdr form))))
+	 ((setf type (gethash (caar form) *maxima-special-ir-map*))
+	  (funcall type form))
+	 (t (cons 'no-convert form))
+	 )))))
 
 (defun maxima-to-ir (form)
   (cond
@@ -48,3 +58,4 @@
 
 (defun $show_form (form)
   (print form))
+*maxima-special-ir-map*
