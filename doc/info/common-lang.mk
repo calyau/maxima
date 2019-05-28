@@ -19,10 +19,10 @@ maxima-index.lisp: maxima.info $(srcdir)/../build_index.pl
 	/usr/bin/env perl $(srcdir)/../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
 maxima.html: maxima.texi $(maxima_TEXINFOS)
-	/usr/bin/env perl $(srcdir)/../texi2html -split_chapter --lang=$(lang) --output=. --css-include=$(srcdir)/../manual.css --init-file texi2html.init maxima.texi 
+	/usr/bin/env perl $(srcdir)/../texi2html -split_chapter --lang=$(lang) --output=. --css-include=$(srcdir)/../manual.css --init-file $(srcdir)/texi2html.init $(srcdir)/maxima.texi 
 
 maxima.pdf: maxima_pdf.texi maxima.texi $(maxima_TEXINFOS)
-	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf maxima_pdf.texi
+	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf $(srcdir)/maxima_pdf.texi
 	rm -f maxima_pdf.fns maxima_pdf.vr maxima_pdf.tp maxima_pdf.pg maxima_pdf.ky maxima_pdf.cp \
 	maxima_pdf.toc maxima_pdf.fn maxima_pdf.aux maxima_pdf.log maxima_pdf.vrs
 

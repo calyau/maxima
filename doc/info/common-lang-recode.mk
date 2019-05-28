@@ -65,7 +65,7 @@ maxima.html: $(LANGSRCDIR)/maxima.texi
 	/usr/bin/env perl $(srcdir)/../texi2html --split_chapter --lang=$(INFOLANGOPT) --output=. \
 	  --css-include=$(srcdir)/../manual.css \
 	  -I $(LANGSRCDIR) -I $(LANGBUILDDIR) \
-	  --init-file $(srcdir)/../texi2html.init \
+	  --init-file $(srcdir)/texi2html.init \
 	  $<
 	for f in maxima*.html; do \
 	    if test x$(urecode) = xtrue ; then \
