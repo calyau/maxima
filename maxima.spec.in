@@ -79,6 +79,16 @@ that can be used from Maxima, and a Web browser that
 accepts a custom html tag to execute Maxima commands from
 an html page. Xmaxima is written in the Tcl/Tk language.
 
+%package maxima-emacs
+Summary: Emacs modes for maima
+Group: Sciences/Mathematics
+Requires: maxima = %{version}, emacs
+Provides: maxima-emacs
+%description maxima-emacs
+
+emaxima and imaxima, two emacs packages that allow to run
+maxima interactively from an emacs buffer.
+
 %if %{enable_clisp}
 %package exec-clisp
 Summary: Maxima compiled with clisp
@@ -294,6 +304,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/xmaxima
 %{_datadir}/maxima/*/xmaxima
 %{_infodir}/xmaxima*
+
+%files maxima-emacs
+%{_datadir}/emacs/*/*
 
 %if %{enable_clisp}
 %files exec-clisp

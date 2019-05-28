@@ -44,5 +44,5 @@ You can build rpm files from an unpacked tarball or Git checkout.
     $ make rpm
     
     The maxima.spec file that is generated during this process builds
-    three binary rpms:
-    maxima, maxima-xmaxima, and maxima-exec-<whatever>.
+    four binary rpms:
+    maxima, maxima-emacs, maxima-xmaxima, and maxima-exec-<whatever>.
