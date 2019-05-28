@@ -166,6 +166,10 @@ iss: win32-lisp-runtime wxmaxima gnuplot extradocinstall
 
 endif # WIN32
 
+rpm: maxima.spec dist-gzip
+	rpmbuild -ba $(top_srcdir)/maxima.spec --define "_sourcedir $(abs_top_builddir)"
+	rpmbuild -bb $(top_srcdir)/maxima.spec --define "_sourcedir $(abs_top_builddir)"
+
 clean-local:
 	rm -rf bin
 	rm -rf binary
