@@ -237,32 +237,32 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %dir %{_datadir}/maxima
-%exclude %{_datadir}/maxima/%{version}/xmaxima
-%{_datadir}/maxima/%{version}
+%exclude %{_datadir}/maxima/*/xmaxima
+%{_datadir}/maxima/*
 %if %{enable_lang_es}
-%exclude %{_datadir}/maxima/%{version}/doc/html/es
+%exclude %{_datadir}/maxima/*/doc/html/es
 %endif
 %if %{enable_lang_pt}
-%exclude %{_datadir}/maxima/%{version}/doc/html/pt
+%exclude %{_datadir}/maxima/*/doc/html/pt
 %endif
 %if %{enable_lang_pt_br}
-%exclude %{_datadir}/maxima/%{version}/doc/html/pt_BR
+%exclude %{_datadir}/maxima/*/doc/html/pt_BR
 %endif
 %if %{enable_lang_es_utf}
-%exclude %{_datadir}/maxima/%{version}/doc/html/es.utf8
+%exclude %{_datadir}/maxima/*/doc/html/es.utf8
 %endif
 %if %{enable_lang_pt_utf}
-%exclude %{_datadir}/maxima/%{version}/doc/html/pt.utf8
+%exclude %{_datadir}/maxima/*/doc/html/pt.utf8
 %endif
 %if %{enable_lang_pt_br_utf}
-%exclude %{_datadir}/maxima/%{version}/doc/html/pt_BR.utf8
+%exclude %{_datadir}/maxima/*/doc/html/pt_BR.utf8
 %endif
 %{_datadir}/applications
 %{_datadir}/bash-completion
 %{_datadir}/pixmaps
 %{_datadir}/mime
 %dir %{_libexecdir}/maxima
-%{_libexecdir}/maxima/%{version}
+%{_libexecdir}/maxima/*
 %{_infodir}/*
 %exclude %{_infodir}/xmaxima.info*
 %if %{enable_lang_es}
@@ -292,67 +292,67 @@ rm -rf $RPM_BUILD_ROOT
 
 %files xmaxima
 %{_bindir}/xmaxima
-%{_datadir}/maxima/%{version}/xmaxima
+%{_datadir}/maxima/*/xmaxima
 %{_infodir}/xmaxima*
 
 %if %{enable_clisp}
 %files exec-clisp
-%{_libdir}/maxima/%{version}/binary-clisp
+%{_libdir}/maxima/*/binary-clisp
 %endif
 
 %if %{enable_ccl}
 %files exec-ccl
-%{_libdir}/maxima/%{version}/binary-openmcl
+%{_libdir}/maxima/*/binary-openmcl
 %endif
 
 %if %{enable_cmucl}
 %files exec-cmucl
-%{_libdir}/maxima/%{version}/binary-cmucl
+%{_libdir}/maxima/*/binary-cmucl
 %endif
 
 %if %{enable_sbcl}
 %files exec-sbcl
-%{_libdir}/maxima/%{version}/binary-sbcl
+%{_libdir}/maxima/*/binary-sbcl
 %endif
 
 %if %{enable_gcl}
 %files exec-gcl
-%{_libdir}/maxima/%{version}/binary-gcl
+%{_libdir}/maxima/*/binary-gcl
 %endif
 
 %if %{enable_lang_es}
 %files lang-es
-%{_datadir}/maxima/%{version}/doc/html/es
+%{_datadir}/maxima/*/doc/html/es
 %{_infodir}/es
 %endif
 
 %if %{enable_lang_es_utf}
 %files lang-es-utf8
-%{_datadir}/maxima/%{version}/doc/html/es.utf8
+%{_datadir}/maxima/*/doc/html/es.utf8
 %{_infodir}/es.utf8
 %endif
 
 %if %{enable_lang_pt}
 %files lang-pt
-%{_datadir}/maxima/%{version}/doc/html/pt
+%{_datadir}/maxima/*/doc/html/pt
 %{_infodir}/pt
 %endif
 
 %if %{enable_lang_pt_utf}
 %files lang-pt-utf8
-%{_datadir}/maxima/%{version}/doc/html/pt.utf8
+%{_datadir}/maxima/*/doc/html/pt.utf8
 %{_infodir}/pt.utf8
 %endif
 
 %if %{enable_lang_pt_br}
 %files lang-pt_BR
-%{_datadir}/maxima/%{version}/doc/html/pt_BR
+%{_datadir}/maxima/*/doc/html/pt_BR
 %{_infodir}/pt_BR
 %endif
 
 %if %{enable_lang_pt_br_utf}
 %files lang-pt_BR-utf8
-%{_datadir}/maxima/%{version}/doc/html/pt_BR.utf8
+%{_datadir}/maxima/*/doc/html/pt_BR.utf8
 %{_infodir}/pt_BR.utf8
 %endif
 
