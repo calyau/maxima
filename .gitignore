@@ -14,7 +14,7 @@ Makefile.in
 /depcomp
 /test-driver
 /bin
-
+x86_64
 mkinstalldirs
 xmaxima-local
 maxima-local
