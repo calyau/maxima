@@ -150,6 +150,7 @@ figures/draw_colorbox.gif\
 figures/draw_color.gif\
 figures/draw_color2.gif\
 figures/draw_color3.gif\
+figures/draw_color4.gif\
 figures/draw_columns.gif\
 figures/draw_contour2.gif\
 figures/draw_contour.gif\
@@ -370,6 +371,7 @@ figures/draw_colorbox.pdf\
 figures/draw_color.pdf\
 figures/draw_color2.pdf\
 figures/draw_color3.pdf\
+figures/draw_color4.pdf\
 figures/draw_columns.pdf\
 figures/draw_contour2.pdf\
 figures/draw_contour.pdf\
