@@ -1,6 +1,6 @@
 EXTRA_DIST = x-mac.xml x-maxima-out.xml \
   text-x-maximasession.svg text-x-maxima-out.svg maxima rmaxima xmaxima \
-  xmaxima.desktop
+  net.sourceforge.maxima.xmaxima.desktop
 
 appinfodir = $(datarootdir)/metainfo
 dist_appinfo_DATA = net.sourceforge.maxima.xmaxima.appdata.xml
