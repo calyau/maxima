@@ -16,39 +16,168 @@ a.mapnode:hover {
     text-decoration: none; color: black;
 }
 a.mapnode:hover { background: #eeeee0; }
+span.foldopened, span.foldclosed  {
+    font-size: xx-small;
+    border-width: 1;
+    font-family: monospace;
+    padding: 0em 0.25em 0em 0.25em;
+    background: #e0e0e0;
+    cursor:pointer;
+}
+span.foldopened  {
+    color: white;
+    VISIBILITY: visible;
+}
+span.foldclosed {
+    color: #666666;
+    VISIBILITY: hidden;
+}
+span.foldspecial {
+    color: #666666;
+    font-size: xx-small;
+    border-style: none solid solid none;
+    border-color: #CCCCCC;
+    border-width: 1;
+    font-family: sans-serif;
+    padding: 0em 0.1em 0em 0.1em;
+    background: #e0e0e0;
+    cursor:pointer;
+}
 
 </style>
 <!-- ^ Position is not set to relative / absolute here because of Mozilla -->
 </head>
 <body>
+<script type="text/javascript">
+// Here we implement folding. It works fine with MSIE5.5, MSIE6.0 and
+// Mozilla 0.9.6.
+
+if (document.layers) {
+    //Netscape 4 specific code
+    pre = 'document.';
+    post = ''; }
+if (document.getElementById) {
+    //Netscape 6 specific code
+    pre = 'document.getElementById("';
+    post = '").style'; }
+if (document.all) {
+    //IE4+ specific code
+    pre = 'document.all.';
+    post = '.style'; }
+
+function layer_exists(layer) {
+    try {
+	eval(pre + layer + post);
+	return true; }
+    catch (error) {
+	return false; }}
+
+function show_layer(layer) {
+    eval(pre + layer + post).position = 'relative';
+    eval(pre + layer + post).visibility = 'visible'; }
+
+function hide_layer(layer) {
+    eval(pre + layer + post).visibility = 'hidden';
+    eval(pre + layer + post).position = 'absolute'; }
+
+function hide_folder(folder) {
+    hide_folding_layer(folder);
+    show_layer('show'+folder);
+
+    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
+}
+
+function show_folder(folder) {
+    // Precondition: all subfolders are folded
+
+    show_layer('hide'+folder);
+    hide_layer('show'+folder);
+    show_layer('fold'+folder);
+
+    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
+
+    var i;
+    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+	show_layer('show'+folder+'_'+i); }
+}
+function show_folder_completely(folder) {
+    // Precondition: all subfolders are folded
+
+    show_layer('hide'+folder);
+    hide_layer('show'+folder);
+    show_layer('fold'+folder);
+
+    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
+
+    var i;
+    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+	show_folder_completely(folder+'_'+i); }
+}
+
+
+
+function hide_folding_layer(folder) {
+    var i;
+    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+	hide_folding_layer(folder+'_'+i); }
+
+    hide_layer('hide'+folder);
+    hide_layer('show'+folder);
+    hide_layer('fold'+folder);
+
+    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
+}
+
+function fold_document() {
+    var i;
+    var folder = '1';
+    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+	hide_folder(folder+'_'+i); }
+}
+
+function unfold_document() {
+    var i;
+    var folder = '1';
+    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+	show_folder_completely(folder+'_'+i); }
+}
+
+</script>
+<SPAN class="foldspecial" onclick="unfold_document()">All +</SPAN>
+<SPAN class="foldspecial" onclick="fold_document()">All -</SPAN>
 <p><span style="font-size: 18pt; ">maxima-to-ir</span>
 <ul>
-<li>atom
+<li><span style="color: #0033ff; font-size: 16pt; ">atom</span>
 <ul>
-<li>$%i
+<li><span style="color: #00b439; font-size: 14pt; ">$%i</span>
 <ul>
-<li>(num 0 1)</li>
+<li><span style="color: #990000; font-size: 12pt; ">(num 0 1)</span></li>
 </ul>
 </li>
-<li>$%pi
+<li><span style="color: #00b439; font-size: 14pt; ">$%pi</span>
 <ul>
-<li>(num pi 0)</li>
+<li><span style="color: #990000; font-size: 12pt; ">(num pi 0)</span></li>
 </ul>
 </li>
-<li>$%e
+<li><span style="color: #00b439; font-size: 14pt; ">$%e</span>
 <ul>
-<li>(num e 0)</li>
+<li><span style="color: #990000; font-size: 12pt; ">(num e 0)</span></li>
+</ul>
+</li>
+<li><span style="color: #00b439; font-size: 14pt; ">(stringp form)</span>
+<ul>
+<li><span style="color: #990000; font-size: 12pt; ">(string form)</span></li>
 </ul>
 </li>
 </ul>
 </li>
-<li>(consp form)
+<li><span style="color: #0033ff; font-size: 16pt; ">(consp form)</span>
 <ul>
-<li>(consp (car form))
+<li><span style="color: #00b439; font-size: 14pt; ">(consp (car form))</span>
 <ul>
-<li>((atom ~) ~)
+<li><span style="color: #990000; font-size: 12pt; ">((atom ~) ~)</span>
 <ul>
-<li>(atom (caar form))
+<li><span style="color: #111111; ">(atom (caar form))</span>
 <ul>
 <li>((mtimes ~) exp1 exp2 ~)
 <ul>
@@ -65,8 +194,9 @@ a.mapnode:hover { background: #eeeee0; }
 <li>(funcall pow simp-exp1 simp-exp2)</li>
 </ul>
 </li>
-<li>((mfactorial ~) exp1)
-<ul>
+<li><span id="show1_1" class="foldclosed" onClick="show_folder('1_1')" style="POSITION: absolute">+</span> <span id="hide1_1" class="foldopened" onClick="hide_folder('1_1')">-</span>
+((mfactorial ~) exp1)
+<ul id="fold1_1" style="POSITION: relative; VISIBILITY: visible;">
 <li>(funcall math.factorial simp-exp1)</li>
 </ul>
 </li>
@@ -90,6 +220,108 @@ a.mapnode:hover { background: #eeeee0; }
 <li>(func-def (symbol atom1) ((symbol atom2) (symbol atom3) simp-exp1)</li>
 </ul>
 </li>
+<li>((mprog) exp1 exp2 ~)
+<ul>
+<li>(block list simp-exp1 simp-exp2 ~)</li>
+</ul>
+</li>
+<li>((%array ~) name num1 num2 ~)
+<ul>
+<li>(OP = (SYMBOL <Name>)&#10;    (OP *&#10;        (STRUCT LIST&#10;            (OP *&#10;                (STRUCT LIST ...~... (SYMBOL "None"))&#10;            num2))&#10;    num1))</li>
+</ul>
+</li>
+<li>((%array ~) name type num1 num2 ~)
+<ul>
+<li>(OP = (SYMBOL <Name>)&#10;    (OP *&#10;        (STRUCT LIST&#10;            (OP *&#10;                (STRUCT LIST ...~... (SYMBOL "None"))&#10;            num2))&#10;    num1))</li>
+</ul>
+</li>
+<li>((%array ~) ((mlist ~) name1 name2 ~) num1 num2 ~)
+<ul>
+<li>
+<ul>
+<li><span id="show1_2" class="foldclosed" onClick="show_folder('1_2')" style="POSITION: absolute">+</span> <span id="hide1_2" class="foldopened" onClick="hide_folder('1_2')">-</span>
+(BLOCK LIST&#10;  (OP = (SYMBOL <name1>)&#10;      (OP *&#10;          (STRUCT LIST&#10;                  (OP *&#10;                      (STRUCT LIST&#10;                              (OP * ..~.. (STRUCT LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1))&#10;  (OP = (SYMBOL <name2>)&#10;      (OP *&#10;          (STRUCT LIST&#10;                  (OP *&#10;                      (STRUCT LIST&#10;                              (OP * ..~.. (STRUCT LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1))&#10;&#10;....&#10;&#10;&#10;  (OP = (SYMBOL <name-n>)&#10;      (OP *&#10;          (STRUCT LIST&#10;                  (OP *&#10;                      (STRUCT LIST&#10;                              (OP * ..~.. (STRUCT LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1)))
+<ul id="fold1_2" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_1" class="foldclosed" onClick="show_folder('1_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1" class="foldopened" onClick="hide_folder('1_2_1')">-</span>
+(OP = (SYMBOL "REF")
+<ul id="fold1_2_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_1_1" class="foldclosed" onClick="show_folder('1_2_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1" class="foldopened" onClick="hide_folder('1_2_1_1')">-</span>
+(OP *
+<ul id="fold1_2_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_1_1_1" class="foldclosed" onClick="show_folder('1_2_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1_1" class="foldopened" onClick="hide_folder('1_2_1_1_1')">-</span>
+(STRUCT LIST
+<ul id="fold1_2_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_1_1_1_1" class="foldclosed" onClick="show_folder('1_2_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1_1_1" class="foldopened" onClick="hide_folder('1_2_1_1_1_1')">-</span>
+(OP *
+<ul id="fold1_2_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_1_1_1_1_1" class="foldclosed" onClick="show_folder('1_2_1_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1_1_1_1" class="foldopened" onClick="hide_folder('1_2_1_1_1_1_1')">-</span>
+(STRUCT LIST
+<ul id="fold1_2_1_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li>(OP * (STRUCT LIST (SYMBOL "None")) 3))</li>
+</ul>
+</li>
+<li>2))</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>1))</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span id="show1_2_2" class="foldclosed" onClick="show_folder('1_2_2')" style="POSITION: absolute">+</span> <span id="hide1_2_2" class="foldopened" onClick="hide_folder('1_2_2')">-</span>
+(OP = (SYMBOL "SVSV")
+<ul id="fold1_2_2" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_2_1" class="foldclosed" onClick="show_folder('1_2_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_2_1" class="foldopened" onClick="hide_folder('1_2_2_1')">-</span>
+(OP *
+<ul id="fold1_2_2_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_2_1_1" class="foldclosed" onClick="show_folder('1_2_2_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_2_1_1" class="foldopened" onClick="hide_folder('1_2_2_1_1')">-</span>
+(STRUCT LIST
+<ul id="fold1_2_2_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_2_1_1_1" class="foldclosed" onClick="show_folder('1_2_2_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_2_1_1_1" class="foldopened" onClick="hide_folder('1_2_2_1_1_1')">-</span>
+(OP *
+<ul id="fold1_2_2_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_2_1_1_1_1" class="foldclosed" onClick="show_folder('1_2_2_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_2_1_1_1_1" class="foldopened" onClick="hide_folder('1_2_2_1_1_1_1')">-</span>
+(STRUCT LIST
+<ul id="fold1_2_2_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li>(OP * (STRUCT LIST (SYMBOL "None")) 3))</li>
+</ul>
+</li>
+<li>2))</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>1))</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span id="show1_2_3" class="foldclosed" onClick="show_folder('1_2_3')" style="POSITION: absolute">+</span> <span id="hide1_2_3" class="foldopened" onClick="hide_folder('1_2_3')">-</span>
+(OP = (SYMBOL "SDVSDV")
+<ul id="fold1_2_3" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_3_1" class="foldclosed" onClick="show_folder('1_2_3_1')" style="POSITION: absolute">+</span> <span id="hide1_2_3_1" class="foldopened" onClick="hide_folder('1_2_3_1')">-</span>
+(OP *
+<ul id="fold1_2_3_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_3_1_1" class="foldclosed" onClick="show_folder('1_2_3_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_3_1_1" class="foldopened" onClick="hide_folder('1_2_3_1_1')">-</span>
+(STRUCT LIST
+<ul id="fold1_2_3_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_3_1_1_1" class="foldclosed" onClick="show_folder('1_2_3_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_3_1_1_1" class="foldopened" onClick="hide_folder('1_2_3_1_1_1')">-</span>
+(OP *
+<ul id="fold1_2_3_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_2_3_1_1_1_1" class="foldclosed" onClick="show_folder('1_2_3_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_3_1_1_1_1" class="foldopened" onClick="hide_folder('1_2_3_1_1_1_1')">-</span>
+(STRUCT LIST
+<ul id="fold1_2_3_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li>(OP * (STRUCT LIST (SYMBOL "None")) 3))</li>
+</ul>
+</li>
+<li>2))</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>1)))</li>
 </ul>
 </li>
 </ul>
@@ -99,5 +331,18 @@ a.mapnode:hover { background: #eeeee0; }
 </ul>
 </li>
 </ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<SCRIPT type="text/javascript">
+fold_document();
+</SCRIPT>
 </body>
 </html>
