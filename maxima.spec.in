@@ -3,6 +3,7 @@
 # By default, this spec file will generate RPMs for clisp
 # This can be changed by modifying the variables below.
 %define _rpmdir @abs_top_builddir@
+%define _sourcedir @abs_top_builddir@
 %define enable_clisp 1
 %define clisp_flags --enable-clisp-exec
 %define enable_ccl 0
