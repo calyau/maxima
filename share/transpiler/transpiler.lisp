@@ -1,12 +1,21 @@
 (defparameter *maxima-direct-ir-map* (make-hash-table))
 (setf (gethash 'mtimes *maxima-direct-ir-map*) '(op *))
 (setf (gethash 'mplus *maxima-direct-ir-map*) '(op +))
-(setf (gethash 'mexpt *maxima-direct-ir-map*) '(funcall pow))
+(setf (gethash 'mexpt *maxima-direct-ir-map*) '(funcall (symbol "pow")))
 (setf (gethash 'mfactorial *maxima-direct-ir-map*) '(funcall math.factorial))
 (setf (gethash 'rat *maxima-direct-ir-map*) '(op /))
 (setf (gethash 'msetq *maxima-direct-ir-map*) '(op =))
 (setf (gethash 'mlist *maxima-direct-ir-map*) '(struct list))
 (setf (gethash 'mprog *maxima-direct-ir-map*) '(block list))
+(setf (gethash 'mand *maxima-direct-ir-map*) '(boolop and))
+(setf (gethash 'mor *maxima-direct-ir-map*) '(boolop or))
+(setf (gethash 'mnot *maxima-direct-ir-map*) '(funcall (symbol "not")))
+(setf (gethash 'mgreaterp *maxima-direct-ir-map*) '(comp-op gr))
+(setf (gethash 'mequal *maxima-direct-ir-map*) '(comp-op eq))
+(setf (gethash 'mnotequal *maxima-direct-ir-map*) '(comp-op neq))
+(setf (gethash 'mlessp *maxima-direct-ir-map*) '(comp-op le))
+(setf (gethash 'mgeqp *maxima-direct-ir-map*) '(comp-op ge))
+(setf (gethash 'mleqp *maxima-direct-ir-map*) '(comp-op leq))
 
 (defparameter *maxima-special-ir-map* (make-hash-table))
 (setf (gethash 'mdefine *maxima-special-ir-map*) 'func-def-to-ir)
@@ -30,6 +39,12 @@
 	 (auxillary-array-to-ir (maxima-to-ir (cadr form)) (cdddr form)))
 	(t
 	 (auxillary-array-to-ir (maxima-to-ir (cadr form)) (cddr form)))))
+
+;;; Function to convert reference to array elements to IR
+;;; TODO : However, a for arrays that are undefined, it needs to be assigned to a hashed array(dictionary)
+(defun array-ref-to-ir (symbol indices)
+  (cond ((null indices) (maxima-to-ir symbol)) 
+	(t `(element-array ,(array-ref-to-ir symbol (butlast indices)) ,(maxima-to-ir (car (last indices)))))))
 
 ;;; Generates IR for function definition
 (defun func-def-to-ir (form)
@@ -57,7 +72,11 @@
 	  (append type (mapcar #'maxima-to-ir (cdr form))))
 	 ((setf type (gethash (caar form) *maxima-special-ir-map*))
 	  (funcall type form))
-	 (t (cons 'no-convert form))
+	 ((member 'array (car form))
+	  (array-ref-to-ir (caar form) (cdr form)))
+	 (t
+	  (append `(funcall ,(maxima-to-ir (caar form)))
+		  (mapcar #'maxima-to-ir (cdr form))))
 	 )))))
 
 (defun maxima-to-ir (form)

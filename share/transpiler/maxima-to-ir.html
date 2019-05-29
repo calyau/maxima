@@ -332,6 +332,61 @@ function unfold_document() {
 </li>
 </ul>
 </li>
+<li>((array-name simp array) index1 index2 ~_
+<ul>
+<li>(element-array (element-array (element-array (symbol <array-name>) index-1) index-2) .. index-n)</li>
+</ul>
+</li>
+<li>DEFAULT CASE
+<ul>
+<li>(funcall (symbol <(caar form)>) simp-exp1 simp-exp2 ~)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span style="color: #111111; ">((mnot ~) exp)</span>
+<ul>
+<li>(funcall (symbol "not") simp-exp)</li>
+</ul>
+</li>
+<li><span style="color: #111111; ">((mand ~) exp-1 exp-2 ~)</span>
+<ul>
+<li>(boolop and simp-exp-1 simp-exp-2)</li>
+</ul>
+</li>
+<li><span style="color: #111111; ">((mor ~) exp-1 exp-2 ~)</span>
+<ul>
+<li>(boolop or simp-exp-1 simp-exp-2)</li>
+</ul>
+</li>
+<li><span style="color: #111111; ">((mgreaterp ~) exp exp)</span>
+<ul>
+<li>(comp-op gr exp exp)</li>
+</ul>
+</li>
+<li><span style="color: #111111; ">((mequal ~) exp exp)</span>
+<ul>
+<li>(comp-op eq exp exp)</li>
+</ul>
+</li>
+<li><span style="color: #111111; ">((mnotequal ~) exp exp)</span>
+<ul>
+<li>(comp-op neq exp exp)</li>
+</ul>
+</li>
+<li><span style="color: #111111; ">((mlessp ~) exp exp)</span>
+<ul>
+<li>(comp-op le exp exp)</li>
+</ul>
+</li>
+<li><span style="color: #111111; ">((mgeqp ~) exp exp)</span>
+<ul>
+<li>(comp-op geq exp exp)</li>
+</ul>
+</li>
+<li><span style="color: #111111; ">((mleqp ~) exp exp)</span>
+<ul>
+<li>(comp-op leq exp exp)</li>
 </ul>
 </li>
 </ul>
