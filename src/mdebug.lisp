@@ -35,6 +35,8 @@
 
 (defvar $mdebug_print_length 100 "Length of forms to print out in debugger")
 
+(defvar *lisp-quiet-suppressed-prompt* "" "The prompt lisp-quiet has suppressed")
+
 (defmacro bak-top-form (x) x)
 
 (defun frame-info (n)
@@ -653,6 +655,8 @@ Command      Description~%~
   "Print information about item")
 
 (defmacro lisp-quiet (&rest l)
+  (if (not (string= *mread-prompt* ""))
+      (setq *lisp-quiet-suppressed-prompt* *mread-prompt*))
   (setq *mread-prompt* "")
   (eval (cons 'progn l))
   nil)
@@ -664,6 +668,9 @@ Command      Description~%~
   "Evaluate the lisp form following on the line")
 
 (defmacro lisp-eval (&rest l)
+  (if (string= *mread-prompt* "")
+      (setq *mread-prompt* *lisp-quiet-suppressed-prompt*))
+  
   (dolist (v (multiple-value-list (eval (cons 'progn l))))
     (fresh-line *standard-output*)
     (princ v)))
