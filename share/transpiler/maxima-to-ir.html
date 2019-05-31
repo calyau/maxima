@@ -215,9 +215,9 @@ function unfold_document() {
 <li>(op = simp-exp1 simp-exp2)</li>
 </ul>
 </li>
-<li>((mdefine simp) ((atom) atom1 atom2) exp1)
+<li>((mdefine simp) ((atom) atom1 atom2 ((mlist) atom3)) exp1)
 <ul>
-<li>(func-def (symbol atom1) ((symbol atom2) (symbol atom3) simp-exp1)</li>
+<li>(func-def (symbol atom) ((symbol atom1) (symbol atom2) (symbol *atom3)) simp-exp1)</li>
 </ul>
 </li>
 <li>((mprog) exp1 exp2 ~)
@@ -239,24 +239,23 @@ function unfold_document() {
 <ul>
 <li>
 <ul>
+<li>(BLOCK LIST&#10;  (OP = (SYMBOL <name1>)&#10;      (OP *&#10;          (STRUCT LIST&#10;                  (OP *&#10;                      (STRUCT LIST&#10;                              (OP * ..~.. (STRUCT LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1))&#10;  (OP = (SYMBOL <name2>)&#10;      (OP *&#10;          (STRUCT LIST&#10;                  (OP *&#10;                      (STRUCT LIST&#10;                              (OP * ..~.. (STRUCT LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1))&#10;&#10;....&#10;&#10;&#10;  (OP = (SYMBOL <name-n>)&#10;      (OP *&#10;          (STRUCT LIST&#10;                  (OP *&#10;                      (STRUCT LIST&#10;                              (OP * ..~.. (STRUCT LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1)))
+<ul>
 <li><span id="show1_2" class="foldclosed" onClick="show_folder('1_2')" style="POSITION: absolute">+</span> <span id="hide1_2" class="foldopened" onClick="hide_folder('1_2')">-</span>
-(BLOCK LIST&#10;  (OP = (SYMBOL <name1>)&#10;      (OP *&#10;          (STRUCT LIST&#10;                  (OP *&#10;                      (STRUCT LIST&#10;                              (OP * ..~.. (STRUCT LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1))&#10;  (OP = (SYMBOL <name2>)&#10;      (OP *&#10;          (STRUCT LIST&#10;                  (OP *&#10;                      (STRUCT LIST&#10;                              (OP * ..~.. (STRUCT LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1))&#10;&#10;....&#10;&#10;&#10;  (OP = (SYMBOL <name-n>)&#10;      (OP *&#10;          (STRUCT LIST&#10;                  (OP *&#10;                      (STRUCT LIST&#10;                              (OP * ..~.. (STRUCT LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1)))
+(OP = (SYMBOL "REF")
 <ul id="fold1_2" style="POSITION: relative; VISIBILITY: visible;">
 <li><span id="show1_2_1" class="foldclosed" onClick="show_folder('1_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1" class="foldopened" onClick="hide_folder('1_2_1')">-</span>
-(OP = (SYMBOL "REF")
+(OP *
 <ul id="fold1_2_1" style="POSITION: relative; VISIBILITY: visible;">
 <li><span id="show1_2_1_1" class="foldclosed" onClick="show_folder('1_2_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1" class="foldopened" onClick="hide_folder('1_2_1_1')">-</span>
-(OP *
+(STRUCT LIST
 <ul id="fold1_2_1_1" style="POSITION: relative; VISIBILITY: visible;">
 <li><span id="show1_2_1_1_1" class="foldclosed" onClick="show_folder('1_2_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1_1" class="foldopened" onClick="hide_folder('1_2_1_1_1')">-</span>
-(STRUCT LIST
+(OP *
 <ul id="fold1_2_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
 <li><span id="show1_2_1_1_1_1" class="foldclosed" onClick="show_folder('1_2_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1_1_1" class="foldopened" onClick="hide_folder('1_2_1_1_1_1')">-</span>
-(OP *
+(STRUCT LIST
 <ul id="fold1_2_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_1_1_1_1_1" class="foldclosed" onClick="show_folder('1_2_1_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1_1_1_1" class="foldopened" onClick="hide_folder('1_2_1_1_1_1_1')">-</span>
-(STRUCT LIST
-<ul id="fold1_2_1_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
 <li>(OP * (STRUCT LIST (SYMBOL "None")) 3))</li>
 </ul>
 </li>
@@ -270,21 +269,21 @@ function unfold_document() {
 </li>
 </ul>
 </li>
-<li><span id="show1_2_2" class="foldclosed" onClick="show_folder('1_2_2')" style="POSITION: absolute">+</span> <span id="hide1_2_2" class="foldopened" onClick="hide_folder('1_2_2')">-</span>
+<li><span id="show1_3" class="foldclosed" onClick="show_folder('1_3')" style="POSITION: absolute">+</span> <span id="hide1_3" class="foldopened" onClick="hide_folder('1_3')">-</span>
 (OP = (SYMBOL "SVSV")
-<ul id="fold1_2_2" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_2_1" class="foldclosed" onClick="show_folder('1_2_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_2_1" class="foldopened" onClick="hide_folder('1_2_2_1')">-</span>
+<ul id="fold1_3" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_3_1" class="foldclosed" onClick="show_folder('1_3_1')" style="POSITION: absolute">+</span> <span id="hide1_3_1" class="foldopened" onClick="hide_folder('1_3_1')">-</span>
 (OP *
-<ul id="fold1_2_2_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_2_1_1" class="foldclosed" onClick="show_folder('1_2_2_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_2_1_1" class="foldopened" onClick="hide_folder('1_2_2_1_1')">-</span>
+<ul id="fold1_3_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_3_1_1" class="foldclosed" onClick="show_folder('1_3_1_1')" style="POSITION: absolute">+</span> <span id="hide1_3_1_1" class="foldopened" onClick="hide_folder('1_3_1_1')">-</span>
 (STRUCT LIST
-<ul id="fold1_2_2_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_2_1_1_1" class="foldclosed" onClick="show_folder('1_2_2_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_2_1_1_1" class="foldopened" onClick="hide_folder('1_2_2_1_1_1')">-</span>
+<ul id="fold1_3_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_3_1_1_1" class="foldclosed" onClick="show_folder('1_3_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_3_1_1_1" class="foldopened" onClick="hide_folder('1_3_1_1_1')">-</span>
 (OP *
-<ul id="fold1_2_2_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_2_1_1_1_1" class="foldclosed" onClick="show_folder('1_2_2_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_2_1_1_1_1" class="foldopened" onClick="hide_folder('1_2_2_1_1_1_1')">-</span>
+<ul id="fold1_3_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_3_1_1_1_1" class="foldclosed" onClick="show_folder('1_3_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_3_1_1_1_1" class="foldopened" onClick="hide_folder('1_3_1_1_1_1')">-</span>
 (STRUCT LIST
-<ul id="fold1_2_2_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<ul id="fold1_3_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
 <li>(OP * (STRUCT LIST (SYMBOL "None")) 3))</li>
 </ul>
 </li>
@@ -298,21 +297,21 @@ function unfold_document() {
 </li>
 </ul>
 </li>
-<li><span id="show1_2_3" class="foldclosed" onClick="show_folder('1_2_3')" style="POSITION: absolute">+</span> <span id="hide1_2_3" class="foldopened" onClick="hide_folder('1_2_3')">-</span>
+<li><span id="show1_4" class="foldclosed" onClick="show_folder('1_4')" style="POSITION: absolute">+</span> <span id="hide1_4" class="foldopened" onClick="hide_folder('1_4')">-</span>
 (OP = (SYMBOL "SDVSDV")
-<ul id="fold1_2_3" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_3_1" class="foldclosed" onClick="show_folder('1_2_3_1')" style="POSITION: absolute">+</span> <span id="hide1_2_3_1" class="foldopened" onClick="hide_folder('1_2_3_1')">-</span>
+<ul id="fold1_4" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_4_1" class="foldclosed" onClick="show_folder('1_4_1')" style="POSITION: absolute">+</span> <span id="hide1_4_1" class="foldopened" onClick="hide_folder('1_4_1')">-</span>
 (OP *
-<ul id="fold1_2_3_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_3_1_1" class="foldclosed" onClick="show_folder('1_2_3_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_3_1_1" class="foldopened" onClick="hide_folder('1_2_3_1_1')">-</span>
+<ul id="fold1_4_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_4_1_1" class="foldclosed" onClick="show_folder('1_4_1_1')" style="POSITION: absolute">+</span> <span id="hide1_4_1_1" class="foldopened" onClick="hide_folder('1_4_1_1')">-</span>
 (STRUCT LIST
-<ul id="fold1_2_3_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_3_1_1_1" class="foldclosed" onClick="show_folder('1_2_3_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_3_1_1_1" class="foldopened" onClick="hide_folder('1_2_3_1_1_1')">-</span>
+<ul id="fold1_4_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_4_1_1_1" class="foldclosed" onClick="show_folder('1_4_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_4_1_1_1" class="foldopened" onClick="hide_folder('1_4_1_1_1')">-</span>
 (OP *
-<ul id="fold1_2_3_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_3_1_1_1_1" class="foldclosed" onClick="show_folder('1_2_3_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_3_1_1_1_1" class="foldopened" onClick="hide_folder('1_2_3_1_1_1_1')">-</span>
+<ul id="fold1_4_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li><span id="show1_4_1_1_1_1" class="foldclosed" onClick="show_folder('1_4_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_4_1_1_1_1" class="foldopened" onClick="hide_folder('1_4_1_1_1_1')">-</span>
 (STRUCT LIST
-<ul id="fold1_2_3_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
+<ul id="fold1_4_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
 <li>(OP * (STRUCT LIST (SYMBOL "None")) 3))</li>
 </ul>
 </li>

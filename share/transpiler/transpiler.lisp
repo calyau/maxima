@@ -46,9 +46,15 @@
   (cond ((null indices) (maxima-to-ir symbol)) 
 	(t `(element-array ,(array-ref-to-ir symbol (butlast indices)) ,(maxima-to-ir (car (last indices)))))))
 
+;;; Convert Function args to corresponding IR
+;;; Convert the optional list argument into corresponding *args form in python
+(defun func-arg-to-ir (form)
+  (cond ((consp form) (cond ((eq (caar form) 'mlist) `(symbol ,(concatenate 'string "*" (subseq (symbol-name (cadr form)) 1))))))
+	(t (maxima-to-ir form))))
+
 ;;; Generates IR for function definition
 (defun func-def-to-ir (form)
-  `(func-def ,(maxima-to-ir (caaadr form)) ,(mapcar #'maxima-to-ir (cdadr form)) ,(maxima-to-ir (caddr form))))
+  `(func-def ,(maxima-to-ir (caaadr form)) ,(mapcar #'func-arg-to-ir (cdadr form)) ,(maxima-to-ir (caddr form))))
 
 ;;; Generates IR for atomic forms
 (defun atom-to-ir (form)
@@ -68,8 +74,10 @@
      (progn
        (setf type (gethash (caar form) *maxima-direct-ir-map*))
        (cond
+	 ;;; If the form is present in *maxima-direct-ir-map*
 	 (type
 	  (append type (mapcar #'maxima-to-ir (cdr form))))
+	 ;;; If the form is to be transformed in a specific way
 	 ((setf type (gethash (caar form) *maxima-special-ir-map*))
 	  (funcall type form))
 	 ((member 'array (car form))
