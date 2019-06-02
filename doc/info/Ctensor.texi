@@ -501,7 +501,7 @@ if @var{dis} is @code{true}.
 @end deffn
 @anchor{rinvariant}
 @deffn {Function} rinvariant ()
-Forms the Kretchmann-invariant (@code{kinvariant}) obtained by
+Forms the Kretschmann-invariant (@code{kinvariant}) obtained by
 contracting the tensors
 
 @example
@@ -1785,7 +1785,7 @@ Frame bracket coefficients, as computed by @code{frame_bracket}.
 @anchor{kinvariant}
 @defvr {Variable} kinvariant
 
-The Kretchmann invariant. Computed by @code{rinvariant}.
+The Kretschmann invariant. Computed by @code{rinvariant}.
 
 @opencatbox
 @category{Package ctensor}
