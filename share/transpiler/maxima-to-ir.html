@@ -220,9 +220,9 @@ function unfold_document() {
 <li>(func-def (symbol atom) ((symbol atom1) (symbol atom2) (symbol *atom3)) simp-exp1)</li>
 </ul>
 </li>
-<li>((mprog) exp1 exp2 ~)
+<li>((mprog/mprogn) exp1 exp2 ~)
 <ul>
-<li>(block list simp-exp1 simp-exp2 ~)</li>
+<li>Creation of a function :-&#10;(def-func (symbol "random") (<args>)&#10;(funcal (symbol "random") <args>)</li>
 </ul>
 </li>
 <li>((%array ~) name num1 num2 ~)
@@ -341,10 +341,16 @@ function unfold_document() {
 <li>(funcall (symbol <(caar form)>) simp-exp1 simp-exp2 ~)</li>
 </ul>
 </li>
+<li>((mcond) cond1 exp1 cond2 exp2 ... condn expn t expnn)
+<ul>
+<li>(conditional cond1 exp1 (conditional cond2 exp2 expnn))</li>
 </ul>
 </li>
-<li><span style="color: #111111; ">((mnot ~) exp)</span>
-<ul>
+</ul>
+</li>
+<li><span id="show1_5" class="foldclosed" onClick="show_folder('1_5')" style="POSITION: absolute">+</span> <span id="hide1_5" class="foldopened" onClick="hide_folder('1_5')">-</span>
+<span style="color: #111111; ">((mnot ~) exp)</span>
+<ul id="fold1_5" style="POSITION: relative; VISIBILITY: visible;">
 <li>(funcall (symbol "not") simp-exp)</li>
 </ul>
 </li>
