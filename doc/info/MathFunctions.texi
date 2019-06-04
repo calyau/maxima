@@ -498,7 +498,7 @@ gives @code{-signum(x)}) and multiplicative identity (@code{signum(x*y)} gives
 @code{signum(x) * signum(y)}).
 
 The @code{signum} function distributes over a list, a matrix, or an
-equation.  See @mrefdot{distribute_over}
+equation.  See @mref{sign} and @mrefdot{distribute_over}
 
 @opencatbox
 @category{Mathematical functions}

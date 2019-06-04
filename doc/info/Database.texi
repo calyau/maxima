@@ -1586,6 +1586,8 @@ current data base.  It returns one of the following answers: @code{pos}
 @code{nz} (negative or zero), @code{pn} (positive or negative), or @code{pnz}
 (positive, negative, or zero, i.e. nothing known).
 
+See also @mrefdot{signum}
+
 @opencatbox
 @category{Declarations and inferences}
 @closecatbox
