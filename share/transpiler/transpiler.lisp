@@ -1,20 +1,20 @@
 (defparameter *maxima-direct-ir-map* (make-hash-table))
 (setf (gethash 'mtimes *maxima-direct-ir-map*) '(op *))
 (setf (gethash 'mplus *maxima-direct-ir-map*) '(op +))
-(setf (gethash 'mexpt *maxima-direct-ir-map*) '(funcall (symbol "pow")))
+(setf (gethash 'mexpt *maxima-direct-ir-map*) '(funcall (symbol "math.pow")))
 (setf (gethash 'mfactorial *maxima-direct-ir-map*) '(funcall (symbol "math.factorial")))
 (setf (gethash 'rat *maxima-direct-ir-map*) '(op /))
-(setf (gethash 'msetq *maxima-direct-ir-map*) '(op =))
-(setf (gethash 'mlist *maxima-direct-ir-map*) '(struct list))
+(setf (gethash 'msetq *maxima-direct-ir-map*) '(assign))
+(setf (gethash 'mlist *maxima-direct-ir-map*) '(struct-list))
 (setf (gethash 'mand *maxima-direct-ir-map*) '(boolop and))
 (setf (gethash 'mor *maxima-direct-ir-map*) '(boolop or))
 (setf (gethash 'mnot *maxima-direct-ir-map*) '(funcall (symbol "not")))
-(setf (gethash 'mgreaterp *maxima-direct-ir-map*) '(comp-op gr))
-(setf (gethash 'mequal *maxima-direct-ir-map*) '(comp-op eq))
-(setf (gethash 'mnotequal *maxima-direct-ir-map*) '(comp-op neq))
-(setf (gethash 'mlessp *maxima-direct-ir-map*) '(comp-op le))
-(setf (gethash 'mgeqp *maxima-direct-ir-map*) '(comp-op ge))
-(setf (gethash 'mleqp *maxima-direct-ir-map*) '(comp-op leq))
+(setf (gethash 'mgreaterp *maxima-direct-ir-map*) '(comp-op >))
+(setf (gethash 'mequal *maxima-direct-ir-map*) '(comp-op ==))
+(setf (gethash 'mnotequal *maxima-direct-ir-map*) '(comp-op !=))
+(setf (gethash 'mlessp *maxima-direct-ir-map*) '(comp-op <))
+(setf (gethash 'mgeqp *maxima-direct-ir-map*) '(comp-op >=))
+(setf (gethash 'mleqp *maxima-direct-ir-map*) '(comp-op <=))
 
 (defparameter *maxima-special-ir-map* (make-hash-table))
 (setf (gethash 'mdefine *maxima-special-ir-map*) 'func-def-to-ir)
@@ -26,11 +26,10 @@
 (defparameter *ir-forms-to-append* '())
 
 (defun mcond-auxiliary (forms)
-  `(
-    ,(maxima-to-ir (car forms))
+  `( ,(maxima-to-ir (car forms))
      ,(maxima-to-ir (cadr forms))
      ,(cond ((eq (caddr forms) 't) (maxima-to-ir (cadddr forms)))
-	    (t `(conditional ,@(mcond-conditional (cdddr forms)))))
+	    (t `(conditional ,@(mcond-auxiliary (cddr forms)))))
      ))
 
 (defun mcond-to-ir (form)
@@ -47,10 +46,10 @@
 
 ;;; It creates a function for the statements.
 ;;; A problem with this approach is that Maxima is dynamically
-;;; binding, whereas Python is not. For accessing values from the global
-;;; context, this will work, however, for assignment operations,
-;;; this method will not. Another alternative that can be considered
-;;; is to create a class to house all the bindings.
+;;; binding, whereas Python is not. For accessing values from the
+;;; global context, this will work, however, for assignment
+;;; operations, this method will not. Another alternative that can
+;;; be considered is to create a class to house all the bindings.
 (defun mprog-to-ir (form)
   (cond ((not (null (cdr form)))
 	 (cond ((and (consp (cadr form)) (eq 'mlist (caaadr form)))
@@ -58,33 +57,40 @@
 		(let ((func_name (maxima-to-ir (gensym "$func"))))
 		  (setf *ir-forms-to-append*
 			(append *ir-forms-to-append*
-				`((func-def ,func_name ,(mapcar 'mprog-variable-names-list (cdadr form)) (body ,@(mapcar 'maxima-to-ir (cddr form)))))))
+				`((func-def ,func_name ,(mapcar 'mprog-variable-names-list (cdadr form)) (body-indented ,@(mapcar 'maxima-to-ir (cddr form)))))))
 		  `(funcall ,func_name ,@(mapcar 'mprog-arg-list (cdadr form)))))
 	       ;; No variable binding required
 	       (t
 		(let ((func_name (maxima-to-ir (gensym "$func"))))
-		  (setf *ir-forms-to-append* (append *ir-forms-to-append* `((func-def ,func_name () (body ,@(mapcar 'maxima-to-ir (cdr form)))))))
+		  (setf *ir-forms-to-append* (append *ir-forms-to-append* `((func-def ,func_name () (body-indented ,@(mapcar 'maxima-to-ir (cdr form)))))))
 		  `(funcall ,func_name))
 		)))))
 
 (defun mprogn-to-ir (form)
-  (let ((func_name (maxima-to-ir (gensym "$func"))))
-		  (setf *ir-forms-to-append* (append *ir-forms-to-append* `((func-def ,func_name () (body ,@(mapcar 'maxima-to-ir (cdr form)))))))
-		  `(funcall ,func_name)))
+  (let
+      ((func_name (maxima-to-ir (gensym "$func"))))
+    (setf *ir-forms-to-append*
+	  (append *ir-forms-to-append*
+		  `((func-def ,func_name
+			      ()
+			      (body-indented
+			       ,@(mapcar 'maxima-to-ir
+					 (cdr form)))))))
+    `(funcall ,func_name)))
 
 ;;; Recursively generates IR for a multi-dimensional array and fills all cells with Null value
 (defun array-gen-ir (dimensions)
   (cond ((null dimensions) '(symbol "None"))
-	(t `(op * (struct list ,(array-gen-ir (cdr dimensions))) ,(maxima-to-ir (car dimensions))))))
+	(t `(op * (struct-list ,(array-gen-ir (cdr dimensions))) ,(maxima-to-ir (car dimensions))))))
 
 ;;; Helper function for array-def-to-ir which generates the IR for array definition 
 (defun auxillary-array-to-ir (symbol dimensions)
-  `(op = ,symbol ,(array-gen-ir dimensions)))
+  `(assign ,symbol ,(array-gen-ir dimensions)))
 
 ;;; Function to generate IR for array definition using different methods, by using the auxillary function
 (defun array-def-to-ir (form)
   (cond ((consp (cadr form))
-	 (append '(block list) (loop for symb in (cdadr form)
+	 (append '(body) (loop for symb in (cdadr form)
 				  collect (auxillary-array-to-ir (maxima-to-ir symb) (cddr form)))))
 	((not (numberp (caddr form)))
 	 (auxillary-array-to-ir (maxima-to-ir (cadr form)) (cdddr form)))
@@ -105,7 +111,7 @@
 
 ;;; Generates IR for function definition
 (defun func-def-to-ir (form)
-  `(func-def ,(maxima-to-ir (caaadr form)) ,(mapcar #'func-arg-to-ir (cdadr form)) (body ,(maxima-to-ir (caddr form)))))
+  `(func-def ,(maxima-to-ir (caaadr form)) ,(mapcar #'func-arg-to-ir (cdadr form)) (body-indented ,(maxima-to-ir (caddr form)))))
 
 ;;; Generates IR for atomic forms
 (defun atom-to-ir (form)
@@ -113,10 +119,10 @@
     ((eq form 'nil) `(symbol "None"))
     ((eq form 't) `(symbol "True"))
     ((stringp form) `(string ,form))
-    ((not (symbolp form)) form)
+    ((not (symbolp form)) `(num ,form 0))
     ((eq form '$%i) '(num 0 1)) ; iota complex number
-    ((eq form '$%pi) '(num pi 0)) ; Pi
-    ((eq form '$%e) '(num e 0)) ; Euler's Constant
+    ((eq form '$%pi) '(num (symbol "math.pi") 0)) ; Pi
+    ((eq form '$%e) '(num (symbol "math.e") 0)) ; Euler's Constant
     (t (list 'symbol (subseq (symbol-name form) 1)))
     ))
 
@@ -127,10 +133,10 @@
      (progn
        (setf type (gethash (caar form) *maxima-direct-ir-map*))
        (cond
-	 ;;; If the form is present in *maxima-direct-ir-map*
+	 ; If the form is present in *maxima-direct-ir-map*
 	 (type
 	  (append type (mapcar #'maxima-to-ir (cdr form))))
-	 ;;; If the form is to be transformed in a specific way
+	 ; If the form is to be transformed in a specific way
 	 ((setf type (gethash (caar form) *maxima-special-ir-map*))
 	  (funcall type form))
 	 ((member 'array (car form))
@@ -140,32 +146,138 @@
 		  (mapcar #'maxima-to-ir (cdr form))))
 	 )))))
 
+;;; Generates IR for Maxima expression
 (defun maxima-to-ir (form &optional (is_stmt nil))
   (let
-      ((ir (cond
-	     ((atom form) (atom-to-ir form))
-	     ((and (consp form) (consp (car form))) (cons-to-ir form))
-	     (t (cons 'no-convert form))
-	     )))
-    (cond (is_stmt (append '(body) *ir-forms-to-append* `(,(maxima-to-ir form))))
-	  (t ir)))
-	   )
+      ((ir (cond ((atom form)
+		  (atom-to-ir form))
+		 ((and (consp form) (consp (car form)))
+		  (cons-to-ir form))
+		 (t
+		  (cons 'no-convert form))
+		 )))
+    (cond (is_stmt (append '(body)
+			   *ir-forms-to-append*
+			   `(,ir)))
+	  (t ir))))
 
-;;; Generates IR for a given Maxima expression
-(defun ir-to-python (form)
-  (print form))
-
-;;; Driver function for the translator, calls the maxima-to-ir and then ir-to-python
+;;; Driver function for the translator, calls the function
+;;; maxima-to-ir and then ir-to-python
 (defun $transpile (form)
   (setf *ir-forms-to-append* '())
   (ir-to-python (maxima-to-ir form t)))
 
-;;;Adapted from http://cybertiggyr.com/fmt/fmt.pdf Creates a comma separated list string.
-(defun comma-list (lst) (format nil "~{~A~#[~:;, ~]~}" lst))
+;;; Generates Python source for given IR form
+(defun ir-to-python (form &optional
+			    (indentation-level 0)
+			    (is_stmt nil))
+  (concatenate
+   'string
+   (cond (is_stmt ; To determine if the form needs to be indented
+	  (format nil "~v@{~A~:*~}" indentation-level "    "))
+	 (t ""))
+   (cond ((consp form)
+	  (progn
+	    (setf type ; Determine the type of form and call appropriate function
+		  (gethash (car form) *ir-python-direct-templates*))
+	    (cond
+	      (type (funcall type form indentation-level))
+	      (t (format nil "no-covert : (~a)" form))
+	      )))	
+	 (t
+	  (format nil "~a" form)))))
 
-;;; Adapted from above. Creates a + separated list.x
-;;; The 2 forms can be merged into a Macro.
-(defun sum-list (lst) (format nil "~{~A~#[~:; + ~]~}" lst))
+;;; Code below is for functions handling specefic IR forms and
+;;; generating the corresponding Python code.
+(defparameter *ir-python-direct-templates* (make-hash-table))
+(setf (gethash 'num *ir-python-direct-templates*) 'num-to-python)
+(setf (gethash 'body *ir-python-direct-templates*) 'body-to-python)
+(setf (gethash 'body-indented *ir-python-direct-templates*) 'body-indented-to-python)
+(setf (gethash 'op *ir-python-direct-templates*) 'op-to-python)
+(setf (gethash 'comp-op *ir-python-direct-templates*) 'op-to-python)
+(setf (gethash 'boolop *ir-python-direct-templates*) 'op-to-python)
+(setf (gethash 'op *ir-python-direct-templates*) 'op-to-python)
+(setf (gethash 'symbol *ir-python-direct-templates*) 'symbol-to-python)
+(setf (gethash 'assign *ir-python-direct-templates*) 'assign-to-python)
+(setf (gethash 'string *ir-python-direct-templates*) 'string-to-python)
+(setf (gethash 'funcall *ir-python-direct-templates*) 'funcall-to-python)
+(setf (gethash 'struct-list *ir-python-direct-templates*) 'struct-list-to-python)
+(setf (gethash 'func-def *ir-python-direct-templates*) 'func-def-to-python)
+(setf (gethash 'element-array *ir-python-direct-templates*) 'element-array-to-python)
+(setf (gethash 'conditional *ir-python-direct-templates*) 'conditional-to-python)
+
+(defun conditional-to-python (form indentation-level)
+  (format nil "(~a if ~a else ~a)"
+	  (ir-to-python (caddr form) indentation-level)
+	  (ir-to-python (cadr form) indentation-level)
+	  (ir-to-python (cadddr form) indentation-level)))
+
+(defun element-array-to-python (form indentation-level)
+  (format nil "~a[~a]"
+	  (ir-to-python (cadr form) indentation-level)
+	  (ir-to-python (car (last form)) indentation-level)))
+  
+(defun func-def-to-python (form indentation-level)
+  (format nil "def ~a(~{~a~^, ~}):~&~a"
+	  (ir-to-python (cadr form))
+	  (mapcar
+	   (lambda (elm) (ir-to-python elm indentation-level))
+	   (caddr form))
+	  (ir-to-python (car (last form)) indentation-level)
+	  ))
+
+(defun struct-list-to-python (form indentation-level)
+  (format nil "[~{~a~^, ~}]"
+	  (mapcar
+	   (lambda (elm) (ir-to-python elm indentation-level))
+	   (cdr form))))
+
+(defun funcall-to-python (form indentation-level)
+  (format nil "~a(~{~a~^, ~})"
+	  (ir-to-python (cadr form))
+	  (mapcar
+	   (lambda (elm) (ir-to-python elm indentation-level))
+	   (cddr form))))
+
+(defun string-to-python (form indentation-level)
+  (format nil "~c~a~c"
+	  #\"
+	  (cadr form)
+	  #\"))
+  
+(defun assign-to-python (form indentation-level)
+  (format nil "~a = ~a"
+	  (ir-to-python (cadr form))
+	  (ir-to-python (caddr form))))
+
+(defun symbol-to-python (form indentation-level)
+  (cadr form))
+
+(defun op-template (op)
+  (format nil "~@?" "(~~{~~#[~~;~~a~~:;~~a ~a ~~]~~})"
+	  op))
+
+(defun op-to-python (form indentation-level)
+  (format nil (op-template (cadr form))
+	  (mapcar
+	   (lambda (elm) (ir-to-python elm indentation-level))
+	   (cddr form))))
+
+(defun body-to-python (form indentation-level)
+  (format nil "~{~&~a~}"
+	  (mapcar
+	   (lambda (elm) (ir-to-python elm indentation-level t))
+	   (cdr form))))
+
+(defun body-indented-to-python (form indentation-level)
+  (format nil "~{~&~a~}"
+	  (mapcar
+	   (lambda (elm) (ir-to-python elm (1+ indentation-level) t))
+	   (cdr form))))
+
+(defun num-to-python (form indentation-level)
+  (cond ((eq 0 (car (last form))) (ir-to-python (cadr form)))
+	(t "1j")))
 
 ;;; Function to display the internal Maxima form
 (defun $show_form (form)

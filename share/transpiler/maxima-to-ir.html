@@ -16,135 +16,11 @@ a.mapnode:hover {
     text-decoration: none; color: black;
 }
 a.mapnode:hover { background: #eeeee0; }
-span.foldopened, span.foldclosed  {
-    font-size: xx-small;
-    border-width: 1;
-    font-family: monospace;
-    padding: 0em 0.25em 0em 0.25em;
-    background: #e0e0e0;
-    cursor:pointer;
-}
-span.foldopened  {
-    color: white;
-    VISIBILITY: visible;
-}
-span.foldclosed {
-    color: #666666;
-    VISIBILITY: hidden;
-}
-span.foldspecial {
-    color: #666666;
-    font-size: xx-small;
-    border-style: none solid solid none;
-    border-color: #CCCCCC;
-    border-width: 1;
-    font-family: sans-serif;
-    padding: 0em 0.1em 0em 0.1em;
-    background: #e0e0e0;
-    cursor:pointer;
-}
 
 </style>
 <!-- ^ Position is not set to relative / absolute here because of Mozilla -->
 </head>
 <body>
-<script type="text/javascript">
-// Here we implement folding. It works fine with MSIE5.5, MSIE6.0 and
-// Mozilla 0.9.6.
-
-if (document.layers) {
-    //Netscape 4 specific code
-    pre = 'document.';
-    post = ''; }
-if (document.getElementById) {
-    //Netscape 6 specific code
-    pre = 'document.getElementById("';
-    post = '").style'; }
-if (document.all) {
-    //IE4+ specific code
-    pre = 'document.all.';
-    post = '.style'; }
-
-function layer_exists(layer) {
-    try {
-	eval(pre + layer + post);
-	return true; }
-    catch (error) {
-	return false; }}
-
-function show_layer(layer) {
-    eval(pre + layer + post).position = 'relative';
-    eval(pre + layer + post).visibility = 'visible'; }
-
-function hide_layer(layer) {
-    eval(pre + layer + post).visibility = 'hidden';
-    eval(pre + layer + post).position = 'absolute'; }
-
-function hide_folder(folder) {
-    hide_folding_layer(folder);
-    show_layer('show'+folder);
-
-    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
-}
-
-function show_folder(folder) {
-    // Precondition: all subfolders are folded
-
-    show_layer('hide'+folder);
-    hide_layer('show'+folder);
-    show_layer('fold'+folder);
-
-    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
-
-    var i;
-    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
-	show_layer('show'+folder+'_'+i); }
-}
-function show_folder_completely(folder) {
-    // Precondition: all subfolders are folded
-
-    show_layer('hide'+folder);
-    hide_layer('show'+folder);
-    show_layer('fold'+folder);
-
-    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
-
-    var i;
-    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
-	show_folder_completely(folder+'_'+i); }
-}
-
-
-
-function hide_folding_layer(folder) {
-    var i;
-    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
-	hide_folding_layer(folder+'_'+i); }
-
-    hide_layer('hide'+folder);
-    hide_layer('show'+folder);
-    hide_layer('fold'+folder);
-
-    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
-}
-
-function fold_document() {
-    var i;
-    var folder = '1';
-    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
-	hide_folder(folder+'_'+i); }
-}
-
-function unfold_document() {
-    var i;
-    var folder = '1';
-    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
-	show_folder_completely(folder+'_'+i); }
-}
-
-</script>
-<SPAN class="foldspecial" onclick="unfold_document()">All +</SPAN>
-<SPAN class="foldspecial" onclick="fold_document()">All -</SPAN>
 <p><span style="font-size: 18pt; ">maxima-to-ir</span>
 <ul>
 <li><span style="color: #0033ff; font-size: 16pt; ">atom</span>
@@ -156,17 +32,22 @@ function unfold_document() {
 </li>
 <li><span style="color: #00b439; font-size: 14pt; ">$%pi</span>
 <ul>
-<li><span style="color: #990000; font-size: 12pt; ">(num pi 0)</span></li>
+<li><span style="color: #990000; font-size: 12pt; ">(num (symbol "math.pi") 0)</span></li>
 </ul>
 </li>
 <li><span style="color: #00b439; font-size: 14pt; ">$%e</span>
 <ul>
-<li><span style="color: #990000; font-size: 12pt; ">(num e 0)</span></li>
+<li><span style="color: #990000; font-size: 12pt; ">(num (symbol "math.e") 0)</span></li>
 </ul>
 </li>
 <li><span style="color: #00b439; font-size: 14pt; ">(stringp form)</span>
 <ul>
 <li><span style="color: #990000; font-size: 12pt; ">(string form)</span></li>
+</ul>
+</li>
+<li><span style="color: #00b439; font-size: 14pt; ">DEFAULT</span>
+<ul>
+<li><span style="color: #990000; font-size: 12pt; ">(num form 0)</span></li>
 </ul>
 </li>
 </ul>
@@ -191,12 +72,11 @@ function unfold_document() {
 </li>
 <li>((mexpt ~) exp1 exp2)
 <ul>
-<li>(funcall pow simp-exp1 simp-exp2)</li>
+<li>(funcall (symbol "pow") simp-exp1 simp-exp2)</li>
 </ul>
 </li>
-<li><span id="show1_1" class="foldclosed" onClick="show_folder('1_1')" style="POSITION: absolute">+</span> <span id="hide1_1" class="foldopened" onClick="hide_folder('1_1')">-</span>
-((mfactorial ~) exp1)
-<ul id="fold1_1" style="POSITION: relative; VISIBILITY: visible;">
+<li>((mfactorial ~) exp1)
+<ul>
 <li>(funcall math.factorial simp-exp1)</li>
 </ul>
 </li>
@@ -207,56 +87,51 @@ function unfold_document() {
 </li>
 <li>((mlist ~) exp1 exp2 ~)
 <ul>
-<li>(struct list simp-exp1 simp-exp2 ~)</li>
+<li>(struct-list simp-exp1 simp-exp2 ~)</li>
 </ul>
 </li>
 <li>((msetq ~) exp1 exp2)
 <ul>
-<li>(op = simp-exp1 simp-exp2)</li>
+<li>(assign simp-exp1 simp-exp2)</li>
 </ul>
 </li>
 <li>((mdefine simp) ((atom) atom1 atom2 ((mlist) atom3)) exp1)
 <ul>
-<li>(func-def (symbol atom) ((symbol atom1) (symbol atom2) (symbol *atom3)) simp-exp1)</li>
+<li>(func-def (symbol atom) ((symbol atom1) (symbol atom2) (symbol *atom3)) (body-indented (simp-exp1) ~))</li>
 </ul>
 </li>
 <li>((mprog/mprogn) exp1 exp2 ~)
 <ul>
-<li>Creation of a function :-&#10;(def-func (symbol "random") (<args>)&#10;(funcal (symbol "random") <args>)</li>
+<li>Creation of a function :-&#10;(func-def (symbol "random") (<args>) (body-indented <forms>))&#10;(funcall (symbol "random") <args>)</li>
 </ul>
 </li>
 <li>((%array ~) name num1 num2 ~)
 <ul>
-<li>(OP = (SYMBOL <Name>)&#10;    (OP *&#10;        (STRUCT LIST&#10;            (OP *&#10;                (STRUCT LIST ...~... (SYMBOL "None"))&#10;            num2))&#10;    num1))</li>
+<li>(asign (SYMBOL <Name>)&#10;    (OP *&#10;        (STRUCT-LIST&#10;            (OP *&#10;                (STRUCT-LIST ...~... (SYMBOL "None"))&#10;            num2))&#10;    num1))</li>
 </ul>
 </li>
 <li>((%array ~) name type num1 num2 ~)
 <ul>
-<li>(OP = (SYMBOL <Name>)&#10;    (OP *&#10;        (STRUCT LIST&#10;            (OP *&#10;                (STRUCT LIST ...~... (SYMBOL "None"))&#10;            num2))&#10;    num1))</li>
+<li>(assign (SYMBOL <Name>)&#10;    (OP *&#10;        (STRUCT-LIST&#10;            (OP *&#10;                (STRUCT-LIST ...~... (SYMBOL "None"))&#10;            num2))&#10;    num1))</li>
 </ul>
 </li>
 <li>((%array ~) ((mlist ~) name1 name2 ~) num1 num2 ~)
 <ul>
 <li>
 <ul>
-<li>(BLOCK LIST&#10;  (OP = (SYMBOL <name1>)&#10;      (OP *&#10;          (STRUCT LIST&#10;                  (OP *&#10;                      (STRUCT LIST&#10;                              (OP * ..~.. (STRUCT LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1))&#10;  (OP = (SYMBOL <name2>)&#10;      (OP *&#10;          (STRUCT LIST&#10;                  (OP *&#10;                      (STRUCT LIST&#10;                              (OP * ..~.. (STRUCT LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1))&#10;&#10;....&#10;&#10;&#10;  (OP = (SYMBOL <name-n>)&#10;      (OP *&#10;          (STRUCT LIST&#10;                  (OP *&#10;                      (STRUCT LIST&#10;                              (OP * ..~.. (STRUCT LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1)))
+<li>(body&#10;  (assign (SYMBOL <name1>)&#10;      (OP *&#10;          (STRUCT-LIST&#10;                  (OP *&#10;                      (STRUCT-LIST&#10;                              (OP * ..~.. (STRUCT-LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1))&#10;  (assign (SYMBOL <name2>)&#10;      (OP *&#10;          (STRUCT-LIST&#10;                  (OP *&#10;                      (STRUCT-LIST&#10;                              (OP * ..~.. (STRUCT-LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1))&#10;&#10;....&#10;&#10;&#10;  (assign (SYMBOL <name-n>)&#10;      (OP *&#10;          (STRUCT-LIST&#10;                  (OP *&#10;                      (STRUCT-LIST&#10;                              (OP * ..~.. (STRUCT-LIST (SYMBOL "None")) 3))&#10;                      2))&#10;          1)))
 <ul>
-<li><span id="show1_2" class="foldclosed" onClick="show_folder('1_2')" style="POSITION: absolute">+</span> <span id="hide1_2" class="foldopened" onClick="hide_folder('1_2')">-</span>
-(OP = (SYMBOL "REF")
-<ul id="fold1_2" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_1" class="foldclosed" onClick="show_folder('1_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1" class="foldopened" onClick="hide_folder('1_2_1')">-</span>
-(OP *
-<ul id="fold1_2_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_1_1" class="foldclosed" onClick="show_folder('1_2_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1" class="foldopened" onClick="hide_folder('1_2_1_1')">-</span>
-(STRUCT LIST
-<ul id="fold1_2_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_1_1_1" class="foldclosed" onClick="show_folder('1_2_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1_1" class="foldopened" onClick="hide_folder('1_2_1_1_1')">-</span>
-(OP *
-<ul id="fold1_2_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_2_1_1_1_1" class="foldclosed" onClick="show_folder('1_2_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1_1_1" class="foldopened" onClick="hide_folder('1_2_1_1_1_1')">-</span>
-(STRUCT LIST
-<ul id="fold1_2_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li>(OP * (STRUCT LIST (SYMBOL "None")) 3))</li>
+<li>(assign (SYMBOL "REF")
+<ul>
+<li>(OP *
+<ul>
+<li>(STRUCT-LIST
+<ul>
+<li>(OP *
+<ul>
+<li>(STRUCT-LIST
+<ul>
+<li>(OP * (STRUCT-LIST (SYMBOL "None")) 3))</li>
 </ul>
 </li>
 <li>2))</li>
@@ -269,22 +144,17 @@ function unfold_document() {
 </li>
 </ul>
 </li>
-<li><span id="show1_3" class="foldclosed" onClick="show_folder('1_3')" style="POSITION: absolute">+</span> <span id="hide1_3" class="foldopened" onClick="hide_folder('1_3')">-</span>
-(OP = (SYMBOL "SVSV")
-<ul id="fold1_3" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_3_1" class="foldclosed" onClick="show_folder('1_3_1')" style="POSITION: absolute">+</span> <span id="hide1_3_1" class="foldopened" onClick="hide_folder('1_3_1')">-</span>
-(OP *
-<ul id="fold1_3_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_3_1_1" class="foldclosed" onClick="show_folder('1_3_1_1')" style="POSITION: absolute">+</span> <span id="hide1_3_1_1" class="foldopened" onClick="hide_folder('1_3_1_1')">-</span>
-(STRUCT LIST
-<ul id="fold1_3_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_3_1_1_1" class="foldclosed" onClick="show_folder('1_3_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_3_1_1_1" class="foldopened" onClick="hide_folder('1_3_1_1_1')">-</span>
-(OP *
-<ul id="fold1_3_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_3_1_1_1_1" class="foldclosed" onClick="show_folder('1_3_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_3_1_1_1_1" class="foldopened" onClick="hide_folder('1_3_1_1_1_1')">-</span>
-(STRUCT LIST
-<ul id="fold1_3_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li>(OP * (STRUCT LIST (SYMBOL "None")) 3))</li>
+<li>(assign (SYMBOL "SVSV")
+<ul>
+<li>(OP *
+<ul>
+<li>(STRUCT-LIST
+<ul>
+<li>(OP *
+<ul>
+<li>(STRUCT-LIST
+<ul>
+<li>(OP * (STRUCT-LIST (SYMBOL "None")) 3))</li>
 </ul>
 </li>
 <li>2))</li>
@@ -297,22 +167,17 @@ function unfold_document() {
 </li>
 </ul>
 </li>
-<li><span id="show1_4" class="foldclosed" onClick="show_folder('1_4')" style="POSITION: absolute">+</span> <span id="hide1_4" class="foldopened" onClick="hide_folder('1_4')">-</span>
-(OP = (SYMBOL "SDVSDV")
-<ul id="fold1_4" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_4_1" class="foldclosed" onClick="show_folder('1_4_1')" style="POSITION: absolute">+</span> <span id="hide1_4_1" class="foldopened" onClick="hide_folder('1_4_1')">-</span>
-(OP *
-<ul id="fold1_4_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_4_1_1" class="foldclosed" onClick="show_folder('1_4_1_1')" style="POSITION: absolute">+</span> <span id="hide1_4_1_1" class="foldopened" onClick="hide_folder('1_4_1_1')">-</span>
-(STRUCT LIST
-<ul id="fold1_4_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_4_1_1_1" class="foldclosed" onClick="show_folder('1_4_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_4_1_1_1" class="foldopened" onClick="hide_folder('1_4_1_1_1')">-</span>
-(OP *
-<ul id="fold1_4_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li><span id="show1_4_1_1_1_1" class="foldclosed" onClick="show_folder('1_4_1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_4_1_1_1_1" class="foldopened" onClick="hide_folder('1_4_1_1_1_1')">-</span>
-(STRUCT LIST
-<ul id="fold1_4_1_1_1_1" style="POSITION: relative; VISIBILITY: visible;">
-<li>(OP * (STRUCT LIST (SYMBOL "None")) 3))</li>
+<li>(assign (SYMBOL "SDVSDV")
+<ul>
+<li>(OP *
+<ul>
+<li>(STRUCT-LIST
+<ul>
+<li>(OP *
+<ul>
+<li>(STRUCT-LIST
+<ul>
+<li>(OP * (STRUCT-LIST (SYMBOL "None")) 3))</li>
 </ul>
 </li>
 <li>2))</li>
@@ -348,9 +213,8 @@ function unfold_document() {
 </li>
 </ul>
 </li>
-<li><span id="show1_5" class="foldclosed" onClick="show_folder('1_5')" style="POSITION: absolute">+</span> <span id="hide1_5" class="foldopened" onClick="hide_folder('1_5')">-</span>
-<span style="color: #111111; ">((mnot ~) exp)</span>
-<ul id="fold1_5" style="POSITION: relative; VISIBILITY: visible;">
+<li><span style="color: #111111; ">((mnot ~) exp)</span>
+<ul>
 <li>(funcall (symbol "not") simp-exp)</li>
 </ul>
 </li>
@@ -366,32 +230,32 @@ function unfold_document() {
 </li>
 <li><span style="color: #111111; ">((mgreaterp ~) exp exp)</span>
 <ul>
-<li>(comp-op gr exp exp)</li>
+<li>(comp-op > exp exp)</li>
 </ul>
 </li>
 <li><span style="color: #111111; ">((mequal ~) exp exp)</span>
 <ul>
-<li>(comp-op eq exp exp)</li>
+<li>(comp-op == exp exp)</li>
 </ul>
 </li>
 <li><span style="color: #111111; ">((mnotequal ~) exp exp)</span>
 <ul>
-<li>(comp-op neq exp exp)</li>
+<li>(comp-op != exp exp)</li>
 </ul>
 </li>
 <li><span style="color: #111111; ">((mlessp ~) exp exp)</span>
 <ul>
-<li>(comp-op le exp exp)</li>
+<li>(comp-op < exp exp)</li>
 </ul>
 </li>
 <li><span style="color: #111111; ">((mgeqp ~) exp exp)</span>
 <ul>
-<li>(comp-op geq exp exp)</li>
+<li>(comp-op >= exp exp)</li>
 </ul>
 </li>
 <li><span style="color: #111111; ">((mleqp ~) exp exp)</span>
 <ul>
-<li>(comp-op leq exp exp)</li>
+<li>(comp-op <= exp exp)</li>
 </ul>
 </li>
 </ul>
@@ -401,8 +265,5 @@ function unfold_document() {
 </ul>
 </li>
 </ul>
-<SCRIPT type="text/javascript">
-fold_document();
-</SCRIPT>
 </body>
 </html>
