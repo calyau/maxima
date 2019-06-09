@@ -461,7 +461,7 @@ f5(2, 10);
 /* note that results match because rhs of ":=" isn't simplified */
 [bar(x) := 11 + x, umm(x) := 21 + x, mumble(x) := 1 + x];
 
-map (?fboundp, [foo, baz, quux]);
+makelist (is (x # false), x, map (?fboundp, [foo, baz, quux])); /* test for generalized Boolean value */
 [true, true, true];
 
 [bar(5), umm(5), mumble(5)];
@@ -702,4 +702,38 @@ makelist (f(xy[1] + %i*xy[2]), xy, [[0, 0], [0, 1], [1, 1], [1, 0], [0, 2], [2, 
 [3/2,9/8,false,3/4,false,0,5,false,-4,9/8,13/2,31/4]$
 
 errcatch (g(1, 1, z));
+[];
+
+/* SF bug #3556: "5.43.0 translate / compile error"
+ * Ensure that "if" within lambda is translated correctly.
+ * The fix for #3412 tickled this bug.
+ */
+
+(kill (f),
+ f(x, m) := map (lambda ([u], if m > 0 then u^m), [x, 2*x, 3*x]),
+ 0);
+0;
+
+is (?fboundp (f) # false);
+false;
+
+(kill (y),
+ [f(y, 2), f(y, -2)]);
+[[y^2, 4*y^2, 9*y^2], [false, false, false]];
+
+(kill (n),
+ errcatch (f(10, n)));
+/* ensure that conditional expressions get simplified to expunge $FALSE ... sigh. */
+''([[if n > 0 then 10^n, if n > 0 then 20^n, if n > 0 then 30^n]]);
+
+translate (f);
+[f];
+
+is (?fboundp (f) # false); /* test for generalized Boolean value */
+true;
+
+[f(y, 2), f(y, -2)];
+[[y^2, 4*y^2, 9*y^2], [false, false, false]];
+
+errcatch (f(10, n));
 [];

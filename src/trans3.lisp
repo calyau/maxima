@@ -55,7 +55,7 @@
 	 (sum-var-sets (free-lisp-vars (car exp))
 		       (free-lisp-vars-of-argl (cdr exp))))
 	(t
-	 (barfo "Bad lisp expression generated."))))
+	 (barfo (intl:gettext "encountered an unrecognized Lisp expression in FREE-LISP-VARS.")))))
 
 
 (defun free-lisp-vars-of-argl (argl)
@@ -125,6 +125,28 @@
 					   (free-lisp-vars u))))
 				(cddr form)))
 		       (make-var-set (cadr form))))
+
+;;; (LET <BVL> . <BODY>)
+
+;; Take the union of the free variables from the init-forms
+;; and the free variables of the body (less the variables bound by LET).
+
+(defun-prop (let free-lisp-vars) (form)
+  (union-var-set 
+    (list
+      ;; extract (FOO BAR NIL NIL) from (LET ((A FOO) (B BAR) C D) ...)
+      ;; and apply FREE-LISP-VARS to each.
+      (union-var-set (mapcar #'free-lisp-vars (mapcar #'(lambda (e) (if (consp e) (cdr e))) (cadr form))))
+      (difference-var-sets
+        ;; cargo-cult programming: copy this next bit from (DEFUN-PROP (PROG ...)) above.
+        (union-var-set
+          (mapcar #'(lambda (u)
+                      (cond ((atom u) nil) ;; go tag.
+                            (t
+                              (free-lisp-vars u))))
+                  (cddr form)))
+        ;; extract A B C D from (LET ((A FOO) (B BAR) C D) ...)
+        (make-var-set (mapcar #'(lambda (e) (if (atom e) e (car e))) (cadr form)))))))
 
 ;;; no computed gos please.
 (defun-prop (go free-lisp-vars) (ignor)ignor nil)
