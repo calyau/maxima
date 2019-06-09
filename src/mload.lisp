@@ -487,12 +487,13 @@
 	     (let ((s (if (> (length all-differences) 1) "s" "")))
 	       (format t (intl:gettext "~%The following ~A problem~A failed: ~A~%")
 		       (length all-differences) s (reverse all-differences)))
-	     (multiple-value-bind (plural was-were)
+	     (when unexpected-pass
+	       (multiple-value-bind (plural was-were)
 		 (if (> (length unexpected-pass) 1)
 		     (values "s" "were")
 		     (values "" "was"))
 	       (format t (intl:gettext "~%The following ~A problem~A passed but ~A expected to fail: ~A~%")
-		       (length unexpected-pass) plural was-were (reverse unexpected-pass)))
+		       (length unexpected-pass) plural was-were (reverse unexpected-pass))))
 	     (values filename
 		     `((mlist) ,@(reverse all-differences))
 		     `((mlist) ,@(reverse unexpected-pass))
