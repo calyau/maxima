@@ -163,7 +163,7 @@
 
 ;;; Driver function for the translator, calls the function
 ;;; maxima-to-ir and then ir-to-python
-(defun $transpile (form)
+(defun $pytranslate (form)
   (setf *ir-forms-to-append* '())
   (ir-to-python (maxima-to-ir form t)))
 
