@@ -10,8 +10,8 @@
     (setf (gethash 'mquotient ht) '(op /))
     (setf (gethash 'msetq ht) '(assign))
     (setf (gethash 'mlist ht) '(struct-list))
-    (setf (gethash 'mand ht) '(boolop and))
-    (setf (gethash 'mor ht) '(boolop or))
+    (setf (gethash 'mand ht) '(boolop (symbol "and")))
+    (setf (gethash 'mor ht) '(boolop (symbol "or")))
     (setf (gethash 'mnot ht) '(funcall (symbol "not")))
     (setf (gethash 'mminus ht) '(unary-op -))
     (setf (gethash 'mgreaterp ht) '(comp-op >))
@@ -65,7 +65,7 @@
 		(let ((func_name (maxima-to-ir (gensym "$func"))))
 		  (setf *ir-forms-to-append*
 			(append *ir-forms-to-append*
-				`((func-def ,func_name ,(mapcar 'mprog-variable-names-list (cdadr form)) (body-indented ,@(mapcar 'maxima-to-ir (cddr form)))))))
+       			`((func-def ,func_name ,(mapcar 'mprog-variable-names-list (cdadr form)) (body-indented ,@(mapcar 'maxima-to-ir (cddr form)))))))
 		  `(funcall ,func_name ,@(mapcar 'mprog-arg-list (cdadr form)))))
 	       ;; No variable binding required
 	       (t
@@ -122,13 +122,17 @@
 
 ;;; Generates IR for function definition
 (defun func-def-to-ir (form)
-  `(func-def ,(maxima-to-ir (caaadr form)) ,(mapcar #'func-arg-to-ir (cdadr form)) (body-indented ,(maxima-to-ir (caddr form)))))
+  `(func-def
+    ,(maxima-to-ir (caaadr form))
+    ,(mapcar #'func-arg-to-ir (cdadr form))
+    (body-indented (funcall (symbol "return")
+			    ,(maxima-to-ir (caddr form))))))
 
 ;;; Generates IR for atomic forms
 (defun atom-to-ir (form)
   (cond
     ((eq form 'nil) `(symbol "None"))
-    ((eq form 't) `(symbol "True"))
+    ((eq form '$true) `(symbol "True"))
     ((stringp form) `(string ,form))
     ((not (symbolp form)) `(num ,form 0))
     ((eq form '$%i) '(num 0 1)) ; iota complex number
@@ -278,7 +282,7 @@
 	  op))
 
 (defun op-to-python (form indentation-level)
-  (format nil (op-template (cadr form))
+  (format nil (op-template (ir-to-python (cadr form)))
 	  (mapcar
 	   (lambda (elm) (ir-to-python elm indentation-level))
 	   (cddr form))))

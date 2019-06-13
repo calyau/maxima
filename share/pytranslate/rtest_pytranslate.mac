@@ -1,0 +1,116 @@
+(load("pytranslate.lisp"), 'done);
+'done$
+(kill(all), 'done);
+'done$
+
+/* Atoms  */
+pytranslate(1);
+"1"$
+pytranslate("sdf");
+"\"sdf\""$
+pytranslate(%i);
+"1j"$
+pytranslate(%pi);
+"math.pi"$
+pytranslate(%e);
+"math.e"$
+pytranslate(true);
+"True"$
+
+/* Arithmetic operators */
+pytranslate(a + b);
+"(B + A)"$
+pytranslate(a*b);
+"(A * B)"$
+pytranslate(a/b);
+"(A / B)"$
+pytranslate(a-b);
+"(A + (-B))"$
+pytranslate(a^b);
+"math.pow(A, B)"$
+pytranslate(a!);
+"math.factorial(A)"$
+
+/* Boolean Operators */
+pytranslate(a or b);
+"(A or B)"$
+pytranslate(a and b);
+"(A and B)"$
+pytranslate(not(a));
+"not(A)"$
+
+/* Relational Operators */
+pytranslate(a >= b);
+"(A >= B)"$
+pytranslate(a <= b);
+"(A <= B)"$
+pytranslate(a > b);
+"(A > B)"$
+pytranslate(a < b);
+"(A < B)"$
+pytranslate(a # b);
+"(A != B)"$
+pytranslate(a = b);
+"(A == B)"$
+
+/* List */
+pytranslate([a,b,c]);
+"[A, B, C]"$
+
+/* Assignment */
+pytranslate('(a:b));
+"A = B"$
+pytranslate('([a,b,c]:[1,2,3]));
+"[A, B, C] = [1, 2, 3]"$
+
+(kill(all), 'done);
+'done$
+
+/* Function Definition */
+pytranslate(f(x):=x^2);
+"def F(X):
+    return(math.pow(X, 2))"$
+pytranslate(f(x, [y]):=x^2);
+"def F(X, *Y):
+    return(math.pow(X, 2))"$
+
+(kill(all), 'done);
+'done$
+
+/* Array-definition */
+pytranslate('array(abc, 1, 2, 3));
+"ABC = ([([([None] * 3)] * 2)] * 1)"$
+pytranslate('array(abc, fixnum, 1, 2, 3));
+"ABC = ([([([None] * 3)] * 2)] * 1)"$
+pytranslate('array([abc,def,tre], 1, 2, 3));
+"ABC = ([([([None] * 3)] * 2)] * 1)
+DEF = ([([([None] * 3)] * 2)] * 1)
+TRE = ([([([None] * 3)] * 2)] * 1)"$
+
+/* Array reference */
+pytranslate('(abc[1,2,3,4]));
+"ABC[1][2][3][4]"$
+
+(kill(all), 'done);
+'done$
+
+/* Block statements */
+/* Need to find a way to test this, as a random function name is generated
+pytranslate('block([a:a, b:b, c:c], d:a+b+c, return(d)));
+"def func19153(A, B, C):
+    D = (A + B + C)
+    RETURN(D)
+func19153(A, B, C)"$
+pytranslate('block(d:1+2+3, return(d)));
+"def func19183():
+    D = 6
+    RETURN(D)
+func19183()"$
+*/
+
+/* if-else-if */
+pytranslate('(if 1>2 then 3 elseif 5>6 then 7 else 8));
+"(3 if (1 > 2) else (7 if (5 > 6) else 8))"$
+
+(kill(all), 'done);
+'done$
