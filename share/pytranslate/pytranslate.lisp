@@ -1,31 +1,37 @@
-(defparameter *maxima-direct-ir-map* (make-hash-table))
-(setf (gethash 'mtimes *maxima-direct-ir-map*) '(op *))
-(setf (gethash 'mplus *maxima-direct-ir-map*) '(op +))
-(setf (gethash 'mexpt *maxima-direct-ir-map*) '(funcall (symbol "math.pow")))
-(setf (gethash 'mfactorial *maxima-direct-ir-map*) '(funcall (symbol "math.factorial")))
-(setf (gethash 'rat *maxima-direct-ir-map*) '(op /))
-(setf (gethash 'mquotient *maxima-direct-ir-map*) '(op /))
-(setf (gethash 'msetq *maxima-direct-ir-map*) '(assign))
-(setf (gethash 'mlist *maxima-direct-ir-map*) '(struct-list))
-(setf (gethash 'mand *maxima-direct-ir-map*) '(boolop and))
-(setf (gethash 'mor *maxima-direct-ir-map*) '(boolop or))
-(setf (gethash 'mnot *maxima-direct-ir-map*) '(funcall (symbol "not")))
-(setf (gethash 'mminus *maxima-direct-ir-map*) '(unary-op -))
-(setf (gethash 'mgreaterp *maxima-direct-ir-map*) '(comp-op >))
-(setf (gethash 'mequal *maxima-direct-ir-map*) '(comp-op ==))
-(setf (gethash 'mnotequal *maxima-direct-ir-map*) '(comp-op !=))
-(setf (gethash 'mlessp *maxima-direct-ir-map*) '(comp-op <))
-(setf (gethash 'mgeqp *maxima-direct-ir-map*) '(comp-op >=))
-(setf (gethash 'mleqp *maxima-direct-ir-map*) '(comp-op <=))
+(defvar *maxaima-direct-ir-map*
+  (let ((ht (make-hash-table)))
+    (setf (gethash 'mtimes ht) '(op *))
+    (setf (gethash 'mplus ht) '(op +))
+    (setf (gethash 'mexpt ht) '(funcall (symbol "math.pow")))
+    (setf
+     (gethash 'mfactorial ht)
+     '(funcall (symbol "math.factorial")))
+    (setf (gethash 'rat ht) '(op /))
+    (setf (gethash 'mquotient ht) '(op /))
+    (setf (gethash 'msetq ht) '(assign))
+    (setf (gethash 'mlist ht) '(struct-list))
+    (setf (gethash 'mand ht) '(boolop and))
+    (setf (gethash 'mor ht) '(boolop or))
+    (setf (gethash 'mnot ht) '(funcall (symbol "not")))
+    (setf (gethash 'mminus ht) '(unary-op -))
+    (setf (gethash 'mgreaterp ht) '(comp-op >))
+    (setf (gethash 'mequal ht) '(comp-op ==))
+    (setf (gethash 'mnotequal ht) '(comp-op !=))
+    (setf (gethash 'mlessp ht) '(comp-op <))
+    (setf (gethash 'mgeqp ht) '(comp-op >=))
+    (setf (gethash 'mleqp ht) '(comp-op <=))
+    ht))
 
-(defparameter *maxima-special-ir-map* (make-hash-table))
-(setf (gethash 'mdefine *maxima-special-ir-map*) 'func-def-to-ir)
-(setf (gethash '%array *maxima-special-ir-map*) 'array-def-to-ir)
-(setf (gethash 'mprog *maxima-special-ir-map*) 'mprog-to-ir)
-(setf (gethash 'mprogn *maxima-special-ir-map*) 'mprogn-to-ir)
-(setf (gethash 'mcond *maxima-special-ir-map*) 'mcond-to-ir)
+(defvar *maxaima-special-ir-map*
+  (let ((ht (make-hash-table)))
+    (setf (gethash 'mdefine ht) 'func-def-to-ir)
+    (setf (gethash '%array ht) 'array-def-to-ir)
+    (setf (gethash 'mprog ht) 'mprog-to-ir)
+    (setf (gethash 'mprogn ht) 'mprogn-to-ir)
+    (setf (gethash 'mcond ht) 'mcond-to-ir)
+    ht))
 
-(defparameter *ir-forms-to-append* '())
+(defvar *ir-forms-to-append* '())
 
 (defun mcond-auxiliary (forms)
   `( ,(maxima-to-ir (car forms))
@@ -108,8 +114,11 @@
 ;;; Convert Function args to corresponding IR
 ;;; Convert the optional list argument into corresponding *args form in python
 (defun func-arg-to-ir (form)
-  (cond ((consp form) (cond ((eq (caar form) 'mlist) `(symbol ,(concatenate 'string "*" (subseq (symbol-name (cadr form)) 1))))))
-	(t (maxima-to-ir form))))
+  (typecase form
+    (cons (cond
+	    ((eq (caar form) 'mlist)
+	     `(symbol ,(concatenate 'string "*" (subseq (symbol-name (cadr form)) 1))))))
+    (t (maxima-to-ir form))))
 
 ;;; Generates IR for function definition
 (defun func-def-to-ir (form)
@@ -132,8 +141,7 @@
 (defun cons-to-ir (form)
   (cond
     ((atom (caar form))
-     (progn
-       (setf type (gethash (caar form) *maxima-direct-ir-map*))
+     (let ((type (gethash (caar form) *maxima-direct-ir-map*)))
        (cond
 	 ; If the form is present in *maxima-direct-ir-map*
 	 (type
@@ -176,39 +184,42 @@
 			    (is_stmt nil))
   (concatenate
    'string
-   (cond (is_stmt ; To determine if the form needs to be indented
-	  (format nil "~v@{~A~:*~}" indentation-level "    "))
-	 (t ""))
-   (cond ((consp form)
-	  (progn
-	    (setf type ; Determine the type of form and call appropriate function
-		  (gethash (car form) *ir-python-direct-templates*))
-	    (cond
-	      (type (funcall type form indentation-level))
-	      (t (format nil "no-covert : (~a)" form))
-	      )))	
-	 (t
-	  (format nil "~a" form)))))
+   (cond
+     (is_stmt ; To determine if the form needs to be indented
+      (format nil "~v@{~A~:*~}" indentation-level "    "))
+     (t ""))
+   (typecase form
+     (cons
+      (setf type ; Determine the type of form and call appropriate function
+	    (gethash (car form) *ir-python-direct-templates*))
+      (cond
+	(type (funcall type form indentation-level))
+	(t (format nil "no-covert : (~a)" form))
+	))	
+     (t
+      (format nil "~a" form)))))
 
 ;;; Code below is for functions handling specefic IR forms and
 ;;; generating the corresponding Python code.
-(defparameter *ir-python-direct-templates* (make-hash-table))
-(setf (gethash 'num *ir-python-direct-templates*) 'num-to-python)
-(setf (gethash 'body *ir-python-direct-templates*) 'body-to-python)
-(setf (gethash 'body-indented *ir-python-direct-templates*) 'body-indented-to-python)
-(setf (gethash 'op *ir-python-direct-templates*) 'op-to-python)
-(setf (gethash 'comp-op *ir-python-direct-templates*) 'op-to-python)
-(setf (gethash 'boolop *ir-python-direct-templates*) 'op-to-python)
-(setf (gethash 'op *ir-python-direct-templates*) 'op-to-python)
-(setf (gethash 'unary-op *ir-python-direct-templates*) 'unary-op-to-python)
-(setf (gethash 'symbol *ir-python-direct-templates*) 'symbol-to-python)
-(setf (gethash 'assign *ir-python-direct-templates*) 'assign-to-python)
-(setf (gethash 'string *ir-python-direct-templates*) 'string-to-python)
-(setf (gethash 'funcall *ir-python-direct-templates*) 'funcall-to-python)
-(setf (gethash 'struct-list *ir-python-direct-templates*) 'struct-list-to-python)
-(setf (gethash 'func-def *ir-python-direct-templates*) 'func-def-to-python)
-(setf (gethash 'element-array *ir-python-direct-templates*) 'element-array-to-python)
-(setf (gethash 'conditional *ir-python-direct-templates*) 'conditional-to-python)
+(defvar *ir-python-direct-templates*
+  (let ((ht (make-hash-table)))
+    (setf (gethash 'num ht) 'num-to-python)
+    (setf (gethash 'body ht) 'body-to-python)
+    (setf (gethash 'body-indented ht) 'body-indented-to-python)
+    (setf (gethash 'op ht) 'op-to-python)
+    (setf (gethash 'comp-op ht) 'op-to-python)
+    (setf (gethash 'boolop ht) 'op-to-python)
+    (setf (gethash 'op ht) 'op-to-python)
+    (setf (gethash 'unary-op ht) 'unary-op-to-python)
+    (setf (gethash 'symbol ht) 'symbol-to-python)
+    (setf (gethash 'assign ht) 'assign-to-python)
+    (setf (gethash 'string ht) 'string-to-python)
+    (setf (gethash 'funcall ht) 'funcall-to-python)
+    (setf (gethash 'struct-list ht) 'struct-list-to-python)
+    (setf (gethash 'func-def ht) 'func-def-to-python)
+    (setf (gethash 'element-array ht) 'element-array-to-python)
+    (setf (gethash 'conditional ht) 'conditional-to-python)
+    ht))
 
 (defun conditional-to-python (form indentation-level)
   (format nil "(~a if ~a else ~a)"
