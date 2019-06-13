@@ -1,4 +1,4 @@
-(defvar *maxaima-direct-ir-map*
+(defvar *maxima-direct-ir-map*
   (let ((ht (make-hash-table)))
     (setf (gethash 'mtimes ht) '(op *))
     (setf (gethash 'mplus ht) '(op +))
@@ -22,7 +22,7 @@
     (setf (gethash 'mleqp ht) '(comp-op <=))
     ht))
 
-(defvar *maxaima-special-ir-map*
+(defvar *maxima-special-ir-map*
   (let ((ht (make-hash-table)))
     (setf (gethash 'mdefine ht) 'func-def-to-ir)
     (setf (gethash '%array ht) 'array-def-to-ir)
