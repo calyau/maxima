@@ -4,11 +4,13 @@
 (setf (gethash 'mexpt *maxima-direct-ir-map*) '(funcall (symbol "math.pow")))
 (setf (gethash 'mfactorial *maxima-direct-ir-map*) '(funcall (symbol "math.factorial")))
 (setf (gethash 'rat *maxima-direct-ir-map*) '(op /))
+(setf (gethash 'mquotient *maxima-direct-ir-map*) '(op /))
 (setf (gethash 'msetq *maxima-direct-ir-map*) '(assign))
 (setf (gethash 'mlist *maxima-direct-ir-map*) '(struct-list))
 (setf (gethash 'mand *maxima-direct-ir-map*) '(boolop and))
 (setf (gethash 'mor *maxima-direct-ir-map*) '(boolop or))
 (setf (gethash 'mnot *maxima-direct-ir-map*) '(funcall (symbol "not")))
+(setf (gethash 'mminus *maxima-direct-ir-map*) '(unary-op -))
 (setf (gethash 'mgreaterp *maxima-direct-ir-map*) '(comp-op >))
 (setf (gethash 'mequal *maxima-direct-ir-map*) '(comp-op ==))
 (setf (gethash 'mnotequal *maxima-direct-ir-map*) '(comp-op !=))
@@ -165,6 +167,7 @@
 ;;; maxima-to-ir and then ir-to-python
 (defun $pytranslate (form)
   (setf *ir-forms-to-append* '())
+  (setf form (nformat form))
   (ir-to-python (maxima-to-ir form t)))
 
 ;;; Generates Python source for given IR form
@@ -197,6 +200,7 @@
 (setf (gethash 'comp-op *ir-python-direct-templates*) 'op-to-python)
 (setf (gethash 'boolop *ir-python-direct-templates*) 'op-to-python)
 (setf (gethash 'op *ir-python-direct-templates*) 'op-to-python)
+(setf (gethash 'unary-op *ir-python-direct-templates*) 'unary-op-to-python)
 (setf (gethash 'symbol *ir-python-direct-templates*) 'symbol-to-python)
 (setf (gethash 'assign *ir-python-direct-templates*) 'assign-to-python)
 (setf (gethash 'string *ir-python-direct-templates*) 'string-to-python)
@@ -231,6 +235,11 @@
 	  (mapcar
 	   (lambda (elm) (ir-to-python elm indentation-level))
 	   (cdr form))))
+
+(defun unary-op-to-python (form indentation-level)
+  (format nil "(~a~a)"
+	  (cadr form)
+	  (ir-to-python (caddr form) indentation-level)))
 
 (defun funcall-to-python (form indentation-level)
   (format nil "~a(~{~a~^, ~})"
@@ -281,4 +290,4 @@
 
 ;;; Function to display the internal Maxima form
 (defun $show_form (form)
-  (print form))
+  (print (nformat-check form))) 
