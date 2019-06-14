@@ -34,8 +34,29 @@
 
 (defvar *ir-forms-to-append* '())
 
+(defun func-call-arg-to-ir (form)
+  (typecase form
+    (cons (cond
+	    ((eq (caar form) 'mlist)
+	     `(symbol ,(maybe-invert-string-case (symbol-name (stripdollar (cadr form))))))))
+    (t (maxima-to-ir form))))
+
 (defun lambda-to-ir (form)
-  `(lambda ,(mapcar #'maxima-to-ir (cdadr form)) ,(maxima-to-ir (car (last form)))))
+  (cond ((eq (list-length (cddr form)) 1)
+	 `(lambda ,(mapcar #'func-arg-to-ir (cdadr form)) ,(maxima-to-ir (car (last form)))))
+	(t
+	 (let ((func_name (maxima-to-ir (gensym "$FUNC"))))
+	   (setf *ir-forms-to-append*
+		 (append *ir-forms-to-append*
+			 `((func-def
+			    ,func_name
+			    ,(mapcar 'func-call-arg-to-ir
+				     (cdadr form))
+			    (body-indented
+			     ,@(mapcar 'maxima-to-ir
+				       (butlast (cddr form)))
+			     (funcall (symbol "return") ,(maxima-to-ir (car (last form)))))))))
+	   `(lambda ,(mapcar #'func-arg-to-ir (cdadr form)) (funcall ,func_name ,@(mapcar #'func-call-arg-to-ir (cdadr form))))))))
 
 (defun mcond-auxiliary (forms)
   `( ,(maxima-to-ir (car forms))

@@ -204,8 +204,11 @@
 <node TEXT="((mleqp ~) exp exp)" ID="ID_1009687600" CREATED="1559153583529" MODIFIED="1559205478235" HGAP_QUANTITY="367.99998944997816 pt" VSHIFT_QUANTITY="-1979.9999409914035 pt">
 <node TEXT="(comp-op &lt;= exp exp)" ID="ID_729342354" CREATED="1559154026017" MODIFIED="1559888138095"/>
 </node>
-<node TEXT="((lambda ~) ((mlist) s1 s2 ~) exp-1)" ID="ID_1159602754" CREATED="1560499082077" MODIFIED="1560499157293">
+<node TEXT="((lambda ~) ((mlist) s1 s2 ~) exp-1)" FOLDED="true" ID="ID_1159602754" CREATED="1560499082077" MODIFIED="1560499157293">
 <node TEXT="(lambda (simp-s1 simp-s2) simp-exp-1)" ID="ID_299579021" CREATED="1560499157304" MODIFIED="1560499175932"/>
+</node>
+<node TEXT="((lambda ~) ((mlist) s1 s2 ~) exp-1 exp-2 ~)" ID="ID_753289066" CREATED="1560534259607" MODIFIED="1560534273623">
+<node TEXT="(BODY (FUNC-DEF (SYMBOL &quot;func19167&quot;) NIL&#xa;          (BODY-INDENTED simp-exp1&#xa;              simp-exp2&#xa;              (FUNCALL (SYMBOL &quot;return&quot;)&#xa;                       (OP / (SYMBOL &quot;a&quot;) (SYMBOL &quot;b&quot;)))))&#xa;(LAMBDA () (FUNCALL (SYMBOL &quot;func19167&quot;)))" ID="ID_1668254200" CREATED="1560534273628" MODIFIED="1560535785478"/>
 </node>
 </node>
 </node>
