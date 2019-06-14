@@ -62,21 +62,21 @@
   (cond ((not (null (cdr form)))
 	 (cond ((and (consp (cadr form)) (eq 'mlist (caaadr form)))
 		;; Variable binding
-		(let ((func_name (maxima-to-ir (gensym "$func"))))
+		(let ((func_name (maxima-to-ir (gensym "$FUNC"))))
 		  (setf *ir-forms-to-append*
 			(append *ir-forms-to-append*
        			`((func-def ,func_name ,(mapcar 'mprog-variable-names-list (cdadr form)) (body-indented ,@(mapcar 'maxima-to-ir (cddr form)))))))
 		  `(funcall ,func_name ,@(mapcar 'mprog-arg-list (cdadr form)))))
 	       ;; No variable binding required
 	       (t
-		(let ((func_name (maxima-to-ir (gensym "$func"))))
+		(let ((func_name (maxima-to-ir (gensym "$FUNC"))))
 		  (setf *ir-forms-to-append* (append *ir-forms-to-append* `((func-def ,func_name () (body-indented ,@(mapcar 'maxima-to-ir (cdr form)))))))
 		  `(funcall ,func_name))
 		)))))
 
 (defun mprogn-to-ir (form)
   (let
-      ((func_name (maxima-to-ir (gensym "$func"))))
+      ((func_name (maxima-to-ir (gensym "$FUNC"))))
     (setf *ir-forms-to-append*
 	  (append *ir-forms-to-append*
 		  `((func-def ,func_name
@@ -117,7 +117,7 @@
   (typecase form
     (cons (cond
 	    ((eq (caar form) 'mlist)
-	     `(symbol ,(concatenate 'string "*" (subseq (symbol-name (cadr form)) 1))))))
+	     `(symbol ,(concatenate 'string "*"  (maybe-invert-string-case (symbol-name (stripdollar (cadr form)))))))))
     (t (maxima-to-ir form))))
 
 ;;; Generates IR for function definition
@@ -138,7 +138,8 @@
     ((eq form '$%i) '(num 0 1)) ; iota complex number
     ((eq form '$%pi) '(num (symbol "math.pi") 0)) ; Pi
     ((eq form '$%e) '(num (symbol "math.e") 0)) ; Euler's Constant
-    (t (list 'symbol (subseq (symbol-name form) 1)))
+    (t (list 'symbol
+	     (maybe-invert-string-case (symbol-name (stripdollar form)))))
     ))
 
 ;;; Generates IR for non-atomic forms

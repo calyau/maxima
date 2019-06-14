@@ -19,77 +19,77 @@ pytranslate(true);
 
 /* Arithmetic operators */
 pytranslate(a + b);
-"(B + A)"$
+"(b + a)"$
 pytranslate(a*b);
-"(A * B)"$
+"(a * b)"$
 pytranslate(a/b);
-"(A / B)"$
+"(a / b)"$
 pytranslate(a-b);
-"(A + (-B))"$
+"(a + (-b))"$
 pytranslate(a^b);
-"math.pow(A, B)"$
+"math.pow(a, b)"$
 pytranslate(a!);
-"math.factorial(A)"$
+"math.factorial(a)"$
 
 /* Boolean Operators */
 pytranslate(a or b);
-"(A or B)"$
+"(a or b)"$
 pytranslate(a and b);
-"(A and B)"$
+"(a and b)"$
 pytranslate(not(a));
-"not(A)"$
+"not(a)"$
 
 /* Relational Operators */
 pytranslate(a >= b);
-"(A >= B)"$
+"(a >= b)"$
 pytranslate(a <= b);
-"(A <= B)"$
+"(a <= b)"$
 pytranslate(a > b);
-"(A > B)"$
+"(a > b)"$
 pytranslate(a < b);
-"(A < B)"$
+"(a < b)"$
 pytranslate(a # b);
-"(A != B)"$
+"(a != b)"$
 pytranslate(a = b);
-"(A == B)"$
+"(a == b)"$
 
 /* List */
 pytranslate([a,b,c]);
-"[A, B, C]"$
+"[a, b, c]"$
 
 /* Assignment */
 pytranslate('(a:b));
-"A = B"$
+"a = b"$
 pytranslate('([a,b,c]:[1,2,3]));
-"[A, B, C] = [1, 2, 3]"$
+"[a, b, c] = [1, 2, 3]"$
 
 (kill(all), 'done);
 'done$
 
 /* Function Definition */
 pytranslate(f(x):=x^2);
-"def F(X):
-    return(math.pow(X, 2))"$
+"def f(x):
+    return(math.pow(x, 2))"$
 pytranslate(f(x, [y]):=x^2);
-"def F(X, *Y):
-    return(math.pow(X, 2))"$
+"def f(x, *y):
+    return(math.pow(x, 2))"$
 
 (kill(all), 'done);
 'done$
 
 /* Array-definition */
 pytranslate('array(abc, 1, 2, 3));
-"ABC = ([([([None] * 3)] * 2)] * 1)"$
+"abc = ([([([None] * 3)] * 2)] * 1)"$
 pytranslate('array(abc, fixnum, 1, 2, 3));
-"ABC = ([([([None] * 3)] * 2)] * 1)"$
+"abc = ([([([None] * 3)] * 2)] * 1)"$
 pytranslate('array([abc,def,tre], 1, 2, 3));
-"ABC = ([([([None] * 3)] * 2)] * 1)
-DEF = ([([([None] * 3)] * 2)] * 1)
-TRE = ([([([None] * 3)] * 2)] * 1)"$
+"abc = ([([([None] * 3)] * 2)] * 1)
+def = ([([([None] * 3)] * 2)] * 1)
+tre = ([([([None] * 3)] * 2)] * 1)"$
 
 /* Array reference */
 pytranslate('(abc[1,2,3,4]));
-"ABC[1][2][3][4]"$
+"abc[1][2][3][4]"$
 
 (kill(all), 'done);
 'done$
