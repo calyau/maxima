@@ -29,9 +29,13 @@
     (setf (gethash 'mprog ht) 'mprog-to-ir)
     (setf (gethash 'mprogn ht) 'mprogn-to-ir)
     (setf (gethash 'mcond ht) 'mcond-to-ir)
+    (setf (gethash 'lambda ht) 'lambda-to-ir)
     ht))
 
 (defvar *ir-forms-to-append* '())
+
+(defun lambda-to-ir (form)
+  `(lambda ,(mapcar #'maxima-to-ir (cdadr form)) ,(maxima-to-ir (car (last form)))))
 
 (defun mcond-auxiliary (forms)
   `( ,(maxima-to-ir (car forms))
@@ -224,7 +228,16 @@
     (setf (gethash 'func-def ht) 'func-def-to-python)
     (setf (gethash 'element-array ht) 'element-array-to-python)
     (setf (gethash 'conditional ht) 'conditional-to-python)
+    (setf (gethash 'lambda ht) 'lambda-to-python)
     ht))
+
+(defun lambda-to-python (form indentation-level)
+  (format nil "lambda ~{~a~^, ~}: ~a"
+	  (mapcar
+	   (lambda (elm) (ir-to-python elm indentation-level))
+	   (cadr form))
+	  (ir-to-python (car (last form)) indentation-level)
+	  ))
 
 (defun conditional-to-python (form indentation-level)
   (format nil "(~a if ~a else ~a)"

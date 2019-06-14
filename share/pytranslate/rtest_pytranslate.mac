@@ -114,3 +114,12 @@ pytranslate('(if 1>2 then 3 elseif 5>6 then 7 else 8));
 
 (kill(all), 'done);
 'done$
+
+/* Lambda Form */
+pytranslate(lambda([a,b], a+b));
+"lambda a, b: (a + b)"$
+pytranslate('(xx:lambda([a,b], a+b)));
+"xx = lambda a, b: (a + b)"$
+
+(kill(all), 'done);
+'done$
