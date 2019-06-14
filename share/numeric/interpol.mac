@@ -149,7 +149,7 @@ linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults,ratprint:fals
                   else if i=n
                           then (a: tab2[i-1][1], b: 'inf)
                           else (a: tab2[i-1][1], b: tab2[i][1]),
-               s: s + funmake('charfun2,[defaults[1], a, b]) *
+               s: s + apply('charfun2,[defaults[1], a, b]) *
                       expand( tab2[i][2] + (tab2[i][2]-tab2[i-1][2]) *
                                     (defaults[1]-tab2[i][1]) /
                                     (tab2[i][1]-tab2[i-1][1]) )   ),
@@ -262,7 +262,7 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
       cj: (aj^3 - aj) * aux,
       dj: (bj^3 - bj) * aux,
 
-      s: s + funmake('charfun2,[defaults[3], a, b]) *
+      s: s + charfun2(defaults[3], a, b) *
              expand(aj * tab2[j-1][2] + bj * tab2[j][2] + cj * y2[j-1] + dj * y2[j])  ),
    s )$
 
