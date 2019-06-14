@@ -1832,11 +1832,6 @@
   (declare (ignore struct i))
   (format stream "Structure [EF-DATA]") ) 
 
-(defstruct1 '(($ef_data) 
-  $exponent $reduction $primitive $cardinality $order $factors_of_order ))
-(let nil (declare (special $structures))
-  (setq $structures (cons '(mlist) (remove-if #'(lambda (x) (eq (caar x) '$ef_data)) (cdr $structures)))))
-
 (defmfun $ef_get_data () 
   (ef-data? "ef_get_data")
   (make-ef-data
