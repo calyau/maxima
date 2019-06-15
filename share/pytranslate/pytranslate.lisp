@@ -83,33 +83,34 @@
 ;;; global context, this will work, however, for assignment
 ;;; operations, this method will not. Another alternative that can
 ;;; be considered is to create a class to house all the bindings.
-(defun mprog-to-ir (form)
+(defun mprog-to-ir (form &optional (func-args '()))
   (cond ((not (null (cdr form)))
 	 (cond ((and (consp (cadr form)) (eq 'mlist (caaadr form)))
 		;; Variable binding
 		(let ((func_name (maxima-to-ir (gensym "$FUNC"))))
 		  (setf *ir-forms-to-append*
 			(append *ir-forms-to-append*
-       			`((func-def ,func_name ,(mapcar 'mprog-variable-names-list (cdadr form)) (body-indented ,@(mapcar 'maxima-to-ir (cddr form)))))))
-		  `(funcall ,func_name ,@(mapcar 'mprog-arg-list (cdadr form)))))
+       			`((func-def ,func_name ,(append func-args (mapcar 'mprog-variable-names-list (cdadr form))) (body-indented ,@(mapcar 'maxima-to-ir (butlast (cddr form))) (funcall (symbol "return") ,(maxima-to-ir (car (last form)))))))))
+		  `(funcall ,func_name ,@(append func-args (mapcar 'mprog-arg-list (cdadr form))))))
 	       ;; No variable binding required
 	       (t
 		(let ((func_name (maxima-to-ir (gensym "$FUNC"))))
-		  (setf *ir-forms-to-append* (append *ir-forms-to-append* `((func-def ,func_name () (body-indented ,@(mapcar 'maxima-to-ir (cdr form)))))))
-		  `(funcall ,func_name))
+		  (setf *ir-forms-to-append* (append *ir-forms-to-append* `((func-def ,func_name ,func-args (body-indented ,@(mapcar 'maxima-to-ir (butlast (cdr form))) (funcall (symbol "return") ,(maxima-to-ir (car (last form)))))))))
+		  `(funcall ,func_name ,@func-args))
 		)))))
 
-(defun mprogn-to-ir (form)
+(defun mprogn-to-ir (form &optional (func-args '()))
   (let
       ((func_name (maxima-to-ir (gensym "$FUNC"))))
     (setf *ir-forms-to-append*
 	  (append *ir-forms-to-append*
 		  `((func-def ,func_name
-			      ()
+			      ,func-args
 			      (body-indented
 			       ,@(mapcar 'maxima-to-ir
-					 (cdr form)))))))
-    `(funcall ,func_name)))
+					 (butlast (cdr form)))
+			       (funcall (symbol "return") ,(maxima-to-ir (car (last form)))))))))
+    `(funcall ,func_name ,@func-args)))
 
 ;;; Recursively generates IR for a multi-dimensional array and fills all cells with Null value
 (defun array-gen-ir (dimensions)
@@ -151,7 +152,18 @@
     ,(maxima-to-ir (caaadr form))
     ,(mapcar #'func-arg-to-ir (cdadr form))
     (body-indented (funcall (symbol "return")
-			    ,(maxima-to-ir (caddr form))))))
+			    ,(cond ((and (consp (caddr form))
+					 (consp (caaddr form))
+					 (eq (car (caaddr form)) 'mprog))
+				    (mprog-to-ir (caddr form)
+						 (mapcar #'func-arg-to-ir (cdadr form))))
+				   ((and (consp (caddr form))
+					 (consp (caaddr form))
+					 (eq (car (caaddr form)) 'mprogn))
+				    (mprogn-to-ir (caddr form)
+						 (mapcar #'func-arg-to-ir (cdadr form))))
+				   (t
+				    (maxima-to-ir (caddr form))))))))
 
 ;;; Generates IR for atomic forms
 (defun atom-to-ir (form)
