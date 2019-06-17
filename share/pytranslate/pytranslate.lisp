@@ -30,9 +30,25 @@
     (setf (gethash 'mprogn ht) 'mprogn-to-ir)
     (setf (gethash 'mcond ht) 'mcond-to-ir)
     (setf (gethash 'lambda ht) 'lambda-to-ir)
+    (setf (gethash 'mdoin ht) 'for-list-to-ir)
     ht))
 
 (defvar *ir-forms-to-append* '())
+
+(defun clast (l)
+  (car (last l)))
+
+(defun for-list-to-ir (form)
+  `(for-list ,(maxima-to-ir (cadr form))
+	     ,(maxima-to-ir (caddr form))
+	     (body-indented
+	      ,@(cond ((and (consp (clast form))
+					 (consp (car (clast form)))
+					 (eq (caar (clast form)) 'mprogn))
+		       (mapcar 'maxima-to-ir (cdr (clast form)))
+		       )
+		      (t
+		       `(,(maxima-to-ir (clast form))))))))
 
 (defun func-call-arg-to-ir (form)
   (typecase form
@@ -43,7 +59,7 @@
 
 (defun lambda-to-ir (form)
   (cond ((eq (list-length (cddr form)) 1)
-	 `(lambda ,(mapcar #'func-arg-to-ir (cdadr form)) ,(maxima-to-ir (car (last form)))))
+	 `(lambda ,(mapcar #'func-arg-to-ir (cdadr form)) ,(maxima-to-ir (clast form))))
 	(t
 	 (let ((func_name (maxima-to-ir (gensym "$FUNC"))))
 	   (setf *ir-forms-to-append*
@@ -74,7 +90,7 @@
 	(t (maxima-to-ir form))))
 
 (defun mprog-arg-list (form)
-  (cond ((and (consp form) (eq 'msetq (caar form))) (maxima-to-ir (car (last form))))
+  (cond ((and (consp form) (eq 'msetq (caar form))) (maxima-to-ir (clast form)))
 	(t `(symbol "None"))))
 
 ;;; It creates a function for the statements.
@@ -90,12 +106,12 @@
 		(let ((func_name (maxima-to-ir (gensym "$FUNC"))))
 		  (setf *ir-forms-to-append*
 			(append *ir-forms-to-append*
-       			`((func-def ,func_name ,(append func-args (mapcar 'mprog-variable-names-list (cdadr form))) (body-indented ,@(mapcar 'maxima-to-ir (butlast (cddr form))) (funcall (symbol "return") ,(maxima-to-ir (car (last form)))))))))
+       			`((func-def ,func_name ,(append func-args (mapcar 'mprog-variable-names-list (cdadr form))) (body-indented ,@(mapcar 'maxima-to-ir (butlast (cddr form))) (funcall (symbol "return") ,(maxima-to-ir (clast form))))))))
 		  `(funcall ,func_name ,@(append func-args (mapcar 'mprog-arg-list (cdadr form))))))
 	       ;; No variable binding required
 	       (t
 		(let ((func_name (maxima-to-ir (gensym "$FUNC"))))
-		  (setf *ir-forms-to-append* (append *ir-forms-to-append* `((func-def ,func_name ,func-args (body-indented ,@(mapcar 'maxima-to-ir (butlast (cdr form))) (funcall (symbol "return") ,(maxima-to-ir (car (last form)))))))))
+		  (setf *ir-forms-to-append* (append *ir-forms-to-append* `((func-def ,func_name ,func-args (body-indented ,@(mapcar 'maxima-to-ir (butlast (cdr form))) (funcall (symbol "return") ,(maxima-to-ir (clast form))))))))
 		  `(funcall ,func_name ,@func-args))
 		)))))
 
@@ -109,7 +125,7 @@
 			      (body-indented
 			       ,@(mapcar 'maxima-to-ir
 					 (butlast (cdr form)))
-			       (funcall (symbol "return") ,(maxima-to-ir (car (last form)))))))))
+			       (funcall (symbol "return") ,(maxima-to-ir (clast form))))))))
     `(funcall ,func_name ,@func-args)))
 
 ;;; Recursively generates IR for a multi-dimensional array and fills all cells with Null value
@@ -135,7 +151,7 @@
 ;;; TODO : However, for arrays that are undefined, it needs to be assigned to a hashed array(dictionary)
 (defun array-ref-to-ir (symbol indices)
   (cond ((null indices) (maxima-to-ir symbol)) 
-	(t `(element-array ,(array-ref-to-ir symbol (butlast indices)) ,(maxima-to-ir (car (last indices)))))))
+	(t `(element-array ,(array-ref-to-ir symbol (butlast indices)) ,(maxima-to-ir (clast indices))))))
 
 ;;; Convert Function args to corresponding IR
 ;;; Convert the optional list argument into corresponding *args form in python
@@ -262,14 +278,21 @@
     (setf (gethash 'element-array ht) 'element-array-to-python)
     (setf (gethash 'conditional ht) 'conditional-to-python)
     (setf (gethash 'lambda ht) 'lambda-to-python)
+    (setf (gethash 'for-list ht) 'for-list-to-python)
     ht))
+
+(defun for-list-to-python (form indentation-level)
+  (format nil "for ~a in ~a:~&~a"
+	  (ir-to-python (cadr form) indentation-level)
+	  (ir-to-python (caddr form) indentation-level)
+	  (ir-to-python (clast form) indentation-level)))
 
 (defun lambda-to-python (form indentation-level)
   (format nil "lambda ~{~a~^, ~}: ~a"
 	  (mapcar
 	   (lambda (elm) (ir-to-python elm indentation-level))
 	   (cadr form))
-	  (ir-to-python (car (last form)) indentation-level)
+	  (ir-to-python (clast form) indentation-level)
 	  ))
 
 (defun conditional-to-python (form indentation-level)
@@ -281,7 +304,7 @@
 (defun element-array-to-python (form indentation-level)
   (format nil "~a[~a]"
 	  (ir-to-python (cadr form) indentation-level)
-	  (ir-to-python (car (last form)) indentation-level)))
+	  (ir-to-python (clast form) indentation-level)))
   
 (defun func-def-to-python (form indentation-level)
   (format nil "def ~a(~{~a~^, ~}):~&~a"
@@ -289,7 +312,7 @@
 	  (mapcar
 	   (lambda (elm) (ir-to-python elm indentation-level))
 	   (caddr form))
-	  (ir-to-python (car (last form)) indentation-level)
+	  (ir-to-python (clast form) indentation-level)
 	  ))
 
 (defun struct-list-to-python (form indentation-level)
@@ -347,7 +370,7 @@
 	   (cdr form))))
 
 (defun num-to-python (form indentation-level)
-  (cond ((eq 0 (car (last form))) (ir-to-python (cadr form)))
+  (cond ((eq 0 (clast form)) (ir-to-python (cadr form)))
 	(t "1j")))
 
 ;;; Function to display the internal Maxima form

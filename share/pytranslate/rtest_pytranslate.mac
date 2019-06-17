@@ -123,3 +123,14 @@ pytranslate('(xx:lambda([a,b], a+b)));
 
 (kill(all), 'done);
 'done$
+
+/*for loop*/
+/* In List */
+pytranslate('(for i in [1,2,3] do print(i)));
+"for i in [1, 2, 3]:
+    print(i)"$
+
+pytranslate('(for i in [1,2,3] do (print(i), print(i*2))));
+"for i in [1, 2, 3]:
+    print(i)
+    print((2 * i))"$

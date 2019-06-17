@@ -210,6 +210,9 @@
 <node TEXT="((lambda ~) ((mlist) s1 s2 ~) exp-1 exp-2 ~)" ID="ID_753289066" CREATED="1560534259607" MODIFIED="1560534273623">
 <node TEXT="(BODY (FUNC-DEF (SYMBOL &quot;func19167&quot;) NIL&#xa;          (BODY-INDENTED simp-exp1&#xa;              simp-exp2&#xa;              (FUNCALL (SYMBOL &quot;return&quot;)&#xa;                       (OP / (SYMBOL &quot;a&quot;) (SYMBOL &quot;b&quot;)))))&#xa;(LAMBDA () (FUNCALL (SYMBOL &quot;func19167&quot;)))" ID="ID_1668254200" CREATED="1560534273628" MODIFIED="1560535785478"/>
 </node>
+<node TEXT="((MDOIN SIMP) $I ((MLIST SIMP)) NIL NIL NIL NIL (($PRINT SIMP) $I)" ID="ID_241512391" CREATED="1560758563567" MODIFIED="1560758615849">
+<node TEXT="(for-list (symbol &quot;i&quot;) (struct-list) (body-indented exps)" ID="ID_458267467" CREATED="1560758615993" MODIFIED="1560758674859"/>
+</node>
 </node>
 </node>
 </node>
