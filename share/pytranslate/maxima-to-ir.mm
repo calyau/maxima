@@ -210,8 +210,11 @@
 <node TEXT="((lambda ~) ((mlist) s1 s2 ~) exp-1 exp-2 ~)" ID="ID_753289066" CREATED="1560534259607" MODIFIED="1560534273623">
 <node TEXT="(BODY (FUNC-DEF (SYMBOL &quot;func19167&quot;) NIL&#xa;          (BODY-INDENTED simp-exp1&#xa;              simp-exp2&#xa;              (FUNCALL (SYMBOL &quot;return&quot;)&#xa;                       (OP / (SYMBOL &quot;a&quot;) (SYMBOL &quot;b&quot;)))))&#xa;(LAMBDA () (FUNCALL (SYMBOL &quot;func19167&quot;)))" ID="ID_1668254200" CREATED="1560534273628" MODIFIED="1560535785478"/>
 </node>
-<node TEXT="((MDOIN SIMP) $I ((MLIST SIMP)) NIL NIL NIL NIL (($PRINT SIMP) $I)" ID="ID_241512391" CREATED="1560758563567" MODIFIED="1560758615849">
+<node TEXT="((MDOIN SIMP) $I ((MLIST SIMP)) NIL NIL NIL NIL (($PRINT SIMP) $I)" FOLDED="true" ID="ID_241512391" CREATED="1560758563567" MODIFIED="1560758615849">
 <node TEXT="(for-list (symbol &quot;i&quot;) (struct-list) (body-indented exps)" ID="ID_458267467" CREATED="1560758615993" MODIFIED="1560758674859"/>
+</node>
+<node TEXT="((MDO SIMP) $I 10 5 NIL NIL ((MLEQP SIMP) ((MTIMES SIMP) 5 $I) 30)&#xa; ((MPROGN SIMP) (($PRINT SIMP) $I)&#xa;  (($PRINT SIMP) ((MTIMES SIMP) 5 $I))))" ID="ID_1381954472" CREATED="1560883665500" MODIFIED="1560883674386">
+<node TEXT="(BODY (BODY (ASSIGN (SYMBOL &quot;i&quot;) (NUM 10 0))&#xa;            (WHILE-LOOP&#xa;                (FUNCALL (SYMBOL &quot;not&quot;)&#xa;                         (COMP-OP &lt;= (OP * (NUM 5 0) (SYMBOL &quot;i&quot;))&#xa;                                  (NUM 30 0)))&#xa;                (BODY-INDENTED (FUNCALL (SYMBOL &quot;print&quot;) (SYMBOL &quot;i&quot;))&#xa;                    (FUNCALL (SYMBOL &quot;print&quot;)&#xa;                             (OP * (NUM 5 0) (SYMBOL &quot;i&quot;)))&#xa;                    (ASSIGN (SYMBOL &quot;i&quot;) (OP + (SYMBOL &quot;i&quot;) (NUM 5 0)))))&#xa;            (DEL (SYMBOL &quot;i&quot;))))" ID="ID_993746514" CREATED="1560883674433" MODIFIED="1560883692204"/>
 </node>
 </node>
 </node>

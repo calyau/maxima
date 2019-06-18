@@ -31,6 +31,7 @@
     (setf (gethash 'mcond ht) 'mcond-to-ir)
     (setf (gethash 'lambda ht) 'lambda-to-ir)
     (setf (gethash 'mdoin ht) 'for-list-to-ir)
+    (setf (gethash 'mdo ht) 'for-loop-to-ir)
     ht))
 
 (defvar *ir-forms-to-append* '())
@@ -38,15 +39,46 @@
 (defun clast (l)
   (car (last l)))
 
+(defun mprogn-p (form)
+  (and (consp (clast form))
+       (consp (car (clast form)))
+       (eq (caar (clast form)) 'mprogn)))
+
+(defun for-loop-to-ir (form)
+  (cond ((null (caddr (cdddr form))) ; Condition Specified
+	 `(body (assign ,(maxima-to-ir (cadr form))
+			,(maxima-to-ir (caddr form)))
+		(while-loop (funcall (symbol "not")
+				     ,(maxima-to-ir (clast (butlast form))))
+			    (body-indented
+			     ,@(cond ((mprogn-p form)
+				    (mapcar 'maxima-to-ir (cdr (clast form))))
+				   (t
+				    `(,(maxima-to-ir (clast form)))))
+			     (assign ,(maxima-to-ir (cadr form))
+				     (op + ,(maxima-to-ir (cadr form)) ,(maxima-to-ir (cadddr form))))))
+			    (del ,(maxima-to-ir (cadr form)))))
+	(t                           ; Limit specified
+	 `(for-list ,(maxima-to-ir (cadr form))
+		    (funcall (symbol "range")
+			     ,(maxima-to-ir (caddr form))
+			     (op +
+				 ,(maxima-to-ir (caddr (cdddr form)))
+				 (num 1 0))
+			     ,(maxima-to-ir (cadddr form))
+			     )
+		    (body-indented
+		     ,@(cond ((mprogn-p form)
+			      (mapcar 'maxima-to-ir (cdr (clast form))))
+			     (t
+			      `(,(maxima-to-ir (clast form))))))))))
+
 (defun for-list-to-ir (form)
   `(for-list ,(maxima-to-ir (cadr form))
 	     ,(maxima-to-ir (caddr form))
 	     (body-indented
-	      ,@(cond ((and (consp (clast form))
-					 (consp (car (clast form)))
-					 (eq (caar (clast form)) 'mprogn))
-		       (mapcar 'maxima-to-ir (cdr (clast form)))
-		       )
+	      ,@(cond ((mprogn-p form)
+		       (mapcar 'maxima-to-ir (cdr (clast form))))
 		      (t
 		       `(,(maxima-to-ir (clast form))))))))
 
@@ -268,6 +300,7 @@
     (setf (gethash 'comp-op ht) 'op-to-python)
     (setf (gethash 'boolop ht) 'op-to-python)
     (setf (gethash 'op ht) 'op-to-python)
+    (setf (gethash 'del ht) 'del-to-python)
     (setf (gethash 'unary-op ht) 'unary-op-to-python)
     (setf (gethash 'symbol ht) 'symbol-to-python)
     (setf (gethash 'assign ht) 'assign-to-python)
@@ -279,7 +312,13 @@
     (setf (gethash 'conditional ht) 'conditional-to-python)
     (setf (gethash 'lambda ht) 'lambda-to-python)
     (setf (gethash 'for-list ht) 'for-list-to-python)
+    (setf (gethash 'while-loop ht) 'while-loop-to-python)
     ht))
+
+(defun while-loop-to-python (form indentation-level)
+  (format nil "while ~a:~&~a"
+	  (ir-to-python (cadr form) indentation-level)
+	  (ir-to-python (caddr form) indentation-level)))
 
 (defun for-list-to-python (form indentation-level)
   (format nil "for ~a in ~a:~&~a"
@@ -325,6 +364,10 @@
   (format nil "(~a~a)"
 	  (cadr form)
 	  (ir-to-python (caddr form) indentation-level)))
+
+(defun del-to-python (form indentation-level)
+  (format nil "del ~a"
+	  (ir-to-python (cadr form))))
 
 (defun funcall-to-python (form indentation-level)
   (format nil "~a(~{~a~^, ~})"
