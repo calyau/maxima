@@ -742,7 +742,7 @@ is @code{true}, @code{with_stdout} appends to the output file.  Otherwise,
 
 @code{with_stdout} returns the value of its final argument.
 
-See also @mrefdot{writefile}
+See also @mref{writefile} and @mrefdot{display2d}
 
 @c THIS DOESN'T SEEM VERY IMPORTANT TO MENTION ...
 @c Note the binding of display2d to be
