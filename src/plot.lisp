@@ -1921,6 +1921,7 @@ sin(y)*(10.0+6*cos(x)),
           (format st "} "))
         file)
        (cons '(mlist) (cons file output-file)))
+      ;; plot_format is one of the gnuplot flavours
       (t
        (with-open-file (st file :direction :output :if-exists :supersede)
          (case (getf options :plot_format)
