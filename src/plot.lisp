@@ -1686,9 +1686,11 @@ sin(y)*(10.0+6*cos(x)),
 
 ;; Escape maxima object names for gnuplot titles
 (defun gnuplot-escape-string (name)
-  (string-substitute "\\^" #\^ 
-    (string-substitute "\\@" #\@ 
-      (string-substitute "\\_" #\_ name))))
+  (string-substitute "\\{" #\{
+    (string-substitute "\\}" #\} 
+    (string-substitute "\\^" #\^ 
+      (string-substitute "\\@" #\@ 
+        (string-substitute "\\_" #\_ name))))))
 
 ;; Transform can be false or the name of a function for the transformation.
 (defun check-option-transform (option)
