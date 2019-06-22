@@ -238,116 +238,122 @@
 ;; The lambda-list supports &optional and &rest args.  Keyword args
 ;; are an error.
 (defmacro defmfun (name lambda-list &body body)
-  (let ((maclisp-narg-p (and (symbolp lambda-list) (not (null lambda-list)))))
-    (cond
-      ((or (char/= #\$ (aref (string name) 0))
-	   maclisp-narg-p)
-       ;; If NAME doesn't start with $, it's an internal function not
-       ;; directly exposed to the user.  Basically define the function
-       ;; as is, taking care to support the Maclisp narg syntax.
-       (cond (maclisp-narg-p
-	      ;; Support MacLisp narg syntax:  (defun foo a ...)
-	      `(progn
-		 (defprop ,name t translated)
-		 (defun ,name (&rest narg-rest-argument
-			       &aux (,lambda-list (length narg-rest-argument)))
-		   ,@body)))
-	     (t
-	      `(progn
-		 (defprop ,name t translated)
-		 (defun ,name ,lambda-list ,@body)))))
-      (t
-       ;; Function name begins with $, so it's exposed to the user;
-       ;; carefully check the number of arguments and print a nice
-       ;; message if the number doesn't match the expected number.
-       #+nil
-       (unless (char= #\$ (aref (string name) 0))
-	 (warn "First character of function name must start with $: ~S~%" name))
-       (multiple-value-bind (required-args
-			     optional-args
-			     restp
-			     rest-arg
-			     keywords-present-p)
-	   (parse-lambda-list lambda-list)
+  (flet ((add-props ()
+           ;; We make sure that the ARG-LIST property is added
+           ;; first, so that it will end up last in the list.
+           `(progn
+              (putprop ',name ',lambda-list 'arg-list)
+              (defprop ,name t translated))))
+    (let ((maclisp-narg-p (and (symbolp lambda-list) (not (null lambda-list)))))
+      (cond
+        ((or (char/= #\$ (aref (string name) 0))
+	     maclisp-narg-p)
+         ;; If NAME doesn't start with $, it's an internal function not
+         ;; directly exposed to the user.  Basically define the function
+         ;; as is, taking care to support the Maclisp narg syntax.
+         (cond (maclisp-narg-p
+	        ;; Support MacLisp narg syntax:  (defun foo a ...)
+	        `(progn
+                   ,(add-props)
+		   (defun ,name (&rest narg-rest-argument
+			         &aux (,lambda-list (length narg-rest-argument)))
+		     ,@body)))
+	       (t
+	        `(progn
+                   ,(add-props)
+		   (defun ,name ,lambda-list ,@body)))))
+        (t
+         ;; Function name begins with $, so it's exposed to the user;
+         ;; carefully check the number of arguments and print a nice
+         ;; message if the number doesn't match the expected number.
+         #+nil
+         (unless (char= #\$ (aref (string name) 0))
+	   (warn "First character of function name must start with $: ~S~%" name))
+         (multiple-value-bind (required-args
+			       optional-args
+			       restp
+			       rest-arg
+			       keywords-present-p)
+	     (parse-lambda-list lambda-list)
 
-	 (when keywords-present-p
-	   (error "Keyword arguments are not supported"))
+	   (when keywords-present-p
+	     (error "Keyword arguments are not supported"))
 
-	 (let* ((required-len (length required-args))
-		(optional-len (length optional-args))
-		(impl-name (intern (concatenate 'string
-						(string name)
-						"-IMPL")))
-		(impl-doc (format nil "Implementation for ~S" name))
-		(nargs (gensym "NARGS-"))
-		(args (gensym "REST-ARG-"))
-		(rest-name (gensym "REST-ARGS"))
-		(pretty-fname
-		 (cond (optional-args
-			;; Can't do much with optional args, so just use the function name.
-			name)
-		       (restp
-			;; Use maxima syntax for rest args: foo(a,b,[c]);
-			`((,name) ,@required-args ((mlist) ,rest-arg)))
-		       (t
-			;; Just have required args: foo(a,b)
-			`((,name) ,@required-args)))))
+	   (let* ((required-len (length required-args))
+		  (optional-len (length optional-args))
+		  (impl-name (intern (concatenate 'string
+						  (string name)
+						  "-IMPL")))
+		  (impl-doc (format nil "Implementation for ~S" name))
+		  (nargs (gensym "NARGS-"))
+		  (args (gensym "REST-ARG-"))
+		  (rest-name (gensym "REST-ARGS"))
+		  (pretty-fname
+		    (cond (optional-args
+			   ;; Can't do much with optional args, so just use the function name.
+			   name)
+		          (restp
+			   ;; Use maxima syntax for rest args: foo(a,b,[c]);
+			   `((,name) ,@required-args ((mlist) ,rest-arg)))
+		          (t
+			   ;; Just have required args: foo(a,b)
+			   `((,name) ,@required-args)))))
 
-	   (multiple-value-bind (forms decls doc-string)
-	       (parse-body body nil t)
-	     (setf doc-string (if doc-string (list doc-string)))
-	     `(progn
-		(defun ,impl-name ,lambda-list
-		  ,impl-doc
-		  ,@decls
-		  (block ,name
-		    ,@forms))
-		(defprop ,name t translated)
-		(defun ,name (&rest ,args)
-		  ,@doc-string
-		  (let ((,nargs (length ,args)))
-		    (declare (ignorable ,nargs))
-		    ,@(cond
-			(restp
-			 ;; When a rest arg is given, there's no upper
-			 ;; limit to the number of args.  Just check that
-			 ;; we have enough args to satisfy the required
-			 ;; args.
-			 (unless (null required-args)
-			   `((when (< ,nargs ,required-len)
+	     (multiple-value-bind (forms decls doc-string)
+	         (parse-body body nil t)
+	       (setf doc-string (if doc-string (list doc-string)))
+	       `(progn
+		  (defun ,impl-name ,lambda-list
+		    ,impl-doc
+		    ,@decls
+		    (block ,name
+		      ,@forms))
+                  ,(add-props)
+		  (defun ,name (&rest ,args)
+		    ,@doc-string
+		    (let ((,nargs (length ,args)))
+		      (declare (ignorable ,nargs))
+		      ,@(cond
+			  (restp
+			   ;; When a rest arg is given, there's no upper
+			   ;; limit to the number of args.  Just check that
+			   ;; we have enough args to satisfy the required
+			   ;; args.
+			   (unless (null required-args)
+			     `((when (< ,nargs ,required-len)
+			         (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
+				         ',pretty-fname
+				         ,required-len
+				         ,nargs
+				         (list* '(mlist) ,args))))))
+			  (optional-args
+			   ;; There are optional args (but no rest
+			   ;; arg). Verify that we don't have too many args,
+			   ;; and that we still have all the required args.
+			   `(
+			     (when (> ,nargs ,(+ required-len optional-len))
+			       (merror (intl:gettext "~M: expected at most ~M arguments but got ~M: ~M")
+				       ',pretty-fname
+				       ,(+ required-len optional-len)
+				       ,nargs
+				       (list* '(mlist) ,args)))
+			     (when (< ,nargs ,required-len)
 			       (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
 				       ',pretty-fname
 				       ,required-len
 				       ,nargs
+				       (list* '(mlist) ,args)))))
+			  (t
+			   ;; We only have required args.
+			   `((unless (= ,nargs ,required-len)
+			       (merror (intl:gettext "~M: expected exactly ~M arguments but got ~M: ~M")
+				       ',pretty-fname
+				       ,required-len
+				       ,nargs
 				       (list* '(mlist) ,args))))))
-			(optional-args
-			 ;; There are optional args (but no rest
-			 ;; arg). Verify that we don't have too many args,
-			 ;; and that we still have all the required args.
-			 `(
-			   (when (> ,nargs ,(+ required-len optional-len))
-			     (merror (intl:gettext "~M: expected at most ~M arguments but got ~M: ~M")
-				     ',pretty-fname
-				     ,(+ required-len optional-len)
-				     ,nargs
-				     (list* '(mlist) ,args)))
-			   (when (< ,nargs ,required-len)
-			     (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
-				     ',pretty-fname
-				     ,required-len
-				     ,nargs
-				     (list* '(mlist) ,args)))))
-			(t
-			 ;; We only have required args.
-			 `((unless (= ,nargs ,required-len)
-			     (merror (intl:gettext "~M: expected exactly ~M arguments but got ~M: ~M")
-				     ',pretty-fname
-				     ,required-len
-				     ,nargs
-				     (list* '(mlist) ,args))))))
-		    (apply #',impl-name ,args)))
-		(define-compiler-macro ,name (&rest ,rest-name)
-		  `(,',impl-name ,@,rest-name))))))))))
+		      (apply #',impl-name ,args)))
+		  (define-compiler-macro ,name (&rest ,rest-name)
+		    `(,',impl-name ,@,rest-name)))))))))))
 
 ;; Examples:
 ;; (defmfun $foobar (a b) (list '(mlist) a b))

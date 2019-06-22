@@ -1,13 +1,860 @@
+/*
+
+Maxima Control Engineering Package COMA ("COntrol engineering with MAxima") 
+
+*/
 
 
-Control Engineering package (COMA)
+/* Wilhelm Haager, 2019-06-14 (wilhelm.haager@htlstp.ac.at) */
 
-Postby wihaa » Mon Mar 29, 2010 11:34 am
-The COMA Control Engineering package currently comprises:
-* Inverse Laplace-transform of transfer functions of arbitrary order
-* Unit step responses
-* Nyquist diagrams and Bode plots
-* Poles and Zeros, root locus plots
-* Stability investigations: stability limit, Hurwitz criterion, stable regions in the parameter plane, phase margin, gain margin
-* Optimization and controller design: ISE-criterion (integral of squared error), gain optimum
-* State space methods: Conversion into a transfer function, canonical forms, controllability, observability
+load(coma);
+
+
+
+/* Plot-Routines*/
+
+
+/* The list "coma_defaults" holds default options (mainly graphic options)
+for COMA functions in the style of an associative array: */
+
+coma_defaults;
+
+
+
+/* Plotting FOUR functions with ONE variable each: */
+
+plot([sin(5*x)**2,0.8*sin(5*y)**2,x,0.8*y],xrange=[-0.5,1.5],
+color=[red,green,brown,blue],line_type=[solid,solid,dots,dots])$
+
+
+
+/* Plotting TWO functions with TWO variables each: */
+
+plot([sin(5*x)**2+0.8*sin(5*y)**2,x+0.8*y],
+xrange=[-0.5,1.5],surface_hide=true,color=[red,green,brown,blue])$
+
+
+
+/* Plotting the damping of a transfer function with respect to the parameter "a":
+As the function "damping" requires a transfer function with numeric coefficients, it has to be quoted. */
+
+f:(s+a)/(s^3+a*s^2+2*s+a);
+
+plot('damping(f),xrange=[0,5]);
+
+plot('damping(f),logx=true,logy=true,xrange=[0.05,50]);
+
+
+
+/* Isolines of the damping of a transfer function with respect to two parameters "a" and "b": */
+
+f:1/(s^5+s^4+6*s^3+a*s^2+b*s+1);
+
+contourplot('damping(f),a,b,
+xrange=[0,10], yrange=[0,10],
+contours=[0.10,0.05,0,-0.05,-0.1,-0.15],
+color=[green,green,black,red,red,red])$
+
+
+
+/* Electrical Engineering Operators and Functions*/
+
+/* Parallel connection of impedances: */
+
+R1//R2;
+
+
+/* Complex quantities in polar coordinates with the cis-Operator "/_" for input and the postfix operator "//_" as well as the function "cisform" for output: */
+
+U1:230;
+U2:230 /_ 240;
+U3:230 /_ 120;
+
+cisform(U1-U3);
+
+U1-U3 //_ ;
+
+
+
+/* Data Processing*/
+
+/* Moving Average */
+
+/* List with values of a noisy sine: */
+
+sinli:makelist(float(sin(t)-0.1+random(0.2)),t,-%pi/10,21/10*%pi,%pi/60)$
+
+
+/* Smoothed list: */
+
+sinlis:moving_average(sinli,15)$
+
+plot([points(sinli),points(sinlis)],point_type=0,points_joined=true,
+  yrange=[-1.1,1.1]);
+
+
+/* Regression Analysis */
+
+
+/* List of points: */
+
+pli:[[0,0.2],[2,0.5],[4,1.4],[5,2],[6,3],[7,4.5],[8,6.5]];
+
+
+
+/* Polynomial Regression: */
+
+p:regan(pli,[1,x,x**2,x**3]);
+
+plot([points(pli),p],point_type=7,points_joined=false,
+  xrange=[0,10],yrange=[-1,10]);
+
+
+
+/* Laplace-Transform, Step Response*/
+
+
+/* Laplace transform and inverse Laplace transform are part of Maxima: */
+
+laplace(t^2*sin(a*t),t,s);
+
+ilt(1/(s^3+2*s^2+2*s+1),s,t);
+
+ilt(1/((s+a)^2*(s+b)),s,t);
+
+
+
+/* Inverse Laplace transform fails at higher order transfer functions: */
+
+ilt(1/(s^3+2*s^2+3*s+1),s,t);
+
+
+
+/* nilt calculates inverse Laplace transform with numerically calculated poles. As the result is valid only for t>=0. If unit_step_included is set to "true" (default), it is multiplied with the unit step function: */
+
+nilt(1/(s^3+2*s^2+3*s+1),s,t);
+
+nilt(1/(s^3+2*s^2+3*s+1),s,t),unit_step_included=false;
+
+
+
+/* nilt tries to perform the back-transformation analytically, unless the variable try_symbolic_ilt is set to false; the additional parameters for the Laplace variable and the time variable can be omitted (if assumed to be "s" and "t", respectively): */
+
+nilt(1/(s^3+2*s^2+2*s+1));
+
+nilt(1/(s^3+2*s^2+2*s+1)),try_symbolic_ilt=false;
+
+
+
+/* List of second order systems: */
+
+pt2li:create_list(1/(s^2+2*d*s+1), d,
+      [0.0001,0.1,0.2,0.3,0.4,0.5]);
+
+
+
+/* Unit step responses of the second order systems: */
+
+step_response(pt2li)$
+
+
+
+/* Response on a piecewise defined input function: */
+
+u:5*unit_step(t)-5*unit_step(t-1)+5*unit_step(t-1.5)-5*unit_step(t-2);
+
+plot(u,xrange=[-1,5],yrange=[-2,6]);
+
+U:laplace(u,t,s);
+
+X:U*1/(1+s);
+
+x:nilt(X);
+
+plot([u,x],xrange=[-1,5],yrange=[-2,6]);
+
+response([explicit(u,t,-1,5),X],xrange=[-1,5],yrange=[-2,6]);
+
+
+
+/* Frequency Response*/
+
+
+/* Magintude plots of second order systems: */
+
+magnitude_plot(pt2li, yrange=[0.1,10])$
+
+
+
+/* Magnitude plots with linear scale: */
+
+magnitude_plot(pt2li,logy=false,yrange=[0,5])$
+
+
+
+/* Magnitude plot scaled in dB: */
+
+magnitude_plot(pt2li,logy=dB,yrange=[-20,20]);
+
+
+
+/* Phase plots of second order systems: */
+
+phase_plot(pt2li)$
+
+
+
+/* Bode plot (magnitude plot and phase plot together: */
+
+bode_plot(pt2li,yrange=[[0.1,10],[-180,0]])$
+
+
+
+/* Asymptotic characteristics */
+
+f:ratsimp(2*(1+1/(5*s)+s/(1+0.1*s)));
+
+bode_plot([f,asymptotic(f)],yrange=[[0.1,100],[-120,120]]);
+
+
+
+/* Nyquist plots (frequency response locus) of second order systems: */
+
+nyquist_plot(pt2li, xrange=[-3,3], yrange=[-5,1],
+    dimensions=[500,500], nticks=2000)$
+
+
+
+/* Nichols plot: */
+
+nichols_plot(pt2li,xrange=[-200,20],yrange=[0.01,10]);
+
+
+
+/* Calculation of gain and phase in degrees of a frequency response: */
+
+F:5*(1+5*s)/((1+3*s)*(1+s));
+
+absval(F);
+
+phase(F),numer;
+
+
+
+/* Investigations in the s-Plane*/
+
+fli:makelist(stable_rantranf(5),k,1,2);
+
+
+
+/* Calculating the zeros and poles of a list of transfer functions: */
+
+zeros(fli);
+
+poles(fli);
+
+
+
+/* Zeros and poles of a list of transfer functions in the complex plane: */
+
+poles_and_zeros(fli)$
+
+
+
+/* Calculation of closed loop transfer functions: */
+
+fli:closed_loop(makelist(k*((s-a)*(s+1))
+    /(s*(s-2)*(s+7)),a,-11,-8));
+
+
+
+/* Root locus plots with respect to the open loop gain of a list
+of transfer functions in the complex plane: */
+
+root_locus(fli,xrange=[-17,3],
+     yrange=[-6,6],nticks=5000)$
+
+
+
+/* Root locus plots with respect to the damping ratio of a
+second order of transfer function: */
+
+root_locus(1/(s**2+a*s+1),xrange=[-4,1],
+     trange=[1e-4,3],nticks=5000);
+
+
+
+/* Transfer Functions:*/
+
+
+/* Random Transfer Functions */
+
+
+/* List of transfer functions with random coefficients: */
+
+fli:makelist(tf(random,3),k,1,4);
+
+
+
+/* Checking the stability of the transfer functions: */
+
+stablep(fli);
+
+
+
+/* List of stable transfer functions with random coefficients: */
+
+fli:makelist(tf(random,stable,3),k,1,4);
+
+
+
+/* Checking the stability of the transfer functions: */
+
+stablep(fli);
+
+
+
+/* Random normalized transfer function: */
+
+tf(random,stable,normalized,7);
+
+
+
+/* Filters */
+
+
+/* Butterworth filter: */
+
+poles_and_zeros(tf(butterworth,5));
+
+step_response(makelist(tf(butterworth,k,2),k,3,10),xrange=[0,10],yrange=[0,1.3]);
+
+
+
+/* Bessel filter */
+
+poles_and_zeros(tf(bessel,5));
+
+step_response(makelist(tf(bessel,k,2),k,3,10),xrange=[0,10],yrange=[0,1.3]);
+
+
+
+/* Cebychev filter */
+
+poles_and_zeros(tf(chebychev,5));
+
+step_response(makelist(tf(chebychev,k,2),k,3,10),xrange=[0,10],yrange=[0,1.3]);
+
+magnitude_plot(makelist(tf(chebychev,k,2),k,3,10),yrange=[0.01,10]);
+
+magnitude_plot(makelist(tf(chebychev,6,2,eps),eps,0.1,0.5,0.1),yrange=[0.5,5]);
+
+
+
+/* PTn with poles on a semicircle (similar to Bessel filter), but poles confined to an angle (e.g.30 degrees): */
+
+poles_and_zeros([tf(ptn,10,1,30),
+  parametric(r*cos(150*%pi/180),r*sin(150*%pi/180),r,0,1.2),
+  parametric(r*cos(-150*%pi/180),r*sin(-150*%pi/180),r,0,1.2)],
+  yrange=[-1,1],xrange=[-2,1],color=[red,gray,gray]);
+
+
+
+/* Basic control system elements */
+
+[tf(pt1),tf(dt1),tf(pi),tf(pd)];
+
+[tf(pt2),tf(pt2,2,1,5),tf(pt2,prod),tf(pt2,prod,2,3,4)];
+
+[tf(pid),tf(pid,prod)];
+
+[tf(pidt1),tf(pidt1,prod)];
+
+
+
+/* List with open loop transfer functions: */
+
+fo:[k/s,5/(s*(s+3)),1-b/s];
+
+
+
+/* Calculation of the closed loop transfer functions: */
+
+fw:closed_loop(fo);
+
+
+
+/* Determining the types of the transfer functions: */
+
+tftype(fo);
+
+tftype(fw);
+
+open_loop(fw);
+
+
+
+/* Various transfer functions */
+
+[tf(generic),tf(generic,3,5,a,b)];
+
+
+
+/* Transfer function of an impedance chain with series resistances and traverse capacitors: */
+
+impedance_chain(R,1/(s*C),4);
+
+
+
+/* Fifth order Pade approximation of a time delay: */
+
+time_delay(T,5);
+
+
+
+/* Transfer function with coefficients optimized according to the ISE-criterion: */
+
+[tf(ise,5),tf(ise,5,2)];
+
+step_response([tf(ise,5),tf(ise,5,2)]);
+
+
+
+/* Canonical forms of transfer functions */
+
+f:rantranf(8);
+
+sum_form(f,1);
+
+sum_form(f,2);
+
+sum_form(f,3);
+
+sum_form(f,4);
+
+product_form(f,1);
+
+product_form(f,2);
+
+
+
+/* Stability Behaviour*/
+
+
+/* Fifth order transfer function and closed loop transfer function (with additional open loop gain k): */
+
+f:(4*s^2+9*s+6)/(2*s^5+6*s^4+9*s^3+10*s^2+5*s+1);
+
+fw:closed_loop(k*f);
+
+
+
+/* Stability limit with respect to the open loop gain k: */
+
+lim:stability_limit(fw,k);
+
+
+
+/* Calculation of the stability using the Hurwitz criterion: */
+
+ratsimp(hurwitz(denom(fw)));
+
+
+
+/* List of three transfer functions: below, at and above the stability limit: */
+
+kli:ev([1.1*k,k,0.9*k],lim,eval,numer);
+
+foli:create_list(k*f,k,kli);
+
+fwli:closed_loop(foli)$
+
+
+
+/* Checking the stability using the predicate function "stablep": */
+
+stablep(fwli);
+
+step_response(fwli,xrange=[0,50])$
+
+foli;
+
+
+
+/* Calculation of the gain crossover frequencies: */
+
+float(gain_crossover(foli));
+
+
+
+/* Calculation of the phase margin (unstable closed loop systems have a negative value): */
+
+phase_margin(foli);
+
+
+
+/* Calculation of the phase crossover frequencies: */
+
+phase_crossover(foli);
+
+
+
+/* Calculation of the gain margin (unstable closed loop systems have a value less than one): */
+
+gain_margin(foli);
+
+
+
+/* Calculation of the (absolute) damping (unstable systems have a negative value): */
+
+damping(fwli);
+
+
+
+/* Calculation of the (relative) damping (i.e. damping ratio),
+unstable systems have a negative value: */
+
+damping_ratio(fwli);
+
+
+
+/* List of transfer functions with two symbolic coefficients a and b
+and another varying coefficient: */
+
+fli:makelist(1/(s^5+3*s^4+k*s^3+a*s^2+b*s+1),k,2,6);
+
+
+
+/* Graphical representation of the stability limit with respect to the two coefficients a and b: */
+
+stable_area_outlined(fli,a,b,xrange=[0,20],yrange=[0,10]);
+
+stable_area([fli[1],fli[2]],a,b,xrange=[2,10],yrange=[0,3]);
+
+unstable_area([fli[1],fli[2]],a,b,xrange=[2,10],yrange=[0,3]);
+
+
+
+/* Controller Design*/
+
+
+/* Transfer function of a plant to be controlled: */
+
+fs:2/((1+5*s)*(1+s)**2*(1+0.3*s));
+
+
+
+/* List with three controllers: I-, PI- and PID-controller: */
+
+[fri,frpi,frpid]:[1/(s*Ti),
+kr*(1+1/(s*Tn)),(1+s*Ta)*(1+s*Tb)/(s*Tc)];
+
+
+
+/* Calculation of the I-controller according to the gain optimum: */
+
+g1:gain_optimum(fs,fri);
+
+
+
+/* Calculation of the PI-controller according to the gain optimum: */
+
+g2:gain_optimum(fs,frpi);
+
+
+
+/* Calculation of the PID-controller according to the gain optimum: */
+
+g3:gain_optimum(fs,frpid);
+
+
+
+/* List with all three dimensioned controllers: */
+
+reli:float(ev([fri,frpi,frpid],[g1,g2,g3]));
+
+
+
+/* Comparison of the closed loop step responses of the controlled systems: */
+
+step_response(closed_loop(reli*fs));
+
+
+
+/* Transfer function of a plant with symbolic coefficients: */
+
+fs:2/((1+a*s)*(1+s**2)*(1+b*s));
+
+
+
+/* Gain optimum also handles plants with symbolic coefficients: */
+
+gain_optimum(fs,frpi);
+
+
+
+/* Optimization*/
+
+
+/* Transfer function with two symbolic parameters a and b: */
+
+f:1/(s**3+a*s**2+b*s+1);
+
+
+
+/* Deviation from the stationary value in response to an input step: */
+
+xdev:ratsimp((1-f)/s);
+
+
+
+/* Integral of squared error (ISE-criterion): */
+
+iise:ise(xdev);
+
+
+
+/* Optimization of the two symbolic parameters a and b: */
+
+abl:ratsimp(jacobian([iise],[a,b]));
+
+realonly:true;
+
+res:solve(abl[1],[a,b]);
+
+
+
+/* Optimum transfer function: */
+
+fopt:ev(f,res);
+
+
+
+/* State Space Methods*/
+
+
+/* System matrix A of an RLC-circuit: */
+
+A:matrix([-R/L,0,-1/L,0],[0,-R/L,1/L,-1/L],
+[1/C1,-1/C1,0,0],[0,1/C1,0,0]);
+
+
+
+/* Input matrix B of an RLC-circuit: */
+
+B:matrix([1/L],[0],[0],[0]);
+
+
+
+/* Output matrix C of an RLC-circuit: */
+
+C:matrix([0,0,0,1]);
+
+
+
+/* A list of the state matrices A, B, and C forms a "system", which
+can be checked with the predicate functions "systemp" and "nsystemp": */
+
+circuit:[A,B,C];
+
+systemp(circuit);
+
+nsystemp(circuit);
+
+
+
+/* Calculation of the transfer function from the state matrices A, B and C,
+which can be performed in several ways: */
+
+f:transfer_function(circuit);
+
+transfer_function(A,B,C);
+
+
+
+/* Calcualtion of the transfer function of the circuit using "impedance_chain"
+gives the same result, expectedly: */
+
+f:impedance_chain(R+s*L,1/(s*C1),2);
+
+
+
+/* Transformation of the state matrices into the controller canonical form: */
+
+circ1:controller_canonical_form(f);
+
+
+
+/* Transformation of the state matrices into the observer canonical form: */
+
+circ2:observer_canonical_form(f);
+
+
+
+/* Calculation of the controllability matrix: */
+
+h1:ratsimp(controllability_matrix(A,B));
+
+
+
+/* Calculation of the observability matrix: */
+
+h2:observability_matrix(circuit);
+
+
+
+/* The rank of those matrices show, whether the system is controllable
+and observable: */
+
+[rank(h1),rank(h2)];
+
+kill(A,B,C);
+
+
+
+/* Time delayed Systems*/
+
+
+/* (added 2019-01-05) */
+
+
+/* Open loop system (IT1) with additional dead time: */
+
+Fo:1/(s*(s+3))*exp(-2*s);
+
+
+
+/* Frequency Response */
+
+absval(Fo);
+
+phase(Fo),numer;
+
+bode_plot(Fo);
+
+nyquist_plot(Fo,xrange=[-1.5,0.5],yrange=[-0.7,0.5]);
+
+nichols_plot(Fo,xrange=[-500,0],yrange=[0.1,10]);
+
+
+
+/* Stability Performance */
+
+gain_crossover(Fo);
+
+phase_margin(Fo);
+
+phase_crossover(Fo);
+
+gain_margin(Fo);
+
+
+
+/* Closed-Loop System */
+
+
+/* The closed-loop transfer function can be represented exactly as an (infinite) sum - one addend for each time step. For t<T the output is 0. For a successive time step the output is just the output from Fo times the input minus the preceeding output from Fo.  */
+
+
+/* The number of time steps can be specified as a 2nd parameter to closed_loop (Default 5): */
+
+Fw:closed_loop(Fo);
+
+unit_step_included=true;
+
+step_response(closed_loop(Fo*[0.5,1,1.5,2],10),xrange=[0,20],yrange=[-0.5,2.5]);
+
+
+
+/* Comparison of the exact step response (red) with a 3rd-order pade approximation (blue): */
+
+Fo_pade:1/(s*(s+3)) *time_delay(2,3);
+
+step_response(closed_loop([Fo,Fo_pade],10),xrange=[0,20],yrange=[-0.5,1.5]);
+
+
+
+/* Digital Algorithms*/
+
+
+/* Step Functions */
+
+
+/* A step function can be generated either by sampling of a continuous function, by a list of values, or by a list of points (with an x-value and an y-value each). The independent variable is assumed to be "t". */
+
+stepsin:stepf(sin(t),%pi/10);
+
+plot(stepsin,xrange=[-5,10],yrange=[-2,2]);
+
+steplist:[0,1,2,3,4,3,2,1];
+
+plot(['stepf(steplist),'stepf(steplist,0.2)],xrange=[-5,10],yrange=[-2,5]);
+
+steppoints:[[0,1],[0.5,2],[1,3],[2,2],[2.5,0],[3,2],[4.5,3]];
+
+plot('stepf(steppoints),xrange=[-5,10],yrange=[-2,5]);
+
+ev(stepf(steppoints),t=1.9);
+ev(stepf(steppoints),t=2.0);
+ev(stepf(steppoints),t=2.1);
+
+
+
+/* Algorithms */
+
+
+/* 2nd-order System: */
+
+Fpt2:2/(3+4*s+5*s**2);
+
+
+
+/* Euler Algorithm (with "backward differentiation") of the PT2:
+The result is a list consisting of the difference equation and the sampling time. If the sampling time as the 2nd parameter is omitted, "T" is assumed. */
+
+alg1:eulerb(Fpt2,0.5);
+
+eulerb(Fpt2);
+
+
+
+/* Euler Algorithm (with "forward differentiation") of the PT2: */
+
+alg2:eulerf(Fpt2,0.5);
+
+
+
+/* Tustin algorithm of the PT2: */
+
+alg3:tustin(Fpt2,0.5);
+
+
+
+/* Comparison, of the algorithms; "step_response" accepts an algorithm as parameter: */
+
+step_response([Fpt2,alg1,alg2,alg3],yrange=[0,1],xrange=[1,20]);
+
+
+
+/* Obviously only the Tustin algorithm yields an acceptable approximation. */
+
+
+/* A list of the first 20 values of the step response (2nd parameter defaults to 100): */
+
+algorithm_step_response(alg3,20);
+
+
+
+/* Check whether a list is recognized as an algorithm: */
+
+algorithmp([x=3*u,5]);
+
+algorithmp([x[k]=3*u+x[k-1],5]);
+
+
+
+/* The algorithms work also symbolically: */
+
+expand(eulerb(kr*1+1/(s*Tn)+s*Tv));
+
+

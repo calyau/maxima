@@ -486,6 +486,10 @@ All functions which have user-defined derivatives, created by the
 All atoms which have any property other than those mentioned above, such as
 properties established by @mref{atvalue} or @mref{matchdeclare}, etc.,
 as well as properties established in the @mref{declare} function.
+@item structures
+@c Is also documented in Structures.texi. But it definitively is an infolist
+@c so it has to be documented here, too.
+All structs defined using @mrefdot{defstruct}
 @item let_rule_packages
 All user-defined @mref{let} rule packages
 plus the special package @mrefdot{default_let_rule_package}
