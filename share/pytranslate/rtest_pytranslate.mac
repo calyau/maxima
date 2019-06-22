@@ -132,6 +132,14 @@ pytranslate(lambda([a,b], a+b));
 "lambda a, b: (a + b)"$
 pytranslate('(xx:lambda([a,b], a+b)));
 "xx = lambda a, b: (a + b)"$
+regex_subst("func_random(",
+            "func[0-9]*?\\(",
+            pytranslate('(lmb:lambda([a,b,c], d:a+b, e:b^c, d+e))));
+"def func_random(a, b, c):
+    d = (a + b)
+    e = math.pow(b, c)
+    return((d + e))
+lmb = lambda a, b, c: func_random(a, b, c)"$
 
 (kill(all), 'done);
 'done$
@@ -178,4 +186,4 @@ pytranslate('(for i:8 step -1 unless i<3 do print(i)));
 while not((i < 3)):
     print(i)
     i = (i + -1)
-del i"$    
+del i"$
