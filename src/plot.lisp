@@ -1684,6 +1684,12 @@ sin(y)*(10.0+6*cos(x)),
             (setq parsed (cons item parsed)))
           (reverse parsed)))))
 
+;; Escape maxima object names for gnuplot titles
+(defun gnuplot-escape-string (name)
+  (string-substitute "\\^" #\^ 
+    (string-substitute "\\@" #\@ 
+      (string-substitute "\\_" #\_ name))))
+
 ;; Transform can be false or the name of a function for the transformation.
 (defun check-option-transform (option)
   (if (and (= (length option) 2)
@@ -1764,7 +1770,7 @@ sin(y)*(10.0+6*cos(x)),
     (when (= (length fun) 2)
       (let ((v (second fun)) label)
         (cond ((atom v) 
-               (setq label (coerce (mstring v) 'string))
+               (setq label (gnuplot-escape-string (coerce (mstring v) 'string)))
                (if (< (length label) 80)
                    (setf (getf options :ylabel) label)))
               ((eq (second v) '$parametric)
@@ -1978,26 +1984,27 @@ sin(y)*(10.0+6*cos(x)),
                       (if (= 2 (length fun))
                           (setq plot-name nil) ; no legend if just one function
                           (setq plot-name
-                                (let ((string ""))
-                                  (cond ((atom v) 
-                                         (setq string
-                                               (coerce (mstring v) 'string)))
-                                        ((eq (second v) '$parametric)
-                                         (setq
-                                          string 
-                                          (concatenate
-                                           'string
-                                           (coerce (mstring (third v)) 'string)
-                                           ", "
-                                           (coerce (mstring (fourth v)) 'string))))
-                                        ((eq (second v) '$discrete)
-                                         (setq
-                                          string (format nil "discrete~a" i)))
-                                        (t
-                                         (setq string 
-                                               (coerce (mstring v) 'string))))
-                                  (cond ((< (length string) 80) string)
-                                        (t (format nil "fun~a" i)))))))
+                             (gnuplot-escape-string
+                               (let ((string ""))
+                                 (cond ((atom v) 
+                                        (setq string
+                                              (coerce (mstring v) 'string)))
+                                       ((eq (second v) '$parametric)
+                                        (setq
+                                         string 
+                                         (concatenate
+                                          'string
+                                          (coerce (mstring (third v)) 'string)
+                                          ", "
+                                          (coerce (mstring (fourth v)) 'string))))
+                                       ((eq (second v) '$discrete)
+                                        (setq
+                                         string (format nil "discrete~a" i)))
+                                       (t
+                                        (setq string 
+                                              (coerce (mstring v) 'string))))
+                                 (cond ((< (length string) 80) string)
+                                       (t (format nil "fun~a" i))))))))
                   (case (getf options :plot_format)
                     ($gnuplot
                      (when (> i 1) (format st ","))
