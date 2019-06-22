@@ -1,0 +1,8 @@
+load("docdraw.mac");
+
+ M: matrix([1,2,3,4], [1,2,3,2], [1,2,3,4], [1,2,3,3])$
+f(x, y) := float('M [round(x), round(y)])$
+
+doc_plot3d("figures/plotting25",
+	f(x,y), [x,1,4],[y,1,4],[grid,3,3],[legend,false]
+)$

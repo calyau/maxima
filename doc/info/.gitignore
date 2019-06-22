@@ -4,6 +4,8 @@ Makefile.in
 maxima.info*
 *.html
 
+data.txt
+
 contents.hhc
 include-maxima.texi
 index.hhk

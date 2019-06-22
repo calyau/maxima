@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+doc_mandelbrot (
+	  "figures/plotting5",
+	  [iterations, 30], [x, -2, 1], [y, -1.2, 1.2],
+          [grid,400,400]
+);

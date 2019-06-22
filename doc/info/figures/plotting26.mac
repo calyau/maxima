@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+doc_plot3d("figures/plotting26",
+	cos (-x^2 + y^3/4), [x,-4,4], [y,-4,4], [zlabel,""],
+       	[mesh_lines_color,false], [elevation,0], [azimuth,0],
+       	color_bar, [grid,80,80], [ztics,false], [color_bar_tics,1]
+)$

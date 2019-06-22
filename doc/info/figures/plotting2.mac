@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+doc_contour_plot("figures/plotting2",
+	u^3 + v^2, [u, -4, 4], [v, -4, 4],
+        [legend,false],
+        [gnuplot_preamble, "set cntrparam levels 12"]
+);

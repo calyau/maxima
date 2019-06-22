@@ -1,0 +1,8 @@
+load("docdraw.mac");
+
+doc_plot3d("figures/plotting19",
+	log (x^2*y^2), [x, -2, 2], [y, -2, 2],[grid, 29, 29],
+       	[palette, [gradient, red, orange, yellow, green]],
+       	color_bar, [xtics, 1], [ytics, 1], [ztics, 4],
+       	[color_bar_tics, 4]
+)$

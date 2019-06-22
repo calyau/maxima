@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+doc_julia (
+	  "figures/plotting4",
+	  -0.55, 0.6, [iterations, 36], [x, -0.3, 0.2],
+	  [y, 0.3, 0.9], [grid, 400, 400], [color_bar_tics, 0, 6, 36]
+)$
