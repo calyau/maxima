@@ -899,6 +899,9 @@
 ;;;; CONCAT
 
 (defmfun $concat (&rest l)
+  "Concatenates its arguments.
+The arguments must evaluate to atoms. The return value is a symbol if
+the first argument is a symbol and a string otherwise."
   (when (null l)
     (merror (intl:gettext "concat: there must be at least one argument.")))
   (let ((result-is-a-string (or (numberp (car l)) (stringp (car l)))))

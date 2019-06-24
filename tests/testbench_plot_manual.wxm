@@ -1,0 +1,160 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 19.05.7-DevelopmentSnapshot ] */
+/* [wxMaxima: title   start ]
+A simple manual testbench for plot
+   [wxMaxima: title   end   ] */
+
+
+/* [wxMaxima: section start ]
+The concept
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+We don't have an automatic testbench for gnuplot. But we can at least run all gnuplot examples and accompy every image with the information what to check for manually.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+if wxplot_size = 'wxplot_size then
+    (
+        print("Maxima will now try to display draw scenes and tell what they should contain."),
+        print("The test if this is actually true has to be done manually, though.")
+    )$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+The test cases for things that can be embedded/displayed on the screen.
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: input   start ] */
+print("Three circles with wild aspect ratios")$
+load("../doc/info/figures/plotting1.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting2.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting3.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting4.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting5.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting6.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting7.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting8.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting9.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting11.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting12.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting13.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting14.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting15.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting16.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting17.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting18.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting19.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting20.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting21.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting22.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting23.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting24.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting25.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+load("../doc/info/figures/plotting26.mac")$
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 19.05.7-DevelopmentSnapshot"$

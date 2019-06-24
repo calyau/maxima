@@ -1,0 +1,11 @@
+load("docdraw.mac");
+tmp:display2d$
+display2d:false$
+with_stdout ("data.txt", for x:0 thru 10 do
+                             print (x, x^2, x^3))$
+display2d:tmp$
+data: read_matrix ("data.txt")$
+  doc_plot2d("figures/plotting15",
+  [discrete, transpose(data)[2], transpose(data)[3]],
+  [style,points], [point_type,diamond], [color,red]
+)$

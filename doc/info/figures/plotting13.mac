@@ -1,0 +1,5 @@
+load("docdraw.mac");
+
+doc_plot2d("figures/plotting13",
+	[discrete, makelist ( random(10), 200)]
+)$

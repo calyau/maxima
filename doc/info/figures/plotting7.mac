@@ -1,0 +1,5 @@
+load("docdraw.mac");
+
+doc_plot("figures/plotting7",
+	sec(x), [x, -2, 2], [y, -20, 20]
+)$

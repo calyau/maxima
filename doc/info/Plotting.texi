@@ -702,6 +702,7 @@ In the next example a table with three columns is saved in a file
 plotted on the two axes:
 
 @c ===beg===
+@c display2d:false$
 @c with_stdout ("data.txt", for x:0 thru 10 do
 @c                              print (x, x^2, x^3))$
 @c data: read_matrix ("data.txt")$
@@ -710,12 +711,15 @@ plotted on the two axes:
 @c ===end===
 @example
 @group
-(%i1) with_stdout ("data.txt", for x:0 thru 10 do
+(%i1) display2d:false$
+@end group
+@group
+(%i2) with_stdout ("data.txt", for x:0 thru 10 do
                              print (x, x^2, x^3))$
 @end group
-(%i2) data: read_matrix ("data.txt")$
+(%i3) data: read_matrix ("data.txt")$
 @group
-(%i3) plot2d ([discrete, transpose(data)[2], transpose(data)[3]],
+(%i4) plot2d ([discrete, transpose(data)[2], transpose(data)[3]],
   [style,points], [point_type,diamond], [color,red])$
 @end group
 @end example
