@@ -158,6 +158,7 @@
     "rtest_boolsimp"
     "rtest_eigen"
     "rtest_lsquares"
+    "rtest_pytranslate"
 
     ;; These tests of diff eq code mostly fail.
     ;; Probably it's just a matter of loading the

@@ -52,7 +52,7 @@ maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
  lapack.texi lbfgs.texi lindstedt.texi linearalgebra.texi lsquares.texi \
  minpack.texi makeOrders.texi mnewton.texi numericalio.texi opsubst.texi \
  operatingsystem.texi \
- orthopoly.texi ratpow.texi romberg.texi simplex.texi simplifications.texi solve_rec.texi \
+ orthopoly.texi pytranslate.texi ratpow.texi romberg.texi simplex.texi simplifications.texi solve_rec.texi \
  stats.texi stirling.texi stringproc.texi to_poly_solve.texi unit.texi \
  zeilberger.texi errormessages.texi
 
