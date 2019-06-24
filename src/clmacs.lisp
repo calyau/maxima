@@ -435,6 +435,7 @@
 (defconstant least-negative-flonum least-negative-double-float)
 (defconstant flonum-epsilon double-float-epsilon)
 (defconstant least-positive-normalized-flonum least-positive-normalized-double-float)
+(defconstant least-negative-normalized-flonum least-negative-normalized-double-float)
 
 (defconstant flonum-exponent-marker #\D)
 )
