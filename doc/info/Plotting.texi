@@ -2018,6 +2018,23 @@ more information.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{gnuplot_strings}
+@defvr {Plot option} gnuplot_strings [gnuplot_strings, @var{value}]
+
+With a value of @code{true}, all strings used in labels and titles will
+be interpreted by gnuplot as ``enhanced'' text, if the terminal being used
+supports it. In enhanced mode, some characters such as ^ and _ are not
+printed, but interpreted as formatting characters. For a list of the
+formatting characters and their meaning, see the documentation for enhanced
+in Gnuplot. The default value for this option is @code{false}, which will
+not treat any characters as formatting characters.
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{gnuplot_svg_term_command}
 @defvr {Plot option} gnuplot_svg_term_command [gnuplot_svg_term_command, @var{command}]
 
@@ -2035,7 +2052,7 @@ more information.
 @anchor{gnuplot_curve_titles}
 @defvr {Plot option} gnuplot_curve_titles
 
-This is an obsolete option that has been replaced @mref{legend} described
+This is an obsolete option that has been replaced by @mref{legend} described
 above.
 
 @opencatbox
