@@ -659,3 +659,41 @@ true;
 ?great ("bar", "foo");
 false;
 
+/* check return values for float_approx_equal */
+
+(load (floatproperties),
+ xx: [largest_negative_float, least_negative_normalized_float, least_negative_float,
+      0.0, 1.0, least_positive_float, least_positive_normalized_float, largest_float],
+ xx : unique (xx),
+ if errcatch (x: 1.0/0.0) # [] then push (x, xx),
+ if errcatch (x: -1.0/0.0) # [] then push (x, xx),
+ if errcatch (x: 0.0/0.0) # [] then push (x, xx),
+ genmatrix (lambda ([i, j], errcatch (float_approx_equal (xx[i], xx[j])), if %% = [] then %% else %%[1]),
+            length (xx), length (xx)));
+''(genmatrix (lambda ([i, j], if i = j then true else false), length (xx), length (xx)));
+
+(kill (foo, bar),
+ foo: 1.0,
+ bar: foo - float_eps (),
+ float_approx_equal_tolerance: float_eps (),
+ floatnump (bar));
+true;
+
+block ([foo100: 1e-100*foo, bar100: 1e-100*bar],
+        [is (foo100 = bar100), float_approx_equal (foo100, bar100)]);
+[false, true];
+
+block ([foo10: 1e-10*foo, bar10: 1e-10*bar],
+        [is (foo10 = bar10), float_approx_equal (foo10, bar10)]);
+[false, true];
+
+[is (foo = bar), float_approx_equal (foo, bar)];
+[false, true];
+
+block ([foo10: 1e10*foo, bar10: 1e10*bar],
+        [is (foo10 = bar10), float_approx_equal (foo10, bar10)]);
+[false, true];
+
+block ([foo100: 1e100*foo, bar100: 1e100*bar],
+        [is (foo100 = bar100), float_approx_equal (foo100, bar100)]);
+[false, true];

@@ -204,13 +204,32 @@
       (incf $linenum)
       in-stream-string-rep)))
 
-;; Return true if $float converts both a and b to floats and 
-
-;;   |a - b| <= float_approx_equal_tolerance * min(2^n, 2^m), 
-
-;; where a = af * 2^m, |af| < 1, and m is an integer (similarly for b); 
-;; in all other cases, return false. See, Knuth, "The Art of Computer Programming," 3rd edition,
-;; page 233.
+;; When either a or b are special float values (NaN or +/-Inf), return true iff
+;; a and b are the both NaN or both +Inf or both -Inf.
+;; Note that float_approx_equal(NaN, NaN) returns true.
+;;
+;; When a and b to finite, nonzero floats, return true iff
+;;
+;;   |a - b| <= float_approx_equal_tolerance * min(2^n, 2^m)
+;;
+;; where a = af * 2^m, |af| < 1, and m is an integer (similarly for b). 
+;; See Knuth, "The Art of Computer Programming" (3rd ed.), Vol. 2, Sec. 4.2.2, Eq. 24, page 233.
+;;
+;; Note that Eq. 24 isn't well-defined for a or b equal to zero.
+;; To make progress, let's consider the limit as b --> 0,
+;; therefore n --> -inf. For any finite a, that means that min(2^n, 2^m) = 2^n
+;; and therefore |a - b| --> |a|, but to pass the test,
+;; |a| must be less than or equal to float_approx_equal_tolerance * 2^n --> 0.
+;; Therefore the test fails for all nonzero, finite a, when b = 0.
+;; i.e. when either a or b is zero but not both, return false.
+;;
+;; Note also that if a < 0 and b > 0 or vice versa, the test must fail:
+;; without loss of generality assume |a| > |b|. Then n <= m and min(2^n, 2^m) = 2^n.
+;; Now |a - b| = |a| + |b| since a and b are different signs.
+;; Then |a - b| / min(2^n, 2^m) = |a/min(2^n, 2^m)| + |b/min(2^n, 2^m)| = |af|*2^m/2^n + |bf| >= |af| + |bf| > 1.
+;; So unless float_approx_equal_tolerance is unusually large, the test must fail.
+;;
+;; Otherwise, either a or b is not a float, so return false.
 
 (defmvar $float_approx_equal_tolerance (* 8 flonum-epsilon))
 
@@ -220,11 +239,31 @@
   (and
    (floatp a)
    (floatp b)
-   (or (= a b)
-       (<= (abs (- a b)) (* $float_approx_equal_tolerance
-                            (min
-                             (expt 2 (second (multiple-value-list (decode-float a))))
-                             (expt 2 (second (multiple-value-list (decode-float b))))))))))
+   (cond
+     ;; look for NaN
+     ((/= a a) (/= b b))
+     ((/= b b) nil)
+     ;; look for Inf
+     ((> (abs a) most-positive-double-float) (= a b))
+     ((> (abs b) most-positive-double-float) nil)
+     ;; look for zero
+     ((= a 0d0) (= b 0d0))
+     ((= b 0d0) nil)
+     ;; look for A = B
+     ((= a b))
+     (t
+       ;; Implement test without involving floating-point arithmetic,
+       ;; to avoid errors which could occur with extreme values.
+       (let (a-significand a-expt a-sign b-significand b-expt b-sign)
+         (multiple-value-setq (a-significand a-expt a-sign) (decode-float a))
+         (multiple-value-setq (b-significand b-expt b-sign) (decode-float b))
+         (if (or (= a-sign b-sign) (>= $float_approx_equal_tolerance 1d0))
+           (let (a-b-significand a-b-expt a-b-sign tol-significand tol-expt tol-sign)
+             (multiple-value-setq (a-b-significand a-b-expt a-b-sign) (integer-decode-float (abs (- a b))))
+             (multiple-value-setq (tol-significand tol-expt tol-sign) (integer-decode-float $float_approx_equal_tolerance))
+             (or (< a-b-expt (+ tol-expt (min a-expt b-expt)))
+                 (and (= a-b-expt (+ tol-expt (min a-expt b-expt)))
+                      (<= a-b-significand tol-significand))))))))))
 
 ;; Big float version of float_approx_equal. But for bfloat_approx_equal, the tolerance isn't
 ;; user settable; instead, it is 32 / 2^fpprec. The factor of 32 is too large, I suppose. But
