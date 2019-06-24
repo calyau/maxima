@@ -1,2 +1,26 @@
 $options->{"EXTRA_HEAD"} = '<link rel="icon" href="figures/favicon.ico">
 @mathjax_script@';
+
+# Make the output file names consist of the base name followed by a number.
+use strict;
+
+use vars qw($element_file_name);
+
+my $file_nr = -1;
+
+sub filename_simple($$$)
+{
+  my $converter = shift;
+  my $element = shift;
+  my $filename = shift;
+
+  my $prefix = $converter->{'document_name'};
+  if ($converter->element_is_top($element)) {
+    return undef;
+  } else {
+    $file_nr++;
+    return $prefix.'_'.$file_nr.'.'.$converter->get_conf('EXTENSION');
+  }
+}
+
+$element_file_name = \&filename_simple;
