@@ -3,15 +3,15 @@
 @c texinfo file which is accessed apart from maxima.info.
 
 @c NOTE: To bring MYTOPIC into maxima.info, you need to make references
-@c to MYTOPIC in 3 places. Search for "lbfgs" in maxima.texi for an example.
+@c to MYTOPIC in 3 places. Search for "lbfgs" in include-maxima.texi for an example.
 @c
-@c 1. Under the heading "Additional packages" (line 139 at the moment)
+@c 1. Under the heading "Additional packages" (line 154 at the moment)
 @c    Here you put "MYTOPIC:: Transmogrification a la Smith and Jones."
 @c
-@c 2. Under the heading "The Detailed Node Listing" (line 178 at the moment)
+@c 2. Under the heading "The Detailed Node Listing" (line 219 at the moment)
 @c    Here you copy the @menu which is defined in this file.
 @c
-@c 3. In the @node list (line 544 at the moment)
+@c 3. In the @node list (line 635 at the moment)
 @c    You MUST fix up the preceding and succeeding @nodes when you
 @c    create a new @node MYTOPIC.
 @c
