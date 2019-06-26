@@ -20,6 +20,10 @@
     (setf (gethash 'mlessp ht) '(comp-op <))
     (setf (gethash 'mgeqp ht) '(comp-op >=))
     (setf (gethash 'mleqp ht) '(comp-op <=))
+    (setf (gethash '$floor ht) '(funcall (symbol "math.floor")))
+    (setf (gethash '$fix ht) '(funcall (symbol "math.floor")))
+    (setf (gethash '%fix ht) '(funcall (symbol "math.floor")))
+    (setf (gethash '%sqrt ht) '(funcall (symbol "math.sqrt")))
     ht))
 
 (defvar *maxima-special-ir-map*
@@ -32,6 +36,8 @@
     (setf (gethash 'lambda ht) 'lambda-to-ir)
     (setf (gethash 'mdoin ht) 'for-list-to-ir)
     (setf (gethash 'mdo ht) 'for-loop-to-ir)
+    (setf (gethash '%endcons ht) 'endcons-to-ir)
+    (setf (gethash '$endcons ht) 'endcons-to-ir)
     ht))
 
 (defvar *ir-forms-to-append* '())
@@ -44,20 +50,35 @@
        (consp (car (clast form)))
        (eq (caar (clast form)) 'mprogn)))
 
+(defun symbol-to-asterisk-ir (form)
+  (list 'symbol
+	(concatenate 'string "*"
+		     (maybe-invert-string-case (symbol-name (stripdollar form))))))
+  
+
+(defun endcons-to-ir (form)
+  (cond ((consp (clast form))
+	 (maxima-to-ir (append (clast form) `(,(cadr form)))))
+	(t
+	 `(struct-list ,(symbol-to-asterisk-ir (clast form)) ,(maxima-to-ir (cadr form))))))
+  
 (defun for-loop-to-ir (form)
   (cond ((null (caddr (cdddr form))) ; Condition Specified
-	 `(body (assign ,(maxima-to-ir (cadr form))
-			,(maxima-to-ir (caddr form)))
+	 `(body ,@(cond ((null (cadr form)) '()) ; If variable not given
+			 (t `((assign ,(maxima-to-ir (cadr form)) ; If variable assigned by "for var:value"
+				     ,(maxima-to-ir (caddr form))))))
 		(while-loop (funcall (symbol "not")
 				     ,(maxima-to-ir (clast (butlast form))))
 			    (body-indented
 			     ,@(cond ((mprogn-p form)
-				    (mapcar 'maxima-to-ir (cdr (clast form))))
-				   (t
-				    `(,(maxima-to-ir (clast form)))))
-			     (assign ,(maxima-to-ir (cadr form))
-				     (op + ,(maxima-to-ir (cadr form)) ,(maxima-to-ir (cadddr form))))))
-			    (del ,(maxima-to-ir (cadr form)))))
+				      (mapcar 'maxima-to-ir (cdr (clast form))))
+				     (t
+				      `(,(maxima-to-ir (clast form)))))
+			     ,@(cond ((null (cadddr form)) '())
+				     (t `((assign ,(maxima-to-ir (cadr form))
+						  (op + ,(maxima-to-ir (cadr form)) ,(maxima-to-ir (cadddr form)))))))))
+		,@(cond ((null (cadr form)) '()) ; If variable not given
+			 (t `((del ,(maxima-to-ir (cadr form))))))))
 	(t                           ; Limit specified
 	 `(for-list ,(maxima-to-ir (cadr form))
 		    (funcall (symbol "range")
@@ -263,10 +284,11 @@
 
 ;;; Driver function for the translator, calls the function
 ;;; maxima-to-ir and then ir-to-python
-(defun $pytranslate (form)
+(defun $pytranslate (form &optional (print-ir nil))
   (setf *ir-forms-to-append* '())
   (setf form (nformat form))
-  (ir-to-python (maxima-to-ir form t)))
+  (cond (print-ir (ir-to-python (print (maxima-to-ir form t))))
+	(t (ir-to-python (maxima-to-ir form t)))))
 
 ;;; Generates Python source for given IR form
 (defun ir-to-python (form &optional
@@ -280,12 +302,11 @@
      (t ""))
    (typecase form
      (cons
-      (setf type ; Determine the type of form and call appropriate function
-	    (gethash (car form) *ir-python-direct-templates*))
-      (cond
-	(type (funcall type form indentation-level))
-	(t (format nil "no-covert : (~a)" form))
-	))	
+      (let ((type (gethash (car form) *ir-python-direct-templates*)))
+	(cond
+	  (type (funcall type form indentation-level))
+	  (t (format nil "no-covert : (~a)" form))
+	  )))	
      (t
       (format nil "~a" form)))))
 
@@ -313,7 +334,16 @@
     (setf (gethash 'lambda ht) 'lambda-to-python)
     (setf (gethash 'for-list ht) 'for-list-to-python)
     (setf (gethash 'while-loop ht) 'while-loop-to-python)
+    (setf (gethash 'obj-funcall ht) 'obj-funcall-to-python)
     ht))
+
+(defun obj-funcall-to-python (form indentation-level)
+  (format nil "~a.~a(~{~a~^, ~})"
+	  (ir-to-python (cadr form))
+	  (ir-to-python (caddr form))
+	  (mapcar
+	   (lambda (elm) (ir-to-python elm indentation-level))
+	   (cdddr form))))	  
 
 (defun while-loop-to-python (form indentation-level)
   (format nil "while ~a:~&~a"
@@ -400,8 +430,25 @@
 	   (lambda (elm) (ir-to-python elm indentation-level))
 	   (cddr form))))
 
+;; "~{~&~a~}" but there was a problem regarding this with indentation:
+;; pytranslate('(while cond do (while cond do (while cond do expr))));
+;; (%o2) None = None
+;; while not(not(cond)):
+;;         None = None
+;;     while not(not(cond)):
+;;                 None = None
+;;         while not(not(cond)):
+;;             expr
+;;             None = (None + None)
+;;         del None
+;;         None = (None + None)
+;;     del None
+;;     None = (None + None)
+;; del None
+;; The lines None=None arent properly indented
+;; Hence change to ~% for new line
 (defun body-to-python (form indentation-level)
-  (format nil "~{~&~a~}"
+  (format nil "~{~%~a~}"
 	  (mapcar
 	   (lambda (elm) (ir-to-python elm indentation-level t))
 	   (cdr form))))
