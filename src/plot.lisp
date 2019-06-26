@@ -1917,6 +1917,7 @@ sin(y)*(10.0+6*cos(x)),
           (format st "} "))
         file)
        (cons '(mlist) (cons file output-file)))
+      ;; this section is for plot_format different from xmaxima
       (t
        (with-open-file (st file :direction :output :if-exists :supersede)
          (case (getf options :plot_format)
@@ -2002,27 +2003,30 @@ sin(y)*(10.0+6*cos(x)),
                                                (coerce (mstring v) 'string))))
                                   (cond ((< (length string) 80) string)
                                         (t (format nil "fun~a" i)))))))
-                  (case (getf options :plot_format)
-                    ($gnuplot
-                     (when (> i 1) (format st ","))
-                     (format st " '-'")
-                     (if plot-name
-                         (format st " title ~s" plot-name)
-                         (format st " notitle"))
-                     (format st " ~a"
-                             (gnuplot-curve-style style colors types i)))
-                    ($gnuplot_pipes
-                     (setq *gnuplot-command*
-                           ($sconcat
-                            *gnuplot-command*
-                            (if plot-name 
-                                (format
-                                 nil " title ~s ~a" plot-name 
-                                 (gnuplot-curve-style style colors types i))
-                                (format
-                                 nil " notitle ~a"
-                                 (gnuplot-curve-style style colors types i)
-                                 )))))))))
+                  ;; TO DO: move this section into gnuplot_def.lisp
+                  (let ((gstrings (if (getf options :gnuplot_strings)
+                                     "" "noenhanced")))
+                    (case (getf options :plot_format)
+                      ($gnuplot
+                       (when (> i 1) (format st ","))
+                       (format st " '-'")
+                       (if plot-name
+                           (format st " title ~s ~a" plot-name gstrings)
+                           (format st " notitle"))
+                       (format st " ~a"
+                               (gnuplot-curve-style style colors types i)))
+                      ($gnuplot_pipes
+                       (setq *gnuplot-command*
+                             ($sconcat
+                              *gnuplot-command*
+                              (if plot-name 
+                                  (format
+                                   nil " title ~s ~a ~a" plot-name gstrings
+                                   (gnuplot-curve-style style colors types i))
+                                  (format
+                                   nil " notitle ~a"
+                                   (gnuplot-curve-style style colors types i)
+                                 ))))))))))
          (case (getf options :plot_format)
            ($gnuplot
             (format st "~%"))
