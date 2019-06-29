@@ -259,7 +259,7 @@ proc vMAXAddSystemMenu {fr text} {
     .menu add cascade -label [mc "Help"] -menu $m -underline 0
 
     # Xmaxima manual
-    set xfile [file join $maxima_priv(maxima_verpkgdatadir) xmaxima html xmaxima.html]
+    set xfile [file join $maxima_priv(maxima_verpkgdatadir) xmaxima html xmaxima_0.html]
     if {[file isfile $xfile]} {
 	set xstate normal
 	if {$tcl_platform(platform) == "windows" && $tcl_platform(osVersion) < 5 } {
