@@ -1,0 +1,9 @@
+load("docdraw.mac");
+
+F(x) := x^2 $
+:lisp (defun |$g| (x) (m* x x x))
+H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
+
+doc_plot2d("figures/plotting10",
+	[F, G, H], [u, -1, 1], [y, -1.5, 1.5]
+)$

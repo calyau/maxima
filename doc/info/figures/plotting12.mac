@@ -1,0 +1,6 @@
+load("docdraw.mac");
+
+doc_plot2d("figures/plotting12",
+	[[parametric, cos(t), sin(t), [t,0,2*%pi]], -abs(x)],
+        [x, -sqrt(2), sqrt(2)], same_xy
+)$

@@ -1,0 +1,7 @@
+load("docdraw.mac");
+
+kill(r)$
+doc_plot3d("figures/plotting23",
+   r^.33*cos(th/3), [r,0,1], [th,0,6*%pi], [box, false],
+   [grid, 12, 80], [transform_xy, polar_to_xy], [legend, false]
+)$

@@ -1,0 +1,5 @@
+load("docdraw.mac");
+
+doc_plot("figures/plotting6",
+	sin(x), [x, -%pi, %pi]
+)$

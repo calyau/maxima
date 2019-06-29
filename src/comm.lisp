@@ -76,10 +76,10 @@
   "If TRUE allows DIFF(X~Y,T) to work where ~ is defined in
 	  SHARE;VECT where VECT_CROSS is set to TRUE.")
 
-(defmfun $substitute (old new &optional (expr nil three-arg?))
-  (cond (three-arg? (maxima-substitute old new expr))
+(defmfun $substitute (new old &optional (expr nil three-arg?))
+  (cond (three-arg? (maxima-substitute new old expr))
 	(t
-	 (let ((l old) (z new))
+	 (let ((l new) (z old))
 	   (cond ((and ($listp l) ($listp (cadr l)) (null (cddr l)))
 		  ($substitute (cadr l) z))
 		 ((notloreq l) (improper-arg-err l '$substitute))

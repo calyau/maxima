@@ -1,0 +1,8 @@
+load("docdraw.mac");
+
+doc_plot3d("figures/plotting22",
+	sin(2*theta)*cos(phi), [theta, 0, %pi],
+        [phi, 0, 2*%pi],
+        [transform_xy, spherical_to_xyz], [grid,30,60],
+	[legend,false]
+)$

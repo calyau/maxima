@@ -24,3 +24,91 @@ else
 		print("Press <enter> to continue."),
 		readline(stdin)
 	)$
+
+
+
+doc_contour_plot(name,[x]):=
+(
+    if wxplot_size # 'wxplot_size then
+       apply('wxcontour_plot,x)
+    else
+    (
+	apply('contour_plot,x),
+	print("Press <enter> to continue."),
+	readline(stdin)
+    )
+)$
+
+load(implicit_plot)$
+doc_implicit_plot(name,[x]):=
+(
+    if wxplot_size # 'wxplot_size then
+       apply('wximplicit_plot,x)
+    else
+    (
+	apply('implicit_plot,x),
+	print("Press <enter> to continue."),
+	readline(stdin)
+    )
+)$
+
+doc_julia(name,[x]):=
+(
+    if wxplot_size # 'wxplot_size then
+       apply('wxjulia,x)
+    else
+    (
+	apply('julia,x),
+	print("Press <enter> to continue."),
+	readline(stdin)
+    )
+)$
+
+doc_mandelbrot(name,[x]):=
+(
+    if wxplot_size # 'wxplot_size then
+       apply('wxmandelbrot,x)
+    else
+    (
+	apply('mandelbrot,x),
+	print("Press <enter> to continue."),
+	readline(stdin)
+    )
+)$
+
+doc_plot2d(name,[x]):=
+(
+    if wxplot_size # 'wxplot_size then
+       apply('wxplot2d,x)
+    else
+    (
+	apply('plot2d,x),
+	print("Press <enter> to continue."),
+	readline(stdin)
+    )
+)$
+
+doc_plot(name,[x]):=
+(
+    if wxplot_size # 'wxplot_size then
+       apply('wxplot2d,x)
+    else
+    (
+	apply('plot,x),
+	print("Press <enter> to continue."),
+	readline(stdin)
+    )
+)$
+
+doc_plot3d(name,[x]):=
+(
+    if wxplot_size # 'wxplot_size then
+       apply('wxplot3d,x)
+    else
+    (
+	apply('plot3d,x),
+	print("Press <enter> to continue."),
+	readline(stdin)
+    )
+)$
+

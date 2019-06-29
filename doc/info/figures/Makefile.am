@@ -278,12 +278,89 @@ worldmap_geomap2.gif\
 worldmap_geomap3.gif\
 worldmap_geomap4.gif\
 worldmap_geomap5.gif\
-worldmap_geomap6.gif
+worldmap_geomap6.gif\
+plotting1.png plotting1.pdf\
+plotting2.png plotting2.pdf\
+plotting3.png plotting3.pdf\
+plotting4.png plotting4.pdf\
+plotting5.png plotting5.pdf\
+plotting6.png plotting6.pdf\
+plotting7.png plotting7.pdf\
+plotting8.png plotting8.pdf\
+plotting9.png plotting9.pdf\
+plotting10.png plotting10.pdf\
+plotting11.png plotting11.pdf\
+plotting12.png plotting12.pdf\
+plotting13.png plotting13.pdf\
+plotting14.png plotting14.pdf\
+plotting15.png plotting15.pdf\
+plotting16.png plotting16.pdf\
+plotting17.png plotting17.pdf\
+plotting18.png plotting18.pdf\
+plotting19.png plotting19.pdf\
+plotting20.png plotting20.pdf\
+plotting21.png plotting21.pdf\
+plotting22.png plotting22.pdf\
+plotting23.png plotting23.pdf\
+plotting24.png plotting24.pdf\
+plotting25.png plotting25.pdf\
+plotting26.png plotting26.pdf
 # draw_color2.gif and draw_color2.pdf aren't automatically remade since the gif terminal
 # doesn't support transparency
 
 
-
+plotting26.pdf: plotting26.mac ../docdraw.mac
+plotting26.png: plotting26.mac ../docdraw.mac
+plotting25.pdf: plotting25.mac ../docdraw.mac
+plotting25.png: plotting25.mac ../docdraw.mac
+plotting24.pdf: plotting24.mac ../docdraw.mac
+plotting24.png: plotting24.mac ../docdraw.mac
+plotting23.pdf: plotting23.mac ../docdraw.mac
+plotting23.png: plotting23.mac ../docdraw.mac
+plotting22.pdf: plotting22.mac ../docdraw.mac
+plotting22.png: plotting22.mac ../docdraw.mac
+plotting21.pdf: plotting21.mac ../docdraw.mac
+plotting21.png: plotting21.mac ../docdraw.mac
+plotting20.pdf: plotting20.mac ../docdraw.mac
+plotting20.png: plotting20.mac ../docdraw.mac
+plotting19.pdf: plotting19.mac ../docdraw.mac
+plotting19.png: plotting19.mac ../docdraw.mac
+plotting18.pdf: plotting18.mac ../docdraw.mac
+plotting18.png: plotting18.mac ../docdraw.mac
+plotting17.pdf: plotting17.mac ../docdraw.mac
+plotting17.png: plotting17.mac ../docdraw.mac
+plotting16.pdf: plotting16.mac ../docdraw.mac
+plotting16.png: plotting16.mac ../docdraw.mac
+plotting15.pdf: plotting15.mac ../docdraw.mac
+plotting15.png: plotting15.mac ../docdraw.mac
+plotting14.pdf: plotting14.mac ../docdraw.mac
+plotting14.png: plotting14.mac ../docdraw.mac
+plotting13.pdf: plotting13.mac ../docdraw.mac
+plotting13.png: plotting13.mac ../docdraw.mac
+plotting12.pdf: plotting12.mac ../docdraw.mac
+plotting12.png: plotting12.mac ../docdraw.mac
+plotting11.pdf: plotting11.mac ../docdraw.mac
+plotting11.png: plotting11.mac ../docdraw.mac
+plotting10.pdf: plotting10.mac ../docdraw.mac
+plotting10.png: plotting10.mac ../docdraw.mac
+plotting9.pdf: plotting9.mac ../docdraw.mac
+plotting9.png: plotting9.mac ../docdraw.mac
+plotting8.pdf: plotting8.mac ../docdraw.mac
+plotting8.png: plotting8.mac ../docdraw.mac
+plotting7.pdf: plotting7.mac ../docdraw.mac
+plotting7.png: plotting7.mac ../docdraw.mac
+plotting6.pdf: plotting6.mac ../docdraw.mac
+plotting6.png: plotting6.mac ../docdraw.mac
+plotting5.pdf: plotting5.mac ../docdraw.mac
+plotting5.png: plotting5.mac ../docdraw.mac
+plotting4.pdf: plotting4.mac ../docdraw.mac
+plotting4.png: plotting4.mac ../docdraw.mac
+plotting3.pdf: plotting3.mac ../docdraw.mac
+plotting3.png: plotting3.mac ../docdraw.mac
+plotting2.pdf: plotting2.mac ../docdraw.mac
+plotting2.png: plotting2.mac ../docdraw.mac
+plotting1.pdf: plotting1.mac ../docdraw.mac
+plotting1.png: plotting1.mac ../docdraw.mac
 draw_scene.pdf: draw_scene.mac ../docdraw.mac
 draw_scene.gif: draw_scene.mac ../docdraw.mac
 draw_equiv.pdf: draw_equiv.mac ../docdraw.mac
@@ -643,6 +720,9 @@ worldmap_geomap6.pdf: worldmap_geomap6.mac ../docdraw.mac
 	cd ..&&maxima < figures/$<
 
 .mac.gif:
+	cd ..&&maxima < figures/$<
+
+.mac.png:
 	cd ..&&maxima < figures/$<
 
 SUFFIXES=.pdf .gif .mac

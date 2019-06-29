@@ -1,0 +1,5 @@
+load("docdraw.mac");
+
+doc_plot("figures/plotting9",
+	exp(3*s), [s, -2, 2], logy
+)$

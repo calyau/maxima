@@ -1,0 +1,6 @@
+load("docdraw.mac");
+
+doc_plot3d("figures/plotting17",
+	u^2 - v^2, [u, -2, 2], [v, -3, 3], [grid, 100, 100],
+        [mesh_lines_color,false]
+)$
