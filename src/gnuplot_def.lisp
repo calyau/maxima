@@ -1,5 +1,5 @@
 ;; gnuplot.lisp: routines for Maxima's interface to gnuplot
-;; Copyright (C) 2007-2013 J. Villate
+;; Copyright (C) 2007-2019 J. Villate
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -231,7 +231,8 @@
   (let (terminal-file (palette (getf plot-options :palette))
         (meshcolor (if (member :mesh_lines_color plot-options)
                        (getf plot-options :mesh_lines_color)
-                       '$black)))
+                       '$black))
+        (gstrings (if (getf plot-options :gnuplot_strings) "" "noenhanced")))
     (when (and (member :gnuplot_pm3d plot-options)
                (not (getf plot-options :gnuplot_pm3d)))
       (setq palette nil))
@@ -309,11 +310,11 @@
 
     ;; axes labels and legend
     (when (getf plot-options :xlabel)
-      (format dest "set xlabel ~s~%" (getf plot-options :xlabel)))
+      (format dest "set xlabel ~s ~a~%" (getf plot-options :xlabel) gstrings))
     (when (getf plot-options :ylabel)
-      (format dest "set ylabel ~s~%" (getf plot-options :ylabel)))
+      (format dest "set ylabel ~s ~a~%" (getf plot-options :ylabel) gstrings))
     (when (getf plot-options :zlabel)
-      (format dest "set zlabel ~s~%" (getf plot-options :zlabel)))
+      (format dest "set zlabel ~s ~a~%" (getf plot-options :zlabel) gstrings))
     (when (and (member :legend plot-options) 
                (null (getf plot-options :legend)))
       (format dest "unset key~%"))
@@ -403,12 +404,12 @@
 
     ;; title and labels
     (when (getf plot-options :title)
-      (format dest "set title ~s~%" (getf plot-options :title)))
+      (format dest "set title ~s ~a~%" (getf plot-options :title) gstrings))
     (when (getf plot-options :label)
       (dolist (label (getf plot-options :label))
         (when (and (listp label) (= (length label) 4))
-          (format dest "set label ~s at ~{~,8f~^, ~}~%"
-                  (cadr label) (cddr label)))))
+          (format dest "set label ~s ~a at ~{~,8f~^, ~}~%"
+                  (cadr label) gstrings (cddr label)))))
 
     ;; identifier for missing data
     (format dest "set datafile missing ~s~%" *missing-data-indicator*)
@@ -421,7 +422,7 @@
     ;;returns a list with the name of the file created, or nil
     (if (null (second terminal-file)) nil (list (second terminal-file)))))
 
-(defun gnuplot-plot3d-command (file palette gstyles colors titles n) 
+(defun gnuplot-plot3d-command (file palette gstyles colors gstrings titles n) 
 (let (title (style "with pm3d"))
   (with-output-to-string (out)
     (format out "splot ")
@@ -435,7 +436,7 @@
     (if titles
         (setq title (nth (mod i (length titles)) titles))
         (setq title ""))
-    (format out "~s title ~s ~a" file title style)))))
+    (format out "~s title ~s ~a ~a" file title gstrings style)))))
 
 (defun gnuplot-terminal-and-file (plot-options)
 (let (terminal-command out-file)
