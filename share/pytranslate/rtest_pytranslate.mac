@@ -1,5 +1,5 @@
-/*(load("pytranslate.lisp"), 'done);
-'done$*/
+(load(pytranslate), 'done);
+'done$
 (kill(all), 'done);
 'done$
 
@@ -254,6 +254,9 @@ pytranslate('endcons(a,b));
 pytranslate(endcons(a, f(b,c)));
 "
 f(b, c, a)"$
+pytranslate(endcons(a, [d,b,c]));
+"
+[d, b, c, a]"$
 
 /* Multiple Indentations */
 pytranslate('(while cond1 do (while cond2 do (while cond3 do (expr1)))));

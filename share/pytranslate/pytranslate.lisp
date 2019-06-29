@@ -24,6 +24,7 @@
     (setf (gethash '$fix ht) '(funcall (symbol "math.floor")))
     (setf (gethash '%fix ht) '(funcall (symbol "math.floor")))
     (setf (gethash '%sqrt ht) '(funcall (symbol "math.sqrt")))
+    (setf (gethash 'mreturn ht) '(funcall (symbol "return")))
     ht))
 
 (defvar *maxima-special-ir-map*
@@ -159,7 +160,7 @@
 		(let ((func_name (maxima-to-ir (gensym "$FUNC"))))
 		  (setf *ir-forms-to-append*
 			(append *ir-forms-to-append*
-       			`((func-def ,func_name ,(append func-args (mapcar 'mprog-variable-names-list (cdadr form))) (body-indented ,@(mapcar 'maxima-to-ir (butlast (cddr form))) (funcall (symbol "return") ,(maxima-to-ir (clast form))))))))
+				`((func-def ,func_name ,(append func-args (mapcar 'mprog-variable-names-list (cdadr form))) (body-indented ,@(mapcar 'maxima-to-ir (butlast (cddr form))) (funcall (symbol "return") ,(maxima-to-ir (clast form))))))))
 		  `(funcall ,func_name ,@(append func-args (mapcar 'mprog-arg-list (cdadr form))))))
 	       ;; No variable binding required
 	       (t
