@@ -6,10 +6,13 @@ SUBDIRS = figures
 
 info_TEXINFOS = xmaxima.texi
 
-all-local: xmaxima.html
+all-local: xmaxima_0.html
 
-xmaxima.html: xmaxima.texi $(top_srcdir)/doc/info/texi2html
-	perl $(top_srcdir)/doc/info/texi2html -split_chapter --lang=en --output=. --css-include=$(top_srcdir)/doc/info/manual.css --init-file  $(top_srcdir)/doc/info/texi2html.init  $<
+#xmaxima.html: xmaxima.texi $(top_srcdir)/doc/info/texi2html
+#	perl $(top_srcdir)/doc/info/texi2html -split_chapter --lang=en --output=. --css-include=$(top_srcdir)/doc/info/manual.css --init-file  $(top_srcdir)/doc/info/texi2html.init  $<
+
+xmaxima_0.html : xmaxima.texi
+	$(MAKEINFO) --html -c TEXI2HTML=1 --split=chapter --document-lang=en --output=. --css-include=$(top_srcdir)/doc/info/manual.css --init-file  $(top_srcdir)/doc/info/texi2html.init  $<
 
 htmlname = xmaxima
 htmlinstdir = $(xmaximadir)/html
