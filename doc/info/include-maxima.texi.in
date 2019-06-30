@@ -87,7 +87,7 @@ and develop DOE Macsyma, now called Maxima.
 @end ifinfo
 @ifnotinfo
 @node Top, Introduction to Maxima
-@end notifinfo
+@end ifnotinfo
 @top
 
 Maxima is a computer algebra system, implemented in Lisp.
