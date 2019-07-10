@@ -1,8 +1,10 @@
-(defparameter *maxima-function-dictionary-name* "m_func")
-(defparameter *maxima-variables-dictionary-name* "m_var")
-(defparameter *maxima-variables-dictionary-name-in-functions* "m_var_l")
+(defparameter *maxima-function-dictionary-name* "m_funcs")
+(defparameter *maxima-variables-dictionary-name* "m_vars")
+(defparameter *python-hierarchial-dict-name* "HierarchialDict")
 (defparameter *symbols-directly-convert* '()
   "List containing symbols to be converted as it is to Python symbols rather than maxima_vars[\"symbol\"]")
+(defparameter *ins-method-name* "ins")
+(defparameter *assignment-method-name* "assign")
 
 (defvar *maxima-direct-ir-map*
   (let ((ht (make-hash-table)))
@@ -68,7 +70,12 @@
   `(element-array (symbol ,*maxima-variables-dictionary-name*) (string ,(symbol-name-to-string form))))
 
 (defun assignment-to-ir (form)
-  `(assign ,(maxima-to-ir (cadr form)) ,(maxima-to-ir (caddr form))))
+  (cond ((consp (cadr form)) `(op-no-bracket = ,@(mapcar #'maxima-to-ir (cdr form))))
+	(t `(funcall (symbol ,*assignment-method-name*)
+	    (string ,(symbol-name-to-string (cadr form)))
+	    ,(maxima-to-ir (caddr form))
+	    (symbol ,*maxima-variables-dictionary-name*)
+	    ))))
 
 (defun symbol-to-asterisk-ir (form)
   (list 'symbol
@@ -79,7 +86,7 @@
   (cond ((consp (clast form))
 	 (maxima-to-ir (append (clast form) `(,(cadr form)))))
 	(t
-	 `(struct-list ,(symbol-to-asterisk-ir (clast form)) ,(maxima-to-ir (cadr form))))))
+	 `(struct-list (asterisk ,(maxima-to-ir (clast form))) ,(maxima-to-ir (cadr form))))))
   
 (defun for-loop-to-ir (form)
   (cond ((null (caddr (cdddr form))) ; Condition Specified
@@ -172,50 +179,81 @@
   (cond ((and (consp form) (eq 'msetq (caar form))) (maxima-to-ir (clast form)))
 	(t `(symbol "None"))))
 
-;;; It creates a function for the statements.
-;;; A problem with this approach is that Maxima is dynamically
-;;; binding, whereas Python is not. For accessing values from the
-;;; global context, this will work, however, for assignment
-;;; operations, this method will not. Another alternative that can
-;;; be considered is to create a class to house all the bindings.
-(defun mprog-to-ir (form &optional (func-args '()))
+(defun mprog-assign-to-dict (form)
+  (mapcar
+   (lambda (x)
+     (cond ((consp x) `((string ,(symbol-name-to-string (cadr x)))
+			,(maxima-to-ir (caddr x))))
+	   (t `((string ,(symbol-name-to-string x))
+		(symbol "None")))))
+   (cdr form)))
+
+(defun mlist-p (form)
+  (and (consp form)
+       (consp (car form))
+       (eq 'mlist (caar form))))
+  
+(defun first-list-mprog (form)
+  (find-if #'mlist-p (cdr form)))
+
+(defun but-first-mlist (form)
+  (let ((pos (position-if #'mlist-p form)))
+    (loop for x in form
+       for y from 0
+	 if (not (eq y pos)) collect x))) 
+
+(defun mprog-to-ir (form &key (context nil))
   (cond ((not (null (cdr form)))
-	 (cond ((and (consp (cadr form)) (eq 'mlist (caaadr form)))
-		;; Variable binding
-		(let ((func_name (maxima-to-ir (gensym "$FUNC"))))
-		  (setf *ir-forms-to-append*
-			(cons `(func-def ,func_name
-					 ,(append func-args
-						  (mapcar 'mprog-variable-names-list (cdadr form)))
-					 (body-indented ,@(mapcar 'maxima-to-ir (butlast (cddr form)))
-							(funcall (symbol "return")
-								 ,(maxima-to-ir (clast form)))))
-			      *ir-forms-to-append*))
-		  `(funcall ,func_name ,@(append func-args (mapcar 'mprog-arg-list (cdadr form))))))
-	       ;; No variable binding required
+	 (cond ((eq context 'function)
+		`((obj-funcall
+		   (symbol ,*maxima-variables-dictionary-name*)
+		   (symbol ,*ins-method-name*)
+		   (dictionary
+		    ,@(mprog-assign-to-dict (first-list-mprog form))
+		    ))
+		  ,@(mapcar #'maxima-to-ir
+			    (but-first-mlist (butlast (cdr form))))
+		  (funcall (symbol "return")
+			   ,(maxima-to-ir (clast form)))
+		  ))
 	       (t
-		(let ((func_name (maxima-to-ir (gensym "$FUNC"))))
+		(let ((func_name (symbol-to-ir (gensym "$BLOCK"))))
 		  (setf *ir-forms-to-append*
-			(cons `(func-def ,func_name
-					 ,func-args
-					 (body-indented ,@(mapcar 'maxima-to-ir (butlast (cdr form)))
-							(funcall (symbol "return")
-								 ,(maxima-to-ir (clast form)))))
-			      *ir-forms-to-append*))
-		  `(funcall ,func_name ,@func-args))
+                        (cons `(func-def
+				,func_name
+				((symbol ,*maxima-variables-dictionary-name*))
+				(body-indented
+				 (obj-funcall
+				  (symbol ,*maxima-variables-dictionary-name*)
+				  (symbol ,*ins-method-name*)
+				  (dictionary
+				   ,@(mprog-assign-to-dict (first-list-mprog form))
+				   ))
+				  ,@(mapcar #'maxima-to-ir
+					    (but-first-mlist (butlast (cdr form))))
+				  (funcall (symbol "return")
+					   ,(maxima-to-ir (clast form)))
+				  ))
+                              *ir-forms-to-append*))
+                  `(funcall ,func_name (funcall (symbol ,*python-hierarchial-dict-name*)
+					  (dictionary)
+					  (symbol ,*maxima-variables-dictionary-name*))))
 		)))))
 
 (defun mprogn-to-ir (form &optional (func-args '()))
-  (let ((func_name (maxima-to-ir (gensym "$FUNC"))))
-    (setf *ir-forms-to-append*
-	  (cons `(func-def ,func_name
-			   ,func-args
-			   (body-indented
-			    ,@(mapcar 'maxima-to-ir
-				      (butlast (cdr form)))
-			    (funcall (symbol "return") ,(maxima-to-ir (clast form)))))
-		*ir-forms-to-append*))
-    `(funcall ,func_name ,@func-args)))
+  (let ((func_name (symbol-to-ir (gensym "$BLOCK"))))
+		  (setf *ir-forms-to-append*
+                        (cons `(func-def
+				,func_name
+				((symbol ,*maxima-variables-dictionary-name*))
+				(body-indented
+				  ,@(mapcar #'maxima-to-ir
+					    (but-first-mlist (butlast (cdr form))))
+				  (funcall (symbol "return")
+					   ,(maxima-to-ir (clast form)))
+				  ))
+                              *ir-forms-to-append*))
+                  `(funcall ,func_name (symbol ,*maxima-variables-dictionary-name*))))
 
 ;;; Recursively generates IR for a multi-dimensional array and fills all cells with Null value
 (defun array-gen-ir (dimensions)
@@ -253,33 +291,42 @@
 
 ;;; Generates IR for function definition
 (defun func-def-to-ir (form)
+  ;The name of function shouldn't be converted to dictionary element
+  (setf *symbols-directly-convert* (cons (caaadr form) *symbols-directly-convert*))
   `(func-def
-    ,(symbol-to-ir (caaadr form))
-    ,@(let ((func-args (mapcar #'func-arg-to-ir (cdadr form))))
-	(cons
-	 (append func-args
-		 `((op-no-bracket =
-				  (symbol ,*maxima-variables-dictionary-name-in-functions*)
-				  (symbol ,*maxima-variables-dictionary-name*))))
-	 (let ((*maxima-variables-dictionary-name* *maxima-variables-dictionary-name-in-functions*)
-	       (*symbols-directly-convert* (mapcar
-					    (lambda (x) (typecase x
-							  (cons (cadr x))
-							  (t x)))
-					    (cdadr form))))
-	   `((body-indented (funcall (symbol "return")
-				     ,(cond ((and (consp (caddr form))
-						  (consp (caaddr form))
-						  (eq (car (caaddr form)) 'mprog))
-					     (mprog-to-ir (caddr form)
-							  (mapcar #'func-arg-to-ir (cdadr form))))
-					    ((and (consp (caddr form))
-						  (consp (caaddr form))
-						  (eq (car (caaddr form)) 'mprogn))
-					     (mprogn-to-ir (caddr form)
-							   (mapcar #'func-arg-to-ir (cdadr form))))
-					    (t
-					     (maxima-to-ir (caddr form))))))))))))
+    ; Function name
+    ,(maxima-to-ir (caaadr form))
+    ; Function argumenets, including variable mapping dictionary
+    ,(let ((func-args (mapcar #'func-arg-to-ir (cdadr form))))
+	(append func-args
+		; initialize dictionary holding variable bindings
+		`((op-no-bracket = 
+				 (symbol ,*maxima-variables-dictionary-name*)
+				 (funcall (symbol ,*python-hierarchial-dict-name*)
+					  (dictionary)
+					  (symbol ,*maxima-variables-dictionary-name*))))))
+    (body-indented
+     ; Map the variables in current context to the HierarchialDict
+     (obj-funcall (symbol ,*maxima-variables-dictionary-name*)
+		  (symbol ,*ins-method-name*)
+		  (dictionary
+		   ,@(mapcar
+		      (lambda (x) (typecase x
+				    (cons `((string ,(symbol-name-to-string (cadr x))) (funcall (symbol "list") ,(symbol-to-ir (cadr x)))))
+				    (t `((string ,(symbol-name-to-string x)) ,(symbol-to-ir x)))))
+		      (cdadr form))))
+     ,@(cond ((and (consp (caddr form))
+		   (consp (caaddr form))
+		   (eq (car (caaddr form)) 'mprog))
+	      `(,@(mprog-to-ir (caddr form) :context 'function)))
+	     ((and (consp (caddr form))
+		   (consp (caaddr form))
+		   (eq (car (caaddr form)) 'mprogn))
+	      (append (mapcar #'maxima-to-ir (butlast (cdaddr form)))
+		      `((funcall (symbol "return") ,(maxima-to-ir (clast (cdaddr form))))
+			)))
+	     (t
+	      `((funcall (symbol "return") ,(maxima-to-ir (caddr form)))))))))
 
 ;;; Generates IR for atomic forms
 (defun atom-to-ir (form)
@@ -312,9 +359,11 @@
 	 ((member 'array (car form))
 	  (array-ref-to-ir (caar form) (cdr form)))
 	 (t
-	  (append `(funcall ,(maxima-to-ir (caar form)))
-		  (mapcar #'maxima-to-ir (cdr form))))
-	 )))))
+	  (append `(funcall
+		    ,(cond
+		      ((member (caar form) *symbols-directly-convert*) (symbol-to-ir (caar form)))
+		      (t `(element-array ,*maxima-function-dictionary-name* (string ,(symbol-name-to-string (caar form)))))))
+		  (mapcar #'maxima-to-ir (cdr form)))))))))
 
 ;;; Generates IR for Maxima expression
 (defun maxima-to-ir (form &optional (is_stmt nil))
@@ -342,6 +391,7 @@
 (defvar *ir-python-direct-templates*
   (let ((ht (make-hash-table)))
     (setf (gethash 'num ht) 'num-to-python)
+    (setf (gethash 'asterisk ht) 'asterisk-to-python)
     (setf (gethash 'body ht) 'body-to-python)
     (setf (gethash 'body-indented ht) 'body-indented-to-python)
     (setf (gethash 'op ht) 'op-to-python)
@@ -362,7 +412,6 @@
     (setf (gethash 'lambda ht) 'lambda-to-python)
     (setf (gethash 'for-list ht) 'for-list-to-python)
     (setf (gethash 'while-loop ht) 'while-loop-to-python)
-    (setf (gethash 'obj-funcall ht) 'obj-funcall-to-python)
     (setf (gethash 'obj-funcall ht) 'obj-funcall-to-python)
     (setf (gethash 'dictionary ht) 'dictionary-to-python)
     ht))
@@ -391,7 +440,11 @@
 ;;; generating the corresponding Python code.
 
 (defun dictionary-to-python (form indentation-level)
-  (format nil "{}"))
+  (format nil "{~{~a~^, ~}}"
+	  (mapcar (lambda (elm) (ir-to-python `(op-no-bracket #\: ,(ir-to-python (car elm))
+							      ,(ir-to-python (cadr elm)))
+					      indentation-level))
+		  (cdr form))))
 
 (defun obj-funcall-to-python (form indentation-level)
   (format nil "~a.~a(~{~a~^, ~})"
@@ -472,6 +525,10 @@
   (format nil "~a = ~a"
 	  (ir-to-python (cadr form))
 	  (ir-to-python (caddr form))))
+
+(defun asterisk-to-python (form indentation-level)
+  (format nil "*~a"
+	  (ir-to-python (cadr form))))
 
 (defun symbol-to-python (form indentation-level)
   (cadr form))
