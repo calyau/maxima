@@ -19,7 +19,11 @@ sub filename_simple($$$)
     return undef;
   } else {
     $file_nr++;
-    return $prefix.'_'.$file_nr.'.'.$converter->get_conf('EXTENSION');
+    if ($file_nr == 0) {
+      return $prefix.'.'.$converter->get_conf('EXTENSION');
+    } else {
+      return $prefix.'_'.$file_nr.'.'.$converter->get_conf('EXTENSION');
+    }
   }
 }
 
