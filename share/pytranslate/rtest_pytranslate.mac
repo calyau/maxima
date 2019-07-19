@@ -1,6 +1,10 @@
-/*(load(pytranslate), 'done);
-'done$*/
+(load(pytranslate), 'done);
+'done$
 (kill(all), 'done);
+'done$
+
+(?\*maxima\-variables\-dictionary\-name\* : "m_vars",
+?\*maxima\-function\-dictionary\-name\* : "m_funcs", 'done);
 'done$
 
 (preprocess(form) := block(
@@ -11,6 +15,9 @@
       ?\*maxima\-function\-dictionary\-name\*, ret),
     ret: regex_subst("block_random(",
             "block[0-9]*?\\(",
+            ret),
+	  ret: regex_subst("lambda_random(",
+            "lambda[0-9]*?\\(",
             ret),
           ret),
   'done);
@@ -95,7 +102,7 @@ preprocess(pytranslate([a,b,c]));
 /* Assignment */
 preprocess(pytranslate('(a:b)));
 "
-assign(\"a\", m_vars[\"b\"], m_vars)"$
+m_vars[\"a\"] = m_vars[\"b\"]"$
 preprocess(pytranslate('([a,b,c]:[1,2,3])));
 "
 [m_vars[\"a\"], m_vars[\"b\"], m_vars[\"c\"]] = [1, 2, 3]"$
@@ -147,23 +154,9 @@ preprocess(pytranslate(f(x):=block(a:10, b:x*20, x+a+b)));
 def f(x, m_vars = HierarchialDict({}, m_vars)):
     m_vars.ins({\"x\" : x})
     m_vars.ins({})
-    assign(\"a\", 10, m_vars)
-    assign(\"b\", (m_vars[\"x\"] * 20), m_vars)
+    m_vars[\"a\"] = 10
+    m_vars[\"b\"] = (m_vars[\"x\"] * 20)
     return((m_vars[\"x\"] + m_vars[\"a\"] + m_vars[\"b\"]))"$
-preprocess(pytranslate('block([a:a, b:b, c:c], d:a+b+c, d)));
-"
-def block_random(m_vars):
-    m_vars.ins({\"a\" : m_vars[\"a\"], \"b\" : m_vars[\"b\"], \"c\" : m_vars[\"c\"]})
-    assign(\"d\", (m_vars[\"a\"] + m_vars[\"b\"] + m_vars[\"c\"]), m_vars)
-    return(m_vars[\"d\"])
-block_random(HierarchialDict({}, m_vars))"$
-preprocess(pytranslate('block(d:1+2+3, d)));
-"
-def block_random(m_vars):
-    m_vars.ins({})
-    assign(\"d\", 6, m_vars)
-    return(m_vars[\"d\"])
-block_random(HierarchialDict({}, m_vars))"$
 
 (?\*symbols\-directly\-convert\*:[], 'done);
 'done$
@@ -171,17 +164,17 @@ preprocess(pytranslate('(block(d : block(c : block(e : 20, f : e + 10, f), c : c
 "
 def block_random(m_vars):
     m_vars.ins({})
-    assign(\"d\", block_random(HierarchialDict({}, m_vars)), m_vars)
+    m_vars[\"d\"] = block_random(HierarchialDict({}, m_vars))
     return(m_vars[\"d\"])
 def block_random(m_vars):
     m_vars.ins({})
-    assign(\"c\", block_random(HierarchialDict({}, m_vars)), m_vars)
-    assign(\"c\", (6 + m_vars[\"c\"]), m_vars)
+    m_vars[\"c\"] = block_random(HierarchialDict({}, m_vars))
+    m_vars[\"c\"] = (6 + m_vars[\"c\"])
     return(m_vars[\"c\"])
 def block_random(m_vars):
     m_vars.ins({})
-    assign(\"e\", 20, m_vars)
-    assign(\"f\", (10 + m_vars[\"e\"]), m_vars)
+    m_vars[\"e\"] = 20
+    m_vars[\"f\"] = (10 + m_vars[\"e\"])
     return(m_vars[\"f\"])
 block_random(HierarchialDict({}, m_vars))"$
 
@@ -197,19 +190,18 @@ pytranslate('(if 1>2 then 3 elseif 5>6 then 7 else 8));
 /* Lambda Form */
 pytranslate(lambda([a,b], a+b));
 "
-lambda a, b: (a + b)"$
+lambda a, b, m_vars = HierarchialDict({}, m_vars): (a + b)"$
 pytranslate('(xx:lambda([a,b], a+b)));
 "
-xx = lambda a, b: (a + b)"$
-regex_subst("func_random(",
-            "func[0-9]*?\\(",
-            pytranslate('(lmb:lambda([a,b,c], d:a+b, e:b^c, d+e))));
+m_vars[\"xx\"] = lambda a, b, m_vars = HierarchialDict({}, m_vars): (a + b)"$
+preprocess(pytranslate('(lmb:lambda([a,b,c], d:a+b, e:b^c, d+e))));
 "
-def func_random(a, b, c):
-    d = (a + b)
-    e = m_funcs[\"pow\"](b, c)
-    return((d + e))
-lmb = lambda a, b, c: func_random(a, b, c)"$
+def lambda_random(a, b, c, m_vars = HierarchialDict({}, m_vars)):
+    m_vars.ins({\"a\" : a, \"b\" : b, \"c\" : c})
+    m_vars[\"d\"] = (a + b)
+    m_vars[\"e\"] = m_funcs[\"pow\"](b, c)
+    return((m_vars[\"d\"] + m_vars[\"e\"]))
+m_vars[\"lmb\"] = lambda a, b, c, m_vars = HierarchialDict({}, m_vars): lambda_random(a, b, c, HierarchialDict({}, m_vars))"$
 
 (kill(allbut(preprocess)), 'done);
 'done$
@@ -218,66 +210,66 @@ lmb = lambda a, b, c: func_random(a, b, c)"$
 /* In List */
 pytranslate('(for i in [1,2,3] do print(i)));
 "
-for i in [1, 2, 3]:
-    print(i)"$
+for m_vars[\"i\"] in [1, 2, 3]:
+    m_funcs[\"print\"](m_vars[\"i\"])"$
 
 pytranslate('(for i in [1,2,3] do (print(i), print(i*2))));
 "
-for i in [1, 2, 3]:
-    print(i)
-    print((2 * i))"$
+for m_vars[\"i\"] in [1, 2, 3]:
+    m_funcs[\"print\"](m_vars[\"i\"])
+    m_funcs[\"print\"]((2 * m_vars[\"i\"]))"$
 
 /* Initial, increment and limit values specified */
 pytranslate('(for i from 1 step 3 thru 5 do print(i)));
 "
-for i in range(1, (5 + 1), 3):
-    print(i)"$
+for m_vars[\"i\"] in range(1, (5 + 1), 3):
+    m_funcs[\"print\"](m_vars[\"i\"])"$
 pytranslate('(for i from 1 step 3 thru 5 do (print(i), a:20+i, print(i*a))));
 "
-for i in range(1, (5 + 1), 3):
-    print(i)
-    a = (20 + i)
-    print((a * i))"$
+for m_vars[\"i\"] in range(1, (5 + 1), 3):
+    m_funcs[\"print\"](m_vars[\"i\"])
+    m_vars[\"a\"] = (20 + m_vars[\"i\"])
+    m_funcs[\"print\"]((m_vars[\"a\"] * m_vars[\"i\"]))"$
 
 /* Initial, increment and condition specified */
 /* while condition */
 pytranslate('(for i:10 step 5 while i*5<70 do (print(i), print(5*i))));
 "
 
-i = 10
-while not(((5 * i) >= 70)):
-    print(i)
-    print((5 * i))
-    i = (i + 5)
-del i"$
+m_vars[\"i\"] = 10
+while not(((5 * m_vars[\"i\"]) >= 70)):
+    m_funcs[\"print\"](m_vars[\"i\"])
+    m_funcs[\"print\"]((5 * m_vars[\"i\"]))
+    m_vars[\"i\"] = (m_vars[\"i\"] + 5)
+del m_vars[\"i\"]"$
 /* unless condition */    
 pytranslate('(for i:8 step -1 unless i<3 do (print(i))));
 "
 
-i = 8
-while not((i < 3)):
-    print(i)
-    i = (i + -1)
-del i"$
+m_vars[\"i\"] = 8
+while not((m_vars[\"i\"] < 3)):
+    m_funcs[\"print\"](m_vars[\"i\"])
+    m_vars[\"i\"] = (m_vars[\"i\"] + -1)
+del m_vars[\"i\"]"$
 pytranslate('(for i:8 step -1 unless i<3 do print(i)));
 "
 
-i = 8
-while not((i < 3)):
-    print(i)
-    i = (i + -1)
-del i"$
+m_vars[\"i\"] = 8
+while not((m_vars[\"i\"] < 3)):
+    m_funcs[\"print\"](m_vars[\"i\"])
+    m_vars[\"i\"] = (m_vars[\"i\"] + -1)
+del m_vars[\"i\"]"$
 
 /* Function Calls */
 pytranslate(fix(a));
 "
-math.floor(a)"$
+math.floor(m_vars[\"a\"])"$
 pytranslate('fix(a));
 "
-math.floor(a)"$
+math.floor(m_vars[\"a\"])"$
 pytranslate(sqrt(a));
 "
-math.sqrt(a)"$
+math.sqrt(m_vars[\"a\"])"$
 
 /* endcons */
 preprocess(pytranslate('endcons(a,b)));
@@ -285,18 +277,36 @@ preprocess(pytranslate('endcons(a,b)));
 [*m_vars[\"b\"], m_vars[\"a\"]]"$
 pytranslate(endcons(a, f(b,c)));
 "
-f(b, c, a)"$
+m_funcs[\"f\"](m_vars[\"b\"], m_vars[\"c\"], m_vars[\"a\"])"$
 pytranslate(endcons(a, [d,b,c]));
 "
-[d, b, c, a]"$
+[m_vars[\"d\"], m_vars[\"b\"], m_vars[\"c\"], m_vars[\"a\"]]"$
 
 /* Multiple Indentations */
-pytranslate('(while cond1 do (while cond2 do (while cond3 do (expr1)))));
+preprocess( pytranslate('(for i:5 step 0 while i>=1 do
+    ((for j from i step 0 while j>=1 do
+    	 ((for k from j step 0 while k>=1 do
+	      (print(k,j,i),
+	      k:k-1)),
+	  j:j-1)),
+    i:i-1))));
 "
 
-while cond1:
+m_vars[\"i\"] = 5
+while not((m_vars[\"i\"] < 1)):
     
-    while cond2:
+    m_vars[\"j\"] = m_vars[\"i\"]
+    while not((m_vars[\"j\"] < 1)):
         
-        while cond3:
-            expr1"$
+        m_vars[\"k\"] = m_vars[\"j\"]
+        while not((m_vars[\"k\"] < 1)):
+            m_funcs[\"print\"](m_vars[\"k\"], m_vars[\"j\"], m_vars[\"i\"])
+            m_vars[\"k\"] = (-1 + m_vars[\"k\"])
+            m_vars[\"k\"] = (m_vars[\"k\"] + 0)
+        del m_vars[\"k\"]
+        m_vars[\"j\"] = (-1 + m_vars[\"j\"])
+        m_vars[\"j\"] = (m_vars[\"j\"] + 0)
+    del m_vars[\"j\"]
+    m_vars[\"i\"] = (-1 + m_vars[\"i\"])
+    m_vars[\"i\"] = (m_vars[\"i\"] + 0)
+del m_vars[\"i\"]"$

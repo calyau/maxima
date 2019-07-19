@@ -1,3 +1,4 @@
+;TODO : Potential smalloptimization - a+-0=a, a*/1=a
 (defparameter *maxima-function-dictionary-name* "m_funcs")
 (defparameter *maxima-variables-dictionary-name* "m_vars")
 (defparameter *python-hierarchial-dict-name* "HierarchialDict")
@@ -16,6 +17,7 @@
      `(funcall (element-array (symbol ,*maxima-function-dictionary-name*) (string "factorial"))))
     (setf (gethash 'rat ht) '(op /))
     (setf (gethash 'mquotient ht) '(op /))
+    (setf (gethash 'msetq ht) '(op-no-bracket =))
     (setf (gethash 'mlist ht) '(struct-list))
     (setf (gethash 'mand ht) '(boolop (symbol "and")))
     (setf (gethash 'mor ht) '(boolop (symbol "or")))
@@ -46,7 +48,6 @@
     (setf (gethash 'mdo ht) 'for-loop-to-ir)
     (setf (gethash '%endcons ht) 'endcons-to-ir)
     (setf (gethash '$endcons ht) 'endcons-to-ir)
-    (setf (gethash 'msetq ht) 'assignment-to-ir)
     ht))
 
 (defvar *ir-forms-to-append* '())
@@ -144,28 +145,52 @@
     (t (maxima-to-ir form))))
 
 (defun lambda-to-ir (form)
-  (cond ((eq (list-length (cddr form)) 1)
-	 `(lambda ,(mapcar #'func-arg-to-ir (cdadr form)) ,(maxima-to-ir (clast form))))
-	(t
-	 (let ((func_name (maxima-to-ir (gensym "$FUNC"))))
-	   (setf *ir-forms-to-append*
-		 (append *ir-forms-to-append*
-			 `((func-def
-			    ,func_name
-			    ,(mapcar 'func-call-arg-to-ir
-				     (cdadr form))
-			    (body-indented
-			     ,@(mapcar 'maxima-to-ir
-				       (butlast (cddr form)))
-			     (funcall (symbol "return") ,(maxima-to-ir (car (last form)))))))))
-	   `(lambda ,(mapcar #'func-arg-to-ir (cdadr form)) (funcall ,func_name ,@(mapcar #'func-call-arg-to-ir (cdadr form))))))))
+  (let ((*symbols-directly-convert* (append (mapcar
+					     (lambda (x)
+					       (cond ((consp x) (cadr x))
+						     (t x)))
+					     (cdadr form))
+					    *symbols-directly-convert*)))
+    (cond ((eq (list-length (cddr form)) 1)
+	   `(lambda
+		,(let ((func-args (mapcar #'func-arg-to-ir (cdadr form))))
+		   (append func-args
+			   ; initialize dictionary holding variable bindings
+			   `((op-no-bracket = 
+					    (symbol ,*maxima-variables-dictionary-name*)
+					    (funcall (symbol ,*python-hierarchial-dict-name*)
+						     (dictionary)
+						     (symbol ,*maxima-variables-dictionary-name*))))))
+	      ,(maxima-to-ir (clast form))))
+	  (t
+	   (let ((func_name (gensym "$LAMBDA")) (func-args (mapcar #'func-arg-to-ir (cdadr form))))
+	     (setf *ir-forms-to-append*
+		   (cons (func-def-to-ir
+			  `((MDEFINE SIMP)
+			    ((,func_name) ,@(cdadr form))
+			    ((MPROGN) ,@(cddr form))
+			    ))
+			 *ir-forms-to-append*))
+	     `(lambda
+		  ,(append func-args
+			   ; initialize dictionary holding variable bindings
+			   `((op-no-bracket = 
+					    (symbol ,*maxima-variables-dictionary-name*)
+					    (funcall (symbol ,*python-hierarchial-dict-name*)
+						     (dictionary)
+						     (symbol ,*maxima-variables-dictionary-name*)))))
+		(funcall ,(symbol-to-ir func_name)
+			 ,@(mapcar #'func-call-arg-to-ir (cdadr form))
+			 (funcall (symbol ,*python-hierarchial-dict-name*)
+				  (dictionary)
+				  (symbol ,*maxima-variables-dictionary-name*)))))))))
 
 (defun mcond-auxiliary (forms)
-  `( ,(maxima-to-ir (car forms))
+  `(,(maxima-to-ir (car forms))
      ,(maxima-to-ir (cadr forms))
      ,(cond ((eq (caddr forms) 't) (maxima-to-ir (cadddr forms)))
 	    (t `(conditional ,@(mcond-auxiliary (cddr forms)))))
-     ))
+      ))
 
 (defun mcond-to-ir (form)
   ;; (conditional <condition> <res1> <else-res>)
@@ -286,7 +311,7 @@
   (typecase form
     (cons (cond
 	    ((eq (caar form) 'mlist)
-	     `(symbol ,(concatenate 'string "*"  (symbol-name-to-string (cadr form)))))))
+	     `(symbol ,(concatenate 'string "*" (symbol-name-to-string (cadr form)))))))
     (t (symbol-to-ir form))))
 
 ;;; Generates IR for function definition
