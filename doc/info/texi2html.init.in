@@ -15,6 +15,10 @@ sub filename_simple($$$)
   my $filename = shift;
 
   my $prefix = $converter->{'document_name'};
+  # If we're not splitting, just return the name.
+  if (!get_conf('SPLIT')) {
+    return $prefix.'.'.$converter->get_conf('EXTENSION');
+  }
   if ($converter->element_is_top($element)) {
     return undef;
   } else {
