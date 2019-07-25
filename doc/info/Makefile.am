@@ -532,7 +532,7 @@ maxima-index.lisp: build_index.pl maxima.info
 
 DOLLAR_SIGN = $$
 
-maxima_toc.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css
+maxima_toc.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css texi2html.init
 	@: sh $(srcdir)/extract_categories.sh maxima
 	./build_html.sh
 
