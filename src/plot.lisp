@@ -1750,7 +1750,8 @@ sin(y)*(10.0+6*cos(x)),
             (setq no-range-required nil))) 
       (unless no-range-required
         (setq range (check-range range))
-        (setf (getf options :xlabel) (ensure-string (second range)))
+        (unless (getf options :xlabel)
+          (setf (getf options :xlabel) (ensure-string (second range))))
         (setf (getf options :x) (cddr range)))
       (when no-range-required
         ;; Make the default ranges on X nd Y large so parametric plots
