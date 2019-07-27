@@ -185,16 +185,37 @@
 				  (dictionary)
 				  (symbol ,*maxima-variables-dictionary-name*)))))))))
 
-(defun mcond-auxiliary (forms)
+(defun conditional-auxiliary (forms)
   `(,(maxima-to-ir (car forms))
      ,(maxima-to-ir (cadr forms))
      ,(cond ((eq (caddr forms) 't) (maxima-to-ir (cadddr forms)))
-	    (t `(conditional ,@(mcond-auxiliary (cddr forms)))))
+	    (t `(conditional ,@(conditional-auxiliary (cddr forms)))))
       ))
 
-(defun mcond-to-ir (form)
+(defun conditional-to-ir (form)
   ;; (conditional <condition> <res1> <else-res>)
-  `(conditional ,@(mcond-auxiliary (cdr form))))
+  `(conditional ,@(conditional-auxiliary (cdr form))))
+
+(defun if-to-ir (form &optional (case-if nil))
+  `(,@(cond (case-if '(body))
+	    (t '()))
+      (,(cond (case-if 'cond-if)
+	      (t 'cond-elif))
+	,(maxima-to-ir (cadr form)))
+      (body-indented ,(maxima-to-ir (caddr form)))
+      ,@(cond ((eq (cadddr form) 't)
+	       (cond ((or (eq (clast form) 'nil) (eq (clast form) '$false)) '())
+		     ((and (consp (clast form))
+			   (consp (car (clast form)))
+			   (eq (caar (clast form)) 'mcond))
+		      (if-to-ir (clast form)))
+		     (t `((cond-else)
+			  (body-indented ,(maxima-to-ir (clast form)))))))
+	      (t (if-to-ir (cddr form))))))
+
+(defun mcond-to-ir (form &optional (is_expr t))
+  (cond (is_expr (conditional-to-ir form))
+	(t `(,@(if-to-ir form t)))))
 
 (defun mprog-variable-names-list (form)
   (cond ((and (consp form) (eq 'msetq (caar form))) (maxima-to-ir (cadr form)))
@@ -236,10 +257,19 @@
 		   (dictionary
 		    ,@(mprog-assign-to-dict (first-list-mprog form))
 		    ))
-		  ,@(mapcar #'maxima-to-ir
+		  ,@(mapcar (lambda (elm) (cond ((and (consp elm)
+						      (consp (car elm))
+						      (eq (caar elm) 'mcond))
+						 (if-to-ir elm t))
+						(t (maxima-to-ir elm))))
 			    (but-first-mlist (butlast (cdr form))))
 		  (funcall (symbol "return")
-			   ,(maxima-to-ir (clast form)))
+			   ,((lambda (elm) (cond ((and (consp elm)
+						  (consp (car elm))
+						  (eq (caar elm) 'mcond))
+						  (if-to-ir elm t))
+						 (t (maxima-to-ir elm))))
+			     (clast form)))
 		  ))
 	       (t
 		(let ((func_name (symbol-to-ir (gensym "$BLOCK"))))
@@ -254,29 +284,47 @@
 				  (dictionary
 				   ,@(mprog-assign-to-dict (first-list-mprog form))
 				   ))
-				  ,@(mapcar #'maxima-to-ir
-					    (but-first-mlist (butlast (cdr form))))
-				  (funcall (symbol "return")
-					   ,(maxima-to-ir (clast form)))
-				  ))
+				 ,@(mapcar (lambda (elm) (cond ((and (consp elm)
+								     (consp (car elm))
+								     (eq (caar elm) 'mcond))
+								(if-to-ir elm t))
+							       (t (maxima-to-ir elm))))
+					   (but-first-mlist (butlast (cdr form))))
+				 (funcall (symbol "return")
+					  ,((lambda (elm) (cond ((and (consp elm)
+								      (consp (car elm))
+								      (eq (caar elm) 'mcond))
+								 (if-to-ir elm t))
+								(t (maxima-to-ir elm))))
+					    (clast form)))
+				 ))
                               *ir-forms-to-append*))
                   `(funcall ,func_name (funcall (symbol ,*python-hierarchial-dict-name*)
-					  (dictionary)
-					  (symbol ,*maxima-variables-dictionary-name*))))
+						(dictionary)
+						(symbol ,*maxima-variables-dictionary-name*))))
 		)))))
 
 (defun mprogn-to-ir (form &optional (func-args '()))
   (let ((func_name (symbol-to-ir (gensym "$BLOCK"))))
-		  (setf *ir-forms-to-append*
+    (setf *ir-forms-to-append*
                         (cons `(func-def
 				,func_name
 				((symbol ,*maxima-variables-dictionary-name*))
 				(body-indented
-				  ,@(mapcar #'maxima-to-ir
-					    (but-first-mlist (butlast (cdr form))))
-				  (funcall (symbol "return")
-					   ,(maxima-to-ir (clast form)))
-				  ))
+				 ,@(mapcar (lambda (elm) (cond ((and (consp elm)
+								     (consp (car elm))
+								     (eq (caar elm) 'mcond))
+								(if-to-ir elm t))
+							       (t (maxima-to-ir elm))))
+					   (but-first-mlist (butlast (cdr form))))
+				 (funcall (symbol "return")
+					  ,((lambda (elm) (cond ((and (consp elm)
+								      (consp (car elm))
+								      (eq (caar elm) 'mcond))
+								 (if-to-ir elm t))
+								(t (maxima-to-ir elm))))
+					    (clast form)))
+				 ))
                               *ir-forms-to-append*))
                   `(funcall ,func_name (symbol ,*maxima-variables-dictionary-name*))))
 
@@ -377,8 +425,10 @@
        (cond
 					; If the form is present in *maxima-direct-ir-map*
 	 (type
-	  (append type (mapcar #'maxima-to-ir (cdr form))))
-	 ; If the form is to be transformed in a specific way
+	  (append type (mapcar
+			#'maxima-to-ir
+			(cdr form))))
+					; If the form is to be transformed in a specific way
 	 ((setf type (gethash (caar form) *maxima-special-ir-map*))
 	  (funcall type form))
 	 ((member 'array (car form))
@@ -386,9 +436,11 @@
 	 (t
 	  (append `(funcall
 		    ,(cond
-		      ((member (caar form) *symbols-directly-convert*) (symbol-to-ir (caar form)))
-		      (t `(element-array ,*maxima-function-dictionary-name* (string ,(symbol-name-to-string (caar form)))))))
-		  (mapcar #'maxima-to-ir (cdr form)))))))))
+		       ((member (caar form) *symbols-directly-convert*) (symbol-to-ir (caar form)))
+		       (t `(element-array ,*maxima-function-dictionary-name* (string ,(symbol-name-to-string (caar form)))))))
+		  (mapcar
+		   #'maxima-to-ir
+		   (cdr form)))))))))
 
 ;;; Generates IR for Maxima expression
 (defun maxima-to-ir (form &optional (is_stmt nil))
@@ -434,6 +486,9 @@
     (setf (gethash 'func-def ht) 'func-def-to-python)
     (setf (gethash 'element-array ht) 'element-array-to-python)
     (setf (gethash 'conditional ht) 'conditional-to-python)
+    (setf (gethash 'cond-if ht) 'cond-if-to-python)
+    (setf (gethash 'cond-else ht) 'cond-else-to-python)
+    (setf (gethash 'cond-elif ht) 'cond-elif-to-python)
     (setf (gethash 'lambda ht) 'lambda-to-python)
     (setf (gethash 'for-list ht) 'for-list-to-python)
     (setf (gethash 'while-loop ht) 'while-loop-to-python)
@@ -504,6 +559,17 @@
 	  (ir-to-python (cadr form) indentation-level)
 	  (ir-to-python (cadddr form) indentation-level)))
 
+(defun cond-if-to-python (form indentation-level)
+  (format nil "if ~a:"
+	  (ir-to-python (cadr form) indentation-level)))
+
+(defun cond-else-to-python (form indentation-level)
+  (format nil "else:"))
+
+(defun cond-elif-to-python (form indentation-level)
+  (format nil "elif ~a:"
+	  (ir-to-python (cadr form) indentation-level)))
+  
 (defun element-array-to-python (form indentation-level)
   (format nil "~a[~a]"
 	  (ir-to-python (cadr form) indentation-level)
