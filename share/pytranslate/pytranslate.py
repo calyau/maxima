@@ -1,4 +1,5 @@
 from collections.abc import MutableMapping
+from fractions import Fraction
 import math
 
 class HierarchialDict(MutableMapping):
@@ -45,7 +46,10 @@ m_funcs = {
     'sqrt': math.sqrt,
     'num':lambda x:x,
     'denom': lambda x:1,
-    'print': print
+    'print': print,
+    'listp': lambda x: type(x)==list,
+    'numberp': lambda x: type(x)==int or type(x)==float or type(x)==Fraction,
+    'length': len,
 }
 
 def assign(lhs, rhs, var_map = m_vars):

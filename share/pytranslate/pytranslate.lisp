@@ -75,8 +75,7 @@
 	(t `(funcall (symbol ,*assignment-method-name*)
 	    (string ,(symbol-name-to-string (cadr form)))
 	    ,(maxima-to-ir (caddr form))
-	    (symbol ,*maxima-variables-dictionary-name*)
-	    ))))
+	    (symbol ,*maxima-variables-dictionary-name*)))))
 
 (defun symbol-to-asterisk-ir (form)
   (list 'symbol
@@ -120,8 +119,8 @@
 			     (op +
 				 ,(maxima-to-ir (caddr (cdddr form)))
 				 (num 1 0))
-			     ,(maxima-to-ir (cadddr form))
-			     )
+			     ,@(cond ((eq (cadddr form) 'nil) '())
+				    (t `(,(maxima-to-ir (cadddr form))))))
 		    (body-indented
 		     ,@(cond ((mprogn-p form)
 			      (mapcar 'maxima-to-ir (cdr (clast form))))
@@ -168,8 +167,7 @@
 		   (cons (func-def-to-ir
 			  `((MDEFINE SIMP)
 			    ((,func_name) ,@(cdadr form))
-			    ((MPROGN) ,@(cddr form))
-			    ))
+			    ((MPROGN) ,@(cddr form))))
 			 *ir-forms-to-append*))
 	     `(lambda
 		  ,(append func-args
@@ -189,8 +187,7 @@
   `(,(maxima-to-ir (car forms))
      ,(maxima-to-ir (cadr forms))
      ,(cond ((eq (caddr forms) 't) (maxima-to-ir (cadddr forms)))
-	    (t `(conditional ,@(conditional-auxiliary (cddr forms)))))
-      ))
+	    (t `(conditional ,@(conditional-auxiliary (cddr forms)))))))
 
 (defun conditional-to-ir (form)
   ;; (conditional <condition> <res1> <else-res>)
@@ -213,7 +210,7 @@
 			  (body-indented ,(maxima-to-ir (clast form)))))))
 	      (t (if-to-ir (cddr form))))))
 
-(defun mcond-to-ir (form &optional (is_expr t))
+(defun mcond-to-ir (form &optional (is_expr nil))
   (cond (is_expr (conditional-to-ir form))
 	(t `(,@(if-to-ir form t)))))
 
@@ -255,8 +252,7 @@
 		   (symbol ,*maxima-variables-dictionary-name*)
 		   (symbol ,*ins-method-name*)
 		   (dictionary
-		    ,@(mprog-assign-to-dict (first-list-mprog form))
-		    ))
+		    ,@(mprog-assign-to-dict (first-list-mprog form))))
 		  ,@(mapcar (lambda (elm) (cond ((and (consp elm)
 						      (consp (car elm))
 						      (eq (caar elm) 'mcond))
@@ -265,12 +261,15 @@
 			    (but-first-mlist (butlast (cdr form))))
 		  (funcall (symbol "return")
 			   ,((lambda (elm) (cond ((and (consp elm)
-						  (consp (car elm))
-						  (eq (caar elm) 'mcond))
-						  (if-to-ir elm t))
+						       (consp (car elm))
+						       (eq (caar elm) 'mcond))
+						  (mcond-to-ir elm t))
+						 ((and (consp elm)
+						       (consp (car elm))
+						       (eq (caar elm) 'mreturn))
+						  (maxima-to-ir (cadr elm)))
 						 (t (maxima-to-ir elm))))
-			     (clast form)))
-		  ))
+			     (clast form)))))
 	       (t
 		(let ((func_name (symbol-to-ir (gensym "$BLOCK"))))
 		  (setf *ir-forms-to-append*
@@ -282,27 +281,28 @@
 				  (symbol ,*maxima-variables-dictionary-name*)
 				  (symbol ,*ins-method-name*)
 				  (dictionary
-				   ,@(mprog-assign-to-dict (first-list-mprog form))
-				   ))
+				   ,@(mprog-assign-to-dict (first-list-mprog form))))
 				 ,@(mapcar (lambda (elm) (cond ((and (consp elm)
 								     (consp (car elm))
 								     (eq (caar elm) 'mcond))
-								(if-to-ir elm t))
+								(mcond-to-ir elm))
 							       (t (maxima-to-ir elm))))
 					   (but-first-mlist (butlast (cdr form))))
 				 (funcall (symbol "return")
 					  ,((lambda (elm) (cond ((and (consp elm)
 								      (consp (car elm))
 								      (eq (caar elm) 'mcond))
-								 (if-to-ir elm t))
+								 (mcond-to-ir elm t))
+								((and (consp elm)
+								      (consp (car elm))
+								      (eq (caar elm) 'mreturn))
+								 (maxima-to-ir (cadr elm)))
 								(t (maxima-to-ir elm))))
-					    (clast form)))
-				 ))
+					    (clast form)))))
                               *ir-forms-to-append*))
                   `(funcall ,func_name (funcall (symbol ,*python-hierarchial-dict-name*)
 						(dictionary)
-						(symbol ,*maxima-variables-dictionary-name*))))
-		)))))
+						(symbol ,*maxima-variables-dictionary-name*)))))))))
 
 (defun mprogn-to-ir (form &optional (func-args '()))
   (let ((func_name (symbol-to-ir (gensym "$BLOCK"))))
@@ -314,17 +314,20 @@
 				 ,@(mapcar (lambda (elm) (cond ((and (consp elm)
 								     (consp (car elm))
 								     (eq (caar elm) 'mcond))
-								(if-to-ir elm t))
+								(mcond-to-ir elm))
 							       (t (maxima-to-ir elm))))
 					   (but-first-mlist (butlast (cdr form))))
 				 (funcall (symbol "return")
 					  ,((lambda (elm) (cond ((and (consp elm)
 								      (consp (car elm))
 								      (eq (caar elm) 'mcond))
-								 (if-to-ir elm t))
+								 (mcond-to-ir elm t))
+								((and (consp elm)
+								      (consp (car elm))
+								      (eq (caar elm) 'mreturn))
+						  (maxima-to-ir (cadr elm)))
 								(t (maxima-to-ir elm))))
-					    (clast form)))
-				 ))
+					    (clast form)))))
                               *ir-forms-to-append*))
                   `(funcall ,func_name (symbol ,*maxima-variables-dictionary-name*))))
 
@@ -396,10 +399,27 @@
 		   (consp (caaddr form))
 		   (eq (car (caaddr form)) 'mprogn))
 	      (append (mapcar #'maxima-to-ir (butlast (cdaddr form)))
-		      `((funcall (symbol "return") ,(maxima-to-ir (clast (cdaddr form))))
-			)))
+		      `((funcall (symbol "return") ,((lambda (elm) (cond ((and (consp elm)
+									       (consp (car elm))
+									       (eq (caar elm) 'mcond))
+									  (mcond-to-ir elm t))
+									 ((and (consp elm)
+									       (consp (car elm))
+									       (eq (caar elm) 'mreturn))
+									  (maxima-to-ir (cadr elm)))
+									 (t (maxima-to-ir elm))))
+						     (clast (cdaddr form)))))))
 	     (t
-	      `((funcall (symbol "return") ,(maxima-to-ir (caddr form)))))))))
+	      `((funcall (symbol "return") ,((lambda (elm) (cond ((and (consp elm)
+								       (consp (car elm))
+								       (eq (caar elm) 'mcond))
+								  (mcond-to-ir elm t))
+								 ((and (consp elm)
+								       (consp (car elm))
+								       (eq (caar elm) 'mreturn))
+								  (maxima-to-ir (cadr elm)))
+								 (t (maxima-to-ir elm))))
+					     (caddr form)))))))))
 
 ;;; Generates IR for atomic forms
 (defun atom-to-ir (form)
@@ -414,8 +434,7 @@
     (t
      (cond
        ((member form *symbols-directly-convert*) (symbol-to-ir form))
-       (t (symbol-to-dictionary-ir form))))
-    ))
+       (t (symbol-to-dictionary-ir form))))))
 
 ;;; Generates IR for non-atomic forms
 (defun cons-to-ir (form)
@@ -450,8 +469,7 @@
 		 ((and (consp form) (consp (car form)))
 		  (cons-to-ir form))
 		 (t
-		  (cons 'no-convert form))
-		 )))
+		  (cons 'no-convert form)))))
     (cond (is_stmt (append '(body)
 			   *ir-forms-to-append*
 			   `(,ir)))
@@ -511,8 +529,7 @@
       (let ((type (gethash (car form) *ir-python-direct-templates*)))
 	(cond
 	  (type (funcall type form indentation-level))
-	  (t (format nil "no-covert : (~a)" form))
-	  )))	
+	  (t (format nil "no-covert : (~a)" form)))))	
      (t
       (format nil "~a" form)))))
 
@@ -550,8 +567,7 @@
 	  (mapcar
 	   (lambda (elm) (ir-to-python elm indentation-level))
 	   (cadr form))
-	  (ir-to-python (clast form) indentation-level)
-	  ))
+	  (ir-to-python (clast form) indentation-level)))
 
 (defun conditional-to-python (form indentation-level)
   (format nil "(~a if ~a else ~a)"
@@ -581,8 +597,7 @@
 	  (mapcar
 	   (lambda (elm) (ir-to-python elm indentation-level))
 	   (caddr form))
-	  (ir-to-python (clast form) indentation-level)
-	  ))
+	  (ir-to-python (clast form) indentation-level)))
 
 (defun struct-list-to-python (form indentation-level)
   (format nil "[~{~a~^, ~}]"

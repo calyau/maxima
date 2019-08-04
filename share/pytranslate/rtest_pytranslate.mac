@@ -180,10 +180,35 @@ block_random(HierarchialDict({}, m_vars))"$
 
 
 /* if-else-if */
-pytranslate('(if 1>2 then 3 elseif 5>6 then 7 else 8));
+preprocess(pytranslate('(if 1>2 then z:10)));
 "
-(3 if (1 > 2) else (7 if (5 > 6) else 8))"$
 
+if (1 > 2):
+    m_vars[\"z\"] = 10"$
+preprocess(pytranslate('(if 1>2 then z:10 else z:30)));
+"
+
+if (1 > 2):
+    m_vars[\"z\"] = 10
+else:
+    m_vars[\"z\"] = 30"$
+preprocess(pytranslate('(if 1>2 then z:10 elseif 1<2 then z:30 else z:40)));
+"
+
+if (1 > 2):
+    m_vars[\"z\"] = 10
+elif (1 < 2):
+    m_vars[\"z\"] = 30
+else:
+    m_vars[\"z\"] = 40"$
+pytranslate('(f(x):=if x>2 then 10 elseif x<2 then 30 else 40));
+"
+def f(x, m_vars = HierarchialDict({}, m_vars)):
+    m_vars.ins({\"x\" : x})
+    return((10 if (m_vars[\"x\"] > 2) else (30 if (m_vars[\"x\"] < 2) else 40)))"$
+
+(?\*symbols\-directly\-convert\*:[], 'done);
+'done$
 (kill(allbut(preprocess)), 'done);
 'done$
 
