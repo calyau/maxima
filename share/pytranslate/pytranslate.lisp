@@ -101,7 +101,7 @@
 			 (maxima-to-ir (cadr (clast (butlast form)))))
 			(t
 			 `(funcall (symbol "not")
-				  ,(maxima-to-ir (clast (butlast form))))))
+				   ,(maxima-to-ir (clast (butlast form))))))
 		 (body-indented
 		  ,@(cond ((mprogn-p form)
 			   (mapcar 'maxima-to-ir (cdr (clast form))))
@@ -116,11 +116,12 @@
 	 `(for-list ,(maxima-to-ir (cadr form))
 		    (funcall (symbol "range")
 			     ,(maxima-to-ir (caddr form))
-			     (op +
-				 ,(maxima-to-ir (caddr (cdddr form)))
-				 (num 1 0))
+			     ,(cond ((and (atom (caddr (cdddr form)))
+					  (not (symbolp (caddr (cdddr form)))))
+				     (maxima-to-ir (1+ (caddr (cdddr form)))))
+				    (t `(op + ,(maxima-to-ir (caddr (cdddr form))) (num 1 0))))
 			     ,@(cond ((eq (cadddr form) 'nil) '())
-				    (t `(,(maxima-to-ir (cadddr form))))))
+				     (t `(,(maxima-to-ir (cadddr form))))))
 		    (body-indented
 		     ,@(cond ((mprogn-p form)
 			      (mapcar 'maxima-to-ir (cdr (clast form))))
@@ -354,7 +355,11 @@
 ;;; TODO : However, for arrays that are undefined, it needs to be assigned to a hashed array(dictionary)
 (defun array-ref-to-ir (symbol indices)
   (cond ((null indices) (maxima-to-ir symbol)) 
-	(t `(element-array ,(array-ref-to-ir symbol (butlast indices)) ,(maxima-to-ir (clast indices))))))
+	(t `(element-array ,(array-ref-to-ir symbol (butlast indices))
+			   ,(cond ((and (atom (clast indices))
+					(not (symbolp (clast indices))))
+				   (maxima-to-ir (1- (clast indices))))
+				  (t `(op + ,(maxima-to-ir (clast indices)) -1)))))))
 
 ;;; Convert Function args to corresponding IR
 ;;; Convert the optional list argument into corresponding *args form in python

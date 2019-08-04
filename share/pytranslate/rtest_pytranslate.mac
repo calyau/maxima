@@ -23,7 +23,7 @@
   'done);
 'done$
 
-/* Atoms  */
+/* Atoms */
 pytranslate(1);
 "
 1"$
@@ -142,7 +142,7 @@ m_vars[\"tre\"] = ([([([None] * 3)] * 2)] * 1)"$
 /* Array reference */
 preprocess(pytranslate('(abc[1,2,3,4])));
 "
-m_vars[\"abc\"][1][2][3][4]"$
+m_vars[\"abc\"][0][1][2][3]"$
 
 (kill(allbut(preprocess)), 'done);
 'done$
@@ -247,11 +247,11 @@ for m_vars[\"i\"] in [1, 2, 3]:
 /* Initial, increment and limit values specified */
 pytranslate('(for i from 1 step 3 thru 5 do print(i)));
 "
-for m_vars[\"i\"] in range(1, (5 + 1), 3):
+for m_vars[\"i\"] in range(1, 6, 3):
     m_funcs[\"print\"](m_vars[\"i\"])"$
 pytranslate('(for i from 1 step 3 thru 5 do (print(i), a:20+i, print(i*a))));
 "
-for m_vars[\"i\"] in range(1, (5 + 1), 3):
+for m_vars[\"i\"] in range(1, 6, 3):
     m_funcs[\"print\"](m_vars[\"i\"])
     m_vars[\"a\"] = (20 + m_vars[\"i\"])
     m_funcs[\"print\"]((m_vars[\"a\"] * m_vars[\"i\"]))"$
@@ -335,3 +335,87 @@ while not((m_vars[\"i\"] < 1)):
     m_vars[\"i\"] = (-1 + m_vars[\"i\"])
     m_vars[\"i\"] = (m_vars[\"i\"] + 0)
 del m_vars[\"i\"]"$
+
+/* Numeric Tests */
+
+/* Continued Fractions */
+/* cf1 produces continued fraction as a list for any number */
+preprocess(pytranslate(cf1(x):=block ([ q:[],  m: fix((x)), _rem:0, _num, _den, _prec: sqrt(ratepsilon) ],
+     _rem: (x - m),
+     k:fpprec,
+     q:[ m],
+     while k>0 and _rem>ratepsilon do (
+         print(float(_rem/_prec)),
+         _num:num(_rem),
+         _den:denom(_rem),
+         m: fix((_den/_num)),
+         q: endcons (m, q),
+         _rem: (_den/_num - m),
+         k:k-1
+      ),
+     q
+)));
+"
+def cf1(x, m_vars = HierarchialDict({}, m_vars)):
+    m_vars.ins({\"x\" : x})
+    m_vars.ins({\"q\" : [], \"m\" : math.floor(m_vars[\"x\"]), \"_rem\" : 0, \"_num\" : None, \"_den\" : None, \"_prec\" : math.sqrt(m_vars[\"ratepsilon\"])})
+    m_vars[\"_rem\"] = (m_vars[\"x\"] + (-m_vars[\"m\"]))
+    m_vars[\"k\"] = m_vars[\"fpprec\"]
+    m_vars[\"q\"] = [m_vars[\"m\"]]
+    
+    while ((m_vars[\"k\"] > 0) and (m_vars[\"_rem\"] > m_vars[\"ratepsilon\"])):
+        m_funcs[\"print\"](m_funcs[\"float\"]((m_vars[\"_rem\"] / m_vars[\"_prec\"])))
+        m_vars[\"_num\"] = m_funcs[\"num\"](m_vars[\"_rem\"])
+        m_vars[\"_den\"] = m_funcs[\"denom\"](m_vars[\"_rem\"])
+        m_vars[\"m\"] = math.floor((m_vars[\"_den\"] / m_vars[\"_num\"]))
+        m_vars[\"q\"] = [*m_vars[\"q\"], m_vars[\"m\"]]
+        m_vars[\"_rem\"] = ((m_vars[\"_den\"] / m_vars[\"_num\"]) + (-m_vars[\"m\"]))
+        m_vars[\"k\"] = (m_vars[\"k\"] + (-1))
+    return(m_vars[\"q\"])"$
+
+/* cfeval works on converting a continuous fraction list back to a number */
+preprocess(pytranslate(
+    cfeval(_a, [len]):=block ([ z:0, m:0, n:0, p1:1, p2:0, q1:0, q2:1 ] ,
+      if listp(_a) then
+      len:length(_a)
+      else (
+        len:first(len),
+        if not numberp(len) then error("illegal argument: ", len, "  nan ")
+        ),
+      if _a[1]#0 then z:_a[1],
+      for i:2 thru len do (
+        m:p2, n:q2,
+        p2:_a[i]*p2+p1,
+        q2:_a[i]*q2+q1,
+        p1:m, q1:n
+        ),
+      z+ (p2/q2)
+      )));
+"
+def block_random(m_vars):
+    m_vars[\"len\"] = m_funcs[\"first\"](m_vars[\"len\"])
+    return((m_funcs[\"error\"](\"illegal argument: \", m_vars[\"len\"], \"  nan \") if not(m_funcs[\"numberp\"](m_vars[\"len\"])) else m_vars[\"false\"]))
+def cfeval(_a, *len, m_vars = HierarchialDict({}, m_vars)):
+    m_vars.ins({\"_a\" : _a, \"len\" : list(len)})
+    m_vars.ins({\"z\" : 0, \"m\" : 0, \"n\" : 0, \"p1\" : 1, \"p2\" : 0, \"q1\" : 0, \"q2\" : 1})
+    
+    if m_funcs[\"listp\"](m_vars[\"_a\"]):
+            m_vars[\"len\"] = m_funcs[\"length\"](m_vars[\"_a\"])
+    else:
+            block_random(m_vars)
+    
+    if (m_vars[\"_a\"][0] != 0):
+            m_vars[\"z\"] = m_vars[\"_a\"][0]
+    for m_vars[\"i\"] in range(2, (m_vars[\"len\"] + 1)):
+        m_vars[\"m\"] = m_vars[\"p2\"]
+        m_vars[\"n\"] = m_vars[\"q2\"]
+        m_vars[\"p2\"] = ((m_vars[\"_a\"][(m_vars[\"i\"] + -1)] * m_vars[\"p2\"]) + m_vars[\"p1\"])
+        m_vars[\"q2\"] = ((m_vars[\"_a\"][(m_vars[\"i\"] + -1)] * m_vars[\"q2\"]) + m_vars[\"q1\"])
+        m_vars[\"p1\"] = m_vars[\"m\"]
+        m_vars[\"q1\"] = m_vars[\"n\"]
+    return((m_vars[\"z\"] + (m_vars[\"p2\"] / m_vars[\"q2\"])))"$
+
+(?\*symbols\-directly\-convert\*:[], 'done);
+'done$
+(kill(allbut(preprocess)), 'done);
+'done$
