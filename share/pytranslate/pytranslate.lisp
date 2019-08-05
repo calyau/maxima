@@ -1,4 +1,5 @@
-;TODO : Potential smalloptimization - a+-0=a, a*/1=a
+;;TODO : Potential smalloptimization - a+-0=a, a*/1=a
+;;TODO : Potential optimization, prevent blank m_vars.ins({}) lines
 (defparameter *maxima-function-dictionary-name* "m_funcs")
 (defparameter *maxima-variables-dictionary-name* "m_vars")
 (defparameter *python-hierarchial-dict-name* "HierarchialDict")
@@ -278,6 +279,11 @@
 				,func_name
 				((symbol ,*maxima-variables-dictionary-name*))
 				(body-indented
+				 (op-no-bracket = 
+						(symbol ,*maxima-variables-dictionary-name*)
+						(funcall (symbol ,*python-hierarchial-dict-name*)
+							 (dictionary)
+							 (symbol ,*maxima-variables-dictionary-name*)))
 				 (obj-funcall
 				  (symbol ,*maxima-variables-dictionary-name*)
 				  (symbol ,*ins-method-name*)
@@ -312,6 +318,11 @@
 				,func_name
 				((symbol ,*maxima-variables-dictionary-name*))
 				(body-indented
+				 (op-no-bracket = 
+						(symbol ,*maxima-variables-dictionary-name*)
+						(funcall (symbol ,*python-hierarchial-dict-name*)
+							 (dictionary)
+							 (symbol ,*maxima-variables-dictionary-name*)))
 				 ,@(mapcar (lambda (elm) (cond ((and (consp elm)
 								     (consp (car elm))
 								     (eq (caar elm) 'mcond))
@@ -326,11 +337,11 @@
 								((and (consp elm)
 								      (consp (car elm))
 								      (eq (caar elm) 'mreturn))
-						  (maxima-to-ir (cadr elm)))
+								 (maxima-to-ir (cadr elm)))
 								(t (maxima-to-ir elm))))
 					    (clast form)))))
                               *ir-forms-to-append*))
-                  `(funcall ,func_name (symbol ,*maxima-variables-dictionary-name*))))
+    `(funcall ,func_name (symbol ,*maxima-variables-dictionary-name*))))
 
 ;;; Recursively generates IR for a multi-dimensional array and fills all cells with Null value
 (defun array-gen-ir (dimensions)
@@ -379,15 +390,18 @@
     ,(maxima-to-ir (caaadr form))
     ; Function argumenets, including variable mapping dictionary
     ,(let ((func-args (mapcar #'func-arg-to-ir (cdadr form))))
-	(append func-args
-		; initialize dictionary holding variable bindings
-		`((op-no-bracket = 
-				 (symbol ,*maxima-variables-dictionary-name*)
-				 (funcall (symbol ,*python-hierarchial-dict-name*)
-					  (dictionary)
-					  (symbol ,*maxima-variables-dictionary-name*))))))
+       (append func-args
+	       ;; initialize dictionary holding variable bindings
+	       `((op-no-bracket = 
+				(symbol ,*maxima-variables-dictionary-name*)
+				(symbol ,*maxima-variables-dictionary-name*)))))
     (body-indented
-     ; Map the variables in current context to the HierarchialDict
+     (op-no-bracket = 
+		    (symbol ,*maxima-variables-dictionary-name*)
+		    (funcall (symbol ,*python-hierarchial-dict-name*)
+			     (dictionary)
+			     (symbol ,*maxima-variables-dictionary-name*)))
+     ;; Map the variables in current context to the HierarchialDict
      (obj-funcall (symbol ,*maxima-variables-dictionary-name*)
 		  (symbol ,*ins-method-name*)
 		  (dictionary
