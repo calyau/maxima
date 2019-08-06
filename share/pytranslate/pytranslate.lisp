@@ -385,7 +385,8 @@
 (defun func-def-to-ir (form)
   ;The name of function shouldn't be converted to dictionary element
   (setf *symbols-directly-convert* (cons (caaadr form) *symbols-directly-convert*))
-  `(func-def
+  `(body
+    (func-def
     ; Function name
     ,(maxima-to-ir (caaadr form))
     ; Function argumenets, including variable mapping dictionary
@@ -438,7 +439,10 @@
 								       (eq (caar elm) 'mreturn))
 								  (maxima-to-ir (cadr elm)))
 								 (t (maxima-to-ir elm))))
-					     (caddr form)))))))))
+					     (caddr form))))))))
+    (op-no-bracket = ;(caaadr form)
+		   ,(symbol-to-dictionary-ir (caaadr form))
+		   ,(symbol-to-ir (caaadr form)))))
 
 ;;; Generates IR for atomic forms
 (defun atom-to-ir (form)
