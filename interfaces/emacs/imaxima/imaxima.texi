@@ -1,5 +1,6 @@
 \input texinfo                  @c -*-texinfo-*-
 @c %**start of header
+@documentencoding ISO-8859-1
 @setfilename imaxima.info
 @settitle Imaxima Manual
 @paragraphindent 0
