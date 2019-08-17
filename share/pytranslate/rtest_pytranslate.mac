@@ -48,6 +48,9 @@ pytranslate(%i);
 pytranslate(%pi);
 "
 math.pi"$
+pytranslate(inf);
+"
+math.inf"$
 pytranslate(%e);
 "
 math.e"$
@@ -130,7 +133,7 @@ def f(x, m_vars = m_vars):
     m_vars = HierarchialDict({}, m_vars)
     m_vars.ins({\"x\" : x})
     return(m_funcs[\"pow\"](m_vars[\"x\"], 2))
-m_vars[\"f\"] = f"$
+m_funcs[\"f\"] = f"$
 preprocess(pytranslate(f(x, [y]):=[x, y]));
 "
 
@@ -138,7 +141,7 @@ def f(x, *y, m_vars = m_vars):
     m_vars = HierarchialDict({}, m_vars)
     m_vars.ins({\"x\" : x, \"y\" : list(y)})
     return([m_vars[\"x\"], m_vars[\"y\"]])
-m_vars[\"f\"] = f"$
+m_funcs[\"f\"] = f"$
 
 (kill(allbut(preprocess)), 'done);
 'done$
@@ -177,7 +180,7 @@ def f(x, m_vars = m_vars):
     m_vars[\"a\"] = 10
     m_vars[\"b\"] = (m_vars[\"x\"] * 20)
     return((m_vars[\"x\"] + m_vars[\"a\"] + m_vars[\"b\"]))
-m_vars[\"f\"] = f"$
+m_funcs[\"f\"] = f"$
 
 (?\*symbols\-directly\-convert\*:[], 'done);
 'done$
@@ -232,7 +235,7 @@ def f(x, m_vars = m_vars):
     m_vars = HierarchialDict({}, m_vars)
     m_vars.ins({\"x\" : x})
     return((10 if (m_vars[\"x\"] > 2) else (30 if (m_vars[\"x\"] < 2) else 40)))
-m_vars[\"f\"] = f"$
+m_funcs[\"f\"] = f"$
 
 (?\*symbols\-directly\-convert\*:[], 'done);
 'done$
@@ -255,7 +258,7 @@ def lambda_random(a, b, c, m_vars = m_vars):
     m_vars[\"d\"] = (a + b)
     m_vars[\"e\"] = m_funcs[\"pow\"](b, c)
     return((m_vars[\"d\"] + m_vars[\"e\"]))
-m_vars[\"lambda_random\"] = lambda_random
+m_funcs[\"lambda_random\"] = lambda_random
 m_vars[\"lmb\"] = lambda a, b, c, m_vars = HierarchialDict({}, m_vars): lambda_random(a, b, c, HierarchialDict({}, m_vars))"$
 
 (kill(allbut(preprocess)), 'done);
@@ -325,6 +328,9 @@ math.floor(m_vars[\"a\"])"$
 pytranslate(sqrt(a));
 "
 math.sqrt(m_vars[\"a\"])"$
+pytranslate(abs(a));
+"
+abs(m_vars[\"a\"])"$
 
 /* endcons */
 preprocess(pytranslate('endcons(a,b)));
@@ -404,7 +410,7 @@ def cf1(x, m_vars = m_vars):
         m_vars[\"_rem\"] = ((m_vars[\"_den\"] / m_vars[\"_num\"]) + (-m_vars[\"m\"]))
         m_vars[\"k\"] = (m_vars[\"k\"] + (-1))
     return(m_vars[\"q\"])
-m_vars[\"cf1\"] = cf1"$
+m_funcs[\"cf1\"] = cf1"$
 
 /* cfeval works on converting a continuous fraction list back to a number */
 preprocess(pytranslate(
@@ -450,7 +456,7 @@ def cfeval(_a, *len, m_vars = m_vars):
         m_vars[\"p1\"] = m_vars[\"m\"]
         m_vars[\"q1\"] = m_vars[\"n\"]
     return((m_vars[\"z\"] + (m_vars[\"p2\"] / m_vars[\"q2\"])))
-m_vars[\"cfeval\"] = cfeval"$
+m_funcs[\"cfeval\"] = cfeval"$
 
 /* Cantor's Function - Calculates the value of Cantor's function at x in n iterations  */
 preprocess(pytranslate(cantorr2(x, n):=block([ret:0, k:0],
@@ -498,7 +504,7 @@ def cantorr2(x, n, m_vars = m_vars):
             return(1)
     m_funcs[\"print\"](m_vars[\"x\"], m_vars[\"n\"])
     return((block_random(m_vars) if (m_vars[\"n\"] > 0) else m_vars[\"x\"]))
-m_vars[\"cantorr2\"] = cantorr2"$
+m_funcs[\"cantorr2\"] = cantorr2"$
 
 (?\*symbols\-directly\-convert\*:[], 'done);
 'done$

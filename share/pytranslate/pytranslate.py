@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from collections.abc import MutableMapping
 from fractions import Fraction
+from mpmath import quad
 
 class HierarchialDict(MutableMapping):
     def __init__(self, data={}, sub={}):
@@ -50,14 +51,17 @@ m_vars = {
 
 def plot2d(mapping, *constraints, m_vars = m_vars):
     plt.ion()
-    if len(constraints) == 1:
-        x = np.arange(constraints[0][1],
-                      constraints[0][2],
-                      0.001,
-                      dtype = 'float')
-        y = list(map(mapping, x))
-        plt.plot(x, y)
-        plt.draw()
+    if type(mapping) != list:
+        mapping = [mapping]
+    for expr in mapping:
+        if len(constraints) == 1:
+            x = np.arange(constraints[0][1],
+                          constraints[0][2],
+                          0.1,
+                          dtype = 'float')
+            y = list(map(expr, x))
+            plt.plot(x, y)
+    plt.draw()
 
 m_funcs = {
     'sin': math.sin,
@@ -85,7 +89,13 @@ m_funcs = {
     'integerp': lambda x: type(x) == int,
     'append': lambda *x: [i for l in x for i in l],
     'plot2d': plot2d,
-    'map': lambda f, i: list(map(f, i))
+    'map': lambda f, i: list(map(f, i)),
+    'abs': abs,
+    'every': lambda func, l: all(map(func, l)),
+    'quad_qagi': quad,
+    'cos': math.cos,
+    'float': float,
+    'signum': lambda x: 0 if x==0 else x/abs(x)
 }
 
 def assign(lhs, rhs, m_vars = m_vars):

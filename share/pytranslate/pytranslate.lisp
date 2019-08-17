@@ -35,6 +35,7 @@
     (setf (gethash '%fix ht) '(funcall (symbol "math.floor")))
     (setf (gethash '%sqrt ht) '(funcall (symbol "math.sqrt")))
     (setf (gethash 'mreturn ht) '(funcall (symbol "return")))
+    (setf (gethash 'mabs ht) '(funcall (symbol "abs")))
     ht))
 
 (defvar *maxima-special-ir-map*
@@ -68,8 +69,11 @@
 (defun symbol-to-ir (form)
   `(symbol ,(symbol-name-to-string form)))
 
-(defun symbol-to-dictionary-ir (form)
-  `(element-array (symbol ,*maxima-variables-dictionary-name*) (string ,(symbol-name-to-string form))))
+(defun symbol-to-dictionary-ir (form &optional (dict-name nil))
+  `(element-array (symbol
+		   ,(cond (dict-name dict-name)
+			 (t *maxima-variables-dictionary-name*)))
+		  (string ,(symbol-name-to-string form))))
 
 (defun assignment-to-ir (form)
   (cond ((consp (cadr form)) `(op-no-bracket = ,@(mapcar #'maxima-to-ir (cdr form))))
@@ -440,8 +444,8 @@
 								  (maxima-to-ir (cadr elm)))
 								 (t (maxima-to-ir elm))))
 					     (caddr form))))))))
-    (op-no-bracket = ;(caaadr form)
-		   ,(symbol-to-dictionary-ir (caaadr form))
+    (op-no-bracket =
+		   ,(symbol-to-dictionary-ir (caaadr form) *maxima-function-dictionary-name*)
 		   ,(symbol-to-ir (caaadr form)))))
 
 ;;; Generates IR for atomic forms
@@ -454,6 +458,7 @@
     ((eq form '$%i) '(num 0 1)) ; iota complex number
     ((eq form '$%pi) '(num (symbol "math.pi") 0)) ; Pi
     ((eq form '$%e) '(num (symbol "math.e") 0)) ; Euler's Constant
+    ((eq form '$inf) '(num (symbol "math.inf") 0))
     (t
      (cond
        ((member form *symbols-directly-convert*) (symbol-to-ir form))
