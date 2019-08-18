@@ -50,7 +50,7 @@ if [ "$TEXI2HTML" = "makeinfo" ];
 then
     # --no-node-files so we don't have thousands of little html files
     # --force -e 10000 because the category stuff causes lots of errors.
-    TEXIOPT="--html --force -e 10000 --document-lang=en -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init"
+    TEXIOPT="--html -c INLINE_CONTENTS=0 --force -e 10000 --document-lang=en -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init"
     $TEXI2HTML --split=chapter --no-node-files --output="@abs_builddir@/tmp_html" $TEXIOPT maxima.texi 
     $TEXI2HTML --no-split --output="@abs_builddir@/maxima_singlepage.html" $TEXIOPT maxima.texi 
 else
