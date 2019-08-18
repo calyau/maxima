@@ -114,6 +114,8 @@
 (defmvar $algepsilon 100000000)
 (defmvar $true t)
 (defmvar $false nil)
+(defmvar $on t)
+(defmvar $off nil)
 (defmvar $logabs nil)
 (defmvar $limitdomain '$complex)
 (defmvar $listarith t)
