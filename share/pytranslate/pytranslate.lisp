@@ -1,6 +1,6 @@
 ;;TODO : Potential smalloptimization - a+-0=a, a*/1=a
 ;;TODO : Potential optimization, prevent blank v.ins({}) lines
-(defparameter *maxima-function-dictionary-name* "m")
+(defparameter *maxima-function-dictionary-name* "f")
 (defparameter *maxima-variables-dictionary-name* "v")
 (defparameter *python-hierarchial-dict-name* "Stack")
 (defparameter *symbols-directly-convert* '()
