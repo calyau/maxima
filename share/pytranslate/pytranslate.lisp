@@ -1,8 +1,8 @@
 ;;TODO : Potential smalloptimization - a+-0=a, a*/1=a
-;;TODO : Potential optimization, prevent blank m_vars.ins({}) lines
-(defparameter *maxima-function-dictionary-name* "m_funcs")
-(defparameter *maxima-variables-dictionary-name* "m_vars")
-(defparameter *python-hierarchial-dict-name* "HierarchialDict")
+;;TODO : Potential optimization, prevent blank v.ins({}) lines
+(defparameter *maxima-function-dictionary-name* "m")
+(defparameter *maxima-variables-dictionary-name* "v")
+(defparameter *python-hierarchial-dict-name* "Stack")
 (defparameter *symbols-directly-convert* '()
   "List containing symbols to be converted as it is to Python symbols rather than maxima_vars[\"symbol\"]")
 (defparameter *ins-method-name* "ins")
@@ -12,10 +12,6 @@
   (let ((ht (make-hash-table)))
     (setf (gethash 'mtimes ht) '(op *))
     (setf (gethash 'mplus ht) '(op +))
-    (setf (gethash 'mexpt ht) `(funcall (element-array (symbol ,*maxima-function-dictionary-name*) (string "pow"))))
-    (setf
-     (gethash 'mfactorial ht)
-     `(funcall (element-array (symbol ,*maxima-function-dictionary-name*) (string "factorial"))))
     (setf (gethash 'rat ht) '(op /))
     (setf (gethash 'mquotient ht) '(op /))
     (setf (gethash 'msetq ht) '(op-no-bracket =))
@@ -52,6 +48,8 @@
     (setf (gethash '$endcons ht) 'endcons-to-ir)
     (setf (gethash '$plot3d ht) 'plot-to-ir)
     (setf (gethash '$plot2d ht) 'plot-to-ir)
+    (setf (gethash 'mexpt ht) 'mexpt-to-ir)
+    (setf (gethash 'mfactorial ht) 'mfactorial-to-ir)
     ht))
 
 (defvar *ir-forms-to-append* '())
@@ -82,8 +80,7 @@
     (element-array ,*maxima-function-dictionary-name*
 		   (string
 		    ,(cond ((eq (list-length (cddr form)) 1) "plot2d")
-			   (t "plot3d"))
-		    "plot3d"))
+			   (t "plot3d"))))
     ,(maxima-to-ir (cadr form))
     ,@(mapcar
        (lambda (elm) (cond ((and (consp elm)
@@ -93,6 +90,12 @@
 					  ,@(mapcar #'maxima-to-ir (cddr elm))))
 			   (t (maxima-to-ir elm))))
        (cddr form))))
+
+(defun mfactorial-to-ir (form)
+  `(funcall (element-array (symbol ,*maxima-function-dictionary-name*) (string "factorial")) ,@(mapcar #'maxima-to-ir (cdr form))))
+
+(defun mexpt-to-ir (form)
+  `(funcall (element-array (symbol ,*maxima-function-dictionary-name*) (string "pow")) ,@(mapcar #'maxima-to-ir (cdr form))))
 
 (defun assignment-to-ir (form)
   (cond ((consp (cadr form)) `(op-no-bracket = ,@(mapcar #'maxima-to-ir (cdr form))))
@@ -425,7 +428,7 @@
 		    (funcall (symbol ,*python-hierarchial-dict-name*)
 			     (dictionary)
 			     (symbol ,*maxima-variables-dictionary-name*)))
-     ;; Map the variables in current context to the HierarchialDict
+     ;; Map the variables in current context to the Stack
      (obj-funcall (symbol ,*maxima-variables-dictionary-name*)
 		  (symbol ,*ins-method-name*)
 		  (dictionary

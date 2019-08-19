@@ -7,8 +7,16 @@ from mpmath import quad
 from mpl_toolkits.mplot3d import axes3d, Axes3D
 from matplotlib import cm
 
-class HierarchialDict(MutableMapping):
+class Stack(MutableMapping):
+    '''
+    Implements a stack holding variable bindings for execution of translated Maxima code.
+    Provides access via Python dictionary like bindings.
+    '''
     def __init__(self, data={}, sub={}):
+        '''
+        data parameter is a dictionary holding values for the current stack frame.
+        sub is either an instance of Stack or dictionary, holding values at stack frames below the current one.
+        '''
         self.mapping = data
         self.sub = sub
         
@@ -43,15 +51,25 @@ class HierarchialDict(MutableMapping):
     def ins(self, data):
         self.mapping={**self.mapping, **data}
 
-        
-m_vars = {
+# v contains the standard variable mapping from Maxima and is the base for all Stack instances for translated code
+v = {
     'fpprec': 16,
     'pi': math.pi,
     'e': math.e,
     'ratepsilon': 2.0E-15
 }
 
-def plot2d(mapping, *constraints, m_vars = m_vars):
+def plot2d(mapping, *constraints, v = v):
+    '''
+    provides functionality for plotting functions in 2D plane.
+    mapping is either:
+    1) A single function/lambda taking one input in the domain defined by constraints.
+    2) List of functions/lambda as defined in 1 above.
+    
+    Example:
+    plot2d(lambda x: x**2, ['x', 0, 1])
+    where 0 and 1 are the lower and upper bounds respectively.
+    '''
     plt.ion()
     if type(mapping) != list:
         mapping = [mapping]
@@ -65,7 +83,18 @@ def plot2d(mapping, *constraints, m_vars = m_vars):
             plt.plot(X, Y)
     plt.draw()
 
-def plot3d(mapping, *constraints, m_vars = m_vars):
+def plot3d(mapping, *constraints, v = v):
+    '''
+    provides functionality for plotting functions in 3D plane.
+    mapping is either:
+    1) A single function/lambda taking two inputs in the domain defined by constraints.
+    2) List of functions/lambda as defined in 1 above.
+    
+    Example:
+    plot2d(lambda x, y: x**2 + y**2, ['x', 0, 1], ['y', 0, 2])
+    where 0 and 1 are the lower and upper bounds respectively for first input and
+    0 and 2 are the lower and upper bounds respectively for the second input.
+    '''
     fig = plt.figure()
     ax = Axes3D(fig)
     plt.ion()
@@ -87,7 +116,8 @@ def plot3d(mapping, *constraints, m_vars = m_vars):
             surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm, linewidth=0, antialiased=False)
     plt.show()
 
-m_funcs = {
+# f contains the function mapping used by translated functions from Maxima
+f = {
     'sin': math.sin,
     'pow': math.pow,
     'factorial': math.factorial,
@@ -123,6 +153,6 @@ m_funcs = {
     'signum': lambda x: 0 if x==0 else x/abs(x)
 }
 
-def assign(lhs, rhs, m_vars = m_vars):
-    m_vars[lhs] = rhs
+def assign(lhs, rhs, v = v):
+    v[lhs] = rhs
     return rhs

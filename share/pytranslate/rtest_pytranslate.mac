@@ -3,8 +3,11 @@
 (kill(all), 'done);
 'done$
 
-(?\*maxima\-variables\-dictionary\-name\* : "m_vars",
-?\*maxima\-function\-dictionary\-name\* : "m_funcs", 'done);
+(temp_vars_map : ?\*maxima\-variables\-dictionary\-name\*,
+  ?\*maxima\-variables\-dictionary\-name\* : "m_vars",
+  temp_funcs_map : ?\*maxima\-function\-dictionary\-name\*,
+  ?\*maxima\-function\-dictionary\-name\* : "m_funcs",
+'done);
 'done$
 
 (preprocess(form) := block([ret],
@@ -122,7 +125,7 @@ preprocess(pytranslate('([a,b,c]:[1,2,3])));
 "
 [m_vars[\"a\"], m_vars[\"b\"], m_vars[\"c\"]] = [1, 2, 3]"$
 
-(kill(allbut(preprocess)), 'done);
+(kill(allbut(preprocess, temp_vars_map, temp_funcs_map)), 'done);
 'done$
 
 /* Function Definition */
@@ -130,7 +133,7 @@ preprocess(pytranslate(f(x):=x^2));
 "
 
 def f(x, m_vars = m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     m_vars.ins({\"x\" : x})
     return(m_funcs[\"pow\"](m_vars[\"x\"], 2))
 m_funcs[\"f\"] = f"$
@@ -138,12 +141,12 @@ preprocess(pytranslate(f(x, [y]):=[x, y]));
 "
 
 def f(x, *y, m_vars = m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     m_vars.ins({\"x\" : x, \"y\" : list(y)})
     return([m_vars[\"x\"], m_vars[\"y\"]])
 m_funcs[\"f\"] = f"$
 
-(kill(allbut(preprocess)), 'done);
+(kill(allbut(preprocess, temp_vars_map, temp_funcs_map)), 'done);
 'done$
 
 /* Array-definition */
@@ -165,7 +168,7 @@ preprocess(pytranslate('(abc[1,2,3,4])));
 "
 m_vars[\"abc\"][0][1][2][3]"$
 
-(kill(allbut(preprocess)), 'done);
+(kill(allbut(preprocess, temp_vars_map, temp_funcs_map)), 'done);
 'done$
 
 /* Block statements */
@@ -174,7 +177,7 @@ preprocess(pytranslate(f(x):=block(a:10, b:x*20, x+a+b)));
 "
 
 def f(x, m_vars = m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     m_vars.ins({\"x\" : x})
     m_vars.ins({})
     m_vars[\"a\"] = 10
@@ -187,23 +190,23 @@ m_funcs[\"f\"] = f"$
 preprocess(pytranslate('(block(d : block(c : block(e : 20, f : e + 10, f), c : c + 1 + 2 + 3, c), d))));
 "
 def block_random(m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     m_vars.ins({})
-    m_vars[\"d\"] = block_random(HierarchialDict({}, m_vars))
+    m_vars[\"d\"] = block_random(Stack({}, m_vars))
     return(m_vars[\"d\"])
 def block_random(m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     m_vars.ins({})
-    m_vars[\"c\"] = block_random(HierarchialDict({}, m_vars))
+    m_vars[\"c\"] = block_random(Stack({}, m_vars))
     m_vars[\"c\"] = (6 + m_vars[\"c\"])
     return(m_vars[\"c\"])
 def block_random(m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     m_vars.ins({})
     m_vars[\"e\"] = 20
     m_vars[\"f\"] = (10 + m_vars[\"e\"])
     return(m_vars[\"f\"])
-block_random(HierarchialDict({}, m_vars))"$
+block_random(Stack({}, m_vars))"$
 
 
 /* if-else-if */
@@ -232,36 +235,36 @@ pytranslate('(f(x):=if x>2 then 10 elseif x<2 then 30 else 40));
 "
 
 def f(x, m_vars = m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     m_vars.ins({\"x\" : x})
     return((10 if (m_vars[\"x\"] > 2) else (30 if (m_vars[\"x\"] < 2) else 40)))
 m_funcs[\"f\"] = f"$
 
 (?\*symbols\-directly\-convert\*:[], 'done);
 'done$
-(kill(allbut(preprocess)), 'done);
+(kill(allbut(preprocess, temp_vars_map, temp_funcs_map)), 'done);
 'done$
 
 /* Lambda Form */
 pytranslate(lambda([a,b], a+b));
 "
-lambda a, b, m_vars = HierarchialDict({}, m_vars): (a + b)"$
+lambda a, b, m_vars = Stack({}, m_vars): (a + b)"$
 pytranslate('(xx:lambda([a,b], a+b)));
 "
-m_vars[\"xx\"] = lambda a, b, m_vars = HierarchialDict({}, m_vars): (a + b)"$
+m_vars[\"xx\"] = lambda a, b, m_vars = Stack({}, m_vars): (a + b)"$
 preprocess(pytranslate('(lmb:lambda([a,b,c], d:a+b, e:b^c, d+e))));
 "
 
 def lambda_random(a, b, c, m_vars = m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     m_vars.ins({\"a\" : a, \"b\" : b, \"c\" : c})
     m_vars[\"d\"] = (a + b)
     m_vars[\"e\"] = m_funcs[\"pow\"](b, c)
     return((m_vars[\"d\"] + m_vars[\"e\"]))
 m_funcs[\"lambda_random\"] = lambda_random
-m_vars[\"lmb\"] = lambda a, b, c, m_vars = HierarchialDict({}, m_vars): lambda_random(a, b, c, HierarchialDict({}, m_vars))"$
+m_vars[\"lmb\"] = lambda a, b, c, m_vars = Stack({}, m_vars): lambda_random(a, b, c, Stack({}, m_vars))"$
 
-(kill(allbut(preprocess)), 'done);
+(kill(allbut(preprocess, temp_vars_map, temp_funcs_map)), 'done);
 'done$
 
 /*for loop*/
@@ -394,7 +397,7 @@ preprocess(pytranslate(cf1(x):=block ([ q:[],  m: fix((x)), _rem:0, _num, _den, 
 "
 
 def cf1(x, m_vars = m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     m_vars.ins({\"x\" : x})
     m_vars.ins({\"q\" : [], \"m\" : math.floor(m_vars[\"x\"]), \"_rem\" : 0, \"_num\" : None, \"_den\" : None, \"_prec\" : math.sqrt(m_vars[\"ratepsilon\"])})
     m_vars[\"_rem\"] = (m_vars[\"x\"] + (-m_vars[\"m\"]))
@@ -432,12 +435,12 @@ preprocess(pytranslate(
       )));
 "
 def block_random(m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     m_vars[\"len\"] = m_funcs[\"first\"](m_vars[\"len\"])
     return((m_funcs[\"error\"](\"illegal argument: \", m_vars[\"len\"], \"  nan \") if not(m_funcs[\"numberp\"](m_vars[\"len\"])) else m_vars[\"false\"]))
 
 def cfeval(_a, *len, m_vars = m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     m_vars.ins({\"_a\" : _a, \"len\" : list(len)})
     m_vars.ins({\"z\" : 0, \"m\" : 0, \"n\" : 0, \"p1\" : 1, \"p2\" : 0, \"q1\" : 0, \"q2\" : 1})
     
@@ -477,7 +480,7 @@ preprocess(pytranslate(cantorr2(x, n):=block([ret:0, k:0],
 )));
 "
 def block_random(m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     
     if ((m_vars[\"x\"] > 0) and (m_vars[\"x\"] <= (1 / 3))):
             m_vars[\"ret\"] = cantorr2((3 * m_vars[\"x\"]), (m_vars[\"n\"] + (-1)))
@@ -490,7 +493,7 @@ def block_random(m_vars):
     return((m_vars[\"ret\"] / 2))
 
 def cantorr2(x, n, m_vars = m_vars):
-    m_vars = HierarchialDict({}, m_vars)
+    m_vars = Stack({}, m_vars)
     m_vars.ins({\"x\" : x, \"n\" : n})
     m_vars.ins({\"ret\" : 0, \"k\" : 0})
     
@@ -509,12 +512,17 @@ m_funcs[\"cantorr2\"] = cantorr2"$
 /* Tests for Plotting code */
 preprocess(pytranslate('(plot3d(lambda([x, y], x^2 + y^(-1)), [x, 1, 10], [y, 1, 10]))));
 "
-m_funcs[\"plot3d\"](lambda x, y, m_vars = HierarchialDict({}, m_vars): (m_funcs[\"pow\"](x, 2) + m_funcs[\"pow\"](y, (-1))), [\"x\", 1, 10], [\"y\", 1, 10])"$
+m_funcs[\"plot3d\"](lambda x, y, m_vars = Stack({}, m_vars): (m_funcs[\"pow\"](x, 2) + m_funcs[\"pow\"](y, (-1))), [\"x\", 1, 10], [\"y\", 1, 10])"$
 preprocess(pytranslate('(plot2d(lambda([x], x^2), [x,0,2]))));
 "
-m_funcs[\"plot2d\"](lambda x, m_vars = HierarchialDict({}, m_vars): m_funcs[\"pow\"](x, 2), [\"x\", 0, 2])"$
+m_funcs[\"plot2d\"](lambda x, m_vars = Stack({}, m_vars): m_funcs[\"pow\"](x, 2), [\"x\", 0, 2])"$
 
 (?\*symbols\-directly\-convert\*:[], 'done);
 'done$
-(kill(allbut(preprocess)), 'done);
+(kill(allbut(preprocess, temp_vars_map, temp_funcs_map)), 'done);
+'done$
+
+(?\*maxima\-variables\-dictionary\-name\* : temp_vars_map,
+  ?\*maxima\-function\-dictionary\-name\* : temp_funcs_map,
+'done);
 'done$
