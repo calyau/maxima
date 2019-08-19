@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from collections.abc import MutableMapping
 from fractions import Fraction
 from mpmath import quad
+from mpl_toolkits.mplot3d import axes3d, Axes3D
+from matplotlib import cm
 
 class HierarchialDict(MutableMapping):
     def __init__(self, data={}, sub={}):
@@ -55,13 +57,35 @@ def plot2d(mapping, *constraints, m_vars = m_vars):
         mapping = [mapping]
     for expr in mapping:
         if len(constraints) == 1:
-            x = np.arange(constraints[0][1],
+            X = np.arange(constraints[0][1],
                           constraints[0][2],
-                          0.1,
+                          0.0001,
                           dtype = 'float')
-            y = list(map(expr, x))
-            plt.plot(x, y)
+            Y = np.array([expr(xi) for xi in X])
+            plt.plot(X, Y)
     plt.draw()
+
+def plot3d(mapping, *constraints, m_vars = m_vars):
+    fig = plt.figure()
+    ax = Axes3D(fig)
+    plt.ion()
+    if type(mapping) != list:
+        mapping = [mapping]
+    for expr in mapping:
+        vexpr = np.vectorize(expr)
+        if len(constraints) == 2:
+            X = np.arange(constraints[0][1],
+                          constraints[0][2],
+                          0.01,
+                          dtype = 'float')
+            Y = np.arange(constraints[1][1],
+                          constraints[1][2],
+                          0.01,
+                          dtype = 'float')
+            X, Y = np.meshgrid(X, Y)
+            Z = vexpr(X, Y)
+            surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm, linewidth=0, antialiased=False)
+    plt.show()
 
 m_funcs = {
     'sin': math.sin,
@@ -89,6 +113,7 @@ m_funcs = {
     'integerp': lambda x: type(x) == int,
     'append': lambda *x: [i for l in x for i in l],
     'plot2d': plot2d,
+    'plot3d': plot3d,
     'map': lambda f, i: list(map(f, i)),
     'abs': abs,
     'every': lambda func, l: all(map(func, l)),

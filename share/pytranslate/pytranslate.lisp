@@ -50,6 +50,8 @@
     (setf (gethash 'mdo ht) 'for-loop-to-ir)
     (setf (gethash '%endcons ht) 'endcons-to-ir)
     (setf (gethash '$endcons ht) 'endcons-to-ir)
+    (setf (gethash '$plot3d ht) 'plot-to-ir)
+    (setf (gethash '$plot2d ht) 'plot-to-ir)
     ht))
 
 (defvar *ir-forms-to-append* '())
@@ -72,27 +74,44 @@
 (defun symbol-to-dictionary-ir (form &optional (dict-name nil))
   `(element-array (symbol
 		   ,(cond (dict-name dict-name)
-			 (t *maxima-variables-dictionary-name*)))
+			  (t *maxima-variables-dictionary-name*)))
 		  (string ,(symbol-name-to-string form))))
+
+(defun plot-to-ir (form)
+  `(funcall
+    (element-array ,*maxima-function-dictionary-name*
+		   (string
+		    ,(cond ((eq (list-length (cddr form)) 1) "plot2d")
+			   (t "plot3d"))
+		    "plot3d"))
+    ,(maxima-to-ir (cadr form))
+    ,@(mapcar
+       (lambda (elm) (cond ((and (consp elm)
+				 (consp (car elm))
+				 (eq 'mlist (caar elm)))
+			    `(struct-list (string ,(symbol-name-to-string (cadr elm)))
+					  ,@(mapcar #'maxima-to-ir (cddr elm))))
+			   (t (maxima-to-ir elm))))
+       (cddr form))))
 
 (defun assignment-to-ir (form)
   (cond ((consp (cadr form)) `(op-no-bracket = ,@(mapcar #'maxima-to-ir (cdr form))))
 	(t `(funcall (symbol ,*assignment-method-name*)
-	    (string ,(symbol-name-to-string (cadr form)))
-	    ,(maxima-to-ir (caddr form))
-	    (symbol ,*maxima-variables-dictionary-name*)))))
+		     (string ,(symbol-name-to-string (cadr form)))
+		     ,(maxima-to-ir (caddr form))
+		     (symbol ,*maxima-variables-dictionary-name*)))))
 
 (defun symbol-to-asterisk-ir (form)
   (list 'symbol
 	(concatenate 'string "*"
 		     (maybe-invert-string-case (symbol-name (stripdollar form))))))
-  
+
 (defun endcons-to-ir (form)
   (cond ((consp (clast form))
 	 (maxima-to-ir (append (clast form) `(,(cadr form)))))
 	(t
 	 `(struct-list (asterisk ,(maxima-to-ir (clast form))) ,(maxima-to-ir (cadr form))))))
-  
+
 (defun for-loop-to-ir (form)
   (cond ((null (caddr (cdddr form))) ; Condition Specified
 	 `(body ,@(cond ((null (cadr form)) '()) ; If variable not given

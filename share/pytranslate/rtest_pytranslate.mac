@@ -506,6 +506,14 @@ def cantorr2(x, n, m_vars = m_vars):
     return((block_random(m_vars) if (m_vars[\"n\"] > 0) else m_vars[\"x\"]))
 m_funcs[\"cantorr2\"] = cantorr2"$
 
+/* Tests for Plotting code */
+preprocess(pytranslate('(plot3d(lambda([x, y], x^2 + y^(-1)), [x, 1, 10], [y, 1, 10]))));
+"
+m_funcs[\"plot3d\"](lambda x, y, m_vars = HierarchialDict({}, m_vars): (m_funcs[\"pow\"](x, 2) + m_funcs[\"pow\"](y, (-1))), [\"x\", 1, 10], [\"y\", 1, 10])"$
+preprocess(pytranslate('(plot2d(lambda([x], x^2), [x,0,2]))));
+"
+m_funcs[\"plot2d\"](lambda x, m_vars = HierarchialDict({}, m_vars): m_funcs[\"pow\"](x, 2), [\"x\", 0, 2])"$
+
 (?\*symbols\-directly\-convert\*:[], 'done);
 'done$
 (kill(allbut(preprocess)), 'done);
