@@ -1,12 +1,10 @@
 from pytranslate import *
-v = m_vars
-f = m_funcs
 
 #########################
 ### Cantorr2 Function ###
 #########################
 def block17340(v):
-    v = HierarchialDict({}, v)
+    v = Stack({}, v)
     if ((v["x"] > 0) and (v["x"] <= (1 / 3))):
             v["ret"] = cantorr2((3 * v["x"]), (v["n"] + (-1)))
     if (((1 / 3) < v["x"]) and (v["x"] < (2 / 3))):
@@ -15,7 +13,7 @@ def block17340(v):
             v["ret"] = (1 + cantorr2(((3 * v["x"]) + (-2)), (v["n"] + (-1))))
     return((v["ret"] / 2))
 def cantorr2(x, n, v = v):
-    v = HierarchialDict({}, v)
+    v = Stack({}, v)
     v.ins({"x" : x, "n" : n})
     v.ins({"ret" : 0, "k" : 0})
     if not(f["numberp"](v["x"])):
@@ -33,11 +31,11 @@ f["cantorr2"] = cantorr2
 ### Cantorri Function ###
 #########################
 def block34784(v):
-    v = HierarchialDict({}, v)
+    v = Stack({}, v)
     v["ret"] = 0
     return(v["ret"])
 def cantorri(x, n, v = v):
-    v = HierarchialDict({}, v)
+    v = Stack({}, v)
     v.ins({"x" : x, "n" : n})
     v.ins({"ret" : 1, "q" : None})
     if not(f["numberp"](v["x"])):
@@ -59,7 +57,7 @@ f["cantorri"] = cantorri
 ### Cantorrd Function ###
 #########################
 def block47665(v):
-    v = HierarchialDict({}, v)
+    v = Stack({}, v)
     if ((v["x"] > 0) and (v["x"] <= (1 / 3))):
             v["ret"] = cantorrd((3 * v["x"]), (v["n"] + (-1)))
     if (((1 / 3) < v["x"]) and (v["x"] < (2 / 3))):
@@ -68,7 +66,7 @@ def block47665(v):
             v["ret"] = cantorrd(((3 * v["x"]) + (-2)), (v["n"] + (-1)))
     return(v["ret"])
 def cantorrd(x, *n, v = v):
-    v = HierarchialDict({}, v)
+    v = Stack({}, v)
     v.ins({"x" : x, "n" : list(n)})
     v.ins({"ret" : 0})
     if f["emptyp"](v["n"]):
@@ -89,7 +87,7 @@ f["cantorrd"] = cantorrd
 ## Cantorr_p Function ##
 ########################
 def block71117(v):
-    v = HierarchialDict({}, v)
+    v = Stack({}, v)
     v["p"] = f["denom"](v["b"])
     v["q"] = f["num"](v["b"])
     if ((v["x"] > 0) and (v["x"] < v["b"])):
@@ -97,10 +95,10 @@ def block71117(v):
     if ((v["b"] <= v["x"]) and (v["x"] <= (1 + (-v["b"])))):
             v["ret"] = 1
     if ((v["x"] > (1 + (-v["b"]))) and (v["x"] < 1)):
-            v["ret"] = (1 + cantorr_p(((v["p"] * v["x"]) + (-(m_vars["p"] + (-v["q"])))), v["b"], (v["n"] + (-1))))
+            v["ret"] = (1 + cantorr_p(((v["p"] * v["x"]) + (-(v["p"] + (-v["q"])))), v["b"], (v["n"] + (-1))))
     return((v["ret"] / 2))
 def cantorr_p(x, b, n, v = v):
-    v = HierarchialDict({}, v)
+    v = Stack({}, v)
     v.ins({"x" : x, "b" : b, "n" : n})
     v.ins({"ret" : 0, "p" : None, "q" : None, "d" : None})
     if not(f["numberp"](v["x"])):
@@ -117,11 +115,11 @@ def cantorr_p(x, b, n, v = v):
 ## gcantorseq Function ##
 #########################
 def block85290(v):
-    v = HierarchialDict({}, v)
+    v = Stack({}, v)
     v["s"] = f["append"](gcantorseq(v["u"], (v["q"] + (-(v["p"] / 2))), (v["p"] * v["r"]), v["r"], (v["n"] + (-1))), gcantorseq((v["q"] + (v["p"] / 2)), v["w"], (v["p"] * v["r"]), v["r"], (v["n"] + (-1))))
     return(v["s"])
 def gcantorseq(u, w, p, r, n, v = v):
-    v = HierarchialDict({}, v)
+    v = Stack({}, v)
     v.ins({"u" : u, "w" : w, "p" : p, "r" : r, "n" : n})
     v.ins({"s" : None, "q" : None})
     
@@ -135,7 +133,7 @@ def gcantorseq(u, w, p, r, n, v = v):
 ## cantorseq Function ##
 ########################
 def cantorseq(n, v = v):
-    v = HierarchialDict({}, v)
+    v = Stack({}, v)
     v.ins({"n" : n})
     v.ins({"seq" : [0, 1], "l" : [], "r" : []})
     if not(f["integerp"](v["n"])):
@@ -148,6 +146,6 @@ def cantorseq(n, v = v):
         v["seq"] = f["append"](v["l"], v["r"])
     return(v["seq"])
 
-f["plot2d"](lambda x, v = HierarchialDict({}, v): f["cantorr2"](x, 10), ['x', 0, 1])
-f["plot2d"](lambda x, v = HierarchialDict({}, v): f["cantorrd"](x, 10), ['x', 0, 1])
-f["plot2d"](lambda x, v = HierarchialDict({}, v): f["cantorri"](x, 10), ['x', 0, 1])
+f["plot2d"](lambda x, v = Stack({}, v): f["cantorr2"](x, 10), ['x', 0, 1])
+f["plot2d"](lambda x, v = Stack({}, v): f["cantorrd"](x, 10), ['x', 0, 1])
+f["plot2d"](lambda x, v = Stack({}, v): f["cantorri"](x, 10), ['x', 0, 1])

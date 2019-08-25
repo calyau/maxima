@@ -137,7 +137,7 @@
    Example : logic_simplify(((not a) and (not b) and c) or ((not a) and b and c) or (a and (not b) and c) or (a and b and c) or ((not a) and b and (not c))); -> ((not a) and b) or c
              logic_simplify(((not a) and b) or (a and b)) -> b"
   (let* ((characteristic-vector (cdr ($characteristic_vector expr)))
-	 (list-of-variables (cdr ($listofvars expr)))
+	 (list-of-variables (list-of-variables expr))
 	 (numvar (list-length list-of-variables))
 	 (list-of-minterms (loop
 			      for bit in characteristic-vector
