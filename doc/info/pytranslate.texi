@@ -1,0 +1,228 @@
+@menu
+* Introduction to pytranslate::
+* Functions in pytranslate::
+* Extending pytranslate::
+@end menu
+
+@node Introduction to pytranslate, Functions in pytranslate, Top, Top
+@section Introduction to pytranslate
+
+@code{pytranslate} package provides Maxima to Python translation functionality. The package is experimental, and the specifications of the functions in this package might change. It was written as a Google Summer of Code project by Lakshya A Agrawal(Undergraduate Student, IIIT-Delhi) in 2019.@*
+
+The package needs to be loaded in a Maxima instance for use, by executing @code{load(pytranslate);}@*
+The statements are converted to python3 syntax. The file pytranslate.py must be imported for all translations to run, as shown in example.
+
+Example:
+@c ===beg===
+@c load (pytranslate)$
+@c /* Define an example function to calculate factorial */
+@c pytranslate(my_factorial(x) := if (x = 1 or x = 0) then 1 else x * my_factorial(x - 1));
+@c my_factorial(5);
+@c ===end===
+@example
+(%i1) load (pytranslate)$
+@group
+/* Define an example function to calculate factorial */
+(%i2) pytranslate(my_factorial(x) := if (x = 1 or x = 0) then 1 else x * my_factorial(x - 1));
+(%o2) 
+def my_factorial(x, v = v):
+    v = Stack(@{@}, v)
+    v.ins(@{"x" : x@})
+    return((1 if ((v["x"] == 1) or (v["x"] == 0)) else (v["x"] * my_factorial((v["x"] + (-1))))))
+m["my_factorial"] = my_factorial
+@end group
+@group
+(%i3) my_factorial(5);
+(%o3)                          120
+@end group
+@group
+>>> from pytranslate import *
+>>> def my_factorial(x, v = v):
+...     v = Stack(@{@}, v)
+...     v.ins(@{"x" : x@})
+...     return((1 if ((v["x"] == 1) or (v["x"] == 0)) else (v["x"] * my_factorial((v["x"] + (-1))))))
+... 
+>>> my_factorial(5)
+120
+@end group
+@end example
+
+The Maxima to Python Translator works in two stages:@*
+1. Conversion of the internal Maxima representation to a defined Intermediate Representation, henceforth referred as IR(mapping is present in @file{share/pytranslate/maxima-to-ir.html})@*
+2. The conversion of IR to Python.
+
+Supported Maxima forms:@*
+1. @mref{Numbers}(including complex numbers)@*
+2. @mref{Assignment operators}@*
+3. @mref{Arithmetic operators}(+, -, *, ^, /, !)@*
+4. @mref{Logical operators}(and, or, not)@*
+5. @mref{Relational operators}(>, <, >=, <=, !=, ==)@*
+6. @mref{Lists}@*
+7. @mref{Arrays}@*
+8. @mref{block}@*
+9. @mref{Function} and function calls@*
+10. @mref{if}-else converted to Python conditionals@*
+11. @mref{for} loops@*
+12. @mref{lambda} form
+
+@subsection Tests for pytranslate
+The tests for @code{pytranslate} are present at @file{share/pytranslate/rtest_pytranslate.mac} and can be run by executing @code{batch(rtest_pytranslate, test);}
+
+@node Functions in pytranslate, Extending pytranslate, Introduction to pytranslate, Top
+@section Functions in pytranslate
+
+@deffn {Function} pytranslate (@var{expr}, [print-ir])
+Translates the expression @var{expr} to equivalent python3 statements. Output is printed in the stdout.
+
+Example:
+@c ===beg===
+@c load (pytranslate)$
+@c pytranslate('(for i:8 step -1 unless i<3 do (print(i))));
+@c ===end===
+@example
+(%i1) load (pytranslate)$
+@group
+(%i2) pytranslate('(for i:8 step -1 unless i<3 do (print(i))));
+(%o2) 
+v["i"] = 8
+while not((v["i"] < 3)):
+    m["print"](v["i"])
+    v["i"] = (v["i"] + -1)
+del v["i"]
+@end group
+@end example
+
+@var{expr} is evaluated, and the return value is used for translation. Hence, for statements like assignment, it might be useful to quote the statement:
+@c ===beg===
+@c load (pytranslate)$
+@c pytranslate(x:20);
+@c pytranslate('(x:20));
+@c ===end===
+@example
+(%i1) load (pytranslate)$
+@group
+(%i2) pytranslate(x:20);
+(%o2) 
+20
+@end group
+@group
+(%i3) pytranslate('(x:20));
+(%o3) 
+v["x"] = 20
+@end group
+@end example
+
+Passing the optional parameter (@var{print-ir}) to @code{pytranslate} as t, will print the internal IR representation of @code{expr} and return the translated python3 code.
+
+@c ===beg===
+@c load(pytranslate);
+@c pytranslate('(plot3d(lambda([x, y], x^2 + y^(-1)), [x, 1, 10], [y, 1, 10])), t);
+@c ===end===
+@example
+@group
+(%i1) load(pytranslate);
+(%o1) pytranslate
+@end group
+@group
+(%i2) pytranslate('(plot3d(lambda([x, y], x^2 + y^(-1)), [x, 1, 10], [y, 1, 10])), t);
+(body
+ (funcall (element-array "m" (string "plot3d"))
+  (lambda ((symbol "x")
+           (symbol "y")
+           (op-no-bracket = (symbol "v") (funcall (symbol "stack") (dictionary) (symbol "v"))))
+   (op + (funcall (element-array (symbol "m") (string "pow")) (symbol "x") (num 2 0))
+         (funcall (element-array (symbol "m") (string "pow")) (symbol "y") (unary-op - (num 1 0)))))
+  (struct-list (string "x") (num 1 0) (num 10 0))
+  (struct-list (string "y") (num 1 0) (num 10 0)))) 
+(%o2) 
+m["plot3d"](lambda x, y, v = Stack(@{@}, v): (m["pow"](x, 2) + m["pow"](y, (-1))),
+            ["x", 1, 10],
+            ["y", 1, 10])
+@end group
+@end example
+@end deffn
+
+@deffn {Function} show_form (@var{expr})
+Displays the internal maxima form of @code{expr}
+@example
+@group
+(%i4) show_form(a^b);
+((mexpt) $a $b) 
+(%o4) a^b
+@end group
+@end example
+@end deffn
+@node Extending pytranslate, ,Functions in pytranslate, Top
+@section Extending pytranslate
+Working of pytranslate:
+@itemize @bullet
+@item
+The entry point for pytranslate is the function @code{$pytranslate} defined in @file{share/pytranslate/pytranslate.lisp}.
+@item
+@code{$pytranslate} calls the function @code{maxima-to-ir} with the Maxima expression as an argument(henceforth referred as @code{expr}).
+@item
+@code{maxima-to-ir} determines if @code{expr} is atomic or non-atomic(lisp cons form). If atomic, @code{atom-to-ir} is called with @code{expr} which returns the IR for the atomic expression.@*
+To define/modify translation for atomic expressions, make changes to the definition of @code{atom-to-ir} in accordance with the IR.
+@item
+If @code{expr} is non-atomic, the function @code{cons-to-ir} is called with @code{expr} as an argument.@*
+@itemize
+@item
+@code{cons-to-ir} looks for @code{(caar expr)} which specifies the type of @code{expr}, in hash-table @var{*maxima-direct-ir-map*} and if the type is found, then appends the retrieved IR with the result of lisp call @code{(mapcar #'maxima-to-ir (cdr expr))}, which applies maxima-to-ir function to all the elements present in the list. Effectively, recursively generate IR for all the elements present in @code{expr} and append them to the IR map for the type.@*
+Example:
+@example
+@group
+(%i9) show_form(a+b);
+((MPLUS) $B $A)
+@end group
+@group
+(%i10) pytranslate(a+b, t);
+(body (op + (element-array (symbol "v") (string "b")) (element-array (symbol "v") (string "a"))))
+(%o10) 
+(v["b"] + v["a"])
+@end group
+@end example
+Here, operator + with internal maxima representation, @code{(mplus)} is present in @var{*maxima-direct-ir-map*} and mapped to @code{(op +)} to which the result of generating IR for all other elements of the list (a b), i.e. @code{(ELEMENT-ARRAY (SYMBOL "v") (STRING "b")) (ELEMENT-ARRAY (SYMBOL "v") (STRING "a"))} is appended.@*
+
+@item
+If @code{(caar expr)} is not found in @var{*maxima-direct-ir-map*}, then @code{cons-to-ir} looks for the type in @var{*maxima-special-ir-map*} which returns the function to handle the translation of the type of @code{expr}. @code{cons-to-ir} then calls the returned function with argument @code{expr} as an argument.@*
+Example:
+@example
+@group
+(%i11) show_form(g(x):=x^2);
+((mdefine simp) (($g) $x) ((mexpt) $x 2))
+@end group
+@group
+(%i12) pytranslate(g(x):=x^2, t);
+(body
+ (body
+  (func-def (symbol "g")
+            ((symbol "x") (op-no-bracket = (symbol "v") (symbol "v")))
+            (body-indented
+                (op-no-bracket = (symbol "v") (funcall (symbol "stack") (dictionary) (symbol "v")))
+                (obj-funcall (symbol "v") (symbol "ins") (dictionary ((string "x") (symbol "x"))))
+                (funcall (symbol "return")
+                         (funcall (element-array (symbol "f") (string "pow"))
+                                  (element-array (symbol "v") (string "x"))
+                                  (num 2 0)))))
+  (op-no-bracket = (element-array (symbol "f") (string "g")) (symbol "g"))))  
+(%o12) 
+def g(x, v = v):
+    v = Stack(@{@}, v)
+    v.ins(@{"x" : x@})
+    return(f["pow"](v["x"], 2))
+f["g"] = g
+
+@end group
+@end example
+Here, @code{mdefine}, which is the type of @code{expr} is present in @var{*maxima-special-ir-map*} which returns @code{func-def-to-ir} as handler function, which is then called with @code{expr} to generate the IR.@*
+To define/modify translation for a type, add an entry to @var{*maxima-direct-ir-map*} if only a part of the IR needs to be generated and the rest can be appended, otherwise, for complete handling of @code{expr}, add an entry to @var{*maxima-special-ir-map*} and define a function with the name defined in @var{*maxima-special-ir-map*} which returns the IR for the form. The function naming convention for ir generators is (type)-to-ir, where type is the @code{(caar expr)} for expression(mdefine -> func-def-to-ir). The function must return a valid IR for the specific type.
+@end itemize
+@item
+After the generation of IR, the function @code{ir-to-python} is called with the generated @code{ir} as an argument, which performs the codegen in a recursive manner.
+@itemize
+@item
+@code{ir-to-python} looks for lisp @code{(car ir)} in the hash-table @var{*ir-python-direct-templates*}, which maps IR type to function handlers and calls the function returned with @code{ir} as an argument.
+@end itemize
+@item
+To extend the IR of pytranslate, define a function with the naming convention (type)-to-python and add the name to @var{*ir-python-direct-templates*}.
+@end itemize

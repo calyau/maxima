@@ -197,6 +197,7 @@ and develop DOE Macsyma, now called Maxima.
 * operatingsystem-pkg::             Common operating system tasks (create/remove dirs+files,...).
 * opsubst-pkg::                     Substitutions utility.
 * orthopoly-pkg::                   Orthogonal polynomials.
+* pytranslate::                     Maxima to Python Translation
 * ratpow-pkg::                      Determine the coefficients of polynoms.
 * romberg-pkg::                     Romberg method for numerical integration.
 * simplex-pkg::                     Linear programming.
@@ -569,6 +570,10 @@ opsubst
 orthopoly
 * Introduction to orthogonal polynomials::
 * Functions and Variables for orthogonal polynomials::
+
+pytranslate
+* Introduction to pytranslate::
+* Functions in pytranslate::
 
 ratpow
 * Functions and Variables for ratpow::
@@ -946,11 +951,15 @@ Understanding maxima's output
 @chapter opsubst
 @include opsubst.texi
 
-@node orthopoly-pkg, ratpow-pkg, opsubst-pkg, Top
+@node orthopoly-pkg, pytranslate, opsubst-pkg, Top
 @chapter orthopoly
 @include orthopoly.texi
 
-@node ratpow-pkg, romberg-pkg, orthopoly-pkg, Top
+@node pytranslate, ratpow-pkg, orthopoly-pkg, Top
+@chapter pytranslate
+@include pytranslate.texi
+
+@node ratpow-pkg, romberg-pkg, pytranslate, Top
 @chapter ratpow
 @include ratpow.texi
 
