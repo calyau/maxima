@@ -144,7 +144,7 @@
           Put my_package.texi on the list of files in
           maxima/doc/info/Makefile.am
 
-          Put my_package on the list of topics in maxima/doc/info/maxima.texi
+          Put my_package on the list of topics in maxima/doc/info/include-maxima.texi.in
           See instructions in comments at top of maxima/share/template.texi
 
       --  Verify that
