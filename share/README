@@ -37,3 +37,7 @@ solve_rec/      Andrej Vodopivec's code for solving recurrence equations
                 algorithm and Abramov's algorithm.
 
 stringproc/     A Maxima string package by Volker van Nek.
+
+pytranslate/    Maxima to Python Translation developed as Google Summer
+                of Code project under mentorship of Dimiter Prodanov and
+                Robert Dodier.
