@@ -569,6 +569,7 @@ orthopoly
 pytranslate
 * Introduction to pytranslate::
 * Functions in pytranslate::
+* Extending pytranslate::
 
 ratpow
 * Functions and Variables for ratpow::
