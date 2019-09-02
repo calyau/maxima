@@ -1284,7 +1284,7 @@ Examples:
 @anchor{ninth}
 @deffn {Function} ninth (@var{expr})
 
-Returns the 9'th item of expression or list @var{expr}.
+Returns the 9th item of expression or list @var{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -1398,7 +1398,7 @@ list and @code{partswitch} is false, @code{rest} signals an error. When
 returns @code{end}.
 
 Applying @code{rest} to expression such as @code{f(a,b,c)} returns
-@code{f(b,c)}. In general, applying @code{rest} to an nonlist doesn't
+@code{f(b,c)}. In general, applying @code{rest} to a nonlist doesn't
 make sense. For example, because '^' requires two arguments,
 @code{rest(a^b)} results in an error message. The functions
 @code{args} and @code{op} may be useful as well, since @code{args(a^b)}
@@ -2132,7 +2132,7 @@ If the elements of a long list need to be processed in a different
 order performance might be increased by converting the list into a
 declared array first.
 
-It is also to note that the ending condition of @code{for} loops
+Note also that the ending condition of @code{for} loops
 is tested for every iteration which means that the result of a
 @code{length} should be cached if it is used in the ending
 condition:

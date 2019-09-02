@@ -341,7 +341,7 @@ the Bessel function is expanded.
 @deffn {Function} scaled_bessel_i (@var{v}, @var{z}) 
 
 The scaled modified Bessel function of the first kind of order
-@math{v} and argument @math{z}.  That is, @math{scaled_bessel_i(v,z) =
+@math{v} and argument @math{z}.  That is, @math{scaled\_bessel_i(v,z) =
 exp(-abs(z))*bessel_i(v, z)}.  This function is particularly useful
 for calculating @math{bessel_i} for large @math{z}, which is large.
 However, maxima does not otherwise know much about this function.  For

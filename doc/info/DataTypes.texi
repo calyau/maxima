@@ -344,8 +344,7 @@ Examples:
 @c numberp (3.14159);
 @c numberp (-1729b-4);
 @c map (numberp, [%e, %pi, %i, %phi, inf, minf]);
-@c declare (a, even, b, odd, c, integer, d, rational,
-     e, irrational, f, real, g, imaginary, h, complex);
+@c declare (a, even, b, odd, c, integer, d, rational, e, irrational, f, real, g, imaginary, h, complex);
 @c map (numberp, [a, b, c, d, e, f, g, h]);
 @c ===end===
 @example

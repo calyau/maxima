@@ -426,7 +426,7 @@ while processing @var{filename}, the global variables @code{_}, @code{__},
 @code{%}, and @code{%th} have whatever bindings they had when @code{load} was
 called.
 
-It is also to note that structures will only be read back as structures if
+Note also that structures will only be read back as structures if
 they have been defined by @code{defstruct} before the @code{load} command
 is called.
 

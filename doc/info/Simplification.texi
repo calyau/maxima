@@ -133,7 +133,7 @@ of @code{h} will be ignored.
 
 In addition to these directly related properties set up by the user, facts and 
 properties from the actual context may have an impact on the simplifier's behavior, 
-too. @xref{Introduction to Maximas Database}.
+too. @xref{Introduction to Maxima's Database}.
 
 Example: @code{sin(n*%pi)} is simplified to zero, if @var{n} is an integer.
 

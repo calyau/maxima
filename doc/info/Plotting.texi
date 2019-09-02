@@ -23,7 +23,7 @@ to every concurrently-running instance of Maxima and @code{format} is
 the name of the plotting format being used (@code{gnuplot},
 @code{xmaxima}, @code{mgnuplot}, @code{gnuplot_pipes} or @code{geomview}).
 
-There are to save the plot in a graphic format file. In those cases, the
+There are commands to save the plot in a graphic format file. In those cases, the
 file @code{maxout_xxx.format} created by Maxima includes commands that will
 make the external plotting program save the result in a graphic
 file. The default name for that graphic file is
@@ -501,7 +501,7 @@ Displays a plot of one or more expressions as a function of one
 variable or parameter.
 
 @code{plot2d} displays one or several plots in two dimensions.  When
-expressions or function name are used to define the plots,
+expressions or function names are used to define the plots,
 they should all depend on only one variable @var{var} and the use of
 @var{x_range} will be mandatory, to provide the name of the variable and
 its minimum and maximum values; the syntax for @var{x_range} is:
@@ -839,7 +839,7 @@ include a color bar that relates colors to values of the z variable:
 
 Two surfaces in the same plot. Ranges specific to one of the surfaces can
 be given by placing each expression and its ranges in a separate list;
-global ranges for the complete plot are also given after the functions
+global ranges for the complete plot are also given after the function
 definitions.
 
 @c ===beg===
@@ -1217,7 +1217,7 @@ horizontal and vertical axis, as in plot2d, and the z axis coming out of
 the screen.  The z axis is then rotated around the x axis through an
 angle equal to @mref{elevation} and then the new xy plane is rotated
 around the new z axis through an angle @mrefdot{azimuth} This option sets
-the value for the azimuth, in degrees.
+the value for the elevation, in degrees.
 
 See also @mrefdot{azimuth}
 

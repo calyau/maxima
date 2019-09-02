@@ -560,8 +560,7 @@ body of @code{f_2}.
 @c ===beg===
 @c f_1 (a) := integrate (x^3, x, 1, a);
 @c ev (f_1 (7), nouns);
-@c /* Note parentheses around integrate(...) here */
-      f_2 (a) := ''(integrate (x^3, x, 1, a));
+@c /* Note parentheses around integrate(...) here */      f_2 (a) := ''(integrate (x^3, x, 1, a));
 @c f_2 (7);
 @c ===end===
 @example
