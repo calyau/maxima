@@ -1160,7 +1160,7 @@ expression. If it is omitted, the default value 1 will be used. If both
 value of 1.
 
 @code{makelist (@var{expr}, @var{x}, @var{list})} returns a list, the
-@code{j}'th element of which is equal to
+@code{j}th element of which is equal to
 @code{ev (@var{expr}, @var{x}=@var{list}[j])} for @code{j} equal to 1 through
 @code{length (@var{list})}.
 
