@@ -477,7 +477,7 @@ Arguments which are @code{equal} but not "=" are not removed.
 @anchor{eighth}
 @deffn {Function} eighth (@var{expr})
 
-Returns the 8'th item of expression or list @var{expr}.
+Returns the 8th item of expression or list @var{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -548,7 +548,7 @@ to a nonlist sometimes gives a surprising result; for example
 @anchor{fifth}
 @deffn {Function} fifth (@var{expr})
 
-Returns the 5'th item of expression or list @var{expr}.
+Returns the 5th item of expression or list @var{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -775,7 +775,7 @@ Note that @code{firstn(@var{expr}, 1)} is not the same as @code{first(@var{expr}
 @anchor{fourth}
 @deffn {Function} fourth (@var{expr})
 
-Returns the 4'th item of expression or list @var{expr}.
+Returns the 4th item of expression or list @var{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -1522,7 +1522,7 @@ Examples:
 @anchor{second}
 @deffn {Function} second (@var{expr})
 
-Returns the 2'nd item of expression or list @var{expr}.
+Returns the 2nd item of expression or list @var{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -1535,7 +1535,7 @@ See @mref{first} for more details.
 @anchor{seventh}
 @deffn {Function} seventh (@var{expr})
 
-Returns the 7'th item of expression or list @var{expr}.
+Returns the 7th item of expression or list @var{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -1548,7 +1548,7 @@ See @mref{first} for more details.
 @anchor{sixth}
 @deffn {Function} sixth (@var{expr})
 
-Returns the 6'th item of expression or list @var{expr}.
+Returns the 6th item of expression or list @var{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -1873,7 +1873,7 @@ Examples:
 @anchor{tenth}
 @deffn {Function} tenth (@var{expr})
 
-Returns the 10'th item of expression or list @var{expr}.
+Returns the 10th item of expression or list @var{expr}.
 See @mref{first} for more details.
 
 @opencatbox
@@ -1886,7 +1886,7 @@ See @mref{first} for more details.
 @anchor{third}
 @deffn {Function} third (@var{expr})
 
-Returns the 3'rd item of expression or list @var{expr}.
+Returns the 3rd item of expression or list @var{expr}.
 See @mref{first} for more details.
 
 @opencatbox
