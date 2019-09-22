@@ -56,4 +56,4 @@ else()
 endif()
 
 # install wxWidgets locale files
-install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-translations/wxMaxima DESTINATION . COMPONENT wxMaxima)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-translations/wxMaxima/locale DESTINATION share/ COMPONENT wxMaxima)
