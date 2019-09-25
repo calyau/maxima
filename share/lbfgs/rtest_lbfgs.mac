@@ -44,4 +44,4 @@ block ([lbfgs_nfeval_max:10], lbfgs (x^6 + y^6, [x, y], [1, 1], 1e-12, [1, 0]));
 [x = 0.1082428019264297, y = 0.1082428019264297];
 
 (reset(float_approx_equal_tolerance),0);
-0
+0;

@@ -27,7 +27,7 @@ for i:1 thru 8 do
 	deffg(),
 	print(" takens' test "),
 	print(" truncate f and g to homogeneous polynomials "),
-	print(truncate()),
+	print(takens_truncate()),
 	getroots(),
 	print(test()),
 	if flag=green then return("done"),
@@ -62,7 +62,7 @@ v::read(v,"="),
 print(ev(v)))$
 
 /* subroutine to truncate f and g to terms of lowest degree */
-truncate():=block(
+takens_truncate():=block(
 for j from 2 thru 8 do
 	(temp1:ratexpand([ev(f),ev(g)]),
 	temp2:taylor(temp1,[ev(x),ev(y)],0,j),

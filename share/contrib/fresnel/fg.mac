@@ -13,9 +13,9 @@ randi:map(factor,randi)$
 randi:rncombine(randi);
 randi:apply1(randi,fa,ga);
 limit(randi,w,16000000 * %pi);
-plot(d15,w,float(%pi)*15700000,float(%pi)*16100000,linlog)
-plot(d15,w,float(%pi)*1000000,float(%pi)*15700000,linlog)
-plot(d15,w,float(%pi)*100000,float(%pi)*1000000,linlog)
-plot(d15,w,float(%pi)*10000,float(%pi)*100000,linlog)
-plot(d15,w,float(%pi)*1000,float(%pi)*10000,linlog)
-plot(d15,w,float(%pi)*100,float(%pi)*1000,linlog)
+plot2d (d15, [w,float(%pi)*15700000,float(%pi)*16100000], [logy, true]);
+plot2d (d15, [w,float(%pi)*1000000,float(%pi)*15700000], [logy, true]);
+plot2d (d15, [w,float(%pi)*100000,float(%pi)*1000000], [logy, true]);
+plot2d (d15, [w,float(%pi)*10000,float(%pi)*100000], [logy, true]);
+plot2d (d15, [w,float(%pi)*1000,float(%pi)*10000], [logy, true]);
+plot2d (d15, [w,float(%pi)*100,float(%pi)*1000], [logy, true]);

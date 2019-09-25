@@ -10,7 +10,7 @@ gensym_conventionp(symbol):=
     getcharn(symbol,2)=getcharn('%,1) then true else false$
 
 gensym_conventions(exp):=
- if atom(exp) then exp else false
+ if atom(exp) then exp else
  block([gens:[],temp:gensym_conventions(part(exp,0))],
        if not temp=false then gens:cons(temp,gens),
        exp:args(exp),
