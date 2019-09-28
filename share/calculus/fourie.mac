@@ -72,48 +72,23 @@ parint(f,x,a,b):=
 parint1(f,x):=if oddfunp(f,x) then 0 else f$
 
 adefint(f,x,a,b):=block([asign,bsign],
-	if equalp(a,b) then 0
-	    else (if not (freeof(%i,f) and freeof(%i,a) and freeof(%i,b))
-		      then ldefint(f,x,a,b)
-		      else (f:parint(f,x,a,b),
-			    if equalp(f,0) then 0
-			        else (if not funp2('abs,f,x)
-					  then ldefint(f,x,a,b)
-					  else (asign:asksign(a),
-						bsign:asksign(b),
-						if 
-						 (asign = 'neg
-						   or asign = 'zero)
-						   and (bsign = 'neg
-						    or bsign = 'zero)
-						  then ldefint(
-						  remfunn2('abs,f,x),x,a,b)
-						  else (if 
-						  (asign = 'zero
-						    or asign = 'pos)
-						    and (bsign = 'zero
-						     or bsign = 'pos)
-						   then ldefint(
-						   remfun2('abs,f,x),x,a,b)
-						   else (if asign = 'neg
-							     then ratsimp(
-							     ldefint(
-							      remfunn2(
-							       'abs,f,x),x,a,
-							      0)
-							      +ldefint(
-							       remfun2(
-								'abs,f,x),x,
-							       0,b))
-							     else ratsimp(
-							     ldefint(
-							      remfun2(
-							       'abs,f,x),x,a,
-							      0)
-							      +ldefint(
-							       remfunn2(
-								'abs,f,x),x,
-							       0,b)))))))))$
+  if equalp(a,b) then 0
+    else (if not (freeof(%i,f) and freeof(%i,a) and freeof(%i,b))
+            then ldefint(f,x,a,b)
+            else (f:parint(f,x,a,b),
+                  if equalp(f,0) then 0
+                    else (if not funp2('abs,f,x)
+                            then ldefint(f,x,a,b)
+                            else (asign:asksign(a), bsign:asksign(b),
+                                  if (asign = 'neg or asign = 'zero) and (bsign = 'neg or bsign = 'zero)
+                                    then ldefint( remfunn2('abs,f,x),x,a,b)
+                                    else (if (asign = 'zero or asign = 'pos) and (bsign = 'zero or bsign = 'pos)
+                                            then ldefint( remfun2('abs,f,x),x,a,b)
+                                            else (if asign = 'neg
+                                                    then ratsimp( ldefint( remfunn2( 'abs,f,x),x,a, 0)
+                                                                 +ldefint( remfun2( 'abs,f,x),x, 0,b))
+                                                    else ratsimp( ldefint( remfun2( 'abs,f,x),x,a, 0)
+                                                                 +ldefint( remfunn2( 'abs,f,x),x, 0,b)))))))))$
 
 indefint(f,x,halfplane):=if halfplane = 'pos
 	  then integrate(remfun2('abs,f,x),x)
