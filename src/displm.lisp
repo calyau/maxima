@@ -29,10 +29,9 @@
 ;; (PUSH-STRING "foo" RESULT) --> (SETQ RESULT (APPEND '(#/o #/o #/f) RESULT))
 
 (defmacro push-string (string symbol)
+  (check-arg string stringp "a string")
   (check-arg symbol symbolp "a symbol")
-  (if (stringp string)
-    `(setq ,symbol (list* ,@(nreverse (exploden string)) ,symbol))
-    `(setq ,symbol (append (nreverse (exploden ,string)) ,symbol))))
+  `(setq ,symbol (list* ,@(nreverse (exploden string)) ,symbol)))
 
 ;; Macros for setting up dispatch table.
 ;; Don't call this DEF-DISPLA, since it shouldn't be annotated by
