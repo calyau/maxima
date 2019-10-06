@@ -1,0 +1,30 @@
+kill(all);
+'done$
+
+(load("inteqn"), 'done);
+'done$
+
+(ieqn0([l]):=block([ieqnprint: false], ?meval(apply(ieqn, l))), 'done);
+'done$
+
+block([e],
+  e: p(x) - 1 - x + cos(x) + 'integrate(cos(x - u)*p(u), u, 0, x),
+  ieqn0(e, p(x), 'transform));
+[[x,transform]]$
+
+block([e],
+  e: 2*'integrate(p(x*sin(u)), u, 0, %pi/2) - a*x - b,
+  ieqn0(e, p(x), 'firstkindseries));
+[[2*a*x+%pi*b,firstkindseries,1,approximate]]$
+
+block([e],
+  e: p(x) - x - 'integrate( p(u) * sum( (x*u)^j/j!, j, 0, 5), u, 0, 1),
+  factor(ieqn0(e, p(x), 'flfrnk2nd)));
+[[-(6*(408248418456648*x^5+2437700856066210*x^4+12113963764280280*x^3
+                          +48070571667498660*x^2-39215192809051280*x
+                          +281737677633905751))
+                      /1091504046228192893,flfrnk2nd]]$
+
+/* Stoutemyer, D. R. (1977). Analytically solving integral equations
+by using computer algebra. ACM Transactions on Mathematical Software
+(TOMS), 3(2), 128-146. */
