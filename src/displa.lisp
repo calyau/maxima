@@ -237,7 +237,7 @@
                                 (append (list (- w10) (+ h-base d11)) post-superscripts-output)
                                 (append (list 0 (- h10)) post-subscripts-output)
                                 (append (list 0 0) bas)
-                                (append (list (- w01) (+ h-base d01)) pre-superscripts-output)
+                                (append (list (if (> w00 0) (- w01) 0) (+ h-base d01)) pre-superscripts-output)
                                 (append (list (if (> w01 w00) (- w01 w00) 0) (- h00)) pre-subscripts-output)))
                    result)
                  height (+ h-base (max (+ d01 h01) (+ d11 h11)))
