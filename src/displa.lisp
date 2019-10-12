@@ -232,6 +232,7 @@
          (t
            (setq result
                  (append
+                   (if (and (> w11 0) (> w10 w11)) (list (list (- w10 w11) 0)))
                    (remove-if #'(lambda (l) (= (length l) 2))
                               (list
                                 (append (list (- w10) (+ h-base d11)) post-superscripts-output)

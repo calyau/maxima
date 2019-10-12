@@ -1,5 +1,7 @@
 ;; Loading file /home/robert/.clisprc.lisp ...
 ;;  Loading file /home/robert/quicklisp/setup.lisp ...
+;;   Loading file /home/robert/quicklisp/cache/asdf-fasls/06hkyy/asdf.fas ...
+;;   Loaded file /home/robert/quicklisp/cache/asdf-fasls/06hkyy/asdf.fas
 ;;  Loaded file /home/robert/quicklisp/setup.lisp
 ;; Loaded file /home/robert/.clisprc.lisp
 Maxima branch_5_37_base_255_g6ea73f3 http://maxima.sourceforge.net
@@ -117,7 +119,7 @@ read and interpret file: /home/robert/maxima/maxima-code/tests/rtest_index_prope
                                a   d
 (%i30) F(foo[aaa,bb,cc,ddd])^n
                            n  bb   cc
-(%o30)                    F (   foo  )
+(%o30)                    F (   foo   )
                              aaa   ddd
 (%i31) 1/(1-foo[a,b,c,d])
                                 1
@@ -129,10 +131,10 @@ read and interpret file: /home/robert/maxima/maxima-code/tests/rtest_index_prope
                               b   c
                                foo
                              aa   dd
-(%o32)                 -----------------
-                            yy   zz
-                       sqrt(  foo   + 1)
-                             x   w
+(%o32)                  -----------------
+                             yy   zz
+                        sqrt(  foo   + 1)
+                              x   w
 (%i33) foo[a,b,c,d]+foo[w,x,y,z]+foo[1,2,3,4]
                       x   y   b   c   2   3
 (%o33)                 foo  +  foo  +  foo
