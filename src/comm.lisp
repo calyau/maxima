@@ -1206,7 +1206,8 @@
 ;; number.  Otherwise, return NIL to indicate that we the computation
 ;; failed.  This is a pretty brute-force approach.
 (defun try-float-computation (thunk)
-  (let ((errcatch (cons bindlist loclist))
+  (let ((errset nil)
+	(errcatch (cons bindlist loclist))
 	(*mdebug* nil))
     (declare (special errcatch))
     (let ((result (errset (funcall thunk))))
