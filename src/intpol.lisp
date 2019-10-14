@@ -44,11 +44,13 @@ Perhaps you meant to enter `~a'.~%"
 		            (relerr maxima::$find_root_rel))
   (flet ((convert (s)
 	   ;; Try to convert to a BIGFLOAT type.  If that fails, just
-	   ;; return the argument.  Set the flags errcatch and erromsg
-	   ;; so we can catch the error, but disable printing of any
-	   ;; error messages.
-	   (let ((maxima::errcatch t)
-		 (maxima::$errormsg nil))
+	   ;; return the argument.  Set the flags errset, errcatch,
+	   ;; $errormsg and *mdebug* so we can catch the error, but
+	   ;; disable printing of any error messages.
+	   (let ((maxima::errset nil)
+		 (maxima::errcatch t)
+		 (maxima::$errormsg nil)
+		 (maxima::*mdebug* nil))
 	     (or (car (maxima::errset (to s)))
 		 s))))
     (let (;; Don't want to bind $numer to T here.  This causes things
