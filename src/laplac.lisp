@@ -329,15 +329,19 @@
 ;;;INTEGRAL FROM A TO INFINITY OF F(X)
 (defun mydefint (f x a parm)
   (let ((tryint (and (not ($unknown f))
-                     ;; $defint should not throw a Maxima error,
-                     ;; therefore we set the flags errcatch and $errormsg.
-                     ;; errset catches the error and returns nil
+                     ;; We don't want any errors thrown by $defint to propagate,
+                     ;; so we set errset, errcatch, $errormsg and *mdebug*.  If
+                     ;; $defint throws a error, then no error message is printed
+                     ;; and errset simply returns nil below.
                      (with-new-context (context)
                        (progn
                          (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
                          (meval `(($assume) ,@(list (list '(mgreaterp) x 0))))
                          (meval `(($assume) ,@(list (list '(mgreaterp) a 0))))
-                         (let ((errcatch t) ($errormsg nil))
+                         (let ((errset nil)
+                               (errcatch t)
+                               ($errormsg nil)
+                               (*mdebug* nil))
                            (errset ($defint f x a '$inf))))))))
     (if tryint
 	(car tryint)
@@ -534,10 +538,14 @@
        (progn
          (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
          (setq tryint
-               ;; $defint should not throw a Maxima error.
-               ;; therefore we set the flags errcatch and errormsg.
-               ;; errset catches an error and returns nil.
-               (let ((errcatch t) ($errormsg nil))
+               ;; We don't want any errors thrown by $defint to propagate,
+               ;; so we set errset, errcatch, $errormsg and *mdebug*.  If
+               ;; $defint throws a error, then no error message is printed
+               ;; and errset simply returns nil below.
+               (let ((errset nil)
+                     (errcatch t)
+                     ($errormsg nil)
+                     (*mdebug* nil))
                  (errset ($defint mult var 0 '$inf))))))
      (and tryint (not (eq (and (listp (car tryint))
 			       (caaar tryint))
