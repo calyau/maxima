@@ -1723,8 +1723,8 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 
 #-gcl
 (defun stream-name (path)
-  (let ((tem (errset (namestring (pathname path)))))
-    (car tem)))
+  (let ((errset nil))
+    (car (errset (namestring (pathname path))))))
 
 #-gcl
 (defun instream-name (instr)
