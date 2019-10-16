@@ -44,11 +44,12 @@
   (values))
 
 (defmacro with-new-context (sub-context &rest forms)
-  `(let ((my-context (gensym "$CTXT")))
-     (mfuncall '$supcontext my-context ,@sub-context)
-     (unwind-protect
-       (prog1 ,@forms)
-       ($killcontext my-context))))
+  (let ((my-context (gensym)))
+    `(let ((,my-context (gensym "$CTXT")))
+       (mfuncall '$supcontext ,my-context ,@sub-context)
+       (unwind-protect
+         (prog1 ,@forms)
+         ($killcontext ,my-context)))))
 
 ;; For creating a macsyma evaluator variable binding context.
 ;; (MBINDING (VARIABLES &OPTIONAL VALUES FUNCTION-NAME)
