@@ -48,7 +48,7 @@
     `(let ((,my-context (gensym "$CTXT")))
        (mfuncall '$supcontext ,my-context ,@sub-context)
        (unwind-protect
-         (prog1 ,@forms)
+         (progn ,@forms)
          ($killcontext ,my-context)))))
 
 ;; For creating a macsyma evaluator variable binding context.
