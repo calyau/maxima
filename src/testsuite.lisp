@@ -133,7 +133,7 @@
 	 ((mlist simp) 40 41))
         ((mlist simp) "rtest_log")
         ((mlist simp) "rtest_power"
-	 ((mlist simp) 19 20 26 58 65))
+	 ((mlist simp) 19 20 26 58))
         "rtestdefstruct"
 	;; Tested with acl 10.1
 	((mlist simp) "rtest_limit"

@@ -21,9 +21,9 @@
 
 ;;; I believe a large portion of this file is described in Paul
 ;;; Wang's thesis, "Evaluation of Definite Integrals by Symbolic
-;;; Integration," MIT/LCS/TR-92, Oct. 1971.  This can be found at
-;;; http://www.lcs.mit.edu/publications/specpub.php?id=660, but some
-;;; important pages are black.
+;;; Manipulation," MIT/LCS/TR-92, Oct. 1971.  This can be found at
+;;; https://web.archive.org/web/20191019131847/https://apps.dtic.mil/dtic/tr/fulltext/u2/732005.pdf
+
 
 ;;; TOP LEVEL FUNCTION(S): $LIMIT $LDEFINT
 
@@ -2729,21 +2729,17 @@ ignoring dummy variables and array indices."
 	  ((member arglim '($minf $infinity) :test #'eq)
 	   '$infinity)
 	  ((member arglim '($ind $und) :test #'eq) '$und)
+	  ((eq arglim '$zeroa)  '$minf)
+	  ((eq arglim '$zerob)  '$infinity)
+	  ((equalp arglim 0)  '$infinity)
+	  ((equalp arglim 1)
+	   (let ((dir (behavior (cadr expr) var val)))
+	     (cond ((equal dir 1) '$zeroa)
+		   ((equal dir -1) '$zerob)
+		   (t 0))))
 	  ((equalp ($imagpart (cadr expr)) 0)
            ;; argument is real.
-	   (let* ((real-lim (ridofab arglim)))
-	     (if (equalp real-lim 0)
-		 (cond ((eq arglim '$zeroa)  '$minf)
-		       ((eq arglim '$zerob)  '$infinity)
-                       (t (let ((dir (behavior (cadr expr) var val)))
-			    (cond ((equal dir 1) '$minf)
-				  ((equal dir -1) '$infinity)
-				  (t (throw 'limit t))))))
-		 (cond ((equalp arglim 1)
-			(let ((dir (behavior (cadr expr) var val)))
-			  (if (equal dir 1) '$zeroa 0)))
-		       (t  ;; Call simplifier to get value at the limit of the argument. 
-		         (simplify `((%log) ,real-lim)))))))
+	   (simplify `((%log) ,arglim)))
 	  (t	   ;; argument is complex.
 	   (destructuring-bind (rp . ip)
                (trisplit expr)

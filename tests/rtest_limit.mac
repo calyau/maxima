@@ -348,6 +348,15 @@ limit(log(-1+x*%i), x, 0, minus);
 limit((log(y+h)-log(y))/h,h,0,plus);
 1/y;
 
+/* Bug 3587 */
+limit(log(3-sqrt(x)),x,9,minus);
+minf;
+
+/* Bug 3589 */
+limit((sqrt(x)-2)*log(1-sqrt(x)/2),x,4,minus);
+0;
+
+
 /* limit of incomplete gamma */
 /* function simplim%gamma_incomplete in gamma.lisp */
 
