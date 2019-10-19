@@ -33,7 +33,7 @@
 
 
 (defun write-font-type ()
-   (if (and (string= (get-option '$font) "") (not (eq (get-option '$font_size) 10)))
+   (if (and (string= (get-option '$font) "") (not (eql (get-option '$font_size) 10)))
      (mwarning "Cannot set the gnuplot font size without a font name."))
 
    (if (or (eq (get-option '$font) nil) (string= (get-option '$font) ""))

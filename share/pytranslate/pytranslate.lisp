@@ -79,7 +79,7 @@
   `(funcall
     (element-array ,*maxima-function-dictionary-name*
 		   (string
-		    ,(cond ((eq (list-length (cddr form)) 1) "plot2d")
+		    ,(cond ((eql (list-length (cddr form)) 1) "plot2d")
 			   (t "plot3d"))))
     ,(maxima-to-ir (cadr form))
     ,@(mapcar
@@ -178,7 +178,7 @@
 						     (t x)))
 					     (cdadr form))
 					    *symbols-directly-convert*)))
-    (cond ((eq (list-length (cddr form)) 1)
+    (cond ((eql (list-length (cddr form)) 1)
 	   `(lambda
 		,(let ((func-args (mapcar #'func-arg-to-ir (cdadr form))))
 		   (append func-args
@@ -739,7 +739,7 @@
 	   (cdr form))))
 
 (defun num-to-python (form indentation-level)
-  (cond ((eq 0 (clast form)) (ir-to-python (cadr form)))
+  (cond ((eql 0 (clast form)) (ir-to-python (cadr form)))
 	(t "1j")))
 
 ;;; Function to display the internal Maxima form

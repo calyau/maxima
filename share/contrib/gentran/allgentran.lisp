@@ -1302,7 +1302,7 @@
 	 (let ((var (cadr exp)) (pow (caddr exp)))
 	   (cond ((eq var '$%e) (list 'exp (franzexp pow 3 context))) ;;rjf --mds double-float numbers in exponentials
 	    
-	    ((or (eq pow -1)
+	    ((or (eql pow -1)
 			 (and (listp pow)
 			      (eq (caar pow) 'mminus)
 			      (onep (cadr pow))))
