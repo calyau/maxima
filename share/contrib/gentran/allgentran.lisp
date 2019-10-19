@@ -255,21 +255,21 @@
   (prog (c)
 	(setq c (procfortcomm))
 	(loop while (not (eq c '$eof$)) do  ;;changed, rjf
-	       (cond ((eq c *cr*)
+	       (cond ((eql c *cr*)
 		      (progn (pprin2 *cr*)
 			     (setq c (procfortcomm))))
-                     ((eq c #\<)
+                     ((eql c #\<)
 		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eq c #\<)
+		      (cond ((eql c #\<)
 			     (setq c (procactive)))
 			    (t
 			     (pprin2 #\<)
 			     (pprin2 c)
 			     (setq c (read-char nil nil '$eof$)))))
 
-                      ((eq c #\>)
+                      ((eql c #\>)
 		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eq c #\>)
+		      (cond ((eql c #\>)
 			     (setq c '$eof$)) ;;-mds terminate file processing if >> found in "passive" section (consistent Macsyma 2.4)
 			    (t
 			     (pprin2 #\>)
@@ -293,7 +293,7 @@
        c)
       (pprin2 c)
       (loop (setq c (read-char (cdr *currin*) nil '$eof$))
-	    (cond ((eq c #\Newline) (pprin2 c) (return nil))
+	    (cond ((eql c #\Newline) (pprin2 c) (return nil))
 		  ((eq c '$eof$) (pprin2 #\Newline) (return c))
 		  (t (pprin2 c))))))
 
@@ -307,17 +307,17 @@
 	(loop while (not (eq c '$eof$)) do
 	       (cond ((eq c sharpsign)
 		      (setq c (procratcomm)))
-                     ((eq c #\<)
+                     ((eql c #\<)
 		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eq c #\<)
+		      (cond ((eql c #\<)
 			     (setq c (procactive)))
 			    (t
 			     (pprin2 '<)
 			     (pprin2 c)
 			     (setq c (read-char nil nil '$eof$)))))
-                      ((eq c #\>)
+                      ((eql c #\>)
 		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eq c #\>)
+		      (cond ((eql c #\>)
 			     (setq c '$eof$))
 			    (t
 			     (pprin2 #\>)
@@ -331,7 +331,7 @@
   ; # ... <cr> ;
   (prog (c)
 	(pprin2 sharpsign)
-	(loop while (not (eq (setq c (read-char nil nil '$eof$)) *cr*)) do
+	(loop while (not (eql (setq c (read-char nil nil '$eof$)) *cr*)) do
 	       (pprin2 c))
 	(pprin2 *cr*)
 	(return (read-char nil nil '$eof$))))
@@ -344,20 +344,20 @@
   (prog (c)
 	(setq c (read-char nil nil '$eof$))
 	(loop while (not (eq c '$eof$)) do
-	       (cond ((eq c *slash*)
+	       (cond ((eql c *slash*)
 		      (setq c (procccomm)))
-                     ((eq c #\<)
+                     ((eql c #\<)
 		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eq c #\<)
+		      (cond ((eql c #\<)
 			     (setq c (procactive)))
 			    (t
 			     (pprin2 #\<)
 			     (pprin2 c)
 			     (setq c (read-char nil nil '$eof$)))))
 
-                     ((eq c #\>)
+                     ((eql c #\>)
 		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eq c #\>)
+		      (cond ((eql c #\>)
 			     (setq c '$eof$))
 			    (t
 			     (pprin2 #\>)
@@ -372,15 +372,15 @@
   (prog (c)
 	(pprin2 *slash*)
 	(setq c (read-char nil nil '$eof$))
-	(cond ((eq c #\*)
+	(cond ((eql c #\*)
 	       (progn (pprin2 c)
 		      (setq c (read-char nil nil '$eof$))
-		      (repeat (progn (loop while (not (eq c #\*)) do
+		      (repeat (progn (loop while (not (eql c #\*)) do
 					    (progn (pprin2 c)
 						   (setq c (read-char nil nil '$eof$))))
 				     (pprin2 c)
 				     (setq c (read-char nil nil '$eof$)))
-			      (eq c *slash*))
+			      (eql c *slash*))
 		      (pprin2 c)
 		      (setq c (read-char nil nil '$eof$)))))
 	(return c)))
@@ -747,7 +747,7 @@
 	(setq $gentranlang a))
 
 (defun imptype(var)
-   (cond ((member (car (exploden var)) '(#\i #\j #\k #\l #\m #\n #\I #\J #\K #\L #\M #\N) :test #'eq) 'integer) ;; fixed old char's for implicit --mds
+   (cond ((member (car (exploden var)) '(#\i #\j #\k #\l #\m #\n #\I #\J #\K #\L #\M #\N)) 'integer) ;; fixed old char's for implicit --mds
 	 (t 'real)))
 
 (defun arrayeltp (exp)
@@ -1197,7 +1197,7 @@
 
 
 (defun pprin2 (arg)
-  (if (eq arg *cr*)
+  (if (eql arg *cr*)
       (foreach c in *outchanl* do (terpri c))
       (foreach c in *outchanl* do (princ arg c))))
 
