@@ -623,10 +623,9 @@ APPLY means like APPLY.")
   ;; Also: think about calling the simplifier here.
   (cond ((atom form)
 	 (cond ((symbolp form)
-        ;; FOLLOWING CODE APPEARS TO BE BROKEN; NOT SURE WHAT WAS THE INTENT.
-        ;; FOLLOWING CODE ALWAYS RETURNS SYMBOL ITSELF EVEN WHEN '$CONSTANTP IS A PROPERTY
-        ;; IS IT SUPPOSED TO FETCH A DECLARED CONSTANT VALUE ??
-        ;; JUST LEAVE IT BE FOR NOW; DO NOT TRY TO REVISE WITH KINDP
+		;; If this symbol has the constant property, then
+		;; use its assigned constant value in place of the
+		;; symbol.
 		(let ((v (getl (mget form '$props) '($constant))))
 		  (if v (cadr v) form)))
 	       (t form)))
