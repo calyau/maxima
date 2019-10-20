@@ -1654,11 +1654,12 @@ wrapper for this."
 (defmfun mgetl (atom inds)
   (let ((props (get atom 'mprops))) (and props (getl props inds))))
 
-(defmfun $declare_index_properties (&rest a)
-  (when (oddp (length a))
-    (merror (intl:gettext "declare_index_properties: number of arguments must be even; found: ~M") `((mlist) ,@a)))
-  (do ((l a (cddr l))) ((null l) '$done)
-    (declare-index-properties-1 (first l) (second l))))
+(defmspec $declare_index_properties (form)
+  (let ((a (rest form)))
+    (when (oddp (length a))
+      (merror (intl:gettext "declare_index_properties: number of arguments must be even; found: ~M") `((mlist) ,@a)))
+    (do ((l a (cddr l))) ((null l) '$done)
+      (declare-index-properties-1 (first l) (second l)))))
 
 (defun declare-index-properties-1 (x l)
   (if (not (or (symbolp x) (and ($listp x) (every #'symbolp (cdr x)))))
@@ -1671,6 +1672,18 @@ wrapper for this."
   (if ($listp x)
     (mapcar #'(lambda (x1) (mputprop x1 (cdr l) 'display-indices)) (cdr x))
     (mputprop x (cdr l) 'display-indices)))
+
+(defmfun $get_index_properties (a)
+  (when (not (symbolp a))
+    (merror (intl:gettext "get_index_properties: argument must be a symbol; found: ~M") a))
+  `((mlist) ,@(mget a 'display-indices)))
+
+(defmspec $remove_index_properties (form)
+  (let ((a (rest form)))
+    (when (not (every #'symbolp a))
+      (merror (intl:gettext "remove_index_properties: every argument must be a symbol; found: ~M") a))
+    (do ((l a (cdr l))) ((null l) '$done)
+      (mremprop (first l) 'display-indices))))
 
 ;;; Define $matrix so that apply(matrix,...) does not need to use Lisp
 ;;; apply -- in GCL, apply is limited to 63 arguments.
