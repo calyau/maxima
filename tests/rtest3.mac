@@ -480,3 +480,141 @@ map (reset, myvals);
 
 ev (myvals);
 [100000, 1, 3, 4, 4, 79];
+
+declare_index_properties
+ (A, [],
+  B, [postsubscript],
+  C, [postsubscript, postsuperscript],
+  D, [postsubscript, postsuperscript, presuperscript],
+  E, [postsubscript, postsuperscript, presuperscript, presubscript],
+  F, [postsubscript, postsuperscript, presuperscript, presubscript,
+      postsubscript, postsuperscript, presuperscript, presubscript],
+  G, [postsubscript, postsuperscript, presuperscript, presubscript,
+      postsuperscript, presubscript]);
+done;
+
+map (get_index_properties, '[A, B, C, D, E, F, G]);
+[[],
+ [postsubscript],
+ [postsubscript, postsuperscript],
+ [postsubscript, postsuperscript, presuperscript],
+ [postsubscript, postsuperscript, presuperscript, presubscript],
+ [postsubscript, postsuperscript, presuperscript, presubscript,
+  postsubscript, postsuperscript, presuperscript, presubscript],
+ [postsubscript, postsuperscript, presuperscript, presubscript,
+  postsuperscript, presubscript]];
+
+kill (a, b, c, d, w, x, y, z);
+done;
+
+/* This business about capturing the output to a string and comparing that
+ * is a little fragile in the sense that changing invisible stuff (trailing
+ * spaces, newline character) can make these tests fail.
+ * But the pretty printer code changes very infrequently,
+ * and also I believe that these tests should work the same on Windows as
+ * on Unix-like platforms, because TERPRI (according to CLHS) just outputs #\Newline.
+ * Changing this file from NL to CR-NL line endings will presumably
+ * make these tests fail.
+ */
+
+block ([display2d: true, S: make_string_output_stream ()],
+  with_stdout (S, ?terpri (), print (A[x])),
+  get_output_stream_string (S));
+"
+A  
+ x
+";
+
+block ([display2d: true, S: make_string_output_stream ()],
+  with_stdout (S, ?terpri (), print (B[x])),
+  get_output_stream_string (S));
+"
+B  
+ x
+";
+
+block ([display2d: true, S: make_string_output_stream ()],
+  with_stdout (S, ?terpri (), print (C[x, y])),
+  get_output_stream_string (S));
+"
+ y
+C  
+ x
+";
+
+block ([display2d: true, S: make_string_output_stream ()],
+  with_stdout (S, ?terpri (), print (D[x, y, z])),
+  get_output_stream_string (S));
+"
+z y
+ D  
+  x
+";
+
+block ([display2d: true, S: make_string_output_stream ()],
+  with_stdout (S, ?terpri (), print (E[w, x, y, z])),
+  get_output_stream_string (S));
+"
+y x
+ E  
+z w
+";
+
+block ([display2d: true, S: make_string_output_stream ()],
+  with_stdout (S, ?terpri (), print (F[a, b, c, d, w, x, y, z])),
+  get_output_stream_string (S));
+"
+c, y b, x
+    F     
+d, z a, w
+";
+
+block ([display2d: true, S: make_string_output_stream ()],
+  with_stdout (S, ?terpri (), print (G[a, b, c, d, w, x])),
+  get_output_stream_string (S));
+"
+   c b, w
+    G     
+d, x a
+";
+
+block ([display2d: true, S: make_string_output_stream ()],
+  with_stdout (S, ?terpri (), print (G[a, B[a], C[a, b], D[a, b, c], E[a, b, c, d], F[a, b, c, d, w, x, y, z]])),
+  get_output_stream_string (S));
+"
+             b     c b
+            C  B ,  E
+             a  a  d a
+              G        
+c b  c, y b, x a
+ D ,     F
+  a  d, z a, w
+";
+
+block ([display2d: true, S: make_string_output_stream ()],
+  with_stdout (S, ?terpri (), print (sqrt (G[a, b, c, d, w, x]))),
+  get_output_stream_string (S));
+"
+        c b, w
+sqrt(    G    ) 
+     d, x a
+";
+
+block ([display2d: true, S: make_string_output_stream ()],
+  with_stdout (S, ?terpri (), print ((1 - G[a, b, c, d, w, x])/E[1, 1/2, 2/3, 17/29])),
+  get_output_stream_string (S));
+"
+       c b, w
+1 -     G
+    d, x a
+------------- 
+    2/3 1/2
+       E
+  17/29 1
+";
+
+remove_index_properties (A, B, C, D, E, F, G);
+done;
+
+map (get_index_properties, '[A, B, C, D, E, F, G]);
+[[], [], [], [], [], [], []];

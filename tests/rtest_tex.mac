@@ -19,6 +19,9 @@ tex_text (s) := block ([linel: 2^16], print (s));
 (prefix ("fooprefix"), infix ("implies"), infix ("iff"), nary ("foonary"),
  postfix ("foopostfix"), matchfix ("<<", ">>"), nofix ("foonofix"));
 
+infix ("-->");
+texput ("-->", "\\rightarrow", infix);
+
 '((aa or bb) and not (cc or dd));
 
 with_stdout ("tmp-rtest-1.tex",
@@ -56,6 +59,27 @@ with_stdout ("tmp-rtest-1.tex",
     tex ([%A_1_B_2_C_3, %A_1_B_2_C[3]]),
     tex_text ("Expect subscripted ``\\%gamma'' to be displayed as math symbol."),
     tex ([%gamma3, %gamma_3, %gamma[3]]),
+
+    tex_text ("\\subsubsection*{Pre- and post- superscripts and subscripts}"),
+    tex_text ("Without index properties:"),
+    tex (x[aa,bb,cc,dd]),
+    tex (x[a + 1,b - 1,2*c,d^2]),
+    tex ((1 - x[a + 1,b - 1,2*c,d^2])/(1 + x[a + 1,b - 1,2*c,d^2])),
+    tex (sqrt (x[a + 1,b - 1,2*c,d^2])),
+    texput (U, "\\mathrm{U}"),
+    texput (Th, "\\mathrm{Th}"),
+    texput (Pa, "\\mathrm{Pa}"),
+    tex (U[92,238] --> Th[90,234] --> Pa[234,91] --> U[234,92]),
+    tex_text ("With index properties:"),
+    declare_index_properties (x, [postsubscript, postsuperscript, presuperscript, presubscript]),
+    tex (x[aa,bb,cc,dd]),
+    tex (x[a + 1,b - 1,2*c,d^2]),
+    tex ((1 - x[a + 1,b - 1,2*c,d^2])/(1 + x[a + 1,b - 1,2*c,d^2])),
+    tex (sqrt (x[a + 1,b - 1,2*c,d^2])),
+    declare_index_properties (U, [presubscript, presuperscript]),
+    declare_index_properties (Th, [presubscript, presuperscript]),
+    declare_index_properties (Pa, [presubscript, presuperscript]),
+    tex (U[92,238] --> Th[90,234] --> Pa[234,91] --> U[234,92]),
 
     tex_text ("\\subsubsection*{Gamma functions and variables}"),
     tex_text ("Variables: \\%gamma (Euler-Mascheroni number), Gamma, nounify(gamma), verbify(gamma):"),

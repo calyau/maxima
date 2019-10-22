@@ -1129,6 +1129,170 @@ Example:
 @c @end defvar
 
 @c -----------------------------------------------------------------------------
+@anchor{declare_index_properties}
+@deffn {Function} declare_index_properties (@var{a}, [@var{p_1}, @var{p_2}, @var{p_3}, ...])
+@deffnx {Function} declare_index_properties ([@var{a}, @var{b}, @var{c}, ...], [@var{p_1}, @var{p_2}, @var{p_3}, ...])
+@deffnx {Symbol} postsubscript
+@deffnx {Symbol} postsuperscript
+@deffnx {Symbol} presuperscript
+@deffnx {Symbol} presubscript
+
+Declares the properties of indices applied to the symbol @var{a}
+or each of the of symbols @var{a}, @var{b}, @var{c}, ....
+If multiple symbols are given,
+the whole list of properties applies to each symbol.
+
+Given a symbol with indices, @code{@var{a}[@var{i_1}, @var{i_2}, @var{i_3}, ...]},
+the @code{k}-th property @var{p_k} applies to the @code{k}-th index @var{i_k}.
+There may be any number of index properties, in any order. 
+
+Each property @var{p_k} must one of these four recognized properties:
+@code{postsubscript}, @code{postsuperscript}, @code{presuperscript}, or @code{presubscript},
+to denote indices which are displayed, respectively,
+to the right and below, to the right and above, to the left and above, or to the left and below.
+
+Index properties apply only to the 2-dimensional display of indexed variables
+(i.e., when @code{display2d} is @code{true})
+and TeX output via @code{tex}.
+Otherwise, index properties are ignored.
+Index properties do not change the input of indexed variables,
+do not change the algebraic properties of indexed variables,
+and do not change the 1-dimensional display of indexed variables.
+
+@code{declare_index_properties} quotes (does not evaluate) its arguments.
+
+@code{remove_index_properties} removes index properties.
+@code{kill} also removes index properties (and all other properties).
+
+@code{get_index_properties} retrieves index properties.
+
+Examples:
+
+Given a symbol with indices, @code{@var{a}[@var{i_1}, @var{i_2}, @var{i_3}, ...]},
+the @code{k}-th property @var{p_k} applies to the @code{k}-th index @var{i_k}.
+There may be any number of index properties, in any order. 
+
+@c ===beg===
+@c declare_index_properties (A, [presubscript, postsubscript]);
+@c declare_index_properties (B, [postsuperscript, postsuperscript, presuperscript]);
+@c declare_index_properties (C, [postsuperscript, presubscript, presubscript, presuperscript]);
+@c A[w, x];
+@c B[w, x, y];
+@c C[w, x, y, z];
+@c ===end===
+@example
+@group
+(%i1) declare_index_properties (A, [presubscript, postsubscript]);
+(%o1)                         done
+@end group
+@group
+(%i2) declare_index_properties (B, [postsuperscript, postsuperscript, presuperscript]);
+(%o2)                         done
+@end group
+@group
+(%i3) declare_index_properties (C, [postsuperscript, presubscript, presubscript, presuperscript]);
+(%o3)                         done
+@end group
+@group
+(%i4) A[w, x];
+(%o4)                           A
+                               w x
+@end group
+@group
+(%i5) B[w, x, y];
+                             y w, x
+(%o5)                         B
+@end group
+@group
+(%i6) C[w, x, y, z];
+                                z w
+(%o6)                            C
+                             x, y
+@end group
+@end example
+
+Index properties apply only to the 2-dimensional display of indexed variables and TeX output.
+Otherwise, index properties are ignored.
+
+@c ===beg===
+@c declare_index_properties (A, [presubscript, postsubscript]);
+@c A[w, x];
+@c tex (A[w, x]);
+@c display2d: false $
+@c A[w, x];
+@c display2d: true $
+@c grind (A[w, x]);
+@c stringdisp: true $
+@c string (A[w, x]);
+@c ===end===
+@example
+@group
+(%i1) declare_index_properties (A, [presubscript, postsubscript]);
+(%o1)                         done
+@end group
+@group
+(%i2) A[w, x];
+(%o2)                           A
+                               w x
+@end group
+@group
+(%i3) tex (A[w, x]);
+$$@{@}_@{w@}A_@{x@}$$
+(%o3)                         false
+@end group
+@group
+(%i4) display2d: false $
+(%i5) A[w, x];
+@end group
+@group
+(%o5) A[w,x]
+(%i6) display2d: true $
+@end group
+@group
+(%i7) grind (A[w, x]);
+A[w,x]$
+(%o7)                         done
+@end group
+@group
+(%i8) stringdisp: true $
+(%i9) string (A[w, x]);
+(%o9)                       "A[w,x]"
+@end group
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{get_index_properties}
+@deffn {Function} get_index_properties (@var{a})
+
+Returns the properties for @var{a} established by @code{declare_index_properties}.
+
+See also @mrefdot{remove_index_properties}
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{remove_index_properties}
+@deffn {Function} remove_index_properties (@var{a}, @var{b}, @var{c}, ...)
+
+Removes the properties established by @code{declare_index_properties}.
+All index properties are removed from each symbol @var{a}, @var{b}, @var{c}, ....
+
+@code{remove_index_properties} quotes (does not evaluate) its arguments.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{disp}
 @deffn {Function} disp (@var{expr_1}, @var{expr_2}, @dots{})
 

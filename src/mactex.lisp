@@ -344,17 +344,45 @@
   (tex x (append l '("\\left(")) (cons "\\right)" r) 'mparen 'mparen))
 
 (defun tex-array (x l r)
+  (tex-array-display-indices x l r))
+
+(defun tex-array-display-indices (x l r)
+  (let*
+    ((base-symbol (caar x))
+     (indices (cdr x))
+     (display-indices (safe-mget base-symbol 'display-indices)))
+    (if (or (not display-indices) (not (= (length display-indices) (length indices))))
+      ;; Ignore DISPLAY-INDICES if it's empty, or nonempty and not the same size as INDICES.
+      (tex-array-simple x l r)
+      (let
+        ((pre-subscripts (extract-indices indices display-indices '$presubscript))
+         (pre-superscripts (extract-indices indices display-indices '$presuperscript))
+         (post-subscripts (extract-indices indices display-indices '$postsubscript))
+         (post-superscripts (extract-indices indices display-indices '$postsuperscript)))
+        (when (or pre-subscripts pre-superscripts)
+          (setq l (append l
+                          (list "{}")
+                          (if pre-subscripts (cons "_{" (tex-list pre-subscripts nil (list "}") ",")))
+                          (if pre-superscripts (cons "^{" (tex-list pre-superscripts nil (list "}") ","))))))
+        (when (or post-subscripts post-superscripts)
+          (setq r (append (if post-subscripts (cons "_{" (tex-list post-subscripts nil (list "}") ",")))
+                          (if post-superscripts  (cons "^{" (tex-list post-superscripts nil (list "}") ","))) r)))
+        (tex-atom base-symbol l r)))))
+
+(defun tex-array-simple (x l r)
   (let ((f))
+    ;; I believe this test always fails; TEX-MQAPPLY calls TEX-ARRAY w/ X = second argument of MQAPPLY.
     (if (eq 'mqapply (caar x))
-	(setq f (cadr x)
-	      x (cdr x)
-	      l (tex f (append l (list "\\left(")) (list "\\right)") 'mparen 'mparen))
-	(setq f (caar x)
-	      l (tex f l nil lop 'mfunction)))
+        (setq f (cadr x)
+              x (cdr x)
+              l (tex f (append l (list "\\left(")) (list "\\right)") 'mparen 'mparen))
+        (setq f (caar x)
+              l (tex f l nil lop 'mfunction)))
     (setq
      r (nconc (tex-list (cdr x) nil (list "}") ",") r))
     (nconc l (list "_{") r  )))
 
+;;
 ;; we could patch this so sin x rather than sin(x), but instead we made sin a prefix
 ;; operator
 

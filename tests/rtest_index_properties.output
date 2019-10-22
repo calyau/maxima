@@ -1,0 +1,394 @@
+;; Loading file /home/robert/.clisprc.lisp ...
+;;  Loading file /home/robert/quicklisp/setup.lisp ...
+;;   Loading file /home/robert/quicklisp/cache/asdf-fasls/06hkyy/asdf.fas ...
+;;   Loaded file /home/robert/quicklisp/cache/asdf-fasls/06hkyy/asdf.fas
+;;  Loaded file /home/robert/quicklisp/setup.lisp
+;; Loaded file /home/robert/.clisprc.lisp
+Maxima branch_5_37_base_255_g6ea73f3 http://maxima.sourceforge.net
+using Lisp CLISP 2.49 (2010-07-07)
+Distributed under the GNU Public License. See the file COPYING.
+Dedicated to the memory of William Schelter.
+The function bug_report() provides bug reporting information.
+(%i1) batch("tests/rtest_index_properties.mac")
+
+read and interpret file: /home/robert/maxima/maxima-code/tests/rtest_index_properties.mac
+(%i2) linel:65
+(%o2)                          65
+(%i3) declare_index_properties(U,[presubscript,presuperscript])
+(%o3)                         done
+(%i4) U[92,235]
+                              235
+(%o4)                            U
+                               92
+(%i5) declare_index_properties(W,[presubscript])
+(%o5)                         done
+(%i6) W[a]
+(%o6)                           W
+                               a
+(%i7) sqrt(W[a])
+(%o7)                       sqrt( W)
+                                 a
+(%i8) 1/(1+sqrt(W[a]))
+                               1
+(%o8)                     ------------
+                          sqrt( W) + 1
+                               a
+(%i9) (1-sqrt(W[a]))/(1+W[a]^2)
+                          1 - sqrt( W)
+                                   a
+(%o9)                     ------------
+                               2
+                           ( W)  + 1
+                            a
+(%i10) declare_index_properties(X,[presuperscript])
+(%o10)                        done
+(%i11) X[a]
+                               a
+(%o11)                          X
+(%i12) sqrt(X[a])
+                                 a
+(%o12)                      sqrt( X)
+(%i13) 1/(1+sqrt(X[a]))
+                               1
+(%o13)                    ------------
+                               a
+                          sqrt( X) + 1
+(%i14) (1-sqrt(X[a]))/(1+X[a]^2)
+                                   a
+                          1 - sqrt( X)
+(%o14)                    ------------
+                            a  2
+                           ( X)  + 1
+(%i15) declare_index_properties(Y,[postsuperscript])
+(%o15)                        done
+(%i16) Y[a]
+                                a
+(%o16)                         Y
+(%i17) sqrt(Y[a])
+                                  a
+(%o17)                      sqrt(Y )
+(%i18) 1/(1+sqrt(Y[a]))
+                               1
+(%o18)                    ------------
+                                a
+                          sqrt(Y ) + 1
+(%i19) (1-sqrt(Y[a]))/(1+Y[a]^2)
+                                    a
+                          1 - sqrt(Y )
+(%o19)                    ------------
+                             a 2
+                           (Y )  + 1
+(%i20) declare_index_properties(Z,[postsubscript])
+(%o20)                        done
+(%i21) Z[a]
+(%o21)                         Z
+                                a
+(%i22) sqrt(Z[a])
+(%o22)                      sqrt(Z )
+                                  a
+(%i23) 1/(1+sqrt(Z[a]))
+                               1
+(%o23)                    ------------
+                          sqrt(Z ) + 1
+                                a
+(%i24) (1-sqrt(Z[a]))/(1+Z[a]^2)
+                          1 - sqrt(Z )
+                                    a
+(%o24)                    ------------
+                               2
+                           (Z )  + 1
+                             a
+(%i25) foo[a,b,c,d]
+(%o25)                    foo
+                             a, b, c, d
+(%i26) declare_index_properties(foo,
+                                [presubscript,presuperscript,
+                                 postsuperscript,postsubscript])
+(%o26)                        done
+(%i27) foo[a,b,c,d]
+                              b   c
+(%o27)                         foo
+                              a   d
+(%i28) foo[a,b,c,d]^n
+                             b   c n
+(%o28)                      ( foo )
+                             a   d
+(%i29) F(foo[a,bbb,cc,d])^n
+                           n bbb   cc
+(%o29)                    F (   foo  )
+                               a   d
+(%i30) F(foo[aaa,bb,cc,ddd])^n
+                           n  bb   cc
+(%o30)                    F (   foo   )
+                             aaa   ddd
+(%i31) 1/(1-foo[a,b,c,d])
+                                1
+(%o31)                      ---------
+                                b   c
+                            1 -  foo
+                                a   d
+(%i32) foo[aa,b,c,dd]/sqrt(1+foo[x,yy,zz,w])
+                              b   c
+                               foo
+                             aa   dd
+(%o32)                  -----------------
+                             yy   zz
+                        sqrt(  foo   + 1)
+                              x   w
+(%i33) foo[a,b,c,d]+foo[w,x,y,z]+foo[1,2,3,4]
+                      x   y   b   c   2   3
+(%o33)                 foo  +  foo  +  foo
+                      w   z   a   d   1   4
+(%i34) foo[aaaaa,b,c,d]
+                                b   c
+(%o34)                           foo
+                            aaaaa   d
+(%i35) foo[a,b,c,ddddd]
+                            b   c
+(%o35)                       foo
+                            a   ddddd
+(%i36) foo[a,b,ccccc,d]
+                            b   ccccc
+(%o36)                       foo
+                            a   d
+(%i37) foo[a,bbbbb,c,d]
+                            bbbbb   c
+(%o37)                           foo
+                                a   d
+(%i38) foo[a,b+x+1,c^2,d[k]]
+                                      2
+                         x + b + 1   c
+(%o38)                            foo
+                                 a   d
+                                      k
+(%i39) bar[a,b,c,d]
+(%o39)                    bar
+                             a, b, c, d
+(%i40) declare_index_properties(bar,
+                                [presubscript,presuperscript,
+                                 presubscript,presuperscript])
+(%o40)                        done
+(%i41) bar[a,b,c,d]
+                             b, d
+(%o41)                           bar
+                             a, c
+(%i42) bar[a,b,c,d]^n
+                            b, d    n
+(%o42)                     (    bar)
+                            a, c
+(%i43) F(bar[a,bbb,cc,d])^n
+                           n bbb, d
+(%o43)                    F (      bar)
+                              a, cc
+(%i44) F(bar[aaa,bb,cc,ddd])^n
+                          n bb, ddd
+(%o44)                   F (       bar)
+                            aaa, cc
+(%i45) 1/(1-bar[a,b,c,d])
+                                1
+(%o45)                     -----------
+                               b, d
+                           1 -     bar
+                               a, c
+(%i46) bar[aa,b,c,dd]/sqrt(1+bar[x,yy,zz,w])
+                            b, dd
+                                 bar
+                            aa, c
+(%o46)                 ------------------
+                            yy, w
+                       sqrt(     bar + 1)
+                            x, zz
+(%i47) bar[a,b,c,d]+bar[w,x,y,z]+bar[1,2,3,4]
+                   x, z      b, d      2, 4
+(%o47)                 bar +     bar +     bar
+                   w, y      a, c      1, 3
+(%i48) bar[aaaaa,b,c,d]
+                               b, d
+(%o48)                             bar
+                           aaaaa, c
+(%i49) bar[a,b,c,ddddd]
+                           b, ddddd
+(%o49)                             bar
+                               a, c
+(%i50) bar[a,b,ccccc,d]
+                               b, d
+(%o50)                             bar
+                           a, ccccc
+(%i51) bar[a,bbbbb,c,d]
+                           bbbbb, d
+(%o51)                             bar
+                               a, c
+(%i52) bar[a,b+x+1,c^2,d[k]]
+                        x + b + 1, d
+                                    k
+(%o52)                               bar
+                                    2
+                                a, c
+(%i53) baz[a,b,c,d]
+(%o53)                    baz
+                             a, b, c, d
+(%i54) declare_index_properties(baz,
+                                [postsubscript,postsuperscript,
+                                 postsubscript,postsuperscript])
+(%o54)                        done
+(%i55) baz[a,b,c,d]
+                                b, d
+(%o55)                       baz
+                                a, c
+(%i56) baz[a,b,c,d]^n
+                               b, d n
+(%o56)                     (baz    )
+                               a, c
+(%i57) F(baz[a,bbb,cc,d])^n
+                           n    bbb, d
+(%o57)                    F (baz      )
+                                a, cc
+(%i58) F(baz[aaa,bb,cc,ddd])^n
+                          n    bb, ddd
+(%o58)                   F (baz       )
+                               aaa, cc
+(%i59) 1/(1-baz[a,b,c,d])
+                                1
+(%o59)                     -----------
+                                  b, d
+                           1 - baz
+                                  a, c
+(%i60) baz[aa,b,c,dd]/sqrt(1+baz[x,yy,zz,w])
+                               b, dd
+                            baz
+                               aa, c
+(%o60)                 ------------------
+                               yy, w
+                       sqrt(baz      + 1)
+                               x, zz
+(%i61) baz[a,b,c,d]+baz[w,x,y,z]+baz[1,2,3,4]
+                      x, z      b, d      2, 4
+(%o61)             baz     + baz     + baz
+                      w, y      a, c      1, 3
+(%i62) baz[aaaaa,b,c,d]
+                              b, d
+(%o62)                     baz
+                              aaaaa, c
+(%i63) baz[a,b,c,ddddd]
+                              b, ddddd
+(%o63)                     baz
+                              a, c
+(%i64) baz[a,b,ccccc,d]
+                              b, d
+(%o64)                     baz
+                              a, ccccc
+(%i65) baz[a,bbbbb,c,d]
+                              bbbbb, d
+(%o65)                     baz
+                              a, c
+(%i66) baz[a,b+x+1,c^2,d[k]]
+                           x + b + 1, d
+                                       k
+(%o66)                  baz
+                               2
+                           a, c
+(%i67) quux[a,b,c,d]
+(%o67)                   quux
+                             a, b, c, d
+(%i68) declare_index_properties(quux,
+                                [presubscript,presubscript,
+                                 postsubscript,postsubscript])
+(%o68)                        done
+(%i69) quux[a,b,c,d]
+(%o69)                        quux
+                          a, b    c, d
+(%i70) quux[a,b,c,d]^n
+                                       n
+(%o70)                   (    quux    )
+                          a, b    c, d
+(%i71) F(quux[a,bbb,cc,d])^n
+                        n
+(%o71)                 F (      quux     )
+                          a, bbb    cc, d
+(%i72) F(quux[aaa,bb,cc,ddd])^n
+                      n
+(%o72)               F (       quux       )
+                        aaa, bb    cc, ddd
+(%i73) 1/(1-quux[a,b,c,d])
+                               1
+(%o73)                  ----------------
+                        1 -     quux
+                            a, b    c, d
+(%i74) quux[aa,b,c,dd]/sqrt(1+quux[x,yy,zz,w])
+                              quux
+                         aa, b    c, dd
+(%o74)              ------------------------
+                    sqrt(     quux      + 1)
+                         x, yy    zz, w
+(%i75) quux[a,b,c,d]+quux[w,x,y,z]+quux[1,2,3,4]
+(%o75)         quux     +     quux     +     quux
+           w, x    y, z   a, b    c, d   1, 2    3, 4
+(%i76) quux[aaaaa,b,c,d]
+(%o76)                          quux
+                        aaaaa, b    c, d
+(%i77) quux[a,b,c,ddddd]
+(%o77)                      quux
+                        a, b    c, ddddd
+(%i78) quux[a,b,ccccc,d]
+(%o78)                      quux
+                        a, b    ccccc, d
+(%i79) quux[a,bbbbb,c,d]
+(%o79)                          quux
+                        a, bbbbb    c, d
+(%i80) quux[a,b+x+1,c^2,d[k]]
+(%o80)                           quux
+                     a, x + b + 1     2
+                                     c , d
+                                          k
+(%i81) blart[a,b,c,d]
+(%o81)                   blart
+                              a, b, c, d
+(%i82) declare_index_properties(blart,
+                                [presuperscript,presuperscript,
+                                 postsuperscript,
+                                 postsuperscript])
+(%o82)                        done
+(%i83) blart[a,b,c,d]
+                          a, b     c, d
+(%o83)                        blart
+(%i84) blart[a,b,c,d]^n
+                         a, b     c, d n
+(%o84)                  (    blart    )
+(%i85) F(blart[a,bbb,cc,d])^n
+                       n a, bbb     cc, d
+(%o85)                F (      blart     )
+(%i86) F(blart[aaa,bb,cc,ddd])^n
+                      n aaa, bb     cc, ddd
+(%o86)               F (       blart       )
+(%i87) 1/(1-blart[a,b,c,d])
+                                1
+(%o87)                  -----------------
+                            a, b     c, d
+                        1 -     blart
+(%i88) blart[aa,b,c,dd]/sqrt(1+blart[x,yy,zz,w])
+                         aa, b     c, dd
+                              blart
+(%o88)              -------------------------
+                         x, yy     zz, w
+                    sqrt(     blart      + 1)
+(%i89) blart[a,b,c,d]+blart[w,x,y,z]+blart[1,2,3,4]
+          w, x     y, z   a, b     c, d   1, 2     3, 4
+(%o89)        blart     +     blart     +     blart
+(%i90) blart[aaaaa,b,c,d]
+                        aaaaa, b     c, d
+(%o90)                          blart
+(%i91) blart[a,b,c,ddddd]
+                        a, b     c, ddddd
+(%o91)                      blart
+(%i92) blart[a,b,ccccc,d]
+                        a, b     ccccc, d
+(%o92)                      blart
+(%i93) blart[a,bbbbb,c,d]
+                        a, bbbbb     c, d
+(%o93)                          blart
+(%i94) blart[a,b+x+1,c^2,d[k]]
+                                       2
+                                      c , d
+                     a, x + b + 1          k
+(%o94)                           blart
+(%o94)          tests/rtest_index_properties.mac

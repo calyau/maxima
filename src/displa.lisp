@@ -236,12 +236,13 @@
          (t
            (setq result
                  (append
+                   (if (and (> w11 0) (> w10 w11)) (list (list (- w10 w11) 0)))
                    (remove-if #'(lambda (l) (= (length l) 2))
                               (list
                                 (append (list (- w10) (+ h-base d11)) post-superscripts-output)
                                 (append (list 0 (- h10)) post-subscripts-output)
                                 (append (list 0 0) bas)
-                                (append (list (- w01) (+ h-base d01)) pre-superscripts-output)
+                                (append (list (if (> w00 0) (- w01) 0) (+ h-base d01)) pre-superscripts-output)
                                 (append (list (if (> w01 w00) (- w01 w00) 0) (- h00)) pre-subscripts-output)))
                    result)
                  height (+ h-base (max (+ d01 h01) (+ d11 h11)))
@@ -521,7 +522,9 @@
 	   h height
 	   d depth)
      (cond ((and (not (atom (cadr form))) (member 'array (cdaadr form) :test #'eq))
-	    (prog (sub (w2 0) (h2 0) (d2 0))
+            (if (safe-mget (caaadr form) 'display-indices)
+              (return (dimension-superscript `(,(first form) ((mprogn) ,(second form)) ,(third form)) result))
+	    (progn (prog (sub (w2 0) (h2 0) (d2 0))
 	       (setq sub (if (eq 'mqapply (caaadr form))
 			     (cdadr form) (cadr form)))
 	       (setq sub (let ((lop 'mparen) (break nil) (size 1))
@@ -536,7 +539,7 @@
 	       (setq result (cons (list (- (max w w2) w2) 0) result)
 		     width (+ width (max w w2)) height (+ h d height) depth (+ d2 h2 depth)))
 	    (update-heights height depth)
-	    (return result))
+	    (return result))))
 	   ((and (atom (caddr form))
 		 (not (atom (cadr form)))
 		 (not (safe-get (caaadr form) 'dimension))
