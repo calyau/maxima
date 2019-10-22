@@ -1,0 +1,50 @@
+(%i2) foo[a,b,c,d]
+(%o2)                            foo
+                                    a, b, c, d
+(%i3) put('foo,'([presubscript,presuperscript,postsuperscript,postsubscript]),
+          'display_indices)
+(%o3)   [presubscript, presuperscript, postsuperscript, postsubscript]
+(%i4) foo[a,b,c,d]
+                                     b   c
+(%o4)                                 foo
+                                     a   d
+(%i5) 1/(1-foo[a,b,c,d])
+                                       1
+(%o5)                              ---------
+                                       b   c
+                                   1 -  foo
+                                       a   d
+(%i6) foo[a,b,c,d]+foo[w,x,y,z]+foo[1,2,3,4]
+                             x   y   b   c   2   3
+(%o6)                         foo  +  foo  +  foo
+                             w   z   a   d   1   4
+(%i7) foo[aaaaa,b,c,d]
+                                       b   c
+(%o7)                                   foo
+                                   aaaaa   d
+(%i8) foo[a,b,c,ddddd]
+                                   b   c
+(%o8)                               foo
+                                   a   ddddd
+(%i9) foo[a,b,ccccc,d]
+                                   b   ccccc
+(%o9)                               foo
+                                   a   d
+(%i10) foo[a,bbbbb,c,d]
+                                   bbbbb   c
+(%o10)                                  foo
+                                       a   d
+(%i11) foo[a,b+x+1,c^2,d[k]]
+                                            2
+                                x + b + 1  c
+(%o11)                                   foo
+                                        a   d
+                                             k
+(%i12) put('U,'([presubscript,presuperscript]),'display_indices)
+(%o12)                  [presubscript, presuperscript]
+(%i13) U[92,235]
+                                     235
+(%o13)                                  U
+                                      92
+(%o13)            tests/displa-prepost-subsuper-scripts-input
+(%i14) 
