@@ -253,7 +253,7 @@
 (defmvar $known_index_properties '((mlist) $presubscript $presuperscript $postsubscript $postsuperscript))
 
 (defun dimension-indices (base-symbol indices)
-  (let ((display-indices (mget base-symbol 'display-indices)))
+  (let ((display-indices (safe-mget base-symbol 'display-indices)))
     (if (and (> (length display-indices) 0) (not (= (length display-indices) (length indices))))
       ;; Ignore DISPLAY-INDICES if it's nonempty and not the same size as INDICES.
       (setq display-indices nil))
@@ -272,7 +272,7 @@
         (if pre-subscripts
           (setq pre-subscripts-output
                 (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1)
-                      (separator ($get base-symbol '$display_index_separator)))
+                      (separator (safe-$get base-symbol '$display_index_separator)))
                   (dimension-list (cons '(mlist) pre-subscripts) nil separator))
                 w00 width
                 h00 height
@@ -280,7 +280,7 @@
         (if pre-superscripts
           (setq pre-superscripts-output
                 (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1)
-                      (separator ($get base-symbol '$display_index_separator)))
+                      (separator (safe-$get base-symbol '$display_index_separator)))
                   (dimension-list (cons '(mlist) pre-superscripts) nil separator))
                 w01 width
                 h01 height
@@ -288,7 +288,7 @@
         (if post-subscripts
           (setq post-subscripts-output
                 (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1)
-                      (separator ($get base-symbol '$display_index_separator)))
+                      (separator (safe-$get base-symbol '$display_index_separator)))
                   (dimension-list (cons '(mlist) post-subscripts) nil separator))
                 w10 width
                 h10 height
@@ -296,7 +296,7 @@
         (if post-superscripts
           (setq post-superscripts-output
                 (let ((lop 'mparen) (rop 'mparen) (break nil) (size 1)
-                      (separator ($get base-symbol '$display_index_separator)))
+                      (separator (safe-$get base-symbol '$display_index_separator)))
                   (dimension-list (cons '(mlist) post-superscripts) nil separator))
                 w11 width
                 h11 height
@@ -307,6 +307,9 @@
   (remove nil
           (loop for i from 0 to (length display-indices)
                 collect (if (eq (nth i display-indices) index-flag) (nth i indices)))))
+
+(defun safe-$get (x y)
+  (and (symbolp x) ($get x y)))
 
 (defun dimension-function (x result)
   (prog (fun (w 0) (h 0) (d 0))
