@@ -492,16 +492,12 @@ APPLY means like APPLY.")
 	  (t
 	   (barfo '?)))))
 
-
-(defun lisp-fcn-typep (fcn type)
-  (get fcn type))
-
 (defun translate-function (name)
   (bind-transl-state
    (setq *in-translate* t)
    (let ((lisp-def-form (tr-mfun name))
 	 (delete-subr? (and (get name 'translated)
-			    (not (lisp-fcn-typep name 'expr)))))
+			    (not (get name 'expr)))))
      (cond (tr-abort
 	    (trfail name))
 	   (t
