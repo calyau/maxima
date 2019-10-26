@@ -16,16 +16,6 @@
 
 (defstruct (bkpt (:type list)) form file file-line function)
 
-;; This function is not documented and not used in Maxima core or share.
-(defmfun $bt()
-  (loop for v in *baktrcl*
-	 do 
-	 (and (consp v)
-	      (consp (cadar v))
-	      (eq (caadar v) 'src))
-	 ($print (format nil "~a:~a:" (nth 1 (cadar v))
-			 (nth 0 (cadar v))) v)))
-
 ;; *mlambda-call-stack*
 ;; #(NIL ($X) (1) $FF ($BIL $X) ($Y) (36) $JOE ($Y $BIL $X) ($JJX) (36)
 ;; to get to current values in ff need to unbind bindlist downto ($BIL $X)
@@ -57,14 +47,6 @@
     (setq lineinfo (if ( < m (fill-pointer ar))
 		       (get-lineinfo (bak-top-form (aref ar (f+ m 1))))
 		       (get-lineinfo (bak-top-form *last-meval1-form*))))
-    ;;    #+if-you-use-baktrcl 
-    ;;	  (if ( < m (fill-pointer ar))
-    ;;	      (get-lineinfo (bak-top-form (aref ar (f+ m 1))))
-    ;;	    (or (get-lineinfo (bak-top-form *last-meval1-form*
-    ;;					    ;baktrcl
-    ;;					    ))
-    ;;		;(get-lineinfo (bak-top-form (cdr baktrcl)))
-    ;;		))
     (values fname vals params backtr lineinfo bdlist)))
 
 (defun print-one-frame (n print-frame-number &aux val (st *debug-io*))
