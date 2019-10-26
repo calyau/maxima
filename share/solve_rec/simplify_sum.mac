@@ -194,7 +194,7 @@ simplify_sum(expr) :=
       if use_gosper and not(atom(sm1)) and not freeof_sum(sm1) then block(
         [hi1 : ?gensym(), lo1 : ?gensym()],
         ss_print_message(1, "Trying with Gosper ..."),
-        sm1 : block([ttyoff:true], nusum(summand, var, lo1, hi1)),
+        sm1 : block([ttyoff:ttyoff], nusum(summand, var, lo1, hi1)),
         if freeof_sum(sm1) then (
           ss_print_message(1, "Gosper returns:", sm1),
           if lo=minf or lo=-inf then
@@ -214,7 +214,7 @@ simplify_sum(expr) :=
       if use_gosper and not(atom(sm1)) and not freeof_sum(sm1) then block(
         [hi1 : ?gensym(), lo1 : ?gensym()],
         ss_print_message(1, "Trying with extended Gosper ..."),
-        sm1 : block([ttyoff:true], extended_nusum(summand, var, lo1, hi1)),
+        sm1 : block([ttyoff:ttyoff], extended_nusum(summand, var, lo1, hi1)),
         if freeof_sum(sm1) then (
           ss_print_message(1, "Extended Gosper returns:", sm1),
           if lo=minf or lo=-inf then
@@ -755,7 +755,7 @@ to_hypergeometric(expr, var, lo, hi) := block(
     [use_simpsum:false, use_harmonic:false, use_integral:false,
      use_ratfun:false, use_gosper:false, use_zeilberger:false,
      use_telescoping:false, min_ni: lmin(ni_coeffs)],
-    apply('sum, [expr, var, lo, -min_ni]) + simplify_sum(apply(sum, [expr, var, -min_ni, hi])))
+    apply('sum, [expr, var, lo, -min_ni - 1]) + simplify_sum(apply(sum, [expr, var, -min_ni, hi])))
   else to_hypergeometric1(expr, var, lo, hi))$
 
 

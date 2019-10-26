@@ -622,5 +622,31 @@ ratsimp (simplify_sum(sum(1/((n+1)*(2*n-1)), n, 1,inf)) -simplify_sum(sum(1/((n+
 ratsimp (simplify_sum(sum(1/((2*n+1)^2-4)^2, n, 0, inf)));
 1/64*%pi^2;
 
+/* SF bug #3521: "simplify_sum(sum(binomial(1,n),n,0,inf)) gives 3 instead of 2" */
+
+simplify_sum(sum(binomial(1,n),n,0,inf));
+2;
+
+foo: makelist (simplify_sum(sum(binomial(1,n),n,n0,inf)), n0, 0, 10);
+[2, 1, 'sum(binomial(1,n),n,2,inf), 'sum(binomial(1,n),n,3,inf), 'sum(binomial(1,n),n,4,inf),
+ 'sum(binomial(1,n),n,5,inf), 'sum(binomial(1,n),n,6,inf), 'sum(binomial(1,n),n,7,inf),
+ 'sum(binomial(1,n),n,8,inf), 'sum(binomial(1,n),n,9,inf), 'sum(binomial(1,n),n,10,inf)];
+
+/* binomial(mm, nn) = 0 for nn - mm an integer and nn > mm.
+ * This rule seems to interfere with extended_nusum (causing extended_nusum
+ * to return 0 instead of 1 for 'sum(binomial(0, n), n, 0, inf)), so let's not worry about
+ * making this a general rule.
+ */
+(matchdeclare (mm, all, nn, lambda ([e], featurep (e - mm, integer) and e > mm)),
+ myrule: first (tellsimpafter (binomial (mm, nn), 0)),
+ ev (foo, nouns)); /* expand(foo, 0, 0) doesn't have any effect. dunno what's going on. */
+[2, 1, 0, 0, 0,  0, 0, 0, 0, 0,  0];
+
+remrule (binomial, myrule);
+binomial;
+
+makelist (simplify_sum(sum(binomial(m, n), n, 0, inf)), m, 0, 10);
+[1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024];
+
 (reset(verbose,linsolvewarn),0);
 0$
