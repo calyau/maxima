@@ -27,8 +27,6 @@
 
 (defvar *lisp-quiet-suppressed-prompt* "" "The prompt lisp-quiet has suppressed")
 
-(defmacro bak-top-form (x) x)
-
 (defun frame-info (n)
   (declare (fixnum n))
   (let* ((ar *mlambda-call-stack*)
@@ -45,8 +43,8 @@
     (setq bdlist (if (< m (fill-pointer ar)) (aref ar m) bindlist))
 					; (setq lineinfo (get-lineinfo backtr))
     (setq lineinfo (if ( < m (fill-pointer ar))
-		       (get-lineinfo (bak-top-form (aref ar (f+ m 1))))
-		       (get-lineinfo (bak-top-form *last-meval1-form*))))
+		       (get-lineinfo (aref ar (f+ m 1)))
+		       (get-lineinfo *last-meval1-form*)))
     (values fname vals params backtr lineinfo bdlist)))
 
 (defun print-one-frame (n print-frame-number &aux val (st *debug-io*))
