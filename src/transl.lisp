@@ -523,14 +523,11 @@ APPLY means like APPLY.")
 
 (defun translate-and-eval-macsyma-expression (form)
   ;; this is the hyper-random entry to the transl package!
-  ;; it is used by MLISP for TRANSLATE:TRUE ":=".
+  ;; it is used by MLISP for TRANSLATE:TRUE "::=".
   (bind-transl-state
    (setq *in-translate* t)
-   ;; Use FUNCALL so that we can be sure we can TRACE this even when
-   ;; JPG sets PURE to NIL. Also, use a function named TRANSLATOR-EVAL
-   ;; so we don't have to lose badly by tracing EVAL!
-   (funcall (progn 'translator-eval)
-	    (funcall (progn 'translate-macexpr-toplevel) form))))
+   ;; Use TRANSLATOR-EVAL so we don't have to lose badly by tracing EVAL
+   (translator-eval (translate-macexpr-toplevel form))))
 
 (defun translator-eval (x)
   (eval x))
