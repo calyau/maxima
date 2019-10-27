@@ -583,7 +583,7 @@ The function @code{warning} always returns false.
 @c -----------------------------------------------------------------------------
 @anchor{error_size}
 @defvr {Option variable} error_size
-Default value: 10
+Default value: 60
 
 @code{error_size} modifies error messages according to the size of expressions
 which appear in them.  If the size of an expression (as determined by the Lisp
