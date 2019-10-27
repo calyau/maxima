@@ -35,7 +35,6 @@
 (defvar thistime 0)
 (defvar *refchkl* nil)
 (defvar *mdebug* nil)
-(defvar *baktrcl* nil)
 (defvar errcatch nil)
 (defvar mcatch nil)
 (defvar brklvl -1)
@@ -91,7 +90,7 @@
 (defun meval* (expr)
   ;; Make sure that clearsign is called after the evaluation.
   (unwind-protect
-    (let (*refchkl* *baktrcl* checkfactors)
+    (let (*refchkl* checkfactors)
       (if $ratvarswitch (setq varlist (cdr $ratvars)))
       (meval expr))
     ;; Clear the facts from asksign and friends.
