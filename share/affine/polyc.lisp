@@ -15,7 +15,7 @@
 
 (defun reset-vgp ()  (setq *genpairs* nil  *genvar*  nil  *varlist* nil)
        (setq *xxx*
-	     (let ((*nopoint t) *print-radix*)
+	     (let (*print-radix*)
 	       (loop for i from 1 to 30 collecting
 		      (add-newvar (intern (format nil "$X~A" i))))))
        'done)
