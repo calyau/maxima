@@ -637,7 +637,7 @@
 	($go mgo) ($signum %signum)
 	($return mreturn) ($factorial mfactorial)
 	($ibase *read-base*) ($obase *print-base*)
-	($modulus modulus) ($zunderflow zunderflow)
+	($modulus modulus)
 	($ttyoff #.ttyoff)
 	($mode_declare $modedeclare)))
 
