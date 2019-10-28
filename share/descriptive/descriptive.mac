@@ -1520,3 +1520,20 @@ starplot_description([args]):=
 starplot([desc]) := draw2d(apply(starplot_description, desc)) $
 wxstarplot([desc]) := wxdraw2d(apply(starplot_description, desc)) $
 
+/* find_runs -- find consecutive identical values in an array or list.
+ * Returns a structure runs(...) with fields lengths and values.
+ */
+
+defstruct (runs (lengths, values));
+
+find_runs (x) :=
+  if x = [] then runs ([], [])
+    else block ([dx : map (lambda ([a, b], is(a # b)), rest(x), rest(x, -1)), ii0, ii],
+                ii0 : sublist_indices (dx, identity),
+                ii : append ([0], ii0, [length (x)]),
+                dii : rest(ii) - rest(ii, -1),
+                runs (dii, makelist (x[i], i, rest (ii))));
+
+find_runs_inverse (r) :=
+  block ([v: r@values, n: r@lengths],
+         apply (append, makelist (makelist (v[i], n[i]), i, 1, length(v))));
