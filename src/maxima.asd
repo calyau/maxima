@@ -393,6 +393,7 @@
                (:module i-o :pathname ""
 			:depends-on (compatibility-macros)
                         :components ((:file "macsys") 
+                                     (:file "testsuite")
                                      (:file "mload") 
                                      (:file "suprv1")
                                      (:file "dskfn")))
