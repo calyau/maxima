@@ -188,6 +188,8 @@
 
 (defun gcfactor (a b)
   (declare (integer a b) (optimize (speed 3)))
+  (when (and (zerop a) (zerop b))
+    (return-from gcfactor (list 0 1)))
   (let* (($intfaclim nil)
          (e1 0)
          (e2 0)
