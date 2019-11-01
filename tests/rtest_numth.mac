@@ -676,3 +676,11 @@ gcfactor(3+4*%i);
 
 gcfactor(0);
 0;
+
+/* Bug #2839: gcfactor(9) => 9 */
+
+block ([g : gcfactor (9)], [op (g), args (g)]);
+["^", [3, 2]];
+
+block ([g : gcfactor (343)], [op (g), args (g)]);
+["^", [7, 3]];

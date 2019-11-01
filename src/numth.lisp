@@ -142,7 +142,7 @@
          with res = () do
            (push (if (= exp 1)
                      (gcdisp term)
-                     (pow (gcdisp term) exp))
+                     (list '(mexpt simp) (gcdisp term) exp))
                  res)
          finally (return (cond ((null res) 1)
                                ((null (cdr res)) (car res))
