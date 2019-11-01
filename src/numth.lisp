@@ -144,9 +144,15 @@
                      (gcdisp term)
                      (list '(mexpt simp) (gcdisp term) exp))
                  res)
-         finally (return (cond ((null res) 1)
-                               ((null (cdr res)) (car res))
-                               (t `((mtimes simp) ,@(nreverse res)))))))))
+         finally
+         (return (cond ((null res)
+                        1)
+                       ((null (cdr res))
+                        (if (mexptp (car res))
+                            `((mexpt simp gcfactored) ,@(cdar res))
+                            (car res)))
+                       (t
+                        `((mtimes simp gcfactored) ,@(nreverse res)))))))))
 
 (defun imodp (p)
   (declare (integer p) (optimize (speed 3)))
