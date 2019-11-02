@@ -13,7 +13,7 @@
 (macsyma-module trutil)
 
 (defun tr-gensym ()
-  (gentemp (symbol-name 'tr-gensym)))
+  (intern (symbol-name (gensym "TR-GENSYM")) :maxima))
 
 (defun push-defvar (var val)
   ;; makes sure there is a form in the beginning of the
