@@ -23,7 +23,7 @@ cond([pair_sequence])::=
 caseq(exp,[pairs])::=
  block([predt,statement],
   cond(not atom(exp),
-       buildq([g:?gentemp(),exp,pairs],block([g:exp],caseq(g,splice(pairs)))),
+       buildq([g:gensym(),exp,pairs],block([g:exp],caseq(g,splice(pairs)))),
 
        pairs=[],buildq([],false),
 

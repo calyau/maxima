@@ -15,7 +15,7 @@ herald_package(basic)$
 */
 
 prog1(statement1,[statements])::=
- buildq([statement1,statements,local:?gentemp()],
+ buildq([statement1,statements,local:gensym()],
         lambda([local],splice(statements),local)(statement1))$
 
 symbolcheck(x):=

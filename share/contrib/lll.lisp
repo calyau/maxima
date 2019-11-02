@@ -223,7 +223,7 @@
   (let ((n 0) (nn 6) ;; nn: maximal search degree 
         (xs nil) (res nil) (def 0) (sol nil)
         (opt nil) (mini 0)
-        (var (gentemp "$v")))
+        (var ($gensym "v")))
     (loop for n from 2 to nn do
           (if (not (null opt)) (return opt))
           (setf xs (loop for i from 0 to n collect (expt x i)))
