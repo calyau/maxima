@@ -533,8 +533,7 @@
 	((nonsymchk y '$alias))
         ((eq x y) y) ; x is already the alias of y
 	((get x 'reversealias)
-	 (if (not (eq x y))
-	     (merror (intl:gettext "alias: ~M already has an alias.") x)))
+	 (merror (intl:gettext "alias: ~M already has an alias.") x))
 	(t (putprop x y'alias)
 	   (putprop y x 'reversealias)
 	   (add2lnc y $aliases)
