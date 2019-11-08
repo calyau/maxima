@@ -149,9 +149,8 @@
 		((null ,rules) ,expr))))
 
 (def%tr $apply2 (form)
-  `($any . ((lambda (*rulelist)
-	      (declare (special *rulelist))
-	      (apply2 ,(dtranslate (cadr form)) 0))
+  `($any . ((lambda (rulelist)
+	      (apply2 rulelist ,(dtranslate (cadr form)) 0))
 	    ',(cddr form))))
 
 (def%tr $applyb1 (form &aux (expr (tr-gensym)) (rules (tr-gensym)))
@@ -163,9 +162,8 @@
 
 (def%tr $applyb2 (form)
   (push-autoload-def '$applyb2 '(apply2hack))
-  `($any . ((lambda (*rulelist)
-	      (declare (special *rulelist))
-	      (apply2hack ,(dtranslate (cadr form))))
+  `($any . ((lambda (rulelist)
+	      (car (apply2hack rulelist ,(dtranslate (cadr form)))))
 	    ',(cddr form))))
 
 ;;; this nice translation property written by REH.

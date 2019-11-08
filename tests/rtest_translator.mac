@@ -737,3 +737,22 @@ true;
 
 errcatch (f(10, n));
 [];
+
+/* apply2 was translated incorrectly for several years.  applyb2
+ * was translated incorrectly for decades.
+ */
+
+(defrule (foorule, foo (), 1),
+ f () := apply2 ('(foo ()), foorule),
+ translate (f),
+ f ());
+1;
+
+(defrule (barrule, bar (), 2),
+ g () := applyb2 ('(bar ()), barrule),
+ translate (g),
+ g ());
+2;
+
+(kill (foorule, f, barrule, g), 0);
+0;
