@@ -50,9 +50,6 @@
 
 (def%tr $maplist (form)
   (destructuring-let (((fun . args) (tr-args (cdr form))))
-    ;; this statement saves the trouble of adding autoload definitions
-    ;; for runtime translator support.
-    (push-autoload-def 'marrayref '(maplist_tr))
     `($any . (maplist_tr ,fun ,@args))))
 
 (def%tr $fullmap (form)
@@ -77,9 +74,6 @@
 
 
 (def%tr $scanmap (form)
-  (push-autoload-def '$scanmap '(scanmap1))
-  ;; there's something more fundamental about the above than
-  ;; just autoload definitions.
   (destructuring-let (((fun . args) (tr-args (cdr form))))
     (call-and-simp '$any 'scanmap1 `((getopr ,fun) ,@args))))
 

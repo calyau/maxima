@@ -135,14 +135,12 @@
 
 (def%tr $cf (form)
   (setq form (car (tr-args (cdr form))))
-  (push-autoload-def '$cf '(cfeval))
   `($any . (let (($listarith nil))
 	     (cfeval ,form))))
 
 ;;; from TRGRED >
 
 (def%tr $apply1 (form &aux (expr (tr-gensym)) (rules (tr-gensym)))
-  (push-autoload-def '$apply1 '(apply1))
   `($any  . (do ((,expr ,(dtranslate (cadr form))
 			(apply1 ,expr (car ,rules) 0))
 		 (,rules ',(cddr form) (cdr ,rules)))
@@ -154,14 +152,12 @@
 	    ',(cddr form))))
 
 (def%tr $applyb1 (form &aux (expr (tr-gensym)) (rules (tr-gensym)))
-  (push-autoload-def '$applyb1 '(apply1hack))
   `($any . (do ((,expr ,(dtranslate (cadr form))
 		       (car (apply1hack ,expr (car ,rules))))
 		(,rules ',(cddr form) (cdr ,rules)))
 	       ((null ,rules) ,expr))))
 
 (def%tr $applyb2 (form)
-  (push-autoload-def '$applyb2 '(apply2hack))
   `($any . ((lambda (rulelist)
 	      (car (apply2hack rulelist ,(dtranslate (cadr form)))))
 	    ',(cddr form))))
