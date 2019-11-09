@@ -678,12 +678,9 @@ APPLY means like APPLY.")
   (and *transl-debug* (pop *transl-backtrace*))
   (prog2
       (and *transl-debug* (push form *transl-backtrace*))
-      (cond ((atom form)
-	     (translate-atom form))
-	    ((consp form)
-	     (translate-form form))
-	    (t
-	     (barfo "help")))
+      (if (atom form)
+          (translate-atom form)
+          (translate-form form))
     ;; hey boy, reclaim that cons, just don't pop it!
     (and *transl-debug* (pop *transl-backtrace*))))
 
