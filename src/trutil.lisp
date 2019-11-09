@@ -49,21 +49,6 @@
 		  (unless winp
 		    (barfo "Bad *pre-transl-forms*"))))))))
 
-(defun push-autoload-def (old-entry new-entries)
-  (and (get old-entry 'autoload)
-       ;; don't need this if it is IN-CORE.
-       ;; this automaticaly punts this shit for systems
-       ;; that don't need it.
-       (do ((entry))
-	   ((null new-entries))
-	 (setq entry (pop new-entries))
-	 (push-pre-transl-form
-	      `(putprop ',entry
-			;; this ensures that the autoload definition
-			;; will not get out of date.
-		(or (get ',old-entry 'autoload) t)
-		'autoload)))))
-
 (defun tr-nargs-check (form &optional (args-p nil) (nargs (length (cdr form))))
   ;; the maclisp args info format is NIL meaning no info,
   ;; probably a lexpr. or cons (min . max)
