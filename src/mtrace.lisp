@@ -689,9 +689,7 @@
   (do ((j (min $trace_max_indent trace-indent-level) (1- j)))
       ((not (> j 0)))
     (write-char #\space))
-  (if *prin1*
-      (funcall *prin1* form)
-      (prin1 form))
+  (prin1 form)
   (terpri)
   (finish-output))
 

@@ -12,8 +12,6 @@
   #+gcl (eval-when (eval) (compiler::compiler-def-hook (first f) body))
   `(setf (get ',(first f) ',(second f)) #'(lambda ,arg ,@body)))
 
-(defvar *prin1* nil)		  ;a function called instead of prin1.
-
 ;; Should we give this a different name?
 (defvar *fortran-print* nil
   "Tells EXPLODEN we are printing numbers for Fortran so include the exponent marker.")
