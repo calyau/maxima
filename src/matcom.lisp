@@ -79,7 +79,7 @@
 	    (merror (intl:gettext "defmatch: failed to compile match for pattern ~M") pt))
 	   (t
          ;; NOTE TO TRANSLATORS: MEANING OF FOLLOWING TEXT IS UNKNOWN
-         (mtell "defmatch: ~M will be matched uniquely since sub-parts would otherwise be ambigious.~%" pt)
+         (mtell "defmatch: ~M will be matched uniquely since sub-parts would otherwise be ambiguous.~%" pt)
 	      (return (list 'lambda
 			    (list e)
 			    `(declare (special ,e))

@@ -252,7 +252,7 @@ lsquares_estimates (data, variables, equation, parameters, [optional_args]) := b
 lsquares_mse ('data%, variables, equation) := block
 
    (if not atom (data%)
-        then block ([temp : ?gentemp (sconcat ("$M"))], temp :: ev(data%), data% : temp),
+        then block ([temp : gensym ("m")], temp :: ev(data%), data% : temp),
 
     makelist ('data% ['i, j], j, 1, length (variables)),
     map ("=", variables, %%),

@@ -376,8 +376,7 @@
    "vect_cross"
    "verbose"
    "zerobern"
-   "zeta%pi"
-   "zunderflow"))
+   "zeta%pi"))
    
 
 (defvar maxima-match-variables-4

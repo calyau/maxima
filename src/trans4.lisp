@@ -185,7 +185,6 @@
 ;;       (MAPCAR #'(LAMBDA (Z) (LIST '(MEQUAL SIMP) Z (MEVAL Z))) L)))
 
 (defun-prop (retlist tr-lisp->lisp) (form)
-  (push-autoload-def 'marrayref '(retlist_tr))
   `(retlist_tr ,@(mapcan #'(lambda (z)
 			     (list `',z (tr-lisp->lisp z)))
 			 (cdr form))))

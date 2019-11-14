@@ -163,7 +163,7 @@
 ;[[X1,X2],1,[X1-Z1,X2-Z2],[X1,X2],1,[X1-1/Z1,X2-Z2/Z1],[X1,X2],1,[X1-1/Z2,X2-Z1/Z2]]$
 
 (defvar *xxx*
-  (let ((*nopoint t))
+  (let (*print-radix*)
     (loop for i from 1 to 30 collecting (add-newvar (intern (format nil "$X~A" i))))))
 
 ;(defun describe-open (open &aux tem)

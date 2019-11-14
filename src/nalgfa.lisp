@@ -18,7 +18,7 @@
 (load-macsyma-macros rzmac ratmac)
 
 (defun new-alg ()
-  (newsym (gentemp (symbol-name '$alg))))
+  (newsym ($gensym "alg")))
 
 
 (defun psqfrp (p var)
