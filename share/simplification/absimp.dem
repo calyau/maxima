@@ -1,4 +1,7 @@
-if get ('absimp,'version)=false then load("absimp.mac");
+/* There isn't any really good way to tell if a package needs to be loaded ... */
+if ?mget ('absimp, '?mexpr) # false
+  then "absimp.dem: function absimp is present."
+  else load ("absimp.mac");
 abs(x)^2;
 diff(abs(x),x);
 cosh(abs(x));
