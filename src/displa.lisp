@@ -220,7 +220,7 @@
         (setq result (cons #\' result) w-base 1)))
      (setq
        bas (if (and (not (atom dummy)) (member 'array (car dummy) :test #'eq))
-             (let ((break nil) (right 0)) (dimension-paren dummy result))
+             (let ((break nil) (right 0)) (dimension-paren dummy nil))
              (let ((atom-context 'dimension-array))
                (dimension dummy nil lop 'mfunction nil 0)))
        w-base (+ w-base width)
