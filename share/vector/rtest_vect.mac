@@ -97,7 +97,7 @@ b . grad a - a . grad b + a * div b - b * div a;
 div curl a;
 0;
 curl grad u;
-0;
+[0, 0, 0];
 vectorsimp(curl curl a),expandall:true;
 grad div a - laplacian a;
 
@@ -221,3 +221,57 @@ true;
 
 (reset(tr_bound_function_applyp,vect_cross,dotexptsimp,dotassoc,dotscrules),0);
 0$
+
+/* SF bug #3287: "cross product scalar zero versus vector zero result" */
+
+kill (f, g);
+done;
+
+0 ~ f(a, b);
+[0, 0, 0];
+
+g(c, d) ~ 0;
+[0, 0, 0];
+
+f(a, g(b, c)) ~ f(a, g(b, c));
+[0, 0, 0];
+
+curl (grad (f (a, b, c)));
+[0, 0, 0];
+
+/* examples from the bug report */
+
+express([0,1,1]~[0,1,2]);
+[1, 0, 0];
+
+express([0,1,1]~[0,1,1]);
+[0, 0, 0];
+
+(e:ident(3),
+ a_:[a_1,a_2,a_3],
+ b_:[b_1,b_2,b_3],
+ /* Levi-Civita Symbol */
+ ε(i,j,k):=e[i].express(e[j]~e[k]),
+0);
+0;
+
+ε(1,2,3);
+1;
+
+ε(1,3,2);
+-1;
+
+ε(1,2,2);
+0;
+
+express(ε(1,2,3)*a_[2]*b_[3]);
+a_2*b_3;
+
+express(ε(1,3,2)*a_[2]*b_[3]);
+-a_2*b_3;
+
+express(ε(1,2,2)*a_[2]*b_[2]);
+0;
+
+makelist(sum(sum(ε(i,j,k)*a_[j]*b_[k],j,1,3),k,1,3),i,3);
+[a_2*b_3 - a_3*b_2, a_3*b_1 - a_1*b_3, a_1*b_2 - a_2*b_1];

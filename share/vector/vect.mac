@@ -55,13 +55,13 @@ if has_rules (vectorpotential) then remove (vectorpotential, rule);
 if has_rules (express) then remove (express, rule);
 if has_rules (potential) then remove (potential, rule);
 
-tellsimpafter(0~etrue, 0) $
-tellsimpafter(etrue~0, 0) $
-tellsimpafter(etrue~etrue, 0)$
+tellsimpafter(0~etrue, zerovector ()) $
+tellsimpafter(etrue~0, zerovector ()) $
+tellsimpafter(etrue~etrue, zerovector ())$
 tellsimpafter(etrue~ttrue.vtrue, etrue.(ttrue~vtrue))$
 tellsimp(etrue~lessp, -(lessp~etrue)) $
 tellsimpafter(div (curl( etrue)), 0) $
-tellsimpafter(curl (grad( etrue)), 0) $
+tellsimpafter(curl (grad( etrue)), zerovector ()) $
 tellsimpafter(vectorpotential(etrue,ttrue),(scalefactors(ttrue), vpot(etrue)))$
 tellsimpafter(vectorpotential(etrue), vpot(etrue)) $
 tellsimpafter(express(etrue), express1(etrue)) $
@@ -69,6 +69,9 @@ tellsimpafter(express(etrue,ttrue), (scalefactors(ttrue), express(etrue)))$
 tellsimpafter(potential(etrue, ttrue),(scalefactors(ttrue),potential1(etrue)))$
 tellsimpafter(potential(etrue), potential1(etrue)) $
 
+/* Create a zero vector of the prevailing number of dimensions.
+ */
+zerovector () := makelist (0, dimension);
 
 /* Variables and switches */
 
@@ -248,10 +251,17 @@ before(arg) := inpart(order(etrue,arg),1)#etrue$
 
 vscalarp(arg) := not nonscalarp(arg)$
 
-vsimp(expn) :=
+matchdeclare (nn, nonscalarp);
+matchdeclare (zz, vector0p);
+vector0p(e) := listp(e) and length(e) = dimension and every (lambda ([x], x = 0), e);
+defrule (rule_vector0_additive_identity, nn + zz, nn);
+
+vsimp(expn) := apply1 (vsimp1(expn), rule_vector0_additive_identity);
+
+vsimp1(expn) :=
    if mapatom(expn) then expn
    else block([pv, qv, rv, sv],
-      expn: map('vsimp, expn),
+      expn: map('vsimp1, expn),
       if mapatom(expn) then return(expn),
       if inpart(expn,0)="~" then expn:removecrosssc1(expn,pv,rv,sv)
       else if piece="grad" then (
