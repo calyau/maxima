@@ -29,6 +29,15 @@ sqrt(W[a])
                                2
                            ( W)  + 1
                             a
+W[a][b]
+                              ( W)
+                               a  b
+W[a][b][c]
+                            (( W) )
+                              a  b c
+W[a][b,c]
+                            ( W)
+                             a  b, c
 declare_index_properties(X,[presuperscript])
                               done
 X[a]
@@ -48,6 +57,18 @@ sqrt(X[a])
                           ------------
                             a  2
                            ( X)  + 1
+X[a][b]
+                               a
+                              ( X)
+                                  b
+X[a][b][c]
+                              a
+                            (( X) )
+                                 b c
+X[a][b,c]
+                             a
+                            ( X)
+                                b, c
 declare_index_properties(Y,[postsuperscript])
                               done
 Y[a]
@@ -67,6 +88,18 @@ sqrt(Y[a])
                           ------------
                              a 2
                            (Y )  + 1
+Y[a][b]
+                                a
+                              (Y )
+                                  b
+Y[a][b][c]
+                               a
+                            ((Y ) )
+                                 b c
+Y[a][b,c]
+                              a
+                            (Y )
+                                b, c
 declare_index_properties(Z,[postsubscript])
                               done
 Z[a]
@@ -87,6 +120,15 @@ sqrt(Z[a])
                                2
                            (Z )  + 1
                              a
+Z[a][b]
+                              (Z )
+                                a b
+Z[a][b][c]
+                            ((Z ) )
+                               a b c
+Z[a][b,c]
+                            (Z )
+                              a b, c
 foo[a,b,c,d]
                           foo
                              a, b, c, d

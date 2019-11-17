@@ -9,11 +9,19 @@ sqrt(W[a]);
 1/(1 + sqrt(W[a]));
 (1 - sqrt(W[a]))/(1 + W[a]^2);
 
+W[a][b];
+W[a][b][c];
+W[a][b, c];
+
 declare_index_properties (X, [presuperscript]);
 X[a];
 sqrt(X[a]);
 1/(1 + sqrt(X[a]));
 (1 - sqrt(X[a]))/(1 + X[a]^2);
+
+X[a][b];
+X[a][b][c];
+X[a][b, c];
 
 declare_index_properties (Y, [postsuperscript]);
 Y[a];
@@ -21,11 +29,19 @@ sqrt(Y[a]);
 1/(1 + sqrt(Y[a]));
 (1 - sqrt(Y[a]))/(1 + Y[a]^2);
 
+Y[a][b];
+Y[a][b][c];
+Y[a][b, c];
+
 declare_index_properties (Z, [postsubscript]);
 Z[a];
 sqrt(Z[a]);
 1/(1 + sqrt(Z[a]));
 (1 - sqrt(Z[a]))/(1 + Z[a]^2);
+
+Z[a][b];
+Z[a][b][c];
+Z[a][b, c];
 
 foo[a,b,c,d];
 declare_index_properties (foo, [presubscript, presuperscript, postsuperscript, postsubscript]);
