@@ -161,13 +161,11 @@
 
 (def%tr $catch (form)
   (destructuring-let (((mode . body) (translate `((mprogn) . ,(cdr form)))))
-    `(,mode . ((lambda ()
-		 ((lambda (mcatch)
-		    (prog1
-			(catch
-			    'mcatch ,body)
-		      (errlfun1 mcatch)))
-		  (cons bindlist loclist)))))))
+    `(,mode . ((lambda (mcatch)
+                 (prog1
+                   (catch 'mcatch ,body)
+                   (errlfun1 mcatch)))
+               (cons bindlist loclist)))))
 
 (def%tr $throw (form)
   (destructuring-let (((mode . exp) (translate (cadr form))))
