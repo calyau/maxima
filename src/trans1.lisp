@@ -170,9 +170,8 @@
 (def%tr $throw (form)
   (destructuring-let (((mode . exp) (translate (cadr form))))
     `(,mode . ((lambda (x)
-		 (cond ((null mcatch)
-			(displa x)
-			(merror (intl:gettext "throw: not within 'catch'."))))
+		 (when (null mcatch)
+		   (merror (intl:gettext "throw: not within 'catch'; expression: ~M") x))
 		 (throw 'mcatch x))
 	       ,exp))))
 
