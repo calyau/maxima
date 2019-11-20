@@ -1189,3 +1189,18 @@ zero;
 (remove (b, complex), forget (equal (a, 0)), 0)$
 0;
 
+/* SF bug report #3583: "Stack overflow for equality testing with assumptions" */
+
+(domain: real,
+ myctxt: newcontext (),
+ assume (x > 0, y > 0),
+ is(equal(y*(x-y),0)));
+unknown;
+
+(domain: complex,
+ is(equal(y*(x-y),0)));
+unknown;
+
+(killcontext (myctxt),
+ reset (domain));
+[domain];

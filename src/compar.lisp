@@ -1460,7 +1460,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 			;; Q^Rpos - S, S<=1, Q>1
 			(member (sign* (sub 1 xrhs)) '($pos $zero $pz) :test #'eq)
 			(eq (sign* (sub (cadr xlhs) 1)) '$pos))
-		       (and
+		       (and (not (eq $domain '$complex))
 			;; Qpos ^ Rpos - Spos => Qpos - Spos^(1/Rpos)
 			(eq (sign* (cadr xlhs)) '$pos)
 			(eq (sign* xrhs) '$pos)
