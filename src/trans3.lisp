@@ -136,7 +136,7 @@
     (list
       ;; extract (FOO BAR NIL NIL) from (LET ((A FOO) (B BAR) C D) ...)
       ;; and apply FREE-LISP-VARS to each.
-      (union-var-set (mapcar #'free-lisp-vars (mapcar #'(lambda (e) (if (consp e) (cdr e))) (cadr form))))
+      (union-var-set (mapcar #'free-lisp-vars (mapcar #'(lambda (e) (if (consp e) (cadr e))) (cadr form))))
       (difference-var-sets
         ;; cargo-cult programming: copy this next bit from (DEFUN-PROP (PROG ...)) above.
         (union-var-set

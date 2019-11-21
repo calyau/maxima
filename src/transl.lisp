@@ -201,9 +201,8 @@ APPLY means like APPLY.")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(defun barfo (&rest l)
-  (apply #'tr-format
-	 (nconc (list (intl:gettext "translator: internal error. Message: ~:M~%")) l))
+(defun barfo (msg)
+  (tr-format (intl:gettext "translator: internal error. Message: ~:M~%") msg)
   (cond (*transl-debug*
 	 (break "transl barfo"))
 	(t

@@ -161,20 +161,17 @@
 
 (def%tr $catch (form)
   (destructuring-let (((mode . body) (translate `((mprogn) . ,(cdr form)))))
-    `(,mode . ((lambda ()
-		 ((lambda (mcatch)
-		    (prog1
-			(catch
-			    'mcatch ,body)
-		      (errlfun1 mcatch)))
-		  (cons bindlist loclist)))))))
+    `(,mode . ((lambda (mcatch)
+                 (prog1
+                   (catch 'mcatch ,body)
+                   (errlfun1 mcatch)))
+               (cons bindlist loclist)))))
 
 (def%tr $throw (form)
   (destructuring-let (((mode . exp) (translate (cadr form))))
     `(,mode . ((lambda (x)
-		 (cond ((null mcatch)
-			(displa x)
-			(merror (intl:gettext "throw: not within 'catch'."))))
+		 (when (null mcatch)
+		   (merror (intl:gettext "throw: not within 'catch'; expression: ~M") x))
 		 (throw 'mcatch x))
 	       ,exp))))
 
@@ -197,15 +194,14 @@
       (setq n (dtranslate n))
       `($any .
              ((lambda (,nn)
-                (progn
-                  (setq ,nn ($float ,nn))
-                  (if (numberp ,nn)
-                      (do ((,|0| 1 (add 1 ,|0|)) (,sum nil))
-                          ((> ,|0| ,nn) (cons '(mlist) ,sum))
-                        (setq ,sum 
-                              (cons ,(cdr (tr-local-exp exp)) ,sum)))
-                      (merror
-                       (intl:gettext "makelist: second argument must evaluate to a number; found: ~M") ,nn))))
+                (setq ,nn ($float ,nn))
+                (if (numberp ,nn)
+                    (do ((,|0| 1 (add 1 ,|0|)) (,sum nil))
+                        ((> ,|0| ,nn) (cons '(mlist) ,sum))
+                      (setq ,sum
+                            (cons ,(cdr (tr-local-exp exp)) ,sum)))
+                    (merror
+                     (intl:gettext "makelist: second argument must evaluate to a number; found: ~M") ,nn)))
               ,n))))
     ((= (length form) 3)
      (destructuring-let
@@ -242,8 +238,7 @@
       (setq |0| (dtranslate |0|) n (dtranslate n))
       `($any .
              ((lambda (,|00| ,nn)
-                (progn
-                  (setq ,nn ($float (sub ,nn ,|00|)))
+                (setq ,nn ($float (sub ,nn ,|00|)))
                 (if (numberp ,nn)
                     (do ((,x ,|00| (add 1 ,x)) (,ii 0 (add 1 ,ii))
                          (,sum nil
@@ -254,7 +249,7 @@
                       (declare (special ,x)))
                     (merror
                      (intl:gettext "makelist: the fourth argument minus the third one must evaluate to a number; found: ~M")
-                     ,nn))))
+                     ,nn)))
               ,|0| ,n))))
     ((= (length form) 5)
      (destructuring-let
@@ -263,8 +258,7 @@
       (setq |0| (dtranslate |0|) n (dtranslate n) s (dtranslate s))
       `($any .
              ((lambda (,|00| ,nn ,ss)
-                (progn
-                  (setq ,nn ($float (div (sub ,nn ,|00|) ,ss)))
+                (setq ,nn ($float (div (sub ,nn ,|00|) ,ss)))
                 (if (numberp ,nn)
                     (do ((,x ,|00| (add ,ss ,x)) (,ii 0 (add 1 ,ii))
                          (,sum nil
@@ -275,7 +269,7 @@
                       (declare (special ,x)))
                     (merror
                      (intl:gettext "makelist: the fourth argument minus the third one, divided by the fifth one must evaluate to a number; found: ~M")
-                     ,nn))))
+                     ,nn)))
               ,|0| ,n ,s))))
     (t
      (mformat *translation-msgs-files*
