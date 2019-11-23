@@ -189,7 +189,7 @@
 
 (defun rds(m)   ;;; presumably used to push/pop input..
   (let ((h *standard-input*))
-    (setf *standard-input* m)
+    (setf *standard-input* (or m (make-broadcast-stream)))
     h))
 
 
