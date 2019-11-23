@@ -53,21 +53,6 @@
 (def%tr %sum $batcon)
 (def%tr %product $batcon)
 
-
-;; From MATCOM.
-;; Temp autoloads needed for pdp-10. There is a better way
-;; to distribute this info, too bad I never implemented it.
-
-(mapc #'(lambda (x)
-	  (let ((old-prop (get (cdr x) 'autoload)))
-	    (if (not (null old-prop))
-		(putprop (car x) old-prop 'autoload))))
-      '((proc-$matchdeclare . $matchdeclare)
-	(proc-$defmatch .     $defmatch)
-	(proc-$defrule . $defrule)
-	(proc-$tellsimpafter . $tellsimpafter)
-	(proc-$tellsimp	 . $tellsimp	)))
-
 (defun yuk-su-meta-prop (f form)
   (let ((meta-prop-p t)
 	(meta-prop-l nil))
