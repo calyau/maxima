@@ -26,7 +26,7 @@ The interpolation points are regarded as vertices of a simplex. The
 parameter RHO controls the size of the simplex and it is reduced
 automatically from RHOBEG to RHOEND. For each RHO the subroutine tries
 to achieve a good vector of variables for the current size, and then
-RHO is reduced until the value RHOEND is reached. Therefore RHOBEG and
+RHO is reduced until the value RHOEND is reached. Therefore, RHOBEG and
 RHOEND should be set to reasonable initial changes to and the required   
 accuracy in the variables respectively, but this accuracy should be
 viewed as a subject for experimentation because it is not guaranteed.
@@ -63,7 +63,7 @@ Returns an approximate minimum of the expression @var{F} with respect
 to the variables @var{X}, subject to an optional set of constraints.
 @var{Y} is a list of initial guesses for @var{X}.
 
-@var{F} must be an ordinary expressions, not names of functions or lambda expressions.
+@var{F} must be ordinary expressions, not names of functions or lambda expressions.
 
 @code{optional_args} represents additional arguments,
 specified as @code{@var{symbol} = @var{value}}.
