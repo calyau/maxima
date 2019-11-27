@@ -1687,7 +1687,7 @@ causing all pending operations to be flushed"
 ;;; Revision 1.98  2008/03/06 20:04:10  rtoy
 ;;; Use ~G for list-directed I/O so that numbers come out reasonably.
 ;;; (F77 standard says E or F is used, depending on the magnitude of the
-;;; number.  The parameters for E and F are processer dependent as is the
+;;; number.  The parameters for E and F are processor dependent as is the
 ;;; magnitude used to select between E or F.  This is pretty close to how
 ;;; ~G works in Lisp.)
 ;;;

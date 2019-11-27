@@ -492,7 +492,7 @@
 ;;;                                    ===
 ;;;                                    m=0
 ;;;
-;;; The evaluation stops if an accuracy better than *expint-eps* is achived.
+;;; The evaluation stops if an accuracy better than *expint-eps* is achieved.
 ;;; If the expansion don't converge within *expint-maxit* steps a Maxima
 ;;; Error is thrown.
 ;;;

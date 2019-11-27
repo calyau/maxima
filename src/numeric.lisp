@@ -1937,7 +1937,7 @@
 ;;;       the choice of a. Therefore we can simply ignore this case.
 ;;;     Note 2: At first, we need to consider the closed interval [a,b].
 ;;;       but since a and b have the denominator 2^(|e|+1) whereas x itself
-;;;       has a denominator <= 2^|e|, we can restrict the seach to the open
+;;;       has a denominator <= 2^|e|, we can restrict the search to the open
 ;;;       interval (a,b).
 ;;;     So, for given a and b (0 < a < b) we are searching a rational number
 ;;;     y with a <= y <= b.

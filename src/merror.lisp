@@ -64,7 +64,7 @@
 ;;; error variables. However, since we do bind the value of the
 ;;; variable $ERROR, calling the function $ERRORMSG will always
 ;;; set things back. It would be better to bind these variables,
-;;; for, amoung other things, then the values could get garbage 
+;;; for, among other things, then the values could get garbage
 ;;; collected.
 
 (define-condition maxima-$error (error)
