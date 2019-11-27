@@ -47,6 +47,7 @@ than without VTK).
 
 One can also include ABCL - a Java based lisp compiler - with the option
 -DWITH_ABCL=YES
+Of course you will need a java installation.
 
 If you want to change the default Lisp, which will be used, you can
 use the option "-DWITH_DEFAULT_LISP=sbcl" in the cmake call (otherwise
