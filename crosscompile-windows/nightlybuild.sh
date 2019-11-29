@@ -62,14 +62,14 @@ cd ~/maxima-code/crosscompile-windows/build || exit
 
 while true; do
 
-    rm -f ~/maxima-clisp-sbcl-current-win32.exe ~/maxima-clisp-sbcl-current-win64.exe ~/buildlog-win32 ~/buildlog-win64
+    rm -f ~/maxima-*-win32.exe ~/maxima-*-win64.exe ~/buildlog-win32 ~/buildlog-win64
     git pull
 
     buildprocess "win32" 2>&1 | tee ~/buildlog-win32
     buildprocess "win64" 2>&1 | tee ~/buildlog-win64
 
-    for i in ~/maxima-clisp-sbcl-current-win32.exe ~/maxima-clisp-sbcl-current-win64.exe ~/buildlog-win32 ~/buildlog-win64 ; do
-        test -r $i && scp -i ~/.ssh/maximakopierkey $i maxima@ns1.dautermann.at:/var/www/wolfgang.dautermann.at/maxima/nightlybuild/
+    for i in ~/maxima-*-current-win32.exe ~/maxima-*-current-win64.exe ~/buildlog-win32 ~/buildlog-win64 ; do
+        test -r $i && scp -i ~/.ssh/maximakopierkey $i maxima@ns3.dautermann.at:/var/www/wolfgang.dautermann.at/maxima/nightlybuild/
     done
     sleepuntil 23:00
 done
