@@ -187,12 +187,6 @@
 
 
 
-(defun rds(m)   ;;; presumably used to push/pop input..
-  (let ((h *standard-input*))
-    (setf *standard-input* (or m (make-broadcast-stream)))
-    h))
-
-
 (defun rederr (m)
 ;                                ;
 ; (rederr msg)  -->  (error msg) ;
@@ -255,30 +249,30 @@
   (prog (c)
 	(setq c (procfortcomm))
 	(loop while (not (eq c '$eof$)) do  ;;changed, rjf
-	       (cond ((eql c *cr*)
+	       (cond ((eq c *cr*)
 		      (progn (pprin2 *cr*)
 			     (setq c (procfortcomm))))
-                     ((eql c #\<)
-		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eql c #\<)
+                     ((eq c #\<)
+		      (setq c (read-char (cdr *currin*) nil '$eof$))
+		      (cond ((eq c #\<)
 			     (setq c (procactive)))
 			    (t
 			     (pprin2 #\<)
 			     (pprin2 c)
-			     (setq c (read-char nil nil '$eof$)))))
+			     (setq c (read-char (cdr *currin*) nil '$eof$)))))
 
-                      ((eql c #\>)
-		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eql c #\>)
+                      ((eq c #\>)
+		      (setq c (read-char (cdr *currin*) nil '$eof$))
+		      (cond ((eq c #\>)
 			     (setq c '$eof$)) ;;-mds terminate file processing if >> found in "passive" section (consistent Macsyma 2.4)
 			    (t
 			     (pprin2 #\>)
 			     (pprin2 c)
-			     (setq c (read-char nil nil '$eof$)))))       
+			     (setq c (read-char (cdr *currin*) nil '$eof$)))))
 
 		     (t
 		      (progn (pprin2 c)
-			     (setq c (read-char nil nil '$eof$))))))))
+			     (setq c (read-char (cdr *currin*) nil '$eof$))))))))
 
 
 
@@ -293,7 +287,7 @@
        c)
       (pprin2 c)
       (loop (setq c (read-char (cdr *currin*) nil '$eof$))
-	    (cond ((eql c #\Newline) (pprin2 c) (return nil))
+	    (cond ((eq c #\Newline) (pprin2 c) (return nil))
 		  ((eq c '$eof$) (pprin2 #\Newline) (return c))
 		  (t (pprin2 c))))))
 
@@ -303,38 +297,38 @@
 
 (defun procrattem () ;;; use character objects --mds. gentranlang:ratfor has not been extensively tested
   (prog (c)
-	(setq c (read-char nil nil '$eof$))
+	(setq c (read-char (cdr *currin*) nil '$eof$))
 	(loop while (not (eq c '$eof$)) do
 	       (cond ((eq c sharpsign)
 		      (setq c (procratcomm)))
-                     ((eql c #\<)
-		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eql c #\<)
+                     ((eq c #\<)
+		      (setq c (read-char (cdr *currin*) nil '$eof$))
+		      (cond ((eq c #\<)
 			     (setq c (procactive)))
 			    (t
 			     (pprin2 '<)
 			     (pprin2 c)
-			     (setq c (read-char nil nil '$eof$)))))
-                      ((eql c #\>)
-		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eql c #\>)
+			     (setq c (read-char (cdr *currin*) nil '$eof$)))))
+                      ((eq c #\>)
+		      (setq c (read-char (cdr *currin*) nil '$eof$))
+		      (cond ((eq c #\>)
 			     (setq c '$eof$))
 			    (t
 			     (pprin2 #\>)
 			     (pprin2 c)
-			     (setq c (read-char nil nil '$eof$)))))       
+			     (setq c (read-char (cdr *currin*) nil '$eof$)))))
 		     (t
 		      (progn (pprin2 c)
-			     (setq c (read-char nil nil '$eof$))))))))
+			     (setq c (read-char (cdr *currin*) nil '$eof$))))))))
 
 (defun procratcomm ()
   ; # ... <cr> ;
   (prog (c)
 	(pprin2 sharpsign)
-	(loop while (not (eql (setq c (read-char nil nil '$eof$)) *cr*)) do
+	(loop while (not (eq (setq c (read-char (cdr *currin*) nil '$eof$)) *cr*)) do
 	       (pprin2 c))
 	(pprin2 *cr*)
-	(return (read-char nil nil '$eof$))))
+	(return (read-char (cdr *currin*) nil '$eof$))))
 
 
 ;;  c  ;;
@@ -342,47 +336,47 @@
 
 (defun procctem ()  ;;; use character objects --mds
   (prog (c)
-	(setq c (read-char nil nil '$eof$))
+	(setq c (read-char (cdr *currin*) nil '$eof$))
 	(loop while (not (eq c '$eof$)) do
-	       (cond ((eql c *slash*)
+	       (cond ((eq c *slash*)
 		      (setq c (procccomm)))
-                     ((eql c #\<)
-		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eql c #\<)
+                     ((eq c #\<)
+		      (setq c (read-char (cdr *currin*) nil '$eof$))
+		      (cond ((eq c #\<)
 			     (setq c (procactive)))
 			    (t
 			     (pprin2 #\<)
 			     (pprin2 c)
-			     (setq c (read-char nil nil '$eof$)))))
+			     (setq c (read-char (cdr *currin*) nil '$eof$)))))
 
-                     ((eql c #\>)
-		      (setq c (read-char nil nil '$eof$))
-		      (cond ((eql c #\>)
+                     ((eq c #\>)
+		      (setq c (read-char (cdr *currin*) nil '$eof$))
+		      (cond ((eq c #\>)
 			     (setq c '$eof$))
 			    (t
 			     (pprin2 #\>)
 			     (pprin2 c)
-			     (setq c (read-char nil nil '$eof$)))))        
+			     (setq c (read-char (cdr *currin*) nil '$eof$)))))
 		     (t
 		      (progn (pprin2 c)
-			     (setq c (read-char nil nil '$eof$))))))))
+			     (setq c (read-char (cdr *currin*) nil '$eof$))))))))
 
 (defun procccomm ()  ;;; use character objects --mds
   ; /* ... */ ;
   (prog (c)
 	(pprin2 *slash*)
-	(setq c (read-char nil nil '$eof$))
-	(cond ((eql c #\*)
+	(setq c (read-char (cdr *currin*) nil '$eof$))
+	(cond ((eq c #\*)
 	       (progn (pprin2 c)
-		      (setq c (read-char nil nil '$eof$))
-		      (repeat (progn (loop while (not (eql c #\*)) do
+		      (setq c (read-char (cdr *currin*) nil '$eof$))
+		      (repeat (progn (loop while (not (eq c #\*)) do
 					    (progn (pprin2 c)
-						   (setq c (read-char nil nil '$eof$))))
+						   (setq c (read-char (cdr *currin*) nil '$eof$))))
 				     (pprin2 c)
-				     (setq c (read-char nil nil '$eof$)))
-			      (eql c *slash*))
+				     (setq c (read-char (cdr *currin*) nil '$eof$)))
+			      (eq c *slash*))
 		      (pprin2 c)
-		      (setq c (read-char nil nil '$eof$)))))
+		      (setq c (read-char (cdr *currin*) nil '$eof$)))))
 	(return c)))
 
 
@@ -399,8 +393,8 @@
 	(setq vexptrm *vexptrm)
 	(meval vexp)
 	(cond ((member vexptrm '(#\NULL #\>))
-	       (return (cond ((equal (setq c (read-char nil nil '$eof$)) *cr*)
-			      (read-char nil nil '$eof$))
+	       (return (cond ((equal (setq c (read-char (cdr *currin*) nil '$eof$)) *cr*)
+			      (read-char (cdr *currin*) nil '$eof$))
 			     (c)))))
 	(go loop)))
 
@@ -747,7 +741,7 @@
 	(setq $gentranlang a))
 
 (defun imptype(var)
-   (cond ((member (car (exploden var)) '(#\i #\j #\k #\l #\m #\n #\I #\J #\K #\L #\M #\N)) 'integer) ;; fixed old char's for implicit --mds
+   (cond ((member (car (exploden var)) '(#\i #\j #\k #\l #\m #\n #\I #\J #\K #\L #\M #\N) :test #'eq) 'integer) ;; fixed old char's for implicit --mds
 	 (t 'real)))
 
 (defun arrayeltp (exp)
@@ -1197,7 +1191,7 @@
 
 
 (defun pprin2 (arg)
-  (if (eql arg *cr*)
+  (if (eq arg *cr*)
       (foreach c in *outchanl* do (terpri c))
       (foreach c in *outchanl* do (princ arg c))))
 
@@ -1302,7 +1296,7 @@
 	 (let ((var (cadr exp)) (pow (caddr exp)))
 	   (cond ((eq var '$%e) (list 'exp (franzexp pow 3 context))) ;;rjf --mds double-float numbers in exponentials
 	    
-	    ((or (eql pow -1)
+	    ((or (eq pow -1)
 			 (and (listp pow)
 			      (eq (caar pow) 'mminus)
 			      (onep (cadr pow))))
@@ -4370,7 +4364,7 @@
 
 
 (defun gentranin (inlist outlist)
-  (prog (holdich ogendecs) ;; disable declarations of tempvars in template --mds
+  (prog (ogendecs) ;; disable declarations of tempvars in template --mds
         (setq ogendecs *gendecs)
         (setq *gendecs nil)
         (setq inlist (map 'list 'fsearch inlist)) ;; use filesearch to find input files --mds
@@ -4385,7 +4379,6 @@
 		       ))
 	(cond (outlist
 	       (eval (list 'gentranoutpush (list 'quote outlist) nil))))
-	(setq holdich (rds nil))
 	(foreach inf in inlist do
 		 (progn
 		  (cond ((equal inf (car *stdin*))
@@ -4398,15 +4391,12 @@
 			(t
 		        (pushinstk (cons inf (open inf
                                                   :direction :input)))))
-              (setq *standard-input* (cdr *currin*))
 
 
 
-		  (rds (cdr *currin*))
 		  (cond ((eq (stripdollar1 $gentranlang) 'ratfor) (procrattem))
 			((eq (stripdollar1 $gentranlang) 'c) (procctem))
 			(t (procforttem)))
-		  (rds holdich)
 		  (cond ((cdr *currin*) (close (cdr *currin*))))
 		  (popinstk)))
         (setq *gendecs ogendecs) ;;re-enable gendecs --mds
