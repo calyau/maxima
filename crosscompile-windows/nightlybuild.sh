@@ -42,7 +42,7 @@ buildprocess () {
     echo
     echo
     buildinformation
-    cp "maxima-clisp-sbcl-current-$1.exe" ~
+    cp maxima-*-current-*.exe ~
 }
 
 # sleep until a given time
