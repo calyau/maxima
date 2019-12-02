@@ -44,8 +44,7 @@ string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel user
 !include LogicLib.nsh
 " MYNSISTEMPLATE "${MYNSISTEMPLATE}")
 
-string(REPLACE "Function .onInit" "
-Function .onInit
+string(REPLACE "Function .onInit" "Function .onInit
 \${GetParameters} \$0
 \${GetOptions} \$0 \"/no_vtk\" \$1
 \${IfNot} \${Errors}
@@ -59,6 +58,12 @@ Function .onInit
 \${IfNot} \${Errors}
     !insertmacro UnselectSection \${wxmaxima}
 \${EndIf}
+\${GetOptions} \$0 \"/?\" \$1
+\${IfNot} \${Errors}
+        MessageBox MB_OK \"Installer for Maxima\$\\n\$\\nThis installer allows the following command line options:\$\\n        /S - silent install\$\\n        /D=<path> - select the install path\$\\n        /no_vtk - do not select VTK\$\\n        /no_gnuplot - do not select Gnuplot\$\\n        /no_wxmaxima - do not select wxMaxima\$\\n        /? - this help message\$\\n\$\\nMaxima Website: http://maxima.sourceforge.net\"
+        Abort
+\${EndIf}
+
 " MYNSISTEMPLATE "${MYNSISTEMPLATE}")
 file(WRITE ${CMAKE_BINARY_DIR}/NSIS.template.in "${MYNSISTEMPLATE}")
 message(STATUS "Copied and patched ${CMAKE_ROOT}/Modules/NSIS.template.in to ${CMAKE_BINARY_DIR}/NSIS.template.in")
