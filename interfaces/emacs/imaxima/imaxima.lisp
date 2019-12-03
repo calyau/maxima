@@ -122,10 +122,6 @@ nor Gnuplot is not recognized by maxima"))))
 
 (defun diff-symbol () '$d)
 
-(defun memq (elem seq)
-  #+(or cmu scl) (declare (inline member))
-  (member elem seq :test #'eq))
-
 (defun main-prompt ()
   (format () (concatenate 'string (string (code-char 3)) "(~A~D) " (string (code-char 4)))
     (stripdollar (print-case-sensitive $inchar)) $linenum))
