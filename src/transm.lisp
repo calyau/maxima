@@ -14,8 +14,6 @@
 
 (macsyma-module transm macro)
 
-(defprop dcl maxdoc fasl-dir)
-
 (defmacro def%tr (name lambda-list &body body &aux definition)
   (setq definition
 	(if (and (null body) (symbolp lambda-list))
