@@ -102,9 +102,7 @@ nor Gnuplot is not recognized by maxima"))))
 
 (style-warning-suppressor
 
-(declare-top
-	 (special lop rop $gcprint $inchar *autoconf-version*)
-	 (*expr tex-lbp tex-rbp))
+(declare-top (special lop rop $gcprint $inchar *autoconf-version*))
 
 ;;;
 ;;; Very unfortunately, the following code does not work in
