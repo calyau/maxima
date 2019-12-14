@@ -102,9 +102,7 @@ nor Gnuplot is not recognized by maxima"))))
 
 (style-warning-suppressor
 
-(declare-top
-	 (special lop rop $gcprint $inchar *autoconf-version*)
-	 (*expr tex-lbp tex-rbp))
+(declare-top (special lop rop $gcprint $inchar *autoconf-version*))
 
 ;;;
 ;;; Very unfortunately, the following code does not work in
@@ -121,10 +119,6 @@ nor Gnuplot is not recognized by maxima"))))
     nil))
 
 (defun diff-symbol () '$d)
-
-(defun memq (elem seq)
-  #+(or cmu scl) (declare (inline member))
-  (member elem seq :test #'eq))
 
 (defun main-prompt ()
   (format () (concatenate 'string (string (code-char 3)) "(~A~D) " (string (code-char 4)))
@@ -211,7 +205,7 @@ nor Gnuplot is not recognized by maxima"))))
 	   x)))
     (cond ((equal sym-name "") "")
 	  ((eql (elt sym-name 0) #\\) sym-name)
-	  ((memq (elt sym-name 0) '(#\$ #\&))
+	  ((member (elt sym-name 0) '(#\$ #\&))
 	   (setq sym-name (unquote-% (subseq sym-name 1)))
 	   (concatenate 'string "\\verb|   " (verb-quote sym-name) "|"))
 	  (t (setq sym-name (unquote-% sym-name))
@@ -253,7 +247,7 @@ nor Gnuplot is not recognized by maxima"))))
 (defun tex-stripdollar (sym)
   (or (symbolp sym) (return-from tex-stripdollar sym))
   (let* ((name (print-case-sensitive sym))
-      (pname (if (memq (elt name 0) '(#\$ #\&)) (subseq name 1) name))
+      (pname (if (member (elt name 0) '(#\$ #\&)) (subseq name 1) name))
       (l (length pname)))
     (cond
      ((eql l 1) (myquote pname))

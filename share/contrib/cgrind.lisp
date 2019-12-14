@@ -11,8 +11,7 @@
 ;; M. Talon (2011)
 
 
-(declare-top ($loadprint ;If NIL, no load message gets printed.
-	))
+(declare-top (special $loadprint)) ;If NIL, no load message gets printed.
 
 ;; This function is called from Macsyma toplevel.  First the arguments is
 ;; checked to be a single expression. Then if the argument is a

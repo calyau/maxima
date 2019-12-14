@@ -52,17 +52,6 @@
 
 ;DECLARATIONS
 (declare-top
-  (localf
-    lire1 lire2
-    *ipolmon *iterm isyz *icofpol -ipol -ipol2
-    *gpolmon *gterm -gpol *gcofpol
-    ired2 idiv-tete2 *gcd primpart
-    iredp idivp idivise2
-    red1 div-terme divise
-    apparier rafraichir reduire inserer vivier
-    macplus macmoins macdiv mactimes
-    notdivmon densif sousp
-    )
   (special
     $nbsyz $nbred $nbreduc $nbred0 ordexp orddeg ordpairs ordlex
     $orddeg $ordlex 
