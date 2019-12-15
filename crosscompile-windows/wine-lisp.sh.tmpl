@@ -5,4 +5,4 @@ export WINEPREFIX
 WINEDLLOVERRIDES="mscoree,mshtml="
 export WINEDLLOVERRIDES
 unset DISPLAY
-@WINE_EXE@ @CLISPROOT@/base/lisp.exe "$@"
+@WINE_EXE@ @CMAKE_BINARY_DIR@/clisp-prefix/src/clisp/base/lisp.exe "$@"
