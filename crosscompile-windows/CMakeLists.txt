@@ -106,11 +106,11 @@ endif()
 # updated setup-file automatically.
 
 # current program versions
-set(CLISPVERSION       2.49)
+set(CLISPVERSION 2.49)
 
 
 # MD5 checksums for the current program versions.
-set(CLISP_MD5       "8d58d64f83dd7ad01c054aecc16c1f52")
+set(CLISP_MD5 "8d58d64f83dd7ad01c054aecc16c1f52")
 
 if(BUILD_CURRENT)
     set(USE_WXMAXIMA_GIT YES)
@@ -125,7 +125,7 @@ endif()
 
 
 # download URLs
-set(CLISP_URL     "http://downloads.sourceforge.net/project/clisp/clisp/${CLISPVERSION}/clisp-${CLISPVERSION}-win32-mingw-big.zip")
+set(CLISP_URL "http://downloads.sourceforge.net/project/clisp/clisp/${CLISPVERSION}/clisp-${CLISPVERSION}-win32-mingw-big.zip")
 
 
 # Where are libgcc and libstdc++?
