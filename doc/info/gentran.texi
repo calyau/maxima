@@ -1,7 +1,12 @@
-@node Top
-@top Top
+@menu
+* Introduction to Gentran::
+* Functions for Gentran::
+* Mode Switches::
+* Option Variables::
+@end menu
 
-@strong{Gentran}
+@node Introduction to Gentran, Functions for Gentran
+@section Introduction to Gentran
 
 Original Authors Barbara Gates and Paul Wang
 
@@ -11,7 +16,8 @@ Gentran can translate mathematical expressions, iteration loops,
 conditional branching statements, data type information, function
 definitions, matrtices and arrays, and more.
 
-@strong{Main gentran functions (special forms):}
+@node Functions for Gentran, Mode Switches, Introduction to Gentran
+@section Functions for Gentran
 
 @strong{gentran}(@emph{stmtl, stmt2, ... , stmtn , [fl, f2, ... , fm]})
 
@@ -163,7 +169,8 @@ Turns on the mode switch @emph{sw}.
 
 Turns the given switch, @emph{sw}, off.
 
-@strong{Mode switches:}
+@node Mode Switches, Option Variables, Functions for Gentran
+@section Mode switches
 
 fortran default: off
 
@@ -198,7 +205,8 @@ be placed in an inappropriate place (@emph{e.g.} in the middle of
 executable fortran code). Therefore the gendecs flag is turned off
 during processing of templates by @strong{gentranin}.
 
-@strong{Option Variables:}
+@node Option Variables,  , Mode Switches
+@section Option Variables
 
 @strong{gentranlang} @emph{default}: fortran
 
