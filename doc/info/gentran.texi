@@ -185,11 +185,10 @@ Turns the given switch, @emph{sw}, off.
 @node Mode Switches, Option Variables, Functions for Gentran
 @section Mode switches
 
-fortran default: off
-
-ratfor default: off
-
-c default: off
+@defvr {Option variable} fortran
+@defvrx {Option variable} ratfor
+@defvrx {Option Variable} c
+Default: off
 
 These mode switches change the default mode of Maxima from evaluation to
 translation. They can be turned on and off with the gentran commands
@@ -205,8 +204,10 @@ translated into the corresponding language just as if it had been given
 as an argument to the gentran command. Each of the special functions
 that can be used from within a call to gentran can be used at the top
 level until the switch is turned off.
+@end defvr
 
-@strong{gendecs} default: on
+@defvr {Option variable} gendecs
+Default: on
 
 When the gendecs switch is turned on, gentran generates type
 declarations whenever possible. When gendecs is switched off, type
@@ -217,55 +218,84 @@ flag is switched back. @strong{Note}: Generated declarations may often
 be placed in an inappropriate place (@emph{e.g.} in the middle of
 executable fortran code). Therefore the gendecs flag is turned off
 during processing of templates by @strong{gentranin}.
+@end defvr
 
 @node Option Variables,  , Mode Switches
 @section Option Variables
 
-@strong{gentranlang} @emph{default}: fortran
+@defvr {Option variable} gentranlang
+Default: fortran
 
 Selects the target numerical language. Currently, gentranlang must be
 fortran, ratfor, or c. Note that symbols entered in Maxima are
 case-sensitive. gentranlang should not be set to FORTRAN, RATFOR or C.
 
-@strong{fortlinelen} @emph{default}: 72
+@end defvr
+
+@defvr {Option variable} fortlinelen
+default: 72
 
 Maximum number of characters printed on each line of generated FORTRAN
 code.
 
-@strong{minfortlinelen} @emph{default}: 40
+@end defvr
+
+@defvr {Option variable} minfortlinelen
+Default: 40
 
 Minimum number of characters printed on each line of generated FORTRAN
 code.
 
-@strong{fortcurrind} @emph{default}:0
+@end defvr
+
+@defvr {Option variable} fortcurrind 
+Default: 0
 
 Number of blank spaces printed at the beginning of each line of
 generated FORTRAN code (after column 6).
 
-@strong{ratlinelen} @emph{default}: 80
+@end defvr
+
+@defvr {Option variable} ratlinelen
+Default: 80
 
 Maximum number of characters printed on each line of generated Ratfor
 code.
 
-@strong{clinelen} @emph{default}: 80
+@end defvr
+
+@defvr {Option variable} clinelen
+Default: 80
 
 Maximum number of characters printed on each line of generated 'C' code.
 
-@strong{minclinelen} @emph{default}: 40
+@end defvr
+
+@defvr {Option variable} minclinelen
+Default: 40
 
 Minimum number of characters printed on each line of generated 'C' code.
 
-@strong{ccurind} @emph{default}: 0
+@end defvr
+
+@defvr {Option variable} ccurind
+Default: 0
 
 Number of blank spaces printed at the beginning of each line of
 generated'C' code.
 
-@strong{tablen} @emph{default}: 4
+@end defvr
+
+@defvr {Option variable} tablen
+Default: 4
 
 Number of blank spaces printed for each new level of indentation.
 (Automatic indentation can be turned off by setting this variable to 0.)
 
-@strong{genfloat} @emph{default}: @strong{false}
+@end defvr
+
+@defvr {Option variable} genfloat
+Default: false
 
 When set to true (or any non-false value), causes integers in generated
 numerical code to be converted to floating point numbers, except in the
@@ -274,16 +304,25 @@ step values in do-loops. An exception (for compatibility with Macsyma
 2.4) is that numbers in exponentials (with base %e only) are
 double-floated even when genfloat is false.
 
-@strong{dblfloat} @emph{default}: @strong{false} If dblfloat is set to
+@end defvr
+
+@defvr {Option variable} dblfloat
+Default: @strong{false} If dblfloat is set to
 true, floating point numbers in gentran output in implementations (such
 asWindows Maxima under CLISP) in which float and double-float are the
 same will be printed as *.d0. In implementations in which float and
 double-float are different, floats will be coerced to double-float
 before being printed.
 
-@strong{gentranseg} @emph{default}: @strong{true}
+@end defvr
 
-@strong{maxexpprintlen} @emph{default}: 800
+@defvr {Option variable} gentranseg
+Default: @strong{true}
+
+@end defvr
+
+@defvr {Option variable} maxexpprintlen
+Default: 800
 
 When @strong{gentranseg} is true (or any non-false value), causes
 Gentran to "segment" large expressions into subexpressions of manageable
@@ -309,7 +348,10 @@ non-false value, then the temporary variables are declared to be of that
 type. 3. Otherwise, the variables are not declared unless
 @strong{implicit} has been set to @strong{true}.
 
-@strong{gentranopt} @emph{default}: @strong{false}
+@end defvr
+
+@defvr {Option variable} gentranopt
+Default: @strong{false}
 
 When set to true (or any non-false value), causes Gentran to replace
 each block of straightline code by an optimized sequence of assignments
@@ -318,18 +360,29 @@ an expression and replaces common subexpressions by temporary variable
 names. It returns the resulting assignment statement, preceded by
 common-subexpression-to-temporary-variable assignments.
 
-@strong{tempvarname} @emph{default}: @strong{‘t}
+@end defvr
+
+@defvr {Option variable} tempvarname
+Default: @strong{‘t}
 
 Name used as the prefix when generating temporary variable names.
 
-@strong{optimvarname} (@emph{default}: @strong{‘u}) is the preface used
+@end defvr
+
+@defvr {Option variable} optimvarname 
+default: @strong{‘u}
+
+is the preface used
 to generate temporary file names produced by the optimizer when
 @strong{gentranopt} is @strong{true}. When both gentranseg and
 gentranopt are true, the optimizer generates temporary file names using
 @strong{optimvarname} while the segmentation routine uses
 @strong{tempvarname} preventing conflict.
 
-@strong{tempvarnum} @emph{default}: 0
+@end defvr
+
+@defvr {Option variable} tempvarnum
+Default: 0
 
 Number appended onto tempvarname to create a temporary variable name. If
 the temporary variable name resulting from appending tempvarnum onto the
@@ -338,7 +391,10 @@ value or has a different type than requested, then the number is
 incremented until one is found that was not previously generated or does
 not still hold a significant value or a different type.
 
-@strong{tempvartype} @emph{default}: @strong{false}
+@end defvr
+
+@defvr {Option variable} tempvartype
+Default: @strong{false}
 
 Target language variable type (e.g., INTEGER, REAL•8, FLOAT, etc.) used
 as a default for automatically generated variables whose type cannot be
@@ -346,27 +402,39 @@ determined otherwise. If tempvartype is false, then generated temporary
 variables whose type cannot be determined are not automatically
 declared.
 
-@strong{implicit} @emph{default}: @strong{false}
+@end defvr
+
+@defvr {Option variable} implicit
+Default: @strong{false}
 
 If implicit is set to @strong{true} temporary variables are assigned
 their implicit type according to Fortran rules based on the initial
 letter of the name. If gendecs is on, this results in printed type
 declarations.
 
-@strong{gentranparser} @emph{default}: @strong{false}
+@end defvr
+
+@defvr {Option variable} gentranparser
+Default: @strong{false}
 
 If gentranparser is set to @strong{true} Maxima forms input to gentran
 will be parsed and an error will be produced if an expression cannot be
 translated. Otherwise, untranslatable expressions may generate anomalous
 output, sometimes containing explicit calls to Maxima functions.
 
-@strong{genstmtno} @emph{default}: 25000
+@end defvr
+
+@defvr {Option variable} genstmtno
+Default: 25000
 
 Number used when a statement number must be generated. Note: it is the
 user's responsibility to make sure this number will not clash with
 statement numbers in template files.
 
-@strong{genstmtincr} @emph{default}: 1
+@end defvr
+
+@defvr {Option variable} genstmtincr
+Default: 1
 
 number by which genstmtno is incremented each time a new statement
 number is generated.
@@ -378,6 +446,7 @@ which are to be translated by the gentran command to indicate that they
 are to be partially or fully evaluated by Maxima before being translated
 into numerical code. Note that these functions have the described effect
 only when supplied in arguments to the gentran command.
+@end defvr
 
 @deffn {Function} eval {@emph{exp}}
 
@@ -417,7 +486,9 @@ translated by Gentran into the target language. This is equivalent to
 VAR[eval(S1),EVAL(s2)...] : EVAL(EXP);
 @end deffn
 
-@strong{type} (@emph{type,v1@dots{}vn})
+@end defvr
+
+@defvr {Option variable} type (@emph{type,v1@dots{}vn})
 
 Places information in the gentran symbol table to assign @emph{type} to
 variables @emph{v1@dots{}vn}. This may result in type declarations
@@ -425,14 +496,18 @@ printed by gentran depending on the setting of gendecs. @strong{type}
 must be called from within gentran and does not evaluate its arguments
 unless @strong{eval}() is used.
 
-@strong{usefortcomplex} @emph{default}:@strong{false}
+@end defvr
+
+@defvr {Option variable} usefortcomplex @emph{default}:@strong{false}
 
 If usefortcomplex is true, real numbers in expressions declared to be
 complex by @emph{type(complex,@dots{})} will be printed in Fortran
 complex number format @emph{(realpart,0.0)}. This is a purely syntactic
 device and does not carry out any complex calculations.
 
-@strong{literal}(@emph{argl, arg2, ... , argn})
+@end defvr
+
+@defvr {Option variable} literal(@emph{argl, arg2, ... , argn})
 
 where argl, arg2, ... , argn is an argument list containing one or more
 arg's, each of which either is, or evaluates to, an atom. The atoms
@@ -442,3 +517,4 @@ character sequence resulting from concatenation of the given atoms.
 Double quotes are stripped from all string type arg's, and each
 occurrence of the reserved atom @emph{tab} or @emph{cr} is replaced by a
 tab to the current level of indentation, or an end-of-line character.
+@end defvr
