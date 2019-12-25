@@ -19,7 +19,7 @@ definitions, matrtices and arrays, and more.
 @node Functions for Gentran, Mode Switches, Introduction to Gentran
 @section Functions for Gentran
 
-@deffn {Function} gentran {@var{stmtl}, @var{stmt2}, ... , @var{stmtn} , @var{[fl, f2, ... , fm]}}
+@deffn {Function} gentran (@var{stmtl}, @var{stmt2}, ... , @var{stmtn} , @var{[fl, f2, ... , fm]})
 Translates each stmt into formatted code in the target language. A
 substantial subset of expressions and statements in the Maxima
 programming language can be translated directly into numerical code. The
@@ -53,7 +53,7 @@ current output, generally the terminal. @strong{gentran} returns (a list
 of) the name(s) of file(s) to which code was written.
 @end deffn
 
-@deffn {Function} gentranout {@var{fl}, @var{f2}, ... , @var{fn}}
+@deffn {Function} gentranout (@var{fl}, @var{f2}, ... , @var{fn})
 
 Gentran maintains a list of files currently open for output by gentran
 commands only. gentranout inserts each file name represented by
@@ -64,7 +64,7 @@ fl, f2, ... , fn}. gentranout returns the list of files represented by
 command has been executed.
 @end deffn
 
-@deffn {Function} gentranshut {@var{fl}, @var{f2}, ... , @var{fn}}
+@deffn {Function} gentranshut (@var{fl}, @var{f2}, ... , @var{fn})
 
 gentranshut creates a list of file names from @emph{fl, f2, ... , fn},
 deletes each from the output file list, and closes the corresponding
@@ -74,7 +74,7 @@ list of) the current output file(s) after the command has been executed.
 @strong{gentranshut}(@strong{all}) will close all gentran output files.
 @end deffn
 
-@deffn {Function} gentranpush {@emph{f1, f2, ... , fn}}
+@deffn {Function} gentranpush (@var{f1}, @var{f2}, ... , @var{fn})
 
 gentranpush pushes the file list onto the output stack. Each file in the
 list that is not already open for output is opened at this time. The
@@ -82,7 +82,7 @@ current output file is reset to this new element on the top of the
 stack.
 @end deffn
 
-@deffn {Function} gentranpop {@emph{fl, f2, ... , fn}}
+@deffn {Function} gentranpop (@var{fl}, @var{f2}, ... , @var{fn})
 
 gentranpop deletes the top-most occurrence of the single element
 containing the file name(s) represented by @emph{fl, f2, ... , fn} from
@@ -92,7 +92,7 @@ the output stack are closed. The current output file is reset to the
 current output file(s) after this command has been executed.
 @end deffn
 
-@deffn {Function} gentranin {@emph{fl, f2, ... , fn}, @emph{[fl,f2, ... , fm]}}
+@deffn {Function} gentranin (@var{fl}, @var{f2}, ... , @var{fn}, [@var{fl},@var{f2}, ... , @var{fm}])
 
 gentranin processes mixed-language template files consisting of active
 parts (delimited by <<@dots{}>>) containing Maxima statements, including
@@ -129,13 +129,13 @@ the same both before and after the call. gentranin returns (to the
 terminal) the name(s) of (all) file(s) written to by this command.
 @end deffn
 
-@deffn {Function} gentraninshut {}
+@deffn {Function} gentraninshut ()
 
 A cleanup function to close input files in case where gentranin hung due
 to error in template.
 @end deffn
 
-@deffn {Function} tempvar {@emph{type}}
+@deffn {Function} tempvar (@var{type})
 
 Generates temporary variable names by concatenating @strong{tempvarname}
 (default @strong{‘t}) with sequence numbers. If @emph{type} is
@@ -146,25 +146,25 @@ is the users responsibility to make sure temporary variable names do not
 conflict with the main program.
 @end deffn
 
-@deffn {Function} markvar {@emph{vname}}
+@deffn {Function} markvar (@var{vname})
 
 markvar "marks" variable name @emph{vname} to indicate that it currently
 holds a significant value.
 @end deffn
 
-@deffn {Function} unmarkvar {@emph{vname}}
+@deffn {Function} unmarkvar (@var{vname})
 
 unmarkvar "unmarks" variable name @emph{vname} to indicate that it no
 longer holds a significant value.
 @end deffn
 
-@deffn {Function} markedvarp {@emph{vname}}
+@deffn {Function} markedvarp (@var{vname})
 
 markedvarp tests whether the variable name @emph{vname} is currently
 marked.
 @end deffn
 
-@deffn {Function} gendecs {@emph{name}}
+@deffn {Function} gendecs (@var{name})
 
 The gendecs command can be called any time the gendecs flag is switched
 off to retrieve all type declarations from Gentran's symbol table for
@@ -172,12 +172,12 @@ the given subprogram name (or the "current" subprogram if false is given
 as its argument).
 @end deffn
 
-@deffn {Function} gentran_on {@emph{sw}}
+@deffn {Function} gentran_on (@var{sw})
 
 Turns on the mode switch @emph{sw}.
 @end deffn
 
-@deffn {Function} gentran_off {@emph{sw}}
+@deffn {Function} gentran_off (@var{sw})
 
 Turns the given switch, @emph{sw}, off.
 @end deffn
@@ -438,17 +438,17 @@ Default: 1
 
 number by which genstmtno is incremented each time a new statement
 number is generated.
+@end defvr
 
-@strong{Evaluation Forms:}
+@subsection{Evaluation Forms}
 
 The following special functions can be included in Maxima statements
 which are to be translated by the gentran command to indicate that they
 are to be partially or fully evaluated by Maxima before being translated
 into numerical code. Note that these functions have the described effect
 only when supplied in arguments to the gentran command.
-@end defvr
 
-@deffn {Function} eval {@emph{exp}}
+@deffn {Function} eval (@var{exp})
 
 Where @emph{exp} is any Maxima expression or statement which, after
 evaluation by Maxima, results in an expression that can be translated by
@@ -458,7 +458,7 @@ Maxima for evaluation first, and then to translate the result of that
 evaluation.
 @end deffn
 
-@deffn {Function} rsetq {@emph{var}, @emph{exp}}
+@deffn {Function} rsetq (@var{var}, @var{exp})
 
 Where @emph{var} is any Maxima variable, matrix or array element, and
 @emph{exp} is any Maxima expression which, after evaluation by Maxima
@@ -485,8 +485,6 @@ which, after evaluation, will result in an expression that can be
 translated by Gentran into the target language. This is equivalent to
 VAR[eval(S1),EVAL(s2)...] : EVAL(EXP);
 @end deffn
-
-@end defvr
 
 @defvr {Option variable} type (@emph{type,v1@dots{}vn})
 
