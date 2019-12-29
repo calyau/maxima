@@ -4,7 +4,7 @@
 * Functions and Variables for binary input and output::
 @end menu
 
-@node Introduction to numericalio, Functions and Variables for plain-text input and output, odepack-pkg, numericalio-pkg
+@node Introduction to numericalio, Functions and Variables for plain-text input and output, mnewton-pkg, numericalio-pkg
 @section Introduction to numericalio
 
 @code{numericalio} is a collection of functions to read and write files and streams.

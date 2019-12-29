@@ -2,10 +2,11 @@
 
 @menu
 * Introduction to ODEPACK::     
+* Getting Started with ODEPACK::
 * Functions and Variables for odepack::  
 @end menu
 
-@node Introduction to ODEPACK, , Functions and Variables for binary input and output, odepack-pkg
+@node Introduction to ODEPACK, Getting Started with ODEPACK, numericalio-pkg, odepack-pkg
 @section Introduction to ODEPACK
 
 @quotation
@@ -33,12 +34,8 @@ References:
 @category{Package odepack}
 @closecatbox
 
-@menu
-* Getting Started::             
-@end menu
-
-@node Getting Started,  , Introduction to ODEPACK, Introduction to ODEPACK
-@subsection Getting Started
+@node Getting Started with ODEPACK, Functions and Variables for odepack, Introduction to ODEPACK, odepack-pkg
+@subsection Getting Started with ODEPACK
 
 Of the eight variants of the solver, maxima currently only has an
 inteface the @code{dlsode}.
@@ -123,7 +120,7 @@ At t =   4.0000e+10   y =  -7.170563e-08 -2.868225e-13  1.000000e+00
 @end example
 
 
-@node Functions and Variables for odepack,  , Introduction to ODEPACK
+@node Functions and Variables for odepack, operatingsystem-pkg, Getting Started with ODEPACK, odepack-pkg
 @section Functions and Variables for odepack
 
 @deffn {Function} dlsode_init (@var{fex}, @var{vars}, @var{method})
