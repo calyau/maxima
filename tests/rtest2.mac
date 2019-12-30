@@ -1085,7 +1085,7 @@ errcatch (arraymake ("foo", [bar]));
 errcatch (arraymake (lambda([x], x), [bar]));
 [];
 
-/* slightly unusual constructs which do yield valid expressions, and are therefore permissable */
+/* slightly unusual constructs which do yield valid expressions, and are therefore permissible */
 
 arraymake (foo + bar, [baz]);
 (foo + bar)[baz];

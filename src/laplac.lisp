@@ -820,8 +820,6 @@
 		  1
 		  nil))))
 
-(declare-top(notype k))
-
 ;;(DEFUN COEF MACRO (POL) (SUBST (CADR POL) (QUOTE DEG)
 ;;  '(DISREP (RATQU (POLCOEF (CAR P) DEG) (CDR P)))))
 

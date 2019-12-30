@@ -9,9 +9,9 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(WXWIDGETSVERSION   "3.1.3")
+set(WXWIDGETSVERSION "3.1.3")
 
-set(WXWIDGETS_MD5   "f4bfa03a071cc20efba84fbcef9533fd")
+set(WXWIDGETS_MD5 "f4bfa03a071cc20efba84fbcef9533fd")
 
 set(WXWIDGETS_URL "https://github.com/wxWidgets/wxWidgets/releases/download/v${WXWIDGETSVERSION}/wxWidgets-${WXWIDGETSVERSION}.tar.bz2")
 

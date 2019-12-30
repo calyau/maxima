@@ -2670,7 +2670,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	      (t (cons (cons (car a) dumx) (cleanup1 (cdr a)))))))
 ;Make list of dotted pairs indicating substitutions i.e. ((a . #1) (b . #2))
 
-(declare-top (notype n index)(unspecial n dumx index))
+(declare-top (unspecial n dumx index))
 
 (defun itensor-sort (l) (cond ((cdr l) (sort l 'less)) (t l)))
 ;Sort into ascending order

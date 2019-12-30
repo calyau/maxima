@@ -12,14 +12,14 @@
 set(VTKVERSION  "6.3.0")
 
 if(BUILD_64BIT)
-    set(VTK_MD5           "c70ced791c09083a39866a76834fae60")
+    set(VTK_MD5 "c70ced791c09083a39866a76834fae60")
     set(VTK_INSTALLERNAME "vtkpython-${VTKVERSION}-Windows-64bit.exe")
 else()
-    set(VTK_MD5           "8d8b0878be81a0ab471e929f828dfe9a")
+    set(VTK_MD5 "8d8b0878be81a0ab471e929f828dfe9a")
     set(VTK_INSTALLERNAME "vtkpython-${VTKVERSION}-Windows-32bit.exe")
 endif()
 
-set(VTK_URL       "http://www.vtk.org/files/release/6.3/${VTK_INSTALLERNAME}")
+set(VTK_URL "http://www.vtk.org/files/release/6.3/${VTK_INSTALLERNAME}")
 
 
 

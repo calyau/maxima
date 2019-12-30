@@ -11,15 +11,15 @@
 
 if(BUILD_64BIT)
     set(SBCLVERSION "1.4.14")
-    set(SBCL_MD5           "c1c002264415d8f1f6f51412c88f7293")
+    set(SBCL_MD5 "c1c002264415d8f1f6f51412c88f7293")
     set(SBCL_INSTALLERNAME "sbcl-${SBCLVERSION}-x86-64-windows-binary.msi")
 else()
     set(SBCLVERSION "1.4.14")
-    set(SBCL_MD5           "01f1927c4dea0d9a9322c28c58fadb7d")
+    set(SBCL_MD5 "01f1927c4dea0d9a9322c28c58fadb7d")
     set(SBCL_INSTALLERNAME "sbcl-${SBCLVERSION}-x86-windows-binary.msi")
 endif()
 
-set(SBCL_URL      "http://prdownloads.sourceforge.net/sbcl/${SBCL_INSTALLERNAME}")
+set(SBCL_URL "http://prdownloads.sourceforge.net/sbcl/${SBCL_INSTALLERNAME}")
 
 externalproject_add(sbcl
   URL "${SBCL_URL}"

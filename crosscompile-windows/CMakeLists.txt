@@ -44,8 +44,7 @@ string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel user
 !include LogicLib.nsh
 " MYNSISTEMPLATE "${MYNSISTEMPLATE}")
 
-string(REPLACE "Function .onInit" "
-Function .onInit
+string(REPLACE "Function .onInit" "Function .onInit
 \${GetParameters} \$0
 \${GetOptions} \$0 \"/no_vtk\" \$1
 \${IfNot} \${Errors}
@@ -59,6 +58,12 @@ Function .onInit
 \${IfNot} \${Errors}
     !insertmacro UnselectSection \${wxmaxima}
 \${EndIf}
+\${GetOptions} \$0 \"/?\" \$1
+\${IfNot} \${Errors}
+        MessageBox MB_OK \"Installer for Maxima\$\\n\$\\nThis installer allows the following command line options:\$\\n        /S - silent install\$\\n        /D=<path> - select the install path\$\\n        /no_vtk - do not select VTK\$\\n        /no_gnuplot - do not select Gnuplot\$\\n        /no_wxmaxima - do not select wxMaxima\$\\n        /? - this help message\$\\n\$\\nMaxima Website: http://maxima.sourceforge.net\"
+        Abort
+\${EndIf}
+
 " MYNSISTEMPLATE "${MYNSISTEMPLATE}")
 file(WRITE ${CMAKE_BINARY_DIR}/NSIS.template.in "${MYNSISTEMPLATE}")
 message(STATUS "Copied and patched ${CMAKE_ROOT}/Modules/NSIS.template.in to ${CMAKE_BINARY_DIR}/NSIS.template.in")
@@ -101,11 +106,11 @@ endif()
 # updated setup-file automatically.
 
 # current program versions
-set(CLISPVERSION       2.49)
+set(CLISPVERSION 2.49)
 
 
 # MD5 checksums for the current program versions.
-set(CLISP_MD5       "8d58d64f83dd7ad01c054aecc16c1f52")
+set(CLISP_MD5 "8d58d64f83dd7ad01c054aecc16c1f52")
 
 if(BUILD_CURRENT)
     set(USE_WXMAXIMA_GIT YES)
@@ -120,7 +125,7 @@ endif()
 
 
 # download URLs
-set(CLISP_URL     "http://downloads.sourceforge.net/project/clisp/clisp/${CLISPVERSION}/clisp-${CLISPVERSION}-win32-mingw-big.zip")
+set(CLISP_URL "http://downloads.sourceforge.net/project/clisp/clisp/${CLISPVERSION}/clisp-${CLISPVERSION}-win32-mingw-big.zip")
 
 
 # Where are libgcc and libstdc++?
@@ -190,7 +195,6 @@ else()
     set(ABCL_INSTALLER "")
 endif()
 
-set(CLISPROOT "${CMAKE_BINARY_DIR}/clisp-prefix/src/clisp")
 configure_file("${CMAKE_SOURCE_DIR}/wine-clisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-clisp.sh")
 configure_file("${CMAKE_SOURCE_DIR}/wine-lisp.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-lisp.sh")
 configure_file("${CMAKE_SOURCE_DIR}/wine-sbcl.sh.tmpl" "${CMAKE_BINARY_DIR}/wine-sbcl.sh")

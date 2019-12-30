@@ -9,13 +9,13 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(WXMAXIMAVERSION "19.11.0")
+set(WXMAXIMAVERSION "19.12.4")
 
-set(WXMAXIMA_MD5    "fd088684518851057d83488d6ba8c761")
+set(WXMAXIMA_MD5 "b20890e0afe88911773ea4c0c453a1cc")
 
-set(WXMAXIMA_URL    "https://github.com/wxmaxima-developers/wxmaxima/archive/Version-${WXMAXIMAVERSION}.tar.gz")
+set(WXMAXIMA_URL "https://github.com/wxmaxima-developers/wxmaxima/archive/Version-${WXMAXIMAVERSION}.tar.gz")
 
-set(WXMAXIMA_GIT    "https://github.com/wxmaxima-developers/wxmaxima.git")
+set(WXMAXIMA_GIT "https://github.com/wxmaxima-developers/wxmaxima.git")
 
 if(USE_WXMAXIMA_GIT)
     find_package(Git REQUIRED)

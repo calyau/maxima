@@ -9,14 +9,14 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(TCLVERSION  "8.6.10")
-set(TKVERSION   "8.6.10")
+set(TCLVERSION "8.6.10")
+set(TKVERSION  "8.6.10")
 
-set(TCL_MD5     "97c55573f8520bcab74e21bfd8d0aadc")
-set(TK_MD5      "602a47ad9ecac7bf655ada729d140a94")
+set(TCL_MD5 "97c55573f8520bcab74e21bfd8d0aadc")
+set(TK_MD5  "602a47ad9ecac7bf655ada729d140a94")
 
-set(TCL_URL     "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
-set(TK_URL      "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
+set(TCL_URL "http://prdownloads.sourceforge.net/tcl/tcl${TCLVERSION}-src.tar.gz")
+set(TK_URL  "http://prdownloads.sourceforge.net/tcl/tk${TKVERSION}-src.tar.gz")
 
 if(BUILD_64BIT)
     set(CONFIGURE64BIT "--enable-64bit")

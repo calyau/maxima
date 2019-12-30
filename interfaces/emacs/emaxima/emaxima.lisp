@@ -7,9 +7,7 @@
 (setq $maxima_frontend "emaxima")
 (setq $maxima_frontend_version *autoconf-version*)
 
-(declare-top
-	 (special lop rop $gcprint $inchar)
-	 (*expr tex-lbp tex-rbp))
+(declare-top (special lop rop $gcprint $inchar))
 
 (defun main-prompt ()
   (format () "(~A~D) "

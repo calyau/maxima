@@ -1,6 +1,6 @@
-set(ABCL_VERSION 1.5.0)
-set(ABCL_MD5   "7c221baabe2dc763fe8ee584e5c6a256")
-set(ABCL_URL   "https://abcl.org/releases/${ABCL_VERSION}/abcl-bin-${ABCL_VERSION}.tar.gz")
+set(ABCL_VERSION 1.6.0)
+set(ABCL_MD5 "555fa10455fb7ee7932c585ae97526d8")
+set(ABCL_URL "https://abcl.org/releases/${ABCL_VERSION}/abcl-bin-${ABCL_VERSION}.tar.gz")
 
 externalproject_add(abcl
   URL "${ABCL_URL}"
