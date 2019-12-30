@@ -152,6 +152,14 @@
      (go a)))
 
 (defun part+ (e p preds) 
+  (if (and (consp e) (eq (caar e) 'mplus))
+    (part+-mplus e p preds)
+    (part+-not-mplus e p preds)))
+
+(defun part+-not-mplus (e p preds) 
+  (part+-mplus (list '(mplus) 0 e) p preds))
+
+(defun part+-mplus (e p preds) 
   (prog (flag saved val) 
      (if (not (mplusp e)) (matcherr))
      (cond ((> (length p) (length preds))
@@ -190,6 +198,14 @@
      (go a)))
 
 (defun part* (e p preds) 
+  (if (and (consp e) (eq (caar e) 'mtimes))
+    (part*-mtimes e p preds)
+    (part*-not-mtimes e p preds)))
+
+(defun part*-not-mtimes (e p preds) 
+  (part*-mtimes (list '(mtimes) 1 e) p preds))
+
+(defun part*-mtimes (e p preds) 
   (prog (flag saved val) 
      (if (not (mtimesp e)) (matcherr))
      (cond ((> (length p) (length preds))

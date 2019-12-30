@@ -515,6 +515,34 @@ apply1 (FOO (x * y * z * 234), r2);
 FOOTIMES (234, x * y * z);
 
 apply1 (FOO (BAR (a, b, c, 123)), r1, r2);
+FOOPLUS (0, BAR (a, b, c, 123));
+
+apply1 (FOO (BAR (a, b, c, 123)), r2, r1);
+FOOTIMES (1, BAR (a, b, c, 123));
+
+apply1 (FOO (x + y + z + 345), r2);
+FOOTIMES (1, x + y + z + 345);
+
+apply1 (FOO (s * t * u * v * 456), r1);
+FOOPLUS (0, s * t * u * v * 456);
+
+(matchdeclare (xx, lambda ([e], integerp(e) and e # 0), yy, lambda ([ee], not integerp (ee))),
+ defrule (r1, FOO (xx + yy), FOOPLUS (xx, yy)),
+ matchdeclare (xx, lambda ([e], integerp(e) and e # 1)),
+ defrule (r2, FOO (xx * yy), FOOTIMES (xx, yy)),
+ 0);
+0;
+
+apply1 (FOO (a + b + c + 123), r1);
+FOOPLUS (123, a + b + c);
+
+apply1 (FOO (x * y * z * 234), r2);
+FOOTIMES (234, x * y * z);
+
+apply1 (FOO (BAR (a, b, c, 123)), r1, r2);
+FOO (BAR (a, b, c, 123));
+
+apply1 (FOO (BAR (a, b, c, 123)), r2, r1);
 FOO (BAR (a, b, c, 123));
 
 apply1 (FOO (x + y + z + 345), r2);
