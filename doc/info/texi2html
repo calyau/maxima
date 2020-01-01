@@ -6997,7 +6997,7 @@ sub load_init_file
     }
 }
 
-my $cmd_line_lang = 0; # 1 if lang was succesfully set by the command line 
+my $cmd_line_lang = 0; # 1 if lang was successfully set by the command line
                        # in that case @documentlanguage is ignored.
 my $lang_set = 0; # 1 if lang was set
 
