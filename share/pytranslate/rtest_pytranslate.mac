@@ -437,7 +437,7 @@ preprocess(pytranslate(
 def block_random(m_vars):
     m_vars = Stack({}, m_vars)
     m_vars[\"len\"] = m_funcs[\"first\"](m_vars[\"len\"])
-    return((m_funcs[\"error\"](\"illegal argument: \", m_vars[\"len\"], \"  nan \") if not(m_funcs[\"numberp\"](m_vars[\"len\"])) else m_vars[\"false\"]))
+    return((m_funcs[\"error\"](\"illegal argument: \", m_vars[\"len\"], \"  nan \") if not(m_funcs[\"numberp\"](m_vars[\"len\"])) else None))
 
 def cfeval(_a, *len, m_vars = m_vars):
     m_vars = Stack({}, m_vars)
