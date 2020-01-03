@@ -1011,22 +1011,28 @@ Beispiele:
 @end example
 @end deffn
 
-@c --- 29.03.2012 VN -----------------------------------------------------------
+@c --- 03.01.2020 VN -----------------------------------------------------------
 @anchor{zn_log}
 @deffn {Funktion} zn_log (@var{a}, @var{g}, @var{n}) 
 @deffnx {Funktion} zn_log (@var{a}, @var{g}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
 Berechnet den diskreten Logarithmus.  Sei (Z/@var{n}Z)* eine zyklische Gruppe, 
-@var{g} eine Primitivwurzel modulo @var{n} und @var{a} ein Element dieser Gruppe.
+@var{g} eine Primitivwurzel modulo @var{n} oder der Generator einer Untergruppe 
+von (Z/@var{n}Z)* und @var{a} ein Element dieser Gruppe.
 Dann berechnet @code{zn_log (a, g, n)} eine L@"osung der Kongruenz 
-@code{g^x = a mod n}.
+@code{g^x = a mod n}.  Man beachte, dass @code{zn_log} nicht terminiert, 
+falls @var{a} keine Potenz von @var{g} modulo @var{n} ist.
 
-Der verwendete Algorithmus ben@"otigt die Primfaktorzerlegung des Totienten von @var{n}. 
+
+Der verwendete Algorithmus ben@"otigt die Primfaktorzerlegung von @code{zn_order(g)} 
+bzw. des Totienten von @var{n}. 
 Da diese Berechnung ebenfalls zeitaufw@"andig ist, kann es eventuell sinnvoll 
-sein, die Primfaktoren des Totienten vorab zu berechnen und @code{zn_log} als 
+sein, die Primfaktoren von @code{zn_order(g)} vorab zu berechnen und @code{zn_log} als 
 viertes Argument zu @"ubergeben. Die Form muss dabei der R@"uckgabe von 
 @code{ifactors(totient(n))} mit der Standardeinstellung @code{false} der 
 Optionsvariable @code{factors_only} entsprechen. 
+Verglichen mit der Laufzeit f@"ur die Berechnung des Logarithmus hat dies jedoch nur 
+einen recht kleinen Effekt.
 
 Als Algorithmus wird die Pohlig-Hellman-Reduktion und das Rho-Verfahren von 
 Pollard f@"ur den diskreten Logarithmus verwendet. Die Laufzeit von @code{zn_log} 
@@ -1047,16 +1053,22 @@ Beispiele:
 (%o3)                              10
 (%i4) powers_7 : makelist(power_mod(g, x, n), x, 0, ord_7 - 1);
 (%o4)              [1, 7, 5, 13, 3, 21, 15, 17, 9, 19]
-(%i5) zn_log(21, g, n);
-(%o5)                               5
+(%i5) zn_log(9, g, n);
+(%o5)                               8
 (%i6) map(lambda([x], zn_log(x, g, n)), powers_7);
 (%o6)                [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+(%i7) ord_5 : zn_order(5, n);
+(%o7)                               5
+(%i8) powers_5 : makelist(power_mod(5,x,n), x, 0, ord_5 - 1);
+(%o8)                       [1, 5, 3, 15, 9]
+(%i9) zn_log(9, 5, n);
+(%o9)                               4
 @end example
 
 Das optionale vierte Argument muss der R@"uckgabe von @code{ifactors(totient(n))} 
 entsprechen. 
 Die Laufzeit h@"angt im Wesentlichen von der Bitl@"ange des gr@"o@ss{}ten
-Primfaktors des Totienten ab.
+Primfaktors von @code{zn_order(g)} ab.
 
 @example
 (%i1) (p : 2^127-1, primep(p));
@@ -1064,15 +1076,18 @@ Primfaktors des Totienten ab.
 (%i2) ifs : ifactors(p - 1)$
 (%i3) g : zn_primroot(p, ifs);
 (%o3)                              43
-(%i4) a : power_mod(g, 1234567890, p)$
+(%i4) a : power_mod(g, 4711, p)$
 (%i5) zn_log(a, g, p, ifs);
-(%o5)                          1234567890
-(%i6) time(%o5);  
-(%o6)                            [1.204]
-(%i7) f_max : last(ifs);
-(%o7)                       [77158673929, 1]
-(%i8) slength( printf(false, "~b", f_max[1]) );
-(%o8)                              37
+(%o5)                             4711
+(%i6) f_max : last(ifs);  
+(%o6)                       [77158673929, 1]
+(%i7) ord_5 : zn_order(5,p,ifs)$
+(%i8) (p - 1)/ord_5;
+(%o8)                              73
+(%i9) ifs_5 : ifactors(ord_5)$
+(%i10) a : power_mod(5, 4711, p)$
+(%i11) zn_log(a, 5, p, ifs_5);
+(%o11)                            4711
 @end example
 @end deffn
 
