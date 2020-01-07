@@ -298,7 +298,7 @@
 ;; chinese, zn_characteristic_factors, zn_factor_generators, zn_nth_root,
 ;; zn_add_table, zn_mult_table, zn_power_table 
 ;;
-;; 2012 - 2015, Volker van Nek  
+;; 2012 - 2020, Volker van Nek  
 ;;
 
 ;; Maxima option variables:
@@ -548,18 +548,18 @@
 
 ;;
 ;; discrete logarithm:
-;; solve g^x = a mod n, where g is a generator of (Z/nZ)* 
+;; solve g^x = a mod n, where g is a generator of (Z/nZ)* or of a subgroup containing a
 ;;
 ;; see: lecture notes 'Grundbegriffe der Kryptographie' - Eike Best
 ;; http://theoretica.informatik.uni-oldenburg.de/~best/publications/kry-Mai2005.pdf
 ;;
-;; optional argument: ifactors of totient(n)
+;; optional argument: ifactors of zn_order(g,n) 
 ;;
-(defmfun $zn_log (a g n &optional fs-phi)
+(defmfun $zn_log (a g n &optional fs-ord)
   (unless (and (integerp a) (integerp g) (integerp n))
     (return-from $zn_log 
-      (if fs-phi 
-        (list '($zn_log) a g n fs-phi)
+      (if fs-ord 
+        (list '($zn_log) a g n fs-ord)
         (list '($zn_log) a g n) )))
   (when (minusp a) (setq a (mod a n)))
   (cond 
@@ -568,33 +568,30 @@
     ((= g a) 1)
     ((> (gcd a n) 1) nil)
     (t 
-      (if fs-phi
-        (if (and ($listp fs-phi) ($listp (cadr fs-phi)))
-          (progn 
-            (setq fs-phi (mapcar #'cdr (cdr fs-phi))) ; Lispify fs-phi
-            (setq fs-phi (cons (totient-from-factors fs-phi) fs-phi)) )
+      (if fs-ord
+        (if (and ($listp fs-ord) ($listp (cadr fs-ord)))
+          (progn
+            (setq fs-ord (mapcar #'cdr (cdr fs-ord))) ; Lispify fs-ord
+            (setq fs-ord (cons (totient-from-factors fs-ord) fs-ord)) ) ; totient resp. order in general
           (gf-merror (intl:gettext
              "Fourth argument to `zn_log' must be of the form [[p1, e1], ..., [pk, ek]]." )))
-        (setq fs-phi (totient-with-factors n)) )
+        (let (($intfaclim) (ord ($zn_order g n)))
+          (setq fs-ord (cons ord (get-factor-list ord))) ))
       (cond
-        ((not (zn-primroot-p g n 
-                             (car fs-phi)                   ;; phi
-                             (mapcar #'car (cdr fs-phi)) )) ;; factors without multiplicity
-          (gf-merror (intl:gettext 
-            "Second argument to `zn_log' must be a generator of (Z/~MZ)*." ) n ))
         ((= 0 (mod (- a (* g g)) n)) 
           2 )
         ((= 1 (mod (* a g) n))
-          (mod -1 (car fs-phi)) )
+          (mod -1 (car fs-ord)) )
         (t 
           (zn-dlog a g n 
-                   (car fs-phi)         ;; phi
-                   (cdr fs-phi) ) ))))) ;; factors with multiplicity
+                   (car fs-ord)         ;; order
+                   (cdr fs-ord) ) ))))) ;; factors with multiplicity
 ;;
 ;; Pohlig-Hellman-reduction:
 ;;
 ;;   Solve g^x = a mod n. 
-;;   Assume, that a is an element of (Z/nZ)* and g is a generator.
+;;   Assume, that a is an element of (Z/nZ)* 
+;;     and g is a generator of (Z/nZ)* or of a subgroup containing a.
 ;;
 (defun zn-dlog (a g n ord fs-ord)
   (let (p e ord/p om xp xk mods dlogs (g-inv (inv-mod g n)))

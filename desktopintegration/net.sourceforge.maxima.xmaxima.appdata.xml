@@ -6,7 +6,7 @@
   <summary>A graphical user interface for Maxima, a powerful computer algebra system</summary>
   <description>
     <p>
-      Xaxima is a graphical user interface for the computer algebra
+      Xmaxima is a graphical user interface for the computer algebra
       system Maxima: a program that solves mathematical problems by
       manipulating equations (and outputting the resulting formula) instead
       of just calculating a number. Unlike other front-ends Xmaxima is
@@ -15,14 +15,14 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>maxima.sourceforge.net/Xmaxima.png</image>
+      <image>http://maxima.sourceforge.net/Xmaxima.png</image>
       <caption>Xmaxima</caption>
     </screenshot>
   </screenshots>
   <url type="bugtracker">https://sourceforge.net/p/maxima/bugs/</url>
-  <url type="homepage">https://maxima.sourceforge.net/</url>
+  <url type="homepage">http://maxima.sourceforge.net/</url>
   <url type="help">http://maxima.sourceforge.net/documentation.html</url>
-  <developer_name>wxMaxima Team</developer_name>
+  <developer_name>Maxima Team</developer_name>
   <kudos>
     <kudo>ModernToolkit</kudo>
     <kudo>HiDpiIcon</kudo>

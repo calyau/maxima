@@ -1154,18 +1154,23 @@ Example:
 @fname{zn_log} (@var{a}, @var{g}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
 Computes the discrete logarithm. Let (Z/@var{n}Z)* be a cyclic group, @var{g} a 
-primitive root modulo @var{n} and let @var{a} be a member of this group.  
+primitive root modulo @var{n} or a generator of a subgroup of (Z/@var{n}Z)* 
+and let @var{a} be a member of this group.  
 @code{zn_log (a, g, n)} then solves the congruence @code{g^x = a mod n}.
+Please note that if @var{a} is not a power of @var{g} modulo @var{n}, 
+@code{zn_log} will not terminate.
 
-The applied algorithm needs a prime factorization of @code{totient(n)}. This factorization 
-might be time consuming as well and in some cases it can be useful to factor first 
-and then to pass the list of factors to @code{zn_log} as the fourth argument. 
-The list must be of the same form as the list returned by @code{ifactors(totient(n))} 
+The applied algorithm needs a prime factorization of @code{zn_order(g)} resp. @code{totient(n)} 
+in case @var{g} is a primitive root modulo @var{n}. 
+A precomputed list of factors of @code{zn_order(g)} might be used as the optional fourth argument.
+This list must be of the same form as the list returned by @code{ifactors(zn_order(g))} 
 using the default option @code{factors_only : false}.
+However, compared to the running time of the logarithm algorithm 
+providing the list of factors has only a quite small effect.
 
 The algorithm uses a Pohlig-Hellman-reduction and Pollard's Rho-method for 
-discrete logarithms. The run time of @code{zn_log} primarily depends on the 
-bitlength of the totient's greatest prime factor.
+discrete logarithms. The running time of @code{zn_log} primarily depends on the 
+bitlength of the greatest prime factor of @code{zn_order(g)}.
 
 See also @mrefcomma{zn_primroot}  @mrefcomma{zn_order}  @mrefcomma{ifactors}  @mrefdot{totient}
 
@@ -1181,15 +1186,21 @@ Examples:
 (%o3)                              10
 (%i4) powers_7 : makelist(power_mod(g, x, n), x, 0, ord_7 - 1);
 (%o4)              [1, 7, 5, 13, 3, 21, 15, 17, 9, 19]
-(%i5) zn_log(21, g, n);
-(%o5)                               5
+(%i5) zn_log(9, g, n);
+(%o5)                               8
 (%i6) map(lambda([x], zn_log(x, g, n)), powers_7);
 (%o6)                [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+(%i7) ord_5 : zn_order(5, n);
+(%o7)                               5
+(%i8) powers_5 : makelist(power_mod(5,x,n), x, 0, ord_5 - 1);
+(%o8)                       [1, 5, 3, 15, 9]
+(%i9) zn_log(9, 5, n);
+(%o9)                               4
 @end example
 
 The optional fourth argument must be of the same form as the list returned by 
-@code{ifactors(totient(n))}.
-The run time primarily depends on the bitlength of the totient's greatest prime factor.
+@code{ifactors(zn_order(g))}.
+The running time primarily depends on the bitlength of the totient's greatest prime factor.
 
 @example
 (%i1) (p : 2^127-1, primep(p));
@@ -1197,15 +1208,18 @@ The run time primarily depends on the bitlength of the totient's greatest prime 
 (%i2) ifs : ifactors(p - 1)$
 (%i3) g : zn_primroot(p, ifs);
 (%o3)                              43
-(%i4) a : power_mod(g, 1234567890, p)$
+(%i4) a : power_mod(g, 4711, p)$
 (%i5) zn_log(a, g, p, ifs);
-(%o5)                          1234567890
-(%i6) time(%o5);  
-(%o6)                            [1.204]
-(%i7) f_max : last(ifs);
-(%o7)                       [77158673929, 1]
-(%i8) slength( printf(false, "~b", f_max[1]) );
-(%o8)                              37
+(%o5)                             4711
+(%i6) f_max : last(ifs);  
+(%o6)                       [77158673929, 1]
+(%i7) ord_5 : zn_order(5,p,ifs)$
+(%i8) (p - 1)/ord_5;
+(%o8)                              73
+(%i9) ifs_5 : ifactors(ord_5)$
+(%i10) a : power_mod(5, 4711, p)$
+(%i11) zn_log(a, 5, p, ifs_5);
+(%o11)                            4711
 @end example
 
 @opencatbox
