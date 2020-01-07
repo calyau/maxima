@@ -319,11 +319,15 @@ random_matrix (nr, nc) := block
         do A[i] : floor (random (256.0)) / 256.0,
     M);
 
-new2old_matrix (M) := genmatrix (lambda ([i, j], get_element (M, i, j)), nrows(M), ncols(M));
+new2old_matrix (M) :=
+  if nrows(M) = 0 or ncols(M) = 0
+    then matrix()
+    else genmatrix (lambda ([i, j], get_element (M, i, j)), nrows(M), ncols(M));
+
 
 old2new_matrix (M) := block ([nr, nc, M2],
     nr : length (M),
-    nc : length (M [1]),
+    nc : if nr = 0 then 0 else length (M [1]),
     M2 : make_matrix (nr, nc),
     for i thru nr
         do for j thru nc
