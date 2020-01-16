@@ -18,7 +18,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 Dan Stanger dan.stanger@ieee.org
 */
-/* these routines are here because of inconsistant behavior in mat_unblocker
+/* these routines are here because of inconsistent behavior in mat_unblocker
    if the matrix created by matrix([matrix(),matrix([r])],[matrix(),matrix()])
    is passed into mat_unblocker, the result is matrix().  i would expect
    that this is a error or that the matrix [r] is returned.

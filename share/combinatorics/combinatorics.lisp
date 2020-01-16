@@ -34,7 +34,7 @@
 ;;;;  lcm   : a lisp list of cycles as maxima lists
 ;;;;  lmcm  : a maxima list of cycles as maxima lists
 ;;;;
-;;;; USEFULL COMMANDS
+;;;; USEFUL COMMANDS
 ;;;;  Turn a pa into a pm:
 ;;;;       (concatenate 'list `((mlist simp)) pa)
 ;;;;
@@ -80,7 +80,7 @@
 (defmacro array-transposition (pa i j)
   `(rotatef (aref ,pa (1- ,i)) (aref ,pa (1- ,j))))
 
-;;; $cyclep returns true if its argument is a maxima list of lenght n or
+;;; $cyclep returns true if its argument is a maxima list of length n or
 ;;; lower, whose elements are integers between 1 and n, without repetitions.
 (defun $cyclep (cm n)
   ;; a cycle must be a maxima list
@@ -93,7 +93,7 @@
     (or (< (count i (rest cm)) 2) (return-from $cyclep nil)))
     t)
 
-;;; $permp returns true if its argument is a maxima list of lenght n,
+;;; $permp returns true if its argument is a maxima list of length n,
 ;;; whose elements are the integers 1, 2, ...n, without repetitions.
 (defun $permp (pm)
   (or ($listp pm) (return-from $permp nil))

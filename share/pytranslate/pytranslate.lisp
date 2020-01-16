@@ -378,7 +378,7 @@
 (defun auxillary-array-to-ir (symbol dimensions)
   `(assign ,symbol ,(array-gen-ir dimensions)))
 
-;;; Function to generate IR for array definition using different methods, by using the auxillary function
+;;; Function to generate IR for array definition using different methods, by using the auxiliary function
 (defun array-def-to-ir (form)
   (cond ((consp (cadr form))
 	 (append '(body) (loop for symb in (cdadr form)

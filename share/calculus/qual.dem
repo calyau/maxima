@@ -16,5 +16,5 @@ temp: expand((x-1)**4 + (x-1)**2 + (y-2)**2 + 5);
 stationarypoints(temp);
 temp: expand((log(x-3)-5)*(x-y+8)/tan(x-y+2));
 zerosandsingularities(temp);
-("QUAL also automatically reveals successive levels of the sturcture of lengthier expressions.  For example, the second derivative of TEMP with respect to X is about 2 pages long, but:")$
+("QUAL also automatically reveals successive levels of the structure of lengthier expressions.  For example, the second derivative of TEMP with respect to X is about 2 pages long, but:")$
 qual(diff(temp,x,2))$

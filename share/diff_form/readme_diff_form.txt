@@ -49,7 +49,7 @@ hodge star operator is written with clifford algebra in definition,but user need
 recognize that. hodge star is named h_st().
 poisson braket with symplectic form is much useful,if you may explicitly  give hamilton 
 operator.
-To multiple unit pseudo scalar is almost same hodge star.(at most,differnt sign + or -)
+To multiple unit pseudo scalar is almost same hodge star.(at most, different sign + or -)
 this J() is defined and used to define antidifferential operator antid().
 
 

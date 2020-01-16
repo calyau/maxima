@@ -101,7 +101,7 @@
 ;;; Maxima's inverse RFFT routine.
 ;;;
 ;;; The input is assumed to consist of objects that can be converted
-;;; to a complex-valued floats.  The input MUST have a lenght that is
+;;; to a complex-valued floats.  The input MUST have a length that is
 ;;; one more than a power of two, as is returned by RFFT.
 (defun $inverse_real_fft (input)
   (multiple-value-bind (ft from-lisp)

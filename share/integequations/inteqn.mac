@@ -356,7 +356,7 @@ flfrnk2nd():=block([frlist, unklist, ueqnlist, eqno, %c],
 	ueqnlist:apply('ev,[ueqnlist,'integrate]),
 	solveandsubst(ueqnlist, unklist, frlist, 'flfrnk2nd))$
 
-/*  returns result of replacing all occurences of
+/*  returns result of replacing all occurrences of
 	'integrate(f(x,u),u,a,b) in fun with
 	sum(q[j](x)*%c[j],j,1,n) where %c[j] is 'integrate(r[j](u),u,a,b)
 	after expressing integrands in finite-rank form

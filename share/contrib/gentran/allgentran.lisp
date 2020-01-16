@@ -726,7 +726,7 @@
 	       (setq type (cadr type)))
 	      ((setq type nil)))
 
-     ;; supress implicit typing of tvars --mds
+     ;; suppress implicit typing of tvars --mds
 	(cond ((and $implicit (not (eq (stripdollar1 $gentranlang) 'c)) (atom var) (null type))
 	       (setq type (imptype var))))
 	(return type)))
