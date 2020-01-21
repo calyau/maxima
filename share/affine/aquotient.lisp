@@ -785,12 +785,6 @@
 					((zerop (second poly))(third poly))
 					(t poly)))))))
 
-
-(defmacro with-area-used (&rest body)
-  `(progn
-     (prog1
-	 (progn ,@body))))
-
 (defun recursive-ideal-gcd1 (f g )
    "assumes that f and g are polynomials of one variable and that modulus is non trivial
    and that deg f >= deg g   gcd = a*f +b*g , and deg a < deg g, deg b < deg f"
