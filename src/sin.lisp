@@ -105,16 +105,6 @@
   (let ((ex (simplify ($factor x))))
     (if (not (alike1 ex x)) ex)))
 
-;; Like FIND-IF, but calls FUNC on elements of SEQ in turn until one returns
-;; non-NIL. At that point, return the result (rather than the input, which is
-;; what you'd get from FIND-IF)
-
-(defun map-find (func seq)
-  (map nil (lambda (x)
-             (let ((result (funcall func x)))
-               (when result (return-from map-find result))))
-       seq))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Stage II of the Integrator
@@ -128,7 +118,7 @@
 
         ;; Map the function intform over the arguments of a sum or a product
 	((member (caar expres) '(mplus mtimes) :test #'eq)
-         (map-find #'intform (cdr expres)))
+         (some #'intform (cdr expres)))
 
         ((or (eq (caar expres) '%log)
             (arcp (caar expres)))
