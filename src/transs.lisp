@@ -288,7 +288,7 @@ translated."
 
 (defun print-abort-msg (fun from)
   (mformat *translation-msgs-files*
-	   (intl:gettext "compfile: failed to translate ~:@M.~
+	   (intl:gettext "compfile: failed to translate ~:@M.~%~
 	    ~A will continue, but file output will be aborted.~%") ;; WTF DOES THIS MEAN ???
 	   fun from))
 
