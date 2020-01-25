@@ -546,7 +546,7 @@ APPLY means like APPLY.")
 	   (setq whens (cond (($listp whens) (cdr whens))
 			     ((atom whens) (list whens))
 			     (t
-			      (tr-format (intl:gettext "error: 'eval-when' argument must be a list or atom; found: ~:M~%") (cadr form))
+			      (tr-format (intl:gettext "error: 'eval_when' argument must be a list or atom; found: ~:M~%") (cadr form))
 			      nil)))
 	   (setq tr-whens (mapcar 'stripdollar whens))
 	   (cond ((member '$translate whens :test #'eq)
