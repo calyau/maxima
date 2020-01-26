@@ -13,7 +13,7 @@ END {
     print " f.write (\"@b{Category: \" + key + \"}\\n\\n\")"
     print " items = categories [key]"
     print " if len (items) == 0: continue"
-    print " items.sort ()"
+    print " items.sort (key = lambda x: x[1])"
     print " f.write (\"@ref{Item: \" + items[0][0] + \", \" + items[0][1] + \"}\\n\")"
     print " for item in items [1:]:"
     print "  f.write (\"@html\\n&middot;\\n@end html\\n\")"
