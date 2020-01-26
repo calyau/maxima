@@ -19,5 +19,5 @@ END {
     print "  f.write (\"@html\\n&middot;\\n@end html\\n\")"
     print "  f.write (\"@ref{Item: \" + item[0] + \", \" + item[1] + \"}\\n\")"
     print " f.write (\"@closecatbox\")"
-    print }
+    print "" }
 
