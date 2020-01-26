@@ -48,11 +48,6 @@
 	(t
 	 `($any . (simplify  `((mfactorial) ,,(cdr form)))))))
 
-;; Kill off the special code for translating sum and product.
-
-(def%tr %sum $batcon)
-(def%tr %product $batcon)
-
 (defun yuk-su-meta-prop (f form)
   (let ((meta-prop-p t)
 	(meta-prop-l nil))
