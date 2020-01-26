@@ -30,13 +30,17 @@ for f in *.texi; do
     fi
 done
 
-cat *.texi\
+for f in *.texi
+do
+  filenamebase=`echo $f | @SED@ 's/^.*\///;s/\.texi$//'`
+  echo "filenamebase = '$filenamebase'"
+  cat $f
   | awk '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/)'\
   | @SED@ 's/\$/---endofline---/'\
   | @SED@ -f "$d/extract_categories1.sed" \
   | awk -F'$' -f "$d/extract_categories1.awk" \
   | @SED@ 's/---endofline---/$/'\
-  > tmp-make-categories.py
+done > tmp-make-categories.py
 
 ${PYTHONBIN:-python} tmp-make-categories.py
 
