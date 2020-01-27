@@ -533,7 +533,6 @@ maxima-index.lisp: build_index.pl maxima.info
 DOLLAR_SIGN = $$
 
 maxima_toc.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css texi2html.init
-	@: sh $(srcdir)/extract_categories.sh maxima
 	./build_html.sh
 
 maxima.epub: maxima_toc.html
@@ -601,7 +600,7 @@ endif
 EXTRA_DIST = texi2html manual.css texi2html.init maxima.texi maxima.html \
     $(genericdirDATA) $(pdffigures) $(macfiles) $(maxima_TEXINFOS) $(figurefiles) \
     create_index build_index.pl maxima-index.lisp docdraw.mac \
-    extract_categories1.awk extract_categories1.sed extract_categories.sh check_tab fix_tab \
+    extract_categories1.awk extract_categories1.sed check_tab fix_tab \
     figures/Makefile.am figures/Makefile.in figures/README \
     maxima-init.lisp mmref.tex README.update_examples maxima_pdf.texi \
     figures/orthopoly1.ps.gz figures/plotdf1.ps.gz figures/plotdf2.ps.gz figures/plotdf3.ps.gz figures/plotdf4.ps.gz figures/plotdf5.ps.gz figures/plotdf6.ps.gz

@@ -1255,7 +1255,6 @@ AC_CONFIG_FILES([src/startmaxima_abcl.sh], chmod +x src/startmaxima_abcl.sh)
 AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
 AC_CONFIG_FILES([tests/test.sh], chmod +x tests/test.sh)
 AC_CONFIG_FILES([doc/info/build_html.sh], chmod +x doc/info/build_html.sh)
-AC_CONFIG_FILES([doc/info/extract_categories.sh], chmod +x doc/info/extract_categories.sh)
 
 # Convert maxima.bat to DOS line ending
 # sed-3.02 in old mingw distribution doesn't support -i or \r
