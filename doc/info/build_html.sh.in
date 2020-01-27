@@ -35,7 +35,9 @@ cd tmp_html
 for f in @abs_srcdir@/*.texi
 do
   filenamebase=`echo $f | @SED@ -e 's/^.*\///;s/\.texi//'`
-  @SED@ -e "s/^@\(deffn\|defvr\)  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: $filenamebase\/\2}\n&/;" -e "s/^@node  *\([^,]*\).*/@anchor{Item: $filenamebase\/\1}\n&/" $f > $(basename $f)
+  @SED@ -e "s/^@\(deffn\|defvr\)[x]*  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: $filenamebase\/\1\/\2}\n&/;" -e "s/^@node  *\([^,]*\).*/@anchor{Item: $filenamebase\/node\/\1}\n&/" $f \
+  | @AWK@ 'BEGIN { iftex = 0; } /^@iftex/ {iftex = 1;} {if (!iftex) {print;}} /^@end iftex/ {iftex = 0;}' \
+  | @AWK@ '/@anchor/ {if (!(foo[$0])) {foo[$0] = 1; print;}} !/@anchor/' > $(basename $f)
 done 
 
 for f in *.texi
