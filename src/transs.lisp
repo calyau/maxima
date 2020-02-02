@@ -275,7 +275,7 @@ translated."
 			 (not (eq (car p) 'eval-when))))
 	 (when flag (princ* #\() (princ* 'progn) (terpri*))
 	 (if $compgrind
-	     (prin1 p)
+	     (prin1 p transl-file)
 	     (prin1 p transl-file))
 	 (when flag (princ* #\)))
 	 (terpri transl-file))))
