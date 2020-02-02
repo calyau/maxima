@@ -772,6 +772,70 @@
                       (power z index)
                       (simplify (list '($pochhammer) (sub a n) (add index 1))))
                     index 0 (sub n 1)))))))))
+      ((and $gamma_expand (consp a) (eq 'rat (caar a))
+	    (integerp (second a))
+	    (integerp (third a)))
+       ;; gamma_incomplete of (numeric) rational order.  Expand it out
+       ;; so that the resulting order is between 0 and 1.
+       (multiple-value-bind (n order)
+	   (floor (/ (second a) (third a)))
+	 ;; a = n + order where 0 <= order < 1.
+	 (let ((rat-order (rat (numerator order) (denominator order))))
+	   (cond
+	     ((zerop n)
+	      ;; Nothing to do if the order is already between 0 and 1
+	      (eqtest (list '(%gamma_incomplete) a z) expr))
+	     ((plusp n)
+	      ;; See https://dlmf.nist.gov/8.8.E9
+	      ;;
+	      ;;   gamma_incomplete(a+n, z) = pochhammer(a,n)*gamma_incomplete(a,z)
+	      ;;     + z^a*exp(-z)*sum(gamma(a+n)/gamma(a+k+1)*z^k,k,0,n-1)
+	      (add
+	       (mul
+		(simplify (list '($pochhammer) rat-order n))
+		(simplify (list '(%gamma_incomplete) rat-order z)))
+	       (mul
+		(power z a)
+		(power '$%e (mul -1 z))
+		(let ((index (gensumindex))
+		      (gamma-n (simpgamma (list '($gamma) a) 1 nil)))
+		  (simpsum1
+		   (mul
+		    (div
+		     gamma-n
+		     (simpgamma (list '($gamma) (add rat-order index 1)) 1 nil))
+		    (power z index))
+		  index 0 (1- n))))))
+	     ((minusp n)
+	      ;; See https://dlmf.nist.gov/8.8.E10
+	      ;;
+	      ;;   gamma_incomplete(a,z) = gamma(a)/gamma(a-n)*gamma_incomplete(a-n,z)
+	      ;;     + z^(a-1)*exp(-z)*sum(gamma(a)/gamma(a-k)*z^(-k),k,0,n-1)
+	      ;;
+	      ;; Rearrange to get
+	      ;;
+	      ;;  gamma_incomplete(a-n,z) = gamma(a-n)/gamma(a)*gamma_incomplete(a,z)
+	      ;;    - gamma(a-n)/gamma(a)*z^(a-1)*exp(-z)
+	      ;;      *sum(gamma(a)/gamma(a-k)*z^(-k),k,0,n-1)
+	      ;;    = pochhammer(a,-n)*gamma_incomplete(a,z)
+	      ;;      -z^(a-1)*exp(-z)*sum(gamma(a-n)/gamma(a-k)*z^(-k),k,0,n-1)
+	      ;;
+	      (sub
+	       (mul
+		(simplify (list '($pochhammer) rat-order n))
+		(simplify (list '(%gamma_incomplete) rat-order z)))
+	       (mul
+		(power z (sub rat-order 1))
+		(power '$%e (mul -1 z))
+		(let ((index (gensumindex))
+		      (gamma-a (simpgamma (list '($gamma) a) 1 nil)))
+		  (simpsum1
+		   (mul
+		    (div
+		     gamma-a
+		     (simpgamma (list '($gamma) (sub rat-order index)) 1 nil))
+		    (power z (mul -1 index)))
+		   index 0 (1- (abs n)))))))))))
 
       (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
 
