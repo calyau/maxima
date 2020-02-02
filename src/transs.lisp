@@ -274,9 +274,8 @@ translated."
 	 (setq flag (and $tr_semicompile
 			 (not (eq (car p) 'eval-when))))
 	 (when flag (princ* #\() (princ* 'progn) (terpri*))
-	 (if $compgrind
-	     (prin1 p transl-file)
-	     (prin1 p transl-file))
+	 (let ((*print-pretty* (or $compgrind *print-pretty*)))
+	   (prin1 p transl-file))
 	 (when flag (princ* #\)))
 	 (terpri transl-file))))
 
