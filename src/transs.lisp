@@ -27,7 +27,7 @@
 
 (defmvar transl-file nil "output stream of $compfile and $translate_file")
 
-(defmvar $compgrind nil "If `true' lisp output will be pretty-printed.")
+(defmvar $compgrind t "If `true' lisp output will be pretty-printed.")
 
 (defmvar $tr_true_name_of_file_being_translated nil
   "This is set by TRANSLATE_FILE for use by user macros
