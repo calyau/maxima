@@ -795,7 +795,7 @@
 		(simplify (list '($pochhammer) rat-order n))
 		(simplify (list '(%gamma_incomplete) rat-order z)))
 	       (mul
-		(power z a)
+		(power z rat-order)
 		(power '$%e (mul -1 z))
 		(let ((index (gensumindex))
 		      (gamma-n (simpgamma (list '($gamma) a) 1 nil)))
