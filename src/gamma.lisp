@@ -785,13 +785,9 @@
 	     ((zerop n)
 	      ;; Nothing to do if the order is already between 0 and 1
 	      (eqtest (list '(%gamma_incomplete) a z) expr))
-	     ((plusp n)
-	      ;; Use gamma_incomplete(a+n,z) above. and then substitue a=order.
-	      (let* ((ord (gensym))
-		     (g (simplify (list '(%gamma_incomplete) (add ord n) z))))
-		($substitute rat-order ord g)))
-	     ((minusp n)
-	      ;; Use gamma_incomplete(a-n,z) above, and then substitute a=order.
+	     (t
+	      ;; Use gamma_incomplete(a+n,z) above. and then substitue
+	      ;; a=order.  This works for n positive or negative.
 	      (let* ((ord (gensym))
 		     (g (simplify (list '(%gamma_incomplete) (add ord n) z))))
 		($substitute rat-order ord g)))))))
