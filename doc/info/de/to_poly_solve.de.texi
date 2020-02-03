@@ -880,7 +880,7 @@ And second, @code{simp_inequality} doesn't consult the fact database:
 (%o3)                         x > 0
 @end example
 
-@b{To use} @file{load(fourier_elim)}
+@code{load(to_poly_solve)} loads this function.
 
 @b{Status} The function @code{simp_inequality} is experimental; its
 specifications might change and its functionality might be merged into

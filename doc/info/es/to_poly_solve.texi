@@ -871,7 +871,7 @@ base de datos:
 (%o3)                         x > 0
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(fourier_elim)}.
+Para hacer uso de esta función, ejecútese @code{load(to_poly_solve)}.
 
 @end deffn
 
