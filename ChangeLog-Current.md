@@ -70,6 +70,8 @@ Unnumbered bugs:
  * PATCH-UP-MEVAL-IN-FSET had a bogus BARFO call
  * *standard-input* was broking during gentranin runs
  * Problem loading abs_integrate in imaxima mode (emacs)
+ * compgrind:true caused compfile to not write to the output file
+ * compgrind:true didn't ensure pretty-printing of compfile output
 
 Additional improvements:
 ------------------------

@@ -911,7 +911,7 @@ inequationの論理積と論理和にいくつかの整理を適用します。
 (%o3)                         x > 0
 @end example
 
-@b{利用するには} @file{load(fourier_elim)}
+@b{利用するには} @file{load(to_poly_solve)}
 
 @b{状況} 関数 @code{simp_inequality}は実験的です;
 仕様は変更の可能性があり、
