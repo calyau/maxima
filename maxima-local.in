@@ -24,11 +24,11 @@ fi;
 
 # quick fix for plotting with plot_format=openmath (bug 3052)
 if [ ! -d "@abs_top_srcdir@/bin" ]; then
-    mkdir -p "bin"
-    ln -sf "@abs_top_srcdir@/xmaxima-local" bin/xmaxima
-    ln -sf "@abs_top_srcdir@/doc" bin/doc
-    ln -sf "@abs_top_srcdir@/src" bin/src
-    ln -sf "@abs_top_srcdir@/interfaces" bin/interfaces
+    mkdir -p "@abs_top_srcdir@/bin"
+    ln -sf "@abs_top_srcdir@/xmaxima-local" "@abs_top_srcdir@/bin/xmaxima"
+    ln -sf "@abs_top_srcdir@/doc" "@abs_top_srcdir@/bin/doc"
+    ln -sf "@abs_top_srcdir@/src" "@abs_top_srcdir@/bin/src"
+    ln -sf "@abs_top_srcdir@/interfaces" "@abs_top_srcdir@/bin/interfaces"
 fi
 
 POSIX_SHELL=@POSIX_SHELL@
