@@ -741,21 +741,25 @@
              (a (simplify (cons '(mplus) (cddr a)))))
          (cond
            ((> n 0)
+	    ;; See DLMF 8.8.9: https://dlmf.nist.gov/8.8.E9
+	    ;;
+	    ;;   gamma_incomplete(a+n,z) = pochhammer(a,n)*gamma_incomplete(a,z)
+	    ;;     + z^a*exp(-z)*sum(gamma(a+n)/gamma(a+k+1)*z^k,k,0,n-1)
             (add
-              (mul
-                (simplify (list '($pochhammer) a n))
-                (simplify (list '(%gamma_incomplete) a z)))
-              (mul
-                (power '$%e (mul -1 z))
-                (power z (add a n -1))
-                (let ((index (gensumindex)))
-                  (simpsum1
-                    (mul
-                      (simplify 
-                        (list 
-                         '($pochhammer) (add 1 (mul -1 a) (mul -1 n)) index))
-                      (power (mul -1 z) (mul -1 index)))
-                    index 0 (add n -1))))))
+	     (mul
+	      (simplify (list '($pochhammer) a n))
+	      (simplify (list '(%gamma_incomplete) a z)))
+	     (mul
+	      (power '$%e (mul -1 z))
+	      (power z a)
+	      (let ((gamma-a+n (simpgamma (list '(%gamma) (add a n)) 1 nil))
+		    (index (gensumindex)))
+		(simpsum1
+		 (mul
+		  (div gamma-a+n
+		       (simpgamma (list '(%gamma) (add a index 1)) 1 nil))
+		  (power z index))
+		 index 0 (add n -1))))))
            ((< n 0)
             (setq n (- n))
 	    ;; See http://functions.wolfram.com/06.06.17.0004.01
