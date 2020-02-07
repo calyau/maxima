@@ -337,10 +337,6 @@
     (or not-dim1 (setf (gethash 'dim1 table) t))
     table))
 
-;;; Range of atan2 should be (-pi,pi]
-;;; CL manual says that's what lisp::atan is supposed to have.
-(deff atan2 #'cl:atan)
-
 ;;; exp is shadowed to save trouble for other packages--its declared special
 (deff exp #'cl:exp)
 

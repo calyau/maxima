@@ -515,7 +515,7 @@
            (and (or (numberp x) (ratnump x))       ; both numbers
                 (or (numberp y) (ratnump y))       ; ... but not bigfloats
                 (or $numer (floatp x) (floatp y))) ; at least one float
-           (atan2 ($float y) ($float x)))
+           (atan ($float y) ($float x)))
           ( ;; bfloat contagion
            (and (mnump x)
                 (mnump y)
