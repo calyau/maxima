@@ -861,33 +861,97 @@ might be merged into other Maxima functions.
 @anchor{simp_inequality}
 @deffn {Function} simp_inequality (@var{e})
 
-The function @code{simp_inequality} applies some simplifications to
-conjunctions and disjunctions of inequations.
+The function @code{simp_inequality} applies basic simplifications to inequations,
+returning either a boolean value (true or false) or the original inequation.
 
-@b{Limitations} The function @code{simp_inequality} is limited in at least two ways;
-first, the simplifications are local; thus
+The simplification rules used by @code{simp_inequality}
+include some facts about the ranges of the absolute value, power,
+and exponential functions along with some elementary algebra facts.
 
-@c TODO: IN MAXIMA 5.24POST THE RESULT IS SIMPLIFIED.
+For conjunctions or disjunctions of inequations,
+@code{simp_inequality} is applied to each individual inequation,
+but no effort is made to simplify the entire logical expression.
 
-@example
-(%i1) simp_inequality((x > minf) %and (x < 0));
-(%o1) (x>1) %and (x<1)
-@end example
-
-And second, @code{simp_inequality} doesn't consult the fact database:
-
-@example
-(%i2) assume(x > 0)$
-
-(%i3) simp_inequality(x > 0);
-(%o3)                         x > 0
-@end example
+Effectively, simp_inequality creates a new empty context,
+so database facts are not used to simplify inequations.
 
 @code{load(to_poly_solve)} loads this function.
 
-@b{Status} The function @code{simp_inequality} is experimental; its
-specifications might change and its functionality might be merged into
-other Maxima functions.
+Examples:
+
+@example
+(%i2) simp_inequality(1 # 0);
+(%o2) true
+@end example
+
+@example
+(%i3) simp_inequality(1 < 0);
+(%o3) false
+@end example
+
+@example
+(%i4) simp_inequality(a=a);
+(%o4) true
+@end example
+
+@example
+(%i5) simp_inequality(a # a);
+(%o5) false
+@end example
+
+@example
+(%i6) simp_inequality(a + 1 # a);
+(%o6) true
+@end example
+
+@example
+(%i7) simp_inequality(a < a+1);
+(%o7) true
+@end example
+
+@example
+(%i8) simp_inequality(abs(x) >= 0);
+(%o8) true
+@end example
+
+@example
+(%i9) simp_inequality(exp(x)  > 0);
+(%o9) true
+@end example
+
+@example
+(%i10) simp_inequality(x^2 >= 0);
+(%o10) true
+@end example
+
+@example
+(%i11) simp_inequality(2^x  # 0);
+(%o11) true
+@end example
+
+@example
+(%i12) simp_inequality(2^(x+1) > 2^x);
+(%o12) true
+@end example
+
+The fact database is not consulted.
+For example:
+
+@example
+(%i13) assume(xx > 0)$
+(%i14) simp_inequality(xx > 0);
+(%o14) xx>0
+@end example
+
+And finally, for conjunctions or disjunctions of inequations,
+each inequation is simplified,
+but no effort is made to simplify the entire logical expression;
+for example:
+
+@example
+(%i15) simp_inequality((1 > 0) and (x < 0) and (x > 0));
+(%o15) x<0 and x>0
+@end example
 
 @end deffn
 
