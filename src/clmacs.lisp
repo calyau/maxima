@@ -337,13 +337,6 @@
     (or not-dim1 (setf (gethash 'dim1 table) t))
     table))
 
-;;; Range of atan should be [0,2*pi]
-(defun atan (y x)
-  (let ((tem (cl:atan y x)))
-    (if (>= tem 0)
-	tem
-	(+ tem (* 2 pi)))))
-
 ;;; Range of atan2 should be (-pi,pi]
 ;;; CL manual says that's what lisp::atan is supposed to have.
 (deff atan2 #'cl:atan)

@@ -756,3 +756,23 @@ errcatch (f(10, n));
 
 (kill (foorule, f, barrule, g), 0);
 0;
+
+/* atan and atan2 calls with float arguments were translated
+ * incorrectly for over a decade.  atan always caused a lisp error
+ * and atan2 had a range between 0 and 2*%pi that was inconsistent
+ * with the interpreted and non-float cases (where the range is
+ * between -%pi and %pi).
+ */
+
+(foo () := [atan2 (-1.0, -1.0), atan2 (-1.0, 1.0)],
+ translate (foo),
+ foo ());
+[-2.356194490192345, -0.7853981633974483];
+
+(bar () := atan (-1.0),
+ translate (bar),
+ bar ());
+-0.7853981633974483;
+
+(kill (foo, bar), 0);
+0;

@@ -47,8 +47,6 @@
 	   signum                       ;(commac): same except
 					; (cl:signum 1.3)==1.0 not 1 but I (?)
 					; think this is ok for macsyma
-	   atan			;(zl:atan y x) == (cl:atan y x) + 2 pi
-					; if latter is negative
 	   asin acos asinh acosh atanh  ;different for complex numbers
 	   tanh cosh sinh tan  ;(trigi): same, could remove from trigi
 	   break		     ; special variable in displa.lisp
