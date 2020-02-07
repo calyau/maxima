@@ -34,6 +34,7 @@ Changes in core:
  * Numbers are no loger compared using EQ instead of EQL
  * Characters are no loger compared using EQ instead of EQL
  * Fixed bogus translations of apply2 and applyb2
+ * Fixed bogus translations of atan and atan2 with float arguments
  * Updated gentran to v.5
  * Improved the pattern matcher for "+" and "*" expressions, see 
    maxima-discuss, circa 2019-12-27: "Function to recognise series"
