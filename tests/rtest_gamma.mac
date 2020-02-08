@@ -1064,7 +1064,7 @@ gamma_incomplete(a-1,z);
 -z^(a-1)*%e^-z/(a-1)-gamma_incomplete(a,z)/(1-a);
 
 gamma_incomplete(a+2,z);
-(1-(-a-1)/z)*z^(a+1)*%e^-z+a*(a+1)*gamma_incomplete(a,z);
+z^a*(z+a+1)*%e^-z+a*(a+1)*gamma_incomplete(a,z);
 
 gamma_incomplete(a-2,z);
 gamma_incomplete(a,z)/((1-a)*(2-a))-z^(a-2)*(z/((a-2)*(a-1))+1/(a-2))*%e^-z;
