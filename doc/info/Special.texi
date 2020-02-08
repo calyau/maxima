@@ -772,7 +772,7 @@ Default value: @code{false}
 @code{gamma_expand} controls expansion of @code{gamma_incomplete}.
 When @code{gamma_expand} is @code{true}, @code{gamma_incomplete(v,z)}
 is expanded in terms of
-@code{z}, @code{exp(z)}, and @code{erfc(z)} when possible.
+@code{z}, @code{exp(z)}, and @code{gamma_incomplete} or @code{erfc(z)} when possible.
 
 @example
 (%i1) gamma_incomplete(2,z);
@@ -787,6 +787,24 @@ is expanded in terms of
                               - z   sqrt(%pi) erfc(sqrt(z))
 (%o4)               sqrt(z) %e    + -----------------------
                                                2
+@end group
+@group
+(%i5) gamma_incomplete(4/3,z);
+                                                    1
+                                   gamma_incomplete(-, z)
+                       1/3   - z                    3
+(%o5)                 z    %e    + ----------------------
+                                             3
+@end group
+@group
+(%i6) gamma_incomplete(a+2,z);
+             a               - z
+(%o6)       z  (z + a + 1) %e    + a (a + 1) gamma_incomplete(a, z)
+(%i7) gamma_incomplete(a-2, z);
+        gamma_incomplete(a, z)    a - 2         z            1      - z
+(%o7)   ---------------------- - z      (--------------- + -----) %e
+           (1 - a) (2 - a)               (a - 2) (a - 1)   a - 2
+
 @end group
 @end example
 
