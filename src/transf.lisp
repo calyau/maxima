@@ -66,5 +66,4 @@
 
 (def-same%tr %asin %acos)
 (def-same%tr %asec %acos)
-(def-same%tr %asec %acos)
 (def-same%tr %acsc %acos)
