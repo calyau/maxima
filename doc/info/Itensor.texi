@@ -1751,7 +1751,7 @@ These can be orthonormal frames (tetrads, vielbeins) or an arbitrary frame.
 To use frames, you must first set @code{iframe_flag} to @code{true}. This
 causes the Christoffel-symbols, @code{ichr1} and @code{ichr2}, to be replaced
 by the more general frame connection coefficients @code{icc1} and @code{icc2}
-in calculations. Speficially, the behavior of @mref{covdiff} and
+in calculations. Specifically, the behavior of @mref{covdiff} and
 @code{icurvature} is changed.
 
 The frame is defined by two tensors: the inverse frame field (@mref{ifri},
