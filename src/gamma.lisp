@@ -518,7 +518,7 @@
          (complex-bigfloat-numerical-eval-p a z))
        (take '(%gamma_incomplete_generalized) a 0 z))
       (t
-        (gamma-incomplete-lower a z)))))
+        (gamma-incomplete-lower a z $gamma_expand)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
