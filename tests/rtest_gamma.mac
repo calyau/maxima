@@ -3875,5 +3875,20 @@ true;
 expand(integrate((-(3*%e^-x^3)/x^2)-(4*%e^-x^3)/x^5, x));
 exp(-x^3)/x^4;
 
+/*
+ * Test expansion of gamma_incomplete_lower
+ */
+gamma_incomplete_lower(a+2,z);
+a*(a+1)*gamma_incomplete_lower(a,z)-z^a*(z+a+1)*%e^-z;
+
+gamma_incomplete_lower(1/3+2,z);
+(4*gamma_incomplete_lower(1/3,z))/9-z^(1/3)*(z+4/3)*%e^-z;
+
+gamma_incomplete_lower(a-2,z);
+(1/((a-2)*z)+1/((a-2)*(a-1)))*z^(a-1)*%e^-z +gamma_incomplete_lower(a,z)/((a-2)*(a-1));
+
+gamma_incomplete_lower(1/3-2,z);
+((9/10-3/(5*z))*%e^-z)/z^(2/3)+(9*''gamma_incomplete_lower(1/3,z))/10;
+
 reset (gamma_expand);
 [gamma_expand];
