@@ -2744,7 +2744,7 @@
 		;; Use gamma_incomplete(a+n,z) above. and then substitue
 		;; a=order.  This works for n positive or negative.
 		(let* ((ord (gensym))
-		       (g (simplify (list '(%gamma_incomplete) (add ord n) z))))
+		       (g (simplify (list '(%gamma_incomplete_lower) (add ord n) z))))
 		  ($substitute rat-order ord g)))))))
 	(t
 	 ;; Give up
