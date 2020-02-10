@@ -2645,7 +2645,7 @@
 	 ;;
 	 ;; gamma_incomplete_lower(a,x) = (a-1)*gamma_incomplete_lower(a-1,x)-x^(a-1)*exp(-x)
 	 (let ((a-1 (sub a 1)))
-	   (sub (mul a-1 (gamma-incomplete-lower a-1 z expand))
+	   (sub (mul a-1 (gamma-incomplete-lower a-1 z))
 		(mul (m^t z a-1)
 		     (mexpt (neg z))))))
 	((and $gamma_expand (=1//2 a))
@@ -2663,11 +2663,11 @@
 	 ;; above.
 	 (if (ratgreaterp a 0)
 	     (let ((a-1 (sub a 1)))
-	       (sub (mul a-1 (gamma-incomplete-lower a-1 z expand))
+	       (sub (mul a-1 (gamma-incomplete-lower a-1 z))
 		    (mul (m^t z a-1)
 			 (mexpt (neg z)))))
 	     (let ((a+1 (add a 1)))
-	       (div (add (gamma-incomplete-lower a+1 z expand)
+	       (div (add (gamma-incomplete-lower a+1 z)
 			 (mul (power z a)
 			      (mexpt (neg z))))
 		    a))))
