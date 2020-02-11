@@ -2625,29 +2625,21 @@
 ;; Incomplete gamma function
 ;;
 ;; gamma_incomplete_lower(a,x) = integrate(t^(a-1)*exp(-t),t,0,x)
-
-;; If the optional arg is not given, then we expand special cases.
-;; This preserves backward compatibility where we previously expanded.
-;; If the optional arg is given, we take the value of the optional arg.
+;;
+;; Handles some special cases for the order a and simplifies it to an
+;; equivalent form, possibly involving erf and gamma_incomplete_lower
+;; to a lower order.
 (defun gamma-incomplete-lower (a z)
   (cond ((and $gamma_expand (integerp a) (eql a 1))
 	 ;; gamma_incomplete_lower(0, x) = 1-exp(x)
 	 (sub 1 (mexpt (neg z))))
 	((and $gamma_expand (integerp a) (plusp a))
-	 ;; gamma_incomplete_lower(a,z) can be simplified if a is a positive
-	 ;; integer.
-	 ;;
-	 ;; A&S 6.5.22:
-	 ;;
-	 ;; gamma_incomplete_lower(a+1,x) = a*gamma_incomplete_lower(a,x) - x^a*exp(-x)
-	 ;;
-	 ;; or
-	 ;;
-	 ;; gamma_incomplete_lower(a,x) = (a-1)*gamma_incomplete_lower(a-1,x)-x^(a-1)*exp(-x)
-	 (let ((a-1 (sub a 1)))
-	   (sub (mul a-1 (gamma-incomplete-lower a-1 z))
-		(mul (m^t z a-1)
-		     (mexpt (neg z))))))
+	 ;; gamma_incomplete_lower(a,z) can be simplified if a is a
+	 ;; positive integer.  Since gamma_incomplete_lower(a,z) =
+	 ;; gamma(a) - gamma_incomplete(a,z), use gamma_incomplete to
+	 ;; get the result.
+	 (sub (simpgamma (list '(%gamma) a) 1 nil)
+	      (take '(%gamma_incomplete) a z)))
 	((and $gamma_expand (=1//2 a))
 	 ;; A&S 6.5.12:
 	 ;;
