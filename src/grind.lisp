@@ -330,9 +330,8 @@
     (cons n l)))
 
 (defprop mquote msize-prefix grind)
-(defprop msetq msize-infix grind)
-(defprop msetq msize-infix grind)
 
+(defprop msetq msize-infix grind)
 (defprop msetq (#\:) strsym)
 (defprop msetq 180. lbp)
 (defprop msetq 20. rbp)
