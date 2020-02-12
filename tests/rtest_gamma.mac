@@ -3746,7 +3746,7 @@ true;
 
 /* SF bug #3277: "no numerical evaluation for gamma_greek" */
 
-expand (gamma_incomplete_lower(10, 1));
+block([gamma_expand: true], gamma_incomplete_lower(10, 1));
 362880-986410*%e^-1;
 
 /* numerical value not very accurate; perhaps it is being computed naively via preceding formula? */
@@ -3761,7 +3761,7 @@ true;
  closeto (gamma_incomplete_lower(10, 1b0), 4.043407757955496b-2, 1b-10));
 true;
 
-gamma_incomplete_lower(1, 10);
+block([gamma_expand: true], gamma_incomplete_lower(1, 10));
 1 - %e^-10;
 
 closeto (ev (gamma_incomplete_lower(1, 10), numer), 0.9999546000702375e0, 1e-15);
