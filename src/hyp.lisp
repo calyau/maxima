@@ -2743,8 +2743,9 @@
 		       (g (simplify (list '(%gamma_incomplete_lower) (add ord n) z))))
 		  ($substitute rat-order ord g)))))))
 	(t
-	 ;; Give up
-	 `((%gamma_incomplete_lower simp) ,a ,z))))
+	 ;; Give up.  Must return verb form for specint to be able to
+	 ;; simplify integrals with gamma_incomplete_lower.
+	 `(($gamma_incomplete_lower simp) ,a ,z))))
 
 ;; A&S 6.5.12: 
 ;; gamma_incomplete_lower(a,x) = x^a/a*M(a,1+a,-x)
