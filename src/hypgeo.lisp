@@ -647,7 +647,7 @@
       `((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($gamma_incomplete_lower) (w1 free ,var) (w2 has ,var)))
+         ((%gamma_incomplete_lower) (w1 free ,var) (w2 has ,var)))
         ((coeffpp) (a zerp)))))
 
 ;; Recognize Struve H function.
@@ -1642,7 +1642,7 @@
   (let ((-a (mul -1 a)))
     (mul c
          (power -a (mul -1 *par*))
-         `(($gamma_incomplete_lower simp) ,*par* ,-a))))
+         `((%gamma_incomplete_lower simp) ,*par* ,-a))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -2901,7 +2901,7 @@
          (wwhit x (div (sub a 1) 2) (div a 2)))
     ;; In all other cases the representation as a lower incomplete Gamma function
     (sub (take '(%gamma) a)
-         (list '($gamma_incomplete_lower simp) a x))))
+         (list '(%gamma_incomplete_lower simp) a x))))
 
 ;; Bessel Y in terms of Bessel J
 ;;
