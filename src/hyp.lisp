@@ -2629,7 +2629,7 @@
 ;; Handles some special cases for the order a and simplifies it to an
 ;; equivalent form, possibly involving erf and gamma_incomplete_lower
 ;; to a lower order.
-(defun gamma-incomplete-lower (a z)
+(defun gamma-incomplete-lower-expand (a z)
   (cond ((and $gamma_expand (integerp a) (eql a 1))
 	 ;; gamma_incomplete_lower(0, x) = 1-exp(x)
 	 (sub 1 (mexpt (neg z))))
@@ -2743,9 +2743,15 @@
 		       (g (simplify (list '(%gamma_incomplete_lower) (add ord n) z))))
 		  ($substitute rat-order ord g)))))))
 	(t
+	 ;; No expansion so return nil to indicate that
+	 nil)))
+
+(defun gamma-incomplete-lower (a z)
+  (cond ((gamma-incomplete-lower-expand a z))
+	(t
 	 ;; Give up.  Must return verb form for specint to be able to
 	 ;; simplify integrals with gamma_incomplete_lower.
-	 `(($gamma_incomplete_lower simp) ,a ,z))))
+	 `((%gamma_incomplete_lower simp) ,a ,z))))
 
 ;; A&S 6.5.12: 
 ;; gamma_incomplete_lower(a,x) = x^a/a*M(a,1+a,-x)

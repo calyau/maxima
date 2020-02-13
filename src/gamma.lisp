@@ -517,8 +517,9 @@
          (bigfloat-numerical-eval-p a z)
          (complex-bigfloat-numerical-eval-p a z))
        (take '(%gamma_incomplete_generalized) a 0 z))
+      ((gamma-incomplete-lower-expand a z))
       (t
-        (gamma-incomplete-lower a z)))))
+        (eqtest (list '(%gamma_incomplete_lower) a z) expr)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
