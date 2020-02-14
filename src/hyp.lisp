@@ -2622,137 +2622,6 @@
 			  (gammareds a (sub c 1) z)))
 		(inv (sub (add 1 a) c)))))))
 
-;; Incomplete gamma function
-;;
-;; gamma_incomplete_lower(a,x) = integrate(t^(a-1)*exp(-t),t,0,x)
-;;
-;; Handles some special cases for the order a and simplifies it to an
-;; equivalent form, possibly involving erf and gamma_incomplete_lower
-;; to a lower order.
-(defun gamma-incomplete-lower-expand (a z)
-  (cond ((and $gamma_expand (integerp a) (eql a 1))
-	 ;; gamma_incomplete_lower(0, x) = 1-exp(x)
-	 (sub 1 (mexpt (neg z))))
-	((and $gamma_expand (integerp a) (plusp a))
-	 ;; gamma_incomplete_lower(a,z) can be simplified if a is a
-	 ;; positive integer.  Since gamma_incomplete_lower(a,z) =
-	 ;; gamma(a) - gamma_incomplete(a,z), use gamma_incomplete to
-	 ;; get the result.
-	 (sub (simpgamma (list '(%gamma) a) 1 nil)
-	      (take '(%gamma_incomplete) a z)))
-	((and $gamma_expand (=1//2 a))
-	 ;; A&S 6.5.12:
-	 ;;
-	 ;; gamma_incomplete_lower(1/2,x^2) = sqrt(%pi)*erf(x)
-	 ;;
-	 ;; gamma_incomplete_lower(1/2,z) = sqrt(%pi)*erf(sqrt(x))
-	 ;;
-	 (mul (power '$%pi '((rat simp) 1 2))
-	      (take '(%erf) (power z '((rat simp) 1 2)))))
-	((and $gamma_expand (integerp (add a 1//2)))
-	 ;; gamma_incomplete_lower(n+1/2,z) can be simplified using A&S 6.5.22 to
-	 ;; reduce the problem to gamma_incomplete_lower(1/2,x), which we know,
-	 ;; above.
-	 (if (ratgreaterp a 0)
-	     (let ((a-1 (sub a 1)))
-	       (sub (mul a-1 (gamma-incomplete-lower a-1 z))
-		    (mul (m^t z a-1)
-			 (mexpt (neg z)))))
-	     (let ((a+1 (add a 1)))
-	       (div (add (gamma-incomplete-lower a+1 z)
-			 (mul (power z a)
-			      (mexpt (neg z))))
-		    a))))
-	((and $gamma_expand (mplusp a) (integerp (cadr a)))
-	 ;; gamma_incomplete_lower(a+n,z), where n is an integer
-	 (let ((n (cadr a))
-	       (a (simplify (cons '(mplus) (cddr a)))))
-	   (cond
-	     ((> n 0)
-	      ;; gamma_incomplete_lower(a+n,z). See DLMF 8.8.7:
-	      ;;
-	      ;;   gamma_incomplete_lower(a+n,z)
-	      ;;     = pochhammer(a,n)*gamma_incomplete_lower(a,z)
-	      ;;       -z^a*exp(-z)*sum(gamma(a+n)gamma(a+k+1)*z^k,k,0,n-1)
-	      (sub
-	       (mul
-		(simplify (list '($pochhammer) a n))
-		(simplify (list '(%gamma_incomplete_lower) a z)))
-	       (mul
-		(power z a)
-		(power '$%e (mul -1 z))
-		(let ((gamma-a+n (simpgamma (list '(%gamma) (add a n)) 1 nil))
-		      (index (gensumindex))
-		      ($simpsum t))
-		  (simpsum1
-		   (mul
-		    (div gamma-a+n
-			 (simpgamma (list '(%gamma) (add a index 1)) 1 nil))
-		    (power z index))
-		   index 0 (add n -1))))))
-	     ((< n 0)
-	      (setq n (- n))
-	      ;; See DLMF 8.8.8.  For simplicity let g(a,z) = gamma_incomplete_lower(a,z).
-	      ;;
-	      ;;   g(a,z) = gamma(a)/gamma(a-n)*g(a-n,z)
-	      ;;     - z^(a-1)*exp(z)*sum(gamma(a)/gamma(a-k)*z^(-k),k,0,n-1)
-	      ;;
-	      ;; Rewrite:
-	      ;;   g(a-n,z) = gamma(a-n)/gamma(a)*g(a,z)
-	      ;;     + gamma(a-n)/gamma(a)*z^(a-1)*exp(-z)
-	      ;;       * sum(gamma(a)/gamma(a-k)*z^(-k),k,0,n-1)
-	      ;; Or
-	      ;;   g(a-n,z) = gamma(a-n)/gamma(a)*g(a,z)
-	      ;;     + z^(a-1)*exp(-z)
-	      ;;       * sum(gamma(a-n)/gamma(a-k)*z^(-k),k,0,n-1)
-	      (let ((gamma-a-n (simpgamma (list '(%gamma) (sub a n)) 1 nil))
-		    (index (gensumindex))
-		    ($simpsum t))
-		(add
-		 (mul
-		  (div gamma-a-n
-		       (list '(%gamma) a))
-		  (simplify (list '(%gamma_incomplete_lower) a z)))
-		 (mul
-		  (power z (sub a 1))
-		  (power '$%e (mul -1 z))
-		  (simpsum1
-		   (mul
-		    (div gamma-a-n
-			 (simpgamma (list '(%gamma) (sub a index)) 1 nil))
-		    (power z (mul -1 index)))
-		   index 0 (add n -1)))))))))
-	((and $gamma_expand (consp a) (eq 'rat (caar a))
-	      (integerp (second a))
-	      (integerp (third a)))
-	 ;; gamma_incomplete_lower of (numeric) rational order.
-	 ;; Expand it out so that the resulting order is between 0 and
-	 ;; 1.
-	 (multiple-value-bind (n order)
-	     (floor (/ (second a) (third a)))
-	   ;; a = n + order where 0 <= order < 1.
-	   (let ((rat-order (rat (numerator order) (denominator order))))
-	     (cond
-	       ((zerop n)
-		;; Nothing to do if the order is already between 0 and 1
-		(list '(%gamma_incomplete_lower simp) a z))
-	       (t
-		;; Use gamma_incomplete(a+n,z) above. and then substitue
-		;; a=order.  This works for n positive or negative.
-		(let* ((ord (gensym))
-		       (g (simplify (list '(%gamma_incomplete_lower) (add ord n) z))))
-		  ($substitute rat-order ord g)))))))
-	(t
-	 ;; No expansion so return nil to indicate that
-	 nil)))
-
-(defun gamma-incomplete-lower (a z)
-  (cond ((gamma-incomplete-lower-expand a z))
-	(t
-	 ;; Give up.  Must return verb form for specint to be able to
-	 ;; simplify integrals with gamma_incomplete_lower.
-	 `((%gamma_incomplete_lower simp) ,a ,z))))
-
 ;; A&S 6.5.12: 
 ;; gamma_incomplete_lower(a,x) = x^a/a*M(a,1+a,-x)
 ;;                  = x^a/a*exp(-x)*M(1,1+a,x)
@@ -2765,7 +2634,7 @@
     (if (not $prefer_gamma_incomplete)
         (mul a
              (power -z (mul -1 a))
-             (gamma-incomplete-lower a -z))
+             (take '(%gamma_incomplete_lower) a -z))
         (mul a
              (power -z (mul -1 a))
              (sub (take '(%gamma) a)
