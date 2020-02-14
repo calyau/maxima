@@ -275,12 +275,6 @@ translated."
 	   (prin1 p transl-file))
 	 (terpri transl-file))))
 
-(defun princ* (form)
-  (princ form transl-file))
-
-(defun terpri* ()
-  (terpri transl-file))
-
 (defun print-abort-msg (fun from)
   (mformat *translation-msgs-files*
 	   (intl:gettext "compfile: failed to translate ~:@M.~%~
