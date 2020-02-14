@@ -136,7 +136,6 @@
    "tr_function_call_default"
    "tr_numer"
    "tr_optimize_max_loop"
-   "tr_semicompile"
    "tr_state_vars"
    "tr_true_name_of_file_being_translated"
    "tr_warn_bad_function_calls"

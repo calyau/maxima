@@ -34,7 +34,7 @@
 	 which want to know the name of the source file.")
 
 (defmvar $tr_state_vars
-    '((mlist) $transcompile $tr_semicompile
+    '((mlist) $transcompile
       $translate_fast_arrays
       $tr_warn_undeclared
       $tr_warn_meval
@@ -268,15 +268,11 @@ translated."
 (defun print* (p)
     (sub-print* p))
 
-(defun sub-print* (p &aux (flag nil))
+(defun sub-print* (p)
   (cond ((atom p))
 	(t
-	 (setq flag (and $tr_semicompile
-			 (not (eq (car p) 'eval-when))))
-	 (when flag (princ* #\() (princ* 'progn) (terpri*))
 	 (let ((*print-pretty* (or $compgrind *print-pretty*)))
 	   (prin1 p transl-file))
-	 (when flag (princ* #\)))
 	 (terpri transl-file))))
 
 (defun princ* (form)
