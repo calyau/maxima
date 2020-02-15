@@ -528,6 +528,8 @@
       (t
         (eqtest (list '(%gamma_incomplete_lower) a z) expr)))))
 
+;; Try to express gamma_incomplete_lower(a,z) in simpler terms for
+;; special values of the order a.  If we can't, return NIL to say so.
 (defun gamma-incomplete-lower-expand (a z)
   (cond ((and $gamma_expand (integerp a) (eql a 1))
 	 ;; gamma_incomplete_lower(0, x) = 1-exp(x)
@@ -548,20 +550,6 @@
 	 ;;
 	 (mul (power '$%pi '((rat simp) 1 2))
 	      (take '(%erf) (power z '((rat simp) 1 2)))))
-	((and $gamma_expand (integerp (add a 1//2)))
-	 ;; gamma_incomplete_lower(n+1/2,z) can be simplified using A&S 6.5.22 to
-	 ;; reduce the problem to gamma_incomplete_lower(1/2,x), which we know,
-	 ;; above.
-	 (if (ratgreaterp a 0)
-	     (let ((a-1 (sub a 1)))
-	       (sub (mul a-1 (take '(%gamma_incomplete_lower) a-1 z))
-		    (mul (m^t z a-1)
-			 (m^t '$%e (neg z)))))
-	     (let ((a+1 (add a 1)))
-	       (div (add (take '(%gamma_incomplete_lower) a+1 z)
-			 (mul (power z a)
-			      (m^t '$%e (neg z))))
-		    a))))
 	((and $gamma_expand (mplusp a) (integerp (cadr a)))
 	 ;; gamma_incomplete_lower(a+n,z), where n is an integer
 	 (let ((n (cadr a))
