@@ -1596,7 +1596,7 @@ sqrt(%pi)*sqrt(a)*%e^(a/s)/s^(3/2);
    other examples can be shown to be correct. I think EqWorld is wrong.
 */
 
-factor(radcan(specint(%e^(-s*t)*sqrt(t)*sinh(2*sqrt(a*t)),t)));
+factor(radcan(block([gamma_expand:true], specint(%e^(-s*t)*sqrt(t)*sinh(2*sqrt(a*t)),t))));
 (sqrt(%pi)*erf(sqrt(a)/sqrt(s))*s*%e^(a/s)+2*sqrt(%pi)*a*erf(sqrt(a)/sqrt(s))*%e^(a/s)+2*sqrt(a)*sqrt(s))/(2*s^(5/2));
 
 /* Problem 205: No. 07 OK New

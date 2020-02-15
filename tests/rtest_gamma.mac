@@ -3746,7 +3746,7 @@ true;
 
 /* SF bug #3277: "no numerical evaluation for gamma_greek" */
 
-expand (gamma_incomplete_lower(10, 1));
+block([gamma_expand: true], gamma_incomplete_lower(10, 1));
 362880-986410*%e^-1;
 
 /* numerical value not very accurate; perhaps it is being computed naively via preceding formula? */
@@ -3761,7 +3761,7 @@ true;
  closeto (gamma_incomplete_lower(10, 1b0), 4.043407757955496b-2, 1b-10));
 true;
 
-gamma_incomplete_lower(1, 10);
+block([gamma_expand: true], gamma_incomplete_lower(1, 10));
 1 - %e^-10;
 
 closeto (ev (gamma_incomplete_lower(1, 10), numer), 0.9999546000702375e0, 1e-15);
@@ -3874,6 +3874,21 @@ true;
  */
 expand(integrate((-(3*%e^-x^3)/x^2)-(4*%e^-x^3)/x^5, x));
 exp(-x^3)/x^4;
+
+/*
+ * Test expansion of gamma_incomplete_lower
+ */
+gamma_incomplete_lower(a+2,z);
+a*(a+1)*gamma_incomplete_lower(a,z)-z^a*(z+a+1)*%e^-z;
+
+gamma_incomplete_lower(1/3+2,z);
+(4*gamma_incomplete_lower(1/3,z))/9-z^(1/3)*(z+4/3)*%e^-z;
+
+gamma_incomplete_lower(a-2,z);
+(1/((a-2)*z)+1/((a-2)*(a-1)))*z^(a-1)*%e^-z +gamma_incomplete_lower(a,z)/((a-2)*(a-1));
+
+gamma_incomplete_lower(1/3-2,z);
+((9/10-3/(5*z))*%e^-z)/z^(2/3)+(9*''gamma_incomplete_lower(1/3,z))/10;
 
 reset (gamma_expand);
 [gamma_expand];

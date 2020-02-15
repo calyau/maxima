@@ -2622,55 +2622,6 @@
 			  (gammareds a (sub c 1) z)))
 		(inv (sub (add 1 a) c)))))))
 
-;; Incomplete gamma function
-;;
-;; gamma_incomplete_lower(a,x) = integrate(t^(a-1)*exp(-t),t,0,x)
-(defun gamma-incomplete-lower (a z)
-  (cond ((and (integerp a) (eql a 1))
-	 ;; gamma_incomplete_lower(0, x) = 1-exp(x)
-	 (sub 1 (mexpt (neg z))))
-	((and (integerp a) (plusp a))
-	 ;; gamma_incomplete_lower(a,z) can be simplified if a is a positive
-	 ;; integer.
-	 ;;
-	 ;; A&S 6.5.22:
-	 ;;
-	 ;; gamma_incomplete_lower(a+1,x) = a*gamma_incomplete_lower(a,x) - x^a*exp(-x)
-	 ;;
-	 ;; or
-	 ;;
-	 ;; gamma_incomplete_lower(a,x) = (a-1)*gamma_incomplete_lower(a-1,x)-x^(a-1)*exp(-x)
-	 (let ((a-1 (sub a 1)))
-	   (sub (mul a-1 (gamma-incomplete-lower a-1 z))
-		(mul (m^t z a-1)
-		     (mexpt (neg z))))))
-	((=1//2 a)
-	 ;; A&S 6.5.12:
-	 ;;
-	 ;; gamma_incomplete_lower(1/2,x^2) = sqrt(%pi)*erf(x)
-	 ;;
-	 ;; gamma_incomplete_lower(1/2,z) = sqrt(%pi)*erf(sqrt(x))
-	 ;;
-	 (mul (power '$%pi '((rat simp) 1 2))
-	      (take '(%erf) (power z '((rat simp) 1 2)))))
-	((and (integerp (add a 1//2)))
-	 ;; gamma_incomplete_lower(n+1/2,z) can be simplified using A&S 6.5.22 to
-	 ;; reduce the problem to gamma_incomplete_lower(1/2,x), which we know,
-	 ;; above.
-	 (if (ratgreaterp a 0)
-	     (let ((a-1 (sub a 1)))
-	       (sub (mul a-1 (gamma-incomplete-lower a-1 z))
-		    (mul (m^t z a-1)
-			 (mexpt (neg z)))))
-	     (let ((a+1 (add a 1)))
-	       (div (add (gamma-incomplete-lower a+1 z)
-			 (mul (power z a)
-			      (mexpt (neg z))))
-		    a))))
-	(t
-	 ;; Give up
-         `(($gamma_incomplete_lower simp) ,a ,z))))
-
 ;; A&S 6.5.12: 
 ;; gamma_incomplete_lower(a,x) = x^a/a*M(a,1+a,-x)
 ;;                  = x^a/a*exp(-x)*M(1,1+a,x)
@@ -2683,7 +2634,7 @@
     (if (not $prefer_gamma_incomplete)
         (mul a
              (power -z (mul -1 a))
-             (gamma-incomplete-lower a -z))
+             (take '(%gamma_incomplete_lower) a -z))
         (mul a
              (power -z (mul -1 a))
              (sub (take '(%gamma) a)
