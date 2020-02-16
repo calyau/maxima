@@ -355,6 +355,16 @@
 ;;;
 ;;; The implementation of the Incomplete Gamma function
 ;;;
+;;; A&S 6.5.3:
+;;;
+;;;                             inf
+;;;                            /
+;;;                            [     a - 1   - t
+;;;   gamma_incomplete(a, z) = I    t      %e    dt
+;;;                            ]
+;;;                            /
+;;;                             z
+;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar *debug-gamma* nil)
@@ -480,6 +490,20 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Lower Incomplete gamma function:
+;;;
+;;; A&S 6.5.2
+;;;
+;;;                                  z
+;;;                                 /
+;;;                                 [  a - 1   - t
+;;;  gamma_incomplete_lower(a, z) = I t      %e    dt
+;;;                                 ]
+;;;                                 /
+;;;                                  0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defmfun $gamma_incomplete_lower (a z)
   (simplify (list '(%gamma_incomplete_lower) a z)))
 
@@ -503,11 +527,6 @@
 
 ;; (defprop %gamma_incomplete_lower ??? grad) WHAT TO PUT HERE ??
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Incomplete gamma function
-;;
-;; gamma_incomplete_lower(a,x) = integrate(t^(a-1)*exp(-t),t,0,x)
 ;;
 ;; Handles some special cases for the order a and simplifies it to an
 ;; equivalent form, possibly involving erf and gamma_incomplete_lower
@@ -1359,6 +1378,14 @@
 ;;;
 ;;; Implementation of the Generalized Incomplete Gamma function
 ;;;
+;;;                                             z2
+;;;					       /
+;;;					       [    a - 1   - t
+;;;  gamma_incomplete_generalized(a, z1, z2) = I   t      %e    dt
+;;;                                            ]
+;;;                                            /
+;;;                                             z1
+;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmfun $gamma_incomplete_generalized (a z1 z2)
@@ -1577,6 +1604,12 @@
 ;;;
 ;;; Implementation of the Regularized Incomplete Gamma function
 ;;;
+;;; A&S 6.5.1
+;;;
+;;;                                        gamma_incomplete(a, z) 
+;;;   gamma_incomplete_regularized(a, z) = ---------------------- 
+;;;                                               gamma(a)
+;;;                                           
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmfun $gamma_incomplete_regularized (a z)
