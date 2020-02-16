@@ -1845,6 +1845,28 @@
                         (power z index)
                         (simplify (list '($pochhammer) (add a (- n)) index)))
                       index 1 n)))))))))
+      ((and $gamma_expand (consp a) (eq 'rat (caar a))
+	    (integerp (second a))
+	    (integerp (third a)))
+       ;; gamma_incomplete_regularized of numeric rational order.
+       ;; Expand it out so that the resulting order is between 0 and
+       ;; 1.  Use gamma_incomplete_regularized(a+n,z) to do the dirty
+       ;; work.
+       (multiple-value-bind (n order)
+	   (floor (/ (second a) (third a)))
+	 ;; a = n + order where 0 <= order < 1.
+	 (let ((rat-order (rat (numerator order) (denominator order))))
+	   (cond
+	     ((zerop n)
+	      ;; Nothing to do if the order is already between 0 and 1
+	      (eqtest (list '(%gamma_incomplete_regularized) a z) expr))
+	     (t
+	      ;; Use gamma_incomplete_regularized(a+n,z) above. and
+	      ;; then substitue a=order.  This works for n positive or
+	      ;; negative.
+	      (let* ((ord (gensym))
+		     (g (simplify (list '(%gamma_incomplete_regularized) (add ord n) z))))
+		($substitute rat-order ord g)))))))
       
       (t (eqtest (list '(%gamma_incomplete_regularized) a z) expr)))))
 
