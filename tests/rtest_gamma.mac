@@ -3890,5 +3890,17 @@ gamma_incomplete_lower(a-2,z);
 gamma_incomplete_lower(1/3-2,z);
 ((9/10-3/(5*z))*%e^-z)/z^(2/3)+(9*''gamma_incomplete_lower(1/3,z))/10;
 
+gamma_incomplete_regularized(2+a,z);
+(z^a*(z+a+1)*%e^-z)/(a*(a+1)*gamma(a))+gamma_incomplete_regularized(a,z)$
+
+gamma_incomplete_regularized(-2+a,z);
+gamma_incomplete_regularized(a,z)-(z^(a-2)*(z+a-1)*%e^-z)/gamma(a)$
+
+gamma_incomplete_regularized(2+1/3,z);
+(9*z^(1/3)*(z+4/3)*%e^-z)/(4*gamma(1/3))+gamma_incomplete_regularized(1/3,z)$
+
+gamma_incomplete_regularized(-2+1/3,z);
+gamma_incomplete_regularized(1/3,z)-((z-2/3)*%e^-z)/(gamma(1/3)*z^(5/3))$
+
 reset (gamma_expand);
 [gamma_expand];
