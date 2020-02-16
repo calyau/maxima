@@ -3894,25 +3894,25 @@ gamma_incomplete_lower(1/3-2,z);
  * Test expansion of gamma_incomplete_regularized.
  */
 gamma_incomplete_regularized(3,z) - gamma_incomplete(3,z)/gamma(3);
-0
+0;
 
-gamma_incomplete_reqularized(3/2,z);
+gamma_incomplete_regularized(3/2,z);
 (2*sqrt(z)*%e^-z)/sqrt(%pi)+erfc(sqrt(z));
 
-gamma_incomplete_reqularized(-3/2,z);
+gamma_incomplete_regularized(-3/2,z);
 erfc(sqrt(z))-(3*((4*z)/3-2/3)*%e^-z)/(4*sqrt(%pi)*z^(3/2));
 
 gamma_incomplete_regularized(2+a,z);
-(z^a*(z+a+1)*%e^-z)/(a*(a+1)*gamma(a))+gamma_incomplete_regularized(a,z)$
+(z^a*(z+a+1)*%e^-z)/(a*(a+1)*gamma(a))+gamma_incomplete_regularized(a,z);
 
 gamma_incomplete_regularized(-2+a,z);
-gamma_incomplete_regularized(a,z)-(z^(a-2)*(z+a-1)*%e^-z)/gamma(a)$
+gamma_incomplete_regularized(a,z)-(z^(a-2)*(z+a-1)*%e^-z)/gamma(a);
 
 gamma_incomplete_regularized(2+1/3,z);
-(9*z^(1/3)*(z+4/3)*%e^-z)/(4*gamma(1/3))+gamma_incomplete_regularized(1/3,z)$
+(9*z^(1/3)*(z+4/3)*%e^-z)/(4*gamma(1/3))+gamma_incomplete_regularized(1/3,z);
 
 gamma_incomplete_regularized(-2+1/3,z);
-gamma_incomplete_regularized(1/3,z)-((z-2/3)*%e^-z)/(gamma(1/3)*z^(5/3))$
+gamma_incomplete_regularized(1/3,z)-((z-2/3)*%e^-z)/(gamma(1/3)*z^(5/3));
 
 reset (gamma_expand);
 [gamma_expand];
