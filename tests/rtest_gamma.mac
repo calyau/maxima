@@ -3890,6 +3890,18 @@ gamma_incomplete_lower(a-2,z);
 gamma_incomplete_lower(1/3-2,z);
 ((9/10-3/(5*z))*%e^-z)/z^(2/3)+(9*''gamma_incomplete_lower(1/3,z))/10;
 
+/*
+ * Test expansion of gamma_incomplete_regularized.
+ */
+gamma_incomplete_regularized(3,z) - gamma_incomplete(3,z)/gamma(3);
+0
+
+gamma_incomplete_reqularized(3/2,z);
+(2*sqrt(z)*%e^-z)/sqrt(%pi)+erfc(sqrt(z));
+
+gamma_incomplete_reqularized(-3/2,z);
+erfc(sqrt(z))-(3*((4*z)/3-2/3)*%e^-z)/(4*sqrt(%pi)*z^(3/2));
+
 gamma_incomplete_regularized(2+a,z);
 (z^a*(z+a+1)*%e^-z)/(a*(a+1)*gamma(a))+gamma_incomplete_regularized(a,z)$
 
