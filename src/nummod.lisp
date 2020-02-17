@@ -333,7 +333,7 @@
 (defprop $mod simp-nummod operators)
 (defprop $mod tex-infix tex)
 (defprop $mod (" \\rm{mod} ") texsym)
-(defprop $mod 180. tex-rbp)
+(defprop $mod 180. tex-lbp)
 (defprop $mod 180. tex-rbp)
 
 ;; $mod distributes over lists, matrices, and equations

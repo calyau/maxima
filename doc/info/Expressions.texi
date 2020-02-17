@@ -2132,7 +2132,7 @@ Quotients are replaced by @code{Quotient}.
 @item
 Unary negation is replaced by @code{Negterm}.
 @item
-Lists are replaced by @code{List(@var{n})} where @var{n} ist the number of
+Lists are replaced by @code{List(@var{n})} where @var{n} is the number of
 elements of the list.
 @end itemize
 

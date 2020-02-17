@@ -64,7 +64,6 @@
 	 *in-translate-file*
 	 *in-translate*
 	 *pre-transl-forms*
-	 ($tr_semicompile $tr_semicompile)
 	 (arrays nil)
 	 (exprs nil)
 	 (lexprs nil)

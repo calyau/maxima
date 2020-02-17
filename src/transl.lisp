@@ -94,11 +94,6 @@
 (defmvar *declared-translated-functions* nil
          "List of functions which are believed to be translated.")
 
-(defmvar $tr_semicompile nil
-  "If TRUE TRANSLATE_FILE and COMPFILE output forms which will~
-	 be macroexpanded but not compiled into machine code by the~
-	 lisp compiler.")
-
 (defmvar  $transcompile  t
   "If TRUE TRANSLATE_FILE outputs declarations for the COMPLR.
 	  The only use of the switch is to save the space declarations take
