@@ -87,6 +87,30 @@ assoc(x,[x=2]);
 assoc(1,[x=2],foobar);
 foobar$
 
+kill(foo, f, x, g, y, z, h, u, xx, yy, none);
+done;
+assoc (f(x), foo(g(x) = y, f(x) = z + 1, h(x) = 2*u));
+z + 1;
+assoc (yy, [xx = 111, yy = 222, yy = 333, yy = 444]);
+222;
+assoc (abc, [[x, 111], [y, 222], [z, 333]], none);
+none;
+assoc (abc, [[x, 111], [y, 222], [z, 333]]);
+false;
+
+kill(bar, baz, ww, zz);
+done;
+assoc (f(x, y), foo(baz(g(x), y), baz(f(x, y), z + 1), baz(h(x), 2*u)));
+z + 1;
+assoc (yy, [xx^11, yy^22, yy^33, yy^44]);
+22;
+assoc (yy, [xx . yy, yy . zz, yy . ww, yy . xx]);
+zz;
+assoc (foo(baz(xx), yy), bar(), none);
+none;
+assoc (baz(foo(ww)), []);
+false;
+
 /* some older versions of gcl had a bug that resulted in a failure of the */
 /* following. */
 primep(80630964769);

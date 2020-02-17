@@ -164,46 +164,67 @@ Do @code{example(append);} for an example.
 @c -----------------------------------------------------------------------------
 @anchor{assoc}
 @deffn {Function} assoc @
-@fname{assoc} (@var{key}, @var{list}, @var{default}) @
-@fname{assoc} (@var{key}, @var{list})
+@fname{assoc} (@var{key}, @var{e}, @var{default}) @
+@fname{assoc} (@var{key}, @var{e})
 
-This function searches for @var{key} in the left hand side of the
-input @var{list}. The @var{list} argument should be a list, each of
-whose elements is an expression with exactly two parts. Most usually,
-the elements of @var{list} are themselves lists, each with two
-elements.
+@code{assoc} searches for @var{key} as the first part of an argument of @var{e}
+and returns the second part of the first match, if any.
 
-The @code{assoc} function iterates along @var{list}, checking the
-first part of each element for equality with @var{key}. If an element
-is found where the comparison is true, @code{assoc} returns the second
-part of that element. If there is no such element in the list,
-@code{assoc} returns either @code{false} or @var{default}, if given.
+@var{key} may be any expression.
+@var{e} must be a nonatomic expression,
+and every argument of @var{e} must have exactly two parts.
+@code{assoc} returns the second part of the first matching argument of @var{e}.
+Matches are determined by @code{is(@var{key} = first(@var{a}))}
+where @var{a} is an argument of @var{e}.
 
-For example, in the expression @code{assoc (y, [[x,1], [y,2],
-[z,3]])}, the @code{assoc} function searches for @code{x} in the left
-hand side of the list @code{[[y,1],[x,2]]} and finds it at the second
-term, returning @code{2}. In @code{assoc (z, [[x,1], [z,2], [z,3]])},
-the search stops at the first term starting with @code{z} and returns
-@code{2}. In @code{assoc(x, [[y,1]])}, there is no matching element,
-so @code{assoc} returns @code{false}.
+If there are two or more matches, only the first is returned.
+If there are no matches, @var{default} is returned, if specified.
+Otherwise, @code{false} is returned.
+
+See also @mref{sublist} and @mrefdot{member}
+
+Examples:
+
+@var{key} may be any expression.
+@var{e} must be a nonatomic expression,
+and every argument of @var{e} must have exactly two parts.
+@code{assoc} returns the second part of the first matching argument of @var{e}.
 
 @c ===beg===
-@c assoc (y, [[x,1], [y,2],[z,3]]);
-@c assoc (z, [[x,1], [z,2], [z,3]]);
-@c assoc (x, [[y,1]]);
+@c assoc (f(x), foo(g(x) = y, f(x) = z + 1, h(x) = 2*u));
 @c ===end===
 @example
 @group
-(%i1) assoc (y, [[x,1], [y,2],[z,3]]);
-(%o1)                           2
+(%i1) assoc (f(x), foo(g(x) = y, f(x) = z + 1, h(x) = 2*u));
+(%o1)                         z + 1
 @end group
+@end example
+
+If there are two or more matches, only the first is returned.
+
+@c ===beg===
+@c assoc (yy, [xx = 111, yy = 222, yy = 333, yy = 444]);
+@c ===end===
+@example
 @group
-(%i2) assoc (z, [[x,1], [z,2], [z,3]]);
-(%o2)                           2
+(%i1) assoc (yy, [xx = 111, yy = 222, yy = 333, yy = 444]);
+(%o1)                          222
 @end group
+@end example
+
+If there are no matches, @var{default} is returned, if specified.
+Otherwise, @code{false} is returned.
+
+@c ===beg===
+@c assoc (abc, [[x, 111], [y, 222], [z, 333]], none); 
+@c assoc (abc, [[x, 111], [y, 222], [z, 333]]);
+@c ===end===
+@example
 @group
-(%i3) assoc (x, [[y,1]]);
-(%o3)                         false
+(%i1) assoc (abc, [[x, 111], [y, 222], [z, 333]], none); 
+(%o1)                         none
+(%i2) assoc (abc, [[x, 111], [y, 222], [z, 333]]);
+(%o2)                         false
 @end group
 @end example
 
