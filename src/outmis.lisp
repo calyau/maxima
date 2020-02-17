@@ -313,9 +313,9 @@
 (defun dispmatchdeclares (l)
   (do ((i l (cdr i))
        (ret))
-      ((null i) (cons '(mlist) ret))
+      ((null i) (cons '(mlist) (reverse ret)))
     (setq l (car (mget (car i) 'matchdeclare)))
-    (setq ret (cons (append (cond ((atom l) (ncons (ncons l))) (t l))
+    (setq ret (cons (append (cond ((atom l) (ncons (ncons l))) ((eq (caar l) 'lambda) (list '(mqapply) l))  (t l))
 			    (ncons (car i)))
 		    ret))))
 

@@ -247,3 +247,15 @@ at('integrate(f(t),t,x,y),[x=a, y=b]);
 
 at(integrate(f(t),t,0,x),x=0);
 0;
+
+/* SF bug #3607: "  printprops displays matchdeclare properties incorrectly when value is a lambda" */
+
+apply (kill, propvars (matchdeclare));
+done;
+
+matchdeclare (aa, all, bb, integerp, cc, lambda([x], floatnump(x) and x > 0));
+done;
+
+printprops (all, matchdeclare);
+[all(aa), integerp(bb), lambda([x], floatnump(x) and (x > 0))(cc)];
+
