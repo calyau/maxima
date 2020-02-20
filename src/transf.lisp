@@ -57,10 +57,10 @@
     ((arg (translate (cadr form)))
      (lisp-function (gethash (caar form) *flonum-op*)))
     (cond ((and (eq (car arg) '$float) lisp-function)
-	   `(,(cond ($tr_float_can_branch_complex
-		     '$any)
-		    (t '$float))
-	     . (complexify (funcall ,lisp-function ,(cdr arg)))))
+	   (let ((call `(funcall ,lisp-function ,(cdr arg))))
+	     (if $tr_float_can_branch_complex
+		 `($any . (complexify ,call))
+		 `($float . ,call))))
 	  (t
 	   `($any . (simplify (list '(,(caar form)) ,(cdr arg))))))))
 
