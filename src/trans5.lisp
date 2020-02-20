@@ -147,9 +147,7 @@
 		((null ,rules) ,expr))))
 
 (def%tr $apply2 (form)
-  `($any . ((lambda (rulelist)
-	      (apply2 rulelist ,(dtranslate (cadr form)) 0))
-	    ',(cddr form))))
+  `($any . (apply2 ',(cddr form) ,(dtranslate (cadr form)) 0)))
 
 (def%tr $applyb1 (form &aux (expr (tr-gensym)) (rules (tr-gensym)))
   `($any . (do ((,expr ,(dtranslate (cadr form))
@@ -158,9 +156,7 @@
 	       ((null ,rules) ,expr))))
 
 (def%tr $applyb2 (form)
-  `($any . ((lambda (rulelist)
-	      (car (apply2hack rulelist ,(dtranslate (cadr form)))))
-	    ',(cddr form))))
+  `($any . (car (apply2hack ',(cddr form) ,(dtranslate (cadr form))))))
 
 ;;; this nice translation property written by REH.
 ;;; He is the first macsyma system program to ever
