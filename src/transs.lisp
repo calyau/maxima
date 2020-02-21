@@ -44,6 +44,7 @@
       $tr_function_call_default
       $tr_array_as_ref
       $tr_numer
+      $tr_float_can_branch_complex
       $define_variable))
 
 (defvar declares nil)
