@@ -793,3 +793,19 @@ errcatch (f(10, n));
 
 (kill (foo, bar), 0);
 0;
+
+/* The translation of a signum call with a float argument was
+ * inconsistent when compared to the interpreted case and other
+ * translated cases.  signum should return an integer or a float
+ * when given an integer or a float argument, respectively.
+ */
+
+(foo () := [signum (0),  signum (0.0),
+            signum (2),  signum (2.0),
+            signum (-3), signum (-3.0)],
+ translate (foo),
+ foo ());
+[0, 0.0, 1, 1.0, -1, -1.0];
+
+(kill (foo), 0);
+0;

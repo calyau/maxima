@@ -160,16 +160,7 @@
 (def%tr %signum (form)
   (destructuring-let (( (mode . arg) (translate (cadr form))))
     (cond ((member mode '($fixnum $float) :test #'eq)
-	   (let ((temp (tr-gensym)))
-	     `($fixnum . ((lambda (,temp)
-			    (declare (,(if (eq mode '$float)	
-					   'flonum
-					   'fixnum)
-				       ,temp))
-			    (cond ((minusp ,temp) -1)
-				  ((plusp ,temp) 1)
-				  (t 0)))
-			  ,arg))))
+	   `(,mode . (cl:signum ,arg)))
 	  (t
 	   ;; even in this unknown case we can do a hell
 	   ;; of a lot better than consing up a form to
