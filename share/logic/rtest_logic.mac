@@ -164,3 +164,16 @@ pdnf (x implies y);
 
 pcnf (x implies y);
 (not x) or y$
+
+/* Ksimplifier */
+logic_simplify(((not a) and (not b) and c) or ((not a) and b and c) or (a and (not b) and c) or (a and b and c) or ((not a) and b and (not c)));
+((not a) and b) or c$
+
+logic_simplify(((not a) and b) or (a and b));
+b$
+
+logic_simplify (a or (not a) and b);
+a or b$
+
+logic_simplify (a or (not a) and (b < 0));
+a or (b < 0)$
