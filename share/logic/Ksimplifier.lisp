@@ -115,38 +115,61 @@
    list-of-variables : a sorted list of variable symbols in the input
    Returns the maxima-expression corresponding to the given minimum-cover
    Example : (maxima-expression '((0 2) (2 0)) '($x $y)) -> ((MOR SIMP) ((MNOT SIMP) $X) ((MNOT SIMP) $Y))"
-  (cons '(mor simp) (mapcar
-		     (lambda (prime-implicant)
-		       (let* ((implicant-maxima-expr 
-			       (remove-if
-				'null (mapcar
-				       (lambda (bit variable)
-					 (cond ((equal bit 0) `((mnot simp) ,variable))
-					       ((equal bit 1) variable)
-					       ((equal bit 2) nil)))
-				       prime-implicant
-				       list-of-variables))))
+  (cons '(mor simp)
+		(mapcar
+		 (lambda (prime-implicant)
+		   (let* ((implicant-maxima-expr 
+				   (remove-if
+					'null (mapcar
+						   (lambda (bit variable)
+							 (cond ((equal bit 0) `((mnot simp) ,variable))
+								   ((equal bit 1) variable)
+								   ((equal bit 2) nil)))
+						   prime-implicant
+						   list-of-variables))))
 			 (if (equal (list-length implicant-maxima-expr) 1)
-			     (car implicant-maxima-expr)
-			     (cons '(mand simp) implicant-maxima-expr))))
-		       minimum-cover)))
-		     
+				 (car implicant-maxima-expr)
+			   (cons '(mand simp) implicant-maxima-expr))))
+		 minimum-cover)))
+
+(defun transform-to-intermediate (expr substitution-table)
+  (cond ((and (consp expr)
+			  (consp (car expr))
+			  (member (caar expr) '(mand mor mnot)))
+		 `(,(car expr) ,@(mapcar (lambda (x) (transform-to-intermediate x substitution-table)) (cdr expr))))
+		((and (consp expr)
+			  (consp (car expr)))
+		 (let ((sym (gensym)))
+		   (setf (gethash sym substitution-table) expr)
+		   sym))
+		(t expr)))
+
+(defun substitute-intermediate (expr substitution-table)
+  (cond ((and (consp expr)
+			  (consp (car expr)))
+		 `(,(car expr) ,@(mapcar (lambda (x) (substitute-intermediate x substitution-table)) (cdr expr))))
+		((atom expr) (if (nth-value 1 (gethash expr substitution-table))
+					   (gethash expr substitution-table)
+					   expr))))
+
 (defun $logic_simplify (expr)
   "Requisite : needs logic.lisp for charactristic_vector function and running maxima for listofvars function.
    Given a logic expression, reduce it to it's simplest form using the method of K-Map reduction.
    Example : logic_simplify(((not a) and (not b) and c) or ((not a) and b and c) or (a and (not b) and c) or (a and b and c) or ((not a) and b and (not c))); -> ((not a) and b) or c
              logic_simplify(((not a) and b) or (a and b)) -> b"
-  (let* ((characteristic-vector (cdr ($characteristic_vector expr)))
-	 (list-of-variables (list-of-variables expr))
-	 (numvar (list-length list-of-variables))
-	 (list-of-minterms (loop
-			      for bit in characteristic-vector
-			      for counter from 0 to (1- (expt 2 numvar))
-			      if bit collect (decimal-to-binary numvar counter)))
-	 (minimum-cover (reduce-to-minimum-cover numvar list-of-minterms)))
+  (let* ((substitutions (make-hash-table))
+		 (intermediate (transform-to-intermediate expr substitutions))
+		 (characteristic-vector (cdr ($characteristic_vector intermediate)))
+		 (list-of-variables (list-of-variables intermediate))
+		 (numvar (list-length list-of-variables))
+		 (list-of-minterms (loop
+							for bit in characteristic-vector
+							for counter from 0 to (1- (expt 2 numvar))
+							if bit collect (decimal-to-binary numvar counter)))
+		 (minimum-cover (reduce-to-minimum-cover numvar list-of-minterms)))
     (cond ((null minimum-cover) nil)
-	  ((equal (car minimum-cover) (make-list numvar :initial-element 2)) t)
-	  (t (let ((converted-expression (maxima-expression minimum-cover list-of-variables)))
-	       (if (equal (list-length converted-expression) 2)
-	       (cadr converted-expression)
-	       converted-expression))))))
+		  ((equal (car minimum-cover) (make-list numvar :initial-element 2)) t)
+		  (t (let ((converted-expression (substitute-intermediate (maxima-expression minimum-cover list-of-variables) substitutions)))
+			   (if (equal (list-length converted-expression) 2)
+				   (cadr converted-expression)
+				 converted-expression))))))

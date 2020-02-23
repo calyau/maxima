@@ -2917,9 +2917,11 @@ non-terminating optimization properties.
 @defvr {System variable} tr_state_vars
 Default value:
 @example
-[transcompile, tr_warn_undeclared, tr_warn_meval,
-tr_warn_fexpr, tr_warn_mode, tr_warn_undefined_variable,
-tr_function_call_default, tr_array_as_ref,tr_numer]
+[transcompile, translate_fast_arrays, tr_warn_undeclared,
+tr_warn_meval, tr_warn_fexpr, tr_warn_mode,
+tr_warn_undefined_variable, tr_function_call_default,
+tr_array_as_ref, tr_numer, tr_float_can_branch_complex,
+define_variable]
 @end example
 
 The list of the switches that affect the form of the
