@@ -397,6 +397,7 @@ declare_constvalue
 declare_dimensions
 declare_fundamental_dimensions
 declare_fundamental_units
+declare_index_properties
 declare_qty
 declare_translated
 declare_unit_conversion
