@@ -892,9 +892,7 @@ APPLY means like APPLY.")
 	else do (merror (intl:gettext "declare_translated: arguments must be symbols or strings; found: ~:M") v)))
 
 (def%tr $declare (form)
-  (do ((l (cdr form) (cddr l)) (nl))
-      ((null l) (if nl `($any $declare . ,(nreverse nl))))
-      (setq nl (cons (cadr l) (cons (car l) nl)))))
+  `($any . (meval ',form)))
 
 (def%tr $eval_when (form)
   (tr-format (intl:gettext "error: found 'eval_when' in a function or expression: ~:M~%") form)

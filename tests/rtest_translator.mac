@@ -809,3 +809,21 @@ errcatch (f(10, n));
 
 (kill (foo), 0);
 0;
+
+/* The translation of declare was broken for decades.  It worked
+ * under Maclisp, but it had never worked under Common Lisp.
+ */
+
+(foo () := declare (n, integer, [x, y], noninteger),
+ translate (foo),
+ foo (),
+ [?kindp (n, integer),
+  ?kindp (n, noninteger),
+  ?kindp (x, integer),
+  ?kindp (x, noninteger),
+  ?kindp (y, integer),
+  ?kindp (y, noninteger)]);
+[true, false, false, true, false, true];
+
+(kill (foo, n, x, y), 0);
+0;
