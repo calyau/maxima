@@ -64,6 +64,7 @@ Bug fixes:
  * #3583: Stack overflow for equality testing with assumptions
  * #3608: logic_simplify handles inequalities incorrectly 
  * #3607: printprops displays matchdeclare properties incorrectly when value is a lambda
+ * #2174: Bogus translation of declare
 
 Unnumbered bugs:
 ----------------
