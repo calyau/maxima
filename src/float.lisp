@@ -1160,7 +1160,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; bigfloat tag.
 ;;
 ;; See
-;; https://sourceforge.net/tracker/?func=detail&atid=104933&aid=2910437&group_id=4933
+;; https://sourceforge.net/p/maxima/bugs/1842/
 ;; for an explanation.
 (let ((table (make-hash-table)))
   (defun fpe ()
@@ -2474,8 +2474,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 		    (bigfloatp result))))))
 	(let ((fp-x (cdr (bigfloatp x))))
 	  (cond ((onep1 x)
-		 ;; Special case for log(1).  See Bug 3381301:
-		 ;; https://sourceforge.net/tracker/?func=detail&aid=3381301&group_id=4933&atid=104933
+		 ;; Special case for log(1).  See:
+		 ;; https://sourceforge.net/p/maxima/bugs/2240/
 		 (bcons (intofp 0)))
 		((fplessp fp-x (intofp 0))
 		 ;; ??? Do we want to return an exact %i*%pi or a float

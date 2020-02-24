@@ -51,7 +51,7 @@ approx_equal(
   )$
 true $
 
-/* see https://sourceforge.net/tracker/index.php?func=detail&aid=1725549&group_id=4933&atid=104933 */
+/* see https://sourceforge.net/p/maxima/bugs/1199/ */
 approx_equal(
   mnewton([2*(x1-1.1234),3*(x2-2.2345)], [x1, x2], [1,2]),
   [[x1=1.1234,x2=2.2345]],
@@ -69,7 +69,7 @@ block([newtonepsilon:bfloat(newtonepsilon)],
 true $
 
 /* see http://www.math.utexas.edu/pipermail/maxima/2010/021238.html and
-https://sourceforge.net/tracker/?func=detail&atid=104933&aid=2994196&group_id=4933 */
+https://sourceforge.net/p/maxima/bugs/1967/ */
 block([f:diff(acos(x^2+8.363+267)/(sqrt(x^2-4.29*x+1042)*(x^2+12.8102*x+1177)),x)],
   approx_equal(
     mnewton(f,x,-5.0),
@@ -94,7 +94,7 @@ block([fpprec:100,newtonepsilon:bfloat(10^(-fpprec/2)),f:diff(acos(x^2+8.363+267
     ))$
 true $
 
-/* see https://sourceforge.net/tracker/index.php?func=detail&aid=1666011&group_id=4933&atid=104933 */
+/* see https://sourceforge.net/p/maxima/bugs/1133/ */
 approx_equal(
   mnewton([x^y - %i,x+y-2],[x,y],[1,1.5]),
   [[x=0.563519172421*%i+0.451201761049,y=1.5487982389505-0.563519172421*%i]],
@@ -102,7 +102,7 @@ approx_equal(
   )$
 true $
 
-/* see https://sourceforge.net/tracker/index.php?func=detail&aid=1662070&group_id=4933&atid=104933 */
+/* see https://sourceforge.net/p/maxima/bugs/1118/ */
 approx_equal(
   mnewton([x[1] + x[2]-1, x[1] - x[2] - 10],[x[1],x[2]],[1,2]),
   [[x[1] = 5.5,x[2] = -4.5]],
