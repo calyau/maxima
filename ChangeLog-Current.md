@@ -40,6 +40,7 @@ Changes in core:
  * Improved the pattern matcher for "+" and "*" expressions, see 
    maxima-discuss, circa 2019-12-27: "Function to recognise series"
  * allow zn_log to work on subgroups
+ * gamma_incomplete_lower is now returned in the noun form in many places
  
 Changes in share:
 --------------
@@ -61,6 +62,8 @@ Bug fixes:
  * #2839: gcfactor(9) => 9
  * #3287: Cross product of scalar zero versus vector yields zero result
  * #3583: Stack overflow for equality testing with assumptions
+ * #3608: logic_simplify handles inequalities incorrectly 
+ * #3607: printprops displays matchdeclare properties incorrectly when value is a lambda
 
 Unnumbered bugs:
 ----------------
@@ -74,6 +77,9 @@ Unnumbered bugs:
  * Problem loading abs_integrate in imaxima mode (emacs)
  * compgrind:true caused compfile to not write to the output file
  * compgrind:true didn't ensure pretty-printing of compfile output
+ * Taylor expansion for gamma_incomplete_lower(1/2,z) now works
+ * compgrind:true didn't ensure pretty-printing of compfile output
+ * gamma_incomplete_lower now respects gamma_expand
 
 Additional improvements:
 ------------------------
@@ -90,3 +96,8 @@ Additional improvements:
  * Fix errors when installing on MacOS via Homebrew
  * run_testsuite(share_tests=only) now doesn't fail due to 
    unicode-sniffer.lisp not having been loaded
+ * Draw now translates the coordinates of labels, too
+ * Use DLMF 8.8.9 to expand gamma_incomplete(a+n,z)
+ * Expand gamma_incomplete for rational order
+ * Many code cleanups
+ * Many improvements to the documentation
