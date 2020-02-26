@@ -608,10 +608,10 @@ This command does not work in XEmacs."
 ;;     (goto-char (point-min))
     (insert "\\documentclass[leqno]{article}
 \\usepackage{verbatim}
-\\usepackage[cmbase]{flexisym}
 \\usepackage{color}
 \\usepackage{breqn}
 \\setkeys{breqn}{compact}
+\\usepackage{flexisym}
 
 \\setlength{\\textwidth}{180mm}
 \\setlength{\\oddsidemargin}{15mm}
@@ -827,9 +827,9 @@ STR is offending LaTeX expression.  FILENAME is name of the LaTeX file."
      imaxima-latex-preamble
      "\\usepackage{color}\n"
      "\\usepackage{exscale}\n"
-     "\\usepackage[cmbase]{flexisym}\n"
      "\\usepackage{breqn}\n"
      "\\setkeys{breqn}{compact}\n"
+     "\\usepackage{flexisym}\n"
      "\\setlength{\\textheight}{200cm}\n"
      ;; define \boxed from amsmath.sty
      "\\makeatletter
