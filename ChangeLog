@@ -2661,7 +2661,7 @@ current version. The changes up to 2005-03-13 were:
 
 	* src/numth.lisp: Bug [ maxima-Bugs-668718 ] gcfactor gives
 	  internal error FIX
-	  https://sourceforge.net/tracker/?func=detail&atid=104933&aid=668718&group_id=4933
+	  https://sourceforge.net/p/maxima/bugs/213/
 
 	  Applied bug fix given in Stavros Macrakis's bug report.
 
