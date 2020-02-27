@@ -9,7 +9,7 @@ apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo texlive texl
 the i386 architecture (https://wiki.debian.org/Multiarch/HOWTO) before).
 If you want a 64Bit installer, install the compiler g++-mingw-w64-x86-64.
 
-You will need CMake >= 3.6, if that is not included in your distribution,
+You will need CMake >= 3.7, if that is not included in your distribution,
 download a recent CMake from https://cmake.org/files/
 
 Then you can extract the Maxima sourcecode or clone the git repository
@@ -17,7 +17,7 @@ and start the crosscompiling-process:
 
 mkdir crosscompile-windows/build
 cd crosscompile-windows/build # change to the build directory
-cmake ..  # use the right CMake executable (CMake >= 3.6)
+cmake ..  # use the right CMake executable (CMake >= 3.7)
 make
 make package
 
