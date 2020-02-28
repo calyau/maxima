@@ -89,19 +89,6 @@
       (merror (format t "Gnuplot error: Gnuplot is not installed,
 nor Gnuplot is not recognized by maxima"))))
 
-(defmacro style-warning-suppressor (&rest body)
-  (if (member :clisp *features*)
-      (setq body (cons
-		  '(let ((scr (find-symbol "*SUPPRESS-CHECK-REDEFINITION*" :CUSTOM)))
-		     (if scr (set scr t)))
-		  body)))
-  (if (macro-function 'handler-bind)
-      `(handler-bind ((style-warning #'muffle-warning))
-		     ,@body)
-    `(progn ,@body)))
-
-(style-warning-suppressor
-
 (declare-top (special lop rop $gcprint $inchar *autoconf-version*))
 
 ;;;
@@ -198,6 +185,16 @@ nor Gnuplot is not recognized by maxima"))))
   (setq str (unquote-%-internal str #\#))
   str)
 
+(defun verb-quote (str)
+  (let ((var "") (charlist
+		  '((#\Newline . "| \\\\ \\verb| "))))
+    (dotimes (i (length str))
+      (let ((chari (elt str i)))
+	(setq var (concatenate 'string var
+			       (or (cdr (assoc chari charlist :test #'eql))
+				   (string chari))))))
+  var))
+
 (defun tex-string (x)
   (let ((sym-name
 	 (if (symbolp x)
@@ -210,17 +207,6 @@ nor Gnuplot is not recognized by maxima"))))
 	   (concatenate 'string "\\verb|   " (verb-quote sym-name) "|"))
 	  (t (setq sym-name (unquote-% sym-name))
 	     (concatenate 'string "\\verb|" (verb-quote sym-name) "|")))))
-
-(defun verb-quote (str)
-  (let ((var "") (charlist
-		  '((#\Newline . "| \\\\ \\verb| "))))
-    (dotimes (i (length str))
-      (let ((chari (elt str i)))
-	(setq var (concatenate 'string var 
-			       (or (cdr (assoc chari charlist :test #'eql))
-				   (string chari))))))
-  var))
-
 
 (defun tex-char (x)
   (if (eql x #\|) "\\verb/|/"
@@ -504,6 +490,12 @@ nor Gnuplot is not recognized by maxima"))))
 
 ; jh: verb & mbox
 
+(defun input-label-p (label)
+  (if (symbolp label)
+      (let ((name (symbol-name label)))
+	(and (> (length name) 3)
+	     (string= "$%I" (subseq name 0 3))))))
+
 (defun latex (x)
 ;  (princ x)  ;; uncomment to debug.
   (if (and (listp x) (car x) (listp (car x)) (caar x)
@@ -523,12 +515,6 @@ nor Gnuplot is not recognized by maxima"))))
 		   (list (string (code-char 22))) 'mparen 'mparen)
 	  (tex x (list (string (code-char 2)))
 	         (list (string (code-char 5))) 'mparen 'mparen))))
-
-(defun input-label-p (label)
-  (if (symbolp label)
-      (let ((name (symbol-name label)))
-	(and (> (length name) 3)
-	     (string= "$%I" (subseq name 0 3))))))
 
 (let ((old-displa (symbol-function 'displa)))
   (defun displa (form)
@@ -648,4 +634,5 @@ nor Gnuplot is not recognized by maxima"))))
 (wx-def-plot/draw $julia 	 $dynamics 	wxplot)
 (wx-def-plot/draw $mandelbrot    $dynamics 	wxplot)
 
-) ;; This paran closes style-warning-suppressor.
+
+;; end of imaxima.lisp
