@@ -147,3 +147,31 @@ the deinstallation) works properly. To test Maxima, try the following:
    Open that file and then select "Cells/Evaluate all cells" in this
    file and check if the file is processed correctly.
 
+
+Further development / TODO:
+===========================
+
+More packages could be included in the Windows installer. 
+
+- Userinterface: Emacs maxima/imaxima mode:
+  Should be rather easy, there are Windows zip files which could be included.
+  But the size of the Maxima installer would be *much* larger.
+  (Discussion on the Maxima mailing list (2020-02-28), that that does not
+  make much sense.
+  Users should install Emacs / Miktex(or Texlive) by themselves, if they want
+  to use that interface).
+- Userinterface Climaxima (https://github.com/lokedhs/maxima-client):
+  Might be possible, but many dependencies, which must be crosscompiled.
+- rlwrap (https://github.com/hanslub42/rlwrap):
+  would provide readline features (advanced command line editing) for
+  command line Maxima, when using SBCL or ABCL (CLISP already supports this).
+  Dependencies: readline and that requires either termcap or ncurses
+  (and neither termcap nor ncurses can be crosscompiled here...)
+- Other Lisp versions: 
+  Must have a Windows port or be crosscompileable and be usable in Wine.
+  I tried other Lisps, but currently only CLISP, SBCL and ABCL work.
+  And including many more Lisp versions might confuse ordinary users.
+
+
+Wolfgang Dautermann
+
