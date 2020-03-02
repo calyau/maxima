@@ -163,7 +163,8 @@ Install the @TeX{} files in the way explained above.
 
 @node Usage
 @chapter Usage
-To start using imaxima just type @kbd{M-x imaxima}.
+To start using imaxima just type @kbd{M-x imaxima}. The imaxima
+directory needs to be on Emacs' @code{load-path}.
 
 @defun imaxima
 Starts a Maxima session in an Emacs buffer.
@@ -230,6 +231,13 @@ resolved by using this command. After calling this command from the
 Emacs mini buffer, you should type simple Maxima expression such as
 1+2; to ensure that the imaxima does respond to you now.
 @end defun
+
+@anchor{imaxima-print-buffer}
+@defun imaxima-print-buffer
+Run LaTeX on the current buffer and show output. See
+@xref{imaxima-print-tex-command} for how LaTeX is run.
+@end defun
+
 
 @node Inline Graph
 @chapter Inline Graph
@@ -428,6 +436,10 @@ anti-aliasing. In that case you might have to remove the options
 @option{-dTextAlphaBits=4} and @option{-dGraphicsAlphaBits=4}.
 @end defopt
 
+@defopt imaxima-cp-program
+The default `copy' program.
+@end defopt
+
 @defopt imaxima-dvips-program
 Dvips executable.
 @end defopt
@@ -437,6 +449,7 @@ Command line options passed to @command{dvips} when converting
 @acronym{EPS} files to @acronym{DVI}.
 @end defopt 
 
+@anchor{imaxima-tmp-dir}
 @defopt imaxima-tmp-dir
 Directory used for temporary files created by imaxima.
 @file{/tmp} by default.
@@ -481,6 +494,19 @@ the directory into which the session.html file and the
 session-images directory are created. The default value is ``~''.
 @end defopt
 
+@anchor{imaxima-print-tex-file}
+@defopt imaxima-print-tex-file
+Name of the LaTeX file name to be created by
+@code{imaxima-print-buffer}. Do not include ".tex" suffix. This file
+will be stored in the directory @code{imaxima-tmp-dir}.
+@end defopt
+
+@anchor{imaxima-print-tex-command}
+@defopt imaxima-print-tex-command
+Command to run LaTeX on the file created by
+@code{imaxima-print-buffer}. In the string '%s' is replaced by the name
+of the tex file. e.g. "pdflatex %s; xpdf %s"
+@end defopt
 
 @node Imath minor mode
 @chapter Imath minor mode
@@ -545,4 +571,6 @@ formulas are copied in this directory.
 @contents
 @bye
 
+@c Local Variables:
+@c time-stamp-format: "%:y-%02m-%02d %02H:%02M:%02S"
 @c End:
