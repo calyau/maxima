@@ -248,25 +248,26 @@ with Gnuplot by trying:
 @end example
 If this works fine, then quite likely @code{wxplot2d} works, too.
 
-Following commands can be used in a maxima session to draw graphs to
-be displayed inline: @code{wxplot2d}, @code{wxplot3d}, @code{wxdraw2d},
-@code{wxdraw3d}, @code{wximplicit_plot}, and @code{wxcontour_plot}.
+Following commands can be used in a maxima session to draw graphs to be
+displayed inline: @code{wxplot2d}, @code{wxplot3d}, @code{wxdraw2d},
+@code{wxdraw3d}, @code{wximplicit_plot}, and @code{wxcontour_plot}. New
+in version 1.0d, the graphics commands @code{wxdraw}, @code{wxjulia} and
+@code{wxmandelbroit} also provide inline images.
 
-They correspond to their original commands @code{plot2d}, @code{plot3d}, @code{draw2d},
-@code{draw3d}, @code{implicit_plot}, and @code{contour_plot}. 
-
-The syntax of the wx-prefixed versions of the commands and their
-arguments are the same as the ones of the corresponding original
-commands. Hence, @code{wxplot2} draws a graph inline in maxima session,
-while @code{plot2d} displays the same graph in the different window.
+The syntax and capabilities of the wx-prefixed versions of the commands
+and their arguments are the same as the ones of the corresponding
+original commands. Hence, @code{wxplot2} draws a graph inline in maxima
+session, while @code{plot2d} displays the same graph in the different
+window.
 
 The wx-prefixed versions of the commands set up arguments so that Gnuplot
 is used to draw the graph and writes the graph in extended postscript 
 format into a temporary file. So, it is suggested not to use plot options
 such as @code{plot_format}.
 
-@code{wxdraw2d} and @code{wxdraw3d} autamatically load the draw package since
-they call @code{draw2d} and @code{draw3d} internally.
+The @code{wxdraw} family of commands automatically load the draw package
+since they call @code{draw} internally. Similarly, @code{wxjulia} and
+@code{wxmandelbroit} automatically load the dynamics package.
 
 
 @node Options
