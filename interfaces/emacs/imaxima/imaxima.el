@@ -1240,7 +1240,7 @@ Please customize the option `imaxima-lisp-file'."))
 (defcustom imaxima-print-tex-file "imax"
   "Name of the LaTeX file name to be created by `imaxima-print-buffer'.
 Do not include \".tex\" suffix.  This file will be stored in the
-directory `imaxima-temp-dir'."
+directory `imaxima-tmp-dir'."
   :group 'imaxima
   :type 'string)
 
