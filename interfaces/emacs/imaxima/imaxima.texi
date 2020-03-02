@@ -116,7 +116,7 @@ To do line breaking imaxima requires the LaTeX package
 breqn.tds.zip}.
 
 The files in @code{breqn} must be installed in a place where @TeX{} can
-find them. In a typical LeTeX installation you should put the
+find them. In a typical LaTeX installation you should put the
 @file{*.sty} and @file{*.sym} files in
 
 @example
