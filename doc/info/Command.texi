@@ -1240,21 +1240,19 @@ Otherwise, index properties are ignored.
 $$@{@}_@{w@}A_@{x@}$$
 (%o3)                         false
 @end group
-@group
 (%i4) display2d: false $
-(%i5) A[w, x];
-@end group
 @group
+(%i5) A[w, x];
 (%o5) A[w,x]
-(%i6) display2d: true $
 @end group
+(%i6) display2d: true $
 @group
 (%i7) grind (A[w, x]);
 A[w,x]$
 (%o7)                         done
 @end group
-@group
 (%i8) stringdisp: true $
+@group
 (%i9) string (A[w, x]);
 (%o9)                       "A[w,x]"
 @end group
@@ -1352,6 +1350,7 @@ Example:
 @example
 (%i1) b[1,2]:x-x^2$
 (%i2) x:123$
+@group
 (%i3) display(x, b[1,2], sin(1.0));
                              x = 123
 
@@ -1362,6 +1361,7 @@ Example:
                   sin(1.0) = 0.8414709848078965
 
 (%o3)                         done
+@end group
 @end example
 
 @opencatbox
@@ -1661,6 +1661,7 @@ bb+aa^10
   for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
 define: warning: redefining the built-in function cholesky
 @end group
+@group
 (%i15) grind (cholesky);
 cholesky(A):=block(
          [n:length(A),L:copymatrix(A),
@@ -1673,6 +1674,7 @@ cholesky(A):=block(
          for i thru n do L[i,i]:1/p[i],
          for i thru n do (for j from i+1 thru n do L[i,j]:0),L)$
 (%o15)                        done
+@end group
 @group
 (%i16) string (fundef (cholesky));
 (%o16) cholesky(A):=block([n:length(A),L:copymatrix(A),p:makelis\
