@@ -1291,6 +1291,221 @@ All index properties are removed from each symbol @var{a}, @var{b}, @var{c}, ...
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{display_index_separator}
+@defvr {Symbol property} display_index_separator
+
+When a symbol @var{A} has index display properties declared via @code{declare_index_properties},
+the value of the property @code{display_index_separator}
+is the string or other expression which is displayed between indices.
+
+The value of @code{display_index_separator}
+is assigned by @code{put(@var{A}, @var{S}, display_index_separator)},
+where @var{S} is a string or other expression.
+The assigned value is retrieved by @code{get(@var{A}, display_index_separator)}.
+
+The display index separator @var{S} can be a string, including an empty string,
+or @code{false}, indicating the default separator, or any expression.
+If not a string and not @code{false}, the property value is coerced to a string via @code{string}.
+
+If no display index separator is assigned, the default separator is used.
+The default separator is a comma.
+There is no way to change the default separator.
+
+Each symbol has its own value of @code{display_index_separator}.
+
+See also @mref{put}, @mref{get}, and @mrefdot{declare_index_properties}
+
+Examples:
+    
+When a symbol @var{A} has index display properties,
+the value of the property @code{display_index_separator}
+is the string or other expression which is displayed between indices.
+The value is assigned by @code{put(@var{A}, @var{S}, display_index_separator)},
+
+@c ===beg===
+@c declare_index_properties (A, [postsuperscript, postsuperscript, presubscript, presubscript]);
+@c put (A, ";", display_index_separator);
+@c A[w, x, y, z];
+@c ===end===
+@example
+@group
+(%i1) declare_index_properties (A, [postsuperscript, postsuperscript, presubscript, presubscript]);
+(%o1)                         done
+@end group
+@group
+(%i2) put (A, ";", display_index_separator);
+(%o2)                           ;
+@end group
+@group
+(%i3) A[w, x, y, z];
+                                 w;x
+(%o3)                           A
+                             y;z
+@end group
+@end example
+
+The assigned value is retrieved by @code{get(@var{A}, display_index_separator)}.
+
+@c ===beg===
+@c declare_index_properties (A, [postsuperscript, postsuperscript, presubscript, presubscript]);
+@c put (A, ";", display_index_separator);
+@c get (A, display_index_separator);
+@c ===end===
+@example
+@group
+(%i1) declare_index_properties (A, [postsuperscript, postsuperscript, presubscript, presubscript]);
+(%o1)                         done
+@end group
+@group
+(%i2) put (A, ";", display_index_separator);
+(%o2)                           ;
+@end group
+@group
+(%i3) get (A, display_index_separator);
+(%o3)                           ;
+@end group
+@end example
+
+The display index separator @var{S} can be a string, including an empty string,
+or @code{false}, indicating the default separator, or any expression.
+
+@c ===beg===
+@c declare_index_properties (A, [postsuperscript, postsuperscript, presubscript, presubscript]);
+@c A[w, x, y, z];
+@c put (A, "-", display_index_separator);
+@c A[w, x, y, z];
+@c put (A, " ", display_index_separator);
+@c A[w, x, y, z];
+@c put (A, "", display_index_separator);
+@c A[w, x, y, z];
+@c put (A, false, display_index_separator);
+@c A[w, x, y, z];
+@c put (A, 'foo, display_index_separator);
+@c A[w, x, y, z];
+@c ===end===
+@example
+@group
+(%i1) declare_index_properties (A, [postsuperscript, postsuperscript, presubscript, presubscript]);
+(%o1)                         done
+@end group
+@group
+(%i2) A[w, x, y, z];
+                                 w, x
+(%o2)                           A
+                            y, z
+@end group
+@group
+(%i3) put (A, "-", display_index_separator);
+(%o3)                           -
+@end group
+@group
+(%i4) A[w, x, y, z];
+                                 w-x
+(%o4)                           A
+                             y-z
+@end group
+@group
+(%i5) put (A, " ", display_index_separator);
+(%o5)                            
+@end group
+@group
+(%i6) A[w, x, y, z];
+                                 w x
+(%o6)                           A
+                             y z
+@end group
+@group
+(%i7) put (A, "", display_index_separator);
+(%o7) 
+@end group
+@group
+(%i8) A[w, x, y, z];
+                                 wx
+(%o8)                           A
+                              yz
+@end group
+@group
+(%i9) put (A, false, display_index_separator);
+(%o9)                         false
+@end group
+@group
+(%i10) A[w, x, y, z];
+                                 w, x
+(%o10)                          A
+                            y, z
+@end group
+@group
+(%i11) put (A, 'foo, display_index_separator);
+(%o11)                         foo
+@end group
+@group
+(%i12) A[w, x, y, z];
+                                 wfoox
+(%o12)                          A
+                           yfooz
+@end group
+@end example
+
+If no display index separator is assigned, the default separator is used.
+The default separator is a comma.
+
+@c ===beg===
+@c declare_index_properties (A, [postsuperscript, postsuperscript, presubscript, presubscript]);
+@c A[w, x, y, z];
+@c ===end===
+@example
+@group
+(%i1) declare_index_properties (A, [postsuperscript, postsuperscript, presubscript, presubscript]);
+(%o1)                         done
+@end group
+@group
+(%i2) A[w, x, y, z];
+                                 w, x
+(%o2)                           A
+                            y, z
+@end group
+@end example
+
+Each symbol has its own value of @code{display_index_separator}.
+
+@c ===beg===
+@c declare_index_properties (A, [postsuperscript, postsuperscript, presubscript, presubscript]);
+@c put (A, " ", display_index_separator);
+@c declare_index_properties (B, [presuperscript, presuperscript, postsubscript, postsubscript]);
+@c put (B, ";", display_index_separator);
+@c A[w, x, y, z] + B[w, x, y, z];
+@c ===end===
+@example
+@group
+(%i1) declare_index_properties (A, [postsuperscript, postsuperscript, presubscript, presubscript]);
+(%o1)                         done
+@end group
+@group
+(%i2) put (A, " ", display_index_separator);
+(%o2)                            
+@end group
+@group
+(%i3) declare_index_properties (B, [postsuperscript, postsuperscript, presubscript, presubscript]);
+(%o3)                         done
+@end group
+@group
+(%i4) put (B, ";", display_index_separator);
+(%o4)                           ;
+@end group
+@group
+(%i5) A[w, x, y, z] + B[w, x, y, z];
+                            w;x       w x
+(%o5)                      B    +    A
+                        y;z       y z
+@end group
+@end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
 @anchor{disp}
 @deffn {Function} disp (@var{expr_1}, @var{expr_2}, @dots{})
 
