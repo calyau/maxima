@@ -9,7 +9,7 @@ apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo texlive texl
 the i386 architecture (https://wiki.debian.org/Multiarch/HOWTO) before).
 If you want a 64Bit installer, install the compiler g++-mingw-w64-x86-64.
 
-You will need CMake >= 3.6, if that is not included in your distribution,
+You will need CMake >= 3.7, if that is not included in your distribution,
 download a recent CMake from https://cmake.org/files/
 
 Then you can extract the Maxima sourcecode or clone the git repository
@@ -17,7 +17,7 @@ and start the crosscompiling-process:
 
 mkdir crosscompile-windows/build
 cd crosscompile-windows/build # change to the build directory
-cmake ..  # use the right CMake executable (CMake >= 3.6)
+cmake ..  # use the right CMake executable (CMake >= 3.7)
 make
 make package
 
@@ -146,4 +146,32 @@ the deinstallation) works properly. To test Maxima, try the following:
    graphics system in the next step.
    Open that file and then select "Cells/Evaluate all cells" in this
    file and check if the file is processed correctly.
+
+
+Further development / TODO:
+===========================
+
+More packages could be included in the Windows installer. 
+
+- Userinterface: Emacs maxima/imaxima mode:
+  Should be rather easy, there are Windows zip files which could be included.
+  But the size of the Maxima installer would be *much* larger.
+  (Discussion on the Maxima mailing list (2020-02-28), that that does not
+  make much sense.
+  Users should install Emacs / Miktex(or Texlive) by themselves, if they want
+  to use that interface).
+- Userinterface Climaxima (https://github.com/lokedhs/maxima-client):
+  Might be possible, but many dependencies, which must be crosscompiled.
+- rlwrap (https://github.com/hanslub42/rlwrap):
+  would provide readline features (advanced command line editing) for
+  command line Maxima, when using SBCL or ABCL (CLISP already supports this).
+  Dependencies: readline and that requires either termcap or ncurses
+  (and neither termcap nor ncurses can be crosscompiled here...)
+- Other Lisp versions: 
+  Must have a Windows port or be crosscompileable and be usable in Wine.
+  I tried other Lisps, but currently only CLISP, SBCL and ABCL work.
+  And including many more Lisp versions might confuse ordinary users.
+
+
+Wolfgang Dautermann
 

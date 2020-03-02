@@ -10,6 +10,7 @@
 ;;          08-12-10: rename stardisp to stardisp1, assign property of $stardisp
 ;;          08-12-14: vector_eval: cut out sratsimp, rename it to vector_simp
 ;;                    $vector_rebuild: evaluate mnctimes, bugfix case mdefine
+;;          20-02-27: TeX-support added
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -75,6 +76,17 @@
 
 (defun mtimesqp (expr)
   (and (not (atom expr)) (eq 'mtimesq (caar expr))) )
+
+;; TeX-support:
+(putprop 'mtimesq 'tex-mtimesq 'tex)
+;;
+(defun tex-mtimesq (x l r)  
+  (append l 
+          (tex (cadr x) nil nil 'mparen 'mparen) 
+          `("\\,")
+          ; `("\\cdot") ; if preferred
+          (tex (caddr x) nil nil 'mparen 'mparen)
+           r ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -1011,9 +1011,6 @@ APPLY means like APPLY.")
     (if specs (pushnew `(special  . ,specs) dl :test #'eq))
     (if dl `(declare . ,dl))))
 
-(def%tr dolist (form)
-  (translate `((mprogn) . ,(cdr form))))
-
 (defun tr-seq (l)
   (do ((mode nil)
        (body nil))
