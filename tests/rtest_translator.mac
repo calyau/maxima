@@ -827,3 +827,17 @@ errcatch (f(10, n));
 
 (kill (foo, n, x, y), 0);
 0;
+
+/* If a variable was declared to be of mode rational, then a lisp
+ * error could occur during translation when attempting to convert
+ * it to a float.
+ */
+
+(foo (x) := (mode_declare (x, rational), float (x)),
+ bar (y) := (mode_declare (y, rational), 1.0 + y),
+ translate (foo, bar),
+ [foo (1/4), bar (1/2)]);
+[0.25, 1.5];
+
+(kill (foo, bar, x, y), 0);
+0;
