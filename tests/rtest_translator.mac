@@ -861,3 +861,41 @@ true;
 
 (kill (foo, bar, x, y, l1, l2), 0);
 0;
+
+/* When attempting to apply float contagion to the arguments, some
+ * translations of max and min with mixed float and rational arguments
+ * were broken because the rationals were not converted to floats before
+ * calling MAX or MIN (like atan2 above).  Also, due to implementation-
+ * dependent behavior in the underlying lisp regarding what to return
+ * from MAX and MIN, the wrong mode could be used during translation and
+ * some of the translations were possibly inconsistent with interpreted
+ * cases.
+ */
+
+(foo (x) :=
+   (mode_declare (x, rational),
+    [max (),         min (),
+     max (1),        min (1),
+     max (1.0),      min (1.0),
+     max (9/10),     min (9/10),
+     max (x)   ,     min (x),
+     max (0.0, 1),   min (0.0, 1),
+     max (0, 1),     min (0, 1),
+     max (1.0, 1),   min (1.0, 1),
+     max (1, 1.0),   min (1, 1.0),
+     max (2.0, 3.0), min (2.0, 3.0),
+     max (-1, 1/2),  min (-1, 1/2),
+     max (3/4, 1/2), min (3/4, 1/2),
+     max (0.0, 1/2), min (0.0, 1/2),
+     max (0, x),     min (0, x),
+     max (-1.0, x),  min (-1.0, x),
+     max (5/6, x),   min (5/6, x),
+     max (x, 1),     min (x, 1)]),
+ l1 : foo (2/3),
+ translate (foo),
+ l2 : foo (2/3),
+ is (l1 = l2));
+true;
+
+(kill (foo, x, l1, l2), 0);
+0;

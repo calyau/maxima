@@ -1319,12 +1319,29 @@ APPLY means like APPLY.")
 
 (defun translate-$max-$min (form)
   (let   ((mode) (arglist) (op (stripdollar (caar form))))
-    (setq arglist 
-	  (mapcar #'(lambda (l) (setq l (translate l)
-				      mode (*union-mode (car l) mode))
-			    l)
+    (setq arglist
+	  (mapcar (lambda (l)
+		    (setq l (translate l))
+		    (cond ((null mode)
+			   (setq mode (car l)))
+			  ((eq mode (car l)))
+			  (t
+			   (setq mode '$any)))
+		    l)
 		  (cdr form)))
-    (if (member mode '($fixnum $float $number) :test #'eq)
+    ; To match the interpreted case, and to make sure we use the
+    ; correct mode for the return value, we do not apply float
+    ; contagion to the arguments and we use a special translation
+    ; to call MAX or MIN only when every argument has the same
+    ; mode (either all fixnum or all float).  CLHS says that
+    ; implementations have choices they can make about what MAX
+    ; and MIN return when the arguments are a mix of float and
+    ; rational types.
+    ; Example: if an implementation decides to apply float contagion
+    ; to the arguments of MAX (MIN), then it can return either an
+    ; integer or a float if the greatest (least) argument was an
+    ; integer.
+    (if (member mode '($fixnum $float) :test #'eq)
 	`(,mode  ,(if (eq 'min op) 'min 'max) . ,(mapcar 'cdr arglist))
 	`($any ,(if (eq 'min op) '$lmin '$lmax)
 	  (list '(mlist) . ,(mapcar 'dconvx arglist))))))
