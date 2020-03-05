@@ -841,3 +841,23 @@ errcatch (f(10, n));
 
 (kill (foo, bar, x, y), 0);
 0;
+
+/* The translation of an atan2 call with one float and one rational
+ * argument was broken because the rational was not converted to a
+ * float before calling ATAN.
+ */
+
+(foo () :=
+   [atan2 (0.0, -1/2),
+    atan2 (-1/2, 0.0),
+    atan2 (0.0, -1),
+    atan2 (1, 0.0)],
+ bar (y, x) := (mode_declare (x, float, y, rational), atan2 (y, x)),
+ l1 : [foo (), bar (1/3, 0.0)],
+ translate (foo, bar),
+ l2 : [foo (), bar (1/3, 0.0)],
+ is (l1 = l2));
+true;
+
+(kill (foo, bar, x, y, l1, l2), 0);
+0;
