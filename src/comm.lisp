@@ -835,7 +835,7 @@
 (defmfun $operatorp (expr oplist)
   (if ($listp oplist)
       ($member ($op expr) oplist)
-      (equal ($op expr) oplist)))
+      (alike1 ($op expr) oplist)))
 
 (defmfun $part (&rest args)
   #-gcl
