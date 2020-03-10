@@ -25,7 +25,7 @@
 (defvar *translation-msgs-files* nil
   "Where the warning and other comments goes.")
 
-(defmvar transl-file nil "output stream of $compfile and $translate_file")
+(defmvar transl-file nil "output stream of $compfile")
 
 (defmvar $compgrind t "If `true' lisp output will be pretty-printed.")
 
