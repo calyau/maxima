@@ -101,7 +101,16 @@ petrov();
 D;
 np.transpose(npi);
 matrix([0,-1,0,0],[-1,0,0,0],[0,0,0,1],[0,0,1,0]);
-/* TODO: miscellaneous stuff: findde, cograd, contragrad, dscalar, etc */
+/* Test cograd, contragrad */
+(g:[0,0,0,0],diagmetric:true,cograd(1/r^2,g),g);
+[0,-2/r^3,0,0];
+(g:[0,0,0,0],diagmetric:false,contragrad(1/r^2,g),g);
+[0,-2/r^3,0,0];
+(g:[0,0,0,0],diagmetric:true,contragrad(1/r^2,g),g);
+[0,-2/r^3,0,0];
+kill(g);
+done;
+/* TODO: miscellaneous stuff: findde, dscalar, etc */
 
 (reset(ratfac),0);
 0$
