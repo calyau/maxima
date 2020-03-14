@@ -84,6 +84,21 @@ block([xy],
     [ylabel, "period (s)"]))$
 plot2d$
 
+wxplot3d (u^2 - v^2, [u, -2, 2], [v, -3, 3], [grid, 100, 100],
+  [mesh_lines_color,false])$
+plot3d$
+
+wxplot3d ( log ( x^2*y^2 ), [x, -2, 2], [y, -2, 2], [z, -8, 4],
+                   [palette, false], [color, magenta])$
+plot3d$
+
+wxplot3d (log (x^2*y^2), [x, -2, 2], [y, -2, 2],[grid, 29, 29],
+                 [palette, [gradient, red, orange, yellow, green]],
+                 color_bar, [xtics, 1], [ytics, 1], [ztics, 4],
+                 [color_bar_tics, 4])$
+plot3d$
+
+
 wxmandelbrot ([iterations, 30], [x, -2, 1], [y, -1.2, 1.2],
                       [grid,400,400])$
 mandelbrot $
@@ -97,5 +112,12 @@ true $
 
 listp(wxdraw( gr2d( key="sin (x)",grid=[2,2], explicit( sin(x), x,0,2*%pi ) ), gr2d( key="cos (x)",grid=[2,2], explicit( cos(x), x,0,2*%pi ) ) )) $
 true $
+
+listp(wxdraw3d(axis_3d = false, explicit(sin(x^2+y^2),x,-2,2,y,-2,2) ))$
+true $
+
+listp(wxdraw3d(colorbox="Magnitude",enhanced3d=true,explicit(x^2+y^2,x,-1,1,y,-1,1)))$
+true $
+
 
 /* end of rtest_imaxima.mac */

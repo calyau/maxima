@@ -1875,7 +1875,7 @@ contragrad(f,xyz):=block
   if diagmetric then for mm thru dim do 
     arraysetapply(xyz,[mm],ratsimp(ratsimp(_ug()[mm,mm]*diff(f,ct_coords[mm]))))
   else for mm thru dim do 
-    arraysetapply(xyz,[mm],sum(_ug()[m,n]*diff(f,ct_coords[n%]),n%,1,dim))
+    arraysetapply(xyz,[mm],sum(_ug()[mm,n%]*diff(f,ct_coords[n%]),n%,1,dim))
 )$
 
 /* The d'Alembertian of a scalar */

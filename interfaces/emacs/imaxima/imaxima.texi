@@ -60,12 +60,13 @@ algebra system Maxima as images typeset by @TeX{}.
 
 This manual documents imaxima version @value{VERSION}. You can
 download the latest version of imaxima from
-@uref{http://members3.jcom.home.ne.jp/imaxima/}.
+@uref{http://maxima.sourceforge.net/, the Maxima website}.
 
 Since version 1.0b, imaxima and imath supports inline graph. 
 
-Send suggestions and bug reports to @email{imaxima@@mac.com, Yasuaki
-Honda}. 
+Send suggestions and bug reports to
+@email{maxima-discuss@@lists.sourceforge.net, the Maxima email list} or
+@uref{https://sourceforge.net/p/maxima/bugs/, the Maxima bug tracker}.
 
 @menu
 * Installation::      Installing imaxima (and breqn).
@@ -108,17 +109,14 @@ If you use Interactive Math minor mode, put
 in your @file{.emacs} file.
 
 
-To do line breaking imaxima requires the LaTeX package @code{breqn}. This
-package is officially distributed by Morten Høgholm from
-@uref{http://www.ctan.org/tex-archive/macros/latex/contrib/mh} as mh.zip.
+To do line breaking imaxima requires the LaTeX package
+@code{breqn}. This package is currently distributed from
+@uref{https://ctan.org/pkg/breqn, its CTAN webpage} as
+@uref{http://mirrors.ctan.org/install/macros/latex/contrib/breqn.tds.zip,
+breqn.tds.zip}.
 
-Alternatively, for the easy installation, you may download
-@uref{http://members3.jcom.home.ne.jp/imaxima/breqn097a.zip}. 
-Compared to mh.zip, breqn097a.zip contains all the @file{*.sty} and
-@file{*.sym} files in it.
-
-The files in @code{breqn} must be installed in a place where @TeX{}
-can find them.  In a typical teTeX installation you should put the
+The files in @code{breqn} must be installed in a place where @TeX{} can
+find them. In a typical LaTeX installation you should put the
 @file{*.sty} and @file{*.sym} files in
 
 @example
@@ -165,7 +163,8 @@ Install the @TeX{} files in the way explained above.
 
 @node Usage
 @chapter Usage
-To start using imaxima just type @kbd{M-x imaxima}.
+To start using imaxima just type @kbd{M-x imaxima}. The imaxima
+directory needs to be on Emacs' @code{load-path}.
 
 @defun imaxima
 Starts a Maxima session in an Emacs buffer.
@@ -233,6 +232,13 @@ Emacs mini buffer, you should type simple Maxima expression such as
 1+2; to ensure that the imaxima does respond to you now.
 @end defun
 
+@anchor{imaxima-print-buffer}
+@defun imaxima-print-buffer
+Run LaTeX on the current buffer and show output. See
+@xref{imaxima-print-tex-command} for how LaTeX is run.
+@end defun
+
+
 @node Inline Graph
 @chapter Inline Graph
 
@@ -250,25 +256,26 @@ with Gnuplot by trying:
 @end example
 If this works fine, then quite likely @code{wxplot2d} works, too.
 
-Following commands can be used in a maxima session to draw graphs to
-be displayed inline: @code{wxplot2d}, @code{wxplot3d}, @code{wxdraw2d},
-@code{wxdraw3d}, @code{wximplicit_plot}, and @code{wxcontour_plot}.
+Following commands can be used in a maxima session to draw graphs to be
+displayed inline: @code{wxplot2d}, @code{wxplot3d}, @code{wxdraw2d},
+@code{wxdraw3d}, @code{wximplicit_plot}, and @code{wxcontour_plot}. New
+in version 1.0d, the graphics commands @code{wxdraw}, @code{wxjulia} and
+@code{wxmandelbroit} also provide inline images.
 
-They correspond to their original commands @code{plot2d}, @code{plot3d}, @code{draw2d},
-@code{draw3d}, @code{implicit_plot}, and @code{contour_plot}. 
-
-The syntax of the wx-prefixed versions of the commands and their
-arguments are the same as the ones of the corresponding original
-commands. Hence, @code{wxplot2} draws a graph inline in maxima session,
-while @code{plot2d} displays the same graph in the different window.
+The syntax and capabilities of the wx-prefixed versions of the commands
+and their arguments are the same as the ones of the corresponding
+original commands. Hence, @code{wxplot2} draws a graph inline in maxima
+session, while @code{plot2d} displays the same graph in the different
+window.
 
 The wx-prefixed versions of the commands set up arguments so that Gnuplot
 is used to draw the graph and writes the graph in extended postscript 
 format into a temporary file. So, it is suggested not to use plot options
 such as @code{plot_format}.
 
-@code{wxdraw2d} and @code{wxdraw3d} autamatically load the draw package since
-they call @code{draw2d} and @code{draw3d} internally.
+The @code{wxdraw} family of commands automatically load the draw package
+since they call @code{draw} internally. Similarly, @code{wxjulia} and
+@code{wxmandelbroit} automatically load the dynamics package.
 
 
 @node Options
@@ -429,6 +436,10 @@ anti-aliasing. In that case you might have to remove the options
 @option{-dTextAlphaBits=4} and @option{-dGraphicsAlphaBits=4}.
 @end defopt
 
+@defopt imaxima-cp-program
+The default `copy' program.
+@end defopt
+
 @defopt imaxima-dvips-program
 Dvips executable.
 @end defopt
@@ -438,6 +449,7 @@ Command line options passed to @command{dvips} when converting
 @acronym{EPS} files to @acronym{DVI}.
 @end defopt 
 
+@anchor{imaxima-tmp-dir}
 @defopt imaxima-tmp-dir
 Directory used for temporary files created by imaxima.
 @file{/tmp} by default.
@@ -482,6 +494,19 @@ the directory into which the session.html file and the
 session-images directory are created. The default value is ``~''.
 @end defopt
 
+@anchor{imaxima-print-tex-file}
+@defopt imaxima-print-tex-file
+Name of the LaTeX file name to be created by
+@code{imaxima-print-buffer}. Do not include ".tex" suffix. This file
+will be stored in the directory @code{imaxima-tmp-dir}.
+@end defopt
+
+@anchor{imaxima-print-tex-command}
+@defopt imaxima-print-tex-command
+Command to run LaTeX on the file created by
+@code{imaxima-print-buffer}. In the string '%s' is replaced by the name
+of the tex file. e.g. "pdflatex %s; xpdf %s"
+@end defopt
 
 @node Imath minor mode
 @chapter Imath minor mode
@@ -546,4 +571,6 @@ formulas are copied in this directory.
 @contents
 @bye
 
+@c Local Variables:
+@c time-stamp-format: "%:y-%02m-%02d %02H:%02M:%02S"
 @c End:

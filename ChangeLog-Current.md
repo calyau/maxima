@@ -35,6 +35,12 @@ Changes in core:
  * Characters are no loger compared using EQ instead of EQL
  * Fixed bogus translations of apply2 and applyb2
  * Fixed bogus translations of atan and atan2 with float arguments
+ * Fixed the bogus translation of atan2 with one float and one rational
+   argument
+ * Fixed bogus and inconsistent translations of max and min when the
+   arguments were a mix of float and other modes
+ * Fixed an internal error in the translator when attempting to convert
+   a variable of mode rational to a float
  * Fixed the inconsistent translation of signum with a float argument
  * Updated gentran to v.5
  * Improved the pattern matcher for "+" and "*" expressions, see 

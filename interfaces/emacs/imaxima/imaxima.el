@@ -673,10 +673,18 @@ This command does not work in XEmacs."
   (unless (eq (process-status process) 'run)
     (imaxima-clean-up)))
 
+(defun imaxima-maybe-restart-gs ()
+  "Unless `imaxima-gs-process' is running, call
+`imaxima-start-gs' to (re)start GS."
+    (unless (and (processp imaxima-gs-process)
+		 (eq (process-status imaxima-gs-process) 'run))
+      (imaxima-start-gs)))
+
 (defun imaxima-ps-to-image (psfilename filename bb width height)
   "Convert eps file PSFILENAME to a bitmap image file FILENAME.
 BB is the bounding box for eps image.  WIDTH and HEIGHT are the
 dimensions of the image."
+  (imaxima-maybe-restart-gs)
   (setq imaxima-gs-computing-p t)
   (when (eq system-type 'windows-nt)
     (setq psfilename (imaxima-subst-char-in-string ?\\ ?/ psfilename))
@@ -1240,7 +1248,7 @@ Please customize the option `imaxima-lisp-file'."))
 (defcustom imaxima-print-tex-file "imax"
   "Name of the LaTeX file name to be created by `imaxima-print-buffer'.
 Do not include \".tex\" suffix.  This file will be stored in the
-directory `imaxima-temp-dir'."
+directory `imaxima-tmp-dir'."
   :group 'imaxima
   :type 'string)
 
