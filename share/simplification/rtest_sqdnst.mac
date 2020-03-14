@@ -1,9 +1,6 @@
 (kill(all), 'done);
 'done$
 
-(load("sqdnst"), 'done);
-'done$
-
 sqrtdenest(sqrt(3+2*sqrt(2)));
 sqrt(2)+1$
 

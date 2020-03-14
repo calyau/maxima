@@ -60,7 +60,7 @@
 ;;; which references Borodin et al (1985), Jeffrey and Rich (2009)
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun sqrtdenest (e)
+(defmfun $sqrtdenest (e)
   "Denest square roots in expression e"
   (sqrtdenest1 e))
 

@@ -573,7 +573,7 @@
     (setq e1 (sratsimp e))
     (if ($constantp e)
       (progn
-	(setq e (sqrtdenest e))
+	(setq e ($sqrtdenest e))
 	;; Rectform does more than is wanted.  A function that denests and
 	;; rationalizes nested complex radicals would be better.
 	;; Limit expression growth.  The factor is based on trials.

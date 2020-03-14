@@ -404,7 +404,6 @@ map(polarform,x),rectform(%%),trigsimp(%%))$
 
 trigvalue(r):=block(
 [f,x,sol,spr,spr1,solvetrigwarn,algebraic],
-load (sqdnst),
 solvetrigwarn:false,
 algebraic:true,
 if freeof(%pi,r) then return(r),

@@ -126,7 +126,6 @@ The function trigvalue compute values of sin(m*pi/n), cos(m*pi/n), tan(m*pi/n), 
 
 trigvalue(r):=block(
 [f,x,sol,spr,spr1,solvetrigwarn,algebraic],
-load (sqdnst),
 solvetrigwarn:false,
 algebraic:true,
 if freeof(%pi,r) then return(r),

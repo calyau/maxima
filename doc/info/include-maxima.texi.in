@@ -594,7 +594,6 @@ simplification
 * Package ineq::
 * Package rducon::
 * Package scifac::
-* Package sqdnst::
 
 solve_rec
 * Introduction to solve_rec::

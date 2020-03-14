@@ -714,13 +714,7 @@ logcontract(ratsimp(factor(integrate (1/((x-3)^4+1), x,0,1)))),algebraic;
  /8$
 /*
  * Work around in residu.lisp, rev 1.9
- *
- * To make the answer shorter and easier to read, we need sqrtdenest,
- * so load it up.
- *
  */
-(load(sqdnst), true);
-true;
 factor(expand(sqrtdenest(integrate (1/((x-3)^4+1/2), x,0,1))))
 /* we factor the result and subtract it */
 -factor(-(2*atan((2^(13/4)+2^(5/2)+2^(3/4))/(-2^(13/4)+2^(3/4)-98))
