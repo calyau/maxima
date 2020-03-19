@@ -288,11 +288,7 @@
   (frob $max #'cl:max)
   (frob $min #'cl:min)
   (frob %signum #'cl:signum)
-  (frob $atan2 #'cl:atan)
-  (frob %log #'(lambda (x)
-		 (let ((y (ignore-errors (cl:log x))))
-		   (if y y (domain-error x 'log)))))
-  (frob %sqrt #'cl:sqrt))
+  (frob $atan2 #'cl:atan))
 
 (macrolet ((frob (mfun dfun) `(setf (gethash ',mfun *big-float-op*) ,dfun)))
   ;; All big-float implementation functions MUST support a required x
