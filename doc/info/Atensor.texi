@@ -253,6 +253,7 @@ The symbol for base vectors.
 
 @end defvr
 
+@anchor{sf}
 @deffn {Function} sf (@var{u}, @var{v})
 
 A symmetric scalar function that is used in commutation relations.

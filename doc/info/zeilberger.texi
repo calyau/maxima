@@ -118,6 +118,7 @@ Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
 
 @end deffn
 
+@anchor{Gosper}
 @deffn {Function} Gosper (@math{F_k}, @var{k})
 Returns the rational certificate @math{R(k)} for @math{F_k}, that is,
 a rational function such that
@@ -136,6 +137,7 @@ Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
 
 @end deffn
 
+@anchor{GosperSum}
 @deffn {Function} GosperSum (@math{F_k}, @var{k}, @var{a}, @var{b})
 
 Returns the summmation of @math{F_k} from @math{@var{k} = @var{a}} to @math{@var{k} = @var{b}}
@@ -213,6 +215,7 @@ Dependent equations eliminated:  (1)
 @end deffn
 
 @iftex
+@anchor{parGosper}
 @deffn {Function} parGosper (@math{F_{n,k}}, @var{k}, @var{n}, @var{d})
 
 Attempts to find a @var{d}-th order recurrence for
@@ -237,6 +240,7 @@ $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 @end iftex
 
 @ifnottex
+@anchor{parGosper}
 @deffn {Function} parGosper (@math{F_(n,k)}, @var{k}, @var{n}, @var{d})
 
 Attempts to find a @var{d}-th order recurrence for @math{F_(n,k)}.
@@ -256,6 +260,7 @@ Each solution has the form
 @end ifnottex
 
 @iftex
+@anchor{Zeilberger}
 @deffn {Function} Zeilberger (@math{F_{n,k}}, @var{k}, @var{n})
 
 Attempts to compute the indefinite hypergeometric summation of
@@ -287,6 +292,7 @@ $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 @end iftex
 
 @ifnottex
+@anchor{Zeilberger}
 @deffn {Function} Zeilberger (@math{F_(n,k)}, @var{k}, @var{n})
 
 Attempts to compute the indefinite hypergeometric summation of @math{F_(n,k)}.

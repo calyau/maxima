@@ -6,6 +6,7 @@
 @node Introduction to asympa, Functions and variables for asympa, asympa-pkg, asympa-pkg
 @section Introduction to asympa
 
+@anchor{asympa}
 @deffn {Function} asympa
 @code{asympa} is a package for asymptotic analysis. The package contains
 simplification functions for asymptotic analysis, including the ``big O''

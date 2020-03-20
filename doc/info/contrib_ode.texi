@@ -239,6 +239,7 @@ Extensive debugging traces and messages are displayed if the command
 @node Functions and Variables for contrib_ode, Possible improvements to contrib_ode, Introduction to contrib_ode, contrib_ode-pkg
 @section Functions and Variables for contrib_ode
 
+@anchor{contrib_ode}
 @deffn {Function} contrib_ode (@var{eqn}, @var{y}, @var{x})
 
 Returns a list of solutions of the ODE @var{eqn} with 
@@ -250,6 +251,7 @@ independent variable @var{x} and dependent variable @var{y}.
 
 @end deffn
 
+@anchor{odelin}
 @deffn {Function} odelin (@var{eqn}, @var{y}, @var{x})
 
 @code{odelin} solves linear homogeneous ODEs of first and 
@@ -282,6 +284,7 @@ special functions.
 
 @end deffn
 
+@anchor{ode_check}
 @deffn {Function} ode_check (@var{eqn}, @var{soln})
 
 Returns the value of ODE @var{eqn} after substituting a
@@ -408,6 +411,7 @@ The derivative with respect to @var{x} of @code{gauss_a(@var{a}, @var{b}, @var{c
 
 @end deffn
 
+@anchor{dgauss_b}
 @deffn {Function} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 The derivative with respect to @var{x} of @code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})}.
 
@@ -470,6 +474,7 @@ The derivative with respect to @var{x} of @code{kummer_u(@var{a}, @var{b}, @var{
 
 @end deffn
 
+@anchor{bessel_simplify}
 @deffn {Function} bessel_simplify (@var{expr})
 Simplifies expressions containing Bessel functions bessel_j, bessel_y,
 bessel_i, bessel_k, hankel_1, hankel_2, strauve_h and strauve_l.
@@ -518,6 +523,7 @@ differ by less than 2.
 
 @end deffn
 
+@anchor{expintegral_e_simplify}
 @deffn {Function} expintegral_e_simplify (@var{expr})
 Simplify expressions containing exponential integral expintegral_e
 using the recurrence (A&S 5.1.14).

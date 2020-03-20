@@ -5,6 +5,7 @@
 @node Functions and Variables for augmented_lagrangian,  , augmented_lagrangian-pkg, augmented_lagrangian-pkg
 @section Functions and Variables for augmented_lagrangian
 
+@anchor{augmented_lagrangian_method}
 @deffn  {Function} augmented_lagrangian_method @
 @fname{augmented_lagrangian_method} (@var{FOM}, @var{xx}, @var{C}, @var{yy}) @
 @fname{augmented_lagrangian_method} (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args) @

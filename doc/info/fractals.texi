@@ -47,6 +47,7 @@ with the contraction ratio.
 
 You can change the transformations and find another fractal
 
+@anchor{sierpinskiale}
 @deffn {Function} sierpinskiale (@var{n})
 
 Sierpinski Triangle: 3 contractive maps; .5 contraction constant and translations;
@@ -66,6 +67,7 @@ Example:
 
 @end deffn
 
+@anchor{treefale}
 @deffn {Function} treefale (@var{n})
 
 3 contractive maps all with the same contraction ratio.
@@ -85,6 +87,7 @@ Example:
 
 @end deffn
 
+@anchor{fernfale}
 @deffn {Function} fernfale (@var{n})
 
 4 contractive maps, the probability to choice a transformation must be related 
@@ -107,6 +110,7 @@ Example:
 @node Definitions for complex fractals, Definitions for Koch snowflakes, Definitions for IFS fractals, Top
 @section Definitions for complex fractals
 
+@anchor{mandelbrot_set}
 @deffn {Function} mandelbrot_set (@var{x}, @var{y})
 
 Mandelbrot set.
@@ -132,7 +136,7 @@ the computing time is also related with the number of grid points.
 
 
 
-
+@anchor{julia_set}
 @deffn {Function} julia_set (@var{x}, @var{y})
 
 Julia sets.
@@ -178,7 +182,7 @@ Its default value is @mref{%i}; we  suggest the  values @code{-.745+%i*.113002},
 
 
 
-
+@anchor{julia_sin}
 @deffn {Function} julia_sin (@var{x}, @var{y})
 
 While function @code{julia_set} implements the transformation @code{julia_parameter+z^2},
@@ -214,6 +218,7 @@ See also @mref{julia_parameter}.
 
 
 
+@anchor{snowmap}
 @deffn {Function} snowmap (@var{ent}, @var{nn})
 
 Koch snowflake sets. Function @code{snowmap} plots the snow Koch map 
@@ -245,6 +250,7 @@ Examples:
 Continuous curves that cover an area. Warning: 
 the number of points exponentially grows with @var{n}.
 
+@anchor{hilbertmap}
 @deffn {Function} hilbertmap (@var{nn})
 
 Hilbert map. Argument @var{nn} must be small (5, for example).
@@ -263,6 +269,7 @@ Example:
 
 @end deffn
 
+@anchor{sierpinskimap}
 @deffn {Function} sierpinskimap (@var{nn})
 
 Sierpinski map. Argument @var{nn} must be small (5, for example).

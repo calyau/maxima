@@ -5,6 +5,7 @@
 @node Functions and Variables for stirling,  , stirling-pkg, stirling-pkg
 @section Functions and Variables for stirling
 
+@anchor{stirling}o
 @deffn {Function} stirling @
 @fname{stirling} (@var{z},@var{n}) @
 @fname{stirling} (@var{z},@var{n},@var{pred})

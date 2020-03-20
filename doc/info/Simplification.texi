@@ -302,6 +302,7 @@ Examples:
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{combine}
 @deffn {Function} combine (@var{expr})
 
 Simplifies the sum @var{expr} by combining terms with the same

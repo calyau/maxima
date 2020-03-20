@@ -294,6 +294,7 @@ See also @mref{setunits}. To use this function write first @code{load("unit")}.
 
 @end deffn
 
+@anchor{convert}
 @deffn {Function} convert (@var{expr}, @var{list})
 When resetting the global environment is overkill, there is the @code{convert}
 command, which allows one time conversions.  It can accept either a single
@@ -690,6 +691,7 @@ control over their working environment.
 @end defvr
 
 
+@anchor{metricexpandall}
 @deffn {Function} metricexpandall (@var{x})
 Rebuilds global unit lists automatically creating all desired metric units.
 @var{x} is a numerical argument which is used to specify how many metric
