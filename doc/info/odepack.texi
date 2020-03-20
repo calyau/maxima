@@ -73,7 +73,7 @@ sp Array: #(0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
 [fjac, #<Function "LAMBDA ($T $Y1 $Y2 $Y3)" @{49D52AC9@}>]]
 @end example
 The arrays rwork and iwork carry state between calls to
-@code{dlsode_step}, so they should not be modified by the user.  In
+@mref{dlsode_step}, so they should not be modified by the user.  In
 fact, this state should not be modified by the user at all.
 
 Now that the algorithm has been initialized we can compute solutions
@@ -123,6 +123,7 @@ At t =   4.0000e+10   y =  -7.170563e-08 -2.868225e-13  1.000000e+00
 @node Functions and Variables for odepack, operatingsystem-pkg, Getting Started with ODEPACK, odepack-pkg
 @section Functions and Variables for odepack
 
+@anchor{dlsode_init}
 @deffn {Function} dlsode_init (@var{fex}, @var{vars}, @var{method})
 
 This must be called before running the solver.  This function returns
@@ -167,8 +168,11 @@ Lisp array holding the integer-valued work vector.
 Compiled analytical Jacobian of the eqations
 @end table
 
+See also @mrefdot{dlsode_step}
+
 @end deffn
 
+@anchor{dlsode_step}
 @deffn {Function} dlsode_step (@var{inity}, @var{t}, @var{tout}, @var{rtol}, @var{atol}, @var{istate}, @var{state})
 
 Performs one step of the solver, returning the values of the
@@ -244,5 +248,6 @@ Actual length used for integer work array
 @end table
 @end table
 
+See also @mrefdot{dlsode_init}
 
 @end deffn
