@@ -47,7 +47,10 @@ Changes in core:
    maxima-discuss, circa 2019-12-27: "Function to recognise series"
  * allow zn_log to work on subgroups
  * gamma_incomplete_lower is now returned in the noun form in many places
- 
+ * operatorp(expr,op) was inconsistent with operatorp(expr,[op])
+ * sqrtdenest is now built-in, not a share function. 
+ * load(sqdnst) now is a no-op.
+
 Changes in share:
 --------------
  * Interpol used funmake iinnstead of apply
@@ -57,6 +60,7 @@ Changes in share:
  * Many minor corrections
  * In package amatrix, protect against empty matrices when converting 
    amatrix to matrix and vice versa
+ * Fixed contragrad in ctensor, added tests for cograd/contragrad
 
 Bug fixes:
 ----------
@@ -71,6 +75,7 @@ Bug fixes:
  * #3608: logic_simplify handles inequalities incorrectly 
  * #3607: printprops displays matchdeclare properties incorrectly when value is a lambda
  * #2174: Bogus translation of declare
+ * #3513: Emacs: wxdraw3d not working
 
 Unnumbered bugs:
 ----------------
@@ -108,3 +113,4 @@ Additional improvements:
  * Expand gamma_incomplete for rational order
  * Many code cleanups
  * Many improvements to the documentation
+ * Windows Installer: Updated wxMaxima to the new release.
