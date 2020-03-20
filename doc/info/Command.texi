@@ -1600,7 +1600,7 @@ the console display is a 1-dimensional or linear form
 which is the same as the output produced by @code{grind}.
 
 When @code{display2d} is @code{false},
-the value of @code{stringdisp} is ignored,
+the value of @mref{stringdisp} is ignored,
 and strings are always displayed with quote marks.
 
 See also @mref{leftjust} to switch between a left justified and a centered

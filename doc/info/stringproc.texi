@@ -26,7 +26,7 @@ command prints his e-mail-address.
 
 
 A string is constructed by typing e.g. @code{"Text"}. 
-When the option variable @code{stringdisp} is set to @code{false}, which is 
+When the option variable @mref{stringdisp} is set to @code{false}, which is 
 the default, the double quotes won't be printed. 
 @ref{stringp} is a test, if an object is a string.
 
