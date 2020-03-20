@@ -124,7 +124,7 @@ Returns a summary of the parameters of the Maxima build,
 as a Maxima structure (defined by @code{defstruct}).
 The fields of the structure are:
 @code{version}, @code{timestamp}, @code{host}, @code{lisp_name}, and @code{lisp_version}.
-When the pretty-printer is enabled (via @code{display2d}),
+When the pretty-printer is enabled (via @mref{display2d}),
 the structure is displayed as a short table.
 
 See also @mrefdot{bug_report}

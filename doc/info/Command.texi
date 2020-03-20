@@ -1152,7 +1152,7 @@ to denote indices which are displayed, respectively,
 to the right and below, to the right and above, to the left and above, or to the left and below.
 
 Index properties apply only to the 2-dimensional display of indexed variables
-(i.e., when @code{display2d} is @code{true})
+(i.e., when @mref{display2d} is @code{true})
 and TeX output via @code{tex}.
 Otherwise, index properties are ignored.
 Index properties do not change the input of indexed variables,

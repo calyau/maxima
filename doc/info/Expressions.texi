@@ -470,7 +470,7 @@ unbound).
 
 Returns @var{expr} enclosed in a box.  The return value is an expression with
 @code{box} as the operator and @var{expr} as the argument.  A box is drawn on
-the display when @code{display2d} is @code{true}.
+the display when @mref{display2d} is @code{true}.
 
 @code{box (@var{expr}, @var{a})} encloses @var{expr} in a box labelled by the
 symbol @var{a}.  The label is truncated if it is longer than the width of the

@@ -26,12 +26,12 @@ The @code{@@} operator refers to fields.
 @code{kill(@var{S})} removes the structure definition @var{S},
 and @code{kill(@var{x}@@ @var{a})} unbinds the field @var{a} of the structure instance @var{x}.
 
-In the pretty-printing console display (with @code{display2d} equal to @code{true}),
+In the pretty-printing console display (with @mref{display2d} equal to @code{true}),
 structure instances are displayed with the value of each field
 represented as an equation, with the field name on the left-hand side
 and the value on the right-hand side.
 (The equation is only a display construct; only the value is actually stored.)
-In 1-dimensional display (via @code{grind} or with @code{display2d} equal to @code{false}),
+In 1-dimensional display (via @code{grind} or with @mref{display2d} equal to @code{false}),
 structure instances are displayed without the field names.
 
 There is no way to use a field name as a function name,
