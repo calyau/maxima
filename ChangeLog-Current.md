@@ -53,7 +53,7 @@ Changes in core:
 
 Changes in share:
 --------------
- * Interpol used funmake iinnstead of apply
+ * Interpol used funmake instead of apply
  * An updated version of COMA
  * A testbench for draw()
  * plot2d with a single function now uses xlabel
