@@ -89,6 +89,7 @@ Messge: Condition designator ((MLABEL) $%O9 $X) is not of type (OR SYMBOL STRING
 @node Functions and Variables for alt-display,  , Introduction to alt-display, alt-display-pkg
 @section Functions and Variables for alt-display
 
+@anchor{define_alt_display}
 @deffn {Function} define_alt_display (@var{function}(@var{input}), @var{expr})
 This function is similar to @code{define}: it evaluates its arguments
 and expands into a function definition. The @var{function} is a
@@ -192,6 +193,7 @@ Produces TeX output.
 
 @end deffn
 
+@anchor{multi_display_for_texinfo}
 @deffn {Function} multi_display_for_texinfo (@var{form})
 Produces Texinfo output using all three display functions.
 
@@ -228,6 +230,7 @@ Produces Texinfo output using all three display functions.
 
 @end deffn
 
+@anchor{reset_displays}
 @deffn {Functions} reset_displays ()
 Resets the prompt prefix and suffix to the empty string, and sets both
 1-d and 2-d display functions to the default.
