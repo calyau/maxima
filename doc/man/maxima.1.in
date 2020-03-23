@@ -1,4 +1,4 @@
-.TH MAXIMA 1 "September 10, 2005"
+.TH MAXIMA 1 "2020-03-23"
 .ds Ps P\s-2OST\s+2S\s-2CRIPT\s+2
 .ds Ts T\s-2RAN\s+2S\s-2CRIPT\s+2
 .if t .ds Te T\\h'-0.1667m'\\v'0.20v'E\\v'-0.20v'\\h'-0.125m'X
@@ -17,7 +17,7 @@
 Maxima \- Common Lisp version of MACSYMA symbolic mathematics package
 released under the GNU Public License
 .LP
-rmaxima \- A version of maxima that supports command autocompletion
+rmaxima \- A version of Maxima that supports command autocompletion
 .LP
 Xmaxima \- A graphical version of Maxima
 .SH SYNOPSIS
@@ -100,7 +100,7 @@ Launch Maxima version \fIversion\fR. Use \fB\-\-list-avail\fR to see
 the list of possible values.
 .TP
 \fB\-\-userdir=\fR\fIdirectory\fR 
-Use \fIdirectory\fR for user directory (default is $HOME/maxima for Windows, $HOME/.maxima for others)
+Use \fIdirectory\fR for user directory (default is %USERPROFILE%/maxima for Windows, $HOME/.maxima for others)
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
 Print extra information from the Maxima wrapper script.
@@ -392,3 +392,6 @@ James Amundson in 2002.
 
 Maxima is now developed and maintained by the Maxima project at <http://maxima.sourceforge.net>.
 .\"
+
+.SH "SEE ALSO"
+.BR wxmaxima(1)
