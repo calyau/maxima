@@ -524,23 +524,25 @@ test_sum(
 );
 0;
 
+block([gamma_expand: true],
 test_sum(
   sum(%e^-4*(k-4)^2*4^k/k!, k, 0, inf),
   [],
   false,
   [],
   4
-);
+));
 0;
 
 
+block([gamma_expand: true],
 test_sum(
   sum(%e^-4*(k-5)^2*4^k/k!, k, 0, inf),
   [],
   false,
   [],
   5
-);
+));
 0;
 
 test_sum(
