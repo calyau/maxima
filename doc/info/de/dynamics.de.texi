@@ -127,7 +127,7 @@ instance if there are 3 points with probabilities 0.2, 0.5 and
 
 Draws the orbits diagram for a family of one-dimensional
 discrete dynamical systems, with one parameter @var{x}; that kind of
-diagram is used to study the bifurcations of a one-dimensional discrete
+diagram is used to study the bifurcations of an one-dimensional discrete
 system.
 
 The function @var{F(y)} defines a sequence with a starting value of

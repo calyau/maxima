@@ -684,7 +684,7 @@ Returns the left-hand side (that is, the first argument) of the expression
 @var{expr}, when the operator of @var{expr} is one of the relational operators
 @code{< <= = # equal notequal >= >},
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
-one of the assignment operators @code{:= ::= : ::}, or a user-defined binary
+one of the assignment operators @code{:= ::= : ::}, or an user-defined binary
 infix operator, as declared by @mrefdot{infix}
 
 When @var{expr} is an atom or its operator is something other than the ones
@@ -1062,7 +1062,7 @@ Returns the right-hand side (that is, the second argument) of the expression
 @var{expr}, when the operator of @var{expr} is one of the relational operators
 @code{< <= = # equal notequal >= >},
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
-one of the assignment operators @code{:= ::= : ::}, or a user-defined binary
+one of the assignment operators @code{:= ::= : ::}, or an user-defined binary
 infix operator, as declared by @mrefdot{infix}
 
 When @var{expr} is an atom or its operator is something other than the ones

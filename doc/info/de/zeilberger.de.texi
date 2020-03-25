@@ -19,7 +19,7 @@
 @section Introduction to zeilberger
 @c -----------------------------------------------------------------------------
 
-@code{zeilberger} is a implementation of Zeilberger's algorithm for definite 
+@code{zeilberger} is an implementation of Zeilberger's algorithm for definite 
 hypergeometric summation, and also Gosper's algorithm for indefinite 
 hypergeometric summation.  @code{zeilberger} makes use of the "filtering"
 optimization method developed by Axel Riese.  @code{zeilberger} was developed

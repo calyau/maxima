@@ -408,7 +408,7 @@ the list of expressions with the variables eliminated; the second
 is the list of pivots; thus, the second list is a list of
 expressions that @code{elim} used to eliminate the variables.
 
-Here is a example of eliminating between linear equations:
+Here is an example of eliminating between linear equations:
 
 @example
 (%i1) elim(set(x + y + z = 1, x - y  - z = 8, x - z = 1), 
@@ -676,7 +676,7 @@ other Maxima functions.
 @anchor{new_variable}
 @deffn {Function} new_variable (type)
 
-Return a unique symbol of the form @code{%[z,n,r,c,g]k}, where
+Return an unique symbol of the form @code{%[z,n,r,c,g]k}, where
 @code{k} is an integer.  The allowed values for @math{type} are
 @i{integer, natural_number, real, complex,} and @i{general}.
 (By natural number, we mean the @i{nonnegative integers}; thus zero is

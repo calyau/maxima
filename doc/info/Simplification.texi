@@ -36,7 +36,7 @@ while re-formulating its representation to be smaller, simpler to understand, or
 conform to particular specifications (like factored, expanded). For
 example, @code{sin(0)} to @code{0} or @code{x+x to 2*x}.
 There are several powerful tools to alter the results 
-of simplification, since it is largely in this part of the system that a user can 
+of simplification, since it is largely in this part of the system that an user can 
 incorporate knowledge of newly introduced functions or symbolic notation into Maxima.
 
 Simplification is generally done at four different levels:
@@ -1406,7 +1406,7 @@ Example:
 Simplifies @var{expr}, which can contain logs, exponentials, and radicals, by 
 converting it into a form which is canonical over a large class of expressions 
 and a given ordering of variables; that is, all functionally equivalent forms 
-are mapped into a unique form.  For a somewhat larger class of expressions, 
+are mapped into an unique form.  For a somewhat larger class of expressions, 
 @code{radcan} produces a regular form.  Two equivalent expressions in this class 
 do not necessarily have the same appearance, but their difference can be 
 simplified by @code{radcan} to zero.

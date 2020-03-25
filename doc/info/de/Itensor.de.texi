@@ -3028,7 +3028,7 @@ und sollten vom Nutzer nicht umdefiniert werden.
   ------------------------------------------
   indices2() Internal version of indices()
   conti      Lists contravariant indices
-  covi       Lists covariant indices of a indexed object
+  covi       Lists covariant indices of an indexed object
   deri       Lists derivative indices of an indexed object
   name       Returns the name of an indexed object
   concan

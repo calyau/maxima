@@ -676,7 +676,7 @@ less than or equal to the truncation level of the power series, i.e.
 are "best" approximants, and which additionally satisfy the specified
 degree bounds.
 
-@var{taylor_series} is a univariate Taylor series.
+@var{taylor_series} is an univariate Taylor series.
 @var{numer_deg_bound} and @var{denom_deg_bound}
 are positive integers specifying degree bounds on
 the numerator and denominator.

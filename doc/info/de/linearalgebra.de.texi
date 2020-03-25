@@ -443,7 +443,7 @@ The first argument must be a matrix; the arguments
 @var{r_1} through @var{c_2} determine a sub-matrix of @var{M} that consists of
 rows @var{r_1} through @var{r_2} and columns @var{c_1} through @var{c_2}. 
 
-Find a entry in the sub-matrix @var{M} that satisfies some property. 
+Find an entry in the sub-matrix @var{M} that satisfies some property. 
 Three cases:
 
 (1) @code{@var{rel} = 'bool} and @var{f} a predicate: 

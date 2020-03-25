@@ -472,7 +472,7 @@ All user-defined pattern matching and simplification rules, created
 by @mrefcomma{tellsimp} @mrefcomma{tellsimpafter} @mrefcomma{defmatch} or
 @mrefdot{defrule}
 @item aliases
-All atoms which have a user-defined alias, created by the @mrefcomma{alias}@w{}
+All atoms which have an user-defined alias, created by the @mrefcomma{alias}@w{}
 @mrefcomma{ordergreat} @mref{orderless} functions or by declaring the atom as a
 @mref{noun} with @mrefdot{declare}
 @item dependencies

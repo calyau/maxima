@@ -240,7 +240,7 @@ results are given in symbolic and rational format.
 @deffnx {Function} test_mean (@var{x}, @var{options} ...)
 
 This is the mean @var{t}-test. Argument @var{x} is a list or a column matrix
-containing a one dimensional sample. It also performs an asymptotic test
+containing an one dimensional sample. It also performs an asymptotic test
 based on the @i{Central Limit Theorem} if option @code{'asymptotic} is
 @code{true}.
 
@@ -547,7 +547,7 @@ equal.
 @deffnx {Function} test_variance (@var{x}, @var{options}, ...)
 
 This is the variance @var{chi^2}-test. Argument @var{x} is a list or a column matrix
-containing a one dimensional sample taken from a normal population.
+containing an one dimensional sample taken from a normal population.
 
 Options:
 
@@ -1006,7 +1006,7 @@ distribution when the data are unknown.
 @deffnx {Function} test_sign (@var{x}, @var{options} ...)
 
 This is the non parametric sign test for the median of a continuous population.
-Argument @var{x} is a list or a column matrix containing a one dimensional sample.
+Argument @var{x} is a list or a column matrix containing an one dimensional sample.
 
 Options:
 
@@ -1086,7 +1086,7 @@ against the alternative @math{H_1: median > 6}.
 
 This is the Wilcoxon signed rank test to make inferences about the median of a
 continuous population. Argument @var{x} is a list or a column matrix
-containing a one dimensional sample. Performs normal approximation if the
+containing an one dimensional sample. Performs normal approximation if the
 sample size is greater than 20, or if there are zeroes or ties.
 
 See also @code{pdf_rank_test} and @code{cdf_rank_test}.

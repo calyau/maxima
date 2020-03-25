@@ -1745,7 +1745,7 @@ The assigned value may be the name of an operator enclosed in quote marks,
 the name of a function,
 or a lambda expression.
 
-The dot operator @code{.} is a useful choice in some contexts.
+The dot operator @code{.} is an useful choice in some contexts.
 
 See also @mref{matrix_element_add} and @mrefdot{matrix_element_transpose}
 
@@ -2221,7 +2221,7 @@ eigenvectors of which do not span the vector space of the appropriate dimension.
 @deffnx {Function} uvect (@var{x})
 
 Returns @math{@var{x}/norm(@var{x})};
-this is a unit vector in the same direction as @var{x}.
+this is an unit vector in the same direction as @var{x}.
 
 @code{load ("eigen")} loads this function.
 

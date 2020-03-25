@@ -192,7 +192,7 @@ options are the same as for @mrefdot{plot2d}
 
 Draws the orbits diagram for a family of one-dimensional
 discrete dynamical systems, with one parameter @var{x}; that kind of
-diagram is used to study the bifurcations of a one-dimensional discrete
+diagram is used to study the bifurcations of an one-dimensional discrete
 system.
 
 The function @var{F(y)} defines a sequence with a starting value of
@@ -812,7 +812,7 @@ vertices in a cylinder or a cone. @var{value} must be a positive number.
 @defvr {Object option} resolution [resolution, @var{number}]
 Default value: @code{6}
 
-@var{number} must be a integer greater than 2 that sets the number of
+@var{number} must be an integer greater than 2 that sets the number of
 edges in the base of a cone or a cylinder.
  
 @opencatbox

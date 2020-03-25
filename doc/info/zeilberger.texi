@@ -6,7 +6,7 @@
 @node Introduction to zeilberger, Functions and Variables for zeilberger, zeilberger-pkg, zeilberger-pkg
 @section Introduction to zeilberger
 
-@code{zeilberger} is a implementation of Zeilberger's algorithm
+@code{zeilberger} is an implementation of Zeilberger's algorithm
 for definite hypergeometric summation, and also 
 Gosper's algorithm for indefinite hypergeometric
 summation.

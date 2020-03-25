@@ -567,7 +567,7 @@ different than just quoting the function name using @code{'legendre_p (5, @var{x
 @subsection Miscellaneous Functions
 
 The @code{orthopoly} package defines the
-Pochhammer symbol and a unit step function. @code{orthopoly} uses 
+Pochhammer symbol and an unit step function. @code{orthopoly} uses 
 the Kronecker delta function and the unit step function in
 @code{gradef} statements.
 
@@ -650,7 +650,7 @@ The unit step function is left-continuous; thus
 (%o1)                       [0, 0, 1]
 @end example
 
-If you need a unit step function that is neither left or right continuous
+If you need an unit step function that is neither left or right continuous
 at zero, define your own using @code{signum}; for example,
 
 @c ===beg===
@@ -1078,7 +1078,7 @@ The left-continuous unit step function; thus
 @code{unit_step (@var{x})} vanishes for @code{@var{x} <= 0} and equals
 1 for @code{@var{x} > 0}.
 
-If you want a unit step function that
+If you want an unit step function that
 takes on the value 1/2 at zero, use @code{(1 + signum (@var{x}))/2}.
 
 @opencatbox

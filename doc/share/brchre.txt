@@ -23,8 +23,8 @@ A Brief Overview of MACSYMA
         MACSYMA is a large, interactive computer system, designed to
 assist mathematicians, scientists, and engineers in solving
 mathematical problems.  It has a wide range of algebraic manipulation
-capabilities where a user supplies symbolic inputs and MACSYMA yields
-symbolic results. In addition a user has, at his disposal, an
+capabilities where an user supplies symbolic inputs and MACSYMA yields
+symbolic results. In addition an user has, at his disposal, an
 extensive numerical subroutine library (IMSL) and plotting package.
 
         The MACSYMA system has been under continual development at MIT
