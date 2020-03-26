@@ -1130,7 +1130,7 @@ the terminal you are working with.
 With terminals @code{gif}, @code{animated_gif}, @code{png}, @code{jpg},
 @code{svg}, @code{screen}, @code{wxt}, and @code{aquaterm},
 the integers represent the number of points in each direction. If they
-are not intergers, they are rounded.
+are not integers, they are rounded.
 
 With terminals @code{eps}, @code{eps_color}, @code{pdf}, and 
 @code{pdfcairo}, both numbers represent hundredths of cm, which
