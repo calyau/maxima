@@ -58,6 +58,9 @@ Example:
 @end example
 @figure{draw_intro}
 
+@anchor{wxdraw}
+@anchor{wxdraw2d}
+@anchor{wxdraw3d}
 You need Gnuplot 4.2 or newer to run draw; If you are using wxMaxima as a
 front end @code{wxdraw}, @code{wxdraw2d} and @code{wxdraw3d} are drop-in
 replacements for draw that do the same as @mrefcomma{draw} @mref{draw2d} and

@@ -75,6 +75,7 @@ equation into a system of two autonomous equations.
 @subsection Functions
 
 @anchor{drawdf}
+@anchor{wxdrawdf}
 @deffn {Function} drawdf @
 @fname{drawdf} (@var{dydx}, ...options and objects...) @
 @fname{drawdf} (@var{dvdu}, [@var{u},@var{v}], ...options and objects...) @

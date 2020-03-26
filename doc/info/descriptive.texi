@@ -2412,6 +2412,7 @@ but option @code{data=false} must be used.
 
 
 @anchor{barsplot}
+@anchor{wxbarsplot}
 @deffn {Function} barsplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
 
 Plots bars diagrams for discrete statistical variables,
@@ -2642,6 +2643,7 @@ Example: @code{barsplot} in a multiplot context.
 @end deffn
 
 @anchor{boxplot}
+@anchor{wxboxplot}
 @deffn {Function} boxplot (@var{data}) @
 @fname{boxplot} (@var{data}, @var{option_1}, @var{option_2}, @dots{})
 
@@ -2808,6 +2810,7 @@ graphic objects.
 @end deffn
 
 @anchor{histogram}
+@anchor{wxhistogram}
 @deffn {Function} histogram @
 @fname{histogram} (@var{list}) @
 @fname{histogram} (@var{list}, @var{option_1}, @var{option_2}, @dots{}) @
@@ -2979,6 +2982,7 @@ the @code{xrange} and adding an explicit curve into the scene:
 @end deffn
 
 @anchor{piechart}
+@anchor{wxpiechart}
 @deffn {Function} piechart @
 @fname{piechart} (@var{list}) @
 @fname{piechart} (@var{list}, @var{option_1}, @var{option_2}, @dots{}) @
@@ -3063,6 +3067,7 @@ graphic objects.
 @end deffn
 
 @anchor{scatterplot}
+@anchor{wxscatterplot}
 @deffn {Function} scatterplot @
 @fname{scatterplot} (@var{list}) @
 @fname{scatterplot} (@var{list}, @var{option_1}, @var{option_2}, @dots{}) @
@@ -3190,6 +3195,7 @@ graphic objects.
 @end deffn
 
 @anchor{starplot}
+@anchor{wxstarplot}
 @deffn {Function} starplot (@var{data1}, @var{data2}, @dots{}, @var{option_1}, @var{option_2}, @dots{})
 
 Plots star diagrams for discrete statistical variables,
