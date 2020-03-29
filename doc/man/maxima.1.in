@@ -182,7 +182,12 @@ or, simply,
 .LP
 \fB ? command\fR
 .LP
-searches the list of functions for the string \fIcommand\fR.
+The command
+.LP
+\fB ?? command\fR
+.LP
+searches the list of functions for the string \fIcommand\fR and prints matching functions.
+.LP
 Demonstration files provide complete examples of problems solved with Maxima,
 and may be accessed with the command
 \fBdemo(command);\fR.
