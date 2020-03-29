@@ -1,15 +1,5 @@
 .TH MAXIMA 1 "2020-03-23"
-.ds Ps P\s-2OST\s+2S\s-2CRIPT\s+2
-.ds Ts T\s-2RAN\s+2S\s-2CRIPT\s+2
-.if t .ds Te T\\h'-0.1667m'\\v'0.20v'E\\v'-0.20v'\\h'-0.125m'X
-.if n .ds Te TeX
-.if t .ds La L\\h'-0.36m'\\v'-0.15v'\\s-2A\\s+2\\h'-0.15m'\\v'0.15v'T\\h'-0.1667m'\\v'0.20v'E\\v'-0.20v'\\h'-0.125m'X
-.if n .ds La LaTeX
-.ds Fl "F\s-2ranz\s+2\ L\s-2isp\s+2
-.ds Ml "M\s-2ACLISP\s+2
-.ds Cl "Common L\s-2isp\s+2
 .ds Li "L\s-2isp\s+2
-.ds Ky "GNU Common L\s-2isp\s+2
 .ds Pr @prefix@
 .ds Vr @VERSION@
 
@@ -31,7 +21,7 @@ Xmaxima \- A graphical version of Maxima
 [\fIoptions\fR]
 .SH DESCRIPTION
 Maxima is a version of the MIT-developed MACSYMA system, modified to run under
-\*(Cl.  It is an interactive expert system and programming environment
+Common Lisp.  It is an interactive expert system and programming environment
 for symbolic and numerical mathematical manipulation.  Written in
 \*(Li, it allows differentiation, integration, solution of linear or
 polynomial equations, factoring of polynomials, expansion of functions
@@ -387,7 +377,7 @@ for use under the UNIX operating system (for use on DEC VAX computers
 and Sun workstations), by Richard Fateman and colleagues at the
 University of California at Berkeley; this version of MACSYMA is known
 as VAXIMA.  The present version stems from a re-working of the public
-domain MIT MACSYMA for \*(Ky, prepared by William Schelter, University
+domain MIT MACSYMA for GNU Common Lisp, prepared by William Schelter, University
 of Texas at Austin until his passing away in 2001.  It contains
 numerous additions, extensions and enhancements of the original.  The
 original version of this manual page was written by R. P. C. Rodgers,
