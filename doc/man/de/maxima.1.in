@@ -2,7 +2,7 @@
 .SH "NAME" 
 Maxima \- Eine Common Lisp Version von MACSYMA, einem Programm f\(:ur symbolische Mathematik, ver\(:offentlicht unter der GNU Public License.
 .LP
-rmaxima \- Eine Version von Maxima, die Befehls-Autovervollst\(:andigung beherrscht.
+Rmaxima \- Eine Version von Maxima, die Befehls-Autovervollst\(:andigung beherrscht.
 .LP
 Xmaxima \- Eine Version von Maxima mit einem einfachen graphischen Benutzerinterface.
 
@@ -22,7 +22,7 @@ Es ist ein interaktives Expertensystem und eine Programmierumgebung f\(:ur symbo
 Mathematik.
 Es erm\(:oglicht Differentiation, Integration, die L\(:osung von linearen oder
 polynomiellen Gleichungen, Faktorisierung von Polynomen, Taylorreihen- oder Laurentreihen-Entwicklung
-von Funktionen, Berechnung von Poissionreihen, Matrizen- und Tensoren Berechnungen und
+von Funktionen, Berechnung von Poissionreihen, Matrizen- und Tensorberechnungen und
 2D und 3D Graphiken.
 Prozeduren k\(:onnen in einer ALGOL-\(:ahnlichen Syntax geschrieben werden und sowohl Lisp-\(:ahnliche Funktionen
 als auch Pattern-Matching kann verwendet werden
@@ -104,7 +104,7 @@ Optionen, die an das verwendete Lisp weitergereicht werden.
 .SH EINF\(:UHRENDE ANMERKUNGEN
 Nach dem Start von
 .I maxima
-gibt Maxima eine Startmeldung aus, anschlie\*[8]end einen Kommandozeilenprompt:
+gibt Maxima eine Startmeldung aus, anschlie\(ssend einen Kommandozeilenprompt:
 .LP
 .B (%i1)
 .LP
@@ -135,7 +135,7 @@ Eingaben, die gemacht werden, erzeugen
 Unter UNIX ist es vielleicht besser, Maxima unter Gnu Emacs or XEmacs zu betreiben.
 Das kann gemacht werden, indem in
 .IR Emacs
-der Shell-Modus aufgerufen wird und anschlie\*[8]end
+der Shell-Modus aufgerufen wird und anschlie\(ssend
 .IR maxima
 eingegeben wird. Oder - besser - 
 .I maxima.el
@@ -147,7 +147,7 @@ eingegeben wird.
 .LP
 Der Hauptvorteil, wenn Maxima innerhalb von
 .I Emacs
-verwendet wird ist, da\*[8] eine vollst\(:andige Historie der Eingaben und Ausgaben zur Verf\(:ugung steht.
+verwendet wird ist, da\(ss eine vollst\(:andige Historie der Eingaben und Ausgaben zur Verf\(:ugung steht.
 Wenn der Befehl
 .IP
 .B display2d: false
@@ -162,7 +162,7 @@ Die Lisp Funktion
 .B (run)
 kehrt zu Maxima zur\(:uck. Alternativ k\(:onnen in einer Zeile Lisp-Befehle eingegeben werden,
 indem am Anfang der Zeile
-\fB:lisp\fR.
+\fB:lisp\fR
 eingegeben wird.
 
 .SH EINGEBAUTE HILFE
@@ -181,7 +181,8 @@ Der Befehl
 .LP
 durchsucht die Liste der Funktionen nach dem String \fIcommand\fR und gibt die Treffer aus.
 Es gibt einige Demo-Dateien, die vollst\(:andige Probleme, die mit Maxima gel\(:ost werden, zeigen. Sie k\(:onnen mit folgendem Befehl gezeigt werden:
-\fBdemo(command);\fR.
+\fBdemo(command);\fR
+.LP
 Zus\(:atzliche - von Benutzern beigesteuerte Programmdateien - f\(:ur verschiedene Probleme sind vorhanden, die 
 .IR "Share Bilbliothek"
 
@@ -199,7 +200,7 @@ F\(:uhrt den Inhalt der Datei
 aus, die Datei sollte Maxima-Kommandos beinhalten.
 .TP
 .B closefile("myfile");
-Schlie\*[8]t die Sitzung, die durch das writefile Kommando (siehe unten) begonnen wurde.
+Schlie\(sst die Sitzung, die durch das writefile Kommando (siehe unten) begonnen wurde.
 .TP
 .B demo("myfile");
 F\(:uhrt den Inhalt der Datei
@@ -211,11 +212,11 @@ Schritt f\(:ur Schritt aus (die Datei sollte Maxima-Kommandos) beinhalten.
 Gibt die Liste der derzeit definierten Funktionen aus.
 .TP
 .B infolists;
-Print a list of the various available information lists.
+Gibt die Liste der verfügbaren Informationslisten aus.
 .TP
 .B kill(objectlist);
 L\(:oscht die Objekte, die als Argument angegeben werden.
-.I kill(all)
+.I kill(all);
 L\(:oscht alle Objekte, die durch den Benutzer erzeugt wurden, Maxima wird in den Startzustand versetzt.
 .TP
 .B quit();
@@ -232,8 +233,8 @@ Schreibt eine Sitzung der folgenden Kommandos in die Datei
 .IR myfile ;
 (nur eine Datei kann gleichzeitig ge\(:offnet sein) und das
 .I closefile
-Kommando mu\*[8] ausgef\(:uhrt werden, bevor Maxima beendet wird, um die Datei
-ordnungsgem\(:ass zu schlie\*[8]en.
+Kommando mu\(ss ausgef\(:uhrt werden, bevor Maxima beendet wird, um die Datei
+ordnungsgem\(:ass zu schlie\(ssen.
 
 .SH PLOTTING BEFEHLE
 Maxima kann 2D und 3-dimensionale Plots erzeugen. Hier ein einfaches Beispiel f\(:ur einen 2D-Plot:
@@ -301,7 +302,7 @@ Maxima kann in ein anderes Verzeichnis verschoben werden, solange das
 Startskript die selbe relative Position wie die restlichen Maxima Dateien beibeh\(:alt.
 Falls das
 .I maxima
-Skript unabh\(:angig davon verschoben werden soll, mu\*[8] \fBMAXIMA_PREFIX\fR zum
+Skript unabh\(:angig davon verschoben werden soll, mu\(ss \fBMAXIMA_PREFIX\fR zum
 Pfad der Maxima-Dateien zeigen.
 .TP
 \fBMAXIMA_DIRECTORY\fR
@@ -371,7 +372,7 @@ Und sehen Sie zuvor nach, ob der Fehler nicht schon gemeldet wurde.
 MACSYMA (Project MAC's SYmbolic MAnipulation System) wurde entwickelt von der 
 Mathlab group am MIT Laboratory for Computer Science
 (urspr\(:unglich bekannt als Project MAC), w\(:ahrend der Jahre  1969-1972.  Die Arbeit
-wurde unters\(:utzt durch die Zusch\(:usse NSG 1323 der National Aeronautics and
+wurde unterst\(:utzt durch die Zusch\(:usse NSG 1323 der National Aeronautics and
 Space Administration, N00014-77-C-0641 des B\(:uros f\(:ur Naval
 Research, ET-78-C-02-4687 des U.S. Department of Energy, und
 F49620-79-C-020 der U.S. Air Force.  MACSYMA wurde weiterentwickelt, um 
