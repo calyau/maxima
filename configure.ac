@@ -1277,7 +1277,7 @@ doc/info/de.utf8/Makefile doc/info/es/Makefile doc/info/es.utf8/Makefile \
 doc/info/pt/Makefile doc/info/pt.utf8/Makefile \
 doc/info/pt/include-maxima.texi \
 doc/info/pt_BR/Makefile doc/info/pt_BR.utf8/Makefile \
-doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/man/ru/maxima.1 doc/man/de/maxima.1 \
+doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/man/ru/Makefile doc/man/ru/maxima.1 doc/man/de/Makefile doc/man/de/maxima.1 \
 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile \
 interfaces/emacs/emaxima/Makefile interfaces/emacs/imaxima/Makefile \
 interfaces/emacs/misc/Makefile interfaces/xmaxima/Makefile \
