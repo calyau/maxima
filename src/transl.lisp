@@ -505,7 +505,7 @@ APPLY means like APPLY.")
 		   (errset (apply 'eval (list lisp-def-form)))))
 	      (cond ((not lisp-action)
 		     (trfail name))
-		    (t (values name lisp-def-form)))))))))
+		    (t name))))))))
 
 
 (defun trfail (x)
