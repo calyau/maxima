@@ -80,7 +80,7 @@
 (require 'advice)
 
 (require 'comint)
-(require 'cl)
+(require 'cl-lib)
 
 ;; XEmacs stuff
 
@@ -174,7 +174,7 @@ Unless optional argument INPLACE is non-nil, return a new string."
   :group 'imaxima
   :type (cons 'choice
 	      (mapcar (lambda (type) (list 'const type))
-		      (remove-if-not 'imaxima-image-type-available-p
+		      (cl-remove-if-not 'imaxima-image-type-available-p
 				     imaxima-image-types))))
 
 (defcustom imaxima-pt-size 11
@@ -938,13 +938,13 @@ temporary files.  Use linearized form if LINEAR is non-nil."
        nil (list (cons 'background-color imaxima-old-bg-color)))))
   (run-hooks 'imaxima-exit-hook))
 
-;;; Continuation is used between maxima-to-latex function and
+;;; Imaxima-Continuation is used between maxima-to-latex function and
 ;;; get-image-from-imaxima. The value is either nil or a list of
 ;;; function, buffer, pos1, and pos2, where pos1 and pos2 are the beginning and
 ;;; end of current maxima formula.
 ;;  (func buffer pos1 pos2)
 
-(defvar continuation nil)
+(defvar imaxima-continuation nil)
 
 ;;; if *debug-imaxima-filter* is set to t, the str is
 ;;; appended to the last of buffer *imaxima-work*.
@@ -993,11 +993,11 @@ Argument STR contains output received from Maxima.
 			 (setq imaxima-output rest)
 			 (setq output (concat output iprompt))
 			 ;; All the output for a maxima command are processed.
-			 ;; We can call continuation if necessary.
-			 (cond ((and continuation main-output)
-				(funcall (car continuation) main-output))
-			       ((and continuation (null main-output))
-				(funcall (car continuation) ""))))
+			 ;; We can call imaxima-continuation if necessary.
+			 (cond ((and imaxima-continuation main-output)
+				(funcall (car imaxima-continuation) main-output))
+			       ((and imaxima-continuation (null main-output))
+				(funcall (car imaxima-continuation) ""))))
 		     ;; imaxima-output is incomplete.
 		     (setq imaxima-filter-running nil)
 		     (return-from imaxima-filter output)))
@@ -1009,7 +1009,7 @@ Argument STR contains output received from Maxima.
 			 (setq imaxima-output rest)
 			 (setq output (concat output (setq image (imaxima-make-image match 'latex))))
 			 ;; Remember the image into main-output if this is the first output.
-			 ;; This will be passed to continuation
+			 ;; This will be passed to imaxima-continuation
 			 (if (null main-output)
 			     (setq main-output image)))
 		     ;; imaxima-output is incomplete.
@@ -1074,8 +1074,8 @@ Argument STR contains output received from Maxima."
 	      (setq output (concat output (if (equal output "") "" newline-char) text (imaxima-make-image match 'latex))))
 	    (setq imaxima-output "")
 	    (message "Processing Maxima output...done")
-	    (if continuation
-		(funcall (car continuation) output))
+	    (if imaxima-continuation
+		(funcall (car imaxima-continuation) output))
 	    (concat output rest prompt)))
 	 ;; Special prompt for demo() function.
 	 ;; _ is prompted.
@@ -1094,8 +1094,8 @@ Argument STR contains output received from Maxima."
 	      (setq output (concat output (if (equal output "") "" newline-char) text (imaxima-make-image match 'latex))))
 	    (setq imaxima-output "")
 	    (message "Processing Maxima output...done")
-	    (if continuation
-		(funcall (car continuation) output))
+	    (if imaxima-continuation
+		(funcall (car imaxima-continuation) output))
 	    (concat " " output rest newline-char "_")))
 	 ;; Special prompt, question.
 	 ((char-equal lastchar ?)
@@ -1192,7 +1192,7 @@ turns them on.  Set `imaxima-use-maxima-mode-flag' to t to use
 			  "*maxima*"
 			"*imaxima*")))
     (when imaxima-buffer
-      (if (interactive-p)
+      (if (called-interactively-p 'any)
 	  (switch-to-buffer imaxima-buffer)
 	(set-buffer imaxima-buffer))
       (return-from imaxima t)))
@@ -1227,8 +1227,7 @@ Please customize the option `imaxima-lisp-file'."))
 	      nil
 	      (split-string
 	       imaxima-maxima-options))))
-	(save-excursion
-	  (set-buffer mbuf)
+	(with-current-buffer mbuf
 	  (setq imaxima-process (get-buffer-process mbuf))
 	  (imaxima-get-geometry mbuf)
 	  (imaxima-change-color mbuf)
@@ -1354,7 +1353,7 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
       (insert html-template)
       (goto-char (point-min))
       (search-forward "<BODY>")
-      (next-line 1)
+      (forward-line 1)
       (insert text)
       (values html-buffer image-folder))))
 
@@ -1404,7 +1403,7 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
 	  (let (start-mark end-mark)
 	    (goto-char (point-min))
 	    (search-forward "<BODY>")
-	    (next-line 1)
+	    (forward-line 1)
 	    (beginning-of-line)
 	    (setq start-mark (point-marker))
 	    (search-forward "</BODY>")
@@ -1413,7 +1412,7 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
 	    (loop
 	     (re-search-forward "$" end-mark)
 	     (replace-match "<br>\n")
-	     (next-line 1)))
+	     (forward-line 1)))
 	(search-failed nil)))))
 
 (defun* imaxima-to-html ()
