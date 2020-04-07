@@ -1420,33 +1420,6 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
   (interactive "")
   (imath-to-html))
 
-(defun* original-find-next-formula ()
-  "Find next formula and return multiple values of
-   formula type, start position and end position.
-   If search failed, error search-failed is signaled."
-  (interactive "")
-  (let (start-pos end-pos tmp found-string ftype)
-    (re-search-forward (concat maxima-start "\\|" latex-start))
-    (setq found-string (match-string 0))
-    (cond ((string= found-string latex-start)
-	   (setq start-pos (- (point) (length latex-start)))
-	   (search-forward latex-end)
-	   (setq end-pos (point) ftype 'latex))
-	  ((string= found-string maxima-start)
-	   (setq start-pos (- (point) (length maxima-start)))
-	   (search-forward maxima-end)
-	   (setq tmp (point))
-	   (if (string= (buffer-substring tmp
-					  (+ tmp 1
-					     (length latex-start)))
-			(concat "&" latex-start))
-	       (progn
-		 (search-forward latex-end)
-		 (setq end-pos (point) ftype 'both))
-	     (setq end-pos tmp ftype 'maxima)))
-	  (t (error "Syntax Error in Imath buffer.")))
-    (values ftype start-pos end-pos)))
-
 (defun* find-next-formula ()
   "Find next formula and return multiple values of
    formula type, start position and end position.
