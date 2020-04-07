@@ -4,6 +4,9 @@
 
 (in-package #-gcl #:maxima #+gcl "MAXIMA")
 
+(defmvar $debug_minpack nil
+  "Set to true to enable debugging messages from minpack routines")
+
 (defun least-squares (vars init-x fcns &key (jacobian t)
 		      (tolerance (sqrt double-float-epsilon)))
   (let* ((n (length (cdr vars)))
@@ -45,12 +48,22 @@
 		       ;; we're called with vector that is longer than
 		       ;; we want.  Perfectly valid Fortran, though.)
 		       (let ((val (apply 'funcall fv (subseq (coerce x 'list) 0 n))))
+			 (unless (consp val)
+			   (merror "Unable to evaluate function at the point ~M"
+				   (list* '(mlist) (subseq (coerce x 'list) 0 n))))
+			 (when $debug_minpack
+			   (format t "f(~{~A~^, ~}) =~%[~@<~{~A~^, ~:_~}~:>]~%"
+				   (coerce x 'list)
+				   (cdr val)))
 			 (replace fvec (mapcar #'(lambda (z)
 						   (cl:float z 1d0))
 					       (cdr val)))))
 		      (2
 		       ;; Compute Jacobian at point x, placing result in fjac
 		       (let ((j (apply 'funcall fj (subseq (coerce x 'list) 0 n))))
+			 (unless (consp val)
+			   (merror "Unable to evaluate Jacobian at the point ~M"
+				   (list* '(mlist) (subseq (coerce x 'list) 0 n))))
 			 ;; Extract out elements of Jacobian and place into
 			 ;; fjac, in column-major order.
 			 (let ((row-index 0))
@@ -92,6 +105,13 @@
 			     (type (cl:array double-float (*)) x fvec fjac))
 		    ;; Compute function at point x, placing result in fvec
 		    (let ((val (apply 'funcall fv (subseq (coerce x 'list) 0 n))))
+		      (unless (consp val)
+			(merror "Unable to evaluate function at the point ~M"
+				(list* '(mlist) (subseq (coerce x 'list) 0 n))))
+		      (when $debug_minpack
+			(format t "f(~{~A~^, ~}) =~%[~@<~{~A~^, ~:_~}~:>]~%"
+				(coerce x 'list)
+				(cdr val)))
 		      (replace fvec (mapcar #'(lambda (z)
 						(cl:float z 1d0))
 					    (cdr val))))
