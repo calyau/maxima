@@ -159,7 +159,7 @@ Unless optional argument INPLACE is non-nil, return a new string."
 (defgroup imaxima nil
   "Image support for Maxima."
   :version "21.1"
-  :link '(url-link "http://purl.org/harder/imaxima.html")
+  :link '(url-link "https://maxima.sourceforge.net/")
   :link '(custom-manual "(imaxima)")
   :prefix "imaxima-"
   :group 'maxima)
