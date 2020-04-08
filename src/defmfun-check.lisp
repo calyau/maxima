@@ -385,7 +385,7 @@
 			  `(,',impl-name ,@args))))
 		      (t
 		       `(define-compiler-macro ,name (&rest ,rest-name)
-			  `(,',impl-name ,rest-name)))))))))))))
+			  `(,',impl-name ,@,rest-name)))))))))))))
 
 ;; Examples:
 ;; (defmfun $foobar (a b) (list '(mlist) a b))
@@ -404,4 +404,4 @@
 ;; (defmfun $baz (a &aux (b (1+ a))) (list '(mlist) a b))
 
 ;; This should produce compile errors
-;; (defmfun $zot (a &optional c&key b) (list '(mlist) a b))
+;; (defmfun $zot (a &optional c &key b) (list '(mlist) a b))
