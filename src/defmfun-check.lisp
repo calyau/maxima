@@ -273,11 +273,16 @@
 			       optional-args
 			       restp
 			       rest-arg
-			       keywords-present-p)
+			       keywords-present-p
+			       keyword-args)
 	     (parse-lambda-list lambda-list)
 
+	   #+nil
 	   (when keywords-present-p
 	     (error "Keyword arguments are not supported"))
+	   (when (and keywords-present-p
+		      (or optional-args restp))
+	     (error "Keyword args cannot be used with optional args or rest args"))
 
 	   (let* ((required-len (length required-args))
 		  (optional-len (length optional-args))
@@ -297,7 +302,16 @@
 			   `((,name) ,@required-args ((mlist) ,rest-arg)))
 		          (t
 			   ;; Just have required args: foo(a,b)
-			   `((,name) ,@required-args)))))
+			   `((,name) ,@required-args))))
+		  (maxima-keywords
+		    (mapcar #'(lambda (x)
+				(intern (concatenate
+					 'string "$"
+					 (symbol-name
+					  (if (consp x)
+					      (car x)
+					      x)))))
+			    keyword-args)))
 
 	     (multiple-value-bind (forms decls doc-string)
 	         (parse-body body nil t)
@@ -314,7 +328,7 @@
 		    (let ((,nargs (length ,args)))
 		      (declare (ignorable ,nargs))
 		      ,@(cond
-			  (restp
+			  ((or restp keywords-present-p)
 			   ;; When a rest arg is given, there's no upper
 			   ;; limit to the number of args.  Just check that
 			   ;; we have enough args to satisfy the required
@@ -351,9 +365,27 @@
 				       ,required-len
 				       ,nargs
 				       (list* '(mlist) ,args))))))
-		      (apply #',impl-name ,args)))
-		  (define-compiler-macro ,name (&rest ,rest-name)
-		    `(,',impl-name ,@,rest-name)))))))))))
+		      ,(cond
+			 (keywords-present-p
+			  `(apply #',impl-name
+				  (append 
+				   (subseq ,args 0 ,required-len)
+				   (lispify-maxima-keyword-options
+				    (nthcdr ,required-len ,args)
+				    ',maxima-keywords))))
+			 (t
+			  `(apply #',impl-name ,args)))))
+		  ,(cond
+		      (keywords-present-p
+		       `(define-compiler-macro ,name (&rest ,rest-name)
+			  (let ((args (append (subseq ,rest-name 0 ,required-len)
+					      (lispify-maxima-keyword-options
+						 (nthcdr ,required-len ,rest-name)
+						 ',maxima-keywords))))
+			  `(,',impl-name ,@args))))
+		      (t
+		       `(define-compiler-macro ,name (&rest ,rest-name)
+			  `(,',impl-name ,rest-name)))))))))))))
 
 ;; Examples:
 ;; (defmfun $foobar (a b) (list '(mlist) a b))
@@ -362,8 +394,14 @@
 ;; (defmfun $foobar2 (a b &rest c) (list '(mlist) a b (list* '(mlist) c)))
 ;; (defmfun $foobar3 (a b &optional c &rest d) "foobar3 function" (list '(mlist) a b c (list* '(mlist) d)))
 ;;
+;; (defmfun $foobar4 (a b &key c) (list '(mlist) a b c))
+;; (defmfun $foobar5 (a b &key (c 42)) (list '(mlist) a b c))
+;;
+;; foobar5(1,2) => [1, 2, 42]
+;; foobar5(1,2,c=99) => [1, 2, 99]
+;;
 ;; This works by accident, kind of:
 ;; (defmfun $baz (a &aux (b (1+ a))) (list '(mlist) a b))
 
 ;; This should produce compile errors
-;; (defmfun $zot (a &key b) (list '(mlist) a b))
+;; (defmfun $zot (a &optional c&key b) (list '(mlist) a b))
