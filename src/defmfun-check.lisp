@@ -274,7 +274,8 @@
 			       restp
 			       rest-arg
 			       keywords-present-p
-			       keyword-args)
+			       keyword-args
+			       allow-other-keys-p)
 	     (parse-lambda-list lambda-list)
 
 	   #+nil
@@ -300,18 +301,36 @@
 		          (restp
 			   ;; Use maxima syntax for rest args: foo(a,b,[c]);
 			   `((,name) ,@required-args ((mlist) ,rest-arg)))
+			  (keywords-present-p
+			   ;; Not exactly sure how to do this
+			   (let* ((index 1)
+				  (keys (mapcar
+					 #'(lambda (k)
+					     (let ((name
+						     (intern (concatenate 'string
+									  "$"
+									  (symbol-name
+									   (if (consp k)
+									       (car k)
+									       k)))))
+						   (val (intern (format nil "$VAL~A" index))))
+					       (incf index)
+					       `((mequal) ,name ,val)))
+					     keyword-args)))
+			     `((,name) ,@required-args ((mlist) ,@keys))))
 		          (t
 			   ;; Just have required args: foo(a,b)
 			   `((,name) ,@required-args))))
 		  (maxima-keywords
-		    (mapcar #'(lambda (x)
-				(intern (concatenate
-					 'string "$"
-					 (symbol-name
-					  (if (consp x)
-					      (car x)
-					      x)))))
-			    keyword-args)))
+		    (unless allow-other-keys-p
+		      (mapcar #'(lambda (x)
+				  (intern (concatenate
+					   'string "$"
+					   (symbol-name
+					    (if (consp x)
+						(car x)
+						x)))))
+			      keyword-args))))
 
 	     (multiple-value-bind (forms decls doc-string)
 	         (parse-body body nil t)
@@ -396,9 +415,12 @@
 ;;
 ;; (defmfun $foobar4 (a b &key c) (list '(mlist) a b c))
 ;; (defmfun $foobar5 (a b &key (c 42)) (list '(mlist) a b c))
+;; (defmfun $foobar6 (a b &key (c 42) &allow-other-keys) (list '(mlist) a b c))
 ;;
 ;; foobar5(1,2) => [1, 2, 42]
 ;; foobar5(1,2,c=99) => [1, 2, 99]
+;; foobar5(1,2,c=99,d=4) => error: unrecognized keyword d
+;; foobar6(1,2,c=42,d=99) => [1, 2, 42]
 ;;
 ;; This works by accident, kind of:
 ;; (defmfun $baz (a &aux (b (1+ a))) (list '(mlist) a b))
