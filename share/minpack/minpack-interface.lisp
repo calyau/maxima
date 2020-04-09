@@ -61,7 +61,7 @@
 		      (2
 		       ;; Compute Jacobian at point x, placing result in fjac
 		       (let ((j (apply 'funcall fj (subseq (coerce x 'list) 0 n))))
-			 (unless (consp val)
+			 (unless (consp j)
 			   (merror "Unable to evaluate Jacobian at the point ~M"
 				   (list* '(mlist) (subseq (coerce x 'list) 0 n))))
 			 ;; Extract out elements of Jacobian and place into
@@ -240,7 +240,7 @@
 		   info))))))))
 
 
-(defmfun $minpack_lsquares (fcns vars init-x &rest options)
+(defmfun $minpack_lsquares (fcns vars init-x &key (jacobian t) (tolerance (sqrt double-float-epsilon)))
   "Minimize the sum of the squares of m functions in n unknowns (n <= m)
 
    VARS    list of the variables
@@ -260,10 +260,9 @@
   (unless (and (listp init-x) (eq (caar init-x) 'mlist))
     (merror "~M is not a list of initial values" init-x))
   
-  (let ((args (lispify-maxima-keyword-options options '($jacobian $tolerance))))
-    (apply #'least-squares vars init-x fcns args)))
+  (least-squares vars init-x fcns :jacobian jacobian :tolerance tolerance))
 
-(defmfun $minpack_solve (fcns vars init-x &rest options)
+(defmfun $minpack_solve (fcns vars init-x &key (jacobian t) (tolerance (sqrt double-float-epsilon)))
   "Solve the system of n equations in n unknowns
 
    VARS    list of the n variables
@@ -283,5 +282,4 @@
   (unless (and (listp init-x) (eq (caar init-x) 'mlist))
     (merror "~M is not a list of initial values" init-x))
   
-  (let ((args (lispify-maxima-keyword-options options '($jacobian $tolerance))))
-    (apply #'nonlinear-solve vars init-x fcns args)))
+  (nonlinear-solve vars init-x fcns :jacobian jacobian :tolerance tolerance))
