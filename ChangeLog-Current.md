@@ -42,6 +42,8 @@ Changes in core:
  * Fixed an internal error in the translator when attempting to convert
    a variable of mode rational to a float
  * Fixed the inconsistent translation of signum with a float argument
+ * Fixed the translations of log and sqrt so they honor the flag
+   tr_float_can_branch_complex
  * Updated gentran to v.5
  * Improved the pattern matcher for "+" and "*" expressions, see 
    maxima-discuss, circa 2019-12-27: "Function to recognise series"
