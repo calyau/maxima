@@ -147,11 +147,6 @@
 (def%tr bigfloat (form)
   `($any . ',form))
 
-(def%tr %sqrt (form)
-  (setq form (translate (cadr form)))
-  (if (eq '$float (car form)) `($float sqrt ,(cdr form))
-      `($any simplify (list '(%sqrt) ,(cdr form)))))
-
 (def%tr mabs (form) 
   (setq form (translate (cadr form)))
   (if (covers '$number (car form)) (list (car form) 'abs (cdr form))
