@@ -36,11 +36,11 @@
 	     (merror (intl:gettext "~M: Cannot numerically evaluate ~M at ~M") ,name ,fun ,x))
 	   (float ,result))))))
      
-(defun quad-qag (fun var a b key &key
-		 (epsrel 1e-8)
-		 (limit 200)
-		 (epsabs 0.0))
-  (quad_argument_check fun var a b) 
+(defmfun $quad_qag (fun var a b key &key
+			(epsrel 1e-8)
+			(limit 200)
+			(epsabs 0.0))
+  ;;(quad_argument_check fun var a b) 
   (unless (and (integerp key) (>= key 1) (<= key 6))
     (merror (intl:gettext "quad_qag: key must be 1, 2, 3, 4, 5, or 6; found: ~M") key))
   (let* ((lenw (* 4 limit))
@@ -67,7 +67,7 @@
 	  ((mequal) $epsabs ,epsabs)
 	  ((mequal) $limit ,limit))))))
 
-(defun quad-qags (fun var a b &key
+(defmfun $quad_qags (fun var a b &key
 		  (epsrel 1e-8)
 		  (limit 200)
 		  (epsabs 0.0))
@@ -95,7 +95,7 @@
 	  ((mequal) $epsabs ,epsabs)
 	  ((mequal) $limit ,limit))))))
 
-(defun quad-qagi (fun var a b &key
+(defmfun $quad_qagi (fun var a b &key
 		      (epsrel 1e-8)
 		      (limit 200)
 		      (epsabs 0.0))
@@ -156,7 +156,7 @@
 	      ((mequal) $epsabs ,epsabs)
 	      ((mequal) $limit ,limit))))))))
 
-(defun quad-qawc (fun var c a b &key
+(defmfun $quad_qawc (fun var c a b &key
 		  (epsrel 1e-8)
 		  (limit 200)
 		  (epsabs 0.0))
@@ -185,7 +185,7 @@
 	  ((mequal) $epsabs ,epsabs)
 	  ((mequal) $limit ,limit))))))
 
-(defun quad-qawf (fun var a omega trig &key
+(defmfun $quad_qawf (fun var a omega trig &key
 		  (epsabs 1e-10)
 		  (limit 200)
 		  (maxp1 100)
@@ -221,7 +221,7 @@
 	  ((mequal) $maxp1 ,maxp1)
 	  ((mequal) $limlst ,limlst))))))
 
-(defun quad-qawo (fun var a b omega trig &key
+(defmfun $quad_qawo (fun var a b omega trig &key
 		  (epsrel 1e-8)
 		  (limit 200)
 		  (maxp1 100)
@@ -259,7 +259,7 @@
 	  ((mequal) $limit ,limit)
 	  ((mequal) $maxp1 ,maxp1))))))
 
-(defun quad-qaws (fun var a b alfa beta wfun &key
+(defmfun $quad_qaws (fun var a b alfa beta wfun &key
 		  (epsrel 1e-8)
 		  (limit 200)
 		  (epsabs 0.0))
@@ -292,7 +292,7 @@
 	  ((mequal) $epsabs ,epsabs)
 	  ((mequal) $limit ,limit))))))
 
-(defun quad-qagp (fun var a b points
+(defmfun $quad_qagp (fun var a b points
 		  &key (epsrel 1e-8) (epsabs 0.0) (limit 200))
   (quad_argument_check fun var a b)
   (let* ((npts2 (+ 2 (length (cdr points))))
@@ -356,6 +356,7 @@
   (quad-control parameter (if new-value (car new-value))))
 
 
+#+nil
 (macrolet
     ((frob (mname iname args valid-keys)
        `(defun-checked ,mname ((,@args) ,@valid-keys)
@@ -363,7 +364,7 @@
 	  (let ((*plot-realpart* nil))
 	    (declare (special *plot-realpart*))
 	    (apply ',iname ,@args keylist)))))
-  (frob $quad_qag quad-qag (fun var a b key) ($epsrel $limit $epsabs))
+  #+nil(frob $quad_qag quad-qag (fun var a b key) ($epsrel $limit $epsabs))
   (frob $quad_qags quad-qags (fun var a b) ($epsrel $limit $epsabs))
   (frob $quad_qagi quad-qagi (fun var a b) ($epsrel $limit $epsabs))
   (frob $quad_qawc quad-qawc (fun var c a b) ($epsrel $limit $epsabs))
