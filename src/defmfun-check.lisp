@@ -339,11 +339,11 @@
 						      (second k))
 						     (values
 						      (intern (format nil "$~A" k))
-						      (intern (format nil "$VAL~A" index))))
+						      nil))
 					       (incf index)
 					       `((mequal) ,name ,val)))
 					 keyword-args)))
-			     `((,name) ,@required-args ((mlist) ,@keys))))
+			     `((,name) ,@required-args ,@keys)))
 		          (t
 			   ;; Just have required args: foo(a,b)
 			   `((,name) ,@required-args))))
