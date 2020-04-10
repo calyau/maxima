@@ -223,7 +223,36 @@
 	       (return (values tail (nreverse decls) doc))))))))
 )
 
-
+(defun defmfun-keywords (fname options valid-keywords)
+  ;; options looks like (((mequal) $opt1 val1) ((mequal) $opt2 val2) ...)
+  ;;
+  ;; Convert to a new list that looks like (:opt1 val1 :opt2 val2 ...)
+  ;;
+  (unless (listp options)
+    (merror "Invalid Maxima keyword options: ~M" options))
+  (when (every #'(lambda (o)
+		   ;; Make sure every option has the right form.
+		   (let ((ok (and (listp o)
+				  (= (length o) 3)
+				  (eq (caar o) 'mequal))))
+		     (unless ok
+		       (merror (intl:gettext "~M: Badly formed keyword option: ~M")
+			       fname o))
+		     ok))
+	       options)
+    (mapcan #'(lambda (o)
+		(destructuring-bind (mequal opt val)
+		    o
+		  (declare (ignore mequal))
+		  (if (or (null valid-keywords)
+			  (member opt valid-keywords))
+		      (flet ((keywordify (x)
+			       (intern (subseq (symbol-name x) 1) :keyword)))
+			(list (keywordify opt) val))
+		      (merror (intl:gettext "~M: Unrecognized keyword: ~M")
+			      fname opt))))
+	    options)))
+  
 ;; Define user-exposed functions that are written in Lisp.
 ;;
 ;; If the function name NAME starts with #\$ we check the number of
@@ -278,9 +307,6 @@
 			       allow-other-keys-p)
 	     (parse-lambda-list lambda-list)
 
-	   #+nil
-	   (when keywords-present-p
-	     (error "Keyword arguments are not supported"))
 	   (when (and keywords-present-p
 		      (or optional-args restp))
 	     (error "Keyword args cannot be used with optional args or rest args"))
@@ -354,11 +380,11 @@
 			   ;; args.
 			   (unless (null required-args)
 			     `((when (< ,nargs ,required-len)
-			         (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
-				         ',pretty-fname
-				         ,required-len
-				         ,nargs
-				         (list* '(mlist) ,args))))))
+				 (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
+					 ',pretty-fname
+					 ,required-len
+					 ,nargs
+					 (list* '(mlist) ,args))))))
 			  (optional-args
 			   ;; There are optional args (but no rest
 			   ;; arg). Verify that we don't have too many args,
@@ -389,7 +415,7 @@
 			  `(apply #',impl-name
 				  (append 
 				   (subseq ,args 0 ,required-len)
-				   (lispify-maxima-keyword-options
+				   (defmfun-keywords ',pretty-fname
 				    (nthcdr ,required-len ,args)
 				    ',maxima-keywords))))
 			 (t
@@ -398,7 +424,7 @@
 		      (keywords-present-p
 		       `(define-compiler-macro ,name (&rest ,rest-name)
 			  (let ((args (append (subseq ,rest-name 0 ,required-len)
-					      (lispify-maxima-keyword-options
+					      (defmfun-keywords ',pretty-fname
 						 (nthcdr ,required-len ,rest-name)
 						 ',maxima-keywords))))
 			  `(,',impl-name ,@args))))
