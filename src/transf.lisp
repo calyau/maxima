@@ -19,30 +19,37 @@
 
 ;;; some floating point translations. with tricks.
 
-(def%tr %log (form)
+(defun translate-with-flonum-op (form can-branch-p)
   (declare (special *flonum-op*))
-  (let (arg (lisp-function (gethash (caar form) *flonum-op*)))
-    (setq arg (translate (cadr form)))
-    (cond ((and (eq (car arg) '$float) lisp-function)
-	   `($float funcall ,lisp-function ,(cdr arg)))
-	  (t `($any simplify (list ',(list (caar form)) ,(cdr arg)))))))
+  (let ((arg (translate (cadr form)))
+        (lisp-function (gethash (caar form) *flonum-op*)))
+    (if (and (eq (car arg) '$float)
+             lisp-function)
+        (let ((call `(funcall ,lisp-function ,(cdr arg))))
+          (if (and can-branch-p
+                   $tr_float_can_branch_complex)
+              `($any . (complexify ,call))
+              `($float . ,call)))
+        `($any . (simplify (list '(,(caar form)) ,(cdr arg)))))))
 
-(def-same%tr %sin %log)
-(def-same%tr %cos %log)
-(def-same%tr %tan %log)
-(def-same%tr %cot %log)
-(def-same%tr %csc %log)
-(def-same%tr %sec %log)
-(def-same%tr %acot %log)
-(def-same%tr %sinh %log)
-(def-same%tr %cosh %log)
-(def-same%tr %tanh %log)
-(def-same%tr %coth %log)
-(def-same%tr %csch %log)
-(def-same%tr %sech %log)
-(def-same%tr %asinh %log)
-(def-same%tr %acsch %log)
-(def-same%tr %erf %log)
+(def%tr %sin (form)
+  (translate-with-flonum-op form nil))
+
+(def-same%tr %cos %sin)
+(def-same%tr %tan %sin)
+(def-same%tr %cot %sin)
+(def-same%tr %csc %sin)
+(def-same%tr %sec %sin)
+(def-same%tr %acot %sin)
+(def-same%tr %sinh %sin)
+(def-same%tr %cosh %sin)
+(def-same%tr %tanh %sin)
+(def-same%tr %coth %sin)
+(def-same%tr %csch %sin)
+(def-same%tr %sech %sin)
+(def-same%tr %asinh %sin)
+(def-same%tr %acsch %sin)
+(def-same%tr %erf %sin)
 
 (defmvar $tr_float_can_branch_complex t
   "States wether the arc functions might return complex
@@ -52,18 +59,10 @@
 	 if and only if X is of mode FLOAT.")
 
 (def%tr %acos (form)
-  (declare (special *flonum-op*))
-  (let
-    ((arg (translate (cadr form)))
-     (lisp-function (gethash (caar form) *flonum-op*)))
-    (cond ((and (eq (car arg) '$float) lisp-function)
-	   (let ((call `(funcall ,lisp-function ,(cdr arg))))
-	     (if $tr_float_can_branch_complex
-		 `($any . (complexify ,call))
-		 `($float . ,call))))
-	  (t
-	   `($any . (simplify (list '(,(caar form)) ,(cdr arg))))))))
+  (translate-with-flonum-op form t))
 
 (def-same%tr %asin %acos)
 (def-same%tr %asec %acos)
 (def-same%tr %acsc %acos)
+(def-same%tr %log %acos)
+(def-same%tr %sqrt %acos)
