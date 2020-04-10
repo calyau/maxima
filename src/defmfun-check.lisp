@@ -306,17 +306,17 @@
 			   (let* ((index 1)
 				  (keys (mapcar
 					 #'(lambda (k)
-					     (let ((name
-						     (intern (concatenate 'string
-									  "$"
-									  (symbol-name
-									   (if (consp k)
-									       (car k)
-									       k)))))
-						   (val (intern (format nil "$VAL~A" index))))
+					     (multiple-value-bind (name val)
+						 (if (consp k)
+						     (values
+						      (intern (format nil "$~A" (car k)))
+						      (second k))
+						     (values
+						      (intern (format nil "$~A" k))
+						      (intern (format nil "$VAL~A" index))))
 					       (incf index)
 					       `((mequal) ,name ,val)))
-					     keyword-args)))
+					 keyword-args)))
 			     `((,name) ,@required-args ((mlist) ,@keys))))
 		          (t
 			   ;; Just have required args: foo(a,b)
