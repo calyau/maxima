@@ -23,7 +23,7 @@
 ;;   output includes the equations, the set of variables, the mf
 ;;   parameter, and various work arrays that must be modified between
 ;;   calls to dlsode_step.
-(defun-checked $dlsode_init ((f vars mf))
+(defmfun $dlsode_init (f vars mf)
   ;; Verify values of mf.
   (unless (member mf '(10 21 22) :test #'eql)
     (merror "MF must be 10, 21, or 22"))
@@ -108,7 +108,7 @@
 ;;                len_rwork    - Actual length used for real work array
 ;;                len_iwork    - Actual length used for integer work array
 ;;
-(defun-checked $dlsode_step ((init-y tt tout rtol atol istate state))
+(defmfun $dlsode_step (init-y tt tout rtol atol istate state)
   (let ((f ($assoc '$f state))
 	(vars ($assoc '$vars state))
 	(mf ($assoc '$mf state))
@@ -218,7 +218,7 @@
 		 (make-mlist '$len_rwork (aref iwork 16))
 		 (make-mlist '$len_iwork (aref iwork 17)))))))))
 
-(defun-checked $dlsode ((f yvars inity trange rtol atol mf))
+(defmfun $dlsode (f yvars inity trange rtol atol mf)
   (let* ((tvar (elt trange 1))
 	 (tstart ($float (elt trange 2)))
 	 (tend ($float (elt trange 3)))
