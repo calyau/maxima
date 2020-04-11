@@ -703,8 +703,17 @@
 	      error-count
 	      total-count))))
 
-(defun run-testsuite (&key display_known_bugs display_all tests time share_tests debug)
+(defmfun $run_testsuite (&key tests display_all display_known_bugs share_tests time debug)
+  "Run the testsuite.  Options are
+  tests                List of tests to run
+  display_all          Display output from each test entry
+  display_known_bugs   Include tests that are known to fail.
+  time                 Display time to run each test entry
+  share_tests          Whether to include the share testsuite or not
+  debug                Set to enable some debugging prints.
+"
   (declare (special $file_search_tests))
+  (enable-some-lisp-warnings)
   (let ((test-file)
 	(expected-failures)
 	(test-file-path))
@@ -823,6 +832,7 @@
 		     finally
 			(print-testsuite-summary errs unexpected-pass error-count total-count))))
 	  (time (testsuite))))))
+  (disable-some-lisp-warnings)
   '$done)
 
 ;; Convert a list of Maxima "keyword" arguments into the corresponding
@@ -861,18 +871,3 @@
 		      (list (keywordify opt) val))
 		    (merror (intl:gettext "Unrecognized keyword: ~M") opt))))
 	    options)))
-
-;; Run the testsuite.  Options are
-;;  tests                List of tests to run
-;;  display_all          Display output from each test entry
-;;  display_known_bugs   Include tests that are known to fail.
-;;  time                 Display time to run each test entry
-;;  share_tests          Whether to include the share testsuite or not
-;;  debug                Set to enable some debugging prints.
-(defmfun $run_testsuite (&rest options)
-  (enable-some-lisp-warnings)
-  (prog1
-    (apply #'run-testsuite
-           (lispify-maxima-keyword-options options '($display_all $display_known_bugs $tests $time
-                                                                  $share_tests $debug)))
-    (disable-some-lisp-warnings)))
