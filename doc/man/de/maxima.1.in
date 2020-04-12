@@ -356,14 +356,15 @@ Version 10.
 January 1983.
 .LP
 Neuere Referenzen: 
-.I http://maxima.sourceforge.net
+.UR http://maxima.sourceforge.net/de/
+.UE
 
 .SH FEHLER
 Maxima ist ein komplexes System. Es beinhaltet sowohl bekannte als auch unbekannte Fehler.
 Verwenden Sie es auf eigenes Risiko. Die Maxima-Fehlerdatenbank ist verf\(:ugbar unter:
-.LP
-https://sourceforge.net/p/maxima/bugs/
-.LP
+.UR https://sourceforge.net/p/maxima/bugs/
+.UE
+
 Neue Fehlermeldungen (und -korrekturen) sind gern gesehen. Bitte inkludieren Sie die Ausgabe der Maxima-Funktion "build_info()" in die Meldung.
 Und sehen Sie zuvor nach, ob der Fehler nicht schon gemeldet wurde.
 
@@ -388,7 +389,7 @@ Die urspr\(:ungliche Version dieser Manualseite wurde von R. P. C. Rodgers (UCSF
 James Amundson in 2002. Die deutsche \(:Ubersetzung stammt von Wolfgang Dautermann.
 
 Maxima wird nun entwickelt und betreut vom 
-.UR http://maxima.sourceforge.net
+.UR http://maxima.sourceforge.net/de/
 Maxima Projekt auf Sourceforge.
 .UE
 
