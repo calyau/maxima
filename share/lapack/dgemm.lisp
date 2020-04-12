@@ -2,7 +2,7 @@
 ;;; multiplication.
 (in-package :maxima)
 
-(defun %%dgemm (a b &key (c nil cp) transpose_a transpose_b (alpha 1e0) (beta 0e0 betap))
+(defmfun $dgemm (a b &key (c nil cp) transpose_a transpose_b (alpha 1e0) (beta 0e0 betap))
   (flet ((maybe-transpose-dims (transp row col)
 	   (if transp
 	       (values col row)
@@ -73,6 +73,7 @@
 
 ;; Main interface from maxima to Lapack routine dgemm.  Just parses
 ;; args and calls %%dgemm to do the dirty work.
+#+nil
 (defun $%dgemm (a b options)
   (let* ((args (lispify-maxima-keyword-options
 		(cdr options)
