@@ -495,7 +495,7 @@ Command      Description~%~
 (defun break-function (fun &optional (li 0) absolute 
                            &aux i tem info form fun-line)
   (unless *mdebug*
-    (format t "~&Turning on debugging debugmode(true)")
+    (format t "~&Turning on debugging debugmode(true)~%")
     (setq *mdebug* t))
   (cond ((stringp fun)
 	 (let ((file fun)  start)
