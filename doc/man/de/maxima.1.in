@@ -93,7 +93,7 @@ Verwendet \fIdirectory\fR als das Homedirectory (standardm\(:assig %USERPROFILE%
 Gibt zus\(:atzliche Informationen des Maxima Startskripts aus.
 .TP
 \fB\-\-version\fR
-Gibt die (Default) installierte Version aus.
+Gibt die (default) installierte Version aus.
 .TP
 \fB\-\-very\-quiet\fR
 Unterdr\(:uckt Ausdrucksmarken und Startmeldungen.
@@ -377,7 +377,7 @@ wurde unterst\(:utzt durch die Zusch\(:usse NSG 1323 der National Aeronautics an
 Space Administration, N00014-77-C-0641 des B\(:uros f\(:ur Naval
 Research, ET-78-C-02-4687 des U.S. Department of Energy, und
 F49620-79-C-020 der U.S. Air Force.  MACSYMA wurde weiterentwickelt, um 
-auf UNIX Betriebssystgemen verwendet zu werden (zur Verwendeung auf DEC VAX Computern
+auf UNIX Betriebssystemen verwendet zu werden (zur Verwendung auf DEC VAX Computern
 und Sun Workstations), durch Richard Fateman und Kollegen auf der
 University of California in Berkeley; diese Version von MACSYMA ist bekannt als
 VAXIMA.  Die derzeitige Version hat ihre Urspr\(:unge in den Weiterentwicklungen der 
