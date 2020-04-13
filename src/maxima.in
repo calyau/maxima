@@ -109,12 +109,6 @@ if [ -z "$GCL_MEM_MULTIPLE" ]; then
     export GCL_MEM_MULTIPLE=0.2
 fi;
 
-# Will be promoted to be gcl's default. But for the time being: Allow concurrent
-# gcl processes to communicate about how much memory each of them can use.
-if [ -z "$GCL_DISABLE_MULTIPROCESS_MEMORY_POOL" ]; then
-    export GCL_MULTIPROCESS_MEMORY_POOL=t
-fi;
-
 # process the command line arguments. This must be done in a function, because
 # "shift" should only shift the function parameters, not the global parameters.
 process_commandline_arguments() {
