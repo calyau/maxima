@@ -24,6 +24,7 @@
 ;; The actual interface to COBYLA.  Take the inputs from maxima,
 ;; massage them into a suitable Lisp form, and call COBYLA to find the
 ;; answer.
+#+nil
 (defun %cobyla (vars init-x f 
 		&key (ineq (list '(mlist))) eq (rhobeg .5d0) (rhoend 1d-6) (iprint 0) (maxfun 1000))
   (when (and eq (cdr eq))
@@ -37,6 +38,7 @@
 		       (mapcar #'(lambda (e)
 				   (mul -1 e))
 			       (cdr eq)))))
+  (format t "ineq = ~A~%" ineq)
   (let* ((n (length (cdr vars)))
 	 (m (length (cdr ineq)))
 	 (x (make-array n :element-type 'double-float
@@ -112,6 +114,7 @@
 		ierr)))))
 
 ;; Interface.  See fmin_cobyla.mac for documentation.
+#+nil
 (defun $%fmin_cobyla (f vars init-x options)
   (let* ((args (lispify-maxima-keyword-options (cdr options) '($ineq $eq $rhobeg $rhoend $iprint $maxfun))))
     ;; Some rudimentary checks.
@@ -130,3 +133,118 @@
 	    fmin
 	    neval
 	    ierr))))
+
+(defmfun $fmin_cobyla (f vars init-x &key constraints (rhobeg 0.5d0) (rhoend 1d-6) ( iprint 0) (maxfun 1000))
+  (unless (listp vars)
+    (merror "~M: vars must be a list of variables. Got: ~M"
+	    '$fmin_cobyla vars))
+  (unless (listp init-x)
+    (merror "~M: Initial values must be a list of values. Got: ~M"
+	    '$fmin_cobyla init-x))
+
+  (unless (= (length (cdr vars))
+	     (length (cdr init-x)))
+    (merror "~M: Number of initial values (~M) does not match the number of variables ~M~%"
+	    '$fmin_cobyla
+	    (length (cdr init-x))
+	    (length (cdr vars))))
+  
+  ;; Go through constraints and convert f >= g to f - g, f <= g to g -
+  ;; f, and f = g to f - g and g - f.  This is because cobyla expects
+  ;; all constraints to of the form h>=0.
+  (let (cobyla-constraints)
+    (mapc #'(lambda (c)
+	      (format t "c = ~A~%" c)
+	      (let ((op ($op c)))
+		(cond ((string-equal op ">=")
+		       (push (sub ($lhs c) ($rhs c)) cobyla-constraints))
+		      ((string-equal op "<=")
+		       (push (sub ($rhs c) ($lhs c)) cobyla-constraints))
+		      ((string-equal op "=")
+		       (push (sub ($lhs c) ($rhs c)) cobyla-constraints)
+		       (push (sub ($rhs c) ($lhs c)) cobyla-constraints))
+		      (t
+		       (merror "~M: Constraint equation must be =, <= or >=: got ~M"
+			       '$fmin_coblya op)))))
+	  (cdr constraints))
+    (format t "coblya-cons = ~A~%" cobyla-constraints)
+    (setf cobyla-constraints (list* '(mlist) cobyla-constraints))
+    (format t "coblya-cons = ~A~%" cobyla-constraints)
+    (let* ((n (length (cdr vars)))
+	   (m (length (cdr cobyla-constraints)))
+	   (x (make-array n :element-type 'double-float
+			  :initial-contents (mapcar #'(lambda (z)
+							(let ((r ($float z)))
+							  (if (floatp r)
+							      r
+							      (merror "Does not evaluate to a float:  ~M"
+								      z))))
+						    (cdr init-x))))
+	   ;; Real work array for cobyla.
+	   (w (make-array (+ (* n (+ (* 3 n)
+				     (* 2 m)
+				     11))
+			     (+ (* 4 m) 6)
+			     6)
+			  :element-type 'double-float))
+	   ;; Integer work array for cobyla.
+	   (iact (make-array (+ m 1) :element-type 'f2cl-lib::integer4))
+	   (fv (coerce-float-fun f vars))
+	   (cv (coerce-float-fun cobyla-constraints vars))
+	   (*calcfc* #'(lambda (nn mm xval cval)
+			 ;; Compute the function and the constraints at
+			 ;; the given xval.  The function value is
+			 ;; returned is returned, and the constraint
+			 ;; values are stored in cval.
+			 (declare (fixnum nn mm)
+				  (type (cl:array double-float (*)) xval cval))
+			 (let* ((x-list (coerce xval 'list))
+				(f (apply fv x-list))
+				(c (apply cv x-list)))
+			   ;; Do we really need these checks?
+			   (unless (floatp f)
+			     (merror "The objective function did not evaluate to a number at ~M"
+				     (list* '(mlist) x-list)))
+			   (unless (every #'floatp (cdr c))
+			     (let ((bad-cons (loop for cval in (cdr c)
+						   for k from 1
+						   unless (floatp cval)
+						     collect k)))
+			       ;; List the constraints that did not
+			       ;; evaluate to a number to make it easier
+			       ;; for the user to figure out which
+			       ;; constraints were bad.
+			       (mformat t "At the point ~M:~%" (list* '(mlist) x-list))
+			       (merror
+				(with-output-to-string (msg)
+				  (loop for index in bad-cons
+					do
+					   (mformat msg "Constraint ~M: ~M did not evaluate to a number.~%"
+						    index (elt cobyla-constraints index)))))))
+			   (replace cval c :start2 1)
+			   ;; This is the f2cl calling convention for
+			   ;; CALCFC.  For some reason, f2cl thinks n
+			   ;; and m are modified, so they must be
+			   ;; returned.
+			   (values nn mm nil
+				   f nil)))))
+      (multiple-value-bind (null-0 null-1 null-2 null-3 null-4 null-5 neval null-6 null-7 ierr)
+	  (cobyla:cobyla n m x rhobeg rhoend iprint maxfun w iact 0)
+	(declare (ignore null-0 null-1 null-2 null-3 null-4 null-5 null-6 null-7))
+	;; Should we put a check here if the number of function
+	;; evaluations equals maxfun?  When iprint is not 0, the output
+	;; from COBYLA makes it clear that something bad happened.
+	(let ((x-list (coerce x 'list)))
+	  ;; Return the optimum function value, the point that gives the
+	  ;; optimum, the value of the constraints, and the number of
+	  ;; function evaluations.  For convenience.  Only the point and
+	  ;; the number of evaluations is really needed.
+	  (make-mlist
+	   (list* '(mlist) (mapcar #'(lambda (var val)
+				       `((mequal) ,var ,val))
+				   (cdr vars)
+				   (coerce x 'list)))
+	   (apply fv x-list)
+	   neval
+	   ierr))))))
+  
