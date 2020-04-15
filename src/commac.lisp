@@ -525,7 +525,7 @@ values")
 ;; Note:  symb can also be a number, not just a symbol.
 (defun explode (symb)
   (declare (optimize (speed 3)))
-  (map 'list #'(lambda (v) (intern (string v))) (format nil "~a" symb)))
+  (map 'list #'(lambda (v) (intern (string v))) (format nil "~s" symb)))
 
 ;;; return the first character of the name of a symbol or a string or char
 (defun get-first-char (symb)
