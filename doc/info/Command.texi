@@ -358,7 +358,7 @@ The dollar sign @code{$} terminates an input expression,
 and the most recent output @code{%} and an output label, e.g. @code{%o1},
 are assigned the result, but the result is not displayed.
 
-See also @code{;}.
+See also @mrefdot{;}
 
 Example:
 @c ===beg===
@@ -389,7 +389,7 @@ Example:
 The semicolon @code{;} terminates an input expression,
 and the resulting output is displayed.
 
-See also @code{$}.
+See also @mrefdot{$}
 
 Example:
 @c ===beg===
@@ -418,7 +418,7 @@ the prefix, the prefixes @code{inchar}, @mrefcomma{outchar} and
 @mref{linechar} should have a different first char.  Otherwise some commands
 like @code{kill(inlabels)} do not work as expected.
 
-See also @code{labels}.
+See also @mrefdot{labels}
 
 Example:
 
