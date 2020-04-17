@@ -106,6 +106,8 @@ calling @code{desolve} by using @code{atvalue}.
 
 If @code{desolve} cannot obtain a solution, it returns @code{false}.
 
+See also @mrefcomma{ode2} @mref{drawdf} and @mrefdot{rk}
+
 @opencatbox
 @category{Differential equations}
 @category{Laplace transform}
@@ -183,6 +185,8 @@ In order to solve initial value problems (IVP) functions @mref{ic1} and
 @mref{ic2} are available for first and second order equations, and to
 solve second-order boundary value problems (BVP) the function @mref{bc2}
 can be used.
+
+See also @mrefcomma{desolve} @mref{drawdf} and @mrefdot{rk}
 
 Example:
 
