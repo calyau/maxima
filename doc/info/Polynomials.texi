@@ -600,7 +600,7 @@ Maxima from taking an inordinately long time factoring large integers.
 prevent certain polynomials from being factored if their degree in any
 variable exceeds @code{n}.
 
-See also @mrefdot{collectterms}
+See also @mref{collectterms} and @mref{sqfr}
 
 Examples:
 
