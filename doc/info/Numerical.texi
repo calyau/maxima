@@ -634,7 +634,7 @@ Thus it is not necessary that @var{expr} evaluate to a number.
 @code{load(newton1)} loads this function.
 
 See also @mrefcomma{realroots} @mrefcomma{allroots} @mref{find_root} and
-@ref{mnewton-pkg}
+@mrefdot{mnewton}
 
 Examples:
 
