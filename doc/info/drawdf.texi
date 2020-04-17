@@ -135,7 +135,7 @@ package include:@*
 @code{dimensions}, @code{file_name}, and all
 others supported by @code{draw2d} and @code{gr2d}.
 
-See also @mref{draw2d}. 
+See also @mref{draw2d} and @mrefdot{rk}
 
 Users of wxMaxima or Imaxima may optionally use @code{wxdrawdf}, which
 is identical to @code{drawdf} except that the graphics are drawn
