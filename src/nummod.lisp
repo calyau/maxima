@@ -257,7 +257,7 @@
 	  ((and (= b 1)
 		(maxima-integerp arglim))
 	   arglim)
-	  ((and (mnump arglim)
+	  ((and ($constantp arglim)
 		(not (maxima-integerp arglim)))
 	   (simplify (list '($floor) arglim)))
 	  (t
@@ -323,7 +323,7 @@
 	  ((and (= b 1)
 		(maxima-integerp arglim))
 	   (m+ arglim 1))
-	  ((and (mnump arglim)
+	  ((and ($constantp arglim)
 		(not (maxima-integerp arglim)))
 	   (simplify (list '($ceiling) arglim)))
 	  (t

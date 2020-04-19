@@ -1362,7 +1362,7 @@ ignoring dummy variables and array indices."
 		  (exp (sratsimp (sdiff exp var)) (sratsimp (sdiff exp var)))
 		  (n () (not n))
 		  (ans ()))	; This do wins by a return.
-		 ((> ct 0) 0)	; This loop used to run up to 5 times,
+		 ((> ct 1) 0)	; This loop used to run up to 5 times,
 		 ;; but the size of some expressions would blow up.
 	       (setq ans (no-err-sub val exp)) ;Why not do an EVENFN and ODDFN
 					;test here.

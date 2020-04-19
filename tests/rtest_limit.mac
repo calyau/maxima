@@ -319,6 +319,23 @@ limit(round(x), x, 5/2, plus);
 limit(floor(sin(x)), x, 0, minus);
 -1;
 
+/* #3616 limit with floor problems */
+limit(floor(atan(x)),x,1);
+0;
+
+limit(ceiling(cos(x)),x,0);
+1;
+
+limit(floor(cos(x)),x,0);
+0;
+
+limit(ceiling(cos(x)^2),x,0);
+1;
+
+/* [ 2914296 ] Limit gets Maxima stuck */
+limit( (log(1+x^2)-2+2*cos(x))/((sin(x))^2+2*sqrt(1-x^2)-2),x,0);
+5/7;
+
 /* [ 1587235 ] limit(floor(x),x,1) wrong */
 limit(floor(x),x,0);
 und;
