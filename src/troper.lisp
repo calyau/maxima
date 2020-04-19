@@ -210,22 +210,9 @@
       (cons '$float (dconv-$float form))
       `($any $float ,(cdr form))))
 
-(def%tr %exp (form)
-  (setq form (translate (cadr form)))
-  (if (eq '$float (car form))
-      `($float exp ,(cdr form))
-      `($any simplify (list '(%exp) ,(cdr form)))))
-
 (def%tr $atan2 (form)
   (setq form (cdr form))
   (let ((x (translate (car form))) (y (translate (cadr form))))
     (if (eq '$float (*union-mode (car x) (car y)))
 	`($float atan ,(dconv-$float x) ,(dconv-$float y))
 	`($any simplify (list '($atan2) ,(cdr x) ,(cdr y))))))
-
-(def%tr %atan (form)
-  (setq form (cdr form))
-  (let ((x (translate (car form))))
-    (if (eq '$float (car x))
-	`($float atan ,(cdr x))
-	`($any simplify (list '(%atan) ,(cdr x))))))

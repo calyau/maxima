@@ -49,7 +49,9 @@
 (def-same%tr %sech %sin)
 (def-same%tr %asinh %sin)
 (def-same%tr %acsch %sin)
+(def-same%tr %atan %sin)
 (def-same%tr %erf %sin)
+(def-same%tr %exp %sin)
 
 (defmvar $tr_float_can_branch_complex t
   "States wether the arc functions might return complex
