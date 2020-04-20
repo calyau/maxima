@@ -13,7 +13,7 @@
 ;; constraint equations.  But we want to be able to specify different
 ;; versions.  So, COBYLA calls CALCFC, which then calls *CALCFC* to
 ;; do the real compuation.
-(defun calcfc (n m x f con)
+(defun cobyla::calcfc (n m x f con)
   (declare (ignore f))
   (funcall maxima::*calcfc* n m x con))
 
@@ -157,7 +157,6 @@
 		;; values are stored in cval.
 		(declare (fixnum nn mm)
 			 (type (cl:array cl:double-float (*)) xval cval))
-		(format t "eval calcfc")
 		(let* ((x-list (coerce xval 'list))
 		       (f (apply fv x-list))
 		       (c (apply cv x-list)))
