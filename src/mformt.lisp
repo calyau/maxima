@@ -136,7 +136,7 @@
   (if (or (eq stream nil) (eq stream *standard-output*))
       (displa object)
       (let ((*standard-output* stream)
-	    (#.ttyoff t))
+	    (#.ttyoff nil))
 	(displa object))))
 
 (defun mtell (&rest l)
