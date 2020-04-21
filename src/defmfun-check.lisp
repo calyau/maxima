@@ -266,6 +266,13 @@
 ;;
 ;; The lambda-list supports &optional and &rest args.  Keyword args
 ;; are an error.
+;;
+;; The variable %%PRETTY-FNAME is defined such that the body can refer
+;; to this variable to get the pretty name of the defined function for
+;; use in printing error messages or what not.  This allows the
+;; implementation to print out the function name that would also be
+;; used when printint out error messages for incorrect number of
+;; arguments.
 (defmacro defmfun (name lambda-list &body body)
   (flet ((add-props ()
            ;; We make sure that the ARG-LIST property is added
@@ -366,7 +373,8 @@
 		    ,impl-doc
 		    ,@decls
 		    (block ,name
-		      ,@forms))
+		      (let ((%%pretty-fname ',pretty-fname))
+			,@forms)))
                   ,(add-props)
 		  (defun ,name (&rest ,args)
 		    ,@doc-string

@@ -90,16 +90,16 @@
 "
   (unless (listp vars)
     (merror "~M: vars must be a list of variables. Got: ~M"
-	    '$fmin_cobyla vars))
+	    %%pretty-fname vars))
   (unless (listp init-x)
     (merror "~M: Initial values must be a list of values. Got: ~M"
-	    '$fmin_cobyla init-x))
+	    %%pretty-fname init-x))
 
   (unless (= (length (cdr vars))
 	     (length (cdr init-x)))
     (merror
      "~M: Number of initial values (~M) does not match the number of variables ~M~%"
-     '$fmin_cobyla
+     %%pretty-fname
      (length (cdr init-x))
      (length (cdr vars))))
 
@@ -107,12 +107,12 @@
 	       (<= 0 iprint 3))
     (merror
      "~M: iprint must be an integer between 0 and 3, inclusive, not: ~M~%"
-     '$fmin_cobyla iprint))
+     %%pretty-fname iprint))
 
   (unless (and (integerp maxfun) (plusp maxfun))
     (merror
      "~M: maxfun must be a positive integer, not: ~M~%"
-     '$fmin_cobyla maxfun))
+     %%pretty-fname maxfun))
   
   ;; Go through constraints and convert f >= g to f - g, f <= g to g -
   ;; f, and f = g to f - g and g - f.  This is because cobyla expects
