@@ -129,7 +129,7 @@
 	       (push (sub ($rhs c) ($lhs c)) normalized-constraints))
 	      (t
 	       (merror "~M: Constraint equation must be =, <= or >=: got ~M"
-		       %%pretty-funame op)))))
+		       %%pretty-fname op)))))
 
     (setf normalized-constraints
 	  (list* '(mlist)
