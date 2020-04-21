@@ -129,7 +129,7 @@
 	       (push (sub ($rhs c) ($lhs c)) normalized-constraints))
 	      (t
 	       (merror "~M: Constraint equation must be =, <= or >=: got ~M"
-		       '$fmin_coblya op)))))
+		       %%pretty-funame op)))))
 
     (setf normalized-constraints
 	  (list* '(mlist)
@@ -146,8 +146,8 @@
 				      (let ((r ($float z)))
 					(if (floatp r)
 					    r
-					    (merror "Does not evaluate to a float:  ~M"
-						    z))))
+					    (merror "~M: Does not evaluate to a float:  ~M"
+						    %%pretty-fname z))))
 				  (cdr init-x))))
 	   ;; Real work array for cobyla.
 	   (w (make-array (+ (* n (+ (* 3 n)
@@ -173,8 +173,8 @@
 		       (c (apply cv x-list)))
 		  ;; Do we really need these checks?
 		  (unless (floatp f)
-		    (merror "The objective function did not evaluate to a number at ~M"
-			    (list* '(mlist) x-list)))
+		    (merror "~M: The objective function did not evaluate to a number at ~M"
+			    %%pretty-fname (list* '(mlist) x-list)))
 		  (unless (every #'floatp (cdr c))
 		    (let ((bad-cons
 			   (loop for cval in (cdr c)
@@ -185,7 +185,8 @@
 		      ;; evaluate to a number to make it easier
 		      ;; for the user to figure out which
 		      ;; constraints were bad.
-		      (mformat t "At the point ~M:~%" (list* '(mlist) x-list))
+		      (mformat t "~M: At the point ~M:~%"
+			       %%pretty-fname (list* '(mlist) x-list))
 		      (merror
 		       (with-output-to-string (msg)
 			 (loop for index in bad-cons
