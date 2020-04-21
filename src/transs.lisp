@@ -92,7 +92,7 @@
 	 (if t-error (delete-file transl-file))))))
 
 (defun compile-function (f)
-  (mformat  *translation-msgs-files* (intl:gettext "~%Translating ~:@M") f)
+  (tr-format (intl:gettext "~%Translating ~:@M") f)
   (let ((fun (tr-mfun f)))
     (cond (tr-abort  nil)
 	  (t fun))))
@@ -273,10 +273,9 @@ translated."
     (terpri transl-file)))
 
 (defun print-abort-msg (fun from)
-  (mformat *translation-msgs-files*
-	   (intl:gettext "compfile: failed to translate ~:@M.~%~
-	    ~A will continue, but file output will be aborted.~%") ;; WTF DOES THIS MEAN ???
-	   fun from))
+  (tr-format (intl:gettext "compfile: failed to translate ~:@M.~%~
+	     ~A will continue, but file output will be aborted.~%") ;; WTF DOES THIS MEAN ???
+	     fun from))
 
 (defmspec $translate (functs)
   (setq functs (cdr functs))

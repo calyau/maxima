@@ -1139,7 +1139,7 @@ APPLY means like APPLY.")
     (cond ((atom fn) 
 	   ;; I'm guessing (ATOM FN) is a parser error or other Lisp error,
 	   ;; so don't bother to translate the following error message.
-	   (mformat *translation-msgs-files* "translator: MQAPPLY operator must be a cons; found: ~:M" form)
+	   (tr-format "translator: MQAPPLY operator must be a cons; found: ~:M" form)
 	   nil)
 	  ((eq (caar fn) 'mquote) 
 	   `($any list ',(cons (cadr fn) aryp) ,@(tr-args args)))
