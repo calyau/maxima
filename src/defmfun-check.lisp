@@ -374,6 +374,7 @@
 		    ,@decls
 		    (block ,name
 		      (let ((%%pretty-fname ',pretty-fname))
+			(declare (ignorable %%pretty-fname))
 			,@forms)))
                   ,(add-props)
 		  (defun ,name (&rest ,args)
