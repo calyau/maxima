@@ -10,7 +10,7 @@
 (defmfun $minpack_lsquares (fcns vars init-x
 				 &key
 				 (jacobian t)
-				 (tolerance (sqrt double-float-epsilon)))
+				 (tolerance #.(sqrt double-float-epsilon)))
   "Minimize the sum of the squares of m functions in n unknowns (n <= m)
 
    VARS    list of the variables
@@ -24,12 +24,16 @@
               forward-difference approximation.
               Otherwise, it is a function returning the Jacobian"
   (unless (and (listp fcns) (eq (caar fcns) 'mlist))
-    (merror "~M is not a list of functions" fcns))
+    (merror "~M: ~M is not a list of functions" %%pretty-fname fcns))
   (unless (and (listp vars) (eq (caar vars) 'mlist))
-    (merror "~M is not a list of variables" vars))
+    (merror "~M: ~M is not a list of variables" %%pretty-fname vars))
   (unless (and (listp init-x) (eq (caar init-x) 'mlist))
-    (merror "~M is not a list of initial values" init-x))
-
+    (merror "~M: ~M is not a list of initial values" %%pretty-fname init-x))
+  (setf tolerance ($float tolerance))
+  (unless (and (realp tolerance) (plusp tolerance))
+    (merror "~M: tolerance must be a non-negative real number, not: ~M"
+	    %%pretty-fname tolerance))
+  
   (let* ((n (length (cdr vars)))
 	 (m (length (cdr fcns)))
 	 (x (make-array n :element-type 'double-float
@@ -156,10 +160,10 @@
 		   (minpack:enorm m fvec)
 		   info))))))))
 
-(defun $minpack_solve (fcns vars init-x
-		       &key
-			 (jacobian t)
-			 (tolerance (sqrt double-float-epsilon)))
+(defmfun $minpack_solve (fcns vars init-x
+			      &key
+			      (jacobian t)
+			      (tolerance #.(sqrt double-float-epsilon)))
   "Solve the system of n equations in n unknowns
 
    VARS    list of the n variables
@@ -173,11 +177,17 @@
               forward-difference approximation.
               Otherwise, it is a function returning the Jacobian"
   (unless (and (listp fcns) (eq (caar fcns) 'mlist))
-    (merror "~M is not a list of functions" fcns))
+    (merror "~M: ~M is not a list of functions"
+	    %%pretty-fname fcns))
   (unless (and (listp vars) (eq (caar vars) 'mlist))
-    (merror "~M is not a list of variables" vars))
+    (merror "~M:  ~M is not a list of variables"
+	    %%pretty-fname vars))
   (unless (and (listp init-x) (eq (caar init-x) 'mlist))
-    (merror "~M is not a list of initial values" init-x))
+    (merror "~M: ~M is not a list of initial values"
+	    %%pretty-fname init-x))
+  (unless (and (realp tolerance) (plusp tolerance))
+    (merror "~M: tolerance must be a non-negative real number, not: ~M"
+	    %%pretty-fname tolerance))
 
   (let* ((n (length (cdr vars)))
 	 (x (make-array n :element-type 'double-float
