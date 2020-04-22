@@ -42,7 +42,8 @@
 			(epsabs 0.0))
   ;;(quad_argument_check fun var a b) 
   (unless (and (integerp key) (>= key 1) (<= key 6))
-    (merror (intl:gettext "quad_qag: key must be 1, 2, 3, 4, 5, or 6; found: ~M") key))
+    (merror (intl:gettext "~M: quad_qag: key must be 1, 2, 3, 4, 5, or 6; found: ~M")
+	    %%pretty-fname key))
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
@@ -71,7 +72,7 @@
 		  (epsrel 1e-8)
 		  (limit 200)
 		  (epsabs 0.0))
-  (quad_argument_check fun var a b) 
+  (quad_argument_check %%pretty-fname fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
@@ -99,7 +100,7 @@
 		      (epsrel 1e-8)
 		      (limit 200)
 		      (epsabs 0.0))
-  (quad_argument_check fun var a b)
+  (quad_argument_check %%pretty-fnmae fun var a b)
   ;; Massage the limits a and b into what Quadpack QAGI wants.
   (flet ((fixup (low high)
 	   (let (bnd inf)
@@ -116,7 +117,8 @@
 		    (setq bnd ($float low))
 		    (setq inf high))
 		   (t
-		    (merror "~M: Unexpected limits of integration: ~M, ~M~%" '$quad_qagi low high)))
+		    (merror "~M: Unexpected limits of integration: ~M, ~M~%"
+			    %%pretty-fname low high)))
 	     (values bnd inf))))
 
     (multiple-value-bind (bound inf-type)
@@ -160,7 +162,7 @@
 		  (epsrel 1e-8)
 		  (limit 200)
 		  (epsabs 0.0))
-  (quad_argument_check fun var a b) 
+  (quad_argument_check %%pretty-fname fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
@@ -226,7 +228,7 @@
 		  (limit 200)
 		  (maxp1 100)
 		  (epsabs 0.0))
-  (quad_argument_check fun var a b) 
+  (quad_argument_check %%pretty-fname fun var a b) 
   (let* ((leniw limit)
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
 	 (work (make-array lenw :element-type 'flonum))
@@ -263,7 +265,7 @@
 		  (epsrel 1e-8)
 		  (limit 200)
 		  (epsabs 0.0))
-  (quad_argument_check fun var a b) 
+  (quad_argument_check %%pretty-fname fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4)))
@@ -294,7 +296,7 @@
 
 (defmfun $quad_qagp (fun var a b points
 		  &key (epsrel 1e-8) (epsabs 0.0) (limit 200))
-  (quad_argument_check fun var a b)
+  (quad_argument_check %%pretty-fname fun var a b)
   (let* ((npts2 (+ 2 (length (cdr points))))
 	 (p (make-array npts2 :element-type 'flonum))
 	 (leniw (max limit (- (* 3 npts2) 2)))
@@ -327,19 +329,18 @@
 	  ((mequal) $limit ,limit))))))
 					
 ;; error checking similar to that done by $defint
-(defun quad_argument_check (exp var ll ul) 
+(defun quad_argument_check (name exp var ll ul) 
   (setq exp (ratdisrep exp))
   (setq var (ratdisrep var))
   (setq ll (ratdisrep ll))
   (setq ul (ratdisrep ul))
   (cond (($constantp var)
-	 (merror "Variable of integration not a variable: ~M"
-		 var)))
+	 (merror "~M: Variable of integration not a variable: ~M" name var)))
   (cond ((not (or ($subvarp var) (atom var)))
-	 (merror "Improper variable of integration: ~M" var))
+	 (merror "~M: Improper variable of integration: ~M" name var))
 	((or (among var ul)
 	     (among var ll))
-	 (merror "Limit contains variable of integration: ~M" var))))
+	 (merror "~M: Limit contains variable of integration: ~M" name var))))
 
 (defun quad-control (parameter &optional new-value)
   (values
