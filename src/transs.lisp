@@ -47,8 +47,6 @@
       $tr_float_can_branch_complex
       $define_variable))
 
-(defvar declares nil)
-
 (defmspec $compfile (forms)
     (setq forms (cdr forms))
     (if (eql 1 (length forms))
@@ -68,11 +66,8 @@
 			 (member '$functions forms :test #'eq))
 		     (setq forms (mapcar #'caar (cdr $functions)))))
 	      (do ((l forms (cdr l))
-		   (declares nil nil)
 		   (tr-abort nil nil)
 		   (item)
-		   (lexprs nil nil)
-		   (fexprs nil nil)
 		   (t-item))		;
 		  ((null l))
 		(setq item (car l))

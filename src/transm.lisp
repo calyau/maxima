@@ -64,12 +64,7 @@
 	 *in-translate-file*
 	 *in-translate*
 	 *pre-transl-forms*
-	 (arrays nil)
-	 (exprs nil)
-	 (lexprs nil)
-	 (fexprs nil)
 	 (specials nil)
-	 (declares nil)
 	 ($transcompile $transcompile)
 	 ($tr_numer $tr_numer)
 	 defined_variables)

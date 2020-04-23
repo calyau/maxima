@@ -108,17 +108,17 @@
 	  *transl-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
 	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
-	  alpha *alphabet* arrays aryp assigns *atp* atvars
+	  alpha *alphabet* aryp assigns *atp* atvars
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  bindlist *mdebug*
-	  declares defined_variables defintdebug derivflag derivlist
+	  defined_variables defintdebug derivflag derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
 	  errorsw evarrp evp expandflag expandp
-	  exprs exptrlsw factlist featurel fexprs fmaplvl
+	  exptrlsw factlist featurel fmaplvl
 	  fourth%pi fr-factor gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3
 	  implicit-real in-p infinitesimals infinities inratsimp inside-mprog
-	  integerl *islinp* lexprs limit-answers limitp linel
+	  integerl *islinp* limit-answers limitp linel
 	  *linelabel* local loclist low* maplp mdop
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
 	  mplc* mprogp mproplist mspeclist msump munbindp

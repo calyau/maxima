@@ -102,10 +102,6 @@
 (defmvar tstack nil " stack of local variable modes ")
 
 (defmvar local nil "T if a $local statement is in the body.")
-(defmvar arrays nil "arrays to declare to `complr'")
-(defmvar lexprs nil "Lexprs to declare.")
-(defmvar exprs nil "what else?")
-(defmvar fexprs nil "Fexprs to declare.")
 (defmvar tr-progret t)
 (defmvar inside-mprog nil)
 (defmvar returns nil "list of `translate'd return forms in the block.")
@@ -787,15 +783,9 @@ APPLY means like APPLY.")
 (defun tr-lisp-function-call (form type)
   (let ((op (caar form)) (mode) (args))
     (setq args (cond ((member type '(subr lsubr expr) :test #'eq)
-		      (if $transcompile
-			  (case type
-			    ((subr) (pushnew op exprs :test #'eq))
-			    ((lsubr) (pushnew op lexprs :test #'eq))
-			    (t nil)))
 		      (mapcar #'(lambda (llis) (dconvx (translate llis)))
 			      (cdr form)))
 		     (t
-		      (if $transcompile (pushnew op fexprs :test #'eq))
 		      (mapcar 'dtranslate (cdr form))))
 	  mode (function-mode op))
     (call-and-simp mode op args)))
