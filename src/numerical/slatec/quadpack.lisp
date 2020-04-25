@@ -100,7 +100,7 @@
 		      (epsrel 1e-8)
 		      (limit 200)
 		      (epsabs 0.0))
-  (quad_argument_check %%pretty-fnmae fun var a b)
+  (quad_argument_check %%pretty-fname fun var a b)
   ;; Massage the limits a and b into what Quadpack QAGI wants.
   (flet ((fixup (low high)
 	   (let (bnd inf)
