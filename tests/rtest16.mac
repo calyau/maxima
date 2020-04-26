@@ -2150,7 +2150,7 @@ closeto(li[2]((1-sqrt(5))/2) - (log((sqrt(5)-1)/2)^2/2-%pi^2/15), 1.1103e-16), n
 true;
 
 /* Catalan's constant: 0.915965594... */
-closeto(li[2](1.0*%i) - (-%pi^2/48 + %i*0.915965594177219015054603514932384110774149374281672134266), 1.3878e-16), numer;
+closeto(li[2](1.0*%i) - (-%pi^2/48 + %i*0.915965594177219015054603514932384110774149374281672134266), 1.3878e-15), numer;
 true;
 
 closeto(li[2](1.0-%i) - (%pi^2/16-%i*0.915965594177219015054603514932384110774149374281672134266 - %pi*%i*log(2)/4), 4.5e-16), numer;
@@ -2167,6 +2167,11 @@ closeto(li[3](0.5) - float((7*zeta(3))/8+log(2)^3/6-(%pi^2*log(2))/12), 1.1103e-
 true;
 
 closeto(float(li[3](exp(%pi*%i/3))) - float(zeta(3)/3 + %i*5*%pi^3/162), 5.6611e-16);
+true;
+
+/* Bug 3582: numerical evaluation of li[2] */
+/* this gave an infinite loop */
+closeto(li[2]( 0.5 + %i* 0.6) - ( 0.7535498331267791 * %i + 0.4081870726952078 ), 1e-15);
 true;
 
 /* Bug 3112: zeta(n) for negative even n is inaccurate */

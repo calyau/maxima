@@ -333,6 +333,7 @@ limit(ceiling(cos(x)^2),x,0);
 1;
 
 /* [ 2914296 ] Limit gets Maxima stuck */
+/* caused blow-up in behavior-by-diff with loop up to 5th derivative */
 limit( (log(1+x^2)-2+2*cos(x))/((sin(x))^2+2*sqrt(1-x^2)-2),x,0);
 5/7;
 
