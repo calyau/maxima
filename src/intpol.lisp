@@ -137,7 +137,8 @@ Perhaps you meant to enter `~a'.~%"
     (setf non-keyword (nreverse non-keyword))
     (setf keywords (nreverse keywords))
     (when keywords
-      (setf keywords (lispify-maxima-keyword-options keywords '($abserr $relerr))))
+      (setf keywords
+	    (defmfun-keywords name keywords '($abserr $relerr))))
     #+(or)
     (progn
       (format t "keyword args = ~S~%" keywords)
