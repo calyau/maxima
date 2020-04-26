@@ -71,12 +71,4 @@
 		;; matrix-c contains the desired result.
 		(lapack-maxify-matrix c-nrows c-ncols matrix-c)))))))))
 
-;; Main interface from maxima to Lapack routine dgemm.  Just parses
-;; args and calls %%dgemm to do the dirty work.
-#+nil
-(defun $%dgemm (a b options)
-  (let* ((args (lispify-maxima-keyword-options
-		(cdr options)
-		'($c $transpose_a $transpose_b $alpha $beta))))
-    (apply #'%%dgemm a b args)))
     
