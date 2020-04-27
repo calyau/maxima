@@ -168,24 +168,3 @@
 	   (apply fv x-list)
 	   neval
 	   ierr))))))
-
-;; Interface.  See fmin_cobyla.mac for documentation.
-#+nil
-(defun $%bf_fmin_cobyla (f vars init-x options)
-  (let* ((args (lispify-maxima-keyword-options (cdr options) '($ineq $eq $rhobeg $rhoend $iprint $maxfun))))
-    ;; Some rudimentary checks.
-    (unless (= (length (cdr vars))
-	       (length (cdr init-x)))
-      (merror "Number of initial values (~M) does not match the number of variables ~M~%"
-	      (length (cdr init-x))
-	      (length (cdr vars))))
-    (multiple-value-bind (fmin xopt neval ierr)
-	(apply #'%bf-cobyla vars init-x f args)
-      (list '(mlist)
-	    (list* '(mlist) (mapcar #'(lambda (var val)
-					`((mequal) ,var ,(to val)))
-				    (cdr vars)
-				    (coerce xopt 'list)))
-	    fmin
-	    neval
-	    ierr))))
