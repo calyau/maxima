@@ -17,10 +17,6 @@
 ;; General purpose macros which are used in Lisp code, but not widely enough
 ;; accepted to be a part of Lisp systems.
 
-;; 'ttyoff' is a system independent way of expressing the Maclisp ^W.
-
-(defvar ttyoff    '^w)
-
 ;; Like PUSH, but works at the other end.
 
 (defmacro tuchus (list object)

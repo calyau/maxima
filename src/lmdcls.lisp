@@ -99,7 +99,7 @@
 	  $tr_state_vars
 	  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
-	  $tr_warn_undefined_variable
+	  $tr_warn_undefined_variable $ttyoff
 	  $use_fast_arrays $values $vect_cross
 	  $zerobern %e-val %p%i %pi-val %pi//2 %pi//4 %pi2 *$any-modes*
 	  *alpha *const* *fnewvarsw *gcdl* *in *in-compile*

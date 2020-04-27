@@ -637,7 +637,6 @@
 	($return mreturn) ($factorial mfactorial)
 	($ibase *read-base*) ($obase *print-base*)
 	($modulus modulus)
-	($ttyoff #.ttyoff)
 	($mode_declare $modedeclare)))
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'alias))

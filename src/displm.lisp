@@ -15,7 +15,6 @@
 (declare-top
  ;; evaluate for declarations
  (special
-  ^w			;If T, then no output goes to the console.
   linel			;Width of screen.
   ttyheight		;Height of screen.
 

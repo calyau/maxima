@@ -18,6 +18,8 @@
 
 (declare-top (special $linel))
 
+(defmvar $ttyoff nil)
+
 (defmvar $stardisp nil
   "Causes factors of products to be separated by * when displayed.")
 
@@ -70,7 +72,7 @@
 (defvar *alt-display1d* nil)
 
 (defun displa (form &aux #+kcl(form form))
-  (if (not #.ttyoff)
+  (if (not $ttyoff)
       (cond ($display2d
 	     (cond (*alt-display2d* (apply *alt-display2d* form ()))
 		   (t
@@ -1336,7 +1338,7 @@
 #-(or gcl clisp) (cond ((not (interactive-stream-p *standard-input*)) (fresh-line)))
   (cond
     ;; If console output is disabled, don't output anything.
-    (#.ttyoff)
+    ($ttyoff)
     ;; Constant 80. in this test appears to be the size of LINEARRAY.
     ((> (+ bkptht bkptdp) 80.)
      ;; I suppose we could reallocate LINEARRAY to some larger size and keep going here ...
