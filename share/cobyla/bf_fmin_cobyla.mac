@@ -13,6 +13,7 @@ load("load-bf-cobyla.lisp");
  * the wrong number of arguments
  */
 
+/*
 bf_fmin_cobyla(f, vars, initx, [options]) :=
   block([constraints : assoc('constraints, options),
 	 ineq : [],
@@ -50,3 +51,4 @@ bf_fmin_cobyla(f, vars, initx, [options]) :=
     options : append(['ineq = ineq, 'eq = eq], delete('constraints = constraints, options)),
     %bf_fmin_cobyla(f, vars, initx, options)
 );
+*/
