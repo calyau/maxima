@@ -44,7 +44,7 @@ eval_when([translate,batch,demo],
 
 herald_package(submac)$
 
-eval_when([translate],transcompile:true,
+eval_when([translate],
 	  /* packagefile:true, bug in meval makes this lose now. */
           modedeclare(function(getcharn),fixnum,
 	  function(symbolp,gensym_conventionp),boolean))$

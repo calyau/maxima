@@ -6,7 +6,6 @@ eval_when(batch,ttyoff:true)$
 */
 
 eval_when(translate,
-	  transcompile:true,
 	  define_variable:'mode)$
 
 put('atrig1,1,'version)$

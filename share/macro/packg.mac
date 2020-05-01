@@ -2,8 +2,6 @@
 
 /* Macros for organizing packages. */
 
-eval_when(translate,transcompile:true)$
-
 /* HERALD_PACKAGE(MYJUNK)$ will tell the macsyma user and the system
            which VERSION of your MYJUNK package is being loaded. */
 

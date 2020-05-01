@@ -13,8 +13,7 @@ ASB;DISOL
 
 eval_when(translate,
 	  define_variable:'mode,
-	  mode_declare(function(freeofl),boolean),
-	  transcompile:true)$
+	  mode_declare(function(freeofl),boolean))$
 
 put('disol,8,'version)$
 
