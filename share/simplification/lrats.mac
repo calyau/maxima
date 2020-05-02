@@ -9,8 +9,7 @@ eval_when(batch,ttyoff:true)$
 */
 
 eval_when(translate,
-	  define_variable:'mode,
-	  transcompile:true)$
+	  define_variable:'mode)$
 
 put('lrats,3,'diageval_version)$
 

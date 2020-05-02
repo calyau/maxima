@@ -34,7 +34,7 @@
 	 which want to know the name of the source file.")
 
 (defmvar $tr_state_vars
-    '((mlist) $transcompile
+    '((mlist)
       $translate_fast_arrays
       $tr_warn_undeclared
       $tr_warn_meval
@@ -52,8 +52,7 @@
     (if (eql 1 (length forms))
       (merror (intl:gettext "compfile: no functions specified; I refuse to create an empty file.")))
     (bind-transl-state
-     (setq $transcompile t
-	   *in-compfile* t)
+     (setq *in-compfile* t)
      (let
        ((out-file-name (namestring (maxima-string (meval (car forms)))))
         (t-error nil)

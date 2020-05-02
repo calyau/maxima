@@ -48,7 +48,7 @@ with the built-in macro BUILDQ.
 
 herald_package(defm)$
 
-eval_when([translate],transcompile:true,
+eval_when([translate],
 	  /* PACKAGEFILE:TRUE, bug in MEVAL makes this lose now. */
           modedeclare(function(getcharn),fixnum,
 	  function(symbolp,gensym_conventionp),boolean))$

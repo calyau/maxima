@@ -80,8 +80,7 @@
 			  (let ((x (symbol-value (find-symbol "*AUTOCONF-LD-FLAGS*"
 							      (find-package "MAXIMA")))))
 			    (if (and x (not (string= x ""))) (list x)))
-			  :epilogue-code '(progn (require :defsystem)
-					         (cl-user::run)))))))
+			  :epilogue-code '(progn (cl-user::run)))))))
 
 (defun maxima-binary-pathname ()
   #+clisp

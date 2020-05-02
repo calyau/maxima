@@ -638,8 +638,6 @@ values")
 	  (return-from eat-continuations ch))))
     ch))
 
-(defvar ^w nil)
-
 (defmfun $timedate (&optional (time (get-universal-time)) tz)
   (cond
     ((and (consp tz) (eq (caar tz) 'rat))

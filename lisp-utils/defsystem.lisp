@@ -4152,7 +4152,7 @@ the system definition, if provided."
       #+:ecl
       (progn
         (ext:package-lock "CL" nil)
-        (setf (symbol-function 'lisp:require)
+        (setf (symbol-function 'cl:require)
               (symbol-function 'new-require))
         (ext:package-lock "CL" t))
       #+:lispworks

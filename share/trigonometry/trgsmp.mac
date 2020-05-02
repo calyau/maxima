@@ -9,7 +9,6 @@ into sin and cos (in lower case)*/
 */
 
 eval_when([translate],
-	  transcompile:true,
           tr_bound_function_applyp:false,
           mode_declare(function(expnlength,argslength),fixnum))$
 

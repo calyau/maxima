@@ -22,7 +22,7 @@
 
 status([x]):='done$
 
-eval_when(translate,transcompile:true /* ,packagefile:true */)$
+/*eval_when(translate,packagefile:true)$*/
 
 /* HERALD_PACKAGE(DIFFEQ_RUNGE)$ */
 

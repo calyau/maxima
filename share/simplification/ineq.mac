@@ -6,13 +6,11 @@
 
 /*
 eval_when([translate,batch,demo,load,loadfile],
-transcompile:true,
 matchdeclare([a,b],true,c,negp,d,posp),
 matchdeclare([e,f,g,h],freeof("<=",">=","<",">","=")));
 */
 
 
-transcompile:true$
 matchdeclare([a,b],true,c,negp,d,posp)$
 matchdeclare([e,f,g,h],freeof("<=",">=","<",">","="))$
 
@@ -26,7 +24,7 @@ define_variable(?matchreverse,true,boolean);
 
 
 /*
-eval_when(translate,simp:false,transcompile:true);
+eval_when(translate,simp:false);
 */
 
 simp:false$

@@ -364,7 +364,6 @@
    "sumsplitfact"
    "taylordepth"
    "tlimswitch"
-   "transcompile"
    "transrun"
    "trigexpandplus"
    "trigexpandtimes"

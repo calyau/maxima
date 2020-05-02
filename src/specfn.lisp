@@ -853,6 +853,56 @@
 
 (defvar *debug-li-eval* nil)
 
+(defun li-using-powers-of-log (n x)
+  ;; When x is on or near the unit circle the other
+  ;; approaches don't work.  Use the expansion in powers of
+  ;; log(z) (from cephes cpolylog)
+  ;;
+  ;;   li[s](z) = sum(Z(s-j)*(log(z))^j/j!, j = 0, inf)
+  ;;
+  ;; where Z(j) = zeta(j) for j != 1.  For j = 1:
+  ;;
+  ;;   Z(1) = -log(-log(z)) + sum(1/k, k, 1, s - 1)
+  ;;
+  ;;
+  ;; This is similar to
+  ;; http://functions.wolfram.com/10.08.06.0024.01, but that
+  ;; identity is clearly undefined if v is a positive
+  ;; integer because zeta(1) is undefined.
+  ;;
+  ;; Thus,
+  ;;
+  ;;  li[3](z) = Z(3) + Z(2)*log(z) + Z(1)*log(z)^2/2!
+  ;;    + Z(0)*log(z)^3/3! + sum(Z(-k)*log(z)^(k+4)/(k+4)!,k,1,inf);
+  ;;
+  ;; But Z(-k) = zeta(-k) is 0 if k is even.  So
+  ;;
+  ;;  li[3](z) = Z(3) + Z(2)*log(z) + Z(1)*log(z)^2/2!
+  ;;    + Z(0)*log(z)^3/3! + sum(Z(-(2*k+1))*log(z)^(2*k+4)/(2*k+4)!,k,0,inf);
+  (flet ((zfun (j)
+	   (cond ((= j 1)
+		  (let ((sum (- (log (- (log x))))))
+		    (+ sum
+		       (loop for k from 1 below n
+			  sum (/ k)))))
+		 (t
+		  (to (maxima::$zeta (maxima::to (float j (realpart x)))))))))
+    (let* ((eps (epsilon x))
+	   (logx (log x))
+	   (sum 0))
+      (do* ((k 0 (1+ k))
+	    (top 1 (* top logx))
+	    (bot 1 (* bot k))
+	    (term (* (/ top bot) (to (zfun (- n k))))
+		  (* (/ top bot) (to (zfun (- n k))))))
+	   ((and (> k 4)
+		 (oddp (- n k))	;; even terms are all zero
+		 (<= (abs term) (* (abs sum) eps))))
+	;;(format t "~3d: ~A / ~A = ~A~%" k top bot term)
+	(incf sum term))
+      sum)))
+
+
 (defun li3numer (x)
   ;; If |x| < series-threshold, the series is used.
   (let ((series-threshold 0.8))
@@ -889,56 +939,7 @@
 				(+ (* lg lg) (* dpi dpi))))))
 		 result))
 	  ((> (abs x) .9)
-	   ;; When x is on or near the unit circle the other
-	   ;; approaches don't work.  Use the expansion in powers of
-	   ;; log(z) (from cephes cpolylog)
-	   ;;
-	   ;;   li[s](z) = sum(Z(s-j)*(log(z))^j/j!, j = 0, inf)
-	   ;;
-	   ;; where Z(j) = zeta(j) for j != 1.  For j = 1:
-	   ;;
-	   ;;   Z(1) = -log(-log(z)) + sum(1/k, k, 1, s - 1)
-	   ;;
-	   ;;
-	   ;; This is similar to
-	   ;; http://functions.wolfram.com/10.08.06.0024.01, but that
-	   ;; identity is clearly undefined if v is a positive
-	   ;; integer because zeta(1) is undefined.
-	   ;;
-	   ;; Thus,
-	   ;;
-	   ;;  li[3](z) = Z(3) + Z(2)*log(z) + Z(1)*log(z)^2/2!
-	   ;;    + Z(0)*log(z)^3/3! + sum(Z(-k)*log(z)^(k+4)/(k+4)!,k,1,inf);
-	   ;;
-	   ;; But Z(-k) = zeta(-k) is 0 if k is even.  So
-	   ;;
-	   ;;  li[3](z) = Z(3) + Z(2)*log(z) + Z(1)*log(z)^2/2!
-	   ;;    + Z(0)*log(z)^3/3! + sum(Z(-(2*k+1))*log(z)^(2*k+4)/(2*k+4)!,k,0,inf);
-
-	   (flet ((zfun (j)
-		    (cond ((= j 1)
-			   (let ((sum (- (log (- (log x))))))
-			     (+ sum
-				(loop for k from 1 below 3
-				      sum (/ k)))))
-			  (t
-			   (to (maxima::$zeta (maxima::to (float j (realpart x)))))))))
-	     (let* ((eps (epsilon x))
-		    (logx (log x))
-		    (logx^2 (* logx logx))
-		    (sum (+ (zfun 3)
-			    (* (zfun 2) logx)
-			    (* (zfun 1) logx^2 1/2)
-			    (* (zfun 0) (* logx^2 logx) 1/6))))
-	       (do* ((k 0 (1+ k))
-		     (top (expt logx 4) (* top logx^2))
-		     (bot 24 (* bot (+ k k 3) (+ k k 4)))
-		     (term (* (/ top bot) (to (maxima::$zeta (- (+ 1 (* 2 k))))))
-			   (* (/ top bot) (to (maxima::$zeta (- (+ 1 (* 2 k))))))))
-		    ((<= (abs term) (* (abs sum) eps)))
-		 ;;(format t "~3d: ~A / ~A = ~A~%" k top bot term)
-		 (incf sum term))
-	       sum)))
+	   (li-using-powers-of-log 3 x))
 	  ((> (abs x) series-threshold)
 	   ;; The series converges too slowly so use the identity:
 	   ;;
@@ -1003,19 +1004,23 @@
 	 (- (+ (li2numer (/ z))
 	       (* 0.5 (expt (log (- z)) 2))
 	       (/ (expt (%pi z) 2) 6))))
+	;; this converges faster when close to unit circle
 	((> (abs z) series-threshold)
+	 (li-using-powers-of-log 2 z))
+	;; no longer in use
+	;;(> (abs z) series-threshold)
 	 ;; For 0.5 <= |z|, where the series would not converge very quickly, use
 	 ;;
 	 ;;  li[2](z) = li[2](1/(1-z)) + 1/2*log(1-z)^2 - log(-z)*log(1-z) - %pi^2/6
 	 ;;
 	 ;; (See http://functions.wolfram.com/10.08.17.0016.01)
-	 (let* ((1-z (- 1 z))
-		(ln (log 1-z)))
-	   (+ (li2numer (/ 1-z))
-	      (* 0.5 ln ln)
-	      (- (* (log (- z))
-		    ln))
-	      (- (/ (expt (%pi z) 2) 6)))))
+	;;(let* ((1-z (- 1 z))
+	;;	(ln (log 1-z)))
+	;;   (+ (li2numer (/ 1-z))
+	;;      (* 0.5 ln ln)
+	;;      (- (* (log (- z))
+	;;	    ln))
+	;;      (- (/ (expt (%pi z) 2) 6)))))
 	(t
 	 ;; Series evaluation:
 	 ;;

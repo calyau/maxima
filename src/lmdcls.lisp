@@ -90,7 +90,7 @@
 	  $taylor_logexpand
 	  $taylor_truncate_polynomials $timer $timer_devalue
 	  $trace $trace_break_arg $trace_max_indent
-	  $trace_safety $transcompile $translate $transrun
+	  $trace_safety $translate $transrun
 	  $trigexpand $trigexpandplus $trigexpandtimes $triginverses
 	  $trigsign $tr_array_as_ref $tr_bound_function_applyp
 	  $tr_file_tty_messagesp $tr_float_can_branch_complex
@@ -99,7 +99,7 @@
 	  $tr_state_vars
 	  $tr_true_name_of_file_being_translated $tr_warn_bad_function_calls
 	  $tr_warn_fexpr $tr_warn_meval $tr_warn_mode $tr_warn_undeclared
-	  $tr_warn_undefined_variable
+	  $tr_warn_undefined_variable $ttyoff
 	  $use_fast_arrays $values $vect_cross
 	  $zerobern %e-val %p%i %pi-val %pi//2 %pi//4 %pi2 *$any-modes*
 	  *alpha *const* *fnewvarsw *gcdl* *in *in-compile*
