@@ -581,3 +581,20 @@ x - x^3 / 3!$
 
 (kill (f), 0);
 0;
+
+/* mailing list 2020-04-30: "Bug in taylor?" */
+
+kill (f, t, u);
+done;
+
+taylor( 'diff(f(t,u),t), t, 0, 1);
+'at('diff(f(t,u),t,1),t = 0)+('at('diff(f(t,u),t,2),t = 0))*t;
+
+taylor( 'diff(f(t,u),t), u, 0, 1);
+'diff(f(t,0),t,1)+('at('diff(f(t,u),t,1,u,1),u = 0))*u;
+
+taylor( 'diff(f(t,u),u), t, 0, 1);
+'diff(f(0,u),u,1)+('at('diff(f(t,u),t,1,u,1),t = 0))*t;
+
+taylor( 'diff(f(t,u),u), u, 0, 1);
+'at('diff(f(t,u),u,1),u = 0)+('at('diff(f(t,u),u,2),u = 0))*u;
