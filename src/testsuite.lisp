@@ -289,7 +289,7 @@
      #-(or ccl cmucl ecl sbcl gcl clisp)
      ((mlist simp) 62))
     ((mlist simp) "rtest_to_poly"
-     #-(or ccl sbcl gcl ecl)
+     #-(or ccl cmucl sbcl gcl ecl)
      ((mlist simp) 13 14 15 16 17 18 19 20 25))
 ;; Tested with acl 10.1
     ((mlist simp) "rtestprintf"
@@ -345,9 +345,8 @@
      ((mlist simp) 64 74 80 48 55 83 102 116 131 133 137 140 141 147 149 166 167 168 183 184 212 216 240 242 245 265 293 312 319 320 322)
      #+cmucl
      ((mlist simp)
-      48 55 64 74 80 83 102 116 131 133 137 140 141 147 166 167 168 183 184 199
-      200 201 202 203 204 214 216 222 240 242 245 265 268 277 278 293 295 311
-      312 319 320 322)
+      48 55 64 74 80 83 102 116 131 133 137 140 141 147 166 167 168 183 184 216 240
+      242 245 265 293 312 319 320 322)
      #+ecl
      ((mlist simp)
       48 55 64 74 80 83 102 116 131 133 137 140 141 147 166 167 168 183 184 199
@@ -361,45 +360,49 @@
      #+(or gcl abcl) ((mlist simp) 87 120)
      #-(or gcl abcl) ((mlist simp) 87))
     ((mlist simp) "rtest_sym"
-     #-(or sbcl gcl clisp) ((mlist simp) 12 15 58 64)
+     #-(or sbcl gcl clisp cmucl) ((mlist simp) 12 15 58 64)
      #+(or clisp gcl)  ((mlist simp) 15 64)
-     #+sbcl ((mlist simp) 15))
+     #+sbcl ((mlist simp) 15 64)
+     #+cmucl ((mlist simp) 15 64))
     ((mlist simp) "rtest_nfloat"
      #-(or ecl gcl)
      ((mlist simp) 25))
     "rtest_mnewton"
     "rtest_solve_rat_ineq"
     ((mlist simp) "rtest_vect"
-     ((mlist simp) 4 9 10 13 16 19 20 21 24 25))
-    "rtest_antid"
-    "rtest_bffac"
-    "rtest_diff_form"
-    "rtest_grobner"
-    ((mlist simp) "rtest_finance"
-     ;; Tested with acl 10.1
-     ;; ECL newer than 15.3.7 doesn't fail any more
-     #+(or gcl allegro ecl)
-     ((mlist simp) 9 10 11))
-    "rtest_fft"
-    "rtest_rfft"
-    ((mlist simp) "rtest_decfp"
-     #+gcl ((mlist simp) 1 2 3 4))
-    "rtest_wrstcse"
-    ;; ACL 10.1 cannot load stringproc as it has no (get-encoding) function.
-    #-(or ecl abcl)
-    "rtest_draw"
-    ((mlist simp) "rtest_engineering_format"
-     #+sbcl
-     ((mlist simp) 6)
-     #+abcl
-     ((mlist simp) 6)
-     ;; ECL > 15.3.7 doesn't fail here any more
-     #+ecl
-     ((mlist simp) 6 8 10 12 14)
-     #+ccl
-     ((mlist simp) 6 8 10 12)
-     ;; Tested with acl 10.1
-     #+allegro
-     ((mlist simp) 1 6 8 10 12 14))
+     #-(or cmucl)
+     ((mlist simp) 4 9 10 13 16 19 20 21 24 25)
+     #+cmucl
+     ((mlist simp) 4 9 10 13 16 20 21 24 25))
+     "rtest_antid"
+     "rtest_bffac"
+     "rtest_diff_form"
+     "rtest_grobner"
+     ((mlist simp) "rtest_finance"
+      ;; Tested with acl 10.1
+      ;; ECL newer than 15.3.7 doesn't fail any more
+      #+(or gcl allegro ecl)
+      ((mlist simp) 9 10 11))
+     "rtest_fft"
+     "rtest_rfft"
+     ((mlist simp) "rtest_decfp"
+      #+gcl ((mlist simp) 1 2 3 4))
+     "rtest_wrstcse"
+     ;; ACL 10.1 cannot load stringproc as it has no (get-encoding) function.
+     #-(or ecl abcl)
+     "rtest_draw"
+     ((mlist simp) "rtest_engineering_format"
+      #+sbcl
+      ((mlist simp) 6)
+      #+abcl
+      ((mlist simp) 6)
+      ;; ECL > 15.3.7 doesn't fail here any more
+      #+ecl
+      ((mlist simp) 6 8 10 12 14)
+      #+ccl
+      ((mlist simp) 6 8 10 12)
+      ;; Tested with acl 10.1
+      #+allegro
+      ((mlist simp) 1 6 8 10 12 14))
+     )
     )
-  )
