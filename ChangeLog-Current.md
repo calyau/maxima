@@ -39,6 +39,8 @@ Changes in core:
    argument
  * Fixed bogus and inconsistent translations of max and min when the
    arguments were a mix of float and other modes
+ * Fixed bogus translations of = and # with mixed float and numerical
+   arguments
  * Fixed an internal error in the translator when attempting to convert
    a variable of mode rational to a float
  * Fixed the inconsistent translation of signum with a float argument
