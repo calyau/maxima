@@ -21,9 +21,6 @@
 
 (def%tr $random (form) `($fixnum . ($random ,@(tr-args (cdr form)))))
 
-(def%tr mequal (form)
-  `($any . (simplify (list '(mequal) ,@(tr-args (cdr form))))))
-
 (def%tr mcall (form)
   (setq form (cdr form))
   (let ((mode (cond ((atom (car form))
