@@ -132,15 +132,11 @@
 		       form)))))
 
 (defun trp-mequal (form) 
-  (let (mode arg1 arg2)
-    (setq arg1 (translate (cadr form)) arg2 (translate (caddr form))
-	  mode (*union-mode (car arg1) (car arg2)))
-    (cond
-      ((or (eq '$fixnum mode)
-	   (eq '$float mode))
-       `(eql ,(dconv arg1 mode) ,(dconv arg2 mode)))
-      ((eq '$number mode) `(equal ,(cdr arg1) ,(cdr arg2)))
-      (t `(like ,(dconv arg1 mode) ,(dconv arg2 mode))))))
+  (destructuring-let (((mode1 . arg1) (translate (cadr form)))
+                      ((mode2 . arg2) (translate (caddr form))))
+    (if (and (covers '$number mode1) (covers '$number mode2))
+        `(eql ,arg1 ,arg2)
+        `(like ,arg1 ,arg2))))
 
 (defun trp-$equal (form) 
   (let (mode arg1 arg2) 

@@ -939,3 +939,60 @@ true;
 
 (kill (foo, x, l1, l2, l3), 0);
 0;
+
+/* The translations for evaluating = and # expressions to boolean
+ * values with one float argument and a different numerical argument
+ * (e.g. a fixnum) gave bogus results because the translator was
+ * incorrectly applying float contagion to the arguments.
+ */
+
+(foo (s, w, x, y, z) :=
+  (mode_declare (w, number, x, fixnum, y, flonum),
+   [/* These translate to EQL comparisons */
+    is (1 = 1),                 is (1 # 1),
+    is (1 = 1.0),               is (1 # 1.0),
+    is (1 = float (1)),         is (1 # float (1)),
+    is (1.0 = float (1)),       is (1.0 # float (1)),
+    is (w = 2),                 is (w # 2),
+    is (w = 2.0),               is (w # 2.0),
+    is (x = 3),                 is (x # 3),
+    is (x = 3.0),               is (x # 3.0),
+    is (x = float (3)),         is (x # float (3)),
+    is (x = float (x)),         is (x # float (x)),
+    is (y = 4),                 is (y # 4),
+    is (y = 4.0),               is (y # 4.0),
+    is (y = float (4)),         is (y # float (4)),
+    is (y = float (y)),         is (y # float (y)),
+    /* These translate to LIKE comparisons */
+    is (z = 5),                 is (z # 5),
+    is (z = 5.0),               is (z # 5.0),
+    is (z = float (5)),         is (z # float (5)),
+    is (z = float (z)),         is (z # float (z)),
+    is (1/2 = 1/2),             is (1/2 # 1/2),
+    is (1/2 = rat (1/2)),       is (1/2 # rat (1/2)),
+    is (rat (1/2) = rat (1/2)), is (rat (1/2) # rat (1/2)),
+    is (1/2 = 0.5),             is (1/2 # 0.5),
+    is (1/2 = float (1/2)),     is (1/2 # float (1/2)),
+    is (%i = %i),               is (%i # %i),
+    is (1 + %i = 1 + %i),       is (1 + %i # 1 + %i),
+    is (s = s),                 is (s # s),
+    is (s = 'bar),              is (s # 'bar),
+    is (s = 1),                 is (s # 1),
+    is (s = 1.0),               is (s # 1.0),
+    is (s = 1/2),               is (s # 1/2),
+    is ('f (0) = 'f (0)),       is ('f (0) # 'f (0)),
+    is ('g (s) = 'g (s)),       is ('g (s) # 'g (s)),
+    is ('h (w) = 'h (w)),       is ('h (w) # 'h (w)),
+    is ('i (x) = 'i (x)),       is ('i (x) # 'i (x)),
+    is ('j (y) = 'j (y)),       is ('j (y) # 'j (y)),
+    is ('k (z) = 'k (z)),       is ('k (z) # 'k (z))]),
+ l1 : foo ('bar, 2, 3, 4.0, 5),
+ translate (foo),
+ l2 : foo ('bar, 2, 3, 4.0, 5),
+ [every (lambda ([x], ?typep (x, ?boolean)), l2),
+  is (l1 = l2)]);
+[true,
+ true];
+
+(kill (foo, w, x, y, l1, l2), 0);
+0;
