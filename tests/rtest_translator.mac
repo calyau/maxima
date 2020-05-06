@@ -996,3 +996,49 @@ true;
 
 (kill (foo, w, x, y, l1, l2), 0);
 0;
+
+/* Bug #3048: notequal is not translated properly
+ *
+ * notequal expressions were only generically translated like user
+ * function calls and the use of notequal in translated code caused
+ * a runtime warning about it being totally undefined.  Also the
+ * evaluation of notequal expressions to boolean values (via is, if,
+ * etc.) were translated like the evaluation of an unknown predicate.
+ */
+
+(assume (equal (a, b), notequal (c, d)),
+ foo () :=
+  [is (equal (1, 1)),
+   is (notequal (1, 1)),
+   is (equal (1, 1.0)),
+   is (notequal (1, 1.0)),
+   is (equal (1, 1.0b0)),
+   is (notequal (1, 1.0b0)),
+   is (equal (1/2, 0.5)),
+   is (notequal (1/2, 0.5)),
+   is (equal (1/2, 0.5b0)),
+   is (notequal (1/2, 0.5b0)),
+   is (equal (1, 2)),
+   is (notequal (1, 2)),
+   is (equal ('ind, 'ind)),
+   is (notequal ('ind, 'ind)),
+   is (equal ('und, 'und)),
+   is (notequal ('und, 'und)),
+   is (equal ('a, 'b)),
+   is (notequal ('a, 'b)),
+   is (equal ('c, 'd)),
+   is (notequal ('c, 'd)),
+   is (equal (x^2 - 1, (x + 1) * (x - 1))),
+   is (notequal (x^2 - 1, (x + 1) * (x - 1)))],
+ l1 : foo (),
+ translate (foo),
+ l2 : foo (),
+ [every (lambda ([x], ?typep (x, ?boolean)), l2),
+  is (l1 = l2)]);
+[true,
+ true];
+
+(kill (foo, l1, l2),
+ forget (equal (a, b), notequal (c, d)),
+ 0);
+0;

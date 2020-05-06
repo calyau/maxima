@@ -30,6 +30,7 @@
 
 (def-same%tr mequal    mnotequal)
 (def-same%tr $equal    mnotequal)
+(def-same%tr $notequal mnotequal)
 (def-same%tr mgreaterp mnotequal)
 (def-same%tr mgeqp     mnotequal)
 (def-same%tr mlessp    mnotequal)
@@ -59,6 +60,7 @@
 	((eq 'mnotequal (caar form)) (trp-mnotequal form))
 	((eq 'mequal (caar form)) (trp-mequal form))
 	((eq '$equal (caar form)) (trp-$equal form))
+	((eq '$notequal (caar form)) (trp-$notequal form))
 	((eq 'mgreaterp (caar form)) (trp-mgreaterp form))
 	((eq 'mgeqp (caar form)) (trp-mgeqp form))
 	((eq 'mlessp (caar form)) (trp-mlessp form))
@@ -154,7 +156,10 @@
     ((t) nil)
     ((nil) t)
     (otherwise val)))
-      
+
+(defun trp-$notequal (form)
+  (list 'trp-not (trp-$equal form)))
+
 (defun trp-mnotequal (form)
   (list 'trp-not (trp-mequal form)))
 
