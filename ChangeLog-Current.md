@@ -80,6 +80,7 @@ Bug fixes:
  * #3607: printprops displays matchdeclare properties incorrectly when value is a lambda
  * #2174: Bogus translation of declare
  * #3513: Emacs: wxdraw3d not working
+ * #3048: notequal is not translated properly
 
 Unnumbered bugs:
 ----------------
