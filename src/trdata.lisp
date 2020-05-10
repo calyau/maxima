@@ -27,7 +27,7 @@
     #-gcl (:load-toplevel :execute)
 
     (mapc #'(lambda (x) (putprop x '$fixnum 'function-mode))
-	  '($length $nterms random $nroots $rank $polysign $time
+	  '($length $nterms $nroots $rank $polysign $time
 	    $array_dimension_n))
 
     (mapc #'(lambda (x) (putprop x '$float 'function-mode))
