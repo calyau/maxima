@@ -18,6 +18,8 @@ set "lisp=@DEFAULTLISP@"
 set lisp_options=
 set "version=@VERSION@"
 
+title Maxima Open Source Computer Algebra System %version%
+
 rem For what directory was Maxima configured? Set %prefix% to exactly that directory, if
 rem Maxima was installed in the default path (= %configureprefix%/bin/maxima.bat exists).
 rem %~dp0/.. should be the same, but is something like the 8.3 short path - and that
