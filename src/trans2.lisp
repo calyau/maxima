@@ -18,8 +18,10 @@
 
 (macsyma-module trans2)
 
-
-(def%tr $random (form) `($fixnum . ($random ,@(tr-args (cdr form)))))
+(def%tr $random (form)
+  (destructuring-bind (mode . arg) (translate (cadr form))
+    (cons (or (find mode '($fixnum $float) :test #'eq) '$number)
+          `($random ,arg))))
 
 (def%tr mcall (form)
   (setq form (cdr form))

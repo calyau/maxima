@@ -1042,3 +1042,36 @@ true;
  forget (equal (a, b), notequal (c, d)),
  0);
 0;
+
+/* The translation of a call to random with a float argument could
+ * cause the generation of bogus code because this always had the
+ * mode of fixnum.
+ */
+
+(foo (w, x, y, z) :=
+  (mode_declare (w, fixnum, x, float),
+   [[random (10),
+     random (w),
+     random (y)],
+    [random (1.0),
+     random (x),
+     random (z),
+     random (x) / 2,
+     random (z) / 2,
+     1 / (1 + random (x))],
+    [random (10) / 2,
+     random (w) / 3,
+     random (y) / 4,
+     1 / (1 + random (w)),
+     1 / (1 + random (y))]]),
+ translate (foo),
+ l : foo (50, 5.0, 100, 10.0),
+ [every (integerp, first (l)),
+  every (floatnump, second (l)),
+  every (ratnump, third (l))]);
+[true,
+ true,
+ true];
+
+(kill (foo, w, x, l), 0);
+0;
