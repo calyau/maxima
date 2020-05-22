@@ -2252,7 +2252,9 @@
 		 (or (free e (car l)) (return ()))))
 	 (newsym e))
 	(t (let ((exact-poly () ))	; Taylor series aren't exact
-	      (taylor2 (diff-expand e tlist)))))))
+          (let ((ee (diff-expand e tlist)))
+            (cond ((equal (sratsimp e) (sratsimp ee)) (return-from taylor2 (prep1 ee)))
+                  (t (taylor2 ee)))))))))
 
 (defun compatvarlist (a b c d)
    (cond ((null a) t)
