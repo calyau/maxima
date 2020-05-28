@@ -2795,14 +2795,45 @@ otherwise array names appear as literal symbols in translated code.
 @defvr {Option variable} tr_bound_function_applyp
 Default value: @code{true}
 
-When @code{tr_bound_function_applyp} is @code{true}, Maxima gives a warning if a
-bound variable (such as a function argument) is found being used as a function.
-@c WHAT DOES THIS MEAN ??
-@code{tr_bound_function_applyp} does not affect the code generated in such
-cases.
+When @code{tr_bound_function_applyp} is @code{true} and @code{tr_function_call_default}
+is @code{general}, if a bound variable (such as a function argument) is found being
+used as a function then Maxima will rewrite that function call using @code{apply} and
+print a warning message.
 
-For example, an expression such as @code{g (f, x) := f (x+1)} will trigger
-the warning message.
+For example, if @code{g} is defined by @code{g(f,x) := f(x+1)} then translating
+@code{g} will cause Maxima to print a warning and rewrite @code{f(x+1)} as
+@code{apply(f,[x+1])}.
+
+@c ===beg===
+@c f (x) := x^2$
+@c g (f) := f (3)$
+@c tr_bound_function_applyp : true$
+@c translate (g)$
+@c g (lambda ([x], x));
+@c tr_bound_function_applyp : false$
+@c translate (g)$
+@c g (lambda ([x], x));
+@c ===end===
+@example
+(%i1) f (x) := x^2$
+(%i2) g (f) := f (3)$
+(%i3) tr_bound_function_applyp : true$
+@group
+(%i4) translate (g)$
+warning: f is a bound variable in f(3), but it is used as a function.
+note: instead I'll translate it as: apply(f,[3])
+@end group
+@group
+(%i5) g (lambda ([x], x));
+(%o5)                           3
+@end group
+(%i6) tr_bound_function_applyp : false$
+(%i7) translate (g)$
+@group
+(%i8) g (lambda ([x], x));
+(%o8)                           9
+@end group
+@end example
 
 @opencatbox
 @category{Translation flags and variables}
