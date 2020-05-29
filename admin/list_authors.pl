@@ -80,6 +80,9 @@ modified) run-lisp from the Common Lisp Open Code Collection,
 
 The nregex code was written by Lawrence E. Freil.
 
+We also want to say thank you to everyone who sent patches,
+reported bugs or suggested new features.
+
 ENDFOOT
 
 # get current year
@@ -116,10 +119,11 @@ for (my $y=$year; $y >= 2000; $y--) {
         $authors[$i] =~ s/^FabrizioCaruso$/Fabrizio Caruso/;
         $authors[$i] =~ s/^Fabrizio CARUSO$/Fabrizio Caruso/;
         $authors[$i] =~ s/^ficmatinfmag$/Jorge Barros de Abreu/;
-        # unknown: Author: grozin <grozin>
+        $authors[$i] =~ s/^grozin$/Andrey Grozin/;  # Mentioned by Robert Dodier on the Mailing list on 2020-05-28
         $authors[$i] =~ s/^hgeyer$/Harald Geyer/;
         $authors[$i] =~ s/^jpromerobx-max$/Juan Pablo Romero Bernal/;
         $authors[$i] =~ s/^l_butler$/Leo Butler/;
+        $authors[$i] =~ s/^Leo Butler \(dev\)$/Leo Butler/; # same spelling as above.
         $authors[$i] =~ s/^macrakis$/Stavros Macrakis/;
         $authors[$i] =~ s/^mhw2$/Mark H. Weaver/;
         $authors[$i] =~ s/^Mark H Weaver$/Mark H. Weaver/; # same spelling as above.
@@ -127,7 +131,7 @@ for (my $y=$year; $y >= 2000; $y--) {
         $authors[$i] =~ s/^riotorto$/Mario Rodriguez Riotorto/;
         $authors[$i] =~ s/^Mario Rodriguez$/Mario Rodriguez Riotorto/; # same spelling as above
         $authors[$i] =~ s/^robert_dodier$/Robert Dodier/;
-        $authors[$i] =~ s/^Robert$/Robert Dodier/;  # unknown, git log entry was: Robert <robert@robert-laptop.(none)> - perhaps Robert Dodier?
+        $authors[$i] =~ s/^Robert$/Robert Dodier/;  # Mentioned by Robert Dodier on the Mailing list on 2020-05-28
         $authors[$i] =~ s/^rtoy$/Raymond Toy/;
         $authors[$i] =~ s/^starseeker$/Cliff Yapp/;
         $authors[$i] =~ s/^van_nek$/Volker van Nek/;
@@ -135,10 +139,10 @@ for (my $y=$year; $y >= 2000; $y--) {
         $authors[$i] =~ s/^Jaime Villate$/Jaime E. Villate/; # same spelling as above
         $authors[$i] =~ s/^vttoth$/Viktor T. Toth/;
         $authors[$i] =~ s/^vvzhy$/Vadim V. Zhytnikov/;
-        $authors[$i] =~ s/^wfs$/William F. Schelter/; # unknown (Author: wfs <wfs>), I assume, that is William F. Schelter?
+        $authors[$i] =~ s/^wfs$/William F. Schelter/; # Mentioned by Robert Dodier on the Mailing list on 2020-05-28
         $authors[$i] =~ s/^willisbl$/Barton Willis/;
         $authors[$i] =~ s/^wjenkner$/Wolfgang Jenkner/;
-        # unknown: Author: xefe <xefe@xefe.(none)>
+        $authors[$i] =~ s/^xefe$/Mario Rodriguez Riotorto/; # Mentioned by Robert Dodier on the Mailing list on 2020-05-28
         $authors[$i] =~ s/^yasu-honda$/Yasuaki Honda/;
         $authors[$i] =~ s/^yycamm$/Camm Maguire/;
     }
