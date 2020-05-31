@@ -42,7 +42,7 @@
 			(epsabs 0.0))
   (quad_argument_check %%pretty-fname fun var a b)
   (unless (and (integerp key) (>= key 1) (<= key 6))
-    (merror (intl:gettext "~M: quad_qag: key must be 1, 2, 3, 4, 5, or 6; found: ~M")
+    (merror (intl:gettext "~M: Key must be 1, 2, 3, 4, 5, or 6; found: ~M")
 	    %%pretty-fname key))
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'flonum))
