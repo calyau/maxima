@@ -30,9 +30,6 @@
 	  '($length $nterms $nroots $rank $polysign $time
 	    $array_dimension_n))
 
-    (mapc #'(lambda (x) (putprop x '$float 'function-mode))
-	  '($find_root_subr))
-
 ;;; Functions of BOOLEAN return VALUE. i.e. PREDICATES
 
     (mapc #'(lambda (x) (putprop x '$boolean 'function-mode))
