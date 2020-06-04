@@ -229,7 +229,8 @@ The next time the file is loaded, it will then be in EMaxima mode"
       (if (and found
                (re-search-forward emaxima-any-cell-end-regexp 
                                   (point-max) t)) ;\endmaxima
-          (setq found (point))))
+          (setq found (point))
+	(setq found nil)))        ; No \endmaxima
     (save-excursion
         (if (and found 
                 (re-search-forward emaxima-any-cell-begin-regexp 
