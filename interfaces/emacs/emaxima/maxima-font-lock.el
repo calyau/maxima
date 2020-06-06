@@ -504,7 +504,6 @@
    "compfile"
    "compile"
    "compile_file"
-   "compile_lisp_file"
    "concat"
    "conjugate"
    "cons"
