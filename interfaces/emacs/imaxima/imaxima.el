@@ -80,7 +80,7 @@
 (require 'advice)
 
 (require 'comint)
-(require 'cl)
+(require 'cl-lib)
 
 ;; XEmacs stuff
 
@@ -159,7 +159,7 @@ Unless optional argument INPLACE is non-nil, return a new string."
 (defgroup imaxima nil
   "Image support for Maxima."
   :version "21.1"
-  :link '(url-link "http://purl.org/harder/imaxima.html")
+  :link '(url-link "https://maxima.sourceforge.net/")
   :link '(custom-manual "(imaxima)")
   :prefix "imaxima-"
   :group 'maxima)
@@ -174,7 +174,7 @@ Unless optional argument INPLACE is non-nil, return a new string."
   :group 'imaxima
   :type (cons 'choice
 	      (mapcar (lambda (type) (list 'const type))
-		      (remove-if-not 'imaxima-image-type-available-p
+		      (cl-remove-if-not 'imaxima-image-type-available-p
 				     imaxima-image-types))))
 
 (defcustom imaxima-pt-size 11
@@ -331,6 +331,93 @@ This hook is called after imaxima has started Maxima."
   "Arguments passed to Maxima."
   :group 'imaxima
   :type '(string))
+
+(defcustom imaxima-latex-buffer-name
+  "*imaxima-latex*"
+  "Default name of buffer created by `imaxima-latex'."
+  :group 'imaxima
+  :type '(string))
+
+(defcustom imaxima-latex-document-class
+  '("\\documentclass[%dpt,leqno]{article}" imaxima-pt-size)
+  "Default documentclass used by `imaxima-latex'. It should be a
+valid argument to `format'."
+  :group 'imaxima
+  :type '(sexp))
+
+(defcustom imaxima-latex-use-packages
+  "
+\\usepackage{verbatim}
+\\usepackage{color}
+\\usepackage{exscale}
+\\usepackage{amsmath}
+\\usepackage[cmbase]{flexisym}
+\\usepackage{breqn}
+\\setkeys{breqn}{compact}
+"
+  "Default latex packages and configuration used by `imaxima-latex'."
+  :group 'imaxima
+  :type '(string))
+
+(defcustom imaxima-latex-document-dimensions
+  "
+\\setlength{\\textwidth}{180mm}
+\\setlength{\\oddsidemargin}{15mm}
+\\addtolength{\\oddsidemargin}{-1in}
+\\setlength{\\evensidemargin}{15mm}
+\\addtolength{\\evensidemargin}{-1in}
+"
+   "Default dimensions of document created by `imaxima-latex'."
+  :group 'imaxima
+  :type '(string))
+
+(defcustom imaxima-latex-macros
+  "
+\\newcommand{\\ifrac}[2]{\\frac{#1}{#2}}
+\\newcommand{\\ifracd}[2]{\\frac{#1}{#2}}
+\\newcommand{\\ifracn}[2]{\\frac{#1}{#2}}
+\\newcommand{\\isubscript}[2]{{#1}_{#2}}
+\\newcommand{\\iexpt}[2]{{#1}^{#2}}
+\\newcommand{\\isqrt}[1]{\\sqrt{#1}}
+"
+  "Default macros used by `imaxima-latex'."
+  :group 'imaxima
+  :type '(string))
+
+(defcustom imaxima-latex-macros-linear
+  (concat
+   ;; braces in both denominator and numerator
+   "\\renewcommand{\\ifrac}[2]{\\left(#1\\right)/\\left(#2\\right)}"
+   ;; only braces denominator
+   "\\renewcommand{\\ifracd}[2]{#1/\\left(#2\\right)}"
+   ;; only braces in numerator
+   "\\renewcommand{\\ifracn}[2]{\\left(#1\\right)/#2}"
+   "\\renewcommand{\\isubscript}[2]{\\mathrm{subscript}\\left(#1,#2\\right)}"
+   "\\renewcommand{\\iexpt}[2]{\\mathrm{expt}\\left(#1,#2\\right)}"
+   "\\renewcommand{\\isqrt}[1]{\\left(#1\\right)^{1/2}}\n")
+  "Default linear macros used by `imaxima-latex'."
+  :group 'imaxima
+  :type '(string))
+
+(defcustom imaxima-latex-macros-format-file
+  (concat
+   "
+\\setlength{\\textheight}{200cm}
+%% define \\boxed from amsmath.sty
+\\makeatletter
+\\providecommand\\boxed{}
+\\providecommand\\operatorname{}
+\\renewcommand{\\boxed}[1]{\\fbox{\\m@th$\\displaystyle#1$}}
+\\renewcommand{\\operatorname}[1]{%
+\\mathop{\\relax\\kern\\z@\\operator@font{#1}}}
+\\makeatother
+")
+  "Default macros used by `imaxima-dump-tex'."
+  :group 'imaxima
+  :type '(string))
+  
+
+  
 
 (defface imaxima-latex-error-face
   '((t (:foreground "Blue" :underline t)))
@@ -591,56 +678,24 @@ box, width, and height."
 	(kill-buffer buff))
       (list (vector 0 0 x y) x y))))
 
+(defun imaxima-latex-document-class ()
+  (apply #'format (mapcar #'eval imaxima-latex-document-class)))
+
 (defun imaxima-latex ()
   "Convert Maxima buffer to LaTeX.
 This command does not work in XEmacs."
   (interactive)
   (let (pos2 label (pos (make-marker))
-	     (buf (generate-new-buffer "*imaxima-latex*"))
+	     (buf (generate-new-buffer imaxima-latex-buffer-name))
 	     (oldbuf (current-buffer)))
     (set-buffer buf)
-    (insert-buffer oldbuf)
-;;     ;; Remove copyright notice
-;;     (goto-char (point-min))
-;;     (search-forward "(%i1)" nil t 2)
-;;     (search-backward "(%i1)" nil t)
-;;     (delete-region (point-min) (point))
-;;     (goto-char (point-min))
-    (insert "\\documentclass[leqno]{article}
-\\usepackage{verbatim}
-\\usepackage{color}
-\\usepackage{breqn}
-\\setkeys{breqn}{compact}
-\\usepackage{flexisym}
-
-\\setlength{\\textwidth}{180mm}
-\\setlength{\\oddsidemargin}{15mm}
-\\addtolength{\\oddsidemargin}{-1in}
-\\setlength{\\evensidemargin}{15mm}
-\\addtolength{\\evensidemargin}{-1in}
-
-\\newcommand{\\ifrac}[2]{\\frac{#1}{#2}}
-\\newcommand{\\ifracd}[2]{\\frac{#1}{#2}}
-\\newcommand{\\ifracn}[2]{\\frac{#1}{#2}}
-\\newcommand{\\isubscript}[2]{{#1}_{#2}}
-\\newcommand{\\iexpt}[2]{{#1}^{#2}}
-\\newcommand{\\isqrt}[1]{\\sqrt{#1}}
-\\begin{document}\n")
-;;     (while (and (not (eobp))
-;; 		(setq pos (next-single-property-change (point) 'display)))
-;;       (goto-char pos)
-;;       (insert "\\end{verbatim}\n\n")
-;;       (setq pos (copy-marker (next-single-property-change (point) 'display)))
-;;       (remove-text-properties (point) pos '(display nil))
-;;       (setq pos2 (point))
-;;       (re-search-forward "(\\([^)]*\\))")
-;;       (setq label (match-string 1))
-;;       (delete-region pos2 (point))
-;;       (insert (format "\\begin{dmath}[number={%s}]\n" label))
-;;       (goto-char pos)
-;;       (insert "\\end{dmath}\n\n\\begin{verbatim}"))
-;;     (goto-char (point-max))
-;;     (insert "\n\\end{verbatim}\n\\end{document}")
+    (insert-buffer-substring oldbuf)
+    (insert (imaxima-latex-document-class) "\n"
+	    imaxima-latex-use-packages "\n"
+	    imaxima-latex-document-dimensions "\n"
+	    imaxima-latex-macros "\n"
+	    "\\begin{document}\n"
+	    )
     (while (not (eobp))
       (let* ((region-start (copy-marker (point)))
 	     (region-end (copy-marker (next-single-property-change (point) 'display nil (point-max))))
@@ -655,14 +710,14 @@ This command does not work in XEmacs."
 	      (setq label (match-string 1))
 	      (delete-region region-start (point))
 	      (goto-char region-start)
-	      (insert (format "\\begin{dmath}[number={%s}]\n" label))
+	      (insert (format "\n\\begin{dmath}[number={%s}]\n" label))
 	      (goto-char region-end)
-	      (insert "\\end{dmath}\n\n"))
+	      (insert "\n\\end{dmath}\n\n"))
 	  (progn
 	    (goto-char region-start)
-	    (insert "\\begin{verbatim}")
+	    (insert "\n\\begin{verbatim}\n")
 	    (goto-char region-end)
-	    (insert "\\end{verbatim}\n\n")))))
+	    (insert "\n\\end{verbatim}\n\n")))))
     (insert "\n\\end{document}")
     (switch-to-buffer-other-window buf)
     (latex-mode)))
@@ -823,44 +878,45 @@ STR is offending LaTeX expression.  FILENAME is name of the LaTeX file."
 			 msg)
     (concat msg str)))
 
-
 (defun imaxima-dump-tex ()
   "Dump a TeX format file preloaded with the required packages."
   (with-temp-file (expand-file-name "mylatex.ltx" imaxima-tmp-subdir)
     (insert imaxima-mylatex))
   (with-temp-file (expand-file-name "format.tex" imaxima-tmp-subdir)
     (insert
-     ;;"\\batchmode\n"
-     (format "\\documentclass[%dpt,leqno]{article}\n" imaxima-pt-size)
-     imaxima-latex-preamble
-     "\\usepackage{color}\n"
-     "\\usepackage{exscale}\n"
-     "\\usepackage{breqn}\n"
-     "\\setkeys{breqn}{compact}\n"
-     "\\usepackage{flexisym}\n"
-     "\\setlength{\\textheight}{200cm}\n"
-     ;; define \boxed from amsmath.sty
-     "\\makeatletter
-      \\providecommand\\boxed{}
-      \\providecommand\\operatorname{}
-      \\renewcommand{\\boxed}[1]{\\fbox{\\m@th$\\displaystyle#1$}}
-      \\renewcommand{\\operatorname}[1]{%
-      \\mathop{\\relax\\kern\\z@\\operator@font{#1}}}
-      \\makeatother
-      \\newcommand{\\ifrac}[2]{\\frac{#1}{#2}}
-      \\newcommand{\\ifracd}[2]{\\frac{#1}{#2}}
-      \\newcommand{\\ifracn}[2]{\\frac{#1}{#2}}
-      \\newcommand{\\isubscript}[2]{{#1}_{#2}}
-      \\newcommand{\\iexpt}[2]{{#1}^{#2}}
-      \\newcommand{\\isqrt}[1]{\\sqrt{#1}}\n
-      \\nofiles
-      \\begin{document}
-      \\end{document}"))
+     (imaxima-latex-document-class)
+     imaxima-latex-preamble "\n"
+     imaxima-latex-use-packages "\n"
+     imaxima-latex-macros-format-file "\n"
+     imaxima-latex-macros "\n"
+     "\\begin{document}\n"
+     "\\end{document}"))
   (imaxima-with-temp-dir
    imaxima-tmp-subdir
-   (apply 'call-process imaxima-tex-program nil nil nil
+   (apply #'call-process imaxima-tex-program nil nil nil
 	  (list imaxima-initex-option "&latex" "mylatex.ltx" "format"))))
-;;		(format "\\input{%s}" "format.tex")))))
+
+(defun imaxima-latex-set-textwidth ()
+  (format "\\setlength{\\textwidth}{%dmm}\n"
+	  (round (/ (imaxima-get-window-width)
+		    imaxima-scale-factor))))
+(defun imaxima-latex-set-pagecolor ()
+  (apply #'format "\\pagecolor[rgb]{%f,%f,%f}\n"
+	 (imaxima-color-to-rgb (imaxima-get-bg-color))))
+(defun imaxima-latex-set-labelcolor ()
+  (apply #'format "\\color[rgb]{%f,%f,%f}\n"
+	 (imaxima-color-to-rgb imaxima-label-color)))
+(defun imaxima-latex-format-label (str label)
+  (concat
+   (format "\\begin{dmath}[number={%s}]\n" label)
+   (apply #'format "\\color[rgb]{%f,%f,%f}\n"
+ 	  (imaxima-color-to-rgb imaxima-equation-color))
+   str (format "\n\\end{dmath}\n")))
+(defun imaxima-latex-format-output (str)
+  (concat
+   (apply #'format "\\color[rgb]{%f,%f,%f}\n"
+ 	  (imaxima-color-to-rgb imaxima-equation-color))
+   "\\begin{math} \\displaystyle \n" str (format "\n\\end{math}\n")))
 
 (defun imaxima-tex-to-dvi (str label filename &optional linear)
 "Run LaTeX on STR.
@@ -868,42 +924,17 @@ Argument LABEL is used as equation label.  FILENAME is used for
 temporary files.  Use linearized form if LINEAR is non-nil."
   (with-temp-file filename
     (insert
-     ;;"\\batchmode\n"
-     (format "\\documentclass[%dpt,leqno]{article}\n" imaxima-pt-size)
-     "\n% mylatex\n"
-     (format "\\setlength{\\textwidth}{%dmm}\n"
-	     (round (/ (imaxima-get-window-width)
-		       imaxima-scale-factor)))
-     (if linear
-	 (concat
-	  ;; braces in both denominator and numerator
-	  "\\renewcommand{\\ifrac}[2]{\\left(#1\\right)/\\left(#2\\right)}"
-	  ;; only braces denominator
-	  "\\renewcommand{\\ifracd}[2]{#1/\\left(#2\\right)}"
-	  ;; only braces in numerator
-          "\\renewcommand{\\ifracn}[2]{\\left(#1\\right)/#2}"
-          "\\renewcommand{\\isubscript}[2]{\\mathrm{subscript}\\left(#1,#2\\right)}"
-          "\\renewcommand{\\iexpt}[2]{\\mathrm{expt}\\left(#1,#2\\right)}"
-	  "\\renewcommand{\\isqrt}[1]{\\left(#1\\right)^{1/2}}\n")
-       "")
+     (imaxima-latex-document-class)
+     (imaxima-latex-set-textwidth)
+     (if linear imaxima-latex-macros-linear "")
      "\\begin{document}\n"
-     (apply 'format "\\pagecolor[rgb]{%f,%f,%f}"
-	 (imaxima-color-to-rgb (imaxima-get-bg-color)))
+     (imaxima-latex-set-pagecolor)
      "\\pagestyle{empty}\n"
      (format "\\begin{%s}\n" imaxima-fnt-size)
-     (apply 'format "\\color[rgb]{%f,%f,%f}"
-	    (imaxima-color-to-rgb imaxima-label-color))
-     "\\tt"
+     (imaxima-latex-set-labelcolor)
      (if label
- 	 (concat
- 	  (format "\\begin{dmath}[number={%s}]\n" label)
- 	  (apply 'format "\\color[rgb]{%f,%f,%f}"
- 		 (imaxima-color-to-rgb imaxima-equation-color))
- 	  str (format "\\end{dmath}\n"))
-       (concat
- 	(apply 'format "\\color[rgb]{%f,%f,%f}"
- 	       (imaxima-color-to-rgb imaxima-equation-color))
- 	"\\begin{math} \\displaystyle " str (format " \\end{math}\n")))
+ 	 (imaxima-latex-format-label str label)
+       (imaxima-latex-format-output str))
      (format "\\end{%s}\n" imaxima-fnt-size)
      "\\end{document}"))
     (imaxima-with-temp-dir imaxima-tmp-subdir
@@ -938,13 +969,13 @@ temporary files.  Use linearized form if LINEAR is non-nil."
        nil (list (cons 'background-color imaxima-old-bg-color)))))
   (run-hooks 'imaxima-exit-hook))
 
-;;; Continuation is used between maxima-to-latex function and
+;;; Imaxima-Continuation is used between maxima-to-latex function and
 ;;; get-image-from-imaxima. The value is either nil or a list of
 ;;; function, buffer, pos1, and pos2, where pos1 and pos2 are the beginning and
 ;;; end of current maxima formula.
 ;;  (func buffer pos1 pos2)
 
-(defvar continuation nil)
+(defvar imaxima-continuation nil)
 
 ;;; if *debug-imaxima-filter* is set to t, the str is
 ;;; appended to the last of buffer *imaxima-work*.
@@ -993,11 +1024,11 @@ Argument STR contains output received from Maxima.
 			 (setq imaxima-output rest)
 			 (setq output (concat output iprompt))
 			 ;; All the output for a maxima command are processed.
-			 ;; We can call continuation if necessary.
-			 (cond ((and continuation main-output)
-				(funcall (car continuation) main-output))
-			       ((and continuation (null main-output))
-				(funcall (car continuation) ""))))
+			 ;; We can call imaxima-continuation if necessary.
+			 (cond ((and imaxima-continuation main-output)
+				(funcall (car imaxima-continuation) main-output))
+			       ((and imaxima-continuation (null main-output))
+				(funcall (car imaxima-continuation) ""))))
 		     ;; imaxima-output is incomplete.
 		     (setq imaxima-filter-running nil)
 		     (return-from imaxima-filter output)))
@@ -1009,7 +1040,7 @@ Argument STR contains output received from Maxima.
 			 (setq imaxima-output rest)
 			 (setq output (concat output (setq image (imaxima-make-image match 'latex))))
 			 ;; Remember the image into main-output if this is the first output.
-			 ;; This will be passed to continuation
+			 ;; This will be passed to imaxima-continuation
 			 (if (null main-output)
 			     (setq main-output image)))
 		     ;; imaxima-output is incomplete.
@@ -1074,8 +1105,8 @@ Argument STR contains output received from Maxima."
 	      (setq output (concat output (if (equal output "") "" newline-char) text (imaxima-make-image match 'latex))))
 	    (setq imaxima-output "")
 	    (message "Processing Maxima output...done")
-	    (if continuation
-		(funcall (car continuation) output))
+	    (if imaxima-continuation
+		(funcall (car imaxima-continuation) output))
 	    (concat output rest prompt)))
 	 ;; Special prompt for demo() function.
 	 ;; _ is prompted.
@@ -1094,8 +1125,8 @@ Argument STR contains output received from Maxima."
 	      (setq output (concat output (if (equal output "") "" newline-char) text (imaxima-make-image match 'latex))))
 	    (setq imaxima-output "")
 	    (message "Processing Maxima output...done")
-	    (if continuation
-		(funcall (car continuation) output))
+	    (if imaxima-continuation
+		(funcall (car imaxima-continuation) output))
 	    (concat " " output rest newline-char "_")))
 	 ;; Special prompt, question.
 	 ((char-equal lastchar ?)
@@ -1192,7 +1223,7 @@ turns them on.  Set `imaxima-use-maxima-mode-flag' to t to use
 			  "*maxima*"
 			"*imaxima*")))
     (when imaxima-buffer
-      (if (interactive-p)
+      (if (called-interactively-p 'any)
 	  (switch-to-buffer imaxima-buffer)
 	(set-buffer imaxima-buffer))
       (return-from imaxima t)))
@@ -1227,8 +1258,7 @@ Please customize the option `imaxima-lisp-file'."))
 	      nil
 	      (split-string
 	       imaxima-maxima-options))))
-	(save-excursion
-	  (set-buffer mbuf)
+	(with-current-buffer mbuf
 	  (setq imaxima-process (get-buffer-process mbuf))
 	  (imaxima-get-geometry mbuf)
 	  (imaxima-change-color mbuf)
@@ -1354,7 +1384,7 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
       (insert html-template)
       (goto-char (point-min))
       (search-forward "<BODY>")
-      (next-line 1)
+      (forward-line 1)
       (insert text)
       (values html-buffer image-folder))))
 
@@ -1404,7 +1434,7 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
 	  (let (start-mark end-mark)
 	    (goto-char (point-min))
 	    (search-forward "<BODY>")
-	    (next-line 1)
+	    (forward-line 1)
 	    (beginning-of-line)
 	    (setq start-mark (point-marker))
 	    (search-forward "</BODY>")
@@ -1413,40 +1443,13 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
 	    (loop
 	     (re-search-forward "$" end-mark)
 	     (replace-match "<br>\n")
-	     (next-line 1)))
+	     (forward-line 1)))
 	(search-failed nil)))))
 
 (defun* imaxima-to-html ()
   "Translate the imaxima buffer contents into HTML format."
   (interactive "")
   (imath-to-html))
-
-(defun* original-find-next-formula ()
-  "Find next formula and return multiple values of
-   formula type, start position and end position.
-   If search failed, error search-failed is signaled."
-  (interactive "")
-  (let (start-pos end-pos tmp found-string ftype)
-    (re-search-forward (concat maxima-start "\\|" latex-start))
-    (setq found-string (match-string 0))
-    (cond ((string= found-string latex-start)
-	   (setq start-pos (- (point) (length latex-start)))
-	   (search-forward latex-end)
-	   (setq end-pos (point) ftype 'latex))
-	  ((string= found-string maxima-start)
-	   (setq start-pos (- (point) (length maxima-start)))
-	   (search-forward maxima-end)
-	   (setq tmp (point))
-	   (if (string= (buffer-substring tmp
-					  (+ tmp 1
-					     (length latex-start)))
-			(concat "&" latex-start))
-	       (progn
-		 (search-forward latex-end)
-		 (setq end-pos (point) ftype 'both))
-	     (setq end-pos tmp ftype 'maxima)))
-	  (t (error "Syntax Error in Imath buffer.")))
-    (values ftype start-pos end-pos)))
 
 (defun* find-next-formula ()
   "Find next formula and return multiple values of

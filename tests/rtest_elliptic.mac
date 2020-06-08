@@ -479,8 +479,9 @@ test_table('inverse_jacobi_cn, [[[-2.0, 3.0], 2.002154760912212-3.20250391465652
 is(abs(jacobi_dn(inverse_jacobi_dn(-2.0,3.0), 3.0) + 2) < 1d-14);
 true;
 
-/* verify that elliptical functions handle non-rectangular complex numbers
+/* elliptical functions handling of non-rectangular complex numbers
  * mailing list 2016-07-14 "Jacobi elliptic functions, maxima 5.38.1"
+ * mailing list 2020-05-28 "Unexpected result from ev"
  */
 
 /* list of functions here is everything that has a SIMP-[$%](ELLIPTIC|JACOBI)_FOO in sr/ellipt.lisp */
@@ -506,20 +507,20 @@ kill (u1, k1, n1);
 with_stdout ("/tmp/foo.mac",
 
   for f in elliptic_fcns_1
-    do block ([a : f(u1), b : f('rectform(u1))],
-        print ('if 'complex_floatp(a) and 'complex_floatp(b) and abs(a - b) < 1e-12 then true else a # b, ";"),
+    do block ([a : f('rectform(u1))],
+        print ('complex_floatp(a), ";"),
         print (true, ";"),
         print ("")),
   
   for f in elliptic_fcns_2
-    do block ([a : f(u1, k1), b : f('rectform(u1), k1)],
-        print ('if 'complex_floatp(a) and 'complex_floatp(b) and abs(a - b) < 1e-12 then true else a # b, ";"),
+    do block ([a : f('rectform(u1), k1)],
+        print ('complex_floatp(a), ";"),
         print (true, ";"),
         print ("")),
   
   for f in elliptic_fcns_3
-    do block ([a : f(n1, u1, k1), b : f(n1, 'rectform(u1), k1)],
-        print ('if 'complex_floatp(a) and 'complex_floatp(b) and abs(a - b) < 1e-12 then true else a # b, ";"),
+    do block ([a : f(n1, 'rectform(u1), k1)],
+        print ('complex_floatp(a), ";"),
         print (true, ";"),
         print ("")));
  */
@@ -531,222 +532,117 @@ with_stdout ("/tmp/foo.mac",
  0);
 0;
 
-if complex_floatp(elliptic_ec(u1))
- and complex_floatp(elliptic_ec(rectform(u1)))
- and (abs(elliptic_ec(rectform(u1)) - elliptic_ec(u1)) < 1.0E-12) then true
- else elliptic_ec(u1) # elliptic_ec(rectform(u1)) ; 
+complex_floatp(elliptic_ec(rectform(u1))) ; 
 true ; 
  
-if complex_floatp(elliptic_kc(u1))
- and complex_floatp(elliptic_kc(rectform(u1)))
- and (abs(elliptic_kc(rectform(u1)) - elliptic_kc(u1)) < 1.0E-12) then true
- else elliptic_kc(u1) # elliptic_kc(rectform(u1)) ; 
+complex_floatp(elliptic_kc(rectform(u1))) ; 
 true ; 
  
-if complex_floatp(elliptic_e(u1, k1))
- and complex_floatp(elliptic_e(rectform(u1), k1))
- and (abs(elliptic_e(rectform(u1), k1) - elliptic_e(u1, k1)) < 1.0E-12)
- then true else elliptic_e(u1, k1) # elliptic_e(rectform(u1), k1) ; 
+complex_floatp(elliptic_e(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(elliptic_eu(u1, k1))
- and complex_floatp(elliptic_eu(rectform(u1), k1))
- and (abs(elliptic_eu(rectform(u1), k1) - elliptic_eu(u1, k1)) < 1.0E-12)
- then true else elliptic_eu(u1, k1) # elliptic_eu(rectform(u1), k1) ; 
+complex_floatp(elliptic_eu(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(elliptic_f(u1, k1))
- and complex_floatp(elliptic_f(rectform(u1), k1))
- and (abs(elliptic_f(rectform(u1), k1) - elliptic_f(u1, k1)) < 1.0E-12)
- then true else elliptic_f(u1, k1) # elliptic_f(rectform(u1), k1) ; 
+complex_floatp(elliptic_f(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(inverse_jacobi_cd(u1, k1))
- and complex_floatp(inverse_jacobi_cd(rectform(u1), k1))
- and (abs(inverse_jacobi_cd(rectform(u1), k1) - inverse_jacobi_cd(u1, k1)) < 1.0E-12)
- then true else inverse_jacobi_cd(u1, k1) # inverse_jacobi_cd(rectform(u1), k1)
- ; 
+complex_floatp(inverse_jacobi_cd(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(inverse_jacobi_cn(u1, k1))
- and complex_floatp(inverse_jacobi_cn(rectform(u1), k1))
- and (abs(inverse_jacobi_cn(rectform(u1), k1) - inverse_jacobi_cn(u1, k1)) < 1.0E-12)
- then true else inverse_jacobi_cn(u1, k1) # inverse_jacobi_cn(rectform(u1), k1)
- ; 
+complex_floatp(inverse_jacobi_cn(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(inverse_jacobi_cs(u1, k1))
- and complex_floatp(inverse_jacobi_cs(rectform(u1), k1))
- and (abs(inverse_jacobi_cs(rectform(u1), k1) - inverse_jacobi_cs(u1, k1)) < 1.0E-12)
- then true else inverse_jacobi_cs(u1, k1) # inverse_jacobi_cs(rectform(u1), k1)
- ; 
+complex_floatp(inverse_jacobi_cs(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(inverse_jacobi_dc(u1, k1))
- and complex_floatp(inverse_jacobi_dc(rectform(u1), k1))
- and (abs(inverse_jacobi_dc(rectform(u1), k1) - inverse_jacobi_dc(u1, k1)) < 1.0E-12)
- then true else inverse_jacobi_dc(u1, k1) # inverse_jacobi_dc(rectform(u1), k1)
- ; 
+complex_floatp(inverse_jacobi_dc(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(inverse_jacobi_dn(u1, k1))
- and complex_floatp(inverse_jacobi_dn(rectform(u1), k1))
- and (abs(inverse_jacobi_dn(rectform(u1), k1) - inverse_jacobi_dn(u1, k1)) < 1.0E-12)
- then true else inverse_jacobi_dn(u1, k1) # inverse_jacobi_dn(rectform(u1), k1)
- ; 
+complex_floatp(inverse_jacobi_dn(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(inverse_jacobi_ds(u1, k1))
- and complex_floatp(inverse_jacobi_ds(rectform(u1), k1))
- and (abs(inverse_jacobi_ds(rectform(u1), k1) - inverse_jacobi_ds(u1, k1)) < 1.0E-12)
- then true else inverse_jacobi_ds(u1, k1) # inverse_jacobi_ds(rectform(u1), k1)
- ; 
+complex_floatp(inverse_jacobi_ds(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(inverse_jacobi_nc(u1, k1))
- and complex_floatp(inverse_jacobi_nc(rectform(u1), k1))
- and (abs(inverse_jacobi_nc(rectform(u1), k1) - inverse_jacobi_nc(u1, k1)) < 1.0E-12)
- then true else inverse_jacobi_nc(u1, k1) # inverse_jacobi_nc(rectform(u1), k1)
- ; 
+complex_floatp(inverse_jacobi_nc(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(inverse_jacobi_nd(u1, k1))
- and complex_floatp(inverse_jacobi_nd(rectform(u1), k1))
- and (abs(inverse_jacobi_nd(rectform(u1), k1) - inverse_jacobi_nd(u1, k1)) < 1.0E-12)
- then true else inverse_jacobi_nd(u1, k1) # inverse_jacobi_nd(rectform(u1), k1)
- ; 
+complex_floatp(inverse_jacobi_nd(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(inverse_jacobi_ns(u1, k1))
- and complex_floatp(inverse_jacobi_ns(rectform(u1), k1))
- and (abs(inverse_jacobi_ns(rectform(u1), k1) - inverse_jacobi_ns(u1, k1)) < 1.0E-12)
- then true else inverse_jacobi_ns(u1, k1) # inverse_jacobi_ns(rectform(u1), k1)
- ; 
+complex_floatp(inverse_jacobi_ns(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(inverse_jacobi_sc(u1, k1))
- and complex_floatp(inverse_jacobi_sc(rectform(u1), k1))
- and (abs(inverse_jacobi_sc(rectform(u1), k1) - inverse_jacobi_sc(u1, k1)) < 1.0E-12)
- then true else inverse_jacobi_sc(u1, k1) # inverse_jacobi_sc(rectform(u1), k1)
- ; 
+complex_floatp(inverse_jacobi_sc(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(inverse_jacobi_sd(u1, k1))
- and complex_floatp(inverse_jacobi_sd(rectform(u1), k1))
- and (abs(inverse_jacobi_sd(rectform(u1), k1) - inverse_jacobi_sd(u1, k1)) < 1.0E-12)
- then true else inverse_jacobi_sd(u1, k1) # inverse_jacobi_sd(rectform(u1), k1)
- ; 
+complex_floatp(inverse_jacobi_sd(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(inverse_jacobi_sn(u1, k1))
- and complex_floatp(inverse_jacobi_sn(rectform(u1), k1))
- and (abs(inverse_jacobi_sn(rectform(u1), k1) - inverse_jacobi_sn(u1, k1)) < 1.0E-12)
- then true else inverse_jacobi_sn(u1, k1) # inverse_jacobi_sn(rectform(u1), k1)
- ; 
+complex_floatp(inverse_jacobi_sn(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_am(u1, k1))
- and complex_floatp(jacobi_am(rectform(u1), k1))
- and (abs(jacobi_am(rectform(u1), k1) - jacobi_am(u1, k1)) < 1.0E-12) then true
- else jacobi_am(u1, k1) # jacobi_am(rectform(u1), k1) ; 
+complex_floatp(jacobi_am(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_cd(u1, k1))
- and complex_floatp(jacobi_cd(rectform(u1), k1))
- and (abs(jacobi_cd(rectform(u1), k1) - jacobi_cd(u1, k1)) < 1.0E-12) then true
- else jacobi_cd(u1, k1) # jacobi_cd(rectform(u1), k1) ; 
+complex_floatp(jacobi_cd(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_cn(u1, k1))
- and complex_floatp(jacobi_cn(rectform(u1), k1))
- and (abs(jacobi_cn(rectform(u1), k1) - jacobi_cn(u1, k1)) < 1.0E-12) then true
- else jacobi_cn(u1, k1) # jacobi_cn(rectform(u1), k1) ; 
+complex_floatp(jacobi_cn(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_cs(u1, k1))
- and complex_floatp(jacobi_cs(rectform(u1), k1))
- and (abs(jacobi_cs(rectform(u1), k1) - jacobi_cs(u1, k1)) < 1.0E-12) then true
- else jacobi_cs(u1, k1) # jacobi_cs(rectform(u1), k1) ; 
+complex_floatp(jacobi_cs(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_dc(u1, k1))
- and complex_floatp(jacobi_dc(rectform(u1), k1))
- and (abs(jacobi_dc(rectform(u1), k1) - jacobi_dc(u1, k1)) < 1.0E-12) then true
- else jacobi_dc(u1, k1) # jacobi_dc(rectform(u1), k1) ; 
+complex_floatp(jacobi_dc(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_dn(u1, k1))
- and complex_floatp(jacobi_dn(rectform(u1), k1))
- and (abs(jacobi_dn(rectform(u1), k1) - jacobi_dn(u1, k1)) < 1.0E-12) then true
- else jacobi_dn(u1, k1) # jacobi_dn(rectform(u1), k1) ; 
+complex_floatp(jacobi_dn(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_ds(u1, k1))
- and complex_floatp(jacobi_ds(rectform(u1), k1))
- and (abs(jacobi_ds(rectform(u1), k1) - jacobi_ds(u1, k1)) < 1.0E-12) then true
- else jacobi_ds(u1, k1) # jacobi_ds(rectform(u1), k1) ; 
+complex_floatp(jacobi_ds(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_nc(u1, k1))
- and complex_floatp(jacobi_nc(rectform(u1), k1))
- and (abs(jacobi_nc(rectform(u1), k1) - jacobi_nc(u1, k1)) < 1.0E-12) then true
- else jacobi_nc(u1, k1) # jacobi_nc(rectform(u1), k1) ; 
+complex_floatp(jacobi_nc(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_nd(u1, k1))
- and complex_floatp(jacobi_nd(rectform(u1), k1))
- and (abs(jacobi_nd(rectform(u1), k1) - jacobi_nd(u1, k1)) < 1.0E-12) then true
- else jacobi_nd(u1, k1) # jacobi_nd(rectform(u1), k1) ; 
+complex_floatp(jacobi_nd(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_ns(u1, k1))
- and complex_floatp(jacobi_ns(rectform(u1), k1))
- and (abs(jacobi_ns(rectform(u1), k1) - jacobi_ns(u1, k1)) < 1.0E-12) then true
- else jacobi_ns(u1, k1) # jacobi_ns(rectform(u1), k1) ; 
+complex_floatp(jacobi_ns(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_sc(u1, k1))
- and complex_floatp(jacobi_sc(rectform(u1), k1))
- and (abs(jacobi_sc(rectform(u1), k1) - jacobi_sc(u1, k1)) < 1.0E-12) then true
- else jacobi_sc(u1, k1) # jacobi_sc(rectform(u1), k1) ; 
+complex_floatp(jacobi_sc(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_sd(u1, k1))
- and complex_floatp(jacobi_sd(rectform(u1), k1))
- and (abs(jacobi_sd(rectform(u1), k1) - jacobi_sd(u1, k1)) < 1.0E-12) then true
- else jacobi_sd(u1, k1) # jacobi_sd(rectform(u1), k1) ; 
+complex_floatp(jacobi_sd(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(jacobi_sn(u1, k1))
- and complex_floatp(jacobi_sn(rectform(u1), k1))
- and (abs(jacobi_sn(rectform(u1), k1) - jacobi_sn(u1, k1)) < 1.0E-12) then true
- else jacobi_sn(u1, k1) # jacobi_sn(rectform(u1), k1) ; 
+complex_floatp(jacobi_sn(rectform(u1), k1)) ; 
 true ; 
  
-if complex_floatp(elliptic_pi(n1, u1, k1))
- and complex_floatp(elliptic_pi(n1, rectform(u1), k1))
- and (abs(elliptic_pi(n1, rectform(u1), k1) - elliptic_pi(n1, u1, k1)) < 1.0E-12)
- then true else elliptic_pi(n1, u1, k1) # elliptic_pi(n1, rectform(u1), k1) ; 
+complex_floatp(elliptic_pi(n1, rectform(u1), k1)) ; 
 true ; 
  
 /*
 with_stdout ("/tmp/bar.mac",
 
   for f in elliptic_fcns_1
-    do block ([a : f(u1), b : f('rectform(u1))],
-        print ('if 'complex_bfloatp(a) and 'complex_bfloatp(b) and abs(a - b) < 1b-12 then true else a # b, ";"),
+    do block ([a : f('rectform(u1))],
+        print ('complex_bfloatp(a), ";"),
         print (true, ";"),
         print ("")),
-  
+
   for f in elliptic_fcns_2
-    do block ([a : f(u1, k1), b : f('rectform(u1), k1)],
-        print ('if 'complex_bfloatp(a) and 'complex_bfloatp(b) and abs(a - b) < 1b-12 then true else a # b, ";"),
+    do block ([a : f('rectform(u1), k1)],
+        print ('complex_bfloatp(a), ";"),
         print (true, ";"),
         print ("")),
-  
+
   for f in elliptic_fcns_3
-    do block ([a : f(n1, u1, k1), b : f(n1, 'rectform(u1), k1)],
-        print ('if 'complex_bfloatp(a) and 'complex_bfloatp(b) and abs(a - b) < 1b-12 then true else a # b, ";"),
+    do block ([a : f(n1, 'rectform(u1), k1)],
+        print ('complex_bfloatp(a), ";"),
         print (true, ";"),
         print ("")));
  */
@@ -758,202 +654,97 @@ with_stdout ("/tmp/bar.mac",
  0);
 0;
 
-if complex_bfloatp(elliptic_ec(u1))
- and complex_bfloatp(elliptic_ec(rectform(u1)))
- and (abs(elliptic_ec(rectform(u1)) - elliptic_ec(u1)) < 1.0b-12) then true
- else elliptic_ec(u1) # elliptic_ec(rectform(u1)) ; 
+complex_bfloatp(elliptic_ec(rectform(u1))) ; 
 true ; 
  
-if complex_bfloatp(elliptic_kc(u1))
- and complex_bfloatp(elliptic_kc(rectform(u1)))
- and (abs(elliptic_kc(rectform(u1)) - elliptic_kc(u1)) < 1.0b-12) then true
- else elliptic_kc(u1) # elliptic_kc(rectform(u1)) ; 
+complex_bfloatp(elliptic_kc(rectform(u1))) ; 
 true ; 
  
-if complex_bfloatp(elliptic_e(u1, k1))
- and complex_bfloatp(elliptic_e(rectform(u1), k1))
- and (abs(elliptic_e(rectform(u1), k1) - elliptic_e(u1, k1)) < 1.0b-12)
- then true else elliptic_e(u1, k1) # elliptic_e(rectform(u1), k1) ; 
+complex_bfloatp(elliptic_e(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(elliptic_eu(u1, k1))
- and complex_bfloatp(elliptic_eu(rectform(u1), k1))
- and (abs(elliptic_eu(rectform(u1), k1) - elliptic_eu(u1, k1)) < 1.0b-12)
- then true else elliptic_eu(u1, k1) # elliptic_eu(rectform(u1), k1) ; 
+complex_bfloatp(elliptic_eu(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(elliptic_f(u1, k1))
- and complex_bfloatp(elliptic_f(rectform(u1), k1))
- and (abs(elliptic_f(rectform(u1), k1) - elliptic_f(u1, k1)) < 1.0b-12)
- then true else elliptic_f(u1, k1) # elliptic_f(rectform(u1), k1) ; 
+complex_bfloatp(elliptic_f(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(inverse_jacobi_cd(u1, k1))
- and complex_bfloatp(inverse_jacobi_cd(rectform(u1), k1))
- and (abs(inverse_jacobi_cd(rectform(u1), k1) - inverse_jacobi_cd(u1, k1)) < 1.0b-12)
- then true else inverse_jacobi_cd(u1, k1) # inverse_jacobi_cd(rectform(u1), k1)
- ; 
+complex_bfloatp(inverse_jacobi_cd(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(inverse_jacobi_cn(u1, k1))
- and complex_bfloatp(inverse_jacobi_cn(rectform(u1), k1))
- and (abs(inverse_jacobi_cn(rectform(u1), k1) - inverse_jacobi_cn(u1, k1)) < 1.0b-12)
- then true else inverse_jacobi_cn(u1, k1) # inverse_jacobi_cn(rectform(u1), k1)
- ; 
+complex_bfloatp(inverse_jacobi_cn(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(inverse_jacobi_cs(u1, k1))
- and complex_bfloatp(inverse_jacobi_cs(rectform(u1), k1))
- and (abs(inverse_jacobi_cs(rectform(u1), k1) - inverse_jacobi_cs(u1, k1)) < 1.0b-12)
- then true else inverse_jacobi_cs(u1, k1) # inverse_jacobi_cs(rectform(u1), k1)
- ; 
+complex_bfloatp(inverse_jacobi_cs(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(inverse_jacobi_dc(u1, k1))
- and complex_bfloatp(inverse_jacobi_dc(rectform(u1), k1))
- and (abs(inverse_jacobi_dc(rectform(u1), k1) - inverse_jacobi_dc(u1, k1)) < 1.0b-12)
- then true else inverse_jacobi_dc(u1, k1) # inverse_jacobi_dc(rectform(u1), k1)
- ; 
+complex_bfloatp(inverse_jacobi_dc(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(inverse_jacobi_dn(u1, k1))
- and complex_bfloatp(inverse_jacobi_dn(rectform(u1), k1))
- and (abs(inverse_jacobi_dn(rectform(u1), k1) - inverse_jacobi_dn(u1, k1)) < 1.0b-12)
- then true else inverse_jacobi_dn(u1, k1) # inverse_jacobi_dn(rectform(u1), k1)
- ; 
+complex_bfloatp(inverse_jacobi_dn(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(inverse_jacobi_ds(u1, k1))
- and complex_bfloatp(inverse_jacobi_ds(rectform(u1), k1))
- and (abs(inverse_jacobi_ds(rectform(u1), k1) - inverse_jacobi_ds(u1, k1)) < 1.0b-12)
- then true else inverse_jacobi_ds(u1, k1) # inverse_jacobi_ds(rectform(u1), k1)
- ; 
+complex_bfloatp(inverse_jacobi_ds(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(inverse_jacobi_nc(u1, k1))
- and complex_bfloatp(inverse_jacobi_nc(rectform(u1), k1))
- and (abs(inverse_jacobi_nc(rectform(u1), k1) - inverse_jacobi_nc(u1, k1)) < 1.0b-12)
- then true else inverse_jacobi_nc(u1, k1) # inverse_jacobi_nc(rectform(u1), k1)
- ; 
+complex_bfloatp(inverse_jacobi_nc(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(inverse_jacobi_nd(u1, k1))
- and complex_bfloatp(inverse_jacobi_nd(rectform(u1), k1))
- and (abs(inverse_jacobi_nd(rectform(u1), k1) - inverse_jacobi_nd(u1, k1)) < 1.0b-12)
- then true else inverse_jacobi_nd(u1, k1) # inverse_jacobi_nd(rectform(u1), k1)
- ; 
+complex_bfloatp(inverse_jacobi_nd(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(inverse_jacobi_ns(u1, k1))
- and complex_bfloatp(inverse_jacobi_ns(rectform(u1), k1))
- and (abs(inverse_jacobi_ns(rectform(u1), k1) - inverse_jacobi_ns(u1, k1)) < 1.0b-12)
- then true else inverse_jacobi_ns(u1, k1) # inverse_jacobi_ns(rectform(u1), k1)
- ; 
+complex_bfloatp(inverse_jacobi_ns(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(inverse_jacobi_sc(u1, k1))
- and complex_bfloatp(inverse_jacobi_sc(rectform(u1), k1))
- and (abs(inverse_jacobi_sc(rectform(u1), k1) - inverse_jacobi_sc(u1, k1)) < 1.0b-12)
- then true else inverse_jacobi_sc(u1, k1) # inverse_jacobi_sc(rectform(u1), k1)
- ; 
+complex_bfloatp(inverse_jacobi_sc(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(inverse_jacobi_sd(u1, k1))
- and complex_bfloatp(inverse_jacobi_sd(rectform(u1), k1))
- and (abs(inverse_jacobi_sd(rectform(u1), k1) - inverse_jacobi_sd(u1, k1)) < 1.0b-12)
- then true else inverse_jacobi_sd(u1, k1) # inverse_jacobi_sd(rectform(u1), k1)
- ; 
+complex_bfloatp(inverse_jacobi_sd(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(inverse_jacobi_sn(u1, k1))
- and complex_bfloatp(inverse_jacobi_sn(rectform(u1), k1))
- and (abs(inverse_jacobi_sn(rectform(u1), k1) - inverse_jacobi_sn(u1, k1)) < 1.0b-12)
- then true else inverse_jacobi_sn(u1, k1) # inverse_jacobi_sn(rectform(u1), k1)
- ; 
+complex_bfloatp(inverse_jacobi_sn(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_am(u1, k1))
- and complex_bfloatp(jacobi_am(rectform(u1), k1))
- and (abs(jacobi_am(rectform(u1), k1) - jacobi_am(u1, k1)) < 1.0b-12) then true
- else jacobi_am(u1, k1) # jacobi_am(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_am(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_cd(u1, k1))
- and complex_bfloatp(jacobi_cd(rectform(u1), k1))
- and (abs(jacobi_cd(rectform(u1), k1) - jacobi_cd(u1, k1)) < 1.0b-12) then true
- else jacobi_cd(u1, k1) # jacobi_cd(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_cd(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_cn(u1, k1))
- and complex_bfloatp(jacobi_cn(rectform(u1), k1))
- and (abs(jacobi_cn(rectform(u1), k1) - jacobi_cn(u1, k1)) < 1.0b-12) then true
- else jacobi_cn(u1, k1) # jacobi_cn(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_cn(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_cs(u1, k1))
- and complex_bfloatp(jacobi_cs(rectform(u1), k1))
- and (abs(jacobi_cs(rectform(u1), k1) - jacobi_cs(u1, k1)) < 1.0b-12) then true
- else jacobi_cs(u1, k1) # jacobi_cs(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_cs(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_dc(u1, k1))
- and complex_bfloatp(jacobi_dc(rectform(u1), k1))
- and (abs(jacobi_dc(rectform(u1), k1) - jacobi_dc(u1, k1)) < 1.0b-12) then true
- else jacobi_dc(u1, k1) # jacobi_dc(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_dc(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_dn(u1, k1))
- and complex_bfloatp(jacobi_dn(rectform(u1), k1))
- and (abs(jacobi_dn(rectform(u1), k1) - jacobi_dn(u1, k1)) < 1.0b-12) then true
- else jacobi_dn(u1, k1) # jacobi_dn(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_dn(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_ds(u1, k1))
- and complex_bfloatp(jacobi_ds(rectform(u1), k1))
- and (abs(jacobi_ds(rectform(u1), k1) - jacobi_ds(u1, k1)) < 1.0b-12) then true
- else jacobi_ds(u1, k1) # jacobi_ds(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_ds(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_nc(u1, k1))
- and complex_bfloatp(jacobi_nc(rectform(u1), k1))
- and (abs(jacobi_nc(rectform(u1), k1) - jacobi_nc(u1, k1)) < 1.0b-12) then true
- else jacobi_nc(u1, k1) # jacobi_nc(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_nc(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_nd(u1, k1))
- and complex_bfloatp(jacobi_nd(rectform(u1), k1))
- and (abs(jacobi_nd(rectform(u1), k1) - jacobi_nd(u1, k1)) < 1.0b-12) then true
- else jacobi_nd(u1, k1) # jacobi_nd(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_nd(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_ns(u1, k1))
- and complex_bfloatp(jacobi_ns(rectform(u1), k1))
- and (abs(jacobi_ns(rectform(u1), k1) - jacobi_ns(u1, k1)) < 1.0b-12) then true
- else jacobi_ns(u1, k1) # jacobi_ns(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_ns(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_sc(u1, k1))
- and complex_bfloatp(jacobi_sc(rectform(u1), k1))
- and (abs(jacobi_sc(rectform(u1), k1) - jacobi_sc(u1, k1)) < 1.0b-12) then true
- else jacobi_sc(u1, k1) # jacobi_sc(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_sc(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_sd(u1, k1))
- and complex_bfloatp(jacobi_sd(rectform(u1), k1))
- and (abs(jacobi_sd(rectform(u1), k1) - jacobi_sd(u1, k1)) < 1.0b-12) then true
- else jacobi_sd(u1, k1) # jacobi_sd(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_sd(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(jacobi_sn(u1, k1))
- and complex_bfloatp(jacobi_sn(rectform(u1), k1))
- and (abs(jacobi_sn(rectform(u1), k1) - jacobi_sn(u1, k1)) < 1.0b-12) then true
- else jacobi_sn(u1, k1) # jacobi_sn(rectform(u1), k1) ; 
+complex_bfloatp(jacobi_sn(rectform(u1), k1)) ; 
 true ; 
  
-if complex_bfloatp(elliptic_pi(n1, u1, k1))
- and complex_bfloatp(elliptic_pi(n1, rectform(u1), k1))
- and (abs(elliptic_pi(n1, rectform(u1), k1) - elliptic_pi(n1, u1, k1)) < 1.0b-12)
- then true else elliptic_pi(n1, u1, k1) # elliptic_pi(n1, rectform(u1), k1) ; 
+complex_bfloatp(elliptic_pi(n1, rectform(u1), k1)) ; 
 true ; 
  
 /* Test derivatives at a few random points using numerical differentiation

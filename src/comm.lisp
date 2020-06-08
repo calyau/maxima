@@ -136,6 +136,9 @@
                         (setq z (maxima-substitute (cdar l) (caar l) z))))))))))
 
 (defun maxima-substitute (x y z) ; The args to SUBSTITUTE are assumed to be simplified.
+;; Prevent replacing dependent variable with constant in derivative
+(cond ((and (not (atom z)) (eq (caar z) '%derivative) (eq (cadr z) y) (typep x 'number)) z)
+(t
   (let ((in-p t) (substp t))
     (if (and (mnump y) (= (signum1 y) 1))
 	(let ($sqrtdispflag ($pfeformat t)) (setq z (nformat-all z))))
@@ -157,6 +160,7 @@
 	       (timesp (if (eq (caar y) 'mtimes) (setq y (nformat y)))))
 	   (subst2 x y z negxpty timesp)))
      nil)))
+))
 
 ;;Remainder of page is update from F302 --gsb
 

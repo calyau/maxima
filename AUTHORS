@@ -29,54 +29,381 @@ spar!malcolm@decwrl.dec.com (malcolm) sun/lucid
 raible@orville.nas.nasa.gov (Eric Raible on iris(kcl))
 fateman@peoplesparc.Berkeley.EDU (Richard Fateman)
 
+
 In November, 2001, the Maxima project moved to the Sourceforge
-project hosting site.
+project hosting site. The following people contributed to the Maxima
+sourcecode (according to Git logs):
 
-As of April 2007, the Maxima developers are:
-
-James Amundson
-Jorge Barros de Abreu
-Jay Belanger
+Contributors in 2020
+====================
+Dan Gildea
 David Billinghurst
-Marco Ciampa
-Douglas Crosher
-Robert Dodier
-Andreas Eder
-Andrey Grozin
-Yasuaki Honda
-Stavros Macrakis
-Camm Maguire
-Volker van Nek
-Mario Rodriguez Riotorto
-Juan Pablo Romero Bernal
-Dan Stanger
-Viktor Toth
+Gunter Königsmann
+John Scott
+Kris Katterjohn
+Lakshya A Agrawal
+Leo Butler
 Raymond Toy
-Jaime Villate
+Robert Dodier
+Viktor T. Toth
+Volker van Nek
+Wolfgang Dautermann
+Yasuaki Honda
+
+Contributors in 2019
+====================
+Andreas Eder
+Dan Gildea
+David Scherfgen
+Elias Mårtenson
+Gunter Königsmann
+Jaime E. Villate
+Kris Katterjohn
+Lakshya A Agrawal
+Leo Butler
+Marduk Bolanos
+Mario Rodriguez Riotorto
+Raymond Toy
+Robert Dodier
+Sergey Litvinov
+Viktor T. Toth
+Wolfgang Dautermann
+
+Contributors in 2018
+====================
+Dan Gildea
+David Billinghurst
+David Scherfgen
+Elias Mårtenson
+Fabrizio Caruso
+Gunter Königsmann
+Jaime E. Villate
+Jarno Malmari
+Kris Katterjohn
+Leo Butler
+Mario Rodriguez Riotorto
+Raymond Toy
+Robert Dodier
+Sergey Litvinov
+Tarn Burton
+Viktor T. Toth
+Volker van Nek
+Wolfgang Dautermann
+
+Contributors in 2017
+====================
+Andreas Eder
+Barton Willis
+Dan Gildea
+David Billinghurst
+David Scherfgen
+Fabrizio Caruso
+Gunter Königsmann
+Jaime E. Villate
+Kris Katterjohn
+Leo Butler
+Mario Rodriguez Riotorto
+Martin Saturka
+Raymond Toy
+Robert Dodier
+Sergey Litvinov
+Viktor T. Toth
+Volker van Nek
+Wolfgang Dautermann
+Yasuaki Honda
+
+Contributors in 2016
+====================
+Andreas Eder
+Andrej Vodopivec
+Dan Gildea
+David Billinghurst
+David Scherfgen
+Gunter Königsmann
+Jaime E. Villate
+Kris Katterjohn
+Leo Butler
+Litvinov Sergey
+Mario Rodriguez Riotorto
+Raymond Toy
+Robert Dodier
+Sergey Litvinov
+Viktor T. Toth
+Volker van Nek
+Wolfgang Dautermann
+
+Contributors in 2015
+====================
+Andrej Vodopivec
+Barton Willis
+Dan Gildea
+David Billinghurst
+David Scherfgen
+Gunter Königsmann
+Ingo Feinerer
+Jaime E. Villate
+Jorge Barros de Abreu
+Kris Katterjohn
+Leo Butler
+Litvinov Sergey
+Mario Rodriguez Riotorto
+Raymond Toy
+Robert Dodier
+Rupert Swarbrick
+Sergey Litvinov
+Viktor T. Toth
+Volker van Nek
+Wolfgang Dautermann
+Yasuaki Honda
+
+Contributors in 2014
+====================
+Andrej Vodopivec
+Barton Willis
+Dan Gildea
+David Billinghurst
+Jaime E. Villate
+Jorge Barros de Abreu
+Kris Katterjohn
+Leo Butler
+Litvinov Sergey
+Mario Rodriguez Riotorto
+Nils Bruin
+Raymond Toy
+Robert Dodier
+Rupert Swarbrick
+Sergey Litvinov
+Viktor T. Toth
+Volker van Nek
+Yasuaki Honda
+
+Contributors in 2013
+====================
+Andreas Eder
+Andrej Vodopivec
+Barton Willis
+Dan Gildea
+David Billinghurst
+Jaime E. Villate
+Jorge Barros de Abreu
+Kris Katterjohn
+Leo Butler
+Mario Rodriguez Riotorto
+Raymond Toy
+Robert Dodier
+Rupert Swarbrick
+Volker van Nek
+
+Contributors in 2012
+====================
+Andreas Eder
+Andrej Vodopivec
+Barton Willis
+Dan Gildea
+David Billinghurst
+Jaime E. Villate
+Mario Rodriguez Riotorto
+Raymond Toy
+Robert Dodier
+Volker van Nek
+Yasuaki Honda
+
+Contributors in 2011
+====================
+Andreas Eder
+Andrej Vodopivec
+Barton Willis
+Dan Gildea
+Dan Stanger
+David Billinghurst
+Dieter Kaiser
+Douglas Crosher
+Jaime E. Villate
+Leo Butler
+Mario Rodriguez Riotorto
+Mark H. Weaver
+Raymond Toy
+Robert Dodier
+Viktor T. Toth
+Yasuaki Honda
+
+Contributors in 2010
+====================
+Andreas Eder
+Andrej Vodopivec
+Barton Willis
+Dan Gildea
+David Billinghurst
+Dieter Kaiser
+Jaime E. Villate
+Leo Butler
+Mario Rodriguez Riotorto
+Raymond Toy
+Robert Dodier
+Viktor T. Toth
+Volker van Nek
+
+Contributors in 2009
+====================
+Alexey Beshenov
+Andreas Eder
+Andrej Vodopivec
+Barton Willis
+Dan Gildea
+David Billinghurst
+Dieter Kaiser
+Douglas Crosher
+Jaime E. Villate
+James Amundson
+Leo Butler
+Mario Rodriguez Riotorto
+Raymond Toy
+Robert Dodier
+Viktor T. Toth
+Volker van Nek
+Yasuaki Honda
+
+Contributors in 2008
+====================
+Alexey Beshenov
+Andreas Eder
+Andrej Vodopivec
+Barton Willis
+Dan Gildea
+David Billinghurst
+Dieter Kaiser
+Douglas Crosher
+Harald Geyer
+Jaime E. Villate
+James Amundson
+Juan Pablo Romero Bernal
+Mario Rodriguez Riotorto
+Raymond Toy
+Robert Dodier
+Stavros Macrakis
+Vadim V. Zhytnikov
+Viktor T. Toth
+Volker van Nek
+Yasuaki Honda
+
+Contributors in 2007
+====================
+Andreas Eder
+Andrej Vodopivec
+Andrey Grozin
+Barton Willis
+Dan Gildea
+Dan Stanger
+David Billinghurst
+Douglas Crosher
+Harald Geyer
+Jaime E. Villate
+Jay Belanger
+Jorge Barros de Abreu
+Juan Pablo Romero Bernal
+Mario Rodriguez Riotorto
+Raymond Toy
+Robert Dodier
+Stavros Macrakis
+Vadim V. Zhytnikov
+Viktor T. Toth
+Volker van Nek
+
+Contributors in 2006
+====================
+Andrej Vodopivec
+Andrey Grozin
+Barton Willis
+Dan Stanger
+David Billinghurst
+Douglas Crosher
+Jaime E. Villate
+Jay Belanger
+Jorge Barros de Abreu
+Mario Rodriguez Riotorto
+Raymond Toy
+Robert Dodier
+Vadim V. Zhytnikov
+Viktor T. Toth
+Volker van Nek
+
+Contributors in 2005
+====================
 Andrej Vodopivec
 Barton Willis
 Cliff Yapp
+Dan Stanger
+David Billinghurst
+James Amundson
+Jay Belanger
+Jorge Barros de Abreu
+Mario Rodriguez Riotorto
+Raymond Toy
+Robert Dodier
 Vadim V. Zhytnikov
-
-Former developers as of April 2007:
-
-Mike Clarkson
-Steve Horne
-Judah Milgram
-Paulo Ney de Souza
-Sergey Semerikov
+Viktor T. Toth
 Wolfgang Jenkner
+
+Contributors in 2004
+====================
+Camm Maguire
+Cliff Yapp
+David Billinghurst
+James Amundson
+Jay Belanger
+Raymond Toy
+Robert Dodier
+Vadim V. Zhytnikov
+Viktor T. Toth
+Wolfgang Jenkner
+
+Contributors in 2003
+====================
+Camm Maguire
+Cliff Yapp
+David Billinghurst
+James Amundson
+Jay Belanger
+Mike Clarkson
+Raymond Toy
+Vadim V. Zhytnikov
+Wolfgang Jenkner
+
+Contributors in 2002
+====================
+Camm Maguire
+Cliff Yapp
+Dan Stanger
+David Billinghurst
+James Amundson
+Jay Belanger
+Mike Clarkson
+Raymond Toy
+Vadim V. Zhytnikov
+Wolfgang Jenkner
+
+Contributors in 2001
+====================
+James Amundson
+Jay Belanger
+Vadim V. Zhytnikov
+William F. Schelter
+
+Contributors in 2000
+====================
+William F. Schelter
+
 
 Maxima also includes contributions from:
 
 Michel van den Bergh
 Karl Berry
-Salvador Bosch P�rez
+Salvador Bosch Pérez
 Fedor Bezrukov
 Fabrizio Caruso
 Ari Constancio
 Gosei Furuya
-Juan Pablo Hierro �lvarez
+Juan Pablo Hierro Álvarez
 Vadim Konovalov
 Tim Moore
 Guenther Nowak
@@ -87,11 +414,13 @@ Jose Ramirez Labrador
 Ole Rohne
 Thomas A. Russ
 Marek Rychlik
-Gunter K�nigsmann
-Wolfgang Dautermann
 
 Starting with version 5.9.0, Maxima uses mk::defsystem and (slightly
 modified) run-lisp from the Common Lisp Open Code Collection,
 <http://clocc.sourceforge.net>.
 
 The nregex code was written by Lawrence E. Freil.
+
+We also want to say thank you to everyone who sent patches,
+reported bugs or suggested new features.
+

@@ -42,6 +42,7 @@
       $tr_warn_mode
       $tr_warn_undefined_variable
       $tr_function_call_default
+      $tr_bound_function_applyp
       $tr_array_as_ref
       $tr_numer
       $tr_float_can_branch_complex
@@ -80,7 +81,7 @@
 			      (when $compgrind
 				(mformat transl-file (intl:gettext "~2%;; Function ~:@M~%") item))
 			      (print* t-item))))))
-          (pathname out-file-name))
+          out-file-name)
 	 ;; unwind-protected
 	 (if transl-file (close transl-file))
 	 (if t-error (delete-file transl-file))))))
@@ -112,6 +113,8 @@
       (setq bin-file output-truename)))
   #-(or cmu scl sbcl clisp allegro openmcl lispworks ecl)
   (setq bin-file (compile-file input-file :output-file bin-file))
+  (when bin-file
+    (setq bin-file (namestring bin-file)))
   (append result (list bin-file)))
 
 (defun maxima-string (symb)

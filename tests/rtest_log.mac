@@ -475,19 +475,21 @@ makelist (li[k](-1b0), k, 2, 8);
 - 0.9721197704469093b0, - 0.9855510912974351b0, - 0.9925938199228304b0, 
 - 0.9962330018526479b0] $
 
-/* SF bug #3422: "li[2] and li[3] numerical evaluation fails for complex not in rectangular form" */
+/* SF bug #3422: "li[2] and li[3] numerical evaluation fails for complex not in rectangular form"
+ * SF bug #3636: "XXX-numerical-eval-p in gamma.lisp extremely inefficient"
+ */
 
 (reset (fpprec), 0);
 0;
 
-li[2]((1 + %i)/2e0);
+li[2](rectform((1 + %i)/2e0));
 0.45398526915029558 + 0.64376733288926875*%i;
 
-li[2]((1 + %i)/2b0);
+li[2](rectform((1 + %i)/2b0));
 0.45398526915029558b0 + 0.64376733288926875b0*%i;
 
-li[3]((1 + %i)/2e0);
+li[3](rectform((1 + %i)/2e0));
 0.48615953708556008 + 0.57007740708876898*%i;
 
-li[3]((1 + %i)/2b0);
+li[3](rectform((1 + %i)/2b0));
 0.48615953708556008b0 + 0.57007740708876898b0*%i;

@@ -118,15 +118,14 @@
   the real and imaginary parts of each arg are nuemrical (but not
   bigfloats).  A non-NIL result is returned if at least one of args is
   a floating-point value or if numer is true.  If the result is
-  non-NIL, it is a list of the arguments reduced via rectform"
+  non-NIL, it is a list of the arguments reduced via COMPLEX-NUMBER-P"
   (let (flag values)
     (dolist (ll args)
-      (destructuring-bind (rll . ill)
-          (trisplit ll)
-        (unless (and (float-or-rational-p rll)
-                     (float-or-rational-p ill))
+      (multiple-value-bind (bool rll ill)
+          (complex-number-p ll 'float-or-rational-p)
+        (unless bool
           (return-from complex-float-numerical-eval-p nil))
-        ;; Always save the result from trisplit.  But for backward
+        ;; Always save the result from complex-number-p.  But for backward
         ;; compatibility, only set the flag if any item is a float.
         (push (add rll (mul ill '$%i)) values)
         (setf flag (or flag (or (floatp rll) (floatp ill))))))
@@ -152,16 +151,15 @@
   the real and imaginary parts of each arg are nuemrical (including
   bigfloats). A non-NIL result is returned if at least one of args is
   a floating-point value or if numer is true. If the result is
-  non-NIL, it is a list of the arguments reduced via rectform."
+  non-NIL, it is a list of the arguments reduced via COMPLEX-NUMBER-P."
 
   (let (flag values)
     (dolist (ll args)
-      (destructuring-bind (rll . ill)
-	  (trisplit ll)
-        (unless (and (bigfloat-or-number-p rll)
-                     (bigfloat-or-number-p ill))
+      (multiple-value-bind (bool rll ill)
+          (complex-number-p ll 'bigfloat-or-number-p)
+        (unless bool
           (return-from complex-bigfloat-numerical-eval-p nil))
-	;; Always save the result from trisplit.  But for backward
+	;; Always save the result from complex-number-p.  But for backward
 	;; compatibility, only set the flag if any item is a bfloat.
 	(push (add rll (mul ill '$%i)) values)
 	(when (or ($bfloatp rll) ($bfloatp ill))
