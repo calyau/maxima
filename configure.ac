@@ -963,7 +963,7 @@ flag.)
    fi
    count=`echo "${result}" | grep -c "MAXIMA_CMUCL_TEST_SUCCESS"`
    if test ! "${count}" = "1" ; then
-      AC_MSG_ERROR(an error occured while checking cmucl runtime)
+      AC_MSG_ERROR(an error occurred while checking cmucl runtime)
    fi
 fi
 

@@ -194,7 +194,7 @@ it is a growing payment.
 geo_annuity_pv(rate,growing_rate,PV,num):=PV*(rate-growing_rate)/(1-(1+growing_rate)^(num)/((1+rate)^num))$
 
 /*
-IRR (Internal Rate of Return), is the value of rate wich makes Net Present Value
+IRR (Internal Rate of Return), is the value of rate which makes Net Present Value
 zero.
 */
 irr(flowValues,I0):=

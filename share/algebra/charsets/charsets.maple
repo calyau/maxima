@@ -3234,7 +3234,7 @@ end:
 
 #  the following routines implement a heuristic procedure for poly factorizati
 #on
-#  over algebraic function fields by interger substitution and solving systems
+#  over algebraic function fields by integer substitution and solving systems
 #  of linear equations
 # the main routine
 `charsets/tefactor` :=

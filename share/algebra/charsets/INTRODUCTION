@@ -1,6 +1,6 @@
 This is a short introduction to the charsets package written by
 D. Wang in Maple and translated to Maxima by Dan Stanger partly
-mechanically with the help of an ocaml translater he wrote. The
+mechanically with the help of an ocaml translator he wrote. The
 original Maple package can be found on the web, but doesn't work any
 more under recent versions of Maple, even having corrected the most
 obvious problems ( replacing " by % and "" by %%, removing the last
