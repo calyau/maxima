@@ -562,20 +562,20 @@
 	      (return result)))))
 
 (defun dsumprod (form result d-form sw sh sd)
-  (prog (dummy (w 0) (h 0) (d 0) dummy2 (lsum (eq (caar form) '%lsum)))
+  (prog (str to dummy (w 0) (h 0) (d 0) dummy2 (lsum (eq (caar form) '%lsum)))
      (setq dummy2 (dimension (caddr form) nil 'mparen 'mequal nil 0)
 	   w width
 	   h height
 	   d depth)
      (if lsum
-	 (push-string " in "  dummy2)
-	 (push-string " = " dummy2))
+	 (setq str " in " to "")
+	 (setq str " = "  to (cadr (cdddr form))))
+     (push-string str dummy2)
      (setq dummy2 (dimension (cadddr form) dummy2 'mequal 'mparen nil 0)
-	   w (+ 3 w width)
+	   w (+ (length str) w width)
 	   h (max h height)
 	   d (max d depth))
-     (or lsum
-	 (setq dummy (dimension (cadr (cdddr form)) nil 'mparen 'mparen nil 0)))
+     (setq dummy (dimension to nil 'mparen 'mparen nil 0))
      (unless (checkfit (max w width))
        (return (dimension-function form result)))
      (setq dummy2 (cons (cons (- sw) (cons (- (+ sd h)) dummy2)) (cons d-form result)))

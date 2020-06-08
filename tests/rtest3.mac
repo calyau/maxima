@@ -618,3 +618,146 @@ done;
 
 map (get_index_properties, '[A, B, C, D, E, F, G]);
 [[], [], [], [], [], [], []];
+
+/* email from Oleg Nesterov 2020-05-21: "maxima: bug in dsumprod() ?" */
+
+(print_string_2d (e) :=
+   block ([s: make_string_output_stream (), s1],
+          with_stdout (s, print (e)),
+          s1: get_output_stream_string (s),
+          close (s),
+          s1),
+ 0);
+0;
+
+print_string_2d (lsum(1/f(g(x)/h(x)), x, LOOOOOOOOONG_EXPR));
+"====
+\\                         1
+ >                     ------- 
+/                        g(x)
+====                   f(----)
+x in LOOOOOOOOONG_EXPR   h(x)
+"$
+
+/* other examples which call DSUMPROD in test suite */
+
+print_string_2d ('sum(x^k / k,k,1,inf));
+"inf
+====   k
+\\     x
+ >    -- 
+/     k
+====
+k = 1
+"$
+
+print_string_2d (subst (k = \*index, 'sum(x^k / k,k,1,inf)));
+"inf
+====        *index
+\\          x
+ >         ------- 
+/          *index
+====
+*index = 1
+"$
+
+print_string_2d ('sum(i!,i,1,4));
+" 4
+====
+\\
+ >    i! 
+/
+====
+i = 1
+"$
+
+print_string_2d ('sum(g(i),i,0,n));
+" n
+====
+\\
+ >    g(i) 
+/
+====
+i = 0
+"$
+
+print_string_2d ('sum(g(i),i,0,n) + 1);
+" n
+====
+\\
+ >    g(i) + 1 
+/
+====
+i = 0
+"$
+
+print_string_2d (foo: unsum(product(i^2,i,1,n),n));
+" n - 1
+ /===\\
+  ! !   2
+( ! !  i ) (n - 1) (n + 1) 
+  ! !
+ i = 1
+"$
+
+print_string_2d (nusum(foo,n,1,n));
+"  n
+/===\\
+ ! !   2
+ ! !  i  - 1 
+ ! !
+i = 1
+"$
+
+print_string_2d (powerseries(log(sin(x)/x),x,0));
+"inf
+====        i2  2 i2 - 1             2 i2
+\\      (- 1)   2         bern(2 i2) x
+ >     ---------------------------------- 
+/                  i2 (2 i2)!
+====
+i2 = 1
+"$
+
+print_string_2d (product((x^i+1)^2.5,i,1,inf)/(x^2+1));
+" inf
+/===\\
+ ! !    i     2.5
+ ! !  (x  + 1)
+ ! !
+i = 1
+----------------- 
+      2
+     x  + 1
+"$
+
+/* additional DSUMPROD examples */
+
+print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl));
+"====
+\\                                            1
+ >                                        -------- 
+/                                         f(x)
+====                                      ---- + 1
+kskdsksdkkdksdksd in w999393293923939losl  2
+"$
+
+print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^2));
+"====
+\\                                             1
+ >                                         -------- 
+/                                          f(x)
+====                                       ---- + 1
+                                         2  2
+kskdsksdkkdksdksd in w999393293923939losl
+"$
+
+print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^skdkskdsk));
+"====
+\\                                                     1
+ >                                                 -------- 
+/                                                  f(x)
+====                                               ---- + 1
+                                         skdkskdsk  2
+kskdsksdkkdksdksd in w999393293923939losl
+"$
