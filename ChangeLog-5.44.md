@@ -4,7 +4,7 @@ Maxima 5.44 change log
 New items in core:
 ------------------
  * Additional float constants: LEAST-NEGATIVE-NORMALIZED-FLONUM,
-   largest_negative_float, least_negative_float, 
+   largest_negative_float, least_negative_float,
    least_positive_normalized_float, and least_negative_normalized_float.
  * Support for pre/post sub/superscripts (get_index_properties,
    declare_index_properties and remove_index_properties).
@@ -16,12 +16,12 @@ New items in share:
  * pytranslate, which converts maxima to python
  * rtest_inteqn
  * descriptive: find_runs and find_runs_inverse
- 
+
 Changes in core:
 ----------------
  * Code clean ups and removal of functions that only had a historical
    meaning
- * In TEST-BATCH, ensure that list of unexpectedly passed tests is 
+ * In TEST-BATCH, ensure that list of unexpectedly passed tests is
    nonempty before reporting it.
  * :lisp-quiet can now be told not to use subsequent :lisp commands
  * defmfun now adds an ARG-LIST property that allows frontends to
@@ -48,12 +48,12 @@ Changes in core:
  * Fixed the translations of log and sqrt so they honor the flag
    tr_float_can_branch_complex
  * Updated gentran to v.5
- * Improved the pattern matcher for "+" and "*" expressions, see 
+ * Improved the pattern matcher for "+" and "*" expressions, see
    maxima-discuss, circa 2019-12-27: "Function to recognise series"
  * allow zn_log to work on subgroups
  * gamma_incomplete_lower is now returned in the noun form in many places
  * operatorp(expr,op) was inconsistent with operatorp(expr,[op])
- * sqrtdenest is now built-in, not a share function. 
+ * sqrtdenest is now built-in, not a share function.
  * load(sqdnst) now is a no-op.
 
 Changes in share:
@@ -63,25 +63,25 @@ Changes in share:
  * A testbench for draw()
  * plot2d with a single function now uses xlabel
  * Many minor corrections
- * In package amatrix, protect against empty matrices when converting 
+ * In package amatrix, protect against empty matrices when converting
    amatrix to matrix and vice versa
  * Fixed contragrad in ctensor, added tests for cograd/contragrad
 
 Bug fixes:
 ----------
- * #3412: Corrected the translation of conditionals
- * #3587, +3489: Better handling of limits of logarithms
- * #3521: In simplify_sum, avoid double-counting -min_ni term in 
+ * 3412: Corrected the translation of conditionals
+ * 3587, +3489: Better handling of limits of logarithms
+ * 3521: In simplify_sum, avoid double-counting -min_ni term in
    to_hypergeometric
- * #3265: gcfactor(0) -> division by zero
- * #2839: gcfactor(9) => 9
- * #3287: Cross product of scalar zero versus vector yields zero result
- * #3583: Stack overflow for equality testing with assumptions
- * #3608: logic_simplify handles inequalities incorrectly 
- * #3607: printprops displays matchdeclare properties incorrectly when value is a lambda
- * #2174: Bogus translation of declare
- * #3513: Emacs: wxdraw3d not working
- * #3048: notequal is not translated properly
+ * 3265: gcfactor(0) -> division by zero
+ * 2839: gcfactor(9) => 9
+ * 3287: Cross product of scalar zero versus vector yields zero result
+ * 3583: Stack overflow for equality testing with assumptions
+ * 3608: logic_simplify handles inequalities incorrectly
+ * 3607: printprops displays matchdeclare properties incorrectly when value is a lambda
+ * 2174: Bogus translation of declare
+ * 3513: Emacs: wxdraw3d not working
+ * 3048: notequal is not translated properly
 
 Unnumbered bugs:
 ----------------
@@ -107,12 +107,12 @@ Additional improvements:
  * A way to run many draw() and plot() examples for manual tests
  * More out-of-source-build improvements
  * "make dvi" was subject to bit-rot and should now work again
- * Resolved a few cases in which common variable names in 
+ * Resolved a few cases in which common variable names in
    arguments caused unexpected behavior
  * Better ABCL integration
  * Added a help message (Option: /?) to the windows installer
  * Fix errors when installing on MacOS via Homebrew
- * run_testsuite(share_tests=only) now doesn't fail due to 
+ * run_testsuite(share_tests=only) now doesn't fail due to
    unicode-sniffer.lisp not having been loaded
  * Draw now translates the coordinates of labels, too
  * Use DLMF 8.8.9 to expand gamma_incomplete(a+n,z)
