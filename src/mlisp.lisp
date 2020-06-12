@@ -1262,8 +1262,11 @@ wrapper for this."
        (nreverse ans))))
 
 (defun mapatom (x)
-  (or (symbolp x) (mnump x) ($subvarp x) (stringp x)
-      (and (consp x) (eq (caar x) 'mminus) (mnump (cadr x)))))
+  (or ($atom x)
+      (mnump x)
+      (and (eq (caar x) 'mminus) (mnump (cadr x)))
+      ($subvarp x)
+      (op-equalp x '$@ '%@)))
 
 (defmfun $mapatom (x)
   (if (mapatom (specrepcheck x)) t))

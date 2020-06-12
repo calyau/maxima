@@ -412,3 +412,40 @@ map (f, -a/b);
 
 map (f, x(1));
 x(f(1));
+
+/* Previously some atoms were not considered to be mapatoms.
+ * Mailing list 2020-06-05: "Non-mapatomic atoms"
+ */
+
+(kill (a),
+ a : make_array (fixnum, 1),
+ 0);
+0;
+
+mapatom (a);
+true;
+
+errcatch (map (f, a));
+[];
+
+(kill (a), 0);
+0;
+
+/* Structure references are mapatoms.
+ * Mailing list 2020-06-05: "Non-mapatomic atoms"
+ */
+
+(kill (f, s, x), 0);
+0;
+
+mapatom (s@x);
+true;
+
+errcatch (map (f, s@x));
+[];
+
+mapatom ('(s@x));
+true;
+
+errcatch (map (f, '(s@x)));
+[];
