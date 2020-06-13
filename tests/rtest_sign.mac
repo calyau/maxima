@@ -1204,3 +1204,18 @@ unknown;
 (killcontext (myctxt),
  reset (domain));
 [domain];
+
+/* Bug #3417: sign(1/zero) => 0 (where equal(zero,0)) */
+
+(assume (equal (zero, 0), equal (q, r)), 0)$
+0;
+
+errcatch (sign (1 / (q - r)))$
+[];
+
+/* This used to return zero */
+errcatch (sign (1 / zero))$
+[];
+
+(forget (equal (zero, 0), equal (q, r)), 0)$
+0;

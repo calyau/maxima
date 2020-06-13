@@ -1266,7 +1266,7 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	      (let (s o e m)
                 (with-compsplt (lhs rhs x)
                   (dcompare lhs rhs)
-                  (cond ((member sign '($pos $neg $zero) :test #'eq))
+                  (cond ((member sign '($pos $neg) :test #'eq))
                         ((eq sign '$pnz) nil)
                         (t (setq s sign o odds e evens m minus)
                            (sign x)
