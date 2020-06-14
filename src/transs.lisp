@@ -214,7 +214,7 @@ translated."
     (when (or hint *untranslated-functions-called*)
       (format t (intl:gettext "~&translator: see the 'unlisp' file for possible optimizations.~%")))))
 
-(defun translate-file (in-file-name out-file-name &optional (ttymsgsp $tr_file_tty_messagesp)
+(defun translate-file (in-file-name out-file-name
 		       &aux warn-file translated-file *translation-msgs-files*
 		       *untranslated-functions-called* *declared-translated-functions*)
   (bind-transl-state
@@ -225,7 +225,7 @@ translated."
      (with-open-file (out-stream translated-file :direction :output :if-exists :supersede)
        (with-open-file (warn-stream warn-file :direction :output :if-exists :supersede)
 	 (setq *translation-msgs-files* (list warn-stream))
-	 (if ttymsgsp
+	 (if $tr_file_tty_messagesp
 	     (setq *translation-msgs-files* (cons *standard-output* *translation-msgs-files*)))
 	 (format out-stream ";;; -*- Mode: Lisp; package:maxima; syntax:common-lisp ;Base: 10 -*- ;;;~%")
 	 (flet ((timezone-iso8601-name (dst tz)
