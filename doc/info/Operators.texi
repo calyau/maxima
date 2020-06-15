@@ -1270,12 +1270,14 @@ quote-quote).
 @code{f(@var{x_1}, ..., @var{x_n}) := ...} defines an ordinary function.
 
 @c ===beg===
-@c G1(x, y) := (print ("Evaluating G1 for x=", x, "and y=", y), x.y - y.x);
+@c G1(x, y) := (print ("Evaluating G1 for x=", x, "and y=", y),
+@c  x.y - y.x);
 @c G1([1, a], [2, b]);
 @c G1([1, a], [2, b]);
 @c ===end===
 @example
-(%i1) G1(x, y) := (print ("Evaluating G1 for x=", x, "and y=", y), x.y - y.x);
+(%i1) G1(x, y) := (print ("Evaluating G1 for x=", x, "and y=", y),
+ x.y - y.x);
 (%o1) G1(x, y) := (print("Evaluating G1 for x=", x, "and y=", 
                                                y), x . y - y . x)
 (%i2) G1([1, a], [2, b]);
@@ -1319,7 +1321,8 @@ Evaluating G2 for a= 2345
 is a special case of a @mrefdot{memoizing function}
 
 @c ===beg===
-@c G3[n](x) := (print ("Evaluating G3 for n=", n), diff (sin(x)^2, x, n));
+@c G3[n](x) := (print ("Evaluating G3 for n=", n), diff (sin(x)^2,
+@c  x, n));
 @c G3[2];
 @c G3[2];
 @c G3[2](1);
@@ -1327,7 +1330,8 @@ is a special case of a @mrefdot{memoizing function}
 @c listarray (G3);
 @c ===end===
 @example
-(%i1) G3[n](x) := (print ("Evaluating G3 for n=", n), diff (sin(x)^2, x, n));
+(%i1) G3[n](x) := (print ("Evaluating G3 for n=", n), diff (sin(x)^2,
+ x, n));
 (%o1) G3 (x) := (print("Evaluating G3 for n=", n), 
         n
                                                      2

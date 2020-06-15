@@ -1140,10 +1140,10 @@ Expansion, when @code{beta_expand} is @code{true}:
                              b + a                 b + a
 
 (%i24) beta_incomplete(a-1,b,z),beta_expand:true;
-                                                           b  a - 1
-           beta_incomplete(a, b, z) (- b - a + 1)   (1 - z)  z
-(%o24)     -------------------------------------- - ---------------
-                           1 - a                         1 - a
+                                                       b  a - 1
+       beta_incomplete(a, b, z) (- b - a + 1)   (1 - z)  z
+(%o24) -------------------------------------- - ---------------
+                       1 - a                         1 - a
 @end example
  
 Derivative and integral for @code{beta_incomplete}:

@@ -149,55 +149,47 @@ exponential function using an logarithm.
 
 @c ===beg===
 @c load ("lsquares")$
-@c yvalues:[1,3,5,60,200,203,80]$
-@c time:[1,2,4,5,6,8,10]$
-@c f:y=a*exp(b*t);
-@c yvalues_log:log(yvalues)$
-@c f_log:log(subst(y=exp(y),f));
-@c lsquares_estimates(
-@c     transpose(matrix(yvalues_log,time)),
-@c     [y,t],
-@c     f_log,
-@c     [a,b]
-@c  );
+@c yvalues: [1,3,5,60,200,203,80]$
+@c time: [1,2,4,5,6,8,10]$
+@c f: y=a*exp(b*t);
+@c yvalues_log: log(yvalues)$
+@c f_log: log(subst(y=exp(y),f));
+@c lsquares_estimates (transpose(matrix(yvalues_log,time)),
+@c                           [y,t], f_log, [a,b]);
 @c ===end===
 @example
 (%i1) load ("lsquares")$
-(%i2) yvalues:[1,3,5,60,200,203,80]$
-(%i3) time:[1,2,4,5,6,8,10]$
+(%i2) yvalues: [1,3,5,60,200,203,80]$
+(%i3) time: [1,2,4,5,6,8,10]$
 @group
-(%i4) f:y=a*exp(b*t);
+(%i4) f: y=a*exp(b*t);
                                    b t
 (%o4)                      y = a %e
 @end group
-(%i5) yvalues_log:log(yvalues)$
+(%i5) yvalues_log: log(yvalues)$
 @group
-(%i6) f_log:log(subst(y=exp(y),f));
+(%i6) f_log: log(subst(y=exp(y),f));
                                     b t
 (%o6)                   y = log(a %e   )
 @end group
 @group
-(%i7) lsquares_estimates(
-    transpose(matrix(yvalues_log,time)),
-    [y,t],
-    f_log,
-    [a,b]
- );
+(%i7) lsquares_estimates (transpose(matrix(yvalues_log,time)),
+                          [y,t], f_log, [a,b]);
 *************************************************
   N=    2   NUMBER OF CORRECTIONS=25
        INITIAL VALUES
  F=  6.802906290754687D+00   GNORM=  2.851243373781393D+01
 *************************************************
 
-   I  NFN     FUNC                    GNORM                   STEPLENGTH
+I NFN FUNC                  GNORM                 STEPLENGTH
 
-   1    3     1.141838765593467D+00   1.067358003667488D-01   1.390943719972406D-02  
-   2    5     1.141118195694385D+00   1.237977833033414D-01   5.000000000000000D+00  
-   3    6     1.136945723147959D+00   3.806696991691383D-01   1.000000000000000D+00  
-   4    7     1.133958243220262D+00   3.865103550379243D-01   1.000000000000000D+00  
-   5    8     1.131725773805499D+00   2.292258231154026D-02   1.000000000000000D+00  
-   6    9     1.131625585698168D+00   2.664440547017370D-03   1.000000000000000D+00  
-   7   10     1.131620564856599D+00   2.519366958715444D-04   1.000000000000000D+00  
+1   3 1.141838765593467D+00 1.067358003667488D-01 1.390943719972406D-02  
+2   5 1.141118195694385D+00 1.237977833033414D-01 5.000000000000000D+00  
+3   6 1.136945723147959D+00 3.806696991691383D-01 1.000000000000000D+00  
+4   7 1.133958243220262D+00 3.865103550379243D-01 1.000000000000000D+00  
+5   8 1.131725773805499D+00 2.292258231154026D-02 1.000000000000000D+00  
+6   9 1.131625585698168D+00 2.664440547017370D-03 1.000000000000000D+00  
+7  10 1.131620564856599D+00 2.519366958715444D-04 1.000000000000000D+00  
 
  THE MINIMIZATION TERMINATED WITHOUT DETECTING ERRORS.
  IFLAG = 0

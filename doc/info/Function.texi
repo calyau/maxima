@@ -1307,7 +1307,8 @@ The mode @code{any_check} is like @code{any}, but @code{any_check} enables the
 @group
 (%i5) baz_quux: sqrt(2);
 Cannot assign to `baz_quux'.
-#0: lambda([y],if y # 'baz_quux then error("Cannot assign to `baz_quux'."))(y=sqrt(2))
+#0: lambda([y],if y # 'baz_quux then
+            error("Cannot assign to `baz_quux'."))(y=sqrt(2))
  -- an error. To debug this try: debugmode(true);
 @end group
 @group

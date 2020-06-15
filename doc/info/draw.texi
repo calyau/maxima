@@ -808,24 +808,25 @@ Example:
 @figure{draw_color2}
 
 @example
-(%i1) H(p,p_0):=%i/(2*%pi*(p-p_0));
-      draw2d(
-          proportional_axes=xy,
-          ip_grid=[150,150],
-          grid=true,
-          makelist(
-              [
-                  color=printf(false,"#~2,'0x~2,'0x~2,'0x",i*10,0,0),
-                  key_pos=top_left,
-                  key = if mod(i,5)=0 then sconcat("H=",i,"A/M") else "",
-                  implicit(
-                      cabs(H(x+%i*y,-1-%i)+H(x+%i*y,1+%i)-H(x+%i*y,1-%i)-H(x+%i*y,-1+%i))=i/10,
-                      x,-3,3,
-                      y,-3,3
-                  )
-              ],
-              i,1,25
-          )
+(%i1) H(p,p_0) := %i/(2*%pi*(p-p_0))$
+(%i2) draw2d(
+       proportional_axes=xy,
+       ip_grid=[150,150],
+       grid=true,
+       makelist(
+         [
+           color=printf(false,"#~2,'0x~2,'0x~2,'0x",i*10,0,0),
+           key_pos=top_left,
+           key = if mod(i,5)=0 then sconcat("H=",i,"A/M") else "",
+           implicit(
+             cabs(H(x+%i*y,-1-%i)+H(x+%i*y,1+%i)-H(x+%i*y,1-%i)
+                  -H(x+%i*y,-1+%i))=i/10,
+             x,-3,3,
+             y,-3,3
+           )
+         ],
+         i,1,25
+       )
       )$
 @end example
 @figure{draw_color3}

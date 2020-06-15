@@ -492,10 +492,11 @@ differ by less than 2.
 @c   +x*((bessel_j(n-2,x^2)-bessel_j(n,x^2))*x
 @c   -(bessel_j(n,x^2)-bessel_j(n+2,x^2))*x)
 @c   -2*bessel_j(n+1,x^2)+2*bessel_j(n-1,x^2));
-@c bessel_simplify(-2*bessel_j(1,z)*z^3-10*bessel_j(2,z)*z^2
-@c  +15*%pi*bessel_j(1,z)*struve_h(3,z)*z-15*%pi*struve_h(1,z)*bessel_j(3,z)*z
-@c  -15*%pi*bessel_j(0,z)*struve_h(2,z)*z+15*%pi*struve_h(0,z)*bessel_j(2,z)*z
-@c  -30*%pi*bessel_j(1,z)*struve_h(2,z)+30*%pi*struve_h(1,z)*bessel_j(2,z));
+@c bessel_simplify( -2*bessel_j(1,z)*z^3 - 10*bessel_j(2,z)*z^2
+@c  + 15*%pi*bessel_j(1,z)*struve_h(3,z)*z - 15*%pi*struve_h(1,z)
+@c    *bessel_j(3,z)*z - 15*%pi*bessel_j(0,z)*struve_h(2,z)*z
+@c  + 15*%pi*struve_h(0,z)*bessel_j(2,z)*z - 30*%pi*bessel_j(1,z)
+@c    *struve_h(2,z) + 30*%pi*struve_h(1,z)*bessel_j(2,z));
 @c ===end===
 @example
 (%i1) load('contrib_ode)$
@@ -507,10 +508,11 @@ differ by less than 2.
 (%o2)                           0
 @end group
 @group
-(%i3) bessel_simplify(-2*bessel_j(1,z)*z^3-10*bessel_j(2,z)*z^2
- +15*%pi*bessel_j(1,z)*struve_h(3,z)*z-15*%pi*struve_h(1,z)*bessel_j(3,z)*z
- -15*%pi*bessel_j(0,z)*struve_h(2,z)*z+15*%pi*struve_h(0,z)*bessel_j(2,z)*z
- -30*%pi*bessel_j(1,z)*struve_h(2,z)+30*%pi*struve_h(1,z)*bessel_j(2,z));
+(%i3) bessel_simplify( -2*bessel_j(1,z)*z^3 - 10*bessel_j(2,z)*z^2
+ + 15*%pi*bessel_j(1,z)*struve_h(3,z)*z - 15*%pi*struve_h(1,z)
+   *bessel_j(3,z)*z - 15*%pi*bessel_j(0,z)*struve_h(2,z)*z
+ + 15*%pi*struve_h(0,z)*bessel_j(2,z)*z - 30*%pi*bessel_j(1,z)
+   *struve_h(2,z) + 30*%pi*struve_h(1,z)*bessel_j(2,z));
 (%o3)                           0
 @end group
 @end example

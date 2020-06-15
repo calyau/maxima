@@ -16,19 +16,22 @@ Example:
 @c ===beg===
 @c load (pytranslate)$
 @c /* Define an example function to calculate factorial */
-@c pytranslate(my_factorial(x) := if (x = 1 or x = 0) then 1 else x * my_factorial(x - 1));
+@c pytranslate(my_factorial(x) := if (x = 1 or x = 0) then 1
+@c                  else x * my_factorial(x - 1));
 @c my_factorial(5);
 @c ===end===
 @example
 (%i1) load (pytranslate)$
 @group
 /* Define an example function to calculate factorial */
-(%i2) pytranslate(my_factorial(x) := if (x = 1 or x = 0) then 1 else x * my_factorial(x - 1));
+(%i2) pytranslate(my_factorial(x) := if (x = 1 or x = 0) then 1
+                  else x * my_factorial(x - 1));
 (%o2) 
 def my_factorial(x, v = v):
     v = Stack(@{@}, v)
     v.ins(@{"x" : x@})
-    return((1 if ((v["x"] == 1) or (v["x"] == 0)) else (v["x"] * my_factorial((v["x"] + (-1))))))
+    return((1 if ((v["x"] == 1) or (v["x"] == 0)) \
+              else (v["x"] * my_factorial((v["x"] + (-1))))))
 m["my_factorial"] = my_factorial
 @end group
 @group
@@ -40,7 +43,8 @@ m["my_factorial"] = my_factorial
 >>> def my_factorial(x, v = v):
 ...     v = Stack(@{@}, v)
 ...     v.ins(@{"x" : x@})
-...     return((1 if ((v["x"] == 1) or (v["x"] == 0)) else (v["x"] * my_factorial((v["x"] + (-1))))))
+...     return((1 if ((v["x"] == 1) or (v["x"] == 0)) \
+...     else (v["x"] * my_factorial((v["x"] + (-1))))))
 ... 
 >>> my_factorial(5)
 120
@@ -116,7 +120,8 @@ Passing the optional parameter (@var{print-ir}) to @code{pytranslate} as t, will
 
 @c ===beg===
 @c load(pytranslate);
-@c pytranslate('(plot3d(lambda([x, y], x^2 + y^(-1)), [x, 1, 10], [y, 1, 10])), t);
+@c pytranslate('(plot3d(lambda([x, y], x^2+y^(-1)), [x, 1, 10],
+@c                    [y, 1, 10])), t);
 @c ===end===
 @example
 @group
@@ -124,20 +129,26 @@ Passing the optional parameter (@var{print-ir}) to @code{pytranslate} as t, will
 (%o1) pytranslate
 @end group
 @group
-(%i2) pytranslate('(plot3d(lambda([x, y], x^2 + y^(-1)), [x, 1, 10], [y, 1, 10])), t);
+(%i2) pytranslate('(plot3d(lambda([x, y], x^2+y^(-1)), [x, 1, 10],
+                   [y, 1, 10])), t);
 (body
  (funcall (element-array "m" (string "plot3d"))
-  (lambda ((symbol "x")
-           (symbol "y")
-           (op-no-bracket = (symbol "v") (funcall (symbol "stack") (dictionary) (symbol "v"))))
-   (op + (funcall (element-array (symbol "m") (string "pow")) (symbol "x") (num 2 0))
-         (funcall (element-array (symbol "m") (string "pow")) (symbol "y") (unary-op - (num 1 0)))))
-  (struct-list (string "x") (num 1 0) (num 10 0))
-  (struct-list (string "y") (num 1 0) (num 10 0)))) 
+          (lambda
+              ((symbol "x") (symbol "y")
+               (op-no-bracket
+                =
+                (symbol "v")
+                (funcall (symbol "stack") (dictionary) (symbol "v"))))
+            (op +
+                (funcall (element-array (symbol "m") (string "pow"))
+                         (symbol "x") (num 2 0))
+                (funcall (element-array (symbol "m") (string "pow"))
+                         (symbol "y") (unary-op - (num 1 0)))))
+          (struct-list (string "x") (num 1 0) (num 10 0))
+          (struct-list (string "y") (num 1 0) (num 10 0))))
 (%o2) 
-m["plot3d"](lambda x, y, v = Stack(@{@}, v): (m["pow"](x, 2) + m["pow"](y, (-1))),
-            ["x", 1, 10],
-            ["y", 1, 10])
+m["plot3d"](lambda x, y, v = Stack(@{@}, v): (m["pow"](x, 2) + m["\
+pow"](y, (-1))), ["x", 1, 10], ["y", 1, 10])
 @end group
 @end example
 @end deffn
@@ -177,7 +188,8 @@ Example:
 @end group
 @group
 (%i10) pytranslate(a+b, t);
-(body (op + (element-array (symbol "v") (string "b")) (element-array (symbol "v") (string "a"))))
+(body (op + (element-array (symbol "v") (string "b")) \
+(element-array (symbol "v") (string "a"))))
 (%o10) 
 (v["b"] + v["a"])
 @end group
@@ -189,7 +201,7 @@ If @code{(caar expr)} is not found in @var{*maxima-direct-ir-map*}, then @code{c
 Example:
 @example
 @group
-(%i11) show_form(g(x):=x^2);
+(%i11) show_form(g(x) := x^2);
 ((mdefine simp) (($g) $x) ((mexpt) $x 2))
 @end group
 @group
@@ -199,13 +211,16 @@ Example:
   (func-def (symbol "g")
             ((symbol "x") (op-no-bracket = (symbol "v") (symbol "v")))
             (body-indented
-                (op-no-bracket = (symbol "v") (funcall (symbol "stack") (dictionary) (symbol "v")))
-                (obj-funcall (symbol "v") (symbol "ins") (dictionary ((string "x") (symbol "x"))))
+                (op-no-bracket = (symbol "v") (funcall (symbol "stack") \
+                (dictionary) (symbol "v")))
+                (obj-funcall (symbol "v") (symbol "ins") (dictionary \
+                ((string "x") (symbol "x"))))
                 (funcall (symbol "return")
-                         (funcall (element-array (symbol "f") (string "pow"))
-                                  (element-array (symbol "v") (string "x"))
+                    (funcall (element-array (symbol "f") (string "pow"))
+                         (element-array (symbol "v") (string "x"))
                                   (num 2 0)))))
-  (op-no-bracket = (element-array (symbol "f") (string "g")) (symbol "g"))))  
+  (op-no-bracket = (element-array (symbol "f") (string "g")) \
+  (symbol "g"))))  
 (%o12) 
 def g(x, v = v):
     v = Stack(@{@}, v)

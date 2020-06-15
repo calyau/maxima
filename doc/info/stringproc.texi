@@ -540,7 +540,8 @@ Example: Read the first 16 bytes from a file encrypted with AES in OpenSSL.
 (%i2) in: openr_binary("msg.bin");
 (%o2)                       #<input stream msg.bin>
 (%i3) (L:[],  thru 16. do push(readbyte(in), L),  L:reverse(L));
-(%o3) [53, 61, 6C, 74, 65, 64, 5F, 5F, 88, 56, 0DE, 8A, 74, 0FD, 0AD, 0F0]
+(%o3) [53, 61, 6C, 74, 65, 64, 5F, 5F, 88, 56, 0DE, 8A, 74, 0FD,
+       0AD, 0F0]
 (%i4) close(in);
 (%o4)                                true
 (%i5) map(ascii, rest(L,-8));

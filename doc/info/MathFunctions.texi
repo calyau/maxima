@@ -240,12 +240,13 @@ Example use:
         r : r - q),
     reverse(uf));
 (%o1) unitfrac(r) := block([uf : [], q], 
-if not ratnump(r) then error("unitfrac: argument must be a rational number"
-                                     1
-), while r # 0 do (uf : cons(q : ----------, uf), r : r - q), 
-                                         1
-                                 ceiling(-)
-                                         r
+if not ratnump(r) then
+error("unitfrac: argument must be a rational number"), 
+                                  1
+while r # 0 do (uf : cons(q : ----------, uf), r : r - q), 
+                                      1
+                              ceiling(-)
+                                      r
 reverse(uf))
 @group
 (%i2) unitfrac (9/10);
@@ -1188,7 +1189,8 @@ evaluated in float or bigfloat precision.
 @end group
 @group
 (%i4) [2.86b0!, (1.0b0+%i)!];
-(%o4)  [5.046635586910012b0, 3.430658398165454b-1 %i + 6.529654964201667b-1]
+(%o4) [5.046635586910012b0, 3.430658398165454b-1 %i
+                                          + 6.529654964201667b-1]
 @end group
 @end example
 

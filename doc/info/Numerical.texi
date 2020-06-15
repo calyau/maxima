@@ -1109,12 +1109,16 @@ $$\cases{{\displaystyle{dx}\over\displaystyle{dt}} = 4-x^2-4y^2 &\cr &\cr {\disp
 for t between 0 and 4, and with values of -1.25 and 0.75 for x and y at t=0:
 
 @c ===beg===
-@c sol: rk([4-x^2-4*y^2,y^2-x^2+1],[x,y],[-1.25,0.75],[t,0,4,0.02])$
-@c plot2d ([discrete,makelist([p[1],p[3]],p,sol)], [xlabel,"t"],[ylabel,"y"])$
+@c sol: rk([4-x^2-4*y^2, y^2-x^2+1], [x, y], [-1.25, 0.75],
+@c               [t,0,4,0.02])$
+@c plot2d([discrete, makelist([p[1], p[3]], p, sol)], [xlabel, "t"],
+@c              [ylabel, "y"])$
 @c ===end===
 @example
-(%i1) sol: rk([4-x^2-4*y^2,y^2-x^2+1],[x,y],[-1.25,0.75],[t,0,4,0.02])$
-(%i2) plot2d ([discrete,makelist([p[1],p[3]],p,sol)], [xlabel,"t"],[ylabel,"y"])$
+(%i1) sol: rk([4-x^2-4*y^2, y^2-x^2+1], [x, y], [-1.25, 0.75],
+              [t, 0, 4, 0.02])$
+(%i2) plot2d([discrete, makelist([p[1], p[3]], p, sol)], [xlabel, "t"],
+             [ylabel, "y"])$
 @end example
 
 The plot will show the solution for variable @var{y} as a function of @var{t}.

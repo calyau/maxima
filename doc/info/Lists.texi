@@ -1780,13 +1780,13 @@ Note that @code{orderlessp} and @code{ordergreatp} do not order numbers, constan
 and all other elements the same as @code{orderlessp}.
 
 @c ===beg===
-@c L : [%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 1.0b0];
+@c L: [%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1,2,3, 1.0, 1.0b0];
 @c sort (L, ordermagnitudep);
 @c sort (L, orderlessp);
 @c ===end===
 @example
 @group
-(%i1) L : [%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 1.0b0];
+(%i1) L: [%i, 1+%i, 2*x, minf, inf, %e, sin(1), 0,1,2,3, 1.0, 1.0b0];
 (%o1) [%i, %i + 1, 2 x, minf, inf, %e, sin(1), 0, 1, 2, 3, 1.0, 
                                                            1.0b0]
 @end group

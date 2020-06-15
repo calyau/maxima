@@ -77,8 +77,8 @@ output. This throws an error, which is handled by resetting the
 (%i9) x;
 
 Error in *alt-display2d*.
-Messge: Condition designator ((MLABEL) $%O9 $X) is not of type (OR SYMBOL STRING
-                                                             FUNCTION).
+Messge: Condition designator ((MLABEL) $%O9 $X) is not of type
+        (OR SYMBOL STRING FUNCTION).
 *alt-display2d* reset to nil.
  -- an error. To debug this try: debugmode(true);
 
@@ -101,16 +101,18 @@ Set a time-stamp on each prompt:
 @example
 (%i1) load("alt-display.mac")$
 
-(%i2) display2d:false$
+(%i2) display2d: false$
 
 (%i3) define_alt_display(time_stamp(x),
-                   block([alt_display1d:false,alt_display2d:false],
-                         prompt_prefix:printf(false,"~a~%",timedate()),
-                         displa(x)));
+                block([alt_display1d:false,alt_display2d:false],
+                      prompt_prefix:printf(false,"~a~%",timedate()),
+                      displa(x)));
 
-(%o3) time_stamp(x):=block([\*alt\-display1d\*:false,
-                            \*alt\-display2d\*:false],
-                 \*prompt\-prefix\*:printf(false,"~a~%",timedate()),displa(x))
+(%o3) time_stamp(x):=block(
+                 [\*alt\-display1d\*:false,
+                  \*alt\-display2d\*:false],
+                 \*prompt\-prefix\*
+                  :printf(false,"~a~%",timedate()),displa(x))
 (%i4) set_alt_display(1,time_stamp);
 
 (%o4) done
@@ -295,8 +297,9 @@ Here is an example to show where the prompt strings are placed.
 @example
 (%i1) load("alt-display.mac")$
 
-(%i2) set_prompt(prefix,"<<prefix>> ",suffix,"<<suffix>> ",general,
-           printf(false,"<<general>>~%"),epilog,printf(false,"<<epilog>>~%"));
+(%i2) set_prompt(prefix, "<<prefix>> ", suffix, "<<suffix>> ",
+                 general, printf(false,"<<general>>~%"),
+                 epilog, printf(false,"<<epilog>>~%"));
 
 (%o2)                                done
 <<prefix>> (%i3) <<suffix>> x/y;

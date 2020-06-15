@@ -714,31 +714,31 @@ following example:
 (%o2)      /share/tensor/itensor.lisp
 (%i3) lg:matrix([sqrt(r/(r-2*m)),0,0,0],[0,r,0,0],
                 [0,0,sin(theta)*r,0],[0,0,0,sqrt((r-2*m)/r)]);
-               [         r                                     ]
-               [ sqrt(-------)  0       0              0       ]
-               [      r - 2 m                                  ]
-               [                                               ]
-               [       0        r       0              0       ]
-(%o3)          [                                               ]
-               [       0        0  r sin(theta)        0       ]
-               [                                               ]
-               [                                      r - 2 m  ]
-               [       0        0       0        sqrt(-------) ]
-               [                                         r     ]
+        [         r                                     ]
+        [ sqrt(-------)  0       0              0       ]
+        [      r - 2 m                                  ]
+        [                                               ]
+        [       0        r       0              0       ]
+(%o3)   [                                               ]
+        [       0        0  r sin(theta)        0       ]
+        [                                               ]
+        [                                      r - 2 m  ]
+        [       0        0       0        sqrt(-------) ]
+        [                                         r     ]
 (%i4) components(g([i,j],[]),lg);
 (%o4)                                done
 (%i5) showcomps(g([i,j],[]));
-                  [         r                                     ]
-                  [ sqrt(-------)  0       0              0       ]
-                  [      r - 2 m                                  ]
-                  [                                               ]
-                  [       0        r       0              0       ]
-(%t5)      g    = [                                               ]
-            i j   [       0        0  r sin(theta)        0       ]
-                  [                                               ]
-                  [                                      r - 2 m  ]
-                  [       0        0       0        sqrt(-------) ]
-                  [                                         r     ]
+             [         r                                     ]
+             [ sqrt(-------)  0       0              0       ]
+             [      r - 2 m                                  ]
+             [                                               ]
+             [       0        r       0              0       ]
+(%t5) g    = [                                               ]
+       i j   [       0        0  r sin(theta)        0       ]
+             [                                               ]
+             [                                      r - 2 m  ]
+             [       0        0       0        sqrt(-------) ]
+             [                                         r     ]
 (%o5)                                false
 
 @end example
