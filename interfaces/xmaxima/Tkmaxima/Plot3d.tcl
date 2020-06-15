@@ -408,7 +408,7 @@ proc plot3d { args } {
     if { "$win" == "" } {
 	set win [getOptionDefault windowname $plot3dOptions] }
     clearLocal $win
-    apply mkPlot3d  $win $args
+    mxapply mkPlot3d  $win $args
     #    bind $win <Configure> {}	
     replot3d $win
 }

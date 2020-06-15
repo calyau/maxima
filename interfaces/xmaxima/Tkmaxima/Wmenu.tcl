@@ -270,10 +270,10 @@ proc wmenuInternal {win option  olist } {
 		    set new $menu.fr$counter
 		    frame $new -borderwidth 1
 		    # puts "new=$new"
-		    apply label $new.label $labopts
+		    mxapply label $new.label $labopts
 		    pack $new.label -side left -fill x
 		    set opts [lsublis {{-radiovariable -textvariable}} $opts]
-		    apply radiobutton $new.radio $opts
+		    mxapply radiobutton $new.radio $opts
 		    pack $new.radio -side right -anchor e
 		    set com "$new.radio invoke"
 		}
@@ -281,10 +281,10 @@ proc wmenuInternal {win option  olist } {
 		    set new $menu.fr$counter
 		    frame $new -borderwidth 1
 		    # puts "new=$new"
-		    apply label $new.label $labopts
+		    mxapply label $new.label $labopts
 		    pack $new.label -side left
 		    set opts [lsublis {{-checkvariable -textvariable}} $opts]
-		    apply checkbutton $new.check $opts
+		    mxapply checkbutton $new.check $opts
 		    pack $new.check -side right
 		    # puts "$var --> $val"
 		    set com "$new.check invoke"
@@ -293,7 +293,7 @@ proc wmenuInternal {win option  olist } {
 		    set com [assoc -command $lis]
 		    set new $menu.fr$counter
 		    frame $new -borderwidth 1
-		    apply label $new.label $labopts
+		    mxapply label $new.label $labopts
 		    pack $new.label -in $new -side left
 		    # puts "bind $new.label <Button-1> $com"
 		    bind $new.label <Button-1> $com
@@ -306,9 +306,9 @@ proc wmenuInternal {win option  olist } {
 		entry {
 		    set new $menu.fr$counter
 		    frame $new -borderwidth 1
-		    apply label $new.label $labopts
+		    mxapply label $new.label $labopts
 		    set opts [lsublis {{-entryvariable -textvariable}} $opts]
-		    apply entry $new.entry $opts
+		    mxapply entry $new.entry $opts
 		    pack $new.label -side top -in $new -anchor w
 		    pack $new.entry  -side top -in $new
 		    set com "focus $new.entry"

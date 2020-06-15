@@ -330,7 +330,7 @@ proc nextColor { win } {
 
 proc plot2d {args } {
     #puts "args=$args"
-    set win [apply mkPlot2d $args]
+    set win [mxapply mkPlot2d $args]
     replot2d $win
     return $win
 }

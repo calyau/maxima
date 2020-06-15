@@ -95,13 +95,16 @@ proc ldelete { item list } {
 }
 #
 #-----------------------------------------------------------------------
-# apply f a1 .. am [list u1 .. un] -- apply a function with arguments
+# mxapply f a1 .. am [list u1 .. un] -- apply a function with arguments
 #        A1 .. Am and all the elements U1 .. Un in a list
 #
 # Result: command f is evaluated, in the scope from where APPLY was issued
+#
+# Used to be called "apply", before 2020-06-15, when it was renamed to
+# avoid conflicts with the apply function in TcL since version 8.5.
 #-----------------------------------------------------------------------
 #
-proc apply {f args } {
+proc mxapply {f args } {
     set lis1 [lrange $args 0 [expr {[llength $args] -2}]]
     foreach v [lindex $args end] { lappend lis1 $v}
     set lis1 [linsert $lis1  0 $f]

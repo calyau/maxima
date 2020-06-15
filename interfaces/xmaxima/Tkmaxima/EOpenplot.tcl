@@ -33,7 +33,7 @@ proc eval_openplot { program w thisRange resultRange } {
     set allowed "plot2d plotdf plot3d scene"
     set f [lindex $tem 0]
     if { [lsearch $allowed $f] >= 0 } {
-	apply $f [lrange $tem 1 end]
+	mxapply $f [lrange $tem 1 end]
 	ShowPlotWindow $w $name $thisRange $resultRange $desired
     } else {
 	error [concat "$f" [mc "not allowed, only"] "{$allowed}"]

@@ -945,7 +945,7 @@ proc markForProgram { w args } {
 	    $w insert tmp RESULT {Tresult Tmodified}
 	    $w insert tmp " "  {plain}
 	} else {
-	    apply $w tag add Tmodified $nextResult
+	    mxapply $w tag add Tmodified $nextResult
 	}
 
     }
