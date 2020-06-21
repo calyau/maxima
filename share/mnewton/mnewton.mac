@@ -56,13 +56,24 @@ solve_by_lu(eqs, vars, field) := block(
 )$
 
 mnewton(FuncList, VarList, GuessList):=
-  block([nfunc, Solutions, Increments, solved:false, h, DF, numer:numer,
+  block([nfunc, Solutions, Increments, solved:false, h, DF, numer:numer, extra_vars,
          i, j, k, keepfloat:true, ratprint:false, field : 'complexfield, float2bf : true],
     local(h),
 
     if (not(listp(FuncList))) then FuncList: [FuncList],    
     if (not(listp(VarList))) then VarList: [VarList],    
     if (not(listp(GuessList))) then GuessList: [GuessList],    
+
+    /* Refuse to proceed if FuncList depends on some variable other than VarList.
+     * Even in that case (which means that the result will just be an expression
+     * containing any other variables), it is plausible that mnewton could carry
+     * out a fixed number of iterations, but mnewton would have to reorganized
+     * somewhat to implement that. For now require that FuncList depends only on VarList.
+     */
+
+    if (extra_vars: setdifference (setify (listofvars (FuncList)), setify (VarList))) # {}
+      then (printf (true, "mnewton: extra variables in equations; found: ~{~a~^, ~}~%", extra_vars),
+            return (false)),
 
     /* Decide which field to use */
     if bfloatp(newtonepsilon) then field : 'bigfloatfield,

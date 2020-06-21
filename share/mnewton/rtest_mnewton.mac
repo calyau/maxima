@@ -134,6 +134,14 @@ approx_equal(
 );
 true $
 
+/* maxima-discuss 2020-06-21: "mnewton error message" */
+
+block ([s: make_string_output_stream ()],
+       with_stdout (s, mnewton([x^2+y^2+z^2,x^2-y^2+z^2],[x,y],[1,1])),
+       [%%, get_output_stream_string (s)]);
+[false, "mnewton: extra variables in equations; found: z
+"];
+
 kill(all)$
 done $
 
