@@ -31,7 +31,7 @@
 	((and (symbolp f) (or (macro-function f) (special-operator-p f)))
 	 (eval (cons f l)))
 	(t
-	 (mapply f l nil))))
+	 (mapply f l f))))
 
 ;;; ((MQAPPLY ARRAY) X Y) is a strange form, meaning (X)[Y].
 
