@@ -28,7 +28,7 @@
 
 (def%tr $apply (form)
   (let* ((fun (dtranslate (cadr form)))
-	 (mode (cond ((atom fun)
+	 (mode (cond ((symbolp fun)
 		      (function-mode-@ fun))
 		     ((quoted-symbolp fun)
 		      (function-mode (cadr fun)))
