@@ -36,11 +36,6 @@
 (defmvar $tr_state_vars
     '((mlist)
       $translate_fast_arrays
-      $tr_warn_undeclared
-      $tr_warn_meval
-      $tr_warn_fexpr
-      $tr_warn_mode
-      $tr_warn_undefined_variable
       $tr_function_call_default
       $tr_bound_function_applyp
       $tr_array_as_ref
