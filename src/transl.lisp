@@ -106,8 +106,6 @@
 	assign property which must be called to bind and unbind the variable
 	whenever it is `lambda' bound.")
 
-(defmvar specials nil "variables to declare special to the complr.")
-
 (defmvar translate-time-evalables
     '($modedeclare $alias $declare $infix $nofix $declare_translated
       $matchfix $prefix $postfix $compfile))
@@ -196,10 +194,8 @@ APPLY means like APPLY.")
 	 nil)))
 
 (defun specialp (var)
-  (cond ((or (optionp var)
-	     (tr-get-special var))
-	 (pushnew var specials :test #'eq)
-	 t)))
+  (or (optionp var)
+      (tr-get-special var)))
 
 
 ;;; The error message system. Crude as it is.
@@ -547,7 +543,6 @@ APPLY means like APPLY.")
 		     ,@(mapcar 'translate-macexpr-toplevel body)))
 		 ((member '$compile whens :test #'eq)
 		  ;; strictly for the knowledgeable user.
-		  ;; I.E. so I can use EVAL_WHEN(COMPILE,?SPECIALS:TRUE)
 		  `(eval-when
 		       #+gcl (compile)
 		       #-gcl (:compile-toplevel)
@@ -684,8 +679,7 @@ APPLY means like APPLY.")
 	 `(,(value-mode form) . ,form))
 	(t
 	 (cond ((not (specialp form))
-		(warn-undefined-variable form)
-		(pushnew form specials :test #'eq)))
+		(warn-undefined-variable form)))
 	 ;; note that the lisp analysis code must know that
 	 ;; the TRD-MSYMEVAL form is a semantic variable.
 	 (let* ((mode (value-mode form))		
@@ -834,17 +828,11 @@ APPLY means like APPLY.")
 	(t nil)))
 
 (defun translate-atoms (form)
-  ;; This is an oldy moldy which tries to declare everything
-  ;; special so that calling fexpr's will work in compiled
-  ;; code. What a joke.
   (cond ((atom form)
 	 (cond ((or (numberp form) (member form '(t nil) :test #'eq)) form)
 	       ((tboundp form)
-		(or (specialp form)
-		    (pushnew form specials :test #'eq))
 		form)
 	       (t
-		(pushnew form specials :test #'eq)
 		form)))
 	((eq 'mquote (caar form)) form)
 	(t (cons (car form) (mapcar #'translate-atoms (cdr form))))))
@@ -1265,8 +1253,6 @@ APPLY means like APPLY.")
 	mode)
     (cond ((atom var)
 	   (setq mode (value-mode var) val (translate val))
-	   (cond ((not (tboundp var))
-		  (pushnew var specials :test #'eq)))
 	   (warn-mode var mode (car val))
 	   (if (eq '$any mode)
 	       (setq mode (car val) val (cdr val))

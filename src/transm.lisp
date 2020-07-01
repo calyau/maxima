@@ -64,7 +64,6 @@
 	 *in-translate-file*
 	 *in-translate*
 	 *pre-transl-forms*
-	 (specials nil)
 	 ($tr_numer $tr_numer)
 	 defined_variables)
     ,@forms))
