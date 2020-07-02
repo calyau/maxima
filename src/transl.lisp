@@ -757,11 +757,9 @@ APPLY means like APPLY.")
 	 `(,(function-mode (caar form)) . (meval ',form)))))
 
 
-(defun attempt-translate-random-macro-op (form typel &aux tem)
+(defun attempt-translate-random-macro-op (form typel)
   (warn-fexpr form)
-  (setq tem (copy-list form))
-  (setf (car tem) (caar tem))
-  `($any . ,tem))
+  `($any . ,(cons (caar form) (cdr form))))
 
 (defun attempt-translate-random-special-op (form typel)
   (warn-fexpr form)
