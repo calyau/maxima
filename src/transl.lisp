@@ -759,13 +759,13 @@ APPLY means like APPLY.")
 
 (defun attempt-translate-random-macro-op (form typel &aux tem)
   (warn-fexpr form)
-  (setq tem (translate-atoms form))
+  (setq tem (copy-list form))
   (setf (car tem) (caar tem))
   `($any . ,tem))
 
 (defun attempt-translate-random-special-op (form typel)
   (warn-fexpr form)
-  `(,(function-mode (caar form)) . (meval ',(translate-atoms form))))
+  `(,(function-mode (caar form)) . (meval ',form)))
 
 
 (defun tr-lisp-function-call (form type)
@@ -825,17 +825,6 @@ APPLY means like APPLY.")
        (t atom)))
     ((get atom 'implied-quotep) atom)
 	(t nil)))
-
-(defun translate-atoms (form)
-  (cond ((atom form)
-	 (cond ((or (numberp form) (member form '(t nil) :test #'eq)) form)
-	       ((tboundp form)
-		form)
-	       (t
-		form)))
-	((eq 'mquote (caar form)) form)
-	(t (cons (car form) (mapcar #'translate-atoms (cdr form))))))
-
 
 ;;; the Translation Properties. the heart of TRANSL.
 
@@ -1276,7 +1265,7 @@ APPLY means like APPLY.")
          (tr-format (intl:gettext "warning: no assignment operator known for ~:M~%") var)
          (tr-format (intl:gettext "note: just keep going and hope for the best.~%")))
 	   (setq val (translate val))
-	   `(,(car val) mset ',(translate-atoms var) ,(cdr val))))))
+	   `(,(car val) mset ',var ,(cdr val))))))
 
 (def%tr $max (x) (translate-$max-$min x))
 (def%tr $min (x) (translate-$max-$min x))
