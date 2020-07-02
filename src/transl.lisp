@@ -707,11 +707,11 @@ APPLY means like APPLY.")
 	 (funcall temp form))
 	((setq temp (get-lisp-fun-type (caar form)))
 	 (tr-lisp-function-call form temp))
-	((setq temp (macsyma-special-macro-p (caar form)))
-	 (attempt-translate-random-macro-op form temp))
-	((setq temp (macsyma-special-op-p (caar form)))
+	((macsyma-special-macro-p (caar form))
+	 (attempt-translate-random-macro-op form))
+	((macsyma-special-op-p (caar form))
 	 ;; a special form not handled yet! foobar!
-	 (attempt-translate-random-special-op form temp))
+	 (attempt-translate-random-special-op form))
 	((or (get (caar form) 'noun) (get (caar form) 'operators))
 	 ;; puntastical case. the weird ones are presumably taken care
 	 ;; of by TRANSLATE properties by now.
@@ -757,11 +757,11 @@ APPLY means like APPLY.")
 	 `(,(function-mode (caar form)) . (meval ',form)))))
 
 
-(defun attempt-translate-random-macro-op (form typel)
+(defun attempt-translate-random-macro-op (form)
   (warn-fexpr form)
   `($any . ,(cons (caar form) (cdr form))))
 
-(defun attempt-translate-random-special-op (form typel)
+(defun attempt-translate-random-special-op (form)
   (warn-fexpr form)
   `(,(function-mode (caar form)) . (meval ',form)))
 
