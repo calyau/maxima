@@ -1075,3 +1075,45 @@ true;
 
 (kill (foo, w, x, l), 0);
 0;
+
+/* acosh, asech, atanh and acoth now have special translations for
+ * float arguments.  These all honor tr_float_can_branch_complex.
+ */
+
+(foo (x) :=
+   (mode_declare (x, float),
+    [acosh (x), asech (x), atanh (x)]),
+ bar (x) :=
+   (mode_declare (x, float),
+    [acoth (x)]),
+ /* l1 is a list of Maxima complex numbers */
+ l1 : append (foo (-3.0), foo (-2.0), bar (-0.5), bar (0.5)),
+ some (lambda ([x], freeof (%i, x)), l1));
+false;
+
+block ([tr_float_can_branch_complex : false],
+  translate (foo, bar),
+  /* l2 is a list of lisp complex numbers because we told the
+   * translator to assume the return values would not be complex,
+   * and it correctly returned the lisp complex numbers directly.
+   */
+  l2 : append (foo (-3.0), foo (-2.0), bar (-0.5), bar (0.5)),
+  [every (?complexp, l2),
+   every ("#", l1, l2),
+   every ("=", l1, map (?complexify, l2))]);
+[true,
+ true,
+ true];
+
+block ([tr_float_can_branch_complex : true],
+  translate (foo, bar),
+  /* l3 is a list of Maxima complex numbers because we told the
+   * translator to assume the return values could be complex, and
+   * it converted the lisp complex numbers to Maxima complex numbers.
+   */
+  l3 : append (foo (-3.0), foo (-2.0), bar (-0.5), bar (0.5)),
+  every ("=", l1, l3));
+true;
+
+(kill (foo, bar, x, l1, l2, l3), 0);
+0;
