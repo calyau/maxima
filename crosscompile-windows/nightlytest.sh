@@ -22,7 +22,7 @@ cd ~/maxima-test || exit
 ./bootstrap >logfile-bootstrap.txt 2>&1
 
 echo "./configure"
-./configure --enable-clisp --enable-ecl --with-ecl=/opt/ecl-20.4.24/bin/ecl --enable-sbcl --with-sbcl=/opt/sbcl-2.0.5/bin/sbcl --enable-gcl --enable-ccl64 --with-ccl64=/opt/ccl/lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-21d/bin/lisp --with-cmucl-runtime=/opt/cmucl-21d/bin/lisp --enable-acl --with-acl=/opt/acl10.1express/alisp --enable-abcl --with-abcl-jar=/opt/abcl-bin-1.7.0/abcl.jar --prefix="$(pwd)/installroot" >logfile-configure.txt 2>&1
+./configure --enable-clisp --enable-ecl --with-ecl=/opt/ecl-20.4.24/bin/ecl --enable-sbcl --with-sbcl=/opt/sbcl-2.0.6/bin/sbcl --enable-gcl --enable-ccl64 --with-ccl64=/opt/ccl/lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-21d/bin/lisp --with-cmucl-runtime=/opt/cmucl-21d/bin/lisp --enable-acl --with-acl=/opt/acl10.1express/alisp --enable-abcl --with-abcl-jar=/opt/abcl-bin-1.7.0/abcl.jar --prefix="$(pwd)/installroot" >logfile-configure.txt 2>&1
 
 echo "make"
 make VERBOSE=1 >logfile-make.txt 2>&1
@@ -65,4 +65,4 @@ done
 # remove the single timing files before copying to the server
 # every information is in the logfile-timings-summary.txt file.
 rm logfile-timing-*
-scp -i ~/.ssh/maximakopierkey ~/maxima-test/logfile-*.txt maxima@ns1.dautermann.at:/var/www/wolfgang.dautermann.at/maxima/nightlybuild/
+scp -i ~/.ssh/maximakopierkey ~/maxima-test/logfile-*.txt maxima@ns3.dautermann.at:/var/www/wolfgang.dautermann.at/maxima/nightlybuild/
