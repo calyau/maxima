@@ -10,12 +10,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
-;;; TRANSLATION PROPERTIES FOR MACSYMA OPERATORS AND FUNCTIONS.
-
-;;; This file is for list and array manipulation optimizations.
 
 (macsyma-module transf)
-
 
 ;;; some floating point translations. with tricks.
 
