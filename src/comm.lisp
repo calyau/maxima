@@ -859,9 +859,9 @@
   (let ((substp t))
     (mpart (cdr l) t nil t '$substinpart)))
 
-(defun part1 (arglist substflag dispflag inflag) ; called only by TRANSLATE
+(defun part1 (arglist substflag dispflag inflag fn) ; called only by TRANSLATE
   (let ((substp t))
-    (mpart arglist substflag dispflag inflag '$substpart)))
+    (mpart arglist substflag dispflag inflag fn)))
 
 (defun mpart (arglist substflag dispflag inflag fn)
   (prog (substitem arg arg1 exp exp1 exp* sevlist count prevcount n specp
