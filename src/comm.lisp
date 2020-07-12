@@ -868,7 +868,7 @@
 	 lastelem lastcount)
      (setq specp (or substflag dispflag))
      (if substflag (setq substitem (car arglist) arglist (cdr arglist)))
-     (if (null arglist) (wna-err '$part))
+     (if (null arglist) (wna-err fn))
      (setq exp (if substflag (meval (car arglist)) (car arglist)))
      (when (null (setq arglist (cdr arglist)))
        (setq $piece exp)
