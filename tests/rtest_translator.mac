@@ -1117,3 +1117,27 @@ true;
 
 (kill (foo, bar, x, l1, l2, l3), 0);
 0;
+
+/* Bug #3642: Lisp error when translating assume
+ *
+ * Translating an assume call with an atomic argument would cause a
+ * lisp error during translation.
+ */
+
+(foo () :=
+   block ([ctx : supcontext (),
+           x : a > 0,
+           y : b > 0,
+           r],
+     assume (x, y, equal (c, 0)),
+     r : [is (a > 0), is (b < 0), is (equal (c, 0))],
+     killcontext (ctx),
+     r),
+ translate (foo));
+[foo];
+
+foo ();
+[true, false, true];
+
+(kill (foo), 0);
+0;
