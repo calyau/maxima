@@ -41,7 +41,7 @@ block ([translate : false],
  foo ([1, 2, 3], [a, b]));
 [3];
 
-(translate_or_lose (foo), ?funcall (foo, [1, 2, 3], [a, b]));
+(translate_or_lose (foo), foo ([1, 2, 3], [a, b]));
 [3];
 
 /* simpler function featuring mprogn and mnot */
@@ -49,7 +49,7 @@ block ([translate : false],
 (bar (x) := (x : 2*x, x : 3*x, not (x < 100)), bar (3));
 false;
 
-(translate_or_lose (bar), ?funcall (bar, 3));
+(translate_or_lose (bar), bar (3));
 false;
 
 /* SF [ 1646525 ] no function mdoin */
@@ -58,7 +58,7 @@ false;
  try_me ([10, 9, 8, 7, 6, 5, 4, 5, 6, 7, 8, 9, 10]));
 40;
 
-(translate_or_lose (try_me), ?funcall (try_me, [10, 9, 8, 7, 6, 5, 4, 5, 6, 7, 8, 9, 10]));
+(translate_or_lose (try_me), try_me ([10, 9, 8, 7, 6, 5, 4, 5, 6, 7, 8, 9, 10]));
 40;
 
 /* SF [ 1818645 ] Compiled maxima code containing $ARRAY gets a Lisp error. */
@@ -72,7 +72,7 @@ false;
   test_array_comp (100));
 [abc, 100, 4];
 
-(translate_or_lose (test_array_comp), ?funcall (test_array_comp, 100));
+(translate_or_lose (test_array_comp), test_array_comp (100));
 [abc, 100, 4];
 
 /* SF [ 545794 ] Local Array does not compile properly */
@@ -86,7 +86,7 @@ false;
  trial (2));
 [true, [1, 2, 4, 8, 16, 32, 64, 128]];
 
-(translate_or_lose (trial), ?funcall (trial, 2));
+(translate_or_lose (trial), trial (2));
 [true, [1, 2, 4, 8, 16, 32, 64, 128]];
 
 /* Next test fails because local(myvar) in translated code doesn't clean up properties ... */
