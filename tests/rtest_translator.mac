@@ -5,13 +5,43 @@
 (kill (all), 0);
 0;
 
+/* There are various cases where (by design) translate and compile don't
+ * signal an error when a function fails to translate.  So here we define
+ * translate_or_lose and compile_or_lose so we don't have to explicitly
+ * check the return values of translate and compile in every test.
+ *
+ * Passing `all' or `functions' is not supported.  I'm not sure how much
+ * sense those make here for tests, but something could be added later if
+ * a test really wants them for some reason.
+ */
+block ([translate : false],
+  local (make_tester),
+  make_tester (trfun) ::=
+    buildq ([trfun, name : concat (trfun, '_or_lose)],
+      (name (['fns]) :=
+         block ([ret : apply ('trfun, fns), losers : []],
+           if ret # fns then
+             /* Report failures in the same order as the given args */
+             (for f in fns do if not (member (f, ret)) then push (f, losers),
+              error ('trfun, "failed unexpectedly for", reverse (losers))),
+           fns),
+       /* Prevent this from being killed during kill(all), etc.
+        * We can remove this later if we're more precise about
+        * what we're killing throughout this file.
+        */
+       ?mfunction\-delete ('name, functions))),
+  make_tester (translate),
+  make_tester (compile),
+  0);
+0;
+
 /* SF [ 1728888 ] translator bugs: no mnot mprogn */
 
 (foo (e,v) := block([vi], for vi in v while not(emptyp(e)) do (print(vi), e : rest(e)), e),
  foo ([1, 2, 3], [a, b]));
 [3];
 
-(translate (foo), ?funcall (foo, [1, 2, 3], [a, b]));
+(translate_or_lose (foo), ?funcall (foo, [1, 2, 3], [a, b]));
 [3];
 
 /* simpler function featuring mprogn and mnot */
@@ -19,7 +49,7 @@
 (bar (x) := (x : 2*x, x : 3*x, not (x < 100)), bar (3));
 false;
 
-(translate (bar), ?funcall (bar, 3));
+(translate_or_lose (bar), ?funcall (bar, 3));
 false;
 
 /* SF [ 1646525 ] no function mdoin */
@@ -28,7 +58,7 @@ false;
  try_me ([10, 9, 8, 7, 6, 5, 4, 5, 6, 7, 8, 9, 10]));
 40;
 
-(translate (try_me), ?funcall (try_me, [10, 9, 8, 7, 6, 5, 4, 5, 6, 7, 8, 9, 10]));
+(translate_or_lose (try_me), ?funcall (try_me, [10, 9, 8, 7, 6, 5, 4, 5, 6, 7, 8, 9, 10]));
 40;
 
 /* SF [ 1818645 ] Compiled maxima code containing $ARRAY gets a Lisp error. */
@@ -42,7 +72,7 @@ false;
   test_array_comp (100));
 [abc, 100, 4];
 
-(translate (test_array_comp), ?funcall (test_array_comp, 100));
+(translate_or_lose (test_array_comp), ?funcall (test_array_comp, 100));
 [abc, 100, 4];
 
 /* SF [ 545794 ] Local Array does not compile properly */
@@ -56,7 +86,7 @@ false;
  trial (2));
 [true, [1, 2, 4, 8, 16, 32, 64, 128]];
 
-(translate (trial), ?funcall (trial, 2));
+(translate_or_lose (trial), ?funcall (trial, 2));
 [true, [1, 2, 4, 8, 16, 32, 64, 128]];
 
 /* Next test fails because local(myvar) in translated code doesn't clean up properties ... */
@@ -71,7 +101,7 @@ false;
 (kill (foo1, bar1),
  foo1 () := bar1 + 1,
  baz1 (n) := block ([S : 0], for bar1:0 thru n - 1 do S : S + foo1 (), S),
- translate (baz1),
+ translate_or_lose (baz1),
  baz1 (10));
 55;
 
@@ -91,7 +121,7 @@ false;
 fun(A,b,2,f,[1,1],.01);
 0.01*f(0.01*f([1,1])+[1,1])+0.01*f([1,1])+[1,1]$
 
-(translate (fun), fun(A,b,2,f,[1,1],.01));
+(translate_or_lose (fun), fun(A,b,2,f,[1,1],.01));
 0.01*f(0.01*f([1,1])+[1,1])+0.01*f([1,1])+[1,1]$
 
 /* incorrect code emitted for call from translated function to untranslated
@@ -101,17 +131,17 @@ fun(A,b,2,f,[1,1],.01);
 (f0001 (x) := [f0002 (x), f0003 (x)],
  f0002 (x) := x,
  f0003 (x) := x,
- translate (f0002, f0001),
+ translate_or_lose (f0002, f0001),
  f0001 (1));
 [1, 1];
 
-(translate (f0003), f0001 (1));
+(translate_or_lose (f0003), f0001 (1));
 [1, 1];
 
-(compile (f0003), f0001 (1));
+(compile_or_lose (f0003), f0001 (1));
 [1, 1];
 
-(compile (f0003, f0002, f0001), f0001 (1));
+(compile_or_lose (f0003, f0002, f0001), f0001 (1));
 [1, 1];
 
 /* SF bug # 2938716 "too much evaluation in translated code"
@@ -120,20 +150,20 @@ fun(A,b,2,f,[1,1],.01);
 (g0001 (x) := [g0002 (x), g0003 (x)],
  g0002 (x) := x,
  g0003 (x) := x,
- translate (g0002, g0001),
+ translate_or_lose (g0002, g0001),
  kill (aa, bb, cc),
  aa : 'bb,
  bb : 'cc,
  g0001 (aa));
 [bb, bb];
 
-(translate (g0003), g0001 (aa));
+(translate_or_lose (g0003), g0001 (aa));
 [bb, bb];
 
-(compile (g0003), g0001 (aa));
+(compile_or_lose (g0003), g0001 (aa));
 [bb, bb];
 
-(compile (g0003, g0002, g0001), g0001 (aa));
+(compile_or_lose (g0003, g0002, g0001), g0001 (aa));
 [bb, bb];
 
 /* SF bug # 3035313 "some array references translated incorrectly"
@@ -165,7 +195,7 @@ fun(A,b,2,f,[1,1],.01);
 [faa (4), fbb (4), fcc (4)];
 [444, 444, 444];
 
-translate (faa, gaa, fbb, gbb, fcc, gcc);
+translate_or_lose (faa, gaa, fbb, gbb, fcc, gcc);
 [faa, gaa, fbb, gbb, fcc, gcc];
 
 [gaa (4), gbb (4), gcc (4)];
@@ -174,7 +204,7 @@ translate (faa, gaa, fbb, gbb, fcc, gcc);
 [faa (4), fbb (4), fcc (4)];
 [444, 444, 444];
 
-compile (faa, gaa, fbb, gbb, fcc, gcc);
+compile_or_lose (faa, gaa, fbb, gbb, fcc, gcc);
 [faa, gaa, fbb, gbb, fcc, gcc];
 
 [gaa (4), gbb (4), gcc (4)];
@@ -193,10 +223,10 @@ compile (faa, gaa, fbb, gbb, fcc, gcc);
  [gaa (4), faa (4)]);
 [321, 444];
 
-(translate (faa, gaa), [gaa (4), faa (4)]);
+(translate_or_lose (faa, gaa), [gaa (4), faa (4)]);
 [321, 444];
 
-(compile (faa, gaa), [gaa (4), faa (4)]);
+(compile_or_lose (faa, gaa), [gaa (4), faa (4)]);
 [321, 444];
 
 /* try same stuff again w/ Lisp arrays */
@@ -218,7 +248,7 @@ compile (faa, gaa, fbb, gbb, fcc, gcc);
 [faa (4), fbb (4), fcc (4)];
 [444, 444, 444];
 
-translate (faa, gaa, fbb, gbb, fcc, gcc);
+translate_or_lose (faa, gaa, fbb, gbb, fcc, gcc);
 [faa, gaa, fbb, gbb, fcc, gcc];
 
 [gaa (4), gbb (4), gcc (4)];
@@ -227,7 +257,7 @@ translate (faa, gaa, fbb, gbb, fcc, gcc);
 [faa (4), fbb (4), fcc (4)];
 [444, 444, 444];
 
-compile (faa, gaa, fbb, gbb, fcc, gcc);
+compile_or_lose (faa, gaa, fbb, gbb, fcc, gcc);
 [faa, gaa, fbb, gbb, fcc, gcc];
 
 [gaa (4), gbb (4), gcc (4)];
@@ -238,10 +268,10 @@ compile (faa, gaa, fbb, gbb, fcc, gcc);
 
 /* SF bug # 2569: "translate rat(1,x) and rat([1]) incorrect" */
 
-(kill (f), f () := rat (x, x), translate (f), f ());
+(kill (f), f () := rat (x, x), translate_or_lose (f), f ());
 ''(rat (x, x));
 
-(kill (f), f () := rat ([1]), translate (f), f ());
+(kill (f), f () := rat ([1]), translate_or_lose (f), f ());
 ''(rat ([1]));
 
 (kill (foo, y1a, y1b, y2a, y2b), 
@@ -279,7 +309,7 @@ y1c : foo (1.0);
  1.188395105778121,1.175201193643801,0.8509181282393216,1.0,
  2.718281828459045]$
 
-(translate (foo), y2a : foo (0.5), y2b : foo (1.5), 0);
+(translate_or_lose (foo), y2a : foo (0.5), y2b : foo (1.5), 0);
 0;
 
 is (y1a = y2a);
@@ -289,7 +319,7 @@ is (y1b = y2b);
 true;
 
 block ([tr_float_can_branch_complex : false],
-  translate (foo),
+  translate_or_lose (foo),
   y2c : foo (1.0),
   0);
 0;
@@ -427,7 +457,7 @@ if build_info()@lisp_name # "ECL" then
  f3(l) := makelist (i^3, i, l),
  f4(n) := makelist (i^4, i, 1, n),
  f5(m, n) := makelist (i^5, i, 1, n, m),
- translate(f1, f2, f3, f4, f5),
+ translate_or_lose(f1, f2, f3, f4, f5),
  0);
 0;
 
@@ -454,7 +484,7 @@ f5(2, 10);
          liss:sort(liss,lambda([x,y],apply("and",map(oper,makelist(part(x,2)[k],k,1,i)
                              ,makelist(part(y,2)[k],k,1,i)))))
      )),liss),
- translate (ordersort)); /* 'translate' doesn't trigger an error, so check return value */
+ translate_or_lose (ordersort));
 [ordersort];
  
 [member ('transfun, properties(ordersort)),
@@ -475,7 +505,7 @@ f5(2, 10);
 [15, 25, 6];
 
 (kill(bar, blurf, mumble),
- translate(foo, baz, quux),
+ translate_or_lose(foo, baz, quux),
  [foo(11), baz(umm, 21), quux()]);
 /* note that results match because rhs of ":=" isn't simplified */
 [bar(x) := 11 + x, umm(x) := 21 + x, mumble(x) := 1 + x];
@@ -504,7 +534,7 @@ makelist (is (x # false), x, map (?fboundp, [foo, baz, quux])); /* test for gene
 fun();
 1 > t1;
 
-(compile(fun), fun());
+(compile_or_lose(fun), fun());
 1 > t1;
 
 (kill(fun, trigfunc, t1),
@@ -517,7 +547,7 @@ fun();
 fun();
 1 > t1;
 
-(compile(fun), fun());
+(compile_or_lose(fun), fun());
 1 > t1;
 
 /* Verify that we catch malformed lambda expressions during translation.
@@ -562,7 +592,7 @@ block ([c, f],
   local (c, f),
   declare (c, constant),
   f () := lambda ([c], c),
-  translate (f))$
+  translate_or_lose (f))$
 [f];
 
 /* Verify that parameter/variable lists cannot contain duplicate variables.
@@ -592,7 +622,7 @@ block ([c, f],
  kill (mumbleblurf), /* as of 2018-01-28, this leaves (OPERATORS NIL) in property list */
  hhh(mumbleblurf, u) := mumbleblurf(u),
  foobarbaz(x) := 100 + x,
- translate (hhh),
+ translate_or_lose (hhh),
  hhh (foobarbaz, 11));
 111;
 
@@ -604,7 +634,7 @@ define_variable (zorble, 0, fixnum);
 (kill(f), f() := block ([zorble], 42), f());
 42;
 
-translate(f);
+translate_or_lose(f);
 [f];
 
 f();
@@ -623,7 +653,7 @@ f();
  niceindicespref);
 [i,j,k,l,m,n];
 
-(translate (test_f),
+(translate_or_lose (test_f),
  test_f (),
  niceindicespref);
 [a,b,c,d];
@@ -647,7 +677,7 @@ f();
 [[myerr1, myerr2, myerr3], 40];
 
 (reset (error_syms, error_size),
- translate (set_error_stuff_permanently),
+ translate_or_lose (set_error_stuff_permanently),
  set_error_stuff_permanently (),
  [error_syms, error_size]);
 [[myerr1, myerr2, myerr3], 40];
@@ -659,7 +689,7 @@ f();
 [error_syms, error_size];
 [[errexp1, errexp2, errexp3], 60];
 
-(translate (set_error_stuff_temporarily),
+(translate_or_lose (set_error_stuff_temporarily),
  set_error_stuff_temporarily());
 [[myerror1, myerror2, myerror3], 55];
 
@@ -678,7 +708,7 @@ if 1/sqrt(y^2+(x+1)^2) < 1 then 1/(%i*y+x+1) else 1;
 makelist (f(xy[1] + %i*xy[2]), xy, [[0, 0], [0, 1], [1, 1], [1, 0], [0, 2], [2, 2], [2, 0]]);
 [1, 1/(%i+1), 1/(%i+2), 1/2, 1/(2*%i+1), 1/(2*%i+3), 1/3]$
 
-(compile (f),
+(compile_or_lose (f),
  errcatch (f(x + %i*y)));
 [];
 
@@ -716,7 +746,7 @@ makelist (f(xy[1] + %i*xy[2]), xy, [[0, 0], [0, 1], [1, 1], [1, 0], [0, 2], [2, 
  map (g, aa, bb, cc));
 [3/2,9/8,false,3/4,false,0,5,false,-4,9/8,13/2,31/4]$
 
-(translate (g),
+(translate_or_lose (g),
  map (g, aa, bb, cc));
 [3/2,9/8,false,3/4,false,0,5,false,-4,9/8,13/2,31/4]$
 
@@ -745,7 +775,7 @@ false;
 /* ensure that conditional expressions get simplified to expunge $FALSE ... sigh. */
 ''([[if n > 0 then 10^n, if n > 0 then 20^n, if n > 0 then 30^n]]);
 
-translate (f);
+translate_or_lose (f);
 [f];
 
 is (?fboundp (f) # false); /* test for generalized Boolean value */
@@ -763,13 +793,13 @@ errcatch (f(10, n));
 
 (defrule (foorule, foo (), 1),
  f () := apply2 ('(foo ()), foorule),
- translate (f),
+ translate_or_lose (f),
  f ());
 1;
 
 (defrule (barrule, bar (), 2),
  g () := applyb2 ('(bar ()), barrule),
- translate (g),
+ translate_or_lose (g),
  g ());
 2;
 
@@ -784,12 +814,12 @@ errcatch (f(10, n));
  */
 
 (foo () := [atan2 (-1.0, -1.0), atan2 (-1.0, 1.0)],
- translate (foo),
+ translate_or_lose (foo),
  foo ());
 [-2.356194490192345, -0.7853981633974483];
 
 (bar () := atan (-1.0),
- translate (bar),
+ translate_or_lose (bar),
  bar ());
 -0.7853981633974483;
 
@@ -805,7 +835,7 @@ errcatch (f(10, n));
 (foo () := [signum (0),  signum (0.0),
             signum (2),  signum (2.0),
             signum (-3), signum (-3.0)],
- translate (foo),
+ translate_or_lose (foo),
  foo ());
 [0, 0.0, 1, 1.0, -1, -1.0];
 
@@ -817,7 +847,7 @@ errcatch (f(10, n));
  */
 
 (foo () := declare (n, integer, [x, y], noninteger),
- translate (foo),
+ translate_or_lose (foo),
  foo (),
  [?kindp (n, integer),
   ?kindp (n, noninteger),
@@ -837,7 +867,7 @@ errcatch (f(10, n));
 
 (foo (x) := (mode_declare (x, rational), float (x)),
  bar (y) := (mode_declare (y, rational), 1.0 + y),
- translate (foo, bar),
+ translate_or_lose (foo, bar),
  [foo (1/4), bar (1/2)]);
 [0.25, 1.5];
 
@@ -856,7 +886,7 @@ errcatch (f(10, n));
     atan2 (1, 0.0)],
  bar (y, x) := (mode_declare (x, float, y, rational), atan2 (y, x)),
  l1 : [foo (), bar (1/3, 0.0)],
- translate (foo, bar),
+ translate_or_lose (foo, bar),
  l2 : [foo (), bar (1/3, 0.0)],
  is (l1 = l2));
 true;
@@ -894,7 +924,7 @@ true;
      max (5/6, x),   min (5/6, x),
      max (x, 1),     min (x, 1)]),
  l1 : foo (2/3),
- translate (foo),
+ translate_or_lose (foo),
  l2 : foo (2/3),
  is (l1 = l2));
 true;
@@ -914,7 +944,7 @@ true;
 false;
 
 block ([tr_float_can_branch_complex : false],
-  translate (foo),
+  translate_or_lose (foo),
   /* l2 is a list of lisp complex numbers because we told the
    * translator to assume the return values of log and sqrt
    * would not be complex, and it correctly returned the complex
@@ -927,7 +957,7 @@ block ([tr_float_can_branch_complex : false],
  true];
 
 block ([tr_float_can_branch_complex : true],
-  translate (foo),
+  translate_or_lose (foo),
   /* l3 is a list of Maxima complex numbers because we told the
    * translator to assume the return values of log and sqrt
    * could be complex, and it converted the lisp complex numbers
@@ -987,7 +1017,7 @@ true;
     is ('j (y) = 'j (y)),       is ('j (y) # 'j (y)),
     is ('k (z) = 'k (z)),       is ('k (z) # 'k (z))]),
  l1 : foo ('bar, 2, 3, 4.0, 5),
- translate (foo),
+ translate_or_lose (foo),
  l2 : foo ('bar, 2, 3, 4.0, 5),
  [every (lambda ([x], ?typep (x, ?boolean)), l2),
   is (l1 = l2)]);
@@ -1031,7 +1061,7 @@ true;
    is (equal (x^2 - 1, (x + 1) * (x - 1))),
    is (notequal (x^2 - 1, (x + 1) * (x - 1)))],
  l1 : foo (),
- translate (foo),
+ translate_or_lose (foo),
  l2 : foo (),
  [every (lambda ([x], ?typep (x, ?boolean)), l2),
   is (l1 = l2)]);
@@ -1064,7 +1094,7 @@ true;
      random (y) / 4,
      1 / (1 + random (w)),
      1 / (1 + random (y))]]),
- translate (foo),
+ translate_or_lose (foo),
  l : foo (50, 5.0, 100, 10.0),
  [every (integerp, first (l)),
   every (floatnump, second (l)),
@@ -1092,7 +1122,7 @@ true;
 false;
 
 block ([tr_float_can_branch_complex : false],
-  translate (foo, bar),
+  translate_or_lose (foo, bar),
   /* l2 is a list of lisp complex numbers because we told the
    * translator to assume the return values would not be complex,
    * and it correctly returned the lisp complex numbers directly.
@@ -1106,7 +1136,7 @@ block ([tr_float_can_branch_complex : false],
  true];
 
 block ([tr_float_can_branch_complex : true],
-  translate (foo, bar),
+  translate_or_lose (foo, bar),
   /* l3 is a list of Maxima complex numbers because we told the
    * translator to assume the return values could be complex, and
    * it converted the lisp complex numbers to Maxima complex numbers.
@@ -1133,11 +1163,14 @@ true;
      r : [is (a > 0), is (b < 0), is (equal (c, 0))],
      killcontext (ctx),
      r),
- translate (foo));
+ translate_or_lose (foo));
 [foo];
 
 foo ();
 [true, false, true];
 
 (kill (foo), 0);
+0;
+
+(kill (translate_or_lose, compile_or_lose), 0);
 0;
