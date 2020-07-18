@@ -484,12 +484,15 @@ f5(2, 10);
          liss:sort(liss,lambda([x,y],apply("and",map(oper,makelist(part(x,2)[k],k,1,i)
                              ,makelist(part(y,2)[k],k,1,i)))))
      )),liss),
- translate_or_lose (ordersort));
-[ordersort];
- 
-[member ('transfun, properties(ordersort)),
- ordersort([[-7,[0,2,1]],[3,[1,2,1]],[1,[0,4,1]],[6,[4,3,3]],[6,[4,4,3]],[-7,[3,5,4]],[2,[0,0,5]],[-10,[2,2,5]],[-10,[3,4,7]],[7,[3,8,9]]],[x,y,z],">=")];
-[true, [[6,[4,4,3]],[6,[4,3,3]],[7,[3,8,9]],[-7,[3,5,4]],[-10,[3,4,7]],[-10,[2,2,5]],[3,[1,2,1]],[1,[0,4,1]],[-7,[0,2,1]],[2,[0,0,5]]]];
+ translate_or_lose (ordersort),
+ [member ('transfun, properties (ordersort)),
+  ordersort([[-7,[0,2,1]],[3,[1,2,1]],[1,[0,4,1]],[6,[4,3,3]],[6,[4,4,3]],
+             [-7,[3,5,4]],[2,[0,0,5]],[-10,[2,2,5]],[-10,[3,4,7]],[7,[3,8,9]]],
+	     [x,y,z],
+	     ">=")]);
+[true,
+ [[6,[4,4,3]],[6,[4,3,3]],[7,[3,8,9]],[-7,[3,5,4]],[-10,[3,4,7]],
+  [-10,[2,2,5]],[3,[1,2,1]],[1,[0,4,1]],[-7,[0,2,1]],[2,[0,0,5]]]];
 
 /* 'define' translated incorrectly, reported to mailing list circa 2017-01-24 */
 
@@ -634,10 +637,7 @@ define_variable (zorble, 0, fixnum);
 (kill(f), f() := block ([zorble], 42), f());
 42;
 
-translate_or_lose(f);
-[f];
-
-f();
+(translate_or_lose(f), f());
 42;
 
 /* bug reported to mailing list 2018-12-03: "error in compiling function with global variable" */
@@ -775,10 +775,8 @@ false;
 /* ensure that conditional expressions get simplified to expunge $FALSE ... sigh. */
 ''([[if n > 0 then 10^n, if n > 0 then 20^n, if n > 0 then 30^n]]);
 
-translate_or_lose (f);
-[f];
-
-is (?fboundp (f) # false); /* test for generalized Boolean value */
+(translate_or_lose (f),
+ is (?fboundp (f) # false)); /* test for generalized Boolean value */
 true;
 
 [f(y, 2), f(y, -2)];
@@ -1163,10 +1161,8 @@ true;
      r : [is (a > 0), is (b < 0), is (equal (c, 0))],
      killcontext (ctx),
      r),
- translate_or_lose (foo));
-[foo];
-
-foo ();
+ translate_or_lose (foo),
+ foo ());
 [true, false, true];
 
 (kill (foo), 0);
