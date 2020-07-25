@@ -141,18 +141,19 @@
 ;;; This is could be done better on the LISPM
 
 (def%tr $errcatch (form)
-  (setq form (translate `((mprogn) ,@(cdr form))))
-  `(,(car form) . ((lambda (errcatch ret)
-		     (declare (special errcatch))
-		     ;; Very important to declare errcatch special
-		     ;; here because merror uses it to figure out if
-		     ;; someone is catching an error so it can be
-		     ;; signaled in a way that we can catch.
-		     (cond ((null (setq ret
-					(errset ,(cdr form))))
-			    (errlfun1 errcatch)))
-		     (cons '(mlist) ret))
-		   (cons bindlist loclist) nil)))
+  (let ((form (translate `((mprogn) ,@(cdr form))))
+        (ret (tr-gensym)))
+    `(,(car form) . ((lambda (errcatch ,ret)
+                       (declare (special errcatch))
+                       ;; Very important to declare errcatch special
+                       ;; here because merror uses it to figure out if
+                       ;; someone is catching an error so it can be
+                       ;; signaled in a way that we can catch.
+                       (cond ((null (setq ,ret
+                                          (errset ,(cdr form))))
+                              (errlfun1 errcatch)))
+                       (cons '(mlist) ,ret))
+                     (cons bindlist loclist) nil))))
 
 
 ;;; The MODE of a CATCH could either be the MODE of the last of the PROGN
