@@ -1168,5 +1168,31 @@ true;
 (kill (foo), 0);
 0;
 
+/* The translation of errcatch was broken because the mode of the
+ * whole form was always assumed to be the same as the mode of the
+ * last subform.  Since errcatch always yields a list, lisp errors
+ * could easily occur.
+ */
+
+(foo () :=
+   block ([listarith : true],
+     [errcatch (1),
+      1 + errcatch (2),
+      1.0 * errcatch (2.0),
+      errcatch (error ("oops")),
+      errcatch (?error ("oops")),
+      errcatch (1 / 0)]),
+ translate_or_lose (foo),
+ foo ());
+[[1],
+ [3],
+ [2.0],
+ [],
+ [],
+ []];
+
+(kill (foo), 0);
+0;
+
 (kill (translate_or_lose, compile_or_lose), 0);
 0;
