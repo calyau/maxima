@@ -48,6 +48,18 @@ if non-us-ascii characters are used as arguments to ~s and ~a directives.
       $stdout *standard-output*
       $stdin  *standard-input* )
 
+(defvar *tilde-m-args*)
+(defvar *tilde-m-params*)
+(defvar *tilde-m-placeholders*)
+
+(defun reconstitute-tilde-m (param)
+  ($sconcat "~" param "m"))
+
+(defun generate-tilde-m-placeholder ()
+  (coerce (mapcar #'code-char
+                  (loop for i from 1 to 6
+                        collect (if (eq ($random 2) 0) (+ ($random (- 92 33)) 33) (+ ($random (- 126 93)) 93))))
+          'string))
 
 (defun $printf (stream ctrls &rest args)
   (cond 
@@ -56,10 +68,22 @@ if non-us-ascii characters are used as arguments to ~s and ~a directives.
         "`printf': first argument must be `true', `false' or a stream." )))
     ((not (stringp ctrls))
       (gf-merror (intl:gettext "`printf': second argument must be a string.")) ))
-  (setq args (prepare-args ctrls args nil))
-  (let ((body (mapcar #'(lambda (x) (if (listp x) `(quote ,x) x)) args)))
-    (setq ctrls (prepare-ctrls ctrls))
-    (eval `(format ,stream ,ctrls ,@body)) ))
+  (let (*tilde-m-args* *tilde-m-params* *tilde-m-placeholders*)
+    (setq args (prepare-args ctrls args nil))
+    (let ((body (mapcar #'(lambda (x) (if (listp x) `(quote ,x) x)) args)))
+      (setq ctrls (prepare-ctrls ctrls))
+      (if *tilde-m-args*
+        ;; Capture output from FORMAT, and then call AFORMAT to handle ~M directives.
+        (let*
+          ((first-pass (apply 'format nil ctrls body))
+           (second-pass (ssubst "~~" "~" first-pass))
+           (third-pass second-pass))
+          ;; Substitute ~m directives back in.
+          (loop for param in *tilde-m-params* for placeholder in *tilde-m-placeholders*
+                do (setq third-pass (ssubst (reconstitute-tilde-m param) placeholder third-pass)))
+          (apply 'aformat stream third-pass (reverse *tilde-m-args*)))
+        ;; No ~m directives present, punt directly to FORMAT.
+        (eval `(format ,stream ,ctrls ,@body)) ))))
 
 
 (defun prepare-args (ctrls todo done &optional (loop nil))
@@ -298,16 +322,19 @@ if non-us-ascii characters are used as arguments to ~s and ~a directives.
       (setq pos2 (spec-position ctrls pos1)
             spec (subseq ctrls (1- pos2) pos2) )
       (setq new-ctrls 
-        (if (string-equal spec "h")
-          (concatenate 'string new-ctrls (subseq ctrls start pos1) "~@a")
-          (concatenate 'string new-ctrls (subseq ctrls start pos2)) ))
+        (cond
+          ((string-equal spec "h")
+           (concatenate 'string new-ctrls (subseq ctrls start pos1) "~@a"))
+          ((string-equal spec "m")
+           (concatenate 'string new-ctrls (subseq ctrls start pos1) "~a"))
+          (t (concatenate 'string new-ctrls (subseq ctrls start pos2)) )))
       (setq start pos2  
             pos1 (search "~" ctrls :start2 start) ))))
 
 
 (defun spec-position (ctrls pos1)
   (do ((p (1+ pos1) (1+ p))) (())
-    (and (search (subseq ctrls p (1+ p)) "abcdefghoprstx%{}^&$[]?~<>;ABCDEFGHOPRSTX
+    (and (search (subseq ctrls p (1+ p)) "abcdefghmoprstx%{}^&$[]?~<>;ABCDEFGHMOPRSTX
 ") ;;  newline possible spec
          (not (string= "'" (subseq ctrls (1- p) p)))
       (return (1+ p)) )))
@@ -428,6 +455,13 @@ if non-us-ascii characters are used as arguments to ~s and ~a directives.
 ;; ~C
     ((string-equal "c" spec)
       (setq arg (character arg)) ) ;; conversion to Lisp char
+;; ~M
+    ((string-equal "m" spec)
+     (push arg *tilde-m-args*)
+     (push params *tilde-m-params*)
+     (let ((placeholder (generate-tilde-m-placeholder)))
+       (push placeholder *tilde-m-placeholders*)
+       (setq arg placeholder)))
 ;; ~[
     ((string= "[" spec) 
       (unless (or (string= "@" params) (string= ":" params))
