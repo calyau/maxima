@@ -428,6 +428,10 @@ The Lisp function @code{format} is described in detail in many reference books.
 Of good help is e.g. the free available online-manual 
 "Common Lisp the Language" by Guy L. Steele. See chapter 22.3.3 there. 
 
+In addition, @code{printf} recognizes two format directives which are not known to Lisp @code{format}.
+The format directive @code{~m} indicates Maxima pretty printer output.
+The format directive @code{~h} indicates a bigfloat number.
+
 @example
    ~%       new line
    ~&       fresh line
@@ -445,6 +449,7 @@ Of good help is e.g. the free available online-manual
    ~g       ~f or ~e, depending upon magnitude
    ~h       bigfloat
    ~a       uses Maxima function string
+   ~m       Maxima pretty printer output
    ~s       like ~a, but output enclosed in "double quotes"
    ~~       ~
    ~<       justification, ~> terminates
@@ -452,8 +457,6 @@ Of good help is e.g. the free available online-manual
    ~[       selection, ~] terminates 
    ~@{       iteration, ~@} terminates
 @end example
-
-The directive ~h for bigfloat is no Lisp-standard and is therefore illustrated below. 
 
 Note that the directive ~* is not supported.
 
