@@ -410,6 +410,8 @@ description of these commands along with examples.
 if an independent variable is not specified.
 In this case, the return value is the so-called "total differential".
 
+See also @mrefcomma{diff} @mref{del} and @mrefdot{derivdegree}
+
 Examples:
 
 @c ===beg===
@@ -570,6 +572,9 @@ For example, @mref{integrate} does not recognize the dependence of @code{f} on
 
 @code{depends(@var{f}, [@var{x_1}, @dots{}, @var{x_n}])} is equivalent to @code{dependencies(@var{f}(@var{x_1}, @dots{}, @var{x_n}))}.
 
+See also @mrefcomma{diff} @mrefcomma{del} @mref{derivdegree} and
+@mrefdot{derivabbrev}
+
 @c ===beg===
 @c depends ([f, g], x);
 @c depends ([r, s], [u, v, w]);
@@ -622,7 +627,7 @@ For example, @mref{integrate} does not recognize the dependence of @code{f} on
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{derivabrev}
+@anchor{derivabbrev}
 @defvr {Option variable} derivabbrev
 Default value: @code{false}
 
@@ -735,6 +740,9 @@ form instead of carrying out the differentiation.
 
 When @code{derivabbrev} is @code{true}, derivatives are displayed as subscripts.
 Otherwise, derivatives are displayed in the Leibniz notation, @code{dy/dx}.
+
+See also @mrefcomma{depends} @mrefcomma{del} @mref{derivdegree} and
+@mrefdot{derivabbrev}
 
 Examples:
 
