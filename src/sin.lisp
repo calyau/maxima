@@ -760,14 +760,14 @@
 ;;;   integrate(exp(x+1)/(1+exp(x)),x)
 ;;;   integrate(10^x*exp(x),x)
 
-(let ((bas nil)       ; The common base.
+(let ((base nil)       ; The common base.
       (pow nil)       ; The common power of the form b*x+a. The values are
                       ; stored in a list which is returned from m2.
       (exptflag nil)) ; When T, the substitution is not possible.
   
   (defun superexpt (exp var bas1 pow1)
     (prog (y (new-var (gensym "NEW-VAR-")))
-      (setq bas bas1
+      (setq base bas1
             pow pow1
             exptflag nil)
       ;; Transform the integrand. At this point resimplify, because it is not
@@ -778,17 +778,17 @@
       ;; Integrate the transformed integrand and substitute back.
       (return
         ($multthru
-          (substint (list '(mexpt) bas
+          (substint (list '(mexpt) base
                           (list '(mplus) (cdras 'a pow)
                                 (list '(mtimes) (cdras 'b pow) var)))
                     new-var
                     (integrator (div y
                                      (mul new-var
                                           (cdras 'b pow)
-                                          (take '(%log) bas))) new-var))))))
+                                          (take '(%log) base))) new-var))))))
   
-  ;; Transform expressions like g^(b*x+a) to the common base bas and
-  ;; do the substitution y = bas^(b*x+a) in the expr.
+  ;; Transform expressions like g^(b*x+a) to the common base base and
+  ;; do the substitution y = base^(b*x+a) in the expr.
   (defun elemxpt (expr &aux w)
     (cond ((freevar expr) expr)
           ;; var is the base of a subexpression. The transformation fails.
@@ -801,24 +801,24 @@
                  (elemxpt (cadr expr))
                  (elemxpt (caddr expr))))
           ;; Transform the expression to the common base.
-          ((not (eq (cadr expr) bas))
+          ((not (eq (cadr expr) base))
            (elemxpt (list '(mexpt)
-                          bas
-                          (mul (power (take '(%log) bas) -1)
+                          base
+                          (mul (power (take '(%log) base) -1)
                                (take '(%log) (cadr expr))
                                (caddr expr)))))
           ;; The exponent must be linear in the variable of integration.
           ((not (setq w (m2-b*x+a (caddr expr))))
-           (list (car expr) bas (elemxpt (caddr expr))))
+           (list (car expr) base (elemxpt (caddr expr))))
           ;; Do the substitution y = g^(b*x+a).
           (t
            (setq w (cons (cons 'bb (cdras 'b pow)) w))
            (setq w (cons (cons 'aa (cdras 'a pow)) w))
-           (setq w (cons (cons 'bas bas) w))
+           (setq w (cons (cons 'base base) w))
            (subliss w '((mtimes)
-                        ((mexpt) bas a)
+                        ((mexpt) base a)
                         ((mexpt)
-                         bas
+                         base
                          ((mquotient)
                           ((mtimes) -1 aa b) bb))
                         ((mexpt)
