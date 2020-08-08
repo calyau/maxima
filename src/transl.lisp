@@ -884,7 +884,8 @@ APPLY means like APPLY.")
 (defun tr-lambda (form &optional (tr-body #'tr-seq) &rest tr-body-argl
 		  &aux
 		  (arglist (mparams (cadr form)))
-		  (easy-assigns nil))
+		  (easy-assigns nil)
+		  (local nil))
   ;; This function is defined to take a simple macsyma lambda expression and
   ;; return a simple lisp lambda expression. The optional TR-BODY hook
   ;; can be used for translating other special forms that do lambda binding.

@@ -1194,5 +1194,21 @@ true;
 (kill (foo), 0);
 0;
 
+/* Attempting to translate multiple functions containing local would
+ * cause an error.  Similarly, translating the same function multiple
+ * times would cause an error if that function contained local.
+ */
+
+(foo () := local (), /* just something with local (not within a block) */
+ bar () := local (), /* something else with local (not within a block) */
+ translate_or_lose (foo),
+ translate_or_lose (bar),
+ translate_or_lose (foo, bar));
+[foo, bar];
+
+(kill (foo, bar), 0);
+0;
+
+
 (kill (translate_or_lose, compile_or_lose), 0);
 0;
