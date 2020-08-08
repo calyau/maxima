@@ -874,7 +874,11 @@ APPLY means like APPLY.")
 	 (setq tr-abort t))
 	(t
 	 (setq local t)))
-  (cons nil `(mapply 'mlocal ',(cdr form) '$local)))
+  ; We can't just translate to a call to MLOCAL here (which is
+  ; what used to happen).  That would push onto LOCLIST and bind
+  ; MLOCP at the "wrong time".  The push onto LOCLIST and the
+  ; binding of MLOCP are handled in TR-LAMBDA.
+  (cons '$any `(meval ',form)))
 
 
 (def%tr mquote (form)
@@ -897,8 +901,15 @@ APPLY means like APPLY.")
   ;; that the use of DECLARE(FOO,SPECIAL) will be phased out at that level.
 
   (mapc #'tbind arglist)
-  (destructuring-let (((mode . nbody) (apply tr-body (cddr form) tr-body-argl))
-		      (local-declares (make-declares arglist t)))
+  (destructuring-let* (((mode . nbody) (apply tr-body (cddr form) tr-body-argl))
+		       (local-declares (make-declares arglist t))
+		       (body (if local
+				 `((let ((mlocp t))
+				     (push nil loclist)
+				     (unwind-protect
+					 (progn ,@nbody)
+				       (munlocal))))
+				 nbody)))
     ;; -> BINDING of variables with ASSIGN properties may be difficult to
     ;; do correctly and efficiently if arbitrary code is to be run.
     (if (or tr-lambda-punt-assigns
@@ -912,11 +923,10 @@ APPLY means like APPLY.")
 			  (t
 			   (return nil)))))))
 	;; Case with EASY or no ASSIGN's
-	(progn ;;-have to undo any local assignments. --wfs
-	  `(,mode . (lambda ,(tunbinds arglist)
-		      ,local-declares
-		      ,@easy-assigns
-		      ,@nbody)))
+	`(,mode . (lambda ,(tunbinds arglist)
+		    ,local-declares
+		    ,@easy-assigns
+		    ,@body))
 	;; Case with arbitrary ASSIGN's.
 	(let ((temps (mapcar #'(lambda (ign) ign (tr-gensym)) arglist)))
 	  `(,mode . (lambda ,temps
@@ -932,7 +942,7 @@ APPLY means like APPLY.")
 			     ;; [2] do the binding.
 			     ((lambda ,(tunbinds arglist)
 				,local-declares
-				,@nbody)
+				,@body)
 			      ,@temps))
 			;; [2] check when unbinding too.
 			,@(mapcan #'(lambda (var)
@@ -1024,7 +1034,6 @@ APPLY means like APPLY.")
 		      (return-mode nil)
 		      (need-prog? nil)
 		      (returns nil) ;; not used but must be bound.
-		      (local nil)
 		      )
   (do ((l nil))
       ((null body)
@@ -1169,7 +1178,7 @@ APPLY means like APPLY.")
 ;; Perhaps a mere expansion into an MPROG would be best.
 
 (def%tr mdo (form)
-  (let (returns assigns return-mode local (inside-mprog t) need-prog?)
+  (let (returns assigns return-mode (inside-mprog t) need-prog?)
     (let (mode var init next test action varmode)
       (setq var (cond ((cadr form)) (t 'mdo)))
       (tbind var)
@@ -1205,7 +1214,7 @@ APPLY means like APPLY.")
 		     (t (list (cdr action)))))))))
 
 (def%tr mdoin (form)
-  (let (returns assigns return-mode local (inside-mprog t) need-prog?)
+  (let (returns assigns return-mode (inside-mprog t) need-prog?)
     (prog (mode var init action)
        (setq var (tbind (cadr form))) (tbind 'mdo)
        (setq init (dtranslate (caddr form)))

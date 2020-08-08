@@ -89,7 +89,10 @@ false;
 (translate_or_lose (trial), trial (2));
 [true, [1, 2, 4, 8, 16, 32, 64, 128]];
 
-/* Next test fails because local(myvar) in translated code doesn't clean up properties ... */
+/* This next test used to fail because local properties would leak out
+ * in the translated case.  This test is expected to pass now.  There
+ * are more local tests below for bug #2976.
+ */
 
 [member (myvar, arrays), errcatch (listarray (myvar))];
 [false, []];
@@ -1208,6 +1211,167 @@ true;
 
 (kill (foo, bar), 0);
 0;
+
+/* Bug #2976: "local" doesn't work in translated code
+ *
+ * For decades no attempt was being made to clean up any local
+ * properties.
+ */
+
+/* The internal LOCLIST used by local should be empty right now */
+?null (?loclist);
+true;
+
+(f0 () := "one",
+ foo1 () :=
+   (local (f0),
+    f0 () := "two",
+    f0 ()),
+ translate_or_lose (foo1),
+ block ([v : foo1 ()],
+   [f0 (), v]));
+["one", "two"];
+
+(kill (f0, foo1), 0);
+0;
+
+(arr1 [0] : "three",
+ foo2 () :=
+   block ([g : lambda ([],
+                 local (arr1, arr2),
+                 arr1 [0] : "four",
+                 arr2 [5] : "five",
+                 [arr1 [0],
+                  arr2 [5],
+                  arrayinfo (arr2)])],
+     apply (g, [])),
+ translate_or_lose (foo2),
+ block ([v : foo2 ()],
+   [arr1 [0],
+    v,
+    errcatch (arrayinfo (arr2))]));
+["three",
+ ["four",
+  "five",
+  [hashed, 1, [5]]],
+ []];
+
+(kill (arr1, foo2), 0);
+0;
+
+(foo3 (n) :=
+   (local (h),
+    h () := n + 1,
+    if n = 10 then
+      n
+    else
+      foo3 (h ())),
+ translate_or_lose (foo3),
+ foo3 (0));
+10;
+
+(kill (foo3), 0);
+0;
+
+/* The internal LOCLIST used by local should be empty right now */
+?null (?loclist);
+true;
+
+/* The fpprintprec itself is not important in this test.  I'm
+ * just picking something that has an ASSIGN property because
+ * that's a separate internal case in the translator.
+ *
+ * This test is ugly, but it's testing different cases and
+ * their interactions.
+ */
+block ([v],
+  local (f1, f2, arr),
+  f1 () := 0,
+  f2 () := 123,
+  arr [1] : "a",
+  bar (fpprintprec) :=
+    (local (f1, arr),
+     fpprintprec : 5,
+     f1 () := 42,
+     arr [1] : "b",
+     [block (
+        local (f2, arr),
+        f2 () := 69,
+        arr [1] : "c",
+        [f1 (), f2 (), arr [1]]),
+      [f1 (), f2 (), arr [1]]]),
+  translate_or_lose (bar),
+  v : bar (3),
+  [is (?get ('fpprintprec, '?assign) = false),
+   v,
+   [f1 (), f2 (), arr [1]]]);
+[false,
+ [[42, 69, "c"],
+  [42, 123, "b"]],
+ [0, 123, "a"]];
+
+(kill (bar), 0);
+0;
+
+/* This is testing to make sure there are no bad interactions
+ * between the usual local cleanup and errcatch cleanup (this
+ * also mixes the interpreted and translated cases).  This test
+ * is also ugly.
+ *
+ * The original implementation of local properties (from decades
+ * ago) not only failed to clean up local properties at all, but
+ * it wasn't even setting up the internal state to keep up with
+ * these properties correctly.  An initial attempt at fixing bug
+ * #2976 made this problem clear because with that it was easy to
+ * cause an infinite loop during certain things like errcatch
+ * cleanup.
+ */
+block ([translate : false,
+        vi, vt],
+  local (f3),
+  f3 () := -10,
+  baz1 () :=
+    (error ("oops 1"),
+     local (f4),
+     f4 () := 0),
+  baz2 () :=
+    (local (f5),
+     f5 () := 1,
+     error ("oops 2")),
+  translate_or_lose (baz1, baz2),
+  baz_test () :=
+    [block (
+       local (f3),
+       f3 () := -1,
+       errcatch (baz1 ()),
+       f3 ()),
+     block (
+       local (f3),
+       f3 () := -2,
+       errcatch (baz2 ()),
+       f3 ())],
+  vi : baz_test (),
+  translate_or_lose (baz_test),
+  vt : baz_test (),
+  [vi,
+   vt,
+   is (f3 () = -10),
+   is (f4 () = 0),
+   is (f5 () = 1)]);
+[[-1, -2],
+ [-1, -2],
+ true,
+ false,
+ false];
+
+/* The internal LOCLIST used by local should be empty right now */
+?null (?loclist);
+true;
+
+(kill (baz1, baz2, baz_test), 0);
+0;
+
+/***** This ends the bug #2976 tests *****/
 
 
 (kill (translate_or_lose, compile_or_lose), 0);
