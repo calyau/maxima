@@ -181,7 +181,7 @@
   (do ((argl argl (cdr argl))
        (lablist nil)
        (tim 0))
-      ((null argl) (if labelsp `((mlist) ,@lablist) '$done))
+      ((null argl) (if labelsp `((mlist) ,@(nreverse lablist)) '$done))
     (let ((ans (car argl)))
       (cond ((and equationsp
 		  ;; ((MEQUAL) FOO BAR)
