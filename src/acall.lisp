@@ -201,7 +201,9 @@
 	(unless $nolabels
 	  (setf (symbol-value *linelabel*) ans)))
       (setq tim (get-internal-run-time))
-      (displa `((mlabel) ,(cond (labelsp *linelabel*)) ,ans))
+      (let ((*display-labels-p* (not (null lablist))))
+	(declare (special *display-labels-p*))
+	(displa `((mlabel) ,(cond (labelsp *linelabel*)) ,ans)))
       (mterpri)
       (timeorg tim))))
 
