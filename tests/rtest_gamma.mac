@@ -3914,5 +3914,14 @@ gamma_incomplete_regularized(2+1/3,z);
 gamma_incomplete_regularized(-2+1/3,z);
 gamma_incomplete_regularized(1/3,z)-((z-2/3)*%e^-z)/(gamma(1/3)*z^(5/3));
 
+integrate(log_gamma(z),z);
+psi[-2](z)$
+
+integrate(log_gamma(1-s),s);
+-psi[-2](1-s)$
+
+integrate(2*x*log_gamma(x^2),x);
+psi[-2](x^2)$
+
 reset (gamma_expand);
 [gamma_expand];
