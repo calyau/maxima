@@ -217,7 +217,7 @@ integrate(-unit_step(-x),x);
 (abs(x)-x)/2$
 
 integrate(mod(x,b),x);
-(b^2*floor(x/b)^2+(b^2-2*b*x)*floor(x/b)+x^2)/2$
+(mod(x,b)^2-mod(x,b)+b*x)/2$
 
 integrate(mod(x,b),x,0,b);
 b^2/2$

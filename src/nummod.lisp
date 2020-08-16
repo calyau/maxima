@@ -445,16 +445,15 @@
 
 ;; We have mod(x,a) = x-a*floor(x/a). This gives
 ;;   integrate(mod(x,a),x) = (a^2 floor(x/a)^2 + (a^2 - 2 a x) floor(x/a) + x^2)/2
+;; In terms of mod(x,a), an antiderivative is
+;;   integrate(mod(x,a),x) = (mod(x,a)^2-a*mod(x,a)+a*x)/2
 (defun mod-integral (x a)
-		(let ((q (take '($floor) (div x a))))
-		    	   (div (add
-		    				    (mul a a q q)
-		    					 (mul (add (mul a a) (mul -2 a x)) q)
-		    					 (mul x x)) 2)))
+		(let ((q (take '($mod) x a)))
+		   (div (add (mul q q) (mul -1 q) (mul a x)) 2)))
 
 (putprop '%signum (list (list 'x) #'signum-integral) 'integral)
 (putprop '$unit_step (list (list 'x) #'unit-step-integral) 'integral)
 
 ;; integrate(mod(x,a),a) doesn't have representation in terms of functions
 ;; known to Maxima, I think. (Barton Willis, 2020).
-(putprop '$mod (list (list 'x 'y) #'mod-integral nil) 'integral)		 
+(putprop '$mod (list (list 'x 'y) #'mod-integral nil) 'integral)
