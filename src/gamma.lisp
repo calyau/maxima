@@ -1900,6 +1900,12 @@
    ((mqapply) (($psi array) 0) z))
   grad)
 
+;; integrate(log_gamma(x),x) = psi[-2](x)
+(defun log-gamma-integral (x)
+  (take '(mqapply) (take '($psi) -2) x))
+
+(putprop '%log_gamma (list (list 'x) #'log-gamma-integral) 'integral)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun simp-log-gamma (expr z simpflag)
