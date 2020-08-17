@@ -180,6 +180,24 @@
      (setq u (addk -1 u) v (1- v))
      (go loop)))
 
+;;; gradient of binomial
+
+(defprop %binomial 
+		 ((a b)
+			((mtimes) -1 ((%binomial) a b)
+              ((mplus)
+                 ((mtimes) -1
+                 ((mqapply) (($psi array) 0) ((mplus) 1 a)))
+                 ((mqapply) (($psi array) 0)
+                 ((mplus) 1 a ((mtimes) -1 b)))))
+		  
+		    ((mtimes) -1 ((%binomial) a b)
+               ((mplus)
+                 ((mtimes) -1
+                 ((mqapply) (($psi array) 0)
+                 ((mplus) 1 a ((mtimes) -1 b))))
+                 ((mqapply) (($psi array) 0) ((mplus) 1 b))))) grad)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Implementation of the Beta function

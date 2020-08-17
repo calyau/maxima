@@ -3925,3 +3925,14 @@ psi[-2](x^2)$
 
 reset (gamma_expand);
 [gamma_expand];
+
+/* tests for derivative of binomial */
+ratsimp(makegamma(diff(binomial(a,b) - makegamma(binomial(a,b)),a)));
+0$
+
+ratsimp(makegamma(diff(binomial(a,b) - makegamma(binomial(a,b)),b)));
+0$
+
+ratsimp(makegamma(diff(binomial(a^2,a) - makegamma(binomial(a^2,a)),a,2)));
+0$
+
