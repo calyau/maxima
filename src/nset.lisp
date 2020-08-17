@@ -894,8 +894,8 @@
 ;; is an identity.
 
 (defprop %kron_delta simp-kron-delta operators)
-(setf (get '$kron_delta 'noun) '%kron_delta)
-(setf (get '%kron_delta 'verb) '$kron_delta)
+(setf (get '$kron_delta 'verb) '%kron_delta)
+(setf (get '%kron_delta 'noun) '$kron_delta)
 (setf (get '$kron_delta 'alias) '%kron_delta)
 (setf (get '%kron_delta 'reversealias) '$kron_delta)
 (defmfun $kron_delta (&rest x) (simplifya `((%kron_delta) ,@x) t))
