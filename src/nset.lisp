@@ -810,7 +810,7 @@
 (defmfun $num_partitions (n &optional lst)
   (cond ((equal n 0) 1)
 	((and (integerp n) (> n -1))
-	 (let ((p (make-array (+ n 1))))
+	 (let ((p (make-array (+ n 1) :initial-element 0)))
            (setf (aref p 0) 1)
            (loop for i from 1 to n
               do (loop with j = 0
