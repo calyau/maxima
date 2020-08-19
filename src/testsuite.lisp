@@ -327,11 +327,11 @@
      #+cmucl
      ((mlist simp) 66 164)
      #+sbcl
-     ((mlist simp) 66 164)
+     ((mlist simp) 61 137)
      #+ecl
      ((mlist simp) 66 164)
      #+ccl
-     ((mlist simp) 66 164))
+     ((mlist simp) 61 137))
     "rtest_pochhammer"
     ((mlist simp) "rtest_to_poly_solve"
      #-(or cmucl ccl ecl gcl sbcl sbcl)

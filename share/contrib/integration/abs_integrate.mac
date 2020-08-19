@@ -14,7 +14,7 @@ Also, Richard Hennessy identified several bugs in this code. */
 
 qput(abs_integrate, 1, version);
 
-eval_when(translate, error("abs_integrate does not translate or compile correctly.")); 
+eval_when(translate, error("abs_integrate does not translate or compile correctly."));
 
 load("opsubst");
 load("unwind_protect");
@@ -37,7 +37,7 @@ tangent_p(x) := safe_op(x) = 'tan;
 intable[abs_cos] : lambda([u], [sin(u)*cos(%pi*floor(u/%pi+1/2))+2*floor(u/%pi+1/2),diff(u, %voi)]),
 intable[triangle_wave] : lambda([u],   [block([u : mod(u,1)], -(4*u-1)*abs(4*u-1)/8+(4*u-3)*abs(4*u-3)/8+2*u^2-2*u+1), diff(u,%voi)]),
 intable[sawtooth_wave] : lambda([u], [sawtooth_wave(u)^2/2-sawtooth_wave(u)/2+u/2, diff(u,%voi)]));
-                              
+
 /* Before attempting to integrate, replace (here X matches with any expression):
      (1) mod =  lambda([x,y], x - y * floor(x / y)),q)
      (2) abs(cos(X)) = abs_cos(X), abs(sin(X))  = abs_sin(X),
@@ -46,7 +46,7 @@ intable[sawtooth_wave] : lambda([u], [sawtooth_wave(u)^2/2-sawtooth_wave(u)/2+u/
      (5) acos(cos(X)) = (%pi/2)*triangle_wave((x - %pi/2)/(2*%pi)) + %pi/2,
      (6) atan(tan(X)) =  %pi * sawtooth_wave((X-%pi/2)/(%pi)) - %pi/2 -> -%pi*floor((2*X-%pi)/(2*%pi))+X-%p
 Where triangle_wave(x) = block([x : mod(x,1)], -abs(4*x-1) + abs(4*x-3) + 4*x-2) and sawtooth_wave(x) = x - floor(x).*/
-     
+
 extra_integrate(q,x) := block([l, i, ii : funmake(nounify('integrate),[q,x])],
   l : extra_integration_methods,
   q : subst('mod = lambda([x,y], x - y * floor(x / y)),q),
@@ -82,8 +82,8 @@ real_linear_factors(e,x) := (
   if every(lambda([w], polynomialp(w, [x], lambda([s], freeof(x,s)),lambda([k],is(k=0 or k=1)))),e) then (
      e : sublist(args(e), lambda([s], is(is(equal(s, conjugate(s))) = true) and not freeof(x,s))),
      map(lambda([s], rhs(first(linsolve(s,x)))), e))
-  else false);	
- 
+  else false);
+
 /* Convert abs, max, min, and unit_step to signum expressions */
 convert_to_signum(e) := block([opsubst : true],
   e : unit_step_mult_simp(e),
@@ -91,7 +91,7 @@ convert_to_signum(e) := block([opsubst : true],
   e : subst('max = lambda([[x]], xreduce(lambda([a,b], (a + b +abs(a-b))/2),x)),e),
   e : subst('min = lambda([[x]], xreduce(lambda([a,b], (a + b -abs(a-b))/2),x)),e),
   subst('abs = lambda([s], s * signum(s)), e));
- 
+
 /* Do unit_step(a) * unit_step(b) --> unit_step(min(a,b)). This is an identity
 for either a left or right continuous unit_step. */
 
@@ -103,7 +103,7 @@ unit_step_mult_simp(e) := block([p : [], q : 1, inflag : true],
    p : xreduce('min, p),
    if freeof('max, 'min, 'inf, p) then q * unit_step(p) else e)
  else map('unit_step_mult_simp, e));
-         
+
 /* Do e * signum(e) --> abs(e) */
 
 signum_to_abs(e) := block([l : flatten(gatherargs(e,'signum))],
@@ -135,7 +135,7 @@ signum_int(q,x) := block([w : 1, acc : [], sgn, v, f, listconstvars : true],
     q : block([extra_integration_methods : []], integrate(trigsimp(q),x)),
     if freeof('integrate, nounify('integrate),q) then q else false)
   else (
-    q : almost_everywhere_simp(q), 
+    q : almost_everywhere_simp(q),
     v : listofvars(q),
     q : block([expandwrt_denom : true], expandwrt(q,'signum)),
     if (f : abs_int_extra(q,x)) # false then f
@@ -150,7 +150,7 @@ signum_int(q,x) := block([w : 1, acc : [], sgn, v, f, listconstvars : true],
       f : map(lambda([s], signum_int(s,x)), args(q)),
       if member(false, f) then false else xreduce("+", f))
     else block([extra_integration_methods : [], extra_definite_integration_methods : []], false)));
- 
+
 /* integrate(q(x) * signum(x - l[1]) * signum(x - l[2]) * ...,x). The list l is nonempty. */
 
 signum_int_helper(q,l,x) := block([v, xo, f, x%],
@@ -175,7 +175,7 @@ dint(e,x,l) := block([xo, acc : 0, i, cntx],
     i : unwind_protect((
          apply('assume,[xo < x, x < xi, xo < xi]),
          errcatch(integrate(expand(e,0,0),x,xo,xi))),
-       killcontext(cntx)), 
+       killcontext(cntx)),
     if i = [ ] then return(acc : false) else acc : acc + first(i),
     xo : xi),
   acc);
@@ -211,7 +211,7 @@ abs_defint(e,x,lo,hi) := block([f,l, prederror : false, cntx],
           if f = false then false else f)
        else false),
     killcontext(cntx))));
- 
+
 /* Replace signum(z)^2 --> 1, where z is nonzero and a polynomial. For a nonzero polynomial z,
 signum(z)^2 -1 is zero everywhere except at each zero of z. The almost_everywhere_simp simplification
 is OK for an integrand--thus integrate(e,x) = integrate(almost_everywhere_simp(e),x).
@@ -222,7 +222,7 @@ for example. Another extension is %if(x=0,xxx,zzz) --> zzz. I'll save these for 
 almost_everywhere_simp(e) := block([l],
   l : sublist(flatten(gatherargs(e,'signum)), lambda([s], s # 0 and polynomialp(s,listofvars(s)))),
   fullratsubst(map(lambda([s], signum(s)^2=1),l), ratexpand(e)));
- 
+
 /* For integrands of the form F(x, |x-c|), integrate F(x,-x+c) and F(x,x-c). Return a signum expression
 that is continuous at c; when the integrand doesn't have this form, return false. The error catch
 on integrate is needed: try integrate(1/(x + abs(x)),x), for example.
@@ -258,7 +258,7 @@ abs_int_extra(q,x) := block([q1,q2,k,xo,kk, cntx],
           (q1 + q2)/2 - (q2 - q1) * signum(xo)/2))
       else false))
   else false);
- 
+
 abs_integrate_use_if(q,x) := block([k,%x,xo],
   q : convert_to_signum(q),
   k : flatten(gatherargs(q,'signum)),
@@ -281,17 +281,16 @@ interval_integrate(q,x,l) :=  block([xo,q1,q2,i1, cntx, extra_integration_method
    cntx : supcontext(),
     q : unwind_protect((assume(x > xo),expand(q,0,0)),killcontext(cntx)),
     q2 : interval_integrate(q,x,rest(l)),
-   
+
     if freeof(nounify('integrate), q2 - q1) then (
       i1 : errcatch(sublis([x = xo], q2 - q1)))
     else i1 : [ ],
     if i1 = [ ] then false else %if(x < xo, q1 + first(i1), q2)));
 
-''(buildq([z : ?gensym()], gradef(floor(z), %if(%integerp(z), 'und, 0))));    
-''(buildq([z : ?gensym()], gradef(ceiling(z),%if(%integerp(z), 'und, 0)))); 
-''(buildq([z : ?gensym()], gradef(signum(z), 0)));
-''(buildq([z : ?gensym()], gradef(sawtooth_wave(z), %if(%integerp(z), 'und, 1))));
-  
+''(buildq([z : gensym()], gradef(floor(z), %if(%integerp(z), 'und, 0))));
+''(buildq([z : gensym()], gradef(ceiling(z),%if(%integerp(z), 'und, 0))));
+''(buildq([z : gensym()], gradef(sawtooth_wave(z), %if(%integerp(z), 'und, 1))));
+
 floor_int(q, x) := block([l, fl : gensym(), cl : gensym(), k : gensym(), cntx, simpsum : true],
   l : setify(xreduce('append, gatherargs(q,'floor))),
   l : union(l, setify(xreduce('append, gatherargs(q,'ceiling)))),
@@ -306,7 +305,7 @@ floor_int(q, x) := block([l, fl : gensym(), cl : gensym(), k : gensym(), cntx, s
        q : subst([fl = floor(x), cl = ceiling(x)], q)
            + sum(subst([fl = k-1, cl = k,x = k], q) - subst([fl = k, cl = k,x = k], q),k,0, floor(x))
            + sum(subst([fl = k-1, cl = k-1,x = k-1], q) - subst([fl = k-1, cl = k,x = k-1], q),k,0,ceiling(x)),
-       if freeof('integrate,'sum,q) then q else false),               
+       if freeof('integrate,'sum,q) then q else false),
      killcontext(cntx)))
  else false);
 
@@ -338,13 +337,13 @@ remove_const_factors(p) := block([inflag : true],
 /* On exiting from sign or csign, temporary assumptions are not immediately forgotten. This function
    removes these temporary assumptions before returning. */
 
-forgetful_csign(e) := unwind_protect(csign(e), ?clearsign()); 
+forgetful_csign(e) := unwind_protect(csign(e), ?clearsign());
 
 /* Do basic simplifications on the equation e = 0. This function is conservative--
    since, for example, 1/x  = 1/x isn't the same as 0 = 0, this function doesn't do
    e <-- rhs(e)-lhs(e). For a similar reason, this function doesn't return the numerator
    of a quotient either.*/
-   
+
 eq_reduce(e) := block([ ],
   e : factor(e),
   if constantp(e) then if csign(e) = 'zero then 0 else 1
@@ -358,7 +357,7 @@ eq_reduce(e) := block([ ],
 
 /* Try to find a set of expressions {q1,q2,...,qn} such that if any q vanishes, the expression
    e is undefined. This function misses things such as gamma(x) -- we would need {0,-1,-2,-3,...} */
-   
+
 possible_singular_pts(e) := block([inflag : true],
   e : factor(e),
   if mapatom(e) then set()
@@ -369,12 +368,12 @@ possible_singular_pts(e) := block([inflag : true],
 
 
 /* This function tries to return integrate(e,x) without calling asksign. If asksign does
-   get called, this function removes any new assumptions in the fact database. 
+   get called, this function removes any new assumptions in the fact database.
 
    To avoid some calls to asksign, forgetful_integrate first tries to integrate using intfudu.  The check that the arguments
    of the summand are freeof abs, floor, ... is a compromise that keeps Maxima from stalling when integrating, for example,
    log(abs(sin(x)),x) with conditional_integrate as a member of extra_integration_methods.*/
-   
+
 forgetful_integrate(e,x) := block([ee : false, cntx],
   unwind_protect((
      cntx : supcontext(),
@@ -382,14 +381,14 @@ forgetful_integrate(e,x) := block([ee : false, cntx],
         ee : intfudu(e,x),
         if ee  # false then ee else block([extra_integration_methods : [], extra_definite_integration_methods : []],  integrate(trigsimp(e),x)))),
     killcontext(cntx)));
-  
+
 /* Let l be a list of first degree polynomials. Solve l and substitute into e.
    When the substitutions are inconsistent, signal an error, but don't print
    a message. Linear_subst isn't intended to be a user-level function--this
    function doesn't check that each expression in the list l is linear. It would
    be good to hide this function from the user, but Maxima doesn't have a way
    to do that.*/
-  
+
 linear_subst(l,e) := block([linsolve_params : false, globalsolve : false, backsubst : false,
   programmode : true],
   if emptyp(l) then e else (
@@ -414,7 +413,7 @@ linear_p(e,var) := polynomialp(e, var, lambda([s], lfreeof(var,s)), lambda([k],i
    (1) Integrate normally--well almost normally. The function forgetful_integrate tries
        to integrate without calling asksign and it cleans the fact database on exit.
        The call to trigsimp cleans up antiderivatives such as integrate(cos(m*x) * sin(x - m),x).
-   
+
    (2) Locate the singularities of the antiderivative that are not singularities of the
        integrand--collect these singularities into a set npoles (new poles).
 
@@ -446,4 +445,3 @@ conditional_integrate(e,x) := block([ee, eee, npoles, vars, n, m, k, cnd, eq, q,
       else false)
     else false)
   else false);
-

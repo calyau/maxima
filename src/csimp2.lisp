@@ -468,6 +468,17 @@
            (gammared j))
 	  (t (eqtest (list '(%gamma) j) x)))))
 
+;; A sign function for gamma(x); when x > 0 return pos; when x < 0 or x > 0, return pn;
+;;; otherwise, return pnz (that is, nothing known).
+(defun gamma-sign (x)
+   (let ((sgn ($csign (second x)))) ;; careful! x = ((%gamma) XXX)
+		(setq sign
+			  (cond ((eql sgn '$pos) '$pos)
+				    ((or (eql sgn '$neg) (eql sgn '$pn)) '$pn)
+				    (t '$pnz)))))
+
+(putprop '%gamma #'gamma-sign 'sign-function)
+
 (defun gamma (y) ;;; numerical evaluation for 0 < y < 1
   (prog (sum coefs)
      (setq coefs (list 0.035868343 -0.193527817 0.48219939
