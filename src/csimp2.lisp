@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special var %p%i varlist plogabs half%pi nn* dn* $factlim
+(declare-top (special var %p%i varlist plogabs half%pi nn* dn* $factlim sign
                       $beta_expand))
 
 (defmvar $gammalim 10000
