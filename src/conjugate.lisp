@@ -1,4 +1,4 @@
-;;  Copyright 2005, 2006 by Barton Willis
+;;  Copyright 2005, 2006, 2020 by Barton Willis
 
 ;;  This is free software; you can redistribute it and/or
 ;;  modify it under the terms of the GNU General Public License,
@@ -90,6 +90,7 @@
 ;; Trig like and hypergeometric like functions
 
 (setf (get '%log 'conjugate-function) 'conjugate-log)
+(setf (get '%plog 'conjugate-function) 'conjugate-log)
 (setf (get 'mexpt 'conjugate-function) 'conjugate-mexpt)
 (setf (get '%asin 'conjugate-function) 'conjugate-asin)
 (setf (get '%acos 'conjugate-function) 'conjugate-acos)
@@ -105,7 +106,11 @@
 
 (setf (get '%hankel_1 'conjugate-function) 'conjugate-hankel-1)
 (setf (get '%hankel_2 'conjugate-function) 'conjugate-hankel-2)
+(setf (get '%log_gamma 'conjugate-function) 'conjugate-log-gamma)
 
+;; conjugate of polylogarithm li & psi
+(setf (get '$li 'conjugate-function) 'conjugate-li)
+(setf (get '$psi 'conjugate-function) 'conjugate-psi)
 ;; Other things:
 
 (setf (get '%sum 'conjugate-function) 'conjugate-sum)
@@ -116,22 +121,22 @@
 
 (defun off-negative-real-axisp (z)
   (setq z (trisplit z))	          ; split into real and imaginary
-  (or (eq t (mnqp (cdr z) 0))     ; y #  0
-      (eq t (mgqp (car z) 0))))   ; x >= 0
+  (or (eql t (mnqp (cdr z) 0))     ; y #  0
+      (eql t (mgqp (car z) 0))))   ; x >= 0
 
 (defun on-negative-real-axisp (z)
   (setq z (trisplit z))
-  (and (eq t (meqp (cdr z) 0))
-       (eq t (mgrp 0 (car z)))))
+  (and (eql t (meqp (cdr z) 0))
+       (eql t (mgrp 0 (car z)))))
 
 (defun in-domain-of-asin (z)
   (setq z (trisplit z))
   (let ((x (car z)) (y (cdr z)))
-    (or (eq t (mgrp y 0))
-	(eq t (mgrp 0 y))
+    (or (eql t (mgrp y 0))
+	(eql t (mgrp 0 y))
 	(and
-	 (eq t (mgrp x -1))
-	 (eq t (mgrp 1 x))))))
+	 (eql t (mgrp x -1))
+	 (eql t (mgrp 1 x))))))
 
 ;; Return conjugate(log(x)). Actually, x is a lisp list (x).
 
@@ -228,16 +233,40 @@
         (take '(%hankel_1) (take '($conjugate) n) (take '($conjugate) x))
        `(($conjugate simp) ((%hankel_2 simp) ,@z)))))
 
+(defun conjugate-log-gamma (z)
+	(setq z (first z))
+	(if (off-negative-real-axisp z)
+		   (take '(%log_gamma) (take '($conjugate) z)) 
+		`(($conjugate simp) ((%log_gamma simp) ,z))))
+
+;; conjugate of polylogarithm li[s](x), where z = (s,x). We have li[s](x) = x+x^2/2^s+x^3/3^s+...
+;; Since for all integers k, we have conjugate(x^k/k^s) = conjugate(x)^k/k^conjugate(s), we 
+;; commute conjugate with li.
+(defun conjugate-li (z)
+	(let ((s (take '($conjugate) (first z))) (x (take '($conjugate) (second z))))
+	   (take '(mqapply) `(($li array) ,s) x)))
+
+(defun conjugate-psi (z)
+	(let ((s (take '($conjugate) (first z))) (x (take '($conjugate) (second z))))
+	   (take '(mqapply) `(($psi array) ,s) x)))
+  
 ;; When a function maps "everything" into the reals, put real-valued on the
 ;; property list of the function name. This duplicates some knowledge that
-;; $rectform has. So it goes. The functions floor and ceiling also aren't
-;; defined off the real-axis. I suppose these functions could be given the
-;; real-valued property.
+;; $rectform has. So it goes. 
 
 (setf (get '%imagpart 'real-valued) t)
 (setf (get 'mabs 'real-valued) t)
 (setf (get '%realpart 'real-valued) t)
 (setf (get '%carg 'real-valued) t)
+(setf (get '$ceiling 'real-valued) t)
+(setf (get '$floor 'real-valued) t)
+(setf (get '$mod 'real-valued) t)
+(setf (get '$unit_step 'real-valued) t)
+(setf (get '$charfun 'real-valued) t)
+
+
+;; The function manifestly-real-p makes some effort to determine if its input is 
+;; real valued.  
 
 ;; manifestly-real-p isn't a great name, but it's OK. Since (manifestly-real-p '$inf) --> true
 ;; it might be called manifestly-extended-real-p. A nonscalar isn't real.
@@ -248,41 +277,40 @@
 
 (defun manifestly-real-p (e)
   (let (($inflag t))
-    (and ($mapatom e)
-	 (not (manifestly-pure-imaginary-p e))
-	 (not (manifestly-complex-p e))
-	 (not (manifestly-nonreal-p e))
-	 (or
+   (or
 	  ($numberp e)
-	  (symbolp e)
-	  (and ($subvarp e) (manifestly-real-p ($op e)))))))
+	  (and ($mapatom e)
+		   (not (manifestly-pure-imaginary-p e))
+	       (not (manifestly-complex-p e))
+	       (not (manifestly-nonreal-p e)))
+	  (and (consp e) (consp (car e)) (get (caar e) 'real-valued)) ;F(xxx), where F is declared real-valued
+	  (and ($subvarp e) (manifestly-real-p ($op e)))))) ;F[n],  where F is declared real-valued
+
+;; The function  manifestly-pure-imaginary-p makes some effort to determine if its input is 
+;; a multiple of %i.
 
 (defun manifestly-pure-imaginary-p (e)
   (let (($inflag t))
     (or 
      (and ($mapatom e)
 	  (or
-	   (eq e '$%i)
+	   (eql e '$%i)
 	   (and (symbolp e) (kindp e '$imaginary) (not ($nonscalarp e)))
 	   (and ($subvarp e) (manifestly-pure-imaginary-p ($op e)))))
      ;; For now, let's use $csign on constant expressions only; once $csign improves,
      ;; the ban on nonconstant expressions can be removed
-     (and ($constantp e) (eq '$imaginary ($csign e))))))
+     (and ($constantp e) (eql '$imaginary ($csign e))))))
 
 ;; Don't use (kindp e '$complex)!
 
 (defun manifestly-complex-p (e)
   (let (($inflag t))
     (or (and (symbolp e) (decl-complexp e) (not ($nonscalarp e)))
-	(eq e '$infinity)
-	(and ($subvarp e) (manifestly-complex-p ($op e))
-	     (not ($nonscalarp e))))))
+	(eql e '$infinity)
+	(and ($subvarp e) (manifestly-complex-p ($op e)) (not ($nonscalarp e))))))
 
 (defun manifestly-nonreal-p (e)
   (and (symbolp e) (or (member e `($und $ind $zeroa $zerob t nil)) ($nonscalarp e))))
-
-;; For a subscripted function, conjugate always returns the conjugate noun-form.
-;; This could be repaired. For now, we don't have a scheme for conjugate(li[m](x)).
 
 ;; We could make commutes_with_conjugate and maps_to_reals features. But I
 ;; doubt it would get much use.
@@ -304,5 +332,10 @@
 
 	((setq f (and (symbolp (mop e)) (get (mop e) 'conjugate-function)))
 	 (funcall f (margs e)))
+	  
+    ;;subscripted functions	  
+	((setq f (and ($subvarp (mop e)) (get (caar (mop e)) 'conjugate-function)))
+	 
+	 (funcall f (append (margs (mop e)) (margs e))))
 
 	(t `(($conjugate simp) ,e))))

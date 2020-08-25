@@ -427,5 +427,33 @@ signum(conjugate(z))$
 (remove(z,complex),0);
 0$
 
+conjugate(ceiling(x));
+ceiling(x)$
+
+conjugate(floor(x));
+floor(x)$
+
+conjugate(mod(x,1));
+mod(x,1)$
+
+conjugate(unit_step(x));
+unit_step(x)$
+
+conjugate(charfun(x>0));
+charfun(x>0)$
+
+conjugate(log_gamma(2+%i*107));
+log_gamma(2-%i*107);
+
+conjugate(log_gamma(-2+%i*107));
+log_gamma(-2-%i*107);
+
+conjugate(li[2](42 + %i/2));
+li[2](42 - %i/2)$
+
+conjugate(psi[2](-42 + %i/2));
+psi[2](-42 - %i/2)$
+
+
 kill (values);
 done;
