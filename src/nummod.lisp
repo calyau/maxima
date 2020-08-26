@@ -55,7 +55,7 @@
 	  ((eq nil bool) 0)
 	  ((op-equalp e '$is) `(($charfun simp) ,(second e)))
 	  (t `(($charfun simp) ,e)))))
-  
+
 (defun integer-part-of-sum (e)
   (let ((i-sum 0) (n-sum 0) (o-sum 0) (n))
     (setq e (margs e))
@@ -110,7 +110,7 @@
 
 (defun pretty-good-floor-or-ceiling (x fn &optional digits)
   (let (($float2bf t) ($algebraic t) (f1) (f2) (f3) (eps) (lb) (ub) (n))
-    
+
     (setq digits (if (and (integerp digits) (> 0 digits)) digits 25))
     (catch 'done
 
@@ -124,24 +124,24 @@
       ;; This happens when, for example, x = asin(2). For now, bfloatp
       ;; evaluates to nil for a complex big float. If this ever changes,
       ;; this code might need to be repaired.
-      
-      (bind-fpprec digits 
+
+      (bind-fpprec digits
         (setq f1 ($bfloat x))
         (if (not ($bfloatp f1)) (throw 'done nil)))
-		   
+
       (incf digits 20)
       (setq f2 (bind-fpprec digits ($bfloat x)))
       (if (not ($bfloatp f2)) (throw 'done nil))
 
       (incf digits 20)
-      (bind-fpprec digits 
+      (bind-fpprec digits
         (setq f3 ($bfloat x))
         (if (not ($bfloatp f3)) (throw 'done nil))
 
         ;; Let's say that the true value of x is in the interval
         ;; [f3 - |f3| * eps, f3 + |f3| * eps], where eps = 10^(20 - digits).
         ;; Define n to be the number of integers in this interval; we have
-        
+
         (setq eps (power ($bfloat 10) (- 20 digits)))
         (setq lb (sub f3 (mult (take '(mabs) f3) eps)))
         (setq ub (add f3 (mult (take '(mabs) f3) eps)))
@@ -160,11 +160,11 @@
       (setq f1 (take (list fn) f1))
       (setq f2 (take (list fn) f2))
       (setq f3 (take (list fn) f3))
-      
+
       ;; Provided f1 = f2 = f3 and n = 0, return f1.
       ;; If n = 1 and (use-radcan-p e) and ($radcan e) is a $ratnump, return
       ;; floor / ceiling of radcan(x).
-      
+
       (cond ((and (= f1 f2 f3) (= n 0)) f1)
 	    ((and (=  f1 f2 f3) (= n 1) (use-radcan-p x))
 	     (setq x ($radcan x))
@@ -340,7 +340,7 @@
 (setf (get '$mod 'distribute_over) '(mlist $matrix mequal))
 
 ;; See "Concrete Mathematics," Section 3.21.
-	     
+
 (defun simp-nummod (e e1 z)
   (twoargcheck e)
   (let ((x (simplifya (specrepcheck (cadr e)) z))
@@ -353,8 +353,8 @@
 	   (mul e1 (opcons '$mod (div x e1) (div y e1))))
 	  (t `(($mod simp) ,x ,y)))))
 
-;; The function 'round' rounds a number to the nearest integer. For a tie, round to the 
-;; nearest even integer. 
+;; The function 'round' rounds a number to the nearest integer. For a tie, round to the
+;; nearest even integer.
 
 (defprop %round simp-round operators)
 (setf (get '%round 'integer-valued) t)
@@ -374,7 +374,7 @@
 	((member e '($inf $minf $und $ind) :test #'eq) e)
 	((eq e '$zerob) 0)
 	((eq e '$zeroa) 0)
-	(t 
+	(t
 	 (let* ((lb (take '($floor) e))
 		(ub (take '($ceiling) e))
 		(sgn (csign (sub (sub ub e) (sub e lb)))))
@@ -405,7 +405,7 @@
 	   (simplify (list '(%round) arglim)))
 	  (t
 	   (throw 'limit nil)))))
- 
+
 ;; Round a number towards zero.
 
 (defprop %truncate simp-truncate operators)
@@ -432,3 +432,28 @@
 		 ((member sgn '($zero $pz $pos) :test #'eq) (take '($floor) e))
 		 ((apply-reflection-simp yy e t))
 		 (t `((,yy simp) ,e)))))))
+
+;;; integration for signum, unit_step, and mod.
+
+;; integrate(signum(x),x) = |x|
+(defun signum-integral (x)
+		 (take '(mabs) x))
+
+;; integrate(unit_step(x),x) = (x + |x|)/2
+(defun unit-step-integral (x)
+		(div (add x (take '(mabs) x)) 2))
+
+;; We have mod(x,a) = x-a*floor(x/a). This gives
+;;   integrate(mod(x,a),x) = (a^2 floor(x/a)^2 + (a^2 - 2 a x) floor(x/a) + x^2)/2
+;; In terms of mod(x,a), an antiderivative is
+;;   integrate(mod(x,a),x) = (mod(x,a)^2-a*mod(x,a)+a*x)/2
+(defun mod-integral (x a)
+		(let ((q (take '($mod) x a)))
+		   (div (add (mul q q) (mul -1 q) (mul a x)) 2)))
+
+(putprop '%signum (list (list 'x) #'signum-integral) 'integral)
+(putprop '$unit_step (list (list 'x) #'unit-step-integral) 'integral)
+
+;; integrate(mod(x,a),a) doesn't have representation in terms of functions
+;; known to Maxima, I think. (Barton Willis, 2020).
+(putprop '$mod (list (list 'x 'y) #'mod-integral nil) 'integral)

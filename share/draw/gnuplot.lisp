@@ -3402,6 +3402,11 @@
     ;; this isn't needed here and is turned off as it often surprises users.
     (format cmdstorage "~%set zero 0.0")
 
+    ; We use whitespace as a separator, so override any datafile separator
+    ; the user has set.  The user could have set the separator to a comma
+    ; for reading CSV files, for example.
+    (format cmdstorage "~%set datafile separator whitespace")
+
     ; write descriptions of 2d and 3d scenes
     (let ((i -1)
           (alloc (reverse *allocations*))

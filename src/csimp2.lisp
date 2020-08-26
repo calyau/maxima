@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special var %p%i varlist plogabs half%pi nn* dn* $factlim
+(declare-top (special var %p%i varlist plogabs half%pi nn* dn* $factlim sign
                       $beta_expand))
 
 (defmvar $gammalim 10000
@@ -179,6 +179,24 @@
      (setq ans (timesk (timesk u ans) (simplify (list '(rat) 1 v))))
      (setq u (addk -1 u) v (1- v))
      (go loop)))
+
+;;; gradient of binomial
+
+(defprop %binomial 
+		 ((a b)
+			((mtimes) -1 ((%binomial) a b)
+              ((mplus)
+                 ((mtimes) -1
+                 ((mqapply) (($psi array) 0) ((mplus) 1 a)))
+                 ((mqapply) (($psi array) 0)
+                 ((mplus) 1 a ((mtimes) -1 b)))))
+		  
+		    ((mtimes) -1 ((%binomial) a b)
+               ((mplus)
+                 ((mtimes) -1
+                 ((mqapply) (($psi array) 0)
+                 ((mplus) 1 a ((mtimes) -1 b))))
+                 ((mqapply) (($psi array) 0) ((mplus) 1 b))))) grad)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -449,6 +467,17 @@
            ;; Expand for rational numbers less than $gammalim.
            (gammared j))
 	  (t (eqtest (list '(%gamma) j) x)))))
+
+;; A sign function for gamma(x); when x > 0 return pos; when x < 0 or x > 0, return pn;
+;;; otherwise, return pnz (that is, nothing known).
+(defun gamma-sign (x)
+   (let ((sgn ($csign (second x)))) ;; careful! x = ((%gamma) XXX)
+		(setq sign
+			  (cond ((eql sgn '$pos) '$pos)
+				    ((or (eql sgn '$neg) (eql sgn '$pn)) '$pn)
+				    (t '$pnz)))))
+
+(putprop '%gamma #'gamma-sign 'sign-function)
 
 (defun gamma (y) ;;; numerical evaluation for 0 < y < 1
   (prog (sum coefs)

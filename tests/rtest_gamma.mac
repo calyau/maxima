@@ -3914,5 +3914,49 @@ gamma_incomplete_regularized(2+1/3,z);
 gamma_incomplete_regularized(-2+1/3,z);
 gamma_incomplete_regularized(1/3,z)-((z-2/3)*%e^-z)/(gamma(1/3)*z^(5/3));
 
+integrate(log_gamma(z),z);
+psi[-2](z)$
+
+integrate(log_gamma(1-s),s);
+-psi[-2](1-s)$
+
+integrate(2*x*log_gamma(x^2),x);
+psi[-2](x^2)$
+
 reset (gamma_expand);
 [gamma_expand];
+
+/* tests for derivative of binomial */
+ratsimp(makegamma(diff(binomial(a,b) - makegamma(binomial(a,b)),a)));
+0$
+
+ratsimp(makegamma(diff(binomial(a,b) - makegamma(binomial(a,b)),b)));
+0$
+
+ratsimp(makegamma(diff(binomial(a^2,a) - makegamma(binomial(a^2,a)),a,2)));
+0$
+
+/* tests for sign of gamma expressions */
+sign(gamma(exp(x)));
+pos$
+
+/* since x might be zero, making gamma(x) undefined, return pnz */
+sign(gamma(x));
+pnz$
+
+/* since sign(1/x) = pn, we have sign(gamma(1/x)) = pn */
+sign(gamma(1/x));
+pn$
+
+sign(gamma(x^2 +1));
+pos$
+
+sign(gamma(-(1 + x^2)));
+pn$
+
+/* since sign(sqrt(x)) = pz, we have sign(gamma(sqrt(x)) = pnz */
+sign(gamma(sqrt(x)));
+pnz$
+
+
+

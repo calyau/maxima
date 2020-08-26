@@ -159,12 +159,12 @@ realpart(signum(%i*y+x))+%i*imagpart(signum(%i*y+x))$
 /* SF bug #2242: "integrating function with signum incorrect" */
 
 integrate(x*signum(x^2-1/4),x,-1,0);
-'integrate(x*signum(x^2-1/4),x,-1,0);
+-1/4$
 
 /* SF bug #3123: "integrate(x*signum(x^2 - 4), x, 0, 3) yields spurious result" */
 
 integrate(x*signum(x^2 - 4), x, 0, 3);
-'integrate(x*signum(x^2 - 4), x, 0, 3);
+1/2$
 
 /* integrate can handle signum if it has constant sign between limits of integration */
 
@@ -192,3 +192,38 @@ integrate(x*signum(x^3 - 8), x, -2, 5);
 
 integrate(x*signum(x^3 - 8), x, 2, 5);
 21/2;
+
+/* Tests for new (August, 2020) integrals of signum, unit_step, and mod. */
+
+integrate(signum(x),x);
+abs(x)$
+
+integrate(-signum(-x),x);
+abs(x)$
+
+integrate(signum(a),a,-107,107);
+0$
+
+integrate(signum(a),a,0,107);
+107$
+
+integrate(unit_step(x),x);
+(x + abs(x))/2$
+
+integrate(unit_step(x),x);
+(x + abs(x))/2$
+
+integrate(-unit_step(-x),x);
+(abs(x)-x)/2$
+
+integrate(mod(x,b),x);
+(mod(x,b)^2-mod(x,b)+b*x)/2$
+
+integrate(mod(x,b),x,0,b);
+b^2/2$
+
+integrate(mod(x,b),x,0,2*b);
+b^2$
+
+integrate(mod(x,b),x,0,42*b);
+21*b^2$
