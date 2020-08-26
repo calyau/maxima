@@ -52,9 +52,8 @@ Converts all numbers and functions of numbers in @var{expr} to bigfloat numbers.
 The number of significant digits in the resulting bigfloats is specified by the
 global variable @mrefdot{fpprec}
 
-When @mref{float2bf} is @code{false} a warning message is printed when
-a floating point number is converted into a bigfloat number (since
-this may lead to loss of precision).
+When @mref{float2bf} is @code{false}, a warning message is printed when
+a floating point number is replaced by a bigfloat number with less precision.
 
 @opencatbox
 @category{Numerical evaluation}
@@ -165,9 +164,9 @@ point.
 @defvr {Option variable} float2bf
 Default value: @code{true}
  
-When @code{float2bf} is @code{false}, a warning message is printed when
-a floating point number is converted into a bigfloat number (since
-this may lead to loss of precision).
+When @mref{float2bf} is @code{false}, a warning message is printed when
+a floating point number is replaced by a bigfloat number with less precision.
+@c DOES THAT APPLY ONLY TO BFLOAT, OR DO OTHER FUNCTIONS CALL IT ??
 
 @opencatbox
 @category{Numerical evaluation}
