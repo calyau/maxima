@@ -13,7 +13,7 @@
 scalarmatrixp : false;
 false$
 
-(check(mat,n) := block([s, okay, z : ?gensym(), i : 0, m],
+(check(mat,n) := block([s, okay, z : gensym(), i : 0, m],
 
   s : spectral_rep(mat),
   okay : xequal(mat - s[1] . s[2] - s[3] , zeromatrix(n,n)),

@@ -309,7 +309,7 @@ polytocompanion(p,x) := block([n],
   p : multthru(p / coeff(p,x,n)),
   genmatrix(lambda([i,j], if i-j=1 then 1 else if j = n then -coeff(p,x,i-1) else 0),n));
       
-moore_penrose_pseudoinverse(m) := block([mm, z : ?gensym(), scalarmatrixp : false],
+moore_penrose_pseudoinverse(m) := block([mm, z : gensym(), scalarmatrixp : false],
   require_unblockedmatrix(m, "first", "moore_penrose_pseudoinverse"),
   mm : m . ctranspose(m),	
   limit(mm : ctranspose(m) . (mm - z * identfor(mm))^^-1,z,0));
