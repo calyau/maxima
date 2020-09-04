@@ -1424,10 +1424,8 @@ if the input is invalid.
 Examples:
 
 @c ===beg===
-@c quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5,
-                 'epsrel=1d-7);
-@c integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1),
-      x, 0, 5);
+@c quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5, 'epsrel=1d-7);
+@c integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1), x, 0, 5);
 @c ev (%, alpha=5, numer);
 @c ===end===
 @example
@@ -1701,8 +1699,7 @@ Examples:
 
 @c ===beg===
 @c quad_qawo (x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
-@c rectform (integrate (x^(-1/2)*exp(-2^(-alpha)*x) * cos(x),
-      x, 0, inf));
+@c rectform (integrate (x^(-1/2)*exp(-2^(-alpha)*x) * cos(x), x, 0, inf));
 @c input:pos;
 @c ev (%, alpha=2, numer);
 @c ===end===
@@ -1836,8 +1833,7 @@ if the input is invalid.
 Examples:
 
 @c ===beg===
-@c quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1,
-                 'epsabs=1d-9);
+@c quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1, 'epsabs=1d-9);
 @c integrate ((1-x*x)^(-1/2)/(x+1+2^(-alpha)), x, -1, 1);
 @c input:pos;
 @c ev (%, alpha=4, numer);
