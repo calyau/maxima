@@ -6,7 +6,7 @@
 
 (defmvar $debug_hompack nil)
 
-(defun parse-equations (eqnlist varlist)
+(defun parse-equations (eqnlist varlist fname)
   (let ((eqns (cdr eqnlist))
 	(vars (cdr varlist))
 	(total-deg 1)
@@ -15,15 +15,14 @@
 	final-coef)
     ;; TODO: Check that varlist is a list of symbols.
     
-    ;; TODO: Check that the number of equations is the same as the
-    ;; number of variables.
-
     ;; Process each equation
     (dolist (eqn eqns)
       (when $debug_hompack
 	(displa eqn))
 
-      (let ((args (cdr ($args eqn)))
+      (let ((args (if (string-equal ($op eqn) "+")
+		      (cdr ($args eqn))
+		      (list eqn)))
 	    eqn-deg kdeg coef)
 
 	(push (length args) numt)
@@ -48,10 +47,12 @@
 				    (setf prod (mul prod (pow v p)))
 				    p))
 			      vars))
-		 (c ($expand (div term prod))))
-	    ;; TODO: Check that c is a real number since it's supposed
+		 (c ($float ($expand (div term prod)))))
+	    ;; Check that c is a real number since it's supposed
 	    ;; to be the numerical coefficient of the polynomial term.
-	    
+	    (unless (floatp c)
+	      (merror "~M: coefficient of ~M is not a number: ~M"
+		      fname term c))
 	    (when $debug_hompack
 	      (format t "deg ~A~%" deg)
 	      (format t "c ~A~%" c)
@@ -115,9 +116,31 @@
       (format t "kdeg array ~A~%" array))
     f2cl-array))
 
-(defmfun $polsys (eqnlist varlist &key (iflg1 0) (epsbig 1d-4) (epssml 1d-14))
+(defmfun $polsys (eqnlist varlist &key (iflg1 0) (epsbig 1d-4) (epssml 1d-14) (numrr 10))
+  "Solve the system of n polynomial equations in n unknowns.
+
+  EQNLIST   list of polynomial equations.  Must be in the form sum(c[k]*x1^p1*x2^p2*...*xn^pn)
+  VARLIST   list of the n variables.
+
+  Optional keywords args (key = val)
+  IFLG1     One of 0, 1, 10, 11.  See docs for more info.
+  EPSBIG    Local error tolerance allowed the path tracker
+  EPSSML    Accuracy desired for final solution.
+  NUMRR     Number of multiples of 1000 steps before abandoning path.
+"
+
+  (unless (= (length eqnlist) (length varlist))
+    (merror "~M: Number of equations (~M) is not the number of variables (~M)"
+	    %%pretty-fname (length eqnlist) (length varlist)))
+  (unless (and (listp varlist) (eq (caar varlist) 'mlist))
+    (merror "~M:  ~M is not a list of variables"
+	    %%pretty-fname varlist))
+  (unless (member iflg1 '(0 1 10 11))
+    (merror "~M: iflg1 must be 0, 1, 10, or 11.  Got ~M"
+	    %%pretty-fname iflg1))
+
   (multiple-value-bind (total-deg kdeg coef numt)
-      (parse-equations eqnlist varlist)
+      (parse-equations eqnlist varlist %%pretty-fname)
     (let* ((n ($length eqnlist))
 	   (mmaxt (reduce #'max numt))
 	   (lenwk (+ 21 (* 61 n) (* 10 n n) (* 7 n mmaxt) (* 4 n n mmaxt)))
@@ -132,7 +155,6 @@
 			      :initial-element -2))
 	   (sspar (make-array 8 :element-type 'double-float
 				:initial-element -1d0))
-	   (numrr 10)
 	   (coef-array (convert-coef coef))
 	   (kdeg-array (convert-kdeg kdeg numt))
 	   (numt (make-array (length numt) :element-type 'f2cl-lib:integer4
@@ -142,33 +164,48 @@
 	(format t "kdeg-array ~A~%" kdeg-array))
 
       (multiple-value-bind (ignore-n ignore-numt ignore-coef-array ignore-kdeg-array
-			    ret-iflg1
-			    ignore-iflg2 ignore-epsbig ignore-epssml ignore-sspar
-			    ret-numrr)
+			    ret-iflg1)
 	  (hompack::polsys n numt coef-array kdeg-array iflg1 iflg2 epsbig epssml
-			   sspar numrr n mmaxt total-deg lenwk leniwk lamda roots arclen nfe wk iwk)
-      (let
-	  ((r (list* '(mlist)
-		     (loop for m from 1 to total-deg
-			   collect (list* '(mlist)
-					  (loop for j from 1 to n
-						collect
-						(list
-						 '(mequal)
-						 (elt varlist j)      
-						 (add (f2cl-lib::fref roots
-								      (1 j m)
-								      ((1 2) (1 (1+ n)) (1 total-deg)))
-						      (mul '$%i
-							   (f2cl-lib::fref roots
-									   (2 j m)
-									   ((1 2) (1 (1+ n)) (1 total-deg))))))))))))
+			   sspar numrr n mmaxt total-deg lenwk leniwk
+			   lamda roots arclen nfe wk iwk)
+	(declare (ignore ignore-n ignore-numt ignore-coef-array ignore-kdeg-array))
+
+	;; Convert the roots into a list where each element of the
+	;; list is a list of the form [x1=r1, x2=r2, ..., xn=rn].
+	(let
+	    ((ret-code
+	       ;; Figure out if anything bad happened.  If iflg1 is
+	       ;; negative, just use it.  Otherwise, check that iflg2
+	       ;; has a normal return for all values.  If so, return
+	       ;; 0.  Otherwise return 1 to indicate that.
+	       (cond ((minusp ret-iflg1)
+		      ret-iflg1)
+		     ((every #'(lambda (x) (= x 1)) iflg2)
+		      0)
+		     (t
+		      1)))
+	     (r (list* '(mlist)
+		       (loop for m from 1 to total-deg
+			     collect
+			     (list* '(mlist)
+				    (loop for j from 1 to n for var in (cdr varlist)
+					  collect
+					  (list
+					   '(mequal)
+					   var      
+					   (add (f2cl-lib::fref roots
+								(1 j m)
+								((1 2) (1 (1+ n)) (1 total-deg)))
+						(mul '$%i
+						     (f2cl-lib::fref roots
+								     (2 j m)
+								     ((1 2) (1 (1+ n)) (1 total-deg))))))))))))
 
 					       
-	(list '(mlist)
-	      iflg1
-	      r
-	      (list* '(mlist) (coerce iflg2 'list))
-	      (list* '(mlist) (coerce lamda 'list))
-	      (list* '(mlist) (coerce arclen 'list))
-	      (list* '(mlist) (coerce nfe 'list))))))))
+	  (list '(mlist)
+		ret-code
+		r
+		(list* '(mlist) (coerce iflg2 'list))
+		(list* '(mlist) (coerce lamda 'list))
+		(list* '(mlist) (coerce arclen 'list))
+		(list* '(mlist) (coerce nfe 'list))))))))
