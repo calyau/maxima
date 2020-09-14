@@ -621,6 +621,10 @@
 
 (displa-def mnctimes dimension-nary " . ")
 
+;; Copy properties for 2-d display from verb to noun.
+(setf (get '%mnctimes 'dissym) (get 'mnctimes 'dissym))
+(setf (get '%mnctimes 'dimension) (get 'mnctimes 'dimension))
+
 (displa-def %product dim-%product 115.)
 
 (defun dim-%product (form result)
