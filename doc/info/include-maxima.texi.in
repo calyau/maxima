@@ -83,10 +83,10 @@ and develop DOE Macsyma, now called Maxima.
 
 @ifnottex
 @ifinfo
-@node Top, Introduction to Maxima, (dir), (dir)
+@node Top, Top, (dir), (dir)
 @end ifinfo
 @ifnotinfo
-@node Top, Introduction to Maxima
+@node Top, Introduction to Maxima, (dir), (dir)
 @end ifnotinfo
 @top
 
@@ -513,6 +513,10 @@ grobner
 * Introduction to grobner::
 * Functions and Variables for grobner::
 
+hompack
+* Introduction to hompack::
+* Functions and Variables for hompack::
+
 impdiff
 * Functions and Variables for impdiff::
 
@@ -891,11 +895,15 @@ Understanding maxima's output
 @chapter graphs
 @include graphs.texi
 
-@node grobner-pkg, impdiff-pkg, graphs-pkg, Top
+@node grobner-pkg, hompack-pkg, graphs-pkg, Top
 @chapter grobner
 @include grobner.texi
 
-@node impdiff-pkg, interpol-pkg, grobner-pkg, Top
+@node hompack-pkg, impdiff-pkg, grobner-pkg, Top
+@chapter hompack
+@include hompack.texi
+
+@node impdiff-pkg, interpol-pkg, hompack-pkg, Top
 @chapter impdiff
 @include impdiff.texi
 
@@ -1007,7 +1015,7 @@ Understanding maxima's output
 @chapter zeilberger
 @include zeilberger.texi
 
-@node Error and warning messages, Function and Variable Index, zeilberger-pkg, Top
+@node Error and warning messages,  , zeilberger-pkg, Top
 @chapter Error and warning messages
 @include errormessages.texi
 
@@ -1017,7 +1025,7 @@ Understanding maxima's output
 @node Function and Variable Index,  , Error and warning messages, Top
 @end ifnothtml
 @ifhtml
-@node Function and Variable Index, Documentation Categories , Error and warning messages, Top
+@node Function and Variable Index,  , Error and warning messages, Top
 @end ifhtml
 @appendix Function and Variable Index
 
