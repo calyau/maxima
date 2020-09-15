@@ -7,11 +7,27 @@
 ;; hompack-package before blas-hompack which causes an error since the
 ;; BLAS package isn't defined.
 
-(mk:defsystem hompack-package
-    :source-pathname (maxima::maxima-load-pathname-directory)
-    :binary-pathname (maxima::maxima-objdir "share" "hompack")
-    :depends-on ("blas-hompack")
+(mk:defsystem blas-hompack
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "hompack")
+  :components
+  ((:module "../lapack/blas"
+    :source-extension "lisp"
     :components
+    ((:file "blas-package")
+     (:file "daxpy" :depends-on ("blas-package"))
+     (:file "dcopy" :depends-on ("blas-package"))
+     (:file "ddot" :depends-on ("blas-package"))
+     (:file "dnrm2" :depends-on ("blas-package"))
+     (:file "dscal" :depends-on ("blas-package"))
+     (:file "idamax" :depends-on ("blas-package"))))))
+
+  
+(mk:defsystem hompack-package
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "hompack")
+  :depends-on ("blas-hompack")
+  :components
   ((:module "lisp"
     :source-extension "lisp"
     :binary-pathname "."
@@ -19,10 +35,10 @@
     ((:file "hompack-package")))))
 
 (mk:defsystem hompack
-    :source-pathname (maxima::maxima-load-pathname-directory)
-    :binary-pathname (maxima::maxima-objdir "share" "hompack")
-    :depends-on ("hompack-package" "blas-hompack")
-    :components
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "hompack")
+  :depends-on ("hompack-package" "blas-hompack")
+  :components
   ((:module "lisp"
     :source-extension "lisp"
     :binary-pathname "."
