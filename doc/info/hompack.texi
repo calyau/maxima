@@ -1,4 +1,9 @@
-@node Introduction to hompack
+@menu
+* Introduction to hompack::
+* Functions and Variables for hompack::  
+@end menu
+
+@node Introduction to hompack, Functions and Variables for hompack
 @section Introduction to hompack
 
 @code{Hompack} is a Common Lisp translation (via @code{f2cl}) of the
@@ -10,7 +15,7 @@ Fortran library HOMPACK, as obtained from Netlib.
 @category{Package hompack}
 @closecatbox
 
-@node Functions and Variables for hompack
+@node Functions and Variables for hompack,  , Introduction to hompack
 @section Functions and Variables for hompack
 
 @anchor{hompack_polsys}
@@ -26,7 +31,7 @@ algorithm.  @var{epsbig} is the local error tolerance allowed by the
 path tracker, defaulting to 1e-4.  @var{epssml} is the accuracy
 desired for the final solution, defaulting to 1d-14.. @var{iflg1},
 defaulting to 0, controls the algorithm as follows:
-@table
+@table @code
 @item 0
 If the problem is to be solved without calling @code{polsys}' scaling
 routine, @code{sclgnp}, and without using the projective
@@ -40,10 +45,10 @@ If both scaling and projective transformation are to be used.
 @end table
 
 @code{hompack_polsys} returns a list.  The elements of the list are:
-@table
+@table @code
 @item retcode
 Indicates whether the solution is valid or not.
-@table
+@table @code
 @item 0
 Solution found without problems
 @item 1
@@ -72,7 +77,7 @@ error should be thrown before @code{polsys} is called.)
 The roots of the of the system of equations.
 @item iflg2
 Information on how the path for the m'th root terminated:
-@table
+@table @code
 @item 1
 Normal return
 @item 2
@@ -159,6 +164,7 @@ Note that @code{hompack_polsys} can sometimes be very slow.  Perhaps
 @code{solve} can be used.  Or perhaps @code{eliminate} can be used to
 convert the system of polynomials into one polynomial for which
 @code{allroots} can find all the roots.
+@end deffn
 
 @c Local Variables: 
 @c mode: texinfo

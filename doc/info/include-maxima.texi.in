@@ -182,6 +182,7 @@ and develop DOE Macsyma, now called Maxima.
 * ggf-pkg::                         Generating function of sequences.
 * graphs-pkg::                      Graph theory package.
 * grobner-pkg::                     Functions for working with Groebner bases.
+* hompack-pkg::                     HOMPACK solver for systems of polynomial equations.
 * impdiff-pkg::                     Implicit derivatives.
 * interpol-pkg::                    Interpolation package.
 * lapack-pkg::                      LAPACK functions for linear algebra.
