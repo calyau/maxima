@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -88,30 +88,30 @@
                           double-float double-float)
                          (values double-float &rest t))
                         qofs))
-        (prog ((fail nil) (itnum 0) (j 0) (judy 0) (np1 0) (dcalc 0.0d0)
-               (dels 0.0d0) (f0 0.0d0) (f1 0.0d0) (fouru 0.0d0) (fp0 0.0d0)
-               (fp1 0.0d0) (hfail 0.0d0) (ht 0.0d0) (lcalc 0.0d0) (rcalc 0.0d0)
-               (rholen 0.0d0) (temp 0.0d0) (twou 0.0d0))
+        (prog ((fail nil) (itnum 0) (j 0) (judy 0) (np1 0) (dcalc 0.0)
+               (dels 0.0) (f0 0.0) (f1 0.0) (fouru 0.0) (fp0 0.0) (fp1 0.0)
+               (hfail 0.0) (ht 0.0) (lcalc 0.0) (rcalc 0.0) (rholen 0.0)
+               (temp 0.0) (twou 0.0))
           (declare (type f2cl-lib:logical fail)
                    (type (f2cl-lib:integer4) itnum j judy np1)
                    (type (double-float) dcalc dels f0 f1 fouru fp0 fp1 hfail ht
                                         lcalc rcalc rholen temp twou))
-          (setf twou (* 2.0 (f2cl-lib:d1mach 4)))
+          (setf twou (* 2.0f0 (f2cl-lib:d1mach 4)))
           (setf fouru (+ twou twou))
           (setf np1 (f2cl-lib:int-add n 1))
           (setf crash f2cl-lib:%true%)
-          (if (< s 0.0) (go end_label))
+          (if (< s 0.0f0) (go end_label))
           (cond
-            ((< h (* fouru (+ 1.0 s)))
-             (setf h (* fouru (+ 1.0 s)))
+            ((< h (* fouru (+ 1.0f0 s)))
+             (setf h (* fouru (+ 1.0f0 s)))
              (go end_label)))
           (setf temp (dnrm2 np1 y 1))
-          (if (>= (* 0.5 (+ (* relerr temp) abserr)) (* twou temp))
+          (if (>= (* 0.5f0 (+ (* relerr temp) abserr)) (* twou temp))
               (go label40))
           (cond
-            ((/= relerr 0.0)
-             (setf relerr (* fouru (+ 1.0 fouru)))
-             (setf abserr (max abserr 0.0d0)))
+            ((/= relerr 0.0f0)
+             (setf relerr (* fouru (+ 1.0f0 fouru)))
+             (setf abserr (max abserr 0.0)))
             (t
              (setf abserr (* fouru temp))))
           (go end_label)
@@ -122,14 +122,14 @@
           (setf start f2cl-lib:%false%)
           (setf h
                   (min h
-                       0.1d0
+                       0.1
                        (f2cl-lib:fsqrt
                         (f2cl-lib:fsqrt (+ (* relerr temp) abserr)))))
           (setf (f2cl-lib:fref ypold-%data%
                                (1)
                                ((1 (f2cl-lib:int-add n 1)))
                                ypold-%offset%)
-                  (coerce 1.0 'double-float))
+                  (coerce 1.0f0 'double-float))
           (f2cl-lib:fdo (j 2 (f2cl-lib:int-add j 1))
                         ((> j np1) nil)
             (tagbody
@@ -137,7 +137,7 @@
                                    (j)
                                    ((1 (f2cl-lib:int-add n 1)))
                                    ypold-%offset%)
-                      (coerce 0.0 'double-float))
+                      (coerce 0.0f0 'double-float))
              label50))
           (multiple-value-bind
                 (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
@@ -178,7 +178,7 @@
           (f2cl-lib:fdo (judy 1 (f2cl-lib:int-add judy 1))
                         ((> judy litfh) nil)
             (tagbody
-              (setf rholen (coerce -1.0 'double-float))
+              (setf rholen (coerce -1.0f0 'double-float))
               (multiple-value-bind
                     (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8
                      var-9 var-10 var-11 var-12 var-13)
@@ -231,10 +231,10 @@
                   (go label600))
              label200))
           (cond
-            ((<= h (* fouru (+ 1.0 s)))
+            ((<= h (* fouru (+ 1.0f0 s)))
              (setf iflag 6)
              (go end_label)))
-          (setf h (* 0.5 h))
+          (setf h (* 0.5f0 h))
           (go label70)
          label300
           (setf fail f2cl-lib:%false%)
@@ -275,7 +275,7 @@
           (f2cl-lib:fdo (judy 1 (f2cl-lib:int-add judy 1))
                         ((> judy litfh) nil)
             (tagbody
-              (setf rholen (coerce -1.0 'double-float))
+              (setf rholen (coerce -1.0f0 'double-float))
               (multiple-value-bind
                     (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8
                      var-9 var-10 var-11 var-12 var-13)
@@ -330,10 +330,10 @@
           (setf fail f2cl-lib:%true%)
           (setf hfail h)
           (cond
-            ((<= h (* fouru (+ 1.0 s)))
+            ((<= h (* fouru (+ 1.0f0 s)))
              (setf iflag 6)
              (go end_label)))
-          (setf h (* 0.5 h))
+          (setf h (* 0.5f0 h))
           (go label320)
          label600
           (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
@@ -419,10 +419,10 @@
                                       y-%offset%)))
              label710))
           (setf dcalc (dnrm2 np1 tz 1))
-          (if (/= dcalc 0.0) (setf dcalc (/ (dnrm2 np1 w 1) dcalc)))
-          (if (= itnum 1) (setf lcalc (coerce 0.0 'double-float)))
+          (if (/= dcalc 0.0f0) (setf dcalc (/ (dnrm2 np1 w 1) dcalc)))
+          (if (= itnum 1) (setf lcalc (coerce 0.0f0 'double-float)))
           (cond
-            ((= (+ lcalc rcalc dcalc) 0.0)
+            ((= (+ lcalc rcalc dcalc) 0.0f0)
              (setf ht
                      (* (f2cl-lib:fref sspar-%data% (7) ((1 8)) sspar-%offset%)
                         hold)))
@@ -430,7 +430,7 @@
              (setf ht
                      (*
                       (expt
-                       (/ 1.0
+                       (/ 1.0f0
                           (max
                            (/ lcalc
                               (f2cl-lib:fref sspar-%data%
@@ -447,7 +447,7 @@
                                              (3)
                                              ((1 8))
                                              sspar-%offset%))))
-                       (/ 1.0
+                       (/ 1.0f0
                           (f2cl-lib:fref sspar-%data%
                                          (8)
                                          ((1 8))
@@ -530,6 +530,6 @@
                             fortran-to-lisp::relerr fortran-to-lisp::abserr
                             fortran-to-lisp::s nil nil nil nil nil nil nil nil
                             nil nil nil nil nil nil nil nil)
-           :calls '(fortran-to-lisp::tangnf fortran-to-lisp::dnrm2
+           :calls '(fortran-to-lisp::dnrm2 fortran-to-lisp::tangnf
                     fortran-to-lisp::d1mach))))
 

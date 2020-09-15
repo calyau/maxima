@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -80,17 +80,16 @@
                          (values double-float &rest t))
                         qofs))
         (prog ((ipp 0) (irho 0) (itangw 0) (itz 0) (iw 0) (iwp 0) (iz0 0)
-               (iz1 0) (judy 0) (jw 0) (lcode 0) (np1 0) (aerr 0.0d0)
-               (dels 0.0d0) (f0 0.0d0) (f1 0.0d0) (fp0 0.0d0) (fp1 0.0d0)
-               (qsout 0.0d0) (rerr 0.0d0) (s 0.0d0) (sa 0.0d0) (sb 0.0d0)
-               (sout 0.0d0) (u 0.0d0))
+               (iz1 0) (judy 0) (jw 0) (lcode 0) (np1 0) (aerr 0.0) (dels 0.0)
+               (f0 0.0) (f1 0.0) (fp0 0.0) (fp1 0.0) (qsout 0.0) (rerr 0.0)
+               (s 0.0) (sa 0.0) (sb 0.0) (sout 0.0) (u 0.0))
           (declare (type (f2cl-lib:integer4) ipp irho itangw itz iw iwp iz0 iz1
                                              judy jw lcode np1)
                    (type (double-float) aerr dels f0 f1 fp0 fp1 qsout rerr s sa
                                         sb sout u))
           (setf u (f2cl-lib:d1mach 4))
           (setf rerr (max relerr u))
-          (setf aerr (max abserr 0.0d0))
+          (setf aerr (max abserr 0.0))
           (setf np1 (f2cl-lib:int-add n 1))
           (setf ipp 1)
           (setf irho (f2cl-lib:int-add n 1))
@@ -144,7 +143,7 @@
                                                 lenqr)))
                                              work-%offset%)
                        1))
-              (setf sa (coerce 0.0 'double-float))
+              (setf sa (coerce 0.0f0 'double-float))
               (setf sb dels)
               (setf lcode 1)
              label130
@@ -176,7 +175,7 @@
                                        ((1 (f2cl-lib:int-add n 1)))
                                        yp-%offset%)
                         dels sout)
-                       1.0))
+                       1.0f0))
               (go label130)
              label140
               (cond
@@ -302,7 +301,7 @@
                 (setf nfe var-12)
                 (setf iflag var-14))
               (if (> iflag 0) (go end_label))
-              (daxpy np1 1.0d0
+              (daxpy np1 1.0
                (f2cl-lib:array-slice work-%data%
                                      double-float
                                      (itz)
@@ -412,7 +411,7 @@
                 (setf nfe var-12)
                 (setf iflag var-14))
               (if (> iflag 0) (go end_label))
-              (daxpy np1 1.0d0
+              (daxpy np1 1.0
                (f2cl-lib:array-slice work-%data%
                                      double-float
                                      (itz)
@@ -451,7 +450,7 @@
                                                                            1))
                                        (f2cl-lib:int-mul 2 n)
                                        lenqr))))
-                     (- 1.0)))
+                     (- 1.0f0)))
                    (+ rerr aerr))
                   (<=
                    (dnrm2 n
@@ -502,7 +501,7 @@
                 ((>
                   (*
                    (+ (f2cl-lib:fref yold (np1) ((1 (f2cl-lib:int-add n 1))))
-                      (- 1.0))
+                      (- 1.0f0))
                    (+
                     (f2cl-lib:fref work
                                    ((f2cl-lib:int-add iw n))
@@ -512,8 +511,8 @@
                                                         (f2cl-lib:int-add n 1))
                                       (f2cl-lib:int-mul 2 n)
                                       lenqr))))
-                    (- 1.0)))
-                  0.0)
+                    (- 1.0f0)))
+                  0.0f0)
                  (dcopy np1
                   (f2cl-lib:array-slice work-%data%
                                         double-float
@@ -611,6 +610,6 @@
            :return-values '(nil fortran-to-lisp::nfe fortran-to-lisp::iflag nil
                             nil nil nil nil nil nil nil nil nil nil nil nil)
            :calls '(fortran-to-lisp::dcopy fortran-to-lisp::daxpy
-                    fortran-to-lisp::tangns fortran-to-lisp::root
-                    fortran-to-lisp::dnrm2 fortran-to-lisp::d1mach))))
+                    fortran-to-lisp::dnrm2 fortran-to-lisp::tangns
+                    fortran-to-lisp::root fortran-to-lisp::d1mach))))
 

@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -145,7 +145,7 @@
                                    (2 j k)
                                    ((1 2) (1 n) (1 mmaxt))
                                    trm-%offset%)
-                      (coerce 0.0 'double-float))
+                      (coerce 0.0f0 'double-float))
               (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
                             ((> l np1) nil)
                 (tagbody
@@ -179,9 +179,9 @@
                     ((> j n) nil)
         (tagbody
           (setf (f2cl-lib:fref f-%data% (1 j) ((1 2) (1 n)) f-%offset%)
-                  (coerce 0.0 'double-float))
+                  (coerce 0.0f0 'double-float))
           (setf (f2cl-lib:fref f-%data% (2 j) ((1 2) (1 n)) f-%offset%)
-                  (coerce 0.0 'double-float))
+                  (coerce 0.0f0 'double-float))
           (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                         ((> i 2) nil)
             (tagbody
@@ -223,14 +223,14 @@
                                            (1 (f2cl-lib:int-add n 1))
                                            (1 mmaxt))
                                           dtrm-%offset%)
-                             (coerce 0.0 'double-float))
+                             (coerce 0.0f0 'double-float))
                      (setf (f2cl-lib:fref dtrm-%data%
                                           (2 j m k)
                                           ((1 2) (1 n)
                                            (1 (f2cl-lib:int-add n 1))
                                            (1 mmaxt))
                                           dtrm-%offset%)
-                             (coerce 0.0 'double-float)))
+                             (coerce 0.0f0 'double-float)))
                     (t
                      (if (<= m n)
                          (multiple-value-bind (var-0 var-1 var-2 var-3)
@@ -254,8 +254,7 @@
                                                     dtrm-%offset%)
                               ierr)
                            (declare (ignore var-0 var-1 var-2))
-                           (when var-3
-                             (setf ierr var-3))))
+                           (setf ierr var-3)))
                      (if (= m np1)
                          (multiple-value-bind (var-0 var-1 var-2 var-3)
                              (divp
@@ -274,8 +273,7 @@
                                                     dtrm-%offset%)
                               ierr)
                            (declare (ignore var-0 var-1 var-2))
-                           (when var-3
-                             (setf ierr var-3))))
+                           (setf ierr var-3)))
                      (cond
                        ((= ierr 0)
                         (setf (f2cl-lib:fref dtrm-%data%
@@ -333,7 +331,7 @@
                                               (1 (f2cl-lib:int-add n 1))
                                               (1 mmaxt))
                                              dtrm-%offset%)
-                                (coerce 0.0 'double-float))
+                                (coerce 0.0f0 'double-float))
                         (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
                                       ((> l np1) nil)
                           (tagbody
@@ -445,12 +443,12 @@
                                    (1 j m)
                                    ((1 2) (1 n) (1 (f2cl-lib:int-add n 1)))
                                    df-%offset%)
-                      (coerce 0.0 'double-float))
+                      (coerce 0.0f0 'double-float))
               (setf (f2cl-lib:fref df-%data%
                                    (2 j m)
                                    ((1 2) (1 n) (1 (f2cl-lib:int-add n 1)))
                                    df-%offset%)
-                      (coerce 0.0 'double-float))
+                      (coerce 0.0f0 'double-float))
               (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                             ((> i 2) nil)
                 (tagbody
@@ -533,5 +531,6 @@
                         (array double-float (*)) (array double-float (*)))
            :return-values '(nil nil nil nil nil nil nil nil nil nil nil nil nil
                             nil)
-           :calls '(fortran-to-lisp::powp fortran-to-lisp::mulp))))
+           :calls '(fortran-to-lisp::divp fortran-to-lisp::powp
+                    fortran-to-lisp::mulp))))
 

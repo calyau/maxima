@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -23,11 +23,11 @@
   (f2cl-lib:with-multi-array-data
       ((qt double-float qt-%data% qt-%offset%)
        (r double-float r-%data% r-%offset%))
-    (prog ((i 0) (j 0) (k 0) (indexr 0) (f2cl-lib:isign 0) (one 0.0d0)
-           (tau 0.0d0) (temp 0.0d0))
+    (prog ((i 0) (j 0) (k 0) (indexr 0) (f2cl-lib:isign 0) (one 0.0) (tau 0.0)
+           (temp 0.0))
       (declare (type (double-float) temp tau one)
                (type (f2cl-lib:integer4) f2cl-lib:isign indexr k j i))
-      (setf one (coerce 1.0 'double-float))
+      (setf one (coerce 1.0f0 'double-float))
       (setf indexr 1)
       (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
                     ((> k (f2cl-lib:int-add n (f2cl-lib:int-sub 1))) nil)
@@ -41,7 +41,7 @@
                                          qt-%offset%)
                    1))
           (cond
-            ((= temp 0.0)
+            ((= temp 0.0f0)
              (setf iflag 4)
              (go end_label))
             (t
@@ -65,7 +65,7 @@
              (setf (f2cl-lib:fref qt-%data% (k k) ((1 n) (1 n)) qt-%offset%)
                      (+
                       (f2cl-lib:fref qt-%data% (k k) ((1 n) (1 n)) qt-%offset%)
-                      1.0))
+                      1.0f0))
              (setf indexr (f2cl-lib:int-add indexr 1))
              (f2cl-lib:fdo (j (f2cl-lib:int-add k 1) (f2cl-lib:int-add j 1))
                            ((> j n) nil)
@@ -117,20 +117,20 @@
                 label10))))
          label20))
       (cond
-        ((= (f2cl-lib:fref qt (n n) ((1 n) (1 n))) 0.0)
+        ((= (f2cl-lib:fref qt (n n) ((1 n) (1 n))) 0.0f0)
          (setf iflag 4)
          (go end_label)))
       (setf (f2cl-lib:fref r-%data% (indexr) ((1 n)) r-%offset%)
               (f2cl-lib:fref qt-%data% (n n) ((1 n) (1 n)) qt-%offset%))
       (setf (f2cl-lib:fref qt-%data% (n n) ((1 n) (1 n)) qt-%offset%)
-              (coerce 1.0 'double-float))
+              (coerce 1.0f0 'double-float))
       (f2cl-lib:fdo (k (f2cl-lib:int-add n (f2cl-lib:int-sub 1))
                      (f2cl-lib:int-add k (f2cl-lib:int-sub 1)))
                     ((> k 1) nil)
         (tagbody
           (setf temp (f2cl-lib:fref qt-%data% (k k) ((1 n) (1 n)) qt-%offset%))
           (setf (f2cl-lib:fref qt-%data% (k k) ((1 n) (1 n)) qt-%offset%)
-                  (- 1.0
+                  (- 1.0f0
                      (f2cl-lib:fref qt-%data%
                                     (k k)
                                     ((1 n) (1 n))

@@ -4,5 +4,4 @@
 
 (load (merge-pathnames (make-pathname :name "hompack" :type "system") (maxima-load-pathname-directory)))
 
-(let ((*read-default-float-format* 'single-float))
-  (mk:oos "hompack-interface" :compile))
+(mk:oos "hompack-interface" :compile)

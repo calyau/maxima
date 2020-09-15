@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -30,10 +30,10 @@
        (work double-float work-%data% work-%offset%)
        (maxa f2cl-lib:integer4 maxa-%data% maxa-%offset%))
     (prog ((stillu nil) (stillb nil) (dir 0) (imax 0) (j 0) (lenq 0) (np1 0)
-           (q 0) (res 0) (zb 0) (zu 0) (ab 0.0d0) (au 0.0d0) (bb 0.0d0)
-           (bu 0.0d0) (dznrm 0.0d0) (pbnprd 0.0d0) (punprd 0.0d0)
-           (rbnprd 0.0d0) (rbtol 0.0d0) (rnprd 0.0d0) (runprd 0.0d0)
-           (rutol 0.0d0) (temp 0.0d0) (zlen 0.0d0) (ztol 0.0d0))
+           (q 0) (res 0) (zb 0) (zu 0) (ab 0.0) (au 0.0) (bb 0.0) (bu 0.0)
+           (dznrm 0.0) (pbnprd 0.0) (punprd 0.0) (rbnprd 0.0) (rbtol 0.0)
+           (rnprd 0.0) (runprd 0.0) (rutol 0.0) (temp 0.0) (zlen 0.0)
+           (ztol 0.0))
       (declare (type (double-float) ztol zlen temp rutol runprd rnprd rbtol
                                     rbnprd punprd pbnprd dznrm bu bb au ab)
                (type (f2cl-lib:integer4) zu zb res q np1 lenq j imax dir)
@@ -99,12 +99,12 @@
                               (f2cl-lib:int-mul 6 (f2cl-lib:int-add nn 1))
                               lenaa)))
                            work-%offset%)
-              (coerce 0.0 'double-float))
-      (daxpy np1 1.0d0 yp 1 work 1)
+              (coerce 0.0f0 'double-float))
+      (daxpy np1 1.0 yp 1 work 1)
       (setf imax (f2cl-lib:int-mul 10 np1))
       (setf stillu f2cl-lib:%true%)
       (setf stillb f2cl-lib:%true%)
-      (setf ztol (* 100.0 (f2cl-lib:d1mach 4)))
+      (setf ztol (* 100.0f0 (f2cl-lib:d1mach 4)))
       (setf rutol (* ztol (dnrm2 np1 work 1)))
       (setf rbtol (* ztol (dnrm2 np1 rho 1)))
       (multds
@@ -163,7 +163,7 @@
                                 lenaa)))
                              work-%offset%)
        1)
-      (dscal np1 -1.0d0
+      (dscal np1 -1.0
        (f2cl-lib:array-slice work-%data%
                              double-float
                              (res)
@@ -173,7 +173,7 @@
                                 lenaa)))
                              work-%offset%)
        1)
-      (daxpy nn -1.0d0 pp 1
+      (daxpy nn -1.0 pp 1
        (f2cl-lib:array-slice work-%data%
                              double-float
                              (res)
@@ -183,7 +183,7 @@
                                 lenaa)))
                              work-%offset%)
        1)
-      (daxpy nn -1.0d0 yp 1
+      (daxpy nn -1.0 yp 1
        (f2cl-lib:array-slice work-%data%
                              double-float
                              (res)
@@ -321,7 +321,7 @@
       (cond
         ((> (f2cl-lib:fsqrt runprd) rutol)
          (cond
-           ((= punprd 0.0)
+           ((= punprd 0.0f0)
             (multds
              (f2cl-lib:array-slice work-%data%
                                    double-float
@@ -386,7 +386,7 @@
                                       lenaa)))
                                    work-%offset%)
              1)
-            (dscal np1 -1.0d0
+            (dscal np1 -1.0
              (f2cl-lib:array-slice work-%data%
                                    double-float
                                    (res)
@@ -398,7 +398,7 @@
                                       lenaa)))
                                    work-%offset%)
              1)
-            (daxpy nn -1.0d0 pp 1
+            (daxpy nn -1.0 pp 1
              (f2cl-lib:array-slice work-%data%
                                    double-float
                                    (res)
@@ -410,7 +410,7 @@
                                       lenaa)))
                                    work-%offset%)
              1)
-            (daxpy nn -1.0d0 yp 1
+            (daxpy nn -1.0 yp 1
              (f2cl-lib:array-slice work-%data%
                                    double-float
                                    (res)
@@ -841,7 +841,7 @@
                                 lenaa)))
                              work-%offset%)
        1)
-      (dscal np1 -1.0d0
+      (dscal np1 -1.0
        (f2cl-lib:array-slice work-%data%
                              double-float
                              (res)
@@ -851,7 +851,7 @@
                                 lenaa)))
                              work-%offset%)
        1)
-      (daxpy np1 -1.0d0 rho 1
+      (daxpy np1 -1.0 rho 1
        (f2cl-lib:array-slice work-%data%
                              double-float
                              (res)
@@ -989,7 +989,7 @@
       (cond
         ((> (f2cl-lib:fsqrt rbnprd) rbtol)
          (cond
-           ((= pbnprd 0.0)
+           ((= pbnprd 0.0f0)
             (multds
              (f2cl-lib:array-slice work-%data%
                                    double-float
@@ -1054,7 +1054,7 @@
                                       lenaa)))
                                    work-%offset%)
              1)
-            (dscal np1 -1.0d0
+            (dscal np1 -1.0
              (f2cl-lib:array-slice work-%data%
                                    double-float
                                    (res)
@@ -1066,7 +1066,7 @@
                                       lenaa)))
                                    work-%offset%)
              1)
-            (daxpy np1 -1.0d0 rho 1
+            (daxpy np1 -1.0 rho 1
              (f2cl-lib:array-slice work-%data%
                                    double-float
                                    (res)
@@ -1451,7 +1451,7 @@
                                   (f2cl-lib:int-mul 6 (f2cl-lib:int-add nn 1))
                                   lenaa)))
                                work-%offset%))
-               (+ 1.0d0
+               (+ 1.0
                   (f2cl-lib:fref work-%data%
                                  ((f2cl-lib:int-add zu nn))
                                  ((1
@@ -1497,9 +1497,9 @@
                         (array double-float (*)) (fortran-to-lisp::integer4))
            :return-values '(nil nil nil nil nil nil nil nil nil
                             fortran-to-lisp::iflag)
-           :calls '(fortran-to-lisp::solvds fortran-to-lisp::dscal
-                    fortran-to-lisp::ddot fortran-to-lisp::multds
-                    fortran-to-lisp::dnrm2 fortran-to-lisp::d1mach
-                    fortran-to-lisp::daxpy fortran-to-lisp::gmfads
-                    fortran-to-lisp::dcopy))))
+           :calls '(fortran-to-lisp::dscal fortran-to-lisp::ddot
+                    fortran-to-lisp::dnrm2 fortran-to-lisp::daxpy
+                    fortran-to-lisp::dcopy fortran-to-lisp::solvds
+                    fortran-to-lisp::multds fortran-to-lisp::d1mach
+                    fortran-to-lisp::gmfads))))
 

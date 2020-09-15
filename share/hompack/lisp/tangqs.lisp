@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -35,11 +35,11 @@
        (pivot f2cl-lib:integer4 pivot-%data% pivot-%offset%)
        (par double-float par-%data% par-%offset%)
        (ipar f2cl-lib:integer4 ipar-%data% ipar-%offset%))
-    (prog ((j 0) (np1 0) (pcgwk 0) (zu 0) (one 0.0d0) (sigma 0.0d0)
-           (ypnrm 0.0d0) (lambda$ 0.0d0))
+    (prog ((j 0) (np1 0) (pcgwk 0) (zu 0) (one 0.0) (sigma 0.0) (ypnrm 0.0)
+           (lambda$ 0.0))
       (declare (type (double-float) lambda$ ypnrm sigma one)
                (type (f2cl-lib:integer4) zu pcgwk np1 j))
-      (setf one (coerce 1.0 'double-float))
+      (setf one (coerce 1.0f0 'double-float))
       (setf nfe (f2cl-lib:int-add nfe 1))
       (setf np1 (f2cl-lib:int-add n 1))
       (setf lambda$
@@ -59,7 +59,7 @@
          (daxpy n (- one) a 1 pp 1)
          (fjacs y qr lenqr pivot)
          (dscal lenqr lambda$ qr 1)
-         (setf sigma (- 1.0 lambda$))
+         (setf sigma (- 1.0f0 lambda$))
          (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                        ((> j n) nil)
            (tagbody
@@ -105,7 +105,7 @@
                                                                          2)))))
                                      ((1 lenqr))
                                      qr-%offset%)
-                      1.0))
+                      1.0f0))
             label20))))
       (dcopy (f2cl-lib:int-mul 2 np1) work 1
        (f2cl-lib:array-slice work-%data%
@@ -124,13 +124,13 @@
                                (j)
                                ((1 (f2cl-lib:int-add n 1)))
                                rhovec-%offset%)
-                  (coerce 0.0 'double-float))
+                  (coerce 0.0f0 'double-float))
          label30))
       (setf (f2cl-lib:fref rhovec-%data%
                            (np1)
                            ((1 (f2cl-lib:int-add n 1)))
                            rhovec-%offset%)
-              (coerce -1.0 'double-float))
+              (coerce -1.0f0 'double-float))
       (multiple-value-bind
             (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
           (pcgqs n qr lenqr pivot pp ypold rhovec yp
@@ -147,7 +147,7 @@
                          var-8))
         (setf iflag var-9))
       (if (> iflag 0) (go end_label))
-      (setf ypnrm (/ 1.0 (dnrm2 np1 yp 1)))
+      (setf ypnrm (/ 1.0f0 (dnrm2 np1 yp 1)))
       (dscal np1 ypnrm yp 1)
       (dcopy (f2cl-lib:int-mul 2 np1)
        (f2cl-lib:array-slice work-%data%
@@ -196,8 +196,8 @@
            :return-values '(nil nil nil nil nil nil nil nil nil nil nil
                             fortran-to-lisp::iflag fortran-to-lisp::nfe nil
                             nil)
-           :calls '(fortran-to-lisp::dnrm2 fortran-to-lisp::pcgqs
-                    fortran-to-lisp::dcopy fortran-to-lisp::fjacs
-                    fortran-to-lisp::daxpy fortran-to-lisp::dscal
-                    fortran-to-lisp::f fortran-to-lisp::rhojs))))
+           :calls '(fortran-to-lisp::fjacs fortran-to-lisp::f
+                    fortran-to-lisp::rhojs fortran-to-lisp::dnrm2
+                    fortran-to-lisp::dcopy fortran-to-lisp::daxpy
+                    fortran-to-lisp::dscal fortran-to-lisp::pcgqs))))
 

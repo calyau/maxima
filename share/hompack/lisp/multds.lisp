@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -26,7 +26,7 @@
        (aa double-float aa-%data% aa-%offset%)
        (x double-float x-%data% x-%offset%)
        (maxa f2cl-lib:integer4 maxa-%data% maxa-%offset%))
-    (prog ((b 0.0d0) (cc 0.0d0) (i 0) (ii 0) (kk 0) (kl 0) (ku 0))
+    (prog ((b 0.0) (cc 0.0) (i 0) (ii 0) (kk 0) (kl 0) (ku 0))
       (declare (type (f2cl-lib:integer4) ku kl kk ii i)
                (type (double-float) cc b))
       (if (> lenaa nn) (go label20))
@@ -44,7 +44,7 @@
         (tagbody
          label40
           (setf (f2cl-lib:fref y-%data% (i) ((1 nn)) y-%offset%)
-                  (coerce 0.0 'double-float))))
+                  (coerce 0.0f0 'double-float))))
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                     ((> i nn) nil)
         (tagbody
@@ -99,7 +99,7 @@
                                   (go label210))
          label210
           (setf ii i)
-          (setf b (coerce 0.0 'double-float))
+          (setf b (coerce 0.0f0 'double-float))
           (f2cl-lib:fdo (kk kl (f2cl-lib:int-add kk 1))
                         ((> kk ku) nil)
             (tagbody

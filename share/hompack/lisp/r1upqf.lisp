@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -26,10 +26,10 @@
        (qt double-float qt-%data% qt-%offset%)
        (r double-float r-%data% r-%offset%)
        (w double-float w-%data% w-%offset%))
-    (prog ((tt (make-array 2 :element-type 'double-float)) (eta 0.0d0)
-           (skipup nil) (i 0) (indexr 0) (indxr2 0) (j 0) (k 0) (c 0.0d0)
-           (den 0.0d0) (one 0.0d0) (ss 0.0d0) (ww 0.0d0) (yy 0.0d0)
-           (temp 0.0d0) (ddot 0.0d0))
+    (prog ((tt (make-array 2 :element-type 'double-float)) (eta 0.0)
+           (skipup nil) (i 0) (indexr 0) (indxr2 0) (j 0) (k 0) (c 0.0)
+           (den 0.0) (one 0.0) (ss 0.0) (ww 0.0) (yy 0.0) (temp 0.0)
+           (ddot 0.0))
       (declare (type (f2cl-lib:integer4) k j indxr2 indexr i)
                (type f2cl-lib:logical skipup)
                (type (double-float) ddot temp yy ww ss one den c eta)
@@ -37,7 +37,8 @@
       (setf k n)
      label50
       (if
-       (or (/= (f2cl-lib:fref t$-%data% (k) ((1 n)) t$-%offset%) 0.0) (<= k 1))
+       (or (/= (f2cl-lib:fref t$-%data% (k) ((1 n)) t$-%offset%) 0.0f0)
+           (<= k 1))
        (go label60))
       (setf k (f2cl-lib:int-sub k 1))
       (go label50)
@@ -52,8 +53,8 @@
                     ((> i 1) nil)
         (tagbody
           (cond
-            ((= (f2cl-lib:fref t$ (i) ((1 n))) 0.0)
-             (setf c (coerce 0.0 'double-float))
+            ((= (f2cl-lib:fref t$ (i) ((1 n))) 0.0f0)
+             (setf c (coerce 0.0f0 'double-float))
              (setf ss
                      (-
                       (f2cl-lib:sign one
@@ -87,7 +88,7 @@
                                     (f2cl-lib:int-mul n (f2cl-lib:int-add n 1))
                                     2)))
                                  r-%offset%))
-          (setf ww (coerce 0.0 'double-float))
+          (setf ww (coerce 0.0f0 'double-float))
           (setf (f2cl-lib:fref r-%data%
                                (indexr)
                                ((1
@@ -169,7 +170,7 @@
                       (+ (* ss yy) (* c ww)))
              label80))
           (cond
-            ((= (f2cl-lib:fref t$ (i) ((1 n))) 0.0)
+            ((= (f2cl-lib:fref t$ (i) ((1 n))) 0.0f0)
              (setf (f2cl-lib:fref t$-%data% (i) ((1 n)) t$-%offset%)
                      (abs
                       (f2cl-lib:fref t$-%data%
@@ -204,8 +205,8 @@
                                (f2cl-lib:f2cl/
                                 (f2cl-lib:int-mul n (f2cl-lib:int-add n 1))
                                 2))))
-              0.0)
-             (setf c (coerce 0.0 'double-float))
+              0.0f0)
+             (setf c (coerce 0.0f0 'double-float))
              (setf ss
                      (-
                       (f2cl-lib:sign one
@@ -275,7 +276,7 @@
                                ((f2cl-lib:int-add i 1))
                                ((1 n))
                                w-%offset%)
-                  (coerce 0.0 'double-float))
+                  (coerce 0.0f0 'double-float))
           (setf indexr (f2cl-lib:int-add indexr 1))
           (setf indxr2 (f2cl-lib:int-sub (f2cl-lib:int-add indexr n) i))
           (f2cl-lib:fdo (j (f2cl-lib:int-add i 1) (f2cl-lib:int-add j 1))

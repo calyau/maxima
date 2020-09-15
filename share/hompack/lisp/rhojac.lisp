@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -34,7 +34,7 @@
       (setf n2 (f2cl-lib:int-mul 2 n))
       (cond
         ((= k 1)
-         (if (< lambda$ 0.0) (setf lambda$ (coerce 0.0 'double-float)))
+         (if (< lambda$ 0.0f0) (setf lambda$ (coerce 0.0f0 'double-float)))
          (hfunp a lambda$ x par ipar)
          (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                        ((> j n2) nil)

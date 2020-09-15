@@ -12,21 +12,21 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
 
-(let* ((limitd 1000) (cursw (coerce 10.0 'double-float)))
+(let* ((limitd 1000) (cursw (coerce 10.0f0 'double-float)))
   (declare (type (f2cl-lib:integer4 1000 1000) limitd)
            (type (double-float) cursw)
            (ignorable limitd cursw))
-  (let ((s 0.0d0)
-        (relerr 0.0d0)
-        (hold 0.0d0)
-        (h 0.0d0)
-        (curtol 0.0d0)
-        (abserr 0.0d0)
+  (let ((s 0.0)
+        (relerr 0.0)
+        (hold 0.0)
+        (h 0.0)
+        (curtol 0.0)
+        (abserr 0.0)
         (np1 0)
         (nfec 0)
         (nc 0)
@@ -72,16 +72,16 @@
            (ipar f2cl-lib:integer4 ipar-%data% ipar-%offset%))
         (prog ()
           (declare)
-          (if (or (<= n 0) (<= ansre 0.0) (< ansae 0.0)) (setf iflag 7))
+          (if (or (<= n 0) (<= ansre 0.0f0) (< ansae 0.0f0)) (setf iflag 7))
           (if (and (>= iflag -2) (<= iflag 0)) (go label20))
           (if (= iflag 2) (go label120))
           (if (= iflag 3) (go label90))
           (setf iflag 7)
           (go end_label)
          label20
-          (setf arclen (coerce 0.0 'double-float))
-          (if (<= arcre 0.0) (setf arcre (* 0.5 (f2cl-lib:fsqrt ansre))))
-          (if (<= arcae 0.0) (setf arcae (* 0.5 (f2cl-lib:fsqrt ansae))))
+          (setf arclen (coerce 0.0f0 'double-float))
+          (if (<= arcre 0.0f0) (setf arcre (* 0.5f0 (f2cl-lib:fsqrt ansre))))
+          (if (<= arcae 0.0f0) (setf arcae (* 0.5f0 (f2cl-lib:fsqrt ansae))))
           (setf nc n)
           (setf nfec 0)
           (setf iflagc iflag)
@@ -96,24 +96,24 @@
           (setf itangw (f2cl-lib:int-add iz1 np1))
           (setf start f2cl-lib:%true%)
           (setf crash f2cl-lib:%false%)
-          (setf hold (coerce 1.0 'double-float))
-          (setf h (coerce 0.1 'double-float))
-          (setf s (coerce 0.0 'double-float))
+          (setf hold (coerce 1.0f0 'double-float))
+          (setf h (coerce 0.1f0 'double-float))
+          (setf s (coerce 0.0f0 'double-float))
           (setf (f2cl-lib:fref ypold-%data%
                                (np1)
                                ((1 (f2cl-lib:int-add n 1)))
                                ypold-%offset%)
-                  (coerce 1.0 'double-float))
+                  (coerce 1.0f0 'double-float))
           (setf (f2cl-lib:fref yp-%data%
                                (np1)
                                ((1 (f2cl-lib:int-add n 1)))
                                yp-%offset%)
-                  (coerce 1.0 'double-float))
+                  (coerce 1.0f0 'double-float))
           (setf (f2cl-lib:fref y-%data%
                                (np1)
                                ((1 (f2cl-lib:int-add n 1)))
                                y-%offset%)
-                  (coerce 0.0 'double-float))
+                  (coerce 0.0f0 'double-float))
           (f2cl-lib:fdo (jw 1 (f2cl-lib:int-add jw 1))
                         ((> jw n) nil)
             (tagbody
@@ -121,12 +121,12 @@
                                    (jw)
                                    ((1 (f2cl-lib:int-add n 1)))
                                    ypold-%offset%)
-                      (coerce 0.0 'double-float))
+                      (coerce 0.0f0 'double-float))
               (setf (f2cl-lib:fref yp-%data%
                                    (jw)
                                    ((1 (f2cl-lib:int-add n 1)))
                                    yp-%offset%)
-                      (coerce 0.0 'double-float))
+                      (coerce 0.0f0 'double-float))
              label40))
           (f2cl-lib:fdo (jw itangw (f2cl-lib:int-add jw 1))
                         ((> jw (f2cl-lib:int-add itangw np1 n)) nil)
@@ -140,33 +140,41 @@
                                       (f2cl-lib:int-mul 2 n)
                                       lenqr)))
                                    work-%offset%)
-                      (coerce 0.0 'double-float))
+                      (coerce 0.0f0 'double-float))
              label50))
-          (if (<= (f2cl-lib:fref sspar-%data% (1) ((1 8)) sspar-%offset%) 0.0)
-              (setf (f2cl-lib:fref sspar-%data% (1) ((1 8)) sspar-%offset%)
-                      (coerce 0.5 'double-float)))
-          (if (<= (f2cl-lib:fref sspar-%data% (2) ((1 8)) sspar-%offset%) 0.0)
-              (setf (f2cl-lib:fref sspar-%data% (2) ((1 8)) sspar-%offset%)
-                      (coerce 0.01 'double-float)))
-          (if (<= (f2cl-lib:fref sspar-%data% (3) ((1 8)) sspar-%offset%) 0.0)
-              (setf (f2cl-lib:fref sspar-%data% (3) ((1 8)) sspar-%offset%)
-                      (coerce 0.5 'double-float)))
-          (if (<= (f2cl-lib:fref sspar-%data% (4) ((1 8)) sspar-%offset%) 0.0)
-              (setf (f2cl-lib:fref sspar-%data% (4) ((1 8)) sspar-%offset%)
-                      (* (+ (f2cl-lib:fsqrt (+ n 1.0)) 4.0)
-                         (f2cl-lib:d1mach 4))))
-          (if (<= (f2cl-lib:fref sspar-%data% (5) ((1 8)) sspar-%offset%) 0.0)
-              (setf (f2cl-lib:fref sspar-%data% (5) ((1 8)) sspar-%offset%)
-                      (coerce 1.0 'double-float)))
-          (if (<= (f2cl-lib:fref sspar-%data% (6) ((1 8)) sspar-%offset%) 0.0)
-              (setf (f2cl-lib:fref sspar-%data% (6) ((1 8)) sspar-%offset%)
-                      (coerce 0.1 'double-float)))
-          (if (<= (f2cl-lib:fref sspar-%data% (7) ((1 8)) sspar-%offset%) 0.0)
-              (setf (f2cl-lib:fref sspar-%data% (7) ((1 8)) sspar-%offset%)
-                      (coerce 3.0 'double-float)))
-          (if (<= (f2cl-lib:fref sspar-%data% (8) ((1 8)) sspar-%offset%) 0.0)
-              (setf (f2cl-lib:fref sspar-%data% (8) ((1 8)) sspar-%offset%)
-                      (coerce 2.0 'double-float)))
+          (if
+           (<= (f2cl-lib:fref sspar-%data% (1) ((1 8)) sspar-%offset%) 0.0f0)
+           (setf (f2cl-lib:fref sspar-%data% (1) ((1 8)) sspar-%offset%)
+                   (coerce 0.5f0 'double-float)))
+          (if
+           (<= (f2cl-lib:fref sspar-%data% (2) ((1 8)) sspar-%offset%) 0.0f0)
+           (setf (f2cl-lib:fref sspar-%data% (2) ((1 8)) sspar-%offset%)
+                   (coerce 0.01f0 'double-float)))
+          (if
+           (<= (f2cl-lib:fref sspar-%data% (3) ((1 8)) sspar-%offset%) 0.0f0)
+           (setf (f2cl-lib:fref sspar-%data% (3) ((1 8)) sspar-%offset%)
+                   (coerce 0.5f0 'double-float)))
+          (if
+           (<= (f2cl-lib:fref sspar-%data% (4) ((1 8)) sspar-%offset%) 0.0f0)
+           (setf (f2cl-lib:fref sspar-%data% (4) ((1 8)) sspar-%offset%)
+                   (* (+ (f2cl-lib:fsqrt (+ n 1.0f0)) 4.0f0)
+                      (f2cl-lib:d1mach 4))))
+          (if
+           (<= (f2cl-lib:fref sspar-%data% (5) ((1 8)) sspar-%offset%) 0.0f0)
+           (setf (f2cl-lib:fref sspar-%data% (5) ((1 8)) sspar-%offset%)
+                   (coerce 1.0f0 'double-float)))
+          (if
+           (<= (f2cl-lib:fref sspar-%data% (6) ((1 8)) sspar-%offset%) 0.0f0)
+           (setf (f2cl-lib:fref sspar-%data% (6) ((1 8)) sspar-%offset%)
+                   (coerce 0.1f0 'double-float)))
+          (if
+           (<= (f2cl-lib:fref sspar-%data% (7) ((1 8)) sspar-%offset%) 0.0f0)
+           (setf (f2cl-lib:fref sspar-%data% (7) ((1 8)) sspar-%offset%)
+                   (coerce 3.0f0 'double-float)))
+          (if
+           (<= (f2cl-lib:fref sspar-%data% (8) ((1 8)) sspar-%offset%) 0.0f0)
+           (setf (f2cl-lib:fref sspar-%data% (8) ((1 8)) sspar-%offset%)
+                   (coerce 2.0f0 'double-float)))
           (cond
             ((>= iflagc (f2cl-lib:int-sub 1))
              (dcopy n y 1 a 1)))
@@ -177,7 +185,7 @@
                         ((> iter limit) nil)
             (tagbody
               (cond
-                ((< (f2cl-lib:fref y (np1) ((1 (f2cl-lib:int-add n 1)))) 0.0)
+                ((< (f2cl-lib:fref y (np1) ((1 (f2cl-lib:int-add n 1)))) 0.0f0)
                  (setf arclen s)
                  (setf iflag 5)
                  (go end_label)))
@@ -262,7 +270,7 @@
                  (setf limit (f2cl-lib:int-sub limit iter))
                  (go end_label)))
               (cond
-                ((>= (f2cl-lib:fref y (np1) ((1 (f2cl-lib:int-add n 1)))) 1.0)
+                ((>= (f2cl-lib:fref y (np1) ((1 (f2cl-lib:int-add n 1)))) 1.0f0)
                  (dcopy np1 yold 1
                   (f2cl-lib:array-slice work-%data%
                                         double-float
@@ -376,7 +384,7 @@
                             fortran-to-lisp::ansre fortran-to-lisp::ansae nil
                             nil fortran-to-lisp::nfe fortran-to-lisp::arclen
                             nil nil nil nil nil nil nil nil nil nil)
-           :calls '(fortran-to-lisp::dnrm2 fortran-to-lisp::rootns
-                    fortran-to-lisp::stepns fortran-to-lisp::dcopy
+           :calls '(fortran-to-lisp::dnrm2 fortran-to-lisp::dcopy
+                    fortran-to-lisp::rootns fortran-to-lisp::stepns
                     fortran-to-lisp::d1mach))))
 

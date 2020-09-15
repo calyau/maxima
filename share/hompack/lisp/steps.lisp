@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -20,16 +20,14 @@
 (let ((two
        (make-array 13
                    :element-type 'double-float
-                   :initial-contents '(2.0d0 4.0d0 8.0d0 16.0d0 32.0d0 64.0d0
-                                       128.0d0 256.0d0 512.0d0 1024.0d0
-                                       2048.0d0 4096.0d0 8192.0d0)))
+                   :initial-contents '(2.0 4.0 8.0 16.0 32.0 64.0 128.0 256.0
+                                       512.0 1024.0 2048.0 4096.0 8192.0)))
       (gstr
        (make-array 13
                    :element-type 'double-float
-                   :initial-contents '(0.5d0 0.0833d0 0.0417d0 0.0264d0
-                                       0.0188d0 0.0143d0 0.0114d0 0.00936d0
-                                       0.00789d0 0.00679d0 0.00592d0 0.00524d0
-                                       0.00468d0)))
+                   :initial-contents '(0.5 0.0833 0.0417 0.0264 0.0188 0.0143
+                                       0.0114 0.00936 0.00789 0.00679 0.00592
+                                       0.00524 0.00468)))
       (psi (make-array 12 :element-type 'double-float))
       (beta (make-array 12 :element-type 'double-float))
       (sig (make-array 13 :element-type 'double-float))
@@ -56,29 +54,29 @@
       (nsm2 0)
       (nsp1 0)
       (nsp2 0)
-      (absh 0.0d0)
-      (erk 0.0d0)
-      (erkm1 0.0d0)
-      (erkm2 0.0d0)
-      (erkp1 0.0d0)
-      (err 0.0d0)
-      (fouru 0.0d0)
-      (hnew 0.0d0)
-      (p5eps 0.0d0)
-      (r 0.0d0)
-      (reali 0.0d0)
-      (realns 0.0d0)
-      (rho 0.0d0)
-      (round$ 0.0d0)
-      (sum 0.0d0)
-      (tau 0.0d0)
-      (temp1 0.0d0)
-      (temp2 0.0d0)
-      (temp3 0.0d0)
-      (temp4 0.0d0)
-      (temp5 0.0d0)
-      (temp6 0.0d0)
-      (twou 0.0d0))
+      (absh 0.0)
+      (erk 0.0)
+      (erkm1 0.0)
+      (erkm2 0.0)
+      (erkp1 0.0)
+      (err 0.0)
+      (fouru 0.0)
+      (hnew 0.0)
+      (p5eps 0.0)
+      (r 0.0)
+      (reali 0.0)
+      (realns 0.0)
+      (rho 0.0)
+      (round$ 0.0)
+      (sum 0.0)
+      (tau 0.0)
+      (temp1 0.0)
+      (temp2 0.0)
+      (temp3 0.0)
+      (temp4 0.0)
+      (temp5 0.0)
+      (temp6 0.0)
+      (twou 0.0))
   (declare (type f2cl-lib:logical phase1 nornd)
            (type (f2cl-lib:integer4) i ifail im1 ip1 iq j jv km1 km2 knew kp1
                                      kp2 kprev l limit1 limit2 ns nsm2 nsp1
@@ -125,15 +123,15 @@
          (ipar f2cl-lib:integer4 ipar-%data% ipar-%offset%))
       (prog ()
         (declare)
-        (setf twou (* 2.0 (f2cl-lib:d1mach 4)))
+        (setf twou (* 2.0f0 (f2cl-lib:d1mach 4)))
         (setf fouru (+ twou twou))
         (setf crash f2cl-lib:%true%)
         (if (>= (abs h) (* fouru (abs x))) (go label5))
         (setf h (f2cl-lib:sign (* fouru (abs x)) h))
         (go end_label)
        label5
-        (setf p5eps (* 0.5 eps))
-        (setf round$ (coerce 0.0 'double-float))
+        (setf p5eps (* 0.5f0 eps))
+        (setf round$ (coerce 0.0f0 'double-float))
         (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
                       ((> l neqn) nil)
           (tagbody
@@ -149,15 +147,15 @@
                         2)))))
         (setf round$ (* twou (f2cl-lib:fsqrt round$)))
         (if (>= p5eps round$) (go label15))
-        (setf eps (* 2.0 round$ (+ 1.0 fouru)))
+        (setf eps (* 2.0f0 round$ (+ 1.0f0 fouru)))
         (go end_label)
        label15
         (setf crash f2cl-lib:%false%)
         (setf (f2cl-lib:fref g-%data% (1) ((1 13)) g-%offset%)
-                (coerce 1.0 'double-float))
+                (coerce 1.0f0 'double-float))
         (setf (f2cl-lib:fref g-%data% (2) ((1 13)) g-%offset%)
-                (coerce 0.5 'double-float))
-        (setf (f2cl-lib:fref sig (1) ((1 13))) (coerce 1.0 'double-float))
+                (coerce 0.5f0 'double-float))
+        (setf (f2cl-lib:fref sig (1) ((1 13))) (coerce 1.0f0 'double-float))
         (if (not start) (go label99))
         (multiple-value-bind
               (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
@@ -186,7 +184,7 @@
           (when var-11
             (setf ifpc2 var-11)))
         (if (> ifpc2 0) (go end_label))
-        (setf sum (coerce 0.0 'double-float))
+        (setf sum (coerce 0.0f0 'double-float))
         (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
                       ((> l neqn) nil)
           (tagbody
@@ -199,7 +197,7 @@
                                  (l 2)
                                  ((1 neqn) (1 16))
                                  phi-%offset%)
-                    (coerce 0.0 'double-float))
+                    (coerce 0.0f0 'double-float))
            label20
             (setf sum
                     (+ sum
@@ -212,17 +210,17 @@
                         2)))))
         (setf sum (f2cl-lib:fsqrt sum))
         (setf absh (abs h))
-        (if (< eps (* 16.0 sum h h))
-            (setf absh (* 0.25 (f2cl-lib:fsqrt (/ eps sum)))))
+        (if (< eps (* 16.0f0 sum h h))
+            (setf absh (* 0.25f0 (f2cl-lib:fsqrt (/ eps sum)))))
         (setf h (f2cl-lib:sign (max absh (* fouru (abs x))) h))
-        (setf hold (coerce 0.0 'double-float))
+        (setf hold (coerce 0.0f0 'double-float))
         (setf k 1)
         (setf kold 0)
         (setf kprev 0)
         (setf start f2cl-lib:%false%)
         (setf phase1 f2cl-lib:%true%)
         (setf nornd f2cl-lib:%true%)
-        (if (> p5eps (* 100.0 round$)) (go label99))
+        (if (> p5eps (* 100.0f0 round$)) (go label99))
         (setf nornd f2cl-lib:%false%)
         (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
                       ((> l neqn) nil)
@@ -232,7 +230,7 @@
                                  (l 15)
                                  ((1 neqn) (1 16))
                                  phi-%offset%)
-                    (coerce 0.0 'double-float))))
+                    (coerce 0.0f0 'double-float))))
        label99
         (setf ifail 0)
        label100
@@ -244,12 +242,12 @@
         (if (<= ns kold) (setf ns (f2cl-lib:int-add ns 1)))
         (setf nsp1 (f2cl-lib:int-add ns 1))
         (if (< k ns) (go label199))
-        (setf (f2cl-lib:fref beta (ns) ((1 12))) (coerce 1.0 'double-float))
+        (setf (f2cl-lib:fref beta (ns) ((1 12))) (coerce 1.0f0 'double-float))
         (setf realns (coerce (the f2cl-lib:integer4 ns) 'double-float))
         (setf (f2cl-lib:fref alpha-%data% (ns) ((1 12)) alpha-%offset%)
-                (/ 1.0 realns))
+                (/ 1.0f0 realns))
         (setf temp1 (* h realns))
-        (setf (f2cl-lib:fref sig (nsp1) ((1 13))) (coerce 1.0 'double-float))
+        (setf (f2cl-lib:fref sig (nsp1) ((1 13))) (coerce 1.0f0 'double-float))
         (if (< k nsp1) (go label110))
         (f2cl-lib:fdo (i nsp1 (f2cl-lib:int-add i 1))
                       ((> i k) nil)
@@ -282,7 +280,7 @@
                      (the f2cl-lib:integer4
                           (f2cl-lib:int-mul iq (f2cl-lib:int-add iq 1)))
                      'double-float))
-            (setf (f2cl-lib:fref v (iq) ((1 12))) (/ 1.0 temp3))
+            (setf (f2cl-lib:fref v (iq) ((1 12))) (/ 1.0f0 temp3))
            label115
             (setf (f2cl-lib:fref w-%data% (iq) ((1 12)) w-%offset%)
                     (f2cl-lib:fref v (iq) ((1 12))))))
@@ -309,7 +307,7 @@
         (setf temp4
                 (coerce (the f2cl-lib:integer4 (f2cl-lib:int-mul k kp1))
                         'double-float))
-        (setf (f2cl-lib:fref v (k) ((1 12))) (/ 1.0 temp4))
+        (setf (f2cl-lib:fref v (k) ((1 12))) (/ 1.0f0 temp4))
         (setf (f2cl-lib:fref w-%data% (k) ((1 12)) w-%offset%)
                 (f2cl-lib:fref v (k) ((1 12))))
         (if (/= k 2) (go label123))
@@ -433,10 +431,10 @@
                                  (l kp1)
                                  ((1 neqn) (1 16))
                                  phi-%offset%)
-                    (coerce 0.0 'double-float))
+                    (coerce 0.0f0 'double-float))
            label220
             (setf (f2cl-lib:fref p-%data% (l) ((1 neqn)) p-%offset%)
-                    (coerce 0.0 'double-float))))
+                    (coerce 0.0f0 'double-float))))
         (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                       ((> j k) nil)
           (tagbody
@@ -532,14 +530,14 @@
           (when var-11
             (setf ifpc2 var-11)))
         (if (> ifpc2 0) (go end_label))
-        (setf erkm2 (coerce 0.0 'double-float))
-        (setf erkm1 (coerce 0.0 'double-float))
-        (setf erk (coerce 0.0 'double-float))
+        (setf erkm2 (coerce 0.0f0 'double-float))
+        (setf erkm1 (coerce 0.0f0 'double-float))
+        (setf erk (coerce 0.0f0 'double-float))
         (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
                       ((> l neqn) nil)
           (tagbody
             (setf temp3
-                    (/ 1.0
+                    (/ 1.0f0
                        (f2cl-lib:fref wt-%data% (l) ((1 neqn)) wt-%offset%)))
             (setf temp4
                     (- (f2cl-lib:fref yp-%data% (l) ((1 neqn)) yp-%offset%)
@@ -608,7 +606,7 @@
         (if (<= (max erkm1 erkm2) erk) (setf knew km1))
         (go label299)
        label290
-        (if (<= erkm1 (* 0.5 erk)) (setf knew km1))
+        (if (<= erkm1 (* 0.5f0 erk)) (setf knew km1))
        label299
         (if (<= err eps) (go label400))
         (setf phase1 f2cl-lib:%false%)
@@ -616,7 +614,7 @@
         (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                       ((> i k) nil)
           (tagbody
-            (setf temp1 (/ 1.0 (f2cl-lib:fref beta (i) ((1 12)))))
+            (setf temp1 (/ 1.0f0 (f2cl-lib:fref beta (i) ((1 12)))))
             (setf ip1 (f2cl-lib:int-add i 1))
             (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
                           ((> l neqn) nil)
@@ -646,13 +644,14 @@
                     (- (f2cl-lib:fref psi (i) ((1 12))) h))))
        label320
         (setf ifail (f2cl-lib:int-add ifail 1))
-        (setf temp2 (coerce 0.5 'double-float))
+        (setf temp2 (coerce 0.5f0 'double-float))
         (f2cl-lib:arithmetic-if (f2cl-lib:int-sub ifail 3)
                                 (go label335)
                                 (go label330)
                                 (go label325))
        label325
-        (if (< p5eps (* 0.25 erk)) (setf temp2 (f2cl-lib:fsqrt (/ p5eps erk))))
+        (if (< p5eps (* 0.25f0 erk))
+            (setf temp2 (f2cl-lib:fsqrt (/ p5eps erk))))
        label330
         (setf knew 1)
        label335
@@ -790,7 +789,7 @@
                                         ((1 neqn) (1 16))
                                         phi-%offset%)))))
            label435))
-        (setf erkp1 (coerce 0.0 'double-float))
+        (setf erkp1 (coerce 0.0f0 'double-float))
         (if (or (= knew km1) (= k 12)) (setf phase1 f2cl-lib:%false%))
         (if phase1 (go label450))
         (if (= knew km1) (go label455))
@@ -814,7 +813,7 @@
                    (f2cl-lib:fref gstr (kp1) ((1 13)))
                    (f2cl-lib:fsqrt erkp1)))
         (if (> k 1) (go label445))
-        (if (>= erkp1 (* 0.5 erk)) (go label460))
+        (if (>= erkp1 (* 0.5f0 erk)) (go label460))
         (go label450)
        label445
         (if (<= erkm1 (min erk erkp1)) (go label455))
@@ -838,8 +837,8 @@
         (setf temp2
                 (coerce (the f2cl-lib:integer4 (f2cl-lib:int-add k 1))
                         'double-float))
-        (setf r (expt (/ p5eps erk) (/ 1.0 temp2)))
-        (setf hnew (* absh (max 0.5d0 (min 0.9d0 r))))
+        (setf r (expt (/ p5eps erk) (/ 1.0f0 temp2)))
+        (setf hnew (* absh (max 0.5 (min 0.9 r))))
         (setf hnew (f2cl-lib:sign (max hnew (* fouru (abs x))) h))
        label465
         (setf h hnew)

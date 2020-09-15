@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -25,7 +25,7 @@
       ((a double-float a-%data% a-%offset%)
        (v double-float v-%data% v-%offset%)
        (maxa f2cl-lib:integer4 maxa-%data% maxa-%offset%))
-    (prog ((c 0.0d0) (k 0) (kk 0) (kl 0) (ku 0) (l 0) (n 0))
+    (prog ((c 0.0) (k 0) (kk 0) (kl 0) (ku 0) (l 0) (n 0))
       (declare (type (f2cl-lib:integer4) n l ku kl kk k)
                (type (double-float) c))
       (f2cl-lib:fdo (n 1 (f2cl-lib:int-add n 1))
@@ -51,7 +51,7 @@
                                   (go label160))
          label160
           (setf k n)
-          (setf c (coerce 0.0 'double-float))
+          (setf c (coerce 0.0f0 'double-float))
           (f2cl-lib:fdo (kk kl (f2cl-lib:int-add kk 1))
                         ((> kk ku) nil)
             (tagbody

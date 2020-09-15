@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -24,18 +24,17 @@
   (f2cl-lib:with-multi-array-data
       ((a double-float a-%data% a-%offset%)
        (maxa f2cl-lib:integer4 maxa-%data% maxa-%offset%))
-    (prog ((bet 0.0d0) (del 0.0d0) (dj 0.0d0) (g 0.0d0) (gam 0.0d0)
-           (gam1 0.0d0) (phi 0.0d0) (the$ 0.0d0) (the1 0.0d0) (xt1 0.0d0)
-           (xt2 0.0d0) (zet 0.0d0) (zet1 0.0d0) (i 0) (i0 0) (i1 0) (i2 0)
-           (i3 0) (i4 0) (j 0) (j1 0) (k 0) (k1 0) (k2 0) (kh 0) (kl 0) (kn 0)
-           (ku 0) (kz 0) (l 0) (l1 0) (l2 0) (l3 0) (m 0) (m1 0) (n1 0)
-           (nnn 0))
+    (prog ((bet 0.0) (del 0.0) (dj 0.0) (g 0.0) (gam 0.0) (gam1 0.0) (phi 0.0)
+           (the$ 0.0) (the1 0.0) (xt1 0.0) (xt2 0.0) (zet 0.0) (zet1 0.0) (i 0)
+           (i0 0) (i1 0) (i2 0) (i3 0) (i4 0) (j 0) (j1 0) (k 0) (k1 0) (k2 0)
+           (kh 0) (kl 0) (kn 0) (ku 0) (kz 0) (l 0) (l1 0) (l2 0) (l3 0) (m 0)
+           (m1 0) (n1 0) (nnn 0))
       (declare (type (f2cl-lib:integer4) nnn n1 m1 m l3 l2 l1 l kz ku kn kl kh
                                          k2 k1 k j1 j i4 i3 i2 i1 i0 i)
                (type (double-float) zet1 zet xt2 xt1 the1 the$ phi gam1 gam g
                                     dj del bet))
-      (setf g (coerce 0.0 'double-float))
-      (setf gam (coerce 0.0 'double-float))
+      (setf g (coerce 0.0f0 'double-float))
+      (setf gam (coerce 0.0f0 'double-float))
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                     ((> i nn) nil)
         (tagbody
@@ -51,7 +50,7 @@
           (setf gam1 (abs (f2cl-lib:fref a-%data% (k) ((1 nwk)) a-%offset%)))
           (if (> gam1 gam) (setf gam gam1))
          label1))
-      (setf zet (coerce 0.0 'double-float))
+      (setf zet (coerce 0.0f0 'double-float))
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                     ((> i nn) nil)
         (tagbody
@@ -75,7 +74,7 @@
             (tagbody
               (setf g
                       (+ g
-                         (* 2.0
+                         (* 2.0f0
                             (f2cl-lib:fref a-%data% (j) ((1 nwk)) a-%offset%)
                             (f2cl-lib:fref a-%data%
                                            (j)
@@ -92,7 +91,7 @@
       (if (> zet bet) (setf bet zet))
       (if (> gam bet) (setf bet gam))
       (setf g (f2cl-lib:fsqrt g))
-      (if (> g 1.0) (setf del (* del g)))
+      (if (> g 1.0f0) (setf del (* del g)))
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                     ((> i nn) nil)
         (tagbody
@@ -134,7 +133,7 @@
          label10
           (setf phi (abs phi))
           (setf l (f2cl-lib:int-add i 1))
-          (setf the$ (coerce 0.0 'double-float))
+          (setf the$ (coerce 0.0f0 'double-float))
           (setf nnn (f2cl-lib:int-add nn 1))
           (if (= l nnn) (go label11))
           (f2cl-lib:fdo (j l (f2cl-lib:int-add j 1))

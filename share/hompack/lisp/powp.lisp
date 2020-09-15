@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -23,14 +23,14 @@
   (f2cl-lib:with-multi-array-data
       ((xxxx double-float xxxx-%data% xxxx-%offset%)
        (yyyy double-float yyyy-%data% yyyy-%offset%))
-    (prog ((r 0.0d0) (rr 0.0d0) (t$ 0.0d0) (tt 0.0d0))
+    (prog ((r 0.0) (rr 0.0) (t$ 0.0) (tt 0.0))
       (declare (type (double-float) tt t$ rr r))
       (cond
         ((= nnnn 0)
          (setf (f2cl-lib:fref yyyy-%data% (1) ((1 2)) yyyy-%offset%)
-                 (coerce 1.0 'double-float))
+                 (coerce 1.0f0 'double-float))
          (setf (f2cl-lib:fref yyyy-%data% (2) ((1 2)) yyyy-%offset%)
-                 (coerce 0.0 'double-float))
+                 (coerce 0.0f0 'double-float))
          (go end_label)))
       (cond
         ((= nnnn 1)
@@ -41,11 +41,11 @@
          (go end_label)))
       (setf r (dnrm2 2 xxxx 1))
       (cond
-        ((= r 0.0)
+        ((= r 0.0f0)
          (setf (f2cl-lib:fref yyyy-%data% (1) ((1 2)) yyyy-%offset%)
-                 (coerce 0.0 'double-float))
+                 (coerce 0.0f0 'double-float))
          (setf (f2cl-lib:fref yyyy-%data% (2) ((1 2)) yyyy-%offset%)
-                 (coerce 0.0 'double-float))
+                 (coerce 0.0f0 'double-float))
          (go end_label)))
       (setf rr (expt r nnnn))
       (setf t$

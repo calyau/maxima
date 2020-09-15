@@ -12,16 +12,16 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
 
-(let ((dum 0.0d0)
-      (lmfpn 0.0d0)
-      (ntur 0.0d0)
-      (rtol 0.0d0)
-      (sum 0.0d0)
+(let ((dum 0.0)
+      (lmfpn 0.0)
+      (ntur 0.0)
+      (rtol 0.0)
+      (sum 0.0)
       (i 0)
       (iflag 0)
       (f2cl-lib:index 0)
@@ -410,12 +410,12 @@
                                         ((1 nn) (1 mmaxt))
                                         coef-%offset%)))
                 (cond
-                  ((= dum 0.0)
+                  ((= dum 0.0f0)
                    (setf (f2cl-lib:fref coescl-%data%
                                         (i j)
                                         ((1 n) (1 mmaxt))
                                         coescl-%offset%)
-                           (coerce 0.0 'double-float)))
+                           (coerce 0.0f0 'double-float)))
                   (t
                    (setf sum
                            (+
@@ -445,7 +445,7 @@
                                         (i j)
                                         ((1 n) (1 mmaxt))
                                         coescl-%offset%)
-                           (f2cl-lib:sign (expt 10.0 sum)
+                           (f2cl-lib:sign (expt 10.0f0 sum)
                                           (f2cl-lib:fref coef-%data%
                                                          (i j)
                                                          ((1 nn) (1 mmaxt))
@@ -496,6 +496,6 @@
                         (fortran-to-lisp::integer4))
            :return-values '(nil nil nil nil nil nil nil nil nil nil nil nil nil
                             nil nil nil nil nil fortran-to-lisp::ierr)
-           :calls '(fortran-to-lisp::qrslqf fortran-to-lisp::idamax
+           :calls '(fortran-to-lisp::idamax fortran-to-lisp::qrslqf
                     fortran-to-lisp::qrfaqf fortran-to-lisp::d1mach))))
 

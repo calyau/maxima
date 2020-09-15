@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -24,7 +24,7 @@
       ((xxxx double-float xxxx-%data% xxxx-%offset%)
        (yyyy double-float yyyy-%data% yyyy-%offset%)
        (zzzz double-float zzzz-%data% zzzz-%offset%))
-    (prog ((denom 0.0d0) (xnum 0.0d0))
+    (prog ((denom 0.0) (xnum 0.0))
       (declare (type (double-float) xnum denom))
       (setf ierr 0)
       (setf denom
@@ -40,8 +40,8 @@
                (* (f2cl-lib:fref xxxx-%data% (2) ((1 2)) xxxx-%offset%)
                   (f2cl-lib:fref yyyy-%data% (2) ((1 2)) yyyy-%offset%))))
       (cond
-        ((or (>= (abs denom) 1.0)
-             (and (< (abs denom) 1.0)
+        ((or (>= (abs denom) 1.0f0)
+             (and (< (abs denom) 1.0f0)
                   (< (f2cl-lib:f2cl/ (abs xnum) (f2cl-lib:d1mach 2))
                      (abs denom))))
          (setf (f2cl-lib:fref zzzz-%data% (1) ((1 2)) zzzz-%offset%)
@@ -57,8 +57,8 @@
                (* (f2cl-lib:fref xxxx-%data% (1) ((1 2)) xxxx-%offset%)
                   (f2cl-lib:fref yyyy-%data% (2) ((1 2)) yyyy-%offset%))))
       (cond
-        ((or (>= (abs denom) 1.0)
-             (and (< (abs denom) 1.0)
+        ((or (>= (abs denom) 1.0f0)
+             (and (< (abs denom) 1.0f0)
                   (< (f2cl-lib:f2cl/ (abs xnum) (f2cl-lib:d1mach 2))
                      (abs denom))))
          (setf (f2cl-lib:fref zzzz-%data% (2) ((1 2)) zzzz-%offset%)

@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -82,16 +82,15 @@
                           double-float double-float)
                          (values double-float &rest t))
                         qofs))
-        (prog ((judy 0) (jw 0) (lcode 0) (np1 0) (aerr 0.0d0) (dels 0.0d0)
-               (f0 0.0d0) (f1 0.0d0) (fp0 0.0d0) (fp1 0.0d0) (qsout 0.0d0)
-               (rerr 0.0d0) (s 0.0d0) (sa 0.0d0) (sb 0.0d0) (sout 0.0d0)
-               (u 0.0d0))
+        (prog ((judy 0) (jw 0) (lcode 0) (np1 0) (aerr 0.0) (dels 0.0) (f0 0.0)
+               (f1 0.0) (fp0 0.0) (fp1 0.0) (qsout 0.0) (rerr 0.0) (s 0.0)
+               (sa 0.0) (sb 0.0) (sout 0.0) (u 0.0))
           (declare (type (f2cl-lib:integer4) judy jw lcode np1)
                    (type (double-float) aerr dels f0 f1 fp0 fp1 qsout rerr s sa
                                         sb sout u))
           (setf u (f2cl-lib:d1mach 4))
           (setf rerr (max relerr u))
-          (setf aerr (max abserr 0.0d0))
+          (setf aerr (max abserr 0.0))
           (setf np1 (f2cl-lib:int-add n 1))
          label100
           (f2cl-lib:fdo (judy 1 (f2cl-lib:int-add judy 1))
@@ -115,7 +114,7 @@
                                           yold-%offset%)))
                  label110))
               (setf dels (dnrm2 np1 tz 1))
-              (setf sa (coerce 0.0 'double-float))
+              (setf sa (coerce 0.0f0 'double-float))
               (setf sb dels)
               (setf lcode 1)
              label130
@@ -147,7 +146,7 @@
                                        ((1 (f2cl-lib:int-add n 1)))
                                        yp-%offset%)
                         dels sout)
-                       1.0))
+                       1.0f0))
               (go label130)
              label140
               (cond
@@ -241,7 +240,7 @@
                   (<=
                    (abs
                     (+ (f2cl-lib:fref w (1) ((1 (f2cl-lib:int-add n 1))))
-                       (- 1.0)))
+                       (- 1.0f0)))
                    (+ rerr aerr))
                   (<=
                    (dnrm2 n
@@ -276,10 +275,10 @@
                 ((>
                   (*
                    (+ (f2cl-lib:fref yold (1) ((1 (f2cl-lib:int-add n 1))))
-                      (- 1.0))
+                      (- 1.0f0))
                    (+ (f2cl-lib:fref w (1) ((1 (f2cl-lib:int-add n 1))))
-                      (- 1.0)))
-                  0.0)
+                      (- 1.0f0)))
+                  0.0f0)
                  (f2cl-lib:fdo (jw 1 (f2cl-lib:int-add jw 1))
                                ((> jw np1) nil)
                    (tagbody
@@ -365,6 +364,6 @@
            :return-values '(nil fortran-to-lisp::nfe fortran-to-lisp::iflag nil
                             nil nil nil nil nil nil nil nil nil nil nil nil nil
                             nil)
-           :calls '(fortran-to-lisp::tangnf fortran-to-lisp::root
-                    fortran-to-lisp::dnrm2 fortran-to-lisp::d1mach))))
+           :calls '(fortran-to-lisp::dnrm2 fortran-to-lisp::tangnf
+                    fortran-to-lisp::root fortran-to-lisp::d1mach))))
 

@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -20,16 +20,16 @@
 (let ((wrge
        (make-array 8
                    :element-type 'single-float
-                   :initial-contents '(0.8735115 0.1531947 0.03191815
-                                       3.339946e-11 0.4677788 6.970123e-4
-                                       1.980863e-6 1.122789e-9)))
+                   :initial-contents '(0.8735115f0 0.1531947f0 0.03191815f0
+                                       3.339946f-11 0.4677788f0 6.970123f-4
+                                       1.980863f-6 1.122789f-9)))
       (acof
        (make-array 12
                    :element-type 'single-float
-                   :initial-contents '(0.9043128 -0.7075675 -4.667383 -3.677482
-                                       0.8516099 -0.1953119 -4.830636
-                                       -0.9770528 1.040061 0.03793395 1.042177
-                                       0.04450706)))
+                   :initial-contents '(0.9043128f0 -0.7075675f0 -4.667383f0
+                                       -3.677482f0 0.8516099f0 -0.1953119f0
+                                       -4.830636f0 -0.9770528f0 1.040061f0
+                                       0.03793395f0 1.042177f0 0.04450706f0)))
       (failed nil)
       (i 0)
       (itcnt 0)
@@ -40,27 +40,27 @@
       (np1 0)
       (pcgwk 0)
       (zu 0)
-      (alpha 0.0d0)
-      (cordis 0.0d0)
-      (dels 0.0d0)
-      (fouru 0.0d0)
-      (gamma 0.0d0)
-      (hfail 0.0d0)
-      (htemp 0.0d0)
-      (idlerr 0.0d0)
-      (omega 0.0d0)
-      (one 0.0d0)
-      (p0 0.0d0)
-      (p1 0.0d0)
-      (pp0 0.0d0)
-      (pp1 0.0d0)
-      (sigma 0.0d0)
-      (temp 0.0d0)
-      (theta 0.0d0)
-      (twou 0.0d0)
-      (wkold 0.0d0)
-      (xstep 0.0d0)
-      (lambda$ 0.0d0))
+      (alpha 0.0)
+      (cordis 0.0)
+      (dels 0.0)
+      (fouru 0.0)
+      (gamma 0.0)
+      (hfail 0.0)
+      (htemp 0.0)
+      (idlerr 0.0)
+      (omega 0.0)
+      (one 0.0)
+      (p0 0.0)
+      (p1 0.0)
+      (pp0 0.0)
+      (pp1 0.0)
+      (sigma 0.0)
+      (temp 0.0)
+      (theta 0.0)
+      (twou 0.0)
+      (wkold 0.0)
+      (xstep 0.0)
+      (lambda$ 0.0))
   (declare (type (array single-float (8)) wrge)
            (type (array single-float (12)) acof)
            (type f2cl-lib:logical failed)
@@ -139,8 +139,8 @@
                         qofs))
         (prog ()
           (declare)
-          (setf one (coerce 1.0 'double-float))
-          (setf twou (* 2.0 (f2cl-lib:d1mach 4)))
+          (setf one (coerce 1.0f0 'double-float))
+          (setf twou (* 2.0f0 (f2cl-lib:d1mach 4)))
           (setf fouru (+ twou twou))
           (setf np1 (f2cl-lib:int-add n 1))
           (setf failed f2cl-lib:%false%)
@@ -148,18 +148,18 @@
           (setf litfh 10)
           (setf pcgwk (f2cl-lib:int-add (f2cl-lib:int-mul 2 n) 3))
           (setf zu (f2cl-lib:int-add (f2cl-lib:int-mul 3 n) 4))
-          (if (< s 0.0) (go end_label))
+          (if (< s 0.0f0) (go end_label))
           (cond
-            ((< h (* fouru (+ 1.0 s)))
-             (setf h (* fouru (+ 1.0 s)))
+            ((< h (* fouru (+ 1.0f0 s)))
+             (setf h (* fouru (+ 1.0f0 s)))
              (go end_label)))
-          (setf temp (+ (dnrm2 np1 y 1) 1.0))
+          (setf temp (+ (dnrm2 np1 y 1) 1.0f0))
           (cond
-            ((< (* 0.5 (+ (* relerr temp) abserr)) (* twou temp))
+            ((< (* 0.5f0 (+ (* relerr temp) abserr)) (* twou temp))
              (cond
-               ((/= relerr 0.0)
-                (setf relerr (* fouru (+ 1.0 fouru)))
-                (setf temp (coerce 0.0 'double-float))
+               ((/= relerr 0.0f0)
+                (setf relerr (* fouru (+ 1.0f0 fouru)))
+                (setf temp (coerce 0.0f0 'double-float))
                 (setf abserr (max abserr temp)))
                (t
                 (setf abserr (* fouru temp))))
@@ -181,7 +181,7 @@
                                                                              1))
                                          lenqr)))
                                       work-%offset%)
-                         (coerce 0.0 'double-float))
+                         (coerce 0.0f0 'double-float))
                 label10))
              (multiple-value-bind
                    (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
@@ -242,7 +242,7 @@
                                                                               1))
                                           lenqr)))
                                        work-%offset%)
-                          (coerce 0.0 'double-float))
+                          (coerce 0.0f0 'double-float))
                  label40))
               (setf lambda$
                       (f2cl-lib:fref z0-%data%
@@ -259,7 +259,7 @@
                 ((= iflag (f2cl-lib:int-sub 1))
                  (fjacs z0 qr lenqr pivot)
                  (dscal lenqr lambda$ qr 1)
-                 (setf sigma (- 1.0 lambda$))
+                 (setf sigma (- 1.0f0 lambda$))
                  (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                                ((> j n) nil)
                    (tagbody
@@ -313,7 +313,7 @@
                                                                 2)))))
                                              ((1 lenqr))
                                              qr-%offset%)
-                              1.0))
+                              1.0f0))
                     label60))
                  (dcopy n z0 1 rhovec 1)
                  (daxpy n (- one) a 1 rhovec 1)
@@ -324,7 +324,7 @@
                                    (np1)
                                    ((1 (f2cl-lib:int-add n 1)))
                                    rhovec-%offset%)
-                      (coerce 0.0 'double-float))
+                      (coerce 0.0f0 'double-float))
               (setf nfe (f2cl-lib:int-add nfe 1))
               (multiple-value-bind
                     (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8
@@ -356,11 +356,11 @@
           (setf failed f2cl-lib:%true%)
           (setf hfail h)
           (cond
-            ((<= h (* fouru (+ 1.0 s)))
+            ((<= h (* fouru (+ 1.0f0 s)))
              (setf iflag 6)
              (go end_label))
             (t
-             (setf h (* 0.5 h))))
+             (setf h (* 0.5f0 h))))
           (go label20)
          label160
           (multiple-value-bind
@@ -374,7 +374,7 @@
             (setf nfe var-12))
           (if (> iflag 0) (go end_label))
           (setf alpha (ddot np1 t$ 1 yp 1))
-          (if (< alpha 0.5) (go label150))
+          (if (< alpha 0.5f0) (go label150))
           (setf alpha (acos alpha))
           (cond
             (start
@@ -470,9 +470,9 @@
           (setf s (+ s hold))
           (cond
             ((<= itcnt 1)
-             (setf theta (coerce 8.0 'double-float)))
+             (setf theta (coerce 8.0f0 'double-float)))
             ((= itcnt 4)
-             (setf theta (coerce 1.0 'double-float)))
+             (setf theta (coerce 1.0f0 'double-float)))
             (t
              (setf omega (/ xstep cordis))
              (cond
@@ -480,7 +480,7 @@
                 (setf lk (f2cl-lib:int-sub (f2cl-lib:int-mul 4 itcnt) 7))
                 (cond
                   ((>= omega (f2cl-lib:fref wrge (lk) ((1 8))))
-                   (setf theta (coerce 1.0 'double-float)))
+                   (setf theta (coerce 1.0f0 'double-float)))
                   ((>= omega
                        (f2cl-lib:fref wrge ((f2cl-lib:int-add lk 1)) ((1 8))))
                    (setf theta
@@ -503,9 +503,9 @@
                                             ((1 12)))
                              (f2cl-lib:flog omega)))))
                   (t
-                   (setf theta (coerce 8.0 'double-float)))))
+                   (setf theta (coerce 8.0f0 'double-float)))))
                ((>= itcnt 7)
-                (setf theta (coerce 0.125 'double-float)))
+                (setf theta (coerce 0.125f0 'double-float)))
                (t
                 (setf lk (f2cl-lib:int-sub (f2cl-lib:int-mul 4 itcnt) 16))
                 (cond
@@ -519,18 +519,18 @@
                                               ((1 12)))
                                (f2cl-lib:flog omega)))))
                   (t
-                   (setf theta (coerce 0.125 'double-float))))))))
+                   (setf theta (coerce 0.125f0 'double-float))))))))
           (setf idlerr (* theta idlerr))
-          (setf idlerr (min (* 0.5 hold) idlerr))
+          (setf idlerr (min (* 0.5f0 hold) idlerr))
           (setf wkold wk)
-          (setf wk (/ (* 2.0 (abs (sin (* 0.5 alpha)))) hold))
+          (setf wk (/ (* 2.0f0 (abs (sin (* 0.5f0 alpha)))) hold))
           (cond
             (start
              (setf gamma wk))
             (t
              (setf gamma (+ wk (* (/ hold (+ hold htemp)) (- wk wkold))))))
-          (setf gamma (max gamma (* 0.01 one)))
-          (setf h (f2cl-lib:fsqrt (/ (* 2.0 idlerr) gamma)))
+          (setf gamma (max gamma (* 0.01f0 one)))
+          (setf h (f2cl-lib:fsqrt (/ (* 2.0f0 idlerr) gamma)))
           (setf h
                   (min
                    (max (f2cl-lib:fref sspar-%data% (1) ((1 4)) sspar-%offset%)
@@ -605,10 +605,10 @@
                             fortran-to-lisp::abserr fortran-to-lisp::s nil nil
                             nil nil nil nil nil nil nil nil nil nil nil nil nil
                             nil)
-           :calls '(fortran-to-lisp::ddot fortran-to-lisp::pcgqs
-                    fortran-to-lisp::f fortran-to-lisp::dscal
-                    fortran-to-lisp::fjacs fortran-to-lisp::rho
-                    fortran-to-lisp::rhojs fortran-to-lisp::daxpy
-                    fortran-to-lisp::dcopy fortran-to-lisp::tangqs
-                    fortran-to-lisp::dnrm2 fortran-to-lisp::d1mach))))
+           :calls '(fortran-to-lisp::f fortran-to-lisp::fjacs
+                    fortran-to-lisp::rhojs fortran-to-lisp::ddot
+                    fortran-to-lisp::dscal fortran-to-lisp::daxpy
+                    fortran-to-lisp::dcopy fortran-to-lisp::dnrm2
+                    fortran-to-lisp::pcgqs fortran-to-lisp::rho
+                    fortran-to-lisp::tangqs fortran-to-lisp::d1mach))))
 

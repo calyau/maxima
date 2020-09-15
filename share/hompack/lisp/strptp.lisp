@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -26,8 +26,8 @@
        (ideg f2cl-lib:integer4 ideg-%data% ideg-%offset%)
        (r double-float r-%data% r-%offset%)
        (x double-float x-%data% x-%offset%))
-    (prog ((xxxx (make-array 2 :element-type 'double-float)) (twopi 0.0d0)
-           (angle 0.0d0) (j 0))
+    (prog ((xxxx (make-array 2 :element-type 'double-float)) (twopi 0.0)
+           (angle 0.0) (j 0))
       (declare (type (f2cl-lib:integer4) j)
                (type (array double-float (2)) xxxx)
                (type (double-float) angle twopi))
@@ -46,7 +46,7 @@
              (go label20)))
          label10))
      label20
-      (setf twopi (coerce (* 8.0 (atan 1.0)) 'double-float))
+      (setf twopi (coerce (* 8.0f0 (atan 1.0f0)) 'double-float))
       (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                     ((> j n) nil)
         (tagbody

@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -49,13 +49,13 @@
                                ((f2cl-lib:int-add lenaa i))
                                ((1 (f2cl-lib:int-add lenaa nn 1)))
                                q-%offset%)
-                  (coerce 0.0 'double-float))
+                  (coerce 0.0f0 'double-float))
          label100))
       (setf (f2cl-lib:fref q-%data%
                            (lenq)
                            ((1 (f2cl-lib:int-add lenaa nn 1)))
                            q-%offset%)
-              1.0d0)
+              1.0)
       (gmfads nq q lenq maxa)
       (go end_label)
      end_label

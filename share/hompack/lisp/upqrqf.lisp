@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -30,13 +30,13 @@
        (w double-float w-%data% w-%offset%)
        (t$ double-float t$-%data% t$-%offset%))
     (prog ((tt (make-array 2 :element-type 'double-float)) (skipup nil) (i 0)
-           (indexr 0) (indxr2 0) (j 0) (k 0) (c 0.0d0) (den 0.0d0) (one 0.0d0)
-           (ss 0.0d0) (ww 0.0d0) (yy 0.0d0) (dnrm2 0.0d0))
+           (indexr 0) (indxr2 0) (j 0) (k 0) (c 0.0) (den 0.0) (one 0.0)
+           (ss 0.0) (ww 0.0) (yy 0.0) (dnrm2 0.0))
       (declare (type (double-float) dnrm2 yy ww ss one den c)
                (type (f2cl-lib:integer4) k j indxr2 indexr i)
                (type f2cl-lib:logical skipup)
                (type (array double-float (2)) tt))
-      (setf one (coerce 1.0 'double-float))
+      (setf one (coerce 1.0f0 'double-float))
       (setf skipup f2cl-lib:%true%)
       (setf indexr 1)
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
@@ -88,7 +88,7 @@
              (setf skipup f2cl-lib:%false%))
             (t
              (setf (f2cl-lib:fref w-%data% (i) ((1 n)) w-%offset%)
-                     (coerce 0.0 'double-float))))
+                     (coerce 0.0f0 'double-float))))
          label20))
       (if skipup (go end_label))
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
@@ -103,7 +103,7 @@
                                          qt-%offset%)
                    n w 1))
          label30))
-      (setf den (/ 1.0 (ddot n s 1 s 1)))
+      (setf den (/ 1.0f0 (ddot n s 1 s 1)))
       (dscal n den s 1)
       (r1upqf n s t$ qt r w)
       (go end_label)
@@ -122,6 +122,6 @@
                         (array double-float (*)) (array double-float (*))
                         (array double-float (*)))
            :return-values '(nil nil nil nil nil nil nil nil nil)
-           :calls '(fortran-to-lisp::r1upqf fortran-to-lisp::dscal
-                    fortran-to-lisp::ddot))))
+           :calls '(fortran-to-lisp::dscal fortran-to-lisp::ddot
+                    fortran-to-lisp::r1upqf))))
 

@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -65,10 +65,10 @@
            (lipar (make-array 15 :element-type 'f2cl-lib:integer4))
            (lpar (make-array 25 :element-type 'f2cl-lib:integer4))
            (proff (make-array 25 :element-type 'f2cl-lib:integer4))
-           (aarcln 0.0d0) (ansae 0.0d0) (ansre 0.0d0) (arcae 0.0d0)
-           (arcre 0.0d0) (i 0) (i1 0) (i2 0) (i3 0) (idummy 0) (iflag 0) (ij 0)
-           (ijp1 0) (f2cl-lib:index 0) (j 0) (n2 0) (n2p1 0) (nnfe 0) (np1 0)
-           (numpat 0) (trace$ 0))
+           (aarcln 0.0) (ansae 0.0) (ansre 0.0) (arcae 0.0) (arcre 0.0) (i 0)
+           (i1 0) (i2 0) (i3 0) (idummy 0) (iflag 0) (ij 0) (ijp1 0)
+           (f2cl-lib:index 0) (j 0) (n2 0) (n2p1 0) (nnfe 0) (np1 0) (numpat 0)
+           (trace$ 0))
       (declare (type (array f2cl-lib:integer4 (25)) proff lpar)
                (type (array f2cl-lib:integer4 (15)) lipar iproff)
                (type (f2cl-lib:integer4) trace$ numpat np1 nnfe n2p1 n2 j
@@ -379,7 +379,7 @@
                                ((1
                                  (f2cl-lib:int-add (f2cl-lib:int-mul 2 n) 1)))
                                y-%offset%)
-                  (coerce 0.0 'double-float))
+                  (coerce 0.0f0 'double-float))
           (strptp n icount ideg r
            (f2cl-lib:array-slice y-%data%
                                  double-float

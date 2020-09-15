@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -40,10 +40,10 @@
     (prog ((gtemp (make-array 13 :element-type 'double-float))
            (c (make-array 13 :element-type 'double-float))
            (wtemp (make-array 13 :element-type 'double-float)) (i 0) (iq 0)
-           (iw 0) (j 0) (jq 0) (kp1 0) (kp2 0) (l 0) (m 0) (alp 0.0d0)
-           (gamma 0.0d0) (gdi 0.0d0) (gdif 0.0d0) (h 0.0d0) (hi 0.0d0)
-           (hmu 0.0d0) (rmu 0.0d0) (sigma 0.0d0) (temp1 0.0d0) (temp2 0.0d0)
-           (temp3 0.0d0) (xi 0.0d0) (xim1 0.0d0) (xiq 0.0d0))
+           (iw 0) (j 0) (jq 0) (kp1 0) (kp2 0) (l 0) (m 0) (alp 0.0)
+           (gamma 0.0) (gdi 0.0) (gdif 0.0) (h 0.0) (hi 0.0) (hmu 0.0)
+           (rmu 0.0) (sigma 0.0) (temp1 0.0) (temp2 0.0) (temp3 0.0) (xi 0.0)
+           (xim1 0.0) (xiq 0.0))
       (declare (type (array double-float (13)) wtemp gtemp c)
                (type (double-float) xiq xim1 xi temp3 temp2 temp1 sigma rmu hmu
                                     hi h gdif gdi gamma alp)
@@ -53,7 +53,7 @@
       (setf hi (- xout xold))
       (setf h (- x xold))
       (setf xi (/ hi h))
-      (setf xim1 (- xi 1.0))
+      (setf xim1 (- xi 1.0f0))
       (setf xiq xi)
       (f2cl-lib:fdo (iq 1 (f2cl-lib:int-add iq 1))
                     ((> iq kp1) nil)
@@ -68,7 +68,7 @@
           (setf (f2cl-lib:fref wtemp (iq) ((1 13))) (/ xiq temp1))))
       (if (<= kold kgi) (go label50))
       (if (> ivc 0) (go label20))
-      (setf gdi (/ 1.0 temp1))
+      (setf gdi (/ 1.0f0 temp1))
       (setf m 2)
       (go label30)
      label20
@@ -94,15 +94,15 @@
       (setf gdi (f2cl-lib:fref gi-%data% (kold) ((1 11)) gi-%offset%))
      label60
       (setf (f2cl-lib:fref gtemp (1) ((1 13))) xi)
-      (setf (f2cl-lib:fref gtemp (2) ((1 13))) (* 0.5 xi xi))
-      (setf (f2cl-lib:fref c (1) ((1 13))) (coerce 1.0 'double-float))
+      (setf (f2cl-lib:fref gtemp (2) ((1 13))) (* 0.5f0 xi xi))
+      (setf (f2cl-lib:fref c (1) ((1 13))) (coerce 1.0f0 'double-float))
       (setf (f2cl-lib:fref c (2) ((1 13))) xi)
       (if (< kold 2) (go label90))
       (f2cl-lib:fdo (i 2 (f2cl-lib:int-add i 1))
                     ((> i kold) nil)
         (tagbody
           (setf alp (f2cl-lib:fref alpha-%data% (i) ((1 12)) alpha-%offset%))
-          (setf gamma (+ 1.0 (* xim1 alp)))
+          (setf gamma (+ 1.0f0 (* xim1 alp)))
           (setf l (f2cl-lib:int-sub kp2 i))
           (f2cl-lib:fdo (jq 1 (f2cl-lib:int-add jq 1))
                         ((> jq l) nil)
@@ -131,10 +131,10 @@
                     ((> l neqn) nil)
         (tagbody
           (setf (f2cl-lib:fref yout-%data% (l) ((1 neqn)) yout-%offset%)
-                  (coerce 0.0 'double-float))
+                  (coerce 0.0f0 'double-float))
          label100
           (setf (f2cl-lib:fref ypout-%data% (l) ((1 neqn)) ypout-%offset%)
-                  (coerce 0.0 'double-float))))
+                  (coerce 0.0f0 'double-float))))
       (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                     ((> j kold) nil)
         (tagbody
@@ -183,7 +183,7 @@
         (tagbody
           (setf (f2cl-lib:fref yout-%data% (l) ((1 neqn)) yout-%offset%)
                   (+
-                   (* (- 1.0 sigma)
+                   (* (- 1.0f0 sigma)
                       (f2cl-lib:fref p-%data% (l) ((1 neqn)) p-%offset%))
                    (* sigma (f2cl-lib:fref y-%data% (l) ((1 neqn)) y-%offset%))
                    (* h

@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -82,22 +82,21 @@
                         double-float double-float)
                        (values double-float &rest t))
                       qofs))
-      (prog ((brack nil) (istep 0) (i 0) (lcode 0) (limit 0) (np1 0)
-             (aerr 0.0d0) (dels 0.0d0) (eta 0.0d0) (one 0.0d0) (p0 0.0d0)
-             (p1 0.0d0) (pp0 0.0d0) (pp1 0.0d0) (qsout 0.0d0) (rerr 0.0d0)
-             (s 0.0d0) (sa 0.0d0) (sb 0.0d0) (sout 0.0d0) (u 0.0d0)
-             (zero 0.0d0))
+      (prog ((brack nil) (istep 0) (i 0) (lcode 0) (limit 0) (np1 0) (aerr 0.0)
+             (dels 0.0) (eta 0.0) (one 0.0) (p0 0.0) (p1 0.0) (pp0 0.0)
+             (pp1 0.0) (qsout 0.0) (rerr 0.0) (s 0.0) (sa 0.0) (sb 0.0)
+             (sout 0.0) (u 0.0) (zero 0.0))
         (declare (type (double-float) zero u sout sb sa s rerr qsout pp1 pp0 p1
                                       p0 one eta dels aerr)
                  (type (f2cl-lib:integer4) np1 limit lcode i istep)
                  (type f2cl-lib:logical brack))
-        (setf one (coerce 1.0 'double-float))
-        (setf zero (coerce 0.0 'double-float))
+        (setf one (coerce 1.0f0 'double-float))
+        (setf zero (coerce 0.0f0 'double-float))
         (setf u (f2cl-lib:d1mach 4))
         (setf rerr (max relerr u))
         (setf aerr (max abserr zero))
         (setf np1 (f2cl-lib:int-add n 1))
-        (setf eta (* 100.0 u))
+        (setf eta (* 100.0f0 u))
         (setf limit
                 (f2cl-lib:int-mul 2
                                   (f2cl-lib:int-add
@@ -152,7 +151,7 @@
                                         ((1 (f2cl-lib:int-add n 1)))
                                         f0-%offset%))
                         (*
-                         (- 1.0
+                         (- 1.0f0
                             (f2cl-lib:fref y-%data%
                                            (1)
                                            ((1 (f2cl-lib:int-add n 1)))
@@ -205,7 +204,7 @@
         (dcopy np1 y 1 dz 1)
         (daxpy np1 (- one) yold 1 dz 1)
         (setf dels (dnrm2 np1 dz 1))
-        (setf sa (coerce 0.0 'double-float))
+        (setf sa (coerce 0.0f0 'double-float))
         (setf sb dels)
         (setf lcode 1)
        label40
@@ -237,7 +236,7 @@
                                  ((1 (f2cl-lib:int-add n 1)))
                                  yp-%offset%)
                   dels sout)
-                 1.0))
+                 1.0f0))
         (go label40)
        label50
         (cond
@@ -384,7 +383,7 @@
                                  (np1)
                                  ((1 (f2cl-lib:int-add n 1)))
                                  dz-%offset%)
-                    (coerce 0.0 'double-float))
+                    (coerce 0.0f0 'double-float))
             (qrslqf qt r dz w np1)
             (dcopy np1 z 1 w 1)
             (daxpy np1 one dz 1 z 1)
@@ -393,7 +392,7 @@
                 (<=
                  (abs
                   (+ (f2cl-lib:fref z (1) ((1 (f2cl-lib:int-add n 1))))
-                     (- 1.0)))
+                     (- 1.0f0)))
                  (+ rerr aerr))
                 (<= (dnrm2 np1 dz 1)
                     (+
@@ -412,7 +411,7 @@
               ((<=
                 (abs
                  (+ (f2cl-lib:fref z (1) ((1 (f2cl-lib:int-add n 1))))
-                    (- 1.0)))
+                    (- 1.0f0)))
                 (+ rerr aerr))
                (dcopy np1 z 1 dz 1)
                (daxpy np1 (- one) w 1 dz 1)
@@ -422,9 +421,10 @@
             (cond
               ((>
                 (*
-                 (+ (f2cl-lib:fref y (1) ((1 (f2cl-lib:int-add n 1)))) (- 1.0))
+                 (+ (f2cl-lib:fref y (1) ((1 (f2cl-lib:int-add n 1))))
+                    (- 1.0f0))
                  (+ (f2cl-lib:fref yold (1) ((1 (f2cl-lib:int-add n 1))))
-                    (- 1.0)))
+                    (- 1.0f0)))
                 0)
                (setf brack f2cl-lib:%false%))
               (t
@@ -435,7 +435,7 @@
             (setf dels (dnrm2 np1 dz 1))
             (setf sa
                     (/
-                     (- 1.0
+                     (- 1.0f0
                         (f2cl-lib:fref y-%data%
                                        (1)
                                        ((1 (f2cl-lib:int-add n 1)))
@@ -458,7 +458,7 @@
                  ((> (dnrm2 np1 dz 1) dels)
                   (setf sa
                           (/
-                           (- 1.0
+                           (- 1.0f0
                               (f2cl-lib:fref y-%data%
                                              (1)
                                              ((1 (f2cl-lib:int-add n 1)))
@@ -523,10 +523,10 @@
                         (array fortran-to-lisp::integer4 (*)))
            :return-values '(nil nil fortran-to-lisp::iflag nil nil nil nil nil
                             nil nil nil nil nil nil nil nil nil nil nil nil)
-           :calls '(fortran-to-lisp::qrslqf fortran-to-lisp::dscal
-                    fortran-to-lisp::upqrqf fortran-to-lisp::root
+           :calls '(fortran-to-lisp::f fortran-to-lisp::dscal
                     fortran-to-lisp::daxpy fortran-to-lisp::dcopy
-                    fortran-to-lisp::ddot fortran-to-lisp::f
-                    fortran-to-lisp::rho fortran-to-lisp::dnrm2
+                    fortran-to-lisp::ddot fortran-to-lisp::dnrm2
+                    fortran-to-lisp::qrslqf fortran-to-lisp::upqrqf
+                    fortran-to-lisp::root fortran-to-lisp::rho
                     fortran-to-lisp::d1mach))))
 

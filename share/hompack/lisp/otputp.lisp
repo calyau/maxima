@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -27,7 +27,7 @@
        (clx double-float clx-%data% clx-%offset%)
        (x double-float x-%data% x-%offset%)
        (xnp1 double-float xnp1-%data% xnp1-%offset%))
-    (prog ((temp (make-array 2 :element-type 'double-float)) (fac 0.0d0) (i 0)
+    (prog ((temp (make-array 2 :element-type 'double-float)) (fac 0.0) (i 0)
            (ierr 0) (j 0) (np1 0))
       (declare (type (f2cl-lib:integer4) np1 j ierr i)
                (type (array double-float (2)) temp)
@@ -95,7 +95,7 @@
                     ((> j n) nil)
         (tagbody
           (setf fac
-                  (expt 10.0
+                  (expt 10.0f0
                         (f2cl-lib:fref facv-%data% (j) ((1 n)) facv-%offset%)))
           (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                         ((> i 2) nil)
@@ -107,7 +107,7 @@
                   (abs (f2cl-lib:fref x-%data% (i j) ((1 2) (1 n)) x-%offset%))
                   (f2cl-lib:fref temp (1) ((1 2))))
                  fac)
-                1.0)
+                1.0f0)
                (setf (f2cl-lib:fref x-%data% (i j) ((1 2) (1 n)) x-%offset%)
                        (* fac
                           (f2cl-lib:fref x-%data%

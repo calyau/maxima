@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -25,7 +25,7 @@
        (r double-float r-%data% r-%offset%)
        (b double-float b-%data% b-%offset%)
        (x double-float x-%data% x-%offset%))
-    (prog ((indexr 0) (i 0) (j 0) (tau 0.0d0))
+    (prog ((indexr 0) (i 0) (j 0) (tau 0.0))
       (declare (type (double-float) tau) (type (f2cl-lib:integer4) j i indexr))
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                     ((> i n) nil)

@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -51,12 +51,12 @@
        (ideg f2cl-lib:integer4 ideg-%data% ideg-%offset%)
        (numt f2cl-lib:integer4 numt-%data% numt-%offset%)
        (kdeg f2cl-lib:integer4 kdeg-%data% kdeg-%offset%))
-    (prog ((oneml 0.0d0) (j 0) (j2 0) (j2m1 0) (k 0) (k2 0) (k2m1 0))
+    (prog ((oneml 0.0) (j 0) (j2 0) (j2m1 0) (k 0) (k2 0) (k2m1 0))
       (declare (type (f2cl-lib:integer4) k2m1 k2 k j2m1 j2 j)
                (type (double-float) oneml))
       (gfunp n ideg pdg qdg x xdgm1 xdg pxdgm1 pxdg g dg)
       (ffunp n numt mmaxt kdeg coef cl x xx trm dtrm clx dxnp1 f df)
-      (setf oneml (- 1.0 lambda$))
+      (setf oneml (- 1.0f0 lambda$))
       (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                     ((> j n) nil)
         (tagbody

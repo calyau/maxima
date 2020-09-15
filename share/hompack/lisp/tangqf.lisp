@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -34,11 +34,10 @@
        (t$ double-float t$-%data% t$-%offset%)
        (par double-float par-%data% par-%offset%)
        (ipar f2cl-lib:integer4 ipar-%data% ipar-%offset%))
-    (prog ((i 0) (j 0) (jp1 0) (np1 0) (one 0.0d0) (ypnrm 0.0d0)
-           (lambda$ 0.0d0))
+    (prog ((i 0) (j 0) (jp1 0) (np1 0) (one 0.0) (ypnrm 0.0) (lambda$ 0.0))
       (declare (type (double-float) lambda$ ypnrm one)
                (type (f2cl-lib:integer4) np1 jp1 j i))
-      (setf one (coerce 1.0 'double-float))
+      (setf one (coerce 1.0f0 'double-float))
       (setf nfe (f2cl-lib:int-add nfe 1))
       (setf np1 (f2cl-lib:int-add n 1))
       (setf lambda$
@@ -131,7 +130,7 @@
                                   ((1 (f2cl-lib:int-add n 1))
                                    (1 (f2cl-lib:int-add n 1)))
                                   qt-%offset%)
-                     (+ (- 1.0 lambda$)
+                     (+ (- 1.0f0 lambda$)
                         (f2cl-lib:fref qt-%data%
                                        (j jp1)
                                        ((1 (f2cl-lib:int-add n 1))
@@ -197,7 +196,7 @@
                                   ((1 (f2cl-lib:int-add n 1))
                                    (1 (f2cl-lib:int-add n 1)))
                                   qt-%offset%)
-                     (+ 1.0
+                     (+ 1.0f0
                         (f2cl-lib:fref qt-%data%
                                        (j jp1)
                                        ((1 (f2cl-lib:int-add n 1))
@@ -223,15 +222,15 @@
                                (j)
                                ((1 (f2cl-lib:int-add n 1)))
                                yp-%offset%)
-                  (coerce 0.0 'double-float))
+                  (coerce 0.0f0 'double-float))
          label70))
       (setf (f2cl-lib:fref yp-%data%
                            (np1)
                            ((1 (f2cl-lib:int-add n 1)))
                            yp-%offset%)
-              (coerce 1.0 'double-float))
+              (coerce 1.0f0 'double-float))
       (qrslqf qt r yp w np1)
-      (setf ypnrm (/ 1.0 (dnrm2 np1 yp 1)))
+      (setf ypnrm (/ 1.0f0 (dnrm2 np1 yp 1)))
       (dscal np1 ypnrm yp 1)
       (dcopy np1 yp 1 s 1)
       (daxpy np1 (- one) ypold 1 s 1)
@@ -266,9 +265,9 @@
            :return-values '(nil nil nil nil nil nil nil nil nil nil
                             fortran-to-lisp::iflag fortran-to-lisp::nfe nil
                             nil)
-           :calls '(fortran-to-lisp::r1upqf fortran-to-lisp::dnrm2
-                    fortran-to-lisp::qrslqf fortran-to-lisp::qrfaqf
-                    fortran-to-lisp::dcopy fortran-to-lisp::daxpy
-                    fortran-to-lisp::dscal fortran-to-lisp::fjac
-                    fortran-to-lisp::f fortran-to-lisp::rhojac))))
+           :calls '(fortran-to-lisp::fjac fortran-to-lisp::f
+                    fortran-to-lisp::dnrm2 fortran-to-lisp::dcopy
+                    fortran-to-lisp::daxpy fortran-to-lisp::dscal
+                    fortran-to-lisp::r1upqf fortran-to-lisp::qrslqf
+                    fortran-to-lisp::qrfaqf fortran-to-lisp::rhojac))))
 

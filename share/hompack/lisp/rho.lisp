@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -29,12 +29,8 @@
        (ipar f2cl-lib:integer4 ipar-%data% ipar-%offset%))
     (prog ((j 0) (n 0))
       (declare (type (f2cl-lib:integer4) n j))
-      (if (< lambda$ 0.0) (setf lambda$ (coerce 0.0 'double-float)))
-      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
-          (hfunp a lambda$ x par ipar)
-        (declare (ignore var-0 var-2 var-3 var-4))
-        (when var-1
-          (setf lambda$ var-1)))
+      (if (< lambda$ 0.0f0) (setf lambda$ (coerce 0.0f0 'double-float)))
+      (hfunp a lambda$ x par ipar)
       (setf n (f2cl-lib:fref ipar-%data% (1) ((1 *)) ipar-%offset%))
       (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                     ((> j (f2cl-lib:int-mul 2 n)) nil)
@@ -66,5 +62,5 @@
                         (array double-float (*))
                         (array fortran-to-lisp::integer4 (*)))
            :return-values '(nil fortran-to-lisp::lambda$ nil nil nil nil)
-           :calls 'nil)))
+           :calls '(fortran-to-lisp::hfunp))))
 

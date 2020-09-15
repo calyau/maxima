@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -36,7 +36,7 @@
        (par double-float par-%data% par-%offset%)
        (ipar f2cl-lib:integer4 ipar-%data% ipar-%offset%))
     (prog ((i 0) (ierr 0) (ik 0) (j 0) (k 0) (kp1 0) (kpiv 0) (lw 0) (np1 0)
-           (sum 0.0d0) (ypnorm 0.0d0))
+           (sum 0.0) (ypnorm 0.0))
       (declare (type (double-float) ypnorm sum)
                (type (f2cl-lib:integer4) np1 lw kpiv kp1 k j ik ierr i))
       (setf np1 (f2cl-lib:int-add n 1))
@@ -127,7 +127,7 @@
                                      (k kp1)
                                      ((1 n) (1 (f2cl-lib:int-add n 1)))
                                      qr-%offset%)
-                        (+ 1.0
+                        (+ 1.0f0
                            (f2cl-lib:fref qr-%data%
                                           (k kp1)
                                           ((1 n) (1 (f2cl-lib:int-add n 1)))
@@ -188,7 +188,7 @@
                                        ((1 n) (1 (f2cl-lib:int-add n 1)))
                                        qr-%offset%)
                           (+
-                           (- 1.0
+                           (- 1.0f0
                               (f2cl-lib:fref y-%data%
                                              (1)
                                              ((1 (f2cl-lib:int-add n 1)))
@@ -210,13 +210,13 @@
                            (np1)
                            ((1 (f2cl-lib:int-add n 1)))
                            tz-%offset%)
-              (coerce 1.0 'double-float))
+              (coerce 1.0f0 'double-float))
       (f2cl-lib:fdo (lw 1 (f2cl-lib:int-add lw 1))
                     ((> lw n) nil)
         (tagbody
           (setf i (f2cl-lib:int-sub np1 lw))
           (setf ik (f2cl-lib:int-add i 1))
-          (setf sum (coerce 0.0 'double-float))
+          (setf sum (coerce 0.0f0 'double-float))
           (f2cl-lib:fdo (j ik (f2cl-lib:int-add j 1))
                         ((> j np1) nil)
             (tagbody
@@ -262,7 +262,7 @@
                                   ((1 (f2cl-lib:int-add n 1)))
                                   tz-%offset%)
                    ypnorm))))
-      (if (>= (ddot np1 yp 1 ypold 1) 0.0) (go label280))
+      (if (>= (ddot np1 yp 1 ypold 1) 0.0f0) (go label280))
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                     ((> i np1) nil)
         (tagbody
@@ -310,7 +310,7 @@
            :return-values '(nil nil nil nil nil nil nil nil nil
                             fortran-to-lisp::nfe nil fortran-to-lisp::iflag nil
                             nil)
-           :calls '(fortran-to-lisp::ddot fortran-to-lisp::dnrm2
-                    fortran-to-lisp::dcpose fortran-to-lisp::fjac
-                    fortran-to-lisp::f fortran-to-lisp::rhojac))))
+           :calls '(fortran-to-lisp::fjac fortran-to-lisp::f
+                    fortran-to-lisp::ddot fortran-to-lisp::dnrm2
+                    fortran-to-lisp::dcpose fortran-to-lisp::rhojac))))
 

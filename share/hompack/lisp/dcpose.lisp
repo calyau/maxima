@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -28,8 +28,8 @@
        (pivot f2cl-lib:integer4 pivot-%data% pivot-%offset%)
        (y double-float y-%data% y-%offset%)
        (sum double-float sum-%data% sum-%offset%))
-    (prog ((beta 0.0d0) (sigma 0.0d0) (alphak 0.0d0) (qrkk 0.0d0) (i 0) (j 0)
-           (jbar 0) (k 0) (kp1 0) (np1 0))
+    (prog ((beta 0.0) (sigma 0.0) (alphak 0.0) (qrkk 0.0) (i 0) (j 0) (jbar 0)
+           (k 0) (kp1 0) (np1 0))
       (declare (type (f2cl-lib:integer4) np1 kp1 k jbar j i)
                (type (double-float) qrkk alphak sigma beta))
       (setf ierr 0)
@@ -113,7 +113,7 @@
                                          ((1 ndim) (1 1))
                                          qr-%offset%)
                    1))
-          (if (/= sigma 0.0) (go label60))
+          (if (/= sigma 0.0f0) (go label60))
           (setf ierr 1)
           (go end_label)
          label60
@@ -121,9 +121,9 @@
           (setf qrkk
                   (f2cl-lib:fref qr-%data% (k k) ((1 ndim) (1 1)) qr-%offset%))
           (setf alphak (- (f2cl-lib:fsqrt sigma)))
-          (if (< qrkk 0.0) (setf alphak (- alphak)))
+          (if (< qrkk 0.0f0) (setf alphak (- alphak)))
           (setf (f2cl-lib:fref alpha-%data% (k) ((1 n)) alpha-%offset%) alphak)
-          (setf beta (/ 1.0 (- sigma (* qrkk alphak))))
+          (setf beta (/ 1.0f0 (- sigma (* qrkk alphak))))
           (setf (f2cl-lib:fref qr-%data% (k k) ((1 ndim) (1 1)) qr-%offset%)
                   (- qrkk alphak))
           (f2cl-lib:fdo (j kp1 (f2cl-lib:int-add j 1))

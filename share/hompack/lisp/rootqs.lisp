@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -83,16 +83,15 @@
                        (values double-float &rest t))
                       qofs))
       (prog ((brack nil) (istep 0) (i 0) (j 0) (lcode 0) (limit 0) (np1 0)
-             (zu 0) (aerr 0.0d0) (dels 0.0d0) (one 0.0d0) (p0 0.0d0) (p1 0.0d0)
-             (pp0 0.0d0) (pp1 0.0d0) (qsout 0.0d0) (rerr 0.0d0) (s 0.0d0)
-             (sa 0.0d0) (sb 0.0d0) (sigma 0.0d0) (sout 0.0d0) (u 0.0d0)
-             (zero 0.0d0) (lambda$ 0.0d0))
+             (zu 0) (aerr 0.0) (dels 0.0) (one 0.0) (p0 0.0) (p1 0.0) (pp0 0.0)
+             (pp1 0.0) (qsout 0.0) (rerr 0.0) (s 0.0) (sa 0.0) (sb 0.0)
+             (sigma 0.0) (sout 0.0) (u 0.0) (zero 0.0) (lambda$ 0.0))
         (declare (type (double-float) lambda$ zero u sout sigma sb sa s rerr
                                       qsout pp1 pp0 p1 p0 one dels aerr)
                  (type (f2cl-lib:integer4) zu np1 limit lcode j i istep)
                  (type f2cl-lib:logical brack))
-        (setf one (coerce 1.0 'double-float))
-        (setf zero (coerce 0.0 'double-float))
+        (setf one (coerce 1.0f0 'double-float))
+        (setf zero (coerce 0.0f0 'double-float))
         (setf u (f2cl-lib:d1mach 4))
         (setf rerr (max relerr u))
         (setf aerr (max abserr zero))
@@ -109,7 +108,7 @@
         (dcopy np1 y 1 dz 1)
         (daxpy np1 (- one) yold 1 dz 1)
         (setf dels (dnrm2 np1 dz 1))
-        (setf sa (coerce 0.0 'double-float))
+        (setf sa (coerce 0.0f0 'double-float))
         (setf sb dels)
         (setf lcode 1)
        label40
@@ -141,7 +140,7 @@
                                  ((1 (f2cl-lib:int-add n 1)))
                                  yp-%offset%)
                   dels sout)
-                 1.0))
+                 1.0f0))
         (go label40)
        label50
         (cond
@@ -192,7 +191,7 @@
                                                                             1))
                                         lenqr)))
                                      work-%offset%)
-                        (coerce 0.0 'double-float))
+                        (coerce 0.0f0 'double-float))
                label70))
             (setf lambda$
                     (f2cl-lib:fref z-%data%
@@ -209,7 +208,7 @@
               ((= iflag (f2cl-lib:int-sub 1))
                (fjacs z qr lenqr pivot)
                (dscal lenqr lambda$ qr 1)
-               (setf sigma (- 1.0 lambda$))
+               (setf sigma (- 1.0f0 lambda$))
                (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                              ((> j n) nil)
                  (tagbody
@@ -263,7 +262,7 @@
                                                               2)))))
                                            ((1 lenqr))
                                            qr-%offset%)
-                            1.0))
+                            1.0f0))
                   label90))
                (dcopy n z 1 rhovec 1)
                (daxpy n (- one) a 1 rhovec 1)
@@ -274,7 +273,7 @@
                                  (np1)
                                  ((1 (f2cl-lib:int-add n 1)))
                                  rhovec-%offset%)
-                    (coerce 0.0 'double-float))
+                    (coerce 0.0f0 'double-float))
             (setf nfe (f2cl-lib:int-add nfe 1))
             (multiple-value-bind
                   (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
@@ -289,7 +288,7 @@
                 (<=
                  (abs
                   (+ (f2cl-lib:fref z (np1) ((1 (f2cl-lib:int-add n 1))))
-                     (- 1.0)))
+                     (- 1.0f0)))
                  (+ rerr aerr))
                 (<= (dnrm2 np1 dz 1) (+ (* rerr (dnrm2 n z 1)) aerr)))
                (go end_label)))
@@ -301,7 +300,7 @@
                                (np1)
                                ((1 (f2cl-lib:int-add n 1)))
                                z-%offset%)
-                1.0))
+                1.0f0))
               (+ rerr aerr))
              (go label300))
             (dcopy np1 y 1 yold 1)
@@ -310,9 +309,9 @@
               ((>
                 (*
                  (+ (f2cl-lib:fref yold (np1) ((1 (f2cl-lib:int-add n 1))))
-                    (- 1.0))
+                    (- 1.0f0))
                  (+ (f2cl-lib:fref y (np1) ((1 (f2cl-lib:int-add n 1))))
-                    (- 1.0)))
+                    (- 1.0f0)))
                 0)
                (setf brack f2cl-lib:%false%))
               (t
@@ -323,7 +322,7 @@
             (setf dels (dnrm2 np1 dz 1))
             (setf sa
                     (/
-                     (- 1.0
+                     (- 1.0f0
                         (f2cl-lib:fref y-%data%
                                        (np1)
                                        ((1 (f2cl-lib:int-add n 1)))
@@ -346,7 +345,7 @@
                  ((> (dnrm2 np1 dz 1) dels)
                   (setf sa
                           (/
-                           (- 1.0
+                           (- 1.0f0
                               (f2cl-lib:fref y-%data%
                                              (np1)
                                              ((1 (f2cl-lib:int-add n 1)))
@@ -411,10 +410,10 @@
            :return-values '(nil fortran-to-lisp::nfe fortran-to-lisp::iflag nil
                             nil nil nil nil nil nil nil nil nil nil nil nil nil
                             nil nil nil)
-           :calls '(fortran-to-lisp::pcgqs fortran-to-lisp::f
-                    fortran-to-lisp::dscal fortran-to-lisp::fjacs
-                    fortran-to-lisp::rho fortran-to-lisp::rhojs
-                    fortran-to-lisp::root fortran-to-lisp::daxpy
-                    fortran-to-lisp::dcopy fortran-to-lisp::dnrm2
+           :calls '(fortran-to-lisp::f fortran-to-lisp::fjacs
+                    fortran-to-lisp::rhojs fortran-to-lisp::dscal
+                    fortran-to-lisp::daxpy fortran-to-lisp::dcopy
+                    fortran-to-lisp::dnrm2 fortran-to-lisp::pcgqs
+                    fortran-to-lisp::rho fortran-to-lisp::root
                     fortran-to-lisp::d1mach))))
 

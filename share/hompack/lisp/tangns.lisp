@@ -12,7 +12,7 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package "HOMPACK")
 
@@ -39,8 +39,8 @@
        (pivot f2cl-lib:integer4 pivot-%data% pivot-%offset%)
        (par double-float par-%data% par-%offset%)
        (ipar f2cl-lib:integer4 ipar-%data% ipar-%offset%))
-    (prog ((j 0) (np1 0) (np2 0) (n2p3 0) (n3p4 0) (n4p5 0) (sigma 0.0d0)
-           (ypnorm 0.0d0) (lambda$ 0.0d0))
+    (prog ((j 0) (np1 0) (np2 0) (n2p3 0) (n3p4 0) (n4p5 0) (sigma 0.0)
+           (ypnorm 0.0) (lambda$ 0.0))
       (declare (type (double-float) lambda$ ypnorm sigma)
                (type (f2cl-lib:integer4) n4p5 n3p4 n2p3 np2 np1 j))
       (setf np1 (f2cl-lib:int-add n 1))
@@ -64,10 +64,10 @@
         (t
          (f y pp)
          (dcopy n y 1 rhovec 1)
-         (daxpy n -1.0d0 a 1 rhovec 1)
+         (daxpy n -1.0 a 1 rhovec 1)
          (cond
            ((= iflag 0)
-            (daxpy n -1.0d0 a 1 pp 1)
+            (daxpy n -1.0 a 1 pp 1)
             (fjacs y qr lenqr pivot)
             (dscal lenqr (- lambda$) qr 1)
             (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
@@ -90,15 +90,15 @@
                                                                             2)))))
                                         ((1 lenqr))
                                         qr-%offset%)
-                         1.0))
+                         1.0f0))
                label120))
             (daxpy n (- lambda$) pp 1 rhovec 1))
            (t
-            (dscal n -1.0d0 pp 1)
-            (daxpy n 1.0d0 rhovec 1 pp 1)
+            (dscal n -1.0 pp 1)
+            (daxpy n 1.0 rhovec 1 pp 1)
             (fjacs y qr lenqr pivot)
             (dscal lenqr lambda$ qr 1)
-            (setf sigma (- 1.0 lambda$))
+            (setf sigma (- 1.0f0 lambda$))
             (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                           ((> j n) nil)
               (tagbody
@@ -122,7 +122,7 @@
                          sigma))
                label170))
             (daxpy n (- lambda$) pp 1 rhovec 1)))))
-      (if (< rholen 0.0) (setf rholen (dnrm2 n rhovec 1)))
+      (if (< rholen 0.0f0) (setf rholen (dnrm2 n rhovec 1)))
       (dcopy (f2cl-lib:int-mul 2 np1) work 1
        (f2cl-lib:array-slice work-%data%
                              double-float
@@ -159,9 +159,9 @@
                              work-%offset%)
        1 work 1)
       (setf ypnorm (dnrm2 np1 yp 1))
-      (dscal np1 (/ 1.0 ypnorm) yp 1)
-      (if (< (ddot np1 yp 1 ypold 1) 0.0) (dscal np1 -1.0d0 yp 1))
-      (dscal (f2cl-lib:int-mul 2 np1) 0.0d0
+      (dscal np1 (/ 1.0f0 ypnorm) yp 1)
+      (if (< (ddot np1 yp 1 ypold 1) 0.0f0) (dscal np1 -1.0 yp 1))
+      (dscal (f2cl-lib:int-mul 2 np1) 0.0
        (f2cl-lib:array-slice work-%data%
                              double-float
                              (n3p4)
@@ -229,10 +229,10 @@
            :return-values '(fortran-to-lisp::rholen nil nil nil nil nil nil nil
                             nil nil nil nil fortran-to-lisp::nfe nil
                             fortran-to-lisp::iflag nil nil)
-           :calls '(fortran-to-lisp::pcgns fortran-to-lisp::ddot
-                    fortran-to-lisp::pcgds fortran-to-lisp::dnrm2
-                    fortran-to-lisp::dscal fortran-to-lisp::fjacs
+           :calls '(fortran-to-lisp::fjacs fortran-to-lisp::f
+                    fortran-to-lisp::rhojs fortran-to-lisp::ddot
+                    fortran-to-lisp::dnrm2 fortran-to-lisp::dscal
                     fortran-to-lisp::daxpy fortran-to-lisp::dcopy
-                    fortran-to-lisp::f fortran-to-lisp::rho
-                    fortran-to-lisp::rhojs))))
+                    fortran-to-lisp::pcgns fortran-to-lisp::pcgds
+                    fortran-to-lisp::rho))))
 
