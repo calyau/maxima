@@ -20,6 +20,10 @@
       (when $debug_hompack
 	(displa eqn))
 
+      (unless ($polynomialp eqn varlist)
+	(merror "~M: Is not a polynomial in ~M: ~M"
+		fname varlist eqn))
+
       (let ((args (if (string-equal ($op eqn) "+")
 		      (cdr ($args eqn))
 		      (list eqn)))
