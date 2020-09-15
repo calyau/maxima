@@ -1,0 +1,140 @@
+;;; -*- Mode: lisp -*-
+;;;
+;;; Defsystem for converting the hompack fortran files to lisp.
+;;;
+;;; From the root the the maxima tree, run the following with maxima:
+;;;
+;;;  :lisp (load "share/hompack/hompack-lisp.system")
+;;;  :lisp (mk:oos "hompack-lisp" :compile :force t)
+;;;
+;;; This should convert all the Fortran files and place them in the
+;;; lisp directory that hompack.system wants.  This is only needed if
+;;; the fortran files have changed since the converted lisp files are
+;;; checked in.
+
+
+(mk:define-language :f2cl-lisp
+    :compiler #'f2cl:f2cl
+  :loader #'identity
+  :source-extension "f"
+  :binary-extension "lisp")
+
+(mk:defsystem blas-package
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "hompack")
+  :components
+  ((:module "../lapack/blas"
+    ::components
+    ((:file "blas-package")))))
+
+(mk:defsystem blas-hompack
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "hompack")
+  :depends-on ("blas-package")
+  :language :f2cl-lisp
+  :components
+  ((:module "../lapack/blas/fortran"
+    :compiler-options (:package "BLAS" :float-format double-float)
+    :compile-only t
+    :source-extension "f"
+    :binary-pathname "."
+    :components
+    ((:file "daxpy")
+     (:file "dcopy")
+     (:file "ddot" )
+     (:file "dnrm2")
+     (:file "dscal")
+     (:file "idamax")))))
+
+(mk:defsystem hompack-package
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "hompack")
+  :components
+  ((:module "lisp"
+    :source-extension "lisp"
+    :binary-pathname "."
+    :components
+    ((:file "hompack-package")))))
+
+;; System to convert the fortran code to lisp code.
+(mk:defsystem hompack-lisp
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-load-pathname-directory)
+  :depends-on ("hompack-package" "blas-hompack")
+  :language :f2cl-lisp
+  :components
+  ((:module "fortran"
+    :compiler-options (:package "HOMPACK" :float-format double-float)
+    :compile-only t
+    :source-extension "f"
+    :binary-pathname "lisp"
+    :components
+    (
+     ;; The following are :compile-only here because HOMPACK only
+     ;; gives skeletons for them.  We make them :compile-only so that
+     ;; f2cl will get the function definitions so it can generate
+     ;; calls to them appropriately.
+     ;;
+     ;; The user is supposed to provide appropriate definitions for
+     ;; them.  Also, rho and rhojac are supposed to be user-defined,
+     ;; but the versions in HOMPACK are used for POLSYS.
+     (:file "f" :compile-only t)
+     (:file "fjac" :compile-only t)
+     (:file "fjacs" :compile-only t)
+     (:file "rhojs"  :compile-only t)
+     (:file "rhoa" :compile-only t)
+     (:file "rho")
+     (:file "rhojac" :depends-on ("hfunp"))
+
+     (:file "dcpose")
+     (:file "divp")
+     (:file "ffunp" :depends-on ("mulp" "powp"))
+     (:file "fixpdf" :depends-on (#+nil "rhoa" "steps" "sintrp" "root"))
+     (:file "fixpds" :depends-on (#+nil "rhoa" "stepds" "sintrp" "root"))
+     (:file "fixpnf" :depends-on ("stepnf" "rootnf"))
+     (:file "fixpns" :depends-on ("stepns" "rootns"))
+     (:file "fixpqf" :depends-on ("stepqf" "rootqf"))
+     (:file "fixpqs" :depends-on ("stepqs" "rootqs"))
+     (:file "fode" :depends-on ("rhojac" #+nil "fjac"))
+     (:file "fodeds" :depends-on (#+nil "rhojs" "pcgds" #+nil "fjacs"))
+     (:file "gfunp" :depends-on ("powp" "mulp"))
+     (:file "gmfads")
+     (:file "hfun1p" :depends-on ("gfunp" "ffunp"))
+     (:file "hfunp" :depends-on ("hfun1p"))
+     (:file "initp" :depends-on ("sclgnp"))
+     (:file "mfacds" :depends-on ("gmfads"))
+     (:file "mulp")
+     (:file "multds")
+     (:file "otputp")
+     (:file "pcgds" :depends-on ("qimuds" "mfacds" "multds"))
+     (:file "pcgns" :depends-on ("mfacds" "multds" "qimuds"))
+     (:file "pcgqs" :depends-on ("solvds" "gmfads" "multds"))
+     (:file "polsys" :depends-on ("polyp"))
+     (:file "polyp" :depends-on ("initp" "strptp" "otputp" "fixpnf"))
+     (:file "powp")
+     (:file "qimuds" :depends-on ("solvds"))
+     (:file "qrfaqf")
+     (:file "qrslqf")
+     (:file "root")
+     (:file "rootnf" :depends-on ("tangnf"))
+     (:file "rootns" :depends-on ("tangns"))
+     (:file "rootqf" :depends-on ("upqrqf" "rho" "qrslqf" #+nil "fjac"))
+     (:file "rootqs" :depends-on (#+nil "rhojs" "rho" "pcgqs" #+nil "fjacs"))
+     (:file "sclgnp")
+     (:file "sintrp")
+     (:file "solvds")
+     (:file "stepds")
+     (:file "stepnf" :depends-on ("tangnf"))
+     (:file "stepns" :depends-on ("tangns"))
+     (:file "stepqf" :depends-on ("tangqf" "upqrqf" "rho" "rhojac" "qrslqf" #+nil "fjac"))
+     (:file "stepqs" :depends-on ("tangqs" #+nil "rhojs" "pcgqs" #+nil "fjacs"))
+     (:file "steps")
+     (:file "strptp")
+     (:file "otputp")
+     (:file "r1upqf")
+     (:file "tangnf" :depends-on ("rhojac" "rho" #+nil "fjac"))
+     (:file "tangns" :depends-on ("rhojac" "rho" "pcgns" #+nil "rhojs" "pcgds" #+nil "fjac"))
+     (:file "tangqf" :depends-on ("rhojac" "qrfaqf" "qrslqf" "r1upqf" #+nil "fjac"))
+     (:file "tangqs" :depends-on (#+nil "rhojs" "pcgqs" #+nil "fjac"))
+     (:file "upqrqf" :depends-on ("r1upqf"))
+     ))))
