@@ -4,7 +4,8 @@
 
 (in-package #-gcl #:maxima #+gcl "MAXIMA")
 
-(defmvar $debug_hompack nil)
+(defmvar $debug_hompack nil
+  "Set to non-NIL to enable some debugging prints")
 
 (defun parse-equations (eqnlist varlist fname)
   (let ((eqns (cdr eqnlist))
@@ -120,7 +121,7 @@
       (format t "kdeg array ~A~%" array))
     f2cl-array))
 
-(defmfun $polsys (eqnlist varlist &key (iflg1 0) (epsbig 1d-4) (epssml 1d-14) (numrr 10))
+(defmfun $hompack_polsys (eqnlist varlist &key (iflg1 0) (epsbig 1d-4) (epssml 1d-14) (numrr 10))
   "Solve the system of n polynomial equations in n unknowns.
 
   EQNLIST   list of polynomial equations.  Must be in the form sum(c[k]*x1^p1*x2^p2*...*xn^pn)
