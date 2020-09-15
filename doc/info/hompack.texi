@@ -53,7 +53,7 @@ Indicates whether the solution is valid or not.
 Solution found without problems
 @item 1
 Solution succeeded but @code{iflg2} indicates some issues with a
-root. (That is, @code{iflg2} is not all ones.
+root. (That is, @code{iflg2} is not all ones.)
 @item -1
 @code{NN}, the declared dimension of the number of terms in the
 polynomials,  is too small.  (This should not happen.)
@@ -74,7 +74,8 @@ small.  (This should not happen.)
 error should be thrown before @code{polsys} is called.)
 @end table
 @item roots
-The roots of the of the system of equations.
+The roots of the system of equations.  This is in the same format as
+@code{solve} would return.
 @item iflg2
 Information on how the path for the m'th root terminated:
 @table @code
