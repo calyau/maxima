@@ -29,7 +29,7 @@
 
 ;; Return true iff n is an integer and n >= 0.
 
-(defun $nonnegintegerp (n)
+(defmfun $nonnegintegerp (n)
   (and (integerp n) (>= n 0)))
 
 (defmfun $polynomialp (p vars &optional (coeffp '$constantp) (exponp '$nonnegintegerp))
