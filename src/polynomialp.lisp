@@ -32,12 +32,17 @@
 (defun $nonnegintegerp (n)
   (and (integerp n) (>= n 0)))
 
-(defun $polynomialp (p vars &optional (coeffp '$constantp) (exponp '$nonnegintegerp))
-  (setq vars (require-list-or-set vars '$polynomialp))
+(defmfun $polynomialp (p vars &optional (coeffp '$constantp) (exponp '$nonnegintegerp))
+  "Returns true if P is a polynomial in the variables in the list VARS.
+ The predicate COEFFP must be a function that evaluates to T for each
+ coefficient, and simpilarly EXPONP must evaluate to T for all
+ exponents of the variables in VARS."
+  (setq vars (require-list-or-set vars %%pretty-fname))
   (setq vars (mapcar '$ratdisrep vars))
   (if (every #'(lambda (s) (or ($symbolp s) ($subvarp s))) vars)
       (polynomialp ($ratdisrep p) vars coeffp exponp)
-    (merror "The second argument to polynomialp must be a list of symbols")))
+      (merror "~M: The second argument to polynomialp must be a list of symbols: ~M"
+	      %%pretty-fname (list* '(mlist) vars))))
  
 (defun polynomialp (p vars coeffp exponp)
   (or
