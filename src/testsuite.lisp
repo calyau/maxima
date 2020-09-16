@@ -144,6 +144,7 @@
         "rtest_plotoptions"
 	"rtest_algsys"
         "rtest_trace"
+	"rtest_polynomialp"
 	))
 
 ;; The list of share testsuite files. As they are given withut a path
@@ -274,7 +275,6 @@
     "rtest_eigens_by_jacobi"
     "rtest_lu"
     "rtest_linalg"
-    "rtest_polynomialp"
     "rtest_matrixexp"
     ((mlist simp) "rtest_romberg"
      ((mlist simp) 18 20))
