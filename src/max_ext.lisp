@@ -281,9 +281,7 @@
        
        $addmatrices            ; mring.lisp
        $require_ring
-       
-       $nonnegintegerp         ; polynomialp.lisp
-       $polynomialp ))
+       ))
   (setf (get f 'autoload) "linearalgebra"))
 
 (dolist (mexpr       

@@ -18,6 +18,9 @@
 ;;  along with this program; if not, write to the Free Software 		 
 ;;  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+(in-package :maxima)
+
+#+nil
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (if (not (functionp 'op-equalp)) ($load "linalg-utilities"))
   (if (not (functionp 'require-list-or-set)) ($load "nset")))

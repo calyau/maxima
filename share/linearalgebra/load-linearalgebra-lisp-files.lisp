@@ -7,7 +7,6 @@
 	       (defmacro with-compilation-unit (a &rest b) `(progn ,@b)))
 
 (with-compilation-unit nil
-    ($load "polynomialp")
     ($load "mring")
     ($load "lu")
     ($load "linalgcholesky")
