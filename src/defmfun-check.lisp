@@ -321,7 +321,7 @@
 	   (let* ((required-len (length required-args))
 		  (optional-len (length optional-args))
 		  (impl-name (intern (concatenate 'string
-						  (string name)
+						  (subseq (string name) 1)
 						  "-IMPL")))
 		  (impl-doc (format nil "Implementation for ~S" name))
 		  (nargs (gensym "NARGS-"))

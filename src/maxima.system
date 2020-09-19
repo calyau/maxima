@@ -181,17 +181,21 @@
 	    (#+gcl (:file "gcl-compat")
 		   (:file "commac")))
    (:module prerequisites :source-pathname ""
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "mormac")
 	     (:file "compat")))
    (:module maxima-language-compiler-macros :source-pathname ""
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "transm")))
    (:module command-line :source-pathname ""
+	    :depends-on ("defmfun")
 	    :depends-on ("getopt")
 	    :components
 	    ((:file "command-line")))
    (:module getopt :source-pathname ""
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "getopt")))
    (:module fundamental-macros :source-pathname ""
@@ -200,10 +204,12 @@
 	    ((:file "defcal")
 	     (:file "maxmac")))
    (:module utility-macros :source-pathname ""
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "mopers")
 	     (:file "mforma")))
    (:module other-macros :source-pathname ""
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "mrgmac")
 	     (:file "rzmac")
@@ -243,6 +249,7 @@
    ;; not compile these routines so that we can at least
    ;; get the rest of maxima built.
    (:module numerical
+	    :depends-on ("defmfun")
 	    :components
 	    ((:module packages :source-pathname ""
 		      :components
@@ -531,11 +538,12 @@
 	     (:file "logarc")
 	     (:file "rpart")))
    (:module numeric-bigfloat :source-pathname ""
-	    :depends-on (#-gcl "package"
+	    :depends-on ("defmfun" #-gcl "package"
 			       #+gcl "proclaim")
 	    :components
 	    ((:file "numeric")))
    (:module server :source-pathname ""
+	    :depends-on ("defmfun")
 	    :components ((:file "server")))
    (:module i-o :source-pathname ""
 	    :depends-on ("defmfun" "compatibility-macros" "compatibility-macros1")
@@ -604,6 +612,7 @@
 	    :components
 	    ((:file "nparse")))
    (:module display :source-pathname ""
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "displa")
 	     (:file "nforma")
@@ -633,6 +642,7 @@
 	     (:file "sin")
 	     (:file "risch")))
    (:module taylor-series :source-pathname ""
+	    :depends-on ("defmfun")
 	    :components ((:file "hayat")))
    (:module definite-integration :source-pathname ""
 	    :depends-on ("defmfun")
@@ -729,6 +739,7 @@
 	     (:file "mactex")
 	     (:file "plot")))
    (:module graphics-drivers :source-pathname ""
+	    :depends-on ("defmfun")
 	    :components
 	    ((:file "gnuplot_def")
 	     (:file "xmaxima_def")))

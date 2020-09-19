@@ -59,31 +59,38 @@
                         :components ((:file "mormac") 
                                      (:file "compat")))
 	       (:module maxima-language-compiler-macros :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "transm")))
 	       (:module getopt :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "getopt")))
 	       (:module command-line :pathname ""
-			:depends-on (getopt)
+			:depends-on (compatibility-macros)
+			:depends-on (getopt compatibility-macros)
 			:components ((:file "command-line")))
                (:module fundamental-macros :pathname ""
+                        :depends-on (compatibility-macros)
                         :components ((:file "defcal") 
                                      (:file "maxmac")))
                (:module utility-macros :pathname ""
+                        :depends-on (compatibility-macros)
                         :components ((:file "mopers") 
                                      (:file "mforma")))
                (:module other-macros :pathname ""
+                        :depends-on (compatibility-macros)
                         :components ((:file "mrgmac") 
                                      (:file "rzmac")    
                                      (:file "strmac") 
                                      (:file "displm")
                                      (:file "safe-recursion")))
                (:module rat-macros :pathname ""
+                        :depends-on (compatibility-macros)
                         :components ((:file "ratmac") 
                                      (:file "mhayat")))
 	       #+gcl (:file "optimize")		; jfa check this
 
 	       (:module utilities :pathname ""
-			:depends-on (utility-macros)
+			:depends-on (utility-macros compatibility-macros)
                         :components ((:file "opers")
                                      (:file "utils") 
                                      (:file "sumcon") 
@@ -95,14 +102,17 @@
                                      (:file "ar")))
 
                (:module commands :pathname ""
+                        :depends-on (compatibility-macros)
                         :components ((:file "comm")
                                      (:file "comm2")))
                (:module evaluator :pathname ""
+                        :depends-on (compatibility-macros)
                         :components ((:file "mlisp") 
                                      (:file "mmacro") 
                                      (:file "buildq")))
 
 	       (:module numerical
+			:depends-on (compatibility-macros)
 			:components
 			(
 			 (:module packages :pathname ""
@@ -379,6 +389,7 @@
 				   )
 			 )))
                (:module simplification :pathname ""
+                        :depends-on (compatibility-macros)
                         :components ((:file "simp") 
                                      (:file "float") 
                                      (:file "csimp") 
@@ -387,8 +398,10 @@
                                      (:file "logarc") 
                                      (:file "rpart")))
 	       (:module numeric-bigfloat :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "numeric")))
 	       (:module server :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "server")))
                (:module i-o :pathname ""
 			:depends-on (compatibility-macros)
@@ -398,6 +411,7 @@
                                      (:file "suprv1")
                                      (:file "dskfn")))
                (:module factoring :pathname ""
+                        :depends-on (compatibility-macros)
                         :components ((:file "lesfac") 
                                      (:file "factor") 
                                      (:file "algfac") 
@@ -405,9 +419,11 @@
                                      (:file "ufact") 
                                      (:file "result")))
 	       (:module ifactor :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "ifactor")))
 
 	       (:module rational-functions :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "rat3a") 
 				     (:file "rat3b") 
 				     (:file "rat3d") 
@@ -436,21 +452,23 @@
 				     (:file "evalw") 
 				     (:file "trprop") 
 				     (:file "mdefun"))
-			:depends-on (maxima-language-compiler-macros))
+			:depends-on (maxima-language-compiler-macros compatibility-macros))
 
 	       (:module pattern-matching :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "schatc") 
 				     (:file "matcom") 
 				     (:file "matrun") 
 				     (:file "nisimp")))
 
 	       (:module trigonometry :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "trigi") 
 				     (:file "trigo") 
 				     (:file "trgred")))
 
 	       (:module numerical-functions :pathname ""
-			:depends-on (trigonometry)
+			:depends-on (trigonometry compatibility-macros)
 			:components ((:file "bessel")
 				     (:file "ellipt")
 				     (:file "airy"
@@ -463,45 +481,56 @@
 			:components ((:file "nparse")))
 
 	       (:module display :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "displa") 
 				     (:file "nforma") 
 				     (:file "grind")))
 
 	       (:module gcd :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "spgcd")
 				     (:file "ezgcd")))
 	       (:module documentation :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "option")
 				     (:file "macdes")))
 	       (:module algebraic-database :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "inmis") 
 				     (:file "db") 
 				     (:file "compar") 
 				     (:file "askp"))) ;does this belong here?
 	       (:module integration :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "sinint") 
 				     (:file "sin") 
 				     (:file "risch")))
 	       (:module taylor-series :pathname ""
-			:depends-on (rat-macros)
+			:depends-on (rat-macros compatibility-macros)
 			:components ((:file "hayat")))
 	       (:module definite-integration :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "defint") 
 				     (:file "residu")))
 	       (:module special-functions :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "specfn")))
 	       (:module matrix-algebra :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "mat") 
                      (:file "linnew")
 				     (:file "matrix")))
 	       (:module determinants :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "sprdet") 
 				     (:file "newinv") 
 				     (:file "newdet")))
 	       (:module limits :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "tlimit") 
 				     (:file "limit")))
 	       (:module solve :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "solve") 
 				     (:file "psolve") 
 				     (:file "algsys") 
@@ -509,9 +538,11 @@
 				     (:file "polyrz") 
 				     (:file "cpoly")))
 	       (:module debugging :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "mtrace")
 				     (:file "mdebug")))
 	       (:module miscellaneous :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "scs") 
 				     (:file "asum") 
 				     (:file "fortra") 
@@ -534,10 +565,11 @@
                                      (:file "gamma")
 				     (:file "mstuff")))
 	       (:module poisson-series :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "pois2") 
 				     (:file "pois3")))
 	       (:module translated-packages :pathname ""
-			:depends-on ("maxima-language-compiler-macros")
+			:depends-on ("maxima-language-compiler-macros" compatibility-macros)
 			:components
 			((:file "desoln")
 			 (:file "elim")
@@ -548,10 +580,12 @@
 			 (:file "mactex")
 			 (:file "plot")))
 	       (:module graphics-drivers :pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "gnuplot_def")
 				     (:file "xmaxima_def")))
 
 	       (:module final :pathname ""
+			:depends-on (compatibility-macros)
 			;; These are not compiled, for whatever reason
 			:components ((:file "autol")
 				     (:file "max_ext")
