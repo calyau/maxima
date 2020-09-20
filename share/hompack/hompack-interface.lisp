@@ -121,7 +121,7 @@
       (format t "kdeg array ~A~%" array))
     f2cl-array))
 
-(defmfun $hompack_polsys (eqnlist varlist &key (iflg1 0) (epsbig 1d-4) (epssml 1d-14) (numrr 10))
+(defmfun $hompack_polsys (eqnlist varlist &key (iflg1 0) (epsbig 1d-4) (epssml 1d-14) (numrr 10) iflg2 sspar)
   "Solve the system of n polynomial equations in n unknowns.
 
   EQNLIST   list of polynomial equations.  Must be in the form sum(c[k]*x1^p1*x2^p2*...*xn^pn)
@@ -132,9 +132,14 @@
   EPSBIG    Local error tolerance allowed the path tracker
   EPSSML    Accuracy desired for final solution.
   NUMRR     Number of multiples of 1000 steps before abandoning path.
-"
 
-  (unless (= (length eqnlist) (length varlist))
+  IFLG2     List indicating which paths to search. -2 means track this
+            path.  Length must be the total degree of the equations.
+  SSPAR     List of parameters used for optimal step size estimation.  If
+            SSPAR[j] < 0, use default value.  See Fortran polynf and
+            stepnf for more info."
+
+  (unless (= ($length eqnlist) ($length varlist))
     (merror "~M: Number of equations (~M) is not the number of variables (~M)"
 	    %%pretty-fname (length eqnlist) (length varlist)))
   (unless (and (listp varlist) (eq (caar varlist) 'mlist))
@@ -144,8 +149,26 @@
     (merror "~M: iflg1 must be 0, 1, 10, or 11.  Got ~M"
 	    %%pretty-fname iflg1))
 
+  (when sspar
+    (unless (and sspar (listp sspar) (eq (caar sspar) 'mlist))
+      (merror "~M: sspar must be a list not ~M"
+	      %%pretty-fname sspar))
+    (unless (= ($length sspar) 8)
+      (merror "~M: sspar must have length 8 not ~M"
+	      %%pretty-fname ($length sspar)))
+    (unless (every #'(lambda (x)
+		       (typep ($float x) 'double-float))
+		   (cdr sspar))))
+
   (multiple-value-bind (total-deg kdeg coef numt)
       (parse-equations eqnlist varlist %%pretty-fname)
+    (when iflg2
+      (unless (= (length iflg2) total-deg)
+	(merror "~M: Length of iflg2 must be ~M not ~M"
+		%%pretty-fname total-deg (length iflg2)))
+      (unless (every #'integerp (cdr iflg2))
+	(merror "~M: iflg2 must be integers: ~M"
+		%%pretty-fname iflg2)))
     (let* ((n ($length eqnlist))
 	   (mmaxt (reduce #'max numt))
 	   (lenwk (+ 21 (* 61 n) (* 10 n n) (* 7 n mmaxt) (* 4 n n mmaxt)))
@@ -156,10 +179,16 @@
 	   (arclen (make-array total-deg :element-type 'double-float))
 	   (nfe (make-array total-deg :element-type 'f2cl-lib:integer4))
 	   (roots (make-array (* 2 (1+ n) total-deg) :element-type 'double-float))
-	   (iflg2 (make-array total-deg :element-type 'f2cl-lib:integer4
-			      :initial-element -2))
-	   (sspar (make-array 8 :element-type 'double-float
-				:initial-element -1d0))
+	   (iflg2 (if iflg2
+		      (make-array total-deg :element-type 'f2cl-lib:integer4
+					    :initial-contents (cdr iflg2))
+		      (make-array total-deg :element-type 'f2cl-lib:integer4
+			      :initial-element -2)))
+	   (sspar (if sspar
+		      (make-array 8 :element-type 'double-float
+				    :initial-contents (cdr sspar))
+		      (make-array 8 :element-type 'double-float
+				:initial-element -1d0)))
 	   (coef-array (convert-coef coef))
 	   (kdeg-array (convert-kdeg kdeg numt))
 	   (numt (make-array (length numt) :element-type 'f2cl-lib:integer4
