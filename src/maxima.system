@@ -720,6 +720,10 @@
 	     (:file "expintegral")
 	     (:file "gamma")
 	     (:file "mstuff")))
+   (:module polynomial :source-pathname ""
+	    :depends-on ("defmfun")
+            :components
+	    ((:file "polynomialp")))
    (:module poisson-series :source-pathname ""
 	    :depends-on ("defmfun")
 	    :components

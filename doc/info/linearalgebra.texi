@@ -4,7 +4,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to linearalgebra, Functions and Variables for linearalgebra, linearalgebra-pkg, linearalgebra-pkg
+@node Introduction to linearalgebra, Functions and Variables for linearalgebra
 @section Introduction to linearalgebra
 @c -----------------------------------------------------------------------------
 
@@ -127,7 +127,7 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @need 800
-@node Functions and Variables for linearalgebra,  , Introduction to linearalgebra, linearalgebra-pkg
+@node Functions and Variables for linearalgebra,  , Introduction to linearalgebra
 @section Functions and Variables for linearalgebra
 @c -----------------------------------------------------------------------------
 
@@ -994,73 +994,6 @@ Each vector @var{v_1} through @var{v_n} must be a column vector.
 
 @opencatbox
 @category{Package linearalgebra}
-@closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@anchor{polynomialp}
-@deffn  {Function} polynomialp @
-@fname{polynomialp} (@var{p}, @var{L}, @var{coeffp}, @var{exponp}) @
-@fname{polynomialp} (@var{p}, @var{L}, @var{coeffp}) @
-@fname{polynomialp} (@var{p}, @var{L})
-
-Return @code{true} if @var{p} is a polynomial in the variables in the list
-@var{L}.  The predicate @var{coeffp} must evaluate to @code{true} for each
-coefficient, and the predicate @var{exponp} must evaluate to @code{true} for all
-exponents of the variables in @var{L}.  If you want to use a non-default value
-for @var{exponp}, you must supply @var{coeffp} with a value even if you want
-to use the default for @var{coeffp}.
-
-@c WORK THE FOLLOWING INTO THE PRECEDING
-The command @code{polynomialp (@var{p}, @var{L}, @var{coeffp})} is equivalent to
-@code{polynomialp (@var{p}, @var{L}, @var{coeffp}, 'nonnegintegerp)} and the
-command @code{polynomialp (@var{p}, @var{L})} is equivalent to
-@code{polynomialp (@var{p}, L@var{,} 'constantp, 'nonnegintegerp)}.
-
-The polynomial needn't be expanded:
-
-@c ===beg===
-@c polynomialp ((x + 1)*(x + 2), [x]);
-@c polynomialp ((x + 1)*(x + 2)^a, [x]);
-@c ===end===
-@example
-(%i1) polynomialp ((x + 1)*(x + 2), [x]);
-(%o1)                         true
-(%i2) polynomialp ((x + 1)*(x + 2)^a, [x]);
-(%o2)                         false
-@end example
-
-An example using non-default values for coeffp and exponp:
-
-@c ===beg===
-@c polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
-@c polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, 
-@c                                                        numberp);
-@c ===end===
-@example
-(%i1) polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
-(%o1)                         true
-(%i2) polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp,
-                                                        numberp);
-(%o2)                         true
-@end example
-
-Polynomials with two variables:
-
-@c ===beg===
-@c polynomialp (x^2 + 5*x*y + y^2, [x]);
-@c polynomialp (x^2 + 5*x*y + y^2, [x, y]);
-@c ===end===
-@example
-(%i1) polynomialp (x^2 + 5*x*y + y^2, [x]);
-(%o1)                         false
-(%i2) polynomialp (x^2 + 5*x*y + y^2, [x, y]);
-(%o2)                         true
-@end example
-
-@opencatbox
-@category{Package linearalgebra}
-@category{Predicate functions}
 @closecatbox
 @end deffn
 
