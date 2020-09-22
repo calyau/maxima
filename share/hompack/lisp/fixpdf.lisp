@@ -366,7 +366,7 @@
                 (setf iflagc var-31))
               (cond
                 ((> trace$ 0)
-                 (f2cl-lib:fformat trace
+                 (f2cl-lib:fformat trace$
                                    ("~%" " STEP" 1 (("~5D")) "~3@T" "NFE =" 1
                                     (("~5D")) "~3@T" "ARC LENGTH =" 1
                                     (("~9,4,0,'*,F")) "~3@T" "LAMBDA =" 1
