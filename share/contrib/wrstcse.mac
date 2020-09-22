@@ -89,7 +89,7 @@ wc_montecarlo(wc_x,wc_samples):=block(
             subst(
                 makelist(
                     (
-                        wc_tol=(random(2000.0*wc_samples + 1)/(1000.0*wc_samples))-1
+                        wc_tol=random(2.0)-1
                     ),
                     wc_tol,%wc_tols
                 ),
