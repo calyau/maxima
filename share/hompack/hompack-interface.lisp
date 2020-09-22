@@ -243,3 +243,94 @@
 		(list* '(mlist) (coerce lamda 'list))
 		(list* '(mlist) (coerce arclen 'list))
 		(list* '(mlist) (coerce nfe 'list))))))))
+
+
+(defvar *f-fun* nil)
+(defvar *fjac-fun* nil)
+
+(in-package "HOMPACK")
+
+(defun f (x v)
+  (declare (type (array double-float (*)) v x))
+  (f2cl-lib:with-multi-array-data
+      ((x cl:double-float x-%data% x-%offset%)
+       (v cl:double-float v-%data% v-%offset%))
+    (funcall maxima::*f-fun* x v)
+    (values nil nil)))
+
+
+(defun fjac (x v k)
+  (declare (type (f2cl-lib:integer4) k) (type (cl:array cl:double-float (*)) v x))
+  (f2cl-lib:with-multi-array-data
+      ((x double-float x-%data% x-%offset%)
+       (v double-float v-%data% v-%offset%))
+    (funcall maxima::*fjac-fun* x v k)
+    (values nil nil nil)))
+
+(in-package "MAXIMA")
+
+(defmfun $hompack_fixpdf (fcns varlist &key (iflag -1) (arctol -1d0) (eps 1d-5) (trace 0) inita)
+  (let* ((n (length (cdr varlist)))
+	 (y (make-array (1+ n) :element-type 'double-float))
+	 (ndima n)
+	 (a (make-array ndima :element-type 'double-float))
+	 (yp (make-array (1+ n) :element-type 'double-float))
+	 (ypold (make-array (1+ n) :element-type 'double-float))
+	 (qr (make-array (* n (1+ n)) :element-type 'double-float))
+	 (alpha (make-array n :element-type 'double-float))
+	 (tz (make-array (1+ n) :element-type 'double-float))
+	 (pivot (make-array (1+ n) :element-type 'f2cl-lib:integer4))
+	 (wt (make-array (1+ n) :element-type 'double-float))
+	 (phi (make-array (* 16 (1+ n)) :element-type 'double-float))
+	 (p (make-array (1+ n) :element-type 'double-float))
+	 (par (make-array 1 :element-type 'double-float))
+	 (ipar (make-array 1 :element-type 'f2cl-lib:integer4))
+	 (arclen 0d0)
+	 (nfe 0)
+	 (fvs (coerce-float-fun fcns varlist))
+	 (fj (let ((fj (meval `(($jacobian) ,fcns ,varlist))))
+	       (mapcar #'(lambda (fjf)
+			   (coerce-float-fun fjf varlist))
+		       (cdr ($transpose fj)))))
+	 (*f-fun*
+	   #'(lambda (x v)
+	       ;; Compute the functions at the point X and return the
+	       ;; value in V.
+	       (declare (type (cl:array cl:double-float (*)) x v))
+	       (let* ((x-list (coerce x 'list))
+		      (v-list (apply fvs x-list)))
+		 (map-into v #'identity (cdr v-list)))))
+	 (*fjac-fun*
+	   #'(lambda (x v k)
+	       (declare (type (f2cl-lib:integer4) k) (type (cl:array cl:double-float (*)) v x))
+	       ;; Compute the k'th column of the Jacobian matrix of
+	       ;; F(x) evaluated at X and store the result in V.
+	       (let* ((x-list (coerce x 'list))
+		      (v-list (apply (elt fj (1- k)) x-list)))
+		 (map-into v #'identity (cdr v-list))))))
+
+    (when inita
+      (loop for ia in (cdr inita)
+	    for k from 0 below (length a)
+	    do
+	       (let ((val ($float ia)))
+		 (setf (aref a k) val)
+		 (setf (aref y (1+ k)) val))))
+    (multiple-value-bind (ignore-n ignore-y
+			  iflag arctol eps
+			  ignore-trace ignore-a ignore-ndima
+			  nfe
+			  ignore-arclen ignore-yp ignore-ypold ignore-qr ignore-alpha
+			  ignore-tz ignore-pivot ignore-wt ignore-phi ignore-p
+			  ignore-par ignore-ipar)
+	(hompack::fixpdf n y iflag arctol eps trace a ndima nfe arclen yp ypold qr alpha tz pivot wt phi p par ipar)
+      (declare (ignore ignore-n ignore-y ignore-trace ignore-a ignore-ndima ignore-arclen ignore-yp
+		       ignore-ypold ignore-qr ignore-alpha ignore-tz ignore-pivot
+		       ignore-wt ignore-phi ignore-p ignore-par ignore-ipar))
+      (let ((ans-y (list* '(mlist) (rest (coerce y 'list)))))
+	(list '(mlist)
+	       iflag
+	       ans-y
+	       arctol
+	       eps
+	       nfe)))))
