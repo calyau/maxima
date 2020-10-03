@@ -1373,6 +1373,23 @@ true;
 
 /***** This ends the bug #2976 tests *****/
 
+/* compile wasn't always compiling the correct function
+ *
+ * This test not only depends on the internal details of how certain
+ * functions are currently translated, but it also depends on internal
+ * details about how DEFMFUN defines functions.  This also doesn't
+ * really test that the correct function gets compiled because the
+ * lisp implementation could have just compiled it itself anyway.  Ugh.
+ */
+
+(foo () := 1,
+ compile_or_lose (foo),
+ ?compiled\-function\-p (?symbol\-function (?get (foo, ?impl\-name))));
+true;
+
+(kill (foo), 0);
+0;
+
 
 (kill (translate_or_lose, compile_or_lose), 0);
 0;
