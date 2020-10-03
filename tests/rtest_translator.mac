@@ -1390,6 +1390,40 @@ true;
 (kill (foo), 0);
 0;
 
+/* Some internal function definitions and compiler macros were not
+ * being cleaned up, and this could cause confusing and bogus results
+ * when an outdated compiler macro was being used.
+ *
+ * Specifically one problem we had involved translating a function,
+ * redefining it and then translating the new definition.  The internal
+ * function and compiler macro from the original function could be used
+ * when compiling calls to the new function if they were not overwritten.
+ *
+ * This all depended on lisp implementation-dependent behavior because
+ * implementations are not required to ever use compiler macros.  Ugh.
+ *
+ * This test also depends on internal details of how certain functions
+ * are currently translated.  Double ugh.
+ */
+
+(foo () := 0,
+ translate_or_lose (foo),
+ kill (foo),
+ foo ([l]) := l,
+ translate_or_lose (foo),
+ test1 () := foo (),
+ test2 () := foo (1, 2, 3),
+ compile_or_lose (test1, test2),
+ /* Previously we observed test1 returning 0 and test2 causing a lisp
+  * error because the compiler macro and old internal function from
+  * the first foo were being used.
+  */
+ [test1 (), test2 ()]);
+[[], [1, 2, 3]];
+
+(kill (foo, test1, test2), 0);
+0;
+
 
 (kill (translate_or_lose, compile_or_lose), 0);
 0;
