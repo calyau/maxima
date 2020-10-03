@@ -218,7 +218,7 @@
 					    :initial-element -2)))
 	   (sspar (if sspar
 		      (make-array 8 :element-type 'double-float
-				    :initial-contents (cdr sspar))
+				    :initial-contents (cdr ($float sspar)))
 		      (make-array 8 :element-type 'double-float
 				    :initial-element -1d0)))
 	   (coef-array (convert-coef coef))
@@ -305,7 +305,9 @@
 
 (in-package "MAXIMA")
 
-(defmfun $hompack_fixpdf (fcns varlist &key (iflag -1) (arctol -1d0) (eps 1d-5) (trace 0) inita)
+(defmfun $hompack_fixpdf (fcns varlist
+			       &key
+			       (iflag -1) (arctol -1d0) (eps 1d-5) (trace 0) inita)
   (let* ((n (length (cdr varlist)))
 	 (y (make-array (1+ n) :element-type 'double-float))
 	 (ndima n)
