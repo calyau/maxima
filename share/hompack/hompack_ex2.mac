@@ -1,0 +1,27 @@
+prod: x1*x2*x3*x4*x5;
+sum: x1+x2+x3+x4+x5 - 6;
+fcns: [prod-1,
+sum+x2,
+sum+x3,
+sum+x4,
+sum+x5];
+
+hompack_fixpdf(fcns,[x1,x2,x3,x4,x5], arctol=.5e-4, eps=.5e-4);
+
+/*
+ * Output:
+[1, [1.000047727322441, 1.000000308332074, 1.000000308332071, 
+  1.000000308332067, 1.000000308332071], 5.0e-5, 5.0e-5, 49, 2.711657722244523]
+
+ * So the routine succeeded (output[1] = 1).
+ *
+ * Compare with the Fortran output:
+        TESTING FIXPDF
+
+
+ LAMBDA = 1.00000000  FLAG = 1      71 JACOBIAN EVALUATIONS
+ EXECUTION TIME(SECS) =      0.00    ARCLEN =     2.712
+   1.00000000E+00  1.00000000E+00  1.00000000E+00
+   1.00000000E+00  1.00000000E+00
+
+ */
