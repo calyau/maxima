@@ -1572,6 +1572,7 @@ wrapper for this."
       (macsyma-untrace fun))
   (when (and (get fun 'translated) (not (eq $savedef '$all)))
     (fmakunbound fun)
+    (zl-remprop fun 'impl-name)
     (zl-remprop fun 'arg-list)
     (zl-remprop fun 'translated-mmacro)
     (zl-remprop fun 'function-mode)

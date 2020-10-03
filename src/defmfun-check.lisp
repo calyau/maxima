@@ -377,6 +377,11 @@
 			(declare (ignorable %%pretty-fname))
 			,@forms)))
                   ,(add-props)
+		  ; We don't put this putprop in add-props because
+		  ; add-props is for both user and internal functions
+		  ; while the impl-name property is only for user
+		  ; functions.
+		  (putprop ',name ',impl-name 'impl-name)
 		  (defun ,name (&rest ,args)
 		    ,@doc-string
 		    (let ((,nargs (length ,args)))
