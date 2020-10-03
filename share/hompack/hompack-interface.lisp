@@ -286,6 +286,9 @@
 
 (in-package "HOMPACK")
 
+;; For HOMPACK_FIXPDF to evaluate the given function at the given
+;; point X, returning the values in V.  The function is in *F-FUN*,
+;; computed by Maxima.
 (defun f (x v)
   (declare (type (array double-float (*)) v x))
   (f2cl-lib:with-multi-array-data
@@ -295,6 +298,9 @@
     (values nil nil)))
 
 
+;; For HOMPACK_FIXPDF to evaluate the k-th column of the Jacobian at
+;; the given point X, returning the values in V.  The Jacobian is in
+;; *FJAC-FUN*, computed by Maxima.
 (defun fjac (x v k)
   (declare (type (f2cl-lib:integer4) k) (type (cl:array cl:double-float (*)) v x))
   (f2cl-lib:with-multi-array-data
@@ -308,6 +314,8 @@
 (defmfun $hompack_fixpdf (fcns varlist
 			       &key
 			       (iflag -1) (arctol -1d0) (eps 1d-5) (trace 0) inita)
+  "hompack_fixpdf"
+
   (let* ((n (length (cdr varlist)))
 	 (y (make-array (1+ n) :element-type 'double-float))
 	 (ndima n)
@@ -329,6 +337,12 @@
 	 (fj (let ((fj (meval `(($jacobian) ,fcns ,varlist))))
 	       (mapcar #'(lambda (fjf)
 			   (coerce-float-fun fjf varlist))
+		       ;; The Fortran code wants the k-th column, so
+		       ;; transpose the Jacobian here to make the
+		       ;; interface bewteen Maxima and Fortran a
+		       ;; little simpler.  Then we can just extract
+		       ;; the k-th row of the transpose to get what's
+		       ;; needed.
 		       (cdr ($transpose fj)))))
 	 (*f-fun*
 	   #'(lambda (x v)
@@ -358,13 +372,13 @@
 			  iflag arctol eps
 			  ignore-trace ignore-a ignore-ndima
 			  nfe
-			  ignore-arclen ignore-yp ignore-ypold ignore-qr ignore-alpha
+			  arclen ignore-yp ignore-ypold ignore-qr ignore-alpha
 			  ignore-tz ignore-pivot ignore-wt ignore-phi ignore-p
 			  ignore-par ignore-ipar)
 	(hompack::fixpdf n y iflag arctol eps trace a ndima nfe arclen yp ypold
 			 qr alpha tz pivot wt phi p par ipar)
       (declare (ignore ignore-n ignore-y ignore-trace ignore-a ignore-ndima
-		       ignore-arclen ignore-yp ignore-ypold ignore-qr ignore-alpha
+		       ignore-yp ignore-ypold ignore-qr ignore-alpha
 		       ignore-tz ignore-pivot ignore-wt ignore-phi ignore-p ignore-par
 		       ignore-ipar))
       (let ((ans-y (list* '(mlist) (rest (coerce y 'list)))))
@@ -373,4 +387,5 @@
 	       ans-y
 	       arctol
 	       eps
-	       nfe)))))
+	       nfe
+	       arclen)))))
