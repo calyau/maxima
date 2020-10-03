@@ -121,11 +121,43 @@
       (format t "kdeg array ~A~%" array))
     f2cl-array))
 
-(defmfun $hompack_polsys (eqnlist varlist &key (iflg1 0) (epsbig 1d-4) (epssml 1d-14) (numrr 10) iflg2 sspar)
+(defmfun $hompack_polsys (eqnlist varlist
+				  &key
+				  (iflg1 0) (epsbig 1d-4) (epssml 1d-14) (numrr 10)
+				  iflg2 sspar)
   "Solve the system of n polynomial equations in n unknowns.
 
   EQNLIST   list of polynomial equations.  Must be in the form sum(c[k]*x1^p1*x2^p2*...*xn^pn)
   VARLIST   list of the n variables.
+
+  Returns a list with the following components
+   ifail    Indicates results of the algorithm:
+              -1 -
+              -2 -
+              -3 - computed total deg is too small (shouldn't happen)
+              -4 - length of real work area is too small (shouldn't happen)
+              -5 - length of integer work area is too small (shouldn't happen)
+              -6 - if ifgl1 is not 00 or 01 or 10 or 11 (shouldn't happen)
+               0 - normal return (iflg2 list only contains 1)
+               1 - error (iflg2 list has values other than 1)
+   roots    The roots of the system of equations
+   iflg2    How the path terminated
+              1 - normal return
+              2 - specified error tolerance cannot be met.  Increase epsbig
+                  and epssml
+              3 - maximum number of steps exceeded.  Increase numrr.
+                  However, the path may be diverging if the lambda value is
+                  near 1 and the root values are large
+              4 - Jacobian matrix does not have full rank
+              5 - Tracking algorithm has lost the zero curve and is not making
+                  progress.  The error tolerances were too lenient.
+              6 - Normal flow Newton iteration failed to converge.  The error
+                  tolerance epsbig may be too stringent
+              7 - Illegal input parameters
+   lambda   List of the final lambda (continuation) parameter
+   arclen   List of the arc length of the patch for each root
+   nfe      List of the number of Jacobian matrix evaluations required
+            to track each path
 
   Optional keywords args (key = val)
   IFLG1     One of 0, 1, 10, 11.  See docs for more info.
@@ -183,12 +215,12 @@
 		      (make-array total-deg :element-type 'f2cl-lib:integer4
 					    :initial-contents (cdr iflg2))
 		      (make-array total-deg :element-type 'f2cl-lib:integer4
-			      :initial-element -2)))
+					    :initial-element -2)))
 	   (sspar (if sspar
 		      (make-array 8 :element-type 'double-float
 				    :initial-contents (cdr sspar))
 		      (make-array 8 :element-type 'double-float
-				:initial-element -1d0)))
+				    :initial-element -1d0)))
 	   (coef-array (convert-coef coef))
 	   (kdeg-array (convert-kdeg kdeg numt))
 	   (numt (make-array (length numt) :element-type 'f2cl-lib:integer4
@@ -206,43 +238,47 @@
 
 	;; Convert the roots into a list where each element of the
 	;; list is a list of the form [x1=r1, x2=r2, ..., xn=rn].
-	(let
-	    ((ret-code
-	       ;; Figure out if anything bad happened.  If iflg1 is
-	       ;; negative, just use it.  Otherwise, check that iflg2
-	       ;; has a normal return for all values.  If so, return
-	       ;; 0.  Otherwise return 1 to indicate that.
-	       (cond ((minusp ret-iflg1)
-		      ret-iflg1)
-		     ((every #'(lambda (x) (= x 1)) iflg2)
-		      0)
-		     (t
-		      1)))
-	     (r (list* '(mlist)
-		       (loop for m from 1 to total-deg
-			     collect
-			     (list* '(mlist)
-				    (loop for j from 1 to n for var in (cdr varlist)
-					  collect
-					  (list
-					   '(mequal)
-					   var      
-					   (add (f2cl-lib::fref roots
-								(1 j m)
-								((1 2) (1 (1+ n)) (1 total-deg)))
-						(mul '$%i
-						     (f2cl-lib::fref roots
-								     (2 j m)
-								     ((1 2) (1 (1+ n)) (1 total-deg))))))))))))
 
+	(flet
+	    ((maxify-roots (roots)
+	       (list* '
+		(mlist)
+		(loop for m from 1 to total-deg
+		      collect
+		      (list* '(mlist)
+			     (loop for j from 1 to n for var in (cdr varlist)
+				   collect
+				   (list
+				    '(mequal)
+				    var      
+				    (add (f2cl-lib::fref roots
+							 (1 j m)
+							 ((1 2) (1 (1+ n)) (1 total-deg)))
+					 (mul '$%i
+					      (f2cl-lib::fref roots
+							      (2 j m)
+							      ((1 2) (1 (1+ n)) (1 total-deg))))))))))))
+	  (let
+	      ((ret-code
+		 ;; Figure out if anything bad happened.  If iflg1 is
+		 ;; negative, just use it.  Otherwise, check that iflg2
+		 ;; Has a normal return for all values.  If so, return
+		 ;; 0.  Otherwise return 1 to indicate that.
+		 (cond ((minusp ret-iflg1)
+			ret-iflg1)
+		       ((every #'(lambda (x) (= x 1)) iflg2)
+			0)
+		       (t
+			1)))
+	       (r (maxify-roots roots)))
 					       
-	  (list '(mlist)
-		ret-code
-		r
-		(list* '(mlist) (coerce iflg2 'list))
-		(list* '(mlist) (coerce lamda 'list))
-		(list* '(mlist) (coerce arclen 'list))
-		(list* '(mlist) (coerce nfe 'list))))))))
+	    (list '(mlist)
+		  ret-code
+		  r
+		  (list* '(mlist) (coerce iflg2 'list))
+		  (list* '(mlist) (coerce lamda 'list))
+		  (list* '(mlist) (coerce arclen 'list))
+		  (list* '(mlist) (coerce nfe 'list)))))))))
 
 
 (defvar *f-fun* nil)
@@ -323,10 +359,12 @@
 			  ignore-arclen ignore-yp ignore-ypold ignore-qr ignore-alpha
 			  ignore-tz ignore-pivot ignore-wt ignore-phi ignore-p
 			  ignore-par ignore-ipar)
-	(hompack::fixpdf n y iflag arctol eps trace a ndima nfe arclen yp ypold qr alpha tz pivot wt phi p par ipar)
-      (declare (ignore ignore-n ignore-y ignore-trace ignore-a ignore-ndima ignore-arclen ignore-yp
-		       ignore-ypold ignore-qr ignore-alpha ignore-tz ignore-pivot
-		       ignore-wt ignore-phi ignore-p ignore-par ignore-ipar))
+	(hompack::fixpdf n y iflag arctol eps trace a ndima nfe arclen yp ypold
+			 qr alpha tz pivot wt phi p par ipar)
+      (declare (ignore ignore-n ignore-y ignore-trace ignore-a ignore-ndima
+		       ignore-arclen ignore-yp ignore-ypold ignore-qr ignore-alpha
+		       ignore-tz ignore-pivot ignore-wt ignore-phi ignore-p ignore-par
+		       ignore-ipar))
       (let ((ans-y (list* '(mlist) (rest (coerce y 'list)))))
 	(list '(mlist)
 	       iflag
