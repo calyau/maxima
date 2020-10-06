@@ -99,7 +99,7 @@
       
 (defun require-poly (p v f i)
   (setq p (myrat p v))
-  (if ($polynomialp p v) p
+  (if ($charsets_polynomialp p v) p
       (merror "The ~A argument of ~:M requires a polynomial, instead found ~:M" ($ordinal_string i) f p)))
 
 (defun require-nonlist (e f i)
@@ -273,10 +273,10 @@
 
 ;; Return true iff and only if e is a polynomial in the variables var.
 
-(defun $polynomialp (e &optional vars cp ep)
+(defun $charsets_polynomialp (e &optional vars cp ep)
   (declare (ignore cp ep))
   (if (null vars) (setq vars (non-constant-ratvars e)))
-  (setq vars (require-list-of-symbols vars "$polynomialp" 2))
+  (setq vars (require-list-of-symbols vars "$charsets_polynomialp" 2))
   (setq vars `((mlist simp) ,@vars))
   (and (every #'(lambda (x) (or ($variablep x) ($ratfreeof vars x) 
 				($constantp x))) 
