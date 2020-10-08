@@ -38,14 +38,6 @@ extradocinstall:
 $(distdir).tar.gz: Makefile.am
 	$(MAKE) dist
 
-# Build the Maxima rpms. Optionally, use
-#     make rpm SUDO=sudo
-# to use sudo to wrap the commands. The user must have sudo permissions
-# for rpm and cp.
-rpm: $(distdir).tar.gz
-	$(SUDO) cp $(distdir).tar.gz /usr/src/redhat/SOURCES && \
-	$(SUDO) rpmbuild -ba maxima.spec
-
 # windows installer rules
 if WIN32
 
