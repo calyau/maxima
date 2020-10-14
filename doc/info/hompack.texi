@@ -19,7 +19,7 @@ Fortran library HOMPACK, as obtained from Netlib.
 @section Functions and Variables for hompack
 
 @anchor{hompack_polsys}
-@deffn {Function} hompack_polsys(@var{eqnlist}, @var{varlist} [, @var{iflg1}, @var{epsbig}, @var{epssml}, @var{numrr}])
+@deffn {Function} hompack_polsys (@var{eqnlist}, @var{varlist} [, @var{iflg1}, @var{epsbig}, @var{epssml}, @var{numrr}])
 Finds the roots of the system of polynomials in the variables
 @var{varlist} in the system of equations in @var{eqnlist}.  The number
 of equations must match number of variables.  Each equation must be a
