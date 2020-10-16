@@ -1,18 +1,24 @@
 @menu
 * Introduction to fast Fourier transform::                     
-* Functions and Variables for fast Fourier transform::
+* Functions and Variables for fft::
+* Functions and Variables for FFTPACK5::
 * Functions for numerical solution of equations::
 * Introduction to numerical solution of differential equations::
 * Functions for numerical solution of differential equations::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to fast Fourier transform, Functions and Variables for fast Fourier transform, Numerical, Numerical
+@node Introduction to fast Fourier transform, Functions and Variables for fast Fourier transform
 @section Introduction to fast Fourier transform
 @c -----------------------------------------------------------------------------
 
 The @code{fft} package comprises functions for the numerical (not symbolic)
-computation of the fast Fourier transform.
+computation of the fast Fourier transform.  This is limited to
+sequences whit length that is a power of two.  For more general
+lengths, consider the @code{fftpack5} package that supports sequences
+of any length, but is most efficient if the length is a product of
+small primes.
+
 
 @opencatbox
 @category{Fourier transform}
@@ -24,8 +30,8 @@ computation of the fast Fourier transform.
 @c end concepts Numerical
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for fast Fourier transform, Functions for numerical solution of equations, Introduction to fast Fourier transform, Numerical
-@section Functions and Variables for fast Fourier transform
+@node Functions and Variables for fast Fourier transform, Functions and Variables for FFTPACK5, Introduction to fast Fourier transform
+@section Functions and Variables for fft
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
@@ -442,7 +448,132 @@ bigfloat output.  This is the bigfloat version of @code{inverse_real_fft}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions for numerical solution of equations, Introduction to numerical solution of differential equations, Functions and Variables for fast Fourier transform, Numerical
+@node Functions and Variables for FFTPACK5, Functions for numerical solution of equations, Functions and Variables for fast Fourier transform
+@section Functions and Variables for FFTPACK5
+@c -----------------------------------------------------------------------------
+
+@code{FFTPACK5} provides several routines to compute Fourier
+transforms for both real and complex sequences and their inverses.
+The forward transform is defined the same as for @code{fft}.  The
+major difference is the length of the sequence is not constrained to
+be a power of two.  In fact, any length is supported, but it is most
+efficient when the length has the form @math{2^r*3^s*5^t}.
+
+@code{load(fftpack5)} loads this function.
+
+Examples:
+
+Real data.
+
+@example
+(%i1) load("fftpack5") $
+(%i2) fpprintprec : 4 $
+(%i3) L : [1, 2, 3, 4, -1, -2 ,-3, -4] $
+(%i4) L1 : fftpack5_fft(L);
+(%o4) [0.0, 1.811 %i - 0.1036, 0.0, 0.3107 %i + 0.6036, 0.0, 
+                                0.6036 - 0.3107 %i, 0.0, (- 1.811 %i) - 0.1036]
+(%i5) L2 : fftpack5_inverse_fft(L1);
+(%o5) [1.0, 4.441e-16 %i + 2.0, 1.837e-16 %i + 3.0, 4.0 - 4.441e-16 %i, 
+     - 1.0, (- 4.441e-16 %i) - 2.0, (- 1.837e-16 %i) - 3.0, 4.441e-16
+       %i - 4.0]
+(%i6) lmax (abs (L2-L));
+(%o6)                       4.441e-16
+(%i7) L : [1, 2, 3, 4, 5, 6]$
+(%i8) L1 : fftpack5_fft(L);
+(%o8) [3.5, (- 0.866 %i) - 0.5, (- 0.2887 %i) - 0.5, (- 1.48e-16 %i) - 0.5, 
+                                               0.2887 %i - 0.5, 0.866
+                                                      %%i - 0.5]
+(%i9) L2 : fftpack5_inverse_fft (L1);
+(%o9) [1.0 - 1.48e-16 %i, 3.701e-17 %i + 2.0, 3.0 - 1.48e-16 %i, 
+                     4.0 - 1.811e-16 %i, 5.0 - 1.48e-16 %i, 5.881e-16
+                           %i + 6.0]
+(%i10) lmax (abs (L2-L));
+(%o10)                             9.064e-16
+(%i11) L1 : fftpack5_real_fft(L);
+(%o11)       [3.5, (- 0.866 %i) - 0.5, (- 0.2887 %i) - 0.5, - 0.5]
+(%i12) L2 : fftpack5_inverse_real_fft(L1, 6);
+(%o12)                  [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
+(%i13) lmax(abs(L2-L));
+(%o13)                            1.332e-15
+(%i14) fftpack5_inverse_real_fft(L1, 7);
+(%o14)            [0.5, 2.083, 2.562, 3.7, 4.3, 5.438, 5.917] 
+@end example
+
+The last example shows how important it to set the length correctly
+for @code{fftpack5_inverse_real_fft}.
+
+Complex data.
+
+@example
+(%i1) load("fftpack5") $
+(%i2) fpprintprec : 4 $
+(%i3) L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
+(%i4) L1 : fftpack5_inverse_fft (L);
+(%o4) [4.0, 2.828 %i + 2.828, (- 2.0 %i) - 2.0, 4.0, 0.0, 
+                                       (- 2.828 %i) - 2.828, 2.0 %i - 2.0, 4.0]
+(%i5) L2 : fftpack5_fft(L1);
+(%o5) [1.0, 1.0 %i + 1.0, 1.0 - 1.0 %i, (- 2.776e-17 %i) - 1.0, - 1.0, 
+                                1.0 - 1.0 %i, 1.0 %i + 1.0, 1.0 -
+                                          %2.776e-17 %i]
+(%i6) lmax(abs(L2-L));
+(%o6)                              1.11e-16
+@end example
+
+
+@anchor{fftpack5_fft}
+@deffn {Function} fftpack5_fft (@var{x})
+
+Like @code{fft} (@mref{fft}), this computes the fast Fourier transform
+of a complex sequence.  However, the length of @var{x} is not limited
+to a power of 2.  
+
+@code{load(fftpack5)} loads this function.
+
+@opencatbox
+@category{Package fftpack5}
+@closecatbox
+@end deffn
+
+@anchor{fftpack5_inverse_fft}
+@deffn {Function} fftpack5_inverse_fft (@var{y})
+
+Computes the inverse complex Fourier transform, like
+@code{inverse_fft}, but is not constrained to be a power of two.
+
+@opencatbox
+@category{Package fftpack5}
+@closecatbox
+@end deffn
+
+@anchor{fftpack5_real_fft}
+@deffn {Function} fftpack5_real_fft (@var{x})
+
+Computes the fast Fourier transform of a real-valued sequence @var{x},
+just like @code{real_fft}, except the length is not constrained to be
+a power of two.
+
+@opencatbox
+@category{Package fftpack5}
+@closecatbox
+@end deffn
+
+@anchor{fftpack5_inverse_real_fft}
+@deffn {Function} fftpack5_inverse_real_fft (@var{y}, @var{n})
+
+Computes the inverse Fourier transform of @var{y}, which must have a
+length of @code{floor(n/2) + 1}.  The length of sequence produced by the
+inverse transform must be specified by @var{n}.  This is required
+because the length of @var{y} does not uniquely determine @var{n}.
+The last element of @var{y} is always real if @var{n} is even, but it
+can be complex when @var{n} is odd.
+
+@opencatbox
+@category{Package fftpack5}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@node Functions for numerical solution of equations, Introduction to numerical solution of differential equations, Functions and Variables for FFTPACK5
 @section Functions for numerical solution of equations
 @c -----------------------------------------------------------------------------
 
@@ -669,7 +800,7 @@ Examples:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Introduction to numerical solution of differential equations, Functions for numerical solution of differential equations, Functions for numerical solution of equations, Numerical
+@node Introduction to numerical solution of differential equations, Functions for numerical solution of differential equations, Functions for numerical solution of equations
 @section Introduction to numerical solution of differential equations
 @c -----------------------------------------------------------------------------
 
@@ -716,7 +847,7 @@ autonomous.
 
 
 @c -----------------------------------------------------------------------------
-@node Functions for numerical solution of differential equations, , Introduction to numerical solution of differential equations, Numerical
+@node Functions for numerical solution of differential equations,  , Introduction to numerical solution of differential equations
 @section Functions for numerical solution of differential equations
 @c -----------------------------------------------------------------------------
 @deffn {Function} plotdf @
