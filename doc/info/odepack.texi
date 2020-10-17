@@ -40,7 +40,7 @@ References:
 Of the eight variants of the solver, maxima currently only has an
 inteface the @code{dlsode}.
 
-Let's say we have this sytem of equations to solve:
+Let's say we have this system of equations to solve:
 @example
   f1 = -.04d0*y1 + 1d4*y2*y3
   f3 = 3d7*y2*y2

@@ -66,7 +66,7 @@ C	MT(I) HAS ALL ZERO ELEMENTS INITIALLY */
 /* pt_name is the symbolic name of the circuit element, and if a element
    is not given a value, then it's value is its name.  maybe there should
    be a flag, to assign symbolic names even if there are numeric values,
-   to be more compatable with spice.
+   to be more compatible with spice.
    pt_aJT is the element type in the order of the pt_A array */
     block([i:0],
 	for l in cl do (i:i+1,

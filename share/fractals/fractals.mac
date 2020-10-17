@@ -115,7 +115,7 @@ plot3d (mandelbrot_set, [x, x0, x1], [y, y0, y1], [gnuplot_preamble, "set view m
  select x0,x1,y0,y1; we suggest the initial values  -2.5, 1, -1.5, 1.5.  You can also change the grid values. 
 
 You can change the upper bound of zz (abs(zz)<100). 
-If you change the upper bound of the  number of iterations (nn<30) by puting (nn<50) or (nn<100) 
+If you change the upper bound of the number of iterations (nn<30) by putting (nn<50) or (nn<100)
 the fractal will have more resolution but the time of computing increases.
 
 Remark: This program is time consuming because it must make a lot of operations; 
@@ -142,7 +142,7 @@ You can change the complex parameter named julia_parameter. Its initial value is
 -.39054-%i*.58679, -.15652+%i*1.03225, -.194+%i*.6557 and .011031-%i*.67037
 
 
-If you change the upper bound of the  number of iterations (nn<30) by puting (nn<50) or (nn<100) 
+If you change the upper bound of the number of iterations (nn<30) by putting (nn<50) or (nn<100)
 the fractal will have more resolution but the time of computing increases.
 
 Remark: This program is time consuming because it must make a lot of operations; 
