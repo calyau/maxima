@@ -1,5 +1,6 @@
 /* set up for run_testsuite() */
 
+/* Unmarked XFAILS are testsuite comparison issues. */
 testsuite_files:[ \
   "rtestode_murphy_1_1", \
   "rtestode_murphy_1_2", \
@@ -17,16 +18,16 @@ testsuite_files:[ \
   "rtestode_kamke_1_3", \
   "rtestode_kamke_1_4", \
   "rtestode_kamke_1_5", \
-  "rtestode_kamke_1_6", \
+  ["rtestode_kamke_1_6",[21]], \
   "rtestode_kamke_2_1", \
-  "rtestode_kamke_2_2", \
-  "rtestode_kamke_2_3", \
+  ["rtestode_kamke_2_2",[133]], \
+  ["rtestode_kamke_2_3",[84,108]], \
   "rtestode_kamke_2_4", \
   "rtestode_kamke_2_5", \
   "rtest_sym", \
   "rtest_sym2", \
-  "rtest_ode1_riccati", \
-  "rtest_ode1_abel", \
+  ["rtest_ode1_riccati",[139]], \
+  ["rtest_ode1_abel",[46]], \
   "rtestode_odelin", \
   "rtestode_utils" \
   ];
