@@ -13,28 +13,13 @@ TEST_FILES = \
 	rtest_ode1_riccati.mac rtest_ode1_abel.mac \
 	rtestode_odelin.mac rtestode_utils.mac
 
-# cunning macros for COMMA and SPACE characters (see GNU Make manual 8.1 Function Call Syntax)
-COMMA:=,
-EMPTY:=
-SPACE:=$(EMPTY) $(EMPTY)
-COMMA_SEPARATED_TEST_FILES:=\"$(subst $(SPACE),\"$(COMMA)\",$(strip $(TEST_FILES:.mac=)))\"
-
-check: $(TEST_FILES)
-	(echo "testsuite_files:[$(COMMA_SEPARATED_TEST_FILES)];";\
-	echo 'file_search_tests:["$$$$$$.{fas,lisp,lsp,mac,mc,wxm}"];';\
-	echo "load('pdiff);";\
-	echo "use_pdiff:false;";\
-	echo "load('contrib_ode);";\
+check: setup_tests.mac $(TEST_FILES)
+	(echo 'load("setup_tests.mac");';\
 	echo 'run_testsuite();') | $(MAXIMA)
 
 # Verbose output
-check.log: $(TEST_FILES)
-	(echo "testsuite_files:[$(COMMA_SEPARATED_TEST_FILES)];";\
-	echo 'file_search_tests:["$$$$$$.{fas,lisp,lsp,mac,mc,wxm}"];';\
-	echo "load('pdiff);";\
-	echo "use_pdiff:false;";\
-	echo "load('contrib_ode);";\
+check.log: setup_tests.mac $(TEST_FILES)
+	(echo 'load("setup_tests.mac");';\
 	echo "put('contrib_ode,true,'verbose);";\
 	echo "DEBUGFLAG:2;";\
 	echo 'run_testsuite(display_all=true);') | $(MAXIMA) > $@ 2>&1
-
