@@ -1,6 +1,6 @@
 @menu
 * Introduction to fast Fourier transform::                     
-* Functions and Variables for fft::
+* Functions and Variables for fast Fourier transform::
 * Functions and Variables for FFTPACK5::
 * Functions for numerical solution of equations::
 * Introduction to numerical solution of differential equations::
