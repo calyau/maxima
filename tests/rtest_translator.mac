@@ -965,7 +965,7 @@ block ([tr_float_can_branch_complex : true],
    * returned by LOG and SQRT to Maxima complex numbers.
    */
   l3 : foo (-2.0),
-  every ("=", l1, l3));
+  every (lambda ([x, y], cabs (x - y) < 1e-15), l1, l3));
 true;
 
 (kill (foo, x, l1, l2, l3), 0);
