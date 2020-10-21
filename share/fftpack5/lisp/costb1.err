@@ -1,0 +1,61 @@
+
+
+; 
+; 
+; File: /home/toy/src/sourceforge/maxima-code/share/fftpack5/lisp/costb1.lisp
+
+; In: DEFUN COSTB1
+
+;   (* 0.5 DSUM)
+; ==>
+;   DSUM
+; Note: Deleting unreachable code.
+; 
+;   (SETF (F2CL-LIB:FREF X-%DATA% # # X-%OFFSET%) (+ # #))
+; --> LET* THE + THE 
+; ==>
+;   X-%OFFSET%
+; Note: Deleting unreachable code.
+; 
+;   (F2CL-LIB:FDO (I 3 #) (# NIL) (TAGBODY # # # # ...))
+; --> PROG* BLOCK LET* MAX LET LET MAX VALUES PROG1 LET THE THE TRUNCATE THE + 
+; --> THE - 
+; ==>
+;   N
+; Note: Deleting unreachable code.
+; 
+;   (SETF (F2CL-LIB:FREF X-%DATA% # # X-%OFFSET%) (+ # #))
+; --> LET* THE + THE + THE * 
+; ==>
+;   INC
+; Note: Deleting unreachable code.
+; 
+;   (+ (F2CL-LIB:FREF X-%DATA% # # X-%OFFSET%)
+;      (F2CL-LIB:FREF X-%DATA% # # X-%OFFSET%))
+; Note: Deleting unreachable code.
+; 
+;   (/ (F2CL-LIB:FFLOAT NM1) 4.0)
+; Note: Deleting unreachable code.
+; ; [Last message occurs 2 times]
+
+;   (TAGBODY (SETF XI #) (SETF # #) (SETF # DSUM) (SETF DSUM #) ...)
+; Note: Deleting unreachable code.
+; 
+;   (F2CL-LIB:INT-ADD I 2)
+; --> THE + 
+; ==>
+;   I
+; Note: Deleting unreachable code.
+; 
+;   (/= MODN 0)
+; --> IF = 
+; ==>
+;   MODN
+; Note: Deleting unreachable code.
+; 
+;   (SETF (F2CL-LIB:FREF X-%DATA% # # X-%OFFSET%) DSUM)
+; --> LET* THE + THE 
+; ==>
+;   X-%OFFSET%
+; Note: Deleting unreachable code.
+; 

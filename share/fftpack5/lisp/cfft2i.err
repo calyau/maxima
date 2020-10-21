@@ -1,0 +1,20 @@
+
+
+; 
+; 
+; File: /home/toy/src/sourceforge/maxima-code/share/fftpack5/lisp/cfft2i.lisp
+
+; In: DEFUN CFFT2I
+
+;   (PROG (# #)
+;     (DECLARE #)
+;     (SETF IER 0)
+;     (COND
+;       #) ...)
+; --> BLOCK 
+; ==>
+;   (LET (# #)
+;     (DECLARE #)
+;     (TAGBODY # # # # ...))
+; Note: Variable LOG$ defined but never used.
+; 

@@ -1,0 +1,32 @@
+
+
+; 
+; 
+; File: /home/toy/src/sourceforge/maxima-code/share/fftpack5/lisp/sintb1.lisp
+
+; In: DEFUN SINTB1
+
+;   (* FNP1S4 (F2CL-LIB:FREF XH-%DATA% # # XH-%OFFSET%))
+; Note: Deleting unreachable code.
+; 
+;   (TAGBODY (SETF # #) (SETF DSUM #) (SETF # DSUM) LABEL105)
+; Note: Deleting unreachable code.
+; 
+;   (F2CL-LIB:INT-ADD I 2)
+; --> THE + 
+; ==>
+;   I
+; Note: Deleting unreachable code.
+; 
+;   (/= MODN 0)
+; --> IF = 
+; ==>
+;   MODN
+; Note: Deleting unreachable code.
+; 
+;   (SETF (F2CL-LIB:FREF X-%DATA% # # X-%OFFSET%) (* FNP1S4 #))
+; --> LET* THE + THE 
+; ==>
+;   X-%OFFSET%
+; Note: Deleting unreachable code.
+; 
