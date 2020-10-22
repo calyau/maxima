@@ -461,6 +461,15 @@ efficient when the length has the form @math{2^r*3^s*5^t}.
 
 @code{load(fftpack5)} loads this function.
 
+@anchor{fftpack5_fft}
+@deffn {Function} fftpack5_fft (@var{x})
+
+Like @code{fft} (@mref{fft}), this computes the fast Fourier transform
+of a complex sequence.  However, the length of @var{x} is not limited
+to a power of 2.  
+
+@code{load(fftpack5)} loads this function.
+
 Examples:
 
 Real data.
@@ -489,18 +498,7 @@ Real data.
                            %i + 6.0]
 (%i10) lmax (abs (L2-L));
 (%o10)                             9.064e-16
-(%i11) L1 : fftpack5_real_fft(L);
-(%o11)       [3.5, (- 0.866 %i) - 0.5, (- 0.2887 %i) - 0.5, - 0.5]
-(%i12) L2 : fftpack5_inverse_real_fft(L1, 6);
-(%o12)                  [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
-(%i13) lmax(abs(L2-L));
-(%o13)                            1.332e-15
-(%i14) fftpack5_inverse_real_fft(L1, 7);
-(%o14)            [0.5, 2.083, 2.562, 3.7, 4.3, 5.438, 5.917] 
 @end example
-
-The last example shows how important it to set the length correctly
-for @code{fftpack5_inverse_real_fft}.
 
 Complex data.
 
@@ -518,16 +516,6 @@ Complex data.
 (%i6) lmax(abs(L2-L));
 (%o6)                              1.11e-16
 @end example
-
-
-@anchor{fftpack5_fft}
-@deffn {Function} fftpack5_fft (@var{x})
-
-Like @code{fft} (@mref{fft}), this computes the fast Fourier transform
-of a complex sequence.  However, the length of @var{x} is not limited
-to a power of 2.  
-
-@code{load(fftpack5)} loads this function.
 
 @opencatbox
 @category{Package fftpack5}
@@ -551,6 +539,24 @@ Computes the inverse complex Fourier transform, like
 Computes the fast Fourier transform of a real-valued sequence @var{x},
 just like @code{real_fft}, except the length is not constrained to be
 a power of two.
+
+Examples:
+
+@example
+(%i1) fpprintprec : 4 $
+(%i2) L : [1, 2, 3, 4, 5, 6] $
+(%i3) L1 : fftpack5_real_fft(L);
+(%o3)       [3.5, (- 0.866 %i) - 0.5, (- 0.2887 %i) - 0.5, - 0.5]
+(%i4) L2 : fftpack5_inverse_real_fft(L1, 6);
+(%o4)                  [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
+(%i5) lmax(abs(L2-L));
+(%o5)                            1.332e-15
+(%i6) fftpack5_inverse_real_fft(L1, 7);
+(%o6)            [0.5, 2.083, 2.562, 3.7, 4.3, 5.438, 5.917] 
+@end example
+
+The last example shows how important it to set the length correctly
+for @code{fftpack5_inverse_real_fft}.
 
 @opencatbox
 @category{Package fftpack5}
