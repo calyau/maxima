@@ -249,10 +249,12 @@ b[n/2] = 0
 
 @code{load(fft)} loads this function.
 
-See also @mref{inverse_fft} (inverse transform), @mrefcomma{recttopolar} and
-@mrefdot{polartorect}. See @mref{real_fft} for FFTs of a real-valued
-input, and @mref{bf_fft} and @mref{bf_real_fft} for operations on
-bigfloat values.
+See also @mref{inverse_fft} (inverse transform),
+@mrefcomma{recttopolar} and @mrefdot{polartorect}. See @mref{real_fft}
+for FFTs of a real-valued input, and @mref{bf_fft} and
+@mref{bf_real_fft} for operations on bigfloat values.  Finally, for
+transforms of any size (but limited to float values), see
+@mref{fftpack5_fft} and @mref{fftpack5_real_fft}.
 
 Examples:
 
