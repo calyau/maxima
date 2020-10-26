@@ -1010,7 +1010,7 @@ defined through a generalized hypergeometric function:
    gamma(a) hypergeometric_generalized([a, 1 - b], [a + 1], z) z
 @end example
 
-(See functions.wolfram.com for a complete definition of the incomplete beta 
+(See @url{https://functions.wolfram.com} for a complete definition of the incomplete beta
 function.)
 
 For negative integers @math{a = -n} and positive integers @math{b=m} with 
@@ -1184,7 +1184,7 @@ beta_incomplete_regularized(a, b, z) =
 @end example
 
 As for @code{beta_incomplete} this definition is not complete. See 
-functions.wolfram.com for a complete definition of 
+@url{https://functions.wolfram.com} for a complete definition of
 @code{beta_incomplete_regularized}.
 
 @code{beta_incomplete_regularized} simplifies @var{a} or @var{b} a positive 

@@ -37,11 +37,11 @@ A selection of useful objects a scene can be made up from are:
 A short description of all draw commands and options including example plots
 (in the html and pdf version of this manual) can be found in the section
 @xref{Functions and Variables for draw}. An online version of the html manual can be
-found at @url{maxima.sourceforge.net/docs/manual/maxima_singlepage.html#draw}. 
+found at @url{http://maxima.sourceforge.net/docs/manual/maxima_singlepage.html#draw}.
 More elaborated examples of this package can be found at the following locations:
 
-@url{http://tecnostats.net/Maxima/gnuplot} @*
-@url{http://tecnostats.net/Maxima/vtk} 
+@url{http://riotorto.users.sourceforge.net/Maxima/gnuplot/} @*
+@url{http://riotorto.users.sourceforge.net/Maxima/vtk/}
 
 Example:
 

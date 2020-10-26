@@ -1609,7 +1609,7 @@ Funktion definiert werden:
    gamma(a) hypergeometric_generalized([a, 1 - b], [a + 1], z) z
 @end example
 
-(Siehe functions.wolfram.com f@"ur eine Definition der unvollst@"andigen
+(Siehe @url{https://functions.wolfram.com/} f@"ur eine Definition der unvollst@"andigen
 Betafunktion.)
 
 F@"ur negative ganze Zahlen @math{a = -n} und positive ganze Zahlen
@@ -1785,7 +1785,7 @@ ist als
 @c @code{beta_incomplete_regularized}.
 
 Wie bei der Funktion @mref{beta_incomplete} ist diese Definition nicht
-vollst@"andig.  Siehe @url{functions.wolfram.com} f@"ur eine vollst@"andige
+vollst@"andig.  Siehe @url{https://functions.wolfram.com} f@"ur eine vollst@"andige
 Definition der Funktion.
 
 @c @code{beta_incomplete_regularized} simplifies @var{a} or @var{b} a positive 
