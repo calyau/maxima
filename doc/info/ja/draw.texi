@@ -1109,7 +1109,7 @@ Windows端末はプロット内部でフォントの変更をサポートしま�
 @item
 @i{png, jpeg, gif}:
 @i{libgd}ライブラリは
-環境変数@code{GDFONTPATH}の中に保持されたフォントパスを使います;
+環境変数@env{GDFONTPATH}の中に保持されたフォントパスを使います;
 この場合、オプション@code{font}をフォント名に設定することだけが必要です。
 フォントファイルへの完全なパスを与えることも可能です。
 
@@ -1128,7 +1128,7 @@ Windows端末はプロット内部でフォントの変更をサポートしま�
         terminal  = png)$
 @end example
 
-もし環境変数@code{GDFONTPATH}が
+もし環境変数@env{GDFONTPATH}が
 フォントファイルが配置されているパスに設定されているなら、
 set グラフィックオプション@code{font}をフォント名に設定することが可能です。
 @example

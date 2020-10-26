@@ -1128,7 +1128,7 @@ the menu of the graph window.
 @item
 @i{png, jpeg, gif}:
 The @i{libgd} library uses the font path stored in the environment
-variable @code{GDFONTPATH}; in this case, it is only necessary to
+variable @env{GDFONTPATH}; in this case, it is only necessary to
 set option @code{font} to the font's name.  It is also possible to
 give the complete path to the font file.
 
@@ -1147,7 +1147,7 @@ Option @code{font} can be given the complete path to the font file:
         terminal  = png)$
 @end example
 
-If environment variable @code{GDFONTPATH} is set to the
+If environment variable @env{GDFONTPATH} is set to the
 path where font files are allocated, it is possible to
 set graphic option @code{font} to the name of the font.
 

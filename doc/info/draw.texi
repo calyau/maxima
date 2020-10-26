@@ -1522,7 +1522,7 @@ the menu of the graph window.
 @item
 @i{png, jpeg, gif}:
 The @i{libgd} library uses the font path stored in the environment
-variable @code{GDFONTPATH}; in this case, it is only necessary to
+variable @env{GDFONTPATH}; in this case, it is only necessary to
 set option @code{font} to the font's name. It is also possible to
 give the complete path to the font file.
 

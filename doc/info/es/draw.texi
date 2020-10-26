@@ -1243,7 +1243,7 @@ fuentes haciendo clic derecho en el menú de la ventana gráfica.
 @item
 @i{png, jpeg, gif}:
 La librería @i{libgd} utiliza la ruta a las fuentes
-almacenada en la variable de entorno @code{GDFONTPATH}; en tal caso
+almacenada en la variable de entorno @env{GDFONTPATH}; en tal caso
 sólo es necesario darle a la opción @code{font} el nombre de la
 fuente. También es posible darle la ruta completa al fichero de la fuente.
 
@@ -1262,7 +1262,7 @@ A la opción @code{font} se le puede dar la ruta completa al fichero de la fuente
         terminal  = png)$
 @end example
 
-Si la variable de entorno @code{GDFONTPATH} almacena la ruta
+Si la variable de entorno @env{GDFONTPATH} almacena la ruta
 a la carpeta donde se alojan las fuentes, es posible darle a la
 opción @code{font} sólo el nombre de la fuente:
 @example
