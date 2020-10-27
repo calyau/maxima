@@ -344,7 +344,7 @@ If @code{declare(h, commutative)} is done, this tells the simplifier that
 @code{h} is a commutative function.  E.g.  @code{h(x, z, y)} will simplify to
 @code{h(x, y, z)}.  This is the same as @code{symmetric}.
 
-Exemplo:
+Example:
 
 @c ===beg===
 @c S (b, a);

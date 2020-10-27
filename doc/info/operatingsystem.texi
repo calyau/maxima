@@ -74,7 +74,7 @@ deletes file @var{file1}
 
 @anchor{getenv}
 @deffn {Function} getenv (@var{env})
-Get the value of the environmentvariable @var{env}
+Get the value of the environment variable @var{env}
 
 Example:
 

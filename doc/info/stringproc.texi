@@ -217,7 +217,7 @@ i.e. the first element in @var{stream} is in position 1.
 @fname{freshline} (@var{stream}) 
 
 Writes a new line to the standard output stream 
-if the position is not at the beginning of a line und returns @code{true}.
+if the position is not at the beginning of a line and returns @code{true}.
 Using the optional argument @var{stream} the new line is written to that stream. 
 There are some cases, where @code{freshline()} does not work as expected. 
 
@@ -1905,7 +1905,7 @@ Examples:
 @end example
 
 Note that if @var{arg} contains umlauts (resp. octets larger than 127) 
-the resulting base64-string is platform dependend. 
+the resulting base64-string is platform dependent.
 However the decoded string will be equal to the original.
 
 @opencatbox
@@ -2014,7 +2014,7 @@ Examples:
 @end example
 
 Note that in case @var{arg} contains German umlauts or other non-ASCII 
-characters (resp. octets larger than 127) the @code{MD5} checksum is platform dependend.
+characters (resp. octets larger than 127) the @code{MD5} checksum is platform dependent.
 
 @opencatbox
 @category{Package stringproc}
@@ -2173,7 +2173,7 @@ Example (continued): Using the optional encoding argument
 @anchor{oid_to_octets}
 @deffn {Function} oid_to_octets (@var{oid-string})
 
-Convertes an object identifier (OID) to a list of @var{octets}.
+Converts an object identifier (OID) to a list of @var{octets}.
 
 Example: See @ref{octets_to_oid}.
 
@@ -2212,7 +2212,7 @@ Example:
 @end example
 
 Note that in case @var{arg} contains German umlauts or other non-ASCII 
-characters (resp. octets larger than 127) the @code{SHA1} fingerprint is platform dependend.
+characters (resp. octets larger than 127) the @code{SHA1} fingerprint is platform dependent.
 
 @opencatbox
 @category{Package stringproc}
@@ -2240,7 +2240,7 @@ Example:
 @end example
 
 Note that in case @var{arg} contains German umlauts or other non-ASCII 
-characters (resp. octets larger than 127) the @code{SHA256} fingerprint is platform dependend.
+characters (resp. octets larger than 127) the @code{SHA256} fingerprint is platform dependent.
 
 @opencatbox
 @category{Package stringproc}

@@ -375,9 +375,9 @@ the length of @var{x}.  @code{N} must be power of two.
 
 No check is made that @var{x} contains only real values.
 
-The symmetry properites of the Fourier transform of real sequences to
+The symmetry properties of the Fourier transform of real sequences to
 reduce he complexity.  In particular the first and last output values
-of @code{real_fft} are purely real.  For larger sequencyes, @code{real_fft}
+of @code{real_fft} are purely real.  For larger sequences, @code{real_fft}
 may be computed more quickly than @code{fft}.
 
 Since the output length is short, the normal @mref{inverse_fft} cannot
@@ -390,7 +390,7 @@ be directly used.  Use @mref{inverse_real_fft} to compute the inverse.
 @c -----------------------------------------------------------------------------
 @anchor{inverse_real_fft}
 @deffn {Function} inverse_real_fft (@var{y})
-Computes the inverse Fourier transfrom of @var{y}, which must have a
+Computes the inverse Fourier transform of @var{y}, which must have a
 length of @code{N/2+1} where @code{N} is a power of two.  That is, the
 input @var{x} is expected to be the output of @code{real_fft}.
 
@@ -439,7 +439,7 @@ returning a bigfloat result.  This is the bigfloat version of
 
 @anchor{bf_inverse_real_fft}
 @deffn {Function} bf_inverse_real_fft (@var{y})
-Computes the inverse fast Fourier transfrom with a real-valued
+Computes the inverse fast Fourier transform with a real-valued
 bigfloat output.  This is the bigfloat version of @code{inverse_real_fft}.
 
 @opencatbox

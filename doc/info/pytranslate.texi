@@ -7,7 +7,7 @@
 @node Introduction to pytranslate, Functions in pytranslate, Top, Top
 @section Introduction to pytranslate
 
-@code{pytranslate} package provides Maxima to Python translation functionality. The package is experimental, and the specifications of the functions in this package might change. It was written as a Google Summer of Code project by Lakshya A Agrawal(Undergraduate Student, IIIT-Delhi) in 2019. A detailed project report is available as a @url{https://gist.github.com/LakshyAAAgrawal/33eee2d33c4788764087eef1fa67269e, GitHub Gist}.@* 
+@code{pytranslate} package provides Maxima to Python translation functionality. The package is experimental, and the specifications of the functions in this package might change. It was written as a Google Summer of Code project by Lakshya A Agrawal (Undergraduate Student, IIIT-Delhi) in 2019. A detailed project report is available as a @url{https://gist.github.com/LakshyAAAgrawal/33eee2d33c4788764087eef1fa67269e, GitHub Gist}.@*
 
 The package needs to be loaded in a Maxima instance for use, by executing @code{load(pytranslate);}@*
 The statements are converted to python3 syntax. The file pytranslate.py must be imported for all translations to run, as shown in example.

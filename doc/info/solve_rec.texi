@@ -299,7 +299,7 @@ See also: @mrefcomma{simplify_products} @mrefdot{solve_rec}
 @fname{summand_to_rec} (@var{summand}, @var{k}, @var{n}) @
 @fname{summand_to_rec} (@var{summand}, [@var{k}, @var{lo}, @var{hi}], @var{n})
 
-Returns the recurrence sattisfied by the sum
+Returns the recurrence satisfied by the sum
 
 @example
 @group

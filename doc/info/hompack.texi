@@ -35,7 +35,7 @@ defaulting to 0, controls the algorithm as follows:
 @item 0
 If the problem is to be solved without calling @code{polsys}' scaling
 routine, @code{sclgnp}, and without using the projective
-transformtion.
+transformation.
 @item 1
 If scaling but no projective transformation is to be used.
 @item 10

@@ -1636,7 +1636,7 @@ Returns the kurtosis coefficient of a @math{Gamma(a,b)} random variable, with @m
 
 Returns a @math{Gamma(a,b)} random variate, with @math{a,b>0}. Calling @code{random_gamma} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-The implemented algorithm is a combinantion of two procedures, depending on the value of parameter @var{a}:
+The implemented algorithm is a combination of two procedures, depending on the value of parameter @var{a}:
 
 For @math{a>=1}, Cheng, R.C.H. and Feast, G.M. (1979). @var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
 

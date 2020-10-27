@@ -727,7 +727,7 @@ variety of @var{polylist2}.
 
 @anchor{poly_ideal_polysaturation1}
 @deffn {Function} poly_ideal_polysaturation1 (@var{polylist1}, @var{polylist2}, @var{varlist})
-@var{polylist2} ist a list of n polynomials @code{[poly1,...,polyn]}.
+@var{polylist2} is a list of n polynomials @code{[poly1,...,polyn]}.
 Returns the reduced Groebner basis of the ideal
 @iftex
 @tex

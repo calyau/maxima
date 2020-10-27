@@ -572,7 +572,7 @@ The contracted form is rendered with the variables in @var{lvar}.
 @anchor{partpol}
 @deffn {Function} partpol (@var{psym}, @var{lvar})
 @var{psym} is a symmetric polynomial in the variables of the list
-@var{lvar}. This function retturns its partitioned representation.
+@var{lvar}. This function returns its partitioned representation.
 
 @c GENERATED FROM THE FOLLOWING
 @c partpol (-a*(x + y) + 3*x*y, [x, y]);
@@ -622,7 +622,7 @@ calculates the direct image (see M. Giusti, D. Lazard et A. Valibouze,
 ISSAC 1988, Rome) associated to the function @var{f}, in the lists of
 variables @var{lvar_1}, ..., @var{lvar_n}, and in the polynomials
 @var{p_1}, ..., @var{p_n} in a variable @var{y}.  The arity of the
-function @var{f} is important for the calulation.  Thus, if the
+function @var{f} is important for the calculation.  Thus, if the
 expression for @var{f} does not depend on some variable, it is useless
 to include this variable, and not including it will also considerably
 reduce the amount of computation.
@@ -993,7 +993,7 @@ See also: @mrefcomma{lgtreillis} @mref{ltreillis} and @mrefdot{treinat}
 
 @anchor{treinat}
 @deffn {Function} treinat (@var{part})
-retruns the list of partitions inferior to the partition @var{part} w.r.t.
+returns the list of partitions inferior to the partition @var{part} w.r.t.
 the natural order.
 
 @c GENERATED FROM THE FOLLOWING

@@ -426,7 +426,7 @@ In the second form, @code{dgemm} computes the @math{@var{alpha} *
 @var{C} are real matrices of the appropriate sizes and @var{alpha} and
 @var{beta} are real numbers.  Optionally, @var{A} and/or @var{B} can
 be transposed before computing the product.  The extra parameters are
-specifed by optional keyword arguments: The keyword arguments are
+specified by optional keyword arguments: The keyword arguments are
 optional and may be specified in any order.  They all take the form
 @code{key=val}.  The keyword arguments are:
 

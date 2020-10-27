@@ -90,7 +90,7 @@ which are called by adding one of the following prefixes:
 @item Summary
 Just a summary at the end is shown
 @item Verbose
-Some information in the intermidiate steps
+Some information in the intermediate steps
 @item VeryVerbose
 More information
 @item Extra
@@ -140,7 +140,7 @@ Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
 @anchor{GosperSum}
 @deffn {Function} GosperSum (@math{F_k}, @var{k}, @var{a}, @var{b})
 
-Returns the summmation of @math{F_k} from @math{@var{k} = @var{a}} to @math{@var{k} = @var{b}}
+Returns the summation of @math{F_k} from @math{@var{k} = @var{a}} to @math{@var{k} = @var{b}}
 if @math{F_k} has a hypergeometric anti-difference.
 Otherwise, @code{GosperSum} returns @code{nongosper_summable}.
 
