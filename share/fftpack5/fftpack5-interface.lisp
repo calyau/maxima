@@ -188,9 +188,9 @@
     ;; To match the fft package, we want to do the inverse FFT here
     ;; and then we need to scale the result by 1/N.
     (fftpack5:inverse-cfft z)
-    (let ((n (coerce (length z) 'double-float)))
+    (let* ((n (length z)) (n-float (coerce n 'double-float)))
       (dotimes (k n)
-	(setf (aref z k) (/ (aref z k) n)))
+	(setf (aref z k) (/ (aref z k) n-float)))
       (funcall from-lisp z))))
 
 (defmfun $fftpack5_inverse_fft (input)
@@ -210,9 +210,9 @@
     ;; To match the fft package, we want to do the forward FFT here
     ;; and scale the result by N.
     (fftpack5:cfft z)
-    (let ((n (coerce (length z) 'double-float)))
+    (let* ((n (length z)) (n-float (coerce n 'double-float)))
       (dotimes (k n)
-	(setf (aref z k) (* n (aref z k))))
+	(setf (aref z k) (* n-float (aref z k))))
       (funcall from-lisp z))))
 
 (defmfun $fftpack5_real_fft (input)
