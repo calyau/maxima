@@ -1,0 +1,57 @@
+time_it (e) ::= buildq ([e], block ([t0: elapsed_run_time (), t1], e, t1: elapsed_run_time (), t1 - t0));
+
+fft_test_case (fft_function, n_function, m) :=
+  makelist (block ([n: n_function (k)], [n, fft_test_case_1 (fft_function, n)]), k, 1, m);
+
+fft_test_case_1 (fft_function, n) :=
+  block ([data: makelist (random (1.0), n)],
+         time_it (fft_function (data)));
+
+if not ?fboundp (fftpack5_fft)
+  then load (fftpack5);
+
+if not ?fboundp (fft)
+  then load (fft);
+
+/* n power of 2 */
+
+time_fft_power_of_2: fft_test_case (fft, lambda ([m], 2^m), 16);
+
+time_fftpack5_power_of_2: fft_test_case (fftpack5_fft, lambda ([m], 2^m), 16);
+
+/* n highly composite -- power of 10 */
+
+time_fftpack5_power_of_10: fft_test_case (fftpack5_fft, lambda ([m], 10^m), 5);
+
+/* n highly composite -- product of primes */
+
+primes_list: primes (5, 17);
+time_fftpack5_product_of_primes: fft_test_case (fftpack5_fft, lambda ([m], product (primes_list[i], i, 1, m)), length (primes_list));
+
+/* n prime */
+
+time_fftpack5_prime: fft_test_case (fftpack5_fft, lambda ([m], next_prime (2^m)), 12);
+
+/* present results */
+
+all_symbols: '[time_fft_power_of_2, time_fftpack5_power_of_2, time_fftpack5_power_of_10, time_fftpack5_product_of_primes, time_fftpack5_prime];
+
+all_points: makelist ([discrete, ev(l)], l, all_symbols);
+
+all_legends: cons ('legend, makelist (string (x), x, all_symbols));
+
+all_styles: cons ('style, makelist ('linespoints, length (all_symbols)));
+
+sanitize (s) := ssubst ("", ")", ssubst ("", "(", ssubst ("_", " ", ssubst ("_", ".", s))));
+
+lisp_version_string: sanitize (sconcat (build_info()@lisp_name, "_", build_info()@lisp_version));
+
+pdf_filename_base: sconcat ("test_FFT_speed_", lisp_version_string);
+
+pdf_filename: sconcat (maxima_userdir, "/", pdf_filename_base, ".pdf");
+
+plot2d (all_points, all_legends, all_styles,
+        [pdf_file, pdf_filename],
+        [title, sconcat ("Time to compute FFT, ", build_info()@lisp_name)],
+        [xlabel, "length of input"],
+        [ylabel, "seconds"]);
