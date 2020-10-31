@@ -3243,8 +3243,8 @@
                   '($multipage_pdf $multipage_pdfcairo $multipage_eps $multipage_eps_color)))
 
     (setf
-       gfn (plot-temp-file (get-option '$gnuplot_file_name))
-       dfn (plot-temp-file (get-option '$data_file_name)))
+       gfn (plot-temp-file (get-option '$gnuplot_file_name) t)
+       dfn (plot-temp-file (get-option '$data_file_name) t))
 
     ;; we now create two files: maxout.gnuplot and data.gnuplot
     (setf cmdstorage

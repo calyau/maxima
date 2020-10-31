@@ -152,7 +152,7 @@
 
     (if  ip-gnuplot
         (if (and (eq gnuplot-term '$default) gnuplot-out-file)
-            (setq file-name (plot-file-path gnuplot-out-file))
+            (setq file-name (plot-file-path gnuplot-out-file t))
           (setq file-name (plot-file-path
                            (format nil "maxout~d.gnuplot" (getpid)))))
       (setq file-name (plot-file-path

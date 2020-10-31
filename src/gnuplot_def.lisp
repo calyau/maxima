@@ -439,7 +439,7 @@
     (format out "~s title ~s ~a ~a" file title gstrings style)))))
 
 (defun gnuplot-terminal-and-file (plot-options)
-(let (terminal-command out-file)
+(let (terminal-command out-file (preserve-file t))
   (cond
     ((getf plot-options :svg_file)
      (if (getf plot-options :gnuplot_svg_term_command)
@@ -494,10 +494,10 @@
            (ensure-string (getf plot-options :gnuplot_term))))
      (if (getf plot-options :gnuplot_out_file)
          (setq out-file (getf plot-options :gnuplot_out_file))
-         (setq
+         (setq preserve-file nil
           out-file
           (format nil "maxplot.~(~a~)"
                   (get-gnuplot-term (getf plot-options :gnuplot_term)))))))
 
-  (unless (null out-file) (setq out-file (plot-file-path out-file)))
+  (unless (null out-file) (setq out-file (plot-file-path out-file preserve-file)))
   (list terminal-command out-file)))
