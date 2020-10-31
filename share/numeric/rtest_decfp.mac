@@ -16,3 +16,8 @@ true;
 
 rationalize(1.0L-1)-1/10;
 0;
+
+/* The decfp code changes the value of bigfloatone (and possibly other 
+such values) to decimal floats. Let's reset them. */
+(reset(?bigfloat%pi,?bigfloat%e,?bfmhalf,?bfhalf,?bigfloatone,?bigfloatzero),0);
+0$

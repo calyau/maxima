@@ -740,7 +740,7 @@ Examples:
 @end group
 @end example
 
-If @code{carg} returns a noun form this most communly is caused by
+If @code{carg} returns a noun form this most commonly is caused by
 some properties of the variables involved not being known:
 
 @c ===beg===

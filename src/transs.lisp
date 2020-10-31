@@ -288,5 +288,15 @@ translated."
 
 (defmspec $compile (form)
   (let ((l (meval `(($translate) ,@(cdr form)))))
-    (mapc #'(lambda (x) (if (fboundp x) (compile x))) (cdr l))
-    l))
+    (flet ((safe-compile (f)
+             (when (fboundp f)
+               (compile f))))
+      (dolist (f (cdr l) l)
+        ; First compile the named translated function.
+        (safe-compile f)
+        ; If DEFMFUN was used to define the function, then compile
+        ; the impl function defined by DEFMFUN if it exists.  The
+        ; impl function actually contains the translated user code
+        ; that we want to compile.
+        (let ((impl (get f 'impl-name)))
+          (safe-compile impl))))))

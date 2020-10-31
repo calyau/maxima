@@ -32,6 +32,7 @@
    #:int-add #:int-sub #:int-mul
    ;; Utilities
    #:array-slice #:array-initialize
+   #:make-compatible-seq #:f2cl-copy-seq
    ;; Intrinsic functions
    #:abs #:acos #:aimag #:dimag #:aint #:alog #:alog10 #:amax0 #:amax1
    #:amin1 #:amod #:anint #:asin #:atan #:atan2

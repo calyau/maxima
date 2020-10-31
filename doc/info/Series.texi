@@ -1190,7 +1190,7 @@ When @code{taylor_truncate_polynomials} is @code{true},
 polynomials are truncated based upon the input truncation levels.
 
 Otherwise,
-polynomials input to @code{taylor} are considered to have infinite precison.
+polynomials input to @code{taylor} are considered to have infinite precision.
 @c WHAT IS "INFINITE PRECISION" IN THIS CONTEXT ??
 
 @opencatbox

@@ -174,7 +174,7 @@ are applied  to  the  factors  of  the  factored  form   of  the
 coefficients of the arguments.
 
 When  @code{false}, @code{facsum} is applied to
-each coefficient as a whole whenever recusive calls to  @code{facsum} occur.
+each coefficient as a whole whenever recursive calls to  @code{facsum} occur.
 
 Inclusion   of   the  atom
 @code{nextlayerfactor} in  the argument  list of @code{facsum}  has the  effect of

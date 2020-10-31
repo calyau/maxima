@@ -47,7 +47,7 @@
 
     (if (and (find (getf options :plot_format) '($gnuplot_pipes $gnuplot))
              (eq gnuplot-term '$default) output-file)
-        (setq file-name (plot-file-path output-file))
+        (setq file-name (plot-file-path output-file t))
       (setq file-name
 	    (plot-file-path
 	     (format nil "maxout~d.~(~a~)" (getpid)
@@ -119,7 +119,7 @@
 
     (if (and (find (getf options :plot_format) '($gnuplot_pipes $gnuplot))
              (eq gnuplot-term '$default) output-file)
-        (setq file-name (plot-file-path output-file))
+        (setq file-name (plot-file-path output-file t))
         (setq file-name
               (plot-file-path
                (format nil "maxout~d.~(~a~)" (getpid)

@@ -42,7 +42,7 @@ an implicit solution for the dependent variable,
 a parametric solution in terms of variable @code{%t}, or
 
 @item
-a tranformation into another ODE in variable @code{%u}.
+a transformation into another ODE in variable @code{%u}.
 
 @end itemize
 
@@ -565,7 +565,7 @@ Fix the LAGRANGE routine @code{ode1_lagrange} to prefer real roots over
 Add additional methods for Riccati equations.
 
 @item
-Improve the detection of Abel equations of second kind.  The exisiting
+Improve the detection of Abel equations of second kind.  The existing
   pattern matching is weak.
 
 @item
@@ -612,7 +612,7 @@ There are some crashes.
 
 @enumerate
 @item
-E. Kamke, Differentialgleichungen Losungsmethoden und Losungen, Vol 1,
+E. Kamke, Differentialgleichungen L@"osungsmethoden und L@"osungen, Vol 1,
     Geest & Portig, Leipzig, 1961
 
 @item

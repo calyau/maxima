@@ -37,11 +37,11 @@ A selection of useful objects a scene can be made up from are:
 A short description of all draw commands and options including example plots
 (in the html and pdf version of this manual) can be found in the section
 @xref{Functions and Variables for draw}. An online version of the html manual can be
-found at @url{maxima.sourceforge.net/docs/manual/maxima_singlepage.html#draw}. 
+found at @url{http://maxima.sourceforge.net/docs/manual/maxima_singlepage.html#draw}.
 More elaborated examples of this package can be found at the following locations:
 
-@url{http://tecnostats.net/Maxima/gnuplot} @*
-@url{http://tecnostats.net/Maxima/vtk} 
+@url{http://riotorto.users.sourceforge.net/Maxima/gnuplot/} @*
+@url{http://riotorto.users.sourceforge.net/Maxima/vtk/}
 
 Example:
 
@@ -599,7 +599,7 @@ Sets the background color for terminals. Default background color is white.
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
-This option das not work with terminals @code{epslatex} and @code{epslatex_standalone}.
+This option does not work with terminals @code{epslatex} and @code{epslatex_standalone}.
 
 See also @code{color}
 
@@ -780,7 +780,7 @@ brown            orange           dark_orange      violet
 dark_violet      plum             purple
 @end verbatim
 
-Cromatic componentes in hexadecimal code are introduced in the form @code{"#rrggbb"}.
+Cromatic components in hexadecimal code are introduced in the form @code{"#rrggbb"}.
 
 Example:
 
@@ -1522,7 +1522,7 @@ the menu of the graph window.
 @item
 @i{png, jpeg, gif}:
 The @i{libgd} library uses the font path stored in the environment
-variable @code{GDFONTPATH}; in this case, it is only necessary to
+variable @env{GDFONTPATH}; in this case, it is only necessary to
 set option @code{font} to the font's name. It is also possible to
 give the complete path to the font file.
 
@@ -5817,7 +5817,7 @@ arrays have two coordinates in the extremes in common. In this
 example, the two first components of @code{boundaries_array[171]} are
 equal to the last two coordinates of @code{boundaries_array[173]}, and 
 the two first of @code{boundaries_array[173]} are equal to the two first
-of @code{boundaries_array[1143]}; in conclussion, boundary numbers
+of @code{boundaries_array[1143]}; in conclusion, boundary numbers
 171, 173 and 1143 (in this order) are compatible and the colored 
 polygon can be drawn.
 @example

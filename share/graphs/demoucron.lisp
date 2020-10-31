@@ -375,12 +375,6 @@
 	(cons '(mlist simp) (mapcar #'(lambda (u) (cons '(mlist simp) u)) *facial-walks*))
 	t) ))
 
-(defun is-planar-unconnected (g)
-  (loop for c in (cdr ($connected_components g)) do
-       (unless ($is_planar ($induced_subgraph c g))
-	 (return-from is-planar-unconnected nil)))
-  t)
-
 (defmfun $planar_embedding (gr)
   (require-graph 'planar_embedding 1 gr)
   (unless ($is_biconnected gr)
@@ -403,3 +397,9 @@
 	     (unless (demoucron ($induced_subgraph c gr) nil)
 	       (return-from $is_planar nil))))
     t))
+
+(defun is-planar-unconnected (g)
+  (loop for c in (cdr ($connected_components g)) do
+       (unless ($is_planar ($induced_subgraph c g))
+	 (return-from is-planar-unconnected nil)))
+  t)

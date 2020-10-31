@@ -14,7 +14,6 @@
  		       								 
 
 ($put '$to_poly 2 '$version)
-($load '$polynomialp)
 
 (defmacro opapply (op args)
   `(simplify (cons (list ,op) ,args)))

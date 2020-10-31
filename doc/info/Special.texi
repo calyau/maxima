@@ -945,7 +945,7 @@ beta: expected nonzero arguments; found 0, b
  -- an error.  To debug this try debugmode(true);
 @end example
 
-Numercial evaluation for real and complex arguments in float or bigfloat 
+Numerical evaluation for real and complex arguments in float or bigfloat
 precision:
 
 @example
@@ -1010,7 +1010,7 @@ defined through a generalized hypergeometric function:
    gamma(a) hypergeometric_generalized([a, 1 - b], [a + 1], z) z
 @end example
 
-(See functions.wolfram.com for a complete definition of the incomplete beta 
+(See @url{https://functions.wolfram.com} for a complete definition of the incomplete beta
 function.)
 
 For negative integers @math{a = -n} and positive integers @math{b=m} with 
@@ -1184,7 +1184,7 @@ beta_incomplete_regularized(a, b, z) =
 @end example
 
 As for @code{beta_incomplete} this definition is not complete. See 
-functions.wolfram.com for a complete definition of 
+@url{https://functions.wolfram.com} for a complete definition of
 @code{beta_incomplete_regularized}.
 
 @code{beta_incomplete_regularized} simplifies @var{a} or @var{b} a positive 
@@ -1585,7 +1585,7 @@ Returns the numerical factor multiplying the expression
 @node Exponential Integrals, Error Function, Gamma and factorial Functions, Special Functions
 @section Exponential Integrals
 
-The Exponential Integral and related funtions are defined in 
+The Exponential Integral and related functions are defined in
 Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 5
 
@@ -1766,7 +1766,7 @@ for positive integers in terms of Ei
 @node Error Function, Struve Functions, Exponential Integrals, Special Functions
 @section Error Function
 
-The Error function and related funtions are defined in 
+The Error function and related functions are defined in
 Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 7
 

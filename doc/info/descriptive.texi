@@ -137,7 +137,7 @@ In order to load these digits in Maxima,
 @end group
 @end example
 
-On the other hand, file @code{wind.data} contains daily average wind speeds at 5 meteorological stations in the Republic of Ireland (This is part of a data set taken at 12 meteorological stations. The original file is freely downloadable from the StatLib Data Repository and its analysis is discused in Haslett, J., Raftery, A. E. (1989) @var{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied Statistics 38, 1-50). This loads the data:
+On the other hand, file @code{wind.data} contains daily average wind speeds at 5 meteorological stations in the Republic of Ireland (This is part of a data set taken at 12 meteorological stations. The original file is freely downloadable from the StatLib Data Repository and its analysis is discussed in Haslett, J., Raftery, A. E. (1989) @var{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied Statistics 38, 1-50). This loads the data:
 
 @c ===beg===
 @c s2 : read_matrix (file_search ("wind.data"))$
@@ -2302,7 +2302,7 @@ See also @mref{cov} and @mrefdot{cov1}
 @fname{principal_components} (@var{matrix}) @
 @fname{principal_components} (@var{matrix}, @var{options} ...)
 
-Calculates the principal componentes of a multivariate sample. Principal components are
+Calculates the principal components of a multivariate sample. Principal components are
 used in multivariate statistical analysis to reduce the dimensionality of the sample.
 
 Option:
@@ -2383,7 +2383,7 @@ but option @code{data=false} must be used.
                                 [             ]
                                 [  0    0   2 ]
 (%i3) fpprintprec:4 $
-(%i4) /* the argumment is a covariance matrix */
+(%i4) /* the argument is a covariance matrix */
       res: principal_components(S, data=false);
 0 errors, 0 warnings
                                                   [ - .3827  0.0  .9239 ]
@@ -2829,7 +2829,7 @@ a list indicating the limits of the classes and the number of them, or
 only the limits. This option also accepts bounds for varying bin widths, or
 a symbol with the name of one of the three optimal algorithms available for
 the number of classes: @code{'fd} (Freedman, D. and Diaconis, P. (1981) On the 
-histogram as a density estimator: L_2 theory. Zeitschrift fuer 
+histogram as a density estimator: L_2 theory. Zeitschrift f@"ur
 Wahrscheinlichkeitstheorie und verwandte Gebiete 57, 453-476.), @code{'scott}
 (Scott, D. W. (1979) On optimal and data-based histograms. Biometrika 66, 
 605-610.), and @code{'sturges} (Sturges, H. A. (1926) The choice of a class

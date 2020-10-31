@@ -3,7 +3,7 @@
 ;       ***************************************************************
 ;       *                    MODULE SYM                               *
 ;       *       MANIPULATIONS DE FONCTIONS SYMETRIQUES                *
-;       *        (version01: Commonlisp pour Maxima)                 *
+;       *        (version01: Commonlisp pour Maxima)                  *
 ;       *                                                             *
 ;       *                ----------------------                       *
 ;       *                  Annick VALIBOUZE                           *

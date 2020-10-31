@@ -113,6 +113,18 @@
       (graph-size gr)
       (digraph-size gr)))
 
+(defmfun $get_positions (gr)
+  (require-graph-or-digraph 'get_positions 1 gr)
+  (if (graph-p gr)
+      (graph-vertex-positions gr)
+      (digraph-vertex-positions gr)))
+
+(defmfun $set_positions (pos gr)
+  (require-graph-or-digraph 'set_positions 2 gr)
+  (if (graph-p gr)
+      (setf (graph-vertex-positions gr) pos)
+      (setf (digraph-vertex-positions gr) pos)))
+
 (defmfun $copy_graph (gr)
   (require-graph-or-digraph 'copy_graph 1 gr)
   (if (graph-p gr)
@@ -138,18 +150,6 @@
 	    (if w (set-edge-weight e w g))))
         ($set_positions ($get_positions gr) g)
 	g) ))
-
-(defmfun $get_positions (gr)
-  (require-graph-or-digraph 'get_positions 1 gr)
-  (if (graph-p gr)
-      (graph-vertex-positions gr)
-      (digraph-vertex-positions gr)))
-
-(defmfun $set_positions (pos gr)
-  (require-graph-or-digraph 'set_positions 2 gr)
-  (if (graph-p gr)
-      (setf (graph-vertex-positions gr) pos)
-      (setf (digraph-vertex-positions gr) pos)))
 
 (defmfun $new_graph ()
   (make-graph))
@@ -953,6 +953,7 @@
     g))
 
 (defmfun $random_graph1 (n m)
+  #+sbcl (declare (notinline $random_graph1))
   (unless (integerp n)
     ($error "Argument 1 to random_graph is not an integer"))
   (unless (integerp m)
@@ -1389,10 +1390,6 @@
 ;;; 2-connectivity
 ;;;
 
-(defmfun $is_biconnected (gr)
-  (require-graph 'is_biconnected 1 gr)
-  (eql ($length ($biconnected_components gr)) 1))
-
 (defmfun $biconnected_components (gr)
   (require-graph 'biconnected_components 1 gr)
   (if (= 0 (graph-order gr))
@@ -1405,6 +1402,10 @@
 	      (setq bicomp ($append bicomp `((mlist simp) ,c)))
 	      (setq bicomp ($append bicomp (bicomponents ($first c) gr)))))
 	bicomp)))
+
+(defmfun $is_biconnected (gr)
+  (require-graph 'is_biconnected 1 gr)
+  (eql ($length ($biconnected_components gr)) 1))
 
 (defvar *dfs-bicomp-depth* 0)
 (defvar *dfs-bicomp-num* ())
@@ -1470,10 +1471,6 @@
 (defvar *scon-vrt* nil)
 (defvar *scon-depth* 0)
 
-(defmfun $is_sconnected (gr)
-  (require-digraph 'strong_components 1 gr)
-  (eql ($length ($strong_components gr)) 1))
-
 (defmfun $strong_components (gr)
   (require-digraph 'strong_components 1 gr)
   (if (= 0 (digraph-order gr))
@@ -1491,6 +1488,10 @@
 		(push c res))
 	      (setq *scon-comp* ()))
 	`((mlist simp) ,@res))))
+
+(defmfun $is_sconnected (gr)
+  (require-digraph 'strong_components 1 gr)
+  (eql ($length ($strong_components gr)) 1))
 
 (defun dfs-strong-components (gr v)
   (incf *scon-depth*)
@@ -1823,17 +1824,6 @@
       (remove-vertex v h)))
   `((mlist simp) ,@(sort *maximum-clique* #'<)))
 
-(defmfun $max_independent_set (gr)
-  (require-graph 'max_independent_set 1 gr)
-  (if ($is_bipartite gr)
-      (let ((mis)
-	    (vc (cdr ($min_vertex_cover gr))))
-	(loop for v in (vertices gr) do
-	     (unless (member v vc)
-	       (setq mis (cons v mis))))
-	`((mlist simp) ,@mis))
-      ($max_clique ($complement_graph gr))))
-
 (defmfun $min_vertex_cover (gr)
   (require-graph 'min_vertex_cover 1 gr)
   (let ((bipart ($bipartition gr)))
@@ -1845,6 +1835,17 @@
 		 (setq vc (cons v vc))))
 	  `((mlist simp) ,@vc))
 	(maximum-matching-bipartite gr (cadr bipart) (caddr bipart) t))))
+
+(defmfun $max_independent_set (gr)
+  (require-graph 'max_independent_set 1 gr)
+  (if ($is_bipartite gr)
+      (let ((mis)
+	    (vc (cdr ($min_vertex_cover gr))))
+	(loop for v in (vertices gr) do
+	     (unless (member v vc)
+	       (setq mis (cons v mis))))
+	`((mlist simp) ,@mis))
+      ($max_clique ($complement_graph gr))))
 
 (defun extend-clique (clique neigh coloring gr)
   (if (= (length neigh) 0)

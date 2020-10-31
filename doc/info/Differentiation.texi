@@ -1012,7 +1012,17 @@ for which partial derivatives have been defined by @code{gradef}.
 @deffn {Function} laplace (@var{expr}, @var{t}, @var{s})
 
 Attempts to compute the Laplace transform of @var{expr} with respect to the 
-variable @var{t} and transform parameter @var{s}.
+variable @var{t} and transform parameter @var{s}.  The Laplace
+transform of the function @code{f(t)} is the one-sided transform defined by
+@ifnottex
+@example
+F(s) = integrate(f(t) * exp(-s*t), t, 0, inf)
+@end example
+@end ifnottex
+@tex
+$$F(s) = \int_0^{\infty} f(t) e^{-st} dt$$
+@end tex
+where @code{F(s)} is the transform of @code{f(t)}.
 
 @code{laplace} recognizes in @var{expr} the functions @mrefcomma{delta} @mrefcomma{exp}
 @mrefcomma{log} @mrefcomma{sin} @mrefcomma{cos} @mrefcomma{sinh} @mrefcomma{cosh} and @mrefcomma{erf}

@@ -183,3 +183,6 @@ ode_check('diff(y,x)=phi,%[1]);
 
 use_pdiff:false;
 false;
+
+kill(ans,eta,f,g,mu,phi,s,sym,xi);
+done;

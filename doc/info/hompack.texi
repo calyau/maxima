@@ -1,0 +1,176 @@
+@menu
+* Introduction to hompack::
+* Functions and Variables for hompack::  
+@end menu
+
+@node Introduction to hompack, Functions and Variables for hompack
+@section Introduction to hompack
+
+@code{Hompack} is a Common Lisp translation (via @code{f2cl}) of the
+Fortran library HOMPACK, as obtained from Netlib.
+
+@opencatbox
+@category{Numerical methods} 
+@category{Share packages}
+@category{Package hompack}
+@closecatbox
+
+@node Functions and Variables for hompack,  , Introduction to hompack
+@section Functions and Variables for hompack
+
+@anchor{hompack_polsys}
+@deffn {Function} hompack_polsys (@var{eqnlist}, @var{varlist} [, @var{iflg1}, @var{epsbig}, @var{epssml}, @var{numrr}])
+Finds the roots of the system of polynomials in the variables
+@var{varlist} in the system of equations in @var{eqnlist}.  The number
+of equations must match number of variables.  Each equation must be a
+polynomial with variables in @var{varlist}.  The coefficients must be
+real numbers.
+
+The optional keyword arguments provide some control over the
+algorithm.  @var{epsbig} is the local error tolerance allowed by the
+path tracker, defaulting to 1e-4.  @var{epssml} is the accuracy
+desired for the final solution, defaulting to 1d-14.. @var{iflg1},
+defaulting to 0, controls the algorithm as follows:
+@table @code
+@item 0
+If the problem is to be solved without calling @code{polsys}' scaling
+routine, @code{sclgnp}, and without using the projective
+transformation.
+@item 1
+If scaling but no projective transformation is to be used.
+@item 10
+If no scaling but projective transformation is to be used.
+@item 11
+If both scaling and projective transformation are to be used.
+@end table
+
+@code{hompack_polsys} returns a list.  The elements of the list are:
+@table @code
+@item retcode
+Indicates whether the solution is valid or not.
+@table @code
+@item 0
+Solution found without problems
+@item 1
+Solution succeeded but @code{iflg2} indicates some issues with a
+root. (That is, @code{iflg2} is not all ones.)
+@item -1
+@code{NN}, the declared dimension of the number of terms in the
+polynomials,  is too small.  (This should not happen.)
+@item -2
+@code{MMAXT}, the declared dimension for the internal coefficient and
+degree arrays, is too small.  (This should not happen.)
+@item -3
+@code{TTOTDG}, the total degree of the equations,  is too small.
+(This should not happen.)
+@item -4
+@code{LENWK}, the length of the internal real work array, is too
+small.  (This should not happen.)
+@item -5
+@code{LENIWK}, the length of the internal integer work array, is too
+small.  (This should not happen.)
+@item -6
+@var{iflg1} is not 0 or 1, or 10 or 11.  (This should not happen; an
+error should be thrown before @code{polsys} is called.)
+@end table
+@item roots
+The roots of the system of equations.  This is in the same format as
+@code{solve} would return.
+@item iflg2
+Information on how the path for the m'th root terminated:
+@table @code
+@item 1
+Normal return
+@item 2
+Specified error tolerance cannot be met.  Increase @var{epsbig} and
+@var{epssml}  and rerun.
+@item 3
+Maximum number of steps exceeded.  To track the path further, increase
+@var{numrr} and rerun the path.  However, the path may be diverging, if the
+lambda value is near 1 and the roots values are large.
+@item 4
+Jacobian matrix does not have full rank.  The algorithm has failed
+(the zero curve of the homotopy map cannot be followed any further).
+@item 5
+The tracking algorithm has lost the zero curve of the homotopy map and
+is not making progress.  The error tolerances @var{epsbig} and
+@var{epssml} were too lenient.  The problem should be restarted with
+smaller error tolerances.
+@item 6
+The normal flow newton iteration in @code{stepnf} or @code{rootnf}
+failed to converge.  The error tolerance @var{epsbig} may be too
+stringent.
+@item 7
+Illegal input parameters, a fatal error.
+@end table
+@item lambda
+The final lambda value for the m-th root, where lambda is the
+continuation parameter.
+@item arclen
+The arc length of the m-th root.
+@item nfe
+The number of jacobian matrix evaluations required to track the m-th
+root.
+@end table
+
+@example
+(%i1) hompack_polsys([x1^2-1, x2^2-2],[x1,x2]);
+(%o1) [0,
+       [[x1 = (-1.354505666901954e-16*%i)-0.9999999999999999,
+         x2 = 3.52147935979316e-16*%i-1.414213562373095],
+        [x1 = 1.0-5.536432658639868e-18*%i,
+         x2 = (-4.213674137126362e-17*%i)-1.414213562373095],
+        [x1 = (-9.475939894034927e-17*%i)-1.0,
+         x2 = 2.669654624736742e-16*%i+1.414213562373095],
+        [x1 = 9.921253413273088e-18*%i+1.0,
+         x2 = 1.414213562373095-5.305667769855424e-17*%i]],[1,1,1,1],
+       [1.0,1.0,0.9999999999999996,1.0],
+       [4.612623769341193,4.612623010859902,4.612623872939383,
+        4.612623114484402],[40,40,40,40]]
+@end example
+
+The analytical solution can be obtained with solve:
+@example
+(%i2) solve([x1^2-1, x2^2-2],[x1,x2]);
+(%o2) [[x1 = 1,x2 = -sqrt(2)],[x1 = 1,x2 = sqrt(2)],[x1 = -1,x2 = -sqrt(2)],
+        [x1 = -1,x2 = sqrt(2)]]
+@end example
+We see that @code{hompack_polsys} returned the correct answer except
+that the roots are in a different order and there is a small imaginary
+part.
+
+Another example, with corresponding solution from solve:
+@example
+(%i1) hompack_polsys([x1^2 + 2*x2^2 + x1*x2 - 5, 2*x1^2 + x2^2 + x2-4],[x1,x2]);
+(%o1) [0,
+       [[x1 = 1.201557301700783-1.004786320788336e-15*%i,
+         x2 = (-4.376615092392437e-16*%i)-1.667270363480143],
+        [x1 = 1.871959754090949e-16*%i-1.428529189565313,
+         x2 = (-6.301586314393093e-17*%i)-0.9106199083334113],
+        [x1 = 0.5920619420732697-1.942890293094024e-16*%i,
+         x2 = 6.938893903907228e-17*%i+1.383859154368197],
+        [x1 = 7.363503717463654e-17*%i+0.08945540033671608,
+         x2 = 1.557667481081721-4.109128293931921e-17*%i]],[1,1,1,1],
+       [1.000000000000001,1.0,1.0,1.0],
+       [6.205795654034752,7.722213259390295,7.228287079174351,
+        5.611474283583368],[35,41,48,40]]
+(%i2) solve([x1^2+2*x2^2+x1*x2 - 5, 2*x1^2+x2^2+x2-4],[x1,x2]);
+(%o2) [[x1 = 0.08945540336850383,x2 = 1.557667386609071],
+       [x1 = 0.5920619554695062,x2 = 1.383859286083807],
+       [x1 = 1.201557352500749,x2 = -1.66727025803531],
+       [x1 = -1.428529150636283,x2 = -0.9106198942815954]]
+@end example
+
+Note that @code{hompack_polsys} can sometimes be very slow.  Perhaps
+@code{solve} can be used.  Or perhaps @code{eliminate} can be used to
+convert the system of polynomials into one polynomial for which
+@code{allroots} can find all the roots.
+@end deffn
+
+@c Local Variables: 
+@c mode: texinfo
+@c TeX-master: "include-maxima"
+@c End: 
+
+
+

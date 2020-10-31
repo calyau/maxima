@@ -235,7 +235,7 @@ Example:
 @deffn {Function} arit_amortization (@var{rate},@var{increment},@var{amount},@var{num})
 
 The amortization table determined by a specific rate and with growing payment
-can be claculated by @code{arit_amortization}.
+can be calculated by @code{arit_amortization}.
 Notice that the payment is not constant, it presents
 an arithmetic growing, increment is then the difference between two
 consecutive rows in the "Payment" column.

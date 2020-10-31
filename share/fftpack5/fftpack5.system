@@ -1,0 +1,195 @@
+;;; -*- Mode: lisp -*-
+
+(mk:defsystem fftpack5-double
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "fftpack5")
+  :components
+  ((:file "fftpack5"
+    :source-extension "lisp")
+   (:module "fftpack5"
+    :source-pathname "lisp"
+    :components
+    ((:file "c1f2kb")
+     (:file "c1f2kf")
+     (:file "c1f3kb")
+     (:file "c1f3kf")
+     (:file "c1f4kb")
+     (:file "c1f4kf")
+     (:file "c1f5kb")
+     (:file "c1f5kf")
+     (:file "c1fgkb")
+     (:file "c1fgkf")
+     (:file "c1fm1b")
+     (:file "c1fm1f")
+     (:file "cfft1b"
+      :depends-on ("xerfft"))
+     (:file "cfft1f"
+      :depends-on ("xerfft" "mcfti1"))
+     (:file "cfft1i")
+     (:file "cfft2b"
+      :depends-on ("xerfft" "cfftmb"))
+     (:file "cfft2f"
+      :depends-on ("xerfft" "cfftmf"))
+     (:file "cfft2i"
+      :depends-on ("xerfft" "cfftmi"))
+     (:file "cfftmb"
+      :depends-on ("xerfft" "xercon" "cmfm1b"))
+     (:file "cfftmf"
+      :depends-on ("xerfft" "xercon" "cmfm1f"))
+     (:file "cfftmi"
+      :depends-on ("xerfft" "mcfti1"))
+     (:file "cmf2kb")
+     (:file "cmf2kf")
+     (:file "cmf3kb")
+     (:file "cmf3kf")
+     (:file "cmf4kb")
+     (:file "cmf4kf")
+     (:file "cmf5kb")
+     (:file "cmf5kf")
+     (:file "cmfgkb")
+     (:file "cmfgkf")
+     (:file "cmfm1b"
+      :depends-on ("cmf2kb" "cmf3kb" "cmf4kb" "cmf5kb" "cmfgkb"))
+     (:file "cmfm1f"
+      :depends-on ("cmf2kf" "cmf3kf" "cmf4kf" "cmf5kf" "cmfgkf"))
+     (:file "cosq1b"
+      :depends-on ("xerfft" "cosqb1"))
+     (:file "cosq1f"
+      :depends-on ("xerfft" "cosqf1"))
+     (:file "cosq1i"
+      :depends-on ("xerfft" "rfft1i"))
+     (:file "cosqb1"
+      :depends-on ("rfft1b" "xerfft"))
+     (:file "cosqf1"
+      :depends-on ("rfft1f" "xerfft"))
+     (:file "cosqmb"
+      :depends-on ("xerfft" "xercon" "mcsqb1"))
+     (:file "cosqmf"
+      :depends-on ("xerfft" "xercon" "mcsqf1"))
+     (:file "cosqmi"
+      :depends-on ("xerfft" "rfftmi"))
+     (:file "cost1b"
+      :depends-on ("xerfft" "costb1"))
+     (:file "cost1f"
+      :depends-on ("xerfft" "costf1"))
+     (:file "cost1i"
+      :depends-on ("xerfft" "rfft1i"))
+     (:file "costb1"
+      :depends-on ("rfft1f"))
+     (:file "costf1"
+      :depends-on ("rfft1f" "xerfft"))
+     #+nil
+     (:file "costmb"
+      :depends-on ("xerfft" "xercon" "mcstb1"))
+     #+nil
+     (:file "costmf"
+      :depends-on ("xerfft" "xercon" "mcstf1"))
+     (:file "costmi"
+      :depends-on ("xerfft" "rfftmi"))
+     (:file "factor")
+     (:file "mcfti1"
+      :depends-on ("tables" "factor"))
+     (:file "mcsqb1"
+      :depends-on ("rfftmb" "xerfft"))
+     (:file "mcsqf1"
+      :depends-on ("rfftmf" "xerfft"))
+     #+nil
+     (:file "mcstb1"
+      :depends-on ("rfftmf" "xerfft"))
+     #+nil
+     (:file "mcstf1"
+      :depends-on ("rfftmf" "xerfft"))
+     (:file "mradb2")
+     (:file "mradb3")
+     (:file "mradb4")
+     (:file "mradb5")
+     (:file "mradbg")
+     (:file "mradf2")
+     (:file "mradf3")
+     (:file "mradf4")
+     (:file "mradf5")
+     (:file "mradfg")
+     (:file "mrftb1"
+      :depends-on ("mradb4" "mradb2" "mradb3" "mradb5" "mradbg"))
+     (:file "mrftf1"
+      :depends-on ("mradf4" "mradf2" "mradf3" "mradf5" "mradfg"))
+     (:file "mrfti1")
+     (:file "msntb1"
+      :depends-on ("rfftmf" "xerfft"))
+     (:file "msntf1")
+     (:file "r1f2kb")
+     (:file "r1f2kf")
+     (:file "r1f3kb")
+     (:file "r1f3kf")
+     (:file "r1f4kb")
+     (:file "r1f4kf")
+     (:file "r1f5kb")
+     (:file "r1f5kf")
+     (:file "r1fgkb")
+     (:file "r1fgkf")
+     (:file "rfft1b"
+      :depends-on ("xerfft" "rfftb1"))
+     (:file "rfft1f"
+      :depends-on ("xerfft" "rfftf1"))
+     (:file "rfft1i"
+      :depends-on ("xerfft" "rffti1"))
+     (:file "rfft2b"
+      :depends-on ("xerfft" "rfftmb"))
+     (:file "rfft2f"
+      :depends-on ("xerfft" "rfftmf"))
+     (:file "rfft2i"
+      :depends-on ("xerfft" "rfftmi"))
+     (:file "rfftb1"
+      :depends-on ("r1f4kb" "r1f2kb" "r1f3kb" "r1fgkb" "r1f5kb"))
+     (:file "rfftf1"
+      :depends-on ("r1f4kf" "r1f2kf" "r1f3kf" "r1fgkf" "r1f5kf"))
+     (:file "rffti1")
+     (:file "rfftmb"
+      :depends-on ("xerfft" "xercon" "mrftb1"))
+     (:file "rfftmf"
+      :depends-on ("xerfft" "xercon" "mrftf1"))
+     (:file "rfftmi"
+      :depends-on ("xerfft" "mrfti1"))
+     (:file "sinq1b"
+      :depends-on ("xerfft"))
+     (:file "sinq1f"
+      :depends-on ("xerfft"))
+     (:file "sinq1i"
+      :depends-on ("xerfft"))
+     (:file "sinqmb"
+      :depends-on ("xerfft"))
+     (:file "sinqmf"
+      :depends-on ("xerfft" "xercon"))
+     (:file "sinqmi"
+      :depends-on ("xerfft"))
+     (:file "sint1b"
+      :depends-on ("xerfft" "sintb1"))
+     (:file "sint1f"
+      :depends-on ("xerfft" "sintf1"))
+     (:file "sint1i"
+      :depends-on ("xerfft"))
+     (:file "sintb1"
+      :depends-on ("xerfft"))
+     (:file "sintf1"
+      :depends-on ("xerfft"))
+     #+nil
+     (:file "sintmb"
+      :depends-on ("xerfft" "xercon"))
+     #+nil
+     (:file "sintmf"
+      :depends-on ("xerfft" "xercon"))
+     (:file "sintmi"
+      :depends-on ("xerfft"))
+     (:file "tables")
+     (:file "xercon")
+     (:file "xerfft")
+     ))))
+
+(mk:defsystem fftpack5-interface
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "fftpack5")
+  :source-extension "lisp"
+  :depends-on ("fftpack5-double")
+  :components
+  ((:file "fftpack5-interface")))
+    

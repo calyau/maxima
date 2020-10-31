@@ -37,10 +37,10 @@ References:
 @node Getting Started with ODEPACK, Functions and Variables for odepack, Introduction to ODEPACK, odepack-pkg
 @subsection Getting Started with ODEPACK
 
-Of the eight variants of the solver, maxima currently only has an
-inteface the @code{dlsode}.
+Of the eight variants of the solver, Maxima currently only has an
+interface the @code{dlsode}.
 
-Let's say we have this sytem of equations to solve:
+Let's say we have this system of equations to solve:
 @example
   f1 = -.04d0*y1 + 1d4*y2*y3
   f3 = 3d7*y2*y2
@@ -165,7 +165,7 @@ Lisp array holding the real-valued work vector.
 @item iwork
 Lisp array holding the integer-valued work vector.
 @item fjac
-Compiled analytical Jacobian of the eqations
+Compiled analytical Jacobian of the equations
 @end table
 
 See also @mrefdot{dlsode_step}
@@ -176,7 +176,7 @@ See also @mrefdot{dlsode_step}
 @deffn {Function} dlsode_step (@var{inity}, @var{t}, @var{tout}, @var{rtol}, @var{atol}, @var{istate}, @var{state})
 
 Performs one step of the solver, returning the values of the
-independent and dependent variables, a succes or error code.
+independent and dependent variables, a success or error code.
 
 @table @code
 @item inity
@@ -227,8 +227,8 @@ Illegal input detected
 Repeated convergence failures (perhaps bad Jacobian or wrong choice of
 mf or tolerances)
 @item -6
-Error weight becase zero during problem (solution component i
-vanishded and atol(i) = 0.
+Error weight because zero during problem (solution component is
+vanished and atol(i) = 0.
 @end table
 @item info
 association list of various bits of information:

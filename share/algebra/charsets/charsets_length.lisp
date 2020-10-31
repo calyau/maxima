@@ -149,7 +149,7 @@
   "Length function similar to maple one for lists of polynomials"
   (cond ((and (listp x) (listp (car x)) (or (eq (caar x) 'MLIST) (eq (caar x) '$SET)))
 	 (+ 3 (length (cdr x)) (reduce #'+ (mapcar #' $charsets_polylength (cdr x)))))
-	(($polynomialp x) ($charsets_polylength x))
+	(($charsets_polynomialp x) ($charsets_polylength x))
 	(t (merror "Only lists or sets of polynomials supported."))))
 
 

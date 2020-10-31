@@ -1115,7 +1115,7 @@ for the variables @math{l}.  The equation(s) @math{e} can either be a
 single expression or a set or list of expressions; similarly, @math{l}
 can either be a single symbol or a list of set of symbols.  When
 a member of @math{e} isn't explicitly an equation, for example @math{x^2 -1},
-the solver asummes that the expression vanishes.
+the solver assumes that the expression vanishes.
 
 The basic strategy of @code{to_poly_solve} is to convert the input into a polynomial form and to 
 call @code{algsys} on the polynomial system. Internally  @code{to_poly_solve} defaults @code{algexact} 
@@ -1144,7 +1144,7 @@ unable to solve
 (%o3)            %solve([x  + 2 x + 1 = 0], [x])
 @end example
 
-Subsitution into a @code{%solve} nounform can sometimes result in the solution
+Substitution into a @code{%solve} nounform can sometimes result in the solution
 
 @example
 (%i4) subst(k = 2, %);
@@ -1171,9 +1171,9 @@ Occasionally, the solver introduces an arbitrary complex number of the
 form @code{%cXXX} or an  arbitrary real number of the form @code{%rXXX}.
 The function @code{nicedummies} will re-index these identifiers to zero.
 
-The solution set sometimes involves simplifing versions of various
+The solution set sometimes involves simplifying versions of various
 of logical operators including @code{%and}, @code{%or}, or @code{%if}
-for conjunction, disjuntion, and implication, respectively; for example
+for conjunction, disjunction, and implication, respectively; for example
 
 @example
 (%i7) sol : to_poly_solve(abs(x) = a, x);
@@ -1472,9 +1472,9 @@ where @var{x}, @var{y}, and @var{z} are one or more unknowns.
 In such cases, @code{to_poly_solve} returns a @code{%union} expression
 containing one or more such lists.
 
-The solution set sometimes involves simplifing versions of various
+The solution set sometimes involves simplifying versions of various
 of logical operators including @code{%and}, @code{%or}, or @code{%if}
-for conjunction, disjuntion, and implication, respectively.
+for conjunction, disjunction, and implication, respectively.
 
 Examples:
 
@@ -1505,7 +1505,7 @@ In many cases, a solution is a list of equations.
 (%o2)                       %union()
 @end example
 
-The solution set sometimes involves simplifing versions of various
+The solution set sometimes involves simplifying versions of various
 of logical operators.
 
 @c ===beg===

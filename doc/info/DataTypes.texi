@@ -373,7 +373,6 @@ m1pbranch:false          m1pbranch:true
 Return @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an integer.
 
 @opencatbox
-@category{Package linearalgebra}
 @category{Predicate functions}
 @closecatbox
 @end deffn

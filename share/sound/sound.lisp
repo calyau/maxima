@@ -313,7 +313,7 @@
          fname)
       (declare (type fixnum num-chn num-sam))
       (setf fname (get-sound-option '$file_name))
-      (with-open-file (out (plot-temp-file ($sconcat fname ".wav"))
+      (with-open-file (out (plot-temp-file ($sconcat fname ".wav") t)
                       :direction :output
                       :if-exists :supersede
                       :element-type '(unsigned-byte 8))
@@ -557,11 +557,11 @@
                                     ""
                                     ($sconcat "." ($pathname_type str))))
                             res2
-                            (plot-temp-file (get-sound-option '$file_name))))
+                            (plot-temp-file (get-sound-option '$file_name) t)))
              ($system (format nil "\"~a\" ~a \"~a.wav\""
                             str
                             res2
-                            (plot-temp-file (get-sound-option '$file_name))))))))
+                            (plot-temp-file (get-sound-option '$file_name) t)))))))
 
 
 
