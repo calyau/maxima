@@ -2206,7 +2206,7 @@
      (mul '$%i (simplify (list '(%erfi) (coeff z '$%i 1)))))
     ((apply-reflection-simp (mop expr) z $trigsign))
     
-    ;; Representation through equivalent functions
+    ;; Representation through more general functions
     
     ($hypergeometric_representation
       (mul 2 z 
@@ -2621,7 +2621,7 @@
     ((and $trigsign (great (mul -1 z) z))
      (sub 2 (simplify (list  '(%erfc) (mul -1 z)))))
     
-    ;; Representation through equivalent functions
+    ;; Representation through more general functions
     
     ($hypergeometric_representation
       (sub 1
@@ -2757,7 +2757,7 @@
      (mul '$%i (simplify (list '(%erf) (coeff z '$%i 1)))))
     ((apply-reflection-simp (mop expr) z $trigsign))
 
-    ;; Representation through equivalent functions
+    ;; Representation through more general functions
     
     ($hypergeometric_representation
       (mul 2 z
