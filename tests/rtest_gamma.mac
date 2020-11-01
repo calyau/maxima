@@ -2803,6 +2803,10 @@ erfc(z);
 erfi(z);
 2*z*'hypergeometric([1/2],[3/2],z^2)/sqrt(%pi);
 
+erf_generalized(z1,z2);
+2*z2*'hypergeometric([1/2],[3/2],-z2^2)/sqrt(%pi) -
+2*z1*'hypergeometric([1/2],[3/2],-z1^2)/sqrt(%pi);
+
 hypergeometric_representation:false;
 false;
 

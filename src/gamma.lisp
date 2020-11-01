@@ -2517,6 +2517,11 @@
       ((and $trigsign (great (mul -1 z1) z1) (great (mul -1 z2) z2))
        (mul -1 (simplify (list '(%erf_generalized) (mul -1 z1) (mul -1 z2)))))
 
+      ;; Representation through more general functions
+
+      ($hypergeometric_representation
+       (sub (erf-hypergeometric z2) (erf-hypergeometric z1)))
+
       ;; Transformation to Erf
 
       ($erf_representation
