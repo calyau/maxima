@@ -2173,6 +2173,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun erf-hypergeometric (z)
+  ; See A&S 7.1.21 or http://functions.wolfram.com/06.25.26.0001.01
+  (mul 2
+       z
+       (power '$%pi '((rat simp) -1 2))
+       (list '(%hypergeometric simp)
+             (list '(mlist simp) '((rat simp) 1 2))
+             (list '(mlist simp) '((rat simp) 3 2))
+             (mul -1 (power z 2)))))
+
 (defun simp-erf (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
@@ -2209,12 +2219,7 @@
     ;; Representation through more general functions
     
     ($hypergeometric_representation
-      (mul 2 z 
-           (power '$%pi '((rat simp) 1 2))
-           (list '(%hypergeometric simp)
-                 (list '(mlist simp) '((rat simp) 1 2))
-                 (list '(mlist simp) '((rat simp) 3 2))
-                 (mul -1 (power z 2)))))
+     (erf-hypergeometric z))
     
     ;; Transformation to Erfc or Erfi
     
@@ -2624,13 +2629,7 @@
     ;; Representation through more general functions
     
     ($hypergeometric_representation
-      (sub 1
-        (mul 2 z 
-             (power '$%pi '((rat simp) 1 2))
-             (list '(%hypergeometric simp)
-                   (list '(mlist simp) '((rat simp) 1 2))
-                   (list '(mlist simp) '((rat simp) 3 2))
-                   (mul -1 (power z 2))))))
+     (sub 1 (erf-hypergeometric z)))
     
     ;; Transformation to Erf or Erfi
 
@@ -2760,12 +2759,7 @@
     ;; Representation through more general functions
     
     ($hypergeometric_representation
-      (mul 2 z
-        (power '$%pi '((rat simp) 1 2))
-               (list '(%hypergeometric simp)
-                     (list '(mlist simp) '((rat simp) 1 2))
-                     (list '(mlist simp) '((rat simp) 3 2))
-                     (power z 2))))
+     (mul -1 '$%i (erf-hypergeometric (mul '$%i z))))
     
     ;; Transformation to Erf or Erfc
     
