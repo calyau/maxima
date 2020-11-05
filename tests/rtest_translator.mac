@@ -1427,3 +1427,76 @@ true;
 
 (kill (translate_or_lose, compile_or_lose), 0);
 0;
+
+/* https://stackoverflow.com/questions/64631208/compilation-global-variables-with-warning
+ *
+ * First verify that error_syms and niceindicespref assignments work as expected.
+ */
+
+kill (aa, bb, cc);
+done;
+
+errcatch (error_syms: 123);
+[];
+
+errcatch (error_syms: [aa, bb, 123]);
+[];
+
+error_syms: [aa, bb, cc];
+[aa, bb, cc];
+
+errcatch (niceindicespref: 123);
+[];
+
+errcatch (niceindicespref: []);
+[];
+
+niceindicespref: [aa, bb, cc];
+[aa, bb, cc];
+
+(reset (error_syms, niceindicespref), 0);
+0;
+
+/* now the example from the Stackoverflow question */
+
+(program_content:
+"define_variable(foo, true, boolean)$
+foo: true$
+
+exprp(that) := if foo = false and listp(that) and not emptyp(that) and member(that[1], [\"+\", \"*\"]) then(foo: true, true)$
+matchdeclare(exprm, exprp)$
+defrule(rule_1, exprm, subst(exprm[1], \"[\", exprm[2]))$
+
+calc(list) := block([steps: []],
+while foo do(
+    steps: endcons(list, steps),
+    foo: false,
+    list: applyb1(list, rule_1)
+),
+steps
+)$
+
+calc_result: calc([\"+\", [[\"*\", [1, 2, 3]], [\"+\", [3, 4, 6]]]]);",
+program_file_name: sconcat (maxima_tempdir, "/tmp_program.mac"),
+with_stdout (program_file_name, print (program_content)),
+0);
+0;
+
+kill (calc_result);
+done;
+
+([file_name_original, file_name_LISP, file_name_UNLISP, file_name_compiled]: compile_file (program_file_name), 0);
+0;
+
+stringp (file_name_compiled);
+true;
+
+calc_result;
+calc_result;
+
+(load (file_name_compiled),
+ calc_result);
+[["+", [["*", [1, 2, 3]], ["+", [3, 4, 6]]]],
+ ["+", [6, ["+", [3, 4, 6]]]],
+ ["+", [6, 13]],
+ 19];
