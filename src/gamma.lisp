@@ -2173,6 +2173,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun erf-hypergeometric (z)
+  ; See A&S 7.1.21 or http://functions.wolfram.com/06.25.26.0001.01
+  (mul 2
+       z
+       (power '$%pi '((rat simp) -1 2))
+       (list '(%hypergeometric simp)
+             (list '(mlist simp) '((rat simp) 1 2))
+             (list '(mlist simp) '((rat simp) 3 2))
+             (mul -1 (power z 2)))))
+
 (defun simp-erf (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
@@ -2206,15 +2216,10 @@
      (mul '$%i (simplify (list '(%erfi) (coeff z '$%i 1)))))
     ((apply-reflection-simp (mop expr) z $trigsign))
     
-    ;; Representation through equivalent functions
+    ;; Representation through more general functions
     
     ($hypergeometric_representation
-      (mul 2 z 
-           (power '$%pi '((rat simp) 1 2))
-           (list '(%hypergeometric simp)
-                 (list '(mlist simp) '((rat simp) 1 2))
-                 (list '(mlist simp) '((rat simp) 3 2))
-                 (mul -1 (power z 2)))))
+     (erf-hypergeometric z))
     
     ;; Transformation to Erfc or Erfi
     
@@ -2512,6 +2517,11 @@
       ((and $trigsign (great (mul -1 z1) z1) (great (mul -1 z2) z2))
        (mul -1 (simplify (list '(%erf_generalized) (mul -1 z1) (mul -1 z2)))))
 
+      ;; Representation through more general functions
+
+      ($hypergeometric_representation
+       (sub (erf-hypergeometric z2) (erf-hypergeometric z1)))
+
       ;; Transformation to Erf
 
       ($erf_representation
@@ -2621,16 +2631,10 @@
     ((and $trigsign (great (mul -1 z) z))
      (sub 2 (simplify (list  '(%erfc) (mul -1 z)))))
     
-    ;; Representation through equivalent functions
+    ;; Representation through more general functions
     
     ($hypergeometric_representation
-      (sub 1
-        (mul 2 z 
-             (power '$%pi '((rat simp) 1 2))
-             (list '(%hypergeometric simp)
-                   (list '(mlist simp) '((rat simp) 1 2))
-                   (list '(mlist simp) '((rat simp) 3 2))
-                   (mul -1 (power z 2))))))
+     (sub 1 (erf-hypergeometric z)))
     
     ;; Transformation to Erf or Erfi
 
@@ -2757,15 +2761,10 @@
      (mul '$%i (simplify (list '(%erf) (coeff z '$%i 1)))))
     ((apply-reflection-simp (mop expr) z $trigsign))
 
-    ;; Representation through equivalent functions
+    ;; Representation through more general functions
     
     ($hypergeometric_representation
-      (mul 2 z
-        (power '$%pi '((rat simp) 1 2))
-               (list '(%hypergeometric simp)
-                     (list '(mlist simp) '((rat simp) 1 2))
-                     (list '(mlist simp) '((rat simp) 3 2))
-                     (power z 2))))
+     (mul -1 '$%i (erf-hypergeometric (mul '$%i z))))
     
     ;; Transformation to Erf or Erfc
     

@@ -2789,6 +2789,27 @@ closeto(
   1b-30);
 true;
 
+/* Hypergeometric representations of the erf functions */
+
+hypergeometric_representation:true;
+true;
+
+erf(z);
+2*z*'hypergeometric([1/2],[3/2],-z^2)/sqrt(%pi);
+
+erfc(z);
+1-2*z*'hypergeometric([1/2],[3/2],-z^2)/sqrt(%pi);
+
+erfi(z);
+2*z*'hypergeometric([1/2],[3/2],z^2)/sqrt(%pi);
+
+erf_generalized(z1,z2);
+2*z2*'hypergeometric([1/2],[3/2],-z2^2)/sqrt(%pi) -
+2*z1*'hypergeometric([1/2],[3/2],-z1^2)/sqrt(%pi);
+
+hypergeometric_representation:false;
+false;
+
 /******************************************************************************
    Test the Fresnel Integrals S(z) and C(z) 
 ******************************************************************************/
