@@ -32,7 +32,6 @@
 (eval-when
     #+gcl (load compile eval)
     #-gcl (:load-toplevel :compile-toplevel :execute)
-    ($load "polynomialp")
     ($load "sqfr")
     ($load "spherodialwave")
     ($load "kummer")

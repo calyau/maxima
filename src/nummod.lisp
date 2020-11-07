@@ -447,9 +447,11 @@
 ;;   integrate(mod(x,a),x) = (a^2 floor(x/a)^2 + (a^2 - 2 a x) floor(x/a) + x^2)/2
 ;; In terms of mod(x,a), an antiderivative is
 ;;   integrate(mod(x,a),x) = (mod(x,a)^2-a*mod(x,a)+a*x)/2
+;; Before this function is called, Maxima checks if a explicitly depends on x. So
+;; this function doesn't need to do that check.
 (defun mod-integral (x a)
 		(let ((q (take '($mod) x a)))
-		   (div (add (mul q q) (mul -1 q) (mul a x)) 2)))
+		   (div (add (mul q q) (mul -1 a q) (mul a x)) 2)))
 
 (putprop '%signum (list (list 'x) #'signum-integral) 'integral)
 (putprop '$unit_step (list (list 'x) #'unit-step-integral) 'integral)
