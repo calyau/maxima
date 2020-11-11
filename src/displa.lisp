@@ -1343,8 +1343,7 @@
   (cond
     ;; If console output is disabled, don't output anything.
     ($ttyoff)
-    ;; Constant 80. in this test appears to be the size of LINEARRAY.
-    ((> (+ bkptht bkptdp) 80.)
+    ((> (+ bkptht bkptdp) (length linearray))
      ;; I suppose we could reallocate LINEARRAY to some larger size and keep going here ...
      (merror (intl:gettext "display: expression is too tall to be displayed.")))
     (t
