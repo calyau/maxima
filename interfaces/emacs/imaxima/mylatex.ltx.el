@@ -223,8 +223,9 @@
 \\expandafter\\input\\endinput%
 
 "
-"Source: David Carlisle's mylatex.ltx
-https://github.com/davidcarlisle/dpctex/tree/master/mylatex"
-)
+"Used by `imaxima-dump-tex'. If set to nil, then imaxima will assume that mylatex.ltx is installed on your system; otherwise, it creates mylatex.ltx from this source.
+
+Source: David Carlisle's mylatex.ltx
+https://github.com/davidcarlisle/dpctex/tree/master/mylatex" )
 
 (provide 'mylatex.ltx)

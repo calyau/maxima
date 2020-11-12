@@ -1,3 +1,4 @@
+;; -*- mode: emacs-lisp; lexical-binding: t; -*-
 ;;;; imaxima.el --- Maxima mode with images
 
 ;; Copyright (C) 2001, 2002, 2003, 2004 Jesper Harder
@@ -898,8 +899,9 @@ STR is offending LaTeX expression.  FILENAME is name of the LaTeX file."
 
 (defun imaxima-dump-tex ()
   "Dump a TeX format file preloaded with the required packages."
-  (with-temp-file (expand-file-name "mylatex.ltx" imaxima-tmp-subdir)
-    (insert imaxima-mylatex))
+ (unless imaxima-mylatex
+   (with-temp-file (expand-file-name "mylatex.ltx" imaxima-tmp-subdir)
+     (insert imaxima-mylatex)))
   (with-temp-file (expand-file-name "format.tex" imaxima-tmp-subdir)
     (insert
      (imaxima-latex-document-class)
