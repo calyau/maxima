@@ -1226,9 +1226,8 @@ BUF is imaxima buffer."
 	(imaxima-start-gs))
       (add-hook 'kill-buffer-hook 'imaxima-clean-up t t)
       (imaxima-setup-preoutput-filter)
-      (maxima-single-string
-;;       (format "?load(?subseq(?symbol\\-name(\"%s\"), 1));\n" imaxima-lisp-file))
-       (format "block(load((\"%s\")), imaxima_tmp_subdir:\"%s\", linenum:0)$\n" imaxima-lisp-file imaxima-tmp-subdir))
+      (imaxima-with-no-new-input-prompt
+       (comint-send-string mbuf (format ":lisp (progn ($load \"%s\") (msetq $imaxima_tmp_subdir \"%s\"))\n" imaxima-lisp-file imaxima-tmp-subdir)))
       ;; maxima mode tries to run inferior-maxima-mode-hook twice
       ;; due to changes made in 5.9.2 release. To prevent this,
       ;; the following hook must be removed earlier than before.
@@ -1299,11 +1298,8 @@ Please customize the option `imaxima-lisp-file'."))
 	  (imaxima-setup-preoutput-filter)
 	  (unless (eq imaxima-image-type 'postscript)
 	    (imaxima-start-gs)))
-	(when (eq system-type 'windows-nt)
-	  (comint-send-string
-	   mbuf
-	   (format "block(load(\"%s\"), linenum:0)$\n" imaxima-lisp-file)))
-	(comint-send-string mbuf (format "block(imaxima_tmp_subdir:\"%s\", linenum:0)$\n" imaxima-tmp-subdir))
+	(imaxima-with-no-new-input-prompt
+	 (comint-send-string mbuf (format ":lisp (progn (msetq $imaxima_tmp_subdir \"%s\") )\n" imaxima-tmp-subdir)))
       (switch-to-buffer mbuf))))
   (run-hooks 'imaxima-startup-hook))
 
