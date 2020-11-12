@@ -68,9 +68,9 @@
 					 (t
 					  ''$variable_num_args_function)))))
 		 ,(cond ((not restp) nil)))))
-      (,(if (consp def-header)
-	    'defun-prop
-	    'defmfun)
+      (,(cond ((consp def-header) 'defun-prop)
+              (restp 'defun)
+              (t 'defmfun))
        ,def-header ,(cond ((not restp) argl)
                           (t `(&rest ,rest)))
        ,@(if (not restp)
