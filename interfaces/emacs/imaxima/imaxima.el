@@ -704,13 +704,14 @@ This command does not work in XEmacs."
 	     (buf (generate-new-buffer imaxima-latex-buffer-name))
 	     (oldbuf (current-buffer)))
     (set-buffer buf)
-    (insert-buffer-substring oldbuf)
     (insert (imaxima-latex-document-class) "\n"
 	    imaxima-latex-use-packages "\n"
 	    imaxima-latex-document-dimensions "\n"
 	    imaxima-latex-macros "\n"
 	    "\\begin{document}\n"
 	    )
+    (save-excursion
+      (insert-buffer-substring oldbuf))
     (while (not (eobp))
       (let* ((region-start (copy-marker (point)))
 	     (region-end (copy-marker (next-single-property-change (point) 'display nil (point-max))))
