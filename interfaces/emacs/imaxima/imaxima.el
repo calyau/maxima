@@ -510,12 +510,22 @@ dots per inch.  Buffer-local to rendering buffer.")
 ;; Reset
 ;;
 
+(defvar imaxima-filter-running nil)
+(defvar imaxima-continuation nil
+  "The variable is used between `maxima-to-image' and `get-image-from-imaxima' in `imath-mode'.
+It is used in `imaxima-filter' and `imaxima-filter1' in `imaxima'.
+
+The value is either nil or a list of (function buffer pos1 pos2),
+where pos1 and pos2 are the beginning and end of current maxima
+formula.")
+
+
 (defun reinit-imaxima ()
   "Re-initialize imaxima"
   (interactive)
   (setq imaxima-filter-running nil
     imaxima-output nil
-    continuation nil))
+    imaxima-continuation nil))
 
 ;;
 ;; Geometry
@@ -654,7 +664,7 @@ Returns a list of bounding box, width, and height."
   "Scale the eps image in FILE with factor SCALE.
 BB is the bounding box of the image.  Returns a list of new bounding
 box, width, and height."
-  (multiple-value-bind (llx lly urx ury) (append bb nil)
+  (cl-multiple-value-bind (llx lly urx ury) (append bb nil)
     (let ((x (round (* (- urx llx) scale)))
           (y (round (* (- ury lly) scale)))
 	  (buff (find-file-noselect file)))
@@ -784,7 +794,7 @@ cleardictstack 0 get restore\n")
 	      eps-or-latex 'eps)))
       
   (let* ((filename (expand-file-name
-		    (number-to-string (incf imaxima-file-counter))
+		    (number-to-string (cl-incf imaxima-file-counter))
 		    imaxima-tmp-subdir))
 	 (psfilename (concat filename ".ps"))
 	 (label "*"))
@@ -804,7 +814,7 @@ cleardictstack 0 get restore\n")
 	  )
     (if (not (file-exists-p psfilename))
 	(imaxima-latex-error str filename)
-      (multiple-value-bind (bb  width height)
+      (cl-multiple-value-bind (bb  width height)
 	    (imaxima-extract-bb psfilename)
 	  (let ((ratio (/  (imaxima-get-window-width)
 			   (imaxima-bp-to-mm width))))
@@ -986,9 +996,7 @@ temporary files.  Use linearized form if LINEAR is non-nil."
       (with-current-buffer (get-buffer-create "*imaxima-work*")
 	(insert str))))
 
-(defvar imaxima-filter-running nil)
-
-(defun* imaxima-filter (str)
+(cl-defun imaxima-filter (str)
   "Parse output from Maxima and make image from TeX parts.
 Argument STR contains output received from Maxima.
 
@@ -999,7 +1007,7 @@ Argument STR contains output received from Maxima.
       (progn
 	(setq imaxima-output (concat imaxima-output str))
 	(debug-imaxima-filter "reenter")
-	(return-from imaxima-filter "")))
+	(cl-return-from imaxima-filter "")))
   (setq imaxima-filter-running t)
   (debug-imaxima-filter str)
   (let* ((len (length str))
@@ -1007,7 +1015,7 @@ Argument STR contains output received from Maxima.
     (if (zerop len)
 	(progn
 	  (setq imaxima-filter-running nil)
-	  (return-from imaxima-filter ""))
+	  (cl-return-from imaxima-filter ""))
       (setq imaxima-output (concat imaxima-output str))
       (let ((lastchar (aref str (1- len)))
 	    (output ""))
@@ -1031,7 +1039,7 @@ Argument STR contains output received from Maxima.
 				(funcall (car imaxima-continuation) ""))))
 		     ;; imaxima-output is incomplete.
 		     (setq imaxima-filter-running nil)
-		     (return-from imaxima-filter output)))
+		     (cl-return-from imaxima-filter output)))
 		  ((string= 1stchar "")
 		   (if (string-match "\\([^]*\\)\\(\\(.\\|\n\\)*\\)" imaxima-output)
 		       (let ((match (match-string 1 imaxima-output))
@@ -1045,7 +1053,7 @@ Argument STR contains output received from Maxima.
 			     (setq main-output image)))
 		     ;; imaxima-output is incomplete.
 		     (setq imaxima-filter-running nil)
-		     (return-from imaxima-filter output)))
+		     (cl-return-from imaxima-filter output)))
 		  ((string= 1stchar "")
 		   (if (string-match "\\([^]*\\)\\(\\(.\\|\n\\)*\\)" imaxima-output)
 		       (let ((match (match-string 1 imaxima-output))
@@ -1054,7 +1062,7 @@ Argument STR contains output received from Maxima.
 			 (setq output (concat output (imaxima-make-image match 'latex))))
 		     ;; imaxima-output is incomplete.
 		     (setq imaxima-filter-running nil)
-		     (return-from imaxima-filter output)))
+		     (cl-return-from imaxima-filter output)))
 		  (t (if (string-match "\\([^]*\\)\\(\\(.\\|\n\\)*\\)" imaxima-output)
 			 (let ((match (match-string 1 imaxima-output))
 			       (rest (match-string 2 imaxima-output)))
@@ -1204,12 +1212,12 @@ BUF is imaxima buffer."
       (remove-hook 'inferior-maxima-mode-hook 'imaxima-setup)
       (goto-char (point-max)))))
 
-(defun* imaxima-delete-maxima-hooks ()
+(cl-defun imaxima-delete-maxima-hooks ()
   (remove-hook 'comint-output-filter-functions 'inferior-maxima-output-filter)
   (remove-hook 'comint-output-filter-functions 'inferior-maxima-remove-double-input-prompt)
   (remove-hook 'comint-output-filter-functions 'inferior-maxima-remove-double-prompt))
 
-(defun* imaxima ()
+(cl-defun imaxima ()
   "Image support for Maxima.
 \"display2d:true\" in Maxima turns images off, \"display2d:imaxima\"
 turns them on.  Set `imaxima-use-maxima-mode-flag' to t to use
@@ -1226,7 +1234,7 @@ turns them on.  Set `imaxima-use-maxima-mode-flag' to t to use
       (if (called-interactively-p 'any)
 	  (switch-to-buffer imaxima-buffer)
 	(set-buffer imaxima-buffer))
-      (return-from imaxima t)))
+      (cl-return-from imaxima t)))
   (reinit-imaxima)
   (unless (imaxima-image-type-available-p imaxima-image-type)
     (error "Your version of Emacs does not support the image type %s"
@@ -1332,7 +1340,7 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
  </HTML>
 ")
 
-(defun* prepare-for-translation ()
+(cl-defun prepare-for-translation ()
   "If error occurs inside this function, multiple values nil nil
    will be returned."
   (interactive "")
@@ -1351,7 +1359,7 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
 	(setq current-buffer-file-name
 	      (if (buffer-file-name)
 		  (buffer-file-name)
-		(return-from prepare-for-translation (values nil nil))))
+		(cl-return-from prepare-for-translation (cl-values nil nil))))
 	(setq filename (concat (file-name-sans-extension
 				(file-name-nondirectory current-buffer-file-name))
 			       ".html"))
@@ -1372,37 +1380,37 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
 		    ;; we need to delete all the files already there.
 		    (dolist (f old-files)
 		      (delete-file (concat image-folder "/" f))))
-		(file-error (return-from prepare-for-translation (values nil nil)))))
+		(file-error (cl-return-from prepare-for-translation (cl-values nil nil)))))
 	  ;; since image-folder doest not exist, let's create it.
 	  (condition-case err
 	      (make-directory image-folder)
-	    (file-error (return-from prepare-for-translation (values nil nil))))))
+	    (file-error (cl-return-from prepare-for-translation (cl-values nil nil))))))
       ;; buffer preparation
       (if buffer-read-only
-	  (return-from prepare-for-translation (values nil nil)))
+	  (cl-return-from prepare-for-translation (cl-values nil nil)))
       (erase-buffer)
       (insert html-template)
       (goto-char (point-min))
       (search-forward "<BODY>")
       (forward-line 1)
       (insert text)
-      (values html-buffer image-folder))))
+      (cl-values html-buffer image-folder))))
 
-(defun* imath-to-html()
+(cl-defun imath-to-html()
   "Translate imath minor mode buffer contents into HTML format."
   (interactive "")
   (save-excursion
-    (multiple-value-bind (html-buffer image-folder)
+    (cl-multiple-value-bind (html-buffer image-folder)
 	(prepare-for-translation)
       (if (not (and html-buffer image-folder))
 	  (progn
 	    (message "Error during HTML buffer preparation.")
-	    (return-from imath-to-html)))
+	    (cl-return-from imath-to-html)))
       (set-buffer html-buffer)
       (goto-char (point-min))
       (condition-case err
 	  (loop 
-	   (multiple-value-bind (ftype start-pos end-pos)
+	   (cl-multiple-value-bind (ftype start-pos end-pos)
 	       (find-next-formula)
 	     (if (not (and ftype start-pos end-pos))
 		 (return t) 
@@ -1411,7 +1419,7 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
 		 (if (null (setq filename (get-image-filename (1- (point)))))
 		     (progn
 		       (message "Error: all formulas must be converted to images first.")
-		       (return-from imath-to-html)))
+		       (cl-return-from imath-to-html)))
 		 (setq dest-name (concat
 				  image-folder "/"
 				  (file-name-sans-extension
@@ -1429,7 +1437,7 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
 	(file-error
 	 (progn
 	   (message "Error: File manipulation failed during processing.")
-	   (return-from imath-to-html))))
+	   (cl-return-from imath-to-html))))
       (condition-case err
 	  (let (start-mark end-mark)
 	    (goto-char (point-min))
@@ -1446,29 +1454,29 @@ See `imaxima-print-tex-command' for how latex is run on the latex output."
 	     (forward-line 1)))
 	(search-failed nil)))))
 
-(defun* imaxima-to-html ()
+(cl-defun imaxima-to-html ()
   "Translate the imaxima buffer contents into HTML format."
   (interactive "")
   (imath-to-html))
 
-(defun* find-next-formula ()
+(cl-defun find-next-formula ()
   "Find next formula and return multiple values of
    formula type, start position and end position.
    If search failed, error search-failed is signaled."
   (interactive "")
   (if (equal (point) (point-max))
-      (return-from find-next-formula (values nil nil nil)))
+      (cl-return-from find-next-formula (cl-values nil nil nil)))
   (let* ((region-start (copy-marker (point)))
 	 (region-end (copy-marker (next-single-property-change (point) 'display nil (point-max))))
 	 (text-prop (get-text-property region-start 'display)))
     (goto-char region-end)
     (if text-prop
-	(return-from find-next-formula (values 'any region-start region-end))
+	(cl-return-from find-next-formula (cl-values 'any region-start region-end))
       (find-next-formula))))
 
   
 
-(defun* get-image-filename (pos)
+(cl-defun get-image-filename (pos)
   "If the pos of the buffer is associated with text a display property,
    it is obtained. Then image filename of the display property is 
    extracted and returned."
