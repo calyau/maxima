@@ -1541,7 +1541,58 @@ block ([translate : false],
 (kill (foo, bar, test, l1, l2, l3), 0);
 0;
 
+/* Attempting to translate a macro with a rest arg always caused an
+ * error during translation because the translator was constructing
+ * bogus Maclisp-style lexpr lambda expressions.
+ */
 
+block ([translate : false],
+  foo ([r]) ::=
+    buildq ([r], ['r, r]),
+  bar (a, b, [c]) ::=
+    buildq ([a, b, c], ['a, a, 'b, b, 'c, c]),
+  test1 () :=
+    block ([x : 1, z : 3],
+      [foo (),
+       foo (x),
+       foo (x, y, z),
+       bar (x, y),
+       bar (x, y, z),
+       bar (x, y, z, 4, 5, 6)]),
+  /* test2 cannot be translated due to the WNA error during macro
+   * expansion, but we can call and test it in the interpreter
+   */
+  test2 () :=
+    [errcatch (bar ()),
+     errcatch (bar (1))],
+
+  /* l1: foo, bar and test1 are interpreted */
+  l1 : test1 (),
+
+  /* l2: foo and bar are translated, and test1 is interpreted */
+  translate_or_lose (foo, bar),
+  l2 : test1 (),
+
+  /* l3: foo, bar and test1 are translated */
+  translate_or_lose (test1),
+  l3 : test1 (),
+
+  [test2 (),
+   is (l1 = l2),
+   is (l2 = l3),
+   l1]);
+[[[], []],
+ true,
+ true,
+ [[[], []],
+  [['x], [1]],
+  [['x, 'y, 'z], [1, 'y, 3]],
+  ['x, 1, 'y, 'y, [], []],
+  ['x, 1, 'y, 'y, ['z], [3]],
+  ['x, 1, 'y, 'y, ['z, 4, 5, 6], [3, 4, 5, 6]]]];
+
+(kill (foo, bar, test1, test2, l1, l2, l3), 0);
+0;
 
 
 /*** KILLING THESE FUNCTIONS SHOULD BE THE LAST TEST IN THIS FILE ***/
