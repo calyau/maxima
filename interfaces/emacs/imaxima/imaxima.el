@@ -415,9 +415,18 @@ valid argument to `format'."
   "Default macros used by `imaxima-dump-tex'."
   :group 'imaxima
   :type '(string))
-  
 
-  
+(defcustom imaxima-create-image-options
+  '(:ascent center :mask (heuristic (color-values imaxima-bg-color)))
+  "Optional arguments passed to `imaxima-create-image'"
+  :group 'imaxima
+  :type '(alist))
+
+(defcustom imaxima-latex-includegraphics
+  "\\includegraphics{%s}\n"
+  "Includegraphics command."
+  :group 'imaxima
+  :type '(string))
 
 (defface imaxima-latex-error-face
   '((t (:foreground "Blue" :underline t)))
@@ -463,39 +472,65 @@ dots per inch.  Buffer-local to rendering buffer.")
 
 (defvar imaxima-html-dir "~/")
 
+(defvar imaxima-image-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map image-map)
+    (define-key map "l" #'imaxima-get-latex-src)
+    (define-key map "g" #'imaxima-gnuplot-replot)
+    map)
+  "Keymap for images in the `imaxima' buffer. The `image-map' is
+  the parent map.")
+
+(defcustom imaxima-latex-src-register ?l
+  "The register used by `imaxima-get-latex-src' to save the latex
+  source code for the image under point."
+  :group 'imaxima
+  :type '(character))
+
+(defcustom imaxima-gnuplot-replot-term nil
+  "The default gnuplot terminal used by `imaxima-gnuplot-replot'
+to replot a figure in an external window."
+  :group 'imaxima
+  :type '(choice (string :tag "Terminal") (symbol :tag "nil" nil)))
+
 ;; This piece of TeX is `mylatex.ltx' by David Carlisle.  The license is:
 ;;
 ;; "There are no restrictions on the distribution or modification of
 ;; this file, except that other people should not attempt to alter
 ;; the master copy on the ctan archives."
 
-(defconst imaxima-mylatex
-"\\makeatletter\\let\\MYLATEXdocument\\document
-\\let\\MYLATEXopenout\\openout\\def\\document{\\endgroup
-{\\setbox\\z@\\hbox{\\normalfont% normal
-{\\ifx\\large\\@undefined\\else\\large\\fi
-\\ifx\\footnotesize\\@undefined\\else\\footnotesize\\fi}%
-{\\bfseries\\itshape}% bold and bold italic
-{\\itshape}\\ttfamily\\sffamily}}%
-\\let\\document\\MYLATEXdocument\\let\\openout\\MYLATEXopenout
-\\makeatother\\everyjob\\expandafter{\\the\\everyjob
-\\begingroup\\listfiles\\expandafter\\MYLATEXcustomised\\@dofilelist
-\\endgroup}\\@addtofilelist{.}\\catcode`\\\\=13\\relax
-\\catcode`\\#=12\\relax\\catcode`\\ =9\\relax\\dump}
-\\def\\openout#1 {\\g@addto@macro\\MYLATEXopens{\\immediate\\openout#1 }}
-\\let\\MYLATEXopens\\@empty\\def\\MYLATEXbegin{\\begin{document}}
-\\def\\MYLATEXcomment{mylatex}\\def\\MYLATEXcustomised#1#2#3\\typeout#4{%
-\\typeout{CUSTOMISED FORMAT. Preloaded files:^^J\\@spaces\\@spaces.}#3}
-{\\catcode`\\^^M=\\active\\catcode`\\/=0 %
-/catcode`\\\\=13 /gdef\\{/catcode`/\\=0 /catcode`/^^M=13   /catcode`/%=9 ^^M}%
-/long/gdef^^M#1^^M{/def/MYLATEXline{#1}%
-/ifx/MYLATEXline/MYLATEXcomment/let/MYLATEXbegin/relax%
-/let/MYLATEXline/relax/fi/ifx/MYLATEXline/MYLATEXbegin%
-/catcode`/^^M=5/relax/let^^M/par/catcode`/#=6/relax%
-/catcode`/%=14/relax/catcode`/ =10/relax%
-/expandafter/MYLATEXopens/expandafter/MYLATEXbegin%
-/else/expandafter^^M/fi}}\\expandafter\\input\\endinput%"
-  "TeX code for dumping a format file.")
+(require 'mylatex.ltx)
+;; (defvar imaxima-mylatex
+;;   (with-temp-buffer (find-file-literally "mylatex.ltx") (prog1 (buffer-substring-no-properties (point-min) (point-max))
+;; 							  (let (kill-buffer-query-functions kill-buffer-hook)
+;; 							    (kill-buffer)))))
+;; (defconst imaxima-mylatex
+;; "\\makeatletter\\let\\MYLATEXdocument\\document
+;; \\let\\MYLATEXopenout\\openout\\def\\document{\\endgroup
+;; {\\setbox\\z@\\hbox{\\normalfont% normal
+;; {\\ifx\\large\\@undefined\\else\\large\\fi
+;; \\ifx\\footnotesize\\@undefined\\else\\footnotesize\\fi}%
+;; {\\bfseries\\itshape}% bold and bold italic
+;; {\\itshape}\\ttfamily\\sffamily}}%
+;; \\let\\document\\MYLATEXdocument\\let\\openout\\MYLATEXopenout
+;; \\makeatother\\everyjob\\expandafter{\\the\\everyjob
+;; \\begingroup\\listfiles\\expandafter\\MYLATEXcustomised\\@dofilelist
+;; \\endgroup}\\@addtofilelist{.}\\catcode`\\\\=13\\relax
+;; \\catcode`\\#=12\\relax\\catcode`\\ =9\\relax\\dump}
+;; \\def\\openout#1 {\\g@addto@macro\\MYLATEXopens{\\immediate\\openout#1 }}
+;; \\let\\MYLATEXopens\\@empty\\def\\MYLATEXbegin{\\begin{document}}
+;; \\def\\MYLATEXcomment{mylatex}\\def\\MYLATEXcustomised#1#2#3\\typeout#4{%
+;; \\typeout{CUSTOMISED FORMAT. Preloaded files:^^J\\@spaces\\@spaces.}#3}
+;; {\\catcode`\\^^M=\\active\\catcode`\\/=0 %
+;; /catcode`\\\\=13 /gdef\\{/catcode`/\\=0 /catcode`/^^M=13   /catcode`/%=9 ^^M}%
+;; /long/gdef^^M#1^^M{/def/MYLATEXline{#1}%
+;; /ifx/MYLATEXline/MYLATEXcomment/let/MYLATEXbegin/relax%
+;; /let/MYLATEXline/relax/fi/ifx/MYLATEXline/MYLATEXbegin%
+;; /catcode`/^^M=5/relax/let^^M/par/catcode`/#=6/relax%
+;; /catcode`/%=14/relax/catcode`/ =10/relax%
+;; /expandafter/MYLATEXopens/expandafter/MYLATEXbegin%
+;; /else/expandafter^^M/fi}}\\expandafter\\input\\endinput%"
+;;   "TeX code for dumping a format file.")
 
 ;;
 ;; Version
@@ -573,6 +608,12 @@ Emacs version."
 	   (progn
 	     ,@body)
 	 (cd ,wd)))))
+
+(defvar imaxima-silence-filter nil)
+(defmacro imaxima-with-no-new-input-prompt (&rest body)
+  "Set `imaxima-silence-filter' to t to silence any output
+through `imaxima-filter'."
+  `(progn (setq imaxima-silence-filter t) ,@body))
 
 ;;
 ;; Gs stuff
@@ -775,15 +816,21 @@ cleardictstack 0 get restore\n")
 			psfilename))
   (imaxima-gs-wait))
 
+(defvar imaxima-latex-src nil)
+
 (defun imaxima-check-plot-output (str)
   "If the str is in the form ^Wpompt^W\\verb|plotfile filename|, then
    filename is returned. Else, nil is returned."
 ;;  (if (string-match "[^]*\\\\mathrm{wxxmltag}\\\\left\(\\\\verb|\\([^|]*\\)|.*" str)
 ;;  (if (string-match "[^]*\\\\mathrm{wxxmltag}\\\\left[^/]*\\(.*\.eps\\).*" str)
 ;;  (if (string-match "[^]*\\\\mathrm{wxxmltag}\\\\left\(\\\\verb|*\\(.*\.eps\\).*" str)
-  (if (string-match "[^]*\\\\mathrm{wxxmltag}\\\\left\(\\(\\\\verb|\\)*\\(.*\.eps\\).*" str)
-      (match-string 2 str)
-    nil))
+  (when (string-match "[^]*\\\\mathrm{wxxmltag}\\\\left\(\\(\\\\verb|\\)*\\(.*\.eps\\).*" str)
+    (let ((plot-file (match-string 2 str)))
+      (setq imaxima-latex-src (format imaxima-latex-includegraphics plot-file))
+      plot-file)))
+
+(defun imaxima-create-image (filename type &rest options)
+  (apply #'create-image (append (list filename type) options imaxima-create-image-options)))
 
 (defun imaxima-make-image (str eps-or-latex &optional no-label-p)
   "Make image from STR. If no-label-p is specified t,
@@ -845,18 +892,16 @@ cleardictstack 0 get restore\n")
 		   (imaxima-start-gs))
 		 (xemacs-set-imagefile-properties filename imaxima-image-type str))
 		(t
-		 (propertize (concat "(" label ") " str) 'display
-			     (if (eq imaxima-image-type 'postscript)
-				 (create-image psfilename
-					       'postscript nil
-					       :pt-width width :pt-height height
-					       :bounding-box bb :ascent 'center
-					       :mask '(heuristic (color-values imaxima-bg-color)))
-			       (create-image filename
-					     imaxima-image-type nil
-					     :ascent 'center
-					     :mask '(heuristic
-						     (color-values imaxima-bg-color)))))))))))
+		 (prog1
+		     (propertize (concat "(" label ") " str) 'display
+				 (apply #'imaxima-create-image
+					(if (eq imaxima-image-type 'postscript)
+					    (list psfilename imaxima-image-type nil (list :pt-width width :pt-height height :bounding-box bb))
+					  (list filename imaxima-image-type nil)))
+				 'keymap imaxima-image-map
+				 'help-echo "o: save to file\ng: replot in window\nl: get latex source\nr: rotate by 90° clockwise\n+: increase size by 20%\n-: decrease size by 20%"
+				 'latex imaxima-latex-src)
+		   (setq imaxima-latex-src nil))))))))
 
 
 (defun imaxima-latex-error (str filename)
@@ -927,29 +972,49 @@ STR is offending LaTeX expression.  FILENAME is name of the LaTeX file."
    (apply #'format "\\color[rgb]{%f,%f,%f}\n"
  	  (imaxima-color-to-rgb imaxima-equation-color))
    "\\begin{math} \\displaystyle \n" str (format "\n\\end{math}\n")))
+(defun imaxima-get-latex-src ()
+  (interactive)
+  (set-register imaxima-latex-src-register (get-text-property (point) 'latex)))
+(defun imaxima-gnuplot-replot ()
+  "Replot the most recent gnuplot command in an external
+window. Suppress a new input prompt."
+  (interactive)
+  (let ((term (or imaxima-gnuplot-replot-term (read-from-minibuffer "Terminal? "))))
+     (when (and (null imaxima-gnuplot-replot-term) (y-or-n-p "Save this as the session default? "))
+       (setq imaxima-gnuplot-replot-term term))
+     (imaxima-with-no-new-input-prompt
+      (process-send-string (current-buffer) (format "(gnuplot_replot(\"set terminal %s\"), linenum:linenum-1)$ \n" term)))))
+
+(defvar imaxima-latex-src nil "The LaTeX code to generate the
+current image. Used by `imaxima-make-image' to set the `latex'
+property of the inserted text/image.")
 
 (defun imaxima-tex-to-dvi (str label filename &optional linear)
-"Run LaTeX on STR.
+  "Run LaTeX on STR.
 Argument LABEL is used as equation label.  FILENAME is used for
 temporary files.  Use linearized form if LINEAR is non-nil."
-  (with-temp-file filename
-    (insert
-     (imaxima-latex-document-class)
-     (imaxima-latex-set-textwidth)
-     (if linear imaxima-latex-macros-linear "")
-     "\\begin{document}\n"
-     (imaxima-latex-set-pagecolor)
-     "\\pagestyle{empty}\n"
-     (format "\\begin{%s}\n" imaxima-fnt-size)
-     (imaxima-latex-set-labelcolor)
-     (if label
- 	 (imaxima-latex-format-label str label)
-       (imaxima-latex-format-output str))
-     (format "\\end{%s}\n" imaxima-fnt-size)
-     "\\end{document}"))
+  (let ((latex-src
+	 (concat
+	  (imaxima-latex-set-pagecolor)
+	  "\\pagestyle{empty}\n"
+	  (format "\\begin{%s}\n" imaxima-fnt-size)
+	  (imaxima-latex-set-labelcolor)
+	  (if label
+ 	      (imaxima-latex-format-label str label)
+	    (imaxima-latex-format-output str))
+	  (format "\\end{%s}\n" imaxima-fnt-size))))
+    (setq imaxima-latex-src latex-src)
+    (with-temp-file filename
+      (insert
+       (imaxima-latex-document-class)
+       (imaxima-latex-set-textwidth)
+       (if linear imaxima-latex-macros-linear "")
+       "\\begin{document}\n"
+       latex-src
+       "\\end{document}"))
     (imaxima-with-temp-dir imaxima-tmp-subdir
       (apply 'call-process imaxima-tex-program nil nil nil
-	     (list "&mylatex" filename))))
+	     (list "&mylatex" filename)))))
 
 (defun imaxima-dvi-to-ps (filename)
   "Convert dvi file FILENAME to PostScript."
@@ -979,17 +1044,10 @@ temporary files.  Use linearized form if LINEAR is non-nil."
        nil (list (cons 'background-color imaxima-old-bg-color)))))
   (run-hooks 'imaxima-exit-hook))
 
-;;; Imaxima-Continuation is used between maxima-to-latex function and
-;;; get-image-from-imaxima. The value is either nil or a list of
-;;; function, buffer, pos1, and pos2, where pos1 and pos2 are the beginning and
-;;; end of current maxima formula.
-;;  (func buffer pos1 pos2)
-
-(defvar imaxima-continuation nil)
-
-;;; if *debug-imaxima-filter* is set to t, the str is
-;;; appended to the last of buffer *imaxima-work*.
-(defvar *debug-imaxima-filter* nil)
+(defvar *debug-imaxima-filter* nil
+  "If `*debug-imaxima-filter*' is set to t, the string is
+  appended to the end of the buffer *imaxima-work*. Used in
+  `imaxima-filter1' and `debug-imaxima-filter'.")
 
 (defun debug-imaxima-filter (str)
   (if *debug-imaxima-filter*
@@ -1071,8 +1129,9 @@ Argument STR contains output received from Maxima.
 		       ;; This should not happen.
 		       (message "Unexpected error encountered in imaxima-filter"))))))
 	(message "Processing Maxima output...done")
+	(if imaxima-silence-filter (setq output "" imaxima-silence-filter nil))
 	(setq imaxima-filter-running nil)
-	(return-from imaxima-filter output)))))
+	(cl-return-from imaxima-filter output)))))
 
 (defun imaxima-filter1 (str)
   "Parse output from Maxima and make image from TeX parts.
