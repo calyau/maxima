@@ -972,6 +972,7 @@ temporary files.  Use linearized form if LINEAR is non-nil."
     (with-temp-file filename
       (insert
        (imaxima-latex-document-class)
+       "\n% mylatex\n" ; magic string
        (imaxima-latex-set-textwidth)
        (if linear imaxima-latex-macros-linear "")
        "\\begin{document}\n"
