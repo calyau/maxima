@@ -82,6 +82,8 @@
 (require 'comint)
 (require 'cl-lib)
 
+(require 'mylatex.ltx)
+
 ;; XEmacs stuff
 
 (defalias 'imaxima-image-type-available-p
@@ -492,45 +494,6 @@ dots per inch.  Buffer-local to rendering buffer.")
 to replot a figure in an external window."
   :group 'imaxima
   :type '(choice (string :tag "Terminal") (symbol :tag "nil" nil)))
-
-;; This piece of TeX is `mylatex.ltx' by David Carlisle.  The license is:
-;;
-;; "There are no restrictions on the distribution or modification of
-;; this file, except that other people should not attempt to alter
-;; the master copy on the ctan archives."
-
-(require 'mylatex.ltx)
-;; (defvar imaxima-mylatex
-;;   (with-temp-buffer (find-file-literally "mylatex.ltx") (prog1 (buffer-substring-no-properties (point-min) (point-max))
-;; 							  (let (kill-buffer-query-functions kill-buffer-hook)
-;; 							    (kill-buffer)))))
-;; (defconst imaxima-mylatex
-;; "\\makeatletter\\let\\MYLATEXdocument\\document
-;; \\let\\MYLATEXopenout\\openout\\def\\document{\\endgroup
-;; {\\setbox\\z@\\hbox{\\normalfont% normal
-;; {\\ifx\\large\\@undefined\\else\\large\\fi
-;; \\ifx\\footnotesize\\@undefined\\else\\footnotesize\\fi}%
-;; {\\bfseries\\itshape}% bold and bold italic
-;; {\\itshape}\\ttfamily\\sffamily}}%
-;; \\let\\document\\MYLATEXdocument\\let\\openout\\MYLATEXopenout
-;; \\makeatother\\everyjob\\expandafter{\\the\\everyjob
-;; \\begingroup\\listfiles\\expandafter\\MYLATEXcustomised\\@dofilelist
-;; \\endgroup}\\@addtofilelist{.}\\catcode`\\\\=13\\relax
-;; \\catcode`\\#=12\\relax\\catcode`\\ =9\\relax\\dump}
-;; \\def\\openout#1 {\\g@addto@macro\\MYLATEXopens{\\immediate\\openout#1 }}
-;; \\let\\MYLATEXopens\\@empty\\def\\MYLATEXbegin{\\begin{document}}
-;; \\def\\MYLATEXcomment{mylatex}\\def\\MYLATEXcustomised#1#2#3\\typeout#4{%
-;; \\typeout{CUSTOMISED FORMAT. Preloaded files:^^J\\@spaces\\@spaces.}#3}
-;; {\\catcode`\\^^M=\\active\\catcode`\\/=0 %
-;; /catcode`\\\\=13 /gdef\\{/catcode`/\\=0 /catcode`/^^M=13   /catcode`/%=9 ^^M}%
-;; /long/gdef^^M#1^^M{/def/MYLATEXline{#1}%
-;; /ifx/MYLATEXline/MYLATEXcomment/let/MYLATEXbegin/relax%
-;; /let/MYLATEXline/relax/fi/ifx/MYLATEXline/MYLATEXbegin%
-;; /catcode`/^^M=5/relax/let^^M/par/catcode`/#=6/relax%
-;; /catcode`/%=14/relax/catcode`/ =10/relax%
-;; /expandafter/MYLATEXopens/expandafter/MYLATEXbegin%
-;; /else/expandafter^^M/fi}}\\expandafter\\input\\endinput%"
-;;   "TeX code for dumping a format file.")
 
 ;;
 ;; Version
