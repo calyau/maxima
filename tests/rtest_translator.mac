@@ -1498,6 +1498,50 @@ calc_result;
  19];
 
 
+/* Some additional basic tests for functions with rest args */
+
+block ([translate : false],
+  foo ([r]) := r,
+  bar (a, b, [c]) := [a, b, c],
+  test () :=
+    [foo (),
+     foo (1),
+     foo (1, 2, 3),
+     errcatch (bar ()),
+     errcatch (bar (1)),
+     bar (1, 2),
+     bar (1, 2, 3),
+     bar (1, 2, 3, 4, 5)],
+
+  /* l1: foo, bar and test are interpreted */
+  l1 : test (),
+
+  /* l2: foo and bar are translated, and test is interpreted */
+  translate_or_lose (foo, bar),
+  l2 : test (),
+
+  /* l3: foo, bar and test are translated */
+  translate_or_lose (test),
+  l3 : test (),
+
+  [is (l1 = l2),
+   is (l2 = l3),
+   l1]);
+[true,
+ true,
+ [[],
+  [1],
+  [1, 2, 3],
+  [],
+  [],
+  [1, 2, []],
+  [1, 2, [3]],
+  [1, 2, [3, 4, 5]]]];
+
+(kill (foo, bar, test, l1, l2, l3), 0);
+0;
+
+
 
 
 /*** KILLING THESE FUNCTIONS SHOULD BE THE LAST TEST IN THIS FILE ***/
