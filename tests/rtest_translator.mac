@@ -1424,10 +1424,6 @@ true;
 (kill (foo, test1, test2), 0);
 0;
 
-
-(kill (translate_or_lose, compile_or_lose), 0);
-0;
-
 /* https://stackoverflow.com/questions/64631208/compilation-global-variables-with-warning
  *
  * First verify that error_syms and niceindicespref assignments work as expected.
@@ -1500,3 +1496,11 @@ calc_result;
  ["+", [6, ["+", [3, 4, 6]]]],
  ["+", [6, 13]],
  19];
+
+
+
+
+/*** KILLING THESE FUNCTIONS SHOULD BE THE LAST TEST IN THIS FILE ***/
+(kill (translate_or_lose, compile_or_lose), 0);
+0;
+/*** THERE SHOULD BE NO TESTS BEYOND THIS POINT ***/
