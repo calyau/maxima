@@ -900,7 +900,7 @@ STR is offending LaTeX expression.  FILENAME is name of the LaTeX file."
 
 (defun imaxima-dump-tex ()
   "Dump a TeX format file preloaded with the required packages."
- (unless imaxima-mylatex
+ (if imaxima-mylatex
    (with-temp-file (expand-file-name "mylatex.ltx" imaxima-tmp-subdir)
      (insert imaxima-mylatex)))
   (with-temp-file (expand-file-name "format.tex" imaxima-tmp-subdir)
