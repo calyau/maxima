@@ -39,7 +39,7 @@ message(STATUS "Host system: ${HOST}")
 find_file (NSISTEMPLATE_IN  NAMES "NSIS.template.in"
     PATHS "${CMAKE_ROOT}/Modules/" "${CMAKE_ROOT}/Modules/Internal/CPack")
 file(READ "${NSISTEMPLATE_IN}" MYNSISTEMPLATE)
-string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel user
+string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel admin
 !include \"${CMAKE_SOURCE_DIR}\\\\\\\\FileAssociation.nsh\"
 !include FileFunc.nsh
 !include LogicLib.nsh
