@@ -3051,9 +3051,8 @@ undefined global variables are seen.
 @fname{compile_file} (@var{filename}, @var{compiled_filename}) @
 @fname{compile_file} (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
 
-Translates the Maxima file @var{filename} into Lisp, executes the Lisp compiler,
-and, if the translation and compilation succeed, loads the compiled code into
-Maxima.
+Translates the Maxima file @var{filename} into Lisp, and executes the Lisp compiler.
+The compiled code is not loaded into Maxima.
 
 @code{compile_file} returns a list of the names of four files: the original
 Maxima file, the Lisp translation, notes on translation, and the compiled code.

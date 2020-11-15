@@ -1424,6 +1424,178 @@ true;
 (kill (foo, test1, test2), 0);
 0;
 
+/* https://stackoverflow.com/questions/64631208/compilation-global-variables-with-warning
+ *
+ * First verify that error_syms and niceindicespref assignments work as expected.
+ */
 
+kill (aa, bb, cc);
+done;
+
+errcatch (error_syms: 123);
+[];
+
+errcatch (error_syms: [aa, bb, 123]);
+[];
+
+error_syms: [aa, bb, cc];
+[aa, bb, cc];
+
+errcatch (niceindicespref: 123);
+[];
+
+errcatch (niceindicespref: []);
+[];
+
+niceindicespref: [aa, bb, cc];
+[aa, bb, cc];
+
+(reset (error_syms, niceindicespref), 0);
+0;
+
+/* now the example from the Stackoverflow question */
+
+(program_content:
+"define_variable(foo, true, boolean)$
+foo: true$
+
+exprp(that) := if foo = false and listp(that) and not emptyp(that) and member(that[1], [\"+\", \"*\"]) then(foo: true, true)$
+matchdeclare(exprm, exprp)$
+defrule(rule_1, exprm, subst(exprm[1], \"[\", exprm[2]))$
+
+calc(list) := block([steps: []],
+while foo do(
+    steps: endcons(list, steps),
+    foo: false,
+    list: applyb1(list, rule_1)
+),
+steps
+)$
+
+calc_result: calc([\"+\", [[\"*\", [1, 2, 3]], [\"+\", [3, 4, 6]]]]);",
+program_file_name: sconcat (maxima_tempdir, "/tmp_program.mac"),
+with_stdout (program_file_name, print (program_content)),
+0);
+0;
+
+kill (calc_result);
+done;
+
+([file_name_original, file_name_LISP, file_name_UNLISP, file_name_compiled]: compile_file (program_file_name), 0);
+0;
+
+stringp (file_name_compiled);
+true;
+
+calc_result;
+calc_result;
+
+(load (file_name_compiled),
+ calc_result);
+[["+", [["*", [1, 2, 3]], ["+", [3, 4, 6]]]],
+ ["+", [6, ["+", [3, 4, 6]]]],
+ ["+", [6, 13]],
+ 19];
+
+
+/* Some additional basic tests for functions with rest args */
+
+block ([translate : false],
+  foo ([r]) := r,
+  bar (a, b, [c]) := [a, b, c],
+  test () :=
+    [foo (),
+     foo (1),
+     foo (1, 2, 3),
+     errcatch (bar ()),
+     errcatch (bar (1)),
+     bar (1, 2),
+     bar (1, 2, 3),
+     bar (1, 2, 3, 4, 5)],
+
+  /* l1: foo, bar and test are interpreted */
+  l1 : test (),
+
+  /* l2: foo and bar are translated, and test is interpreted */
+  translate_or_lose (foo, bar),
+  l2 : test (),
+
+  /* l3: foo, bar and test are translated */
+  translate_or_lose (test),
+  l3 : test (),
+
+  [is (l1 = l2),
+   is (l2 = l3),
+   l1]);
+[true,
+ true,
+ [[],
+  [1],
+  [1, 2, 3],
+  [],
+  [],
+  [1, 2, []],
+  [1, 2, [3]],
+  [1, 2, [3, 4, 5]]]];
+
+(kill (foo, bar, test, l1, l2, l3), 0);
+0;
+
+/* Attempting to translate a macro with a rest arg always caused an
+ * error during translation because the translator was constructing
+ * bogus Maclisp-style lexpr lambda expressions.
+ */
+
+block ([translate : false],
+  foo ([r]) ::=
+    buildq ([r], ['r, r]),
+  bar (a, b, [c]) ::=
+    buildq ([a, b, c], ['a, a, 'b, b, 'c, c]),
+  test1 () :=
+    block ([x : 1, z : 3],
+      [foo (),
+       foo (x),
+       foo (x, y, z),
+       bar (x, y),
+       bar (x, y, z),
+       bar (x, y, z, 4, 5, 6)]),
+  /* test2 cannot be translated due to the WNA error during macro
+   * expansion, but we can call and test it in the interpreter
+   */
+  test2 () :=
+    [errcatch (bar ()),
+     errcatch (bar (1))],
+
+  /* l1: foo, bar and test1 are interpreted */
+  l1 : test1 (),
+
+  /* l2: foo and bar are translated, and test1 is interpreted */
+  translate_or_lose (foo, bar),
+  l2 : test1 (),
+
+  /* l3: foo, bar and test1 are translated */
+  translate_or_lose (test1),
+  l3 : test1 (),
+
+  [test2 (),
+   is (l1 = l2),
+   is (l2 = l3),
+   l1]);
+[[[], []],
+ true,
+ true,
+ [[[], []],
+  [['x], [1]],
+  [['x, 'y, 'z], [1, 'y, 3]],
+  ['x, 1, 'y, 'y, [], []],
+  ['x, 1, 'y, 'y, ['z], [3]],
+  ['x, 1, 'y, 'y, ['z, 4, 5, 6], [3, 4, 5, 6]]]];
+
+(kill (foo, bar, test1, test2, l1, l2, l3), 0);
+0;
+
+
+/*** KILLING THESE FUNCTIONS SHOULD BE THE LAST TEST IN THIS FILE ***/
 (kill (translate_or_lose, compile_or_lose), 0);
 0;
+/*** THERE SHOULD BE NO TESTS BEYOND THIS POINT ***/

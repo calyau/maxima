@@ -199,7 +199,8 @@ distribution to get these features.
 
 @defun imaxima-latex
 Converts the Maxima buffer to a LaTeX document and opens it in LaTeX
-mode. @emph{Note:} This command does not work in XEmacs.
+mode. @ref{imaxima-latex-buffer-name} @emph{Note:} This command does not
+work in XEmacs.
 @end defun
 
 @defun imaxima-to-html
@@ -330,12 +331,14 @@ Foreground color used in the imaxima buffer.  @code{nil} if you don't want
 to change the default color.
 @end defopt
 
-
-
+@anchor{imaxima-latex-preamble}
 @defopt imaxima-latex-preamble
-LaTeX expression inserted at the start of the document preamble when
-TeX'ing equations.  This can be used to change, say, the document font.
-E.g.
+(See options @code{imaxima-latex-document-class},
+@code{imaxima-latex-use-packages},
+@code{imaxima-latex-document-dimensions}, @code{imaxima-latex-macros}
+and @code{imaxima-latex-macros-linear}.) LaTeX expression inserted at
+the start of the document preamble when TeX'ing equations. This can be
+used to change, say, the document font. E.g.
 
 @example
 \usepackage@{concrete@}
@@ -353,6 +356,39 @@ default Computer Modern, which works best at high resolutions.
 Face used for LaTeX errors.  This option is ignored when using
 @code{maxima.el}.
 @end defopt
+
+@anchor{imaxima-latex-document-class}
+@defopt imaxima-latex-document-class
+An elisp list (FORMAT-STRING [ARGS]) that provides a valid list of
+inputs to @code{format}. FORMAT-STRING should generate the @LaTeX{}
+document class used to generate all @LaTeX{} documents; ARGS is
+evaluated. Used by @code{imaxima-latex}.
+@end defopt
+
+@anchor{imaxima-latex-use-packages}
+@defopt imaxima-latex-use-packages
+A string that contains all @code{usepackage} declarations needed. This
+is inserted into the @LaTeX{} document after
+@code{imaxima-latex-preamble}.
+@end defopt
+
+@anchor{imaxima-latex-macros-format-file}
+@defopt imaxima-latex-macros-format-file
+Macros used by @code{imaxima-dump-tex} to generate the format file.
+@end defopt
+
+@anchor{imaxima-latex-macros}
+@anchor{imaxima-latex-macros-linear}
+@defopt imaxima-latex-macros, imaxima-latex-macros-linear
+A string that defines @emph{imaxima}-specific macros to format fractions
+in regular and linear fashion.
+@end defopt
+
+@anchor{imaxima-latex-document-dimensions}
+@defopt imaxima-latex-document-dimensions
+A string the contains the document dimensions for @code{imaxima-latex}.
+@end defopt
+
 
 @node Line Breaking
 @section Line Breaking
@@ -412,6 +448,12 @@ $${\rm expt}(a,b) \quad {\rm subscript}(a,b) \quad (a+b)/(c+d) \quad (a+b)^{1/2}
 @section Miscellaneous
 If the required files are in your path, you shouldn't normally need to
 change these options.
+
+@anchor{imaxima-latex-buffer-name}
+@defopt imaxima-latex-buffer-name
+The default name of the buffer created by @code{imaxima-latex}.
+The default value is @code{*imaxima-latex*}.
+@end defopt
 
 @cindex png
 @cindex jpeg

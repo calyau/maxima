@@ -34,7 +34,8 @@
 ;;; modes of the arguments should not be thrown away.
 
 (defmacro defmtrfun  ((name mode prop restp . array-flag) argl . body )
-  (let ((def-header))
+  (let ((def-header)
+        (rest (gensym "TR-REST-ARG")))
     (and array-flag
 	 ;; old DEFMTRFUN's might have this extra bit NIL
 	 ;; new ones will have (NIL) or (T)
@@ -67,31 +68,23 @@
 					 (t
 					  ''$variable_num_args_function)))))
 		 ,(cond ((not restp) nil)))))
-      (,(if (consp def-header)
-	    'defun-prop
-	    'defmfun)
+      (,(cond ((consp def-header) 'defun-prop)
+              (restp 'defun)
+              (t 'defmfun))
        ,def-header ,(cond ((not restp) argl)
-			  (t '|mlexpr NARGS|))
-       ,@(cond ((not restp)
-		body)
-	       (t
-		(let ((nl (1- (length argl))))
-		  `((cond ((< |mlexpr NARGS| ,nl)
-			   ($error 'maxima-error ',name ,(intl:gettext " takes no less than ")
-			    ,nl
-			    ',(cond ((= nl 1)
-				     (intl:gettext " argument."))
-				    (t
-				     (intl:gettext " arguments.")))))
-			  (t
-			   ((lambda ,argl ,@body)
-			    ;; this conses up the
-			    ;; calls to ARGS and LISTIFY.
-			    ,@(do ((j 1 (1+ j))
-				   (p-argl nil))
-				  ((> j nl)
-				   (push
-				    `(cons '(mlist) (listify (- ,nl |mlexpr NARGS|)))
-				    p-argl)
-				   (nreverse p-argl))
-				  (push `(arg ,j) p-argl)))))))))))))
+                          (t `(&rest ,rest)))
+       ,@(if (not restp)
+             body
+             (let ((required-arg-count (1- (length argl))))
+               (if (zerop required-arg-count)
+                   `((let ((,(car argl) (cons '(mlist) ,rest)))
+                       ,@body))
+                   `((when (< (length ,rest) ,required-arg-count)
+                       (merror (intl:gettext "~M: expected at least ~M arguments but got ~M: ~M")
+                               ',name
+                               ,required-arg-count
+                               (length ,rest)
+                               (cons '(mlist) ,rest)))
+                     (apply (lambda ,argl ,@body)
+                            (nconc (subseq ,rest 0 ,required-arg-count)
+                                   (list (cons '(mlist) (nthcdr ,required-arg-count ,rest)))))))))))))

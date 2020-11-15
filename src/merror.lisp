@@ -116,7 +116,9 @@
 (defmvar $error_syms '((mlist) $errexp1 $errexp2 $errexp3)
   "Symbols to bind the too-large `maxima-error' expresssions to")
 
-(defun-prop ($error_syms assign) (var val)
+(putprop '$error_syms 'assign-symbols 'assign)
+
+(defun assign-symbols (var val)
   (if (not (and ($listp val)
 		(do ((l (cdr val) (cdr l)))
 		    ((null l) (return t))

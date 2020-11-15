@@ -39,7 +39,7 @@ message(STATUS "Host system: ${HOST}")
 find_file (NSISTEMPLATE_IN  NAMES "NSIS.template.in"
     PATHS "${CMAKE_ROOT}/Modules/" "${CMAKE_ROOT}/Modules/Internal/CPack")
 file(READ "${NSISTEMPLATE_IN}" MYNSISTEMPLATE)
-string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel user
+string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel admin
 !include \"${CMAKE_SOURCE_DIR}\\\\\\\\FileAssociation.nsh\"
 !include FileFunc.nsh
 !include LogicLib.nsh
@@ -264,6 +264,8 @@ set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/maxima-icon.bmp")
 set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima\\\\maxima-icon.ico")
 set(CPACK_NSIS_MUI_UNIICON "${CPACK_NSIS_MUI_ICON}")
+set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\maxima-command.ico")
+set(CPACK_NSIS_DISPLAY_NAME "Maxima computer algebra system")
 set(CPACK_PACKAGE_EXECUTABLES "..\\\\bin\\\\wxmaxima" "wxMaxima (GUI for Maxima)")
 set(CPACK_NSIS_URL_INFO_ABOUT "http://maxima.sourceforge.net")
 set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "http://maxima.sourceforge.net" "About Maxima" "http://wxmaxima-developers.github.io/wxmaxima/" "About wxMaxima" "share/doc/maxima.pdf" "Maxima documentation"  "share/doc/licenses.html" "Maxima and included software licenses" "bin/lispselector.bat" "Configure default LISP for Maxima")

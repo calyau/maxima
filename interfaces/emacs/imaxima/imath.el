@@ -58,7 +58,7 @@
 ;;     A folder is created to store all the formula images. They
 ;;     are referenced from the HTML document by using <IMG> tag.
 
-(require 'cl)
+(require 'cl-lib)
 (require 'imaxima)
 
 (if (featurep 'xemacs)
@@ -156,13 +156,6 @@ are referenced from the HTML document by using <IMG> tag.
 	(imaxima))
       (switch-to-buffer cur-buf))))
 
-;;; Continuation is used between maxima-to-image function and
-;;; get-image-from-imaxima. The value is either nil or a list of
-;;; buffer, pos1, and pos2, where pos1 and pos2 are the beginning and
-;;; end of current maxima formula.
-;;  (func buffer pos1 pos2)
-
-(defvar continuation nil)
 (defvar maxima-start "{maxima ")
 (defvar maxima-end " maxima}")
 (defvar latex-start "{latex ")
@@ -182,7 +175,7 @@ are referenced from the HTML document by using <IMG> tag.
   (insert "{latex  latex}")
   (backward-char 7))
 
-(defun* find-formula (ftype)
+(cl-defun find-formula (ftype)
   (let (start-symbol end-symbol tmpresult)
     (cond ((eql ftype 'maxima)
 	   (setq start-symbol maxima-start
@@ -195,32 +188,32 @@ are referenced from the HTML document by using <IMG> tag.
 		 end-symbol eps-end))
 	  ((eql ftype 'both)
 	   (save-excursion
-	     (multiple-value-bind (la-start la-end la-type)
+	     (cl-multiple-value-bind (la-start la-end la-type)
 		 (find-formula 'latex)
 	       (if (not (and la-start la-end la-type))
-		   (return-from find-formula nil)
+		   (cl-return-from find-formula nil)
 		 (goto-char (1- la-start))
 		 (if (not (string= (buffer-substring (point) (1+ (point)))
 				   "&"))
-		     (return-from find-formula nil))
-		 (multiple-value-bind (mx-start mx-end mx-type)
+		     (cl-return-from find-formula nil))
+		 (cl-multiple-value-bind (mx-start mx-end mx-type)
 		     (find-formula 'maxima)
 		   (if (not (and mx-start mx-end mx-type))
-		       (return-from find-formula nil))
-		   (return-from find-formula
-		     (values mx-start la-end 'both)))))))
+		       (cl-return-from find-formula nil))
+		   (cl-return-from find-formula
+		     (cl-values mx-start la-end 'both)))))))
 	  ((eql ftype 'any)
 	   (cond ((setq tmpresult (find-formula 'both))
-		  (return-from find-formula tmpresult))
+		  (cl-return-from find-formula tmpresult))
 		 ((setq tmpresult (find-formula 'latex))
-		  (return-from find-formula tmpresult))
+		  (cl-return-from find-formula tmpresult))
 		 ((setq tmpresult (find-formula 'maxima))
-		  (return-from find-formula tmpresult))
+		  (cl-return-from find-formula tmpresult))
 		 ((setq tmpresult (find-formula 'eps))
-		  (return-from find-formula tmpresult))
+		  (cl-return-from find-formula tmpresult))
 		 (t 
-		  (return-from find-formula nil))))
-	  (t (return-from find-formula nil)))
+		  (cl-return-from find-formula nil))))
+	  (t (cl-return-from find-formula nil)))
     (save-excursion
       (let (begin end (curpos (point)))
 	(setq begin (search-backward start-symbol (point-min) t))
@@ -228,13 +221,13 @@ are referenced from the HTML document by using <IMG> tag.
 	(if (and (numberp begin) (numberp end) ;; {start-symbol ... end-symbol} is found.
 		 (or (and (> end curpos) (> curpos begin)) ;; {start-symbol ... curpos ... end-symbol}
 		     (= curpos end))) ;;  {start-symbol ... end-symbol}}curpos
-	    (values begin end ftype)
+	    (cl-values begin end ftype)
 	  nil)))))
 
 (defun remove-maxima-formula-image (arg)
   (interactive "P")
   (save-excursion
-    (multiple-value-bind (begin end ftype)
+    (cl-multiple-value-bind (begin end ftype)
 	(find-formula 'any)
       (when (and begin end ftype)
 	(if (featurep 'xemacs)
@@ -242,18 +235,18 @@ are referenced from the HTML document by using <IMG> tag.
 	      (if ext (delete-extent ext)))
 	  (remove-text-properties begin end '(display) (current-buffer)))
 	(if (eql ftype 'both)
-	    (multiple-value-bind (la-begin la-end la-ftype)
+	    (cl-multiple-value-bind (la-begin la-end la-ftype)
 		(find-formula 'latex)
 	      (when (and (not arg) la-begin la-end la-ftype)
 		;; remove & between the maxima formula and latex formula
 		;; if that is the case.
-		(if (eql ftype 'both) (decf la-begin))
+		(if (eql ftype 'both) (cl-decf la-begin))
 		(delete-region la-begin la-end))))))))
 
 (defun form-to-image ()
   "Convert any form to image based on form types"
   (interactive "")
-  (multiple-value-bind (start end ftype)
+  (cl-multiple-value-bind (start end ftype)
       (find-formula 'any)
     (if (and start end ftype)
 	(cond ((eql ftype 'maxima)
@@ -269,12 +262,12 @@ are referenced from the HTML document by using <IMG> tag.
     )
   )
 
-(defun* maxima-to-image (&aux maxcmd)
+(cl-defun maxima-to-image (&aux maxcmd)
   "Transform a maxima form which is placed just before current point or
 is surrounding the current point into a formula image."
   (interactive "")
   (save-excursion
-    (multiple-value-bind (begin end)
+    (cl-multiple-value-bind (begin end)
 	(find-formula 'maxima)
       (let (curpos (point))
 	(when (and begin end)
@@ -282,54 +275,48 @@ is surrounding the current point into a formula image."
 				      (- end (length maxima-end))))
 	  (kill-new (buffer-substring (+ begin (length maxima-start))
 				      (- end (length maxima-end))))
-	  (save-excursion
-	    (set-buffer (if imaxima-use-maxima-mode-flag
-			    "*maxima*"
-			  "*imaxima*"))
+	  (with-current-buffer (if imaxima-use-maxima-mode-flag "*maxima*" "*imaxima*")
 	    (yank)
 	    (insert ";")
 	    (comint-send-input))))
-      (if continuation
-	  (debug-imaxima-filter "continuation exits"))
-      (setq continuation (list (if (string-match "[ 	]*wx\\(plot2d\\|plot3d\\|draw\\|draw2d\\|draw3d\\|implicit_plot\\|contour_plot\\).*" maxcmd)
+      (if imaxima-continuation
+	  (debug-imaxima-filter "imaxima-continuation exits"))
+      (setq imaxima-continuation (list (if (string-match "[ 	]*wx\\(plot2d\\|plot3d\\|draw\\|draw2d\\|draw3d\\|implicit_plot\\|contour_plot\\).*" maxcmd)
 				   #'get-inline-graph
 				 #'get-image-from-imaxima-1)
 			       (current-buffer) begin end)))))
 
-(defun* maxima-to-image-all (&aux maxcmd)
+(cl-defun maxima-to-image-all (&aux maxcmd)
   "Transform a maxima form which is placed just before current point or
 is surrounding the current point into a formula image."
   (interactive "")
   (if (not (re-search-forward "maxima}[^&]" (point-max) 0))
       (progn
-	(setq continuation nil)
-	(return-from maxima-to-image-all nil)))
+	(setq imaxima-continuation nil)
+	(cl-return-from maxima-to-image-all nil)))
   (backward-char)
-  (multiple-value-bind (begin end)
+  (cl-multiple-value-bind (begin end)
       (find-formula 'maxima)
     (when (and begin end)
       (setq maxcmd (buffer-substring (+ begin (length maxima-start))
 				     (- end (length maxima-end))))
       (kill-new (buffer-substring (+ begin (length maxima-start))
 				  (- end (length maxima-end))))
-      (save-excursion
-	(set-buffer (if imaxima-use-maxima-mode-flag
-			"*maxima*"
-		      "*imaxima*"))
-	(yank)
-	(insert ";")
-	(comint-send-input))
-      (if continuation
-	  (debug-imaxima-filter "continuation exits"))
-      (setq continuation (list (if (string-match "[ 	]*wx\\(plot2d\\|plot3d\\|draw\\|draw2d\\|draw3d\\|implicit_plot\\|contour_plot\\).*" maxcmd)
+      (with-current-buffer (if imaxima-use-maxima-mode-flag "*maxima*" "*imaxima*")
+		(yank)
+		(insert ";")
+		(comint-send-input))
+      (if imaxima-continuation
+	  (debug-imaxima-filter "imaxima-continuation exits"))
+      (setq imaxima-continuation (list (if (string-match "[ 	]*wx\\(plot2d\\|plot3d\\|draw\\|draw2d\\|draw3d\\|implicit_plot\\|contour_plot\\).*" maxcmd)
 				   #'(lambda (arg)
-				   (let ((cont continuation))
+				   (let ((cont imaxima-continuation))
 				     (funcall #'get-inline-graph arg)
 				     (save-current-buffer
 				       (set-buffer (nth 1 cont))
 				       (maxima-to-image-all))))
 			     #'(lambda (arg)
-				 (let ((cont continuation))
+				 (let ((cont imaxima-continuation))
 				   (funcall #'get-image-from-imaxima-1 arg)
 				   (save-current-buffer
 				     (set-buffer (nth 1 cont))
@@ -337,14 +324,14 @@ is surrounding the current point into a formula image."
 			   (current-buffer) begin end)))))
 
 
-(defun* get-image-from-imaxima (eps-or-latex)
+(cl-defun get-image-from-imaxima (eps-or-latex)
   "Converts a both form or a latex form into a formula image when
 placed right after the form."
   (interactive "")
   (let (la-start la-end la-ftype entire-start entire-end entire-ftype
 		 entire-string latex-formula-or-epsfile)
 
-    (multiple-value-bind (la-start la-end la-ftype)
+    (cl-multiple-value-bind (la-start la-end la-ftype)
 	(find-formula eps-or-latex)
       (when (and la-start la-end la-ftype)
 	(setq entire-string (buffer-substring la-start la-end))
@@ -361,14 +348,14 @@ placed right after the form."
 							    (length eps-end))))
 	       )
 	      )
-	(multiple-value-bind (entire-start entire-end entire-ftype)
+	(cl-multiple-value-bind (entire-start entire-end entire-ftype)
 	    (find-formula 'any)
 	  (when (and entire-start entire-end entire-ftype)
 	    (if (featurep 'xemacs)
 		(progn
 		  (let ((ext (extent-at entire-start)))
 		    (if ext
-			(return-from get-image-from-imaxima nil)))
+			(cl-return-from get-image-from-imaxima nil)))
 		  
 		  (cond ((eql eps-or-latex 'latex)
 			 (let ((ext (extent-at 0 (imaxima-make-image latex-formula-or-epsfile eps-or-latex  t))))
@@ -398,17 +385,17 @@ placed right after the form."
 	(if ext (set-extent-property ext 'duplicable nil))))
   (while (string-match "^([\\%a-zA-Z0-9]+)" latex-string)
     (setq latex-string (replace-match "" t t latex-string)))
-  (if continuation
+  (if imaxima-continuation
       (let ((maxima-string (save-current-buffer
-			     (set-buffer (nth 1 continuation))
-			     (buffer-substring (nth 2 continuation)
-					       (nth 3 continuation))))
+			     (set-buffer (nth 1 imaxima-continuation))
+			     (buffer-substring (nth 2 imaxima-continuation)
+					       (nth 3 imaxima-continuation))))
 	    pos)
 	(save-current-buffer
-	  (set-buffer (nth 1 continuation))
-	  (setq pos (copy-marker (nth 2 continuation) t))
-	  (delete-region (nth 2 continuation) (nth 3 continuation))
-	  (setq continuation nil)
+	  (set-buffer (nth 1 imaxima-continuation))
+	  (setq pos (copy-marker (nth 2 imaxima-continuation) t))
+	  (delete-region (nth 2 imaxima-continuation) (nth 3 imaxima-continuation))
+	  (setq imaxima-continuation nil)
 	  (let ((str-to-insert (concat maxima-string "&{latex " latex-string " latex}")))
 	    (if (featurep 'xemacs)
 		(let ((ext (extent-at 0 (imaxima-make-image latex-string 'latex t))))
@@ -430,15 +417,15 @@ placed right after the form."
 	(if ext (set-extent-property ext 'duplicable nil))))
   (when (string-match "^([\\%a-zA-Z0-9]+)" latex-string)
     (setq latex-string (replace-match "" t t latex-string)))
-  (if continuation
+  (if imaxima-continuation
       (let ((maxima-string (save-current-buffer
-			     (set-buffer (nth 1 continuation))
-			     (buffer-substring (nth 2 continuation)
-					       (nth 3 continuation)))))
+			     (set-buffer (nth 1 imaxima-continuation))
+			     (buffer-substring (nth 2 imaxima-continuation)
+					       (nth 3 imaxima-continuation)))))
 	(save-current-buffer
-	  (set-buffer (nth 1 continuation))
-	  (delete-region (nth 2 continuation) (nth 3 continuation))
-	  (setq continuation nil)
+	  (set-buffer (nth 1 imaxima-continuation))
+	  (delete-region (nth 2 imaxima-continuation) (nth 3 imaxima-continuation))
+	  (setq imaxima-continuation nil)
 	  (let ((str-to-insert maxima-string))
 	    (if (featurep 'xemacs)
 		(let ((ext (extent-at 0 (imaxima-make-image latex-string 'latex t))))
@@ -455,7 +442,7 @@ placed right after the form."
   "Transform all the latex forms and maxima&latex forms into
 formula images." 
   (interactive "")
-  (beginning-of-buffer)
+  (goto-char (point-min))
   (let ((msg "Converting latex"))
     (message msg)
     (while (search-forward latex-end nil 1)
@@ -463,14 +450,14 @@ formula images."
       (setq msg (concat msg "."))
       (message msg))
     (message (concat msg ".done.")))
-  (beginning-of-buffer)
+  (goto-char (point-min))
   (let ((msg "Converting eps"))
     (while (search-forward eps-end nil 1)
       (get-image-from-imaxima 'eps)
       (setq msg (concat msg "."))
       (message msg))
     (message (concat msg ".done.")))
-  (beginning-of-buffer)
+  (goto-char (point-min))
   (let ((msg "Converting maxima..."))
     (message msg)
     (maxima-to-image-all)
