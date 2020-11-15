@@ -1295,8 +1295,6 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 
 ;; Copy properties to noun operator.
 (setf (get '%mnctimes 'op) (get 'mnctimes 'op))
-(setf (get '%mnctimes 'rbp) (get '|$.| 'rbp))
-(setf (get '%mnctimes 'lbp) (get '|$.| 'lbp))
 
 (def-led-equiv	|$*| parse-nary)
 (def-lbp	|$*| 120.)

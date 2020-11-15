@@ -755,3 +755,162 @@ print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^skd
                                          skdkskdsk  2
 kskdsksdkkdksdksd in w999393293923939losl
 "$
+
+/* ensure that nounified operators are displayed same as verbs
+ * follow-on work for bug reported to mailing list 2020-09-13: "Function name for matrix/vector dot product?"
+ */
+
+kill (foo, x, y, z, a, b, c);
+done;
+
+print_string_2d (' "'"(foo));
+"'foo
+";
+
+print_string_2d (' ":"(foo, 123));
+"foo : 123
+";
+
+print_string_2d (' "::"(foo, 123));
+"foo :: 123
+";
+
+print_string_2d (' ":="(foo(a, b), [x, y, z]));
+"foo(a, b) := [x, y, z]
+";
+
+print_string_2d (' "::="(foo(a, b), [x, y, z]));
+"foo(a, b) ::= [x, y, z]
+";
+
+print_string_2d (' "!"(4));
+"4!
+";
+
+print_string_2d (' "^"(2, x));
+" x
+2
+";
+
+print_string_2d (' "^^"(a, b));
+" <b>
+a
+";
+
+print_string_2d (' "."(a, b, c));
+"a . b . c
+";
+
+print_string_2d (' ?rat(a, b));
+"a
+-
+b
+";
+
+print_string_2d (' "/"(a, b));
+"a
+-
+b
+";
+
+print_string_2d (' "*"(a, b, c));
+"a b c
+";
+
+print_string_2d (' "+"(a, b, c));
+"a + b + c
+";
+
+print_string_2d (' "-"(a));
+"- a
+";
+
+print_string_2d ('?marrow(a, b));
+"a -> b
+";
+
+print_string_2d (' ">"(a, b));
+"a > b
+";
+
+print_string_2d (' ">="(a, b));
+"a >= b
+";
+
+print_string_2d (' "="(a, b));
+"a = b
+";
+
+print_string_2d (' "#"(a, b));
+"a # b
+";
+
+print_string_2d (' "<="(a, b));
+"a <= b
+";
+
+print_string_2d (' "<"(a, b));
+"a < b
+";
+
+print_string_2d (' "not"(a));
+"not a
+";
+
+print_string_2d (' "and"(a, b));
+"a and b
+";
+
+print_string_2d (' "or"(a, b));
+"a or b
+";
+
+print_string_2d ('?mprogn(a, b, c));
+"(a, b, c)
+";
+
+print_string_2d ('?mlist(a, b, c));
+"[a, b, c]
+";
+
+/* example from mailing list 2019-04-02: "maxima lists" */
+print_string_2d ('[x][1]);
+"[x]
+   1
+";
+
+print_string_2d ('?mangle(a, b, c));
+"<a, b, c>
+";
+
+print_string_2d ('?mcomma(a, b, c));
+"a, b, c
+";
+
+print_string_2d ('?mabs(a));
+"abs(a)
+";
+
+print_string_2d ('matrix([a, b, c]));
+"[ a  b  c ]
+";
+
+print_string_2d ('?mbox(a));
+"\"\"\"
+\"a\"
+\"\"\"
+";
+
+print_string_2d ('?mlabox (a, b));
+"b\"\"
+\"a\"
+\"\"\"
+";
+
+print_string_2d ('?mtext ("hello"));
+"hello
+";
+
+block ([linel: 65], print_string_2d ('?mlabel (a, b)));
+"(a)                             b
+";
