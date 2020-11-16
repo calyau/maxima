@@ -293,7 +293,7 @@ if the following maxima command is entered:
 @closecatbox
 
 
-@node Warning messages, ,Error messages,Error and warning messages
+@node Warning messages, ,Error messages, Error and warning messages
 @section Warning messages
 @menu
 * undefined variable during translation::
@@ -313,7 +313,7 @@ resolve this issue.
 @closecatbox
 
 
-@node replaced x by y,  , undefined variable during translation, Warning messages
+@node replaced x by y, Command-line options, undefined variable during translation, Warning messages
 @subsection Rat: replaced <x> by <y> = <z>
 Floating-point numbers provide a maximum number of digits that is typically high,
 but still limited. Good examples that this limitation might be too low

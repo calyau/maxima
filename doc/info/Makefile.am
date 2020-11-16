@@ -54,7 +54,7 @@ maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
  operatingsystem.texi \
  orthopoly.texi pytranslate.texi ratpow.texi romberg.texi simplex.texi simplifications.texi solve_rec.texi \
  stats.texi stirling.texi stringproc.texi to_poly_solve.texi unit.texi \
- zeilberger.texi errormessages.texi
+ zeilberger.texi errormessages.texi commandline-options.texi
 
 figurefiles = \
 figures/introduction1.gif\
