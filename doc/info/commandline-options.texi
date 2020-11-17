@@ -75,7 +75,7 @@ The following command line options are available for Maxima:
 
 @need 150
     @item --userdir=@var{directory}
-              Use directory for user directory (default is @code{%HOMEPATH%/maxima} for Windows, @code{$HOME/.maxima} for others)
+              Use directory for user directory (default is @code{%USERPROFILE%/maxima} for Windows, @code{$HOME/.maxima} for others)
 
 @need 150
     @item -v, --verbose
