@@ -23,7 +23,7 @@ EXTRA_DIST = \
   ChangeLog-5.28 ChangeLog-5.29 ChangeLog-5.30 ChangeLog-5.31 ChangeLog-5.32 \
   ChangeLog-5.33 ChangeLog-5.34 ChangeLog-5.35 ChangeLog-5.36.md ChangeLog-5.37.md \
   ChangeLog-5.38.md ChangeLog-5.39.md ChangeLog-5.40.md ChangeLog-5.41.md \
-  ChangeLog-5.42.md LICENSES/getopt-license.txt\
+  ChangeLog-5.42.md ChangeLog-5.43.md ChangeLog-5.44.md ChangeLog-5.45.md LICENSES/getopt-license.txt\
   snap/snapcraft.yaml
 
 include common.mk
