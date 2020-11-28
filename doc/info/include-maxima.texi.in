@@ -215,6 +215,9 @@ and develop DOE Macsyma, now called Maxima.
 @b{Understanding maxima's output}
 * Error and warning messages::  Error and warning messages
 
+@b{Maxima's command-line options}
+* Command-line options::  Which command-line options does Maxima support?
+
 @b{Index}
 * Function and Variable Index:: Index.
 @ifhtml
@@ -1016,17 +1019,21 @@ Understanding maxima's output
 @chapter zeilberger
 @include zeilberger.texi
 
-@node Error and warning messages,  , zeilberger-pkg, Top
+@node Error and warning messages, Command-line options, zeilberger-pkg, Top
 @chapter Error and warning messages
 @include errormessages.texi
+
+@node Command-line options, Function and Variable Index, Error and warning messages, Top
+@chapter Command-line options
+@include commandline-options.texi
 
 @c end includes
 
 @ifnothtml
-@node Function and Variable Index,  , Error and warning messages, Top
+@node Function and Variable Index,  , Command-line options, Top
 @end ifnothtml
 @ifhtml
-@node Function and Variable Index,  , Error and warning messages, Top
+@node Function and Variable Index,  , Command-line options, Top
 @end ifhtml
 @appendix Function and Variable Index
 

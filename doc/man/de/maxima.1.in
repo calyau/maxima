@@ -25,7 +25,7 @@ polynomiellen Gleichungen, Faktorisierung von Polynomen, Taylorreihen- oder Laur
 von Funktionen, Berechnung von Poissionreihen, Matrizen- und Tensorberechnungen und
 2D und 3D Graphiken.
 Prozeduren k\(:onnen in einer ALGOL-\(:ahnlichen Syntax geschrieben werden und sowohl Lisp-\(:ahnliche Funktionen
-als auch Pattern-Matching kann verwendet werden
+als auch Pattern-Matching kann verwendet werden.
 Maxima-Code kann in Dateien geschrieben und aus Dateien gelesen werden.
 Maxima-Befehle in Dateien k\(:onnen gelesen und ausgef\(:uhrt werden, was Batch-Prozessing erm\(:oglicht.
 
@@ -184,7 +184,7 @@ Es gibt einige Demo-Dateien, die vollst\(:andige Probleme, die mit Maxima gel\(:
 \fBdemo(command);\fR
 .LP
 Zus\(:atzliche - von Benutzern beigesteuerte Programmdateien - f\(:ur verschiedene Probleme sind vorhanden, die 
-.IR "Share Bilbliothek"
+.IR "Share Bibliothek"
 
 .SH WEITERE DOKUMENTATION
 Das Handbuch von Maxima existiert in vielen Formaten, z.B. als HTML oder PDF Dokument.
@@ -234,7 +234,7 @@ Schreibt eine Sitzung der folgenden Kommandos in die Datei
 (nur eine Datei kann gleichzeitig ge\(:offnet sein) und das
 .I closefile
 Kommando mu\(ss ausgef\(:uhrt werden, bevor Maxima beendet wird, um die Datei
-ordnungsgem\(:ass zu schlie\(ssen.
+ordnungsgem\(:a\(ss zu schlie\(ssen.
 
 .SH PLOTTING BEFEHLE
 Maxima kann 2D und 3-dimensionale Plots erzeugen. Hier ein einfaches Beispiel f\(:ur einen 2D-Plot:

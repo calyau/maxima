@@ -327,10 +327,7 @@ This hook is called after imaxima has started Maxima."
   :type '(file))
 
 (defcustom imaxima-maxima-options
-  (if (eq system-type 'windows-nt)
-      ;; in this case the appropriate value is the empty string.
-      ""
-    (format "--preload-lisp=%s" imaxima-lisp-file))
+  (format "--preload-lisp=%s" imaxima-lisp-file)
   "Arguments passed to Maxima."
   :group 'imaxima
   :type '(string))
@@ -1301,7 +1298,8 @@ Please customize the option `imaxima-lisp-file'."))
 	  (unless (eq imaxima-image-type 'postscript)
 	    (imaxima-start-gs)))
 	(imaxima-with-no-new-input-prompt
-	 (comint-send-string mbuf (format ":lisp (progn (msetq $imaxima_tmp_subdir \"%s\") )\n" imaxima-tmp-subdir)))
+	 (let ((maxima-set-up (list 'progn (list 'msetq '$imaxima_tmp_subdir imaxima-tmp-subdir) "")))
+	   (comint-send-string mbuf (format ":lisp %S\n" maxima-set-up))))
       (switch-to-buffer mbuf))))
   (run-hooks 'imaxima-startup-hook))
 
