@@ -17,7 +17,8 @@
 (defmvar *alphabet* (list #\_ #\%))
 (defmvar *whitespace-chars*
          '(#\tab #\space #\linefeed #\return #\page #\newline
-           #+(or unicode sb-unicode openmcl-unicode-strings) #\no-break_space))
+           #+(or (and unicode (not lispworks))
+                 sb-unicode openmcl-unicode-strings) #\no-break_space))
 
 (defun alphabetp (n)
   (and (characterp n)

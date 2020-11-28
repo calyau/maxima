@@ -143,8 +143,8 @@
 	     ;; build possible), but not compiled (which means
 	     ;; with ECL or ABCL it won't end up in the final image)
 	     ;; => no out-of-tree build for ECL.
-	     #-(or ecl abcl) (:private-file "autoconf-variables")
-	     #+(or ecl abcl) (:file "autoconf-variables")
+	     #-(or ecl abcl lispworks) (:private-file "autoconf-variables")
+	     #+(or ecl abcl lispworks) (:file "autoconf-variables")
 	     ))
    (:module intl :source-pathname ""
 	    :components
