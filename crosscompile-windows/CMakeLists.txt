@@ -213,6 +213,7 @@ externalproject_add(maxima
         COMMAND LANG=C $(MAKE)
         COMMAND LANG=C $(MAKE) pdf
   INSTALL_COMMAND LANG=C $(MAKE) install DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
+          COMMAND LANG=C $(MAKE) extradocinstall DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
 )
 
 # crosscompiling winkill with autoconf does not work, compile it using CMake.
