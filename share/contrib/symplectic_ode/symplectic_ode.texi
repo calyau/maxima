@@ -97,10 +97,12 @@ Numerically solve Hamilton's equations of motion using a symplectic method. Spec
 hamiltonian is separable; that is when it has the form @code{f(p) + g(q)}.
    
 @item The canonical coordinates are @var{p} and @var{q}. The arguments @var{p} and @var{q} should be 
-mapatoms or equal length lists of mapatoms.
+symbols or equal length lists of symbols.
 
 @item The arguments @var{po} and @var{q0} are the initial values of @var{p} and @var{q}, respectively. 
-These should be mapatoms or equal length lists of mapatoms.
+These should be expressions or equal length lists of expressions. Generally, the values of @var{po} and @var{q0}
+should be numbers. When the optional argument @var{type} is float, the code attempts to convert the values
+of @var{po} and @var{qo} into floating point numbers; when this isn't possible, the code signals an error.
   
 @item @var{dt} is the fixed time step.
 

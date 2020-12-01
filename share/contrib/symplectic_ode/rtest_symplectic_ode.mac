@@ -254,10 +254,22 @@ errcatch( poisson_bracket(p^2,q^2,p,[q]));
 errcatch( poisson_bracket(p^2,q^2,[p],q));
 []$
 
+/* see mailing list "symplectic_ode and mapatom" 30 Nov 2020 */
+symplectic_ode (p^2/2 + q^2/2,p,q, %pi/7,%pi, 1/10, 2, 'symplectic_euler, 'any);
+[[%pi/7,(3*%pi)/70,-(403*%pi)/7000],[%pi,(703*%pi)/700,(69897*%pi)/70000]]$
+
+errcatch(symplectic_ode (p^2/2 + q^2/2,[p],q, %pi/7,%pi, 1/10, 2, 'symplectic_euler, 'any));
+[]$
+
+
+symplectic_ode (p^2/2 + q^2/2,[p],[q], [1],[1], 1/10, 2, 'symplectic_euler, 'any);
+[[[1],[9/10],[791/1000]],[[1],[109/100],[11691/10000]]]$
+
 (print("Runtime was ", elapsed_real_time()-ty," seconds."),0);
 0$
+
 /* make a mess? Clean it up.*/
-(remvalue(pp,qq), reset(algebraic, display2d),0);
+(remvalue(pp,qq,ty,ham,dt,N,x,z), reset(algebraic, display2d),0);
 0$
 
 
