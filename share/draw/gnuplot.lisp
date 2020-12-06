@@ -3248,12 +3248,16 @@
 
     ;; we now create two files: maxout.gnuplot and data.gnuplot
     (setf cmdstorage
-          (open gfn
+          (open
+	   #+sbcl (sb-ext:native-namestring gfn)
+	   #-sbcl gfn
                 :direction :output :if-exists :supersede))
     (if (eql cmdstorage nil)
       (merror "draw: Cannot create file '~a'. Probably maxima_tempdir doesn't point to a writable directory." gfn))
     (setf datastorage
-          (open dfn
+          (open
+	   #+sbcl (sb-ext:native-namestring dfn)
+	   #-sbcl dfn
                 :direction :output :if-exists :supersede))
     (if (eql datastorage nil)
       (merror "draw: Cannot create file '~a'. Probably maxima_tempdir doesn't point to a writable directory." dfn))

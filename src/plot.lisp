@@ -1920,7 +1920,10 @@ sin(y)*(10.0+6*cos(x)),
        (cons '(mlist) (cons file output-file)))
       ;; this section is for plot_format different from xmaxima
       (t
-       (with-open-file (st file :direction :output :if-exists :supersede)
+       (with-open-file (st
+			#+sbcl (sb-ext:native-namestring file)
+			#-sbcl file
+			:direction :output :if-exists :supersede)
          (case (getf options :plot_format)
            ($gnuplot
             (setq output-file (gnuplot-print-header st options))
@@ -2468,7 +2471,10 @@ Several functions depending on the two variables v1 and v2:
   ;; Set up the output file stream
   (let (($pstream
          (cond ($in_netmath *standard-output*)
-               (t (open file :direction :output :if-exists :supersede))))
+               (t (open
+		   #+sbcl (sb-ext:native-namestring file)
+		   #-sbcl file
+		   :direction :output :if-exists :supersede))))
         (palette (getf options :palette))
         (gstrings (if (getf options :gnuplot_strings) "" "noenhanced"))
         (legend (getf options :legend)) (n (length functions)))
