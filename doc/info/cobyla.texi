@@ -111,15 +111,27 @@ The minimized function value
 The number of function evaluations.
 @item
 Return code with the following meanings
- @enumerate
+ @itemize @w{}
  @item
  0 - No errors.
  @item
  1 - Limit on maximum number of function evaluations reached.
  @item
  2 - Rounding errors inhibiting progress.
- @end enumerate
+ @item
+ -1 - @var{MAXCV} value exceeds @var{RHOEND}.  This indicates that the
+  constraints were probably not satisfied.  User should investigate
+  the value of the constraints.
+
+ @end itemize
 @end enumerate
+
+@var{MAXCV} stands for ``MAXimum Constraint Violation'' and is the
+value of @math{max(0.0, -c1(x), -c2(x),...-cm(x))} where @math{ck(x)}
+denotes the k'th constraint function.  (Note that maxima allows
+constraints of the form @math{f(x) = g(x)}, which are internally
+converted to @math{f(x)-g(x) >= 0} and @math{g(x)-f(x) >= 0} which is
+required by COBYLA.
 
 @code{load("fmin_cobyla")} loads this function.
 
@@ -165,5 +177,6 @@ The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
        - 0.49999999999926, [[-1.999955756559757e-12],[]], 66]
 @end example
 
-There are additional examples in the share/cobyla/ex directory.
+There are additional examples in the share/cobyla/ex directory and in
+share/cobyla/rtest_cobyla.mac.
 
