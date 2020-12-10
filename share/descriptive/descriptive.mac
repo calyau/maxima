@@ -269,18 +269,25 @@ continuous_freq_array (lis,[opt]):=block([nc,mini,maxi,lim,amp,fr,ult,n,k,index,
                   fr: count_array_by_bins (lis, bins),
                   [lim,fr]))
      else /* bins of equal amplitude */
-       (if length(opt) = 1 and listofnumbersp(opt[1])
-           then ( mini: opt[1][1],
-     	     maxi: opt[1][2],
-                  if length(opt[1]) = 3   /* min, max, and number of classes given */
-                    then nc: opt[1][3]
-                  elseif length(opt[1]) = 2  /* min and max */
-                    then nc:10
-                    else error("continuous_freq: incorrect number of elements in optional argument."))
-           else ( [mini, maxi] : vector_min_max (lis),
-                  if length(opt)=1
-                     then nc:opt[1]  /* only number of classes given */
-                     else nc:10 ),   /* default number of classes */
+       (if length(opt) > 0
+            then /* either a list comprising min, max, and number of classes,
+                  * or a list comprising just min and max,
+                  * or a number of classes
+                  */
+                 (if length(opt) = 1 and listp(opt[1])
+                      then (if length(opt[1]) = 2 or length(opt[1]) = 3
+                                then ([mini, maxi]: [opt[1][1], opt[1][2]],
+                                      if length(opt[1]) = 3
+                                          then nc: opt[1][3]
+                                          else nc: 10))
+                  elseif length(opt) = 1 and integerp(opt[1])
+                      then ([mini, maxi]: vector_min_max (lis),
+                            nc:opt[1])
+                  else
+                      error ("continuous_freq: unrecognized optional argument:", opt))
+            else /* default classes */
+                ([mini, maxi] : vector_min_max (lis),
+                 nc: 10),
         lim:[mini],
         amp:(maxi-mini)/nc,
         if amp=0
