@@ -131,7 +131,7 @@ value of @math{max(0.0, -c1(x), -c2(x),...-cm(x))} where @math{ck(x)}
 denotes the k'th constraint function.  (Note that maxima allows
 constraints of the form @math{f(x) = g(x)}, which are internally
 converted to @math{f(x)-g(x) >= 0} and @math{g(x)-f(x) >= 0} which is
-required by COBYLA.
+required by COBYLA).
 
 @code{load("fmin_cobyla")} loads this function.
 
