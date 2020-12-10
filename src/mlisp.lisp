@@ -1684,6 +1684,7 @@ wrapper for this."
       (declare-index-properties-1 (first l) (second l)))))
 
 (defun declare-index-properties-1 (x l)
+  (declare (special $known_index_properties))
   (if (not (or (symbolp x) (and ($listp x) (every #'symbolp (cdr x)))))
     (merror (intl:gettext "declare_index_properties: first argument must be a symbol or a list of symbols; found: ~M") x))
   (if (not ($listp l))

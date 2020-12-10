@@ -230,6 +230,7 @@
        d-base depth)
      (multiple-value-bind (w00 w01 w10 w11 h00 h01 h10 h11 d00 d01 d10 d11 pre-subscripts-output pre-superscripts-output post-subscripts-output post-superscripts-output)
        (dimension-indices dummy (cdr x))
+       (declare (special pre-subscripts pre-superscripts post-subscripts post-superscripts))
        (cond
          ((not (checkfit (setq width (+ w-base (max w00 w01) (max w10 w11))))) ;; ?? !!
           (return (dimension-function (cons '(subscript) (cons dummy (cdr x))) result)))
@@ -263,6 +264,7 @@
       ;; Ignore DISPLAY-INDICES if it's nonempty and not the same size as INDICES.
       (setq display-indices nil))
     (let (pre-subscripts pre-superscripts post-subscripts post-superscripts)
+      (declare (special pre-subscripts pre-superscripts post-subscripts post-superscripts))
       (if display-indices
         (setq pre-subscripts (extract-indices indices display-indices '$presubscript)
               pre-superscripts (extract-indices indices display-indices '$presuperscript)
