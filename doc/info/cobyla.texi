@@ -177,6 +177,29 @@ The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
        - 0.49999999999926, [[-1.999955756559757e-12],[]], 66]
 @end example
 
+Here is the same example but the constraint is @math{x1^2+x2^2 <= -1}
+which is impossible over the reals.
+
+@example
+@group
+(%i1) fmin_cobyla(x1*x2, [x1, x2], [1,1],
+         constraints = [x1^2+x2^2 <= -1], iprint=1);
+@end group
+   Normal return from subroutine COBYLA
+
+   NFVALS =   65   F = 3.016417E-13    MAXCV = 1.000000E+00
+   X =-3.375179E-07  -8.937057E-07
+(%o1) [[x1 = - 3.375178983064622e-7, x2 = - 8.937056510780022e-7], 
+                                                3.016416530564557e-13, 65, - 1]
+(%i2) subst(%o1[2], [x1^2+x2^2 <= -1]);
+(%o2)                 [- 6.847914590915444e-13 <= - 1]
+@end example
+
+We see the return code (@code{%o1[4]}) is -1 indicating that the
+constraints may not be satisfied.  Substituting the solution into the
+constraint equation as shown in @code{%o2} shows that the constraint
+is, of course, violated.
+
 There are additional examples in the share/cobyla/ex directory and in
 share/cobyla/rtest_cobyla.mac.
 
