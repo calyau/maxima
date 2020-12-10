@@ -3365,7 +3365,10 @@
                            (round (first (get-option '$dimensions)))
                            (round (second (get-option '$dimensions)))))
 
-        (otherwise ; default screen output
+        (otherwise
+          ;; If we arrive here, (get-option '$terminal) returned something unrecognized;
+          ;; at present (commit ccd8074, 2020-12-07) the following are accepted by
+          ;; UPDATE-TERMINAL, but not handled here: $obj $ply $pnm $screen $stl $tiff $vrml
           (cond
             ((string= *autoconf-windows* "true")  ; running on windows operating system
               (format cmdstorage "set terminal windows enhanced ~a ~a size ~a, ~a~%"
@@ -3373,16 +3376,18 @@
                           (write-font-type)
                           (round (first (get-option '$dimensions)))
                           (round (second (get-option '$dimensions)))))
-            (t  ; other platforms
-              (format cmdstorage "if(GPVAL_VERSION >= 5.0){set terminal x11 dashed enhanced ~a ~a size ~a, ~a replotonresize} else {set terminal x11 dashed enhanced ~a ~a size ~a, ~a}~%"
-                           *draw-terminal-number*
-                           (write-font-type)
-                           (round (first (get-option '$dimensions)))
-                           (round (second (get-option '$dimensions)))
-			   *draw-terminal-number*
-                           (write-font-type)
-                           (round (first (get-option '$dimensions)))
-                           (round (second (get-option '$dimensions))))))) ))
+            (t
+              ;; Non-Windows platform. There isn't any terminal specification which
+              ;; works across the board; in the absence of a terminal specification
+              ;; which is known to work, we must refrain altogether.
+              ;;
+              ;; Treat $SCREEN as a default option. Otherwise, complain.
+
+              (unless (eq (get-option '$terminal) '$screen)
+                (mtell "draw: warning: I don't know about terminal '~m'; I'll try to restore the default.~%" (get-option '$terminal))
+                (mtell "draw: try this: set_draw_defaults(terminal = <something>);~%"))
+
+              (format cmdstorage "set terminal pop~%"))))))
 
     ; compute some parameters for multiplot
     (when (and (not isanimatedgif) (not ismultipage))
