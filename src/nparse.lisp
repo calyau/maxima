@@ -17,7 +17,8 @@
 (defmvar *alphabet* (list #\_ #\%))
 (defmvar *whitespace-chars*
          '(#\tab #\space #\linefeed #\return #\page #\newline
-           #+(or unicode sb-unicode openmcl-unicode-strings) #\no-break_space))
+           #+(or (and unicode (not lispworks))
+                 sb-unicode openmcl-unicode-strings) #\no-break_space))
 
 (defun alphabetp (n)
   (and (characterp n)
@@ -1295,8 +1296,6 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 
 ;; Copy properties to noun operator.
 (setf (get '%mnctimes 'op) (get 'mnctimes 'op))
-(setf (get '%mnctimes 'rbp) (get '|$.| 'rbp))
-(setf (get '%mnctimes 'lbp) (get '|$.| 'lbp))
 
 (def-led-equiv	|$*| parse-nary)
 (def-lbp	|$*| 120.)

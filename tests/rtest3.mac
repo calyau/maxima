@@ -621,19 +621,13 @@ map (get_index_properties, '[A, B, C, D, E, F, G]);
 
 /* email from Oleg Nesterov 2020-05-21: "maxima: bug in dsumprod() ?" */
 
-(print_string_2d (e) :=
-   with_default_2d_display ([s: make_string_output_stream (), s1],
-          with_stdout (s, print (e)),
-          s1: get_output_stream_string (s),
-          close (s),
-          s1),
- 0);
+(print_string_2d (e) := with_default_2d_display (printf (false, "~m", e)), 0);
 0;
 
 print_string_2d (lsum(1/f(g(x)/h(x)), x, LOOOOOOOOONG_EXPR));
 "====
 \\                         1
- >                     ------- 
+ >                     -------
 /                        g(x)
 ====                   f(----)
 x in LOOOOOOOOONG_EXPR   h(x)
@@ -645,7 +639,7 @@ print_string_2d ('sum(x^k / k,k,1,inf));
 "inf
 ====   k
 \\     x
- >    -- 
+ >    --
 /     k
 ====
 k = 1
@@ -655,7 +649,7 @@ print_string_2d (subst (k = \*index, 'sum(x^k / k,k,1,inf)));
 "inf
 ====        *index
 \\          x
- >         ------- 
+ >         -------
 /          *index
 ====
 *index = 1
@@ -665,7 +659,7 @@ print_string_2d ('sum(i!,i,1,4));
 " 4
 ====
 \\
- >    i! 
+ >    i!
 /
 ====
 i = 1
@@ -675,7 +669,7 @@ print_string_2d ('sum(g(i),i,0,n));
 " n
 ====
 \\
- >    g(i) 
+ >    g(i)
 /
 ====
 i = 0
@@ -685,7 +679,7 @@ print_string_2d ('sum(g(i),i,0,n) + 1);
 " n
 ====
 \\
- >    g(i) + 1 
+ >    g(i) + 1
 /
 ====
 i = 0
@@ -695,7 +689,7 @@ print_string_2d (foo: unsum(product(i^2,i,1,n),n));
 " n - 1
  /===\\
   ! !   2
-( ! !  i ) (n - 1) (n + 1) 
+( ! !  i ) (n - 1) (n + 1)
   ! !
  i = 1
 "$
@@ -704,7 +698,7 @@ print_string_2d (nusum(foo,n,1,n));
 "  n
 /===\\
  ! !   2
- ! !  i  - 1 
+ ! !  i  - 1
  ! !
 i = 1
 "$
@@ -713,7 +707,7 @@ print_string_2d (powerseries(log(sin(x)/x),x,0));
 "inf
 ====        i2  2 i2 - 1             2 i2
 \\      (- 1)   2         bern(2 i2) x
- >     ---------------------------------- 
+ >     ----------------------------------
 /                  i2 (2 i2)!
 ====
 i2 = 1
@@ -726,7 +720,7 @@ print_string_2d (product((x^i+1)^2.5,i,1,inf)/(x^2+1));
  ! !  (x  + 1)
  ! !
 i = 1
------------------ 
+-----------------
       2
      x  + 1
 "$
@@ -736,7 +730,7 @@ i = 1
 print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl));
 "====
 \\                                            1
- >                                        -------- 
+ >                                        --------
 /                                         f(x)
 ====                                      ---- + 1
 kskdsksdkkdksdksd in w999393293923939losl  2
@@ -745,7 +739,7 @@ kskdsksdkkdksdksd in w999393293923939losl  2
 print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^2));
 "====
 \\                                             1
- >                                         -------- 
+ >                                         --------
 /                                          f(x)
 ====                                       ---- + 1
                                          2  2
@@ -755,9 +749,168 @@ kskdsksdkkdksdksd in w999393293923939losl
 print_string_2d ('lsum(1/(1+f(x)/2), kskdsksdkkdksdksd, w999393293923939losl^skdkskdsk));
 "====
 \\                                                     1
- >                                                 -------- 
+ >                                                 --------
 /                                                  f(x)
 ====                                               ---- + 1
                                          skdkskdsk  2
 kskdsksdkkdksdksd in w999393293923939losl
 "$
+
+/* ensure that nounified operators are displayed same as verbs
+ * follow-on work for bug reported to mailing list 2020-09-13: "Function name for matrix/vector dot product?"
+ */
+
+kill (foo, x, y, z, a, b, c);
+done;
+
+print_string_2d (' "'"(foo));
+"'foo
+";
+
+print_string_2d (' ":"(foo, 123));
+"foo : 123
+";
+
+print_string_2d (' "::"(foo, 123));
+"foo :: 123
+";
+
+print_string_2d (' ":="(foo(a, b), [x, y, z]));
+"foo(a, b) := [x, y, z]
+";
+
+print_string_2d (' "::="(foo(a, b), [x, y, z]));
+"foo(a, b) ::= [x, y, z]
+";
+
+print_string_2d (' "!"(4));
+"4!
+";
+
+print_string_2d (' "^"(2, x));
+" x
+2
+";
+
+print_string_2d (' "^^"(a, b));
+" <b>
+a
+";
+
+print_string_2d (' "."(a, b, c));
+"a . b . c
+";
+
+print_string_2d (' ?rat(a, b));
+"a
+-
+b
+";
+
+print_string_2d (' "/"(a, b));
+"a
+-
+b
+";
+
+print_string_2d (' "*"(a, b, c));
+"a b c
+";
+
+print_string_2d (' "+"(a, b, c));
+"a + b + c
+";
+
+print_string_2d (' "-"(a));
+"- a
+";
+
+print_string_2d ('?marrow(a, b));
+"a -> b
+";
+
+print_string_2d (' ">"(a, b));
+"a > b
+";
+
+print_string_2d (' ">="(a, b));
+"a >= b
+";
+
+print_string_2d (' "="(a, b));
+"a = b
+";
+
+print_string_2d (' "#"(a, b));
+"a # b
+";
+
+print_string_2d (' "<="(a, b));
+"a <= b
+";
+
+print_string_2d (' "<"(a, b));
+"a < b
+";
+
+print_string_2d (' "not"(a));
+"not a
+";
+
+print_string_2d (' "and"(a, b));
+"a and b
+";
+
+print_string_2d (' "or"(a, b));
+"a or b
+";
+
+print_string_2d ('?mprogn(a, b, c));
+"(a, b, c)
+";
+
+print_string_2d ('?mlist(a, b, c));
+"[a, b, c]
+";
+
+/* example from mailing list 2019-04-02: "maxima lists" */
+print_string_2d ('[x][1]);
+"[x]
+   1
+";
+
+print_string_2d ('?mangle(a, b, c));
+"<a, b, c>
+";
+
+print_string_2d ('?mcomma(a, b, c));
+"a, b, c
+";
+
+print_string_2d ('?mabs(a));
+"abs(a)
+";
+
+print_string_2d ('matrix([a, b, c]));
+"[ a  b  c ]
+";
+
+print_string_2d ('?mbox(a));
+"\"\"\"
+\"a\"
+\"\"\"
+";
+
+print_string_2d ('?mlabox (a, b));
+"b\"\"
+\"a\"
+\"\"\"
+";
+
+print_string_2d ('?mtext ("hello"));
+"hello
+";
+
+block ([linel: 65], print_string_2d ('?mlabel (a, b)));
+"(a)                             b
+";

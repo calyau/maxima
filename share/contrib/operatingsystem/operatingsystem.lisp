@@ -9,6 +9,8 @@
 ;;; for details and the precise copyright document.
 ;;;
 ;;; Added to Maxima by Wolfgang Dautermann
+;;; The sbcl's native-* commands are from the "file name issue"
+;;; thread in the sbcl-help mailing list that came up in 11/2020
 
 
 
@@ -22,7 +24,7 @@
   #+gcl (si::chdir dir)
   #+lispworks (hcl:change-directory dir)
   #+lucid (lcl:working-directory dir)
-  #+sbcl (sb-posix:chdir dir)
+  #+sbcl (sb-posix:chdir (sb-ext:native-pathname dir))
   #+sbcl (setf *default-pathname-defaults* (sb-ext:native-pathname (format nil "~A~A" (sb-posix:getcwd) "/")))
   #+ccl (ccl:cwd dir)
   #+ecl (si:chdir dir)
@@ -36,7 +38,7 @@
   #+clisp (ext:make-directory dir)
   #+cmu (unix:unix-mkdir (directory-namestring dir) #o777)
   #+lispworks (system:make-directory dir)
-  #+sbcl (sb-unix:unix-mkdir (directory-namestring dir) #o777)
+  #+sbcl (sb-unix:unix-mkdir (directory-namestring (sb-ext:native-pathname dir)) #o777)
   #+ccl (ensure-directories-exist dir)
   #+ecl (ensure-directories-exist dir)
   #-(or allegro clisp cmu lispworks sbcl ccl ecl)
@@ -48,7 +50,7 @@
   #+allegro (excl:delete-directory dir)
   #+clisp (ext:delete-directory dir)
   #+cmu (unix:unix-rmdir dir)
-  #+sbcl (zerop (sb-posix:rmdir (namestring dir)))
+  #+sbcl (zerop (sb-posix:rmdir (namestring (sb-ext:native-pathname dir))))
   #+ccl (ccl:delete-directory dir)
   #+ecl (si:rmdir dir)
   #+lispworks
@@ -69,18 +71,22 @@
   #+cormanlisp (ccl:get-current-directory)
   #+lispworks (hcl:get-working-directory)
   #+lucid (lcl:working-directory)
-  #+sbcl (sb-unix:posix-getcwd/)
+  #+sbcl (sb-ext:parse-native-namestring (sb-unix:posix-getcwd/))
   #-(or allegro clisp cmu cormanlisp lispworks lucid sbcl) (truename ".")))
   
 ; The copy function below was written by StackOverflow user user224021 and is licensed
 ; under CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/).
 ; http://stackoverflow.com/a/15813006
 (defun os-copy-file (from-file to-file)
-  (with-open-file (input-stream from-file
+  (with-open-file (input-stream
+		   #-sbcl from-file
+		   #+sbcl (sb-ext:native-namestring from-file)
                 :direction :input
                 :element-type '(unsigned-byte 8))
-    (with-open-file (output-stream to-file
-                   :direction :output
+    (with-open-file (output-stream
+		     #-sbcl to-file
+		     #+sbcl (sb-ext:native-namestring to-file)
+		   :direction :output
                    :if-exists :supersede
                    :if-does-not-exist :create
                    :element-type '(unsigned-byte 8))

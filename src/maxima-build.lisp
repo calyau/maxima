@@ -11,7 +11,9 @@
 #+lispworks (defun getenv (x) (LW:ENVIRONMENT-VARIABLE x))
 #+lispworks (in-package "CL-USER")
 
-(load "../lisp-utils/defsystem.lisp")
+#-lispworks(load "../lisp-utils/defsystem.lisp")
+#+lispworks(load (current-pathname "../lisp-utils/defsystem.lisp"))
+
 #+ecl (load "maxima-package.lisp")
 #+ecl
 (compile 'maxima::make-unspecial

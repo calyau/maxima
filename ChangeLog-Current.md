@@ -1,3 +1,0 @@
-Maxima next change log
-======================
-

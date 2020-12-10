@@ -5,6 +5,9 @@
 
 (in-package #-gcl #:maxima #+gcl "MAXIMA")
 
+(defvar *debug-cobyla* nil
+  "Non-Nil to enable some debugging prints in the coblya interface")
+
 ;; Variable that will hold the function that calculates the function
 ;; value and the constraints.
 (defvar *calcfc*)
@@ -71,20 +74,23 @@
 
   1:  The value of the variables giving the minimum
   2:  The minimized function value
-  3:  The value of the constraints as a list.  The first element
-      is for the inequality constraints and the second element is
-      for the equality constraints.
-  4:  The number of function evaluations.
+  3:  The number of function evaluations.
+  4:  Success code:
+        0 - success
+        1 - maxfun limit reached
+        2 - rounding issues
+       -1 - maxcv exceeds rhoend probably indicating constraints not
+            satisfied.
 
  You can find some examples in share/cobyla/ex.
 
  An example of minimizing x1*x2 with 1-x1^2-x2^2 >= 0:
 
    load(fmin_cobyla);
-   fmin_cobyla(x1*x2, [x1, x2], [1,1], ineq = [1-x1^2-x2^2], iprint=1);
+   fmin_cobyla(x1*x2, [x1, x2], [1,1], constraints = [1-x1^2-x2^2 >= 0], iprint=1);
 
- => [[x1 = .7071058493484819, x2 = - .7071077130247994], 
-     - .4999999999992633, [[- 1.999955756559757e-12], []], 66]
+ => [[x1 = 0.707107555323284, x2 = - 0.7071060070503778], 
+          - 0.4999999999998015, 64, 0]
 
  The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
 "
@@ -134,8 +140,8 @@
     (setf normalized-constraints
 	  (list* '(mlist)
 		 (nreverse normalized-constraints)))
-    #+nil
-    (mformat t "cons = ~M~%" normalized-constraints)
+    (when *debug-cobyla*
+      (mformat t "cons = ~M~%" normalized-constraints))
 
     (let* ((n (length (cdr vars)))
 	   (m (length (cdr normalized-constraints)))
@@ -208,17 +214,27 @@
 	;; Should we put a check here if the number of function
 	;; evaluations equals maxfun?  When iprint is not 0, the output
 	;; from COBYLA makes it clear that something bad happened.
-	(let ((x-list (coerce x 'list)))
-	  ;; Return the optimum function value, the point that gives the
-	  ;; optimum, the value of the constraints, and the number of
-	  ;; function evaluations.  For convenience.  Only the point and
-	  ;; the number of evaluations is really needed.
+	(let* ((x-list (coerce x 'list))
+	       (soln (list* '(mlist)
+			    (mapcar #'(lambda (var val)
+					`((mequal) ,var ,val))
+				    (cdr vars)
+				    (coerce x 'list))))
+	       ;; The maxcv value.  See cobyla.f MPP value. MPP = M +
+	       ;; 2, adjusted for 0-indexing lisp arrays.
+	       (max-cv (aref w (+ m 1))))
+	  ;; Return a list off the following items:
+	  ;;  1:  The point that gives the optimum in the form var=val
+	  ;;  2:  The corresponding value of the function
+	  ;;  3:  Number of function evaluations
+	  ;;  4:  Return code
+	  ;;        0  - no errors
+	  ;;        1  - maxfun limit reached
+	  ;;        2  - rounding issues
+	  ;;        -1 - maxcv exceeds rhoend probably indicating
+	  ;;             constraints not satisfied.
 	  (make-mlist
-	   (list* '(mlist)
-		  (mapcar #'(lambda (var val)
-			      `((mequal) ,var ,val))
-			  (cdr vars)
-			  (coerce x 'list)))
+	   soln
 	   (apply fv x-list)
 	   neval
-	   ierr))))))
+	   (if (> max-cv rhoend) -1 ierr)))))))

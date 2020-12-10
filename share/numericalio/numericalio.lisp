@@ -57,7 +57,8 @@
 
 (defun $openw_binary (file)
    (open
-      file
+      #+sbcl (sb-ext:native-namestring file)
+      #-sbcl file
       :direction :output
       :if-exists :supersede
       :element-type '(unsigned-byte 8)
@@ -65,13 +66,17 @@
 
 (defun $opena_binary (file)
    (open
-      file
+      #+sbcl (sb-ext:native-namestring file)
+      #-sbcl file
       :direction :output
       :if-exists :append
       :element-type '(unsigned-byte 8)
       :if-does-not-exist :create))
 
-(defun $openr_binary (file) (open file :element-type '(unsigned-byte 8)))
+(defun $openr_binary (file) (open
+			     #+sbcl (sb-ext:native-namestring file)
+			     #-sbcl file
+			     :element-type '(unsigned-byte 8)))
 
 ;; -------------------- read functions --------------------
 
@@ -142,7 +147,9 @@
     (read-into-existing-array-size-known-from-stream stream-or-filename A sep-ch-flag mode n)
     (let ((file-name (require-string stream-or-filename)))
       (with-open-file
-        (in file-name
+        (in 
+            #+sbcl (sb-ext:native-namestring file-name)
+            #-sbcl file-name
             :if-does-not-exist nil
             :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
         (if (not (null in))
@@ -168,7 +175,9 @@
     (read-and-return-new-array-from-stream stream-or-filename sep-ch-flag mode)
     (let ((file-name (require-string stream-or-filename)))
       (with-open-file
-        (in file-name
+        (in
+            #+sbcl (sb-ext:native-namestring file-name)
+            #-sbcl file-name
             :if-does-not-exist nil
             :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
         (if (not (null in))
@@ -186,7 +195,10 @@
   (if (streamp stream-or-filename)
     (read-hashed-array-from-stream stream-or-filename A sep-ch-flag)
     (let ((file-name (require-string stream-or-filename)))
-      (with-open-file (in file-name :if-does-not-exist nil)
+      (with-open-file (in
+		       #+sbcl (sb-ext:native-namestring file-name)
+		       #-sbcl file-name
+		       :if-does-not-exist nil)
         (if (not (null in))
           (read-hashed-array-from-stream in A sep-ch-flag)
           (merror "read_hashed_array no such file `~a'" file-name))))))
@@ -211,7 +223,10 @@
   (if (streamp stream-or-filename)
     (read-nested-list-from-stream stream-or-filename sep-ch-flag)
     (let ((file-name (require-string stream-or-filename)))
-      (with-open-file (in file-name :if-does-not-exist nil)
+      (with-open-file (in
+		       #+sbcl (sb-ext:native-namestring file-name)
+		       #-sbcl file-name
+		       :if-does-not-exist nil)
         (if (not (null in))
           (read-nested-list-from-stream in sep-ch-flag)
           (merror "read_nested_list: no such file `~a'" file-name))))))
@@ -242,7 +257,9 @@
     (read-into-existing-list-from-stream stream-or-filename L sep-ch-flag mode n)
     (let ((file-name (require-string stream-or-filename)))
       (with-open-file
-        (in file-name
+        (in 
+            #+sbcl (sb-ext:native-namestring file-name)
+            #-sbcl file-name
             :if-does-not-exist nil
             :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
         (if (not (null in))
@@ -262,7 +279,9 @@
     (read-list-from-stream stream-or-filename sep-ch-flag mode n)
     (let ((file-name (require-string stream-or-filename)))
       (with-open-file
-        (in file-name
+       (in
+            #+sbcl (sb-ext:native-namestring file-name)
+            #-sbcl file-name
             :if-does-not-exist nil
             :element-type (if (eq mode 'text) 'character '(unsigned-byte 8)))
         (if (not (null in))
@@ -375,7 +394,9 @@
 ;; -------------------- write functions -------------------
 
 (defun open-file-appropriately (file-name mode)
-  (open file-name
+  (open
+        #+sbcl (sb-ext:native-namestring file-name)
+        #-sbcl file-name
         :direction :output
         :element-type (if (eq mode 'text) 'character '(unsigned-byte 8))
         :if-exists (if (or (eq $file_output_append '$true) (eq $file_output_append t)) :append :supersede)

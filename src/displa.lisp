@@ -597,11 +597,17 @@
      (return dummy)))
 
 (displa-def bigfloat  dim-bigfloat)
+(displa-def %bigfloat  dim-bigfloat)
 (displa-def mquote    dimension-prefix "'")
+(displa-def %mquote    dimension-prefix "'")
 (displa-def msetq     dimension-infix  " : ")
+(displa-def %msetq    dimension-infix  " : ")
 (displa-def mset      dimension-infix  " :: ")
+(displa-def %mset     dimension-infix  " :: ")
 (displa-def mdefine   dim-mdefine      " := ")
+(displa-def %mdefine  dim-mdefine      " := ")
 (displa-def mdefmacro dim-mdefine      " ::= ")
+(displa-def %mdefmacro dim-mdefine      " ::= ")
 
 (defun dim-mdefine (form result)
   (let (($noundisp t)
@@ -612,18 +618,18 @@
 		     result)))
 
 (displa-def mfactorial dimension-postfix "!")
+(displa-def %mfactorial dimension-postfix "!")
 (displa-def mexpt      dimension-superscript)
+(displa-def %mexpt     dimension-superscript)
 (displa-def mncexpt    dim-mncexpt "^^")
+(displa-def %mncexpt   dim-mncexpt "^^")
 
 (defun dim-mncexpt (form result)
   (dimension-superscript (list '(mncexpt) (cadr form) (cons '(mangle) (cddr form)))
 			 result))
 
 (displa-def mnctimes dimension-nary " . ")
-
-;; Copy properties for 2-d display from verb to noun.
-(setf (get '%mnctimes 'dissym) (get 'mnctimes 'dissym))
-(setf (get '%mnctimes 'dimension) (get 'mnctimes 'dimension))
+(displa-def %mnctimes dimension-nary " . ")
 
 (displa-def %product dim-%product 115.)
 
@@ -631,6 +637,7 @@
   (dsumprod form result '(d-prodsign) 5 3 1))
 
 (displa-def rat dim-rat "/")
+(displa-def %rat dim-rat "/")
 
 (defun dim-rat (form result)
   (if $pfeformat
@@ -638,6 +645,7 @@
       (dim-mquotient form result)))
 
 (displa-def mquotient dim-mquotient "/")
+(displa-def %mquotient dim-mquotient "/")
 
 (defun dim-mquotient (form result)
   (unless (= (length (cdr form)) 2)
@@ -680,6 +688,7 @@
   result)
 
 (displa-def mtimes dimension-nary " ")
+(displa-def %mtimes dimension-nary " ")
 
 ;; This code gets run when STARDISP is assigned a value.
 
@@ -801,6 +810,7 @@
      (return result)))
 
 (displa-def mplus  dim-mplus)
+(displa-def %mplus  dim-mplus)
 (defprop munaryplus (#\+ #\space) dissym)
 
 (defun dim-mplus (form result)
@@ -838,6 +848,7 @@
 		      (checkbreak result w)))))))
 
 (displa-def mminus dim-mminus)
+(displa-def %mminus dim-mminus)
 (defprop munaryminus (#\- #\space) dissym)
 (def-rbp munaryminus 134)
 (def-rbp munaryminus 100)
@@ -923,16 +934,26 @@
 ;; sets on consoles which have them.
 
 (displa-def marrow    dimension-infix  " -> " 80. 80.)
+(displa-def %marrow   dimension-infix  " -> " 80. 80.)
 (displa-def mgreaterp dimension-infix  " > ")
+(displa-def %mgreaterp dimension-infix  " > ")
 (displa-def mgeqp     dimension-infix  " >= ")
+(displa-def %mgeqp    dimension-infix  " >= ")
 (displa-def mequal    dimension-infix  " = ")
+(displa-def %mequal   dimension-infix  " = ")
 (displa-def mnotequal dimension-infix  " # ")
+(displa-def %mnotequal dimension-infix  " # ")
 (displa-def mleqp     dimension-infix  " <= ")
+(displa-def %mleqp    dimension-infix  " <= ")
 (displa-def mlessp    dimension-infix  " < ")
+(displa-def %mlessp   dimension-infix  " < ")
 (displa-def mnot      dimension-prefix "not ")
+(displa-def %mnot     dimension-prefix "not ")
 (displa-def mand      dimension-nary   " and ")
+(displa-def %mand      dimension-nary   " and ")
 (defprop mand dimnary-boolean dimension-nary-helper)
 (displa-def mor	      dimension-nary   " or ")
+(displa-def %mor      dimension-nary   " or ")
 (defprop mor dimnary-boolean dimension-nary-helper)
 (displa-def mcond     dim-mcond)
 (displa-def %mcond    dim-mcond)
@@ -1075,13 +1096,15 @@
      (return result)))
 
 (displa-def mprogn dimension-match "(" ")")
+(displa-def %mprogn dimension-match "(" ")")
 (displa-def mlist  dimension-match "[" "]")
+(displa-def %mlist  dimension-match "[" "]")
 (displa-def mangle dimension-match "<" ">")
+(displa-def %mangle dimension-match "<" ">")
 (displa-def mcomma dimension-nary  ", " 10. 10.)
+(displa-def %mcomma dimension-nary  ", " 10. 10.)
 (displa-def mabs   dim-mabs)
-
-(setf (get '%mlist 'dissym) (get 'mlist 'dissym))
-(setf (get '%mlist 'dimension) (get 'mlist 'dimension))
+(displa-def %mabs  dim-mabs)
 
 (defun dim-mabs (form result &aux arg bar)
   (setq arg (dimension (cadr form) nil 'mparen 'mparen nil 0))
@@ -1093,6 +1116,7 @@
 	   (cons bar (nconc arg (cons bar result))))))
 
 (displa-def $matrix dim-$matrix)
+(displa-def %matrix dim-$matrix)
 
 (defun dim-$matrix (form result)
   (prog (dmstr rstr cstr consp cols)
@@ -1175,6 +1199,7 @@
   result)
 
 (displa-def mbox dim-mbox)
+(displa-def %mbox dim-mbox)
 
 (defun dim-mbox (form result &aux dummy)
   (setq dummy (dimension (cadr form) nil 'mparen 'mparen nil 0))
@@ -1186,6 +1211,7 @@
 	   result)))
 
 (displa-def mlabox dim-mlabox)
+(displa-def %mlabox dim-mlabox)
 
 (defun dim-mlabox (form result)
   (prog (dummy ch)
@@ -1213,6 +1239,7 @@
      (return result)))
 
 (displa-def mtext dim-mtext 1 1)
+(displa-def %mtext dim-mtext 1 1)
 (defprop mtext dimnary-mtext dimension-nary-helper)
 
 (defun dim-mtext (form result)
@@ -1220,6 +1247,7 @@
       (dimension-nary form result)))
 
 (displa-def mlabel dim-mlabel 0 0)
+(displa-def %mlabel dim-mlabel 0 0)
 (setf (get 'mlabel 'wxxml) 'wxxml-mlable) ;; backwards-compatibility for wxMaxima
 
 (defvar *display-labels-p* t)

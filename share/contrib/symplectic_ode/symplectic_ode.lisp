@@ -60,7 +60,7 @@
 ;;; The Poisson bracket {f,g}.
 (defun $poisson_bracket (f g p q)
   "Return the poisson bracket {f,g} for the canonical coordinates p & q. Either both p & q must be
-  Maxima lists or both must be equal length mapatoms."
+  equal length Maxima lists or both must be ."
   (cond 
     ((and ($listp p) ($listp q))
      (setq p (rest p))
@@ -111,7 +111,7 @@
 ;;; for orbital problems,'' Revista Mexicana de Astronom´ıa y Astrof´ısica, 49, 11–24 
 ;;; (2013)
 
-;;; cut an paste coefficients from article--the article says something about using 40 
+;;; cut and paste coefficients from article--the article says something about using 40 
 ;;; digits, but the coeffficeints are given to 57 digits. Let's be cautious and say these
 ;;; are good to 40 digits.
 
@@ -172,20 +172,20 @@ d7 = 0.47501834514453949720351208570106713494289203770372938037
 
 ;;;   ham = time independent hamiltonian (function of p1 ... pn and q1 ... qn only)
 ;;;   p1 ... pn; q1 ... qn = canonical  momenta and position, respectively
-;;;   p01 .. p0n, q01 ... q0n  = initial values for p1 ... pn & q1 ... qn, respectively
+;;;   p01 .. p0n; q01 ... q0n  = initial values for p1 ... pn & q1 ... qn, respectively
 ;;;   dt = time step--can be negative
 ;;;   N = number of time steps--must be a positive fixnum
 ;;;   method = integration method (default symplectic_euler); must be one of symplectic_euler, 
 ;;;            verlet, symplectic_third_order, symplectic_fourth_order
 ;;;   ntype = optional number type (default float)--can be float, rational, or any (no type)
 
-;;; The function symplectic returns a two member list of two list. The first list has the form
+;;; The function symplectic returns a two member list of two lists. The first list has the form
 ;;; [[p00,p10,p20, ...],[p01,p11, p21, ..] ...] where pij = i-th momentum at time step j.
 
 ;;; For a separable hamiltonian of the form ham = F(p) + G(q), symplectic_ode approximately 
 ;;; integrates the hamiltonian equation using a method that preserves the poisson brackets of p & q. 
 ;;; For a description, see https://en.wikipedia.org/wiki/Symplectic_integrator#A_first-order_example. 
-;;; For non separable hamiltonians, the method does not in general preserve the poisson brackets.
+;;; For non separable hamiltonians, the method does not in general preserve the Poisson brackets.
 
 ;;; Basically, the method is
 
@@ -238,16 +238,19 @@ d7 = 0.47501834514453949720351208570106713494289203770372938037
            (setq p (rest p))
            (setq q (rest q)))
 
-          ((every #'$mapatom (list p q po qo))
+          ((every #'(lambda (s) (not ($listp s))) (list p q po qo))
            (setq scalar-case t)
            (setq po (list (list (mcoerce po ntype))))
            (setq qo (list (list (mcoerce qo ntype))))
            (setq p (list p))
            (setq q (list q)))
 
-          (t (merror (intl:gettext "Either the second through fifth arguments must all be lists or all must be mapatoms"))))
+          (t (merror (intl:gettext "Either the second through fifth arguments must all be lists or all must be nonlists."))))
 
         
+        (when (or (some #'(lambda (s) (not ($symbolp s))) p)
+                  (some #'(lambda (s) (not ($symbolp s))) q))
+              (merror "The second and third arguments must be either be symbols or lists of symbols."))    
 
         (setq args (append p q (list ddt))) 
         (setq update-p (mapcar #'(lambda (pk qk) 

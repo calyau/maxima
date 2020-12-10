@@ -49,7 +49,16 @@
 ;; These operators aren't killed by the function kill-operator.
 (defvar *mopl* nil)
 
-(mapc #'(lambda (x) (putprop (car x) (cadr x) 'op) (putopr (cadr x) (car x)) (push (cadr x) *mopl*))
+;; This business about operator properties is terrible --
+;; this stuff should be in src/nparse.lisp, and it should be split up
+;; for each operator. Extra points for making it declarative.
+
+(mapc #'(lambda (x)
+          (putprop (car x) (cadr x) 'op)
+          (putprop (intern (concatenate 'string "%" (symbol-name (car x)))) (cadr x) 'op) ;; nounify not yet available
+          (putopr (cadr x) (car x))
+          (push (cadr x) *mopl*))
+
       '((mplus "+") (mminus "-") (mtimes "*") (mexpt "**") (mexpt "^")
 	(mnctimes ".") (rat "/") (mquotient "/") (mncexpt "^^")
 	(mequal "=") (mgreaterp ">") (mlessp "<") (mleqp "<=") (mgeqp ">=")

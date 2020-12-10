@@ -111,15 +111,27 @@ The minimized function value
 The number of function evaluations.
 @item
 Return code with the following meanings
- @enumerate
+ @itemize @w{}
  @item
  0 - No errors.
  @item
  1 - Limit on maximum number of function evaluations reached.
  @item
  2 - Rounding errors inhibiting progress.
- @end enumerate
+ @item
+ -1 - @var{MAXCV} value exceeds @var{RHOEND}.  This indicates that the
+  constraints were probably not satisfied.  User should investigate
+  the value of the constraints.
+
+ @end itemize
 @end enumerate
+
+@var{MAXCV} stands for ``MAXimum Constraint Violation'' and is the
+value of @math{max(0.0, -c1(x), -c2(x),...-cm(x))} where @math{ck(x)}
+denotes the k'th constraint function.  (Note that maxima allows
+constraints of the form @math{f(x) = g(x)}, which are internally
+converted to @math{f(x)-g(x) >= 0} and @math{g(x)-f(x) >= 0} which is
+required by COBYLA).
 
 @code{load("fmin_cobyla")} loads this function.
 
@@ -165,5 +177,29 @@ The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
        - 0.49999999999926, [[-1.999955756559757e-12],[]], 66]
 @end example
 
-There are additional examples in the share/cobyla/ex directory.
+Here is the same example but the constraint is @math{x1^2+x2^2 <= -1}
+which is impossible over the reals.
+
+@example
+@group
+(%i1) fmin_cobyla(x1*x2, [x1, x2], [1,1],
+         constraints = [x1^2+x2^2 <= -1], iprint=1);
+@end group
+   Normal return from subroutine COBYLA
+
+   NFVALS =   65   F = 3.016417E-13    MAXCV = 1.000000E+00
+   X =-3.375179E-07  -8.937057E-07
+(%o1) [[x1 = - 3.375178983064622e-7, x2 = - 8.937056510780022e-7], 
+                                                3.016416530564557e-13, 65, - 1]
+(%i2) subst(%o1[2], [x1^2+x2^2 <= -1]);
+(%o2)                 [- 6.847914590915444e-13 <= - 1]
+@end example
+
+We see the return code (@code{%o1[4]}) is -1 indicating that the
+constraints may not be satisfied.  Substituting the solution into the
+constraint equation as shown in @code{%o2} shows that the constraint
+is, of course, violated.
+
+There are additional examples in the share/cobyla/ex directory and in
+share/cobyla/rtest_cobyla.mac.
 

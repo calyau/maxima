@@ -1893,6 +1893,7 @@ s/^[^M]*IRIX Execution Environment 1, *[a-zA-Z]* *\\([^ ]*\\)/\\1/p\\
       (setf abs-keyword rel-keyword))
     (setf directory (append abs-directory rel-directory))
     (when abs-keyword (setf directory (cons abs-keyword directory)))
+    #+(and lispworks unix) (when (and directory (not (symbolp (first directory)))) (setq directory (cons :relative directory)))
     (namestring
      (make-pathname :host host
 		    :device device
@@ -4322,7 +4323,7 @@ the system definition, if provided."
   #+(or :cmu :scl) (extensions:run-program program arguments)
   #+:openmcl (ccl:run-program program arguments)
   #+:sbcl (sb-ext:run-program program arguments)
-  #+:lispworks (foreign:call-system-showing-output
+  #+:lispworks (sys:call-system-showing-output
 		(format nil "~A~@[ ~{~A~^ ~}~]" program arguments))
   #+clisp (#+lisp=cl ext:run-program #-lisp=cl lisp:run-program
                      program :arguments arguments)

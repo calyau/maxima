@@ -143,8 +143,8 @@
 	     ;; build possible), but not compiled (which means
 	     ;; with ECL or ABCL it won't end up in the final image)
 	     ;; => no out-of-tree build for ECL.
-	     #-(or ecl abcl) (:private-file "autoconf-variables")
-	     #+(or ecl abcl) (:file "autoconf-variables")
+	     #-(or ecl abcl lispworks) (:private-file "autoconf-variables")
+	     #+(or ecl abcl lispworks) (:file "autoconf-variables")
 	     ))
    (:module intl :source-pathname ""
 	    :components
@@ -245,8 +245,8 @@
 	    ((:file "mlisp")
 	     (:file "mmacro")
 	     (:file "buildq")))
-   ;; The free version of Allegro has a heap limit.  Let's
-   ;; not compile these routines so that we can at least
+   ;; The free versions of Allegro and Lispworks have a heap limit.
+   ;; Let's not compile these routines so that we can at least
    ;; get the rest of maxima built.
    (:module numerical
 	    :depends-on ("defmfun")
@@ -260,8 +260,8 @@
 		      ((:file "f2cl-lib")))
 	     (:module slatec :source-pathname "slatec"
 		      :depends-on ("f2cl-lib" "packages")
-		      #+allegro-cl-trial :load-only
-		      #+allegro-cl-trial t
+		      #+(or allegro-cl-trial lispworks-personal-edition) :load-only
+		      #+(or allegro-cl-trial lispworks-personal-edition)  t
 		      :components
 		      ((:file "fdump")
 		       (:file "j4save")
@@ -436,8 +436,8 @@
 		       (:file "d9upak")))
 	     (:module quadpack
 		      :source-pathname "slatec"
-		      #+allegro-cl-trial :load-only
-		      #+allegro-cl-trial t
+		      #+(or allegro-cl-trial lispworks-personal-edition) :load-only
+		      #+(or allegro-cl-trial lispworks-personal-edition) t
 		      :components
 		      (
 		       ;; Support
