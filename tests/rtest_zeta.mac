@@ -1,6 +1,9 @@
 (kill (all), 0);
 0;
 
+closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<tol) then true else abse);
+closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<tol) then true else abse);
+
 (zeta%pi : true, 0);
 0$
 
@@ -62,6 +65,20 @@ zeta(10);
 /* bfloat(zeta(5)) should not return a rational! */
 bfloat(zeta(5));
 1.03692775514337b0;
+
+/* Fix bug #3672 */
+closeto(abs(zeta(%i-2)-(0.02919559324346426-0.01778710697084208*%i)), 1.39e-17),numer;
+true$
+
+zeta(-2);
+0$
+
+zeta(-2),numer;
+0.0$
+
+/* Fix bug #3673 */
+closeto(abs(zeta(%i)-(0.003300223685324066-0.4181554491413215*%i)), 1.69e-16),numer;
+true$
 
 (remfunction(chk),0);
 0$

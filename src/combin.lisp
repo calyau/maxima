@@ -642,7 +642,8 @@
     ((complex rational)
      (setf s (coerce s '(complex flonum)))))
 
-  (let ((sigma (bigfloat:realpart s)))
+  (let ((sigma (bigfloat:realpart s))
+        (tau (bigfloat:imagpart s)))
     (cond
       ;; abs(s)^2 < epsilon, use the expansion zeta(s) = -1/2-1/2*log(2*%pi)*s
       ((bigfloat:< (bigfloat:abs (bigfloat:* s s)) (bigfloat:epsilon s))
@@ -651,12 +652,13 @@
                                (bigfloat:log (bigfloat:* 2 (bigfloat:%pi s)))
                                s)))
 
-      ;; Reflection formula
-      ((bigfloat:minusp sigma)
+      ;; Reflection formula:
+      ;; zeta(s) = 2^s*%pi^(s-1)*sin(%pi*s/2)*gamma(1-s)*zeta(1-s)
+      ((not (bigfloat:plusp sigma))
        (let ((n (bigfloat:floor sigma)))
-	 ;; If sigma is a negative even integer, zeta(sigma) is zero,
-	 ;; from the reflection formula because sin(%pi*n/2) is 0.
-	 (when (and (bigfloat:= n sigma) (evenp n))
+	 ;; If s is a negative even integer, zeta(s) is zero,
+	 ;; from the reflection formula because sin(%pi*s/2) is 0.
+	 (when (and (bigfloat:zerop tau) (bigfloat:= n sigma) (evenp n))
 	   (return-from float-zeta (bigfloat:float 0.0 sigma))))
        (bigfloat:* (bigfloat:expt 2 s)
                    (bigfloat:expt (bigfloat:%pi s)
@@ -670,8 +672,7 @@
       ;; The general formula from above. Call the imaginary part "tau" rather
       ;; than the "t" above, because that isn't a CL keyword...
       (t
-       (let* ((tau (bigfloat:imagpart s))
-              (logh
+       (let* ((logh
                (bigfloat:-
                 (if (bigfloat:zerop tau) 0
                     (bigfloat:+
