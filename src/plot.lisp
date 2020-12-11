@@ -1285,6 +1285,7 @@ sin(y)*(10.0+6*cos(x)),
 	 (if *maxima-tempdir* 
 	     (format nil "~a/~a" *maxima-tempdir* file)
 	   file)))
+    (declare (special *temp-files-list*))
     (unless preserve-file
       (setf (gethash filename *temp-files-list*) t))
     (format nil "~a" filename)

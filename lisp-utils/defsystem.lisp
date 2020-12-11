@@ -1893,7 +1893,7 @@ s/^[^M]*IRIX Execution Environment 1, *[a-zA-Z]* *\\([^ ]*\\)/\\1/p\\
       (setf abs-keyword rel-keyword))
     (setf directory (append abs-directory rel-directory))
     (when abs-keyword (setf directory (cons abs-keyword directory)))
-    #+(and lispworks unix) (when (and directory (not (symbolp (first directory)))) (setq directory (cons :relative directory)))
+    #+lispworks (when (and directory (not (symbolp (first directory)))) (setq directory (cons :relative directory)))
     (namestring
      (make-pathname :host host
 		    :device device
