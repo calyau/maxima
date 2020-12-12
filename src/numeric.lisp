@@ -1507,7 +1507,7 @@
 	  (bigfloat 1))
       (cond ((and (zerop a) (plusp (realpart b)))
 	     (* a b))
-	    ((and (typep b 'bigfloat) (= b (truncate b)))
+	    ((and (realp b) (= b (truncate b)))
 	     ;; Use the numeric^number method because it can be much
 	     ;; more accurate when b is an integer.
 	     (expt a (truncate b)))
@@ -1525,7 +1525,7 @@
 	  (bigfloat 1))
       (cond ((and (zerop a) (plusp (realpart b)))
 	     (* a b))
-	    ((= b (truncate b))
+	    ((and (realp b) (= b (truncate b)))
 	     (with-extra-precision ((expt-extra-bits a b)
 				    (a b))
 	       (intofp (expt a (truncate b)))))
