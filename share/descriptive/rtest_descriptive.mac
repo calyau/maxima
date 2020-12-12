@@ -246,6 +246,24 @@ continuous_freq (s1, [-2,12]);
 [[-2,-3/5,4/5,11/5,18/5,5,32/5,39/5,46/5,53/5,12],[0,8,20,12,18,9,8,25,
                                                           0,0]]$
 
+continuous_freq (random_permutation (makelist (i, i, 0, 100)), 1);
+[[0, 100], [101]];
+
+continuous_freq (random_permutation (makelist (i, i, 0, 100)), 10);
+[[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], [11, 10, 10, 10, 10,  10, 10, 10, 10, 10]];
+
+continuous_freq (makelist (random (100), 100), [0, 100, 1]);
+[[0, 100], [100]];
+
+continuous_freq (random_permutation (makelist (i, i, 0, 100)), [0, 100, 10]);
+[[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], [11, 10, 10, 10, 10,  10, 10, 10, 10, 10]];
+
+continuous_freq (makelist (random (100), 100), {0, 100});
+[[0, 100], [100]];
+
+continuous_freq (random_permutation (makelist (i, i, 0, 100)), {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100});
+[[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], [11, 10, 10, 10, 10,  10, 10, 10, 10, 10]];
+
 (test_continuous_freq (xx, foo) := block ([output, bins, counts],
   output : continuous_freq (xx, foo),
   bins : makelist ([output[1][i], output[1][i + 1]], i, 1, length(output[1]) - 1),
