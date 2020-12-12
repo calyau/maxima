@@ -27,7 +27,7 @@ Let @math{f(x)} be the @var{density function} of an absolute continuous random v
 @tex
 $$F\left(x\right)=\int_{ -\infty }^{x}{f\left(u\right)\;du}$$
 @end tex
-which equals the probability @var{Pr(X <= x)}.
+which equals the probability @code{Pr(X <= x)}.
 
 The @var{mean} value is a localization parameter and is defined as
 @ifnottex

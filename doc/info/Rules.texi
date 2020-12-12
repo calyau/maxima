@@ -955,7 +955,7 @@ will reach before giving up.
 @fname{remlet} (all) @
 @fname{remlet} (all, @var{name})
 
-Deletes the substitution rule, @var{prod} --> repl, most
+Deletes the substitution rule, @code{prod --> repl}, most
 recently defined by the @code{let} function.  If name is supplied the rule is
 deleted from the rule package name.
 

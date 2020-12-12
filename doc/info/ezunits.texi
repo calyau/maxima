@@ -95,7 +95,7 @@ but other fundamental dimensions and units can be declared.
 @anchor{physical_constants}
 @code{physical_constants} is a collection of physical constants,
 copied from CODATA 2006 recommended values
-(@url{http://physics.nist.gov/constants}).
+(@url{https://physics.nist.gov/cuu/Constants/}).
 @code{load ("physical_constants")} loads this package,
 and loads @code{ezunits} also, if it is not already loaded.
 
@@ -197,7 +197,7 @@ Wien displacement law constant
 Wien displacement law constant
 @end table
 
-Reference: @url{http://physics.nist.gov/constants}
+Reference: @url{https://physics.nist.gov/cuu/Constants/}
 
 Examples:
 

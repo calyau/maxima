@@ -341,8 +341,8 @@ output}.
 Each prompt string starts with the ASCII escape character (27) followed
 by an open square bracket (91); each string ends with a lower-case m
 (109). The webpages
-@url{http://misc.flogisoft.com/bash/tip_colors_and_formatting} and
-@url{http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html} provide
+@url{https://misc.flogisoft.com/bash/tip_colors_and_formatting} and
+@url{https://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html} provide
 information on how to use control strings to set the terminal colors.
 
 @opencatbox

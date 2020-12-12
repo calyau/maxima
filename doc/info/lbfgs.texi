@@ -21,7 +21,7 @@ References:
 [1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
 scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
-[2] @url{http://netlib.org/opt/lbfgs_um.shar}
+[2] @url{https://www.netlib.org/opt/lbfgs_um.shar}
 
 @opencatbox
 @category{Numerical methods} 
@@ -110,7 +110,7 @@ References:
 [1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
 scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
-[2] @url{http://netlib.org/opt/lbfgs_um.shar}
+[2] @url{https://www.netlib.org/opt/lbfgs_um.shar}
 
 Examples:
 

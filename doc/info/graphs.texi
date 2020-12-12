@@ -20,7 +20,7 @@ edges/arcs of graphs/digraphs.
 There is a @code{draw_graph} function for drawing graphs. Graphs are
 drawn using a force based vertex positioning
 algorithm. @code{draw_graph} can also use graphviz programs available
-from @url{http://www.graphviz.org}. @code{draw_graph} is based on the maxima
+from @url{https://www.graphviz.org}. @code{draw_graph} is based on the maxima
 @code{draw} package.
 
 To use the @code{graphs} package, first load it with @code{load("graphs")}.

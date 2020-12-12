@@ -1270,8 +1270,8 @@ to the one produced by @code{dpart} but it has a name in the top line.
 @defvr {Property} mainvar
 
 You may declare variables to be @code{mainvar}.  The ordering scale for atoms is
-essentially: numbers < constants (e.g., @code{%e}, @code{%pi}) < scalars < other
-variables < mainvars.  E.g., compare @code{expand ((X+Y)^4)} with
+essentially: numbers @code{<} constants (e.g., @code{%e}, @code{%pi}) @code{<} scalars @code{<} other
+variables @code{<} mainvars.  E.g., compare @code{expand ((X+Y)^4)} with
 @code{(declare (x, mainvar), expand ((x+y)^4))}.  (Note: Care should be taken if
 you elect to use the above feature.  E.g., if you subtract an expression in
 which @code{x} is a @code{mainvar} from one in which @code{x} isn't a

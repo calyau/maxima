@@ -1760,7 +1760,7 @@ if @code{false} then no simplification of @code{%e} to a power containing
 @code{log}'s is done.
 
 @item @code{lognegint}
-if @code{true} implements the rule @code{log(-n)} -> @code{log(n)+%i*%pi} for 
+if @code{true} implements the rule @code{log(-n) -> log(n)+%i*%pi} for
 @code{n} a positive integer.
 
 @item @code{%e_to_numlog}
@@ -2008,7 +2008,7 @@ these simplifications are disabled.
 Default value: @code{false}
 
 If @code{true} implements the rule
-@code{log(-n)} -> @code{log(n)+%i*%pi} for @code{n} a positive integer.
+@code{log(-n) -> log(n)+%i*%pi} for @code{n} a positive integer.
 
 @opencatbox
 @category{Exponential and logarithm functions}
@@ -2035,7 +2035,7 @@ power containing @code{log}'s is done.
 @deffn {Function} plog (@var{x})
 
 Represents the principal branch of the complex-valued natural
-logarithm with @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
+logarithm with @code{-%pi < carg(@var{x}) <= +%pi} .
 
 @opencatbox
 @category{Exponential and logarithm functions}

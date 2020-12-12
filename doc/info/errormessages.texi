@@ -78,7 +78,7 @@ single-element list first:
 
 
 @node cannot assign to function, 0 to a negative exponent, argument must be a non-atomic expression, Error messages
-@subsection assignment: cannot assign to <function name>
+@subsection assignment: cannot assign to @code{<function name>}
 Maxima supports several assignment operators. When trying to define a function
 @code{:=} has to be used.
 @opencatbox
@@ -113,7 +113,7 @@ opening one or a closing parenthesis directly preceded by a comma.
 
 
 @node loadfile failed to load, makelist second argument must evaluate to a number, Illegal use of delimiter, Error messages
-@subsection loadfile: failed to load <filename>
+@subsection loadfile: failed to load @code{<filename>}
 This error message normally indicates that the file exists, but can not be read.
 If the file is present and readable there is another possible for this error
 message: Maxima can compile packages to native binary files in order to make them
@@ -301,7 +301,7 @@ if the following maxima command is entered:
 @end menu
 
 @node undefined variable during translation, replaced x by y, Warning messages, Warning messages
-@subsection Encountered undefined variable <x> in translation
+@subsection Encountered undefined variable @code{<x>} in translation
 A function was compiled but the type of the variable @code{x} was not known.
 This means that the compiled command contains additional code that makes it
 retain all the flexibility maxima provides in respect to this variable.
@@ -314,7 +314,7 @@ resolve this issue.
 
 
 @node replaced x by y, Command-line options, undefined variable during translation, Warning messages
-@subsection Rat: replaced <x> by <y> = <z>
+@subsection Rat: replaced @code{<x>} by @code{<y> = <z>}
 Floating-point numbers provide a maximum number of digits that is typically high,
 but still limited. Good examples that this limitation might be too low
 even for harmless-looking examples include 
