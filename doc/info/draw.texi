@@ -176,7 +176,7 @@ See also @mref{draw} and @mrefdot{draw3d}
 
 
 @anchor{draw}
-@deffn {Function} draw (<arg_1>, ...)
+@deffn {Function} draw (@code{<arg_1>, ...})
 
 Plots a series of scenes; its arguments are @code{gr2d} and/or @code{gr3d} 
 objects, together with some options, or lists of scenes and options.
@@ -752,7 +752,7 @@ Default value: @code{blue}
 polygons and labels.
 
 Colors can be given as names or in hexadecimal @i{rgb} code. If a gnuplot
-version >= 5.0 is used and the terminal that is in use supports this
+version @code{>= 5.0} is used and the terminal that is in use supports this
 @i{rgba} colors with transparency information are also supported.
 
 Available color names are:

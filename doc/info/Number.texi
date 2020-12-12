@@ -115,8 +115,8 @@ tolerable efficiency:
 
 @code{burn} may be more efficient than @mref{bern} for large, isolated @var{n}
 as @mref{bern} computes all the Bernoulli numbers up to index @var{n} before 
-returning.  @code{burn} invokes the approximation for even integers @var{n} >
-255.  For odd integers and @var{n} <= 255 the function @mref{bern} is called.
+returning.  @code{burn} invokes the approximation for even integers @code{n >
+255}.  For odd integers and @code{n <= 255} the function @mref{bern} is called.
 
 @code{load ("bffac")} loads this function.  See also @mrefdot{bern}
 

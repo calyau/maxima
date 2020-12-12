@@ -1176,7 +1176,7 @@ Also see @code{prodrac}.
 @anchor{resolvante}
 @deffn {Function} resolvante (@var{P}, @var{x}, @var{f}, [@var{x_1},..., @var{x_d}]) 
 calculates the resolvent of the polynomial @var{P} in @var{x} of degree
-@var{n} >= @var{d} by the function @var{f} expressed in the variables
+@code{n >= d} by the function @var{f} expressed in the variables
 @var{x_1}, ..., @var{x_d}.  For efficiency of computation it is
 important to not include in the list @code{[@var{x_1}, ..., @var{x_d}]}
 variables which do not appear in the transformation function @var{f}.

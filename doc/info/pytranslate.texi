@@ -60,7 +60,7 @@ Supported Maxima forms:@*
 2. @mref{Assignment operators}@*
 3. @mref{Arithmetic operators}(+, -, *, ^, /, !)@*
 4. @mref{Logical operators}(and, or, not)@*
-5. @mref{Relational operators}(>, <, >=, <=, !=, ==)@*
+5. @mref{Relational operators}(@code{>}, @code{<}, @code{>=}, @code{<=}, @code{!=}, @code{==})@*
 6. @mref{Lists}@*
 7. @mref{Arrays}@*
 8. @mref{block}@*
@@ -231,7 +231,7 @@ f["g"] = g
 @end group
 @end example
 Here, @code{mdefine}, which is the type of @code{expr} is present in @var{*maxima-special-ir-map*} which returns @code{func-def-to-ir} as handler function, which is then called with @code{expr} to generate the IR.@*
-To define/modify translation for a type, add an entry to @var{*maxima-direct-ir-map*} if only a part of the IR needs to be generated and the rest can be appended, otherwise, for complete handling of @code{expr}, add an entry to @var{*maxima-special-ir-map*} and define a function with the name defined in @var{*maxima-special-ir-map*} which returns the IR for the form. The function naming convention for ir generators is (type)-to-ir, where type is the @code{(caar expr)} for expression(mdefine -> func-def-to-ir). The function must return a valid IR for the specific type.
+To define/modify translation for a type, add an entry to @var{*maxima-direct-ir-map*} if only a part of the IR needs to be generated and the rest can be appended, otherwise, for complete handling of @code{expr}, add an entry to @var{*maxima-special-ir-map*} and define a function with the name defined in @var{*maxima-special-ir-map*} which returns the IR for the form. The function naming convention for ir generators is (type)-to-ir, where type is the @code{(caar expr)} for expression(@code{mdefine -> func-def-to-ir}). The function must return a valid IR for the specific type.
 @end itemize
 @item
 After the generation of IR, the function @code{ir-to-python} is called with the generated @code{ir} as an argument, which performs the codegen in a recursive manner.

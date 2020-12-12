@@ -11,11 +11,11 @@
 Fortran constrained optimization routine COBYLA by Powell[1][2][3].  
 
 COBYLA minimizes an objective function F(X) subject to M inequality
-constraints of the form g(X) >= 0 on X, where X is a vector of
+constraints of the form @code{g(X) >= 0} on X, where X is a vector of
 variables that has N components.
 
 Equality constraints g(X)=0 can often be implemented by a pair of inequality 
-constraints g(X)>=0 and -g(X)>= 0.  Maxima's interface to COBYLA
+constraints @code{g(X)>=0} and @code{-g(X)>= 0}.  Maxima's interface to COBYLA
 allows equality constraints and internally converts the equality
 constraints to a pair of inequality constraints.
 
@@ -155,7 +155,7 @@ See @mref{fmin_cobyla} for more information.
 @node Examples for cobyla, , Functions and Variables for cobyla, cobyla-pkg
 @section Examples for cobyla
 
-Minimize x1*x2 with 1-x1^2-x2^2 >= 0.  
+Minimize x1*x2 with @code{1-x1^2-x2^2 >= 0}.  
 The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
 
 @c ===beg===

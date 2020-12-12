@@ -863,7 +863,7 @@ For @var{a} or @var{b} equal to zero the beta function is not defined.
 
 In general the beta function is not defined for negative integers as an 
 argument. The exception is for @var{a=-n}, @var{n} a positive integer 
-and @var{b} a positive integer with @var{b<=n}, it is possible to define an 
+and @var{b} a positive integer with @code{b<=n}, it is possible to define an
 analytic continuation. Maxima gives for this case a result.
 
 When @code{beta_expand} is @code{true}, expressions like @code{beta(a+n,b)} and 
