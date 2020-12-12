@@ -23,10 +23,10 @@ solvers for the linear systems that arise.  Two others use iterative
 linear systems.  The most recent addition is LSODIS, which solves
 implicit problems with general sparse treatment of all matrices involved.
 @end quotation
-@footnote{From @url{http://netlib.org/odepack/opkd-sum}}
+@footnote{From @url{https://www.netlib.org/odepack/opkd-sum}}
 
 References:
-[1] Fortran Code is from @url{http://netlib.org/odepack/}
+[1] Fortran Code is from @url{https://www.netlib.org/odepack/}
 
 @opencatbox
 @category{Numerical methods}

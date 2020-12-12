@@ -55,7 +55,7 @@ apply(linear_program, klee_minty(10));
 
 @subsubsection NETLIB
 
-Some smaller problems from netlib (@url{http://www.netlib.org/lp/data/})
+Some smaller problems from netlib (@url{https://www.netlib.org/lp/data/})
 test suite are converted to a format, readable by Maxima. Problems are
 @code{adlittle}, @code{afiro}, @code{kb2}, @code{sc50a} and
 @code{share2b}. Each problem has three input files in CSV format for
@@ -84,7 +84,7 @@ sc50a          -6.4575077059E+01        false
 share2b        -4.1573518187E+02        false
 @end example
 
-The Netlib website @url{http://www.netlib.org/lp/data/readme} lists the values as
+The Netlib website @url{https://www.netlib.org/lp/data/readme} lists the values as
 
 @example
 PROBLEM        MINIMUM
