@@ -90,5 +90,5 @@ fpprec: 32;
 closeto(abs(zeta(3b0 + %i) - (1.1072144084314091956251002057752233976776b0 - 0.1482908671781753484907641256686246807941b0*%i)), 3.11b-33);
 true$
 
-(remfunction(chk),0);
+(reset(fpprec), remfunction(chk),0);
 0$
