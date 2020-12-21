@@ -1597,6 +1597,44 @@ block ([translate : false],
 (kill (foo, bar, test1, test2, l1, l2, l3), 0);
 0;
 
+/* Some additional basic tests for conditionals.
+ *
+ * We test both elseif and else-if ("else if").
+ */
+
+block ([translate : false],
+  mysignum1 (x) := if x > 0 then 1 elseif  x < 0 then -1 else 0,
+  mysignum2 (x) := if x > 0 then 1 else if x < 0 then -1 else 0,
+  foo () :=
+    [if true then 1,
+     if false then 1,
+     if true then 1 else 2,
+     if false then 1 else 2,
+     if 1 < 2 then 'y,
+     if 1 < 2 then 'y else 'n,
+     if 1 > 2 then 'n,
+     if 1 > 2 then 'n else 'y,
+     if 1 > 2 then 'n elseif  1 = 2 then 'n else 'y,
+     if 1 > 2 then 'n else if 1 = 2 then 'n else 'y,
+     mysignum1 (-3),
+     mysignum2 (-3),
+     mysignum1 (0),
+     mysignum2 (0),
+     mysignum1 (2),
+     mysignum2 (2)],
+  l1 : foo (),
+  translate_or_lose (mysignum1, mysignum2, foo),
+  l2 : foo (),
+  [is (l1 = l2),
+   l2]);
+[true,
+ [1, false, 1, 2, 'y, 'y, false, 'y, 'y, 'y, -1, -1, 0, 0, 1, 1]];
+
+(kill (mysignum1, mysignum2, foo, l1, l2), 0);
+0;
+
+
+
 
 /*** KILLING THESE FUNCTIONS SHOULD BE THE LAST TEST IN THIS FILE ***/
 (kill (translate_or_lose, compile_or_lose), 0);
