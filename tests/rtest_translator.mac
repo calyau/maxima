@@ -1497,6 +1497,9 @@ calc_result;
  ["+", [6, 13]],
  19];
 
+(kill (program_content, program_file_name, file_name_original, file_name_LISP, file_name_UNLISP, file_name_compiled, calc_result), 0);
+0;
+
 
 /* Some additional basic tests for functions with rest args */
 
