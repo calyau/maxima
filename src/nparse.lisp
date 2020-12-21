@@ -1454,8 +1454,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 	 (case (first-c)
 	   (($else)   (list t (parse '$any (rbp (pop-c)))))
 	   (($elseif) (parse-condition (pop-c)))
-	   (t ; Note: $false instead of () makes DISPLA suppress display!
-	    (list t '$false)))))
+	   (t         (list t '$false)))))
 
 (def-mheader $do (mdo))
 
