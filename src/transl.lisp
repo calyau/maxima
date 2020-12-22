@@ -1141,8 +1141,15 @@ APPLY means like APPLY.")
 	   mode (car dummy) 
 	   nl (list dummy (translate-predicate (cadr form))))
      (do ((l (cdddr form) (cddr l))) ((null l))
-       (cond ((and (not (atom (cadr l))) (eq 'mcond (caaadr l)))
-	      (setq l (cdadr l))))
+       ; Optimize the else-if case: if we're at the else case at the end
+       ; and the body is just another conditional, then we just continue
+       ; directly with the clauses of the inner conditional instead of
+       ; nesting.
+       (when (and (null (cddr l))
+		  (eq (car l) t)
+		  (consp (cadr l))
+		  (eq (caaadr l) 'mcond))
+	 (setq l (cdadr l)))
        (setq dummy (translate (cadr l)) 
 	     mode (*union-mode mode (car dummy)) 
 	     nl (cons dummy
