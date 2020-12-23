@@ -1155,23 +1155,26 @@ APPLY means like APPLY.")
 	     nl (cons dummy
 		      (cons (translate-predicate (car l))
 			    nl))))
+     ; We leave off the final clause if the condition is true
+     ; and the consequent is false.
+     (when (and (eq t (cadr nl)) (null (cdar nl)))
+       (setq nl (cddr nl)))
      (setq form nil)
      (do ((l nl (cddr l))) ((null l))
-       (cond ((and (eq t (cadr l)) (null (cdar l))))
-	     (t (setq form
-		      (cons (cons (cadr l)
-				  (cond ((and (not (atom (cdar l)))
-					      (cddar l)
-					      (eq (cadar l) 'progn))
-					 (nreverse 
-					  (cons (dconv (cons (caar l)
-							     (car (reverse (cddar l))))
-						       mode)
-						(cdr (reverse (cddar l))))))
-					((and (equal (cdar l) (cadr l))
-					      (atom (cdar l))) nil)
-					(t (list (cdr (car l))))))
-			    form)))))
+       (setq form
+             (cons (cons (cadr l)
+                         (cond ((and (not (atom (cdar l)))
+                                     (cddar l)
+                                     (eq (cadar l) 'progn))
+                                (nreverse 
+                                 (cons (dconv (cons (caar l)
+                                                    (car (reverse (cddar l))))
+                                              mode)
+                                       (cdr (reverse (cddar l))))))
+                               ((and (equal (cdar l) (cadr l))
+                                     (atom (cdar l))) nil)
+                               (t (list (cdr (car l))))))
+                   form)))
      ;; Wrap (LET (($PREDERROR T)) ...) around translation of MCOND.
      ;; Nested MCOND expressions (e.g. if x > 0 then if y > 0 then ...)
      ;; will therefore yield nested (LET (($PREDERROR T)) ... (LET (($PREDERROR T)) ...)).

@@ -1759,6 +1759,35 @@ block ([translate : false],
 (kill (foo, bar, l1, l2, inputs, to_else_if, with_both_elseifs), 0);
 0;
 
+/* Bogus translations of conditionals with tests that translated to T
+ * and consequents that translated to NIL.
+ */
+
+block ([translate : false],
+  foo () :=
+    [if true then false else 1,
+     if true then false elseif true then 1 else 2,
+     if false then true elseif true then false else 1],
+
+  /* l1: foo is interpreted */
+  l1 : foo (),
+
+  translate_or_lose (foo),
+
+  /* l2: foo is translated
+   *
+   * foo used to return [1, 1, 1]
+   */
+  l2 : foo (),
+
+  [is (l2 = l1),
+   l2]);
+[true,
+ [false, false, false]];
+
+(kill (foo, l1, l2), 0);
+0;
+
 
 
 
