@@ -1497,6 +1497,9 @@ calc_result;
  ["+", [6, 13]],
  19];
 
+(kill (program_content, program_file_name, file_name_original, file_name_LISP, file_name_UNLISP, file_name_compiled, calc_result), 0);
+0;
+
 
 /* Some additional basic tests for functions with rest args */
 
@@ -1593,6 +1596,199 @@ block ([translate : false],
 
 (kill (foo, bar, test1, test2, l1, l2, l3), 0);
 0;
+
+/* Some additional basic tests for conditionals.
+ *
+ * We test both elseif and else-if ("else if").
+ */
+
+block ([translate : false],
+  mysignum1 (x) := if x > 0 then 1 elseif  x < 0 then -1 else 0,
+  mysignum2 (x) := if x > 0 then 1 else if x < 0 then -1 else 0,
+  foo () :=
+    [if true then 1,
+     if false then 1,
+     if true then 1 else 2,
+     if false then 1 else 2,
+     if 1 < 2 then 'y,
+     if 1 < 2 then 'y else 'n,
+     if 1 > 2 then 'n,
+     if 1 > 2 then 'n else 'y,
+     if 1 > 2 then 'n elseif  1 = 2 then 'n else 'y,
+     if 1 > 2 then 'n else if 1 = 2 then 'n else 'y,
+     mysignum1 (-3),
+     mysignum2 (-3),
+     mysignum1 (0),
+     mysignum2 (0),
+     mysignum1 (2),
+     mysignum2 (2)],
+  l1 : foo (),
+  translate_or_lose (mysignum1, mysignum2, foo),
+  l2 : foo (),
+  [is (l1 = l2),
+   l2]);
+[true,
+ [1, false, 1, 2, 'y, 'y, false, 'y, 'y, 'y, -1, -1, 0, 0, 1, 1]];
+
+(kill (mysignum1, mysignum2, foo, l1, l2), 0);
+0;
+
+/* Bogus translations of nested conditionals in elseif clauses
+ *
+ * The translation of a conditional with another conditional nested
+ * directly under an elseif clause was totally wrong.  Using else-if
+ * ("else if") instead of elseif would work fine.
+ *
+ *
+ * We use the with_both_elseifs macro so we can test both elseif and
+ * else-if without having to duplicate portions of the tests below.
+ * Give this macro a conditional expression with elseifs and it will
+ * expand into a list: the first element is the same expression given
+ * to it (with elseifs), and the second element is that same expression
+ * rewritten to use else-ifs instead of elseifs.
+ */
+
+(to_else_if (expr) :=
+   if mapatom (expr) then
+     expr
+   else
+     block ([op : op (expr), args : args (expr)],
+       if op = "if" and length (args) > 4 then
+         funmake (op, map ('to_else_if, append (firstn (args, 2), [true, funmake (op, rest (args, 2))])))
+       else
+         funmake (op, map ('to_else_if, args))),
+ with_both_elseifs (expr) ::=
+   buildq ([expr, texpr : to_else_if (expr)],
+     [expr, texpr]),
+  0);
+0;
+
+block ([translate : false],
+  foo () :=
+    with_both_elseifs (
+      if false then
+        'lose1
+      elseif false then
+        'lose2
+      elseif false then
+        if true then
+          'lose3
+        else
+          'lose4
+      else
+        'win),
+
+  /* l1: foo is interpreted */
+  l1 : foo (),
+
+  translate_or_lose (foo),
+
+  /* l2: foo is translated
+   *
+   * foo used to give lose3 instead of win in the elseif case.
+   */
+  l2 : foo (),
+
+  [is (l1 = l2),
+   l2]);
+[true,
+ ['win, 'win]];
+
+block ([translate : false],
+  /* There is nothing special about bar here.  This is just some
+   * function that has several branches with nested conditionals.
+   */
+  bar (x) :=
+    with_both_elseifs (
+      if x > 5 then
+        if x > 7 then
+          'more_than_seven
+        elseif x > 6 then
+          'seven
+        else
+          'six
+      elseif x > 2 then
+        if x > 4 then
+          'five
+        elseif x > 3 then
+          'four
+        else
+          'three
+      elseif x >= 0 then
+        if x > 1 then
+          'two
+        elseif x > 0 then
+          'one
+        else
+          'zero
+      else
+        'negative),
+
+  /* We test bar with the integers -2 to 9 */
+  inputs : makelist (k, k, -2, 9),
+
+  /* l1: bar is interpreted */
+  l1 : map (bar, inputs),
+
+  translate_or_lose (bar),
+
+  /* l2: bar is translated
+   *
+   * bar used to give incorrect results in the elseif case for every
+   * number less than or equal to 2 (which means we got incorrect
+   * results for the integers -2 to 2 in this test).
+   */
+  l2 : map (bar, inputs),
+
+  [is (l2 = l1),
+   l2]);
+[true,
+ [['negative, 'negative],
+  ['negative, 'negative],
+  ['zero, 'zero],
+  ['one, 'one],
+  ['two, 'two],
+  ['three, 'three],
+  ['four, 'four],
+  ['five, 'five],
+  ['six, 'six],
+  ['seven, 'seven],
+  ['more_than_seven, 'more_than_seven],
+  ['more_than_seven, 'more_than_seven]]];
+
+(kill (foo, bar, l1, l2, inputs, to_else_if, with_both_elseifs), 0);
+0;
+
+/* Bogus translations of conditionals with tests that translated to T
+ * and consequents that translated to NIL.
+ */
+
+block ([translate : false],
+  foo () :=
+    [if true then false else 1,
+     if true then false elseif true then 1 else 2,
+     if false then true elseif true then false else 1],
+
+  /* l1: foo is interpreted */
+  l1 : foo (),
+
+  translate_or_lose (foo),
+
+  /* l2: foo is translated
+   *
+   * foo used to return [1, 1, 1]
+   */
+  l2 : foo (),
+
+  [is (l2 = l1),
+   l2]);
+[true,
+ [false, false, false]];
+
+(kill (foo, l1, l2), 0);
+0;
+
+
 
 
 /*** KILLING THESE FUNCTIONS SHOULD BE THE LAST TEST IN THIS FILE ***/
