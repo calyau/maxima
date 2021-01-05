@@ -350,10 +350,18 @@
 (defprop mdefine 180 lbp)
 (defprop mdefine  20 rbp)
 
+;; copy binding powers to nounified operator
+(setf (get '%mdefine 'lbp) (get 'mdefine 'lbp))
+(setf (get '%mdefine 'rbp) (get 'mdefine 'rbp))
+
 (defprop mdefmacro msz-mdef grind)
 (defprop mdefmacro (#\: #\: #\=) strsym)
 (defprop mdefmacro 180 lbp)
 (defprop mdefmacro  20 rbp)
+
+;; copy binding powers to nounified operator
+(setf (get '%mdefmacro 'lbp) (get 'mdefmacro 'lbp))
+(setf (get '%mdefmacro 'rbp) (get 'mdefmacro 'rbp))
 
 (defun msz-mdef (x l r)
   (setq l (msize (cadr x) l (copy-list (strsym (caar x))) lop (caar x))
