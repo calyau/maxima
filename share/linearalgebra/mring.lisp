@@ -1,5 +1,5 @@
 ;; A Maxima ring structure
-;; Copyright (C) 2005, 2007, Barton Willis
+;; Copyright (C) 2005, 2007, 2021, Barton Willis
 
 ;; Barton Willis
 ;; Department of Mathematics
@@ -94,7 +94,7 @@
    :mring-to-maxima #'cl:identity
    :maxima-to-mring #'(lambda (s) 
 			(setq s ($float s))
-			(if (floatp s) s (merror "Unable to convert ~:M to a long float" s)))))
+			(if (floatp s) s (merror (intl:gettext "Unable to convert ~:M to a long float") s)))))
 
 (setf (get '$floatfield 'ring) *floatfield*)
 
@@ -122,7 +122,7 @@
 			  (setq s (coerce-expr-to-clcomplex ($rectform (meval s))))
 			  (if (complexp s)
 			      s
-			      (merror "Unable to convert ~:M to a complex long float" s))))))
+			      (merror (intl:gettext "Unable to convert ~:M to a complex long float") s))))))
 
 (defun coerce-expr-to-clcomplex (s)
   (complex (funcall (coerce-float-fun ($realpart s))) (funcall (coerce-float-fun ($imagpart s)))))
@@ -157,7 +157,7 @@
    #'(lambda (s) 
        (if (or (floatp s) ($bfloatp s)) (setq s ($rationalize s)))
        (if ($ratnump s) (if (integerp s) s (/ ($num s) ($denom s)))
-	 (merror "Unable to convert ~:M to a rational number" s)))))
+	 (merror (intl:gettext "Unable to convert ~:M to a rational number") s)))))
 
 (setf (get '$rationalfield 'ring) *rationalfield*)
 
@@ -232,7 +232,7 @@
    :maxima-to-mring #'(lambda (s) 
 			(setq s ($rectform ($bfloat s)))
 			(if (or (eq s '$%i) (complex-number-p s 'bigfloat-or-number-p)) s
-				(merror "Unable to convert matrix entry to a big float")))))
+				(merror (intl:gettext "Unable to convert matrix entry to a big float"))))))
 
 (setf (get '$bigfloatfield 'ring) *bigfloatfield*)
 
@@ -321,7 +321,7 @@
 	((= (first b) 0.0) a)
 	(t
 	 (let ((s (+ (first a) (first b))))
-	   (if (= 0.0 s) (merror "floating point divide by zero"))
+	   (if (= 0.0 s) (merror (intl:gettext "floating point divide by zero")))
 	   (list s (ceiling (+ 1
 			       (abs (/ (* (first a) (second a)) s))
 			       (abs (/ (* (first b) (second b)) s)))))))))
@@ -331,7 +331,7 @@
 	((= (first b) 0.0) a)
 	(t
 	 (let ((s (- (first a) (first b))))
-	   (if (= 0.0 s) (merror "floating point divide by zero"))
+	   (if (= 0.0 s) (merror (intl:gettext "floating point divide by zero")))
 	   (list s (ceiling (+ 1
 			       (abs (/ (* (first a) (second a)) s))
 			       (abs (/ (* (first b) (second b)) s)))))))))
@@ -375,7 +375,7 @@
    :name '$noncommutingring
    :coerce-to-lisp-float nil
    :abs #'(lambda (s) (simplify (mfuncall '$cabs s)))
-   :great #'(lambda (a b) (declare (ignore a)) (eq t (meqp b 0)))
+   :great #'(lambda (a b) (declare (ignore a)) (not (invertible-matrixp b '$noncommutingring)))
    :add #'(lambda (a b) (add a b))
    :div #'(lambda (a b) (progn
 			  (let (($matrix_element_mult ".")
@@ -409,7 +409,7 @@
    :add-id #'(lambda () 0)
    :psqrt #'(lambda (s) (take '(%sqrt) s))
    :mult-id #'(lambda () 1)
-   :fzerop #'(lambda (s) (eq t (meqp s 0)))
+   :fzerop #'(lambda (s) (not (invertible-matrixp s '$noncommutingring)))
    :adjoint #'(lambda (s) ($transpose (take '($conjugate) s)))
    :mring-to-maxima #'cl:identity
    :maxima-to-mring #'cl:identity))
@@ -450,7 +450,7 @@
 		(consp e) (consp (car e)) (gethash (mop e) *flonum-op*))
 	   (apply (gethash (mop e) *flonum-op*) (mapcar #'(lambda (s) (ring-eval s fld)) (margs e))))
 	  
-	  (t (merror "Unable to evaluate ~:M in the ring '~:M'" e (mring-name fld))))))
+	  (t (merror (intl:gettext "Unable to evaluate ~:M in the ring '~:M'") e (mring-name fld))))))
   
 (defmspec $ringeval (e)
   (let ((fld (get (or (car (member (nth 2 e) $%mrings)) '$generalring) 'ring)))

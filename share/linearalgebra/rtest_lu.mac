@@ -1,7 +1,7 @@
 (kill(values),0);
 0$
 
-(saveratprint : ratprint, savefloat2bf : float2bf, ratprint : false, float2bf : true, 0);
+(ratprint : false, float2bf : true,0);
 0$
 
 (lu_test(m) := block([mp],
@@ -150,16 +150,171 @@ true$
 zeromatrixp(m1[1] . m1[2] . m1[3]-m);
 true$
 
-(ratprint : saveratprint, float2bf : savefloat2bf, 0);
+(matrix_element_mult : "*",0);
+0$
+
+errcatch(lu_factor(matrix()));
+[]$
+
+get_lu_factors(lu_factor(matrix([0])));
+[matrix([1]),matrix([1]),matrix([0])]$
+
+ratdisrep(get_lu_factors(lu_factor(matrix([0]),'crering)));
+[matrix([1]),matrix([1]),matrix([0])]$
+
+get_lu_factors(lu_factor(matrix([0]), 'floatfield));
+[matrix([1]),matrix([1]),matrix([0.0])]$
+
+get_lu_factors(lu_factor(matrix([0]), 'bigfloatfield));
+[matrix([1]),matrix([1]),matrix([0.0b0])]$
+
+get_lu_factors(lu_factor(matrix([0,1],[0,1])));
+[matrix([0,1],[1,0]),matrix([1,0],[0,1]),matrix([0,1],[0,1])]$
+
+get_lu_factors(lu_factor(matrix([5,0,0],[0,0,0],[0,0,1])));
+[matrix([1,0,0],[0,0,1],[0,1,0]),matrix([1,0,0],[0,1,0],[0,0,1]),
+matrix([5,0,0],[0,0,1],[0,0,0])]$
+
+get_lu_factors(lu_factor(matrix([5,0,0],[0,0,0],[0,0,0])));
+[matrix([1,0,0],[0,0,1],[0,1,0]),
+matrix([1,0,0],[0,1,0],[0,0,1]),
+matrix([5,0,0],[0,0,0],[0,0,0])]$
+
+(lower_triangular_p(mat) := block([n : matrix_size(mat), OK : true],
+    for r :1 thru second(n) do (
+      for c : r thru first(n) do (
+            OK : OK and (if r=c then is (mat[r,c] = 1) else is(mat[r,c] = 0)))),
+    OK),0);
+0$
+
+(upper_triangular_p(mat) := block([n : matrix_size(mat), OK : true],
+    for r :1 thru second(n) do (
+      for c : 1 thru r-1 do (
+            OK : OK and is(mat[r,c] = 0))),
+    OK), 0);
+0$
+
+(perm_mat_p(mat) := zeromatrixp(mat.transpose(mat) - identfor(mat)),0);
+0$
+
+/* In this file, there are multiple definitions of lu_test." */
+
+
+(lu_test(m) := block([mp],
+  mp : get_lu_factors(lu_factor(m, 'generalring)),
+  lower_triangular_p(second(mp)) and
+  perm_mat_p(first(mp)) and
+  upper_triangular_p(third(mp)) and
+  zeromatrixp(ratsimp(m - first(mp).second(mp).third(mp)))), 0);
+0$
+
+/* see mailing list, "lu_factor fails on trivial diagonal matrix," 5 Jan 2021. */
+lu_test(matrix([-1,0,0,0],[0,-3,0,0],[0,0,0,0],[0,0,0,-3]));
+true$
+
+lu_test(matrix([0,0,0,0],[0,-3,0,0],[0,0,0,0],[0,0,0,-3]));
+true$
+
+lu_test(matrix([0,0,0,0],[0,0,0,0],[0,0,-3,0],[0,0,0,0]));
+true$
+
+lu_test(matrix([0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,-3]));
+true$
+
+lu_test(matrix([0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,-1]));
+true$
+
+every(lambda([x],x), map('lu_test, flatten(outermap(lambda([a,b,c,d], matrix([a,b],[c,d])),
+    [0,1],[0,1],[0,1],[0,1]))));
+true$
+
+(remvalue(m,b,m1),0);
+0$
+
+every(lambda([x],x), map(lu_test, flatten(outermap(lambda([x1,x2,x3,x4], matrix([x1,x2],[x3,x4])),
+   [a,b],[a,b],[a,b],[a,b]))));
+true$
+
+/* diagonal matrices */
+lu_test(matrix([46,0,0],[0,107,0],[0,0,28]));
+true$
+
+lu_test(matrix([46,0,0],[0,107,0],[0,0,0]));
+true$
+
+lu_test(matrix([0,0,0],[0,46,0],[0,0,107]));
+true$
+
+lu_test(matrix([107,0,0],[0,0,0],[0,0,46]));
+true$
+
+lu_test(matrix([0,0,0],[0,0,0],[0,0,46]));
+true$
+
+lu_test(matrix([0,0,0],[0,107,0],[0,0,0]));
+true$
+
+lu_test(matrix([107,0,0],[0,0,0],[0,0,0]));
+true$
+
+lu_test(matrix([0,0,0],[0,0,0],[0,0,107]));
+true$
+
+lu_test(matrix([0,0,0],[0,0,0],[0,0,0]));
+true$
+
+lu_test(matrix([107,0,0],[0,46,0],[0,0,107]));
+true$
+
+(mat : matrix([matrix([0,0],[0,1]), matrix([1,2],[2,1])], [matrix([0,1],[1,0]), matrix([1,2],[2,1])]),0);
+0$
+
+block([matrix_element_mult : ".", mm : get_lu_factors(lu_factor(mat, 'noncommutingring))],
+  zeromatrixp(mat - first(mm) . second(mm) . third(mm)));
+true$
+
+(mat : matrix([matrix([0,0],[0,0]), matrix([107,2],[2,107])], [matrix([0,0],[0,0]), matrix([1,2],[2,1])]),0);
+0$
+
+block([matrix_element_mult : ".", mm : get_lu_factors(lu_factor(mat, 'noncommutingring))],
+  zeromatrixp(mat - first(mm) . second(mm) . third(mm)));
+true$
+
+(mat : matrix([matrix([0,1],[1,0]), matrix([107,2],[2,107])], [matrix([0,0],[0,0]), matrix([1,2],[2,1])]),0);
+0$
+
+block([matrix_element_mult : ".", mm : get_lu_factors(lu_factor(mat, 'noncommutingring))],
+  zeromatrixp(mat - first(mm) . second(mm) . third(mm)));
+true$
+
+(mat : matrix([matrix([0,1],[1,0]), matrix([107,2],[2,107])], [matrix([0,1],[1,0]), matrix([1,46],[46,1])]),0);
+0$
+
+block([matrix_element_mult : ".", mm : get_lu_factors(lu_factor(mat, 'noncommutingring))],
+  zeromatrixp(mat - first(mm) . second(mm) . third(mm)));
+true$
+
+(mat : matrix([matrix([0,0],[1,0]), matrix([1,0],[0,0])], [matrix([0,1],[1,0]), matrix([1,46],[46,1])]),0);
+0$
+
+block([matrix_element_mult : ".", mm : get_lu_factors(lu_factor(mat, 'noncommutingring))],
+  zeromatrixp(mat - first(mm) . second(mm) . third(mm)));
+true$
+
+(mat : matrix([matrix([0,0],[0,0]), matrix([0,0],[0,0])], [matrix([0,0],[0,0]), matrix([0,0],[0,0])]),0);
+0$
+
+block([matrix_element_mult : ".", mm : get_lu_factors(lu_factor(mat, 'noncommutingring))],
+  zeromatrixp(mat - first(mm) . second(mm) . third(mm)));
+true$
+
+(reset(ratprint, float2bf, matrix_element_mult, matrix_element_transpose),0);
+0$
+
+(remfunction(lu_test, lower_triangular_p,upper_triangular_p,perm_mat_p),0);
 0$
 
 (kill(values),0);
-0$
-
-(kill(lu_test),0);
-0$
-
-(matrix_element_mult : "*",0);
 0$
 
 
