@@ -47,9 +47,12 @@ Changes in Xmaxima:
 -------------------
  * Tcl 8.5 compatibility
 
-Changes in the windows installer:
+Changes in the Windows installer:
 ---------------------------------
- * RequestExecutionLevel admin for Windows installation in order to make uninstall smoother
+ * Admin permissions are now required (as for most Windows programs).
+   Installation without admin permissions worked, but left some
+   spurious registry entries after uninstallation. This should be fixed now.
+ * Windows Installer: Updated ABCL, TCL, wxWidgets and wxMaxima.
  * The start menu entry is now named "Maxima computer algebra system"
 
 Bug fixes for numbered bugs:
