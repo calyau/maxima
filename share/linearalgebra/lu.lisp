@@ -1,4 +1,4 @@
-;;  Copyright 2005, 2006 by Barton Willis
+;;  Copyright 2005, 2006, 2021 by Barton Willis
 
 ;;  This is free software; you can redistribute it and/or
 ;;  modify it under the terms of the GNU General Public License,
@@ -7,7 +7,7 @@
 ;; This software has NO WARRANTY, not even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-($put '$lu 2 '$version)
+($put '$lu 3 '$version)
 	
 ;; Return the i,j entry of the Maxima matrix m. The rows of m have been permuted according
 ;; to the Maxima list p.
@@ -38,15 +38,15 @@
     (declare (type flonum add-id))
     (let ((l (aref p i)))
       (loop for s from 0 to n do
-	(setq add-id (+ add-id (* (aref m l s) (aref m (aref p s) k)))))
-      (setf (aref m l k) (- (aref m l k) add-id)))))
+      	(setq add-id (+ add-id (* (aref m l s) (aref m (aref p s) k)))))
+        (setf (aref m l k) (- (aref m l k) add-id)))))
 
 (defun partial-matrix-prod-complex-float (m p i k n)
   (let ((add-id 0.0))
     (let ((l (aref p i)))
       (loop for s from 0 to n do
-	(setq add-id (+ add-id (* (aref m l s) (aref m (aref p s) k)))))
-      (setf (aref m l k) (- (aref m l k) add-id)))))
+      	(setq add-id (+ add-id (* (aref m l s) (aref m (aref p s) k)))))
+        (setf (aref m l k) (- (aref m l k) add-id)))))
 
 ;; Return the infinity norm (the largest row sum) of the r by c array mat. The function
 ;; fn coerces matrix elements into flonum floats. The argument 'mat' is a Maxima
@@ -57,8 +57,8 @@
 			(array-to-row-list mat #'(lambda (s) (abs (funcall fn s)))))))
 
 (defun $lu_factor (mat &optional (fld '$generalring))
-  ($require_square_matrix mat '$first '$lu_factor)
   ($require_nonempty_matrix mat '$first '$lu_factor)
+  ($require_square_matrix mat '$first '$lu_factor)
   (setq fld ($require_ring fld '$second '$lu_factor))
   
   (let* ((c ($length mat)) (perm (make-array c)) (cnd) (fn))
@@ -116,23 +116,23 @@
 	 (fdiv (a b) (funcall (mring-div fld) a b))
 	 (fgreat (a b) (funcall (mring-great fld) a b)))
       
-      (loop for k from 0 to c do 
-	(loop for i from k to c  do (partial-matrix-prod m perm i k (- k 1) 
+  (loop for k from 0 to c do 
+	  (loop for i from k to c  do (partial-matrix-prod m perm i k (- k 1) 
 							 #'fadd #'fsub #'fmult add-id fname))
-	(setq mx (fabs (m-elem m perm k k)))
-	(setq pos k)
-	(loop for s from k to c do
-	  (if (fgreat (fabs (m-elem m perm s k)) mx) (setq pos s mx (fabs (m-elem m perm s k)))))
+	  (setq mx (fabs (m-elem m perm k k)))
+	  (setq pos k)
+	  (loop for s from k to c do
+	    (if (fgreat (fabs (m-elem m perm s k)) mx) (setq pos s mx (fabs (m-elem m perm s k)))))
 
-	(setq save (aref perm k))
-	(setf (aref perm k) (aref perm pos))
-	(setf (aref perm pos) save)
+  	(setq save (aref perm k))
+	  (setf (aref perm k) (aref perm pos))
+	  (setf (aref perm pos) save)
 
-	(setq kp1 (+ 1 k))
-	(loop for i from kp1 to c do
-	  (if (fzerop (m-elem m perm k k)) (merror "Unable to compute the LU factorization"))
-	  (setmatelem m (fdiv (m-elem m perm i k) (m-elem m perm k k)) (aref perm i) k)
-	  (partial-matrix-prod m perm k i (- k 1) #'fadd #'fsub #'fmult add-id fname)))
+  	(setq kp1 (+ 1 k))
+	  (loop for i from kp1 to c do
+	      (when (not (fzerop (m-elem m perm k k)))
+	          (setmatelem m (fdiv (m-elem m perm i k) (m-elem m perm k k)) (aref perm i) k)
+	          (partial-matrix-prod m perm k i (- k 1) #'fadd #'fsub #'fmult add-id fname))))
       
       (cond ((not (eq nil (mring-coerce-to-lisp-float fld)))
 	     (multiple-value-setq (lb ub) (mat-cond-by-lu m perm c (mring-coerce-to-lisp-float fld)))
@@ -193,7 +193,8 @@
       
 (defun $lu_backsub(m b1)
   ($require_list m '$first '$lu_backsub)
-  (if (< ($length m) 3) (merror "The first argument to 'lu_backsub' must be a list with at least 3 members"))
+  (when (< ($length m) 3) 
+      (merror (intl:gettext "The first argument to 'lu_backsub' must be a list with at least 3 members")))
   
   (let* ((mat) (n) (r) (c) (bb) (acc) (perm) (id-perm) (b) 
 	 (fld (get (mfuncall '$ev (fourth m)) 'ring)) (cc) 
@@ -219,7 +220,7 @@
     (setq bb (copy-tree b))
     (loop for i from 1 to r do
       (loop for j from 1 to cc do
-	(setmatelem bb (m-elem b perm i j) i j)))
+	      (setmatelem bb (m-elem b perm i j) i j)))
     
     (setq id-perm (mfuncall '$makelist 'i 'i 1 r))
 
@@ -290,8 +291,22 @@
   ($require_matrix b '$second '$linsolve_by_lu)
   ($require_ring fld '$third '$linsolve_by_lu)
   (if (= ($second ($matrix_size m)) ($first ($matrix_size b))) t
-    (merror "Incompatible matrix sizes"))
+    (merror (intl:gettext "Incompatible matrix sizes")))
   
   (setq m ($lu_factor m fld))
   `((mlist) ,($lu_backsub m b) ,(if (floatp ($last m)) ($last m) nil)))
 
+(defun invertible-matrixp (mat fld)
+  (let ((OK t) (n))
+      (cond (($matrixp mat)
+              (setq n ($matrix_size mat))
+              (cond ((not (eql ($first n) ($second n))) ;nonsquare matrices aren't invertiable
+                 nil)
+              (t    
+                (setq mat (fourth ($get_lu_factors ($lu_factor mat fld))))
+                (setq n ($first n))
+                (while (and OK (> n  0))
+                  (setq OK (and OK (not ($zeromatrixp ($inpart mat n n)))))
+                 (decf n 1))
+                OK)))
+            (t (not ($zeromatrixp mat))))))   

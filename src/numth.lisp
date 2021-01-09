@@ -187,7 +187,7 @@
       term
       (let ((rp (car term))
             (ip (cadr term)))
-        (setq ip (if (= ip 1) '$%i `((mtimes) ,ip $%i)))
+        (setq ip (if (eql ip 1) '$%i `((mtimes) ,ip $%i)))
         (if (eql 0 rp)
             ip
             `((mplus) ,rp ,ip)))))

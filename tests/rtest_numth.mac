@@ -684,3 +684,13 @@ block ([g : gcfactor (9)], [op (g), args (g)]);
 
 block ([g : gcfactor (343)], [op (g), args (g)]);
 ["^", [7, 3]];
+
+/* A bogus comparison caused various things like gcfactor(x*%i)
+ * to signal lisp errors
+ */
+
+gcfactor (x * %i);
+x * %i;
+
+gcfactor (%i / 2);
+%i / 2;

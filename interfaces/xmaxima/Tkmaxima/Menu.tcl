@@ -319,7 +319,7 @@ proc vMAXAddSystemMenu {fr text} {
 	
 	set selectedbrowser xdg-open
 
-	foreach b { xdg-open htmlview firefox mozilla konqueror epiphany galeon amaya opera netscape } {
+	foreach b { xdg-open htmlview firefox chromium-browser google-chrome konqueror epiphany galeon amaya opera } {
 	    if { ! [catch {exec which $b} ] } {
 		set selectedbrowser $b
 		break } }
