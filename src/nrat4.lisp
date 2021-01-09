@@ -110,12 +110,13 @@
 (setq *radsubst nil)
 
 (defmfun $ratsubst (a b c)              ; NEEDS CODE FOR FAC. FORM
-  (prog (varlist newvarlist dontdisrepit $ratfac genvar $keepfloat)
+  (prog (varlist newvarlist dontdisrepit $ratfac genvar $keepfloat $float $numer)
      ;; hard to maintain user ordering info.
      (if ($ratp c) (setq dontdisrepit t))
      (if (and $radsubstflag
 		(prog2 (newvar b) (some #'mexptp varlist)))
        (let (($factorflag t) *exp *exp2 *radsubst)
+	 (setq a (fullratsimp a))
 	 (setq b (fullratsimp b))
 	 (setq c (fullratsimp c))
 	 (setq varlist nil)
@@ -128,7 +129,11 @@
 	 (spc0)
 	 (setq b (rdis *exp) c (rdis *exp2))
 	 (setq varlist nil))
-       (setq varlist nil))
+	(progn 
+	 (setq a ($rat a))
+	 (setq b ($rat b))
+	 (setq c ($rat c))
+       (setq varlist nil)))
      (setq a ($ratdisrep a) b ($ratdisrep b) c ($ratdisrep c))
      (cond ((integerp b) (setq c (ratf (maxima-substitute a b c)))
 	    (return (cond (dontdisrepit c) (t ($ratdisrep c))))))
