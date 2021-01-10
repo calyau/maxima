@@ -62,3 +62,4 @@ Bug fixes for numbered bugs:
  * #3643: "DEFMFUN creates $NAME and $NAME-IMPL, contradicting documentation"
  * #3671+3675: imaxima bit rot
  * #3685: descriptive/"continuous_freq causes Lisp error given rational numbers"
+ * #3658: "error with floats appearing instead of integers in lratsubst"
