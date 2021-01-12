@@ -1,9 +1,15 @@
 % texinfo.tex -- TeX macros to handle Texinfo files.
+%
+% This texinfo.tex is based on the version 2020-10-24.12
+% from the GNU website, but contains a patch from Leo Butler
+% to solve an issue with the generation of our PDF documentation.
+% See: https://sourceforge.net/p/maxima/mailman/message/37181353/
+% and: https://sourceforge.net/p/maxima/mailman/message/37181827/
 % 
 % Load plain if necessary, i.e., if running under initex.
 \expandafter\ifx\csname fmtname\endcsname\relax\input plain\fi
 %
-\def\texinfoversion{2020-10-24.12}
+\def\texinfoversion{2020-12-22.07}
 %
 % Copyright 1985, 1986, 1988, 1990-2020 Free Software Foundation, Inc.
 %
@@ -2849,12 +2855,20 @@ end
 % @cite is like \smartslanted except unconditionally use \sl.  We never want
 % ttsl for book titles, do we?
 \def\cite#1{{\sl #1}\futurelet\next\smartitaliccorrection}
-
 \def\aftersmartic{}
-\def\var#1{%
-  \let\saveaftersmartic = \aftersmartic
-  \def\aftersmartic{\null\let\aftersmartic=\saveaftersmartic}%
-  \smartslanted{#1}%
+
+{
+  \catcode`\_=\active
+  %
+  \global\def\var{\begingroup
+    \catcode\underChar=\active
+    \let_\codeunder%
+  \varxxx}
+   \global\def\varxxx#1{%
+     \let\saveaftersmartic = \aftersmartic
+     \def\aftersmartic{\null\let\aftersmartic=\saveaftersmartic}%
+     \smartslanted{#1}%
+     \endgroup}
 }
 
 \let\i=\smartitalic
