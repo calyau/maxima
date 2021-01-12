@@ -507,7 +507,6 @@ nor Gnuplot is not recognized by maxima"))))
 	(declare (special $display2d))
 	(displa x)
 	(return-from latex)))
-  (fresh-line)
   (mapc #'princ
 	(if (and (listp x) (cdr x) (stringp (cadr x))
 		 (equal (string-right-trim '(#\Space) (cadr x)) "Is"))
