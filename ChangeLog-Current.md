@@ -60,5 +60,7 @@ Bug fixes for numbered bugs:
  * #3417: sign(1/zero) => 0 (where equal(zero,0))
  * #3650: We trusted gnuplot's datafile separator to be unmodified
  * #3643: "DEFMFUN creates $NAME and $NAME-IMPL, contradicting documentation"
- * #3671+3675: imaxima bit rot
+ * #3671, 3674, 3675: imaxima-related bugs
  * #3685: descriptive/"continuous_freq causes Lisp error given rational numbers"
+ * #3658: "error with floats appearing instead of integers in lratsubst"
+ * #3700: stringproc/"Mysterious error in ssubst"

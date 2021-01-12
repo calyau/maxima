@@ -2353,8 +2353,8 @@ When @code{radsubstflag} is @code{true},
 @code{ratsubst} makes substitutions for radicals in expressions
 which don't explicitly contain them.
 
-@code{ratsubst} ignores the value @code{true} of the option variable 
-@code{keepfloat}.
+@code{ratsubst} ignores the value @code{true} of the option variables
+@code{keepfloat}, @code{float}, and @code{numer}.
 
 Examples:
 

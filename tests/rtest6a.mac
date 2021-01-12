@@ -154,6 +154,46 @@ ratsubst (z, sqrt(x + 1), 1 + (x + 1)^(3/2)), radsubstflag=false;
 ratsubst (z, sqrt(x + 1), 1 + (x + 1)^(3/2)), radsubstflag=true;
 1 + z^3;
 
+/* SF bug #3658: "" */
+
+ratsubst (1.1, x, 0.001*cos(x));
+cos(11/10)/1000;
+
+(load(lrats), 0);
+0;
+
+lratsubst1 ([phi_2 = 1.1], 0.001*cos(phi_2)), numer;
+0.001*cos(11/10);
+
+/* original example from #3658;
+ * note that this assumes load(lrats) already.
+ * result is not checked, just whether or not it runs without error.
+ */
+block ([mat21,theta_1,mat22,phi_2,theta_2,mat23,t,t1,t2,fl,theta1,theta2,phi2,tt],
+[mat21:matrix([cos(theta_1/2),
+%i*sin(theta_1/2)],[%i*sin(theta_1/2),
+cos(theta_1/2)]),
+mat22:matrix([cos(theta_2/2)
+*exp(%i*phi_2/2),
+%i*sin(theta_2/2)*exp(%i*phi_2/2)],
+[%i*sin(theta_2/2)*exp(-%i*phi_2/2),cos(theta_2/2)
+*exp(-%i*phi_2/2)]),
+mat23:mat21.mat22,
+t:expand(mat23[2,2]*mat23[1,1]),
+t1:expand(demoivre(t)),
+t2:trigsimp(trigreduce(2*t1-1))],
+fl:true,
+for theta1:0 thru %pi step 1.1 do  
+for theta2:0 thru %pi step 1.1 do 
+for phi2:0  thru 2*%pi step 1.1
+do (tt:float(ev(lratsubst([theta_1=theta1,theta_2=theta2,phi_2=phi2],
+abs(t2-(cos(theta_1)*cos(theta_2) - sin(theta_1)*sin(theta_2)*cos(phi_2)))),
+numer)),
+if tt>1e-5 then(fl:false,disp(tt))),
+fl,
+0);
+0;
+
 /* SF bug #2012: "Lisp stack overflow with dpart." */
 
 dpart(cos(a+b),1);

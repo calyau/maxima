@@ -55,7 +55,7 @@ The following command line options are available for Maxima:
               List the available Lisp and Maxima versions.
 @need 150
     @item -p  @var{lisp_file}, --preload-lisp=@var{lisp_file}
-              Preload lisp_file.
+              Preload @code{lisp_file}.
 
  @need 150
     @item -q, --quiet

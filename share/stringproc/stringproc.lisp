@@ -1110,9 +1110,9 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
         (apply #'ssubstfirst `(,new ,old ,str ,@args)) )
       (s-pos-error2 "ssubstfirst") ))
 ;;
-(defun ssubstfirst (new old str &optional (test '$sequal) (start 0) (end nil))
+(defun ssubstfirst (new old str &optional (test '$sequal) (start 0) (end nil) (matched? nil))
   (let ((len (length old))
-        (pos (search old str :test test :start2 start :end2 end)) )
+        (pos (if matched? start (search old str :test test :start2 start :end2 end))))
     (if (null pos)
       str
       (concatenate 'string (subseq str 0 pos) new (subseq str (+ pos len))) )))
@@ -1127,15 +1127,12 @@ constituent, alphanumericp, alphacharp, digitcharp, lowercasep, uppercasep, char
       (s-pos-error2 "ssubst") ))
 ;;
 (defun ssubst (new old str &optional (test '$sequal) (start 0) (end nil))
-  (let ((pos (search old str :test test :start2 start :end2 end)))
-    (if (null pos)
-       str
-       (ssubst new
-               old
-               (ssubstfirst new old str test pos end)
-               test
-               (+ pos (length new))
-               (when end (- (+ end (length new)) (length old))) ))))
+  (let ((pos nil) (n (length new)) (o (length old)))
+    (while (setq pos (search old str :test test :start2 start :end2 end))
+      (setq str (ssubstfirst new old str test pos end t)
+	    start (+ pos n)
+	    end (when end (- (+ end n) o))))
+    str))
 
 
 (defun $sremovefirst (seq str &rest args)
