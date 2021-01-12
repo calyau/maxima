@@ -216,6 +216,14 @@ ssubst("like", "hate", "I hate Thai food. I hate green tea.");
 "I like Thai food. I like green tea."$
 ssubst("Black", "Green", "Green light. Green tea. Greenwich.", 'sequal, 10, 20);
 "Green light. Black tea. Greenwich."$
+
+/* SF bug #3700, ssubst crashes with large number of substitutions
+   construct the long strings via concat
+*/
+block([s:lreduce(concat,makelist("a",k,1,1400)), r:lreduce(concat,makelist("b",k,1,1400))],
+  sequal(r,ssubst("b","a",s))) $
+true $
+
 "  /* comment */  ";
 "  /* comment */  "$
 strim(" /*", %);
