@@ -712,20 +712,13 @@ This command does not work in XEmacs."
     (while (not (eobp))
       (let* ((region-start (copy-marker (point)))
 	     (region-end (copy-marker (next-single-property-change (point) 'display nil (point-max))))
-	     (text-prop (get-text-property region-start 'display)))
-	(if text-prop
+	     (text-prop (get-text-property region-start 'display))
+	     (latex-prop (get-text-property region-start 'latex)))
+	(if latex-prop
 	    (progn
+	      (delete-region region-start region-end)
 	      (goto-char region-start)
-	      (remove-text-properties region-start region-end '(display nil))
-	      (goto-char region-end)
-	      (goto-char region-start)
-	      (re-search-forward "(\\([^)]*\\))")
-	      (setq label (match-string 1))
-	      (delete-region region-start (point))
-	      (goto-char region-start)
-	      (insert (format "\n\\begin{dmath}[number={%s}]\n" label))
-	      (goto-char region-end)
-	      (insert "\n\\end{dmath}\n\n"))
+	      (insert (concat latex-prop "\n\n")))
 	  (progn
 	    (goto-char region-start)
 	    (insert "\n\\begin{verbatim}\n")
