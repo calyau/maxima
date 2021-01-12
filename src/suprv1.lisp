@@ -321,6 +321,7 @@
 	      (mapc #'(lambda (y) (kill1 (caar y))) (cdr (symbol-value x))))
 	     ((eq x '$myoptions))
 	     ((eq x '$tellrats) (setq tellratlist nil))
+	     ((eq x '$ratvars) (setq $ratvars '((mlist simp)) varlist nil))
 	     ((eq x '$ratweights) (setq *ratweights nil
 					$ratweights '((mlist simp))))
 	     ((eq x '$features)

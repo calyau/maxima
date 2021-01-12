@@ -773,6 +773,32 @@ true;
                                      +a2^3/(27*a3^3))
                                      ^(1/3)+a2/(3*a3)]$
 
+/* SF bug #3434: "kill(ratvars) should give an error" */
+
+kill(all);
+done;
+
+ratvars;
+[];
+
+ratdisrep (rat(3));
+3;
+
+errcatch (ratvars: 23);
+[];
+
+ratdisrep (rat(3));
+3;
+
+kill(ratvars);
+done;
+
+ratdisrep (rat(3));
+3;
+
+ratvars;
+[];
+
 /* SF bug #3158: "triangularize gives incorrect result on a matrix containing %i" */
 
 triangularize (matrix([%i,-1,0,0,1,0,0,0],
