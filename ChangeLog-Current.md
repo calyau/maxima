@@ -64,3 +64,4 @@ Bug fixes for numbered bugs:
  * #3685: descriptive/"continuous_freq causes Lisp error given rational numbers"
  * #3658: "error with floats appearing instead of integers in lratsubst"
  * #3700: stringproc/"Mysterious error in ssubst"
+ * #3704: Translator gives internal error

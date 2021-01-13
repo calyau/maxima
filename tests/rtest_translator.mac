@@ -1788,6 +1788,29 @@ block ([translate : false],
 (kill (foo, l1, l2), 0);
 0;
 
+/* Bug #3704: Translator gives internal error
+ *
+ * The hyper_to_summand function is from the bug report.
+ */
+
+(hyper_to_summand(e,k) := subst(hypergeometric = lambda([P,Q,x], 
+    P : xreduce("*", map(lambda([zz], pochhammer(zz,k)),P)),
+    Q : xreduce("*", map(lambda([zz], pochhammer(zz,k)),Q)),
+    P*x^k/(k! * Q)),e),
+ l1 : hyper_to_summand (hypergeometric ([1/2], [2/5], x), 2),
+ translate_or_lose (hyper_to_summand),
+ l2 : hyper_to_summand (hypergeometric ([1/2], [2/5], x), 2),
+ [is (l1 = l2), l2]);
+[true, 75 * x^2 / 112];
+
+(foo () := lambda ([], x!),
+ translate_or_lose (foo),
+ block ([x : 5], foo () ()));
+120;
+
+(kill (hyper_to_summand, foo, l1, l2), 0);
+0;
+
 
 
 

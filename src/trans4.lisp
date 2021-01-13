@@ -46,7 +46,7 @@
   (cond ((eq (car form) '$fixnum)
 	 `($number . (factorial ,(cdr form))))
 	(t
-	 `($any . (simplify  `((mfactorial) ,,(cdr form)))))))
+	 `($any . (simplify (list '(mfactorial) ,(cdr form)))))))
 
 (defun yuk-su-meta-prop (f form)
   (let ((meta-prop-p t)
