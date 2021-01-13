@@ -1173,7 +1173,7 @@ The most general form, @code{makelist (@var{expr}, @var{i}, @var{i_0},
 @var{i_max}, @var{step})}, returns the list of elements obtained when
 @code{ev (@var{expr}, @var{i}=@var{j})} is applied to the elements
 @var{j} of the sequence: @var{i_0}, @var{i_0} + @var{step}, @var{i_0} +
-2*@var{step}, ..., with @var{|j|} less than or equal to @var{|i_max|}.
+2*@var{step}, ..., with @code{|}@var{j}@code{|} less than or equal to @code{|}@var{i_max}@code{|}.
 
 The increment @var{step} can be a number (positive or negative) or an
 expression. If it is omitted, the default value 1 will be used. If both
