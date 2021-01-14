@@ -9,7 +9,7 @@
 % Load plain if necessary, i.e., if running under initex.
 \expandafter\ifx\csname fmtname\endcsname\relax\input plain\fi
 %
-\def\texinfoversion{2020-12-22.07}
+\def\texinfoversion{2021-01-14.14}
 %
 % Copyright 1985, 1986, 1988, 1990-2020 Free Software Foundation, Inc.
 %
@@ -8935,6 +8935,8 @@ might help (with 'rm \jobname.?? \jobname.??s')%
 % node name, #4 the name of the Info file, #5 the name of the printed
 % manual.  All but the node name can be omitted.
 %
+\newif\ifrefincludespage
+\refincludespagetrue
 \def\pxref{\putwordsee{} \xrefXX}
 \def\xref{\putwordSee{} \xrefXX}
 \def\ref{\xrefXX}
@@ -9112,8 +9114,8 @@ might help (with 'rm \jobname.?? \jobname.??s')%
       %
       % output the `[mynode]' via the macro below so it can be overridden.
       \xrefprintnodename\printedrefname
-      %
-      % But we always want a comma and a space:
+      \ifrefincludespage
+      % We always want a comma and a space:
       ,\space
       %
       % output the `page 3'.
@@ -9127,6 +9129,7 @@ might help (with 'rm \jobname.?? \jobname.??s')%
                 \tokenafterxref ,%    @NL
       \else\ifx\tie\tokenafterxref ,% @tie
       \fi\fi\fi\fi\fi\fi
+      \fi
     \fi\fi
   \fi
   \endlink
