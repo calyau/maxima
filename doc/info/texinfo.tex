@@ -2855,20 +2855,12 @@ end
 % @cite is like \smartslanted except unconditionally use \sl.  We never want
 % ttsl for book titles, do we?
 \def\cite#1{{\sl #1}\futurelet\next\smartitaliccorrection}
-\def\aftersmartic{}
 
-{
-  \catcode`\_=\active
-  %
-  \global\def\var{\begingroup
-    \catcode\underChar=\active
-    \let_\codeunder%
-  \varxxx}
-   \global\def\varxxx#1{%
-     \let\saveaftersmartic = \aftersmartic
-     \def\aftersmartic{\null\let\aftersmartic=\saveaftersmartic}%
-     \smartslanted{#1}%
-     \endgroup}
+\def\aftersmartic{}
+\def\var#1{%
+  \let\saveaftersmartic = \aftersmartic
+  \def\aftersmartic{\null\let\aftersmartic=\saveaftersmartic}%
+  \smartslanted{#1}%
 }
 
 \let\i=\smartitalic
