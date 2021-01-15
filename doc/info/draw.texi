@@ -1847,7 +1847,7 @@ by interpolation.
 For positive @var{m} and @var{n}, each quadrangle or triangle is interpolated
 @var{m} times and @var{n} times in the respective direction. For negative
 @var{m} and @var{n}, the interpolation frequency is chosen so that there will be at least
-@code{|}@var{m}@code{|} and @code{|}@var{n}@code{|} points drawn; you can consider this as a special gridding function.
+@var{|m|} and @var{|n|} points drawn; you can consider this as a special gridding function.
 Zeros, i.e. @code{interpolate_color=[0,0]}, will automatically choose an
 optimal number of interpolated surface points.
 
