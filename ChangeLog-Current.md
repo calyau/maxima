@@ -65,3 +65,8 @@ Bug fixes for numbered bugs:
  * #3685: descriptive/"continuous_freq causes Lisp error given rational numbers"
  * #3700: stringproc/"Mysterious error in ssubst"
  * #3704: Translator gives internal error
+
+Documentation:
+--------------
+ * Some characters in the PDF documentation (e.g. "_", "|") were displayed wrong.
+
