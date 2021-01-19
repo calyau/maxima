@@ -151,8 +151,11 @@
 @tex
 \gdef\linkcolor{0 .5 0}
 \gdef\urlcolor{0 0 .5}
-%% \refincludespagefalse depends on a patched texinfo.tex
-\gdef\mmref#1{{\refincludespagefalse\def\xrefprintnodename##1{##1}\ref{#1}}}
+
+%% @set txiomitrefpg ==> in TeX, this creates a top-level csname SETtxiomitxrefpg
+%% bound to some other than \relax
+%% @clear txiomitrefpg ==> bind it to \relax
+\gdef\mmref#1{{\def\SETtxiomitxrefpg{true}\def\xrefprintnodename##1{##1}\ref{#1}}}
 @end tex
 
 @macro mref {nodename}
