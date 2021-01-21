@@ -1,4 +1,4 @@
-/* -*- MACSYMA -*- */
+/* -*- mode: maxima -*- */
 eval_when(batch,ttyoff:true)$
 /*ASB;LRATS 3
 5:05pm  Tuesday, 14 July 1981
@@ -17,45 +17,48 @@ define_variable(messlrats2,"Invalid argument to FULLRATSUBST:",any)$
 
 define_variable(fullratsubstflag,false,boolean)$
 
-lratsubst(listofeqns,exp):=block(
+lratsubst(listofeqns,expr):=block(
   [partswitch:true,inflag:true,piece],
   if not listp(listofeqns)
   then if inpart(listofeqns,0)="="
        then listofeqns:[listofeqns]
        else if fullratsubstflag=true
-            then error(messlrats2,[listofeqns,exp])
-	    else error("Invalid argument to LRATSUBST:",[listofeqns,exp]),
+            then error(messlrats2,[listofeqns,expr])
+            else error("Invalid argument to lratsubst:",[listofeqns,expr]),
+  if listp(inpart(listofeqns,1)) then if length(listofeqns)>1 then error("lratsubst: improper argument:",listofeqns) else listofeqns:inpart(listofeqns,1),
   for idum in listofeqns do
       if inpart(idum,0)#"="
       then if fullratsubstflag=true
-           then error(messlrats2,[listofeqns,exp])
-	   else error("Invalid argument to LRATSUBST:",[listofeqns,exp]),
-  lratsubst1(listofeqns,exp))$
+           then error(messlrats2,[listofeqns,expr])
+	   else error("Invalid argument to lratsubst:",[listofeqns,expr]),
+  lratsubst1(listofeqns,expr))$
 
-lratsubst1(listofeqns,exp):=block(
-  [dum:if listofeqns=[]
-       then exp
-       else if rest(listofeqns)=[]
-            then ratsubst(inpart(listofeqns,1,2),inpart(listofeqns,1,1),exp)
-            else lratsubst1(rest(listofeqns),
-			    if fullratsubstflag=true
-			    then fullratsubst1(inpart(listofeqns,1,2),
-					       inpart(listofeqns,1,1),
-					       exp)
-			    else ratsubst(inpart(listofeqns,1,2),
-					  inpart(listofeqns,1,1),
-					  exp))],
-  if fullratsubstflag=true and dum#exp
-  then lratsubst1(listofeqns,dum)
-  else if dum#exp
-       then dum
-       else exp)$
+define_variable(lrats_max_iter,100000,integer)$
+qput(lrats_max_iter,lambda([v], if v<=0 then error("lrats_max_iter must be set to a positive integer.")),value_check);
 
-fullratsubst1(substexp,forexp,exp):=block(
-  [dum:ratsubst(substexp,forexp,exp)],
-  if dum=exp
-  then exp
-  else fullratsubst1(substexp,forexp,dum))$
+lratsubst1(listofeqns,expr):=block([dum,lrats_iter:0,l],
+  begin_outer_loop,
+  l:listofeqns,
+  while dum='dum do (
+    dum:if l = [] then expr
+    else (if rest(l) = []
+      then ratsubst(inpart(l,1,2),inpart(l,1,1),expr)
+      else 'dum),
+    expr:if fullratsubstflag = true
+    then fullratsubst1(inpart(l,1,2),inpart(l,1,1),expr)
+    else ratsubst(inpart(l,1,2),inpart(l,1,1),expr),
+    l:rest(l)),
+  if fullratsubstflag = true and dum # expr and lrats_iter<lrats_max_iter then (lrats_iter:lrats_iter+1,go(begin_outer_loop))
+  else (if dum # expr then dum else expr))$
+
+fullratsubst1(substexpr,forexpr,expr):=block(
+  [dum,lrats_iter:0],
+  while lrats_iter<lrats_max_iter and dum#expr do (
+    [dum,expr]:[expr,ratsubst(substexpr,forexpr,expr)],
+    lrats_iter:1+lrats_iter),
+  if lrats_iter>=lrats_max_iter then warning("fullratsubst1(substexpr,forexpr,expr): reached maximum iterations of",lrats_max_iter,". Increase `lrats_max_iter' to increase this limit."),
+  expr)$
+    
 
 fullratsubst([arglist]):=block(
   [fullratsubstflag:true,larglistdum:length(arglist),farglist,
