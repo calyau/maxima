@@ -570,6 +570,15 @@ nor Gnuplot is not recognized by maxima"))))
 	(delete-file filename))
     filename))
 
+(defvar $wx_data_file "data_~a.gnuplot" "A FORMAT string that takes exactly one argument, *image-counter*; or a MAXIMA function.")
+(defvar $wx_gnuplot_file "maxout_~a.gnuplot" "A FORMAT string that takes exactly one argument, *image-counter*; or a MAXIMA function.")
+
+(defun wxplot-data+maxout ()
+  (declare (special *image-counter* $wx_data_file $wx_gnuplot_file))
+  (let ((datafile (if (stringp $wx_data_file) (format nil $wx_data_file *image-counter*) (mfuncall $wx_data_file *image-counter*)))
+	(gnpltfile (if (stringp $wx_data_file) (format nil $wx_gnuplot_file *image-counter*) (mfuncall $wx_gnuplot_file *image-counter*))))
+    (cons datafile gnpltfile)))
+
 (defun $range (i j)
   (let ((x (gensym)))
     (mfuncall '$makelist x x i j)))
@@ -584,21 +593,26 @@ nor Gnuplot is not recognized by maxima"))))
   ;; further execution.
   (wx-gnuplot-installation-check)
   (let ((filename (wxplot-filename))
+	(data+maxout (wxplot-data+maxout))
 	(fun ($get wx-fun '$function)))
     (maybe-load-package-for wx-fun)
     (imaxima-apply fun
 		   `(,@args
 		     ((mlist simp) $plot_format $gnuplot)
 		     ((mlist simp) $gnuplot_term $ps)
-		     ((mlist simp) $gnuplot_out_file ,filename)))
+		     ((mlist simp) $ps_file ,filename)
+		     ((mlist simp) $gnuplot_out_file ,(cdr data+maxout))))
     ($ldisp `((wxxmltag simp) ,filename "img"))
     fun))
 
 (defun wxdraw (wx-fun &rest args)
+  (declare (special *image-counter*))
   ;; if gnuplot is not installed, this will terminate the
   ;; further execution.
   (wx-gnuplot-installation-check)
   (let* ((filename (wxplot-filename nil))
+	 (datafile (format nil "data_~a.gnuplot" *image-counter*))
+	 (gnpltfile (format nil "maxout_~a.gnuplot" *image-counter*))
 	 (fun ($get wx-fun '$function))
 	 (*windows-OS* t))
     (maybe-load-package-for wx-fun)
@@ -611,7 +625,9 @@ nor Gnuplot is not recognized by maxima"))))
 			    ;; convert points to 1/100 of cm
 			    ,(* 3.53 ($first $wxplot_size))
 			    ,(* 3.53 ($second $wxplot_size))))
-			  ((mequal simp) $file_name ,filename))
+			  ((mequal simp) $file_name ,filename)
+			  ((mequal simp) $data_file_name ,datafile)
+			  ((mequal simp) $gnuplot_file_name ,gnpltfile))
 			args))
       ($ldisp `((wxxmltag simp) ,(format nil "~a.eps" filename) "img")))))
 
