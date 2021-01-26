@@ -11,7 +11,7 @@
 @section Introduction to draw
 
 
-@code{draw} is a Maxima-Gnuplot and a Maxima-vtk interface.
+@code{draw} is a Maxima-Gnuplot and a Maxima-VTK interface.
 
 There are three main functions to be used at Maxima level: 
 @itemize @bullet
@@ -62,6 +62,11 @@ You need Gnuplot 4.2 or newer to run draw; If you are using wxMaxima as a
 front end @code{wxdraw}, @code{wxdraw2d} and @code{wxdraw3d} are drop-in
 replacements for draw that do the same as @mrefcomma{draw} @mref{draw2d} and
 @mref{draw3d} but embed the resulting plot in the worksheet.
+
+If you want to use VTK with draw, you need VTK with the Python interface installed
+(the @ref{dynamics-pkg} uses VTK with the TCL interface!) and set the variable:
+
+@code{draw_renderer: 'vtk $}
 
 @opencatbox
 @category{Plotting}
@@ -5475,6 +5480,18 @@ Example:
 
 @end deffn
 
+@anchor{draw_renderer}
+@defvr {Variable} draw_renderer
+@c gnuplot_pipes is the default value here, it might also be gnuplot?
+Default value: gnuplot_pipes
+
+When @code{draw_renderer} is set to @code{'vtk}, the VTK interface is used for draw.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
 
 
 
