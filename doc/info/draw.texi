@@ -5483,7 +5483,7 @@ Example:
 @anchor{draw_renderer}
 @defvr {Variable} draw_renderer
 @c gnuplot_pipes is the default value here, it might also be gnuplot?
-Default value: gnuplot_pipes
+Default value: @code{gnuplot_pipes}
 
 When @code{draw_renderer} is set to @code{'vtk}, the VTK interface is used for draw.
 
