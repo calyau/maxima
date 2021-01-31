@@ -3,11 +3,13 @@ Crosscompiling Maxima for Windows
 
 On a Ubuntu/Debian System just install some tools for crosscompiling:
 
-apt-get install g++-mingw-w64-i686 cmake nsis wine automake texinfo texlive texlive-plain-generic texlive-xetex rsync p7zip-full g++ gettext tcl pandoc po4a
+apt-get install g++-mingw-w64-x86-64 cmake nsis wine automake texinfo texlive texlive-plain-generic texlive-xetex rsync p7zip-full g++ gettext tcl pandoc po4a
 
-(If you are using a 64 bit operating system, it might be necessary to add
-the i386 architecture (https://wiki.debian.org/Multiarch/HOWTO) before).
-If you want a 64Bit installer, install the compiler g++-mingw-w64-x86-64.
+The Mingw compiler comes in two flavors for threading (win32 and posix threads).
+wxMaxima requires posix threads, so you must reconfigure mingw and select the posix
+version, on Debian/Ubuntu Linux using:
+update-alternatives --config x86_64-w64-mingw32-g++
+update-alternatives --config x86_64-w64-mingw32-gcc
 
 You will need CMake >= 3.7, if that is not included in your distribution,
 download a recent CMake from https://cmake.org/files/
@@ -45,9 +47,9 @@ cmake -DUSE_VTK=NO ..
 (The size of the installer with VTK will approximately be 50% larger
 than without VTK).
 
-One can also include ABCL - a Java based lisp compiler - with the option
+One can also include ABCL - a Java based Lisp compiler - with the option
 -DWITH_ABCL=YES
-Of course you will need a java installation.
+Of course you will need a Java installation.
 
 If you want to change the default Lisp, which will be used, you can
 use the option "-DWITH_DEFAULT_LISP=sbcl" in the cmake call (otherwise
@@ -59,19 +61,18 @@ it should be sufficient to just increase the version number and MD5-checksum
 for the new release in CMakeLists.txt.
 
 
-Building a 64 bit installer
+Building a 32 bit installer
 ===========================
 
-By default a 32 bit installer (which works on 32 and 64 bit Windows) will be
-generated. If you want to crosscompile a 64 bit installer, install the 64 bit
-crosscompiler package (g++-mingw-w64-x86-64) and a recent 64 bit 'wine'.
-(see https://www.winehq.org/download how to get a development version
-for your Linux distribution). For the 64bit crosscompiliation procedure wine64
-will be searched in /opt/wine-devel - where the packages from the wine team
-will install their packages.
+By default a 64 bit installer will be generated.
+If you want to crosscompile a 32 bit installer, install the 32 bit
+crosscompiler package (g++-mingw-w64-i686-g++) - and reconfigure it
+for posix threads.
+It might be necessary to add the i386 architecture:
+https://wiki.debian.org/Multiarch/HOWTO
 
-Then use the following commands to build a 64 bit installer:
-cmake -DBUILD_64BIT=YES ..
+Then use the following commands to build a 32 bit installer:
+cmake -DBUILD_64BIT=NO ..
 make
 make package
 
@@ -91,7 +92,7 @@ this installer (and uninstaller) understands the command line switch
 
 To select a installation directory for a unattended installation, use
 "/D=directory", e.g. to install to C:\maxima the command would be:
-maxima-clisp-sbcl-VERSION-win32.exe /S /D=C:\maxima
+maxima-clisp-sbcl-VERSION-win64.exe /S /D=C:\maxima
 This parameter must be the last one.
 
 The installer supports components, you can deselect (by default a full

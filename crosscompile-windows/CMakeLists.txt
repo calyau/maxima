@@ -6,7 +6,7 @@
 
 set(CMAKE_SYSTEM_NAME Windows)
 
-option(BUILD_64BIT "Build a 64 bit installer." NO)
+option(BUILD_64BIT "Build a 64 bit installer." YES)
 
 if(BUILD_64BIT)
     set(HOST x86_64-w64-mingw32)
