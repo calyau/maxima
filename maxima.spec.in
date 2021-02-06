@@ -299,7 +299,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/rmaxima
 %exclude %{_datadir}/mime/packages/x-mac.xml
 %doc AUTHORS COPYING INSTALL INSTALL.lisp NEWS desktopintegration/x-mac.xml
-%doc README README.lisps README.rpms README.external README.i18n
+%doc README README-lisps.md README.rpms README.external README.i18n
 
 %files xmaxima
 %{_bindir}/xmaxima
