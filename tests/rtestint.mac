@@ -1776,3 +1776,97 @@ x*'sum(x,x,1,1);
 
 integrate('product(x,x,1,1), x);
 x*'product(x,x,1,1);
+
+/* SF bug #3712: "Symbolic integration may fail when called with numerical constants in function and/or limits." */
+
+/* original problem from bug report */
+
+(E1:200,
+ nu:0.33,
+ rho1:7850,
+ Pi:ev(%pi,numer),
+ ah:5,
+ e0:0.25,
+ h:1/ah,
+ em:1-sqrt(1-e0),
+ aa:Pi*z/(2*h)+Pi/(4), 
+ Ez:E1*(1-e0*(cos(aa))),
+ rhoz:rho1*(1-em*(cos(aa))),
+ Q11:Ez,
+ /* this call to integrate is okay in bug report */
+ A11:ev(integrate(Q11,z,-h/2,h/2),numer));
+33.63380227632413;
+
+/* this one triggers the bug in the bug report */
+B11:ev(integrate(Q11*z,z,-h/2,h/2),numer);
+0.1739496967711204;
+
+/* double check numerical results */
+
+is (abs (first (quad_qags (Q11,z,-h/2,h/2, 'epsabs = 1e-8)) - 33.63380227632413) < 1e-8);
+true;
+
+is (abs (first (quad_qags (Q11*z,z,-h/2,h/2, 'epsabs = 1e-8)) - 0.1739496967711204) < 1e-8);
+true;
+
+/* additional cases for #3712 */
+
+/* try integral w/ symbolic constants;
+ * some gyrations here to verify symbolic result
+ */
+(kill(values),
+ Q:a*(b-c*cos(d*z+e)),
+ IQz_indefinite: integrate(Q*z, z),
+ ratsimp (diff (IQz_indefinite, z) - Q*z));
+0;
+
+(IQz_defint: integrate(Q*z,z,-f,f),
+ IQz_defint_via_indefinite: ev (IQz_indefinite, z = f) - ev (IQz_indefinite, z = -f),
+ ratsimp (IQz_defint - IQz_defint_via_indefinite));
+0;
+
+(L1:[a=200, b=1, c=0.25, d=7.853981633974483, e=0.7853981633974483,f=1/10],
+ subst (L1, IQz_defint));
+0.1739496967711208;
+
+/* verify integrate doesn't take a long time with more digits */
+
+/*
+integrate(z*(1-cos(7.85*z)),z,0,1) => 0 seconds
+integrate(z*(1-cos(7.8539*z)),z,0,1) => 3.2 seconds
+integrate(z*(1-cos(7.85398*z)),z,0,1) => 77 seconds
+ */
+
+(time_in_secs (f, e) ::= buildq ([f, e], (timer (f), e, block ([i: timer_info (f)], untimer (f), i[2, 4]/verbify(sec)))),
+ is (time_in_secs (integrate, integrate(z*(1-cos(7.85*z)),z,0,1)) < 1));
+true;
+
+is (time_in_secs (integrate, integrate(z*(1-cos(7.8539*z)),z,0,1)) < 1);
+true;
+
+is (time_in_secs (integrate, integrate(z*(1-cos(7.85398*z)),z,0,1)) < 1);
+true;
+
+/* factor_max_degree now controls loops in ROOTFAC -- verify result not changed */
+
+block ([factor_max_degree: 1000], integrate(z*(1-cos(7.8*z)),z,0,1));
+25/1521-(390*sin(39/5)+50*cos(39/5)-1521)/3042$
+
+block ([factor_max_degree: 10], integrate(z*(1-cos(7.8*z)),z,0,1));
+25/1521-(390*sin(39/5)+50*cos(39/5)-1521)/3042$
+
+/*
+B11:'integrate(Q11*z,z,-h/2,h/2)$
+B11r: scanmap('ratsimp,B11)$
+ev(B11r,nouns) => result in 0.16 seconds
+ */
+
+(B11:'integrate(Q11*z,z,-h/2,h/2),
+ B11r: scanmap('ratsimp,B11),
+ is (time_in_secs (integrate, ev(B11r,nouns)) < 1));
+true;
+
+(foo: integrate(z*cos(7.853981633974483*z + 0.7853981633974483),z),
+ bar: subst (a = 7.853981633974483, integrate(z*cos(a*z + a/10), z)),
+ is (lmax (makelist (ev (foo - bar, numer), z, [0, 1, 2, 3, 4, 5])) < 1e-12));
+true;

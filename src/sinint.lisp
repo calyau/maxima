@@ -20,15 +20,20 @@
 		      wholepart parnumer varlist logptdx switch1))
 
 (defun rootfac (q)
-  (prog (nthdq nthdq1 simproots ans)
+  (prog (nthdq nthdq1 simproots ans n-loops)
      (setq nthdq (pgcd q (pderivative q var)))
      (setq simproots (pquotient q nthdq))
      (setq ans (list (pquotient simproots (pgcd nthdq simproots))))
-     amen (if (or (pcoefp nthdq) (pointergp var (car nthdq)))
-	      (return (reverse ans)))
+     (setq n-loops 0)
+     amen (cond
+            ((= n-loops $factor_max_degree)
+             (return (list q)))
+            ((or (pcoefp nthdq) (pointergp var (car nthdq)))
+             (return (reverse ans))))
      (setq nthdq1 (pgcd (pderivative nthdq var) nthdq))
      (push (pquotient (pgcd nthdq simproots) (pgcd nthdq1 simproots)) ans)
      (setq nthdq nthdq1)
+     (incf n-loops)
      (go amen)))
 
 (defun aprog (q)
