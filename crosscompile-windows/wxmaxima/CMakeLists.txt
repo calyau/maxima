@@ -55,9 +55,6 @@ else()
     install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima-build/${WINDOWS_DRIVELETTER}\:/maxima-${MAXIMAVERSION}/ DESTINATION . COMPONENT wxMaxima)
 endif()
 
-# install wxWidgets locale files
-install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-translations/wxMaxima/locale DESTINATION share/ COMPONENT wxMaxima)
-
 
 # wxMaxima uses OpenMP, include the required mingw libraries.
 execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libgomp-1.dll OUTPUT_VARIABLE MINGW_LIBGOMP OUTPUT_STRIP_TRAILING_WHITESPACE)
