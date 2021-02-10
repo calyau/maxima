@@ -291,8 +291,7 @@ if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "wxMaxima")
     ")
 endif()
 
-set(CPACK_NSIS_INSTALLER_MUI_ICON_CODE "
-  !define MUI_WELCOMEFINISHPAGE_BITMAP \\\"${CMAKE_SOURCE_DIR}/maxima-installerimage.bmp\\\"")
+set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP "${CMAKE_SOURCE_DIR}/maxima-installerimage.bmp")
 include(CPack)
 
 cpack_add_component(Maxima
