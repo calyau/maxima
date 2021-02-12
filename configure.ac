@@ -1256,6 +1256,7 @@ AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
 AC_CONFIG_FILES([tests/test.sh], chmod +x tests/test.sh)
 AC_CONFIG_FILES([doc/info/build_html.sh], chmod +x doc/info/build_html.sh)
 AC_CONFIG_FILES([src/maxima], chmod +x src/maxima)
+AC_CONFIG_FILES([src/maxima.bat])
 
 AC_OUTPUT(Makefile maxima.spec maxima.iss \
 admin/Makefile src/Makefile src/rmaxima src/autoconf-variables.lisp \
