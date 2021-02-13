@@ -224,7 +224,6 @@
 (defun vtkpolydatamapper-code (mn fn con)
   (concatenate 'string
     (format nil "~a=vtk.vtkPolyDataMapper()~%" mn)
-    (format nil "~a.GlobalImmediateModeRenderingOn()~%" mn) 
     (if con
       (format nil "~a.SetInputConnection(~a.GetOutputPort())~%" mn fn)
       "") ))
