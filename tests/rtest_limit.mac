@@ -621,7 +621,11 @@ a;
  */
 limit(x/(2+sin(1/x)),x,0);
 0;
- 
+
+/* #3680 limit(x/sin(1/x),x,0); wrong */
+limit(x/sin(1/x), x, 0, plus);
+und;
+
 /* Bug ID: 1106912 - limit(x/sin(x)^2,x,inf)
    I think the limit is not defined because the func is not defined
    for all x > any constant.
