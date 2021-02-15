@@ -1412,7 +1412,7 @@
          (pts '())
          pltcmd grouping x y)
 
-    (when (not (subsetp (rest ($listofvars ineq)) (list x-var y-var)))
+    (when (not (subsetp (rest ($listofvars ineq)) (list x-var y-var) :test #'like))
        (merror "draw2d (region): non defined variable"))
 
     ; build 2d arrays: x, y and boolean
@@ -1735,7 +1735,7 @@
         (pts '())
         (grouping '())
         pltcmd ncols vertices)
-    (when (not (subsetp (rest ($listofvars expr)) (list par1 par2 par3)))
+    (when (not (subsetp (rest ($listofvars expr)) (list par1 par2 par3) :test #'like))
        (merror "draw3d (implicit): non defined variable"))
     (check-enhanced3d-model "implicit" '(0 3 99))
     (when (= *draw-enhanced3d-type* 99)
@@ -1828,14 +1828,14 @@
          ($numer t)
          (count -1)
          ncols result)
-    (when (not (subsetp (rest ($listofvars fcn)) (list par1 par2)))
+    (when (not (subsetp (rest ($listofvars fcn)) (list par1 par2) :test #'like))
             (let ((items (rest ($listofvars fcn))) (item 'nil))
 	      ;; Search for the item in sublist that is the undefined variable
 	      (while items
 		(if
 		    (
 		     not
-		     (subsetp (list (car items)) (list par1 par2))
+		     (subsetp (list (car items)) (list par1 par2) :test #'like)
 		     )
 		    (setq item (car items))
 		  )
@@ -2178,7 +2178,7 @@
          result f1 f2 xx yy)
     (when (< tmax tmin)
        (merror "draw2d (parametric): illegal range"))
-    (when (not (subsetp (append (rest ($listofvars xfun)) (rest ($listofvars yfun))) (list par)))
+    (when (not (subsetp (append (rest ($listofvars xfun)) (rest ($listofvars yfun))) (list par) :test #'like))
        (merror "draw2d (parametric): non defined variable"))
     (setq *plot-realpart* (get-option '$draw_realpart))
     (setq f1 (coerce-float-fun xfun `((mlist), par)))
@@ -2329,7 +2329,7 @@
          (eps (/ (- tmax tmin) (- nticks 1)))
          (count -1)
          ncols result f1 f2 f3 xx yy zz)
-     (when (not (subsetp (rest ($append ($listofvars xfun) ($listofvars yfun) ($listofvars zfun))) (list par1)))
+    (when (not (subsetp (rest ($append ($listofvars xfun) ($listofvars yfun) ($listofvars zfun))) (list par1) :test #'like))
         (merror "draw3d (parametric): non defined variable"))
     (setq *plot-realpart* (get-option '$draw_realpart))
     (check-enhanced3d-model "parametric" '(0 1 3 99))
@@ -2414,7 +2414,7 @@
          (nv (+ vgrid 1))
          (count -1)
          ncols result f1 f2 f3 xx yy zz uu vv)
-     (when (not (subsetp (rest ($append ($listofvars xfun) ($listofvars yfun) ($listofvars zfun))) (list par1 par2)))
+    (when (not (subsetp (rest ($append ($listofvars xfun) ($listofvars yfun) ($listofvars zfun))) (list par1 par2) :test #'like))
         (merror "draw3d (parametric_surface): non defined variable"))
     (setq *plot-realpart* (get-option '$draw_realpart))
     (check-enhanced3d-model "parametric_surface" '(0 2 3 99))
@@ -2527,7 +2527,7 @@
        (merror "draw3d (tube): illegal range"))
     (when (not (subsetp (rest ($append ($listofvars xfun) ($listofvars yfun)
                                        ($listofvars zfun) ($listofvars rad)))
-                        (list par1)))
+                        (list par1) :test #'like))
        (merror "draw3d (tube): non defined variable"))
     (check-enhanced3d-model "tube" '(0 1 3 99))
     (when (= *draw-enhanced3d-type* 99)
