@@ -1,5 +1,5 @@
-(kill(all), load(odelin),display2d : false, 0);
-0$
+(kill(all), load(odelin), 0);
+0$ 
 
 odelin(y+'diff(y,x,2),y,x);
 set(%e^-(%i*x),%e^(%i*x))$
@@ -304,7 +304,6 @@ set(1/(x^a*(x+1)^a), ('integrate(x^(a-1)*(x+1)^(a-1)*(2*x+1)/(x^2+x+1)^a,x))/(x^
 odelin(('diff(y,x,2) = (-((2*x^2-1)*y+8*x*'diff(y,x,1)))/(2*x^2-2)),y,x);
 set(spherodialwave_a(1,1/2,1/4,-x),spherodialwave_b(1,1/2,1/4,-x))$
 
-
 odelin(('diff(y,x,2) = (-((6*x^2-28)*y+(6*x^3+2*x^5)*'diff(y,x,1)))/(x^6-x^4)),y,x);
 set(spherodialwave_a(-3,12,7,-(1/x))*x^5*abs(x)/((x-1)^3*(x+1)^3),
   spherodialwave_b(-3,12,7,-(1/x))*x^5*abs(x)/((x-1)^3*(x+1)^3))$
@@ -374,5 +373,19 @@ set(gauss_a(-n,n+1,1,-((x-1)/2)),gauss_b(-n,n+1,1,-((x-1)/2)))$
 odelin(n*y+(1-x)*'diff(y,x)+x*'diff(y,x,2),y,x);
 set(kummer_m(n+1,1,-x)*%e^x,kummer_u(n+1,1,-x)*%e^x)$
 
-(reset(display2d),0);
-0$
+/* #3576 odelin wrong answer on simplest ode */
+odelin('diff(f,x)+f,f,x);
+set(exp(-x))$
+
+odelin(x *'diff(f,x)+f,f,x);
+set(1/x)$
+
+odelin(x *'diff(f,x)+f,f,x);
+set(1/x)$
+
+odelin(x*'diff(f,x)-46*f,f,x);
+set(x^46)$
+
+odelin('diff(f,x) + (46*x+107)*f,f,x);
+set(exp(-23*x^2-107*x))$
+

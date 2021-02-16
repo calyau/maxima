@@ -947,28 +947,25 @@ Example:
 @closecatbox
 @end deffn
 
-@c SPELL OUT WHAT fullratsubst DOES INSTEAD OF ALLUDING TO ratsubst AND lratsubst
-@c THIS ITEM NEEDS MORE WORK
-
 @c -----------------------------------------------------------------------------
-@deffn {Function} fullratsubst (@var{a}, @var{b}, @var{c})
+@deffn {Function} fullratsubst (@var{new}, @var{old}, @var{expr})
+@fname{fullratsubst} (@code{@var{old} = @var{new}}, @var{expr}) @
+@fname{fullratsubst} (@code{[ @var{old_1} = @var{new_1}, @dots{}, @var{old_n} = @var{new_n} ]}, @var{expr})
 
-is the same as @code{ratsubst} except that it calls
-itself recursively on its result until that result stops changing.
-This function is useful when the replacement expression and the
-replaced expression have one or more variables in common.
+@code{fullratsubst} applies @mref{lratsubst} repeatedly until @var{expr}
+stops changing (or @mref{lrats_max_iter} is reached). This function is
+useful when the replacement expression and the replaced expression have
+one or more variables in common.
 
-@code{fullratsubst} will also accept its arguments in the format of
-@code{lratsubst}.  That is, the first argument may be a single substitution
-equation or a list of such equations, while the second argument is the
-expression being processed.
+@code{fullratsubst} accepts its arguments in the format of
+@mref{ratsubst} or @mref{lratsubst}.
 
 @code{load ("lrats")} loads @code{fullratsubst} and @code{lratsubst}.
 
 Examples:
 
 @c EXPRESSIONS ADAPTED FROM demo ("lrats")
-@c CAN PROBABLY CUT OUT THE lratsubst STUFF (lratsubst HAS ITS OWN DESCRIPTION)
+@c ===beg===
 @c load ("lrats")$
 @c subst ([a = b, c = d], a + c);
 @c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
@@ -977,6 +974,7 @@ Examples:
 @c fullratsubst (b*a, a^2, a^3);
 @c fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
 @c fullratsubst (a^2 = b*a, a^3);
+@c ===end===
 @example
 (%i1) load ("lrats")$
 @end example
@@ -1027,19 +1025,38 @@ equation as first argument.
 @end example
 @itemize @bullet
 @item
-@c REWORD THIS SENTENCE
-@code{fullratsubst} may cause an indefinite recursion.
+@code{fullratsubst} catches potential infinite recursions. @ref{lrats_max_iter}.
 @end itemize
 @example
-(%i9) errcatch (fullratsubst (b*a^2, a^2, a^3));
-
-*** - Lisp stack overflow. RESET
+(%i9) fullratsubst (b*a^2, a^2, a^3), lrats_max_iter=15;
+Warning: fullratsubst1(substexpr,forexpr,expr): reached maximum iterations of 15 . Increase `lrats_max_iter' to increase this limit.
+                                     3  15
+(%o7)                               a  b
 @end example
+
+See also @mref{lrats_max_iter} and @mref{fullratsubstflag}.
 
 @opencatbox
 @category{Rational expressions}
 @closecatbox
 @end deffn
+
+@c FULLRATSUBSTFLAG was undocumented until 2020-01
+
+@c -----------------------------------------------------------------------------
+@anchor{fullratsubstflag}
+@defvr {Option variable} fullratsubstflag
+Default value: @code{false}
+
+An option variable that is set to @code{true} in @mref{fullratsubst}.
+
+@opencatbox
+@category{Polynomials}
+@category{Rational expressions}
+@closecatbox
+@end defvr
+
+
 
 @c GCD IS A VARIABLE AND A FUNCTION
 @c THIS ITEM NEEDS A LOT OF WORK
@@ -1384,16 +1401,18 @@ Returns the lowest exponent of @var{x} which explicitly appears in
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} lratsubst (@var{L}, @var{expr})
+@deffn {Function} lratsubst (@var{new}, @var{old}, @var{expr}) @
+@fname{lratsubst} (@code{@var{old} = @var{new}}, @var{expr}) @
+@fname{lratsubst} (@code{[ @var{old_1} = @var{new_1}, @dots{}, @var{old_n} = @var{new_n} ]}, @var{expr})
 
-is analogous to @code{subst (@var{L}, @var{expr})}
-except that it uses @code{ratsubst} instead of @code{subst}.
+@code{lratsubst} is analogous to @mref{subst} except that it uses
+@code{ratsubst} to perform substitutions.
 
-The first argument of
-@code{lratsubst} is an equation or a list of equations identical in
-format to that accepted by @code{subst}.  The
-substitutions are made in the order given by the list of equations,
-that is, from left to right.
+The first argument of @code{lratsubst} is an equation, a list of
+equations or a list of unit length whose first element is a list of
+equations (that is, the first argument is identical in format to that
+accepted by @code{subst}). The substitutions are made in the order given
+by the list of equations, that is, from left to right.
 
 @code{load ("lrats")} loads @code{fullratsubst} and @code{lratsubst}.
 
@@ -1401,10 +1420,16 @@ Examples:
 
 @c EXPRESSIONS ADAPTED FROM demo ("lrats")
 @c THIS STUFF CAN PROBABLY STAND REVISION -- EXAMPLES DON'T SEEM VERY ENLIGHTENING
+
+@c ===beg===
 @c load ("lrats")$
-@c subst ([a = b, c = d], a + c);
+@c lratsubst ([a = b, c = d], a + c);
 @c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
 @c lratsubst (a^2 = b, a^3);
+@c lratsubst ([[a^2=b*a, b=c]], a^3);
+@c errcatch(lratsubst ([[a^2=b*a, b=c],[a=b]], a^3));
+@c ===end===
+
 @example
 (%i1) load ("lrats")$
 @end example
@@ -1414,7 +1439,7 @@ Examples:
 @code{lratsubst} is analogous to @code{subst}.
 @end itemize
 @example
-(%i2) subst ([a = b, c = d], a + c);
+(%i2) lratsubst ([a = b, c = d], a + c);
 (%o2)                         d + b
 (%i3) lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
 (%o3)                (d + a c) e + a d + b c
@@ -1428,12 +1453,49 @@ equation may be given as first argument.
 (%i4) lratsubst (a^2 = b, a^3);
 (%o4)                          a b
 @end example
+@itemize @bullet
+@item
+A nested list of substitutions can be used--but it must contain only one list.
+@end itemize
+@example
+(%i5) lratsubst ([[a^2=b*a, b=c]], a^3);
+
+                                      2
+(%o5)                               a  c
+(%i6) lratsubst ([[a^2=b*a, b=c],[a=b]], a^3);
+
+
+                                 2
+lratsubst: improper argument: [[a  = a b, b = c], [a = b]]
+#0: lratsubst(listofeqns=[[a^2 = a*b,b = c],[a = b]],expr=a^3)
+ -- an error. To debug this try: debugmode(true);
+
+@end example
+
+See also @mref{fullratsubst}.
 
 @opencatbox
 @category{Polynomials}
 @category{Rational expressions}
 @closecatbox
 @end deffn
+
+
+@c -----------------------------------------------------------------------------
+@anchor{lrats_max_iter}
+@defvr {Option variable} lrats_max_iter
+Default value: @code{100000}
+
+The upper limit on the number of iterations that @mref{fullratsubst} and
+@mref{lratsubst} may perform. It must be set to a positive integer. See
+the example for @mref{fullratsubst}.
+
+@opencatbox
+@category{Polynomials}
+@category{Rational expressions}
+@closecatbox
+@end defvr
+
 
 @c -----------------------------------------------------------------------------
 @anchor{modulus}

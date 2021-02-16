@@ -10,7 +10,7 @@ SUBDIRS = admin crosscompile-windows src lisp-utils tests doc interfaces share d
 
 EXTRA_DIST = \
   common.mk maxima.iss.in \
-  README.lisps README.rpms README.i18n README.external README.developers-howto \
+  README-lisps.md README.rpms README.i18n README.external README.developers-howto \
   INSTALL.win32 INSTALL.lisp INSTALL.git INSTALL.win32nogcl \
   configure.lisp  maxima-local.in xmaxima-local.in \
   macosx/Makefile macosx/Readme.md macosx/maxima.sh macosx/script \
@@ -30,7 +30,7 @@ include common.mk
 
 extradocinstall:
 	test -d "$(DESTDIR)$(docdir)" || mkdir -p "$(DESTDIR)$(docdir)"
-	for file in AUTHORS COPYING INSTALL README README.lisps ; \
+	for file in AUTHORS COPYING INSTALL README README-lisps.md ; \
             do \
             $(INSTALL_DATA) $$file "$(DESTDIR)$(docdir)" ; \
             done

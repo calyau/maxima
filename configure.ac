@@ -1255,13 +1255,8 @@ AC_CONFIG_FILES([src/startmaxima_abcl.sh], chmod +x src/startmaxima_abcl.sh)
 AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
 AC_CONFIG_FILES([tests/test.sh], chmod +x tests/test.sh)
 AC_CONFIG_FILES([doc/info/build_html.sh], chmod +x doc/info/build_html.sh)
-
-# Convert maxima.bat to DOS line ending
-# sed-3.02 in old mingw distribution doesn't support -i or \r
-# dos2unix may not be present, but perl is required elsewhere
-# perl -i interferes with binmode so need to use a temporary file
-AC_CONFIG_FILES([src/maxima.bat], (perl -ne 'BEGIN{binmode(STDOUT,":crlf")};' -e 'print' < src/maxima.bat > src/maxima.bat.tmp; mv src/maxima.bat.tmp src/maxima.bat))
 AC_CONFIG_FILES([src/maxima], chmod +x src/maxima)
+AC_CONFIG_FILES([src/maxima.bat])
 
 AC_OUTPUT(Makefile maxima.spec maxima.iss \
 admin/Makefile src/Makefile src/rmaxima src/autoconf-variables.lisp \

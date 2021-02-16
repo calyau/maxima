@@ -9,9 +9,9 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(WXMAXIMAVERSION "20.12.2")
+set(WXMAXIMAVERSION "21.01.0")
 
-set(WXMAXIMA_MD5 "7157ff520ed51729fc5a0e955983ec95")
+set(WXMAXIMA_MD5 "2c9b97c786806172aa6ed000784e995e")
 
 set(WXMAXIMA_URL "https://github.com/wxmaxima-developers/wxmaxima/archive/Version-${WXMAXIMAVERSION}.tar.gz")
 
@@ -54,9 +54,6 @@ else()
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/wxmaxima/wxmaxima-prefix/src/wxmaxima-build/${WINDOWS_DRIVELETTER}\:/maxima-${MAXIMAVERSION}/ DESTINATION . COMPONENT wxMaxima)
 endif()
-
-# install wxWidgets locale files
-install(DIRECTORY ${CMAKE_BINARY_DIR}/wxMaxima-translations/wxMaxima/locale DESTINATION share/ COMPONENT wxMaxima)
 
 
 # wxMaxima uses OpenMP, include the required mingw libraries.

@@ -538,7 +538,7 @@ maxima_toc.html: maxima.texi $(maxima_TEXINFOS) $(figurefiles) manual.css texi2h
 maxima.epub: maxima_toc.html
 	ebook-convert maxima_singlepage.html maxima.epub --breadth-first "--title=Maxima @manual_version@ Manual" "--authors=Maxima Team" --language=en
 
-maxima.pdf: maxima_pdf.texi $(maxima_TEXINFOS) $(pdffigures)
+maxima.pdf: maxima.texi $(maxima_TEXINFOS) $(pdffigures)
 	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf $<
 	rm -f maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
 	maxima.toc maxima.fn maxima.aux maxima.log
@@ -602,7 +602,7 @@ EXTRA_DIST = texi2html manual.css texi2html.init maxima.texi maxima.html \
     create_index build_index.pl maxima-index.lisp docdraw.mac \
     extract_categories1.awk extract_categories1.sed check_tab fix_tab \
     figures/Makefile.am figures/Makefile.in figures/README \
-    maxima-init.lisp mmref.tex README.update_examples maxima_pdf.texi \
+    maxima-init.lisp README.update_examples \
     figures/orthopoly1.ps.gz figures/plotdf1.ps.gz figures/plotdf2.ps.gz figures/plotdf3.ps.gz figures/plotdf4.ps.gz figures/plotdf5.ps.gz figures/plotdf6.ps.gz
 
 check_texinfo:

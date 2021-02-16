@@ -200,6 +200,14 @@ limit((((1+1/x)^(x^2))+1)^(1/x),x,inf);
 limit(1/n * n!^(1/n), n, inf);
 %e^-1;
 
+/* #3681 limit(n^n/(n^n+(n-1)^n),n,inf) wrong */
+limit(n^n/(n^n+(n-1)^n), n, inf);
+%e/(%e+1);
+
+/* #3682 limit(n^(n-1)/(n^n+(n-1)^n),n,inf) gives Lisp error */
+limit(n^(n-1)/(n^n+(n-1)^n),n,inf);
+0;
+
 /* Apparently wrong limit with factorial - ID: 3198530 */
 limit(1/(2+1/factorial(n)),n,inf);
 1/2;
@@ -613,7 +621,11 @@ a;
  */
 limit(x/(2+sin(1/x)),x,0);
 0;
- 
+
+/* #3680 limit(x/sin(1/x),x,0); wrong */
+limit(x/sin(1/x), x, 0, plus);
+und;
+
 /* Bug ID: 1106912 - limit(x/sin(x)^2,x,inf)
    I think the limit is not defined because the func is not defined
    for all x > any constant.

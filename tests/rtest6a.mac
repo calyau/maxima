@@ -162,6 +162,25 @@ cos(11/10)/1000;
 (load(lrats), 0);
 0;
 
+/* SF bug #3376: fullratsubst doesn't catch infinite recursions
+   In this example, fullratsubst1 should loop exactly lrats_max_iter=30 times,
+   adding a power of b each time.
+*/
+fullratsubst(b*a^2,a^2,a^3), lrats_max_iter=30;
+a^3*b^30;
+
+/* SF bug #3706: lratsusbst causes bind stack overflow on large lists */
+block([l:makelist(concat('x,i)=concat('x,i+1),i,0,5000)], lratsubst(l,x0)) $
+x5001 $
+
+/* SF bug #3154 lratsubst NOT as described in Help file */
+lratsubst([[a=b,b=c]],a) $
+c $
+
+/* first argument to lratsbust should throw an error */
+errcatch(lratsubst([[a=b,b=c],[b=c]],a)) $
+[] $
+
 lratsubst1 ([phi_2 = 1.1], 0.001*cos(phi_2)), numer;
 0.001*cos(11/10);
 

@@ -6,7 +6,7 @@
 
 set(CMAKE_SYSTEM_NAME Windows)
 
-option(BUILD_64BIT "Build a 64 bit installer." NO)
+option(BUILD_64BIT "Build a 64 bit installer." YES)
 
 if(BUILD_64BIT)
     set(HOST x86_64-w64-mingw32)
@@ -291,8 +291,7 @@ if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "wxMaxima")
     ")
 endif()
 
-set(CPACK_NSIS_INSTALLER_MUI_ICON_CODE "
-  !define MUI_WELCOMEFINISHPAGE_BITMAP \\\"${CMAKE_SOURCE_DIR}/maxima-installerimage.bmp\\\"")
+set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP "${CMAKE_SOURCE_DIR}/maxima-installerimage.bmp")
 include(CPack)
 
 cpack_add_component(Maxima

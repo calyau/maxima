@@ -146,10 +146,20 @@
 @code{\nodename\})
 @end macro
 @end ifnottex
+
 @iftex
+@tex
+\gdef\linkcolor{0 .5 0}
+\gdef\urlcolor{0 0 .5}
+
+%% @set txiomitrefpg ==> in TeX, this creates a top-level csname SETtxiomitxrefpg
+%% bound to some other than \relax
+%% @clear txiomitrefpg ==> bind it to \relax
+\gdef\mmref#1{{\def\SETtxiomitxrefpg{true}\def\xrefprintnodename##1{##1}\ref{#1}}}
+@end tex
 
 @macro mref {nodename}
-@code{@mmref{\nodename\}{\nodename\}}
+@code{@mmref{\nodename\}}
 @end macro
 
 @macro mxref {nodename, text}
@@ -157,36 +167,24 @@
 @end macro
 
 @macro mrefdot {nodename}
-@code{@mmref{\nodename\}{\nodename\}}.
+@mref{\nodename\}.
 @end macro
 
 @macro mxrefdot {nodename, text}
-@code{@ref{\nodename\, \text\}}.
+@mxref{\nodename\,\text\}.
 @end macro
 
 @macro mrefcomma {nodename}
-@code{@mmref{\nodename\}{\nodename\}},
+@mref{\nodename\},
 @end macro
 
 @macro mxrefcomma {nodename, text}
-@code{@ref{\nodename\, \text\}},
+@mxref{\nodename\, \text\},
 @end macro
 
 @macro mrefparen {nodename}
-@code{@mmref{\nodename\}{\nodename\}})
+@mref{\nodename\})
 @end macro
 
 @end iftex
 @end ifnothtml
-
-
-@tex
-\global\def\linkcolor{0 .5 0}
-\global\def\urlcolor{0 0 .5}
-
-\global\def\setpdfdestname#1{%
- \turnoffactive
- \def\pdfdestname{#1}%
- \txiescapepdf\pdfdestname
-}
-@end tex

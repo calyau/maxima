@@ -649,7 +649,7 @@ A plot of the butterfly curve, defined parametrically:
 @end ifnotinfo
 
 Plot of a circle, using its parametric representation, together with the
-function -|x|. The circle will only look like a circle if the scale in the
+function -@code{|@var{x}|}. The circle will only look like a circle if the scale in the
 two axes is the same, which is done with the option @mrefdot{same_xy}
 
 @c ===beg===

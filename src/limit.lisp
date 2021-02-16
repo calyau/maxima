@@ -785,8 +785,9 @@ ignoring dummy variables and array indices."
 		   (return n1))
 		  ((and (infinityp n1) (eq ($sign dn) '$neg))
 		   (return (simpinf (m* -1 n1))))
-		  ((and (not (eq n1 '$ind))
-			(eq ($csign n1) '$zero))
+		  ((and (zerop1 n1)
+			(or (eq ($sign dn) '$pos)
+			    (eq ($sign dn) '$neg)))
 		   (return 0))
 		  (t (return '$und))))
 	   ((eq n1 '$ind) (return (cond ((infinityp d1) 0)
@@ -2215,27 +2216,30 @@ ignoring dummy variables and array indices."
 	   ;; together.
 	   (cond ((mtimesp t1)  (setq t1 (cdr t1)))
 		 (t (setq t1 (list t1))))
-	     (cond ((mtimesp t2)  (setq t2 (cdr t2)))
-		   (t (setq t2 (list t2))))
-	     ;; Find the strengths of each term of T1 and T2
-	     (setq t1 (mapcar (function istrength) t1))
-	     (setq t2 (mapcar (function istrength) t2))
-	     ;; Compute the max of the strengths of the terms.
-	     (let ((ans (ismax t1))
-		   (d (ismax t2)))
-	       (cond ((or (null ans) (null d)
-			  (eq (car ans) 'gen) (eq (car d) 'gen))  0.))
-	       (if (eq (car ans) 'var)  (setq ans (add-up-deg t1)))
-	       (if (eq (car d) 'var)  (setq d (add-up-deg t2)))
-	       ;; Can't just just compare dominating terms if there are
-	       ;; indeterm-inates present; e.g. X-X^2*LOG(1+1/X). So
-	       ;; check for this.
-	       (cond ((or (zero-lim t1)
-			  (zero-lim t2))
-		      (cpa-indeterm ans d t1 t2 flag))
-		     ((isgreaterp ans d)  1.)
-		     ((isgreaterp d ans)  -1.)
-		     (t  0)))))))
+	   (cond ((mtimesp t2)  (setq t2 (cdr t2)))
+		 (t (setq t2 (list t2))))
+	   ;; Find the strengths of each term of T1 and T2
+	   (setq t1 (mapcar (function istrength) t1))
+	   (setq t2 (mapcar (function istrength) t2))
+	   ;; Compute the max of the strengths of the terms.
+	   (let ((ans (ismax t1))
+		 (d (ismax t2)))
+	     (cond ((or (null ans) (null d))
+		    ;;(eq (car ans) 'gen) (eq (car d) 'gen))
+		    ;; ismax couldn't find highest term; give up
+		    0.)
+		   (t
+		    (if (eq (car ans) 'var)  (setq ans (add-up-deg t1)))
+		    (if (eq (car d) 'var)  (setq d (add-up-deg t2)))
+		    ;; Can't just just compare dominating terms if there are
+		    ;; indeterm-inates present; e.g. X-X^2*LOG(1+1/X). So
+		    ;; check for this.
+		    (cond ((or (zero-lim t1)
+			       (zero-lim t2))
+			   (cpa-indeterm ans d t1 t2 flag))
+			  ((isgreaterp ans d)  1.)
+			  ((isgreaterp d ans)  -1.)
+			  (t  0)))))))))
 
 (defun cpa-indeterm (ans d t1 t2 flag)
   (cond ((not (eq (car ans) 'var))
@@ -2460,7 +2464,7 @@ ignoring dummy variables and array indices."
 			     (t (list 'num term))))
 	((not (among var term))  (list 'num term))
 	((mplusp term)
-	 (let ((temp (ismax (mapcar #'istrength (cdr term)))))
+	 (let ((temp (ismax-core (mapcar #'istrength (cdr term)))))
 	   (cond ((not (null temp))  temp)
 		 (t `(gen ,term)))))
 	((mtimesp term)
@@ -3331,6 +3335,9 @@ ignoring dummy variables and array indices."
 					 ((equal (mrv-sign c0 var) -1)
 					  (return '$minf))))
 				  ((equal sig 0)
+				   (if (equal exp c0)
+				       ;; example: gruntz(n^n/(n^n+(n-1)^n), n, inf);
+				       (tay-error " infinite recursion in limitinf" exp))
 				   (return (limitinf c0 var)))))))
 
 ;; user-level function equivalent to $limit.

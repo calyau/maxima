@@ -1,6 +1,6 @@
 The following external tools are needed to build and/or use Maxima:
 
-1) A supported Lisp implementation. See README.lisps.
+1) A supported Lisp implementation. See README-lisps.md.
 
 2) To build Maxima in the standard manner, Bourne shell and make are
    required. See INSTALL.
