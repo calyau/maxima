@@ -333,13 +333,13 @@ sin(y)*(10.0+6*cos(x)),
   (declare (fixnum nx ny))
   (let* ((tem (make-array (+ 15 (* 5 nx ny)) :fill-pointer (* 5 nx ny)
                           :adjustable t
-                          :element-type '(mod  65000)))
+                          :element-type '(mod  #x80000000)))
          (m  nx )
          (nxpt (+ nx 1))
          (i 0)
          )
     (declare (fixnum i nxpt m)
-             (type (cl:array (mod 65000)) tem))
+             (type (cl:array (mod #x80000000)) tem))
     (loop for k below (length tem)
            do
            (setf (aref tem k) i)
@@ -670,7 +670,7 @@ sin(y)*(10.0+6*cos(x)),
 ;; and this is then they are sorted in groups of 5.   
 (defun sort-ngons (points edges n &aux lis )
   (declare (type (cl:array (flonum))  points)
-           (type (cl:array (mod 65000)) edges)
+           (type (cl:array (mod #x80000000)) edges)
            (fixnum n))
   (let ((new (make-array (length edges) :element-type  (array-element-type edges)))
         (i 0)
@@ -680,7 +680,7 @@ sin(y)*(10.0+6*cos(x)),
         (at 0)
         (leng (length edges))
         )
-    (declare (type (cl:array (mod 65000)) new)
+    (declare (type (cl:array (mod #x80000000)) new)
              (fixnum i leng n1 at )
              )
     (declare (type flonum z z1))
