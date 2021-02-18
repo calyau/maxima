@@ -227,12 +227,12 @@
     "rtest_stats"
     "rtest_distrib"
     ((mlist simp) "rtest_descriptive"
-     ;; 86 and 97 fail in ECL 15.3.7
-     #+(or gcl ecl)
-     ((mlist simp) 86 97)
+     ;; Tests that failed for gcl 2.6.12
+     #+gcl 
+     ((mlist simp) 98 109)
      ;; Tests that failed for ACL 10.1
      #+allegro
-     ((mlist simp) 86 87 97 98))
+     ((mlist simp) 98 99 109 110))
     "rtest_interpol"
     ((mlist simp) "rtest_levin"
      ;; Tested with allegro 10.1
