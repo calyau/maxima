@@ -1870,3 +1870,23 @@ true;
  bar: subst (a = 7.853981633974483, integrate(z*cos(a*z + a/10), z)),
  is (lmax (makelist (ev (foo - bar, numer), z, [0, 1, 2, 3, 4, 5])) < 1e-12));
 true;
+
+/* bug reported to mailing list 2021-02-18: "Maxima asking for the sign of 'und'" */
+
+kill (a, b, c, d, u, v, w, x, y, z);
+done;
+
+integrate(cos(x),x,0,inf);
+'integrate(cos(x),x,0,inf);
+
+integrate(sin(u) + cos(u), u, 0, inf);
+'integrate(sin(u) + cos(u), u, 0, inf);
+
+integrate (a*sin(y)+b*cos(y), y, minf, 1);
+'integrate (a*sin(y)+b*cos(y), y, minf, 1);
+
+integrate ((a*sin(z)+b*cos(z))^3, z, minf, 1);
+'integrate ((a*sin(z)+b*cos(z))^3, z, minf, 1);
+
+integrate (a*sin(5*w)+b*cos(7*w), w, minf, 1);
+'integrate (a*sin(5*w)+b*cos(7*w), w, minf, 1);

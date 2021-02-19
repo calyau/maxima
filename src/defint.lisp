@@ -1955,6 +1955,8 @@ in the interval of integration.")
 	   (setq b (add bb (mul b cc)))))
        (setq limit-diff (m+ b (m* -1 a)))
        (when (or (not (period %pi2 e var))
+		 (member a infinities)
+		 (member b infinities)
 		 (not (and ($constantp a)
 			   ($constantp b))))
 	 ;; Exit if b or a is not a constant or if the integrand
