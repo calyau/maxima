@@ -842,7 +842,80 @@ docdraw2d("numericLineType",
 );
 /* [wxMaxima: input   end   ] */
 
+/* SF Bug: 3715 draw3d with variables x[1], x[2] not working */
 
+docdraw2d(
+  "An annulus (using subscripted variables)",
+  x_voxel = 30,
+  y_voxel = 30,
+  region(x[1]^2+x[2]^2<1 and x[1]^2+x[2]^2 > 1/2,
+    x[1], -1.5, 1.5, x[2], -1.5, 1.5));
 
-/* Old versions of Maxima abort on loading files that end in a comment. */
-"Created with wxMaxima 17.10.x.unofficial"$
+docdraw2d(
+  "Two implicit functions (using subscripted variables)",
+  grid      = true,
+  line_type = solid,
+  key       = "x[2]^2=x[1]^3-2*x[1]+1",
+  implicit(x[2]^2=x[1]^3-2*x[1]+1, x[1], -4,4, x[2], -4,4),
+  line_type = dots,
+  key       = "x[1]^3+x[2]^3 = 3*x[1]*x[2]^2-x[1]-1",
+  implicit(x[1]^3+x[2]^3 = 3*x[1]*x[2]^2-x[1]-1, x[1],-4,4, x[2],-4,4),
+  title     = "Two implicit functions" )$
+
+docdraw3d(
+  "An implicit surface (using subscripted variables)",
+  color=blue,
+  implicit((x[1]^2+x[2]^2+x[3]^2-1)*(x[1]^2+(x[2]-1.5)^2+x[3]^2-0.5)=0.015,
+    x[1],-1,1,x[2],-1.2,2.3,x[3],-1,1),
+  surface_hide=true);
+
+docdraw3d(
+  "Two explicit surfaces (using subscripted variables)",
+  key   = "Gauss",
+  color = "#a02c00",
+  explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
+  yv_grid     = 10,
+  color = blue,
+  key   = "Plane",
+  explicit(x+y,x,-5,5,y,-5,5),
+  surface_hide = true)$
+
+docdraw2d(
+  "An implicit & explicit curve (using subscripted variables)",
+  explicit(exp(x[1]),x[1],-1,3),
+  color = red,
+  key   = "This is the parametric one!!",
+  nticks = 100,
+  parametric(2*cos(rrr[1]),rrr[1]^2,rrr[1],0,2*%pi))$
+
+docdraw3d(
+  "An explicit surface and two parametric curves (using subscripted variables)",
+  explicit(exp(sin(x[1])+cos(x[1]^2)),x[1],-3,3,y[1],-3,3),
+  nticks = 100,
+  color = royalblue,
+  parametric(cos(5*u[1])^2,sin(7*u[1]),u[1]-2,u[1],0,2),
+  color      = turquoise,
+  line_width = 2,
+  parametric(t[1]^2,sin(t[1]),2+t[1],t[1],0,2),
+  surface_hide = true,
+  title = "Surface & curves" )$
+
+docdraw3d(
+  "A parametric surface (using subscripted variables)",
+  title          = "Sea shell",
+  xu_grid        = 100,
+  yv_grid        = 25,
+  view           = [100,20],
+  surface_hide   = true,
+  parametric_surface(0.5*u[1]*cos(u[1])*(cos(v[1])+1),0.5*u[1]*sin(u[1])*(cos(v[1])+1),u[1]*sin(v[1]) - ((u[1]+3)/8*%pi)^2 - 20,
+    u[1], 0, 13*%pi, v[1], -%pi, %pi) )$
+
+docdraw3d(
+  "A tube (using subscripted variables)",
+  enhanced3d = true,
+  xu_grid = 50,
+  tube(cos(a[1]), a[1], 0, cos(a[1]/10)^2, a[1], 0, 4*%pi) )$
+
+/* VTK tests are missing */
+
+'done$

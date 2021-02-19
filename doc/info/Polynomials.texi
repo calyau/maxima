@@ -141,6 +141,7 @@ Examples:
 @c REWORD THIS ITEM -- COULD BE MORE CONCISE
 
 @c -----------------------------------------------------------------------------
+@anchor{bothcoef}
 @deffn {Function} bothcoef (@var{expr}, @var{x})
 
 Returns a list whose first member is the coefficient of @var{x} in @var{expr}
@@ -348,6 +349,7 @@ function.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{content}
 @deffn {Function} content (@var{p_1}, @var{x_1}, @dots{}, @var{x_n})
 
 Returns a list whose first element is
@@ -811,6 +813,7 @@ integer factors of rational expressions.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{factorout}
 @deffn {Function} factorout (@var{expr}, @var{x_1}, @var{x_2}, @dots{})
 
 Rearranges the sum @var{expr} into a sum of terms of the form 
@@ -845,6 +848,7 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{factorsum}
 @deffn {Function} factorsum (@var{expr})
 
 Tries to group terms in factors of @var{expr} which are sums into groups of
@@ -877,6 +881,7 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{fasttimes}
 @deffn {Function} fasttimes (@var{p_1}, @var{p_2})
 
 Returns the product of the polynomials @var{p_1} and @var{p_2} by using a
@@ -893,6 +898,7 @@ and @code{n_2} is the degree of @code{p_2}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{fullratsimp}
 @deffn {Function} fullratsimp (@var{expr})
 
 @code{fullratsimp} repeatedly
@@ -948,6 +954,7 @@ Example:
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{fullratsubst}
 @deffn {Function} fullratsubst (@var{new}, @var{old}, @var{expr})
 @fname{fullratsubst} (@code{@var{old} = @var{new}}, @var{expr}) @
 @fname{fullratsubst} (@code{[ @var{old_1} = @var{new_1}, @dots{}, @var{old_n} = @var{new_n} ]}, @var{expr})
@@ -1205,6 +1212,7 @@ not the  @code{y+1} we would expect in @code{k[y, x]}.
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
 
 @c -----------------------------------------------------------------------------
+@anchor{gcfactor}
 @deffn {Function} gcfactor (@var{n})
 
 Factors the Gaussian integer @var{n} over the Gaussian integers, i.e., numbers
@@ -1221,6 +1229,7 @@ rational integers (i.e.,  ordinary integers).  Factors are normalized by making
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
 
 @c -----------------------------------------------------------------------------
+@anchor{gfactor}
 @deffn {Function} gfactor (@var{expr})
 
 Factors the polynomial @var{expr} over the Gaussian integers
@@ -1247,6 +1256,7 @@ Example:
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
+@anchor{gfactorsum}
 @deffn {Function} gfactorsum (@var{expr})
 
 is similar to @code{factorsum} but applies @code{gfactor} instead
@@ -1258,6 +1268,7 @@ of @code{factor}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{hipow}
 @deffn {Function} hipow (@var{expr}, @var{x})
 
 Returns the highest explicit exponent of @var{x} in @var{expr}.
@@ -1401,6 +1412,7 @@ Returns the lowest exponent of @var{x} which explicitly appears in
 @c THIS ITEM NEEDS MORE WORK
 
 @c -----------------------------------------------------------------------------
+@anchor{lratsubst}
 @deffn {Function} lratsubst (@var{new}, @var{old}, @var{expr}) @
 @fname{lratsubst} (@code{@var{old} = @var{new}}, @var{expr}) @
 @fname{lratsubst} (@code{[ @var{old_1} = @var{new_1}, @dots{}, @var{old_n} = @var{new_n} ]}, @var{expr})
@@ -2058,6 +2070,7 @@ Examples:
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ratdiff}
 @deffn {Function} ratdiff (@var{expr}, @var{x})
 
 Differentiates the rational expression @var{expr} with respect to @var{x}.
@@ -2246,6 +2259,7 @@ both be used at the same time.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{ratnumer}
 @deffn {Function} ratnumer (@var{expr})
 
 Returns the numerator of @var{expr},
@@ -2270,6 +2284,7 @@ are not considered ratios by @code{num}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{ratp}
 @deffn {Function} ratp (@var{expr})
 
 Returns @code{true} if @var{expr} is a canonical rational expression (CRE) or

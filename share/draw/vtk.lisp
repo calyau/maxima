@@ -224,7 +224,6 @@
 (defun vtkpolydatamapper-code (mn fn con)
   (concatenate 'string
     (format nil "~a=vtk.vtkPolyDataMapper()~%" mn)
-    (format nil "~a.GlobalImmediateModeRenderingOn()~%" mn) 
     (if con
       (format nil "~a.SetInputConnection(~a.GetOutputPort())~%" mn fn)
       "") ))
@@ -1877,7 +1876,7 @@
        (merror "draw2d (parametric): illegal range"))
     (when (not (string= (string-trim " " key) ""))
        (incf *vtk-2dkey-counter*) )
-    (when (not (subsetp (append (rest ($listofvars xfun)) (rest ($listofvars yfun))) (list par)))
+    (when (not (subsetp (append (rest ($listofvars xfun)) (rest ($listofvars yfun))) (list par) :test #'like))
        (merror "draw2d (parametric): non defined variable"))
     (setq *plot-realpart* (get-option '$draw_realpart))
     (setq f1 (coerce-float-fun xfun `((mlist) ,par)))
@@ -2687,7 +2686,7 @@
        (merror "draw3d (tube): illegal parametric range"))
     (when (not (subsetp (rest ($append ($listofvars xfun) ($listofvars yfun)
                                        ($listofvars zfun) ($listofvars rad)))
-                        (list par)))
+                        (list par) :test #'like))
        (merror "draw3d (tube): non defined variable"))
     (check-enhanced3d-model "tube" '(0 1 3 99))
     (check-isolines-model "tube" '(0 1 3 99))

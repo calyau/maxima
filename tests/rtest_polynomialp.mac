@@ -43,6 +43,14 @@ true$
 polynomialp((1+x)^a,[x], 'constantp);
 false$
 
+/* Bug #3543: bug with polynomialp */
+
+block ([z : factor (x[1])],
+  /* This should yield true even though the value of z has
+   * some extra stuff in its header compared to a vanilla x[1]
+   */
+  polynomialp (x[1], [z]));
+true;
 
 
 
