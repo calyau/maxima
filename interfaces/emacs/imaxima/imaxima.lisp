@@ -631,12 +631,14 @@ nor Gnuplot is not recognized by maxima"))))
 			args))
       ($ldisp `((wxxmltag simp) ,(format nil "~a.eps" filename) "img")))))
 
-(defmacro wx-def-plot/draw (fun pkg parent)
+(defmacro wx-def-plot/draw (fun pkg parent &optional init  &rest body)
   (let ((wx-fun (intern (format nil "$WX~a" (stripdollar fun)))))
     `(progn
+       ,init
        ($put ',wx-fun ',pkg '$load_package)
        ($put ',wx-fun ',fun '$function)
        (defun ,wx-fun (&rest args)
+	 ,body
 	 (imaxima-apply ',parent (cons ',wx-fun args))))))
 
 (wx-def-plot/draw $draw 	 $draw 		wxdraw)
@@ -648,6 +650,11 @@ nor Gnuplot is not recognized by maxima"))))
 (wx-def-plot/draw $contour_plot  nil 		wxplot)
 (wx-def-plot/draw $julia 	 $dynamics 	wxplot)
 (wx-def-plot/draw $mandelbrot    $dynamics 	wxplot)
+
+;; We could load drawdf package, because we want to overwrite wxdrawdf.
+;; However, we do not need to, because wxdrawdf is a wrapper for wxdraw.
+;; The following will load drawdf, then overwrite wxdrawdf with our own:
+;; (wx-def-plot/draw $drawdf 	 $drawdf	wxdraw ($load '$drawdf))
 
 
 ;; end of imaxima.lisp
