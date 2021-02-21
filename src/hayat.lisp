@@ -2513,6 +2513,13 @@
   (declare (ignore func))
   (taylor2 `((%gamma) ,(m1+ arg))))
 
+(defprop %signum signum-trans tay-trans)
+
+;; signum(x) => x/abs(x)
+;; this gives an error at x=0 and a derivative of 0 elsewhere
+(defun signum-trans (arg func)
+  (declare (ignore func))
+  (taylor2 `((mtimes) ,arg ((mexpt) ((mabs) ,arg) -1))))
 
 (defprop %gamma_incomplete gamma-upper-trans tay-trans)
 (defprop $gamma_incomplete gamma-upper-trans tay-trans)
