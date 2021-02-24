@@ -154,17 +154,32 @@
         ;; extract A B C D from (LET ((A FOO) (B BAR) C D) ...)
         (make-var-set (mapcar #'(lambda (e) (if (atom e) e (car e))) (cadr form)))))))
 
-;;; (DO ((<V> <V> <V>) ...) ((<in-scope>) ..) ...)
+;;; (DO (<VARSPEC> ...) (<END-TEST-FORM> . <RESULT-FORMS>) . <BODY>)
 
 (defun-prop (do free-lisp-vars) (form)
-  (difference-var-sets
-   (sum-var-sets (free-lisp-vars-of-argl (cdddr form))
-		 (free-lisp-vars-of-argl (caddr form))
-		 (union-var-set (mapcar #'(lambda (do-iter)
-					    (free-lisp-vars-of-argl
-					     (cdr do-iter)))
-					(cadr form))))
-   (make-var-set (mapcar #'car (cadr form)))))
+  (sum-var-sets
+    ; get free lisp vars from init forms
+    (union-var-set (mapcar (lambda (e)
+                             (when (consp e)
+                               (free-lisp-vars (cadr e))))
+                           (cadr form)))
+    (difference-var-sets
+      (sum-var-sets
+        ; get free lisp vars from body forms
+        (union-var-set (mapcar (lambda (e)
+                                 ; skip go tags
+                                 (if (atom e) '() (free-lisp-vars e)))
+                               (cdddr form)))
+        ; get free lisp vars from the end test form and result forms
+        (free-lisp-vars-of-argl (caddr form))
+        ; get free lisp vars from step forms
+        (union-var-set (mapcar (lambda (e)
+                                 (when (consp e)
+                                   (free-lisp-vars (caddr e))))
+                               (cadr form))))
+      ; get vars bound by DO
+      (make-var-set (mapcar (lambda (e) (if (atom e) e (car e)))
+                            (cadr form))))))
 
 ;;; (COND (<I> ..) (<J> ..) ...)
 
