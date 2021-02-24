@@ -121,16 +121,23 @@
     ; get vars bound by LAMBDA
     (make-var-set (cadr form))))
 
-;;; (PROG <BVL> . <BODY>)
+;;; (PROG <BVLSPEC> . <BODY>)
 
 (defun-prop (prog free-lisp-vars) (form)
-  (difference-var-sets (union-var-set
-			(mapcar #'(lambda (u)
-				    (cond ((atom u) nil) ;; go tag.
-					  (t
-					   (free-lisp-vars u))))
-				(cddr form)))
-		       (make-var-set (cadr form))))
+  (sum-var-sets
+    ; get free lisp vars from init forms
+    (union-var-set
+      (mapcar (lambda (e) (when (consp e) (free-lisp-vars (cadr e))))
+              (cadr form)))
+    (difference-var-sets
+      ; get free lisp vars from body forms
+      (union-var-set (mapcar (lambda (e)
+                               ; skip go tags
+                               (if (atom e) '() (free-lisp-vars e)))
+                             (cddr form)))
+      ; get vars bound by PROG
+      (make-var-set (mapcar (lambda (e) (if (consp e) (car e) e))
+                            (cadr form))))))
 
 ;;; (LET <BVL> . <BODY>)
 
