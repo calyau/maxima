@@ -41,8 +41,6 @@
 	((atom (car exp))
 	 (cond ((setq prop (get (car exp) 'free-lisp-vars))
 		(funcall prop exp))
-	       ((setq prop (get (car exp) 'free-lisp-vars-macro))
-		(free-lisp-vars (funcall prop exp)))
 	       ((setq prop (get (car exp) 'macro))
 		(free-lisp-vars (funcall prop exp)))
 	       ((getl (car exp) '(fsubr fexpr))
