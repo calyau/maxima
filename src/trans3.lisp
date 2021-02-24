@@ -139,27 +139,20 @@
       (make-var-set (mapcar (lambda (e) (if (consp e) (car e) e))
                             (cadr form))))))
 
-;;; (LET <BVL> . <BODY>)
-
-;; Take the union of the free variables from the init-forms
-;; and the free variables of the body (less the variables bound by LET).
+;;; (LET <BVLSPEC> . <BODY>)
 
 (defun-prop (let free-lisp-vars) (form)
-  (union-var-set 
-    (list
-      ;; extract (FOO BAR NIL NIL) from (LET ((A FOO) (B BAR) C D) ...)
-      ;; and apply FREE-LISP-VARS to each.
-      (union-var-set (mapcar #'free-lisp-vars (mapcar #'(lambda (e) (if (consp e) (cadr e))) (cadr form))))
-      (difference-var-sets
-        ;; cargo-cult programming: copy this next bit from (DEFUN-PROP (PROG ...)) above.
-        (union-var-set
-          (mapcar #'(lambda (u)
-                      (cond ((atom u) nil) ;; go tag.
-                            (t
-                              (free-lisp-vars u))))
-                  (cddr form)))
-        ;; extract A B C D from (LET ((A FOO) (B BAR) C D) ...)
-        (make-var-set (mapcar #'(lambda (e) (if (atom e) e (car e))) (cadr form)))))))
+  (sum-var-sets
+    ; get free lisp vars from init forms
+    (union-var-set
+      (mapcar (lambda (e) (when (consp e) (free-lisp-vars (cadr e))))
+              (cadr form)))
+    (difference-var-sets
+      ; get free lisp vars from body forms
+      (free-lisp-vars-of-argl (cddr form))
+      ; get vars bound by LET
+      (make-var-set (mapcar (lambda (e) (if (atom e) e (car e)))
+                            (cadr form))))))
 
 ;;; (DO (<VARSPEC> ...) (<END-TEST-FORM> . <RESULT-FORMS>) . <BODY>)
 
