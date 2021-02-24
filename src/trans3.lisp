@@ -115,13 +115,11 @@
 ;;; (LAMBDA <BVL> . <BODY>)
 
 (defun-prop (lambda free-lisp-vars) (form)
-  (difference-var-sets (free-lisp-vars-of-argl (cddr form))
-		       (cond ((null (cadr form))
-			      nil)
-			     ((atom (cadr form))
-			      (make-var-set (list (cadr form))))
-			     (t
-			      (make-var-set (cadr form))))))
+  (difference-var-sets
+    ; get free lisp vars from body forms
+    (free-lisp-vars-of-argl (cddr form))
+    ; get vars bound by LAMBDA
+    (make-var-set (cadr form))))
 
 ;;; (PROG <BVL> . <BODY>)
 
