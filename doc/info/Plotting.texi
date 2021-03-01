@@ -1089,8 +1089,8 @@ section, followed by one or more values. Some of the options may have
 different effects in different plotting commands as it will be pointed
 out in the following list. The options that accept among their possible
 values true or false, can also be set to true by simply writing their
-names. For instance, typing logx as an option is equivalent to writing
-[logx, true].
+names. For instance, typing @code{logx} as an option is equivalent to writing
+@code{[logx, true]}.
 
 
 @c -----------------------------------------------------------------------------
@@ -1244,7 +1244,7 @@ For a way to actually draw a grid See @mrefdot{grid2d}
 
 @c -----------------------------------------------------------------------------
 @anchor{grid2d}
-@defvr {Plot option} grid2d [grid, @var{value}]
+@defvr {Plot option} grid2d [grid2d, @var{value}]
 Default value: @code{false}
 
 Shows a grid of lines on the xy plane. The points where the grid lines
@@ -1261,7 +1261,7 @@ See also @mrefdot{grid}
 
 @c -----------------------------------------------------------------------------
 @anchor{iterations}
-@defvr {Plot option} iterations [grid, @var{value}]
+@defvr {Plot option} iterations [iterations, @var{value}]
 Default value: @code{9}
 
 Number of iterations made by the programs mandelbrot and julia.
