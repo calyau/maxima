@@ -321,9 +321,7 @@
      #+allegro ((mlist simp) 3 4 5))
     ((mlist simp) "rtest_abs_integrate"
      #-(or cmucl ccl ecl sbcl gcl)
-     ((mlist) 61 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 123 125 126 127 137 178)
-     #+(or cmucl ccl ecl sbcl gcl)
-     ((mlist simp) 61 137))
+     ((mlist) 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 123 125 126 127 178))
     "rtest_pochhammer"
     ((mlist simp) "rtest_to_poly_solve"
      #-(or cmucl ccl ecl gcl sbcl sbcl)

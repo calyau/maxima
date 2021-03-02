@@ -41,8 +41,6 @@
 	((atom (car exp))
 	 (cond ((setq prop (get (car exp) 'free-lisp-vars))
 		(funcall prop exp))
-	       ((setq prop (get (car exp) 'free-lisp-vars-macro))
-		(free-lisp-vars (funcall prop exp)))
 	       ((setq prop (get (car exp) 'macro))
 		(free-lisp-vars (funcall prop exp)))
 	       ((getl (car exp) '(fsubr fexpr))
@@ -104,72 +102,89 @@
 (defun make-var-set (vars)
   (loop for v in vars collect (ncons v)))
 
+(macrolet ((empty-free-lisp-vars (name)
+             (let ((form (gensym)))
+               `(defun-prop (,name free-lisp-vars) (,form)
+                  (declare (ignore ,form))
+                  '()))))
+  (empty-free-lisp-vars declare)
+  (empty-free-lisp-vars function)
+  (empty-free-lisp-vars go)
+  (empty-free-lisp-vars quote))
+
 ;;; (LAMBDA <BVL> . <BODY>)
 
 (defun-prop (lambda free-lisp-vars) (form)
-  (difference-var-sets (free-lisp-vars-of-argl (cddr form))
-		       (cond ((null (cadr form))
-			      nil)
-			     ((atom (cadr form))
-			      (make-var-set (list (cadr form))))
-			     (t
-			      (make-var-set (cadr form))))))
+  (difference-var-sets
+    ; get free lisp vars from body forms
+    (free-lisp-vars-of-argl (cddr form))
+    ; get vars bound by LAMBDA
+    (make-var-set (cadr form))))
 
-;;; (PROG <BVL> . <BODY>)
+;;; (PROG <BVLSPEC> . <BODY>)
 
 (defun-prop (prog free-lisp-vars) (form)
-  (difference-var-sets (union-var-set
-			(mapcar #'(lambda (u)
-				    (cond ((atom u) nil) ;; go tag.
-					  (t
-					   (free-lisp-vars u))))
-				(cddr form)))
-		       (make-var-set (cadr form))))
+  (sum-var-sets
+    ; get free lisp vars from init forms
+    (union-var-set
+      (mapcar (lambda (e) (when (consp e) (free-lisp-vars (cadr e))))
+              (cadr form)))
+    (difference-var-sets
+      ; get free lisp vars from body forms
+      (union-var-set (mapcar (lambda (e)
+                               ; skip go tags
+                               (if (atom e) '() (free-lisp-vars e)))
+                             (cddr form)))
+      ; get vars bound by PROG
+      (make-var-set (mapcar (lambda (e) (if (consp e) (car e) e))
+                            (cadr form))))))
 
-;;; (LET <BVL> . <BODY>)
-
-;; Take the union of the free variables from the init-forms
-;; and the free variables of the body (less the variables bound by LET).
+;;; (LET <BVLSPEC> . <BODY>)
 
 (defun-prop (let free-lisp-vars) (form)
-  (union-var-set 
-    (list
-      ;; extract (FOO BAR NIL NIL) from (LET ((A FOO) (B BAR) C D) ...)
-      ;; and apply FREE-LISP-VARS to each.
-      (union-var-set (mapcar #'free-lisp-vars (mapcar #'(lambda (e) (if (consp e) (cadr e))) (cadr form))))
-      (difference-var-sets
-        ;; cargo-cult programming: copy this next bit from (DEFUN-PROP (PROG ...)) above.
-        (union-var-set
-          (mapcar #'(lambda (u)
-                      (cond ((atom u) nil) ;; go tag.
-                            (t
-                              (free-lisp-vars u))))
-                  (cddr form)))
-        ;; extract A B C D from (LET ((A FOO) (B BAR) C D) ...)
-        (make-var-set (mapcar #'(lambda (e) (if (atom e) e (car e))) (cadr form)))))))
+  (sum-var-sets
+    ; get free lisp vars from init forms
+    (union-var-set
+      (mapcar (lambda (e) (when (consp e) (free-lisp-vars (cadr e))))
+              (cadr form)))
+    (difference-var-sets
+      ; get free lisp vars from body forms
+      (free-lisp-vars-of-argl (cddr form))
+      ; get vars bound by LET
+      (make-var-set (mapcar (lambda (e) (if (atom e) e (car e)))
+                            (cadr form))))))
 
-;;; no computed gos please.
-(defun-prop (go free-lisp-vars) (ignor)ignor nil)
-
-;;; (DO ((<V> <V> <V>) ...) ((<in-scope>) ..) ...)
+;;; (DO (<VARSPEC> ...) (<END-TEST-FORM> . <RESULT-FORMS>) . <BODY>)
 
 (defun-prop (do free-lisp-vars) (form)
-  (difference-var-sets
-   (sum-var-sets (free-lisp-vars-of-argl (cdddr form))
-		 (free-lisp-vars-of-argl (caddr form))
-		 (union-var-set (mapcar #'(lambda (do-iter)
-					    (free-lisp-vars-of-argl
-					     (cdr do-iter)))
-					(cadr form))))
-   (make-var-set (mapcar #'car (cadr form)))))
+  (sum-var-sets
+    ; get free lisp vars from init forms
+    (union-var-set (mapcar (lambda (e)
+                             (when (consp e)
+                               (free-lisp-vars (cadr e))))
+                           (cadr form)))
+    (difference-var-sets
+      (sum-var-sets
+        ; get free lisp vars from body forms
+        (union-var-set (mapcar (lambda (e)
+                                 ; skip go tags
+                                 (if (atom e) '() (free-lisp-vars e)))
+                               (cdddr form)))
+        ; get free lisp vars from the end test form and result forms
+        (free-lisp-vars-of-argl (caddr form))
+        ; get free lisp vars from step forms
+        (union-var-set (mapcar (lambda (e)
+                                 (when (consp e)
+                                   (free-lisp-vars (caddr e))))
+                               (cadr form))))
+      ; get vars bound by DO
+      (make-var-set (mapcar (lambda (e) (if (atom e) e (car e)))
+                            (cadr form))))))
 
 ;;; (COND (<I> ..) (<J> ..) ...)
 
 (defun-prop (cond free-lisp-vars) (form)
   (union-var-set (mapcar #'free-lisp-vars-of-argl (cdr form))))
-
-(defun-prop (quote free-lisp-vars) (ignor)ignor nil)
-(defun-prop (function free-lisp-vars) (ignor)ignor nil)
 
 ;;; (SETQ ... ODD AND EVENS...)
 
@@ -184,8 +199,6 @@
 
 (defun-prop (and free-lisp-vars)(form)(free-lisp-vars-of-argl (cdr form)))
 (defun-prop (or free-lisp-vars)(form)(free-lisp-vars-of-argl (cdr form)))
-
-(defun-prop (declare free-lisp-vars) (ignor) ignor nil)
 
 ;;; these next forms are generated by TRANSLATE.
 

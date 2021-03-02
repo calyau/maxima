@@ -598,3 +598,8 @@ taylor( 'diff(f(t,u),u), t, 0, 1);
 
 taylor( 'diff(f(t,u),u), u, 0, 1);
 'at('diff(f(t,u),u,1),u = 0)+('at('diff(f(t,u),u,2),u = 0))*u;
+
+/*--- signum ---*/
+taylor(signum(x), x, -2, 5)$
+-1;
+
