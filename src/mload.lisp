@@ -515,7 +515,7 @@
 		     (values "" "was"))
 	       (format t (intl:gettext "~%The following ~A problem~A passed but ~A expected to fail: ~A~%")
 		       (length unexpected-pass) plural was-were (reverse unexpected-pass))))
-	     (values (when unexpected-pass filename)
+	     (values filename
 		     nil
 		     `((mlist) ,@(reverse unexpected-pass))
 		     num-problems))
@@ -808,7 +808,7 @@
 					    expected-failures :show-expected display_known_bugs
 					    :show-all display_all :showtime time))
 			      (incf total-count test-count)
-			      (when filename
+			      (when (or (rest diff) (rest upass))
 				(incf error-count (length (rest diff)))
 				(when (rest diff)
 				  (push (list* filename (rest diff))
