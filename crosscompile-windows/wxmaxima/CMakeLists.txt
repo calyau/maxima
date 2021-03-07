@@ -56,15 +56,10 @@ else()
 endif()
 
 
-# wxMaxima uses OpenMP, include the required mingw libraries.
-execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libgomp-1.dll OUTPUT_VARIABLE MINGW_LIBGOMP OUTPUT_STRIP_TRAILING_WHITESPACE)
-
+# wxMaxima uses C++ threads, include the required mingw library.
 execute_process(COMMAND "${CMAKE_CXX_COMPILER}" -print-file-name=libwinpthread-1.dll OUTPUT_VARIABLE MINGW_LIBWINPTHREAD OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-message(STATUS "Found libgomp at ${MINGW_LIBGOMP}")
-
 message(STATUS "Found libwinpthread at ${MINGW_LIBWINPTHREAD}")
 
 # Include DLLs from the current Mingw environment.
-install(FILES "${MINGW_LIBGOMP}" "${MINGW_LIBWINPTHREAD}" DESTINATION bin/ COMPONENT wxMaxima)
+install(FILES "${MINGW_LIBWINPTHREAD}" DESTINATION bin/ COMPONENT wxMaxima)
 
