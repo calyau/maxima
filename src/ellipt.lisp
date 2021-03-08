@@ -1794,10 +1794,10 @@ first kind:
 	   ;;      = (2*%pi*gamma(3/4)^4+%pi^3)/(4*%pi^(3/2)*gamma(3/4)^2)
 	   ;;      = gamma(3/4)^2/(2*sqrt(%pi))+%pi^(3/2)/(4*gamma(3/4)^2)
 	   ;;
-	   (add (div (power (take '($gamma) (div 3 4)) 2)
+	   (add (div (power (take '(%gamma) (div 3 4)) 2)
 		     (mul 2 (power '$%pi 1//2)))
 		(div (power '$%pi (div 3 2))
-		     (mul 4 (power (take '($gamma) (div 3 4)) 2)))))
+		     (mul 4 (power (take '(%gamma) (div 3 4)) 2)))))
 	  ((zerop1 (add 1 m))
 	   ;; elliptic_ec(-1). Use the identity
 	   ;; http://functions.wolfram.com/08.01.17.0002.01
