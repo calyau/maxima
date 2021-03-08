@@ -133,7 +133,7 @@
       ; get free lisp vars from body forms
       (union-var-set (mapcar (lambda (e)
                                ; skip go tags
-                               (if (atom e) '() (free-lisp-vars e)))
+                               (if (go-tag-p e) '() (free-lisp-vars e)))
                              (cddr form)))
       ; get vars bound by PROG
       (make-var-set (mapcar (lambda (e) (if (consp e) (car e) e))
@@ -168,7 +168,7 @@
         ; get free lisp vars from body forms
         (union-var-set (mapcar (lambda (e)
                                  ; skip go tags
-                                 (if (atom e) '() (free-lisp-vars e)))
+                                 (if (go-tag-p e) '() (free-lisp-vars e)))
                                (cdddr form)))
         ; get free lisp vars from the end test form and result forms
         (free-lisp-vars-of-argl (caddr form))
