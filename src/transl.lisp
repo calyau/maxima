@@ -993,6 +993,8 @@ APPLY means like APPLY.")
   (setq form (tr-seq (cdr form)))
   (cons (car form) `(progn ,@(cdr form))))
 	
+(defun go-tag-p (e)
+  (or (symbolp e) (integerp e)))
 
 (def%tr mprog (form)
   (let (arglist body val-list)
@@ -1075,7 +1077,7 @@ APPLY means like APPLY.")
 			  (not (eq (car form) 'return))))
 		 ;; put a RETURN on just in case.
 		 (setq form `(return ,form))))
-	    ((symbolp form))
+	    ((go-tag-p form))
 	    (t
 	     (setq form (dtranslate form))))
       (push form l))))
@@ -1095,8 +1097,8 @@ APPLY means like APPLY.")
 (def%tr mgo (form)
   (if (null inside-mprog)
       (tr-format (intl:gettext "warning: 'go' not within 'block' or 'do': ~:M~%") form))
-  (if (not (symbolp (cadr form)))
-      (tr-format (intl:gettext "warning: 'go' tag must be a symbol: ~:M~%") form))
+  (if (not (go-tag-p (cadr form)))
+      (tr-format (intl:gettext "warning: 'go' tag must be a symbol or an integer: ~:M~%") form))
   (setq need-prog? t)
   `($any . (go ,(cadr form))))
 

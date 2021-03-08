@@ -1811,6 +1811,29 @@ block ([translate : false],
 (kill (hyper_to_summand, foo, l1, l2), 0);
 0;
 
+/* go tags can be integers
+ *
+ * This has been allowed, but it used to give a warning and an extra
+ * trivial run through the translator to translate the integer go tags.
+ * Now we allow integers directly without giving a warning.
+ *
+ * We don't actually bother to check for warnings in the test below.
+ * We're really just verifying that using an integer go tag works.
+ */
+
+block ([translate : false],
+  foo () := block ([i : 0], tag, i : i + 1, if i < 5 then go (tag), i),
+  bar () := block ([i : 0], 123, i : i + 1, if i < 5 then go (123), i),
+  l1 : [foo (), bar ()],
+  translate_or_lose (foo, bar),
+  l2 : [foo (), bar ()],
+  [is (l1 = l2), l2]);
+[true, [5, 5]];
+
+(kill (foo, bar, l1, l2), 0);
+0;
+
+
 
 
 
