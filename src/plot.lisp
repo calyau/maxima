@@ -1763,30 +1763,25 @@ sin(y)*(10.0+6*cos(x)),
           ;; second argument was really a plot option, not a range
           (setq extra-options (cons range extra-options)))))
 
-    ;; When only one function is being plotted:
-    ;; If a simple function use, its name for the vertical axis.
-    ;; If parametric, give the axes the names of the two parameters.
-    ;; If discrete points, name the axes x and y.
+    ;; If no global options xlabel or ylabel have been given, choose
+    ;; a default value for them: the expressions given, converted
+    ;; to Maxima strings, if their length is less than 50 characters,
+    ;; or the default "x" and "y" otherwise.
     (when (= (length fun) 2)
-      (let ((v (second fun)) label)
+      (let ((v (second fun)) xlabel ylabel)
         (cond ((atom v) 
-               (setq label (coerce (mstring v) 'string))
-               (if (< (length label) 80)
-                   (setf (getf options :ylabel) label)))
+               (setq xlabel "x") (setq ylabel ($sconcat v)))
               ((eq (second v) '$parametric)
-               (setq label (coerce (mstring (third v)) 'string))
-               (if (< (length label) 80)
-                   (setf (getf options :xlabel) label))
-               (setq label (coerce (mstring (fourth v)) 'string))
-               (if (< (length label) 80)
-                   (setf (getf options :ylabel) label)))
+               (setq xlabel ($sconcat (third v)))
+               (setq ylabel ($sconcat (fourth v))))
               ((eq (second v) '$discrete)
-               (setf (getf options :xlabel) "x")
-               (setf (getf options :ylabel) "y"))
+               (setq xlabel "x") (setq ylabel "y"))
               (t
-               (setq label (coerce (mstring v) 'string))
-               (if (< (length label) 80)
-                   (setf (getf options :ylabel) label))))))
+               (setq xlabel "x") (setq ylabel ($sconcat v))))
+        (unless (getf options :xlabel)
+          (if (< (length xlabel) 50) (setf (getf options :xlabel) xlabel)))
+        (unless (getf options :ylabel)
+          (if (< (length ylabel) 50) (setf (getf options :ylabel) ylabel)))))
 
     ;; Parse the given options into the options list
     (setq options (plot-options-parser extra-options options))
