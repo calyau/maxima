@@ -1,5 +1,5 @@
-declare (x, real);
-done;
+(kill(all),reset(), 0);
+0$
 
 conjugate(-1);
 -1$
@@ -238,13 +238,19 @@ conjugate(q) * (1 + conjugate(q))$
 conjugate((1+q)/(1-q));
 (1 + conjugate(q))/(1 - conjugate(q))$
 
-declare (p0, even, q1, odd, pq, rational, qp, irrational, rr, real, ii, imaginary);
+(forget(imagpart(z) > 0), forget(realpart(w) > 0),0);
+0$
+
+declare(p0, even, q1, odd, pq, rational, qp, irrational, rr, real, ii, imaginary);
 done;
 
 conjugate (p0 + q1 + pq + qp + rr + ii);
 p0 + q1 + pq + qp + rr - ii;
 
 /* conjugate of  sums and products */
+
+(declare(n, real), declare(m,real),0);
+0$
 
 conjugate(sum(cos(k),k,1,n));
 sum(cos(k),k,1,n)$
@@ -257,6 +263,9 @@ sum(log(k - %i), k, m, n)$
  
 conjugate(prod(log(k + %i), k, m, n));
 prod(log(k - %i), k, m, n)$
+
+(remove(n,real), remove(m,real),0);
+0$
 
 /* conjugate of asin */
 
@@ -336,7 +345,7 @@ log(-x - %i * www)$
 (forget(x > 0, notequal(www,0)),0);
 0$
 
-/* exponentials */
+/* exponential expressions */
 
 conjugate(exp(x));
 exp(x)$
@@ -454,6 +463,329 @@ li[2](42 - %i/2)$
 conjugate(psi[2](-42 + %i/2));
 psi[2](-42 - %i/2)$
 
+/* constants */
+conjugate(%pi);
+%pi$
 
-kill (values);
-done;
+conjugate(%e);
+%e$
+
+conjugate(%phi);
+%phi$
+
+conjugate(minf);
+minf$
+
+conjugate(inf);
+inf$
+
+conjugate(infinity);
+conjugate(infinity)$
+
+conjugate(zerob);
+zerob$
+
+conjugate(zeroa);
+zeroa$
+
+conjugate(und);
+conjugate(und)$
+
+conjugate(ind);
+conjugate(ind)$
+
+/* additional tests  */
+
+(declare(z,complex), declare(zz,complex), assume(-1<a, a<1, notequal(b,0)),0);
+0$
+
+/* one of the few tests that check this case */
+is(conjugate(z^zz) = conjugate(z)^conjugate(zz));
+false$
+
+is(equal(conjugate(z^zz), conjugate(z)^conjugate(zz)));
+unknown$
+
+is(conjugate(sqrt(x)) = sqrt(conjugate(x)));
+false$
+
+is(equal(conjugate(sqrt(1+%i)), sqrt(conjugate(1+%i))));
+true$
+
+is(equal(conjugate(sqrt(-1+%i)), sqrt(conjugate(-1+%i))));
+true$
+
+is(conjugate(x^zz) = conjugate(x)^conjugate(zz));
+false$
+
+is(conjugate(x^zz) = conjugate(x)^conjugate(zz));
+false$
+
+(declare(n,integer),0);
+0$
+
+is(equal(conjugate(z^n), conjugate(z)^n));
+true$
+
+(remove(n,integer),0);
+0$
+
+(assume(notequal(imagpart(z),0)),0);
+0$
+
+is(equal(conjugate(z^zz), conjugate(z)^conjugate(zz)));
+true$
+
+(forget(notequal(imagpart(z),0)),0);
+0$
+
+is(equal(conjugate((x+%i*%pi)^zz), (x-%i*%pi)^conjugate(zz)));
+true$
+
+is(equal(conjugate((x+%i/10)^zz), (x-%i/10)^conjugate(zz)));
+true$
+
+conjugate(acsc(z));
+conjugate(acsc(z))$
+
+conjugate(acsc(3/2 + %i));
+acsc(3/2-%i)$
+
+conjugate(acsc(1/2 + %i));
+acsc(1/2-%i)$
+
+conjugate(asec(z));
+conjugate(asec(z))$
+
+conjugate(asec(3/2 + %i));
+asec(3/2-%i)$
+
+conjugate(asec(1/2 + %i));
+asec(1/2-%i)$
+
+/* functions that commute with conjugate */
+map(lambda([fn], is(conjugate(apply(fn,[z])) = apply(fn, [conjugate(z)]))), 
+        [cosh, sinh, tanh, sech, csch, coth, cos, sin, tan, sec, csc, cot,gamma]);
+[true,true,true,true,true,true,true,true,true,true,true,true,true]$
+
+conjugate(jacobi_cn(a,z));
+jacobi_cn(a, conjugate(z))$
+
+conjugate(jacobi_sn(a,z));
+jacobi_sn(a, conjugate(z))$
+
+conjugate(jacobi_dn(a,z));
+jacobi_dn(a, conjugate(z))$
+
+conjugate(pochhammer(z, n));
+pochhammer(conjugate(z),n)$
+
+conjugate(z = 4+%i);
+conjugate(z) = 4-%i$
+
+conjugate(z # 46+107*%i);
+conjugate(z) # 46 - 107*%i$
+
+conjugate(transpose(z));
+transpose(conjugate(z))$
+
+conjugate(matrix([%i,5],[5,%i]));
+matrix([-%i,5],[5,-%i])$
+
+conjugate([a,b,c]);
+[a,b,c]$
+
+conjugate(set(a,b,%i));
+set(a,b,-%i)$
+
+conjugate(hankel_1(z,z^2));
+conjugate(hankel_1(z,z^2))$
+
+conjugate(hankel_1(z,x+%i));
+hankel_2(conjugate(z),x-%i)$
+
+conjugate(hankel_2(z,z^2));
+conjugate(hankel_2(z,z^2))$
+
+conjugate(hankel_2(z,x+%i));
+hankel_1(conjugate(z),x-%i)$
+
+map('conjugate, [log(5+%i), log(x^2+1), log(z), log(-(x^2+1))]);
+[log(5-%i),log(x^2+1),conjugate(log(z)),log(x^2+1)-%i*%pi]$
+
+conjugate(bessel_j(z,z^2));
+conjugate(bessel_j(z,z^2))$
+
+conjugate(bessel_j(z,x+%i));
+bessel_j(conjugate(z),x-%i)$
+
+conjugate(bessel_y(z,z^2));
+conjugate(bessel_y(z,z^2))$
+
+conjugate(bessel_y(z,x+%i));
+bessel_y(conjugate(z),x-%i)$
+
+conjugate(bessel_i(z,z^2));
+conjugate(bessel_i(z,z^2))$
+
+conjugate(bessel_i(z,x+%i));
+bessel_i(conjugate(z),x-%i)$
+
+conjugate(bessel_k(z,z^2));
+conjugate(bessel_k(z,z^2))$
+
+conjugate(bessel_k(z,x+%i));
+bessel_k(conjugate(z),x-%i)$
+
+conjugate(log_gamma(z));
+conjugate(log_gamma(z))$
+
+conjugate(log_gamma(1-%i));
+log_gamma(1+%i)$
+
+conjugate(li[2](z));
+li[2](conjugate(z))$
+
+conjugate(psi[2](z));
+psi[2](conjugate(z))$
+
+map('conjugate, [plog(5+%i), plog(x^2+1), plog(z), plog(-(x^2+1))]);
+[plog(5-%i),plog(x^2+1),conjugate(plog(z)),plog(x^2+1)-%i*%pi]$
+
+/* off (-infinity,-1) union (1,infinity), conjugate and asin commute */
+map('conjugate,[asin(z), asin(a+%i*b), asin(1/2+%i), asin(107+%i*b),asin(107)]);
+[conjugate(asin(z)), asin(a-%i*b), asin(1/2-%i), asin(107-%i*b), conjugate(asin(107))]$
+
+/* off (-infinity,-1) union (1,infinity), conjugate and acos commute */
+map('conjugate,[acos(z), acos(a+%i*b), acos(1/2+%i), acos(107+%i*b),acos(107)]);
+[conjugate(acos(z)), acos(a-%i*b), acos(1/2-%i), acos(107-%i*b), conjugate(acos(107))]$
+
+/* off (-infinity %i, -%i) union (%i, %i infinity), conjugate and atan commute */
+map('conjugate, [atan(z), atan(1/2 + %i), atan(-1/3+%i)]);
+[conjugate(atan(z)), atan(1/2-%i), atan(-1/3-%i)]$
+
+conjugate([x,%i*x,0,1,-1,%i,-%i,%pi, %e, %phi,inf,minf]);
+[x,-(%i*x),0,1,-1,-%i,%i,%pi,%e,%phi,inf,minf]$
+
+conjugate(sqrt(-2));
+-(sqrt(2)*%i)$
+
+conjugate(cos(exp(107)));
+cos(exp(107))$
+
+conjugate(conjugate(log(-1)));
+log(-1)$
+
+conjugate(polarform(5+%i*7)) - polarform(5-%i*7);
+0$
+
+conjugate(z/zz);
+conjugate(z)/conjugate(zz)$
+
+(declare(nn,integer),0);
+0$
+
+conjugate(z^nn);
+conjugate(z)^nn$
+
+(forget(nn,integer),0);
+0$
+
+conjugate(1/z);
+1/conjugate(z)$
+
+conjugate(realpart(z));
+realpart(z)$
+
+conjugate(imagpart(z));
+imagpart(z)$
+
+conjugate(conjugate(z));
+z$
+
+conjugate(sin(z));
+sin(conjugate(z))$
+
+conjugate(z*zz) - conjugate(z)*conjugate(zz);
+0$
+
+(assume(xx>0),0);
+0$
+
+conjugate(xx^z);
+xx^conjugate(z)$
+
+(forget(xx>0),0);
+0$
+
+(assume(notequal(imagpart(z),0)),0);
+0$
+
+conjugate(z^x);
+conjugate(z)^x$
+
+conjugate(z^zz);
+conjugate(z)^conjugate(zz)$
+
+(forget(-1<a,a<1, notequal(b,0)), remove(z,complex), remove(zz,complex), 0);
+0$
+
+/* #2179 conjugate of CRE matrix  */
+conjugate(matrix([rat(0)]));
+matrix([0])$
+
+/* #1982 conjugate(atan(x+%i*y)) wrong */
+conjugate(atan(x+%i*y));
+conjugate(atan(x+%i*y))$
+
+/* #1801 conjugate(atan2(y,x)) not simplified */
+conjugate(atan2(y,x));
+atan2(y,x)$
+
+/* #1211 conjugate error */
+conjugate( atanh(1/4));
+atanh(1/4)$
+
+/* #1080 conjugate(log(-1 + %i * y)), with y # 0 */
+ (assume(notequal(y,0)),0);
+ 0$
+
+conjugate(log(-1 + %i*y));
+log(-1-%i*y)$
+
+(forget(notequal(y,0)),0);
+0$
+
+/* #1067 absolute value of conjugate */
+abs(conjugate(z)) ;
+abs(z)$
+
+/* #616 conjugate(complex) wrong */
+conjugate(z);
+conjugate(z)$
+
+/* #924 conjugate of subscripted function */
+conjugate(f[6](x));
+conjugate(f[6](x))$
+
+/* #932 conjugate of complex ^ complex */
+ conjugate((1+%i)^%i);
+ (1-%i)^(-%i)$
+
+/* 1071 conjugate & ratsubst */
+ ratsubst(1,a, conjugate(log(-1 + %i*a)));
+ log(-%i-1)$
+
+/* #1163 rational doesn't work */
+conjugate( rat(1+%i));
+1-%i$
+
+(kill(all),0);
+0$
+
+/* did we really tidy the environment? */
+values;
+[]$
+
+facts();
+[]$

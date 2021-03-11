@@ -846,5 +846,9 @@ true;
 closeto(elliptic_pi(0.2b0,2.0b0,0.8b0) - 3.6543835090082902501670624830938b0, 1b-32);
 true;
 
+/* Test for #3733 $gamma vs %gamma confusion */
+elliptic_ec(1/2) - gamma(3/4)^2/(2*sqrt(%pi))- %pi^(3/2)/(4*gamma(3/4)^2);
+0$
+
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;

@@ -1,6 +1,6 @@
 ;;  Author Barton Willis
 ;;  University of Nebraska at Kearney
-;;  Copyright (C) 2011 Barton Willis
+;;  Copyright (C) 2011,2021 Barton Willis
 
 ;;  This program is free software; you can redistribute it and/or modify 
 ;;  it under the terms of the GNU General Public License as published by	 
@@ -42,7 +42,7 @@
 		(x (caddr e)))
 	    (if (and ($featurep k '$integer) ($featurep n '$integer))
 		(opcons '%bernstein_poly k n (opcons '$conjugate x))
-	      `(($conjugate simp) ((%bernstein_poly simp) ,k ,n ,x))))))
+	     (list (list '$conjugate 'simp) (take '(%bernstein_poly) k n x))))))
 
 ;; integrate(bernstein_poly(k,n,x),x) = hypergeometric([k+1,k-n],[k+2],x)*x^(k+1)/(k+1)
 

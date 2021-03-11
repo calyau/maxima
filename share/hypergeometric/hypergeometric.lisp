@@ -1,4 +1,4 @@
-;;  Copyright 2009 by Barton Willis
+;;  Copyright 2009,2021 by Barton Willis
 
 ;;  This is free software; you can redistribute it and/or
 ;;  modify it under the terms of the GNU General Public License,
@@ -116,7 +116,8 @@
   (let ((a (first l)) (b (second l)) (x (third l)))
     (cond ((or (< ($length a) (+ 1 ($length b))) (eq t (mgrp 1 (take '(mabs) x))))
 	   (take '($hypergeometric) (take '($conjugate) a) (take '($conjugate) b) (take '($conjugate) x)))
-	  (t `(($conjugate simp) (($hypergeometric) ,a ,b ,x))))))
+	  (t 
+	  (list (list '$conjugate 'simp) (take '($hypergeometric) a b x))))))
 
 (defun lenient-complex-p (e)
   (and ($freeof '$infinity '$und '$ind '$inf '$minf '$false '$true t nil e) ;; what else?

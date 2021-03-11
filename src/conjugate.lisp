@@ -1,4 +1,4 @@
-;;  Copyright 2005, 2006, 2020 by Barton Willis
+;;  Copyright 2005, 2006, 2020, 2021 by Barton Willis
 
 ;;  This is free software; you can redistribute it and/or
 ;;  modify it under the terms of the GNU General Public License,
@@ -19,6 +19,10 @@
 (defprop $conjugate ("^\\star") texsym)
 (defprop $conjugate 160. tex-lbp)
 (defprop $conjugate simp-conjugate operators)
+
+;; Maybe $conjugate should have a msimpind property. But with some Maxima versions,
+;; kill(conjugate) eliminates the msimpind property; after that, conjugate gives rubbish.
+;; Until this is resolved, $conjugate doesn't have a msimpind property.
 
 (eval-when
     #+gcl (load eval)
@@ -82,23 +86,28 @@
 (setf (get '$max 'commutes-with-conjugate) t)
 (setf (get '$min 'commutes-with-conjugate) t)
 
-;; When a function has the conjugate-function property,
-;; use a non-generic function to conjugate it. Not done:
-;; conjugate-functions for all the inverse trigonometric
-;; functions.
+;; When a function has the conjugate-function property, use a non-generic function to conjugate it. 
+;; The argument to a conjugate function for an operator op is the CL list of arguments to op. For
+;; example, the conjugate function for log gets the argument for log, not the expression log(x). 
+;; It would be a bit more efficient if a conjugate function received the full expression--that
+;; way for a pure nounform return (for example, return conjugate(log(x))), a conjugate function
+;; would not not need to apply the operator to the argument to the conjugate function, instead it 
+;; could simply paste ($conjugate simp) onto the expression.
+
+;; Not done: conjugate-functions for all the inverse trigonometric functions.
 
 ;; Trig like and hypergeometric like functions
 
 (setf (get '%log 'conjugate-function) 'conjugate-log)
-(setf (get '%plog 'conjugate-function) 'conjugate-log)
+(setf (get '%plog 'conjugate-function) 'conjugate-plog)
 (setf (get 'mexpt 'conjugate-function) 'conjugate-mexpt)
 (setf (get '%asin 'conjugate-function) 'conjugate-asin)
 (setf (get '%acos 'conjugate-function) 'conjugate-acos)
 (setf (get '%atan 'conjugate-function) 'conjugate-atan)
 (setf (get '%atanh 'conjugate-function) 'conjugate-atanh)
+(setf (get '%asec 'conjugate-function) 'conjugate-asec)
+(setf (get '%acsc 'conjugate-function) 'conjugate-acsc)
 
-;;(setf (get '$asec 'conjugate-function) 'conjugate-asec)
-;;(setf (get '$acsc 'conjugate-function) 'conjugate-acsc)
 (setf (get '%bessel_j 'conjugate-function) 'conjugate-bessel-j)
 (setf (get '%bessel_y 'conjugate-function) 'conjugate-bessel-y)
 (setf (get '%bessel_i 'conjugate-function) 'conjugate-bessel-i)
@@ -129,14 +138,21 @@
   (and (eql t (meqp (cdr z) 0))
        (eql t (mgrp 0 (car z)))))
 
+(defun off-negative-one-to-onep (z)
+  (setq z (trisplit z)) ; split z into real and imaginary parts
+  (or
+    (eq t (mnqp (cdr z) 0))    ; y # 0
+    (eq t (mgrp (car z) 1))    ; x > 1
+    (eq t (mgrp -1 (car z))))) ; -1 > x
+
 (defun in-domain-of-asin (z)
-  (setq z (trisplit z))
-  (let ((x (car z)) (y (cdr z)))
-    (or (eql t (mgrp y 0))
-	(eql t (mgrp 0 y))
-	(and
-	 (eql t (mgrp x -1))
-	 (eql t (mgrp 1 x))))))
+  (setq z (trisplit z)) ; split z into real and imaginary parts
+  (let ((x (car z)) (y (cdr z))) ;z = x+%i*y
+    (or
+      (eq t (mnqp y 0)) ; y # 0
+      (and
+	     (eq t (mgrp x -1))     ; x > -1
+	     (eq t (mgrp 1 x)))))) ; x < 1
 
 ;; Return conjugate(log(x)). Actually, x is a lisp list (x).
 
@@ -146,7 +162,17 @@
 	 (take '(%log) (take '($conjugate) x)))
 	((on-negative-real-axisp x)
 	 (add (take '(%log) (neg x)) (mul -1 '$%i '$%pi)))
-	(t `(($conjugate simp) ((%log simp) ,x)))))
+	(t (list '($conjugate simp)  (take '(%log) x)))))
+
+
+;; Return conjugate(plog(x)); again, x is the CL list (x).
+(defun conjugate-plog (x)
+  (setq x (car x))
+  (cond ((off-negative-real-axisp x)
+	 (take '(%plog) (take '($conjugate) x)))
+	((on-negative-real-axisp x)
+	 (add (take '(%plog) (neg x)) (mul -1 '$%i '$%pi)))
+	(t (list '($conjugate simp)  (take '(%plog) x)))))
 
 ;; Return conjugate(x^p), where e = (x, p). Suppose x isn't on the negative real axis.
 ;; Then conjugate(x^p) == conjugate(exp(p * log(x))) == exp(conjugate(p) * conjugate(log(x)))
@@ -154,27 +180,62 @@
 ;; x is off the negative real axis, commute the conjugate with ^. Also if p is an integer
 ;; ^ commutes with the conjugate.
 
+;; We don't need to call $ratdisrep before checking if p is a declared integer--the
+;; simpcheck at the top level of simp-conjugate does that for us. So we can call
+;; maxima-integerp on p instead of using $featurep.
+
+;; The rule that is commented out is, I think, correct, but I'm not sure how useful it is and
+;; the testsuite plus the share testsuite never use this rule. For now, let's keep
+;; it commented out.
+
+;; Running the testsuite plus the share testsuite calls conjugate-mexpt 63,441
+;; times. This is far more times than all the other conjugate functions. Of these
+;; calls, the exponent is an integer 63,374 times. So for efficiency, we check 
+;; (maxima-integerp p) first. 
+
+;; The case of a nounform return only happens 9 times. For the nounform return, the power has 
+;; been simplified at the higher level. So at least for running the testsuite, we shouldn't 
+;; worry all that much about resimplifying the power for the nounform return.
+
 (defun conjugate-mexpt (e)
   (let ((x (first e)) (p (second e)))
-    (if (or (off-negative-real-axisp x) ($featurep p '$integer))
-	(power (take '($conjugate) x) (take '($conjugate) p))
-      `(($conjugate simp) ,(power x p)))))
+    (cond ((or (maxima-integerp p) (off-negative-real-axisp x))
+	             (power (take '($conjugate) x) (take '($conjugate) p)))
+          ;((on-negative-real-axisp x) ;conjugate(x^p) = exp(-%i %pi conjugate(p)) (-x)^p 
+          ;    (setq p (take '($conjugate) p)) 
+          ;    (mul (power '$%e (mul -1 '$%i '$%pi p)) (power (mul -1 x) p)))
+          (t
+           (list '($conjugate simp) (power x p))))))
 
 (defun conjugate-sum (e)
-  (take '(%sum) (take '($conjugate) (first e)) (second e) (third e) (fourth e)))
+  (if (and ($featurep (third e) '$real) ($featurep (fourth e) '$real)) 
+    (take '(%sum) (take '($conjugate) (first e)) (second e) (third e) (fourth e))
+    (list '($conjugate simp) (simplifya (cons '(%sum) e) t))))
 
 (defun conjugate-product (e)
-  (take '(%product) (take '($conjugate) (first e)) (second e) (third e) (fourth e)))
+  (if (and ($featurep (third e) '$real) ($featurep (fourth e) '$real)) 
+    (take '(%product) (take '($conjugate) (first e)) (second e) (third e) (fourth e))
+    (list '($conjugate simp) (simplifya (cons '(%product) e) t))))
 
 (defun conjugate-asin (x)
   (setq x (car x))
   (if (in-domain-of-asin x) (take '(%asin) (take '($conjugate) x))
-    `(($conjugate simp) ((%asin) ,x))))
-
+    (list '($conjugate simp) (take '(%asin) x))))
+  
 (defun conjugate-acos (x)
   (setq x (car x))
   (if (in-domain-of-asin x) (take '(%acos) (take '($conjugate) x))
-    `(($conjugate simp) ((%acos) ,x))))
+    (list '($conjugate simp) (take '(%acos) x))))
+
+(defun conjugate-acsc (x)
+  (setq x (car x))
+  (if (off-negative-one-to-onep x) (take '(%acsc) (take '($conjugate) x))
+      (list '($conjugate simp) (take '(%acsc) x))))
+
+(defun conjugate-asec (x)
+  (setq x (car x))
+  (if (off-negative-one-to-onep x) (take '(%asec) (take '($conjugate) x))
+      (list '($conjugate simp) (take '(%asec) x))))
 
 (defun conjugate-atan (x)
   (let ((xx))
@@ -182,62 +243,63 @@
     (setq xx (mul '$%i x))
     (if (in-domain-of-asin xx)
         (take '(%atan) (take '($conjugate) x))
-        `(($conjugate simp) ((%atan) ,x)))))
+         (list '($conjugate simp) (take '(%atan) x)))))
 
-;; atanh and asin are entire on the same set; see A&S Fig. 4.4 and 4.7.
+;; atanh and asin are entire on the same set; DLMF http://dlmf.nist.gov/4.37.F1 and
+;; http://dlmf.nist.gov/4.23.F1
 
 (defun conjugate-atanh (x)
   (setq x (car x))
   (if (in-domain-of-asin x) (take '(%atanh) (take '($conjugate) x))
-    `(($conjugate simp) ((%atanh) ,x))))
+    (list '($conjugate simp) (take '(%atanh) x))))
 
 ;; Integer order Bessel functions are entire; thus they commute with the
-;; conjugate (Schwartz refection principle).  But non-integer order Bessel
-;; functions are not analytic along the negative real axis. Notice that A&S
-;; 9.1.40 isn't correct -- it says that the real order Bessel functions
-;; commute with the conjugate. Not true.
+;; conjugate (Schwartz refection principle). But non-integer order Bessel
+;; functions are not analytic along the negative real axis. Notice that DLMF
+;; http://dlmf.nist.gov/10.11.E9  isn't correct; we have, for example
+;; conjugate(bessel_j(1/2,-1)) =/= bessel_j(1/2,conjugate(-1))
 
 (defun conjugate-bessel-j (z)
   (let ((n (first z)) (x (second z)))
     (if (or ($featurep n '$integer) (off-negative-real-axisp x))
         (take '(%bessel_j) (take '($conjugate) n) (take '($conjugate) x))
-       `(($conjugate simp) ((%bessel_j simp) ,@z)))))
+        (list '($conjugate simp) (simplifya (cons '(%bessel_j)  z) t)))))
 
 (defun conjugate-bessel-y (z)
   (let ((n (first z)) (x (second z)))
     (if (off-negative-real-axisp x)
         (take '(%bessel_y) (take '($conjugate) n) (take '($conjugate) x))
-       `(($conjugate simp) ((%bessel_y simp) ,@z)))))
+        (list '($conjugate simp) (simplifya (cons '(%bessel_y) z) t)))))
 
 (defun conjugate-bessel-i (z)
   (let ((n (first z)) (x (second z)))
     (if (or ($featurep n '$integer) (off-negative-real-axisp x))
         (take '(%bessel_i) (take '($conjugate) n) (take '($conjugate) x))
-       `(($conjugate simp) ((%bessel_i simp) ,@z)))))
+        (list '($conjugate simp) (simplifya (cons '(%bessel_i) z) t)))))
 
 (defun conjugate-bessel-k (z)
   (let ((n (first z)) (x (second z)))
     (if (off-negative-real-axisp x)
         (take '(%bessel_k) (take '($conjugate) n) (take '($conjugate) x))
-       `(($conjugate simp) ((%bessel_k simp) ,@z)))))
+       (list '($conjugate simp) (simplifya (cons '(%bessel_k) z) t)))))
 
 (defun conjugate-hankel-1 (z)
   (let ((n (first z)) (x (second z)))
     (if (off-negative-real-axisp x)
         (take '(%hankel_2) (take '($conjugate) n) (take '($conjugate) x))
-       `(($conjugate simp) ((%hankel_1 simp) ,@z)))))
+        (list '($conjugate simp) (simplifya (cons '(%hankel_1) z) t)))))
 
 (defun conjugate-hankel-2 (z)
   (let ((n (first z)) (x (second z)))
     (if (off-negative-real-axisp x)
         (take '(%hankel_1) (take '($conjugate) n) (take '($conjugate) x))
-       `(($conjugate simp) ((%hankel_2 simp) ,@z)))))
+        (list '($conjugate simp) (simplifya (cons '(%hankel_2) z) t)))))
 
 (defun conjugate-log-gamma (z)
 	(setq z (first z))
 	(if (off-negative-real-axisp z)
 		   (take '(%log_gamma) (take '($conjugate) z)) 
-		`(($conjugate simp) ((%log_gamma simp) ,z))))
+		(list '($conjugate simp) (take '(%log_gamma) z))))
 
 ;; conjugate of polylogarithm li[s](x), where z = (s,x). We have li[s](x) = x+x^2/2^s+x^3/3^s+...
 ;; Since for all integers k, we have conjugate(x^k/k^s) = conjugate(x)^k/k^conjugate(s), we 
@@ -280,7 +342,7 @@
    (or
 	  ($numberp e)
 	  (and ($mapatom e)
-		   (not (manifestly-pure-imaginary-p e))
+		     (not (manifestly-pure-imaginary-p e))
 	       (not (manifestly-complex-p e))
 	       (not (manifestly-nonreal-p e)))
 	  (and (consp e) (consp (car e)) (get (caar e) 'real-valued)) ;F(xxx), where F is declared real-valued
@@ -293,24 +355,24 @@
   (let (($inflag t))
     (or 
      (and ($mapatom e)
-	  (or
-	   (eql e '$%i)
-	   (and (symbolp e) (kindp e '$imaginary) (not ($nonscalarp e)))
-	   (and ($subvarp e) (manifestly-pure-imaginary-p ($op e)))))
-     ;; For now, let's use $csign on constant expressions only; once $csign improves,
-     ;; the ban on nonconstant expressions can be removed
-     (and ($constantp e) (eql '$imaginary ($csign e))))))
+	     (or
+	      (eq e '$%i)
+	      (and (symbolp e) (kindp e '$imaginary) (not ($nonscalarp e)))
+	      (and ($subvarp e) (manifestly-pure-imaginary-p ($op e)))))
+        ;; For now, let's use $csign on constant expressions only; once $csign improves,
+        ;; the ban on nonconstant expressions can be removed.
+        (and ($constantp e) (not (eq '$und e)) (not (eq '$ind e)) (eq '$imaginary ($csign e))))))
 
 ;; Don't use (kindp e '$complex)!
 
 (defun manifestly-complex-p (e)
   (let (($inflag t))
     (or (and (symbolp e) (decl-complexp e) (not ($nonscalarp e)))
-	(eql e '$infinity)
-	(and ($subvarp e) (manifestly-complex-p ($op e)) (not ($nonscalarp e))))))
+	      (eq e '$infinity)
+	      (and ($subvarp e) (manifestly-complex-p ($op e)) (not ($nonscalarp e))))))
 
 (defun manifestly-nonreal-p (e)
-  (and (symbolp e) (or (member e `($und $ind $zeroa $zerob t nil)) ($nonscalarp e))))
+  (and (symbolp e) (or (member e `($und $ind t nil)) ($nonscalarp e))))
 
 ;; We could make commutes_with_conjugate and maps_to_reals features. But I
 ;; doubt it would get much use.
@@ -318,11 +380,13 @@
 (defun simp-conjugate (e f z)
   (oneargcheck e)
   (setq e (simpcheck (cadr e) z))	; simp and disrep if necessary
+
   (cond ((complexp e) (conjugate e))    ; never happens, but might someday.
 	((manifestly-real-p e) e)
 	((manifestly-pure-imaginary-p e) (mul -1 e))
-	((manifestly-nonreal-p e) `(($conjugate simp) ,e))
-	(($mapatom e) `(($conjugate simp) ,e))
+	((or (manifestly-nonreal-p e) ($mapatom e))
+      (list '($conjugate simp) e))
+
 	((op-equalp e '$conjugate) (car (margs e)))
 
 	((and (symbolp (mop e)) (get (mop e) 'real-valued)) e)
@@ -331,11 +395,11 @@
 	 (simplify (cons (list (mop e)) (mapcar #'(lambda (s) (take '($conjugate) s)) (margs e)))))
 
 	((setq f (and (symbolp (mop e)) (get (mop e) 'conjugate-function)))
-	 (funcall f (margs e)))
+      (funcall f (margs e)))
 	  
-    ;;subscripted functions	  
+  ;;subscripted functions	  
 	((setq f (and ($subvarp (mop e)) (get (caar (mop e)) 'conjugate-function)))
-	 
-	 (funcall f (append (margs (mop e)) (margs e))))
+	 	 (funcall f (append (margs (mop e)) (margs e))))
 
-	(t `(($conjugate simp) ,e))))
+	(t 
+    (list '($conjugate simp) e))))
