@@ -2167,5 +2167,10 @@ factor(ratsimp(specint(exp(-s*t)*t^(a-1)*whittaker_m(v,u,-t),t)));
 
 /******************************************************************************/
 
+/* regression test for #3734 $hypergeometric_u vs %hypergeometric_u confusion */
+specint(%e^(-t)/k*sqrt(t*(t+2*k)),t) - 2*sqrt(%pi)*hypergeometric_u(3/2,3,2*k)*k;
+0$
+
 kill(all);
 done;
+ 
