@@ -1,5 +1,5 @@
 ;; Maxima functions for finding the maximum or minimum
-;; Copyright (C) 2005, 2007 Barton Willis
+;; Copyright (C) 2005, 2007, 2021 Barton Willis
 
 ;; Barton Willis
 ;; Department of Mathematics, 
@@ -33,6 +33,9 @@
   ;; Let's remove built-in symbols from list for user-defined properties.
   (setq $props (remove '$trylevel $props))
   (setq $props (remove '$maxmin $props)))
+
+(defprop $max $max verb)
+(defprop $min $min verb)
 
 ;; Return true if there is pi in the CL list p and qi in the CL lisp q such that
 ;; x is between pi and qi.  This means that either pi <= x <= qi or

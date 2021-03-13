@@ -1222,21 +1222,21 @@ min(a,b,c,d)$
 
 /*--non-comparable cases--*/
 
-max(und,false,true,%i,ind,3,4,5);
-max(und,false,true,%i,ind,5)$
+(xx : max(und,false,true,%i,ind,3,4,5), cons(op(xx), args(xx)));
+[max, 5, %i, ind, und, true, false]$
 
-min(und,false,true,%i,ind,3,4,5);
-min(und,false,true,%i,ind,3);
+(xx : min(und,false,true,%i,ind,3,4,5), cons(op(xx), args(xx)));
+[min, 3, %i, ind, und, true, false]$
 
-max(a < b, a,a,b);
-max(a < b,a,b)$
+(xx : max(a < b, a,a,b), cons(op(xx), args(xx)));
+[max, a, a < b, b]$
 
-min(a # b, a,a,b,a);
-min(a # b,a,b)$
+(xx : min(a # b, a,a,b,a), cons(op(xx), args(xx)));
+[min, a, a # b, b]$
 
 /*---symbolic----*/
 
-max(a,b,a);
+(remvalue(xx),max(a,b,a));
 max(a,b)$
 
 min(a,b,b);
@@ -1663,55 +1663,55 @@ integrate(ceiling(x),x,0,4);
  * These are the examples from the bug report.
  */
 
-min(%i*inf,inf);
-'min(%i*inf,inf);
+(xx : min(%i*inf,inf), cons(op(xx), args(xx)));
+[min, %i*inf,inf]$
 
-min(%i*minf,minf);
-'min(minf,%i*minf);
+(xx : min(%i*minf,minf), cons(op(xx), args(xx)));
+[min, minf,%i*minf];
 
-min(%i*inf,inf);
-'min(%i*inf,inf);
+(xx : min(%i*inf,inf), cons(op(xx), args(xx)));
+[min,%i*inf,inf];
 
-min(%i*minf,minf);
-'min(minf,%i*minf);
+(xx : min(%i*minf,minf), cons(op(xx), args(xx)));
+[min,minf,%i*minf];
 
-min(%i*-inf,-inf);
-'min(minf,%i*-inf);
+(xx : min(%i*-inf,-inf), cons(op(xx), args(xx)));
+[min,minf,%i*-inf];
 
-min(%i*-inf,minf);
-'min(minf,%i*-inf);
+(xx : min(%i*-inf,minf), cons(op(xx), args(xx)));
+[min,minf,%i*-inf];
 
-min(%i*minf,-inf);
-'min(minf,%i*minf);
+(xx : min(%i*minf,-inf), cons(op(xx), args(xx)));
+[min, minf,%i*minf];
 
-max(%i*minf,inf);
-'max(inf,%i*minf);
+(xx : max(%i*minf,inf), cons(op(xx), args(xx)));
+[max, inf,%i*minf];
 
-max(%i*minf,minf);
-'max(minf,%i*minf);
+(xx : max(%i*minf,minf), cons(op(xx), args(xx)));
+[max, minf,%i*minf];
 
-max(%i*inf,inf);
-'max(inf,%i*inf);
+(xx : max(%i*inf,inf), cons(op(xx), args(xx)));
+[max, inf,%i*inf];
 
-max(%i*-inf,-inf);
-'max(-inf,%i*-inf);
+(xx : max(%i*-inf,-inf), cons(op(xx), args(xx)));
+[max,-inf,%i*-inf];
 
-max(%i*minf,minf);
-'max(minf,%i*minf);
+(xx : max(%i*minf,minf), cons(op(xx), args(xx)));
+[max,minf,%i*minf];
 
-max(7*%i*inf+4*inf,4*%i*inf+3);
-'max(4*%i*inf+3,7*%i*inf+4*inf);
+(xx : max(7*%i*inf+4*inf,4*%i*inf+3), cons(op(xx), args(xx)));
+[max, 4*%i*inf+3,7*%i*inf+4*inf];
 
-min(7*%i*inf+4*inf,4*%i*inf+3);
-'min(7*%i*inf+4*inf,4*%i*inf+3);
+(xx : min(7*%i*inf+4*inf,4*%i*inf+3), cons(op(xx), args(xx)));
+[min,7*%i*inf+4*inf,4*%i*inf+3];
 
-min(7*%i*minf+4*inf,4*%i*minf+3);
-'min(7*%i*minf+4*inf,4*%i*minf+3);
+(xx : min(7*%i*minf+4*inf,4*%i*minf+3), cons(op(xx), args(xx)));
+[min, 7*%i*minf+4*inf,4*%i*minf+3];
 
-min(7*%i*minf+4*inf,4*%i*-inf+3);
-'min(4*%i*-inf+3,7*%i*minf+4*inf);
+(xx : min(7*%i*minf+4*inf,4*%i*-inf+3), cons(op(xx), args(xx)));
+[min,4*%i*-inf+3,7*%i*minf+4*inf];
 
-min(-inf,minf);
+(remvalue(xx), min(-inf,minf));
 minf;
 
 max(-inf,minf);
@@ -1742,4 +1742,11 @@ sublist (makelist (i, i, 1, 1000), lambda ([i], mod (bfloat(i*i), bfloat(i)) # 0
 
 sublist (makelist (i, i, 1, 1000), lambda ([i], mod (bfloat(i), bfloat(i)) # 0b0));
 [];
+
+/* See #3736 Quoting either min or max inhibits simplification */ 
+'max(1,1);
+1$
+
+'min(1,1);
+1$
 
