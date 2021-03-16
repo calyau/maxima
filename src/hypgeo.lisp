@@ -2430,7 +2430,7 @@
             (power a (add pow1 pow2 1))
             (inv (power b (add pow1 1)))
             (take '(%gamma) (add pow1 1))
-            (list '(%hypergeometric_u simp)
+            (take '($hypergeometric_u)
                   (add pow1 1)
                   (add pow1 pow2 2)
                   (mul *par* a (inv b))))))
