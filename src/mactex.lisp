@@ -252,14 +252,14 @@
                       ((stringp x)
                        (tex-string (quote-% (if $stringdisp (concatenate 'string "``" x "''") x))))
                       ((characterp x) (tex-char x))
-		      ((not ($mapatom x))
+		      ((symbolp x) (tex-stripdollar (or (get x 'reversealias) x)))
+		      (t
 		       (let ((x (if (member (marray-type x) '(array hash-table $functional))
 				    ($sconcat x)
 				  (format nil "~A" x))))
-			 (tex-string (quote-chars (if $stringdisp (concatenate 'string "``" x "''") x)
-						  "#$%&_"))))
-			 
-		      (t (tex-stripdollar (or (get x 'reversealias) x)))))
+			 ;; Do not apply stringdisp here -- we are outputting a string
+			 ;; only because we don't have a better way to handle Lisp arrays.
+			 (tex-string (quote-chars x "#$%&_"))))))
 	  r))
 
 (defun tex-string (x)
@@ -596,7 +596,7 @@
     (let ((r (exploden number)))
       (member 'e r :test #'string-equal))))
 
-(defvar *tex-mexpt-trig-like-fns* '(%sin %cos %tan %sinh %cosh %tanh %asin %acos %atan %asinh %acosh %atanh))
+(defvar *tex-mexpt-trig-like-fns* '(%sin %cos %tan %csc %sec %cot %sinh %cosh %tanh %asin %acos %atan %asinh %acosh %atanh))
 (defun tex-mexpt-trig-like-fn-p (f)
   (member f *tex-mexpt-trig-like-fns*))
 (defun maybe-tex-mexpt-trig-like (x l r)
