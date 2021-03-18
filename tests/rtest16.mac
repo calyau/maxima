@@ -2626,3 +2626,17 @@ errcatch (addcol (matrix ([1], [2], [3]), matrix ([11, 22, 33])));
 /* Bug #3532: Integrator doesn't use a new variable internally, causing facts on the original variable to be used for the substitution variable */
 is(integrate(cos(x) * abs(cos(x)), x, 0, %pi) = %pi / 2);
 false$
+
+/* Bug found on mailing list thread "Wrong integral, but antiderivative and limits are correct" */
+integrate(x^8/(5+x^9)^2, x, 0, inf);
+1/45$
+
+/* Test case for bug mentioned at https://sourceforge.net/p/maxima/mailman/message/8488105/ */
+is(abs(integrate(1/(x^4+1), x, 0, 1/2) - 0.49396) < 0.00001);
+true$
+
+/* Another bug found on mailing list thread "Wrong integral, but antiderivative and limits are correct" */
+freeof(?xz, residue(plog(x)/(x-ratsimp(rectform(%e^(%i*%pi/9)))), x, %e^(%i*%pi/9)));
+true$
+
+/* An
