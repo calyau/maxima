@@ -94,9 +94,9 @@
           ;; are bound in order to prevent the symbol 'xz from leaking
           ;; out of this function.
           (let ((var 'xz) genvar varlist)
-	      (numden (div* r i))
-	      (cond ((and (eq (caar nn*) '%cos) (eq (caar dn*) '%sin))
-		     (return (cadr nn*)))))))
+            (numden (div* r i))
+            (cond ((and (eq (caar nn*) '%cos) (eq (caar dn*) '%sin))
+              (return (cadr nn*)))))))
        (setq a ($sign r) b ($sign i))
        (cond ((eq a '$pos) (setq a 1))
 	     ((eq a '$neg) (setq a -1))
