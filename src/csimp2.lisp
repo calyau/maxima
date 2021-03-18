@@ -90,10 +90,13 @@
 		    ((equal r '$neg) (return (simplify '$%pi)))
 		    (t (merror (intl:gettext "plog: encountered atan(0/0).")))))
 	     ((and (among '%cos r) (among '%sin i))
-	      (setq var 'xz)
+          ;; genvar and varlist, used by the rational function system,
+          ;; are bound in order to prevent the symbol 'xz from leaking
+          ;; out of this function.
+          (let ((var 'xz) genvar varlist)
 	      (numden (div* r i))
 	      (cond ((and (eq (caar nn*) '%cos) (eq (caar dn*) '%sin))
-		     (return (cadr nn*))))))
+		     (return (cadr nn*)))))))
        (setq a ($sign r) b ($sign i))
        (cond ((eq a '$pos) (setq a 1))
 	     ((eq a '$neg) (setq a -1))
