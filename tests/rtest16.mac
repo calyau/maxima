@@ -2638,5 +2638,3 @@ true$
 /* Another bug found on mailing list thread "Wrong integral, but antiderivative and limits are correct" */
 freeof(?xz, residue(plog(x)/(x-ratsimp(rectform(%e^(%i*%pi/9)))), x, %e^(%i*%pi/9)));
 true$
-
-/* An
