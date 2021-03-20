@@ -432,16 +432,20 @@ with_stdout (s,
     print ("Typesetting exponents."),
 
     tex(sin(x)^2),
+    tex(sec(x)^2),
     tex(f(x)^2),
 
     tex(sin(x)^n),
+    tex(sec(x)^n),
     tex(f(x)^n),
 
     tex(sin(x)^-2),
+    tex(sec(x)^-2),
     tex(f(x)^-2),
 
     simp:false,
     tex(sin(x)^-2),
+    tex(sec(x)^-2),
     tex(f(x)^-2),
     simp:true,
 

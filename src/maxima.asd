@@ -582,7 +582,8 @@
 	       (:module graphics-drivers :pathname ""
 			:depends-on (compatibility-macros)
 			:components ((:file "gnuplot_def")
-				     (:file "xmaxima_def")))
+				     (:file "xmaxima_def")
+                                     (:file "geomview_def")))
 
 	       (:module final :pathname ""
 			:depends-on (compatibility-macros)

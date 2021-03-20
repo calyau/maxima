@@ -850,5 +850,26 @@ true;
 elliptic_ec(1/2) - gamma(3/4)^2/(2*sqrt(%pi))- %pi^(3/2)/(4*gamma(3/4)^2);
 0$
 
+/* #3745 Quoting either elliptic_f [or elliptic_e] inhibits simplification */
+'elliptic_f(5,0);
+5$
+
+'elliptic_e(5,0);
+5$
+
+/* #3746 derivative of inverse_jacobi_sn is noun/verb confused. 
+   The same is true for inverse_jacobi_cn and inverse_jacobi_dn, but the 
+   remaining nine inverse Jacobi functions ns, nc, nd, sc, cs, sd, ds, cd, 
+   and dc don't have defined m derivatives.*/
+subst(u=0, diff(inverse_jacobi_sn(u,m),m));
+0$
+
+subst(u=1, diff(inverse_jacobi_cn(u,m),m));
+0$
+
+subst(u=1, diff(inverse_jacobi_dn(u,m),m));
+0$
+
+
 (fpprec:oldfpprec,kill(l2,l3,test_deriv,oldfpprec),done);
 done;

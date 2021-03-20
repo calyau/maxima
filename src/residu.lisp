@@ -276,10 +276,6 @@
 	 (resm1 (div* nn* dn*) p))))
 
 (defun resm1 (e pole)
-  ;; Call $ratsimp to simplify pole.  Not sure if this is really
-  ;; necessary or desired, but it fixes bug 1504505.  It would be
-  ;; better to fix $taylor, but that seems much harder.
-  (let ((pole ($ratsimp ($rectform pole))))
     ;; Call taylor with silent-taylor-flag t and catch an error.
     (if (setq e (catch 'taylor-catch
                   (let ((silent-taylor-flag t))
@@ -287,4 +283,4 @@
                     ;; Things like residue(s/(s^2-a^2),s,a) fails if use -1.
                     ($taylor e var pole 1))))
         (coeff (ratdisrep e) (m^ (m+ (m* -1 pole) var) -1) 1)
-        (merror (intl:gettext "residue: taylor failed.")))))
+        (merror (intl:gettext "residue: taylor failed."))))

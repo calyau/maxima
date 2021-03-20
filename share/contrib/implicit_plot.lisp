@@ -4,6 +4,8 @@
 ;;  Author:  Andrej Vodopivec <andrejv@users.sourceforge.net>                ;;
 ;;  Licence: GPL                                                             ;;
 ;;                                                                           ;;
+;;  Modified by: Jaime Villate (use new options of plot2d and plot objects)  ;;
+;;                                                                           ;;
 ;;  Usage:                                                                   ;;
 ;;   implicit_plot(expr, xrange, yrange, [options]);                         ;;
 ;;      Plots the curve `expr' in the region given by `xrange' and `yrange'. ;;
@@ -113,14 +115,14 @@
 
 (defun $implicit_plot (expr xrange yrange &rest extra-options)
   (let (($numer t) (options (copy-tree *plot-options*))
-        (i 0) plot-name xmin xmax xdelta ymin ymax ydelta
+        (i 0) plot-name xmin xmax xdelta ymin ymax ydelta plot
         (sample (make-array `(,(1+ ($first $ip_grid))
                                ,(1+ ($second $ip_grid)))))
         (ssample (make-array `(,(1+ ($first $ip_grid_in))
                                 ,(1+ ($second $ip_grid_in)))))
         file-name gnuplot-out-file gnuplot-term ip-gnuplot
         (xmaxima-titles nil))
-    
+
     ;; Parse the given options into the list options
     (setf (getf options :type) "plot2d")
     (setq options (plot-options-parser extra-options options))
@@ -135,6 +137,16 @@
     (setf (getf options :x) (cddr xrange))
     (setf (getf options :y) (cddr yrange))
     
+    ;; Creates the object that will be passed to the external graphic program
+    (case (getf options :plot_format)
+      ($xmaxima
+       (setq plot (make-instance 'xmaxima-plot)))
+      (($gnuplot $gnuplot_pipes)
+       (setq plot (make-instance 'gnuplot-plot)))
+      (t
+       (merror (intl:gettext "plot2d: plot format ~M not supported")
+            (getf options :plot_format))))   
+    
     (unless (getf options :xlabel)
       (setf (getf options :xlabel) (ensure-string (second xrange))))
     (unless (getf options :ylabel)
@@ -143,30 +155,29 @@
     (if (not ($listp expr))
         (setq expr `((mlist simp) ,expr)))
 
-    (setq gnuplot-term (getf options :gnuplot_term))
-    (setq gnuplot-out-file (getf options :gnuplot_out_file))
-    
     (if (eq (getf options :plot_format) '$xmaxima)
         (setq ip-gnuplot nil)
         (setq ip-gnuplot t))
 
-    (if  ip-gnuplot
-        (if (and (eq gnuplot-term '$default) gnuplot-out-file)
-            (setq file-name (plot-file-path gnuplot-out-file t))
+    (if ip-gnuplot
+        (progn
+          (setq gnuplot-term (getf options :gnuplot_term))
+          (setq gnuplot-out-file (getf options :gnuplot_out_file))
+    
+          (when (and (eq gnuplot-term '$default) gnuplot-out-file)
+            (setq file-name (plot-file-path gnuplot-out-file t)))
           (setq file-name (plot-file-path
                            (format nil "maxout~d.gnuplot" (getpid)))))
-      (setq file-name (plot-file-path
-                       (format nil "maxout~d.xmaxima" (getpid)))))
+        (setq file-name (plot-file-path
+                         (format nil "maxout~d.xmaxima" (getpid)))))
     
     ;; output data
+    (setq gnuplot-out-file (plot-preamble plot options))
     (with-open-file
         (file file-name :direction :output :if-exists :supersede)
-      (if ip-gnuplot
-          (progn
-            (setq gnuplot-out-file (gnuplot-print-header file options))
-            (format file "set style data lines~%")
-            (format file "plot"))
-          (xmaxima-print-header file options))
+      (format file "~a" (slot-value plot 'data))
+      (when ip-gnuplot
+          (format file "set style data lines~%plot"))
       (let ((legend (getf options :legend))
             (colors (getf options :color))
             (types (getf options :point_type))
@@ -215,8 +226,9 @@
                   (format file " '-' ~a ~a" title style)))
               (progn
                 (let (title style)
-                  (when plot-name
-                    (setq title (format nil " {label \"~a\"}" plot-name)))
+                  (if plot-name
+                      (setq title (format nil " {label \"~a\"}" plot-name))
+                      (setq title (format nil " {nolegend 1}")))
                   (if styles
                       (progn
                         (setq style (nth (mod i (length styles)) styles))

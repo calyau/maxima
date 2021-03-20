@@ -1,5 +1,5 @@
 ;; xmaxima.lisp: routines for Maxima's interface to xmaxima
-;; Copyright (C) 2007-2013 J. Villate
+;; Copyright (C) 2007-2021 J. Villate
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -174,53 +174,211 @@
   (if (find 'mlist palette :key #'car) (setq palette (list palette)))
   (xmaxima-palette (rest (nth (mod (- n 1) (length palette)) palette))))
 			 
-(defun xmaxima-print-header (dest plot-options)
-  (cond ($show_openplot (format dest "~a -data {~%" (getf plot-options :type)))
-	(t (format dest "{~a " (getf plot-options :type))))
-  (when (string= (getf plot-options :type) "plot3d")
-    (let ((palette (getf plot-options :palette))
-          (meshcolor (if (member :mesh_lines_color plot-options)
-                       (getf plot-options :mesh_lines_color)
-                       '$black))
-          (elev (getf plot-options :elevation))
-          (azim (getf plot-options :azimuth)))
-      (if (find 'mlist palette :key #'car) (setq palette (list palette)))
-      (if palette
-	  (progn
-	    (if meshcolor
-		(format dest " {mesh_lines ~a}" (rgb-color meshcolor))
-		(format dest " {mesh_lines 0}")))
-	  (format dest " {colorscheme 0}~%"))
-      (when elev (format dest " {el ~d}" elev))
-      (when azim (format dest " {az ~d}" azim))
-      (format dest "~%")))
+(defmethod plot-preamble ((plot xmaxima-plot) plot-options)
+  (let (outfile)
+    (setf
+     (slot-value plot 'data)
+     (concatenate
+      'string
+      (slot-value plot 'data)
+      (with-output-to-string (dest)            
+        (cond ($show_openplot
+               (format dest "~a -data {~%" (getf plot-options :type)))
+              (t (format dest "{~a " (getf plot-options :type))))
+        (when (string= (getf plot-options :type) "plot3d")
+          (let ((palette (getf plot-options :palette))
+                (meshcolor (if (member :mesh_lines_color plot-options)
+                               (getf plot-options :mesh_lines_color)
+                               '$black))
+                (elev (getf plot-options :elevation))
+                (azim (getf plot-options :azimuth)))
+            (if (find 'mlist palette :key #'car) (setq palette (list palette)))
+            (if palette
+                (progn
+                  (if meshcolor
+                      (format dest " {mesh_lines ~a}" (rgb-color meshcolor))
+                      (format dest " {mesh_lines 0}")))
+                (format dest " {colorscheme 0}~%"))
+            (when elev (format dest " {el ~d}" elev))
+            (when azim (format dest " {az ~d}" azim))
+            (format dest "~%")))
+        (when (getf plot-options :ps_file)
+          (setq outfile (plot-file-path (getf plot-options :ps_file) t))
+          (format dest " {psfile ~s}" outfile))
+        (when (member :legend plot-options)
+          (unless (getf plot-options :legend)
+            (format dest " {nolegend 1}")))
+        (when (member :box plot-options)
+          (unless (getf plot-options :box)
+            (format dest " {nobox 1}")))
+        (if (getf plot-options :axes)
+            (case (getf plot-options :axes)
+              ($x (format dest " {axes {x} }"))
+              ($y (format dest " {axes {y} }"))
+              (t (format dest " {axes {xy} }")))
+            (format dest " {axes 0}"))
+        (when (getf plot-options :x)
+          (format dest " {xrange ~{~g~^ ~}}" (getf plot-options :x)))
+        (when (getf plot-options :y)
+          (format dest " {yrange ~{~g~^ ~}}" (getf plot-options :y)))
+        (when (getf plot-options :xlabel)
+          (format dest " {xaxislabel ~s}" (getf plot-options :xlabel)))
+        (when (getf plot-options :ylabel)
+          (format dest " {yaxislabel ~s}" (getf plot-options :ylabel)))
+        (when (getf plot-options :z)
+          (format $pstream " {zcenter ~g }"
+                  (/ (apply #'+ (getf plot-options :z)) 2))
+          (format $pstream " {zradius ~g }~%"
+                  (/ (apply #'- (getf plot-options :z)) -2)))
+        (format dest "~%"))))
+    ;;returns a list with the name of the file to be created, or nil
+    (if (null outfile) nil (list outfile))))
 
-  (when (getf plot-options :ps_file)
-    (format dest " {psfile ~s}" (getf plot-options :ps_file)))
-  (when (member :legend plot-options)
-    (unless (getf plot-options :legend)
-      (format dest " {nolegend 1}")))
-  (when (member :box plot-options)
-    (unless (getf plot-options :box)
-      (format dest " {nobox 1}")))
-  (if (getf plot-options :axes)
-      (case (getf plot-options :axes)
-	($x (format dest " {axes {x} }"))
-	($y (format dest " {axes {y} }"))
-	(t (format dest " {axes {xy} }")))
-      (format dest " {axes 0}"))
-  (when (getf plot-options :x)
-    (format dest " {xrange ~{~g~^ ~}}" (getf plot-options :x)))
-  (when (getf plot-options :y)
-    (format dest " {yrange ~{~g~^ ~}}" (getf plot-options :y)))
-  (when (getf plot-options :xlabel)
-    (format dest " {xaxislabel ~s}" (getf plot-options :xlabel)))
-  (when (getf plot-options :ylabel)
-    (format dest " {yaxislabel ~s}" (getf plot-options :ylabel)))
-  (when (getf plot-options :z)
-    (format $pstream " {zcenter ~g }"
-	    (/ (apply #'+ (getf plot-options :z)) 2))
-    (format $pstream " {zradius ~g }~%"
-	    (/ (apply #'- (getf plot-options :z)) -2)))
-  (format dest "~%"))
+(defmethod plot2d-command ((plot xmaxima-plot) fun options range)
+  (let (points-lists)
+    (setq points-lists
+          (mapcar #'(lambda (f) (cdr (draw2d f range options))) (cdr fun)))
+    (when (= (count-if #'(lambda (x) x) points-lists) 0)
+      (merror (intl:gettext "plot2d: nothing to plot.~%")))
+    (setf
+     (slot-value plot 'data)
+     (concatenate
+      'string
+      (slot-value plot 'data)
+      (with-output-to-string (st)            
+        (let ((legend (getf options :legend))
+              (colors (getf options :color))
+              (styles (getf options :style)) (i 0) style plot-name)
+          (unless (listp legend) (setq legend (list legend)))
+          (unless (listp colors) (setq colors (list colors)))
+          (unless (listp styles) (setq styles (list styles)))
+          (loop for v in (cdr fun) for points-list in points-lists do
+               (when points-list
+                 (if styles
+                     (setq style (nth (mod i (length styles)) styles))
+                     (setq style nil))
+                 (when ($listp style) (setq style (cdr style)))
+                 (incf i)
+                 ;; label the expression according to the legend,
+                 ;; unless it is "false" or there is only one expression
+                 (if (member :legend options)
+                     (setq plot-name
+                           (if (first legend)
+                               (ensure-string
+                                (nth (mod (- i 1) (length legend)) legend)) nil))
+                     (if (= 2 (length fun))
+                         (setq plot-name nil)
+                         (progn 
+                           (setq
+                            plot-name
+                            (with-output-to-string (pn)
+                              (cond ((atom v) (format pn "~a" ($sconcat v)))
+                                    ((eq (second v) '$parametric)
+                                     (format pn "~a, ~a"
+                                             ($sconcat (third v))
+                                             ($sconcat (fourth v))))
+                                    ((eq (second v) '$discrete)
+                                     (format pn "discrete~a" i))
+                                    (t (format pn "~a" ($sconcat v))))))
+                           (when (> (length plot-name) 50)
+                             (setq plot-name (format nil "fun~a" i))))))
+                 (if plot-name 
+                     (format st " {label ~s} " plot-name)
+                     (format st " {nolegend 1} "))
+                 (format st (xmaxima-curve-style style colors i))
+                 (format st "~%{xversusy~%")
+                 (let ((lis points-list))
+                   (loop while lis
+                      do
+                        (loop while (and lis (not (eq (car lis) 'moveto)))
+                           collecting (car lis) into xx
+                           collecting (cadr lis) into yy
+                           do (setq lis (cddr lis))
+                           finally
+                           ;; only output if at least two points for line
+                             (when (cdr xx)
+                               (tcl-output-list st xx)
+                               (tcl-output-list st yy)))
+                      ;; remove the moveto
+                        (setq lis (cddr lis))))
+                 (format st "}")))
+          (format st "} ")))))))
 
+(defmethod plot3d-command ((plot xmaxima-plot) functions options titles)
+  (let ((i 0) fun xrange yrange lvars trans)
+    (setf
+     (slot-value plot 'data)
+     (concatenate
+      'string
+      (slot-value plot 'data)
+      (with-output-to-string ($pstream)
+        ;; generate the mesh points for each surface in the functions stack
+        (dolist (f functions)
+          (setq i (+ 1 i))
+          (setq fun (first f))
+          (setq xrange (second f))
+          (setq yrange (third f))
+          (if ($listp fun)
+              (progn
+                (setq trans
+                      ($make_transform `((mlist) ,(second xrange)
+                                         ,(second yrange) $z)
+                                       (second fun) (third fun) (fourth fun)))
+                (setq fun '$zero_fun))
+              (let*
+                  ((x0 (third xrange))
+                   (x1 (fourth xrange))
+                   (y0 (third yrange))
+                   (y1 (fourth yrange))
+                   (xmid (+ x0 (/ (- x1 x0) 2)))
+                   (ymid (+ y0 (/ (- y1 y0) 2))))
+                (setq lvars `((mlist) ,(second xrange) ,(second yrange)))
+                (setq fun (coerce-float-fun fun lvars))
+                ;; Evaluate FUN at the middle point of the range.
+                ;; Looking at a single point is somewhat unreliable.
+                ;; Call FUN with numerical arguments (symbolic arguments may
+                ;; fail due to trouble computing real/imaginary parts for 
+                ;; complicated expressions, or it may be a numerical function)
+                (when (cdr ($listofvars (mfuncall fun xmid ymid)))
+                  (mtell
+                   (intl:gettext
+                    "plot3d: expected <expr. of v1 and v2>, [v1,min,max], [v2,min,max]~%"))
+                  (mtell
+                   (intl:gettext
+                    "plot3d: keep going and hope for the best.~%")))))
+          (let* ((pl
+                  (draw3d
+                   fun (third xrange) (fourth xrange) (third yrange)
+                   (fourth yrange) (first (getf options :grid))
+                   (second (getf options :grid))))
+                 (ar (polygon-pts pl))
+                 (colors (getf options :color))
+                 (palettes (getf options :palette)))
+            (declare (type (cl:array t) ar))
+            (when trans (mfuncall trans ar))
+            (when (getf options :transform_xy)
+                (mfuncall (getf options :transform_xy) ar))
+            (if palettes
+                   (format $pstream " ~a~%" (xmaxima-palettes palettes i))
+                   (format $pstream " {mesh_lines ~a}" (xmaxima-color colors i)))
+              (output-points-tcl $pstream pl (first (getf options :grid)))))
+        (format $pstream "}~%"))))))
+
+(defmethod plot-shipout ((plot xmaxima-plot) options &optional output-file)
+  (let ((file (plot-file-path (format nil "maxout~d.xmaxima" (getpid)))))
+    (cond ($show_openplot
+           (with-open-file (fl
+                            #+sbcl (sb-ext:native-namestring file)
+                            #-sbcl file
+                            :direction :output :if-exists :supersede)
+             (princ (slot-value plot 'data) fl))
+           ($system (concatenate 'string *maxima-prefix* 
+                                 (if (string= *autoconf-windows* "true")
+                                     "\\bin\\" "/bin/") 
+                                 $xmaxima_plot_command)
+                    #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
+                    (format nil " ~s &" file)
+                    #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
+                    file))
+          (t (princ (slot-value plot 'data)) ""))
+    (cons '(mlist) (cons file output-file))))
