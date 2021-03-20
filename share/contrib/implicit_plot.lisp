@@ -185,7 +185,7 @@
         (unless (listp legend) (setq legend (list legend)))
         (unless (listp colors) (setq colors (list colors)))
         (unless (listp types) (setq types (list types)))
-        (unless (listp styles) (setq colors (list styles)))
+        (unless (listp styles) (setq styles (list styles)))
         (dolist (v (cdr expr))
           (incf i)
           (setq plot-name nil)
@@ -209,9 +209,9 @@
               (progn
                 (if (> i 1)
                     (format file ","))
-                (let ((title (nth (1- i) (getf options :gnuplot_curve_titles)))
+                (let ((title (nth (1- i) (getf options :legend)))
                       (style (nth (1- i)
-                                  (getf options :gnuplot_curve_styles))))
+                                  (getf options :style))))
                   (when (or (not title) (equal title "default"))
                     (if plot-name
                         (setq title (format nil " title \"~a\"" plot-name))
