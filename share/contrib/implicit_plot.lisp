@@ -272,5 +272,7 @@
         (gnuplot-process options file-name gnuplot-out-file)
         ($system (concatenate 'string *maxima-prefix*
                               "/bin/" $xmaxima_plot_command)
-                 (format nil " \"~a\"" (plot-temp-file (format nil "maxout~d.xmaxima" (getpid)))))))
+                 (format nil " ~s &"
+                         (plot-temp-file
+                          (format nil "maxout~d.xmaxima" (getpid)))))))
     '$done)

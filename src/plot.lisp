@@ -1663,9 +1663,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 ;; one of the possible formats
 (defun check-option-format (option &aux formats)
-  (if (string= *autoconf-windows* "true")
-      (setq formats '($geomview $gnuplot $mgnuplot $openmath $xmaxima))
-      (setq formats '($geomview $gnuplot $gnuplot_pipes $mgnuplot $openmath $xmaxima)))
+  (setq formats '($geomview $gnuplot $gnuplot_pipes $mgnuplot $xmaxima))
   (unless (member (cadr option) formats)
     (merror
      (intl:gettext

@@ -1,6 +1,6 @@
 /*
   Copyright 2008, 2009, 2010, 2011, 2012, 2014, 2015 by Barton Willis
-  Maxima code for integration of signum, abs, max, min, floor, ceiling, and unit_step.
+  Maxima code for integration of signum, abs, max, min, floor, ceiling, unit_step, and hstep.
 
   This is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License,
@@ -82,26 +82,114 @@ real_linear_factors(e,x) := (
   if every(lambda([w], polynomialp(w, [x], lambda([s], freeof(x,s)),lambda([k],is(k=0 or k=1)))),e) then (
      e : sublist(args(e), lambda([s], is(is(equal(s, conjugate(s))) = true) and not freeof(x,s))),
      map(lambda([s], rhs(first(linsolve(s,x)))), e))
-  else false);
-
-/* Convert abs, max, min, and unit_step to signum expressions */
+  else false);	
+ 
+/* Convert abs, max, min, unit_step, and hstep to signum expressions */
 convert_to_signum(e) := block([opsubst : true],
   e : unit_step_mult_simp(e),
   e : subst('unit_step = lambda([s], (signum(s)*(signum(s)+1))/2), e),
+  e : subst('hstep = lambda([s], (signum(s) + 1) / 2), e),
   e : subst('max = lambda([[x]], xreduce(lambda([a,b], (a + b +abs(a-b))/2),x)),e),
   e : subst('min = lambda([[x]], xreduce(lambda([a,b], (a + b -abs(a-b))/2),x)),e),
   subst('abs = lambda([s], s * signum(s)), e));
 
-/* Do unit_step(a) * unit_step(b) --> unit_step(min(a,b)). This is an identity
-for either a left or right continuous unit_step. */
+/* unit_step_mult_simp simplifies products and powers of unit step
+   functions.
 
+   For example, unit_step(a) * unit_step(b) --> unit_step(min(a,b)).
+
+   Internal to the function unit_step_mult_simp, we represent
+   unit_step(x) or hstep(x) in a more general form:
+  
+   general_step(x,c) = (if x>0 then 1 elseif x<0 then 0 elseif x=0 then c)
+  
+   e.g. unit_step(x) <==> general_step(x,0)
+       unit_rstep(x) <==> general_step(x,1)
+            hstep(x) <==> general_step(x,1/2)
+          hstep(x)^2 <==> general_step(x,1/4)
+          hstep(x)^p <==> general_step(x,1/2^p)  (when p>0)
+  
+   Here we apply the following simplification rules:
+  
+                     general_step(x,c)^p  ==>  general_step(x,c^p)  (when p>0)
+   general_step(x,c) * general_step(y,d)  ==>  general_step(x,c*d)  (when x=y)
+   general_step(x,c) * general_step(y,d)  ==>  general_step(x,c)    (when x<y or (x<=y and c=c*d))
+   
+   We apply these rules as follows: first we iterate over the factors
+   of e, putting step functions into p and everything else into q.
+
+   We rewrite all step functions in terms of general_step, optimizing
+   as we go, and then convert back to the more familiar step functions
+   (when possible) before returning.
+
+   p is a list of general_step(x,c) expressions, which we aim to keep
+   as short as possible.  After we have scanned e, p will contain an
+   optimized list of general_step(x,c) expressions which we were
+   unable to merge or eliminate any further. */
+ 
 unit_step_mult_simp(e) := block([p : [], q : 1, inflag : true],
  if mapatom(e) then e
- else if safe_op(e) = "*" then (
+ else if member(safe_op(e), ["*", "^"]) then (
+   e : if op(e)="^" then [e] else args(e),
    for ek in e do (
-     if safe_op(ek) = 'unit_step then p : cons(first(ek),p) else q : q * ek),
-   p : xreduce('min, p),
-   if freeof('max, 'min, 'inf, p) then q * unit_step(p) else e)
+     if member(safe_op(ek), ['unit_step,'hstep])
+        or (safe_op(ek)="^" and is(second(ek)>0)=true
+            and member(safe_op(first(ek)), ['unit_step,'hstep]))
+     then block([pk, new_p, cmp],
+       /* First rewrite ek (or ek^p) as general_step(x,a) */
+       if op(ek)="^"    
+       then ek : general_step(first(first(ek)), op(first(ek))(0)^second(ek))
+       else ek : general_step(first(ek), op(ek)(0)),
+
+       /* We do not simply add ek to p.  Instead we compare ek's argument
+          with the argument of each step function in p, with the goal of
+          eliminating (or merging) as many step functions as possible.
+
+          For each ek, we iterate over the elements of p, keeping the
+          step function of minimum argument in ek, and adding to new_p
+          all elements of p which cannot be ordered relative to ek.
+          new_p becomes p before proceeding to the next ek.
+
+          If any element of p has a first argument less then ek, then
+          we drop ek, abort the inner loop, and move that element of p
+          to the front.  Elements of p whose first argument is greater
+          than ek's are dropped (not added to new_p).  Elements of p
+          whose first argument is equal to ek's are merged with ek, by
+          multiplying their values at zero (their second arguments). */
+
+       new_p : [],
+       p : do (
+         if p=[] then return(cons(ek, new_p)),
+         [pk,p] : [first(p), rest(p)],
+         cmp : compare(first(pk), first(ek)),
+
+         if cmp="<" or
+           (cmp="<=" and is(second(pk)=second(pk)*second(ek))=true)
+         then return(append([pk], reverse(new_p), p))  /* drop ek */
+
+         elseif cmp=">" or
+               (cmp=">=" and is(second(ek)=second(pk)*second(ek))=true)
+         then 'drop_pk    /* drop pk (do not add it to new_p) */
+
+         elseif cmp#"="                /* ordering cannot be determined */
+         then new_p : cons(pk, new_p)  /* we must keep both ek and pk */
+
+         /* first args of ek and pk are equal: merge them into ek */
+         else ek : general_step(first(ek), second(pk)*second(ek))))
+
+     /* everything other than step functions are put into q */
+     else q : q * ek),
+
+   /* Now we convert each element of p into standard form.
+      XXX We use a rather ugly combination of unit_steps to
+      do the job in the general case; it would be better to
+      have a standard general_step function */
+   for pk in p do q : q * (
+     if safe_op(pk)#'general_step then pk
+     elseif second(pk)=0 then unit_step(first(pk))
+     elseif second(pk)=1/2 then hstep(first(pk))
+     else unit_step(first(pk)) + second(pk)*(1-unit_step(first(pk))-unit_step(-first(pk)))),
+   q)
  else map('unit_step_mult_simp, e));
 
 /* Do e * signum(e) --> abs(e) */

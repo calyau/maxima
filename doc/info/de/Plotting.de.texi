@@ -106,7 +106,7 @@ Grafikkommandos und Daten werden in die Datei @code{maxout.gnuplot} gespeichert.
 
 @item @strong{gnuplot_pipes} (Standard, wenn nicht Windows)
 
-Dieses Format ist f@"ur Windows nicht verf@"ugbar.  Es ist @"ahnlich dem Format 
+Es ist @"ahnlich dem Format
 @code{gnuplot}, mit der Ausnahme, dass die Grafikkommandos als Datenstrom @"uber
 eine Pipe an Gnuplot gesendet werden, w@"ahrend die Daten in der Datei 
 @code{maxout.gnuplot_pipes} gespeichert werden.  Es wird nur eine Instanz von

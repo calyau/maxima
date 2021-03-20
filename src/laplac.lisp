@@ -49,11 +49,7 @@
   (setq fun (mratcheck fun))
   (cond ((or *nounsflag* (member '%laplace *nounl* :test #'eq))
          (setq fun (remlaplace fun))))
-  (cond ((and (null (atom fun)) (eq (caar fun) 'mequal))
-	 (list '(mequal)
-	       (laplace (cadr fun) parm)
-	       (laplace (caddr fun) parm)))
-	(t (laplace fun parm))))
+   (laplace fun parm))
 
 ;;;LAMBDA BINDS SOME SPECIAL VARIABLES TO NIL AND DISPATCHES
 
@@ -66,7 +62,8 @@
 (defun laplace (fun parm &optional (dvar nil))
   (let ()
 ;;; Handles easy cases and calls appropriate function on others.
-    (cond ((equal fun 0) 0)
+    (cond ((mbagp fun) (cons (car fun) (mapcar #'(lambda (e) (laplace e parm)) (cdr fun))))
+	  ((equal fun 0) 0)
 	  ((equal fun 1)
 	   (cond ((zerop1 parm) (simplify (list '($delta) 0)))
 		 (t (power parm -1))))
@@ -110,6 +107,8 @@
 			    (t (subst parm (caddr fun)(cadr fun)))))
                      ((eq op '$delta)
 		      (lapdelta fun nil parm))
+ 		     ((member op '(%hstep $unit_step))
+ 		      (laphstep fun nil parm))
 		     ((setq op ($get op '$laplace))
 		      (mcall op fun var parm))
 		     (t (lapdefint fun parm)))))
@@ -180,6 +179,8 @@
 		  (lapsinh (car fun) (cdr fun) t parm))
 		 ((eq op '$delta)
 		  (lapdelta (car fun) (cdr fun) parm))
+ 		 ((member op '(%hstep $unit_step))
+ 		  (laphstep (car fun) (cdr fun) parm))
 		 (t
 		  (lapshift (car fun) (cdr fun) parm)))))))
 
@@ -485,6 +486,30 @@
       fbase
       (list '(mexpt) fbase exponent)))
 
+;;TAKES TRANSFORM OF HSTEP(A*T+B)*F(T)
+(defun laphstep (fun rest parm)
+  (let ((ab (islinear (cadr fun) var)))
+    (if ab
+	(let* ((a (car ab))
+	       (b (cdr ab))
+	       (offset (div b a)))
+	  (case (asksign a)
+	    ($positive (if (eq (asksign offset) '$negative)
+			   (mul (exponentiate (mul offset parm))
+				(laplace (maxima-substitute
+					  (sub var offset) var
+					  (fixuprest rest)) parm))
+			 (laptimes rest parm)))
+	    ($negative (if (eq (asksign offset) '$negative)
+			   (sub (laptimes rest parm)
+				(mul (exponentiate (mul offset parm))
+				     (laplace (maxima-substitute
+					       (sub var offset) var
+					       (fixuprest rest)) parm)))
+			 0))
+	    (t (mul fun (laptimes rest parm)))))
+      (lapshift fun rest parm))))
+			  
 ;;TAKES TRANSFORM OF DELTA(A*T+B)*F(T)
 (defun lapdelta (fun rest parm)
   (let ((ab (islinear (cadr fun) var))
@@ -687,7 +712,7 @@
 		 ($ilt (caddr exp) ils ilt)))
 	  ((zerop1 exp) 0)
 	  ((freeof ils exp)
-	   (list '(%ilt) exp ils ilt))
+ 	   (list '(mtimes) exp (list '($delta) ilt)))
 	  (t (ilt0 exp)))))
 
 (defun maxima-rationalp (le v)
