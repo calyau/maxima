@@ -1,6 +1,6 @@
 ;; complex_dynamics.lisp - functions julia, mandelbrot and rk
 ;;   
-;; Copyright (C) 2006-2013 Jaime E. Villate <villate@fe.up.pt>
+;; Copyright (C) 2006-2021 Jaime E. Villate <villate@fe.up.pt>
 ;;
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,15 +19,15 @@
 ;;
 
 (in-package :maxima)
+(macsyma-module dynamics)
 
 ;; Function $mandelbrot displays the Mandelbrot set
 ;; on the region: xmin < x <xmax, ymin < y <ymax.
 
-(defun $mandelbrot (&rest extra-options)
-  (let (file-name output-file (options (copy-tree *plot-options*))
-        a b c d e num  dx dy x xmax xmin y ymax ymin m nx ny gnuplot-term)
+(defmfun $mandelbrot (&rest extra-options)
+  (let (plot output-file (options (copy-tree *plot-options*))
+        a b c d e num  dx dy x xmax xmin y ymax ymin m nx ny)
     (setf (getf options :type) "plot2d")
-    (setf (getf options :plot_format) '$gnuplot)
     (unless (getf options :x) (setf (getf options :x) '(-2 2)))
     (unless (getf options :y) (setf (getf options :y) '(-2 2)))
     (unless (getf options :iterations) (setf (getf options :iterations) 9))
@@ -40,21 +40,7 @@
                                           
     ;; Parses the options given in the command line
     (setq options (plot-options-parser extra-options options))
-
-    ;; Name of the gnuplot commands file and output file
-    (setq gnuplot-term (getf options :gnuplot_term))
-    (setf output-file (getf options :gnuplot_out_file))
-
-    (if (and (find (getf options :plot_format) '($gnuplot_pipes $gnuplot))
-             (eq gnuplot-term '$default) output-file)
-        (setq file-name (plot-file-path output-file t))
-      (setq file-name
-	    (plot-file-path
-	     (format nil "maxout~d.~(~a~)" (getpid)
-		     (ensure-string (getf options :plot_format))))))
-
     (unless (getf options :yx_ratio) (setf (getf options :same_xy) t))
-    
     (setq xmin (car (getf options :x))) 
     (setq xmax (cadr (getf options :x)))
     (setq ymin (car (getf options :y))) 
@@ -65,41 +51,49 @@
     (setq dx (/ (rationalize (- xmax xmin)) nx)) ; x incr. per pixel
     (setq dy (/ (rationalize (- ymax ymin)) ny)) ; y incr. per pixel
 
-    (with-open-file
-        (st file-name :direction :output :if-exists :supersede)
-      (setq output-file (gnuplot-print-header st options))
-      (format st "set palette ~a~%"
-              (gnuplot-palette (rest (first (getf options :palette)))))
-      (format st "unset key~%")
-      (format st "plot '-' with image~%")
-      ;; iterates through all grid points
-      (dotimes (i ny) 
-        (setq y (+ ymin (/ dy 2) (* i dy)))
-        (dotimes (j nx)
-          (setq x (+ xmin (/ dx 2) (* j dx)))
-          (setq a 0) (setq b 0)
-          (setq num m)
-          (dotimes (l m)
-            (setq c (* a a))
-            (setq d (* b b))
-            (setq e (* 2 a b))
-            (when (> (+ c d) 4) (progn (setq num l) (return)))
-            (setq a (+ (float x) (- c d)))
-            (setq b (+ (float y) e)))
-          (format st "~f ~f ~d~%" x y num)))
-      (format st "e~%"))
-    (gnuplot-process options file-name output-file)
-    (cons '(mlist) (cons file-name output-file))))
+    ;; Creates the object that will be passed to the external graphic program
+    (setq plot (make-instance 'gnuplot-plot))
+    (if (eq (getf options :plot_format) '$gnuplot_pipes)
+        (setf (slot-value plot 'pipe) T)
+        (setf (getf options :plot_format) '$gnuplot))
+
+    (setq output-file (plot-preamble plot options))
+    (setf
+     (slot-value plot 'data)
+     (concatenate
+      'string
+      (slot-value plot 'data)
+      (with-output-to-string (st)            
+        (format st "set palette ~a~%"
+                (gnuplot-palette (rest (first (getf options :palette)))))
+        (format st "unset key~%")
+        (format st "plot '-' with image~%")
+        ;; iterates through all grid points
+        (dotimes (i ny) 
+          (setq y (+ ymin (/ dy 2) (* i dy)))
+          (dotimes (j nx)
+            (setq x (+ xmin (/ dx 2) (* j dx)))
+            (setq a 0) (setq b 0)
+            (setq num m)
+            (dotimes (l m)
+              (setq c (* a a))
+              (setq d (* b b))
+              (setq e (* 2 a b))
+              (when (> (+ c d) 4) (progn (setq num l) (return)))
+              (setq a (+ (float x) (- c d)))
+              (setq b (+ (float y) e)))
+            (format st "~f ~f ~d~%" x y num)))
+        (format st "e~%"))))
+    (plot-shipout plot options output-file)))
 
 ;; Function $julia(x,y) displays the Julia set for the
 ;; point (x,y) of the complex plane, on the region: xmin < x <xmax,
 ;; ymin < y <ymax.
 
-(defun $julia (x y &rest extra-options)
-  (let (file-name output-file (options (copy-tree *plot-options*))
-        num dx dy xmax xmin ymax ymin a b c d e a0 b0 m nx ny gnuplot-term)
+(defmfun $julia (x y &rest extra-options)
+  (let (plot output-file (options (copy-tree *plot-options*))
+        num dx dy xmax xmin ymax ymin a b c d e a0 b0 m nx ny)
     (setf (getf options :type) "plot2d")
-    (setf (getf options :plot_format) '$gnuplot)
     (unless (getf options :x) (setf (getf options :x) '(-2 2)))
     (unless (getf options :y) (setf (getf options :y) '(-2 2)))
     (unless (getf options :iterations) (setf (getf options :iterations) 9))
@@ -112,21 +106,7 @@
                                           
     ;; Parses the options given in the command line
     (setq options (plot-options-parser extra-options options))
-
-    ;; Name of the gnuplot commands file and output file
-    (setq gnuplot-term (getf options :gnuplot_term))
-    (setf output-file (getf options :gnuplot_out_file))
-
-    (if (and (find (getf options :plot_format) '($gnuplot_pipes $gnuplot))
-             (eq gnuplot-term '$default) output-file)
-        (setq file-name (plot-file-path output-file t))
-        (setq file-name
-              (plot-file-path
-               (format nil "maxout~d.~(~a~)" (getpid)
-                       (ensure-string (getf options :plot_format))))))
-
     (unless (getf options :yx_ratio) (setf (getf options :same_xy) t))
-    
     (setq xmin (car (getf options :x))) 
     (setq xmax (cadr (getf options :x)))
     (setq ymin (car (getf options :y))) 
@@ -137,33 +117,42 @@
     (setq dx (/ (rationalize (- xmax xmin)) nx)) ; x incr. per pixel
     (setq dy (/ (rationalize (- ymax ymin)) ny)) ; y incr. per pixel
 
-    (with-open-file
-        (st file-name :direction :output :if-exists :supersede)
-      (setq output-file (gnuplot-print-header st options))
-      (format st "set palette ~a~%"
-              (gnuplot-palette (rest (first (getf options :palette)))))
-      (format st "unset key~%")
-      (format st "plot '-' with image~%")
+    ;; Creates the object that will be passed to the external graphic program
+    (setq plot (make-instance 'gnuplot-plot))
+    (if (eq (getf options :plot_format) '$gnuplot_pipes)
+        (setf (slot-value plot 'pipe) T)
+        (setf (getf options :plot_format) '$gnuplot))
 
-      ;; iterates through all grid points
-      (dotimes (i ny) 
-        (setq b0 (+ ymin (/ dy 2) (* i dy)))
-        (dotimes (j nx)
-          (setq a0 (+ xmin (/ dx 2) (* j dx)))
-          (setq a (float a0))
-          (setq b (float b0))
-          (setq num m)
-          (dotimes (l m)
-            (setq c (* a a))
-            (setq d (* b b))
-            (setq e (* 2 a b))
-            (when (> (+ c d) 4) (progn (setq num l) (return)))
-            (setq a (+ x (- c d)))
-            (setq b (+ y e)))
-          (format st "~f ~f ~d~%" a0 b0 num)))
-      (format st "e~%"))
-    (gnuplot-process options file-name output-file)
-    (cons '(mlist) (cons file-name output-file))))
+    (setq output-file (plot-preamble plot options))
+    (setf
+     (slot-value plot 'data)
+     (concatenate
+      'string
+      (slot-value plot 'data)
+      (with-output-to-string (st)
+        (format st "set palette ~a~%"
+                (gnuplot-palette (rest (first (getf options :palette)))))
+        (format st "unset key~%")
+        (format st "plot '-' with image~%")
+        
+        ;; iterates through all grid points
+        (dotimes (i ny) 
+          (setq b0 (+ ymin (/ dy 2) (* i dy)))
+          (dotimes (j nx)
+            (setq a0 (+ xmin (/ dx 2) (* j dx)))
+            (setq a (float a0))
+            (setq b (float b0))
+            (setq num m)
+            (dotimes (l m)
+              (setq c (* a a))
+              (setq d (* b b))
+              (setq e (* 2 a b))
+              (when (> (+ c d) 4) (progn (setq num l) (return)))
+              (setq a (+ x (- c d)))
+              (setq b (+ y e)))
+            (format st "~f ~f ~d~%" a0 b0 num)))
+        (format st "e~%"))))
+    (plot-shipout plot options output-file)))
 
 ;; Function $rk implements the 4th order Runge-Kutta numerical method.
 ;;  exprs:   an expression or maxima list with n expressions
@@ -171,7 +160,7 @@
 ;;  initial: initial value for the variable (or list of initial values)
 ;;  domain:  maxima list with four elements (name of the independent
 ;;           variable, its initial and final values and its increment)
-(defun $rk (exprs vars initial domain
+(defmfun $rk (exprs vars initial domain
             &aux d u fun k1 k2 k3 k4 r1 r2 r3 traj r
               (it (mapcar #'coerce-float (cddr domain))))
   (unless ($listp exprs) (setq exprs `((mlist) ,exprs)))

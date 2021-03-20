@@ -1,5 +1,5 @@
 ;; gnuplot.lisp: routines for Maxima's interface to gnuplot
-;; Copyright (C) 2007-2019 J. Villate
+;; Copyright (C) 2007-2021 J. Villate
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -227,201 +227,6 @@
            "palette: wrong keyword ~M. Must be hue, saturation, value, gray or gradient.")
           (first palette)))))))
 
-(defun gnuplot-print-header (dest plot-options)
-  (let (terminal-file (palette (getf plot-options :palette))
-        (meshcolor (if (member :mesh_lines_color plot-options)
-                       (getf plot-options :mesh_lines_color)
-                       '$black))
-        (gstrings (if (getf plot-options :gnuplot_strings) "" "noenhanced")))
-    (when (and (member :gnuplot_pm3d plot-options)
-               (not (getf plot-options :gnuplot_pm3d)))
-      (setq palette nil))
-    (when (find 'mlist palette :key #'car) (setq palette (list palette)))
-    ;; user's preamble
-    (when (and (getf plot-options :gnuplot_preamble)
-               (> (length  (getf plot-options :gnuplot_preamble)) 0))
-      (format dest "~a~%" (getf plot-options :gnuplot_preamble)))
-
-    ;; sets-up terminal command and output file name
-    (setq terminal-file (gnuplot-terminal-and-file plot-options))
-
-    ;; By default gnuplot assumes everything below 1e-8 to be a rounding error
-    ;; and rounds it down to 0. This is handy for standalone gnuplot as it allows
-    ;; to suppress pixels with imaginary part while allowing for small calculation
-    ;; errors. As plot and draw handle the imaginary part without gnuplot's help
-    ;; this isn't needed here and is turned off as it often surprises users.
-    (format dest "set zero 0.0~%")
-
-    ;; prints terminal and output commands
-    (when (first terminal-file)
-      (format dest "~a~%" (first terminal-file)))
-    (when (second terminal-file)
-      (format dest "set output ~s~%" (second terminal-file)))
-
-    ;; options specific to plot3d
-    (when (string= (getf plot-options :type) "plot3d")
-      (format dest "set xyplane relative 0~%")
-      (if palette
-          (progn
-            (if meshcolor
-                (progn
-                  (format dest "set style line 100 lt rgb ~s lw 1~%"
-                          (rgb-color meshcolor))
-                  (format dest "set pm3d hidden3d 100~%")
-                  (unless (getf plot-options :gnuplot_4_0)
-                    (format dest "set pm3d depthorder~%")))
-                (format dest "set pm3d~%"))
-            (format dest "unset hidden3d~%")
-            (format dest "set palette ~a~%"
-                    (gnuplot-palette (rest (first palette)))))
-          (format dest "set hidden3d~%"))
-      (let ((elev (getf plot-options :elevation))
-            (azim (getf plot-options :azimuth)))
-        (when (or elev azim)
-          (if elev
-              (format dest "set view ~d" elev)
-              (format dest "set view "))
-          (when azim (format dest ", ~d" azim))
-          (format dest "~%"))))
-
-    ;; color_bar can be used by plot3d or plot2d
-    (unless (getf plot-options :color_bar)
-      (format dest "unset colorbox~%"))
-
-    ;; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
-    ;; When the expression to be plotted is a constant, Gnuplot fails
-    ;; with a division by 0.  Explicitly assigning cbrange prevents
-    ;; the error. Also set zrange to match cbrange.
-    ;; When the bug is fixed in Gnuplot (maybe 4.1 ?) this hack can go away.
-    (when (floatp (getf plot-options :const_expr))
-      (format
-       dest "set cbrange [~a : ~a]~%"
-       (1- (getf plot-options :const_expr))
-       (1+ (getf plot-options :const_expr)))
-      (format
-       dest "set zrange [~a : ~a]~%"
-       (1- (getf plot-options :const_expr))
-       (1+ (getf plot-options :const_expr))))
-    ;; -----  END GNUPLOT 4.0 WORK-AROUND  -----
-    
-    ;; logarithmic plots
-    (when (getf plot-options :logx) (format dest "set log x~%"))
-    (when (getf plot-options :logy) (format dest "set log y~%"))
-
-    ;; axes labels and legend
-    (when (getf plot-options :xlabel)
-      (format dest "set xlabel ~s ~a~%" (getf plot-options :xlabel) gstrings))
-    (when (getf plot-options :ylabel)
-      (format dest "set ylabel ~s ~a~%" (getf plot-options :ylabel) gstrings))
-    (when (getf plot-options :zlabel)
-      (format dest "set zlabel ~s ~a~%" (getf plot-options :zlabel) gstrings))
-    (when (and (member :legend plot-options) 
-               (null (getf plot-options :legend)))
-      (format dest "unset key~%"))
-
-    ;; plotting box
-    (when (and (member :box plot-options) (not (getf plot-options :box)))
-      (format dest "unset border~%")
-      (if (and (getf plot-options :axes)
-               (string= (getf plot-options :type) "plot2d"))
-          (format dest "set xtics axis~%set ytics axis~%set ztics axis~%")
-          (format dest "unset xtics~%unset ytics~%unset ztics~%")))
-
-    (when (string= (getf plot-options :type) "plot2d")
-
-      ;; 2d grid (specific to plot2d)
-      (format dest "set grid front~%")
-      (if (getf plot-options :grid2d)
-          (format dest "set grid~%")
-          (format dest "unset grid~%"))
-
-      ;; plot size and aspect ratio for plot2d
-      (if (getf plot-options :same_xy)
-          (format dest "set size ratio -1~%")
-          (if (getf plot-options :yx_ratio)
-              (format dest "set size ratio ~,8f~%" (getf plot-options :yx_ratio))
-              (if (not (getf plot-options :xy_scale))
-                  ;; emit the default only if there is no xy_scale specified.
-                  (format dest "set size ratio 0.75~%"))))
-      (if (and (getf plot-options :xy_scale)
-               (listp (getf plot-options :xy_scale)))
-          (format dest "set size ~{~,8f~^, ~}~%" (getf plot-options :xy_scale))))
-
-    ;; plot size and aspect ratio for plot3d
-    (when (string= (getf plot-options :type) "plot3d")
-      (when (getf plot-options :same_xy)
-        (format dest "set view equal xy~%"))
-      (when (getf plot-options :same_xyz)
-        (format dest "set view equal xyz~%"))
-      (when (getf plot-options :zmin)
-        (format dest "set xyplane at ~,8f~%" (getf plot-options :zmin))))
-
-    ;; axes tics
-    (when (member :xtics plot-options)
-      (let ((xtics (getf plot-options :xtics)))
-        (if (consp xtics)
-            (format dest "set xtics ~{~,8f~^, ~}~%" xtics)
-            (if xtics
-                (format dest "set xtics ~,8f~%" xtics)
-                (format dest "unset xtics~%")))))
-    (when (member :ytics plot-options)
-      (let ((ytics (getf plot-options :ytics)))
-        (if (consp ytics)
-            (format dest "set ytics ~{~,8f~^, ~}~%" ytics)
-            (if ytics
-                (format dest "set ytics ~,8f~%" ytics)
-                (format dest "unset ytics~%")))))
-    (when (member :ztics plot-options)
-      (let ((ztics (getf plot-options :ztics)))
-        (if (consp ztics)
-            (format dest "set ztics ~{~,8f~^, ~}~%" ztics)
-            (if ztics
-                (format dest "set ztics ~,8f~%" ztics)
-                (format dest "unset ztics~%")))))
-    (when (member :color_bar_tics plot-options)
-      (let ((cbtics (getf plot-options :color_bar_tics)))
-        (if (consp cbtics)
-            (format dest "set cbtics ~{~,8f~^, ~}~%" cbtics)
-            (if cbtics
-                (format dest "set cbtics ~,8f~%" cbtics)
-                (format dest "unset cbtics~%")))))
-
-    ;; axes ranges and style
-    (when (and (getf plot-options :x) (listp (getf plot-options :x)))
-      (format dest "set xrange [~{~g~^ : ~}]~%" (getf plot-options :x)))
-    (when (and (getf plot-options :y) (listp (getf plot-options :y)))
-      (format dest "set yrange [~{~g~^ : ~}]~%" (getf plot-options :y)))
-    (when (and (getf plot-options :z) (listp (getf plot-options :z)))
-      (format dest "set zrange [~{~g~^ : ~}]~%" (getf plot-options :z)))
-    (when (and (string= (getf plot-options :type) "plot2d")
-               (member :axes plot-options))
-      (if (getf plot-options :axes)
-          (case (getf plot-options :axes)
-            ($x (format dest "set xzeroaxis~%"))
-            ($y (format dest "set yzeroaxis~%"))
-            ($solid (format dest "set zeroaxis lt -1~%"))
-            (t (format dest "set zeroaxis~%")))))
-
-    ;; title and labels
-    (when (getf plot-options :title)
-      (format dest "set title ~s ~a~%" (getf plot-options :title) gstrings))
-    (when (getf plot-options :label)
-      (dolist (label (getf plot-options :label))
-        (when (and (listp label) (= (length label) 4))
-          (format dest "set label ~s ~a at ~{~,8f~^, ~}~%"
-                  (cadr label) gstrings (cddr label)))))
-
-    ;; identifier for missing data
-    (format dest "set datafile missing ~s~%" *missing-data-indicator*)
-
-    ;; user's commands; may overule any of the previous settings
-    (when (and (getf plot-options :gnuplot_postamble)
-               (> (length  (getf plot-options :gnuplot_postamble)) 0))
-      (format dest "~a~%" (getf plot-options :gnuplot_postamble)))
-
-    ;;returns a list with the name of the file created, or nil
-    (if (null (second terminal-file)) nil (list (second terminal-file)))))
-
 (defun gnuplot-plot3d-command (file palette gstyles colors gstrings titles n) 
 (let (title (style "with pm3d"))
   (with-output-to-string (out)
@@ -501,3 +306,352 @@
 
   (unless (null out-file) (setq out-file (plot-file-path out-file preserve-file)))
   (list terminal-command out-file)))
+
+(defmethod plot-preamble ((plot gnuplot-plot) plot-options)
+  (let ((palette (getf plot-options :palette))
+                      (meshcolor (if (member :mesh_lines_color plot-options)
+                                     (getf plot-options :mesh_lines_color)
+                                     '$black))
+                      (gstrings (if (getf plot-options :gnuplot_strings)
+                                    "" "noenhanced"))  terminal-file)
+    (when (find 'mlist palette :key #'car) (setq palette (list palette)))
+    ;; sets-up terminal command and output file name
+    (setq terminal-file (gnuplot-terminal-and-file plot-options))
+    (setf
+     (slot-value plot 'data)
+     (concatenate
+      'string
+      (slot-value plot 'data)
+      (with-output-to-string (dest)            
+        ;; user's preamble
+        (when (and (getf plot-options :gnuplot_preamble)
+                   (> (length  (getf plot-options :gnuplot_preamble)) 0))
+          (format dest "~a~%" (getf plot-options :gnuplot_preamble)))
+        ;; Don't round numbers with absolute value less than 1e-8 to zero
+        (format dest "set zero 0.0~%")
+        ;; prints terminal and output commands
+        (when (first terminal-file)
+          (format dest "~a~%" (first terminal-file)))
+        (when (second terminal-file)
+          (format dest "set output ~s~%" (second terminal-file)))
+        ;; options specific to plot3d
+        (when (string= (getf plot-options :type) "plot3d")
+          (format dest "set xyplane relative 0~%")
+          (if palette
+              (progn
+                (if meshcolor
+                    (progn
+                      (format dest "set style line 100 lt rgb ~s lw 1~%"
+                              (rgb-color meshcolor))
+                      (format dest "set pm3d hidden3d 100~%")
+                      (unless (getf plot-options :gnuplot_4_0)
+                        (format dest "set pm3d depthorder~%")))
+                    (format dest "set pm3d~%"))
+                (format dest "unset hidden3d~%")
+                (format dest "set palette ~a~%"
+                        (gnuplot-palette (rest (first palette)))))
+              (format dest "set hidden3d~%"))
+          (let ((elev (getf plot-options :elevation))
+                (azim (getf plot-options :azimuth)))
+            (when (or elev azim)
+              (if elev
+                  (format dest "set view ~d" elev)
+                  (format dest "set view "))
+              (when azim (format dest ", ~d" azim))
+              (format dest "~%"))))
+        ;; color_bar can be used by plot3d or plot2d
+        (unless (getf plot-options :color_bar)
+          (format dest "unset colorbox~%"))
+        ;; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
+        ;; When the expression plotted is constant, Gnuplot 4.0 fails
+        ;; with a division by 0.  Explicitly assigning cbrange prevents
+        ;; the error. Also set zrange to match cbrange.
+        (when (floatp (getf plot-options :const_expr))
+          (format
+           dest "set cbrange [~a : ~a]~%"
+           (1- (getf plot-options :const_expr))
+           (1+ (getf plot-options :const_expr)))
+          (format
+           dest "set zrange [~a : ~a]~%"
+           (1- (getf plot-options :const_expr))
+           (1+ (getf plot-options :const_expr))))
+        ;; -----  END GNUPLOT 4.0 WORK-AROUND  -----
+        ;; logarithmic plots
+        (when (getf plot-options :logx) (format dest "set log x~%"))
+        (when (getf plot-options :logy) (format dest "set log y~%"))
+        ;; axes labels and legend
+        (when (getf plot-options :xlabel)
+          (format dest
+                  "set xlabel ~s ~a~%" (getf plot-options :xlabel) gstrings))
+        (when (getf plot-options :ylabel)
+          (format dest
+                  "set ylabel ~s ~a~%" (getf plot-options :ylabel) gstrings))
+        (when (getf plot-options :zlabel)
+          (format dest
+                  "set zlabel ~s ~a~%" (getf plot-options :zlabel) gstrings))
+        (when (and (member :legend plot-options) 
+                   (null (getf plot-options :legend)))
+          (format dest "unset key~%"))
+        ;; plotting box
+        (when (and (member :box plot-options) (not (getf plot-options :box)))
+          (format dest "unset border~%")
+          (if (and (getf plot-options :axes)
+                   (string= (getf plot-options :type) "plot2d"))
+              (format dest "set xtics axis~%set ytics axis~%set ztics axis~%")
+              (format dest "unset xtics~%unset ytics~%unset ztics~%")))
+        ;; 2d grid (specific to plot2d)
+        (when (string= (getf plot-options :type) "plot2d")
+          (format dest "set grid front~%")
+          (if (getf plot-options :grid2d)
+              (format dest "set grid~%")
+              (format dest "unset grid~%"))
+          ;; plot size and aspect ratio for plot2d
+          (if (getf plot-options :same_xy)
+              (format dest "set size ratio -1~%")
+              (if (getf plot-options :yx_ratio)
+                  (format dest "set size ratio ~,8f~%"
+                          (getf plot-options :yx_ratio))
+                  (if (not (getf plot-options :xy_scale))
+                      ;; emit the default only if there is no xy_scale specified.
+                      (format dest "set size ratio 0.75~%"))))
+          (if (and (getf plot-options :xy_scale)
+                   (listp (getf plot-options :xy_scale)))
+              (format dest "set size ~{~,8f~^, ~}~%"
+                      (getf plot-options :xy_scale))))
+        ;; plot size and aspect ratio for plot3d
+        (when (string= (getf plot-options :type) "plot3d")
+          (when (getf plot-options :same_xy)
+            (format dest "set view equal xy~%"))
+          (when (getf plot-options :same_xyz)
+            (format dest "set view equal xyz~%"))
+          (when (getf plot-options :zmin)
+            (format dest "set xyplane at ~,8f~%" (getf plot-options :zmin))))
+        ;; axes tics
+        (when (member :xtics plot-options)
+          (let ((xtics (getf plot-options :xtics)))
+            (if (consp xtics)
+                (format dest "set xtics ~{~,8f~^, ~}~%" xtics)
+                (if xtics
+                    (format dest "set xtics ~,8f~%" xtics)
+                    (format dest "unset xtics~%")))))
+        (when (member :ytics plot-options)
+          (let ((ytics (getf plot-options :ytics)))
+            (if (consp ytics)
+                (format dest "set ytics ~{~,8f~^, ~}~%" ytics)
+                (if ytics
+                    (format dest "set ytics ~,8f~%" ytics)
+                    (format dest "unset ytics~%")))))
+        (when (member :ztics plot-options)
+          (let ((ztics (getf plot-options :ztics)))
+            (if (consp ztics)
+                (format dest "set ztics ~{~,8f~^, ~}~%" ztics)
+                (if ztics
+                    (format dest "set ztics ~,8f~%" ztics)
+                    (format dest "unset ztics~%")))))
+        (when (member :color_bar_tics plot-options)
+          (let ((cbtics (getf plot-options :color_bar_tics)))
+            (if (consp cbtics)
+                (format dest "set cbtics ~{~,8f~^, ~}~%" cbtics)
+                (if cbtics
+                    (format dest "set cbtics ~,8f~%" cbtics)
+                    (format dest "unset cbtics~%")))))
+        ;; axes ranges and style
+        (when (and (getf plot-options :x) (listp (getf plot-options :x)))
+          (format dest "set xrange [~{~g~^ : ~}]~%" (getf plot-options :x)))
+        (when (and (getf plot-options :y) (listp (getf plot-options :y)))
+          (format dest "set yrange [~{~g~^ : ~}]~%" (getf plot-options :y)))
+        (when (and (getf plot-options :z) (listp (getf plot-options :z)))
+          (format dest "set zrange [~{~g~^ : ~}]~%" (getf plot-options :z)))
+        (when (and (string= (getf plot-options :type) "plot2d")
+                   (member :axes plot-options))
+          (if (getf plot-options :axes)
+              (case (getf plot-options :axes)
+                ($x (format dest "set xzeroaxis~%"))
+                ($y (format dest "set yzeroaxis~%"))
+                ($solid (format dest "set zeroaxis lt -1~%"))
+                (t (format dest "set zeroaxis~%")))))
+        ;; title and labels
+        (when (getf plot-options :title)
+          (format dest "set title ~s ~a~%" (getf plot-options :title) gstrings))
+        (when (getf plot-options :label)
+          (dolist (label (getf plot-options :label))
+            (when (and (listp label) (= (length label) 4))
+              (format dest "set label ~s ~a at ~{~,8f~^, ~}~%"
+                      (cadr label) gstrings (cddr label)))))
+        ;; identifier for missing data
+        (format dest "set datafile missing ~s~%" *missing-data-indicator*)
+        ;; user's commands; may overule any of the previous settings
+        (when (and (getf plot-options :gnuplot_postamble)
+                   (> (length  (getf plot-options :gnuplot_postamble)) 0))
+          (format dest "~a~%" (getf plot-options :gnuplot_postamble))))))
+        ;;returns a list with the name of the file created, or nil
+    (if (null (second terminal-file))
+        nil (list (second terminal-file)))))
+
+(defmethod plot2d-command ((plot gnuplot-plot) fun options range)
+  ;; Compute points to plot for each element of FUN.
+  ;; If no plottable points are found, end with an error.
+  (let (points-lists)
+    (setq points-lists
+          (mapcar #'(lambda (f) (cdr (draw2d f range options))) (cdr fun)))
+    (when (= (count-if #'(lambda (x) x) points-lists) 0)
+      (merror (intl:gettext "plot2d: nothing to plot.~%")))
+    (setf
+     (slot-value plot 'data)
+     (concatenate
+      'string
+      (slot-value plot 'data)
+      (with-output-to-string (st)            
+        (format st "plot")
+        (when (getf options :x)
+          (format st " [~{~g~^ : ~}]" (getf options :x)))
+        (when (getf options :y) 
+          (unless (getf options :x)
+            (format st " []"))
+          (format st " [~{~g~^ : ~}]"  (getf options :y)))
+        (let ((legend (getf options :legend))
+              (colors (getf options :color))
+              (types (getf options :point_type))
+              (styles (getf options :style))
+              (gstrings (if (getf options :gnuplot_strings) "" "noenhanced "))
+              (i 0) style plot-name)
+          (unless (listp legend) (setq legend (list legend)))
+          (unless (listp colors) (setq colors (list colors)))
+          (unless (listp styles) (setq styles (list styles)))
+          (loop for v in (cdr fun) for points-list in points-lists do
+               (when points-list
+                 (if styles
+                     (setq style (nth (mod i (length styles)) styles))
+                     (setq style nil))
+                 (when ($listp style) (setq style (cdr style)))
+                 (incf i)
+                 ;; label the expression according to the legend,
+                 ;; unless it is "false" or there is only one expression
+                 (if (member :legend options)
+                     (setq plot-name
+                           (if (first legend)
+                               (ensure-string
+                                (nth (mod (- i 1) (length legend)) legend)) nil))
+                     (if (= 2 (length fun))
+                         (setq plot-name nil)
+                         (progn 
+                           (setq
+                            plot-name
+                            (with-output-to-string (pn)
+                              (cond ((atom v) (format pn "~a" ($sconcat v)))
+                                    ((eq (second v) '$parametric)
+                                     (format pn "~a, ~a"
+                                             ($sconcat (third v))
+                                             ($sconcat (fourth v))))
+                                    ((eq (second v) '$discrete)
+                                     (format pn "discrete~a" i))
+                                    (t (format pn "~a" ($sconcat v))))))
+                           (when (> (length plot-name) 50)
+                             (setq plot-name (format nil "fun~a" i))))))
+                 (when (> i 1) (format st ","))
+                 (format st " '-'")
+                 (if plot-name 
+                     (format st " title ~s ~a" plot-name gstrings)
+                     (format st " notitle "))
+                 (format st (gnuplot-curve-style style colors types i)))))
+        ;; Parses points data
+        (format st "~%")
+        (loop for points-list in points-lists do
+             (when points-list
+               (let (in-discontinuity points)
+                 (loop for (v w) on points-list by #'cddr
+                    do
+                      (cond ((eq v 'moveto)
+                             ;; A blank line means a discontinuity
+                             (if (null in-discontinuity)
+                                 (progn
+                                   (format st "~%")
+                                   (setq in-discontinuity t))))
+                            (t
+                             (format st "~g ~g ~%" v w)
+                             (setq points t)
+                             (setq in-discontinuity nil))))
+                 (if (and (null points)
+                          (first (getf options :x)) (first (getf options :y)))
+                     (format st "~g ~g ~%" (first (getf options :x))
+                             (first (getf options :y)))))
+               (format st "e~%"))))))))
+
+(defmethod plot3d-command ((plot gnuplot-plot) functions options titles)
+  (let ((i 0) fun xrange yrange lvars trans (n (length functions))
+    (gstrings (if (getf options :gnuplot_strings) "" "noenhanced")))
+    (setf
+     (slot-value plot 'data)
+     (concatenate
+      'string
+      (slot-value plot 'data)
+      (with-output-to-string ($pstream)
+        (format $pstream "~a"
+                (gnuplot-plot3d-command "-" (getf options :palette)
+                                        (getf options :gnuplot_curve_styles)
+                                        (getf options :color)
+                                        gstrings titles n))
+        ;; generate the mesh points for each surface in the functions stack
+        (dolist (f functions)
+          (setq i (+ 1 i))
+          (setq fun (first f))
+          (setq xrange (second f))
+          (setq yrange (third f))
+          (if ($listp fun)
+              (progn
+                (setq trans
+                      ($make_transform `((mlist) ,(second xrange)
+                                         ,(second yrange) $z)
+                                       (second fun) (third fun) (fourth fun)))
+                (setq fun '$zero_fun))
+              (let*
+                  ((x0 (third xrange))
+                   (x1 (fourth xrange))
+                   (y0 (third yrange))
+                   (y1 (fourth yrange))
+                   (xmid (+ x0 (/ (- x1 x0) 2)))
+                   (ymid (+ y0 (/ (- y1 y0) 2))))
+                (setq lvars `((mlist) ,(second xrange) ,(second yrange)))
+                (setq fun (coerce-float-fun fun lvars))
+                ;; Evaluate FUN at the middle point of the range.
+                ;; Looking at a single point is somewhat unreliable.
+                ;; Call FUN with numerical arguments (symbolic arguments may
+                ;; fail due to trouble computing real/imaginary parts for 
+                ;; complicated expressions, or it may be a numerical function)
+                (when (cdr ($listofvars (mfuncall fun xmid ymid)))
+                  (mtell
+                   (intl:gettext
+                    "plot3d: expected <expr. of v1 and v2>, [v1,min,max], [v2,min,max]~%"))
+                  (mtell
+                   (intl:gettext
+                    "plot3d: keep going and hope for the best.~%")))))
+          (let* ((pl
+                  (draw3d
+                   fun (third xrange) (fourth xrange) (third yrange)
+                   (fourth yrange) (first (getf options :grid))
+                   (second (getf options :grid))))
+                 (ar (polygon-pts pl)))
+            (declare (type (cl:array t) ar))
+            (when trans (mfuncall trans ar))
+            (when (getf options :transform_xy)
+              (mfuncall (getf options :transform_xy) ar))
+            (output-points pl (first (getf options :grid)))
+            (format $pstream "e~%"))))))))
+
+(defmethod plot-shipout ((plot gnuplot-plot) options &optional output-file)
+   (case (getf options :plot_format)
+     ($gnuplot
+      (let (file)
+        (setq file (plot-file-path (format nil "maxout~d.gnuplot" (getpid))))
+        (with-open-file (fl
+                         #+sbcl (sb-ext:native-namestring file)
+                         #-sbcl file
+                         :direction :output :if-exists :supersede)
+          (format fl "~a" (slot-value plot 'data)))
+        (gnuplot-process options file output-file)
+        (cons '(mlist) (cons file output-file))))
+      ($gnuplot_pipes
+       (check-gnuplot-process)
+       ($gnuplot_reset)
+       (send-gnuplot-command (slot-value plot 'data))
+       (if output-file (cons '(mlist) output-file) nil))))

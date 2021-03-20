@@ -48,9 +48,11 @@
 	 `(progn
 	    (defprop ,f-verb ,f-noun verb)
 	    (defprop ,f-noun ,f-verb noun)
+		(defprop ,f-verb ,f-noun alias)
 	    (defprop ,f-noun ,f-verb reversealias)
 	    (defprop ,i-verb ,i-noun verb)
 	    (defprop ,i-noun ,i-verb noun)
+		(defprop ,i-verb ,i-noun alias)
 	    (defprop ,i-noun ,i-verb reversealias)))))
   (frob sn)
   (frob cn)
@@ -65,6 +67,8 @@
   (frob cd)
   (frob dc))
 
+(defprop $elliptic_f  $elliptic_f verb)
+(defprop $elliptic_e  $elliptic_e verb) 
 ;;
 ;; Routines for computing the basic elliptic functions sn, cn, and dn.
 ;;
@@ -74,7 +78,7 @@
 ;; transformations (16.12 and 16.14).  The latter are actually quite
 ;; fast, only requiring simple arithmetic and square roots for the
 ;; transformation until the last step.  The AGM requires evaluation of
-;; several trignometric functions at each stage.
+;; several trigonometric functions at each stage.
 ;;
 ;; However, the Landen transformations appear to have some round-off
 ;; issues.  For example, using the ascending transform to compute cn,
@@ -450,9 +454,9 @@
 	((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m ((mexpt simp) x 2)))
 	 ((rat simp) -1 2)))
        ((mtimes simp) ((mexpt simp) m -1)
-	((mplus simp) ((%elliptic_e simp) ((%asin simp) x) m)
+	((mplus simp) (($elliptic_e simp) ((%asin simp) x) m)
 	 ((mtimes simp) -1 ((mplus simp) 1 ((mtimes simp) -1 m))
-	  ((%elliptic_f simp) ((%asin simp) x) m)))))))
+	  (($elliptic_f simp) ((%asin simp) x) m)))))))
   grad)
 
 ;; Let u = inverse_jacobi_cn(x).  Then jacobi_cn(u) = x or
@@ -485,12 +489,12 @@
 	((mabs simp) x))
        ((mtimes simp) ((mexpt simp) m -1)
 	((mplus simp)
-	 ((%elliptic_e simp)
+	 (($elliptic_e simp)
 	  ((%asin simp)
 	   ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 ((mexpt simp) x 2))) ((rat simp) 1 2)))
 	  m)
 	 ((mtimes simp) -1 ((mplus simp) 1 ((mtimes simp) -1 m))
-	  ((%elliptic_f simp)
+	  (($elliptic_f simp)
 	   ((%asin simp)
 	    ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 ((mexpt simp) x 2))) ((rat simp) 1 2)))
 	   m)))))))
@@ -537,7 +541,7 @@
 	 ((mexpt simp) ((mabs simp) x) -1))
 	((mtimes simp) ((mexpt simp) m -1)
 	 ((mplus simp)
-	  ((%elliptic_e simp)
+	  (($elliptic_e simp)
 	   ((%asin simp)
 	    ((mtimes simp) ((mexpt simp) m ((rat simp) -1 2))
 	     ((mexpt simp) ((mplus simp) 1
@@ -545,7 +549,7 @@
 	      ((rat simp) 1 2))))
 	   m)
 	  ((mtimes simp) -1 ((mplus simp) 1 ((mtimes simp) -1 m))
-	   ((%elliptic_f simp)
+	   (($elliptic_f simp)
 	    ((%asin simp)
 	     ((mtimes simp) ((mexpt simp) m ((rat simp) -1 2))
 	      ((mexpt simp) ((mplus simp) 1
@@ -1114,10 +1118,10 @@
 					  (bigfloat:to m)))))
 	  ((zerop1 m)
 	   ;; asn(x,0) = F(acos(x),0) = acos(x)
-	   `((%elliptic_f) ((%acos) ,u) 0))
+	   `(($elliptic_f) ((%acos) ,u) 0))
 	  ((onep1 m)
 	   ;; asn(x,1) = F(asin(x),1) = log(tan(pi/2+asin(x)/2))
-	   `((%elliptic_f) ((%acos) ,u) 1))
+	   `(($elliptic_f) ((%acos) ,u) 1))
 	  ((zerop1 u)
 	   `((%elliptic_kc) ,m))
 	  ((onep1 u)
@@ -3851,10 +3855,10 @@ first kind:
 				      (bigfloat:to ($bfloat m))))))
       ((zerop1 m)
        ;; ans(x,0) = F(asin(1/x),0) = asin(1/x)
-       `((%elliptic_f) ((%asin) ((mexpt) ,u -1)) 0))
+       `(($elliptic_f) ((%asin) ((mexpt) ,u -1)) 0))
       ((onep1 m)
        ;; ans(x,1) = F(asin(1/x),1) = log(tan(pi/2+asin(1/x)/2))
-       `((%elliptic_f) ((%asin) ((mexpt) ,u -1)) 1))
+       `(($elliptic_f) ((%asin) ((mexpt) ,u -1)) 1))
       ((onep1 u)
        `((%elliptic_kc) ,m))
       ((alike1 u -1)

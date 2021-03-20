@@ -746,7 +746,8 @@
 	    :depends-on ("defmfun")
 	    :components
 	    ((:file "gnuplot_def")
-	     (:file "xmaxima_def")))
+	     (:file "xmaxima_def")
+             (:file "geomview_def")))
    (:module final :source-pathname ""
 	    :depends-on ("defmfun")
 	    ;; These are not compiled, for whatever reason, except on ecl:
