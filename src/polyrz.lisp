@@ -40,7 +40,7 @@
 		     finally (return t)))
 	 ;;(EVERY #'ATOM (CDR EXP)))
 	 exp1)
-	(t (merror (intl:gettext "UNIPOLY: argument must be a univariate polynomial; found: ~M") exp))))
+	(t (merror (intl:gettext "UNIPOLY: argument must be a univariate polynomial with rational coefficients; found: ~M") exp))))
 
 (defun makrat (pt)
   (cond ((floatp pt) (maxima-rationalize pt))
