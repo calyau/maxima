@@ -81,7 +81,6 @@ your system.  All plotting commands and data are saved into the file
 @item
 @strong{gnuplot_pipes} (default on non-Windows platforms)
 
-This format is not available in Windows platforms.
 It is similar to the @code{gnuplot} format except that the commands are sent
 to gnuplot through a pipe, while the data are saved into the file
 @code{maxout_xxx.gnuplot_pipes}.  A single gnuplot process is kept open
