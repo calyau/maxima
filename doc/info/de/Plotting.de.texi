@@ -158,11 +158,9 @@ anderen Nutzeroberfl@"ache gestartet, werden die Grafikkommandos und Daten in
 die Datei @code{maxout.xmaxima} gespeichert.  Diese Datei wird an Xmaxima f@"ur
 die Ausgabe der Grafik @"ubergeben.
 
-@c In previous versions this format used to be called @code{openmath}; that
-@c old name will still be accepted as a synonym for @code{xmaxima}.
+@c In previous versions this format used to be called @code{openmath}.
 
 In fr@"uheren Versionen wurde dieses Grafikformat @code{openmath} genannt.
-Dieser Name wird weiterhin als ein Synonym f@"ur @code{xmaxima} akzeptiert.
 
 
 @c @item
