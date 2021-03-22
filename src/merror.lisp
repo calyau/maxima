@@ -78,18 +78,28 @@
 (defun merror (sstring &rest l)
   (declare (special errcatch *mdebug*))
   (setq $error `((mlist simp) ,sstring ,@ l))
-  (and $errormsg ($errormsg))
-  (cond (*mdebug*
+  (cond ((eq *mdebug* '$lisp)
+	 ; Go immediately into the lisp debugger
+	 (let ((*debugger-hook* nil))
+	   (invoke-debugger (make-condition 'maxima-$error))))
+	(*mdebug*
 	 (let ((dispflag t) ret)
 	   (declare (special dispflag))
+	   (when $errormsg
+	     ($errormsg))
 	   (format t (intl:gettext " -- an error.  Entering the Maxima debugger.~%~
                        Enter ':h' for help.~%"))
 	   (progn
 	     (setq ret (break-dbm-loop nil))
 	     (cond ((eql ret :resume)
 		    (break-quit))))))
-	(errcatch  (error 'maxima-$error))
+	(errcatch
+	 (when $errormsg
+	   ($errormsg))
+	 (error 'maxima-$error))
 	(t
+	 (when $errormsg
+	   ($errormsg))
 	 (fresh-line *standard-output*)
 	 ($backtrace 3)
 	 (format t (intl:gettext "~& -- an error. To debug this try: debugmode(true);~%"))
