@@ -1737,108 +1737,162 @@ plot2d ( [ [discrete, xy], 2*%pi*sqrt(l/980) ], [l, 0, 50],
 plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], [box, false], [color, red],
 [ylabel, "x^2-1"], [plot_format, xmaxima]);
 |#
-(defmfun $plot2d (fun &optional range &rest extra-options)
-  (let (($display2d nil) (*plot-realpart* *plot-realpart*)
-        (options (copy-tree *plot-options*)) output-file plot)
-    ;; 1- fun will be a maxima list with several objects: expressions (simple
-    ;; functions), maxima lists (parametric or discrete cases).
-    ;; A single parametric or discrete plot is placed inside a maxima list
-    (setf (getf options :type) "plot2d")
-    (when (and (consp fun)
-               (or (eq (second fun) '$parametric) (eq (second fun) '$discrete)))
-      (setq fun `((mlist) ,fun)))
-    ;; If at this point fun is not a maxima list, it is then a single function
-    (unless ($listp fun ) (setq fun `((mlist) ,fun)))
-    ;; 2- Get names for the two axis and values for xmin and xmax if needed.
-    ;; If any of the objects in the fun list is a simple function,
-    ;; the range option is mandatory and will provide the name of
-    ;; the horizontal axis and the values of xmin and xmax.
-    (let ((no-range-required t) small huge)
-      #-clisp (setq small (- (/ most-positive-flonum 1024)))
-      #+clisp (setq small (- (/ most-positive-double-float 1024.0)))
-      #-clisp (setq huge (/ most-positive-flonum 1024))
-      #+clisp (setq huge (/ most-positive-double-float 1024.0))
-      (setf (getf options :ybounds) (list small huge))
-      (dolist (subfun (rest fun))
-        (if (not ($listp subfun))
-            (setq no-range-required nil))) 
-      (unless no-range-required
-        (setq range (check-range range))
-        (unless (getf options :xlabel)
-          (setf (getf options :xlabel) (ensure-string (second range))))
-        (setf (getf options :x) (cddr range)))
-      (when no-range-required
-        ;; Make the default ranges on X nd Y large so parametric plots
-        ;; don't get prematurely clipped. Don't use most-positive-flonum
-        ;; because draw2d will overflow.
-        (setf (getf options :xbounds) (list small huge))
-        (when range
-          ;; second argument was really a plot option, not a range
-          (setq extra-options (cons range extra-options)))))
-    ;; If no global options xlabel or ylabel have been given, choose
-    ;; a default value for them: the expressions given, converted
-    ;; to Maxima strings, if their length is less than 50 characters,
-    ;; or the default "x" and "y" otherwise.
-    (when (= (length fun) 2)
-      (let ((v (second fun)) xlabel ylabel)
-        (cond ((atom v) 
-               (setq xlabel "x") (setq ylabel ($sconcat v)))
-              ((eq (second v) '$parametric)
-               (setq xlabel ($sconcat (third v)))
-               (setq ylabel ($sconcat (fourth v))))
-              ((eq (second v) '$discrete)
-               (setq xlabel "x") (setq ylabel "y"))
+(defmfun $plot2d
+    (fun &optional range &rest extra-options
+         &aux
+         ($display2d nil) (*plot-realpart* *plot-realpart*)
+         (options (copy-tree *plot-options*)) output-file plot)
+  ;; fun must be a maxima list with several objects: expressions (simple
+  ;; functions), maxima lists (parametric or discrete cases).
+  ;; A single parametric or discrete plot is placed inside a maxima list.
+  (setf (getf options :type) "plot2d")
+  (when (and (consp fun)
+             (or (eq (second fun) '$parametric) (eq (second fun) '$discrete)))
+    (setq fun `((mlist) ,fun)))
+  ;; If by now fun is not a maxima list, it is then a single expression
+  (unless ($listp fun ) (setq fun `((mlist) ,fun)))
+  ;; 2- Get names for the two axis and values for xmin and xmax if needed.
+  ;; If any of the objects in the fun list is a simple function,
+  ;; the range option is mandatory and will provide the name of
+  ;; the horizontal axis and the values of xmin and xmax.
+  (let ((range-required nil) (bounds-required nil)
+        small huge fpfun vars1 vars2 prange)
+    #-clisp (setq small (- (/ most-positive-flonum 1024)))
+    #+clisp (setq small (- (/ most-positive-double-float 1024.0)))
+    #-clisp (setq huge (/ most-positive-flonum 1024))
+    #+clisp (setq huge (/ most-positive-double-float 1024.0))
+    (setf (getf options :ybounds) (list small huge))
+    (dolist (f (rest fun))
+      (if ($listp f)
+          (progn
+            (case ($first f)
+              ($parametric
+               (unless bounds-required
+                 (setq bounds-required t)
+                 ;; Default X and Y bound large so parametric plots don't get
+                 ;; prematurely clipped. Don't use most-positive-flonum
+                 ;; because draw2d will overflow.
+                 (setf (getf options :xbounds) (list small huge)))
+               (setq prange (check-range ($fourth f))) 
+               ;; The two expressions can only depend on the parameter given
+               (setq fpfun (coerce-float-fun ($second f) ($rest prange -2)))
+               (setq vars1 ($listofvars (mfuncall fpfun ($first prange))))
+               (setq fpfun (coerce-float-fun ($third f) ($rest prange -2)))
+               (setq vars2 ($listofvars (mfuncall fpfun ($first prange))))
+               (setq vars1 ($listofvars `((mlist) ,vars1 ,vars2)))
+               (setq vars1 (delete ($first prange) vars1))
+               (when (> ($length vars1) 0)
+                 (merror
+                  (intl:gettext
+                   "plot2d: parametric expressions ~M and ~M should depend only on ~M")
+                  ($second f) ($third f) ($first prange))))
+              ($discrete)
               (t
-               (setq xlabel "x") (setq ylabel ($sconcat v))))
-        (unless (getf options :xlabel)
-          (if (< (length xlabel) 50) (setf (getf options :xlabel) xlabel)))
-        (unless (getf options :ylabel)
-          (if (< (length ylabel) 50) (setf (getf options :ylabel) ylabel)))))
-    ;; Parse the given options into the options list
-    (setq options (plot-options-parser extra-options options))
-    (when (getf options :y) (setf (getf options :ybounds) (getf options :y)))
-    ;; Remove axes labels when no box is used in gnuplot
-    (when (and (member :box options) (not (getf options :box))
-		(not (eq (getf options :plot_format) '$xmaxima)))
-      (remf options :xlabel)
-      (remf options :ylabel))
-    ;; check options given
-    (let ((xmin (first (getf options :x))) (xmax (second (getf options :x))))
-      (when
-          (and (getf options :logx) xmin xmax)
-        (if (> xmax 0)
-            (when (<= xmin 0)
-              (let ((revised-xmin (/ xmax 1000)))
-                (mtell (intl:gettext "plot2d: lower bound must be positive when 'logx' in effect.~%plot2d: assuming lower bound = ~M instead of ~M") revised-xmin xmin)
-                (setf (getf options :x) (list revised-xmin xmax))
-                (setq range `((mlist) ,(second range) ,revised-xmin ,xmax))))
-            (merror (intl:gettext "plot2d: upper bound must be positive when 'logx' in effect; found: ~M") xmax))))
-    (let ((ymin (first (getf options :y)))
-          (ymax (second (getf options :y))))
-      (when (and (getf options :logy) ymin ymax)
-        (if (> ymax 0)
-            (when (<= ymin 0)
-              (let ((revised-ymin (/ ymax 1000)))
-                (mtell (intl:gettext "plot2d: lower bound must be positive when 'logy' in effect.~%plot2d: assuming lower bound = ~M instead of ~M") revised-ymin ymin)
-                (setf (getf options :y) (list revised-ymin ymax))))
-            (merror (intl:gettext "plot2d: upper bound must be positive when 'logy' in effect; found: ~M") ymax))))
-    (setq *plot-realpart* (getf options :plot_realpart))
-    ;; Creates the object that will be passed to the external graphic program
-    (case (getf options :plot_format)
-      ($xmaxima
-       (setq plot (make-instance 'xmaxima-plot)))
-      ($gnuplot
-       (setq plot (make-instance 'gnuplot-plot)))
-      ($gnuplot_pipes
-       (setq plot (make-instance 'gnuplot-plot))
-       (setf (slot-value plot 'pipe) T))
-      (t
-       (merror (intl:gettext "plot2d: plot format ~M not supported")
-            (getf options :plot_format))))   
-    ;; Parse plot object and pass it to the graphic program
-    (setq output-file (plot-preamble plot options))
-    (plot2d-command plot fun options range)
-    (plot-shipout plot options output-file)))
+               (merror
+                (intl:gettext
+                 "plot2d: a keyword 'parametric' or 'discrete' missing in ~M")
+                f))))
+          ;; The expression represents a function of one variable
+          (progn
+            (unless range-required
+              (setq range-required t)
+              (setq range (check-range range))    
+              (setq range-required t)
+              (unless (getf options :xlabel)
+                (setf (getf options :xlabel) (ensure-string (second range))))
+              (setf (getf options :x) (cddr range)))
+            (setq fpfun (coerce-float-fun f ($rest range -2)))
+            (setq vars1 ($listofvars (mfuncall fpfun ($first range))))
+            (setq vars1 (delete ($first range) vars1))
+            (when (> ($length vars1) 0)
+              (merror
+               (intl:gettext
+                "plot2d: expression ~M should  depend only on ~M")
+               f ($first range))))))
+    (when (not range-required)
+      ;; Make the default ranges on X nd Y large so parametric plots
+      ;; don't get prematurely clipped. Don't use most-positive-flonum
+      ;; because draw2d will overflow.
+      (setf (getf options :xbounds) (list small huge))
+      (when range
+        ;; second argument was really a plot option, not a range
+        (setq extra-options (cons range extra-options)))))
+  ;; If no global options xlabel or ylabel have been given, choose
+  ;; a default value for them: the expressions given, converted
+  ;; to Maxima strings, if their length is less than 50 characters,
+  ;; or the default "x" and "y" otherwise.
+  (when (= (length fun) 2)
+    (let ((v (second fun)) xlabel ylabel)
+      (cond ((atom v) 
+             (setq xlabel "x") (setq ylabel ($sconcat v)))
+            ((eq (second v) '$parametric)
+             (setq xlabel ($sconcat (third v)))
+             (setq ylabel ($sconcat (fourth v))))
+            ((eq (second v) '$discrete)
+             (setq xlabel "x") (setq ylabel "y"))
+            (t
+             (setq xlabel "x") (setq ylabel ($sconcat v))))
+      (unless (getf options :xlabel)
+        (if (< (length xlabel) 50) (setf (getf options :xlabel) xlabel)))
+      (unless (getf options :ylabel)
+        (if (< (length ylabel) 50) (setf (getf options :ylabel) ylabel)))))
+  ;; Parse the given options into the options list
+  (setq options (plot-options-parser extra-options options))
+  (when (getf options :y) (setf (getf options :ybounds) (getf options :y)))
+  ;; Remove axes labels when no box is used in gnuplot
+  (when (and (member :box options) (not (getf options :box))
+             (not (eq (getf options :plot_format) '$xmaxima)))
+    (remf options :xlabel)
+    (remf options :ylabel))
+  ;; check options given
+  (let ((xmin (first (getf options :x))) (xmax (second (getf options :x))))
+    (when
+        (and (getf options :logx) xmin xmax)
+      (if (> xmax 0)
+          (when (<= xmin 0)
+            (let ((revised-xmin (/ xmax 1000)))
+              (mtell
+               (intl:gettext
+                "plot2d: lower bound must be positive when using 'logx'.~%plot2d: assuming lower bound = ~M instead of ~M")
+               revised-xmin xmin)
+              (setf (getf options :x) (list revised-xmin xmax))
+              (setq range `((mlist) ,(second range) ,revised-xmin ,xmax))))
+          (merror
+           (intl:gettext
+            "plot2d: upper bound must be positive when using 'logx'; found: ~M")
+           xmax))))
+  (let ((ymin (first (getf options :y)))
+        (ymax (second (getf options :y))))
+    (when (and (getf options :logy) ymin ymax)
+      (if (> ymax 0)
+          (when (<= ymin 0)
+            (let ((revised-ymin (/ ymax 1000)))
+              (mtell
+               (intl:gettext
+                "plot2d: lower bound must be positive when using 'logy'.~%plot2d: assuming lower bound = ~M instead of ~M")
+               revised-ymin ymin)
+              (setf (getf options :y) (list revised-ymin ymax))))
+          (merror
+           (intl:gettext
+            "plot2d: upper bound must be positive when using 'logy'; found: ~M")
+           ymax))))
+  (setq *plot-realpart* (getf options :plot_realpart))
+  ;; Creates the object that will be passed to the external graphic program
+  (case (getf options :plot_format)
+    ($xmaxima
+     (setq plot (make-instance 'xmaxima-plot)))
+    ($gnuplot
+     (setq plot (make-instance 'gnuplot-plot)))
+    ($gnuplot_pipes
+     (setq plot (make-instance 'gnuplot-plot))
+     (setf (slot-value plot 'pipe) T))
+    (t
+     (merror (intl:gettext "plot2d: plot format ~M not supported")
+             (getf options :plot_format))))   
+  ;; Parse plot object and pass it to the graphic program
+  (setq output-file (plot-preamble plot options))
+  (plot2d-command plot fun options range)
+  (plot-shipout plot options output-file))
 
 (defun msymbolp (x)
   (and (symbolp x) (char= (char (symbol-value x) 0) #\$)))
