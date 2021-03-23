@@ -318,7 +318,7 @@
 (defun powerset-subset (a k n)
   (let ((s) (b) (acc))
     (cond ((= k 0)
-	   (setq acc (cons `(($set)) acc)))
+	   (setq acc (cons `(($set simp)) acc)))
      	  ((<= k n)
 	   (dotimes (i k)
 	     (setq s (cons i s)))
@@ -382,7 +382,7 @@
 	     (setq acc (cons (cons '(mlist simp) (nreverse q)) acc))
 	     (setq p (permutation-lex-successor n p r))))
 	  (t
-	   (setq acc `(((mlist))))))
+	   (setq acc `(((mlist simp))))))
     (setq acc (nreverse acc))
     (if need-to-simp `(($set) ,@acc)
       `(($set simp) ,@acc))))
@@ -731,7 +731,7 @@
 (defun set-partitions (a n)
   (cond ((= n 0)
 	 (cond ((null a)
-		(list `(($set))))
+		(list `(($set simp))))
 	       (t
 		nil)))
 	((null a)
@@ -748,7 +748,7 @@
 	       (setq acc (cons (simplifya `(($set) ,@w ,($adjoin x z) ,@s) t) acc))
 	       (setq w (cons z w))))
 	     	   
-	   (setq x `(($set) ,x))
+	   (setq x `(($set simp) ,x))
 	   (setq p (set-partitions (cdr a) (- n 1)))
 	   (dolist (pj p acc)
 	     (setq acc (cons ($adjoin x pj) acc)))))))
