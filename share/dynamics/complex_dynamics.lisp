@@ -46,8 +46,8 @@
     (setq ymin (car (getf options :y))) 
     (setq ymax (cadr (getf options :y)))
     (setq m (getf options :iterations))
-    (setq nx (car (getf options :grid)))
-    (setq ny (cadr (getf options :grid)))
+    (setq nx (or (car (getf options :grid)) 30))
+    (setq ny (or (cadr (getf options :grid)) 30))
     (setq dx (/ (rationalize (- xmax xmin)) nx)) ; x incr. per pixel
     (setq dy (/ (rationalize (- ymax ymin)) ny)) ; y incr. per pixel
 
@@ -112,8 +112,8 @@
     (setq ymin (car (getf options :y))) 
     (setq ymax (cadr (getf options :y)))
     (setq m (getf options :iterations))
-    (setq nx (car (getf options :grid)))
-    (setq ny (cadr (getf options :grid)))
+    (setq nx (or (car (getf options :grid)) 30))
+    (setq ny (or (cadr (getf options :grid)) 30))
     (setq dx (/ (rationalize (- xmax xmin)) nx)) ; x incr. per pixel
     (setq dy (/ (rationalize (- ymax ymin)) ny)) ; y incr. per pixel
 

@@ -22,7 +22,7 @@ set plot2dOptions {
     {xfun "" {function of x to plot eg: sin(x) or "sin(x);x^2+3" }}
     {parameters "" "List of parameters and values eg k=3,l=7+k"}
     {sliders "" "List of parameters ranges k=3:5,u"}
-    {nsteps "100" "mininmum number of steps in x direction"}
+    {nsteps "100" "minimum number of steps in x direction"}
     {ycenter 0.0 "see xcenter"}
     {bbox "" "xmin ymin xmax ymax .. overrides the -xcenter etc"}
     {screenwindow "20 20 700 700" "Part of canvas on screen"}
@@ -95,7 +95,7 @@ proc  makeFrame2d  { win } {
     catch {
 	wm title $top [mc "Xmaxima: Plot2d"]
 	wm iconname $top "plot2d"
-	# wm geometry $top 750x700-0+20
+	wm geometry $top 750x700
     }
     pack $w
     return $w
@@ -755,7 +755,7 @@ proc drawPlot {win listpts args } {
 		    set i 0
 		    set res "$win create line "
 		    #puts npts:[llength $pts]
-		    if { $n >= 6 } {
+		    if { $n >= 4 } {
 			eval $c create line $pts -tags [list $tags] -width $linewidth -fill $fill
 		    }
 		}
