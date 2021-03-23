@@ -54,6 +54,15 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     ((symbolp x) (print-invert-case (stripdollar x)))
     (t (maybe-invert-string-case (string (implode (strgrind x)))))))
 
+(defun flatten2 (l z)
+    (cond
+        ((endp l) z)
+        ((listp (car l)) (flatten2 (car l) (flatten2 (cdr l) z)))
+        ((atom (car l)) (cons (car l) (flatten2 (cdr l) z)))))
+
+(defun flatten (l)
+  (flatten2 l nil))
+
 (defmfun $join (x y)
   (if (and ($listp x) ($listp y))
       (cons '(mlist) (loop for w in (cdr x) for u in (cdr y) collect w collect u))
@@ -254,17 +263,18 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
           ($grid :grid) ($grid2d :grid2d) ($iterations :iterations)
           ($label :label) ($legend :legend) ($logx :logx) ($logy :logy)
           ($mesh_lines_color :mesh_lines_color) ($nticks :nticks)
-          ($palette :palette) ($plot_format :plot_format)
-          ($plot_realpart :plot_realpart) ($point_type :point_type)
-          ($pdf_file :pdf_file) ($png_file :png_file) ($ps_file :ps_file)
+          ($palette :palette) ($plotepsilon :plotepsilon)
+          ($plot_format :plot_format) ($plot_realpart :plot_realpart)
+          ($point_type :point_type) ($pdf_file :pdf_file)
+          ($png_file :png_file) ($ps_file :ps_file)
           ($run_viewer :run_viewer) ($same_xy :samexy)
-          ($same_xyz :same_xyz) ($style :style) ($svg_file :svg_file)
-          ($t :t) ($title :title) ($transform_xy :transform_xy)
-          ($x :x) ($xbounds :xbounds) ($xlabel :xlabel)
-          ($xtics :xtics) ($xy_scale :xy_scale)
+          ($same_xyz :same_xyz) ($sample :sample) ($style :style)
+          ($svg_file :svg_file) ($t :t) ($title :title)
+          ($transform_xy :transform_xy) ($x :x) ($xbounds :xbounds)
+          ($xlabel :xlabel) ($xtics :xtics) ($xy_scale :xy_scale)
           ($y :y) ($ybounds :ybounds) ($ylabel :ylabel) ($ytics :ytics)
-          ($yx_ratio :yx_ratio)
-          ($z :z) ($zlabel :zlabel) ($zmin :zmin) ($ztics :ztics)
+          ($yx_ratio :yx_ratio) ($z :z) ($zlabel :zlabel) ($zmin :zmin)
+          ($ztics :ztics)
           ($gnuplot_4_0 :gnuplot_4_0)
           ($gnuplot_curve_titles :gnuplot_curve_titles)
           ($gnuplot_curve_styles :gnuplot_curve_styles)
@@ -782,6 +792,166 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
           ((symbolp lis) start)
           (t (merror (intl:gettext "copy_pts: unrecognized first argument: ~M") lis)))))
 
+;; Explicit expressions of two variables, for instance, x and y,
+;; where expr is of the form f(x,y) = g(x,y).
+;; The result is a series of separated line segments.
+(defun draw2d-implicit (expr options)
+  (let ((xmin (first (getf options :x)))
+        (ymin (first (getf options :y)))
+        (xmax (second (getf options :x)))
+        (ymax (second (getf options :y)))
+        (gridx (or (first (getf options :sample)) 130))
+        (gridy (or (second (getf options :sample)) 130))
+        (eps (or (getf options :plotepsilon) 0.00000001))
+        vx vy dx dy fun (result nil))
+    (setq dx (/ (- xmax xmin) gridx))
+    (setq dy (/ (- ymax ymin) gridy))
+    (setq expr (m- ($lhs expr) ($rhs expr)))
+    (setq vx (getf options :xvar))
+    (setq vy (getf options :yvar))
+    (setq fun (coerce-float-fun expr `((mlist) ,vx ,vy)))
+    ;;
+    ;; Implicit functions algorithm by Jaime Villate. 2021
+    ;;
+    ;; The domain is divided into a grid of rectangles,
+    ;; each one with two triangles, with points labelled as follows:
+    ;;
+    ;;  lu ______ ru   l=left, r=right, d=down, u=up
+    ;;     |   /|
+    ;;     |  / |    function fun has the following values at those points:
+    ;;     | /  |
+    ;;  ld |/___| rd     fld, frd, flu, fru
+    ;;
+    (let (p1 p2 next)
+      (flet
+          ((interp (xi yi fi xj yj fj &aux xp yp fp)
+             (if (< (* fi fj) eps)
+                 (progn
+                   (setq xp (/ (- (* fi xj) (* fj xi)) (- fi fj)))
+                   (setq yp (/ (- (* fi yj) (* fj yi)) (- fi fj)))
+                   (setq fp (funcall fun xp yp))
+                   (if (and (< (abs fp) (abs fi)) (< (abs fp) (abs fj)))
+                       (list xp yp)
+                       nil))
+                 nil))
+           (plot-line (p1 p2)
+             (push (first p1) result)
+             (push (second p1) result)
+             (push (first p2) result)
+             (push (second p2) result)
+             (push 'moveto result)
+             (push 'moveto result)))
+        (do ((i 0 (1+ i))
+             (xl xmin xr)
+             (xr (+ xmin dx) (+ xr dx))
+             (flm (funcall fun xmin ymin) frm)
+             (frm (funcall fun (+ xmin dx) ymin) (funcall fun (+ xr dx) ymin)))
+            ((>= i gridx))
+          (do ((j 0 (1+ j))
+               (yd ymin yu)
+               (yu (+ ymin dy) (+ yu dy))
+               (fld flm flu)
+               (frd frm fru)
+               (flu (funcall fun xl (+ ymin dy)) (funcall fun xl (+ yu dy)))
+               (fru (funcall fun xr (+ ymin dy)) (funcall fun xr (+ yu dy))))
+              ((>= j gridy))
+            (setq next t)
+            (if (not (numberp fld))
+                (progn
+                  ;; fld undefined
+                  (setq next nil)
+                  (when
+                      (and
+                       (numberp frd) (numberp flu) (numberp fru)
+                       (setq p1 (interp xr yd frd xr yu fru))
+                       (setq p2 (interp xl yu flu xr yu fru)))
+                    ;; line between segments rd-ru and lu-ru
+                    (plot-line p1 p2)))
+                (when (not (numberp fru))
+                  ;; fru undefined
+                  (setq next nil)
+                  (when
+                      (and
+                       (numberp frd) (numberp flu)
+                       (setq p1 (interp xl yd fld xr yd frd))
+                       (setq p2 (interp xl yd fld xl yu flu)))
+                    ;; line between segments ld-rd and ld-lu
+                    (plot-line p1 p2))))
+            (when (and next (< (abs fld) eps))
+              ;; zero at ld
+              (when
+                  (and
+                   (numberp flu)
+                   (setq p2 (interp xl yu flu xr yu fru)))
+                ;; line from ld to segment lu-ru
+                (plot-line (list xl yd) p2))
+              (when
+                  (and
+                   (numberp frd)
+                   (setq p2 (interp xr yd frd xr yu fru)))
+                ;; line from lu to segment rd-ru
+                (plot-line (list xl yd) p2))
+              (setq next nil))
+            (when (and next (< (abs fru) eps))
+              ;; zero at ru
+              (when
+                  (and
+                   (numberp frd)
+                   (setq p2 (interp xl yd fld xr yd frd)))
+                ;; line from ru to segment ld-rd
+                (plot-line (list xr yu) p2))
+              (when
+                  (and
+                   (numberp flu)
+                   (setq p2 (interp xl yd fld xl yu flu)))
+                ;; line from ru to segment ld-lu
+                (plot-line (list xr yu) p2))
+              (setq next nil))
+            (when next 
+              (if (setq p1 (interp xl yd fld xr yu fru))
+                  ;; zero in segment ld-ru
+                  (progn
+                    (when (numberp flu)
+                      (when (< (abs flu) eps)
+                        ;; line from segment ld-ru to lu
+                        (plot-line p1 (list xl yu)))
+                      (if (setq p2 (interp xl yd fld xl yu flu))
+                          ;; line between segments ld-ru and ld-lu
+                          (plot-line p1 p2)
+                          (when
+                              (setq
+                               p2 (interp xl yu flu xr yu fru))
+                            ;; line between segments ld-ru and lu-ru
+                            (plot-line p1 p2))))
+                    (when (numberp frd)
+                      (when (< (abs frd) eps)
+                        ;; line from segment ld-ru to rd
+                        (plot-line p1 (list xr yd)))
+                      (if (setq p2 (interp xl yd fld xr yd frd))
+                          ;; line between segments ld-ru and ld-rd
+                          (plot-line p1 p2)
+                          (when
+                              (setq
+                               p2 (interp xr yd frd xr yu fru))
+                            ;; line between segments ld-ru and rd-ru
+                            (plot-line p1 p2)))))
+                  (progn
+                    (when
+                        (and
+                         (numberp flu)
+                         (setq p1 (interp xl yd fld xl yu flu))
+                         (setq p2 (interp xl yu flu xr yu fru)))
+                      ;; line between segments ld-lu and lu-ru
+                      (plot-line p1 p2))
+                    (when
+                        (and
+                         (numberp frd)
+                         (setq p1 (interp xl yd fld xr yd frd))
+                         (setq p2 (interp xr yd frd xr yu fru)))
+                      ;; line between segments ld-rd and rd-ru
+                      (plot-line p1 p2)))))))))
+    (cons '(mlist) (reverse result))))
+
 ;; parametric ; [parametric,xfun,yfun,[t,tlow,thigh],[nticks ..]]
 ;; the rest of the parametric list after the list will add to the plot options
 
@@ -1153,6 +1323,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
         (draw2d-parametric-adaptive fcn plot-options)))
   (if (and ($listp fcn) (equal '$discrete (cadr fcn)))
       (return-from draw2d (draw2d-discrete fcn)))
+  (when (and (listp fcn) (member 'mequal (flatten fcn)))
+    (return-from draw2d (draw2d-implicit fcn plot-options)))
   (let* ((nticks (getf plot-options :nticks))
          (yrange (getf plot-options :ybounds))
          (depth (getf plot-options :adapt_depth)))
@@ -1424,6 +1596,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
                         (check-option (cdr opt) #'naturalp "a natural number" 1)))
          ($palette (setf (getf options :palette)
                          (check-option-palette (cdr opt))))
+         ($plotepsilon (setf (getf options :plotepsilon)
+                             (check-option (cdr opt) #'realp "a real number" 1)))
          ($plot_format (setf (getf options :plot_format)
                              (check-option-format (cdr opt))))
          ($plot_realpart (setf (getf options :plot_realpart)
@@ -1438,6 +1612,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
                          (check-option (cdr opt) #'stringp "a string" 1)))
          ($run_viewer (setf (getf options :run_viewer)
                             (check-option-boole (cdr opt))))
+         ($sample (setf (getf options :sample)
+                        (check-option (cdr opt) #'naturalp "a natural number" 2)))
          ($same_xy (setf (getf options :same_xy)
                          (check-option-boole (cdr opt))))
          ($same_xyz (setf (getf options :same_xyz)
@@ -1722,11 +1898,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     (merror
      (intl:gettext
       "Wrong argument ~M for option ~M. Must one of the following symbols: geomview, gnuplot, mgnuplot, xmaxima (or gnuplot_pipes in Unix)")
-     (cadr option) (car option)))
-  ; $openmath is just a synonym for $xmaxima
-  (if (eq (cadr option) '$openmath)
-    '$xmaxima
-    (cadr option)))
+     (cadr option) (car option))))
 
 ; palette most be one or more Maxima lists starting with the name of one
 ;; of the 5 kinds: hue, saturation, value, gray or gradient.
@@ -1776,11 +1948,11 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 #| plot2d
 Examples:
 
-plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200]);
+plot2d (sec(x), [x, -2, 2], [y, -20, 20]);
 
-plot2d (exp(3*s), [s, -2, 2], [logy]);
+plot2d (exp(3*s), [s, -2, 2], logy);
 
-plot2d ([parametric, cos(t), sin(t), [t, -%pi, %pi]],[same_xy,true]);
+plot2d ([parametric, cos(t), sin(t), [t, -%pi, %pi]], same_xy);
 
 xy:[[10,.6], [20,.9], [30,1.1], [40,1.3], [50,1.4]]$
 plot2d ( [ [discrete, xy], 2*%pi*sqrt(l/980) ], [l, 0, 50],
@@ -1788,14 +1960,16 @@ plot2d ( [ [discrete, xy], 2*%pi*sqrt(l/980) ], [l, 0, 50],
 [legend, "experiment", "theory"],
 [xlabel, "pendulum's length (cm)"], [ylabel, "period (s)"]);
 
-plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], [box, false], [color, red],
+plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], nobox, [color, red],
 [ylabel, "x^2-1"], [plot_format, xmaxima]);
+
+plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
 |#
 (defmfun $plot2d
-    (fun &optional range &rest extra-options
+    (fun &optional xrange &rest extra-options
          &aux
          ($display2d nil) (*plot-realpart* *plot-realpart*)
-         (options (copy-tree *plot-options*)) output-file plot)
+         (options (copy-tree *plot-options*)) yrange output-file plot)
   ;; fun must be a maxima list with several objects: expressions (simple
   ;; functions), maxima lists (parametric or discrete cases).
   ;; A single parametric or discrete plot is placed inside a maxima list.
@@ -1807,9 +1981,9 @@ plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], [box, false], [color, red],
   (unless ($listp fun ) (setq fun `((mlist) ,fun)))
   ;; 2- Get names for the two axis and values for xmin and xmax if needed.
   ;; If any of the objects in the fun list is a simple function,
-  ;; the range option is mandatory and will provide the name of
+  ;; the xrange option is mandatory and will provide the name of
   ;; the horizontal axis and the values of xmin and xmax.
-  (let ((range-required nil) (bounds-required nil)
+  (let ((xrange-required nil) (bounds-required nil) (yrange-required nil)
         small huge fpfun vars1 vars2 prange)
     #-clisp (setq small (- (/ most-positive-flonum 1024)))
     #+clisp (setq small (- (/ most-positive-double-float 1024.0)))
@@ -1846,31 +2020,81 @@ plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], [box, false], [color, red],
                 (intl:gettext
                  "plot2d: a keyword 'parametric' or 'discrete' missing in ~M")
                 f))))
-          ;; The expression represents a function of one variable
+          ;; The expression represents a function, explicit or implicit
           (progn
-            (unless range-required
-              (setq range-required t)
-              (setq range (check-range range))    
-              (setq range-required t)
+            (unless xrange-required
+              (setq xrange-required t)
+              (setq xrange (check-range xrange))    
+              (setq xrange-required t)
               (unless (getf options :xlabel)
-                (setf (getf options :xlabel) (ensure-string (second range))))
-              (setf (getf options :x) (cddr range)))
-            (setq fpfun (coerce-float-fun f ($rest range -2)))
-            (setq vars1 ($listofvars (mfuncall fpfun ($first range))))
-            (setq vars1 (delete ($first range) vars1))
-            (when (> ($length vars1) 0)
-              (merror
-               (intl:gettext
-                "plot2d: expression ~M should  depend only on ~M")
-               f ($first range))))))
-    (when (not range-required)
+                (setf (getf options :xlabel) (ensure-string (second xrange))))
+              (setf (getf options :xvar) (cadr xrange))
+              (setf (getf options :x) (cddr xrange)))
+            (if (and (listp f) (member 'mequal (flatten f)))
+                (progn
+                  ;; Implicit function
+                  (setq
+                   fpfun
+                   (coerce-float-fun (m- ($lhs f) ($rhs f)) ($rest xrange -2)))
+                  (setq vars1 ($listofvars (mfuncall fpfun ($first xrange))))
+                  (when
+                      (and
+                       (= ($length vars1) 2)
+                       (not (member ($first xrange) vars1)))
+                    (merror
+                     (intl:gettext
+                      "plot2d: ~M is not one of the variables in ~M") 
+                     ($first xrange) f))
+                  (setq vars1 (delete ($first xrange) vars1))
+                  (if (< ($length vars1) 2)
+                      (progn
+                        (if yrange-required
+                            (unless
+                                (or (= ($length vars1) 0)
+                                    (eq ($first yrange) ($first vars1)))
+                              (merror
+                               (intl:gettext
+                                "plot2d: ~M should only depend on ~M and ~M") 
+                               f ($first xrange) ($first vars1)))
+                            (progn
+                              (setq yrange-required t)
+                              (if (null extra-options)
+                                  (merror
+                                   (intl:gettext
+                                    "plot2d: Missing interval for variable 2."))
+                                  (progn
+                                    (setq yrange (pop extra-options))
+                                    (setq vars1 (delete ($first yrange) vars1))
+                                    (unless (= ($length vars1) 0)
+                                      (merror
+                                       (intl:gettext
+                                        "plot2d: ~M should only depend on ~M and ~M")
+                                       f ($first xrange) ($first yrange)))
+                                    (setq yrange (check-range yrange))
+                                    (setf (getf options :yvar) ($first yrange))
+                                    (setf (getf options :y) (cddr yrange)))))))
+                      (merror
+                       (intl:gettext
+                        "plot2d: ~M should only depend on 2 variables")
+                       f)))
+                (progn
+                  ;; Explicit function
+                  (setq fpfun (coerce-float-fun f ($rest xrange -2)))
+                  (setq vars1 ($listofvars (mfuncall fpfun ($first xrange))))
+                  (setq vars1 (delete ($first xrange) vars1))
+                  (when (> ($length vars1) 0)
+                    (merror
+                     (intl:gettext
+                      "plot2d: expression ~M should  depend only on ~M")
+                     f ($first xrange))))))))
+    (when (not xrange-required)
       ;; Make the default ranges on X nd Y large so parametric plots
       ;; don't get prematurely clipped. Don't use most-positive-flonum
       ;; because draw2d will overflow.
       (setf (getf options :xbounds) (list small huge))
-      (when range
-        ;; second argument was really a plot option, not a range
-        (setq extra-options (cons range extra-options)))))
+      (when xrange
+        ;; second argument was really a plot option, not an xrange
+        (setq extra-options (cons xrange extra-options)))))
   ;; If no global options xlabel or ylabel have been given, choose
   ;; a default value for them: the expressions given, converted
   ;; to Maxima strings, if their length is less than 50 characters,
@@ -1910,7 +2134,7 @@ plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], [box, false], [color, red],
                 "plot2d: lower bound must be positive when using 'logx'.~%plot2d: assuming lower bound = ~M instead of ~M")
                revised-xmin xmin)
               (setf (getf options :x) (list revised-xmin xmax))
-              (setq range `((mlist) ,(second range) ,revised-xmin ,xmax))))
+              (setq xrange `((mlist) ,(second xrange) ,revised-xmin ,xmax))))
           (merror
            (intl:gettext
             "plot2d: upper bound must be positive when using 'logx'; found: ~M")
@@ -1945,7 +2169,7 @@ plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], [box, false], [color, red],
              (getf options :plot_format))))   
   ;; Parse plot object and pass it to the graphic program
   (setq output-file (plot-preamble plot options))
-  (plot2d-command plot fun options range)
+  (plot2d-command plot fun options xrange)
   (plot-shipout plot options output-file))
 
 (defun msymbolp (x)
