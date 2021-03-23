@@ -75,10 +75,27 @@
 	     (let ((*standard-output* stream))
 	       ($errormsg)))))
 
+(defvar *merror-signals-$error-p* nil
+  "When T, MERROR will signal a MAXIMA-$ERROR condition.")
+
+;; Sample:
+;; (defun h (he)
+;;   (merror "hi there ~:M and ~:M" he he))
+;; This will signal a MAXIMA-$ERROR condition:
+;; (with-$error (h '$you))
+
+(defmacro with-$error (&body body)
+  "Let MERROR signal a MAXIMA-$ERROR condition."
+  `(let ((*merror-signals-$error-p* t))
+     (declare (special *merror-signals-$error-p*))
+     ,@body))
+
 (defun merror (sstring &rest l)
   (declare (special errcatch *mdebug*))
   (setq $error `((mlist simp) ,sstring ,@ l))
-  (cond ((eq *mdebug* '$lisp)
+  (cond (*merror-signals-$error-p*
+	 (error 'maxima-$error))
+	((eq *mdebug* '$lisp)
 	 ; Go immediately into the lisp debugger
 	 (let ((*debugger-hook* nil))
 	   (invoke-debugger (make-condition 'maxima-$error))))
@@ -108,20 +125,6 @@
 
 (defun mwarning (&rest l)
   (format t "Warning: ~{~a~^ ~}~%" (mapcar #'$sconcat l)))
-
-(defmacro with-$error (&body body)
-  "Let MERROR signal a MAXIMA-$ERROR condition."
-  `(let ((errcatch t)
-	 *mdebug*		       ;let merror signal a lisp error
-	 $errormsg)			;don't print $error
-     (declare (special errcatch *mdebug* $errormsg))
-     ,@body))
-
-;; Sample:
-;; (defun h (he)
-;;   (merror "hi there ~:M and ~:M" he he))
-;; This will signal a MAXIMA-$ERROR condition:
-;; (with-$error (h '$you))
 
 (defmvar $error_syms '((mlist) $errexp1 $errexp2 $errexp3)
   "Symbols to bind the too-large `maxima-error' expresssions to")
