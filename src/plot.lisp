@@ -1591,8 +1591,10 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($nozmin (setf (getf options :zmin) nil))
          ($nognuplot_4_0 (setf (getf options :gnuplot_4_0) nil))
          ($nognuplot_pm3d (setf (getf options :gnuplot_pm3d) nil))
-         ($nognuplot_strings (setf (getf options :gnuplot_strings) nil))))))
-
+         ($nognuplot_strings (setf (getf options :gnuplot_strings) nil))
+         (t
+          (merror (intl:gettext "Unknown plot option \"~M\".") opt))))))
+           
   ;; plots that create a file work better in gnuplot than gnuplot_pipes
   (when (and (eq (getf options :plot_format) '$gnuplot_pipes)
              (or (eq (getf options :gnuplot_term) '$dumb)
@@ -1654,8 +1656,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
       (cadr option)
       (cdr option)))
 
-;; Accepts one or more items of the same type or false. Called with only
-;; When given, n is the maximum number of items. 
+;; Accepts one or more items of the same type or false.
+;; When given, n is the maximum number of items.
 (defun check-option-b (option test type &optional count)
   (let ((n (- (length option) 1)))
     (when count
