@@ -1129,7 +1129,7 @@ specint(t^(-3/2)*exp(-t^2/8/a)*exp(-p*t),t);
 'specint(t^(-3/2)*exp(-t^2/8/a)*exp(-p*t),t);
 
 /* fail-on-f35p147test
-   Because we modified the construction of a noun form, we get a sligthly
+   Because we modified the construction of a noun form, we get a slightly
    different noun form as result. DK. */
 specint((2*t)^(-3/2)*exp(-2*sqrt(a)*sqrt(t))*exp(-p*t),t);
 /*'specint(exp(-p*t -2*sqrt(a)*sqrt(t))/(8*t^(3/2)),t);*/
@@ -1689,7 +1689,7 @@ done;
 /* Numerical tests of the Bessel functions using the Wronskians
 
    The Wronskians combines different types of Bessel functions and 
-   Bessel functions with negative and positve order.
+   Bessel functions with negative and positive order.
    The results are very simple. Therefore the numerical calculation of the
    Wronskians is a good test for the different parts of the algorithmen.  
 

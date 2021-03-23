@@ -292,7 +292,7 @@ factor(specint(%e^(-s*t)*laguerre(10,t),t));
    in a Laplace transformation.
 
    First:  The function ltw seems not to be correct. There are differences
-           beetween the code and the formula A&S 13.6.9.
+           between the code and the formula A&S 13.6.9.
            The code uses the Lisp-Function FACTORIAL. That's wrong for a
            symbol. We get a Lisp error. We have to use a general GAMMA 
            expression.
@@ -1473,7 +1473,7 @@ sqrt(%pi)*sqrt(a)*%e^-(a/s)/s^(3/2);
 
 /* Problem 186: No. 10 (OK noun form New)
    For this Problem the test f35p147test fail.
-   The exponent v is negativ. We have no algorithm for this case.
+   The exponent v is negative. We have no algorithm for this case.
    Tabulated answer is:
    %pi*erf(sqrt(a/s));
 */
@@ -1664,7 +1664,7 @@ sqrt(%pi)*%e^(a/s)/sqrt(s);
      (sqrt(s+4*a)*(2*sqrt(%pi)*sqrt(s-4*a)+sqrt(%pi)*sqrt(s)) 
         + sqrt(%pi)*sqrt(s)*sqrt(s-4*a)) 
            /(4*sqrt(s)*sqrt(s-4*a)*sqrt(s+4*a))$
-   The result doesn't contain the requiered exponential function.
+   The result doesn't contain the required exponential function.
    Now correct. But there is an extra factor 4 in the exponent.
    I think EqWorld is wrong.
 */
@@ -1766,7 +1766,7 @@ sqrt(a)/(sqrt(s)*(s-a));
    We declare this to an Error until verification of the problem.
    
    This is a bug. The argument of the hypergeometric function for this example
-   is 1/t. For an argument with a negavtive power the alogrithm for the
+   is 1/t. For an argument with a negavtive power the algorithm for the
    Laplace transform is not correct.
 */
 

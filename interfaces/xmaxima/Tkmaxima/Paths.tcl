@@ -294,7 +294,7 @@ proc setMaxDir {} {
 		}
 	    }
 	} else {
-	    # Platform != windows, just chooose the HTML documentation
+	    # Platform != windows, just choose the HTML documentation
 	    if { $maxima_priv(maxima_lang_subdir) != "" && \
 		[file exists [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html] ] } {
 		set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html]

@@ -275,7 +275,7 @@ z^a;
 hgfred([-a,b],[b],1-z);
 z^a;
 
-/* Reseting the option variables to the default values */
+/* Resetting the option variables to the default values */
 (reset(domain), reset(radexpand), done);
 done;
 

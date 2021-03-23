@@ -488,7 +488,7 @@ algsys(eqs,[a,b,c,z]));
 [[a = (-2*%i)-3, b = 4, c = -6, z = 2*%i-3],
  [a = 3-2*%i,    b = 4, c =  6, z = 2*%i+3]];
 
-/* Count the number of solutions for each permuation of variable */
+/* Count the number of solutions for each permutation of variable */
 map(length,
   map(lambda([u],algsys(eqs,u)), listify(permutations([a,b,c,z]))));
 [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2];

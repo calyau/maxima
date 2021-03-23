@@ -211,7 +211,7 @@ so editing after it would mean all offsets would likely be incorrect.
   (define-key book-mode-map [menu-bar book] (cons "Book" bookmode-menu-bar-book-menu))
    )
   (use-local-map book-mode-map)
-  ;; 30 xterminals beep randomly can really be anoying!
+  ;; 30 xterminals beep randomly can really be annoying!
  ;  (setq visible-bell t)
   (setq trim-versions-without-asking t)
   )
@@ -1284,7 +1284,7 @@ affects whether a sample result is inserted.
       )
     ;;
     ;; if there is output at all, x is at least of length 2
-    ;; including a trailling \n\n (yes 2 of them).
+    ;; including a trailing \n\n (yes 2 of them).
     ;; Strip one \n out.
     ;;
     (if (< (length x) 2) 
@@ -1658,7 +1658,7 @@ affects whether a sample result is inserted.
     (setq x str) 
     ;;
     ;; if there is output at all, x is at least of length 2
-    ;; including a trailling \n\n.
+    ;; including a trailing \n\n.
     ;; Strip the beginning \n and one ending \n out.
     ;;
     (if (< (length x) 2) 

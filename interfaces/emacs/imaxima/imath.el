@@ -121,7 +121,7 @@ image and C-c &. Then the image is removed and original form
 appears at the position.
 
 When saving the buffer into a file, images are
-discarded. However, maxima forms and their correspoding latex
+discarded. However, maxima forms and their corresponding latex
 forms are kept there in the text. If the text is loaded again
 into Emacs and imath minor mode is enabled, you can type C-c $ to
 restore all the images for the forms in the buffer.

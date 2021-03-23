@@ -150,7 +150,7 @@ carg(signum(x));
 atan2(0,x);
 
 
-/* ----- Argument involving basic arithemtic operations --------------------- */
+/* ----- Argument involving basic arithmetic operations --------------------- */
 
 /* Add more examples for sums, products and quotients */
 

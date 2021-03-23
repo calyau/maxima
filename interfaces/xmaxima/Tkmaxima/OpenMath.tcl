@@ -170,7 +170,7 @@ proc omPanel { w args } {
 	    }
 	}
     } else {
-	#mike slate the old histroy list for demolition
+	#mike slate the old history list for demolition
 	button $win.loclabel -text " Url:" \
 	    -command "OpenMathOpenUrl \[$win.location get\] -commandpanel  $win"
 	setHelp $win.loclabel [mc {Fetch the URL or FILE indicated in the entry box. \
