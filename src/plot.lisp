@@ -800,8 +800,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
         (ymin (first (getf options :y)))
         (xmax (second (getf options :x)))
         (ymax (second (getf options :y)))
-        (gridx (or (first (getf options :sample)) 50))
-        (gridy (or (second (getf options :sample)) 50))
+        (gridx (or (first (getf options :sample)) 130))
+        (gridy (or (second (getf options :sample)) 130))
         (eps (or (getf options :plotepsilon) 0.00000001))
         vx vy dx dy fun (result nil))
     (setq dx (/ (- xmax xmin) gridx))
@@ -1898,7 +1898,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     (merror
      (intl:gettext
       "Wrong argument ~M for option ~M. Must one of the following symbols: geomview, gnuplot, mgnuplot, xmaxima (or gnuplot_pipes in Unix)")
-     (cadr option) (car option))))
+     (cadr option) (car option)))
+  (cadr option))
 
 ; palette most be one or more Maxima lists starting with the name of one
 ;; of the 5 kinds: hue, saturation, value, gray or gradient.
