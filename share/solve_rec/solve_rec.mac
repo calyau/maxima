@@ -1109,7 +1109,7 @@ simplify_product(prod) := block(
         prod
     )
     else if part(term, 0)="-" and length(args(term))=1 then
-      (-1)^(hi-lo)*simplify_product(apply(nounify('product), [-term, %n, lo, hi]))
+      (-1)^(hi-lo+1)*simplify_product(apply(nounify('product), [-term, %n, lo, hi]))
     /* Give up! */
     else
       p%*apply(nounify('product), [factor(term), %n, lo, hi])

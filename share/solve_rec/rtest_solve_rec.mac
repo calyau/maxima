@@ -96,3 +96,23 @@ test_solve_rec_rat(a[x+2]-2*((x-99)*(x+101))/((x-98)*(x+102))*a[x+1]+((x-100)*(x
 
 test_solve_rec((x+4)*a[x+3] + (x+3)*a[x+2] - x*a[x+1] + (x^2-1)*a[x]=(x+2)/(x+1), a[x]);
 0;
+
+/* Sage bug #30520: "Error in the sign of a product"
+ * see: https://trac.sagemath.org/ticket/30520
+ */
+
+simplify_product ('product (1 - f(k), k, 1, N));
+(-1)^N*'product(f(k) - 1, k, 1, N);
+
+simplify_product ('product (1 - q^k, k, 1, N));
+(-1)^N*'product(q^k - 1, k, 1, N);
+
+simplify_product ('product (-x**2, x, 1, n));
+(-1)^n*(n!)^2;
+
+/* this one triggers Sage bug #31557: "Fix product(-x, x, 1, SR.var('n')) to return (-1)^n*factorial(n)"
+ * see: https://trac.sagemath.org/ticket/31557
+ *
+simplify_product ('product (-x, x, 1, n));
+(-1)^n*n!;
+ */
