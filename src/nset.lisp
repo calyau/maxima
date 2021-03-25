@@ -318,7 +318,7 @@
 (defun powerset-subset (a k n)
   (let ((s) (b) (acc))
     (cond ((= k 0)
-	   (setq acc (cons `(($set)) acc)))
+	   (setq acc (cons `(($set simp)) acc)))
      	  ((<= k n)
 	   (dotimes (i k)
 	     (setq s (cons i s)))
