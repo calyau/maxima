@@ -2638,3 +2638,11 @@ true$
 /* Another bug found on mailing list thread "Wrong integral, but antiderivative and limits are correct" */
 freeof(?xz, residue(plog(x)/(x-ratsimp(rectform(%e^(%i*%pi/9)))), x, %e^(%i*%pi/9)));
 true$
+
+/* Bug #3562: "integrate(1/(1+tan(x)), x, 0, %pi/2) gives complex result, should be %pi/4" */
+integrate(1/(1+tan(x)), x, 0, %pi/2);
+%pi/4$
+
+/* Also from bug #3562 */
+limit(log((x^2+1)/x^2)-2*log((x-1)/x), x, 0, minus);
+0$
