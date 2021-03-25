@@ -591,7 +591,7 @@ hgfred([a,b],[1/2],x);            /* No solution, noun form */
 /* ---------- 2F1(a,a+1/2; c; z) -------------------------------------------- */
 
 /* Test of routine legf24 called from legfun.
- * Maxima distingushes x<0 and x>0. We get a problem with the phase of the 
+ * Maxima distinguishes x<0 and x>0. We get a problem with the phase of the
  * result. More tests are needed.
  */
 

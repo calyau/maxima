@@ -1203,67 +1203,6 @@ ignoring dummy variables and array indices."
     (setq expolim (limit expo var val 'think))
     (simplimexpt bas expo baslim expolim)))
 
-;;; This function will transform an expression such that either all logarithms
-;;; contain arguments not becoming infinite or are of the form
-;;; LOG(LOG( ... LOG(VAR))) This reduction takes place only over the operators
-;;; MPLUS, MTIMES, MEXPT, and %LOG.
-
-(defun log-red-contract (facs)
-  (do ((l facs (cdr l))
-       (consts ())
-       (log ()))
-      ((null l)
-       (if log (cons (cadr log) (m*l consts))
-	   ()))
-    (cond ((freeof var (car l)) (push (car l) consts))
-	  ((mlogp (car l))
-	   (if (null log) (setq log (car l))
-	       (return ())))
-	  (t (return ())))))
-
-(defun log-reduce (x)
-  (cond ((atom x) x)
-	((freeof var x) x)
-	((mplusp x)
-	 (do ((l (cdr x) (cdr l))
-	      (sum ())
-	      (weak-logs ())
-	      (strong-logs ())
-	      (temp))
-	     ((null l) (m+l `(((%log) ,(m*l strong-logs))
-			      ((%log) ,(m*l weak-logs))
-			      ,@sum)))
-	   (setq x (log-reduce (car l)))
-	   (cond ((mlogp x)
-		  (if (infinityp (limit (cadr x) var val 'think))
-		      (push (cadr x) strong-logs)
-		      (push (cadr x) weak-logs)))
-		 ((and (mtimesp x) (setq temp (log-red-contract (cdr x))))
-		  (if (infinityp (limit (car temp) var val 'think))
-		      (push (m^ (car temp) (cdr temp)) strong-logs)
-		      (push (m^ (car temp) (cdr temp)) weak-logs)))
-		 (t (push x sum)))))
-	((mtimesp x)
-	 (do ((l (cdr x) (cdr l))
-	      (ans 1))
-	     ((null l) ans)
-	   (setq ans ($expand (m* (log-reduce (car l)) ans)))))
-	((mexptp x) (m^t (log-reduce (cadr x)) (caddr x)))
-	((mlogp x)
-	 (cond ((not (infinityp (limit (cadr x) var val 'think))) x)
-	       (t
-		(cond ((eq (cadr x) var) x)
-		      ((mplusp (cadr x))
-		       (let ((strongl (maxi (cdadr x))))
-			 (m+ (log-reduce `((%log) ,(car strongl))) `((%log) ,(m// (cadr x) (car strongl))))))
-		      ((mtimesp (cadr x))
-		       (do ((l (cdadr x) (cdr l)) (ans 0)) ((null l) ans)
-			 (setq ans (m+ (log-reduce (simplify `((%log) ,(log-reduce (car l))))) ans))))
-		      (t
-		       (let ((red-log (simplify `((%log) ,(log-reduce (cadr x))))))
-			 (if (alike1 red-log x) x (log-reduce red-log))))))))
-	(t x)))
-
 ;; this function is responsible for the following bug:
 ;; limit(x^2 + %i*x, x, inf)  -> inf	(should be infinity)
 (defun ratlim (e)
@@ -2031,7 +1970,7 @@ ignoring dummy variables and array indices."
 		    (t (setq infl (append infl infinityl))))))
 
      oon  (setq y (m+l (append minfl infl)))
-     (cond ((alike1 exp (setq y (sratsimp (log-reduce (hyperex y)))))
+     (cond ((alike1 exp (setq y (sratsimp (hyperex y))))
 	    (cond ((not (infinityp val))
 		   (setq infl (cnv infl val)) ;THIS IS HORRIBLE!!!!
 		   (setq minfl (cnv minfl val))))

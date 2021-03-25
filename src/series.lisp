@@ -1072,32 +1072,3 @@ integration / differentiation variable."))
       ((mexpt) sp2var ((mplus) ((mtimes) 2 *index) 1)))
      *index 0 $inf)
   sp2)
-
-(defprop %erf
-    ((mtimes) 2 ((mexpt) $%pi ((rat) -1 2))
-     ((%sum)
-      ((mtimes) ((mexpt) ((mplus) 1 ((mtimes) 2 *index)) -1)
-       ((mexpt) -1 *index) ((mexpt) ((mfactorial) *index) -1)
-       ((mexpt) sp2var ((mplus) 1 ((mtimes) 2 *index))))
-      *index 0 $inf))
-  sp2)
-
-(defprop %fresnel_c
-    ((%sum)
-     ((mtimes) ((mexpt) ((mplus) 1 ((mtimes) 4 *index)) -1)
-      ((mexpt) 2 ((mtimes) -2 *index)) ((mexpt) -1 *index)
-      ((mexpt) $%pi ((mtimes) 2 *index))
-      ((mexpt) ((mfactorial) ((mtimes) 2 *index)) -1)
-      ((mexpt) sp2var ((mplus) 1 ((mtimes) 4 *index))))
-     *index 0 $inf)
-  sp2)
-
-(defprop %fresnel_s
-    ((%sum)
-     ((mtimes) ((mexpt) ((mplus) 3 ((mtimes) 4 *index)) -1)
-      ((mexpt) 2 ((mplus) -1 ((mtimes) -2 *index))) ((mexpt) -1 *index)
-      ((mexpt) $%pi ((mplus) 1 ((mtimes) 2 *index)))
-      ((mexpt) ((mfactorial) ((mplus) 1 ((mtimes) 2 *index))) -1)
-      ((mexpt) sp2var ((mplus) 3 ((mtimes) 4 *index))))
-     *index 0 $inf)
-  sp2)

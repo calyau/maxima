@@ -82,7 +82,7 @@ if { "[info commands vwait]" == "vwait"  } {
     proc myVwait { x  } {
         global maxima_priv
 # Fix for Tcl 8.5: linking unreachable global variables used to be ignored
-# in Tcl 8.4 but in 8.5 it raises an errror. The catch command should
+# in Tcl 8.4 but in 8.5 it raises an error. The catch command should
 # restore the Tcl 8.4 behavior. (villate, 20080513)
 	catch {global $x}
 	lappend maxima_priv(myVwait) $x

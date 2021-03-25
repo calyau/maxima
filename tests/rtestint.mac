@@ -917,7 +917,7 @@ factor(integrate(1/r/sqrt(2*h*r^2-a^2-2*k*r^4),r));
  * Answer = 1/2/sqrt(a^2+eps^2)*asin((h*r^2-(a^2+eps^2))/r^2/sqrt(h^2-2*k*(a^2+eps^2)))
  * h^2 > 2*(a^2+eps^2)*k
  *
- * Maxima doens't get stuck anymore, but I can't figure out the magic
+ * Maxima doesn't get stuck anymore, but I can't figure out the magic
  * assume expression so that integrate doesn't ask questions anymore.
  */
 /*

@@ -75,21 +75,48 @@
 	     (let ((*standard-output* stream))
 	       ($errormsg)))))
 
+(defvar *merror-signals-$error-p* nil
+  "When T, MERROR will signal a MAXIMA-$ERROR condition.")
+
+;; Sample:
+;; (defun h (he)
+;;   (merror "hi there ~:M and ~:M" he he))
+;; This will signal a MAXIMA-$ERROR condition:
+;; (with-$error (h '$you))
+
+(defmacro with-$error (&body body)
+  "Let MERROR signal a MAXIMA-$ERROR condition."
+  `(let ((*merror-signals-$error-p* t))
+     (declare (special *merror-signals-$error-p*))
+     ,@body))
+
 (defun merror (sstring &rest l)
   (declare (special errcatch *mdebug*))
   (setq $error `((mlist simp) ,sstring ,@ l))
-  (and $errormsg ($errormsg))
-  (cond (*mdebug*
+  (cond (*merror-signals-$error-p*
+	 (error 'maxima-$error))
+	((eq *mdebug* '$lisp)
+	 ; Go immediately into the lisp debugger
+	 (let ((*debugger-hook* nil))
+	   (invoke-debugger (make-condition 'maxima-$error))))
+	(*mdebug*
 	 (let ((dispflag t) ret)
 	   (declare (special dispflag))
+	   (when $errormsg
+	     ($errormsg))
 	   (format t (intl:gettext " -- an error.  Entering the Maxima debugger.~%~
                        Enter ':h' for help.~%"))
 	   (progn
 	     (setq ret (break-dbm-loop nil))
 	     (cond ((eql ret :resume)
 		    (break-quit))))))
-	(errcatch  (error 'maxima-$error))
+	(errcatch
+	 (when $errormsg
+	   ($errormsg))
+	 (error 'maxima-$error))
 	(t
+	 (when $errormsg
+	   ($errormsg))
 	 (fresh-line *standard-output*)
 	 ($backtrace 3)
 	 (format t (intl:gettext "~& -- an error. To debug this try: debugmode(true);~%"))
@@ -98,20 +125,6 @@
 
 (defun mwarning (&rest l)
   (format t "Warning: ~{~a~^ ~}~%" (mapcar #'$sconcat l)))
-
-(defmacro with-$error (&body body)
-  "Let MERROR signal a MAXIMA-$ERROR condition."
-  `(let ((errcatch t)
-	 *mdebug*		       ;let merror signal a lisp error
-	 $errormsg)			;don't print $error
-     (declare (special errcatch *mdebug* $errormsg))
-     ,@body))
-
-;; Sample:
-;; (defun h (he)
-;;   (merror "hi there ~:M and ~:M" he he))
-;; This will signal a MAXIMA-$ERROR condition:
-;; (with-$error (h '$you))
 
 (defmvar $error_syms '((mlist) $errexp1 $errexp2 $errexp3)
   "Symbols to bind the too-large `maxima-error' expresssions to")

@@ -351,19 +351,5 @@ niceindices(powerseries(log(1-a*x), x, 0));
 niceindices(powerseries(log(1-z*exp(-4)), z, 0));
 -sum(exp(-4*i)*z^i/i, i, 1, inf)$
 
-/*
- * Test series for erf, fresnel_c, and fresnel_s
- * See A&S 7.1.5, 7.3.11, and 7.3.13
- */
-
-niceindices(powerseries(erf(z), z, 0));
-2/sqrt(%pi)*sum((-1)^i*z^(2*i+1)/((2*i+1)*i!), i, 0, inf);
-
-niceindices(powerseries(fresnel_c(x), x, 0));
-sum((-1)^i*(%pi/2)^(2*i)/((4*i+1)*(2*i)!)*x^(4*i+1), i, 0, inf);
-
-niceindices(powerseries(fresnel_s(y), y, 0));
-sum((-1)^i*(%pi/2)^(2*i+1)/((4*i+3)*(2*i+1)!)*y^(4*i+3), i, 0, inf);
-
 (kill(all), 0);
 0$

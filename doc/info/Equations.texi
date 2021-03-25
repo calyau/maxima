@@ -621,32 +621,112 @@ Solution
 
 @code{inteqn} is a package for solving integral equations.
 @code{load ("inteqn")} loads this package.
- 
-@var{ie} is the integral equation; @var{unk} is the unknown function; @var{tech}
-is the technique to be tried from those given above (@var{tech} = @code{first}
-means: try the first technique which finds a solution; @var{tech} = @code{all}
-means: try all applicable techniques); @var{n} is the maximum number of terms
-to take for @code{taylor}, @code{neumann}, @code{firstkindseries}, or
-@code{fredseries} (it is also the maximum depth of recursion for the
-differentiation method); @var{guess} is the initial guess for @code{neumann} or
-@code{firstkindseries}.
 
-Default values for the 2nd thru 5th parameters are:
+@var{ie} is the integral equation; @var{unk} is the unknown function;
+@var{tech} is the technique to be tried from those given in the lists
+below; (@var{tech} = @code{first} means: try the first technique which
+finds a solution; @var{tech} = @code{all} means: try all applicable
+techniques); @var{n} is the maximum number of terms to take for
+@code{taylor}, @code{neumann}, @code{firstkindseries}, or
+@code{fredseries} (it is also the maximum depth of recursion for the
+differentiation method); @var{guess} is the initial guess for
+@code{neumann} or @code{firstkindseries}.
+
+Two types of equations are considered. A second-kind equation of the
+following form,
+@ifnottex
+@example
+                           b(x)
+                          /
+                          [
+        p(x) = q(x, p(x), I     w(x, u, p(x), p(u)) du)
+                          ]
+                          /
+                           a(x)
+@end example
+@end ifnottex
+@tex
+$$p\left(x\right)=q\left(x, p\left(x\right) , \int_{a\left(x\right)}
+^{b\left(x\right)}{w\left(x, u, p\left(x\right), p\left(u\right)\right)
+\;du}\right)$$
+@end tex
+
+and a first-kind equation with the form
+@ifnottex
+@example
+                         b(x)
+                        /
+                        [
+                 f(x) = I     w(x, u, p(u)) du
+                        ]
+                        /
+                         a(x)
+@end example
+@end ifnottex
+@tex
+$$f\left(x\right)=\int_{a\left(x\right)}^{b\left(x\right)}
+{w\left(x, u, p\left(u\right)\right)\;du}$$
+@end tex
+
+The different solution techniques used require particular forms of the
+expressions @var{q} and @var{w}. The techniques available are the following:
+
+@b{Second-kind equations}
+@itemize  @bullet
+@item @code{flfrnk2nd}: For fixed-limit, finite-rank integrands.
+@item @code{vlfrnk}: For variable-limit, finite-rank integrands.
+@item @code{transform}: Laplace transform for convolution types.
+@item @code{fredseries}: Fredholm-Carleman series for linear equations.
+@item @code{tailor}: Taylor series for quasi-linear variable-limit equations.
+@item @code{neumann}: Neumann series for quasi-second kind equations.
+@item @code{collocate}: Collocation using a power series form for p(x)
+evaluated at equally spaced points.
+@end itemize
+
+@b{First-kind equations}
+@itemize  @bullet
+@item @code{flfrnk1st}: For fixed-limit, finite-rank integrands.
+@item @code{vlfrnk}: For variable-limit, finite-rank integrands.
+@item @code{abel}: For singular integrands
+@item @code{transform}: See above
+@item @code{collocate}: See above
+@item @code{firstkindseries}: Iteration technique similar to neumann series.
+@end itemize
+
+The default values for the 2nd thru 5th parameters in the calling form
+are:
 
 @var{unk}: @code{@var{p}(@var{x})}, where @var{p} is the first function
 encountered in an integrand which is unknown to Maxima and @var{x} is the
 variable which occurs as an argument to the first occurrence of @var{p} found
 outside of an integral in the case of @code{secondkind} equations, or is the
 only other variable besides the variable of integration in @code{firstkind}
-equations.  If the attempt to search for @var{x} fails, the user will be asked
-to supply the independent variable.
+equations. If the attempt to search for @var{x} fails, the user will be asked
+to supply the independent variable. @var{tech}: @code{first}. @var{n}: 1.
+@var{guess}: @code{none} which will cause @code{neumann} and
+@code{firstkindseries} to use @code{@var{f}(@var{x})} as an initial guess.
 
-tech: @code{first}
+Examples:
+@example
+(%i1) load("inteqn")$
 
-n: 1
+(%i2) e: p(x) - 1 -x + cos(x) + 'integrate(cos(x-u)*p(u),u,0,x)$
 
-guess: @code{none} which will cause @code{neumann} and @code{firstkindseries}
-to use @code{@var{f}(@var{x})} as an initial guess.
+(%i3) ieqn(e, p(x), 'transform);
+default 4th arg, number of iterations or coll. parms.:  1 
+default 5th arg, initial guess:  none 
+
+(%t3)                           [x, transform]
+(%o3)                               [%t3]
+(%i4) e: 2*'integrate(p(x*sin(u)), u, 0, %pi/2) - a*x - b$
+
+(%i5) ieqn(e, p(x), 'firstkindseries);
+default 4th arg, number of iterations or coll. parms.:  1 
+default 5th arg, initial guess:  none 
+
+(%t5)          [2 a x + %pi b, firstkindseries, 1, approximate]
+(%o5)                               [%t5]
+@end example
 
 @opencatbox
 @category{Integral equations}

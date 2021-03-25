@@ -140,7 +140,7 @@
 	 #+allegro ((mlist simp) 184 185))
         "rtest_powerseries"
         ((mlist simp) "rtest_laplace"
-	 ((mlist simp) 29 49 50 51 54 59 60 61 62 78 80))
+	 ((mlist simp) 29 49 50 51 59 60 61 62 78 80))
         "rtest_plotoptions"
 	"rtest_algsys"
         "rtest_trace"

@@ -59,7 +59,7 @@ To build Maxima:
 
 Maxima builds with defsystem. The file maxima-build.lisp is provided
 for rudimentary guidance in using defsystem. Experts should feel free
-to subsitute their knowledge of defsystem for the following steps.
+to substitute their knowledge of defsystem for the following steps.
 
 (5) Restart Lisp, and load maxima-build.lisp:
 

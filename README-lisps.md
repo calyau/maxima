@@ -107,7 +107,7 @@ GCL <https://www.gnu.org/software/gcl/>
 
 GCL versions starting with 2.4.3 can be built with readline
 support, so Maxima has advanced command-line editing facilities
-when built with it. GCL produces a fast Maxima exectuable that
+when built with it. GCL produces a fast Maxima executable that
 profit from GCL's fast bignum algorithms.
 
 Only the ANSI-enabled version of GCL works with Maxima, i.e.,

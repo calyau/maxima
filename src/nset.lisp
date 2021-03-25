@@ -318,7 +318,7 @@
 (defun powerset-subset (a k n)
   (let ((s) (b) (acc))
     (cond ((= k 0)
-	   (setq acc (cons `(($set)) acc)))
+	   (setq acc (cons `(($set simp)) acc)))
      	  ((<= k n)
 	   (dotimes (i k)
 	     (setq s (cons i s)))
@@ -382,7 +382,7 @@
 	     (setq acc (cons (cons '(mlist simp) (nreverse q)) acc))
 	     (setq p (permutation-lex-successor n p r))))
 	  (t
-	   (setq acc `(((mlist))))))
+	   (setq acc `(((mlist simp))))))
     (setq acc (nreverse acc))
     (if need-to-simp `(($set) ,@acc)
       `(($set simp) ,@acc))))

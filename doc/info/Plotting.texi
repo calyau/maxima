@@ -118,8 +118,7 @@ from graphical interfaces different from Xmaxima, the commands and data
 are saved in the file @code{maxout_xxx.xmaxima} and xmaxima is run with the
 name of that file as argument.
 
-In previous versions this format used to be called @code{openmath}; that
-old name still works as a synonym for @code{xmaxima}.
+In previous versions this format used to be called @code{openmath}.
 
 @item
 @strong{geomview}
