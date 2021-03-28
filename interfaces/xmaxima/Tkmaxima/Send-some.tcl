@@ -1,9 +1,5 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Send-some.tcl,v 1.9 2011-03-14 20:01:13 villate Exp $
-#
-###### send-some.tcl ######
-
+#     Sen-some.tcl
+#     Time-stamp: "2021-03-28 17:47:57 villate"
 # Usage:
 # catch {close $socket}
 # source send-some.tcl ; openConnection $tohost $port $magic $program
@@ -329,10 +325,6 @@ proc cleanPdata { program } {
 }
 
 
-
-# number from run-main.tcl
-# set MathServer { linux1.ma.utexas.edu 4443 }
-
 proc currentTextWinWidth { } {
     set width 79
     catch {
@@ -359,8 +351,8 @@ proc currentTextWinWidth { } {
 #
 proc assureProgram { program timeout tries } {
     # puts "assure: program=$program"
-    global pdata MathServer
-
+    global pdata
+    set MathServer { some.server.edu 4443 }
 
     if { $tries <=  0   } { return 0}
 

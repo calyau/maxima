@@ -1,5 +1,5 @@
 #     Constants.tcl
-#     Time-stamp: "2021-03-28 11:27:49 villate"
+#     Time-stamp: "2021-03-28 17:33:58 villate"
 #
 
 proc cMAXINITBeforeIni {} {
@@ -27,8 +27,8 @@ proc cMAXINITBeforeIni {} {
 
     # from FileDlg.tcl
     set maxima_default(OpenDir) "~/"
-    set maxima_default(OpenFile) "~/.xmaximarc"
-    set maxima_default(SaveFile) "~/.xmaximarc"
+    set maxima_default(OpenFile) "~/.xmaximrc"
+    set maxima_default(SaveFile) "~/.xmaximrc"
 
     global embed_args
     if { "[info var embed_args]" != "" } {
@@ -49,10 +49,8 @@ proc cMAXINITReadIni {} {
 }
 
 proc cMAXINITAfterIni {} {
-    global maxima_default maxima_priv MathServer
+    global maxima_default maxima_priv
     lMaxInitSetOpts
-    set MathServer [list $maxima_default(sMathServerHost) \
-			$maxima_default(iMathServerPort) ]
 
     # from plot3d.tcl
     set maxima_priv(speed) [expr {(9700.0 / (1 + [lindex [time {set i 0 ; while { [incr i] < 1000} {}} 1] 0]))}]

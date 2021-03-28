@@ -1,6 +1,5 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: OpenMath.tcl,v 1.17 2011-03-15 01:13:22 villate Exp $
+#     OpenMath.tcl
+#     Time-stamp: "2021-03-28 17:36:15 villate"
 #
 proc genSample { x n } {
     set sample $x
@@ -570,7 +569,7 @@ proc doInsertp { tags } {
 #----------------------------------------------------------------
 #
 proc doInvoke { w index } {
-    global evalPrograms MathServer
+    global evalPrograms
     set tags [$w tag names $index]
 
     $w tag delete sel
@@ -583,8 +582,6 @@ proc doInvoke { w index } {
     set res [resolveURL $program [oget $w baseprogram]]
     # puts "program=$program,baseprogram[oget $w baseprogram],res=$res"
 
-    set MathServer "[assoc server $res [lindex $MathServer 0]] \
-	   [assoc port $res [lindex $MathServer 1]]"
     set this [thisRange $w  program:$program $index]
     # puts "this=$this"
 
