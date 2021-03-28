@@ -1,19 +1,10 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Constants.tcl,v 1.29 2011-03-20 23:14:57 villate Exp $
+#     Constants.tcl
+#     Time-stamp: "2021-03-28 11:27:49 villate"
 #
 
 proc cMAXINITBeforeIni {} {
     global maxima_default
     set maxima_default(plotwindow) multiple
-
-    # from Send-some.tcl
-    set maxima_default(sMathServerHost) genie1.ma.utexas.edu
-    set maxima_default(iMathServerPort) 4443
-
-    # from Browser.tcl
-    set maxima_default(sMathServerHost) localhost
-    set maxima_default(iMathServerPort) 4443
 
     #mike turn these off by default
     set maxima_default(iShowBalloons) 0
@@ -39,21 +30,12 @@ proc cMAXINITBeforeIni {} {
     set maxima_default(OpenFile) "~/.xmaximrc"
     set maxima_default(SaveFile) "~/.xmaximrc"
 
-    # From Browser.tcl
-    set maxima_default(defaultservers) {
-	nmtp://genie1.ma.utexas.edu/
-	nmtp://linux51.ma.utexas.edu/
-	nmtp://linux52.ma.utexas.edu/
-    }
-
     global embed_args
     if { "[info var embed_args]" != "" } {
 	# the following will be defined only in the plugin
 	set maxima_default(defaultservers) nmtp://genie1.ma.utexas.edu/
     }
-
-
-    # maxima_default(lProxyHttp)
+    set maxima_priv(imgregexp) {[.](gif|png|jpe?g)[^/]*$}
 }
 
 proc cMAXINITReadIni {} {
@@ -93,9 +75,8 @@ proc cMAXINITAfterIni {} {
 
 # Constants
 global maxima_priv
-set maxima_priv(date) 14/03/2011
+set maxima_priv(date) 28/03/2021
 
-# from
 if { ![info exists maxima_priv(date)] } {
     set maxima_priv(date) [clock  format [clock seconds] -format {%m/%d/%Y} ]
 }
@@ -104,12 +85,10 @@ if { ![info exists maxima_priv(date)] } {
 set maxima_priv(clicks_per_second) 1000000
 
 # from Getdata1.tcl
-set maxima_priv(cachedir) ~/.netmath/cache
+set maxima_priv(cachedir) ~/.xmaxima/cache
 
 # from Plotconf.tcl
 global ftpInfo
-set ftpInfo(host) genie1.ma.utexas.edu
-set ftpInfo(viahost) genie1.ma.utexas.edu
 
 # from Plot2d.tcl
 array set maxima_priv { bitmap,disc4 {#define disc4_width 4
@@ -125,12 +104,6 @@ static unsigned char disc_bits[] = {
 # from xmaxima.tcl
 set maxima_priv(options,maxima) {{doinsert 0 "Do an insertion" boolean}}
 
-# from EOctave.tcl
-set maxima_priv(options,octave) {{doinsert 1 "Do an insertion" boolean}}
-
-# from EOpenplot.tcl
-set maxima_priv(options,openplot) {{doinsert 0 "Do an insertion" boolean}}
-
 # from EHref.tcl
 set maxima_priv(options,href) {
     {src "" [mc "A URL (universal resource locator) such as http://www.ma.utexas.edu/foo.om"]}
@@ -138,7 +111,7 @@ set maxima_priv(options,href) {
     {searchregexp "" [mc "A regexp to search for, to get an initial position"]}
 }
 
-# from Preamle.tcl
+# from Preamble.tcl
 set maxima_priv(counter) 0
 	
 # the linelength initially will have Maxima's default value.
@@ -152,6 +125,7 @@ set maxima_priv(urlHandlers) {
     text/plain netmath
     image/gif  netmath
     image/png  netmath
+    image/jpg netmath
     image/jpeg netmath
     application/postscript "ghostview -safer %s"
     application/pdf "acroread %s"
