@@ -27,8 +27,8 @@ proc cMAXINITBeforeIni {} {
 
     # from FileDlg.tcl
     set maxima_default(OpenDir) "~/"
-    set maxima_default(OpenFile) "~/.xmaximrc"
-    set maxima_default(SaveFile) "~/.xmaximrc"
+    set maxima_default(OpenFile) "~/.xmaximarc"
+    set maxima_default(SaveFile) "~/.xmaximarc"
 
     global embed_args
     if { "[info var embed_args]" != "" } {
