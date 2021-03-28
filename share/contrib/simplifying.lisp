@@ -75,6 +75,7 @@
   
 (defun simpfunmake (fun args)
   (if (not (or (symbolp fun) ($subvarp fun)
+	       (and (stringp fun) (getopr0 fun))
 	       (and (not (atom fun)) (eq (caar fun) 'lambda))))
       (merror "Bad first argument to `simpfuncall/make': ~M" fun))
   (simpcons (getopr fun) args))
