@@ -40,7 +40,6 @@ find_file (NSISTEMPLATE_IN  NAMES "NSIS.template.in"
     PATHS "${CMAKE_ROOT}/Modules/" "${CMAKE_ROOT}/Modules/Internal/CPack")
 file(READ "${NSISTEMPLATE_IN}" MYNSISTEMPLATE)
 string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel admin
-!include \"${CMAKE_SOURCE_DIR}\\\\\\\\FileAssociation.nsh\"
 !include FileFunc.nsh
 !include LogicLib.nsh
 " MYNSISTEMPLATE "${MYNSISTEMPLATE}")
@@ -273,23 +272,6 @@ set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.
 set(CPACK_PACKAGE_FILE_NAME "maxima-clisp-sbcl${ABCL_INSTALLER}-${CPACK_PACKAGE_VERSION}-${INSTALLERSUFFIX}")
 set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
 
-if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "wxMaxima")
-    # include NSIS Plugin
-    set(CPACK_NSIS_EXTRA_PREINSTALL_COMMANDS "!include \\\"${path_to_plugins}\\\\fileassoc.nsh\\\"")
-    #File associations:
-    set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-    \\\${registerExtension} \\\"$INSTDIR\\\\bin\\\\wxmaxima.exe\\\" \\\".wxm\\\" \\\"wxMaxima Document\\\"
-    \\\${registerExtension} \\\"$INSTDIR\\\\bin\\\\wxmaxima.exe\\\" \\\".wxmx\\\" \\\"wxMaxima XML Document\\\"
-    \\\${registerExtension} \\\"$INSTDIR\\\\bin\\\\wxmaxima.exe\\\" \\\".mac\\\" \\\"Maxima Batch file\\\"
-    WriteRegStr HKCR \\\".wxmx\\\\ShellNew\\\" \\\"NullFile\\\" \\\"\\\"
-    ")
-    set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
-    \\\${unregisterExtension} \\\".wxm\\\" \\\"wxMaxima Document\\\"
-    \\\${unregisterExtension} \\\".wxmx\\\" \\\"wxMaxima XML Document\\\"
-    \\\${unregisterExtension} \\\".mac\\\" \\\"Maxima Batch File\\\"
-    DeleteRegKey HKCR \\\".wxmx\\\\ShellNew\\\"
-    ")
-endif()
 
 set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP "${CMAKE_SOURCE_DIR}/maxima-installerimage.bmp")
 include(CPack)
