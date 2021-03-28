@@ -1,4 +1,3 @@
-
 ;;; Package to allow Maxima-level user-defined simplifying functions
 ;;;
 ;;; For example, suppose we want to write a step function stepfn(x)
