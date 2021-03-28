@@ -1,5 +1,5 @@
 #     Constants.tcl
-#     Time-stamp: "2021-03-28 17:33:58 villate"
+#     Time-stamp: "2021-03-28 17:59:30 villate"
 #
 
 proc cMAXINITBeforeIni {} {
@@ -27,8 +27,11 @@ proc cMAXINITBeforeIni {} {
 
     # from FileDlg.tcl
     set maxima_default(OpenDir) "~/"
-    set maxima_default(OpenFile) "~/.xmaximrc"
-    set maxima_default(SaveFile) "~/.xmaximrc"
+    # The last files opened and saved. Any default value serves
+    # but a good starting value is Xmaxima's initialization file.
+    # TO DO: change ~ for a home directory customized for each system.
+    set maxima_default(OpenFile) "~/.xmaximarc"
+    set maxima_default(SaveFile) "~/.xmaximarc"
 
     global embed_args
     if { "[info var embed_args]" != "" } {
