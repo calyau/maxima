@@ -352,7 +352,7 @@ proc currentTextWinWidth { } {
 proc assureProgram { program timeout tries } {
     # puts "assure: program=$program"
     global pdata
-    set MathServer { some.server.edu 4443 }
+    set MathServer { some.server.example.org 4443 }
 
     if { $tries <=  0   } { return 0}
 
