@@ -122,42 +122,24 @@
 	(cl-info::info-exact topic)
 	(cl-info::info-inexact topic))))
 
-; The old implementation
-;(defmfun $apropos (s)
-;  (cons '(mlist) (apropos-list s :maxima)))
-
-;;; Utility function for apropos to filter a list LST with a function FN
-;;; it is semiliar to remove-if-not, but take the return value of the function
-;;; and build up a new list with this values.
-;;; e.g. (filter #'(lambda(x) (if (oddp x) (inc x)) '(1 2 3 4 5)) --> (2 4 6)
-
-(defun filter (fn lst)
-  (let ((acc nil))
-    (dolist (x lst)
-      (let ((val (funcall fn x)))
-        (if val (push val acc))))
-    (nreverse acc)))
-
 (defmspec $apropos (s)
-  (let (acc y)
-    (setq s (car (margs s)))
-    (cond ((stringp s)
-           ;; A list of all Maxima names which contain the string S.
-           (setq acc (append acc (apropos-list (stripdollar s) :maxima)))
+  (setq s (car (margs s)))
+  (cond ((or (stringp s)
+	     (and (symbolp s) (setq s (string (stripdollar s)))))
+         ;; A list of all Maxima names which contain the string S.
+         (let ((acc (apropos-list s :maxima)))
            ;; Filter the names which are Maxima User symbols starting
            ;; with % or $ and remove duplicates.
-           ($listify
-             ($setify
-               (cons '(mlist)
-                      (filter #'(lambda (x)
-                                  (cond ((char= (get-first-char x) #\$) x)
-                                        ((char= (get-first-char x) #\%)
-                                         ;; Change to a verb, when present.
-                                         (if (setq y (get x 'noun))
-                                             y
-                                             x))
-                                        (t nil)))
-                              acc)))))
-          (t
-           (merror
-             (intl:gettext "apropos: argument must be a string; found: ~M") s)))))
+           (remove-duplicates
+            (cons '(mlist)
+                   (delete-if-not
+		    #'(lambda (x)
+                        (cond ((eq x '||) nil)
+			      ((char= (get-first-char x) #\$) x)
+                              ;; Change to a verb, when present.
+                              ((char= (get-first-char x) #\%) (or (get x 'noun) x))
+                              (t nil)))
+                    acc)) :test #'eq)))
+        (t
+         (merror
+          (intl:gettext "apropos: argument must be a string or symbol; found: ~M") s))))
