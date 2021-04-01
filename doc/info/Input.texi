@@ -430,13 +430,15 @@ Note also that structures will only be read back as structures if
 they have been defined by @code{defstruct} before the @code{load} command
 is called.
 
-See also @mrefcomma{loadfile} @mrefcomma{batch} @mrefcomma{batchload} and
-@mrefdot{demo}  @code{loadfile} processes Lisp files; @code{batch},
-@code{batchload}, and @code{demo} process Maxima files.
+See also @mrefcomma{loadfile} for Lisp files; and @mrefcomma{batch} @mrefcomma{batchload} and
+@mrefdot{demo} for Maxima files.
 
 See @mref{file_search} for more detail about the file search mechanism.
-Additionally the chapter on @mref{numericalio} describes many functions
-that allow to load files that contain csv or similar data.
+The @mref{numericalio} chapter describes many functions
+for loading csv and other data files.
+
+During Maxima file loading, the variable @mref{load_pathname} is bound to the pathname of the file
+being loaded.
 
 @code{load} evaluates its argument.
 
