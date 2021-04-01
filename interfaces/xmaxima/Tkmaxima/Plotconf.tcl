@@ -1,11 +1,10 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Plotconf.tcl,v 1.26 2011-03-15 01:16:10 villate Exp $
-#
-###### plotconf.tcl ######
 ############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
+# Plotconf.tcl                                             #
+# Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2021-04-01 17:08:38 villate"            #
 ############################################################
 
 proc makeFrame { w type } {
@@ -15,13 +14,7 @@ proc makeFrame { w type } {
         set w ""
     } else {
 	catch { destroy $w}
-	
 	frame $w
-	# toplevel $w
-	# set w $w.new
-	# frame $w
-	# puts "making $w"	
-	
     }
 
     set dismiss "destroy $win"

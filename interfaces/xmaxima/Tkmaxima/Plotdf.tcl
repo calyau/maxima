@@ -1,11 +1,11 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Plotdf.tcl,v 1.23 2011-03-20 16:33:16 villate Exp $
-#
-###### Plotdf.tcl ######
-#######################################################################
-#######  Copyright William F. Schelter.  All rights reserved.  ########
-#######################################################################
+############################################################
+# Plotdf.tcl                                               #
+# Copyright (C) 1998 William F. Schelter                   #
+# For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2021-04-01 17:08:53 villate"            #
+############################################################
 
 global plotdfOptions
 set plotdfOptions {
@@ -17,8 +17,8 @@ set plotdfOptions {
     {curves "" "Color for the orthogonal curves"}
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
-    {width 560 "Width of canvas in pixels"}
-    {height 560 "Height of canvas in pixels" }
+    {width 700 "Width of canvas in pixels"}
+    {height 500 "Height of canvas in pixels" }
     {scrollregion {} "Area to show if canvas is larger" }
     {xcenter 0.0 {(xcenter,ycenter) is the origin of the window}}
     {ycenter 0.0 "see xcenter"}
@@ -29,7 +29,7 @@ set plotdfOptions {
     {tstep "" "t step size"}
     {direction "both" "May be both, forward or backward" }
     {versus_t 0 "Plot in a separate window x and y versus t, after each trajectory" }
-    {windowname ".dfplot" "window name"}
+    {windowname ".plotdf" "window name"}
     {windowtitle "Plotdf" "window title"}
     {parameters "" "List of parameters and values eg k=3,l=7+k"}
     {linecolors { green black  brown gray black} "colors for functions plots"}
@@ -37,7 +37,6 @@ set plotdfOptions {
     {trajectory_at "" "Place to calculate trajectory"}
     {linewidth "2.0" "Width of integral lines" }
     {nolines 0 "If not 0, plot points and nolines"}
-    {bargraph 0 "If not 0 this is the width of the bars on a bar graph" }
     {plotpoints 0 "if not 0 plot the points at pointsize" }
     {pointsize 2 "radius in pixels of points" }
     {autoscale "x y" "Set {x,y}center and {x,y}range depending on data and function. "}
@@ -59,13 +58,10 @@ proc makeFrameDf { win } {
     makeLocal $win c dydx
 
     set top $win
-    # puts "w=$w,win=$win"
     catch { set top [winfo parent $win]}
     catch {
-
-	wm title $top [oget $win windowtitle]
+	wm title $top {Xmaxima: plotdf}
 	wm iconname $top "plotdf"
-	#    wm geometry $top 750x700-0+20
     }
     set wb $w.menubar
     makeLocal $win buttonFont
@@ -244,6 +240,7 @@ proc doIntegrate { win x0 y0 } {
 
 proc plotVersusT {win } {
     linkLocal $win didLast dydt dxdt parameters xcenter xradius ycenter yradius
+    if { $didLast == {} } {return}
     set nwin .versust.plot2d
     if { "$parameters" != ""  } {
 	set pars ", $parameters"
@@ -487,8 +484,6 @@ proc parseOdeArg {  s } {
     return $ans
 }
 
-
-
 proc plotdf { args } {
     global plotdfOptions   printOption printOptions plot2dOptions
     # puts "args=$args"
@@ -501,6 +496,7 @@ proc plotdf { args } {
     }
     global [oarray $win]
     getOptions $plotdfOptions $args -usearray [oarray $win]
+    oset $win didLast {}
 
     makeLocal $win dydx
 

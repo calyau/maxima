@@ -1,11 +1,10 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Plot3d.tcl,v 1.19 2011-03-12 17:29:04 villate Exp $
-#
-###### Plot3d.tcl ######
 ############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
+# Plot3d.tcl                                               #
+# Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2021-04-01 17:09:58 villate"            #
 ############################################################
 
 global plot3dOptions
@@ -13,7 +12,7 @@ set plot3dOptions {
     {xradius 1 "Width in x direction of the x values" }
     {yradius 1 "Height in y direction of the y values"}
 
-    {width 500 "Width of canvas in pixels"}
+    {width 700 "Width of canvas in pixels"}
     {height 500 "Height of canvas in pixels" }
     {xcenter 0.0 {(xcenter,ycenter) is the origin of the window}}
     {ycenter 0.0 "see xcenter"}
@@ -681,13 +680,10 @@ proc makeFrame3d { win } {
     set top $w
     catch { set top [winfo parent $w]}
     catch {
-	wm title $top [mc "Xmaxima: Plot3d"]
+	wm title $top {Xmaxima: plot3d}
 	wm iconname $top "plot3d"
-	#   wm geometry $top 750x700-0+20
     }
-
     pack $w
-
 }
 
 proc mkPlot3d { win  args } {

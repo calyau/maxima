@@ -1,23 +1,18 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Plot2d.tcl,v 1.20 2011-03-09 11:28:25 villate Exp $
-#
-###### Plot2d.tcl ######
 ############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
+# Plot2d.tcl                                               #
+# Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2021-04-01 17:10:32 villate"            #
 ############################################################
-
-global p
-set p .plot
-if {[winfo exists $p]} {catch { destroy $p }}
 
 global plot2dOptions
 set plot2dOptions {
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
-    {width 560 "Width of canvas in pixels"}
-    {height 560 "Height of canvas in pixels" }
+    {width 700 "Width of canvas in pixels"}
+    {height 500 "Height of canvas in pixels" }
     {xcenter 0.0 {(xcenter,ycenter) is the origin of the window}}
     {xfun "" {function of x to plot eg: sin(x) or "sin(x);x^2+3" }}
     {parameters "" "List of parameters and values eg k=3,l=7+k"}
@@ -30,7 +25,7 @@ set plot2dOptions {
     {windowname ".plot2d" "window name"}
     {nolines 0 "If not 0, plot points and nolines"}
     {bargraph 0 "If not 0 this is the width of the bars on a bar graph" }
-    {linewidth "0.6" "Width of plot lines" }
+    {linewidth "1.5" "Width of plot lines" }
     {plotpoints 0 "if not 0 plot the points at pointsize" }
     {pointsize 2 "radius in pixels of points" }
     {linecolors {blue green red brown gray black} "colors to use for lines in data plots"}
@@ -88,18 +83,17 @@ proc mkPlot2d { args } {
 
 }
 
-proc  makeFrame2d  { win } {
+proc makeFrame2d  { win } {
     set w [makeFrame $win 2d]
     set top $w
     catch { set top [winfo parent $w]}
     catch {
-	wm title $top [mc "Xmaxima: Plot2d"]
+	wm title $top {Xmaxima: plot2d}
 	wm iconname $top "plot2d"
 	wm geometry $top 750x700
     }
     pack $w
     return $w
-
 }
 
 proc doConfig2d { win } {
