@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2021-04-01 17:10:32 villate"            #
+#     Time-stamp: "2021-04-02 14:34:52 villate"            #
 ############################################################
 
 global plot2dOptions
@@ -20,8 +20,6 @@ set plot2dOptions {
     {nsteps "100" "minimum number of steps in x direction"}
     {ycenter 0.0 "see xcenter"}
     {bbox "" "xmin ymin xmax ymax .. overrides the -xcenter etc"}
-    {screenwindow "20 20 700 700" "Part of canvas on screen"}
-
     {windowname ".plot2d" "window name"}
     {nolines 0 "If not 0, plot points and nolines"}
     {bargraph 0 "If not 0 this is the width of the bars on a bar graph" }
@@ -33,7 +31,6 @@ set plot2dOptions {
     {xaxislabel "" "Label for the x axis"}
     {yaxislabel "" "Label for the y axis"}
     {autoscale "y" "Set {x,y}center and {x,y}range depending on data and function. Value of y means autoscale in y direction, value of {x y} means scale in both.  Supplying data will automatically turn this on."}
-    {zoomfactor "1.6 1.6" "Factor to zoom the x and y axis when zooming.  Zoom out will be reciprocal" }
     {errorbar 0 "If not 0 width in pixels of errorbar.  Two y values supplied for each x: {y1low y1high y2low y2high  .. }"}
     {data "" "List of data sets to be plotted.  Has form { {xversusy {x1 x2 ... xn} {y1 .. yn ... ym}} .. {againstIndex {y1 y2 .. yn}}  .. }"}
     {psfile "" "A filename where the graph will be saved in PostScript."}
@@ -48,18 +45,14 @@ proc argSuppliedp { x } {
 }
 
 proc mkPlot2d { args } {
-    global plot2dOptions  printOption axisGray
-    #puts "args=<$args>"
-    # global  screenwindow c xmax xmin ymin ymax
-    # eval global [optionFirstItems $plot2dOptions]
+    global plot2dOptions printOption axisGray
     set win [assoc -windowname $args]
     if { "$win" == "" } {
 	set win [getOptionDefault windowname $plot2dOptions]
     }
     global  [oarray $win]
     set data [assoc -data $args ]
-    # puts ranges=[plot2dGetDataRange $data]
-
+    
     getOptions $plot2dOptions $args -usearray [oarray $win]
     linkLocal $win autoscale
     if { [argSuppliedp -data] && ![argSuppliedp -autoscale] && \
@@ -90,9 +83,7 @@ proc makeFrame2d  { win } {
     catch {
 	wm title $top {Xmaxima: plot2d}
 	wm iconname $top "plot2d"
-	wm geometry $top 750x700
     }
-    pack $w
     return $w
 }
 
@@ -108,33 +99,6 @@ proc doConfig2d { win } {
 	mkentry $wb1.$w [oloc $win $w] $w $buttonFont
 	pack $wb1.$w -side bottom -expand 1 -fill x
     }
-}
-
-proc doHelp2d {win } {
-    global Parser
-
-    doHelp $win [join [list \
-			[mc {
-
-XMAXIMA'S PLOTTER FOR TWO-DIMENSIONAL GRAPHICS
-
-To quit this help click anywhere on this text.
-
-Clicking on Config will open a menu where several settings can be changed, \
-such as the function being plotted, the line width, and the \
-x and y centers and radii. Replot is used to update the plot with the \
-changes made in the Config menu.
-
-By clicking on Zoom, the mouse will allow you to zoom in on a region \
-of the plot. Each click near a point magnifies the plot, keeping the center \
-at the point you clicked. Depressing the SHIFT key while clicking \
-zooms in the opposite direction.
-
-Holding the right mouse button down while moving the mouse will drag \
-(translate) the plot sideways or up and down.
-
-The plot can be saved as a postscript file, by clicking on Save.
-}] $Parser(help)]]
 }
 
 global plot
@@ -322,14 +286,13 @@ proc nextColor { win } {
 }
 
 
-proc plot2d {args } {
-    #puts "args=$args"
+proc plot2d { args } {
     set win [mxapply mkPlot2d $args]
     replot2d $win
     return $win
 }
 
-proc replot2d {win } {
+proc replot2d { win } {
     global printOption axisGray plot2dOptions
     linkLocal $win xfundata data psfile nobox axes
     foreach v $data {
@@ -343,10 +306,7 @@ proc replot2d {win } {
 	addSliders $win
     }
     set xfundata ""
-    #   puts xfun=$xfun,parameters=$parameters,[oget $win xradius],[oget $win xmax]
     foreach v [sparseListWithParams $xfun x $parameters] {
-	#	puts v=$v
-	#	proc _xf {  x  } "return \[expr { $v } \]"
 	proc _xf {  x  } "expr { $v }"	
 	regsub "\\$" $v "" label
 	lappend xfundata [list label $label] \
@@ -365,7 +325,8 @@ proc replot2d {win } {
 	}
     }
 
-    setUpTransforms $win 0.8
+    set_xy_region $win 0.8
+    set_xy_transforms $win
     set rtosx rtosx$win ; set rtosy rtosy$win
     makeLocal $win xmin ymin xmax ymax
     set x1 [rtosx$win $xmin]
@@ -411,20 +372,21 @@ proc replot2d {win } {
     }
     # Write down the axes labels
     $c del axislabel
+    set width [oget $win width]
+    set height [oget $win height]
     if {$nobox != 0  && $xmin*$xmax < 0  && ($axes == {y} || $axes == {xy})} {
-	set xbound [expr { [$rtosx 0] - 30}]
+	set xbound [expr { [$rtosx 0] - 0.08*$width}]
     } else {
-	set xbound [expr {$x1 - 30}]
+	set xbound [expr {$x1-0.08*$width}]
     }
-    $c create text $xbound [expr {$y1 - 6}] -anchor sw \
+    $c create text $xbound [expr {($y1+$y2)/2.0}] -anchor center -angle 90 \
        -text [oget $win yaxislabel] -font {helvetica 16 normal} -tags axislabel
     if {$nobox != 0  && $ymin*$ymax < 0  && ($axes == {x} || $axes == {xy})} {
-	$c create text [expr {$x2 - 5}] [expr { [$rtosy 0] + 15}] \
-	    -anchor ne -text [oget $win xaxislabel] \
-	    -font {helvetica 16 normal} \
-	    -tags axislabel
+	$c create text [expr {$x2-0.01*$width}] \
+            [expr { [$rtosy 0]+0.02*$height}] -anchor ne -tags axislabel \
+            -text [oget $win xaxislabel] -font {helvetica 16 normal}
     } else {
-	$c create text [expr {($x1 + $x2)/2}] [expr {$y2 + 35}] \
+	$c create text [expr {($x1 + $x2)/2}] [expr {$y2 + 0.08*$height}] \
 	    -anchor center -text [oget $win xaxislabel] \
 	    -font {helvetica 16 normal} -tags axislabel
     }
