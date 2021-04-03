@@ -627,7 +627,7 @@ without asking."
         files parts prompt
         tmp-buffer tmp-alist file-buffer)
     (if (not file)
-        ;; If file has not been specifed, prompt
+        ;; If file has not been specified, prompt
         (progn
               ;; Get default file from cell label, if any
               (save-excursion
@@ -1017,7 +1017,7 @@ then the substring preceding the `...' is used with try-completion on ALIST.
 An exact match is required if optional EXACT is t.
 If text is just `...' and alist is length 1, then the car of its single element
 is returned.
-Oherwise nil is returned."
+Otherwise nil is returned."
   (let (name try-name)
     (if (not (string-match "\\(\\.\\.\\.$\\)" text))
         (setq name text) ; don't do completion on full names
@@ -1155,7 +1155,7 @@ Return nil if no name or error in name."
     found))
 
 (defun emaxima-reference-p ()
-  "Return t if cell contains a cell reference, else retrun nil."
+  "Return t if cell contains a cell reference, else return nil."
   (save-excursion
     (goto-char (emaxima-cell-start))
     (if (re-search-forward "^ *\t*<[^:].*:[^>].*>$" (emaxima-cell-end) t)

@@ -541,7 +541,7 @@ in source buffer specified by BUFF."
 
 (defun imaxima-get-window-width-xemacs ()
   "Return window width in mm.
-XEmacs verson."
+XEmacs version."
   (/ (* (window-text-area-pixel-width) (imaxima-display-mm-width))
      (imaxima-display-pixel-width)))
 

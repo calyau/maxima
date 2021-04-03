@@ -49,15 +49,17 @@ and additional output.
 
 @c -----------------------------------------------------------------------------
 @anchor{apropos}
-@deffn {Function} apropos (@var{string})
+@deffn {Function} apropos (@var{name})
 
-Searches for Maxima names which have @var{string} appearing anywhere within
-them.  Thus, @code{apropos (exp)} returns a list of all the flags and functions
-which have @code{exp} as part of their names, such as @code{expand}, @code{exp},
-and @code{exponentialize}.  Thus if you can only remember part of the name of
-something you can use this command to find the rest of the name.  Similarly, you
-could say @code{apropos (tr_)} to find a list of many of the switches relating
-to the translator, most of which begin with @code{tr_}.
+Searches for Maxima names which have @var{name} appearing anywhere
+within them; @var{name} must be a string or symbol. Thus, @code{apropos
+(exp)} returns a list of all the flags and functions which have
+@code{exp} as part of their names, such as @code{expand}, @code{exp},
+and @code{exponentialize}. So, if you can only remember part of the name
+of a Maxima command or variable, you can use this command to find the
+rest of the name. Similarly, you can type @code{apropos (tr_)} to find
+a list of many of the switches relating to the translator, most of which
+begin with @code{tr_}.
 
 @code{apropos("")} returns a list with all Maxima names.
 
@@ -65,19 +67,35 @@ to the translator, most of which begin with @code{tr_}.
 
 Example:
 
-Show all Maxima symbols which have @code{"gamma"} in the name:
+Show all Maxima symbols which have @code{gamma} in the name:
 
 @c ===beg===
 @c apropos("gamma");
+@c apropos(gamma);
+@c length(apropos(""));
 @c ===end===
 @example
 @group
 (%i1) apropos("gamma");
-(%o1) [%gamma, gamma, gammalim, gamma_expand, gamma_incomplete_lower, 
-gamma_incomplete, gamma_incomplete_generalized, 
-gamma_incomplete_regularized, Gamma, log_gamma, makegamma, 
-prefer_gamma_incomplete, gamma-incomplete, 
-gamma_incomplete_generalized_regularized]
+(%o1) [%gamma, Gamma, gamma_expand, gammalim, makegamma, 
+prefer_gamma_incomplete, gamma, gamma-incomplete, gamma_incomplete, 
+gamma_incomplete_generalized, gamma_incomplete_generalized_regularized, 
+gamma_incomplete_lower, gamma_incomplete_regularized, log_gamma]
+@end group
+
+The same example, using the symbol @code{gamma}, rather than the string:
+@group
+(%i2) apropos(gamma);
+(%o2) [%gamma, Gamma, gamma_expand, gammalim, makegamma, 
+prefer_gamma_incomplete, gamma, gamma-incomplete, gamma_incomplete, 
+gamma_incomplete_generalized, gamma_incomplete_generalized_regularized, 
+gamma_incomplete_lower, gamma_incomplete_regularized, log_gamma]
+@end group
+
+The number of symbols in the current Maxima session. This will vary.
+@group
+(%i3) length(apropos(""));
+(%o3)                                2338
 @end group
 @end example
 

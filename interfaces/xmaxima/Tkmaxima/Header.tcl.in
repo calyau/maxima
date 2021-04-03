@@ -1,6 +1,9 @@
 #!/bin/sh
-#  -*- mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*- \
+#  -*- mode: tcl; fill-column: 75; tab-width: 8 -*- \
 exec @WISH@ "$0" -- "$@"
+
+package require Tk 8.6
+catch {package require Img}
 
 #
 # Xmaxima is created from the files in the directory interfaces/xmaxima/Tkmaxima/

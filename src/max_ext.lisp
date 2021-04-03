@@ -44,6 +44,10 @@
 ($auto_mexpr '$desimp "ode2.mac")
 ($auto_mexpr '$linear2 "ode2")
 
+;villate
+($auto_mexpr '$similaritytransform "eigen.mac")
+($auto_mexpr '$simtran "eigen.mac")
+
 (dolist (v       
 	  '($arite
 	    $card_orbit
@@ -386,3 +390,8 @@
     $common_lisp    
     $to_cl))
   (setf (get f 'autoload) "tocl"))
+
+(dolist (f
+  '($hstep
+    $pwilt))
+  (setf (get f 'autoload) "pwilt"))

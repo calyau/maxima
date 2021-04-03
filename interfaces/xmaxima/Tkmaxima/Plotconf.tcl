@@ -1,126 +1,84 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Plotconf.tcl,v 1.26 2011-03-15 01:16:10 villate Exp $
-#
-###### plotconf.tcl ######
 ############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
+# Plotconf.tcl                                             #
+# Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2021-04-02 14:48:10 villate"            #
 ############################################################
 
 proc makeFrame { w type } {
-    global   writefile doExit fontSize buttonfont maxima_priv
+    # If the plot was produced by Xmaxima's console, it will be in a frame
+    # inserted in the console. Otherwise it will be a toplevel window
+    global writefile doExit fontSize buttonfont maxima_priv
     set win $w
     if { "$w" == "." } {
         set w ""
     } else {
 	catch { destroy $w}
-	
-	frame $w
-	# toplevel $w
-	# set w $w.new
-	# frame $w
-	# puts "making $w"	
-	
+	if { [regexp {^\.(plot|versust)} $w] } {
+            tk::toplevel $w
+        } else {
+            ttk::frame $w
+        }
     }
-
+    # hide the parent window and destroy it when the canvas is destroyed
     set dismiss "destroy $win"
-    catch { set  parent [winfo parent $win]
+    catch { set parent [winfo parent $w]
 	if { "$parent" == "." } {
 	    set dismiss "destroy ."
 	}
-	if { [string match .plot* [winfo toplevel $win]] } {
-	    set dismiss "destroy [winfo toplevel $win]"
+	if { [regexp {^\.(plot|versust)} [winfo toplevel $win]] } {
+            set top [winfo parent $win]
+            set dismiss "destroy $top"
+            wm withdraw $top
 	}
     }
-
     if { "$doExit" != "" } {set dismiss $doExit } 	
-    oset $w type $type
+    set dismiss [concat $dismiss "; clearLocal $win "]
 
-    frame $w.grid
-    #positionWindow $w
+    # Win is the name of the window and w its name without a final period
+    oset $win type $type
     set c $w.c
     oset $win c $c
     bboxToRadius $win
-
     set buttonFont $buttonfont
     oset $win buttonFont $buttonfont
 
-    label $w.position -text [mc "Pointer Coordinates"] -background white -font $buttonFont
-    set dismiss [concat $dismiss "; clearLocal $win "]
+    # widgets for the menu buttons and (x, y) coordinates label
+    if { $type == {df} } {
+        set ltext [mc "Click on the graph to trace a curve"]
+    } else {
+        set ltext [mc "Pointer Coordinates"]
+    }
+    ttk::label $w.position -text $ltext -background white -font $buttonFont
     set mb [frame $w.menubar]
     pack $mb -fill x
-    button $mb.close -image ::img::close -text [mc "Close"] \
-        -command $dismiss -relief flat -width 30 -height 30
-    button $mb.config -image ::img::config -text [mc "Config"] \
-        -command "doConfig$type $win" -relief flat -width 30 -height 30
-    button $mb.replot -image ::img::replot -text [mc "Replot"] \
-        -command "replot$type $win" -relief flat -width 30 -height 30
-    button $mb.save  -image ::img::save -text [mc "Save"] \
-        -command "mkPrintDialog .dial -canvas $c -buttonfont $buttonFont " \
-        -relief flat -width 30 -height 30
-    button $mb.zoomin -image ::img::zoom-in -text [mc "Zoom in"] \
-        -command "doZoom $win 1" -relief flat -width 30 -height 30
-    button $mb.zoomout -image ::img::zoom-out -text [mc "Zoom out"] \
-        -command "doZoom $win -1" -relief flat -width 30 -height 30
-    button $mb.help -image ::img::help -text [mc "Help"] \
-        -command "doHelp$type $win" -relief flat -width 30 -height 30
-    pack $mb.close $mb.config $mb.replot $mb.save $mb.zoomin $mb.zoomout -side left
-    pack $mb.help -side right
-    scrollbar $w.hscroll -orient horiz -command "$c xview"
-    scrollbar $w.vscroll -command "$c yview"
-    # -relief sunken
-    canvas $c  -borderwidth 2 \
-	-scrollregion {-1200 -1200 1200 1200} \
-	-xscrollcommand "$w.hscroll set" \
-	-yscrollcommand "$w.vscroll set" -cursor arrow -background white
-    # puts "$c config  -height [oget $win height] -width [oget $win width] "
+    ttk::button $mb.close -text [mc "Close"] -command $dismiss
+    ttk::button $mb.config -text [mc "Config"] -command "doConfig$type $win"
+    ttk::button $mb.save -text [mc "Save"] \
+        -command "mkPrintDialog .dial -canvas $c -buttonfont $buttonFont "
+    pack $mb.close $mb.config $mb.save -side left
     set buttonsLeft 1
-    set wid [oget $win width]
-    catch {$c config  -height [oget $win height] -width  $wid
-	oset $win oldCheight [oget $win height]
-	oset $win oldCwidth $wid
-    }
-    # puts "$c height =[$c cget   -height],$c width =[$c cget   -width]"
-    # bind $c <2> "$c scan mark %x %y"
 
-    bind $c <B3-Motion> "$c scan dragto %x %y"
-    bind $c <3> "$c scan mark %x %y"
-    bind $c <B3-Motion> "$c scan dragto %x %y"
+    # c is the canvas where the plot will be drawn
+    tk::canvas $c -cursor arrow -background white \
+        -width [oget $win width] -height [oget $win height]
+    pack $c -side top -expand 1 -fill both
     bind $c <Motion> "showPosition $w %x %y"
-    bind $c <Configure> "reConfigure $c %w %h"
-    ##bind $c <Enter> "raise $win.position"
-    ##bind $c <Leave> "after 200 lower $win.position"
-
+    bind $c <Configure> "reConfigure %W %w %h"
+    
     $w.position config -background [$c cget -background]
-
-    ##pack  $wb.dismiss $wb.help $wb.zoom   \
-    ##	$wb.postscript $wb.markrect $wb.replot $wb.config -side top -expand 1 -fill x
-    if { 0 } {
-	pack $w.hscroll -side bottom -expand 1 -fill x
-	pack $w.vscroll -side right -expand 1 -fill y
-    }
-    pack $w.c -side right -expand 1 -fill both
-
-    pack $w
-
-    # update
-    #    set wid [ winfo width $win]
-    #    if { $wid > [      $c cget -width ] } {
-    #    $c config -width $wid
-    #	    oset $win width $wid
-    #    }
-
-    # place the coordinates in the lower right-hand corner.
-    place $w.position -in $w.c -relx 0.99 -rely 0.99 -anchor se
-
+    place $w.position -in $w.c -relx 0.03 -rely 0.99 -anchor sw
     raise $w.position
     focus $w
-    bind $w <Configure> "resizePlotWindow $w %w %h"
-    bind $w <Control-w> $dismiss
-    bind $w <Configure> "resizePlotWindow $w %w %h"
-    addSliders $w
-    return $w
+    addSliders $win
+    if { [regexp {^\.(plot|versust)} [winfo toplevel $win]] } {
+        pack [ttk::sizegrip $w.szgr] -side bottom -anchor se
+        bind $win <Control-w> $dismiss
+        wm protocol $w WM_DELETE_WINDOW $dismiss
+    }
+    return $win
 }
 
 proc mkentry { newframe textvar text buttonFont } {
@@ -149,18 +107,6 @@ proc mkentry { newframe textvar text buttonFont } {
     pack $newframe.lab -side left
     pack $newframe.e -side right -padx 3 -fill x
     # pack $newframe.lab $newframe.e -side left -padx 3 -expand 1 -fill x
-}
-
-
-proc doHelp { win msg } {
-    makeLocal $win c
-    set atx [$c canvasx 0]
-    set aty [$c canvasy 0]
-    $c create rectangle [expr {$atx -1000}] [expr  {$aty -1000}] 10000 10000 -fill white -tag help
-
-    $c create text [expr {$atx +10}] [expr {$aty + 10.0}] -tag help  -anchor nw  -width 400 -text $msg
-
-    pushBind $c <1> "$c delete help; popBind $c <1>"
 }
 
 proc pushBind { win key action } {
@@ -193,100 +139,16 @@ proc showPosition { win x y } {
     }
 }
 
-proc doZoom { win direction } {
-    set zf [oget $win zoomfactor]
-    if { $direction < 0 } {
-	set zf 	"[expr {1/[lindex $zf 0]}] [expr {1/[lindex $zf 1]}]"
-    }
-    eval doZoomXY $win $zf
-}
-
-
-
-#
-#-----------------------------------------------------------------
-#
-# doZoomXY --  given screen coordinates (x,y) and factors (f1,f2)
-#  perform a scaling on the canvas, centered at (x,y) so that
-#  the distance in the x direction from this origin is multiplied by f1
-#  and similarly in the y direction
-#  Results:
-#
-#  Side Effects: scale the canvas, and set new transforms for translation
-#   from real to canvas coordinates.
-#----------------------------------------------------------------
-#
-
-proc doZoomXY { win facx facy } {
-    if { [catch {
-	makeLocal $win c transform
-    } ] } {
-	# not ready
-	return
-    }
-
-    set x [$c canvasx [expr {[oget $win oldCwidth]/2.0}]]
-    set y [$c canvasy [expr {[oget $win oldCheight]/2.0}]]
-
-    $c scale all $x $y $facx $facy
-
-    set ntransform [composeTransform \
-			"$facx 0 0 $facy [expr {(1-$facx)* $x}] [expr {(1-$facy)* $y}]" \
-			$transform  ]
-    oset $win transform $ntransform
-    getXtransYtrans $ntransform rtosx$win rtosy$win
-    getXtransYtrans [inverseTransform $ntransform] storx$win story$win
-    # axisTicks $win $c
-}
-
-
-#
-#-----------------------------------------------------------------
-#
-# scrollPointTo --  attempt to scroll the canvas so that point
-#  x,y on the canvas appears at screen (sx,sy)
-#
-#  Results: none
-#
-#  Side Effects: changes x and y view of canvas
-#
-#----------------------------------------------------------------
-#
-proc scrollPointTo { c x y sx sy } {
-    desetq "x0 y0 x1 y1" [$c cget -scrollregion]
-    $c xview moveto [expr { 1.0*($x-$x0-$sx)/($x1-$x0)} ]
-    $c yview moveto [expr { 1.0*($y-$y0-$sy)/($y1-$y0)} ]
-}
-
-
-
-#
-#-----------------------------------------------------------------
-#
-# reConfigure --
-#
-#  Results:
-#
-#  Side Effects:
-#
-#----------------------------------------------------------------
-#
-
 proc reConfigure { c width height  } {
-    set w [winfo parent $c]
-    if { [catch { makeLocal $w oldCwidth oldCheight } ] } {
-	oset $w oldCwidth $width
-	oset $w oldCheight $height
-	return
-    }
-    set oldx [$c canvasx [expr {$oldCwidth/2.0}]]
-    set oldy [$c canvasy [expr {$oldCheight/2.0}]]
-    doZoomXY $w [expr {1.0*$width/$oldCwidth}] [expr {1.0*$height/$oldCheight}]
-
-    scrollPointTo $c [expr {-15+$width/2.0}] [expr {15+$height/2.0}]  [expr {$width/2.0}] [expr {$height/2.0}]
-    # update
-    oset $w oldCwidth $width
-    oset $w oldCheight $height
+    set win [winfo parent $c]
+    set w [oget $win width]
+    set h [oget $win height]
+    set wscale [expr double($width)/$w]
+    set hscale [expr double($height)/$h]
+    $c scale all 0 0 $wscale $hscale
+    set_xy_transforms $win
+    oset $win width $width
+    oset $win height $height
 }
 
 proc writePostscript { win } {
@@ -474,24 +336,6 @@ proc compose { a b } {
       +[lindex $a 0]}] [expr {[lindex $a 1]*[lindex $b 1]}]"
 }
 
-# the following two have been replaced
-# proc sparseList { s } {
-#     if  { [catch {
-# 	set val [parseConvert "$s" -variables "x y t"] } err ] } {
-# 	    error "Syntax error with `$s'\n $err"
-# 	}
-# 	return [lindex $val 0]
-#     }
-#
-# proc sparse { s } {
-#     set val [sparseList $s]
-#     set first $val
-#     if { [llength $first] != 1 } {
-# 	error "only one function wanted" }
-# 	
-# 	return [lindex $first 0]
-#    }
-
 proc sparseListWithParams { form variables paramlist } {
     set tem [parseConvert $form -doall 1]
     #puts tem=$tem
@@ -515,8 +359,6 @@ proc sparseWithParams { form variables params } {
     if { [llength $tem ] > 1 } { error [concat [mc "only wanted one function:"] "$form"]}
     lindex $tem 0
 }
-
-
 
 #
 #-----------------------------------------------------------------
@@ -558,9 +400,6 @@ proc splitParams { paramlist } {
     }
     return $params
 }
-
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -578,56 +417,64 @@ proc substParams { form variables params } {
     set res [myVarSubst $form $params]
     return $res
 }
-
-
-
-
-
 #
 #-----------------------------------------------------------------
 #
-# setUpTransforms --  set up transformations for the canvas of WINDOW
-# so that the image is on FACTOR fractionof the window
-# these transforms are used for real to screen and vice versa.
-#  Results:
-#
-#  Side Effects: transform functions rtosx$win rtosy$win storx$win story$win
-#  are defined.
+# set_xy_region --  set up the bounds of the x and y coordinates
+# that will appear on the plot and the part of the window that will
+# be filled by the plot (fac, a number between 0 and 1).
 #
 #----------------------------------------------------------------
 #
-proc setUpTransforms { win fac } {
+proc set_xy_region { win fac } {
     makeLocal $win xcenter ycenter xradius yradius c
-
-    set delx [$c cget -width]
-    set dely [$c cget -height]
-    set f1 [expr {(1 - $fac)/3.0}]
-
-    set x1 [expr {2* $f1 *$delx}]
-    set y1 [expr {$f1 *$dely}]
-    set x2 [expr {$x1 + $fac*$delx}]
-    set y2 [expr {$y1 + $fac*$dely}]
 
     set xmin [expr {$xcenter - $xradius}]
     set xmax [expr {$xcenter + $xradius}]
     set ymin [expr {$ycenter - $yradius}]
     set ymax [expr {$ycenter + $yradius}]
 
+    oset $win fac $fac
     oset $win xmin $xmin
     oset $win xmax $xmax
     oset $win ymin $ymin
     oset $win ymax $ymax
+}
 
-    oset $win transform [makeTransform "$xmin $ymin $x1 $y2" "$xmin $ymax $x1 $y1 " "$xmax $ymin $x2 $y2"]
-    set transform [makeTransform "$xmin $ymin $x1 $y2" "$xmin $ymax $x1 $y1 " "$xmax $ymin $x2 $y2"]
+#-----------------------------------------------------------------
+#
+# set_xy_transforms --  set up transformations for the canvas of WINDOW
+# so that the plot is a fraction of the window (fac).
+# these transformation are used to conver from real values of x and y
+# to screen coodinates in pixel and vice versa.
+#
+#  Side Effects: transform functions rtosx$win rtosy$win storx$win story$win
+#  are defined.
+#
+#----------------------------------------------------------------
+#
+proc set_xy_transforms { win } {
+    makeLocal $win xmin ymin xmax ymax width height fac
+    if { [oget $win type] == {3d} } {
+        set f1 [expr {(1 - $fac)/2.0}]
+        set x1 [expr {$f1 *$width}]
+    } else {
+        set f1 [expr {(1 - $fac)/3.0}]
+        set x1 [expr {2* $f1 *$width}]
+    }
+    set y1 [expr {$f1 *$height}]
+    set x2 [expr {$x1 + $fac*$width}]
+    set y2 [expr {$y1 + $fac*$height}]
+
+    set transform [makeTransform "$xmin $ymin $x1 $y2" "$xmin $ymax $x1 $y1 " \
+                       "$xmax $ymin $x2 $y2"]
     oset $win transform $transform
     oset $win transform0 $transform
 
     getXtransYtrans $transform rtosx$win rtosy$win
     getXtransYtrans [inverseTransform $transform] storx$win story$win
-
 }
-
+                        
 proc inputParse { in } {
     if { [regexp -indices \
 	      {D\[([a-zA-Z][0-9a-zA-Z]*[ ]*),([a-zA-Z][0-9a-zA-Z]*[ ]*)\] *=} \
@@ -1046,7 +893,6 @@ proc omPlotAny { data args } {
     #eval [lindex [lindex $data 0] 0] -xfun [list {}] -data [list [lindex $data 0]] $args
 }
 
-
 proc resizeSubPlotWindows { win wid height } {
     set at [$win yview "@0,0"]
     foreach w [winfo children $win] {
@@ -1056,8 +902,6 @@ proc resizeSubPlotWindows { win wid height } {
     }
     if { "$at" != "" } { $win yview $at}
 }
-
-
 
 proc resizePlotWindow  { w width height } {
     if { [winfo width $w.c] <= 1 } {
@@ -1109,17 +953,14 @@ proc resizePlotWindow  { w width height } {
 
 }
 
-
-
 proc bboxToRadius { win  } {
     makeLocal $win bbox
     if { "$bbox" != "" } {
-	linkLocal $win       xradius yradius xcenter ycenter
+	linkLocal $win xradius yradius xcenter ycenter
 	set i 0
 	foreach v { x y z } {
-
 	    set min [lindex $bbox $i]
-	    set max [lindex $bbox [expr $i +2]]
+	    set max [lindex $bbox [expr {$i+2}]]
 	    if { "$min" != "" } {
 		if { $min >= $max } {error "bad bbox $bbox since $min >= $max"}
 		set ${v}radius [expr { ($max - $min) /2.0}]

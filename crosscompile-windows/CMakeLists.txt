@@ -40,7 +40,6 @@ find_file (NSISTEMPLATE_IN  NAMES "NSIS.template.in"
     PATHS "${CMAKE_ROOT}/Modules/" "${CMAKE_ROOT}/Modules/Internal/CPack")
 file(READ "${NSISTEMPLATE_IN}" MYNSISTEMPLATE)
 string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel admin
-!include \"${CMAKE_SOURCE_DIR}\\\\\\\\FileAssociation.nsh\"
 !include FileFunc.nsh
 !include LogicLib.nsh
 " MYNSISTEMPLATE "${MYNSISTEMPLATE}")
@@ -61,7 +60,7 @@ string(REPLACE "Function .onInit" "Function .onInit
 \${EndIf}
 \${GetOptions} \$0 \"/?\" \$1
 \${IfNot} \${Errors}
-        MessageBox MB_OK \"Installer for Maxima\$\\n\$\\nThis installer allows the following command line options:\$\\n        /S - silent install\$\\n        /D=<path> - select the install path\$\\n        /no_vtk - do not select VTK\$\\n        /no_gnuplot - do not select Gnuplot\$\\n        /no_wxmaxima - do not select wxMaxima\$\\n        /? - this help message\$\\n\$\\nMaxima Website: http://maxima.sourceforge.net\"
+        MessageBox MB_OK \"Installer for Maxima\$\\n\$\\nThis installer allows the following command line options:\$\\n        /S - silent install\$\\n        /D=<path> - select the install path\$\\n        /no_vtk - do not select VTK\$\\n        /no_gnuplot - do not select Gnuplot\$\\n        /no_wxmaxima - do not select wxMaxima\$\\n        /? - this help message\$\\n\$\\nMaxima Website: https://maxima.sourceforge.io\"
         Abort
 \${EndIf}
 
@@ -268,28 +267,11 @@ set(CPACK_NSIS_MUI_UNIICON "${CPACK_NSIS_MUI_ICON}")
 set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\maxima-command.ico")
 set(CPACK_NSIS_DISPLAY_NAME "Maxima computer algebra system")
 set(CPACK_PACKAGE_EXECUTABLES "..\\\\bin\\\\wxmaxima" "wxMaxima (GUI for Maxima)")
-set(CPACK_NSIS_URL_INFO_ABOUT "http://maxima.sourceforge.net")
-set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "http://maxima.sourceforge.net" "About Maxima" "http://wxmaxima-developers.github.io/wxmaxima/" "About wxMaxima" "share/doc/maxima.pdf" "Maxima documentation"  "share/doc/licenses.html" "Maxima and included software licenses" "bin/lispselector.bat" "Configure default LISP for Maxima")
+set(CPACK_NSIS_URL_INFO_ABOUT "https://maxima.sourceforge.io")
+set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "https://maxima.sourceforge.io" "About Maxima" "http://wxmaxima-developers.github.io/wxmaxima/" "About wxMaxima" "share/doc/maxima.pdf" "Maxima documentation"  "share/doc/licenses.html" "Maxima and included software licenses" "bin/lispselector.bat" "Configure default LISP for Maxima")
 set(CPACK_PACKAGE_FILE_NAME "maxima-clisp-sbcl${ABCL_INSTALLER}-${CPACK_PACKAGE_VERSION}-${INSTALLERSUFFIX}")
 set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
 
-if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "wxMaxima")
-    # include NSIS Plugin
-    set(CPACK_NSIS_EXTRA_PREINSTALL_COMMANDS "!include \\\"${path_to_plugins}\\\\fileassoc.nsh\\\"")
-    #File associations:
-    set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-    \\\${registerExtension} \\\"$INSTDIR\\\\bin\\\\wxmaxima.exe\\\" \\\".wxm\\\" \\\"wxMaxima Document\\\"
-    \\\${registerExtension} \\\"$INSTDIR\\\\bin\\\\wxmaxima.exe\\\" \\\".wxmx\\\" \\\"wxMaxima XML Document\\\"
-    \\\${registerExtension} \\\"$INSTDIR\\\\bin\\\\wxmaxima.exe\\\" \\\".mac\\\" \\\"Maxima Batch file\\\"
-    WriteRegStr HKCR \\\".wxmx\\\\ShellNew\\\" \\\"NullFile\\\" \\\"\\\"
-    ")
-    set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
-    \\\${unregisterExtension} \\\".wxm\\\" \\\"wxMaxima Document\\\"
-    \\\${unregisterExtension} \\\".wxmx\\\" \\\"wxMaxima XML Document\\\"
-    \\\${unregisterExtension} \\\".mac\\\" \\\"Maxima Batch File\\\"
-    DeleteRegKey HKCR \\\".wxmx\\\\ShellNew\\\"
-    ")
-endif()
 
 set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP "${CMAKE_SOURCE_DIR}/maxima-installerimage.bmp")
 include(CPack)

@@ -1,4 +1,3 @@
-
 ;;; Package to allow Maxima-level user-defined simplifying functions
 ;;;
 ;;; For example, suppose we want to write a step function stepfn(x)
@@ -75,6 +74,7 @@
   
 (defun simpfunmake (fun args)
   (if (not (or (symbolp fun) ($subvarp fun)
+	       (and (stringp fun) (getopr0 fun))
 	       (and (not (atom fun)) (eq (caar fun) 'lambda))))
       (merror "Bad first argument to `simpfuncall/make': ~M" fun))
   (simpcons (getopr fun) args))
