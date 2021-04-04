@@ -1306,7 +1306,7 @@ fi
 echo
 echo "Summary:"
 if test x"${clisp}" = xtrue ; then
-	echo "Compiling an maxima image that uses \"${CLISP_NAME}\"",
+	echo "Compiling a maxima image using \"${CLISP_NAME}\"",
 	echo "clisp runtime is \"${CLISP_RUNTIME_PATH}\""
 	if test x"${clisp_exec}" = xtrue ; then
 		echo "clisp executable image enabled for maxima."
@@ -1315,7 +1315,7 @@ if test x"${clisp}" = xtrue ; then
 	fi
 fi
 if test x"${cmucl}" = xtrue ; then
-	echo "Compiling an maxima image that uses \"${CMUCL_NAME}\""
+	echo "Compiling a maxima image using \"${CMUCL_NAME}\""
 	echo "cmucl runtime is \"${CMUCL_RUNTIME_PATH}\""
 	if test x"${cmucl_exec}" = xtrue; then
 		echo "CMUCL executable image enabled for maxima."
@@ -1324,11 +1324,11 @@ if test x"${cmucl}" = xtrue ; then
 	fi
 fi
 if test x"${scl}" = xtrue ; then
-	echo "SCL enabled, that uses \"${SCL_NAME}\""
+	echo "SCL enabled, using \"${SCL_NAME}\""
 	echo "SCL runtime is \"${SCL_RUNTIME_PATH}\""
 fi
 if test x"${sbcl}" = xtrue ; then
-   	echo "Compiling an maxima image that uses \"${SBCL_NAME}\""
+   	echo "Compiling a maxima image using \"${SBCL_NAME}\""
 	if test x"${sbcl_exec}" = xtrue ; then
 	   	echo "sbcl executable image enabled for maxima."
 	else
@@ -1336,7 +1336,7 @@ if test x"${sbcl}" = xtrue ; then
 	fi
 fi
 if test x"${gcl}" = xtrue ; then
-	echo "Compiling an maxima image that uses \"${GCL_NAME}\""
+	echo "Compiling a maxima image using \"${GCL_NAME}\""
 	if test x"${gcl_alt_link}" = xtrue ; then
 		echo "    GCL alternative linking method enabled."
 	fi
@@ -1345,7 +1345,7 @@ if test x"${acl}" = xtrue ; then
 	echo "ACL enabled. Executable name: \"${ACL_NAME}\""
 fi
 if test x"${openmcl}" = xtrue ; then
-	echo "Compiling an maxima image that uses \"${OPENMCL_NAME}\""
+	echo "Compiling a maxima image using \"${OPENMCL_NAME}\""
 	if test x"${openmcl_exec}" = xtrue ; then
 		echo "OpenMCL executable image enabled for maxima."
 	else
@@ -1353,7 +1353,7 @@ if test x"${openmcl}" = xtrue ; then
 	fi
 fi
 if test x"${ccl64}" = xtrue ; then
-	echo "Compiling an maxima image that uses \"${CCL64_NAME}\""
+	echo "Compiling a maxima image using \"${CCL64_NAME}\""
 	if test x"${ccl64_exec}" = xtrue ; then
 	   	echo "CCL64 executable image enabled for maxima."
 	else
