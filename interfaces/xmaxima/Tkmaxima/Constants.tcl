@@ -3,11 +3,11 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2021-04-04 10:04:29 villate"            #
+#     Time-stamp: "2021-04-04 19:56:58 villate"            #
 ############################################################
 
 proc cMAXINITBeforeIni {} {
-    global maxima_default
+    global maxima_default maxima_priv
     set maxima_default(plotwindow) multiple
 
     #mike turn these off by default
@@ -43,11 +43,18 @@ proc cMAXINITBeforeIni {} {
 	set maxima_default(defaultservers) nmtp://some.server.example.org/
     }
     set maxima_priv(imgregexp) {[.](gif|png|jpe?g)[^/]*$}
+    if {$::tcl_platform(platform) == "windows" } {
+        set maxima_priv(home) "%USERPROFILE%"
+    } else {
+        set maxima_priv(home) "~"
+    }
 }
 
 proc cMAXINITReadIni {} {
+    global maxima_priv
     if {[file isfile ~/.xmaximarc]} {
-	if {[catch {uplevel "#0" [list source ~/.xmaximarc] } err]} {
+	if {[catch {uplevel "#0" [list source "$maxima_priv(home)/.xmaximarc"]}\
+                 err]} {
 	    tide_failure [M [mc "Error sourcing %s\n%s"] \
 			      [file native ~/.xmaximarc] \
 			      $err]

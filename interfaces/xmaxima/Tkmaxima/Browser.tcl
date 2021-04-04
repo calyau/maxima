@@ -1,9 +1,9 @@
 ############################################################
-# Plotconf.tcl                                             #
+# Browser.tcl                                              #
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2021-04-04 10:14:23 villate"            #
+#     Time-stamp: "2021-04-04 20:04:35 villate"            #
 ############################################################
 
 proc peekLastCommand {win} {
@@ -1052,28 +1052,38 @@ proc fontDialog { top } {
 
 proc savePreferences {} {
     global maxima_default maxima_priv
+    makeLocal {.maxima.text} inputs
 
     # Save current console size in maxima_default
     set console [lindex [array get maxima_priv cConsoleText] end]
     set maxima_default(iConsoleWidth) [textWindowWidth $console]
     set maxima_default(iConsoleHeight) [textWindowHeight $console]
 
-    if {[catch {open  "~/.xmaximarc" w} fi]} {return}
+    catch {
+        set fi [open  "$maxima_priv(home)/.xmaximarc" w]
+        puts $fi "array set maxima_default {"
+        foreach {k v} [array get maxima_default *] {
+            lappend all [list $k $v]
+        }
+        set all [lsort $all]
+        foreach v $all { puts $fi $v }
+        puts $fi "}"
 
-    puts $fi "array set maxima_default {"
-    foreach {k v} [array get maxima_default *] {
-	lappend all [list $k $v]
-    }
-    set all [lsort $all]
-    foreach v $all { puts $fi $v }
-    puts $fi "}"
-
-    #mike FIXME: make this a _default
-    if { [info exists maxima_priv(proxy,http)] && [llength $maxima_priv(proxy,http)] == 2   } {
-	puts $fi [list array set maxima_priv [array get maxima_priv proxy,http]
+        #mike FIXME: make this a _default
+        if { [info exists maxima_priv(proxy,http)] && \
+                 [llength $maxima_priv(proxy,http)] == 2   } {
+            puts $fi [list array set maxima_priv [array get maxima_priv proxy,http]
 		 ]
+        }
+        close $fi
     }
-    close $fi
+    catch {
+        set hf [open "$maxima_priv(home)/.xmaxima_history" w]
+        puts $hf "oset {.maxima.text} inputs {"
+        foreach v [lrange $inputs end-99 end] { puts $hf "{$v}" }
+        puts $hf "}"
+        close $hf
+    }
 }
 #
 #-----------------------------------------------------------------
