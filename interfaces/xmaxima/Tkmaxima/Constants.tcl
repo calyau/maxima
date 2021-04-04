@@ -1,6 +1,10 @@
-#     Constants.tcl
-#     Time-stamp: "2021-03-28 17:59:30 villate"
-#
+############################################################
+# Constants.tcl                                            #
+# Copyright (C) 1998 William F. Schelter                   #
+# For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Time-stamp: "2021-04-04 10:04:29 villate"            #
+############################################################
 
 proc cMAXINITBeforeIni {} {
     global maxima_default
@@ -36,7 +40,7 @@ proc cMAXINITBeforeIni {} {
     global embed_args
     if { "[info var embed_args]" != "" } {
 	# the following will be defined only in the plugin
-	set maxima_default(defaultservers) nmtp://genie1.ma.utexas.edu/
+	set maxima_default(defaultservers) nmtp://some.server.example.org/
     }
     set maxima_priv(imgregexp) {[.](gif|png|jpe?g)[^/]*$}
 }
@@ -107,7 +111,7 @@ set maxima_priv(options,maxima) {{doinsert 0 "Do an insertion" boolean}}
 
 # from EHref.tcl
 set maxima_priv(options,href) {
-    {src "" [mc "A URL (universal resource locator) such as http://www.ma.utexas.edu/foo.om"]}
+    {src "" [mc "A URL (universal resource locator) such as http://maxima.sourceforge.net/index.html"]}
     {search "" [mc "A string to search for, to get an initial position"]}
     {searchregexp "" [mc "A regexp to search for, to get an initial position"]}
 }
@@ -144,6 +148,8 @@ set evalPrograms {  gp gap gb }
 # "The Tango base icon theme is released to the Public Domain.
 # "The palette is in public domain. Developers, feel free to ship it
 # "along with your application."
+
+# Images added by J. Villate
 
 image create photo ::img::brokenimage -format GIF -data {
     R0lGODlhHQAgAOMEAAAAAP9jMcbGxoSEhP///zExY/9jzgCEAP/////////////////////
