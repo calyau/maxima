@@ -540,7 +540,7 @@ DESTINATION is an actual stream (rather than nil for a string)."
 
 (defun maxima-banner ()
   (format t *maxima-prolog*)
-  (format t "~&Maxima ~a http://maxima.sourceforge.net~%"
+  (format t "~&Maxima ~a https://maxima.sourceforge.io~%"
       *autoconf-version*)
   (format t (intl:gettext "using Lisp ~a ~a") (lisp-implementation-type)
       #-clisp (lisp-implementation-version)
