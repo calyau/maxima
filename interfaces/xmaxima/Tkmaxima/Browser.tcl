@@ -1,19 +1,9 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Browser.tcl,v 1.25 2011-03-21 09:18:58 villate Exp $
-#
-###### Browser.tcl ######
 ############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
+# Browser.tcl                                              #
+# Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
-############################################################
-
-## source keyb.tcl
-
-###### keyb.tcl ######
-############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Time-stamp: "2021-04-04 20:04:35 villate"            #
 ############################################################
 
 proc peekLastCommand {win} {
@@ -27,9 +17,6 @@ proc pushCommand { win command arglist } {
     global maxima_priv
     set maxima_priv(lastcom,$win) [list $command $arglist]
 }
-
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -44,7 +31,6 @@ proc pushCommand { win command arglist } {
 #
 #----------------------------------------------------------------
 #
-
 proc tkTextInsert { w s } {
     global maxima_priv
     set after [$w tag names insert]
@@ -74,8 +60,8 @@ proc tkTextInsert { w s } {
     }
     $w insert insert $s $both
     $w see insert
-
 }
+
 proc getRange { win a b }  {
     if { [$win compare $a < $b ] } {
 	return "$a $b" 
@@ -83,8 +69,6 @@ proc getRange { win a b }  {
 	return "$b $a"
     }
 }
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -131,11 +115,8 @@ proc tagRanges { win tag begin end } {
 		}
 	    }
 	    return $answer
-	
 	}
 }
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -165,10 +146,6 @@ proc thisRange { win tag index } {
     }
     return ""
 }
-
-
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -208,8 +185,6 @@ proc insertRichText {win index list } {
 	incr i $n
     }
 }
-
-
 proc Tins { tags text } {
     global maxima_priv
     # foreach v $args { append text $v }
@@ -222,60 +197,12 @@ proc TinsSlashEnd { tags text } {
     $maxima_priv(currentwin) insert $maxima_priv(point) "$text\\"  $tags
 }
 
-
-
-## endsource keyb.tcl
-
 proc underTop {top win} {
     if { "$top" == "." } {
 	return $win
     } else {
 	return $top$win
     }
-}
-
-# now unused
-proc showHistory { window } {
-    set top [winfo toplevel $window]
-    set win [omPanel $window]
-    makeLocal $win history historyIndex
-
-    set w [underTop $top .historylist]
-    if {[winfo exists $w]} {catch {destroy $w}}
-
-    frame $w -borderwidth 2 -relief raised
-    label $w.title -text [mc "History List"] -relief raised
-    pack $w.title -side top -fill x
-    setHelp $w.title [mc "This window may be dragged elsewhere by grabbing this title bar with the mouse.  Double clicking on a history item, moves to that page."]
-
-    button $w.dismiss -command "destroy $w" -text [mc "Close"]
-    pack $w.dismiss -side bottom -fill x
-    setHelp $w.dismiss [mc "Remove the history list"]
-
-    scrollbar $w.scrolly -command "$w.list yview"
-    scrollbar $w.scrollx -orient horizontal -command "$w.list xview"
-    pack $w.scrollx -side bottom -fill x -expand 1
-    pack $w.scrolly -side right -fill y -expand 1
-    listbox $w.list -yscroll "$w.scrolly set" \
-	-width 35 -height 16 -setgrid 1 -xscroll "$w.scrollx set"
-    $w.title configure -font [$w.list cget -font]
-    set l $w.list
-
-    pack $w.list  -side top -fill both -expand 1
-    resetHistory $win $w.list junk history
-    global [oarray $win]
-
-    #puts "    trace variable [oloc $win history] w {resetHistory $win $w.list}"
-    trace vdelete  [oloc $win history] w "resetHistory $win $w.list"
-    trace variable [oloc $win history] w "resetHistory $win $w.list"
-    trace vdelete [oloc $win historyIndex] w "resetHistory $win $w.list"
-    trace variable [oloc $win historyIndex] w "resetHistory $win $w.list"
-    bind $l <Double-1> {OpenMathMoveHistory [omPanel %W] [expr [%W index @%x,%y]-[oget [omPanel %W] historyIndex]]}
-    bind  $w.title <B1-Motion> "dragPlacedWindow $w %W %X %Y"
-    bind  $w.title <1> "startDragPlacedWindow $w %X %Y"
-    place $w -relx .4 -rely .8 -in $top
-
-
 }
 
 proc deleteAllTraces {var} {
@@ -305,7 +232,6 @@ proc resetHistory { win list args } {
 	deleteAllTraces [oloc $win historyIndex]
     }
 }
-
 
 proc startDragPlacedWindow { win x y } {
     oset $win placeinfo [list $x $y [place info $win]]
@@ -353,7 +279,6 @@ proc toLocalFilename { url } {
 	}
 	default "unknown type: $type"
     }
-
 }
 
 proc OpenMathGetWindow { commandPanel win } {
@@ -387,16 +312,12 @@ proc filesplit { x } {
     return [list [join $dir /] $file]
 }
 
-
-
 proc decodeURL { name } {
     set server ""
     if { [regexp  {([^#]*)#(.*)$} $name junk name anchor] } {
 	lappend answer anchor $anchor
 	# puts "answer=$answer"
     }
-
-
     if { [regexp {^([a-z]+)[(]?([0-9]*)[)]?:/(.+)$} $name all type port path ] } {
 	lappend answer type $type
     } else {
@@ -519,8 +440,6 @@ proc resolveURL { name current {post ""} } {
 		lappend ans $key $val
 	    }
 	}
-	
-
     }
     if { "$post" != "" } {
 	set ans [putassoc post $ans $post]
@@ -537,20 +456,16 @@ proc getURLrequest { path server port types {post ""} {meth ""} } {
 	set method GET
 	if { "$post" != "" } {set method POST}
     }
-
     #puts "getURLrequest $path $server $port [list $types]"
     foreach {v handler}  $maxima_priv(urlHandlers) {
 	lappend types $v,
     }
-
     set ans "$method $path HTTP/1.0\nConnection: Keep-Alive\nUser-agent: netmath\nHost: $server:$port\nAccept: $types\n"
     if { "$post" != "" } {
 	# append ans "Content-length: [string length $post]\n\n$post"
 	append ans "Content-type: application/x-www-form-urlencoded\nContent-length: [string length $post]\n\n$post"
     }
-
     return $ans
-
 }
 
 proc canonicalizeContentType { type } {
@@ -561,15 +476,12 @@ proc canonicalizeContentType { type } {
 proc getURL { resolved type {mimeheader ""} {post ""} } {
     global maxima_priv
     set res $resolved
-
     set ans ""
     set method ""
     if { "$mimeheader" != ""} {
 	uplevel 1 set $mimeheader \[list\]
     }
     uplevel 1 set $type "unknown"
-
-
     #puts "getting $resolved,post=<$post>"
     switch [assoc type $res] {
 	http {
@@ -590,7 +502,6 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 		    return
 		}
 	    }
-	
 	    fconfigure $sock -blocking 0
 	    ##DO NOT DELETE THE FOLLOWING !!!!!puts!!!!!!!!
 	    #puts request=[getURLrequest [dirnamePlusFilename $res] [assoc server $res] [assoc port $res] image/gif $post]
@@ -611,7 +522,6 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 		
 		#puts "length=[string length $maxima_priv(url_result)]"
 		#	flush stdout
-		
 		set contentType [canonicalizeContentType [assoc content-type $maxima_priv(mimeheader) text/plain]]
 		uplevel 1 set $type [list $contentType]
 		if { "$mimeheader" != "" } {
@@ -651,9 +561,6 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
     }
 }
 
-
-
-
 proc getImage { resolved width height} {
     global maxima_priv
     set res $resolved
@@ -672,7 +579,6 @@ proc getImage { resolved width height} {
     return $image
 }
 
-
 proc backgroundGetImage  { image res width height }   {
     global maxima_priv
     #puts [list backgroundGetImage  $image $res $width $height ]
@@ -682,7 +588,6 @@ proc backgroundGetImage  { image res width height }   {
 	$image copy $im
     }
 }
-
 
 proc backgroundGetImage1  { image res width height }   {
     #puts  "resolved=$res"
@@ -738,12 +643,8 @@ proc backgroundGetImage1  { image res width height }   {
 			    $tmp
 			unset maxima_priv($s,mimeheader)
 		    }
-
-		
-		
 		    # all the below just to try to remove the file..
 		    #  depending on versions and in environments..
-		
 		}
 	    }
 	}
@@ -768,8 +669,6 @@ proc backgroundGetImage1  { image res width height }   {
     }
 
 }
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -802,8 +701,6 @@ proc readData { s { timeout 10000 }} {
     after cancel "set maxima_priv($s,done) -1"
     return $maxima_priv($s,done)
 }
-
-
 
 proc doRead { sock } {
     global maxima_priv
@@ -897,7 +794,6 @@ proc OpenMathOpenUrl { name args} {
 		    #    pushHistory $commandPanel $v
 		    return
 		}
-		
 	    }
 	} else {
 	    # reload=1
@@ -913,7 +809,6 @@ proc OpenMathOpenUrl { name args} {
 	}
 	set name $tem
     }
-
     #puts "contentType defined:[info exists contentType]"
     set handler [assoc $contentType $maxima_priv(urlHandlers)]
     if { "$handler" != "netmath" && "$handler" != "" } {
@@ -923,7 +818,6 @@ proc OpenMathOpenUrl { name args} {
 	return
     }
     #puts contentType=$contentType
-
     #puts "got [string length $result] bytes"
     #puts ", result= [string range $result 0 70] .."
 
@@ -934,14 +828,11 @@ proc OpenMathOpenUrl { name args} {
     if { $reload } {   forgetCurrent $commandPanel }
 
     #puts "maxima_priv(counter)=$maxima_priv(counter)"
-
     set win [mkOpenMath [set w $toplevel.t[incr maxima_priv(counter)]] ]
 
     #puts "maxima_priv(counter)=$maxima_priv(counter)"
-
     makeLocal $w commandPanel
     #puts "resolveURL $name $currentUrl"
-
     if { [set anchor [assoc anchor $new]] != "" } {
 	set new [delassoc anchor $new]
     }
@@ -955,7 +846,6 @@ proc OpenMathOpenUrl { name args} {
     oset $w location  [encodeURL $new]
     # puts "new=$new"
     oset $commandPanel savefilename [file root [toLocalFilename $new]].txt
-
     set tem [assoc filename $new ""]
     #puts $contentType
     if { "$contentType" != "text/html" } {
@@ -988,10 +878,7 @@ proc OpenMathOpenUrl { name args} {
 		$win yview anchor:$anchor
 	    }
 	}
-	
 	#   foreach v {Tresult Teval} {  $win tag raise $v}	
-
-
     } else {
 	###Never get here.. must change to make be the rich text case..	
 	# drop comment lines
@@ -1016,9 +903,7 @@ proc OpenMathOpenUrl { name args} {
 	puts "$errmsg1"
 	error [concat [mc "unable to evaluate"] "[encodeURL $new]\n$errmsg1\n$errorInfo"]
     }
-
 }
-
 
 proc pushHistory { commandPanel win } {
     global [oarray $commandPanel]
@@ -1031,8 +916,6 @@ proc pushHistory { commandPanel win } {
 	oset $commandPanel history [linsert $history [incr [oloc $commandPanel historyIndex]] $win]
     }
 }
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -1086,7 +969,6 @@ proc fileBaseprogram { textwin parent x y } {
     set com "destroy $e ; oset $textwin baseprogram \[decodeURL \$xHMpriv(baseprogram)] "
     bind $e <Leave> $com
     bind $e <Return> $com
-
 }
 
 proc fontDialog { top } {
@@ -1137,14 +1019,12 @@ proc fontDialog { top } {
     entry $win.entryproxy  -width 40
     catch { $win.entryproxy insert 0 $maxima_priv(proxy,http) }
     $win window create insert -window $win.entryproxy
-    $win insert insert [mc "\nIf you are behind a firewall enter the name of your http proxy host and port,\n eg: `foo.ma.utexas.edu 3128', otherwise leave this blank"]
+    $win insert insert [mc "\nIf you are behind a firewall enter the name of your http proxy host and port,\n eg: `some.server.example.org 3128', otherwise leave this blank"]
 
     set men [tk_optionMenu $win.plottype maxima_default(plotwindow) embedded separate multiple ]
     $win insert insert [mc "\nShould plot windows be "]
     $win window create insert -window $win.plottype
     $win insert insert "?"
-
-
     $win insert insert "\n\n\n"
     $win insert insert [mc " Apply and Quit "] "bye raised"
     $win insert insert "      "
@@ -1166,41 +1046,45 @@ proc fontDialog { top } {
     $win insert insert "      "
     $win insert insert [mc " Save Preferences "] "save raised"
     $win tag bind save <1> "_FontDialogApply $win ; savePreferences"
-
     pack $win
     #    place $win -in [oget [omPanel .] textwin] -x 10 -y 10
 }
+
 proc savePreferences {} {
     global maxima_default maxima_priv
+    makeLocal {.maxima.text} inputs
 
     # Save current console size in maxima_default
     set console [lindex [array get maxima_priv cConsoleText] end]
     set maxima_default(iConsoleWidth) [textWindowWidth $console]
     set maxima_default(iConsoleHeight) [textWindowHeight $console]
 
-    if {[catch {open  "~/.xmaximarc" w} fi]} {return}
+    catch {
+        set fi [open  "$maxima_priv(home)/.xmaximarc" w]
+        puts $fi "array set maxima_default {"
+        foreach {k v} [array get maxima_default *] {
+            lappend all [list $k $v]
+        }
+        set all [lsort $all]
+        foreach v $all { puts $fi $v }
+        puts $fi "}"
 
-    puts $fi "array set maxima_default {"
-    foreach {k v} [array get maxima_default *] {
-	lappend all [list $k $v]
-    }
-    set all [lsort $all]
-    foreach v $all { puts $fi $v }
-    puts $fi "}"
-
-    #mike FIXME: make this a _default
-    if { [info exists maxima_priv(proxy,http)] && [llength $maxima_priv(proxy,http)] == 2   } {
-	puts $fi [list array set maxima_priv [array get maxima_priv proxy,http]
+        #mike FIXME: make this a _default
+        if { [info exists maxima_priv(proxy,http)] && \
+                 [llength $maxima_priv(proxy,http)] == 2   } {
+            puts $fi [list array set maxima_priv [array get maxima_priv proxy,http]
 		 ]
+        }
+        close $fi
     }
-    close $fi
+    catch {
+        set hf [open "$maxima_priv(home)/.xmaxima_history" w]
+        puts $hf "oset {.maxima.text} inputs {"
+        foreach v [lrange $inputs end-99 end] { puts $hf "{$v}" }
+        puts $hf "}"
+        close $hf
+    }
 }
-
-
-
-
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -1244,11 +1128,8 @@ proc listBoxChoose { win  items textvar  } {
     place $fr -in $win -x 0  -y 0 -anchor n
 }
 
-
 proc quoteForRegexp { s } {
     regsub -all {[\]\[$+()\\.?*]} $s {\\\0}  ans
     return $ans
 }
 
-
-## endsource browser.tcl
