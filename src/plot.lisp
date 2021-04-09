@@ -54,15 +54,6 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     ((symbolp x) (print-invert-case (stripdollar x)))
     (t (maybe-invert-string-case (string (implode (strgrind x)))))))
 
-(defun flatten2 (l z)
-    (cond
-        ((endp l) z)
-        ((listp (car l)) (flatten2 (car l) (flatten2 (cdr l) z)))
-        ((atom (car l)) (cons (car l) (flatten2 (cdr l) z)))))
-
-(defun flatten (l)
-  (flatten2 l nil))
-
 (defmfun $join (x y)
   (if (and ($listp x) ($listp y))
       (cons '(mlist) (loop for w in (cdr x) for u in (cdr y) collect w collect u))
@@ -1323,7 +1314,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
         (draw2d-parametric-adaptive fcn plot-options)))
   (if (and ($listp fcn) (equal '$discrete (cadr fcn)))
       (return-from draw2d (draw2d-discrete fcn)))
-  (when (and (listp fcn) (member 'mequal (flatten fcn)))
+  (when (and (listp fcn) (eq 'mequal (caar fcn)))
     (return-from draw2d (draw2d-implicit fcn plot-options)))
   (let* ((nticks (getf plot-options :nticks))
          (yrange (getf plot-options :ybounds))
@@ -2031,7 +2022,7 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                 (setf (getf options :xlabel) (ensure-string (second xrange))))
               (setf (getf options :xvar) (cadr xrange))
               (setf (getf options :x) (cddr xrange)))
-            (if (and (listp f) (member 'mequal (flatten f)))
+            (if (and (listp f) (eq 'mequal (caar f)))
                 (progn
                   ;; Implicit function
                   (setq
@@ -2086,7 +2077,7 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                   (when (> ($length vars1) 0)
                     (merror
                      (intl:gettext
-                      "plot2d: expression ~M should  depend only on ~M")
+                      "plot2d: expression ~M~%    should  depend only on ~M, or be an expression of 2 variables~%    equal another expression of the same variables.")
                      f ($first xrange))))))))
     (when (not xrange-required)
       ;; Make the default ranges on X nd Y large so parametric plots

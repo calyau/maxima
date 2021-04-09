@@ -160,7 +160,7 @@ do have to use an older version, read the Maxima documentation for variable
 gnuplot_view_args).  
 Install gnuplot in your MSYS user home directory in ~/programs/gnuplot 
 
-6) Compile wxMaxima for windows from <http://wxmaxima.sourceforge.net>.
+6) Compile wxMaxima for windows from <https://wxmaxima-developers.github.io/wxmaxima/>.
 Use wxMaxima 0.6.5 with Maxima 5.9.3 or earlier, 
 wxMaxima 0.7.0 with Maxima 5.10.0,
 and wxMaxima 0.7.1 with Maxima 5.11.0.

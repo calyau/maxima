@@ -1,6 +1,10 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Paths.tcl,v 1.27 2009/01/18 20:17:24 robert_dodier Exp $
+############################################################
+# Paths.tcl                                                #
+# Copyright (C) 1998 William F. Schelter                   #
+# For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Time-stamp: "2021-04-06 13:58:37 villate"            #
+############################################################
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -9,7 +13,6 @@ proc setMaxDir {} {
     global env maxima_priv autoconf tcl_platform
 
     if {$tcl_platform(platform) == "windows"} {
-
 	# Make sure the signals thread is started
 	set env(MAXIMA_SIGNALS_THREAD) "1"
 
@@ -30,7 +33,6 @@ proc setMaxDir {} {
 		[file isdir \
 		     [file join $autoconf(datadir) \
 			  $autoconf(package) $autoconf(version)]]} {
-
 	    # Assume it's CYGWIN or  MSYS in /usr/local
 	} elseif {[file isdir $up/lib] && \
 		      [file isdir $up/bin] && \
@@ -51,20 +53,15 @@ proc setMaxDir {} {
 	    # Old windows 5.5 layout
 	    # Assume we are in the same directory as saved_maxima
 	    if {[file isfile [set exe $up/src/saved_maxima.exe]]} {
-
 		set env(MAXIMA_DIRECTORY) $up
-
 		set maxima_priv(maxima_verpkgdatadir) \
 		    $env(MAXIMA_DIRECTORY)
-
 		set maxima_priv(xmaxima_maxima) $exe
-
 		set maxima_priv(maxima_xmaximadir) [file dir $exe]
 
 		# This should be unused
 		set maxima_priv(maxima_verpkglibdir) \
 		    $env(MAXIMA_DIRECTORY)
-
 		set maxima_priv(maxima_verpkgdatadir) \
 		    $env(MAXIMA_DIRECTORY)
 
@@ -74,7 +71,6 @@ proc setMaxDir {} {
 	    }
 	}
     }
-
     #mike Could someone document all of these environment variables?
     # autoconf(prefix) does not seem to me to be the equivalent of
     # $env(MAXIMA_DIRECTORY) so I don't understand the next statement
@@ -100,12 +96,11 @@ proc setMaxDir {} {
     # be found in init-cl.lisp.
 
     # The following section should be considered temporary work-around.
-        if { [info exists env(MAXIMA_VERPKGDATADIR)] } {
+    if { [info exists env(MAXIMA_VERPKGDATADIR)] } {
 	set maxima_priv(maxima_verpkgdatadir) $env(MAXIMA_VERPKGDATADIR)
     }
     # End temporary workaround. It's only a workaround because the next
     # section is backwards: 
-    
 
     #mike Is it correct to assume that autoconf exists and is valid
     # for binary windows distributions? I think it would be better
@@ -119,7 +114,6 @@ proc setMaxDir {} {
     } else {
 	set maxima_priv(maxima_prefix) $autoconf(prefix)
     }
-
     if {[info exists maxima_priv(maxima_verpkgdatadir)]} {
 	# drop through
     } else {
@@ -137,7 +131,6 @@ proc setMaxDir {} {
 	    tide_notify [M [mc "Maxima data directory not found in '%s'"] \
 			     [file native  $maxima_datadir]]
 	}
-
 	set maxima_priv(maxima_verpkgdatadir) \
 	    [file join $maxima_datadir $autoconf(package) \
 		 $autoconf(version)]
@@ -159,7 +152,6 @@ proc setMaxDir {} {
 	    [file join $autoconf(libdir) $autoconf(package) \
 		 $autoconf(version)]
     }
-
     if {[info exists maxima_priv(maxima_xmaximadir)]} {
 	# drop through
     } elseif { [info exists env(MAXIMA_XMAXIMADIR)] } {
@@ -168,7 +160,7 @@ proc setMaxDir {} {
 	set maxima_priv(maxima_xmaximadir) \
 	    [file join $maxima_priv(maxima_verpkgdatadir) xmaxima]
     }
-    
+
     # xmaxima messages
     ::msgcat::mcload [file join $maxima_priv(maxima_xmaximadir) msgs]
 
@@ -317,14 +309,10 @@ proc setMaxDir {} {
     } else {
 	# who cares
     }
-
-
     set file [file join $maxima_priv(maxima_xmaximadir) "intro.html"]
-
     if {![file isfile $file]} {
 	tide_notify [M [mc "Starting documentation not found in '%s'"] \
 			 [file native	$file]]
-
 	set maxima_priv(firstUrl) ""
     } else {
 	if {$tcl_platform(platform) == "windows"} {
@@ -337,14 +325,12 @@ proc setMaxDir {} {
 	# FIXME: This is bogus - need a FileToUrl
 	set maxima_priv(firstUrl) file:/$file
     }
-
     # set up for autoloading
     global auto_path
     set dir [file join $maxima_priv(maxima_xmaximadir) Tkmaxima]
     if {[file isdir $dir]} {
 	lappend auto_path $dir
     }
-
     # jfa: Windows 98 users were seeing long startup times because
     # MAXIMA_USERDIR defaults to HOME, which is usually C:\.
     # Make the default something else under Windows 98 as a workaround.
@@ -354,7 +340,6 @@ proc setMaxDir {} {
 	    set env(MAXIMA_USERDIR) "$maxima_priv(maxima_prefix)/user"
 	}
     }
-
     # jfa: extend path so that gcl can see gcc in windows package
     # I don't know that this is the best place for this
     if {$tcl_platform(platform) == "windows"} {
@@ -375,7 +360,6 @@ proc vMAXSetMaximaCommand {} {
     global maxima_priv tcl_platform env
 
     set maxima_priv(localMaximaServer) ""
-
     if {[info exists maxima_priv(xmaxima_maxima)] && \
 	    $maxima_priv(xmaxima_maxima) != ""} {
 	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
@@ -408,7 +392,6 @@ proc vMAXSetMaximaCommand {} {
 		tide_failure [M [mc "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]]
 		return
 	    }
-	    
 	} else {
 	    set maxima_priv(xmaxima_maxima) maxima
 	    if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
@@ -419,12 +402,12 @@ proc vMAXSetMaximaCommand {} {
     set command {}
     lappend command $exe
     eval lappend command $maxima_priv(opts)
-
     lappend command -s PORT
-
+    if {$tcl_platform(platform) == "windows"} {
+        lappend command > NUL
+    } else {
+        lappend command > /dev/null
+    }
     lappend command &
     set maxima_priv(localMaximaServer) $command
-	
-
 }
-

@@ -15,13 +15,13 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>http://maxima.sourceforge.net/Xmaxima.png</image>
+      <image>https://maxima.sourceforge.io/Xmaxima.png</image>
       <caption>Xmaxima</caption>
     </screenshot>
   </screenshots>
   <url type="bugtracker">https://sourceforge.net/p/maxima/bugs/</url>
-  <url type="homepage">http://maxima.sourceforge.net/</url>
-  <url type="help">http://maxima.sourceforge.net/documentation.html</url>
+  <url type="homepage">https://maxima.sourceforge.io/</url>
+  <url type="help">https://maxima.sourceforge.io/documentation.html</url>
   <developer_name>Maxima Team</developer_name>
   <kudos>
     <kudo>ModernToolkit</kudo>

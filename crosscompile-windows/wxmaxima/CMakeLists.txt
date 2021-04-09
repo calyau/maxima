@@ -29,6 +29,7 @@ if(USE_WXMAXIMA_GIT)
 
     externalproject_add(wxmaxima-git
         GIT_REPOSITORY ${CMAKE_SOURCE_DIR}/downloads/wxmaxima-git
+        GIT_TAG main
         DEPENDS wxwidgets
         # search wx-config here - do not use the host wx-config
         # had to set CMAKE_LIBRARY_PATH=/usr/${HOST}/lib - libraries for mingw are installed there, but CMake (>3.8)
