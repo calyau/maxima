@@ -783,45 +783,71 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
           ((symbolp lis) start)
           (t (merror (intl:gettext "copy_pts: unrecognized first argument: ~M") lis)))))
 
-;; Explicit expressions of two variables, for instance, x and y,
+;; Implicit expressions of two variables, for instance, x and y,
 ;; where expr is of the form f(x,y) = g(x,y).
 ;; The result is a series of separated line segments.
+;;
 (defun draw2d-implicit (expr options)
-  (let ((xmin (first (getf options :x)))
-        (ymin (first (getf options :y)))
-        (xmax (second (getf options :x)))
-        (ymax (second (getf options :y)))
-        (gridx (or (first (getf options :sample)) 50))
-        (gridy (or (second (getf options :sample)) 50))
-        (eps (or (getf options :plotepsilon) 0.00000001))
-        vx vy dx dy fun (result nil))
+  (let* ((xmin (first (getf options :x)))
+         (ymin (first (getf options :y)))
+         (xmax (second (getf options :x)))
+         (ymax (second (getf options :y)))
+         (gridx (or (first (getf options :sample)) 50))
+         (gridy (or (second (getf options :sample)) 50))
+         (eps (or (getf options :plotepsilon) 1e-10))
+         (f (make-array `(,(1+ gridx) ,(1+ gridy))))
+         vx vy dx dy fun (result nil))
     (setq dx (/ (- xmax xmin) gridx))
     (setq dy (/ (- ymax ymin) gridy))
     (setq expr (m- ($lhs expr) ($rhs expr)))
     (setq vx (getf options :xvar))
     (setq vy (getf options :yvar))
     (setq fun (coerce-float-fun expr `((mlist) ,vx ,vy)))
+    (dotimes (i (1+ gridx))
+      (dotimes (j (1+ gridy))
+        (setf (aref f i j) (funcall fun (+ xmin (* i dx)) (+ ymin (* j dy))))))
     ;;
     ;; Implicit functions algorithm by Jaime Villate. 2021
     ;;
     ;; The domain is divided into a grid of rectangles,
     ;; each one with two triangles, with points labelled as follows:
     ;;
-    ;;  lu ______ ru   l=left, r=right, d=down, u=up
+    ;; ij+ ______ i+j+
     ;;     |   /|
-    ;;     |  / |    function fun has the following values at those points:
+    ;;     |  / |    function fun has the following vaij+es at those points:
     ;;     | /  |
-    ;;  ld |/___| rd     fld, frd, flu, fru
+    ;;  ij |/___| i+j     fij, fi+j, fij+, fi+j+
     ;;
-    (let (p1 p2 next)
+    (let (fij fi+j fij+ fi+j+ p1 p2 next)
       (flet
-          ((interp (xi yi fi xj yj fj &aux xp yp fp)
-             (if (< (* fi fj) eps)
+          ((interpxy (i j f1 f2 &aux r xp yp fp)
+             (if (< (* f1 f2) 0.0)
                  (progn
-                   (setq xp (/ (- (* fi xj) (* fj xi)) (- fi fj)))
-                   (setq yp (/ (- (* fi yj) (* fj yi)) (- fi fj)))
+                   (setq r (/ f1 (- f1 f2)))
+                   (setq xp (+ xmin (* dx (+ i r))))
+                   (setq yp (+ ymin (* dy (+ j r))))
                    (setq fp (funcall fun xp yp))
-                   (if (and (< (abs fp) (abs fi)) (< (abs fp) (abs fj)))
+                   (if (< (* (- fp f1) (- fp f2)) 0.0)
+                       (list xp yp)
+                       nil))
+                 nil))
+           (interpx (i j f1 f2 &aux xp yp fp)
+             (if (< (* f1 f2) 0.0)
+                 (progn
+                   (setq xp (+ xmin (* dx (+ i (/ f1 (- f1 f2))))))
+                   (setq yp (+ ymin (* dy j)))
+                   (setq fp (funcall fun xp yp))
+                   (if (< (* (- fp f1) (- fp f2)) 0.0)
+                       (list xp yp)
+                       nil))
+                 nil))
+           (interpy (i j f1 f2 &aux xp yp fp)
+             (if (< (* f1 f2) 0.0)
+                 (progn
+                   (setq xp (+ xmin (* dx i)))
+                   (setq yp (+ ymin (* dy (+ j (/ f1 (- f1 f2))))))
+                   (setq fp (funcall fun xp yp))
+                   (if (< (* (- fp f1) (- fp f2)) 0.0)
                        (list xp yp)
                        nil))
                  nil))
@@ -832,116 +858,116 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
              (push (second p2) result)
              (push 'moveto result)
              (push 'moveto result)))
-        (do ((i 0 (1+ i))
-             (xl xmin xr)
-             (xr (+ xmin dx) (+ xr dx))
-             (flm (funcall fun xmin ymin) frm)
-             (frm (funcall fun (+ xmin dx) ymin) (funcall fun (+ xr dx) ymin)))
-            ((>= i gridx))
-          (do ((j 0 (1+ j))
-               (yd ymin yu)
-               (yu (+ ymin dy) (+ yu dy))
-               (fld flm flu)
-               (frd frm fru)
-               (flu (funcall fun xl (+ ymin dy)) (funcall fun xl (+ yu dy)))
-               (fru (funcall fun xr (+ ymin dy)) (funcall fun xr (+ yu dy))))
-              ((>= j gridy))
+        (dotimes (i gridx)
+          (dotimes (j gridy)
+            (setq fij (aref f i j))
+            (setq fij+ (aref f i (1+ j)))
+            (setq fi+j (aref f (1+ i) j))
+            (setq fi+j+ (aref f (1+ i) (1+ j)))
             (setq next t)
-            (if (not (numberp fld))
+            (if (not (numberp fij))
                 (progn
-                  ;; fld undefined
+                  ;; fij undefined
                   (setq next nil)
+                  ;; check triangle i+j+, ij+, i+j
                   (when
                       (and
-                       (numberp frd) (numberp flu) (numberp fru)
-                       (setq p1 (interp xr yd frd xr yu fru))
-                       (setq p2 (interp xl yu flu xr yu fru)))
-                    ;; line between segments rd-ru and lu-ru
+                       (numberp fi+j) (numberp fij+) (numberp fi+j+)
+                       (setq p1 (interpy (1+ i) j fi+j fi+j+))
+                       (setq p2 (interpx i (1+ j) fij+  fi+j+)))
+                    ;; line between segments i+j, i+j+ and ij+, i+j+
                     (plot-line p1 p2)))
-                (when (not (numberp fru))
-                  ;; fru undefined
+                (when (not (numberp fi+j+))
+                  ;; fi+j+ undefined
                   (setq next nil)
+                  ;; check triangle ij, ij+, i+j
                   (when
                       (and
-                       (numberp frd) (numberp flu)
-                       (setq p1 (interp xl yd fld xr yd frd))
-                       (setq p2 (interp xl yd fld xl yu flu)))
-                    ;; line between segments ld-rd and ld-lu
+                       (numberp fi+j) (numberp fij+)
+                       (setq p1 (interpx i j fij fi+j))
+                       (setq p2 (interpy i j fij fij+)))
+                    ;; line between segments ij, i+j and ij, ij+
                     (plot-line p1 p2))))
-            (when (and next (< (abs fld) eps))
-              ;; zero at ld
+            (when (and next (< (abs fij) eps))
+              ;; zero at ij
               (when
                   (and
-                   (numberp flu)
-                   (setq p2 (interp xl yu flu xr yu fru)))
-                ;; line from ld to segment lu-ru
-                (plot-line (list xl yd) p2))
+                   (numberp fij+)
+                   (setq p2 (interpx i (1+ j) fij+ fi+j+)))
+                ;; line from ij to segment ij+, i+j+
+                (plot-line (list (+ xmin (* i dx)) (+ ymin (* j dy))) p2))
               (when
                   (and
-                   (numberp frd)
-                   (setq p2 (interp xr yd frd xr yu fru)))
-                ;; line from lu to segment rd-ru
-                (plot-line (list xl yd) p2))
+                   (numberp fi+j)
+                   (setq p2 (interpy (1+ i) j fi+j fi+j+)))
+                ;; line from ij to segment i+j, i+j+
+                (plot-line (list (+ xmin (* i dx)) (+ ymin (* j dy))) p2))
               (setq next nil))
-            (when (and next (< (abs fru) eps))
-              ;; zero at ru
+            (when (and next (< (abs fi+j+) eps))
+              ;; zero at i+j+
               (when
                   (and
-                   (numberp frd)
-                   (setq p2 (interp xl yd fld xr yd frd)))
-                ;; line from ru to segment ld-rd
-                (plot-line (list xr yu) p2))
+                   (numberp fi+j)
+                   (setq p2 (interpx i j fij fi+j)))
+                ;; line from i+j+ to segment ij, i+j
+                (plot-line (list (+ xmin (* (1+ i) dx)) (+ ymin (* (1+ j) dy)))
+                           p2))
               (when
                   (and
-                   (numberp flu)
-                   (setq p2 (interp xl yd fld xl yu flu)))
-                ;; line from ru to segment ld-lu
-                (plot-line (list xr yu) p2))
+                   (numberp fij+)
+                   (setq p2 (interpy i j fij fij+)))
+                ;; line from i+j+ to segment ij, ij+
+                (plot-line (list (+ xmin (* (1+ i) dx)) (+ ymin (* (1+ j) dy)))
+                           p2))
               (setq next nil))
             (when next 
-              (if (setq p1 (interp xl yd fld xr yu fru))
-                  ;; zero in segment ld-ru
+              (if (setq p1 (interpxy i j fij fi+j+))
+                  ;; zero in segment ij, i+j+
                   (progn
-                    (when (numberp flu)
-                      (when (< (abs flu) eps)
-                        ;; line from segment ld-ru to lu
-                        (plot-line p1 (list xl yu)))
-                      (if (setq p2 (interp xl yd fld xl yu flu))
-                          ;; line between segments ld-ru and ld-lu
+                    ;; triangle ij, i+j+, ij+
+                    (when (numberp fij+)
+                      (when (< (abs fij+) eps)
+                        ;; line from segment ij, i+j+ to ij+
+                        (plot-line p1 (list (+ xmin (* i dx))
+                                            (+ ymin (* (1+ j) dy)))))
+                      (if (setq p2 (interpy i j fij fij+))
+                          ;; line between segments ij, i+j+ and ij, ij+
                           (plot-line p1 p2)
                           (when
-                              (setq
-                               p2 (interp xl yu flu xr yu fru))
-                            ;; line between segments ld-ru and lu-ru
+                              (setq p2 (interpx i (1+ j) fij+ fi+j+))
+                            ;; line between segments ij, i+j+ and ij+, i+j+
                             (plot-line p1 p2))))
-                    (when (numberp frd)
-                      (when (< (abs frd) eps)
-                        ;; line from segment ld-ru to rd
-                        (plot-line p1 (list xr yd)))
-                      (if (setq p2 (interp xl yd fld xr yd frd))
-                          ;; line between segments ld-ru and ld-rd
+                    ;; triangle ij, i+j+, i+j
+                    (when (numberp fi+j)
+                      (when (< (abs fi+j) eps)
+                        ;; line from segment ij, i+j+ to i+j
+                        (plot-line p1 (list (+ xmin (* (1+ i) dx))
+                                            (+ ymin (* j dy)))))
+                      (if (setq p2 (interpx i j fij fi+j))
+                          ;; line between segments ij, i+j+ and ij, i+j
                           (plot-line p1 p2)
                           (when
-                              (setq
-                               p2 (interp xr yd frd xr yu fru))
-                            ;; line between segments ld-ru and rd-ru
+                              (setq p2 (interpy (1+ i) j fi+j fi+j+))
+                            ;; line between segments ij, i+j+ and i+j, i+j+
                             (plot-line p1 p2)))))
                   (progn
+                    ;; triangle ij, i+j+, ij+
                     (when
                         (and
-                         (numberp flu)
-                         (setq p1 (interp xl yd fld xl yu flu))
-                         (setq p2 (interp xl yu flu xr yu fru)))
-                      ;; line between segments ld-lu and lu-ru
+                         (numberp fij+)
+                         (setq p1 (interpy i j fij fij+))
+                         (setq p2 (interpx i (1+ j) fij+ fi+j+)))
+                      ;; line between segments ij, ij+ and ij+, i+j+
                       (plot-line p1 p2))
+                    ;; triangle ij, i+j+, i+j
                     (when
                         (and
-                         (numberp frd)
-                         (setq p1 (interp xl yd fld xr yd frd))
-                         (setq p2 (interp xr yd frd xr yu fru)))
-                      ;; line between segments ld-rd and rd-ru
-                      (plot-line p1 p2)))))))))
-    (cons '(mlist) (reverse result))))
+                         (numberp fi+j)
+                         (setq p1 (interpx i j fij fi+j))
+                         (setq p2 (interpy (1+ i) j fi+j fi+j+)))
+                      ;; line between segments ij, i+j and i+j, i+j+
+                      (plot-line p1 p2))))))))
+      (cons '(mlist) (reverse result)))))
 
 ;; parametric ; [parametric,xfun,yfun,[t,tlow,thigh],[nticks ..]]
 ;; the rest of the parametric list after the list will add to the plot options
