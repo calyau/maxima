@@ -828,13 +828,13 @@ cleardictstack 0 get restore\n")
 			   (or (eq imaxima-max-scale t)
 			       (> ratio imaxima-max-scale))))
 		  ;; scale image
-		  (multiple-value-setq (bb width height)
+		  (cl-multiple-value-setq (bb width height)
 		    (imaxima-eps-scale psfilename bb ratio))
 		(when imaxima-linearize-flag
 		  ;; linearize image
 		  (imaxima-tex-to-dvi str label (concat filename ".tex") t)
 		  (imaxima-dvi-to-ps filename)
-		  (multiple-value-setq (bb width height)
+		  (cl-multiple-value-setq (bb width height)
 		    (imaxima-extract-bb psfilename))))))
 	  (unless (eq imaxima-image-type 'postscript)
 	    (imaxima-ps-to-image psfilename filename bb width height))
