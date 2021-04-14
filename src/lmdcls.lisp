@@ -12,7 +12,7 @@
 
 #+gcl
 (progn 
-  (system::clines "#define MAKE_UNSPECIAL(x) (check_type_symbol(&(x)),(x)->s.s_stype = stp_ordinary, Cnil)")
+  (system::clines "object MAKE_UNSPECIAL(object x) {if (type_of(x)==t_symbol) x->s.s_stype=0;return Cnil;}")
   (system::defentry make-unspecial (system::object) (system::object "MAKE_UNSPECIAL")))
 
 #+(or scl cmu)
