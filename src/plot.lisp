@@ -794,180 +794,357 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          (ymax (second (getf options :y)))
          (gridx (or (first (getf options :sample)) 50))
          (gridy (or (second (getf options :sample)) 50))
-         (eps (or (getf options :plotepsilon) 1e-10))
+         (eps (or (getf options :plotepsilon) 1e-6))
          (f (make-array `(,(1+ gridx) ,(1+ gridy))))
-         vx vy dx dy fun (result nil))
-    (setq dx (/ (- xmax xmin) gridx))
-    (setq dy (/ (- ymax ymin) gridy))
-    (setq expr (m- ($lhs expr) ($rhs expr)))
-    (setq vx (getf options :xvar))
-    (setq vy (getf options :yvar))
-    (setq fun (coerce-float-fun expr `((mlist) ,vx ,vy)))
+         vx vy dx dy fun faux fmax fmin result)
+    (setq dx (/ (- xmax xmin) gridx) dy (/ (- ymax ymin) gridy))
+    (setq fun (m- ($lhs expr) ($rhs expr)))
+    (setq vx (getf options :xvar) vy (getf options :yvar))
+    (setq fun (coerce-float-fun fun `((mlist) ,vx ,vy)))
+    ;; sets up array f with values of the function at corners of sample grid.
+    ;; finds maximum and minimum values in that array. 
     (dotimes (i (1+ gridx))
       (dotimes (j (1+ gridy))
-        (setf (aref f i j) (funcall fun (+ xmin (* i dx)) (+ ymin (* j dy))))))
+        (setq faux (funcall fun (+ xmin (* i dx)) (+ ymin (* j dy))))
+        (setf (aref f i j) faux)
+        (when (numberp faux)
+          (if (numberp fmin)
+              (if (numberp fmax)
+                  (progn
+                    (when (< faux fmin) (setq fmin faux))
+                    (when (> faux fmax) (setq fmax faux)))
+                  (if (< faux fmin)
+                      (setq fmax fmin fmin faux)
+                      (setq fmax faux)))
+              (if (numberp fmax)
+                  (if (> faux fmax)
+                      (setq fmin fmax fmax faux)
+                      (setq fmin faux))
+                  (setq fmin faux))))))
+    (when (or (not (numberp fmin)) (not (numberp fmax)) (plusp (* fmax fmin)))
+      (merror (intl:gettext "plot2d: nothing to plot for ~M.~%") expr))
     ;;
-    ;; Implicit functions algorithm by Jaime Villate. 2021
+    ;; Algorithm for implicit function, by Jaime Villate. 2021
     ;;
-    ;; The domain is divided into a grid of rectangles,
-    ;; each one with two triangles, with points labelled as follows:
+    ;; The points at each rectangle in the sample grid are labeled as follows:
     ;;
     ;; ij+ ______ i+j+
-    ;;     |   /|
-    ;;     |  / |    function fun has the following vaij+es at those points:
-    ;;     | /  |
-    ;;  ij |/___| i+j     fij, fi+j, fij+, fi+j+
+    ;;     |    |
+    ;;     |    |    function fun has the following values at those points:
+    ;;     |    |
+    ;;  ij |____| i+j     fij, fi+j, fij+, fi+j+
     ;;
-    (let (fij fi+j fij+ fi+j+ p1 p2 next)
+    (let (fij fi+j fij+ fi+j+ p1 p2 p3 p4 next)
       (flet
-          ((interpxy (i j f1 f2 &aux r xp yp fp)
-             (if (< (* f1 f2) 0.0)
+          ((interp+ (i j fi fi+ &aux x1 y1 x2 y2 (f1 fi) (f2 fi+) xp yp fp)
+             (if (minusp (* fi fi+))
                  (progn
-                   (setq r (/ f1 (- f1 f2)))
-                   (setq xp (+ xmin (* dx (+ i r))))
-                   (setq yp (+ ymin (* dy (+ j r))))
-                   (setq fp (funcall fun xp yp))
-                   (if (< (* (- fp f1) (- fp f2)) 0.0)
-                       (list xp yp)
-                       nil))
+                   (setq x1 (+ xmin (* dx i)))
+                   (setq x2 (+ x1 dx))
+                   (setq y1 (+ ymin (* dy j)))
+                   (setq y2 (+ y1 dy))
+                   (dotimes (n 2
+                             (if (< (/ (+ (abs (- fi fp)) (abs (- fi+ fp)))
+                                       (abs (- fi fi+))) 1.5) (list xp yp) nil))
+                     (setq xp (/ (+ x1 x2) 2.0))
+                     (setq yp (/ (+ y1 y2) 2.0))
+                     (setq fp (funcall fun xp yp))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq x1 xp y1 yp f1 fp)
+                         (setq x2 xp y2 yp f2 fp))
+                     (setq xp (/ (- (* f1 x2) (* f2 x1)) (- f1 f2)))
+                     (setq yp (/ (- (* f1 y2) (* f2 y1)) (- f1 f2)))
+                     (setq fp (funcall fun xp yp))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq x1 xp y1 yp f1 fp)
+                         (setq x2 xp y2 yp f2 fp))))
                  nil))
-           (interpx (i j f1 f2 &aux xp yp fp)
-             (if (< (* f1 f2) 0.0)
+           (interp- (i j fi fi+ &aux x1 y1 x2 y2 (f1 fi) (f2 fi+) xp yp fp)
+             (if (minusp (* fi fi+))
                  (progn
-                   (setq xp (+ xmin (* dx (+ i (/ f1 (- f1 f2))))))
+                   (setq x1 (+ xmin (* dx i)))
+                   (setq x2 (+ x1 dx))
+                   (setq y1 (+ ymin (* dy j)))
+                   (setq y2 (- y1 dy))
+                   (dotimes (n 2
+                             (if (< (/ (+ (abs (- fi fp)) (abs (- fi+ fp)))
+                                       (abs (- fi fi+))) 1.5) (list xp yp) nil))
+                     (setq xp (/ (+ x1 x2) 2.0))
+                     (setq yp (/ (+ y1 y2) 2.0))
+                     (setq fp (funcall fun xp yp))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq x1 xp y1 yp f1 fp)
+                         (setq x2 xp y2 yp f2 fp))
+                     (setq xp (/ (- (* f1 x2) (* f2 x1)) (- f1 f2)))
+                     (setq yp (/ (- (* f1 y2) (* f2 y1)) (- f1 f2)))
+                     (setq fp (funcall fun xp yp))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq x1 xp y1 yp f1 fp)
+                         (setq x2 xp y2 yp f2 fp))))
+                 nil))
+           (interpx (i j fi fi+ &aux x1 x2 (f1 fi) (f2 fi+) xp yp fp)
+             (if (minusp (* fi fi+))
+                 (progn
+                   (setq x1 (+ xmin (* dx i)))
+                   (setq x2 (+ x1 dx))
                    (setq yp (+ ymin (* dy j)))
-                   (setq fp (funcall fun xp yp))
-                   (if (< (* (- fp f1) (- fp f2)) 0.0)
-                       (list xp yp)
-                       nil))
+                   (dotimes (n 2
+                             (if (< (/ (+ (abs (- fi fp)) (abs (- fi+ fp)))
+                                       (abs (- fi fi+))) 1.5) (list xp yp) nil))
+                     (setq xp (/ (+ x1 x2) 2.0))
+                     (setq fp (funcall fun xp yp))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq x1 xp f1 fp)
+                         (setq x2 xp f2 fp))
+                     (setq xp (/ (- (* f1 x2) (* f2 x1)) (- f1 f2)))
+                     (setq fp (funcall fun xp yp))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq x1 xp f1 fp)
+                         (setq x2 xp f2 fp))))
                  nil))
-           (interpy (i j f1 f2 &aux xp yp fp)
-             (if (< (* f1 f2) 0.0)
+           (interpy (i j fj fj+ &aux y1 y2 (f1 fj) (f2 fj+) xp yp fp)
+             (if (minusp (* fj fj+))
                  (progn
                    (setq xp (+ xmin (* dx i)))
-                   (setq yp (+ ymin (* dy (+ j (/ f1 (- f1 f2))))))
-                   (setq fp (funcall fun xp yp))
-                   (if (< (* (- fp f1) (- fp f2)) 0.0)
-                       (list xp yp)
-                       nil))
+                   (setq y1 (+ ymin (* dy j)))
+                   (setq y2 (+ y1 dy))
+                   (dotimes (n 2
+                             (if (< (/ (+ (abs (- fj fp)) (abs (- fj+ fp)))
+                                       (abs (- fj fj+))) 1.5) (list xp yp) nil))
+                     (setq yp (/ (+ y1 y2) 2.0))
+                     (setq fp (funcall fun xp yp))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq y1 yp f1 fp)
+                         (setq y2 yp f2 fp))
+                     (setq yp (/ (- (* f1 y2) (* f2 y1)) (- f1 f2)))
+                     (setq fp (funcall fun xp yp))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq y1 yp f1 fp)
+                         (setq y2 yp f2 fp))))
                  nil))
-           (plot-line (p1 p2)
+           (coords (i j)
+             (list (+ xmin (* i dx)) (+ ymin (* j dy))))
+           (draw-line (p1 p2)
              (push (first p1) result)
              (push (second p1) result)
              (push (first p2) result)
              (push (second p2) result)
              (push 'moveto result)
+             (push 'moveto result))
+           (draw-lines (p1 p2 p3)
+             (push (first p1) result)
+             (push (second p1) result)
+             (push (first p2) result)
+             (push (second p2) result)
+             (push (first p3) result)
+             (push (second p3) result)
+             (push 'moveto result)
              (push 'moveto result)))
         (dotimes (i gridx)
           (dotimes (j gridy)
-            (setq fij (aref f i j))
-            (setq fij+ (aref f i (1+ j)))
-            (setq fi+j (aref f (1+ i) j))
-            (setq fi+j+ (aref f (1+ i) (1+ j)))
+            (setq fij (aref f i j) fij+ (aref f i (1+ j)))
+            (setq fi+j (aref f (1+ i) j) fi+j+ (aref f (1+ i) (1+ j)))
             (setq next t)
-            (if (not (numberp fij))
-                (progn
-                  ;; fij undefined
-                  (setq next nil)
-                  ;; check triangle i+j+, ij+, i+j
-                  (when
-                      (and
-                       (numberp fi+j) (numberp fij+) (numberp fi+j+)
-                       (setq p1 (interpy (1+ i) j fi+j fi+j+))
-                       (setq p2 (interpx i (1+ j) fij+  fi+j+)))
-                    ;; line between segments i+j, i+j+ and ij+, i+j+
-                    (plot-line p1 p2)))
-                (when (not (numberp fi+j+))
-                  ;; fi+j+ undefined
-                  (setq next nil)
-                  ;; check triangle ij, ij+, i+j
-                  (when
-                      (and
-                       (numberp fi+j) (numberp fij+)
-                       (setq p1 (interpx i j fij fi+j))
-                       (setq p2 (interpy i j fij fij+)))
-                    ;; line between segments ij, i+j and ij, ij+
-                    (plot-line p1 p2))))
-            (when (and next (< (abs fij) eps))
-              ;; zero at ij
-              (when
-                  (and
-                   (numberp fij+)
-                   (setq p2 (interpx i (1+ j) fij+ fi+j+)))
-                ;; line from ij to segment ij+, i+j+
-                (plot-line (list (+ xmin (* i dx)) (+ ymin (* j dy))) p2))
-              (when
-                  (and
-                   (numberp fi+j)
-                   (setq p2 (interpy (1+ i) j fi+j fi+j+)))
-                ;; line from ij to segment i+j, i+j+
-                (plot-line (list (+ xmin (* i dx)) (+ ymin (* j dy))) p2))
-              (setq next nil))
-            (when (and next (< (abs fi+j+) eps))
-              ;; zero at i+j+
-              (when
-                  (and
-                   (numberp fi+j)
-                   (setq p2 (interpx i j fij fi+j)))
-                ;; line from i+j+ to segment ij, i+j
-                (plot-line (list (+ xmin (* (1+ i) dx)) (+ ymin (* (1+ j) dy)))
-                           p2))
-              (when
-                  (and
-                   (numberp fij+)
-                   (setq p2 (interpy i j fij fij+)))
-                ;; line from i+j+ to segment ij, ij+
-                (plot-line (list (+ xmin (* (1+ i) dx)) (+ ymin (* (1+ j) dy)))
-                           p2))
-              (setq next nil))
-            (when next 
-              (if (setq p1 (interpxy i j fij fi+j+))
-                  ;; zero in segment ij, i+j+
-                  (progn
-                    ;; triangle ij, i+j+, ij+
-                    (when (numberp fij+)
-                      (when (< (abs fij+) eps)
-                        ;; line from segment ij, i+j+ to ij+
-                        (plot-line p1 (list (+ xmin (* i dx))
-                                            (+ ymin (* (1+ j) dy)))))
-                      (if (setq p2 (interpy i j fij fij+))
-                          ;; line between segments ij, i+j+ and ij, ij+
-                          (plot-line p1 p2)
+            ;; 1. undefined at ij
+            (when (not (numberp fij))
+              (setq next nil)
+              ;; if undefined also at i+j or ij+, continue to next rectangle
+              (when (and (numberp fi+j) (numberp fij+))
+                (if (< (abs fi+j) eps)
+                    (if (< (abs fij+) eps)
+                        ;; real and 0 at i+j and ij+
+                        (draw-line (coords (1+ i) j) (coords i (1+ j)))
+                        (when
+                            (and
+                             (numberp fi+j+) 
+                             (setq p2 (interpx i (1+ j) fij+ fi+j+)))
+                          ;; real at i+j, ij+ and i+j+, 0 at i+j and segment
+                          ;; ij+ i+j+
+                          (draw-line (coords (1+ i) j) p2)))
+                    (when (numberp fi+j+)
+                      (if (< (abs fij+) eps)
+                          (when (setq p2 (interpy (1+ i) j fi+j fi+j+))
+                            ;; real at i+j, and i+j+, 0 at ij+ and segment
+                            ;; i+j i+j+
+                            (draw-line (coords i (1+ j)) p2))
                           (when
-                              (setq p2 (interpx i (1+ j) fij+ fi+j+))
-                            ;; line between segments ij, i+j+ and ij+, i+j+
-                            (plot-line p1 p2))))
-                    ;; triangle ij, i+j+, i+j
-                    (when (numberp fi+j)
-                      (when (< (abs fi+j) eps)
-                        ;; line from segment ij, i+j+ to i+j
-                        (plot-line p1 (list (+ xmin (* (1+ i) dx))
-                                            (+ ymin (* j dy)))))
-                      (if (setq p2 (interpx i j fij fi+j))
-                          ;; line between segments ij, i+j+ and ij, i+j
-                          (plot-line p1 p2)
-                          (when
-                              (setq p2 (interpy (1+ i) j fi+j fi+j+))
-                            ;; line between segments ij, i+j+ and i+j, i+j+
-                            (plot-line p1 p2)))))
-                  (progn
-                    ;; triangle ij, i+j+, ij+
+                              (and
+                               (setq p1 (interpx i (1+ j) fij+ fi+j+))
+                               (setq p2 (interpy (1+ i) j fi+j fi+j+)))
+                            ;; real at i+j, ij+ and i+j+, 0 at segments
+                            ;; ij+ i+j+ and i+j i+j+
+                            (draw-line p1 p2)))))))
+            ;; 2. real at ij and undefined at i+j
+            (when (and next (not (numberp fi+j)))
+              (setq next nil)
+              ;; if undefined at ij+, continue to next rectangle
+              (when (numberp fij+)
+                (if (< (abs fij) eps)
+                    (if (< (abs fij+) eps)
+                        ;; zero at ij and ij+
+                        (draw-line (coords i j) (coords i (1+ j)))
+                        (when
+                            (and
+                             (numberp fi+j+)
+                             (setq p2 (interpx i (1+ j) fij+ fi+j+)))
+                          ;; real at ij+ and i+j+, 0 at ij and segment ij+ i+j+
+                          (draw-line (coords i j) p2)))
                     (when
                         (and
-                         (numberp fij+)
+                         (numberp fi+j+)
                          (setq p1 (interpy i j fij fij+))
                          (setq p2 (interpx i (1+ j) fij+ fi+j+)))
-                      ;; line between segments ij, ij+ and ij+, i+j+
-                      (plot-line p1 p2))
-                    ;; triangle ij, i+j+, i+j
-                    (when
-                        (and
-                         (numberp fi+j)
-                         (setq p1 (interpx i j fij fi+j))
-                         (setq p2 (interpy (1+ i) j fi+j fi+j+)))
-                      ;; line between segments ij, i+j and i+j, i+j+
-                      (plot-line p1 p2))))))))
-      (cons '(mlist) (reverse result)))))
+                      ;; real at ij, ij+ and i+j+, 0 at segments ij ij+
+                      ;; and ij+ i+j+
+                      (draw-line p1 p2)))))
+            ;; 3. real at fi+j and 0 at ij
+            (when (and next (< (abs fij) eps))
+              (setq next nil)
+              (if (numberp fij+)
+                  (if (< (abs fij+) eps)
+                      ;; real at i+j, 0 at ij and ij+
+                      (draw-line (coords i j) (coords i (1+ j)))
+                      (when (setq p1 (interp- i (1+ j) fij+ fi+j))
+                        (if (numberp fi+j+)
+                            (if (< (abs fi+j+) eps)
+                                ;; real at i+j and ij, 0 at ij, i+j+ and
+                                ;; diagonal ij+ i+j
+                                (draw-lines (coords i j) p1
+                                            (coords (1+ i) (1+ j)))
+                                (progn
+                                  ;; real at i+j, ij+ and i+j+, 0 at ij,
+                                  ;; diagonal ij+ i+j and segment ij+ i+j+
+                                  (when (setq p2 (interpx i (1+ j) fij+ fi+j+))
+                                    (draw-lines (coords i j) p1 p2))
+                                  ;; real at i+j, ij+ and i+j+, 0 at ij,
+                                  ;; diagonal ij+ i+j and segment i+j i+j+
+                                  (when (setq p2 (interpy (1+ i) j fi+j fi+j+))
+                                    (draw-lines (coords i j) p1 p2)))))))
+                  (if (numberp fi+j+)
+                      (if (< (abs fi+j) eps)
+                          ;; undefined at ij+, real at fi+j+, 0 at ij and i+j
+                          (draw-line (coords i j) (coords (1+ i) j))
+                          (when (setq p2 (interpy (1+ i) j fi+j fi+j+))
+                            ;; undefined at ij+, real at fi+j and fi+j+, 0 at
+                            ;; ij and segment i+j i+j+
+                            (draw-line (coords i j) p2)))
+                      (when (< (abs fi+j) eps)
+                        ;; undefined at ij+ and i+j+, 0 at ij and i+j
+                        (draw-line (coords i j) (coords (1+ i) j))))))
+            ;; 4. real at ij and 0 at i+j
+            (when (and next (< (abs fi+j) eps))
+              (setq next nil)
+              (if (numberp fij+)
+                  (if (numberp fi+j+)
+                      ;; if 0 at i+j but undefined at ij+ or there's no zero
+                      ;; in diagonal ij i+j+, continue to next rectangle
+                      (when (setq p1 (interp+ i j fij fi+j+))
+                        (if (< (abs fij+) eps)
+                            ;; 0 at i+j, ij+ and diagonal ij i+j+
+                            (draw-lines (coords (1+ i) j) p1 (coords i (1+ j)))
+                            (progn
+                              (when (setq p2 (interpy i j fij fij+))
+                                ;; 0 at i+j, diagonal ij i+j+ and segment ij ij+ 
+                                (draw-lines (coords (1+ i) j) p1 p2))
+                              (when (setq p2 (interpx i (1+ j) fij+ fi+j+))
+                                ;; 0 at i+j, diagonal ij i+j+ and segm. ij+ i+j+
+                                (draw-lines (coords (1+ i) j) p1 p2)))))
+                      (when (setq p2 (interpy i j fij fij+))
+                        ;; undefined at i+j+, 0 at i+j and segment ij ij+
+                        (draw-line (coords (1+ i) j) p2)))))
+            ;; 5. real at ij and i+j but undefined at ij+
+            (when (and next (not (numberp fij+)))
+              (setq next nil)
+              (when
+                  (and
+                   (numberp fi+j+)
+                   (setq p1 (interpx i j fij fi+j))
+                   (setq p2 (interpy (1+ i) j fi+j fi+j+)))
+                ;; 0 at segments ij i+j and i+j i+j+
+                (draw-line p1 p2)))
+            ;; 6. real at ij, i+j and ij+, but undefined at i+j+
+            (when (and next (not (numberp fi+j+)))
+              (setq next nil)
+              (when
+                  (and
+                   (setq p1 (interpy i j fij fij+))
+                   (setq p2 (interpx i j fij fi+j)))
+                ;; 0 at segments ij ij+ and ij i+j
+                (draw-line p1 p2)))
+            ;; 7. real at the four corners and 0 at ij+
+            (when (and next (< (abs fij+) eps))
+              (setq next nil)
+              (when (setq p1 (interp+ i j fij fi+j+))
+                (when (setq p2 (interpx i j fij fi+j))
+                  ;; 0 at diagonal ij i+j+ and segment ij i+j
+                  (draw-lines p2 p1 (coords i (1+ j))))
+                (when (setq p2 (interpy (1+ i) j fi+j fi+j+))
+                  ;; 0 at diagonal ij i+j+ and segment i+j i+j+
+                  (draw-lines p2 p1 (coords i (1+ j))))))
+            ;; 8. real at the four corners and 0 at i+j+
+            (when (and next (< (abs fi+j+) eps))
+              (setq next nil)
+              (when (setq p1 (interp- i (1+ j) fij+ fi+j))
+                (when (setq p2 (interpx i j fij fi+j))
+                  ;; 0 at diagonal ij+ i+j and segment ij i+j
+                  (draw-lines p2 p1 (coords (1+ i) (1+ j))))
+                (when (setq p2 (interpy i j fij fij+))
+                  ;; 0 at diagonal ij+ i+j and segment ij ij+
+                  (draw-lines p2 p1 (coords (1+ i) (1+ j))))))
+            ;; 9. real at the four corners and 0 at segment ij i+j
+            (when (and next (setq p1 (interpx i j fij fi+j)))
+              (setq next nil)
+              (if (setq p2 (interpy i j fij fij+))
+                  (if (setq p3 (interpx i (1+ j) fij+ fi+j+))
+                      (when (setq p4 (interpy (1+ i) j fi+j fi+j+))
+                        ;; 0 at the four sides
+                        (draw-line p1 p3)
+                        (draw-line p2 p4))
+                      (when (setq p3 (interp+ i j fij fi+j+))
+                        ;; 0 at segments ij i+j, ij ij+ and diagonal ij i+j+
+                        (draw-lines p1 p3 p2)))
+                  (if (setq p4 (interpy (1+ i) j fi+j fi+j+))
+                      (when (setq p2 (interp- i (1+ j) fij+ fi+j))
+                        ;; 0 at segments ij i+j, i+j i+j+ and diagonal ij+ i+j
+                        (draw-lines p1 p2 p4))
+                      (when
+                          (and
+                           (setq p3 (interpx i (1+ j) fij+ fi+j+))
+                           (setq p2 (interp+ i j fij fi+j+)))
+                        ;; 0 at segments ij i+j, ij+ i+j+ and diagonal ij i+j+
+                        (draw-lines p1 p2 p3)))))
+            ;; 10. real at the four corners, without zero in segment ij i+j
+            (when next
+              (if (setq p2 (interpy i j fij fij+))
+                  (if (setq p3 (interpx i (1+ j) fij+ fi+j+))
+                      (when (setq p4 (interp- i (1+ j) fij+ fi+j))
+                        ;; 0 at segments ij ij+ and ij+ i+j+ and diagonal
+                        ;; ij+ i+j
+                        (draw-lines p2 p4 p3))
+                      (when
+                          (and
+                           (setq p4 (interpy (1+ i) j fi+j fi+j+))
+                           (setq p3 (interp+ i j fij fi+j+)))
+                        ;; 0 at segments ij ij+ and i+j i+j+ and diagonal
+                        ;; ij i+j+
+                        (draw-lines p2 p3 p4)))
+                  (when
+                      (and
+                       (setq p3 (interpx i (1+ j) fij+ fi+j+))
+                       (setq p4 (interpy (1+ i) j fi+j fi+j+))
+                       (setq p1 (interp+ i j fij fi+j+)))
+                    ;; 0 at segments ij+ i+j+ and i+j i+j+ and diagonal
+                    ;; ij i+j+
+                    (draw-lines p4 p1 p3))))))))
+    (cons '(mlist) (reverse result))))
 
 ;; parametric ; [parametric,xfun,yfun,[t,tlow,thigh],[nticks ..]]
 ;; the rest of the parametric list after the list will add to the plot options
@@ -2129,9 +2306,12 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
             (t
              (setq xlabel "x") (setq ylabel ($sconcat v))))
       (unless (getf options :xlabel)
-        (if (< (length xlabel) 50) (setf (getf options :xlabel) xlabel)))
+        (when (< (length xlabel) 50) (setf (getf options :xlabel) xlabel)))
       (unless (getf options :ylabel)
-        (if (< (length ylabel) 50) (setf (getf options :ylabel) ylabel)))))
+        (when (< (length ylabel) 50) (setf (getf options :ylabel) ylabel)))))
+  ;; For explicit functions, default ylabel is the name of the 2nd variable
+  (when (getf options :yvar)
+    (setf (getf options :ylabel) ($sconcat (getf options :yvar))))
   ;; Parse the given options into the options list
   (setq options (plot-options-parser extra-options options))
   (when (getf options :y) (setf (getf options :ybounds) (getf options :y)))
