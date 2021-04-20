@@ -2586,81 +2586,17 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
 		  file))
         (t (princ ans) "")))
 
-
-;; contour_plot -- set some parameters for Gnuplot and punt to plot3d
-;;
-;; We go to some trouble here to avoid clobbering the Gnuplot preamble
-;; specified by the user, either as a global option (via set_plot_option)
-;; or specified in arguments to contour_plot. Just append or prepend
-;; the parameters for contour plotting to the user-specified preamble.
-;; Assume that arguments take precedence over global options.
-;;
-;; contour_plot knows how to set parameters only for Gnuplot.
-;; If the plot_format is not a Gnuplot format, complain.
-;;
-;; Examples:
-;;
-;;   contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4]);
-;;   contour_plot (sin(y) * cos(x)^2, [x, -4, 4], [y, -4, 4]);
-;;   F(x, y) := x^3 + y^2;
-;;   contour_plot (F, [u, -4, 4], [v, -4, 4]);
-;;   contour_plot (F, [u, -4, 4], [v, -4, 4], [gnuplot_preamble, "set size ratio -1"]);
-;;   set_plot_option ([gnuplot_preamble, "set cntrparam levels 12"]);
-;;   contour_plot (F, [u, -4, 4], [v, -4, 4]);
-;;   set_plot_option ([plot_format, xmaxima]);
-;;   contour_plot (F, [u, -4, 4], [v, -4, 4]); => error: must be gnuplot format
-;;   contour_plot (F, [u, -4, 4], [v, -4, 4], [plot_format, gnuplot]);
-
+;; contour_plot now punts to plot2d
 (defmfun $contour_plot (expr &rest optional-args)
-  (let*
-      ((plot-format-in-options (getf *plot-options* :plot_format))
-       (plot-format-in-arguments
-        (caddar (member '$plot_format optional-args :key #'cadr)))
-       (preamble-in-plot-options (getf *plot-options* :gnuplot_preamble))
-       (preamble-in-arguments
-        (caddar (member '$gnuplot_preamble optional-args :key #'cadr)))
-       (contour-preamble "set contour; unset surface; set view map")
-       (gnuplot-formats '($gnuplot $gnuplot_pipes))
-       preamble)
-    ;; Ensure that plot_format is some gnuplot format.
-    ;; Argument takes precedence over global option.
-  
-    (if (or
-         (and plot-format-in-arguments
-              (not (member plot-format-in-arguments gnuplot-formats :test #'eq)))
-         (and (not plot-format-in-arguments)
-              (not (member plot-format-in-options gnuplot-formats :test #'eq))))
-        (progn
-          (mtell(intl:gettext "contour_plot: plot_format = ~a not recognized; must be a gnuplot format.~%")
-                (ensure-string (or plot-format-in-arguments plot-format-in-options)))
-          (return-from $contour_plot)))
-    
-    ;; Prepend contour preamble to preamble in arguments (if given)
-    ;; and pass concatenated preamble as an argument to plot3d.
-    ;; Otherwise if there is a global option preamble, 
-    ;; append contour preamble to global option preamble.
-    ;; Otherwise just set global option preamble to the contour preamble.
-    
-    ;; All this complication is to avoid clobbering the preamble
-    ;; if one was specified somehow (either global option or argument).
-      
-    (if preamble-in-arguments
-        (progn
-          (setq optional-args
-                (remove-if #'(lambda (e) (and ($listp e) (eq ($first e) '$gnuplot_preamble))) optional-args))
-          (setq preamble
-                ($sconcat contour-preamble (format nil "~%")
-                          preamble-in-arguments)))
-        (if preamble-in-plot-options
-            (setf preamble
-                  ($sconcat preamble-in-plot-options (format nil "~%")
-                            contour-preamble))
-            (setq preamble contour-preamble)))
-    (apply #'$plot3d
-           (append (list expr)
-                   optional-args
-                   (list '((mlist) $palette nil))
-                   (list `((mlist) $gnuplot_preamble ,preamble))))))
+  (let ((command "plot2d ([contour, "))
+    (setq command ($sconcat command expr "]"))
+    (when optional-args
+      (dolist (arg optional-args)
+        (setq command ($sconcat command ", " arg))))
+    (setq command ($sconcat command ")"))
+  (mtell (intl:gettext "contour_plot is now obsolete. Using plot2d instead:~%"))
+  (mtell "~M~%" command)
+  (apply #'$plot2d (cons `((mlist) $contour ,expr) optional-args))))
 
 #| plot3d
 Examples:
