@@ -1984,7 +1984,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($nolegend (setf (getf options :legend) nil))
          ($nologx (setf (getf options :logx) nil))
          ($nology (setf (getf options :logy) nil))
-         ($nomesh_lines_color (setf (getf options :mesh_lines_color) nil))
+         ($nomesh_lines (setf (getf options :mesh_lines_color) nil))
          ($noplot_realpart (setf (getf options :plot_realpart) nil))
          ($norun_viewer (setf (getf options :run_viewer) nil))
          ($nosame_xy (setf (getf options :same_xy) nil))
