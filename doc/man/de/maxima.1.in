@@ -356,7 +356,7 @@ Version 10.
 January 1983.
 .LP
 Neuere Referenzen: 
-.UR http://maxima.sourceforge.net/de/
+.UR https://maxima.sourceforge.io/de/
 .UE
 
 .SH FEHLER
@@ -389,7 +389,7 @@ Die urspr\(:ungliche Version dieser Manualseite wurde von R. P. C. Rodgers (UCSF
 James Amundson in 2002. Die deutsche \(:Ubersetzung stammt von Wolfgang Dautermann.
 
 Maxima wird nun entwickelt und betreut vom 
-.UR http://maxima.sourceforge.net/de/
+.UR https://maxima.sourceforge.io/de/
 Maxima Projekt auf Sourceforge.
 .UE
 

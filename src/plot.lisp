@@ -54,15 +54,6 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     ((symbolp x) (print-invert-case (stripdollar x)))
     (t (maybe-invert-string-case (string (implode (strgrind x)))))))
 
-(defun flatten2 (l z)
-    (cond
-        ((endp l) z)
-        ((listp (car l)) (flatten2 (car l) (flatten2 (cdr l) z)))
-        ((atom (car l)) (cons (car l) (flatten2 (cdr l) z)))))
-
-(defun flatten (l)
-  (flatten2 l nil))
-
 (defmfun $join (x y)
   (if (and ($listp x) ($listp y))
       (cons '(mlist) (loop for w in (cdr x) for u in (cdr y) collect w collect u))
@@ -261,7 +252,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
           ($box :box) ($color :color) ($color_bar :color_bar)
           ($color_bar_tics :color_bar_tics) ($elevation :elevation)
           ($grid :grid) ($grid2d :grid2d) ($iterations :iterations)
-          ($label :label) ($legend :legend) ($logx :logx) ($logy :logy)
+          ($label :label) ($legend :legend) ($levels :levels)
+          ($logx :logx) ($logy :logy)
           ($mesh_lines_color :mesh_lines_color) ($nticks :nticks)
           ($palette :palette) ($plotepsilon :plotepsilon)
           ($plot_format :plot_format) ($plot_realpart :plot_realpart)
@@ -792,165 +784,396 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
           ((symbolp lis) start)
           (t (merror (intl:gettext "copy_pts: unrecognized first argument: ~M") lis)))))
 
-;; Explicit expressions of two variables, for instance, x and y,
+;; Implicit expressions of two variables, for instance, x and y,
 ;; where expr is of the form f(x,y) = g(x,y).
 ;; The result is a series of separated line segments.
+;;
 (defun draw2d-implicit (expr options)
-  (let ((xmin (first (getf options :x)))
-        (ymin (first (getf options :y)))
-        (xmax (second (getf options :x)))
-        (ymax (second (getf options :y)))
-        (gridx (or (first (getf options :sample)) 50))
-        (gridy (or (second (getf options :sample)) 50))
-        (eps (or (getf options :plotepsilon) 0.00000001))
-        vx vy dx dy fun (result nil))
-    (setq dx (/ (- xmax xmin) gridx))
-    (setq dy (/ (- ymax ymin) gridy))
-    (setq expr (m- ($lhs expr) ($rhs expr)))
-    (setq vx (getf options :xvar))
-    (setq vy (getf options :yvar))
-    (setq fun (coerce-float-fun expr `((mlist) ,vx ,vy)))
+  (let* ((xmin (first (getf options :x)))
+         (ymin (first (getf options :y)))
+         (xmax (second (getf options :x)))
+         (ymax (second (getf options :y)))
+         (gridx (or (first (getf options :sample)) 50))
+         (gridy (or (second (getf options :sample)) 50))
+         (eps (or (getf options :plotepsilon) 1e-6))
+         (f (make-array `(,(1+ gridx) ,(1+ gridy))))
+         vx vy dx dy fun faux fmax fmin levels values result results)
+    (setq dx (/ (- xmax xmin) gridx) dy (/ (- ymax ymin) gridy))
+    (setq vx (getf options :xvar) vy (getf options :yvar))
+    (if (getf options :contour)
+        (setq fun expr)
+        (setq fun (m- ($lhs expr) ($rhs expr))))
+    (setq fun (coerce-float-fun fun `((mlist) ,vx ,vy)))
+    ;; sets up array f with values of the function at corners of sample grid.
+    ;; finds maximum and minimum values in that array. 
+    (dotimes (i (1+ gridx))
+      (dotimes (j (1+ gridy))
+        (setq faux (funcall fun (+ xmin (* i dx)) (+ ymin (* j dy))))
+        (setf (aref f i j) faux)
+        (when (and (numberp faux) (plusp i) (plusp j) (< i gridx) (< j gridy))
+          (if (numberp fmin)
+              (if (numberp fmax)
+                  (progn
+                    (when (< faux fmin) (setq fmin faux))
+                    (when (> faux fmax) (setq fmax faux)))
+                  (if (< faux fmin)
+                      (setq fmax fmin fmin faux)
+                      (setq fmax faux)))
+              (if (numberp fmax)
+                  (if (> faux fmax)
+                      (setq fmin fmax fmax faux)
+                      (setq fmin faux))
+                  (setq fmin faux))))))
+    ;; checks that the function has a minimum and a maximum
+    (when
+        (or
+         (not (numberp fmin))
+         (not (numberp fmax)) (not (> fmax fmin)))
+      (merror (intl:gettext "plot2d: nothing to plot for ~M.~%") expr))
+    ;; sets up the levels for contour plots
+    (if (getf options :contour)
+        (if (setq levels (getf options :levels))
+            (unless (listp levels)
+              (setq levels (getlevels fmin fmax levels)))
+            (setq levels (getlevels fmin fmax 8)))
+        (setq levels (list 0.0)))
     ;;
-    ;; Implicit functions algorithm by Jaime Villate. 2021
+    ;; Algorithm for implicit functions, by Jaime Villate. 2021
     ;;
-    ;; The domain is divided into a grid of rectangles,
-    ;; each one with two triangles, with points labelled as follows:
+    ;; The points at each rectangle in the sample grid are labeled as follows:
     ;;
-    ;;  lu ______ ru   l=left, r=right, d=down, u=up
-    ;;     |   /|
-    ;;     |  / |    function fun has the following values at those points:
-    ;;     | /  |
-    ;;  ld |/___| rd     fld, frd, flu, fru
+    ;; ij+ ______ i+j+
+    ;;     |    |
+    ;;     |    |    function fun has the following values at those points:
+    ;;     |    |
+    ;;  ij |____| i+j     fij, fi+j, fij+, fi+j+
     ;;
-    (let (p1 p2 next)
+    (let (fij fi+j fij+ fi+j+ p1 p2 p3 p4 next)
       (flet
-          ((interp (xi yi fi xj yj fj &aux xp yp fp)
-             (if (< (* fi fj) eps)
+          ((interp+ (i j fi fi+ &aux x1 y1 x2 y2 (f1 fi) (f2 fi+) xp yp fp)
+             (if (minusp (* fi fi+))
                  (progn
-                   (setq xp (/ (- (* fi xj) (* fj xi)) (- fi fj)))
-                   (setq yp (/ (- (* fi yj) (* fj yi)) (- fi fj)))
-                   (setq fp (funcall fun xp yp))
-                   (if (and (< (abs fp) (abs fi)) (< (abs fp) (abs fj)))
-                       (list xp yp)
-                       nil))
+                   (setq x1 (+ xmin (* dx i)))
+                   (setq x2 (+ x1 dx))
+                   (setq y1 (+ ymin (* dy j)))
+                   (setq y2 (+ y1 dy))
+                   (dotimes (n 2
+                             (if (< (/ (+ (abs (- fi fp)) (abs (- fi+ fp)))
+                                       (abs (- fi fi+))) 1.5) (list xp yp) nil))
+                     (setq xp (/ (+ x1 x2) 2.0))
+                     (setq yp (/ (+ y1 y2) 2.0))
+                     (setq fp (- (funcall fun xp yp) level))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq x1 xp y1 yp f1 fp)
+                         (setq x2 xp y2 yp f2 fp))
+                     (setq xp (/ (- (* f1 x2) (* f2 x1)) (- f1 f2)))
+                     (setq yp (/ (- (* f1 y2) (* f2 y1)) (- f1 f2)))
+                     (setq fp (- (funcall fun xp yp) level))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq x1 xp y1 yp f1 fp)
+                         (setq x2 xp y2 yp f2 fp))))
                  nil))
-           (plot-line (p1 p2)
+           (interp- (i j fi fi+ &aux x1 y1 x2 y2 (f1 fi) (f2 fi+) xp yp fp)
+             (if (minusp (* fi fi+))
+                 (progn
+                   (setq x1 (+ xmin (* dx i)))
+                   (setq x2 (+ x1 dx))
+                   (setq y1 (+ ymin (* dy j)))
+                   (setq y2 (- y1 dy))
+                   (dotimes (n 2
+                             (if (< (/ (+ (abs (- fi fp)) (abs (- fi+ fp)))
+                                       (abs (- fi fi+))) 1.5) (list xp yp) nil))
+                     (setq xp (/ (+ x1 x2) 2.0))
+                     (setq yp (/ (+ y1 y2) 2.0))
+                     (setq fp (- (funcall fun xp yp) level))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq x1 xp y1 yp f1 fp)
+                         (setq x2 xp y2 yp f2 fp))
+                     (setq xp (/ (- (* f1 x2) (* f2 x1)) (- f1 f2)))
+                     (setq yp (/ (- (* f1 y2) (* f2 y1)) (- f1 f2)))
+                     (setq fp (- (funcall fun xp yp) level))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq x1 xp y1 yp f1 fp)
+                         (setq x2 xp y2 yp f2 fp))))
+                 nil))
+           (interpx (i j fi fi+ &aux x1 x2 (f1 fi) (f2 fi+) xp yp fp)
+             (if (minusp (* fi fi+))
+                 (progn
+                   (setq x1 (+ xmin (* dx i)))
+                   (setq x2 (+ x1 dx))
+                   (setq yp (+ ymin (* dy j)))
+                   (dotimes (n 2
+                             (if (< (/ (+ (abs (- fi fp)) (abs (- fi+ fp)))
+                                       (abs (- fi fi+))) 1.5) (list xp yp) nil))
+                     (setq xp (/ (+ x1 x2) 2.0))
+                     (setq fp (- (funcall fun xp yp) level))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq x1 xp f1 fp)
+                         (setq x2 xp f2 fp))
+                     (setq xp (/ (- (* f1 x2) (* f2 x1)) (- f1 f2)))
+                     (setq fp (- (funcall fun xp yp) level))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq x1 xp f1 fp)
+                         (setq x2 xp f2 fp))))
+                 nil))
+           (interpy (i j fj fj+ &aux y1 y2 (f1 fj) (f2 fj+) xp yp fp)
+             (if (minusp (* fj fj+))
+                 (progn
+                   (setq xp (+ xmin (* dx i)))
+                   (setq y1 (+ ymin (* dy j)))
+                   (setq y2 (+ y1 dy))
+                   (dotimes (n 2
+                             (if (< (/ (+ (abs (- fj fp)) (abs (- fj+ fp)))
+                                       (abs (- fj fj+))) 1.5) (list xp yp) nil))
+                     (setq yp (/ (+ y1 y2) 2.0))
+                     (setq fp (- (funcall fun xp yp) level))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq y1 yp f1 fp)
+                         (setq y2 yp f2 fp))
+                     (setq yp (/ (- (* f1 y2) (* f2 y1)) (- f1 f2)))
+                     (setq fp (- (funcall fun xp yp) level))
+                     (when (not (numberp fp)) (return nil))
+                     (if (plusp (* f1 fp))
+                         (setq y1 yp f1 fp)
+                         (setq y2 yp f2 fp))))
+                 nil))
+           (coords (i j)
+             (list (+ xmin (* i dx)) (+ ymin (* j dy))))
+           (draw-line (p1 p2)
              (push (first p1) result)
              (push (second p1) result)
              (push (first p2) result)
              (push (second p2) result)
              (push 'moveto result)
+             (push 'moveto result))
+           (draw-lines (p1 p2 p3)
+             (push (first p1) result)
+             (push (second p1) result)
+             (push (first p2) result)
+             (push (second p2) result)
+             (push (first p3) result)
+             (push (second p3) result)
+             (push 'moveto result)
              (push 'moveto result)))
-        (do ((i 0 (1+ i))
-             (xl xmin xr)
-             (xr (+ xmin dx) (+ xr dx))
-             (flm (funcall fun xmin ymin) frm)
-             (frm (funcall fun (+ xmin dx) ymin) (funcall fun (+ xr dx) ymin)))
-            ((>= i gridx))
-          (do ((j 0 (1+ j))
-               (yd ymin yu)
-               (yu (+ ymin dy) (+ yu dy))
-               (fld flm flu)
-               (frd frm fru)
-               (flu (funcall fun xl (+ ymin dy)) (funcall fun xl (+ yu dy)))
-               (fru (funcall fun xr (+ ymin dy)) (funcall fun xr (+ yu dy))))
-              ((>= j gridy))
-            (setq next t)
-            (if (not (numberp fld))
-                (progn
-                  ;; fld undefined
-                  (setq next nil)
-                  (when
-                      (and
-                       (numberp frd) (numberp flu) (numberp fru)
-                       (setq p1 (interp xr yd frd xr yu fru))
-                       (setq p2 (interp xl yu flu xr yu fru)))
-                    ;; line between segments rd-ru and lu-ru
-                    (plot-line p1 p2)))
-                (when (not (numberp fru))
-                  ;; fru undefined
-                  (setq next nil)
-                  (when
-                      (and
-                       (numberp frd) (numberp flu)
-                       (setq p1 (interp xl yd fld xr yd frd))
-                       (setq p2 (interp xl yd fld xl yu flu)))
-                    ;; line between segments ld-rd and ld-lu
-                    (plot-line p1 p2))))
-            (when (and next (< (abs fld) eps))
-              ;; zero at ld
-              (when
-                  (and
-                   (numberp flu)
-                   (setq p2 (interp xl yu flu xr yu fru)))
-                ;; line from ld to segment lu-ru
-                (plot-line (list xl yd) p2))
-              (when
-                  (and
-                   (numberp frd)
-                   (setq p2 (interp xr yd frd xr yu fru)))
-                ;; line from lu to segment rd-ru
-                (plot-line (list xl yd) p2))
-              (setq next nil))
-            (when (and next (< (abs fru) eps))
-              ;; zero at ru
-              (when
-                  (and
-                   (numberp frd)
-                   (setq p2 (interp xl yd fld xr yd frd)))
-                ;; line from ru to segment ld-rd
-                (plot-line (list xr yu) p2))
-              (when
-                  (and
-                   (numberp flu)
-                   (setq p2 (interp xl yd fld xl yu flu)))
-                ;; line from ru to segment ld-lu
-                (plot-line (list xr yu) p2))
-              (setq next nil))
-            (when next 
-              (if (setq p1 (interp xl yd fld xr yu fru))
-                  ;; zero in segment ld-ru
-                  (progn
-                    (when (numberp flu)
-                      (when (< (abs flu) eps)
-                        ;; line from segment ld-ru to lu
-                        (plot-line p1 (list xl yu)))
-                      (if (setq p2 (interp xl yd fld xl yu flu))
-                          ;; line between segments ld-ru and ld-lu
-                          (plot-line p1 p2)
+        (dolist (level (reverse levels))
+          (dotimes (i gridx)
+            (dotimes (j gridy)
+              (setq fij (- (aref f i j) level))
+              (setq fij+ (- (aref f i (1+ j)) level))
+              (setq fi+j (- (aref f (1+ i) j) level))
+              (setq fi+j+ (- (aref f (1+ i) (1+ j)) level))
+              (setq next t)
+              ;; 1. undefined at ij
+              (when (not (numberp fij))
+                (setq next nil)
+                ;; if undefined also at i+j or ij+, continue to next rectangle
+                (when (and (numberp fi+j) (numberp fij+))
+                  (if (< (abs fi+j) eps)
+                      (if (< (abs fij+) eps)
+                          ;; real and 0 at i+j and ij+
+                          (draw-line (coords (1+ i) j) (coords i (1+ j)))
                           (when
-                              (setq
-                               p2 (interp xl yu flu xr yu fru))
-                            ;; line between segments ld-ru and lu-ru
-                            (plot-line p1 p2))))
-                    (when (numberp frd)
-                      (when (< (abs frd) eps)
-                        ;; line from segment ld-ru to rd
-                        (plot-line p1 (list xr yd)))
-                      (if (setq p2 (interp xl yd fld xr yd frd))
-                          ;; line between segments ld-ru and ld-rd
-                          (plot-line p1 p2)
+                              (and
+                               (numberp fi+j+) 
+                               (setq p2 (interpx i (1+ j) fij+ fi+j+)))
+                            ;; real at i+j, ij+ and i+j+, 0 at i+j and segment
+                            ;; ij+ i+j+
+                            (draw-line (coords (1+ i) j) p2)))
+                      (when (numberp fi+j+)
+                        (if (< (abs fij+) eps)
+                            (when (setq p2 (interpy (1+ i) j fi+j fi+j+))
+                              ;; real at i+j, and i+j+, 0 at ij+ and segment
+                              ;; i+j i+j+
+                              (draw-line (coords i (1+ j)) p2))
+                            (when
+                                (and
+                                 (setq p1 (interpx i (1+ j) fij+ fi+j+))
+                                 (setq p2 (interpy (1+ i) j fi+j fi+j+)))
+                              ;; real at i+j, ij+ and i+j+, 0 at segments
+                              ;; ij+ i+j+ and i+j i+j+
+                              (draw-line p1 p2)))))))
+              ;; 2. real at ij and undefined at i+j
+              (when (and next (not (numberp fi+j)))
+                (setq next nil)
+                ;; if undefined at ij+, continue to next rectangle
+                (when (numberp fij+)
+                  (if (< (abs fij) eps)
+                      (if (< (abs fij+) eps)
+                          ;; zero at ij and ij+
+                          (draw-line (coords i j) (coords i (1+ j)))
                           (when
-                              (setq
-                               p2 (interp xr yd frd xr yu fru))
-                            ;; line between segments ld-ru and rd-ru
-                            (plot-line p1 p2)))))
-                  (progn
+                              (and
+                               (numberp fi+j+)
+                               (setq p2 (interpx i (1+ j) fij+ fi+j+)))
+                            ;; real at ij+ and i+j+, 0 at ij and segment ij+ i+j+
+                            (draw-line (coords i j) p2)))
+                      (when
+                          (and
+                           (numberp fi+j+)
+                           (setq p1 (interpy i j fij fij+))
+                           (setq p2 (interpx i (1+ j) fij+ fi+j+)))
+                        ;; real at ij, ij+ and i+j+, 0 at segments ij ij+
+                        ;; and ij+ i+j+
+                        (draw-line p1 p2)))))
+              ;; 3. real at fi+j and 0 at ij
+              (when (and next (< (abs fij) eps))
+                (setq next nil)
+                (if (numberp fij+)
+                    (if (< (abs fij+) eps)
+                        ;; real at i+j, 0 at ij and ij+
+                        (draw-line (coords i j) (coords i (1+ j)))
+                        (when (setq p1 (interp- i (1+ j) fij+ fi+j))
+                          (if (numberp fi+j+)
+                              (if (< (abs fi+j+) eps)
+                                  ;; real at i+j and ij, 0 at ij, i+j+ and
+                                  ;; diagonal ij+ i+j
+                                  (draw-lines (coords i j) p1
+                                              (coords (1+ i) (1+ j)))
+                                  (progn
+                                    ;; real at i+j, ij+ and i+j+, 0 at ij,
+                                    ;; diagonal ij+ i+j and segment ij+ i+j+
+                                    (when (setq p2 (interpx i (1+ j) fij+ fi+j+))
+                                      (draw-lines (coords i j) p1 p2))
+                                    ;; real at i+j, ij+ and i+j+, 0 at ij,
+                                    ;; diagonal ij+ i+j and segment i+j i+j+
+                                    (when (setq p2 (interpy (1+ i) j fi+j fi+j+))
+                                      (draw-lines (coords i j) p1 p2)))))))
+                    (if (numberp fi+j+)
+                        (if (< (abs fi+j) eps)
+                            ;; undefined at ij+, real at fi+j+, 0 at ij and i+j
+                            (draw-line (coords i j) (coords (1+ i) j))
+                            (when (setq p2 (interpy (1+ i) j fi+j fi+j+))
+                              ;; undefined at ij+, real at fi+j and fi+j+, 0 at
+                              ;; ij and segment i+j i+j+
+                              (draw-line (coords i j) p2)))
+                        (when (< (abs fi+j) eps)
+                          ;; undefined at ij+ and i+j+, 0 at ij and i+j
+                          (draw-line (coords i j) (coords (1+ i) j))))))
+              ;; 4. real at ij and 0 at i+j
+              (when (and next (< (abs fi+j) eps))
+                (setq next nil)
+                (if (numberp fij+)
+                    (if (numberp fi+j+)
+                        ;; if 0 at i+j but undefined at ij+ or there's no zero
+                        ;; in diagonal ij i+j+, continue to next rectangle
+                        (when (setq p1 (interp+ i j fij fi+j+))
+                          (if (< (abs fij+) eps)
+                              ;; 0 at i+j, ij+ and diagonal ij i+j+
+                              (draw-lines (coords (1+ i) j) p1 (coords i (1+ j)))
+                              (progn
+                                (when (setq p2 (interpy i j fij fij+))
+                                  ;; 0 at i+j, diagonal ij i+j+ and segment
+                                  ;; ij ij+ 
+                                  (draw-lines (coords (1+ i) j) p1 p2))
+                                (when (setq p2 (interpx i (1+ j) fij+ fi+j+))
+                                  ;; 0 at i+j, diagonal ij i+j+ and segment
+                                  ;; ij+ i+j+
+                                  (draw-lines (coords (1+ i) j) p1 p2)))))
+                        (when (setq p2 (interpy i j fij fij+))
+                          ;; undefined at i+j+, 0 at i+j and segment ij ij+
+                          (draw-line (coords (1+ i) j) p2)))))
+              ;; 5. real at ij and i+j but undefined at ij+
+              (when (and next (not (numberp fij+)))
+                (setq next nil)
+                (when
+                    (and
+                     (numberp fi+j+)
+                     (setq p1 (interpx i j fij fi+j))
+                     (setq p2 (interpy (1+ i) j fi+j fi+j+)))
+                  ;; 0 at segments ij i+j and i+j i+j+
+                  (draw-line p1 p2)))
+              ;; 6. real at ij, i+j and ij+, but undefined at i+j+
+              (when (and next (not (numberp fi+j+)))
+                (setq next nil)
+                (when
+                    (and
+                     (setq p1 (interpy i j fij fij+))
+                     (setq p2 (interpx i j fij fi+j)))
+                  ;; 0 at segments ij ij+ and ij i+j
+                  (draw-line p1 p2)))
+              ;; 7. real at the four corners and 0 at ij+
+              (when (and next (< (abs fij+) eps))
+                (setq next nil)
+                (when (setq p1 (interp+ i j fij fi+j+))
+                  (when (setq p2 (interpx i j fij fi+j))
+                    ;; 0 at diagonal ij i+j+ and segment ij i+j
+                    (draw-lines p2 p1 (coords i (1+ j))))
+                  (when (setq p2 (interpy (1+ i) j fi+j fi+j+))
+                    ;; 0 at diagonal ij i+j+ and segment i+j i+j+
+                    (draw-lines p2 p1 (coords i (1+ j))))))
+              ;; 8. real at the four corners and 0 at i+j+
+              (when (and next (< (abs fi+j+) eps))
+                (setq next nil)
+                (when (setq p1 (interp- i (1+ j) fij+ fi+j))
+                  (when (setq p2 (interpx i j fij fi+j))
+                    ;; 0 at diagonal ij+ i+j and segment ij i+j
+                    (draw-lines p2 p1 (coords (1+ i) (1+ j))))
+                  (when (setq p2 (interpy i j fij fij+))
+                    ;; 0 at diagonal ij+ i+j and segment ij ij+
+                    (draw-lines p2 p1 (coords (1+ i) (1+ j))))))
+              ;; 9. real at the four corners and 0 at segment ij i+j
+              (when (and next (setq p1 (interpx i j fij fi+j)))
+                (setq next nil)
+                (if (setq p2 (interpy i j fij fij+))
+                    (if (setq p3 (interpx i (1+ j) fij+ fi+j+))
+                        (when (setq p4 (interpy (1+ i) j fi+j fi+j+))
+                          ;; 0 at the four sides
+                          (draw-line p1 p3)
+                          (draw-line p2 p4))
+                        (when (setq p3 (interp+ i j fij fi+j+))
+                          ;; 0 at segments ij i+j, ij ij+ and diagonal ij i+j+
+                          (draw-lines p1 p3 p2)))
+                    (if (setq p4 (interpy (1+ i) j fi+j fi+j+))
+                        (when (setq p2 (interp- i (1+ j) fij+ fi+j))
+                          ;; 0 at segments ij i+j, i+j i+j+ and diagonal ij+ i+j
+                          (draw-lines p1 p2 p4))
+                        (when
+                            (and
+                             (setq p3 (interpx i (1+ j) fij+ fi+j+))
+                             (setq p2 (interp+ i j fij fi+j+)))
+                          ;; 0 at segments ij i+j, ij+ i+j+ and diagonal ij i+j+
+                          (draw-lines p1 p2 p3)))))
+              ;; 10. real at the four corners, without zero in segment ij i+j
+              (when next
+                (if (setq p2 (interpy i j fij fij+))
+                    (if (setq p3 (interpx i (1+ j) fij+ fi+j+))
+                        (when (setq p4 (interp- i (1+ j) fij+ fi+j))
+                          ;; 0 at segments ij ij+ and ij+ i+j+ and diagonal
+                          ;; ij+ i+j
+                          (draw-lines p2 p4 p3))
+                        (when
+                            (and
+                             (setq p4 (interpy (1+ i) j fi+j fi+j+))
+                             (setq p3 (interp+ i j fij fi+j+)))
+                          ;; 0 at segments ij ij+ and i+j i+j+ and diagonal
+                          ;; ij i+j+
+                          (draw-lines p2 p3 p4)))
                     (when
                         (and
-                         (numberp flu)
-                         (setq p1 (interp xl yd fld xl yu flu))
-                         (setq p2 (interp xl yu flu xr yu fru)))
-                      ;; line between segments ld-lu and lu-ru
-                      (plot-line p1 p2))
-                    (when
-                        (and
-                         (numberp frd)
-                         (setq p1 (interp xl yd fld xr yd frd))
-                         (setq p2 (interp xr yd frd xr yu fru)))
-                      ;; line between segments ld-rd and rd-ru
-                      (plot-line p1 p2)))))))))
-    (cons '(mlist) (reverse result))))
+                         (setq p3 (interpx i (1+ j) fij+ fi+j+))
+                         (setq p4 (interpy (1+ i) j fi+j fi+j+))
+                         (setq p1 (interp+ i j fij fi+j+)))
+                      ;; 0 at segments ij+ i+j+ and i+j i+j+ and diagonal
+                      ;; ij i+j+
+                      (draw-lines p4 p1 p3))))))
+          (when (and (getf options :contour) result)
+            (push (cons '(mlist) (reverse result)) results)
+            (push level values)
+            (setq result nil)))))
+    ;; When called for a single implicit expression, returns a Maxima list
+    ;; of points. When called for contours of an expression, returns a
+    ;; Maxima list whose first element is another Maxima list with the values
+    ;; of the contours, followed by Maxima lists of points for each contour.
+    (if (getf options :contour)
+        (cons '(mlist) (cons (cons '(mlist) values) results))
+        (cons '(mlist) (reverse result)))))
 
 ;; parametric ; [parametric,xfun,yfun,[t,tlow,thigh],[nticks ..]]
 ;; the rest of the parametric list after the list will add to the plot options
@@ -1231,7 +1454,6 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
         (t
          ;; Something is not a number, so assume it's not smooth enough.
          nil)))
-                    
     
 (defun adaptive-plot (fcn a b c f-a f-b f-c depth eps)
   ;; Step 1:  Split the interval [a, c] into 5 points
@@ -1323,7 +1545,11 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
         (draw2d-parametric-adaptive fcn plot-options)))
   (if (and ($listp fcn) (equal '$discrete (cadr fcn)))
       (return-from draw2d (draw2d-discrete fcn)))
-  (when (and (listp fcn) (member 'mequal (flatten fcn)))
+  (when (and ($listp fcn) (equal '$contour (cadr fcn)))
+    (setf (getf plot-options :contour) t)
+    (return-from draw2d (draw2d-implicit (caddr fcn) plot-options)))
+  (when (and (listp fcn) (eq 'mequal (caar fcn)))
+    (setf (getf plot-options :contour) nil)
     (return-from draw2d (draw2d-implicit fcn plot-options)))
   (let* ((nticks (getf plot-options :nticks))
          (yrange (getf plot-options :ybounds))
@@ -1561,15 +1787,15 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
                          (check-option (cdr opt) #'realp "a real number" 1)))
          ($box (setf (getf options :box)
                      (check-option-boole (cdr opt))))
+         ($color (setf (getf options :color)
+                       (check-option (cdr opt) #'plotcolorp "a color")))
+         ($color_bar (setf (getf options :color_bar)
+                           (check-option-boole (cdr opt))))
          ($color_bar_tics
           (if (cddr opt)
               (setf (cddr opt) (mapcar #'coerce-float (cddr opt))))
           (setf (getf options :color_bar_tics)
                 (check-option-b (cdr opt) #'realp "a real number" 3)))
-         ($color (setf (getf options :color)
-                       (check-option (cdr opt) #'plotcolorp "a color")))
-         ($color_bar  (setf (getf options :color_bar)
-                            (check-option-boole (cdr opt))))
          ($elevation (if (caddr opt)
                          (setf (caddr opt) (parse-elevation (caddr opt))))
                      (setf (getf options :elevation)
@@ -1585,6 +1811,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
                        (check-option-label (cdr opt))))
          ($legend (setf (getf options :legend)
                         (check-option-b (cdr opt) #'stringp "a string")))
+         ($levels (setf (getf options :levels)
+                        (check-option-levels (cdr opt))))
          ($logx (setf (getf options :logx)
                       (check-option-boole (cdr opt))))
          ($logy (setf (getf options :logy)
@@ -1612,12 +1840,12 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
                          (check-option (cdr opt) #'stringp "a string" 1)))
          ($run_viewer (setf (getf options :run_viewer)
                             (check-option-boole (cdr opt))))
-         ($sample (setf (getf options :sample)
-                        (check-option (cdr opt) #'naturalp "a natural number" 2)))
          ($same_xy (setf (getf options :same_xy)
                          (check-option-boole (cdr opt))))
          ($same_xyz (setf (getf options :same_xyz)
                           (check-option-boole (cdr opt))))
+         ($sample (setf (getf options :sample)
+                        (check-option (cdr opt) #'naturalp "a natural number" 2)))
          ($style (setf (getf options :style)
                        (check-option-style (cdr opt))))
          ($svg_file (setf (getf options :svg_file)
@@ -1756,7 +1984,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($nolegend (setf (getf options :legend) nil))
          ($nologx (setf (getf options :logx) nil))
          ($nology (setf (getf options :logy) nil))
-         ($nomesh_lines_color (setf (getf options :mesh_lines_color) nil))
+         ($nomesh_lines (setf (getf options :mesh_lines_color) nil))
          ($noplot_realpart (setf (getf options :plot_realpart) nil))
          ($norun_viewer (setf (getf options :run_viewer) nil))
          ($nosame_xy (setf (getf options :same_xy) nil))
@@ -1770,7 +1998,6 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($nognuplot_strings (setf (getf options :gnuplot_strings) nil))
          (t
           (merror (intl:gettext "Unknown plot option \"~M\".") opt))))))
-           
   ;; plots that create a file work better in gnuplot than gnuplot_pipes
   (when (and (eq (getf options :plot_format) '$gnuplot_pipes)
              (or (eq (getf options :gnuplot_term) '$dumb)
@@ -1946,6 +2173,39 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
        (intl:gettext
         "Wrong argument ~M for option ~M. Should be either false or the name of function for the transformation") option (car option))))
 
+;; levels can be a single natural number (requested number of levels)
+;; or two or more floating-point numbers.
+(defun check-option-levels (option)
+  (cond
+    ((< (length option) 3)
+     (check-option option #'naturalp "a natural number" 1))
+    (t
+     (mapcar #'coerce-float (cdr option))
+     (check-option option #'realp "a real number" (1- (length option))))))
+           
+;; Tries to get n numbers between fmin and fmax of the form d*10^e,
+;; where d is either 1, 2 or 5.
+;; It returns a list with n or less numbers
+;; (adapted from procedure getticks of Xmaxima)
+;;
+(defun getlevels (fmin fmax n)
+  (let ((len (- fmax fmin)) (best 0) levels val fac j1 j2 step ans)
+    (dolist (v '(0.1 0.2 0.5))
+      (setq val (ceiling (/ (log (/ len n v)) (log 10))))
+      (setq fac (/ 1 v (expt 10 val)))
+      (setq j1 (ceiling (* fmin fac)))
+      (setq j2 (floor (* fmax fac)))
+      (if (> j2 14)
+          (setq step 5)
+          (setq step 2))
+      (setq levels nil)
+      (do ((j j1 (1+ j))) ((> j j2))
+        (push (/ j fac) levels))
+      (when (> (length levels) best)
+        (setq best (length levels))
+        (setq ans (copy-list levels))))
+    (reverse ans)))
+
 #| plot2d
 Examples:
 
@@ -1976,7 +2236,9 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
   ;; A single parametric or discrete plot is placed inside a maxima list.
   (setf (getf options :type) "plot2d")
   (when (and (consp fun)
-             (or (eq (second fun) '$parametric) (eq (second fun) '$discrete)))
+             (or (eq (second fun) '$parametric)
+                 (eq (second fun) '$contour)
+                 (eq (second fun) '$discrete)))
     (setq fun `((mlist) ,fun)))
   ;; If by now fun is not a maxima list, it is then a single expression
   (unless ($listp fun ) (setq fun `((mlist) ,fun)))
@@ -2015,6 +2277,47 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                   (intl:gettext
                    "plot2d: parametric expressions ~M and ~M should depend only on ~M")
                   ($second f) ($third f) ($first prange))))
+              ($contour
+               (setq xrange-required t)
+               (setq fpfun (coerce-float-fun ($second f) ($rest xrange -2)))
+               (setq vars1 ($listofvars (mfuncall fpfun ($first xrange))))
+               (when (and (= ($length vars1) 2)
+                          (not (member ($first xrange) vars1)))
+                 (merror
+                  (intl:gettext "plot2d: ~M is not one of the variables in ~M") 
+                  ($first xrange) f))
+               (setq vars1 (delete ($first xrange) vars1))
+               (if (< ($length vars1) 2)
+                   (progn
+                     (if yrange-required
+                         (unless (or (= ($length vars1) 0)
+                                     (eq ($first yrange) ($first vars1)))
+                           (merror
+                            (intl:gettext
+                             "plot2d: ~M should only depend on ~M and ~M") 
+                            f ($first xrange) ($first vars1)))
+                         (progn
+                           (setq yrange-required t)
+                           (if (null extra-options)
+                               (merror
+                                (intl:gettext
+                                 "plot2d: Missing interval for variable 2."))
+                               (progn
+                                 (setq yrange (pop extra-options))
+                                 (setq vars1 (delete ($first yrange) vars1))
+                                 (unless (= ($length vars1) 0)
+                                   (merror
+                                    (intl:gettext
+                                     "plot2d: ~M should only depend on ~M and ~M")
+                                    f ($first xrange) ($first yrange)))
+                                 (setq yrange (check-range yrange))
+                                 (setf (getf options :xvar) ($first xrange))
+                                 (setf (getf options :yvar) ($first yrange))
+                                 (setf (getf options :x) (cddr xrange))
+                                 (setf (getf options :y) (cddr yrange)))))))
+                   (merror
+                    (intl:gettext "plot2d: ~M should only depend on 2 variables")
+                    ($second f))))
               ($discrete)
               (t
                (merror
@@ -2031,7 +2334,7 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                 (setf (getf options :xlabel) (ensure-string (second xrange))))
               (setf (getf options :xvar) (cadr xrange))
               (setf (getf options :x) (cddr xrange)))
-            (if (and (listp f) (member 'mequal (flatten f)))
+            (if (and (listp f) (eq 'mequal (caar f)))
                 (progn
                   ;; Implicit function
                   (setq
@@ -2086,7 +2389,7 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                   (when (> ($length vars1) 0)
                     (merror
                      (intl:gettext
-                      "plot2d: expression ~M should  depend only on ~M")
+                      "plot2d: expression ~M~%    should  depend only on ~M, or be an expression of 2 variables~%    equal another expression of the same variables.")
                      f ($first xrange))))))))
     (when (not xrange-required)
       ;; Make the default ranges on X nd Y large so parametric plots
@@ -2109,12 +2412,18 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
              (setq ylabel ($sconcat (fourth v))))
             ((eq (second v) '$discrete)
              (setq xlabel "x") (setq ylabel "y"))
+            ((eq (second v) '$contour)
+             (setq xlabel (ensure-string (getf options :xvar)))
+             (setq ylabel (ensure-string (getf options :yvar))))
             (t
              (setq xlabel "x") (setq ylabel ($sconcat v))))
       (unless (getf options :xlabel)
         (if (< (length xlabel) 50) (setf (getf options :xlabel) xlabel)))
       (unless (getf options :ylabel)
         (if (< (length ylabel) 50) (setf (getf options :ylabel) ylabel)))))
+  ;; For explicit functions, default ylabel is the name of the 2nd variable
+  (when (getf options :yvar)
+    (setf (getf options :ylabel) ($sconcat (getf options :yvar))))
   ;; Parse the given options into the options list
   (setq options (plot-options-parser extra-options options))
   (when (getf options :y) (setf (getf options :ybounds) (getf options :y)))
@@ -2175,7 +2484,6 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
 
 (defun msymbolp (x)
   (and (symbolp x) (char= (char (symbol-value x) 0) #\$)))
-
 
 (defmfun $tcl_output (lis i &optional (skip 2))
   (when (not (typep i 'fixnum))
@@ -2278,81 +2586,17 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
 		  file))
         (t (princ ans) "")))
 
-
-;; contour_plot -- set some parameters for Gnuplot and punt to plot3d
-;;
-;; We go to some trouble here to avoid clobbering the Gnuplot preamble
-;; specified by the user, either as a global option (via set_plot_option)
-;; or specified in arguments to contour_plot. Just append or prepend
-;; the parameters for contour plotting to the user-specified preamble.
-;; Assume that arguments take precedence over global options.
-;;
-;; contour_plot knows how to set parameters only for Gnuplot.
-;; If the plot_format is not a Gnuplot format, complain.
-;;
-;; Examples:
-;;
-;;   contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4]);
-;;   contour_plot (sin(y) * cos(x)^2, [x, -4, 4], [y, -4, 4]);
-;;   F(x, y) := x^3 + y^2;
-;;   contour_plot (F, [u, -4, 4], [v, -4, 4]);
-;;   contour_plot (F, [u, -4, 4], [v, -4, 4], [gnuplot_preamble, "set size ratio -1"]);
-;;   set_plot_option ([gnuplot_preamble, "set cntrparam levels 12"]);
-;;   contour_plot (F, [u, -4, 4], [v, -4, 4]);
-;;   set_plot_option ([plot_format, xmaxima]);
-;;   contour_plot (F, [u, -4, 4], [v, -4, 4]); => error: must be gnuplot format
-;;   contour_plot (F, [u, -4, 4], [v, -4, 4], [plot_format, gnuplot]);
-
+;; contour_plot now punts to plot2d
 (defmfun $contour_plot (expr &rest optional-args)
-  (let*
-      ((plot-format-in-options (getf *plot-options* :plot_format))
-       (plot-format-in-arguments
-        (caddar (member '$plot_format optional-args :key #'cadr)))
-       (preamble-in-plot-options (getf *plot-options* :gnuplot_preamble))
-       (preamble-in-arguments
-        (caddar (member '$gnuplot_preamble optional-args :key #'cadr)))
-       (contour-preamble "set contour; unset surface; set view map")
-       (gnuplot-formats '($gnuplot $gnuplot_pipes))
-       preamble)
-    ;; Ensure that plot_format is some gnuplot format.
-    ;; Argument takes precedence over global option.
-  
-    (if (or
-         (and plot-format-in-arguments
-              (not (member plot-format-in-arguments gnuplot-formats :test #'eq)))
-         (and (not plot-format-in-arguments)
-              (not (member plot-format-in-options gnuplot-formats :test #'eq))))
-        (progn
-          (mtell(intl:gettext "contour_plot: plot_format = ~a not recognized; must be a gnuplot format.~%")
-                (ensure-string (or plot-format-in-arguments plot-format-in-options)))
-          (return-from $contour_plot)))
-    
-    ;; Prepend contour preamble to preamble in arguments (if given)
-    ;; and pass concatenated preamble as an argument to plot3d.
-    ;; Otherwise if there is a global option preamble, 
-    ;; append contour preamble to global option preamble.
-    ;; Otherwise just set global option preamble to the contour preamble.
-    
-    ;; All this complication is to avoid clobbering the preamble
-    ;; if one was specified somehow (either global option or argument).
-      
-    (if preamble-in-arguments
-        (progn
-          (setq optional-args
-                (remove-if #'(lambda (e) (and ($listp e) (eq ($first e) '$gnuplot_preamble))) optional-args))
-          (setq preamble
-                ($sconcat contour-preamble (format nil "~%")
-                          preamble-in-arguments)))
-        (if preamble-in-plot-options
-            (setf preamble
-                  ($sconcat preamble-in-plot-options (format nil "~%")
-                            contour-preamble))
-            (setq preamble contour-preamble)))
-    (apply #'$plot3d
-           (append (list expr)
-                   optional-args
-                   (list '((mlist) $palette nil))
-                   (list `((mlist) $gnuplot_preamble ,preamble))))))
+  (let ((command "plot2d ([contour, "))
+    (setq command ($sconcat command expr "]"))
+    (when optional-args
+      (dolist (arg optional-args)
+        (setq command ($sconcat command ", " arg))))
+    (setq command ($sconcat command ")"))
+  (mtell (intl:gettext "contour_plot is now obsolete. Using plot2d instead:~%"))
+  (mtell "~M~%" command)
+  (apply #'$plot2d (cons `((mlist) $contour ,expr) optional-args))))
 
 #| plot3d
 Examples:

@@ -189,6 +189,7 @@
             ;; some random form with caar COMPLEX
             ;;not really a CL complex
             form)))
+#+gcl(setf (get 'si::complex* 'formatter) (get 'complex 'formatter))
 
 ;; something I added for fun
 ;; (defstruct (ri (:constructor $interval (lo hi) ))lo hi)

@@ -8,9 +8,11 @@ fpprec:16;
 16;
 
 /* apropos function added 7 april 2002 
-   changed to accept only a string as an argument 06/2009
 */
 apropos("tr_optimize_max_loop");
+[tr_optimize_max_loop]$
+
+apropos(tr_optimize_max_loop);
 [tr_optimize_max_loop]$
 
 /* test introduced 7 april 2002. bug fix incorporated 9 june 2002 */

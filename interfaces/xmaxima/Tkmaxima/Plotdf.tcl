@@ -1,11 +1,11 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Plotdf.tcl,v 1.23 2011-03-20 16:33:16 villate Exp $
-#
-###### Plotdf.tcl ######
-#######################################################################
-#######  Copyright William F. Schelter.  All rights reserved.  ########
-#######################################################################
+############################################################
+# Plotdf.tcl                                               #
+# Copyright (C) 1998 William F. Schelter                   #
+# For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2021-04-02 14:39:08 villate"            #
+############################################################
 
 global plotdfOptions
 set plotdfOptions {
@@ -17,8 +17,8 @@ set plotdfOptions {
     {curves "" "Color for the orthogonal curves"}
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
-    {width 560 "Width of canvas in pixels"}
-    {height 560 "Height of canvas in pixels" }
+    {width 700 "Width of canvas in pixels"}
+    {height 500 "Height of canvas in pixels" }
     {scrollregion {} "Area to show if canvas is larger" }
     {xcenter 0.0 {(xcenter,ycenter) is the origin of the window}}
     {ycenter 0.0 "see xcenter"}
@@ -29,19 +29,17 @@ set plotdfOptions {
     {tstep "" "t step size"}
     {direction "both" "May be both, forward or backward" }
     {versus_t 0 "Plot in a separate window x and y versus t, after each trajectory" }
-    {windowname ".dfplot" "window name"}
+    {windowname ".plotdf" "window name"}
     {windowtitle "Plotdf" "window title"}
     {parameters "" "List of parameters and values eg k=3,l=7+k"}
     {linecolors { green black  brown gray black} "colors for functions plots"}
     {sliders "" "List of parameters ranges k=3:5,u"}
     {trajectory_at "" "Place to calculate trajectory"}
-    {linewidth "2.0" "Width of integral lines" }
+    {linewidth "1.5" "Width of integral lines" }
     {nolines 0 "If not 0, plot points and nolines"}
-    {bargraph 0 "If not 0 this is the width of the bars on a bar graph" }
     {plotpoints 0 "if not 0 plot the points at pointsize" }
     {pointsize 2 "radius in pixels of points" }
     {autoscale "x y" "Set {x,y}center and {x,y}range depending on data and function. "}
-    {zoomfactor "1.6 1.6" "Factor to zoom the x and y axis when zooming.  Zoom out will be reciprocal" }
     {errorbar 0 "If not 0 width in pixels of errorbar.  Two y values supplied for each x: {y1low y1high y2low y2high  .. }"}
     {data "" "List of data sets to be plotted.  Has form { {xversusy {x1 x2 ... xn} {y1 .. yn ... ym}} .. {againstIndex {y1 y2 .. yn}}  .. }"}
     {labelposition "10 15" "Position for the curve labels nw corner"}
@@ -56,22 +54,19 @@ set plotdfOptions {
 
 proc makeFrameDf { win } {
     set w [makeFrame $win df]
-    makeLocal $win c dydx
+    if { "$w" == "." } { set w "" }
+    makeLocal $win c dydx buttonFont type
 
     set top $win
-    # puts "w=$w,win=$win"
     catch { set top [winfo parent $win]}
     catch {
-
-	wm title $top [oget $win windowtitle]
+	wm title $top {Xmaxima: plotdf}
 	wm iconname $top "plotdf"
-	#    wm geometry $top 750x700-0+20
     }
-    set wb $w.menubar
-    makeLocal $win buttonFont
-    button $wb.versust -image ::img::plot -text [mc "Time Plots"] \
-        -command "plotVersusT $w" -relief flat -width 30 -height 30
-    pack $wb.versust -side left
+    set mb $w.menubar
+    ttk::button $mb.versust -text [mc "Time Plot"] -command "plotVersusT $win"
+    ttk::button $mb.replot -text [mc "Replot"] -command "replot$type $win"
+    pack $mb.replot $mb.versust -side left
     setForIntegrate $w
     return $win
 }
@@ -89,39 +84,6 @@ proc swapChoose {win msg winchoose } {
 	oset $win dydx " "
 	$winchoose.dydt.lab config -text "dy/dx:"
     }
-}
-
-
-proc doHelpdf { win } {
-    global Parser
-    doHelp $win [join [list \
-			 [mc  {
-SOLVER/PLOTTER FOR SYSTEMS OF DIFFERENTIAL EQUATIONS
-
-To quit this help click anywhere on this text.
-
-Clicking at a point computes the trajectory (x(t),y(t)) starting at that \
-point, and satisfying the differential equations		
-      dx/dt = dxdt       dy/dt = dydt
-
-By clicking on Zoom, the mouse will allow you to zoom in on a region \
-of the plot. Each click near a point magnifies the plot, keeping the center \
-at the point you clicked. Depressing the SHIFT key while clicking \
-zooms in the opposite direction. To resume computing trajectories click \
-on Integrate.
-
-Clicking on Config will open a menu where several settings can be changed, \
-such as the differential equations being solved, the initial point for the \
-trajectory to be computed, the direction of integration for that trajectory, \
-the time step for each integration interval and the number of integration \
-steps (nsteps). Replot is used to update the plot with the \
-changes made in the Config menu.
-
-Holding the right mouse button down while moving the mouse will drag \
-(translate) the plot sideways or up and down.
-
-The plot can be saved as a postscript file, by clicking on Save.
-} ] $Parser(help)]]
 }
 
 proc setForIntegrate { win} {
@@ -241,9 +203,11 @@ proc doIntegrate { win x0 y0 } {
     if { $versus_t } { plotVersusT $win}
 }
 
-
-proc plotVersusT {win } {
+proc plotVersusT { win } {
     linkLocal $win didLast dydt dxdt parameters xcenter xradius ycenter yradius
+    if { $didLast == {} } { return }
+    set w [winfo parent $win]
+    if { "$w" == "." } { set w "" }
     set nwin .versust.plot2d
     if { "$parameters" != ""  } {
 	set pars ", $parameters"
@@ -450,24 +414,24 @@ proc drawDF { win tinitial } {
     }
     # Write down the axes labels
     $c del axislabel
+    set width [oget $win width]
+    set height [oget $win height]
     if {$nobox != 0  && $xmin*$xmax < 0  && ($axes == {y} || $axes == {xy})} {
-	set xbound [expr { [$rtosx 0] - 30}]
+	set xbound [expr { [$rtosx 0] - 0.08*$width}]
     } else {
-	set xbound [expr {$x1 - 30}]
+	set xbound [expr {$x1-0.08*$width}]
     }
-    $c create text $xbound [expr {$y1 - 6}] -anchor sw \
+    $c create text $xbound [expr {($y1+$y2)/2.0}] -anchor center -angle 90 \
        -text [oget $win yaxislabel] -font {helvetica 16 normal} -tags axislabel
     if {$nobox != 0  && $ymin*$ymax < 0  && ($axes == {x} || $axes == {xy})} {
-	$c create text [expr {$x2 - 5}] [expr { [$rtosy 0] + 15}] \
-	    -anchor ne -text [oget $win xaxislabel] \
-	    -font {helvetica 16 normal} \
-	    -tags axislabel
+	$c create text [expr {$x2-0.01*$width}] \
+            [expr { [$rtosy 0]+0.02*$height}] -anchor ne -tags axislabel \
+            -text [oget $win xaxislabel] -font {helvetica 16 normal}
     } else {
-	$c create text [expr {($x1 + $x2)/2}] [expr {$y2 + 35}] \
+	$c create text [expr {($x1 + $x2)/2}] [expr {$y2 + 0.08*$height}] \
 	    -anchor center -text [oget $win xaxislabel] \
 	    -font {helvetica 16 normal} -tags axislabel
     }
-
 }
 
 proc parseOdeArg {  s } {
@@ -487,8 +451,6 @@ proc parseOdeArg {  s } {
     return $ans
 }
 
-
-
 proc plotdf { args } {
     global plotdfOptions   printOption printOptions plot2dOptions
     # puts "args=$args"
@@ -501,6 +463,7 @@ proc plotdf { args } {
     }
     global [oarray $win]
     getOptions $plotdfOptions $args -usearray [oarray $win]
+    oset $win didLast {}
 
     makeLocal $win dydx
 
@@ -528,7 +491,8 @@ proc replotdf { win } {
 	
     }
     makeLocal $win c dxdt dydt tinitial nsteps xfun trajectory_at parameters number_of_arrows
-    setUpTransforms $win 0.8
+    set_xy_region $win 0.8
+    set_xy_transforms $win
     setXffYff $dxdt $dydt $parameters
     $c delete all
     setForIntegrate $win

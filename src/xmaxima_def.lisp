@@ -248,12 +248,41 @@
       (with-output-to-string (st)            
         (let ((legend (getf options :legend))
               (colors (getf options :color))
-              (styles (getf options :style)) (i 0) style plot-name)
+              (styles (getf options :style)) (i 0) j style plot-name)
           (unless (listp legend) (setq legend (list legend)))
           (unless (listp colors) (setq colors (list colors)))
           (unless (listp styles) (setq styles (list styles)))
           (loop for v in (cdr fun) for points-list in points-lists do
                (when points-list
+                 ;; case "contour" with several plots in one list
+                 (when ($listp (car points-list))
+                   (setq j 0)
+                   (dolist (level (cdar points-list))
+                     (if styles
+                         (setq style (nth (mod i (length styles)) styles))
+                         (setq style nil))
+                     (when ($listp style) (setq style (cdr style)))
+                     (incf i)
+                     (incf j)
+                     (format st " {label ~s} " (ensure-string level))
+                     (format st (xmaxima-curve-style style colors i))
+                     (format st "~%{xversusy~%")
+                     (let ((lis (cdr (nth j points-list))))
+                       (loop while lis do
+                            (loop while (and lis (not (eq (car lis) 'moveto)))
+                               collecting (car lis) into xx
+                               collecting (cadr lis) into yy
+                               do (setq lis (cddr lis))
+                               finally
+                               ;; only output if at least two points for line
+                                 (when (cdr xx)
+                                   (tcl-output-list st xx)
+                                   (tcl-output-list st yy)))
+                          ;; remove the moveto
+                            (setq lis (cddr lis))))
+                     (format st "}"))
+                   (return))
+                 ;; other cases with only one plot per list
                  (if styles
                      (setq style (nth (mod i (length styles)) styles))
                      (setq style nil))

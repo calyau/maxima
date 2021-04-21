@@ -92,7 +92,7 @@ this installer (and uninstaller) understands the command line switch
 
 To select a installation directory for a unattended installation, use
 "/D=directory", e.g. to install to C:\maxima the command would be:
-maxima-clisp-sbcl-VERSION-win64.exe /S /D=C:\maxima
+maxima-VERSION-win64.exe /S /D=C:\maxima
 This parameter must be the last one.
 
 The installer supports components, you can deselect (by default a full

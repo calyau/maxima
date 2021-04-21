@@ -1,7 +1,11 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Menu.tcl,v 1.37 2011-03-22 01:23:04 villate Exp $
-#
+############################################################
+# Menu.tcl                                                 #
+# Copyright (C) 1998 William F. Schelter                   #
+# For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Modified by Jaime E. Villate                         #
+#     Time-stamp: "2021-04-04 12:05:13 villate"            #
+############################################################
 
 proc zoomConsole {f} {
     global maxima_default maxima_priv
@@ -57,13 +61,11 @@ proc vMAXAddBrowserMenu {win} {
         -command "destroy $win"
     $bm.options add command -label [mc {Fonts}] -underline 0 \
         -command {fontDialog .fontdialog}
-
 }
 
 proc vMAXAddSystemMenu {fr text} {
     global maxima_priv maxima_default
     global tcl_platform env
-
     set win $fr.textcommands
 
     # Build a menubar
@@ -74,7 +76,6 @@ proc vMAXAddSystemMenu {fr text} {
     # Add a File menu
     set m [menu .menu.file -tearoff 0]
     .menu add cascade -label [mc "File"] -menu $m -underline 0
-
     $m add command -underline 0 \
 	-accel {Alt+b} \
 	-label [set label [M [mc "Batch File"]]] \
@@ -86,7 +87,6 @@ proc vMAXAddSystemMenu {fr text} {
 	    }
 	}]]
     bind $text <Alt-Key-b> $command
-
     $m add command -underline 11 \
 	-accel {Alt+o} \
 	-label [set label [M [mc "Batch File Silently"]]] \
@@ -135,8 +135,6 @@ proc vMAXAddSystemMenu {fr text} {
 	    }
 	}]]
     bind $text <Control-Key-a> $command
-
-
     $m add sep
     $m add command -underline 0 \
 	-label [mc "Interrupt"] \
@@ -155,10 +153,9 @@ proc vMAXAddSystemMenu {fr text} {
 	-label [mc "Exit"] \
 	-command [list tkmaxima exit $text]
 
-    # Add a Edit menubutton
+    # Add an Edit menubutton
     set m [menu .menu.edit -tearoff 0]
     .menu add cascade -label [mc "Edit"] -menu $m -underline 0
-
     $m add command -underline 2 \
 	-label [mc "Cut"] \
 	-accel {Ctrl+x} \
@@ -201,7 +198,6 @@ proc vMAXAddSystemMenu {fr text} {
     # Add a Options menubutton
     set m [menu .menu.options -tearoff 0]
     .menu add cascade -label [mc "Options"] -menu $m -underline 0
-
     $m add separator
     set pm [menu $m.plot]
     $m add cascade -label [mc "Plot Windows"] -menu $pm
@@ -210,7 +206,6 @@ proc vMAXAddSystemMenu {fr text} {
 	    -variable maxima_default(plotwindow) \
 	    -value $elt -command [list SetPlotFormat $text ]
     }
-
     # $m add separator
     # $m add command -underline 0 \
     #     -label [mc "Preferences"] \
@@ -224,7 +219,6 @@ proc vMAXAddSystemMenu {fr text} {
     # Add a Maxima menubutton
     set m [menu .menu.maxima -tearoff 0]
     .menu add cascade -label "Maxima" -menu $m -underline 0
-
     set km [menu $m.kill]
     $m add cascade -label [mc "Clear Memory"] -menu $km
     $km add command -label [mc "Kill All"] \
@@ -236,7 +230,6 @@ proc vMAXAddSystemMenu {fr text} {
 	$km add command -label [mc [string totit $elt]] \
 	    -command [list sendMaxima $text "kill($elt)\$\n"]
     }
-
     $m add separator  
     set dir $maxima_priv(pTestsDir)  
     if {[file isdir $dir]} {
@@ -252,7 +245,6 @@ proc vMAXAddSystemMenu {fr text} {
 	-state $state \
 	-label [mc "About Maxima"] \
 	-command [list sendMaxima $text "build_info();\n"]
-
 
     # Add a Help menubutton
     set m [menu .menu.help -tearoff 0]
@@ -270,7 +262,6 @@ proc vMAXAddSystemMenu {fr text} {
     } else {
 	set xstate disabled
     }
-    
     # Maxima manual
     set file $maxima_priv(pReferenceToc)
     if {[file isfile $file]} {
@@ -316,14 +307,13 @@ proc vMAXAddSystemMenu {fr text} {
 	    lappend browse cmd.exe /c start
 	}
     } else {
-	
 	set selectedbrowser xdg-open
-
 	foreach b { xdg-open htmlview firefox chromium-browser google-chrome konqueror epiphany galeon amaya opera } {
 	    if { ! [catch {exec which $b} ] } {
 		set selectedbrowser $b
-		break } }
-
+		break
+            }
+        }
 	lappend browse $selectedbrowser
     }
     $m add separator
@@ -340,10 +330,8 @@ proc vMAXAddSystemMenu {fr text} {
 	-command [list eval $browse https://sourceforge.net/projects/maxima/ &]
     $m add command -underline 0 -label [mc "Bug Reports"] \
 	-command [list eval $browse https://sourceforge.net/p/maxima/bugs/ &]
-
     rename vMAXAddSystemMenu ""
     # vMAXSystemMenuHandlers $text $event
-
     # Backwards compatibility
     return $win
 }
@@ -359,13 +347,10 @@ proc vMAXAddSystemBar {} {
 }
 
 proc SetPlotFormat { text } {
-
     global maxima_default
-    
     if { $maxima_default(plotwindow) == "embedded" } {
 	sendMaxima $text ":lisp-quiet (prog2 (\$set_plot_option '((mlist simp) \$plot_format \$xmaxima)) nil) \n"
     }
-    
 }
 
 

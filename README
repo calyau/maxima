@@ -25,4 +25,4 @@ A simple usage example:
 (%o3)	(sin(a*x)-a*x*cos(a*x))/a^2
 
 For more information on Maxima, see the Maxima web site,
-<http://maxima.sourceforge.net>.
+<https://maxima.sourceforge.io>.

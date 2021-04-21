@@ -1,7 +1,10 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Gui.tcl,v 1.8 2011-03-21 09:17:42 villate Exp $
-#
+############################################################
+# Gui.tcl                                                  #
+# Copyright (C) 1998 William F. Schelter                   #
+# For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Time-stamp: "2021-04-04 20:05:13 villate"            #
+############################################################
 
 object_class MAXGui {
 
@@ -117,6 +120,16 @@ object_class MAXGui {
  	# Adds the menu bar to the Maxima console
 	vMAXAddSystemMenu $fr $fr.text
 
+        # Reads the history from previous runs
+        if {[file isfile ~/.xmaxima_history]} {
+            if {[catch {uplevel "#0" \
+                            [list source "$maxima_priv(home)/.xmaxima_history"] } err]} {
+                tide_failure [M [mc "Error sourcing %s\n%s"] \
+                                  [file native ~/.xmaximarc] \
+                                  $err]
+            }
+        }
+        
 	wm deiconify .
  	return $w
     }

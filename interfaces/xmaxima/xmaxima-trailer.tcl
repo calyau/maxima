@@ -1,14 +1,7 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: xmaxima-trailer.tcl,v 1.13 2011-03-09 11:31:23 villate Exp $
+#     xmaxima-trailer.tcl
+#     Time-stamp: "2021-03-28 11:05:43 villate"
 #
 # Attach this at the bottom of the xmaxima code to start up the interface.
-
-if {[catch {package require Img}]} {
-    set maxima_priv(imgregexp) {[.](gif)[^/]*$}
-} else {
-    set maxima_priv(imgregexp) {[.](gif|png|jpe?g)[^/]*$}
-}
 
 setMaxDir
 cMAXINITBeforeIni
