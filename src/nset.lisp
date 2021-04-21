@@ -121,7 +121,7 @@
 (defun simp-set (a yy z)
   (declare (ignore yy))
   (setq a (mapcar #'(lambda (x) (simplifya x z)) (cdr a)))
-  (setq a (sorted-remove-duplicates (sort a '$orderlessp)))
+  (setq a (sorted-remove-duplicates (stable-sort a '$orderlessp)));FIXME consider a total order function with #'sort
   `(($set simp) ,@a))
 
 ;; Return true iff a is an empty set or list

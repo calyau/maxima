@@ -520,6 +520,21 @@
           (unless (listp styles) (setq styles (list styles)))
           (loop for v in (cdr fun) for points-list in points-lists do
                (when points-list
+                 ;; case "contour" with several plots in one list
+                 (when ($listp (car points-list))
+                   (dolist (level (cdar points-list))
+                     (if styles
+                         (setq style (nth (mod i (length styles)) styles))
+                         (setq style nil))
+                     (when ($listp style) (setq style (cdr style)))
+                     (incf i)
+                     (setq plot-name (ensure-string level))
+                     (when (> i 1) (format st ","))
+                     (format st " '-'")
+                     (format st " title ~s ~a" plot-name gstrings)
+                     (format st (gnuplot-curve-style style colors types i)))
+                   (return))
+                 ;; other cases with only one plot per list
                  (if styles
                      (setq style (nth (mod i (length styles)) styles))
                      (setq style nil))
@@ -556,11 +571,32 @@
                  (format st (gnuplot-curve-style style colors types i)))))
         ;; Parses points data
         (format st "~%")
-        (loop for points-list in points-lists do
-             (when points-list
-               (let (in-discontinuity points)
-                 (loop for (v w) on points-list by #'cddr
-                    do
+        (let (in-discontinuity points)
+          (loop for points-list in points-lists do
+               (when points-list
+                 ;; case "contour" with several plots in one list
+                 (when ($listp (car points-list))
+                   (dolist (level (cdr points-list))
+                     (loop for (v w) on (cdr level) by #'cddr do
+                          (cond ((eq v 'moveto)
+                                 ;; A blank line means a discontinuity
+                                 (if (null in-discontinuity)
+                                     (progn
+                                       (format st "~%")
+                                       (setq in-discontinuity t))))
+                                (t
+                                 (format st "~g ~g ~%" v w)
+                                 (setq points t)
+                                 (setq in-discontinuity nil))))
+                     (if (and (null points)
+                              (first (getf options :x))
+                              (first (getf options :y)))
+                         (format st "~g ~g ~%" (first (getf options :x))
+                                 (first (getf options :y))))
+                     (format st "e~%"))
+                   (return))
+                 ;; other cases with only one plot per list
+                 (loop for (v w) on points-list by #'cddr do
                       (cond ((eq v 'moveto)
                              ;; A blank line means a discontinuity
                              (if (null in-discontinuity)

@@ -3127,8 +3127,8 @@ ignoring dummy variables and array indices."
 ;; expressions in terms of new variable wsym.  return cons pair of new
 ;; version of exp and the log of the new variable wsym.
 (defun mrv-rewrite (exp omega var wsym)
-  (setq omega (sort omega (lambda (x y) (> (length (mrv x var))
-					   (length (mrv y var))))))
+  (setq omega (stable-sort omega (lambda (x y) (> (length (mrv x var))
+					   (length (mrv y var))))));FIXME consider a total order function with #'sort
   (let* ((g (car (last omega)))
 	 (logg (logred g))
 	 (sig (equal (mrv-sign logg var) 1))
