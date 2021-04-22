@@ -2367,6 +2367,8 @@
 ;;;
 ;;; t^u
 ;;;   -> gamma(u+1)*p^(-u-1)
+;;;
+;;; Re(u) > -1
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun lt-arbpow (expr pow)
@@ -2377,7 +2379,7 @@
 
 ;; Check if conditions for f1p137 hold
 (defun f1p137test (pow)
-  (cond ((eq ($asksign (add pow 1)) '$pos)
+  (cond ((eq ($asksign ($realpart (add pow 1))) '$pos)
          (f1p137 pow))
         (t
          (setq *hyp-return-noun-flag* 'fail-in-arbpow))))
