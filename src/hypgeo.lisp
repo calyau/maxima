@@ -2359,13 +2359,13 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Algorithm 2.1: Laplace transform of c*t^v*%e(-p*t)
+;;; Algorithm 2.1: Laplace transform of c*t^u
 ;;;
 ;;; Table of Integral Transforms
 ;;;
 ;;; p. 137, formula 1:
 ;;;
-;;; t^u*exp(-p*t)
+;;; t^u
 ;;;   -> gamma(u+1)*p^(-u-1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
