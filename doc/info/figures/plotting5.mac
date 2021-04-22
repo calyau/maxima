@@ -1,7 +1,4 @@
-load("docdraw.mac");
-
-doc_mandelbrot (
-	  "figures/plotting5",
-	  [iterations, 30], [x, -2, 1], [y, -1.2, 1.2],
-          [grid,400,400]
-);
+mandelbrot ([iterations,30], [x,-2,1], [y,-1.2,1.2], [grid,400,400],
+  [pdf_file,"./plotting5.pdf"]);
+mandelbrot ([iterations,30], [x,-2,1], [y,-1.2,1.2], [grid,400,400],
+  [png_file,"./plotting5.png"]);
