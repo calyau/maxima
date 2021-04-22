@@ -1,7 +1,4 @@
-load("docdraw.mac");
-
-kill(r)$
-doc_plot3d("figures/plotting23",
-   r^.33*cos(th/3), [r,0,1], [th,0,6*%pi], [box, false],
-   [grid, 12, 80], [transform_xy, polar_to_xy], [legend, false]
-)$
+plot3d (r^.33*cos(th/3), [r,0,1], [th,0,6*%pi], nobox, nolegend,
+   [grid, 12, 80], [transform_xy, polar_to_xy], [pdf_file,"./plotting23.pdf"]);
+plot3d (r^.33*cos(th/3), [r,0,1], [th,0,6*%pi], nobox, nolegend,
+   [grid, 12, 80], [transform_xy, polar_to_xy], [png_file,"./plotting23.png"]);

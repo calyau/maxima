@@ -11,7 +11,7 @@ version, on Debian/Ubuntu Linux using:
 update-alternatives --config x86_64-w64-mingw32-g++
 update-alternatives --config x86_64-w64-mingw32-gcc
 
-You will need CMake >= 3.7, if that is not included in your distribution,
+You will need CMake >= 3.10, if that is not included in your distribution,
 download a recent CMake from https://cmake.org/files/
 
 Then you can extract the Maxima sourcecode or clone the git repository
@@ -19,7 +19,7 @@ and start the crosscompiling-process:
 
 mkdir crosscompile-windows/build
 cd crosscompile-windows/build # change to the build directory
-cmake ..  # use the right CMake executable (CMake >= 3.7)
+cmake ..  # use the right CMake executable (CMake >= 3.10)
 make
 make package
 
@@ -52,8 +52,8 @@ One can also include ABCL - a Java based Lisp compiler - with the option
 Of course you will need a Java installation.
 
 If you want to change the default Lisp, which will be used, you can
-use the option "-DWITH_DEFAULT_LISP=sbcl" in the cmake call (otherwise
-Clisp would be the default).
+use the option "-DWITH_DEFAULT_LISP=clisp" (or abcl) in the cmake call
+(otherwise SBCL would be the default).
 
 
 In case a new release of a software is released (and no new patches are needed),
@@ -90,9 +90,9 @@ install Maxima on many computers in a school, university or company),
 this installer (and uninstaller) understands the command line switch
 "/S" (for 'silent install').
 
-To select a installation directory for a unattended installation, use
+To select an installation directory for a unattended installation, use
 "/D=directory", e.g. to install to C:\maxima the command would be:
-maxima-clisp-sbcl-VERSION-win64.exe /S /D=C:\maxima
+maxima-VERSION-win64.exe /S /D=C:\maxima
 This parameter must be the last one.
 
 The installer supports components, you can deselect (by default a full

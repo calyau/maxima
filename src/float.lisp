@@ -689,7 +689,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 
 (defun extreme-float-values (x)
   ;; BLECHH, I HATE ENUMERATING CASES. IS THERE A BETTER WAY ??
-  (case (type-of x)
+  (typecase x ;gcl returns an atomic list type with type-of
     (short-float (values most-negative-short-float most-positive-short-float))
     (single-float (values most-negative-single-float most-positive-single-float))
     (double-float (values most-negative-double-float most-positive-double-float))

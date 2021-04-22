@@ -1051,7 +1051,7 @@
   (setq varlist (nconc (sortgreat vlist) varlist)))
 
 (defun sortgreat (l)
-  (and l (nreverse (sort l 'great))))
+  (and l (nreverse (stable-sort l 'great))));FIXME consider a total order function with #'sort
 
 (defun fnewvar (l &aux (*fnewvarsw t))
   (newvar l))

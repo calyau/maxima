@@ -1,5 +1,2 @@
-load("docdraw.mac");
-
-doc_plot2d("figures/plotting13",
-	[discrete, makelist ( random(10), 200)]
-)$
+plot2d ([discrete,makelist(random(10),200)], [pdf_file,"./plotting13.pdf"]);
+plot2d ([discrete,makelist(random(10),200)], [png_file,"./plotting13.png"]);

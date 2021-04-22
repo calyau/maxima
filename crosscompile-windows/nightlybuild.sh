@@ -35,14 +35,14 @@ buildprocess () {
     then
         $CMAKE -DBUILD_CURRENT=YES -DWITH_ABCL=YES -DBUILD_64BIT=YES ..
     else
-        $CMAKE -DBUILD_CURRENT=YES -DWITH_ABCL=YES ..
+        $CMAKE -DBUILD_CURRENT=YES -DWITH_ABCL=YES -DBUILD_64BIT=NO ..
     fi
     make
     make package
     echo
     echo
     buildinformation
-    cp maxima-*-current-*.exe ~
+    cp maxima-current-*.exe ~
 }
 
 # sleep until a given time
@@ -54,7 +54,7 @@ sleepuntil () {
 LANG=C
 export LANG
 
-CMAKE=/opt/cmake-3.12.2-Linux-x86_64/bin/cmake
+CMAKE=/usr/bin/cmake
 
 test -x $CMAKE || exit
 
@@ -68,7 +68,7 @@ while true; do
     buildprocess "win32" 2>&1 | tee ~/buildlog-win32
     buildprocess "win64" 2>&1 | tee ~/buildlog-win64
 
-    for i in ~/maxima-*-current-win32.exe ~/maxima-*-current-win64.exe ~/buildlog-win32 ~/buildlog-win64 ; do
+    for i in ~/maxima-current-win32.exe ~/maxima-current-win64.exe ~/buildlog-win32 ~/buildlog-win64 ; do
         test -r $i && scp -i ~/.ssh/maximakopierkey $i maxima@ns3.dautermann.at:/var/www/wolfgang.dautermann.at/maxima/nightlybuild/
     done
     sleepuntil 23:00

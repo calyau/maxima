@@ -1,5 +1,2 @@
-load("docdraw.mac");
-
-doc_plot("figures/plotting6",
-	sin(x), [x, -%pi, %pi]
-)$
+plot2d(sin(x), [x, -%pi, %pi], [pdf_file, "./plotting6.pdf"]);
+plot2d(sin(x), [x, -%pi, %pi], [png_file, "./plotting6.png"]);

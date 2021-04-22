@@ -1,18 +1,10 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: Getdata1.tcl,v 1.7 2004-10-13 12:08:57 vvzhy Exp $
-#
-###### getdata1.tcl ######
 ############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
+# Getdata1.tcl                                             #
+# Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Time-stamp: "2021-04-04 10:23:33 villate"            #
 ############################################################
-
-
-
-
-
-#
 #-----------------------------------------------------------------
 #
 # readAllData --  read data from CHANNEL.
@@ -44,8 +36,6 @@
 #
 #----------------------------------------------------------------
 #
-
-
 proc readAllData { sock args } {
     global readAllData [oarray $sock] maxima_priv
 
@@ -98,9 +88,6 @@ proc readAllData { sock args } {
 	return ""
     }
 }
-
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -161,7 +148,6 @@ proc readMimeHeader { sock } {
 	append result "$line\n"
     }
 }
-
 
 proc readAllData1 { sock } {
     #puts "readAllData1 $sock" ; flush stdout
@@ -225,10 +211,6 @@ proc readAllData1 { sock } {
     lappend [oloc $sock after] \
 	[after $timeout "oset $sock done -1"]
 }
-
-
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -268,7 +250,6 @@ proc wrFinishRead { sock } {
     #puts "wrFinishRead, tovar=$tovar,tochannel=$tochannel,res=$res,bytesread=$bytesread"	
     clearLocal $sock
     oset $sock done $res
-
     return $res
 }
 
@@ -304,13 +285,10 @@ proc testit { addr usecommand args } {
 	catch { close $sock }
     }
 }
-
-
-
 #
 #-----------------------------------------------------------------
 #
-# tryGetCache --  look up PATH (eg http://www.ma.utexas.edu:80/...)
+# tryGetCache --  look up PATH (eg http://maxima.sourceforge.net:80/...)
 # in the cache, and if you find success and a matching ETAG,
 # then return the data in the file
 #
@@ -348,7 +326,6 @@ proc tryGetCache { path alist } {
     }
 }
 
-
 proc saveInCache { path etag  result} {
     global ws_Cache maxima_priv
     set cachedir $maxima_priv(cachedir)
@@ -378,13 +355,11 @@ proc cleanCache { } {
     }
     catch { unset ws_Cache }
 }
+
 proc cacheName { name } {
     global maxima_priv
     return [ file join $maxima_priv(cachedir) $name]
 }
-
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -430,6 +405,3 @@ proc readAndSyncCache { } {
 	close $fi
     }
 }
-
-
-## endsource getdata1.tcl

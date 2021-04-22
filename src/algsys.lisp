@@ -128,7 +128,7 @@
     (mapl (lambda (q)
             (unless (subsetl (cdr q) (car q))
               (push (car q) solnl)))
-	  (sort tempsolnl #'(lambda (a b) (> (length a) (length b)))))
+	  (stable-sort tempsolnl #'(lambda (a b) (> (length a) (length b)))));FIXME consider a total order function with #'sort
     solnl))
 
 ;;; (SUBSETL L1 S2)

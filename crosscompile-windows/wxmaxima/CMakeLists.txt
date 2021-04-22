@@ -9,9 +9,9 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(WXMAXIMAVERSION "21.02.0")
+set(WXMAXIMAVERSION "21.04.0")
 
-set(WXMAXIMA_MD5 "be01eeb6714f851f6d7a1d1d6440e7c0")
+set(WXMAXIMA_MD5 "15eaaceeda9d44fd07b3fe56d8a8bc19")
 
 set(WXMAXIMA_URL "https://github.com/wxmaxima-developers/wxmaxima/archive/Version-${WXMAXIMAVERSION}.tar.gz")
 
@@ -29,6 +29,7 @@ if(USE_WXMAXIMA_GIT)
 
     externalproject_add(wxmaxima-git
         GIT_REPOSITORY ${CMAKE_SOURCE_DIR}/downloads/wxmaxima-git
+        GIT_TAG main
         DEPENDS wxwidgets
         # search wx-config here - do not use the host wx-config
         # had to set CMAKE_LIBRARY_PATH=/usr/${HOST}/lib - libraries for mingw are installed there, but CMake (>3.8)

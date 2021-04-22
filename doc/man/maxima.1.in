@@ -355,7 +355,7 @@ Version 10.
 January 1983.
 .LP
 Newer references: 
-.I http://maxima.sourceforge.net
+.I https://maxima.sourceforge.io
 .SH BUGS
 Maxima is a complex system. It includes both known and unknown bugs.
 Use at your own risk. The Maxima bug database is available at
@@ -385,7 +385,7 @@ UCSF School of Pharmacy, San Francisco, CA 94143
 (rodgers@maxwell.mmwb.ucsf.edu) in 1989. It was extensively revised by
 James Amundson in 2002.
 
-Maxima is now developed and maintained by the Maxima project at <http://maxima.sourceforge.net>.
+Maxima is now developed and maintained by the Maxima project at <https://maxima.sourceforge.io>.
 .\"
 
 .SH "SEE ALSO"

@@ -1,5 +1,10 @@
-#     Sen-some.tcl
-#     Time-stamp: "2021-03-28 17:47:57 villate"
+############################################################
+# Send-some.tcl                                            #
+# Copyright (C) 1998 William F. Schelter                   #
+# For distribution under GNU public License.  See COPYING. #
+#                                                          #
+#     Time-stamp: "2021-04-04 12:02:33 villate"            #
+############################################################
 # Usage:
 # catch {close $socket}
 # source send-some.tcl ; openConnection $tohost $port $magic $program
@@ -14,9 +19,6 @@
 # If you specified -debug when starting the server then you can
 #    evaluate tcl commands in the process controlling 'program'
 #   eg:  sendCommand octave "list 1 1"
-
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -42,8 +44,6 @@ proc myVwait { var  } {
     set variable [lindex $tem 0]
     global $variable
     lappend maxima_priv(myVwait) $variable
-
-
     set index ""
     if { [llength $tem ] > 1 } {
 	set index [lindex [split [lindex $tem 1] ")" ] 0]
@@ -68,9 +68,7 @@ proc _myaction { ind name1 name2 op } {
 	
 	global $name1
 	set _waiting 0
-
     }
-
 }
 
 # proc myVwait { x args } {uplevel "#0"  vwait $x }
@@ -116,8 +114,6 @@ proc omDoAbort { win } {
     }
 }
 
-
-
 proc  msleep { n } {
     global Msleeping
     set Msleeping 1
@@ -126,11 +122,13 @@ proc  msleep { n } {
     myVwait Msleeping
     debugsend "..donewaiting Msleeping"
 }
+
 proc message { msg } {
     global maxima_priv _debugSend
     if { $_debugSend } { puts "setting message=<$msg>" }
     catch { set maxima_priv(load_rate) $msg }
 }
+
 proc sendOne { program  com }  {
     global  pdata maxima_priv
     incr pdata($program,currentExpr)
@@ -140,14 +138,11 @@ proc sendOne { program  com }  {
         error [mc "connection closed"]
     }
     # puts "sending $program ([lindex [fconfigure $socket -peername] 1])"
-
     message [concat [mc "sending"] "$program" [mc "on"] "[lindex [fconfigure $socket -peername] 1]"]
     debugsend "sending.. {$com<$pdata($program,currentExpr)\|fayve>}"
     set msg "$com<$pdata($program,currentExpr)\|fayve>\n"
     proxyPuts $socket $msg
 }
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -168,7 +163,6 @@ proc sendOneDoCommand {program command callback } {
     global pdata
 
     if { ![assureProgram $program 5000 2] } { return "cant connect"}
-
     set ii [expr {$pdata($program,currentExpr) + 1}]
     catch { unset pdata($program,results,$ii)}
     trace variable pdata($program,results,$ii) w \
@@ -188,7 +182,6 @@ proc invokeAndUntrace { callback name1 name2 op args} {
     trace vdelete [set name1]($name2) w [list invokeAndUntrace $callback]
     lappend callback  [set name1]($name2)
     # puts "callback=$callback" ; flush stdout
-
     if { [catch { eval $callback } errmsg ] } {
 	global errorInfo
 	# report the error in the background
@@ -202,14 +195,11 @@ proc sendOneWait { program com } {
     if { ![assureProgram $program 5000 2] } { return "cant connect"}
     set ii [expr {$pdata($program,currentExpr) + 1}]
     catch { unset pdata($program,results,$ii)}
-
-
     sendOne $program $com
     set i $pdata($program,currentExpr)
     set socket $pdata($program,socket)
     if { $ii != $i } { error "expected $ii got $i as expression number " }
     debugsend "waiting for pdata($program,results,$i)"
-
     myVwait pdata($program,results,$i)
     debugsend "..done waiting for pdata($program,results,$i)"
     return $pdata($program,results,$i)
@@ -222,7 +212,6 @@ proc closeConnection { program } {
 	set pdata(input,$sock) ""
 	cleanPdata $program
 	close $sock
-
     }
 }
 
@@ -243,13 +232,11 @@ proc openConnection { tohost port magic program } {
     debugsend "openConnection { $tohost $port $magic $program }"
 
     while { [incr retries -1] > 0 \
-	    && [catch { set socket [openSocketAndSend $tohost $port $msg 1] }] }   {
+                && [catch {set socket [openSocketAndSend $tohost $port $msg 1]}] } {
 	debugsend retries=$retries
 	msleep 400
     }
-
     if { $retries == 0 } { return 0}	
-
     message [concat [mc "connected to"] "nmtp//$tohost:$port/$program"]
     set pdata($program,socket) $socket
     set pdata($program,currentExpr) 0
@@ -257,7 +244,6 @@ proc openConnection { tohost port magic program } {
     catch { fconfigure $socket -blocking 0 }
     fileevent $socket readable "getResults $program $socket"
     return 1
-
 }
 
 proc sendInterrupt { program } {
@@ -324,7 +310,6 @@ proc cleanPdata { program } {
     }
 }
 
-
 proc currentTextWinWidth { } {
     set width 79
     catch {
@@ -333,10 +318,6 @@ proc currentTextWinWidth { } {
     }
     return $width
 }
-
-
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -423,19 +404,15 @@ proc programName { name } {
     return [lindex [split $name #] 0]
 }
 
-global EOFexpr
-set EOFexpr "|fayve>"
-
 proc getMatch { s inds } {
     return [string range $s [lindex $inds 0] [lindex $inds 1]]
 }
 
 proc testForFayve { input } {
-    global EOFexpr
+    set EOFexpr "|fayve>"
     set ind [string first $EOFexpr $input]
     if { $ind < 0 } { return "" } else {
 	regexp -indices {<([0-9]+)\|fayve>} $input all first
-	
 	set n [getMatch $input $first]
 	return "$all $n"
     }
@@ -459,8 +436,6 @@ proc statServer1  {server {timeout 1000}} {
     }
     return ""
 }
-
-
 #
 #-----------------------------------------------------------------
 #
@@ -483,8 +458,6 @@ proc preeval { program name } {
 	return 1
     }
 }
-
-
 
 proc statServer  {server {timeout 1000}} {
     global statServer1_
@@ -527,7 +500,6 @@ proc isAlive { server {timeout 1000} } {
     return $maxima_priv(isalive)
 }
 
-
 proc debugsend { s } {
     global _debugSend
     if { $_debugSend } {
@@ -536,6 +508,3 @@ proc debugsend { s } {
 	flush stdout
     }
 }
-
-
-## endsource send-some.tcl
