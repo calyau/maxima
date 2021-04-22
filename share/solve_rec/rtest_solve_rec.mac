@@ -3,10 +3,16 @@
   load(solve_rec),
   test_solve_rec([eq]) := block(
     [sol:apply(solve_rec,eq)],
-    ev(radcan(minfactorial(rhs(first(eq))-lhs(first(eq)))), subst(":=", "=", sol))),
+    ev(radcan(minfactorial(rhs(first(eq))-lhs(first(eq)))), subst(":=", "=", sol)),
+    if %% = 0 then 0 else solve_rec_failure ('eq = eq, 'sol = sol)),
   test_solve_rec_rat([eq]) := block(
     [sol:apply(solve_rec_rat,eq)],
-    ev(radcan(minfactorial(rhs(first(eq))-lhs(first(eq)))), subst(":=", "=", sol))),
+    ev(radcan(minfactorial(rhs(first(eq))-lhs(first(eq)))), subst(":=", "=", sol)),
+    if %% = 0 then 0 else solve_rec_failure ('eq = eq, 'sol = sol)),
+  test_solve_rec_makefact([eq]) := block(
+    [sol:apply(solve_rec,eq)],
+    ev(radcan(minfactorial(makefact(rhs(first(eq))-lhs(first(eq))))), subst(":=", "=", sol)),
+    if %% = 0 then 0 else solve_rec_failure ('eq = eq, 'sol = sol)),
   0
 );
 0;
@@ -73,10 +79,18 @@ test_solve_rec((n+3)*s[n+2]-3*(n+2)*s[n+1]+2*(n+1)*s[n],s[n]);
 test_solve_rec((x^6+5*x^5+5*x^4-5*x^3-6*x^2)*z[x+2]+(2*x^4+7*x^3+9*x^2+6*x)*z[x+1]+(x^2+4*x+3)*z[x], z[x]);
 0;
 
-test_solve_rec(n*(n+1)*a[n+2]-2*n*(n+k+1)*a[n+1]+(n+k)*(n+k+1)*a[n], a[n]);
+block ([result],
+    assume (k >= 0),
+    result: test_solve_rec_makefact (n*(n+1)*a[n+2]-2*n*(n+k+1)*a[n+1]+(n+k)*(n+k+1)*a[n], a[n]),
+    forget (k >= 0),
+    result);
 0;
 
-test_solve_rec(a[n+2]-(2*n+1)*a[n+1]+(n^2-u)*a[n], a[n]), hyper_factor_solve=true, assume_pos=true;
+block ([result],
+    assume (sqrt(u) >= 1),
+    result: ev (test_solve_rec_makefact (a[n+2]-(2*n+1)*a[n+1]+(n^2-u)*a[n], a[n]), hyper_factor_solve=true, assume_pos=true),
+    forget (sqrt(u) >= 1),
+    result);
 0;
 
 test_solve_rec((n^2-n-2)*f[n+2]+(-n^3-3*n^2+2*n+8)*f[n+1]+(2*n^3+4*n^2-2*n-4)*f[n], f[n]);
@@ -110,9 +124,24 @@ simplify_product ('product (1 - q^k, k, 1, N));
 simplify_product ('product (-x**2, x, 1, n));
 (-1)^n*(n!)^2;
 
-/* this one triggers Sage bug #31557: "Fix product(-x, x, 1, SR.var('n')) to return (-1)^n*factorial(n)"
+/* Sage bug #31557: "Fix product(-x, x, 1, SR.var('n')) to return (-1)^n*factorial(n)"
  * see: https://trac.sagemath.org/ticket/31557
- *
+ */
+
 simplify_product ('product (-x, x, 1, n));
 (-1)^n*n!;
- */
+
+simplify_product ('product (-q*x, x, 1, n));
+(-q)^n*n!;
+
+simplify_product ('product (-x, x, 0, n));
+0;
+
+simplify_product ('product (-q*x, x, 0, n));
+0;
+
+simplify_product ('product (-x, x, 2, n));
+(-1)^(n - 1)*n!;
+
+simplify_product ('product (-q*x, x, 2, n));
+(-1)^(n - 1)*q^(n - 1)*n!;
