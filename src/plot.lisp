@@ -294,7 +294,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 (defun print-pt1 (f str)
   (if (floatp f)
-    (format str "~g " f)
+    (format str "~,8,,,,,'eg " f)
     (format str "~a " *missing-data-indicator*)))
 
 (defstruct (polygon (:type list)
@@ -2499,12 +2499,12 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
   (cond (($listp (second lis))
          (loop for v in lis
                 do
-                (format *standard-output* "~,10g " (nth i v))))
+                (format *standard-output* "~,8,,,,,'eg " (nth i v))))
         (t
          (setq lis (nthcdr i lis))
          (loop  with v = lis  while v
                  do
-                 (format *standard-output* "~,10g " (car v))
+                 (format *standard-output* "~,8,,,,,'eg " (car v))
                  (setq v (nthcdr skip v)))))
   (format *standard-output* "~% }"))
 (defun tcl-output-list ( st lis )
@@ -2516,7 +2516,7 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                 when (eql 0 (mod n 5))
                 do (terpri st)
                 do
-                (format st "~,10g " v))
+                (format st "~,8,,,,,'eg " v))
          (format st  " }~%"))
         (t (tcl-output-list st (car lis))
            (tcl-output-list st (cdr lis)))))
