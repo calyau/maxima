@@ -1092,13 +1092,22 @@ simplify_product(prod) := block(
     [aa, bb, lcoeff, %m],
     bb : bothcoef(term, %n), aa : bb[1], bb : bb[2],
 
-    /* At this point, we know aa != 0 because otherwise
-     * term is free of %n, and we checked for that already.
-     *
-     * Take care of linear products here.
-     */
-    if freeof(%n, aa) and freeof(%n, bb) then
-      simplify_product_linear_term (%n, lo, hi, aa, bb)
+    /* Take care of linear products. */
+    if freeof(%n, aa) and freeof(%n, bb) then (
+      if aa=1 then (
+        %m : term - %n,
+        (hi+%m)!/(lo+%m-1)!
+      )
+      else if aa=-1 then (
+        %m : term + %n,
+        (%m-lo)!/(%m-hi-1)!
+      )
+      else if product_use_gamma and integerp(aa) then
+        gamma(subst(hi+1, %n, expand(term/aa)))/
+        gamma(subst(lo, %n, expand(term/aa)))*aa^(hi-lo+1)
+      else
+        prod
+    )
     else if part(term, 0)="-" and length(args(term))=1 then
       (-1)^(hi-lo+1)*simplify_product(apply(nounify('product), [-term, %n, lo, hi]))
     /* Give up! */
@@ -1106,93 +1115,6 @@ simplify_product(prod) := block(
       p%*apply(nounify('product), [factor(term), %n, lo, hi])
   )
 )$
-
-product_linear_term (%n, lo, hi, aa, bb) := product (aa*%n + bb, %n, lo, hi);
-
-simplify_product_linear_term (%n, lo, hi, aa, bb) :=
-    /* MAYBE APPLY UNWIND_PROTECT HERE ?? */
-    block ([ctxt: supcontext ()],
-           assume (lo <= %n, %n <= hi, lo <= hi),
-           return_value: simplify_product_linear_term_1 (%n, lo, hi, aa, bb),
-           killcontext (ctxt),
-           return_value);
-
-simplify_product_linear_term_1 (%n, lo, hi, aa, bb) :=
-      /* term == aa*%n + bb
-       * so we have
-       *      product(aa*%n + bb, %n, lo, hi)
-       *   == aa^(hi - lo + 1)*product(%n + bb/aa, %n, lo, hi)
-       */
-  if member (sign(bb/aa), '[pos, zero, pz]) then (
-      /* (Case 1a) For integerp(bb/aa),
-       *      product(aa*%n + bb, %n, lo, hi)
-       *   == aa^(hi - lo + 1)*product(%n + bb/aa, %n, lo, hi)
-       *   == aa^(hi - lo + 1)*product(%n, %n, lo + bb/aa, hi + bb/aa)
-       *   == aa^(hi - lo + 1)*(hi + bb/aa)!/(lo + bb/aa - 1)!
-       * (Case 1b) Otherwise, bb must be nonzero, so
-       *      product(aa*%n + bb, %n, lo, hi)
-       *   == aa^(hi - lo + 1)*product(%n + bb/aa, %n, lo, hi)
-       *   == aa^(hi - lo + 1)*(product(bb/aa + %n, %n, 0, hi) / product(bb/aa + %n, %n, 0, lo - 1))
-       *   == aa^(hi - lo + 1)*(pochhammer(bb/aa, hi + 1) / pochhammer(bb/aa, lo))
-       * Now recall pochhammer(x, n) == gamma(x + n)/gamma(x), so
-       *   == aa^(hi - lo + 1)*(gamma(hi + bb/aa + 1) / gamma(lo + bb/aa))
-       * Apply this last result only if product_use_gamma is enabled.
-       * (Case 1c) Otherwise, product_use_gamma is disabled; return minimally simplified result.
-       */
-      if integerp(bb/aa) then
-        simplify_product_linear_term_case1a (lo, hi, aa, bb)
-      elseif product_use_gamma then
-        simplify_product_linear_term_case1b (lo, hi, aa, bb)
-      else
-        simplify_product_linear_term_case1c (%n, lo, hi, aa, bb)
-  )
-  elseif sign(bb/aa) = 'neg then (
-    /* (Case 2a) For integerp(bb/(- aa)),
-     *   (Case 2a1) if bb/(- aa) >= lo and bb/(- aa) <= hi,
-     *     then product(bb + aa*%n, %n, lo, hi) == 0
-     *   (Case 2a2) Otherwise, bb/(- aa) >= 0 and (bb/(- aa) < lo or bb/(- aa) > hi)
-     *   therefore product(aa*%n + bb, %n, lo, hi)
-     *     == (- aa)^(hi - lo + 1)*product(- %n + bb/(- aa), %n, lo, hi)
-     *     == (- aa)^(hi - lo + 1)*product(bb/(- aa) - %n, %n, lo, hi)
-     *     (Case 2a2a) bb/(- aa) < lo, therefore bb/(- aa) - %n < 0.
-     *     == (- aa)^(hi - lo + 1)*product((- 1)*(%n - bb/(- aa)), %n, lo, hi)
-     *     == aa^(hi - lo + 1)*product(%n - bb/(- aa), %n, lo, hi)
-     *     == aa^(hi - lo + 1)*product(%n, %n, lo - bb/(- aa), hi - bb/(- aa))
-     *     == aa^(hi - lo + 1)*((hi - bb/(- aa))!/(lo - bb/(- aa) - 1)!)
-     *     (Case 2a2b) bb/(- aa) > hi, therefore bb/(- aa) - %n > 0. 
-     *     == (- aa)^(hi - lo + 1)*product(%n, %n, bb/(- aa) - hi, bb/(- aa) - lo)
-     *     == (- aa)^(hi - lo + 1)*((bb/(- aa) - hi)!/(bb/(- aa) - lo - 1)!)
-     * (Case 2b) Otherwise, bb must be nonzero;
-     *   when product_use_gamma is enabled, handle this case the same as Case 1b above.
-     * (Case 2c) Otherwise, product_use_gamma is disabled; handle this case the same as Case 1c above.
-     */
-    if integerp(bb/(- aa)) then (
-      if bb/(- aa) >= lo and bb/(- aa) <= hi then
-        simplify_product_linear_term_case2a1 (%n, lo, hi, aa, bb)
-      else (
-        if bb/(- aa) < lo then
-          simplify_product_linear_term_case2a2a (%n, lo, hi, aa, bb)
-        else
-          simplify_product_linear_term_case2a2b (%n, lo, hi, aa, bb)
-      )
-    )
-    elseif product_use_gamma then
-      aa^(hi - lo + 1)*(gamma(hi + bb/aa + 1) / gamma(lo + bb/aa))
-    else
-      aa^(hi - lo + 1)*simplify_product_linear_term (%n, lo, hi, 1, bb/aa)
-  )
-  else
-    aa^(hi - lo + 1)*product(%n + bb/aa, %n, lo, hi);
-
-simplify_product_linear_term_case1a (lo, hi, aa, bb) := aa^(hi - lo + 1)*(hi + bb/aa)!/(lo + bb/aa - 1)!;
-simplify_product_linear_term_case1b (lo, hi, aa, bb) := aa^(hi - lo + 1)*(gamma(hi + bb/aa + 1) / gamma(lo + bb/aa));
-simplify_product_linear_term_case1c (%n, lo, hi, aa, bb) := aa^(hi - lo + 1)*simplify_product_linear_term (%n, lo, hi, 1, bb/aa);
-
-simplify_product_linear_term_case2a1 (%n, lo, hi, aa, bb) := 0;
-simplify_product_linear_term_case2a2a (%n, lo, hi, aa, bb) := aa^(hi - lo + 1)*((hi - bb/(- aa))!/(lo - bb/(- aa) - 1)!);
-simplify_product_linear_term_case2a2b (%n, lo, hi, aa, bb) := (- aa)^(hi - lo + 1)*((bb/(- aa) - hi)!/(bb/(- aa) - lo - 1)!);
-simplify_product_linear_term_case2b (%n, lo, hi, aa, bb) := simplify_product_linear_term_case1b (%n, lo, hi, aa, bb);
-simplify_product_linear_term_case2c (%n, lo, hi, aa, bb) := simplify_product_linear_term_case1c (%n, lo, hi, aa, bb);
 
 normalize_product(%expr) :=
   if atom(%expr) or not(normalize_products) then %expr

@@ -1,6 +1,4 @@
-load("docdraw.mac");
-
-doc_plot2d("figures/plotting14",
-	[discrete, makelist(i*%pi, i, 1, 5),
-        [0.6, 0.9, 0.2, 1.3, 1]]
-)$
+plot2d ([discrete,makelist(i*%pi,i,1,5),[0.6,0.9,0.2,1.3,1]],
+  [pdf_file,"./plotting14.pdf"]);
+plot2d ([discrete,makelist(i*%pi,i,1,5),[0.6,0.9,0.2,1.3,1]],
+  [png_file,"./plotting14.png"]);

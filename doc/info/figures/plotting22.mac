@@ -1,8 +1,6 @@
-load("docdraw.mac");
-
-doc_plot3d("figures/plotting22",
-	sin(2*theta)*cos(phi), [theta, 0, %pi],
-        [phi, 0, 2*%pi],
-        [transform_xy, spherical_to_xyz], [grid,30,60],
-	[legend,false]
-)$
+plot3d (sin(2*theta)*cos(phi), [theta,0,%pi], [phi,0,2*%pi],
+  [transform_xy,spherical_to_xyz], [grid,30,60], nolegend,
+  [pdf_file,"./plotting22.pdf"]);
+plot3d (sin(2*theta)*cos(phi), [theta,0,%pi], [phi,0,2*%pi],
+  [transform_xy,spherical_to_xyz], [grid,30,60], nolegend,
+  [png_file,"./plotting22.png"]);

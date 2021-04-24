@@ -1,6 +1,4 @@
-load("docdraw.mac");
-
-doc_plot2d("figures/plotting12",
-	[[parametric, cos(t), sin(t), [t,0,2*%pi]], -abs(x)],
-        [x, -sqrt(2), sqrt(2)], same_xy
-)$
+plot2d ([[parametric,cos(t),sin(t), [t,0,2*%pi]], -abs(x)],
+  [x,-sqrt(2),sqrt(2)], same_xy, [pdf_file,"./plotting12.pdf"]);
+plot2d ([[parametric,cos(t),sin(t), [t,0,2*%pi]], -abs(x)],
+  [x,-sqrt(2),sqrt(2)], same_xy, [png_file,"./plotting12.png"]);

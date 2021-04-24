@@ -1,9 +1,7 @@
-load("docdraw.mac");
-
 expr_1: 5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3)-10$
 expr_2: -5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3)$
 expr_3: 5*(-sin(x/2)*cos(y)+cos(x/2)*sin(2*y))$
-doc_plot3d("figures/plotting21",
-	[expr_1, expr_2, expr_3], [x, -%pi, %pi],
-        [y, -%pi, %pi], [grid, 50, 50]
-)$
+plot3d ([expr_1,expr_2,expr_3], [x,-%pi,%pi], [y,-%pi,%pi], [grid,50,50],
+  [pdf_file,"./plotting21.pdf"]);
+plot3d ([expr_1,expr_2,expr_3], [x,-%pi,%pi], [y,-%pi,%pi], [grid,50,50],
+  [png_file,"./plotting21.png"]);

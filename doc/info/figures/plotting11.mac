@@ -1,7 +1,5 @@
-load("docdraw.mac");
-
 r: (exp(cos(t))-2*cos(4*t)-sin(t/12)^5)$
-
-doc_plot2d("figures/plotting11",
-	[parametric, r*sin(t), r*cos(t), [t, -8*%pi, 8*%pi]]
-)$
+plot2d ([parametric,r*sin(t),r*cos(t), [t,-8*%pi,8*%pi]],
+  [pdf_file,"./plotting11.pdf"]);
+plot2d ([parametric,r*sin(t),r*cos(t), [t,-8*%pi,8*%pi]],
+  [png_file,"./plotting11.png"]);
