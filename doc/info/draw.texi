@@ -389,11 +389,7 @@ Example:
 
 @end deffn
 
-
-
-
-@subsection Graphics options
-
+@subsection Plot options for draw programs
 
 @anchor{adapt_depth_draw}
 @defvr {Graphic option} adapt_depth
@@ -410,7 +406,6 @@ See also @code{nticks}
 @closecatbox
 
 @end defvr
-
 
 @anchor{allocation}
 @defvr {Graphic option} allocation
@@ -3421,7 +3416,7 @@ Labeled tics.
              explicit(x^3,x,-1,1)  )$
 @end example
 
-See also @mrefcomma{ytics}  and @mrefdot{ztics}
+See also @mrefcomma{ytics_draw}  and @mrefdot{ztics_draw}
 
 @opencatbox
 @category{Package draw}
@@ -3490,7 +3485,7 @@ Default value: @code{auto}
 
 This graphic option controls the way tic marks are drawn on the second @var{x} axis.
 
-See @code{xtics} for a complete description.
+See @mref{xtics_draw} for a complete description.
 
 @opencatbox
 @category{Package draw}
@@ -4252,13 +4247,13 @@ See also @mref{xrange} and @mrefdot{yrange}
 @end defvr
 
 
-@anchor{ztics}
+@anchor{ztics_draw}
 @defvr {Graphic option} ztics
 Default value: @code{true}
 
 This graphic option controls the way tic marks are drawn on the @var{z} axis.
 
-See @code{xtics} for a complete description.
+See @mref{xtics_draw} for a complete description.
 
 @opencatbox
 @category{Package draw}
