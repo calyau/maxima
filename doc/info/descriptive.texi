@@ -2031,9 +2031,9 @@ Function @code{global_variances} returns a list of global variance measures:
 @item
 @var{generalized standard deviation}: @code{sqrt(determinant(S_1))},
 @item
-@var{efective variance} @code{determinant(S_1)^(1/p)}, (defined in: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
+@var{effective variance} @code{determinant(S_1)^(1/p)}, (defined in: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
 @item
-@var{efective standard deviation}: @code{determinant(S_1)^(1/(2*p))}.
+@var{effective standard deviation}: @code{determinant(S_1)^(1/(2*p))}.
 @end itemize
 where @var{p} is the dimension of the multivariate random variable and @math{S_1} the covariance matrix returned by @code{cov1}.
 

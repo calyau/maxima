@@ -555,7 +555,7 @@ Extend the FACTOR method @code{ode1_factor} to work for multiple roots.
 
 @item
 Extend the FACTOR method @code{ode1_factor} to attempt to solve higher
-  order factors.  At present it only attemps to solve linear factors.
+  order factors.  At present it only attempts to solve linear factors.
 
 @item
 Fix the LAGRANGE routine @code{ode1_lagrange} to prefer real roots over

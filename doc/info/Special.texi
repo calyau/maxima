@@ -555,7 +555,7 @@ avoid internal overflow. See @code{factlim} and @code{gammalim}.
 
 For negative integers @code{gamma} is not defined.
 
-Maxima can evalute @code{gamma} numerically for real and complex values in float 
+Maxima can evaluate @code{gamma} numerically for real and complex values in float
 and bigfloat precision.
 
 @code{gamma} has mirror symmetry.

@@ -74,7 +74,6 @@ figures/plotdf3.gif\
 figures/plotdf4.gif\
 figures/plotdf5.gif\
 figures/plotdf6.gif\
-figures/plotting1.png\
 figures/plotting2.png\
 figures/plotting3.png\
 figures/plotting4.png\
@@ -296,7 +295,6 @@ figures/plotdf3.pdf\
 figures/plotdf4.pdf\
 figures/plotdf5.pdf\
 figures/plotdf6.pdf\
-figures/plotting1.pdf\
 figures/plotting2.pdf\
 figures/plotting3.pdf\
 figures/plotting4.pdf\

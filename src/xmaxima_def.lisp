@@ -114,7 +114,7 @@
               "palette: gray must be followed by two numbers."))))
        (when (or (< gray 0) (> gray 1))
          (setq gray (- gray (floor gray))))
-       (setq fun (format nil "{value ~,8f} {colorrange ~,8f}" gray range)))
+       (setq fun (format nil "{value ~,8,,,,,'eg} {colorrange ~,8,,,,,'eg}" gray range)))
       (($hue $saturation $value)
        (case (length (rest palette))
          (4 (setq hue (second palette))
@@ -129,7 +129,7 @@
        (when (or (< sat 0) (> sat 1)) (setq sat (- sat (floor sat))))
        (when (or (< val 0) (> val 1)) (setq val (- val (floor val))))
        (setq fun
-             (format nil " {hue ~,8f} {saturation ~,8f} {value ~,8f} {colorrange ~,8f}"
+             (format nil " {hue ~,8,,,,,'eg} {saturation ~,8,,,,,'eg} {value ~,8,,,,,'eg} {colorrange ~,8,,,,,'eg}"
                      hue sat val range))))
     (with-output-to-string (st)
       (case (first palette)
@@ -159,7 +159,7 @@
                                   (cons (/ i (1- n)) map))))))    ;; number i
 
            ;; prints map with the format:  nj, "cj", ...,n1, "c1"  
-           (setq fun (format nil "~{{ ~,8f ~s}~^ ~}" (reverse map)))
+           (setq fun (format nil "~{{ ~,8,,,,,'eg ~s}~^ ~}" (reverse map)))
            (format st "~&{colorscheme gradient} ")
            ;; writes: {gradlist {{nj "cj"} ...{n1 "c1"}}}
            (format st "{gradlist {~a}}" fun)))
@@ -218,17 +218,17 @@
               (t (format dest " {axes {xy} }")))
             (format dest " {axes 0}"))
         (when (getf plot-options :x)
-          (format dest " {xrange ~{~g~^ ~}}" (getf plot-options :x)))
+          (format dest " {xrange ~{~,8,,,,,'eg~^ ~}}" (getf plot-options :x)))
         (when (getf plot-options :y)
-          (format dest " {yrange ~{~g~^ ~}}" (getf plot-options :y)))
+          (format dest " {yrange ~{~,8,,,,,'eg~^ ~}}" (getf plot-options :y)))
         (when (getf plot-options :xlabel)
           (format dest " {xaxislabel ~s}" (getf plot-options :xlabel)))
         (when (getf plot-options :ylabel)
           (format dest " {yaxislabel ~s}" (getf plot-options :ylabel)))
         (when (getf plot-options :z)
-          (format $pstream " {zcenter ~g }"
+          (format $pstream " {zcenter ~,8,,,,,'eg }"
                   (/ (apply #'+ (getf plot-options :z)) 2))
-          (format $pstream " {zradius ~g }~%"
+          (format $pstream " {zradius ~,8,,,,,'eg }~%"
                   (/ (apply #'- (getf plot-options :z)) -2)))
         (format dest "~%"))))
     ;;returns a list with the name of the file to be created, or nil

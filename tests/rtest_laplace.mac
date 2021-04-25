@@ -648,6 +648,29 @@ true;
 (kill (foo), tellsimpafter ('laplace (foo (w), w, x), FOO (x)), laplace (foo (w), w, x));
 FOO (x);
 
+/* laplace(t^z,t,s) did not properly support complex z expressions
+ *
+ * See mailing list thread "Laplace transform for complex exponent polynomial functions."
+ * from 2021-04-21.
+ */
+
+laplace (t^(v*%i), t, s);
+s^((-%i*v)-1)*gamma(%i*v+1);
+
+assuming (u > -1, laplace (t^(u + v*%i), t, s));
+s^((-%i*v)-u-1)*gamma(%i*v+u+1);
+
+(kill (z),
+ declare (z, complex), assume (realpart (z) > -1), 0);
+0;
+
+laplace (t^z, t, s);
+s^((-z)-1)*gamma(z+1);
+
+(remove (z, complex), forget (realpart (z) > -1), 0);
+0;
+
+
 (remove (n, integer), killcontext (mycontext));
 done;
 

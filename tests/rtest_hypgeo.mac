@@ -2171,6 +2171,34 @@ factor(ratsimp(specint(exp(-s*t)*t^(a-1)*whittaker_m(v,u,-t),t)));
 specint(%e^(-t)/k*sqrt(t*(t+2*k)),t) - 2*sqrt(%pi)*hypergeometric_u(3/2,3,2*k)*k;
 0$
 
+/* specint(exp(-s*t)*t^z,t) did not properly support complex z expressions
+ *
+ * See mailing list thread "Laplace transform for complex exponent polynomial functions."
+ * from 2021-04-21.
+ */
+
+specint (exp (-s*t) * t^(v*%i), t);
+s^((-%i*v)-1)*gamma(%i*v+1);
+
+(kill (u, z),
+ declare (z, complex),
+ assume (realpart (z) > -1),
+ assume (u > -1),
+ 0);
+0;
+
+specint (exp (-s*t) * t^(u + v*%i), t);
+s^((-%i*v)-u-1)*gamma(%i*v+u+1);
+
+specint (exp (-s*t) * t^z, t);
+s^((-z)-1)*gamma(z+1);
+
+(remove (z, complex),
+ forget (realpart (z) > -1),
+ forget (u > -1),
+ 0);
+0;
+
 kill(all);
 done;
  

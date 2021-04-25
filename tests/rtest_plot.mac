@@ -166,31 +166,8 @@ plot2d (log(x), [x, -5, 5], [plot_realpart, true]);
 
 plot2d (log(x), [x, -3, 3]);
 plot3d (log(x), [x, -3, 3], [y, -3, 3]);
-contour_plot (log(x), [x, -3, 3], [y, -3, 3]);
 
 /* (other options listed under plot_options do not have plot2d or plot3d examples) */
-
-/* Examples copied from contour_plot documentation */
-
-"contour_plot examples" $
-
-contour_plot (x^2 + y^2, [x, -4, 4], [y, -4, 4]);
-
-contour_plot (sin(y) * cos(x)^2, [x, -4, 4], [y, -4, 4]);
-
-"contour_plot with named function" $
-
-F(x, y) := x^3 + y^2;
-contour_plot (F, [u, -4, 4], [v, -4, 4]);
-
-"contour_plot with gnuplot_preamble" $
-
-contour_plot (F, [u, -4, 4], [v, -4, 4], [gnuplot_preamble, "set size ratio -1"]);
-
-"contour_plot with gnuplot_preamble via set_plot_option" $
-
-set_plot_option ([gnuplot_preamble, "set cntrparam levels 12"])$
-contour_plot (F, [u, -4, 4], [v, -4, 4]);
 
 /* Examples adapted from demo/demo.dem
  * (others are duplicates or not different enough)

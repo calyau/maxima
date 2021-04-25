@@ -294,7 +294,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 (defun print-pt1 (f str)
   (if (floatp f)
-    (format str "~g " f)
+    (format str "~,8,,,,,'eg " f)
     (format str "~a " *missing-data-indicator*)))
 
 (defstruct (polygon (:type list)
@@ -1962,14 +1962,14 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($color_bar_tics (remf options :color_bar_tics))
          ($grid2d (setf (getf options :grid2d) t))
          ($legend (remf options :legend))
+         ($mesh_lines_color (remf options :mesh_lines_color))
          ($logx (setf (getf options :logx) t))
          ($logy (setf (getf options :logy) t))
-         ($mesh_lines_color (remf options :mesh_lines_color))
+         ($palette (remf options :palette))
          ($plot_realpart (setf (getf options :plot_realpart) t))
          ($run_viewer (setf (getf options :run_viewer) t))
          ($same_xy (setf (getf options :same_xy) t))
          ($same_xyz (setf (getf options :same_xyz) t))
-         ($transform_xy (remf options :transform_xy))
          ($xtics (remf options :xtics))
          ($ytics (remf options :ytics))
          ($zmin (remf options :zmin))
@@ -1990,14 +1990,10 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($norun_viewer (setf (getf options :run_viewer) nil))
          ($nosame_xy (setf (getf options :same_xy) nil))
          ($nosame_xyz (setf (getf options :same_xyz) nil))
-         ($notransform_xy (setf (getf options :transform_xy) nil))
+         ($notransform_xy (remf options :transform_xy))
          ($noxtics (setf (getf options :xtics) nil))
          ($noytics (setf (getf options :ytics) nil))
          ($noztics (setf (getf options :ztics) nil))
-         ($nozmin (setf (getf options :zmin) nil))
-         ($nognuplot_4_0 (setf (getf options :gnuplot_4_0) nil))
-         ($nognuplot_pm3d (setf (getf options :gnuplot_pm3d) nil))
-         ($nognuplot_strings (setf (getf options :gnuplot_strings) nil))
          (t
           (merror (intl:gettext "Unknown plot option \"~M\".") opt))))))
   ;; plots that create a file work better in gnuplot than gnuplot_pipes
@@ -2499,12 +2495,12 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
   (cond (($listp (second lis))
          (loop for v in lis
                 do
-                (format *standard-output* "~,10g " (nth i v))))
+                (format *standard-output* "~,8,,,,,'eg " (nth i v))))
         (t
          (setq lis (nthcdr i lis))
          (loop  with v = lis  while v
                  do
-                 (format *standard-output* "~,10g " (car v))
+                 (format *standard-output* "~,8,,,,,'eg " (car v))
                  (setq v (nthcdr skip v)))))
   (format *standard-output* "~% }"))
 (defun tcl-output-list ( st lis )
@@ -2516,7 +2512,7 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                 when (eql 0 (mod n 5))
                 do (terpri st)
                 do
-                (format st "~,10g " v))
+                (format st "~,8,,,,,'eg " v))
          (format st  " }~%"))
         (t (tcl-output-list st (car lis))
            (tcl-output-list st (cdr lis)))))
