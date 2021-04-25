@@ -121,7 +121,7 @@
          (format st " ps 1.5"))
        (if (fourth style)
          (format st " lt ~d" (gnuplot-color colors (fourth style)))
-         (format st " lt ~d" (gnuplot-color colors li)))
+         (format st " lt ~d" (gnuplot-color colors i)))
        (if (integerp (fifth style))
          (format st " pt ~d" (gnuplot-pointtypes types (fifth style)))
          (format st " pt ~d" (gnuplot-pointtypes types i))))
