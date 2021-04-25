@@ -3042,7 +3042,7 @@ Example:
 @defvr {Graphic option} wired_surface
 Default value: @code{false}
 
-Indicates whether 3D surfaces in @code{enhanced3d} mode show the grid joinning
+Indicates whether 3D surfaces in @code{enhanced3d} mode show the grid joining
 the points or not.
 
 Since this is a global graphics option, its position in the scene description

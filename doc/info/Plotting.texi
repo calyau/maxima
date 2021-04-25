@@ -1293,8 +1293,8 @@ This option is used by @mref{plot2d} to do contour plots. If only one
 number is given after the keyword @code{levels}, it must be a natural
 number; @code{plot2d} will try to plot that number of contours with
 values between the minimum and maximum value of the expression given,
-with the form d*10^n, where d is either 1, 2 or 5. Since not always will
-be posible to find that number of levels in that interval, the number of
+with the form d*10^n, where d is either 1, 2 or 5. Since not always it will
+be possible to find that number of levels in that interval, the number of
 contour lines show will be smaller than the number specified by this
 option.
 
