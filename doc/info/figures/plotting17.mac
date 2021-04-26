@@ -1,6 +1,4 @@
-load("docdraw.mac");
-
-doc_plot3d("figures/plotting17",
-	u^2 - v^2, [u, -2, 2], [v, -3, 3], [grid, 100, 100],
-        [mesh_lines_color,false]
-)$
+plot3d (u^2-v^2, [u,-2,2], [v,-3,3], [grid,100,100], nomesh_lines,
+  [pdf_file,"./plotting17.pdf"]);
+plot3d (u^2-v^2, [u,-2,2], [v,-3,3], [grid,100,100], nomesh_lines,
+  [png_file,"./plotting17.png"]);

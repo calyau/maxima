@@ -1699,7 +1699,7 @@ The optional second argument must be of the same form as the list returned by
 @defvr {Option variable} zn_primroot_limit
 Default value: @code{1000} 
 
-If @mref{zn_primroot} cannot find a primitve root, it stops at this upper bound. 
+If @mref{zn_primroot} cannot find a primitive root, it stops at this upper bound.
 If the option variable @mref{zn_primroot_verbose} (default: @code{false}) is 
 set to @code{true}, a message will be printed when @code{zn_primroot_limit} is reached. 
 

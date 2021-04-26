@@ -1089,7 +1089,7 @@ This is a known weakness.
 
 @code{assume} does not handle predicates with complex numbers.  If a predicate
 contains a complex number @code{assume} returns @code{inconsistent} or 
-@code{redunant}.
+@code{redundant}.
 
 @code{assume} evaluates its arguments.
 

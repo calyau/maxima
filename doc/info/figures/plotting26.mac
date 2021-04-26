@@ -1,7 +1,6 @@
-load("docdraw.mac");
-
-doc_plot3d("figures/plotting26",
-	cos (-x^2 + y^3/4), [x,-4,4], [y,-4,4], [zlabel,""],
-       	[mesh_lines_color,false], [elevation,0], [azimuth,0],
-       	color_bar, [grid,80,80], [ztics,false], [color_bar_tics,1]
-)$
+plot3d (cos(-x^2 + y^3/4), [x,-4,4], [y,-4,4], [zlabel,""],
+  nomesh_lines, [elevation,0], [azimuth,0], color_bar,
+  [grid,80,80], noztics, [color_bar_tics,1], [pdf_file,"./plotting26.pdf"]);
+plot3d (cos(-x^2 + y^3/4), [x,-4,4], [y,-4,4], [zlabel,""],
+  nomesh_lines, [elevation,0], [azimuth,0], color_bar,
+  [grid,80,80], noztics, [color_bar_tics,1], [png_file,"./plotting26.png"]);

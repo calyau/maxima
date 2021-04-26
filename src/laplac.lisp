@@ -305,7 +305,7 @@
      var-easy-case
      (setq power
 	   (simplus (list '(mplus) 1 power) 1 t))
-     (or (eq (asksign power) '$positive) (go noluck))
+     (or (eq (asksign ($realpart power)) '$positive) (go noluck))
      (setq result (list (list '(%gamma) power)
 			(list '(mexpt)
 			      parm
