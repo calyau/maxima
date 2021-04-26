@@ -1,4 +1,7 @@
-;;; Package to allow Maxima-level user-defined simplifying functions
+;;; simplifying.lisp
+;;; Maxima-level user-defined simplifying functions
+;;; Copyright 2007-2019 by Stavros Macrakis macrakis@alum.mit.edu
+;;; Licensed under the GNU Lesser General Public License version 3 (LGPLv3)
 ;;;
 ;;; For example, suppose we want to write a step function stepfn(x)
 ;;; which is 0 for x<- and 1 for x>0.
