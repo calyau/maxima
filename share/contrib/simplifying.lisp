@@ -76,7 +76,10 @@
 		 (merror "Bad second argument to `simpfunmake': ~M" args))))
   
 (defun simpfunmake (fun args)
-  (if (not (or (symbolp fun) ($subvarp fun)
+  ;; Code copied from (updated) $funmake
+  (if (not (or (and (symbolp fun)
+		    (not (member fun '(t nil $%e $%pi $%i))))
+	       ($subvarp fun)
 	       (and (stringp fun) (getopr0 fun))
 	       (and (not (atom fun)) (eq (caar fun) 'lambda))))
       (merror "Bad first argument to `simpfuncall/make': ~M" fun))
