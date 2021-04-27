@@ -137,7 +137,9 @@ Unnumbered bugs fixed:
 
 Documentation:
 --------------
-	* Plotting section updated with the new methods of plot2d (implicit functions and contours), new options and removing obsolte programs contour_plot and implicit_plot
+	* Plotting section updated with the new methods of plot2d (implicit
+	functions and contours), new options and removing obsolete programs
+	contour_plot and implicit_plot
 	* Documentation for the VTK interface of the draw package
 	* lratsusbst and fullratsubst documentation updated
 	* ieqn documentation improved
