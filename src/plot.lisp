@@ -1778,7 +1778,11 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
        (case name
          ($adapt_depth 
           (setf (getf options :adapt_depth)
-                (check-option (cdr opt) #'naturalp "a natural number" 1)))
+                (check-option (cdr opt) #'(lambda (n)
+					    ;; N should be a non-negative integer
+					    (and (integerp n)
+						 (>= n 0)))
+			      "a natural number" 1)))
          ($axes (setf (getf options :axes)
                       (check-option-b (cdr opt) #'axesoptionp "x, y, solid" 1)))
          ($azimuth (if (caddr opt)
