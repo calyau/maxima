@@ -134,6 +134,7 @@ Unnumbered bugs fixed:
 	* Remove calls to $ratsimp and $rectform in res1m, since it broke some
 	definite integrals
 	* Prevent the symbol 'xz from leaking out of the "ptan" function
+	* Option z for plot3d now works in Xmaxima format
 
 Documentation:
 --------------
