@@ -1,0 +1,37 @@
+
+
+
+This installer for Maxima does not contain only Maxima, but also other free software, which is required for Maxima.
+
+The following projects are included in the installer:
+
+* Maxima
+  Website: https://maxima.sourceforge.io
+  License: https://sourceforge.net/p/maxima/code/ci/master/tree/COPYING
+* CLISP:
+  Website: http://clisp.org
+  License: https://sourceforge.net/p/clisp/clisp/ci/default/tree/COPYRIGHT
+* SBCL
+  Website: http://www.sbcl.org
+  License: https://sourceforge.net/p/sbcl/sbcl/ci/master/tree/COPYING
+* ABCL (maybe)
+  Website: https://www.abcl.org
+  License: https://www.abcl.org/faq.shtml#license
+* TCL/TK
+  Website: https://tcl.tk
+  License: https://tcl.tk/software/tcltk/license.html
+* Gnuplot
+  Website: http://gnuplot.info
+  License: https://sourceforge.net/p/gnuplot/gnuplot-main/ci/master/tree/Copyright
+* VTK
+  Website: https://www.vtk.org/
+  License: https://www.vtk.org/about/#license
+* wxWidgets
+  Website: https://wxwidgets.org
+  License: https://wxwidgets.org/about/licence/
+* wxMaxima
+  Website: https://wxmaxima-developers.github.io/wxmaxima/
+  License: https://raw.githubusercontent.com/wxmaxima-developers/wxmaxima/main/COPYING
+
+Thanks to all these free software projects and the free software,
+which was used to create this installer.
