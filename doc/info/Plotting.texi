@@ -53,7 +53,7 @@ inspected to look for the source of the problem.
 
 The additional package @ref{draw} provides functions similar to the ones
 described in this section with some extra features, but it only works
-with@code{gnuplot}. Note that some plotting options have the same name
+with @code{gnuplot}. Note that some plotting options have the same name
 in both plotting packages, but their syntax and behavior is
 different. To view the documentation for a graphic option @code{opt},
 type @code{?? opt} in order to choose the information for either of
