@@ -53,7 +53,7 @@ inspected to look for the source of the problem.
 
 The additional package @ref{draw} provides functions similar to the ones
 described in this section with some extra features, but it only works
-with@code{gnuplot}. Note that some plotting options have the same name
+with @code{gnuplot}. Note that some plotting options have the same name
 in both plotting packages, but their syntax and behavior is
 different. To view the documentation for a graphic option @code{opt},
 type @code{?? opt} in order to choose the information for either of
@@ -894,7 +894,7 @@ surface correctly.
 @c ===end===
 @example
 @group
-(%i1) plot3d ( 5, [theta,0,%pi], [phi,0,2*%pi], same_xyz, nolegend
+(%i1) plot3d ( 5, [theta,0,%pi], [phi,0,2*%pi], same_xyz, nolegend,
   [transform_xy, spherical_to_xyz], [mesh_lines_color,blue],
   [palette,[gradient,"#1b1b4e", "#8c8cf8"]])$
 @end group

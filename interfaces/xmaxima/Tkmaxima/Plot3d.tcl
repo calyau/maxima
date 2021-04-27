@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2021-04-02 14:48:03 villate"            #
+#     Time-stamp: "2021-04-27 19:10:28 villate"            #
 ############################################################
 
 global plot3dOptions
@@ -202,7 +202,7 @@ proc addAxes { win } {
 
 proc addBbox { win } {
     global plot3dMeshes$win
-    makeLocal $win xmin xmax ymin ymax zmin zmax  cmap
+    makeLocal $win xmin xmax ymin ymax zmin zmax cmap
     linkLocal $win points lmesh
     set ll [llength $points]
     append points " $xmin $ymin $zmin \
@@ -366,24 +366,18 @@ proc getOrderedMeshIndices { win } {
 #
 #----------------------------------------------------------------
 #
-proc set_xy_region_3d { win fac} {
+proc set_xy_region_3d { win fac } {
     linkLocal $win scale
-    makeLocal $win xcenter ycenter xradius yradius c zmin zmax xmin xmax \
-        ymin ymax zradius
-    oset $win fac $fac
-    set delx [$c cget -width]
-    set dely [$c cget -height]
-    set f1 [expr {(1 - $fac)/2.0}]
-
+    makeLocal $win xcenter ycenter xradius yradius xmin xmax ymin ymax zradius
     set scale [list [expr {1.5/($xradius)}] 0 0 0 [expr {1.5/($yradius)}] \
                    0 0 0 [expr {1.5/($zradius)}] ]
-    set x1 [expr {$f1 *$delx}]
-    set y1 [expr {$f1 *$dely}]
-    set x2 [expr {$x1 + $fac*$delx}]
-    set y2 [expr {$y1 + $fac*$dely}]
-
     desetq "xmin ymin" [matMul $scale 3 "$xmin $ymin 0" 1]
     desetq "xmax ymax" [matMul $scale 3 "$xmax $ymax 0" 1]
+    oset $win fac $fac
+    oset $win xmin $xmin
+    oset $win xmax $xmax
+    oset $win ymin $ymin
+    oset $win ymax $ymax
 }
 
 #
@@ -441,12 +435,12 @@ proc replot3d { win } {
 	addOnePlot3d $win $data
     }
 
-    set_xy_region_3d $win 0.7
-    set_xy_transforms $win
-
     if { $nobox == 0 } {
 	addBbox $win
     }
+
+    set_xy_region_3d $win 0.5
+    set_xy_transforms $win
     # grab the bbox just as itself
     global maxima_priv
     linkLocal $win lmesh

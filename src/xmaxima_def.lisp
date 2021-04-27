@@ -175,7 +175,7 @@
   (xmaxima-palette (rest (nth (mod (- n 1) (length palette)) palette))))
 			 
 (defmethod plot-preamble ((plot xmaxima-plot) plot-options)
-  (let (outfile)
+  (let (outfile zmin zmax)
     (setf
      (slot-value plot 'data)
      (concatenate
@@ -221,6 +221,11 @@
           (format dest " {xrange ~{~,8,,,,,'eg~^ ~}}" (getf plot-options :x)))
         (when (getf plot-options :y)
           (format dest " {yrange ~{~,8,,,,,'eg~^ ~}}" (getf plot-options :y)))
+        (when (getf plot-options :z)
+          (setq zmin (first (getf plot-options :z)))
+          (setq zmax (second (getf plot-options :z)))
+          (format dest " {zcenter ~,8,,,,,'eg }" (/ (+ zmax zmin) 2.0))
+          (format dest " {zradius ~,8,,,,,'eg }" (/ (- zmax zmin) 2.0)))
         (when (getf plot-options :xlabel)
           (format dest " {xaxislabel ~s}" (getf plot-options :xlabel)))
         (when (getf plot-options :ylabel)

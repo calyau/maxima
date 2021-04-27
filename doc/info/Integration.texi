@@ -222,7 +222,11 @@ begin with.
 
 Computes the inverse Laplace transform of @var{expr} with
 respect to @var{s} and parameter @var{t}.  @var{expr} must be a ratio of
-polynomials whose denominator has only linear and quadratic factors.
+polynomials whose denominator has only linear and quadratic factors;
+there is an extension of @code{ilt}, called @mref{pwilt} (Piece Wise
+Inverse Laplace Transform) that handles several other cases where
+@code{ilt} fails.
+
 By using the functions @code{laplace} and @code{ilt} together with the
 @code{solve} or @code{linsolve} functions the user can solve a single
 differential or convolution integral equation or a set of them.
@@ -796,6 +800,40 @@ special cases.
 
 @c UMM, IS THERE SOME TEXT MISSING HERE ???
 @c WHAT IS THIS ABOUT EXACTLY ??
+
+@c -----------------------------------------------------------------------------
+@anchor{pwilt}
+@deffn {Function} pwilt (@var{expr}, @var{s}, @var{t})
+
+Computes the inverse Laplace transform of @var{expr} with
+respect to @var{s} and parameter @var{t}. Unlike @mrefcomma{ilt}
+@code{pwilt} is able to return piecewise and periodic functions
+and can also handle some cases with polynomials of degree greater than 3
+in the denominator.
+
+Two examples where @code{ilt} fails:
+@c ===beg===
+@c pwilt (exp(-s)*s/(s^3-2*s-s+2), s, t);
+@c pwilt ((s^2+2)/(s^2-1), s, t);
+@c ===end===
+@example
+(%i1) pwilt (exp(-s)*s/(s^3-2*s-s+2), s, t);
+                                       t - 1       - 2 (t - 1)
+                             (t - 1) %e        2 %e
+(%o1)         hstep(t - 1) (--------------- - ---------------)
+                                    3                 9
+                                    
+(%i2) pwilt ((s^2+2)/(s^2-1), s, t);
+                                         t       - t
+                                     3 %e    3 %e
+(%o2)                    delta(t) + ----- - -------
+                                       2        2
+@end example
+
+@opencatbox
+@category{Laplace transform}
+@closecatbox
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{potential}
