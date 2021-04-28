@@ -1,4 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
+;;
+;; Time-stamp: "2021-04-28 07:19:33 villate"
 
 (in-package :maxima)
 
@@ -1782,7 +1784,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 					    ;; N should be a non-negative integer
 					    (and (integerp n)
 						 (>= n 0)))
-			      "a natural number" 1)))
+			      "a non-negative integer" 1)))
          ($axes (setf (getf options :axes)
                       (check-option-b (cdr opt) #'axesoptionp "x, y, solid" 1)))
          ($azimuth (if (caddr opt)

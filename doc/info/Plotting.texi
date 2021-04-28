@@ -1061,7 +1061,13 @@ graphic program to decide what to do.
 @defvr {Plot option} adapt_depth [adapt_depth, @var{integer}]
 Default value: @code{5}
 
-The maximum number of splittings used by the adaptive plotting routine.
+The maximum number of splittings used by the adaptive plotting routine
+of @mref{plot2d}; @var{integer} must be a non-negative integer. A value
+of zero means that adaptive plotting will not be used and the resulting
+plot will have 1+4*@var{nticks} points (see option @mref{nticks}). To
+have more control on the number of points and their positions, a list of
+points can be created and then plotted using the @code{discrete} method
+of @code{plot2d}.
 
 @opencatbox
 @category{Plotting}
