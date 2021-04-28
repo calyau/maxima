@@ -32,6 +32,7 @@ Changes in core:
  * Add hypergeometric representation of erf_generalized
  * Plot object for plotting programs with methods for Gnuplot and Xmaxima
  * More options added to the plotting programs
+ * Option adapt_depth can be 0, to turn off adaptive plotting
  * Extend specint(exp(-s*t)*t^z,t) and laplace(t^z,t,s) to complex z
  * In TeX output, put csc, sec, and cot onto list of trig-like functions
    for TEX-MEXPT
@@ -45,10 +46,12 @@ Changes in core:
 Changes in share:
 -----------------
  * Remove bogus gradef for signum in abs_integrate.mac
- * share/contrib/wrstcse: A better way to generate random numbers between -1 and 1
+ * share/contrib/wrstcse: A better way to generate random numbers between -1
+   and 1
  * fft did result in the conjugate of the actual result
  * draw: don't cleanup files on close that were assigned a name by the user
- * Non-ascii filename support for plotting, operatingsystem and numericalio on sbcl+MSW
+ * Non-ascii filename support for plotting, operatingsystem and numericalio
+   on sbcl+MSW
  * fmin_coblya now sets ierr = -1 if constraints might not be satisfied
  * linearalgebra: fix for some singular matrices
  * dynamics: julia and mandelbrot updated for the new version of plot.lisp
@@ -85,7 +88,8 @@ Bug fixes for numbered bugs:
  * #3434: kill(ratvars) should give an error
  * #3543: bug with polynomialp
  * #3549: removing mmref.tex and maxima_pdf.texi from info directory
- * #3562: integrate(1/(1+tan(x)), x, 0, %pi/2) gives complex result, should be %pi/4
+ * #3562: integrate(1/(1+tan(x)), x, 0, %pi/2) gives complex result, should be
+   %pi/4
  * #3576: odelin wrong answer on simplest ode
  * #3642: Lisp error when translating assume
  * #3643: "DEFMFUN creates $NAME and $NAME-IMPL, contradicting documentation"
@@ -118,6 +122,7 @@ Bug fixes for numbered bugs:
  * #3752: missing simp flag from permutations
  * #3753: powerset has missing simp flag
  * #3760: apropos("") errors
+ * #3777: rat fails on denormalized floats
  * #30520: (from Sage bug tracker) Error in the sign of a product
  * #31557: (from Sage bug tracker) Fix product(-x, x, 1, SR.var('n')) to
    return (-1)^n*factorial(n)
