@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 EXTRA_DIST =\
  CMakeLists.txt\
  README.txt TODO.txt LICENSE_APPENDIX.txt\

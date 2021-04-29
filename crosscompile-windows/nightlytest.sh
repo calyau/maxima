@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Script for nightly testruns
 # should be copied to a private location (~/bin), so that
 # git changes to that script can be reviewed before.
