@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2021-04-02 14:48:10 villate"            #
+#     Time-stamp: "2021-04-29 14:33:48 villate"            #
 ############################################################
 
 proc makeFrame { w type } {
@@ -146,9 +146,9 @@ proc reConfigure { c width height  } {
     set wscale [expr double($width)/$w]
     set hscale [expr double($height)/$h]
     $c scale all 0 0 $wscale $hscale
-    set_xy_transforms $win
     oset $win width $width
     oset $win height $height
+    set_xy_transforms $win
 }
 
 proc writePostscript { win } {
