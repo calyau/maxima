@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /* Tests for the operatingsystem package */
 /* File tests may need write and read permissions in the current directory */
 /* run the test (if you start maxima with ./maxima-local) with */
