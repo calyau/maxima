@@ -341,9 +341,10 @@
               (progn
                 (if meshcolor
                     (progn
-                      (format dest "set style line 100 lt rgb ~s lw 1~%"
-                              (rgb-color meshcolor))
-                      (format dest "set pm3d hidden3d 100~%")
+                      (format
+                       dest
+                       "set pm3d hidden3d 100 border lw 0.5 lt rgb ~s~%"
+                       (rgb-color meshcolor))
                       (unless (getf plot-options :gnuplot_4_0)
                         (format dest "set pm3d depthorder~%")))
                     (format dest "set pm3d~%"))
