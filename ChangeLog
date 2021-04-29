@@ -122,6 +122,7 @@ Bug fixes for numbered bugs:
  * #3752: missing simp flag from permutations
  * #3753: powerset has missing simp flag
  * #3760: apropos("") errors
+ * #3774: Horizontal parts of plots at ymin/ymax are invisible
  * #3777: rat fails on denormalized floats
  * #30520: (from Sage bug tracker) Error in the sign of a product
  * #31557: (from Sage bug tracker) Fix product(-x, x, 1, SR.var('n')) to
