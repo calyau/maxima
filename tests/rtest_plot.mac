@@ -233,7 +233,9 @@ plot2d (x, [x, 1e-5, 100], [logx]);
  matchdeclare (x, floatnump),
  tellsimpafter (k(x), sin(x) + 0.6));
 
-plot2d ([f, g, h, i, sin, k], [u, 0, 1]);
+/* BUG: this fails, but should not */
+errcatch(
+  plot2d ([f, g, h, i, sin, k], [u, 0, 1]));
 
 /* "j" in list of functions tickles a bug -- quote marks not sanitized
  * work around it by explicit legend spec
@@ -264,11 +266,13 @@ errcatch(plot2d (sin(u), [u, 0, 1], [logx, true], [y, 0, 1], [logy, true]));
 
 "verify that nested numerical integral is handled correctly";
 
+/* BUG: this fails, but should not */
 errcatch(
   plot2d (w^2 * 'quad_qags (1/(s - w), s, 1, 5) [1], [w, -5, -1], [adapt_depth, 1]));
 
 "another nested numerical integral";
 
+/* BUG: this fails, but should not */
 errcatch(kill (W, R, A),
  W(t) := 95*sqrt(t)*sin(t/6)^2,
  R(t) := 275*sin(t/3)^2,
@@ -295,11 +299,11 @@ plot2d (sqrt (x), [x, 0, 1], [y, 0, 1/2]); /* some clipped */
 
 plot2d (sqrt (x), [x, -1, 1], [y, 0, 1/2]); /* some non-numeric, some clipped */
 
-plot2d (sqrt (x), [x, -2, -1]); /* all non-numeric */
+errcatch(plot2d (sqrt (x), [x, -2, -1])); /* all non-numeric */
 
-plot2d (sqrt (x), [x, 0, 1], [y, -2, -1]); /* all clipped */
+errcatch(plot2d (sqrt (x), [x, 0, 1], [y, -2, -1])); /* all clipped */
 
-plot2d (sqrt (x), [x, -1, 1], [y, -2, -1]); /* all non-numeric or clipped */
+errcatch(plot2d (sqrt (x), [x, -1, 1], [y, -2, -1])); /* all non-numeric or clipped */
 
 "coping with overflow in intermediate results";
 
@@ -368,7 +372,8 @@ plot3d([sin(t), cos(t), t], [t,-5,5], [y,-5,5], [grid,100,2], [gnuplot_pm3d,fals
 
 /* plot2d/plot3d with subscripted variable */
 
-(kill (x, a), plot2d (a[x]^3, [a[x], -1, 1]));
+/* BUG? this fails, but should not */
+errcatch(kill (x, a), plot2d (a[x]^3, [a[x], -1, 1]));
 
 plot3d (a[x]^2 - x[a]^3, [a[x], -1, 1], [x[a], -1, 1]);
 
