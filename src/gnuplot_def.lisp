@@ -1,4 +1,4 @@
-;; gnuplot.lisp: routines for Maxima's interface to gnuplot
+;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
 ;; 
 ;; This program is free software; you can redistribute it and/or
@@ -304,7 +304,7 @@
           (format nil "maxplot.~(~a~)"
                   (get-gnuplot-term (getf plot-options :gnuplot_term)))))))
 
-  (unless (null out-file) (setq out-file (plot-file-path out-file preserve-file)))
+  (unless (null out-file) (setq out-file (plot-file-path out-file preserve-file plot-options)))
   (list terminal-command out-file)))
 
 (defmethod plot-preamble ((plot gnuplot-plot) plot-options)
@@ -702,8 +702,7 @@
 (defmethod plot-shipout ((plot gnuplot-plot) options &optional output-file)
    (case (getf options :plot_format)
      ($gnuplot
-      (let (file)
-        (setq file (plot-file-path (format nil "maxout~d.gnuplot" (getpid))))
+      (let ((file (plot-set-gnuplot-script-file-name options)))
         (with-open-file (fl
                          #+sbcl (sb-ext:native-namestring file)
                          #-sbcl file

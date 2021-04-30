@@ -2040,6 +2040,47 @@ or @mrefdot{svg_file}
 @closecatbox
 @end defvr
 
+     @c -----------------------------------------------------------------------------
+@anchor{gnuplot_script_file}
+@defvr {Plot option} gnuplot_script_file [gnuplot_script_file, @var{file_name_or_function}]
+
+Set the name of the script file created by @code{plot2d} or @code{plot3d}
+when the @mref{plot_format} is @code{gnuplot}. The value
+@var{file_name_or_function} can be a string or a Maxima function of one
+variable that returns a string.
+
+In this example, the script file name is set to ``sin.gnuplot''.
+
+@example
+(%i1) plot2d( sin(x), [x,0,2*%pi], [gnuplot_script_file, "sin.gnuplot"]);
+
+(%o1) ["/tmp/sin.gnuplot"]
+@end example
+
+In this example, @code{gnuplot_maxout_prt(@var{file})} is a function
+that takes the default file name, @var{file}. It constructs a full file
+name for the data file by interpolating a random 8-digit integer with a
+pad of zeros into the default file name. The directory is determined by
+@mref{maxima_tempdir} (it is ``/tmp'' in this example).
+
+@example
+(%i1) gnuplot_maxout_prt(file) := block([beg,end],
+        [beg,end] : split(file,"."),
+        printf(false,"~a_~8,'0d.~a",beg,random(10^8-1),end)) $
+
+(%i2) plot2d( sin(x), [x,0,2*%pi], [gnuplot_script_file, gnuplot_maxout_prt]);
+
+(%o2) ["/tmp/maxout68715_09606909.gnuplot"]
+@end example
+
+By default, the script would have been saved in a file named
+@code{maxoutXXXXX.gnuplot} (XXXXX=68715 in this example).
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
 @c -----------------------------------------------------------------------------
 @anchor{gnuplot_pm3d}
 @defvr {Plot option} gnuplot_pm3d [gnuplot_pm3d, @var{value}]
