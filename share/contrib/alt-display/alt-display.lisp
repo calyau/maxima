@@ -32,15 +32,20 @@
 	   (type value)
 	   ($printf nil "set_prompt(type, value): type must be one of prefix, suffix, general, prolog or epilog; value must be a string or false.~%type=~a value=~a" type value))
   (set (cdr (assoc type *set-prompt-alist*)) (or value ""))
-  (if args (apply '$set_prompt args))
-  '$done)
+  (cond ((null args)
+	 '$done)
+	((and args (listp args) (> (length args) 1))
+	 (apply '$set_prompt args))
+	(t
+	 (merror "set_prompt(type,value): missing value."))))
 
 (defun $reset_prompts ()
   (declare (special *set-prompt-alist*))
   (dolist (v *set-prompt-alist* '$done)
     ($set_prompt (car v) (or (gethash (cdr v) *variable-initial-values*) ""))))
 
-(defun $set_alt_display (type &optional (f nil) (warn nil) (error-handler nil))
+(defun $set_alt_display (type &optional (f nil) (warn nil))
+  (declare (special *alt-display1d* *alt-display2d*))
   (massert (and (member type '(1 2))
 		(or (and (symbolp f) (or (fboundp f) (mfboundp f)))
 		    (and (consp f) (member (caar f) '(lambda mfexpr)))
@@ -50,19 +55,25 @@
   (let* ((alt-display (ecase type
 			(1 '*alt-display1d*)
 			(2 '*alt-display2d*))))
-    (labels ((error-handler (msg)
-	       (if error-handler (mfuncall error-handler msg)
-		   (let ((a-d alt-display)) (set alt-display nil)
-			(merror "Error in ~a.~%Messge: ~a~%~a reset to ~a." a-d msg a-d nil))))
-	     (alt-display-fun (form)
-	       (handler-bind ((error #'error-handler))
-		 (mfuncall f form))))
-      (cond (f
-	     (if warn (warn "Setting ~dd-display to ~(~a~)." type ($printf nil "~a" f)))
-	     (set alt-display #'alt-display-fun))
-	    (t
-	     (if warn (warn "Resetting ~dd-display to default." type))
-	     (set alt-display nil)))))
+    (cond (f
+	   (if warn (warn "Setting ~dd-display to ~(~a~)." type ($printf nil "~a" f)))
+	   (let ((error? t))
+	     (labels ((error-handler (msg)
+				     (merror "Error in ~a.~%~a~a reset to default." alt-display msg alt-display))
+		      (alt-display-fun (form)
+				       ;; convert maxima errors to maxima-$error conditions (a type of error)
+				       ;; we can't use handler case to forcibly reset *alt-display[12]d*, because of dynamic scope
+				       ;; so we manually keep track of whether an error occurs.
+				       (ignore-errors
+					 (with-$error (mfuncall f form))
+					 (setq error? nil))
+				       (when error?
+					 ($set_alt_display type nil)
+					 (error-handler ""))))
+	       (set alt-display #'alt-display-fun))))
+	  (t
+	   (if warn (warn "Resetting ~dd-display to default." type))
+	   (set alt-display nil))))
   '$done)
 
 ;; end of alt-display.lisp
