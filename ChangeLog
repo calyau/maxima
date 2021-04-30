@@ -9,16 +9,16 @@ New items in share:
 -------------------
  * hompack package with interface to polsys
  * FFTPACK5: Fast Fourier Transform package
- * pwilt: Piece-Wise Inverse Laplace Transform immproves ilt
+ * pwilt: Piece Wise Inverse Laplace Transform improves ilt
 
 Changes in core:
 ----------------
- * Fix and extend the definition of mapatom, see maxima-discuss thread "Non-mapatomic atoms".
+ * Fix and extend the definition of mapatom, see maxima-discuss thread
+   "Non-mapatomic atoms".
  * Improved num_partitions from O(n^2) to O(n^1.5)
  * Give signum, unit_step, log_gamma and mod an integral property
  * Express anti derivative of mod in terms of mod, not floor
  * Add grad property to binomial
- * The noun and verb forms of kron_delta were backwards
  * Give %gamma a sign-function property
  * No float-to-bigfloat conversion warning if no precision is lost
  * Change ?gensym to gensym in linearalgebra.mac
@@ -27,7 +27,6 @@ Changes in core:
  * Reset changed some bigfloat variables to decimal fractions
  * Fix incorrect values of zeta(%i) and zeta(%i-2)
  * Resolved an error when using bigfloat exponents
- * Bug fix: gcfactor(x*%i) => lisp error
  * Correct the hypergeometric representation of erf, erfc and erfi
  * Add hypergeometric representation of erf_generalized
  * Plot object for plotting programs with methods for Gnuplot and Xmaxima
@@ -52,7 +51,7 @@ Changes in share:
  * draw: don't cleanup files on close that were assigned a name by the user
  * Non-ascii filename support for plotting, operatingsystem and numericalio
    on sbcl+MSW
- * fmin_coblya now sets ierr = -1 if constraints might not be satisfied
+ * fmin_cobyla now sets ierr = -1 if constraints might not be satisfied
  * linearalgebra: fix for some singular matrices
  * dynamics: julia and mandelbrot updated for the new version of plot.lisp
  * symplifying: disallow illegal functions in simpfunmake
@@ -60,7 +59,7 @@ Changes in share:
 Changes in Xmaxima:
 -------------------
  * Tcl 8.6 is now required (themed widgets and rotated strings).
- * Plot with a better look and resizeable. Size change and replot
+ * Plots with a better look and resizeable. Size change and replot
    buttons have been removed.
  * History saved in a local file to be reused in later sessions
  * Configuration file saved in home directory in Windows
@@ -131,6 +130,8 @@ Bug fixes for numbered bugs:
 
 Unnumbered bugs fixed:
 ---------------------
+ * The noun and verb forms of kron_delta were backwards
+ * Bug fix: gcfactor(x*%i) => lisp error
  * Several fixes to imaxima
  * translator: several bugs fixed and obsolete Maclisp code removed
  * Taylor series of signum
