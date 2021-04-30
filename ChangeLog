@@ -9,7 +9,7 @@ New items in share:
 -------------------
  * hompack package with interface to polsys
  * FFTPACK5: Fast Fourier Transform package
- * pwilt: Piece Wise Inverse Laplace Transform improves ilt
+ * pwilt: Piece-Wise Inverse Laplace Transform improves ilt
 
 Changes in core:
 ----------------
@@ -149,7 +149,7 @@ Documentation:
    functions and contours), new options and removing obsolete programs
    contour_plot and implicit_plot
  * Documentation for the VTK interface of the draw package
- * Documentation for hstep and pwilt (Piece Wise Inverse Laplace Transform)
+ * Documentation for hstep and pwilt (Piece-Wise Inverse Laplace Transform)
  * lratsusbst and fullratsubst documentation updated
  * ieqn documentation improved
  * refer load_pathname in documentation of load
