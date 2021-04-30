@@ -38,19 +38,20 @@ F(x) := x^2 $
 H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
 plot2d (F, [u, -1, 1])$
 plot2d ([F, G, H], [u, -1, 1], [y, -1.5, 1.5])$
+kill(F,H,G) $
 
 "We can plot a circle using a parametric plot ..." $
 
-plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi], [nticks,80]], [x, -4/3, 4/3])$
+plot2d ([parametric, cos(t), sin(t), [t,-%pi,%pi]], [nticks,80], [x, -4/3, 4/3])$
 
 "If we repeat that plot with only 8 points ..." $
 "As parametric plot uses adaptive method, nticks=4 and adapt_depth=1 is for 8 point drawing" $
 
-plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2], [nticks, 4], [adapt_depth,1]], [x, -2, 2], [y, -1.5, 1.5])$
+plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2]], [nticks, 4], [adapt_depth,1], [x, -2, 2], [y, -1.5, 1.5])$
 
 "Combination of an ordinary plot ..." $
 
-plot2d ([x^3+2, [parametric, cos(t), sin(t), [t, -5, 5], [nticks, 80]]], [x, -3, 3])$
+plot2d ([x^3+2, [parametric, cos(t), sin(t), [t, -5, 5]]], [x, -3, 3],  [nticks, 80])$
 
 "Example of a logarithmic plot:" $
 
@@ -105,9 +106,9 @@ plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi],
 
 plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2]);
 
-"The same graph can be plotted using openmath ..." $
+"The same graph can be plotted using xmaxima ..." $
 
-plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2], [plot_format, openmath]);
+plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2], [plot_format, xmaxima]);
 
 "An example of the third pattern of arguments is" $
 
@@ -135,9 +136,11 @@ plot3d ([expr_1, expr_2, expr_3], [x, 0, 2*%pi], [y, 0, 2*%pi], ['grid, 40, 40])
 
 "Sometimes it is necessary to define a function to plot the expression." $
 
+kill(f) $
 M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4], [1, 2, 3, 3])$
 f(x, y) := float (M [?round(x), ?round(y)])$
 plot3d (f, [x, 1, 4], [y, 1, 4], ['grid, 4, 4])$
+kill(M,f)$
 
 "Here is a three-dimensional plot using the gnuplot pm3d terminal." $
 
@@ -175,7 +178,7 @@ plot3d (log(x), [x, -3, 3], [y, -3, 3]);
 
 "two dimensional parametric plot" $
 
-plot2d ([parametric, t*sin(t), t*cos(t)], [t, 0, 80], [nticks, 1000]);
+plot2d ([parametric, t*sin(t), t*cos(t), [t, 0, 80]], [nticks, 1000]);
 
 "three dimensional cartesian plot of a bessel function" $
 
@@ -240,6 +243,8 @@ plot2d (["+", "j"], [u, 0, 1], [legend, "+", "j"]);
 "(not a plot example, maybe it should be moved elsewhere)" $
 
 map (lambda ([f], quad_qags (f, u, 0, 1)), [f, g, h, i, "+", "j", sin, k]);
+:lisp (unintern '$f)
+:lisp (unintern '$h)
 
 "r1.82 src/plot.lisp: floatify non-float numbers" $
 
@@ -255,15 +260,16 @@ plot2d (sin(x), [x, 0, 1], [logx, true]);
 
 plot2d (sin(u), [u, 0, 1], [logx, true]);
 
-plot2d (sin(u), [u, 0, 1], [logx, true], [y, 0, 1], [logy, true]);
+errcatch(plot2d (sin(u), [u, 0, 1], [logx, true], [y, 0, 1], [logy, true]));
 
 "verify that nested numerical integral is handled correctly";
 
-plot2d (w^2 * 'quad_qags (1/(s - w), s, 1, 5) [1], [w, -5, -1], [adapt_depth, 1]);
+errcatch(
+  plot2d (w^2 * 'quad_qags (1/(s - w), s, 1, 5) [1], [w, -5, -1], [adapt_depth, 1]));
 
 "another nested numerical integral";
 
-(kill (W, R, A),
+errcatch(kill (W, R, A),
  W(t) := 95*sqrt(t)*sin(t/6)^2,
  R(t) := 275*sin(t/3)^2,
  A(t) := 1200 + quad_qags (W(x) - R(x), x, 0, t) [1],
