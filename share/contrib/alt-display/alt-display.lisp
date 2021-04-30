@@ -8,6 +8,15 @@
     `(handler-bind ((error (lambda(msg) (merror "~a" msg))))
        (assert ,assertion ,vars ,@action))))
 
+(defun $alt_display_output_type (&optional (form nil))
+  (massert (and (listp form) (car form) (listp (car form)) (caar form))
+	   (form)
+	   ($printf nil "alt_display_output_type(form): form is ill-structured, found: ~a." form))
+  (case (caar form)
+    (mlabel '$label)
+    (mtext  '$text)
+    (t      '$unknown)))
+
 (defvar *set-prompt-alist*
   '(($prefix	. *prompt-prefix*)
     ($suffix	. *prompt-suffix*)
