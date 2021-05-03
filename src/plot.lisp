@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "30-04-2021 13:30:51 Leo Butler"
+;; Time-stamp: "2021-05-03 14:07:21 villate"
 
 (in-package :maxima)
 
@@ -2303,6 +2303,7 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                    "plot2d: parametric expressions ~M and ~M should depend only on ~M")
                   ($second f) ($third f) ($first prange))))
               ($contour
+               (setq xrange (check-range xrange))
                (setq xrange-required t)
                (setq fpfun (coerce-float-fun ($second f) ($rest xrange -2)))
                (setq vars1 ($listofvars (mfuncall fpfun ($first xrange))))
