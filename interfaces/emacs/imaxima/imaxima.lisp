@@ -41,15 +41,6 @@
 ;;; issue.
 ;;; by yasuaki honda
 
-;;;
-;;; There is a report that some Linux provides Maxima with GCL
-;;; which does not support handler-bind. The macro
-;;; style-warning-suppressor
-;;; is introduced to check if handler-bind is defined or not.
-;;;
-;;; by yasuaki honda 2007/06/10
-;;;
-
 (in-package :maxima)
 
 (setq $maxima_frontend "imaxima")
@@ -60,34 +51,14 @@
 (defmvar $wxplot_old_gnuplot nil)
 (defvar *image-counter* 0)
 
-
-;;; Following function wx-gnuplot-installed-p and the macro
-;;; wx-gnuplot-installation-check should be in plotting section
-;;; later in this file. However, because they must be in the
-;;; real toplevel, they are moved here.
-;;; yasuaki honda
-(defun wx-gnuplot-installed-p ()
-  #+gcl
-  (cond ((member :linux *features*)
-	 (let* ((tmp-stream (open "| which gnuplot" :direction :input))
-		(result (read-line tmp-stream nil :eof)))
-	   (if (eql result :eof) nil t)))
-	((and (member :mingw32 *features*)
-	      (probe-file "c:\\Windows\\System32\\where.exe"))
-	 (let* ((tmp-stream (open "| where wgnuplot" :direction :input))
-		(result (read-line tmp-stream nil :eof)))
-	   (if (eql result :eof) nil t)))
-	(t t))
-  #-gcl
+(defun wx-gnuplot-installation-check ()
   ;; The function check-gnuplot-process is defined in
   ;; maxima/src/plot.lisp since at least 5.12.0.
-  (handler-case (progn (check-gnuplot-process) t)
-		(error () nil)))
-
-(defun wx-gnuplot-installation-check ()
-  (if (not (wx-gnuplot-installed-p))
+  (flet ((wx-gnuplot-installed-p ()
+	   (ignore-errors (check-gnuplot-process) t)))
+    (unless (wx-gnuplot-installed-p)
       (merror (format t "Gnuplot error: Gnuplot is not installed,
-nor Gnuplot is not recognized by maxima"))))
+nor Gnuplot is not recognized by maxima")))))
 
 (declare-top (special lop rop $gcprint $inchar *autoconf-version*))
 
