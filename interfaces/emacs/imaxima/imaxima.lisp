@@ -601,7 +601,7 @@ nor Gnuplot is not recognized by maxima"))))
 		     ((mlist simp) $plot_format $gnuplot)
 		     ((mlist simp) $gnuplot_term $ps)
 		     ((mlist simp) $ps_file ,filename)
-		     ((mlist simp) $gnuplot_out_file ,(cdr data+maxout))))
+		     ((mlist simp) $gnuplot_script_file ,(cdr data+maxout))))
     ($ldisp `((wxxmltag simp) ,filename "img"))
     fun))
 
