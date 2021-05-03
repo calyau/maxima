@@ -209,6 +209,30 @@ translated."
     (when (or hint *untranslated-functions-called*)
       (format t (intl:gettext "~&translator: see the 'unlisp' file for possible optimizations.~%")))))
 
+(defun print-transl-herald (stream)
+  (flet ((timezone-iso8601-name (dst tz)
+           ;; This function was borrowed from CMUCL.
+           (let ((tz (- tz)))
+             (if (and (not dst) (= tz 0))
+                 "Z"
+                 (multiple-value-bind (hours minutes)
+                     (truncate (if dst (1+ tz) tz))
+                   (format nil "~C~2,'0D:~2,'0D"
+                           (if (minusp tz) #\- #\+)
+                           (abs hours)
+                           (abs (truncate (* minutes 60)))))))))
+    (multiple-value-bind (secs mins hours day month year dow dst tz)
+        (decode-universal-time (get-universal-time))
+      (declare (ignore dow))
+      (format stream (intl:gettext "; Translated on: ~D-~2,'0D-~2,'0D ~2,'0D:~2,'0D:~2,'0D~A~%")
+              year month day hours mins secs (timezone-iso8601-name dst tz))))
+  (format stream (intl:gettext "; Maxima version: ~A~%") *autoconf-version*)
+  (format stream (intl:gettext "; Lisp implementation: ~A~%") (lisp-implementation-type))
+  (format stream (intl:gettext "; Lisp version: ~A~%;~%") (lisp-implementation-version))
+  (format stream (intl:gettext "; Translator state vars:~%;~%"))
+  (loop for v in (cdr $tr_state_vars)
+        do (mformat stream ";   ~:M: ~:M;~%" v (symbol-value v))))
+
 (defun translate-file (in-file-name out-file-name
 		       &aux warn-file translated-file *translation-msgs-files*
 		       *untranslated-functions-called* *declared-translated-functions*)
@@ -223,28 +247,7 @@ translated."
 	 (if $tr_file_tty_messagesp
 	     (setq *translation-msgs-files* (cons *standard-output* *translation-msgs-files*)))
 	 (format out-stream ";;; -*- Mode: Lisp; package:maxima; syntax:common-lisp ;Base: 10 -*- ;;;~%~%")
-	 (flet ((timezone-iso8601-name (dst tz)
-		  ;; This function was borrowed from CMUCL.
-		  (let ((tz (- tz)))
-		    (if (and (not dst) (= tz 0))
-			"Z"
-			(multiple-value-bind (hours minutes)
-			    (truncate (if dst (1+ tz) tz))
-			  (format nil "~C~2,'0D:~2,'0D"
-				  (if (minusp tz) #\- #\+)
-				  (abs hours)
-				  (abs (truncate (* minutes 60)))))))))
-	   (multiple-value-bind (secs mins hours day month year dow dst tz)
-	       (decode-universal-time (get-universal-time))
-	     (declare (ignore dow))
-	     (format out-stream (intl:gettext "; Translated on: ~D-~2,'0D-~2,'0D ~2,'0D:~2,'0D:~2,'0D~A~%")
-		     year month day hours mins secs (timezone-iso8601-name dst tz))))
-	 (format out-stream (intl:gettext "; Maxima version: ~A~%") *autoconf-version*)
-	 (format out-stream (intl:gettext "; Lisp implementation: ~A~%") (lisp-implementation-type))
-	 (format out-stream (intl:gettext "; Lisp version: ~A~%;~%") (lisp-implementation-version))
-	 (format out-stream (intl:gettext "; Translator state vars:~%;~%"))
-	 (loop for v in (cdr $tr_state_vars)
-		do (mformat out-stream   ";   ~:M: ~:M;~%" v (symbol-value v)))
+	 (print-transl-herald out-stream)
 	 (format out-stream "~%(in-package :maxima)~%")
 	 (format warn-stream (intl:gettext "This is the unlisp file for ~A~%")
 		 (namestring (pathname in-stream)))
