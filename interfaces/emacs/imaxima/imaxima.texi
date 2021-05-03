@@ -265,46 +265,136 @@ in version 1.0d, the graphics commands @code{wxdraw}, @code{wxjulia} and
 
 The syntax and capabilities of the wx-prefixed versions of the commands
 and their arguments are the same as the ones of the corresponding
-original commands. Hence, @code{wxplot2} draws a graph inline in maxima
-session, while @code{plot2d} displays the same graph in the different
-window.
+original commands. Hence, @code{wxplot2d} draws a graph inline in the
+@verb{*imaxima*} buffer, while @code{plot2d} displays the same graph in
+a different window created by Gnuplot.
 
-The wx-prefixed versions of the commands set up arguments so that Gnuplot
-is used to draw the graph and writes the graph in extended postscript 
-format into a temporary file. So, it is suggested not to use plot options
-such as @code{plot_format}.
+The wx-prefixed versions of the commands set up arguments so that
+Gnuplot is used to draw the graph and writes the graph in extended
+postscript format into a temporary file. Conseqently, use of plot
+options such as @code{plot_format}, @code{gnuplot_script_file},
+@code{gnuplot_term}, @code{ps_file} or their draw counterparts will
+result in unspecified behaviour.
 
 The @code{wxdraw} family of commands automatically load the draw package
 since they call @code{draw} internally. Similarly, @code{wxjulia} and
 @code{wxmandelbroit} automatically load the dynamics package.
 
+@menu
+* Keybindings::
+* Commands and Options::
+@end menu
 
-@node Options
+@node Keybindings, Commands and Options, Inline Graphs, Inline Graphs
+@section Keybindings
+
+Images in the @verb{*imaxima*} buffer have a special keymap
+(@pxref{keymaps,keymaps,keymaps,emacs}). By hovering the mouse over the
+image, one can display the list of `hot keys' and a short description of
+each action pressing a key triggers. To activate the keymap, point must
+be on the image.
+
+@enumerate
+@item
+l : Copy the @LaTeX{} source to generate the image under point into the
+register stored in @ref{imaxima-latex-src-register} (default:
+l). @pxref{imaxima-get-latex-src}.
+
+@item
+g : Have Gnuplot replot the graph/image under point in a separate window
+spawned by Gnuplot. @pxref{imaxima-gnuplot-replot}.
+
+@item
+s : Forcibly restart the Gnuplot process. This can be useful if an error
+occurs during plotting. Some @code{plot} examples may only work if
+Gnuplot is restarted. @pxref{imaxima-gnuplot-restart}.
+@end enumerate
+
+@node Commands and Options,  , Keybindings, Inline Graphs
+@section Commands and Options
+
+@anchor{imaxima-get-latex-src}
+@deffn {Command} imaxima-get-latex-src
+When point is over an image, this copies the @LaTeX{} source used by
+imaxima to generate the image into the register named by
+@ref{imaxima-latex-src-register}.
+@end deffn
+
+@anchor{imaxima-gnuplot-replot}
+@deffn {Command} imaxima-gnuplot-replot
+When point is over an image created by Gnuplot, this command will
+re-execute the Gnuplot script that created the image and display it in a
+separate window spawned by Gnuplot. Asks for the Gnuplot terminal to
+use. @pxref{imaxima-gnuplot-replot-term}.
+@end deffn
+
+@anchor{imaxima-gnuplot-restart}
+@deffn {Command} imaxima-gnuplot-restart
+Forcibly kill the Gnuplot process and buffer, if necessary, and then
+start a new Gnuplot process.
+@end deffn
+
+@anchor{imaxima-gnuplot-buffer}
+@defopt imaxima-gnuplot-buffer
+The name of the buffer in which imaxima runs its Gnuplot
+process. Default: @verb{|*imaxima-gnuplot*|}.
+@end defopt
+
+@anchor{imaxima-gnuplot-command}
+@defopt imaxima-gnuplot-command
+The name of the Gnuplot executable that imaxima runs. Default:
+@verb{|gnuplot|}.
+@end defopt
+
+@anchor{imaxima-gnuplot-args}
+@defopt imaxima-gnuplot-args
+Optional arguments sent to the Gnuplot executable by imaxima. Default:
+@verb{|""|}.
+@end defopt
+
+@anchor{imaxima-latex-src-register}
+@defopt imaxima-latex-src-register
+One can copy the @LaTeX{} source used to generate an image into a
+register by placing point over the image and typing this key. Default:
+@code{l}.
+@end defopt
+
+@anchor{imaxima-gnuplot-replot-term}
+@defopt imaxima-gnuplot-replot-term
+The name of the Gnuplot terminal used to display an inline plot in an
+external, Gnuplot-spawned window. @pxref{imaxima-gnuplot-replot}.
+@end defopt
+
+
+@node Options, Imath minor mode, Inline Graphs, Top
 @chapter Options
 
 @menu
 * Appearance::                  Size, colors, fonts.
-* Line Breaking::               Options for breaking wide equations.
-* Miscellaneous::               Various options.
+* Line Breaking::               Options for Line Breaking.
+* Miscellaneous::
 @end menu
 
 All options can be changed in the Emacs customize interface, use
 @kbd{M-x customize-group @key{RET} imaxima @key{RET}}.
 
-@node Appearance
+@node Appearance, Line Breaking, Options, Options
 @section Appearance
 
+@anchor{imaxima-pt-size}
 @defopt imaxima-pt-size
 The type size used in LaTeX.  This can be @samp{9}, @samp{10},
 @samp{11} or @samp{12} pt.
 @end defopt
 
+@anchor{imaxima-fnt-size}
 @defopt imaxima-fnt-size
 Default size of font.  Options include @samp{small},
 @samp{normalsize}, @samp{large}, @samp{Large}, @samp{LARGE},
 @samp{huge} or @samp{Huge} (in non decreasing order).
 @end defopt
 
+@anchor{imaxima-scale-factor}
 @defopt imaxima-scale-factor
 Scale all images by this factor.  The default is @samp{1.0}.
 @end defopt
@@ -394,8 +484,16 @@ in regular and linear fashion.
 A string the contains the document dimensions for @code{imaxima-latex}.
 @end defopt
 
+@anchor{imaxima-create-image-options}
+@defopt imaxima-create-image-options
+An association list of options that are used by the imaxima function
+@code{imaxima-create-image}. For example, if one is using a dark
+background in emacs, it may be preferable to set this option to
+@code{(:ascent center)}, thereby removing the default mask option.
+@end defopt
 
-@node Line Breaking
+
+@node Line Breaking, Miscellaneous, Appearance, Options
 @section Line Breaking
 Imaxima usually does a decent job of breaking lines that are too wide
 to fit in the buffer (thanks to the @code{breqn} LaTeX package).
