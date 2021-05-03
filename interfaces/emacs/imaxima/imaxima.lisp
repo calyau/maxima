@@ -1,15 +1,15 @@
 ;; Copyright (C) 2001, 2002, 2003, 2004 Jesper Harder
 ;; Copyright (C) 2007, 2008 Yasuaki Honda
+;; Copyright (C) 2020, 2021 Leo Butler
 ;;
 ;; Plotting support section of this file is the copy of the same
 ;; section of wxmathml.lisp with very small modification. The file
 ;; wxmathml.lisp is a part of the distribution of wxMaxima.
 
-;; Author: Jesper Harder <harder@ifa.au.dk>
 ;; Created: 14 Nov 2001
-;; Version: 1.0b
+;; Version: See version.texi
 ;; Keywords: maxima
-;; $Id: imaxima.lisp,v 1.8 2011-01-05 22:49:31 riotorto Exp $
+;; Time-stamp: <2021-05-03 Leo Butler (dev)>
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as

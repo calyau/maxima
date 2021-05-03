@@ -23,6 +23,7 @@ This file documents Imaxima.
 
 Copyright (C) 2002, 2003, 2004 Jesper Harder
 Copyright (C) 2004, 2007, 2008 Yasuaki Honda
+Copyright (C) 2020, 2021 Leo Butler
 
 Permission is granted to make and distribute verbatim copies of
 this manual provided the copyright notice and this permission notice
@@ -40,12 +41,13 @@ notice identical to this one except for the removal of this paragraph
 @title Imaxima Manual
 @subtitle Version @value{VERSION}
 @subtitle @value{UPDATED}
-@author by Jesper Harder and Yasuaki Honda. Imath mode by Yasuaki Honda.
+@author by Jesper Harder, Yasuaki Honda and Leo Butler. Imath mode by Yasuaki Honda.
 @page
 
 @vskip 0pt plus 1filll
 Copyright @copyright{} 2002, 2003, 2004 Jesper Harder 
 Copyright @copyright{} 2004, 2007, 2008 Yasuaki Honda   
+Copyright @copyright{} 2020, 2021 Leo Butler
 
 Permission is granted to make and distribute verbatim copies of@*
 this manual provided the copyright notice and this permission notice@*

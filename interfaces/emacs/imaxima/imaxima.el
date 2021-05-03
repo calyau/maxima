@@ -1,17 +1,16 @@
 ;; -*- mode: emacs-lisp; lexical-binding: t; -*-
 ;;;; imaxima.el --- Maxima mode with images
 
-;; Copyright (C) 2001, 2002, 2003, 2004 Jesper Harder
-
-;; Author: Jesper Harder <harder@ifa.au.dk>
 ;; Created: 14 Nov 2001
-;; Version: 1.0b
+;; Version: See version.texi
 ;; Keywords: maxima
 
+;; Copyright (C) 2001, 2002, 2003, 2004 Jesper Harder
 ;; Copyright (C) 2006 Stephen Eglen (imaxima-print-buffer)
 ;; Copyright (C) 2007, 2008 Yasuaki Honda (imaxima-to-html, inline graph)
+;; Copyright (C) 2020, 2021 Leo Butler (imaxima-gnuplot-replot, various improvements)
 
-;; $Id: imaxima.el,v 1.7 2009-02-22 09:18:27 yasu-honda Exp $
+;; Time-stamp: <2021-05-03 Leo Butler (dev)>
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
