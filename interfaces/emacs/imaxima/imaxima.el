@@ -975,10 +975,10 @@ STR is offending LaTeX expression.  FILENAME is name of the LaTeX file."
   (let ((kill-buffer-query-functions '())
 	(kill-buffer-hook '()))
     (if (get-buffer imaxima-gnuplot-buffer) (kill-buffer imaxima-gnuplot-buffer)))
-  (imaxima-gnuplot-start))
+  (imaxima-start-gnuplot))
 
 (defun imaxima-gnuplot-replot ()
-  "Replot the most recent gnuplot command in an external
+  "Replot the Gnuplot graph under point in an external
 window. Suppress a new input prompt."
   (interactive)
   (imaxima-start-gnuplot)
