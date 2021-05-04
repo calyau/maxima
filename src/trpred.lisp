@@ -14,6 +14,9 @@
 
 (defvar wrap-an-is 'is-boole-check "How to verify booleans")
 
+(defun wrap-an-is (exp)
+  (list wrap-an-is exp))
+
 (def%tr $is (form)
   (let ((wrap-an-is 'is-boole-check))
     (cons '$boolean (translate-predicate (cadr form)))))
@@ -73,7 +76,7 @@
   (destructuring-bind (mode . exp) (translate form)
     (if (eq mode '$boolean)
         exp
-        (wrap-an-is exp form))))
+        (wrap-an-is exp))))
 
 (defun trp-mnot (form) 
   (setq form (translate-predicate (cadr form)))
@@ -96,10 +99,6 @@
 				(t (cons 'or (nreverse nl)))))))
     (cond ((car l) (setq nl (cons (car l) nl))))))
 
-(defun wrap-an-is (exp ignore-form)
-  (declare (ignore ignore-form))
-  (list wrap-an-is exp))
-
 (defvar *number-types* '($float $number $fixnum ))
 
 (defun trp-mgreaterp (form) 
@@ -112,8 +111,7 @@
 	   `(> ,(dconv arg1 mode) ,(dconv arg2 mode)))
 	  ((eq '$number mode) `(> ,(cdr arg1) ,(cdr arg2)))
 	  ('else
-	   (wrap-an-is `(mgrp ,(dconvx arg1) ,(dconvx arg2))
-		       form)))))
+	   (wrap-an-is `(mgrp ,(dconvx arg1) ,(dconvx arg2)))))))
  
 (defun trp-mlessp (form) 
   (let (mode arg1 arg2)
@@ -125,8 +123,7 @@
 	   `(< ,(dconv arg1 mode) ,(dconv arg2 mode)))
 	  ((eq '$number mode) `(< ,(cdr arg1) ,(cdr arg2)))
 	  ('else
-	   (wrap-an-is `(mlsp ,(dconvx arg1) ,(dconvx arg2))
-		       form)))))
+	   (wrap-an-is `(mlsp ,(dconvx arg1) ,(dconvx arg2)))))))
 
 (defun trp-mequal (form) 
   (destructuring-let (((mode1 . arg1) (translate (cadr form)))
@@ -143,7 +140,7 @@
 	   `(= ,(dconv arg1 mode) ,(dconv arg2 mode)))
 	  ((eq '$number mode) `(meqp ,(cdr arg1) ,(cdr arg2)))
 	  ('else
-	   (wrap-an-is `(meqp ,(dconvx arg1) ,(dconvx arg2)) form)))))
+	   (wrap-an-is `(meqp ,(dconvx arg1) ,(dconvx arg2)))))))
 
 ;; Logical not for predicates.  Do the expected thing, except return
 (defun trp-not (val)
