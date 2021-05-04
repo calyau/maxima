@@ -49,11 +49,7 @@
 
 (defun translate-predicate (form)
   ;; N.B. This returns s-exp, not (<mode> . <s-exp>)
-  (cond ((atom form)
-	 (let ((tform (translate form)))
-	   (cond ((eq '$boolean (car tform)) (cdr tform))
-		 (t
-		  (wrap-an-is (cdr tform) form)))))
+  (cond ((atom form) (trp-with-boolean-convert form))
 	((eq 'mnot (caar form)) (trp-mnot form))
 	((eq 'mand (caar form)) (trp-mand form))
 	((eq 'mor (caar form)) (trp-mor form))
@@ -71,14 +67,13 @@
 	 ;; special form in macsyma!
 	 `(progn ,@(tr-args (nreverse (cdr (reverse (cdr form)))))
 	   ,(translate-predicate (car (last (cdr form))))))
-	(t
-	 (destructuring-let (((mode . tform) (translate form)))
-	   (boolean-convert mode tform form)))))
+	(t (trp-with-boolean-convert form))))
 
-(defun boolean-convert (mode exp form)
-  (if (eq mode '$boolean)
-      exp
-      (wrap-an-is exp form)))
+(defun trp-with-boolean-convert (form)
+  (destructuring-bind (mode . exp) (translate form)
+    (if (eq mode '$boolean)
+        exp
+        (wrap-an-is exp form))))
 
 (defun trp-mnot (form) 
   (setq form (translate-predicate (cadr form)))
