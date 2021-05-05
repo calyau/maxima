@@ -1252,9 +1252,13 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 	(if (and (numberp (car x)) (numberp (car y)))
             (unless (and (<= ymin (car y) ymax)
 			 (<= xmin (car x) xmax))
-              (incf n-clipped)
-              (setf (car x) 'moveto)
-              (setf (car y) 'moveto))
+	      ;; Let gnuplot do the clipping.  See the comment in DRAW2D.
+	      (unless (member (getf options :plot_format)
+			      '($gnuplot_pipes $gnuplot))
+
+		(incf n-clipped)
+		(setf (car x) 'moveto)
+		(setf (car y) 'moveto)))
             (progn
               (incf n-non-numeric)
               (setf (car x) 'moveto)
