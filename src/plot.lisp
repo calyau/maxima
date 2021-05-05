@@ -1631,10 +1631,18 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
              (y (cdr result) (cddr y)))
             ((null y))
           (if (numberp (car y))
-              (unless (<= ymin (car y) ymax)
-                (incf n-clipped)
-                (setf (car x) 'moveto)
-                (setf (car y) 'moveto))
+	      (unless (<= ymin (car y) ymax)
+		;; If the plot format uses gnuplot, we can let gnuplot
+		;; do the clipping for us.  This results in better
+		;; looking plots.  For example plot2d(x-floor(x),
+		;; [x,0,5], [y, 0, .5]) has lines going all the way to
+		;; the limits.  Previously, the lines would stop
+		;; before the limit.
+              	(unless (member (getf plot-options :plot_format)
+				'($gnuplot_pipes $gnuplot))
+		  (incf n-clipped)
+                  (setf (car x) 'moveto)
+                  (setf (car y) 'moveto)))
               (progn
                 (incf n-non-numeric)
                 (setf (car x) 'moveto)
