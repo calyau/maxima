@@ -940,6 +940,7 @@ A function in the @code{ctensor} (component tensor)
 package which will perform a coordinate transformation
 upon an arbitrary square symmetric matrix @var{M}. The user must input the
 functions which define the transformation.  (Formerly called @code{transform}.)
+These may also be supplied in the form of a list as an optional second argument.
 
 @opencatbox
 @category{Package ctensor}

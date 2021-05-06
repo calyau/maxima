@@ -1,4 +1,5 @@
 # CMake file for crosscompiling Maxima/wxMaxima for Windows
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) by Wolfgang Dautermann
 # License GPLv2+: GNU GPL version 2 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
@@ -249,13 +250,16 @@ install(FILES "${MINGW_LIBSTDCPP}" "${MINGW_LIBGCC}" DESTINATION bin/ COMPONENT 
 configure_file("${CMAKE_SOURCE_DIR}/licenses.html" "${CMAKE_BINARY_DIR}/licenses.html")
 install(FILES "${CMAKE_BINARY_DIR}/licenses.html" DESTINATION share/doc/ COMPONENT Maxima)
 
+file(COPY "${CMAKE_SOURCE_DIR}/../COPYING" DESTINATION "${CMAKE_BINARY_DIR}")
+file(READ "${CMAKE_SOURCE_DIR}/LICENSE_APPENDIX.txt" LICENSE_APPENDIX)
+file(APPEND "${CMAKE_BINARY_DIR}/COPYING" "${LICENSE_APPENDIX}")
 
 set(CPACK_GENERATOR "NSIS;ZIP")
 set(CPACK_PACKAGE_VERSION "${MAXIMAVERSION}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Maxima")
 set(CPACK_PACKAGE_VENDOR "Maxima Team")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/../README")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/../COPYING")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_BINARY_DIR}/COPYING")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "maxima-${CPACK_PACKAGE_VERSION}")
 set(CPACK_NSIS_INSTALL_ROOT "${WINDOWS_DRIVELETTER}:")
 set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)

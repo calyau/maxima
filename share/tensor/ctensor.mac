@@ -93,22 +93,35 @@ ctaylor(x):=
 
 /* This function transforms second-rank covariant tensors given the components
    and the transformation law, which is in the form Yi=Yi(X1,...,Xdim) */
-ctransform(qxyz):=block
+ctransform(qxyz,[equ]):=block
 (
   [ttemp,omtemp,vartemp,newtemp],
+  if length(equ)=0 then
+  (
+    for i thru dim do vartemp[i]:read("Transform #",i)
+  )
+  else
+  (
+    if length(equ)=1 then
+    (
+      if listp(equ[1])#true then print("argument 2 needs to be list")
+      else for i thru dim do vartemp[i]:equ[1][i]
+    )
+    else print("too many arguments")
+  ),
   for i thru dim do
     for j thru dim do 
   (
     ttemp[i,j]:qxyz[i,j],
     for k thru dim do ttemp[i,j]:subst(omtemp[k],ct_coords[k],ttemp[i,j])
   ),
-  for i thru dim do vartemp[i]:read("Transform #",i),
   for i thru dim do
     for j thru dim do
       for k thru dim do ttemp[i,j]:subst(vartemp[k],omtemp[k],ttemp[i,j]),
   for a thru dim do
-    for b thru dim do newtemp[a,b]:txyzsum(vartemp,ct_coords,a,b,ttemp),
-  genmatrix(newtemp,dim,dim)
+    for b thru dim do newtemp[a,b]:txyzsum(vartemp,ct_coords,a,b,ttemp), 
+  if ctrgsimp=true then ratsimp(trigsimp(genmatrix(newtemp,dim,dim)))
+  else genmatrix(newtemp,dim,dim)
 )$
 
 txyzsum(vartemp,ct_coords,a,b,ttemp):=block(
@@ -467,14 +480,14 @@ ct_coordsys(coordinate_system, [extra_args]):=
     declare(e,constant),
     if cframe_flag then
     (
-      fri:matrix([e*sin(u)*sinh(v)/tmp,  e*(1-cos(u)*cosh(v))/tmp,     0],
-                 [e*(cos(u)*cosh(v)-1)/tmp, -e*sin(u)*sinh(v)/tmp,     0],
-                 [                   0,                         0, e/tmp]),
+      fri:matrix([e*sin(u)*sinh(v)/tmp,  e*(1-cos(u)*cosh(v))/tmp, 0],
+                 [e*(cos(u)*cosh(v)-1)/tmp,  e*sin(u)*sinh(v)/tmp, 0],
+                 [                   0,                         0, 1]),
       lfg:ident(3)
     )
-    else lg:matrix([e^2/tmp, 2*e^2*sin(u)*sinh(v)*(1-cos(u)*cosh(v))/tmp, 0],
-                   [2*e^2*sin(u)*sinh(v)*(1-cos(u)*cosh(v))/tmp, e^2/tmp, 0],
-                   [                                        0, 0, e^2/tmp^2])
+    else lg:matrix([e^2/tmp, 0, 0],
+                   [0, e^2/tmp, 0],
+                   [0, 0,       1])
   )
   else if coordinate_system='paraboliccylindrical then
   (
@@ -490,12 +503,12 @@ ct_coordsys(coordinate_system, [extra_args]):=
   else if coordinate_system='paraboloidal then
   (
     dim:3,
-    ct_coords:[u,v,phi],
+    ct_coords:[phi,u,v],
     if cframe_flag then
     (
-      fri:matrix([-sin(phi)*u*v, cos(phi)*v, cos(phi)*u],
-                 [ cos(phi)*u*v, sin(phi)*v, sin(phi)*u],
-                 [            0,          u,         -v]),
+      fri:matrix([            0,          u,         -v],
+                 [-sin(phi)*u*v, cos(phi)*v, cos(phi)*u],
+                 [ cos(phi)*u*v, sin(phi)*v, sin(phi)*u]),
       lfg:ident(3)
     )
     else lg:matrix([u^2*v^2, 0, 0],[0, u^2+v^2, 0], [0, 0, u^2+v^2])
@@ -509,8 +522,8 @@ ct_coordsys(coordinate_system, [extra_args]):=
     (
       fri:matrix([v*w/e/f, u*w/e/f, u*v/e/f],
                  [-u*w/sqrt((f^2-e^2)*(u^2-e^2)/(e^2-v^2))/e,
-                  -v*w/sqrt((f^2-e^2)*(v^2-e^2)/(e^2-u^2))/e,
-                       sqrt((u^2-e^2)*(v^2-e^2)/(e^2-f^2))/e],
+                   v*w/sqrt((f^2-e^2)*(v^2-e^2)/(e^2-u^2))/e,
+                      -sqrt((u^2-e^2)*(v^2-e^2)/(e^2-f^2))/e],
                  [ u*w/sqrt((f^2-e^2)*(u^2-f^2)/(v^2-f^2))/f,
                    v*w/sqrt((f^2-e^2)*(v^2-f^2)/(u^2-f^2))/f,
                        sqrt((u^2-f^2)*(v^2-f^2)/(f^2-e^2))/f]),
@@ -577,12 +590,12 @@ ct_coordsys(coordinate_system, [extra_args]):=
     if cframe_flag then
     (
       fri:matrix([abs(e)*sqrt((u^2-v^2)/(u^2-1)), 0, 0],
-                 [0, abs(e)*sqrt((u^2-v^2)/(u^2-1)), 0],
+                 [0, abs(e)*sqrt((u^2-v^2)/(1-v^2)), 0],
                  [0,                     0, abs(e*u*v)]),
       lfg:ident(3)
     )
     else lg:matrix([e^2*(u^2-v^2)/(u^2-1), 0, 0],
-                   [0, e^2*(u^2-v^2)/(u^2-1), 0],
+                   [0, e^2*(u^2-v^2)/(1-v^2), 0],
                    [0,           0, e^2*u^2*v^2])
   )
   else if coordinate_system='prolatespheroidal then
@@ -1970,4 +1983,4 @@ riccicov(ii,jj,kk,ll):=block(
 
 
 
-put('ctensor,'v20041204,'version)$
+put('ctensor,'v20210427,'version)$

@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 
 # Compilation-script for nightly builds.
 # Should be copied to a private location (~/bin), so that

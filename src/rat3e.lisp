@@ -868,6 +868,10 @@
 
 (defun maxima-rationalize (x)
   (cond ((not (floatp x)) x)
+	;; Handle denormalized floats -- see maxima-discuss 2021-04-27 and bug 3777
+	((and (not (= x 0.0)) (< (abs x) COMMON-LISP:LEAST-POSITIVE-NORMALIZED-DOUBLE-FLOAT))
+	 (let ((r ($rationalize x)))
+	   (cons (cadr r) (caddr r))))
 	((< x 0.0)
 	 (setq x (ration1 (* -1.0 x)))
 	 (rplaca x (* -1 (car x))))

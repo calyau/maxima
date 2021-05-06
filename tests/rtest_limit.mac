@@ -523,10 +523,14 @@ minf;
  * Bug ID: 1797296 - Crazy results when doing limit of 'diff
  */
 limit('diff(x+1,x),x,2);
-'limit('diff(x+1,x),x,2);
+1;
 
 limit('integrate(x+1,x),x,2);
-'limit('integrate(x+1,x),x,2);
+'integrate(x+1,x);
+
+/* #3767 incorrect limit (radius of convergence) */
+limit(diff(exp(n * x), x,n)/n,n,inf);
+'limit(diff(exp(n * x), x,n)/n,n,inf);
 
 limit(integrate(f(t),t,0,x),x,0,plus);
 'limit(integrate(f(t),t,0,x),x,0,plus);

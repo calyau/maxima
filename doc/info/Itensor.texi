@@ -916,7 +916,7 @@ Maxima encountered a Lisp error:
  $IMETRIC [or a callee] requires less than two arguments.
 
 Automatically continuing.
-To reenable the Lisp debugger set *debugger-hook* to nil.
+To re-enable the Lisp debugger set *debugger-hook* to nil.
 (%i9) imetric(g);
 (%o9)                                done
 (%i10) ishow(lc2kdt(expr))$
@@ -1253,7 +1253,7 @@ in @var{expr} and then carry out the differentiation by saying
 Equivalent to the execution of @mref{undiff}, followed by @mref{ev} and
 @mref{rediff}.
 
-The point of this operation is to easily evalute expressions that cannot
+The point of this operation is to easily evaluate expressions that cannot
 be directly evaluated in derivative form. For instance, the following
 causes an error:
 
@@ -1267,7 +1267,7 @@ Maxima encountered a Lisp error:
  $ICURVATURE [or a callee] requires less than three arguments.
 
 Automatically continuing.
-To reenable the Lisp debugger set *debugger-hook* to nil.
+To re-enable the Lisp debugger set *debugger-hook* to nil.
 @end example
 
 However, if @mref{icurvature} is entered in noun form, it can be evaluated

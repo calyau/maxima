@@ -1,4 +1,7 @@
-;;; Package to allow Maxima-level user-defined simplifying functions
+;;; simplifying.lisp
+;;; Maxima-level user-defined simplifying functions
+;;; Copyright 2007-2019 by Stavros Macrakis macrakis@alum.mit.edu
+;;; Licensed under the GNU Lesser General Public License version 3 (LGPLv3)
 ;;;
 ;;; For example, suppose we want to write a step function stepfn(x)
 ;;; which is 0 for x<- and 1 for x>0.
@@ -73,7 +76,10 @@
 		 (merror "Bad second argument to `simpfunmake': ~M" args))))
   
 (defun simpfunmake (fun args)
-  (if (not (or (symbolp fun) ($subvarp fun)
+  ;; Code copied from (updated) $funmake
+  (if (not (or (and (symbolp fun)
+		    (not (member fun '(t nil $%e $%pi $%i))))
+	       ($subvarp fun)
 	       (and (stringp fun) (getopr0 fun))
 	       (and (not (atom fun)) (eq (caar fun) 'lambda))))
       (merror "Bad first argument to `simpfuncall/make': ~M" fun))

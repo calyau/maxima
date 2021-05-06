@@ -46,51 +46,6 @@ docplot(name,[contents]):=
     )
 )$
 
-doc_contour_plot(name,[contents]):=
-(
-    apply(
-	contour_plot,
-	append(
-		contents,
-		[
-			[png_file, sconcat(name,".png")]
-		]
-	)
-    ),
-    apply(
-	contour_plot,
-	append(
-		contents,
-		[
-			[pdf_file, sconcat(name,".pdf")]
-		]
-	)
-    )
-)$
-
-load(implicit_plot)$
-doc_implicit_plot(name,[contents]):=
-(
-    apply(
-	implicit_plot,
-	append(
-		contents,
-		[
-			[png_file, sconcat(name,".png")]
-		]
-	)
-    ),
-    apply(
-	implicit_plot,
-	append(
-		contents,
-		[
-			[pdf_file, sconcat(name,".pdf")]
-		]
-	)
-    )
-)$
-
 doc_julia(name,[contents]):=
 (
     apply(

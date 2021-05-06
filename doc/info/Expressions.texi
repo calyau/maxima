@@ -1985,7 +1985,7 @@ the function itself.
 @fname{psubst} (@var{list}, @var{expr}) @
 @fname{psubst} (@var{a}, @var{b}, @var{expr})
 
-@code{psubst(@var{a}, @var{b}, @var{expr})} is simliar to @code{subst}.  See 
+@code{psubst(@var{a}, @var{b}, @var{expr})} is similar to @code{subst}.  See
 @mrefdot{subst}
 
 In distinction from @code{subst} the function @code{psubst} makes parallel 

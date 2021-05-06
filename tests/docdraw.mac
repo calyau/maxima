@@ -4,6 +4,4 @@ wxitornot(fun) ::= buildq([fun:fun, wxfun:concat('wx,fun), docfun:concat(doc,fun
     ( print("Test:",name), apply('fun,x), if demo=true then (print("Press <enter> to continue."), readline(stdin) )),
     alias(doc_fun,docfun))) ;
 
-load(implicit_plot)$
-
-map(wxitornot,[draw2d,draw3d,draw,contour_plot,implicit_plot,julia,mandelbrot,plot2d,plot,plot3d]);
+map(wxitornot,[draw2d,draw3d,draw,julia,mandelbrot,plot2d,plot,plot3d]);
