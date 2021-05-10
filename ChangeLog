@@ -1,3 +1,6 @@
+Maxima 5.45 change log
+======================
+
 New items in core:
 ------------------
  * A ~m (Maxima pretty printer) format directive for printf
