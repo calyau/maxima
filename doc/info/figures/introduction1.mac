@@ -1,0 +1,2 @@
+plot2d (sin(x)/x, [x, -20, 20], [pdf_file, "./introduction1.pdf"]);
+plot2d (sin(x)/x, [x, -20, 20], [png_file, "./introduction1.png"]);

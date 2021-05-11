@@ -1,0 +1,4 @@
+plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5], [y, -1.5, 2],
+  [pdf_file, "./introduction2.pdf"]);
+plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5], [y, -1.5, 2],
+  [png_file, "./introduction2.png"]);

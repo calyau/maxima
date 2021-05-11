@@ -1,0 +1,4 @@
+plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), [x, -12, 12], [y, -12, 12],
+  [pdf_file, "./introduction3.pdf"]);
+plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), [x, -12, 12], [y, -12, 12],
+  [png_file, "./introduction3.png"]);
