@@ -57,9 +57,9 @@ maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
  zeilberger.texi errormessages.texi commandline-options.texi
 
 figurefiles = \
-figures/introduction1.gif\
-figures/introduction2.gif\
-figures/introduction3.gif\
+figures/introduction1.png\
+figures/introduction2.png\
+figures/introduction3.png\
 figures/dynamics1.png\
 figures/dynamics2.png\
 figures/dynamics3.png\
