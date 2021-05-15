@@ -407,7 +407,7 @@ coordinates), and transform them into x and y coordinates.
 @fname{plot2d} ([parametric, @var{expr_x}, @var{expr}_y, @var{range}], @var{options}) @
 @fname{plot2d} ([discrete, @var{points}], @var{options}) @
 @fname{plot2d} ([contour, @var{expr}], @var{range_x}, @var{range_y}, @var{options}) @
-@fname{plot2d} ([@var{type_1}, @dots{}, @var{type_n}], @var{options}) @
+@fname{plot2d} ([@var{type_1}, @dots{}, @var{type_n}], @var{options})
 
 There are 5 types of plots that can be plotted by @code{plot2d}:
 
