@@ -113,8 +113,8 @@ Bug fixes for numbered bugs:
  * #3715: draw3d with variables x[1], x[2] not working
  * #3720: conjugate of und, ind, zerob, and zeroa
  * #3722: missing simp flags in subexpressions conjugate nounform
- * #3728: missing simp flag from set_partitions
  * #3723: conjugate of summations (check if summation range is real)
+ * #3728: missing simp flag from set_partitions
  * #3732: plot_format gnuplot_pipes creates file in addition to a pipe
  * #3733: $gamma vs %gamma confusion
  * #3734: $hypergeometric_u vs %hypergeometric_u confusion
