@@ -731,7 +731,7 @@
 (defun set-partitions (a n)
   (cond ((= n 0)
 	 (cond ((null a)
-		(list `(($set))))
+		(list `(($set simp))))
 	       (t
 		nil)))
 	((null a)
@@ -748,7 +748,7 @@
 	       (setq acc (cons (simplifya `(($set) ,@w ,($adjoin x z) ,@s) t) acc))
 	       (setq w (cons z w))))
 	     	   
-	   (setq x `(($set) ,x))
+	   (setq x `(($set simp) ,x))
 	   (setq p (set-partitions (cdr a) (- n 1)))
 	   (dolist (pj p acc)
 	     (setq acc (cons ($adjoin x pj) acc)))))))
