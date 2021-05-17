@@ -7,6 +7,8 @@ New items in core:
  * New methods contour and implicit function for plot2d
  * New file geomview_def.lisp. Code to parse plots for Geomview
    moved from plot.lisp to that file
+ * New code to commute conjugate and derivative
+ * New tests for rtestconjugate.mac
 
 New items in share:
 -------------------
@@ -111,6 +113,7 @@ Bug fixes for numbered bugs:
  * #3715: draw3d with variables x[1], x[2] not working
  * #3720: conjugate of und, ind, zerob, and zeroa
  * #3722: missing simp flags in subexpressions conjugate nounform
+ * #3728: missing simp flag from set_partitions
  * #3723: conjugate of summations (check if summation range is real)
  * #3732: plot_format gnuplot_pipes creates file in addition to a pipe
  * #3733: $gamma vs %gamma confusion
