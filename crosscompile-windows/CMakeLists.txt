@@ -205,7 +205,7 @@ externalproject_add(maxima
   BUILD_IN_SOURCE 1
   CONFIGURE_COMMAND sh -c "test -x ./bootstrap && ./bootstrap || return 0"
             COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh ${ABCL_ENABLE} "${ABCL_JAR}" --with-default-lisp=${WITH_DEFAULT_LISP} --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
-  # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...
+  # clisp-depends.mk is generated with "\" as path separator, not "/" - correct that...
   BUILD_COMMAND LANG=C $(MAKE) -C src clisp-depends.mk
         COMMAND sed -i s+\\\\+/+g src/clisp-depends.mk
         COMMAND LANG=C $(MAKE)
