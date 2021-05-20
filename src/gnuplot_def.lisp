@@ -1,4 +1,4 @@
-;; gnuplot.lisp: routines for Maxima's interface to gnuplot
+;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
 ;; 
 ;; This program is free software; you can redistribute it and/or
@@ -304,7 +304,7 @@
           (format nil "maxplot.~(~a~)"
                   (get-gnuplot-term (getf plot-options :gnuplot_term)))))))
 
-  (unless (null out-file) (setq out-file (plot-file-path out-file preserve-file)))
+  (unless (null out-file) (setq out-file (plot-file-path out-file preserve-file plot-options)))
   (list terminal-command out-file)))
 
 (defmethod plot-preamble ((plot gnuplot-plot) plot-options)
@@ -341,9 +341,10 @@
               (progn
                 (if meshcolor
                     (progn
-                      (format dest "set style line 100 lt rgb ~s lw 1~%"
-                              (rgb-color meshcolor))
-                      (format dest "set pm3d hidden3d 100~%")
+                      (format
+                       dest
+                       "set pm3d hidden3d 100 border lw 0.5 lt rgb ~s~%"
+                       (rgb-color meshcolor))
                       (unless (getf plot-options :gnuplot_4_0)
                         (format dest "set pm3d depthorder~%")))
                     (format dest "set pm3d~%"))
@@ -502,6 +503,30 @@
       'string
       (slot-value plot 'data)
       (with-output-to-string (st)            
+        (unless (or (getf options :logy)
+                    (and (getf options :y) (listp (getf options :y))))
+          (let (y ymin ymax)
+            (dolist (points-list points-lists)
+              (dotimes (i (/ (length points-list) 2))
+                (setq y (nth (1+ (* i 2)) points-list))
+                (when (numberp y)
+                  (if (numberp ymin)
+                      (if (numberp ymax)
+                          (progn
+                            (when (< y ymin) (setq ymin y))
+                            (when (> y ymax) (setq ymax y)))
+                          (if (< y ymin)
+                              (setq ymax ymin ymin y)
+                              (setq ymax y)))
+                      (if (numberp ymax)
+                          (if (> y ymax)
+                              (setq ymin ymax ymax y)
+                              (setq ymin y))
+                          (setq ymin y))))))
+            (when (and (numberp ymin) (numberp ymax))
+              (psetq ymin (- (* 1.05 ymin) (* 0.05 ymax))
+                     ymax (- (* 1.05 ymax) (* 0.05 ymin)))
+              (format st "set yrange [~,8,,,,,'eg: ~,8,,,,,'eg]~%" ymin ymax))))
         (format st "plot")
         (when (getf options :x)
           (format st " [~{~,8,,,,,'eg~^ : ~}]" (getf options :x)))
@@ -677,8 +702,7 @@
 (defmethod plot-shipout ((plot gnuplot-plot) options &optional output-file)
    (case (getf options :plot_format)
      ($gnuplot
-      (let (file)
-        (setq file (plot-file-path (format nil "maxout~d.gnuplot" (getpid))))
+      (let ((file (plot-set-gnuplot-script-file-name options)))
         (with-open-file (fl
                          #+sbcl (sb-ext:native-namestring file)
                          #-sbcl file

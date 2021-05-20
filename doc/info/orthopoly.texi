@@ -1078,8 +1078,8 @@ The left-continuous unit step function; thus
 @code{unit_step (@var{x})} vanishes for @code{@var{x} <= 0} and equals
 1 for @code{@var{x} > 0}.
 
-If you want an unit step function that
-takes on the value 1/2 at zero, use @code{(1 + signum (@var{x}))/2}.
+If you want a unit step function that takes on the value 1/2 at zero,
+use @mrefdot{hstep}
 
 @opencatbox
 @category{Package orthopoly}

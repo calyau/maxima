@@ -1,4 +1,6 @@
 ;;; Functions from http://clocc.sourceforge.net/
+;;; SPDX-License-Identifier: LGPL-3.0-or-later
+;;; (the link http://www.gnu.org/copyleft/lesser.html redirects to that license)
 ;;;
 ;;; Copyright (C) 1999-2010 by Sam Steingold
 ;;; This is open-source software.

@@ -1,4 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
+;;
+;; Time-stamp: "2021-05-03 14:07:21 villate"
 
 (in-package :maxima)
 
@@ -1250,9 +1252,13 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 	(if (and (numberp (car x)) (numberp (car y)))
             (unless (and (<= ymin (car y) ymax)
 			 (<= xmin (car x) xmax))
-              (incf n-clipped)
-              (setf (car x) 'moveto)
-              (setf (car y) 'moveto))
+	      ;; Let gnuplot do the clipping.  See the comment in DRAW2D.
+	      (unless (member (getf options :plot_format)
+			      '($gnuplot_pipes $gnuplot))
+
+		(incf n-clipped)
+		(setf (car x) 'moveto)
+		(setf (car y) 'moveto)))
             (progn
               (incf n-non-numeric)
               (setf (car x) 'moveto)
@@ -1629,10 +1635,18 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
              (y (cdr result) (cddr y)))
             ((null y))
           (if (numberp (car y))
-              (unless (<= ymin (car y) ymax)
-                (incf n-clipped)
-                (setf (car x) 'moveto)
-                (setf (car y) 'moveto))
+	      (unless (<= ymin (car y) ymax)
+		;; If the plot format uses gnuplot, we can let gnuplot
+		;; do the clipping for us.  This results in better
+		;; looking plots.  For example plot2d(x-floor(x),
+		;; [x,0,5], [y, 0, .5]) has lines going all the way to
+		;; the limits.  Previously, the lines would stop
+		;; before the limit.
+              	(unless (member (getf plot-options :plot_format)
+				'($gnuplot_pipes $gnuplot))
+		  (incf n-clipped)
+                  (setf (car x) 'moveto)
+                  (setf (car y) 'moveto)))
               (progn
                 (incf n-non-numeric)
                 (setf (car x) 'moveto)
@@ -1701,7 +1715,18 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 (defvar $xmaxima_plot_command "xmaxima")
 
-(defun plot-temp-file (file &optional (preserve-file nil))
+(defun plot-set-gnuplot-script-file-name (options)
+  (let ((gnuplot-term (getf options :gnuplot_term))
+	(gnuplot-out-file (getf options :gnuplot_out_file)))
+    (if (and (find (getf options :plot_format) '($gnuplot_pipes $gnuplot))
+             (eq gnuplot-term '$default) gnuplot-out-file)
+	(plot-file-path gnuplot-out-file t options)
+      (plot-file-path
+       (format nil "maxout~d.~(~a~)"
+	       (getpid)
+               (ensure-string (getf options :plot_format))) nil options))))
+
+(defun plot-temp-file0 (file &optional (preserve-file nil))
   (let ((filename 
 	 (if *maxima-tempdir* 
 	     (format nil "~a/~a" *maxima-tempdir* file)
@@ -1711,12 +1736,18 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
       (setf (gethash filename *temp-files-list*) t))
     (format nil "~a" filename)
     ))
+(defun plot-temp-file (file &optional (preserve-file nil) (plot-options nil))
+  (let ((script-name (and plot-options (getf plot-options :gnuplot_script_file))))
+    (plot-temp-file0
+     (cond ((null script-name) file)
+	   ((symbolp script-name) (mfuncall script-name file))
+	   (t script-name)) preserve-file)))
 
 ;; If no file path is given, uses temporary directory path
-(defun plot-file-path (file &optional (preserve-file nil))
+(defun plot-file-path (file &optional (preserve-file nil) (plot-options nil))
   (if (pathname-directory file)
       file
-      (plot-temp-file file preserve-file)))
+      (plot-temp-file file preserve-file plot-options)))
 
 (defun gnuplot-process (plot-options &optional file out-file)
   (let ((gnuplot-term (getf plot-options :gnuplot_term))
@@ -1778,7 +1809,11 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
        (case name
          ($adapt_depth 
           (setf (getf options :adapt_depth)
-                (check-option (cdr opt) #'naturalp "a natural number" 1)))
+                (check-option (cdr opt) #'(lambda (n)
+					    ;; N should be a non-negative integer
+					    (and (integerp n)
+						 (>= n 0)))
+			      "a non-negative integer" 1)))
          ($axes (setf (getf options :axes)
                       (check-option-b (cdr opt) #'axesoptionp "x, y, solid" 1)))
          ($azimuth (if (caddr opt)
@@ -1914,6 +1949,10 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($gnuplot_out_file 
           (setf (getf options :gnuplot_out_file)
                 (check-option (cdr opt) #'stringp "a string" 1)))
+	 ($gnuplot_script_file
+	  (setf (getf options :gnuplot_script_file)
+		(check-option (cdr opt) #'(lambda(x) (or (stringp x) (symbolp x))) "a string or symbol" 1)
+		(getf options :plot_format) '$gnuplot))
          ($gnuplot_pm3d
           (setf (getf options :gnuplot_pm3d)
                 (check-option-boole (cdr opt))))
@@ -2276,6 +2315,7 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                    "plot2d: parametric expressions ~M and ~M should depend only on ~M")
                   ($second f) ($third f) ($first prange))))
               ($contour
+               (setq xrange (check-range xrange))
                (setq xrange-required t)
                (setq fpfun (coerce-float-fun ($second f) ($rest xrange -2)))
                (setq vars1 ($listofvars (mfuncall fpfun ($first xrange))))

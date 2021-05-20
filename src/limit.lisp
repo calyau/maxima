@@ -174,9 +174,6 @@
 		      origval '$inf
 		      exp (subin (m* -1 var) exp)))
               
-              ;; Hide noun form of %derivative, %integrate.
-	      (setq exp (hide exp))
-              
 	      ;; Transform the limit value.
 	      (unless (infinityp val)
 		(unless (zerop2 val)
@@ -185,6 +182,7 @@
 		    ;; bound by %sum, %product, %integrate, %limit
 		    (setq var (gensym))
 		    (putprop var t 'internal)
+		    (setq exp (derivative-subst exp val var realvar))
 		    (setq exp (maxima-substitute (m+ val var) realvar exp))))
 		(setq val (cond ((eq dr '$plus) '$zeroa)
 				((eq dr '$minus) '$zerob)
@@ -2993,30 +2991,27 @@ ignoring dummy variables and array indices."
 	 (cond ((eq val '$zeroa) '($plus))
 	       ((eq val '$zerob) '($minus)))))
 
-;; replace noun form of %derivative and indefinite %integrate with gensym.
-;; prevents substitution x -> x+1 for limit('diff(x+2,x), x, 1)
+;; substitute inside noun form of %derivative
+;; for cases such as     limit('diff(x+2,x), x, 1)
+;;                 ->    limit('diff(xx+3), xx, 0)
 ;;
-;; however, this doesn't work for limit('diff(x+2,x)/x, x, inf)
-;; because the rest of the limit code thinks the gensym is const wrt x.
-(defun hide (exp)
+;; maxima-substitute with *atp* skips over %derivative
+;;
+;; substitutes   diff(f(realvar), realvar, n)
+;;           ->  diff(f(var+val), var, n)
+(defun derivative-subst (exp val var realvar)
   (cond ((atom exp) exp)
-	((or (eq '%derivative (caar exp))
-	     (and (eq '%integrate (caar exp))	; indefinite integral
-		  (null (cdddr exp))))
-	 (hidelim exp (caar exp)))
-	(t (cons (car exp) (mapcar 'hide (cdr exp))))))
-
-(defun hidelim (exp func)
-  (setq func (gensym))
-  (putprop func
-	   (hidelima exp)
-	   'limitsub)
-  func)
-
-(defun hidelima (e)
-  (if (among var e)
-      (nounlimit e var val)
-      e))
+	((eq '%derivative (caar exp))
+	 (cons
+	  (car exp)
+	  (cons		;; the function being differentiated
+	   (maxima-substitute (m+ val var) realvar (cadr exp))
+	   (cons	;; the var of differentiation
+	    (maxima-substitute var realvar (caddr exp))
+	    (cdddr exp))))) ;; the order of the derivative
+	(t (cons (car exp)
+		 (mapcar (lambda (x) (derivative-subst x val var realvar))
+			 (cdr exp))))))
 
 ;;;Used by Defint also.
 (defun oscip (e)

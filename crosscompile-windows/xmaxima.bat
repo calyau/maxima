@@ -1,4 +1,5 @@
 @echo off
+rem SPDX-License-Identifier: GPL-2.0-or-later
 rem startscript for xmaxima
 
 rem get directory, where xmaxima.bat is installed (including final "\")

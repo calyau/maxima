@@ -400,6 +400,23 @@ A synonym for @code{entier (@var{x})}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{hstep}
+@deffn {Function} hstep (@var{x})
+The Heaviside unit step function, equal to 0 if @var{x} is negative,
+equal to 1 if @var{x} is positive and equal to 1/2 if @var{x} is equal
+to zero.
+
+If you want a unit step function that takes on the value of 0 at @var{x}
+equal to zero, use @mrefdot{unit_step}
+
+@opencatbox
+@category{Laplace transform}
+@category{Mathematical functions}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{lmax}
 @deffn {Function} lmax (@var{L})
 

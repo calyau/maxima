@@ -1,3 +1,4 @@
+@c Time-stamp: "2021-05-18 21:10:18 villate"
 @menu
 * Introduction to Plotting::
 * Plotting Formats::
@@ -15,17 +16,16 @@
 To make the plots, Maxima can use an external plotting package or its
 own graphical interface Xmaxima (see the section on @mref{Plotting
 Formats}). The plotting functions calculate a set of points and pass
-them to the plotting package together with a set of commands. That
-information can be passed directly, if Maxima is running via the Xmaxima
-interface and the plotting program is also Xmaxima, through a pipe, if
-the plotting program is Gnuplot or saving the plotting commands into a
-file and then running the plotting program to parse that file.
+them to the plotting package together with a set of commands specific to
+that graphic program. In some cases those commands and data are saved in
+a file and the graphic program is executed giving it the name of that
+file to be parsed.
 
-The data file is given the name @code{maxout_xxx.format}, where
-@code{xxx} is a number that is unique to every concurrently-running
-instance of Maxima and @code{format} is the name of the plotting format
-being used (@code{gnuplot}, @code{xmaxima}, @code{mgnuplot} or
-@code{geomview}).
+When a file is created, it will begiven the name
+@code{maxout_xxx.format}, where @code{xxx} is a number that is unique to
+every concurrently-running instance of Maxima and @code{format} is the
+name of the plotting format being used (@code{gnuplot}, @code{xmaxima},
+@code{mgnuplot} or @code{geomview}).
 
 There are commands to save the plot in a graphic format file, rather
 than showing it in the screen. The default name for that graphic file is
@@ -39,7 +39,7 @@ in the directory specified by the system variable
 that variable (or to the environment variable @env{MAXIMA_TEMPDIR}) a string
 that represents a valid directory where Maxima can create new files. The
 output of the Maxima plotting command will be a list with the names of
-the file(s) created, including their complete path, or false if no files
+the file(s) created, including their complete path, or empty if no files
 are created. Those files should be deleted after the maxima session ends.
 
 If the format used is either @code{gnuplot} or @code{xmaxima}, and the
@@ -53,7 +53,7 @@ inspected to look for the source of the problem.
 
 The additional package @ref{draw} provides functions similar to the ones
 described in this section with some extra features, but it only works
-with@code{gnuplot}. Note that some plotting options have the same name
+with @code{gnuplot}. Note that some plotting options have the same name
 in both plotting packages, but their syntax and behavior is
 different. To view the documentation for a graphic option @code{opt},
 type @code{?? opt} in order to choose the information for either of
@@ -184,7 +184,7 @@ integer which can be used to extract only one element from the list
 (element 1 is the name of the option).
 
 See also @mrefcomma{set_plot_option} @mref{remove_plot_option} and the
-section on @mref{Plotting Options}.
+section on @mrefdot{Plotting Options}
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -192,10 +192,11 @@ section on @mref{Plotting Options}.
 @defvr {System variable} gnuplot_command
 
 This variable stores the name of the command used to run the gnuplot
-program when the plot format is @code{gnuplot}. Its default value is
-"gnuplot". If the gnuplot program is not found unless you give its
-complete path or if you want to try a different version of it, you
-may change the value of this variable. For instance,
+program when the plot format is @code{gnuplot} or
+@code{gnuplot_pipes}. Its default value is "gnuplot". If the gnuplot
+program is not found unless you give its complete path or if you want to
+try a different version of it, you may change the value of this
+variable. For instance,
 
 @c ===beg===
 @c gnuplot_command: "/usr/local/bin/my_gnuplot"$
@@ -214,9 +215,11 @@ may change the value of this variable. For instance,
 @defvr {System variable} gnuplot_file_args
 
 When a graphic file is going to be created using @code{gnuplot}, this
-variable is used to specify the way the file name should be passed to
-gnuplot. Its default value is "~s", which means that the name of the
-file will be passed directly. The contents of this variable can be
+variable is used to specify the format used to print the file name given
+to gnuplot. Its default value is "~a" in SBCL and Openmcl, and "~s" in
+other lisp versions, which means that the name of the file will be
+passed without quotes if SBCL or Openmcl are used and within quotes if
+other Lisp versions are used. The contents of this variable can be
 changed in order to add options for the gnuplot program, adding those
 options before the format directive "~s".
 
@@ -229,13 +232,14 @@ options before the format directive "~s".
 @anchor{gnuplot_view_args}
 @defvr {System variable} gnuplot_view_args
 
-This variable is used to parse the argument that will be passed to the
-gnuplot program when the plot format is @code{gnuplot}. Its default
-value is "-persist ~s", where "~s" will be replaced with the name of the
-file where the gnuplot commands have been written (usually
-"maxout_xxx.gnuplot"). The option @code{-persist} tells gnuplot to exit
-after the commands in the file have been executed, without closing the
-window that displays the plot.
+This variable is the format used to parse the argument that will be
+passed to the gnuplot program when the plot format is
+@code{gnuplot}. Its default value is "-persist ~a" when SBCL or Openmcl
+are used, and "-persist ~s" with other Lisp variants, where "~a" or "~s"
+will be replaced with the name of the file where the gnuplot commands
+have been written (usually "maxout_xxx.gnuplot"). The option
+@code{-persist} tells gnuplot to exit after the commands in the file
+have been executed, without closing the window that displays the plot.
 
 Those familiar with gnuplot, might want to change the value of this
 variable. For example, by changing it to:
@@ -279,8 +283,8 @@ iterations it takes the sequence that starts at that point to move out
 of the convergence circle of radius 2 centered at the origin. The number
 of pixels in the grid is controlled by the @mref{grid} plot option
 (default 30 by 30). The maximum number of iterations is set with the
-option @mrefdot{iterations} The program uses its own default palette:
-magenta,violet, blue, cyan, green, yellow, orange, red, brown and black,
+option @mrefdot{iterations} The program sets its own default palette:
+magenta, violet, blue, cyan, green, yellow, orange, red, brown and black,
 but it can be changed by adding an explicit @mref{palette} option in the
 command.
 
@@ -407,7 +411,7 @@ coordinates), and transform them into x and y coordinates.
 @fname{plot2d} ([parametric, @var{expr_x}, @var{expr}_y, @var{range}], @var{options}) @
 @fname{plot2d} ([discrete, @var{points}], @var{options}) @
 @fname{plot2d} ([contour, @var{expr}], @var{range_x}, @var{range_y}, @var{options}) @
-@fname{plot2d} ([@var{type_1}, @dots{}, @var{type_n}], @var{options}) @
+@fname{plot2d} ([@var{type_1}, @dots{}, @var{type_n}], @var{options})
 
 There are 5 types of plots that can be plotted by @code{plot2d}:
 
@@ -420,7 +424,7 @@ first one being the name of the variable that will be shown on the
 horizontal axis of the plot, and the other two elements should be two
 numbers, the first one smaller than the second, that define the minimum
 and maximum values to be shown on the horizontal axis. The name of the
-variable used in @var{range} must be the same variable on which
+variable used in @var{range_x} must be the same variable on which
 @var{expr} depends. The result will show in the vertical axis the
 corresponding values of the expression or function for each value of the
 variable in the horizontal axis.
@@ -894,7 +898,7 @@ surface correctly.
 @c ===end===
 @example
 @group
-(%i1) plot3d ( 5, [theta,0,%pi], [phi,0,2*%pi], same_xyz, nolegend
+(%i1) plot3d ( 5, [theta,0,%pi], [phi,0,2*%pi], same_xyz, nolegend,
   [transform_xy, spherical_to_xyz], [mesh_lines_color,blue],
   [palette,[gradient,"#1b1b4e", "#8c8cf8"]])$
 @end group
@@ -1061,7 +1065,13 @@ graphic program to decide what to do.
 @defvr {Plot option} adapt_depth [adapt_depth, @var{integer}]
 Default value: @code{5}
 
-The maximum number of splittings used by the adaptive plotting routine.
+The maximum number of splittings used by the adaptive plotting routine
+of @mref{plot2d}; @var{integer} must be a non-negative integer. A value
+of zero means that adaptive plotting will not be used and the resulting
+plot will have 1+4*@var{nticks} points (see option @mref{nticks}). To
+have more control on the number of points and their positions, a list of
+points can be created and then plotted using the @code{discrete} method
+of @code{plot2d}.
 
 @opencatbox
 @category{Plotting}
@@ -2028,6 +2038,47 @@ used to save the plot in a file, in one of the graphic formats supported
 by Gnuplot. To create PNG, PDF, Postscript or SVG, it is easier to use
 options @mrefcomma{png_file} @mrefcomma{pdf_file} @mrefcomma{ps_file}
 or @mrefdot{svg_file}
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+@end defvr
+
+     @c -----------------------------------------------------------------------------
+@anchor{gnuplot_script_file}
+@defvr {Plot option} gnuplot_script_file [gnuplot_script_file, @var{file_name_or_function}]
+
+Set the name of the script file created by @code{plot2d} or @code{plot3d}
+when the @mref{plot_format} is @code{gnuplot}. The value
+@var{file_name_or_function} can be a string or a Maxima function of one
+variable that returns a string.
+
+In this example, the script file name is set to ``sin.gnuplot''.
+
+@example
+(%i1) plot2d( sin(x), [x,0,2*%pi], [gnuplot_script_file, "sin.gnuplot"]);
+
+(%o1) ["/tmp/sin.gnuplot"]
+@end example
+
+In this example, @code{gnuplot_maxout_prt(@var{file})} is a function
+that takes the default file name, @var{file}. It constructs a full file
+name for the data file by interpolating a random 8-digit integer with a
+pad of zeros into the default file name. The directory is determined by
+@mref{maxima_tempdir} (it is ``/tmp'' in this example).
+
+@example
+(%i1) gnuplot_maxout_prt(file) := block([beg,end],
+        [beg,end] : split(file,"."),
+        printf(false,"~a_~8,'0d.~a",beg,random(10^8-1),end)) $
+
+(%i2) plot2d( sin(x), [x,0,2*%pi], [gnuplot_script_file, gnuplot_maxout_prt]);
+
+(%o2) ["/tmp/maxout68715_09606909.gnuplot"]
+@end example
+
+By default, the script would have been saved in a file named
+@code{maxoutXXXXX.gnuplot} (XXXXX=68715 in this example).
 
 @opencatbox
 @category{Plotting}

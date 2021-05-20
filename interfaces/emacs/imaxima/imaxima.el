@@ -1,17 +1,16 @@
 ;; -*- mode: emacs-lisp; lexical-binding: t; -*-
 ;;;; imaxima.el --- Maxima mode with images
 
-;; Copyright (C) 2001, 2002, 2003, 2004 Jesper Harder
-
-;; Author: Jesper Harder <harder@ifa.au.dk>
 ;; Created: 14 Nov 2001
-;; Version: 1.0b
+;; Version: See version.texi
 ;; Keywords: maxima
 
+;; Copyright (C) 2001, 2002, 2003, 2004 Jesper Harder
 ;; Copyright (C) 2006 Stephen Eglen (imaxima-print-buffer)
 ;; Copyright (C) 2007, 2008 Yasuaki Honda (imaxima-to-html, inline graph)
+;; Copyright (C) 2020, 2021 Leo Butler (imaxima-gnuplot-replot, various improvements)
 
-;; $Id: imaxima.el,v 1.7 2009-02-22 09:18:27 yasu-honda Exp $
+;; Time-stamp: <2021-05-03 Leo Butler (dev)>
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -477,6 +476,7 @@ dots per inch.  Buffer-local to rendering buffer.")
     (set-keymap-parent map image-map)
     (define-key map "l" #'imaxima-get-latex-src)
     (define-key map "g" #'imaxima-gnuplot-replot)
+    (define-key map "s" #'imaxima-gnuplot-restart)
     map)
   "Keymap for images in the `imaxima' buffer. The `image-map' is
   the parent map.")
@@ -827,13 +827,13 @@ cleardictstack 0 get restore\n")
 			   (or (eq imaxima-max-scale t)
 			       (> ratio imaxima-max-scale))))
 		  ;; scale image
-		  (multiple-value-setq (bb width height)
+		  (cl-multiple-value-setq (bb width height)
 		    (imaxima-eps-scale psfilename bb ratio))
 		(when imaxima-linearize-flag
 		  ;; linearize image
 		  (imaxima-tex-to-dvi str label (concat filename ".tex") t)
 		  (imaxima-dvi-to-ps filename)
-		  (multiple-value-setq (bb width height)
+		  (cl-multiple-value-setq (bb width height)
 		    (imaxima-extract-bb psfilename))))))
 	  (unless (eq imaxima-image-type 'postscript)
 	    (imaxima-ps-to-image psfilename filename bb width height))
@@ -854,7 +854,7 @@ cleardictstack 0 get restore\n")
 					    (list psfilename imaxima-image-type nil (list :pt-width width :pt-height height :bounding-box bb))
 					  (list filename imaxima-image-type nil)))
 				 'keymap imaxima-image-map
-				 'help-echo "o: save to file\ng: replot in window\nl: get latex source\nr: rotate by 90° clockwise\n+: increase size by 20%\n-: decrease size by 20%"
+				 'help-echo "o: save to file\ng: replot in window\nl: get latex source\nr: rotate by 90° clockwise\ns: restart gnuplot\n+: increase size by 20%\n-: decrease size by 20%"
 				 'latex imaxima-latex-src)
 		   (setq imaxima-latex-src nil))))))))
 
@@ -931,15 +931,75 @@ STR is offending LaTeX expression.  FILENAME is name of the LaTeX file."
 (defun imaxima-get-latex-src ()
   (interactive)
   (set-register imaxima-latex-src-register (get-text-property (point) 'latex)))
+
+;;;;;;;;;;;;;;;;;;;; GNUPLOT Support ;;;;;;;;;;;;;;;;;;;;
+(defun imaxima-get-gnuplot-file ()
+  (interactive)
+  (let ((src (get-text-property (point) 'latex)))
+    (if (string-match (format "\\(%s/maxout_[0-9]+\\)" imaxima-tmp-subdir) src)
+      (concat (match-string 1 src) ".gnuplot"))))
+
+(defcustom imaxima-gnuplot-buffer "*imaxima-gnuplot*"
+  "Name of the buffer created by `imaxima-start-gnuplot' and used by `imaxima-gnuplot-replot'. The sentinel `imaxima-gnuplot-sentinel' monitors the `gnuplot' process in this buffer.")
+(defcustom imaxima-gnuplot-command "gnuplot"
+  "Name, or complete pathname, of the `gnuplot' binary. Used by `imaxima-start-gnuplot'.")
+(defcustom imaxima-gnuplot-args ""
+  "Optional arguments passed to the `gnuplot' binary when started by `imaxima-start-gnuplot'.")
+(defvar imaxima-gnuplot-process nil
+  "A holder for the `gnuplot' process started in `imaxima-start-gnuplot'.")
+
+(defun imaxima-gnuplot-sentinel (process desc)
+  (let ((state (process-status process)))
+    (message "imaxima-gnuplot-sentinel: state: %s\ndescription: %s" state desc)))
+(defun imaxima-start-gnuplot ()
+  (save-mark-and-excursion
+    (let* ((gbuf (get-buffer-create imaxima-gnuplot-buffer))
+	   (proc (and gbuf (get-buffer-process gbuf)))
+	   (state (and proc (process-status proc))))
+      (cond ((and gbuf (eq state 'run))
+	     (message "Gnuplot running."))
+	    (gbuf
+	     (message "Re-starting gnuplot...")
+	     (setq imaxima-gnuplot-process (start-process (buffer-name gbuf) gbuf imaxima-gnuplot-command "-" imaxima-gnuplot-args)))	     
+	    (t
+	    ;; gbuf does not exist
+	     (error "Failed to create buffer %s to run %s. Stop." imaxima-gnuplot-buffer imaxima-gnuplot-command)))
+      (if (and gbuf imaxima-gnuplot-process)
+	  (set-process-sentinel imaxima-gnuplot-process #'imaxima-gnuplot-sentinel)
+	(error "imaxima-start-gnuplot failed.")))))
+
+(defun imaxima-gnuplot-restart ()
+  "Forcibly restart `gnuplot' process."
+  (interactive)
+  (let ((kill-buffer-query-functions '())
+	(kill-buffer-hook '()))
+    (if (get-buffer imaxima-gnuplot-buffer) (kill-buffer imaxima-gnuplot-buffer)))
+  (imaxima-start-gnuplot))
+
 (defun imaxima-gnuplot-replot ()
-  "Replot the most recent gnuplot command in an external
+  "Replot the Gnuplot graph under point in an external
 window. Suppress a new input prompt."
   (interactive)
+  (imaxima-start-gnuplot)
   (let ((term (or imaxima-gnuplot-replot-term (read-from-minibuffer "Terminal? "))))
-     (when (and (null imaxima-gnuplot-replot-term) (y-or-n-p "Save this as the session default? "))
-       (setq imaxima-gnuplot-replot-term term))
-     (imaxima-with-no-new-input-prompt
-      (process-send-string (current-buffer) (format "(gnuplot_replot(\"set terminal %s\"), linenum:linenum-1)$ \n" term)))))
+    (when (and (null imaxima-gnuplot-replot-term) (y-or-n-p "Save this as the session default? "))
+      (setq imaxima-gnuplot-replot-term term))
+    (let ((gplt-src (imaxima-get-gnuplot-file)))
+      (when gplt-src
+	(message "file=%s" gplt-src)
+	(save-mark-and-excursion
+	  (with-temp-file gplt-src
+	    (insert-file-contents gplt-src)
+	    (goto-char (point-min))
+	    (while (re-search-forward "^set term.+" nil t)
+	      (replace-match "# \\&")
+	      (insert (concat "\nset terminal " term)))
+	    (goto-char (point-min))
+	    (while (re-search-forward "^set out.+" nil t)
+	      (replace-match "# \\&")))
+	  (with-current-buffer imaxima-gnuplot-buffer
+	    (comint-send-string imaxima-gnuplot-process (concat "load \"" (shell-quote-argument gplt-src) "\"\n")))
+	  )))))
 
 (defvar imaxima-latex-src nil "The LaTeX code to generate the
 current image. Used by `imaxima-make-image' to set the `latex'
