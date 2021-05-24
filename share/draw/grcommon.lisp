@@ -40,6 +40,9 @@
 ;;      gnuplot
 ;;      vtk or vtk6
 ;;      vtk7
+#+(or (and sbcl win32) (and sbcl win64))
+(defvar $draw_renderer '$gnuplot)
+#-(or (and sbcl win32) (and sbcl win64))
 (defvar $draw_renderer '$gnuplot_pipes)
 
 (defvar $draw_use_pngcairo nil "If true, use pngcairo terminal when png is requested.")

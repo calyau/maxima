@@ -2,8 +2,8 @@
 
 # By default, this spec file will generate RPMs for clisp
 # This can be changed by modifying the variables below.
-%define enable_clisp 1
-%define clisp_flags --enable-clisp-exec
+%define enable_clisp 0
+%define clisp_flags --disable-clisp-exec
 %define enable_ccl 0
 %define ccl_flags --disable-ccl
 # ccl_flags --enable-ccl-exec --with-ccl=lx86cl
@@ -11,8 +11,8 @@
 %define cmucl_flags --disable-cmucl
 %define enable_sbcl 0
 %define sbcl_flags --disable-sbcl-exec
-%define enable_gcl 0
-%define gcl_flags --disable-gcl
+%define enable_gcl 1
+%define gcl_flags --enable-gcl
 
 # Options to build language packs
 #  Spanish 

@@ -955,7 +955,7 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{fullratsubst}
-@deffn {Function} fullratsubst (@var{new}, @var{old}, @var{expr})
+@deffn {Function} fullratsubst (@var{new}, @var{old}, @var{expr}) @
 @fname{fullratsubst} (@code{@var{old} = @var{new}}, @var{expr}) @
 @fname{fullratsubst} (@code{[ @var{old_1} = @var{new_1}, @dots{}, @var{old_n} = @var{new_n} ]}, @var{expr})
 
