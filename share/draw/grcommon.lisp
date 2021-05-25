@@ -40,6 +40,10 @@
 ;;      gnuplot
 ;;      vtk or vtk6
 ;;      vtk7
+
+;; gnuplot_pipes does not work with the combination SBCL/Windows.
+;; Therefore set the default value for draw_renderer to gnuplot
+;; in that case, set it to gnuplot_pipes otherwise.
 #+(or (and sbcl win32) (and sbcl win64))
 (defvar $draw_renderer '$gnuplot)
 #-(or (and sbcl win32) (and sbcl win64))
