@@ -9,5 +9,5 @@ set "xmpath=%xmpath:\=/%"
 
 set "MAXIMA_PREFIX=%xmpath%/.."
 
-start "Xmaxima" /b "%xmpath%wish86.exe" "%xmpath%xmaxima" %*
+start "Xmaxima" /b "%xmpath%wish86s.exe" "%xmpath%xmaxima" %*
 

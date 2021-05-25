@@ -31,7 +31,7 @@ externalproject_add(tcl
   URL "${TCL_URL}"
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${TCL_MD5}
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcltk/tcl-prefix/src/tcl/win/configure --build=${BUILDHOST} --host=${HOST} ${CONFIGURE64BIT} --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcltk/tcl-prefix/src/tcl/win/configure --build=${BUILDHOST} --host=${HOST} ${CONFIGURE64BIT} --enable-shared=no --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
   BUILD_COMMAND $(MAKE)
         COMMAND $(MAKE) install
 )
@@ -42,7 +42,7 @@ externalproject_add(tk
   DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/downloads
   URL_MD5 ${TK_MD5}
   DEPENDS tcl
-  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcltk/tk-prefix/src/tk/win/configure --build=${BUILDHOST} --host=${HOST} ${CONFIGURE64BIT} --with-tcl=${CMAKE_BINARY_DIR}/tcltk/tcl-prefix/src/tcl-build/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/lib --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
+  CONFIGURE_COMMAND ${CMAKE_BINARY_DIR}/tcltk/tk-prefix/src/tk/win/configure --build=${BUILDHOST} --host=${HOST} ${CONFIGURE64BIT} --enable-shared=no --with-tcl=${CMAKE_BINARY_DIR}/tcltk/tcl-prefix/src/tcl-build/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/lib --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
   BUILD_COMMAND $(MAKE)
         COMMAND $(MAKE) install
 )
