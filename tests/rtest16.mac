@@ -2646,3 +2646,19 @@ integrate(1/(1+tan(x)), x, 0, %pi/2);
 /* Also from bug #3562 */
 limit(log((x^2+1)/x^2)-2*log((x-1)/x), x, 0, minus);
 0$
+
+/* #3787 fixnump checks in simpexpt */
+(declare(n,integer),0);
+0$
+
+(-1)^((2^62-1)*n);
+(-1)^n$
+
+(-1)^((2^62+1)*n);
+(-1)^n$
+
+(-1)^((2^62+2)*n);
+1$
+
+(remove(n,integer),0);
+0$
