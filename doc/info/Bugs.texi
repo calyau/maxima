@@ -101,6 +101,9 @@ directory that is run as a part of the test suite by
 @c -----------------------------------------------------------------------------
 @anchor{bug_report}
 @deffn {Function} bug_report ()
+@ifinfo
+@fnindex Bugs
+@end ifinfo
 
 Prints out Maxima and Lisp version numbers, and gives a link
 to the Maxima project bug report web page.
