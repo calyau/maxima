@@ -405,9 +405,9 @@ Most directives use one or more elements of the arguments
 If @var{dest} is a stream or @code{true}, then @code{printf} returns @code{false}.
 Otherwise, @code{printf} returns a string containing the output.
 By default the streams @var{stdin}, @var{stdout} and @var{stderr} are defined.
-If maxima is running as a server (which is the normal case if maxima communicating
-with a graphical user interface) @code{setup-client} will define @var{old_stdout} and
-@var{old_stderr}, too.
+If Maxima is running as a network client (which is the normal case if Maxima is communicating
+with a graphical user interface, which must be the server) @code{setup-client}
+will define @var{old_stdout} and @var{old_stderr}, too.
 
 @code{printf} provides the Common Lisp function @code{format} in Maxima. 
 The following example illustrates the general relation between these two 
