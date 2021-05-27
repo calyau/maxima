@@ -63,49 +63,33 @@ Unfixed:
 
 (define-modify-macro mincf (&optional (i 1)) addk)
 
-(defmacro opcons (op &rest args)
-  `(simplify (list (list ,op) ,@args)))
-
 (defmacro opapply (op args)
   `(simplify (cons (list ,op) ,args)))
 
 (defun mzerop (z)
   (and (mnump z)
        (or (and (numberp z)(= z 0))
-	   (and (bigfloatp z)(= (cadr z) 0))))) ;bigfloat zeros may be diff precisions
+	         (and (bigfloatp z)(= (cadr z) 0))))) ;bigfloat zeros may be diff precisions
 
 (defun convert-to-coeff-form (x)  
   (let ((c))
     (cond ((mnump x) (cons 1 x))
-	  ((mtimesp x) 
-	   (pop x)  ;remove (car x) which is (mtimes ..)
-	   (cond ((mnump (setf c (car x))) ;set c to numeric coeff.
-		  (pop x) ; remove numeric coeff.
-		  (if (null (cdr x));; if only one more item, that's it.
-		      (cons  (car x) c)
-		    (cons  `((mtimes simp) ,@x) c)))
-		 (t (cons  `((mtimes simp) ,@x) 1))))
-	  (t (cons x 1)))))
+	        ((mtimesp x) 
+	          (pop x)  ;remove (car x) which is (mtimes ..)
+	          (cond ((mnump (setf c (car x))) ;set c to numeric coeff.
+	          	     (pop x) ; remove numeric coeff.
+		               (if (null (cdr x));; if only one more item, that's it.
+		                  (cons  (car x) c)
+		                  (cons  `((mtimes simp) ,@x) c)))
+            		    (t (cons  `((mtimes simp) ,@x) 1))))
+	        (t (cons x 1)))))
 
-;; The expression e must be simplified (ok)
-;;   (a) 1 * x --> x,
-;;   (b) 0 * x --> 0, 0.0 * x --> 0.0, 0.0b0 * x --> 0.0b0
-;;   (c) cf * e --> timesk(ck,e) when e is a maxima number,
-;;   (d) -1 * (a + b) --> -a - b,
-;;   (e) cf * (* a b c) --> (* (* cf a) b c ...) when a is a number; otherwise (* cf a b ...)
-;;   (f) (* cf e) (default)
-
+;; Previously there was a specialized function for multiplying a number times an expression. The
+;; motivation was, I think, speed. But the specialized function was responsible for 22 testsuite
+;; failures (May 2021) and it didn't contribute to running the testsuite any faster. So let us 
+;; replace the specialized function with a call to mul.
 (defun number-times-expr (cf e)
-  (cond ((eql cf 1) e)
-      	((mzerop cf) cf)
-	      ((mnump e) (timesk cf e)) ; didn't think this should happen
-      	((and (onep1 (neg cf)) (mplusp e))
-	        (opapply 'mplus (mapcar 'neg (cdr e))))
-	      ((mtimesp e) 
-        	  (if (mnump (cadr e))
-      	      `((mtimes simp) ,@(cons (timesk cf (cadr e)) (cddr e)))
-	            `((mtimes simp) ,@(cons cf (cdr e)))))
-	      (t  `((mtimes simp) ,cf ,e))))
+  (mul cf e))
 
 ;; Add an expression x to a list of equalities l.
 
@@ -198,15 +182,16 @@ Unfixed:
     (dolist (li l)
     	(setq li (simplifya li z))
     	(if (mplusp li) (setq acc (append acc (cdr li))) (push li acc))))
-      (setq l acc)
-      (setq acc nil)
-      (dolist (li l)
-         ;;(if (atom li) (incf *its-an-atom*) (incf *not-an-atom*))
-          (cond ((mnump li) (mincf num-sum li))
-	              ;; factor out infrequent cases.
-          	    ((and (consp li) (consp (car li)) (memq (caar li) '(mequal mrat $matrix mlist $interval)))
+
+    (setq l acc)
+    (setq acc nil)
+    (dolist (li l)
+      ;;(if (atom li) (incf *its-an-atom*) (incf *not-an-atom*))
+      (cond ((mnump li) (mincf num-sum li))
+	          ;; factor out infrequent cases.
+          	((and (consp li) (consp (car li)) (memq (caar li) '(mequal mrat $matrix mlist $interval)))
 	                (setq op (caar li))
-	               (cond ((eq op 'mequal)
+	                (cond ((eq op 'mequal)
 		                      (push li mequal-terms))
 		                    (($taylorp li)
 	                  	    (push li taylor-terms))
@@ -219,13 +204,13 @@ Unfixed:
 		                    ((eq op 'mlist)
 		                      (if $listarith (push li mlist-terms) (push (convert-to-coeff-form li) acc))))) 
 
-	              ;; Put non-infinite atoms into a hashtable; push infinite atoms into inf-terms.
-	              ((atom li)
-	                  (if (memq li '($minf $inf $infinity $und $ind))
-		                    (push li inf-terms)
-	                      (progn
-		                       (setq cf (gethash li atom-hash))
-		                       (setf (gethash li atom-hash) (if cf (1+ cf) 1)))))
+	            ;; Put non-infinite atoms into a hashtable; push infinite atoms into inf-terms.
+	            ((atom li)
+	                (if (memq li '($minf $inf $infinity $und $ind))
+		                  (push li inf-terms)
+	                    (progn
+		                      (setq cf (gethash li atom-hash))
+		                      (setf (gethash li atom-hash) (if cf (1+ cf) 1)))))
 
 	        (t (push (convert-to-coeff-form li) acc))))
 
