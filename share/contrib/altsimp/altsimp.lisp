@@ -97,15 +97,15 @@ Unfixed:
 
 (defun number-times-expr (cf e)
   (cond ((eql cf 1) e)
-	((mzerop cf) cf)
-	((mnump e) (timesk cf e)) ; didn't think this should happen
-	((and (onep1 (neg cf)) (mplusp e))
-	 (opapply 'mplus (mapcar 'neg (cdr e))))
-	((mtimesp e) 
-	 (if (mnump (cadr e))
-	     `((mtimes simp) ,@(cons (timesk cf (cadr e)) (cddr e)))
-	   `((mtimes simp) ,@(cons cf (cdr e)))))
-	(t  `((mtimes simp) ,cf ,e))))
+      	((mzerop cf) cf)
+	      ((mnump e) (timesk cf e)) ; didn't think this should happen
+      	((and (onep1 (neg cf)) (mplusp e))
+	        (opapply 'mplus (mapcar 'neg (cdr e))))
+	      ((mtimesp e) 
+        	  (if (mnump (cadr e))
+      	      `((mtimes simp) ,@(cons (timesk cf (cadr e)) (cddr e)))
+	            `((mtimes simp) ,@(cons cf (cdr e)))))
+	      (t  `((mtimes simp) ,cf ,e))))
 
 ;; Add an expression x to a list of equalities l.
 
@@ -150,18 +150,18 @@ Unfixed:
 	 (cond ((memq b '($minf $ind)) '$minf)
 	       ((memq b '($und $inf)) '$und)
 	       ((eq b '$infinity) '$infinity)))
-	((eq a '$ind)
-	 (cond ((eq b '$minf) '$minf)
-	       ((eq b '$ind) '$ind)
-	       ((eq b '$und) '$und)
-	       ((eq b '$inf) '$inf)
-	       ((eq b '$infinity) '$infinity)))
-	((eq a '$und) '$und)
-	((eq a '$inf)
-	 (cond ((memq b '($minf $und)) '$und)
-	       ((memq b '($inf $ind)) '$inf)
-	       ((eq b '$infinity) '$infinity)))
-	((eq a '$infinity) (if (eq b '$und) '$und '$infinity))))
+      	 ((eq a '$ind)
+	       (cond ((eq b '$minf) '$minf)
+	             ((eq b '$ind) '$ind)
+	             ((eq b '$und) '$und)
+	             ((eq b '$inf) '$inf)
+	             ((eq b '$infinity) '$infinity)))
+               ((eq a '$und) '$und)
+            	 ((eq a '$inf)
+	             (cond ((memq b '($minf $und)) '$und)
+	                   ((memq b '($inf $ind)) '$inf)
+	                   ((eq b '$infinity) '$infinity)))
+	                   ((eq a '$infinity) (if (eq b '$und) '$und '$infinity))))
 
 ;; Add an expression x to a list of infinities.
 
@@ -191,43 +191,43 @@ Unfixed:
 	(inf-terms nil) (matrix-terms nil) (mlist-terms nil) (taylor-terms nil) (interval-terms nil) (op)
 	(atom-hash (make-hash-table :test #'eq :size 8)))
 
-    (setq l (margs l))
+  (setq l (margs l))
 
-    ;; simplfy and flatten
-    (let (($%enumer $numer)) ;; convert %e --> 2.718...Why not %pi too? See simpcheck in simp.lisp.
-      (dolist (li l)
-	(setq li (simplifya li z))
-	(if (mplusp li) (setq acc (append acc (cdr li))) (push li acc))))
-    (setq l acc)
-    (setq acc nil)
+  ;; simplfy and flatten
+  (let (($%enumer $numer)) ;; convert %e --> 2.718...Why not %pi too? See simpcheck in simp.lisp.
     (dolist (li l)
-      ;;(if (atom li) (incf *its-an-atom*) (incf *not-an-atom*))
-      (cond ((mnump li) (mincf num-sum li))
-	    ;; factor out infrequent cases.
-	    ((and (consp li) (consp (car li)) (memq (caar li) '(mequal mrat $matrix mlist $interval)))
-	     (setq op (caar li))
-	     (cond ((eq op 'mequal)
-		    (push li mequal-terms))
-		   (($taylorp li)
-		    (push li taylor-terms))
-		   ((eq op 'mrat)
-		    (push li mrat-terms))
-		   ((eq op '$matrix)
-		    (push li matrix-terms))
-		   ((eq op '$interval)
-		    (push li interval-terms))
-		   ((eq op 'mlist)
-		    (if $listarith (push li mlist-terms) (push (convert-to-coeff-form li) acc)))))
+    	(setq li (simplifya li z))
+    	(if (mplusp li) (setq acc (append acc (cdr li))) (push li acc))))
+      (setq l acc)
+      (setq acc nil)
+      (dolist (li l)
+         ;;(if (atom li) (incf *its-an-atom*) (incf *not-an-atom*))
+          (cond ((mnump li) (mincf num-sum li))
+	              ;; factor out infrequent cases.
+          	    ((and (consp li) (consp (car li)) (memq (caar li) '(mequal mrat $matrix mlist $interval)))
+	                (setq op (caar li))
+	               (cond ((eq op 'mequal)
+		                      (push li mequal-terms))
+		                    (($taylorp li)
+	                  	    (push li taylor-terms))
+		                    ((eq op 'mrat)
+		                       (push li mrat-terms))
+		                    ((eq op '$matrix)
+		                       (push li matrix-terms))
+		                    ((eq op '$interval)
+		                       (push li interval-terms))
+		                    ((eq op 'mlist)
+		                      (if $listarith (push li mlist-terms) (push (convert-to-coeff-form li) acc))))) 
 
-	    ;; Put non-infinite atoms into a hashtable; push infinite atoms into inf-terms.
-	    ((atom li)
-	     (if (memq li '($minf $inf $infinity $und $ind))
-		 (push li inf-terms)
-	       (progn
-		 (setq cf (gethash li atom-hash))
-		 (setf (gethash li atom-hash) (if cf (1+ cf) 1)))))
+	              ;; Put non-infinite atoms into a hashtable; push infinite atoms into inf-terms.
+	              ((atom li)
+	                  (if (memq li '($minf $inf $infinity $und $ind))
+		                    (push li inf-terms)
+	                      (progn
+		                       (setq cf (gethash li atom-hash))
+		                       (setf (gethash li atom-hash) (if cf (1+ cf) 1)))))
 
-	    (t (push (convert-to-coeff-form li) acc))))
+	        (t (push (convert-to-coeff-form li) acc))))
 
      ;; push atoms in the hashtable into the accumulator acc; sort acc.
     (maphash #'(lambda (cf a) (push (cons cf a) acc)) atom-hash)
@@ -244,11 +244,11 @@ Unfixed:
       (setq cf (cdr x))
       (setq x (car x))
       (while (and l (like x (caar l)))
-	(mincf cf (cdr (pop l))))
-      (if (and (or (eql cf 1) (eql cf -1)) (mplusp x)) (setq do-over t))
-      (setq x (number-times-expr cf x))
-      (cond ((mnump x) (mincf num-sum x))
-	    ((not (mzerop x)) (push x acc))))
+      	(mincf cf (cdr (pop l))))
+        (if (and (or (eql cf 1) (eql cf -1)) (mplusp x)) (setq do-over t))
+        (setq x (number-times-expr cf x))
+        (cond ((mnump x) (mincf num-sum x))
+	            ((not (mzerop x)) (push x acc))))
 
     ;;(setq acc (sort acc '$orderlessp))   ;;<-- not sure this is needed.
 
@@ -266,25 +266,25 @@ Unfixed:
     ;;(if do-over (incf *do-over*)) ;; never happens for testsuite!
     (setq acc
 	  (cond (do-over (simplifya `((mplus) ,@acc) nil))
-		((null acc) num-sum)
-		((null (cdr acc)) (car acc))
-		(t (cons '(mplus simp) acc))))
+      		((null acc) num-sum)
+		      ((null (cdr acc)) (car acc))
+		      (t (cons '(mplus simp) acc))))
     
     ;; special case dispatch
     (if mequal-terms
-	(setq acc (add-expr-mequal acc mequal-terms)))
+	     (setq acc (add-expr-mequal acc mequal-terms)))
     (if taylor-terms
-	(setq acc (add-expr-taylor acc taylor-terms)))
+    	(setq acc (add-expr-taylor acc taylor-terms)))
     (if mrat-terms
-	(setq acc (add-expr-mrat acc mrat-terms)))
+	      (setq acc (add-expr-mrat acc mrat-terms)))
     (if mlist-terms
-	(setq acc (add-expr-mlist acc mlist-terms)))
+	      (setq acc (add-expr-mlist acc mlist-terms)))
     (if interval-terms
-	(setq acc (add-expr-interval acc interval-terms)))
+      	(setq acc (add-expr-interval acc interval-terms)))
     (if matrix-terms
-	(setq acc (add-expr-matrix acc matrix-terms)))
+	      (setq acc (add-expr-matrix acc matrix-terms)))
     (if inf-terms
-	(setq acc (add-expr-infinities acc inf-terms)))   
+      	(setq acc (add-expr-infinities acc inf-terms)))   
  
     acc))
 
