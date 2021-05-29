@@ -445,8 +445,8 @@ proc set_xy_region { win fac } {
 #
 # set_xy_transforms --  set up transformations for the canvas of WINDOW
 # so that the plot is a fraction of the window (fac).
-# these transformation are used to conver from real values of x and y
-# to screen coodinates in pixel and vice versa.
+# these transformation are used to convert from real values of x and y
+# to screen coordinates in pixel and vice versa.
 #
 #  Side Effects: transform functions rtosx$win rtosy$win storx$win story$win
 #  are defined.
