@@ -3084,7 +3084,7 @@ and such that no line contains an incomplete form."
   (maxima-goto-beginning-of-form))
 
 (defun maxima-send-completed-region (beg end)
-  "Send the marked region, but complete possibly non-complete forms at the bounderies."
+  "Send the marked region, but complete possibly non-complete forms at the boundaries."
   (interactive "r\nP")
   (let ((beg1)
         (end1))

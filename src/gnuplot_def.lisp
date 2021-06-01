@@ -710,8 +710,8 @@
           (format fl "~a" (slot-value plot 'data)))
         (gnuplot-process options file output-file)
         (cons '(mlist) (cons file output-file))))
-      ($gnuplot_pipes
-       (check-gnuplot-process)
-       ($gnuplot_reset)
-       (send-gnuplot-command (slot-value plot 'data))
-       (if output-file (cons '(mlist) output-file) nil))))
+     ($gnuplot_pipes
+      (check-gnuplot-process)
+      ($gnuplot_reset)
+      (send-gnuplot-command (slot-value plot 'data))
+      (if output-file (cons '(mlist) output-file) nil))))

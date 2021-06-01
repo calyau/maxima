@@ -311,7 +311,7 @@ a^v * gamma_incomplete (-v, a);
  *    log(1+a*x), log(x+a), log(x)^2.
  */
 
-/* Algorithm 2.4: Laplace transfom of the Whittaker function
+/* Algorithm 2.4: Laplace transform of the Whittaker function
  *
  * Test for Whittaker W function.  Simplify this if possible, or
  * convert to Whittaker M function.
@@ -326,7 +326,7 @@ a^v * gamma_incomplete (-v, a);
  *        *2f1(u+v+1/2,u-k+1/2;v-k+1;(p-a/2)/(p+a/2))
  */
 
-/* Algorithm 2.5: Laplace transfom of bessel_k(0,a*t)
+/* Algorithm 2.5: Laplace transform of bessel_k(0,a*t)
  *
  * The general algorithm handles the Bessel K function for an order |v|<1.
  * but does not include the special case v=0. Return the Laplace transform:

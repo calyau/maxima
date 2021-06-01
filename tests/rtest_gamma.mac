@@ -3424,7 +3424,7 @@ closeto(
   4.35e-15); /* we have lost accuracy. More tests necessary? */
 true;
 
-/* Incomplete Beta is definied for negative integers a and b >= (-a) 
+/* Incomplete Beta is defined for negative integers a and b >= (-a)
    Add this point we have a problem. functions.wolfram.com gives different
    numerical results for this cases. When b not equal -a Maxima and 
    functions.wolfram.com differ by a factor 2. For other valid integer b
