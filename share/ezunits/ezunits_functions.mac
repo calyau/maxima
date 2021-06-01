@@ -420,7 +420,7 @@ block ([L],
  */
 
 matchdeclare
-   (aa%, lambda ([e%], atom (e%) and not symbolp (e%)),
+   (aa%, lambda ([e%], numberp (e%) or (atom (e%) and not symbolp (e%))),
     bb%, lambda ([e%], symbolp (e%) and member (e%, fundamental_dimensions)),
     cc%, lambda ([e%], symbolp (e%) and get (e%, 'units) # false),
     dd%, lambda ([e%], symbolp (e%) and get (e%, 'constvalue) # false),
@@ -429,7 +429,7 @@ matchdeclare
     ff%, lambda ([e%], symbolp (e%)),
     gg%, lambda ([e%], not atom (e%) and op (e%) = "`"),
     hh%, lambda ([e%], not atom (e%) and op (e%) = "^"),
-    ii%, lambda ([e%], not atom (e%) and member (op (e%), ["+", "-", "*", "/"])));
+    ii%, lambda ([e%], not mapatom (e%) and member (op (e%), ["+", "-", "*", "/"])));
 
 simp : false;
 defrule (raa, 'dimensions (aa%), 1);
@@ -452,6 +452,14 @@ defrule (rii, 'dimensions (ii%), map (dimensions, ii%));
 simp : true;
 
 dimensions (expr) :=
+    /* Binding *NOUNSFLAG* is pretty terrible,
+     * but it's the only way to disable ev(..., nouns);
+     * ev(..., nouns=false) has no effect!
+     */
+    block ([?\*nounsflag\*: false],
+           dimensions1 (expr));
+
+dimensions1 (expr) :=
     if not atom (expr) and (setp (expr) or listp (expr) or matrixp (expr) or op (expr) = "=")
         then map (dimensions, expr)
         else apply (apply1, ['dimensions (expr), raa, rbb, rcc, rdd, ree, ree1, rff, rgg, rhh, rii]);

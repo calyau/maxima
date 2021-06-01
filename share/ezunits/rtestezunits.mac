@@ -1055,3 +1055,20 @@ exp (-qty(%%k)*x/y);
 (%e + %pi) / (100 ` hour - 100 ` s + x ` ms) `` Hz;
 (%e + %pi) / (x/1000 + 359900) ` Hz;
 
+/* SF bug #3789: "package ezunits: ev(dimensions(u), nouns) stack overflow" */
+
+(foo: 81*sin(acos((77-x)/81)-atan(7/20)), 0);
+0;
+
+/* primary test here is just the absence of stack overflow error;
+ * numerical value not really crucial
+ */
+is (abs (find_root (foo - 50.58515344111066, x, 5, 55, abserr = 1e-6) - 34.0) <= 1e-6);
+true;
+
+(kill(u), ev (dimensions(u), nouns));
+'dimensions(u);
+
+/* now try this:
+ * plot2d (foo, [x, 5, 55]);
+ */
