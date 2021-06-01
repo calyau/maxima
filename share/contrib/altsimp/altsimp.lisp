@@ -53,7 +53,7 @@ Reasons for these failures include:
 * Altsimp simplifies 2^(3/2)-sqrt(2)*x^2 to sqrt(2)*x^2, but standard Maxima misses this.
 * Possible differences in ordering of addition of floating point numbers.
 
-Using CCL 12.1 (64 bit) and altsimp, timings are:
+Using CCL 1.12.1 (64 bit) and altsimp, timings are:
 
 took 752,166,000 microseconds (752.166000 seconds) to run.
       12,556,790 microseconds ( 12.556790 seconds, 1.67%) of which was spent in GC.
@@ -74,7 +74,24 @@ During that period, and with 4 available CPU cores,
  Compared to standard Maxima, altsimp runs the testsuites more slowly and uses more
  memory. Using sbcl 2.0, the results are similar, but faster and more memory.
 
-Expected testsuite failures that are fixed:
+Using CCL 1.12.1 (64 bit) and use_extended_real_arithmetic set to true, the
+testsuites give 45 failures:
+
+Error(s) found:
+  rtest11.mac problems:  (4 8)
+  rtest14.mac problem: (62)
+  rtest16.mac problems:  (457 459)
+  rtest3.mac problem: (146)
+  rtest_expintegral.mac problems: (173 174)
+  rtest_powerseries.mac problems: (53 63)
+  solve_rec/rtest_simplify_sum.mac problems: (3 4 5 6 7 10 11 12 13 14 16 17 19 
+  20 21 22 23 28 29 53 67 68 69 70 71 72)
+  rtest_dgesv.mac problem: (5)
+  rtest_linalg.mac problems: (92 94)
+  rtest_abs_integrate.mac problems: (75 76 77 132 140)
+  rtest_to_poly_solve.mac problem: (241)
+
+Most of these additional failures are due to dispatching sign on und.
 
 * integrate(exp(2^(3/2)*x^2-sqrt(2)*x^2),x) is OK. This is due to the fact that with altsimp,
     exp(2^(3/2)*x^2-sqrt(2)*x^2) simplifies to %e^(sqrt(2)*x^2).
@@ -92,6 +109,13 @@ would possibly speed the code.
 
 (in-package :maxima)
 (declaim (optimize (speed 3) (safety 0)))
+
+;; When the option variable $use_extended_real_arithmetic is true, simplus adds the extended real 
+;; numbers (minf,inf,infinity, und, ind) in a mathematically logical way. But since simptimes and
+;; simpexpt do not have an option of doing correct extended real number arithmetic, this feature of
+;; simplus is limited.
+
+(defmvar $use_extended_real_arithmetic nil)
 
 (define-modify-macro mincf (&optional (i 1)) addk)
 
@@ -196,29 +220,43 @@ would possibly speed the code.
 
 ;; Return a + b, where a, b in {minf, inf, ind, und, infinity}. I should
 ;; extend this to allow zeroa and zerob (but I'm not sure zeroa and zerob
-;; are supposed to be allowed outside the limit code). 
-(defun add-extended-real (a b)
-  (cond ((eq a '$minf) 
-	 (cond ((memq b '($minf $ind)) '$minf)
-	       ((memq b '($und $inf)) '$und)
-	       ((eq b '$infinity) '$infinity)))
-      	 ((eq a '$ind)
-	       (cond ((eq b '$minf) '$minf)
-	             ((eq b '$ind) '$ind)
-	             ((eq b '$und) '$und)
-	             ((eq b '$inf) '$inf)
-	             ((eq b '$infinity) '$infinity)))
-               ((eq a '$und) '$und)
-            	 ((eq a '$inf)
-	             (cond ((memq b '($minf $und)) '$und)
-	                   ((memq b '($inf $ind)) '$inf)
-	                   ((eq b '$infinity) '$infinity)))
-	                   ((eq a '$infinity) (if (eq b '$und) '$und '$infinity))))
+;; are supposed to be allowed outside the limit code). Internally, Maxima
+;; uses prin-inf (see defint.lisp) to represent $inf. We could include
+;; prin-inf as an extended real.
 
-;; Add an expression x to a list of infinities.
+;;We use a hashtable to represent the multiplication table--this should be easy 
+;; to extend and to modify.
+(defvar *extended-real-add-table* (make-hash-table :test #'equal :size 16))
+
+(mapcar #'(lambda (a) (setf (gethash (list (first a) (second a)) *extended-real-add-table*) (third a)))
+   (list (list '$minf '$minf '$minf)
+         (list '$minf '$inf '$und)
+         (list '$minf '$infinity '$und)
+         (list '$minf '$und '$und)
+         (list '$minf '$ind '$minf)
+         
+         (list '$inf '$inf '$inf)
+         (list '$inf '$infinity '$und)
+         (list '$inf '$und '$und)
+         (list '$inf '$ind '$inf)
+
+         (list '$infinity '$infinity '$und)
+         (list '$infinity '$und '$und)
+         (list '$infinity '$ind '$infinity)
+
+         (list '$ind '$ind '$ind)
+         (list '$ind '$und '$und)
+
+         (list '$und '$und '$und)))
+
+(defun add-extended-real(a b)  
+  (gethash (list a b) *extended-real-add-table* (gethash (list b a) *extended-real-add-table* '$und)))
+
+;; Add an expression x to a list of infinities. We do explicit number + extended real --> extended real, 
+;; but for a general expression XXX we do XXX + extended real --> nounform.
 (defun add-expr-infinities (x l) 
   (setq l (if l (reduce #'add-extended-real l) (car l)))
-  (if (mnump x) l (list (get 'mtimes 'msimpind) x l)))
+  (if (mnump x) l (list (get 'mplus 'msimpind) x l)))
 
 ;; The functions pls & plusin are parts of the standard simplus code. Let's issue
 ;; errors when these functions are called. Unfortunately, code in share\affine calls
@@ -238,13 +276,6 @@ would possibly speed the code.
 ;; If l has n summands, simplus calls great O(n log_2(n)) times. All
 ;; other spendy functions are called O(n) times. The standard simplus
 ;; function calls great O(n^2) times, I think.
-
-;; When the option variable $use_extended_real_arithmetic is true, simplus adds the extended real 
-;; numbers (minf,inf,infinity, und, ind) in a mathematically logicaly way. But since simptimes and
-;; simpexpt do not have an option of doing correct extended real number arithmetic, this feature of
-;; simplus is limited.
-
-(defmvar $use_extended_real_arithmetic nil)
 
 ;; The binary64 value of %e.
 (defvar %e-float64 (exp 1.0d0))
