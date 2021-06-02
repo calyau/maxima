@@ -42,15 +42,16 @@ the testsuite + the share testsuite with nine failures; the failures are
 
  rtest11.mac problems (4 8)
  rtest14.mac problem: (62)
- rtest16.mac problems:  (457 459)
  rtest_expintegral.mac problems: (173 174)
  rtest_dgesv.mac problem: (5)
  rtest_to_poly_solve.mac problem: (241)
 
+Additionally, rtest3 #146 fails (errcatch(integrate(exp(2^(3/2)*x^2-sqrt(2)*x^2),x))), but 
+actually, altsimp fixes this bug. This is due to the fact that with altsimp, exp(2^(3/2)*x^2-sqrt(2)*x^2) 
+simplifies to %e^(sqrt(2)*x^2).
+
 Reasons for these failures include:
 
-* Standard Maxima simplifies 2^a+3*2^(a+1) to 7*2^a, but altsimp misses this simplification.
-* Altsimp simplifies 2^(3/2)-sqrt(2)*x^2 to sqrt(2)*x^2, but standard Maxima misses this.
 * Possible differences in ordering of addition of floating point numbers.
 
 Using CCL 1.12.1 (64 bit) and altsimp, timings are:
@@ -93,8 +94,7 @@ Error(s) found:
 
 Most of these additional failures are due to dispatching sign on und.
 
-* integrate(exp(2^(3/2)*x^2-sqrt(2)*x^2),x) is OK. This is due to the fact that with altsimp,
-    exp(2^(3/2)*x^2-sqrt(2)*x^2) simplifies to %e^(sqrt(2)*x^2).
+
 
 Speculation on how to speed up simplication of sums:
 
@@ -129,6 +129,10 @@ would possibly speed the code.
 (defun surd-p (x)
   (and (mexptp x) (integerp (cadr x)) ($ratnump (caddr x))))
 
+(defun generalized-surd-p (x)
+  (and (mexptp x) (integerp (cadr x)) (mplusp (caddr x)) 
+         (or ($ratnump (second (caddr x))) (integerp (second (caddr x))))))
+
 (defun surd-convert (x)
    (cond ((or (integerp x) (mnump x))
            (cons 1 x))
@@ -137,8 +141,15 @@ would possibly speed the code.
             (let ((a (cadr x)) (p (caddr x)) (q) (n))
               (setq q ($denom p))
               (setq p ($num p))         
-              (setq n (floor (/ p q)))
+              (setq n (floor p q))
               (cons (take '(mexpt) a (sub (caddr x) n)) (take '(mexpt) a n))))
+          ((generalized-surd-p x) ; x = ((mexpt) a ((mplus) n a1 a2 ...)))
+           (let ((a (second x)) (n (second (third x))) (p) (q))
+              (setq p ($num n))
+              (setq q ($denom n))
+              (setq n (floor p q))
+              (cons (take '(mexpt) a (sub (third x) n)) (take '(mexpt) a n))))            
+
           (t (cons x 1))))
   
 ;; Convert a term (a non sum expression) to the form (e . coefficient), where
@@ -147,12 +158,12 @@ would possibly speed the code.
 (defun convert-to-coeff-form (x)  
   (let ((c 1) (xx) (qq 1))
     (cond ((mnump x) (cons 1 x))
-          ((surd-p x)
+          ((or (surd-p x) (generalized-surd-p x))
             (surd-convert x))
 
 	        ((mtimesp x) 
 	          (pop x)  ;remove (car x) which is (mtimes ..)
-            (while (or (mnump (car x)) (surd-p (car x)))
+            (while (or (mnump (car x)) (surd-p (car x)) (generalized-surd-p (car x)))
                (setq xx (surd-convert (car x)))
                (setq c (mul c (cdr xx)))
                (setq qq (mul qq (car xx)))
