@@ -67,7 +67,7 @@
 	 #+allegro ((mlist simp) 50 241 524 525))
         "rtestode"
 	"rtestode_zp"
-        ((mlist simp) "rtest3" 146)
+        ((mlist simp) "rtest3" ((mlist simp) 146))
 	;; ECL 16.1.2 still fails in #104
 	((mlist simp) "rtest8"
 	 #+ecl ((mlist simp) 104))
