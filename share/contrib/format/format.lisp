@@ -11,9 +11,6 @@
 
 (in-package :maxima)
 
-(defmacro mlist* (arg1 &rest more-args)
-  `(list* '(mlist simp) ,arg1 ,@more-args))
-
 (defun mrelationp (expr)
   (and (listp expr)
        (member (caar expr) '(mequal mnotequal mgreaterp mlessp mgeqp mleqp))))
@@ -153,8 +150,7 @@
   (format-w/o-subtemplates ($substitute (mlist* listofeqns) expr)))
 
 (def-formatter $%ratsubst (expr &rest listofeqns)
-  (autoldchk '$lratsubst)
-  (format-w/o-subtemplates ($lratsubst (mlist* listofeqns) expr)))
+  (format-w/o-subtemplates (mfuncall '$lratsubst (mlist* listofeqns) expr)))
 
 ;;;;******************************************************************************************
 ;;; `Bag' & Relation templates.

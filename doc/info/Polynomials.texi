@@ -967,13 +967,10 @@ one or more variables in common.
 @code{fullratsubst} accepts its arguments in the format of
 @mref{ratsubst} or @mref{lratsubst}.
 
-@code{load ("lrats")} loads @code{fullratsubst} and @code{lratsubst}.
-
 Examples:
 
 @c EXPRESSIONS ADAPTED FROM demo ("lrats")
 @c ===beg===
-@c load ("lrats")$
 @c subst ([a = b, c = d], a + c);
 @c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
 @c lratsubst (a^2 = b, a^3);
@@ -982,9 +979,6 @@ Examples:
 @c fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
 @c fullratsubst (a^2 = b*a, a^3);
 @c ===end===
-@example
-(%i1) load ("lrats")$
-@end example
 @itemize @bullet
 @item
 @code{subst} can carry out multiple substitutions.
@@ -1426,15 +1420,12 @@ equations (that is, the first argument is identical in format to that
 accepted by @code{subst}). The substitutions are made in the order given
 by the list of equations, that is, from left to right.
 
-@code{load ("lrats")} loads @code{fullratsubst} and @code{lratsubst}.
-
 Examples:
 
 @c EXPRESSIONS ADAPTED FROM demo ("lrats")
 @c THIS STUFF CAN PROBABLY STAND REVISION -- EXAMPLES DON'T SEEM VERY ENLIGHTENING
 
 @c ===beg===
-@c load ("lrats")$
 @c lratsubst ([a = b, c = d], a + c);
 @c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
 @c lratsubst (a^2 = b, a^3);
@@ -1442,9 +1433,6 @@ Examples:
 @c errcatch(lratsubst ([[a^2=b*a, b=c],[a=b]], a^3));
 @c ===end===
 
-@example
-(%i1) load ("lrats")$
-@end example
 @itemize @bullet
 @item
 @code{subst} can carry out multiple substitutions.
