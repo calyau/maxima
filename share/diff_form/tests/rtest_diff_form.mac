@@ -158,5 +158,39 @@ ratsimp(f_star([p1,q1,p2,q2,p3,q3],(depends([f,g,h],[p1,q1,p2,q2,p3,q3]),
       p_braket(f*g,h)-f*p_braket(g,h)-g*p_braket(f,h))));
 0$
 
+/* additional examples from "Differential Forms 01.wxmx" by Jeffrey Rolland
+ * posted to mailing list 2021-05-21: "Can't Take Exterior Derivative with diff_form"
+ */
+(coords: [x, y, z],
+ dim: extdim: length(coords),
+ basis: VR: extsub[1]: extsubb[1]: [],
+ for i thru dim do basis: endcons (concat (D, coords[i]), basis),
+ for i thru dim do
+    (extsub[i + 1]: cons (basis[i] = -basis[i], extsub[i]),
+     extsubb[i]: cons (basis[i] = 0, extsub[i]),
+     ci: concat (v, i),
+     VR:endcons (ci, VR)),
+ 0);
+0;
+
+Dx@Dy;
+Dx*Dy;
+
+Dy@Dx;
+-Dx*Dy;
+
+omega: -y*Dx + x*Dy;
+Dy*x-Dx*y;
+
+d(omega);
+2*Dx*Dy;
+
+eta1: x*Dy@Dz+y*Dz@Dx + z*Dx@Dy;
+Dx*Dy*z-Dx*Dz*y+Dy*Dz*x;
+
+d(eta1);
+3*Dx*Dy*Dz;
+
 (reset(matrix_element_mult),0);
 0$
+
