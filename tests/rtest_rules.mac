@@ -742,3 +742,303 @@ true;
 
 f(1);
 i(1);
+
+/* examples to exercise COMPILEPLUS
+ * These were devised while investigating
+ * SF bug #3683: "rule function tries to divide out -1, leading to trouble"
+ * but don't actually have any effect on that bug,
+ * since these are all about "+" expressions instead of "*".
+ * Anyway, it doesn't hurt to have more finger exercises.
+ */
+
+(kill (all), 
+ matchdeclare (aa, all),
+ matchdeclare (ii, integerp, jj, lambda ([x], integerp(x) and x#0)),
+ matchdeclare (uu, mapatom, vv, subvarp),
+ matchdeclare ([xx, yy], symbolp));
+done;
+
+(defrule(r1, aa + ii, foo(aa, ii)), 0);
+0;
+
+r1(123 + x/y - 2*a);
+foo(x/y - 2*a, 123);
+
+r1(x/y - 2*a);
+foo(x/y - 2*a, 0);
+
+r1(x + y*%pi - 22/7);
+foo(x + y*%pi - 22/7, 0);
+
+/* trips "COMPILEPLUS: MEVAL #2" */
+(defrule(r2, aa + ii + 123, foo(aa, ii)), 0);
+0;
+
+r2(x/y - 2*a);
+foo(x/y - 2*a, -123);
+
+r2(x + y*%pi - 22/7);
+foo(x + y*%pi - 883/7, 0);
+
+/* trips "COMPILEPLUS: MEVAL #2" */
+(defrule(r3, aa*4 + ii + 123, foo(aa, ii)), 0);
+0;
+
+r3(4*u + x[2] + 1230);
+false;
+
+r3(4*u + x[2] + 123);
+false;
+
+r3(4*u + 123);
+foo(u, 0);
+
+r3(u + 123);
+foo(u/4, 0);
+
+r3(4*(u - v));
+foo(u - v, -123);
+
+/* trips "COMPILEPLUS: MEVAL #5" */
+(defrule(r4, g(ii) + xx(uu) + aa, baz(ii,xx,uu,aa)), 0);
+0;
+
+r4(f(b[2]) + g(123) + sqrt(3)/z);
+baz(123, f, b[2], sqrt(3)/z);
+
+(defrule(r1a, yy(xx) + ii + aa, foo(aa, ii, xx, yy)), 0);
+0;
+
+r1a(h(v) + 100 + %pi/2);
+foo(%pi/2, 100, v, h);
+
+/* to be expected: yy(xx) matches only one of the terms g(u), h(v) */
+r1a(g(u) + h(v) + 100 + %pi/2);
+foo(h(v) + %pi/2, 100, u, g);
+
+(defrule(r2b, ii + xx + aa, foo(aa, ii, xx)), 0);
+0;
+
+r2b (u + v + w);
+foo(0, 0, w + v + u);
+
+/* to be expected: aa matches -v because -v is not a symbol, so xx doesn't match */
+r2b (u - v + w);
+foo(- v, 0, u + w);
+
+/* to be expected: ii matches -1234 because -1234 is an integer */
+r2b(sin(x)*cos(y) + w + v + u - 1234);
+foo(sin(x)*cos(y), - 1234, w + v + u);
+
+/* trips "COMPILEPLUS: MEVAL #2" */
+(defrule(r2a, ii + xx + aa + u, foo(aa, ii, xx)), 0);
+0;
+
+r2a (-200 + u + v + w + x + a^2 + b^2 + c^2);
+foo(a^2 + b^2 + c^2, -200, v + w + x);
+
+/* trips "COMPILEPLUS: MEVAL #2" twice */
+(defrule(r2aa, ii + xx + aa + 2 + u, foo(aa, ii, xx)), 0);
+0;
+
+r2aa (-200 + u + v + w + x + a^2 + b^2 + c^2);
+foo(a^2 + b^2 + c^2, -202, v + w + x);
+
+/* trips "COMPILEPLUS: MEVAL #2" */
+(defrule (r3aa, fgh(ii,ii + xx), foo(ii, xx)), 0);
+0;
+
+r3aa(fgh(111, 111 + u));
+foo(111, u);
+
+/* At present, this next example fails to match,
+ * because PART+ is not pasted into the rule,
+ * so it matches only a single symbol.
+ *
+ * Not matching is the expected output on the theory (not 100% convinced)
+ * that PART+ is invoked when there are two or more still-to-be-matched variables.
+ * In r3aa, there's only one, namely xx, since ii is matched already.
+ */
+r3aa(fgh(111, 111 + u + v + w));
+false;
+
+/* Same here as with preceding example. */
+r3aa(fgh(0, u + v + w));
+false;
+
+/* trips "COMPILEPLUS: MEVAL #2" */
+(defrule(r3aaa, fgh(ii, ii + xx + uu), foo(ii, xx, uu)), 0);
+0;
+
+r3aaa(fgh(0, u + v + w));
+foo(0, u + v + w, 0);
+
+r3aaa(fgh(0, u + v + w + a[i] + b[j] + c[k]));
+foo(0, u + v + w, a[i] + b[j] + c[k]);
+
+/* trips "COMPILEPLUS: MEVAL #2" */
+(defrule (r3aa1, fghi(xx, ii + xx), baz(ii, xx)), 0);
+0;
+
+r3aa1(fghi(u, 111 + u));
+baz(111, u);
+
+r3aa1(fghi(z, z));
+baz(0, z);
+
+/* trips "COMPILEPLUS: MEVAL #2" twice */
+(defrule (r3a, fgh(ii,ii + xx + 1234), foo(ii, xx)), 0);
+0;
+
+r3a(fgh(111,1345 + u));
+foo(111, u);
+
+/* trips "COMPILEPLUS: MEVAL #2" twice */
+(defrule (r3b, fgh(ii,ii + xx + abc), foo(ii, xx)), 0);
+0;
+
+r3b(fgh(111,111 + u + abc));
+foo(111, u);
+
+/* trips "COMPILEPLUS: MEVAL #2" twice */
+(defrule (r3c, fgh(ii,ghi(ii + xx + abc)), foo(ii, xx)), 0);
+0;
+
+r3c (fgh (222, ghi (222 + v + abc)));
+foo(222, v);
+
+/* trips "COMPILEPLUS: MEVAL #2" four times */
+(defrule (r3c1, fgh(ii,ghi(ii + xx + abc + bcd + cde)), foo(ii, xx)), 0);
+0;
+
+r3c1 (fgh (222, ghi (222 + v + abc + bcd + cde)));
+foo(222, v);
+
+/* trips "COMPILEPLUS: MEVAL #2" twice */
+(defrule (r3d, fgh(ii,ghi(hij(ii) + xx + abc)), foo(ii, xx)), 0);
+0;
+
+r3d(fgh(111,ghi(hij(111) + u + abc)));
+foo(111, u);
+
+/* trips "COMPILEPLUS: MEVAL #2" and then "COMPILEPLUS: MEVAL #5" twice */
+(defrule (r4,  ii + ghi(hij(ii) + xx + abc), foo(ii, xx)), 0);
+0;
+
+r4 (345 + ghi(hij(345) + y + abc));
+foo(345, y);
+
+/* trips "COMPILEPLUS: MEVAL #5" three times */
+(defrule (r4a, ii + ghi(hij(ii) + xx + abc(yy)), foo(ii, xx, yy)), 0);
+0;
+
+r4a (345 + ghi(hij(345) + y + abc(z)));
+foo(345, y, z);
+
+/* trips "COMPILEPLUS: MEVAL #5" three times and then "COMPILEPLUS: MEVAL #1" once */
+(defrule (r4b, ii + ghi(hij(ii, jj) + xx + abc(yy)) + yy, foo(ii, jj, xx, yy)), 0);
+0;
+
+r4b (345 + ghi(hij(345, 999) + uvw + abc(z123)) + z123);
+foo(345, 999, uvw, z123);
+
+/* trips "COMPILEPLUS: MEVAL #5", then "COMPILEPLUS: MEVAL #2", then "COMPILEPLUS: MEVAL #5" again, then "COMPILEPLUS: MEVAL #1" */
+(defrule (r4c, ii + ghi(hij(ii, jj, yy) + xx + abc(yy)) + yy, foo(ii, jj, xx, yy)), 0);
+0;
+
+r4c (345 + ghi(hij(345, 999, z123) + uvw + abc(z123)) + z123);
+foo(345, 999, uvw, z123);
+
+/* trips "COMPILEPLUS: MEVAL #5" three times and then "COMPILEPLUS: MEVAL #1" once */
+(defrule (r4d, ii + ghi(hij(ii) + xx + abc(yy)) + yy, foo(ii, xx, yy)), 0);
+0;
+
+r4d (345 + ghi(hij(345) + uvw + abc(z123)) + z123);
+foo(345, uvw, z123);
+
+(defrule (r4e, ii + ghi(ii + xx + abc(yy)) + yy, foo(ii, xx, yy)), 0);
+0;
+
+/* trips "COMPILEPLUS: MEVAL #5" twice and then "COMPILEPLUS: MEVAL #1" once */
+r4e (345 + ghi(345 + uvw + abc(z123)) + z123);
+foo(345, uvw, z123);
+
+/* trips "COMPILEPLUS: MEVAL #5" once and then "COMPILEPLUS: MEVAL #1" once */
+(defrule (r4f, ii + ghi(ii + xx + vv) + vv, baz(ii, xx, vv)), 0);
+0;
+
+r4f (ghi(345 + uvw + z[3]) + 345 + z[3]);
+baz(345, uvw, z[3]);
+
+r4f(ghi(u + v + z[3] + w[2] + 123) + z[3] + w[2] + 123);
+baz(123, u + v, z[3] + w[2]);
+
+/* trips "COMPILEPLUS: MEVAL #5" once and then "COMPILEPLUS: MEVAL #1" once */
+(defrule (r4fb, jj + ghi(jj + vv + yy) + yy, foo(jj, vv, yy)), 0);
+0;
+
+r4fb (345 + ghi(345 + z[123] + uvw) + uvw);
+foo(345, z[123], uvw);
+
+r4fb (345 + ghi(345 + z[123] + u + v + w) + u + v + w);
+foo(345, z[123], u + v + w);
+
+(defrule (r4f1, zyx(ii, ghi(ii, xx, yy), yy), foo(ii, xx, yy)), 0);
+0;
+
+r4f1 (zyx (345, ghi(345, uvw, z123), z123));
+foo(345, uvw, z123);
+
+/* trips "COMPILEPLUS: MEVAL #5" once and then "COMPILEPLUS: MEVAL #1" once */
+(defrule (r4f2, jj  + ghi(jj + yy) + yy, foo(jj, yy)), 0);
+0;
+
+r4f2 (345 + ghi(345 + z123) + z123);
+foo(345, z123);
+
+/* trips "COMPILEPLUS: MEVAL #5" once and then "COMPILEPLUS: MEVAL #1" once */
+(defrule (r4g, ii + ghi(ii + yy) + yy, foo(ii, yy)), 0);
+0;
+
+r4g(u + ghi(u + 123) + 123);
+foo(123, u);
+
+(defrule (r5a, jj*xx*vv + yy, baz(jj, vv, xx, yy)), 0);
+0;
+
+r5a (17*a*y[4] + mumble);
+baz (17, y[4], a, mumble);
+
+r5a (17*a*u*z[4]*y[4] + mumble);
+baz (17, z[4]*y[4], a*u, mumble);
+
+(defrule (r5b, 17*vv + yy, baz(vv, yy)), 0);
+0;
+
+r5b (17*y[4] + mumble);
+baz (y[4], mumble);
+
+/* trips "COMPILEPLUS: MEVAL #3" */
+(defrule (r5c, mysymbol*vv + yy, baz(vv, yy)), 0);
+0;
+
+r5c (mysymbol*y[4] + mumble);
+baz (y[4], mumble);
+
+/* trips "COMPILEPLUS: MEVAL #5" */
+(defrule (r6a, jj^xx + yy + vv, quux(jj, vv, xx, yy)), 0);
+0;
+
+r6a (29^blurf + b + w[3]);
+quux (29, w[3], blurf, b);
+
+r6a (29^blurf + b + c + d + w[3] + m[7]);
+quux (29, w[3] + m[7], blurf, b + c + d);
+
+/* trips "COMPILEPLUS: MEVAL #4" */
+(defrule (r6b, 29^xx + vv, quux(vv, xx)), 0);
+0;
+
+r6b (29^blurf + w[3]);
+quux (w[3], blurf);
+
