@@ -607,18 +607,22 @@ dimensionally (e%) ::=
 gensym_map (h) := map ("=", rest (arrayinfo (h), 2), listarray (h));
 inverse_gensym_map (h) := map ("=", listarray (h), rest (arrayinfo (h), 2));
 
-/* Degrees to pure number conversion for trigonometric functions.
- * Not sure if this should be enabled by default; maybe it should be optional.
- * Well, go ahead for now, in the absence of evidence to the contrary.
+/* Nondimensional to pure number conversion for trig functions, exp, and log.
+ * Conversion is applied only for explicit "`" expressions;
+ * previous implementation in terms of dimensions(e) could be time-consuming.
  */
 
 simp : false;
 declare_unit_conversion (degree = %pi/180);
-matchdeclare (uu, lambda ([e], not nondimensionalp(e) and dimensions(e) = 1));
-map (lambda ([f], apply (tellsimp, [apply (f, [uu]), apply (f, [uu``1])])), '[sin, cos, tan, csc, sec, cot, atan]);
+matchdeclare (uu, lambda ([e], unitop_p(e) and dimensions(units(e)) = 1));
+map (lambda ([f], apply (tellsimp, [apply (f, [uu]), apply (f, [uu `` 1])])), '[sin, cos, tan, csc, sec, cot, atan]);
 
 tellsimp (%e^uu, %e^(uu `` 1));
 tellsimp (log (uu), log (uu `` 1));
+
+/* Convert atan2 arguments to pure numbers when arguments have same dimensions.
+ * Determining dimensions are the same is potentially time-consuming.
+ */
 
 matchdeclare (aa, unitp, bb, lambda ([e], dimensions (e) = dimensions (aa)));
 tellsimp (atan2 (aa, bb), atan2 (qty (aa), qty (bb `` units (aa))));

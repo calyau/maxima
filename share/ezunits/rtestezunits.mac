@@ -1022,7 +1022,18 @@ map (lambda ([f1], f1((x ` m)/(y ` foot))), foo1);
 atan2 (x ` m, y ` foot);
 atan2 (x, 381*y/1250);
 
-exp (-%%k*(x ` K)/(y ` J));
+exp (- (t ` hour)/(T ` s));
+exp (- 3600*t/T);
+
+/* in this next example, %%k*(x ` K)/(y ` J) is dimensionless,
+ * but it is a little too complex to be detected by the rule for
+ * dimensionless argument of exp.
+ * We'll help out a little.
+ */
+foo: exp (-%%k*(x ` K)/(y ` J));
+exp (%%k*((-x/y) ` K/J));
+
+map (lambda ([e], if dimensions(e) = 1 then qty(e) else e), foo);
 exp (-qty(%%k)*x/y);
 
 /* fractions of a farad */
