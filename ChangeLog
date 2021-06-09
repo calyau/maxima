@@ -21,6 +21,7 @@ Changes in the Windows installer:
 
 Bug fixes for numbered bugs:
 ----------------------------
+ *  #380: algsys a*b=c*d grossly incomplete
 
 Unnumbered bugs fixed:
 ---------------------
