@@ -268,7 +268,7 @@
     #-(or gcl abcl gcl)
     "rtest_dlsode"
     ((mlist simp) "rtest_fourier_elim"
-     ((mlist simp) 146 147 148 149))
+     ((mlist simp) 99 146 147 148 149))
     ((mlist simp) "rtest_sequence"
      ((mlist simp) 55))
     "rtest_cholesky"
