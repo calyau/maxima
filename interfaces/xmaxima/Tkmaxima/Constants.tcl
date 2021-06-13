@@ -44,7 +44,7 @@ proc cMAXINITBeforeIni {} {
     }
     set maxima_priv(imgregexp) {[.](gif|png|jpe?g)[^/]*$}
     if {$::tcl_platform(platform) == "windows" } {
-        set maxima_priv(home) "%USERPROFILE%"
+        set maxima_priv(home) $::env(USERPROFILE)
     } else {
         set maxima_priv(home) "~"
     }
