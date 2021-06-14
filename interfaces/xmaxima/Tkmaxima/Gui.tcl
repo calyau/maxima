@@ -3,7 +3,7 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2021-04-04 20:05:13 villate"            #
+#     Time-stamp: "2021-06-14 15:40:23 villate"            #
 ############################################################
 
 object_class MAXGui {
@@ -121,11 +121,11 @@ object_class MAXGui {
 	vMAXAddSystemMenu $fr $fr.text
 
         # Reads the history from previous runs
-        if {[file isfile ~/.xmaxima_history]} {
+        if {[file isfile "$maxima_priv(home)/.xmaxima_history"]} {
             if {[catch {uplevel "#0" \
                             [list source "$maxima_priv(home)/.xmaxima_history"] } err]} {
                 tide_failure [M [mc "Error sourcing %s\n%s"] \
-                                  [file native ~/.xmaximarc] \
+                                  [file native "$maxima_priv(home)/.xmaxima_history"] \
                                   $err]
             }
         }
