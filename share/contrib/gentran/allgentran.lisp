@@ -1582,6 +1582,7 @@
 (defun franzif (stmt)
   ; return the franz lisp representation for an if statement ;
   (destructuring-bind (x exp stmt1 y stmt2) stmt
+   (declare (ignore x y))
    (let ((fr '(cond)))
         (setq fr (append1 fr (list (franzexp exp 0 exp)
 				   (franzstmt stmt1))))
@@ -1653,6 +1654,7 @@
   ;            dobody)                                                      ;
   (let ((gvar) condbody)
     (destructuring-bind (dovar (_x1 . dolist) _x2 _x3 _x4 doexitcond dobody) (cdr stmt)
+       (declare (ignore _x1 _x2 _x3 _x4))
        (setq tvname $tempvarname)
        (setq $tempvarname 'i)
        (setq gvar ($tempvar nil))
