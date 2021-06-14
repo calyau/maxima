@@ -37,7 +37,7 @@ message(STATUS "Build system: ${BUILDHOST}")
 # Output the host system, for which we are compiling
 message(STATUS "Host system: ${HOST}")
 
-find_file (NSISTEMPLATE_IN  NAMES "NSIS.template.in"
+find_file(NSISTEMPLATE_IN  NAMES "NSIS.template.in"
     PATHS "${CMAKE_ROOT}/Modules/" "${CMAKE_ROOT}/Modules/Internal/CPack")
 file(READ "${NSISTEMPLATE_IN}" MYNSISTEMPLATE)
 string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel admin
@@ -214,19 +214,25 @@ externalproject_add(maxima
           COMMAND LANG=C $(MAKE) extradocinstall DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
 )
 
+option(STRIP_HELPERPROGRAMS "Strip the included helper programs (winkill, winkill_lib, maxima_longnames)." YES)
+
 # crosscompiling winkill with autoconf does not work, compile it using CMake.
 add_library(winkill_lib SHARED ${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/winkill_lib.c)
 add_executable(winkill ${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/winkill.c)
 set_target_properties(winkill_lib PROPERTIES PREFIX "") # remove 'lib' prefix from libwinkill_lib.dll
 target_link_libraries(winkill winkill_lib)
-install(TARGETS winkill winkill_lib COMPONENT Maxima RUNTIME DESTINATION bin LIBRARY DESTINATION bin/)
-install(FILES "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/win_signals.lisp" DESTINATION bin/ COMPONENT Maxima)
 
 # convert windows short names to long names (e.g.
 # "C:/Users/TESTTE~1/AppData/Local/Temp" to "C:/Users/test test/AppData/Local/Temp")
 # CLISP can (currently not handle short names.
 add_executable(maxima_longnames maxima_longnames.c)
-install(FILES "${CMAKE_BINARY_DIR}/maxima_longnames.exe" DESTINATION bin/ COMPONENT Maxima)
+if(STRIP_HELPERPROGRAMS)
+    add_custom_command(TARGET winkill POST_BUILD COMMAND ${CMAKE_STRIP} winkill.exe)
+    add_custom_command(TARGET winkill_lib POST_BUILD COMMAND ${CMAKE_STRIP} winkill_lib.dll)
+    add_custom_command(TARGET maxima_longnames POST_BUILD COMMAND ${CMAKE_STRIP} maxima_longnames.exe)
+endif()
+install(TARGETS winkill winkill_lib maxima_longnames COMPONENT Maxima RUNTIME DESTINATION bin LIBRARY DESTINATION bin/)
+install(FILES "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/win_signals.lisp" DESTINATION bin/ COMPONENT Maxima)
 
 
 install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/
