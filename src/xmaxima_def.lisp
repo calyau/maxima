@@ -1,6 +1,6 @@
 ;; xmaxima.lisp: routines for Maxima's interface to xmaxima
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2021-06-14 16:34:14 villate"
+;; Time-stamp: "2021-06-14 17:27:42 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -273,7 +273,7 @@
                               (setq ymin ymax ymax y)
                               (setq ymin y))
                           (setq ymin y))))))
-            (when (and (numberp ymin) (numberp ymax))
+            (when (and (numberp ymin) (numberp ymax) (< ymin ymax))
               (psetq ymin (- (* 1.05 ymin) (* 0.05 ymax))
                      ymax (- (* 1.05 ymax) (* 0.05 ymin)))
               (format st " {yrange ~,,,,,,'eg ~,,,,,,'eg}~%" ymin ymax))))
