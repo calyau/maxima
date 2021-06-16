@@ -1,5 +1,6 @@
 ;; xmaxima.lisp: routines for Maxima's interface to xmaxima
 ;; Copyright (C) 2007-2021 J. Villate
+;; Time-stamp: "2021-06-14 17:27:42 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -59,14 +60,14 @@
       ($lines
        (format st "\{ nolines 0 \} \{ plotpoints 0 \}")
        (if (realp (second style))
-	 (format st " \{ linewidth ~,2f \}" (second style)))
+	 (format st " \{ linewidth ~f \}" (second style)))
        (if (third style)
 	 (format st " \{ color ~a \}" (xmaxima-color colors (third style)))
 	 (format st " \{ color ~a \}" (xmaxima-color colors i))))
       ($points
        (format st "\{ nolines 1 \} \{ plotpoints 1 \}")
        (if (realp (second style))
-	 (format st " \{ pointsize ~,2f \}" (second style))
+	 (format st " \{ pointsize ~f \}" (second style))
 	 (format st " \{ pointsize 3 \}"))
        (if (third style)
 	 (format st " \{ color ~a \}" (xmaxima-color colors (third style)))
@@ -74,9 +75,9 @@
       ($linespoints
        (format st "\{ nolines 0 \} \{ plotpoints 1 \}")
        (if (realp (second style))
-	 (format st " \{ linewidth ~,2f \}" (second style)))
+	 (format st " \{ linewidth ~f \}" (second style)))
        (if (realp (third style))
-	 (format st " \{ pointsize ~,2f \}" (third style))
+	 (format st " \{ pointsize ~f \}" (third style))
 	 (format st " \{ pointsize 3 \}"))
        (if (fourth style)
 	 (format st " \{ color ~a \}" (xmaxima-color colors (fourth style)))
@@ -114,7 +115,8 @@
               "palette: gray must be followed by two numbers."))))
        (when (or (< gray 0) (> gray 1))
          (setq gray (- gray (floor gray))))
-       (setq fun (format nil "{value ~,8,,,,,'eg} {colorrange ~,8,,,,,'eg}" gray range)))
+       (setq fun (format nil "{value ~,,,,,,'eg} {colorrange ~,,,,,,'eg}"
+                         gray range)))
       (($hue $saturation $value)
        (case (length (rest palette))
          (4 (setq hue (second palette))
@@ -129,7 +131,7 @@
        (when (or (< sat 0) (> sat 1)) (setq sat (- sat (floor sat))))
        (when (or (< val 0) (> val 1)) (setq val (- val (floor val))))
        (setq fun
-             (format nil " {hue ~,8,,,,,'eg} {saturation ~,8,,,,,'eg} {value ~,8,,,,,'eg} {colorrange ~,8,,,,,'eg}"
+             (format nil " {hue ~,,,,,,'eg} {saturation ~,,,,,,'eg} {value ~,,,,,,'eg} {colorrange ~,,,,,,'eg}"
                      hue sat val range))))
     (with-output-to-string (st)
       (case (first palette)
@@ -159,7 +161,7 @@
                                   (cons (/ i (1- n)) map))))))    ;; number i
 
            ;; prints map with the format:  nj, "cj", ...,n1, "c1"  
-           (setq fun (format nil "~{{ ~,8,,,,,'eg ~s}~^ ~}" (reverse map)))
+           (setq fun (format nil "~{{ ~,,,,,,'eg ~s}~^ ~}" (reverse map)))
            (format st "~&{colorscheme gradient} ")
            ;; writes: {gradlist {{nj "cj"} ...{n1 "c1"}}}
            (format st "{gradlist {~a}}" fun)))
@@ -218,22 +220,22 @@
               (t (format dest " {axes {xy} }")))
             (format dest " {axes 0}"))
         (when (getf plot-options :x)
-          (format dest " {xrange ~{~,8,,,,,'eg~^ ~}}" (getf plot-options :x)))
+          (format dest " {xrange ~{~,,,,,,'eg~^ ~}}" (getf plot-options :x)))
         (when (getf plot-options :y)
-          (format dest " {yrange ~{~,8,,,,,'eg~^ ~}}" (getf plot-options :y)))
+          (format dest " {yrange ~{~,,,,,,'eg~^ ~}}" (getf plot-options :y)))
         (when (getf plot-options :z)
           (setq zmin (first (getf plot-options :z)))
           (setq zmax (second (getf plot-options :z)))
-          (format dest " {zcenter ~,8,,,,,'eg }" (/ (+ zmax zmin) 2.0))
-          (format dest " {zradius ~,8,,,,,'eg }" (/ (- zmax zmin) 2.0)))
+          (format dest " {zcenter ~,,,,,,'eg }" (/ (+ zmax zmin) 2.0))
+          (format dest " {zradius ~,,,,,,'eg }" (/ (- zmax zmin) 2.0)))
         (when (getf plot-options :xlabel)
           (format dest " {xaxislabel ~s}" (getf plot-options :xlabel)))
         (when (getf plot-options :ylabel)
           (format dest " {yaxislabel ~s}" (getf plot-options :ylabel)))
         (when (getf plot-options :z)
-          (format $pstream " {zcenter ~,8,,,,,'eg }"
+          (format $pstream " {zcenter ~,,,,,,'eg }"
                   (/ (apply #'+ (getf plot-options :z)) 2))
-          (format $pstream " {zradius ~,8,,,,,'eg }~%"
+          (format $pstream " {zradius ~,,,,,,'eg }~%"
                   (/ (apply #'- (getf plot-options :z)) -2)))
         (format dest "~%"))))
     ;;returns a list with the name of the file to be created, or nil
@@ -271,10 +273,10 @@
                               (setq ymin ymax ymax y)
                               (setq ymin y))
                           (setq ymin y))))))
-            (when (and (numberp ymin) (numberp ymax))
+            (when (and (numberp ymin) (numberp ymax) (< ymin ymax))
               (psetq ymin (- (* 1.05 ymin) (* 0.05 ymax))
                      ymax (- (* 1.05 ymax) (* 0.05 ymin)))
-              (format st " {yrange ~,8,,,,,'eg ~,8,,,,,'eg}~%" ymin ymax))))
+              (format st " {yrange ~,,,,,,'eg ~,,,,,,'eg}~%" ymin ymax))))
         (let ((legend (getf options :legend))
               (colors (getf options :color))
               (styles (getf options :style)) (i 0) j style plot-name)

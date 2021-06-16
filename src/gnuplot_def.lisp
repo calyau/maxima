@@ -1,5 +1,6 @@
 ;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
+;; Time-stamp: "2021-06-14 17:26:25 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -97,14 +98,14 @@
       ($lines
        (format st "with lines")
        (if (realp (second style))
-         (format st " lw ~,8,,,,,'eg" (second style)))
+         (format st " lw ~f" (second style)))
        (if (third style)
          (format st " lt ~d" (gnuplot-color colors (third style)))
          (format st " lt ~d" (gnuplot-color colors i))))
       ($points
        (format st "with points")
        (if (realp (second style))
-         (format st " ps ~,8,,,,,'eg" (/ (second style) 2))
+         (format st " ps ~f" (/ (second style) 2))
          (format st " ps 1.5"))
        (if (third style)
          (format st " lt ~d" (gnuplot-color colors (third style)))
@@ -115,9 +116,9 @@
       ($linespoints
        (format st "with linespoints")
        (if (realp (second style))
-         (format st " lw ~,8,,,,,'eg" (second style)))
+         (format st " lw ~f" (second style)))
        (if (realp (third style))
-         (format st " ps ~,8,,,,,'eg" (/ (third style) 2))
+         (format st " ps ~f" (/ (third style) 2))
          (format st " ps 1.5"))
        (if (fourth style)
          (format st " lt ~d" (gnuplot-color colors (fourth style)))
@@ -218,7 +219,7 @@
                                   (cons (/ i (1- n)) map))))))    ;; number i
 
            ;; prints map with the format:  nj, "cj", ...,n1, "c1"  
-           (setq fun (format nil "~{~,8,,,,,'eg ~s~^, ~}" (reverse map)))
+           (setq fun (format nil "~{~f ~s~^, ~}" (reverse map)))
            ;; outputs the string: defined (nj, "cj", ...,n1, "c1")
            (format st "defined (~a)" fun)))
         (t
@@ -410,14 +411,14 @@
           (if (getf plot-options :same_xy)
               (format dest "set size ratio -1~%")
               (if (getf plot-options :yx_ratio)
-                  (format dest "set size ratio ~,8,,,,,'eg~%"
+                  (format dest "set size ratio ~f~%"
                           (getf plot-options :yx_ratio))
                   (if (not (getf plot-options :xy_scale))
                       ;; emit the default only if there is no xy_scale specified.
                       (format dest "set size ratio 0.75~%"))))
           (if (and (getf plot-options :xy_scale)
                    (listp (getf plot-options :xy_scale)))
-              (format dest "set size ~{~,8,,,,,'eg~^, ~}~%"
+              (format dest "set size ~{~f~^, ~}~%"
                       (getf plot-options :xy_scale))))
         ;; plot size and aspect ratio for plot3d
         (when (string= (getf plot-options :type) "plot3d")
@@ -426,43 +427,43 @@
           (when (getf plot-options :same_xyz)
             (format dest "set view equal xyz~%"))
           (when (getf plot-options :zmin)
-            (format dest "set xyplane at ~,8,,,,,'eg~%" (getf plot-options :zmin))))
+            (format dest "set xyplane at ~f~%" (getf plot-options :zmin))))
         ;; axes tics
         (when (member :xtics plot-options)
           (let ((xtics (getf plot-options :xtics)))
             (if (consp xtics)
-                (format dest "set xtics ~{~,8,,,,,'eg~^, ~}~%" xtics)
+                (format dest "set xtics ~{~f~^, ~}~%" xtics)
                 (if xtics
-                    (format dest "set xtics ~,8,,,,,'eg~%" xtics)
+                    (format dest "set xtics ~f~%" xtics)
                     (format dest "unset xtics~%")))))
         (when (member :ytics plot-options)
           (let ((ytics (getf plot-options :ytics)))
             (if (consp ytics)
-                (format dest "set ytics ~{~,8,,,,,'eg~^, ~}~%" ytics)
+                (format dest "set ytics ~{~f~^, ~}~%" ytics)
                 (if ytics
-                    (format dest "set ytics ~,8,,,,,'eg~%" ytics)
+                    (format dest "set ytics ~f~%" ytics)
                     (format dest "unset ytics~%")))))
         (when (member :ztics plot-options)
           (let ((ztics (getf plot-options :ztics)))
             (if (consp ztics)
-                (format dest "set ztics ~{~,8,,,,,'eg~^, ~}~%" ztics)
+                (format dest "set ztics ~{~f~^, ~}~%" ztics)
                 (if ztics
-                    (format dest "set ztics ~,8,,,,,'eg~%" ztics)
+                    (format dest "set ztics ~f~%" ztics)
                     (format dest "unset ztics~%")))))
         (when (member :color_bar_tics plot-options)
           (let ((cbtics (getf plot-options :color_bar_tics)))
             (if (consp cbtics)
-                (format dest "set cbtics ~{~,8,,,,,'eg~^, ~}~%" cbtics)
+                (format dest "set cbtics ~{~f~^, ~}~%" cbtics)
                 (if cbtics
-                    (format dest "set cbtics ~,8,,,,,'eg~%" cbtics)
+                    (format dest "set cbtics ~f~%" cbtics)
                     (format dest "unset cbtics~%")))))
         ;; axes ranges and style
         (when (and (getf plot-options :x) (listp (getf plot-options :x)))
-          (format dest "set xrange [~{~,8,,,,,'eg~^ : ~}]~%" (getf plot-options :x)))
+          (format dest "set xrange [~{~,,,,,,'eg~^ : ~}]~%" (getf plot-options :x)))
         (when (and (getf plot-options :y) (listp (getf plot-options :y)))
-          (format dest "set yrange [~{~,8,,,,,'eg~^ : ~}]~%" (getf plot-options :y)))
+          (format dest "set yrange [~{~,,,,,,'eg~^ : ~}]~%" (getf plot-options :y)))
         (when (and (getf plot-options :z) (listp (getf plot-options :z)))
-          (format dest "set zrange [~{~,8,,,,,'eg~^ : ~}]~%" (getf plot-options :z)))
+          (format dest "set zrange [~{~,,,,,,'eg~^ : ~}]~%" (getf plot-options :z)))
         (when (and (string= (getf plot-options :type) "plot2d")
                    (member :axes plot-options))
           (if (getf plot-options :axes)
@@ -477,7 +478,7 @@
         (when (getf plot-options :label)
           (dolist (label (getf plot-options :label))
             (when (and (listp label) (= (length label) 4))
-              (format dest "set label ~s ~a at ~{~,8,,,,,'eg~^, ~}~%"
+              (format dest "set label ~s ~a at ~{~f~^, ~}~%"
                       (cadr label) gstrings (cddr label)))))
         ;; identifier for missing data
         (format dest "set datafile missing ~s~%" *missing-data-indicator*)
@@ -523,17 +524,17 @@
                               (setq ymin ymax ymax y)
                               (setq ymin y))
                           (setq ymin y))))))
-            (when (and (numberp ymin) (numberp ymax))
+            (when (and (numberp ymin) (numberp ymax) (< ymin ymax))
               (psetq ymin (- (* 1.05 ymin) (* 0.05 ymax))
                      ymax (- (* 1.05 ymax) (* 0.05 ymin)))
-              (format st "set yrange [~,8,,,,,'eg: ~,8,,,,,'eg]~%" ymin ymax))))
+              (format st "set yrange [~,,,,,,'eg: ~,,,,,,'eg]~%" ymin ymax))))
         (format st "plot")
         (when (getf options :x)
-          (format st " [~{~,8,,,,,'eg~^ : ~}]" (getf options :x)))
+          (format st " [~{~,,,,,,'eg~^ : ~}]" (getf options :x)))
         (when (getf options :y) 
           (unless (getf options :x)
             (format st " []"))
-          (format st " [~{~,8,,,,,'eg~^ : ~}]"  (getf options :y)))
+          (format st " [~{~,,,,,,'eg~^ : ~}]"  (getf options :y)))
         (let ((legend (getf options :legend))
               (colors (getf options :color))
               (types (getf options :point_type))
@@ -610,13 +611,14 @@
                                        (format st "~%")
                                        (setq in-discontinuity t))))
                                 (t
-                                 (format st "~,8,,,,,'eg ~,8,,,,,'eg ~%" v w)
+                                 (format st "~,,,,,,'eg ~,,,,,,'eg ~%" v w)
                                  (setq points t)
                                  (setq in-discontinuity nil))))
                      (if (and (null points)
                               (first (getf options :x))
                               (first (getf options :y)))
-                         (format st "~,8,,,,,'eg ~,8,,,,,'eg ~%" (first (getf options :x))
+                         (format st "~,,,,,,'eg ~,,,,,,'eg ~%"
+                                 (first (getf options :x))
                                  (first (getf options :y))))
                      (format st "e~%"))
                    (return))
@@ -629,12 +631,13 @@
                                    (format st "~%")
                                    (setq in-discontinuity t))))
                             (t
-                             (format st "~,8,,,,,'eg ~,8,,,,,'eg ~%" v w)
+                             (format st "~,,,,,,'eg ~,,,,,,'eg ~%" v w)
                              (setq points t)
                              (setq in-discontinuity nil))))
                  (if (and (null points)
                           (first (getf options :x)) (first (getf options :y)))
-                     (format st "~,8,,,,,'eg ~,8,,,,,'eg ~%" (first (getf options :x))
+                     (format st "~,,,,,,'eg ~,,,,,,'eg ~%"
+                             (first (getf options :x))
                              (first (getf options :y)))))
                (format st "e~%"))))))))
 
