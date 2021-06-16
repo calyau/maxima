@@ -183,7 +183,7 @@ Turns the given switch, @emph{sw}, off.
 @end deffn
 
 @node Mode Switches, Option Variables, Functions for Gentran, gentran-pkg
-@section Mode switches
+@section Mode Switches
 
 @defvr {Option variable} fortran
 @defvrx {Option variable} ratfor
@@ -440,7 +440,7 @@ number by which genstmtno is incremented each time a new statement
 number is generated.
 @end defvr
 
-@subsection{Evaluation Forms}
+@subsection Evaluation Forms
 
 The following special functions can be included in Maxima statements
 which are to be translated by the gentran command to indicate that they
@@ -466,7 +466,7 @@ results in an expression that can be translated by Gentran into the
 target language. This is equivalent to VAR : EVAL(EXP) ;
 @end deffn
 
-@deffn {Function} lsetq {@emph{var}, @emph{exp}}
+@deffn {Function} lsetq (@emph{var}, @emph{exp})
 
 Where @emph{var} is any Maxima user level matrix or array element with
 indices which, after evaluation by Maxima, will result in expressions
@@ -476,7 +476,7 @@ is equivalent to VAR[EVAL(S1) ,EVAL(S2) , ... ] : EXP where sl, s2, ...
 are indices.
 @end deffn
 
-@deffn {Function} lrsetq {@emph{var}, @emph{exp}}
+@deffn {Function} lrsetq (@emph{var}, @emph{exp})
 
 Where @emph{var} is any Maxima matrix or array element with indices
 which, after evaluation by Maxima, will result in expressions that can
@@ -486,7 +486,7 @@ translated by Gentran into the target language. This is equivalent to
 VAR[eval(S1),EVAL(s2)...] : EVAL(EXP);
 @end deffn
 
-@defvr {Option variable} type (@emph{type,v1@dots{}vn})
+@deffn {Function} type (@emph{type,v1@dots{}vn})
 
 Places information in the gentran symbol table to assign @emph{type} to
 variables @emph{v1@dots{}vn}. This may result in type declarations
@@ -494,7 +494,7 @@ printed by gentran depending on the setting of gendecs. @strong{type}
 must be called from within gentran and does not evaluate its arguments
 unless @strong{eval}() is used.
 
-@end defvr
+@end deffn
 
 @defvr {Option variable} usefortcomplex @emph{default}:@strong{false}
 
@@ -505,7 +505,7 @@ device and does not carry out any complex calculations.
 
 @end defvr
 
-@defvr {Option variable} literal(@emph{argl, arg2, ... , argn})
+@deffn {Function} literal (@emph{argl, arg2, ... , argn})
 
 where argl, arg2, ... , argn is an argument list containing one or more
 arg's, each of which either is, or evaluates to, an atom. The atoms
@@ -515,4 +515,5 @@ character sequence resulting from concatenation of the given atoms.
 Double quotes are stripped from all string type arg's, and each
 occurrence of the reserved atom @emph{tab} or @emph{cr} is replaced by a
 tab to the current level of indentation, or an end-of-line character.
-@end defvr
+
+@end deffn

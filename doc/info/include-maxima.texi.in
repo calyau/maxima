@@ -895,7 +895,7 @@ Understanding maxima's output
 @chapter Gentran
 @include gentran.texi
 
-@node ggf-pkg, graphs-pkg, fractals-pkg, Top
+@node ggf-pkg, graphs-pkg, gentran-pkg, Top
 @chapter ggf
 @include ggf.texi
 
