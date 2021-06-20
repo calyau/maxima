@@ -138,8 +138,8 @@ to error in template.
 @deffn {Function} tempvar (@var{type})
 
 Generates temporary variable names by concatenating @strong{tempvarname}
-(default @strong{‘t}) with sequence numbers. If @emph{type} is
-non-false, @emph{e.g.} “real*8” the corresponding type is assigned to
+(default @strong{'t}) with sequence numbers. If @emph{type} is
+non-false, @emph{e.g.} "real*8" the corresponding type is assigned to
 the variable in the gentran symbol table, which may be used to generate
 declarations depending on the setting of the @strong{gendecs} flag. It
 is the users responsibility to make sure temporary variable names do not
@@ -363,14 +363,14 @@ common-subexpression-to-temporary-variable assignments.
 @end defvr
 
 @defvr {Option variable} tempvarname
-Default: @strong{‘t}
+Default: @strong{'t}
 
 Name used as the prefix when generating temporary variable names.
 
 @end defvr
 
 @defvr {Option variable} optimvarname 
-default: @strong{‘u}
+default: @strong{'u}
 
 is the preface used
 to generate temporary file names produced by the optimizer when
@@ -396,7 +396,7 @@ not still hold a significant value or a different type.
 @defvr {Option variable} tempvartype
 Default: @strong{false}
 
-Target language variable type (e.g., INTEGER, REAL•8, FLOAT, etc.) used
+Target language variable type (e.g., INTEGER, REAL*8, FLOAT, etc.) used
 as a default for automatically generated variables whose type cannot be
 determined otherwise. If tempvartype is false, then generated temporary
 variables whose type cannot be determined are not automatically
