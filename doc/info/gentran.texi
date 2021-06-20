@@ -3,6 +3,7 @@
 * Functions for Gentran::
 * Gentran Mode Switches::
 * Gentran Option Variables::
+* Gentran Evaluation Forms::
 @end menu
 
 @node Introduction to Gentran, Functions for Gentran, gentran-pkg
@@ -220,7 +221,7 @@ executable fortran code). Therefore the gendecs flag is turned off
 during processing of templates by @strong{gentranin}.
 @end defvr
 
-@node Gentran Option Variables,  , Gentran Mode Switches, gentran-pkg
+@node Gentran Option Variables, Gentran Evaluation Forms, Gentran Mode Switches, gentran-pkg
 @section Gentran Option Variables
 
 @defvr {Option variable} gentranlang
@@ -440,7 +441,18 @@ number by which genstmtno is incremented each time a new statement
 number is generated.
 @end defvr
 
-@subsection Evaluation Forms
+@defvr {Option variable} usefortcomplex
+Default: @strong{false}
+
+If usefortcomplex is true, real numbers in expressions declared to be
+complex by @emph{type(complex,@dots{})} will be printed in Fortran
+complex number format @emph{(realpart,0.0)}. This is a purely syntactic
+device and does not carry out any complex calculations.
+
+@end defvr
+
+@node Gentran Evaluation Forms, , Gentran Option Variables, gentran-pkg
+@section Gentran Evaluation Forms
 
 The following special functions can be included in Maxima statements
 which are to be translated by the gentran command to indicate that they
@@ -495,15 +507,6 @@ must be called from within gentran and does not evaluate its arguments
 unless @strong{eval}() is used.
 
 @end deffn
-
-@defvr {Option variable} usefortcomplex @emph{default}:@strong{false}
-
-If usefortcomplex is true, real numbers in expressions declared to be
-complex by @emph{type(complex,@dots{})} will be printed in Fortran
-complex number format @emph{(realpart,0.0)}. This is a purely syntactic
-device and does not carry out any complex calculations.
-
-@end defvr
 
 @deffn {Function} literal (@emph{argl, arg2, ... , argn})
 
