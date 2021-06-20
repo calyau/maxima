@@ -642,7 +642,7 @@
 
 (defmethod plot3d-command ((plot gnuplot-plot) functions options titles)
   (let ((i 0) fun xrange yrange lvars trans (n (length functions))
-    (gstrings (if (getf options :gnuplot_strings) "" "noenhanced")))
+    (gstrings (if (getf options :gnuplot_strings) "" "")))
     (setf
      (slot-value plot 'data)
      (concatenate
