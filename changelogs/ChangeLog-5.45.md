@@ -85,7 +85,6 @@ Changes in the Windows installer:
 
 Bug fixes for numbered bugs:
 ----------------------------
- * #926: sign errors in cartan package
  * #2976: "local" doesn't work in translated code
  * #3154: lratsubst NOT as described in Help file
  * #3376: lratsusbst causes bind stack overflow on large lists
@@ -131,12 +130,10 @@ Bug fixes for numbered bugs:
  * #3768: imaxima causes an error
  * #3774: Horizontal parts of plots at ymin/ymax are invisible
  * #3777: rat fails on denormalized floats
- * #3789: package ezunits: ev(dimensions(u), nouns) stack overflow
  * #30520: (from Sage bug tracker) Error in the sign of a product
  * #31557: (from Sage bug tracker) Fix product(-x, x, 1, SR.var('n')) to
    return (-1)^n*factorial(n)
  * #1501: (from Wxmaxima bug tacker) Wrong description of plotting options
-
 
 Unnumbered bugs fixed:
 ---------------------
