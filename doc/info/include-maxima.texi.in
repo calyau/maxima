@@ -179,6 +179,7 @@ and develop DOE Macsyma, now called Maxima.
 * f90-pkg::                         Maxima to fortran translator.
 * finance-pkg::                     Financial package.
 * fractals-pkg::                    Fractals.
+* gentran-pkg::                     Gentran
 * ggf-pkg::                         Generating function of sequences.
 * graphs-pkg::                      Graph theory package.
 * grobner-pkg::                     Functions for working with Groebner bases.
@@ -505,6 +506,12 @@ fractals
 * Definitions for complex fractals::
 * Definitions for Koch snowflakes::
 * Definitions for Peano maps::
+
+gentran
+* Introduction to Gentran::
+* Functions for Gentran::
+* Mode Switches::
+* Option Variables::
 
 ggf
 * Functions and Variables for ggf::
@@ -887,11 +894,15 @@ Understanding maxima's output
 @chapter finance
 @include finance.texi
 
-@node fractals-pkg, ggf-pkg, finance-pkg, Top
+@node fractals-pkg, gentran-pkg, finance-pkg, Top
 @chapter fractals
 @include fractals.texi
 
-@node ggf-pkg, graphs-pkg, fractals-pkg, Top
+@node gentran-pkg, ggf-pkg, fractals-pkg, Top
+@chapter Gentran
+@include gentran.texi
+
+@node ggf-pkg, graphs-pkg, gentran-pkg, Top
 @chapter ggf
 @include ggf.texi
 
