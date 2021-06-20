@@ -510,8 +510,8 @@ fractals
 gentran
 * Introduction to Gentran::
 * Functions for Gentran::
-* Mode Switches::
-* Option Variables::
+* Gentran Mode Switches::
+* Gentran Option Variables::
 
 ggf
 * Functions and Variables for ggf::
