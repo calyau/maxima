@@ -85,55 +85,55 @@ Changes in the Windows installer:
 
 Bug fixes for numbered bugs:
 ----------------------------
- * #2976: "local" doesn't work in translated code
- * #3154: lratsubst NOT as described in Help file
- * #3376: lratsusbst causes bind stack overflow on large lists
- * #3417: sign(1/zero) => 0 (where equal(zero,0))
- * #3434: kill(ratvars) should give an error
- * #3543: bug with polynomialp
- * #3549: removing mmref.tex and maxima_pdf.texi from info directory
- * #3562: integrate(1/(1+tan(x)), x, 0, %pi/2) gives complex result, should be
+ * \#2976: "local" doesn't work in translated code
+ * \#3154: lratsubst NOT as described in Help file
+ * \#3376: lratsusbst causes bind stack overflow on large lists
+ * \#3417: sign(1/zero) => 0 (where equal(zero,0))
+ * \#3434: kill(ratvars) should give an error
+ * \#3543: bug with polynomialp
+ * \#3549: removing mmref.tex and maxima_pdf.texi from info directory
+ * \#3562: integrate(1/(1+tan(x)), x, 0, %pi/2) gives complex result, should be
    %pi/4
- * #3576: odelin wrong answer on simplest ode
- * #3642: Lisp error when translating assume
- * #3643: "DEFMFUN creates $NAME and $NAME-IMPL, contradicting documentation"
- * #3648: plot output depends on *read-default-float-format*
- * #3650: We trusted gnuplot's datafile separator to be unmodified
- * #3658: error with floats appearing instead of integers in lratsubst
- * #3680: limit(x/sin(1/x),x,0) wrong
- * #3681: limit(n^n/(n^n+(n-1)^n),n,inf) wrong
- * #3682: limit(n^(n-1)/(n^n+(n-1)^n),n,inf) gives Lisp error
- * #3671, 3674, 3675: imaxima-related bugs
- * #3685: descriptive/continuous_freq causes Lisp error given rational numbers
- * #3700: stringproc/Mysterious error in ssubst
- * #3704: Translator gives internal error
- * #3706: lratsusbst causes bind stack overflow on large lists
- * #3710: plot3d fails with [grid,300,300]
- * #3714: Update maxima to use vtk-8.2.0
- * #3715: draw3d with variables x[1], x[2] not working
- * #3720: conjugate of und, ind, zerob, and zeroa
- * #3722: missing simp flags in subexpressions conjugate nounform
- * #3723: conjugate of summations (check if summation range is real)
- * #3728: missing simp flag from set_partitions
- * #3732: plot_format gnuplot_pipes creates file in addition to a pipe
- * #3733: $gamma vs %gamma confusion
- * #3734: $hypergeometric_u vs %hypergeometric_u confusion
- * #3736: Quoting either min or max inhibits simplification
- * #3738: xlabel, ylabel in set_plot_option ignored
- * #3745: Quoting either elliptic_f inhibits simplification
- * #3746: derivative of inverse_jacobi_sn is noun/verb confused
- * #3749: Calling demo() causes crash in Maxima 5.41.0 and 5.44.0 (GCL)
- * #3751: implicit_plot option handling for style and legend is out of date
- * #3752: missing simp flag from permutations
- * #3753: powerset has missing simp flag
- * #3760: apropos("") errors
- * #3768: imaxima causes an error
- * #3774: Horizontal parts of plots at ymin/ymax are invisible
- * #3777: rat fails on denormalized floats
- * #30520: (from Sage bug tracker) Error in the sign of a product
- * #31557: (from Sage bug tracker) Fix product(-x, x, 1, SR.var('n')) to
+ * \#3576: odelin wrong answer on simplest ode
+ * \#3642: Lisp error when translating assume
+ * \#3643: "DEFMFUN creates $NAME and $NAME-IMPL, contradicting documentation"
+ * \#3648: plot output depends on *read-default-float-format*
+ * \#3650: We trusted gnuplot's datafile separator to be unmodified
+ * \#3658: error with floats appearing instead of integers in lratsubst
+ * \#3680: limit(x/sin(1/x),x,0) wrong
+ * \#3681: limit(n^n/(n^n+(n-1)^n),n,inf) wrong
+ * \#3682: limit(n^(n-1)/(n^n+(n-1)^n),n,inf) gives Lisp error
+ * \#3671, 3674, 3675: imaxima-related bugs
+ * \#3685: descriptive/continuous_freq causes Lisp error given rational numbers
+ * \#3700: stringproc/Mysterious error in ssubst
+ * \#3704: Translator gives internal error
+ * \#3706: lratsusbst causes bind stack overflow on large lists
+ * \#3710: plot3d fails with [grid,300,300]
+ * \#3714: Update maxima to use vtk-8.2.0
+ * \#3715: draw3d with variables x[1], x[2] not working
+ * \#3720: conjugate of und, ind, zerob, and zeroa
+ * \#3722: missing simp flags in subexpressions conjugate nounform
+ * \#3723: conjugate of summations (check if summation range is real)
+ * \#3728: missing simp flag from set_partitions
+ * \#3732: plot_format gnuplot_pipes creates file in addition to a pipe
+ * \#3733: $gamma vs %gamma confusion
+ * \#3734: $hypergeometric_u vs %hypergeometric_u confusion
+ * \#3736: Quoting either min or max inhibits simplification
+ * \#3738: xlabel, ylabel in set_plot_option ignored
+ * \#3745: Quoting either elliptic_f inhibits simplification
+ * \#3746: derivative of inverse_jacobi_sn is noun/verb confused
+ * \#3749: Calling demo() causes crash in Maxima 5.41.0 and 5.44.0 (GCL)
+ * \#3751: implicit_plot option handling for style and legend is out of date
+ * \#3752: missing simp flag from permutations
+ * \#3753: powerset has missing simp flag
+ * \#3760: apropos("") errors
+ * \#3768: imaxima causes an error
+ * \#3774: Horizontal parts of plots at ymin/ymax are invisible
+ * \#3777: rat fails on denormalized floats
+ * \#30520: (from Sage bug tracker) Error in the sign of a product
+ * \#31557: (from Sage bug tracker) Fix product(-x, x, 1, SR.var('n')) to
    return (-1)^n*factorial(n)
- * #1501: (from Wxmaxima bug tacker) Wrong description of plotting options
+ * \#1501: (from Wxmaxima bug tacker) Wrong description of plotting options
 
 Unnumbered bugs fixed:
 ---------------------
