@@ -27,9 +27,9 @@ Changes in the Windows installer:
 
 Bug fixes for numbered bugs:
 ----------------------------
- * #926: sign errors in cartan package
- * #3789: package ezunits: ev(dimensions(u), nouns) stack overflow
- * #3793: plot2d fails on small x-range
- * #3796 plot3d doesn't support rotation in 5.45
- * #3797: plot2d(0, ...) gives "can't plot with empty y range" -- regression
- * #3801: error sourcing .xmaximarc on Windows
+ * \#926: sign errors in cartan package
+ * \#3789: package ezunits: ev(dimensions(u), nouns) stack overflow
+ * \#3793: plot2d fails on small x-range
+ * \#3796 plot3d doesn't support rotation in 5.45
+ * \#3797: plot2d(0, ...) gives "can't plot with empty y range" -- regression
+ * \#3801: error sourcing .xmaximarc on Windows
