@@ -167,8 +167,11 @@ if "%layout_autotools%" == "true" goto clisp_autotools
 goto end
 
 :clisp_autotools
+rem ./configure sets a variable @CLISP_NAME@ which might be used instead of lisp.exe,
+rem but when Maxima is crosscompiled on Linux, a shell script is used as 'crosscompiler',
+rem which would be inserted here ==> do not use the variable @CLISP_NAME@ but just lisp.exe.
 set "path=%maxima_imagesdir%/binary-%lisp%;%maxima_prefix%/clisp-2.49/base;%path%"
-@CLISP_NAME@ %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
+lisp.exe %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
 goto end
 
 :clisp_exec
@@ -202,7 +205,10 @@ if exist "%maxima_prefix%/bin/libgcc_s_seh-1.dll" (
     rem I am a 32 bit build - the SBCL workaround for load(lapack) will not work
 )
 
-@SBCL_NAME@ --core "%maxima_image_base%.core" --noinform %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options %*
+rem ./configure sets a variable @SBCL_NAME@ which might be used instead of sbcl.exe,
+rem but when Maxima is crosscompiled on Linux, a shell script is used as 'crosscompiler',
+rem which would be inserted here ==> do not use the variable @SBCL_NAME@ but just sbcl.exe.
+sbcl.exe --core "%maxima_image_base%.core" --noinform %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options %*
 goto end
 :dosbcl_exec
 "%maxima_image_base%.exe" %lisp_options% --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options %*
