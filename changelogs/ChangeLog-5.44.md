@@ -31,8 +31,8 @@ Changes in core:
  * Better handling of defint errors triggered by laplace()
  * Avoid variable capture in the WITH-NEW-CONTEXT macro
  * Evaluate the body of a WITH-NEW-CONTEXT form as an implicit PROGN
- * Numbers are no loger compared using EQ instead of EQL
- * Characters are no loger compared using EQ instead of EQL
+ * Numbers are no longer compared using EQ instead of EQL
+ * Characters are no longer compared using EQ instead of EQL
  * Fixed bogus translations of apply2 and applyb2
  * Fixed bogus translations of atan and atan2 with float arguments
  * Fixed the bogus translation of atan2 with one float and one rational

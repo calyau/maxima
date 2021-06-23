@@ -40,7 +40,7 @@
 
  * apropos: argument is a string, return Maxima user symbols only
 
- * regularize implmentation of constant declaration
+ * regularize implementation of constant declaration
 
  * pass options from Maxima command line to Lisp
 
