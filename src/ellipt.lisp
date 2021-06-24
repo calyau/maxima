@@ -1388,9 +1388,7 @@ first kind:
 	 ;; A&S 17.4.25
 	 1.0)
 	(t
-	 (let* ((k (sqrt m))
-		(y (* (- 1 k)
-		      (+ 1 k))))
+	 (let* ((y (- 1 m)))
 	   (to (- (bigfloat::bf-rf 0.0 y 1.0)
 		  (* (/ m 3)
 		     (bigfloat::bf-rd 0.0 y 1.0))))))))
