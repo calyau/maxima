@@ -89,17 +89,22 @@ The executable program, xmaxima, accepts the following command-line
 options:
 
 @table @option
-@item -help
-@itemx -h
+@item @code{--help}
+@itemx @code{-h}
 Displays a brief usage summary.
-@item -url site
+@item @code{--url} site
 Start Xmaxima's browser with the page at the URL @samp{site}
-@item -use-version ver
-@itemx -u ver
+@item @code{--use-version} ver
+@itemx @code{-u} ver
 Launch version @samp{ver} of Maxima.
-@item -lisp flavor
-@itemx -l flavor
+@item @code{--lisp} flavor
+@itemx @code{-l} flavor
 Use the lisp implementation @samp{flavor} of Maxima.
+@item @code{--lisp-options} lisp-options
+@itemx @code{-X} lisp-options
+Options to be given to the underlying Lisp.
+Option lines containing spaces have to be
+quoted to be passed to the lisp as a whole.
 @end table
 
 @node Main Window, Entering commands, Command-line options, Top
@@ -482,7 +487,7 @@ Maxima will now be inserted back into the Web page, in the next tag
 @code{eval} tags can be edited and reenter.
 
 Some more sample active pages can be found in
-@url{http://www.ma.utexas.edu/users/wfs/netmath/netmath.html}
+@url{https://web.archive.org/web/20190926040445/https://web.ma.utexas.edu/users/wfs/netmath/netmath.html}
  
 @node Getting Help, Concept Index, The browser, Top
 @chapter Getting Help
