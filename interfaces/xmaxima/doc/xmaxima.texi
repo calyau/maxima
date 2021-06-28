@@ -9,7 +9,7 @@
 @ifinfo
 This is the Reference Manual for Xmaxima
 
-Copyright 2006 Jaime E. Villate
+Copyright 2006-2021 Jaime E. Villate
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -67,8 +67,8 @@ MA 02110-1301, USA.
 Maxima (formerly called 'openmath'), which can do some of the plots done by Maxima's default plotter
 (@dfn{gnuplot}) and a few more that gnuplot cannot do.
 
-This manual was written for version 5.11.0 of Xmaxima. Some familiarity
-with Maxima 5.11.0 is assumed. There is a separate reference manual for
+This manual was written for Xmaxima - the screenshots are from the Linux version of Maxima 5.43.2. Some familiarity
+with Maxima is assumed. There is a separate reference manual for
 Maxima, which can be browsed and studied from Xmaxima.
 
 @menu
@@ -110,34 +110,31 @@ quoted to be passed to the lisp as a whole.
 @node Main Window, Entering commands, Command-line options, Top
 @chapter Xmaxima Window
 
-By default, Xmaxima creates a window split horizontally into two
-sub-windows. The one on the top is the text window, where all
+By default, Xmaxima creates two windows, a command window, where all
 the commands for Maxima will be entered and the output returned by
 Maxima will be printed.
 @cindex text window
 
-The lower window is Xmaxima's browser; it is used to show a quick
+The second window is Xmaxima's browser; it is used to show a quick
 primer, a copy of the Maxima manual and any other HTML you might want to
 download from the Web.
 @cindex browser
 
 @ifnotinfo
-@image{figures/xmaxima,8cm}
+@image{figures/xmaximawindow,8cm}
 @end ifnotinfo
 
-The cursor is the small vertical bar that blinks in the text Window. The
+@ifnotinfo
+@image{figures/xmaximabrowser,8cm}
+@end ifnotinfo
+
+The cursor is the small vertical bar that blinks in the text window. The
 text that is currently being written in the text window and which could
 be submitted to Maxima for evaluation is rendered in green. The text
 sent back by Maxima is rendered in black, and the text that has been
 previously entered by the user and that was already evaluated by Maxima
 is rendered in blue.
 
-The relative size of the two sub-windows can be adjusted, by dragging
-the horizontal bar that separates them, with the mouse. The browser
-window can be eliminated, leaving only a larger text window, and recovered
-again, by using the section @samp{Toggle Browser Visibility} in the
-@code{Options} menu.
-@cindex Options
 
 You can also choose different types and sizes for the fonts, in the
 section @samp{Preferences} of the @code{Options} menu; those settings
@@ -399,7 +396,7 @@ file.
 @end itemize
 
 @ifnotinfo
-@image{figures/plot2d,8cm}
+@image{figures/xmaximaplot,8cm}
 @end ifnotinfo
 
 By default, each plot will be opened in a new separate window. However,
@@ -409,7 +406,7 @@ selecting the option @samp{Plot windows -> Embedded} in the
 @cindex Embedded
 
 @ifnotinfo
-@image{figures/plot3d,8cm}
+@image{figures/xmaximaembedded,8cm}
 @end ifnotinfo
 
 The 3d plot has a menu very similar to that obtained with
@@ -442,7 +439,7 @@ and a sine function with a period that can be changed by moving the
 slider that appears on the bottom.
 
 @ifnotinfo
-@image{figures/sliders,8cm}
+@image{figures/xmaximaslider,8cm}
 @end ifnotinfo
 
 the sliders option of xmaxima is one feature that cannot be accessed
