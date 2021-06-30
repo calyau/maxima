@@ -316,9 +316,6 @@ proc setMaxDir {} {
 	set maxima_priv(firstUrl) ""
     } else {
 	if {$tcl_platform(platform) == "windows"} {
-	    if {$tcl_platform(osVersion) < 5 } {
-		set file [file attrib $file -shortname]
-	    }
 	    # convert to unix
 	    set file [file dir $file]/[file tail $file]
 	}

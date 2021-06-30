@@ -41,11 +41,7 @@ set fontSize $_pixel
 # Really should do another version for mono
 switch -exact -- $tcl_platform(platform) {
     windows {
-	if {$tcl_platform(osVersion) < 5} {
-	    set _prop_default {MS Sans Serif}
-	} else {
-	    set _prop_default Tahoma
-	}
+	set _prop_default Tahoma
 	set _fixed_default {Courier New}
     }
     default {

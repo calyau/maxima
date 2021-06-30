@@ -463,7 +463,7 @@ relational knowledge is contained in the default context GLOBAL.")
                 ((atom (setq patevalled (specrepcheck (meval pat))))
                  patevalled)
                 ((member (caar patevalled) '(mnot mand mor) :test #'eq)
-                 (mevalp1 patevalled))
+                 (return-from mevalp1 (mevalp1 patevalled)))
                 (t
                  (mevalp2 patevalled
                           (caar patevalled)
