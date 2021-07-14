@@ -792,7 +792,7 @@
                       $inmc1 %inmc1 $ikt1 %ikt1))
 (setq christoffels2 '($ichr2 %ichr2 $icc2 %icc2 $ifc2 %ifc2
                       $inmc2 %inmc2 $ikt2 %ikt2))
-(setq christoffels (append christoffels1 christoffels2 '(%ifb $ifb)))
+(setq christoffels (append christoffels1 christoffels2 '(%ifb $ifb %itr $itr)))
 
 ;; Main contraction function
 (defmfun $contract (e)
@@ -1185,11 +1185,12 @@
       )
     )
 
-    ;No tensor can contract Kronecker-deltas or Levi-Civita symbols.
+    ;No tensor can contract Kronecker-deltas, Levi-Civita symbols, or the torsion tensor.
     (and
       (or (eq (caar g) '$kdelta) (eq (caar g) '%kdelta)
           (eq (caar g) '$levi_civita) (eq (caar g) '%levi_civita)
           (eq (caar g) '$icurvature) (eq (caar g) '%icurvature)
+          (eq (caar g) '$itr) (eq (caar g) '%itr)
       )
       (return nil)
     )
