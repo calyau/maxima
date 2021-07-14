@@ -1318,6 +1318,8 @@
       (
         (member (car cf) christoffels1)
         (cond
+            ; VTT - before anything else, check that we're contracting on the last index only
+            ((not (equal (append c (last (cdadr g))) (cdadr g))) (return nil))
           (
             ;;(and (eql (length a) 2) (eql (length b) 1))
             (and (eql (+ (length (plusi a)) (length (minusi b))) 2) (eql (+ (length (plusi b)) (length (minusi a))) 1))
