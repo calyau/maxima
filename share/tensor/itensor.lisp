@@ -14,7 +14,7 @@
 ;; Comments:
 ;;
 ;; The Itensor package was downcased, cleaned up, and moving frames
-;; functionality was added by Viktor Toth (http://www.vttoth.com/).
+;; functionality was added by Viktor Toth (https://www.vttoth.com/).
 ;;
 ;; As of November, 2004, the naming conventions in this package now
 ;; correspond with the naming conventions in commercial MACSYMA.
@@ -25,7 +25,7 @@
 (macsyma-module itensor) ;; added 9/24/82 at UCB
 
 (cond (($get '$itensor '$version) (merror "ITENSOR already loaded"))
-      (t ($put '$itensor '$v20081223 '$version)))
+      (t ($put '$itensor '$v20210714 '$version)))
 
 ;    Various functions in Itensor have been parceled out to separate files. A
 ;    function in one of these files will only be loaded in (automatically) if
