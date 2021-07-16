@@ -66,4 +66,11 @@ ishow(canform(conmetderiv(D2,g)))$
 ("Finally, we see that the two results differ only by torsion")$
 ishow(canform(D2-D1))$
 
+("Last but not least, d^2 is not nilpotent in the presence of torsion")$
+extdiff(extdiff(f([],[])))$
+%,icc2,ikt2,ikt1$
+canform(%)$
+%,g$
+ishow(contract(%))$
+
 ("Reminder: when dim = 2n, the Laplacian is -1 times these results.")$
