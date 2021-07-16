@@ -1680,6 +1680,23 @@ X*4/3;    ---        - X
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{with_default_2d_display}
+@deffn {Function} with_default_2d_display (expr)
+
+While maxima by default realizes 2d Output using ASCII-Art some frontend
+change that to TeX, MathML or a specific XML dialect that better suits
+the needs for this specific frontend. @code{with_default_2d_display}
+temporarily switches maxima to the default 2D ASCII Art formatter for
+outputting the result of @code{expr}.
+
+See also @mref{set_alt_display} and @mrefdot{display2d}
+
+@opencatbox
+@category{Display functions}
+@closecatbox
+@end deffn
+
 @c IS THIS FUNCTION STILL USEFUL ???
 @c REPHRASE, NEEDS EXAMPLES
 
