@@ -733,5 +733,18 @@ block([%rnum:0],algsys([a*b^2*c-d*e],[a,b,c,d,e]));
  [a = %r11,b = 0,c = %r12,d = %r13,e = 0],
  [a = %r14,b = %r15,c = 0,d = %r16,e = 0]];
 
+/* Reduced from rtest_to_poly_solve.mac
+   Third solution found after bug #380 fixed */
+block([%rnum:0],
+  eqs:[a5*b1=0,a1*b2=r3,b2+a1=r2,a2*b2+a3*b1=r4,r4+a3*b2+a5=d5],
+  algsys(eqs,[a1,a2,a3,a5,b1,b2,r2,r3,r4]))$
+[[a1=%r1,a2=%r2,a3=%r3,a5=d5+((-%r3)-%r2)*%r4,b1=0,b2=%r4,
+  r2=%r4+%r1,r3=%r1*%r4,r4=%r2*%r4],
+ [a1=%r5,a2=(d5-%r6*%r8-%r6*%r7)/%r8,a3=%r6,a5=0,b1=%r7,
+  b2=%r8,r2=%r8+%r5,r3=%r5*%r8,r4=d5-%r6*%r8],
+ [a1=%r9,a2=%r10,a3=d5/%r11,a5=0,b1=%r11,b2=0,r2=%r9,
+  r3=0,r4=d5]];
+
+
 (kill(eqt,eqs,F,G,p,p1,p2,s),done)$
 done;
