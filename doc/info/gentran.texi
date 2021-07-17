@@ -20,7 +20,7 @@ definitions, matrtices and arrays, and more.
 @node Functions for Gentran, Gentran Mode Switches, Introduction to Gentran, gentran-pkg
 @section Functions for Gentran
 
-@deffn {Function} gentran (@var{stmtl}, @var{stmt2}, ... , @var{stmtn} , @var{[fl, f2, ... , fm]})
+@deffn {Function} gentran (@var{stmt1}, @var{stmt2}, ... , @var{stmtn} , @var{[f1, f2, ... , fm]})
 Translates each stmt into formatted code in the target language. A
 substantial subset of expressions and statements in the Maxima
 programming language can be translated directly into numerical code. The
@@ -29,12 +29,12 @@ definitions into code in the target language (@strong{gentranlang:}
 fortran, c, or ratfor). Expressions may optionally be given to Maxima
 for evaluation prior to translation.
 
-@emph{stmtl, stmt2, ... , stmtn} is a sequence of one or more
+@emph{stmt1, stmt2, ... , stmtn} is a sequence of one or more
 statements, each of which is any Maxima user level expression, (simple,
 group, or block) statement, or procedure definition that can be
 translated into the target language.
 
-@emph{[fl, f2, ... , fm]} is an optional list of output files to which
+@emph{[f1, f2, ... , fm]} is an optional list of output files to which
 translated output will be written. They can be any of the following:
 
 @emph{@strong{string}} = the name of an output file in quotes
@@ -54,20 +54,20 @@ current output, generally the terminal. @strong{gentran} returns (a list
 of) the name(s) of file(s) to which code was written.
 @end deffn
 
-@deffn {Function} gentranout (@var{fl}, @var{f2}, ... , @var{fn})
+@deffn {Function} gentranout (@var{f1}, @var{f2}, ... , @var{fn})
 
 Gentran maintains a list of files currently open for output by gentran
 commands only. gentranout inserts each file name represented by
-@emph{fl, f2,... , fn} into that list and opens each one for output. It
-also resets the current output file(s) to include all files in @emph{fl,
-fl, f2, ... , fn}. gentranout returns the list of files represented by
-@emph{fl, f2, ... , fn}; i.e., the current output file(s) after the
+@emph{f1, f2,... , fn} into that list and opens each one for output. It
+also resets the current output file(s) to include all files in
+@emph{f1, f2, ... , fn}. gentranout returns the list of files represented by
+@emph{f1, f2, ... , fn}; i.e., the current output file(s) after the
 command has been executed.
 @end deffn
 
-@deffn {Function} gentranshut (@var{fl}, @var{f2}, ... , @var{fn})
+@deffn {Function} gentranshut (@var{f1}, @var{f2}, ... , @var{fn})
 
-gentranshut creates a list of file names from @emph{fl, f2, ... , fn},
+gentranshut creates a list of file names from @emph{f1, f2, ... , fn},
 deletes each from the output file list, and closes the corresponding
 files. If (all of) the current output file(s) are closed, then the
 current output file is reset to the terminal. gentranshut returns (a
@@ -83,17 +83,17 @@ current output file is reset to this new element on the top of the
 stack.
 @end deffn
 
-@deffn {Function} gentranpop (@var{fl}, @var{f2}, ... , @var{fn})
+@deffn {Function} gentranpop (@var{f1}, @var{f2}, ... , @var{fn})
 
 gentranpop deletes the top-most occurrence of the single element
-containing the file name(s) represented by @emph{fl, f2, ... , fn} from
+containing the file name(s) represented by @emph{f1, f2, ... , fn} from
 the output stack. Files whose names have been completely removed from
 the output stack are closed. The current output file is reset to the
 (new) element on the top of the output stack. gentranpop returns the
 current output file(s) after this command has been executed.
 @end deffn
 
-@deffn {Function} gentranin (@var{fl}, @var{f2}, ... , @var{fn}, [@var{fl},@var{f2}, ... , @var{fm}])
+@deffn {Function} gentranin (@var{f1}, @var{f2}, ... , @var{fn}, [@var{f1},@var{f2}, ... , @var{fm}])
 
 gentranin processes mixed-language template files consisting of active
 parts (delimited by <<@dots{}>>) containing Maxima statements, including
@@ -102,7 +102,7 @@ the target language (including comments), which are transcribed
 verbatim. Input files are processed sequentially and the results
 appended to the output. The presence of >> in passive parts of the file
 (except for in comments) is interpreted as an end-of-file and terminates
-processing of that file. The optional list of output files @emph{[fl,f2,
+processing of that file. The optional list of output files @emph{[f1,f2,
 ... , fm]} each receive a copy of the entire output. All filespecs are
 quoted strings. Input files may be given as (quoted string) filenames,
 which will be located by Maxima @strong{file_search}. The optional
@@ -122,7 +122,7 @@ replaced by generated code. If @emph{[f1, f2, ... , fm]} is not
 supplied, then generated code is simply written to the current output
 file(s). However, if it is given, then the current output file is
 temporarily overridden. Generated code is written to each file
-represented by @emph{fl,f2, ... , fn} for this command only. Files which
+represented by @emph{f1, f2, ... , fn} for this command only. Files which
 were open prior to the call to gentranin will remain open after the
 call, and files which did not exist prior to the call will be created,
 opened, written to, and closed. The output file stack will be exactly
@@ -310,7 +310,7 @@ double-floated even when genfloat is false.
 @defvr {Option variable} dblfloat
 Default: @strong{false} If dblfloat is set to
 true, floating point numbers in gentran output in implementations (such
-asWindows Maxima under CLISP) in which float and double-float are the
+as Windows Maxima under CLISP) in which float and double-float are the
 same will be printed as *.d0. In implementations in which float and
 double-float are different, floats will be coerced to double-float
 before being printed.
@@ -484,7 +484,7 @@ Where @emph{var} is any Maxima user level matrix or array element with
 indices which, after evaluation by Maxima, will result in expressions
 that can be translated by Gentran, and @emph{exp} is any Maxima user
 level expression that can be translated into the target language. This
-is equivalent to VAR[EVAL(S1) ,EVAL(S2) , ... ] : EXP where sl, s2, ...
+is equivalent to @code{var[eval(s1), eval(s2), ...]: exp} where @var{s1}, @var{s2}, ...
 are indices.
 @end deffn
 
@@ -495,7 +495,7 @@ which, after evaluation by Maxima, will result in expressions that can
 be translated by Gentran; and @emph{exp} is any user level expression
 which, after evaluation, will result in an expression that can be
 translated by Gentran into the target language. This is equivalent to
-VAR[eval(S1),EVAL(s2)...] : EVAL(EXP);
+@code{var[eval(s1), eval(s2), ...]: eval(exp);}.
 @end deffn
 
 @deffn {Function} type (@emph{type,v1@dots{}vn})
@@ -508,9 +508,9 @@ unless @strong{eval}() is used.
 
 @end deffn
 
-@deffn {Function} literal (@emph{argl, arg2, ... , argn})
+@deffn {Function} literal (@emph{arg1, arg2, ... , argn})
 
-where argl, arg2, ... , argn is an argument list containing one or more
+where arg1, arg2, ... , argn is an argument list containing one or more
 arg's, each of which either is, or evaluates to, an atom. The atoms
 @emph{tab} and @emph{cr} have special meanings. arg's are not evaluated
 unless given as arguments to eval. This function call is replaced by the
