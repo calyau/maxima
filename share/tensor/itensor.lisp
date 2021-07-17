@@ -2991,6 +2991,9 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
   (prog (len idx1 idx2)
     (setq
       len ($length (cadr ($indices e)))
+    )
+    (cond ((> len $dim) (return 0)))
+    (setq
       idx1 (do ((i $dim (1- i)) l) ((eq i len) l) (setq l (cons ($idummy) l)))
       idx2 (do ((i $dim (1- i)) l) ((eq i len) l) (setq l (cons ($idummy) l)))
     )

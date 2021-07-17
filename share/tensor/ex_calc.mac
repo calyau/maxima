@@ -159,6 +159,7 @@ extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
     if itorsion_flag= true then return (covdiff(forma,ind1))
     else return(idiff(forma,ind1))
   )
+  else if length(l1) >= dim then return(0)
   else
   (
     l11:makelist(idummy(),i,1,length(l1)),
