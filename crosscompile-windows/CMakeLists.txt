@@ -123,7 +123,27 @@ else()
     message(STATUS "Maxima version (from configure.ac): ${MAXIMAVERSION}")
 endif()
 
-
+# The HTML documentation is installed in a directory depending on "git describe",
+# when building from Git, e.g.:
+# share/maxima/branch_5_45_base_99_g0b3357e40_dirty/doc/html/maxima_singlepage.html
+# Otherwise the version number is included, e.g something like:
+# share/maxima/5.45.1/doc/html/maxima_singlepage.html
+# Set it first to the second variant, if Git is found and we are building
+# from a Git tree use the result of "git describe --dirty" in the path instead - where
+# "-" are changed to "_" (see commit d5d04f2 and the file '../configure.ac').
+set(MAXIMA_SINGLEPAGE_HTML "share/maxima/${MAXIMAVERSION}/doc/html/maxima_singlepage.html")
+find_package(Git)
+if(Git_FOUND)
+    execute_process(COMMAND ${GIT_EXECUTABLE} describe --dirty
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                    OUTPUT_VARIABLE GIT_DESCRIBE
+                    ERROR_QUIET
+                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    if(GIT_DESCRIBE)
+        string(REPLACE "-" "_" GIT_DESCRIBE ${GIT_DESCRIBE})
+        set(MAXIMA_SINGLEPAGE_HTML "share/maxima/${GIT_DESCRIBE}/doc/html/maxima_singlepage.html")
+    endif()
+endif()
 
 # download URLs
 set(CLISP_URL "http://downloads.sourceforge.net/project/clisp/clisp/${CLISPVERSION}/clisp-${CLISPVERSION}-win32-mingw-big.zip")
@@ -276,7 +296,7 @@ set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\maxima-command.ico")
 set(CPACK_NSIS_DISPLAY_NAME "Maxima computer algebra system")
 set(CPACK_PACKAGE_EXECUTABLES "..\\\\bin\\\\wxmaxima" "wxMaxima (GUI for Maxima)")
 set(CPACK_NSIS_URL_INFO_ABOUT "https://maxima.sourceforge.io")
-set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "https://maxima.sourceforge.io" "About Maxima" "http://wxmaxima-developers.github.io/wxmaxima/" "About wxMaxima" "share/doc/maxima.pdf" "Maxima documentation"  "share/doc/licenses.html" "Maxima and included software licenses" "bin/lispselector.bat" "Configure default LISP for Maxima")
+set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "https://maxima.sourceforge.io" "About Maxima" "http://wxmaxima-developers.github.io/wxmaxima/" "About wxMaxima" "${MAXIMA_SINGLEPAGE_HTML}" "Maxima documentation"  "share/doc/licenses.html" "Maxima and included software licenses" "bin/lispselector.bat" "Configure default LISP for Maxima")
 set(CPACK_PACKAGE_FILE_NAME "maxima-${CPACK_PACKAGE_VERSION}-${INSTALLERSUFFIX}")
 set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
 
