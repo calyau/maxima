@@ -450,39 +450,104 @@ See also @mref{lmax} and @mrefdot{min}
 @anchor{max}
 @deffn {Function} max (@var{x_1}, @dots{}, @var{x_n})
 
-Return a simplified value for the maximum of the expressions @var{x_1} through
-@var{x_n}.  When @code{get (trylevel, maxmin)}, is 2 or greater, @code{max}
-uses the simplification @code{max (e, -e) --> |e|}.  When
-@code{get (trylevel, maxmin)} is 3 or greater, @var{max} tries to eliminate
-expressions that are between two other arguments; for example,
-@code{max (x, 2*x, 3*x) --> max (x, 3*x)}.  To set the value of @code{trylevel}
-to 2, use @code{put (trylevel, 2, maxmin)}.
+Return a simplified value for the numerical maximum of the expressions @var{x_1} 
+through @var{x_n}. For an empty argument list, @code{max} yields @code{minf}.
 
-See also @mref{min} and @mrefdot{lmax}
+The option variable @code{maxmin_effort} controls which simplification methods are 
+applied. Using the default value of @emph{twelve} for @code{maxmin_effort}, 
+@code{max} uses @emph{all} available simplification methods. To to inhibit all 
+simplifications, set @code{maxmin_effort} to zero.
+
+When @code{maxmin_effort} is one or more, for an explicit list of real numbers, 
+@code{max} returns a number. 
+
+Unless @code{max} needs to simplify a lengthy list of expressions, we suggest using 
+the default value of @code{maxmin_effort}. Setting @code{maxmin_effort} to zero 
+(no simplifications), will cause problems for some Maxima functions; accordingly, 
+generally @code{maxmin_effort} should be nonzero.
+
+See also @mref{min}, @mrefdot{lmax}, and @mrefdot{lmin}.
+
+@b{Examples:}
+
+In the first example, setting @code{maxmin_effort} to zero suppresses simplifications.
+@example
+(%i1)	block([maxmin_effort : 0], max(1,2,x,x, max(a,b)));
+(%o1)	max(1,2,max(a,b),x,x)
+
+(%i2)	block([maxmin_effort : 1], max(1,2,x,x, max(a,b)));
+(%o2)	max(2,a,b,x)
+@end example
+
+When @code{maxmin_effort} is two or more, @code{max} compares pairs of members:
+@example
+(%i1)	block([maxmin_effort : 1], max(x,x+1,x+3));
+(%o1)	max(x,x+1,x+3)
+
+(%i2)	block([maxmin_effort : 2], max(x,x+1,x+3));
+(%o2)	x+3
+@end example
+
+Finally, when @code{maxmin_effort} is three or more, @code{max} compares triples 
+members and excludes those that are in between; for example
+@example
+(%i1)	block([maxmin_effort : 4], max(x, 2*x, 3*x, 4*x));
+(%o1)	max(x,4*x)
+@end example
 
 @opencatbox
 @category{Mathematical functions}
 @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
 @anchor{min}
 @deffn {Function} min (@var{x_1}, @dots{}, @var{x_n})
 
-Return a simplified value for the minimum of the expressions @code{x_1} through
-@code{x_n}.  When @code{get (trylevel, maxmin)}, is 2 or greater, @code{min}
-uses the simplification @code{min (e, -e) --> -|e|}.  When
-@code{get (trylevel, maxmin)} is 3 or greater, @code{min} tries to eliminate
-expressions that are between two other arguments; for example,
-@code{min (x, 2*x, 3*x) --> min (x, 3*x)}.  To set the value of @code{trylevel}
-to 2, use @code{put (trylevel, 2, maxmin)}.
+Return a simplified value for the numerical minimum of the expressions @var{x_1} 
+through @var{x_n}. For an empty argument list, @code{minf} yields @code{inf}.
 
-See also @mref{max} and @mrefdot{lmin}
+The option variable @code{maxmin_effort} controls which simplification methods are 
+applied. Using the default value of @emph{twelve} for @code{maxmin_effort}, 
+@code{max} uses @emph{all} available simplification methods. To to inhibit all 
+simplifications, set @code{maxmin_effort} to zero.
 
-@opencatbox
-@category{Mathematical functions}
-@closecatbox
-@end deffn
+When @code{maxmin_effort} is one or more, for an explicit list of real numbers, 
+@code{min} returns a number. 
+
+Unless @code{min} needs to simplify a lengthy list of expressions, we suggest using 
+the default value of @code{maxmin_effort}. Setting @code{maxmin_effort} to zero 
+(no simplifications), will cause problems for some Maxima functions; accordingly, 
+generally @code{maxmin_effort} should be nonzero.
+
+See also @mref{max}, @mrefdot{lmax}, and @mrefdot{lmin}.
+
+@b{Examples:}
+
+In the first example, setting @code{maxmin_effort} to zero suppresses simplifications.
+@example
+(%i1)	block([maxmin_effort : 0], min(1,2,x,x, min(a,b)));
+(%o1)	min(1,2,a,b,x,x)
+
+(%i2)	block([maxmin_effort : 1], min(1,2,x,x, min(a,b)));
+(%o2)	min(1,a,b,x)
+@end example
+
+When @code{maxmin_effort} is two or more, @code{min} compares pairs of members:
+@example
+(%i1)	block([maxmin_effort : 1], min(x,x+1,x+3));
+(%o1)	min(x,x+1,x+3)
+
+(%i2)	block([maxmin_effort : 2], min(x,x+1,x+3));
+(%o2)	x
+@end example
+
+Finally, when @code{maxmin_effort} is three or more, @code{min} compares triples 
+members and excludes those that are in between; for example
+@example
+(%i1)	block([maxmin_effort : 4], min(x, 2*x, 3*x, 4*x));
+(%o1)	max(x,4*x)
+@end example
+
 
 @c -----------------------------------------------------------------------------
 @anchor{round}

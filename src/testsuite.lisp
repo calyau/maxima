@@ -80,6 +80,8 @@
 	 ((mlist simp) 143))
         "rtestmt19937"
         "rtest_allnummod"
+        ((mlist simp) "rtest_maxmin" 
+                ((mlist simp) 16 17 40 52 53 57 97 109))
         "rtestconjugate"
         ((mlist simp) "rtestsum"
 	 ((mlist simp) 3 4 18 75))
@@ -268,7 +270,7 @@
     #-(or gcl abcl gcl)
     "rtest_dlsode"
     ((mlist simp) "rtest_fourier_elim"
-     ((mlist simp) 99 146 147 148 149))
+     ((mlist simp) 146 147 148 149))
     ((mlist simp) "rtest_sequence"
      ((mlist simp) 55))
     "rtest_cholesky"

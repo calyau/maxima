@@ -91,7 +91,6 @@ block ([use_fast_arrays : true,
  ?putprop (nounify ('erf_generalized), 222, 'bar),
  ?putprop ('beta, 333, 'baz),
  ?putprop ('nset, 444, 'quux),
- ?putprop ('trylevel, 555, 'mumble),
  ?putprop ('maxmin, 666, 'blurf),
  ?putprop ('nummod, 777, 'barf),
  0);
@@ -104,15 +103,14 @@ done;
  ?get (nounify ('erf_generalized), 'bar),
  ?get ('beta, 'baz),
  ?get ('nset, 'quux),
- ?get ('trylevel, 'mumble),
  ?get ('maxmin, 'blurf),
  ?get ('nummod, 'barf)];
-[111, 222, 333, 444, 555, 666, 777];
+[111, 222, 333, 444, 666, 777];
 
 (kill (conjugate),
  apply (kill, [nounify ('erf_generalized)]),
  kill (beta),
- kill (nset, trylevel, maxmin, nummod),
+ kill (nset, maxmin, nummod),
  0);
 0;
 
@@ -120,10 +118,9 @@ done;
  ?get (nounify ('erf_generalized), 'bar),
  ?get ('beta, 'baz),
  ?get ('nset, 'quux),
- ?get ('trylevel, 'mumble),
  ?get ('maxmin, 'blurf),
  ?get ('nummod, 'barf)];
-[false, false, false, false, false, false, false];
+[false, false, false, false, false, false];
 
 /* verify that props is empty after kill(all) -- pre-bugfix behavior is that props
  * has several built-in symbols before and after kill(all)
@@ -136,7 +133,7 @@ done;
 /* workaround bug #3289 */
 (kill(all),
  not some (lambda ([x], member (x, props)),
-           ['conjugate, nounify ('erf_generalized), 'beta, 'nset, 'trylevel, 'maxmin, 'nummod]));
+           ['conjugate, nounify ('erf_generalized), 'beta, 'nset, 'maxmin, 'nummod]));
 true;
 
 (reset(use_fast_arrays),1);

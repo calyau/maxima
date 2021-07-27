@@ -1,4 +1,4 @@
-kill (all);
+(ratprint : false, kill (all));
 done;
 
 ceiling(42);
@@ -1066,12 +1066,7 @@ lmax(makelist(1/i,i,1,1000));
 lmin(makelist(1/i,i,1,1000));
 1/1000$
 
-
-
-
-
-
-(put(trylevel,1, maxmin),0);
+(maxmin_effort : 3,0);
 0$
 
 /*---boundary cases---*/
@@ -1303,35 +1298,33 @@ log(x)$
 
 /*---other-----*/
 
-(mode(a,b,c) := min(max(a,b),max(b,c),max(a,c)),0);
+(median(a,b,c) := min(max(a,b),max(b,c),max(a,c)),0);
 0$
 
-mode(1,2,3);
+median(1,2,3);
 2$
 
-mode(-56,1,%pi);
+median(-56,1,%pi);
 1$
 
-mode(x,x,x);
+median(x,x,x);
 x$
 
-/*--- sign can't handle this 
-mode(x,x,y);
+median(x,x,y);
 x$
-----------------------------*/
 
-mode(abs(x),0,-abs(x));
+median(abs(x),0,-abs(x));
 0$
 
-mode(a,a+1,a+28);
+median(a,a+1,a+28);
 a+1$
 
-mode(exp(x+1), exp(x+2), exp(x));
+median(exp(x+1), exp(x+2), exp(x));
 exp(x+1)$
 
-/*-- try a higher trylevel----*/
+/*-- try a higher value of maxmin_effort ----*/
 
-(put(trylevel,2,maxmin),0);
+(maxmin_effort : 3,0);
 0$
 
 max(x,-x);
@@ -1355,9 +1348,9 @@ max(cos(x), abs(cos(x^2)))$
 min(-cos(x^2), cos(x), cos(x^2));
 min(cos(x), -abs(cos(x^2)))$
 
-/*--try a higher trylevel-----*/
+/*--try a higher maxmin_effort-----*/
 
-(put(trylevel,3,maxmin),0);
+(maxmin_effort : 10,0);
 0$
 
 max(x,2*x,3*x);
@@ -1378,7 +1371,7 @@ max(x^2,x^6);
 min(x^2,x^4,x^6);
 min(x^2,x^6);
 
-(kill(mode),0);
+(kill(median),0);
 0$
 
 
@@ -1549,10 +1542,10 @@ v.t$
 rationalize(a^^0.125);
 a^^(1/8)$
 
-rationalize(rat(a+b + 0.125));
+block([ratprint : false], rationalize(rat(a+b + 0.125)));
 (8 * a + 8 * b + 1)/8$
 
-rationalize(rat(1+x+x^2.0));
+block([ratprint : false], rationalize(rat(1+x+x^2.0)));
 1+x+x^2$
 
 rationalize(matrix([a,0.25],[-a,2.0^z]));
@@ -1640,10 +1633,10 @@ ceiling(log(125) / log(5) + 42 / 5);
  0);
 0;
 
-min (aa, bb, cc, dd);
-min (3.0*sqrt(1 - v), 1.0*sqrt(v) + 2.0, (0.5/v - 1.0)*v + 2.0);
+block([ratprint : false],min (aa, bb, cc, dd));
+min(3.0*sqrt(1-v),1.0*sqrt(v)+2.0,(1.5/(1-v)+1.0)*(1-v))$
 
-ratsimp (bb - dd);
+block([ratprint : false], ratsimp (bb - dd));
 0;
 
 block ([prederror : false], is (cc > aa));
@@ -1687,22 +1680,22 @@ integrate(ceiling(x),x,0,4);
  */
 
 (xx : min(%i*inf,inf), cons(op(xx), args(xx)));
-[min, %i*inf,inf]$
+[min, inf,%i*inf]$
 
 (xx : min(%i*minf,minf), cons(op(xx), args(xx)));
 [min, minf,%i*minf];
 
 (xx : min(%i*inf,inf), cons(op(xx), args(xx)));
-[min,%i*inf,inf];
+[min, inf, %i*inf]$
 
 (xx : min(%i*minf,minf), cons(op(xx), args(xx)));
 [min,minf,%i*minf];
 
 (xx : min(%i*-inf,-inf), cons(op(xx), args(xx)));
-[min,minf,%i*-inf];
+[min, - %i*inf, minf]$
 
 (xx : min(%i*-inf,minf), cons(op(xx), args(xx)));
-[min,minf,%i*-inf];
+[min, - %i*inf, minf]$
 
 (xx : min(%i*minf,-inf), cons(op(xx), args(xx)));
 [min, minf,%i*minf];
@@ -1726,10 +1719,10 @@ integrate(ceiling(x),x,0,4);
 [max, 4*%i*inf+3,7*%i*inf+4*inf];
 
 (xx : min(7*%i*inf+4*inf,4*%i*inf+3), cons(op(xx), args(xx)));
-[min,7*%i*inf+4*inf,4*%i*inf+3];
+[min,4*%i*inf+3,7*%i*inf+4*inf]$
 
 (xx : min(7*%i*minf+4*inf,4*%i*minf+3), cons(op(xx), args(xx)));
-[min, 7*%i*minf+4*inf,4*%i*minf+3];
+[min,4*%i*minf+3,7*%i*minf+4*inf]$
 
 (xx : min(7*%i*minf+4*inf,4*%i*-inf+3), cons(op(xx), args(xx)));
 [min,4*%i*-inf+3,7*%i*minf+4*inf];
@@ -1738,7 +1731,7 @@ integrate(ceiling(x),x,0,4);
 minf;
 
 max(-inf,minf);
-minf;
+-inf;
 
 /* mailing list 2016-03-11: "bfloat divide bad; WAS: nonzero remainder of mod(x*x, x) where x is a small integer float or bigfloat" */
 
@@ -1772,3 +1765,12 @@ sublist (makelist (i, i, 1, 1000), lambda ([i], mod (bfloat(i), bfloat(i)) # 0b0
 
 'min(1,1);
 1$
+
+values;
+[]$
+
+contexts;
+[initial, global]$
+
+(reset(ratprint),0);
+0$
