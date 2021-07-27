@@ -15,8 +15,7 @@
 
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with f90.lisp; see the file COPYING.  If not,
-;;;; write to the Free Software Foundation, Inc., 59 Temple Place -
-;;;; Suite 330, Boston, MA 02111-1307, USA.
+;;;; write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 ;;;; Based on fortra.lisp. Copyright statements for fortra.lisp follow:
 ;;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas
