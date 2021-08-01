@@ -548,6 +548,10 @@ members and excludes those that are in between; for example
 (%o1) max(x,4*x)
 @end example
 
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @anchor{round}
