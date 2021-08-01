@@ -472,27 +472,27 @@ See also @mref{min}, @mrefdot{lmax}, and @mrefdot{lmin}.
 
 In the first example, setting @code{maxmin_effort} to zero suppresses simplifications.
 @example
-(%i1)	block([maxmin_effort : 0], max(1,2,x,x, max(a,b)));
-(%o1)	max(1,2,max(a,b),x,x)
+(%i1) block([maxmin_effort : 0], max(1,2,x,x, max(a,b)));
+(%o1) max(1,2,max(a,b),x,x)
 
-(%i2)	block([maxmin_effort : 1], max(1,2,x,x, max(a,b)));
-(%o2)	max(2,a,b,x)
+(%i2) block([maxmin_effort : 1], max(1,2,x,x, max(a,b)));
+(%o2) max(2,a,b,x)
 @end example
 
 When @code{maxmin_effort} is two or more, @code{max} compares pairs of members:
 @example
-(%i1)	block([maxmin_effort : 1], max(x,x+1,x+3));
-(%o1)	max(x,x+1,x+3)
+(%i1) block([maxmin_effort : 1], max(x,x+1,x+3));
+(%o1) max(x,x+1,x+3)
 
-(%i2)	block([maxmin_effort : 2], max(x,x+1,x+3));
-(%o2)	x+3
+(%i2) block([maxmin_effort : 2], max(x,x+1,x+3));
+(%o2) x+3
 @end example
 
 Finally, when @code{maxmin_effort} is three or more, @code{max} compares triples 
 members and excludes those that are in between; for example
 @example
-(%i1)	block([maxmin_effort : 4], max(x, 2*x, 3*x, 4*x));
-(%o1)	max(x,4*x)
+(%i1) block([maxmin_effort : 4], max(x, 2*x, 3*x, 4*x));
+(%o1) max(x,4*x)
 @end example
 
 @opencatbox
@@ -525,27 +525,27 @@ See also @mref{max}, @mrefdot{lmax}, and @mrefdot{lmin}.
 
 In the first example, setting @code{maxmin_effort} to zero suppresses simplifications.
 @example
-(%i1)	block([maxmin_effort : 0], min(1,2,x,x, min(a,b)));
-(%o1)	min(1,2,a,b,x,x)
+(%i1) block([maxmin_effort : 0], min(1,2,x,x, min(a,b)));
+(%o1) min(1,2,a,b,x,x)
 
-(%i2)	block([maxmin_effort : 1], min(1,2,x,x, min(a,b)));
-(%o2)	min(1,a,b,x)
+(%i2) block([maxmin_effort : 1], min(1,2,x,x, min(a,b)));
+(%o2) min(1,a,b,x)
 @end example
 
 When @code{maxmin_effort} is two or more, @code{min} compares pairs of members:
 @example
-(%i1)	block([maxmin_effort : 1], min(x,x+1,x+3));
-(%o1)	min(x,x+1,x+3)
+(%i1) block([maxmin_effort : 1], min(x,x+1,x+3));
+(%o1) min(x,x+1,x+3)
 
-(%i2)	block([maxmin_effort : 2], min(x,x+1,x+3));
-(%o2)	x
+(%i2) block([maxmin_effort : 2], min(x,x+1,x+3));
+(%o2) x
 @end example
 
 Finally, when @code{maxmin_effort} is three or more, @code{min} compares triples 
 members and excludes those that are in between; for example
 @example
-(%i1)	block([maxmin_effort : 4], min(x, 2*x, 3*x, 4*x));
-(%o1)	max(x,4*x)
+(%i1) block([maxmin_effort : 4], min(x, 2*x, 3*x, 4*x));
+(%o1) max(x,4*x)
 @end example
 
 
