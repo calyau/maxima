@@ -48,11 +48,11 @@
 	 `(progn
 	    (defprop ,f-verb ,f-noun verb)
 	    (defprop ,f-noun ,f-verb noun)
-		(defprop ,f-verb ,f-noun alias)
+	    (defprop ,f-verb ,f-noun alias)
 	    (defprop ,f-noun ,f-verb reversealias)
 	    (defprop ,i-verb ,i-noun verb)
 	    (defprop ,i-noun ,i-verb noun)
-		(defprop ,i-verb ,i-noun alias)
+	    (defprop ,i-verb ,i-noun alias)
 	    (defprop ,i-noun ,i-verb reversealias)))))
   (frob sn)
   (frob cn)
