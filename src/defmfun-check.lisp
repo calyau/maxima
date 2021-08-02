@@ -575,7 +575,9 @@
 	 (arg-count-check ,(length lambda-list) form)
 	 (let ,arg-forms
 	   (macrolet ((give-up ()
-			`(eqtest (list '(,',noun-name) x y) form)))
+			;; Should this also return from the function?
+			;; That would fit in better with giving up.
+			`(eqtest (list '(,',noun-name) ,@',lambda-list) form)))
 	     ,@body)))
 
        ;; Define the verb function
