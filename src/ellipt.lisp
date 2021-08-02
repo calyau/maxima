@@ -2045,7 +2045,7 @@ first kind:
   ;; quite right, but it makes the routines more accurate as fpprec
   ;; increases.
   (sqrt (reduce #'min (mapcar #'(lambda (x)
-				  (if (rationalp x)
+				  (if (rationalp (realpart x))
 				      maxima::flonum-epsilon
 				      (epsilon x)))
 			      args))))
@@ -2099,14 +2099,18 @@ first kind:
 
 
 
-;; rd(x,y,z) = integrate(3/2/sqrt(t+x)/sqrt(t+y)/sqrt(t+z), t, 0, inf)
+;; See https://dlmf.nist.gov/19.16.E5:
+;; 
+;; rd(x,y,z) = integrate(3/2/sqrt(t+x)/sqrt(t+y)/sqrt(t+z)/(t+z), t, 0, inf)
 ;;
+;; rd(1,1,1) = 1
 ;; E(K) = rf(0, 1-K^2, 1) - (K^2/3)*rd(0,1-K^2,1)
 ;;
 ;; B = integrate(s^2/sqrt(1-s^4), s, 0 ,1)
 ;;   = beta(3/4,1/2)/4
 ;;   = sqrt(%pi)*gamma(3/4)/gamma(1/4)
 ;;   = 1/3*rd(0,2,1)
+
 (defun bf-rd (x y z)
   (let* ((xn x)
 	 (yn y)
@@ -2163,6 +2167,11 @@ first kind:
        (/ (* power4 s)
 	  (expt an 3/2))))))
 
+;; See https://dlmf.nist.gov/19.16.E1
+;;
+;; rf(x,y,z) = 1/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)), t, 0, inf);
+;;
+;; rf(1,1,1) = 1
 (defun bf-rf (x y z)
   (let* ((xn x)
 	 (yn y)
@@ -2444,30 +2453,348 @@ first kind:
 
 (in-package :maxima)
 
-;; Define Carlson's elliptic integrals so we can test their
-;; implementation.  We only support bigfloat
+;; Define Carlson's elliptic integrals.
 
-(defmfun $carlson_rc (x y)
-  (to (bigfloat::bf-rc (bigfloat:bigfloat ($bfloat x))
-		       (bigfloat:bigfloat ($bfloat y)))))
-
-(defmfun $carlson_rd (x y z)
-  (to (bigfloat::bf-rd (bigfloat:bigfloat ($bfloat x))
-		       (bigfloat:bigfloat ($bfloat y))
-		       (bigfloat:bigfloat ($bfloat z)))))
-
-(defmfun $carlson_rf (x y z)
-  (to (bigfloat::bf-rf (bigfloat:bigfloat ($bfloat x))
-		       (bigfloat:bigfloat ($bfloat y))
-		       (bigfloat:bigfloat ($bfloat z)))))
-
-(defmfun $carlson_rj (x y z p)
-  (to (bigfloat::bf-rj (bigfloat:bigfloat ($bfloat x))
-		       (bigfloat:bigfloat ($bfloat y))
-		       (bigfloat:bigfloat ($bfloat z))
-		       (bigfloat:bigfloat ($bfloat p)))))
+(def-simplifying-fun carlson_rc (x y)
+  (let (args)
+    (flet ((calc (x y)
+	     (flet ((floatify (z)
+		      ;; If z is a complex rational, convert to a
+		      ;; complex double-float.  Otherwise, leave it as
+		      ;; is.  If we don't do this, %i is handled as
+		      ;; #c(0 1), which makes bf-rc use single-float
+		      ;; arithmetic instead of the desired
+		      ;; double-float.
+		      (if (and (complexp z) (rationalp (realpart z)))
+			  (complex (float (realpart z))
+				   (float (imagpart z)))
+			  z)))
+	       (to (bigfloat::bf-rc (floatify (bigfloat:to x))
+				    (floatify (bigfloat:to y)))))))
+      ;; See comments from bf-rc
+      (cond ((float-numerical-eval-p x y)
+	     (calc ($float x) ($float y)))
+	    ((bigfloat-numerical-eval-p x y)
+	     (calc ($bfloat x) ($bfloat y)))
+	    ((setf args (complex-float-numerical-eval-p x y))
+	     (destructuring-bind (x y)
+		 args
+	       (calc ($float x) ($float y))))
+	    ((setf args (complex-bigfloat-numerical-eval-p x y))
+	     (destructuring-bind (x y)
+		 args
+	       (calc ($bfloat x) ($bfloat y))))
+	    ((and (zerop1 x)
+		  (onep1 y))
+	     ;; rc(0, 1) = %pi/2
+	     (div '$%pi 2))
+	    ((and (zerop1 x)
+		  (alike1 y (div 1 4)))
+	     ;; rc(0,1/4) = %pi
+	     '$%pi)
+	    ((and (eql x 2)
+		  (onep1 y))
+	     ;; rc(2,1) = 1/2*integrate(1/sqrt(t+2)/(t+1), t, 0, inf)
+	     ;;   = (log(sqrt(2)+1)-log(sqrt(2)-1))/2
+	     ;; ratsimp(logcontract(%)),algebraic:
+	     ;;   = -log(3-2^(3/2))/2
+	     ;;   = -log(sqrt(3-2^(3/2)))
+	     ;;   = -log(sqrt(2)-1)
+	     ;;   = log(1/(sqrt(2)-1))
+	     ;; ratsimp(%),algebraic;
+	     ;;   = log(sqrt(2)+1)
+	     (take '(%log) (add 1 (pow 2 1//2))))
+	    ((and (alike x '$%i)
+		  (alike y (add 1 '$%i)))
+	     ;; rc(%i, %i+1) = 1/2*integrate(1/sqrt(t+%i)/(t+%i+1), t, 0, inf)
+	     ;;   = %pi/2-atan((-1)^(1/4))
+	     ;; ratsimp(logcontract(ratsimp(rectform(%o42)))),algebraic;
+	     ;;   = (%i*log(3-2^(3/2))+%pi)/4
+	     ;;   = (%i*log(3-2^(3/2)))/4+%pi/4
+	     ;;   = %i*log(sqrt(3-2^(3/2)))/2+%pi/4
+	     ;; sqrtdenest(%);
+	     ;;   = %pi/4 + %i*log(sqrt(2)-1)/2
+	     (add (div '$%pi 4)
+		  (mul '$%i
+		       1//2
+		       (take '(%log) (sub (pow 2 1//2) 1)))))
+	    ((and (zerop1 x)
+		  (alike1 y '$%i))
+	     ;; rc(0,%i) = 1/2*integrate(1/(sqrt(t)*(t+%i)), t, 0, inf)
+	     ;;   = -((sqrt(2)*%i-sqrt(2))*%pi)/4
+	     ;;   = ((1-%i)*%pi)/2^(3/2)
+	     (div (mul (sub 1 '$%i)
+		       '$%pi)
+		  (pow 2 3//2)))
+	    ((and (alike1 x y)
+		  (eq ($sign ($realpart x)) '$pos))
+	     ;; carlson_rc(x,x) = 1/2*integrate(1/sqrt(t+x)/(t+x), t, 0, inf)
+	     ;;    = 1/sqrt(x)
+	     (pow x -1//2))
+	    ((and (alike1 x (pow (div (add 1 y) 2) 2))
+		  (eq ($sign ($realpart y)) '$pos))
+	     ;; Rc(((1+x)/2)^2,x) = log(x)/(x-1) for x > 0.
+	     ;;
+	     ;; This is done by looking at Rc(x,y) and seeing if
+	     ;; ((1+y)/2)^2 is the same as x.
+	     (div (take '(%log) y)
+		  (sub y 1)))
+	    (t
+	     (give-up))))))
   
+(def-simplifying-fun carlson_rd (x y z)
+  (let (args)
+    (flet ((calc (x y z)
+	     (to (bigfloat::bf-rd (bigfloat:to x)
+				  (bigfloat:to y)
+				  (bigfloat:to z)))))
+      ;; See https://dlmf.nist.gov/19.20.E18
+      (cond ((and (eql x 1)
+		  (eql x y)
+		  (eql y z))
+	     ;; Rd(1,1,1) = 1
+	     1)
+	    ((and (alike1 x y)
+		  (alike1 y z))
+	     ;; Rd(x,x,x) = x^(-3/2)
+	     (pow x (div -3 2)))
+	    ((and (zerop1 x)
+		  (alike1 y z))
+	     ;; Rd(0,y,y) = 3/4*%pi*y^(-3/2)
+	     (mul (div 3 4)
+		  '$%pi
+		  (pow y (div -3 2))))
+	    ((alike1 y z)
+	     ;; Rd(x,y,y) = 3/(2*(y-x))*(Rc(x, y) - sqrt(x)/y)
+	     (mul (div 3 (mul 2 (sub y x)))
+		  (sub (take '(%carlson_rc) x y)
+		       (div (pow x 1//2)
+			    y))))
+	    ((alike1 x y)
+	     ;; Rd(x,x,z) = 3/(z-x)*(Rc(z,x) - 1/sqrt(z))
+	     (mul (div 3 (sub z x))
+		  (sub (take '(%carlson_rc) z x)
+		       (div 1 (pow z 1//2)))))
+	    ((and (eql z 1)
+		  (or (and (eql x 0)
+			   (eql y 2))
+		      (and (eql x 2)
+			   (eql y 0))))
+	     ;; Rd(0,2,1) = 3*(gamma(3/4)^2)/sqrt(2*%pi)
+	     ;; See https://dlmf.nist.gov/19.20.E22.
+	     ;;
+	     ;; But that's the same as
+	     ;; 3*sqrt(%pi)*gamma(3/4)/gamma(1/4).  We can see this by
+	     ;; taking the ratio to get
+	     ;; gamma(1/4)*gamma(3/4)/sqrt(2)*%pi.  But
+	     ;; gamma(1/4)*gamma(3/4) = beta(1/4,3/4) = sqrt(2)*%pi.
+	     ;; Hence, the ratio is 1.
+	     ;;
+	     ;; Note also that Rd(x,y,z) = Rd(y,x,z)
+	     (mul 3
+		  (pow '$%pi 1//2)
+		  (div (take '(%gamma) (div 3 4))
+		       (take '(%gamma) (div 1 4)))))
+	    ((and (or (eql x 0) (eql y 0))
+		  (eql z 1))
+	     ;; 1/3*m*Rd(0,1-m,1) = K(m) - E(m).
+	     ;; See https://dlmf.nist.gov/19.25.E1
+	     ;;
+	     ;; Thus, Rd(0,y,1) = 3/(1-y)*(K(1-y) - E(1-y))
+	     ;;
+	     ;; Note that Rd(x,y,z) = Rd(y,x,z).
+	     (let ((m (sub 1 y)))
+	       (mul (div 3 m)
+		    (sub (take '(%elliptic_kc) m)
+			 (take '(%elliptic_ec) m)))))
+	    ((or (and (eql x 0)
+		      (eql y 1))
+		 (and (eql x 1)
+		      (eql y 0)))
+	     ;; 1/3*m*(1-m)*Rd(0,1,1-m) = E(m) - (1-m)*K(m)
+	     ;; See https://dlmf.nist.gov/19.25.E1
+	     ;;
+	     ;; Thus
+	     ;;  Rd(0,1,z) = 3/(z*(1-z))*(E(1-z) - z*K(1-z))
+	     ;; Recall that Rd(x,y,z) = Rd(y,x,z).
+	     (mul (div 3 (mul z (sub 1 z)))
+		  (sub (take '(%elliptic_ec) (sub 1 z))
+		       (mul z
+			    (take '(%elliptic_kc) (sub 1 z))))))
+	    ((float-numerical-eval-p x y z)
+	     (calc ($float x) ($float y) ($float z)))
+	    ((bigfloat-numerical-eval-p x y z)
+	     (calc ($bfloat x) ($bfloat y) ($bfloat z)))
+	    ((setf args (complex-float-numerical-eval-p x y z))
+	     (destructuring-bind (x y z)
+		 args
+	       (calc ($float x) ($float y) ($float z))))
+	    ((setf args (complex-bigfloat-numerical-eval-p x y z))
+	     (destructuring-bind (x y z)
+		 args
+	       (calc ($bfloat x) ($bfloat y) ($bfloat z))))
+	    (t
+	     (give-up))))))
 
+(def-simplifying-fun carlson_rf (x y z)
+  (let (args)
+    (flet ((calc (x y z)
+	     (to (bigfloat::bf-rf (bigfloat:to x)
+				  (bigfloat:to y)
+				  (bigfloat:to z)))))
+      ;; See https://dlmf.nist.gov/19.20.i
+      (cond ((and (alike1 x y)
+		  (alike1 y z))
+	     ;; Rf(x,x,x) = x^(-1/2)
+	     (pow x -1//2))
+	    ((and (zerop1 x)
+		  (alike1 y z))
+	     ;; Rf(0,y,y) = 1/2*%pi*y^(-1/2)
+	     (mul 1//2 '$%pi
+		  (pow y -1//2)))
+	    ((alike1 y z)
+	     (take '(%carlson_rc) x y))
+	    ((some #'(lambda (args)
+		       (destructuring-bind (x y z)
+			   args
+			 (and (zerop1 x)
+			      (eql y 1)
+			      (eql z 2))))
+		   (list (list x y z)
+			 (list x z y)
+			 (list y x z)
+			 (list y z x)
+			 (list z x y)
+			 (list z y x)))
+	     ;; Rf(0,1,2) = (gamma(1/4))^2/(4*sqrt(2*%pi))
+	     ;;
+	     ;; And Rf is symmetric in all the args, so check every
+	     ;; permutation too.  This could probably be simplified
+	     ;; without consing all the lists, but I'm lazy.
+	     (div (pow (take '(%gamma) (div 1 4)) 2)
+		  (mul 4 (pow (mul 2 '$%pi) 1//2))))
+	    ((some #'(lambda (args)
+		       (destructuring-bind (x y z)
+			   args
+			 (and (alike1 x '$%i)
+			      (alike1 y (mul -1 '$%i))
+			      (eql z 0))))
+		   (list (list x y z)
+			 (list x z y)
+			 (list y x z)
+			 (list y z x)
+			 (list z x y)
+			 (list z y x)))
+	     ;; rf(%i, -%i, 0)
+	     ;;   = 1/2*integrate(1/sqrt(t^2+1)/sqrt(t),t,0,inf)
+	     ;;   = beta(1/4,1/4)/4;
+	     ;; makegamma(%)
+	     ;;   = gamma(1/4)^2/(4*sqrt(%pi))
+	     ;;
+	     ;; Rf is symmetric, so check all the permutations too.
+	     (div (pow (take '(%gamma) (div 1 4)) 2)
+		  (mul 4 (pow '$%pi 1//2))))
+	    ((setf args
+		   (some #'(lambda (args)
+			     (destructuring-bind (x y z)
+				 args
+			       ;; Check that x = 0 and z = 1, and
+			       ;; return y.
+			       (and (zerop1 x)
+				    (eql z 1)
+				    y)))
+			 (list (list x y z)
+			       (list x z y)
+			       (list y x z)
+			       (list y z x)
+			       (list z x y)
+			       (list z y x))))
+	     ;; Rf(0,1-m,1) = elliptic_kc(m).
+	     ;; See https://dlmf.nist.gov/19.25.E1
+	     (take '(%elliptic_kc) (sub 1 args)))
+	    ((some #'(lambda (args)
+		       (destructuring-bind (x y z)
+			   args
+			 (and (alike1 x '$%i)
+			      (alike1 y (mul -1 '$%i))
+			      (eql z 0))))
+		   (list (list x y z)
+			 (list x z y)
+			 (list y x z)
+			 (list y z x)
+			 (list z x y)
+			 (list z y x)))
+	     ;; rf(%i, -%i, 0)
+	     ;;   = 1/2*integrate(1/sqrt(t^2+1)/sqrt(t),t,0,inf)
+	     ;;   = beta(1/4,1/4)/4;
+	     ;; makegamma(%)
+	     ;;   = gamma(1/4)^2/(4*sqrt(%pi))
+	     ;;
+	     ;; Rf is symmetric, so check all the permutations too.
+	     (div (pow (take '(%gamma) (div 1 4)) 2)
+		  (mul 4 (pow '$%pi 1//2))))
+	    ((float-numerical-eval-p x y z)
+	     (calc ($float x) ($float y) ($float z)))
+	    ((bigfloat-numerical-eval-p x y z)
+	     (calc ($bfloat x) ($bfloat y) ($bfloat z)))
+	    ((setf args (complex-float-numerical-eval-p x y z))
+	     (destructuring-bind (x y z)
+		 args
+	       (calc ($float x) ($float y) ($float z))))
+	    ((setf args (complex-bigfloat-numerical-eval-p x y z))
+	     (destructuring-bind (x y z)
+		 args
+	       (calc ($bfloat x) ($bfloat y) ($bfloat z))))
+	    (t
+	     (give-up))))))
+
+(def-simplifying-fun carlson_rj (x y z p)
+  (let (args)
+    (flet ((calc (x y z p)
+	     (to (bigfloat::bf-rj (bigfloat:to x)
+				  (bigfloat:to y)
+				  (bigfloat:to z)
+				  (bigfloat:to p)))))
+      ;; See https://dlmf.nist.gov/19.20.iii
+      (cond ((and (alike1 x y)
+		  (alike1 y z)
+		  (alike1 z p))
+	     ;; Rj(x,x,x,x) = x^(-3/2)
+	     (pow x (div -3 2)))
+	    ((alike1 z p)
+	     ;; Rj(x,y,z,z) = Rd(x,y,z)
+	     (take '(%carlson_rd) x y z))
+	    ((and (zerop1 x)
+		  (alike1 y z))
+	     ;; Rj(0,y,y,p) = 3*%pi/(2*(y*sqrt(p)+p*sqrt(y)))
+	     (div (mul 3 '$%pi)
+		  (mul 2
+		       (add (mul y (pow p 1//2))
+			    (mul p (pow y 1//2))))))
+	    ((alike1 y z)
+	     ;; Rj(x,y,y,p) = 3/(p-y)*(Rc(x,y) - Rc(x,p))
+	     (mul (div 3 (sub p y))
+		  (sub (take '(%carlson_rc) x y)
+		       (take '(%carlson_rc) x p))))
+	    ((and (alike1 y z)
+		  (alike1 y p))
+	     ;; Rj(x,y,y,y) = Rd(x,y,y)
+	     (take '(%carlson_rd) x y y))
+	    ((float-numerical-eval-p x y z p)
+	     (calc ($float x) ($float y) ($float z) ($float p)))
+	    ((bigfloat-numerical-eval-p x y z p)
+	     (calc ($bfloat x) ($bfloat y) ($bfloat z) ($bfloat p)))
+	    ((setf args (complex-float-numerical-eval-p x y z p))
+	     (destructuring-bind (x y z p)
+		 args
+	       (calc ($float x) ($float y) ($float z) ($float p))))
+	    ((setf args (complex-bigfloat-numerical-eval-p x y z p))
+	     (destructuring-bind (x y z p)
+		 args
+	       (calc ($bfloat x) ($bfloat y) ($bfloat z) ($bfloat p))))
+	    (t
+	     (give-up))))))
+		  
 ;;; Other Jacobian elliptic functions
 
 ;; jacobi_ns(u,m) = 1/jacobi_sn(u,m)
@@ -4851,3 +5178,4 @@ first kind:
 			     den)
 			(div (mul -1 (mul param (mul s (mul c s1))))
 			     den))))))))))
+

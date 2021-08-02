@@ -599,7 +599,7 @@
 	     (:file "trprop")
 	     (:file "mdefun")))
    (:module numerical-functions :source-pathname ""
-	    :depends-on ("defmfun" "trigonometry")
+	    :depends-on ("defmfun" "trigonometry" "algebraic-database")
 	    :components
 	    ((:file "bessel")
 	     (:file "ellipt")
