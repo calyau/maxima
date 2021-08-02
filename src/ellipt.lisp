@@ -67,8 +67,6 @@
   (frob cd)
   (frob dc))
 
-(defprop $elliptic_f  $elliptic_f verb)
-(defprop $elliptic_e  $elliptic_e verb) 
 ;;
 ;; Routines for computing the basic elliptic functions sn, cn, and dn.
 ;;
@@ -398,7 +396,7 @@
        ((%jacobi_cn simp) u m) ((%jacobi_dn simp) u m)
        ((mplus simp) u
 	((mtimes simp) -1 ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m)) -1)
-	 (($elliptic_e simp) ((%asin simp) ((%jacobi_sn simp) u m)) m))))))
+	 ((%elliptic_e simp) ((%asin simp) ((%jacobi_sn simp) u m)) m))))))
   grad)
 
 (defprop %jacobi_cn
@@ -412,7 +410,7 @@
        ((%jacobi_dn simp) u m) ((%jacobi_sn simp) u m)
        ((mplus simp) u
 	((mtimes simp) -1 ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m)) -1)
-	 (($elliptic_e simp) ((%asin simp) ((%jacobi_sn simp) u m)) m))))))
+	 ((%elliptic_e simp) ((%asin simp) ((%jacobi_sn simp) u m)) m))))))
   grad)
 
 (defprop %jacobi_dn
@@ -427,7 +425,7 @@
        ((mplus simp) u
 	((mtimes simp) -1
 	 ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m)) -1)
-	 (($elliptic_e simp) ((%asin simp) ((%jacobi_sn simp) u m)) m))))))
+	 ((%elliptic_e simp) ((%asin simp) ((%jacobi_sn simp) u m)) m))))))
   grad)
 
 ;; The inverse elliptic functions.
@@ -454,9 +452,9 @@
 	((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m ((mexpt simp) x 2)))
 	 ((rat simp) -1 2)))
        ((mtimes simp) ((mexpt simp) m -1)
-	((mplus simp) (($elliptic_e simp) ((%asin simp) x) m)
+	((mplus simp) ((%elliptic_e simp) ((%asin simp) x) m)
 	 ((mtimes simp) -1 ((mplus simp) 1 ((mtimes simp) -1 m))
-	  (($elliptic_f simp) ((%asin simp) x) m)))))))
+	  ((%elliptic_f simp) ((%asin simp) x) m)))))))
   grad)
 
 ;; Let u = inverse_jacobi_cn(x).  Then jacobi_cn(u) = x or
@@ -489,12 +487,12 @@
 	((mabs simp) x))
        ((mtimes simp) ((mexpt simp) m -1)
 	((mplus simp)
-	 (($elliptic_e simp)
+	 ((%elliptic_e simp)
 	  ((%asin simp)
 	   ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 ((mexpt simp) x 2))) ((rat simp) 1 2)))
 	  m)
 	 ((mtimes simp) -1 ((mplus simp) 1 ((mtimes simp) -1 m))
-	  (($elliptic_f simp)
+	  ((%elliptic_f simp)
 	   ((%asin simp)
 	    ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 ((mexpt simp) x 2))) ((rat simp) 1 2)))
 	   m)))))))
@@ -541,7 +539,7 @@
 	 ((mexpt simp) ((mabs simp) x) -1))
 	((mtimes simp) ((mexpt simp) m -1)
 	 ((mplus simp)
-	  (($elliptic_e simp)
+	  ((%elliptic_e simp)
 	   ((%asin simp)
 	    ((mtimes simp) ((mexpt simp) m ((rat simp) -1 2))
 	     ((mexpt simp) ((mplus simp) 1
@@ -549,7 +547,7 @@
 	      ((rat simp) 1 2))))
 	   m)
 	  ((mtimes simp) -1 ((mplus simp) 1 ((mtimes simp) -1 m))
-	   (($elliptic_f simp)
+	   ((%elliptic_f simp)
 	    ((%asin simp)
 	     ((mtimes simp) ((mexpt simp) m ((rat simp) -1 2))
 	      ((mexpt simp) ((mplus simp) 1
@@ -1081,7 +1079,7 @@
 	   (take '(%asin) u))
 	  ((onep1 m)
 	   ;; asn(x,1) = F(asin(x),1) = log(tan(pi/4+asin(x)/2))
-	   (take '($elliptic_f) (take '(%asin) u) 1))
+	   (take '(%elliptic_f) (take '(%asin) u) 1))
 	  ((and (eq $triginverses '$all)
 		(listp u)
 		(eq (caar u) '%jacobi_sn)
@@ -1118,10 +1116,10 @@
 					  (bigfloat:to m)))))
 	  ((zerop1 m)
 	   ;; asn(x,0) = F(acos(x),0) = acos(x)
-	   `(($elliptic_f) ((%acos) ,u) 0))
+	   `((%elliptic_f) ((%acos) ,u) 0))
 	  ((onep1 m)
 	   ;; asn(x,1) = F(asin(x),1) = log(tan(pi/2+asin(x)/2))
-	   `(($elliptic_f) ((%acos) ,u) 1))
+	   `((%elliptic_f) ((%acos) ,u) 1))
 	  ((zerop1 u)
 	   `((%elliptic_kc) ,m))
 	  ((onep1 u)
@@ -1421,9 +1419,6 @@ first kind:
 ;;
 
 
-(defprop $elliptic_f simp-$elliptic_f operators)
-(defprop $elliptic_e simp-$elliptic_e operators)
-
 ;; The derivative of F(phi|m) wrt to phi is easy.  The derivative wrt
 ;; to m is harder.  Here is a derivation.  Hope I got it right.
 ;;
@@ -1495,7 +1490,7 @@ first kind:
 ;;   ----------------------------------------------------------------------
 ;; 				     1 - m
 
-(defprop $elliptic_f
+(defprop %elliptic_f
     ((phi m)
      ;; diff wrt phi
      ;; 1/sqrt(1-m*sin(phi)^2)
@@ -1507,9 +1502,9 @@ first kind:
       ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m)) -1)
       ((mplus simp)
        ((mtimes simp) ((mexpt simp) m -1)
-	((mplus simp) (($elliptic_e simp) phi m)
+	((mplus simp) ((%elliptic_e simp) phi m)
 	 ((mtimes simp) -1 ((mplus simp) 1 ((mtimes simp) -1 m))
-	  (($elliptic_f simp) phi m))))
+	  ((%elliptic_f simp) phi m))))
        ((mtimes simp) -1 ((%cos simp) phi) ((%sin simp) phi)
 	((mexpt simp)
 	 ((mplus simp) 1
@@ -1548,7 +1543,7 @@ first kind:
 ;;   -- (elliptic_E(PHI, m)) = ---------------------------------------
 ;;   dm					        2 m
 
-(defprop $elliptic_e
+(defprop %elliptic_e
     ((phi m)
      ;; sqrt(1-m*sin(phi)^2)
      ((mexpt simp)
@@ -1556,21 +1551,12 @@ first kind:
       ((rat simp) 1 2))
      ;; diff wrt m
      ((mtimes simp) ((rat simp) 1 2) ((mexpt simp) m -1)
-      ((mplus simp) (($elliptic_e simp) phi m)
-       ((mtimes simp) -1 (($elliptic_f simp) phi m)))))
+      ((mplus simp) ((%elliptic_e simp) phi m)
+       ((mtimes simp) -1 ((%elliptic_f simp) phi m)))))
   grad)
 		    
-(defmfun $elliptic_f (phi m)
-  (simplify (list '($elliptic_f) (resimplify phi) (resimplify m))))
-(defmfun $elliptic_e (phi m)
-  (simplify (list '($elliptic_e) (resimplify phi) (resimplify m))))
-
-(defun simp-$elliptic_f (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((phi (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	args)
+(def-simplifying-fun elliptic_f (phi m)
+  (let (args)
     (cond ((float-numerical-eval-p phi m)
 	   ;; Numerically evaluate it
 	   (to (elliptic-f ($float phi) ($float m))))
@@ -1608,14 +1594,10 @@ first kind:
 	   `((%elliptic_kc) ,m))
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '($elliptic_f) phi m) form)))))
+	   (give-up)))))
 
-(defun simp-$elliptic_e (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((phi (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	args)
+(def-simplifying-fun elliptic_e (phi m)
+  (let (args)
     (cond ((float-numerical-eval-p phi m)
 	   ;; Numerically evaluate it
 	   (elliptic-e ($float phi) ($float m)))
@@ -1668,8 +1650,7 @@ first kind:
 			  (take '(%elliptic_ec) m)))))
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '($elliptic_e) phi m) form)))))
-    
+	   (give-up)))))
 
 ;; Complete elliptic integrals
 ;;
@@ -1877,7 +1858,7 @@ first kind:
 				       (bigfloat:to phi)
 				       (bigfloat:to m)))))
       ((zerop1 n)
-       `(($elliptic_f) ,phi ,m))
+       `((%elliptic_f) ,phi ,m))
       ((zerop1 m)
        ;; 3 cases depending on n < 1, n > 1, or n = 1.
        (let ((s (asksign (resimplify `((mplus) -1 ,n)))))
@@ -1994,9 +1975,9 @@ first kind:
      ((mtimes) ((mexpt) n -1)
       ((mplus) ((mtimes) -1 m) ((mexpt) n 2))
       (($elliptic_pi) n z m))
-     (($elliptic_e) z m)
+     ((%elliptic_e) z m)
      ((mtimes) ((mplus) m ((mtimes) -1 n)) ((mexpt) n -1)
-      (($elliptic_f) z m))
+      ((%elliptic_f) z m))
      ((mtimes) ((rat) -1 2) n
       ((mexpt)
        ((mplus) 1 ((mtimes) -1 m ((mexpt) ((%sin) z) 2)))
@@ -2017,7 +1998,7 @@ first kind:
     ((mexpt) ((mplus) ((mtimes) -1 m) n) -1)
     ((mplus) (($elliptic_pi) n z m)
      ((mtimes) ((mexpt) ((mplus) -1 m) -1)
-      (($elliptic_e) z m))
+      ((%elliptic_e) z m))
      ((mtimes) ((rat) -1 2) ((mexpt) ((mplus) -1 m) -1) m
       ((mexpt)
        ((mplus) 1 ((mtimes) -1 m ((mexpt) ((%sin) z) 2)))
@@ -2820,7 +2801,7 @@ first kind:
 	((mplus) u
 	 ((mtimes) -1
 	  ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	  (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	  ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	   m)))))))
   grad)
 
@@ -2950,7 +2931,7 @@ first kind:
 	((%jacobi_dn) u m) ((%jacobi_sn) u m)
 	((mplus) u
 	 ((mtimes) -1 ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	  (($elliptic_e) ((%asin) ((%jacobi_sn) u m)) m)))))))
+	  ((%elliptic_e) ((%asin) ((%jacobi_sn) u m)) m)))))))
   grad)
 
 (defun simp-%jacobi_nc (form unused z)
@@ -3089,7 +3070,7 @@ first kind:
 	((mplus) u
 	 ((mtimes) -1
 	  ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	  (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	  ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	   m)))))))
   grad)
 
@@ -3210,7 +3191,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))
       ((mtimes) -1 ((mexpt) ((%jacobi_cn) u m) -2)
        ((%jacobi_sn) u m)
@@ -3224,7 +3205,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))))
   grad)
 
@@ -3351,7 +3332,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))
       ((mtimes) -1 ((mexpt) ((%jacobi_dn) u m) -2)
        ((%jacobi_sn) u m)
@@ -3365,7 +3346,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))))
   grad)
 
@@ -3521,7 +3502,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))
       ((mtimes) ((mexpt) ((%jacobi_sn) u m) -1)
        ((mplus)
@@ -3534,7 +3515,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))))
   grad)
 
@@ -3667,7 +3648,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))
       ((mtimes) ((mexpt) ((%jacobi_dn) u m) -1)
        ((mplus)
@@ -3680,7 +3661,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))))
   grad)
 
@@ -3823,7 +3804,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))
       ((mtimes) ((mexpt) ((%jacobi_sn) u m) -1)
        ((mplus)
@@ -3836,7 +3817,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))))
   grad)
 
@@ -3992,7 +3973,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))
       ((mtimes) -1 ((mexpt) ((%jacobi_cn) u m) -2)
        ((%jacobi_dn) u m)
@@ -4006,7 +3987,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))))
   grad)
 
@@ -4180,10 +4161,10 @@ first kind:
 				      (bigfloat:to ($bfloat m))))))
       ((zerop1 m)
        ;; ans(x,0) = F(asin(1/x),0) = asin(1/x)
-       `(($elliptic_f) ((%asin) ((mexpt) ,u -1)) 0))
+       `((%elliptic_f) ((%asin) ((mexpt) ,u -1)) 0))
       ((onep1 m)
        ;; ans(x,1) = F(asin(1/x),1) = log(tan(pi/2+asin(1/x)/2))
-       `(($elliptic_f) ((%asin) ((mexpt) ,u -1)) 1))
+       `((%elliptic_f) ((%asin) ((mexpt) ,u -1)) 1))
       ((onep1 u)
        `((%elliptic_kc) ,m))
       ((alike1 u -1)
@@ -4690,13 +4671,13 @@ first kind:
 	   (ecase fn
 	     (%inverse_jacobi_sc
 	      ;; A&S 17.4.41
-	      `(($elliptic_f) ((%atan) ,u) ,m))
+	      `((%elliptic_f) ((%atan) ,u) ,m))
 	     (%inverse_jacobi_cs
 	      ;; A&S 17.4.42
-	      `(($elliptic_f) ((%atan) ((mexpt) ,u -1)) ,m))
+	      `((%elliptic_f) ((%atan) ((mexpt) ,u -1)) ,m))
 	     (%inverse_jacobi_nd
 	      ;; A&S 17.4.43
-	      `(($elliptic_f)
+	      `((%elliptic_f)
 		((%asin) ((mtimes)
 			  ((mexpt) ,m ((rat) -1 2))
 			  ((mexpt) ,u -1)
@@ -4705,7 +4686,7 @@ first kind:
 		,m))
 	     (%inverse_jacobi_dn
 	      ;; A&S 17.4.44
-	      `(($elliptic_f)
+	      `((%elliptic_f)
 		((%asin)
 		 ((mtimes) ((mexpt) ,m ((rat) -1 2))
 		  ((mexpt) ((mplus) 1 ((mtimes) -1 ((mexpt) ,u 2)))
@@ -4713,10 +4694,10 @@ first kind:
 		,m))
 	     (%inverse_jacobi_sn
 	      ;; A&S 17.4.45
-	      `(($elliptic_f) ((%asin) ,u) ,m))
+	      `((%elliptic_f) ((%asin) ,u) ,m))
 	     (%inverse_jacobi_cd
 	      ;; A&S 17.4.46
-	      `(($elliptic_f)
+	      `((%elliptic_f)
 		((%asin)
 		 ((mexpt) ((mtimes) ((mplus) 1
 				     ((mtimes) -1 ((mexpt) ,u 2)))
@@ -4727,7 +4708,7 @@ first kind:
 		,m))
 	     (%inverse_jacobi_dc
 	      ;; A&S 17.4.47
-	      `(($elliptic_f)
+	      `((%elliptic_f)
 		((%asin)
 		 ((mexpt)
 		  ((mtimes) ((mplus) -1 ((mexpt) ,u 2))
@@ -4736,19 +4717,19 @@ first kind:
 		,m))
 	     (%inverse_jacobi_ns
 	      ;; A&S 17.4.48
-	      `(($elliptic_f) ((%asin) ((mexpt) ,u -1)) ,m))
+	      `((%elliptic_f) ((%asin) ((mexpt) ,u -1)) ,m))
 	     (%inverse_jacobi_nc
 	      ;; A&S 17.4.49
-	      `(($elliptic_f) ((%acos) ((mexpt) ,u -1)) ,m))
+	      `((%elliptic_f) ((%acos) ((mexpt) ,u -1)) ,m))
 	     (%inverse_jacobi_ds
 	      ;; A&S 17.4.50
-	      `(($elliptic_f)
+	      `((%elliptic_f)
 		((%asin) ((mexpt) ((mplus) ,m ((mexpt) ,u 2))
 			  ((rat) -1 2)))
 		,m))
 	     (%inverse_jacobi_sd
 	      ;; A&S 17.4.51
-	      `(($elliptic_f)
+	      `((%elliptic_f)
 		((%asin)
 		 ((mtimes) ,u
 		  ((mexpt) ((mplus) 1 ((mtimes) ,m ((mexpt) ,u 2)))
@@ -4756,7 +4737,7 @@ first kind:
 		,m))
 	     (%inverse_jacobi_cn
 	      ;; A&S 17.4.52
-	      `(($elliptic_f) ((%acos) ,u) ,m)))))
+	      `((%elliptic_f) ((%acos) ,u) ,m)))))
 	(t
 	 (recur-apply #'make-elliptic-f e))))
 
@@ -4770,7 +4751,7 @@ first kind:
 	((eq (caar e) '$elliptic_eu)
 	 (destructuring-bind ((ffun &rest ops) u m) e
 	   (declare (ignore ffun ops))
-	   `(($elliptic_e) ((%asin) ((%jacobi_sn) ,u ,m)) ,m)))
+	   `((%elliptic_e) ((%asin) ((%jacobi_sn) ,u ,m)) ,m)))
 	(t
 	 (recur-apply #'make-elliptic-e e))))
 
