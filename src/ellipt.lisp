@@ -1555,7 +1555,7 @@ first kind:
        ((mtimes simp) -1 ((%elliptic_f simp) phi m)))))
   grad)
 		    
-(def-simplifying-fun elliptic_f (phi m)
+(def-simplifier elliptic_f (phi m)
   (let (args)
     (cond ((float-numerical-eval-p phi m)
 	   ;; Numerically evaluate it
@@ -1596,7 +1596,7 @@ first kind:
 	   ;; Nothing to do
 	   (give-up)))))
 
-(def-simplifying-fun elliptic_e (phi m)
+(def-simplifier elliptic_e (phi m)
   (let (args)
     (cond ((float-numerical-eval-p phi m)
 	   ;; Numerically evaluate it
@@ -2436,7 +2436,7 @@ first kind:
 
 ;; Define Carlson's elliptic integrals.
 
-(def-simplifying-fun carlson_rc (x y)
+(def-simplifier carlson_rc (x y)
   (let (args)
     (flet ((calc (x y)
 	     (flet ((floatify (z)
@@ -2523,7 +2523,7 @@ first kind:
 	    (t
 	     (give-up))))))
   
-(def-simplifying-fun carlson_rd (x y z)
+(def-simplifier carlson_rd (x y z)
   (let (args)
     (flet ((calc (x y z)
 	     (to (bigfloat::bf-rd (bigfloat:to x)
@@ -2617,7 +2617,7 @@ first kind:
 	    (t
 	     (give-up))))))
 
-(def-simplifying-fun carlson_rf (x y z)
+(def-simplifier carlson_rf (x y z)
   (let (args)
     (flet ((calc (x y z)
 	     (to (bigfloat::bf-rf (bigfloat:to x)
@@ -2729,7 +2729,7 @@ first kind:
 	    (t
 	     (give-up))))))
 
-(def-simplifying-fun carlson_rj (x y z p)
+(def-simplifier carlson_rj (x y z p)
   (let (args)
     (flet ((calc (x y z p)
 	     (to (bigfloat::bf-rj (bigfloat:to x)
