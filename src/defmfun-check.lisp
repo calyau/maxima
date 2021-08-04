@@ -468,48 +468,7 @@
 ;; This should produce compile errors
 ;; (defmfun $zot (a &optional c &key b) (list '(mlist) a b))
 
-;; Simple macro to define simplifiers for NAME taking LAMBDA-LIST for
-;; the args.  This macro generates some of the boilerplate used for
-;; simplifiers.
-;;
-;; For example, normally a hand-written simplifier for a function FUN
-;; of 2 args looks like:
-;;
-;; (defun simp-%fun (form unused z)
-;;   (declare (ignore unused))
-;;   (let ((x (simpcheck (second form) z))
-;;         (y (simpcheck (third form) z)))
-;;     (twoargcheck form)
-;;     <stuff>)
-;;
-;; This can be replaced with
-;;
-;; (defsimp %fun (x y)
-;;   <stuff>)
-;;
-;; Which expands to something like
-;;
-;; (defun simp-%fun (form #:unused-1 #:z-0)
-;;   (declare (ignore #:unused-1))
-;;   (let ((x (simpcheck (second form) #:z-0))
-;;         (y (simpcheck (third form) #:z-0)))
-;;     (arg-count-check 2 form)
-;;     <stuff>))
-(defmacro defsimp (name lambda-list &body body)
-  (let* ((simp-name (intern (concatenate 'string "SIMP-" (string name))))
-	 (z-arg (gensym "Z-"))
-	 (unused-arg (gensym "UNUSED-"))
-	 (arg-forms (loop for arg in lambda-list
-			  and count from 1
-			  collect (list arg `(simpcheck (nth ,count form) ,z-arg)))))
-    `(progn
-       (defprop ,name ,simp-name operators)
-       (defun ,simp-name (form ,unused-arg ,z-arg)
-       (declare (ignore ,unused-arg))
-       (let ,arg-forms
-	 (arg-count-check ,(length lambda-list) form)
-	 ,@body)))))
-
+
 ;; Defines a simplifying function for Maxima whose name is BASE-NAME.
 ;; The noun and verb properties are set up appropriately, along with
 ;; setting the operator property.  The noun form is created from the
@@ -520,7 +479,7 @@
 ;; foo of two args with a corresponding simplifier to simplify special
 ;; cases or numerically evaluate it.  Then:
 ;;
-;; (def-simplifying-fun foo (x y)
+;; (def-simplifier foo (x y)
 ;;   (cond ((float-numerical-eval-p x y)
 ;;          (foo-eval x y))
 ;;         (t
@@ -546,13 +505,12 @@
 ;;            (foo-eval x y))
 ;;           (t
 ;;            (give-up))))))
-;;   (defmfun $foo (x y) (simplify (list '(%foo) (resimplify x) (resimplify y)))))
 ;;
 ;; Note carefully that the expansion defines a macro GIVE-UP to
 ;; handle the default case of the simplifier when we can't do any
 ;; simplification.  Call this in the default case for the COND.
 
-(defmacro def-simplifying-fun (base-name lambda-list &body body)
+(defmacro def-simplifier (base-name lambda-list &body body)
   (let* ((noun-name (intern (concatenate 'string "%" (string base-name))))
 	 (verb-name (intern (concatenate 'string "$" (string base-name))))
 	 (simp-name (intern (concatenate 'string "SIMP-" (string noun-name))))
@@ -574,16 +532,8 @@
 	 (declare (ignore ,unused-arg))
 	 (arg-count-check ,(length lambda-list) form)
 	 (let ,arg-forms
-	   (macrolet ((give-up ()
-			;; Should this also return from the function?
-			;; That would fit in better with giving up.
-			`(eqtest (list '(,',noun-name) ,@',lambda-list) form)))
-	     ,@body)))
-
-       ;; Define the verb function
-       (defmfun ,verb-name ,lambda-list
-	 (simplify (list '(,noun-name)
-			 ;; Not really sure resimplify is needed here.
-			 ,@(mapcar #'(lambda (v)
-				       `(resimplify ,v))
-				   lambda-list)))))))
+	   (flet ((give-up ()
+		    ;; Should this also return from the function?
+		    ;; That would fit in better with giving up.
+		    (eqtest (list '(,noun-name) ,@lambda-list) form)))
+	     ,@body))))))
