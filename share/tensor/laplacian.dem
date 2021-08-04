@@ -34,6 +34,9 @@ icounter:100$
 ("We choose the appropriate convention for exterior algebra")$
 igeowedge_flag:true$
 
+("For this problem, better simplifications are achieved with flipflag")$
+flipflag:true$
+
 ("Now let us calculate the Laplacian of a scalar field and simplify")$
 canform(hodge(extdiff(hodge(extdiff(f([],[]))))))$
 contract(expand(lc2kdt(%)))$
@@ -41,7 +44,7 @@ contract(expand(lc2kdt(%)))$
 D1:ishow(canform(%))$
 
 ("We can re-express the result using Christoffel symbols, too")$
-ishow(canform(conmetderiv(D1,g)))$
+ishow(rename(contract(canform(conmetderiv(D1,g)))))$
 
 ("Nice. Now let us repeat the same calculation with torsion")$
 itorsion_flag:true$
@@ -57,20 +60,19 @@ canform(%)$
 %,g$
 %,ichr1$
 contract(rename(expand(canform(%))))$
-flipflag:not flipflag$
 D2:ishow(canform(%th(2)))$
 
 ("Another clean result; can also be expressed using Christoffel symbols")$
-ishow(canform(conmetderiv(D2,g)))$
+ishow(rename(contract(canform(conmetderiv(D2,g)))))$
 
 ("Finally, we see that the two results differ only by torsion")$
-ishow(canform(D2-D1))$
+ishow(rename(contract(canform(D2-D1))))$
 
 ("Last but not least, d^2 is not nilpotent in the presence of torsion")$
-extdiff(extdiff(f([],[])))$
+extdiff(extdiff(f([],[]),i),j)$
 %,icc2,ikt2,ikt1$
 canform(%)$
 %,g$
-ishow(contract(%))$
+ishow(rename(contract(%)))$
 
 ("Reminder: when dim = 2n, the Laplacian is -1 times these results.")$
