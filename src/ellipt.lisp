@@ -5626,8 +5626,10 @@ first kind:
      nil)
   grad)
 
+#+nil
 (defprop %inverse_jacobi_ns simp-%inverse_jacobi_ns operators)
 
+#+nil
 (defun simp-%inverse_jacobi_ns (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -5671,6 +5673,45 @@ first kind:
        ;; Nothing to do
        (eqtest (list '(%inverse_jacobi_ns) u m) form)))))
 
+(def-simplifier inverse_jacobi_ns (u m)
+  (let (args)
+    (cond
+      ((float-numerical-eval-p u m)
+       ;; Numerically evaluate asn
+       ;;
+       ;; ans(x,m) = asn(1/x,m) = F(asin(1/x),m)
+       (to (elliptic-f (cl:asin (/ ($float u))) ($float m))))
+      ((complex-float-numerical-eval-p u m)
+       (to (elliptic-f (cl:asin (/ (complex ($realpart ($float u)) ($imagpart ($float u)))))
+		       (complex ($realpart ($float m)) ($imagpart ($float m))))))
+      ((bigfloat-numerical-eval-p u m)
+       (to (bigfloat::bf-elliptic-f (bigfloat:asin (bigfloat:/ (bigfloat:to ($bfloat u))))
+				    (bigfloat:to ($bfloat m)))))
+      ((setf args (complex-bigfloat-numerical-eval-p u m))
+       (destructuring-bind (u m)
+	   args
+	 (to (bigfloat::bf-elliptic-f (bigfloat:asin (bigfloat:/ (bigfloat:to ($bfloat u))))
+				      (bigfloat:to ($bfloat m))))))
+      ((zerop1 m)
+       ;; ans(x,0) = F(asin(1/x),0) = asin(1/x)
+       `((%elliptic_f) ((%asin) ((mexpt) ,u -1)) 0))
+      ((onep1 m)
+       ;; ans(x,1) = F(asin(1/x),1) = log(tan(pi/2+asin(1/x)/2))
+       `((%elliptic_f) ((%asin) ((mexpt) ,u -1)) 1))
+      ((onep1 u)
+       `((%elliptic_kc) ,m))
+      ((alike1 u -1)
+       (neg `((%elliptic_kc) ,m)))
+      ((and (eq $triginverses '$all)
+	    (listp u)
+	    (eq (caar u) '%jacobi_ns)
+	    (alike1 (third u) m))
+       ;; inverse_jacobi_ns(ns(u)) = u
+       (second u))
+      (t
+       ;; Nothing to do
+       (give-up)))))
+
 ;; inverse_jacobi_nc(x)
 ;;
 ;; Let u = inverse_jacobi_nc(x).  Then jacobi_nc(u) = x or
@@ -5699,8 +5740,10 @@ first kind:
      nil)
   grad)
 
+#+nil
 (defprop %inverse_jacobi_nc simp-%inverse_jacobi_nc operators)
 
+#+nil
 (defun simp-%inverse_jacobi_nc (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -5725,6 +5768,27 @@ first kind:
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_nc) u m) form)))))
+
+(def-simplifier inverse_jacobi_nc (u m)
+  (cond ((or (float-numerical-eval-p u m)
+	     (complex-float-numerical-eval-p u m)
+	     (bigfloat-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 ;;
+	 ($inverse_jacobi_cn ($rectform (div 1 u)) m))
+	((onep1 u)
+	 0)
+	((alike1 u -1)
+	 `((mtimes) 2 ((%elliptic_kc) ,m)))
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_nc)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_nc(nc(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; inverse_jacobi_nd(x)
 ;;
@@ -5755,8 +5819,10 @@ first kind:
      nil)
   grad)
 
+#+nil
 (defprop %inverse_jacobi_nd simp-%inverse_jacobi_nd operators)
 
+#+nil
 (defun simp-%inverse_jacobi_nd (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -5782,6 +5848,28 @@ first kind:
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_nd) u m) form)))))
+
+(def-simplifier inverse_jacobi_nd (u m)
+  (cond ((or (float-numerical-eval-p u m)
+	     (complex-float-numerical-eval-p u m)
+	     (bigfloat-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 ($inverse_jacobi_dn ($rectform (div 1 u)) m))
+	((onep1 u)
+	 0)
+	((onep1 ($ratsimp (mul (power (sub 1 m) 1//2) u)))
+	 ;; jacobi_nd(1/sqrt(1-m),m) = K(m).  This follows from
+	 ;; jacobi_dn(sqrt(1-m),m) = K(m).
+	 ($elliptic_kc m))
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_nd)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_nd(nd(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; inverse_jacobi_sc(x)
 ;;
@@ -5820,8 +5908,10 @@ first kind:
      nil)
   grad)
 
+#+nil
 (defprop %inverse_jacobi_sc simp-%inverse_jacobi_sc operators)
 
+#+nil
 (defun simp-%inverse_jacobi_sc (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -5846,6 +5936,27 @@ first kind:
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_sc) u m) form)))))
+
+(def-simplifier inverse_jacobi_sc (u m)
+  (cond ((or (float-numerical-eval-p u m)
+	     (complex-float-numerical-eval-p u m)
+	     (bigfloat-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 ($inverse_jacobi_sn
+	  ($rectform (div u (power (add 1 (mul u u)) 1//2)))
+	  m))
+	((zerop1 u)
+	 ;; jacobi_sc(0,m) = 0
+	 0)
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_sc)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_sc(sc(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; inverse_jacobi_sd(x)
 ;;
@@ -5883,8 +5994,10 @@ first kind:
      nil)
   grad)
 
+#+nil
 (defprop %inverse_jacobi_sd simp-%inverse_jacobi_sd operators)
 
+#+nil
 (defun simp-%inverse_jacobi_sd (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -5916,6 +6029,33 @@ first kind:
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_sd) u m) form)))))
 
+(def-simplifier inverse_jacobi_sd (u m)
+  (cond ((or (float-numerical-eval-p u m)
+	     (complex-float-numerical-eval-p u m)
+	     (bigfloat-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 ($inverse_jacobi_sn
+	  ($rectform (div u (power (add 1 (mul m (mul u u))) 1//2)))
+	  m))
+	((zerop1 u)
+	 0)
+	((eql 0 ($ratsimp (sub u (div 1 (power (sub 1 m) 1//2)))))
+	 ;; inverse_jacobi_sd(1/sqrt(1-m), m) = elliptic_kc(m)
+	 ;;
+	 ;; We can see this from inverse_jacobi_sd(x,m) =
+	 ;; inverse_jacobi_sn(x/sqrt(1+m*x^2), m).  So
+	 ;; inverse_jacobi_sd(1/sqrt(1-m),m) = inverse_jacobi_sn(1,m)
+	 ($elliptic_kc m))
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_sd)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_sd(sd(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
+
 ;; inverse_jacobi_cs(x)
 ;;
 ;; Let u = inverse_jacobi_cs(x).  Then jacobi_cs(u) = x or
@@ -5944,8 +6084,10 @@ first kind:
      nil)
   grad)
 
+#+nil
 (defprop %inverse_jacobi_cs simp-%inverse_jacobi_cs operators)
 
+#+nil
 (defun simp-%inverse_jacobi_cs (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -5961,6 +6103,18 @@ first kind:
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_cs) u m) form)))))
+
+(def-simplifier inverse_jacobi_cs (u m)
+  (cond ((or (float-numerical-eval-p u m)
+	     (complex-float-numerical-eval-p u m)
+	     (bigfloat-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 ($inverse_jacobi_sc ($rectform (div 1 u)) m))
+	((zerop1 u)
+	 `((%elliptic_kc) ,m))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; inverse_jacobi_cd(x)
 ;;
@@ -5999,8 +6153,10 @@ first kind:
      nil)
   grad)
 
+#+nil
 (defprop %inverse_jacobi_cd simp-%inverse_jacobi_cd operators)
 
+#+nil
 (defun simp-%inverse_jacobi_cd (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -6026,6 +6182,28 @@ first kind:
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_cd) u m) form)))))
+
+(def-simplifier inverse_jacobi_cd (u m)
+  (cond ((or (complex-float-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 (let (($numer t))
+	   ($inverse_jacobi_sn
+	    ($rectform (div (power (mul (sub 1 u) (add 1 u)) 1//2)
+			    (power (sub 1 (mul m (mul u u))) 1//2)))
+	    m)))
+	((onep1 u)
+	 0)
+	((zerop1 u)
+	 `((%elliptic_kc) ,m))
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_cd)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_cd(cd(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; inverse_jacobi_ds(x)
 ;;
@@ -6055,8 +6233,10 @@ first kind:
      nil)
   grad)
 
+#+nil
 (defprop %inverse_jacobi_ds simp-%inverse_jacobi_ds operators)
 
+#+nil
 (defun simp-%inverse_jacobi_ds (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -6085,6 +6265,31 @@ first kind:
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_ds) u m) form)))))
+
+(def-simplifier inverse_jacobi_ds (u m)
+  (cond ((or (float-numerical-eval-p u m)
+	     (complex-float-numerical-eval-p u m)
+	     (bigfloat-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 ($inverse_jacobi_sd ($rectform (div 1 u)) m))
+	((and $trigsign (mminusp* u))
+	 (neg (cons-exp '%inverse_jacobi_ds (neg u) m)))
+	((eql 0 ($ratsimp (sub u (power (sub 1 m) 1//2))))
+	 ;; inverse_jacobi_ds(sqrt(1-m),m) = elliptic_kc(m)
+	 ;;
+	 ;; Since inverse_jacobi_ds(sqrt(1-m), m) =
+	 ;; inverse_jacobi_sd(1/sqrt(1-m),m).  And we know from
+	 ;; above that this is elliptic_kc(m)
+	 ($elliptic_kc m))
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_ds)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_ds(ds(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 
 ;; inverse_jacobi_dc(x)
@@ -6121,8 +6326,10 @@ first kind:
      nil)
   grad)
 
+#+nil
 (defprop %inverse_jacobi_dc simp-%inverse_jacobi_dc operators)
 
+#+nil
 (defun simp-%inverse_jacobi_dc (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -6142,6 +6349,22 @@ first kind:
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_dc) u m) form)))))
+
+(def-simplifier inverse_jacobi_dc (u m)
+  (cond ((or (complex-float-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 ($inverse_jacobi_cd ($rectform (div 1 u)) m))
+	((onep1 u)
+	 0)
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_dc)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_dc(dc(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; Convert an inverse Jacobian function into the equivalent elliptic
 ;; integral F.
