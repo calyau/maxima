@@ -1383,6 +1383,7 @@
 ;; it, but perhaps allow some way to do that transformation if
 ;; desired.
 
+#+nil
 (defun simp-%inverse_jacobi_sn (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -1455,6 +1456,75 @@
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_sn) u m) form)))))
 
+(def-simplifier inverse_jacobi_sn (u m)
+  (let (args)
+    ;; To numerically evaluate inverse_jacobi_sn (asn), use
+    ;;
+    ;; asn(x,m) = F(asin(x),m)
+    ;;
+    ;; But F(phi,m) = sin(phi)*rf(cos(phi)^2, 1-m*sin(phi)^2,1).  Thus
+    ;;
+    ;; asn(x,m) = F(asin(x),m)
+    ;;          = x*rf(1-x^2,1-m*x^2,1)
+    ;;
+    ;; I (rtoy) am not 100% about the first identity above for all
+    ;; complex values of x and m, but tests seem to indicate that it
+    ;; produces the correct value as verified by verifying
+    ;; jacobi_sn(inverse_jacobi_sn(x,m),m) = x.
+    (cond ((float-numerical-eval-p u m)
+	   (complexify (* u (bigfloat::bf-rf (bigfloat:to (float (- 1 (* u u))))
+					     (bigfloat:to (float (- 1 (* m u u))))
+					     1))))
+	  ((setf args (complex-float-numerical-eval-p u m))
+	   (destructuring-bind (u m)
+	       args
+	     (let ((uu (bigfloat:to ($float u)))
+		   (mm (bigfloat:to ($float m))))
+	       (complexify (* uu (bigfloat::bf-rf (- 1 (* uu uu))
+						  (- 1 (* mm uu uu))
+						  1))))))
+	  ((bigfloat-numerical-eval-p u m)
+	   (let ((uu (bigfloat:to u))
+		 (mm (bigfloat:to m)))
+	     (to (bigfloat:* uu
+			     (bigfloat::bf-rf (bigfloat:- 1 (bigfloat:* uu uu))
+					      (bigfloat:- 1 (bigfloat:* mm uu uu))
+					      1)))))
+	  ((setf args (complex-bigfloat-numerical-eval-p u m))
+	   (destructuring-bind (u m)
+	       args
+	     (let ((uu (bigfloat:to u))
+		   (mm (bigfloat:to m)))
+	     (to (bigfloat:* uu
+			     (bigfloat::bf-rf (bigfloat:- 1 (bigfloat:* uu uu))
+					      (bigfloat:- 1 (bigfloat:* mm uu uu))
+						1))))))
+	  ((zerop1 u)
+	   ;; asn(0,m) = 0
+	   0)
+	  ((onep1 u)
+	   ;; asn(1,m) = elliptic_kc(m)
+	   ($elliptic_kc m))
+	  ((and (numberp u) (onep1 (- u)))
+	   ;; asn(-1,m) = -elliptic_kc(m)
+	   (mul -1 ($elliptic_kc m)))
+	  ((zerop1 m)
+	   ;; asn(x,0) = F(asin(x),0) = asin(x)
+	   (take '(%asin) u))
+	  ((onep1 m)
+	   ;; asn(x,1) = F(asin(x),1) = log(tan(pi/4+asin(x)/2))
+	   (take '(%elliptic_f) (take '(%asin) u) 1))
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(eq (caar u) '%jacobi_sn)
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_sn(sn(u)) = u
+	   (second u))
+	  (t
+	   ;; Nothing to do
+	   (give-up)))))
+
+#+nil
 (defun simp-%inverse_jacobi_cn (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -1499,6 +1569,47 @@
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_cn) u m) form)))))
 
+(def-simplifier inverse_jacobi_cn (u m)
+  (let (args)
+    (cond ((float-numerical-eval-p u m)
+	   ;; Numerically evaluate acn
+	   ;;
+	   ;; acn(x,m) = F(acos(x),m)
+	   (to (elliptic-f (cl:acos ($float u)) ($float m))))
+	  ((setf args (complex-float-numerical-eval-p u m))
+	   (destructuring-bind (u m)
+	       args
+	     (to (elliptic-f (cl:acos (bigfloat:to ($float u)))
+			     (bigfloat:to ($float m))))))
+	  ((bigfloat-numerical-eval-p u m)
+	   (to (bigfloat::bf-elliptic-f (bigfloat:acos (bigfloat:to u))
+					(bigfloat:to m))))
+	  ((setf args (complex-bigfloat-numerical-eval-p u m))
+	   (destructuring-bind (u m)
+	       args
+	     (to (bigfloat::bf-elliptic-f (bigfloat:acos (bigfloat:to u))
+					  (bigfloat:to m)))))
+	  ((zerop1 m)
+	   ;; asn(x,0) = F(acos(x),0) = acos(x)
+	   `((%elliptic_f) ((%acos) ,u) 0))
+	  ((onep1 m)
+	   ;; asn(x,1) = F(asin(x),1) = log(tan(pi/2+asin(x)/2))
+	   `((%elliptic_f) ((%acos) ,u) 1))
+	  ((zerop1 u)
+	   `((%elliptic_kc) ,m))
+	  ((onep1 u)
+	   0)
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(eq (caar u) '%jacobi_cn)
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_cn(cn(u)) = u
+	   (second u))
+	  (t
+	   ;; Nothing to do
+	   (give-up)))))
+
+#+nil
 (defun simp-%inverse_jacobi_dn (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -1541,6 +1652,45 @@
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_dn) u m) form)))))
+
+(def-simplifier inverse_jacobi_dn (u m)
+  (let (args)
+    (cond ((float-numerical-eval-p u m)
+	   (to (bigfloat::bf-inverse-jacobi-dn (bigfloat:to (float u))
+					       (bigfloat:to (float m)))))
+	  ((setf args (complex-float-numerical-eval-p u m))
+	   (destructuring-bind (u m)
+	       args
+	     (let ((uu (bigfloat:to ($float u)))
+		   (mm (bigfloat:to ($float m))))
+	       (to (bigfloat::bf-inverse-jacobi-dn uu mm)))))
+	  ((bigfloat-numerical-eval-p u m)
+	   (let ((uu (bigfloat:to u))
+		 (mm (bigfloat:to m)))
+	     (to (bigfloat::bf-inverse-jacobi-dn uu mm))))
+	  ((setf args (complex-bigfloat-numerical-eval-p u m))
+	   (destructuring-bind (u m)
+	       args
+	     (to (bigfloat::bf-inverse-jacobi-dn (bigfloat:to u) (bigfloat:to m)))))
+	  ((onep1 m)
+	   ;; x = dn(u,1) = sech(u).  so u = asech(x)
+	   `((%asech) ,u))
+	  ((onep1 u)
+	   ;; jacobi_dn(0,m) = 1
+	   0)
+	  ((zerop1 ($ratsimp (sub u (power (sub 1 m) 1//2))))
+	   ;; jacobi_dn(K(m),m) = sqrt(1-m) so
+	   ;; inverse_jacobi_dn(sqrt(1-m),m) = K(m)
+	   ($elliptic_kc m))
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(eq (caar u) '%jacobi_dn)
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_dn(dn(u)) = u
+	   (second u))
+	  (t
+	   ;; Nothing to do
+	   (give-up)))))
 
 ;;;; Elliptic integrals
 
