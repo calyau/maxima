@@ -36,6 +36,7 @@
 
 ;; Setup noun/verb for elliptic functions
 
+#+nil
 (macrolet
     ((frob (root)
        (let* ((s (string root))
@@ -2179,7 +2180,9 @@ first kind:
   (simplify (list '(%elliptic_ec) (resimplify m))))
 
 
+#+nil
 (defprop %elliptic_kc simp-%elliptic_kc operators)
+#+nil
 (defprop %elliptic_ec simp-%elliptic_ec operators)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2201,6 +2204,7 @@ first kind:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun simp-%elliptic_kc (form yy z)
   (declare (ignore yy))
   (oneargcheck form)
@@ -2242,6 +2246,44 @@ first kind:
 	   ;; Nothing to do
 	   (eqtest (list '(%elliptic_kc) m) form)))))
 
+(def-simplifier elliptic_kc (m)
+  (let (args)
+    (cond ((onep1 m)
+           ;; elliptic_kc(1) is complex infinity. Maxima can not handle
+           ;; infinities correctly, throw a Maxima error.
+           (merror
+             (intl:gettext "elliptic_kc: elliptic_kc(~:M) is undefined.")
+             m))
+          ((float-numerical-eval-p m)
+	   ;; Numerically evaluate it
+	   (to (elliptic-k ($float m))))
+	  ((complex-float-numerical-eval-p m)
+	   (complexify (bigfloat::bf-elliptic-k (complex ($float ($realpart m)) ($float ($imagpart m))))))
+	  ((setf args (complex-bigfloat-numerical-eval-p m))
+	   (destructuring-bind (m)
+	       args
+	     (to (bigfloat::bf-elliptic-k (bigfloat:to ($bfloat m))))))
+	  ((zerop1 m)
+	   '((mtimes) ((rat) 1 2) $%pi))
+	  ((alike1 m 1//2)
+	   ;; http://functions.wolfram.com/EllipticIntegrals/EllipticK/03/01/
+	   ;;
+	   ;; elliptic_kc(1/2) = 8*%pi^(3/2)/gamma(-1/4)^2
+	   (div (mul 8 (power '$%pi (div 3 2)))
+		(power (gm (div -1 4)) 2)))
+	  ((eql -1 m)
+	   ;; elliptic_kc(-1) = gamma(1/4)^2/(4*sqrt(2*%pi))
+	   (div (power (gm (div 1 4)) 2)
+		(mul 4 (power (mul 2 '$%pi) 1//2))))
+	  ((alike1 m (add 17 (mul -12 (power 2 1//2))))
+	   ;; elliptic_kc(17-12*sqrt(2)) = 2*(2+sqrt(2))*%pi^(3/2)/gamma(-1/4)^2
+	   (div (mul 2 (mul (add 2 (power 2 1//2))
+			    (power '$%pi (div 3 2))))
+		(power (gm (div -1 4)) 2)))
+	  (t
+	   ;; Nothing to do
+	   (give-up)))))
+
 (defprop %elliptic_kc
     ((m)
      ;; diff wrt m
@@ -2255,6 +2297,7 @@ first kind:
       ((mexpt) m -1)))
   grad)
 
+#+nil
 (defun simp-%elliptic_ec (form yy z)
   (declare (ignore yy))
   (oneargcheck form)
@@ -2314,6 +2357,62 @@ first kind:
 	   ;; Nothing to do
 	   (eqtest (list '(%elliptic_ec) m) form)))))
 
+(def-simplifier elliptic_ec (m)
+  (let (args)
+    (cond ((float-numerical-eval-p m)
+	   ;; Numerically evaluate it
+	   (elliptic-ec ($float m)))
+	  ((setf args (complex-float-numerical-eval-p m))
+	   (destructuring-bind (m)
+	       args
+	     (complexify (bigfloat::bf-elliptic-ec (bigfloat:to ($float m))))))
+	  ((setf args (complex-bigfloat-numerical-eval-p m))
+	   (destructuring-bind (m)
+	       args
+	     (to (bigfloat::bf-elliptic-ec (bigfloat:to ($bfloat m))))))
+	  ;; Some special cases we know about.
+	  ((zerop1 m)
+	   '((mtimes) ((rat) 1 2) $%pi))
+	  ((onep1 m)
+	   1)
+	  ((alike1 m 1//2)
+	   ;; elliptic_ec(1/2). Use the identity
+	   ;;
+	   ;;   elliptic_ec(z)*elliptic_kc(1-z) - elliptic_kc(z)*elliptic_kc(1-z)
+	   ;;     + elliptic_ec(1-z)*elliptic_kc(z) = %pi/2;
+	   ;;
+	   ;; Let z = 1/2 to get
+	   ;;
+	   ;;   %pi^(3/2)*'elliptic_ec(1/2)/gamma(3/4)^2-%pi^3/(4*gamma(3/4)^4) = %pi/2
+	   ;;
+	   ;; since we know that elliptic_kc(1/2) = %pi^(3/2)/(2*gamma(3/4)^2).  Hence
+	   ;;
+	   ;;   elliptic_ec(1/2)
+	   ;;      = (2*%pi*gamma(3/4)^4+%pi^3)/(4*%pi^(3/2)*gamma(3/4)^2)
+	   ;;      = gamma(3/4)^2/(2*sqrt(%pi))+%pi^(3/2)/(4*gamma(3/4)^2)
+	   ;;
+	   (add (div (power (take '(%gamma) (div 3 4)) 2)
+		     (mul 2 (power '$%pi 1//2)))
+		(div (power '$%pi (div 3 2))
+		     (mul 4 (power (take '(%gamma) (div 3 4)) 2)))))
+	  ((zerop1 (add 1 m))
+	   ;; elliptic_ec(-1). Use the identity
+	   ;; http://functions.wolfram.com/08.01.17.0002.01
+	   ;;
+	   ;;
+	   ;;   elliptic_ec(z) = sqrt(1 - z)*elliptic_ec(z/(z-1))
+	   ;;
+	   ;; Let z = -1 to get
+	   ;;
+	   ;;   elliptic_ec(-1) = sqrt(2)*elliptic_ec(1/2)
+	   ;;
+	   ;; Should we expand out elliptic_ec(1/2) using the above result?
+	   (mul (power 2 1//2)
+		(take '(%elliptic_ec) 1//2)))
+	  (t
+	   ;; Nothing to do
+	   (give-up)))))
+
 (defprop %elliptic_ec
     ((m)
      ((mtimes) ((rat) 1 2)
@@ -2339,12 +2438,14 @@ first kind:
 ;; As with E and F, we do not use the modular angle alpha but the
 ;; parameter m = sin(alpha)^2.
 ;;
+#+nil
 (defprop $elliptic_pi simp-$elliptic_pi operators)
 
 (defmfun $elliptic_pi (n phi m)
   (simplify (list '($elliptic_pi)
 		  (resimplify n) (resimplify phi) (resimplify m))))
 
+#+nil
 (defun simp-$elliptic_pi (form yy z)
   (declare (ignore yy))
   ;;(threeargcheck form)
@@ -2391,6 +2492,48 @@ first kind:
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '($elliptic_pi) n phi m) form)))))
+
+(def-simplifier elliptic_pi (n phi m)
+  (let (args)
+    (cond
+      ((float-numerical-eval-p n phi m)
+       ;; Numerically evaluate it
+       (elliptic-pi ($float n) ($float phi) ($float m)))
+      ((setf args (complex-float-numerical-eval-p n phi m))
+       (destructuring-bind (n phi m)
+	   args
+         (elliptic-pi (bigfloat:to ($float n))
+		      (bigfloat:to ($float phi))
+		      (bigfloat:to ($float m)))))
+      ((bigfloat-numerical-eval-p n phi m)
+       (to (bigfloat::bf-elliptic-pi (bigfloat:to n)
+				     (bigfloat:to phi)
+				     (bigfloat:to m))))
+      ((setq args (complex-bigfloat-numerical-eval-p n phi m))
+       (destructuring-bind (n phi m)
+	   args
+	 (to (bigfloat::bf-elliptic-pi (bigfloat:to n)
+				       (bigfloat:to phi)
+				       (bigfloat:to m)))))
+      ((zerop1 n)
+       `((%elliptic_f) ,phi ,m))
+      ((zerop1 m)
+       ;; 3 cases depending on n < 1, n > 1, or n = 1.
+       (let ((s (asksign (resimplify `((mplus) -1 ,n)))))
+	 (case s
+	   ($positive
+	    (div (take '(%atanh) (mul (power (add n -1) 1//2)
+				      (take '(%tan) phi)))
+		 (power (add n -1) 1//2)))
+	   ($negative
+	    (div (take '(%atan) (mul (power (sub 1 n) 1//2)
+				     (take '(%tan) phi)))
+		 (power (sub 1 n) 1//2)))
+	   ($zero
+	    (take '(%tan) phi)))))
+	  (t
+	   ;; Nothing to do
+	   (give-up)))))
 
 ;; Complete elliptic-pi.  That is phi = %pi/2.  Then
 ;; elliptic_pi(n,m)
@@ -2480,7 +2623,7 @@ first kind:
 
 ;;; Deriviatives from functions.wolfram.com
 ;;; http://functions.wolfram.com/EllipticIntegrals/EllipticPi3/20/
-(defprop $elliptic_pi
+(defprop %elliptic_pi
   ((n z m)
    ;Derivative wrt first argument
    ((mtimes) ((rat) 1 2)
@@ -2489,7 +2632,7 @@ first kind:
     ((mplus)
      ((mtimes) ((mexpt) n -1)
       ((mplus) ((mtimes) -1 m) ((mexpt) n 2))
-      (($elliptic_pi) n z m))
+      ((%elliptic_pi) n z m))
      ((%elliptic_e) z m)
      ((mtimes) ((mplus) m ((mtimes) -1 n)) ((mexpt) n -1)
       ((%elliptic_f) z m))
@@ -2511,7 +2654,7 @@ first kind:
    ;Derivative wrt third argument
    ((mtimes) ((rat) 1 2)
     ((mexpt) ((mplus) ((mtimes) -1 m) n) -1)
-    ((mplus) (($elliptic_pi) n z m)
+    ((mplus) ((%elliptic_pi) n z m)
      ((mtimes) ((mexpt) ((mplus) -1 m) -1)
       ((%elliptic_e) z m))
      ((mtimes) ((rat) -1 2) ((mexpt) ((mplus) -1 m) -1) m
@@ -6533,7 +6676,9 @@ first kind:
 		       (/ (* m (bigfloat::sn u-r m) (bigfloat::sn u-i m1) (bigfloat::sn u m))
 			  (bigfloat::cn u-i m1))))))))))
 
+#+nil
 (defprop $elliptic_eu simp-$elliptic_eu operators)
+
 (defprop $elliptic_eu
     ((u m)
      ((mexpt) ((%jacobi_dn) u m) 2)
@@ -6541,6 +6686,7 @@ first kind:
      )
   grad)
 
+#+nil
 (defun simp-$elliptic_eu (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -6559,14 +6705,30 @@ first kind:
 	  (t
 	   (eqtest `(($elliptic_eu) ,u ,m) form)))))
 
+(def-simplifier elliptic_eu (u m)
+  (cond
+    ;; as it stands, ELLIPTIC-EU can't handle bigfloats or complex bigfloats,
+    ;; so handle only floats and complex floats here.
+    ((float-numerical-eval-p u m)
+     (elliptic-eu ($float u) ($float m)))
+    ((complex-float-numerical-eval-p u m)
+     (let ((u-r ($realpart u))
+	   (u-i ($imagpart u))
+	   (m ($float m)))
+       (complexify (elliptic-eu (complex u-r u-i) m))))
+    (t
+     (give-up))))
+
 (defmfun $elliptic_eu (u m)
   (simplify `(($elliptic_eu) ,(resimplify u) ,(resimplify m))))
 
+#+nil
 (defprop %jacobi_am simp-%jacobi_am operators)
 
 (defmfun $jacobi_am (u m)
   (simplify `((%jacobi_am) ,(resimplify u) ,(resimplify m))))
 
+#+nil
 (defun simp-%jacobi_am (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -6585,6 +6747,21 @@ first kind:
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%jacobi_am) u m) form)))))
+
+(def-simplifier jacobi_am (u m)
+  (cond
+    ;; as it stands, BIGFLOAT::SN can't handle bigfloats or complex bigfloats,
+    ;; so handle only floats and complex floats here.
+    ((float-numerical-eval-p u m)
+     (cl:asin (bigfloat::sn ($float u) ($float m))))
+    ((complex-float-numerical-eval-p u m)
+     (let ((u-r ($realpart ($float u)))
+	   (u-i ($imagpart ($float u)))
+	   (m ($float m)))
+       (complexify (cl:asin (bigfloat::sn (complex u-r u-i) m)))))
+    (t
+     ;; Nothing to do
+     (give-up))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Integrals.  At present with respect to first argument only.
