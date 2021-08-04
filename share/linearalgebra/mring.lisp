@@ -243,7 +243,7 @@
    :name 'gf-coeff-ring
    :coerce-to-lisp-float nil
    :abs #'gf-cmod
-   :great #'(lambda (a b) (declare (ignore a)) (null b))
+   :great #'(lambda (a b) (declare (ignore a)) (= 0 b))
    :add #'gf-cplus-b
    :div #'(lambda (a b) (gf-ctimes a (gf-cinv b)))
    :rdiv #'(lambda (a b) (gf-ctimes a (gf-cinv b)))
