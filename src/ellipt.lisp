@@ -34,43 +34,6 @@
 ;;; Note that m = k^2 and k = sin(alpha).
 ;;;
 
-;; Setup noun/verb for elliptic functions
-
-#+nil
-(macrolet
-    ((frob (root)
-       (let* ((s (string root))
-	      (forward (concatenate 'string (string 'jacobi_) s))
-	      (f-noun (intern (concatenate 'string "%" forward)))
-	      (f-verb (intern (concatenate 'string "$" forward)))
-	      (inverse (concatenate 'string (string 'inverse_jacobi_) s))
-	      (i-noun (intern (concatenate 'string "%" inverse)))
-	      (i-verb (intern (concatenate 'string "$" inverse))))
-	 `(progn
-	    (defprop ,f-verb ,f-noun verb)
-	    (defprop ,f-noun ,f-verb noun)
-	    (defprop ,f-verb ,f-noun alias)
-	    (defprop ,f-noun ,f-verb reversealias)
-	    (defprop ,i-verb ,i-noun verb)
-	    (defprop ,i-noun ,i-verb noun)
-	    (defprop ,i-verb ,i-noun alias)
-	    (defprop ,i-noun ,i-verb reversealias)))))
-  #+nil
-  (frob sn)
-  #+nil
-  (frob cn)
-  #+nil
-  (frob dn)
-  (frob ns)
-  (frob nc)
-  (frob nd)
-  (frob sc)
-  (frob cs)
-  (frob sd)
-  (frob ds)
-  (frob cd)
-  (frob dc))
-
 ;;
 ;; Routines for computing the basic elliptic functions sn, cn, and dn.
 ;;
@@ -285,18 +248,6 @@
 ;; $jacobi_sn is the user visible function JACOBI_SN.  We put
 ;; properties on this symbol so maxima can figure out what to do with
 ;; it.
-
-;; Tell maxima how to simplify the functions $jacobi_sn, etc.  This
-;; borrows heavily from trigi.lisp.
-#+nil
-(defprop %jacobi_sn simp-%jacobi_sn operators)
-#+nil
-(defprop %jacobi_cn simp-%jacobi_cn operators)
-#+nil
-(defprop %jacobi_dn simp-%jacobi_dn operators)
-(defprop %inverse_jacobi_sn simp-%inverse_jacobi_sn operators)
-(defprop %inverse_jacobi_cn simp-%inverse_jacobi_cn operators)
-(defprop %inverse_jacobi_dn simp-%inverse_jacobi_dn operators)
 
 ;; Tell maxima what the derivatives are.
 ;;
@@ -2179,12 +2130,6 @@ first kind:
 (defmfun $elliptic_ec (m)
   (simplify (list '(%elliptic_ec) (resimplify m))))
 
-
-#+nil
-(defprop %elliptic_kc simp-%elliptic_kc operators)
-#+nil
-(defprop %elliptic_ec simp-%elliptic_ec operators)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; We support a simplim%function. The function is looked up in simplimit and 
@@ -2438,9 +2383,6 @@ first kind:
 ;; As with E and F, we do not use the modular angle alpha but the
 ;; parameter m = sin(alpha)^2.
 ;;
-#+nil
-(defprop $elliptic_pi simp-$elliptic_pi operators)
-
 (defmfun $elliptic_pi (n phi m)
   (simplify (list '($elliptic_pi)
 		  (resimplify n) (resimplify phi) (resimplify m))))
@@ -3440,9 +3382,6 @@ first kind:
 (defmfun  $jacobi_ns (u m)
   (simplify (list '(%jacobi_ns) (resimplify u) (resimplify m))))
 
-#+nil
-(defprop %jacobi_ns simp-%jacobi_ns operators)
-
 (defprop %jacobi_ns
     ((u m)
      ;; diff wrt u
@@ -3673,9 +3612,6 @@ first kind:
 
 (defmfun $jacobi_nc (u m)
   (simplify (list '(%jacobi_nc) (resimplify u) (resimplify m))))
-
-#+nil
-(defprop %jacobi_nc simp-%jacobi_nc operators)
 
 (defprop %jacobi_nc
     ((u m)
@@ -3922,9 +3858,6 @@ first kind:
 (defmfun $jacobi_nd (u m)
   (simplify (list '(%jacobi_nd) (resimplify u) (resimplify m))))
 
-#+nil
-(defprop %jacobi_nd simp-%jacobi_nd operators)
-
 (defprop %jacobi_nd
     ((u m)
      ;; wrt u
@@ -4132,9 +4065,6 @@ first kind:
 ;; jacobi_sc(u,m) = jacobi_sn/jacobi_cn
 (defmfun $jacobi_sc (u m)
   (simplify (list '(%jacobi_sc) (resimplify u) (resimplify m))))
-
-#+nil
-(defprop %jacobi_sc simp-%jacobi_sc operators)
 
 (defprop %jacobi_sc
     ((u m)
@@ -4370,9 +4300,6 @@ first kind:
 ;; jacobi_sd(u,m) = jacobi_sn/jacobi_dn
 (defmfun $jacobi_sd (u m)
   (simplify (list '(%jacobi_sd) (resimplify u) (resimplify m))))
-
-#+nil
-(defprop %jacobi_sd simp-%jacobi_sd operators)
 
 (defprop %jacobi_sd
     ((u m)
@@ -4665,9 +4592,6 @@ first kind:
 (defmfun $jacobi_cs (u m)
   (simplify (list '(%jacobi_cs) (resimplify u) (resimplify m))))
 
-#+nil
-(defprop %jacobi_cs simp-%jacobi_cs operators)
-
 (defprop %jacobi_cs
     ((u m)
      ;; wrt u
@@ -4911,9 +4835,6 @@ first kind:
 #+nil
 (defmfun $jacobi_cd (u m)
   (simplify (list '(%jacobi_cd) (resimplify u) (resimplify m))))
-
-#+nil
-(defprop %jacobi_cd simp-%jacobi_cd operators)
 
 (defprop %jacobi_cd
     ((u m)
@@ -5180,9 +5101,6 @@ first kind:
 ;; jacobi_ds(u,m) = jacobi_dn/jacobi_sn
 (defmfun $jacobi_ds (u m)
   (simplify (list '(%jacobi_ds) (resimplify u) (resimplify m))))
-
-#+nil
-(defprop %jacobi_ds simp-%jacobi_ds operators)
 
 (defprop %jacobi_ds
     ((u m)
@@ -5474,9 +5392,6 @@ first kind:
 ;; jacobi_dc(u,m) = jacobi_dn/jacobi_cn
 (defmfun $jacobi_dc (u m)
   (simplify (list '(%jacobi_dc) (resimplify u) (resimplify m))))
-
-#+nil
-(defprop %jacobi_dc simp-%jacobi_dc operators)
 
 (defprop %jacobi_dc
     ((u m)
@@ -5770,9 +5685,6 @@ first kind:
   grad)
 
 #+nil
-(defprop %inverse_jacobi_ns simp-%inverse_jacobi_ns operators)
-
-#+nil
 (defun simp-%inverse_jacobi_ns (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -5884,9 +5796,6 @@ first kind:
   grad)
 
 #+nil
-(defprop %inverse_jacobi_nc simp-%inverse_jacobi_nc operators)
-
-#+nil
 (defun simp-%inverse_jacobi_nc (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -5961,9 +5870,6 @@ first kind:
 ;     ((%derivative) ((%inverse_jacobi_nd) x m) m 1)
      nil)
   grad)
-
-#+nil
-(defprop %inverse_jacobi_nd simp-%inverse_jacobi_nd operators)
 
 #+nil
 (defun simp-%inverse_jacobi_nd (form unused z)
@@ -6052,9 +5958,6 @@ first kind:
   grad)
 
 #+nil
-(defprop %inverse_jacobi_sc simp-%inverse_jacobi_sc operators)
-
-#+nil
 (defun simp-%inverse_jacobi_sc (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -6136,9 +6039,6 @@ first kind:
 ;     ((%derivative) ((%inverse_jacobi_sd) x m) m 1)
      nil)
   grad)
-
-#+nil
-(defprop %inverse_jacobi_sd simp-%inverse_jacobi_sd operators)
 
 #+nil
 (defun simp-%inverse_jacobi_sd (form unused z)
@@ -6228,9 +6128,6 @@ first kind:
   grad)
 
 #+nil
-(defprop %inverse_jacobi_cs simp-%inverse_jacobi_cs operators)
-
-#+nil
 (defun simp-%inverse_jacobi_cs (form unused z)
   (declare (ignore unused))
   (twoargcheck form)
@@ -6295,9 +6192,6 @@ first kind:
 ;     ((%derivative) ((%inverse_jacobi_cd) x m) m 1)
      nil)
   grad)
-
-#+nil
-(defprop %inverse_jacobi_cd simp-%inverse_jacobi_cd operators)
 
 #+nil
 (defun simp-%inverse_jacobi_cd (form unused z)
@@ -6375,9 +6269,6 @@ first kind:
 ;     ((%derivative) ((%inverse_jacobi_ds) x m) m 1)
      nil)
   grad)
-
-#+nil
-(defprop %inverse_jacobi_ds simp-%inverse_jacobi_ds operators)
 
 #+nil
 (defun simp-%inverse_jacobi_ds (form unused z)
@@ -6468,9 +6359,6 @@ first kind:
 ;     ((%derivative) ((%inverse_jacobi_dc) x m) m 1)
      nil)
   grad)
-
-#+nil
-(defprop %inverse_jacobi_dc simp-%inverse_jacobi_dc operators)
 
 #+nil
 (defun simp-%inverse_jacobi_dc (form unused z)
@@ -6676,9 +6564,6 @@ first kind:
 		       (/ (* m (bigfloat::sn u-r m) (bigfloat::sn u-i m1) (bigfloat::sn u m))
 			  (bigfloat::cn u-i m1))))))))))
 
-#+nil
-(defprop $elliptic_eu simp-$elliptic_eu operators)
-
 (defprop $elliptic_eu
     ((u m)
      ((mexpt) ((%jacobi_dn) u m) 2)
@@ -6721,9 +6606,6 @@ first kind:
 
 (defmfun $elliptic_eu (u m)
   (simplify `(($elliptic_eu) ,(resimplify u) ,(resimplify m))))
-
-#+nil
-(defprop %jacobi_am simp-%jacobi_am operators)
 
 (defmfun $jacobi_am (u m)
   (simplify `((%jacobi_am) ,(resimplify u) ,(resimplify m))))
