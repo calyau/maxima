@@ -45,7 +45,7 @@ ev(%,kdelta)$
 D1:ishow(canform(rename(contract(canform(%)))))$
 
 ("We can re-express the result using Christoffel symbols, too")$
-show(rename(contract(canform(conmetderiv(D1,g)))))$
+ishow(rename(contract(canform(conmetderiv(D1,g)))))$
 
 ("Nice. Now let us repeat the same calculation with torsion")$
 itorsion_flag:true$
