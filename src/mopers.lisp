@@ -90,6 +90,11 @@
       `(ncmuln (list ,@factors) t)))
 
 ;; (TAKE '(%TAN) X) = tan(x)
+;;
+;; Stavros says it's named take:
+;;   "Take as in 'take the sine of ...'.  call or apply might imply
+;;   it's a function call, which it isn't."
+;;
 ;; This syntax really loses.  Not only does this syntax lose, but this macro
 ;; has to look like a subr.  Otherwise, the definition would look like
 ;; (DEFMACRO TAKE ((NIL (OPERATOR)) . ARGS) ...)
@@ -115,6 +120,19 @@
 ;; take* does not assume that the arguments are simplified.
 (defmacro take* (operator &rest args)
   `(simplifya (list ,operator ,@args) nil))
+
+;; Like TAKE, but you only need to specify then name.  So
+;;
+;; (ftake name x y) => (take '(name) x y)
+;;
+;; The name should be the verb form, like %foo.
+(defmacro ftake (name &rest args)
+  `(simplifya (list '(,name) ,@args)
+	      t))
+
+(defmacro ftake* (name &rest args)
+  `(simplifya (list '(,name) ,@args)
+	      nil))
 
 (declaim (inline simplify))
 (defun simplify (x)
