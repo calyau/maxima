@@ -94,7 +94,7 @@ __iextdiff_flag:false;
 );
 
 contind(t):=if mapatom(t) then []
-	else if op(t)=?%determinant then []
+	else if op(t)=nounify(determinant) then []
 	else if op(t)=sqrt then []
 	else if ?rpobj(t) then conti(t)
 	else if op(t)="+" then
@@ -114,7 +114,7 @@ contind(t):=if mapatom(t) then []
 	else error("Cannot determine list of contravariant indices.");
 
 covind(t):=if mapatom(t) then []
-	else if op(t)=?%determinant then []
+	else if op(t)=nounify(determinant) then []
 	else if op(t)=sqrt then []
 	else if ?rpobj(t) then append(covi(t),deri(t))
 	else if op(t)="+" then
