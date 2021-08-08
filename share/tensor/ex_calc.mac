@@ -57,7 +57,7 @@ __iextdiff_flag:false;
   )
   else if not atom(any) and nounify(op(any))=nounify("~") and
           not atom(body) and nounify(op(body))=nounify("~") and
-          (?intersect)(args(any),args(body))#[] then 0
+          (intersect)(setify(args(any)),setify(args(body)))#[] then 0
   else if not atom(any) and nounify(op(any))=nounify("~") then
   (
      if member(body, any) then 0
