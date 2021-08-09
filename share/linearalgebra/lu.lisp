@@ -278,8 +278,10 @@
       (setq d (funcall fconvert (m-elem m perm i i)))
       ;;(if ($matrixp d) (setq d ($determinant_by_lu d fld)))
       (setq acc (funcall fmult acc d)))
-    (bbsort1 (cdr perm))
-    (funcall (mring-mring-to-maxima fld) (if sign (funcall (mring-negate fld) acc) acc))))
+    (multiple-value-bind (perm-sorted perm-sign) (bbsort1 (cdr perm))
+      (declare (ignore perm-sorted))
+      (funcall (mring-mring-to-maxima fld)
+               (if perm-sign (funcall (mring-negate fld) acc) acc)))))
 
 (defun $mat_cond (m p)
   ($require_square_matrix m '$first '$mat_cond)
