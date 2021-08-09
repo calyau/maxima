@@ -1529,7 +1529,7 @@ first kind:
 	   ;; Handle the case where phi is a number where we can apply
 	   ;; the periodicity property without blowing up the
 	   ;; expression.
-	   (add (ftake $elliptic_e
+	   (add (ftake %elliptic_e
 		       (add phi
 			    (mul (mul -1 '$%pi)
 				 (ftake %round (div phi '$%pi))))
@@ -2754,7 +2754,7 @@ first kind:
 		       ;; ns(3*K) = -1
 		       (if (zerop1 const)
 			   -1
-			   (neg (ftake jacobi_dc const m))))))
+			   (neg (ftake %jacobi_dc const m))))))
 		   ((and (alike1 lin 1//2)
 			 (zerop1 const))
 		    (div 1 (ftake %jacobi_sn u m)))
