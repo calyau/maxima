@@ -51,7 +51,7 @@
 
 (declare-top (special smlist $idummyx $vect_coords $imetric $icounter $dim
 		      $contractions $coord $allsym $metricconvert $iframe_flag
-		      $itorsion_flag $inonmet_flag))
+		      $itorsion_flag $inonmet_flag $__iextdiff_flag))
 
 (setq $idummyx '$%                   ;Prefix for dummy indices
       $icounter 0.                   ;Dummy variable numeric index
@@ -61,7 +61,8 @@
       $allsym nil                    ;If T then all indexed objects symmetric
       $metricconvert t               ;Flag used by $ic_convert
       $iframe_flag nil
-      $itorsion_flag nil)
+      $itorsion_flag nil
+      $__iextdiff_flag nil)
 
 (defmacro ifnot  (&rest clause) `(or ,@ clause))
 
@@ -505,7 +506,20 @@
       (eq (caar e) 'mequal)
       (list (car e) (covdiff (cadr e)) (covdiff (caddr e)))
     )
-    ((eq (caar e) '%determinant) 0)
+    ((and (eq (caar e) '%determinant) (eq (cadr e) $imetric))
+     (cond ((or $iframe_flag $itorsion_flag $inonmet_flag)
+           (prog (d1 d2) (setq d1 ($idummy) d2 ($idummy))
+                  (return (simptimes (list '(mtimes) e 
+                      (list (cons $imetric '(simp)) '((mlist simp)) (list '(mlist simp) d1 d2))
+                      (cond ($__iextdiff_flag  ; Special case, we're in extdiff()
+                       ($idiff (list (cons $imetric '(simp)) (list '(mlist simp) d1 d2) '((mlist simp))) x))
+                       (t ($covdiff (list (cons $imetric '(simp)) (list '(mlist simp) d1 d2) '((mlist simp))) x))
+                      )
+                  )))
+           ))
+           (t 0)
+     )
+    )
     (t (merror "Not acceptable to COVDIFF: ~M" (ishow e)))
   )
 )
@@ -2323,7 +2337,8 @@
        (setq dummy ($idummy))
        (cond ((eq dummy x) (setq dummy ($idummy))))
        (list '(mtimes simp) 2. e
-       (list '($ichr2 simp) (cons smlist (list dummy x))
+;;       (list '(($ichr2) simp) (cons smlist (list dummy x))
+       (list (diffop) (cons smlist (list dummy x))
        (cons smlist (ncons dummy)))))
        nil))
 	     ((eq (caar e) 'mnctimes)
