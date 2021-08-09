@@ -173,12 +173,10 @@ extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
     indd:idummy(),
     lk2:append(l11,[indd]),
     res:sublis(l1s,forma),
-    __iextdiff_flag:true,
     if itorsion_flag=true then
       res:contract(canform(ratexpand(kdelta(lk1,lk2)*covdiff(res,indd))))
     else res:contract(canform(ratexpand(kdelta(lk1,lk2)*idiff(res,indd)))),
     /* If a frame base is used, the contribution of ifb must be added */
-    __iextdiff_flag:false,
     if iframe_flag=true then
       for i thru length(l1) do
     (
