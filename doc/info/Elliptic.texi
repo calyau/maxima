@@ -516,6 +516,7 @@ $$R_C(x, y) = {1\over{2}} \int_0^{\infty} {1\over{\sqrt{t+x}(t+y)}}\, dt$$
 @end ifset
 @ifclear mathjax
 @math{integrate(1/2*(t+x)^(-1/2)/(t+y), t, 0, inf)}
+
 @end ifclear
 @end ifnotinfo
 @ifinfo
@@ -554,11 +555,17 @@ $$
 @end ifset
 @ifclear mathjax
 @math{log(x)  = (x-1)*rc(((1+x)/2)^2, x), x > 0}
+
 @math{asin(x) = x * rc(1-x^2, 1), |x|<= 1}
+
 @math{acos(x) = sqrt(1-x^2)*rc(x^2,1), 0 <= x <=1}
+
 @math{atan(x) = x * rc(1,1+x^2)}
+
 @math{asinh(x) = x * rc(1+x^2,1)}
+
 @math{acosh(x) = sqrt(x^2-1) * rc(x^2,1), x >= 1}
+
 @math{atanh(x) = x * rc(1,1-x^2), |x|<=1}
 @end ifclear
 @end ifnotinfo
@@ -595,6 +602,8 @@ $$
 @end html
 @end ifset
 @ifclear mathjax
+@math{R_C(x,y) = R_F(x,y,y)}
+
 @end ifclear
 @end ifnotinfo
 @ifinfo
@@ -627,6 +636,16 @@ $$
 @end html
 @end ifset
 @ifclear mathjax
+
+@math{R_C(0,1) = %pi/2}
+
+@math{R_C(0,1/4) = %pi}
+
+@math{R_C(2,1) = log(sqrt(2)+1)}
+
+@math{R_C(%i, %i+1) = %pi/4 + %i/2*log(sqrt(2)+1)}
+
+@math{R_C(0, %i) = (1-%i)*%pi/(2*sqrt(2))}
 @end ifclear
 @end ifnotinfo
 
@@ -666,13 +685,14 @@ $$
 @end html
 @end ifset
 @ifclear mathjax
+@math{R_D(x,y,z) = 3/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)*(t+z)), t, 0, inf)}
 @end ifclear
 @end ifnotinfo
 @ifinfo
 @math{R_D(x,y,z) = 3/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)*(t+z)), t, 0, inf)}
 @end ifinfo
 
-We also have the special value
+We also have the special values
 @ifnotinfo
 @tex
 $$
@@ -699,6 +719,12 @@ $$
 @end html
 @end ifset
 @ifclear mathjax
+
+@math{R_D(x,x,x) = x^(-3/2)}
+
+@math{R_D(0,y,y) = 3/4*%pi*y^(-3/2)}
+
+@math{R_D(0,2,1) = 3 sqrt(%pi) gamma(3/4)/gamma(1/4)}
 @end ifclear
 @end ifnotinfo
 @ifinfo
@@ -725,6 +751,8 @@ $$
 @end html
 @end ifset
 @ifclear mathjax
+
+@math{E(m) = R_F(0, 1 - m, 1) - (m/3)* R_D(0, 1 - m, 1)}
 @end ifclear
 @end ifnotinfo
 @ifinfo
@@ -782,6 +810,10 @@ $$
 @end html
 @end ifset
 @ifclear mathjax
+
+@math{R_F(0,1,2) = gamma(1/4)^2/(4*sqrt(2*%pi))}
+
+@math{R_F(%i,-%i,0) = gamma(1/4)^2/(4*sqrt(%pi))}
 @end ifclear
 @end ifnotinfo
 @ifinfo
@@ -806,6 +838,8 @@ $$
 @end html
 @end ifset
 @ifclear mathjax
+
+@math{E(m) = R_F(0, 1 - m, 1) - (m/3)* R_D(0, 1 - m, 1)}
 @end ifclear
 @end ifnotinfo
 @ifinfo
@@ -836,6 +870,7 @@ $$
 @end html
 @end ifset
 @ifclear mathjax
+@math{R_J(x,y,z) = 1/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)*(t+p)), t, 0, inf)}
 @end ifclear
 @end ifnotinfo
 @ifinfo
