@@ -431,7 +431,7 @@
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) 0)
 			     ((has-const-or-int-term y '$%pi) (%piargs-sin/cos y)))))
-	((and $%iargs (multiplep y '$%i)) (mul '$%i (cons-exp '%sinh (coeff y '$%i 1))))
+	((and $%iargs (multiplep y '$%i)) (mul '$%i (ftake* '%sinh (coeff y '$%i 1))))
 	((and $triginverses (not (atom y))
 	      (cond ((eq '%asin (setq z (caar y))) (cadr y))
 		    ((eq '%acos z) (sqrt1-x^2 (cadr y)))
@@ -444,7 +444,7 @@
 	($exponentialize (exponentialize '%sin y))
 	((and $halfangles (halfangle '%sin y)))
 	((apply-reflection-simp (mop form) y $trigsign))
-	;((and $trigsign (mminusp* y)) (neg (cons-exp '%sin (neg y))))
+	;((and $trigsign (mminusp* y)) (neg (ftake* '%sin (neg y))))
 	(t (eqtest (list '(%sin) y) form))))
 
 (defun simp-%cos (form y z) 
@@ -456,7 +456,7 @@
 	((and $%piargs (cond ((zerop1 y) 1)
 			     ((has-const-or-int-term y '$%pi)
 			      (%piargs-sin/cos (add %pi//2 y))))))
-	((and $%iargs (multiplep y '$%i)) (cons-exp '%cosh (coeff y '$%i 1)))
+	((and $%iargs (multiplep y '$%i)) (ftake* '%cosh (coeff y '$%i 1)))
 	((and $triginverses (not (atom y))
 	      (cond ((eq '%acos (setq z (caar y))) (cadr y))
 		    ((eq '%asin z) (sqrt1-x^2 (cadr y)))
@@ -469,7 +469,7 @@
 	($exponentialize (exponentialize '%cos y))
 	((and $halfangles (halfangle '%cos y)))
 	((apply-reflection-simp (mop form) y $trigsign))
-	;((and $trigsign (mminusp* y)) (cons-exp '%cos (neg y)))
+	;((and $trigsign (mminusp* y)) (ftake* '%cos (neg y)))
 	(t (eqtest (list '(%cos) y) form))))
 
 (defun %piargs-sin/cos (x)
@@ -479,10 +479,10 @@
 	  zl-rem (get-not-const-or-int-terms x '$%pi))
     (cond ((zerop1 zl-rem) (%piargs coeff ratcoeff))
 	  ((not (mevenp (car coeff))) nil)
-	  ((equal 0 (setq x (mmod (cdr coeff) 2))) (cons-exp '%sin zl-rem))
-	  ((equal 1 x) (neg (cons-exp '%sin zl-rem)))
-	  ((alike1 1//2 x) (cons-exp '%cos zl-rem))
-	  ((alike1 '((rat) 3 2) x) (neg (cons-exp '%cos zl-rem))))))
+	  ((equal 0 (setq x (mmod (cdr coeff) 2))) (ftake* '%sin zl-rem))
+	  ((equal 1 x) (neg (ftake* '%sin zl-rem)))
+	  ((alike1 1//2 x) (ftake* '%cos zl-rem))
+	  ((alike1 '((rat) 3 2) x) (neg (ftake* '%cos zl-rem))))))
 
 
 (defun filter-sum (pred form simp-flag)
@@ -537,7 +537,7 @@
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) 0)
 			     ((has-const-or-int-term y '$%pi) (%piargs-tan/cot y)))))
-	((and $%iargs (multiplep y '$%i)) (mul '$%i (cons-exp '%tanh (coeff y '$%i 1))))
+	((and $%iargs (multiplep y '$%i)) (mul '$%i (ftake* '%tanh (coeff y '$%i 1))))
 	((and $triginverses (not (atom y))
 	      (cond ((eq '%atan (setq z (caar y))) (cadr y))
 		    ((eq '%asin z) (div (cadr y) (sqrt1-x^2 (cadr y))))
@@ -550,7 +550,7 @@
 	($exponentialize (exponentialize '%tan y))
 	((and $halfangles (halfangle '%tan y)))
 	((apply-reflection-simp (mop form) y $trigsign))
-	;((and $trigsign (mminusp* y)) (neg (cons-exp '%tan (neg y))))
+	;((and $trigsign (mminusp* y)) (neg (ftake* '%tan (neg y))))
 	(t (eqtest (list '(%tan) y) form))))
 
 (defun simp-%cot (form y z)
@@ -564,7 +564,7 @@
 			     ((and (has-const-or-int-term y '$%pi)
 				   (setq z (%piargs-tan/cot (add %pi//2 y))))
 			      (neg z)))))
-	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (cons-exp '%coth (coeff y '$%i 1))))
+	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (ftake* '%coth (coeff y '$%i 1))))
 	((and $triginverses (not (atom y))
 	      (cond ((eq '%acot (setq z (caar y))) (cadr y))
 		    ((eq '%asin z) (div (sqrt1-x^2 (cadr y)) (cadr y)))
@@ -577,7 +577,7 @@
 	($exponentialize (exponentialize '%cot y))
 	((and $halfangles (halfangle '%cot y)))
 	((apply-reflection-simp (mop form) y $trigsign))
-	;((and $trigsign (mminusp* y)) (neg (cons-exp '%cot (neg y))))
+	;((and $trigsign (mminusp* y)) (neg (ftake* '%cot (neg y))))
 	(t (eqtest (list '(%cot) y) form))))
 
 (defun %piargs-tan/cot (x)
@@ -614,11 +614,11 @@
      ;; effect and then, if this is zero, returns tan of the
      ;; rest, because tan has periodicity %pi.
      ((zerop1 (setq x (mmod (cdr coeff) 1)))
-      (cons-exp '%tan zl-rem))
+      (ftake* '%tan zl-rem))
  
      ;; Similarly, if x = 1/2 then return -cot(x).
      ((alike1 1//2 x)
-        (neg (cons-exp '%cot zl-rem))))))
+        (neg (ftake* '%cot zl-rem))))))
 
 (defun simp-%csc (form y z)
   (oneargcheck form)
@@ -628,7 +628,7 @@
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) (domain-error y 'csc))
 			     ((has-const-or-int-term y '$%pi) (%piargs-csc/sec y)))))
-	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (cons-exp '%csch (coeff y '$%i 1))))
+	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (ftake* '%csch (coeff y '$%i 1))))
 	((and $triginverses (not (atom y))
 	      (cond ((eq '%acsc (setq z (caar y))) (cadr y))
 		    ((eq '%asin z) (div 1 (cadr y)))
@@ -641,7 +641,7 @@
 	($exponentialize (exponentialize '%csc y))
 	((and $halfangles (halfangle '%csc y)))
 	((apply-reflection-simp (mop form) y $trigsign))
-	;((and $trigsign (mminusp* y)) (neg (cons-exp '%csc (neg y))))
+	;((and $trigsign (mminusp* y)) (neg (ftake* '%csc (neg y))))
 
 	(t (eqtest (list '(%csc) y) form))))
 
@@ -653,7 +653,7 @@
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) 1)
 			     ((has-const-or-int-term y '$%pi) (%piargs-csc/sec (add %pi//2 y))))))
-	((and $%iargs (multiplep y '$%i)) (cons-exp '%sech (coeff y '$%i 1)))
+	((and $%iargs (multiplep y '$%i)) (ftake* '%sech (coeff y '$%i 1)))
 	((and $triginverses (not (atom y))
 	      (cond ((eq '%asec (setq z (caar y))) (cadr y))
 		    ((eq '%asin z) (div 1 (sqrt1-x^2 (cadr y))))
@@ -666,7 +666,7 @@
 	($exponentialize (exponentialize '%sec y))
 	((and $halfangles (halfangle '%sec y)))
 	((apply-reflection-simp (mop form) y $trigsign))
-	;((and $trigsign (mminusp* y)) (cons-exp '%sec (neg y)))
+	;((and $trigsign (mminusp* y)) (ftake* '%sec (neg y)))
 	
 	(t (eqtest (list '(%sec) y) form))))
 
@@ -677,10 +677,10 @@
 	   zl-rem (get-not-const-or-int-terms x '$%pi))
      (return (cond ((and (zerop1 zl-rem) (setq zl-rem (%piargs coeff nil))) (div 1 zl-rem))
 		   ((not (mevenp (car coeff))) nil)
-		   ((equal 0 (setq x (mmod (cdr coeff) 2))) (cons-exp '%csc zl-rem))
-		   ((equal 1 x) (neg (cons-exp '%csc zl-rem)))
-		   ((alike1 1//2 x) (cons-exp '%sec zl-rem))
-		   ((alike1 '((rat) 3 2) x) (neg (cons-exp '%sec zl-rem)))))))
+		   ((equal 0 (setq x (mmod (cdr coeff) 2))) (ftake* '%csc zl-rem))
+		   ((equal 1 x) (neg (ftake* '%csc zl-rem)))
+		   ((alike1 1//2 x) (ftake* '%sec zl-rem))
+		   ((alike1 '((rat) 3 2) x) (neg (ftake* '%sec zl-rem)))))))
 
 (defun simp-%atan (form y z)
   (oneargcheck form)
