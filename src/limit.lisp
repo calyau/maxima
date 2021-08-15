@@ -3195,6 +3195,8 @@ ignoring dummy variables and array indices."
 				      ;; (mtell "series: ~M lo: ~M~%" series lo)
 			      (tay-error "error in series expansion" f))
 			    (setq coef ($coeff series wsym lo))
+                           (when (not (free coef wsym))
+                             (tay-error "MRV-LEADTERM: failed to extract leading coefficient; obtained" coef))
 			    ;;(mtell "exp: ~M f: ~M~%" exp f)
 			    ;;(mtell "series: ~M~%coeff: ~M~%pow: ~M~%" series coef lo)
 			    (return (list coef lo)))))
