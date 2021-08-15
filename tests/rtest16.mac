@@ -2662,3 +2662,54 @@ limit(log((x^2+1)/x^2)-2*log((x-1)/x), x, 0, minus);
 
 (remove(n,integer),0);
 0$
+
+/* SF bug #3825: "apply('forget, facts()) gives Lisp error" */
+
+(kill (all), declare (F, increasing));
+done;
+
+facts ();
+[kind (F, increasing)];
+
+featurep (F, increasing);
+true;
+
+apply ('forget, facts ());
+[kind (F, increasing)];
+
+facts ();
+[];
+
+featurep (F, increasing);
+false;
+
+declare ([F, G], rational, [H, I], irrational);
+done;
+
+facts ();
+[kind (F, rational), kind (G, rational), kind (H, irrational), kind (I, irrational)];
+
+[featurep (F, rational),
+ featurep (G, rational),
+ featurep (H, irrational),
+ featurep (I, irrational)];
+[true, true, true, true];
+
+forget (kind (G, rational), kind (I, irrational));
+[kind (G, rational), kind (I, irrational)];
+
+facts ();
+[kind (F, rational), kind (H, irrational)];
+
+forget (kind (F, rational), kind (H, irrational));
+[kind (F, rational), kind (H, irrational)];
+
+facts ();
+[];
+
+[featurep (F, rational),
+ featurep (G, rational),
+ featurep (H, irrational),
+ featurep (I, irrational)];
+[false, false, false, false];
+

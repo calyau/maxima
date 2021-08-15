@@ -567,7 +567,12 @@ relational knowledge is contained in the default context GLOBAL.")
 	((eq (caar pat) 'mleqp) (daddgq flag (sub (caddr pat) (cadr pat))))
 	((eq (caar pat) 'mlessp) (daddgr flag (sub (caddr pat) (cadr pat))))
 	(flag (true* (munformat pat)))
-	(t (untrue (munformat pat)))))
+	(t 
+      (cond
+        ((eq (caar pat) '$kind)
+         (unkind (second pat) (third pat)))
+        (t (untrue (munformat pat))))
+      pat)))
 
 ;;; When abs(x)<a is in the pattern, where a is a positive expression,
 ;;; then learn x<a and -x<a too. The additional facts are put into the context
