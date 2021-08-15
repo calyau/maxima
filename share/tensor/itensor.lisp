@@ -514,7 +514,7 @@
                        ($idiff (list (cons $imetric '(simp)) (list '(mlist simp) d1 d2) '((mlist simp))) x))
                        (t ($covdiff (list (cons $imetric '(simp)) (list '(mlist simp) d1 d2) '((mlist simp))) x))
                       )
-                  )))
+                  ) 1. t))
            ))
            (t 0)
      )
