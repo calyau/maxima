@@ -70,3 +70,4 @@ canform(%)$
 ishow(rename(contract(%)))$
 
 ("Reminder: when dim = 2n, the Laplacian is -1 times these results.")$
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */
