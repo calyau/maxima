@@ -2681,6 +2681,8 @@ ignoring dummy variables and array indices."
 	  ((equalp ($imagpart (cadr expr)) 0)
            ;; argument is real.
 	   (simplify `((%log) ,arglim)))
+	  ((off-negative-real-axisp arglim) ;use direct subst when arglim isn't on negative real
+	    (ftake '%log arglim))
 	  (t	   ;; argument is complex.
 	   (destructuring-bind (rp . ip)
                (trisplit expr)

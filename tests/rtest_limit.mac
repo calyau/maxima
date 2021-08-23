@@ -382,6 +382,9 @@ minf;
 limit((sqrt(x)-2)*log(1-sqrt(x)/2),x,4,minus);
 0;
 
+/* Bug 3831 */
+limit(log((sqrt(x^2+1))/2),x,1);
+-log(2)/2;
 
 /* limit of incomplete gamma */
 /* function simplim%gamma_incomplete in gamma.lisp */
