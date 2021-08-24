@@ -205,23 +205,26 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $double_factorial (z)
   (simplify (list '(%double_factorial) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Set properties to give full support to the parser and display
-
+#+nil
+(progn
 (defprop $double_factorial %double_factorial alias)
 (defprop $double_factorial %double_factorial verb)
 
 (defprop %double_factorial $double_factorial reversealias)
 (defprop %double_factorial $double_factorial noun)
-
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Double factorial is a simplifying function
 
+#+nil
 (defprop %double_factorial simp-double-factorial operators)
 
 ;;; Double factorial distributes over bags
@@ -256,6 +259,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun simp-double-factorial (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
@@ -315,7 +319,66 @@
            (eqtest (list '(%double_factorial) z) expr)))))
 
     (t
-      (eqtest (list '(%double_factorial) z) expr))))
+     (eqtest (list '(%double_factorial) z) expr))))
+
+(def-simplifier double_factorial (z)
+  (cond    
+    ((and (fixnump z) (> z -1) (or (minusp $factlim) (< z $factlim)))
+     ;; Positive Integer less then $factlim or $factlim is -1. Call gfact.
+     (gfact z (floor (/ z 2)) 2))
+
+    ((and (mnump z)
+          (eq ($sign z) '$neg)          
+          (zerop1 (sub (simplify (list '(%truncate) (div z 2))) (div z 2))))
+     ;; Even negative integer or real representation. Not defined.
+     (simp-domain-error 
+       (intl:gettext 
+         "double_factorial: double_factorial(~:M) is undefined.") z))
+
+    ((or (integerp z)   ; at this point odd negative integer. Evaluate.
+         (complex-float-numerical-eval-p z))
+     (cond
+       ((and (integerp z) (= z -1))  1)  ; Special cases -1 and -3 
+       ((and (integerp z) (= z -3)) -1)
+       (t
+        ;; Odd negative integer, float or complex float.
+        (complexify 
+          (double-factorial 
+            (complex ($float ($realpart z)) ($float ($imagpart z))))))))
+  
+    ((and (not (ratnump z))
+          (complex-bigfloat-numerical-eval-p z))
+     ;; bigfloat or complex bigfloat.
+     (bfloat-double-factorial 
+       (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
+
+    ;; double_factorial(inf) -> inf
+    ((eq z '$inf) '$inf)
+
+    ((and $factorial_expand
+          (mplusp z)
+          (integerp (cadr z)))
+     (let ((k (cadr z))
+           (n (simplify (cons '(mplus) (cddr z)))))
+       (cond
+         ((= k -1)
+          ;; Special case double_factorial(n-1)
+          ;; Not sure if this simplification is useful.
+          (div (simplify (list '(mfactorial) n)) 
+               (simplify (list '(%double_factorial) n))))
+         ((= k (* 2 (truncate (/ k 2))))
+          ;; Special case double_factorial(2*k+n), k integer
+          (setq k (/ k 2))
+          ($factor   ; we get more simple expression when factoring
+            (mul
+              (power 2 k)
+              (simplify (list '($pochhammer) (add (div n 2) 1) k))
+              (simplify (list '(%double_factorial) n)))))
+         (t
+           (give-up)))))
+
+    (t
+      (give-up))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Double factorial for a complex float argument. The result is a CL complex.
