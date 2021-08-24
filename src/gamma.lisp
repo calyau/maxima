@@ -438,13 +438,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Set properties to give full support to the parser and display
-
+#+nil
+(progn
 (defprop $gamma_incomplete %gamma_incomplete alias)
 (defprop $gamma_incomplete %gamma_incomplete verb)
 
 (defprop %gamma_incomplete $gamma_incomplete reversealias)
 (defprop %gamma_incomplete $gamma_incomplete noun)
-
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Incomplete Gamma function is a simplifying function
