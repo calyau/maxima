@@ -4082,21 +4082,24 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $fresnel_s (z)
   (simplify (list '(%fresnel_s) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Set properties to give full support to the parser and display
-
+#+nil
+(progn
 (defprop $fresnel_s %fresnel_s alias)
 (defprop $fresnel_s %fresnel_s verb)
 
 (defprop %fresnel_s $fresnel_s reversealias)
 (defprop %fresnel_s $fresnel_s noun)
-
+)
 ;;; fresnel_s is a simplifying function
 
+#+nil
 (defprop %fresnel_s simp-fresnel-s operators)
 
 ;;; fresnel_s distributes over bags
@@ -4245,6 +4248,7 @@
 	    fc))))
 
 (in-package :maxima)
+#+nil
 (defun simp-fresnel-s (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
@@ -4294,12 +4298,59 @@
     (t
      (eqtest (list '(%fresnel_s) z) expr))))
 
+(def-simplifier fresnel_s (z)
+  (cond
+
+    ;; Check for specific values
+
+    ((zerop1 z) z)
+    ((eq z '$inf)  '((rat simp) 1 2))
+    ((eq z '$minf) '((rat simp) -1 2))
+    
+    ;; Check for numerical evaluation
+    ((numerical-eval-p z)
+     (to (bigfloat::bf-fresnel-s (bigfloat::to z))))
+
+    ;; Check for argument simplification
+
+    ((taylorize (mop form) (second form)))
+    ((and $%iargs (multiplep z '$%i))
+     (mul -1 '$%i (simplify (list '(%fresnel_s) (coeff z '$%i 1)))))
+    ((apply-reflection-simp (mop form) z $trigsign))
+
+    ;; Representation through equivalent functions
+
+    ($erf_representation
+      (mul
+        (div (add 1 '$%i) 4)
+        (add
+          (simplify 
+            (list 
+              '(%erf) 
+              (mul (div (add 1 '$%i) 2) (power '$%pi '((rat simp) 1 2)) z)))
+          (mul -1 '$%i
+            (simplify 
+              (list 
+                '(%erf) 
+                (mul (div (sub 1 '$%i) 2) 
+                     (power '$%pi '((rat simp) 1 2)) z)))))))
+
+    ($hypergeometric_representation
+      (mul (div (mul '$%pi (power z 3)) 6)
+           (take '($hypergeometric)
+                 (list '(mlist) (div 3 4))
+                 (list '(mlist) (div 3 2) (div 7 4))
+                 (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
+
+    (t
+     (give-up))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Implementation of the Fresnel Integral C(z)
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $fresnel_c (z)
   (simplify (list '(%fresnel_c) z)))
 
@@ -4307,14 +4358,17 @@
 
 ;;; Set properties to give full support to the parser and display
 
+#+nil
+(progn
 (defprop $fresnel_c %fresnel_c alias)
 (defprop $fresnel_c %fresnel_c verb)
 
 (defprop %fresnel_c $fresnel_c reversealias)
 (defprop %fresnel_c $fresnel_c noun)
-
+)
 ;;; fresnel_c is a simplifying function
 
+#+nil
 (defprop %fresnel_c simp-fresnel-c operators)
 
 ;;; fresnel_c distributes over bags
@@ -4366,6 +4420,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun simp-fresnel-c (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
@@ -4416,7 +4471,53 @@
     (t
       (eqtest (list '(%fresnel_c) z) expr))))
 
+(def-simplifier fresnel_c (z)
+  (cond
 
+    ;; Check for specific values
+
+    ((zerop1 z) z)
+    ((eq z '$inf)  '((rat simp) 1 2))
+    ((eq z '$minf) '((rat simp) -1 2))
+    
+    ;; Check for numerical evaluation
+    ((numerical-eval-p z)
+     (to (bigfloat::bf-fresnel-c (bigfloat::to z))))
+
+
+    ;; Check for argument simplification
+
+    ((taylorize (mop form) (second form)))
+    ((and $%iargs (multiplep z '$%i))
+     (mul '$%i (simplify (list '(%fresnel_c) (coeff z '$%i 1)))))
+    ((apply-reflection-simp (mop form) z $trigsign))
+
+    ;; Representation through equivalent functions
+
+    ($erf_representation
+      (mul
+        (div (sub 1 '$%i) 4)
+        (add
+          (simplify 
+            (list 
+              '(%erf) 
+              (mul (div (add 1 '$%i) 2) (power '$%pi '((rat simp) 1 2)) z)))
+          (mul '$%i
+            (simplify 
+              (list 
+                '(%erf) 
+                (mul (div (sub 1 '$%i) 2) 
+                     (power '$%pi '((rat simp) 1 2)) z)))))))
+
+    ($hypergeometric_representation
+      (mul z
+           (take '($hypergeometric)
+                 (list '(mlist) (div 1 4))
+                 (list '(mlist) (div 1 2) (div 5 4))
+                 (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
+
+    (t
+      (give-up))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Implementation of the Beta function
