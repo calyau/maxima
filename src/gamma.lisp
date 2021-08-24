@@ -2745,16 +2745,21 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; TODO: This is called by simp-expintegral-e in expintegral.lisp.
+;; Can't remove this until that is fixed.
 (defmfun $erf (z)
   (simplify (list '(%erf) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defprop $erf %erf alias)
+#+nil
+(progn
+  (defprop $erf %erf alias)
 (defprop $erf %erf verb)
 
 (defprop %erf $erf reversealias)
 (defprop %erf $erf noun)
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -2768,6 +2773,7 @@
 
 ;;; erf is a simplifying function
 
+#+nil
 (defprop %erf simp-erf operators)
 
 ;;; erf distributes over bags
@@ -2806,6 +2812,7 @@
              (list '(mlist simp) '((rat simp) 3 2))
              (mul -1 (power z 2)))))
 
+#+nil
 (defun simp-erf (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
@@ -2858,6 +2865,57 @@
 
     (t
      (eqtest (list '(%erf) z) expr))))
+
+(def-simplifier erf (z)
+  (cond
+
+    ;; Check for specific values
+
+    ((zerop1 z) z)
+    ((eq z '$inf) 1)
+    ((eq z '$minf) -1)
+
+    ;; Check for numerical evaluation
+
+    ((float-numerical-eval-p z)
+     (bigfloat::bf-erf ($float z)))
+    ((complex-float-numerical-eval-p z)
+     (complexify 
+       (bigfloat::bf-erf (complex ($float ($realpart z)) ($float ($imagpart z))))))
+    ((bigfloat-numerical-eval-p z)
+     (to (bigfloat::bf-erf (bigfloat:to ($bfloat z)))))
+    ((complex-bigfloat-numerical-eval-p z)
+     (to (bigfloat::bf-erf
+	  (bigfloat:to (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))))
+
+    ;; Argument simplification
+    
+    ((taylorize (mop form) (second form)))
+    ((and $erf_%iargs 
+          (not $erf_representation)
+          (multiplep z '$%i))
+     (mul '$%i (simplify (list '(%erfi) (coeff z '$%i 1)))))
+    ((apply-reflection-simp (mop form) z $trigsign))
+    
+    ;; Representation through more general functions
+    
+    ($hypergeometric_representation
+     (erf-hypergeometric z))
+    
+    ;; Transformation to Erfc or Erfi
+    
+    ((and $erf_representation
+          (not (eq $erf_representation '$erf)))
+     (case $erf_representation
+       (%erfc
+        (sub 1 (take '(%erfc) z)))
+       (%erfi
+        (mul -1 '$%i (take '(%erfi) (mul '$%i z))))
+       (t
+        (give-up))))
+
+    (t
+     (give-up))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -3010,16 +3068,20 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $erf_generalized (z1 z2)
   (simplify (list '(%erf_generalized) z1 z2)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
+(progn
 (defprop $erf_generalized %erf_generalized alias)
 (defprop $erf_generalized %erf_generalized verb)
 
 (defprop %erf_generalized $erf_generalized reversealias)
 (defprop %erf_generalized $erf_generalized noun)
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -3043,6 +3105,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defprop %erf_generalized simp-erf-generalized operators)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3087,6 +3150,7 @@
 
 ;;; ----------------------------------------------------------------------------
 
+#+nil
 (defun simp-erf-generalized (expr ignored simpflag)
   (declare (ignore ignored))
   (twoargcheck expr)
@@ -3153,29 +3217,96 @@
       (t
        (eqtest (list '(%erf_generalized) z1 z2) expr)))))
 
+(def-simplifier erf_generalized (z1 z2)
+  (cond
+      
+    ;; Check for specific values
+      
+    ((and (zerop1 z1) (zerop1 z2)) 0)
+    ((zerop1 z1) (take '(%erf) z2))
+    ((zerop1 z2) (mul -1 (take '(%erf) z1)))
+    ((or (eq z2 '$inf)
+         (alike1 z2 '((mtimes) -1 $minf)))
+     (sub 1 (take '(%erf) z1)))
+    ((or (eq z2 '$minf)
+         (alike1 z2 '((mtimes) -1 $inf)))
+     (sub (mul -1 (take '(%erf) z1)) 1))
+    ((or (eq z1 '$inf)
+         (alike1 z1 '((mtimes) -1 $minf)))
+     (sub (take '(%erf) z2) 1))
+    ((or (eq z1 '$minf)
+         (alike1 z1 '((mtimes) -1 $inf)))
+     (add (take '(%erf) z2) 1))
+
+    ;; Check for numerical evaluation. Use erf(z1,z2) = erf(z2)-erf(z1)
+
+    ((float-numerical-eval-p z1 z2)
+     (- (bigfloat::bf-erf ($float z2))
+	(bigfloat::bf-erf ($float z1))))
+    ((complex-float-numerical-eval-p z1 z2)
+     (complexify 
+      (- 
+       (bigfloat::bf-erf 
+        (complex ($float ($realpart z2)) ($float ($imagpart z2))))
+       (bigfloat::bf-erf 
+        (complex ($float ($realpart z1)) ($float ($imagpart z1)))))))
+    ((bigfloat-numerical-eval-p z1 z2)
+     (to (bigfloat:-
+	  (bigfloat::bf-erf (bigfloat:to ($bfloat z2)))
+	  (bigfloat::bf-erf (bigfloat:to ($bfloat z1))))))
+    ((complex-bigfloat-numerical-eval-p z1 z2)
+     (to (bigfloat:-
+	  (bigfloat::bf-erf 
+	   (bigfloat:to (add ($bfloat ($realpart z2)) (mul '$%i ($bfloat ($imagpart z2))))))
+	  (bigfloat::bf-erf 
+	   (bigfloat:to (add ($bfloat ($realpart z1)) (mul '$%i ($bfloat ($imagpart z1)))))))))
+
+    ;; Argument simplification
+      
+    ((and $trigsign (great (mul -1 z1) z1) (great (mul -1 z2) z2))
+     (mul -1 (simplify (list '(%erf_generalized) (mul -1 z1) (mul -1 z2)))))
+
+    ;; Representation through more general functions
+
+    ($hypergeometric_representation
+     (sub (erf-hypergeometric z2) (erf-hypergeometric z1)))
+
+    ;; Transformation to Erf
+
+    ($erf_representation
+     (sub (simplify (list '(%erf) z2)) (simplify (list '(%erf) z1))))
+
+    (t
+     (give-up))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Implementation of the Complementary Error function Erfc(z)
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; TODO: called by simp-expintegral-e in expintegral.lisp.  Need to
+;; keep this around until that is fixed.
 (defmfun $erfc (z)
   (simplify (list '(%erfc) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
+(progn
 (defprop $erfc %erfc alias)
 (defprop $erfc %erfc verb)
 
 (defprop %erfc $erfc reversealias)
 (defprop %erfc $erfc noun)
-
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defprop %erfc t commutes-with-conjugate)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defprop %erfc simp-erfc operators)
 
 ;;; Complementary Error function distributes over bags
@@ -3232,6 +3363,7 @@
 
 ;;; ----------------------------------------------------------------------------
 
+#+nil
 (defun simp-erfc (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
@@ -3274,23 +3406,67 @@
     (t
      (eqtest (list '(%erfc) z) expr))))
 
+(def-simplifier erfc (z)
+  (cond
+
+    ;; Check for specific values
+
+    ((zerop1 z) 1)
+    ((eq z '$inf) 0)
+    ((eq z '$minf) 2)
+
+    ;; Check for numerical evaluation.
+
+    ((numerical-eval-p z)
+     (to (bigfloat::bf-erfc (bigfloat:to z))))
+
+    ;; Argument simplification
+
+    ((taylorize (mop form) (second form)))
+    ((and $trigsign (great (mul -1 z) z))
+     (sub 2 (simplify (list  '(%erfc) (mul -1 z)))))
+    
+    ;; Representation through more general functions
+    
+    ($hypergeometric_representation
+     (sub 1 (erf-hypergeometric z)))
+    
+    ;; Transformation to Erf or Erfi
+
+    ((and $erf_representation
+          (not (eq $erf_representation '$erfc)))
+     (case $erf_representation
+       (%erf
+        (sub 1 (take '(%erf) z)))
+       (%erfi
+        (add 1 (mul '$%i (take '(%erfi) (mul '$%i z)))))
+       (t
+        (give-up))))
+    
+    (t
+     (give-up))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Implementation of the Imaginary Error function Erfi(z)
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; TODO: Called by integrate-exp-special in sin.lisp.  That needs to
+;; be fixed before this can be removed.
 (defmfun $erfi (z)
   (simplify (list '(%erfi) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
+(progn
 (defprop $erfi %erfi alias)
 (defprop $erfi %erfi verb)
 
 (defprop %erfi $erfi reversealias)
 (defprop %erfi $erfi noun)
-
+)
 ;;; erfi has mirror symmetry
 
 (defprop %erfi t commutes-with-conjugate)
@@ -3301,6 +3477,7 @@
 
 ;;; erfi is an simplifying function
 
+#+nil
 (defprop %erfi simp-erfi operators)
 
 ;;; erfi distributes over bags
@@ -3360,6 +3537,7 @@
 
 (in-package :maxima)
 
+#+nil
 (defun simp-erfi (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
@@ -3404,12 +3582,55 @@
     (t
      (eqtest (list '(%erfi) z) expr))))
 
+(def-simplifier erfi (z)
+  (cond
+
+    ;; Check for specific values
+
+    ((zerop1 z) z)
+    ((eq z '$inf) '$inf)
+    ((eq z '$minf) '$minf)
+
+    ;; Check for numerical evaluation. Use erfi(z) = -%i*erf(%i*z).
+
+    ((numerical-eval-p z)
+     (to (bigfloat::bf-erfi (bigfloat:to z))))
+
+    ;; Argument simplification
+
+    ((taylorize (mop form) (second form)))
+    ((and $erf_%iargs
+          (multiplep z '$%i))
+     (mul '$%i (simplify (list '(%erf) (coeff z '$%i 1)))))
+    ((apply-reflection-simp (mop form) z $trigsign))
+
+    ;; Representation through more general functions
+    
+    ($hypergeometric_representation
+     (mul -1 '$%i (erf-hypergeometric (mul '$%i z))))
+    
+    ;; Transformation to Erf or Erfc
+    
+    ((and $erf_representation
+          (not (eq $erf_representation '$erfi)))
+     (case $erf_representation
+       (%erf
+        (mul -1 '$%i (take '(%erf) (mul '$%i z))))
+       (%erfc
+        (sub (mul '$%i (take '(%erfc) (mul '$%i z))) '$%i))
+       (t
+        (give-up))))
+    
+    (t
+     (give-up))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; The implementation of the Inverse Error function
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $inverse_erf (z)
   (simplify (list '(%inverse_erf) z)))
 
@@ -3417,16 +3638,19 @@
 
 ;;; Set properties to give full support to the parser and display
 
+#+nil
+(progn
 (defprop $inverse_erf %inverse_erf alias)
 (defprop $inverse_erf %inverse_erf verb)
 
 (defprop %inverse_erf $inverse_erf reversealias)
 (defprop %inverse_erf $inverse_erf noun)
-
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; The Inverse Error function is a simplifying function
 
+#+nil
 (defprop %inverse_erf simp-inverse-erf operators)
 
 ;;; The Inverse Error function distributes over bags
@@ -3479,6 +3703,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
           
+#+nil
 (defun simp-inverse-erf (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
@@ -3493,6 +3718,19 @@
     ((taylorize (mop expr) (cadr expr)))
     (t
      (eqtest (list '(%inverse_erf) z) expr))))
+
+(def-simplifier inverse_erf (z)
+  (cond
+    ((or (onep1 z)
+         (onep1 (mul -1 z)))
+     (simp-domain-error 
+       (intl:gettext "inverse_erf: inverse_erf(~:M) is undefined.") z))
+    ((zerop1 z) z)
+    ((numerical-eval-p z)
+     (to (bigfloat::bf-inverse-erf (bigfloat:to z))))
+    ((taylorize (mop form) (cadr form)))
+    (t
+     (give-up))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
