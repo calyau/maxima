@@ -2057,13 +2057,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
+(progn
 (defprop $gamma_incomplete_regularized %gamma_incomplete_regularized alias)
 (defprop $gamma_incomplete_regularized %gamma_incomplete_regularized verb)
 
 (defprop %gamma_incomplete_regularized 
          $gamma_incomplete_regularized reversealias)
 (defprop %gamma_incomplete_regularized 
-         $gamma_incomplete_regularized noun)
+  $gamma_incomplete_regularized noun)
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -2091,6 +2094,7 @@
 
 ;;; Regularized Incomplete Gamma function is a simplifying function
 
+#+nil
 (defprop %gamma_incomplete_regularized 
          simp-gamma-incomplete-regularized operators)
 
@@ -2130,6 +2134,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun simp-gamma-incomplete-regularized (expr ignored simpflag)
   (declare (ignore ignored))
   (twoargcheck expr)
@@ -2309,6 +2314,182 @@
 		($substitute rat-order ord g)))))))
       
       (t (eqtest (list '(%gamma_incomplete_regularized) a z) expr)))))
+
+(def-simplifier gamma_incomplete_regularized (a z)
+  (let (($simpsum t)
+        (ratorder 0))
+
+    (cond
+
+      ;; Check for specific values
+
+      ((zerop1 z)
+       (let ((sgn ($sign ($realpart a))))
+         (cond ((member sgn '($neg $zero))
+                (simp-domain-error 
+                  (intl:gettext 
+                    "gamma_incomplete_regularized: gamma_incomplete_regularized(~:M,~:M) is undefined.")
+                    a z))
+               ((member sgn '($pos $pz)) 1)
+               (t (give-up)))))  
+
+      ((zerop1 a) 0)
+      ((eq z '$inf) 0)
+
+      ;; Check for numerical evaluation in Float or Bigfloat precision
+
+      ((float-numerical-eval-p a z)
+       (complexify
+       ;; gamma_incomplete returns a regularized result
+         (gamma-incomplete ($float a) ($float z) t)))
+
+      ((complex-float-numerical-eval-p a z)
+       (let ((ca (complex ($float ($realpart a)) ($float ($imagpart a))))
+             (cz (complex ($float ($realpart z)) ($float ($imagpart z)))))
+         ;; gamma_incomplete returns a regularized result
+         (complexify (gamma-incomplete ca cz t))))
+           
+      ((bigfloat-numerical-eval-p a z)
+       (div (bfloat-gamma-incomplete ($bfloat a) ($bfloat z)) 
+            (simplify (list '(%gamma) ($bfloat a)))))
+
+      ((complex-bigfloat-numerical-eval-p a z)
+       (let ((ca (add ($bfloat ($realpart a)) 
+                      (mul '$%i ($bfloat ($imagpart a)))))
+             (cz (add ($bfloat ($realpart z)) 
+                 (mul '$%i ($bfloat ($imagpart z))))))
+       ($rectform
+         (div
+           (complex-bfloat-gamma-incomplete ca cz)
+           (simplify (list '(%gamma) ca))))))
+
+      ;; Check for transformations and argument simplification
+
+      ((and $gamma_expand (integerp a))
+       ;; An integer. Expand the expression.
+       (let ((sgn ($sign a)))
+         (cond
+           ((member sgn '($pos $pz))
+            (mul
+              (power '$%e (mul -1 z))
+              (let ((index (gensumindex)))
+                (simpsum1
+                  (div 
+                    (power z index)
+                    (let (($gamma_expand nil))
+                      (simplify (list '(%gamma) (add index 1)))))
+                  index 0 (sub a 1)))))
+           ((member sgn '($neg $nz)) 0)
+           (t (give-up)))))
+
+      ((and $gamma_expand (setq ratorder (max-numeric-ratio-p a 2)))
+       ;; We have a half integral order and $gamma_expand is not NIL.
+       ;; We expand in a series with the Erfc function
+       (setq ratorder (- ratorder (/ 1 2)))
+       (when *debug-gamma*
+         (format t "~&SIMP-GAMMA-INCOMPLETE-REGULARIZED in RATORDER~%")
+         (format t "~&   : a        = ~A~%" a)
+         (format t "~&   : ratorder = ~A~%" ratorder))
+       (cond
+         ((equal ratorder 0)
+          (simplify (list '(%erfc) (power z '((rat simp) 1 2)))))
+
+         ((> ratorder 0)
+          (add                               
+            (simplify (list '(%erfc) (power z '((rat simp) 1 2))))
+            (mul
+              (power -1 (sub ratorder 1))
+              (power '$%e (mul -1 z))
+              (power z '((rat simp) 1 2))
+              (div 1 (simplify (list '(%gamma) a)))             
+              (let ((index (gensumindex)))
+                (simpsum1
+                  (mul
+                    (power (mul -1 z) index)
+                    (simplify (list '($pochhammer) 
+                                    (sub '((rat simp) 1 2) ratorder)
+                                    (sub ratorder (add index 1)))))
+                  index 0 (sub ratorder 1))))))
+
+         ((< ratorder 0)
+          (setq ratorder (- ratorder))
+          (add
+            (simplify (list '(%erfc) (power z '((rat simp) 1 2))))
+            (mul -1
+              (power '$%e (mul -1 z))
+              (power z (sub '((rat simp) 1 2) ratorder))
+              (inv (simplify (list '(%gamma) (sub '((rat simp) 1 2) ratorder))))
+              (let ((index (gensumindex)))
+                (simpsum1
+                  (div
+                    (power z index)
+                    (simplify (list '($pochhammer) 
+                                    (sub '((rat simp) 1 2) ratorder) 
+                                    (add index 1))))
+                  index 0 (sub ratorder 1))))))))
+
+      ((and $gamma_expand (mplusp a) (integerp (cadr a)))
+       (when *debug-gamma* 
+         (format t "~&SIMP-GAMMA-INCOMPLETE-REGULARIZED in COND (mplusp)~%"))
+       (let ((n (cadr a))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (cond
+           ((> n 0)
+            (add
+              (simplify (list '(%gamma_incomplete_regularized) a z))
+              ;; We factor the second summand. 
+              ;; Some factors vanish and the result is more readable.
+              ($factor
+                (mul
+                  (power '$%e (mul -1 z))
+                  (power z (add a -1))
+                  (div 1 (simplify (list '(%gamma) a)))
+                  (let ((index (gensumindex)))
+                    (simpsum1
+                      (div
+                        (power z index)
+                        (simplify (list '($pochhammer) a index)))
+                      index 1 n))))))
+           ((< n 0)
+            (setq n (- n))
+            (add
+              (simplify (list '(%gamma_incomplete_regularized) a z))
+              ;; We factor the second summand.
+              ($factor
+                (mul -1
+                  (power '$%e (mul -1 z))
+                  (power z (sub a (add n 1)))
+                  (div 1 (simplify (list '(%gamma) (add a (- n)))))
+                  (let ((index (gensumindex)))
+                    (simpsum1
+                      (div
+                        (power z index)
+                        (simplify (list '($pochhammer) (add a (- n)) index)))
+                      index 1 n)))))))))
+      ((and $gamma_expand (consp a) (eq 'rat (caar a))
+	    (integerp (second a))
+	    (integerp (third a)))
+       ;; gamma_incomplete_regularized of numeric rational order.
+       ;; Expand it out so that the resulting order is between 0 and
+       ;; 1.  Use gamma_incomplete_regularized(a+n,z) to do the dirty
+       ;; work.
+       (multiple-value-bind (n order)
+	   (floor (/ (second a) (third a)))
+	 ;; a = n + order where 0 <= order < 1.
+	 (let ((rat-order (rat (numerator order) (denominator order))))
+	   (cond
+	     ((zerop n)
+	      ;; Nothing to do if the order is already between 0 and 1
+	      (give-up))
+	     (t
+	      ;; Use gamma_incomplete_regularized(a+n,z) above. and
+	      ;; then substitue a=order.  This works for n positive or
+	      ;; negative.
+	      (let* ((ord (gensym))
+		     (g (simplify (list '(%gamma_incomplete_regularized) (add ord n) z))))
+		($substitute rat-order ord g)))))))
+      
+      (t (give-up)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
