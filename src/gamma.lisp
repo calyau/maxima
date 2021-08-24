@@ -4553,15 +4553,17 @@
   (simplify (list '(%beta_incomplete) a b z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+#+nil
+(progn
 (defprop $beta_incomplete %beta_incomplete alias)
 (defprop $beta_incomplete %beta_incomplete verb)
 
 (defprop %beta_incomplete $beta_incomplete reversealias)
 (defprop %beta_incomplete $beta_incomplete noun)
-
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defprop %beta_incomplete simp-beta-incomplete operators)
 
 ;;; beta_incomplete distributes over bags
@@ -4619,6 +4621,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun simp-beta-incomplete (expr ignored simpflag)
   (declare (ignore ignored))
   (arg-count-check 3 expr)
@@ -4798,6 +4801,180 @@
       (t
        (eqtest (list '(%beta_incomplete) a b z) expr)))))
 
+(def-simplifier beta_incomplete (a b z)
+  (let (($simpsum t))
+    (when *debug-gamma* 
+         (format t "~&SIMP-BETA-INCOMPLETE:~%")
+         (format t "~&   : a = ~A~%" a)
+         (format t "~&   : b = ~A~%" b)
+         (format t "~&   : z = ~A~%" z))
+    (cond
+
+      ;; Check for specific values
+
+      ((zerop1 z)
+       (let ((sgn ($sign ($realpart a))))
+         (cond ((member sgn '($neg $zero))
+                (simp-domain-error 
+                  (intl:gettext 
+                    "beta_incomplete: beta_incomplete(~:M,~:M,~:M) is undefined.") 
+                    a b z))
+               ((member sgn '($pos $pz)) 
+                z)
+               (t 
+                (give-up)))))
+
+      ((and (onep1 z) (eq ($sign ($realpart b)) '$pos))
+       ;; z=1 and realpart(b)>0. Simplify to a Beta function.
+       ;; If we have to evaluate numerically preserve the type.
+       (cond
+         ((complex-float-numerical-eval-p a b z)
+          (simplify (list '($beta) ($float a) ($float b))))
+         ((complex-bigfloat-numerical-eval-p a b z)
+          (simplify (list '($beta) ($bfloat a) ($bfloat b))))
+         (t
+          (simplify (list '($beta) a b)))))
+      
+      ((or (zerop1 a)
+           (and (integer-representation-p a)
+                (eq ($sign a) '$neg)
+                (or (and (mnump b) 
+                         (not (integer-representation-p b)))
+                    (eq ($sign (add a b)) '$pos))))
+       ;; The argument a is zero or a is negative and the argument b is
+       ;; not in a valid range. Beta incomplete is undefined.
+       ;; It would be more correct to return Complex infinity.
+       (simp-domain-error 
+         (intl:gettext 
+           "beta_incomplete: beta_incomplete(~:M,~:M,~:M) is undefined.") a b z))
+
+      ;; Check for numerical evaluation in Float or Bigfloat precision
+
+      ((complex-float-numerical-eval-p a b z)
+       (cond
+         ((not (and (integer-representation-p a) (< a 0.0)))
+          (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0))))
+            (beta-incomplete ($float a) ($float b) ($float z))))
+         (t
+           ;; Negative integer a and b is in a valid range. Expand.
+           ($rectform 
+             (beta-incomplete-expand-negative-integer 
+               (truncate a) ($float b) ($float z))))))
+           
+      ((complex-bigfloat-numerical-eval-p a b z)
+       (cond
+         ((not (and (integer-representation-p a) (eq ($sign a) '$neg)))
+          (let ((*beta-incomplete-eps*
+                  (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
+            (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z))))
+         (t
+           ;; Negative integer a and b is in a valid range. Expand.          
+           ($rectform
+             (beta-incomplete-expand-negative-integer
+               ($truncate a) ($bfloat b) ($bfloat z))))))
+
+      ;; Argument simplifications and transformations
+      
+      ((and (integerp b) 
+            (plusp b)
+            (or (not (integerp a))
+                (plusp a)))
+       ;; Expand for b a positive integer and a not a negative integer.
+       (mul
+         (simplify (list '($beta) a b))
+         (power z a)
+         (let ((index (gensumindex)))
+           (simpsum1
+             (div
+               (mul
+                 (simplify (list '($pochhammer) a index))
+                 (power (sub 1 z) index))
+              (simplify (list '(mfactorial) index)))
+             index 0 (sub b 1)))))
+      
+      ((and (integerp a) (plusp a))
+       ;; Expand for a a positive integer.
+       (mul
+         (simplify (list '($beta) a b))
+         (sub 1
+           (mul
+             (power (sub 1 z) b)
+             (let ((index (gensumindex)))
+               (simpsum1 
+                 (div
+                   (mul
+                     (simplify (list '($pochhammer) b index))
+                     (power z index))
+                 (simplify (list '(mfactorial) index)))
+               index 0 (sub a 1)))))))
+      
+      ((and (integerp a) (minusp a) (integerp b) (plusp b) (<= b (- a)))
+       ;; Expand for a a negative integer and b an integer with b <= -a.
+       (mul
+         (power z a)
+         (let ((index (gensumindex)))
+           (simpsum1
+             (div
+               (mul (simplify (list '($pochhammer) (sub 1 b) index))
+                    (power z index))
+               (mul (add index a)
+                    (simplify (list '(mfactorial) index))))
+             index 0 (sub b 1)))))
+
+      ((and $beta_expand (mplusp a) (integerp (cadr a)) (plusp (cadr a)))
+       (let ((n (cadr a))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (sub
+           (mul
+             (div
+               (simplify (list '($pochhammer) a n))
+               (simplify (list '($pochhammer) (add a b) n)))
+             ($beta_incomplete a b z))
+           (mul
+             (power (add a b n -1) -1)
+             (let ((index (gensumindex)))
+               (simpsum1
+                 (mul
+                   (div
+                     (simplify (list '($pochhammer) 
+                                     (add 1 (mul -1 a) (mul -1 n))
+                                     index))
+                     (simplify (list '($pochhammer)
+                                     (add 2 (mul -1 a) (mul -1 b) (mul -1 n))
+                                     index)))
+                   (mul (power (sub 1 z) b)
+                        (power z (add a n (mul -1 index) -1))))
+                index 0 (sub n 1)))))))
+
+      ((and $beta_expand (mplusp a) (integerp (cadr a)) (minusp (cadr a)))
+       (let ((n (- (cadr a)))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (sub
+           (mul
+             (div
+               (simplify (list '($pochhammer) (add 1 (mul -1 a) (mul -1 b)) n))
+               (simplify (list '($pochhammer) (sub 1 a) n)))
+             ($beta_incomplete a b z))
+           (mul
+             (div
+               (simplify 
+                 (list '($pochhammer) (add 2 (mul -1 a) (mul -1 b)) (sub n 1)))
+               (simplify (list '($pochhammer) (sub 1 a) n)))
+             (let ((index (gensumindex)))
+               (simpsum1
+                 (mul
+                   (div
+                     (simplify (list '($pochhammer) (sub 1 a) index))
+                     (simplify (list '($pochhammer)
+                                     (add 2 (mul -1 a) (mul -1 b))
+                                     index)))
+                   (mul (power (sub 1 z) b)
+                        (power z (add a (mul -1 index) -1))))
+                index 0 (sub n 1)))))))
+      
+      (t
+       (give-up)))))
+
 (defun beta-incomplete-expand-negative-integer (a b z)
   (mul
     (power z a)
@@ -4891,19 +5068,23 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $beta_incomplete_generalized (a b z1 z2)
   (simplify (list '(%beta_incomplete_generalized) a b z1 z2)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
+(progn
 (defprop $beta_incomplete_generalized %beta_incomplete_generalized alias)
 (defprop $beta_incomplete_generalized %beta_incomplete_generalized verb)
 
 (defprop %beta_incomplete_generalized $beta_incomplete_generalized reversealias)
 (defprop %beta_incomplete_generalized $beta_incomplete_generalized noun)
-
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defprop %beta_incomplete_generalized 
          simp-beta-incomplete-generalized operators)
 
@@ -5025,6 +5206,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun simp-beta-incomplete-generalized (expr ignored simpflag)
   (declare (ignore ignored))
   (arg-count-check 4 expr)
@@ -5206,25 +5388,199 @@
       (t
        (eqtest (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
 
+(def-simplifier beta_incomplete_generalized (a b z1 z2)
+  (let (($simpsum t))
+    (cond
+
+      ;; Check for specific values
+
+      ((zerop1 z2)
+       (let ((sgn ($sign ($realpart a))))
+         (cond ((eq sgn '$neg)
+                (simp-domain-error 
+                  (intl:gettext 
+                    "beta_incomplete_generalized: beta_incomplete_generalized(~:M,~:M,~:M,~:M) is undefined.") 
+                    a b z1 z2))
+               ((member sgn '($pos $pz)) 
+                (mul -1 ($beta_incomplete a b z1)))
+               (t 
+                (give-up)))))
+
+      ((zerop1 z1)
+       (let ((sgn ($sign ($realpart a))))
+         (cond ((eq sgn '$neg)
+                (simp-domain-error 
+                  (intl:gettext 
+                    "beta_incomplete_generalized: beta_incomplete_generalized(~:M,~:M,~:M,~:M) is undefined.") 
+                    a b z1 z2))
+               ((member sgn '($pos $pz)) 
+                (mul -1 ($beta_incomplete a b z2)))
+               (t 
+                (give-up)))))
+
+      ((and (onep1 z2) (or (not (mnump a)) (not (mnump b)) (not (mnump z1))))
+       (let ((sgn ($sign ($realpart b))))
+         (cond ((member sgn '($pos $pz)) 
+                (sub (simplify (list '($beta) a b))
+                     ($beta_incomplete a b z1)))
+               (t 
+                (give-up)))))
+
+      ((and (onep1 z1) (or (not (mnump a)) (not (mnump b)) (not (mnump z2))))
+       (let ((sgn ($sign ($realpart b))))
+         (cond ((member sgn '($pos $pz)) 
+                (sub ($beta_incomplete a b z2) 
+                     (simplify (list '($beta) a b))))
+               (t 
+                (give-up)))))
+
+      ;; Check for numerical evaluation in Float or Bigfloat precision
+
+      ((complex-float-numerical-eval-p a b z1 z2)
+       (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0))))
+         (sub (beta-incomplete ($float a) ($float b) ($float z2))
+              (beta-incomplete ($float a) ($float b) ($float z1)))))
+           
+      ((complex-bigfloat-numerical-eval-p a b z1 z2)
+       (let ((*beta-incomplete-eps*
+               (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
+         (sub (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z2))
+              (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z1)))))
+
+      ;; Check for argument simplifications and transformations
+
+      ((and (integerp a) (plusp a))
+       (mul
+         (simplify (list '($beta) a b))
+         (sub
+           (mul
+             (power (sub 1 z1) b)
+             (let ((index (gensumindex)))
+               (simpsum1
+                 (div
+                   (mul
+                     (simplify (list '($pochhammer) b index))
+                     (power z1 index))
+                   (simplify (list '(mfactorial) index)))
+                index 0 (sub a 1))))
+           (mul
+             (power (sub 1 z2) b)
+             (let ((index (gensumindex)))
+               (simpsum1
+                 (div
+                   (mul 
+                     (simplify (list '($pochhammer) b index))
+                     (power z2 index))
+                   (simplify (list '(mfactorial) index)))
+                 index 0 (sub a 1)))))))
+
+      ((and (integerp b) (plusp b))
+       (mul
+         (simplify (list '($beta) a b))
+         (sub
+           (mul
+             (power z2 a)
+             (let ((index (gensumindex)))
+               (simpsum1
+                 (div
+                   (mul
+                     (simplify (list '($pochhammer) a index))
+                     (power (sub 1 z2) index))
+                   (simplify (list '(mfactorial) index)))
+                index 0 (sub b 1))))
+           (mul
+             (power z1 a)
+             (let ((index (gensumindex)))
+               (simpsum1
+                 (div
+                   (mul 
+                     (simplify (list '($pochhammer) a index))
+                     (power (sub 1 z1) index))
+                   (simplify (list '(mfactorial) index)))
+                 index 0 (sub b 1)))))))
+      
+      ((and $beta_expand (mplusp a) (integerp (cadr a)) (plusp (cadr a)))
+       (let ((n (cadr a))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (add
+           (mul
+             (div
+               (simplify (list '($pochhammer) a n))
+               (simplify (list '($pochhammer) (add a b) n)))
+             ($beta_incomplete_generalized a b z1 z2))
+           (mul
+             (power (add a b n -1) -1)
+             (let ((index (gensumindex)))
+               (simpsum1
+                 (mul
+                   (div
+                     (simplify (list '($pochhammer) 
+                                     (add 1 (mul -1 a) (mul -1 n))
+                                     index))
+                     (simplify (list '($pochhammer)
+                                     (add 2 (mul -1 a) (mul -1 b) (mul -1 n))
+                                     index)))
+                   (sub
+                     (mul (power (sub 1 z1) b)
+                          (power z1 (add a n (mul -1 index) -1)))
+                     (mul (power (sub 1 z2) b)
+                          (power z2 (add a n (mul -1 index) -1)))))
+                index 0 (sub n 1)))))))
+
+      ((and $beta_expand (mplusp a) (integerp (cadr a)) (minusp (cadr a)))
+       (let ((n (- (cadr a)))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (sub
+           (mul
+             (div
+               (simplify (list '($pochhammer) (add 1 (mul -1 a) (mul -1 b)) n))
+               (simplify (list '($pochhammer) (sub 1 a) n)))
+             ($beta_incomplete_generalized a b z1 z2))
+           (mul
+             (div
+               (simplify 
+                 (list '($pochhammer) (add 2 (mul -1 a) (mul -1 b)) (sub n 1)))
+               (simplify (list '($pochhammer) (sub 1 a) n)))
+             (let ((index (gensumindex)))
+               (simpsum1
+                 (mul
+                   (div
+                     (simplify (list '($pochhammer) (sub 1 a) index))
+                     (simplify (list '($pochhammer)
+                                     (add 2 (mul -1 a) (mul -1 b))
+                                     index)))
+                   (sub
+                     (mul (power (sub 1 z2) b)
+                          (power z2 (add a (mul -1 index) -1)))
+                     (mul (power (sub 1 z1) b)
+                          (power z1 (add a (mul -1 index) -1)))))
+                index 0 (sub n 1)))))))
+      
+      (t
+       (give-up)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Implementation of the Regularized Incomplete Beta function
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $beta_incomplete_regularized (a b z)
   (simplify (list '(%beta_incomplete_regularized) a b z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+#+nil
+(progn
 (defprop $beta_incomplete_regularized %beta_incomplete_regularized alias)
 (defprop $beta_incomplete_regularized %beta_incomplete_regularized verb)
 
 (defprop %beta_incomplete_regularized $beta_incomplete_regularized reversealias)
 (defprop %beta_incomplete_regularized $beta_incomplete_regularized noun)
-
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defprop %beta_incomplete_regularized
          simp-beta-incomplete-regularized operators)
 
@@ -5292,6 +5648,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun simp-beta-incomplete-regularized (expr ignored simpflag)
   (declare (ignore ignored))
   (arg-count-check 3 expr)
@@ -5424,5 +5781,131 @@
 
       (t
        (eqtest (list '(%beta_incomplete_regularized) a b z) expr)))))
+
+(def-simplifier beta_incomplete_regularized (a b z)
+  (let (($simpsum t))
+    (cond
+
+      ;; Check for specific values
+
+      ((zerop1 z)
+       (let ((sgn ($sign ($realpart a))))
+         (cond ((eq sgn '$neg)
+                (simp-domain-error 
+                  (intl:gettext 
+                    "beta_incomplete_regularized: beta_incomplete_regularized(~:M,~:M,~:M) is undefined.") 
+                    a b z))
+               ((member sgn '($pos $pz)) 
+                0)
+               (t 
+                (give-up)))))
+
+      ((and (onep1 z) 
+            (or (not (mnump a)) 
+                (not (mnump b)) 
+                (not (mnump z))))
+       (let ((sgn ($sign ($realpart b))))
+         (cond ((member sgn '($pos $pz)) 
+                1)
+               (t 
+                (give-up)))))
+
+      ((and (integer-representation-p b)
+            (if ($bfloatp b) (minusp (cadr b)) (minusp b)) )
+       ;; Problem: for b a negative integer the Regularized Incomplete 
+       ;; Beta function is defined to be zero. BUT: When we calculate
+       ;; e.g. beta_incomplete(1.0,-2.0,1/2)/beta(1.0,-2.0) we get the 
+       ;; result -3.0, because beta_incomplete and beta are defined for
+       ;; for this case. How do we get a consistent behaviour?
+       0)
+
+      ((and (integer-representation-p a)
+            (if ($bfloatp a) (minusp (cadr a)) (minusp a)) )
+       (cond
+         ;; TODO: The following line does not work for bigfloats.
+         ((and (integer-representation-p b) (<= b (- a)))
+         ;;       Does $beta_incomplete or simpbeta underflow in this case?
+          (div ($beta_incomplete a b z)
+               (simplify (list '($beta) a b))))
+         (t 
+          1)))
+
+      ;; Check for numerical evaluation in Float or Bigfloat precision
+
+      ((complex-float-numerical-eval-p a b z)
+       (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0)))
+              beta ibeta )
+         (setq a ($float a) b ($float b))
+         (if (or (< ($abs (setq beta (simplify (list '($beta) a b)))) 1e-307) 
+                 (< ($abs (setq ibeta (beta-incomplete a b ($float z)))) 1e-307) )
+           ;; In case of underflow (see bug #2999) or precision loss use bigfloats 
+           ;; and emporarily give some extra precision but avoid fpprec dependency.
+           ;; Is this workaround correct for complex values?
+           (let ((fpprec 70))
+             ($float ($beta_incomplete_regularized ($bfloat a) ($bfloat b) z)) )
+           ($rectform (div ibeta beta)) )))
+           
+      ((complex-bigfloat-numerical-eval-p a b z)
+       (let ((*beta-incomplete-eps*
+               (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
+         (setq a ($bfloat a) b ($bfloat b))
+         ($rectform 
+           (div (beta-incomplete a b ($bfloat z))
+                (simplify (list '($beta) a b))))))
+
+      ;; Check for argument simplifications and transformations
+
+      ((and (integerp b) (plusp b))
+       (div ($beta_incomplete a b z)
+            (simplify (list '($beta) a b))))
+
+      ((and (integerp a) (plusp a))
+       (div ($beta_incomplete a b z)
+            (simplify (list '($beta) a b))))
+
+      ((and $beta_expand (mplusp a) (integerp (cadr a)) (plusp (cadr a)))
+       (let ((n (cadr a))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (sub
+           ($beta_incomplete_regularized a b z)
+           (mul
+             (power (add a b n -1) -1)
+             (power (simplify (list '($beta) (add a n) b)) -1)
+             (let ((index (gensumindex)))
+               (simpsum1
+                 (mul
+                   (div
+                     (simplify (list '($pochhammer) 
+                                     (add 1 (mul -1 a) (mul -1 n))
+                                     index))
+                     (simplify (list '($pochhammer)
+                                     (add 2 (mul -1 a) (mul -1 b) (mul -1 n))
+                                     index)))
+                   (power (sub 1 z) b)
+                   (power z (add a n (mul -1 index) -1)))
+                index 0 (sub n 1)))))))
+
+      ((and $beta_expand (mplusp a) (integerp (cadr a)) (minusp (cadr a)))
+       (let ((n (- (cadr a)))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (sub
+           ($beta_incomplete_regularized a b z)
+           (mul
+             (power (add a b -1) -1)
+             (power (simplify (list '($beta) a b)) -1)
+             (let ((index (gensumindex)))
+               (simpsum1
+                 (mul
+                   (div
+                     (simplify (list '($pochhammer) (sub 1 a) index))
+                     (simplify (list '($pochhammer)
+                                     (add 2 (mul -1 a) (mul -1 b))
+                                     index)))
+                   (power (sub 1 z) b)
+                   (power z (add a (mul -1 index) -1)))
+                index 0 (sub n 1)))))))
+
+      (t
+       (give-up)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
