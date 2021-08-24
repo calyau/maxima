@@ -205,28 +205,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defmfun $double_factorial (z)
-  (simplify (list '(%double_factorial) z)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; Set properties to give full support to the parser and display
-#+nil
-(progn
-(defprop $double_factorial %double_factorial alias)
-(defprop $double_factorial %double_factorial verb)
-
-(defprop %double_factorial $double_factorial reversealias)
-(defprop %double_factorial $double_factorial noun)
-)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; Double factorial is a simplifying function
-
-#+nil
-(defprop %double_factorial simp-double-factorial operators)
-
 ;;; Double factorial distributes over bags
 
 (defprop %double_factorial (mlist $matrix mequal) distribute_over)
@@ -259,67 +237,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defun simp-double-factorial (expr z simpflag)
-  (oneargcheck expr)
-  (setq z (simpcheck (cadr expr) simpflag))
-  (cond    
-    ((and (fixnump z) (> z -1) (or (minusp $factlim) (< z $factlim)))
-     ;; Positive Integer less then $factlim or $factlim is -1. Call gfact.
-     (gfact z (floor (/ z 2)) 2))
-
-    ((and (mnump z)
-          (eq ($sign z) '$neg)          
-          (zerop1 (sub (simplify (list '(%truncate) (div z 2))) (div z 2))))
-     ;; Even negative integer or real representation. Not defined.
-     (simp-domain-error 
-       (intl:gettext 
-         "double_factorial: double_factorial(~:M) is undefined.") z))
-
-    ((or (integerp z)   ; at this point odd negative integer. Evaluate.
-         (complex-float-numerical-eval-p z))
-     (cond
-       ((and (integerp z) (= z -1))  1)  ; Special cases -1 and -3 
-       ((and (integerp z) (= z -3)) -1)
-       (t
-        ;; Odd negative integer, float or complex float.
-        (complexify 
-          (double-factorial 
-            (complex ($float ($realpart z)) ($float ($imagpart z))))))))
-  
-    ((and (not (ratnump z))
-          (complex-bigfloat-numerical-eval-p z))
-     ;; bigfloat or complex bigfloat.
-     (bfloat-double-factorial 
-       (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
-
-    ;; double_factorial(inf) -> inf
-    ((eq z '$inf) '$inf)
-
-    ((and $factorial_expand
-          (mplusp z)
-          (integerp (cadr z)))
-     (let ((k (cadr z))
-           (n (simplify (cons '(mplus) (cddr z)))))
-       (cond
-         ((= k -1)
-          ;; Special case double_factorial(n-1)
-          ;; Not sure if this simplification is useful.
-          (div (simplify (list '(mfactorial) n)) 
-               (simplify (list '(%double_factorial) n))))
-         ((= k (* 2 (truncate (/ k 2))))
-          ;; Special case double_factorial(2*k+n), k integer
-          (setq k (/ k 2))
-          ($factor   ; we get more simple expression when factoring
-            (mul
-              (power 2 k)
-              (simplify (list '($pochhammer) (add (div n 2) 1) k))
-              (simplify (list '(%double_factorial) n)))))
-         (t
-           (eqtest (list '(%double_factorial) z) expr)))))
-
-    (t
-     (eqtest (list '(%double_factorial) z) expr))))
+;;; Double factorial is a simplifying function
 
 (def-simplifier double_factorial (z)
   (cond    
@@ -437,21 +355,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; Set properties to give full support to the parser and display
-#+nil
-(progn
-(defprop $gamma_incomplete %gamma_incomplete alias)
-(defprop $gamma_incomplete %gamma_incomplete verb)
-
-(defprop %gamma_incomplete $gamma_incomplete reversealias)
-(defprop %gamma_incomplete $gamma_incomplete noun)
-)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; Incomplete Gamma function is a simplifying function
-
-#+nil
-(defprop %gamma_incomplete simp-gamma-incomplete operators)
 
 ;;; Incomplete Gamma distributes over bags
 
@@ -569,26 +472,6 @@
 ;;;                                 /
 ;;;                                  0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-#+nil
-(defmfun $gamma_incomplete_lower (a z)
-  (simplify (list '(%gamma_incomplete_lower) a z)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(progn
-(defprop $gamma_incomplete_lower %gamma_incomplete_lower alias)
-(defprop $gamma_incomplete_lower %gamma_incomplete_lower verb)
-
-(defprop %gamma_incomplete_lower $gamma_incomplete_lower reversealias)
-(defprop %gamma_incomplete_lower $gamma_incomplete_lower noun)
-)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defprop %gamma_incomplete_lower simp-gamma-incomplete-lower operators)
-
 ;;; distribute over bags (aggregates)
 
 (defprop %gamma_incomplete_lower (mlist $matrix mequal) distribute_over)
@@ -601,23 +484,6 @@
 ;; Handles some special cases for the order a and simplifies it to an
 ;; equivalent form, possibly involving erf and gamma_incomplete_lower
 ;; to a lower order.
-#+nil
-(defun simp-gamma-incomplete-lower (expr ignored simpflag)
-  (declare (ignore ignored))
-  (twoargcheck expr)
-  (let ((a (simpcheck (cadr expr) simpflag))
-        (z (simpcheck (caddr expr) simpflag)))
-    (cond
-      ((or
-         (float-numerical-eval-p a z)
-         (complex-float-numerical-eval-p a z)
-         (bigfloat-numerical-eval-p a z)
-         (complex-bigfloat-numerical-eval-p a z))
-       (take '(%gamma_incomplete_generalized) a 0 z))
-      ((gamma-incomplete-lower-expand a z))
-      (t
-       (eqtest (list '(%gamma_incomplete_lower) a z) expr)))))
-
 (def-simplifier gamma_incomplete_lower (a z)
   (cond
     ((or
@@ -737,308 +603,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defun simp-gamma-incomplete (expr ignored simpflag)
-  (declare (ignore ignored))
-  (twoargcheck expr)
-  (let ((a (simpcheck (cadr expr) simpflag))
-        (z (simpcheck (caddr expr) simpflag))
-        ($simpsum t)
-        (ratorder))
-    (cond
-
-      ;; Check for specific values
-
-      ((zerop1 z)
-       ;; gamma_incomplete(v,0) is gamma(v) only if the realpart(v) >
-       ;; 0.  If realpart(v) <= 0, gamma_incomplete is undefined.  For
-       ;; all other cases, return the noun form.
-       (let ((sgn ($sign ($realpart a))))
-         (cond ((member sgn '($neg $zero))
-                (simp-domain-error 
-                  (intl:gettext 
-                    "gamma_incomplete: gamma_incomplete(~:M,~:M) is undefined.")
-                    a z))
-               ((member sgn '($pos $pz)) ($gamma a))
-               (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
-              
-      ((eq z '$inf) 0)
-      ((and (eq z '$minf) 
-	    (eql a 0))
-       '$infinity)
-
-      ;; Check for numerical evaluation in Float or Bigfloat precision
-
-      ((float-numerical-eval-p a z)
-       (when *debug-gamma* 
-         (format t "~&SIMP-GAMMA-INCOMPLETE in float-numerical-eval-p~%"))
-       ;; a and z are Maxima numbers, at least one has a float value
-       (let ((a ($float a))
-             (z ($float z)))
-         (cond
-           ((or (= a 0.0)
-                (and (= 0 (- a (truncate a)))
-                     (< a 0.0)))
-            ;; a is zero or a negative float representing an integer.
-            ;; For these cases the numerical routines of gamma-incomplete
-            ;; do not work. Call the numerical routine for the Exponential 
-            ;; Integral E(n,z). The routine is called with a positive integer!.
-            (setq a (truncate a))
-            (complexify (* (expt z a) (expintegral-e (- 1 a) z))))
-           (t
-             (complexify (gamma-incomplete a z))))))
-
-      ((complex-float-numerical-eval-p a z)
-       (when *debug-gamma* 
-         (format t 
-           "~&SIMP-GAMMA-INCOMPLETE in complex-float-numerical-eval-p~%"))
-       ;; a and z are Maxima numbers, at least one is a complex value and
-       ;; we have at least one float part
-       (let ((ca (complex ($float ($realpart a)) ($float ($imagpart a))))
-             (cz (complex ($float ($realpart z)) ($float ($imagpart z)))))
-         (cond
-           ((and (= (imagpart ca) 0.0)
-                 (or (= (realpart ca) 0.0)
-                     (and (= 0 (- (realpart ca) (truncate (realpart ca))))
-                          (< (realpart ca) 0.0))))
-            ;; Call expintegral-e. See comment above.
-            (setq ca (truncate (realpart ca)))
-            (complexify (* (expt cz ca) (expintegral-e (- 1 ca) cz))))
-           (t
-            (complexify (gamma-incomplete ca cz))))))
-           
-      ((bigfloat-numerical-eval-p a z)
-       (when *debug-gamma* 
-         (format t "~&SIMP-GAMMA-INCOMPLETE in bigfloat-numerical-eval-p~%"))
-       (let ((a ($bfloat a))
-             (z ($bfloat z)))
-         (cond         
-           ((or (eq ($sign a) '$zero)
-                (and (eq ($sign (sub a ($truncate a))) '$zero)
-                     (eq ($sign a) '$neg)))
-            ;; Call bfloat-expintegral-e. See comment above.
-            (setq a ($truncate a))
-            ($rectform (mul (power z a) (bfloat-expintegral-e (- 1 a) z))))
-           (t
-             (bfloat-gamma-incomplete a z)))))
-
-      ((complex-bigfloat-numerical-eval-p a z)
-       (when *debug-gamma* 
-         (format t 
-           "~&SIMP-GAMMA-INCOMPLETE in complex-bigfloat-numerical-eval-p~%"))
-       (let ((ca (add ($bfloat ($realpart a))
-                      (mul '$%i ($bfloat ($imagpart a)))))
-             (cz (add ($bfloat ($realpart z)) 
-                      (mul '$%i ($bfloat ($imagpart z))))))
-         (cond         
-           ((and (eq ($sign ($imagpart ca)) '$zero)
-                 (or (eq ($sign ($realpart ca)) '$zero)
-                     (and (eq ($sign (sub ($realpart ca)
-                                          ($truncate ($realpart ca))))
-                              '$zero)
-                          (eq ($sign ($realpart ca)) '$neg))))
-            ;; Call bfloat-expintegral-e. See comment above.
-            (when *debug-gamma* 
-               (format t 
-                 "~& bigfloat-numerical-eval-p calls bfloat-expintegral-e~%"))
-            (setq a ($truncate ($realpart a)))
-            ($rectform (mul (power cz a)
-                            (bfloat-expintegral-e (- 1 a) cz))))
-           (t
-            (complex-bfloat-gamma-incomplete ca cz)))))
-
-      ;; Check for transformations and argument simplification
-
-      ((and $gamma_expand (integerp a))
-       ;; Integer or a symbol declared to be an integer. Expand in a series.
-       (let ((sgn ($sign a)))
-         (cond
-           ((eq sgn '$zero)
-            (add
-              (mul -1
-                (simplify (list '(%expintegral_ei) (mul -1 z))))
-              (mul
-                '((rat simp) 1 2)
-                (sub
-                  (simplify (list '(%log) (mul -1 z)))
-                  (simplify (list '(%log) (div -1 z)))))
-              (mul -1 (simplify (list '(%log) z)))))
-           ((member sgn '($pos $pz))
-            (mul
-              (simplify (list '(%gamma) a))
-              (power '$%e (mul -1 z))
-              (let ((index (gensumindex)))
-                (simpsum1
-                  (div 
-                    (power z index)
-                    (let (($gamma_expand nil))
-                      ;; Simplify gamma, but do not expand to avoid division 
-                      ;; by zero.
-                      (simplify (list '(%gamma) (add index 1)))))
-                  index 0 (sub a 1)))))
-           ((member sgn '($neg $nz))
-            (sub
-              (mul
-                (div
-                  (power -1 (add (mul -1 a) -1))
-                  (simplify (list '(%gamma) (add (mul -1 a) 1))))
-                (add
-                  (simplify (list '(%expintegral_ei) (mul -1 z)))
-                  (mul
-                    '((rat simp) -1 2)
-                    (sub
-                      (simplify (list '(%log) (mul -1 z)))
-                      (simplify (list '(%log) (div -1 z)))))
-                  (simplify (list '(%log) z))))
-              (mul
-                (power '$%e (mul -1 z))
-                (let ((index (gensumindex)))
-                  (simpsum1
-                    (div
-                      (power z (add index a -1))
-                      (simplify (list '($pochhammer) a index)))
-                    index 1 (mul -1 a))))))
-           (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
-
-      ((and $gamma_expand (setq ratorder (max-numeric-ratio-p a 2)))
-       ;; We have a half integral order and $gamma_expand is not NIL.
-       ;; We expand in a series with the Erfc function
-       (setq ratorder (- ratorder (/ 1 2)))
-       (cond
-         ((equal ratorder 0)
-          (mul 
-            (power '$%pi '((rat simp) 1 2))
-            (simplify (list '(%erfc) (power z '((rat simp) 1 2))))))
-         ((> ratorder 0)
-          (sub
-            (mul
-              (simplify (list '(%gamma) a))
-              (simplify (list '(%erfc) (power z '((rat simp) 1 2)))))
-            (mul
-              (power -1 (sub ratorder 1))
-              (power '$%e (mul -1 z))
-              (power z '((rat simp) 1 2))
-              (let ((index (gensumindex)))
-                (simpsum1
-                  (mul -1                      ; we get more simple results
-                    (simplify                  ; when multiplying with -1  
-                      (list 
-                       '($pochhammer)
-                        (sub '((rat simp) 1 2) ratorder)
-                        (sub ratorder (add index 1))))
-                    (power (mul -1 z) index))
-                  index 0 (sub ratorder 1))))))
-         ((< ratorder 0)
-          (setq ratorder (- ratorder))
-          (sub
-            (div
-              (mul
-                (power -1 ratorder)
-                (power '$%pi '((rat simp) 1 2))
-                (simplify (list '(%erfc) (power z '((rat simp) 1 2)))))
-              (simplify (list '($pochhammer) '((rat simp) 1 2) ratorder)))
-            (mul 
-              (power z (sub '((rat simp) 1 2) ratorder))
-              (power '$%e (mul -1 z))
-              (let ((index (gensumindex)))
-                (simpsum1
-                  (div
-                    (power z index)
-                    (simplify 
-                      (list 
-                       '($pochhammer) 
-                        (sub '((rat simp) 1 2) ratorder)  
-                        (add index 1))))
-                  index 0 (sub ratorder 1))))))))
-
-      ((and $gamma_expand (mplusp a) (integerp (cadr a)))
-       ;; Handle gamma_incomplete(a+n, z), where n is a numerical integer
-       (let ((n (cadr a))
-             (a (simplify (cons '(mplus) (cddr a)))))
-         (cond
-           ((> n 0)
-	    ;; See DLMF 8.8.9: https://dlmf.nist.gov/8.8.E9
-	    ;;
-	    ;;   gamma_incomplete(a+n,z) = pochhammer(a,n)*gamma_incomplete(a,z)
-	    ;;     + z^a*exp(-z)*sum(gamma(a+n)/gamma(a+k+1)*z^k,k,0,n-1)
-            (add
-	     (mul
-	      (simplify (list '($pochhammer) a n))
-	      (simplify (list '(%gamma_incomplete) a z)))
-	     (mul
-	      (power '$%e (mul -1 z))
-	      (power z a)
-	      (let ((gamma-a+n (simpgamma (list '(%gamma) (add a n)) 1 nil))
-		    (index (gensumindex)))
-		(simpsum1
-		 (mul
-		  (div gamma-a+n
-		       (simpgamma (list '(%gamma) (add a index 1)) 1 nil))
-		  (power z index))
-		 index 0 (add n -1))))))
-           ((< n 0)
-            (setq n (- n))
-	    ;; See http://functions.wolfram.com/06.06.17.0004.01
-	    ;;
-	    ;;   gamma_incomplate(a,z) =
-	    ;;     (-1)^n*pochhammer(1-a,n)
-	    ;;     *[gamma_incomplete(a-n,z)
-	    ;;       + z^(a-n-1)*exp(-z)*sum(z^k/pochhammer(a-n,k),k,1,n)]
-	    ;;
-	    ;; Rerarrange this in terms of gamma_incomplete(a-n,z):
-	    ;;
-	    ;;   gamma_incomplete(a-n,z) =
-	    ;;     (-1)^n*gamma_incomplete(a,z)/pochhammer(1-a,n)
-	    ;;     -z^(a-n-1)*exp(-z)*sum(z^k/pochhammer(a-n,k),k,1,n)
-	    ;;
-	    ;; Change the summation index to go from k = 0 to n-1:
-	    ;;
-	    ;;   z^(a-n-1)*sum(z^k/pochhammer(a-n,k),k,1,n)
-	    ;;     = z^(a-n-1)*sum(z^(k+1)/pochhammer(a-n,k+1),k,0,n-1)
-	    ;;     = z^(a-n)*sum(z^k/pochhammer(a-n,k+1),k,0,n-1)
-	    ;;
-	    ;;  Thuus:
-	    ;;   gamma_incomplete(a-n,z) =
-	    ;;     (-1)^n*gamma_incomplete(a,z)/pochhammer(1-a,n)
-	    ;;     -z^(a-n)*sum(z^k/pochhammer(a-n,k+1),k,0,n-1)
-            (sub
-	     ;; (-1)^n*gamma_incomplete(a,z)/pochhammer(1-a,n)
-              (div
-                (mul
-                  (power -1 n)
-                  (simplify (list '(%gamma_incomplete) a z)))
-                (simplify (list '($pochhammer) (sub 1 a) n)))
-              (mul
-                (power '$%e (mul -1 z))
-                (power z (sub a n))
-		;; sum(z^k/pochhammer(a-n,k+1),k,0,n-1)
-                (let ((index (gensumindex)))
-                  (simpsum1
-                    (div
-                      (power z index)
-                      (simplify (list '($pochhammer) (sub a n) (add index 1))))
-                    index 0 (sub n 1)))))))))
-      ((and $gamma_expand (consp a) (eq 'rat (caar a))
-	    (integerp (second a))
-	    (integerp (third a)))
-       ;; gamma_incomplete of (numeric) rational order.  Expand it out
-       ;; so that the resulting order is between 0 and 1.
-       (multiple-value-bind (n order)
-	   (floor (/ (second a) (third a)))
-	 ;; a = n + order where 0 <= order < 1.
-	 (let ((rat-order (rat (numerator order) (denominator order))))
-	   (cond
-	     ((zerop n)
-	      ;; Nothing to do if the order is already between 0 and 1
-	      (eqtest (list '(%gamma_incomplete) a z) expr))
-	     (t
-	      ;; Use gamma_incomplete(a+n,z) above. and then substitue
-	      ;; a=order.  This works for n positive or negative.
-	      (let* ((ord (gensym))
-		     (g (simplify (list '(%gamma_incomplete) (add ord n) z))))
-		($substitute rat-order ord g)))))))
-
-      (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
+;;; Incomplete Gamma function is a simplifying function
 
 (def-simplifier gamma_incomplete (a z)
   (let (($simpsum t)
@@ -1770,25 +1335,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defmfun $gamma_incomplete_generalized (a z1 z2)
-  (simplify (list '(%gamma_incomplete_generalized) a z1 z2)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; Set the properties alias, reversealias, noun and verb
-
-#+nil
-(progn
-(defprop $gamma_incomplete_generalized %gamma_incomplete_generalized alias)
-(defprop $gamma_incomplete_generalized %gamma_incomplete_generalized verb)
-
-(defprop %gamma_incomplete_generalized 
-         $gamma_incomplete_generalized reversealias)
-(defprop %gamma_incomplete_generalized 
-  $gamma_incomplete_generalized noun)
-)
-
 ;;; Generalized Incomplete Gamma function has not mirror symmetry for z1 or z2 
 ;;; on the negative real axis. 
 ;;; We support a conjugate-function which test this case.
@@ -1814,12 +1360,6 @@
              (simplify (list '(%gamma_incomplete_generalized) a z1 z2)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; Generalized Incomplete Gamma function is a simplifying function
-
-#+nil
-(defprop %gamma_incomplete_generalized 
-         simp-gamma-incomplete-generalized operators)
 
 ;;; Generalized Incomplete Gamma distributes over bags
 
@@ -1866,127 +1406,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defun simp-gamma-incomplete-generalized (expr ignored simpflag)
-  (declare (ignore ignored))
-  (arg-count-check 3 expr)
-  (let ((a  (simpcheck (cadr expr)   simpflag))
-        (z1 (simpcheck (caddr expr)  simpflag))
-        (z2 (simpcheck (cadddr expr) simpflag))
-        ($simpsum t))
-
-    (cond
-
-      ;; Check for specific values
-
-      ((zerop1 z2)
-       (let ((sgn ($sign ($realpart a))))
-         (cond 
-           ((member sgn '($pos $pz))
-            (sub
-              (simplify (list '(%gamma_incomplete) a z1))
-              (simplify (list '(%gamma) a))))
-           (t 
-            (eqtest (list '(%gamma_incomplete_generalized) a z1 z2) expr)))))
-
-      ((zerop1 z1)
-       (let ((sgn ($sign ($realpart a))))
-         (cond 
-           ((member sgn '($pos $pz))
-            (sub
-              (simplify (list '(%gamma) a))
-              (simplify (list '(%gamma_incomplete) a z2))))
-           (t 
-            (eqtest (list '(%gamma_incomplete_generalized) a z1 z2) expr)))))
-
-      ((zerop1 (sub z1 z2)) 0)
-
-      ((eq z2 '$inf) (simplify (list '(%gamma_incomplete) a z1)))
-      ((eq z1 '$inf) (mul -1 (simplify (list '(%gamma_incomplete) a z2))))
-
-      ;; Check for numerical evaluation in Float or Bigfloat precision
-      ;; Use the numerical routines of the Incomplete Gamma function
-
-      ((float-numerical-eval-p a z1 z2)
-       (complexify 
-         (- (gamma-incomplete ($float a) ($float z1)) 
-            (gamma-incomplete ($float a) ($float z2)))))
-
-      ((complex-float-numerical-eval-p a z1 z2)
-       (let ((ca  (complex ($float ($realpart a))  ($float ($imagpart a))))
-             (cz1 (complex ($float ($realpart z1)) ($float ($imagpart z1))))
-             (cz2 (complex ($float ($realpart z2)) ($float ($imagpart z2)))))
-         (complexify (- (gamma-incomplete ca cz1) (gamma-incomplete ca cz2)))))
-           
-      ((bigfloat-numerical-eval-p a z1 z2)
-       (sub (bfloat-gamma-incomplete ($bfloat a) ($bfloat z1)) 
-            (bfloat-gamma-incomplete ($bfloat a) ($bfloat z2))))
-
-      ((complex-bigfloat-numerical-eval-p a z1 z2)
-       (let ((ca  (add ($bfloat ($realpart a)) 
-                       (mul '$%i ($bfloat ($imagpart a)))))
-             (cz1 (add ($bfloat ($realpart z1))
-                       (mul '$%i ($bfloat ($imagpart z1)))))
-             (cz2 (add ($bfloat ($realpart z2))
-                       (mul '$%i ($bfloat ($imagpart z2))))))
-       (sub (complex-bfloat-gamma-incomplete ca cz1)
-            (complex-bfloat-gamma-incomplete ca cz2))))
-
-      ;; Check for transformations and argument simplification
-
-      ((and $gamma_expand (mplusp a) (integerp (cadr a)))
-       ;; Expand gamma_incomplete_generalized(a+n,z1,z2) with n an integer
-       (let ((n (cadr a))
-             (a (simplify (cons '(mplus) (cddr a)))))
-         (cond
-           ((> n 0)
-            (mul
-              (simplify (list '($pochhammer) a n))
-              (add
-                (simplify (list '(%gamma_incomplete_generalized) a z1 z2))
-                (mul
-                  (power '$%e (mul -1 z1))
-                  (let ((index (gensumindex)))
-                    (simpsum1
-                      (div
-                        (power z1 (add a index -1))
-                        (simplify (list '($pochhammer) a index)))
-                      index 1 n)))
-                (mul -1
-                  (power '$%e (mul -1 z2))
-                  (let ((index (gensumindex)))
-                    (simpsum1
-                      (div
-                        (power z2 (add a index -1))
-                        (simplify (list '($pochhammer) a index)))
-                      index 1 n))))))
-
-           ((< n 0)
-            (setq n (- n))
-            (add
-              (mul
-                (div
-                  (power -1 n)
-                  ($factor (simplify (list '($pochhammer) (sub 1 a) n))))
-                (simplify (list '(%gamma_incomplete_generalized) a z1 z2)))
-              (mul -1
-                (power '$%e (mul -1 z2))
-                (let ((index (gensumindex)))
-                  (simpsum1
-                    (div
-                      (power z1 (add a index (- n) -1))
-                      (simplify (list '($pochhammer) (sub a n) index)))
-                    index 1 n)))
-              (mul
-                (power '$%e (mul -1 z2))
-                (let ((index (gensumindex)))
-                  (simpsum1
-                    (div
-                      (power z2 (add a index (- n) -1))
-                      (simplify (list '($pochhammer) (sub a n) index)))
-                    index 1 n))))))))
-
-      (t (eqtest (list '(%gamma_incomplete_generalized) a z1 z2) expr)))))
+;;; Generalized Incomplete Gamma function is a simplifying function
 
 (def-simplifier gamma_incomplete_generalized (a z1 z2)
   (let (($simpsum t))
@@ -2115,23 +1535,6 @@
 ;;;                                           
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defmfun $gamma_incomplete_regularized (a z)
-  (simplify (list '(%gamma_incomplete_regularized) a z)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(progn
-(defprop $gamma_incomplete_regularized %gamma_incomplete_regularized alias)
-(defprop $gamma_incomplete_regularized %gamma_incomplete_regularized verb)
-
-(defprop %gamma_incomplete_regularized 
-         $gamma_incomplete_regularized reversealias)
-(defprop %gamma_incomplete_regularized 
-  $gamma_incomplete_regularized noun)
-)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Generalized Incomplete Gamma function has not mirror symmetry for z1 or z2 
@@ -2155,12 +1558,6 @@
            (list
             '($conjugate simp)
              (simplify (list '(%gamma_incomplete_regularized) a z)))))))
-
-;;; Regularized Incomplete Gamma function is a simplifying function
-
-#+nil
-(defprop %gamma_incomplete_regularized 
-         simp-gamma-incomplete-regularized operators)
 
 ;;; Regularized Incomplete Gamma distributes over bags
 
@@ -2198,186 +1595,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defun simp-gamma-incomplete-regularized (expr ignored simpflag)
-  (declare (ignore ignored))
-  (twoargcheck expr)
-  (let ((a (simpcheck (cadr expr)  simpflag))
-        (z (simpcheck (caddr expr) simpflag))
-        ($simpsum t)
-        (ratorder 0))
-
-    (cond
-
-      ;; Check for specific values
-
-      ((zerop1 z)
-       (let ((sgn ($sign ($realpart a))))
-         (cond ((member sgn '($neg $zero))
-                (simp-domain-error 
-                  (intl:gettext 
-                    "gamma_incomplete_regularized: gamma_incomplete_regularized(~:M,~:M) is undefined.")
-                    a z))
-               ((member sgn '($pos $pz)) 1)
-               (t (eqtest (list '(%gamma_incomplete_regularized) a z) expr)))))  
-
-      ((zerop1 a) 0)
-      ((eq z '$inf) 0)
-
-      ;; Check for numerical evaluation in Float or Bigfloat precision
-
-      ((float-numerical-eval-p a z)
-       (complexify
-       ;; gamma_incomplete returns a regularized result
-         (gamma-incomplete ($float a) ($float z) t)))
-
-      ((complex-float-numerical-eval-p a z)
-       (let ((ca (complex ($float ($realpart a)) ($float ($imagpart a))))
-             (cz (complex ($float ($realpart z)) ($float ($imagpart z)))))
-         ;; gamma_incomplete returns a regularized result
-         (complexify (gamma-incomplete ca cz t))))
-           
-      ((bigfloat-numerical-eval-p a z)
-       (div (bfloat-gamma-incomplete ($bfloat a) ($bfloat z)) 
-            (simplify (list '(%gamma) ($bfloat a)))))
-
-      ((complex-bigfloat-numerical-eval-p a z)
-       (let ((ca (add ($bfloat ($realpart a)) 
-                      (mul '$%i ($bfloat ($imagpart a)))))
-             (cz (add ($bfloat ($realpart z)) 
-                 (mul '$%i ($bfloat ($imagpart z))))))
-       ($rectform
-         (div
-           (complex-bfloat-gamma-incomplete ca cz)
-           (simplify (list '(%gamma) ca))))))
-
-      ;; Check for transformations and argument simplification
-
-      ((and $gamma_expand (integerp a))
-       ;; An integer. Expand the expression.
-       (let ((sgn ($sign a)))
-         (cond
-           ((member sgn '($pos $pz))
-            (mul
-              (power '$%e (mul -1 z))
-              (let ((index (gensumindex)))
-                (simpsum1
-                  (div 
-                    (power z index)
-                    (let (($gamma_expand nil))
-                      (simplify (list '(%gamma) (add index 1)))))
-                  index 0 (sub a 1)))))
-           ((member sgn '($neg $nz)) 0)
-           (t (eqtest (list '(%gamma_incomplete_regularized) a z) expr)))))
-
-      ((and $gamma_expand (setq ratorder (max-numeric-ratio-p a 2)))
-       ;; We have a half integral order and $gamma_expand is not NIL.
-       ;; We expand in a series with the Erfc function
-       (setq ratorder (- ratorder (/ 1 2)))
-       (when *debug-gamma*
-         (format t "~&SIMP-GAMMA-INCOMPLETE-REGULARIZED in RATORDER~%")
-         (format t "~&   : a        = ~A~%" a)
-         (format t "~&   : ratorder = ~A~%" ratorder))
-       (cond
-         ((equal ratorder 0)
-          (simplify (list '(%erfc) (power z '((rat simp) 1 2)))))
-
-         ((> ratorder 0)
-          (add                               
-            (simplify (list '(%erfc) (power z '((rat simp) 1 2))))
-            (mul
-              (power -1 (sub ratorder 1))
-              (power '$%e (mul -1 z))
-              (power z '((rat simp) 1 2))
-              (div 1 (simplify (list '(%gamma) a)))             
-              (let ((index (gensumindex)))
-                (simpsum1
-                  (mul
-                    (power (mul -1 z) index)
-                    (simplify (list '($pochhammer) 
-                                    (sub '((rat simp) 1 2) ratorder)
-                                    (sub ratorder (add index 1)))))
-                  index 0 (sub ratorder 1))))))
-
-         ((< ratorder 0)
-          (setq ratorder (- ratorder))
-          (add
-            (simplify (list '(%erfc) (power z '((rat simp) 1 2))))
-            (mul -1
-              (power '$%e (mul -1 z))
-              (power z (sub '((rat simp) 1 2) ratorder))
-              (inv (simplify (list '(%gamma) (sub '((rat simp) 1 2) ratorder))))
-              (let ((index (gensumindex)))
-                (simpsum1
-                  (div
-                    (power z index)
-                    (simplify (list '($pochhammer) 
-                                    (sub '((rat simp) 1 2) ratorder) 
-                                    (add index 1))))
-                  index 0 (sub ratorder 1))))))))
-
-      ((and $gamma_expand (mplusp a) (integerp (cadr a)))
-       (when *debug-gamma* 
-         (format t "~&SIMP-GAMMA-INCOMPLETE-REGULARIZED in COND (mplusp)~%"))
-       (let ((n (cadr a))
-             (a (simplify (cons '(mplus) (cddr a)))))
-         (cond
-           ((> n 0)
-            (add
-              (simplify (list '(%gamma_incomplete_regularized) a z))
-              ;; We factor the second summand. 
-              ;; Some factors vanish and the result is more readable.
-              ($factor
-                (mul
-                  (power '$%e (mul -1 z))
-                  (power z (add a -1))
-                  (div 1 (simplify (list '(%gamma) a)))
-                  (let ((index (gensumindex)))
-                    (simpsum1
-                      (div
-                        (power z index)
-                        (simplify (list '($pochhammer) a index)))
-                      index 1 n))))))
-           ((< n 0)
-            (setq n (- n))
-            (add
-              (simplify (list '(%gamma_incomplete_regularized) a z))
-              ;; We factor the second summand.
-              ($factor
-                (mul -1
-                  (power '$%e (mul -1 z))
-                  (power z (sub a (add n 1)))
-                  (div 1 (simplify (list '(%gamma) (add a (- n)))))
-                  (let ((index (gensumindex)))
-                    (simpsum1
-                      (div
-                        (power z index)
-                        (simplify (list '($pochhammer) (add a (- n)) index)))
-                      index 1 n)))))))))
-      ((and $gamma_expand (consp a) (eq 'rat (caar a))
-	    (integerp (second a))
-	    (integerp (third a)))
-       ;; gamma_incomplete_regularized of numeric rational order.
-       ;; Expand it out so that the resulting order is between 0 and
-       ;; 1.  Use gamma_incomplete_regularized(a+n,z) to do the dirty
-       ;; work.
-       (multiple-value-bind (n order)
-	   (floor (/ (second a) (third a)))
-	 ;; a = n + order where 0 <= order < 1.
-	 (let ((rat-order (rat (numerator order) (denominator order))))
-	   (cond
-	     ((zerop n)
-	      ;; Nothing to do if the order is already between 0 and 1
-	      (eqtest (list '(%gamma_incomplete_regularized) a z) expr))
-	     (t
-	      ;; Use gamma_incomplete_regularized(a+n,z) above. and
-	      ;; then substitue a=order.  This works for n positive or
-	      ;; negative.
-	      (let* ((ord (gensym))
-		     (g (simplify (list '(%gamma_incomplete_regularized) (add ord n) z))))
-		($substitute rat-order ord g)))))))
-      
-      (t (eqtest (list '(%gamma_incomplete_regularized) a z) expr)))))
+;;; Regularized Incomplete Gamma function is a simplifying function
 
 (def-simplifier gamma_incomplete_regularized (a z)
   (let (($simpsum t)
@@ -2816,17 +2034,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(progn
-  (defprop $erf %erf alias)
-(defprop $erf %erf verb)
-
-(defprop %erf $erf reversealias)
-(defprop %erf $erf noun)
-)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;; erf has mirror symmetry
 
 (defprop %erf t commutes-with-conjugate)
@@ -2834,11 +2041,6 @@
 ;;; erf is an odd function
 
 (defprop %erf odd-function-reflect reflection-rule)
-
-;;; erf is a simplifying function
-
-#+nil
-(defprop %erf simp-erf operators)
 
 ;;; erf distributes over bags
 
@@ -2876,59 +2078,7 @@
              (list '(mlist simp) '((rat simp) 3 2))
              (mul -1 (power z 2)))))
 
-#+nil
-(defun simp-erf (expr z simpflag)
-  (oneargcheck expr)
-  (setq z (simpcheck (cadr expr) simpflag))
-  (cond
-
-    ;; Check for specific values
-
-    ((zerop1 z) z)
-    ((eq z '$inf) 1)
-    ((eq z '$minf) -1)
-
-    ;; Check for numerical evaluation
-
-    ((float-numerical-eval-p z)
-     (bigfloat::bf-erf ($float z)))
-    ((complex-float-numerical-eval-p z)
-     (complexify 
-       (bigfloat::bf-erf (complex ($float ($realpart z)) ($float ($imagpart z))))))
-    ((bigfloat-numerical-eval-p z)
-     (to (bigfloat::bf-erf (bigfloat:to ($bfloat z)))))
-    ((complex-bigfloat-numerical-eval-p z)
-     (to (bigfloat::bf-erf
-	  (bigfloat:to (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))))
-
-    ;; Argument simplification
-    
-    ((taylorize (mop expr) (second expr)))
-    ((and $erf_%iargs 
-          (not $erf_representation)
-          (multiplep z '$%i))
-     (mul '$%i (simplify (list '(%erfi) (coeff z '$%i 1)))))
-    ((apply-reflection-simp (mop expr) z $trigsign))
-    
-    ;; Representation through more general functions
-    
-    ($hypergeometric_representation
-     (erf-hypergeometric z))
-    
-    ;; Transformation to Erfc or Erfi
-    
-    ((and $erf_representation
-          (not (eq $erf_representation '$erf)))
-     (case $erf_representation
-       (%erfc
-        (sub 1 (take '(%erfc) z)))
-       (%erfi
-        (mul -1 '$%i (take '(%erfi) (mul '$%i z))))
-       (t
-        (eqtest (list '(%erf) z) expr))))
-
-    (t
-     (eqtest (list '(%erf) z) expr))))
+;;; erf is a simplifying function
 
 (def-simplifier erf (z)
   (cond
@@ -3132,23 +2282,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defmfun $erf_generalized (z1 z2)
-  (simplify (list '(%erf_generalized) z1 z2)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(progn
-(defprop $erf_generalized %erf_generalized alias)
-(defprop $erf_generalized %erf_generalized verb)
-
-(defprop %erf_generalized $erf_generalized reversealias)
-(defprop %erf_generalized $erf_generalized noun)
-)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;; Generalized Erf has mirror symmetry
 
 (defprop %erf_generalized t commutes-with-conjugate)
@@ -3166,11 +2299,6 @@
       (meval '(($declare) %erf_generalized $antisymmetric))
       ;; Let's remove built-in symbols from list for user-defined properties.
       (setq $props (remove '%erf_generalized $props))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defprop %erf_generalized simp-erf-generalized operators)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -3213,73 +2341,6 @@
        (simplify (list '(%erf_generalized) z1 z2))))))
 
 ;;; ----------------------------------------------------------------------------
-
-#+nil
-(defun simp-erf-generalized (expr ignored simpflag)
-  (declare (ignore ignored))
-  (twoargcheck expr)
-  (let ((z1 (simpcheck (cadr expr) simpflag))
-        (z2 (simpcheck (caddr expr) simpflag)))
-    (cond
-      
-      ;; Check for specific values
-      
-      ((and (zerop1 z1) (zerop1 z2)) 0)
-      ((zerop1 z1) (take '(%erf) z2))
-      ((zerop1 z2) (mul -1 (take '(%erf) z1)))
-      ((or (eq z2 '$inf)
-           (alike1 z2 '((mtimes) -1 $minf)))
-       (sub 1 (take '(%erf) z1)))
-      ((or (eq z2 '$minf)
-           (alike1 z2 '((mtimes) -1 $inf)))
-       (sub (mul -1 (take '(%erf) z1)) 1))
-      ((or (eq z1 '$inf)
-           (alike1 z1 '((mtimes) -1 $minf)))
-       (sub (take '(%erf) z2) 1))
-      ((or (eq z1 '$minf)
-           (alike1 z1 '((mtimes) -1 $inf)))
-       (add (take '(%erf) z2) 1))
-
-      ;; Check for numerical evaluation. Use erf(z1,z2) = erf(z2)-erf(z1)
-
-      ((float-numerical-eval-p z1 z2)
-       (- (bigfloat::bf-erf ($float z2))
-	  (bigfloat::bf-erf ($float z1))))
-      ((complex-float-numerical-eval-p z1 z2)
-       (complexify 
-         (- 
-           (bigfloat::bf-erf 
-             (complex ($float ($realpart z2)) ($float ($imagpart z2))))
-           (bigfloat::bf-erf 
-             (complex ($float ($realpart z1)) ($float ($imagpart z1)))))))
-      ((bigfloat-numerical-eval-p z1 z2)
-       (to (bigfloat:-
-	    (bigfloat::bf-erf (bigfloat:to ($bfloat z2)))
-	    (bigfloat::bf-erf (bigfloat:to ($bfloat z1))))))
-      ((complex-bigfloat-numerical-eval-p z1 z2)
-       (to (bigfloat:-
-	    (bigfloat::bf-erf 
-	     (bigfloat:to (add ($bfloat ($realpart z2)) (mul '$%i ($bfloat ($imagpart z2))))))
-	    (bigfloat::bf-erf 
-	     (bigfloat:to (add ($bfloat ($realpart z1)) (mul '$%i ($bfloat ($imagpart z1)))))))))
-
-      ;; Argument simplification
-      
-      ((and $trigsign (great (mul -1 z1) z1) (great (mul -1 z2) z2))
-       (mul -1 (simplify (list '(%erf_generalized) (mul -1 z1) (mul -1 z2)))))
-
-      ;; Representation through more general functions
-
-      ($hypergeometric_representation
-       (sub (erf-hypergeometric z2) (erf-hypergeometric z1)))
-
-      ;; Transformation to Erf
-
-      ($erf_representation
-       (sub (simplify (list '(%erf) z2)) (simplify (list '(%erf) z1))))
-
-      (t
-       (eqtest (list '(%erf_generalized) z1 z2) expr)))))
 
 (def-simplifier erf_generalized (z1 z2)
   (cond
@@ -3356,22 +2417,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(progn
-(defprop $erfc %erfc alias)
-(defprop $erfc %erfc verb)
-
-(defprop %erfc $erfc reversealias)
-(defprop %erfc $erfc noun)
-)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defprop %erfc t commutes-with-conjugate)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defprop %erfc simp-erfc operators)
 
 ;;; Complementary Error function distributes over bags
 
@@ -3427,49 +2473,6 @@
 
 ;;; ----------------------------------------------------------------------------
 
-#+nil
-(defun simp-erfc (expr z simpflag)
-  (oneargcheck expr)
-  (setq z (simpcheck (cadr expr) simpflag))
-  (cond
-
-    ;; Check for specific values
-
-    ((zerop1 z) 1)
-    ((eq z '$inf) 0)
-    ((eq z '$minf) 2)
-
-    ;; Check for numerical evaluation.
-
-    ((numerical-eval-p z)
-     (to (bigfloat::bf-erfc (bigfloat:to z))))
-
-    ;; Argument simplification
-
-    ((taylorize (mop expr) (second expr)))
-    ((and $trigsign (great (mul -1 z) z))
-     (sub 2 (simplify (list  '(%erfc) (mul -1 z)))))
-    
-    ;; Representation through more general functions
-    
-    ($hypergeometric_representation
-     (sub 1 (erf-hypergeometric z)))
-    
-    ;; Transformation to Erf or Erfi
-
-    ((and $erf_representation
-          (not (eq $erf_representation '$erfc)))
-     (case $erf_representation
-       (%erf
-        (sub 1 (take '(%erf) z)))
-       (%erfi
-        (add 1 (mul '$%i (take '(%erfi) (mul '$%i z)))))
-       (t
-        (eqtest (list '(%erfc) z) expr))))
-    
-    (t
-     (eqtest (list '(%erfc) z) expr))))
-
 (def-simplifier erfc (z)
   (cond
 
@@ -3523,14 +2526,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(progn
-(defprop $erfi %erfi alias)
-(defprop $erfi %erfi verb)
-
-(defprop %erfi $erfi reversealias)
-(defprop %erfi $erfi noun)
-)
 ;;; erfi has mirror symmetry
 
 (defprop %erfi t commutes-with-conjugate)
@@ -3538,11 +2533,6 @@
 ;;; erfi is an odd function
 
 (defprop %erfi odd-function-reflect reflection-rule)
-
-;;; erfi is an simplifying function
-
-#+nil
-(defprop %erfi simp-erfi operators)
 
 ;;; erfi distributes over bags
 
@@ -3601,50 +2591,7 @@
 
 (in-package :maxima)
 
-#+nil
-(defun simp-erfi (expr z simpflag)
-  (oneargcheck expr)
-  (setq z (simpcheck (cadr expr) simpflag))
-  (cond
-
-    ;; Check for specific values
-
-    ((zerop1 z) z)
-    ((eq z '$inf) '$inf)
-    ((eq z '$minf) '$minf)
-
-    ;; Check for numerical evaluation. Use erfi(z) = -%i*erf(%i*z).
-
-    ((numerical-eval-p z)
-     (to (bigfloat::bf-erfi (bigfloat:to z))))
-
-    ;; Argument simplification
-
-    ((taylorize (mop expr) (second expr)))
-    ((and $erf_%iargs
-          (multiplep z '$%i))
-     (mul '$%i (simplify (list '(%erf) (coeff z '$%i 1)))))
-    ((apply-reflection-simp (mop expr) z $trigsign))
-
-    ;; Representation through more general functions
-    
-    ($hypergeometric_representation
-     (mul -1 '$%i (erf-hypergeometric (mul '$%i z))))
-    
-    ;; Transformation to Erf or Erfc
-    
-    ((and $erf_representation
-          (not (eq $erf_representation '$erfi)))
-     (case $erf_representation
-       (%erf
-        (mul -1 '$%i (take '(%erf) (mul '$%i z))))
-       (%erfc
-        (sub (mul '$%i (take '(%erfc) (mul '$%i z))) '$%i))
-       (t
-        (eqtest (list '(%erfi) z) expr))))
-    
-    (t
-     (eqtest (list '(%erfi) z) expr))))
+;;; erfi is an simplifying function
 
 (def-simplifier erfi (z)
   (cond
@@ -3693,29 +2640,6 @@
 ;;; The implementation of the Inverse Error function
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defmfun $inverse_erf (z)
-  (simplify (list '(%inverse_erf) z)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; Set properties to give full support to the parser and display
-
-#+nil
-(progn
-(defprop $inverse_erf %inverse_erf alias)
-(defprop $inverse_erf %inverse_erf verb)
-
-(defprop %inverse_erf $inverse_erf reversealias)
-(defprop %inverse_erf $inverse_erf noun)
-)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; The Inverse Error function is a simplifying function
-
-#+nil
-(defprop %inverse_erf simp-inverse-erf operators)
 
 ;;; The Inverse Error function distributes over bags
 
@@ -3767,21 +2691,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
           
-#+nil
-(defun simp-inverse-erf (expr z simpflag)
-  (oneargcheck expr)
-  (setq z (simpcheck (cadr expr) simpflag))
-  (cond
-    ((or (onep1 z)
-         (onep1 (mul -1 z)))
-     (simp-domain-error 
-       (intl:gettext "inverse_erf: inverse_erf(~:M) is undefined.") z))
-    ((zerop1 z) z)
-    ((numerical-eval-p z)
-     (to (bigfloat::bf-inverse-erf (bigfloat:to z))))
-    ((taylorize (mop expr) (cadr expr)))
-    (t
-     (eqtest (list '(%inverse_erf) z) expr))))
+;;; The Inverse Error function is a simplifying function
 
 (def-simplifier inverse_erf (z)
   (cond
@@ -3801,28 +2711,6 @@
 ;;; The implementation of the Inverse Complementary Error function
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defmfun $inverse_erfc (z)
-  (simplify (list '(%inverse_erfc) z)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; Set properties to give full support to the parser and display
-#+nil
-(progn
-(defprop $inverse_erfc %inverse_erfc alias)
-(defprop $inverse_erfc %inverse_erfc verb)
-
-(defprop %inverse_erfc $inverse_erfc reversealias)
-(defprop %inverse_erfc $inverse_erfc noun)
-)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; Inverse Complementary Error function is a simplifying function
-
-#+nil
-(defprop %inverse_erfc simp-inverse-erfc operators)
 
 ;;; Inverse Complementary Error function distributes over bags
 
@@ -3879,22 +2767,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
           
-#+nil
-(defun simp-inverse-erfc (expr z simpflag)
-  (oneargcheck expr)
-  (setq z (simpcheck (cadr expr) simpflag))
-  (cond
-    ((or (zerop1 z)
-         (zerop1 (add z -2)))
-     (simp-domain-error 
-       (intl:gettext "inverse_erfc: inverse_erfc(~:M) is undefined.") z))
-    ((onep1 z) 0)
-    ((numerical-eval-p z)
-     (to (bigfloat::bf-inverse-erfc (bigfloat:to z))))
-    ((taylorize (mop expr) (cadr expr)))
-    (t
-     (eqtest (list '(%inverse_erfc) z) expr))))
-
+;;; Inverse Complementary Error function is a simplifying function
 (def-simplifier inverse_erfc (z)
   (cond
     ((or (zerop1 z)
@@ -4083,26 +2956,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defmfun $fresnel_s (z)
-  (simplify (list '(%fresnel_s) z)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; Set properties to give full support to the parser and display
-#+nil
-(progn
-(defprop $fresnel_s %fresnel_s alias)
-(defprop $fresnel_s %fresnel_s verb)
-
-(defprop %fresnel_s $fresnel_s reversealias)
-(defprop %fresnel_s $fresnel_s noun)
-)
-;;; fresnel_s is a simplifying function
-
-#+nil
-(defprop %fresnel_s simp-fresnel-s operators)
-
 ;;; fresnel_s distributes over bags
 
 (defprop %fresnel_s (mlist $matrix mequal) distribute_over)
@@ -4249,56 +3102,8 @@
 	    fc))))
 
 (in-package :maxima)
-#+nil
-(defun simp-fresnel-s (expr z simpflag)
-  (oneargcheck expr)
-  (setq z (simpcheck (cadr expr) simpflag))
-  (cond
 
-    ;; Check for specific values
-
-    ((zerop1 z) z)
-    ((eq z '$inf)  '((rat simp) 1 2))
-    ((eq z '$minf) '((rat simp) -1 2))
-    
-    ;; Check for numerical evaluation
-    ((numerical-eval-p z)
-     (to (bigfloat::bf-fresnel-s (bigfloat::to z))))
-
-    ;; Check for argument simplification
-
-    ((taylorize (mop expr) (second expr)))
-    ((and $%iargs (multiplep z '$%i))
-     (mul -1 '$%i (simplify (list '(%fresnel_s) (coeff z '$%i 1)))))
-    ((apply-reflection-simp (mop expr) z $trigsign))
-
-    ;; Representation through equivalent functions
-
-    ($erf_representation
-      (mul
-        (div (add 1 '$%i) 4)
-        (add
-          (simplify 
-            (list 
-              '(%erf) 
-              (mul (div (add 1 '$%i) 2) (power '$%pi '((rat simp) 1 2)) z)))
-          (mul -1 '$%i
-            (simplify 
-              (list 
-                '(%erf) 
-                (mul (div (sub 1 '$%i) 2) 
-                     (power '$%pi '((rat simp) 1 2)) z)))))))
-
-    ($hypergeometric_representation
-      (mul (div (mul '$%pi (power z 3)) 6)
-           (take '($hypergeometric)
-                 (list '(mlist) (div 3 4))
-                 (list '(mlist) (div 3 2) (div 7 4))
-                 (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
-
-    (t
-     (eqtest (list '(%fresnel_s) z) expr))))
-
+;;; fresnel_s is a simplifying function
 (def-simplifier fresnel_s (z)
   (cond
 
@@ -4351,27 +3156,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defmfun $fresnel_c (z)
-  (simplify (list '(%fresnel_c) z)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; Set properties to give full support to the parser and display
-
-#+nil
-(progn
-(defprop $fresnel_c %fresnel_c alias)
-(defprop $fresnel_c %fresnel_c verb)
-
-(defprop %fresnel_c $fresnel_c reversealias)
-(defprop %fresnel_c $fresnel_c noun)
-)
-;;; fresnel_c is a simplifying function
-
-#+nil
-(defprop %fresnel_c simp-fresnel-c operators)
-
 ;;; fresnel_c distributes over bags
 
 (defprop %fresnel_c (mlist $matrix mequal) distribute_over)
@@ -4421,57 +3205,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defun simp-fresnel-c (expr z simpflag)
-  (oneargcheck expr)
-  (setq z (simpcheck (cadr expr) simpflag))
-  (cond
-
-    ;; Check for specific values
-
-    ((zerop1 z) z)
-    ((eq z '$inf)  '((rat simp) 1 2))
-    ((eq z '$minf) '((rat simp) -1 2))
-    
-    ;; Check for numerical evaluation
-    ((numerical-eval-p z)
-     (to (bigfloat::bf-fresnel-c (bigfloat::to z))))
-
-
-    ;; Check for argument simplification
-
-    ((taylorize (mop expr) (second expr)))
-    ((and $%iargs (multiplep z '$%i))
-     (mul '$%i (simplify (list '(%fresnel_c) (coeff z '$%i 1)))))
-    ((apply-reflection-simp (mop expr) z $trigsign))
-
-    ;; Representation through equivalent functions
-
-    ($erf_representation
-      (mul
-        (div (sub 1 '$%i) 4)
-        (add
-          (simplify 
-            (list 
-              '(%erf) 
-              (mul (div (add 1 '$%i) 2) (power '$%pi '((rat simp) 1 2)) z)))
-          (mul '$%i
-            (simplify 
-              (list 
-                '(%erf) 
-                (mul (div (sub 1 '$%i) 2) 
-                     (power '$%pi '((rat simp) 1 2)) z)))))))
-
-    ($hypergeometric_representation
-      (mul z
-           (take '($hypergeometric)
-                 (list '(mlist) (div 1 4))
-                 (list '(mlist) (div 1 2) (div 5 4))
-                 (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
-
-    (t
-      (eqtest (list '(%fresnel_c) z) expr))))
-
+;;; fresnel_c is a simplifying function
 (def-simplifier fresnel_c (z)
   (cond
 
@@ -4550,24 +3284,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defmfun $beta_incomplete (a b z)
-  (simplify (list '(%beta_incomplete) a b z)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-#+nil
-(progn
-(defprop $beta_incomplete %beta_incomplete alias)
-(defprop $beta_incomplete %beta_incomplete verb)
-
-(defprop %beta_incomplete $beta_incomplete reversealias)
-(defprop %beta_incomplete $beta_incomplete noun)
-)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defprop %beta_incomplete simp-beta-incomplete operators)
-
 ;;; beta_incomplete distributes over bags
 
 (defprop %beta_incomplete (mlist $matrix mequal) distribute_over)
@@ -4622,186 +3338,6 @@
   integral)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defun simp-beta-incomplete (expr ignored simpflag)
-  (declare (ignore ignored))
-  (arg-count-check 3 expr)
-  (let ((a (simpcheck (cadr expr)   simpflag))
-        (b (simpcheck (caddr expr)  simpflag))
-        (z (simpcheck (cadddr expr) simpflag))
-        ($simpsum t))
-    (when *debug-gamma* 
-         (format t "~&SIMP-BETA-INCOMPLETE:~%")
-         (format t "~&   : a = ~A~%" a)
-         (format t "~&   : b = ~A~%" b)
-         (format t "~&   : z = ~A~%" z))
-    (cond
-
-      ;; Check for specific values
-
-      ((zerop1 z)
-       (let ((sgn ($sign ($realpart a))))
-         (cond ((member sgn '($neg $zero))
-                (simp-domain-error 
-                  (intl:gettext 
-                    "beta_incomplete: beta_incomplete(~:M,~:M,~:M) is undefined.") 
-                    a b z))
-               ((member sgn '($pos $pz)) 
-                z)
-               (t 
-                (eqtest (list '(%beta_incomplete) a b z) expr)))))
-
-      ((and (onep1 z) (eq ($sign ($realpart b)) '$pos))
-       ;; z=1 and realpart(b)>0. Simplify to a Beta function.
-       ;; If we have to evaluate numerically preserve the type.
-       (cond
-         ((complex-float-numerical-eval-p a b z)
-          (simplify (list '($beta) ($float a) ($float b))))
-         ((complex-bigfloat-numerical-eval-p a b z)
-          (simplify (list '($beta) ($bfloat a) ($bfloat b))))
-         (t
-          (simplify (list '($beta) a b)))))
-      
-      ((or (zerop1 a)
-           (and (integer-representation-p a)
-                (eq ($sign a) '$neg)
-                (or (and (mnump b) 
-                         (not (integer-representation-p b)))
-                    (eq ($sign (add a b)) '$pos))))
-       ;; The argument a is zero or a is negative and the argument b is
-       ;; not in a valid range. Beta incomplete is undefined.
-       ;; It would be more correct to return Complex infinity.
-       (simp-domain-error 
-         (intl:gettext 
-           "beta_incomplete: beta_incomplete(~:M,~:M,~:M) is undefined.") a b z))
-
-      ;; Check for numerical evaluation in Float or Bigfloat precision
-
-      ((complex-float-numerical-eval-p a b z)
-       (cond
-         ((not (and (integer-representation-p a) (< a 0.0)))
-          (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0))))
-            (beta-incomplete ($float a) ($float b) ($float z))))
-         (t
-           ;; Negative integer a and b is in a valid range. Expand.
-           ($rectform 
-             (beta-incomplete-expand-negative-integer 
-               (truncate a) ($float b) ($float z))))))
-           
-      ((complex-bigfloat-numerical-eval-p a b z)
-       (cond
-         ((not (and (integer-representation-p a) (eq ($sign a) '$neg)))
-          (let ((*beta-incomplete-eps*
-                  (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
-            (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z))))
-         (t
-           ;; Negative integer a and b is in a valid range. Expand.          
-           ($rectform
-             (beta-incomplete-expand-negative-integer
-               ($truncate a) ($bfloat b) ($bfloat z))))))
-
-      ;; Argument simplifications and transformations
-      
-      ((and (integerp b) 
-            (plusp b)
-            (or (not (integerp a))
-                (plusp a)))
-       ;; Expand for b a positive integer and a not a negative integer.
-       (mul
-         (simplify (list '($beta) a b))
-         (power z a)
-         (let ((index (gensumindex)))
-           (simpsum1
-             (div
-               (mul
-                 (simplify (list '($pochhammer) a index))
-                 (power (sub 1 z) index))
-              (simplify (list '(mfactorial) index)))
-             index 0 (sub b 1)))))
-      
-      ((and (integerp a) (plusp a))
-       ;; Expand for a a positive integer.
-       (mul
-         (simplify (list '($beta) a b))
-         (sub 1
-           (mul
-             (power (sub 1 z) b)
-             (let ((index (gensumindex)))
-               (simpsum1 
-                 (div
-                   (mul
-                     (simplify (list '($pochhammer) b index))
-                     (power z index))
-                 (simplify (list '(mfactorial) index)))
-               index 0 (sub a 1)))))))
-      
-      ((and (integerp a) (minusp a) (integerp b) (plusp b) (<= b (- a)))
-       ;; Expand for a a negative integer and b an integer with b <= -a.
-       (mul
-         (power z a)
-         (let ((index (gensumindex)))
-           (simpsum1
-             (div
-               (mul (simplify (list '($pochhammer) (sub 1 b) index))
-                    (power z index))
-               (mul (add index a)
-                    (simplify (list '(mfactorial) index))))
-             index 0 (sub b 1)))))
-
-      ((and $beta_expand (mplusp a) (integerp (cadr a)) (plusp (cadr a)))
-       (let ((n (cadr a))
-             (a (simplify (cons '(mplus) (cddr a)))))
-         (sub
-           (mul
-             (div
-               (simplify (list '($pochhammer) a n))
-               (simplify (list '($pochhammer) (add a b) n)))
-             ($beta_incomplete a b z))
-           (mul
-             (power (add a b n -1) -1)
-             (let ((index (gensumindex)))
-               (simpsum1
-                 (mul
-                   (div
-                     (simplify (list '($pochhammer) 
-                                     (add 1 (mul -1 a) (mul -1 n))
-                                     index))
-                     (simplify (list '($pochhammer)
-                                     (add 2 (mul -1 a) (mul -1 b) (mul -1 n))
-                                     index)))
-                   (mul (power (sub 1 z) b)
-                        (power z (add a n (mul -1 index) -1))))
-                index 0 (sub n 1)))))))
-
-      ((and $beta_expand (mplusp a) (integerp (cadr a)) (minusp (cadr a)))
-       (let ((n (- (cadr a)))
-             (a (simplify (cons '(mplus) (cddr a)))))
-         (sub
-           (mul
-             (div
-               (simplify (list '($pochhammer) (add 1 (mul -1 a) (mul -1 b)) n))
-               (simplify (list '($pochhammer) (sub 1 a) n)))
-             ($beta_incomplete a b z))
-           (mul
-             (div
-               (simplify 
-                 (list '($pochhammer) (add 2 (mul -1 a) (mul -1 b)) (sub n 1)))
-               (simplify (list '($pochhammer) (sub 1 a) n)))
-             (let ((index (gensumindex)))
-               (simpsum1
-                 (mul
-                   (div
-                     (simplify (list '($pochhammer) (sub 1 a) index))
-                     (simplify (list '($pochhammer)
-                                     (add 2 (mul -1 a) (mul -1 b))
-                                     index)))
-                   (mul (power (sub 1 z) b)
-                        (power z (add a (mul -1 index) -1))))
-                index 0 (sub n 1)))))))
-      
-      (t
-       (eqtest (list '(%beta_incomplete) a b z) expr)))))
 
 (def-simplifier beta_incomplete (a b z)
   (let (($simpsum t))
@@ -5070,26 +3606,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defmfun $beta_incomplete_generalized (a b z1 z2)
-  (simplify (list '(%beta_incomplete_generalized) a b z1 z2)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(progn
-(defprop $beta_incomplete_generalized %beta_incomplete_generalized alias)
-(defprop $beta_incomplete_generalized %beta_incomplete_generalized verb)
-
-(defprop %beta_incomplete_generalized $beta_incomplete_generalized reversealias)
-(defprop %beta_incomplete_generalized $beta_incomplete_generalized noun)
-)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defprop %beta_incomplete_generalized 
-         simp-beta-incomplete-generalized operators)
-
 ;;; beta_incomplete_generalized distributes over bags
 
 (defprop %beta_incomplete_generalized (mlist $matrix mequal) distribute_over)
@@ -5207,188 +3723,6 @@
   integral)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defun simp-beta-incomplete-generalized (expr ignored simpflag)
-  (declare (ignore ignored))
-  (arg-count-check 4 expr)
-  (let ((a  (simpcheck (second expr) simpflag))
-        (b  (simpcheck (third expr)  simpflag))
-        (z1 (simpcheck (fourth expr) simpflag))
-        (z2 (simpcheck (fifth expr)  simpflag))
-        ($simpsum t))
-    (cond
-
-      ;; Check for specific values
-
-      ((zerop1 z2)
-       (let ((sgn ($sign ($realpart a))))
-         (cond ((eq sgn '$neg)
-                (simp-domain-error 
-                  (intl:gettext 
-                    "beta_incomplete_generalized: beta_incomplete_generalized(~:M,~:M,~:M,~:M) is undefined.") 
-                    a b z1 z2))
-               ((member sgn '($pos $pz)) 
-                (mul -1 (ftake '%beta_incomplete a b z1)))
-               (t 
-                (eqtest 
-                  (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
-
-      ((zerop1 z1)
-       (let ((sgn ($sign ($realpart a))))
-         (cond ((eq sgn '$neg)
-                (simp-domain-error 
-                  (intl:gettext 
-                    "beta_incomplete_generalized: beta_incomplete_generalized(~:M,~:M,~:M,~:M) is undefined.") 
-                    a b z1 z2))
-               ((member sgn '($pos $pz)) 
-                (mul -1 (ftake '%beta_incomplete a b z2)))
-               (t 
-                (eqtest 
-                  (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
-
-      ((and (onep1 z2) (or (not (mnump a)) (not (mnump b)) (not (mnump z1))))
-       (let ((sgn ($sign ($realpart b))))
-         (cond ((member sgn '($pos $pz)) 
-                (sub (simplify (list '($beta) a b))
-                     (ftake '%beta_incomplete a b z1)))
-               (t 
-                (eqtest 
-                  (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
-
-      ((and (onep1 z1) (or (not (mnump a)) (not (mnump b)) (not (mnump z2))))
-       (let ((sgn ($sign ($realpart b))))
-         (cond ((member sgn '($pos $pz)) 
-                (sub (ftake '%beta_incomplete a b z2) 
-                     (simplify (list '($beta) a b))))
-               (t 
-                (eqtest 
-                  (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
-
-      ;; Check for numerical evaluation in Float or Bigfloat precision
-
-      ((complex-float-numerical-eval-p a b z1 z2)
-       (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0))))
-         (sub (beta-incomplete ($float a) ($float b) ($float z2))
-              (beta-incomplete ($float a) ($float b) ($float z1)))))
-           
-      ((complex-bigfloat-numerical-eval-p a b z1 z2)
-       (let ((*beta-incomplete-eps*
-               (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
-         (sub (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z2))
-              (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z1)))))
-
-      ;; Check for argument simplifications and transformations
-
-      ((and (integerp a) (plusp a))
-       (mul
-         (simplify (list '($beta) a b))
-         (sub
-           (mul
-             (power (sub 1 z1) b)
-             (let ((index (gensumindex)))
-               (simpsum1
-                 (div
-                   (mul
-                     (simplify (list '($pochhammer) b index))
-                     (power z1 index))
-                   (simplify (list '(mfactorial) index)))
-                index 0 (sub a 1))))
-           (mul
-             (power (sub 1 z2) b)
-             (let ((index (gensumindex)))
-               (simpsum1
-                 (div
-                   (mul 
-                     (simplify (list '($pochhammer) b index))
-                     (power z2 index))
-                   (simplify (list '(mfactorial) index)))
-                 index 0 (sub a 1)))))))
-
-      ((and (integerp b) (plusp b))
-       (mul
-         (simplify (list '($beta) a b))
-         (sub
-           (mul
-             (power z2 a)
-             (let ((index (gensumindex)))
-               (simpsum1
-                 (div
-                   (mul
-                     (simplify (list '($pochhammer) a index))
-                     (power (sub 1 z2) index))
-                   (simplify (list '(mfactorial) index)))
-                index 0 (sub b 1))))
-           (mul
-             (power z1 a)
-             (let ((index (gensumindex)))
-               (simpsum1
-                 (div
-                   (mul 
-                     (simplify (list '($pochhammer) a index))
-                     (power (sub 1 z1) index))
-                   (simplify (list '(mfactorial) index)))
-                 index 0 (sub b 1)))))))
-      
-      ((and $beta_expand (mplusp a) (integerp (cadr a)) (plusp (cadr a)))
-       (let ((n (cadr a))
-             (a (simplify (cons '(mplus) (cddr a)))))
-         (add
-           (mul
-             (div
-               (simplify (list '($pochhammer) a n))
-               (simplify (list '($pochhammer) (add a b) n)))
-             ($beta_incomplete_generalized a b z1 z2))
-           (mul
-             (power (add a b n -1) -1)
-             (let ((index (gensumindex)))
-               (simpsum1
-                 (mul
-                   (div
-                     (simplify (list '($pochhammer) 
-                                     (add 1 (mul -1 a) (mul -1 n))
-                                     index))
-                     (simplify (list '($pochhammer)
-                                     (add 2 (mul -1 a) (mul -1 b) (mul -1 n))
-                                     index)))
-                   (sub
-                     (mul (power (sub 1 z1) b)
-                          (power z1 (add a n (mul -1 index) -1)))
-                     (mul (power (sub 1 z2) b)
-                          (power z2 (add a n (mul -1 index) -1)))))
-                index 0 (sub n 1)))))))
-
-      ((and $beta_expand (mplusp a) (integerp (cadr a)) (minusp (cadr a)))
-       (let ((n (- (cadr a)))
-             (a (simplify (cons '(mplus) (cddr a)))))
-         (sub
-           (mul
-             (div
-               (simplify (list '($pochhammer) (add 1 (mul -1 a) (mul -1 b)) n))
-               (simplify (list '($pochhammer) (sub 1 a) n)))
-             ($beta_incomplete_generalized a b z1 z2))
-           (mul
-             (div
-               (simplify 
-                 (list '($pochhammer) (add 2 (mul -1 a) (mul -1 b)) (sub n 1)))
-               (simplify (list '($pochhammer) (sub 1 a) n)))
-             (let ((index (gensumindex)))
-               (simpsum1
-                 (mul
-                   (div
-                     (simplify (list '($pochhammer) (sub 1 a) index))
-                     (simplify (list '($pochhammer)
-                                     (add 2 (mul -1 a) (mul -1 b))
-                                     index)))
-                   (sub
-                     (mul (power (sub 1 z2) b)
-                          (power z2 (add a (mul -1 index) -1)))
-                     (mul (power (sub 1 z1) b)
-                          (power z1 (add a (mul -1 index) -1)))))
-                index 0 (sub n 1)))))))
-      
-      (t
-       (eqtest (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
 
 (def-simplifier beta_incomplete_generalized (a b z1 z2)
   (let (($simpsum t))
@@ -5567,25 +3901,6 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defmfun $beta_incomplete_regularized (a b z)
-  (simplify (list '(%beta_incomplete_regularized) a b z)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-#+nil
-(progn
-(defprop $beta_incomplete_regularized %beta_incomplete_regularized alias)
-(defprop $beta_incomplete_regularized %beta_incomplete_regularized verb)
-
-(defprop %beta_incomplete_regularized $beta_incomplete_regularized reversealias)
-(defprop %beta_incomplete_regularized $beta_incomplete_regularized noun)
-)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defprop %beta_incomplete_regularized
-         simp-beta-incomplete-regularized operators)
-
 ;;; beta_incomplete_regularized distributes over bags
 
 (defprop %beta_incomplete_regularized (mlist $matrix mequal) distribute_over)
@@ -5649,140 +3964,6 @@
   integral)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defun simp-beta-incomplete-regularized (expr ignored simpflag)
-  (declare (ignore ignored))
-  (arg-count-check 3 expr)
-  (let ((a (simpcheck (second expr) simpflag))
-        (b (simpcheck (third expr)  simpflag))
-        (z (simpcheck (fourth expr) simpflag))
-        ($simpsum t))
-    (cond
-
-      ;; Check for specific values
-
-      ((zerop1 z)
-       (let ((sgn ($sign ($realpart a))))
-         (cond ((eq sgn '$neg)
-                (simp-domain-error 
-                  (intl:gettext 
-                    "beta_incomplete_regularized: beta_incomplete_regularized(~:M,~:M,~:M) is undefined.") 
-                    a b z))
-               ((member sgn '($pos $pz)) 
-                0)
-               (t 
-                (eqtest 
-                  (list '(%beta_incomplete_regularized) a b z) expr)))))
-
-      ((and (onep1 z) 
-            (or (not (mnump a)) 
-                (not (mnump b)) 
-                (not (mnump z))))
-       (let ((sgn ($sign ($realpart b))))
-         (cond ((member sgn '($pos $pz)) 
-                1)
-               (t 
-                (eqtest 
-                  (list '(%beta_incomplete_regularized) a b z) expr)))))
-
-      ((and (integer-representation-p b)
-            (if ($bfloatp b) (minusp (cadr b)) (minusp b)) )
-       ;; Problem: for b a negative integer the Regularized Incomplete 
-       ;; Beta function is defined to be zero. BUT: When we calculate
-       ;; e.g. beta_incomplete(1.0,-2.0,1/2)/beta(1.0,-2.0) we get the 
-       ;; result -3.0, because beta_incomplete and beta are defined for
-       ;; for this case. How do we get a consistent behaviour?
-       0)
-
-      ((and (integer-representation-p a)
-            (if ($bfloatp a) (minusp (cadr a)) (minusp a)) )
-       (cond
-         ;; TODO: The following line does not work for bigfloats.
-         ((and (integer-representation-p b) (<= b (- a)))
-         ;;       Does $beta_incomplete or simpbeta underflow in this case?
-          (div (ftake '%beta_incomplete a b z)
-               (simplify (list '($beta) a b))))
-         (t 
-          1)))
-
-      ;; Check for numerical evaluation in Float or Bigfloat precision
-
-      ((complex-float-numerical-eval-p a b z)
-       (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0)))
-              beta ibeta )
-         (setq a ($float a) b ($float b))
-         (if (or (< ($abs (setq beta (simplify (list '($beta) a b)))) 1e-307) 
-                 (< ($abs (setq ibeta (beta-incomplete a b ($float z)))) 1e-307) )
-           ;; In case of underflow (see bug #2999) or precision loss use bigfloats 
-           ;; and emporarily give some extra precision but avoid fpprec dependency.
-           ;; Is this workaround correct for complex values?
-           (let ((fpprec 70))
-             ($float ($beta_incomplete_regularized ($bfloat a) ($bfloat b) z)) )
-           ($rectform (div ibeta beta)) )))
-           
-      ((complex-bigfloat-numerical-eval-p a b z)
-       (let ((*beta-incomplete-eps*
-               (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
-         (setq a ($bfloat a) b ($bfloat b))
-         ($rectform 
-           (div (beta-incomplete a b ($bfloat z))
-                (simplify (list '($beta) a b))))))
-
-      ;; Check for argument simplifications and transformations
-
-      ((and (integerp b) (plusp b))
-       (div (ftake '%beta_incomplete a b z)
-            (simplify (list '($beta) a b))))
-
-      ((and (integerp a) (plusp a))
-       (div (ftake '%beta_incomplete a b z)
-            (simplify (list '($beta) a b))))
-
-      ((and $beta_expand (mplusp a) (integerp (cadr a)) (plusp (cadr a)))
-       (let ((n (cadr a))
-             (a (simplify (cons '(mplus) (cddr a)))))
-         (sub
-           ($beta_incomplete_regularized a b z)
-           (mul
-             (power (add a b n -1) -1)
-             (power (simplify (list '($beta) (add a n) b)) -1)
-             (let ((index (gensumindex)))
-               (simpsum1
-                 (mul
-                   (div
-                     (simplify (list '($pochhammer) 
-                                     (add 1 (mul -1 a) (mul -1 n))
-                                     index))
-                     (simplify (list '($pochhammer)
-                                     (add 2 (mul -1 a) (mul -1 b) (mul -1 n))
-                                     index)))
-                   (power (sub 1 z) b)
-                   (power z (add a n (mul -1 index) -1)))
-                index 0 (sub n 1)))))))
-
-      ((and $beta_expand (mplusp a) (integerp (cadr a)) (minusp (cadr a)))
-       (let ((n (- (cadr a)))
-             (a (simplify (cons '(mplus) (cddr a)))))
-         (sub
-           ($beta_incomplete_regularized a b z)
-           (mul
-             (power (add a b -1) -1)
-             (power (simplify (list '($beta) a b)) -1)
-             (let ((index (gensumindex)))
-               (simpsum1
-                 (mul
-                   (div
-                     (simplify (list '($pochhammer) (sub 1 a) index))
-                     (simplify (list '($pochhammer)
-                                     (add 2 (mul -1 a) (mul -1 b))
-                                     index)))
-                   (power (sub 1 z) b)
-                   (power z (add a (mul -1 index) -1)))
-                index 0 (sub n 1)))))))
-
-      (t
-       (eqtest (list '(%beta_incomplete_regularized) a b z) expr)))))
 
 (def-simplifier beta_incomplete_regularized (a b z)
   (let (($simpsum t))
