@@ -3738,23 +3738,26 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $inverse_erfc (z)
   (simplify (list '(%inverse_erfc) z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Set properties to give full support to the parser and display
-
+#+nil
+(progn
 (defprop $inverse_erfc %inverse_erfc alias)
 (defprop $inverse_erfc %inverse_erfc verb)
 
 (defprop %inverse_erfc $inverse_erfc reversealias)
 (defprop %inverse_erfc $inverse_erfc noun)
-
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Inverse Complementary Error function is a simplifying function
 
+#+nil
 (defprop %inverse_erfc simp-inverse-erfc operators)
 
 ;;; Inverse Complementary Error function distributes over bags
@@ -3812,6 +3815,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
           
+#+nil
 (defun simp-inverse-erfc (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
@@ -3826,6 +3830,19 @@
     ((taylorize (mop expr) (cadr expr)))
     (t
      (eqtest (list '(%inverse_erfc) z) expr))))
+
+(def-simplifier inverse_erfc (z)
+  (cond
+    ((or (zerop1 z)
+         (zerop1 (add z -2)))
+     (simp-domain-error 
+       (intl:gettext "inverse_erfc: inverse_erfc(~:M) is undefined.") z))
+    ((onep1 z) 0)
+    ((numerical-eval-p z)
+     (to (bigfloat::bf-inverse-erfc (bigfloat:to z))))
+    ((taylorize (mop form) (cadr form)))
+    (t
+     (give-up))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
