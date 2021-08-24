@@ -4549,6 +4549,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $beta_incomplete (a b z)
   (simplify (list '(%beta_incomplete) a b z)))
 
@@ -4929,7 +4930,7 @@
              (div
                (simplify (list '($pochhammer) a n))
                (simplify (list '($pochhammer) (add a b) n)))
-             ($beta_incomplete a b z))
+             (ftake '%beta_incomplete a b z))
            (mul
              (power (add a b n -1) -1)
              (let ((index (gensumindex)))
@@ -4954,7 +4955,7 @@
              (div
                (simplify (list '($pochhammer) (add 1 (mul -1 a) (mul -1 b)) n))
                (simplify (list '($pochhammer) (sub 1 a) n)))
-             ($beta_incomplete a b z))
+             (ftake '%beta_incomplete a b z))
            (mul
              (div
                (simplify 
@@ -5227,7 +5228,7 @@
                     "beta_incomplete_generalized: beta_incomplete_generalized(~:M,~:M,~:M,~:M) is undefined.") 
                     a b z1 z2))
                ((member sgn '($pos $pz)) 
-                (mul -1 ($beta_incomplete a b z1)))
+                (mul -1 (ftake '%beta_incomplete a b z1)))
                (t 
                 (eqtest 
                   (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
@@ -5240,7 +5241,7 @@
                     "beta_incomplete_generalized: beta_incomplete_generalized(~:M,~:M,~:M,~:M) is undefined.") 
                     a b z1 z2))
                ((member sgn '($pos $pz)) 
-                (mul -1 ($beta_incomplete a b z2)))
+                (mul -1 (ftake '%beta_incomplete a b z2)))
                (t 
                 (eqtest 
                   (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
@@ -5249,7 +5250,7 @@
        (let ((sgn ($sign ($realpart b))))
          (cond ((member sgn '($pos $pz)) 
                 (sub (simplify (list '($beta) a b))
-                     ($beta_incomplete a b z1)))
+                     (ftake '%beta_incomplete a b z1)))
                (t 
                 (eqtest 
                   (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
@@ -5257,7 +5258,7 @@
       ((and (onep1 z1) (or (not (mnump a)) (not (mnump b)) (not (mnump z2))))
        (let ((sgn ($sign ($realpart b))))
          (cond ((member sgn '($pos $pz)) 
-                (sub ($beta_incomplete a b z2) 
+                (sub (ftake '%beta_incomplete a b z2) 
                      (simplify (list '($beta) a b))))
                (t 
                 (eqtest 
@@ -5402,7 +5403,7 @@
                     "beta_incomplete_generalized: beta_incomplete_generalized(~:M,~:M,~:M,~:M) is undefined.") 
                     a b z1 z2))
                ((member sgn '($pos $pz)) 
-                (mul -1 ($beta_incomplete a b z1)))
+                (mul -1 (ftake '%beta_incomplete a b z1)))
                (t 
                 (give-up)))))
 
@@ -5414,7 +5415,7 @@
                     "beta_incomplete_generalized: beta_incomplete_generalized(~:M,~:M,~:M,~:M) is undefined.") 
                     a b z1 z2))
                ((member sgn '($pos $pz)) 
-                (mul -1 ($beta_incomplete a b z2)))
+                (mul -1 (ftake '%beta_incomplete a b z2)))
                (t 
                 (give-up)))))
 
@@ -5422,14 +5423,14 @@
        (let ((sgn ($sign ($realpart b))))
          (cond ((member sgn '($pos $pz)) 
                 (sub (simplify (list '($beta) a b))
-                     ($beta_incomplete a b z1)))
+                     (ftake '%beta_incomplete a b z1)))
                (t 
                 (give-up)))))
 
       ((and (onep1 z1) (or (not (mnump a)) (not (mnump b)) (not (mnump z2))))
        (let ((sgn ($sign ($realpart b))))
          (cond ((member sgn '($pos $pz)) 
-                (sub ($beta_incomplete a b z2) 
+                (sub (ftake '%beta_incomplete a b z2) 
                      (simplify (list '($beta) a b))))
                (t 
                 (give-up)))))
@@ -5699,7 +5700,7 @@
          ;; TODO: The following line does not work for bigfloats.
          ((and (integer-representation-p b) (<= b (- a)))
          ;;       Does $beta_incomplete or simpbeta underflow in this case?
-          (div ($beta_incomplete a b z)
+          (div (ftake '%beta_incomplete a b z)
                (simplify (list '($beta) a b))))
          (t 
           1)))
@@ -5730,11 +5731,11 @@
       ;; Check for argument simplifications and transformations
 
       ((and (integerp b) (plusp b))
-       (div ($beta_incomplete a b z)
+       (div (ftake '%beta_incomplete a b z)
             (simplify (list '($beta) a b))))
 
       ((and (integerp a) (plusp a))
-       (div ($beta_incomplete a b z)
+       (div (ftake '%beta_incomplete a b z)
             (simplify (list '($beta) a b))))
 
       ((and $beta_expand (mplusp a) (integerp (cadr a)) (plusp (cadr a)))
@@ -5825,7 +5826,7 @@
          ;; TODO: The following line does not work for bigfloats.
          ((and (integer-representation-p b) (<= b (- a)))
          ;;       Does $beta_incomplete or simpbeta underflow in this case?
-          (div ($beta_incomplete a b z)
+          (div (ftake '%beta_incomplete a b z)
                (simplify (list '($beta) a b))))
          (t 
           1)))
@@ -5856,11 +5857,11 @@
       ;; Check for argument simplifications and transformations
 
       ((and (integerp b) (plusp b))
-       (div ($beta_incomplete a b z)
+       (div (ftake '%beta_incomplete a b z)
             (simplify (list '($beta) a b))))
 
       ((and (integerp a) (plusp a))
-       (div ($beta_incomplete a b z)
+       (div (ftake '%beta_incomplete a b z)
             (simplify (list '($beta) a b))))
 
       ((and $beta_expand (mplusp a) (integerp (cadr a)) (plusp (cadr a)))
