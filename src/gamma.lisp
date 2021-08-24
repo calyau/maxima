@@ -367,6 +367,8 @@
 
 (defvar *debug-gamma* nil)
 
+;; TODO:  This is currently called by integrate-exp-special in sin.lisp.
+;; Need to fix that before this can be removed.
 (defmfun $gamma_incomplete (a z)
   (simplify (list '(%gamma_incomplete) a z)))
 
@@ -1704,6 +1706,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $gamma_incomplete_generalized (a z1 z2)
   (simplify (list '(%gamma_incomplete_generalized) a z1 z2)))
 
@@ -2048,6 +2051,7 @@
 ;;;                                           
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $gamma_incomplete_regularized (a z)
   (simplify (list '(%gamma_incomplete_regularized) a z)))
 
