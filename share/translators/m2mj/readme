@@ -1,0 +1,8 @@
+This is a partial implmentation of a maple to macsyma translator.
+It is implemented using the antlr parser generator and stringtemplate.
+It does a mostly syntactic translation of maple. The grammar is
+based on François Thomasset's maple grammar which was written for
+ocaml.
+The tracing and intermediate print statements can be ignored.
+Comments need to be transmitted to the output as well.
+Dan Stanger

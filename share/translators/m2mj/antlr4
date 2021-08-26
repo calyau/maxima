@@ -1,0 +1,2 @@
+#!/bin/sh -x
+java -cp "/usr/local/lib/antlr-4.9.2-complete.jar" org.antlr.v4.Tool $*

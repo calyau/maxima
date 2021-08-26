@@ -1,0 +1,99 @@
+// Translation from Maple to Macsyma
+// 
+// Copyright © 2021 Dan Stanger, all rights reserved.
+// Copying is covered by the GNU General Public License (GPL).
+//  
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//  
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+
+group Macsyma;
+
+local(names) ::= <<
+<if(names)>[<names; separator=", ">],<endif>
+>>
+function(name,args) ::= <<
+<name>(<args; separator=", ">)
+>>
+listexpr(args) ::= <<
+[<args; separator=", ">]
+>>
+setexpr(args) ::= <<
+setify([<args; separator=", ">])
+>>
+seqsansprefix(left,right) ::= <<
+makelist(<left>,<right>)
+>>
+proc(name,parms,locals,statseq) ::= <<
+<name>(<parms; separator=", ">):=block(<locals>
+<statseq; separator=",\n">
+);
+>>
+procexpr(parms,expr) ::= <<
+lambda([<parms; separator=", ">],<expr>)
+>>
+statseq(stat) ::= <<
+<stat; separator=",\n">
+>>
+ifstat(expr,statseq,elifclause,elseclause) ::= <<
+if <expr> then (<statseq; separator=",\n" >)
+<if(elifclause)><elifclause><endif>
+<if(elseclause)><elseclause><endif>
+>>
+elseclause(s) ::= <<
+else (<s>)
+>>
+ifelifstat(x,i,e) ::= <<
+if <x> then (<i>) <e>
+>>
+ifelifelsestat(x,i,ei,e) ::= <<
+if <x> then (<i>) <ei> else <e>
+>>
+exprseq(e) ::= <<
+<e ; separator=",">
+>>
+elifclause(x,i) ::= <<
+else if <x> then (<i>)
+>>
+forin(name,expr,body) ::= <<
+for <name> in <expr> <body>
+>>
+forbodywhile(expr,statseq) ::= <<
+while <expr> do (<statseq; separator=",\n" >)
+>>
+forbodydo(expr,statseq) ::= <<
+do (<statseq; separator=",\n" >)
+>>
+assign(lvalue,exprseq) ::= <<
+<lvalue> : <exprseq>
+>>
+namebracket(n,e) ::= <<
+<n>[<e; separator=",">]
+>>
+name(text) ::= <<
+<text>
+>>
+number(text) ::= <<
+<text>
+>>
+binexp(l,op,r) ::= <<
+<l> <op> <r>
+>>
+setrelexp(op,l,r) ::= <<
+<op>(<l>,<r>)
+>>
+paren(e) ::= <<
+(<e>)
+>>
+notimplemented(name) ::= <<
+<name> not implemented
+>>
+isnull(name, op) ::= <<
+visit <name> <op> was null
+>>
