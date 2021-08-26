@@ -2236,7 +2236,7 @@
                   rest (cdras 'u l))
             (let (($expintrep '%gamma_incomplete)
                   ($logexpand '$all))
-              (return (sratsimp (sendexec rest ($expintegral_ei arg1)))))))
+              (return (sratsimp (sendexec rest (ftake '%expintegral_ei arg1)))))))
      
      ;; Laplace transform of expintegral_e1
      (cond ((setq l (m2-oneexpintegral_e1 u *var*))
@@ -2244,7 +2244,7 @@
                   rest (cdras 'u l))
             (let (($expintrep '%gamma_incomplete)
                   ($logexpand '$all))
-              (return (sratsimp (sendexec rest ($expintegral_e1 arg1)))))))
+              (return (sratsimp (sendexec rest (ftake '%expintegral_e1 arg1)))))))
      
      ;; Laplace transform of expintegral_e
      (cond ((setq l (m2-oneexpintegral_e u *var*))
