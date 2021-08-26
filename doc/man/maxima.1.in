@@ -345,6 +345,13 @@ it is found in the search path.  For user customization,
 Alternatively, the user can load a Maxima initialization file with
 another name or location by means of the \fB\-\-init-mac\fR or \fB\-\-init\fR
 command-line options.
+.TP
+\fB~/.xmaximarc\fR
+Here Xmaxima stores personal settings.
+.TP
+\fB~/.xmaxima_history\fR
+Here Xmaxima stores the command history.
+
 .SH REFERENCES
 Old Reference:  
 .I "MACSYMA Reference Manual"

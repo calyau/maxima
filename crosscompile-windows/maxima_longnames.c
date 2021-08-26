@@ -1,4 +1,5 @@
 /*
+SPDX-License-Identifier: GPL-2.0-or-later
     Clisp has problems with generated Windows 'short names' e.g.
     echo %TMP%
     C:\Users\TESTTE~1\AppData\Local\Temp

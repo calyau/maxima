@@ -2276,7 +2276,7 @@
                  (maxima-integerp pot)
                  (mtimesp pot)
                  (= (length pot) 3)
-                 (fixnump (cadr pot))
+                 (integerp (cadr pot))
                  (oddp (cadr pot))
                  (maxima-integerp (caddr pot)))
             (setq pot (caddr pot))

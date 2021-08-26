@@ -1,4 +1,5 @@
 @echo off
+rem SPDX-License-Identifier: GPL-2.0-or-later
 rem startscript for xmaxima
 
 rem get directory, where xmaxima.bat is installed (including final "\")
@@ -8,5 +9,5 @@ set "xmpath=%xmpath:\=/%"
 
 set "MAXIMA_PREFIX=%xmpath%/.."
 
-start "Xmaxima" /b "%xmpath%wish86.exe" "%xmpath%xmaxima" %*
+start "Xmaxima" /b "%xmpath%wish86s.exe" "%xmpath%xmaxima" %*
 

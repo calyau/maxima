@@ -1,1 +1,1 @@
-SUBDIRS = integration maxima-odesolve
+SUBDIRS = integration maxima-odesolve symplectic_ode

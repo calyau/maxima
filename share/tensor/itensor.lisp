@@ -14,7 +14,7 @@
 ;; Comments:
 ;;
 ;; The Itensor package was downcased, cleaned up, and moving frames
-;; functionality was added by Viktor Toth (http://www.vttoth.com/).
+;; functionality was added by Viktor Toth (https://www.vttoth.com/).
 ;;
 ;; As of November, 2004, the naming conventions in this package now
 ;; correspond with the naming conventions in commercial MACSYMA.
@@ -25,7 +25,7 @@
 (macsyma-module itensor) ;; added 9/24/82 at UCB
 
 (cond (($get '$itensor '$version) (merror "ITENSOR already loaded"))
-      (t ($put '$itensor '$v20081223 '$version)))
+      (t ($put '$itensor '$v20210714 '$version)))
 
 ;    Various functions in Itensor have been parceled out to separate files. A
 ;    function in one of these files will only be loaded in (automatically) if
@@ -505,7 +505,20 @@
       (eq (caar e) 'mequal)
       (list (car e) (covdiff (cadr e)) (covdiff (caddr e)))
     )
-    ((eq (caar e) '%determinant) 0)
+    ((and (eq (caar e) '%determinant) (eq (cadr e) $imetric))
+     (cond ((or $iframe_flag $itorsion_flag $inonmet_flag)
+           (prog (d1 d2) (setq d1 ($idummy) d2 ($idummy))
+                  (return (simptimes (list '(mtimes) e 
+                      (list (cons $imetric '(simp)) '((mlist simp)) (list '(mlist simp) d1 d2))
+                      (cond ((position '$extdiff *mlambda-call-stack*)  ; Special case, we're in extdiff()
+                       ($idiff (list (cons $imetric '(simp)) (list '(mlist simp) d1 d2) '((mlist simp))) x))
+                       (t ($covdiff (list (cons $imetric '(simp)) (list '(mlist simp) d1 d2) '((mlist simp))) x))
+                      )
+                  ) 1. t))
+           ))
+           (t 0)
+     )
+    )
     (t (merror "Not acceptable to COVDIFF: ~M" (ishow e)))
   )
 )
@@ -792,7 +805,7 @@
                       $inmc1 %inmc1 $ikt1 %ikt1))
 (setq christoffels2 '($ichr2 %ichr2 $icc2 %icc2 $ifc2 %ifc2
                       $inmc2 %inmc2 $ikt2 %ikt2))
-(setq christoffels (append christoffels1 christoffels2 '(%ifb $ifb)))
+(setq christoffels (append christoffels1 christoffels2 '(%ifb $ifb %itr $itr)))
 
 ;; Main contraction function
 (defmfun $contract (e)
@@ -1185,11 +1198,12 @@
       )
     )
 
-    ;No tensor can contract Kronecker-deltas or Levi-Civita symbols.
+    ;No tensor can contract Kronecker-deltas, Levi-Civita symbols, or the torsion tensor.
     (and
       (or (eq (caar g) '$kdelta) (eq (caar g) '%kdelta)
           (eq (caar g) '$levi_civita) (eq (caar g) '%levi_civita)
           (eq (caar g) '$icurvature) (eq (caar g) '%icurvature)
+          (eq (caar g) '$itr) (eq (caar g) '%itr)
       )
       (return nil)
     )
@@ -1318,6 +1332,8 @@
       (
         (member (car cf) christoffels1)
         (cond
+            ; VTT - before anything else, check that we're contracting on the last index only
+            ((not (equal (append c (last (cdadr g))) (cdadr g))) (return nil))
           (
             ;;(and (eql (length a) 2) (eql (length b) 1))
             (and (eql (+ (length (plusi a)) (length (minusi b))) 2) (eql (+ (length (plusi b)) (length (minusi a))) 1))
@@ -2320,7 +2336,8 @@
        (setq dummy ($idummy))
        (cond ((eq dummy x) (setq dummy ($idummy))))
        (list '(mtimes simp) 2. e
-       (list '($ichr2 simp) (cons smlist (list dummy x))
+;;       (list '(($ichr2) simp) (cons smlist (list dummy x))
+       (list (diffop) (cons smlist (list dummy x))
        (cons smlist (ncons dummy)))))
        nil))
 	     ((eq (caar e) 'mnctimes)
@@ -2988,6 +3005,9 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
   (prog (len idx1 idx2)
     (setq
       len ($length (cadr ($indices e)))
+    )
+    (cond ((> len $dim) (return 0)))
+    (setq
       idx1 (do ((i $dim (1- i)) l) ((eq i len) l) (setq l (cons ($idummy) l)))
       idx2 (do ((i $dim (1- i)) l) ((eq i len) l) (setq l (cons ($idummy) l)))
     )

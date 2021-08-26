@@ -4,7 +4,7 @@ docdraw(name,[contents]):=
     draw(
 	append(
 		[
-			terminal=gif,
+			terminal=pngcairo,
 			dimensions=[800,600],
 	                file_name=name
 		],

@@ -382,6 +382,9 @@ minf;
 limit((sqrt(x)-2)*log(1-sqrt(x)/2),x,4,minus);
 0;
 
+/* Bug 3831 */
+limit(log((sqrt(x^2+1))/2),x,1);
+-log(2)/2;
 
 /* limit of incomplete gamma */
 /* function simplim%gamma_incomplete in gamma.lisp */
@@ -523,10 +526,14 @@ minf;
  * Bug ID: 1797296 - Crazy results when doing limit of 'diff
  */
 limit('diff(x+1,x),x,2);
-'limit('diff(x+1,x),x,2);
+1;
 
 limit('integrate(x+1,x),x,2);
-'limit('integrate(x+1,x),x,2);
+'integrate(x+1,x);
+
+/* #3767 incorrect limit (radius of convergence) */
+limit(diff(exp(n * x), x,n)/n,n,inf);
+'limit(diff(exp(n * x), x,n)/n,n,inf);
 
 limit(integrate(f(t),t,0,x),x,0,plus);
 'limit(integrate(f(t),t,0,x),x,0,plus);
@@ -867,3 +874,28 @@ block ([actual, expected, ctxt:newcontext()],
   killcontext (ctxt),
   if ev (equal (actual, expected), logexpand='super) then true else [actual, expected]);
 true;
+
+/* SF bug #3826: "limit returns temp variable expression" */
+
+(kill (q, a, x),
+ ctxt: newcontext (),
+ assume (q > 0),
+ limit(x^q/(a*x^q- 1),x,inf));
+'limit(x^q/(a*x^q- 1),x,inf);
+
+tlimit(x^q/(a*x^q- 1),x,inf);
+'limit(x^q/(a*x^q- 1),x,inf);
+
+(assume (a > 0),
+ declare (q, integer),
+ limit(x^q/(a*x^q- 1),x,inf));
+1/a;
+
+(remove (q, integer),
+ declare (q, noninteger),
+ limit(x^q/(a*x^q- 1),x,inf));
+1/a;
+
+(remove (q, noninteger),
+ killcontext (ctxt));
+done;

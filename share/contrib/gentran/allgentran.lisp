@@ -224,10 +224,6 @@
 ;                                       ;
   `(dotimes (i ,m) (princ " ")))
 
-(defmacro while (exp stmt)
-  `(loop while ,exp do ,stmt) ) ;;rjf
-
-
 
 
 
@@ -760,8 +756,8 @@
 
 (defun delstk (pr)
   ; remove all occurrences of filepair from output file stack ;
-  (while (member pr (cdr (reverse *outstk*)))
-	 (popstk pr)))
+  (loop while (member pr (cdr (reverse *outstk*)))
+	 do (popstk pr)))
 
 (defun flisteqp (flist1 flist2)
   (progn
@@ -799,11 +795,11 @@
 	(t
 	 (prog (stk1 stk2)
 	       (setq stk1 *outstk*)
-	       (while (not (equal (car stk1) pr))
-		      (progn (setq stk2 (aconc stk2 (car stk1)))
-			     (setq stk1 (cdr stk1))))
-	       (while (not (equal (car stk1) '(nil)))
-		      (setq stk1 (cdr stk1)))
+	       (loop while (not (equal (car stk1) pr))
+		      do (progn (setq stk2 (aconc stk2 (car stk1)))
+				(setq stk1 (cdr stk1))))
+	       (loop while (not (equal (car stk1) '(nil)))
+		      do (setq stk1 (cdr stk1)))
 	       (resetstk (append stk2 (cdr stk1)))))))
 
 (defun pushinstk (pr)
@@ -1025,9 +1021,9 @@
   (prog (result)
 	(cond ((null lst) (return nil)))
 	(setq result (list (car lst)))
-	(while (setq lst (cdr lst))
-	       (setq result (cons (car lst)
-				  (cons '|,| result))))
+	(loop while (setq lst (cdr lst))
+	       do (setq result (cons (car lst)
+				     (cons '|,| result))))
 	(return (reverse result))))
 
 
@@ -1586,6 +1582,7 @@
 (defun franzif (stmt)
   ; return the franz lisp representation for an if statement ;
   (destructuring-bind (x exp stmt1 y stmt2) stmt
+   (declare (ignore x y))
    (let ((fr '(cond)))
         (setq fr (append1 fr (list (franzexp exp 0 exp)
 				   (franzstmt stmt1))))
@@ -1657,6 +1654,7 @@
   ;            dobody)                                                      ;
   (let ((gvar) condbody)
     (destructuring-bind (dovar (_x1 . dolist) _x2 _x3 _x4 doexitcond dobody) (cdr stmt)
+       (declare (ignore _x1 _x2 _x3 _x4))
        (setq tvname $tempvarname)
        (setq $tempvarname 'i)
        (setq gvar ($tempvar nil))
@@ -2312,7 +2310,7 @@
   ; stmtgp  ----->  stmtgp                                    ;
   ; def  ----->  def                                          ;
   (foreach f in forms collect
-	   (cond ((and (not (equal (car f) 'literal)) (lispexpp f))
+	   (cond ((and (not (atom f)) (not (equal (car f) 'literal)) (lispexpp f))
 		  (cond ((toolongexpp f)
 			 (segexp f 'unknown))
 			(t

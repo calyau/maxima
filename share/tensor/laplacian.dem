@@ -1,0 +1,73 @@
+/* Copyright (C) 2021 Viktor T. Toth <https://www.vttoth.com/>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * ITENSOR scalar field Laplacian demo
+ */
+
+if get('itensor,'version)=false then load(itensor)$
+
+("First, we set up the basic properties of the system")$
+imetric(g)$
+
+("Demo is faster in 3D but works for other values of dim, too")$
+dim:3$
+
+("We declare symmetries of the metric and other symbols")$
+decsym(g,2,0,[sym(all)],[])$
+decsym(g,0,2,[],[sym(all)])$
+components(g([a],[b]),kdelta([a],[b]))$
+decsym(levi_civita,0,dim,[],[anti(all)])$
+decsym(itr,2,1,[anti(all)],[])$
+
+("It is useful to set icounter to avoid indexing conflicts")$
+icounter:100$
+
+("We choose the appropriate convention for exterior algebra")$
+igeowedge_flag:true$
+
+("For this problem, better simplifications are achieved with flipflag")$
+flipflag:true$
+
+("Now let us calculate the Laplacian of a scalar field and simplify")$
+hodge(extdiff(hodge(extdiff(f([],[])))/sqrt(determinant(g))))*sqrt(determinant(g))$
+canform(rename(contract(expand(lc2kdt(%)))))$
+ev(%,kdelta)$
+D1:ishow(canform(rename(contract(canform(%)))))$
+
+("We can re-express the result using Christoffel symbols, too")$
+ishow(rename(contract(canform(conmetderiv(D1,g)))))$
+
+("Nice. Now let us repeat the same calculation with torsion")$
+itorsion_flag:true$
+icounter:100$
+hodge(extdiff(hodge(extdiff(f([],[])))/sqrt(determinant(g))))*sqrt(determinant(g))$
+canform(rename(contract(expand(lc2kdt(%)))))$
+ev(%,kdelta)$
+canform(rename(contract(canform(%))))$
+%,ikt1$
+D2:ishow(contract(ev(contract(canform(%)),g)))$
+
+("Another clean result; can also be expressed using Christoffel symbols")$
+ishow(rename(contract(canform(conmetderiv(D2,g)))))$
+
+("Finally, we see that the two results differ only by torsion")$
+ishow(rename(D2-D1))$
+
+("Last but not least, d^2 is not nilpotent in the presence of torsion")$
+extdiff(extdiff(f([],[]),i),j)$
+%,icc2,ikt2,ikt1$
+canform(%)$
+%,g$
+ishow(rename(contract(%)))$
+
+("Reminder: when dim = 2n, the Laplacian is -1 times these results.")$
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

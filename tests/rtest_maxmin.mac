@@ -1,0 +1,408 @@
+/* The file rtest_allnummod.mac has tests for max & min.  Here is a file for new max & min tests.*/
+(reset(maxmin_effort),0);
+0$
+
+/* #3769 max or min called on CRE expressions */
+max(a,b) - max(rat(a), b);
+0$
+
+/* #3764 limit of min works with assume but not with asksign */
+/* I can't figure out how to test for the asksign version of this bug. Here
+is an assume version, but this wasn't the bug.*/
+(assume(x>1),0);
+0$
+
+limit(min(x^a,x^(2*a))-x^a,a,inf);
+0$
+
+(forget(x>1),0)$
+0$
+
+/* #3765 min(und,...) gives error with trylevel > 1 */
+block([maxmin_effort : 1], min(und,%pi));
+min(und,%pi)$
+
+block([maxmin_effort : 2], min(und,%pi));
+min(und,%pi)$
+
+block([maxmin_effort : 3], min(und,%pi));
+min(und,%pi)$
+
+block([maxmin_effort : 10], min(und,%pi));
+min(und,%pi)$
+
+block([maxmin_effort : 1], max(und,%pi));
+max(und,%pi)$
+
+block([maxmin_effort : 2], max(und,%pi));
+max(und,%pi)$
+
+block([maxmin_effort : 3], max(und,%pi));
+max(und,%pi)$
+
+block([maxmin_effort : 10], max(und,%pi));
+max(und,%pi)$
+
+/* #3736 Quoting either min or max inhibits simplification */
+'max(1,1);
+1$
+
+'max(107,46);
+107$
+
+/* #3508 max(zeroa,zerob) gives zerob */
+ max(zeroa,zerob);
+ zeroa$
+
+ min(zeroa,zerob);
+ zerob$
+
+/* #3146 max() runs out of memory when comparing exponential functions */
+max(2.103-7.053*%e^(-4.0681*10^5*t), 2.0325-6.9825*%e^(-4.9238*10^5*t));
+max(2.0325-6.9825*%e^(-492380.0*t),2.103-7.053*%e^(-406810.0*t))$
+
+/* #1498 min and max of imaginary and real numbers */
+min(%i*inf,inf);
+min(%i*inf,inf)$
+
+min(%i*minf,minf);
+min(%i*minf,minf)$
+
+min(%i*inf,inf);
+min(%i*inf,inf)$
+
+min(%i*minf,minf);
+min(%i*minf,minf)$
+
+min(%i*-inf,-inf);
+min(%i*-inf,-inf)$
+
+min(%i*-inf,minf);
+min(%i*-inf,minf)$
+
+min(%i*minf,-inf);
+min(%i*minf,-inf)$
+
+max(%i*minf,inf);
+max(%i*minf,inf)$
+
+max(%i*minf,minf);
+max(%i*minf,minf)$
+
+max(%i*inf,inf);
+max(%i*inf,inf)$
+
+min(%i*inf,inf);
+min(%i*inf,inf)$
+
+max(%i*-inf,-inf);
+max(%i*-inf,-inf)$
+
+max(%i*minf,minf);
+max(%i*minf,minf)$
+
+max(7*%i*inf+4*inf,4*%i*inf+3);
+max(7*%i*inf+4*inf,4*%i*inf+3)$
+
+min(7*%i*inf+4*inf,4*%i*inf+3);
+min(7*%i*inf+4*inf,4*%i*inf+3)$
+
+min(7*%i*minf+4*inf,4*%i*minf+3);
+min(7*%i*minf+4*inf,4*%i*minf+3)$
+
+min(7*%i*minf+4*inf,4*%i*-inf+3);
+min(7*%i*minf+4*inf,4*%i*-inf+3)$
+
+min(-inf,minf);
+minf$
+
+max(-inf,minf);
+-inf$
+
+/* #1460 compare(max(1,%i)-%i,0) / FIX */
+compare(max(1,%i)-%i,0);
+notcomparable$
+
+ is(equal(max(1,%i),0));
+ false$
+
+ /* #1436 sign(max(7,x) - max(6,x)) --> error */
+ sign(max(7,x) - max(6,x));
+ pz$
+
+/* #1172 max(inf, ...) doesn't simplify to inf */
+ max(1/(1-x),inf);
+ inf$
+
+/* #1171 max leads to UND error */
+ max(1/(q-1));
+ 1/(q-1)$
+
+max(1/(q-1),1/(q-1));
+max(1/(q-1))$
+
+compare(minf,1/(q-1));
+"<"$
+
+compare(1/(q-1),minf);
+">"$
+
+/* #1073 max and min of an array*/
+
+/* For now, let's comment these tests out...some of these bugs stem from
+   things like sign(make_array('any,2)) --> error, for example. 
+(f : make_array('any,2),0);
+0$
+
+max(f,1);
+max(''f,1)$
+
+min(f,1);
+min(''f,1)$
+
+(remvalue(f),0);
+0$
+
+*/
+/* #990 ratsubst and sets, floor, ceiling, min, max */
+ratsubst(a,b,min(a,b));
+a$
+
+ ratsubst(a,b,max(a,b));
+ a$
+
+/* #542 max and min with CRE expressions */
+ max(1,rat(x));
+ max(1,x)$
+
+/* #398 MAX(a+b,c) is NOT equal to MAX(c,a+b) */
+max(a+b,c); 
+max(a+b,c)$
+
+max(c,a+b);
+max(c,a+b)$
+
+(assume(a+b > c),0);
+0$
+
+max(a+b,c);
+a+b$
+
+max(c,a+b);
+a+b$
+
+(forget(a+b > c),0);
+0$
+
+/* #338 min/max handles inf/minf/ind but not und */
+
+max(inf,minf);
+inf$
+
+max(x,inf);
+inf$
+
+max(ind,minf);
+ind$
+
+/* does the assign function for maxmin_effort work? */
+(xxx : maxmin_effort,0);
+0$
+
+errcatch(maxmin_effort : 2/3);
+[]$
+
+is(maxmin_effort = xxx);
+true$
+
+errcatch(maxmin_effort : 2<x);
+[]$
+
+is(maxmin_effort = xxx);
+true$
+
+(remvalue(xxx),0);
+0$
+
+max(1, cos(x)^2+sin(x)^2);
+1$
+
+min(1, cos(x)^2+sin(x)^2);
+1$
+
+max(107, cos(x)^2+sin(x)^2);
+107$
+
+min(107, cos(x)^2+sin(x)^2);
+cos(x)^2+sin(x)^2$
+
+min(1);
+1$
+
+max(3/2, 1.51);
+1.51$
+
+max(3/2, 1.51b0);
+1.51b0$
+
+max(3/2, 1.51b0,F(x));
+max(1.51b0, F(x))$
+
+max(-inf, minf, log(2), 3/4);
+3/4$
+
+max(3,1,4,1,5,9,2,6,5,3);
+9$
+
+min(3,1,4,1,5,9,2,6,5,3);
+1$
+
+max(%pi, %e, %phi);
+%pi$
+
+min(%pi, %e, %phi);
+%phi$
+
+max(inf,107);
+inf$
+
+max(-inf,107);
+107$
+
+max(max(a,b),max(c,d));
+max(a,b,c,d)$
+
+min(min(a,b),min(c,d));
+min(a,b,c,d)$
+
+min(max(a,b),min(c,d));
+min(c,d,max(a,b))$
+
+min(min(a,b),min(c,d));
+min(a,b,c,d)$
+
+max(1-x,1+x,x);
+max(1-x,1+x)$
+
+
+/* Examples from Stavros Macrakis. These are slow for maxmin_effort > 3, so we'll try maxmin_effort = 2*/
+(maxmin_effort : 2,0)$
+0$
+
+lreduce('min,makelist(a[i],i,1,20));
+min(a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10],a[11],a[12],a[13],a[14],a[15],a[16],a[17],a[18],a[19],a[20])$
+
+rreduce('min,makelist(a[i],i,1,20));
+min(a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10],a[11],a[12],a[13],a[14],a[15],a[16],a[17],a[18],a[19],a[20])$
+
+xreduce('min,makelist(a[i],i,1,20));
+min(a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10],a[11],a[12],a[13],a[14],a[15],a[16],a[17],a[18],a[19],a[20])$
+
+tree_reduce('min,makelist(a[i],i,1,20));
+min(a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10],a[11],a[12],a[13],a[14],a[15],a[16],a[17],a[18],a[19],a[20])$
+
+lreduce('max,makelist(a[i],i,1,20));
+max(a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10],a[11],a[12],a[13],a[14],a[15],a[16],a[17],a[18],a[19],a[20])$
+
+rreduce('max,makelist(a[i],i,1,20));
+max(a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10],a[11],a[12],a[13],a[14],a[15],a[16],a[17],a[18],a[19],a[20])$
+
+xreduce('max,makelist(a[i],i,1,20));
+max(a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10],a[11],a[12],a[13],a[14],a[15],a[16],a[17],a[18],a[19],a[20])$
+
+tree_reduce('max,makelist(a[i],i,1,20));
+max(a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10],a[11],a[12],a[13],a[14],a[15],a[16],a[17],a[18],a[19],a[20])$
+
+(maxmin_effort : 10,0)$
+0$
+
+min(a,max(b,c));
+min(a,max(b,c))$
+
+max(x^2,x^4,x^6);
+max(x^2,x^6)$
+
+min(x^2,x^4,x^6);
+min(x^2,x^6)$
+
+max(a,min(b,max(c,min(d,a-1)))); 
+max(a,min(b,c))$
+
+max(a,min(a,max(c,min(d,a-1))));
+a$
+
+(load(unwind_protect),0);
+0$
+
+block([cntx : newcontext()],
+  unwind_protect(
+      (assume(a<b, b<c),
+      min(a,max(b,c))),
+      killcontext(cntx)));
+a$
+
+block([cntx : newcontext()],
+  unwind_protect(
+      (assume(b<a, a<c),
+      min(a,max(b,c))),
+      killcontext(cntx)));
+a$
+
+block([cntx : newcontext()],
+  unwind_protect(
+      (assume(b<c, c< a),
+      min(a,max(b,c))),
+      killcontext(cntx)));
+c$
+
+block([cntx : newcontext()],
+  unwind_protect(
+      (assume(a<b, b<c,c<d),
+      max(a,min(b,max(c,d)))),
+      killcontext(cntx)));
+b$
+
+block([cntx : newcontext()],
+  unwind_protect(
+      (assume(b<a, a<c,c< d),
+      max(a,min(b,max(c,d)))),
+      killcontext(cntx)));
+a$
+
+block([cntx : newcontext()],
+  unwind_protect(
+      (assume(b<c,c<a,a< d),
+      max(a,min(b,max(c,d)))),
+      killcontext(cntx)));
+a$
+
+block([cntx : newcontext()],
+  unwind_protect(
+      (assume(b<c,c<d,d<a),
+      max(a,min(b,max(c,d)))),
+      killcontext(cntx)));
+a$
+
+(reset(maxmin_effort),0);
+0$
+
+max(inf,inf+4);
+inf$
+
+min(inf,inf-2);
+inf$
+
+max(minf, minf+5);
+minf$
+
+max(minf,inf);
+inf$
+
+max(-inf,inf);
+inf$
+
+values;
+[]$
+
+contexts;
+[initial,global]$

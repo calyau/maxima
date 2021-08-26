@@ -780,6 +780,29 @@ conjugate(f[6](x))$
 conjugate( rat(1+%i));
 1-%i$
 
+/* conjugate of derivative */
+
+conjugate(diff(f(x),x));
+'diff(conjugate(f(x)),x);
+
+conjugate(diff(f(x),x,107));
+'diff(conjugate(f(x)),x,107);
+
+conjugate(diff(f(x),x,n));
+'diff(conjugate(f(x)),x,n);
+
+op(conjugate(diff(f(x),x,%i)));
+conjugate$
+
+(declare(z,complex),0);
+0$
+
+op(conjugate(diff(f(z),z)));
+conjugate$
+
+(remove(z,complex), conjugate(z));
+z$
+
 (kill(all),0);
 0$
 

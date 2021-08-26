@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Script for nightly testruns
 # should be copied to a private location (~/bin), so that
 # git changes to that script can be reviewed before.
@@ -19,7 +19,7 @@ cd ~/maxima-test || exit
 ./bootstrap >logfile-bootstrap.txt 2>&1
 
 echo "./configure"
-./configure --enable-clisp --enable-ecl --with-ecl=/opt/ecl-21.2.1/bin/ecl --enable-sbcl --with-sbcl=/opt/sbcl-2.1.3/bin/sbcl --enable-gcl --enable-ccl64 --with-ccl64=/opt/ccl/lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-21d/bin/lisp --with-cmucl-runtime=/opt/cmucl-21d/bin/lisp --enable-acl --with-acl=/opt/acl10.1express/alisp --enable-abcl --with-abcl-jar=/opt/abcl-bin-1.8.0/abcl.jar --prefix="$(pwd)/installroot" >logfile-configure.txt 2>&1
+./configure --enable-clisp --enable-ecl --with-ecl=/opt/ecl-21.2.1/bin/ecl --enable-sbcl --with-sbcl=/opt/sbcl-2.1.7/bin/sbcl --enable-gcl --enable-ccl64 --with-ccl64=/opt/ccl/lx86cl64 --enable-cmucl --with-cmucl=/opt/cmucl-21d/bin/lisp --with-cmucl-runtime=/opt/cmucl-21d/bin/lisp --enable-acl --with-acl=/opt/acl10.1express/alisp --enable-abcl --with-abcl-jar=/opt/abcl-bin-1.8.0/abcl.jar --prefix="$(pwd)/installroot" >logfile-configure.txt 2>&1
 
 echo "make"
 make VERBOSE=1 >logfile-make.txt 2>&1

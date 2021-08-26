@@ -145,7 +145,7 @@ categories: infrastructure, functionality and bug fixes.
 
    j) GCL performance increase
       - Maxima now takes better advantage of GCL's optimization
-        features. The result is a substantially faster exectuable.
+        features. The result is a substantially faster executable.
 
 2) Functionality
 

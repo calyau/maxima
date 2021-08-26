@@ -176,17 +176,17 @@ Examples:
 @c -----------------------------------------------------------------------------
 
 Maxima identifiers may comprise alphabetic characters, plus the numerals 0
-through 9, plus any special character preceded by the backslash @code{\}
+through 9, plus any other character preceded by the backslash @code{\}
 character.
 
 A numeral may be the first character of an identifier if it is preceded by a
 backslash.  Numerals which are the second or later characters need not be
 preceded by a backslash.
 
+The alphabetic characters are initially @code{%}, @code{_},
+and all characters for which the Lisp function ALPHA-CHAR-P returns @code{true}.
 Characters may be declared alphabetic by the @code{declare} function.
 If so declared, they need not be preceded by a backslash in an identifier.
-The alphabetic characters are initially @code{A} through @code{Z}, @code{a}
-through @code{z}, @code{%}, and @code{_}.
 
 Maxima is case-sensitive.  The identifiers @code{foo}, @code{FOO}, and
 @code{Foo} are distinct.  See @ref{Lisp and Maxima} for more on this point.

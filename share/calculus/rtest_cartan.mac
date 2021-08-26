@@ -1,0 +1,128 @@
+/* SF bug report #926: "sign errors in cartan package" */
+
+(if get ('cartan, 'version) = false
+   then load (cartan),
+0);
+0;
+
+(kill (aliases),
+ init_cartan([x1,x2,x11,x21]));
+[dx1, dx2, dx11, dx21];
+
+foo: block ([ff],
+    ff:x11*dx2+x21*dx1,
+    ext_diff(ff));
+- dx1*dx21 - dx2*dx11;
+
+/* verify ordering of operands */
+subst ("*" = ".", foo);
+- dx1.dx21 - dx2.dx11;
+
+(kill (aliases),
+ init_cartan([x1,x2,x3,x4]));
+[dx1, dx2, dx3, dx4];
+
+foo: block ([ff],
+    ff:x3*dx2+x4*dx1,
+    ext_diff(ff));
+-dx1*dx4-dx2*dx3;
+
+subst ("*" = ".", foo);
+-dx1.dx4-dx2.dx3;
+
+(kill (aliases),
+ init_cartan([y,x,z]));
+[dy, dx, dz];
+
+cartan_coords;
+[y, x, z];
+
+cartan_dim;
+3;
+
+cartan_basis;
+[dy, dx, dz];
+
+extdim;
+3;
+
+foo: dx ~ dy ~ dz;
+- dy*dx*dz;
+
+subst ("*" = ".", foo);
+- dy.dx.dz;
+
+foo: dx ~ dy;
+- dy*dx;
+
+subst ("*" = ".", foo);
+- dy.dx;
+
+foo: dy ~ dx;
+dy*dx;
+
+subst ("*" = ".", foo);
+dy.dx;
+
+/* example from the mailing list circa 2021-05-20: "Can't Take Exterior Derivative with diff_form" */
+
+(kill (aliases),
+ init_cartan ([x, y]));
+[dx, dy];
+
+omega: -y * dx + x * dy;
+x*dy - y*dx;
+
+subst ("*" = ".", omega);
+x.dy - y.dx;
+
+foo: ext_diff (omega);
+2*dx*dy;
+
+subst ("*" = ".", foo);
+2*dx.dy;
+
+(kill (aliases),
+ init_cartan ([x, y, z]));
+[dx, dy, dz];
+
+foo: dx ~ dy;
+dx*dy;
+
+subst ("*" = ".", foo);
+dx.dy;
+
+foo: dy ~ dx;
+-dx*dy;
+
+subst ("*" = ".", foo);
+-dx.dy;
+
+/* continuing with basis [dx, dy, dz], these are additional examples
+ * from "Differential Forms 02.wxmx" by Jeffrey Rolland
+ */
+
+eta1: x*dy~dz +y*dz~dx +z*dx~dy;
+x*dy*dz-y*dx*dz+z*dx*dy;
+
+subst ("*" = ".", eta1);
+x.dy.dz-y.dx.dz+z.dx.dy;
+
+foo: ext_diff(eta1);
+3*dx*dy*dz;
+
+subst ("*" = ".", foo);
+3*dx.dy.dz;
+
+eta2: x*dy~dz +y*dx~dz +z*dx~dy;
+x*dy*dz+y*dx*dz+z*dx*dy;
+
+subst ("*" = ".", eta2);
+x.dy.dz+y.dx.dz+z.dx.dy;
+
+foo: ext_diff(eta2);
+dx*dy*dz;
+
+subst ("*" = ".", foo);
+dx.dy.dz;
+

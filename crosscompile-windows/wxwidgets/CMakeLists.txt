@@ -1,4 +1,5 @@
 # CMake file for crosscompiling Maxima/wxMaxima for Windows
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) by Wolfgang Dautermann
 # License GPLv2+: GNU GPL version 2 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
@@ -9,9 +10,9 @@
 # If no further patches are needed, you should get a
 # updated setup-file automatically.
 
-set(WXWIDGETSVERSION "3.1.5")
+set(WXWIDGETSVERSION "3.1.4")
 
-set(WXWIDGETS_MD5 "8b2ac42364a02bb5f3df22e1b1a517e5")
+set(WXWIDGETS_MD5 "47eaa907b3923bc5d6938bd5cf35b901")
 
 set(WXWIDGETS_URL "https://github.com/wxWidgets/wxWidgets/releases/download/v${WXWIDGETSVERSION}/wxWidgets-${WXWIDGETSVERSION}.tar.bz2")
 

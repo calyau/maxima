@@ -1022,7 +1022,18 @@ map (lambda ([f1], f1((x ` m)/(y ` foot))), foo1);
 atan2 (x ` m, y ` foot);
 atan2 (x, 381*y/1250);
 
-exp (-%%k*(x ` K)/(y ` J));
+exp (- (t ` hour)/(T ` s));
+exp (- 3600*t/T);
+
+/* in this next example, %%k*(x ` K)/(y ` J) is dimensionless,
+ * but it is a little too complex to be detected by the rule for
+ * dimensionless argument of exp.
+ * We'll help out a little.
+ */
+foo: exp (-%%k*(x ` K)/(y ` J));
+exp (%%k*((-x/y) ` K/J));
+
+map (lambda ([e], if dimensions(e) = 1 then qty(e) else e), foo);
 exp (-qty(%%k)*x/y);
 
 /* fractions of a farad */
@@ -1055,3 +1066,20 @@ exp (-qty(%%k)*x/y);
 (%e + %pi) / (100 ` hour - 100 ` s + x ` ms) `` Hz;
 (%e + %pi) / (x/1000 + 359900) ` Hz;
 
+/* SF bug #3789: "package ezunits: ev(dimensions(u), nouns) stack overflow" */
+
+(foo: 81*sin(acos((77-x)/81)-atan(7/20)), 0);
+0;
+
+/* primary test here is just the absence of stack overflow error;
+ * numerical value not really crucial
+ */
+is (abs (find_root (foo - 50.58515344111066, x, 5, 55, abserr = 1e-6) - 34.0) <= 1e-6);
+true;
+
+(kill(u), ev (dimensions(u), nouns));
+'dimensions(u);
+
+/* now try this:
+ * plot2d (foo, [x, 5, 55]);
+ */

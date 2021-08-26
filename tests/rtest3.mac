@@ -330,7 +330,7 @@ block ([L : [], s : -2], for i:10 thru 1 step s do L : cons (s : -s, L), L);
 
 /* bug reported to mailing list 2009-05-13 "reset ( radexpand,  domain )"
  *
- * display2d is a resetable option variable. We save the value of display2d
+ * display2d is a resettable option variable. We save the value of display2d
  * and restore it after the reset. This allows to run the testsuite in both
  * display modes.
  */
@@ -406,9 +406,10 @@ errcatch (integrate(ev(ratsimp(1/(x^(5/2)+3*x^(1/3))),algebraic),x));
 (kill (foo, bar, baz), foo () := bar (), bar () := (errcatch (integrate(ev(ratsimp(1/(x^(5/2)+3*x^(1/3))),algebraic),x)), throw ('baz)), catch (foo ()));
 baz;
 
-/* result for this test will change if ever "quotient by zero" bug is fixed */
+/* This bug can be fixed by changing simplus to simplify 2^(3/2)*x^2 - sqrt(2)*x^2
+to sqrt(2)*x^2. Until this bug is fixed, we'll errcatch this test. */
 errcatch (integrate (exp(2^(3/2)*x^2 - sqrt(2)*x^2), x));
-[];
+[-((sqrt(%pi)*%i*erf(2^(1/4)*%i*x))/2^(5/4))];
 
 (kill (quux), bar () := (errcatch (integrate (exp(2^(3/2)*x^2 - sqrt(2)*x^2), x)), throw ('quux)), catch (foo ()));
 quux;

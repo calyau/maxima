@@ -177,7 +177,7 @@ simpmetderiv(exp,[stop]):=
                         (
                             length(covi(a)) = 2 and length(conti(a)) = 0 and
                             length(covi(b)) = 0 and length(conti(b)) = 2 and
-                            length(?intersect(covi(a),conti(b))) >= 1 and
+                            length(intersect(setify(covi(a)),setify(conti(b)))) >= 1 and
                             (
                                 (flipflag and length(deri(a)) = 1 and
                                  length(deri(b)) = 0) or

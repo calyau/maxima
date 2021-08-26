@@ -3,7 +3,7 @@
 # htmlinstdir -- html installation directory  
 
 install-data-local: install-maxima-html
-install-maxima-html: $(wildcard $(htmlname).html $(htmlname)_*.html)
+install-maxima-html: $(wildcard index.html $(htmlname).html $(htmlname)_*.html)
 	@d=$(DESTDIR)$(htmlinstdir); \
 	test -d $$d && $(mkinstalldirs) $$d; \
 	list="$^"; for p in $$list; do \
@@ -29,6 +29,7 @@ install-maxima-html: $(wildcard $(htmlname).html $(htmlname)_*.html)
 
 uninstall-local: uninstall-maxima-html
 uninstall-maxima-html:
+	rm -f $(DESTDIR)$(htmlinstdir)/index.html
 	rm -f $(DESTDIR)$(htmlinstdir)/$(htmlname).html 
 	rm -f $(DESTDIR)$(htmlinstdir)/$(htmlname)_*.html
 

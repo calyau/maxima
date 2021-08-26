@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2021-04-02 14:48:10 villate"            #
+#     Time-stamp: "2021-04-29 14:33:48 villate"            #
 ############################################################
 
 proc makeFrame { w type } {
@@ -146,9 +146,9 @@ proc reConfigure { c width height  } {
     set wscale [expr double($width)/$w]
     set hscale [expr double($height)/$h]
     $c scale all 0 0 $wscale $hscale
-    set_xy_transforms $win
     oset $win width $width
     oset $win height $height
+    set_xy_transforms $win
 }
 
 proc writePostscript { win } {
@@ -445,8 +445,8 @@ proc set_xy_region { win fac } {
 #
 # set_xy_transforms --  set up transformations for the canvas of WINDOW
 # so that the plot is a fraction of the window (fac).
-# these transformation are used to conver from real values of x and y
-# to screen coodinates in pixel and vice versa.
+# these transformation are used to convert from real values of x and y
+# to screen coordinates in pixel and vice versa.
 #
 #  Side Effects: transform functions rtosx$win rtosy$win storx$win story$win
 #  are defined.

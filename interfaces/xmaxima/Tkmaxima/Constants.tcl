@@ -3,7 +3,7 @@
 # Copyright (C) 1998 William F. Schelter                   #
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
-#     Time-stamp: "2021-04-04 19:56:58 villate"            #
+#     Time-stamp: "2021-06-14 15:38:17 villate"            #
 ############################################################
 
 proc cMAXINITBeforeIni {} {
@@ -43,11 +43,7 @@ proc cMAXINITBeforeIni {} {
 	set maxima_default(defaultservers) nmtp://some.server.example.org/
     }
     set maxima_priv(imgregexp) {[.](gif|png|jpe?g)[^/]*$}
-    if {$::tcl_platform(platform) == "windows" } {
-        set maxima_priv(home) "%USERPROFILE%"
-    } else {
-        set maxima_priv(home) "~"
-    }
+    set maxima_priv(home) "~"
 }
 
 proc cMAXINITReadIni {} {

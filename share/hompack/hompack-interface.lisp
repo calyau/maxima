@@ -49,7 +49,7 @@
 				  (let ((p ($hipow term v)))
 				    (incf term-deg p)
 				    ;; TODO: Check that p is non-negative integer
-				    (setf prod (mul prod (pow v p)))
+				    (setf prod (mul prod (power v p)))
 				    p))
 			      vars))
 		 (c ($float ($expand (div term prod)))))

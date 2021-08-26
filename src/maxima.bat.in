@@ -147,6 +147,7 @@ if "%lisp%" == "ecl" goto doecl
 rem Allow ccl as an alias of openmcl
 if "%lisp%" == "ccl" set lisp=openmcl
 if "%lisp%" == "openmcl" goto doopenmcl
+if "%lisp%" == "ccl64" goto doccl64
 if "%lisp%" == "sbcl" goto dosbcl
 if "%lisp%" == "abcl" goto doabcl
 
@@ -155,33 +156,36 @@ goto end
 
 :dogcl
 set "path=%maxima_prefix%/lib/gcc-lib/mingw32/@GCCVER@;%path"
-"%maxima_imagesdir%/binary-gcl/maxima.exe" -eval "(cl-user::run)" %lisp_options% -f -- %*
+"%maxima_image_base%.exe" -eval "(cl-user::run)" %lisp_options% -f -- %*
 goto end
 
 :doclisp
-if exist "%maxima_imagesdir%/binary-clisp/maxima.exe" goto doclisp_exec
+if exist "%maxima_image_base%.exe" goto doclisp_exec
 
 if "%layout_autotools%" == "true" goto clisp_autotools
-clisp %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
+@CLISP_NAME@ %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
 goto end
 
 :clisp_autotools
-set "path=%maxima_imagesdir%/binary-clisp;%maxima_prefix%/clisp-2.49/base;%path%"
+rem ./configure sets a variable @CLISP_NAME@ which might be used instead of lisp.exe,
+rem but when Maxima is crosscompiled on Linux, a shell script is used as 'crosscompiler',
+rem which would be inserted here ==> do not use the variable @CLISP_NAME@ but just lisp.exe.
+set "path=%maxima_imagesdir%/binary-%lisp%;%maxima_prefix%/clisp-2.49/base;%path%"
 lisp.exe %lisp_options% -q -M "%maxima_image_base%.mem" "" -- %*
 goto end
 
 :clisp_exec
-"%maxima_imagesdir%/binary-clisp/maxima.exe" %lisp_options% -q "" -- %*
+"%maxima_image_base%.exe" %lisp_options% -q "" -- %*
 goto end
 
 :doecl
-ecl -load %maxima_image_base%.fas %lisp_options% -eval "(user::run)" -- %*
+@ECL_NAME@ -load %maxima_image_base%.fas %lisp_options% -eval "(user::run)" -- %*
 goto end
 
 rem SBCL Steel Bank Common Lisp
 :dosbcl
 rem run executable image if it exists
-if exist "%maxima_imagesdir%/binary-sbcl/maxima.exe" goto dosbcl_exec
+if exist "%maxima_image_base%.exe" goto dosbcl_exec
 if "%MAXIMA_SIGNALS_THREAD%" == "" (
   set start_maxima="(cl-user::run)"
 ) else ( 
@@ -201,10 +205,13 @@ if exist "%maxima_prefix%/bin/libgcc_s_seh-1.dll" (
     rem I am a 32 bit build - the SBCL workaround for load(lapack) will not work
 )
 
-sbcl.exe --core "%maxima_imagesdir%/binary-sbcl/maxima.core" --noinform %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options %*
+rem ./configure sets a variable @SBCL_NAME@ which might be used instead of sbcl.exe,
+rem but when Maxima is crosscompiled on Linux, a shell script is used as 'crosscompiler',
+rem which would be inserted here ==> do not use the variable @SBCL_NAME@ but just sbcl.exe.
+sbcl.exe --core "%maxima_image_base%.core" --noinform %lisp_options% --end-runtime-options --eval %start_maxima% --end-toplevel-options %*
 goto end
 :dosbcl_exec
-"%maxima_imagesdir%/binary-sbcl/maxima.exe" %lisp_options% --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options %*
+"%maxima_image_base%.exe" %lisp_options% --noinform --end-runtime-options --eval "(cl-user::run)" --end-toplevel-options %*
 goto end
 
 :doopenmcl
@@ -213,13 +220,23 @@ if "%MAXIMA_SIGNALS_THREAD%" == "" (
 ) else ( 
   set start_maxima="(progn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
 )
-wx86cl -I "%maxima_image_base%.image" %lisp_options% -e %start_maxima% -- %*
+@OPENMCL_NAME@ -I "%maxima_image_base%" %lisp_options% -e %start_maxima% -- %*
 goto end
 
-:doabcl
-set "MAXIMA_IMAGESDIR_BIN=%maxima_imagesdir%/binary-abcl"
+:doccl64
+if "%MAXIMA_SIGNALS_THREAD%" == "" (
+  set start_maxima="(cl-user::run)"
+) else ( 
+  set start_maxima="(progn (load (maxima::$sconcat (namestring (pathname (maxima::maxima-getenv \"MAXIMA_PREFIX\"))) \"/bin/win_signals.lisp\")) (cl-user::run))"
+)
+@CCL64_NAME@ -I "%maxima_image_base%" %lisp_options% -e %start_maxima% -- %*
+goto end
 
-java -jar "%maxima_imagesdir%/binary-abcl/abcl.jar" %lisp_options% --eval "(load \"%maxima_imagesdir%/binary-abcl/defsystem.lisp\")" --eval "(mk:add-registry-location \"%maxima_imagesdir%/binary-abcl\")" --eval "(funcall (intern (symbol-name :operate-on-system) :mk) \"maxima\" :load :verbose nil)" --eval "(cl-user::run)" -- %*
+
+:doabcl
+set "MAXIMA_IMAGESDIR_BIN=%maxima_imagesdir%/binary-%lisp%"
+
+java -jar "%MAXIMA_IMAGESDIR_BIN%/abcl.jar" %lisp_options% --eval "(load \"%MAXIMA_IMAGESDIR_BIN%/defsystem.lisp\")" --eval "(mk:add-registry-location \"%MAXIMA_IMAGESDIR_BIN%\")" --eval "(funcall (intern (symbol-name :operate-on-system) :mk) \"maxima\" :load :verbose nil)" --eval "(cl-user::run)" -- %*
 goto end
 
 :end

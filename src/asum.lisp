@@ -85,16 +85,15 @@
 ;; This is much faster (3-4 times) than the original factorial
 ;; function.
 
-(defun k (n m) 
-  (if (<= n m)
-      n
-      (* (k n (* 2 m))
-	 (k (- n m) (* 2 m)))))
-
 (defun factorial (n)
-  (if (zerop n)
-      1
-      (k n 1)))
+  (labels ((k (n m) 
+	     (if (<= n m)
+		 n
+		 (* (k n (* 2 m))
+		    (k (- n m) (* 2 m))))))
+    (if (zerop n)
+	1
+	(k n 1))))
 
 ;;; Factorial has mirror symmetry
 

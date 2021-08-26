@@ -705,5 +705,46 @@ block([%rnum:0], s:algsys(eqs:[
 freeof(%r1,s);
 false;
 
+/* SF bug 380.  Missed solutions for algsys([a*b-c*d],[a,b,c,d]) */
+block([%rnum:0],algsys([a*b-c*d],[a,b,c,d]));
+[[a = (%r2*%r3)/%r1,b = %r1,c = %r2,d = %r3],
+ [a = %r4,b = 0,c = 0,d = %r5],
+ [a = %r6,b = 0,c = %r7,d = 0]];
+
+block([%rnum:0],algsys([a*b*c-d*e*f],[a,b,c,d,e,f]));
+[[a = (%r3*%r4*%r5)/(%r1*%r2),b = %r1,c = %r2,d = %r3,e = %r4,f = %r5],
+ [a = %r6,b = 0,c = %r7,d = 0,e = %r8,f = %r9],
+ [a = %r10,b = %r11,c = 0,d = 0,e = %r12,f = %r13],
+ [a = %r14,b = 0,c = %r15,d = %r16,e = 0,f = %r17],
+ [a = %r18,b = %r19,c = 0,d = %r20,e = 0,f = %r21],
+ [a = %r22,b = 0,c = %r23,d = %r24,e = %r25,f = 0],
+ [a = %r26,b = %r27,c = 0,d = %r28,e = %r29,f = 0]];
+
+block([%rnum:0],algsys([a^2*b^2-c*d],[a,b,c,d]));
+[[a = sqrt(%r2*%r3)/%r1,b = %r1,c = %r2,d = %r3],
+ [a = -sqrt(%r5*%r6)/%r4,b = %r4,c = %r5,d = %r6],
+ [a = %r7,b = 0,c = 0,d = %r8],
+ [a = %r9,b = 0,c = %r10,d = 0]];
+
+block([%rnum:0],algsys([a*b^2*c-d*e],[a,b,c,d,e]));
+[[a = (%r3*%r4)/(%r1^2*%r2),b = %r1,c = %r2,d = %r3,e = %r4],
+ [a = %r5,b = 0,c = %r6,d = 0,e = %r7],
+ [a = %r8,b = %r9,c = 0,d = 0,e = %r10],
+ [a = %r11,b = 0,c = %r12,d = %r13,e = 0],
+ [a = %r14,b = %r15,c = 0,d = %r16,e = 0]];
+
+/* Reduced from rtest_to_poly_solve.mac
+   Third solution found after bug #380 fixed */
+block([%rnum:0],
+  eqs:[a5*b1=0,a1*b2=r3,b2+a1=r2,a2*b2+a3*b1=r4,r4+a3*b2+a5=d5],
+  algsys(eqs,[a1,a2,a3,a5,b1,b2,r2,r3,r4]))$
+[[a1=%r1,a2=%r2,a3=%r3,a5=d5+((-%r3)-%r2)*%r4,b1=0,b2=%r4,
+  r2=%r4+%r1,r3=%r1*%r4,r4=%r2*%r4],
+ [a1=%r5,a2=(d5-%r6*%r8-%r6*%r7)/%r8,a3=%r6,a5=0,b1=%r7,
+  b2=%r8,r2=%r8+%r5,r3=%r5*%r8,r4=d5-%r6*%r8],
+ [a1=%r9,a2=%r10,a3=d5/%r11,a5=0,b1=%r11,b2=0,r2=%r9,
+  r3=0,r4=d5]];
+
+
 (kill(eqt,eqs,F,G,p,p1,p2,s),done)$
 done;

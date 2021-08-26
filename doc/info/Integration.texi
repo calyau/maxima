@@ -221,9 +221,9 @@ begin with.
 @deffn {Function} ilt (@var{expr}, @var{s}, @var{t})
 
 Computes the inverse Laplace transform of @var{expr} with
-respect to @var{s} and parameter @var{t}.  @var{expr} must be a ratio of
+respect to @var{s} and parameter @var{t}. @var{expr} must be a ratio of
 polynomials whose denominator has only linear and quadratic factors;
-there is an extension of @code{ilt}, called @mref{pwilt} (Piece Wise
+there is an extension of @code{ilt}, called @mref{pwilt} (Piece-Wise
 Inverse Laplace Transform) that handles several other cases where
 @code{ilt} fails.
 
@@ -807,7 +807,7 @@ special cases.
 
 Computes the inverse Laplace transform of @var{expr} with
 respect to @var{s} and parameter @var{t}. Unlike @mrefcomma{ilt}
-@code{pwilt} is able to return piecewise and periodic functions
+@code{pwilt} is able to return piece-wise and periodic functions
 and can also handle some cases with polynomials of degree greater than 3
 in the denominator.
 

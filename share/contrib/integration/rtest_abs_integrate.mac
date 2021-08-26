@@ -89,10 +89,10 @@ integrate(signum(x) * sin(x),x);
 (1-cos(x))*signum(x)$
 
 integrate(max(-x,x),x);
-(x^2*signum(x))/2$
+x*abs(x)/2$
 
 integrate(min(-x,x),x);
--(x^2*signum(x))/2$
+-(x*abs(x)/2)$
 
 signum_to_abs(integrate(max(x,2*x),x));
 (x*abs(x)+3*x^2)/4$

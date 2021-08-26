@@ -467,3 +467,78 @@
 
 ;; This should produce compile errors
 ;; (defmfun $zot (a &optional c &key b) (list '(mlist) a b))
+
+
+;; Defines a simplifying function for Maxima whose name is BASE-NAME.
+;; The noun and verb properties are set up appropriately, along with
+;; setting the operator property.  The noun form is created from the
+;; BASE-NAME by prepending a "%"; the verb form, by prepending "$".
+;; The verb function is defined appropriately too.
+;;
+;; For example, let's say we want to define a Maxima function named
+;; foo of two args with a corresponding simplifier to simplify special
+;; cases or numerically evaluate it.  Then:
+;;
+;; (def-simplifier foo (x y)
+;;   (cond ((float-numerical-eval-p x y)
+;;          (foo-eval x y))
+;;         (t
+;;          (give-up))))
+;;
+;; This expands to 
+;;         
+;; (progn
+;;   (defprop %foo simp-%foo operators)
+;;   (defprop $foo %foo verb)
+;;   (defprop %foo $foo noun)
+;;   (defprop $foo %foo alias)
+;;   (defprop %foo $foo reversealias)
+;;   (defun simp-%foo (form #:unused-5230 #:z-5229)
+;;     (declare (ignore #:unused-5230))
+;;     (let ((x (simpcheck (nth 1 form) #:z-5229))
+;;           (y (simpcheck (nth 2 form) #:z-5229)))
+;;       (arg-count-check 2 form)
+;;       (macrolet ((give-up ()
+;;                    '(eqtest (list '(%foo) x y) form)))
+;;         (cond
+;;           ((float-numerical-eval-p x y)
+;;            (foo-eval x y))
+;;           (t
+;;            (give-up))))))
+;;
+;; Note carefully that the expansion defines a macro GIVE-UP to
+;; handle the default case of the simplifier when we can't do any
+;; simplification.  Call this in the default case for the COND.
+
+(defmacro def-simplifier (base-name lambda-list &body body)
+  (let* ((noun-name (intern (concatenate 'string "%" (string base-name))))
+	 (verb-name (intern (concatenate 'string "$" (string base-name))))
+	 (simp-name (intern (concatenate 'string "SIMP-" (string noun-name))))
+	 (z-arg (gensym "Z-"))
+	 (unused-arg (gensym "UNUSED-"))
+	 (arg-forms (loop for arg in lambda-list
+			  and count from 1
+			  collect (list arg `(simpcheck (nth ,count form) ,z-arg)))))
+    `(progn
+       ;; Set up properties
+       (defprop ,noun-name ,simp-name operators)
+       ;; The verb and alias properties are needed to make things like
+       ;; quad_qags(jacobi_sn(x,.5)...) work.
+       (defprop ,verb-name ,noun-name verb)
+       (defprop ,verb-name ,noun-name alias)
+       ;; The reversealias property is needed by grind to print out
+       ;; the right thing.  Without it, grind(jacobi_sn(x,m)) prints
+       ;; '?%jacobi_sn(x,m)".  Also needed for labels in plots which
+       ;; would show up as %jacobi_sn instead of jacobi_sn.
+       (defprop ,noun-name ,verb-name reversealias)
+
+       ;; Define the simplifier
+       (defun ,simp-name (form ,unused-arg ,z-arg)
+	 (declare (ignore ,unused-arg))
+	 (arg-count-check ,(length lambda-list) form)
+	 (let ,arg-forms
+	   (flet ((give-up ()
+		    ;; Should this also return from the function?
+		    ;; That would fit in better with giving up.
+		    (eqtest (list '(,noun-name) ,@lambda-list) form)))
+	     ,@body))))))

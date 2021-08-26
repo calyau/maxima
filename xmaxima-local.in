@@ -8,4 +8,4 @@ export MAXIMA_XMAXIMADIR
 XMAXIMA_MAXIMA="@abs_top_srcdir@/maxima-local"
 export XMAXIMA_MAXIMA
 
-exec @WISH@ "@abs_top_srcdir@/interfaces/xmaxima/xmaxima" "$@"
+exec @WISH@ "@abs_top_srcdir@/interfaces/xmaxima/xmaxima" -- "$@"

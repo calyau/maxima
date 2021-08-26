@@ -34,41 +34,6 @@
 ;;; Note that m = k^2 and k = sin(alpha).
 ;;;
 
-;; Setup noun/verb for elliptic functions
-
-(macrolet
-    ((frob (root)
-       (let* ((s (string root))
-	      (forward (concatenate 'string (string 'jacobi_) s))
-	      (f-noun (intern (concatenate 'string "%" forward)))
-	      (f-verb (intern (concatenate 'string "$" forward)))
-	      (inverse (concatenate 'string (string 'inverse_jacobi_) s))
-	      (i-noun (intern (concatenate 'string "%" inverse)))
-	      (i-verb (intern (concatenate 'string "$" inverse))))
-	 `(progn
-	    (defprop ,f-verb ,f-noun verb)
-	    (defprop ,f-noun ,f-verb noun)
-		(defprop ,f-verb ,f-noun alias)
-	    (defprop ,f-noun ,f-verb reversealias)
-	    (defprop ,i-verb ,i-noun verb)
-	    (defprop ,i-noun ,i-verb noun)
-		(defprop ,i-verb ,i-noun alias)
-	    (defprop ,i-noun ,i-verb reversealias)))))
-  (frob sn)
-  (frob cn)
-  (frob dn)
-  (frob ns)
-  (frob nc)
-  (frob nd)
-  (frob sc)
-  (frob cs)
-  (frob sd)
-  (frob ds)
-  (frob cd)
-  (frob dc))
-
-(defprop $elliptic_f  $elliptic_f verb)
-(defprop $elliptic_e  $elliptic_e verb) 
 ;;
 ;; Routines for computing the basic elliptic functions sn, cn, and dn.
 ;;
@@ -277,22 +242,6 @@
 
 (in-package :maxima)
 
-;;
-;; How this works, I think.
-;;
-;; $jacobi_sn is the user visible function JACOBI_SN.  We put
-;; properties on this symbol so maxima can figure out what to do with
-;; it.
-
-;; Tell maxima how to simplify the functions $jacobi_sn, etc.  This
-;; borrows heavily from trigi.lisp.
-(defprop %jacobi_sn simp-%jacobi_sn operators)
-(defprop %jacobi_cn simp-%jacobi_cn operators)
-(defprop %jacobi_dn simp-%jacobi_dn operators)
-(defprop %inverse_jacobi_sn simp-%inverse_jacobi_sn operators)
-(defprop %inverse_jacobi_cn simp-%inverse_jacobi_cn operators)
-(defprop %inverse_jacobi_dn simp-%inverse_jacobi_dn operators)
-
 ;; Tell maxima what the derivatives are.
 ;;
 ;; Lawden says the derivative wrt to k but that's not what we want.
@@ -398,7 +347,7 @@
        ((%jacobi_cn simp) u m) ((%jacobi_dn simp) u m)
        ((mplus simp) u
 	((mtimes simp) -1 ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m)) -1)
-	 (($elliptic_e simp) ((%asin simp) ((%jacobi_sn simp) u m)) m))))))
+	 ((%elliptic_e simp) ((%asin simp) ((%jacobi_sn simp) u m)) m))))))
   grad)
 
 (defprop %jacobi_cn
@@ -412,7 +361,7 @@
        ((%jacobi_dn simp) u m) ((%jacobi_sn simp) u m)
        ((mplus simp) u
 	((mtimes simp) -1 ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m)) -1)
-	 (($elliptic_e simp) ((%asin simp) ((%jacobi_sn simp) u m)) m))))))
+	 ((%elliptic_e simp) ((%asin simp) ((%jacobi_sn simp) u m)) m))))))
   grad)
 
 (defprop %jacobi_dn
@@ -427,7 +376,7 @@
        ((mplus simp) u
 	((mtimes simp) -1
 	 ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m)) -1)
-	 (($elliptic_e simp) ((%asin simp) ((%jacobi_sn simp) u m)) m))))))
+	 ((%elliptic_e simp) ((%asin simp) ((%jacobi_sn simp) u m)) m))))))
   grad)
 
 ;; The inverse elliptic functions.
@@ -454,9 +403,9 @@
 	((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m ((mexpt simp) x 2)))
 	 ((rat simp) -1 2)))
        ((mtimes simp) ((mexpt simp) m -1)
-	((mplus simp) (($elliptic_e simp) ((%asin simp) x) m)
+	((mplus simp) ((%elliptic_e simp) ((%asin simp) x) m)
 	 ((mtimes simp) -1 ((mplus simp) 1 ((mtimes simp) -1 m))
-	  (($elliptic_f simp) ((%asin simp) x) m)))))))
+	  ((%elliptic_f simp) ((%asin simp) x) m)))))))
   grad)
 
 ;; Let u = inverse_jacobi_cn(x).  Then jacobi_cn(u) = x or
@@ -489,12 +438,12 @@
 	((mabs simp) x))
        ((mtimes simp) ((mexpt simp) m -1)
 	((mplus simp)
-	 (($elliptic_e simp)
+	 ((%elliptic_e simp)
 	  ((%asin simp)
 	   ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 ((mexpt simp) x 2))) ((rat simp) 1 2)))
 	  m)
 	 ((mtimes simp) -1 ((mplus simp) 1 ((mtimes simp) -1 m))
-	  (($elliptic_f simp)
+	  ((%elliptic_f simp)
 	   ((%asin simp)
 	    ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 ((mexpt simp) x 2))) ((rat simp) 1 2)))
 	   m)))))))
@@ -541,7 +490,7 @@
 	 ((mexpt simp) ((mabs simp) x) -1))
 	((mtimes simp) ((mexpt simp) m -1)
 	 ((mplus simp)
-	  (($elliptic_e simp)
+	  ((%elliptic_e simp)
 	   ((%asin simp)
 	    ((mtimes simp) ((mexpt simp) m ((rat simp) -1 2))
 	     ((mexpt simp) ((mplus simp) 1
@@ -549,7 +498,7 @@
 	      ((rat simp) 1 2))))
 	   m)
 	  ((mtimes simp) -1 ((mplus simp) 1 ((mtimes simp) -1 m))
-	   (($elliptic_f simp)
+	   ((%elliptic_f simp)
 	    ((%asin simp)
 	     ((mtimes simp) ((mexpt simp) m ((rat simp) -1 2))
 	      ((mexpt simp) ((mplus simp) 1
@@ -558,25 +507,6 @@
 	    m))))))))
   grad)
 
-
-;; Define the actual functions for the user
-(defmfun $jacobi_sn (u m)
-  (simplify (list '(%jacobi_sn) (resimplify u) (resimplify m))))
-
-(defmfun $jacobi_cn (u m)
-  (simplify (list '(%jacobi_cn) (resimplify u) (resimplify m))))
-
-(defmfun $jacobi_dn (u m)
-  (simplify (list '(%jacobi_dn) (resimplify u) (resimplify m))))
-
-(defmfun $inverse_jacobi_sn (u m)
-  (simplify (list '(%inverse_jacobi_sn) (resimplify u) (resimplify m))))
-
-(defmfun $inverse_jacobi_cn (u m)
-  (simplify (list '(%inverse_jacobi_cn) (resimplify u) (resimplify m))))
-
-(defmfun $inverse_jacobi_dn (u m)
-  (simplify (list '(%inverse_jacobi_dn) (resimplify u) (resimplify m))))
 
 ;; Possible forms of a complex number:
 ;;
@@ -644,15 +574,9 @@
 	nil)))
 
 ;; Tell maxima how to simplify the functions
-;;
-;; FORM is list containing the actual expression.  I don't really know
-;; what Y and Z contain.  Most of this modeled after SIMP-%SIN.
-(defun simp-%jacobi_sn (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	coef args)
+
+(def-simplifier jacobi_sn (u m)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
        (to (bigfloat::sn (bigfloat:to ($float u)) (bigfloat:to ($float m)))))
@@ -671,12 +595,12 @@
        0)
       ((zerop1 m)
        ;; A&S 16.6.1
-       `((%sin) ,u))
+       (ftake '%sin u))
       ((onep1 m)
        ;; A&S 16.6.1
-       `((%tanh) ,u))
+       (ftake '%tanh u))
       ((and $trigsign (mminusp* u))
-       (neg (cons-exp '%jacobi_sn (neg u) m)))
+       (neg (ftake* '%jacobi_sn (neg u) m)))
       ((and $triginverses
 	    (listp u)
 	    (member (caar u) '(%inverse_jacobi_sn
@@ -705,8 +629,8 @@
 	    (power (sub 1 (mul inv-arg inv-arg)) 1//2))
 	   (%inverse_jacobi_nc
 	    ;; inverse_jacobi_nc(u) = inverse_jacobi_cn(1/u)
-	    ($jacobi_sn ($inverse_jacobi_cn (div 1 inv-arg) m)
-			m))
+	    (ftake '%jacobi_sn (ftake '%inverse_jacobi_cn (div 1 inv-arg) m)
+		   m))
 	   (%inverse_jacobi_dn
 	    ;; dn(x)^2 + m*sn(x)^2 = 1 so
 	    ;; sn(x) = 1/sqrt(m)*sqrt(1-dn(x)^2)
@@ -714,32 +638,32 @@
 		 (power (sub 1 (mul inv-arg inv-arg)) 1//2)))
 	   (%inverse_jacobi_nd
 	    ;; inverse_jacobi_nd(u) = inverse_jacobi_dn(1/u)
-	    ($jacobi_sn ($inverse_jacobi_dn (div 1 inv-arg) m)
-			m))
+	    (ftake '%jacobi_sn (ftake '%inverse_jacobi_dn (div 1 inv-arg) m)
+		   m))
 	   (%inverse_jacobi_sc
 	    ;; See below for inverse_jacobi_sc.
 	    (div inv-arg (power (add 1 (mul inv-arg inv-arg)) 1//2)))
 	   (%inverse_jacobi_cs
 	    ;; inverse_jacobi_cs(u) = inverse_jacobi_sc(1/u)
-	    ($jacobi_sn ($inverse_jacobi_sc (div 1 inv-arg) m)
-			m))
+	    (ftake '%jacobi_sn (ftake '%inverse_jacobi_sc (div 1 inv-arg) m)
+		   m))
 	   (%inverse_jacobi_sd
 	    ;; See below for inverse_jacobi_sd
 	    (div inv-arg (power (add 1 (mul m (mul inv-arg inv-arg))) 1//2)))
 	   (%inverse_jacobi_ds
 	    ;; inverse_jacobi_ds(u) = inverse_jacobi_sd(1/u)
-	    ($jacobi_sn ($inverse_jacobi_sd (div 1 inv-arg) m)
-			m))
+	    (ftake '%jacobi_sn (ftake '%inverse_jacobi_sd (div 1 inv-arg) m)
+		   m))
 	   (%inverse_jacobi_cd
 	    ;; See below
 	    (div (power (sub 1 (mul inv-arg inv-arg)) 1//2)
 		 (power (sub 1 (mul m (mul inv-arg inv-arg))) 1//2)))
 	   (%inverse_jacobi_dc
-	    ($jacobi_sn ($inverse_jacobi_cd (div 1 inv-arg) m) m)))))
+	    (ftake '%jacobi_sn (ftake '%inverse_jacobi_cd (div 1 inv-arg) m) m)))))
       ;; A&S 16.20.1 (Jacobi's Imaginary transformation)
       ((and $%iargs (multiplep u '$%i))
        (mul '$%i
-	    (cons-exp '%jacobi_sc (coeff u '$%i 1) (add 1 (neg m)))))
+	    (ftake* '%jacobi_sc (coeff u '$%i 1) (add 1 (neg m)))))
       ((setq coef (kc-arg2 u m))
        ;; sn(m*K+u)
        ;;
@@ -752,57 +676,49 @@
 		   ;; sn(4*m*K + u) = sn(u), sn(0) = 0
 		   (if (zerop1 const)
 		       0
-		       `((%jacobi_sn simp) ,const ,m)))
+		       (ftake '%jacobi_sn const m)))
 		  (1
 		   ;; sn(4*m*K + K + u) = sn(K+u) = cd(u)
 		   ;; sn(K) = 1
 		   (if (zerop1 const)
 		       1
-		       `((%jacobi_cd simp) ,const ,m)))
+		       (ftake '%jacobi_cd const m)))
 		  (2
 		   ;; sn(4*m*K+2*K + u) = sn(2*K+u) = -sn(u)
 		   ;; sn(2*K) = 0
 		   (if (zerop1 const)
 		       0
-		       (neg `((%jacobi_sn simp) ,const ,m))))
+		       (neg (ftake '%jacobi_sn const m))))
 		  (3
 		   ;; sn(4*m*K+3*K+u) = sn(2*K + K + u) = -sn(K+u) = -cd(u)
 		   ;; sn(3*K) = -1
 		   (if (zerop1 const)
 		       -1
-		       (neg `((%jacobi_cd simp) ,const ,m))))))
+		       (neg (ftake '%jacobi_cd const m))))))
 	       ((and (alike1 lin 1//2)
 		     (zerop1 const))
 		;; A&S 16.5.2
 		;;
 		;; sn(1/2*K) = 1/sqrt(1+sqrt(1-m))
-		`((mexpt simp)
-		  ((mplus simp) 1
-		   ((mexpt simp)
-		    ((mplus simp) 1 ((mtimes simp) -1 ,m))
-		    ((rat simp) 1 2)))
-		  ((rat) -1 2)))
+		(div 1
+		     (power (add 1 (power (sub 1 m) 1//2))
+			    1//2)))
 	       ((and (alike1 lin 3//2)
 		     (zerop1 const))
 		;; A&S 16.5.2
 		;;
 		;; sn(1/2*K + K) = cd(1/2*K,m)
-		(simplifya
-		 `((%jacobi_cd) ((mtimes) ((rat) 1 2) ((%elliptic_kc) ,m))
-		   ,m)
-		 nil))
+		(ftake '%jacobi_cd (mul 1//2
+				       (ftake '%elliptic_kc m))
+		       m))
 	       (t
-		(eqtest (list '(%jacobi_sn) u m) form)))))
+		(give-up)))))
       (t
        ;; Nothing to do
-       (eqtest (list '(%jacobi_sn) u m) form)))))
+       (give-up)))))
 
-(defun simp-%jacobi_cn (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	coef args)
+(def-simplifier jacobi_cn (u m)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
        (to (bigfloat::cn (bigfloat:to ($float u)) (bigfloat:to ($float m)))))
@@ -821,12 +737,12 @@
        1)
       ((zerop1 m)
        ;; A&S 16.6.2
-       `((%cos) ,u))
+       (ftake '%cos u))
       ((onep1 m)
        ;; A&S 16.6.2
-       `((%sech) ,u))
+       (ftake '%sech u))
       ((and $trigsign (mminusp* u))
-       (cons-exp '%jacobi_cn (neg u) m))
+       (ftake* '%jacobi_cn (neg u) m))
       ((and $triginverses
 	    (listp u)
 	    (member (caar u) '(%inverse_jacobi_sn
@@ -847,11 +763,11 @@
 	     (t
 	      ;; I'm lazy.  Use cn(x) = sqrt(1-sn(x)^2).  Hope
 	      ;; this is right.
-	      (power (sub 1 (power ($jacobi_sn u (third u)) 2))
+	      (power (sub 1 (power (ftake '%jacobi_sn u (third u)) 2))
 		     1//2))))
       ;; A&S 16.20.2 (Jacobi's Imaginary transformation)
       ((and $%iargs (multiplep u '$%i))
-       (cons-exp '%jacobi_nc (coeff u '$%i 1) (add 1 (neg m))))
+       (ftake* '%jacobi_nc (coeff u '$%i 1) (add 1 (neg m))))
       ((setq coef (kc-arg2 u m))
        ;; cn(m*K+u)
        ;;
@@ -865,23 +781,20 @@
 		   ;; cn(0) = 1
 		   (if (zerop1 const)
 		       1
-		       `((%jacobi_cn simp) ,const ,m)))
+		       (ftake '%jacobi_cn const m)))
 		  (1
 		   ;; cn(4*m*K + K + u) = cn(K+u) = -sqrt(m1)*sd(u)
 		   ;; cn(K) = 0
 		   (if (zerop1 const)
 		       0
-		       (neg `((mtimes simp)
-			      ((mexpt simp)
-			       ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			       ((rat simp) 1 2))
-			      ((%jacobi_sd simp) ,const ,m)))))
+		       (neg (mul (power (sub 1 m) 1//2)
+				 (ftake '%jacobi_sd const m)))))
 		  (2
 		   ;; cn(4*m*K + 2*K + u) = cn(2*K+u) = -cn(u)
 		   ;; cn(2*K) = -1
 		   (if (zerop1 const)
 		       -1
-		       (neg `((%jacobi_cn) ,const ,m))))
+		       (neg (ftake '%jacobi_cn const m))))
 		  (3
 		   ;; cn(4*m*K + 3*K + u) = cn(2*K + K + u) =
 		   ;; -cn(K+u) = sqrt(m1)*sd(u)
@@ -889,37 +802,24 @@
 		   ;; cn(3*K) = 0
 		   (if (zerop1 const)
 		       0
-		       `((mtimes simp)
-			 ((mexpt simp)
-			  ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			  ((rat simp) 1 2))
-			 ((%jacobi_sd simp) ,const ,m))))))
+		       (mul (power (sub 1 m) 1//2)
+			    (ftake '%jacobi_sd const m))))))
 	       ((and (alike1 lin 1//2)
 		     (zerop1 const))
 		;; A&S 16.5.2
 		;; cn(1/2*K) = (1-m)^(1/4)/sqrt(1+sqrt(1-m))
-		`((mtimes simp)
-		  ((mexpt simp) ((mplus simp) 1
-				 ((mtimes simp) -1 ,m))
-		   ((rat simp) 1 4))
-		  ((mexpt simp)
-		   ((mplus simp) 1
-		    ((mexpt simp)
-		     ((mplus simp) 1
-		      ((mtimes simp) -1 ,m))
-		     ((rat simp) 1 2)))
-		   ((rat simp) -1 2))))
+		(mul (power (sub 1 m) (div 1 4))
+		     (power (add 1
+				 (power (sub 1 m)
+					1//2))
+			    1//2)))
 	       (t
-		(eqtest (list '(%jacobi_cn) u m) form)))))
+		(give-up)))))
       (t
-       (eqtest (list '(%jacobi_cn) u m) form)))))
+       (give-up)))))
 
-(defun simp-%jacobi_dn (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	coef args)
+(def-simplifier jacobi_dn (u m)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
        (to (bigfloat::dn (bigfloat:to ($float u)) (bigfloat:to ($float m)))))
@@ -941,9 +841,9 @@
        1)
       ((onep1 m)
        ;; A&S 16.6.3
-       (take '(%sech) u))
+       (ftake '%sech u))
       ((and $trigsign (mminusp* u))
-       (cons-exp '%jacobi_dn (neg u) m))
+       (ftake* '%jacobi_dn (neg u) m))
       ((and $triginverses
 	    (listp u)
 	    (member (caar u) '(%inverse_jacobi_sn
@@ -966,15 +866,15 @@
 	      ;; Express in terms of sn:
 	      ;; dn(x) = sqrt(1-m*sn(x)^2)
 	      (power (sub 1 (mul m
-				 (power ($jacobi_sn u m) 2)))
+				 (power (ftake '%jacobi_sn u m) 2)))
 		     1//2))))
       ((zerop1 ($ratsimp (sub u (power (sub 1 m) 1//2))))
        ;; A&S 16.5.3
        ;; dn(sqrt(1-m),m) = K(m)
-       ($elliptic_kc m))
+       (ftake '%elliptic_kc m))
       ;; A&S 16.20.2 (Jacobi's Imaginary transformation)
       ((and $%iargs (multiplep u '$%i))
-       (cons-exp '%jacobi_dc (coeff u '$%i 1)
+       (ftake* '%jacobi_dc (coeff u '$%i 1)
 		 (add 1 (neg m))))
       ((setq coef (kc-arg2 u m))
        ;; A&S 16.8.3
@@ -991,41 +891,31 @@
 		   (if (zerop1 const)
 		       1
 		       ;; dn(4*m*K+2*K + u) = dn(2*K+u) = dn(u)
-		       `((%jacobi_dn) ,const ,m)))
+		       (ftake '%jacobi_dn const m)))
 		  (1
 		   ;; dn(2*m*K + K + u) = dn(K + u) = sqrt(1-m)*nd(u)
 		   ;; dn(K) = sqrt(1-m)
 		   (if (zerop1 const)
-		       `((mexpt simp)
-			 ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			 ((rat simp) 1 2))
-		       `((mtimes simp)
-			 ((mexpt simp)
-			  ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			  ((rat simp) 1 2))
-			 ((%jacobi_nd simp) ,const ,m))))))
+		       (power (sub 1 m) 1//2)
+		       (mul (power (sub 1 m) 1//2)
+			    (ftake '%jacobi_nd const m))))))
 	       ((and (alike1 lin 1//2)
 		     (zerop1 const))
 		;; A&S 16.5.2
 		;; dn(1/2*K) = (1-m)^(1/4)
-		`((mexpt simp)
-		  ((mplus simp) 1 ((mtimes simp) -1 ,m))
-		  ((rat simp) 1 4)))
+		(power (sub 1 m)
+		       (div 1 4)))
 	       (t
-		(eqtest (list '(%jacobi_dn) u m) form)))))
-      (t (eqtest (list '(%jacobi_dn) u m) form)))))
+		(give-up)))))
+      (t (give-up)))))
 
 ;; Should we simplify the inverse elliptic functions into the
 ;; appropriate incomplete elliptic integral?  I think we should leave
 ;; it, but perhaps allow some way to do that transformation if
 ;; desired.
 
-(defun simp-%inverse_jacobi_sn (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	args)
+(def-simplifier inverse_jacobi_sn (u m)
+  (let (args)
     ;; To numerically evaluate inverse_jacobi_sn (asn), use
     ;;
     ;; asn(x,m) = F(asin(x),m)
@@ -1040,9 +930,13 @@
     ;; produces the correct value as verified by verifying
     ;; jacobi_sn(inverse_jacobi_sn(x,m),m) = x.
     (cond ((float-numerical-eval-p u m)
-	   (complexify (* u (bigfloat::bf-rf (bigfloat:to (float (- 1 (* u u))))
-					     (bigfloat:to (float (- 1 (* m u u))))
-					     1))))
+	   (let ((uu (bigfloat:to ($float u)))
+		 (mm (bigfloat:to ($float m))))
+	     (complexify
+	      (* uu
+		 (bigfloat::bf-rf (bigfloat:to (- 1 (* uu uu)))
+				  (bigfloat:to (- 1 (* mm uu uu)))
+				  1)))))
 	  ((setf args (complex-float-numerical-eval-p u m))
 	   (destructuring-bind (u m)
 	       args
@@ -1072,16 +966,16 @@
 	   0)
 	  ((onep1 u)
 	   ;; asn(1,m) = elliptic_kc(m)
-	   ($elliptic_kc m))
+	   (ftake '%elliptic_kc m))
 	  ((and (numberp u) (onep1 (- u)))
 	   ;; asn(-1,m) = -elliptic_kc(m)
-	   (mul -1 ($elliptic_kc m)))
+	   (mul -1 (ftake '%elliptic_kc m)))
 	  ((zerop1 m)
 	   ;; asn(x,0) = F(asin(x),0) = asin(x)
-	   (take '(%asin) u))
+	   (ftake '%asin u))
 	  ((onep1 m)
 	   ;; asn(x,1) = F(asin(x),1) = log(tan(pi/4+asin(x)/2))
-	   (take '($elliptic_f) (take '(%asin) u) 1))
+	   (ftake '%elliptic_f (ftake '%asin u) 1))
 	  ((and (eq $triginverses '$all)
 		(listp u)
 		(eq (caar u) '%jacobi_sn)
@@ -1090,14 +984,10 @@
 	   (second u))
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '(%inverse_jacobi_sn) u m) form)))))
+	   (give-up)))))
 
-(defun simp-%inverse_jacobi_cn (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	args)
+(def-simplifier inverse_jacobi_cn (u m)
+  (let (args)
     (cond ((float-numerical-eval-p u m)
 	   ;; Numerically evaluate acn
 	   ;;
@@ -1118,12 +1008,12 @@
 					  (bigfloat:to m)))))
 	  ((zerop1 m)
 	   ;; asn(x,0) = F(acos(x),0) = acos(x)
-	   `(($elliptic_f) ((%acos) ,u) 0))
+	   (ftake '%elliptic_f (ftake '%acos u) 0))
 	  ((onep1 m)
 	   ;; asn(x,1) = F(asin(x),1) = log(tan(pi/2+asin(x)/2))
-	   `(($elliptic_f) ((%acos) ,u) 1))
+	   (ftake '%elliptic_f (ftake '%acos u) 1))
 	  ((zerop1 u)
-	   `((%elliptic_kc) ,m))
+	   (ftake '%elliptic_kc m))
 	  ((onep1 u)
 	   0)
 	  ((and (eq $triginverses '$all)
@@ -1134,14 +1024,10 @@
 	   (second u))
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '(%inverse_jacobi_cn) u m) form)))))
+	   (give-up)))))
 
-(defun simp-%inverse_jacobi_dn (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	args)
+(def-simplifier inverse_jacobi_dn (u m)
+  (let (args)
     (cond ((float-numerical-eval-p u m)
 	   (to (bigfloat::bf-inverse-jacobi-dn (bigfloat:to (float u))
 					       (bigfloat:to (float m)))))
@@ -1161,14 +1047,14 @@
 	     (to (bigfloat::bf-inverse-jacobi-dn (bigfloat:to u) (bigfloat:to m)))))
 	  ((onep1 m)
 	   ;; x = dn(u,1) = sech(u).  so u = asech(x)
-	   `((%asech) ,u))
+	   (ftake '%asech u))
 	  ((onep1 u)
 	   ;; jacobi_dn(0,m) = 1
 	   0)
 	  ((zerop1 ($ratsimp (sub u (power (sub 1 m) 1//2))))
 	   ;; jacobi_dn(K(m),m) = sqrt(1-m) so
 	   ;; inverse_jacobi_dn(sqrt(1-m),m) = K(m)
-	   ($elliptic_kc m))
+	   (ftake '%elliptic_kc m))
 	  ((and (eq $triginverses '$all)
 		(listp u)
 		(eq (caar u) '%jacobi_dn)
@@ -1177,7 +1063,7 @@
 	   (second u))
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '(%inverse_jacobi_dn) u m) form)))))
+	   (give-up)))))
 
 ;;;; Elliptic integrals
 
@@ -1388,9 +1274,7 @@ first kind:
 	 ;; A&S 17.4.25
 	 1.0)
 	(t
-	 (let* ((k (sqrt m))
-		(y (* (- 1 k)
-		      (+ 1 k))))
+	 (let* ((y (- 1 m)))
 	   (to (- (bigfloat::bf-rf 0.0 y 1.0)
 		  (* (/ m 3)
 		     (bigfloat::bf-rd 0.0 y 1.0))))))))
@@ -1422,9 +1306,6 @@ first kind:
 ;; the parameter m = sin(alpha)^2 is used.
 ;;
 
-
-(defprop $elliptic_f simp-$elliptic_f operators)
-(defprop $elliptic_e simp-$elliptic_e operators)
 
 ;; The derivative of F(phi|m) wrt to phi is easy.  The derivative wrt
 ;; to m is harder.  Here is a derivation.  Hope I got it right.
@@ -1497,7 +1378,7 @@ first kind:
 ;;   ----------------------------------------------------------------------
 ;; 				     1 - m
 
-(defprop $elliptic_f
+(defprop %elliptic_f
     ((phi m)
      ;; diff wrt phi
      ;; 1/sqrt(1-m*sin(phi)^2)
@@ -1509,9 +1390,9 @@ first kind:
       ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m)) -1)
       ((mplus simp)
        ((mtimes simp) ((mexpt simp) m -1)
-	((mplus simp) (($elliptic_e simp) phi m)
+	((mplus simp) ((%elliptic_e simp) phi m)
 	 ((mtimes simp) -1 ((mplus simp) 1 ((mtimes simp) -1 m))
-	  (($elliptic_f simp) phi m))))
+	  ((%elliptic_f simp) phi m))))
        ((mtimes simp) -1 ((%cos simp) phi) ((%sin simp) phi)
 	((mexpt simp)
 	 ((mplus simp) 1
@@ -1550,7 +1431,7 @@ first kind:
 ;;   -- (elliptic_E(PHI, m)) = ---------------------------------------
 ;;   dm					        2 m
 
-(defprop $elliptic_e
+(defprop %elliptic_e
     ((phi m)
      ;; sqrt(1-m*sin(phi)^2)
      ((mexpt simp)
@@ -1558,21 +1439,12 @@ first kind:
       ((rat simp) 1 2))
      ;; diff wrt m
      ((mtimes simp) ((rat simp) 1 2) ((mexpt simp) m -1)
-      ((mplus simp) (($elliptic_e simp) phi m)
-       ((mtimes simp) -1 (($elliptic_f simp) phi m)))))
+      ((mplus simp) ((%elliptic_e simp) phi m)
+       ((mtimes simp) -1 ((%elliptic_f simp) phi m)))))
   grad)
 		    
-(defmfun $elliptic_f (phi m)
-  (simplify (list '($elliptic_f) (resimplify phi) (resimplify m))))
-(defmfun $elliptic_e (phi m)
-  (simplify (list '($elliptic_e) (resimplify phi) (resimplify m))))
-
-(defun simp-$elliptic_f (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((phi (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	args)
+(def-simplifier elliptic_f (phi m)
+  (let (args)
     (cond ((float-numerical-eval-p phi m)
 	   ;; Numerically evaluate it
 	   (to (elliptic-f ($float phi) ($float m))))
@@ -1599,25 +1471,22 @@ first kind:
 	   ;; isn't right if we know that abs(phi) > %pi/2, where
 	   ;; elliptic_f is undefined (or infinity).
 	   (cond ((not (eq '$pos (csign (sub ($abs phi) (div '$%pi 2)))))
-		  `((%log) ((%tan)
-			    ((mplus) ((mtimes) $%pi ((rat) 1 4))
-			     ((mtimes) ((rat) 1 2) ,phi)))))
+		  (ftake '%log
+			 (ftake '%tan
+				(add (mul '$%pi (div 1 4))
+				     (mul 1//2 phi)))))
 		 (t
 		  (merror (intl:gettext "elliptic_f: elliptic_f(~:M, ~:M) is undefined.")
 					phi m))))
 	  ((alike1 phi '((mtimes) ((rat) 1 2) $%pi))
 	   ;; Complete elliptic integral
-	   `((%elliptic_kc) ,m))
+	   (ftake '%elliptic_kc m))
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '($elliptic_f) phi m) form)))))
+	   (give-up)))))
 
-(defun simp-$elliptic_e (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((phi (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	args)
+(def-simplifier elliptic_e (phi m)
+  (let (args)
     (cond ((float-numerical-eval-p phi m)
 	   ;; Numerically evaluate it
 	   (elliptic-e ($float phi) ($float m)))
@@ -1646,13 +1515,13 @@ first kind:
 	   ;;
 	   ;; elliptic_e(x,1) = sin(phi) + 2*round(x/%pi)*elliptic_ec(m)
 	   ;;
-	   (add (take '(%sin) phi)
+	   (add (ftake '%sin phi)
 		(mul 2
-		     (mul (take '(%round) (div phi '$%pi))
-			  (take '(%elliptic_ec) m)))))
+		     (mul (ftake '%round (div phi '$%pi))
+			  (ftake '%elliptic_ec m)))))
 	  ((alike1 phi '((mtimes) ((rat) 1 2) $%pi))
 	   ;; Complete elliptic integral
-	   `((%elliptic_ec) ,m))
+	   (ftake '%elliptic_ec m))
 	  ((and ($numberp phi)
 		(let ((r ($round (div phi '$%pi))))
 		  (and ($numberp r)
@@ -1660,18 +1529,17 @@ first kind:
 	   ;; Handle the case where phi is a number where we can apply
 	   ;; the periodicity property without blowing up the
 	   ;; expression.
-	   (add (take '($elliptic_e)
-		      (add phi
-			   (mul (mul -1 '$%pi)
-				(take '(%round) (div phi '$%pi))))
-		      m)
+	   (add (ftake '%elliptic_e
+		       (add phi
+			    (mul (mul -1 '$%pi)
+				 (ftake '%round (div phi '$%pi))))
+		       m)
 		(mul 2
-		     (mul (take '(%round) (div phi '$%pi))
-			  (take '(%elliptic_ec) m)))))
+		     (mul (ftake '%round (div phi '$%pi))
+			  (ftake '%elliptic_ec m)))))
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '($elliptic_e) phi m) form)))))
-    
+	   (give-up)))))
 
 ;; Complete elliptic integrals
 ;;
@@ -1679,14 +1547,6 @@ first kind:
 ;;
 ;; elliptic_ec(m) = elliptic_e(%pi/2, m)
 ;;
-(defmfun $elliptic_kc (m)
-  (simplify (list '(%elliptic_kc) (resimplify m))))
-(defmfun $elliptic_ec (m)
-  (simplify (list '(%elliptic_ec) (resimplify m))))
-
-
-(defprop %elliptic_kc simp-%elliptic_kc operators)
-(defprop %elliptic_ec simp-%elliptic_ec operators)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1707,11 +1567,8 @@ first kind:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun simp-%elliptic_kc (form yy z)
-  (declare (ignore yy))
-  (oneargcheck form)
-  (let ((m (simpcheck (cadr form) z))
-	args)
+(def-simplifier elliptic_kc (m)
+  (let (args)
     (cond ((onep1 m)
            ;; elliptic_kc(1) is complex infinity. Maxima can not handle
            ;; infinities correctly, throw a Maxima error.
@@ -1746,7 +1603,7 @@ first kind:
 		(power (gm (div -1 4)) 2)))
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '(%elliptic_kc) m) form)))))
+	   (give-up)))))
 
 (defprop %elliptic_kc
     ((m)
@@ -1761,11 +1618,8 @@ first kind:
       ((mexpt) m -1)))
   grad)
 
-(defun simp-%elliptic_ec (form yy z)
-  (declare (ignore yy))
-  (oneargcheck form)
-  (let ((m (simpcheck (cadr form) z))
-	args)
+(def-simplifier elliptic_ec (m)
+  (let (args)
     (cond ((float-numerical-eval-p m)
 	   ;; Numerically evaluate it
 	   (elliptic-ec ($float m)))
@@ -1798,10 +1652,10 @@ first kind:
 	   ;;      = (2*%pi*gamma(3/4)^4+%pi^3)/(4*%pi^(3/2)*gamma(3/4)^2)
 	   ;;      = gamma(3/4)^2/(2*sqrt(%pi))+%pi^(3/2)/(4*gamma(3/4)^2)
 	   ;;
-	   (add (div (power (take '(%gamma) (div 3 4)) 2)
+	   (add (div (power (ftake '%gamma (div 3 4)) 2)
 		     (mul 2 (power '$%pi 1//2)))
 		(div (power '$%pi (div 3 2))
-		     (mul 4 (power (take '(%gamma) (div 3 4)) 2)))))
+		     (mul 4 (power (ftake '%gamma (div 3 4)) 2)))))
 	  ((zerop1 (add 1 m))
 	   ;; elliptic_ec(-1). Use the identity
 	   ;; http://functions.wolfram.com/08.01.17.0002.01
@@ -1815,10 +1669,10 @@ first kind:
 	   ;;
 	   ;; Should we expand out elliptic_ec(1/2) using the above result?
 	   (mul (power 2 1//2)
-		(take '($elliptic_ec) 1//2)))
+		(ftake '%elliptic_ec 1//2)))
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '(%elliptic_ec) m) form)))))
+	   (give-up)))))
 
 (defprop %elliptic_ec
     ((m)
@@ -1845,19 +1699,8 @@ first kind:
 ;; As with E and F, we do not use the modular angle alpha but the
 ;; parameter m = sin(alpha)^2.
 ;;
-(defprop $elliptic_pi simp-$elliptic_pi operators)
-
-(defmfun $elliptic_pi (n phi m)
-  (simplify (list '($elliptic_pi)
-		  (resimplify n) (resimplify phi) (resimplify m))))
-
-(defun simp-$elliptic_pi (form yy z)
-  (declare (ignore yy))
-  ;;(threeargcheck form)
-  (let ((n (simpcheck (cadr form) z))
-	(phi (simpcheck (caddr form) z))
-	(m (simpcheck (cadddr form) z))
-	args)
+(def-simplifier elliptic_pi (n phi m)
+  (let (args)
     (cond
       ((float-numerical-eval-p n phi m)
        ;; Numerically evaluate it
@@ -1879,24 +1722,24 @@ first kind:
 				       (bigfloat:to phi)
 				       (bigfloat:to m)))))
       ((zerop1 n)
-       `(($elliptic_f) ,phi ,m))
+       (ftake '%elliptic_f phi m))
       ((zerop1 m)
        ;; 3 cases depending on n < 1, n > 1, or n = 1.
-       (let ((s (asksign (resimplify `((mplus) -1 ,n)))))
+       (let ((s (asksign (add -1 n))))
 	 (case s
 	   ($positive
-	    (div (take '(%atanh) (mul (power (add n -1) 1//2)
-				      (take '(%tan) phi)))
+	    (div (ftake '%atanh (mul (power (add n -1) 1//2)
+				    (ftake '%tan phi)))
 		 (power (add n -1) 1//2)))
 	   ($negative
-	    (div (take '(%atan) (mul (power (sub 1 n) 1//2)
-				     (take '(%tan) phi)))
+	    (div (ftake '%atan (mul (power (sub 1 n) 1//2)
+				   (ftake '%tan phi)))
 		 (power (sub 1 n) 1//2)))
 	   ($zero
-	    (take '(%tan) phi)))))
+	    (ftake '%tan phi)))))
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '($elliptic_pi) n phi m) form)))))
+	   (give-up)))))
 
 ;; Complete elliptic-pi.  That is phi = %pi/2.  Then
 ;; elliptic_pi(n,m)
@@ -1986,7 +1829,7 @@ first kind:
 
 ;;; Deriviatives from functions.wolfram.com
 ;;; http://functions.wolfram.com/EllipticIntegrals/EllipticPi3/20/
-(defprop $elliptic_pi
+(defprop %elliptic_pi
   ((n z m)
    ;Derivative wrt first argument
    ((mtimes) ((rat) 1 2)
@@ -1995,10 +1838,10 @@ first kind:
     ((mplus)
      ((mtimes) ((mexpt) n -1)
       ((mplus) ((mtimes) -1 m) ((mexpt) n 2))
-      (($elliptic_pi) n z m))
-     (($elliptic_e) z m)
+      ((%elliptic_pi) n z m))
+     ((%elliptic_e) z m)
      ((mtimes) ((mplus) m ((mtimes) -1 n)) ((mexpt) n -1)
-      (($elliptic_f) z m))
+      ((%elliptic_f) z m))
      ((mtimes) ((rat) -1 2) n
       ((mexpt)
        ((mplus) 1 ((mtimes) -1 m ((mexpt) ((%sin) z) 2)))
@@ -2017,9 +1860,9 @@ first kind:
    ;Derivative wrt third argument
    ((mtimes) ((rat) 1 2)
     ((mexpt) ((mplus) ((mtimes) -1 m) n) -1)
-    ((mplus) (($elliptic_pi) n z m)
+    ((mplus) ((%elliptic_pi) n z m)
      ((mtimes) ((mexpt) ((mplus) -1 m) -1)
-      (($elliptic_e) z m))
+      ((%elliptic_e) z m))
      ((mtimes) ((rat) -1 2) ((mexpt) ((mplus) -1 m) -1) m
       ((mexpt)
        ((mplus) 1 ((mtimes) -1 m ((mexpt) ((%sin) z) 2)))
@@ -2047,7 +1890,7 @@ first kind:
   ;; quite right, but it makes the routines more accurate as fpprec
   ;; increases.
   (sqrt (reduce #'min (mapcar #'(lambda (x)
-				  (if (rationalp x)
+				  (if (rationalp (realpart x))
 				      maxima::flonum-epsilon
 				      (epsilon x)))
 			      args))))
@@ -2101,14 +1944,18 @@ first kind:
 
 
 
-;; rd(x,y,z) = integrate(3/2/sqrt(t+x)/sqrt(t+y)/sqrt(t+z), t, 0, inf)
+;; See https://dlmf.nist.gov/19.16.E5:
+;; 
+;; rd(x,y,z) = integrate(3/2/sqrt(t+x)/sqrt(t+y)/sqrt(t+z)/(t+z), t, 0, inf)
 ;;
+;; rd(1,1,1) = 1
 ;; E(K) = rf(0, 1-K^2, 1) - (K^2/3)*rd(0,1-K^2,1)
 ;;
 ;; B = integrate(s^2/sqrt(1-s^4), s, 0 ,1)
 ;;   = beta(3/4,1/2)/4
 ;;   = sqrt(%pi)*gamma(3/4)/gamma(1/4)
 ;;   = 1/3*rd(0,2,1)
+
 (defun bf-rd (x y z)
   (let* ((xn x)
 	 (yn y)
@@ -2165,6 +2012,11 @@ first kind:
        (/ (* power4 s)
 	  (expt an 3/2))))))
 
+;; See https://dlmf.nist.gov/19.16.E1
+;;
+;; rf(x,y,z) = 1/2*integrate(1/(sqrt(t+x)*sqrt(t+y)*sqrt(t+z)), t, 0, inf);
+;;
+;; rf(1,1,1) = 1
 (defun bf-rf (x y z)
   (let* ((xn x)
 	 (yn y)
@@ -2446,38 +2298,351 @@ first kind:
 
 (in-package :maxima)
 
-;; Define Carlson's elliptic integrals so we can test their
-;; implementation.  We only support bigfloat
+;; Define Carlson's elliptic integrals.
 
-(defmfun $carlson_rc (x y)
-  (to (bigfloat::bf-rc (bigfloat:bigfloat ($bfloat x))
-		       (bigfloat:bigfloat ($bfloat y)))))
-
-(defmfun $carlson_rd (x y z)
-  (to (bigfloat::bf-rd (bigfloat:bigfloat ($bfloat x))
-		       (bigfloat:bigfloat ($bfloat y))
-		       (bigfloat:bigfloat ($bfloat z)))))
-
-(defmfun $carlson_rf (x y z)
-  (to (bigfloat::bf-rf (bigfloat:bigfloat ($bfloat x))
-		       (bigfloat:bigfloat ($bfloat y))
-		       (bigfloat:bigfloat ($bfloat z)))))
-
-(defmfun $carlson_rj (x y z p)
-  (to (bigfloat::bf-rj (bigfloat:bigfloat ($bfloat x))
-		       (bigfloat:bigfloat ($bfloat y))
-		       (bigfloat:bigfloat ($bfloat z))
-		       (bigfloat:bigfloat ($bfloat p)))))
+(def-simplifier carlson_rc (x y)
+  (let (args)
+    (flet ((calc (x y)
+	     (flet ((floatify (z)
+		      ;; If z is a complex rational, convert to a
+		      ;; complex double-float.  Otherwise, leave it as
+		      ;; is.  If we don't do this, %i is handled as
+		      ;; #c(0 1), which makes bf-rc use single-float
+		      ;; arithmetic instead of the desired
+		      ;; double-float.
+		      (if (and (complexp z) (rationalp (realpart z)))
+			  (complex (float (realpart z))
+				   (float (imagpart z)))
+			  z)))
+	       (to (bigfloat::bf-rc (floatify (bigfloat:to x))
+				    (floatify (bigfloat:to y)))))))
+      ;; See comments from bf-rc
+      (cond ((float-numerical-eval-p x y)
+	     (calc ($float x) ($float y)))
+	    ((bigfloat-numerical-eval-p x y)
+	     (calc ($bfloat x) ($bfloat y)))
+	    ((setf args (complex-float-numerical-eval-p x y))
+	     (destructuring-bind (x y)
+		 args
+	       (calc ($float x) ($float y))))
+	    ((setf args (complex-bigfloat-numerical-eval-p x y))
+	     (destructuring-bind (x y)
+		 args
+	       (calc ($bfloat x) ($bfloat y))))
+	    ((and (zerop1 x)
+		  (onep1 y))
+	     ;; rc(0, 1) = %pi/2
+	     (div '$%pi 2))
+	    ((and (zerop1 x)
+		  (alike1 y (div 1 4)))
+	     ;; rc(0,1/4) = %pi
+	     '$%pi)
+	    ((and (eql x 2)
+		  (onep1 y))
+	     ;; rc(2,1) = 1/2*integrate(1/sqrt(t+2)/(t+1), t, 0, inf)
+	     ;;   = (log(sqrt(2)+1)-log(sqrt(2)-1))/2
+	     ;; ratsimp(logcontract(%)),algebraic:
+	     ;;   = -log(3-2^(3/2))/2
+	     ;;   = -log(sqrt(3-2^(3/2)))
+	     ;;   = -log(sqrt(2)-1)
+	     ;;   = log(1/(sqrt(2)-1))
+	     ;; ratsimp(%),algebraic;
+	     ;;   = log(sqrt(2)+1)
+	     (ftake '%log (add 1 (power 2 1//2))))
+	    ((and (alike x '$%i)
+		  (alike y (add 1 '$%i)))
+	     ;; rc(%i, %i+1) = 1/2*integrate(1/sqrt(t+%i)/(t+%i+1), t, 0, inf)
+	     ;;   = %pi/2-atan((-1)^(1/4))
+	     ;; ratsimp(logcontract(ratsimp(rectform(%o42)))),algebraic;
+	     ;;   = (%i*log(3-2^(3/2))+%pi)/4
+	     ;;   = (%i*log(3-2^(3/2)))/4+%pi/4
+	     ;;   = %i*log(sqrt(3-2^(3/2)))/2+%pi/4
+	     ;; sqrtdenest(%);
+	     ;;   = %pi/4 + %i*log(sqrt(2)-1)/2
+	     (add (div '$%pi 4)
+		  (mul '$%i
+		       1//2
+		       (ftake '%log (sub (power 2 1//2) 1)))))
+	    ((and (zerop1 x)
+		  (alike1 y '$%i))
+	     ;; rc(0,%i) = 1/2*integrate(1/(sqrt(t)*(t+%i)), t, 0, inf)
+	     ;;   = -((sqrt(2)*%i-sqrt(2))*%pi)/4
+	     ;;   = ((1-%i)*%pi)/2^(3/2)
+	     (div (mul (sub 1 '$%i)
+		       '$%pi)
+		  (power 2 3//2)))
+	    ((and (alike1 x y)
+		  (eq ($sign ($realpart x)) '$pos))
+	     ;; carlson_rc(x,x) = 1/2*integrate(1/sqrt(t+x)/(t+x), t, 0, inf)
+	     ;;    = 1/sqrt(x)
+	     (power x -1//2))
+	    ((and (alike1 x (power (div (add 1 y) 2) 2))
+		  (eq ($sign ($realpart y)) '$pos))
+	     ;; Rc(((1+x)/2)^2,x) = log(x)/(x-1) for x > 0.
+	     ;;
+	     ;; This is done by looking at Rc(x,y) and seeing if
+	     ;; ((1+y)/2)^2 is the same as x.
+	     (div (ftake '%log y)
+		  (sub y 1)))
+	    (t
+	     (give-up))))))
   
+(def-simplifier carlson_rd (x y z)
+  (let (args)
+    (flet ((calc (x y z)
+	     (to (bigfloat::bf-rd (bigfloat:to x)
+				  (bigfloat:to y)
+				  (bigfloat:to z)))))
+      ;; See https://dlmf.nist.gov/19.20.E18
+      (cond ((and (eql x 1)
+		  (eql x y)
+		  (eql y z))
+	     ;; Rd(1,1,1) = 1
+	     1)
+	    ((and (alike1 x y)
+		  (alike1 y z))
+	     ;; Rd(x,x,x) = x^(-3/2)
+	     (power x (div -3 2)))
+	    ((and (zerop1 x)
+		  (alike1 y z))
+	     ;; Rd(0,y,y) = 3/4*%pi*y^(-3/2)
+	     (mul (div 3 4)
+		  '$%pi
+		  (power y (div -3 2))))
+	    ((alike1 y z)
+	     ;; Rd(x,y,y) = 3/(2*(y-x))*(Rc(x, y) - sqrt(x)/y)
+	     (mul (div 3 (mul 2 (sub y x)))
+		  (sub (ftake '%carlson_rc x y)
+		       (div (power x 1//2)
+			    y))))
+	    ((alike1 x y)
+	     ;; Rd(x,x,z) = 3/(z-x)*(Rc(z,x) - 1/sqrt(z))
+	     (mul (div 3 (sub z x))
+		  (sub (ftake '%carlson_rc z x)
+		       (div 1 (power z 1//2)))))
+	    ((and (eql z 1)
+		  (or (and (eql x 0)
+			   (eql y 2))
+		      (and (eql x 2)
+			   (eql y 0))))
+	     ;; Rd(0,2,1) = 3*(gamma(3/4)^2)/sqrt(2*%pi)
+	     ;; See https://dlmf.nist.gov/19.20.E22.
+	     ;;
+	     ;; But that's the same as
+	     ;; 3*sqrt(%pi)*gamma(3/4)/gamma(1/4).  We can see this by
+	     ;; taking the ratio to get
+	     ;; gamma(1/4)*gamma(3/4)/sqrt(2)*%pi.  But
+	     ;; gamma(1/4)*gamma(3/4) = beta(1/4,3/4) = sqrt(2)*%pi.
+	     ;; Hence, the ratio is 1.
+	     ;;
+	     ;; Note also that Rd(x,y,z) = Rd(y,x,z)
+	     (mul 3
+		  (power '$%pi 1//2)
+		  (div (ftake '%gamma (div 3 4))
+		       (ftake '%gamma (div 1 4)))))
+	    ((and (or (eql x 0) (eql y 0))
+		  (eql z 1))
+	     ;; 1/3*m*Rd(0,1-m,1) = K(m) - E(m).
+	     ;; See https://dlmf.nist.gov/19.25.E1
+	     ;;
+	     ;; Thus, Rd(0,y,1) = 3/(1-y)*(K(1-y) - E(1-y))
+	     ;;
+	     ;; Note that Rd(x,y,z) = Rd(y,x,z).
+	     (let ((m (sub 1 y)))
+	       (mul (div 3 m)
+		    (sub (ftake '%elliptic_kc m)
+			 (ftake '%elliptic_ec m)))))
+	    ((or (and (eql x 0)
+		      (eql y 1))
+		 (and (eql x 1)
+		      (eql y 0)))
+	     ;; 1/3*m*(1-m)*Rd(0,1,1-m) = E(m) - (1-m)*K(m)
+	     ;; See https://dlmf.nist.gov/19.25.E1
+	     ;;
+	     ;; Thus
+	     ;;  Rd(0,1,z) = 3/(z*(1-z))*(E(1-z) - z*K(1-z))
+	     ;; Recall that Rd(x,y,z) = Rd(y,x,z).
+	     (mul (div 3 (mul z (sub 1 z)))
+		  (sub (ftake '%elliptic_ec (sub 1 z))
+		       (mul z
+			    (ftake '%elliptic_kc (sub 1 z))))))
+	    ((float-numerical-eval-p x y z)
+	     (calc ($float x) ($float y) ($float z)))
+	    ((bigfloat-numerical-eval-p x y z)
+	     (calc ($bfloat x) ($bfloat y) ($bfloat z)))
+	    ((setf args (complex-float-numerical-eval-p x y z))
+	     (destructuring-bind (x y z)
+		 args
+	       (calc ($float x) ($float y) ($float z))))
+	    ((setf args (complex-bigfloat-numerical-eval-p x y z))
+	     (destructuring-bind (x y z)
+		 args
+	       (calc ($bfloat x) ($bfloat y) ($bfloat z))))
+	    (t
+	     (give-up))))))
 
+(def-simplifier carlson_rf (x y z)
+  (let (args)
+    (flet ((calc (x y z)
+	     (to (bigfloat::bf-rf (bigfloat:to x)
+				  (bigfloat:to y)
+				  (bigfloat:to z)))))
+      ;; See https://dlmf.nist.gov/19.20.i
+      (cond ((and (alike1 x y)
+		  (alike1 y z))
+	     ;; Rf(x,x,x) = x^(-1/2)
+	     (power x -1//2))
+	    ((and (zerop1 x)
+		  (alike1 y z))
+	     ;; Rf(0,y,y) = 1/2*%pi*y^(-1/2)
+	     (mul 1//2 '$%pi
+		  (power y -1//2)))
+	    ((alike1 y z)
+	     (ftake '%carlson_rc x y))
+	    ((some #'(lambda (args)
+		       (destructuring-bind (x y z)
+			   args
+			 (and (zerop1 x)
+			      (eql y 1)
+			      (eql z 2))))
+		   (list (list x y z)
+			 (list x z y)
+			 (list y x z)
+			 (list y z x)
+			 (list z x y)
+			 (list z y x)))
+	     ;; Rf(0,1,2) = (gamma(1/4))^2/(4*sqrt(2*%pi))
+	     ;;
+	     ;; And Rf is symmetric in all the args, so check every
+	     ;; permutation too.  This could probably be simplified
+	     ;; without consing all the lists, but I'm lazy.
+	     (div (power (ftake '%gamma (div 1 4)) 2)
+		  (mul 4 (power (mul 2 '$%pi) 1//2))))
+	    ((some #'(lambda (args)
+		       (destructuring-bind (x y z)
+			   args
+			 (and (alike1 x '$%i)
+			      (alike1 y (mul -1 '$%i))
+			      (eql z 0))))
+		   (list (list x y z)
+			 (list x z y)
+			 (list y x z)
+			 (list y z x)
+			 (list z x y)
+			 (list z y x)))
+	     ;; rf(%i, -%i, 0)
+	     ;;   = 1/2*integrate(1/sqrt(t^2+1)/sqrt(t),t,0,inf)
+	     ;;   = beta(1/4,1/4)/4;
+	     ;; makegamma(%)
+	     ;;   = gamma(1/4)^2/(4*sqrt(%pi))
+	     ;;
+	     ;; Rf is symmetric, so check all the permutations too.
+	     (div (power (ftake '%gamma (div 1 4)) 2)
+		  (mul 4 (power '$%pi 1//2))))
+	    ((setf args
+		   (some #'(lambda (args)
+			     (destructuring-bind (x y z)
+				 args
+			       ;; Check that x = 0 and z = 1, and
+			       ;; return y.
+			       (and (zerop1 x)
+				    (eql z 1)
+				    y)))
+			 (list (list x y z)
+			       (list x z y)
+			       (list y x z)
+			       (list y z x)
+			       (list z x y)
+			       (list z y x))))
+	     ;; Rf(0,1-m,1) = elliptic_kc(m).
+	     ;; See https://dlmf.nist.gov/19.25.E1
+	     (ftake '%elliptic_kc (sub 1 args)))
+	    ((some #'(lambda (args)
+		       (destructuring-bind (x y z)
+			   args
+			 (and (alike1 x '$%i)
+			      (alike1 y (mul -1 '$%i))
+			      (eql z 0))))
+		   (list (list x y z)
+			 (list x z y)
+			 (list y x z)
+			 (list y z x)
+			 (list z x y)
+			 (list z y x)))
+	     ;; rf(%i, -%i, 0)
+	     ;;   = 1/2*integrate(1/sqrt(t^2+1)/sqrt(t),t,0,inf)
+	     ;;   = beta(1/4,1/4)/4;
+	     ;; makegamma(%)
+	     ;;   = gamma(1/4)^2/(4*sqrt(%pi))
+	     ;;
+	     ;; Rf is symmetric, so check all the permutations too.
+	     (div (power (ftake '%gamma (div 1 4)) 2)
+		  (mul 4 (power '$%pi 1//2))))
+	    ((float-numerical-eval-p x y z)
+	     (calc ($float x) ($float y) ($float z)))
+	    ((bigfloat-numerical-eval-p x y z)
+	     (calc ($bfloat x) ($bfloat y) ($bfloat z)))
+	    ((setf args (complex-float-numerical-eval-p x y z))
+	     (destructuring-bind (x y z)
+		 args
+	       (calc ($float x) ($float y) ($float z))))
+	    ((setf args (complex-bigfloat-numerical-eval-p x y z))
+	     (destructuring-bind (x y z)
+		 args
+	       (calc ($bfloat x) ($bfloat y) ($bfloat z))))
+	    (t
+	     (give-up))))))
+
+(def-simplifier carlson_rj (x y z p)
+  (let (args)
+    (flet ((calc (x y z p)
+	     (to (bigfloat::bf-rj (bigfloat:to x)
+				  (bigfloat:to y)
+				  (bigfloat:to z)
+				  (bigfloat:to p)))))
+      ;; See https://dlmf.nist.gov/19.20.iii
+      (cond ((and (alike1 x y)
+		  (alike1 y z)
+		  (alike1 z p))
+	     ;; Rj(x,x,x,x) = x^(-3/2)
+	     (power x (div -3 2)))
+	    ((alike1 z p)
+	     ;; Rj(x,y,z,z) = Rd(x,y,z)
+	     (ftake '%carlson_rd x y z))
+	    ((and (zerop1 x)
+		  (alike1 y z))
+	     ;; Rj(0,y,y,p) = 3*%pi/(2*(y*sqrt(p)+p*sqrt(y)))
+	     (div (mul 3 '$%pi)
+		  (mul 2
+		       (add (mul y (power p 1//2))
+			    (mul p (power y 1//2))))))
+	    ((alike1 y z)
+	     ;; Rj(x,y,y,p) = 3/(p-y)*(Rc(x,y) - Rc(x,p))
+	     (mul (div 3 (sub p y))
+		  (sub (ftake '%carlson_rc x y)
+		       (ftake '%carlson_rc x p))))
+	    ((and (alike1 y z)
+		  (alike1 y p))
+	     ;; Rj(x,y,y,y) = Rd(x,y,y)
+	     (ftake '%carlson_rd x y y))
+	    ((float-numerical-eval-p x y z p)
+	     (calc ($float x) ($float y) ($float z) ($float p)))
+	    ((bigfloat-numerical-eval-p x y z p)
+	     (calc ($bfloat x) ($bfloat y) ($bfloat z) ($bfloat p)))
+	    ((setf args (complex-float-numerical-eval-p x y z p))
+	     (destructuring-bind (x y z p)
+		 args
+	       (calc ($float x) ($float y) ($float z) ($float p))))
+	    ((setf args (complex-bigfloat-numerical-eval-p x y z p))
+	     (destructuring-bind (x y z p)
+		 args
+	       (calc ($bfloat x) ($bfloat y) ($bfloat z) ($bfloat p))))
+	    (t
+	     (give-up))))))
+		  
 ;;; Other Jacobian elliptic functions
 
 ;; jacobi_ns(u,m) = 1/jacobi_sn(u,m)
-(defmfun  $jacobi_ns (u m)
-  (simplify (list '(%jacobi_ns) (resimplify u) (resimplify m))))
-
-(defprop %jacobi_ns simp-%jacobi_ns operators)
-
 (defprop %jacobi_ns
     ((u m)
      ;; diff wrt u
@@ -2495,16 +2660,12 @@ first kind:
 	((mplus) u
 	 ((mtimes) -1
 	  ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	  (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	  ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	   m)))))))
   grad)
 
-(defun simp-%jacobi_ns (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	coef args)
+(def-simplifier jacobi_ns (u m)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
 	   (to (bigfloat:/ (bigfloat::sn (bigfloat:to ($float u))
@@ -2526,15 +2687,15 @@ first kind:
 	       (to (bigfloat:/ (bigfloat::sn uu mm))))))
 	  ((zerop1 m)
 	   ;; A&S 16.6.10
-	   (take '(%csc) u))
+	   (ftake '%csc u))
 	  ((onep1 m)
 	   ;; A&S 16.6.10
-	   (take '(%coth) u))
+	   (ftake '%coth u))
 	  ((zerop1 u)
 	   (dbz-err1 'jacobi_ns))
 	  ((and $trigsign (mminusp* u))
 	   ;; ns is odd
-	   (neg (cons-exp '%jacobi_ns (neg u) m)))
+	   (neg (ftake* '%jacobi_ns (neg u) m)))
 	  ((and $triginverses
 		(listp u)
 		(member (caar u) '(%inverse_jacobi_sn
@@ -2555,12 +2716,12 @@ first kind:
 		 (t
 		  ;; Express in terms of sn:
 		  ;; ns(x) = 1/sn(x)
-		  (div 1 ($jacobi_sn u m)))))
+		  (div 1 (ftake '%jacobi_sn u m)))))
 	  ;; A&S 16.20 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   ;; ns(i*u) = 1/sn(i*u) = -i/sc(u,m1) = -i*cs(u,m1)
 	   (neg (mul '$%i
-		     (cons-exp '%jacobi_cs (coeff u '$%i 1) (add 1 (neg m))))))
+		     (ftake* '%jacobi_cs (coeff u '$%i 1) (add 1 (neg m))))))
 	  ((setq coef (kc-arg2 u m))
 	   ;; A&S 16.8.10
 	   ;;
@@ -2575,41 +2736,35 @@ first kind:
 		       ;; ns(0) = infinity
 		       (if (zerop1 const)
 			   (dbz-err1 'jacobi_ns)
-			   `((%jacobi_ns simp) ,const ,m)))
+			   (ftake '%jacobi_ns const m)))
 		      (1
 		       ;; ns(4*m*K + K + u) = ns(K+u) = dc(u)
 		       ;; ns(K) = 1
 		       (if (zerop1 const)
 			   1
-			   `((%jacobi_dc simp) ,const ,m)))
+			   (ftake '%jacobi_dc const m)))
 		      (2
 		       ;; ns(4*m*K+2*K + u) = ns(2*K+u) = -ns(u)
 		       ;; ns(2*K) = infinity
 		       (if (zerop1 const)
 			   (dbz-err1 'jacobi_ns)
-			   (neg `((%jacobi_ns simp) ,const ,m))))
+			   (neg (ftake '%jacobi_ns const m))))
 		      (3
 		       ;; ns(4*m*K+3*K+u) = ns(2*K + K + u) = -ns(K+u) = -dc(u)
 		       ;; ns(3*K) = -1
 		       (if (zerop1 const)
 			   -1
-			   (neg `((%jacobi_dc simp) ,const ,m))))))
+			   (neg (ftake '%jacobi_dc const m))))))
 		   ((and (alike1 lin 1//2)
 			 (zerop1 const))
-		    `((mexpt) ((%jacobi_sn) ,u ,m) -1))
+		    (div 1 (ftake '%jacobi_sn u m)))
 		   (t
-		    (eqtest (list '(%jacobi_ns) u m) form)))))	  
+		    (give-up)))))	  
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '(%jacobi_ns) u m) form)))))
+	   (give-up)))))
 
 ;; jacobi_nc(u,m) = 1/jacobi_cn(u,m)
-
-(defmfun $jacobi_nc (u m)
-  (simplify (list '(%jacobi_nc) (resimplify u) (resimplify m))))
-
-(defprop %jacobi_nc simp-%jacobi_nc operators)
-
 (defprop %jacobi_nc
     ((u m)
      ;; wrt u
@@ -2625,15 +2780,11 @@ first kind:
 	((%jacobi_dn) u m) ((%jacobi_sn) u m)
 	((mplus) u
 	 ((mtimes) -1 ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	  (($elliptic_e) ((%asin) ((%jacobi_sn) u m)) m)))))))
+	  ((%elliptic_e) ((%asin) ((%jacobi_sn) u m)) m)))))))
   grad)
 
-(defun simp-%jacobi_nc (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	coef args)
+(def-simplifier jacobi_nc (u m)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
 	   (to (bigfloat:/ (bigfloat::cn (bigfloat:to ($float u))
@@ -2657,13 +2808,13 @@ first kind:
 	   1)
 	  ((zerop1 m)
 	   ;; A&S 16.6.8
-	   (take '(%sec) u))
+	   (ftake '%sec u))
 	  ((onep1 m)
 	   ;; A&S 16.6.8
-	   `((%cosh) ,u))
+	   (ftake '%cosh u))
 	  ((and $trigsign (mminusp* u))
 	   ;; nc is even
-	   (cons-exp '%jacobi_nc (neg u) m))
+	   (ftake* '%jacobi_nc (neg u) m))
 	  ((and $triginverses
 		(listp u)
 		(member (caar u) '(%inverse_jacobi_sn
@@ -2684,11 +2835,11 @@ first kind:
 		 (t
 		  ;; Express in terms of cn:
 		  ;; nc(x) = 1/cn(x)
-		  (div 1 ($jacobi_cn u m)))))
+		  (div 1 (ftake '%jacobi_cn u m)))))
 	   ;; A&S 16.20 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   ;; nc(i*u) = 1/cn(i*u) = 1/nc(u,1-m) = cn(u,1-m)
-	   (cons-exp '%jacobi_cn (coeff u '$%i 1) (add 1 (neg m))))
+	   (ftake* '%jacobi_cn (coeff u '$%i 1) (add 1 (neg m))))
 	  ((setq coef (kc-arg2 u m))
 	   ;; A&S 16.8.8
 	   ;;
@@ -2703,23 +2854,20 @@ first kind:
 		       ;; nc(0) = 1
 		       (if (zerop1 const)
 			   1
-			   `((%jacobi_nc simp) ,const ,m)))
+			   (ftake '%jacobi_nc const m)))
 		      (1
 		       ;; nc(4*m*K+K+u) = nc(K+u) = -ds(u)/sqrt(1-m)
 		       ;; nc(K) = infinity
 		       (if (zerop1 const)
 			   (dbz-err1 'jacobi_nc)
-			   (neg `((mtimes simp)
-				  ((mexpt simp)
-				   ((mplus simp) 1 ((mtimes simp) -1 ,m))
-				   ((rat simp) -1 2))
-				  ((%jacobi_ds simp) ,const ,m)))))
+			   (neg (div (ftake '%jacobi_ds const m)
+				     (power (sub 1 m) 1//2)))))
 		      (2
 		       ;; nc(4*m*K+2*K+u) = nc(2*K+u) = -nc(u)
 		       ;; nc(2*K) = -1
 		       (if (zerop1 const)
 			   -1
-			   (neg `((%jacobi_nc) ,const ,m))))
+			   (neg (ftake '%jacobi_nc const m))))
 		      (3
 		       ;; nc(4*m*K+3*K+u) = nc(3*K+u) = nc(2*K+K+u) =
 		       ;; -nc(K+u) = ds(u)/sqrt(1-m)
@@ -2727,26 +2875,18 @@ first kind:
 		       ;; nc(3*K) = infinity
 		       (if (zerop1 const)
 			   (dbz-err1 'jacobi_nc)
-			   `((mtimes simp)
-			     ((mexpt simp)
-			      ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			      ((rat simp) -1 2))
-			     ((%jacobi_ds simp) ,const ,m))))))
+			   (div (ftake '%jacobi_ds const m)
+				(power (sub 1 m) 1//2))))))
 		   ((and (alike1 1//2 lin)
 			 (zerop1 const))
-		    `((mexpt) ((%jacobi_cn) ,u ,m) -1))
+		    (div 1 (ftake '%jacobi_cn u m)))
 		   (t
-		    (eqtest (list '(%jacobi_nc) u m) form)))))
+		    (give-up)))))
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '(%jacobi_nc) u m) form)))))
+	   (give-up)))))
 
 ;; jacobi_nd(u,m) = 1/jacobi_dn(u,m)
-(defmfun $jacobi_nd (u m)
-  (simplify (list '(%jacobi_nd) (resimplify u) (resimplify m))))
-
-(defprop %jacobi_nd simp-%jacobi_nd operators)
-
 (defprop %jacobi_nd
     ((u m)
      ;; wrt u
@@ -2764,16 +2904,12 @@ first kind:
 	((mplus) u
 	 ((mtimes) -1
 	  ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	  (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	  ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	   m)))))))
   grad)
 
-(defun simp-%jacobi_nd (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	coef args)
+(def-simplifier jacobi_nd (u m)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
 	   (to (bigfloat:/ (bigfloat::dn (bigfloat:to ($float u))
@@ -2800,10 +2936,10 @@ first kind:
 	   1)
 	  ((onep1 m)
 	   ;; A&S 16.6.6
-	   `((%cosh) ,u))
+	   (ftake '%cosh u))
 	  ((and $trigsign (mminusp* u))
 	   ;; nd is even
-	   (cons-exp '%jacobi_nd (neg u) m))
+	   (ftake* '%jacobi_nd (neg u) m))
 	  ((and $triginverses
 		(listp u)
 		(member (caar u) '(%inverse_jacobi_sn
@@ -2824,11 +2960,11 @@ first kind:
 		 (t
 		  ;; Express in terms of dn:
 		  ;; nd(x) = 1/dn(x)
-		  (div 1 ($jacobi_dn u m)))))
+		  (div 1 (ftake '%jacobi_dn u m)))))
 	   ;; A&S 16.20 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   ;; nd(i*u) = 1/dn(i*u) = 1/dc(u,1-m) = cd(u,1-m)
-	   (cons-exp '%jacobi_cd (coeff u '$%i 1) (add 1 (neg m))))
+	   (ftake* '%jacobi_cd (coeff u '$%i 1) (add 1 (neg m))))
 	  ((setq coef (kc-arg2 u m))
 	   ;; A&S 16.8.6
 	   ;;
@@ -2842,31 +2978,21 @@ first kind:
 		       ;; nd(0) = 1
 		       (if (zerop1 const)
 			   1
-			   `((%jacobi_nd) ,const ,m)))
+			   (ftake '%jacobi_nd const m)))
 		      (1
 		       ;; nd(2*m*K+K+u) = nd(K+u) = dn(u)/sqrt(1-m)
 		       ;; nd(K) = 1/sqrt(1-m)
 		       (if (zerop1 const)
-			   `((mexpt simp)
-			     ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			     ((rat simp) -1 2))
-			   `((mtimes simp)
-			     ((%jacobi_nd simp) ,const ,m)
-			     ((mexpt simp)
-			      ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			      ((rat simp) -1 2)))))))
+			   (power (sub 1 m) -1//2)
+			   (div (ftake '%jacobi_nd const m)
+				(power (sub 1 m) 1//2))))))
 		   (t
-		    (eqtest (list '(%jacobi_nd) u m) form)))))
+		    (give-up)))))
 	  (t
 	   ;; Nothing to do
-	   (eqtest (list '(%jacobi_nd) u m) form)))))
+	   (give-up)))))
 
 ;; jacobi_sc(u,m) = jacobi_sn/jacobi_cn
-(defmfun $jacobi_sc (u m)
-  (simplify (list '(%jacobi_sc) (resimplify u) (resimplify m))))
-
-(defprop %jacobi_sc simp-%jacobi_sc operators)
-
 (defprop %jacobi_sc
     ((u m)
      ;; wrt u
@@ -2885,7 +3011,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))
       ((mtimes) -1 ((mexpt) ((%jacobi_cn) u m) -2)
        ((%jacobi_sn) u m)
@@ -2899,16 +3025,12 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))))
   grad)
 
-(defun simp-%jacobi_sc (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	coef args)
+(def-simplifier jacobi_sc (u m)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
        (let ((fu (bigfloat:to ($float u)))
@@ -2936,13 +3058,13 @@ first kind:
        0)
       ((zerop1 m)
        ;; A&S 16.6.9
-       `((%tan) ,u))
+       (ftake '%tan u))
       ((onep1 m)
        ;; A&S 16.6.9
-       `((%sinh) ,u))
+       (ftake '%sinh u))
       ((and $trigsign (mminusp* u))
        ;; sc is odd
-       (neg (cons-exp '%jacobi_sc (neg u) m)))
+       (neg (ftake* '%jacobi_sc (neg u) m)))
       ((and $triginverses
 	    (listp u)
 	    (member (caar u) '(%inverse_jacobi_sn
@@ -2963,13 +3085,13 @@ first kind:
 	     (t
 	      ;; Express in terms of sn and cn
 	      ;; sc(x) = sn(x)/cn(x)
-	      (div ($jacobi_sn u m)
-		   ($jacobi_cn u m)))))
+	      (div (ftake '%jacobi_sn u m)
+		   (ftake '%jacobi_cn u m)))))
       ;; A&S 16.20 (Jacobi's Imaginary transformation)
       ((and $%iargs (multiplep u '$%i))
        ;; sc(i*u) = sn(i*u)/cn(i*u) = i*sc(u,m1)/nc(u,m1) = i*sn(u,m1)
        (mul '$%i
-	    (cons-exp '%jacobi_sn (coeff u '$%i 1) (add 1 (neg m)))))
+	    (ftake* '%jacobi_sn (coeff u '$%i 1) (add 1 (neg m)))))
       ((setq coef (kc-arg2 u m))
        ;; A&S 16.8.9
        ;; sc(2*m*K+u) = sc(u)
@@ -2982,14 +3104,14 @@ first kind:
 		   ;; sc(0) = 0
 		   (if (zerop1 const)
 		       1
-		       `((%jacobi_sc simp) ,const ,m)))
+		       (ftake '%jacobi_sc const m)))
 		  (1
 		   ;; sc(2*m*K + K + u) = sc(K+u)= - cs(u)/sqrt(1-m)
 		   ;; sc(K) = infinity
 		   (if (zerop1 const)
 		       (dbz-err1 'jacobi_sc)
 		       (mul -1
-			    (div (cons-exp '%jacobi_cs const m)
+			    (div (ftake* '%jacobi_cs const m)
 				 (power (sub 1 m) 1//2)))))))
 	       ((and (alike1 lin 1//2)
 		     (zerop1 const))
@@ -2997,17 +3119,12 @@ first kind:
 		;; sc(1/2*K) = 1/(1-m)^(1/4)
 		(power (sub 1 m) (div -1 4)))
 	       (t
-		(eqtest (list '(%jacobi_sc) u m) form)))))
+		(give-up)))))
       (t
        ;; Nothing to do
-       (eqtest (list '(%jacobi_sc) u m) form)))))
+       (give-up)))))
 
 ;; jacobi_sd(u,m) = jacobi_sn/jacobi_dn
-(defmfun $jacobi_sd (u m)
-  (simplify (list '(%jacobi_sd) (resimplify u) (resimplify m))))
-
-(defprop %jacobi_sd simp-%jacobi_sd operators)
-
 (defprop %jacobi_sd
     ((u m)
      ;; wrt u
@@ -3026,7 +3143,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))
       ((mtimes) -1 ((mexpt) ((%jacobi_dn) u m) -2)
        ((%jacobi_sn) u m)
@@ -3040,16 +3157,12 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))))
   grad)
 
-(defun simp-%jacobi_sd (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	coef args)
+(def-simplifier jacobi_sd (u m)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
        (let ((fu (bigfloat:to ($float u)))
@@ -3077,13 +3190,13 @@ first kind:
        0)
       ((zerop1 m)
        ;; A&S 16.6.5
-       `((%sin) ,u))
+       (ftake '%sin u))
       ((onep1 m)
        ;; A&S 16.6.5
-       `((%sinh) ,u))
+       (ftake '%sinh u))
       ((and $trigsign (mminusp* u))
        ;; sd is odd
-       (neg (cons-exp '%jacobi_sd (neg u) m)))
+       (neg (ftake* '%jacobi_sd (neg u) m)))
       ((and $triginverses
 	    (listp u)
 	    (member (caar u) '(%inverse_jacobi_sn
@@ -3103,13 +3216,13 @@ first kind:
 	      (second u))
 	     (t
 	      ;; Express in terms of sn and dn
-	      (div ($jacobi_sn u m)
-		   ($jacobi_dn u m)))))
+	      (div (ftake '%jacobi_sn u m)
+		   (ftake '%jacobi_dn u m)))))
       ;; A&S 16.20 (Jacobi's Imaginary transformation)
       ((and $%iargs (multiplep u '$%i))
        ;; sd(i*u) = sn(i*u)/dn(i*u) = i*sc(u,m1)/dc(u,m1) = i*sd(u,m1)
        (mul '$%i
-	    (cons-exp '%jacobi_sd (coeff u '$%i 1) (add 1 (neg m)))))
+	    (ftake* '%jacobi_sd (coeff u '$%i 1) (add 1 (neg m)))))
       ((setq coef (kc-arg2 u m))
        ;; A&S 16.8.5
        ;; sd(4*m*K+u) = sd(u)
@@ -3122,61 +3235,46 @@ first kind:
 		   ;; sd(0) = 0
 		   (if (zerop1 const)
 		       0
-		       `((%jacobi_sd simp) ,const ,m)))
+		       (ftake '%jacobi_sd const m)))
 		  (1
 		   ;; sd(4*m*K+K+u) = sd(K+u) = cn(u)/sqrt(1-m)
 		   ;; sd(K) = 1/sqrt(m1)
 		   (if (zerop1 const)
-		       `((mexpt) ((mplus) 1 ((mtimes) -1 ,m))
-			 ((rat) -1 2))
-		       `((mtimes simp)
-			 ((mexpt simp)
-			  ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			  ((rat simp) -1 2))
-			 ((%jacobi_cn simp) ,const ,m))))
+		       (power (sub 1 m) 1//2)
+		       (div (ftake '%jacobi_cn const m)
+			    (power (sub 1 m) 1//2))))
 		  (2
 		   ;; sd(4*m*K+2*K+u) = sd(2*K+u) = -sd(u)
 		   ;; sd(2*K) = 0
 		   (if (zerop1 const)
 		       0
-		       (neg `((%jacobi_sd) ,const ,m))))
+		       (neg (ftake '%jacobi_sd const m))))
 		  (3
 		   ;; sd(4*m*K+3*K+u) = sd(3*K+u) = sd(2*K+K+u) =
 		   ;; -sd(K+u) = -cn(u)/sqrt(1-m)
 		   ;; sd(3*K) = -1/sqrt(m1)
 		   (if (zerop1 const)
-		       (neg `((mexpt)
-			      ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			      ((rat) -1 2)))
-		       (neg `((mtimes simp)
-			      ((mexpt simp)
-			       ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			       ((rat simp) -1 2))
-			      ((%jacobi_cn simp) ,const ,m)))))))
+		       (neg (power (sub 1 m) -1//2))
+		       (neg (div (ftake '%jacobi_cn const m)
+				 (power (sub 1 m) 1//2)))))))
 	       ((and (alike1 lin 1//2)
 		     (zerop1 const))
 		;; jacobi_sn/jacobi_dn
-		`((mtimes)
-		  ((%jacobi_sn) ((mtimes) ((rat) 1 2)
-				 ((%elliptic_kc) ,m))
-		   ,m)
-		  ((mexpt)
-		   ((%jacobi_dn) ((mtimes) ((rat) 1 2)
-				  ((%elliptic_kc) ,m))
-		    ,m)
-		   -1)))
+		(div (ftake '%jacobi_sn
+			    (mul 1//2
+				 (ftake '%elliptic_kc m))
+			    m)
+		     (ftake '%jacobi_dn
+			    (mul 1//2
+				 (ftake '%elliptic_kc m))
+			    m)))
 	       (t
-		(eqtest (list '(%jacobi_sd) u m) form)))))
+		(give-up)))))
       (t
        ;; Nothing to do
-       (eqtest (list '(%jacobi_sd) u m) form)))))
+       (give-up)))))
 
 ;; jacobi_cs(u,m) = jacobi_cn/jacobi_sn
-(defmfun $jacobi_cs (u m)
-  (simplify (list '(%jacobi_cs) (resimplify u) (resimplify m))))
-
-(defprop %jacobi_cs simp-%jacobi_cs operators)
-
 (defprop %jacobi_cs
     ((u m)
      ;; wrt u
@@ -3196,7 +3294,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))
       ((mtimes) ((mexpt) ((%jacobi_sn) u m) -1)
        ((mplus)
@@ -3209,16 +3307,12 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))))
   grad)
 
-(defun simp-%jacobi_cs (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	coef args)
+(def-simplifier jacobi_cs (u m)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
        (let ((fu (bigfloat:to ($float u)))
@@ -3244,15 +3338,15 @@ first kind:
 			   (bigfloat::sn uu mm))))))
       ((zerop1 m)
        ;; A&S 16.6.12
-       (take '(%cot) u))
+       (ftake '%cot u))
       ((onep1 m)
        ;; A&S 16.6.12
-       (take '(%csch) u))
+       (ftake '%csch u))
       ((zerop1 u)
        (dbz-err1 'jacobi_cs))
       ((and $trigsign (mminusp* u))
        ;; cs is odd
-       (neg (cons-exp '%jacobi_cs (neg u) m)))
+       (neg (ftake* '%jacobi_cs (neg u) m)))
       ((and $triginverses
 	    (listp u)
 	    (member (caar u) '(%inverse_jacobi_sn
@@ -3272,13 +3366,13 @@ first kind:
 	      (second u))
 	     (t
 	      ;; Express in terms of cn an sn
-	      (div ($jacobi_cn u m)
-		   ($jacobi_sn u m)))))
+	      (div (ftake '%jacobi_cn u m)
+		   (ftake '%jacobi_sn u m)))))
       ;; A&S 16.20 (Jacobi's Imaginary transformation)
       ((and $%iargs (multiplep u '$%i))
        ;; cs(i*u) = cn(i*u)/sn(i*u) = -i*nc(u,m1)/sc(u,m1) = -i*ns(u,m1)
        (neg (mul '$%i
-		 (cons-exp '%jacobi_ns (coeff u '$%i 1) (add 1 (neg m))))))
+		 (ftake* '%jacobi_ns (coeff u '$%i 1) (add 1 (neg m))))))
       ((setq coef (kc-arg2 u m))
        ;; A&S 16.8.12
        ;; 
@@ -3292,36 +3386,28 @@ first kind:
 		   ;; cs(0) = infinity
 		   (if (zerop1 const)
 		       (dbz-err1 'jacobi_cs)
-		       `((%jacobi_cs simp) ,const ,m)))
+		       (ftake '%jacobi_cs const m)))
 		  (1
 		   ;; cs(K+u) = -sqrt(1-m)*sc(u)
 		   ;; cs(K) = 0
 		   (if (zerop1 const)
 		       0
-		       `((mtimes simp) -1
-			 ((mexpt simp)
-			  ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			  ((rat simp) 1 2))
-			 ((%jacobi_sc simp) ,const ,m))))))
+		       (neg (mul (power (sub 1 m) 1//2)
+				 (ftake '%jacobi_sc const m)))))))
 	       ((and (alike1 lin 1//2)
 		     (zerop1 const))
 		;; 1/jacobi_sc
-		`((mexpt)
-		  ((%jacobi_sc) ((mtimes) ((rat) 1 2)
-				 ((%elliptic_kc) ,m)) ,m)
-		  -1))
+		(div 1
+		     (ftake '%jacobi_sc (mul 1//2
+					    (ftake '%elliptic_kc m))
+			    m)))
 	       (t
-		(eqtest (list '(%jacobi_cs simp) u m) form)))))
+		(give-up)))))
       (t
        ;; Nothing to do
-       (eqtest (list '(%jacobi_cs simp) u m) form)))))
+       (give-up)))))
 
 ;; jacobi_cd(u,m) = jacobi_cn/jacobi_dn
-(defmfun $jacobi_cd (u m)
-  (simplify (list '(%jacobi_cd) (resimplify u) (resimplify m))))
-
-(defprop %jacobi_cd simp-%jacobi_cd operators)
-
 (defprop %jacobi_cd
     ((u m)
      ;; wrt u
@@ -3342,7 +3428,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))
       ((mtimes) ((mexpt) ((%jacobi_dn) u m) -1)
        ((mplus)
@@ -3355,16 +3441,12 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))))
   grad)
 
-(defun simp-%jacobi_cd (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	coef args)
+(def-simplifier jacobi_cd (u m)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
        (let ((fu (bigfloat:to ($float u)))
@@ -3390,13 +3472,13 @@ first kind:
        1)
       ((zerop1 m)
        ;; A&S 16.6.4
-       `((%cos) ,u))
+       (ftake '%cos u))
       ((onep1 m)
        ;; A&S 16.6.4
        1)
       ((and $trigsign (mminusp* u))
        ;; cd is even
-       (cons-exp '%jacobi_cd (neg u) m))
+       (ftake* '%jacobi_cd (neg u) m))
       ((and $triginverses
 	    (listp u)
 	    (member (caar u) '(%inverse_jacobi_sn
@@ -3416,12 +3498,12 @@ first kind:
 	      (second u))
 	     (t
 	      ;; Express in terms of cn and dn
-	      (div ($jacobi_cn u m)
-		   ($jacobi_dn u m)))))
+	      (div (ftake '%jacobi_cn u m)
+		   (ftake '%jacobi_dn u m)))))
       ;; A&S 16.20 (Jacobi's Imaginary transformation)
       ((and $%iargs (multiplep u '$%i))
        ;; cd(i*u) = cn(i*u)/dn(i*u) = nc(u,m1)/dc(u,m1) = nd(u,m1)
-       (cons-exp '%jacobi_nd (coeff u '$%i 1) (add 1 (neg m))))
+       (ftake* '%jacobi_nd (coeff u '$%i 1) (add 1 (neg m))))
       ((setf coef (kc-arg2 u m))
        ;; A&S 16.8.4
        ;;
@@ -3434,51 +3516,45 @@ first kind:
 		   ;; cd(0) = 1
 		   (if (zerop1 const)
 		       1
-		       `((%jacobi_cd) ,const ,m)))
+		       (ftake '%jacobi_cd const m)))
 		  (1
 		   ;; cd(4*m*K + K + u) = cd(K+u) = -sn(u)
 		   ;; cd(K) = 0
 		   (if (zerop1 const)
 		       0
-		       (neg `((%jacobi_sn) ,const ,m))))
+		       (neg (ftake '%jacobi_sn const m))))
 		  (2
 		   ;; cd(4*m*K + 2*K + u) = cd(2*K+u) = -cd(u)
 		   ;; cd(2*K) = -1
 		   (if (zerop1 const)
 		       -1
-		       (neg `((%jacobi_cd) ,const ,m))))
+		       (neg (ftake '%jacobi_cd const m))))
 		  (3
 		   ;; cd(4*m*K + 3*K + u) = cd(2*K + K + u) =
 		   ;; -cd(K+u) = sn(u)
 		   ;; cd(3*K) = 0
 		   (if (zerop1 const)
 		       0
-		       `((%jacobi_sn) ,const ,m)))))
+		       (ftake '%jacobi_sn const m)))))
 	       ((and (alike1 lin 1//2)
 		     (zerop1 const))
 		;; jacobi_cn/jacobi_dn
-		`((mtimes)
-		  ((%jacobi_cn) ((mtimes) ((rat) 1 2)
-				 ((%elliptic_kc) ,m))
-		   ,m)
-		  ((mexpt)
-		   ((%jacobi_dn) ((mtimes) ((rat) 1 2)
-				  ((%elliptic_kc) ,m))
-		    ,m)
-		   -1)))
+		(div (ftake '%jacobi_cn
+			    (mul 1//2
+				 (ftake '%elliptic_kc m))
+			    m)
+		     (ftake '%jacobi_dn
+			    (mul 1//2
+				 (ftake '%elliptic_kc m))
+			    m)))
 	       (t
 		;; Nothing to do
-		(eqtest (list '(%jacobi_cd) u m) form)))))
+		(give-up)))))
       (t
        ;; Nothing to do
-       (eqtest (list '(%jacobi_cd) u m) form)))))
+       (give-up)))))  
 
 ;; jacobi_ds(u,m) = jacobi_dn/jacobi_sn
-(defmfun $jacobi_ds (u m)
-  (simplify (list '(%jacobi_ds) (resimplify u) (resimplify m))))
-
-(defprop %jacobi_ds simp-%jacobi_ds operators)
-
 (defprop %jacobi_ds
     ((u m)
      ;; wrt u
@@ -3498,7 +3574,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))
       ((mtimes) ((mexpt) ((%jacobi_sn) u m) -1)
        ((mplus)
@@ -3511,16 +3587,12 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))))
   grad)
 
-(defun simp-%jacobi_ds (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	coef args)
+(def-simplifier jacobi_ds (u m)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
        (let ((fu (bigfloat:to ($float u)))
@@ -3546,14 +3618,14 @@ first kind:
 			   (bigfloat::sn uu mm))))))
       ((zerop1 m)
        ;; A&S 16.6.11
-       (take '(%csc) u))
+       (ftake '%csc u))
       ((onep1 m)
        ;; A&S 16.6.11
-       (take '(%csch) u))
+       (ftake '%csch u))
       ((zerop1 u)
        (dbz-err1 'jacobi_ds))
       ((and $trigsign (mminusp* u))
-       (neg (cons-exp '%jacobi_ds (neg u) m)))
+       (neg (ftake* '%jacobi_ds (neg u) m)))
       ((and $triginverses
 	    (listp u)
 	    (member (caar u) '(%inverse_jacobi_sn
@@ -3573,13 +3645,13 @@ first kind:
 	      (second u))
 	     (t
 	      ;; Express in terms of dn and sn
-	      (div ($jacobi_dn u m)
-		   ($jacobi_sn u m)))))
+	      (div (ftake '%jacobi_dn u m)
+		   (ftake '%jacobi_sn u m)))))
       ;; A&S 16.20 (Jacobi's Imaginary transformation)
       ((and $%iargs (multiplep u '$%i))
        ;; ds(i*u) = dn(i*u)/sn(i*u) = -i*dc(u,m1)/sc(u,m1) = -i*ds(u,m1)
        (neg (mul '$%i
-		 (cons-exp '%jacobi_ds (coeff u '$%i 1) (add 1 (neg m))))))
+		 (ftake* '%jacobi_ds (coeff u '$%i 1) (add 1 (neg m))))))
       ((setf coef (kc-arg2 u m))
        ;; A&S 16.8.11
        (destructuring-bind (lin const)
@@ -3591,63 +3663,46 @@ first kind:
 		   ;; ds(0) = infinity
 		   (if (zerop1 const)
 		       (dbz-err1 'jacobi_ds)
-		       `((%jacobi_ds) ,const ,m)))
+		       (ftake '%jacobi_ds const m)))
 		  (1
 		   ;; ds(4*m*K + K + u) = ds(K+u) = sqrt(1-m)*nc(u)
 		   ;; ds(K) = sqrt(1-m)
 		   (if (zerop1 const)
-		       `((mexpt simp)
-			 ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			 ((rat simp) 1 2))
-		       `((mtimes simp)
-			 ((mexpt simp)
-			  ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			  ((rat simp) 1 2))
-			 ((%jacobi_nc simp) ,const ,m))))
+		       (power (sub 1 m) 1//2)
+		       (mul (power (sub 1 m) 1//2)
+			    (ftake '%jacobi_nc const m))))
 		  (2
 		   ;; ds(4*m*K + 2*K + u) = ds(2*K+u) = -ds(u)
 		   ;; ds(0) = pole
 		   (if (zerop1 const)
 		       (dbz-err1 'jacobi_ds)
-		       (neg `((%jacobi_ds) ,const ,m))))
+		       (neg (ftake '%jacobi_ds const m))))
 		  (3
 		   ;; ds(4*m*K + 3*K + u) = ds(2*K + K + u) =
 		   ;; -ds(K+u) = -sqrt(1-m)*nc(u)
 		   ;; ds(3*K) = -sqrt(1-m)
 		   (if (zerop1 const)
-		       (neg `((mexpt simp)
-			      ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			      ((rat simp) 1 2)))
-		       (neg `((mtimes simp)
-			      ((mexpt simp)
-			       ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			       ((rat simp) 1 2))
-			      ((%jacobi_nc simp) ,const ,m)))))))
+		       (neg (power (sub 1 m) 1//2))
+		       (neg (mul (power (sub 1 m) 1//2)
+				 (ftake '%jacobi_nc u m)))))))
 	       ((and (alike1 lin 1//2)
 		     (zerop1 const))
 		;; jacobi_dn/jacobi_sn
-		`((mtimes)
-		  ((%jacobi_dn) ((mtimes) ((rat) 1 2)
-				 ((%elliptic_kc) ,m))
-		   ,m)
-		  ((mexpt)
-		   ((%jacobi_sn) ((mtimes) ((rat) 1 2)
-				  ((%elliptic_kc) ,m))
-		    ,m)
-		   -1)))
+		(div
+		 (ftake '%jacobi_dn
+			(mul 1//2 (ftake '%elliptic_kc m))
+			m)
+		 (ftake '%jacobi_sn
+			(mul 1//2 (ftake '%elliptic_kc m))
+			m)))
 	       (t
 		;; Nothing to do
-		(eqtest (list '(%jacobi_ds) u m) form)))))
+		(give-up)))))
       (t
        ;; Nothing to do
-       (eqtest (list '(%jacobi_ds) u m) form)))))
+       (give-up)))))
 
 ;; jacobi_dc(u,m) = jacobi_dn/jacobi_cn
-(defmfun $jacobi_dc (u m)
-  (simplify (list '(%jacobi_dc) (resimplify u) (resimplify m))))
-
-(defprop %jacobi_dc simp-%jacobi_dc operators)
-
 (defprop %jacobi_dc
     ((u m)
      ;; wrt u
@@ -3667,7 +3722,7 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))
       ((mtimes) -1 ((mexpt) ((%jacobi_cn) u m) -2)
        ((%jacobi_dn) u m)
@@ -3681,16 +3736,12 @@ first kind:
 	 ((mplus) u
 	  ((mtimes) -1
 	   ((mexpt) ((mplus) 1 ((mtimes) -1 m)) -1)
-	   (($elliptic_e) ((%asin) ((%jacobi_sn) u m))
+	   ((%elliptic_e) ((%asin) ((%jacobi_sn) u m))
 	    m))))))))
   grad)
 
-(defun simp-%jacobi_dc (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	coef args)
+(def-simplifier jacobi_dc (u m)
+  (let (coef args)
     (cond
       ((float-numerical-eval-p u m)
        (let ((fu (bigfloat:to ($float u)))
@@ -3718,12 +3769,12 @@ first kind:
        1)
       ((zerop1 m)
        ;; A&S 16.6.7
-       (take '(%sec) u))
+       (ftake '%sec u))
       ((onep1 m)
        ;; A&S 16.6.7
        1)
       ((and $trigsign (mminusp* u))
-       (cons-exp '%jacobi_dc (neg u) m))
+       (ftake* '%jacobi_dc (neg u) m))
       ((and $triginverses
 	    (listp u)
 	    (member (caar u) '(%inverse_jacobi_sn
@@ -3743,12 +3794,12 @@ first kind:
 	      (second u))
 	     (t
 	      ;; Express in terms of dn and cn
-	      (div ($jacobi_dn u m)
-		   ($jacobi_cn u m)))))
+	      (div (ftake '%jacobi_dn u m)
+		   (ftake '%jacobi_cn u m)))))
       ;; A&S 16.20 (Jacobi's Imaginary transformation)
       ((and $%iargs (multiplep u '$%i))
        ;; dc(i*u) = dn(i*u)/cn(i*u) = dc(u,m1)/nc(u,m1) = dn(u,m1)
-       (cons-exp '%jacobi_dn (coeff u '$%i 1) (add 1 (neg m))))
+       (ftake* '%jacobi_dn (coeff u '$%i 1) (add 1 (neg m))))
       ((setf coef (kc-arg2 u m))
        ;; See A&S 16.8.7
        (destructuring-bind (lin const)
@@ -3760,44 +3811,42 @@ first kind:
 		   ;; dc(0) = 1
 		   (if (zerop1 const)
 		       1
-		       `((%jacobi_dc) ,const ,m)))
+		       (ftake '%jacobi_dc const m)))
 		  (1
 		   ;; dc(4*m*K + K + u) = dc(K+u) = -ns(u)
 		   ;; dc(K) = pole
 		   (if (zerop1 const)
 		       (dbz-err1 'jacobi_dc)
-		       (neg `((%jacobi_ns simp) ,const ,m))))
+		       (neg (ftake '%jacobi_ns const m))))
 		  (2
 		   ;; dc(4*m*K + 2*K + u) = dc(2*K+u) = -dc(u)
 		   ;; dc(2K) = -1
 		   (if (zerop1 const)
 		       -1
-		       (neg `((%jacobi_dc) ,const ,m))))
+		       (neg (ftake '%jacobi_dc const m))))
 		  (3
 		   ;; dc(4*m*K + 3*K + u) = dc(2*K + K + u) =
 		   ;; -dc(K+u) = ns(u)
 		   ;; dc(3*K) = ns(0) = inf
 		   (if (zerop1 const)
 		       (dbz-err1 'jacobi_dc)
-		       `((%jacobi_dc simp) ,const ,m)))))
+		       (ftake '%jacobi_dc const m)))))
 	       ((and (alike1 lin 1//2)
 		     (zerop1 const))
 		;; jacobi_dn/jacobi_cn
-		`((mtimes)
-		  ((%jacobi_dn) ((mtimes) ((rat) 1 2)
-				 ((%elliptic_kc) ,m))
-		   ,m)
-		  ((mexpt)
-		   ((%jacobi_cn) ((mtimes) ((rat) 1 2)
-				  ((%elliptic_kc) ,m))
-		    ,m)
-		   -1)))
+		(div
+		 (ftake '%jacobi_dn
+			(mul 1//2 (ftake '%elliptic_kc m))
+			m)
+		 (ftake '%jacobi_cn
+			(mul 1//2 (ftake '%elliptic_kc m))
+			m)))
 	       (t
 		;; Nothing to do
-		(eqtest (list '(%jacobi_dc) u m) form)))))
+		(give-up)))))
       (t
        ;; Nothing to do
-       (eqtest (list '(%jacobi_dc) u m) form)))))
+       (give-up)))))
 
 ;;; Other inverse Jacobian functions
 
@@ -3809,10 +3858,6 @@ first kind:
 ;; jacobi_sn(u) = 1/x
 ;;
 ;; so u = inverse_jacobi_sn(1/x)
-
-(defmfun $inverse_jacobi_ns (u m)
-  (simplify (list '(%inverse_jacobi_ns) (resimplify u) (resimplify m))))
-
 (defprop %inverse_jacobi_ns
     ((x m)
      ;; Whittaker and Watson, example in 22.122
@@ -3828,14 +3873,8 @@ first kind:
      nil)
   grad)
 
-(defprop %inverse_jacobi_ns simp-%inverse_jacobi_ns operators)
-
-(defun simp-%inverse_jacobi_ns (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z))
-	args)
+(def-simplifier inverse_jacobi_ns (u m)
+  (let (args)
     (cond
       ((float-numerical-eval-p u m)
        ;; Numerically evaluate asn
@@ -3855,14 +3894,14 @@ first kind:
 				      (bigfloat:to ($bfloat m))))))
       ((zerop1 m)
        ;; ans(x,0) = F(asin(1/x),0) = asin(1/x)
-       `(($elliptic_f) ((%asin) ((mexpt) ,u -1)) 0))
+       (ftake '%elliptic_f (ftake '%asin (div 1 u)) 0))
       ((onep1 m)
        ;; ans(x,1) = F(asin(1/x),1) = log(tan(pi/2+asin(1/x)/2))
-       `(($elliptic_f) ((%asin) ((mexpt) ,u -1)) 1))
+       (ftake '%elliptic_f (ftake '%asin (div 1 u)) 1))
       ((onep1 u)
-       `((%elliptic_kc) ,m))
+       (ftake '%elliptic_kc m))
       ((alike1 u -1)
-       (neg `((%elliptic_kc) ,m)))
+       (neg (ftake '%elliptic_kc m)))
       ((and (eq $triginverses '$all)
 	    (listp u)
 	    (eq (caar u) '%jacobi_ns)
@@ -3871,7 +3910,7 @@ first kind:
        (second u))
       (t
        ;; Nothing to do
-       (eqtest (list '(%inverse_jacobi_ns) u m) form)))))
+       (give-up)))))
 
 ;; inverse_jacobi_nc(x)
 ;;
@@ -3881,10 +3920,6 @@ first kind:
 ;; jacobi_cn(u) = 1/x
 ;;
 ;; so u = inverse_jacobi_cn(1/x)
-
-(defmfun $inverse_jacobi_nc (u m)
-  (simplify (list '(%inverse_jacobi_nc) (resimplify u) (resimplify m))))
-
 (defprop %inverse_jacobi_nc
     ((x m)
      ;; Whittaker and Watson, example in 22.122
@@ -3901,32 +3936,26 @@ first kind:
      nil)
   grad)
 
-(defprop %inverse_jacobi_nc simp-%inverse_jacobi_nc operators)
-
-(defun simp-%inverse_jacobi_nc (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z)))
-    (cond ((or (float-numerical-eval-p u m)
-	       (complex-float-numerical-eval-p u m)
-	       (bigfloat-numerical-eval-p u m)
-	       (complex-bigfloat-numerical-eval-p u m))
-	   ;;
-	   ($inverse_jacobi_cn ($rectform (div 1 u)) m))
-	  ((onep1 u)
-	   0)
-	  ((alike1 u -1)
-	   `((mtimes) 2 ((%elliptic_kc) ,m)))
-	  ((and (eq $triginverses '$all)
-		(listp u)
-		(eq (caar u) '%jacobi_nc)
-		(alike1 (third u) m))
-	   ;; inverse_jacobi_nc(nc(u)) = u
-	   (second u))
-	  (t
-	   ;; Nothing to do
-	   (eqtest (list '(%inverse_jacobi_nc) u m) form)))))
+(def-simplifier inverse_jacobi_nc (u m)
+  (cond ((or (float-numerical-eval-p u m)
+	     (complex-float-numerical-eval-p u m)
+	     (bigfloat-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 ;;
+	 (ftake '%inverse_jacobi_cn ($rectform (div 1 u)) m))
+	((onep1 u)
+	 0)
+	((alike1 u -1)
+	 (mul 2 (ftake '%elliptic_kc m)))
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_nc)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_nc(nc(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; inverse_jacobi_nd(x)
 ;;
@@ -3936,10 +3965,6 @@ first kind:
 ;; jacobi_dn(u) = 1/x
 ;;
 ;; so u = inverse_jacobi_dn(1/x)
-
-(defmfun $inverse_jacobi_nd (u m)
-  (simplify (list '(%inverse_jacobi_nd) (resimplify u) (resimplify m))))
-
 (defprop %inverse_jacobi_nd
     ((x m)
      ;; Whittaker and Watson, example in 22.122
@@ -3957,33 +3982,27 @@ first kind:
      nil)
   grad)
 
-(defprop %inverse_jacobi_nd simp-%inverse_jacobi_nd operators)
-
-(defun simp-%inverse_jacobi_nd (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z)))
-    (cond ((or (float-numerical-eval-p u m)
-	       (complex-float-numerical-eval-p u m)
-	       (bigfloat-numerical-eval-p u m)
-	       (complex-bigfloat-numerical-eval-p u m))
-	   ($inverse_jacobi_dn ($rectform (div 1 u)) m))
-	  ((onep1 u)
-	   0)
-	  ((onep1 ($ratsimp (mul (power (sub 1 m) 1//2) u)))
-	   ;; jacobi_nd(1/sqrt(1-m),m) = K(m).  This follows from
-	   ;; jacobi_dn(sqrt(1-m),m) = K(m).
-	   ($elliptic_kc m))
-	  ((and (eq $triginverses '$all)
-		(listp u)
-		(eq (caar u) '%jacobi_nd)
-		(alike1 (third u) m))
-	   ;; inverse_jacobi_nd(nd(u)) = u
-	   (second u))
-	  (t
-	   ;; Nothing to do
-	   (eqtest (list '(%inverse_jacobi_nd) u m) form)))))
+(def-simplifier inverse_jacobi_nd (u m)
+  (cond ((or (float-numerical-eval-p u m)
+	     (complex-float-numerical-eval-p u m)
+	     (bigfloat-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 (ftake '%inverse_jacobi_dn ($rectform (div 1 u)) m))
+	((onep1 u)
+	 0)
+	((onep1 ($ratsimp (mul (power (sub 1 m) 1//2) u)))
+	 ;; jacobi_nd(1/sqrt(1-m),m) = K(m).  This follows from
+	 ;; jacobi_dn(sqrt(1-m),m) = K(m).
+	 (ftake '%elliptic_kc m))
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_nd)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_nd(nd(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; inverse_jacobi_sc(x)
 ;;
@@ -4001,10 +4020,6 @@ first kind:
 ;;
 ;; u = inverse_sn(x/sqrt(1+x^2))
 ;;
-
-(defmfun $inverse_jacobi_sc (u m)
-  (simplify (list '(%inverse_jacobi_sc) (resimplify u) (resimplify m))))
-
 (defprop %inverse_jacobi_sc
     ((x m)
      ;; Whittaker and Watson, example in 22.122
@@ -4022,32 +4037,26 @@ first kind:
      nil)
   grad)
 
-(defprop %inverse_jacobi_sc simp-%inverse_jacobi_sc operators)
-
-(defun simp-%inverse_jacobi_sc (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z)))
-    (cond ((or (float-numerical-eval-p u m)
-	       (complex-float-numerical-eval-p u m)
-	       (bigfloat-numerical-eval-p u m)
-	       (complex-bigfloat-numerical-eval-p u m))
-	   ($inverse_jacobi_sn
-	     ($rectform (div u (power (add 1 (mul u u)) 1//2)))
-	     m))
-	  ((zerop1 u)
-	   ;; jacobi_sc(0,m) = 0
-	   0)
-	  ((and (eq $triginverses '$all)
-		(listp u)
-		(eq (caar u) '%jacobi_sc)
-		(alike1 (third u) m))
-	   ;; inverse_jacobi_sc(sc(u)) = u
-	   (second u))
-	  (t
-	   ;; Nothing to do
-	   (eqtest (list '(%inverse_jacobi_sc) u m) form)))))
+(def-simplifier inverse_jacobi_sc (u m)
+  (cond ((or (float-numerical-eval-p u m)
+	     (complex-float-numerical-eval-p u m)
+	     (bigfloat-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 (ftake '%inverse_jacobi_sn
+		($rectform (div u (power (add 1 (mul u u)) 1//2)))
+		m))
+	((zerop1 u)
+	 ;; jacobi_sc(0,m) = 0
+	 0)
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_sc)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_sc(sc(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; inverse_jacobi_sd(x)
 ;;
@@ -4065,10 +4074,6 @@ first kind:
 ;;
 ;; u = inverse_sn(x/sqrt(1+m*x^2))
 ;;
-
-(defmfun $inverse_jacobi_sd (u m)
-  (simplify (list '(%inverse_jacobi_sd) (resimplify u) (resimplify m))))
-
 (defprop %inverse_jacobi_sd
     ((x m)
      ;; Whittaker and Watson, example in 22.122
@@ -4085,38 +4090,32 @@ first kind:
      nil)
   grad)
 
-(defprop %inverse_jacobi_sd simp-%inverse_jacobi_sd operators)
-
-(defun simp-%inverse_jacobi_sd (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z)))
-    (cond ((or (float-numerical-eval-p u m)
-	       (complex-float-numerical-eval-p u m)
-	       (bigfloat-numerical-eval-p u m)
-	       (complex-bigfloat-numerical-eval-p u m))
-	   ($inverse_jacobi_sn
-	     ($rectform (div u (power (add 1 (mul m (mul u u))) 1//2)))
-	     m))
-	  ((zerop1 u)
-	   0)
-	  ((eql 0 ($ratsimp (sub u (div 1 (power (sub 1 m) 1//2)))))
-	   ;; inverse_jacobi_sd(1/sqrt(1-m), m) = elliptic_kc(m)
-	   ;;
-	   ;; We can see this from inverse_jacobi_sd(x,m) =
-	   ;; inverse_jacobi_sn(x/sqrt(1+m*x^2), m).  So
-	   ;; inverse_jacobi_sd(1/sqrt(1-m),m) = inverse_jacobi_sn(1,m)
-	   ($elliptic_kc m))
-	  ((and (eq $triginverses '$all)
-		(listp u)
-		(eq (caar u) '%jacobi_sd)
-		(alike1 (third u) m))
-	   ;; inverse_jacobi_sd(sd(u)) = u
-	   (second u))
-	  (t
-	   ;; Nothing to do
-	   (eqtest (list '(%inverse_jacobi_sd) u m) form)))))
+(def-simplifier inverse_jacobi_sd (u m)
+  (cond ((or (float-numerical-eval-p u m)
+	     (complex-float-numerical-eval-p u m)
+	     (bigfloat-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 (ftake '%inverse_jacobi_sn
+		($rectform (div u (power (add 1 (mul m (mul u u))) 1//2)))
+		m))
+	((zerop1 u)
+	 0)
+	((eql 0 ($ratsimp (sub u (div 1 (power (sub 1 m) 1//2)))))
+	 ;; inverse_jacobi_sd(1/sqrt(1-m), m) = elliptic_kc(m)
+	 ;;
+	 ;; We can see this from inverse_jacobi_sd(x,m) =
+	 ;; inverse_jacobi_sn(x/sqrt(1+m*x^2), m).  So
+	 ;; inverse_jacobi_sd(1/sqrt(1-m),m) = inverse_jacobi_sn(1,m)
+	 (ftake '%elliptic_kc m))
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_sd)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_sd(sd(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; inverse_jacobi_cs(x)
 ;;
@@ -4125,10 +4124,6 @@ first kind:
 ;;
 ;; u = inverse_sc(1/x)
 ;;
-
-(defmfun $inverse_jacobi_cs (u m)
-  (simplify (list '(%inverse_jacobi_cs) (resimplify u) (resimplify m))))
-
 (defprop %inverse_jacobi_cs
     ((x m)
      ;; Whittaker and Watson, example in 22.122
@@ -4146,23 +4141,17 @@ first kind:
      nil)
   grad)
 
-(defprop %inverse_jacobi_cs simp-%inverse_jacobi_cs operators)
-
-(defun simp-%inverse_jacobi_cs (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z)))
-    (cond ((or (float-numerical-eval-p u m)
-	       (complex-float-numerical-eval-p u m)
-	       (bigfloat-numerical-eval-p u m)
-	       (complex-bigfloat-numerical-eval-p u m))
-	   ($inverse_jacobi_sc ($rectform (div 1 u)) m))
-	  ((zerop1 u)
-	   `((%elliptic_kc) ,m))
-	  (t
-	   ;; Nothing to do
-	   (eqtest (list '(%inverse_jacobi_cs) u m) form)))))
+(def-simplifier inverse_jacobi_cs (u m)
+  (cond ((or (float-numerical-eval-p u m)
+	     (complex-float-numerical-eval-p u m)
+	     (bigfloat-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 (ftake '%inverse_jacobi_sc ($rectform (div 1 u)) m))
+	((zerop1 u)
+	 (ftake '%elliptic_kc m))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; inverse_jacobi_cd(x)
 ;;
@@ -4180,10 +4169,6 @@ first kind:
 ;;
 ;; u = inverse_sn(sqrt(1-x^2)/sqrt(1-m*x^2))
 ;;
-
-(defmfun $inverse_jacobi_cd (u m)
-  (simplify (list '(%inverse_jacobi_cd) (resimplify u) (resimplify m))))
-
 (defprop %inverse_jacobi_cd
     ((x m)
      ;; Whittaker and Watson, example in 22.122
@@ -4201,33 +4186,27 @@ first kind:
      nil)
   grad)
 
-(defprop %inverse_jacobi_cd simp-%inverse_jacobi_cd operators)
-
-(defun simp-%inverse_jacobi_cd (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z)))
-    (cond ((or (complex-float-numerical-eval-p u m)
-	       (complex-bigfloat-numerical-eval-p u m))
-	   (let (($numer t))
-	     ($inverse_jacobi_sn
-	       ($rectform (div (power (mul (sub 1 u) (add 1 u)) 1//2)
-			       (power (sub 1 (mul m (mul u u))) 1//2)))
-	       m)))
-	  ((onep1 u)
-	   0)
-	  ((zerop1 u)
-	   `((%elliptic_kc) ,m))
-	  ((and (eq $triginverses '$all)
-		(listp u)
-		(eq (caar u) '%jacobi_cd)
-		(alike1 (third u) m))
-	   ;; inverse_jacobi_cd(cd(u)) = u
-	   (second u))
-	  (t
-	   ;; Nothing to do
-	   (eqtest (list '(%inverse_jacobi_cd) u m) form)))))
+(def-simplifier inverse_jacobi_cd (u m)
+  (cond ((or (complex-float-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 (let (($numer t))
+	   (ftake '%inverse_jacobi_sn
+		  ($rectform (div (power (mul (sub 1 u) (add 1 u)) 1//2)
+				  (power (sub 1 (mul m (mul u u))) 1//2)))
+		  m)))
+	((onep1 u)
+	 0)
+	((zerop1 u)
+	 (ftake '%elliptic_kc m))
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_cd)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_cd(cd(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; inverse_jacobi_ds(x)
 ;;
@@ -4236,10 +4215,6 @@ first kind:
 ;;
 ;; u = inverse_sd(1/x)
 ;;
-
-(defmfun $inverse_jacobi_ds (u m)
-  (simplify (list '(%inverse_jacobi_ds) (resimplify u) (resimplify m))))
-
 (defprop %inverse_jacobi_ds
     ((x m)
      ;; Whittaker and Watson, example in 22.122
@@ -4257,36 +4232,30 @@ first kind:
      nil)
   grad)
 
-(defprop %inverse_jacobi_ds simp-%inverse_jacobi_ds operators)
-
-(defun simp-%inverse_jacobi_ds (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z)))
-    (cond ((or (float-numerical-eval-p u m)
-	       (complex-float-numerical-eval-p u m)
-	       (bigfloat-numerical-eval-p u m)
-	       (complex-bigfloat-numerical-eval-p u m))
-	   ($inverse_jacobi_sd ($rectform (div 1 u)) m))
-	  ((and $trigsign (mminusp* u))
-	   (neg (cons-exp '%inverse_jacobi_ds (neg u) m)))
-	  ((eql 0 ($ratsimp (sub u (power (sub 1 m) 1//2))))
-	   ;; inverse_jacobi_ds(sqrt(1-m),m) = elliptic_kc(m)
-	   ;;
-	   ;; Since inverse_jacobi_ds(sqrt(1-m), m) =
-	   ;; inverse_jacobi_sd(1/sqrt(1-m),m).  And we know from
-	   ;; above that this is elliptic_kc(m)
-	   ($elliptic_kc m))
-	  ((and (eq $triginverses '$all)
-		(listp u)
-		(eq (caar u) '%jacobi_ds)
-		(alike1 (third u) m))
-	   ;; inverse_jacobi_ds(ds(u)) = u
-	   (second u))
-	  (t
-	   ;; Nothing to do
-	   (eqtest (list '(%inverse_jacobi_ds) u m) form)))))
+(def-simplifier inverse_jacobi_ds (u m)
+  (cond ((or (float-numerical-eval-p u m)
+	     (complex-float-numerical-eval-p u m)
+	     (bigfloat-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 (ftake '%inverse_jacobi_sd ($rectform (div 1 u)) m))
+	((and $trigsign (mminusp* u))
+	 (neg (ftake* '%inverse_jacobi_ds (neg u) m)))
+	((eql 0 ($ratsimp (sub u (power (sub 1 m) 1//2))))
+	 ;; inverse_jacobi_ds(sqrt(1-m),m) = elliptic_kc(m)
+	 ;;
+	 ;; Since inverse_jacobi_ds(sqrt(1-m), m) =
+	 ;; inverse_jacobi_sd(1/sqrt(1-m),m).  And we know from
+	 ;; above that this is elliptic_kc(m)
+	 (ftake '%elliptic_kc m))
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_ds)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_ds(ds(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 
 ;; inverse_jacobi_dc(x)
@@ -4296,10 +4265,6 @@ first kind:
 ;;
 ;; u = inverse_cd(1/x)
 ;;
-
-(defmfun $inverse_jacobi_dc (u m)
-  (simplify (list '(%inverse_jacobi_dc) (resimplify u) (resimplify m))))
-
 (defprop %inverse_jacobi_dc
     ((x m)
      ;; Note: Whittaker and Watson, example in 22.122 says
@@ -4323,27 +4288,21 @@ first kind:
      nil)
   grad)
 
-(defprop %inverse_jacobi_dc simp-%inverse_jacobi_dc operators)
-
-(defun simp-%inverse_jacobi_dc (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z)))
-    (cond ((or (complex-float-numerical-eval-p u m)
-	       (complex-bigfloat-numerical-eval-p u m))
-	   ($inverse_jacobi_cd ($rectform (div 1 u)) m))
-	  ((onep1 u)
-	   0)
-	  ((and (eq $triginverses '$all)
-		(listp u)
-		(eq (caar u) '%jacobi_dc)
-		(alike1 (third u) m))
-	   ;; inverse_jacobi_dc(dc(u)) = u
-	   (second u))
-	  (t
-	   ;; Nothing to do
-	   (eqtest (list '(%inverse_jacobi_dc) u m) form)))))
+(def-simplifier inverse_jacobi_dc (u m)
+  (cond ((or (complex-float-numerical-eval-p u m)
+	     (complex-bigfloat-numerical-eval-p u m))
+	 (ftake '%inverse_jacobi_cd ($rectform (div 1 u)) m))
+	((onep1 u)
+	 0)
+	((and (eq $triginverses '$all)
+	      (listp u)
+	      (eq (caar u) '%jacobi_dc)
+	      (alike1 (third u) m))
+	 ;; inverse_jacobi_dc(dc(u)) = u
+	 (second u))
+	(t
+	 ;; Nothing to do
+	 (give-up))))
 
 ;; Convert an inverse Jacobian function into the equivalent elliptic
 ;; integral F.
@@ -4365,73 +4324,69 @@ first kind:
 	   (ecase fn
 	     (%inverse_jacobi_sc
 	      ;; A&S 17.4.41
-	      `(($elliptic_f) ((%atan) ,u) ,m))
+	      (ftake '%elliptic_f (ftake '%atan u) m))
 	     (%inverse_jacobi_cs
 	      ;; A&S 17.4.42
-	      `(($elliptic_f) ((%atan) ((mexpt) ,u -1)) ,m))
+	      (ftake '%elliptic_f (ftake '%atan (div 1 u)) m))
 	     (%inverse_jacobi_nd
 	      ;; A&S 17.4.43
-	      `(($elliptic_f)
-		((%asin) ((mtimes)
-			  ((mexpt) ,m ((rat) -1 2))
-			  ((mexpt) ,u -1)
-			  ((mexpt) ((mplus) -1 ((mexpt) ,u 2))
-			   ((rat) 1 2))))
-		,m))
+	      (ftake '%elliptic_f
+		     (ftake '%asin
+			    (mul (power m -1//2)
+				 (div 1 u)
+				 (power (add -1 (mul u u))
+					1//2)))
+		     m))
 	     (%inverse_jacobi_dn
 	      ;; A&S 17.4.44
-	      `(($elliptic_f)
-		((%asin)
-		 ((mtimes) ((mexpt) ,m ((rat) -1 2))
-		  ((mexpt) ((mplus) 1 ((mtimes) -1 ((mexpt) ,u 2)))
-		   ((rat) 1 2))))
-		,m))
+	      (ftake '%elliptic_f
+		     (ftake '%asin (mul
+				   (power m  -1//2)
+				   (power (sub 1 (power u 2)) 1//2)))
+		     m))
 	     (%inverse_jacobi_sn
 	      ;; A&S 17.4.45
-	      `(($elliptic_f) ((%asin) ,u) ,m))
+	      (ftake '%elliptic_f (ftake '%asin u) m))
 	     (%inverse_jacobi_cd
 	      ;; A&S 17.4.46
-	      `(($elliptic_f)
-		((%asin)
-		 ((mexpt) ((mtimes) ((mplus) 1
-				     ((mtimes) -1 ((mexpt) ,u 2)))
-			   ((mexpt) ((mplus) 1
-				     ((mtimes) -1 ,m ((mexpt) ,u 2)))
-			    -1))
-		  ((rat) 1 2)))
-		,m))
+	      (ftake '%elliptic_f
+		     (ftake '%asin
+			    (power (mul (sub 1 (mul u u))
+					(sub 1 (mul m u u)))
+				   1//2))
+		     m))
 	     (%inverse_jacobi_dc
 	      ;; A&S 17.4.47
-	      `(($elliptic_f)
-		((%asin)
-		 ((mexpt)
-		  ((mtimes) ((mplus) -1 ((mexpt) ,u 2))
-		   ((mexpt) ((mplus) ((mtimes) -1 ,m) ((mexpt) ,u 2)) -1))
-		  ((rat) 1 2)))
-		,m))
+	      (ftake '%elliptic_f
+		     (ftake '%asin
+			    (power (mul (sub (mul u u) 1)
+					(sub (mul u u) m))
+				   1//2))
+		     m))
 	     (%inverse_jacobi_ns
 	      ;; A&S 17.4.48
-	      `(($elliptic_f) ((%asin) ((mexpt) ,u -1)) ,m))
+	      (ftake '%elliptic_f (ftake '%asin (div 1 u)) m))
 	     (%inverse_jacobi_nc
 	      ;; A&S 17.4.49
-	      `(($elliptic_f) ((%acos) ((mexpt) ,u -1)) ,m))
+	      (ftake '%elliptic_f (ftake '%acos (div 1 u)) m))
 	     (%inverse_jacobi_ds
 	      ;; A&S 17.4.50
-	      `(($elliptic_f)
-		((%asin) ((mexpt) ((mplus) ,m ((mexpt) ,u 2))
-			  ((rat) -1 2)))
-		,m))
+	      (ftake '%elliptic_f
+		     (ftake '%asin
+			    (power (add m (mul u u))
+				   1//2)
+			    m)))
 	     (%inverse_jacobi_sd
 	      ;; A&S 17.4.51
-	      `(($elliptic_f)
-		((%asin)
-		 ((mtimes) ,u
-		  ((mexpt) ((mplus) 1 ((mtimes) ,m ((mexpt) ,u 2)))
-		   ((rat) -1 2))))
-		,m))
+	      (ftake '%elliptic_f
+		     (ftake '%asin
+			    (div u
+				 (power (add 1 (mul m u u))
+					1//2)))
+		     m))
 	     (%inverse_jacobi_cn
 	      ;; A&S 17.4.52
-	      `(($elliptic_f) ((%acos) ,u) ,m)))))
+	      (ftake '%elliptic_f (ftake '%acos u) m)))))
 	(t
 	 (recur-apply #'make-elliptic-f e))))
 
@@ -4445,7 +4400,7 @@ first kind:
 	((eq (caar e) '$elliptic_eu)
 	 (destructuring-bind ((ffun &rest ops) u m) e
 	   (declare (ignore ffun ops))
-	   `(($elliptic_e) ((%asin) ((%jacobi_sn) ,u ,m)) ,m)))
+	   (ftake '%elliptic_e (ftake '%asin (ftake '%jacobi_sn u m)) m)))
 	(t
 	 (recur-apply #'make-elliptic-e e))))
 
@@ -4512,7 +4467,6 @@ first kind:
 		       (/ (* m (bigfloat::sn u-r m) (bigfloat::sn u-i m1) (bigfloat::sn u m))
 			  (bigfloat::cn u-i m1))))))))))
 
-(defprop $elliptic_eu simp-$elliptic_eu operators)
 (defprop $elliptic_eu
     ((u m)
      ((mexpt) ((%jacobi_dn) u m) 2)
@@ -4520,50 +4474,34 @@ first kind:
      )
   grad)
 
-(defun simp-$elliptic_eu (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z)))
-    (cond
-      ;; as it stands, ELLIPTIC-EU can't handle bigfloats or complex bigfloats,
-      ;; so handle only floats and complex floats here.
-      ((float-numerical-eval-p u m)
-       (elliptic-eu ($float u) ($float m)))
-      ((complex-float-numerical-eval-p u m)
-	   (let ((u-r ($realpart u))
-		 (u-i ($imagpart u))
-		 (m ($float m)))
-	     (complexify (elliptic-eu (complex u-r u-i) m))))
-	  (t
-	   (eqtest `(($elliptic_eu) ,u ,m) form)))))
+(def-simplifier elliptic_eu (u m)
+  (cond
+    ;; as it stands, ELLIPTIC-EU can't handle bigfloats or complex bigfloats,
+    ;; so handle only floats and complex floats here.
+    ((float-numerical-eval-p u m)
+     (elliptic-eu ($float u) ($float m)))
+    ((complex-float-numerical-eval-p u m)
+     (let ((u-r ($realpart u))
+	   (u-i ($imagpart u))
+	   (m ($float m)))
+       (complexify (elliptic-eu (complex u-r u-i) m))))
+    (t
+     (give-up))))
 
-(defmfun $elliptic_eu (u m)
-  (simplify `(($elliptic_eu) ,(resimplify u) ,(resimplify m))))
-
-(defprop %jacobi_am simp-%jacobi_am operators)
-
-(defmfun $jacobi_am (u m)
-  (simplify `((%jacobi_am) ,(resimplify u) ,(resimplify m))))
-
-(defun simp-%jacobi_am (form unused z)
-  (declare (ignore unused))
-  (twoargcheck form)
-  (let ((u (simpcheck (cadr form) z))
-	(m (simpcheck (caddr form) z)))
-    (cond
-      ;; as it stands, BIGFLOAT::SN can't handle bigfloats or complex bigfloats,
-      ;; so handle only floats and complex floats here.
-      ((float-numerical-eval-p u m)
-	   (cl:asin (bigfloat::sn ($float u) ($float m))))
-	  ((complex-float-numerical-eval-p u m)
-	   (let ((u-r ($realpart ($float u)))
-		 (u-i ($imagpart ($float u)))
-		 (m ($float m)))
-	     (complexify (cl:asin (bigfloat::sn (complex u-r u-i) m)))))
-	  (t
-	   ;; Nothing to do
-	   (eqtest (list '(%jacobi_am) u m) form)))))
+(def-simplifier jacobi_am (u m)
+  (cond
+    ;; as it stands, BIGFLOAT::SN can't handle bigfloats or complex bigfloats,
+    ;; so handle only floats and complex floats here.
+    ((float-numerical-eval-p u m)
+     (cl:asin (bigfloat::sn ($float u) ($float m))))
+    ((complex-float-numerical-eval-p u m)
+     (let ((u-r ($realpart ($float u)))
+	   (u-i ($imagpart ($float u)))
+	   (m ($float m)))
+       (complexify (cl:asin (bigfloat::sn (complex u-r u-i) m)))))
+    (t
+     ;; Nothing to do
+     (give-up))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Integrals.  At present with respect to first argument only.
@@ -4801,12 +4739,12 @@ first kind:
 	     (cons (take (first expr) arg-r param)
 		   0))
 	    (t
-	     (let* ((s (take '(%jacobi_sn) arg-r param))
-		    (c (take '(%jacobi_cn) arg-r param))
-		    (d (take '(%jacobi_dn) arg-r param))
-		    (s1 (take '(%jacobi_sn) arg-i (sub 1 param)))
-		    (c1 (take '(%jacobi_cn) arg-i (sub 1 param)))
-		    (d1 (take '(%jacobi_dn) arg-i (sub 1 param)))
+	     (let* ((s (ftake '%jacobi_sn arg-r param))
+		    (c (ftake '%jacobi_cn arg-r param))
+		    (d (ftake '%jacobi_dn arg-r param))
+		    (s1 (ftake '%jacobi_sn arg-i (sub 1 param)))
+		    (c1 (ftake '%jacobi_cn arg-i (sub 1 param)))
+		    (d1 (ftake '%jacobi_dn arg-i (sub 1 param)))
 		    (den (add (mul c1 c1)
 			      (mul param
 				   (mul (mul s s)
@@ -4853,3 +4791,4 @@ first kind:
 			     den)
 			(div (mul -1 (mul param (mul s (mul c s1))))
 			     den))))))))))
+

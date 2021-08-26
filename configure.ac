@@ -8,7 +8,7 @@ dnl Note: during Lisp-based builds (see INSTALL.lisp) the version
 dnl number is read from the following AC_INIT line.  It's sensitive to
 dnl whitespace so when updating the version number only make changes
 dnl within the second pair of square brackets.
-AC_INIT([maxima], [5.44post])
+AC_INIT([maxima], [5.45post])
 AC_CONFIG_SRCDIR([src/macsys.lisp])
 AM_INIT_AUTOMAKE([-Wno-portability tar-ustar])
 
@@ -1282,6 +1282,7 @@ interfaces/xmaxima/msgs/Makefile interfaces/xmaxima/win32/Makefile \
 plotting/mgnuplot share/Makefile demo/Makefile plotting/Makefile locale/Makefile \
 share/contrib/Makefile share/contrib/integration/Makefile \
 share/contrib/maxima-odesolve/Makefile \
+share/contrib/symplectic_ode/Makefile \
 share/draw/Makefile share/logic/Makefile  doc/info/es/include-maxima.texi \
 src/lisp)
 

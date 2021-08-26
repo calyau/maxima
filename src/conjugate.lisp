@@ -195,7 +195,7 @@
 
 ;; The case of a nounform return only happens 9 times. For the nounform return, the power has 
 ;; been simplified at the higher level. So at least for running the testsuite, we shouldn't 
-;; worry all that much about resimplifying the power for the nounform return.
+;; worry all that much about re-simplifying the power for the nounform return.
 
 (defun conjugate-mexpt (e)
   (let ((x (first e)) (p (second e)))
@@ -311,6 +311,17 @@
 (defun conjugate-psi (z)
 	(let ((s (take '($conjugate) (first z))) (x (take '($conjugate) (second z))))
 	   (take '(mqapply) `(($psi array) ,s) x)))
+
+;; When all derivative variables & orders are real, commute the derivative with
+;; the conjugate.
+(defun conjugate-derivative (z)
+   (cond ((every #'manifestly-real-p (cdr z))
+           (setq z (cons (take '($conjugate) (car z)) (cdr z)))
+           (simplifya (cons (list '%derivative) z) t))
+         (t
+           (list '($conjugate simp) (simplifya (cons (list '%derivative) z) t)))))
+          
+(setf (get '%derivative 'conjugate-function) #'conjugate-derivative)     
   
 ;; When a function maps "everything" into the reals, put real-valued on the
 ;; property list of the function name. This duplicates some knowledge that

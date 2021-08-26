@@ -1,4 +1,5 @@
 #!/usr/bin/wish
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Simple GUI for selecting the default Lisp for Windows users.
 
 #  @ABCL_ENABLED@ will be replaced by 0 or 1 in the final program.

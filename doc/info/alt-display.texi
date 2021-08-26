@@ -89,6 +89,66 @@ Messge: Condition designator ((MLABEL) $%O9 $X) is not of type
 @node Functions and Variables for alt-display,  , Introduction to alt-display, alt-display-pkg
 @section Functions and Variables for alt-display
 
+@anchor{alt_display_output_type}
+@deffn {Function} alt_display_output_type (@var{form})
+
+Determine the type of output to be printed. @var{Form} must be a lisp
+form suitable for printing via Maxima's built-in @code{displa}
+function. At present, this function returns one of three values:
+@var{text}, @var{label} or @var{unknown}.
+
+An example where @code{alt_display_output_type} is used. In
+@code{my_display}, a text form is printed between a pair of tags
+@verb{|TEXT;>>|} and @verb{|<<TEXT;|} while a label form is printed between
+a pair tags @verb{|OUT;>>|} and @verb{|<<OUT;|} in addition to the usual
+output label.
+
+The function @mref{set_prompt} also ensures that input labels are
+printed between matching @verb{|PROMPT;>>|} and @verb{|<<PROMPT;|} tags.
+
+Thanks to
+@url{https://sourceforge.net/p/maxima/mailman/maxima-discuss/thread/7792c096-7e07-842d-0c3a-b2f039ef1f15%40gmail.com/#msg37235035,Eric
+Stemmler}.
+
+@verbatim
+(%i1) (load("mactex-utilities"), load("alt-display.mac")) $
+
+(%i2) define_alt_display(my_display(form),
+block([type,txttmplt,labtmplt], 
+txttmplt:"~%TEXT;>>~%~a~%<<TEXT;~%",
+labtmplt:"~%OUT;>>~%(~a) ~a~a~a~%<<OUT;~%",
+type:alt_display_output_type(form),
+if type='text then 
+   printf(true,txttmplt,first(form))
+else if type='label then 
+     printf(true,labtmplt,first(form),"$$",tex1(second(form)),"$$")
+else 
+     block([alt_display1d:false, alt_display2d:false], displa(form)))) $
+
+(%i3) (set_prompt('prefix, "PROMPT;>>",'suffix, "<<PROMPT;"), 
+      set_alt_display(1,my_display)) $
+
+PROMPT;>>(%i4) <<PROMPT;integrate(x^n,x);
+PROMPT;>>
+TEXT;>>
+Is n equal to -1?
+<<TEXT;
+<<PROMPT;
+n;
+
+OUT;>>
+(%o4) $$\frac{x^{n+1}}{n+1}$$
+<<OUT;
+PROMPT;>>(%i5) <<PROMPT;
+@end verbatim
+
+@opencatbox
+@category{Package alt-display}
+@closecatbox
+
+@end deffn
+
+         
 @anchor{define_alt_display}
 @deffn {Function} define_alt_display (@var{function}(@var{input}), @var{expr})
 This function is similar to @code{define}: it evaluates its arguments
@@ -323,7 +383,7 @@ output}.
 @example
 (%i1) load("alt-display.mac")$
 
-(%i2) cs(s) := printf(false,"~c[~am",ascii(27),s)$
+(%i2) cs(s) := printf(false,"~a[~am",ascii(27),s)$
 
 (%i3) set_prompt(prefix,cs("1;31"),suffix,cs("0;32"),general,cs("1;34"),epilog,cs("00;"));
 (%o3)                                done

@@ -251,14 +251,10 @@ proc vMAXAddSystemMenu {fr text} {
     .menu add cascade -label [mc "Help"] -menu $m -underline 0
 
     # Xmaxima manual
-    set xfile [file join $maxima_priv(maxima_verpkgdatadir) xmaxima html xmaxima.html]
-    if {[file isfile $xfile]} {
+    set xmaximahelpfile [file join $maxima_priv(maxima_verpkgdatadir) xmaxima html xmaxima.html]
+    set xmaximahelpfile [file normalize $xmaximahelpfile]
+    if {[file isfile $xmaximahelpfile]} {
 	set xstate normal
-	if {$tcl_platform(platform) == "windows" && $tcl_platform(osVersion) < 5 } {
-	    # decodeURL is broken and needs fixing
-	    # This is a workaround
-	    set xfile [file attrib $xfile -shortname]
-	}
     } else {
 	set xstate disabled
     }
@@ -286,14 +282,14 @@ proc vMAXAddSystemMenu {fr text} {
         }
         $m add command -underline 4 -label [mc "Xmaxima Manual (xmaxima browser)"] \
         	-state $xstate \
-	        -command "OpenMathOpenUrl \"file:/$xfile\""
+	        -command "OpenMathOpenUrl \"file:/$xmaximahelpfile\""
     } else {
         $m add command -underline 1 -label [mc "Maxima Manual (xmaxima browser)"] \
         	-state $state \
 	        -command "OpenMathOpenUrl \"file:/$file\""
         $m add command -underline 4 -label [mc "Xmaxima Manual (xmaxima browser)"] \
         	-state $xstate \
-	        -command "OpenMathOpenUrl \"file:/$xfile\""
+	        -command "OpenMathOpenUrl \"file:/$xmaximahelpfile\""
     }
     set browse {exec}
 
@@ -322,7 +318,7 @@ proc vMAXAddSystemMenu {fr text} {
 	    -command [list eval $browse "file://$file" &]
     }
     $m add command -underline 0 -label [mc "Xmaxima Manual (web browser)"] \
-	-command [list eval $browse "file://$xfile" &]
+	-command [list eval $browse "file://$xmaximahelpfile" &]
     $m add separator
     $m add command -underline 7 -label [mc "Maxima Homepage"] \
 	-command [list eval $browse http://maxima.sourceforge.net &]

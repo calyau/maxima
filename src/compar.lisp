@@ -72,6 +72,9 @@ relational knowledge is contained in the default context GLOBAL.")
 
 (defvar $useminmax t)
 
+;; Remove this (nil'ed out) function after a while.  We should be
+;; using POWER instead of POW.
+#+nil
 (defmacro pow (&rest x)
   `(power ,@x))
 
@@ -463,7 +466,7 @@ relational knowledge is contained in the default context GLOBAL.")
                 ((atom (setq patevalled (specrepcheck (meval pat))))
                  patevalled)
                 ((member (caar patevalled) '(mnot mand mor) :test #'eq)
-                 (mevalp1 patevalled))
+                 (return-from mevalp1 (mevalp1 patevalled)))
                 (t
                  (mevalp2 patevalled
                           (caar patevalled)
@@ -564,7 +567,12 @@ relational knowledge is contained in the default context GLOBAL.")
 	((eq (caar pat) 'mleqp) (daddgq flag (sub (caddr pat) (cadr pat))))
 	((eq (caar pat) 'mlessp) (daddgr flag (sub (caddr pat) (cadr pat))))
 	(flag (true* (munformat pat)))
-	(t (untrue (munformat pat)))))
+	(t 
+      (cond
+        ((eq (caar pat) '$kind)
+         (unkind (second pat) (third pat)))
+        (t (untrue (munformat pat))))
+      pat)))
 
 ;;; When abs(x)<a is in the pattern, where a is a positive expression,
 ;;; then learn x<a and -x<a too. The additional facts are put into the context
@@ -913,7 +921,7 @@ relational knowledge is contained in the default context GLOBAL.")
          (t
           (if minus (setq sign (flip sign)))
           (setq $askexp
-                (lmul (nconc odds (mapcar #'(lambda (l) (pow l 2)) evens))))))
+                (lmul (nconc odds (mapcar #'(lambda (l) (power l 2)) evens))))))
        (setq sign (cdr (assol $askexp *local-signs*)))
        (ensure-sign $askexp domain squared)))))
 
@@ -1207,13 +1215,13 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 (defun c-$pos (o e)
   (cond ((null o) (list '(mnot) (list '($equal) (lmul e) 0)))
 	((null e) (list '(mgreaterp) (lmul o) 0))
-	(t (setq e (mapcar #'(lambda (l) (pow l 2)) e))
+	(t (setq e (mapcar #'(lambda (l) (power l 2)) e))
 	   (list '(mgreaterp) (lmul (nconc o e)) 0))))
 
 (defun c-$pz (o e)
   (cond ((null o) (list '(mnot) (list '($equal) (lmul e) 0)))
 	((null e) (list '(mgeqp) (lmul o) 0))
-	(t (setq e (mapcar #'(lambda (l) (pow l 2)) e))
+	(t (setq e (mapcar #'(lambda (l) (power l 2)) e))
 	   (list '(mgeqp) (lmul (nconc o e)) 0))))
 
 (defun sign* (x)

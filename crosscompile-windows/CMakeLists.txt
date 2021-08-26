@@ -1,4 +1,5 @@
 # CMake file for crosscompiling Maxima/wxMaxima for Windows
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright (C) by Wolfgang Dautermann
 # License GPLv2+: GNU GPL version 2 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
@@ -36,7 +37,7 @@ message(STATUS "Build system: ${BUILDHOST}")
 # Output the host system, for which we are compiling
 message(STATUS "Host system: ${HOST}")
 
-find_file (NSISTEMPLATE_IN  NAMES "NSIS.template.in"
+find_file(NSISTEMPLATE_IN  NAMES "NSIS.template.in"
     PATHS "${CMAKE_ROOT}/Modules/" "${CMAKE_ROOT}/Modules/Internal/CPack")
 file(READ "${NSISTEMPLATE_IN}" MYNSISTEMPLATE)
 string(REPLACE "RequestExecutionLevel admin" "RequestExecutionLevel admin
@@ -122,7 +123,27 @@ else()
     message(STATUS "Maxima version (from configure.ac): ${MAXIMAVERSION}")
 endif()
 
-
+# The HTML documentation is installed in a directory depending on "git describe",
+# when building from Git, e.g.:
+# share/maxima/branch_5_45_base_99_g0b3357e40_dirty/doc/html/maxima_singlepage.html
+# Otherwise the version number is included, e.g something like:
+# share/maxima/5.45.1/doc/html/maxima_singlepage.html
+# Set it first to the second variant, if Git is found and we are building
+# from a Git tree use the result of "git describe --dirty" in the path instead - where
+# "-" are changed to "_" (see commit d5d04f2 and the file '../configure.ac').
+set(MAXIMA_SINGLEPAGE_HTML "share/maxima/${MAXIMAVERSION}/doc/html/maxima_singlepage.html")
+find_package(Git)
+if(Git_FOUND)
+    execute_process(COMMAND ${GIT_EXECUTABLE} describe --dirty
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                    OUTPUT_VARIABLE GIT_DESCRIBE
+                    ERROR_QUIET
+                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    if(GIT_DESCRIBE)
+        string(REPLACE "-" "_" GIT_DESCRIBE ${GIT_DESCRIBE})
+        set(MAXIMA_SINGLEPAGE_HTML "share/maxima/${GIT_DESCRIBE}/doc/html/maxima_singlepage.html")
+    endif()
+endif()
 
 # download URLs
 set(CLISP_URL "http://downloads.sourceforge.net/project/clisp/clisp/${CLISPVERSION}/clisp-${CLISPVERSION}-win32-mingw-big.zip")
@@ -204,7 +225,7 @@ externalproject_add(maxima
   BUILD_IN_SOURCE 1
   CONFIGURE_COMMAND sh -c "test -x ./bootstrap && ./bootstrap || return 0"
             COMMAND ./configure --host=${HOST} --enable-clisp --with-clisp=${CMAKE_BINARY_DIR}/wine-clisp.sh --with-clisp-runtime=${CMAKE_BINARY_DIR}/wine-lisp.sh --enable-sbcl --with-sbcl=${CMAKE_BINARY_DIR}/wine-sbcl.sh ${ABCL_ENABLE} "${ABCL_JAR}" --with-default-lisp=${WITH_DEFAULT_LISP} --prefix=${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}
-  # clisp-depends.mk is generated with "\" as path seperator, not "/" - correct that...
+  # clisp-depends.mk is generated with "\" as path separator, not "/" - correct that...
   BUILD_COMMAND LANG=C $(MAKE) -C src clisp-depends.mk
         COMMAND sed -i s+\\\\+/+g src/clisp-depends.mk
         COMMAND LANG=C $(MAKE)
@@ -213,19 +234,25 @@ externalproject_add(maxima
           COMMAND LANG=C $(MAKE) extradocinstall DESTDIR=${CMAKE_BINARY_DIR}/maxima-installroot/
 )
 
+option(STRIP_HELPERPROGRAMS "Strip the included helper programs (winkill, winkill_lib, maxima_longnames)." YES)
+
 # crosscompiling winkill with autoconf does not work, compile it using CMake.
 add_library(winkill_lib SHARED ${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/winkill_lib.c)
 add_executable(winkill ${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/winkill.c)
 set_target_properties(winkill_lib PROPERTIES PREFIX "") # remove 'lib' prefix from libwinkill_lib.dll
 target_link_libraries(winkill winkill_lib)
-install(TARGETS winkill winkill_lib COMPONENT Maxima RUNTIME DESTINATION bin LIBRARY DESTINATION bin/)
-install(FILES "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/win_signals.lisp" DESTINATION bin/ COMPONENT Maxima)
 
 # convert windows short names to long names (e.g.
 # "C:/Users/TESTTE~1/AppData/Local/Temp" to "C:/Users/test test/AppData/Local/Temp")
 # CLISP can (currently not handle short names.
 add_executable(maxima_longnames maxima_longnames.c)
-install(FILES "${CMAKE_BINARY_DIR}/maxima_longnames.exe" DESTINATION bin/ COMPONENT Maxima)
+if(STRIP_HELPERPROGRAMS)
+    add_custom_command(TARGET winkill POST_BUILD COMMAND ${CMAKE_STRIP} winkill.exe)
+    add_custom_command(TARGET winkill_lib POST_BUILD COMMAND ${CMAKE_STRIP} winkill_lib.dll)
+    add_custom_command(TARGET maxima_longnames POST_BUILD COMMAND ${CMAKE_STRIP} maxima_longnames.exe)
+endif()
+install(TARGETS winkill winkill_lib maxima_longnames COMPONENT Maxima RUNTIME DESTINATION bin LIBRARY DESTINATION bin/)
+install(FILES "${CMAKE_SOURCE_DIR}/../interfaces/xmaxima/win32/win_signals.lisp" DESTINATION bin/ COMPONENT Maxima)
 
 
 install(DIRECTORY ${CMAKE_BINARY_DIR}/maxima-installroot/${WINDOWS_DRIVELETTER}:/maxima-${MAXIMAVERSION}/
@@ -269,7 +296,7 @@ set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\maxima-command.ico")
 set(CPACK_NSIS_DISPLAY_NAME "Maxima computer algebra system")
 set(CPACK_PACKAGE_EXECUTABLES "..\\\\bin\\\\wxmaxima" "wxMaxima (GUI for Maxima)")
 set(CPACK_NSIS_URL_INFO_ABOUT "https://maxima.sourceforge.io")
-set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "https://maxima.sourceforge.io" "About Maxima" "http://wxmaxima-developers.github.io/wxmaxima/" "About wxMaxima" "share/doc/maxima.pdf" "Maxima documentation"  "share/doc/licenses.html" "Maxima and included software licenses" "bin/lispselector.bat" "Configure default LISP for Maxima")
+set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "https://maxima.sourceforge.io" "About Maxima" "http://wxmaxima-developers.github.io/wxmaxima/" "About wxMaxima" "${MAXIMA_SINGLEPAGE_HTML}" "Maxima documentation"  "share/doc/licenses.html" "Maxima and included software licenses" "bin/lispselector.bat" "Configure default LISP for Maxima")
 set(CPACK_PACKAGE_FILE_NAME "maxima-${CPACK_PACKAGE_VERSION}-${INSTALLERSUFFIX}")
 set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
 

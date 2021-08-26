@@ -81,10 +81,11 @@
 	#+sbcl "sbcl"
 	#+gcl "gcl"
 	#+allegro "acl"
-	#+openmcl "openmcl"
-    #+abcl "abcl"
-    #+ecl "ecl"
-	#-(or clisp cmu scl sbcl gcl allegro openmcl abcl ecl) "unknownlisp")
+	#+(and openmcl (not 64-bit-target)) "openmcl"
+	#+(and openmcl 64-bit-target) "ccl64"
+	#+abcl "abcl"
+	#+ecl "ecl"
+	#-(or clisp cmu scl sbcl gcl allegro ccl abcl ecl) "unknownlisp")
 
 (defun configure (&key (interactive t) (verbose nil)
 		  is-win32 
@@ -95,6 +96,7 @@
 		  scl-name
 		  acl-name
 		  openmcl-name
+		  ccl64-name
 		  sbcl-name
 		  ecl-name
 		  gcl-name)
@@ -108,6 +110,7 @@
 	(scl (if scl-name scl-name "lisp"))
 	(acl (if acl-name acl-name "acl"))
 	(openmcl (if openmcl-name openmcl-name "mcl"))
+	(ccl64 (if ccl64-name ccl64-name "ccl64"))
 	(sbcl (if sbcl-name sbcl-name "sbcl"))
 	(ecl (if ecl-name ecl-name "ecl"))
 	(gcl (if gcl-name gcl-name "gcl"))
@@ -136,6 +139,9 @@
 	  (setf openmcl 
 		(read-with-default "Name of the OpenMCL executable (optional)"
 				   openmcl))
+	  (setf ccl64 
+		(read-with-default "Name of the OpenMCL (64-bit) executable (optional)"
+				   ccl64))
 	  (setf ecl 
 		(read-with-default "Name of the ECL executable (optional)"
 				   ecl))
@@ -162,6 +168,7 @@
 			      (cons "@SCL_NAME@" scl)
 			      (cons "@ACL_NAME@" acl)
 			      (cons "@OPENMCL_NAME@" openmcl)
+			      (cons "@CCL64_NAME@" ccl64)
 			      (cons "@ECL_NAME@" ecl)
 			      (cons "@GCL_NAME@" gcl)
 			      (cons "@SBCL_NAME@" sbcl)))

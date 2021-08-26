@@ -1806,7 +1806,8 @@ B11:ev(integrate(Q11*z,z,-h/2,h/2),numer);
 is (abs (first (quad_qags (Q11,z,-h/2,h/2, 'epsabs = 1e-8)) - 33.63380227632413) < 1e-8);
 true;
 
-is (abs (first (quad_qags (Q11*z,z,-h/2,h/2, 'epsabs = 1e-8)) - 0.1739496967711204) < 1e-8);
+/* for display_all = true, need nondefault value of linel. */
+block([linel : 107], is (abs (first (quad_qags (Q11*z,z,-h/2,h/2, 'epsabs = 1e-8)) - 0.1739496967711204) < 1e-8));
 true;
 
 /* additional cases for #3712 */

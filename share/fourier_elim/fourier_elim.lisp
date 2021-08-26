@@ -1,4 +1,4 @@
-#| Copyright 2007, 2008 by Barton Willis
+#| Copyright 2007, 2008, 2021 by Barton Willis
 
   This is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License,
@@ -17,17 +17,10 @@
 (mfuncall '$declare '$tanh '$one_to_one)
 (mfuncall '$declare '$log '$increasing)
   
-;; The macro opcons is defined elsewhere; I don't know if opapply is also defined elsewhere.
-;; I need to check...
-
-(defmacro opapply (op args)
-  `(simplify (cons (list ,op) ,args)))
-
-(defmacro opcons (op &rest args)
-  `(simplify (list (list ,op) ,@args)))
+;; The macro opcons is defined in src; opapply is defined in to_poly. So we
+;; no longer define them here.
 
 ;; Maybe I should use csign instead of these functions...
-
 (defun number-sign (x)
   (cond ((or (integerp x) (floatp x))
 	 (cond ((< x 0) '$neg)
@@ -46,7 +39,7 @@
   (let ((f1) (f2) (f3))
    
     ;; I can do better. A big float running error evaluator would be nice.
-    ;; (or interval arithematic).  But for now let's evaluate with 25, 50, 
+    ;; (or interval arithmetic).  But for now let's evaluate with 25, 50, 
     ;; and 75 digits. Provided all three agree, and |f3| > 2^-50, return the common sign.
 
     ;; I need to check for complex...
@@ -370,7 +363,7 @@
 
 (defun linear-elimination (l v)
   (let (($linsolve_params nil) ($backsubst t) ($programmode t) 
-	($linsolvewarn nil) ($globalsolve nil) (subs) (vars))
+	      ($linsolvewarn nil) ($globalsolve nil) (subs) (unsolved) (vars))
     
     (setq l ($elim l v))
     (cond (($member 1 ($first l)) '$emptyset)
@@ -378,11 +371,14 @@
 	   (setq subs ($linsolve ($second l) v))
 	   (setq vars (mapcar '$lhs (margs subs)))
 	   (setq vars (push '(mlist) vars))
-	   `((mlist) ,subs ,($first l) ,vars)))))
+     (setq unsolved ($first l))
+     (setq unsolved (cons '(mlist) (mapcar #'(lambda (q) (take '(mequal) q 0)) (cdr ($first l)))))
+     (simplifya (list '(mlist) subs unsolved vars) t)))))
 	  	   
 (defun $fourier_elim (l vars)
  
-  (let ((eq-list nil) (pos-list nil) (other-list nil) (acc) ($listconstvars nil) ($ratprint nil))
+  (let ((eq-list nil) (pos-list nil) (other-list nil) (acc) ($listconstvars nil) 
+        ($ratprint nil) ($domain '$real))
     
     ;; Check the arguments
 
@@ -421,7 +417,7 @@
 		   ((op-equalp li 'mgreaterp) (push ($lhs li) pos-list))
                    (t (push li other-list))))
            
-	   ;; Using eq-list, elimination as many variables as possible.
+	   ;; Using eq-list, eliminate as many variables as possible.
 	   
 	   (push '(mlist) eq-list)
 	   (push '(mlist) pos-list)
@@ -475,14 +471,15 @@
   (let ((vi) (acc nil) (w))
     (while (and (not (eq pos '$emptyset)) (first pos) vars)
       (setq vi (pop vars))
+
       (setq w (fourier-elim-one-variable pos vi))
       (setq acc (append acc (first w)))
       (setq pos (second w)))
     (if (eq '$emptyset pos) '$emptyset
       (progn
-	(setq pos (delete t (mapcar #'(lambda (s) (fe> s 0)) pos)))
-	(if (consp (member 'nil pos)) '$emptyset
-	  (opapply 'mlist (post-fourier-elim-simp (append acc pos))))))))
+      	(setq pos (delete t (mapcar #'(lambda (s) (fe> s 0)) pos)))
+      	(if (consp (member 'nil pos)) '$emptyset
+	        (opapply 'mlist (post-fourier-elim-simp (append acc pos))))))))
     
 ;; Do Fourier elimination on a list l of inequalities with respect to the 
 ;; indeterminate x. Each member of l is a polynomial, and each polynomial p in

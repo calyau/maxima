@@ -1,6 +1,9 @@
 ;;Autoloads for maxima
 (in-package :maxima)
 
+($auto_mexpr '$lratsubst "lrats")
+($auto_mexpr '$fullratsubst "lrats")
+
 ($auto_mexpr '$nusum "nusum")
 ($auto_mexpr '$unsum "nusum")
 ($auto_mexpr '$funcsolve "nusum")

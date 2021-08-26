@@ -79,7 +79,7 @@ Extensions and improvements of the Gamma function
    have a complex number.
  - Improved accuracy for float, bigfloat and complex bigfloat values.
  - reduce the default value of $gammalim to 10,000
- - $gammalim and $factlim now work indepently
+ - $gammalim and $factlim now work independently
 
  Related bugs:
  SF [2013650] gamma(250.0) returns non-number; gamma(-1.0) finite

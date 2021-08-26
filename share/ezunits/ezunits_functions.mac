@@ -420,7 +420,7 @@ block ([L],
  */
 
 matchdeclare
-   (aa%, lambda ([e%], atom (e%) and not symbolp (e%)),
+   (aa%, lambda ([e%], numberp (e%) or (atom (e%) and not symbolp (e%))),
     bb%, lambda ([e%], symbolp (e%) and member (e%, fundamental_dimensions)),
     cc%, lambda ([e%], symbolp (e%) and get (e%, 'units) # false),
     dd%, lambda ([e%], symbolp (e%) and get (e%, 'constvalue) # false),
@@ -429,7 +429,7 @@ matchdeclare
     ff%, lambda ([e%], symbolp (e%)),
     gg%, lambda ([e%], not atom (e%) and op (e%) = "`"),
     hh%, lambda ([e%], not atom (e%) and op (e%) = "^"),
-    ii%, lambda ([e%], not atom (e%) and member (op (e%), ["+", "-", "*", "/"])));
+    ii%, lambda ([e%], not mapatom (e%) and member (op (e%), ["+", "-", "*", "/"])));
 
 simp : false;
 defrule (raa, 'dimensions (aa%), 1);
@@ -452,6 +452,14 @@ defrule (rii, 'dimensions (ii%), map (dimensions, ii%));
 simp : true;
 
 dimensions (expr) :=
+    /* Binding *NOUNSFLAG* is pretty terrible,
+     * but it's the only way to disable ev(..., nouns);
+     * ev(..., nouns=false) has no effect!
+     */
+    block ([?\*nounsflag\*: false],
+           dimensions1 (expr));
+
+dimensions1 (expr) :=
     if not atom (expr) and (setp (expr) or listp (expr) or matrixp (expr) or op (expr) = "=")
         then map (dimensions, expr)
         else apply (apply1, ['dimensions (expr), raa, rbb, rcc, rdd, ree, ree1, rff, rgg, rhh, rii]);
@@ -599,18 +607,22 @@ dimensionally (e%) ::=
 gensym_map (h) := map ("=", rest (arrayinfo (h), 2), listarray (h));
 inverse_gensym_map (h) := map ("=", listarray (h), rest (arrayinfo (h), 2));
 
-/* Degrees to pure number conversion for trigonometric functions.
- * Not sure if this should be enabled by default; maybe it should be optional.
- * Well, go ahead for now, in the absence of evidence to the contrary.
+/* Nondimensional to pure number conversion for trig functions, exp, and log.
+ * Conversion is applied only for explicit "`" expressions;
+ * previous implementation in terms of dimensions(e) could be time-consuming.
  */
 
 simp : false;
 declare_unit_conversion (degree = %pi/180);
-matchdeclare (uu, lambda ([e], not nondimensionalp(e) and dimensions(e) = 1));
-map (lambda ([f], apply (tellsimp, [apply (f, [uu]), apply (f, [uu``1])])), '[sin, cos, tan, csc, sec, cot, atan]);
+matchdeclare (uu, lambda ([e], unitop_p(e) and dimensions(units(e)) = 1));
+map (lambda ([f], apply (tellsimp, [apply (f, [uu]), apply (f, [uu `` 1])])), '[sin, cos, tan, csc, sec, cot, atan]);
 
 tellsimp (%e^uu, %e^(uu `` 1));
 tellsimp (log (uu), log (uu `` 1));
+
+/* Convert atan2 arguments to pure numbers when arguments have same dimensions.
+ * Determining dimensions are the same is potentially time-consuming.
+ */
 
 matchdeclare (aa, unitp, bb, lambda ([e], dimensions (e) = dimensions (aa)));
 tellsimp (atan2 (aa, bb), atan2 (qty (aa), qty (bb `` units (aa))));

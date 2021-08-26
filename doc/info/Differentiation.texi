@@ -401,6 +401,31 @@ description of these commands along with examples.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{init_cartan}
+@deffn {Function} init_cartan ([@var{x_1}, ..., @var{x_n}])
+
+@code{init_cartan([@var{x_1}, ..., @var{x_n}])} initializes global variables
+for the @code{cartan} package.
+The sole argument is a list of symbols, from which the Cartan basis is constructed.
+
+@code{init_cartan} returns the basis which is constructed.
+
+@code{init_cartan} assigns values to the following global variables:
+@code{cartan_coords}, @code{cartan_dim}, @code{extdim}, and @code{cartan_basis}.
+In addition, the following arrays are assigned:
+@code{extsub} and @code{extsubb}.
+
+Note: Because of the internal implementation of the @code{cartan} package,
+it is necessary for @code{init_cartan} to be called before any expression
+containing the Cartan coordinates @code{@var{x_1}, ..., @var{x_n}} is parsed.
+
+@opencatbox
+@category{Differential geometry}
+@category{Package cartan}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{del}
 @deffn {Function} del (@var{x})
 

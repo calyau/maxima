@@ -130,7 +130,7 @@ T $FALSE)) ((MRETURN SIMP) $EXT104))) MEXPR)
   (do
     ((c (cdr $cartan_coords) (cdr c)) (i 1 (1+ i)) (ci))
     ((null c) (setq $cartan_basis (cons '(mlist simp) (reverse $cartan_basis))))
-    (setq ci ($concat 'zzz (car c)))
+     (setq ci ($concat 'zzz  i )) 
     (setq $cartan_basis (cons ci $cartan_basis))
 
     (meval (list '(msetq) (list '($extsub array) (1+ i))

@@ -345,6 +345,13 @@ Maxima hat \(:ublicherweise eine systemweite
 Alternativ kann man eine Maxima-Initialisierungs-Datei mit den Kommandozeilenoptionen
 \fB\-\-init-mac\fR oder \fB\-\-init\fR
 laden.
+.TP
+\fB~/.xmaximarc\fR
+Xmaxima speichert hier userspezifische Einstellungen.
+.TP
+\fB~/.xmaxima_history\fR
+Xmaxima speichert hier die Kommando-Historie.
+
 
 .SH REFERENZEN
 Alte Refererenz:  

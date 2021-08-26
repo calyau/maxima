@@ -955,7 +955,7 @@ Example:
 
 @c -----------------------------------------------------------------------------
 @anchor{fullratsubst}
-@deffn {Function} fullratsubst (@var{new}, @var{old}, @var{expr})
+@deffn {Function} fullratsubst (@var{new}, @var{old}, @var{expr}) @
 @fname{fullratsubst} (@code{@var{old} = @var{new}}, @var{expr}) @
 @fname{fullratsubst} (@code{[ @var{old_1} = @var{new_1}, @dots{}, @var{old_n} = @var{new_n} ]}, @var{expr})
 
@@ -967,29 +967,19 @@ one or more variables in common.
 @code{fullratsubst} accepts its arguments in the format of
 @mref{ratsubst} or @mref{lratsubst}.
 
-@code{load ("lrats")} loads @code{fullratsubst} and @code{lratsubst}.
+@c EXPRESSIONS ADAPTED FROM demo ("lrats")
 
 Examples:
 
-@c EXPRESSIONS ADAPTED FROM demo ("lrats")
-@c ===beg===
-@c load ("lrats")$
-@c subst ([a = b, c = d], a + c);
-@c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
-@c lratsubst (a^2 = b, a^3);
-@c ratsubst (b*a, a^2, a^3);
-@c fullratsubst (b*a, a^2, a^3);
-@c fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
-@c fullratsubst (a^2 = b*a, a^3);
-@c ===end===
-@example
-(%i1) load ("lrats")$
-@end example
 @itemize @bullet
 @item
 @code{subst} can carry out multiple substitutions.
 @code{lratsubst} is analogous to @code{subst}.
 @end itemize
+@c ===beg===
+@c subst ([a = b, c = d], a + c);
+@c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+@c ===end===
 @example
 (%i2) subst ([a = b, c = d], a + c);
 (%o2)                         d + b
@@ -1001,6 +991,9 @@ Examples:
 If only one substitution is desired, then a single
 equation may be given as first argument.
 @end itemize
+@c ===beg===
+@c lratsubst (a^2 = b, a^3);
+@c ===end===
 @example
 (%i4) lratsubst (a^2 = b, a^3);
 (%o4)                          a b
@@ -1010,6 +1003,10 @@ equation may be given as first argument.
 @code{fullratsubst} is equivalent to @code{ratsubst}
 except that it recurses until its result stops changing.
 @end itemize
+@c ===beg===
+@c ratsubst (b*a, a^2, a^3);
+@c fullratsubst (b*a, a^2, a^3);
+@c ===end===
 @example
 (%i5) ratsubst (b*a, a^2, a^3);
                                2
@@ -1023,6 +1020,10 @@ except that it recurses until its result stops changing.
 @code{fullratsubst} also accepts a list of equations or a single
 equation as first argument.
 @end itemize
+@c ===beg===
+@c fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
+@c fullratsubst (a^2 = b*a, a^3);
+@c ===end===
 @example
 (%i7) fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
 (%o7)                           b
@@ -1034,6 +1035,9 @@ equation as first argument.
 @item
 @code{fullratsubst} catches potential infinite recursions. @ref{lrats_max_iter}.
 @end itemize
+@c ===beg===
+@c fullratsubst (b*a^2, a^2, a^3), lrats_max_iter=15;
+@c ===end===
 @example
 (%i9) fullratsubst (b*a^2, a^2, a^3), lrats_max_iter=15;
 Warning: fullratsubst1(substexpr,forexpr,expr): reached maximum iterations of 15 . Increase `lrats_max_iter' to increase this limit.
@@ -1426,30 +1430,20 @@ equations (that is, the first argument is identical in format to that
 accepted by @code{subst}). The substitutions are made in the order given
 by the list of equations, that is, from left to right.
 
-@code{load ("lrats")} loads @code{fullratsubst} and @code{lratsubst}.
-
 Examples:
 
 @c EXPRESSIONS ADAPTED FROM demo ("lrats")
 @c THIS STUFF CAN PROBABLY STAND REVISION -- EXAMPLES DON'T SEEM VERY ENLIGHTENING
 
-@c ===beg===
-@c load ("lrats")$
-@c lratsubst ([a = b, c = d], a + c);
-@c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
-@c lratsubst (a^2 = b, a^3);
-@c lratsubst ([[a^2=b*a, b=c]], a^3);
-@c errcatch(lratsubst ([[a^2=b*a, b=c],[a=b]], a^3));
-@c ===end===
-
-@example
-(%i1) load ("lrats")$
-@end example
 @itemize @bullet
 @item
 @code{subst} can carry out multiple substitutions.
 @code{lratsubst} is analogous to @code{subst}.
 @end itemize
+@c ===beg===
+@c lratsubst ([a = b, c = d], a + c);
+@c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+@c ===end===
 @example
 (%i2) lratsubst ([a = b, c = d], a + c);
 (%o2)                         d + b
@@ -1461,6 +1455,9 @@ Examples:
 If only one substitution is desired, then a single
 equation may be given as first argument.
 @end itemize
+@c ===beg===
+@c lratsubst (a^2 = b, a^3);
+@c ===end===
 @example
 (%i4) lratsubst (a^2 = b, a^3);
 (%o4)                          a b
@@ -1469,6 +1466,10 @@ equation may be given as first argument.
 @item
 A nested list of substitutions can be used--but it must contain only one list.
 @end itemize
+@c ===beg===
+@c lratsubst ([[a^2=b*a, b=c]], a^3);
+@c lratsubst ([[a^2=b*a, b=c],[a=b]], a^3);
+@c ===end===
 @example
 (%i5) lratsubst ([[a^2=b*a, b=c]], a^3);
 

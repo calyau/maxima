@@ -21,6 +21,7 @@ declare("~",additive);
 declare("~",antisymmetric);
 
 igeowedge_flag:false;
+__iextdiff_flag:false;
 
 "~"(any,body):=block
 (
@@ -56,7 +57,7 @@ igeowedge_flag:false;
   )
   else if not atom(any) and nounify(op(any))=nounify("~") and
           not atom(body) and nounify(op(body))=nounify("~") and
-          (?intersect)(args(any),args(body))#[] then 0
+          (intersect)(setify(args(any)),setify(args(body)))#[] then 0
   else if not atom(any) and nounify(op(any))=nounify("~") then
   (
      if member(body, any) then 0
@@ -93,6 +94,8 @@ igeowedge_flag:false;
 );
 
 contind(t):=if mapatom(t) then []
+	else if op(t)=nounify(determinant) then []
+	else if op(t)=sqrt then []
 	else if ?rpobj(t) then conti(t)
 	else if op(t)="+" then
 	(
@@ -111,6 +114,8 @@ contind(t):=if mapatom(t) then []
 	else error("Cannot determine list of contravariant indices.");
 
 covind(t):=if mapatom(t) then []
+	else if op(t)=nounify(determinant) then []
+	else if op(t)=sqrt then []
 	else if ?rpobj(t) then append(covi(t),deri(t))
 	else if op(t)="+" then
 	(
@@ -150,11 +155,16 @@ extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
  */
         else block
 (
-  [l11,l1s,lk1,lk2,indd,res,
+  [l1,l11,l1s,lk1,lk2,indd,res,l0:setify(first(indices(forma))),
 /* l1:listify(intersect(setify(covi(forma)),setify(first(indices(forma))))),*/
-   l1:listify(intersect(setify(covind(forma)),setify(first(indices(forma))))),
    div,ind1:if length(optind)>0 then optind[1] else idummy()],
-  if l1=[] then return(idiff(forma,ind1))
+   l1:listify(intersect(setify(covind(forma)),l0)),
+  if l1=[] then
+  (
+    if itorsion_flag = true and length(l0)>0 then return (covdiff(forma,ind1))
+    else return(idiff(forma,ind1))
+  )
+  else if length(l1) >= dim then return(0)
   else
   (
     l11:makelist(idummy(),i,1,length(l1)),
@@ -163,7 +173,9 @@ extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
     indd:idummy(),
     lk2:append(l11,[indd]),
     res:sublis(l1s,forma),
-    res:contract(canform(ratexpand(kdelta(lk1,lk2)*idiff(res,indd)))),
+    if itorsion_flag=true then
+      res:contract(canform(ratexpand(kdelta(lk1,lk2)*covdiff(res,indd))))
+    else res:contract(canform(ratexpand(kdelta(lk1,lk2)*idiff(res,indd)))),
     /* If a frame base is used, the contribution of ifb must be added */
     if iframe_flag=true then
       for i thru length(l1) do

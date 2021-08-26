@@ -72,54 +72,55 @@
 
 ;; these are in the system package in gcl...
 #-gcl
-(progn (defun break-call (key args prop &aux fun)
-	 (setq fun (complete-prop key 'keyword prop))
-	 (setq key fun)
-	 (or fun (return-from break-call nil))
-	 (setq fun (get fun prop))
-	 (unless (symbolp fun)
-	   (let ((gen (gensym)))
-	     (setf (symbol-function gen) fun) (setf (get key prop) gen)
-	     (setq fun gen)))
-	 (cond (fun
-		(setq args (cons fun args))
+(progn
+  (defun break-call (key args prop &aux fun)
+    (setq fun (complete-prop key 'keyword prop))
+    (setq key fun)
+    (or fun (return-from break-call nil))
+    (setq fun (get fun prop))
+    (unless (symbolp fun)
+      (let ((gen (gensym)))
+	(setf (symbol-function gen) fun) (setf (get key prop) gen)
+	(setq fun gen)))
+    (cond (fun
+	   (setq args (cons fun args))
 					; jfa temporary hack
-		#+gcl(evalhook args nil nil *break-env*)
-		#-gcl(eval args)
-	        )
-	       (t (format *debug-io* 
-	                  (intl:gettext "~&~S is an undefined break command.~%")
-			  key))))
+	   #+gcl(evalhook args nil nil *break-env*)
+	   #-gcl(eval args)
+	   )
+	  (t (format *debug-io* 
+	             (intl:gettext "~&~S is an undefined break command.~%")
+		     key))))
 
-       (defun complete-prop (sym package prop &optional return-list)
-	 (cond ((and (symbolp sym)(get sym prop)(equal (symbol-package sym)
-						       (find-package package)))
-		(return-from complete-prop sym)))
-	 (loop for vv being the symbols of package 
-		when (and (get vv prop)
-			  (eql #+gcl (string-match sym vv)
-			       #-gcl (search (symbol-name sym)
-					     (symbol-name vv)) 
-			       0))
-		collect vv into all
-		finally
+  (defun complete-prop (sym package prop &optional return-list)
+    (cond ((and (symbolp sym)(get sym prop)(equal (symbol-package sym)
+						  (find-package package)))
+	   (return-from complete-prop sym)))
+    (loop for vv being the symbols of package 
+	  when (and (get vv prop)
+		    (eql #+gcl (string-match sym vv)
+			 #-gcl (search (symbol-name sym)
+				       (symbol-name vv)) 
+			 0))
+	    collect vv into all
+	  finally
        
-		(cond (return-list (return-from complete-prop all))
-		      ((> (length all) 1)
-		       (format *debug-io*
-			 (intl:gettext "~&Break command '~(~s~)' is ambiguous.~%")
-			 sym)
-		       (format *debug-io*
-			 (intl:gettext "Perhaps you meant one of the following: ~(~{~s~^, ~}~).")
-			 all)
-		       (finish-output *debug-io*))
-		      ((null all)
-		       (format *debug-io*
-			 (intl:gettext "~&Break command '~(~s~)' does not exist.")
-			 sym)
-		       (finish-output *debug-io*))
-		      (t (return-from complete-prop
-			   (car all)))))))
+	     (cond (return-list (return-from complete-prop all))
+		   ((> (length all) 1)
+		    (format *debug-io*
+			    (intl:gettext "~&Break command '~(~s~)' is ambiguous.~%")
+			    sym)
+		    (format *debug-io*
+			    (intl:gettext "Perhaps you meant one of the following: ~(~{~s~^, ~}~).")
+			    all)
+		    (finish-output *debug-io*))
+		   ((null all)
+		    (format *debug-io*
+			    (intl:gettext "~&Break command '~(~s~)' does not exist.")
+			    sym)
+		    (finish-output *debug-io*))
+		   (t (return-from complete-prop
+			(car all)))))))
 
 (defmfun $backtrace (&optional (n 0 n-p))
   (unless (typep n '(integer 0))
@@ -323,8 +324,8 @@
 				(subseq 
 				 (read-line stream eof-error-p eof-value) 1))))
 		    `((displayinput) nil (($describe) ,line $exact))))
-         ((equal next #\?)
-          ;; Got "?? <stuff>". Invoke inexact search on <stuff>.
+		 ((equal next #\?)
+		  ;; Got "?? <stuff>". Invoke inexact search on <stuff>.
 		  (let* ((line (string-trim 
 				'(#\space #\tab #\; #\$)
 				(subseq 
