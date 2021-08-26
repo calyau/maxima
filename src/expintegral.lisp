@@ -126,11 +126,13 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defmfun $expintegral_e (v z)
   (simplify (list '(%expintegral_e) v z)))
 
 ;;; Set properties to give full support to the parser and display
-
+#+nil
+(progn
 (defprop $expintegral_e %expintegral_e alias)
 (defprop $expintegral_e %expintegral_e verb)
 
@@ -140,6 +142,7 @@
 ;;; Exponential Integral E is a simplifying function
 
 (defprop %expintegral_e simp-expintegral-e operators)
+)
 
 ;;; Exponential Integral E distributes over bags
 
@@ -233,13 +236,14 @@
                 ;; no direction, return infinity
                 '$infinity)
                (t
-                ($expintegral_e a z))))
+                (ftake '%expintegral_e a z))))
         (t
          ;; All other cases are handled by the simplifier of the function.
-         ($expintegral_e a z)))))
+         (ftake '%expintegral_e a z)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun simp-expintegral-e (expr ignored z)
   (declare (ignore ignored))
   (twoargcheck expr)
@@ -437,6 +441,200 @@
       
       (t 
        (eqtest (list '(%expintegral_e) order arg) expr)))))
+
+(def-simplifier expintegral_e (order arg)
+  (let ((ratorder))
+    (cond
+      ;; Check for special values
+      ((or (eq arg '$inf)
+           (alike1 arg '((mtimes) -1 $minf)))
+       ;; arg is inf or -minf, return zero
+       0)
+      
+      ((zerop1 arg)
+       (let ((sgn ($sign (add ($realpart order) -1))))
+         (cond 
+           ((eq sgn '$pos)
+            ;; we handle the special case E[v](0) = 1/(v-1), for realpart(v)>1
+            (inv (add order -1)))
+           ((member sgn '($neg $nz $zero))
+            (simp-domain-error 
+              (intl:gettext 
+                "expintegral_e: expintegral_e(~:M,~:M) is undefined.")
+                order arg))
+           (t (give-up)))))
+      
+      ((or (and (symbolp order) (member order infinities))
+           (and (symbolp arg) (member arg infinities)))
+       ;; order or arg is one of the infinities, we return a noun form,
+       ;; but we have already handled the special value inf for arg.
+       (give-up))
+      
+      ((and (numberp order) (integerp order))
+       ;; The parameter of the Exponential integral is an integer. For this 
+       ;; case we can do further simplifications or numerical evaluation.
+       (cond
+         ((= order 0)
+          ;; Special case E[0](z) = %e^(-z)/z, z<>0
+          ;; The case z=0 is already handled.
+          (div (power '$%e (mul -1 arg)) arg))
+         
+         ((= order -1)
+          ;; Special case E[-1](0) = ((z+1)*%e^(-z))/z^2, z<>0
+          ;; The case z=0 is already handled.
+          (div (mul (power '$%e (mul -1 arg)) (add arg 1)) (mul arg arg)))
+         
+         ((< order -1)
+          ;; We expand in a series, z<>0
+          (mul
+            (factorial (- order))
+            (power arg (+ order -1))
+            (power '$%e (mul -1 arg))
+            (let ((index (gensumindex)))
+              (dosum 
+                (div (power arg index)
+                     (take '(mfactorial) index))
+                index 0 (- order) t))))
+         
+         ((and (> order 0) 
+               (complex-float-numerical-eval-p arg))
+          ;; Numerical evaluation for double float real or complex arg
+          ;; order is an integer > 0 and arg <> 0 for order < 2
+          (let ((carg (complex ($float ($realpart arg))
+                               ($float ($imagpart arg)))))
+            (complexify (expintegral-e order carg))))
+         
+         ((and (> order 0) 
+               (complex-bigfloat-numerical-eval-p arg))
+          ;; Numerical evaluation for Bigfloat real or complex arg.
+          (let* (($ratprint nil)
+                 (carg (add ($bfloat ($realpart arg)) 
+                            (mul '$%i ($bfloat ($imagpart arg)))))
+                 (result (bfloat-expintegral-e order carg)))
+            (add ($realpart result) (mul '$%i ($imagpart result)))))
+         
+         ((and $expintexpand (> order 0))
+          ;; We only expand in terms of the Exponential Integral Ei
+          ;; if the expand flag is set.
+          (sub (mul -1
+                    (power (mul -1 arg) (- order 1))
+                    (inv (factorial (- order 1)))
+                    (add (take '(%expintegral_ei) (mul -1 arg))
+                         (mul (inv 2)
+                              (sub (take '(%log) (mul -1 (inv arg)))
+                                   (take '(%log) (mul -1 arg))))
+                         (take '(%log) arg)))
+               (mul (power '$%e (mul -1 arg))
+                    (let ((index (gensumindex)))
+                      (dosum 
+                        (div (power arg (add index -1))
+                             (take '($pochhammer) (- 1 order) index))
+                        index 1 (- order 1) t)))))
+         
+         ((eq $expintrep '%gamma_incomplete)
+          ;; We transform to the Incomplete Gamma function.
+          (mul (power arg (- order 1))
+               (take '(%gamma_incomplete) (- 1 order) arg)))
+         
+         (t
+          (give-up))))
+      
+      ((complex-float-numerical-eval-p order arg)
+       (cond
+         ((and (setq z (integer-representation-p order))
+               (plusp z))
+          ;; We have a pure real positive order and the realpart is a float 
+          ;; representation of an integer value.
+          ;; We call the routine for an integer order.
+          (let ((carg (complex ($float ($realpart arg)) 
+                               ($float ($imagpart arg)))))
+            (complexify (expintegral-e z carg))))
+         (t
+          ;; The general case, order and arg are complex or real.
+          (let ((corder (complex ($float ($realpart order)) 
+                                 ($float ($imagpart order))))
+                (carg (complex ($float ($realpart arg)) 
+                               ($float ($imagpart arg)))))
+            (complexify (frac-expintegral-e corder carg))))))
+      
+      ((complex-bigfloat-numerical-eval-p order arg)
+       (cond
+         ((and (setq z (integer-representation-p order))
+               (plusp z))
+          ;; We have a real positive order and the realpart is a Float or 
+          ;; Bigfloat representation of an integer value.
+          ;; We call the routine for an integer order.
+          (let* (($ratprint nil)
+                 (carg (add ($bfloat ($realpart arg)) 
+                            (mul '$%i ($bfloat ($imagpart arg)))))
+                 (result (bfloat-expintegral-e z carg)))
+            (add ($realpart result) 
+                 (mul '$%i ($imagpart result)))))
+         (t
+          ;; the general case, order and arg are bigfloat or complex bigfloat
+          (let* (($ratprint nil)
+                 (corder (add ($bfloat ($realpart order))
+                              (mul '$%i ($bfloat ($imagpart order)))))
+                 (carg (add ($bfloat ($realpart arg))
+                            (mul '$%i ($bfloat ($imagpart arg)))))
+                 (result (frac-bfloat-expintegral-e corder carg)))
+            (add ($realpart result)
+                 (mul '$%i ($imagpart result)))))))
+      
+      ((and $expintexpand
+            (setq ratorder (max-numeric-ratio-p order 2)))
+       ;; We have a half integral order and $expintexpand is not NIL. 
+       ;; We expand in a series in terms of the Erfc or Erf function.
+       (let ((func (cond ((eq $expintexpand '%erf)
+                          (sub 1 ($erf (power arg '((rat simp) 1 2)))))
+                         (t
+                          ($erfc (power arg '((rat simp) 1 2)))))))
+         (cond
+           ((= ratorder 1/2)
+            (mul (power '$%pi '((rat simp) 1 2))
+                 (power arg '((rat simp) -1 2))
+                 func))
+           ((= ratorder -1/2)
+            (add
+              (mul
+                (power '$%pi '((rat simp) 1 2))
+                (inv (mul 2 (power arg '((rat simp) 3 2))))
+                func)
+              (div (power '$%e (mul -1 arg)) arg)))
+           (t
+            (let ((n (- ratorder 1/2)))
+              (mul
+                (power arg (sub n '((rat simp) 1 2)))
+                (add
+                  (mul func (take '(%gamma) (sub '((rat simp) 1 2) n)))
+                  (mul
+                    (power '$%e (mul -1 arg))
+                    (let ((index (gensumindex)))
+                      (dosum
+                        (div
+                          (power arg (add index '((rat simp) 1 2)))
+                          (take '($pochhammer)
+                                (sub '((rat simp) 1 2) n)
+                                (add index n 1)))
+                        index 0 (mul -1 (add n 1)) t)))
+                  (mul -1
+                    (power '$%e (mul -1 arg))
+                    (let ((index (gensumindex)))
+                      (dosum
+                        (div
+                          (power arg (add index '((rat simp) 1 2)))
+                          (take '($pochhammer)
+                                (sub '((rat simp) 1 2) n)
+                                (add index n 1)))
+                        index (- n) -1 t))))))))))
+      
+      ((eq $expintrep '%gamma_incomplete)
+       ;; We transform to the Incomplete Gamma function.
+       (mul (power arg (sub order 1))
+            (take '(%gamma_incomplete) (sub 1 order) arg)))
+      
+      (t 
+       (give-up)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Numerical evaluation of the Exponential Integral En(z)

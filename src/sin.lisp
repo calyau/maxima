@@ -2414,7 +2414,7 @@
       (div -1 a)
       (power '$%e (sub d (div (mul b c) a)))
       (power (add b (mul a var)) (add p 1))
-      ($expintegral_e (mul -1 p) (mul (div -1 a) c (add b (mul a var))))))
+      (ftake '%expintegral_e (mul -1 p) (mul (div -1 a) c (add b (mul a var))))))
 
     ((m2-exp-type-4 expr)
      (a b c d)
