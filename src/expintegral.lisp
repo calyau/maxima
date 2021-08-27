@@ -1246,7 +1246,7 @@
                          (take '(%log) logarg))))))))
       
     (t
-     (give-up)))))
+     (give-up))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Numerical evaluation of the Expintegral Li
