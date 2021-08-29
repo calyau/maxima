@@ -151,6 +151,7 @@
                          94 96 98 100 102 103 104 106 108 111 116 118 
                          119 124 125 126 127 132 133 135 136 137 139 170 187
                          208))
+        "rtest_gcd"
           ))
 
 ;; The list of share testsuite files. As they are given without a path

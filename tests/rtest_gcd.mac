@@ -1,0 +1,8 @@
+(kill(all),0);
+0$
+
+/* SF bug 3832 and merge request 25 */
+
+is(equal(gcd(expand((r^2-2*m+a^2)*(a^2*s^2+r^2)^3*(a^2*s^2+r^2-2*m)), expand((r^2-2*m+a^2)*(a^2*s^2+r^2)^2)),
+         expand((r^2-2*m+a^2)*(a^2*s^2+r^2)^2)));
+true$

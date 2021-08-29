@@ -211,10 +211,23 @@
 (defun zerolp (a)
   (every #'zerop1 a))
 
+;;; TESTDIVIDE
+;;;
+;;; Check if y divides x, assuming that x and y are polynomials in the
+;;; same variable.
 (defun testdivide (x y)
   (if algfac*
       (algtestd x y)
       (eztestdivide x y)))
+
+;;; TESTDIVIDE*
+;;;
+;;; Check if y divides x, for general polynomials x and y (not
+;;; necessarily in the same variable).
+(defun testdivide* (x y)
+  (if algfac*
+      (algtestd x y)
+      (ignore-rat-err (pquotient x y))))
 
 (defun algtestd (x y)
   (and (div-deg-chk (nreverse (pdegreevector x)) (nreverse (pdegreevector y))

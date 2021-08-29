@@ -161,7 +161,7 @@
 		  (t (return (list 1 pol1 pol2))))))
      (cond (cofac? (desetq (gcdcoef coeff11 coeff12)
 			   (pgcdcofacts gcdab gcdcd))
-		   (cond ((setq gcdcd (testdivide rpol2 rpol1))
+		   (cond ((setq gcdcd (testdivide* rpol2 rpol1))
 			  (return (list (ptimes gcdcoef rpol1)
 					coeff11
 					(ptimes coeff12 gcdcd))))
@@ -169,7 +169,7 @@
 					  (ptimes coeff11 rpol1)
 					  (ptimes coeff12 rpol2))))))
 	   (t (setq gcdcoef (pgcd gcdcd gcdab))
-	      (cond ((testdivide rpol2 rpol1)
+	      (cond ((testdivide* rpol2 rpol1)
 		     (return (list (ptimes gcdcoef rpol1))))
 		    (t (return (list gcdcoef))))))))
 
