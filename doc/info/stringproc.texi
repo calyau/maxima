@@ -1300,7 +1300,7 @@ Examples:
 (%o2)                   baz + 1764
 @end example
 
-See also @ref{parse_string}.
+See also @ref{parse_string} and @ref{eval_string_lisp}.
 
 @opencatbox
 @category{Package stringproc}

@@ -366,6 +366,18 @@ DESTINATION is an actual stream (rather than nil for a string)."
     (princ *general-display-prefix*)
     res))
 
+(defmfun $eval_string_lisp (string)
+  (unless (stringp string)
+    (merror (intl:gettext "eval_string_lisp: Expected a string, got ~M.") string))
+  (let ((eof (cons 0 0)))
+    (with-input-from-string (s string)
+      ; We do some consing for each form, but I think that'll be OK
+      (do ((input (read s nil eof) (read s nil eof))
+           (values nil (multiple-value-list (eval input))))
+          ((eq input eof)
+           ; Mark the list as simplified
+           (cons (list 'mlist 'simp) values))))))
+
 (defmfun $read (&rest l)
   (meval (apply #'$readonly l)))
 

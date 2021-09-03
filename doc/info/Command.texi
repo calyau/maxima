@@ -998,6 +998,64 @@ Returning to Maxima
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{eval_string_lisp}
+@deffn {Function} eval_string_lisp (@var{str})
+
+Sequentially read lisp forms from the string @var{str} and evaluate them.
+Any values produced from the last form are returned as a Maxima list.
+
+Examples:
+
+@c ===beg===
+@c eval_string_lisp ("");
+@c eval_string_lisp ("(values)");
+@c eval_string_lisp ("69");
+@c eval_string_lisp ("1 2 3");
+@c eval_string_lisp ("(values 1 2 3)");
+@c eval_string_lisp ("(defun $foo (x) (* 2 x))");
+@c foo (5);
+@c ===end===
+@example
+@group
+(%i1) eval_string_lisp ("");
+(%o1) []
+@end group
+@group
+(%i2) eval_string_lisp ("(values)");
+(%o2) []
+@end group
+@group
+(%i3) eval_string_lisp ("69");
+(%o3) [69]
+@end group
+@group
+(%i4) eval_string_lisp ("1 2 3");
+(%o4) [3]
+@end group
+@group
+(%i5) eval_string_lisp ("(values 1 2 3)");
+(%o5) [1,2,3]
+@end group
+@group
+(%i6) eval_string_lisp ("(defun $foo (x) (* 2 x))");
+(%o6) [foo]
+@end group
+@group
+(%i7) foo (5);
+(%o7) 10
+@end group
+@end example
+
+See also @ref{eval_string}.
+
+@opencatbox
+@category{Debugging}
+@category{Evaluation}
+@closecatbox
+
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @anchor{values}
 @defvr {System variable} values
 Initial value: @code{[]}
