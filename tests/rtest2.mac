@@ -1093,3 +1093,13 @@ arraymake (foo + bar, [baz]);
 arraymake (foo(bar), [baz]);
 foo(bar)[baz];
 
+/* A bug in MARRAYREF caused things like arrayapply to return
+ * MQAPPLY expressions with an incorrect header.
+ */
+
+arrayapply (foo (), [1]);
+foo () [1];
+
+arrayapply (foo (), [1, 2, 3]);
+foo () [1, 2, 3];
+

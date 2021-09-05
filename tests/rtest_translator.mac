@@ -1833,6 +1833,22 @@ block ([translate : false],
 (kill (foo, bar, l1, l2), 0);
 0;
 
+/* A bug in MARRAYREF caused things like translated array references
+ * to yield MQAPPLY expressions with an incorrect header.
+ */
+
+block ([translate : false],
+  foo () := 'baz () [1],
+  bar () := 'baz () [1, 2, 3],
+  l1 : [foo (), bar ()],
+  translate_or_lose (foo, bar),
+  l2 : [foo (), bar ()],
+  [is (l1 = l2), l2]);
+[true, ['baz () [1], 'baz () [1, 2, 3]]];
+
+(kill (foo, bar, l1, l2), 0);
+0;
+
 
 
 

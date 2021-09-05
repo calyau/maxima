@@ -86,7 +86,7 @@
     (cl:list
      (simplify (if (member (caar aarray) '(mlist $matrix) :test #'eq)
 		   (list-ref aarray (cons ind1 inds))
-		   `((mqapply aarray) ,aarray ,ind1 ,@inds))))
+		   `((mqapply array) ,aarray ,ind1 ,@inds))))
     (t
      (merror (intl:gettext "MARRAYREF: cannot retrieve an element of ~M") aarray))))
 
