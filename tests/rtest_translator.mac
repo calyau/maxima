@@ -1849,6 +1849,32 @@ block ([translate : false],
 (kill (foo, bar, l1, l2), 0);
 0;
 
+/* A bug in MARRAYREF caused bogus indexing into hash tables and fast
+ * arrays.  This affected things like translated array references.
+ */
+
+block ([translate : false,
+        use_fast_arrays : true],
+
+  foo () := block ([a],
+              a[false] : 'wtf,
+              a[1] : 2,
+              a[1]),
+
+  /* This would correctly yield 2 */
+  l1 : foo (),
+
+  translate_or_lose (foo),
+
+  /* This used to incorrectly yield wtf */
+  l2 : foo (),
+
+  [is (l1 = l2), l2]);
+[true, 2];
+
+(kill (foo, l1, l2), 0);
+0;
+
 
 
 

@@ -1103,3 +1103,14 @@ foo () [1];
 arrayapply (foo (), [1, 2, 3]);
 foo () [1, 2, 3];
 
+/* A bug in MARRAYREF caused bogus indexing into hash tables and fast
+ * arrays.  This affected things like arrayapply.
+ */
+
+block ([use_fast_arrays : true,
+        arr],
+  arr[false] : 'wtf,
+  arr[1] : 2,
+  [arr[1], arrayapply (arr, [1])]);
+[2, 2];
+
