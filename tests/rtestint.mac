@@ -1891,3 +1891,43 @@ integrate ((a*sin(z)+b*cos(z))^3, z, minf, 1);
 
 integrate (a*sin(5*w)+b*cos(7*w), w, minf, 1);
 'integrate (a*sin(5*w)+b*cos(7*w), w, minf, 1);
+
+/* SF bug #3718: "incorrect trigonometric definite integral" */
+
+(kill(e, e1, e2, e3, t, I),
+ e:(tan(x)^2+1)^2/(16*tan(x)^4+12*tan(x)^2+1),
+ [e1, e2, e3]: args (expand (e)),
+ assume (t > acos(3/5)/2),
+ 0);
+0;
+
+/* RISCHINT seems to be returning a discontinuous antiderivative
+ * (a separate problem from #3718).
+ * First just verify it's not zero (the previous, incorrect result).
+ */
+
+is ((I: integrate (e, x, 0, t)) # 0);
+true;
+
+/* Now try some random intervals and see if the antiderivative
+ * matches a numerical calculation on at least one such interval.
+ *
+ * Trying this repeated yields 14 failures (apparently hit a discontinuity)
+ * and 39 successess (apparently missed).
+ * If I am reading the tea leaves correctly, that suggests
+ * the mean number of tries to the first success is 1/(39/(39 + 14)) = 53/39 = 1.36
+ * and p(number of tries > 10) = (1 - 39/(39 + 14))^10 = (14/53)^10 = 1.65 x 10^-6 = 1/605000.
+ * So at least for this problem, 10 tries seems enough.
+ */
+
+block ([t1, t2, I_defint_numerical, I_defint_FTC],
+  for k thru 10 
+    do (t1: random(5.0),
+        t2: t1 + random(0.5),
+        I_defint_numerical: first (quad_qags (e, x, t1, t2)),
+        I_defint_FTC: float (ev (I, t = t2) - ev (I, t = t1)),
+        if abs (I_defint_numerical - I_defint_FTC) < 1e-4
+          then (printf (true, "re: #3718, apparently valid antiderivative on (~f, ~f)~%", t1, t2),
+                return(true))
+          else printf (true, "re: #3718, can't confirm antiderivative on (~f, ~f), keep trying.~%", t1, t2)));
+true;
