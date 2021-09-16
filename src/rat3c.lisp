@@ -295,7 +295,7 @@
 (defun pgcd1 (u v) (caddr (psquorem1 u v nil)))
 
 (defun pgcd2 (u v k &aux (i 0))
-  (declare (special lcu lcv) (fixnum k i))
+  (declare (special lcu lcv) (fixnum i))
   (cond ((null u) (pcetimes1 v k lcu))
 	((null v) (pctimes1 lcv u))
 	((zerop (setq i (+ (pt-le u) (- k) (- (car v)))))
@@ -413,7 +413,7 @@
 
 (defun pgcdu1 (u v pquo*)
   (let ((invv (painvmod (pt-lc v))) (k 0) q*)
-    (declare (special k quo q*) (fixnum k))
+    (declare (special k quo q*))
     (loop until (minusp (setq k (- (pt-le u) (pt-le v))))
 	   do (setq q* (ptimes invv (pt-lc u)))
 	   if pquo* do (setq quo (nconc quo (list k q*)))
