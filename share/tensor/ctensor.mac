@@ -1766,7 +1766,7 @@ frame_bracket(fr,fri,diagframe):=block
 (
   for a thru dim do for b thru dim do for c thru dim do
     fb[a,b,c]:sum(sum(fr[a,e%]*(diff(fri[e%,c],ct_coords[f%])-
-              diff(fri[f%,c],ct_coords[e%]))*fr[b,c],e%,1,dim),f%,1,dim)
+              diff(fri[f%,c],ct_coords[e%]))*fr[b,%f],e%,1,dim),f%,1,dim)
 );
 
 /* The findde function finds a list of unique differential equations in the
