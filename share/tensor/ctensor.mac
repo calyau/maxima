@@ -1212,8 +1212,8 @@ leinstein(dis):=block
   if not (member('ein,arrays) or matrixp(ein)) then einstein(false),
   for i thru dim do for j thru i do
   (
-    lein[i,j]:if diagmetric then ein[i,j]*lg[j,j]
-              else sum(ein[i,k%]*lg[k%,j],k%,1,dim),
+    lein[i,j]:if diagmetric then ein[i,j]*_lg()[j,j]
+              else sum(ein[i,k%]*_lg()[k%,j],k%,1,dim),
     if i#j then lein[j,i]:lein[i,j],
     if dis#false and lein[i,j]#0 then ldisplay(lein[i,j])
   )
@@ -1983,4 +1983,4 @@ riccicov(ii,jj,kk,ll):=block(
 
 
 
-put('ctensor,'v20210427,'version)$
+put('ctensor,'v20210918,'version)$
