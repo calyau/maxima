@@ -144,9 +144,9 @@ eigenvectors(mat):=
 		(mmatrx:matrx-part(eigvals,1,index1)*vectr,
 		equations:[],
 		for index2 thru dimnsn do
-		equations:cons(mmatrx[index2,1],equations),%rnum:0,
+		equations:cons((+mmatrx)[index2,1],equations),%rnum:0,
 		solution:algsys(equations,unknowns),
-		interm:map('rhs,solution[1]),
+		interm:map('rhs,(+solution)[1]),
 		unit:[],if %rnum#part(multiplicities,index1)
 		then nondiagonalizable:true,
 		for index3 thru %rnum do
@@ -180,10 +180,10 @@ uniteigenvectors (M):= block ([uv],
     if uv = []
         then []
         else
-           (for i thru length (uv[2])
-                do for j thru length (uv[2][i])
+           (for i thru length ((+uv)[2])
+                do for j thru length ((+uv)[2][i])
                     /* modification in-place (OK due to copy above) */
-                    do uv[2][i][j] : ratsimp (unitvector (uv[2][i][j])),
+                    do (+uv)[2][i][j] : ratsimp (unitvector ((+uv)[2][i][j])),
             uv));
 
 
@@ -192,7 +192,7 @@ similaritytransform(mat):=
                 mode_declare([listvec,listuevec],list),
 		listuevec:uniteigenvectors(mat),
 		if nondiagonalizable then return(listuevec)
-		else (listvec: apply (append, listuevec[2]),
+		else (listvec: apply (append, (+listuevec)[2]),
 		rightmatrix:transpose(apply('matrix,listvec)),
 		if hermitianmatrix then
 		leftmatrix:conjugate(transpose(rightmatrix))
@@ -208,7 +208,7 @@ uvect(x):=unitvector(x)$
 
 covect(x):=columnvector(x)$
 
-gschmit(x%, [f]):= if f = [] then gramschmidt(x%) else gramschmidt (x%, f[1])$
+gschmit(x%, [f]):= if f = [] then gramschmidt(x%) else gramschmidt (x%, (+f)[1])$
 
 eivals(mat):=eigenvalues(mat)$
 

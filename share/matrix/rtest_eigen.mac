@@ -75,3 +75,46 @@ matrix ([1, 0, 0, 0, 0],
         [0, 0, 1, 0, 0],
         [0, 0, 0, 1, 0],
         [0, 0, 0, 0, 1]);
+
+/* SF bug #3654: "uniteigenvectors fails if uv[1] is used in the user main program." */
+
+(kill(m, mm, r, uv, foo, θ),
+ assume (m > 0, r > 0),
+ mm:matrix(
+          [-(r-2*m)/r,    sqrt(2*m/r),    0,  0],
+          [sqrt(2*m/r),   1,  0,  0],
+          [0, 0,  r^2,    0],
+          [0, 0,  0,  r^2*sin(θ)^2]
+      ),
+ foo: uniteigenvectors(mm),
+ 0);
+0;
+
+/* go through some gyrations here to verify result of uniteigenvectors */
+
+(kill(S),
+ [e1, e2, e3, e4]: [foo[2][1][1], foo[2][2][1], foo[2][3][1], foo[2][4][1]],
+ S: transpose (matrix (e1, e2, e3, e4)),
+ ratsimp (S . transpose (S)));
+matrix ([1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]);
+
+(kill(Lambda),
+ Lambda: ident(4),
+ for i thru 4 do Lambda[i, i]: foo[1][1][i],
+ ratsimp (S . Lambda . transpose (S) - mm));
+matrix ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]);
+
+/* now test in presence of uv array */
+
+(kill(uv), uv[1]:0);
+0;
+
+member ('uv, arrays);
+true;
+
+(bar: uniteigenvectors(mm),
+ is (bar = foo));
+true;
+
+kill(uv);
+done;
