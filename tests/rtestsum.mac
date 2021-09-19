@@ -1060,3 +1060,30 @@ aa + 2*bb;
 
 (reset(assume_pos),1);
 1;
+
+/* SF bug #3605: "Variable confusion in function handling Taylor series" */
+
+kill(x, y);
+done;
+
+/* function definition copied verbatim from bug report */
+
+(test(f) := block([i:taylorinfo(f)[1]], sum(coeff(f, i[1], x) * i[1]^x, x, 0, i[3])), 0);
+0;
+
+ratdisrep (test(taylor(cos(y), y, 0, 4)));
+(y^4-12*y^2+24)/24;
+
+ratdisrep (test(taylor(cos(x), x, 0, 4)));
+29/3;
+
+/* declare summation index with different name in block to distinguish from global */
+(test1(f) := block([i:taylorinfo(f)[1], x%], sum(coeff(f, i[1], x%) * i[1]^x%, x%, 0, i[3])), 0);
+0;
+
+ratdisrep (test1(taylor(cos(y), y, 0, 4)));
+(y^4-12*y^2+24)/24;
+
+ratdisrep (test1(taylor(cos(x), x, 0, 4)));
+(x^4-12*x^2+24)/24;
+

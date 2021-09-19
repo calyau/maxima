@@ -514,12 +514,10 @@ summation when necessary."
 
 (defun subst-if-not-freeof (x y expr)
   (if ($freeof y expr)
+      ;; suppressing substitution here avoids substituting for
+      ;; local variables recognize by freeof, e.g., formal argument of lambda.
       expr
-      (if (atom expr)
-	  x
-	  (let* ((args (cdr expr))
-		 (L (eval `(mapcar (lambda (a) (subst-if-not-freeof ',x ',y a)) ',args))))
-	    (cons (car expr) L)))))
+      (let ($simp) (maxima-substitute x y expr))))
 
 (defun mevalsumarg (expr ind low hi)
   (if (let (($prederror nil))
