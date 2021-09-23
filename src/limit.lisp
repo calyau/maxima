@@ -2657,40 +2657,36 @@ ignoring dummy variables and array indices."
 	   (t (return ($radcan (ridofab (subin val e))))))
      (return (simplimtimes (list n1 d1)))))
 
-;;; Limit of the Logarithm function
-
+;;; Limit(log(XXX), var, 0, val), where val is either zerob (limit from below)
+;;; or zeroa (limit from above).
 (defun simplimln (expr var val)
-  ;; We need to be careful with log because of the branch cut on the
-  ;; negative real axis.  So we look at the imagpart of the argument.  If
-  ;; it's not identically zero, we compute the limit of the real and
-  ;; imaginary parts and combine them.  Otherwise, we can use the
-  ;; original method for real limits.
-  (let ((arglim (limit (cadr expr) var val 'think)))
-    (cond ((eq arglim '$inf) '$inf)
-	  ((member arglim '($minf $infinity) :test #'eq)
-	   '$infinity)
-	  ((member arglim '($ind $und) :test #'eq) '$und)
-	  ((eq arglim '$zeroa)  '$minf)
-	  ((eq arglim '$zerob)  '$infinity)
-	  ((equalp arglim 0)  '$infinity)
-	  ((equalp arglim 1)
-	   (let ((dir (behavior (cadr expr) var val)))
-	     (cond ((equal dir 1) '$zeroa)
-		   ((equal dir -1) '$zerob)
-		   (t 0))))
-	  ((equalp ($imagpart (cadr expr)) 0)
-           ;; argument is real.
-	   (simplify `((%log) ,arglim)))
-	  ((off-negative-real-axisp arglim) ;use direct subst when arglim isn't on negative real
-	    (ftake '%log arglim))
-	  (t	   ;; argument is complex.
-	   (destructuring-bind (rp . ip)
-               (trisplit expr)
-             (if (eq (setq rp (limit rp var val 'think)) '$minf)
-                 ;; Realpart is minf, do not return minf+%i*ip but infinity.
-                 '$infinity
-                 ;; Return a complex limit value.
-                 (add rp (mul '$%i (limit ip var val 'think)))))))))
+  (let ((arglim (limit (cadr expr) var val 'think)) (dir)) 
+    (cond ((eq arglim '$inf) '$inf) ;log(inf) = inf
+          ;;log(minf,infinity,zerob) = infinity & log(0) = infinity
+		  ((or (member arglim '($minf $infinity $zerob)) (eql arglim 0))
+		   '$infinity)
+		  ((eq arglim '$zeroa) '$minf) ;log(zeroa) = minf
+          ;; log(ind)=und & log(und)=und
+		  ((member arglim '($ind $und)) '$und)
+          ;; log(1^(-)) = zerob, log(1^(+)) = zeroa & log(1)=0
+		  ((eql arglim 1)
+		      (if (or (eq val '$zerob) (eq var '$zeroa)) val 0))
+          ;; When arglim is off the negative real axis, use direct substitution
+		  ((off-negative-real-axisp arglim) 
+            (ftake '%log arglim))
+	      (t
+		     ;; We know that arglim is a negative real number, say xx.
+			 ;; When the imaginary part of expr near var is negative,
+			 ;; return log(-x) - %i*pi; when the imaginary part of expr 
+			 ;; near var is positive return log(-x) + %i*pi; and when
+			 ;; we cannot determine the behavior of the imaginary part,
+			 ;; return a nounform. The value of val (either zeroa or zerob)
+			 ;; determines what is meant by "near" (smaller than var when 
+			 ;; val is zerob and larger than var when val is zeroa).
+	         (setq dir (behavior ($imagpart expr) var val))
+             (cond  ((or (eql dir 1) (eql dir -1))
+	                  (sub (ftake '%log (mul -1 arglim)) (mul dir '$%i '$%pi)))
+	                (t (throw 'limit nil))))))) ;do a nounform return
 
 ;;; Limit of the Factorial function
 
@@ -3224,11 +3220,15 @@ ignoring dummy variables and array indices."
 ;; Ideally we would use a lazy series representation that generates
 ;; more terms as higher order terms cancel.
 (defun calculate-series (exp var)
-  (assume `((mgreaterp) ,var 0))
-  (putprop var t 'internal);; keep var from appearing in questions to user
-  (let ((series ($taylor exp var 0 $lhospitallim)))
-    (forget `((mgreaterp) ,var 0))
-    series))
+  (let ((cntx ($supcontext)))
+		 ($activate cntx)
+		 (unwind-protect 
+		 	 (progn
+				 (mfuncall '$assume (ftake 'mgreaterp var 0))
+				 (putprop var t 'internal); keep var from appearing in questions to user
+ 			     ($taylor exp var 0 $lhospitallim))
+			  (remprop var 'internal)	  
+              ($killcontext cntx))))
 
 (defun mrv-sign (exp var)
   (cond ((freeof var exp)

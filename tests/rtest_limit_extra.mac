@@ -157,8 +157,8 @@ errcatch( limit(gamma(1/x)/gamma(x),x,0,plus));
 errcatch( limit(gamma(x)/gamma(1/x),x,0,plus));
 [0]$
 
-/* #3842 limit(atan(x),x,%i) --> error. I'm not sure I agree that this isn't
-a bug, but here are two related limit problems. */
+/* #3842 limit(atan(x),x,%i) --> error. That was determined to be a non-bug, but
+here are two related limit problems. */
  limit(atan(%i + x),x,0);
  'infinity$
 

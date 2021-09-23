@@ -135,7 +135,7 @@
 	 ((mlist simp) 40 41))
         ((mlist simp) "rtest_log")
         ((mlist simp) "rtest_power"
-	 ((mlist simp) 19 20 26 58))
+	 ((mlist simp) 19 20 26))
         "rtestdefstruct"
 	;; Tested with acl 10.1
 	((mlist simp) "rtest_limit"
@@ -147,9 +147,13 @@
 	"rtest_algsys"
         "rtest_trace"
 	"rtest_polynomialp"
+        ((mlist simp) "rtest_limit_extra" 
+          ((mlist simp) 7 10 13 42 48 49 50 51 52 54 55 56 57 58 
+                       61  64 67 77 78 79 80 81 84 86 87 88 91 93 95 97 99 100 101 103 105 108 
+                       110 112 113 115 116 121 122 123 124 128 129 130 132 133 134 136))
 	))
 
-;; The list of share testsuite files. As they are given withut a path
+;; The list of share testsuite files. As they are given without a path
 ;; this assumes that file_search_tests is set appropriately so that maxima
 ;; can actually find these files. (file_search_maxima is a good choice.)
 (defvar $share_testsuite_files
