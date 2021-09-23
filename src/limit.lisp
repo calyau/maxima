@@ -1748,7 +1748,6 @@ ignoring dummy variables and array indices."
     ((member (caar exp) '(%sin %cos) :test #'eq)
      (simplimsc exp (caar exp) (limit (cadr exp) var val 'think)))
     ((eq (caar exp) '%tan) (simplim%tan (cadr exp)))
-    ((eq (caar exp) '%atan) (simplim%atan (limit (cadr exp) var val 'think)))
     ((eq (caar exp) '$atan2) (simplim%atan2 exp))
     ((member (caar exp) '(%sinh %cosh) :test #'eq)
      (simplimsch (caar exp) (limit (cadr exp) var val 'think)))
@@ -2744,14 +2743,25 @@ ignoring dummy variables and array indices."
 	   ;; erf (or tanh) of a known value is just erf(arglim).
 	   (simplify (list (ncons fn) arglim))))))
 
-(defun simplim%atan (exp1)
-  (cond ((zerop2 exp1) exp1)
-	((member exp1 '($und $infinity) :test #'eq)
-	 (throw 'limit ()))
-	((eq exp1 '$inf) half%pi)
-	((eq exp1 '$minf)
-	 (m*t -1. half%pi))
-	(t `((%atan) ,exp1))))
+(defun in-domain-of-atan (z)
+  (setq z (trisplit z)) ; split z into real and imaginary parts
+  (let ((x (car z)) (y (cdr z))) ;z = x+%i*y
+    (or
+      (eq t (mnqp x 0)) ; x # 0
+      (and
+	     (eq t (mgrp -1 y))    ; y < -1
+	     (eq t (mgrp y 1)))))) ; y > 1
+
+(defun simplim%atan (e x pt)
+  (let ((lim (limit (cadr e) x pt 'think)))
+	  (cond ((or (eq lim '$zeroa) (eq lim '$zerob) (eq lim 0) (eq lim '$ind)) lim)
+		    ((or (eq lim '$und) (eq lim '$infinity)) (throw 'limit nil))
+   	   		((eq lim '$inf) #$%pi/2$)
+	        ((eq lim '$minf) #$-%pi/2$)
+			((in-domain-of-atan (ridofab lim))
+			  (ftake '%atan (ridofab lim)))
+	       (t (limit ($logarc e) x pt 'think)))))
+(setf (get '%atan 'simplim%function) #'simplim%atan)
 
 ;; Most instances of atan2 are simplified to expressions in atan 
 ;; by simpatan2 before we get to this point.  This routine handles
@@ -2774,11 +2784,11 @@ ignoring dummy variables and array indices."
 	   (m- '$%pi))
 	  ((and (eq lim1 '$zeroa)	;; atan2( 0+, 0 )
 		(zerop2 lim2))
-	   (simplim%atan (limit (m// exp1 exp2) var val 'think)))
+	    (limit (ftake '%atan (m// exp1 exp2)) var val 'think))
 	  ((and (eq lim1 '$zerob)	;; atan2( 0-, 0 )
 		(zerop2 lim2))
 	   (m+ (porm (eq lim2 '$zeroa) '$%pi)
-	       (simplim%atan (limit (m// exp1 exp2) var val 'think))))
+	       (limit (ftake '%atan (m// exp1 exp2)) var val 'think)))
 	  ((member lim1 '($und $infinity) :test #'eq)
 	   (throw 'limit ()))
 	  ((eq lim1 '$inf) half%pi)
