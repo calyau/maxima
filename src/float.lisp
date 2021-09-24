@@ -192,11 +192,20 @@ One extra decimal digit in actual representation for rounding purposes.")
 		   (list (fpround (car l)) (+ (- extradigs) *m (cadr l)))))
        (let ((*print-base* 10.)
              *print-radix*
+	     (expo-adjust 0)
              (l1 nil))
          (setq l1 (let*
                     ((effective-printprec (if (or (= $fpprintprec 0) (> $fpprintprec fpprec)) fpprec $fpprintprec))
                      (integer-to-explode (round (car l) (expt 10 (- fpprec effective-printprec))))
                      (exploded-integer (explodec integer-to-explode)))
+		    ;; If the rounded integer has more digits than
+		    ;; expected, we need to adjust the exponent by
+		    ;; this amount.  This also means we need to remove
+		    ;; these extra digits so that the result has the
+		    ;; desired number of digits.
+		    (setf expo-adjust (- (length exploded-integer) effective-printprec))
+		    (when (plusp expo-adjust)
+		      (setf exploded-integer (butlast exploded-integer expo-adjust)))
                     (if $bftrunc
                       (do ((l (nreverse exploded-integer) (cdr l)))
                         ((not (eq '|0| (car l))) (nreverse l)))
@@ -204,7 +213,7 @@ One extra decimal digit in actual representation for rounding purposes.")
          (nconc (ncons (car l1)) (ncons '|.|)
                 (or (cdr l1) (ncons '|0|))
                 (ncons '|b|)
-                (explodec (1- (cadr l)))))))))
+                (explodec (+ (1- (cadr l)) expo-adjust))))))))
 
 ;; NOTE: This is a modified version of FORMAT-EXP-AUX from CMUCL to
 ;; support printing of bfloats.

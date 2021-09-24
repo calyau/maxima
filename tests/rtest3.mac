@@ -915,3 +915,31 @@ print_string_2d ('?mtext ("hello"));
 block ([linel: 65], print_string_2d ('?mlabel (a, b)));
 "(a)                             b
 ";
+
+/*
+ * Test exponent of printed bigfloat is correct when number is rounded.
+ */
+(fpprec:64, fpprintprec:16, done);
+done;
+
+print_string_2d(0.99999999999999999999b0);
+"1.0b0
+";
+
+print_string_2d(1.99999999999999999999b0);
+"2.0b0
+";
+
+bftrunc:false;
+false;
+
+print_string_2d(0.99999999999999999999b0);
+"1.000000000000000b0
+";
+
+print_string_2d(1.99999999999999999999b0);
+"2.000000000000000b0
+";
+
+(reset(fpprec, fpprintprec), done);
+done;
