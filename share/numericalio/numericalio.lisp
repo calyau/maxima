@@ -314,7 +314,7 @@
   (setq s (concatenate 'string s " "))
 
   (with-input-from-string (*parse-stream* s)
-    (let ((token) (L) (LL) (sign))
+    (let ((token) (L) (LL) (sign) (found-token) (found-sep))
       (loop
         (setq token (scan-one-token-g t 'eof))
         (cond
@@ -326,7 +326,11 @@
              ((eql sep-ch #\space)
               (return (cons '(mlist) LL)))
              (t
-               (return (cons '(mlist) (appropriate-append L LL)))))))
+               (if (or found-token found-sep)
+                 (return (cons '(mlist) (appropriate-append L LL)))
+                 ;; We reached EOF without encountering a token or a separator;
+                 ;; this is an empty line.
+                 (return '((mlist))))))))
         (cond
           ((or (eq token '$-) (eq token '$+))
            (setq sign (cond ((eq token '$-) -1) (t 1))))
@@ -337,13 +341,16 @@
                (setq sign nil)))
             (cond
               ((eql sep-ch #\space)
+               (setq found-token token)
                (setq LL (append LL (list token))))
               (t
                 (cond
                   ((eql token sep-ch)
+                   (setq found-sep token)
                    (setq L (appropriate-append L LL))
                    (setq LL nil))
                   (t
+                    (setq found-token token)
                     (setq LL (append LL (list token)))))))))))))
 
 (defun appropriate-append (L LL)
@@ -473,7 +480,9 @@
 
 (defun write-list-lowlevel (L out sep-ch mode)
   (setq sep-ch (cond ((symbolp sep-ch) (cadr (exploden sep-ch))) (t sep-ch)))
-  (cond ((not (null L))
+  (cond
+    ((null L) (terpri out))
+    (t
       (loop 
         (if (not L) (return))
         (let ((e (pop L)))
