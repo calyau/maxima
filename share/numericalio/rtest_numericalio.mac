@@ -154,8 +154,16 @@ true;
  is (m = m3));
 true;
 
+(m3a : read_matrix (file_search ("really-csv.data"), ","),
+ is (m = m3a));
+true;
+
 (m4 : read_matrix (file_search ("really-space-separated.csv"), 'space),
  is (m = m4));
+true;
+
+(m4a : read_matrix (file_search ("really-space-separated.csv"), " "),
+ is (m = m4a));
 true;
 
 (write_data (m2, sconcat (maxima_tempdir, "/tmp-matrix.csv")),
@@ -168,9 +176,19 @@ true;
  is (m2 = m6));
 true;
 
+(write_data (m2, sconcat (maxima_tempdir, "/tmp-matrix.data", ",")),
+ m6a : read_matrix(sconcat (maxima_tempdir, "/tmp-matrix.data", ",")),
+ is (m2 = m6a));
+true;
+
 (write_data (m2, sconcat (maxima_tempdir, "/tmp-matrix-2.csv", 'space)),
  m7 : read_matrix(sconcat (maxima_tempdir, "/tmp-matrix-2.csv", 'space)),
  is (m2 = m7));
+true;
+
+(write_data (m2, sconcat (maxima_tempdir, "/tmp-matrix-2.csv", " ")),
+ m7a : read_matrix(sconcat (maxima_tempdir, "/tmp-matrix-2.csv", " ")),
+ is (m2 = m7a));
 true;
 
 (array (a, 10, 6),
@@ -367,13 +385,33 @@ true;
  is (l_nested = l_nested_2));
 true;
 
+(write_data (l_nested_2, sconcat (maxima_tempdir, "/tmp-semicolon.data"), ";"),
+ l_nested_2a : read_nested_list (sconcat (maxima_tempdir, "/tmp-semicolon.data"), ";"),
+ is (l_nested = l_nested_2a));
+true;
+
 (l_nested_3 : read_nested_list (file_search ("pipe.data"), 'pipe),
  is (l_nested = l_nested_3));
 true;
 
-(write_data (l_nested_2, sconcat (maxima_tempdir, "/tmp-tab.data"), 'tab),
- l_nested_4: read_nested_list (sconcat (maxima_tempdir, "/tmp-tab.data"), 'tab),
+(write_data (l_nested_3, sconcat (maxima_tempdir, "/tmp-pipe.data"), "|"),
+ l_nested_3a : read_nested_list (sconcat (maxima_tempdir, "/tmp-pipe.data"), "|"),
+ is (l_nested = l_nested_3a));
+true;
+
+(write_data (l_nested, sconcat (maxima_tempdir, "/tmp-tab.data"), 'tab),
+ /* tab not recognized by read_nested_list, since Maxima parser
+  * (barring hackery to recognize tab characters as tokens)
+  * just burns through multiple tabs.
+  */
+ l_nested_4: read_nested_list (sconcat (maxima_tempdir, "/tmp-tab.data"), 'space),
  is (l_nested = l_nested_4));
+true;
+
+/* ASCII character 9 is the tab character. ascii(9) returns a 1-element string. */
+(write_data (l_nested, sconcat (maxima_tempdir, "/tmp-tab.data"), ascii(9)),
+ l_nested_4a: read_nested_list (sconcat (maxima_tempdir, "/tmp-tab.data"), " "),
+ is (l_nested = l_nested_4a));
 true;
 
 /* Test read/write on streams (instead of files) */

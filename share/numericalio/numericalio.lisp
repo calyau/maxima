@@ -545,6 +545,20 @@
     ((eq sep-ch-flag '$pipe) '$\|)
     ((eq sep-ch-flag '$semicolon) '$\;)
 
+    ((stringp sep-ch-flag)
+     (if (/= (length sep-ch-flag) 1)
+       (progn (format t "numericalio: unrecognized separator; assume ``space''.~%")
+              #\space)
+       (let ((would-be-sep-ch (aref sep-ch-flag 0)))
+         (cond
+           ((eq would-be-sep-ch #\space) #\space)
+           ((eq would-be-sep-ch #\tab) #\tab)
+           ((eq would-be-sep-ch #\,) '$\,)
+           ((eq would-be-sep-ch #\|) '$\|)
+           ((eq would-be-sep-ch #\;) '$\;)
+           (t
+             (format t "numericalio: separator flag ~S not recognized; assume ``space''.~%" would-be-sep-ch)
+             #\space)))))
     ((null sep-ch-flag)
       (cond
         ((ignore-errors (equal (pathname-type (truename my-stream)) "csv"))

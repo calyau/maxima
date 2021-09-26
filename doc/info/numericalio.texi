@@ -53,6 +53,10 @@ For plain-text input, these values of @var{separator_flag} are recognized:
 @code{pipe} for values separated by the vertical bar character @code{|},
 @code{semicolon} for values separated by semicolon @code{;}, 
 and @code{space} for values separated by space or tab characters.
+Equivalently, the separator may be specified as a string of one character:
+@code{","} (comma), @code{"|"} (pipe), @code{";"} (semicolon),
+@code{" "} (space), or @code{"	"} (tab).
+
 If the file name ends in @code{.csv} and @var{separator_flag} is not specified,
 @code{comma} is assumed.
 If the file name ends in something other than @code{.csv} and @code{separator_flag} is not specified,
@@ -123,6 +127,9 @@ close(s);
 
 The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
+Equivalently, the separator may be specified as a string of one character:
+@code{","} (comma), @code{"|"} (pipe), @code{";"} (semicolon),
+@code{" "} (space), or @code{"	"} (tab).
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 See also @mrefcomma{openr} @mrefcomma{read_array} @mrefcomma{read_hash_table}
@@ -150,6 +157,9 @@ The source @var{S} may be a file name or a stream.
 
 The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
+Equivalently, the separator may be specified as a string of one character:
+@code{","} (comma), @code{"|"} (pipe), @code{";"} (semicolon),
+@code{" "} (space), or @code{"	"} (tab).
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_hash_table}
@@ -178,6 +188,9 @@ Lines need not have the same numbers of elements.
 
 The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
+Equivalently, the separator may be specified as a string of one character:
+@code{","} (comma), @code{"|"} (pipe), @code{";"} (semicolon),
+@code{" "} (space), or @code{"	"} (tab).
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_array}
@@ -204,6 +217,9 @@ Empty lines are @i{not} ignored: an empty line yields an empty sublist.
 
 The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
+Equivalently, the separator may be specified as a string of one character:
+@code{","} (comma), @code{"|"} (pipe), @code{";"} (semicolon),
+@code{" "} (space), or @code{"	"} (tab).
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_array}
@@ -232,6 +248,9 @@ The source @var{S} may be a file name or a stream.
 
 The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, and @code{space}.
+Equivalently, the separator may be specified as a string of one character:
+@code{","} (comma), @code{"|"} (pipe), @code{";"} (semicolon),
+@code{" "} (space), or @code{"	"} (tab).
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_array}
@@ -275,6 +294,9 @@ in particular, the stream remains open.
 
 The recognized values of @var{separator_flag} are
 @code{comma}, @code{pipe}, @code{semicolon}, @code{space}, and @code{tab}.
+Equivalently, the separator may be specified as a string of one character:
+@code{","} (comma), @code{"|"} (pipe), @code{";"} (semicolon),
+@code{" "} (space), or @code{"	"} (tab).
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 See also @mref{openw} and @mrefdot{read_matrix}
