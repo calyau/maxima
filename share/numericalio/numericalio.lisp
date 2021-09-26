@@ -158,6 +158,7 @@
 
 (defun read-into-existing-array-size-known-from-stream (in A sep-ch-flag mode n)
   (let (x (sep-ch (get-input-sep-ch sep-ch-flag in)))
+    (reset-for-parse-next-element)
     (dotimes (i n)
       (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
         (return A))
@@ -165,6 +166,7 @@
 
 (defun read-into-existing-array-size-unknown-from-stream (in A sep-ch mode)
   (let (x)
+    (reset-for-parse-next-element)
     (loop
       (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
         (return A))
@@ -268,6 +270,7 @@
 
 (defun read-into-existing-list-from-stream (in L sep-ch-flag mode n)
   (let (x (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
+    (reset-for-parse-next-element)
     (dotimes (i n)
       (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
         (return))
@@ -290,6 +293,7 @@
 
 (defun read-list-from-stream (in sep-ch-flag mode n)
   (let (A x (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
+    (reset-for-parse-next-element)
     (loop
       (if
         (or
@@ -369,33 +373,54 @@
 
 ;; ---- read one element
 
-(let (pushback-sep-ch)
+(defvar newline-symbol (intern (coerce '(#\$ #\newline) 'string)))
+(defvar whitespace-sans-newline (remove #\newline *whitespace-chars*))
+
+(let (prev-token-sep-ch sign start-of-line)
+
+  (defun reset-for-parse-next-element ()
+    (setq prev-token-sep-ch nil)
+    (setq sign 1)
+    (setq start-of-line t))
+
   (defun parse-next-element (in sep-ch)
     (let
       ((*parse-stream* in)
-       (sign 1)
-       (initial-pos (file-position in))
-       token
-       found-sep-ch)
+       ;; Treat newline as a token, so leading/trailing separators can be detected,
+       ;; when separator is anything other than a space.
+       (*whitespace-chars* (if (eql sep-ch #\space) *whitespace-chars* whitespace-sans-newline))
+       token)
       (loop
-        (if pushback-sep-ch
-          (setq token pushback-sep-ch pushback-sep-ch nil)
-          (setq token (scan-one-token-g t 'eof)))
+        (setq token (scan-one-token-g t 'eof))
         (cond
+          ((eq token newline-symbol)
+           (setq start-of-line t)
+           (when prev-token-sep-ch
+             (setq prev-token-sep-ch nil)
+             (return nil)))
           ((eq token 'eof)
-           (if found-sep-ch
-             (return nil)
-             (return 'eof)))
-          ((and (eql token sep-ch) (not (eql sep-ch #\space)))
-           (if (or found-sep-ch (eql initial-pos 0))
+           (if prev-token-sep-ch
              (progn
-               (setq pushback-sep-ch token)
+               (setq prev-token-sep-ch nil)
                (return nil))
-             (setq found-sep-ch token)))
+             (return 'eof)))
+          ((and (eql token sep-ch) (not (eql sep-ch #\space))) ;; TEST FOR #\SPACE IS REDUNDANT
+           ;; We have a separator token.
+           ;; If the preceding token was also a separator,
+           ;; or we're at the start of a line, return NIL.
+           (if (or prev-token-sep-ch start-of-line)
+             (progn
+               (setq start-of-line nil)
+               (return nil))
+             (setq prev-token-sep-ch token)))
+          ((prog nil (setq start-of-line nil)))
+          ((prog nil (setq prev-token-sep-ch nil)))
           ((member token '($- $+))
            (setq sign (* sign (if (eq token '$-) -1 1))))
           (t
-            (return (m* sign token))))))))
+            (let ((return-value (m* sign token)))
+              (setq sign 1)
+              (return return-value))))))))
 
 
 ;; -------------------- write functions -------------------

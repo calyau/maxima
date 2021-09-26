@@ -1,3 +1,79 @@
+/* Test read_list parsing -- verify expected handling of separator with missing value */
+
+(read_from_string (f, S, sep) :=
+     block ([S1, L],
+            S1: make_string_input_stream (S),
+            L: apply (f, [S1, sep]),
+            close (S1),
+            L),
+ kill (a, b, c, d, e, f, g, h, i));
+done;
+
+(bb:"a,b,c
+d,e,f
+g,h,i",
+ read_from_string (read_list, bb, 'comma));
+[a, b, c,
+ d, e, f,
+ g, h, i];
+
+read_from_string (read_nested_list, bb, 'comma);
+[[a, b, c],
+ [d, e, f],
+ [g, h, i]];
+
+(cc:",a,b,c,
+,d,e,f,
+,g,h,i,",
+ read_from_string (read_list, cc, 'comma));
+[false, a, b, c, false,
+ false, d, e, f, false,
+ false, g, h, i, false];
+
+read_from_string (read_nested_list, cc, 'comma);
+[[false, a, b, c, false],
+ [false, d, e, f, false],
+ [false, g, h, i, false]];
+
+(dd:",a,b,c
+,d,e,f
+,g,h,i",
+ read_from_string (read_list, dd, 'comma));
+[false, a, b, c,
+ false, d, e, f,
+ false, g, h, i];
+
+read_from_string (read_nested_list, dd, 'comma);
+[[false, a, b, c],
+ [false, d, e, f],
+ [false, g, h, i]];
+
+(ee:"a,b,c,
+d,e,f,
+g,h,i,",
+ read_from_string (read_list, ee, 'comma));
+[a, b, c, false,
+ d, e, f, false,
+ g, h, i, false];
+
+read_from_string (read_nested_list, ee, 'comma);
+[[a, b, c, false],
+ [d, e, f, false],
+ [g, h, i, false]];
+
+(ff:"a,,,b,,,c
+d,,,e,,,f
+g,,,h,,,i",
+ read_from_string (read_list, ff, 'comma));
+[a, false, false, b, false, false, c,
+ d, false, false, e, false, false, f,
+ g, false, false, h, false, false, i];
+
+read_from_string (read_nested_list, ff, 'comma);
+[[a, false, false, b, false, false, c],
+ [d, false, false, e, false, false, f],
+ [g, false, false, h, false, false, i]];
+
 /* Test read/write array */
 
 (kill (all),
