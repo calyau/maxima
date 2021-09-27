@@ -158,7 +158,7 @@
 
 (defun read-into-existing-array-size-known-from-stream (in A sep-ch-flag mode n)
   (let (x (sep-ch (get-input-sep-ch sep-ch-flag in)))
-    (reset-for-parse-next-element)
+    (if (eq mode 'text) (reset-for-parse-next-element))
     (dotimes (i n)
       (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
         (return A))
@@ -166,7 +166,7 @@
 
 (defun read-into-existing-array-size-unknown-from-stream (in A sep-ch mode)
   (let (x)
-    (reset-for-parse-next-element)
+    (if (eq mode 'text) (reset-for-parse-next-element))
     (loop
       (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
         (return A))
@@ -270,7 +270,7 @@
 
 (defun read-into-existing-list-from-stream (in L sep-ch-flag mode n)
   (let (x (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
-    (reset-for-parse-next-element)
+    (if (eq mode 'text) (reset-for-parse-next-element))
     (dotimes (i n)
       (if (eq (setq x (if (eq mode 'text) (parse-next-element in sep-ch) (read-float-64 in))) 'eof)
         (return))
@@ -293,7 +293,7 @@
 
 (defun read-list-from-stream (in sep-ch-flag mode n)
   (let (A x (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
-    (reset-for-parse-next-element)
+    (if (eq mode 'text) (reset-for-parse-next-element))
     (loop
       (if
         (or
