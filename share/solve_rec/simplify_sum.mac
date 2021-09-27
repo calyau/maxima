@@ -674,6 +674,7 @@ ratfun_to_psi(ratfun, var, lo, hi) := block(
 
   for prt in pf do block(
     [term: numfactor(prt), exponent, a, b],
+    local(a),
 
     ss_print_message(3, "Working on term", prt),
 

@@ -652,3 +652,17 @@ makelist (simplify_sum(sum(binomial(m, n), n, 0, inf)), m, 0, 10);
 
 (reset(verbose,linsolvewarn),0);
 0$
+
+/* SF bug #3462: "simplify_sum() variable name clash" */
+
+kill(a);
+done;
+
+simplify_sum(sum((2*i+1)^-2, i, 0, inf));
+%pi^2/8;
+
+(a[i] := i, simplify_sum(sum((2*i+1)^-2, i, 0, inf)));
+%pi^2/8;
+
+(kill(a), simplify_sum(sum((2*i+1)^-2, i, 0, inf)));
+%pi^2/8;
