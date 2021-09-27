@@ -92,8 +92,11 @@
        (L ($read_list stream-or-filename sep-ch-flag (* nrow ncol))))
       ;; COPYING DATA HERE !!
       (fill-matrix-from-list L M nrow ncol))
-    (let ((sep-ch-flag (car args)))
-      `(($matrix) ,@(cdr ($read_nested_list stream-or-filename sep-ch-flag))))))
+    (let*
+      ((sep-ch-flag (car args))
+       (rows-list (cdr ($read_nested_list stream-or-filename sep-ch-flag)))
+       (rows-list-nonempty (remove-if #'(lambda (x) (= ($length x) 0)) rows-list)))
+      `(($matrix) ,@rows-list-nonempty))))
 
 (defun $read_binary_matrix (stream-or-filename M)
   (if ($matrixp M)

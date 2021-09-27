@@ -654,3 +654,73 @@ block ([a, l],
   [is (length (l) = ?length (a)), every (makelist (l[i] = a[i - 1], i, length (l)))]);
 [true, true];
 
+/* verify that empty lines are ignored by
+ * read_matrix, read_list, read_array, and read_hashed_array,
+ * but not read_nested_list.
+ */
+
+(zz: "
+
+11,22,33,44
+55,66,77,88
+
+99,111,222,333
+444,555,666,777
+888,999,1111,2222
+
+
+",
+ aa: [11,22,33,44,
+      55,66,77,88,
+      99,111,222,333,
+      444,555,666,777,
+      888,999,1111,2222],
+ read_from_string (f, S, [a]) :=
+     block ([S1, L],
+            S1: make_string_input_stream (S),
+            L: apply (f, cons (S1, a)),
+            close (S1),
+            L),
+0);
+0;
+
+read_from_string (read_matrix, zz, 'comma);
+matrix ([11,22,33,44],
+        [55,66,77,88],
+        [99,111,222,333],
+        [444,555,666,777],
+        [888,999,1111,2222]);
+
+read_from_string (read_list, zz, 'comma);
+[11,22,33,44,
+ 55,66,77,88,
+ 99,111,222,333,
+ 444,555,666,777,
+ 888,999,1111,2222];
+
+(yy: make_array (fixnum, 5*4),
+ read_from_string (read_array, zz, yy, 'comma),
+ yy);
+''(make_array (fixnum, 5*4), fillarray (%%, aa), %%);
+
+(kill(hh, hh1),
+ read_from_string (read_hashed_array, zz, hh, 'comma),
+ hh1[11]: [22, 33, 44],
+ hh1[55]: [66, 77, 88],
+ hh1[99]: [111, 222, 333],
+ hh1[444]: [555, 666, 777],
+ hh1[888]: [999, 1111, 2222],
+ is (equal (hh, hh1)));
+true;
+
+read_from_string (read_nested_list, zz, 'comma);
+[[],
+ [],
+ [11,22,33,44],
+ [55,66,77,88],
+ [],
+ [99,111,222,333],
+ [444,555,666,777],
+ [888,999,1111,2222],
+ [],
+ []];
