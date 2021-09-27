@@ -121,11 +121,11 @@
     (let
       ((A (car args))
        (sep-ch-flag (and (cdr args) (cadr args)))
-       (mode (or (and (cddr args) (caddr args)) 'text)))
+       (mode 'text))
       (read-into-existing-array stream-or-filename A sep-ch-flag mode))
     (let
       ((sep-ch-flag (and args (car args)))
-       (mode (or (and (cdr args) (cadr args)) 'text)))
+       (mode 'text))
       (read-and-return-new-array stream-or-filename sep-ch-flag mode))))
 
 (defun $read_binary_array (file-name &rest args)
