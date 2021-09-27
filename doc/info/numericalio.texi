@@ -132,7 +132,7 @@ Equivalently, the separator may be specified as a string of one character:
 @code{" "} (space), or @code{"	"} (tab).
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
-See also @mrefcomma{openr} @mrefcomma{read_array} @mrefcomma{read_hash_table}
+See also @mrefcomma{openr} @mrefcomma{read_array} @mrefcomma{read_hashed_array}
 @mrefcomma{read_list} @mrefcomma{read_binary_matrix} @mref{write_data} and
 @mrefdot{read_nested_list}
 
@@ -162,7 +162,7 @@ Equivalently, the separator may be specified as a string of one character:
 @code{" "} (space), or @code{"	"} (tab).
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
-See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_hash_table}
+See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_hashed_array}
 @mrefcomma{read_list} @mref{read_binary_array} and @mrefdot{read_nested_list}
 
 @opencatbox
@@ -172,15 +172,15 @@ See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_hash_table}
 
 @end deffn
 
-@anchor{read_hash_table}
-@deffn {Function} read_hash_table @
-@fname{read_hash_table} (@var{S}, @var{A}) @
-@fname{read_hash_table} (@var{S}, @var{A}, @var{separator_flag})
+@anchor{read_hashed_array}
+@deffn {Function} read_hashed_array @
+@fname{read_hashed_array} (@var{S}, @var{A}) @
+@fname{read_hashed_array} (@var{S}, @var{A}, @var{separator_flag})
 
 Reads the source @var{S} and returns its entire content as a @mrefdot{hashed array}
 The source @var{S} may be a file name or a stream.
 
-@code{read_hash_table} treats the first item on each line as a hash key,
+@code{read_hashed_array} treats the first item on each line as a hash key,
 and associates the remainder of the line (as a list) with the key.
 For example,
 the line @code{567 12 17 32 55} is equivalent to @code{A[567]: [12, 17, 32, 55]$}.
@@ -223,7 +223,7 @@ Equivalently, the separator may be specified as a string of one character:
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_array}
-@mref{read_list} and @mrefdot{read_hash_table}
+@mref{read_list} and @mrefdot{read_hashed_array}
 
 @opencatbox
 @category{Package numericalio}
@@ -254,7 +254,7 @@ Equivalently, the separator may be specified as a string of one character:
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_array}
-@mrefcomma{read_nested_list} @mref{read_binary_list} and @mrefdot{read_hash_table}
+@mrefcomma{read_nested_list} @mref{read_binary_list} and @mrefdot{read_hashed_array}
 
 @opencatbox
 @category{Package numericalio}
