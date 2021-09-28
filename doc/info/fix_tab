@@ -3,7 +3,7 @@
 pattern=`printf "\t"`
 bad_files=`find . -name '*.texi' -print0 | xargs -0 grep -l -e "$pattern"`
 
-[[ "x$bad_files" == "x" ]] && exit 0
+[ "x$bad_files" = "x" ] && exit 0
 
 for f in $bad_files ; do
     echo "Fixing TAB in $f"
