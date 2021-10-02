@@ -123,6 +123,7 @@ eigenvectors(mat):=
 		block([eigvecs,equations,unknowns,solution,eigvals,dimnsn,
 		count,vectr,index3,index4,index2,index1,matrx,mmatrx,notknwn,
 		unit,multiplicities,%rnum,realonly,algebraic,interm,intern],
+		local(solution, mmatrx),
                 mode_declare([equations,unknowns,solution,eigvals,
                               unit,interm],list,
                              [dimnsn,count,index3,index4,index2,index1],fixnum,
@@ -144,9 +145,9 @@ eigenvectors(mat):=
 		(mmatrx:matrx-part(eigvals,1,index1)*vectr,
 		equations:[],
 		for index2 thru dimnsn do
-		equations:cons((+mmatrx)[index2,1],equations),%rnum:0,
+		equations:cons(mmatrx[index2,1],equations),%rnum:0,
 		solution:algsys(equations,unknowns),
-		interm:map('rhs,(+solution)[1]),
+		interm:map('rhs,solution[1]),
 		unit:[],if %rnum#part(multiplicities,index1)
 		then nondiagonalizable:true,
 		for index3 thru %rnum do
@@ -170,7 +171,7 @@ substvectk(l,n,exp):=(mode_declare(l,list,n,fixnum,exp,any),
                 sublis(sub_list,exp)))$
 
 
-uniteigenvectors (M):= block ([uv],
+uniteigenvectors (M):= block ([uv], local(uv),
     mode_declare (uv, list, [i, j], fixnum),
 
     if knowneigvects
@@ -180,19 +181,19 @@ uniteigenvectors (M):= block ([uv],
     if uv = []
         then []
         else
-           (for i thru length ((+uv)[2])
-                do for j thru length ((+uv)[2][i])
+           (for i thru length (uv[2])
+                do for j thru length (uv[2][i])
                     /* modification in-place (OK due to copy above) */
-                    do (+uv)[2][i][j] : ratsimp (unitvector ((+uv)[2][i][j])),
+                    do uv[2][i][j] : ratsimp (unitvector (uv[2][i][j])),
             uv));
 
 
 similaritytransform(mat):=
-		block([listvec,listuevec],
+		block([listvec,listuevec], local(listuevec),
                 mode_declare([listvec,listuevec],list),
 		listuevec:uniteigenvectors(mat),
 		if nondiagonalizable then return(listuevec)
-		else (listvec: apply (append, (+listuevec)[2]),
+		else (listvec: apply (append, listuevec[2]),
 		rightmatrix:transpose(apply('matrix,listvec)),
 		if hermitianmatrix then
 		leftmatrix:conjugate(transpose(rightmatrix))
@@ -208,7 +209,7 @@ uvect(x):=unitvector(x)$
 
 covect(x):=columnvector(x)$
 
-gschmit(x%, [f]):= if f = [] then gramschmidt(x%) else gramschmidt (x%, (+f)[1])$
+gschmit(x%, [f]):= if f = [] then gramschmidt(x%) else gramschmidt (x%, first(f))$
 
 eivals(mat):=eigenvalues(mat)$
 
