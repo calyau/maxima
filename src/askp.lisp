@@ -87,7 +87,7 @@
 ;;; Asks the user a question about the property of an object.
 ;;; Returns only $yes, $no or $unknown.
 (defun ask-prop (object property fun-or-number)
-  (if fun-or-number (setq fun-or-number (list '| | fun-or-number)))
+  (if fun-or-number (setq fun-or-number (list " " fun-or-number)))
   (do ((end-flag) (answer))
       (end-flag (cond ((member answer '($yes |$Y| |$y|) :test #'eq) '$yes)
 		      ((member answer '($no |$N| |$n|) :test #'eq) '$no)
