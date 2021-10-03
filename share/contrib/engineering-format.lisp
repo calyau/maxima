@@ -41,6 +41,7 @@
 (defmvar $engineering_format_min 0.0)
 (defmvar $engineering_format_max 0.0)
 
+#+nil
 (defun engineering-format (x)
   (if (= x 0.0)
     (format nil "~e" x)
@@ -52,11 +53,47 @@
       (declare (special $fpprintprec))
       (format nil "~,v,,ve" digits scale x))))
 
+(defun engineering-format (x)
+  (if (= x 0.0)
+    (format nil "~e" x)
+    (let*
+        ((integer-log (floor
+                       #+nil
+                       (log x 10)
+                       (/ (log (abs x)) (log 10.0)))))
+      (unless (and (<= (expt 10d0 integer-log)
+                       x)
+                   (< x (expt 10d0 (1+ integer-log))))
+        (incf integer-log))
+      (let*
+          ((scale (1+ (mod integer-log 3)))
+           (effective-fpprintprec (if (= $fpprintprec 0) 16 $fpprintprec))
+           (digits (1- effective-fpprintprec))
+           (result (format nil "~,v,,ve" digits scale x))
+           (dot-posn (position #\. result :test #'char-equal))
+           (expo (parse-integer result
+                                :start (1+ (position #\e result :test #'char-equal)))))
+        (declare (special $fpprintprec))
+        #+nil
+        (format t "X = ~A log = ~A scale = ~A digits ~A expo ~A dot ~A result ~A~%"
+                x integer-log scale digits expo dot-posn result)
+        (unless (and (< dot-posn 4)
+                     (zerop (rem expo 3)))
+          #+nil
+          (format t "Expo ~A posn ~A: Result is wrong:  ~A~%" expo dot-posn result)
+          (decf scale)
+          (setf result (format nil "~,v,,ve" digits scale x))
+          #+nil
+          (format t "New result: ~A~%" result)
+        
+          )
+        result))))
+
 (let ((foo (symbol-function 'exploden)))
   (defun exploden (x)
     (if (and (floatp x) $engineering_format_floats
-	     (or (< (abs x) $engineering_format_min)
-	         (> (abs x) $engineering_format_max)))
+             (or (< (abs x) $engineering_format_min)
+                 (> (abs x) $engineering_format_max)))
       (let ((s (engineering-format x)) s1)
         (declare (special *exploden-strip-float-zeros*))
         (setq s1 (if *exploden-strip-float-zeros* (or (strip-float-zeros s) s) s))
