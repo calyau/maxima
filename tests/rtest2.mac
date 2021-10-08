@@ -1114,3 +1114,14 @@ block ([use_fast_arrays : true,
   [arr[1], arrayapply (arr, [1])]);
 [2, 2];
 
+/* A bug in MARRAYREF caused things like arrayapply to return array
+ * references with an incorrect header.
+ */
+
+block ([use_fast_arrays : false,
+        arr],
+  local (arr),
+  array (arr, complete, 5),
+  [arr[3], arrayapply (arr, [3])]);
+[arr[3], arr[3]];
+
