@@ -1875,6 +1875,30 @@ block ([translate : false,
 (kill (foo, l1, l2), 0);
 0;
 
+/* A bug in MARRAYREF caused things like translated array references
+ * to yield expressions with an incorrect header.
+ */
+
+block ([translate : false],
+  foo () := block ([a],
+              local (a),
+              array (a, complete, 5),
+              a[3]),
+
+  /* This would correctly yield a[3] */
+  l1 : foo(),
+
+  translate_or_lose (foo),
+
+  /* This would incorrectly yield a(3) */
+  l2 : foo(),
+
+  [is (l1 = l2), l2]);
+[true, 'a[3]];
+
+(kill (foo, l1, l2), 0);
+0;
+
 
 
 

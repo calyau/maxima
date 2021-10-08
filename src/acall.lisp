@@ -73,7 +73,7 @@
                                     ((fixnum) (= val fixunbound))
                                     ((t) (eq val munbound))
                                     (t (merror (intl:gettext "MARRAYREF: encountered array pointer ~S of unknown type.") ap)))
-                                  (arrfind `((,aarray ,aarray) ,ind1 ,@inds))
+                                  (arrfind `((,aarray array) ,ind1 ,@inds))
                                   val)))
                            ((setq ap (mget aarray 'array))
                             (arrfind `((,aarray array) ,ind1 ,@inds)))
