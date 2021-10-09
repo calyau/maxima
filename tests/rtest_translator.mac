@@ -1899,6 +1899,38 @@ block ([translate : false],
 (kill (foo, l1, l2), 0);
 0;
 
+/* When translate_fast_arrays:true, a lisp error would occur at runtime
+ * during an attempted MQAPPLY array assignment
+ */
+
+block ([translate : false],
+  foo () := block ([a],
+              local (a, b),
+              a : make_array ('fixnum, 5),
+              b () := a,
+              b () [3] : 17,
+              b () [3]),
+
+  /* This would correctly yield 17 */
+  l1 : foo(),
+
+  block ([translate_fast_arrays : false],
+    translate_or_lose (foo)),
+
+  /* This would correctly yield 17 */
+  l2 : foo(),
+
+  block ([translate_fast_arrays : true],
+    translate_or_lose (foo)),
+
+  /* This would cause a lisp error */
+  l3 : foo(),
+
+  [is (l1 = l2), is (l2 = l3), l3]);
+[true, true, 17];
+
+(kill (foo, l1, l2, l3), 0);
+0;
 
 
 
