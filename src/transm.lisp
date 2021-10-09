@@ -84,10 +84,13 @@
        (bind-transl-state (translate-macexpr-toplevel (second u)))))
 
 (defmacro maset (val ar &rest inds)
-  `(progn
-    (when (symbolp ,ar)
-      (setf ,ar (make-equal-hash-table ,(if (cdr inds) t nil))))
-    (maset1 ,val ,ar ,@inds)))
+  (if (or (eq ar 'mqapply)
+          (and (consp ar) (member 'mqapply ar :test #'eq)))
+      `(marrayset ,val ,(car inds) ,@(cdr inds))
+      `(progn
+         (when (symbolp ,ar)
+           (setf ,ar (make-equal-hash-table ,(if (cdr inds) t nil))))
+         (maset1 ,val ,ar ,@inds))))
 
 (defmacro maref (ar &rest inds)
   (cond ((or (eql ar 'mqapply)(and (consp ar) (member 'mqapply ar :test #'eq)))
