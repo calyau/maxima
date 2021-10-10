@@ -13,7 +13,7 @@
 ;;; "testfile.mac", or a Maxima list containing a file name followed by
 ;;; another Maxima list of the numbers of the test problems that are
 ;;; expected to fail, e.g.  ((mlist simp) "testfile.mac" ((mlist) 7 9 13)).
-(defvar $testsuite_files
+(defparameter $testsuite_files
       `((mlist simp)
 	((mlist simp) "rtest_rules"
 	 #+allegro ((mlist simp) 11 13))
@@ -156,7 +156,7 @@
 ;; The list of share testsuite files. As they are given without a path
 ;; this assumes that file_search_tests is set appropriately so that maxima
 ;; can actually find these files. (file_search_maxima is a good choice.)
-(defvar $share_testsuite_files
+(defparameter $share_testsuite_files
   '((mlist simp)
     "rtestflatten"
     "rtest_z_transform"
