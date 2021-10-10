@@ -1376,9 +1376,9 @@
 ;; product routines
 
 (defmspec $product (l)
+  (arg-count-check 4 l)
   (setq l (cdr l))
-  (cond ((not (= (length l) 4)) (merror (intl:gettext "product: expected exactly four arguments.")))
-	((dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) nil :evaluate-summand t))))
+  (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) nil :evaluate-summand t))
 
 (declare-top (special $ratsimpexpons))
 
