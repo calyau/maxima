@@ -388,13 +388,8 @@
      #-(or ecl abcl)
      "rtest_draw"
      ((mlist simp) "rtest_engineering_format"
-      #+sbcl
-      ((mlist simp) 6)
       #+abcl
       ((mlist simp) 6)
-      ;; ECL > 15.3.7 doesn't fail here any more
-      #+ecl
-      ((mlist simp) 6 8 10 12 14)
       #+ccl
       ((mlist simp) 6 8 10 12)
       ;; Tested with acl 10.1
