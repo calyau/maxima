@@ -4,6 +4,76 @@ done;
 (assume_pos_save: assume_pos, assume_pos: true);
 true;
 
+/* Verify that we at least get errors when passing the wrong number
+ * of arguments to sum and product.
+ *
+ * The ev tests are significant.  In the 2 and 3 arg cases, we used
+ * to get bogus results.  In the case of more than 4 args, the extra
+ * args used to be effectively ignored.  (In the 0 and 1 arg cases,
+ * we got obscure error messages about assigning to false.  The tests
+ * below don't do any checking about *why* we got an error.)
+ */
+
+errcatch (sum ());
+[];
+
+errcatch (ev (sum ()));
+[];
+
+errcatch (sum (f (x)));
+[];
+
+errcatch (ev (sum (f (x))));
+[];
+
+errcatch (sum (f (x), x));
+[];
+
+errcatch (ev (sum (f (x), x)));
+[];
+
+errcatch (sum (f (x), x, 0));
+[];
+
+errcatch (ev (sum (f (x), x, 0)));
+[];
+
+errcatch (sum (f (x), x, 0, 1, 2));
+[];
+
+errcatch (ev (sum (f (x), x, 0, 1, 2)));
+[];
+
+errcatch (product ());
+[];
+
+errcatch (ev (product ()));
+[];
+
+errcatch (product (f (x)));
+[];
+
+errcatch (ev (product (f (x))));
+[];
+
+errcatch (product (f (x), x));
+[];
+
+errcatch (ev (product (f (x), x)));
+[];
+
+errcatch (product (f (x), x, 1));
+[];
+
+errcatch (ev (product (f (x), x, 1)));
+[];
+
+errcatch (product (f (x), x, 1, 2, 3));
+[];
+
+errcatch (ev (product (f (x), x, 1, 2, 3)));
+[];
+
 /* Known failure: concat (q, k) => gensym
  */
 sum (concat (q, k), k, a, b);

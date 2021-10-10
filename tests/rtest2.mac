@@ -676,6 +676,30 @@ errcatch (block ([x, x], x))$
 errcatch (block ([x, x:foo], x))$
 [];
 
+/* Verify some WNA checks
+ *
+ * The ev tests are significant.  Previously missing args were
+ * effectively replaced with false and extra args were ignored.
+ */
+
+errcatch (define ());
+[];
+
+errcatch (ev (define ()));
+[];
+
+errcatch (define (f (x)));
+[];
+
+errcatch (ev (define (f (x))));
+[];
+
+errcatch (define (f (x), foo, bar, baz));
+[];
+
+errcatch (ev (define (f (x), foo, bar, baz)));
+[];
+
 /* try to verify that save(...) handles arrays correctly */
 
 (kill (all),

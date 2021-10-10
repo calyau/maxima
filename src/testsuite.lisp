@@ -84,7 +84,7 @@
                 ((mlist simp) 16 17 40 52 53 57 97 109))
         "rtestconjugate"
         ((mlist simp) "rtestsum"
-	 ((mlist simp) 3 4 18 75))
+	 ((mlist simp) 23 24 38 95))
 	;; Tested with acl 10.1
 	((mlist simp) "rtest_trig"
 	 #+allegro ((mlist simp) 58))

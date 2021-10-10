@@ -1067,6 +1067,7 @@ wrapper for this."
 	       exp1)))
 	((eq (caar exp) 'mquote) (cadr exp))
 	((member (caar exp) '(msetq $define) :test #'eq)
+	 (twoargcheck exp)
 	 (list (car exp) (cadr exp) (mevalatoms (caddr exp))))
 	((or (and (eq (caar exp) '$ev)
 		  (cdr exp)
@@ -1074,6 +1075,7 @@ wrapper for this."
 	     (eq (caar exp) 'mprogn))
 	 (cons (car exp) (cons (mevalatoms (cadr exp)) (cddr exp))))
 	((member (caar exp) '($sum $product %sum %product) :test #'eq)
+	 (arg-count-check 4 exp)
 	 (if msump
 	     (meval exp)
 	     (list (car exp) (cadr exp) (caddr exp)
