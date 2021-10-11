@@ -30,11 +30,13 @@
   "Airy function Ai(z)"
   (simplify (list '(%airy_ai) (resimplify z))))
 
+#||
 (defprop $airy_ai %airy_ai alias)
 (defprop $airy_ai %airy_ai verb)
 (defprop %airy_ai $airy_ai reversealias)
 (defprop %airy_ai $airy_ai noun)
 (defprop %airy_ai simp-%airy_ai operators)
+||#
 (defprop %airy_ai simplim%airy_ai simplim%function)
 (defprop %airy_ai ((z) ((%airy_dai) z)) grad)
 
@@ -84,6 +86,7 @@
 	   ; Handle other cases with the function simplifier
 	   (simplify (list '(%airy_ai) z))))))
 
+#+nil
 (defun simp-%airy_ai (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
@@ -95,17 +98,27 @@
 	  ((flonum-eval (mop form) z))
 	  (t (eqtest (list '(%airy_ai) z) form)))))
 
+(def-simplifier airy_ai (z)
+  (cond ((equal z 0)	     ; A&S 10.4.4: Ai(0) = 3^(-2/3)/gamma(2/3)
+	 '((mtimes simp)
+	   ((mexpt simp) 3 ((rat simp) -2 3))
+	   ((mexpt simp) ((%gamma simp) ((rat simp) 2 3)) -1)))
+	((flonum-eval (mop form) z))
+	(t (eqtest (list '(%airy_ai) z) form))))
+
 
 ;; Derivative dAi/dz of Airy function Ai(z)
 (defmfun $airy_dai (z)
   "Derivative dAi/dz of Airy function Ai(z)"
   (simplify (list '(%airy_dai) (resimplify z))))
 
+#||
 (defprop $airy_dai %airy_dai alias)
 (defprop $airy_dai %airy_dai verb)
 (defprop %airy_dai $airy_dai reversealias)
 (defprop %airy_dai $airy_dai noun)
 (defprop %airy_dai simp-%airy_dai operators)
+||#
 (defprop %airy_dai simplim%airy_dai simplim%function)
 (defprop %airy_dai ((z) ((mtimes) z ((%airy_ai) z))) grad)
 (defprop %airy_dai ((z) ((%airy_ai) z)) integral)
@@ -133,6 +146,7 @@
 	   ; Handle other cases with the function simplifier
 	   (simplify (list '(%airy_dai) z))))))
 
+#+nil
 (defun simp-%airy_dai (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
@@ -144,16 +158,26 @@
 	  ((flonum-eval (mop form) z))
 	  (t (eqtest (list '(%airy_dai) z) form)))))
 
+(def-simplifier airy_dai (z)
+  (cond ((equal z 0)	   ; A&S 10.4.5: Ai'(0) = -3^(-1/3)/gamma(1/3)
+         '((mtimes simp) -1
+	   ((mexpt simp) 3 ((rat simp) -1 3))
+	   ((mexpt simp) ((%gamma simp) ((rat simp) 1 3)) -1)))
+	((flonum-eval (mop form) z))
+	(t (eqtest (list '(%airy_dai) z) form))))
+
 ;; Airy Bi function 
 (defmfun $airy_bi (z)
   "Airy function Bi(z)"
   (simplify (list '(%airy_bi) (resimplify z))))
 
+#||
 (defprop $airy_bi %airy_bi alias)
 (defprop $airy_bi %airy_bi verb)
 (defprop %airy_bi $airy_bi reversealias)
 (defprop %airy_bi $airy_bi noun)
 (defprop %airy_bi simp-%airy_bi operators)
+||#
 (defprop %airy_bi simplim%airy_bi simplim%function)
 (defprop %airy_bi ((z) ((%airy_dbi) z)) grad)
 
@@ -204,6 +228,7 @@
 	   ; Handle other cases with the function simplifier
 	   (simplify (list '(%airy_bi) z))))))
 
+#+nil
 (defun simp-%airy_bi (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
@@ -215,16 +240,27 @@
 	  ((flonum-eval (mop form) z))
 	  (t (eqtest (list '(%airy_bi) z) form)))))
 
+(def-simplifier airy_bi (z)
+  (cond ((equal z 0) ; A&S 10.4.4: Bi(0) = sqrt(3) 3^(-2/3)/gamma(2/3)
+	 '((mtimes simp)
+	   ((mexpt simp) 3 ((rat simp) -1 6))
+	   ((mexpt simp) ((%gamma simp) ((rat simp) 2 3)) -1)))
+	((flonum-eval (mop form) z))
+	(t (eqtest (list '(%airy_bi) z) form))))
+
+
 ;; Derivative dBi/dz of Airy function Bi(z)
 (defmfun $airy_dbi (z)
   "Derivative dBi/dz of Airy function Bi(z)"
   (simplify (list '(%airy_dbi) (resimplify z))))
 
+#||
 (defprop $airy_dbi %airy_dbi alias)
 (defprop $airy_dbi %airy_dbi verb)
 (defprop %airy_dbi $airy_dbi reversealias)
 (defprop %airy_dbi $airy_dbi noun)
 (defprop %airy_dbi simp-%airy_dbi operators)
+||#
 (defprop %airy_dbi simplim%airy_dbi simplim%function)
 (defprop %airy_dbi ((z) ((mtimes) z ((%airy_bi) z))) grad)
 (defprop %airy_dbi ((z) ((%airy_bi) z)) integral)
@@ -252,6 +288,7 @@
 	   ; Handle other cases with the function simplifier
 	   (simplify (list '(%airy_dbi) z))))))
 
+#+nil
 (defun simp-%airy_dbi (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
@@ -262,6 +299,14 @@
 	    ((mexpt simp) ((%gamma simp) ((rat simp) 1 3)) -1)))
 	  ((flonum-eval (mop form) z))
 	  (t (eqtest (list '(%airy_dbi) z) form)))))
+
+(def-simplifier airy_dbi (z)
+  (cond ((equal z 0) ; A&S 10.4.5: Bi'(0) = sqrt(3) 3^(-1/3)/gamma(1/3)
+         '((mtimes simp) 
+	   ((mexpt simp) 3 ((rat simp) 1 6))
+	   ((mexpt simp) ((%gamma simp) ((rat simp) 1 3)) -1)))
+	((flonum-eval (mop form) z))
+	(t (eqtest (list '(%airy_dbi) z) form))))
 
 ;; Numerical routines using slatec functions
 
