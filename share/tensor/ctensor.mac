@@ -459,8 +459,8 @@ ct_coordsys(coordinate_system, [extra_args]):=
                   -sqrt((u-e^2)*(w-e^2)/(f^2-e^2)/(g^2-e^2)/(e^2-v))/2,
                   -sqrt((u-e^2)*(v-e^2)/(f^2-e^2)/(g^2-e^2)/(e^2-w))/2],
 
-                 [ sqrt((v-f^2)*(w-f^2)/(f^2-e^2)/(g^2-f^2)/(u-f^2))/2,
-                   sqrt((u-f^2)*(w-f^2)/(f^2-e^2)/(g^2-f^2)/(v-f^2))/2,
+                 [-sqrt((v-f^2)*(w-f^2)/(f^2-e^2)/(g^2-f^2)/(u-f^2))/2,
+                  -sqrt((u-f^2)*(w-f^2)/(f^2-e^2)/(g^2-f^2)/(v-f^2))/2,
                    sqrt((u-f^2)*(v-f^2)/(f^2-e^2)/(g^2-f^2)/(w-f^2))/2],
 
                  [-sqrt((v-g^2)*(w-g^2)/(g^2-e^2)/(g^2-f^2)/(g^2-u))/2,
@@ -1983,4 +1983,4 @@ riccicov(ii,jj,kk,ll):=block(
 
 
 
-put('ctensor,'v20210918,'version)$
+put('ctensor,'v20211011,'version)$
