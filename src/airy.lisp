@@ -104,7 +104,7 @@
 	   ((mexpt simp) 3 ((rat simp) -2 3))
 	   ((mexpt simp) ((%gamma simp) ((rat simp) 2 3)) -1)))
 	((flonum-eval (mop form) z))
-	(t (eqtest (list '(%airy_ai) z) form))))
+	(t (give-up))))
 
 
 ;; Derivative dAi/dz of Airy function Ai(z)
@@ -164,7 +164,7 @@
 	   ((mexpt simp) 3 ((rat simp) -1 3))
 	   ((mexpt simp) ((%gamma simp) ((rat simp) 1 3)) -1)))
 	((flonum-eval (mop form) z))
-	(t (eqtest (list '(%airy_dai) z) form))))
+	(t (give-up))))
 
 ;; Airy Bi function 
 (defmfun $airy_bi (z)
@@ -246,7 +246,7 @@
 	   ((mexpt simp) 3 ((rat simp) -1 6))
 	   ((mexpt simp) ((%gamma simp) ((rat simp) 2 3)) -1)))
 	((flonum-eval (mop form) z))
-	(t (eqtest (list '(%airy_bi) z) form))))
+	(t (give-up))))
 
 
 ;; Derivative dBi/dz of Airy function Bi(z)
@@ -306,7 +306,7 @@
 	   ((mexpt simp) 3 ((rat simp) 1 6))
 	   ((mexpt simp) ((%gamma simp) ((rat simp) 1 3)) -1)))
 	((flonum-eval (mop form) z))
-	(t (eqtest (list '(%airy_dbi) z) form))))
+	(t (give-up))))
 
 ;; Numerical routines using slatec functions
 
