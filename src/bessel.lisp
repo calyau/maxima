@@ -52,6 +52,7 @@
 (defmfun $bessel_j (v z)
   (simplify (list '(%bessel_j) v z)))
 
+#||
 (defprop $bessel_j %bessel_j alias)
 (defprop $bessel_j %bessel_j verb)
 (defprop %bessel_j $bessel_j reversealias)
@@ -60,7 +61,7 @@
 ;; Bessel J is a simplifying function.
 
 (defprop %bessel_j simp-bessel-j operators)
-
+||#
 ;; Bessel J distributes over lists, matrices, and equations
 
 (defprop %bessel_j (mlist $matrix mequal) distribute_over)
@@ -167,6 +168,7 @@
      ;; All other cases are handled by the simplifier of the function.
      (simplify (list '(%bessel_j) v z))))))
 
+#+nil
 (defun simp-bessel-j (expr ignored z)
   (declare (ignore ignored))
   (twoargcheck expr)
@@ -264,6 +266,100 @@
 
       (t
        (eqtest (list '(%bessel_j) order arg) expr)))))
+
+(def-simplifier bessel_j (order arg)
+  (let ((rat-order nil))
+    (cond
+      ((zerop1 arg)
+       ;; We handle the different case for zero arg carefully.
+       (let ((sgn ($sign ($realpart order))))
+         (cond ((and (eq sgn '$zero)
+                     (zerop1 ($imagpart order)))
+                ;; bessel_j(0,0) = 1
+                (cond ((or ($bfloatp order) ($bfloatp arg)) ($bfloat 1))
+                      ((or (floatp order) (floatp arg)) 1.0)
+                      (t 1)))
+               ((or (eq sgn '$pos)
+                    (maxima-integerp order))
+                ;; bessel_j(v,0) and Re(v)>0 or v an integer
+                (cond ((or ($bfloatp order) ($bfloatp arg)) ($bfloat 0))
+                      ((or (floatp order) (floatp arg)) 0.0)
+                      (t 0)))
+               ((and (eq sgn '$neg)
+                     (not (maxima-integerp order)))
+                ;; bessel_j(v,0) and Re(v)<0 and v not an integer
+                (simp-domain-error
+                  (intl:gettext "bessel_j: bessel_j(~:M,~:M) is undefined.")
+                  order arg))
+               ((and (eq sgn '$zero)
+                     (not (zerop1 ($imagpart order))))
+                ;; bessel_j(v,0) and Re(v)=0 and v # 0
+                (simp-domain-error
+                  (intl:gettext "bessel_j: bessel_j(~:M,~:M) is undefined.")
+                  order arg))
+               (t
+                ;; No information about the sign of the order
+                (give-up)))))
+      
+      ((complex-float-numerical-eval-p order arg)
+       ;; We have numeric order and arg and $numer is true, or we have either 
+       ;; the order or arg being floating-point, so let's evaluate it 
+       ;; numerically.
+       ;; The numerical routine bessel-j returns a CL number, so we have
+       ;; to add the conversion to a Maxima-complex-number.
+       (cond ((= 0 ($imagpart order))
+              ;; order is real, arg is real or complex
+              (complexify (bessel-j ($float order)
+                                    (complex ($float ($realpart arg))
+                                             ($float ($imagpart arg))))))
+             (t
+              ;; order is complex, arg is real or complex
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (bessel-j-hypergeometric order arg)))))))
+      
+      ((and (integerp order) (minusp order))
+       ;; Some special cases when the order is an integer.
+       ;; A&S 9.1.5: J[-n](x) = (-1)^n*J[n](x)
+       (if (evenp order)
+           (take '(%bessel_j) (- order) arg)
+           (mul -1 (take '(%bessel_j) (- order) arg))))
+      
+      ((and $besselexpand 
+            (setq rat-order (max-numeric-ratio-p order 2)))
+       ;; When order is a fraction with a denominator of 2, we
+       ;; can express the result in terms of elementary functions.
+       (bessel-j-half-order rat-order arg))
+      
+      ((and $bessel_reduce
+            (and (integerp order)
+                 (plusp order)
+                 (> order 1)))
+       ;; Reduce a bessel function of order > 2 to order 1 and 0.
+       ;; A&S 9.1.27: bessel_j(v,z) = 2*(v-1)/z*bessel_j(v-1,z)-bessel_j(v-2,z)
+       (sub (mul 2
+                 (- order 1)
+                 (inv arg) 
+                 (take '(%bessel_j) (- order 1) arg))
+            (take '(%bessel_j) (- order 2) arg)))
+
+      ((and $%iargs (multiplep arg '$%i))
+       ;; bessel_j(v, %i*x) = (%i*x)^v/(x^v) * bessel_i(v, x)
+       ;; (From http://functions.wolfram.com/03.01.27.0002.01)
+       (let ((x (coeff arg '$%i 1)))
+	 (mul (power (mul '$%i x) order)
+	      (inv (power x order))
+	      (take '(%bessel_i) order x))))
+
+      ($hypergeometric_representation
+       (bessel-j-hypergeometric order arg))
+
+      (t
+       (give-up)))))
 
 ;; Returns the hypergeometric representation of bessel_j
 (defun bessel-j-hypergeometric (order arg)
@@ -379,12 +475,14 @@
 (defmfun $bessel_y (v z)
   (simplify (list '(%bessel_y) v z)))
 
+#||
 (defprop $bessel_y %bessel_y alias)
 (defprop $bessel_y %bessel_y verb)
 (defprop %bessel_y $bessel_y reversealias)
 (defprop %bessel_y $bessel_y noun)
 
 (defprop %bessel_y simp-bessel-y operators)
+||#
 
 ;; Bessel Y distributes over lists, matrices, and equations
 
@@ -505,6 +603,7 @@
      ;; All other cases are handled by the simplifier of the function.
      (simplify (list '(%bessel_y) v z))))))
 
+#+nil
 (defun simp-bessel-y (expr ignored z)
   (declare (ignore ignored))
   (twoargcheck expr)
@@ -570,6 +669,68 @@
 
       (t
        (eqtest (list '(%bessel_y) order arg) expr)))))
+
+(def-simplifier bessel_y (order arg)
+  (let ((rat-order nil))
+    (cond
+      ((zerop1 arg)
+       ;; Domain error for a zero argument.
+       (simp-domain-error
+         (intl:gettext "bessel_y: bessel_y(~:M,~:M) is undefined.") order arg))
+      
+      ((complex-float-numerical-eval-p order arg)
+       ;; We have numeric order and arg and $numer is true, or
+       ;; we have either the order or arg being floating-point,
+       ;; so let's evaluate it numerically.
+       (cond ((= 0 ($imagpart order))
+              ;; order is real, arg is real or complex
+              (complexify (bessel-y ($float order)
+                                    (complex ($float ($realpart arg))
+                                             ($float ($imagpart arg))))))
+             (t
+              ;; order is complex, arg is real or complex
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (bessel-y-hypergeometric order arg)))))))
+      
+      ((and (integerp order) (minusp order))
+       ;; Special case when the order is an integer.
+       ;; A&S 9.1.5: Y[-n](x) = (-1)^n*Y[n](x)
+       (if (evenp order)
+           (take '(%bessel_y) (- order) arg)
+           (mul -1 (take '(%bessel_y) (- order) arg))))
+      
+      ((and $besselexpand 
+            (setq rat-order (max-numeric-ratio-p order 2)))
+       ;; When order is a fraction with a denominator of 2, we
+       ;; can express the result in terms of elementary functions.
+       ;; From A&S 10.1.1, 10.1.11-12 and 10.1.15:
+       ;;
+       ;; Y[1/2](z) = -J[-1/2](z) is a function of cos(z).
+       ;; Y[-1/2](z) = J[1/2](z) is a function of sin(z).
+       (bessel-y-half-order rat-order arg))
+      
+      ((and $bessel_reduce
+            (and (integerp order)
+                 (plusp order)
+                 (> order 1)))
+       ;; Reduce a bessel function of order > 2 to order 1 and 0.
+       ;; A&S 9.1.27: bessel_y(v,z) = 2*(v-1)/z*bessel_y(v-1,z)-bessel_y(v-2,z)
+       (sub (mul 2
+                 (- order 1)
+                 (inv arg) 
+                 (take '(%bessel_y) (- order 1) arg))
+            (take '(%bessel_y) (- order 2) arg)))
+      
+      ($hypergeometric_representation
+       (bessel-y-hypergeometric order arg))
+
+      (t
+       (give-up)))))
 
 ;; Returns the hypergeometric representation of bessel_y
 (defun bessel-y-hypergeometric (order arg)
@@ -722,12 +883,14 @@
 (defmfun $bessel_i (v z)
   (simplify (list '(%bessel_i) v z)))
 
+#||
 (defprop $bessel_i %bessel_i alias)
 (defprop $bessel_i %bessel_i verb)
 (defprop %bessel_i $bessel_i reversealias)
 (defprop %bessel_i $bessel_i noun)
 
 (defprop %bessel_i simp-bessel-i operators)
+||#
 
 ;; Bessel I distributes over lists, matrices, and equations
 
@@ -834,6 +997,7 @@
      ;; All other cases are handled by the simplifier of the function.
      (simplify (list '(%bessel_i) v z))))))
 
+#+nil
 (defun simp-bessel-i (expr ignored z)
   (declare (ignore ignored))
   (twoargcheck expr)
@@ -927,6 +1091,96 @@
 
       (t
        (eqtest (list '(%bessel_i) order arg) expr)))))
+
+(def-simplifier bessel_i (order arg)
+  (let ((rat-order nil))
+    (cond
+      ((zerop1 arg)
+       ;; We handle the different case for zero arg carefully.
+       (let ((sgn ($sign ($realpart order))))
+         (cond ((and (eq sgn '$zero)
+                     (zerop1 ($imagpart order)))
+                ;; bessel_i(0,0) = 1
+                (cond ((or ($bfloatp order) ($bfloatp arg)) ($bfloat 1))
+                      ((or (floatp order) (floatp arg)) 1.0)
+                      (t 1)))
+               ((or (eq sgn '$pos)
+                    (maxima-integerp order))
+                ;; bessel_i(v,0) and Re(v)>0 or v an integer
+                (cond ((or ($bfloatp order) ($bfloatp arg)) ($bfloat 0))
+                      ((or (floatp order) (floatp arg)) 0.0)
+                      (t 0)))
+               ((and (eq sgn '$neg)
+                     (not (maxima-integerp order)))
+                ;; bessel_i(v,0) and Re(v)<0 and v not an integer
+                (simp-domain-error
+                  (intl:gettext "bessel_i: bessel_i(~:M,~:M) is undefined.")
+                  order arg))
+               ((and (eq sgn '$zero)
+                     (not (zerop1 ($imagpart order))))
+                ;; bessel_i(v,0) and Re(v)=0 and v # 0
+                (simp-domain-error
+                  (intl:gettext "bessel_i: bessel_i(~:M,~:M) is undefined.")
+                  order arg))
+               (t
+                ;; No information about the sign of the order
+                (give-up)))))
+      
+      ((complex-float-numerical-eval-p order arg)
+       (cond ((= 0 ($imagpart order))
+              ;; order is real, arg is real or complex
+              (complexify (bessel-i ($float order)
+                                    (complex ($float ($realpart arg))
+                                             ($float ($imagpart arg))))))
+             (t
+              ;; order is complex, arg is real or complex
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (bessel-i-hypergeometric order arg)))))))
+      
+      ((and (integerp order) (minusp order))
+       ;; Some special cases when the order is an integer
+       ;; A&S 9.6.6: I[-n](x) = I[n](x)
+       (take '(%bessel_i) (- order) arg))
+      
+      ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
+       ;; When order is a fraction with a denominator of 2, we
+       ;; can express the result in terms of elementary functions.
+       ;; From A&S 10.2.13 and 10.2.14:
+       ;;
+       ;; I[1/2](z) = sqrt(2/%pi/z)*sinh(z)
+       ;; I[-1/2](z) = sqrt(2/%pi/z)*cosh(z)
+       (bessel-i-half-order rat-order arg))
+      
+      ((and $bessel_reduce
+            (and (integerp order)
+                 (plusp order)
+                 (> order 1)))
+       ;; Reduce a bessel function of order > 2 to order 1 and 0.
+       ;; A&S 9.6.26: bessel_i(v,z) = -2*(v-1)/z*bessel_i(v-1,z)+bessel_i(v-2,z)
+       (add (mul -2
+                 (- order 1)
+                 (inv arg) 
+                 (take '(%bessel_i) (- order 1) arg))
+            (take '(%bessel_i) (- order 2) arg)))
+
+      ((and $%iargs (multiplep arg '$%i))
+       ;; bessel_i(v, %i*x) = (%i*x)^v/(x^v) * bessel_j(v, x)
+       ;; (From http://functions.wolfram.com/03.02.27.0002.01)
+       (let ((x (coeff arg '$%i 1)))
+	 (mul (power (mul '$%i x) order)
+	      (inv (power x order))
+	      (take '(%bessel_j) order x))))
+
+      ($hypergeometric_representation
+       (bessel-i-hypergeometric order arg))
+
+      (t
+       (give-up)))))
 
 ;; Returns the hypergeometric representation of bessel_i
 (defun bessel-i-hypergeometric (order arg)
@@ -1053,12 +1307,14 @@
 (defmfun $bessel_k (v z)
   (simplify (list '(%bessel_k) v z)))
 
+#||
 (defprop $bessel_k %bessel_k alias)
 (defprop $bessel_k %bessel_k verb)
 (defprop %bessel_k $bessel_k reversealias)
 (defprop %bessel_k $bessel_k noun)
 
 (defprop %bessel_k simp-bessel-k operators)
+||#
 
 ;; Bessel K distributes over lists, matrices, and equations
 
@@ -1192,6 +1448,7 @@
      ;; All other cases are handled by the simplifier of the function.
      (simplify (list '(%bessel_k) v z))))))
 
+#+nil
 (defun simp-bessel-k (expr ignored z)
   (declare (ignore ignored))
   (twoargcheck expr)
@@ -1251,6 +1508,62 @@
       
       (t
        (eqtest (list '(%bessel_k) order arg) expr)))))
+
+(def-simplifier bessel_k (order arg)
+  (let ((rat-order nil))
+    (cond
+      ((zerop1 arg)
+       ;; Domain error for a zero argument.
+       (simp-domain-error
+         (intl:gettext "bessel_k: bessel_k(~:M,~:M) is undefined.") order arg))
+      
+      ((complex-float-numerical-eval-p order arg)
+       (cond ((= 0 ($imagpart order))
+              ;; order is real, arg is real or complex
+              (complexify (bessel-k ($float order)
+                                    (complex ($float ($realpart arg))
+                                             ($float ($imagpart arg))))))
+             (t
+              ;; order is complex, arg is real or complex
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (bessel-k-hypergeometric order arg)))))))
+      
+      ((mminusp order)
+       ;; A&S 9.6.6: K[-v](x) = K[v](x)
+       (take '(%bessel_k) (mul -1 order) arg))
+      
+      ((and $besselexpand 
+            (setq rat-order (max-numeric-ratio-p order 2)))
+       ;; When order is a fraction with a denominator of 2, we
+       ;; can express the result in terms of elementary
+       ;; functions.  From A&S 10.2.16 and 10.2.17:
+       ;;
+       ;; K[1/2](z) = sqrt(%pi/2/z)*exp(-z)
+       ;;           = K[-1/2](z)
+       (bessel-k-half-order rat-order arg))
+      
+      ((and $bessel_reduce
+            (and (integerp order)
+                 (plusp order)
+                 (> order 1)))
+       ;; Reduce a bessel function of order > 2 to order 1 and 0.
+       ;; A&S 9.6.26: bessel_k(v,z) = 2*(v-1)/z*bessel_k(v-1,z)+bessel_k(v-2,z)
+       (add (mul 2
+                 (- order 1)
+                 (inv arg) 
+                 (take '(%bessel_k) (- order 1) arg))
+            (take '(%bessel_k) (- order 2) arg)))
+      
+      ($hypergeometric_representation
+       (bessel-k-hypergeometric order arg))
+      
+      (t
+       (give-up)))))
 
 ;; Returns the hypergeometric representation of bessel_k
 (defun bessel-k-hypergeometric (order arg)
@@ -1670,15 +1983,18 @@
 (defmfun $hankel_1 (v z)
   (simplify (list '(%hankel_1) v z)))
 
+#||
 (defprop $hankel_1 %hankel_1 alias)
 (defprop $hankel_1 %hankel_1 verb)
 (defprop %hankel_1 $hankel_1 reversealias)
 (defprop %hankel_1 $hankel_1 noun)
+||#
 
 ;; hankel_1 distributes over lists, matrices, and equations
 
 (defprop %hankel_1 (mlist $matrix mequal) distribute_over)
 
+#+nil
 (defprop %hankel_1 simp-hankel-1 operators)
 
 ; Derivatives of the Hankel 1 function
@@ -1694,6 +2010,7 @@
        ((rat) 1 2)))
     grad)
 
+#+nil
 (defun simp-hankel-1 (expr ignored z)
   (declare (ignore ignored))
   (twoargcheck expr)
@@ -1735,6 +2052,43 @@
                    (bessel-y-half-order rat-order arg)))))
       (t (eqtest (list '(%hankel_1) order arg) expr)))))
 
+(def-simplifier hankel_1 (order arg)
+  (let (rat-order)
+    (cond
+      ((zerop1 arg)
+       (simp-domain-error
+         (intl:gettext "hankel_1: hankel_1(~:M,~:M) is undefined.")
+         order arg))
+      ((complex-float-numerical-eval-p order arg)
+       (cond ((= 0 ($imagpart order))
+              ;; order is real, arg is real or complex
+              (complexify (hankel-1 ($float order)
+                                    (complex ($float ($realpart arg))
+                                             ($float ($imagpart arg))))))
+             (t
+              ;; The order is complex.  Use
+              ;;   hankel_1(v,z) = bessel_j(v,z) + %i*bessel_y(v,z)
+              ;; and evaluate using the hypergeometric function
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (add (bessel-j-hypergeometric order arg)
+                         (mul '$%i
+                              (bessel-y-hypergeometric order arg)))))))))
+      ((and $besselexpand
+            (setq rat-order (max-numeric-ratio-p order 2)))
+       ;; When order is a fraction with a denominator of 2, we can express 
+       ;; the result in terms of elementary functions.
+       ;; Use the definition hankel_1(v,z) = bessel_j(v,z)+%i*bessel_y(v,z)
+       (sratsimp
+         (add (bessel-j-half-order rat-order arg)
+              (mul '$%i
+                   (bessel-y-half-order rat-order arg)))))
+      (t (give-up)))))
+
 ;; Numerically compute H1[v](z).
 ;;
 ;; A&S 9.1.3 says H1[v](z) = J[v](z) + %i * Y[v](z)
@@ -1772,15 +2126,18 @@
 (defmfun $hankel_2 (v z)
   (simplify (list '(%hankel_2) v z)))
 
+#||
 (defprop $hankel_2 %hankel_2 alias)
 (defprop $hankel_2 %hankel_2 verb)
 (defprop %hankel_2 $hankel_2 reversealias)
 (defprop %hankel_2 $hankel_2 noun)
+||#
 
 ;; hankel_2 distributes over lists, matrices, and equations
 
 (defprop %hankel_2 (mlist $matrix mequal) distribute_over)
 
+#+nil
 (defprop %hankel_2 simp-hankel-2 operators)
 
 ; Derivatives of the Hankel 2 function
@@ -1796,6 +2153,7 @@
        ((rat) 1 2)))
     grad)
 
+#+nil
 (defun simp-hankel-2 (expr ignored z)
   (declare (ignore ignored))
   (twoargcheck expr)
@@ -1837,6 +2195,43 @@
                    (bessel-y-half-order rat-order arg)))))
       (t (eqtest (list '(%hankel_2) order arg) expr)))))
 
+(def-simplifier hankel_2 (order arg)
+  (let (rat-order)
+    (cond
+      ((zerop1 arg)
+       (simp-domain-error
+         (intl:gettext "hankel_2: hankel_2(~:M,~:M) is undefined.")
+         order arg))
+      ((complex-float-numerical-eval-p order arg)
+       (cond ((= 0 ($imagpart order))
+              ;; order is real, arg is real or complex
+              (complexify (hankel-2 ($float order)
+                                    (complex ($float ($realpart arg))
+                                             ($float ($imagpart arg))))))
+             (t
+              ;; The order is complex.  Use
+              ;;   hankel_2(v,z) = bessel_j(v,z) - %i*bessel_y(v,z)
+              ;; and evaluate using the hypergeometric function
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (sub (bessel-j-hypergeometric order arg)
+                         (mul '$%i
+                              (bessel-y-hypergeometric order arg)))))))))
+      ((and $besselexpand
+            (setq rat-order (max-numeric-ratio-p order 2)))
+       ;; When order is a fraction with a denominator of 2, we can express 
+       ;; the result in terms of elementary functions.
+       ;; Use the definition hankel_2(v,z) = bessel_j(v,z)-%i*bessel_y(v,z)
+       (sratsimp
+         (sub (bessel-j-half-order rat-order arg)
+              (mul '$%i
+                   (bessel-y-half-order rat-order arg)))))
+      (t (give-up)))))
+
 ;; Numerically compute H2[v](z).
 ;;
 ;; A&S 9.1.4 says H2[v](z) = J[v](z) - %i * Y[v](z)
@@ -1874,15 +2269,18 @@
 (defmfun $struve_h (v z)
   (simplify (list '(%struve_h) v z)))
 
+#||
 (defprop $struve_h %struve_h alias)
 (defprop $struve_h %struve_h verb)
 (defprop %struve_h $struve_h reversealias)
 (defprop %struve_h $struve_h noun)
+||#
 
 ;; struve_h distributes over lists, matrices, and equations
 
 (defprop %struve_h (mlist $matrix mequal) distribute_over)
 
+#+nil
 (defprop %struve_h simp-struve-h operators)
 
 ; Derivatives of the Struve H function
@@ -1905,6 +2303,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun simp-struve-h (expr ignored z)
   (declare (ignore ignored))
   (twoargcheck expr)
@@ -2117,6 +2516,214 @@
       (t 
        (eqtest (list '(%struve_h) order arg) expr)))))
 
+(def-simplifier struve_h (order arg)
+  (cond
+      
+    ;; Check for special values
+      
+    ((zerop1 arg)
+     (cond ((eq ($csign (add order 1)) '$zero)
+					; http://functions.wolfram.com/03.09.03.0018.01
+            (cond ((or ($bfloatp order)
+                       ($bfloatp arg))
+                   ($bfloat (div 2 '$%pi)))
+                  ((or (floatp order)
+                       (floatp arg))
+                   ($float (div 2 '$%pi)))
+                  (t
+                   (div 2 '$%pi))))
+           ((eq ($sign (add ($realpart order) 1)) '$pos)
+					; http://functions.wolfram.com/03.09.03.0001.01
+            arg)
+           ((member ($sign (add ($realpart order) 1)) '($zero $neg $nz))
+            (simp-domain-error 
+             (intl:gettext "struve_h: struve_h(~:M,~:M) is undefined.")
+             order arg))
+           (t
+            (give-up))))
+      
+    ;; Check for numerical evaluation
+      
+    ((complex-float-numerical-eval-p order arg)
+					; A&S 12.1.21
+     (let (($numer t) ($float t))
+       ($rectform
+        ($float
+         (mul
+          ($rectform (power arg (add order 1.0)))
+          ($rectform (inv (power 2.0 order)))
+          (inv (power ($float '$%pi) 0.5))
+          (inv (simplify (list '(%gamma) (add order 1.5))))
+          (simplify (list '($hypergeometric)
+                          (list '(mlist) 1)
+                          (list '(mlist) '((rat simp) 3 2)
+                                (add order '((rat simp) 3 2)))
+                          (div (mul arg arg) -4.0))))))))
+      
+    ((complex-bigfloat-numerical-eval-p order arg)
+					; A&S 12.1.21
+     (let (($ratprint nil)
+           (arg ($bfloat arg))
+           (order ($bfloat order)))
+       ($rectform
+        ($bfloat
+         (mul
+          ($rectform (power arg (add order 1)))
+          ($rectform (inv (power 2 order)))
+          (inv (power ($bfloat '$%pi) ($bfloat '((rat simp) 1 2))))
+          (inv (simplify (list '(%gamma) 
+                               (add order ($bfloat '((rat simp) 3 2))))))
+          (simplify (list '($hypergeometric)
+                          (list '(mlist) 1)
+                          (list '(mlist) '((rat simp) 3 2)
+                                (add order '((rat simp) 3 2)))
+                          (div (mul arg arg) ($bfloat -4)))))))))
+      
+    ;; Transformations and argument simplifications
+      
+    ((and $besselexpand
+          (ratnump order)
+          (integerp (mul 2 order)))
+     (cond 
+       ((eq ($sign order) '$pos)
+        ;; Expansion of Struve H for a positive half integral order.
+        (sratsimp
+         (add
+          (mul
+           (inv (simplify (list '(mfactorial) (sub order 
+                                                   '((rat simp) 1 2)))))
+           (inv (power '$%pi '((rat simp) 1 2 )))
+           (power (div arg 2) (add order -1))
+           (let ((index (gensumindex)))
+             (dosum
+              (mul
+               (simplify (list '($pochhammer) '((rat simp) 1 2) index))
+               (simplify (list '($pochhammer)
+                               (sub '((rat simp) 1 2) order)
+                               index))
+               (power (mul -1 arg arg (inv 4)) (mul -1 index)))
+              index 0 (sub order '((rat simp) 1 2)) t)))
+          (mul
+           (power (div 2 '$%pi) '((rat simp) 1 2))
+           (power -1 (add order '((rat simp) 1 2)))
+           (inv (power arg '((rat simp) 1 2)))
+           (add
+            (mul
+             (simplify 
+              (list '(%sin)
+                    (add (mul '((rat simp) 1 2)
+                              '$%pi
+                              (add order '((rat simp) 1 2)))
+                         arg)))
+             (let ((index (gensumindex)))
+               (dosum
+                (mul
+                 (power -1 index)
+                 (simplify (list '(mfactorial) 
+                                 (add (mul 2 index) 
+                                      order 
+                                      '((rat simp) -1 2))))
+                 (inv (simplify (list '(mfactorial) (mul 2 index))))
+                 (inv (simplify (list '(mfactorial)
+                                      (add (mul -2 index)
+                                           order
+                                           '((rat simp) -1 2)))))
+                 (inv (power (mul 2 arg) (mul 2 index))))
+                index 0 
+                (simplify (list '($floor) 
+                                (div (sub (mul 2 order) 1) 4)))
+                t)))
+            (mul
+             (simplify (list '(%cos)
+                             (add (mul '((rat simp) 1 2)
+                                       '$%pi
+                                       (add order '((rat simp) 1 2)))
+                                  arg)))
+             (let ((index (gensumindex)))
+               (dosum
+                (mul
+                 (power -1 index)
+                 (simplify (list '(mfactorial) 
+                                 (add (mul 2 index) 
+                                      order 
+                                      '((rat simp) 1 2))))
+                 (power (mul 2 arg) (mul -1 (add (mul 2 index) 1)))
+                 (inv (simplify (list '(mfactorial) 
+                                      (add (mul 2 index) 1))))
+                 (inv (simplify (list '(mfactorial)
+                                      (add (mul -2 index)
+                                           order
+                                           '((rat simp) -3 2))))))
+                index 0 
+                (simplify (list '($floor) 
+                                (div (sub (mul 2 order) 3) 4)))
+                t))))))))
+         
+       ((eq ($sign order) '$neg)
+        ;; Expansion of Struve H for a negative half integral order.
+        (sratsimp
+         (add
+          (mul
+           (power (div 2 '$%pi) '((rat simp) 1 2))
+           (power -1 (add order '((rat simp) 1 2)))
+           (inv (power arg '((rat simp) 1 2)))
+           (add
+            (mul
+             (simplify (list '(%sin)
+                             (add
+                              (mul
+                               '((rat simp) 1 2)
+                               '$%pi
+                               (add order '((rat simp) 1 2)))
+                              arg)))
+             (let ((index (gensumindex)))
+               (dosum
+                (mul
+                 (power -1 index)
+                 (simplify (list '(mfactorial)
+                                 (add (mul 2 index) 
+                                      (neg order) 
+                                      '((rat simp) -1 2))))
+                 (inv (simplify (list '(mfactorial) (mul 2 index))))
+                 (inv (simplify (list '(mfactorial)
+                                      (add (mul -2 index)
+                                           (neg order)
+                                           '((rat simp) -1 2)))))
+                 (inv (power (mul 2 arg) (mul 2 index))))
+                index 0
+                (simplify (list '($floor) 
+                                (div (add (mul 2 order) 1) -4)))
+                t)))
+            (mul
+             (simplify (list '(%cos)
+                             (add
+                              (mul
+                               '((rat simp) 1 2)
+                               '$%pi
+                               (add order '((rat simp) 1 2)))
+                              arg)))
+             (let ((index (gensumindex)))
+               (dosum
+                (mul
+                 (power -1 index)
+                 (simplify (list '(mfactorial) 
+                                 (add (mul 2 index)
+                                      (neg order) 
+                                      '((rat simp) 1 2))))
+                 (power (mul 2 arg) (mul -1 (add (mul 2 index) 1)))
+                 (inv (simplify (list '(mfactorial) 
+                                      (add (mul 2 index) 1))))
+                 (inv (simplify (list '(mfactorial)
+                                      (add (mul -2 index)
+                                           (neg order)
+                                           '((rat simp) -3 2))))))
+                index 0 
+                (simplify (list '($floor) 
+                                (div (add (mul 2 order) 3) -4)))
+                t))))))))))
+    (t 
+     (give-up))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Implementation of Struve L function
@@ -2126,12 +2733,14 @@
 (defmfun $struve_l (v z)
   (simplify (list '(%struve_l) v z)))
 
+#||
 (defprop $struve_l %struve_l alias)
 (defprop $struve_l %struve_l verb)
 (defprop %struve_l $struve_l reversealias)
 (defprop %struve_l $struve_l noun)
 
 (defprop %struve_l simp-struve-l operators)
+||#
 
 ;; struve_l distributes over lists, matrices, and equations
 
@@ -2157,6 +2766,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun simp-struve-l (expr ignored z)
   (declare (ignore ignored))
   (twoargcheck expr)
@@ -2374,6 +2984,220 @@
                    t))))))))))
       (t 
        (eqtest (list '(%struve_l) order arg) expr)))))
+
+(def-simplifier struve_l (order arg)
+  (cond
+      
+    ;; Check for special values
+      
+    ((zerop1 arg)
+     (cond ((eq ($csign (add order 1)) '$zero)
+					; http://functions.wolfram.com/03.10.03.0018.01
+            (cond ((or ($bfloatp order)
+                       ($bfloatp arg))
+                   ($bfloat (div 2 '$%pi)))
+                  ((or (floatp order)
+                       (floatp arg))
+                   ($float (div 2 '$%pi)))
+                  (t
+                   (div 2 '$%pi))))
+           ((eq ($sign (add ($realpart order) 1)) '$pos)
+					; http://functions.wolfram.com/03.10.03.0001.01
+            arg)
+           ((member ($sign (add ($realpart order) 1)) '($zero $neg $nz))
+            (simp-domain-error 
+             (intl:gettext "struve_l: struve_l(~:M,~:M) is undefined.")
+             order arg))
+           (t
+            (give-up))))
+      
+    ;; Check for numerical evaluation
+      
+    ((complex-float-numerical-eval-p order arg)
+					; http://functions.wolfram.com/03.10.26.0002.01
+     (let (($numer t) ($float t))
+       ($rectform
+        ($float
+         (mul
+          ($rectform (power arg (add order 1.0)))
+          ($rectform (inv (power 2.0 order)))
+          (inv (power ($float '$%pi) 0.5))
+          (inv (simplify (list '(%gamma) (add order 1.5))))
+          (simplify (list '($hypergeometric)
+                          (list '(mlist) 1)
+                          (list '(mlist) '((rat simp) 3 2) 
+                                (add order '((rat simp) 3 2)))
+                          (div (mul arg arg) 4.0))))))))
+      
+    ((complex-bigfloat-numerical-eval-p order arg)
+					; http://functions.wolfram.com/03.10.26.0002.01
+     (let (($ratprint nil))
+       ($rectform
+        ($bfloat
+         (mul
+          ($rectform (power arg (add order 1)))
+          ($rectform (inv (power 2 order)))
+          (inv (power ($bfloat '$%pi) ($bfloat '((rat simp) 1 2))))
+          (inv (simplify (list '(%gamma) (add order '((rat simp) 3 2)))))
+          (simplify (list '($hypergeometric)
+                          (list '(mlist) 1)
+                          (list '(mlist) '((rat simp) 3 2) 
+                                (add order '((rat simp) 3 2)))
+                          (div (mul arg arg) 4))))))))
+      
+    ;; Transformations and argument simplifications
+      
+    ((and $besselexpand
+          (ratnump order)
+          (integerp (mul 2 order)))
+     (cond 
+       ((eq ($sign order) '$pos)
+        ;; Expansion of Struve L for a positive half integral order.
+        (sratsimp
+         (add
+          (mul -1
+               (power 2 (sub 1 order))
+               (power arg (sub order 1))
+               (inv (power '$%pi '((rat simp) 1 2)))
+               (inv (simplify (list '(mfactorial) (sub order 
+                                                       '((rat simp) 1 2)))))
+               (let ((index (gensumindex)))
+                 (dosum
+                  (mul
+                   (simplify (list '($pochhammer) '((rat simp) 1 2) index))
+                   (simplify (list '($pochhammer) 
+                                   (sub '((rat simp) 1 2) order) 
+                                   index))
+                   (power (mul arg arg (inv 4)) (mul -1 index)))
+                  index 0 (sub order '((rat simp) 1 2)) t)))
+          (mul -1
+               (power (div 2 '$%pi) '((rat simp) 1 2))
+               (inv (power arg '((rat simp) 1 2)))
+               ($exp (div (mul '$%pi '$%i (add order '((rat simp) 1 2))) 2))
+               (add
+                (mul
+                 (let (($trigexpand t)) 
+                   (simplify (list '(%sinh) 
+                                   (sub (mul '((rat simp) 1 2) 
+                                             '$%pi 
+                                             '$%i 
+                                             (add order '((rat simp) 1 2))) 
+                                        arg))))
+                 (let ((index (gensumindex)))
+                   (dosum
+                    (mul
+                     (simplify (list '(mfactorial)
+                                     (add (mul 2 index)
+                                          (simplify (list '(mabs) order))
+                                          '((rat simp) -1 2))))
+                     (inv (simplify (list '(mfactorial) (mul 2 index))))
+                     (inv (simplify (list '(mfactorial) 
+                                          (add (simplify (list '(mabs) 
+                                                               order))
+                                               (mul -2 index)
+                                               '((rat simp) -1 2)))))
+                     (inv (power (mul 2 arg) (mul 2 index))))
+                    index 0
+                    (simplify (list '($floor)
+                                    (div (sub (mul 2 
+                                                   (simplify (list '(mabs) 
+                                                                   order))) 
+                                              1) 
+                                         4)))
+                    t)))
+                (mul
+                 (let (($trigexpand t)) 
+                   (simplify (list '(%cosh) 
+                                   (sub (mul '((rat simp) 1 2) 
+                                             '$%pi 
+                                             '$%i 
+                                             (add order '((rat simp) 1 2))) 
+                                        arg))))
+                 (let ((index (gensumindex)))
+                   (dosum
+                    (mul
+                     (simplify (list '(mfactorial) 
+                                     (add (mul 2 index)
+                                          (simplify (list '(mabs) order))
+                                          '((rat simp) 1 2))))
+                     (power (mul 2 arg) (neg (add (mul 2 index) 1)))
+                     (inv (simplify (list '(mfactorial)
+                                          (add (mul 2 index) 1))))
+                     (inv (simplify (list '(mfactorial)
+                                          (add (simplify (list '(mabs) 
+                                                               order))
+                                               (mul -2 index)
+                                               '((rat simp) -3 2))))))                    
+                    index 0
+                    (simplify (list '($floor) 
+                                    (div (sub (mul 2 
+                                                   (simplify (list '(mabs) 
+                                                                   order)))
+                                              3)
+                                         4)))
+                    t))))))))
+       ((eq ($sign order) '$neg)
+        ;; Expansion of Struve L for a negative half integral order.
+        (sratsimp
+         (add
+          (mul -1
+               (power (div 2 '$%pi) '((rat simp) 1 2))
+               (inv (power arg '((rat simp) 1 2)))
+               ($exp (div (mul '$%pi '$%i (add order '((rat simp) 1 2))) 2))
+               (add
+                (mul
+                 (let (($trigexpand t)) 
+                   (simplify (list '(%sinh) 
+                                   (sub (mul '((rat simp) 1 2) 
+                                             '$%pi 
+                                             '$%i 
+                                             (add order '((rat simp) 1 2))) 
+                                        arg))))
+                 (let ((index (gensumindex)))
+                   (dosum
+                    (mul
+                     (simplify (list '(mfactorial)
+                                     (add (mul 2 index)
+                                          (neg order)
+                                          '((rat simp) -1 2))))
+                     (inv (simplify (list '(mfactorial) (mul 2 index))))
+                     (inv (simplify (list '(mfactorial) 
+                                          (add (neg order)
+                                               (mul -2 index)
+                                               '((rat simp) -1 2)))))
+                     (inv (power (mul 2 arg) (mul 2 index))))
+                    index 0
+                    (simplify (list '($floor)
+                                    (div (add (mul 2 order) 1) -4)))
+                    t)))
+                (mul
+                 (let (($trigexpand t)) 
+                   (simplify (list '(%cosh) 
+                                   (sub (mul '((rat simp) 1 2) 
+                                             '$%pi 
+                                             '$%i 
+                                             (add order '((rat simp) 1 2))) 
+                                        arg))))
+                 (let ((index (gensumindex)))
+                   (dosum
+                    (mul
+                     (simplify (list '(mfactorial)
+                                     (add (mul 2 index)
+                                          (neg order)
+                                          '((rat simp) 1 2))))
+                     (power (mul 2 arg) (neg (add (mul 2 index) 1)))
+                     (inv (simplify (list '(mfactorial)
+                                          (add (mul 2 index) 1))))
+                     (inv (simplify (list '(mfactorial)
+                                          (add (neg order)
+                                               (mul -2 index)
+                                               '((rat simp) -3 2))))))                    
+                    index 0
+                    (simplify (list '($floor) 
+                                    (div (add (mul 2 order) 3) -4)))
+                    t))))))))))
+    (t 
+     (give-up))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
