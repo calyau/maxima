@@ -563,7 +563,7 @@ and bigfloat precision.
 When @code{gamma_expand} is @code{true}, Maxima expands @code{gamma} for 
 arguments @code{z+n} and @code{z-n} where @code{n} is an integer.
 
-Maxima knows the derivate of @code{gamma}.
+Maxima knows the derivative of @code{gamma}.
 
 Examples:
 
@@ -614,7 +614,7 @@ is @code{true}:
                                 z - 1
 @end example
 
-The deriviative of @code{gamma}:
+The derivative of @code{gamma}:
 
 @example
 (%i10) diff(gamma(z),z);
