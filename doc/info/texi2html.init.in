@@ -20,7 +20,8 @@ sub filename_simple($$$)
     return $prefix.'.'.$converter->get_conf('EXTENSION');
   }
   if ($converter->element_is_top($element)) {
-    return undef;
+    # The table of contents file should be named this.
+    return "maxima_toc.html";
   } else {
     $file_nr++;
     if ($file_nr == 0) {
