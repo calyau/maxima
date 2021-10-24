@@ -757,8 +757,14 @@
         (*mdebug* nil))
     (handler-case (list '(mlist) (rat-error-to-merror (mevaln (cdr form))))
       (maxima-$error ()
-        ; merror already set the error variable and printed the error
-        ; message if errormsg is true, so we just need to clean up.
+        ; If this was signaled by MERROR, then it has already handled
+        ; the setting of the error variable and the printing of any error
+        ; messages (as applicable).
+        ;
+        ; If for some reason this wasn't signaled by MERROR, then it's the
+        ; signaler's responsibility to handle error messages.
+        ;
+        ; Either way, we just need to clean up here.
         (errlfun1 errcatch)
         (list '(mlist simp)))
       (error (e)
