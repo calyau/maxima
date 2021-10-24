@@ -697,3 +697,14 @@ block ([foo10: 1e10*foo, bar10: 1e10*bar],
 block ([foo100: 1e100*foo, bar100: 1e100*bar],
         [is (foo100 = bar100), float_approx_equal (foo100, bar100)]);
 [false, true];
+
+/* errcatch failed to catch some types of errors.  It caught the usual Maxima
+ * and lisp errors, but it failed to catch some errors that would just throw
+ * elsewhere.
+ */
+
+errcatch (gf_set_data ("wtf"));
+[];
+
+block ([?errorsw : true], errcatch (log (0)));
+[];

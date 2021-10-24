@@ -752,10 +752,32 @@
 	(char (symbol-name label) 2)
 	c)))
 
+; Evaluate form while catching throws to some specific tags (called
+; "errcatch tags").  If no throw to an errcatch tag is caught, then
+; the values from form are returned.  If a throw to an errcatch tag
+; is caught, then a Maxima error is signaled.
+;
+; The errcatch tags are ERRORSW, MACSYMA-QUIT and RAT-ERR.
+(defmacro with-errcatch-tag-$errors (form)
+  (let ((block-name (gensym)))
+    `(block ,block-name
+       ; RAT-ERROR-TO-MERROR will catch any throws to RAT-ERR and
+       ; call merror with a specific error message.
+       (catch 'macsyma-quit
+         (catch 'errorsw
+           (rat-error-to-merror
+             (return-from ,block-name ,form))))
+       ; If we're here, then we don't know any information about the
+       ; error, so just call MERROR with a vague error message.  This
+       ; message will not be printed by MERROR, but it will be stored
+       ; in Maxima's error variable.
+       (with-$error
+         (merror (intl:gettext "An error was caught by errcatch."))))))
+
 (defmspec $errcatch (form)
   (let ((errcatch (cons bindlist loclist))
         (*mdebug* nil))
-    (handler-case (list '(mlist) (rat-error-to-merror (mevaln (cdr form))))
+    (handler-case (list '(mlist) (with-errcatch-tag-$errors (mevaln (cdr form))))
       (maxima-$error ()
         ; If this was signaled by MERROR, then it has already handled
         ; the setting of the error variable and the printing of any error
