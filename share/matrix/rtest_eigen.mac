@@ -78,13 +78,13 @@ matrix ([1, 0, 0, 0, 0],
 
 /* SF bug #3654: "uniteigenvectors fails if uv[1] is used in the user main program." */
 
-(kill(m, mm, r, uv, foo, θ),
+(kill(m, mm, r, uv, foo, theta),
  assume (m > 0, r > 0),
  mm:matrix(
           [-(r-2*m)/r,    sqrt(2*m/r),    0,  0],
           [sqrt(2*m/r),   1,  0,  0],
           [0, 0,  r^2,    0],
-          [0, 0,  0,  r^2*sin(θ)^2]
+          [0, 0,  0,  r^2*sin(theta)^2]
       ),
  foo: uniteigenvectors(mm),
  0);

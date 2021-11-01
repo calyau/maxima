@@ -282,8 +282,8 @@
 	 (setq integer-info old-integer-info))))
 
 ;; The optional arg allows the caller to decide on the value of
-;; preserve-direction.  Default is T, like it used to be.
-(defun both-side (exp var val &optional (preserve t))
+;; preserve-direction.  Default is nil, since we immediately ridofab.
+(defun both-side (exp var val &optional (preserve nil))
   (let* ((preserve-direction preserve)
          (la (toplevel-$limit exp var val '$plus)) lb)
     (when (eq la '$und) (return-from both-side '$und))
@@ -2802,6 +2802,9 @@ ignoring dummy variables and array indices."
 	((eq arg '$infinity) '$infinity)
 	((eq arg '$ind) '$ind)
 	((eq arg '$und) '$und)
+	((and (eq sch '%sinh)
+	      (or (eq arg '$zerob) (eq arg '$zeroa)))
+         arg)
 	(t (let (($exponentialize t))
 	     (resimplify (list (ncons sch) (ridofab arg)))))))
 
