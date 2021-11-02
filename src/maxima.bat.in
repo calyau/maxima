@@ -81,6 +81,7 @@ if x%1 == x--use-version goto foundversion
 if x%1 == x-v goto foundverbose
 if x%1 == x--verbose goto foundverbose
 if x%1 == x--lisp-options goto foundlispoptions
+if x%1 == x--userdir goto founduserdir
 if x%1 == x-X goto foundlispoptions
 
 :continueparseargs
@@ -88,8 +89,14 @@ shift
 if not x%1 == x goto startparseargs
 goto endparseargs
 
+
 :foundlispoptions
 set lisp_options=%~2
+shift
+goto continueparseargs
+
+:founduserdir
+set "MAXIMA_USERDIR=%~2"
 shift
 goto continueparseargs
 
