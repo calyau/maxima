@@ -235,7 +235,7 @@ would possibly speed the code.
 ;; uses prin-inf (see defint.lisp) to represent $inf. We could include
 ;; prin-inf as an extended real.
 
-;;We use a hashtable to represent the multiplication table--this should be easy 
+;;We use a hashtable to represent the addition table--this should be easy 
 ;; to extend and to modify.
 (defvar *extended-real-add-table* (make-hash-table :test #'equal :size 16))
 
