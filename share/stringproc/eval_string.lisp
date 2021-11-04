@@ -51,7 +51,7 @@
   (declare (special *mread-prompt* *parse-string-input-stream*))
   (setq *parse-string-input-stream* 
     (make-string-input-stream (ensure-terminator s)))
-  (let ((*mread-prompt*)) 
+  (let ((*mread-prompt* ""))
     (third (mread *parse-string-input-stream*)) ))
 
 ;; (ENSURE-TERMINATOR S)  -- if the string S does not contain dollar sign `$' or semicolon `;'
