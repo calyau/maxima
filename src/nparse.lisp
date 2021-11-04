@@ -97,7 +97,7 @@
       (apply 'format t format-string (mapcar #'printer l))
       (cond ((or $report_synerr_info (eql *parse-stream* *standard-input*))
 	     (let ((some (column)))
-	       (format t "~%~{~c~}~%~vt^" some (- (length some) 2))
+	       (format t "~%~{~c~}~%~vt^" some (max 0 (- (length some) 2)))
 	       (read-line *parse-stream* nil nil))))
       (terpri)
       (finish-output)
