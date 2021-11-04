@@ -72,7 +72,8 @@
 	       (loop for i from (1- n) downto (- n 20)
 	     	  while (setq ch (nth i *parse-window*))
 		  do
-		    (cond ((char= ch #\newline)
+		    (cond ((or (eql ch *parse-stream-eof*)
+			       (char= ch #\newline))
 			   (return-from column some))
 			  (t (push ch some))))
 	       some))
