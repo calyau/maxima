@@ -1674,9 +1674,10 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 		  (setq evens (nconc odds evens)
 			odds nil minus nil))
 		 ((mevenp (caddr expt))
-		  (cond ((and *complexsign* (eq sign-base '$neg))
-			 ;; In Complex Mode the sign is $complex.
-			 (setq sign-base (setq sign-expt '$complex)))
+		  (cond (*complexsign*
+			 (when (not (member sign-base '($pos $pz)))
+			   ;; In Complex Mode the sign is $complex.
+			   (setq sign-base (setq sign-expt '$complex))))
 			(complexsign
 			 ;; The only place the variable complexsign
 			 ;; is used. Unfortunately, one routine in

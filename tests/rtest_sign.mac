@@ -513,25 +513,25 @@ pos$
 /* algebraic */
 
 csign(sqrt(x));
-pz$
+complex$
 
 csign(sqrt(x^2 + 1));
 pos$
 
 csign(sqrt(a) + sqrt(b));
-pz$
+complex$
 
 csign(x^(1/3));
 pnz$
 
 csign(x^(1/4));
-pz$
+complex$
 
 csign(x^(1/4) + 1);
-pos$
+complex$
 
 csign(-(x^(1/4) + 1));
-neg$
+complex$
 
 /* exp-like */
 

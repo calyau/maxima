@@ -482,3 +482,7 @@ abs(z)^2;
 (reset(domain), 0);
 0;
 
+/* SF merge request 29 */
+
+abs(sqrt(sin(theta) - 1));
+abs(sqrt(sin(theta) - 1))$
