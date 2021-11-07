@@ -1157,3 +1157,8 @@ ratdisrep (test1(taylor(cos(y), y, 0, 4)));
 ratdisrep (test1(taylor(cos(x), x, 0, 4)));
 (x^4-12*x^2+24)/24;
 
+/* Bug #2267: simpsum error */
+
+sum((2^(k+i))/(2^(k+i)+2^(i)),i,0,k), simpsum;
+(2^k*(1 + k))/(1 + 2^k);
+
