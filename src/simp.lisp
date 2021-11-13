@@ -676,7 +676,8 @@
       (cons (remove 'simp (car x) :count 1) (mapcar #'unsimplify (cdr x)))))
 
 (defun simpargs (x y)
-  (if (or (eq (get (caar x) 'dimension) 'dimension-infix)
+  (if (or (and (eq (get (caar x) 'dimension) 'dimension-infix)
+	       (not (getl (caar x) '($lassociative $rassociative))))
 	  (get (caar x) 'binary))
       (twoargcheck x))
   (if (and (member 'array (cdar x) :test #'eq) (null (margs x)))
