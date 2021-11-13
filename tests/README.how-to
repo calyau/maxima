@@ -1,7 +1,7 @@
 Suggestions and tips for writing test files
 Barton Willis
 
-(1) test file contains pairs of expressions. The first
+(1) A test file contains pairs of expressions. The first
 expression is the input, and the second is the expected output; for
 example, here are two tests:
 
@@ -62,14 +62,13 @@ should be something like
 
 (8) To append a test file to the main Maxima test suite,
 you'll need to append the file name to the list in the file
-/tests/testsuite.lisp. If your test has known errors, you'll need to
+/src/testsuite.lisp. If your test has known errors, you'll need to
 include this data into testsuite.lisp. To illustrate, the tests
-42 and 42 in rtest_abs are known bugs. To tell Maxima that these
+42 and 43 in rtest_abs are known bugs. To tell Maxima that these
 are known bugs, append ((mlist) "rtest_abs" 42 43) to the file 
 list in testsuite.lisp.
 
-Also, you'll need to append the name of the test file to
-makefile.am. Finally, build Maxima and run the test suite. If all goes
+Finally, build Maxima and run the test suite. If all goes
 well, commit the new test file.
 
 (9) Other:
@@ -134,7 +133,5 @@ Another way to handle such things is to use explicit calls to ratsimp:
   ''(ratsimp(-a/2))$
 
 To test a function such as factor, you do not want to apply ratsimp.
-
-
 
 
