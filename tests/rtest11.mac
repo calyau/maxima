@@ -1119,6 +1119,61 @@ ev (a wedge (b wedge (c wedge (0 wedge d))) wedge (e wedge f), infeval);
 ev (a wedge (b wedge (c wedge (z wedge d))) wedge (e wedge f), infeval);
 z;
 
+/* Bug #2876: Error simplifying infix operators declared l/rassociative */
+
+(infix ("++"), 0);
+0;
+
+a ++ b ++ c ++ d;
+((a ++ b) ++ c) ++ d;
+
+/* Here, ++ is an infix operator with no associativity declared.
+ * Applying ++ to less than two args or more than two args is
+ * an error.
+ */
+errcatch ("++" ());
+[];
+
+errcatch ("++" (a, b, c, d));
+[];
+
+(declare ("++", lassociative), 0);
+0;
+
+a ++ b ++ c ++ d;
+((a ++ b) ++ c) ++ d;
+
+/* Here, ++ is an infix operator that's declared lassociative.
+ * Applying ++ to less than two args or more than two args is
+ * not an error.
+ */
+"++" ();
+"++" ();
+
+"++" (a, b, c, d);
+((a ++ b) ++ c) ++ d;
+
+(remove ("++", lassociative),
+ declare ("++", rassociative),
+ 0);
+0;
+
+a ++ b ++ c ++ d;
+a ++ (b ++ (c ++ d));
+
+/* Here, ++ is an infix operator that's declared rassociative.
+ * Applying ++ to less than two args or more than two args is
+ * not an error.
+ */
+"++" ();
+"++" ();
+
+"++" (a, b, c, d);
+a ++ (b ++ (c ++ d));
+
+(kill ("++"), 0);
+0;
+
 /* some tests for partition */
 
 (kill (foo, u, e1, e2, e3),
