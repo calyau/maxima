@@ -449,6 +449,16 @@ limit( ((1/%pi)*(atan(n/%pi) + %pi/2))^n, n, inf);
 limit(x*expintegral_ei(x), x, 0);
 0;
 
+/* #3865 crash from taking limit of factorial(x) + 1 */
+limit(factorial(x) + 1, x, 0);
+2;
+
+limit(1/(1-factorial(x)), x, 0, minus);
+minf;
+
+limit(1/(1-factorial(x)), x, 0, plus);
+inf;
+
 /* Limit of the factorial function - 4 problems - ID: 2841504 */
 limit(factorial(x),x,-2,plus);
 minf;

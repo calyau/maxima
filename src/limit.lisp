@@ -2694,6 +2694,7 @@ ignoring dummy variables and array indices."
          (arg2 arglim))
     (cond ((eq arglim '$inf) '$inf)
           ((member arglim '($minf $infinity $und $ind) :test #'eq) '$und)
+          ((zerop2 arglim) 1)
           ((and (or (maxima-integerp arglim)
                     (setq arg2 (integer-representation-p arglim)))
                 (eq ($sign arg2) '$neg))
