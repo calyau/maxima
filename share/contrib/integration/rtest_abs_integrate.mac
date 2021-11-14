@@ -1,11 +1,8 @@
 (kill(all),
  reset (),
  load("abs_integrate.mac"),
- load('hypergeometric),
- load("hyperint.mac"),
  start : elapsed_real_time(),
  declare(signum,real),
- load("unwind_protect"),
  0);
 0$
 
@@ -17,9 +14,6 @@ integrate(log(1-x)*log(1+x)/(1+x),x,0,1);
 (-1)/6*%pi^2*log(2)+1/2*log(2)^3+zeta(3)
                    +(-1)/24*((-2)*%pi^2*log(2)+4*log(2)^3+21*zeta(3))$
 
-(extra_integration_methods : endcons('hyper_int, extra_integration_methods),0);
-0$
-
 integrate(abs(x),x);
 (x*abs(x))/2$
 
@@ -30,13 +24,13 @@ integrate(abs(sqrt(3)*x),x);
 (sqrt(3)*x*abs(x))/2$
 
 signum_to_abs(integrate(abs(x - 5),x));
-((x-5)*abs(x-5))/2$
+(abs(x-5)*x)/2-(5*abs(x-5))/2$
 
 integrate(abs(%pi * x + 1),x);
 ((%pi*x+1)*abs(%pi*x+1))/(2*%pi)$
 
 integrate(x*abs(x),x);
-x^2*abs(x)/2-x^3*signum(x)/6;
+(x^3*signum(x))/3$
 
 (assume(n > 2), integrate(abs(x) * x^n,x));
 (x^(n+2)*signum(x))/(n+2)$
@@ -86,7 +80,7 @@ integrate(signum(x - 42),x);
 abs(x-42)$
 
 integrate(signum(x) * sin(x),x);
-(1-cos(x))*signum(x)$
+((2-2*cos(x))*signum(x))/2$
 
 integrate(max(-x,x),x);
 x*abs(x)/2$
@@ -95,13 +89,13 @@ integrate(min(-x,x),x);
 -(x*abs(x)/2)$
 
 signum_to_abs(integrate(max(x,2*x),x));
-(x*abs(x)+3*x^2)/4$
+(x*abs(x))/4+(3*x^2)/4$
 
 integrate(x + max(x,0),x);
 (x^2*signum(x))/4+(3*x^2)/4$
 
 i : integrate(max(x,x^2),x);
-(((2*x^3-3*x^2)/12+1/12)*signum(x-1)+1/12)*signum(x)+(x^3/3+x^2/2)/2$
+(signum(x-1)*((2*x^3-3*x^2)/12+1/12)+1/12)*signum(x)+x^3/6+x^2/4$
 
 block([cntx : newcontext()],
    unwind_protect((assume(0<x, x<1), factor(diff(expand(i,0,0),x)-max(x,x^2))), killcontext(cntx)));
@@ -133,7 +127,7 @@ subst(a = 1,i);
 0$
 
 signum_to_abs(integrate(unit_step(x + b),x));
-(abs(x+b)+x+b)/2$
+abs(x+b)/2+x/2+b/2$
 
 ratsimp(integrate(unit_step(x) + cos(x^2) * x,x));
 (sin(x^2)+abs(x)+x)/2$
@@ -157,8 +151,8 @@ integrate(x*abs(x),x,-6,6);
 integrate(x*abs(x),x,-a,a);
 0$
 
-signum_to_abs(integrate(x^2*abs(x),x,-a,a));
-(a^3*abs(a))/2$
+integrate(x^2*abs(x),x,-a,a);
+(a^4*signum(a))/2$
 
 integrate(unit_step(x),x,-1,0);
 0$
@@ -167,14 +161,14 @@ integrate(unit_step(x),x,-1,1);
 1$
 
 signum_to_abs(integrate(unit_step(x),x,a,b));
-(abs(b)+b)/2-(abs(a)+a)/2$
+abs(b)/2+b/2-abs(a)/2-a/2$
 
 /* With hyper_int, we get an interesting result... */
-i : block([extra_integration_methods : ['signum_int]], i : integrate(f(x) * abs(x-a),x), ev(i, f(x) := x, 'integrate));
-x^2*abs(x-a)/2-(2*x^3/3-2*a^3/3)*signum(x-a)/4$
+(i : integrate(f(x) * abs(x-a),x), ev(i, f(x) := x, 'integrate));
+(((2*x^3)/3-a*x^2+a^3/3)*signum(x-a))/2$
 
-unwind_protect((assume(notequal(x,a)), factor(diff(signum_to_abs(i),x))), forget(notequal(x,a)));
-x*abs(x-a)$
+diff(i,x);
+f(x)*abs(x-a)$
 
 (i : integrate(f(x) * max(x,-x),x,0,1), ev(i, f(x) := x,integrate));
 1/3$
@@ -216,9 +210,8 @@ true$
 integrate(abs(x-1) * (x + abs(x-5)),x,-7,9);
 1280/3$
 
-/* Due to changes in limit (circa 14 December 2014), we need to exclude abs_integrate_use_if*/
-block([extra_integration_methods : ['intfudu, 'intfugudu, 'signum_int, 'floor_int]], integrate(abs(x-1) / (x + abs(x-5)),x,-7,9));
-(3*log(13)+18)/4-(3*log(5)+10)/4+8$
+integrate(abs(x-1) / (x + abs(x-5)),x,-7,9);
+(3*log(13))/4-(3*log(5))/4+10$
 
 integrate(abs(x-1) / (x + abs(x-5)),x,9,-7) + integrate(abs(x-1) / (x + abs(x-5)),x,-7,9);
 0$
@@ -233,7 +226,7 @@ is(equal(op(integrate(signum(x + sqrt(1-x)),x)), nounify('integrate)));
 true$
 
 i : integrate(abs(x-1)/ ( 1 + x^2),x);
-(signum(x-1)*(2*(log(x^2+1)/2-atan(x))-2*(log(2)/2-%pi/4)))/2-(signum(x-1)*(2*x-2)*atan(x))/2+abs(x-1)*atan(x)$
+signum(x-1)*(log(x^2+1)/2-atan(x)-log(2)/2+%pi/4)$
 
 [unwind_protect((assume(x<1), ratsimp(diff(i,x))), forget(x < 1)), unwind_protect((assume(x>1), ratsimp(diff(i,x))), forget(x>1))];
 [-((x-1)/(x^2+1)),(x-1)/(x^2+1)]$
@@ -241,29 +234,26 @@ i : integrate(abs(x-1)/ ( 1 + x^2),x);
 integrate(exp(-abs(x)), x);
 ((-%e^x-%e^(-x)+2)*signum(x))/2+(%e^x-%e^(-x))/2$
 
-integrate(cos(x + abs(x)),x);
+ratsimp(integrate(cos(x + abs(x)),x));
 ((signum(x)+1)*sin(2*x)-2*x*signum(x)+2*x)/4$
 
-signum_to_abs(integrate(diff(abs(x) * cos(x),x),x)), gamma_expand:true;
+signum_to_abs(integrate(diff(abs(x) * cos(x),x),x));
 cos(x)*abs(x)$
 
-block([extra_integration_methods : ['signum_int]], integrate(abs(x) * exp(-abs(x-9)),x,minf,inf));
+integrate(abs(x) * exp(-abs(x-9)),x,minf,inf);
 18 + 2 * exp(-9)$
 
-block([extra_integration_methods : ['signum_int]], integrate(exp(-abs((x-1)*(x-7))),x,minf,inf));
+integrate(exp(-abs((x-1)*(x-7))),x,minf,inf);
 -%e^(-9)*sqrt(%pi)*%i*erf(3*%i)-%e^9*sqrt(%pi)*erf(3)+%e^9*sqrt(%pi)$
 
-block([extra_integration_methods : ['signum_int]], integrate(exp(-abs((x-1)*(x+1))),x,minf,inf));
+integrate(exp(-abs((x-1)*(x+1))),x,minf,inf);
 -%e^(-1)*sqrt(%pi)*%i*erf(%i)-sqrt(%pi)*%e*erf(1)+sqrt(%pi)*%e$
 
 integrate(1/(1 + abs(x))^2,x,minf,inf);
 2$
 
 e : integrate((5*sin(3*x)*signum(x+3))/x,x);
-
--(5 * (%i*gamma_incomplete(0, 3*%i*x) - %i*gamma_incomplete(0, -3*%i*x)
- + %i*gamma_incomplete(0, 9*%i) - %i*gamma_incomplete(0, -9*%i))*signum(3*x + 9))/2$
-
+(5*(-%i*gamma_incomplete(0,3*%i*x)+%i*gamma_incomplete(0,-3*%i*x)-%i*gamma_incomplete(0,9*%i)+%i*gamma_incomplete(0,-9*%i))*signum(x+3))/2$
 
 block([cntx : newcontext()],
   unwind_protect(
@@ -285,7 +275,7 @@ unit_step_mult_simp(1909 + unit_step(x) * unit_step(x - 1));
 (i : integrate(1/(1 + abs(x) + abs(x-1)),x), sublis([x = 5], i) - sublis([x=-7], i));
 log(16)/2+log(5)/2-log(2)/2+1/2$
 
-block([extra_integration_methods : ['intfudu, 'intfugudu]],i : integrate(1/(1 + abs(x) + abs(x-1)),x,-7,5));
+integrate(1/(1 + abs(x) + abs(x-1)),x,-7,5);
 log(16)/2+log(5)/2-log(2)/2+1/2$
 
 expand (integrate(exp(-abs(x)),x,-1,inf));
@@ -323,23 +313,23 @@ ratexpand(integrate(ceiling(x),x));
 diff(%,x);
 ceiling(x)$
 
-(assume(x > 0),0);
+(assume(x > 0),declare(x, noninteger), 0);
 0$
 
-ratexpand(integrate(xx*floor(xx),xx,0,x));
+integrate(xx*floor(xx),xx,0,x);
 -(floor(x)^3/6)-(floor(x)^2/4)+x^2*floor(x)/2-(floor(x)/12)$
 
 diff(%,x);
 x * floor(x)$
-
-(forget(x > 0),0);
-0$
 
 factor(integrate(x*floor(x)^2,x));
 -((floor(x)*(3*floor(x)^3+4*floor(x)^2-6*x^2*floor(x)-1))/12)$
 
 diff(%,x);
 x*floor(x)^2$
+
+(forget(x > 0), remove(x,noninteger), 0);
+0$
 
 integrate(%if(x < 0,-x,x),x,-5,z);
 %if(-z>0,-z^2/2,z^2/2)+25/2$
@@ -362,8 +352,9 @@ integrate(max(x^5-x^3,x*(x^4-q-y)*(1-x^2)),x);
 (remfunction(convolution, unit_box), remvalue(i,di,f1),0);
 0$
 
-e : integrate(x^(a) * (1-x)^(b),x);
--(hypergeometric([-a,b+1],[b+2],1-x)*(1-x)*%e^(a*log(x)+b*log(1-x)))/((b+1)*x^a)$
+block([extra_integration_methods : endcons('hyper_int, extra_integration_methods)],
+e : integrate(x^(a) * (1-x)^(b),x));
+-((hypergeometric([-a,b+1],[b+2],1-x)*(1-x)^(b+1))/(b+1))$
 
 rat(hypergeometric_simp(subst([a=1,b=3], x^a * (1-x)^b - diff(e,x))),x);
 ''(rat(0))$
@@ -427,7 +418,7 @@ hyper_int(sqrt(x) * (x^2 - x + 1)^(1/3) * (11*x^2 - 11)/((x^2+1)^(5/6) * (x^4 + 
 hyper_int(4 * (1-x^3)^(1/3),x);
 hypergeometric([2/3,4/3],[7/3],-((x-1)*(x^2+x+1))) *(x-1)*(x^2+x+1)*(1-x^3)^(1/3)$
 
-integrate(exp(-x) * (signum(x-a) + 1),x,minf,inf);
+(assume(a > 0) , unwind_protect(integrate(exp(-x) * (signum(x-a) + 1),x,minf,inf), forget(a > 0)));
 2 * exp(-a)$
 
 (assume(0 < a), 0);
@@ -522,6 +513,9 @@ block([domain : 'complex], 'integrate(x^2*sqrt(a^2 - x^2),x));
 'integrate(abs(1 - a*z),z);
 %if(a#0,((a*z-1)*abs(a*z-1))/(2*a),z)$
 
+(extra_integration_methods : delete('conditional_integrate,extra_integration_methods),0);
+0$
+
 integrate(unit_step(x),x,99,100);
 1$
 
@@ -550,10 +544,10 @@ radcan(subst(x=5,i) - subst(x=0,i) - integrate(sqrt(5),x,0,5));
 0$
 
 /* abs_integrate causes stack overflow - ID: 3533723 */
-block([extra_integration_methods : ['intfudu, 'intfugudu, 'signum_int, 'abs_integrate_use_if, 'floor_int, 'if_int]],
-   integrate(log(sin(x)),x));
-(2*%i*li[2](%e^(%i*x))+2*%i*li[2](-%e^(%i*x))-%i*x^2+(%i*%pi-4*log(2))*x)/2+log(2)*x$
-
+integrate(log(sin(x)),x);
+x*log(sin(x)) -(x*log(sin(x)^2+cos(x)^2+2*cos(x)+1)+x*log(sin(x)^2+cos(x)^2
+ -2*cos(x)+1)+2*%i*x*atan2(sin(x),cos(x)+1) -2*%i*x*atan2(sin(x),1 -cos(x))
+ -2*%i*li[2](%e^(%i*x)) -2*%i*li[2]( -%e^(%i*x)) -%i*x^2)/(2)$
 
 /* SF bug #2557: "abs_integrate leaks assumptions into enclosing context" */
 
@@ -566,11 +560,15 @@ defint(exp(-abs(x))/cosh(x),x,minf,inf);
 is (foo = facts ());
 true;
 
+(remvalue(foo),0);
+0$
+
 defint(exp(-abs(x))/cosh(x),x,minf,inf);
 2*log(2);
 
-ratsimp(integrate(sqrt(x+sqrt(x)),x,0,1));
-(3*log(sqrt(2)+1)-3*log(1-sqrt(2))+3*log(-1)+7*2^(3/2))/24$
+/* a purely real answer is better, but this value isn't wrong.*/
+integrate(sqrt(x+sqrt(x)),x,0,1);
+log(sqrt(2)+1)/8-log(1-sqrt(2))/8+log(-1)/8+2^(3/2)/3-1/(3*2^(3/2))$
 
 (print(facts(x)),0);
 0$
@@ -601,7 +599,7 @@ integrate(log(abs(sin(x))),x,0,%pi/2);
 /* Tests for January 2015 extensions. */
 
 i : 'integrate(atan(tan(x)),x);
- -%pi^2*(-floor((2*x-%pi)/(2*%pi))+(2*x-%pi)/%pi-1)*floor((2*x-%pi)/(2*%pi))/2 +x^2/2-%pi*x$
+x^2/2-(%pi^2*((2*(x/%pi+1/2)-1)*floor(x/%pi+1/2)-floor(x/%pi+1/2)^2))/2$
 
 ratsimp(subst(x=100*%pi + 2/3, diff(i,x)));
 2/3$
@@ -610,8 +608,7 @@ subst(x=-2015*%pi + 2/3,diff(i,x));
 2/3$
 
 integrate(triangle_wave(x),x);
--(((4*floor(x)-4*x+3)*abs(4*floor(x)-4*x+3) +(-4*floor(x)+4*x-1)*abs(4*floor(x)-4*x+1)-16*floor(x)^2+(32*x-16)*floor(x)
- -16*x^2+16*x-8) /8)$
+((1-4*(x-floor(x)))*abs(4*(x-floor(x))-1))/8+((4*(x-floor(x))-3)*abs(4*(x-floor(x))-3))/8-2*(x-floor(x))+2*(x-floor(x))^2+1$
 
 integrate(triangle_wave(x),x,0,1/2);
 1/4$
@@ -645,7 +642,7 @@ sawtooth_wave(x)^2/2-sawtooth_wave(x)/2-4029*x/2$
 2*floor(x/%pi)-cos(x)*cos(%pi*floor(x/%pi))$
 
 'integrate(x*abs(sin(x^2)),x);
- -((cos(x^2)*cos(%pi*floor(x^2/%pi))-2*floor(x^2/%pi))/2)$
+(2*floor(x^2/%pi)-cos(x^2)*cos(%pi*floor(x^2/%pi)))/2$
  
 i : intfudu(Ci(x^2)*x,x);
 (x^2*Ci(x^2)-sin(x^2))/2$
@@ -662,9 +659,195 @@ sin(x)^2/2$
 intfudu(cos(x)^2*sin(x),x);
  -cos(x)^3/3$
  
+integrate(abs(sin(x)),x);
+2*floor(x/%pi)-cos(x)*cos(%pi*floor(x/%pi))$
+
+integrate(abs(cos(x)),x);
+sin(x)*cos(%pi*floor(x/%pi+1/2))+2*floor(x/%pi+1/2)$
+
+integrate(abs(sin(x)),x,0,%pi);
+2$
+
+integrate(abs(sin(x)),x,0,2*%pi);
+4$
+
+integrate(abs(sin(x)),x,0,-2*%pi);
+-4$
+
+integrate(abs(cos(x)),x,0,%pi);
+2$
+
+integrate(abs(cos(x)),x,0,2*%pi);
+4$
+
+integrate(abs(cos(x)),x,0,-2*%pi);
+-4$
+
+integrate(1/(1+abs(x)),x,-1,1);
+2*log(2)$
+
+integrate(1/(1+abs(x)),x,-1/2,1/2);
+2*log(3/2)$
+
+integrate(1/(1+abs(x)),x,-107,107);
+2*log(108)$
+
+/* bugs #3519 & #3641 */
+integrate(abs(sin(x)),x,0,2*%pi);
+4$
+
+integrate(abs(sin(x)),x,0,-2*%pi);
+-4$
+
+integrate(abs(sin(x)),x,0,8*%pi);
+16$
+
+/* #3548 expand stops working after loading abs_integrate */
+
+(unwind_protect ((assume(L>0), ii : (2*integrate((f(xvar)-B*xvar-A)*sin((%pi*(2*n-1)*xvar)/(2*L)),xvar,0,L))/L),
+   (forget(L>0))));
+
+(2*integrate((f(xvar)-B*xvar-A)*sin((%pi*(2*n-1)*xvar)/(2*L)),xvar,0,L))/L$
+
+expand(ii);
+(2*integrate(f(xvar)*sin((%pi*n*xvar)/L-(%pi*xvar)/(2*L))-B*xvar*sin((%pi*n*xvar)/L-(%pi*xvar)/(2*L))-A*sin((%pi*n*xvar)/L-(%pi*xvar)/(2*L)),xvar,0,L))/L$
+
+(remvalue(ii),0);
+0$
+
+hypergeometric_simp(hyper_int(x*abs(x-a),x));
+-(a*x^2*(1-(2*x)/(3*a))*abs(x-a))/(2*(x-a))$
+
+/* #3863 Wrong result for abs_integrate applied to unit_step */
+integrate( x*unit_step(x-1), x,0,2 ); 
+3/2$
+
+/* #3528 abs_integrate causes integral of sqrt(1+2*sin(x)^2) to give spurious results */
+/* abs_integrate can't do this--perviously, the value was bogus, now we
+   get a integral nounform.*/
+
+(ii : integrate(sqrt(1+2*sin(x)^2), x),0);
+0$
+
+is(inpart(ii,0)= nounify('integrate));
+true$
+
+diff(ii,x);
+sqrt(2*sin(x)^2+1)$
+
+(remvalue(ii),0);
+0$
+
+/* #3442 stack overflow in integration with special settings */
+(ii : block([
+besselexpand : true,
+display2d : false,
+domain : complex,
+keepfloat : true],
+load(to_poly_solve),
+load(simplify_sum),
+load(abs_integrate),
+load(diag),
+integrate(x^m/sqrt(a + b*x^(2 - m)),x)),0);
+0$
+
+is(inpart(ii,0)= nounify('integrate));
+true$
+
+diff(ii,x);
+x^m/sqrt(a + b*x^(2 - m))$
+
+(remvalue(ii),0);
+0$
+
+/* #3237 regression on a simple integral in abs_integrate */
+integrate(1 / (1 + abs(x-5)), x, -5, 6);
+log(11) + log(2)$
+
+/* #2520 abs_integrate fails on abs(sin(x)) and abs(cos(x)) */
+ integrate(abs(sin(x)),x);
+ 2*floor(x/%pi)-cos(x)*cos(%pi*floor(x/%pi))$
+
+ integrate(abs(sin(x)),x);
+ 2*floor(x/%pi)-cos(x)*cos(%pi*floor(x/%pi))$
+
+ integrate(abs(sin(x)),x,0,2*%pi);
+ 4$
+
+ integrate(abs(cos(x)),x,0,2*%pi);
+ 4$
+
+integrate(abs(sin(x)),x,0,8*%pi);
+ 16$
+
+ integrate(abs(cos(x)),x,0,8*%pi);
+ 16$
+
+/* #3125 with abs_integrate, incorrect limit of expression containing signum */
+/* Before Maxima gave a bogus result of 0, now it gives a limit nounform.*/
+
+is(limit(2*((1/2-sin(x)/((cos(x)+1)*(sin(x)^2/(cos(x)+1)^2+1)))
+  *signum(sin(x)/(cos(x)+1)-1)
+  +1)*signum(sin(x)/(cos(x)+1)+1),x,%pi) # 0);
+true$
+
+/* #3122 substitution causes trouble with diff in integral, triggered by abs_integrate */
+(declare(f,real), integrate(cos(x)^2*diff(f(x),x),x));
+(integrate(cos(2*x)*('diff(f(x),x,1)),x)+f(x))/2$
+
+(remove(f,real),0);
+0$
+
+/* #2859 Maxima should integrate abs(sin(x)) correctly */
+integrate(abs(sin(x)),x,0,%pi);
+2$
+
+integrate(abs(cos(x)),x,0,%pi);
+2$
+
+/* #2853 abs_integrate hangs after encountering log(0) */
+ ii : integrate(log(abs(sin(x))), x, 0, %pi/2);
+ (8*%i*li[2](%i)+8*%i*li[2](-%i)-4*%pi*log(2)+%i*%pi^2)/8-(%i*%pi^2)/12$
+
+ ratsubst(-%pi^2/24, li[2](%i) +  li[2](-%i) , ii);
+ -(%pi*log(2))/2$
+
+ /* #2823 Yet another abs_integrate problem */
+ integrate( sqrt((cos(x) - 1)^2 + sin(x)^2), x, 0, 2*%pi);
+ 8$
+
+ /* #2815 abs_integrate leads to infinite recursion */
+  integrate(log(1-x)*log(1+x)/(1+x),x,0,1);
+  -((21*zeta(3)+4*log(2)^3-2*%pi^2*log(2))/24)+zeta(3)+log(2)^3/2-(%pi^2*log(2))/6$
+
+/* #2814 abs_integrate: integration of x*ceiling(x) */
+  expand(integrate(x*ceiling(x),x));
+  -ceiling(x)^3/6+ceiling(x)^2/4+(x^2*ceiling(x))/2-ceiling(x)/12-1/2$
+
+/* #2781 integral triggers error on ECL+abs_integrate */
+(ii : integrate(diff((tan(x)+x)*exp(tan(x)),x),x),0);
+0$
+
+/* of course a non-nounform is better, but a nounform is better
+than an infinite loop.*/
+is(inpart(ii,0)= nounify('integrate));
+true$
+
+(remvalue(ii),0);
+0$ 
+
+/* #2031 Operator ' does not work with integrate? */
+is('integrate(x^3+3,x,1,5) # 168);
+true$
+
 (print("time = ", elapsed_real_time () - start), 0);
 0$
 
-(remvalue(e,i,di,f1,start,baz), remove(x,noninteger,kk,integer), remfunction(convolution, unit_box), forget(signum,real),0);
+(kill(functions), kill(values),remove(x,noninteger,kk,integer), forget(signum,real),0);
 0$ 
 
+setify(map(lambda([q], if inpart(q,0)='kind then true else false), facts()));
+set(true)$
+
+contexts;
+[initial,global]$

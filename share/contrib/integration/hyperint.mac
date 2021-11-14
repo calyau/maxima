@@ -1,5 +1,5 @@
 /*
-  Copyright 2009 by Barton Willis
+  Copyright 2009, 2021 by Barton Willis
   Maxima code for integration of some algebraic functions.
 
   This is free software; you can redistribute it and/or
@@ -11,8 +11,6 @@
 
 */
 
-
-load("basic");
 if get('abs_integrate,'version) = false then load("abs_integrate.mac")$
 
 /* The function radcan isn't idempotent for some expressions that you might think
@@ -86,7 +84,7 @@ piecewise_constant_p(e,x,[z]) := (
     every(lambda([s], piecewise_constant_p(s,x, false)), args(e))));
 
 hyper_int(e,x) := block([kern, sigma, a, b, r, dkern, mu, eq, aa, l,
-                         sol, f, cnst, ie : false, %fo, %so, algexact : true],
+                     errormsg : false, sol, f, cnst, ie : false, %fo, %so, algexact : true],
   kern : collect_poly_factors(e,x),
   if kern # false then (
     kern : listify(kern),
@@ -110,7 +108,7 @@ hyper_int(e,x) := block([kern, sigma, a, b, r, dkern, mu, eq, aa, l,
         sol : algsys(eq, [a,b]),
         for sk in sol while ie = false do (
           f : radcan(exp(logcontract(integrate(mu,x)))),
-          f : block([?errorsw : true], errcatch(subst(sk, f))),
+          f : errcatch(subst(sk, f)),
           if f #  [] then (
             f : first(f),
             %fo : new_variable('general),

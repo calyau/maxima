@@ -326,8 +326,10 @@
      ;; Tested with acl 10.1
      #+allegro ((mlist simp) 3 4 5))
     ((mlist simp) "rtest_abs_integrate"
-     #-(or cmucl ccl ecl sbcl gcl)
-     ((mlist) 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 123 125 126 127 178))
+     #-(or ccl sbcl)
+     ((mlist) 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 123 125 126 127 178)
+     #+ccl ((mlist) 177 253)
+     #+sbcl ((mlist) 177 253))
     "rtest_pochhammer"
     ((mlist simp) "rtest_to_poly_solve"
      #-(or cmucl ccl ecl gcl sbcl sbcl)

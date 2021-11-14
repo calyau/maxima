@@ -1,5 +1,5 @@
 /*
-  Copyright 2008, 2009, 2010, 2011, 2012, 2014, 2015 by Barton Willis
+  Copyright 2008, 2009, 2010, 2011, 2012, 2014, 2015, 2021 by Barton Willis
   Maxima code for integration of signum, abs, max, min, floor, ceiling, unit_step, and hstep.
 
   This is free software; you can redistribute it and/or
@@ -21,14 +21,16 @@ load("unwind_protect");
 load("to_poly_solve_extra");
 load("partition");
 load("lrats");
+load("abs_integrate.lisp");
+load("hypergeometric");
+load("hyperint");
 
 matchdeclare(x, symbolp, [q,%a,%b], lambda([s], true));
-block([simp : false], tellsimpafter('integrate(q,x), extra_integrate(q,x)),
-	     	      tellsimpafter('integrate(q,x,%a,%b), extra_definite_integrate(q,x,%a,%b)));
+block([simp : false], 
+         tellsimpafter('integrate(q,x), extra_integrate(q,x)),
+	     	tellsimpafter('integrate(q,x,%a,%b), extra_definite_integrate(q,x,%a,%b)));
 
-extra_integration_methods : ['intfudu, 'intfugudu, 'signum_int, 'abs_integrate_use_if, 'floor_int, 'if_int];
-
-sine_p(x) :=safe_op(x) = 'sin;
+sine_p(x) := safe_op(x) = 'sin;
 cosine_p(x) := safe_op(x) = 'cos;
 tangent_p(x) := safe_op(x) = 'tan;
 
@@ -36,19 +38,28 @@ tangent_p(x) := safe_op(x) = 'tan;
 (intable[abs_sin] : lambda([u], [2*floor(u/%pi)-cos(u)*cos(%pi*floor(u/%pi)),  diff(u, %voi)]),
 intable[abs_cos] : lambda([u], [sin(u)*cos(%pi*floor(u/%pi+1/2))+2*floor(u/%pi+1/2),diff(u, %voi)]),
 intable[triangle_wave] : lambda([u],   [block([u : mod(u,1)], -(4*u-1)*abs(4*u-1)/8+(4*u-3)*abs(4*u-3)/8+2*u^2-2*u+1), diff(u,%voi)]),
+intable[floor] : lambda([u], [((2*u-1)*floor(u)-floor(u)^2)/2, diff(u,%voi)]),
+intable[ceiling] : lambda([u],[((2*u+1)*ceiling(u)-ceiling(u)^2)/2, diff(u,%voi)]),
 intable[sawtooth_wave] : lambda([u], [sawtooth_wave(u)^2/2-sawtooth_wave(u)/2+u/2, diff(u,%voi)]));
 
 /* Before attempting to integrate, replace (here X matches with any expression):
      (1) mod =  lambda([x,y], x - y * floor(x / y)),q)
      (2) abs(cos(X)) = abs_cos(X), abs(sin(X))  = abs_sin(X),
-     (3) acos(X) = %pi/2 - asin(x),
+     (3) acos(X) = %pi/2 - asin(X),
      (4) asin(sin(X)) =  (%pi/2)*triangle_wave(X/(2*%pi)), asin(cos(X)) =  -(%pi/2)*triangle_wave((x - %pi/2)/(2*%pi)),
      (5) acos(cos(X)) = (%pi/2)*triangle_wave((x - %pi/2)/(2*%pi)) + %pi/2,
      (6) atan(tan(X)) =  %pi * sawtooth_wave((X-%pi/2)/(%pi)) - %pi/2 -> -%pi*floor((2*X-%pi)/(2*%pi))+X-%p
 Where triangle_wave(x) = block([x : mod(x,1)], -abs(4*x-1) + abs(4*x-3) + 4*x-2) and sawtooth_wave(x) = x - floor(x).*/
 
-extra_integrate(q,x) := block([l, i, ii : funmake(nounify('integrate),[q,x])],
-  l : extra_integration_methods,
+/* The check for integration_depth() < 1 ensures that the main integration code
+   has finished before using the methods of of extra_integrate. Arguably, this
+   check makes the integration code less powerful, but the check reduces the
+   chances of infinite loops. Additionally, this check reduces the chances that
+   the main definite integration code will use an antiderivative that fails to 
+   be continuous on the integration interval.*/
+extra_integrate(q,x) := block([l, i, ii : funmake(nounify('integrate),[q,x]), opsubst : true, errormsg : false],
+  l : if is(integration_depth() < 1) then
+    extra_integration_methods else [],
   q : subst('mod = lambda([x,y], x - y * floor(x / y)),q),
   q : subst('abs = lambda([x], if sine_p(x) then abs_sin(first(x)) elseif cosine_p(x) then abs_cos(first(x)) else abs(x)),q),
   q : subst('acos = lambda([x], %pi/2 - asin(x)), q),
@@ -63,14 +74,10 @@ extra_integrate(q,x) := block([l, i, ii : funmake(nounify('integrate),[q,x])],
       l : [])),
   subst(['abs_sin = lambda([x], abs(sin(x))), 'abs_cos = lambda([x], abs(cos(x)))], ii));
 
-extra_definite_integration_methods : ['abs_defint];
-
 extra_definite_integrate(q,x,lo,hi) := block([l,i, ii : funmake(nounify('integrate),[q,x, lo, hi])],
-  l : extra_definite_integration_methods,
-  while l # [] do (
-    i : first(l)(q,x, lo, hi),
-    l : rest(l),
-    if (i # false) and freeof('integrate, i) then return(ii : i)),
+  for fn in extra_definite_integration_methods do (
+    i : fn(q,x,lo, hi),
+    if (i # false) and freeof('integrate, nounify('integrate), i) then return(ii : i)),
   ii);
 
 safe_op(e) := block([inflag : true], if mapatom(e) then false else op(e));
@@ -192,10 +199,15 @@ unit_step_mult_simp(e) := block([p : [], q : 1, inflag : true],
    q)
  else map('unit_step_mult_simp, e));
 
-/* Do e * signum(e) --> abs(e) */
+/* Do x*signum(x) --> abs(x) and signum(x)*abs(x) --> x until 
+   result doesn't change. Risky? Maybe--should there be a counter
+   that does an emergency stop to prevent an infinite loop?*/
+signum_to_abs(e) := block([l : flatten(gatherargs(e,'signum)),ee],
+  e : expand(e),
+  ee : expand(lratsubst(map(lambda([s], s*signum(s)=abs(s)), l), e)),
+  ee : expand(lratsubst(map(lambda([s], signum(s)*abs(s)=s), l), ee)),
+  if e=ee then e else signum_to_abs(ee));
 
-signum_to_abs(e) := block([l : flatten(gatherargs(e,'signum))],
-  fullratsubst(map(lambda([s], s*signum(s)=abs(s)), l), e));
 
 /* If e has the form w * signum(p1(x)) * signum(p2(x)) * ... * signum(pn(x)), where w
 is either freeof signum terms or free of x, return [w, append(q1,q2,...,qn)],
@@ -217,11 +229,19 @@ partition_as_signum(e,x) := block([w : 1, acc : [], OK : true, inflag : true, sg
 linear_in_p(e,x) :=
   polynomialp(e,[x], lambda([s], freeof(x,s)), lambda([k], is(k=0) or is(k = 1))) and numberp(diff(e,x));
 
+/* Try all "extra" integration methods, except signum_int. Additionally,
+   for a sum of terms, map all_but_signum_int on to the terms.*/
+all_but_signum_int(e,x) := block([extra_integration_methods : delete('signum_int,extra_integration_methods)],
+   e : expand(e),
+   if (safe_op(e) = "+") then (
+      e : map(lambda([s], all_but_signum_int(s,x)), args(e)),
+      if member(false, e) then false else xreduce("+", e))
+    else extra_integrate(e,x));
+
 signum_int(q,x) := block([w : 1, acc : [], sgn, v, f, listconstvars : true],
   q : convert_to_signum(q),
   if freeof('signum, q) then (
-    q : block([extra_integration_methods : []], integrate(trigsimp(q),x)),
-    if freeof('integrate, nounify('integrate),q) then q else false)
+     all_but_signum_int(q,x))
   else (
     q : almost_everywhere_simp(q),
     v : listofvars(q),
@@ -262,7 +282,7 @@ dint(e,x,l) := block([xo, acc : 0, i, cntx],
    cntx : supcontext(),
     i : unwind_protect((
          apply('assume,[xo < x, x < xi, xo < xi]),
-         errcatch(integrate(expand(e,0,0),x,xo,xi))),
+         errcatch(defint(expand(e,0,0),x,xo,xi))),
        killcontext(cntx)),
     if i = [ ] then return(acc : false) else acc : acc + first(i),
     xo : xi),
@@ -278,27 +298,6 @@ partitions_interval_p(l,[endpts]) := block([ok,lo,hi],
     l : sort(l, lambda([a,b], csign(b-a) = 'pos)),
     if every(lambda([a,b], is(a <= b)=true), l, endcons('inf, rest(l))) then l else false)
   else false);
-
-abs_defint(e,x,lo,hi) := block([f,l, prederror : false, cntx],
-  if is(hi < lo)=true then -abs_defint(e,x,hi,lo)
-  else if is(lo = hi) then 0
-  else (
-     unwind_protect((
-       cntx : supcontext(),
-        assume(lo <= x, x <= hi),
-        e : expand(e,0,0),
-        e : convert_to_signum(e),
-        e : almost_everywhere_simp(e),
-        l : xreduce('append, (gatherargs(e, 'signum))),
-        l : flatten(map(lambda([s], real_linear_factors(s,x)), l)), /* flatten([[1], false]) --> [1,false] */
-        l : sublist(l, lambda([s], lo <= s and s <= hi)),
-        l : delete(false,l),
-        l : partitions_interval_p(l,lo,hi),
-        if l # false then (
-          f : dint(e,x,l),
-          if f = false then false else f)
-       else false),
-    killcontext(cntx))));
 
 /* Replace signum(z)^2 --> 1, where z is nonzero and a polynomial. For a nonzero polynomial z,
 signum(z)^2 -1 is zero everywhere except at each zero of z. The almost_everywhere_simp simplification
@@ -405,9 +404,6 @@ if_int(q,x) := block([p,f,g,fi,gi,c],
       g : third(q),
       fi : integrate(f,x),
       gi : integrate(g,x),
-      /* ahhh, I'm not sure why it seems that extra_integrate isn't automatically called? */
-      if not(freeof('integrate, gi)) then gi : extra_integrate(g,x),
-      if not(freeof('integrate, fi)) then fi : extra_integrate(f,x),
       if freeof(x,p) then (
         %if(p,fi,gi))
       else if linear_in_p(lhs(p),x) and rhs(p) = 0 and freeof('integrate, 'limit, [fi,gi]) then (
@@ -533,3 +529,50 @@ conditional_integrate(e,x) := block([ee, eee, npoles, vars, n, m, k, cnd, eq, q,
       else false)
     else false)
   else false);
+
+abs_defint_signum(e,x,lo,hi,nounf) := block([f,l, prederror : false],
+  e : convert_to_signum(e),
+  e : almost_everywhere_simp(e),
+  l : xreduce('append, (gatherargs(e, 'signum))),
+  l : flatten(map(lambda([s], real_linear_factors(s,x)), l)), /* flatten([[1], false]) --> [1,false] */
+  l : sublist(l, lambda([s], lo <= s and s <= hi)),
+  l : delete(false,l),
+  l : partitions_interval_p(l,lo,hi),
+  if l # false then (
+      f : dint(e,x,l),
+      if f = false then nounf else f)
+  else nounf);
+
+/* Simplify e in the context that the facts in the list fcts are true.*/
+simp_assuming(e, fcts) := block([cntx : supcontext()],
+  unwind_protect ((
+    map(lambda([q], assume(q)), fcts),
+    expand(e,0,0)),
+  killcontext(cntx)));
+  
+/* We're going to trust extra_integrate to only return an antiderivative
+   that is valid on the interval with endpoints a & b. Notice that for
+   problems such as integrate(1/(2 + sin(x)),x), Maxima's answer isn'
+   valid on (-inf, inf) -- Maxima's defint code has to patch up such
+   cases.*/
+
+abs_defint(e,x,a,b) := block([ee, ii, xx : gensym(), errormsg : false, spts],
+  ee : subst(x = xx, e), /* effectively erase facts about x */
+  ee : simp_assuming(ee, [min(a,b) < xx, xx < max(a,b)]),
+  /* We attempt to reject antiderivatives that aren't continuous on the
+     interval [min(a,b),max(a,b)] */
+  spts : possible_singular_pts(ee),
+  spts : map(lambda([q], block([solveexplicit : true],solve(q,xx))), spts),
+  spts : xreduce('append, spts),
+  spts : map(lambda([q], is(q < min(a,b) and q > max(a,b))), spts),
+  if spts=[] then (
+    ii : extra_integrate(ee,xx),
+    if freeof('integrate, nounify('integrate), ii) then (
+      ii : errcatch(limit(subst(xx=b,ii)-subst(xx=a,ii))),
+      if ii # [] and ii # ['und] then (
+        first(ii))
+      else (
+        abs_defint_signum(ee,xx,a,b,funmake('integrate,[e,x,a,b]))))
+    else abs_defint_signum(ee,xx,a,b,funmake('integrate,[e,x,a,b])))       
+  else abs_defint_signum(ee,xx,a,b,funmake('integrate,[e,x,a,b])));    
+            
