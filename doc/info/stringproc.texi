@@ -1991,12 +1991,22 @@ WdiwkSPZ3gnIBhM9SuC076gLWZUNs6NqTeE3UzMjDAFhH3jYk1T7mysCvdtIkms=
 @fname{md5sum} (@var{arg}) @
 @fname{md5sum} (@var{arg}, @var{return-type})
 
-Returns the @code{MD5} checksum of a string, a non-negative integer or 
-a list of octets. The default return value is a string containing 32 hex characters.
+Returns the @code{MD5} checksum of a string, non-negative integer,
+list of octets, or binary (not character) input stream.
+A file for which an input stream is opened may be an ordinary text file;
+it is the stream which needs to be binary, not the file itself.
 
+When the argument is an input stream,
+@code{md5sum} reads the entire content of the stream,
+but does not close the stream.
+
+The default return value is a string containing 32 hex characters.
 The optional argument @var{return-type} allows @code{md5sum} to alternatively 
 return the corresponding number or list of octets.
 @var{return-type} may be @code{string}, @code{number} or @code{list}.
+
+Note that in case @var{arg} contains German umlauts or other non-ASCII 
+characters (resp. octets larger than 127) the @code{MD5} checksum is platform dependent.
 
 Examples:
 
@@ -2013,8 +2023,17 @@ Examples:
 (%o6)           ab:07:ac:bb:1e:49:68:01:93:7a:df:a7:72:42:4b:f7
 @end example
 
-Note that in case @var{arg} contains German umlauts or other non-ASCII 
-characters (resp. octets larger than 127) the @code{MD5} checksum is platform dependent.
+The argument may be a binary input stream.
+
+@example
+(%i1) S: openr_binary (file_search ("md5.lisp"));
+(%o1) #<INPUT BUFFERED FILE-STREAM (UNSIGNED-BYTE 8)
+  /home/robert/maxima/maxima-code/share/stringproc/md5.lisp>
+(%i2) md5sum (S);
+(%o2)           31a512ed53daf5b99495c9d05559355f
+(%i3) close (S);
+(%o3)                         true
+@end example
 
 @opencatbox
 @category{Package stringproc}

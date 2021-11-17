@@ -1,0 +1,24 @@
+(kill(md5array),
+ md5array["len-0-md5-d41d8c.txt"]: "d41d8cd98f00b204e9800998ecf8427e",
+ md5array["len-1-md5-68b329.txt"]: "68b329da9893e34099c7d8ad5cb9c940",
+ md5array["len-2-md5-60b725.txt"]: "60b725f10c9c85c70d97880dfe8191b3",
+ md5array["len-63-md5-6d19bf.txt"]: "6d19bfd45423fa9c33b367d399b0c797",
+ md5array["len-64-md5-e9df39.txt"]: "e9df395ee72f8605b60f93c785b12b16",
+ md5array["len-65-md5-14448c.txt"]: "14448c3a1ad72aeb2852ce57a9291679",
+ md5array["len-98-md5-669560.txt"]: "669560e73ba7be5849ab8969daa147eb",
+ md5array["len-128-md5-6ee76c.txt"]: "6ee76c556fa747695ca51ab543932981",
+ md5array["len-129-md5-50a749.txt"]: "50a7497555843f5c43d19dae7b3780d9",
+ md5array["len-897-md5-f353a8.txt"]: "f353a849ab29ad9da4580f67a29b4281",
+ 0);
+0;
+
+(ff: flatten (rest (arrayinfo (md5array), 2)),
+ map (lambda ([f], block ([S: openr_binary (file_search (f)), x],
+                          x: md5sum (S),
+                          close (S),
+                          if x = md5array[f]
+                              then true
+                              else md5_mismatch (f, md5array[f], x))),
+      ff),
+ if every (lambda ([a], a = true), %%) then true else %%);
+true;

@@ -187,9 +187,11 @@
         (setq bytes (number-to-octets s)) )
       (($listp s)
         (setq bytes (cdr s)) )
+      ((streamp s)
+       (return-from md5sum-impl (md5sum-stream s rtype)))
       (t 
         (gf-merror (intl:gettext 
-          "`md5sum': Argument must be a string, a non-negative integer or a list of octets." ))))
+          "`md5sum': Argument must be a string, non-negative integer, list of octets, or stream." ))))
     (setq len (length bytes) 
           *h5* '(#x67452301 #xefcdab89 #x98badcfe #x10325476) )
     (do ((off len)) 
@@ -198,18 +200,33 @@
       (md5-update (butlast bytes off))
       (setq bytes (last bytes off)) )
     (setq *h5* (mapcar #'swap-endian32 *h5*))
-    (cond
-      ((equal rtype '$list)
-        (cons '(mlist simp)
-          (reduce #'nconc (mapcar #'word-to-octets *h5*)) ))
-      ((equal rtype '$number)
-        (reduce #'(lambda (x y) (logior (ash x 32.) y)) *h5*) )
-      ((equal rtype '$string)
-        (nstring-downcase (format nil "~{~8,'0x~}" *h5*)) )
-      (t  
-        (gf-merror (intl:gettext 
-          "`md5sum': Optional argument must be 'list, 'number or 'string." ))))))
+    (md5sum-return rtype)))
 
+(defun md5sum-return (rtype)
+  (cond
+    ((equal rtype '$list)
+      (cons '(mlist simp)
+        (reduce #'nconc (mapcar #'word-to-octets *h5*)) ))
+    ((equal rtype '$number)
+      (reduce #'(lambda (x y) (logior (ash x 32.) y)) *h5*) )
+    ((equal rtype '$string)
+      (nstring-downcase (format nil "~{~8,'0x~}" *h5*)) )
+    (t  
+      (gf-merror (intl:gettext 
+        "`md5sum': Optional argument must be 'list, 'number or 'string." )))))
+
+(defun md5sum-stream (s rtype)
+  (setq *h5* '(#x67452301 #xefcdab89 #x98badcfe #x10325476))
+  (let ((bytes (make-list 64.)) (len 0))
+    (do
+      ((len-1 (read-sequence bytes s)))
+      ((< len-1 64.) (md5-final (butlast bytes (- (length bytes) len-1)) len-1 (+ len len-1)))
+      (md5-update bytes)
+      (setq len (+ len len-1))
+      (setq len-1 (read-sequence bytes s))))
+
+  (setq *h5* (mapcar #'swap-endian32 *h5*))
+  (md5sum-return rtype))
 
 (eval-when
   #+gcl (compile eval)

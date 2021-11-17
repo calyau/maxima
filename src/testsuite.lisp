@@ -229,6 +229,7 @@
      ;; 12 fails in ECL 15.3.7, 69 in ECL 13.5.1
      #+ecl ((mlist simp) 12 69)
      #+gcl ((mlist simp) 14))
+    #-allegro "rtest_md5sum"
     "rtest_opproperties"
     "rtest_stats"
     "rtest_distrib"
