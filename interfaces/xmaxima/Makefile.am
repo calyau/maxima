@@ -5,7 +5,11 @@
 
 include $(top_srcdir)/common.mk
 
-SUBDIRS = msgs doc
+if ENABLE_BUILD_DOCS
+   DOC_DIR = doc
+endif
+
+SUBDIRS = msgs $(DOC_DIR)
 if XMAXIMA_EXE
 SUBDIRS += win32
 else

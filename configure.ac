@@ -616,6 +616,18 @@ AC_ARG_ENABLE(gettext,
 
 AM_CONDITIONAL(ENABLE_GETTEXT, test x$enable_gettext = xtrue)
 
+AC_ARG_ENABLE(build-docs,
+	[  --enable-build-docs        Execute make in doc directories],
+	[case "${enableval}" in
+	       yes) enable_build_docs=true  ;;
+ 	       no)  enable_build_docs=false ;;
+	       *) AC_MSG_ERROR(bad value ${enableval} for --enable-build-docs) ;;
+	 esac],
+	 [enable_build_docs=true])
+
+
+AM_CONDITIONAL(ENABLE_BUILD_DOCS, test x$enable_build_docs = xtrue)
+
 dnl languages
 AC_ARG_ENABLE(lang-de,
 	[  --enable-lang-de             German language support],
