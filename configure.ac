@@ -628,6 +628,14 @@ AC_ARG_ENABLE(build-docs,
 
 AM_CONDITIONAL(ENABLE_BUILD_DOCS, test x$enable_build_docs = xtrue)
 
+AC_CHECK_PROG(makeinfo_found,makeinfo,true,false)
+
+if test x"${enable_build_docs}" = xtrue ; then
+    if test x"${makeinfo_found}" = xfalse ; then
+        AC_MSG_ERROR(No makeinfo found; consider --disable-build-docs)
+    fi
+fi
+
 dnl languages
 AC_ARG_ENABLE(lang-de,
 	[  --enable-lang-de             German language support],
