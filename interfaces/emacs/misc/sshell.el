@@ -16,7 +16,7 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
-;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+;; the Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 ;; The following is a "simple shell" much like the one in version 18
 ;; of emacs.   Unfortunately cmint breaks most code which tries to use

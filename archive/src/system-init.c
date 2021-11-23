@@ -27,7 +27,7 @@ License for more details.
 
 You should have received a copy of the GNU Library General Public License 
 along with GCL; see the file COPYING.  If not, write to the Free Software
-Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+Foundation, 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 #include <stdio.h>
 #include <setjmp.h>
