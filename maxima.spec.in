@@ -80,7 +80,7 @@ accepts a custom html tag to execute Maxima commands from
 an html page. Xmaxima is written in the Tcl/Tk language.
 
 %package emacs
-Summary: Emacs modes for maima
+Summary: Emacs modes for Maxima
 Group: Sciences/Mathematics
 Requires: maxima = %{version}, emacs
 Provides: maxima-emacs
