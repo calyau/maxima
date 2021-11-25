@@ -1,7 +1,3 @@
-/* batch (bode)$ 
- * (load will fail with an error due to presence of a :lisp construct below) 
- */
-
 /* bode.mac -- functions to draw Bode gain and phase plots
  *
  * copyright Robert Dodier, October 2005
@@ -35,23 +31,6 @@
    bode_gain (H8 (s), [w, 1/1000, 1000]);
    block ([bode_phase_unwrap : false], bode_phase (H8 (s), [w, 1/1000, 1000]));
    block ([bode_phase_unwrap : true], bode_phase (H8 (s), [w, 1/1000, 1000]));
- */
-
-/* If running 5.9.2, need to download plot.lisp from cvs main branch
- */
-  "http://cvs.sourceforge.net/viewcvs.py/*checkout*/maxima/maxima/src/plot.lisp";
-/* since 5.9.2 branch does not have the logx stuff.
- * 5.9.3 will have logx, so this is just a temporary measure.
- * Uncomment next two lines to load plot.lisp.
- */
-/* load("/tmp/plot.lisp"); */     /* change /tmp if you put plot.lisp someplace else */
-/* plot_options : set_plot_option ([logx, false]); */
-
-/* If running 5.9.2, uncomment next line to load conjugate from share/linearalgebra */
-/* load (conjugate); */
-
-/*:lisp (defun $charfun (p) (let* (($prederror nil) (q (mevalp p))) (cond ((eq q t) 1) ((eq q nil) 0) (t `(($charfun) ,p)))))*/
-/* If running 5.9.2, uncomment preceding :lisp to define charfun (characteristic function).
  */
 
 bode_phase_unwrap : false;
