@@ -1791,8 +1791,9 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 ;; STRIP-LINEINFO does not modify EXPR.
 
 (defun strip-lineinfo (expr)
-  (if (atom expr) expr
-    (cons (strip-lineinfo-op (car expr)) (mapcar #'strip-lineinfo (cdr expr)))))
+  (if (or (atom expr) (specrepp expr))
+      expr
+      (cons (strip-lineinfo-op (car expr)) (mapcar #'strip-lineinfo (cdr expr)))))
 
 ;; If something in the operator looks like debugging stuff, remove it.
 ;; It is assumed here that debugging stuff is a list comprising an integer and a string
