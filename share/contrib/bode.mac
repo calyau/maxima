@@ -33,6 +33,8 @@
    block ([bode_phase_unwrap : true], bode_phase (H8 (s), [w, 1/1000, 1000]));
  */
 
+bode_plot2d: 'plot2d;
+
 bode_phase_unwrap : false;
 
 bode_grid : false;
@@ -54,7 +56,7 @@ bode_gain (H, range, [plot_opts]) := block ([omega, L, s, my_preamble],
   H : subst (%i * omega, s, H),
 
   buildq ([plot_opts],
-    plot2d (10 * log10 (cabs (H * conjugate (H))), range,
+    bode_plot2d (10 * log10 (cabs (H * conjugate (H))), range,
     [logx, true], [gnuplot_preamble, my_preamble], splice (plot_opts))),
   ev (%%));
 
@@ -72,7 +74,7 @@ bode_phase (H, range, [plot_opts]) := block ([omega, L, s, my_preamble],
 
   if bode_phase_unwrap
     then buildq ([plot_opts],
-      plot2d (180/%pi * carg_unwrapped (H), range, [logx, true], [gnuplot_preamble, my_preamble], splice (plot_opts)))
+      bode_plot2d (180/%pi * carg_unwrapped (H), range, [logx, true], [gnuplot_preamble, my_preamble], splice (plot_opts)))
     else buildq ([plot_opts],
-      plot2d (180/%pi * carg (H), range, [logx, true], [gnuplot_preamble, my_preamble], splice (plot_opts))),
+      bode_plot2d (180/%pi * carg (H), range, [logx, true], [gnuplot_preamble, my_preamble], splice (plot_opts))),
   ev (%%));
