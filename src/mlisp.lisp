@@ -1962,7 +1962,8 @@ wrapper for this."
       0					; break SAVE files.
       (logand #o77777
 	      (let ((x (car l)))
-		(cond (($ratp x) (merror (intl:gettext "hash function: cannot hash a special expression (CRE or Taylor).")))
+		(cond ((specrepp x)
+		       (merror (intl:gettext "hash function: cannot hash a special expression (CRE, Taylor or Poisson).")))
 		      ((or (fixnump x) (floatp x))
 		       (+ (if (fixnump x) x (floor (+ x 5e-4)))
 			   (* 7 (hasher (cdr l)))))

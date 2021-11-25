@@ -146,8 +146,8 @@
 (defun bad-index-error (indices)
   (let ((m-indices (cons '(mlist) indices)))
     (cond
-      ((every #'(lambda (x) (or ($ratp x) (integerp x))) indices)
-       (merror (intl::gettext "array: indices cannot be special expressions (CRE or Taylor); found: ~M") m-indices))
+      ((every #'(lambda (x) (or (specrepp x) (integerp x))) indices)
+       (merror (intl::gettext "array: indices cannot be special expressions (CRE, Taylor or Poisson); found: ~M") m-indices))
       ((every #'(lambda (x) (or ($mapatom x) (integerp x))) indices)
        (merror (intl::gettext "array: indices cannot be plain or subscripted symbols; found: ~M") m-indices))
       (t
