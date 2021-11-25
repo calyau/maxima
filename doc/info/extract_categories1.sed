@@ -1,10 +1,10 @@
-s/^@deffn  *{[^}]*}  *\([^[:blank:]]*\).*/items = [["deffn", "\1"]]/
-s/^@defvr  *{[^}]*}  *\([^[:blank:]]*\).*/items = [["defvr", "\1"]]/
-s/^@deffnx  *{[^}]*}  *\([^[:blank:]]*\).*/if not ["deffn", "\1"] in items: items.append (["deffn", "\1"])/
-s/^@defvrx  *{[^}]*}  *\([^[:blank:]]*\).*/if not ["defvr", "\1"] in items: items.append (["defvr", "\1"])/
-s/^@end deffn/items = []/
-s/^@end defvr/items = []/
-s/^@node  *\([^,]*\).*/items = [["node", "\1"]] # extracted from node/
+s/^@deffn  *{[^}]*}  *\([^[:blank:]]*\).*/(setq items (list (list "deffn" "\1")))/
+s/^@defvr  *{[^}]*}  *\([^[:blank:]]*\).*/(setq items (list (list "defvr" "\1")))/
+s/^@deffnx  *{[^}]*}  *\([^[:blank:]]*\).*/(if (not (member (list "deffn" "\1") items :test #'equal)) (nconc items (list (list "deffn" "\1"))))/
+s/^@defvrx  *{[^}]*}  *\([^[:blank:]]*\).*/(if (not (member (list "defvr" "\1") items :test #'equal)) (nconc items (list (list "defvr" "\1"))))/
+s/^@end deffn//
+s/^@end defvr//
+s/^@node  *\([^,]*\).*/(setq items (list (list "node" "\1")))/
 s/@opencatbox//
 s/@closecatbox//
-s/@category{\([^}]*\)}\s*/@@@###@@@foo = []@@@###@@@for x in items: foo.append ([filenamebase, x[0], x[1]])@@@###@@@try: categories ["\1"] . extend (foo)@@@###@@@except KeyError: categories ["\1"] = foo@@@###@@@/g
+s/@category{\([^}]*\)}\s*/(setf (gethash "\1" *categories*) (append (gethash "\1" *categories*) (foo items)))/g

@@ -43,10 +43,10 @@ done
 for f in *.texi
 do
   filenamebase=`echo $f | @SED@ -e 's/^.*\///;s/\.texi//'`
-  echo "filenamebase = \"$filenamebase\""
+  echo "(setq *filenamebase* \"$filenamebase\")"
   cat $f
-done | @AWK@ '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/ || /^filenamebase/)' | @SED@ -f @abs_srcdir@/extract_categories1.sed | @AWK@ -f @abs_srcdir@/extract_categories1.awk > make-categories.py 
-python make-categories.py 
+done | @AWK@ '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/ || /^.setq .filenamebase/)' | @SED@ -f @abs_srcdir@/extract_categories1.sed | @AWK@ -f @abs_srcdir@/extract_categories1.awk > make-categories.lisp 
+@DEFAULTLISP@ make-categories.lisp
 @SED@ -e 's/^@bye/@node Documentation Categories, , Function and Variable Index\n@chapter Documentation Categories/' @abs_srcdir@/maxima.texi > maxima.texi 
 ( for f in Category-*.texi; do echo '@include' $f; done ; echo @bye ) >> maxima.texi 
 
