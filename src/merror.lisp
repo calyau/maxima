@@ -39,12 +39,12 @@
   this variable may be determined by factors of terminal speed and type.")
 
 (defun error-size (exp)
-  ; RATDISREP the argument in case it's a CRE. Ugh.
-  ; But RATDISREP simplifies its argument, which is a no-no if we got here
+  ; Call SPECREPCHECK on the argument in case it's a specrep. Ugh.
+  ; But this simplifies its argument, which is a no-no if we got here
   ; because some simplification code is complaining, so inhibit simplification. Double ugh.
   (let (($simp nil))
     (declare (special $simp))
-    (setq exp (ratdisrep exp)))
+    (setq exp (specrepcheck exp)))
 
   (if (atom exp)
       0
