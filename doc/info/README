@@ -50,7 +50,7 @@ https://ftp.gnu.org/gnu/texinfo/texinfo.tex - and it probably makes sense
 to update the "texinfo.tex" files shipped with maxima from time to time.
 
 The files header.hhp, maxima.hhp (and the generated files contents.hhc and index.hhk)
-are for the for the generation of Microsoft HTML Help (Option --enable-chm).
+are for the generation of Microsoft HTML Help (Option --enable-chm).
 
 
 
