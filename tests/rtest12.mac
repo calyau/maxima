@@ -195,3 +195,20 @@ bar(x)^4 - 2*bar(x)^2 + 1;
  test ());
 5;
 
+/* Bug #2709: `letsimp' is wrong if `ratexpand' is called */
+
+(let (U, T), 0);
+0;
+
+letsimp (U / n);
+T / n;
+
+ratexpand (a * b * c);
+a * b * c;
+
+letsimp (U / n); /* This used to yield 1 */
+T / n;
+
+(remlet (U), 0);
+0;
+

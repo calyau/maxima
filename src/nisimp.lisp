@@ -245,7 +245,20 @@
   (let ((num (cadr e)) (denom (cddr e)) $ratexpand)
     (if $letvarsimp (setq varlist (mapcar #'nisletsimp varlist)))
     (let (($ratexpand t))
-      (setq num (nisletsimp (pdis num)) denom (nisletsimp (pdis denom))))
+      ; Construct new CREs based on the numerator and denominator
+      ; of E and disrep them in the VARLIST and GENVAR context from
+      ; E.
+      ;
+      ; NISLETSIMP can change VARLIST and GENVAR, so the order of
+      ; the PDIS and NISLETSIMP forms matter here.  PDISing and
+      ; NISLETSIMPing the numerator before moving on to the
+      ; denominator is not correct.
+      (let ((varlist (mrat-varlist e))
+            (genvar (mrat-genvar e)))
+        (setq num (pdis num)
+              denom (pdis denom)))
+      (setq num (nisletsimp num)
+            denom (nisletsimp denom)))
     (setq e (list '(mquotient) num denom))
     (if $letrat (nisletsimp ($ratexpand e)) e)))
 
