@@ -1,10 +1,11 @@
 BEGIN {
-   print "(defparameter *categories* (make-hash-table :test 'equal))"
+   print "(defvar *categories* (make-hash-table :test 'equal))"
+   print "(defvar *filenamebase*)"
    print "(defvar items)"
    print "(defvar fn)"
    print "(defun foo (lst)"
    print "  (loop :for x :in lst"
-   print "        :collect (list *filenamebase* #+WHY (elt lst 0) x)))"
+   print "        :collect (list *filenamebase* x)))"
 }
 
 { print; }
@@ -23,7 +24,7 @@ END {
    print "                     :for y :from 1"
    print "                     :when (> y 1)"
    print "                     :do (format out-stream \"~&@html~%&middot;~%@end html\")"
-   print "                     :do (format out-stream \"~&@ref{Item: ~A/~A/~A, ~A}\" (elt x 0) (first (elt x 1)) (second (elt x 1)) (second (elt x 1))))))"
+   print "                     :do (format out-stream \"~&@ref{Item: ~A/~A/~A, ~A}\" (first x) (first (second x)) (second (second x)) (second (second x))))))"
    print "        (format out-stream \"~&@closecatbox\")))"
    print ""
 }
