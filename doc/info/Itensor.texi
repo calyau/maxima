@@ -462,24 +462,6 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @closecatbox
 @end deffn
 
-@c THIS FUNCTION IS IN THE SHARE PACKAGE itensor.lisp
-@c MOVE THIS DESCRIPTION TO Itensor.texi
-
-@c -----------------------------------------------------------------------------
-@anchor{show}
-@deffn {Function} show (@var{expr})
-
-Displays @code{expr} with the indexed objects in it shown
-having covariant indices as subscripts, contravariant indices as
-superscripts.  The derivative indices are displayed as subscripts,
-separated from the covariant indices by a comma.
-
-@opencatbox
-@category{Package itensor}
-@category{Display functions}
-@closecatbox
-@end deffn
-
 @c -----------------------------------------------------------------------------
 @anchor{flipflag}
 @defvr {Option variable} flipflag
@@ -1393,8 +1375,8 @@ removes this property from all indexed objects.
 
 @c -----------------------------------------------------------------------------
 @anchor{makebox}
-@deffn {Function} makebox (@var{expr})
-Display @var{expr} in the same manner as @mref{show}; however,
+@deffn {Function} makebox (@var{expr},@var{g})
+Display @var{expr} using the metric @var{g} such that
 any tensor d'Alembertian occurring in @var{expr} will be indicated using the
 symbol @code{[]}.  For example, @code{[]p([m],[n])} represents
 @code{g([],[i,j])*p([m],[n],i,j)}.
