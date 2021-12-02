@@ -637,15 +637,15 @@ $$
 @end ifset
 @ifclear mathjax
 
-@math{R_C(0,1) = %pi/2}
+@code{R_C(0,1) = %pi/2}
 
-@math{R_C(0,1/4) = %pi}
+@code{R_C(0,1/4) = %pi}
 
-@math{R_C(2,1) = log(sqrt(2)+1)}
+@code{R_C(2,1) = log(sqrt(2)+1)}
 
-@math{R_C(%i, %i+1) = %pi/4 + %i/2*log(sqrt(2)+1)}
+@code{R_C(%i, %i+1) = %pi/4 + %i/2*log(sqrt(2)+1)}
 
-@math{R_C(0, %i) = (1-%i)*%pi/(2*sqrt(2))}
+@code{R_C(0, %i) = (1-%i)*%pi/(2*sqrt(2))}
 @end ifclear
 @end ifnotinfo
 
@@ -720,11 +720,11 @@ $$
 @end ifset
 @ifclear mathjax
 
-@math{R_D(x,x,x) = x^(-3/2)}
+@code{R_D(x,x,x) = x^(-3/2)}
 
-@math{R_D(0,y,y) = 3/4*%pi*y^(-3/2)}
+@code{R_D(0,y,y) = 3/4*%pi*y^(-3/2)}
 
-@math{R_D(0,2,1) = 3 sqrt(%pi) gamma(3/4)/gamma(1/4)}
+@code{R_D(0,2,1) = 3 sqrt(%pi) gamma(3/4)/gamma(1/4)}
 @end ifclear
 @end ifnotinfo
 @ifinfo
