@@ -1668,6 +1668,14 @@ as they might appear in books and articles,
 using only letters, numbers, and some punctuation characters.
 This display is sometimes called the "pretty printer" display.
 
+When @code{display2d} is @code{true},
+Maxima attempts to honor the global variable for line length, @code{linel}.
+When an atom (symbol, number, or string) would otherwise cause a line to exceed @code{linel},
+the atom may be printed in pieces on successive lines,
+with a continuation character (backslash, @code{\}) at the end of the leading piece;
+however, in some cases, such atoms are printed without a line break,
+and the length of the line is greater than @code{linel}.
+
 When @code{display2d} is @code{false},
 the console display is a 1-dimensional or linear form
 which is the same as the output produced by @code{grind}.
@@ -1675,6 +1683,11 @@ which is the same as the output produced by @code{grind}.
 When @code{display2d} is @code{false},
 the value of @mref{stringdisp} is ignored,
 and strings are always displayed with quote marks.
+
+When @code{display2d} is @code{false},
+Maxima attempts to honor @code{linel},
+but atoms are not broken across lines,
+and the actual length of an output line may exceed @code{linel}.
 
 See also @mref{leftjust} to switch between a left justified and a centered
 display of equations.
