@@ -119,7 +119,7 @@ if(BUILD_CURRENT)
 else()
     # Get Maxima version from configure.ac
     file(STRINGS "${CMAKE_SOURCE_DIR}/../configure.ac" CONFIGUREAC REGEX "AC_INIT\\(.*\\)")
-    string(REGEX REPLACE "AC_INIT\\(\\[maxima\\], \\[(.*)\\]\\)" "\\1" MAXIMAVERSION ${CONFIGUREAC})
+    string(REGEX REPLACE "AC_INIT\\(\\[maxima\\],[ \t\r\n]*\\[(.*)\\]\\)" "\\1" MAXIMAVERSION ${CONFIGUREAC})
     message(STATUS "Maxima version (from configure.ac): ${MAXIMAVERSION}")
 endif()
 
