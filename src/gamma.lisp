@@ -3843,7 +3843,7 @@
              (div
                (simplify (list '($pochhammer) a n))
                (simplify (list '($pochhammer) (add a b) n)))
-             ($beta_incomplete_generalized a b z1 z2))
+             (take '(%beta_incomplete_generalized) a b z1 z2))
            (mul
              (power (add a b n -1) -1)
              (let ((index (gensumindex)))
@@ -3871,7 +3871,7 @@
              (div
                (simplify (list '($pochhammer) (add 1 (mul -1 a) (mul -1 b)) n))
                (simplify (list '($pochhammer) (sub 1 a) n)))
-             ($beta_incomplete_generalized a b z1 z2))
+             (take '(%beta_incomplete_generalized) a b z1 z2))
            (mul
              (div
                (simplify 
@@ -4025,7 +4025,7 @@
            ;; and emporarily give some extra precision but avoid fpprec dependency.
            ;; Is this workaround correct for complex values?
            (let ((fpprec 70))
-             ($float ($beta_incomplete_regularized ($bfloat a) ($bfloat b) z)) )
+             ($float (take '(%beta_incomplete_regularized) ($bfloat a) ($bfloat b) z)) )
            ($rectform (div ibeta beta)) )))
            
       ((complex-bigfloat-numerical-eval-p a b z)
@@ -4050,7 +4050,7 @@
        (let ((n (cadr a))
              (a (simplify (cons '(mplus) (cddr a)))))
          (sub
-           ($beta_incomplete_regularized a b z)
+           (take '(%beta_incomplete_regularized) a b z)
            (mul
              (power (add a b n -1) -1)
              (power (simplify (list '($beta) (add a n) b)) -1)
@@ -4072,7 +4072,7 @@
        (let ((n (- (cadr a)))
              (a (simplify (cons '(mplus) (cddr a)))))
          (sub
-           ($beta_incomplete_regularized a b z)
+           (take '(%beta_incomplete_regularized) a b z)
            (mul
              (power (add a b -1) -1)
              (power (simplify (list '($beta) a b)) -1)
