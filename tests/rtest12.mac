@@ -165,7 +165,7 @@ poissimp(sin(x)^5+cos(x)^5);
 pfeformat:false;
 false$
 
-/* test for bug [ 1648352 ] rules and pattern bug */
+/* test for bug #1097: rules and pattern bug */
 
 (kill (foo, bar),
  matchdeclare (aa, true, gg, lambda([yy], evenp(yy) and (yy > 1))),
@@ -181,6 +181,27 @@ foo(x)^3;
 
 letsimp (foo(x)^4);
 bar(x)^4 - 2*bar(x)^2 + 1;
+
+/* More tests for bug #1097: pattern variable appears in letsimp result */
+
+(kill (f, g, x, y),
+ matchdeclare ([arg1, arg2, exp], true),
+ let (f(arg1, arg2)^exp, g(arg2, arg1)^exp), 0);
+0;
+
+letsimp (f(x, y)); /* This used to yield g(arg2,arg1) */
+g(y, x);
+
+letsimp (f(x, y)^2); /* This used to yield g(arg2,arg1)^2 */
+g(y, x)^2;
+
+letsimp (f(x, y)^q); /* This used to yield g(arg2,arg1)^q */
+g(y, x)^q;
+
+(remlet (f(arg1, arg2)^exp),
+ remove ([arg1, arg2, exp], matchdeclare),
+ 0);
+0;
 
 /* letsimp confused by debug stuff in expression car
  * mailing list 2012-12-23: "let(simp) behaves different when loaded from batch file"

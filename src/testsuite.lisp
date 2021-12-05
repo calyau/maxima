@@ -71,8 +71,7 @@
 	;; ECL 16.1.2 still fails in #104
 	((mlist simp) "rtest8"
 	 #+ecl ((mlist simp) 104))
-        ((mlist simp) "rtest12"
-	 ((mlist simp) 76 78))
+        "rtest12"
         "rexamples"
         ((mlist simp) "rtesthyp"
 	 ((mlist simp) 105 112 113 123 124 128))
