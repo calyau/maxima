@@ -4020,3 +4020,106 @@ beta_incomplete_generalized (m - 2, n, x, y), beta_expand = true;
                                /((-n)-m+2)-(1-x)^n*x^(m-1)))
   /((1-m)*(2-m));
 
+/* verify derivatives of beta_incomplete and friends (unreported bug) */
+
+(kill (a, b, x, y, e), 
+finite_difference_epsilon: 1e-8,
+
+finite_difference_jacobian (ee, vars, vars0) :=
+    genmatrix (lambda ([i, j], finite_difference_partial (ee[i], vars, vars0, j)), length(ee), length(vars)),
+
+finite_difference_partial (e, vars, vars0, j) :=
+    block ([e0, e1, vars1],
+           subst (vars0, e),
+           e0: ev (%%, nouns, numer),
+           vars1: copy (vars0),
+           vars1[j]: (lhs(vars0[j]) = rhs(vars0[j]) + finite_difference_epsilon),
+           subst (vars1, e),
+           e1: ev (%%, nouns, numer),
+           (e1 - e0)/finite_difference_epsilon),
+
+finite_difference_gradient (e, vars, vars0) :=
+    makelist (finite_difference_partial (e, vars, vars0, j), j, 1, length(vars)),
+
+/* definition of hypergeometric_regularized can go away when it is built in ... */
+hypergeometric_regularized (p, q, x) :=
+    hypergeometric (p, q, x)/product (gamma(q[i]), i, 1, length(q)),
+
+test_derivative (expr, grad_expr, vars, vars0) :=
+    block ([grad_via_diff, grad_via_finite_difference, norm_error],
+           subst (vars0, grad_expr),
+           grad_via_diff: ev (%%, numer),
+           grad_via_finite_difference: finite_difference_gradient (expr, vars, vars0),
+           norm_error: sqrt (lsum (e^2, e, grad_via_diff - grad_via_finite_difference)),
+           if norm_error < sqrt (finite_difference_epsilon)
+               then true
+               else FAILED ('expr = expr, 'grad_via_diff = grad_via_diff, 'grad_via_finite_difference = grad_via_finite_difference, 'norm_error = norm_error)),
+
+ab0_list:
+    cartesian_product_list
+        ([a = 2, a = 3, a = 4],
+         [b = 4, b = 5, b = 6]),
+
+abx0_list:
+    cartesian_product_list
+        ([a = 2, a = 3, a = 4],
+         [b = 4, b = 5, b = 6],
+         [x = 0.25, x = 0.5, x = 0.75]),
+
+abxy0_list:
+    cartesian_product_list
+        ([a = 2, a = 3, a = 4],
+         [b = 4, b = 5, b = 6],
+         [x = 0.1, x = 0.25, x = 0.4],
+         [y = 0.6, y = 0.75, y = 0.9]),
+0);
+0;
+
+grad_beta: makelist (diff (beta (a, b), v), v, [a, b]);
+[-beta(a,b)*(psi[0](b+a)-psi[0](a)),
+ -beta(a,b)*(psi[0](b+a)-psi[0](b))];
+
+grad_beta_incomplete: makelist (diff (beta_incomplete (a, b, x), v), v, [a, b, x]);
+[beta_incomplete(a,b,x)*log(x)
+  -gamma(a)^2*hypergeometric_regularized([a,a,1-b],[a+1,a+1],x)*x^a,
+
+ gamma(b)^2*hypergeometric_regularized([b,b,1-a],[b+1,b+1],1-x)*(1-x)^b
+  -beta_incomplete(b,a,1-x)*log(1-x)+beta(a,b)*(psi[0](b)-psi[0](b+a)),
+
+ (1-x)^(b-1)*x^(a-1)];
+
+grad_beta_incomplete_regularized: makelist (diff (beta_incomplete_regularized (a, b, x), v), v, [a, b, x]);
+[beta_incomplete_regularized(a,b,x)*(log(x)+psi[0](b+a)-psi[0](a))
+  -(gamma(a)*hypergeometric_regularized([a,a,1-b],[a+1,a+1],x)*gamma(b+a)*x^a)/gamma(b),
+
+ (gamma(b)*gamma(b+a)*hypergeometric_regularized([b,b,1-a],[b+1,b+1],1-x)*(1-x)^b)/gamma(a)
+   +beta_incomplete_regularized(b,a,1-x)*((-log(1-x))-psi[0](b+a)+psi[0](b)),
+
+ ((1-x)^(b-1)*x^(a-1))/beta(a,b)];
+
+grad_beta_incomplete_generalized: makelist (diff (beta_incomplete_generalized (a, b, x, y), v), v, [a, b, x, y]);
+[beta_incomplete(a,b,y)*log(y)
+  +gamma(a)^2*(hypergeometric_regularized([a,a,1-b],[a+1,a+1],x)*x^a
+                -hypergeometric_regularized([a,a,1-b],[a+1,a+1],y)*y^a)
+  -beta_incomplete(a,b,x)*log(x),
+
+ (-gamma(b)^2*(hypergeometric_regularized([b,b,1-a],[b+1,b+1],1-x)*(1-x)^b
+               -hypergeometric_regularized([b,b,1-a],[b+1,b+1],1-y)*(1-y)^b))
+  -beta_incomplete(b,a,1-y)*log(1-y)+beta_incomplete(b,a,1-x)*log(1-x),
+
+ -(1-x)^(b-1)*x^(a-1),
+
+ (1-y)^(b-1)*y^(a-1)];
+
+map (lambda ([ab0], test_derivative (beta (a, b), grad_beta, [a, b], ab0)), ab0_list);
+''(makelist (true, length (ab0_list)));
+
+map (lambda ([abx0], test_derivative (beta_incomplete (a, b, x), grad_beta_incomplete, [a, b, x], abx0)), abx0_list);
+''(makelist (true, length (abx0_list)));
+
+map (lambda ([abx0], test_derivative (beta_incomplete_regularized (a, b, x), grad_beta_incomplete_regularized, [a, b, x], abx0)), abx0_list);
+''(makelist (true, length (abx0_list)));
+
+map (lambda ([abxy0], test_derivative (beta_incomplete_generalized (a, b, x, y), grad_beta_incomplete_generalized, [a, b, x, y], abxy0)), abxy0_list);
+''(makelist (true, length (abxy0_list)));
+
