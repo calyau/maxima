@@ -44,8 +44,8 @@ differential equations using Laplace transform. Here the @var{eqn}'s are
 differential equations in the dependent variables @var{y_1}, ...,
 @var{y_n}. The functional dependence of @var{y_1}, ..., @var{y_n} on an
 independent variable, for instance @var{x}, must be explicitly indicated
-in the variables and its derivatives. For example, the @em{correct} way to
-define the differential equations would be:
+in the variables and its derivatives. For example, the @emph{correct}
+way to define the differential equations would be:
 
 @example
 eqn_1: 'diff(f(x),x,2) = sin(x) + 'diff(g(x),x);
