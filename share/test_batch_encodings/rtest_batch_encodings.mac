@@ -1,0 +1,94 @@
+/* Test character encodings when specified as an argument to openr
+ * when opening a stream to be supplied to batch or batchload.
+ * e.g. S: openr("foo.mac", "CP1252"); batch(S); close(S);
+ *
+ * The batch files foo-<encoding>.mac and foo-<encoding>.UTF-8.mac
+ * contain strings which are assigned to the variable foo_string.
+ * All four instances of foo_string (batch and batchload, <encoding> and UTF-8)
+ * should be identical.
+ *
+ * foo-<encoding>.UTF-8.mac is the same as foo-<encoding>.mac,
+ * after passing it through a character conversion program
+ * (I think it was iconv but I don't remember for sure).
+ */
+
+(test_encoding ([ee]) :=
+    (for e in ee do
+         if recognized_encoding_p (e)
+             then return (test_encoding_1 (ee[1], e))
+             else printf (true, "rtest_encodings: skip unrecognized encoding ~s~%", e),
+     if %% = done /* all were skipped; pass this test */
+         then true
+         else %%),
+ test_encoding_1 (ee1, e) :=
+     block ([foo_name, foo_UTF8_name],
+            if e = ee1
+                then printf (true, "rtest_encodings: recognized ~s.", e)
+                else printf (true, "rtest_encodings: recognized ~s (an alias of ~s).~%", e, ee1),
+            foo_name: printf (false, "foo-~a.mac", ee1),
+            foo_UTF8_name: printf (false, "foo-~a.UTF-8.mac", ee1),
+            kill (foo_string),
+            mystream: openr (file_search (foo_name), e),
+            batchload (mystream),
+            close (mystream),
+            foo_string_1: foo_string,
+            kill (foo_string),
+            mystream: openr (file_search (foo_name), e),
+            batch (mystream),
+            close (mystream),
+            foo_string_2: foo_string,
+            kill (foo_string),
+            mystream: openr (file_search (foo_UTF8_name), "UTF-8"),
+            batchload (mystream),
+            close (mystream),
+            foo_string_3: foo_string,
+            kill (foo_string),
+            mystream: openr (file_search (foo_UTF8_name), "UTF-8"),
+            batch (mystream),
+            close (mystream),
+            foo_string_4: foo_string,
+            is (foo_string_2 = foo_string_1
+                and foo_string_3 = foo_string_2
+                and foo_string_4 = foo_string_3)),
+ 0);
+0;
+
+test_encoding ("CP1252", "WINDOWS-1252");
+true;
+
+test_encoding ("ISO-8859-1", "ISO8859-1");
+true;
+
+test_encoding ("ISO-8859-2", "ISO8859-2");
+true;
+
+test_encoding ("ISO-8859-3", "ISO8859-3");
+true;
+
+test_encoding ("ISO-8859-4", "ISO8859-4");
+true;
+
+test_encoding ("ISO-8859-5", "ISO8859-5");
+true;
+
+test_encoding ("ISO-8859-6", "ISO8859-6");
+true;
+
+test_encoding ("ISO-8859-7", "ISO8859-7");
+true;
+
+test_encoding ("ISO-8859-8", "ISO8859-8");
+true;
+
+test_encoding ("ISO-8859-9", "ISO8859-9");
+true;
+
+test_encoding ("ISO-8859-10", "ISO8859-10");
+true;
+
+test_encoding ("ISO-8859-14", "ISO8859-14");
+true;
+
+test_encoding ("ISO-8859-15", "ISO8859-15");
+true;
+
