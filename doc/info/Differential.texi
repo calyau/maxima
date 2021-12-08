@@ -36,30 +36,23 @@ See @mref{ode2} for an example of its usage.
 
 @anchor{desolve}
 @deffn {Function} desolve @
-@fname{desolve} (@var{eqn}, @var{x}) @
-@fname{desolve} ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+@fname{desolve} (@var{eqn}, @var{y}) @
+@fname{desolve} ([@var{eqn_1}, ..., @var{eqn_n}], [@var{y_1}, ..., @var{y_n}])
 
 The function @code{desolve} solves systems of linear ordinary
-differential equations using Laplace transform.  Here the @var{eqn}'s
-are differential equations in the dependent variables @var{x_1}, ...,
-@var{x_n}.  The functional dependence of @var{x_1}, ..., @var{x_n} on an
+differential equations using Laplace transform. Here the @var{eqn}'s are
+differential equations in the dependent variables @var{y_1}, ...,
+@var{y_n}. The functional dependence of @var{y_1}, ..., @var{y_n} on an
 independent variable, for instance @var{x}, must be explicitly indicated
-in the variables and its derivatives. For example, this would not be the
-correct way to define two equations:
-
-@example
-eqn_1: 'diff(f,x,2) = sin(x) + 'diff(g,x);
-eqn_2: 'diff(f,x) + x^2 - f = 2*'diff(g,x,2);
-@end example
-
-The correct way would be:
+in the variables and its derivatives. For example, the @em{correct} way to
+define the differential equations would be:
 
 @example
 eqn_1: 'diff(f(x),x,2) = sin(x) + 'diff(g(x),x);
 eqn_2: 'diff(f(x),x) + x^2 - f(x) = 2*'diff(g(x),x,2);
 @end example
 
-The call to the function @code{desolve} would then be
+The call to the function @code{desolve} would then be:
 @example
 desolve([eqn_1, eqn_2], [f(x),g(x)]);
 @end example
@@ -76,11 +69,11 @@ calling @code{desolve} by using @code{atvalue}.
 @c [%o1,%o2],%o5,diff;
 @c ===end===
 @example
-(%i1) @b{@t{'diff(f(x),x)='diff(g(x),x)+sin(x);}}
+(%i1) 'diff(f(x),x)='diff(g(x),x)+sin(x);
                  d           d
 (%o1)            -- (f(x)) = -- (g(x)) + sin(x)
                  dx          dx
-(%i2) @b{@t{'diff(g(x),x,2)='diff(f(x),x)-cos(x);}}
+(%i2) 'diff(g(x),x,2)='diff(f(x),x)-cos(x);
 @group
                   2
                  d            d
@@ -88,17 +81,17 @@ calling @code{desolve} by using @code{atvalue}.
                    2          dx
                  dx
 @end group
-(%i3) @b{@t{atvalue('diff(g(x),x),x=0,a);}}
+(%i3) atvalue('diff(g(x),x),x=0,a);
 (%o3)                           a
-(%i4) @b{@t{atvalue(f(x),x=0,1);}}
+(%i4) atvalue(f(x),x=0,1);
 (%o4)                           1
-(%i5) @b{@t{desolve([%o1,%o2],[f(x),g(x)]);}}
+(%i5) desolve([%o1,%o2],[f(x),g(x)]);
                   x
 (%o5) [f(x) = a %e  - a + 1, g(x) = 
 
                                                 x
                                    cos(x) + a %e  - a + g(0) - 1]
-(%i6) @b{@t{[%o1,%o2],%o5,diff;}}
+(%i6) [%o1,%o2],%o5,diff;
              x       x      x                x
 (%o6)   [a %e  = a %e , a %e  - cos(x) = a %e  - cos(x)]
 
@@ -200,39 +193,39 @@ Example:
 @c bc2(%o5,x=0,y=1,x=1,y=3);
 @c ===end===
 @example
-(%i1) @b{@t{x^2*'diff(y,x) + 3*y*x = sin(x)/x;}}
+(%i1) x^2*'diff(y,x) + 3*y*x = sin(x)/x;
                       2 dy           sin(x)
 (%o1)                x  -- + 3 x y = ------
                         dx             x
-(%i2) @b{@t{ode2(%,y,x);}}
+(%i2) ode2(%,y,x);
                              %c - cos(x)
 (%o2)                    y = -----------
                                   3
                                  x
-(%i3) @b{@t{ic1(%o2,x=%pi,y=0);}}
+(%i3) ic1(%o2,x=%pi,y=0);
                               cos(x) + 1
 (%o3)                   y = - ----------
                                    3
                                   x
-(%i4) @b{@t{'diff(y,x,2) + y*'diff(y,x)^3 = 0;}}
+(%i4) 'diff(y,x,2) + y*'diff(y,x)^3 = 0;
                          2
                         d y      dy 3
 (%o4)                   --- + y (--)  = 0
                           2      dx
                         dx
-(%i5) @b{@t{ode2(%,y,x);}}
+(%i5) ode2(%,y,x);
                       3
                      y  + 6 %k1 y
 (%o5)                ------------ = x + %k2
                           6
-(%i6) @b{@t{ratsimp(ic2(%o5,x=0,y=0,'diff(y,x)=2));}}
+(%i6) ratsimp(ic2(%o5,x=0,y=0,'diff(y,x)=2));
 @group
                              3
                           2 y  - 3 y
 (%o6)                   - ---------- = x
                               6
 @end group
-(%i7) @b{@t{bc2(%o5,x=0,y=1,x=1,y=3);}}
+(%i7) bc2(%o5,x=0,y=1,x=1,y=3);
                          3
                         y  - 10 y       3
 (%o7)                   --------- = x - -

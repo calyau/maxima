@@ -190,6 +190,10 @@ eqn3: 'diff(f(x),x,2)+f(x)=2*x;
 desolve(eqn3,f(x));
 ''(f(x) = sin(x)*(at('diff(f(x),x,1),x = 0)-2)+f(0)*cos(x)+2*x);
 
+/* BUG 3899 */
+errcatch(desolve('diff(f(x),x),x));
+[];
+
 /* Examples mentioned in bug report [ 1063454 ] bug in ode2
  * First one was reported to fail in CMUCL with "run out of heap" message.
  * Others were reported to be OK. Put them all here for good measure.

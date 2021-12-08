@@ -5,6 +5,8 @@
 (defmfun $desolve (eqns vars)
   (let (teqns tvars ovar (lvar ($gensym)) (flag nil) ($dispflag nil))
     (declare (special $dispflag))
+    (if ($mapatom vars)
+	(merror (intl:gettext "desolve(<eqn>,<depvar>): dependant variable <depvar> cannot be a mapatom, found: ~M") vars))
     (unless ($listp vars)
       (setq eqns (list '(mlist) eqns))
       (setq vars (list '(mlist) vars))
