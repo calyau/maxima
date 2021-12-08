@@ -360,14 +360,19 @@ The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 The incomplete elliptic integral of the first kind, defined as
 
 @ifhtml
+@ifset mathjax
+@math{ $$ \int\limits_0^{\phi} {\frac{d\theta}{\sqrt{1-m\sin^2\theta}}} $$ }
+@end ifset
+@ifclear mathjax
 @math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@end ifclear
 @end ifhtml
 @ifinfo
 @math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
 
 @tex
-$$\int_0^\phi {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
+$$ \int\limits_0^\phi {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}} $$
 @end tex
 
 See also @ref{elliptic_e} and @ref{elliptic_kc}.
@@ -382,13 +387,19 @@ See also @ref{elliptic_e} and @ref{elliptic_kc}.
 The incomplete elliptic integral of the second kind, defined as
 
 @ifhtml
+@ifset mathjax
+@math{ $$ \int\limits_0^\phi {\sqrt{1 - m\sin^2\theta}} d\theta $$ }
+@end ifset
+@ifclear mathjax
 @math{elliptic_e(phi, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@end ifclear
 @end ifhtml
 @ifinfo
 @math{elliptic_e(phi, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
+
 @tex
-$$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
+$$ \int\limits_0^\phi \sqrt{1 - m\sin^2\theta} d\theta $$
 @end tex
 
 See also @ref{elliptic_f} and @ref{elliptic_ec}.
@@ -403,9 +414,15 @@ See also @ref{elliptic_f} and @ref{elliptic_ec}.
 The incomplete elliptic integral of the second kind, defined as
 
 @ifhtml
+@ifset mathjax
+@math{ $$ \int\limits_0^u {\rm dn}(v, m) dv  = \int\limits_0^\tau \sqrt{{1-m t^2}\over{1-t^2}} dt $$ }
+where:
+@math{ $$ \tau = sn(u,m) $$ }
+@end ifset
+@ifclear mathjax
 @math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
-
 where @math{tau = sn(u,m)}.
+@end ifclear
 @end ifhtml
 @ifinfo
 @math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
@@ -413,12 +430,12 @@ where @math{tau = sn(u,m)}.
 where @math{tau = sn(u,m)}.
 @end ifinfo
 @tex
-$$\int_0^u {\rm dn}(v, m) dv  = \int_0^\tau \sqrt{{1-m t^2}\over{1-t^2}} dt$$
-
+$$ \int\limits_0^u {\rm dn}(v, m) dv  = \int\limits_0^\tau \sqrt{{1-m t^2}\over{1-t^2}} dt $$
+code
 where $\tau = {\rm sn}(u, m)$.
 @end tex
 
-This is related to @math{elliptic_e} by
+This is related to @code{elliptic_e} by
 
 @ifhtml
 @math{elliptic_eu(u, m) = elliptic_e(asin(sn(u,m)),m)}
@@ -443,13 +460,18 @@ See also @ref{elliptic_e}.
 The incomplete elliptic integral of the third kind, defined as
 
 @ifhtml
+@ifset mathjax
+@math{ $$ \int\limits_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}} $$ }
+@end ifset
+@ifclear mathjax
 @math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@end ifclear
 @end ifhtml
 @ifinfo
 @math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
 @tex
-$$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
+$$\int\limits_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
 @opencatbox
@@ -462,17 +484,23 @@ $$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 The complete elliptic integral of the first kind, defined as
 
 @ifhtml
-@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
+@ifset mathjax
+@math{ $$ \int\limits_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}} $$ }
+@end ifset
+@ifclear mathjax
+@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, pi/2)}
+@end ifclear
 @end ifhtml
 @ifinfo
-@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
+@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, pi/2)}
 @end ifinfo
 
 @tex
-$$\int_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
+$$\int\limits_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
+
 For certain values of @math{m}, the value of the integral is known in
-terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
+terms of @math{Gamma} functions.  Use @mref{makegamma} to evaluate them.
 
 @opencatbox
 @category{Elliptic integrals}
@@ -484,17 +512,23 @@ terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
 The complete elliptic integral of the second kind, defined as
 
 @ifhtml
-@math{integrate(sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
+@ifset mathjax
+@math{ $$ \int\limits_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta $$ }
+@end ifset
+@ifclear mathjax
+@math{integrate(sqrt(1 - m*sin(x)^2), x, 0, pi/2)}
+@end ifclear
 @end ifhtml
 @ifinfo
-@math{integrate(sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
+@math{integrate(sqrt(1 - m*sin(x)^2), x, 0, pi/2)}
 @end ifinfo
 
 @tex
-$$\int_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
+$$\int\limits_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
+
 For certain values of @math{m}, the value of the integral is known in
-terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
+terms of @math{Gamma} functions.  Use @mref{makegamma} to evaluate them.
 
 @opencatbox
 @category{Elliptic integrals}
@@ -505,25 +539,25 @@ terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
 @deffn {Function} carlson_rc (@var{x}, @var{y})
 Carlson's RC integral is defined by
 
-@ifnotinfo
-@tex
-$$R_C(x, y) = {1\over{2}} \int_0^{\infty} {1\over{\sqrt{t+x}(t+y)}}\, dt$$
-@end tex
+@ifhtml
 @ifset mathjax
-@html
-$$R_C(x, y) = {1\over{2}} \int_0^{\infty} {1\over{\sqrt{t+x}(t+y)}}\, dt$$
-@end html
+@math{ $$ R_C(x, y) = {1\over{2}} \int\limits_0^{\infty} {1\over{\sqrt{t+x}(t+y)}}\, dt $$ }
 @end ifset
 @ifclear mathjax
 @math{integrate(1/2*(t+x)^(-1/2)/(t+y), t, 0, inf)}
-
 @end ifclear
-@end ifnotinfo
+@end ifhtml
 @ifinfo
 @math{integrate(1/2*(t+x)^(-1/2)/(t+y), t, 0, inf)}
 @end ifinfo
+
+@tex
+$$ R_C(x, y) = {1\over{2}} \int\limits_0^{\infty} {1\over{\sqrt{t+x}(t+y)}}\, dt $$
+@end tex
+
 This integral is related to many elementary functions in the following
 way:
+
 @ifnotinfo
 @tex
 $$
