@@ -87,12 +87,27 @@
   #+ecl (or (eq e ':ucs-4le) (member e (ext:all-encodings)))
   #+ccl (ccl:lookup-character-encoding e)
   #+clisp (equal (symbol-package e) (find-package :charset))
-  #+cmucl (assoc e (ext:list-all-external-formats))
-  #+sbcl (gethash e sb-impl::*external-formats*)
+  ;; CMUCL: flatten table of encodings and look for E among preferred names and their synonyms
+  #+cmucl (member e (apply #'append (mapcar (lambda (l) (if (cdr l) (cons (car l) (cadr l)) l)) (ext:list-all-external-formats))))
+  #+sbcl (check-encoding-sbcl e)
   #+gcl nil ;; GCL 2.6.12 does not recognize :external-format in OPEN
   ;; work around ABCL bug: "SYSTEM:AVAILABLE-ENCODINGS symbols strangeness" (https://github.com/armedbear/abcl/issues/82)
   #+abcl (member (symbol-name e) (mapcar #'symbol-name (system:available-encodings)) :test #'string=)
   #-(or ecl ccl clisp cmucl sbcl gcl abcl) 'unknown)
+
+#+sbcl (defun check-encoding-sbcl (e)
+         (let ((x sb-impl::*external-formats*))
+           (cond
+             ;; not sure when SBCL switched over from hash table to array ... try to handle both
+             ((hash-table-p x) (gethash e x))
+             ((arrayp x)
+              (some
+                #'identity
+                (mapcar (lambda (l) (member e l))
+                        (loop for ef across x
+                              when (sb-impl::external-format-p ef)
+                              collect (sb-impl::ef-names ef)))))
+             (t (merror "CHECK-ENCODING: I don't know how to check encoding for this version of SBCL.")))))
 
 ;; Expose CHECK-ENCODING to Maxima user.
 ;; Argument is an encoding symbol name, such as that returned by $INFERRED_ENCODING.
@@ -100,16 +115,21 @@
 ;; false if the encoding is not recognized or the argument is null;
 ;; if there is no known method to check the encoding, print an error message.
 
+;; CMUCL: symbols for encodings aren't known until this function is called.
+#+cmucl (ext:list-all-external-formats)
+
 (defun $recognized_encoding_p (e)
-  (setq e (string-upcase e))
-  (or
-    (not (null (string= e "DEFAULT")))
-    (let ((s (find-symbol e #+clisp :charset #-clisp :keyword)))
-      (if (not s)
-        (merror (intl:gettext "recognized_encoding_p: ~M can't be the name of an encoding for this Lisp implementation.") e)
-        (let ((x (check-encoding s)))
-          (cond
-            ((eq x 'unknown)
-             (merror (intl:gettext "recognized_encoding_p: I don't know how to verify encoding for this Lisp implementation.")))
-            (t
-              (not (null x)))))))))
+  (let ((e-up (string-upcase e)) (e-down (string-downcase e)))
+    (or
+      (not (null (string= e-up "DEFAULT")))
+      (let ((s (or
+                 (find-symbol e #+clisp :charset #-clisp :keyword)
+                 (find-symbol e-up #+clisp :charset #-clisp :keyword)
+                 (find-symbol e-down #+clisp :charset #-clisp :keyword))))
+        (when s
+          (let ((x (check-encoding s)))
+            (cond
+              ((eq x 'unknown)
+               (merror (intl:gettext "recognized_encoding_p: I don't know how to verify encoding for this Lisp implementation.")))
+              (t
+                (not (null x))))))))))

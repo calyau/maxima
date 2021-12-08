@@ -316,10 +316,9 @@ See comments to $adjust_external_format below for a detailed description.
                ef ))))
       ;;
       #+cmucl (progn
-        #+unix (let ((ef (stream-external-format *standard-output*)) ;; input format remains 'default'
-                     (ef2 (stream-external-format *standard-input*)) ) ;; in test-batch input format is UTF-8
+        #+unix (let ((ef (stream-external-format *standard-output*))) ;; input format remains 'default'
           (cond 
-            ((or (eq ef :utf-8) (eq ef2 :utf-8)) enc)
+            ((check-encoding enc) enc)
             (t (is-ignored enc name "to enable the encoding argument") 
                ef )))
         #-unix enc )
