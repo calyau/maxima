@@ -112,23 +112,24 @@
   convenience for writers of packages and users of the macsyma->lisp
   translator."
 
-  (let ((searched-for
-	 ($file_search1 filename
-			'((mlist) $file_search_maxima $file_search_lisp  )))
-	type)
-    (setq type ($file_type searched-for))
-    (case type
-      (($maxima)
-       ($batchload searched-for))
-      (($lisp $object)
-       ;; do something about handling errors
-       ;; during loading. Foobar fail act errors.
-       (load-and-tell searched-for))
-      (t
-       ;; UNREACHABLE MESSAGE: DEFAULT TYPE IS '$OBJECT (SEE $FILE_TYPE BELOW)
-       (merror "Maxima bug: Unknown file type ~M" type)))
-    searched-for))
-
+  (if (or (stringp filename) (symbolp filename) (pathnamep filename))
+    (let ((searched-for
+  	 ($file_search1 filename
+  			'((mlist) $file_search_maxima $file_search_lisp  )))
+  	type)
+      (setq type ($file_type searched-for))
+      (case type
+        (($maxima)
+         ($batchload searched-for))
+        (($lisp $object)
+         ;; do something about handling errors
+         ;; during loading. Foobar fail act errors.
+         (load-and-tell searched-for))
+        (t
+         ;; UNREACHABLE MESSAGE: DEFAULT TYPE IS '$OBJECT (SEE $FILE_TYPE BELOW)
+         (merror "Maxima bug: Unknown file type ~M" type)))
+      searched-for)
+    (merror "load: argument must be a string, symbol, or pathname; found: ~M" filename)))
 
 (defmvar $file_type_lisp
     (list '(mlist) "l" "lsp" "lisp"))

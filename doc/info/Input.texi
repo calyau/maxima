@@ -102,11 +102,20 @@ always appended.
 @anchor{batch}
 @deffn  {Function} batch @
 @fname{batch} (@var{filename}) @
-@fname{batch} (@var{filename}, @code{option})
+@fname{batch} (@var{filename}, @var{option}) @
+@fname{batch} (@var{S}) @
+@fname{batch} (@var{S}, @var{option})
 
 @code{batch(@var{filename})} reads Maxima expressions from @var{filename} and 
 evaluates them.  @code{batch} searches for @var{filename} in the list 
 @mrefdot{file_search_maxima}  See also @mrefdot{file_search}
+
+@code{batch(@var{S})} reads Maxima expressions from the input stream @var{S}
+as created by @mref{openr}.
+The behavior of @code{batch} in this case is the same as if the input
+were a file name, and in the remainder of this description,
+what is said about input files applies to input streams as well,
+except that the comments about searching for files do not apply to streams.
 
 @code{batch(@var{filename}, @code{demo})} is like @code{demo(@var{filename})}.
 In this case @code{batch} searches for @var{filename} in the list
@@ -146,9 +155,17 @@ implementation.
 command lines, to give error-free demonstrations, or to help organize one's
 thinking in solving complex problems.
 
-@code{batch} evaluates its argument.  @code{batch} returns the path of
-@var{filename} as a string, when called with no second argument or with the 
-option @code{demo}.  When called with the option @code{test}, the return value
+@code{batch} evaluates its arguments.
+
+When called with no second argument or with the option @code{demo},
+@code{batch} returns the path of @var{filename},
+if the argument is a file name,
+or the path of the file for which the input stream was opened,
+if the argument is a file input stream.
+If the argument is a string input stream,
+a representation of the input stream is returned.
+
+When called with the option @code{test}, the return value
 is a an empty list @code{[]} or a list with @var{filename} and the numbers of
 the tests which have failed.
 
@@ -164,10 +181,13 @@ See also @mrefcomma{load} @mrefcomma{batchload} and @mrefdot{demo}
 
 @c -----------------------------------------------------------------------------
 @anchor{batchload}
-@deffn {Function} batchload (@var{filename})
+@deffn {Function} batchload @
+@fname{batchload} (@var{filename}) @
+@fname{batchload} (@var{S}) @
 
-Reads Maxima expressions from @var{filename} and evaluates them, without
-displaying the input or output expressions and without assigning labels to
+Reads Maxima expressions from input file @var{filename} or input stream @var{S}
+and evaluates them,
+without displaying the input or output expressions and without assigning labels to
 output expressions.  Printed output (such as produced by @mref{print} or
 @mrefparen{describe}) is displayed, however.
 
@@ -175,8 +195,14 @@ The special variable @mref{%} and the function @mref{%th} refer to previous
 results from the interactive interpreter, not results within the file.
 The file cannot include @code{:lisp} constructs.
 
-@code{batchload} returns the path of @var{filename}, as a string.
 @code{batchload} evaluates its argument.
+
+@code{batchload} returns the path of @var{filename},
+if the argument is a file name,
+or the path of the file for which the input stream was opened,
+if the argument is a file input stream.
+If the argument is a string input stream,
+a representation of the input stream is returned.
 
 See also @mrefcomma{batch} and @mrefdot{load}
 @c batchload APPEARS TO HAVE THE SAME EFFECT AS load.
@@ -410,7 +436,11 @@ See also @mrefdot{file_type}
 
 Evaluates expressions in @var{filename}, thus bringing variables, functions, and
 other objects into Maxima.  The binding of any existing object is clobbered by
-the binding recovered from @var{filename}.  To find the file, @code{load} calls
+the binding recovered from @var{filename}.
+
+@var{filename} must be a string, symbol,
+or Lisp pathname (as created by @mref{filename_merge}).
+To find the file, @code{load} calls
 @mref{file_search} with @mref{file_search_maxima} and
 @mref{file_search_lisp} as the search directories.  If @code{load} succeeds, it
 returns the name of the file.  Otherwise @code{load} prints an error message.
