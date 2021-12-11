@@ -120,3 +120,43 @@ return an unevaluated limit expression.
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{gruntz}
+@deffn {Function} gruntz @
+@fname{gruntz} (@var{expr}, @var{var}, @var{value}) @
+@fname{gruntz} (@var{expr}, @var{var}, @var{value}, @var{direction})
+
+Compute limit of expression @var{expr} with respect to variable @var{var} at @var{value}.
+When @var{value} is not infinite (i.e., not @code{inf} or @code{minf}),
+@var{direction} must be supplied,
+either @code{plus} for a limit from above,
+or @code{minus} for a limit from below.
+
+If @code{gruntz} cannot find the limit,
+an unevaluated expression @code{gruntz(...)} is returned.
+
+@code{gruntz} implements the method described in the dissertation of
+Dominik Gruntz, "On Computing Limits in a Symbolic Manipulation System"
+(ETH Zurich, 1996).
+
+The algorithm identifies the most rapidly varying subexpression,
+replaces it with a new variable, rewrites the expression in terms
+of the new variable, and then repeats.
+
+The algorithm doesn't handle oscillating functions, so it can't do things like
+@code{limit(sin(x)/x, x, inf)}.
+
+To handle limits involving functions such as @code{gamma(x)} and @code{erf(x)},
+the Gruntz algorithm requires them to be written in terms of asymptotic expansions,
+which Maxima cannot currently do.
+
+The Gruntz algorithm assumes that variables and expressions are real,
+so, for example, it can't handle @code{limit((-2)^x, x, inf)}.
+
+@code{gruntz} is one of the methods called from @code{limit}.
+
+@opencatbox
+@category{Limits}
+@closecatbox
+
+@end deffn
