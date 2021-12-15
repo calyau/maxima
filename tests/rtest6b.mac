@@ -74,3 +74,37 @@ tex1(sin(x)^-2);
 tex1(f(x)^-2);
 "{{1}\\over{f\\left(x\\right)^2}}";
 
+/* see: https://stackoverflow.com/questions/66056058/wxmaxima-texput-for-powers-of-expressions
+ */
+
+logexpand: false; /* disable log simplifications */
+false;
+
+foo: map (tex1, [log(x), log(x+1), log(x)^n]);
+["\\log x","\\log \\left(x+1\\right)","\\left(\\log x\\right)^{n}"];
+
+texput (log, "\\ln ");
+"\\ln ";
+
+bar: map (tex1, [log(x), log(x+1), log(x)^n]);
+["\\ln x","\\ln \\left(x+1\\right)","\\left(\\ln x\\right)^{n}"];
+
+/* verify that log is just as it was before but with \ln instead of \log */
+
+if bar = map (lambda ([s], ssubst ("ln", "log", s)), foo) then true else bar;
+true;
+
+/* there's no user-level interface for this, and :lisp isn't recognized in test scripts, so ... */
+block([simp:false], ?nconc(?\*tex\-mexpt\-trig\-like\-fns\*, ?list(log)), 0);
+0;
+
+baz: map (tex1, [log(x), log(x+1), log(x)^n]);
+["\\ln x","\\ln \\left(x+1\\right)","\\ln ^{n}x"];
+
+/* verify that now, log acts just like tan in tex output */
+
+map (lambda ([s], ssubst ("ln", "tan", s)), map (tex1, [tan(x), tan(x+1), tan(x)^n]));
+''baz;
+
+(reset (), 0);
+0;
