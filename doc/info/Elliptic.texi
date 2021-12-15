@@ -390,7 +390,7 @@ The incomplete elliptic integral of the first kind, defined as
 
 @ifhtml
 @ifset mathjax
-@math{ $$ \int\limits_0^{\phi} {\frac{d\theta}{\sqrt{1-m\sin^2\theta}}} $$ }
+@math{ $$ \int_0^{\phi} {\frac{d\theta}{\sqrt{1-m\sin^2\theta}}} $$ }
 @end ifset
 @ifclear mathjax
 @math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}
@@ -401,7 +401,7 @@ The incomplete elliptic integral of the first kind, defined as
 @end ifinfo
 
 @tex
-$$ \int\limits_0^{\phi} {\frac{d\theta}{\sqrt{1-m\sin^2\theta}}} $$
+$$ \int_0^{\phi} {\frac{d\theta}{\sqrt{1-m\sin^2\theta}}} $$
 @end tex
 
 See also @ref{elliptic_e} and @ref{elliptic_kc}.
@@ -417,7 +417,7 @@ The incomplete elliptic integral of the second kind, defined as
 
 @ifhtml
 @ifset mathjax
-@math{ $$ \int\limits_0^\phi {\sqrt{1 - m\sin^2\theta}} d\theta $$ }
+@math{ $$ \int_0^\phi {\sqrt{1 - m\sin^2\theta}} d\theta $$ }
 @end ifset
 @ifclear mathjax
 @math{elliptic_e(phi, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
@@ -428,7 +428,7 @@ The incomplete elliptic integral of the second kind, defined as
 @end ifinfo
 
 @tex
-$$ \int\limits_0^\phi \sqrt{1 - m\sin^2\theta} d\theta $$
+$$ \int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta $$
 @end tex
 
 See also @ref{elliptic_f} and @ref{elliptic_ec}.
@@ -444,7 +444,7 @@ The incomplete elliptic integral of the second kind, defined as
 
 @ifhtml
 @ifset mathjax
-@math{ $$ \int\limits_0^u {\rm dn}(v, m) dv  = \int\limits_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}} dt $$ }
+@math{ $$ \int_0^u {\rm dn}(v, m) dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}} dt $$ }
 where:
 @math{ $$ \tau = sn(u,m) $$ }
 @end ifset
@@ -459,7 +459,7 @@ where @math{tau = sn(u,m)}.
 where @math{tau = sn(u,m)}.
 @end ifinfo
 @tex
-$$ \int\limits_0^u {\rm dn}(v, m) dv  = \int\limits_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}} dt $$
+$$ \int_0^u {\rm dn}(v, m) dv  = \int_0^\tau \sqrt{\frac{1-m t^2}{1-t^2}} dt $$
 
 where $\tau = {\rm sn}(u, m)$.
 @end tex
@@ -498,7 +498,7 @@ The incomplete elliptic integral of the third kind, defined as
 
 @ifhtml
 @ifset mathjax
-@math{ $$ \int\limits_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}} $$ }
+@math{ $$ \int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}} $$ }
 @end ifset
 @ifclear mathjax
 @math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
@@ -508,7 +508,7 @@ The incomplete elliptic integral of the third kind, defined as
 @math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
 @tex
-$$\int\limits_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
+$$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
 @opencatbox
@@ -522,7 +522,7 @@ The complete elliptic integral of the first kind, defined as
 
 @ifhtml
 @ifset mathjax
-@math{ $$ \int\limits_0^{\frac{\pi}{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}} $$ }
+@math{ $$ \int_0^{\frac{\pi}{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}} $$ }
 @end ifset
 @ifclear mathjax
 @math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, pi/2)}
@@ -533,7 +533,7 @@ The complete elliptic integral of the first kind, defined as
 @end ifinfo
 
 @tex
-$$\int\limits_0^{\frac{\pi}{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
+$$\int_0^{\frac{\pi}{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
 For certain values of @math{m}, the value of the integral is known in
@@ -550,7 +550,7 @@ The complete elliptic integral of the second kind, defined as
 
 @ifhtml
 @ifset mathjax
-@math{ $$ \int\limits_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta} d\theta $$ }
+@math{ $$ \int_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta} d\theta $$ }
 @end ifset
 @ifclear mathjax
 @math{integrate(sqrt(1 - m*sin(x)^2), x, 0, pi/2)}
@@ -561,7 +561,7 @@ The complete elliptic integral of the second kind, defined as
 @end ifinfo
 
 @tex
-$$\int\limits_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
+$$\int_0^{\frac{\pi}{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
 
 For certain values of @math{m}, the value of the integral is known in
@@ -578,7 +578,7 @@ Carlson's RC integral is defined by
 
 @ifhtml
 @ifset mathjax
-@math{ $$ R_C(x, y) = \frac{1}{2} \int\limits_0^{\infty} \frac{1}{\sqrt{t+x}(t+y)}\, dt $$ }
+@math{ $$ R_C(x, y) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}(t+y)}\, dt $$ }
 @end ifset
 @ifclear mathjax
 @math{integrate(1/2*(t+x)^(-1/2)/(t+y), t, 0, inf)}
@@ -589,7 +589,7 @@ Carlson's RC integral is defined by
 @end ifinfo
 
 @tex
-$$ R_C(x, y) = \frac{1}{2} \int\limits_0^{\infty} \frac{1}{\sqrt{t+x}(t+y)}\, dt $$
+$$ R_C(x, y) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}(t+y)}\, dt $$
 @end tex
 
 This integral is related to many elementary functions in the following
@@ -746,7 +746,7 @@ Carlson's RD integral is defined by
 @ifset mathjax
 @math{
 $$
-R_D(x,y,z) = \frac{3}{2} \int\limits_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+z)}\, dt
+R_D(x,y,z) = \frac{3}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+z)}\, dt
 $$
 }
 @end ifset
@@ -761,7 +761,7 @@ $$
 
 @tex
 $$
-R_D(x,y,z) = \frac{3}{2} \int\limits_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+z)}\, dt
+R_D(x,y,z) = \frac{3}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+z)}\, dt
 $$
 @end tex
 
@@ -848,7 +848,7 @@ Carlson's RF integral is defined by
 @ifset mathjax
 @math{
 $$
-R_F(x,y,z) = \frac{1}{2} \int\limits_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}}\, dt
+R_F(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}}\, dt
 $$
 }
 @end ifset
@@ -863,7 +863,7 @@ $$
 
 @tex
 $$
-R_F(x,y,z) = \frac{1}{2} \int\limits_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}}\, dt
+R_F(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}}\, dt
 $$
 @end tex
 
@@ -945,7 +945,7 @@ Carlson's RJ integral is defined by
 @ifset mathjax
 @math{
 $$
-R_J(x,y,z) = \frac{1}{2} \int\limits_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+p)}\, dt
+R_J(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+p)}\, dt
 $$
 }
 @end ifset
@@ -960,7 +960,7 @@ $$
 
 @tex
 $$
-R_J(x,y,z) = \frac{1}{2} \int\limits_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+p)}\, dt
+R_J(x,y,z) = \frac{1}{2} \int_0^{\infty} \frac{1}{\sqrt{t+x}\sqrt{t+y}\sqrt{t+z}\,(t+p)}\, dt
 $$
 @end tex
 
