@@ -613,8 +613,10 @@
        (doit (and
 	      f ; there is such a function
 	      (tex-mexpt-trig-like-fn-p f) ; f is trig-like
+          ;; I THINK THIS NEXT TEST IS UNNECESSARY BECAUSE IF IT PASSES THE PRECEDING TEST, IT IS ACCEPTABLE. REVISIT.
 	      (member (get-first-char f) '(#\% #\$) :test #'char=) ;; insist it is a % or $ function
 	      (not (member 'array (cdar fx) :test #'eq)) ; fix for x[i]^2
+          ;; I THINK THIS NEXT TEST IS UNNECESSARY BECAUSE NFORMAT CHANGES (...)^-1 TO 1/(...) AND (...)^(1/2) TO SQRT(...). REVISIT.
 	      (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
 		  (and (atom expon) (numberp expon) (> expon 0))))))
                                         ; f(x)^3 is ok, but not f(x)^-1, which could
@@ -1178,7 +1180,9 @@
      ;; the Maxima function named by foo.
      (let ((s0 (nth 0 s)))
        (if (stringp s0)
-         (putprop e s0 'texword)
+         (progn
+           (when (get e 'texsym) (putprop e (list s0) 'texsym))
+           (putprop e s0 'texword))
          (make-maxima-tex-glue e s0)))) ;; assigns TEX property
 	((eq tx '$matchfix)
 	 (putprop e 'tex-matchfix 'tex)
@@ -1193,6 +1197,7 @@
 	((eq tx '$nofix)
 	 (putprop e 'tex-nofix 'tex)
 	 (putprop e s 'texsym)
+	 (when (get e 'texword) (putprop e (nth 0 s) 'texword))
 	 (car s))
 
 	((eq tx '$prefix)
@@ -1200,6 +1205,7 @@
 	 (when (null (get e 'grind))
 	   (putprop e 180 'tex-rbp))
 	 (putprop e s 'texsym)
+	 (when (get e 'texword) (putprop e (nth 0 s) 'texword))
 	 (car s))
 		
 	((eq tx '$infix)
@@ -1208,6 +1214,7 @@
 	   (putprop e 180 'tex-lbp)
 	   (putprop e 180 'tex-rbp))
 	 (putprop e  s 'texsym)
+	 (when (get e 'texword) (putprop e (nth 0 s) 'texword))
 	 (car s))
 
 	((eq tx '$nary)
@@ -1216,6 +1223,7 @@
 	   (putprop e 180 'tex-lbp)
 	   (putprop e 180 'tex-rbp))
 	 (putprop e s 'texsym)
+	 (when (get e 'texword) (putprop e (nth 0 s) 'texword))
 	 (car s))
 
 	((eq tx '$postfix)
@@ -1223,4 +1231,5 @@
 	 (when (null (get e 'grind))
 	   (putprop e 180 'tex-lbp))
 	 (putprop e  s 'texsym)
+	 (when (get e 'texword) (putprop e (nth 0 s) 'texword))
 	 (car s))))
