@@ -1,0 +1,2 @@
+contour_plot(x^2 + y^2, [x, -4, 4], [y, -4, 4], [pdf_file,"./plotting1.pdf"]);
+contour_plot(x^2 + y^2, [x, -4, 4], [y, -4, 4], [png_file,"./plotting1.png"]);
