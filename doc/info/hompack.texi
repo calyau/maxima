@@ -9,7 +9,7 @@
 @code{Hompack} is a Common Lisp translation (via @code{f2cl}) of the
 Fortran library HOMPACK, as obtained from Netlib.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods} 
 @category{Share packages}
 @category{Package hompack}

@@ -40,7 +40,7 @@ mat.lisp
 
 See also @mref{fpprintprec} and @mrefdot{float}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @category{Global flags}
 @category{Share packages}
@@ -84,7 +84,7 @@ mat.lisp
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @category{Global flags}
 @category{Share packages}
@@ -99,7 +99,7 @@ Default value: @code{0.0}
 The maximum absolute value that isn't automatically converted to the engineering format.
 See also @mref{engineering_format_min} and @mrefdot{engineering_format_floats}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @category{Global flags}
 @category{Share packages}

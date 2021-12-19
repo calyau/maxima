@@ -36,7 +36,7 @@ Example:
 (%o2)                      - 621
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -58,7 +58,7 @@ Example:
 (%o2)                     1404.928
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -80,7 +80,7 @@ Example:
 (%o2)                711.7802478134108
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -102,7 +102,7 @@ Example:
 (%i2) graph_flow([-5000,-3000,800,1300,1500,2000])$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -124,7 +124,7 @@ Example:
 (%o2)                884.9208207992202
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -146,7 +146,7 @@ Example:
 (%o2)                3703.970670389863
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -168,7 +168,7 @@ Example:
 (%o2)                802.6888176505123
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -190,7 +190,7 @@ Example:
 (%o2)                216.5203395312695
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -224,7 +224,7 @@ Example:
     12.000         0.000       300.868      6017.355      6318.223
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -263,7 +263,7 @@ Example:
     12.000        -0.000       590.301     11806.020     12396.321
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -302,7 +302,7 @@ Example:
     12.000         0.000       358.233      7164.668      7522.901
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -341,7 +341,7 @@ Example:
     15.000     12000.000      1532.321       252.205
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -363,7 +363,7 @@ Example:
 (%o2)                714.4703999999999
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -387,7 +387,7 @@ Example:
 (%o3)                .03009250374237132
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 
@@ -412,7 +412,7 @@ Example:
 (%o2)               1.427249324905784
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package finance}
 @closecatbox
 

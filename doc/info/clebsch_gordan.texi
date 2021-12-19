@@ -10,7 +10,7 @@
 
 Compute the Clebsch-Gordan coefficient @verb{|<j1, j2, m1, m2 | j, m>|}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{clebsch_gordan}
 @closecatbox
 @end deffn
@@ -21,7 +21,7 @@ Compute the Clebsch-Gordan coefficient @verb{|<j1, j2, m1, m2 | j, m>|}.
 Compute Racah's V coefficient (computed in terms of a related
 Clebsch-Gordan coefficient).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{clebsch_gordan}
 @closecatbox
 @end deffn
@@ -31,7 +31,7 @@ Clebsch-Gordan coefficient).
 
 Compute Racah's W coefficient (computed in terms of a Wigner @verb{|6j|} symbol)
 
-@opencatbox
+@opencatbox{Categories:}
 @category{clebsch_gordan}
 @closecatbox
 @end deffn
@@ -42,7 +42,7 @@ Compute Racah's W coefficient (computed in terms of a Wigner @verb{|6j|} symbol)
 Compute Wigner's @verb{|3j|} symbol (computed in terms of a related
 Clebsch-Gordan coefficient).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{clebsch_gordan}
 @closecatbox
 @end deffn
@@ -52,7 +52,7 @@ Clebsch-Gordan coefficient).
 
 Compute Wigner's @verb{|6j|} symbol.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{clebsch_gordan}
 @closecatbox
 @end deffn
@@ -62,7 +62,7 @@ Compute Wigner's @verb{|6j|} symbol.
 
 Compute Wigner's @verb{|9j|} symbol.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{clebsch_gordan}
 @closecatbox
 @end deffn

@@ -22,7 +22,7 @@ will make both parameters tolerate in the same way.
 
 @code{load ("wrstcse")} loads this package.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Share packages}
 @category{Package wrstcse}
 @closecatbox

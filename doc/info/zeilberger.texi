@@ -17,7 +17,7 @@ summation.
 
 @code{load ("zeilberger")} loads this package.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @category{Share packages}
 @category{Package zeilberger}
@@ -112,7 +112,7 @@ For example:@*
 Returns the hypergeometric anti-difference of @math{F_k}, if it exists.@*
 Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -131,7 +131,7 @@ $F_k = R\left(k+1\right) \, F_{k+1} - R\left(k\right) \, F_k$,
 if it exists.
 Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -208,7 +208,7 @@ Dependent equations eliminated:  (1)
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -232,7 +232,7 @@ $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 
 @code{parGosper} returns @code{[]} if it fails to find a recurrence.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -252,7 +252,7 @@ Each solution has the form
 
 @code{parGosper} returns @code{[]} if it fails to find a recurrence.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -284,7 +284,7 @@ $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 
 @code{Zeilberger} invokes @code{Gosper} only if @code{Gosper_in_Zeilberger} is @code{true}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -311,7 +311,7 @@ Each solution has the form
 
 @code{Zeilberger} invokes @code{Gosper} only if @code{Gosper_in_Zeilberger} is @code{true}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -328,7 +328,7 @@ Default value: 5
 
 @code{MAX_ORD} is the maximum recurrence order attempted by @code{Zeilberger}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -342,7 +342,7 @@ When @code{simplified_output} is @code{true},
 functions in the @code{zeilberger} package attempt
 further simplification of the solution.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -355,7 +355,7 @@ Default value: @code{linsolve}
 @code{linear_solver} names the solver which is used to solve the system
 of equations in Zeilberger's algorithm.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -369,7 +369,7 @@ When @code{warnings} is @code{true},
 functions in the @code{zeilberger} package print
 warning messages during execution.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -383,7 +383,7 @@ When @code{Gosper_in_Zeilberger} is @code{true},
 the @code{Zeilberger} function calls @code{Gosper} before calling @code{parGosper}.
 Otherwise, @code{Zeilberger} goes immediately to @code{parGosper}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -397,7 +397,7 @@ When @code{trivial_solutions} is @code{true},
 @code{Zeilberger} returns solutions
 which have certificate equal to zero, or all coefficients equal to zero.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -413,7 +413,7 @@ When @code{mod_test} is @code{true},
 @code{parGosper} executes a
 modular test for discarding systems with no solutions.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -425,7 +425,7 @@ Default value: @code{linsolve}
 
 @code{modular_linear_solver} names the linear solver used by the modular test in @code{parGosper}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -438,7 +438,7 @@ Default value: @code{big_primes[10]}
 @code{ev_point} is the value at which the variable @var{n} is evaluated
 when executing the modular test in @code{parGosper}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -450,7 +450,7 @@ Default value: @code{big_primes[1]}
 
 @code{mod_big_prime} is the modulus used by the modular test in @code{parGosper}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 
@@ -463,7 +463,7 @@ Default value: 4
 @code{mod_threshold} is the
 greatest order for which the modular test in @code{parGosper} is attempted.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package zeilberger}
 @closecatbox
 

@@ -22,7 +22,7 @@ computation accurate enough.
 
 See also @mref{ggf}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ggf}
 @closecatbox
 
@@ -44,7 +44,7 @@ generating functions.
 
 See also @mref{ggf}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ggf}
 @closecatbox
 
@@ -63,7 +63,7 @@ This function is controlled by global variables @var{GGFINFINITY} and @var{GGFCF
 
 To use this function write first @code{load("ggf")}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Generating functions}
 @category{Share packages}
 @category{Package ggf}

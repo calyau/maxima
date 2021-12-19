@@ -28,7 +28,7 @@ implicit problems with general sparse treatment of all matrices involved.
 References:
 [1] Fortran Code is from @url{https://www.netlib.org/odepack/}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Share packages}
 @category{Package odepack}

@@ -9,7 +9,7 @@
 @code{lapack} is a Common Lisp translation (via the program @code{f2cl}) of the Fortran library LAPACK,
 as obtained from the SLATEC project.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Share packages}
 @category{Package lapack}
@@ -97,7 +97,7 @@ Example:
                      [ 0.0       0.0      ]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lapack}
 @closecatbox
 
@@ -145,7 +145,7 @@ is equal to @var{A} (ignoring floating point round-off errors).
 (%o6)                      3.10862E-15
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lapack}
 @closecatbox
 
@@ -246,7 +246,7 @@ The elements of @var{A} and @var{b} must evaluate to real floating point numbers
 (%o4)                        2.220446049250313E-16
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lapack}
 @category{Linear equations}
 @closecatbox
@@ -376,7 +376,7 @@ Example:
           [ - 5.55112E-17  5.55112E-17       1.0      ]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lapack}
 @closecatbox
 
@@ -405,7 +405,7 @@ Compute the Frobenius norm of @var{A},
 that is, the square root of the sum of squares of the matrix elements.
 @end table
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lapack}
 @closecatbox
 
@@ -534,7 +534,7 @@ for the product.  The default is @code{false}.
                                [ 111  134  157 ]
 
 @end example
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lapack}
 @closecatbox
 
@@ -547,7 +547,7 @@ for the product.  The default is @code{false}.
 
 Like @code{dgeev}, but the matrix @var{A} is complex.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lapack}
 @closecatbox
 
@@ -567,7 +567,7 @@ No check is made that the matrix @var{A} is, in fact, Hermitian.
 A list of two items is returned, as in @code{dgeev}: a list of
 eigenvalues, and @code{false} or the matrix of the eigenvectors.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lapack}
 @closecatbox
 

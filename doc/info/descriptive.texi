@@ -193,7 +193,7 @@ One must take care when working with categorical data. In the next example, symb
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Descriptive statistics}
 @category{Share packages}
 @category{Package descriptive}
@@ -277,7 +277,7 @@ Multivariate frequency table.
 (%i4) barsplot(sam2, grouping=stacked) $
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -378,7 +378,7 @@ The first argument may be an array.
                              [8, 8, 12, 12, 10, 8, 9, 8, 12, 13]]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -431,7 +431,7 @@ The argument may be an array.
                              [8, 8, 12, 12, 10, 8, 9, 8, 12, 13]]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -449,7 +449,7 @@ the result by the standard deviation. When the input is a matrix,
 @code{standardize} subtracts to each row the multivariate mean, and then
 divides each component by the corresponding standard deviation.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -622,7 +622,7 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -674,7 +674,7 @@ Add a constant column and remove the third variable.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -741,7 +741,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -789,7 +789,7 @@ Example:
 
 See also function @mrefdot{var1}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -845,7 +845,7 @@ Example:
 
 See also function @mrefdot{var}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -885,7 +885,7 @@ Example:
 
 See also functions @mref{var} and @mrefdot{std1}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -925,7 +925,7 @@ Example:
 
 See also functions @mref{var1} and @mrefdot{std}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -983,7 +983,7 @@ Example:
 
 See also function @mrefdot{central_moment}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1039,7 +1039,7 @@ Example:
 
 See also functions @mref{central_moment} and @mrefdot{mean}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1077,7 +1077,7 @@ The variation coefficient is the quotient between the sample standard deviation 
 
 See also functions @mref{std} and @mrefdot{mean}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1117,7 +1117,7 @@ which are associated to statistical variables.
 
 See also function @mrefdot{smax}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1157,7 +1157,7 @@ which are associated to statistical variables.
 
 See also function @mrefdot{smin}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1194,7 +1194,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1234,7 +1234,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1277,7 +1277,7 @@ The median is the 1/2-quantile.
 
 See also function @mrefdot{quantile}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1317,7 +1317,7 @@ The interquartilic range is the difference between the third and first quartiles
 
 See also function @mrefdot{quantile}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1375,7 +1375,7 @@ Example:
 
 See also function @mrefdot{mean}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1433,7 +1433,7 @@ Example:
 
 See also function @mrefdot{mean}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1491,7 +1491,7 @@ Example:
 
 See also functions @mref{mean} and @mrefdot{geometric_mean}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 
@@ -1548,7 +1548,7 @@ Example:
 
 See also functions @mref{mean} and @mrefdot{harmonic_mean}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1604,7 +1604,7 @@ Example:
 
 See also functions @mrefcomma{mean} @mref{var} and @mrefdot{skewness}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1660,7 +1660,7 @@ Example:
 
 See also functions @mrefcomma{mean}, @mref{var} and @mrefdot{kurtosis}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1714,7 +1714,7 @@ Example:
 
 See also functions @mrefcomma{mean} @mref{var} and @mrefdot{median}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1770,7 +1770,7 @@ Example:
 
 See also function @mrefdot{quantile}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1841,7 +1841,7 @@ Estimate survival probabilities.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1895,7 +1895,7 @@ Empirical distribution function.
         explicit(F(z), z, -2, 12)) $
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -1951,7 +1951,7 @@ Example:
 
 See also function @mrefdot{cov1}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -2007,7 +2007,7 @@ Example:
 
 See also function @mrefdot{cov}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -2084,7 +2084,7 @@ Calculate the @code{global_variances} from the covariance matrix.
 
 See also @mref{cov} and @mrefdot{cov1}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -2163,7 +2163,7 @@ Calculate de correlation matrix from the covariance matrix.
 
 See also @mref{cov} and @mrefdot{cov1}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -2289,7 +2289,7 @@ Example:
 
 See also @mref{cov} and @mrefdot{cov1}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -2399,7 +2399,7 @@ but option @code{data=false} must be used.
              [ .9239 b2 - .3827 a2  1.0 c2  .3827 b2 + .9239 a2 ]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @closecatbox
 @end deffn
@@ -2599,7 +2599,7 @@ Stacked bars.
 For bars diagrams related options, see @mref{barsplot} of package @ref{draw-pkg}
 See also functions @mref{histogram} and @mrefdot{piechart}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox
@@ -2635,7 +2635,7 @@ Example: @code{barsplot} in a multiplot context.
 (%i6) draw(gr2d(bp1), gr2d(bp2))$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox
@@ -2788,7 +2788,7 @@ Option @var{range} can be used to handle outliers.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox
@@ -2801,7 +2801,7 @@ Function @code{boxplot_description} creates a graphic object
 suitable for creating complex scenes, together with other
 graphic objects. 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox
@@ -2942,7 +2942,7 @@ Freedmann - Diakonis robust method for optimal search of the number of classes.
 (%i3) histogram(s1, nclasses=fd) $
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox
@@ -2972,7 +2972,7 @@ the @code{xrange} and adding an explicit curve into the scene:
         explicit(pdf_normal(x,m,s), x, m - 3*s, m + 3* s))$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox
@@ -3043,7 +3043,7 @@ Example:
 
 See also function @mrefdot{barsplot}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox
@@ -3056,7 +3056,7 @@ Function @code{piechart_description} creates a graphic object
 suitable for creating complex scenes, together with other
 graphic objects.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox
@@ -3170,7 +3170,7 @@ Five dimensional scatter plot, with five classes histograms.
 For plotting isolated or line-joined points in two and three dimensions,
 see @code{points}. See also @mrefdot{histogram}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox
@@ -3183,7 +3183,7 @@ Function @code{scatterplot_description} creates a graphic object
 suitable for creating complex scenes, together with other
 graphic objects.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox
@@ -3262,7 +3262,7 @@ Location and radius defined by the user.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox
@@ -3275,7 +3275,7 @@ Function @code{starplot_description} creates a graphic object
 suitable for creating complex scenes, together with other
 graphic objects. 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox
@@ -3339,7 +3339,7 @@ key: 6|3 =  6.3
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package descriptive}
 @category{Plotting}
 @closecatbox

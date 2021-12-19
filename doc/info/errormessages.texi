@@ -30,7 +30,7 @@ or on how to recover from errors.
 One common cause for this error message is that square brackets operator
 (@code{[ ]}) was used trying to access a list element that whose element
 number was @code{< 1} or @code{> length(list)}.
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -72,7 +72,7 @@ single-element list first:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -81,7 +81,7 @@ single-element list first:
 @subsection assignment: cannot assign to @code{<function name>}
 Maxima supports several assignment operators. When trying to define a function
 @code{:=} has to be used.
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -89,7 +89,7 @@ Maxima supports several assignment operators. When trying to define a function
 @node 0 to a negative exponent, Comma is not a prefix operator, cannot assign to function, Error messages
 @subsection expt: undefined:  0 to a negative exponent.
 This message notifies about a classical division by zero error.
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -98,7 +98,7 @@ This message notifies about a classical division by zero error.
 @subsection incorrect syntax: , is not a prefix operator
 This might be caused by a command starting with a comma (@code{,}) or by one comma
 being directly followed by another one..
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -107,7 +107,7 @@ being directly followed by another one..
 @subsection incorrect syntax: Illegal use of delimiter )
 Common reasons for this error appearing are a closing parenthesis without an
 opening one or a closing parenthesis directly preceded by a comma.
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -133,7 +133,7 @@ typing:
 @end example
 If this directory is missing maxima will recreate it again as soon as it has to
 compile a package.
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -144,7 +144,7 @@ compile a package.
 be stepped. This time instead of the name of a still-undefined variable maxima has found
 something else, possibly a list or the name of a list.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -154,7 +154,7 @@ something else, possibly a list or the name of a list.
 The most probable cause for this error is that there was an attempt to either
 use a number or a variable whose numerical value is known as a loop
 counter.
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -196,7 +196,7 @@ single-element list first:
 @end example
 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -221,7 +221,7 @@ approaches might be useful:
       memory. Also note that 32-bit processes might only be able to access
       2GB of physical memory.
 @end itemize
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -230,7 +230,7 @@ approaches might be useful:
 @subsection part: fell off the end
 @code{part()} was used to access the @code{n}th item in something that has less than
 @code{n} items.
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -267,7 +267,7 @@ draw2d (explicit): non defined variable
 (%o4) ddraw2d(explicit(sin(omega t), x, 1, 10))
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -288,7 +288,7 @@ if the following maxima command is entered:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -308,7 +308,7 @@ retain all the flexibility maxima provides in respect to this variable.
 If @code{x} isn't meant as a variable name but just a named option to a
 command prepending the named option by a single quote (@code{'}) should
 resolve this issue.
-@opencatbox
+@opencatbox{Categories:}
 @category{Error messages}
 @closecatbox
 
@@ -326,6 +326,6 @@ cancelling each other out maxima therefore by default replaces them with exact
 fractions.
 See also @code{ratprint}, @code{ratepsilon}, @code{bftorat}, @code{fpprintprec}
 and @code{rationalize}.
-@opencatbox
+@opencatbox{Categories:}
 @category{Warning messages}
 @closecatbox

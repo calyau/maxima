@@ -112,7 +112,7 @@ higher degree function.  E.g.,
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end deffn
@@ -175,7 +175,7 @@ example problem.
 @c demo (dblint_1) FAILS WITH Could not find `fltdfnk.mc' -- DON'T BOTHER TO MENTION IT. !!!
 @c @code{demo (dblint_1)} executes another demonstration.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end deffn
@@ -195,7 +195,7 @@ Thus from the user's point of view, it is sufficient to call @code{integrate}.
 noun form of the integral.  See @mref{quad_qag} and related functions for
 numerical approximation of definite integrals.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end deffn
@@ -209,7 +209,7 @@ When @code{erfflag} is @code{false}, prevents @code{risch} from introducing the
 @code{erf} function in the answer if there were none in the integrand to
 begin with.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end defvr
@@ -283,7 +283,7 @@ pos;
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Laplace transform}
 @closecatbox
 @end deffn
@@ -336,7 +336,7 @@ The number 1 isn't in the domain of atanh
                                        2
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end defvr
@@ -592,7 +592,7 @@ body of @code{f_2}.
 @end example
 @end itemize
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end deffn
@@ -636,7 +636,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end defvr
@@ -697,7 +697,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end defvr
@@ -769,7 +769,7 @@ and then express the integrand in terms of these roots, e.g.,
 if the denominator is a cubic polynomial.
 Sometimes this will help Maxima obtain a more useful result.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end defvr
@@ -793,7 +793,7 @@ result than @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
 while @code{integrate} may employ various heuristics and may recognize some
 special cases.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end deffn
@@ -830,7 +830,7 @@ Two examples where @code{ilt} fails:
                                        2        2
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Laplace transform}
 @closecatbox
 @end deffn
@@ -881,7 +881,7 @@ variable @var{z} assumes the value @var{z_0}.  The residue is the coefficient of
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @category{Complex variables}
 @closecatbox
@@ -922,7 +922,7 @@ with.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end deffn
@@ -935,7 +935,7 @@ with.
 
 Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end deffn
@@ -1053,7 +1053,7 @@ for the integrator to produce a good solution.
 @end table
 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @category{Numerical methods}
 @category{Share packages}
@@ -1166,7 +1166,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Package quadpack}
 @closecatbox
@@ -1262,7 +1262,7 @@ Examples:
 
 Note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} for this integrand.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Package quadpack}
 @closecatbox
@@ -1381,7 +1381,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Package quadpack}
 @closecatbox
@@ -1499,7 +1499,7 @@ Principal Value
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Package quadpack}
 @closecatbox
@@ -1612,7 +1612,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Package quadpack}
 @closecatbox
@@ -1761,7 +1761,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Package quadpack}
 @closecatbox
@@ -1900,7 +1900,7 @@ pos;
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Package quadpack}
 @closecatbox
@@ -2006,7 +2006,7 @@ The integrand has singularities at @code{1} and @code{sqrt(2)} so we supply
 these points to @code{quad_qagp}.  We also note that @code{quad_qagp} is
 more accurate and more efficient that @mrefdot{quad_qags}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Package quadpack}
 @closecatbox
@@ -2033,7 +2033,7 @@ If @var{value} is not given, then the current value of the
 @var{parameter} is returned.  If @var{value} is given, the value of
 @var{parameter} is set to the given value.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Package quadpack}
 @closecatbox

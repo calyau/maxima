@@ -44,7 +44,7 @@ Example:
 (%o4)                  [@@yy`xx, `xx@@@@yy~]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -105,7 +105,7 @@ Example:
 (%o4)                         false
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Constants}
 @closecatbox
@@ -158,7 +158,7 @@ Examples:
 (%i8) 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Constants}
 @closecatbox
@@ -318,7 +318,7 @@ Tells Maxima to consider @var{a_i} a scalar variable.
 Examples of the usage of the properties are available in the documentation
 for each separate description of a property.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -348,7 +348,7 @@ Example:
 (%o4)                         true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -379,7 +379,7 @@ Example:
 (%o4)                         false
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -424,7 +424,7 @@ See also @mref{declare} and @mrefdot{features}
 (%o2)                           true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Declarations and inferences}
 @closecatbox
@@ -483,7 +483,7 @@ Example:
 (%o3)                         true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -534,7 +534,7 @@ x is not numeric.
 (%o6)     [transcendental, [algebraic, transcendental]]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -561,7 +561,7 @@ Example:
 (%o3)                          no
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -588,7 +588,7 @@ Example:
 (%o3)                       %e
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -624,7 +624,7 @@ Example:
                                 x
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -639,7 +639,7 @@ Makes atoms behave as does a list or matrix with respect to the dot operator.
 
 See also @mrefdot{declare}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Vectors}
 @category{Matrices}
@@ -655,7 +655,7 @@ atoms declared as non-scalars, lists, or matrices.
 
 See also the predicate function @mref{scalarp} and @mrefdot{declare}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Vectors}
 @category{Matrices}
@@ -673,7 +673,7 @@ See also the predicate function @mref{scalarp} and @mrefdot{declare}
 
 See also @mrefdot{declare}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Operators}
 @closecatbox
@@ -696,7 +696,7 @@ case all of the atoms with the given property will be used.  For example,
 cannot otherwise be displayed, i.e.  for @mrefcomma{atvalue}@w{}
 @mrefcomma{atomgrad} @mrefcomma{gradef} and @mrefdot{matchdeclare}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Display functions}
 @closecatbox
@@ -712,7 +712,7 @@ cannot otherwise be displayed, i.e.  for @mrefcomma{atvalue}@w{}
 Returns a list of the names of all the properties associated with the atom
 @var{a}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -731,7 +731,7 @@ mentioned in @mrefcomma{infolists} such as specified by @mrefcomma{atvalue}@w{}
 @mrefcomma{matchdeclare} etc., as well as properties specified in the
 @mref{declare} function.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Global variables}
 @closecatbox
@@ -748,7 +748,7 @@ Returns a list of those atoms on the @mref{props} list which
 have the property indicated by @var{prop}.  Thus @code{propvars (atvalue)}
 returns a list of atoms which have atvalues.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -790,7 +790,7 @@ Examples:
 (%o5)                         Hello
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -825,7 +825,7 @@ Example:
 (%o9)                          bar
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -841,7 +841,7 @@ Maxima to recognize @var{a} as a rational or irrational real variable.
 
 See also @mrefdot{declare}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -860,7 +860,7 @@ pure imaginary, or complex variable.
 
 See also @mrefdot{declare}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -880,7 +880,7 @@ Removes the property indicated by @var{indicator} from @var{atom}.
 @code{rem} returns @code{done} if @var{atom} had an @var{indicator} property
 when @code{rem} was called, or @code{false} if it had no such property.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -940,7 +940,7 @@ property.  This behavior is unlike the more specific remove functions
 @code{remove} quotes its arguments.
 
 @c IN SERIOUS NEED OF EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -954,7 +954,7 @@ variable.
 
 See also @mrefdot{declare}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -971,7 +971,7 @@ constants, and such variables, but not containing matrices or lists.
 
 See also the predicate function @mrefdot{nonscalarp}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Vectors}
 @category{Matrices}
@@ -995,7 +995,7 @@ The facts in these contexts are not listed by @code{facts ()}.
 The variable @mref{activecontexts} is the list
 of contexts which are active by way of the @code{activate} function.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -1009,7 +1009,7 @@ Default value: @code{[]}
 by way of the @mref{activate} function, as opposed to being active because
 they are subcontexts of the current context.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -1037,7 +1037,7 @@ and attempt to install the information in the database if possible.
 likewise attempt to determine if @var{expr} is an even integer or odd integer,
 respectively.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -1055,7 +1055,7 @@ answer is recorded in the data base for the duration of the current
 computation.  The return value of @code{asksign} is one of @code{pos},
 @code{neg}, or @code{zero}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -1133,7 +1133,7 @@ Examples:
 (%o10)                       unknown
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -1163,7 +1163,7 @@ expressions will behave like non-scalars.
 When @code{assumescalar} is @code{all}, such expressions will behave like
 scalars for all the operators listed above.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -1200,7 +1200,7 @@ even when @code{assume_pos} is @code{true} and @code{assume_pos_pred} is
 a function which returns @code{true} for all arguments.
 
 @c NEED EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -1293,7 +1293,7 @@ p;
 (%o11)                         neg
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -1315,7 +1315,7 @@ The specified context is activated automatically.
 
 See @mref{contexts} for a general description of the context mechanism.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -1355,7 +1355,7 @@ See also @mrefcomma{facts} @mrefcomma{newcontext} @mrefcomma{supcontext}@w{}
 @mrefcomma{killcontext} @mrefcomma{activate} @mrefcomma{deactivate}@w{}
 @mrefcomma{assume} and @mrefdot{forget}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -1366,7 +1366,7 @@ See also @mrefcomma{facts} @mrefcomma{newcontext} @mrefcomma{supcontext}@w{}
 
 Deactivates the specified contexts @var{context_1}, @dots{}, @var{context_n}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -1386,7 +1386,7 @@ are active, but in a different context, are not listed.
 
 @code{facts ()} (i.e., without an argument) lists the current context.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -1404,7 +1404,7 @@ to) those previously assumed.
 @code{forget (@var{L})}, where @var{L} is a list of predicates,
 forgets each item on the list.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -1487,7 +1487,7 @@ a > 0
 (%o5)                        unknown
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Declarations and inferences}
 @closecatbox
@@ -1512,7 +1512,7 @@ context, or by use of the function @mrefdot{activate}
 @code{killcontext} evaluates its arguments.
 @code{killcontext} returns @code{done}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -1550,7 +1550,7 @@ Examples:
 (%o3)                         true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Declarations and inferences}
 @closecatbox
@@ -1571,7 +1571,7 @@ If @var{name} is not specified, a new name is created (via @code{gensym}) and re
 @code{newcontext} evaluates its argument.
 @code{newcontext} returns @var{name} (if specified) or the new context name.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -1588,7 +1588,7 @@ current data base.  It returns one of the following answers: @code{pos}
 
 See also @mrefdot{signum}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -1610,7 +1610,7 @@ If @var{name} is not specified, a new name is created (via @code{gensym}) and re
 @code{supcontext} evaluates its argument.
 @code{supcontext} returns @var{name} (if specified) or the new context name.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -1646,7 +1646,7 @@ Examples:
 (%o4)                       [0, 1, 0]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -1700,7 +1700,7 @@ its arguments are nonempty; thus
 @c IT IS NOT QUITE TRUE, WHAT ABOUT x=0 ?
 The real domain of @code{acos (x^2 + 1)} is empty.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -1858,7 +1858,7 @@ Because @code{not @var{expr}} causes evaluation of @var{expr},
 (%o2)                         true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @closecatbox
 @end deffn
@@ -1906,7 +1906,7 @@ Examples:
 (%o10)                        true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @closecatbox
 @end deffn
@@ -1918,7 +1918,7 @@ Examples:
 Returns @code{true} if and only if @var{expr} contains an operator or function
 not recognized by the Maxima simplifier.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Simplification functions}
 @closecatbox
@@ -1957,7 +1957,7 @@ For example @code{zeroequiv (sin(2 * x) - 2 * sin(x) * cos(x), x)} returns
 On the other hand @code{zeroequiv (log(a * b) - log(a) - log(b), a)} returns 
 @code{dontknow} because of the presence of an extra parameter @code{b}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @closecatbox
 @end deffn

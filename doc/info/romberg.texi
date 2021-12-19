@@ -148,7 +148,7 @@ A 2-dimensional integration, implemented by nested calls to @code{romberg}.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package romberg}
 @category{Numerical methods}
 @closecatbox
@@ -169,7 +169,7 @@ only the relative error test has any effect on @code{romberg}.
 
 See also @mref{rombergit} and @mref{rombergmin}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package romberg}
 @closecatbox
 
@@ -186,7 +186,7 @@ this is a heuristic intended to prevent spurious termination when the integrand 
 
 See also @mref{rombergabs} and @mref{rombergtol}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package romberg}
 @closecatbox
 
@@ -201,7 +201,7 @@ this is a heuristic intended to prevent spurious termination when the integrand 
 
 See also @mref{rombergit}, @mref{rombergabs}, and @mref{rombergtol}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package romberg}
 @closecatbox
 
@@ -221,7 +221,7 @@ only the relative error test has any effect on @code{romberg}.
 
 See also @mref{rombergit} and @mref{rombergmin}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package romberg}
 @closecatbox
 

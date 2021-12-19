@@ -51,7 +51,7 @@ all fields are always visible.
 
 @code{structures} is the list of user-defined structures defined by @code{defstruct}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Structures}
 @category{Global variables}
 @closecatbox
@@ -110,7 +110,7 @@ Examples:
 (%o8)             [bar(v, w, x = 123, y = %pi)]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Structures}
 @closecatbox
 @end deffn
@@ -146,7 +146,7 @@ Examples:
 (%o3)            foo(w = 1, x = 2, y = 4, z = 8)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Structures}
 @closecatbox
 @end deffn
@@ -225,7 +225,7 @@ The field name is not evaluated.
 (%o8)                          123
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Structures}
 @category{Operators}
 @closecatbox

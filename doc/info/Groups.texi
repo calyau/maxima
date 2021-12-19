@@ -63,7 +63,7 @@ Rows tried 213
 Rows tried 71
 (%o6)                          20
 @end example
-@opencatbox
+@opencatbox{Categories:}
 @category{Group theory}
 @closecatbox
 @end deffn

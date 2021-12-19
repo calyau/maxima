@@ -11,7 +11,7 @@
 @code{mnewton} is an implementation of Newton's method for solving nonlinear
 equations in one or more variables.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Share packages}
 @category{Package mnewton}
@@ -31,7 +31,7 @@ Precision to determine when the @code{mnewton} function has converged towards
 the solution.  If @code{newtonepsilon} is a bigfloat, then @code{mnewton}
 computations are done with bigfloats.  See also @mrefdot{mnewton}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package mnewton}
 @closecatbox
 @end defvr
@@ -46,7 +46,7 @@ if it does not converge or if it converges too slowly.
 
 See also @mrefdot{mnewton}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package mnewton}
 @closecatbox
 @end defvr
@@ -98,7 +98,7 @@ floats or bigfloats.
 To use this function write first @code{load("mnewton")}.
 See also @mref{newtonepsilon} and @mrefdot{newtonmaxiter}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package mnewton}
 @closecatbox
 @end deffn

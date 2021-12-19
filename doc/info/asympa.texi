@@ -15,7 +15,7 @@ numerical analysis.
 
 @code{load ("asympa")} loads this package.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package asympa}
 @closecatbox
 @end deffn

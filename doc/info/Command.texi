@@ -79,7 +79,7 @@ Current input expression = --------------
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Global variables}
 @closecatbox
 @end defvr
@@ -172,7 +172,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Console interaction}
 @category{Global variables}
 @closecatbox
@@ -196,7 +196,7 @@ is not bound to output expressions in the file being processed.
 
 See also @mrefcomma{_} @mrefcomma{%%} and @mrefdot{%th}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Console interaction}
 @category{Global variables}
 @closecatbox
@@ -261,7 +261,7 @@ _%%;
 _
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Global variables}
 @closecatbox
 @end defvr
@@ -302,7 +302,7 @@ output expressions.
 (%o6)                          15
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Console interaction}
 @closecatbox
 @end deffn
@@ -323,7 +323,7 @@ whitespace) is equivalent to @code{describe("word")}.  The question mark must
 occur at the beginning of an input line; otherwise it is not recognized as a
 request for documentation.  See also @mrefdot{describe}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Help}
 @category{Console interaction}
 @closecatbox
@@ -341,7 +341,7 @@ is equivalent to @code{describe("word", inexact)}.  The question mark must occur
 at the beginning of an input line; otherwise it is not recognized as a request
 for documentation.  See also @mrefdot{describe}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Help}
 @category{Console interaction}
 @closecatbox
@@ -438,7 +438,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -497,7 +497,7 @@ plus the special package @mrefdot{default_let_rule_package}
 one is not explicitly set by the user.)
 @end table
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Global variables}
 @closecatbox
@@ -573,7 +573,7 @@ by @code{kill}.
 
 @code{kill} always returns @code{done}, even if an argument has no binding.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Evaluation}
 @category{Console interaction}
 @category{Session management}
@@ -605,7 +605,7 @@ intermediate expression labels.
 See also @mrefcomma{inchar} @mrefcomma{outchar} @mrefcomma{linechar} and
 @mrefdot{infolists}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @category{Console interaction}
 @closecatbox
@@ -617,7 +617,7 @@ The variable @code{labels} is the list of input, output, and intermediate
 expression labels, including all previous labels if @code{inchar},
 @code{outchar}, or @code{linechar} were redefined.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @category{Console interaction}
 @closecatbox
@@ -641,7 +641,7 @@ like @code{kill(inlabels)} do not work as expected.
 Intermediate expressions might or might not be displayed.
 See @mref{programmode} and @mrefdot{labels}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -654,7 +654,7 @@ See @mref{programmode} and @mrefdot{labels}
 
 The line number of the current pair of input and output expressions.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @category{Console interaction}
 @closecatbox
@@ -670,7 +670,7 @@ Default value: @code{[]}
 @code{myoptions} is the list of all options ever reset by the user,
 whether or not they get reset to their default value.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Global variables}
 @category{Session management}
 @category{Console interaction}
@@ -697,7 +697,7 @@ labels are bound and appended to the @code{labels} list.
 
 See also @mrefcomma{batch} @mrefcomma{load} and @mrefdot{labels}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Global flags}
 @category{Session management}
 @closecatbox
@@ -726,7 +726,7 @@ assignment: assigning to option gamma_expand
 (%o2)                         true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Global flags}
 @category{Session management}
 @category{Console interaction}
@@ -769,7 +769,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -829,7 +829,7 @@ option.  See @mrefdot{grind}
 Arguments may be combined, e.g., @code{playback ([5, 10], grind, time, slow)}.
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @category{Console interaction}
 @closecatbox
@@ -845,7 +845,7 @@ Default value: @code{_}
 @code{playback (slow)} mode, and the Maxima break loop (as invoked by
 @mref{break}).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Global variables}
 @category{Console interaction}
 @closecatbox
@@ -862,7 +862,7 @@ To stop a lengthy computation, type @code{control-C}.  The default action is to
 return to the Maxima prompt.  If @code{*debugger-hook*} is @code{nil},
 @code{control-C} opens the Lisp debugger.  See also @ref{Debugging}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Console interaction}
 @closecatbox
 @end deffn
@@ -889,7 +889,7 @@ foo is 42  -- enter new value.
 (%o3)                         (b + a)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Console interaction}
 @closecatbox
 @end deffn
@@ -919,7 +919,7 @@ Enter an expression:
 (%o3)                            128
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Console interaction}
 @closecatbox
 @end deffn
@@ -937,7 +937,7 @@ on this list (among other actions).  Many, but not all, global variables and
 options are defined by @code{defmvar}, and some variables defined by
 @code{defmvar} are not global variables or options.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Session management}
 @closecatbox
 @end deffn
@@ -955,7 +955,7 @@ display the computation time even when @code{showtime} is @code{false}.
 
 See also @mrefdot{timer}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @category{Debugging}
 @closecatbox
@@ -992,7 +992,7 @@ Returning to Maxima
 (%o3)                       x (x + 1)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Console interaction}
 @closecatbox
 @end deffn
@@ -1048,7 +1048,7 @@ Examples:
 
 See also @ref{eval_string}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @category{Evaluation}
 @closecatbox
@@ -1101,7 +1101,7 @@ The values are removed from the variables.  @code{values} is the empty list.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Evaluation}
 @category{Global variables}
 @closecatbox
@@ -1144,7 +1144,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Display flags and variables}
 @closecatbox
@@ -1166,7 +1166,7 @@ Example:
 (%o1)                       !x  + 1!
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -1320,7 +1320,7 @@ A[w,x]$
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end deffn
@@ -1333,7 +1333,7 @@ Returns the properties for @var{a} established by @code{declare_index_properties
 
 See also @mrefdot{remove_index_properties}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end deffn
@@ -1347,7 +1347,7 @@ All index properties are removed from each symbol @var{a}, @var{b}, @var{c}, ...
 
 @code{remove_index_properties} quotes (does not evaluate) its arguments.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end deffn
@@ -1573,7 +1573,7 @@ Each symbol has its own value of @code{display_index_separator}.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -1611,7 +1611,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @closecatbox
 @end deffn
@@ -1652,7 +1652,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @closecatbox
 @end deffn
@@ -1714,7 +1714,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -1746,7 +1746,7 @@ X*4/3;    ---        - X
            3         3
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -1763,7 +1763,7 @@ outputting the result of @code{expr}.
 
 See also @mref{set_alt_display} and @mrefdot{display2d}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @closecatbox
 @end deffn
@@ -1801,7 +1801,7 @@ Example:
 (%o1)                         done
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @closecatbox
 @end deffn
@@ -1847,7 +1847,7 @@ Example:
 (%o4)                         10
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Display flags and variables}
 @closecatbox
@@ -2003,7 +2003,7 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @closecatbox
 @end deffn
@@ -2020,7 +2020,7 @@ value of the variable @code{grind} is @code{false}.
 format as the @code{grind} function.  Otherwise, no attempt is made to specially
 format input expressions.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -2137,7 +2137,7 @@ it is interpreted in base 10.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Console interaction}
 @closecatbox
 @end defvr
@@ -2177,7 +2177,7 @@ Examples:
 (%o5)               b  + 3 a b  + 3 a  b + a
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @closecatbox
 @end deffn
@@ -2220,7 +2220,7 @@ Examples:
 (%o5)             f = b  + 3 a b  + 3 a  b + a
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @closecatbox
 @end deffn
@@ -2247,7 +2247,7 @@ Example:
 (%o3) x  + 3 x  + 3 x + 1
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -2263,7 +2263,7 @@ the user, although very small or very large values may be impractical.  Text
 printed by built-in Maxima functions, such as error messages and the output of
 @mrefcomma{describe} is not affected by @code{linel}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -2299,7 +2299,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -2317,7 +2317,7 @@ check in display for the difference of two expressions to not be done.  One
 application is that thus @code{a + %i*b} and @code{a - %i*b} may both be
 displayed the same way.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -2386,7 +2386,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @category{Console interaction}
 @closecatbox
@@ -2420,7 +2420,7 @@ Examples:
 (%o6)                      1/8 (b + a)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -2452,7 +2452,7 @@ Example:
 (%o4)                     x  + x  + x
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -2496,7 +2496,7 @@ Examples:
                        10 log(a) - log(b)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @closecatbox
 @end deffn
@@ -2510,7 +2510,7 @@ When @code{sqrtdispflag} is @code{false}, causes @code{sqrt} to display with
 exponent 1/2.
 @c AND OTHERWISE ... ??
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @category{Display flags and variables}
 @closecatbox
@@ -2524,7 +2524,7 @@ Default value: @code{false}
 When @code{stardisp} is @code{true}, multiplication is
 displayed with an asterisk @code{*} between operands.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -2540,7 +2540,7 @@ Output expressions are still computed and assigned labels.  See @mrefdot{labels}
 Text printed by built-in Maxima functions, such as error messages and the output
 of @mrefcomma{describe} is not affected by @code{ttyoff}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr

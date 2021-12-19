@@ -165,7 +165,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Evaluation}
 @category{Nouns and verbs}
 @closecatbox
@@ -267,7 +267,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Syntax}
 @closecatbox
 
@@ -294,7 +294,7 @@ expressions.
 provides an alternate name for a (user or system) function, variable, array,
 etc.  Any even number of arguments may be used.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end deffn
@@ -308,7 +308,7 @@ Default value: @code{[]}
 the @mrefcomma{alias} @mrefcomma{ordergreat} @mref{orderless} functions or by
 declaring the atom a @mref{noun} with @mrefdot{declare})
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Global variables}
 @closecatbox
@@ -439,7 +439,7 @@ with @code{n} arguments args() can extract the list of terms in a sum:
 
 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -456,7 +456,7 @@ Returns @code{true} if @var{expr} is atomic (i.e. a number, name or string) else
 @code{atom(sin(x))} are @code{false} (assuming @code{a[1]} and @code{x} are
 unbound).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Predicate functions}
 @closecatbox
@@ -545,7 +545,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -561,7 +561,7 @@ and in the @mref{dpart} and @mref{lpart} functions.
 All boxes in an expression are drawn with the current value of @code{boxchar};
 the drawing character is not stored with the box expression.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -581,7 +581,7 @@ collapse several expressions together by using
 collapse the elements of the array @code{A} by doing
 @code{collapse (listarray ('A))}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -640,7 +640,7 @@ Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
 
 This time, the assignment to @var{mm} does not change the value of @var{m}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -658,7 +658,7 @@ integration, and that variable change involved two or more of the integration
 variables.  This function is autoloaded from @file{simplification/disol.mac}.
 A demo is available by @code{demo("disol")$}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -766,7 +766,7 @@ Use of the optional argument @code{all}.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -795,7 +795,7 @@ expression.
                             """
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -810,7 +810,7 @@ Default value: @code{false}
 examine exponents of atoms (such as @code{%e}) which contain @code{var}.
 
 @c NEED EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -856,7 +856,7 @@ for @code{%e^x} in @code{%e^(a x)}.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Expressions}
 @closecatbox
@@ -990,7 +990,7 @@ An indefinite integral is not free of its variable of integration.
 (%o3)                         false
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1017,7 +1017,7 @@ Functions affected by the setting of @code{inflag} are: @mrefcomma{part}@w{}
 @mrefdot{pickapart}
 
 @c NEED EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -1062,7 +1062,7 @@ Examples:
 (%o5)                       g(x + 1)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1090,7 +1090,7 @@ with respect to products.  See @mrefdot{isolate_wrt_times} See also @mrefdot{dis
 
 Do @code{example (isolate)} for examples.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1125,7 +1125,7 @@ with respect to products.  E.g. compare both settings of the switch on
 (%o5)               c  + 2 b c + 2 a c + %t4
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -1145,7 +1145,7 @@ type via @mref{declare}, and @mref{constantp} returns @code{true}
 for all variables declared as @code{constant}. The default is to
 omit constant variables from @code{listofvars} return value.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -1178,7 +1178,7 @@ Example:
 (%o4)                          [n]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -1207,7 +1207,7 @@ See also the option variable @mref{listdummyvars} to exclude or include
                                   1
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1244,7 +1244,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1258,7 +1258,7 @@ Example:
 is similar to @mref{dpart} but uses a labelled box.  A labelled box is similar
 to the one produced by @code{dpart} but it has a name in the top line.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1279,7 +1279,7 @@ which @code{x} is a @code{mainvar} from one in which @code{x} isn't a
 necessary if cancellation is to occur.  Also, if you save an expression in which
 @code{x} is a @code{mainvar}, you probably should also save @code{x}.)
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Expressions}
 @closecatbox
@@ -1324,7 +1324,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Nouns and verbs}
 @closecatbox
 @end defvr
@@ -1340,7 +1340,7 @@ When @code{noundisp} is @code{true}, nouns display with
 a single quote.  This switch is always @code{true} when displaying function
 definitions.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @category{Nouns and verbs}
 @closecatbox
@@ -1360,7 +1360,7 @@ the form returned if a function call is preceded by a quote.
 
 See also @mrefdot{verbify}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Nouns and verbs}
 @closecatbox
 @end deffn
@@ -1377,7 +1377,7 @@ Note that expressions like @code{sin (@var{expr})}, @code{sqrt (@var{expr})},
 @code{exp (@var{expr})}, etc. count as just one term regardless of how many
 terms @var{expr} has (if it is a sum).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1474,7 +1474,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Operators}
 @closecatbox
@@ -1495,7 +1495,7 @@ if @var{op} is equal to the operator of @var{expr}.
 @code{true} if some element @var{op_1}, @dots{}, @var{op_n} is equal to the
 operator of @var{expr}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @category{Predicate functions}
 @closecatbox
@@ -1547,7 +1547,7 @@ substitute into the operator of an expression.  E.g.,
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -1564,7 +1564,7 @@ recomputation of common subexpressions.  @code{optimize} also has the side
 effect of "collapsing" its argument so that all common subexpressions
 are shared.  Do @code{example (optimize)} for examples.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1578,7 +1578,7 @@ Default value: @code{%}
 @code{optimprefix} is the prefix used for generated symbols by
 the @mref{optimize} command.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -1604,7 +1604,7 @@ once each, unless @code{unorder} is called; only the last call to
 
 See also @mrefdot{ordergreatp}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1749,7 +1749,7 @@ Ordering non-atomic expressions.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Predicate functions}
 @closecatbox
@@ -1810,7 +1810,7 @@ Examples:
 
 @code{example (part)} displays additional examples.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1842,7 +1842,7 @@ Examples:
 (%o3)                  [[b, c], [a, f(a)]]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1858,7 +1858,7 @@ When @code{partswitch} is @code{true}, @code{end} is returned
 when a selected part of an expression doesn't exist, otherwise an
 error message is given.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -1956,7 +1956,7 @@ Examples:
                 3        2
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1974,7 +1974,7 @@ the function itself.
 
 @c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -2015,7 +2015,7 @@ substitution.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -2106,7 +2106,7 @@ dpart: fell off the end.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -2192,7 +2192,7 @@ Example:
                     2 %e      + %e    + %e
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Display functions}
 @closecatbox
@@ -2230,7 +2230,7 @@ Denests @code{sqrt} of simple, numerical, binomial surds, where possible.  E.g.
 Sometimes it helps to apply @code{sqrtdenest} more than once, on such as
 @code{(19601-13860 sqrt(2))^(7/4)}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 
@@ -2262,7 +2262,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -2276,7 +2276,7 @@ Controls whether @code{lambda}'s substituted are applied in simplification after
 @code{sublis} is used or whether you have to do an @mref{ev} to get things to
 apply.  @code{true} means do the application.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -2307,7 +2307,7 @@ subst: cannot substitute 100 for operator g in expression g
 (%o2)                          102
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -2434,7 +2434,7 @@ following example:
 @noindent
 For further examples, do @code{example (subst)}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -2541,7 +2541,7 @@ message is given.
 Also, setting the option @mref{inflag} to @code{true} and calling @mref{part}
 or @mref{substpart} is the same as calling @mref{inpart} or @code{substinpart}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -2595,7 +2595,7 @@ Also, setting the option @mref{inflag} to @code{true} and calling @mref{part}
 or @code{substpart} is the same as calling @code{inpart} or
 @mrefdot{substinpart}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -2610,7 +2610,7 @@ Returns @code{true} if @var{expr} is a symbol, else @code{false}.
 @c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
 See also @ref{Identifiers}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @closecatbox
 @end deffn
@@ -2675,7 +2675,7 @@ output @code{%o7}.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -2714,7 +2714,7 @@ $FOO
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Nouns and verbs}
 @closecatbox
 @end deffn

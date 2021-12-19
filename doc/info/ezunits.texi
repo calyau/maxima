@@ -83,7 +83,7 @@ length, mass, time, charge, temperature, and quantity,
 and the fundamental units are the associated SI units,
 but other fundamental dimensions and units can be declared.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Physical units}
 @category{Share packages}
 @category{Package ezunits}
@@ -282,7 +282,7 @@ Computing conversions to base units; may take a moment.
 (%o7)              4.0759872051556356e+7 ` GJ
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Physical units}
 @category{Share packages}
 @category{Package physical_constants}
@@ -414,7 +414,7 @@ Arithmetic operations on dimensional quantities.
 (%o6)                        a  ` m
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 
@@ -635,7 +635,7 @@ Computing conversions to base units; may take a moment.
                                    bell ft
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 
@@ -672,7 +672,7 @@ Example:
 (%o3)           Newtonian constant of gravitation
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 @end deffn
@@ -703,7 +703,7 @@ Example:
 (%o4)                      5000 ` lbm
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 @end deffn
@@ -714,7 +714,7 @@ Example:
 Reverts the effect of @mrefdot{declare_constvalue} This function should be
 loaded with @code{load ("ezunits")}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 @end deffn
@@ -770,7 +770,7 @@ Example:
 (%o8)                          kg
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 @end deffn
@@ -810,7 +810,7 @@ Example:
 (%o7)                         kg J
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 @end deffn
@@ -854,7 +854,7 @@ Example:
 (%o6)                         100 v
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 @end deffn
@@ -891,7 +891,7 @@ Example:
 (%o6)                        100 xx
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 @end deffn
@@ -957,7 +957,7 @@ Examples:
 (%o4)                         true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 
@@ -1024,7 +1024,7 @@ Computing conversions to base units; may take a moment.
 (%o4)                     90 ` teaspoon
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 
@@ -1066,7 +1066,7 @@ Examples:
                                s
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 @end deffn
@@ -1078,7 +1078,7 @@ Reverts the effect of @code{declare_dimensions}. This function should be
 loaded with @code{load ("ezunits")}.
 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 @end deffn
@@ -1124,7 +1124,7 @@ Examples:
 (%o6) [length, mass, time, current, temperature, quantity, money]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 
@@ -1180,7 +1180,7 @@ Examples:
                               smile
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 
@@ -1247,7 +1247,7 @@ Examples:
 (%o5)                 [3, 0, - 1, 0, 0, 0]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 
@@ -1300,7 +1300,7 @@ Examples:
                                m
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 
@@ -1351,7 +1351,7 @@ is proportional to the fine-structure constant.
                       %c %e_0 %h_bar  %m_P
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 
@@ -1373,7 +1373,7 @@ Examples:
 @example
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package ezunits}
 @closecatbox
 

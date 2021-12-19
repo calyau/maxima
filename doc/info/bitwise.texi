@@ -49,7 +49,7 @@ Inverts all bits of a signed integer. The result of this action reads
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @category{Binary operations}
 @category{Package bitwise}
@@ -112,7 +112,7 @@ is taken into consideration by the function.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @category{Binary operations}
 @category{Package bitwise}
@@ -175,7 +175,7 @@ is taken into consideration by the function.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @category{Binary operations}
 @category{Package bitwise}
@@ -238,7 +238,7 @@ is taken into consideration by the function.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @category{Binary operations}
 @category{Package bitwise}
@@ -289,7 +289,7 @@ this process. The result of @code{bit_lsh} therefore is @code{int * 2}.
 (%o7)                          - 4
 @end group
 @end example
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @category{Binary operations}
 @category{Package bitwise}
@@ -345,7 +345,7 @@ this process.
 (%o8)                          - 1
 @end group
 @end example
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @category{Binary operations}
 @category{Package bitwise}
@@ -384,7 +384,7 @@ number @code{int}. This function only operates on positive numbers.
 (%o5)                           4
 @end group
 @end example
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @category{Binary operations}
 @category{Package bitwise}
@@ -492,7 +492,7 @@ is taken into consideration by the function.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @category{Binary operations}
 @category{Package bitwise}

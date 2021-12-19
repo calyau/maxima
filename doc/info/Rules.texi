@@ -25,7 +25,7 @@ There are additional mechanisms for rules applied to polynomials by
 @code{tellrat}, and for commutative and noncommutative algebra in @code{affine}
 package.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification}
 @category{Rules and patterns}
 @closecatbox
@@ -56,7 +56,7 @@ subexpression, the result is returned.
 
 See also @mrefcomma{applyb1} @mref{apply2} and @mrefdot{let}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn
@@ -78,7 +78,7 @@ subexpression is reprocessed, starting with the first rule.
 
 See also @mref{apply1} and @mrefdot{let}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn
@@ -104,7 +104,7 @@ before giving up.
 
 See also @mrefcomma{apply1} @mref{apply2} and @mrefdot{let}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn
@@ -124,7 +124,7 @@ If a call such as @code{letsimp (expr, rule_pkg_name)} is made,
 the rule package @code{rule_pkg_name} is used for that function call only,
 and the value of @code{current_let_rule_package} is not changed.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end defvr
@@ -140,7 +140,7 @@ Default value: @code{default_let_rule_package}
 is not explicitly set by the user with @code{let} or by changing the value of
 @code{current_let_rule_package}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end defvr
@@ -320,7 +320,7 @@ to see if it is a definite integral.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn
@@ -343,7 +343,7 @@ treated as functions which transform an expression by one
 operation of the pattern match and replacement.
 If the match fails, the rule function returns @code{false}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn
@@ -408,7 +408,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @category{Display functions}
 @closecatbox
@@ -502,7 +502,7 @@ named by @code{current_let_rule_package} is used.  If a call such as
 @end example
 
 @c NEEDS ADDITIONAL EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn
@@ -535,7 +535,7 @@ the numerator, denominator, and their quotient are simplified in that order.
 (%o6)                       (a - 1)!
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end defvr
@@ -560,7 +560,7 @@ See also @mrefcomma{disprule} which displays rules defined by @mref{tellsimp} an
 @mrefdot{tellsimpafter}
 @c WHAT ABOUT defmatch AND defrule ??
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn
@@ -633,7 +633,7 @@ For other ways to do substitutions see also @mrefcomma{subst}
                                           5               5
 @end group
 @end example
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn
@@ -646,7 +646,7 @@ Default value: @code{[default_let_rule_package]}
 @code{let_rule_packages} is a list of all user-defined let rule packages
 plus the default package @code{default_let_rule_package}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end defvr
@@ -909,7 +909,7 @@ match variables.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @category{Declarations and inferences}
 @closecatbox
@@ -925,7 +925,7 @@ Default value: 10000
 @code{maxapplydepth} is the maximum depth to which @code{apply1}
 and @code{apply2} will delve.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @closecatbox
 @end defvr
@@ -940,7 +940,7 @@ Default value: 10000
 @code{maxapplyheight} is the maximum height to which @code{applyb1}
 will reach before giving up.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @closecatbox
 @end defvr
@@ -972,7 +972,7 @@ called the original substitution rule is revived.
 See also @mrefcomma{remrule} which removes a rule defined by @mref{tellsimp} or
 @mrefdot{tellsimpafter}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn
@@ -1069,7 +1069,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn
@@ -1141,7 +1141,7 @@ Examples:
 (%o17)                     1 - cos (y)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn
@@ -1490,7 +1490,7 @@ A worked example: anticommutative multiplication.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn
@@ -1502,7 +1502,7 @@ A worked example: anticommutative multiplication.
 Executes @code{kill (rules)} and then resets the next rule number to 1
 for addition @code{+}, multiplication @code{*}, and exponentiation @code{^}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rules and patterns}
 @closecatbox
 @end deffn

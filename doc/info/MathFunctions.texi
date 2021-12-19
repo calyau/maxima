@@ -130,7 +130,7 @@ transform of @code{abs}: see @mrefdot{laplace}
                                s
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -286,7 +286,7 @@ reverse(uf))
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -299,7 +299,7 @@ Returns the largest integer less than or equal to @var{x} where @var{x} is
 numeric.  @mref{fix} (as in @code{fixnum}) is a synonym for this, so
 @code{fix(@var{x})} is precisely the same.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -383,7 +383,7 @@ can use this information; for example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -394,7 +394,7 @@ can use this information; for example:
 
 A synonym for @code{entier (@var{x})}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -409,7 +409,7 @@ to zero.
 If you want a unit step function that takes on the value of 0 at @var{x}
 equal to zero, use @mrefdot{unit_step}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Laplace transform}
 @category{Mathematical functions}
 @closecatbox
@@ -424,7 +424,7 @@ When @var{L} is a list or a set, return @code{apply ('max, args (@var{L}))}.
 When @var{L} is not a list or a set, signal an error.
 See also @mref{lmin} and @mrefdot{max}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @category{Lists}
 @category{Sets}
@@ -439,7 +439,7 @@ When @var{L} is a list or a set, return @code{apply ('min, args (@var{L}))}.
 When @var{L} is not a list or a set, signal an error.
 See also @mref{lmax} and @mrefdot{min}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @category{Lists}
 @category{Sets}
@@ -495,7 +495,7 @@ members and excludes those that are in between; for example
 (%o1) max(x,4*x)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -548,7 +548,7 @@ members and excludes those that are in between; for example
 (%o1) max(x,4*x)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -564,7 +564,7 @@ Multiples of 1/2 are rounded to the nearest even integer.  Evaluation of
 The @code{round} function distributes over lists, matrices and equations.
 See @mrefdot{distribute_over}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -587,7 +587,7 @@ gives @code{-signum(x)}) and multiplicative identity (@code{signum(x*y)} gives
 The @code{signum} function distributes over a list, a matrix, or an
 equation.  See @mref{sign} and @mrefdot{distribute_over}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -603,7 +603,7 @@ to @mref{floor} and @mrefdot{ceiling}
 The @code{truncate} function distributes over lists, matrices and equations.
 See @mrefdot{distribute_over}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -762,7 +762,7 @@ example for @mrefdot{bessel_j}
 (%o4)                 abs(bessel_j(1, %i))
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Complex variables}
 @closecatbox
 @end deffn
@@ -861,7 +861,7 @@ some properties of the variables involved not being known:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Complex variables}
 @closecatbox
 @end deffn
@@ -902,7 +902,7 @@ Returns the complex conjugate of @var{x}.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Complex variables}
 @closecatbox
 @end deffn
@@ -947,7 +947,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Complex variables}
 @closecatbox
 @end deffn
@@ -988,7 +988,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Complex variables}
 @category{Exponential and logarithm functions}
 @closecatbox
@@ -1029,7 +1029,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Complex variables}
 @closecatbox
 @end deffn
@@ -1063,7 +1063,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Complex variables}
 @closecatbox
 @end deffn
@@ -1098,7 +1098,7 @@ yields a noun form @code{genfact (n, n/2, 2)}.
 @c n!! IS NEITHER SIMPLIFIED NOR EVALUATED IN THIS CASE 
 @c -- MENTION THAT? OR TOO MUCH DETAIL ???
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @category{Operators}
 @closecatbox
@@ -1149,7 +1149,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1204,7 +1204,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @closecatbox
 @end deffn
@@ -1356,7 +1356,7 @@ simplification of expressions with the factorial function.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @category{Operators}
 @closecatbox
@@ -1372,7 +1372,7 @@ Default value: 100000
 @code{factlim} specifies the highest factorial which is
 automatically expanded.  If it is -1 then all integers are expanded.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @closecatbox
 @end defvr
@@ -1386,7 +1386,7 @@ The option variable @code{factorial_expand} controls the simplification of
 expressions like @code{(n+1)!}, where @code{n} is an integer.
 See @mref{factorial} for an example.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @closecatbox
 @end defvr
@@ -1401,7 +1401,7 @@ Returns the generalized factorial, defined as
 @code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Thus, when @var{x} is an integer,
 @code{genfact (x, x, 1) = x!} and @code{genfact (x, x/2, 2) = x!!}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @closecatbox
 @end deffn
@@ -1435,7 +1435,7 @@ which differ by an integer.
                          (n + 1) (n + 2)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1492,7 +1492,7 @@ When @code{sumsplitfact} is @code{false},
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Gamma and factorial functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -1514,7 +1514,7 @@ that the @code{radcan} command also does this transformation, and more
 complicated transformations of this ilk as well.  The @code{logcontract}
 command "contracts" expressions containing @code{log}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -1588,7 +1588,7 @@ When @code{%emode} is @code{false}, no special simplification of
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -1658,7 +1658,7 @@ See also @mref{ev} and @mrefdot{numer}
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Evaluation flags}
 @closecatbox
@@ -1711,7 +1711,7 @@ See @mrefdot{%emode}
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @closecatbox
 @end deffn
@@ -1816,7 +1816,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @closecatbox
 @end deffn
@@ -1857,7 +1857,7 @@ and more complicated transformations of this as well. The @code{logcontract}
 command "contracts" expressions containing @code{log}.
 @end table
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @closecatbox
 @end deffn
@@ -1874,7 +1874,7 @@ if @code{logabs} is @code{true}, but in terms of @code{log(...)} if
 setting is used, because here "evaluation" of the indefinite integral at the
 endpoints is often needed.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Integral calculus}
 @category{Global flags}
@@ -1891,7 +1891,7 @@ inverse circular and hyperbolic functions with equivalent logarithmic
 functions for an expression @var{expr} without setting the global
 variable @code{logarc}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Simplification flags and variables}
 @category{Simplification functions}
@@ -1906,7 +1906,7 @@ inverse circular and hyperbolic functions are replaced by
 equivalent logarithmic functions.
 The default value of @code{logarc} is @code{false}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Simplification flags and variables}
 @category{Simplification functions}
@@ -1925,7 +1925,7 @@ SQRTs, you can do @code{logconcoeffp:'logconfun$
 logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 @code{logcontract(1/2*log(x));} will give @code{log(sqrt(x))}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -1962,7 +1962,7 @@ E.g. if you like to generate SQRTs, you can do @code{logconcoeffp:'logconfun$
 logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 @code{logcontract(1/2*log(x));} will give @code{log(sqrt(x))}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @closecatbox
 @end deffn
@@ -2082,7 +2082,7 @@ these simplifications are disabled.
                              i = 1
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -2096,7 +2096,7 @@ Default value: @code{false}
 If @code{true} implements the rule
 @code{log(-n) -> log(n)+%i*%pi} for @code{n} a positive integer.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -2110,7 +2110,7 @@ Default value: @code{true}
 If @code{false} then no simplification of @code{%e} to a
 power containing @code{log}'s is done.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -2123,7 +2123,7 @@ power containing @code{log}'s is done.
 Represents the principal branch of the complex-valued natural
 logarithm with @code{-%pi < carg(@var{x}) <= +%pi} .
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Exponential and logarithm functions}
 @category{Complex variables}
 @closecatbox
@@ -2136,7 +2136,7 @@ logarithm with @code{-%pi < carg(@var{x}) <= +%pi} .
 The square root of @var{x}.  It is represented internally by
 @code{@var{x}^(1/2)}.  See also @mref{rootscontract} and @mrefdot{radexpand}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -2173,7 +2173,7 @@ packages extend the simplification rules built into Maxima,
 @code{ntrig} and @code{atrig1}.  Do @code{describe(@var{command})}
 for details.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 
@@ -2278,7 +2278,7 @@ an integer variable.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -2346,7 +2346,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Hyperbolic functions}
 @category{Simplification flags and variables}
@@ -2359,7 +2359,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 -- Arc Cosine.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2370,7 +2370,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 -- Hyperbolic Arc Cosine.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
@@ -2381,7 +2381,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 -- Arc Cotangent.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2392,7 +2392,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 -- Hyperbolic Arc Cotangent.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
@@ -2403,7 +2403,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 -- Arc Cosecant.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2414,7 +2414,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 -- Hyperbolic Arc Cosecant.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
@@ -2425,7 +2425,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 -- Arc Secant.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2436,7 +2436,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 -- Hyperbolic Arc Secant.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
@@ -2447,7 +2447,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 -- Arc Sine.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2458,7 +2458,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 -- Hyperbolic Arc Sine.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
@@ -2471,7 +2471,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 
 See also @mref{atan2}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2485,7 +2485,7 @@ to @code{%pi}.
 
 See also @mref{atan}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2496,7 +2496,7 @@ See also @mref{atan}.
 
 -- Hyperbolic Arc Tangent.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
@@ -2515,7 +2515,7 @@ already known to Maxima, the following angles are fully implemented:
 Corresponding angles in the other three quadrants are also available.
 Do @code{load("atrig1");} to use them.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Package atrig1}
 @closecatbox
@@ -2527,7 +2527,7 @@ Do @code{load("atrig1");} to use them.
 
 -- Cosine.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2538,7 +2538,7 @@ Do @code{load("atrig1");} to use them.
 
 -- Hyperbolic Cosine.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
@@ -2549,7 +2549,7 @@ Do @code{load("atrig1");} to use them.
 
 -- Cotangent.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2560,7 +2560,7 @@ Do @code{load("atrig1");} to use them.
 
 -- Hyperbolic Cotangent.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
@@ -2571,7 +2571,7 @@ Do @code{load("atrig1");} to use them.
 
 -- Cosecant.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2582,7 +2582,7 @@ Do @code{load("atrig1");} to use them.
 
 -- Hyperbolic Cosecant.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
@@ -2660,7 +2660,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -2678,7 +2678,7 @@ used to simplify trigonometric function whose arguments are of the form
 @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
 @c NEED TO LOAD THIS PACKAGE ??
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Package ntrig}
 @closecatbox
@@ -2690,7 +2690,7 @@ used to simplify trigonometric function whose arguments are of the form
 
 -- Secant.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2701,7 +2701,7 @@ used to simplify trigonometric function whose arguments are of the form
 
 -- Hyperbolic Secant.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
@@ -2712,7 +2712,7 @@ used to simplify trigonometric function whose arguments are of the form
 
 -- Sine.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2723,7 +2723,7 @@ used to simplify trigonometric function whose arguments are of the form
 
 -- Hyperbolic Sine.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
@@ -2734,7 +2734,7 @@ used to simplify trigonometric function whose arguments are of the form
 
 -- Tangent.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @closecatbox
 @end deffn
@@ -2745,7 +2745,7 @@ used to simplify trigonometric function whose arguments are of the form
 
 -- Hyperbolic Tangent.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Hyperbolic functions}
 @closecatbox
 @end deffn
@@ -2800,7 +2800,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Simplification functions}
 @closecatbox
@@ -2817,7 +2817,7 @@ Default value: @code{true}
 (e.g. @code{sin(x+y))} will take place only if @code{trigexpandplus} is
 @code{true}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -2833,7 +2833,7 @@ Thus, when the @code{trigexpand} command is used or the @code{trigexpand}
 switch set to @code{true}, expansion of products (e.g. @code{sin(2*x)})
 will take place only if @code{trigexpandtimes} is @code{true}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -2859,7 +2859,7 @@ If @code{false}, both the
 @code{@var{fun}(@var{arcfun}(@var{x}))}
 simplifications are turned off.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -2913,7 +2913,7 @@ See also @mref{poissimp}.
 @c (%o3)                       - cos(x)
 @c @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Simplification functions}
 @closecatbox
@@ -2928,7 +2928,7 @@ When @code{trigsign} is @code{true}, it permits simplification of negative
 arguments to trigonometric functions.  E.g., @code{sin(-x)} will become
 @code{-sin(x)} only if @code{trigsign} is @code{true}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Simplification flags and variables}
 @closecatbox
@@ -2962,7 +2962,7 @@ able to further simplify the result.
 @code{demo ("trgsmp.dem")} displays some examples of @code{trigsimp}.
 @c MERGE EXAMPLES INTO THIS ITEM
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Simplification functions}
 @closecatbox
@@ -3057,7 +3057,7 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Trigonometric functions}
 @category{Simplification functions}
 @closecatbox
@@ -3099,7 +3099,7 @@ using the current computer clock time as the seed.
 @code{make_random_state (false)} returns a copy of the current state
 of the random number generator.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Random numbers}
 @closecatbox
 @end deffn
@@ -3112,7 +3112,7 @@ Copies @var{s} to the random number generator state.
 
 @code{set_random_state} always returns @code{done}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Random numbers}
 @closecatbox
 @end deffn
@@ -3200,7 +3200,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Random numbers}
 @category{Numerical methods}
 @closecatbox

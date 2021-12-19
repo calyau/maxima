@@ -66,7 +66,7 @@ symbol @code{/T/} follows the line label of such expressions.
 
 @c TODO: An example of some code that yields the /T/ form.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @category{Rational expressions}
 @closecatbox
@@ -86,7 +86,7 @@ Default value: @code{false}
 @code{algebraic} must be set to @code{true} in order for the simplification of
 algebraic integers to take effect.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification flags and variables}
 @closecatbox
 @end defvr
@@ -100,7 +100,7 @@ When @code{berlefact} is @code{false} then the Kronecker factoring
 algorithm will be used otherwise the Berlekamp algorithm, which is the
 default, will be used.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end defvr
@@ -133,7 +133,7 @@ Examples:
                             2      2
 (%o3)                      a  d + b  c
 @end example
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -165,7 +165,7 @@ Example:
 (%o2)                         true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -343,7 +343,7 @@ function.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -372,7 +372,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -416,7 +416,7 @@ See also @mref{num}
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -449,7 +449,7 @@ Examples:
 @noindent
 Note that @code{y} is the main variable in the second example.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -492,7 +492,7 @@ Example:
                             - 5154 x  - 1291 x  + 7688 x + 15376]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @category{Algebraic equations}
 @closecatbox
@@ -542,7 +542,7 @@ gcd is first calculated with the function @code{gcd} and then with the function
 (%o5) [2 x - 3, 3 x  - 4 x + 1, 2 x  - 4 x  + 1, - 4 x  + x + 1]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -554,7 +554,7 @@ Default value: @code{true}
 @code{facexpand} controls whether the irreducible factors returned by
 @code{factor} are in expanded (the default) or recursive (normal CRE) form.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end defvr
@@ -725,7 +725,7 @@ Examples:
  - x   - x   + x   + x   - x   - x  + x  + 1)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -777,7 +777,7 @@ Refusing to factor polynomial x    - 1
 
 See also: @mref{factor_max_degree_print_warning}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end defvr
@@ -793,7 +793,7 @@ its degree exceeds the value of factor_max_degree.
 
 See also: @mref{factor_max_degree}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end defvr 
@@ -807,7 +807,7 @@ Default value: @code{false}
 When @code{factorflag} is @code{false}, suppresses the factoring of
 integer factors of rational expressions.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end defvr
@@ -842,7 +842,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -875,7 +875,7 @@ Example:
 (%o2)            (x + 1) (a (z + w)  + (v + u) )
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -892,7 +892,7 @@ multiplication is of order @code{n_1 n_2} where
 and @code{n_2} is the degree of @code{p_2}.
 @code{fasttimes} is of order @code{max (n_1, n_2)^1.585}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -947,7 +947,7 @@ Example:
                              x  - 1
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification functions}
 @category{Rational expressions}
 @closecatbox
@@ -1047,7 +1047,7 @@ Warning: fullratsubst1(substexpr,forexpr,expr): reached maximum iterations of 15
 
 See also @mref{lrats_max_iter} and @mref{fullratsubstflag}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end deffn
@@ -1061,7 +1061,7 @@ Default value: @code{false}
 
 An option variable that is set to @code{true} in @mref{fullratsubst}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @category{Rational expressions}
 @closecatbox
@@ -1136,7 +1136,7 @@ the polynomials divided by the greatest common divisor.
 (%o6)           [6 x  + 13 x + 6, x + 1, x  + x]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @category{Rational expressions}
 @closecatbox
@@ -1207,7 +1207,7 @@ not the  @code{y+1} we would expect in @code{k[y, x]}.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @category{Rational expressions}
 @closecatbox
@@ -1225,7 +1225,7 @@ rational integers (i.e.,  ordinary integers).  Factors are normalized by making
 @var{a} and @var{b} non-negative.
 @c NEED EXAMPLES HERE
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integers}
 @closecatbox
 @end deffn
@@ -1251,7 +1251,7 @@ Example:
 (%o1)           (x - 1) (x + 1) (x - %i) (x + %i)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -1266,7 +1266,7 @@ Example:
 is similar to @code{factorsum} but applies @code{gfactor} instead
 of @code{factor}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1307,7 +1307,7 @@ Examples:
 (%o5)                           0
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1335,7 +1335,7 @@ Internal calls to @code{factor} respect the user-specified value of
 the time spent factoring large integers.
 @c NEED EXAMPLES HERE
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integers}
 @closecatbox
 @end defvr
@@ -1387,7 +1387,7 @@ rat: replaced 1.0 by 1/1 = 1.0
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @closecatbox
 @end defvr
@@ -1407,7 +1407,7 @@ Returns the lowest exponent of @var{x} which explicitly appears in
 (%o1)                       min(a, 2)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1487,7 +1487,7 @@ lratsubst: improper argument: [[a  = a b, b = c], [a = b]]
 
 See also @mref{fullratsubst}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @category{Rational expressions}
 @closecatbox
@@ -1503,7 +1503,7 @@ The upper limit on the number of iterations that @mref{fullratsubst} and
 @mref{lratsubst} may perform. It must be set to a positive integer. See
 the example for @mref{fullratsubst}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @category{Rational expressions}
 @closecatbox
@@ -1569,7 +1569,7 @@ Examples:
                             6    2
 (%o8)                      x  + x  + 1
 @end example
-@opencatbox
+@opencatbox{Categories:}
 @category{Integers}
 @closecatbox
 @end defvr
@@ -1628,7 +1628,7 @@ See also @mref{denom}
 @end example
 
 @c NEED SOME EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1725,7 +1725,7 @@ returns @var{p} (unexpanded), @code{polydecomp (compose ([@var{p_1}, ...,
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -1744,7 +1744,7 @@ instead of the current value of @code{modulus}.
 
 See @mrefdot{modulus}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -1813,7 +1813,7 @@ Polynomials with two variables:
 (%o2)                         true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Polynomials}
 @closecatbox
@@ -1832,7 +1832,7 @@ arguments @var{x_1}, @dots{}, @var{x_n} are interpreted as in @code{ratvars}.
 @mref{divide}.
 
 @c NEED SOME EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -1909,7 +1909,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end deffn
@@ -1921,7 +1921,7 @@ When @code{ratalgdenom} is @code{true}, allows rationalization of denominators
 with respect to radicals to take effect.  @code{ratalgdenom} has an effect only
 when canonical rational expressions (CRE) are used in algebraic mode.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification flags and variables}
 @closecatbox
 @end defvr
@@ -1974,7 +1974,7 @@ Example:
 @end example
 @c NEED MORE EXAMPLES HERE
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @category{Rational expressions}
 @closecatbox
@@ -2000,7 +2000,7 @@ denominator, and thus some expressions which are considered ratios by
 @code{ratdenom} are not considered ratios by @code{denom}.
 
 @c NEEDS AN EXAMPLE HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end deffn
@@ -2064,7 +2064,7 @@ Examples:
                              b  + 3
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification flags and variables}
 @category{Rational expressions}
 @closecatbox
@@ -2134,7 +2134,7 @@ Example:
 (%o6)            3 b  + (6 a + 2) b + 3 a  + 2 a
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end deffn
@@ -2154,7 +2154,7 @@ use rational functions in non-rational contexts.
 
 See also @mrefdot{totaldisrep}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end deffn
@@ -2223,7 +2223,7 @@ Examples:
                 x  + x  - x - 1   x  + x  - x - 1
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end deffn
@@ -2254,7 +2254,7 @@ The @code{ratfac} and @code{ratweight} schemes are incompatible and may not
 both be used at the same time.
 
 @c NEED EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end defvr
@@ -2279,7 +2279,7 @@ and thus some expressions which are considered ratios by @code{ratnumer}
 are not considered ratios by @code{num}.
 
 @c NEEDS AN EXAMPLE HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end deffn
@@ -2294,7 +2294,7 @@ extended CRE, otherwise @code{false}.
 CRE are created by @code{rat} and related functions.
 Extended CRE are created by @code{taylor} and related functions.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Rational expressions}
 @closecatbox
@@ -2308,7 +2308,7 @@ When @code{ratprint} is @code{true},
 a message informing the user of the conversion of floating point numbers
 to rational numbers is displayed.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @category{Numerical evaluation}
 @category{Console interaction}
@@ -2380,7 +2380,7 @@ Examples:
 (%o5)                        x
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification functions}
 @category{Rational expressions}
 @closecatbox
@@ -2394,7 +2394,7 @@ When @code{ratsimpexpons} is @code{true},
 @code{ratsimp} is applied to the exponents of expressions during simplification.
 
 @c NEED AN EXAMPLE HERE -- RECYCLE THE ratsimpexpons EXAMPLE FROM ratsimp ABOVE
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification flags and variables}
 @category{Rational expressions}
 @closecatbox
@@ -2408,7 +2408,7 @@ Default value: @code{false}
 @code{radsubstflag}, if @code{true}, permits @code{ratsubst} to make
 substitutions such as @code{u} for @code{sqrt (x)} in @code{x}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification flags and variables}
 @closecatbox
 @end defvr
@@ -2483,7 +2483,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end deffn
@@ -2512,7 +2512,7 @@ Each call to the function @code{ratvars} resets the list.
 @code{ratvars ()} clears the list.
 
 @c NEED EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end deffn
@@ -2586,7 +2586,7 @@ evaluation are still present.
 ($A $B $X $Y)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @category{Global flags}
 @closecatbox
@@ -2632,7 +2632,7 @@ Examples:
 (%o5)/R/                  2 b + 2 a + 1
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end deffn
@@ -2648,7 +2648,7 @@ each call to @code{ratweight} places additional items in the list.
 @c DO WE REALLY NEED TO MENTION THIS ??
 @code{kill (ratweights)} and @code{save (ratweights)} both work as expected.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end defvr
@@ -2662,7 +2662,7 @@ Default value: @code{false}
 function to control the truncation of canonical rational expressions (CRE).
 For the default value of @code{false}, no truncation occurs.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end defvr
@@ -2680,7 +2680,7 @@ Returns the remainder of the polynomial @var{p_1} divided by the polynomial
 of the two-element list returned by @code{divide}.
 
 @c NEED SOME EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -2735,7 +2735,7 @@ Examples:
 (%i6) determinant(%);
 (%o6)                   4 a - (2 b - c) c
 @end example
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -2762,7 +2762,7 @@ On most problems the default value @code{subres} should be best.
 @c On some large degree univariate or bivariate problems @code{mod}
 @c may be better.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end defvr
@@ -2778,7 +2778,7 @@ expression which is a product of factors to be saved by certain
 functions in order to speed up later factorizations of expressions
 containing some of the same factors.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end defvr
@@ -2792,7 +2792,7 @@ expression @code{expr}.
 
 See also @mrefdot{ratvars}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @category{Display functions}
 @closecatbox
@@ -2824,7 +2824,7 @@ Example:
 (%o1)                  (2 x + 1)  (x  - 1)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @closecatbox
 @end deffn
@@ -2904,7 +2904,7 @@ Examples:
 (%o6)                 [y  - x , a  + a + 1]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @category{Rational expressions}
 @closecatbox
@@ -2924,7 +2924,7 @@ ratdisrepping expressions such as equations, lists, matrices, etc., which
 have some subexpressions in CRE form.
 
 @c NEED EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @closecatbox
 @end deffn
@@ -2936,7 +2936,7 @@ have some subexpressions in CRE form.
 Removes @code{tellrat} properties from @var{x_1}, @dots{}, @var{x_n}.
 
 @c NEED EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @category{Rational expressions}
 @closecatbox

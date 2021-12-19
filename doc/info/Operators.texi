@@ -175,7 +175,7 @@ Incorrect syntax: # is not a prefix operator
 (%o9)                       ##(5, 3)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @category{Syntax}
 @closecatbox
@@ -401,7 +401,7 @@ Arithmetic is carried out element-by-element for lists (depending on
 (%o8)                   [a , c , m , t ]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @closecatbox
 @end deffn
@@ -439,7 +439,7 @@ Examples:
 (%o4)                         done
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @closecatbox
 @end deffn
@@ -474,7 +474,7 @@ Examples:
 (%o2)                  a^3*b^2+a^^2 . b^^3
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @closecatbox
 @end deffn
@@ -504,7 +504,7 @@ See also
 and
 @mrefdot{dotscrules}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @closecatbox
 @end deffn
@@ -602,7 +602,7 @@ values, although the arguments of relational expressions are evaluated.
 (%o3)               [true, true, true, false]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @closecatbox
 @end deffn
@@ -641,7 +641,7 @@ accepted, and the result is a Boolean expression.
 @code{and} is not commutative: @code{a and b} might not be equal to
 @code{b and a} due to the treatment of indeterminate operands.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @closecatbox
 @end deffn
@@ -666,7 +666,7 @@ prints an error message when @code{prederror} is @code{true}.  Otherwise,
 operands which do not evaluate to @code{true} or @code{false} are accepted,
 and the result is a Boolean expression.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @closecatbox
 @end deffn
@@ -700,7 +700,7 @@ accepted, and the result is a Boolean expression.
 @code{or} is not commutative: @code{a or b} might not be equal to @code{b or a}
 due to the treatment of indeterminate operands.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @closecatbox
 @end deffn
@@ -749,7 +749,7 @@ Examples:
 (%o6)                         true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @closecatbox
 @end deffn
@@ -890,7 +890,7 @@ Because @code{not @var{expr}} causes evaluation of @var{expr},
 (%o2)                         true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @closecatbox
 @end deffn
@@ -1024,7 +1024,7 @@ The values of @code{a} and @code{b} are exchanged in this example.
 (%o4)                          33
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Evaluation}
 @category{Operators}
 @closecatbox
@@ -1074,7 +1074,7 @@ Examples:
 (%o8)                          33
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Evaluation}
 @category{Operators}
 @closecatbox
@@ -1189,7 +1189,7 @@ x is equal to 1234 - 1729 w
 (%o7)                            1234 - 1729 w
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @category{Operators}
 @closecatbox
@@ -1386,7 +1386,7 @@ the function defined by @code{:=} accepts a variable number of arguments.
 (%o4)                         - 99
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @category{Operators}
 @closecatbox
@@ -1522,7 +1522,7 @@ if x ## y then
 (%o3)                if x ## y then 1 else 0
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @category{Declarations and inferences}
 @category{Syntax}
@@ -1660,7 +1660,7 @@ Matchfix operators are ordinary user-defined functions.
                                 15
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Syntax}
 @category{Operators}
 @closecatbox
@@ -1681,7 +1681,7 @@ to be an @code{nary} operator.  Functions may be declared to be @code{nary}.  If
 
 See also @ref{Introduction to operators}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @category{Syntax}
 @closecatbox
@@ -1702,7 +1702,7 @@ function which declares @code{x} to be a @code{nofix} operator.
 
 See also @ref{Introduction to operators}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @category{Syntax}
 @closecatbox
@@ -1722,7 +1722,7 @@ to be a @code{postfix} operator.
 
 See also @ref{Introduction to operators}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @category{Syntax}
 @closecatbox
@@ -1741,7 +1741,7 @@ which argument immediately follows an occurrence of the operator.
 
 See also @ref{Introduction to operators}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @category{Syntax}
 @closecatbox

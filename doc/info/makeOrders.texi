@@ -26,7 +26,7 @@ where @code{[0, 1]} is associated with the term @math{b} and @code{[2, 3]} with 
 
 To use this function write first @code{load("makeOrders")}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Polynomials}
 @category{Share packages}
 @category{Package makeOrders}

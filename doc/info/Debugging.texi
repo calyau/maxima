@@ -120,7 +120,7 @@ maxima-mode.el turned on in the window in which the file @code{foobar.mac} is
 visiting.  There are additional commands available in that file window, such as
 evaluating the function into the Maxima, by typing @code{Alt-Control-x}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 
@@ -193,7 +193,7 @@ Return to the Maxima prompt (from any debugger level) without
 completing the computation
 @end table 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 
@@ -220,7 +220,7 @@ In either case, enabling @code{debugmode} will not catch Lisp errors.
 @c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
 @c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @category{Global flags}
 @closecatbox
@@ -235,7 +235,7 @@ When @code{refcheck} is @code{true}, Maxima prints a message
 each time a bound variable is used for the first time in a
 computation.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Evaluation}
 @category{Console interaction}
 @category{Global flags}
@@ -277,7 +277,7 @@ to put them on the list of variables to check.
 No printout is generated when a
 variable on the @code{setcheck} list is assigned to itself, e.g., @code{X: 'X}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Console interaction}
 @category{Global flags}
 @closecatbox
@@ -298,7 +298,7 @@ Hence, one may assign a different value by assigning to @code{setval}.
 
 See also @mref{setcheck} and @mrefdot{setval}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Console interaction}
 @category{Global flags}
 @closecatbox
@@ -314,7 +314,7 @@ Hence, one may assign a different value by assigning to @mref{setval}.
 
 See also @mref{setcheck} and @mrefdot{setcheckbreak}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Console interaction}
 @category{Global variables}
 @closecatbox
@@ -351,7 +351,7 @@ If @code{trace(f)} is in effect, then @code{timer(f)} has no effect;
 
 See also @mrefdot{timer_devalue}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 @end deffn
@@ -374,7 +374,7 @@ return information about any function not currently on the timer list.
 @code{timer (f)} resets all timing statistics to zero
 and puts @code{f} on the timer list again.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 @end deffn
@@ -392,7 +392,7 @@ total time.
 
 See also @mref{timer} and @mrefdot{timer_info}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @category{Global flags}
 @closecatbox
@@ -422,7 +422,7 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 
 See also @mrefdot{timer}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 @end deffn
@@ -457,7 +457,7 @@ function @code{f} is no longer on the timer list.
 If @code{timer (f)} is in effect, then @code{trace (f)} has no effect;
 @code{trace} and @code{timer} can't both be in effect for the same function.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 @end deffn
@@ -533,7 +533,7 @@ on a predicate:
 (%i7) ff(6);
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 @end deffn
@@ -551,7 +551,7 @@ With no arguments, @code{untrace} disables tracing for all functions.
 @code{untrace} returns a list of the functions for which 
 it disabled tracing.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 @end deffn

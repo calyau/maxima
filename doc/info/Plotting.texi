@@ -59,7 +59,7 @@ different. To view the documentation for a graphic option @code{opt},
 type @code{?? opt} in order to choose the information for either of
 those two packages.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 
@@ -143,7 +143,7 @@ format, the geomview program must be installed.
 
 @end itemize
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 
@@ -169,7 +169,7 @@ you may change the value of this variable. For instance,
 (%i1) geomview_command: "/usr/local/bin/my_geomview"$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -205,7 +205,7 @@ variable. For instance,
 (%i1) gnuplot_command: "/usr/local/bin/my_gnuplot"$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -223,7 +223,7 @@ other Lisp versions are used. The contents of this variable can be
 changed in order to add options for the gnuplot program, adding those
 options before the format directive "~s".
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -263,7 +263,7 @@ gnuplot shell keeping the plot window. Therefore, when older gnuplot
 versions are used in Windows, it might be necessary to adjust the value
 of @code{gnuplot_view_args}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -314,7 +314,7 @@ corresponding the maximum 36 iterations would not be black.
 @image{figures/plotting4,8cm}
 @end ifnotinfo
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -336,7 +336,7 @@ plotted.  There are two transformations defined by default:
 @mref{polar_to_xy} and @mrefdot{spherical_to_xyz} See the documentation
 for those two transformations.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end deffn
@@ -382,7 +382,7 @@ Example:
 @image{figures/plotting5,8cm}
 @end ifnotinfo
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -398,7 +398,7 @@ plot3d.  Its effect will be to interpret the two independent variables in
 plot3d as the distance from the z axis and the azimuthal angle (polar
 coordinates), and transform them into x and y coordinates.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end deffn
@@ -727,7 +727,7 @@ A plot of discrete data points together with a continuous function:
 
 See also the section about Plotting Options.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end deffn
@@ -950,7 +950,7 @@ in which each color represents a different level.
 
 See also @mrefdot{Plotting Options}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end deffn
@@ -964,7 +964,7 @@ use is deprecated. To set global plotting options, see their current
 values or remove options, use @mrefcomma{set_plot_option}
 @mref{get_plot_option} and @mrefdot{remove_plot_option}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -978,7 +978,7 @@ Removes the default value of an option. The name of the option must be given.
 See also @mrefcomma{set_plot_option} @mref{get_plot_option} and
 @mref{Plotting Options}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end deffn
@@ -1016,7 +1016,7 @@ Modification of the @mref{grid} values.
 red, brown, black]], [gnuplot_preamble, ], [gnuplot_term, default]]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end deffn
@@ -1032,7 +1032,7 @@ of a point (first, the angle with the z axis, then the angle of the xy
 projection with the x axis and finally the distance from the origin) and
 transform them into x, y and z coordinates.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end deffn
@@ -1073,7 +1073,7 @@ have more control on the number of points and their positions, a list of
 points can be created and then plotted using the @code{discrete} method
 of @code{plot2d}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1094,7 +1094,7 @@ line. This option does not have any effect in the 3 dimensional plots.
 The single keywords @code{axes} and @code{noaxes} can be used as
 synonyms for @code{[axes, true]} and @code{[axes, false]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1114,7 +1114,7 @@ the value for the azimuth, in degrees.
 
 See also @mrefdot{elevation}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1130,7 +1130,7 @@ to @code{false}, no box will be drawn.
 The single keywords @code{box} and @code{nobox} can be used as
 synonyms for @code{[box, true]} and @code{[box, false]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1152,7 +1152,7 @@ digits: two for the red component, two for green component and two for
 the blue component. If the name of a given color is unknown color, black
 will be used instead.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1171,7 +1171,7 @@ shown on the right, showing the corresponding between colors and values.
 The single keywords @code{color_bar} and @code{nocolor_bar} can be used
 as synonyms for @code{[color_bar, true]} and @code{[color_bar, false]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1191,7 +1191,7 @@ value given previously, making the graphic program use its default for
 the values of the tics and @code{nocolor_bar_tics} will not show any
 tics on the color bar.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1211,7 +1211,7 @@ the value for the elevation, in degrees.
 
 See also @mrefdot{azimuth}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1227,7 +1227,7 @@ programs.
 
 For a way to actually draw a grid See @mrefdot{grid2d}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1246,7 +1246,7 @@ used as synonyms for @code{[grid2d, true]} and @code{[grid2d, false]}.
 
 See also @mrefdot{grid}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1259,7 +1259,7 @@ Default value: @code{9}
 
 Number of iterations made by the programs mandelbrot and julia.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1271,7 +1271,7 @@ Number of iterations made by the programs mandelbrot and julia.
 Writes one or several labels in the points with @var{x}, @var{y}
 coordinates indicated after each label.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1290,7 +1290,7 @@ The single keyword @code{legend} removes any previously defined legends,
 leaving it to the plotting program to set up a legend. The keyword
 @code{nolegend} is a synonym for @code{[legend, false]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1312,7 +1312,7 @@ If more than one number are given after the keyword @code{levels},
 @mrefdot{plot2d} will show the contour lines corresponding to those
 values of the expression plotted, if they exist within the domain used.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1327,7 +1327,7 @@ Makes the horizontal axes to be scaled logarithmically. It can be either
 true or false. The single keywords @code{logx} and @code{nologx} can be
 used as synonyms for @code{[logx, true]} and @code{[logx, false]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1343,7 +1343,7 @@ true or false.
 The single keywords @code{logy} and @code{nology} can be used as
 synonyms for @code{[logy, true]} and @code{[logy, false]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1364,7 +1364,7 @@ defined colors, leaving it to the graphic program to decide what color
 to use. The keyword @code{no_mesh_lines} is a synonym for
 @code{[mesh_lines_color, false]}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1380,7 +1380,7 @@ number of points used by the adaptive plotting routine for plotting
 functions. When plotting parametric functions with @mrefcomma{plot3d}
 it sets the number of points that will be shown for the plot.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1418,7 +1418,7 @@ The single keyword @code{palette} removes any palette previously
 defined, leaving it to the graphic program to decide the palette to use
 and @code{nopalette} is a synonym for @code{[palette, false]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1440,7 +1440,7 @@ points in that grid the absolute value of the expression is less than
 the value of @code{plotepsilon}, it will be assumed to be zero, and
 therefore, as being part of the curve to be plotted.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1458,7 +1458,7 @@ gnuplot_pipes or geomview.
 It sets the format to be used for plotting as explained in
 @mrefdot{Plotting Formats}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1482,7 +1482,7 @@ were @code{false}. The single keyword @code{plot_realpart} can be used
 as a synonym for @code{[plot_realpart, true]} and @code{noplot_realpart}
 is a synonym for @code{[plot_realpart, false]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1501,7 +1501,7 @@ The possible objects that can be used are: @code{bullet}, @code{circle},
 @code{triangle}, @code{delta}, @code{wedge}, @code{nabla}, @code{diamond},
 @code{lozenge}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1522,7 +1522,7 @@ Gnuplot's PDF terminal; otherwise, Gnuplot's pdfcairo terminal
 will be used with solid colored lines of width 3, plot
 size of 17.2 cm by 12.9 cm and font of 18 points.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1542,7 +1542,7 @@ to save the file in a different directory. When the option
 Gnuplot's PNG terminal; otherwise, Gnuplot's pngcairo terminal
 will be used, with a font of size 12. 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1563,7 +1563,7 @@ Gnuplot's Postscript terminal; otherwise, Gnuplot's postscript terminal
 will be used with the EPS option, solid colored lines of width 2, plot
 size of 16.4 cm by 12.3 cm and font of 24 points.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1598,7 +1598,7 @@ a separate graphics window. @code{run_viewer} and @code{norun_viewer}
 are synonyms for @code{[run_viewer, true]} and @code{[run_viewer,
 false]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1612,7 +1612,7 @@ axes will be the same, in either 2d or 3d plots. See also
 @mrefdot{yx_ratio} @code{same_xy} and @code{nosame_xy} are synonyms for
 @code{[same_xy, true]} and @code{[same_xy, false]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1625,7 +1625,7 @@ It can be either true or false. If true, the scales used in the 3 axes
 of a 3d plot will be the same. @code{same_xyz} and @code{nosame_xyz} are
 synonyms for @code{[same_xyz, true]} and @code{[same_xyz, false]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1648,7 +1648,7 @@ direction, to get better results it is more important to try to make
 those points to be at the border of the intervals, rather than
 increasing @var{nx} and @var{ny}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1691,7 +1691,7 @@ radius, color and type of object to replace the points.
 
 See also @mref{color} and @mrefdot{point_type}
  
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1711,7 +1711,7 @@ to save the file in a different directory. When the option
 Gnuplot's SVG terminal; otherwise, Gnuplot's svg terminal
 will be used with font of 14 points.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1722,7 +1722,7 @@ will be used with font of 14 points.
 
 Default range for parametric plots.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1733,7 +1733,7 @@ Default range for parametric plots.
 
 Defines a title that will be written at the top of the plot.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1751,7 +1751,7 @@ previously defined.
 See @mrefcomma{make_transform} @mref{polar_to_xy} and
 @mrefdot{spherical_to_xyz}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1766,7 +1766,7 @@ is x and it sets its range.  It can also be used again after the first
 option (or after the second option in plot3d) to define the effective
 horizontal domain that will be shown in the plot.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1781,7 +1781,7 @@ variable, when plotting functions with @mref{plot2d} the name of the
 first variable, when plotting surfaces with @mref{plot3d}, or the first
 expression in the case of a parametric plot.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1803,7 +1803,7 @@ The single keyword @code{xtics} removes any values previously
 defined, leaving it to the graphic program to decide the values to use
 and @code{noxtics} is a synonym for @code{[xtics, false]}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1821,7 +1821,7 @@ of the graph in the window. If you want to change the aspect ratio of the
 plot, it is better to use option @mrefdot{yx_ratio} For instance,
 @code{[yx_ratio, 10]} instead of @code{[xy_scale, 0.1, 1]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1835,7 +1835,7 @@ that one of the independent variables is y and it sets its range.  Otherwise,
 it defines the effective domain of the second variable that will be
 shown in the plot.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1850,7 +1850,7 @@ functions with @mref{plot2d}, or the name of the second variable, when
 plotting surfaces with @mref{plot3d}, or the second expression in the
 case of a parametric plot.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1872,7 +1872,7 @@ The single keyword @code{ytics} removes any values previously
 defined, leaving it to the graphic program to decide the values to use
 and @code{noytics} is a synonym for @code{[ytics, false]}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1884,7 +1884,7 @@ and @code{noytics} is a synonym for @code{[ytics, false]}
 In a 2d plot, the ratio between the vertical and the horizontal sides of
 the rectangle used to make the plot. See also @mrefdot{same_xy}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1896,7 +1896,7 @@ the rectangle used to make the plot. See also @mrefdot{same_xy}
 Used in @mref{plot3d} to set the effective range of values of z that will be
 shown in the plot.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1911,7 +1911,7 @@ plotting surfaces, or the third expression in the case of a parametric
 plot.  It can not be used with @mref{set_plot_option} and it will be
 ignored by @mrefdot{plot2d}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1925,7 +1925,7 @@ In 3d plots, the value of z that will be at the bottom of the plot box.
 The single keyword @code{zmin} removes any value previously
 defined, leaving it to the graphic program to decide the value to use.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -1947,7 +1947,7 @@ The single keyword @code{ztics} removes any values previously
 defined, leaving it to the graphic program to decide the values to use
 and @code{noztics} is a synonym for @code{[ztics, false]}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2014,7 +2014,7 @@ output to @var{filename}.  Otherwise, it is saved as
 name.
 @end itemize
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2039,7 +2039,7 @@ by Gnuplot. To create PNG, PDF, Postscript or SVG, it is easier to use
 options @mrefcomma{png_file} @mrefcomma{pdf_file} @mrefcomma{ps_file}
 or @mrefdot{svg_file}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2080,7 +2080,7 @@ pad of zeros into the default file name. The directory is determined by
 By default, the script would have been saved in a file named
 @code{maxoutXXXXX.gnuplot} (XXXXX=68715 in this example).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2092,7 +2092,7 @@ By default, the script would have been saved in a file named
 With a value of @code{false}, it can be used to disable the use of PM3D
 mode, which is enabled by default.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2105,7 +2105,7 @@ This option inserts gnuplot commands before any other commands sent to
 Gnuplot. Any valid gnuplot commands may be used. Multiple commands should
 be separated with a semi-colon. See also @mrefdot{gnuplot_postamble}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2119,7 +2119,7 @@ Gnuplot and right before the plot command is sent. Any valid gnuplot
 commands may be used. Multiple commands should be separated with a
 semi-colon. See also @mrefdot{gnuplot_preamble}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2132,7 +2132,7 @@ semi-colon. See also @mrefdot{gnuplot_preamble}
 The gnuplot command to set the terminal type for the default
 terminal. It this option is not set, the command used will be: @code{"set term wxt size 640,480 font \",12\"; set term pop"}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2146,7 +2146,7 @@ The gnuplot command to set the terminal type for the dumb terminal.  It
 this option is not set, the command used will be: @code{"set term dumb
 79 22"}, which makes the text output 79 characters by 22 characters.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2158,7 +2158,7 @@ this option is not set, the command used will be: @code{"set term dumb
 The gnuplot command to set the terminal type for the PDF
 terminal.  If this option is not set, the command used will be: @code{"set term pdfcairo color solid lw 3 size 17.2 cm, 12.9 cm font \",18\""}. See the gnuplot documentation for more information.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2172,7 +2172,7 @@ this option is not set, the command used will be:
 @code{"set term pngcairo font \",12\""}. See the gnuplot documentation
 for more information.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2185,7 +2185,7 @@ The gnuplot command to set the terminal type for the PostScript
 terminal.  If this option is not set, the command used will be: @code{"set term postscript eps color solid lw 2 size 16.4 cm, 12.3 cm font \",24\""}. See the gnuplot documentation for @code{set term postscript} for
 more information.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2202,7 +2202,7 @@ formatting characters and their meaning, see the documentation for enhanced
 in Gnuplot. The default value for this option is @code{false}, which will
 not treat any characters as formatting characters.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2216,7 +2216,7 @@ terminal.  If this option is not set, the command used will be:
 @code{"set term svg font \",14\""}. See the gnuplot documentation for
 more information.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2228,7 +2228,7 @@ more information.
 This is an obsolete option that has been replaced by @mref{legend} described
 above.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2239,7 +2239,7 @@ above.
 
 This is an obsolete option that has been replaced by @mrefdot{style}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end defvr
@@ -2256,7 +2256,7 @@ This is an obsolete option that has been replaced by @mrefdot{style}
 Opens the pipe to gnuplot used for plotting with the @code{gnuplot_pipes}
 format.  Is not necessary to manually open the pipe before plotting.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end deffn
@@ -2267,7 +2267,7 @@ format.  Is not necessary to manually open the pipe before plotting.
 
 Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes} format.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end deffn
@@ -2279,7 +2279,7 @@ Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes} format.
 Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes}
 format and opens a new pipe.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end deffn
@@ -2294,7 +2294,7 @@ Updates the gnuplot window.  If @code{gnuplot_replot} is called with a
 gnuplot command in a string @var{s}, then @code{s} is sent to gnuplot
 before reploting the window.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end deffn
@@ -2306,7 +2306,7 @@ before reploting the window.
 Resets the state of gnuplot used with the @code{gnuplot_pipes} format.  To
 update the gnuplot window call @mref{gnuplot_replot} after @code{gnuplot_reset}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Plotting}
 @closecatbox
 @end deffn

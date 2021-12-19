@@ -50,7 +50,7 @@ When @code{asksign} is called,
 At one time, it was possible for an user to inspect @code{askexp}
 by entering a Maxima break with control-A.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @closecatbox
 @end defvr
@@ -63,7 +63,7 @@ Default value: @code{i}
 @code{genindex} is the alphabetic prefix used to generate the
 next variable of summation when necessary.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @closecatbox
 @end defvr
@@ -76,7 +76,7 @@ Default value: 0
 of summation.  If it is set to @code{false} then the index will consist only
 of @code{genindex} with no numeric suffix.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @closecatbox
 @end defvr
@@ -137,7 +137,7 @@ possible name conflicts.  Also note that the flag simply affects what is output
 to the package file.  Setting the flag to @code{true} is also useful for
 creating Maxima init files.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -160,7 +160,7 @@ the list of all variables given names by the user
 
 See also @mrefdot{values}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Evaluation}
 @closecatbox
 @end deffn
@@ -184,7 +184,7 @@ cancellations.
 
 @code{load(rncomb)} loads this function.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -232,7 +232,7 @@ Warning - you are redefining the Macsyma function legendre_p
                              2
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @category{File input}
 @closecatbox

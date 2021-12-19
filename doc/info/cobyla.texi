@@ -44,7 +44,7 @@ References:
 
 [3] M. J. D. Powell, "Direct search algorithms for optimization calculations," Acta Numerica 7, 287-336 (1998).  Also available as University of Cambridge, Department of Applied Mathematics and Theoretical Physics,  Numerical Analysis Group, Report NA1998/04 from @url{http://www.damtp.cam.ac.uk/user/na/reports.html}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods} 
 @category{Optimization}
 @category{Share packages}

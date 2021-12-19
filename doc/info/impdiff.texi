@@ -14,7 +14,7 @@ This subroutine computes implicit derivatives of multivariable functions.
 
 To use this function write first @code{load("impdiff")}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential calculus}
 @category{Share packages}
 @category{Package impdiff}

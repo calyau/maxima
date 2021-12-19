@@ -11,7 +11,7 @@
 @code{lsquares} is a collection of functions to implement the method of least squares
 to estimate parameters for a model from numerical data.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Statistical estimation}
 @category{Share packages}
 @category{Package lsquares}
@@ -197,7 +197,7 @@ I NFN FUNC                  GNORM                 STEPLENGTH
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lsquares}
 @category{Numerical methods}
 @closecatbox
@@ -268,7 +268,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lsquares}
 @closecatbox
 
@@ -352,7 +352,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lsquares}
 @category{Numerical methods}
 @closecatbox
@@ -485,7 +485,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lsquares}
 @closecatbox
 
@@ -564,7 +564,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lsquares}
 @closecatbox
 
@@ -643,7 +643,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lsquares}
 @closecatbox
 
@@ -726,7 +726,7 @@ _Nor = a b - b - a + 1, _Nxor = 2 a b - b - a + 1]
 
 To use this function write first @code{load("lsquares")}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package lsquares}
 @category{Numerical methods}
 @closecatbox

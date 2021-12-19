@@ -40,7 +40,7 @@ To run an interactive tutorial, use the command @code{demo
 with the command @code{load("combinatorics")}.
 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Share packages}
 @category{Package combinatorics}
 @closecatbox
@@ -80,7 +80,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -124,7 +124,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -153,7 +153,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -182,7 +182,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -212,7 +212,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -242,7 +242,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -268,7 +268,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -297,7 +297,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -325,7 +325,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -353,7 +353,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -382,7 +382,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -411,7 +411,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -439,7 +439,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -467,7 +467,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -499,7 +499,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -557,7 +557,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -620,7 +620,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -645,7 +645,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -680,7 +680,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 
@@ -707,7 +707,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package combinatorics}
 @closecatbox
 

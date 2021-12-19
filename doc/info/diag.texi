@@ -43,7 +43,7 @@ Example:
 
 To use this function write first @code{load("diag")}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Matrices}
 @category{Share packages}
 @category{Package diag}
@@ -78,7 +78,7 @@ Example:
 
 To use this function write first @code{load("diag")}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package diag}
 @closecatbox
 
@@ -154,7 +154,7 @@ Example:
 
 To use this function write first @code{load("diag")}. See also @mref{dispJordan} and @mrefdot{minimalPoly}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package diag}
 @closecatbox
 
@@ -194,7 +194,7 @@ Example:
 
 To use this function write first @code{load("diag")}. See also @mref{jordan} and @mrefdot{minimalPoly}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package diag}
 @closecatbox
 
@@ -226,7 +226,7 @@ Example:
 
 To use this function write first @code{load("diag")}. See also @mref{jordan} and @mrefdot{dispJordan}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package diag}
 @closecatbox
 
@@ -281,7 +281,7 @@ twice. To avoid this, we could have stored the output of
 To use this function write first @code{load("diag")}. See also
 @mref{jordan} and @mrefdot{dispJordan}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package diag}
 @closecatbox
 
@@ -428,7 +428,7 @@ Power operations.
 
 To use this function write first @code{load("diag")}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package diag}
 @closecatbox
 

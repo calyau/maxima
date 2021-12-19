@@ -46,7 +46,7 @@ Examples:
 (%o5)                        xyz + 1
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Syntax}
 @closecatbox
 
@@ -92,7 +92,7 @@ always appended.
 @mref{closefile} closes the transcript file opened by @code{appendfile} or
 @code{writefile}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File output}
 @category{Console interaction}
 @closecatbox
@@ -171,7 +171,7 @@ the tests which have failed.
 
 See also @mrefcomma{load} @mrefcomma{batchload} and @mrefdot{demo}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Session management}
 @category{File input}
 @closecatbox
@@ -208,7 +208,7 @@ See also @mrefcomma{batch} and @mrefdot{load}
 @c batchload APPEARS TO HAVE THE SAME EFFECT AS load.
 @c WHY NOT GET RID OF batchload ???
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Session management}
 @category{File input}
 @closecatbox
@@ -220,7 +220,7 @@ See also @mrefcomma{batch} and @mrefdot{load}
 
 Closes the transcript file opened by @mref{writefile} or @mrefdot{appendfile}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File output}
 @category{Console interaction}
 @closecatbox
@@ -242,7 +242,7 @@ functions always truncate their output file, and @mref{tex} and
 @mref{appendfile} always append.
 @c WHAT ABOUT WRITEFILE ??
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File output}
 @category{Global flags}
 @closecatbox
@@ -261,7 +261,7 @@ component is simply replaced by @var{filename}.
 
 The result is a Lisp pathname object.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File input}
 @category{File output}
 @closecatbox
@@ -310,7 +310,7 @@ See @mrefdot{file_search_maxima}
 @code{file_search} is invoked by @mref{load} with @code{file_search_maxima} and
 @mref{file_search_lisp} as the search directories.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File input}
 @closecatbox
 @end deffn
@@ -366,7 +366,7 @@ expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp},
 @code{/home/wfs/neumann.mac}, and @code{/home/gcj/neumann.mac}.
 @end flushleft
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File input}
 @category{Global variables}
 @closecatbox
@@ -403,7 +403,7 @@ Examples:
 (%o2)            [lisp, maxima, maxima, object]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File input}
 @closecatbox
 @end deffn
@@ -472,7 +472,7 @@ being loaded.
 
 @code{load} evaluates its argument.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Session management}
 @category{File input}
 @closecatbox
@@ -511,7 +511,7 @@ The value of load_pathname is:
 End of batchfile
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File input}
 @closecatbox
 @end defvr
@@ -530,7 +530,7 @@ as much of the path as needed to find the file.
 @mrefcomma{translate_file} and @mrefdot{compile_file}  The user may find it
 more convenient to use @mref{load} instead of @code{loadfile}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Session management}
 @category{File input}
 @closecatbox
@@ -560,7 +560,7 @@ See @mrefdot{setup_autoload}
 When @code{loadprint} is @code{false}, never print a message.
 @end itemize
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File input}
 @category{Global flags}
 @closecatbox
@@ -581,7 +581,7 @@ and possibly other characters, depending on the system.
 @code{directory} relies on the Lisp function DIRECTORY,
 which may have implementation-specific behavior.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File input}
 @closecatbox
 @end deffn
@@ -612,7 +612,7 @@ Examples:
 (%o3)                          txt
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File input}
 @closecatbox
 @end deffn
@@ -632,7 +632,7 @@ attempts to locate the file by appending @var{path} to each of the elements of
 @code{printfile} returns @var{path} if it names an existing file,
 or otherwise the result of a successful filename merge.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File input}
 @category{Console interaction}
 @closecatbox
@@ -698,7 +698,7 @@ have been assigned new values by the user; see @mrefdot{myoptions}
 
 @code{save} evaluates @var{filename} and quotes all other arguments.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Session management}
 @category{File output}
 @closecatbox
@@ -751,7 +751,7 @@ Each variable is printed as an assignment statement, with the name of the
 variable, a colon, and its value.  Note that the general form of
 @code{stringout} does not print variables as assignment statements.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Session management}
 @category{File output}
 @closecatbox
@@ -805,7 +805,7 @@ See also @mref{writefile} and @mrefdot{display2d}
 10 ! yields 3628800
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File output}
 @closecatbox
 @end deffn
@@ -838,7 +838,7 @@ displayed by @code{playback}.
 @mref{closefile} closes the transcript file opened by @code{writefile} or
 @code{appendfile}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File output}
 @category{Console interaction}
 @closecatbox
@@ -921,7 +921,7 @@ $$-\cos x$$
 (%o2) $$x\,y\,z$$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{TeX output}
 @category{File output}
 @closecatbox
@@ -1154,7 +1154,7 @@ $$ \langle a \, | \,b \rangle $$
 (%o7)                         false
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{TeX output}
 @closecatbox
 @end deffn
@@ -1207,7 +1207,7 @@ $$f(x):=1-x$$
 (%o4)                         false
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{TeX output}
 @closecatbox
 @end deffn
@@ -1256,7 +1256,7 @@ g\left(x\right)+f\left(x\right)
 (%o4)                         false
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{TeX output}
 @closecatbox
 @end deffn
@@ -1276,7 +1276,7 @@ expressions printed out by the @mref{fortran} command.  @code{0} gives normal
 printout (i.e., 6 spaces), and positive values will causes the
 expressions to be printed farther to the right.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end defvr
@@ -1341,7 +1341,7 @@ Examples:
 (%o8)                         done
 @end verbatim
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end deffn
@@ -1354,7 +1354,7 @@ Default value: @code{false}
 When @code{fortspaces} is @code{true}, @code{fortran} fills out
 each printed line with spaces to 80 columns.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end defvr

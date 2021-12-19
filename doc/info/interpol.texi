@@ -11,7 +11,7 @@ splines methods for polynomial interpolation.
 
 For comments, bugs or suggestions, please contact me at @var{'mario AT edu DOT xunta DOT es'}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Share packages}
 @category{Package interpol}
@@ -122,7 +122,7 @@ Examples:
                  84
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package interpol}
 @closecatbox
 
@@ -183,7 +183,7 @@ Otherwise, @code{charfun2} returns a partially-evaluated result in terms of @mre
 (%o5)                           0
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package interpol}
 @closecatbox
 
@@ -262,7 +262,7 @@ Examples:
      3
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package interpol}
 @closecatbox
 
@@ -374,7 +374,7 @@ Examples:
         points(p))$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package interpol}
 @closecatbox
 
@@ -423,7 +423,7 @@ Examples:
           yrange=[0,10])$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package interpol}
 @closecatbox
 

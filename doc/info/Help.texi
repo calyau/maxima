@@ -38,7 +38,7 @@ yields
 
 and additional output.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Console interaction}
 @closecatbox
 
@@ -99,7 +99,7 @@ The number of symbols in the current Maxima session. This will vary.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Help}
 @closecatbox
 @end deffn
@@ -144,7 +144,7 @@ _
 _
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Help}
 @category{Console interaction}
 @category{File input}
@@ -222,7 +222,7 @@ by @code{[...]}).  All or none of the items could have been selected by entering
 @code{all} or @code{none}, which can be abbreviated @code{a} or @code{n},
 respectively.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Help}
 @category{Console interaction}
 @closecatbox
@@ -273,7 +273,7 @@ Examples:
 (%o6)                         done
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Help}
 @category{Console interaction}
 @closecatbox
@@ -287,7 +287,7 @@ Default value: @code{"manual.demo"}
 @code{manual_demo} specifies the name of the file containing the examples for 
 the function @code{example}.  See @mrefdot{example}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Help}
 @category{Global variables}
 @closecatbox

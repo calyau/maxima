@@ -6,7 +6,7 @@
 @node Package f90,  , f90-pkg, f90-pkg
 @section Package f90
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Share packages}
 @category{Package f90}
 @closecatbox
@@ -60,7 +60,7 @@ foo = yyy**4+4*xxx*yyy**3+28*yyy**3+6*xx&
 (%o6)                         false
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Global variables}
 @category{Translation and compilation}
 @category{Package f90}
@@ -134,7 +134,7 @@ end
 (%o4)                        foo.f90
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @category{Package f90}
 @closecatbox

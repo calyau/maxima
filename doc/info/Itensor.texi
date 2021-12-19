@@ -76,7 +76,7 @@ solution.) The second, @code{bradic.dem}, demonstrates how to compute the Friedm
 equations from the action of Brans-Dicke gravity theory, and also derives
 the Hamiltonian associated with the theory's scalar field.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Tensors}
 @category{Share packages}
 @category{Package itensor}
@@ -286,7 +286,7 @@ Displays the contraction properties of its arguments as were given to
 @code{defcon}.  @code{dispcon (all)} displays all the contraction properties
 which were defined.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display functions}
 @closecatbox
 @end deffn
@@ -300,7 +300,7 @@ object called @var{name} with any number of tensorial and derivative
 indices. Either a single index or a list of indices (which may be
 null) is acceptable input (see the example under @mref{covdiff}).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -315,7 +315,7 @@ in @var{expr}. @var{old} may be either a symbol or a list of the form
 @var{name} with @var{m} covariant and @var{n} contravariant indices will be
 renamed to @var{new}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -340,7 +340,7 @@ Lists all tensors in a tensorial expression, complete with their indices. E.g.,
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -355,7 +355,7 @@ superscripts. The derivative indices are displayed as subscripts,
 separated from the covariant indices by a comma (see the examples
 throughout this document).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -387,7 +387,7 @@ illegal. @code{indices} attempts to deal with these expressions in a
 reasonable manner; however, when it is called to operate upon such an
 illegal expression, its behavior should be considered undefined.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -457,7 +457,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
                           %1 %3      %2 %6      %4 r      %5 %7
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -478,7 +478,7 @@ index in the list is renamed to @code{%1}, the next to @code{%2}, etc.
 Then sorting occurs after the @code{rename}-ing (see the example
 under @code{rename}).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -505,7 +505,7 @@ used.
 @code{contractions} is a list of those indexed objects which have been given
 contraction properties with @code{defcon}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -520,7 +520,7 @@ Removes all the contraction properties
 from the (@var{tensor_1}, ..., @var{tensor_n}). @code{remcon(all)} removes all contraction
 properties from all indexed objects.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -537,7 +537,7 @@ products and powers of sums if there are no variables in the denominators
 of the terms. The @mref{gcd} switch should be @code{false} if GCD
 cancellations are unnecessary.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -550,7 +550,7 @@ Must be executed before assigning components to a @var{tensor} for which
 a built in value already exists as with @code{ichr1}, @code{ichr2},
 @code{icurvature}. See the example under @mref{icurvature}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -661,7 +661,7 @@ of covariant and contravariant indices and no derivative indices, and
                                          %1  %2  %3 n
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -672,7 +672,7 @@ of covariant and contravariant indices and no derivative indices, and
 Unbinds all values from @var{tensor} which were assigned with the
 @mref{components} function.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -728,7 +728,7 @@ following example:
 The @code{showcomps} command can also display components of a tensor of
 rank higher than 2.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -742,7 +742,7 @@ Increments @mref{icounter} and returns as its value an index of the form
 which are needed in forming expressions will not conflict with indices
 already in use (see the example under @mref{indices}).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -753,7 +753,7 @@ Default value: @code{%}
 
 Is the prefix for dummy indices (see the example under @mref{indices}).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -767,7 +767,7 @@ Determines the numerical suffix to be used in
 generating the next dummy index in the tensor package.  The prefix is
 determined by the option @mref{idummy} (default: @code{%}).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -788,7 +788,7 @@ and no covariant indices, in effect providing a co(ntra)variant "unit matrix"
 capability. This is strictly considered a programming aid and not meant to
 imply that @code{kdelta([i,j],[])} is a valid tensorial object.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -818,7 +818,7 @@ Symmetrized Kronecker delta, used in some calculations. For instance:
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -831,7 +831,7 @@ the list @var{L} consists of an even permutation of integers, -1 if it
 consists of an odd permutation, and 0 if some indices in @var{L} are
 repeated.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -915,7 +915,7 @@ To re-enable the Lisp debugger set *debugger-hook* to nil.
 @end example
 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -949,7 +949,7 @@ For example:
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -965,7 +965,7 @@ symbol (@mref{levi_civita}). Along with @code{lc_u}, it can be used to simplify
 many expressions more efficiently than the evaluation of @code{levi_civita}.
 For details, see @mref{lc_l}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -984,7 +984,7 @@ if its argument is an expression that is fully symmetric in its indices.
 For this reason, @code{canten} returns an error if @mref{allsym} is not
 set to @code{true}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -994,7 +994,7 @@ set to @code{true}.
 @deffn {Function} concan (@var{expr})
 Similar to @mref{canten} but also performs index contraction.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1014,7 +1014,7 @@ indices. If @code{false} then no symmetries of any kind are assumed
 in these indices. Derivative indices are always taken to be symmetric
 unless @code{iframe_flag} is set to @code{true}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -1075,7 +1075,7 @@ illustrates.
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1086,7 +1086,7 @@ illustrates.
 Removes all symmetry properties from @var{tensor} which has @var{m}
 covariant indices and @var{n} contravariant indices.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1111,7 +1111,7 @@ always return a mathematically correct result.
 
 The optional second parameter @var{rename}, if set to @code{false}, suppresses renaming.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1144,7 +1144,7 @@ second derivatives. This capability is particularly useful when considering
 Lagrangian formulations of a gravitational theory, allowing one to derive
 the Einstein tensor and field equations from the action principle.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1165,7 +1165,7 @@ tensor. Thus, if @code{imetric} has been bound to @code{G} then
 @code{2 * determinant(g) * ichr2([%i,k],[%i])} where the dummy index @code{%i}
 is chosen appropriately.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1194,7 +1194,7 @@ field. For example:
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1206,7 +1206,7 @@ field. For example:
 Evaluates all occurrences of the @mref{idiff} command in the tensorial
 expression @var{ten}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1223,7 +1223,7 @@ differentiated indexed object with some function definition resulting
 in @var{expr} and then carry out the differentiation by saying
 @code{ev(@var{expr}, idiff)}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1291,7 +1291,7 @@ so @code{evundiff} is no longer necessary for expressions like this:
                                          2
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1302,7 +1302,7 @@ so @code{evundiff} is no longer necessary for expressions like this:
 Set to zero, in
 @var{expr}, all occurrences of the @var{tensor_i} that have no derivative indices.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1313,7 +1313,7 @@ Set to zero, in
 Set to zero, in
 @var{expr}, all occurrences of the @var{tensor_i} that have derivative indices.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1338,7 +1338,7 @@ derivative indices as the following example demonstrates.
                                      i,k r
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1353,7 +1353,7 @@ derivative of contravariant vector whose name is one of the
 been done then @code{idiff(x([],[i]),j)} gives @code{kdelta([i],[j])}.
 @code{coord} is a list of all indexed objects having this property.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1368,7 +1368,7 @@ Removes the coordinate differentiation property from the @code{tensor_i}
 that was established by the function @code{coord}.  @code{remcoord(all)}
 removes this property from all indexed objects.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1381,7 +1381,7 @@ any tensor d'Alembertian occurring in @var{expr} will be indicated using the
 symbol @code{[]}.  For example, @code{[]p([m],[n])} represents
 @code{g([],[i,j])*p([m],[n],i,j)}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1410,7 +1410,7 @@ symbols as seen from the following:
                                    %1 c              %1 c
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1505,7 +1505,7 @@ errexp1 has improper indices
 See also @code{weyl.dem} for an example that uses @mref{simpmetderiv}
 and @mref{conmetderiv} together to simplify contractions of the Weyl tensor.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1517,7 +1517,7 @@ and @mref{conmetderiv} together to simplify contractions of the Weyl tensor.
 Set to zero, in @code{expr}, all occurrences of @code{tensor} that have
 exactly one derivative index.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1537,7 +1537,7 @@ executing the commands @code{defcon(@var{g}), defcon(@var{g}, @var{g}, kdelta)}.
 The variable @code{imetric} (unbound by default), is bound to the metric, assigned by
 the @code{imetric(@var{g})} command.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1548,7 +1548,7 @@ the @code{imetric(@var{g})} command.
 Sets the dimensions of the metric. Also initializes the antisymmetry
 properties of the Levi-Civita symbols for the given dimension.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1566,7 +1566,7 @@ definition
 To evaluate the Christoffel symbols for a particular metric, the
 variable @code{imetric} must be assigned a name as in the example under @code{chr2}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1582,7 +1582,7 @@ defined by the relation
                              is,j     js,i     ij,s
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1602,7 +1602,7 @@ kind (@code{ichr2}).  The following notation is used:
                             %1 k       i j
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1658,7 +1658,7 @@ Enter a list of the derivative indices: [];
 (%i6)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1670,7 +1670,7 @@ Imposes the Lorentz condition by substituting 0 for all
 indexed objects in @var{expr} that have a derivative index identical to a
 contravariant index.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1718,7 +1718,7 @@ curvature tensor using the @code{igeodesic_coords} function.
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1810,7 +1810,7 @@ Since in this version of Maxima, contraction identities for @mref{ifr} and
 @mref{ifri} are always defined, as is the frame bracket (@mref{ifb}), this
 function does nothing.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -1855,7 +1855,7 @@ ifb    = (ifr    ifr    - ifr    ifr   ) ifri
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -1881,7 +1881,7 @@ torsion is already calculated as part of the frame bracket.
 Lastly, of @code{inonmet_flag} is @code{false},
 @mref{inmc1} will not be present.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -1908,7 +1908,7 @@ torsion is already calculated as part of the frame bracket.
 Lastly, of @code{inonmet_flag} is @code{false},
 @mref{inmc2} will not be present.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -1932,7 +1932,7 @@ ifc1    = --------------------------------
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -1954,7 +1954,7 @@ ifc2   = ifg   ifc1
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -1966,7 +1966,7 @@ ifc2   = ifg   ifc1
 The frame field. Contracts with the inverse frame field (@mref{ifri}) to
 form the frame metric (@mref{ifg}).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -1979,7 +1979,7 @@ The inverse frame field. Specifies the frame base (dual basis vectors). Along
 with the frame metric, it forms the basis of all calculations based on
 frames.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -1991,7 +1991,7 @@ frames.
 The frame metric. Defaults to @mref{kdelta}, but can be changed using
 @mref{components}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -2003,7 +2003,7 @@ The frame metric. Defaults to @mref{kdelta}, but can be changed using
 The inverse frame metric. Contracts with the frame metric (@mref{ifg})
 to @mref{kdelta}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -2015,7 +2015,7 @@ Default value: @code{true}
 
 Specifies how the frame bracket (@mref{ifb}) is computed.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -2045,7 +2045,7 @@ g     =- g  inm
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -2067,7 +2067,7 @@ inmc1    = ------------------------------
 
 (Substitute @mref{ifg} in place of @code{g} if a frame metric is used.)
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -2092,7 +2092,7 @@ inmc2   = -------------------------------------------
 
 (Substitute @mref{ifg} in place of @code{g} if a frame metric is used.)
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -2116,7 +2116,7 @@ ikt1    = ----------------------------------
 
 (Substitute @mref{ifg} in place of @code{g} if a frame metric is used.)
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -2138,7 +2138,7 @@ ikt2   = g   ikt1
 
 (Substitute @mref{ifg} in place of @code{g} if a frame metric is used.)
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -2203,7 +2203,7 @@ by the following example:
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -2303,7 +2303,7 @@ The behavior of the wedge product operator is controlled by the
                            i j  k    i  j k    i k  j
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @category{Operators}
 @closecatbox
@@ -2345,7 +2345,7 @@ Note that it is essential that the tensors used with the @code{|} operator be
 declared totally antisymmetric in their covariant indices. Otherwise,
 the results will be incorrect.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @category{Operators}
 @closecatbox
@@ -2387,7 +2387,7 @@ For instance:
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -2448,7 +2448,7 @@ Compute the Hodge-dual of @var{expr}. For instance:
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end deffn
@@ -2464,7 +2464,7 @@ correspond with that of a totally antisymmetric covariant tensor field.
 When set to @code{true}, differential forms will agree with the notion
 of the volume element.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @closecatbox
 @end defvr
@@ -2518,7 +2518,7 @@ of the percent sign in the TeX expression, which may lead to compile errors.
 
 NB: This version of the @code{tentex} function is somewhat experimental.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @category{TeX output}
 @closecatbox
@@ -2597,7 +2597,7 @@ function.
    l, m
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package itensor}
 @category{Package ctensor}
 @closecatbox

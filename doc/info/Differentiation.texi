@@ -77,7 +77,7 @@ Examples:
                   /
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end deffn
@@ -151,7 +151,7 @@ Examples:
                   /
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Integral calculus}
 @closecatbox
 @end deffn
@@ -264,7 +264,7 @@ seen in the following example:
 @end example
 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Evaluation}
 @category{Differential equations}
 @closecatbox
@@ -282,7 +282,7 @@ seen in the following example:
 This property is assigned by @code{gradef}.
 
 @c NEED EXAMPLE HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential calculus}
 @closecatbox
 @end defvr
@@ -369,7 +369,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential equations}
 @category{Declarations and inferences}
 @closecatbox
@@ -395,7 +395,7 @@ description of these commands along with examples.
 
 @code{cartan} was implemented by F.B. Estabrook and H.D. Wahlquist.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential geometry}
 @closecatbox
 @end deffn
@@ -419,7 +419,7 @@ Note: Because of the internal implementation of the @code{cartan} package,
 it is necessary for @code{init_cartan} to be called before any expression
 containing the Cartan coordinates @code{@var{x_1}, ..., @var{x_n}} is parsed.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential geometry}
 @category{Package cartan}
 @closecatbox
@@ -456,7 +456,7 @@ Examples:
 (%o3)         x y del(z) + x z del(y) + y z del(x)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential calculus}
 @closecatbox
 @end deffn
@@ -484,7 +484,7 @@ p;
 (%o1)                   sin(a b) %e
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @category{Laplace transform}
 @closecatbox
@@ -556,7 +556,7 @@ See also @mref{depends} and @mrefdot{gradef}
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Global variables}
 @closecatbox
@@ -645,7 +645,7 @@ See also @mrefcomma{diff} @mrefcomma{del} @mref{derivdegree} and
                                 du dt
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential calculus}
 @category{Declarations and inferences}
 @closecatbox
@@ -661,7 +661,7 @@ symbolic derivatives (that is, @code{diff} nouns) are displayed as subscripts.
 Otherwise, derivatives are displayed in the Leibniz notation @code{dy/dx}.
 
 @c NEED EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential calculus}
 @category{Global flags}
 @closecatbox
@@ -694,7 +694,7 @@ Example:
 (%o2)                           2
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential calculus}
 @category{Expressions}
 @closecatbox
@@ -709,7 +709,7 @@ Example:
 Causes only differentiations with respect to
 the indicated variables, within the @mref{ev} command.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential calculus}
 @category{Evaluation}
 @closecatbox
@@ -723,7 +723,7 @@ Default value: @code{false}
 When @code{derivsubst} is @code{true}, a non-syntactic substitution such as
 @code{subst (x, 'diff (y, t), 'diff (y, t, 2))} yields @code{'diff (x, t)}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential calculus}
 @category{Expressions}
 @closecatbox
@@ -822,7 +822,7 @@ subscripted names like @code{X[1]}, @code{X[2]}, @dots{} to be used.  If
 treated as in (1) above.
 
 @c NEED EXAMPLES FOR TENSOR STUFF
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential calculus}
 @closecatbox
 @end deffn
@@ -931,7 +931,7 @@ Examples:
 (%o15)          [b z - c y, c x - a z, a y - b x]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential calculus}
 @category{Vectors}
 @category{Operators}
@@ -1010,7 +1010,7 @@ explicitly but its first derivatives are and it is desired to obtain
 higher order derivatives.
 
 @c NEED EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential calculus}
 @category{Declarations and inferences}
 @closecatbox
@@ -1026,7 +1026,7 @@ for which partial derivatives have been defined by @code{gradef}.
 @code{gradefs} does not include any variables
 for which partial derivatives have been defined by @code{gradef}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential calculus}
 @category{Declarations and inferences}
 @closecatbox
@@ -1152,7 +1152,7 @@ Examples:
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Laplace transform}
 @category{Differential equations}
 @closecatbox

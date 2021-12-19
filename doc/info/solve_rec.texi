@@ -25,7 +25,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Linear recurrences}
 @category{Share packages}
 @category{Package solve_rec}
@@ -92,7 +92,7 @@ So the general solution is
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package solve_rec}
 @closecatbox
 
@@ -107,7 +107,7 @@ simplify products in result.
 
 See also: @mrefdot{solve_rec}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package solve_rec}
 @closecatbox
 
@@ -148,7 +148,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package solve_rec}
 @category{Sums and products}
 @category{Simplification functions}
@@ -236,7 +236,7 @@ Example of Ricatti type recurrence:
 
 See also: @mrefcomma{solve_rec_rat} @mref{simplify_products} and @mrefdot{product_use_gamma}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package solve_rec}
 @closecatbox
 
@@ -273,7 +273,7 @@ Example:
 
 See also: @mrefdot{solve_rec}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package solve_rec}
 @closecatbox
 
@@ -288,7 +288,7 @@ into the expression if @code{product_use_gamma} is @code{true}.
 
 See also: @mrefcomma{simplify_products} @mrefdot{solve_rec}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package solve_rec}
 @closecatbox
 
@@ -345,7 +345,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package solve_rec}
 @closecatbox
 

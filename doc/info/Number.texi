@@ -32,7 +32,7 @@ See also @mrefdot{burn}
                       2  6    30  42    30  66    2730  6
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -44,7 +44,7 @@ See also @mrefdot{burn}
 Returns the @var{n}'th Bernoulli polynomial in the
 variable @var{x}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -57,7 +57,7 @@ Returns the Riemann zeta function for the argument @var{s}.
 The return value is a big float (bfloat);
 @var{n} is the number of digits in the return value.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @category{Numerical evaluation}
 @closecatbox
@@ -90,7 +90,7 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
 
 @code{load ("bffac")} loads this function.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @category{Numerical evaluation}
 @closecatbox
@@ -120,7 +120,7 @@ returning.  @code{burn} invokes the approximation for even integers @code{n >
 
 @code{load ("bffac")} loads this function.  See also @mrefdot{bern}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -150,7 +150,7 @@ positive and pairwise coprime integers.
 (%o7)                              10
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -241,7 +241,7 @@ Maxima does not know about operations on continued fractions outside of
 
 @end itemize
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Continued fractions}
 @closecatbox
 @end deffn
@@ -270,7 +270,7 @@ from the list representation of a continued fraction @code{[a, b, c, ...]}.
                                       2
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Continued fractions}
 @closecatbox
 @end deffn
@@ -295,7 +295,7 @@ next-to-last (column 2) convergents of the continued fraction @var{x}.
 (%o3)                   3.141592653011902
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Continued fractions}
 @closecatbox
 @end deffn
@@ -321,7 +321,7 @@ Thus the default is to give one period.
 (%o6)           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Continued fractions}
 @closecatbox
 @end defvr
@@ -348,7 +348,7 @@ raised to the @var{k}'th power.
 (%o4)                          210
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -372,7 +372,7 @@ For the Euler-Mascheroni constant, see @code{%gamma}.
 (%o4)               [1, - 1, 5, - 61, 1385, - 50521, 2702765]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -389,7 +389,7 @@ computed prime factors. If @code{factors_only} is set to @code{true},
 
 Example: See @mrefdot{ifactors}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end defvr
@@ -411,7 +411,7 @@ the Fibonacci number preceding the last one computed.
 (%o1)           [- 3, 2, - 1, 1, 0, 1, 1, 2, 3, 5, 8, 13, 21]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -452,7 +452,7 @@ Examples:
 (%o4)                           0
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -487,7 +487,7 @@ prime factors.
 (%o3)                   [2, 3, 5, 1583, 9050207]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -518,7 +518,7 @@ Examples:
 (%o4)                   [4181, - 2584, 1]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -535,7 +535,7 @@ Returns the integer @var{n}'th root of the absolute value of @var{x}.
 (%o2) [2, 4, 10, 21, 46, 100, 215, 464, 1000, 2154, 4641, 10000]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -557,7 +557,7 @@ if @var{n} is a zero divisor modulo @var{m}.
 (%o3)                          false
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -569,7 +569,7 @@ if @var{n} is a zero divisor modulo @var{m}.
 Returns the "integer square root" of the absolute value of @var{x}, which is an
 integer.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -586,7 +586,7 @@ Returns the Jacobi symbol of @var{p} and @var{q}.
 (%o2)         [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -600,7 +600,7 @@ The arguments may be general expressions as well as integers.
 
 @code{load ("functs")} loads this function.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -632,7 +632,7 @@ how Fibonacci numbers can be computed via @code{lucas} and @code{next_lucas}.
 (%o2)     [- 3, 2, - 1, 1, 0, 1, 1, 2, 3, 5, 8, 13, 21]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -676,7 +676,7 @@ simplification rules:
 (%o3)                           0
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Mathematical functions}
 @closecatbox
 @end deffn
@@ -692,7 +692,7 @@ Returns the smallest prime bigger than @var{n}.
 (%o1)                       29
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -750,7 +750,7 @@ If @var{n} is negative, @code{inv_mod} is used to find the modular inverse.
 (%o4)                          3
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -774,7 +774,7 @@ pass one Miller-Rabin test is less than 1/4.  Using the default value 25 for
 @code{primep_number_of_tests}, the probability of @var{n} being
 composite is much smaller that 10^-15.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Number theory}
 @closecatbox
@@ -787,7 +787,7 @@ Default value: 25
 
 Number of Miller-Rabin's tests used in @code{primep}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end defvr
@@ -803,7 +803,7 @@ Returns the list of all primes from @var{start} to @var{end}.
 (%o1)                     [3, 5, 7]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -819,7 +819,7 @@ Returns the greatest prime smaller than @var{n}.
 (%o1)                       23
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -840,7 +840,7 @@ This amounts to solving Pell's equation @code{a^2 - @var{n} b^2 = 1}.
 (%o2)                           1
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -852,7 +852,7 @@ This amounts to solving Pell's equation @code{a^2 - @var{n} b^2 = 1}.
 Returns the number of integers less than or equal to @var{n} which
 are relatively prime to @var{n}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -865,7 +865,7 @@ When @code{zerobern} is @code{false}, @code{bern} excludes the Bernoulli numbers
 and @code{euler} excludes the Euler numbers which are equal to zero.
 See @code{bern} and @code{euler}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end defvr
@@ -910,7 +910,7 @@ Examples:
 (%o3)                         minf
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -944,7 +944,7 @@ Examples:
 (%o4)                        zeta(4)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end defvr
@@ -957,7 +957,7 @@ Shows an addition table of all elements in (Z/@var{n}Z).
 
 See also @mrefcomma{zn_mult_table}  @mrefdot{zn_power_table}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1043,7 +1043,7 @@ and each of these has @code{2^2} square roots.
 (%o7)                   [[1, 4, 11, 14], [2, 7, 8, 13]]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1057,7 +1057,7 @@ the greatest characteristic factor of the totient of @var{n}.
 
 For remarks and examples see @mrefdot{zn_characteristic_factors}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1094,7 +1094,7 @@ Examples:
 (%o4)                               0
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1108,7 +1108,7 @@ characteristic factors of the totient of @var{n}.
 
 For remarks and examples see @mrefdot{zn_characteristic_factors}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1143,7 +1143,7 @@ Example:
                                 [ 0  1 ]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1223,7 +1223,7 @@ The running time primarily depends on the bitlength of the totient's greatest pr
 (%o11)                            4711
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1337,7 +1337,7 @@ the top left corner, just like in table @code{T9}.
                           [ 8   16  32  4   20  28 ]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1460,7 +1460,7 @@ and passed as the fourth argument.
 (%o7)               [11223344556677889900aabbccddeeff]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1519,7 +1519,7 @@ The optional third argument must be of the same form as the list returned by
 (%o5)    [22, 1, 44, 10, 5, 2, 22, 2, 8, 2, 1, 1, 20, 1]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1622,7 +1622,7 @@ The following table shows a very small example of RSA.
       [ 9  1  9  1  9  1  9  1  9  1  9  1  9  1  9  1  9  1  9  1  9 ]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1689,7 +1689,7 @@ The optional second argument must be of the same form as the list returned by
 (%o8)                             false
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end deffn
@@ -1703,7 +1703,7 @@ If @mref{zn_primroot} cannot find a primitive root, it stops at this upper bound
 If the option variable @mref{zn_primroot_verbose} (default: @code{false}) is 
 set to @code{true}, a message will be printed when @code{zn_primroot_limit} is reached. 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end defvr
@@ -1754,7 +1754,7 @@ The optional third argument must be of the same form as the list returned by
 (%o4)                  [[7.748484], [0.036002]]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Number theory}
 @closecatbox
@@ -1774,7 +1774,7 @@ if one of these cases occur before it computes the smallest primitive root.
 Only if @code{zn_primroot_pretest} is set to @code{true} this pretest will be 
 performed.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end defvr
@@ -1787,7 +1787,7 @@ Default value: @code{false}
 Controls whether @mref{zn_primroot} prints a message when reaching 
 @mrefdot{zn_primroot_limit}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Number theory}
 @closecatbox
 @end defvr

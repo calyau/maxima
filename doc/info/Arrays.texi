@@ -89,7 +89,7 @@ creates @math{m} arrays, all of the same dimensions.
 
 See also @mrefcomma{arraymake} @mref{arrayinfo} and @mrefdot{make_array}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Arrays}
 @closecatbox
 @end deffn
@@ -104,7 +104,7 @@ where @var{A} is an array and @var{i_1}, @dots{}, @var{i_n} are integers.
 This is reminiscent of @mrefcomma{apply} except the first argument is an array
 instead of a function.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Arrays}
 @closecatbox
@@ -306,7 +306,7 @@ Using @code{arrayinfo} in order to convert an undeclared array to a declared arr
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Arrays}
 @closecatbox
 @end deffn
@@ -403,7 +403,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Arrays}
 @closecatbox
@@ -462,7 +462,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Arrays}
 @category{Global variables}
 @closecatbox
@@ -477,7 +477,7 @@ where @var{A} is an array and @var{i_1}, @dots{}, @var{i_n} are integers.
 
 @code{arraysetapply} evaluates its arguments.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Arrays}
 @closecatbox
@@ -586,7 +586,7 @@ Multiple-dimension arrays are filled in row-major order.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Arrays}
 @closecatbox
 @end deffn
@@ -756,7 +756,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Arrays}
 @closecatbox
 @end deffn
@@ -863,7 +863,7 @@ IMP) -1 $Z))
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Arrays}
 @closecatbox
 @end deffn
@@ -882,7 +882,7 @@ the remaining elements are filled with
 depending on the type of the array.  The type of the array cannot be
 changed.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Arrays}
 @closecatbox
 @end deffn
@@ -906,7 +906,7 @@ desired to clear the cache of a @mrefdot{memoizing function}
 
 @code{remarray} quotes its arguments.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Arrays}
 @closecatbox
 @end deffn
@@ -957,7 +957,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Arrays}
 @closecatbox
@@ -972,7 +972,7 @@ Examples:
 Returns @code{true} if @var{expr} is a subscripted variable, for example
 @code{a[i]}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @closecatbox
 @end deffn
@@ -996,7 +996,7 @@ than the default one; Arrays created by @mref{make_array} are not affected by
 
 See also @mrefdot{translate_fast_arrays}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Arrays}
 @category{Global flags}
 @closecatbox
@@ -1015,7 +1015,7 @@ When @code{translate_fast_arrays} is @code{false},
 the Maxima-to-Lisp translator generates code that assumes arrays are properties,
 as if @code{use_fast_arrays} were @code{false}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Arrays}
 @category{Translation flags and variables}
 @closecatbox

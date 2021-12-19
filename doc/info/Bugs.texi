@@ -55,7 +55,7 @@ and then defines functions and variables appropriate to the test.
 
 @code{run_testsuite} returns @code{done}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 @end deffn
@@ -80,7 +80,7 @@ This specifies the testsuite consists of the files "rtest13s" and
 "rtest14", but "rtest14" contains two tests that are known to fail: 57
 and 63.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @category{Global variables}
 @closecatbox
@@ -92,7 +92,7 @@ and 63.
 directory that is run as a part of the test suite by
 @mrefdot{run_testsuite}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @category{Global variables}
 @closecatbox
@@ -114,7 +114,7 @@ and Lisp version information into the bug report.
 
 @code{bug_report} returns an empty string @code{""}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 @end deffn
@@ -211,7 +211,7 @@ Front-ends for maxima can add information about currently being used
 by setting the variables @code{maxima_frontend} and
 @code{maxima_frontend_version} accordingly.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 @end deffn

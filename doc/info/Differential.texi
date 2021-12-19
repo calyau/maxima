@@ -29,7 +29,7 @@ form.
 
 See @mref{ode2} for an example of its usage.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential equations}
 @closecatbox
 @end deffn
@@ -101,7 +101,7 @@ If @code{desolve} cannot obtain a solution, it returns @code{false}.
 
 See also @mrefcomma{ode2} @mref{drawdf} and @mrefdot{rk}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential equations}
 @category{Laplace transform}
 @closecatbox
@@ -117,7 +117,7 @@ initial value for the dependent variable in the form @code{@var{y} =
 
 See @mref{ode2} for an example of its usage.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential equations}
 @closecatbox
 @end deffn
@@ -135,7 +135,7 @@ variable, in the form @code{diff(@var{y},@var{x}) = @var{dy0}}
 
 See @mref{ode2} for an example of its usage.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential equations}
 @closecatbox
 @end deffn
@@ -233,7 +233,7 @@ Example:
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential equations}
 @closecatbox
 @end deffn

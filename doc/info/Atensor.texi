@@ -110,7 +110,7 @@ consider setting @code{dotassoc} to @code{false}. In this case, however,
 @code{atensimp} will not always be able to obtain the desired
 simplifications.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Tensors}
 @category{Share packages}
 @category{Package atensor}
@@ -178,7 +178,7 @@ Cl(3,0). A call to @code{init_atensor(pauli)} is equivalent to
 Cl(3,1). A call to @code{init_atensor(dirac)} is equivalent to
 @code{init_atensor(clifford,3,0,1)}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package atensor}
 @closecatbox
 @end deffn
@@ -194,7 +194,7 @@ to @code{sf}, @code{af}, and @code{av} where applicable. A
 safeguard is used to ensure that the function always terminates, even
 for complex expressions.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package atensor}
 @category{Simplification functions}
 @closecatbox
@@ -206,7 +206,7 @@ for complex expressions.
 The algebra type. Valid values are @code{universal}, @code{grassmann},
 @code{clifford}, @code{symmetric}, @code{symplectic} and @code{lie_envelop}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package atensor}
 @closecatbox
 
@@ -219,7 +219,7 @@ Default value: 0
 The dimensionality of the algebra. @code{atensor} uses the value of @code{adim}
 to determine if an indexed object is a valid base vector.  See @code{abasep}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package atensor}
 @category{Global variables}
 @closecatbox
@@ -233,7 +233,7 @@ Default value: @code{ident(3)}
 Default values for the bilinear forms @code{sf}, @code{af}, and
 @code{av}. The default is the identity matrix @code{ident(3)}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package atensor}
 @category{Global variables}
 @closecatbox
@@ -246,7 +246,7 @@ Default value: @code{v}
 
 The symbol for base vectors.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package atensor}
 @category{Global variables}
 @closecatbox
@@ -261,7 +261,7 @@ The default implementation checks if both arguments are base vectors
 using @code{abasep} and if that is the case, substitutes the
 corresponding value from the matrix @code{aform}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package atensor}
 @closecatbox
 
@@ -275,7 +275,7 @@ The default implementation checks if both arguments are base vectors
 using @code{abasep} and if that is the case, substitutes the
 corresponding value from the matrix @code{aform}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package atensor}
 @closecatbox
 
@@ -316,7 +316,7 @@ For instance:
                                        3
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package atensor}
 @closecatbox
 
@@ -331,7 +331,7 @@ an indexed symbol, with the symbol being the same as the value of
 @code{asymbol}, and the index having a numeric value between 1
 and @code{adim}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package atensor}
 @category{Predicate functions}
 @closecatbox

@@ -142,7 +142,7 @@ OUT;>>
 PROMPT;>>(%i5) <<PROMPT;
 @end verbatim
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package alt-display}
 @closecatbox
 
@@ -191,7 +191,7 @@ The display variables @code{alt_display1d} and @code{alt_display2d} are
 both bound to @code{false} in the body of @code{time_stamp} to prevent
 an infinite recursion in @code{displa}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package alt-display}
 @closecatbox
 
@@ -213,7 +213,7 @@ an alternative 1-d or 2-d display function.
 (%o3) x/y
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package alt-display}
 @closecatbox
 
@@ -232,7 +232,7 @@ Produces MathML output.
  <mo>,</mo><mi>done</mi> </mfenced> </math>
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package alt-display}
 @closecatbox
 
@@ -249,7 +249,7 @@ Produces TeX output.
 \mbox@{\tt\red(@{\it \%o_3@}) \black@}$$@{@{x@}\over@{y^2+x^2@}@}$$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package alt-display}
 @closecatbox
 
@@ -286,7 +286,7 @@ Produces Texinfo output using all three display functions.
 @@end ifinfo
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package alt-display}
 @closecatbox
 
@@ -297,7 +297,7 @@ Produces Texinfo output using all three display functions.
 Resets the prompt prefix and suffix to the empty string, and sets both
 1-d and 2-d display functions to the default.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package alt-display}
 @closecatbox
 
@@ -325,7 +325,7 @@ A user-defined display function should take care that it @emph{prints}
 its output. A display function that returns a string will appear to
 display nothing, nor cause any errors.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package alt-display}
 @closecatbox
 
@@ -405,7 +405,7 @@ by an open square bracket (91); each string ends with a lower-case m
 @url{https://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html} provide
 information on how to use control strings to set the terminal colors.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package alt-display}
 @closecatbox
 

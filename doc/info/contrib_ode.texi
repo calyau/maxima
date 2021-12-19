@@ -229,7 +229,7 @@ For second order ODEs @code{contrib_ode} calls @code{ode2} then @code{odelin}.
 Extensive debugging traces and messages are displayed if the command
 @code{put('contrib_ode,true,'verbose)} is executed.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential equations}
 @category{Share packages}
 @category{Package contrib_ode}
@@ -245,7 +245,7 @@ Extensive debugging traces and messages are displayed if the command
 Returns a list of solutions of the ODE @var{eqn} with 
 independent variable @var{x} and dependent variable @var{y}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -278,7 +278,7 @@ special functions.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -324,7 +324,7 @@ zero if @var{soln} is a solution of @var{eqn}.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -335,7 +335,7 @@ zero if @var{soln} is a solution of @var{eqn}.
 The variable @code{method} is set to the successful solution
 method. 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -345,7 +345,7 @@ method.
 
 @code{%c} is the integration constant for first order ODEs.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -355,7 +355,7 @@ method.
 
 @code{%k1} is the first integration constant for second order ODEs.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -365,7 +365,7 @@ method.
 
 @code{%k2} is the second integration constant for second order ODEs.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -385,7 +385,7 @@ functions may change in future releases of Maxima.
 
 See also @mrefcomma{gauss_b} @mref{dgauss_a} and @mrefdot{gauss_b}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -395,7 +395,7 @@ See also @mrefcomma{gauss_b} @mref{dgauss_a} and @mrefdot{gauss_b}
 @deffn {Function} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 See @mrefdot{gauss_a}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -405,7 +405,7 @@ See @mrefdot{gauss_a}
 @deffn {Function} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 The derivative with respect to @var{x} of @code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -415,7 +415,7 @@ The derivative with respect to @var{x} of @code{gauss_a(@var{a}, @var{b}, @var{c
 @deffn {Function} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 The derivative with respect to @var{x} of @code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -434,7 +434,7 @@ function may change in future releases of Maxima.
 
 See also @mrefcomma{kummer_u} @mrefcomma{dkummer_m} and @mrefdot{dkummer_u}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -448,7 +448,7 @@ Kummer's U function, as defined in Abramowitz and Stegun,
 
 See @mrefdot{kummer_m}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -458,7 +458,7 @@ See @mrefdot{kummer_m}
 @deffn {Function} dkummer_m (@var{a}, @var{b}, @var{x})
 The derivative with respect to @var{x} of @code{kummer_m(@var{a}, @var{b}, @var{x})}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -468,7 +468,7 @@ The derivative with respect to @var{x} of @code{kummer_m(@var{a}, @var{b}, @var{
 @deffn {Function} dkummer_u (@var{a}, @var{b}, @var{x})
 The derivative with respect to @var{x} of @code{kummer_u(@var{a}, @var{b}, @var{x})}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @closecatbox
 
@@ -517,7 +517,7 @@ differ by less than 2.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @category{Bessel functions}
 @category{Special functions}
@@ -533,7 +533,7 @@ using the recurrence (A&S 5.1.14).
    expintegral_e(n+1,z) 
         = (1/n) * (exp(-z)-z*expintegral_e(n,z))      n = 1,2,3 ....
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package contrib_ode}
 @category{Exponential Integrals}
 @category{Special functions}

@@ -19,7 +19,7 @@ If there already exists a list, matrix, or array object to store input data,
 Otherwise, @code{numericalio} can guess, to some degree, the structure of an object
 to store the data, and return that object.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{File input}
 @category{File output}
 @category{Share packages}
@@ -136,7 +136,7 @@ See also @mrefcomma{openr} @mrefcomma{read_array} @mrefcomma{read_hashed_array}
 @mrefcomma{read_list} @mrefcomma{read_binary_matrix} @mref{write_data} and
 @mrefdot{read_nested_list}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File input}
 @closecatbox
@@ -165,7 +165,7 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_hashed_array}
 @mrefcomma{read_list} @mref{read_binary_array} and @mrefdot{read_nested_list}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File input}
 @closecatbox
@@ -196,7 +196,7 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_array}
 @mref{read_list} and @mrefdot{read_nested_list}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File input}
 @closecatbox
@@ -225,7 +225,7 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_array}
 @mref{read_list} and @mrefdot{read_hashed_array}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File input}
 @closecatbox
@@ -256,7 +256,7 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 See also @mrefcomma{openr} @mrefcomma{read_matrix} @mrefcomma{read_array}
 @mrefcomma{read_nested_list} @mref{read_binary_list} and @mrefdot{read_hashed_array}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File input}
 @closecatbox
@@ -301,7 +301,7 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 
 See also @mref{openw} and @mrefdot{read_matrix}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File output}
 @closecatbox
@@ -320,7 +320,7 @@ and @code{msb} which indicates most-significant byte first, also called big-endi
 
 If not specified, @code{numericalio} assumes the external byte order is most-significant byte first.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @closecatbox
 @end deffn
@@ -331,7 +331,7 @@ Returns an input stream of 8-bit unsigned bytes to read the file named by @var{f
 
 See also @mref{openw_binary} and @mrefdot{openr}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File input}
 @closecatbox
@@ -343,7 +343,7 @@ Returns an output stream of 8-bit unsigned bytes to write the file named by @var
 
 See also @mrefcomma{openr_binary} @mref{opena_binary} and @mrefdot{openw}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File output}
 @closecatbox
@@ -353,7 +353,7 @@ See also @mrefcomma{openr_binary} @mref{opena_binary} and @mrefdot{openw}
 @deffn {Function} opena_binary (@var{file_name})
 Returns an output stream of 8-bit unsigned bytes to append the file named by @var{file_name}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File output}
 @closecatbox
@@ -371,7 +371,7 @@ The byte order in elements of the source is specified by @code{assume_external_b
 
 See also @mrefdot{read_matrix}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File input}
 @closecatbox
@@ -390,7 +390,7 @@ The byte order in elements of the source is specified by @code{assume_external_b
 
 See also @mrefdot{read_array}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File input}
 @closecatbox
@@ -412,7 +412,7 @@ The byte order in elements of the source is specified by @code{assume_external_b
 
 See also @mrefdot{read_list}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File input}
 @closecatbox
@@ -444,7 +444,7 @@ is specified by @code{assume_external_byte_order}.
 
 See also @mrefdot{write_data}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package numericalio}
 @category{File output}
 @closecatbox

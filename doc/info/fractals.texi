@@ -61,7 +61,7 @@ Example:
 (%i3) plot2d([discrete,sierpinskiale(n)], [style,dots])$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fractals}
 @closecatbox
 
@@ -81,7 +81,7 @@ Example:
 (%i3) plot2d([discrete,treefale(n)], [style,dots])$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fractals}
 @closecatbox
 
@@ -101,7 +101,7 @@ Example:
 (%i3) plot2d([discrete,fernfale(n)], [style,dots])$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fractals}
 @closecatbox
 
@@ -128,7 +128,7 @@ the computing time is also related with the number of grid points.
                 [grid, 150, 150])$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fractals}
 @closecatbox
 
@@ -156,7 +156,7 @@ Example:
 
 See also @mref{julia_parameter}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fractals}
 @closecatbox
 
@@ -173,7 +173,7 @@ Its default value is @mref{%i}; we  suggest the  values @code{-.745+%i*.113002},
 @code{-.39054-%i*.58679}, @code{-.15652+%i*1.03225}, @code{-.194+%i*.6557} and 
 @code{.011031-%i*.67037}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fractals}
 @closecatbox
 
@@ -207,7 +207,7 @@ the computing time is also related with the number of grid points.
 
 See also @mref{julia_parameter}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fractals}
 @closecatbox
 
@@ -238,7 +238,7 @@ Examples:
 (%i5) plot2d([discrete, snowmap([0,%i,1+%i,1,0],4)])$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fractals}
 @closecatbox
 
@@ -263,7 +263,7 @@ Example:
 (%i2) plot2d([discrete,hilbertmap(6)])$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fractals}
 @closecatbox
 
@@ -282,7 +282,7 @@ Example:
 (%i2) plot2d([discrete,sierpinskimap(6)])$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fractals}
 @closecatbox
 

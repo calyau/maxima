@@ -17,7 +17,7 @@
 @section Function
 @c -----------------------------------------------------------------------------
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @category{Programming}
 @closecatbox
@@ -436,7 +436,7 @@ create another function for which some of the arguments are fixed.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @closecatbox
 @end deffn
@@ -496,7 +496,7 @@ Examples
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @closecatbox
 @end deffn
@@ -554,7 +554,7 @@ Examples
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @closecatbox
 @end deffn
@@ -571,7 +571,7 @@ macro functions from the list.
 
 See also @mrefdot{infolists}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @category{Global variables}
 @closecatbox
@@ -628,7 +628,7 @@ Examples
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @closecatbox
 @end deffn
@@ -768,7 +768,7 @@ How to convert a nested list into a matrix:
 @end example
 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @closecatbox
 @end deffn
@@ -839,7 +839,7 @@ See also @mref{return} and @mrefdot{go}
 
 @c Needs some examples.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Programming}
 @closecatbox
@@ -855,7 +855,7 @@ Evaluates and prints @var{expr_1}, @dots{}, @var{expr_n} and then
 causes a Maxima break at which point the user can examine and change
 his environment.  Upon typing @code{exit;} the computation resumes.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 @end deffn
@@ -898,7 +898,7 @@ The function @code{g} returns a list of @code{f} of each element of @code{l} if
 @code{l} consists only of non-negative numbers; otherwise, @code{g} "catches"
 the first negative element of @code{l} and "throws" it up.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @closecatbox
 @end deffn
@@ -925,7 +925,7 @@ translates Maxima into Lisp, and then executes the Lisp compiler.
 
 See also @mrefcomma{translate} @mrefcomma{translate_file} and @mrefdot{compile_file}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end deffn
@@ -975,7 +975,7 @@ to limit the code's functionality are the following:
       tells the compiler that the text is meant as an option.
 @end itemize
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end deffn
@@ -1133,7 +1133,7 @@ When the first argument is an expression with operator @code{funmake},
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @closecatbox
 @end deffn
@@ -1317,7 +1317,7 @@ Cannot assign to `baz_quux'.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end deffn
@@ -1435,7 +1435,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @category{Display functions}
 @closecatbox
@@ -1474,7 +1474,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @category{Expressions}
 @closecatbox
@@ -1499,7 +1499,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @category{Expressions}
 @closecatbox
@@ -1583,7 +1583,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @category{Global variables}
 @closecatbox
@@ -1616,7 +1616,7 @@ In contrast, @code{dispfun (@var{f})} creates an intermediate expression label
 and assigns the definition to the label.
 
 @c PROBABLY NEED SOME EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @closecatbox
 @end deffn
@@ -1791,7 +1791,7 @@ Maxima simplifies @code{funmake}'s return value.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @category{Expressions}
 @closecatbox
@@ -2031,7 +2031,7 @@ The arguments appear within the function body as a list.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @closecatbox
 @end deffn
@@ -2090,7 +2090,7 @@ A local function definition.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @category{Programming}
 @closecatbox
@@ -2317,7 +2317,7 @@ x + 99 is equal to x
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @category{Global flags}
 @closecatbox
@@ -2427,7 +2427,7 @@ Example:
 @end example
 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end deffn
@@ -2488,7 +2488,7 @@ To enable the Lisp debugger set *debugger-hook* to nil.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2502,7 +2502,7 @@ When @code{mode_check_errorp} is @code{true}, @code{mode_declare} calls
 error.
 @c NEED SOME EXAMPLES HERE.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2517,7 +2517,7 @@ When @code{mode_check_warnp} is @code{true}, mode errors are
 described.
 @c NEED SOME EXAMPLES HERE.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2560,7 +2560,7 @@ compile(firstnumb)
 @end example
 @code{firstnumb} now can be used every time you need the first element
 of a list that is guaranteed to be filled with numbers.
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end deffn
@@ -2586,7 +2586,7 @@ which there is no function definition.
 @code{remfunction} does not apply to @mref{memoizing functions} or subscripted functions.
 @mref{remarray} applies to those types of functions.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function definition}
 @closecatbox
 @end deffn
@@ -2605,7 +2605,7 @@ displayed by @code{dispfun} and allows the function to be edited.
 When @code{savedef} is @code{false}, the names of translated functions are
 removed from the @code{functions} list.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2671,7 +2671,7 @@ translated version.
 The result returned by @code{translate} is a list of the names of the
 functions translated.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end deffn
@@ -2747,7 +2747,7 @@ See also
 and @mrefdot{tr_warn_undefined_variable}
 @end flushleft
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end deffn
@@ -2761,7 +2761,7 @@ When @code{transrun} is @code{false} will cause the interpreted
 version of all functions to be run (provided they are still around)
 rather than the translated version.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2783,7 +2783,7 @@ otherwise array names appear as literal symbols in translated code.
 @code{tr_array_as_ref} has no effect if @code{translate_fast_arrays} is
 @code{true}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2836,7 +2836,7 @@ note: instead I'll translate it as: apply(f,[3])
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2851,7 +2851,7 @@ When @code{tr_file_tty_messagesp} is @code{true}, messages generated by
 and inserted into the UNLISP file.  When @code{false}, messages about
 translation of the file are only inserted into the UNLISP file.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2871,7 +2871,7 @@ even if @code{x} is of mode @code{float} (as set by @code{mode_declare}).
 When @code{false} then @code{acos(x)} is of mode
 @code{float} if and only if @code{x} is of mode @code{float}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2891,7 +2891,7 @@ There is no need to turn this off.  With the default settings, no warning
 messages implies full compatibility of translated and compiled code with the
 Maxima interpreter.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2904,7 +2904,7 @@ Default value: @code{false}
 When @code{tr_numer} is @code{true}, @code{numer} properties are used for
 atoms which have them, e.g. @code{%pi}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2919,7 +2919,7 @@ macro-expansion and optimization pass of the translator will loop in
 considering a form.  This is to catch macro expansion errors, and
 non-terminating optimization properties.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2944,7 +2944,7 @@ trying to debug the translator.  By comparing the translated product
 to what should have been produced for a given state, it is possible to
 track down bugs.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2960,7 +2960,7 @@ track down bugs.
 Prints a list of warnings which have been given by
 the translator during the current translation.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end deffn
@@ -2973,7 +2973,7 @@ Default value: @code{true}
 when function calls are being made which may not be correct due to
 improper declarations that were made at translate time.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -2987,7 +2987,7 @@ Default value: @code{compfile}
 encountered.  FEXPRs should not normally be output in translated code,
 all legitimate special program forms are translated.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -3000,7 +3000,7 @@ Default value: @code{compfile}
 - Gives a warning if the function @code{meval} gets called.  If @code{meval} is
 called that indicates problems in the translation.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -3013,7 +3013,7 @@ Default value: @code{all}
 - Gives a warning when variables are
 assigned values inappropriate for their mode.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -3026,7 +3026,7 @@ Default value: @code{compile}
 - Determines when to send
 warnings about undeclared variables to the TTY.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -3039,7 +3039,7 @@ Default value: @code{all}
 - Gives a warning when
 undefined global variables are seen.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation flags and variables}
 @closecatbox
 @end defvr
@@ -3083,7 +3083,7 @@ flags (@code{tr_numer}, etc.) have no effect on the translation.
 
 @code{compile_file} evaluates its arguments.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end deffn
@@ -3103,7 +3103,7 @@ does which does not yet have a Lisp function value, will have one at
 call time.  @code{(MFUNCTION-CALL fn arg1 arg2 ...)} is generated when
 the translator does not know @code{fn} is going to be a Lisp function.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Translation and compilation}
 @closecatbox
 @end deffn

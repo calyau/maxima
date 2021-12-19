@@ -23,7 +23,7 @@ with summations or products.  The form of the unique index is
 @code{gensumnum}, which can be changed by the user.  For example,
 @code{gensumnum:0$} resets it.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @closecatbox
 @end deffn
@@ -58,7 +58,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @closecatbox
 @end deffn
@@ -80,7 +80,7 @@ does not remove this property, it only bypasses it.
 In some cases, a @code{scanmap (multthru, @var{expr})} may be necessary before
 the @code{intosum}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -96,7 +96,7 @@ This simplification may sometimes be able to produce a closed form.  If
 value is a product noun form which is a representation of the pi notation used
 in mathematics.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @category{Simplification flags and variables}
 @closecatbox
@@ -177,7 +177,7 @@ Examples:
 (%o9)                        a   b
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @closecatbox
 @end deffn
@@ -195,7 +195,7 @@ This simplification may sometimes be able to produce a closed form.  If
 value is a sum noun form which is a representation of the sigma notation used
 in mathematics.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @category{Simplification flags and variables}
 @closecatbox
@@ -321,7 +321,7 @@ Examples:
 (%o12)   b   + b  + b  + b  + b  + a  + a  + a  + a  + a
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @closecatbox
 @end deffn
@@ -344,7 +344,7 @@ reasonable index if it cannot use any supplied.
 It may be necessary to do an @code{intosum (@var{expr})} before the
 @code{sumcontract}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @closecatbox
 @end deffn
@@ -383,7 +383,7 @@ Examples:
                     i3 = 0 i4 = 0
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @category{Simplification flags and variables}
 @closecatbox
@@ -458,7 +458,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @closecatbox
 @end defvr
@@ -498,7 +498,7 @@ Example:
                      2     18432     307200
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end deffn
@@ -513,7 +513,7 @@ When @code{maxtayorder} is @code{true}, then during algebraic
 manipulation of (truncated) Taylor series, @code{taylor} tries to retain
 as many terms as are known to be correct.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end defvr
@@ -558,7 +558,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @closecatbox
 @end deffn
@@ -596,7 +596,7 @@ Example:
                           p = 1
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @closecatbox
 @end defvr
@@ -658,7 +658,7 @@ Dependent equations eliminated:  (2 3)
                           i = 1
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @closecatbox
 @end deffn
@@ -735,7 +735,7 @@ in order to have enough unknown coefficients to solve.
  + 2856700692480 x  + 3370143559680 x + 2386516803584)]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end deffn
@@ -793,7 +793,7 @@ in the first simplification we have returned:
                                       2
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end deffn
@@ -815,7 +815,7 @@ a multivariate expression is displayed just as in the rational function package.
 When @code{psexpand} is  @code{multi},
 then terms with the same total degree in the variables are grouped together.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr
@@ -866,7 +866,7 @@ Examples:
                          4    3    2
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end deffn
@@ -1056,7 +1056,7 @@ Examples:
           x + y     6                   360
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end deffn
@@ -1071,7 +1071,7 @@ If there are still no nonzero terms, @code{taylor} doubles the degree of the
 expansion of @code{@var{g}(@var{x})} so long as the degree of the expansion is
 less than or equal to @code{@var{n} 2^taylordepth}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end defvr
@@ -1106,7 +1106,7 @@ Example:
 (%o2)               [[y, a, inf], [x, 0, 3]]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end deffn
@@ -1118,7 +1118,7 @@ Example:
 Returns @code{true} if @var{expr} is a Taylor series,
 and @code{false} otherwise.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Power series}
 @closecatbox
@@ -1143,7 +1143,7 @@ When @code{taylor_logexpand} is set to @code{false}, then the only expansion of
 logarithms that occur is that necessary to obtain a formal power series.
 
 @c NEED EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @category{Exponential and logarithm functions}
 @closecatbox
@@ -1163,7 +1163,7 @@ coefficients of taylor series are ordered canonically.
 @c AND WHAT HAPPENS WHEN IT IS FALSE ??
 
 @c NEED EXAMPLES HERE
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end defvr
@@ -1175,7 +1175,7 @@ coefficients of taylor series are ordered canonically.
 Simplifies coefficients of the power series @var{expr}.
 @code{taylor} calls this function.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end deffn
@@ -1193,7 +1193,7 @@ Otherwise,
 polynomials input to @code{taylor} are considered to have infinite precision.
 @c WHAT IS "INFINITE PRECISION" IN THIS CONTEXT ??
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end defvr
@@ -1206,7 +1206,7 @@ Converts @var{expr} from @code{taylor} form to canonical rational expression
 (CRE) form.  The effect is the same as @code{rat (ratdisrep (@var{expr}))}, but
 faster.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @category{Rational expressions}
 @closecatbox
@@ -1233,7 +1233,7 @@ Example:
 (%o3)                         true
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end deffn
@@ -1278,7 +1278,7 @@ Examples:
                         binomial(2 n, n)
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Sums and products}
 @closecatbox
 @end deffn
@@ -1291,7 +1291,7 @@ Default value: @code{false}
 When @code{verbose} is @code{true},
 @code{powerseries} prints progress messages.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Power series}
 @closecatbox
 @end defvr
@@ -1306,7 +1306,7 @@ of Fourier series.
 There are functions in the @code{fourie} package to calculate Fourier integral
 coefficients and some functions for manipulation of expressions.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Fourier transform}
 @category{Share packages}
 @category{Package fourie}
@@ -1327,7 +1327,7 @@ Returns @code{true} if @code{equal (@var{x}, @var{y})} otherwise @code{false}
 (doesn't give an error message like @code{equal (x, y)} would do in this case).
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end deffn
@@ -1346,7 +1346,7 @@ Returns @code{true} if @code{equal (@var{x}, @var{y})} otherwise @code{false}
 the variable @var{x}.
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end deffn
@@ -1365,7 +1365,7 @@ returns @code{true} if @var{expr} contains the function @var{f} and the variable
 @var{x} is somewhere in the argument of one of the instances of @var{f}.
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end deffn
@@ -1392,7 +1392,7 @@ of @var{f} with respect to @var{x} from @var{a} to @var{b}.
 @var{f} may include absolute values.
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @category{Integral calculus}
 @closecatbox
@@ -1408,7 +1408,7 @@ Returns a list of the Fourier coefficients of @code{@var{f}(@var{x})} defined
 on the interval @code{[-p, p]}.
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end deffn
@@ -1423,7 +1423,7 @@ Simplifies @code{sin (n %pi)} to 0 if @code{sinnpiflag} is @code{true} and
 @code{cos (n %pi)} to @code{(-1)^n} if @code{cosnpiflag} is @code{true}.
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @category{Trigonometric functions}
 @category{Simplification functions}
@@ -1437,7 +1437,7 @@ Default value: @code{true}
 
 See @code{foursimp}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end defvr
@@ -1449,7 +1449,7 @@ Default value: @code{true}
 
 See @code{foursimp}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end defvr
@@ -1465,7 +1465,7 @@ Constructs and returns the Fourier series from the list of Fourier coefficients
 and @var{p} have same meaning as in @code{fourier}.
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end deffn
@@ -1480,7 +1480,7 @@ Returns the Fourier cosine coefficients for @code{@var{f}(@var{x})} defined on
 @code{[0, @var{p}]}.
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end deffn
@@ -1495,7 +1495,7 @@ Returns the Fourier sine coefficients for @code{@var{f}(@var{x})} defined on
 @code{[0, @var{p}]}.
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end deffn
@@ -1510,7 +1510,7 @@ Returns @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})),
 @var{x}, @var{p}, 'inf)}.
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end deffn
@@ -1525,7 +1525,7 @@ Constructs and returns a list of the Fourier integral coefficients of
 @code{@var{f}(@var{x})} defined on @code{[minf, inf]}.
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end deffn
@@ -1540,7 +1540,7 @@ Returns the Fourier cosine integral coefficients for @code{@var{f}(@var{x})}
 on @code{[0, inf]}.
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end deffn
@@ -1555,7 +1555,7 @@ Returns the Fourier sine integral coefficients for @code{@var{f}(@var{x})} on
 @code{[0, inf]}.
 
 @c NEEDS EXAMPLES
-@opencatbox
+@opencatbox{Categories:}
 @category{Package fourie}
 @closecatbox
 @end deffn
@@ -1573,7 +1573,7 @@ Returns the Fourier sine integral coefficients for @code{@var{f}(@var{x})} on
 @deffn {Function} intopois (@var{a})
 Converts @var{a} into a Poisson encoding.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end deffn
@@ -1590,7 +1590,7 @@ i.e., the return value is @code{outofpois (intopois (@var{a}))}.
 This function is thus a canonical simplifier
 for sums of powers of sine and cosine terms of a particular type.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end deffn
@@ -1605,7 +1605,7 @@ for sums of powers of sine and cosine terms of a particular type.
 Differentiates @var{a} with respect to @var{b}. @var{b} must occur only
 in the trig arguments or only in the coefficients.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end deffn
@@ -1621,7 +1621,7 @@ in the trig arguments or only in the coefficients.
 Functionally identical to @code{intopois (@var{a}^@var{b})}.
 @var{b} must be a positive integer.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end deffn
@@ -1635,7 +1635,7 @@ Functionally identical to @code{intopois (@var{a}^@var{b})}.
 Integrates in a similarly restricted sense (to @code{poisdiff}).  Non-periodic
 terms in @var{b} are dropped if @var{b} is in the trig arguments.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end deffn
@@ -1650,7 +1650,7 @@ the arguments of the trig functions.  The initial value of 5
 corresponds to the interval [-2^(5-1)+1,2^(5-1)], or [-15,16], but it
 can be set to [-2^(n-1)+1, 2^(n-1)].
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end defvr
@@ -1666,7 +1666,7 @@ cosine terms of the Poisson series given.  @var{sinfn} and @var{cosfn} are
 functions of two arguments which are a coefficient and a trigonometric part of
 a term in series respectively.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end deffn
@@ -1679,7 +1679,7 @@ a term in series respectively.
 
 Is functionally identical to @code{intopois (a + b)}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end deffn
@@ -1691,7 +1691,7 @@ Is functionally identical to @code{intopois (a + b)}.
 Converts @var{a} into a Poisson series for @var{a} in general
 representation.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end deffn
@@ -1705,7 +1705,7 @@ representation.
 The symbol @code{/P/} follows the line label of Poisson series
 expressions.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end defvr
@@ -1732,7 +1732,7 @@ expansion in terms of a small parameter.  For example,
 @code{poissubst (u, v, cos(v), %e, 3)} yields
 @code{cos(u)*(1 - %e^2/2) - sin(u)*(%e - %e^3/6)}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end deffn
@@ -1745,7 +1745,7 @@ expansion in terms of a small parameter.  For example,
 
 Is functionally identical to @code{intopois (@var{a}*@var{b})}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end deffn
@@ -1762,7 +1762,7 @@ function of 6 arguments which are the coefficients of the @var{u}, @var{v}, ...,
 in a term.  Terms for which @code{poistrim} is @code{true} (for the coefficients of
 that term) are eliminated during multiplication.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @closecatbox
 @end deffn
@@ -1775,7 +1775,7 @@ Prints a Poisson series in a readable format.  In common
 with @code{outofpois}, it will convert @var{a} into a Poisson encoding first, if
 necessary.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Poisson series}
 @category{Display functions}
 @closecatbox

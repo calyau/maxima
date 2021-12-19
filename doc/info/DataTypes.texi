@@ -35,7 +35,7 @@ of complex expressions can usually be accomplished by using the @code{realpart},
 @code{imagpart}, @code{rectform}, @code{polarform}, @code{abs}, @code{carg}
 functions.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Complex variables}
 @closecatbox
 
@@ -109,7 +109,7 @@ in @var{expr} with bigfloat numbers.
 (%o4)                 4.812118250596035b-1
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @closecatbox
 @end deffn
@@ -120,7 +120,7 @@ in @var{expr} with bigfloat numbers.
 
 Returns @code{true} if @var{expr} is a bigfloat number, otherwise @code{false}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @category{Predicate functions}
 @closecatbox
@@ -162,7 +162,7 @@ Example:
                              111111
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @closecatbox
 @end defvr
@@ -177,7 +177,7 @@ displayed.  Thus, if @code{bftrunc} is @code{false}, @code{bfloat (1)}
 displays as @code{1.000000000000000B0}.  Otherwise, this is displayed as
 @code{1.0B0}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @closecatbox
 @end defvr
@@ -193,7 +193,7 @@ Returns @code{true} if @var{expr} is a literal even integer, otherwise
 @code{evenp} returns @code{false} if @var{expr} is a symbol, even if @var{expr}
 is declared @code{even}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @closecatbox
 @end deffn
@@ -207,7 +207,7 @@ point numbers.  It is also an @mrefcomma{evflag} @code{float} causes
 non-integral rational numbers and bigfloat numbers to be converted to floating
 point.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @category{Evaluation flags}
 @closecatbox
@@ -222,7 +222,7 @@ When @mref{float2bf} is @code{false}, a warning message is printed when
 a floating point number is replaced by a bigfloat number with less precision.
 @c DOES THAT APPLY ONLY TO BFLOAT, OR DO OTHER FUNCTIONS CALL IT ??
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @closecatbox
 @end defvr
@@ -234,7 +234,7 @@ a floating point number is replaced by a bigfloat number with less precision.
 Returns @code{true} if @var{expr} is a floating point number, otherwise
 @code{false}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @category{Predicate functions}
 @closecatbox
@@ -251,7 +251,7 @@ numbers.
 
 See also @mref{bfloat} and @mrefdot{fpprintprec}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @closecatbox
 @end defvr
@@ -283,7 +283,7 @@ if there are trailing zero digits.
 
 @code{fpprintprec} cannot be 1.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @category{Display flags and variables}
 @closecatbox
@@ -333,7 +333,7 @@ Examples:
 (%o9)                         false
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @closecatbox
 @end deffn
@@ -360,7 +360,7 @@ m1pbranch:false          m1pbranch:true
 (-1)^(1/4)              sqrt(2)/2+%i*sqrt(2)/2
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Global flags}
 @closecatbox
@@ -372,7 +372,7 @@ m1pbranch:false          m1pbranch:true
 
 Return @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an integer.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @closecatbox
 @end deffn
@@ -418,7 +418,7 @@ Examples:
 (%o7) [false, false, false, false, false, false, false, false]
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @closecatbox
 @end deffn
@@ -458,7 +458,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @category{Evaluation flags}
 @closecatbox
@@ -511,7 +511,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @closecatbox
 @end defvr
@@ -532,7 +532,7 @@ in any expressions in which the variable occurs if the @code{numer} flag is
 The expressions @code{expr_1}, @dots{}, @code{expr_n} can be any expressions,
 not necessarily numeric.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Numerical evaluation}
 @closecatbox
@@ -549,7 +549,7 @@ Returns @code{true} if @var{expr} is a literal odd integer, otherwise
 @code{oddp} returns @code{false} if @var{expr} is a symbol, even if @var{expr}
 is declared @code{odd}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @closecatbox
 @end deffn
@@ -563,7 +563,7 @@ Default value: @code{2.0e-15}
 of floating point numbers to rational numbers, when the option variable
 @mref{bftorat} has the value @code{false}.  See @code{bftorat} for an example.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @category{Rational expressions}
 @closecatbox
@@ -624,7 +624,7 @@ representation.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical evaluation}
 @closecatbox
 @end deffn
@@ -636,7 +636,7 @@ representation.
 Returns @code{true} if @var{expr} is a literal integer or ratio of literal
 integers, otherwise @code{false}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @category{Rational expressions}
 @closecatbox
@@ -744,7 +744,7 @@ in this string.
 (%i9) stringdisp : false;
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Syntax}
 @closecatbox
 
@@ -820,7 +820,7 @@ Note that although @code{concat (1, 2)} looks like a number, it is a string.
 (%o10)                       12 + 3
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Strings}
 @closecatbox
@@ -862,7 +862,7 @@ Another purpose for @code{sconcat} is to convert arbitrary objects to strings.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @category{Strings}
 @closecatbox
@@ -883,7 +883,7 @@ computation.
 See also @mrefcomma{concat} @mrefcomma{sconcat} @mref{simplode} and
 @mrefdot{eval_string}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Strings}
 @closecatbox
 @end deffn
@@ -929,7 +929,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Display flags and variables}
 @closecatbox
 @end defvr

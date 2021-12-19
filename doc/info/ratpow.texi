@@ -39,7 +39,7 @@ Finds the highest power of the main variable in @code{ratnumer(expr)}
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @category{Package ratpow}
 @closecatbox
@@ -109,7 +109,7 @@ The CRE form of the following equation contains @code{sqrt(x)} and
 @end example
 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @category{Package ratpow}
 @closecatbox
@@ -132,7 +132,7 @@ Generates a list of powers and coefficients of the main variable
 (%o2)/R/         [[3, 4], [1, 1], [0, sqrt(x)]]
 @end group
 @end example
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @category{Package ratpow}
 @closecatbox
@@ -156,7 +156,7 @@ coefficients are in CRE form except for numbers.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Rational expressions}
 @category{Package ratpow}
 @closecatbox

@@ -129,7 +129,7 @@ Some Lisp functions are shadowed in the Maxima package, namely the following.
    tan            break         gcd
 @end verbatim
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @closecatbox
 
@@ -157,7 +157,7 @@ garbage collection.
 If maxima knows how to do manually trigger the garbage collection for the
 current lisp @code{garbage_collect} returns @code{true}, else @code{false}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @closecatbox
 @end deffn
@@ -239,7 +239,7 @@ functions, including the currently active function.
 @end example
 @end itemize
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @closecatbox
 @end deffn
@@ -517,7 +517,7 @@ non-atomic expression, and successive parts are taken.)
 (%o4)                             0.78539816
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @closecatbox
 @end deffn
@@ -538,7 +538,7 @@ would terminate the @code{batch} if the error weren't caught.
 
 See also @mrefdot{errormsg}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @closecatbox
 @end deffn
@@ -560,7 +560,7 @@ and the remaining elements are the values of any non-string arguments.
 @code{errormsg()} formats and prints @code{error}.
 This is effectively reprinting the most recent error message.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @closecatbox
 @end deffn
@@ -575,7 +575,7 @@ may be able to recognize the warning and to format it accordingly.
 
 The function @code{warning} always returns false.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @closecatbox
 @end deffn
@@ -634,7 +634,7 @@ Example expression is --------------
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @category{Display flags and variables}
 @closecatbox
@@ -656,7 +656,7 @@ symbol equivalent to @code{concat ('errexp, @var{n})}.
 
 See also @mref{error} and @mrefdot{error_size}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Debugging}
 @category{Display flags and variables}
 @closecatbox
@@ -670,7 +670,7 @@ Reprints the most recent error message.
 The variable @code{error} holds the message,
 and @mref{errormsg} formats and prints it.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @closecatbox
 @end deffn
@@ -744,7 +744,7 @@ value of errormsg is false
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @closecatbox
 @end defvr
@@ -766,7 +766,7 @@ The argument to @code{go} must be the name of a tag appearing in the same
 @code{block}.  One cannot use @code{go} to transfer to tag in a @code{block}
 other than the one containing the @code{go}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @closecatbox
 @end deffn
@@ -835,7 +835,7 @@ or                   or          logical infix
 not                  not         logical prefix
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @category{Predicate functions}
 @closecatbox
@@ -896,7 +896,7 @@ See also @mrefcomma{scanmap} @mrefcomma{maplist} @mrefcomma{outermap} @mref{matr
 
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @closecatbox
 @end deffn
@@ -910,7 +910,7 @@ routines as an atom.  "Mapatoms" are atoms, numbers
 (including rational numbers), and subscripted variables.
 @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION OF ATOMS ??
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Predicate functions}
 @closecatbox
 @end deffn
@@ -937,7 +937,7 @@ not all the same type of object.
 If @code{maperror} is @code{true} then an error message
 is displayed in the above two instances.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @closecatbox
 @end defvr
@@ -954,7 +954,7 @@ situations.  These include situations where @code{map} would use
 
 If @mref{mapprint} is @code{false}, these messages are suppressed.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @closecatbox
 @end defvr
@@ -973,7 +973,7 @@ lambda expression.
 which returns an expression with the same main operator as @var{expr_i} has
 (except for simplifications and the case where @mref{map} does an @mref{apply}).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @closecatbox
 @end deffn
@@ -996,7 +996,7 @@ however, @code{maybe} is supported in translated code.
 
 See also @mref{is} and @mrefdot{maybe}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @category{Predicate functions}
 @closecatbox
@@ -1068,7 +1068,7 @@ statement from C.
 
 See also @mrefcomma{for} @mrefcomma{while} @mref{do} and @mref{block}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @closecatbox
 @end deffn
@@ -1126,7 +1126,7 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 In this case, you get the same answer both
 ways.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @closecatbox
 @end deffn
@@ -1139,7 +1139,7 @@ Evaluates @var{expr} and throws the value back to the most recent
 @mref{catch}.  @code{throw} is used with @code{catch} as a nonlocal return
 mechanism.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Programming}
 @closecatbox
 @end deffn
@@ -1336,7 +1336,7 @@ while @code{cartesian_product} does not.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Function application}
 @closecatbox
 @end deffn

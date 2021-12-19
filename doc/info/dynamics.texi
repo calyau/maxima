@@ -17,7 +17,7 @@ sets are described in the section on @mrefdot{Plotting}
 All the functions in this package will be loaded automatically the first
 time they are used.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Dynamical systems}
 @category{Share packages}
 @category{Package dynamics}
@@ -49,7 +49,7 @@ same as for @mrefdot{plot2d}
 @figure{dynamics7}
 @end ifnotinfo
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -88,7 +88,7 @@ depend on @var{y}, but any other variable can be used),
 @end ifnotinfo
 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -138,7 +138,7 @@ And an enlargement of a small region in that fractal:
 @figure{dynamics6}
 @end ifnotinfo
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -180,7 +180,7 @@ options are the same as for @mrefdot{plot2d}
 @figure{dynamics8}
 @end ifnotinfo
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -228,7 +228,7 @@ To enlarge the region around the lower bifurcation near x @code{=} -1.25 use:
 @figure{dynamics4}
 @end ifnotinfo
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -268,7 +268,7 @@ reached. The options are the same as for @mrefdot{plot2d}
 @figure{dynamics2}
 @end ifnotinfo
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -355,7 +355,7 @@ automatically every time the last point in the position list is reached.
 The accepted values for the colors are the same as for the @mref{color}
 option of plot2d. 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -373,7 +373,7 @@ The rotation of the camera on the horizontal (x, y) plane. @var{angle}
 must be a real number; an angle of 0 means that the camera points in the
 direction of the y axis and the x axis will appear on the right.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -386,7 +386,7 @@ Default value: @code{black}
 The color of the graphics window's background. It accepts color names or
 hexadecimal red-green-blue strings (see the @mref{color} option of plot2d).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -401,7 +401,7 @@ number; an angle of 0 means that the camera points on the horizontal,
 and the default angle of 30 means that the camera is pointing 30 degrees
 down from the horizontal.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -414,7 +414,7 @@ Default value: @code{500}
 The height, in pixels, of the graphics window. @var{pixels} must be a
 positive integer number.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -428,7 +428,7 @@ A true value means that animations will restart automatically when the
 end of the list is reached. Writing just ``restart'' is equivalent to
 [restart, @var{true}].
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -441,7 +441,7 @@ Default value: @code{10}
 The amount of time, in mili-seconds, between iterations among
 consecutive animation frames. @var{time} must be a real number.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -454,7 +454,7 @@ Default value: @code{500}
 The width, in pixels, of the graphics window. @var{pixels} must be a
 positive integer number.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -468,7 +468,7 @@ Default value: @code{.scene}
 window created by Xmaxima for the @code{scene} graphics. The default
 value @code{.scene} implies that a new top level window will be created.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -481,7 +481,7 @@ Default value: @code{Xmaxima: scene}
 @var{name} must be a string that will be written in the title of the
 window created by @code{scene}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -512,7 +512,7 @@ axis when the play button is pressed.
    [animate,orientation,makelist([0,30,i],i,5,360,5)]], restart)$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -527,7 +527,7 @@ planes. The lengths of the three edges can be changed with options
 @mxref{object_zlength,zlength}, turning it into a rectangular box and
 the faces can be rotated with option @mxrefdot{object_orientation,orientation}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -547,7 +547,7 @@ the axis will be along the x axis and the middle point of the axis will
 be at the origin; use options @mxref{object_orientation,orientation} and
 @mxref{object_center,center} to change those defaults.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -558,7 +558,7 @@ be at the origin; use options @mxref{object_orientation,orientation} and
 
 A sphere with default radius of 0.5 units and center at the origin. 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -582,7 +582,7 @@ the animation restart after the play button is pressed again.
 
 See also @mxrefdot{object_track,track}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -596,7 +596,7 @@ In a cone or a cylinder, it defines whether the base (or bases) will be
 shown. A value of 1 for @var{number} makes the base visible and a value
 of 0 makes it invisible.
  
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -611,7 +611,7 @@ The coordinates of the object's geometric center, with respect to its
 real numbers, or 3 real numbers separated by commas. In a cylinder, cone
 or cube it will be at half its height and in a sphere at its center.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -624,7 +624,7 @@ Default value: @code{white}
 The color of the object. It accepts color names or hexadecimal
 red-green-blue strings (see the @mref{color} option of plot2d).
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -643,7 +643,7 @@ part of the sphere's surface.
 See also @mxref{object_startphi,startphi} and
 @mxrefdot{object_phiresolution,phiresolution}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -662,7 +662,7 @@ the sphere's surface.
 See also @mxref{object_starttheta,starttheta} and
 @mxrefdot{object_thetaresolution,thetaresolution}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -675,7 +675,7 @@ Default value: @code{1}
 @var{value} must be a positive number which sets the height of a cone
 or a cylinder.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -688,7 +688,7 @@ Default value: @code{1}
 The width of the lines, when option @mxref{object_wireframe,wireframe} is
 used. @var{value} must be a positive number.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -702,7 +702,7 @@ Default value: @code{1}
 more transparent the object will become. The default value of 1 means a
 completely opaque object.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -717,7 +717,7 @@ three axis. @var{angles} can be a list with 3 real numbers, or 3 real
 numbers separated by commas. @strong{Example}: @code{[0, 0, 90]} rotates
 the x axis of the object to the y axis of the reference frame.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -731,7 +731,7 @@ The coordinates of the object's origin, with respect to which its
 other dimensions are defined. @var{point} can be a list with 3
 real numbers, or 3 real numbers separated by commas.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -748,7 +748,7 @@ will be divided. @var{num} must be a positive integer.
 See also @mxref{object_startphi,startphi} and
 @mxrefdot{object_endphi,endphi}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -763,7 +763,7 @@ be shown. @strong{Example}: @code{[sphere, [points]]}
 See also @mxref{object_surface,surface} and
 @mxrefdot{object_wireframe,wireframe}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -776,7 +776,7 @@ Default value: @code{1}
 The size of the points, when option @mxref{object_points,points} is
 used. @var{value} must be a positive number.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -789,7 +789,7 @@ Default value: @code{[0, 0, 0]}
 The coordinates of the object's position. @var{point} can be a list with 3
 real numbers, or 3 real numbers separated by commas.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -802,7 +802,7 @@ Default value: @code{0.5}
 The radius or a sphere or the distance from the axis to the base's
 vertices in a cylinder or a cone. @var{value} must be a positive number.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -815,7 +815,7 @@ Default value: @code{6}
 @var{number} must be an integer greater than 2 that sets the number of
 edges in the base of a cone or a cylinder.
  
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -832,7 +832,7 @@ enlarges the object to twice its size in the x direction, reduces the
 dimensions in the y direction to half and leaves the z dimensions
 unchanged.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -851,7 +851,7 @@ part of the sphere's surface.
 See also @mxref{object_endphi,endphi} and
 @mxrefdot{object_phiresolution,phiresolution}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -870,7 +870,7 @@ the sphere's surface.
 See also @mxref{object_endtheta,endtheta} and
 @mxrefdot{object_thetaresolution,thetaresolution}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -884,7 +884,7 @@ the triangulation used to build the surface will not be shown. This is
 the default behavior, which can be changed using either the option
 @mxref{object_points,points} or @mxrefdot{object_wireframe,wireframe}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -901,7 +901,7 @@ will be divided. @var{num} must be a positive integer.
 See also @mxref{object_starttheta,starttheta} and
 @mxrefdot{object_endtheta,endtheta}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -936,7 +936,7 @@ be neglected:
 See also @mxrefdot{object_animation,animation}
 
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -950,7 +950,7 @@ The height of a cube in the x direction. @var{length} must be a positive
 number. See also @mxref{object_ylength,ylength} and
 @mxrefdot{object_zlength,zlength}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -964,7 +964,7 @@ The height of a cube in the y direction. @var{length} must be a positive
 number. See also @mxref{object_xlength,xlength} and
 @mxrefdot{object_zlength,zlength}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -978,7 +978,7 @@ The height of a cube in z the direction. @var{length} must be a positive
  number.  See also @mxref{object_xlength,xlength} and
  @mxrefdot{object_ylength,ylength}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox
@@ -993,7 +993,7 @@ shown. @strong{Example}: @code{[cube, [wireframe]]}
 See also @mxref{object_surface,surface} and
 @mxrefdot{object_points,points}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package dynamics}
 @category{Plotting}
 @closecatbox

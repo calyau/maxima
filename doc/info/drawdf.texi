@@ -60,7 +60,7 @@ If only one ODE is given, @code{drawdf} will implicitly admit
 @code{x=t}, and @code{G(x,y)=1}, transforming the non-autonomous
 equation into a system of two autonomous equations.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Differential equations}
 @category{Plotting}
 @category{Share packages}
@@ -276,7 +276,7 @@ generate graphics.
                        k,1,5))$
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package drawdf}
 @closecatbox
 

@@ -22,7 +22,7 @@ Example:
                   10       10      5
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods} 
 @category{Optimization}
 @category{Share packages}
@@ -128,7 +128,7 @@ Warning: Solution may be incorrect.
 
 See also: @mref{linear_program}, @mref{ratnump}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package simplex}
 @closecatbox
 
@@ -171,7 +171,7 @@ Example:
 
 See also: @mref{minimize_lp}, @mref{scale_lp}, and @mref{epsilon_lp}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package simplex}
 @category{Numerical methods}
 @closecatbox
@@ -188,7 +188,7 @@ description of arguments and return value.
 
 See also: @mref{minimize_lp}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package simplex}
 @category{Numerical methods}
 @closecatbox
@@ -290,7 +290,7 @@ p;
 
 See also: @mref{maximize_lp}, @mref{nonnegative_lp}, @mref{epsilon_lp}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package simplex}
 @category{Numerical methods}
 @closecatbox
@@ -308,7 +308,7 @@ If @code{nonnegative_lp} is true all decision variables to
                    
 See also: @mref{minimize_lp}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package simplex}
 @closecatbox
 
@@ -321,7 +321,7 @@ Default value: @code{false}
 When @code{scale_lp} is @code{true},
 @code{linear_program} scales its input so that the maximum absolute value in each row or column is 1.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package simplex}
 @closecatbox
 
@@ -333,7 +333,7 @@ When @code{scale_lp} is @code{true},
 After @code{linear_program} returns,
 @code{pivot_count_sx} is the number of pivots in last computation.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package simplex}
 @closecatbox
 
@@ -344,7 +344,7 @@ After @code{linear_program} returns,
 
 @code{pivot_max_sx} is the maximum number of pivots allowed by @code{linear_program}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Package simplex}
 @closecatbox
 

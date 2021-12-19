@@ -26,7 +26,7 @@
 number.  The numeric value of @code{%e} is the double-precision floating-point
 value 2.718281828459045d0.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -41,7 +41,7 @@ value 2.718281828459045d0.
 
 @code{%i} represents the imaginary unit, @math{sqrt(- 1)}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -53,7 +53,7 @@ value 2.718281828459045d0.
 @code{false} represents the Boolean constant of the same name.
 Maxima implements @code{false} by the value @code{NIL} in Lisp.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -68,7 +68,7 @@ Maxima implements @code{false} by the value @code{NIL} in Lisp.
 The Euler-Mascheroni constant, 0.5772156649015329 ....
 @c DOUBTLESS THERE IS MORE TO SAY HERE.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -94,7 +94,7 @@ Example:
 (%o1)                          ind
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -108,7 +108,7 @@ Example:
 
 @code{inf} represents real positive infinity.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -122,7 +122,7 @@ Example:
 
 @code{infinity} represents complex infinity.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -137,7 +137,7 @@ Example:
 
 @code{minf} represents real minus (i.e., negative) infinity.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -219,7 +219,7 @@ After evaluating @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
 (%o5)                           0
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -235,7 +235,7 @@ After evaluating @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
 The numeric value of @code{%pi} is the double-precision floating-point value
 3.141592653589793d0.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -247,7 +247,7 @@ The numeric value of @code{%pi} is the double-precision floating-point value
 @code{true} represents the Boolean constant of the same name.
 Maxima implements @code{true} by the value @code{T} in Lisp.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -273,7 +273,7 @@ Example:
 (%o1)                          und
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -303,7 +303,7 @@ Example:
 (%o2)                           x
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr
@@ -318,7 +318,7 @@ infinitesimals.
 
 See also @mref{zeroa} and @mrefdot{limit}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Constants}
 @closecatbox
 @end defvr

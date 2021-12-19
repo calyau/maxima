@@ -146,7 +146,7 @@ Same example as before, but this time the gradient is supplied as an argument.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Numerical methods}
 @category{Optimization}
 @category{Share packages}

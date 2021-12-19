@@ -232,7 +232,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @category{Declarations and inferences}
 @closecatbox
@@ -295,7 +295,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @category{Declarations and inferences}
 @closecatbox
@@ -331,7 +331,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -381,7 +381,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @category{Declarations and inferences}
 @closecatbox
@@ -408,7 +408,7 @@ The default value of @code{demoivre} is @code{false}.
 form.  @code{demoivre} and @code{exponentialize} cannot both be true at the same
 time.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Complex variables}
 @category{Trigonometric functions}
 @category{Hyperbolic functions}
@@ -449,7 +449,7 @@ Examples:
                       b d + a d + b c + a c
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -573,7 +573,7 @@ to the value @code{false}.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification flags and variables}
 @closecatbox
 @end defvr
@@ -590,7 +590,7 @@ When @code{domain} is set to @code{complex}, @code{sqrt (x^2)} will remain
 @c The notion of a "domain" of simplification is still in its infancy,
 @c and controls little more than this at the moment.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification flags and variables}
 @closecatbox
 @end defvr
@@ -763,7 +763,7 @@ Resimplify an expression without expansion:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -787,7 +787,7 @@ means of the switch @code{expandwrt_denom}.
 This function is autoloaded from
 @file{simplification/stopex.mac}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -803,7 +803,7 @@ denominator of the expression will be expanded according to the
 arguments of @code{expandwrt}, but if @code{expandwrt_denom} is @code{false},
 then only the numerator will be expanded in that way.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -822,7 +822,7 @@ of @code{expr} that contain the variables @var{x_1}, @dots{}, @var{x_n}.
 @c NOT SURE WHY WE SHOULD MENTION THIS HERE
 This function is autoloaded from @file{simplification/stopex.mac}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -837,7 +837,7 @@ is automatically expanded (independent of calls to @code{expand}).  For
 example, if @code{expon} is 4 then @code{(x+1)^(-5)} will not be automatically
 expanded.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -859,7 +859,7 @@ The default value is @code{false}.
 @code{exponentialize} and @code{demoivre} cannot
 both be true at the same time.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Complex variables}
 @category{Trigonometric functions}
 @category{Hyperbolic functions}
@@ -881,7 +881,7 @@ Thus @code{(x + 1)^3}, when typed, will be automatically expanded only if
 executing @code{expand ((x + 1)^n)} will work only if @code{maxposex} is not
 less than n.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -896,7 +896,7 @@ less than n.
 left-associative.  E.g., @code{g (g (a, b), g (c, d))} will simplify to
 @code{g (g (g (a, b), c), d)}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Operators}
 @category{Simplification}
@@ -982,7 +982,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Operators}
 @category{Simplification}
@@ -999,7 +999,7 @@ Default value: 1000
 @code{maxnegex} is the largest negative exponent which will
 be expanded by the @code{expand} command, see also @mrefdot{maxposex}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -1014,7 +1014,7 @@ Default value: 1000
 @code{maxposex} is the largest exponent which will be
 expanded with the @code{expand} command, see also @mrefdot{maxnegex}
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end defvr
@@ -1096,7 +1096,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Expressions}
 @category{Simplification}
@@ -1164,7 +1164,7 @@ noncommutative) over sums.  Since quotients are represented as products
 (%o7)         a . f + a . c . e + a . c . d + a . b
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
@@ -1240,7 +1240,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification flags and variables}
 @closecatbox
 @end defvr
@@ -1268,7 +1268,7 @@ lassociative, rassociative]
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Global variables}
 @category{Operators}
 @category{Simplification}
@@ -1335,7 +1335,7 @@ Declare that @code{f} and @code{g} have the new property.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Operators}
 @category{Simplification}
 @closecatbox
@@ -1395,7 +1395,7 @@ Example:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Operators}
 @closecatbox
@@ -1457,7 +1457,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification functions}
 @closecatbox
 @end deffn
@@ -1492,7 +1492,7 @@ If @code{radexpand} is @code{false}, or @code{radexpand} is @code{true} and
 @c CORRECT STATEMENT HERE ???
 Note that @code{domain} only matters when @code{radexpand} is @code{true}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification flags and variables}
 @closecatbox
 @end defvr
@@ -1507,7 +1507,7 @@ Note that @code{domain} only matters when @code{radexpand} is @code{true}.
 simplifier that @code{g} is right-associative.  E.g.,
 @code{g(g(a, b), g(c, d))} simplifies to @code{g(a, g(b, g(c, d)))}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Operators}
 @closecatbox
@@ -1528,7 +1528,7 @@ simplifications are tried, it returns the original answer.
 @c MERGE EXAMPLES INTO THIS FILE
 @code{example (scsimp)} displays some examples.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Simplification functions}
 @closecatbox
 @end deffn
@@ -1601,7 +1601,7 @@ assignment has occurred during the evaluation phase of the expression.
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Evaluation flags}
 @closecatbox
 @end defvr
@@ -1618,7 +1618,7 @@ simplifies to @code{h (x, y, z)}.
 
 @code{commutative} is synonymous with @code{symmetric}.
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Declarations and inferences}
 @category{Operators}
 @closecatbox
@@ -1664,7 +1664,7 @@ Examples:
 @end group
 @end example
 
-@opencatbox
+@opencatbox{Categories:}
 @category{Expressions}
 @closecatbox
 @end deffn
