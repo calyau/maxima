@@ -51,17 +51,18 @@
 @end ifnothtml
 
 @ifhtml
-@macro opencatbox {}
+@macro opencatbox {label}
 @html
 <div class=categorybox>
+\label\
 @end html
 @end macro
 
 @macro category {name}
 @html
+@ref{Category: \name\, \name\}
 &middot;
 @end html
-@ref{Category: \name\}
 @end macro
 
 @macro closecatbox {}
@@ -106,7 +107,7 @@
 
 @ifnothtml
 
-@macro opencatbox {}
+@macro opencatbox {label}
 @end macro
 
 @macro category {name}

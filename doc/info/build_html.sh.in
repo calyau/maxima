@@ -100,10 +100,10 @@ then
     # --no-node-files so we don't have thousands of little html files
     # --force -e 10000 because the category stuff causes lots of errors.
     TEXIOPT="--html -c INLINE_CONTENTS=0 --force -e 10000 --document-lang=en -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init"
-    $TEXI2HTML --split=chapter --no-node-files --output="@abs_builddir@/tmp_html" $TEXIOPT maxima.texi 
+    $TEXI2HTML --split=chapter --no-node-files --output="@abs_builddir@" $TEXIOPT maxima.texi 
     $TEXI2HTML --no-split --output="@abs_builddir@/maxima_singlepage.html" $TEXIOPT maxima.texi 
 else
-    $TEXI2HTML --split chapter --lang=en --output="@abs_builddir@/tmp_html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
+    $TEXI2HTML --split chapter --lang=en --output="@abs_builddir@" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
     $TEXI2HTML --split none --lang=en --output="@abs_builddir@/maxima_singlepage.html" -I . -I .. -I @abs_srcdir@ --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init maxima.texi 
 fi
 
@@ -111,12 +111,6 @@ if [ "X$DEBUG" = "Xyes" ]; then
     set +x
 fi
 
-for f in *.html
-do
-  cat $f | @SED@ -e 's/^&middot;$//' -e 's/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' -e 's/<a href="\(.*\)">Category: \(.*\)<\/a>/<a href="\1">\2<\/a>/' -e 's/<a href="\(.*\)">Item: \(.*\)<\/a>/<a href="\1">\2<\/a>/' >tmpfile &&
-  mv tmpfile $f &&
-  install -c $f "@abs_builddir@"
-done 
 cd ..
 
 if [ "X$DEBUG" != "Xyes" ]; then
