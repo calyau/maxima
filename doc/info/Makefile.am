@@ -755,7 +755,7 @@ clean-chm:
 	rm -rf chm
 endif
 
-EXTRA_DIST = texi2html manual.css texi2html.init maxima.texi maxima.html \
+EXTRA_DIST = manual.css texi2html.init maxima.texi maxima.html \
     $(genericdirDATA) $(pdffigures) $(macfiles) $(maxima_TEXINFOS) $(figurefiles) \
     create_index build_index.pl maxima-index.lisp docdraw.mac \
     extract_categories1.awk extract_categories1.sed check_tab fix_tab \
