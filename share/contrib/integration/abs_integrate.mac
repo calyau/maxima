@@ -552,7 +552,7 @@ simp_assuming(e, fcts) := block([cntx : supcontext()],
   
 /* We're going to trust extra_integrate to only return an antiderivative
    that is valid on the interval with endpoints a & b. Notice that for
-   problems such as integrate(1/(2 + sin(x)),x), Maxima's answer isn'
+   problems such as integrate(1/(2 + sin(x)),x), Maxima's answer isn't
    valid on (-inf, inf) -- Maxima's defint code has to patch up such
    cases.*/
 
@@ -576,3 +576,16 @@ abs_defint(e,x,a,b) := block([ee, ii, xx : gensym(), errormsg : false, spts],
     else abs_defint_signum(ee,xx,a,b,funmake('integrate,[e,x,a,b])))       
   else abs_defint_signum(ee,xx,a,b,funmake('integrate,[e,x,a,b])));    
             
+/* Do the simplification 
+
+  floor(x)^2-ceiling(x)^2 --> (2*x-1)*floor(x)+(-2*x-1)*ceiling(x)+2*x
+
+This identity arises from the fact that an antiderivative of ceiling(x)-floor(x) 
+is x.*/  
+floor_ceiling_square_simp(e,x) := block([L],
+    L : xreduce('append, gatherargs(e,'ceiling)),
+    L : sublist(L, lambda([q], not freeof(x,q))),
+    L : listify(setify(L)),
+    L : map(lambda([q], floor(q)^2 - ceiling(q)^2 = (2*q-1)*floor(q)+(-2*q-1)*ceiling(q)+2*q),L),
+    lratsubst(L,e));              
+    
