@@ -767,6 +767,7 @@
   
   (defun superexpt (exp var bas1 pow1)
     (prog (y (new-var (gensym "NEW-VAR-")))
+      (putprop new-var t 'internal)
       (setq base bas1
             pow pow1
             exptflag nil)
@@ -1240,6 +1241,7 @@
 		    (new-var (gensym "NEW-VAR-"))
 		    (new-exp (maxima-substitute (div (sub new-var b) c)
 						var exp)))
+         (putprop new-var t 'internal)    
 	       (if (every-trigarg-alike new-exp new-var)
 		   ;; avoid endless recursion when more than one
 		   ;; trigarg exists or c is a float
