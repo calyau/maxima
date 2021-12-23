@@ -99,12 +99,23 @@
     (if (and (consp first-try) (eq (caar first-try) '%limit))
       (let ((*getsignl-asksign-ok* t))
         (apply #'toplevel-$limit args))
-      first-try)))
+
+      ;; The function toplevel-$limit sets $numer, $%enumer, %emode, and 
+	  ;; $%e_to_numlog to false. When any of these option variables are true,
+	  ;; we resimplify the limit in the current context. 
+      (progn
+	 	 (when (or $numer $%enumer $%emode $%e_to_numlog)
+	  		(setq first-try (resimplify first-try)))
+      	 first-try))))
 
 (defun toplevel-$limit (&rest args)
   (let ((limit-assumptions ())
 	(old-integer-info ())
 	($keepfloat t)
+	($numer nil)
+	($%enumer nil)
+	($%emode t) 
+	($%e_to_numlog nil)
 	(limit-top t))
     (declare (special limit-assumptions old-integer-info
 		      $keepfloat limit-top))
@@ -235,8 +246,10 @@
   (setq exp (restorelim exp))
   (if preserve-direction exp (ridofab exp)))
 
+;; Users who want limit to map over equality (mequal) will need to do that 
+;; manually.
 (defun limit-list (exp1 &rest rest)
-  (if (mbagp exp1)
+  (if (and (mbagp exp1) (not (mequalp exp1)))
       `(,(car exp1) ,@(mapcar #'(lambda (x) (apply #'toplevel-$limit `(,x ,@rest))) (cdr exp1)))
       ()))
 
@@ -742,6 +755,17 @@ ignoring dummy variables and array indices."
               ((=0 ($ratsimp deriv)) t)
               (t nil)))))
 
+;; The standard /#alike function is possibly somewhat inefficient. Here is
+;; a possible replacement:
+
+;; If e/f is free of var (a special), return true. This code 
+;; assumes that f is not zero. First, we test if e & f
+;; are alike--this check is relatively fast; second, we check
+;; if e/f is free of var.
+
+;;(defun /#alike (e f) 
+;;	(or (alike1 e f) (freeof var (sratsimp (div e f)))))
+
 (defun limit2 (n dn var val)
   (prog (n1 d1 lim-sign gcp sheur-ans)
      (setq n (hyperex n) dn (hyperex dn))
@@ -1032,15 +1056,20 @@ ignoring dummy variables and array indices."
 ;; substitute asymptotic approximations for gamma, factorial, and
 ;; polylogarithm
 (defun stirling0 (e)
-  (cond ((atom e) e)
+   (cond ((atom e) e)
 	((and (setq e (cons (car e) (mapcar 'stirling0 (cdr e))))
 	      nil))
 	((and (eq (caar e) '%gamma)
 	      (eq (limit (cadr e) var val 'think) '$inf))
 	 (stirling (cadr e)))
-	((and (eq (caar e) 'mfactorial)
-	      (eq (limit (cadr e) var val 'think) '$inf))
-	 (m* (cadr e) (stirling (cadr e))))
+	((eq (caar e) 'mfactorial)
+		(let ((n (limit (cadr e) var val 'think)))
+	 	  (cond ((eq n '$inf)
+		          (m* (cadr e) (stirling (cadr e))))
+		        ((and (integerp n) (< n 0))
+		   		  (setq n (mul -1 n))
+		          (div (power -1 n) (mul (ftake 'mfactorial n) (add var n))))
+				(t e))))
 	((and (eq (caar e) 'mqapply)		;; polylogarithm
 	      (eq (subfunname e) '$li)
 	      (integerp (car (subfunsubs e))))
@@ -1075,27 +1104,84 @@ ignoring dummy variables and array indices."
     (cond ((null ans) t)     ; Ratfun package returns NIL for failure.
 	  (t ans))))
 
-;; substitute value v for var into expression e.
-;; if result is defined and e is continuous, we have the limit.
+(defun extended-real-p (e)
+	(member e (list '$minf '$zerob '$zeroa '$ind '$und '$inf '$infinity)))
+
+;; Evaluate the limit of e as var (special) approaches v using direct substitution.
+;; This function is the last of the chain of methods tried by limit. As such it
+;; shouldn't call higher level functions such as simplimit or limit--doing so 
+;; would risk creating an infinite loop.
+
+;; This function special cases sums, products, and powers. It declines to use 
+;; direct subsitution on any expression whose main operator has a simplim%function 
+;; function. Generally, limits of functions that have a simplim%function should be 
+;; handled by those specialized functions, not by simplimsubst. Having said this, 
+;; it's OK for simplimsubst to special case an operator and do direct substitution 
+;; when its OK. The cases of log, cosine, and sine happen often enough that these
+;; functions are special cased.
+
+;; Possibly  simplimsubst should decline to do direct substituion on functions 
+;; that have a limit function, for example inverse_jacobi_ns.
+
+;; For all other kinds of expressions, this function assumes that if substiution 
+;; doesn't result in an error (division by zero, for example), the function
+;; is continuous at the limit point. That's dodgy. This dodginess underscores the
+;; need to define a simplim%function functions that are not continous on their 
+;; domains. 
+
+;; This function sometimes recieves unsimplifed expressions. Maybe they should be
+;; simplified, maybe not. 
+
+;; Locally setting $numer and $%enumer to nil keeps some limits, for example
+;; limit(sin(x)/x,x,0) from returning 1.0 when numer is true. (Barton Willis)
+
 (defun simplimsubst (v e)
-  (let (ans)
-    (cond ((involve e '(mfactorial)) nil)
-
-	  ;; functions that are defined at their discontinuities
-	  ((amongl '($atan2 $floor %round $ceiling %signum %integrate
-			    %gamma_incomplete)
-		   e) nil)
-
-	  ;; substitute value into expression
-	  ((eq (setq ans (no-err-sub (ridofab v) e)) t)
-	   nil)
-
-	  ((and (member v '($zeroa $zerob) :test #'eq) (=0 ($radcan ans)))
-	   (setq ans (behavior e var v))
-	   (cond ((equal ans 1) '$zeroa)
-		 ((equal ans -1) '$zerob)
-		 (t nil)))	; behavior can't find direction
-	  (t ans))))
+  (let ((ans nil) ($numer nil) ($%enumer nil) (ee))
+   	(cond 
+	    ;; When e is a number, return it.
+	    (($numberp e) e)
+		;; When e is a mapatom, substitute v for var and return.
+		(($mapatom e) ($substitute v var e))
+	    ;; Special case mexpt expressions. Decline direct subsitution for 
+		;; extended reals.
+		((and (mexptp e) (not (extended-real-p v)))
+		   (setq ee (mapcar #'(lambda(q) (simplimsubst v q)) (cdr e)))
+		   (if (or (off-negative-real-axisp (car ee)) (integerp (cadr ee)))
+		   	     (ftake 'mexpt (car ee) (cadr ee)) nil))
+        ;; Special case product and sum expressions. Again, we decline direct 
+		;; subsitution for extended reals. 
+        ((and (or (mplusp e) (mtimesp e)) (not (extended-real-p v)))
+		  (setq ee (mapcar #'(lambda(q) (simplimsubst v q)) (cdr e)))
+		  (if (some #'(lambda (q) (eq q nil)) ee) nil
+				  (simplifya (cons (list (caar e)) ee) t)))
+        ;; Decline direct substitution for sums, products, and powers for
+		;; the extended real case.
+        ((and (or (mexptp e) (mplusp e) (mtimesp e)) (extended-real-p v))
+	  	 nil)
+	    ;; Special case log expressions--possibly the log case happens
+		;; often enough to make this worthwile.
+        ((and (consp e) (consp (car e)) (eq '%log (caar e)))
+		  (let ((w (simplimsubst v (cadr e))))
+		    (if (and w (off-negative-real-axisp w)) (ftake '%log w) nil))) 
+		;; Special case %cos and %sin expressions--we could special case others.
+		((and (consp e) (consp (car e)) (or (member (caar e) (list '%cos '%sin)))) 
+		  (let ((op (caar e)))
+			 (setq e (simplimsubst v (second e)))
+		 (if (and e (lenient-realp e) (not (extended-real-p e))) (ftake op e) nil)))
+		;; Don't use direct substituion on expressions whose main operator has
+		;; a simplim%function. 
+	    ((and (consp e) (consp (car e)) (get (caar e) 'simplim%function)) nil)
+		(t	
+	    	(setq ans (no-err-sub (ridofab v) e))
+	        ;; Previously the condition (zerop2 ans) was (=0 ($radcan ans)). In 
+			;; December 2021, the testsuite + the share testsuite only gives ans = 0,
+			;; making the radcan unneeded.
+ 	        (cond ((and (member v '($zeroa $zerob) :test #'eq) (zerop2 ans));
+	     	  	    (setq ans (behavior e var v))
+	                (cond ((eql ans 1) '$zeroa)
+		                  ((eql ans -1) '$zerob)
+		                  (t nil)))	; behavior can't find direction
+	              (t ans))))))
 
 ;;;returns (cons numerator denominator)
 (defun numden* (e)
@@ -1733,30 +1819,34 @@ ignoring dummy variables and array indices."
   (cond
     ((eq var exp) val)
     ((or (atom exp) (mnump exp)) exp)
-    ((and (not (infinityp val))
-	  (not (amongl '(%sin %cos %atanh %cosh %sinh %tanh mfactorial %log)
-		       exp))
-	  (not (inf-typep exp))
-	  (simplimsubst val exp)))
-    ((eq (caar exp) '%limit) (throw 'limit t))
-    ((mplusp exp)  (simplimplus exp))
+    ;; Lookup and dispatch a simplim%function from the property list  
+    ((setq op (safe-get (mop exp) 'simplim%function))
+     (funcall op exp var val))
+
+    ;; And do the same for subscripted:
+	((and (consp exp) (consp (car exp)) (eq (caar exp) 'mqapply)
+		  (setq op (safe-get (subfunname exp) 'simplim%function)))
+	  (funcall op exp var val))	  
+
+    ;; Without the call to rootscontract, 
+	;;   limit(((-4)*x^2-10*x+24)/((4*x+8)^(1/3)+2),x,-4)
+	;; returns zero (should be 66). This bug is due to the fact that
+	;; 4^(1/3)*2^(1/3)-2 does not simplify to zero. Although the call
+	;; to rootscontract takes care of this case, almost surely there are
+	;; many other limit problems that need more than rootscontract.
+    ((mplusp exp) (let (($rootsconmode nil)) ($rootscontract (simplimplus exp))))
+	((mplusp exp) (simplimplus exp))
     ((mtimesp exp)  (simplimtimes (cdr exp)))
     ((mexptp exp)  (simplimexpt (cadr exp) (caddr exp)
 				(limit (cadr exp) var val 'think)
 				(limit (caddr exp) var val 'think)))
-    ((mlogp exp)  (simplimln exp var val))
     ((member (caar exp) '(%sin %cos) :test #'eq)
      (simplimsc exp (caar exp) (limit (cadr exp) var val 'think)))
     ((eq (caar exp) '%tan) (simplim%tan (cadr exp)))
-    ((eq (caar exp) '$atan2) (simplim%atan2 exp))
     ((member (caar exp) '(%sinh %cosh) :test #'eq)
      (simplimsch (caar exp) (limit (cadr exp) var val 'think)))
-    ((eq (caar exp) 'mfactorial)
-     (simplimfact exp var val))
     ((member (caar exp) '(%erf %tanh) :test #'eq)
      (simplim%erf-%tanh (caar exp) (cadr exp)))
-    ((member (caar exp) '(%acos %asin) :test #'eq)
-     (simplim%asin-%acos (caar exp) (limit (cadr exp) var val 'think)))
     ((eq (caar exp) '%atanh)
      (simplim%atanh (limit (cadr exp) var val 'think) val))
     ((eq (caar exp) '%acosh)
@@ -1776,9 +1866,6 @@ ignoring dummy variables and array indices."
     ((eq (caar exp) '%inverse_jacobi_ds)
      (simplim%inverse_jacobi_ds (limit (cadr exp) var val 'think) (third exp)))
     ((and (eq (caar exp) 'mqapply)
-	  (eq (subfunname exp) '$li))
-     (simplim$li (subfunsubs exp) (subfunargs exp) val))
-    ((and (eq (caar exp) 'mqapply)
 	  (eq (subfunname exp) '$psi))
      (simplim$psi (subfunsubs exp) (subfunargs exp) val))
     ((and (eq (caar exp) var)
@@ -1787,16 +1874,15 @@ ignoring dummy variables and array indices."
 		       (free sub-exp var))
 		   (cdr exp)))
      exp)				;LIMIT(B[I],B,INF); -> B[I]
-    ((setq op (safe-get (mop exp) 'simplim%function))
-     ;; Lookup a simplim%function from the property list
-     (funcall op exp var val))
-    (t (if $limsubst
+	;; When limsubst is true, limit(f(n+1)/f(n),n,inf) = 1. The user documentation
+	;; warns against setting limsubst to true. 
+	(t (if $limsubst
 	   (simplify (cons (operator-with-array-flag exp)
 			   (mapcar #'(lambda (a)
 				       (limit a var val 'think))
 				   (cdr exp))))
-	   (throw 'limit t)))))
-
+	   (throw 'limit t))))) 
+  
 (defun liminv (e)
   (setq e (resimplify (subst (m// 1 var) var e)))
   (let ((new-val (cond ((eq val '$zeroa)  '$inf)
@@ -2035,9 +2121,9 @@ ignoring dummy variables and array indices."
 
 ;; get rid of zeroa and zerob
 (defun ridofab (e)
-  (if (among '$zeroa e) (setq e (maxima-substitute 0 '$zeroa e)))
-  (if (among '$zerob e) (setq e (maxima-substitute 0 '$zerob e)))
-  e)
+   (if (among '$zeroa e) (setq e (maxima-substitute 0 '$zeroa e)))
+   (if (among '$zerob e) (setq e (maxima-substitute 0 '$zerob e)))
+   e)
 
 ;; simple radical
 ;; returns true if exp is a polynomial raised to a numeric power
@@ -2116,13 +2202,15 @@ ignoring dummy variables and array indices."
 
 (defun sheur1 (l1 l2)
   (prog (ans)
+     (setq l1 (mapcar #'stirling0 l1))
+     (setq l2 (mapcar #'stirling0 l2))
      (setq l1 (m+l (maxi l1)))
      (setq l2 (m+l (maxi l2)))
      (setq ans (cpa l1 l2 t))
      (return (cond ((=0 ans)  (m+  l1 l2))
 		   ((equal ans 1.) '$inf)
 		   (t '$minf)))))
-
+			  
 (defun zero-lim (cpa-list)
   (do ((l cpa-list (cdr l)))
       ((null l) ())
@@ -2662,7 +2750,7 @@ ignoring dummy variables and array indices."
   (let ((arglim (limit (cadr expr) var val 'think)) (dir)) 
     (cond ((eq arglim '$inf) '$inf) ;log(inf) = inf
           ;;log(minf,infinity,zerob) = infinity & log(0) = infinity
-		  ((or (member arglim '($minf $infinity $zerob)) (eql arglim 0))
+		  ((or (member arglim '($minf $infinity $zerob)))
 		   '$infinity)
 		  ((eq arglim '$zeroa) '$minf) ;log(zeroa) = minf
           ;; log(ind)=und & log(und)=und
@@ -2670,23 +2758,73 @@ ignoring dummy variables and array indices."
           ;; log(1^(-)) = zerob, log(1^(+)) = zeroa & log(1)=0
 		  ((eql arglim 1)
 		      (if (or (eq val '$zerob) (eq var '$zeroa)) val 0))
+		  ;; Special case of arglim = 0
+		  ((eql arglim 0)
+		    (setq dir (behavior (cadr expr) var val))
+			(cond ((eql dir -1) '$infinity)
+				  ((eql dir 0) '$infinity)
+				  ((eql dir 1) '$minf)))
           ;; When arglim is off the negative real axis, use direct substitution
 		  ((off-negative-real-axisp arglim) 
             (ftake '%log arglim))
 	      (t
 		     ;; We know that arglim is a negative real number, say xx.
-			 ;; When the imaginary part of expr near var is negative,
-			 ;; return log(-x) - %i*pi; when the imaginary part of expr 
+			 ;; When the imaginary part of (cadr expr) near var is negative,
+			 ;; return log(-x) - %i*pi; when the imaginary part of (cadr expr) 
 			 ;; near var is positive return log(-x) + %i*pi; and when
 			 ;; we cannot determine the behavior of the imaginary part,
 			 ;; return a nounform. The value of val (either zeroa or zerob)
 			 ;; determines what is meant by "near" (smaller than var when 
 			 ;; val is zerob and larger than var when val is zeroa).
-	         (setq dir (behavior ($imagpart expr) var val))
+	         (setq dir (behavior ($imagpart (cadr expr)) var val))
              (cond  ((or (eql dir 1) (eql dir -1))
-	                  (sub (ftake '%log (mul -1 arglim)) (mul dir '$%i '$%pi)))
+	                  (add (ftake '%log (mul -1 arglim)) (mul dir '$%i '$%pi)))
 	                (t (throw 'limit nil))))))) ;do a nounform return
+(setf (get '%log 'simplim%function)  #'simplimln)
+(setf (get '%plog 'simplim%function)  #'simplimln)
 
+(defun simplim%limit (e x pt)
+	(declare (ignore e x pt))
+	(throw 'limit t))
+(setf (get '%limit 'simplim%function) #'simplim%limit)
+
+(defun simplim%unit_step (e var val)
+	(let ((lim (limit (cadr e) var val 'think)))
+		(cond ((eq lim '$und) '$und)
+			  ((eq lim '$ind) '$ind)
+			  ((eq lim '$zerob) 0)
+			  ((eq lim '$zeroa) 1)
+			  ((not (lenient-realp lim)) (throw 'limit nil)) ;catches infinity too
+			  ;; catches minf & inf cases
+			  ((eq t (mgrp 0 lim)) 0)
+			  ((eq t (mgrp lim 0)) 1)
+			  (t '$ind))))
+(setf (get '$unit_step 'simplim%function) #'simplim%unit_step)
+
+(defun simplim%conjugate (e var val)
+	(let ((lim (limit (cadr e) var val 'think)))
+		(cond ((off-negative-real-axisp lim)
+				(ftake '$conjugate lim))
+              (t (throw 'limit nil)))))
+(setf (get '$conjugate 'simplim%function)  #'simplim%conjugate)
+
+(defun simplim%imagpart (e var val)
+	(let ((lim (limit (cadr e) var val 'think)))
+	   (cond ((eq lim '$und) '$und)
+	         ((eq lim '$ind) 0)
+			 ((eq lim '$infinity) (throw 'limit nil))
+			 (t (mfuncall '$imagpart lim)))))
+(setf (get '$imagpart 'simplim%function)  #'simplim%imagpart)	  
+(setf (get '%imagpart 'simplim%function)  #'simplim%imagpart)
+
+(defun simplim%realpart (e var val)
+	(let ((lim (limit (cadr e) var val 'think)))
+	   (cond ((eq lim '$und) '$und)
+	         ((eq lim '$ind) '$ind)
+			 ((eq lim '$infinity) (throw 'limit nil))
+			 (t  (mfuncall '$realpart lim)))))
+(setf (get '$realpart 'simplim%function)  #'simplim%realpart)
+(setf (get '%realpart 'simplim%function)  #'simplim%realpart)
 ;;; Limit of the Factorial function
 
 (defun simplimfact (expr var val)
@@ -2715,6 +2853,7 @@ ignoring dummy variables and array indices."
           (t
            ;; Call simplifier to get value at the limit of the argument.
            (simplify (list '(mfactorial) arglim))))))
+(setf (get 'mfactorial 'simplim%function) #'simplimfact)
 
 (defun simplim%erf-%tanh (fn arg)
   (let ((arglim (limit arg var val 'think))
@@ -2755,47 +2894,72 @@ ignoring dummy variables and array indices."
 
 (defun simplim%atan (e x pt)
   (let ((lim (limit (cadr e) x pt 'think)))
-	  (cond ((or (eq lim '$zeroa) (eq lim '$zerob) (eq lim 0) (eq lim '$ind)) lim)
-		    ((or (eq lim '$und) (eq lim '$infinity)) (throw 'limit nil))
-   	   		((eq lim '$inf) #$%pi/2$)
-	        ((eq lim '$minf) #$-%pi/2$)
-			((in-domain-of-atan (ridofab lim))
+	(cond ((or (eq lim '$zeroa) (eq lim '$zerob) (eq lim 0) (eq lim '$ind)) lim)
+		  ((or (eq lim '$und) (eq lim '$infinity)) (throw 'limit nil))
+   	   	  ((eq lim '$inf) #$%pi/2$)    ;atan(inf) -> %pi/2
+	      ((eq lim '$minf) #$-%pi/2$)  ;atan(-inf) -> -%pi/2
+		  ((in-domain-of-atan (ridofab lim)) ; direct substitution
 			  (ftake '%atan (ridofab lim)))
-	       (t (limit ($logarc e) x pt 'think)))))
+	    (t (limit ($logarc e) x pt 'think)))))
 (setf (get '%atan 'simplim%function) #'simplim%atan)
 
-;; Most instances of atan2 are simplified to expressions in atan 
-;; by simpatan2 before we get to this point.  This routine handles
-;; tricky cases such as limit(atan2((x^2-2), x^3-2*x), x, sqrt(2), minus).
+(defmvar extended-reals 
+	(append infinitesimals infinities (list '$und '$ind)))
+
+;; Most instances of atan2 are simplified to atan expressions, but this routine 
+;; handles tricky cases such as limit(atan2((x^2-2), x^3-2*x), x, sqrt(2), minus).
 ;; Taylor and Gruntz cannot handle the discontinuity at atan(0, -1)
-(defun simplim%atan2 (exp)
-  (let* ((exp1 (cadr exp))
-	 (exp2 (caddr exp))
-	 (lim1 (limit (cadr exp) var val 'think))
-	 (lim2 (limit (caddr exp) var val 'think))
-	 (sign2 ($csign lim2)))
-    (cond ((and (zerop2 lim1)		;; atan2( 0+, + )
-		(eq sign2 '$pos))
-	   lim1)	;; result is zeroa or zerob
-	  ((and (eq lim1 '$zeroa)
-		(eq sign2 '$neg))
-	   '$%pi)
-	  ((and (eq lim1 '$zerob)	;; atan2( 0-, - )
-		(eq sign2 '$neg))
-	   (m- '$%pi))
-	  ((and (eq lim1 '$zeroa)	;; atan2( 0+, 0 )
-		(zerop2 lim2))
-	    (limit (ftake '%atan (m// exp1 exp2)) var val 'think))
-	  ((and (eq lim1 '$zerob)	;; atan2( 0-, 0 )
-		(zerop2 lim2))
-	   (m+ (porm (eq lim2 '$zeroa) '$%pi)
-	       (limit (ftake '%atan (m// exp1 exp2)) var val 'think)))
-	  ((member lim1 '($und $infinity) :test #'eq)
-	   (throw 'limit ()))
-	  ((eq lim1 '$inf) half%pi)
-	  ((eq lim1 '$minf)
-	   (m*t -1. half%pi))
-	  (t (take '($atan2) lim1 lim2)))))
+
+;; When possible, we want to evaluate the limit of an atan2 expression using 
+;; direct substituion--that produces, I think, the least surprising values. 
+
+;; The general simplifier catches atan2(0,0) and it transforms atan2(minf or inf,X)
+;; and atan2(X, minf or inf) into an atan expression, but it doesn't catch 
+;; atan2(X, zerob or zeroa) or atan2(zerob or zeroa, X). For the other extended 
+;; real (ind,und, or infinity) arguments, the general simplifer gives sign errors.
+
+(defun simplim%atan2 (e v pt)
+     (let ((y (second e)) (x (third e)) (xlim) (ylim) (xlim-z) (ylim-z) (q))
+		(setq xlim (limit x v pt 'think))
+		(setq ylim (limit y v pt 'think))
+	  	(setq xlim-z (ridofab xlim)
+			  ylim-z (ridofab ylim))
+		;; For cases for which direct substitution fails, normalize 
+		;; x & y and try again.
+		(setq q (cond ((eq xlim '$inf) x)
+			((eq xlim '$minf) (mul -1 x))
+			((eq ylim '$inf) y)
+			((eq ylim '$minf) (mul -1 y))
+            ((and (eq xlim '$zerob) (zerop2 ylim)) (mul -1 x))
+			((and (eq xlim '$zeroa) (zerop2 ylim)) x)
+			((and (eq ylim '$zerob) (zerop2 xlim)) (mul -1 y))
+			((and (eq ylim '$zeroa) (zerop2 xlim)) y) 
+			(t 1)))
+
+			(when (not (eql q 1))
+					(setq x (div x q))
+					(setq y (div y q))
+					(setq xlim (limit x v pt 'think))
+		  		    (setq ylim (limit y v pt 'think))
+	  	            (setq xlim-z (ridofab xlim)
+			              ylim-z (ridofab ylim)))		  	  
+				
+	   	(cond
+			((and (eq '$zerob ylim) (eq t (mgrp 0 xlim))) (mul -1 '$%pi))
+			((and (eq '$zerob ylim) (eq t (mgrp xlim 0))) 0)
+			((and (eq '$zeroa ylim) (eq t (mgrp 0 xlim))) '$%pi)
+			((and (eq '$zeroa ylim) (eq t (mgrp xlim 0))) 0)
+			((and (eql xlim 1) (eql ylim '$inf)) (div '$%pi 2))
+			((and (eql xlim -1) (eql ylim 0)) '$ind)
+					 
+		    ;; Use direct substitution when ylim-z # 0 or xlim-z > 0. We need
+		    ;; to check that xlim-z & ylim-z are real too.
+		    ((and (lenient-realp xlim-z) (lenient-realp ylim-z)
+				  (or (eq t (mnqp ylim-z 0)) (eq t (mgrp xlim-z 0))))
+			 	        (ftake '$atan2 ylim-z xlim-z))
+			(t
+				(throw 'limit nil)))))
+(setf (get '$atan2 'simplim%function) #'simplim%atan2)
 
 (defun simplimsch (sch arg)
   (cond ((real-infinityp arg)
@@ -2883,34 +3047,91 @@ ignoring dummy variables and array indices."
 	     '$infinity))
 	(t (simplify (list '(%atanh) arg)))))
 
-(defun simplim%asin-%acos (fn arg)
-  (cond ((member arg '($und $ind $inf $minf $infinity) :test #'eq)
-	 '$und)
-	((and (eq fn '%asin)
-	      (member arg '($zeroa $zerob) :test #'eq))
-	 arg)
-	(t (simplify (list (ncons fn) (ridofab arg))))))
+(defun simplim%asin (e x pt)
+  (let ((lim (limit (cadr e) x pt 'think)) (dir) (lim-sgn))
+ 	  (cond ((member lim '($zeroa $zerob)) lim) ;asin(zeoroa/b) = zeroa/b
+			((in-domain-of-asin lim) ;direct subsititution
+				(ftake '%asin lim))
+			((member lim '($und $ind $inf $minf $infinity)) ;boundary cases
+			'$und)	
+			(t 
+			  (setq e (trisplit (cadr e))) ;overwrite e!
+			  (setq dir (behavior (cdr e) x pt))
+			  (setq lim-sgn ($csign lim))
+			  (cond 			  
+			  	((eql dir 0)
+				  	(throw 'limit t)) ;unable to find behavior of imaginary part
+		        ;; for the values of asin on the branch cuts, see DLMF 4.23.20 & 4.23.21
+			    ((or (eq '$pos lim-sgn) (eq '$neg lim-sgn))
+					;; continuous from above
+					(if (eql dir 1) (ftake '%asin lim) (sub '$%pi (ftake '%asin lim))))
+				(t  (throw 'limit t))))))) ; unable to find sign of real part of lim.
+(setf (get '%asin 'simplim%function) #'simplim%asin)
 
-(defun simplim$li (order arg val)
-  (if (and (not (equal (length order) 1))
-         (not (equal (length arg) 1)))
-      (throw 'limit ())
-      (setq order (car order)
-            arg (car arg)))
-  (if (not (equal order 2))
-      (throw 'limit ())
-      (destructuring-bind (rpart . ipart)
-          (trisplit arg)
-        (cond ((not (equal ipart 0))
-               (throw 'limit ()))
-              (t
-               (setq rpart (limit rpart var val 'think))
-               (cond ((eq rpart '$zeroa)  '$zeroa)
-                     ((eq rpart '$zerob)  '$zerob)
-                     ((eq rpart '$minf)  '$minf)
-                     ((eq rpart '$inf)  '$infinity)
-                     (t (simplify (subfunmake '$li (list order)
-                                              (list rpart))))))))))
+(defun simplim%acos (e x pt)
+  (let ((lim (limit (cadr e) x pt 'think)) (dir) (lim-sgn))
+ 	  (cond ((in-domain-of-asin lim) ;direct subsititution
+				(ftake '%acos lim))
+			((member lim '($und $ind $inf $minf $infinity)) ;boundary cases
+			 '$und)	
+			(t 
+			  (setq e (trisplit (cadr e))) ;overwrite e!
+			  (setq dir (behavior (cdr e) x pt))
+			  (setq lim-sgn ($csign lim))
+			  (cond 			  
+			  	((eql dir 0)
+				  	(throw 'limit t)) ;unable to find behavior of imaginary part
+		        ;; for the values of acos on the branch cuts, see DLMF 4.23.24 & 4.23.25
+				;; http://dlmf.nist.gov/4.23.E24
+			    ((or (eq '$pos lim-sgn) (eq '$neg lim-sgn))
+					;; continuous from above
+					(if (eql dir 1) (ftake '%acos lim) (sub (mul 2 '$%pi) (ftake '%acos lim))))
+				(t  (throw 'limit t))))))) ; unable to find sign of real part of lim.
+(setf (get '%acos 'simplim%function) #'simplim%acos)
+
+;; Limit of an %integrate expression. For a definite integral
+;; integrate(ee,var,a,b), when ee is free of the limit variable
+(defun simplim%integrate (e x pt)
+	(let* ((ee (second e)) ;ee = integrand
+		   (var (third e)) ;integration variable
+		   (a (fourth e))  ;lower limit or nil if indefinite
+           (b (fifth e))   ;lower limit or nil if indefinite
+		   (alim) (blim))
+	  (cond ((and a b ($freeof x ee) ($freeof x var))
+	    	  (setq alim (limit a x pt 'think))
+		      (setq blim (limit b x pt 'think))
+		      (if (and (lenient-extended-realp alim) 
+			           (lenient-extended-realp blim)
+					   (not (eq alim '$infinity))
+					   (not (eq blim '$infinity)))
+		    	(ftake '%integrate ee var alim blim)
+			    (throw 'limit t)))
+            (t
+                (throw 'limit t)))))
+(setf (get '%integrate 'simplim%function) #'simplim%integrate)
+
+(defun subftake (op subarg arg)
+  (simplifya (subfunmake op subarg arg) t))
+  
+(defun off-one-to-inf (z)
+  (setq z (trisplit z)) ; split z into x+%i*y
+  (or
+    (eq t (mnqp (cdr z) 0))    ; y # 0
+    (eq t (mgrp 1 (car z)))))    ; x < 1
+
+(defun simplim%li (expr x pt)
+  (let ((n (car (subfunsubs expr))) (e (car (subfunargs expr))))
+	(cond ((freeof x n)
+			(setq e (limit e x pt 'think))
+			(cond ((and (eq e '$minf) (eql n 2)) '$minf)
+				  ((and (eq e '$inf) (eql n 2)) '$infinity)
+			      ((or (eql e 1) (off-one-to-inf e))
+					(subftake '$li (list n) (list e)))
+				  (t (throw 'limit nil))))
+		  ;; Claim ignorance when order depends on limit variable.	
+		  (t (throw 'limit nil)))))	
+(setf (get '$li 'simplim%function) #'simplim%li)
+(setf (get '%li 'simplim%function) #'simplim%li)
 
 (defun simplim$psi (order arg val)
   (if (and (not (equal (length order) 1))
@@ -2967,13 +3188,20 @@ ignoring dummy variables and array indices."
       0
       `((%inverse_jacobi_ds) ,arg ,m)))
 
-(setf (get '%signum 'simplim%function) 'simplim%signum)
-
 (defun simplim%signum (e x pt)
-  (let* ((e (limit (cadr e) x pt 'think)) (sgn (mnqp e 0)))
-    (cond ((eq t sgn) (take '(%signum) e)) ;; limit of argument of signum is not zero
-	  ((eq nil sgn) '$und)             ;; limit of argument of signum is zero (noncontinuous)
-	  (t (throw 'limit nil)))))        ;; don't know
+  (let ((e (limit (cadr e) x pt 'think)) (sgn))
+    (cond ((eq '$minf e) -1)
+		  ((eq '$inf e) 1)
+		  ((eq '$infinity e) '$und)
+		  ((eq '$ind e) '$ind)
+		  ((eq '$und e) e)
+		  ((eq '$zerob e) -1)
+		  ((eq '$zeroa e) 1)
+		  (t  
+		     (setq sgn (mnqp e 0))
+			 (cond ((eq t sgn) (ftake '%signum e))
+			 	   (t (throw 'limit nil))))))) ; don't know
+(setf (get '%signum 'simplim%function) #'simplim%signum)
 
 ;; more functions for limit to handle
 
@@ -3225,10 +3453,12 @@ ignoring dummy variables and array indices."
 
 ;; test whether sub is a subexpression of exp
 (defun subexp (exp sub)
-  (not (equal (maxima-substitute 'dummy
+  (let ((dummy (gensym)))
+	(putprop dummy t 'internal)
+ 	(not (alike1 (maxima-substitute dummy
 				 sub
 				 exp)
-	      exp)))
+	      exp))))
 
 ;; Generate $lhospitallim terms of taylor expansion.
 ;; Ideally we would use a lazy series representation that generates
@@ -3324,6 +3554,7 @@ ignoring dummy variables and array indices."
   (let (($logexpand t) ; gruntz needs $logexpand T
         (newvar (gensym "w"))
 	(dir (car rest)))
+	(putprop newvar t 'internal); keep var from appearing in questions to user	
     (cond ((eq val '$inf)
 	   (setq newvar var))
 	  ((eq val '$minf)

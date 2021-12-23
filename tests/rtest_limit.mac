@@ -554,7 +554,7 @@ limit(diff(exp(n * x), x,n)/n,n,inf);
 'limit(diff(exp(n * x), x,n)/n,n,inf);
 
 limit(integrate(f(t),t,0,x),x,0,plus);
-'limit(integrate(f(t),t,0,x),x,0,plus);
+0$
 
 limit(integrate(t,t,0,x)/x,x,inf);
 inf;
@@ -738,10 +738,10 @@ limit((a*exp(a*x)*sin(b*x))/(b^2+a^2)-(b*exp(a*x)*cos(b*x))/(b^2+a^2), x, 0, plu
 /* Bug #2898: limit of continuous --> und */
 
 limit(log(x)^2+2*log(x)+q/2+1,x,1);
-(q+2)/2$
+q/2+1$
 
 limit(log(x)^2+2*%gamma*log(x)-%pi^2/6+%gamma^2,x,1);
--((%pi^2-6*%gamma^2)/6)$
+%gamma^2-%pi^2/6$
 
 /* #2972 Wrong limits involving logs */
 limit( 27^(log(n)/log(3))/n^3, n, inf);

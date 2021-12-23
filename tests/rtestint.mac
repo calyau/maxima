@@ -1403,7 +1403,7 @@ integrate(cos(w+T)/(1+1/2*cos(T))^2,T,0,2*%pi);
 
 /* wrong sign for integral of e^(-1/x^2) - ID: 3211937 */
 integrate(%e^(-1/x^2),x,0,1);
-%e^-1*(sqrt(%pi)*%e*erf(1)+1)-sqrt(%pi);
+sqrt(%pi)*erf(1)-sqrt(%pi)+%e^(-1)$
 
 /* definite integration introduces xy variable - ID: 3292707 */
 integrate((log((2-x)/2)+log(2))/(1-x), x, 0, 1);
@@ -1411,7 +1411,7 @@ li[2](2)-(6*log(2)^2-6*log(-2)*log(2)+%pi^2)/6;
 
 /* Incorrect integral of log(1+a/(x*t)^2) - ID: 3291160 */
 integrate(log(1+7/(x^2)),x,1,inf);
-(14*atan(sqrt(7))-sqrt(7)*log(8))/sqrt(7);
+sqrt(7)*(2*atan(sqrt(7))-log(8)/sqrt(7))$
 
 /* Wrong sign in exponential integral - ID: 3517785 */
 integrate(1/(%e^(2*t)*sqrt(1-1/%e^(2*t))), t, 0, inf);
@@ -1448,8 +1448,7 @@ integrate(log(2*sin(t/2)),t,0,%pi);
 
 /* integrate error - ID: 3388801 */
 integrate( sqrt((x-474)^2/(107669-(x-474)^2)+1), x, 181, 474);
-sqrt(107669)*%i*log(2*sqrt(107669)*%i)
- - sqrt(107669)*%i*log(4*sqrt(5455)*%i-586);
+sqrt(107669)*%i*log(2*sqrt(107669)*%i)-sqrt(107669)*%i*log(2*(2*sqrt(5455)*%i-293))$
 
 /* integrate erf fails - ID: 3454370 */
 integrate( erf(x+a)-erf(x-a), x, minf, inf);

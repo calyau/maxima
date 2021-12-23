@@ -147,10 +147,11 @@
         "rtest_trace"
 	"rtest_polynomialp"
         ((mlist simp) "rtest_limit_extra" 
-          ((mlist simp) 7 10 13 42 48 49 50 54 55 56 58 
-                       61  64 67 77 78 79 80 81 84 86 87 88 91 93 95 97 99 100 101 103 105 108 
-                       110 112 113 115 116 121 122 123 124 128 129 130 132 133 134 136))
-	))
+          ((mlist simp)  21 42 52 53 61 64 67 70 80 81 82 83 84 87 89 90 91 
+                         94 96 98 100 102 103 104 106 108 111 113 115 116 118 
+                         119 124 125 126 127 131 132 133 135 136 137 139 170 187
+                         208))
+          ))
 
 ;; The list of share testsuite files. As they are given without a path
 ;; this assumes that file_search_tests is set appropriately so that maxima

@@ -11,8 +11,7 @@
  */
 
 integrate(log(1-x)*log(1+x)/(1+x),x,0,1);
-(-1)/6*%pi^2*log(2)+1/2*log(2)^3+zeta(3)
-                   +(-1)/24*((-2)*%pi^2*log(2)+4*log(2)^3+21*zeta(3))$
+zeta(3)/8+log(2)^3/3-(%pi^2*log(2))/12$
 
 integrate(abs(x),x);
 (x*abs(x))/2$
@@ -818,7 +817,7 @@ integrate(abs(cos(x)),x,0,%pi);
 
  /* #2815 abs_integrate leads to infinite recursion */
   integrate(log(1-x)*log(1+x)/(1+x),x,0,1);
-  -((21*zeta(3)+4*log(2)^3-2*%pi^2*log(2))/24)+zeta(3)+log(2)^3/2-(%pi^2*log(2))/6$
+  zeta(3)/8+log(2)^3/3-(%pi^2*log(2))/12$
 
 /* #2814 abs_integrate: integration of x*ceiling(x) */
   expand(integrate(x*ceiling(x),x));
