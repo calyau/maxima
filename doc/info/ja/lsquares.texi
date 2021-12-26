@@ -13,7 +13,9 @@
 最小二乗法を実装するための関数のコレクションです。
 
 @opencatbox
-@category{Statistical estimation} @category{Share packages} @category{Package lsquares}
+@category{Statistical estimation}
+@category{Share packages}
+@category{Package lsquares}
 @closecatbox
 
 
@@ -142,7 +144,8 @@
 @end example
 
 @opencatbox
-@category{Package lsquares} @category{Numerical methods}
+@category{Package lsquares}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn
@@ -300,7 +303,8 @@ This requires that the data from which
 @end example
 
 @opencatbox
-@category{Package lsquares} @category{Numerical methods}
+@category{Package lsquares}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn
@@ -657,7 +661,8 @@ _Nor = a b - b - a + 1, _Nxor = 2 a b - b - a + 1]
 最初に @code{load("lsquares")}を書いてください。
 
 @opencatbox
-@category{Package lsquares} @category{Numerical methods}
+@category{Package lsquares}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn

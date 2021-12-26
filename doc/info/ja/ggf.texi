@@ -65,7 +65,9 @@
 この関数を使うには、最初に@code{load("ggf")}を書いてください。
 
 @opencatbox
-@category{Generating functions} @category{Share packages} @category{Package ggf}
+@category{Generating functions}
+@category{Share packages}
+@category{Package ggf}
 @closecatbox
 
 @end deffn

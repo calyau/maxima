@@ -212,7 +212,8 @@ Let
 @end example
 
 @opencatbox
-@category{Evaluation} @category{Differential equations}
+@category{Evaluation}
+@category{Differential equations}
 @closecatbox
 @end deffn
 
@@ -309,7 +310,8 @@ atvaluesが表示される時、
 @end example
 
 @opencatbox
-@category{Differential equations} @category{Declarations and inferences}
+@category{Differential equations}
+@category{Declarations and inferences}
 @closecatbox
 @end deffn
 
@@ -389,7 +391,8 @@ p;
 @end example
 
 @opencatbox
-@category{Mathematical functions} @category{Laplace transform}
+@category{Mathematical functions}
+@category{Laplace transform}
 @closecatbox
 @end deffn
 
@@ -407,7 +410,8 @@ each call to
 @code{depends}と@code{gradef}を参照してください。
 
 @opencatbox
-@category{Declarations and inferences} @category{Global variables}
+@category{Declarations and inferences}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -489,7 +493,8 @@ each call to
 @end example
 
 @opencatbox
-@category{Differential calculus} @category{Declarations and inferences}
+@category{Differential calculus}
+@category{Declarations and inferences}
 @closecatbox
 @end deffn
 
@@ -504,7 +509,8 @@ each call to
 
 @c NEED EXAMPLES HERE
 @opencatbox
-@category{Differential calculus} @category{Global flags}
+@category{Differential calculus}
+@category{Global flags}
 @closecatbox
 @end defvr
 
@@ -534,7 +540,8 @@ each call to
 @end example
 
 @opencatbox
-@category{Differential calculus} @category{Expressions}
+@category{Differential calculus}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -547,7 +554,8 @@ each call to
 @code{ev}コマンド内にて、指摘された変数に関する微分のみを起こします。
 
 @opencatbox
-@category{Differential calculus} @category{Evaluation}
+@category{Differential calculus}
+@category{Evaluation}
 @closecatbox
 @end deffn
 
@@ -561,7 +569,8 @@ each call to
 のような非構文法的代入は@code{'diff (x, t)}をもらします。
 
 @opencatbox
-@category{Differential calculus} @category{Expressions}
+@category{Differential calculus}
+@category{Expressions}
 @closecatbox
 @end defvr
 
@@ -688,7 +697,8 @@ each call to
 @c @end example
 
 @opencatbox
-@category{Differential calculus} @category{Package ctensor}
+@category{Differential calculus}
+@category{Package ctensor}
 @closecatbox
 @end deffn
 
@@ -781,7 +791,9 @@ expressの戻り値の中のシンボリックな導関数(すなわち、@code{
 @end example
 
 @opencatbox
-@category{Differential calculus} @category{Vectors} @category{Operators}
+@category{Differential calculus}
+@category{Vectors}
+@category{Operators}
 @closecatbox
 @end deffn
 
@@ -854,7 +866,8 @@ expressの戻り値の中のシンボリックな導関数(すなわち、@code{
 
 @c NEED EXAMPLES HERE
 @opencatbox
-@category{Differential calculus} @category{Declarations and inferences}
+@category{Differential calculus}
+@category{Declarations and inferences}
 @closecatbox
 @end deffn
 
@@ -869,7 +882,8 @@ expressの戻り値の中のシンボリックな導関数(すなわち、@code{
 偏微分が@code{gradef}によって定義されたいかなる変数も含みません。
 
 @opencatbox
-@category{Differential calculus} @category{Declarations and inferences}
+@category{Differential calculus}
+@category{Declarations and inferences}
 @closecatbox
 @end defvr
 
@@ -982,6 +996,7 @@ expressの戻り値の中のシンボリックな導関数(すなわち、@code{
 @end example
 
 @opencatbox
-@category{Laplace transform} @category{Differential equations}
+@category{Laplace transform}
+@category{Differential equations}
 @closecatbox
 @end deffn

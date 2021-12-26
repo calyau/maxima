@@ -23,7 +23,10 @@
 @end example
 
 @opencatbox
-@category{Numerical methods} @category{Optimization} @category{Share packages} @category{Package simplex} 
+@category{Numerical methods}
+@category{Optimization}
+@category{Share packages}
+@category{Package simplex} 
 @closecatbox
 
 @node Functions and Variables for simplex,  , Introduction to simplex, simplex
@@ -82,7 +85,8 @@
 以下も参照してください: @code{minimize_lp}, @code{scale_lp}, @code{epsilon_lp}
 
 @opencatbox
-@category{Package simplex} @category{Numerical methods}
+@category{Package simplex}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn
@@ -97,7 +101,8 @@
 以下も参照してください: @code{minimize_lp}.
 
 @opencatbox
-@category{Package simplex} @category{Numerical methods}
+@category{Package simplex}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn
@@ -159,7 +164,8 @@ Maximaの@code{linear_program}関数で実装された
 いかも参照してください: @code{maximize_lp}, @code{nonegative_lp}, @code{epsilon_lp}。
 
 @opencatbox
-@category{Package simplex} @category{Numerical methods}
+@category{Package simplex}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn

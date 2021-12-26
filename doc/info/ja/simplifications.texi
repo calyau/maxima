@@ -62,7 +62,10 @@
 @c elim.usg: "eliminate" already in doc/info/Polynomials.texi
 
 @opencatbox
-@category{Simplification functions} @category{Rules and patterns} @category{Share packages} @category{Package absimp}
+@category{Simplification functions}
+@category{Rules and patterns}
+@category{Share packages}
+@category{Package absimp}
 @closecatbox
 
 
@@ -102,7 +105,9 @@
 @code{demo (facexp)}はこのパッケージのデモを見せます。
 
 @opencatbox
-@category{Expressions} @category{Share packages} @category{Package facexp}
+@category{Expressions}
+@category{Share packages}
+@category{Package facexp}
 @closecatbox
 
 
@@ -154,7 +159,8 @@ complicated subexpressions,  such as
 @code{facsum}の結果に影響するかもしれません。
 
 @opencatbox
-@category{Package facexp} @category{Expressions}
+@category{Package facexp}
+@category{Expressions}
 @closecatbox
 
 @end deffn
@@ -182,7 +188,8 @@ complicated subexpressions,  such as
 シングルクォートで表さなければいけません。
 
 @opencatbox
-@category{Package facexp} @category{Expressions}
+@category{Package facexp}
+@category{Expressions}
 @closecatbox
 
 @end defvr
@@ -203,7 +210,8 @@ complicated subexpressions,  such as
 このスイッチの@code{true}設定は役に立ちます。
 
 @opencatbox
-@category{Package facexp} @category{Expressions}
+@category{Package facexp}
+@category{Expressions}
 @closecatbox
 
 @end defvr
@@ -216,7 +224,8 @@ complicated subexpressions,  such as
 因子と指数と両方がこの方法で処理されます。
 
 @opencatbox
-@category{Package facexp} @category{Expressions}
+@category{Package facexp}
+@category{Expressions}
 @closecatbox
 
 @end deffn
@@ -235,7 +244,8 @@ complicated subexpressions,  such as
 この能力は加算する式が非常に大きい時特に役立ちます。
 
 @opencatbox
-@category{Package facexp} @category{Expressions}
+@category{Package facexp}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -246,7 +256,8 @@ complicated subexpressions,  such as
 @section Package functs
 
 @opencatbox
-@category{Share packages} @category{Package functs}
+@category{Share packages}
+@category{Package functs}
 @closecatbox
 
 @deffn {関数} rempart (@var{expr}, @var{n})
@@ -258,7 +269,8 @@ complicated subexpressions,  such as
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Expressions}
+@category{Package functs}
+@category{Expressions}
 @closecatbox
 
 @end deffn
@@ -282,7 +294,8 @@ Wronskian行列の行列式は、
 @end example
 
 @opencatbox
-@category{Package functs} @category{Differential calculus}
+@category{Package functs}
+@category{Differential calculus}
 @closecatbox
 
 @end deffn
@@ -295,7 +308,8 @@ Wronskian行列の行列式は、
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Matrices}
+@category{Package functs}
+@category{Matrices}
 @closecatbox
 
 @end deffn
@@ -309,7 +323,8 @@ Wronskian行列の行列式は、
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Expressions}
+@category{Package functs}
+@category{Expressions}
 @closecatbox
 
 @end deffn
@@ -327,7 +342,8 @@ Wronskian行列の行列式は、
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Expressions}
+@category{Package functs}
+@category{Expressions}
 @closecatbox
 
 @end deffn
@@ -341,7 +357,8 @@ Wronskian行列の行列式は、
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Expressions}
+@category{Package functs}
+@category{Expressions}
 @closecatbox
 
 @end deffn
@@ -393,7 +410,8 @@ Wronskian行列の行列式は、
 @end example
 
 @opencatbox
-@category{Package functs} @category{Polynomials}
+@category{Package functs}
+@category{Polynomials}
 @closecatbox
 @end deffn
 
@@ -405,7 +423,8 @@ Wronskian行列の行列式は、
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Sums and products}
+@category{Package functs}
+@category{Sums and products}
 @closecatbox
 
 @end deffn
@@ -416,7 +435,8 @@ Wronskian行列の行列式は、
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Sums and products}
+@category{Package functs}
+@category{Sums and products}
 @closecatbox
 
 @end deffn
@@ -427,7 +447,8 @@ Wronskian行列の行列式は、
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Sums and products}
+@category{Package functs}
+@category{Sums and products}
 @closecatbox
 
 @end deffn
@@ -438,7 +459,8 @@ Wronskian行列の行列式は、
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Sums and products}
+@category{Package functs}
+@category{Sums and products}
 @closecatbox
 
 @end deffn
@@ -451,7 +473,8 @@ Wronskian行列の行列式は、
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Sums and products}
+@category{Package functs}
+@category{Sums and products}
 @closecatbox
 
 @end deffn
@@ -462,7 +485,8 @@ Gaussian確率函数@code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}を返します。
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Mathematical functions}
+@category{Package functs}
+@category{Mathematical functions}
 @closecatbox
 
 @end deffn
@@ -473,7 +497,8 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Mathematical functions}
+@category{Package functs}
+@category{Mathematical functions}
 @closecatbox
 
 @end deffn
@@ -484,7 +509,8 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Mathematical functions}
+@category{Package functs}
+@category{Mathematical functions}
 @closecatbox
 
 @end deffn
@@ -495,7 +521,8 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Mathematical functions}
+@category{Package functs}
+@category{Mathematical functions}
 @closecatbox
 
 @end deffn
@@ -506,7 +533,8 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Mathematical functions}
+@category{Package functs}
+@category{Mathematical functions}
 @closecatbox
 
 @end deffn
@@ -517,7 +545,8 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Mathematical functions}
+@category{Package functs}
+@category{Mathematical functions}
 @closecatbox
 
 @end deffn
@@ -528,7 +557,8 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Mathematical functions}
+@category{Package functs}
+@category{Mathematical functions}
 @closecatbox
 
 @end deffn
@@ -540,7 +570,8 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Mathematical functions}
+@category{Package functs}
+@category{Mathematical functions}
 @closecatbox
 
 @end deffn
@@ -552,7 +583,8 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 この関数を使うには、最初に@code{load(functs)}を書いてください。
 
 @opencatbox
-@category{Package functs} @category{Mathematical functions}
+@category{Package functs}
+@category{Mathematical functions}
 @closecatbox
 
 @end deffn
@@ -691,7 +723,10 @@ Maximaが@code{X}の符号を尋ね、
 規則名を引用符で囲まなければいけません。
 
 @opencatbox
-@category{Simplification functions} @category{Rules and patterns} @category{Share packages} @category{Package ineq}
+@category{Simplification functions}
+@category{Rules and patterns}
+@category{Share packages}
+@category{Package ineq}
 @closecatbox
 
 
@@ -703,7 +738,9 @@ Maximaが@code{X}の符号を尋ね、
 @section Package rducon
 
 @opencatbox
-@category{Expressions} @category{Share packages} @category{Package rducon}
+@category{Expressions}
+@category{Share packages}
+@category{Package rducon}
 @closecatbox
 
 
@@ -740,7 +777,8 @@ map ('fortran, const_eqns)$
 @code{demo (rducon)}はこの関数のデモを見せます。
 
 @opencatbox
-@category{Package rducon} @category{Expressions}
+@category{Package rducon}
+@category{Expressions}
 @closecatbox
 
 @end deffn
@@ -752,7 +790,9 @@ map ('fortran, const_eqns)$
 @section Package scifac
 
 @opencatbox
-@category{Expressions} @category{Share packages} @category{Package scifac}
+@category{Expressions}
+@category{Share packages}
+@category{Package scifac}
 @closecatbox
 
 
@@ -783,7 +823,8 @@ map ('fortran, const_eqns)$
 @code{demo (scifac)}はこの関数のデモを見せます。
 
 @opencatbox
-@category{Package scifac} @category{Expressions}
+@category{Package scifac}
+@category{Expressions}
 @closecatbox
 
 @end deffn
@@ -827,7 +868,9 @@ map ('fortran, const_eqns)$
 @code{load (sqdnst)}はこの関数をロードします。
 
 @opencatbox
-@category{Expressions} @category{Share packages} @category{Package sqdnst}
+@category{Expressions}
+@category{Share packages}
+@category{Package sqdnst}
 @closecatbox
 
 @end deffn

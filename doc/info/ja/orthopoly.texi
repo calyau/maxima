@@ -35,7 +35,9 @@ University of Nebraska at Kearney (UNK)のBarton Willisが
 パッケージはGNU General Public License (GPL)の下で公開されています。
 
 @opencatbox
-@category{Orthogonal polynomials} @category{Share packages} @category{Package orthopoly}
+@category{Orthogonal polynomials}
+@category{Share packages}
+@category{Package orthopoly}
 @closecatbox
 
 @subsection Getting Started with orthopoly
@@ -809,7 +811,8 @@ Hermite多項式。
 そうでないなら @code{false}を返します。
 
 @opencatbox
-@category{Package orthopoly} @category{Predicate functions}
+@category{Package orthopoly}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -1016,7 +1019,8 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 @end example
 
 @opencatbox
-@category{Package orthopoly} @category{Gamma and factorial functions}
+@category{Package orthopoly}
+@category{Gamma and factorial functions}
 @closecatbox
 
 @end deffn
@@ -1045,7 +1049,8 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 参考文献: Abramowitz and Stegun, equation 6.1.16, page 256.
 
 @opencatbox
-@category{Package orthopoly} @category{Gamma and factorial functions}
+@category{Package orthopoly}
+@category{Gamma and factorial functions}
 @closecatbox
 
 @end defvr
@@ -1056,7 +1061,8 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 参考文献: Abramowitz and Stegun, equations 10.1.8, page 437 and 10.1.15, page 439.
 
 @opencatbox
-@category{Package orthopoly} @category{Bessel functions}
+@category{Package orthopoly}
+@category{Bessel functions}
 @closecatbox
 
 @end deffn
@@ -1067,7 +1073,8 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 参考文献: Abramowitz and Stegun, equations 10.1.9, page 437 and 10.1.15, page 439.
 
 @opencatbox
-@category{Package orthopoly} @category{Bessel functions}
+@category{Package orthopoly}
+@category{Bessel functions}
 @closecatbox
 
 @end deffn
@@ -1078,7 +1085,8 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 参考文献: Abramowitz and Stegun, equation 10.1.36, page 439.
 
 @opencatbox
-@category{Package orthopoly} @category{Bessel functions}
+@category{Package orthopoly}
+@category{Bessel functions}
 @closecatbox
 
 @end deffn
@@ -1089,7 +1097,8 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 参考文献: Abramowitz and Stegun, equation 10.1.17, page 439.
 
 @opencatbox
-@category{Package orthopoly} @category{Bessel functions}
+@category{Package orthopoly}
+@category{Bessel functions}
 @closecatbox
 
 @end deffn
@@ -1114,7 +1123,8 @@ Pochhammerシンボルをガンマ函数の商に変換するには、
 @code{(1 + signum (@var{x}))/2}を使ってください。
 
 @opencatbox
-@category{Package orthopoly} @category{Mathematical functions}
+@category{Package orthopoly}
+@category{Mathematical functions}
 @closecatbox
 
 @end deffn

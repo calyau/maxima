@@ -18,7 +18,9 @@ Axel Rieseによって開発された「フィルタリング」最適化法を�
 @code{load (zeilberger)}はこのパッケージをロードします。
 
 @opencatbox
-@category{Sums and products} @category{Share packages} @category{Package zeilberger}
+@category{Sums and products}
+@category{Share packages}
+@category{Package zeilberger}
 @closecatbox
 
 @subsection The indefinite summation problem

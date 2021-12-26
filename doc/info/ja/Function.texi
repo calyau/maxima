@@ -18,7 +18,8 @@
 @c -----------------------------------------------------------------------------
 
 @opencatbox
-@category{Function definition} @category{Programming}
+@category{Function definition}
+@category{Programming}
 @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -458,7 +459,8 @@ Inside functions, when the right hand side of a definition, may be computed at r
 @code{infolists}も参照してください。
 
 @opencatbox
-@category{Function definition} @category{Global variables}
+@category{Function definition}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -652,7 +654,8 @@ Improper name or value in functional position.
 ブロックは、典型的な場合、関数定義の右辺に現れますが、他の場所でも使うことができます。
 
 @opencatbox
-@category{Expressions} @category{Programming}
+@category{Expressions}
+@category{Programming}
 @closecatbox
 @end deffn
 
@@ -1151,7 +1154,8 @@ Cannot assign to `baz_quux'.
 @end example
 
 @opencatbox
-@category{Function definition} @category{Display functions}
+@category{Function definition}
+@category{Display functions}
 @closecatbox
 @end deffn
 
@@ -1183,7 +1187,8 @@ Cannot assign to `baz_quux'.
 @end example
 
 @opencatbox
-@category{Function application} @category{Expressions}
+@category{Function application}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -1204,7 +1209,8 @@ Cannot assign to `baz_quux'.
 @end example
 
 @opencatbox
-@category{Function application} @category{Expressions}
+@category{Function application}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -1268,7 +1274,8 @@ Lisp関数はどのリストにも保持されません。
 @end example
 
 @opencatbox
-@category{Function definition} @category{Global variables}
+@category{Function definition}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -1429,7 +1436,8 @@ Maximaは@code{funmake}の戻り値を整理します。
 @end example
 
 @opencatbox
-@category{Function application} @category{Expressions}
+@category{Function application}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -1674,7 +1682,8 @@ Maximaは@code{funmake}の戻り値を整理します。
 @end example
 
 @opencatbox
-@category{Function definition} @category{Programming}
+@category{Function definition}
+@category{Programming}
 @closecatbox
 @end deffn
 
@@ -1857,7 +1866,8 @@ x + 99 is equal to x
 @end example
 
 @opencatbox
-@category{Function application} @category{Global flags}
+@category{Function application}
+@category{Global flags}
 @closecatbox
 
 @end defvr

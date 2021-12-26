@@ -65,7 +65,8 @@
 @mref{apply}を連想させます。
 
 @opencatbox
-@category{Expressions} @category{Arrays}
+@category{Expressions}
+@category{Arrays}
 @closecatbox
 @end deffn
 
@@ -341,7 +342,8 @@
 @end example
 
 @opencatbox
-@category{Expressions} @category{Arrays}
+@category{Expressions}
+@category{Arrays}
 @closecatbox
 @end deffn
 
@@ -396,7 +398,8 @@
 @end example
 
 @opencatbox
-@category{Arrays} @category{Global variables}
+@category{Arrays}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -870,7 +873,8 @@ Lisp配列を生成し、返します。
 @end example
 
 @opencatbox
-@category{Expressions} @category{Arrays}
+@category{Expressions}
+@category{Arrays}
 @closecatbox
 @end deffn
 
@@ -926,6 +930,7 @@ Maximaハッシャの古いタイプよりも
 @code{translate_fast_arrays}を@code{true}に設定してください。
 
 @opencatbox
-@category{Arrays} @category{Global flags}
+@category{Arrays}
+@category{Global flags}
 @closecatbox
 @end defvr

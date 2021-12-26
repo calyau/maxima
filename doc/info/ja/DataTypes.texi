@@ -66,7 +66,8 @@ Maximaでは複素数式を式の実部と@code{%i}かける虚部の足し算�
 もし@var{expr}が多倍長浮動小数点数なら@code{true}を、そうでなければ@code{false}を返します。
 
 @opencatbox
-@category{Numerical evaluation} @category{Predicate functions}
+@category{Numerical evaluation}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -125,7 +126,8 @@ Maximaでは複素数式を式の実部と@code{%i}かける虚部の足し算�
 非整数有理数と多倍長浮動小数点を浮動小数点に変換します。
 
 @opencatbox
-@category{Numerical evaluation} @category{Evaluation flags}
+@category{Numerical evaluation}
+@category{Evaluation flags}
 @closecatbox
 @end deffn
 
@@ -154,7 +156,8 @@ Maximaでは複素数式を式の実部と@code{%i}かける虚部の足し算�
 @code{false}を返します。
 
 @opencatbox
-@category{Numerical evaluation} @category{Predicate functions}
+@category{Numerical evaluation}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -198,7 +201,8 @@ Maximaでは複素数式を式の実部と@code{%i}かける虚部の足し算�
 @code{fpprintprec}は1にはできません。
 
 @opencatbox
-@category{Numerical evaluation} @category{Display flags and variables}
+@category{Numerical evaluation}
+@category{Display flags and variables}
 @closecatbox
 @end defvr
 
@@ -262,7 +266,8 @@ m1pbranch:false          m1pbranch:true
 @end example
 
 @opencatbox
-@category{Expressions} @category{Global flags}
+@category{Expressions}
+@category{Global flags}
 @closecatbox
 @end defvr
 
@@ -273,7 +278,8 @@ m1pbranch:false          m1pbranch:true
 
 
 @opencatbox
-@category{Package linearalgebra} @category{Predicate functions}
+@category{Package linearalgebra}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -348,7 +354,8 @@ m1pbranch:false          m1pbranch:true
 @end example
 
 @opencatbox
-@category{Numerical evaluation} @category{Evaluation flags}
+@category{Numerical evaluation}
+@category{Evaluation flags}
 @closecatbox
 @end defvr
 
@@ -410,7 +417,8 @@ Maximaは主枝を使って数値結果を評価します。
 式@code{expr_1}, @dots{}, @code{expr_n}は、任意の式を取り得ます。数値である必要はありません。
 
 @opencatbox
-@category{Declarations and inferences} @category{Numerical evaluation}
+@category{Declarations and inferences}
+@category{Numerical evaluation}
 @closecatbox
 @end deffn
 
@@ -435,7 +443,8 @@ Maximaは主枝を使って数値結果を評価します。
 
 @c NEED EXAMPLES HERE
 @opencatbox
-@category{Numerical evaluation} @category{Rational expressions}
+@category{Numerical evaluation}
+@category{Rational expressions}
 @closecatbox
 @end defvr
 
@@ -556,7 +565,8 @@ reverse(uf))
 そうでなければ @code{false}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Rational expressions}
+@category{Predicate functions}
+@category{Rational expressions}
 @closecatbox
 @end deffn
 
@@ -695,7 +705,8 @@ this string.";
 @end example
 
 @opencatbox
-@category{Expressions} @category{Strings}
+@category{Expressions}
+@category{Strings}
 @closecatbox
 @end deffn
 
@@ -712,7 +723,8 @@ this string.";
 @end example
 
 @opencatbox
-@category{Expressions} @category{Strings}
+@category{Expressions}
+@category{Strings}
 @closecatbox
 @end deffn
 

@@ -1274,6 +1274,7 @@ AC_CONFIG_FILES([src/startmaxima_abcl.sh], chmod +x src/startmaxima_abcl.sh)
 AC_CONFIG_FILES([xmaxima-local], chmod +x xmaxima-local)
 AC_CONFIG_FILES([tests/test.sh], chmod +x tests/test.sh)
 AC_CONFIG_FILES([doc/info/build_html.sh], chmod +x doc/info/build_html.sh)
+AC_CONFIG_FILES([doc/info/ja/build_html.sh], chmod +x doc/info/ja/build_html.sh)
 AC_CONFIG_FILES([src/maxima], chmod +x src/maxima)
 AC_CONFIG_FILES([src/maxima.bat])
 
@@ -1288,6 +1289,7 @@ doc/info/texi2html.init \
 doc/info/figures/Makefile \
 doc/info/de/Makefile \
 doc/info/de.utf8/Makefile doc/info/es/Makefile doc/info/es.utf8/Makefile \
+doc/info/ja/include-maxima.texi \
 doc/info/pt/Makefile doc/info/pt.utf8/Makefile \
 doc/info/pt/include-maxima.texi \
 doc/info/pt_BR/Makefile doc/info/pt_BR.utf8/Makefile \

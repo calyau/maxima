@@ -126,7 +126,9 @@ _
 @end example
 
 @opencatbox
-@category{Help} @category{Console interaction} @category{File input}
+@category{Help}
+@category{Console interaction}
+@category{File input}
 @closecatbox
 @end deffn
 
@@ -200,7 +202,8 @@ Enter space-separated numbers, `all' or `none': 7 8
 それぞれ@code{a}もしくは@code{n}と省略形を使うことができます。
 
 @opencatbox
-@category{Help} @category{Console interaction}
+@category{Help}
+@category{Console interaction}
 @closecatbox
 @end deffn
 
@@ -248,7 +251,8 @@ Enter space-separated numbers, `all' or `none': 7 8
 @end example
 
 @opencatbox
-@category{Help} @category{Console interaction}
+@category{Help}
+@category{Console interaction}
 @closecatbox
 @end deffn
 
@@ -262,6 +266,7 @@ Enter space-separated numbers, `all' or `none': 7 8
 @mref{example}を参照してください。
 
 @opencatbox
-@category{Help} @category{Global variables}
+@category{Help}
+@category{Global variables}
 @closecatbox
 @end defvr

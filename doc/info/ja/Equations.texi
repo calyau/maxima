@@ -305,7 +305,8 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 @end example
 
 @opencatbox
-@category{Polynomials} @category{Numerical methods}
+@category{Polynomials}
+@category{Numerical methods}
 @closecatbox
 @end deffn
 
@@ -322,7 +323,8 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 詳しい情報については@mref{allroots}を参照してください。
 
 @opencatbox
-@category{Polynomials} @category{Numerical methods}
+@category{Polynomials}
+@category{Numerical methods}
 @closecatbox
 @end deffn
 
@@ -467,7 +469,8 @@ Solution:
 @code{dispflag}を@code{false}に設定します。
 
 @opencatbox
-@category{Algebraic equations} @category{Display flags and variables}
+@category{Algebraic equations}
+@category{Display flags and variables}
 @closecatbox
 @end defvr
 
@@ -853,7 +856,8 @@ Solution
 @c NEED AN EXAMPLE HERE
 
 @opencatbox
-@category{Algebraic equations} @category{Polynomials}
+@category{Algebraic equations}
+@category{Polynomials}
 @closecatbox
 @end defvr
 
@@ -875,7 +879,8 @@ Solution
 @end example
 
 @opencatbox
-@category{Polynomials} @category{Numerical methods}
+@category{Polynomials}
+@category{Numerical methods}
 @closecatbox
 @end deffn
 
@@ -907,7 +912,8 @@ pが完全なn番目のべきでないことを示すエラーメッセージを
 例は@code{allroots}を参照してください。
 
 @opencatbox
-@category{Polynomials} @category{Numerical methods}
+@category{Polynomials}
+@category{Numerical methods}
 @closecatbox
 @end defvr
 
@@ -929,7 +935,8 @@ pが完全なn番目のべきでないことを示すエラーメッセージを
 @c NEED AN EXAMPLE HERE
 
 @opencatbox
-@category{Algebraic equations} @category{Polynomials}
+@category{Algebraic equations}
+@category{Polynomials}
 @closecatbox
 @end defvr
 
@@ -1011,7 +1018,8 @@ pが完全なn番目のべきでないことを示すエラーメッセージを
 @end example
 
 @opencatbox
-@category{Polynomials} @category{Numerical methods}
+@category{Polynomials}
+@category{Numerical methods}
 @closecatbox
 @end deffn
 
@@ -1093,7 +1101,8 @@ pが完全なn番目のべきでないことを示すエラーメッセージを
 詳細は@mref{rootscontract}を参照してください。
 
 @opencatbox
-@category{Expressions} @category{Simplification flags and variables}
+@category{Expressions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -1198,7 +1207,8 @@ x^(1/2)*y^(1/3)      all            (x^3*y^2)^(1/6)
 @c NEED EXAMPLE HERE
 
 @opencatbox
-@category{Polynomials} @category{Numerical methods}
+@category{Polynomials}
+@category{Numerical methods}
 @closecatbox
 @end defvr
 

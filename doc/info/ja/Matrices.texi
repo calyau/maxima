@@ -75,7 +75,9 @@ The @code{vect}パッケージは以下の関数を含みます:
 可換ドット演算子@code{.}を得るには、コマンド@code{declare(".", commutative)}を実行しなければいけません。
 
 @opencatbox
-@category{Vectors} @category{Share packages} @category{Package vect}
+@category{Vectors}
+@category{Share packages}
+@category{Package vect}
 @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -100,7 +102,10 @@ Maximaは、パッケージを自動的にロードします。
 @mref{gramschmidt}, @mref{eigenvalues}, @mref{eigenvectors}, @mref{uniteigenvectors}, @mref{similaritytransform}です。
 
 @opencatbox
-@category{Vectors} @category{Matrices} @category{Share packages} @category{Package eigen}
+@category{Vectors}
+@category{Matrices}
+@category{Share packages}
+@category{Package eigen}
 @closecatbox
 
 @c end concepts Matrices and Linear Algebra
@@ -165,7 +170,8 @@ Maximaは、パッケージを自動的にロードします。
 @end example
 
 @opencatbox
-@category{Linear equations} @category{Matrices}
+@category{Linear equations}
+@category{Matrices}
 @closecatbox
 @end deffn
 
@@ -278,7 +284,8 @@ Maximaは、パッケージを自動的にロードします。
 @end example
 
 @opencatbox
-@category{Linear equations} @category{Matrices}
+@category{Linear equations}
+@category{Matrices}
 @closecatbox
 @end deffn
 
@@ -408,7 +415,8 @@ Creating a copy with
 @c IT APPEARS THAT doallmxops IS CRUCIAL HERE.
 
 @opencatbox
-@category{Matrices} @category{Evaluation flags}
+@category{Matrices}
+@category{Evaluation flags}
 @closecatbox
 @end defvr
 
@@ -755,7 +763,8 @@ Creating a copy with
 @end example
 
 @opencatbox
-@category{Linear equations} @category{Matrices}
+@category{Linear equations}
+@category{Matrices}
 @closecatbox
 @end deffn
 
@@ -1007,7 +1016,8 @@ Matrix entered.
 @end example
 
 @opencatbox
-@category{Console interaction} @category{Matrices}
+@category{Console interaction}
+@category{Matrices}
 @closecatbox
 @end deffn
 
@@ -1291,7 +1301,8 @@ invert (m) := adjoint (m) / determinant (m)
 @end example
 
 @opencatbox
-@category{Display flags and variables} @category{Matrices}
+@category{Display flags and variables}
+@category{Matrices}
 @closecatbox
 @end defvr
 
@@ -1514,7 +1525,8 @@ invert (m) := adjoint (m) / determinant (m)
 もし@var{expr}が行列なら@code{true}を返し，そうでなければ、@code{false}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Matrices}
+@category{Predicate functions}
+@category{Matrices}
 @closecatbox
 @end deffn
 
@@ -1685,7 +1697,8 @@ invert (m) := adjoint (m) / determinant (m)
 @code{load ("nchrpl")}はこの関数をロードします。
 
 @opencatbox
-@category{Matrices} @category{Package nchrpl}
+@category{Matrices}
+@category{Package nchrpl}
 @closecatbox
 @end deffn
 
@@ -1723,7 +1736,8 @@ invert (m) := adjoint (m) / determinant (m)
 @code{load ("nchrpl")}はこのファイルをロードします。
 
 @opencatbox
-@category{Matrices} @category{Package nchrpl}
+@category{Matrices}
+@category{Package nchrpl}
 @closecatbox
 @end deffn
 
@@ -1749,7 +1763,9 @@ invert (m) := adjoint (m) / determinant (m)
 アトムをドット演算子に関してリストか行列のように振る舞うようにします。
 
 @opencatbox
-@category{Declarations and inferences} @category{Vectors} @category{Matrices}
+@category{Declarations and inferences}
+@category{Vectors}
+@category{Matrices}
 @closecatbox
 @end defvr
 
@@ -1762,7 +1778,9 @@ invert (m) := adjoint (m) / determinant (m)
 @code{true}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Vectors} @category{Matrices}
+@category{Predicate functions}
+@category{Vectors}
+@category{Matrices}
 @closecatbox
 @end deffn
 
@@ -1814,7 +1832,8 @@ invert (m) := adjoint (m) / determinant (m)
 要素が展開されるようになるかもしれないことに注意してください。
 
 @opencatbox
-@category{Matrices} @category{Rational expressions}
+@category{Matrices}
+@category{Rational expressions}
 @closecatbox
 @end defvr
 
@@ -1860,7 +1879,8 @@ invert (m) := adjoint (m) / determinant (m)
 1 x 1行列はスカラーに整理されません。
 
 @opencatbox
-@category{Matrices} @category{Simplification flags and variables}
+@category{Matrices}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -2027,7 +2047,8 @@ SF[1], SF[2], @dots{}, SF[DIMENSION]は、座標スケールファクタに設�
 @end example
 
 @opencatbox
-@category{Linear equations} @category{Matrices}
+@category{Linear equations}
+@category{Matrices}
 @closecatbox
 @end deffn
 
@@ -2165,7 +2186,8 @@ SF[1], SF[2], @dots{}, SF[DIMENSION]は、座標スケールファクタに設�
 @c by the function invocation
 
 @opencatbox
-@category{Package vect} @category{Simplification functions}
+@category{Package vect}
+@category{Simplification functions}
 @closecatbox
 @end deffn
 
@@ -2181,7 +2203,8 @@ SF[1], SF[2], @dots{}, SF[DIMENSION]は、座標スケールファクタに設�
 でDIFF(X~Y,T)が機能するようにします。
 
 @opencatbox
-@category{Package vect} @category{Differential calculus}
+@category{Package vect}
+@category{Differential calculus}
 @closecatbox
 @end defvr
 

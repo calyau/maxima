@@ -11,7 +11,10 @@ Netlibから得られるFortranライブラリ MINPACKの
 (@code{f2cl}を介した)Common Lisp翻訳です。
 
 @opencatbox
-@category{Numerical methods} @category{Share packages} @category{Package minpack} @category{Package minpack}
+@category{Numerical methods}
+@category{Share packages}
+@category{Package minpack}
+@category{Package minpack}
 @closecatbox
 
 @node Functions and Variables for minpack, , ,

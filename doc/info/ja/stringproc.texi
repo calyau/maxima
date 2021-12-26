@@ -116,7 +116,9 @@ Maxima文字列の最初の文字は位置1にあることを知ることは重�
 @code{readline}は@code{false}を返します。
 
 @opencatbox
-@category{Strings} @category{Share packages} @category{Package stringproc}
+@category{Strings}
+@category{Share packages}
+@category{Package stringproc}
 @closecatbox
 
 
@@ -160,7 +162,9 @@ and an integer: ~20t~d~%"$
 @code{true}を返します。
 
 @opencatbox
-@category{File input} @category{File output} @category{Package stringproc}
+@category{File input}
+@category{File output}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -169,7 +173,9 @@ and an integer: ~20t~d~%"$
 @var{stream}の中の要素の数を返します。
 
 @opencatbox
-@category{File input} @category{File output} @category{Package stringproc}
+@category{File input}
+@category{File output}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -184,7 +190,9 @@ and an integer: ~20t~d~%"$
 @var{stream}の最初の要素は位置1にあります。
 
 @opencatbox
-@category{File input} @category{File output} @category{Package stringproc}
+@category{File input}
+@category{File output}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -196,7 +204,8 @@ and an integer: ~20t~d~%"$
 @code{newline}も参照してください。
 
 @opencatbox
-@category{File output} @category{Package stringproc}
+@category{File output}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -210,7 +219,8 @@ and an integer: ~20t~d~%"$
 いくつかの場合があることに注意してください。
 
 @opencatbox
-@category{File output} @category{Package stringproc}
+@category{File output}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -221,7 +231,8 @@ and an integer: ~20t~d~%"$
 @code{opena}はファイルの終わりに要素を追加します。
 
 @opencatbox
-@category{File output} @category{Package stringproc}
+@category{File output}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -231,7 +242,8 @@ and an integer: ~20t~d~%"$
 もし@var{file}が存在しないなら、生成されます。
 
 @opencatbox
-@category{File input} @category{Package stringproc}
+@category{File input}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -243,7 +255,8 @@ and an integer: ~20t~d~%"$
 @var{file}を破壊的に変更します。
 
 @opencatbox
-@category{File output} @category{Package stringproc}
+@category{File output}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -320,7 +333,8 @@ Common Lisp関数FORMATをMaximaで利用可能にします。
 そうでないなら、@code{printf}は出力を含む文字列を返します。
 
 @opencatbox
-@category{File output} @category{Package stringproc}
+@category{File output}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -330,7 +344,8 @@ Common Lisp関数FORMATをMaximaで利用可能にします。
 もしファイルの終わりが来たら@var{false}を返します。
 
 @opencatbox
-@category{File input} @category{Package stringproc}
+@category{File input}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -374,7 +389,8 @@ Common Lisp関数FORMATをMaximaで利用可能にします。
 もし@var{char}がアルファベット文字なら@code{true}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -383,7 +399,8 @@ Common Lisp関数FORMATをMaximaで利用可能にします。
 もし@var{char}がアルファベット文字か数字なら@code{true}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -414,7 +431,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 もし@var{char_1}と@var{char_2}が同じなら@code{true}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -423,7 +441,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 @code{cequal}と同様ですが、文字の大小を無視します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -432,7 +451,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 もし@var{char_1}のASCIIコードが@var{char_2}のそれより大きいなら@code{true}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -441,7 +461,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 @code{cgreaterp}と同様ですが、文字の大小を無視します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -451,7 +472,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 例えばイントロダクションを参照してください。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -469,7 +491,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 もし@var{char_1}のASCIIコードが@var{char_2}のそれより小さいなら@code{true}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -478,7 +501,8 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 @code{clessp}と同様ですが、文字の大小を無視します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -502,7 +526,8 @@ d e f g h i j k l m n o p q r s t u v w x y z @{ | @} ~
 @end example
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -522,7 +547,8 @@ Lisp文字をMaxima文字に変換します。
 @code{true}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -532,7 +558,8 @@ Lisp文字をMaxima文字に変換します。
 (必要としないでしょう。)
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -541,7 +568,8 @@ Lisp文字をMaxima文字に変換します。
 もし@var{char}が小文字なら、@code{true}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -550,7 +578,8 @@ Lisp文字をMaxima文字に変換します。
 改行文字。
 
 @opencatbox
-@category{Global variables} @category{Package stringproc}
+@category{Global variables}
+@category{Package stringproc}
 @closecatbox
 
 @end defvr
@@ -559,7 +588,8 @@ Lisp文字をMaxima文字に変換します。
 スペース文字。
 
 @opencatbox
-@category{Global variables} @category{Package stringproc}
+@category{Global variables}
+@category{Package stringproc}
 @closecatbox
 
 @end defvr
@@ -568,7 +598,8 @@ Lisp文字をMaxima文字に変換します。
 タブ文字。
 
 @opencatbox
-@category{Global variables} @category{Package stringproc}
+@category{Global variables}
+@category{Package stringproc}
 @closecatbox
 
 @end defvr
@@ -577,7 +608,8 @@ Lisp文字をMaxima文字に変換します。
 もし@var{char}が大文字なら、@code{true}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -590,7 +622,8 @@ Lisp文字をMaxima文字に変換します。
 例はイントロダクションを参照してください。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -719,7 +752,8 @@ Lisp文字をMaxima文字に変換します。
 @code{true}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
@@ -728,7 +762,8 @@ Lisp文字をMaxima文字に変換します。
 @code{sequal}と同様ですが、文字の大小を無視します。
 
 @opencatbox
-@category{Predicate functions} @category{Package stringproc}
+@category{Predicate functions}
+@category{Package stringproc}
 @closecatbox
 
 @end deffn
