@@ -1471,8 +1471,8 @@ and passed as the fourth argument.
 @fname{zn_order} (@var{x}, @var{n})  @
 @fname{zn_order} (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 
-Returns the order of @var{x} if it is an unit of the finite group (Z/@var{n}Z)* 
-or returns @code{false}.  @var{x} is an unit modulo @var{n} if it is coprime to @var{n}.
+Returns the order of @var{x} if it is a unit of the finite group (Z/@var{n}Z)*
+or returns @code{false}.  @var{x} is a unit modulo @var{n} if it is coprime to @var{n}.
 
 The applied algorithm needs a prime factorization of @code{totient(n)}. This factorization 
 might be time consuming in some cases and it can be useful to factor first 

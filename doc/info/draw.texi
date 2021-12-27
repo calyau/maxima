@@ -259,7 +259,7 @@ See also @mrefcomma{gr2d} @mrefcomma{gr3d} @mref{draw2d} and @mrefdot{draw3d}
 This function is a shortcut for
 @code{draw(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
 
-It can be used to plot an unique scene in 2d, as can be seen in most examples below.
+It can be used to plot a unique scene in 2d, as can be seen in most examples below.
 
 See also @mref{draw} and @mrefdot{gr2d}
 
@@ -280,7 +280,7 @@ See also @mref{draw} and @mrefdot{gr2d}
 This function is a shortcut for
 @code{draw(gr3d(@var{options}, ..., @var{graphic_object}, ...))}.
 
-It can be used to plot an unique scene in 3d, as can be seen in many examples below.
+It can be used to plot a unique scene in 3d, as can be seen in many examples below.
 
 See also @mref{draw} and @mrefdot{gr3d}
 
@@ -2446,7 +2446,7 @@ negative numbers mean negative colour component.
 @code{palette = gray} and @code{palette = color} are short cuts for
 @code{palette = [3,3,3]} and @code{palette = [7,5,15]}, respectively.
 
-Second, @code{palette} can be an user defined lookup table. In this case,
+Second, @code{palette} can be a user defined lookup table. In this case,
 the format for building a lookup table of length @code{n} is
 @code{palette=[color_1, color_2, ..., color_n]}, where @code{color_i} is
 a well formed color (see option @code{color}) such that @code{color_1} is
@@ -2483,7 +2483,7 @@ It also works with gray images.
 @end example
 @figure{draw_palette2}
 
-@code{palette} can be an user defined lookup table.
+@code{palette} can be a user defined lookup table.
 In this example, low values of @code{x} are colored
 in red, and higher values in yellow.
 

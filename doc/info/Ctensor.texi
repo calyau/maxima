@@ -865,7 +865,7 @@ December 19, 2004, and is likely to contain errors.
 @code{ctensor} has the ability to compute and include torsion and nonmetricity
 coefficients in the connection coefficients.
 
-The torsion coefficients are calculated from an user-supplied tensor
+The torsion coefficients are calculated from a user-supplied tensor
 @code{tr}, which should be a rank (2,1) tensor. From this, the torsion
 coefficients @code{kt} are computed according to the following formulae:
 

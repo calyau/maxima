@@ -47,7 +47,7 @@ capacity is at hand, a complex metric with intricate functional and
 coordinate dependencies can easily lead to expressions whose size is
 excessive and whose structure is hidden. In addition, many calculations
 involve intermediate expressions which swell causing programs to
-terminate before completion. Through experience, an user can avoid
+terminate before completion. Through experience, a user can avoid
 many of these difficulties.
 
 Because of the special way in which tensors and tensor operations
