@@ -101,6 +101,22 @@
 @code{@ref{\nodename\}})
 @end macro
 
+@macro nref {nodename}
+@ref{\nodename\}
+@end macro
+
+@macro nxref {nodename, text}
+@ref{\nodename\, \text\}
+@end macro
+
+@macro nrefdot {nodename}
+@ref{\nodename\}.
+@end macro
+
+@macro nrefcomma {nodename}
+@ref{\nodename\},
+@end macro
+
 @end ifhtml
 
 @c Non html versions of the macros
@@ -146,6 +162,22 @@
 @macro mrefparen {nodename}
 @code{\nodename\})
 @end macro
+
+@macro nref {nodename}
+\nodename\
+@end macro
+
+@macro nxref {nodename, text}
+\text\
+@end macro
+
+@macro nrefdot {nodename}
+\nodename\.
+@end macro
+
+@macro nrefcomma {nodename}
+\nodename\,
+@end macro
 @end ifnottex
 
 @iftex
@@ -185,6 +217,22 @@
 
 @macro mrefparen {nodename}
 @mref{\nodename\})
+@end macro
+
+@macro nref {nodename}
+@ref{\nodename\}
+@end macro
+
+@macro nxref {nodename, text}
+@ref{\nodename\, \text\}
+@end macro
+
+@macro nrefdot {nodename}
+@ref{\nodename\}.
+@end macro
+
+@macro nrefcomma {nodename}
+@ref{\nodename\},
 @end macro
 
 @end iftex

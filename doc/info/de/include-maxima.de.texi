@@ -49,7 +49,8 @@ END-INFO-DIR-ENTRY
 
 @paragraphindent 0
 
-@include category-macros.de.texi
+@include category-macros.texi
+@include hyphenation.de.texi
 
 @titlepage
 @sp 10

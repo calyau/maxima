@@ -1,8 +1,6 @@
 \input ../texinfo
 @setfilename  maxima.info
-@ifnottex
-@documentencoding ISO-8859-1
-@end ifnottex
+@documentencoding UTF-8
 @include include-maxima.de.texi
 @bye
 

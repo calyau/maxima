@@ -1,3 +1,4 @@
+s/@"/@\\"/g
 s/^@deffn  *{[^}]*}  *\([^[:blank:]]*\).*/(setq items (list (list "deffn" "\1")))/
 s/^@defvr  *{[^}]*}  *\([^[:blank:]]*\).*/(setq items (list (list "defvr" "\1")))/
 s/^@deffnx  *{[^}]*}  *\([^[:blank:]]*\).*/(if (not (member (list "deffn" "\1") items :test #'equal)) (nconc items (list (list "deffn" "\1"))))/
