@@ -92,7 +92,7 @@ fi
 
 # --no-node-files so we don't have thousands of little html files
 # --force -e 10000 because the category stuff causes lots of errors.
-TEXIOPT="--html -c INLINE_CONTENTS=0 --force -e 10000 --document-lang=ja -I . -I .. -I @abs_srcdir@ -I @abs_srcdir@/.. --css-include=@abs_srcdir@/manual.css --init-file ../texi2html.init"
+TEXIOPT="--html -c INLINE_CONTENTS=0 --force -e 10000 --document-lang=ja -I . -I .. -I @abs_srcdir@ -I @abs_srcdir@/.. --css-include=@abs_srcdir@/../manual.css --init-file @abs_srcdir@/../texi2html.init"
 makeinfo --split=chapter --no-node-files --output="@abs_builddir@" $TEXIOPT maxima.texi 
 makeinfo --no-split --output="@abs_builddir@/maxima_singlepage.html" $TEXIOPT maxima.texi 
 

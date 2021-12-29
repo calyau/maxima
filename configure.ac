@@ -659,6 +659,17 @@ AC_ARG_ENABLE(lang-de-utf8,
 
 AM_CONDITIONAL(LANG_DE_UTF8, test x$lang_de_utf8 = xtrue)
 
+AC_ARG_ENABLE(lang-ja,
+	[  --enable-lang-ja             Japanese language support],
+     	[case "${enableval}" in
+       		yes) lang_ja=true  ;;
+       		no)  lang_ja=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-lang-ja) ;;
+     	esac],
+	[lang_ja=false])
+
+AM_CONDITIONAL(LANG_JA, test x$lang_ja = xtrue)
+
 AC_ARG_ENABLE(lang-es,
 	[  --enable-lang-es             Spanish language support],
      	[case "${enableval}" in
@@ -1290,6 +1301,7 @@ doc/info/texi2html.init \
 doc/info/figures/Makefile \
 doc/info/de/Makefile \
 doc/info/de.utf8/Makefile doc/info/es/Makefile doc/info/es.utf8/Makefile \
+doc/info/ja/Makefile \
 doc/info/ja/include-maxima.texi \
 doc/info/pt/Makefile doc/info/pt.utf8/Makefile \
 doc/info/pt/include-maxima.texi \
