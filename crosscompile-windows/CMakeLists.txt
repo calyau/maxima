@@ -201,6 +201,9 @@ add_subdirectory("wxmaxima/")
 
 if(USE_VTK)
     add_subdirectory("vtk/")
+    set(VTK_LICENSE_INFORMATION "<li><a href=\"https://www.vtk.org/\">VTK Website</a>, <a href=\"https://www.vtk.org/about/#license\">VTK license</a></li>")
+else()
+    set(VTK_LICENSE_INFORMATION "")
 endif()
 
 if(WITH_ABCL)
