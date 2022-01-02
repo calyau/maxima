@@ -744,10 +744,10 @@ of the order the square of the machine epsilon.
 
 There is no user-interface for defining a new field.  A user that is
 familiar with Common Lisp should be able to define a new field.  To do
-this, an user must define functions for the arithmetic operations and
+this, a user must define functions for the arithmetic operations and
 functions for converting from the field representation to Maxima and
 back.  Additionally, for ordered fields (where partial pivoting will be
-used), an user must define functions for the magnitude and for
+used), a user must define functions for the magnitude and for
 comparing field members.  After that all that remains is to define a
 Common Lisp structure @code{mring}.  The file @code{mring} has many
 examples.

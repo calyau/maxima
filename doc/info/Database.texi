@@ -1331,7 +1331,7 @@ Default value: @code{[initial, global]}
 @code{contexts} is a list of the contexts which
 currently exist, including the currently active context.
 
-The context mechanism makes it possible for an user to bind together
+The context mechanism makes it possible for a user to bind together
 and name a collection of facts, called a context.
 Once this is done, the user can have Maxima assume or forget large numbers
 of facts merely by activating or deactivating their context.

@@ -676,7 +676,7 @@ other Maxima functions.
 @anchor{new_variable}
 @deffn {Function} new_variable (type)
 
-Return an unique symbol of the form @code{%[z,n,r,c,g]k}, where
+Return a unique symbol of the form @code{%[z,n,r,c,g]k}, where
 @code{k} is an integer.  The allowed values for @math{type} are
 @i{integer, natural_number, real, complex,} and @i{general}.
 (By natural number, we mean the @i{nonnegative integers}; thus zero is

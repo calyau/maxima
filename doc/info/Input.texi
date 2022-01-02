@@ -727,7 +727,7 @@ creates the file if it does not yet exist.
 The general form of @code{stringout} writes the values of one or more 
 expressions to the output file.  Note that if an expression is a
 variable, only the value of the variable is written and not the name
-of the variable.  As an useful special case, the expressions may be
+of the variable.  As a useful special case, the expressions may be
 input labels (@code{%i1}, @code{%i2}, @code{%i3}, @dots{}) or output labels
 (@code{%o1}, @code{%o2}, @code{%o3}, @dots{}).
 

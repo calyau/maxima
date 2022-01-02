@@ -1,10 +1,25 @@
-The package @code{ratpow} provides functions that find the exponents
-of the denominator in a CRE polynomial. If the exponents in the denominator
-are needed instead @mref{ratdenom} can be used to extract this denominator
-first. Returned coefficients are in CRE form except for numbers.
+The package @code{ratpow} provides functions that return the coefficients
+of the numerator of a CRE polynomial in a given variable.
 
-In order to get a list of vars in a CRE polynomial @mref{showratvars} can be
-used.
+For example,
+@itemize
+@item
+@code{ratp_coeffs(5*x^7-3*x^2+4,x)} returns @code{[[7,5],[2,-3],[0,4]]}, which omits zero terms;
+@item
+@code{ratp_dense_coeffs(5*x^7-y*x^2+4,x)} returns @code{[5,0,0,0,0,-y,0,4]}, which includes zero terms;
+@item
+@code{ratp_dense_coeffs((x^4-y^4)/(x-y),x)} returns @code{[1,y,y^2,y^3]},
+because CRE simplifies the expression to @code{x^3+y*x^2+y^2*x+y^3};
+@item
+@code{ratp_dense_coeffs(x+sqrt(x),x)} returns @code{[1,sqrt(x)]}
+while @code{ratp_dense_coeffs(x+sqrt(x),sqrt(x))} returns @code{[1,x]}:
+in CRE form, @code{x} and @code{sqrt(x)} are treated as independent variables.
+@end itemize
+
+The returned coefficients are in CRE form except for numbers.
+
+For the list of vars of a CRE polynomial, use @mref{showratvars}.
+For the denominator of a CRE polynomial, use @mref{ratdenom}.
 
 For information about CREs see also @mrefcomma{rat} @mref{ratdisrep} and
 @mrefdot{showratvars}
@@ -20,7 +35,7 @@ For information about CREs see also @mrefcomma{rat} @mref{ratdisrep} and
 @anchor{ratp_hipow}
 @deffn {Function} ratp_hipow (@var{expr}, @var{x})
 
-Finds the highest power of the main variable in @code{ratnumer(expr)}
+Returns the highest power of @var{x} in @code{ratnumer(expr)}
 
 @c ===beg===
 @c load("ratpow")$
@@ -49,7 +64,7 @@ Finds the highest power of the main variable in @code{ratnumer(expr)}
 @anchor{ratp_lopow}
 @deffn {Function} ratp_lopow (@var{expr}, @var{x})
 
-Finds the lowest power of the main variable in @code{ratnumer(expr)}
+Returns the lowest power of @var{x} in @code{ratnumer(expr)}
 
 @c ===beg===
 @c load("ratpow")$
@@ -63,7 +78,7 @@ Finds the lowest power of the main variable in @code{ratnumer(expr)}
 @end group
 @end example
 
-The following example will return 0 since @code{1} equals @code{x^0}:
+The following example returns 0 since @code{1} equals @code{x^0}:
 @c ===beg===
 @c load("ratpow")$
 @c ratp_lopow( x^5 + x^2 + 1, x);
@@ -77,8 +92,8 @@ The following example will return 0 since @code{1} equals @code{x^0}:
 @end example
 
 The CRE form of the following equation contains @code{sqrt(x)} and
-@code{x}. Since they are interpreted as independent variables
-@code{ratp_lopow} returns @code{0} in this case:
+@code{x}. Since they are interpreted as independent variables,
+@code{ratp_lopow} returns @code{0}:
 @c ===beg===
 @c load("ratpow")$
 @c g:sqrt(x)^5 + sqrt(x)^2;
@@ -119,7 +134,10 @@ The CRE form of the following equation contains @code{sqrt(x)} and
 @anchor{ratp_coeffs}
 @deffn {Function} ratp_coeffs (@var{expr}, @var{x})
 
-Generates a list of powers and coefficients of the main variable
+Returns the powers and coefficients of @var{x} in @code{ratnumer(expr)} as a list of length-2 lists;
+returned coefficients are in CRE form except for numbers.
+
+
 @code{ratnumer(expr)}.
 @c ===beg===
 @c load("ratpow")$
@@ -141,8 +159,8 @@ Generates a list of powers and coefficients of the main variable
 @anchor{ratp_dense_coeffs}
 @deffn {Function} ratp_dense_coeffs (@var{expr}, @var{x})
 
-Generates a list of coefficients in @code{ratnumer(expr)}; returned
-coefficients are in CRE form except for numbers.
+Returns the coefficients of powers of @var{x} in @code{ratnumer(expr)} from highest to lowest;
+returned coefficients are in CRE form except for numbers.
 
 @c ===beg===
 @c load("ratpow")$
