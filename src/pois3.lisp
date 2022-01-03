@@ -89,7 +89,7 @@
 
 ;;; THIS TELLS THE EVALUATOR TO KEEP OUT OF POISSON $SERIES.
 
-(defprop mpois (lambda (x) x) mfexpr*)
+(defmspec mpois (x) x)
 
 (defmfun $poisplus (a b)
   (setq a (intopois a) b (intopois b))

@@ -14,8 +14,6 @@
 
 (declare-top (special poisvals poishift poistsm poissiz poists $poisz $pois1))
 
-(defmspec mpois (x) x)
-
 (defun poislim1 (uu n)
   (declare (ignore uu))
   (unless  (fixnump n)
