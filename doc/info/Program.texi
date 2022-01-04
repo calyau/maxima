@@ -907,7 +907,8 @@ See also @mrefcomma{scanmap} @mrefcomma{maplist} @mrefcomma{outermap} @mref{matr
 
 Returns @code{true} if and only if @var{expr} is treated by the mapping
 routines as an atom.  "Mapatoms" are atoms, numbers
-(including rational numbers), and subscripted variables.
+(including rational numbers), subscripted variables and structure
+references.
 @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION OF ATOMS ??
 
 @opencatbox{Categories:}
