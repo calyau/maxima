@@ -275,3 +275,29 @@ express(ε(1,2,2)*a_[2]*b_[2]);
 
 makelist(sum(sum(ε(i,j,k)*a_[j]*b_[k],j,1,3),k,1,3),i,3);
 [a_2*b_3 - a_3*b_2, a_3*b_1 - a_1*b_3, a_1*b_2 - a_2*b_1];
+
+/* bug reported to mailing list 2022-01-04: "Bad vect package?" */
+
+/* example from email -- grad */
+
+(scalefactors(polarcylindrical),
+ kill (u, E, rho, I, D),
+ depends(u,r),
+ E:[-rho*I,0,0],
+ 0);
+0;
+
+foo: D*(grad(u)+E*u);
+D*([- I*rho*u, 0, 0] + grad(u));
+
+ev (express (foo), 'diff);
+[D*('diff(u, r) - I*rho*u), 0, 0];
+
+/* other examples -- cross product, curl */
+
+(kill (a, b, x, y, z),
+ (a ~ b) + [x, y, z]);
+(a ~ b) + [x, y, z];
+
+curl(a) + [x, y, z];
+curl(a) + [x, y, z];
