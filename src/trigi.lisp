@@ -260,11 +260,16 @@
 		     ;; log((1+sqrt(1+x^2))/x) = log(1+sqrt(1+x^2)) -
 		     ;; log(x).  If we choose x such that 1+x^2 = 1,
 		     ;; then this simplifies to log(2) - log(x).
+		     ;; Don't convert this to log(2/x) because if x is
+		     ;; very small 2/x can overflow.
 		     ;;
 		     ;; 1+x^2 = 1 when x^2 = double-float-epsilon.  So
-		     ;; x = sqrt(double-float-epsilon).
-		     (if (< (abs x) (sqrt double-float-epsilon))
-			 (float-sign x (log (/ 2 x)))
+		     ;; x = sqrt(double-float-epsilon).  But sinh(1/x)
+		     ;; is ok, as long as x is a normalized number.
+		     ;; So use instead of sqrt(epsilon), just use
+		     ;; least-positive-normalized-double-float.
+		     (if (< (abs x) least-positive-normalized-double-float)
+			 (float-sign x (- (log 2d0) (log (abs x))))
 			 (cl:asinh (/ x)))))
 	      (let ((y (ignore-errors (acsch x))))
 		(if y y (domain-error x 'acsch))))))
