@@ -1948,6 +1948,20 @@ block ([translate : false],
 (kill (foo, l1, l2), 0);
 0;
 
+/* Attempting to translate some atoms like lisp arrays would
+ * cause lisp errors during translation.
+ */
+
+(a : make_array (fixnum, 1),
+ a[0] : 13,
+ define (foo (), a),
+ translate_or_lose (foo),
+ listarray (foo ()));
+[13];
+
+(kill (foo, a), 0);
+0;
+
 
 
 
