@@ -5,20 +5,20 @@
 @c TranslatedBy: (c) 2007-09-04 Alexey V. Beshenov <al@beshenov.ru>
 
 @menu
-* Формула Стирлинга::
+* Р¤РѕСЂРјСѓР»Р° РЎС‚РёСЂР»РёРЅРіР°::
 @end menu
 
-@node Формула Стирлинга,  , Пакет stirling, Пакет stirling
-@section Формула Стирлинга
+@node Р¤РѕСЂРјСѓР»Р° РЎС‚РёСЂР»РёРЅРіР°,  , РџР°РєРµС‚ stirling, РџР°РєРµС‚ stirling
+@section Р¤РѕСЂРјСѓР»Р° РЎС‚РёСЂР»РёРЅРіР°
 
-@deffn {Функция} stirling (@var{z},@var{n})
+@deffn {Р¤СѓРЅРєС†РёСЏ} stirling (@var{z},@var{n})
 
-Заменяет @code{gamma(x)} по формуле Стирлинга @math{O(1/x^(2n-1))}. Сообщает об ошибке,
-если @var{n} не является неотрицательным целым числом.
+Р—Р°РјРµРЅСЏРµС‚ @code{gamma(x)} РїРѕ С„РѕСЂРјСѓР»Рµ РЎС‚РёСЂР»РёРЅРіР° @math{O(1/x^(2n-1))}. РЎРѕРѕР±С‰Р°РµС‚ РѕР± РѕС€РёР±РєРµ,
+РµСЃР»Рё @var{n} РЅРµ СЏРІР»СЏРµС‚СЃСЏ РЅРµРѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј С†РµР»С‹Рј С‡РёСЃР»РѕРј.
 
-См. Abramowitz & Stegun, "Handbook of mathematical functions", 6.1.40.
+РЎРј. Abramowitz & Stegun, "Handbook of mathematical functions", 6.1.40.
 
-Примеры:
+РџСЂРёРјРµСЂС‹:
 @example
 (%i1) load (stirling)$
 
@@ -41,7 +41,7 @@
                                   2
 @end example
 
-Функция @code{stirling} различает переменную 'gamma' и функцию gamma:
+Р¤СѓРЅРєС†РёСЏ @code{stirling} СЂР°Р·Р»РёС‡Р°РµС‚ РїРµСЂРµРјРµРЅРЅСѓСЋ 'gamma' Рё С„СѓРЅРєС†РёСЋ gamma:
 
 @example
 (%i5) stirling(gamma + gamma(x),0);
@@ -55,10 +55,10 @@
 @end example
 
 
-Для использования этой функции сначала напишите @code{load("stirling")}.
+Р”Р»СЏ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ СЌС‚РѕР№ С„СѓРЅРєС†РёРё СЃРЅР°С‡Р°Р»Р° РЅР°РїРёС€РёС‚Рµ @code{load("stirling")}.
 
 @opencatbox
-@category{Гамма-функция и факториал} @category{Пакеты библиотеки share} @category{Пакет stirling}
+@category{Р“Р°РјРјР°-С„СѓРЅРєС†РёСЏ Рё С„Р°РєС‚РѕСЂРёР°Р»} @category{РџР°РєРµС‚С‹ Р±РёР±Р»РёРѕС‚РµРєРё share} @category{РџР°РєРµС‚ stirling}
 @closecatbox
 
 @end deffn
