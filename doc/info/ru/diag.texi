@@ -1,5 +1,5 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=diag.texi 
 @c OriginalRevision=1.5
 @c TranslatedBy: (c) 2007-07 Vadim V. Zhytnikov <vvzhyt@gmail.com>

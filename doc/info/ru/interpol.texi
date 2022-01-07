@@ -1,5 +1,5 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=interpol.texi 
 @c OriginalRevision=1.8
 @c TranslatedBy: (c) 2008-03 Vadim V. Zhytnikov <vvzhyt@gmail.com>

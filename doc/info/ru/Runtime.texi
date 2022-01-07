@@ -1,5 +1,5 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=Runtime.texi 
 @c OriginalRevision=1.23
 @c TranslatedBy: (c) 2007-06 Vadim V. Zhytnikov <vvzhyt@gmail.com>

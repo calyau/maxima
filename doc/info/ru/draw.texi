@@ -1,5 +1,5 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=draw.texi 
 @c OriginalRevision=1.25
 @c TranslatedBy: (c) 2007-11 Vadim V. Zhytnikov <vvzhyt@gmail.com>

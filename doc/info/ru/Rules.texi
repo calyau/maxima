@@ -1,5 +1,5 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=Rules.texi 
 @c OriginalRevision=1.35
 @c TranslatedBy: (c) 2007-09-11 Valery Pipin <pip@iszf.irk.ru>

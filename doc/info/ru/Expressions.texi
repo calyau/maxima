@@ -1,5 +1,5 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=Expressions.texi 
 @c OriginalRevision=1.61
 @c TranslatedBy: (c) 2007-12-24 Andrey Siver <ihep-2005@yandex.ru>

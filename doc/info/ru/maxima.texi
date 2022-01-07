@@ -2,7 +2,7 @@
 @c -*-texinfo-*-
 
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=maxima.texi 
 @c OriginalRevision=1.57
 

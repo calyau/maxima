@@ -1,5 +1,5 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=stirling.texi
 @c OriginalRevision=1.3
 @c TranslatedBy: (c) 2007-09-04 Alexey V. Beshenov <al@beshenov.ru>

@@ -1,5 +1,5 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=Operators.texi 
 @c OriginalRevision=1.49
 @c TranslatedBy: (c) 2007-11-06 Andrey Siver <ihep-2005@yandex.ru>

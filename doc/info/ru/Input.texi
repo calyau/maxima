@@ -1,5 +1,5 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=Input.texi
 @c OriginalRevision=1.66
 @c TranslatedBy: (c) 2008-02 Sergei Shmakov <chivorotkiv@omich.net>

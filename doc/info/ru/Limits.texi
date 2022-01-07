@@ -1,5 +1,5 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=Limits.texi 
 @c OriginalRevision=1.14
 @c TranslatedBy: (c) 2007-05-23 Alexey V. Beshenov <al@beshenov.ru>

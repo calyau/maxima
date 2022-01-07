@@ -1,5 +1,5 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=Ctensor.texi 
 @c OriginalRevision=1.35
 @c TranslatedBy: (c) 2006-03 Valery Pipin <pip@iszf.irk.ru>

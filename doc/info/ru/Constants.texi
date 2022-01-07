@@ -1,5 +1,5 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=Constants.texi
 @c OriginalRevision=1.22
 @c TranslatedBy: (c) 2005-12 Vadim V. Zhytnikov <vvzhyt@gmail.ru>
