@@ -812,17 +812,9 @@ APPLY means like APPLY.")
 ;;; Some atoms, solely by usage, are self evaluating. 
 
 (defun implied-quotep (atom)
-  (cond
-	((stringp atom)
-	 (cond
-       ;; I WONDER IF THIS NEXT CONDITION CAN BE CUT OUT ?? !!
-       ((equal atom "**") ;;; foolishness. The PARSER should do this.
-		;; Losing Fortran hackers.
-		(tr-format "~% `**' is obsolete, use `^' !!!")
-		"^")
-       (t atom)))
-    ((get atom 'implied-quotep) atom)
-	(t nil)))
+  (if (or (stringp atom) (get atom 'implied-quotep))
+      atom
+      nil))
 
 ;;; the Translation Properties. the heart of TRANSL.
 
