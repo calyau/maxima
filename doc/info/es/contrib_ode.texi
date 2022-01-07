@@ -1,67 +1,67 @@
 @c English version: 2013-08-03
 @menu
-* Introducción a contrib_ode::
+* IntroducciÃ³n a contrib_ode::
 * Funciones y variables para contrib_ode::
 * Posibles mejoras a contrib_ode::
 * Pruebas realizadas con contrib_ode::
 * Referencias para contrib_ode::
 @end menu
 
-@node Introducción a contrib_ode, Funciones y variables para contrib_ode, contrib_ode, contrib_ode
+@node IntroducciÃ³n a contrib_ode, Funciones y variables para contrib_ode, contrib_ode, contrib_ode
 
-@section Introducción a contrib_ode 
+@section IntroducciÃ³n a contrib_ode 
 
-La función @code{ode2} de Maxima resuelve ecuaciones diferenciales
-ordinarias (EDO) simples de primer y segundo orden. La función 
+La funciÃ³n @code{ode2} de Maxima resuelve ecuaciones diferenciales
+ordinarias (EDO) simples de primer y segundo orden. La funciÃ³n 
 @code{contrib_ode} extiende las posibilidades de @code{ode2}
-con métodos adicionales para ODEs lineales y no lineales de
-primer orden y homogéneas lineales de segundo orden.
-El código se encuentra en estado de desarrollo y la
-syntaxis puede cambiar en futuras versiones. Una vez el código
-se haya estabilizado podrá pasar a integrarse dentro de
+con mÃ©todos adicionales para ODEs lineales y no lineales de
+primer orden y homogÃ©neas lineales de segundo orden.
+El cÃ³digo se encuentra en estado de desarrollo y la
+syntaxis puede cambiar en futuras versiones. Una vez el cÃ³digo
+se haya estabilizado podrÃ¡ pasar a integrarse dentro de
 Maxima.
 
-El paquete debe cargarse con la instrucción @code{load('contrib_ode)}
+El paquete debe cargarse con la instrucciÃ³n @code{load('contrib_ode)}
 antes de utilizarlo.
 
 La sintaxis de @code{contrib_ode} es similar a la de @code{ode2}.
-Necesita tres argumentos: una EDO (sólo se necesita el miembro
+Necesita tres argumentos: una EDO (sÃ³lo se necesita el miembro
 izquierdo si el derecho es igual cero), la variable dependiente y
-la independiente. Si encuentra la solución, devolverá una
+la independiente. Si encuentra la soluciÃ³n, devolverÃ¡ una
 lista de resultados.
 
 La forma de los resultados devueltos es diferente de la utilizada
 por @code{ode2}.
-Puesto que las ecuaciones no lineales pueden tener múltiples
+Puesto que las ecuaciones no lineales pueden tener mÃºltiples
 soluciones, @code{contrib_ode} devuelve una lista de soluciones.
 Las soluciones pueden tener diferentes formatos:
 @itemize @bullet
 @item
-una función explícita para la variable dependiente,
+una funciÃ³n explÃ­cita para la variable dependiente,
 
 @item
-una función implícita para la variable dependiente,
+una funciÃ³n implÃ­cita para la variable dependiente,
 
 @item
-una solución paramétrica en términos de la variable @code{%t} o
+una soluciÃ³n paramÃ©trica en tÃ©rminos de la variable @code{%t} o
 
 @item
-una transformación en otra EDO de variable @code{%u}.
+una transformaciÃ³n en otra EDO de variable @code{%u}.
 
 @end itemize
 
-@code{%c} hace referencia a la constante de integración en 
+@code{%c} hace referencia a la constante de integraciÃ³n en 
 las ecuaciones de primer orden.
 @code{%k1} y @code{%k2} son las constantes para las ecuaciones
 de segundo orden.
-Si por cualquier razón contrib_ode no pudiese encontrar una
-solución, devolverá @code{false}, quizás después de 
+Si por cualquier razÃ³n contrib_ode no pudiese encontrar una
+soluciÃ³n, devolverÃ¡ @code{false}, quizÃ¡s despuÃ©s de 
 mostrar un mensaje de error.
 
 Ejemplos:
 
 En ocasiones es necesario devolver una lista de soluciones,
-pues algunas EDOs pueden tener múltiples soluciones:
+pues algunas EDOs pueden tener mÃºltiples soluciones:
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -87,7 +87,7 @@ pues algunas EDOs pueden tener múltiples soluciones:
 @end example
 
 Las EDOs no lineales pueden tener soluciones singulares sin
-constantes de integración, como en la segunda solución
+constantes de integraciÃ³n, como en la segunda soluciÃ³n
 del ejemplo siguiente:
 
 @c ===beg===
@@ -115,9 +115,9 @@ del ejemplo siguiente:
 (%o4)                       clairault
 @end example
 
-La siguiente ODE tiene dos soluciones paramétricas en términos
-de la variable @code{%t}. En este caso, las soluciones paramétricas
-se pueden manipular para dar soluciones explícitas.
+La siguiente ODE tiene dos soluciones paramÃ©tricas en tÃ©rminos
+de la variable @code{%t}. En este caso, las soluciones paramÃ©tricas
+se pueden manipular para dar soluciones explÃ­citas.
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -142,8 +142,8 @@ se pueden manipular para dar soluciones explícitas.
 (%o4)                       lagrange
 @end example
 
-En el siguiente ejemplo (Kamke 1.112) se obtiene una solución 
-implícita.
+En el siguiente ejemplo (Kamke 1.112) se obtiene una soluciÃ³n 
+implÃ­cita.
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -173,7 +173,7 @@ implícita.
 (%o5)                          lie
 @end example
 
-La siguiente ecuación de Riccati se transforma en
+La siguiente ecuaciÃ³n de Riccati se transforma en
 una EDO lineal de segundo orden de variable @code{%u}. Maxima
 es incapaz de resolver la nueva EDO, por lo que la devuelve si
 resolver:
@@ -206,43 +206,43 @@ resolver:
 @end example
 
 Para EDOs de primer orden, @code{contrib_ode} llama a @code{ode2}.
-Entonces trata de aplicar los siguientes métodos: factorización,
-Clairault, Lagrange, Riccati, Abel y Lie. El método de Lie no
+Entonces trata de aplicar los siguientes mÃ©todos: factorizaciÃ³n,
+Clairault, Lagrange, Riccati, Abel y Lie. El mÃ©todo de Lie no
 se intenta aplicar a las ecuaciones de Abel si el propio
-método de Abel no obtiene solución, pero sí
-se utiliza si el método de Riccati devuelve una EDO de
+mÃ©todo de Abel no obtiene soluciÃ³n, pero sÃ­
+se utiliza si el mÃ©todo de Riccati devuelve una EDO de
 segundo orden sin resolver.
 
 Para EDOs de segundo orden, @code{contrib_ode} llama a @code{ode2}
 y luego a @code{odelin}.
 
-Se mostrarán mensajes de depurado si se ejecuta la sentencia
+Se mostrarÃ¡n mensajes de depurado si se ejecuta la sentencia
 @code{put('contrib_ode,true,'verbose)}.
 
 
 
-@node Funciones y variables para contrib_ode, Posibles mejoras a contrib_ode, Introducción a contrib_ode, contrib_ode
+@node Funciones y variables para contrib_ode, Posibles mejoras a contrib_ode, IntroducciÃ³n a contrib_ode, contrib_ode
 @section Funciones y variables para contrib_ode
 
-@deffn {Función} contrib_ode (@var{eqn}, @var{y}, @var{x})
+@deffn {FunciÃ³n} contrib_ode (@var{eqn}, @var{y}, @var{x})
 
-Devuelve la lista de soluciones de la ecuación diferencia
+Devuelve la lista de soluciones de la ecuaciÃ³n diferencia
 ordinaria (EDO) @var{eqn} de variable independiente @var{x}
 y variable dependiente @var{y}.
 
 @end deffn
 
 
-@deffn {Función} odelin (@var{eqn}, @var{y}, @var{x})
+@deffn {FunciÃ³n} odelin (@var{eqn}, @var{y}, @var{x})
 
-La función @code{odelin} resulve EDOs homogéneas lineales
+La funciÃ³n @code{odelin} resulve EDOs homogÃ©neas lineales
 de primer y segundo orden con variable independiente @var{x}
 y variable dependiente @var{y}. Devuelve un conjunto fundamental
 de soluciones de la EDO.
 
 Para EDOs de segundo orden, @code{odelin} utiliza un
-método desarrollado por Bronstein y Lafaille, que busca las soluciones
-en términos de funciones especiales dadas.
+mÃ©todo desarrollado por Bronstein y Lafaille, que busca las soluciones
+en tÃ©rminos de funciones especiales dadas.
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -274,12 +274,12 @@ en términos de funciones especiales dadas.
 @end deffn
 
 
-@deffn {Función} ode_check (@var{eqn}, @var{soln})
+@deffn {FunciÃ³n} ode_check (@var{eqn}, @var{soln})
 
-Devuelve el valor de la ecuación diferencia
-ordinaria (EDO) @var{eqn} después de sustituir
-una posible solución @var{soln}. El valor es
-cero si @var{soln} es una solución de @var{eqn}.
+Devuelve el valor de la ecuaciÃ³n diferencia
+ordinaria (EDO) @var{eqn} despuÃ©s de sustituir
+una posible soluciÃ³n @var{soln}. El valor es
+cero si @var{soln} es una soluciÃ³n de @var{eqn}.
 
 @c ===beg===
 @c load('contrib_ode)$
@@ -318,86 +318,86 @@ cero si @var{soln} es una solución de @var{eqn}.
 
 @defvr {Variable opcional} @code{method}
 
-A la variable @code{method} se le asigna el método aplicado. 
+A la variable @code{method} se le asigna el mÃ©todo aplicado. 
 
 @end defvr
 
 @defvr {Variable} @code{%c}
 
-@code{%c} es la constante de integración para EDOs de primer
+@code{%c} es la constante de integraciÃ³n para EDOs de primer
 orden.
 
 @end defvr
 
 @defvr {Variable} @code{%k1}
 
-@code{%k1} es la primera constante de integración para EDOs de segundo
+@code{%k1} es la primera constante de integraciÃ³n para EDOs de segundo
 orden.
 
 @end defvr
 
 @defvr {Variable} @code{%k2}
 
-@code{%k2} es la segunda constante de integración para EDOs de segundo
+@code{%k2} es la segunda constante de integraciÃ³n para EDOs de segundo
 orden.
 
 @end defvr
 
-@deffn {Función} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+@deffn {FunciÃ³n} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 
 @code{gauss_a(a,b,c,x)} y @code{gauss_b(a,b,c,x)} son funciones
-geométricas 2F1 . Representan dos soluciones independientes
-cualesquiera de la ecuación diferencial hipergeométrica
+geomÃ©tricas 2F1 . Representan dos soluciones independientes
+cualesquiera de la ecuaciÃ³n diferencial hipergeomÃ©trica
 @code{x(1-x) diff(y,x,2) + [c-(a+b+1)x] diff(y,x) - aby = 0} (A&S 15.5.1).
 
-El único uso que se hace de estas funciones es en las soluciones de
-EDOs que devuelven @code{odelin} y @code{contrib_ode}. La definición
-y utilización de estas funciones puede cambiar en futuras distribuciones
+El Ãºnico uso que se hace de estas funciones es en las soluciones de
+EDOs que devuelven @code{odelin} y @code{contrib_ode}. La definiciÃ³n
+y utilizaciÃ³n de estas funciones puede cambiar en futuras distribuciones
 de Maxima.
 
-Véanse también @code{gauss_b}, @code{dgauss_a} y @code{gauss_b}.
+VÃ©anse tambiÃ©n @code{gauss_b}, @code{dgauss_a} y @code{gauss_b}.
 
 @end deffn
 
-@deffn {Función} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
-Véase  también @code{gauss_a}.
+@deffn {FunciÃ³n} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+VÃ©ase  tambiÃ©n @code{gauss_a}.
 @end deffn
 
-@deffn {Función} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
+@deffn {FunciÃ³n} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 The derivative with respect to x of @code{gauss_a(a,b,c,x)}.
 @end deffn
 
-@deffn {Función} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+@deffn {FunciÃ³n} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 Derivada de @code{gauss_b(@var{a},@var{b},@var{c},@var{x})} respecto de @var{x}.
 @end deffn
 
 
-@deffn {Función} kummer_m (@var{a}, @var{b}, @var{x})
+@deffn {FunciÃ³n} kummer_m (@var{a}, @var{b}, @var{x})
 
-Función M de Kummer, tal como la definen Abramowitz y Stegun,
-@i{Handbook of Mathematical Functions}, Sección 13.1.2.
+FunciÃ³n M de Kummer, tal como la definen Abramowitz y Stegun,
+@i{Handbook of Mathematical Functions}, SecciÃ³n 13.1.2.
 
-El único uso que se hace de esta función es en las soluciones de
-EDOs que devuelven @code{odelin} y @code{contrib_ode}. La definición
-y utilización de estas funciones puede cambiar en futuras distribuciones
+El Ãºnico uso que se hace de esta funciÃ³n es en las soluciones de
+EDOs que devuelven @code{odelin} y @code{contrib_ode}. La definiciÃ³n
+y utilizaciÃ³n de estas funciones puede cambiar en futuras distribuciones
 de Maxima.
 
-Véanse también @code{kummer_u}, @code{dkummer_m} y @code{dkummer_u}.
+VÃ©anse tambiÃ©n @code{kummer_u}, @code{dkummer_m} y @code{dkummer_u}.
 @end deffn
 
-@deffn {Función} kummer_u (@var{a}, @var{b}, @var{x})
+@deffn {FunciÃ³n} kummer_u (@var{a}, @var{b}, @var{x})
 
-Función U de Kummer, tal como la definen Abramowitz y Stegun,
-@i{Handbook of Mathematical Functions}, Sección 13.1.3.
+FunciÃ³n U de Kummer, tal como la definen Abramowitz y Stegun,
+@i{Handbook of Mathematical Functions}, SecciÃ³n 13.1.3.
 
-Véase  también @code{kummer_m}.
+VÃ©ase  tambiÃ©n @code{kummer_m}.
 @end deffn
 
-@deffn {Función} dkummer_m (@var{a}, @var{b}, @var{x})
+@deffn {FunciÃ³n} dkummer_m (@var{a}, @var{b}, @var{x})
 Derivada de @code{kummer_m(@var{a},@var{b},@var{x})} respecto de @var{x}.
 @end deffn
 
-@deffn {Función} dkummer_u (@var{a}, @var{b}, @var{x})
+@deffn {FunciÃ³n} dkummer_u (@var{a}, @var{b}, @var{x})
 Derivada de @code{kummer_u(@var{a},@var{b},@var{x})} respecto de @var{x}.
 @end deffn
 
@@ -405,38 +405,38 @@ Derivada de @code{kummer_u(@var{a},@var{b},@var{x})} respecto de @var{x}.
 @node Posibles mejoras a contrib_ode, Pruebas realizadas con contrib_ode, Funciones y variables para contrib_ode, contrib_ode
 @section Posibles mejoras a contrib_ode
 
-Este paquete aún se encuentra en fase de desarrollo. Aspectos pendientes:
+Este paquete aÃºn se encuentra en fase de desarrollo. Aspectos pendientes:
 
 @itemize @bullet
 
 @item
-Extender el método FACTOR @code{ode1_factor} para que trabaje con
-raíces múltiples.
+Extender el mÃ©todo FACTOR @code{ode1_factor} para que trabaje con
+raÃ­ces mÃºltiples.
 
 @item
-Extender el método FACTOR @code{ode1_factor} para que intente
-resolver factores de orden superior. En este momento sólo
+Extender el mÃ©todo FACTOR @code{ode1_factor} para que intente
+resolver factores de orden superior. En este momento sÃ³lo
 intenta resolver factores lineales.
 
 @item
 Modificar la rutina LAGRANGE @code{ode1_lagrange} para que prefiera
-raíces reales a las complejas.
+raÃ­ces reales a las complejas.
 
 @item
-Añadir más métodos para las ecuaciones de RIccati.
+AÃ±adir mÃ¡s mÃ©todos para las ecuaciones de RIccati.
 
 @item
-Mejorar la identificación de las ecuaciones de Abel de segunda especie.
+Mejorar la identificaciÃ³n de las ecuaciones de Abel de segunda especie.
 El procedimiento actual no es muy bueno.
 
 @item
-Trabajar la rutina del grupo simétrico de Lie @code{ode1_lie}.
-Existen algunos problemas: algunas partes no están implementadas,
+Trabajar la rutina del grupo simÃ©trico de Lie @code{ode1_lie}.
+Existen algunos problemas: algunas partes no estÃ¡n implementadas,
 algunos ejemplos no terminan de ejecutarse, otros producen errors,
 otros devuelven respuestas muy complejas. 
 
 @item
-Hacer más pruebas.
+Hacer mÃ¡s pruebas.
 
 @end itemize
 
@@ -444,18 +444,18 @@ Hacer más pruebas.
 @section Pruebas realizadas con contrib_ode
 
 Los procedimientos fueron probados con cerca de mil ecuaciones tomadas
-de Murphy, Kamke, Zwillinger y otros. Éstas se encuentran en el directorio
+de Murphy, Kamke, Zwillinger y otros. Ã‰stas se encuentran en el directorio
 de pruebas.
 
 @itemize @bullet
 @item
 La rutina de Clairault @code{ode1_clairault} encuentra todas las
-soluciones conocidas, incluídas las singulares,
+soluciones conocidas, incluÃ­das las singulares,
 de las ecuaciones de Clairault en Murphy y Kamke.
 
 @item
-Las otras rutinas a veces devuelven una sola solución cuando
-existen más.
+Las otras rutinas a veces devuelven una sola soluciÃ³n cuando
+existen mÃ¡s.
 
 @item
 Algunas de las soluciones devueltas por @code{ode1_lie} son

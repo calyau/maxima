@@ -1,27 +1,27 @@
 @c Language: Portuguese
 @c /Logarithms.texi/1.16/Sat Jul  8 08:14:48 2006/-ko/
 @menu
-* DefiniÁıes para Logaritmos::
+* Defini√ß√µes para Logaritmos::
 @end menu
 
-@node DefiniÁıes para Logaritmos,  , Logaritmos, Logaritmos
-@section DefiniÁıes para Logaritmos
+@node Defini√ß√µes para Logaritmos,  , Logaritmos, Logaritmos
+@section Defini√ß√µes para Logaritmos
 
-@defvr {Vari·vel de opÁ„o} %e_to_numlog
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} %e_to_numlog
+Valor por omiss√£o: @code{false}
 
-Quando @code{true}, sendo @code{r} algum n˙mero racional, e @code{x}
-alguma express„o, @code{%e^(r*log(x))} ser· simplificado em
-@code{x^r} .  Note-se que o comando @code{radcan} tambÈm faz essa
-transformaÁ„o, assim como algumas transformaÁıes mais
-complicadas.  O comando @code{logcontract} @emph{contrai} expressıes
+Quando @code{true}, sendo @code{r} algum n√∫mero racional, e @code{x}
+alguma express√£o, @code{%e^(r*log(x))} ser√° simplificado em
+@code{x^r} .  Note-se que o comando @code{radcan} tamb√©m faz essa
+transforma√ß√£o, assim como algumas transforma√ß√µes mais
+complicadas.  O comando @code{logcontract} @emph{contrai} express√µes
 contendo @code{log}.
 
 @end defvr
 
-@deffn {FunÁ„o} li [@var{s}] (@var{z})
-Representa a funÁ„o polilogaritmo de ordem @var{s}
-e argumento @var{z}, definida por meio da sÈrie infinita
+@deffn {Fun√ß√£o} li [@var{s}] (@var{z})
+Representa a fun√ß√£o polilogaritmo de ordem @var{s}
+e argumento @var{z}, definida por meio da s√©rie infinita
 
 @example
                                  inf
@@ -33,19 +33,19 @@ e argumento @var{z}, definida por meio da sÈrie infinita
                                  k = 1
 @end example
 
-@code{li [1]} È @code{- log (1 - z)}.  @code{li [2]} e @code{li [3]}
-s„o as funÁıes dilogaritmo e
+@code{li [1]} √© @code{- log (1 - z)}.  @code{li [2]} e @code{li [3]}
+s√£o as fun√ß√µes dilogaritmo e
 trilogaritmo, respectivamente.
 
 Quando a ordem for 1, o polilogaritmo simplifica para
 @code{- log (1 - z)}, o qual por sua vez simplifica para um valor
-numÈrico se @var{z} for um n˙mero em ponto flutuante real ou
-complexo ou o sinalizador de avaliaÁ„o @code{numer} estiver
+num√©rico se @var{z} for um n√∫mero em ponto flutuante real ou
+complexo ou o sinalizador de avalia√ß√£o @code{numer} estiver
 presente.
 
 Quando a ordem for 2 ou 3, o polilogaritmo simplifica
-para um valor numÈrico se @var{z} for um n˙mero real em ponto
-flutuante ou o sinalizador de avaliaÁ„o @code{numer} estiver
+para um valor num√©rico se @var{z} for um n√∫mero real em ponto
+flutuante ou o sinalizador de avalia√ß√£o @code{numer} estiver
 presente.
 
 Exemplos:
@@ -97,36 +97,36 @@ Exemplos:
 
 @end deffn
 
-@deffn {FunÁ„o} log (@var{x})
+@deffn {Fun√ß√£o} log (@var{x})
 Representa o logaritmo natural (base @math{e}) de
 @var{x}.
 
-Maxima n„o possui uma funÁ„o interna para
+Maxima n√£o possui uma fun√ß√£o interna para
 logaritmo de base 10 ou de outras bases. @code{log10(x)
-:= log(x) / log(10)} È uma definiÁ„o ˙til.
+:= log(x) / log(10)} √© uma defini√ß√£o √∫til.
 
-A simplificaÁ„o e avaliaÁ„o de logaritmos
-s„o governadas por v·rios sinalizadores globais:
+A simplifica√ß√£o e avalia√ß√£o de logaritmos
+s√£o governadas por v√°rios sinalizadores globais:
 
 @code{logexpand} - faz com que @code{log(a^b)} se transfome em
 @code{b*log(a)}. Se @code{logexpand} tiver o valor @code{all},
-@code{log(a*b)} ir· tambÈm simplificar para @code{log(a)+log(b)}.
-Se @code{logexpand} for igual a @code{super}, ent„o
-@code{log(a/b)} ir· tambÈm simplificar para @code{log(a)-log(b)}
-para n˙meros racionais @code{a/b}, @code{a#1} (@code{log(1/b)},
+@code{log(a*b)} ir√° tamb√©m simplificar para @code{log(a)+log(b)}.
+Se @code{logexpand} for igual a @code{super}, ent√£o
+@code{log(a/b)} ir√° tamb√©m simplificar para @code{log(a)-log(b)}
+para n√∫meros racionais @code{a/b}, @code{a#1} (@code{log(1/b)},
 para @code{b} inteiro, sempre simplifica).  Se @code{logexpand} for
-igaul a @code{false}, todas essas simplificaÁıes ir„o
+igaul a @code{false}, todas essas simplifica√ß√µes ir√£o
 ser desabilitadas.
 
-@code{logsimp} - se tiver valor @code{false}, n„o ser· feita nenhuma
-simplificaÁ„o de @code{%e} para um expoente contendo
+@code{logsimp} - se tiver valor @code{false}, n√£o ser√° feita nenhuma
+simplifica√ß√£o de @code{%e} para um expoente contendo
 @code{log}'s.
 
 @code{lognumer} - se tiver valor @code{true}, os argumentos negativos
-em ponto flutuante para @code{log} ir· sempre ser convertidos para
+em ponto flutuante para @code{log} ir√° sempre ser convertidos para
 seu valor absoluto antes que @code{log} seja calculado. Se
-@code{numer} for tambÈm @code{true}, ent„o argumentos negativos
-inteiros para @code{log} ir„o tambÈm ser convertidos para os seus
+@code{numer} for tamb√©m @code{true}, ent√£o argumentos negativos
+inteiros para @code{log} ir√£o tamb√©m ser convertidos para os seus
 valores absolutos.
 
 @code{lognegint} - se tiver valor @code{true}, implementa a regra
@@ -134,61 +134,61 @@ valores absolutos.
 positivo.
 
 @code{%e_to_numlog} - quando for igual a @code{true},
-@code{%e^(r*log(x))}, sendo @code{r} algum n˙mero racional, e
-@code{x} alguma express„o, ser· simplificado para
-@code{x^r}. Note-se que o comando @code{radcan} tambÈm faz essa
-transformaÁ„o, e outras transformaÁıes mais complicadas
-desse gÈnero.
+@code{%e^(r*log(x))}, sendo @code{r} algum n√∫mero racional, e
+@code{x} alguma express√£o, ser√° simplificado para
+@code{x^r}. Note-se que o comando @code{radcan} tamb√©m faz essa
+transforma√ß√£o, e outras transforma√ß√µes mais complicadas
+desse g√©nero.
 
-O comando @code{logcontract} "contrai" expressıes
+O comando @code{logcontract} "contrai" express√µes
 contendo @code{log}.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} logabs
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} logabs
+Valor por omiss√£o: @code{false}
 
-No c·lculo de primitivas em que sejam gerados
+No c√°lculo de primitivas em que sejam gerados
 logaritmos, por exemplo, @code{integrate(1/x,x)}, a
-resposta ser· dada em termos de @code{log(abs(...))} se
+resposta ser√° dada em termos de @code{log(abs(...))} se
 @code{logabs} for @code{true}, mas em termos de @code{log(...)} se
 @code{logabs} for @code{false}. Para integrais definidos, usa-se
-@code{logabs:true}, porque nesse caso muitas vezes È necess·rio
+@code{logabs:true}, porque nesse caso muitas vezes √© necess√°rio
 calcular a primitiva nos extremos.
 
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Vari·vel de opÁ„o} logarc
-@defvrx {FunÁ„o} logarc (@var{expr})
+@defvr {Vari√°vel de op√ß√£o} logarc
+@defvrx {Fun√ß√£o} logarc (@var{expr})
 
-Quando a vari·vel global @code{logarc} for igual a @code{true}, as
-funÁıes trigononomÈtricas inversas, circulares e
-hiperbÛlicas, ser„o substituÌdas por suas
-funÁıes logarÌtmicas equivalentes. O valor
-padr„o de @code{logarc} È @code{false}.
+Quando a vari√°vel global @code{logarc} for igual a @code{true}, as
+fun√ß√µes trigononom√©tricas inversas, circulares e
+hiperb√≥licas, ser√£o substitu√≠das por suas
+fun√ß√µes logar√≠tmicas equivalentes. O valor
+padr√£o de @code{logarc} √© @code{false}.
 
-A funÁ„o @code{logarc(@var{expr})} realiza essa
-substituiÁ„o para uma express„o @var{expr} sem modificar o
-valor da vari·vel global @code{logarc}.
+A fun√ß√£o @code{logarc(@var{expr})} realiza essa
+substitui√ß√£o para uma express√£o @var{expr} sem modificar o
+valor da vari√°vel global @code{logarc}.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} logconcoeffp
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} logconcoeffp
+Valor por omiss√£o: @code{false}
 
-Controla quais coeficientes s„o contraÌdos quando se
-usa @code{logcontract}. Poder· ser igual ao nome de uma funÁ„o
-de um argumento. Por exemplo, se quiser gerar raÌzes
+Controla quais coeficientes s√£o contra√≠dos quando se
+usa @code{logcontract}. Poder√° ser igual ao nome de uma fun√ß√£o
+de um argumento. Por exemplo, se quiser gerar ra√≠zes
 quadradas, pode fazer @code{logconcoeffp:'logconfun$
 logconfun(m):=featurep(m,integer) or ratnump(m)$}. E assim,
-@code{logcontract(1/2*log(x));} produzir· @code{log(sqrt(x))}.
+@code{logcontract(1/2*log(x));} produzir√° @code{log(sqrt(x))}.
 
 @end defvr
 
-@deffn {FunÁ„o} logcontract (@var{expr})
-Examina recursivamente a express„o @var{expr}, transformando
-subexpressıes da forma @code{a1*log(b1) + a2*log(b2) + c} em
+@deffn {Fun√ß√£o} logcontract (@var{expr})
+Examina recursivamente a express√£o @var{expr}, transformando
+subexpress√µes da forma @code{a1*log(b1) + a2*log(b2) + c} em
 @code{log(ratsimp(b1^a1 * b2^a2)) + c}
 
 @c ===beg===
@@ -203,64 +203,64 @@ subexpressıes da forma @code{a1*log(b1) + a2*log(b2) + c} em
 
 @end example
 
-Se fizer @code{declare(n,integer);} ent„o
-@code{logcontract(2*a*n*log(x));} produzir·
+Se fizer @code{declare(n,integer);} ent√£o
+@code{logcontract(2*a*n*log(x));} produzir√°
 @code{a*log(x^(2*n))}. Os coeficientes que @emph{contraem} dessa
-maneira s„o os que, tal como 2 e @code{n} neste exemplo, satisfazem
+maneira s√£o os que, tal como 2 e @code{n} neste exemplo, satisfazem
 @code{featurep(coeficiente,integer)}. O utilizador pode controlar
-quais coeficientes s„o contraÌdos, dando ‡ vari·vel
-@code{logconcoeffp} o nome de uma funÁ„o de um argumento. Por
-exemplo, se quiser gerar raÌzes quadradas, pode fazer
+quais coeficientes s√£o contra√≠dos, dando √† vari√°vel
+@code{logconcoeffp} o nome de uma fun√ß√£o de um argumento. Por
+exemplo, se quiser gerar ra√≠zes quadradas, pode fazer
 @code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or
-ratnump(m)$}. E assim, @code{logcontract(1/2*log(x));} produzir·
+ratnump(m)$}. E assim, @code{logcontract(1/2*log(x));} produzir√°
 @code{log(sqrt(x))}.
 
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} logexpand
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} logexpand
+Valor por omiss√£o: @code{true}
 
 Faz com que @code{log(a^b)} se transfome em @code{b*log(a)}. Se
-@code{logexpand} tiver o valor @code{all}, @code{log(a*b)} ir·
-tambÈm simplificar para @code{log(a)+log(b)}.  Se @code{logexpand}
-for igual a @code{super}, ent„o @code{log(a/b)} ir· tambÈm
-simplificar para @code{log(a)-log(b)} para n˙meros racionais
+@code{logexpand} tiver o valor @code{all}, @code{log(a*b)} ir√°
+tamb√©m simplificar para @code{log(a)+log(b)}.  Se @code{logexpand}
+for igual a @code{super}, ent√£o @code{log(a/b)} ir√° tamb√©m
+simplificar para @code{log(a)-log(b)} para n√∫meros racionais
 @code{a/b}, @code{a#1} (@code{log(1/b)}, para @code{b} inteiro, sempre
 simplifica).  Se @code{logexpand} for igaul a @code{false}, todas
-essas simplificaÁıes ir„o ser desabilitadas.
+essas simplifica√ß√µes ir√£o ser desabilitadas.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} lognegint
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} lognegint
+Valor por omiss√£o: @code{false}
 
 Se for igual a @code{true}, implementa a regra @code{log(-n)} ->
 @code{log(n)+%i*%pi} para @code{n} um inteiro positivo.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} lognumer
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} lognumer
+Valor por omiss√£o: @code{false}
 
 Se tiver valor @code{true}, os argumentos negativos em ponto flutuante
-para @code{log} ir· sempre ser convertidos para seu valor absoluto
-antes que @code{log} seja calculado. Se @code{numer} for tambÈm
-@code{true}, ent„o argumentos negativos inteiros para @code{log}
-ir„o tambÈm ser convertidos para os seus valores absolutos.
+para @code{log} ir√° sempre ser convertidos para seu valor absoluto
+antes que @code{log} seja calculado. Se @code{numer} for tamb√©m
+@code{true}, ent√£o argumentos negativos inteiros para @code{log}
+ir√£o tamb√©m ser convertidos para os seus valores absolutos.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} logsimp
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} logsimp
+Valor por omiss√£o: @code{true}
 
-Se tiver valor @code{false}, n„o ser· feita nenhuma
-simplificaÁ„o de @code{%e} para um expoente contendo
+Se tiver valor @code{false}, n√£o ser√° feita nenhuma
+simplifica√ß√£o de @code{%e} para um expoente contendo
 @code{log}'s.
 
 @end defvr
 
-@deffn {FunÁ„o} plog (@var{x})
+@deffn {Fun√ß√£o} plog (@var{x})
 Representa o ramo principal dos logaritmos naturais no
 plano complexo, com @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi}.
 

@@ -7,46 +7,46 @@
 @section Funciones y variables para lsquares
 
 
-@deffn {FunciÛn} lsquares_estimates (@var{D}, @var{x}, @var{e}, @var{a})
-@deffnx {FunciÛn} lsquares_estimates (@var{D}, @var{x}, @var{e}, @var{a}, initial = @var{L}, tol = @var{t})
+@deffn {Funci√≥n} lsquares_estimates (@var{D}, @var{x}, @var{e}, @var{a})
+@deffnx {Funci√≥n} lsquares_estimates (@var{D}, @var{x}, @var{e}, @var{a}, initial = @var{L}, tol = @var{t})
 
-Estima los par·metros @var{a} que mejor se ajusten a la ecuaciÛn @var{e}
-de variables @var{x} y @var{a} a los datos @var{D} por el mÈtodo de los
-mÌnimos cuadrados. La funciÛn @code{lsquares_estimates}
-busca primero una soluciÛn exacta, y si no la encuentra, buscar·
+Estima los par√°metros @var{a} que mejor se ajusten a la ecuaci√≥n @var{e}
+de variables @var{x} y @var{a} a los datos @var{D} por el m√©todo de los
+m√≠nimos cuadrados. La funci√≥n @code{lsquares_estimates}
+busca primero una soluci√≥n exacta, y si no la encuentra, buscar√°
 una aproximada.
 
 El resultado es una lista de listas de ecuaciones de la forma
 @code{[a = ..., b = ..., c = ...]}. Cada elemento de la lista es un
-mÌnimo diferente de error cuadr·tico medio.
+m√≠nimo diferente de error cuadr√°tico medio.
 
 Los datos deben darse en formato matricial. Cada fila es un dato (el cual suele
 denominarse `registro' o `caso' en ciertos contextos), y las columnas contienen los
 valores para cada una de las variables. La lista de variables @var{x} asigna un nombre
 a cada una de las columnas de @var{D}, incluso a aquellas que no intervienen en el
-an·lisis. La lista @var{a} asigna nombres a los par·metros cuyas estimaciones se
-buscan. El argumento @var{e} es una expresiÛn o ecuaciÛn de variables @var{x} y @var{a};
-si @var{e} no es una ecuaciÛn (es decir, carece de igualdad), se trata como si 
+an√°lisis. La lista @var{a} asigna nombres a los par√°metros cuyas estimaciones se
+buscan. El argumento @var{e} es una expresi√≥n o ecuaci√≥n de variables @var{x} y @var{a};
+si @var{e} no es una ecuaci√≥n (es decir, carece de igualdad), se trata como si 
 fuese  @code{@var{e} = 0}.
 
 Se pueden dar argumentos adicionales a @code{lsquares_estimates} en forma de ecuaciones,
-las cuales se pasan tal cual a la funciÛn @code{lbfgs}, que es la que se encarga de
-calcular las estimaciones por el mÈtodo numÈrico cuando no encuentra una
-soluciÛn exacta.
+las cuales se pasan tal cual a la funci√≥n @code{lbfgs}, que es la que se encarga de
+calcular las estimaciones por el m√©todo num√©rico cuando no encuentra una
+soluci√≥n exacta.
 
-Cuando se pueda encontrar una soluciÛn exacta, mediante @code{solve}, los datos
-en @var{D} pueden contener valores no numÈricos. Sin embargo, cuando no exista
-soluciÛn exacta, todos los elementos de @var{D} deben ser necesariamente
-numÈricos, lo cual incluye constantes numÈricas tales como @code{%pi} o @code{%e}
-y n˙meros literales (enteros, racionales y decimales en coma flotante, tanto los de doble 
-precisiÛn como los de precisiÛn arbitraria).
-Los c·lculos numÈricos se realizan en doble precisiÛn con aritmÈtica de
-punto flotante, por lo que n˙meros de cualesquiera otro tipo son 
-convenientemente convertidos antes de proceder con los c·lculos.
+Cuando se pueda encontrar una soluci√≥n exacta, mediante @code{solve}, los datos
+en @var{D} pueden contener valores no num√©ricos. Sin embargo, cuando no exista
+soluci√≥n exacta, todos los elementos de @var{D} deben ser necesariamente
+num√©ricos, lo cual incluye constantes num√©ricas tales como @code{%pi} o @code{%e}
+y n√∫meros literales (enteros, racionales y decimales en coma flotante, tanto los de doble 
+precisi√≥n como los de precisi√≥n arbitraria).
+Los c√°lculos num√©ricos se realizan en doble precisi√≥n con aritm√©tica de
+punto flotante, por lo que n√∫meros de cualesquiera otro tipo son 
+convenientemente convertidos antes de proceder con los c√°lculos.
 
-Antes de utilizar esta funciÛn ejec˙tese @code{load(lsquares)}.
+Antes de utilizar esta funci√≥n ejec√∫tese @code{load(lsquares)}.
 
-VÈanse tambiÈn
+V√©anse tambi√©n
 @code{lsquares_estimates_exact},
 @code{lsquares_estimates_approximate},
 @code{lsquares_mse},
@@ -55,7 +55,7 @@ y @code{lsquares_residual_mse}.
 
 Ejemplos:
 
-Un problema con soluciÛn exacta.
+Un problema con soluci√≥n exacta.
 
 @c ===beg===
 @c load (lsquares)$
@@ -88,8 +88,8 @@ Un problema con soluciÛn exacta.
                          16        16      1024         32
 @end example
 
-un problema para el que no se encuentra soluciÛn exacta,
-por lo que @code{lsquares_estimates} recurre a la aproximaciÛn numÈrica.
+un problema para el que no se encuentra soluci√≥n exacta,
+por lo que @code{lsquares_estimates} recurre a la aproximaci√≥n num√©rica.
 
 @c ===beg===
 @c load (lsquares)$
@@ -121,19 +121,19 @@ por lo que @code{lsquares_estimates} recurre a la aproximaciÛn numÈrica.
 
 @end deffn
 
-@deffn {FunciÛn} lsquares_estimates_exact (@var{MSE}, @var{a})
+@deffn {Funci√≥n} lsquares_estimates_exact (@var{MSE}, @var{a})
 
-Estima los valores de los par·metros @var{a} que minimizan el error
-cuadr·tico medio @var{MSE} mediante un sistema de ecuaciones que intentar·
-resolver simbÛlicamente con @code{solve}. El error cuadr·tico medio es una
-expresiÛn con par·metros @var{a}, como los devueltos por @code{lsquares_mse}.
+Estima los valores de los par√°metros @var{a} que minimizan el error
+cuadr√°tico medio @var{MSE} mediante un sistema de ecuaciones que intentar√°
+resolver simb√≥licamente con @code{solve}. El error cuadr√°tico medio es una
+expresi√≥n con par√°metros @var{a}, como los devueltos por @code{lsquares_mse}.
 
-El valor devuelto por la funciÛn es una lista de listas de ecuaciones de la 
+El valor devuelto por la funci√≥n es una lista de listas de ecuaciones de la 
 forma @code{[a = ..., b = ..., c = ...]}. El resultado puede contener cero, uno o
-m·s elementos. Cuando la respuesta contiene m·s de una soluciÛn, todas ellas
-representan mÌnimos del error cuadr·tico medio.
+m√°s elementos. Cuando la respuesta contiene m√°s de una soluci√≥n, todas ellas
+representan m√≠nimos del error cuadr√°tico medio.
 
-VÈanse tambiÈn
+V√©anse tambi√©n
 @code{lsquares_estimates},
 @code{lsquares_estimates_approximate},
 @code{lsquares_mse},
@@ -184,36 +184,36 @@ Ejemplo:
 
 @end deffn
 
-@deffn {FunciÛn} lsquares_estimates_approximate (@var{MSE}, @var{a}, initial = @var{L}, tol = @var{t})
+@deffn {Funci√≥n} lsquares_estimates_approximate (@var{MSE}, @var{a}, initial = @var{L}, tol = @var{t})
 
-Estima los valores de los par·metros @var{a} que minimizan el error
-cuadr·tico medio @var{MSE} mediante el algoritmo numÈrico @code{lbfgs}.
-El error cuadr·tico medio es una expresiÛn con par·metros @var{a},
+Estima los valores de los par√°metros @var{a} que minimizan el error
+cuadr√°tico medio @var{MSE} mediante el algoritmo num√©rico @code{lbfgs}.
+El error cuadr√°tico medio es una expresi√≥n con par√°metros @var{a},
 como los devueltos por @code{lsquares_mse}.
 
-La soluciÛn devuelta por la funciÛn es un mÌnimo local
-(posiblemente global) del error cuadr·tico medio.
+La soluci√≥n devuelta por la funci√≥n es un m√≠nimo local
+(posiblemente global) del error cuadr√°tico medio.
 
 Por consistencia con @code{lsquares_estimates_exact}, el valor devuelto
-es una lista anidada con un ˙nico elemento, consistente en una lista
+es una lista anidada con un √∫nico elemento, consistente en una lista
 de ecuaciones de la forma @code{[a = ..., b = ..., c = ...]}.
 
 Los argumentos adicionales de @code{lsquares_estimates_approximate}
-se especifican como ecuaciones y se pasan de esta forma a la funciÛn @code{lbfgs}.
+se especifican como ecuaciones y se pasan de esta forma a la funci√≥n @code{lbfgs}.
 
-@var{MSE} debe devolver un n˙mero cuando a sus par·metros se les
-asignen valores numÈricos, lo cual implica que los datos a partir de los
-cuales se ha generado @var{MSE} contengan ˙nicamente constantes numÈricas 
-tales como @code{%pi} o @code{%e} y n˙meros literales (enteros, racionales y 
+@var{MSE} debe devolver un n√∫mero cuando a sus par√°metros se les
+asignen valores num√©ricos, lo cual implica que los datos a partir de los
+cuales se ha generado @var{MSE} contengan √∫nicamente constantes num√©ricas 
+tales como @code{%pi} o @code{%e} y n√∫meros literales (enteros, racionales y 
 decimales en coma flotante, tanto los de doble 
-precisiÛn como los de precisiÛn arbitraria).
-Los c·lculos numÈricos se realizan en doble precisiÛn con aritmÈtica de
-punto flotante, por lo que n˙meros de cualesquiera otro tipo son 
-convenientemente convertidos antes de proceder con los c·lculos.
+precisi√≥n como los de precisi√≥n arbitraria).
+Los c√°lculos num√©ricos se realizan en doble precisi√≥n con aritm√©tica de
+punto flotante, por lo que n√∫meros de cualesquiera otro tipo son 
+convenientemente convertidos antes de proceder con los c√°lculos.
 
-Antes de utilizar esta funciÛn ejec˙tese @code{load(lsquares)}.
+Antes de utilizar esta funci√≥n ejec√∫tese @code{load(lsquares)}.
 
-VÈanse tambiÈn
+V√©anse tambi√©n
 @code{lsquares_estimates},
 @code{lsquares_estimates_exact},
 @code{lsquares_mse},
@@ -264,9 +264,9 @@ Ejemplo:
 
 @end deffn
 
-@deffn {FunciÛn} lsquares_mse (@var{D}, @var{x}, @var{e})
+@deffn {Funci√≥n} lsquares_mse (@var{D}, @var{x}, @var{e})
 
-Devuelve el error medio cuadr·tico (MSE) para la ecuaciÛn @var{e}
+Devuelve el error medio cuadr√°tico (MSE) para la ecuaci√≥n @var{e}
 de variables @var{x} respecto de los datos @var{D}. El resultado devuelto
 es una suma, definida como
 
@@ -286,11 +286,11 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 @end ifnottex
 
 
-siendo @var{n} el n˙mero de datos y @code{@var{e}[i]} es la ecuaciÛn @var{e}
+siendo @var{n} el n√∫mero de datos y @code{@var{e}[i]} es la ecuaci√≥n @var{e}
 evaluada cuando a sus variables @var{x} se le asignan los valores asociados
-al dato @code{i}-Èsimo @code{@var{D}[i]}.
+al dato @code{i}-√©simo @code{@var{D}[i]}.
 
-Antes de utilizar esta funciÛn ejec˙tese @code{load(lsquares)}.
+Antes de utilizar esta funci√≥n ejec√∫tese @code{load(lsquares)}.
 
 Ejemplo:
 
@@ -352,15 +352,15 @@ Ejemplo:
 
 @end deffn
 
-@deffn {FunciÛn} lsquares_residuals (@var{D}, @var{x}, @var{e}, @var{a})
+@deffn {Funci√≥n} lsquares_residuals (@var{D}, @var{x}, @var{e}, @var{a})
 
-Devuelve los residuos para la ecuaciÛn @var{e} de par·metros @var{a}
+Devuelve los residuos para la ecuaci√≥n @var{e} de par√°metros @var{a}
 y datos @var{D}.
 
-@var{D} es una matriz, @var{x} una lista de variables y @var{e} es una ecuaciÛn
-o expresiÛn general; si @var{e} no es una ecuaciÛn (es decir, carece de igualdad),
+@var{D} es una matriz, @var{x} una lista de variables y @var{e} es una ecuaci√≥n
+o expresi√≥n general; si @var{e} no es una ecuaci√≥n (es decir, carece de igualdad),
 se trata como si fuese  @code{@var{e} = 0}. La lista @var{a} contiene ecuaciones
-que especifican valores para cualesquiera par·metros de @var{e} que no estÈn en @var{x}.
+que especifican valores para cualesquiera par√°metros de @var{e} que no est√©n en @var{x}.
 
 Los residuos se definen como
 
@@ -374,11 +374,11 @@ $${\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right),$$
 @end example
 @end ifnottex
 
-siendo @code{@var{e}[i]} la ecuaciÛn @var{e} evaluada cuando las variables @var{x}
-toman los valores asociados al dato @code{i}-Èsimo @code{@var{D}[i]}, y haciendo las
+siendo @code{@var{e}[i]} la ecuaci√≥n @var{e} evaluada cuando las variables @var{x}
+toman los valores asociados al dato @code{i}-√©simo @code{@var{D}[i]}, y haciendo las
 asignaciones indicadas en @var{a} al resto de variables.
 
-Antes de utilizar esta funciÛn ejec˙tese @code{load(lsquares)}.
+Antes de utilizar esta funci√≥n ejec√∫tese @code{load(lsquares)}.
 
 Ejemplo:
 
@@ -422,12 +422,12 @@ Ejemplo:
 
 @end deffn
 
-@deffn {FunciÛn} lsquares_residual_mse (@var{D}, @var{x}, @var{e}, @var{a})
+@deffn {Funci√≥n} lsquares_residual_mse (@var{D}, @var{x}, @var{e}, @var{a})
 
-Devuelve el residuo del error cuadr·tico medio (MSE) de la ecuaciÛn @var{e}
-para los valores par·metricos @var{a} y datos @var{D}.
+Devuelve el residuo del error cuadr√°tico medio (MSE) de la ecuaci√≥n @var{e}
+para los valores par√°metricos @var{a} y datos @var{D}.
 
-El residuo del error cuadr·tico medio (MSE) se define como
+El residuo del error cuadr√°tico medio (MSE) se define como
 
 @tex
 $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right)\right]^2,$$
@@ -445,11 +445,11 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 @end ifnottex
 
 
-siendo @code{@var{e}[i]} la ecuaciÛn @var{e} evaluada cuando las variables @var{x}
-toman los valores asociados al dato @code{i}-Èsimo @code{@var{D}[i]}, y haciendo las
+siendo @code{@var{e}[i]} la ecuaci√≥n @var{e} evaluada cuando las variables @var{x}
+toman los valores asociados al dato @code{i}-√©simo @code{@var{D}[i]}, y haciendo las
 asignaciones indicadas en @var{a} al resto de variables.
 
-Antes de utilizar esta funciÛn ejec˙tese @code{load(lsquares)}.
+Antes de utilizar esta funci√≥n ejec√∫tese @code{load(lsquares)}.
 
 Ejemplo:
 
@@ -496,29 +496,29 @@ Ejemplo:
 
 
 
-@deffn {FunciÛn} plsquares (@var{Mat},@var{VarList},@var{depvars})
-@deffnx {FunciÛn} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
-@deffnx {FunciÛn} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
+@deffn {Funci√≥n} plsquares (@var{Mat},@var{VarList},@var{depvars})
+@deffnx {Funci√≥n} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
+@deffnx {Funci√≥n} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
 
-Ajuste de una funciÛn polinÛmica multivariante a una tabla de datos por el mÈtodo
-de los @i{mÌnimos cuadrados}. @var{Mat} es la matriz con los datos 
-empÌricos, @var{VarList} es la lista con los nombres de las variables
+Ajuste de una funci√≥n polin√≥mica multivariante a una tabla de datos por el m√©todo
+de los @i{m√≠nimos cuadrados}. @var{Mat} es la matriz con los datos 
+emp√≠ricos, @var{VarList} es la lista con los nombres de las variables
 (una por cada columna de @var{Mat}, pero puede usarse @code{-} en lugar de los nombres de
 variables para ignorar las columnas de @var{Mat}), @var{depvars} es el nombre de la
-variable dependiente o una lista con uno o m·s nombres de variables dependientes
-(cuyos nombres deben estar tambiÈn en @var{VarList}), @var{maxexpon} es un argumento
-opcional para indicar el m·ximo exponente para cada una de las variables independientes
+variable dependiente o una lista con uno o m√°s nombres de variables dependientes
+(cuyos nombres deben estar tambi√©n en @var{VarList}), @var{maxexpon} es un argumento
+opcional para indicar el m√°ximo exponente para cada una de las variables independientes
 (1 por defecto) y  @var{maxdegree} es otro argumento opcional para el grado del polinomio
-(@var{maxexpon} por defecto); nÛtese que la suma de exponentes de cada tÈrmino debe ser
-igual o menor que @var{maxdegree}. Si @code{maxdgree = 0} entonces no se aplicar·
-ning˙n lÌmite.
+(@var{maxexpon} por defecto); n√≥tese que la suma de exponentes de cada t√©rmino debe ser
+igual o menor que @var{maxdegree}. Si @code{maxdgree = 0} entonces no se aplicar√°
+ning√∫n l√≠mite.
 
 Si @var{depvars} es el nombre de una variable dependiente (no en una lista),
 @code{plsquares} devuelve el polinomio ajustado. Si @var{depvars} es una lista
-de una o m·s variables dependientes, @code{plsquares} devuelve una lista con
-los polinomios ajustados. Los coeficientes de determinaciÛn se muestran en
+de una o m√°s variables dependientes, @code{plsquares} devuelve una lista con
+los polinomios ajustados. Los coeficientes de determinaci√≥n se muestran en
 su orden correspondiente para informar sobre la bondad del ajuste. Estos
-valores se almacenan tambiÈn en la variable global @var{DETCOEF} en un
+valores se almacenan tambi√©n en la variable global @var{DETCOEF} en un
 formato de lista si @var{depvars} es a su vez una lista.
 
 Un ejemplo sencillo de ajuste lineal multivariante:
@@ -545,7 +545,7 @@ El mismo ejemplo sin restricciones en el grado:
                               6
 @end example
 
-C·lculo del n˙mero de diagonales de un polÌgono de @math{N} lados
+C√°lculo del n√∫mero de diagonales de un pol√≠gono de @math{N} lados
 
 @example
 (%i4) plsquares(matrix([3,0],[4,2],[5,5],[6,9],[7,14],[8,20]),
@@ -559,7 +559,7 @@ C·lculo del n˙mero de diagonales de un polÌgono de @math{N} lados
 (%o5)                 diagonals = 27
 @end example
 
-C·lculo del n˙mero de formas de colocar dos reinas en un tablero 
+C√°lculo del n√∫mero de formas de colocar dos reinas en un tablero 
 n x n de manera que no se amenacen.
 
 @example
@@ -589,7 +589,7 @@ _Xor = - 2 a b + b + a, _Nand = 1 - a b,
 _Nor = a b - b - a + 1, _Nxor = 2 a b - b - a + 1]
 @end example
 
-Antes de hacer uso de esta funciÛn ejec˙tese  @code{load("plsquares")}.
+Antes de hacer uso de esta funci√≥n ejec√∫tese  @code{load("plsquares")}.
 @end deffn
 
 

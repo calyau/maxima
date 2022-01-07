@@ -5,80 +5,80 @@
 @menu
 * Lisp e Maxima::            
 * Descartando::          
-* DocumentaÁ„o::               
-* DefiniÁıes para Ajuda::        
+* Documenta√ß√£o::               
+* Defini√ß√µes para Ajuda::        
 @end menu
 
 @node Lisp e Maxima, Descartando, Ajuda, Ajuda
 @section Lisp e Maxima
-Maxima È escrito na liguagem de programaÁ„o Lisp, e È f·cil acessar funÁıes Lisp e vari·veis
+Maxima √© escrito na liguagem de programa√ß√£o Lisp, e √© f√°cil acessar fun√ß√µes Lisp e vari√°veis
 a partir do Maxima e vice-versa.
-SÌmbolos Lisp e Maxima s„o distinguidos atravÈs de uma convenÁ„o de nome.
-Um sÌmbolo Lisp que comeÁa com um sinal de dÛlar @code{$} corresponde a
-um sÌmbolo Maxima sem o sinal de dÛlar.
+S√≠mbolos Lisp e Maxima s√£o distinguidos atrav√©s de uma conven√ß√£o de nome.
+Um s√≠mbolo Lisp que come√ßa com um sinal de d√≥lar @code{$} corresponde a
+um s√≠mbolo Maxima sem o sinal de d√≥lar.
 @c NEED TO MENTION THIS OR IS IT JUST CLUTTERING ??
 @c This includes special Maxima variables such as @code{%} and input and output labels,
 @c which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., in Lisp.
-Um sÌmbolo Maxima que comeÁa com um ponto de interrogaÁ„o @code{?} corresponde a
-um sÌmbolo Lisp sem o ponto de interrogaÁ„o.
-Por exemplo, o sÌmbolo Maxima @code{foo} corresponde ao sÌmbolo Lisp @code{$foo},
-enquanto o sÌmbolo Maxima @code{?foo} corresponde ao sÌmbolo Lisp @code{foo},
-Note que @code{?foo} È escrito sem um espaÁo entre @code{?} e @code{foo};
+Um s√≠mbolo Maxima que come√ßa com um ponto de interroga√ß√£o @code{?} corresponde a
+um s√≠mbolo Lisp sem o ponto de interroga√ß√£o.
+Por exemplo, o s√≠mbolo Maxima @code{foo} corresponde ao s√≠mbolo Lisp @code{$foo},
+enquanto o s√≠mbolo Maxima @code{?foo} corresponde ao s√≠mbolo Lisp @code{foo},
+Note que @code{?foo} √© escrito sem um espa√ßo entre @code{?} e @code{foo};
 de outra forma pode ser uma chamada err@^onea para @code{describe ("foo")}.
 
-HÌfen @code{-}, asterisco @code{*}, ou outro caractere especial em sÌmbolos Lisp
-deve ser precedido por uma barra invertida @code{\} onde ele aparecer no cÛdigo Maxima.
-Por exemplo, o identificador Lisp @code{*foo-bar*} È escrito @code{?\*foo\-bar\*} no Maxima.
+H√≠fen @code{-}, asterisco @code{*}, ou outro caractere especial em s√≠mbolos Lisp
+deve ser precedido por uma barra invertida @code{\} onde ele aparecer no c√≥digo Maxima.
+Por exemplo, o identificador Lisp @code{*foo-bar*} √© escrito @code{?\*foo\-bar\*} no Maxima.
 
-CÛdigo Lisp pode ser executado dentro de uma sess„o Maxima.
+C√≥digo Lisp pode ser executado dentro de uma sess√£o Maxima.
 Uma linha simples de Lisp (contendo uma ou mais formas) pode ser executada
-atravÈs do comando especial @code{:lisp}. Por exemplo,
+atrav√©s do comando especial @code{:lisp}. Por exemplo,
 
 @example
 (%i1) :lisp (foo $x $y)
 @end example
 
 @noindent
-chama a funÁ„o Lisp @code{foo} com vari·veis Maxima @code{x} e @code{y} como argumentos.
-A constuÁ„o @code{:lisp} pode aparecer na linha de comando interativa
-ou em um ficheiro processado por @code{batch} ou @code{demo}, mas n„o em um ficheiro processado por
+chama a fun√ß√£o Lisp @code{foo} com vari√°veis Maxima @code{x} e @code{y} como argumentos.
+A constu√ß√£o @code{:lisp} pode aparecer na linha de comando interativa
+ou em um ficheiro processado por @code{batch} ou @code{demo}, mas n√£o em um ficheiro processado por
 @code{load}, @code{batchload}, @code{translate_file}, ou @code{compile_file}.
 
-A funÁ„o @code{to_lisp()} abre uma sess„o interativa Lisp.
-Digitando @code{(to-maxima)} fecha a sess„o Lisp e retorna para o Maxima.
+A fun√ß√£o @code{to_lisp()} abre uma sess√£o interativa Lisp.
+Digitando @code{(to-maxima)} fecha a sess√£o Lisp e retorna para o Maxima.
 @c I DON'T EVEN WANT TO MENTION USING CTRL-C TO OPEN A LISP SESSION.
 @c (1) IT TAKES EXTRA SET UP TO GET STARTED NAMELY :lisp (setq *debugger-hook* nil)
 @c (2) IT GETS SCREWED UP EASILY -- TYPE SOMETHING WRONG AND YOU CAN'T GET BACK TO MAXIMA
 @c (3) IT DOESN'T OFFER FUNCTIONALITY NOT PRESENT IN THE to_lisp() SESSION
 
-FunÁıes Lisp e vari·veis que s„o para serem visÌveis no Maxima como
-funÁıes e vari·veis com nomes comuns (sem pontuaÁ„o especial)
-devem ter nomes Lisp comeÁando com o sinal de dÛlar @code{$}.
+Fun√ß√µes Lisp e vari√°veis que s√£o para serem vis√≠veis no Maxima como
+fun√ß√µes e vari√°veis com nomes comuns (sem pontua√ß√£o especial)
+devem ter nomes Lisp come√ßando com o sinal de d√≥lar @code{$}.
 
-Maxima È sensÌvel ‡ caixa, distingue entre letras em caixa alta (mai˙sculas) e letras em caixa baixa (min˙sculas)
-em identificadores, enquanto Lisp n„o È sensÌvel ‡ caixa.
-Existem algumas regras governando a traduÁ„o de nomes entre o Lisp e o Maxima.
+Maxima √© sens√≠vel √† caixa, distingue entre letras em caixa alta (mai√∫sculas) e letras em caixa baixa (min√∫sculas)
+em identificadores, enquanto Lisp n√£o √© sens√≠vel √† caixa.
+Existem algumas regras governando a tradu√ß√£o de nomes entre o Lisp e o Maxima.
 
 @enumerate
 @item
-Um identificador Lisp n„o contido entre barras verticais corresponde a um identificador Maxima
+Um identificador Lisp n√£o contido entre barras verticais corresponde a um identificador Maxima
 em caixa baixa.
-Se o identificador Lisp estiver em caixa alta, caixa baixa, ou caixa mista, È ignorado.
+Se o identificador Lisp estiver em caixa alta, caixa baixa, ou caixa mista, √© ignorado.
 E.g., Lisp @code{$foo}, @code{$FOO}, e @code{$Foo} todos correspondem a Maxima @code{foo}.
 @item
-Um identificador Lisp que est· todo em caixa alta ou todo em caixa baixa
+Um identificador Lisp que est√° todo em caixa alta ou todo em caixa baixa
 e contido em barras verticais corresponde a um identificador Maxima com caixa invertida.
-Isto È, caixa alta È alterada para caixa baixa e caixa baixa para caixa alta.
+Isto √©, caixa alta √© alterada para caixa baixa e caixa baixa para caixa alta.
 E.g., Lisp @code{|$FOO|} e @code{|$foo|}
 corresponde a Maxima @code{foo} e @code{FOO}, respectivamente.
 @item
-Um identificador Lisp que È misto de caixa alta e caixa baixa
+Um identificador Lisp que √© misto de caixa alta e caixa baixa
 e contido entre barras verticais corresponde a um identificador Maxima com o mesma caixa.
 E.g., Lisp @code{|$Foo|} corresponde a Maxima @code{Foo}.
 @end enumerate
 
-A macro Lisp @code{#$} permite o uso de expressıes Maxima em cÛdigo Lisp.
-@code{#$@var{expr}$} expande para uma express„o Lisp equivalente ‡ express„o Maxima @var{expr}.
+A macro Lisp @code{#$} permite o uso de express√µes Maxima em c√≥digo Lisp.
+@code{#$@var{expr}$} expande para uma express√£o Lisp equivalente √† express√£o Maxima @var{expr}.
 
 @example
 (msetq $foo #$[x, y]$)
@@ -92,7 +92,7 @@ Isso tem o mesmo efeito que digitar
 @end example
 
 @noindent
-A funÁ„o Lisp @code{displa} imprime uma express„o em formato Maxima.
+A fun√ß√£o Lisp @code{displa} imprime uma express√£o em formato Maxima.
 
 @example
 (%i1) :lisp #$[x, y, z]$ 
@@ -102,8 +102,8 @@ A funÁ„o Lisp @code{displa} imprime uma express„o em formato Maxima.
 NIL
 @end example
 
-FunÁıes definidas em Maxima n„o s„o funÁıes comuns em Lisp.
-A funÁ„o Lisp @code{mfuncall} chama uma funÁ„o Maxima.
+Fun√ß√µes definidas em Maxima n√£o s√£o fun√ß√µes comuns em Lisp.
+A fun√ß√£o Lisp @code{mfuncall} chama uma fun√ß√£o Maxima.
 Por exemplo:
 
 @example
@@ -112,7 +112,7 @@ Por exemplo:
 ((MTIMES SIMP) A B)
 @end example
 
-Algumas funÁıes Lisp possuem o mesmo nome que no pacote Maxima, a saber as seguintes.
+Algumas fun√ß√µes Lisp possuem o mesmo nome que no pacote Maxima, a saber as seguintes.
 
 @code{complement},
 @code{continue},
@@ -137,38 +137,38 @@ Algumas funÁıes Lisp possuem o mesmo nome que no pacote Maxima, a saber as segui
 e @code{gcd}.
 
 
-@node Descartando, DocumentaÁ„o, Lisp e Maxima, Ajuda
+@node Descartando, Documenta√ß√£o, Lisp e Maxima, Ajuda
 @section Descartando
-ComputaÁ„o simbÛlica tende a criar um bom volume
-de ficheiros tempor·rios, e o efectivo manuseio disso pode ser crucial para sucesso
+Computa√ß√£o simb√≥lica tende a criar um bom volume
+de ficheiros tempor√°rios, e o efectivo manuseio disso pode ser crucial para sucesso
 completo de alguns programas.
 
 @c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
 @c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
 @c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
 Sob GCL, nos sistemas UNIX onde a chamada de sistema mprotect ( controle
-de acessso autorizado a uma regi„o de memÛria) est·
-disponÌvel (incluindo SUN OS 4.0 e algumas variantes de
-BSD) uma organizaÁ„o de ficheiros tempor·rios
-estratificada est· disponÌvel.  Isso limita a
-organizaÁ„o para p·ginas que tenham sido recentemente
-escritas.  Veja a documentaÁ„o da GCL sob ALLOCATE e
-GBC.  No ambiente Lisp fazendo (setq si::*notify-gbc* t) ir·
-ajud·-lo a determinar quais ·reas podem precisar de mais
-espaÁo.
+de acessso autorizado a uma regi√£o de mem√≥ria) est√°
+dispon√≠vel (incluindo SUN OS 4.0 e algumas variantes de
+BSD) uma organiza√ß√£o de ficheiros tempor√°rios
+estratificada est√° dispon√≠vel.  Isso limita a
+organiza√ß√£o para p√°ginas que tenham sido recentemente
+escritas.  Veja a documenta√ß√£o da GCL sob ALLOCATE e
+GBC.  No ambiente Lisp fazendo (setq si::*notify-gbc* t) ir√°
+ajud√°-lo a determinar quais √°reas podem precisar de mais
+espa√ßo.
 
-@node DocumentaÁ„o, DefiniÁıes para Ajuda, Descartando, Ajuda
-@section DocumentaÁ„o
+@node Documenta√ß√£o, Defini√ß√µes para Ajuda, Descartando, Ajuda
+@section Documenta√ß√£o
 
 @c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
 
 O manual on-line de utilizador do Maxima pode ser visto em diferentes formas.
 A partir da linha de comando interativa do Maxima, o manual de utilizador
-È visto em texto plano atravÈs do comando @code{?} (i.e., a funÁ„o @code{describe} ).
-O manual de utilizador È visto como hipertexto @code{info} atravÈs do programa visualizador @code{info}
-e como uma web page atravÈs de qualquer navegador web comum.
+√© visto em texto plano atrav√©s do comando @code{?} (i.e., a fun√ß√£o @code{describe} ).
+O manual de utilizador √© visto como hipertexto @code{info} atrav√©s do programa visualizador @code{info}
+e como uma web page atrav√©s de qualquer navegador web comum.
 
-@code{example} mostra exemplos de muitas funÁıes do Maxima.
+@code{example} mostra exemplos de muitas fun√ß√µes do Maxima.
 Por exemplo,
 
 @example
@@ -190,26 +190,26 @@ retorna
 (%o5)                           0
 @end example
 
-e saÌda adicional.
+e sa√≠da adicional.
 
-@node DefiniÁıes para Ajuda,  , DocumentaÁ„o, Ajuda
-@section DefiniÁıes para Ajuda
+@node Defini√ß√µes para Ajuda,  , Documenta√ß√£o, Ajuda
+@section Defini√ß√µes para Ajuda
 
-@deffn {FunÁ„o} demo (@var{nomeficheiro})
-Avalia expressıes Maxima em @var{nomeficheiro} e mostra os resultados.
-@code{demo} faz uma pausa apÛs avaliar cada express„o
-e continua apÛs a conclus„o com um enter das entradas de utilizador.
-(Se executando em Xmaxima, @code{demo} pode precisar ver um ponto e vÌrgula @code{;}
+@deffn {Fun√ß√£o} demo (@var{nomeficheiro})
+Avalia express√µes Maxima em @var{nomeficheiro} e mostra os resultados.
+@code{demo} faz uma pausa ap√≥s avaliar cada express√£o
+e continua ap√≥s a conclus√£o com um enter das entradas de utilizador.
+(Se executando em Xmaxima, @code{demo} pode precisar ver um ponto e v√≠rgula @code{;}
 seguido por um enter.)
 
-@code{demo} procura na lista de directÛrios
+@code{demo} procura na lista de direct√≥rios
 @code{file_search_demo} para achar @code{nomeficheiro}.
 Se o ficheiro tiver o sufixo @code{dem},
 o sufixo pode ser omitido.
-Veja tambÈm @code{file_search}.
+Veja tamb√©m @code{file_search}.
 
 @code{demo} avalia seus argumento.
-@code{demo} retorna o nome do ficheiro de demonstraÁ„o.
+@code{demo} retorna o nome do ficheiro de demonstra√ß√£o.
 
 Exemplo:
 
@@ -285,34 +285,34 @@ _
 
 @end deffn
 
-@deffn {FunÁ„o} describe (@var{string})
-@deffnx {FunÁ„o} describe (@var{string}, exact)
-@deffnx {FunÁ„o} describe (@var{string}, inexact)
+@deffn {Fun√ß√£o} describe (@var{string})
+@deffnx {Fun√ß√£o} describe (@var{string}, exact)
+@deffnx {Fun√ß√£o} describe (@var{string}, inexact)
 @ifinfo
 @fnindex Ajuda
 @end ifinfo
 
-@code{describe(@var{string})} È equivalente a @code{describe(@var{string}, exact)}.
+@code{describe(@var{string})} √© equivalente a @code{describe(@var{string}, exact)}.
 
-@code{describe(@var{string}, exact)} encontra um item com tÌtulo igual
+@code{describe(@var{string}, exact)} encontra um item com t√≠tulo igual
 (case-insensitive)
 a @var{string}, se existir tal item.
 
-@code{describe(@var{string}, inexact)} encontra todos os itens documentados que contiverem @var{string} em seus tÌtulos.
+@code{describe(@var{string}, inexact)} encontra todos os itens documentados que contiverem @var{string} em seus t√≠tulos.
 Se existe mais de um de tal item, Maxima solicita ao utilizador seleccionar
-um item ou Ìtens para mostrar.
+um item ou √≠tens para mostrar.
 
 Na linha de comando interativa,
-@code{? foo} (com um espaÁo entre @code{?} e @code{foo})
-È equivalente a @code{describe("foo", exact)}.
-e @code{?? foo} È equivalente a @code{describe("foo", inexact)}.
+@code{? foo} (com um espa√ßo entre @code{?} e @code{foo})
+√© equivalente a @code{describe("foo", exact)}.
+e @code{?? foo} √© equivalente a @code{describe("foo", inexact)}.
 
-@code{describe("", inexact)} retorna uma lista de todos os tÛpicos documentados no manual on-line.
+@code{describe("", inexact)} retorna uma lista de todos os t√≥picos documentados no manual on-line.
 
-@code{describe} n„o avalia seu argumento.
-@code{describe} retorna @code{true} se alguma documentaÁ„o for encontrada, de outra forma retorna @code{false}.
+@code{describe} n√£o avalia seu argumento.
+@code{describe} retorna @code{true} se alguma documenta√ß√£o for encontrada, de outra forma retorna @code{false}.
 
-Veja tambÈm @emph{DocumentaÁ„o}.
+Veja tamb√©m @emph{Documenta√ß√£o}.
 
 Exemplo:
 
@@ -339,26 +339,26 @@ Info from file /use/local/maxima/doc/info/maxima.info:
      integral, [...]
 @end example
 
-Nesse , Ìtens 7 e 8 foram seleccionados.
-Todos ou nenhum dos Ìtens poderia ter sido seleccionado atravÈs da inserÁ„o de @code{all} ou @code{none},
+Nesse , √≠tens 7 e 8 foram seleccionados.
+Todos ou nenhum dos √≠tens poderia ter sido seleccionado atrav√©s da inser√ß√£o de @code{all} ou @code{none},
 que podem ser abreviado para @code{a} ou para @code{n}, respectivamente.
 
 @end deffn
 
-@deffn {FunÁ„o} example (@var{tÛpico})
-@deffnx {FunÁ„o} example ()
-@code{example (@var{topic})} mostra alguns exemplos de @var{tÛpico},
-que È um sÌmbolo (n„o uma sequÍncia de caracteres).
-A maioria dos tÛpicos s„o nomes de funÁ„o.
-@code{example ()} retorna a lista de todos os tÛpicos reconhecidos.
+@deffn {Fun√ß√£o} example (@var{t√≥pico})
+@deffnx {Fun√ß√£o} example ()
+@code{example (@var{topic})} mostra alguns exemplos de @var{t√≥pico},
+que √© um s√≠mbolo (n√£o uma sequ√™ncia de caracteres).
+A maioria dos t√≥picos s√£o nomes de fun√ß√£o.
+@code{example ()} retorna a lista de todos os t√≥picos reconhecidos.
 
-O nome do ficheiro contendo os exemplos È dado pela
-vari·vel global @code{manual_demo}, cujo valor padr„o È @code{"manual.demo"}.
+O nome do ficheiro contendo os exemplos √© dado pela
+vari√°vel global @code{manual_demo}, cujo valor padr√£o √© @code{"manual.demo"}.
 
-@code{example} n„o avalia seu argumento.
+@code{example} n√£o avalia seu argumento.
 @code{example} retorna @code{done}
-a menos que ocorra um erro ou n„o exista o argumento fornecido pelo utilizador, nesse caso @code{example}
-retorna uma lista de todos os tÛpicos reconhecidos.
+a menos que ocorra um erro ou n√£o exista o argumento fornecido pelo utilizador, nesse caso @code{example}
+retorna uma lista de todos os t√≥picos reconhecidos.
 
 Exemplos:
 

@@ -6,58 +6,58 @@
 @node Funciones y variables para romberg, , Top, Top
 @section Funciones y variables para romberg
 
-@deffn {Función} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
-@deffnx {Función} romberg (@var{F}, @var{a}, @var{b})
+@deffn {FunciÃ³n} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffnx {FunciÃ³n} romberg (@var{F}, @var{a}, @var{b})
 
-Integra numéricamente por el método de Romberg.
+Integra numÃ©ricamente por el mÃ©todo de Romberg.
 
 La llamada @code{romberg(@var{expr}, @var{x}, @var{a}, @var{b})}
-devuelve una estimación de la integral @code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})}.
-El argumento @var{expr} debe ser una expresión reducible a un valor decimal
-en coma flotante cuando @var{x} es a su vez un número decimal.
+devuelve una estimaciÃ³n de la integral @code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})}.
+El argumento @var{expr} debe ser una expresiÃ³n reducible a un valor decimal
+en coma flotante cuando @var{x} es a su vez un nÃºmero decimal.
 
-La llamada @code{romberg(@var{F}, @var{a}, @var{b})} devuelve una estimación
+La llamada @code{romberg(@var{F}, @var{a}, @var{b})} devuelve una estimaciÃ³n
 de la integral @code{integrate(@var{F}(x), x, @var{a}, @var{b})}, siendo
-@code{x} el único argumento de @var{F}. El argumento @var{F} debe ser 
-una función en Lisp o en Maxima que devuelva un valor decimal
-en coma flotante cuando @var{x} es a su vez un número decimal; @var{F}
-puede ser el nombre de una función de Maxima traducida o compilada.
+@code{x} el Ãºnico argumento de @var{F}. El argumento @var{F} debe ser 
+una funciÃ³n en Lisp o en Maxima que devuelva un valor decimal
+en coma flotante cuando @var{x} es a su vez un nÃºmero decimal; @var{F}
+puede ser el nombre de una funciÃ³n de Maxima traducida o compilada.
 
 La exactitud de @code{romberg} se controla con las variables globales 
-@code{rombergabs} y @code{rombergtol}. La función @code{romberg}
-termina con éxito su cálculo cuando la diferencia absoluta entre
+@code{rombergabs} y @code{rombergtol}. La funciÃ³n @code{romberg}
+termina con Ã©xito su cÃ¡lculo cuando la diferencia absoluta entre
 sucesivas aproximaciones es menor que @code{rombergabs},
 o cuando la diferencia relativa de sucesivas aproximaciones es menor que
-@code{rombergtol}. Así, cuando @code{rombergabs} vale 0.0
-(su valor por defecto) sólo tiene efecto el test del error relativo basado
+@code{rombergtol}. AsÃ­, cuando @code{rombergabs} vale 0.0
+(su valor por defecto) sÃ³lo tiene efecto el test del error relativo basado
 en @code{romberg}.
 
-La función @code{romberg} reduce a mitades sucesivas la amplitud del paso un máximo de
-@code{rombergit} veces antes de abandonar el cómputo; el número máximo de 
+La funciÃ³n @code{romberg} reduce a mitades sucesivas la amplitud del paso un mÃ¡ximo de
+@code{rombergit} veces antes de abandonar el cÃ³mputo; el nÃºmero mÃ¡ximo de 
 evaluaciones del integrando es, por consiguiente, igual a @code{2^rombergit}.
 De no satisfacerse el criterio de error establecido por @code{rombergabs} y
 @code{rombergtol},  @code{romberg} devuelve un mensaje de error.
-La función @code{romberg} hace siempre al menos @code{rombergmin}
-iteraciones; se trata de una heurística para evitar
-la finalización prematura cuando el integrando oscila mucho.
+La funciÃ³n @code{romberg} hace siempre al menos @code{rombergmin}
+iteraciones; se trata de una heurÃ­stica para evitar
+la finalizaciÃ³n prematura cuando el integrando oscila mucho.
 
-La función @code{romberg} evalúa el integrando repetidamente tras asignarle
-a la variable de integración un valor específico. Este criterio
-permite anidar llamadas a @code{romberg} para calcular integrales múltiples.
-Sin embargo, los errores de cálculo no tienen en cuenta los errores de 
+La funciÃ³n @code{romberg} evalÃºa el integrando repetidamente tras asignarle
+a la variable de integraciÃ³n un valor especÃ­fico. Este criterio
+permite anidar llamadas a @code{romberg} para calcular integrales mÃºltiples.
+Sin embargo, los errores de cÃ¡lculo no tienen en cuenta los errores de 
 las integraciones anidadas, por lo que tales errores pueden subestimarse.
-Por otro lado, métodos especialmente desarrollados para integraciones
-múltiples pueden dar la misma exactitud con menos evaluaciones
+Por otro lado, mÃ©todos especialmente desarrollados para integraciones
+mÃºltiples pueden dar la misma exactitud con menos evaluaciones
 del integrando.
 
-Para hacer uso de esta función ejecútese primero @code{load(romberg)}.
+Para hacer uso de esta funciÃ³n ejecÃºtese primero @code{load(romberg)}.
 
-Véase también @code{QUADPACK}, un conjunto de funciones para 
-integración numérica.
+VÃ©ase tambiÃ©n @code{QUADPACK}, un conjunto de funciones para 
+integraciÃ³n numÃ©rica.
 
 Ejemplos:
 
-Una integración unidimensional.
+Una integraciÃ³n unidimensional.
 @c ===beg===
 @c load (romberg);
 @c f(x) := 1/((x - 1)^2 + 1/100) + 1/((x - 2)^2 + 1/1000)
@@ -93,7 +93,7 @@ Una integración unidimensional.
 (%o7)                7.5527060865060088E-11
 @end example
 
-Una integración bidimensional, implementada mediante llamadas anidadas a @code{romberg}.
+Una integraciÃ³n bidimensional, implementada mediante llamadas anidadas a @code{romberg}.
 @c ===beg===
 @c load (romberg);
 @c g(x, y) := x*y / (x + y);
@@ -138,41 +138,41 @@ Una integración bidimensional, implementada mediante llamadas anidadas a @code{r
 Valor por defecto: 0.0
 
 La exactitud de @code{romberg} se controla con las variables globales 
-@code{rombergabs} y @code{rombergtol}. La función @code{romberg}
-termina con éxito su cálculo cuando la diferencia absoluta entre
+@code{rombergabs} y @code{rombergtol}. La funciÃ³n @code{romberg}
+termina con Ã©xito su cÃ¡lculo cuando la diferencia absoluta entre
 sucesivas aproximaciones es menor que @code{rombergabs},
 o cuando la diferencia relativa de sucesivas aproximaciones es menor que
-@code{rombergtol}. Así, cuando @code{rombergabs} vale 0.0
-(su valor por defecto) sólo tiene efecto el test del error relativo basado
+@code{rombergtol}. AsÃ­, cuando @code{rombergabs} vale 0.0
+(su valor por defecto) sÃ³lo tiene efecto el test del error relativo basado
 en @code{romberg}.
 
-Véanse también @code{rombergit} y @code{rombergmin}.
+VÃ©anse tambiÃ©n @code{rombergit} y @code{rombergmin}.
 
 @end defvr
 
 @defvr {Variable opcional} rombergit
 Valor por defecto: 11
 
-La función @code{romberg} reduce a mitades sucesivas la amplitud del paso un máximo de
-@code{rombergit} veces antes de abandonar el cómputo; el número máximo de 
+La funciÃ³n @code{romberg} reduce a mitades sucesivas la amplitud del paso un mÃ¡ximo de
+@code{rombergit} veces antes de abandonar el cÃ³mputo; el nÃºmero mÃ¡ximo de 
 evaluaciones del integrando es, por consiguiente, igual a @code{2^rombergit}.
-La función @code{romberg} hace siempre al menos @code{rombergmin}
-iteraciones; se trata de una heurística para evitar
-la finalización prematura cuando el integrando oscila mucho.
+La funciÃ³n @code{romberg} hace siempre al menos @code{rombergmin}
+iteraciones; se trata de una heurÃ­stica para evitar
+la finalizaciÃ³n prematura cuando el integrando oscila mucho.
 
 
-Véanse también @code{rombergabs} y @code{rombergtol}.
+VÃ©anse tambiÃ©n @code{rombergabs} y @code{rombergtol}.
 
 @end defvr
 
 @defvr {Variable opcional} rombergmin
 Valor por defecto: 0
 
-La función @code{romberg} hace siempre al menos @code{rombergmin}
-iteraciones; se trata de una heurística para evitar
-la finalización prematura cuando el integrando oscila mucho.
+La funciÃ³n @code{romberg} hace siempre al menos @code{rombergmin}
+iteraciones; se trata de una heurÃ­stica para evitar
+la finalizaciÃ³n prematura cuando el integrando oscila mucho.
 
-Véanse también @code{rombergit}, @code{rombergabs} y @code{rombergtol}.
+VÃ©anse tambiÃ©n @code{rombergit}, @code{rombergabs} y @code{rombergtol}.
 
 @end defvr
 
@@ -180,15 +180,15 @@ Véanse también @code{rombergit}, @code{rombergabs} y @code{rombergtol}.
 Valor por defecto: 1e-4
 
 La exactitud de @code{romberg} se controla con las variables globales 
-@code{rombergabs} y @code{rombergtol}. La función @code{romberg}
-termina con éxito su cálculo cuando la diferencia absoluta entre
+@code{rombergabs} y @code{rombergtol}. La funciÃ³n @code{romberg}
+termina con Ã©xito su cÃ¡lculo cuando la diferencia absoluta entre
 sucesivas aproximaciones es menor que @code{rombergabs},
 o cuando la diferencia relativa de sucesivas aproximaciones es menor que
-@code{rombergtol}. Así, cuando @code{rombergabs} vale 0.0
-(su valor por defecto) sólo tiene efecto el test del error relativo basado
+@code{rombergtol}. AsÃ­, cuando @code{rombergabs} vale 0.0
+(su valor por defecto) sÃ³lo tiene efecto el test del error relativo basado
 en @code{romberg}.
 
-Véanse también @code{rombergit} y @code{rombergmin}.
+VÃ©anse tambiÃ©n @code{rombergit} y @code{rombergmin}.
 
 @end defvr
 

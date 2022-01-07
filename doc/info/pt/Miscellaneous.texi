@@ -1,49 +1,49 @@
 @c /Miscellaneous.texi/1.20/Mon Jan  1 07:27:14 2007/-ko/
 @menu
-* IntroduÁ„o a OpÁıes Diversas::  
+* Introdu√ß√£o a Op√ß√µes Diversas::  
 * Compartilhado::                       
-* DefiniÁıes para OpÁıes Diversas::  
+* Defini√ß√µes para Op√ß√µes Diversas::  
 @end menu
 
-@node IntroduÁ„o a OpÁıes Diversas, Compartilhado, OpÁıes Diversas, OpÁıes Diversas
-@section IntroduÁ„o a OpÁıes Diversas
+@node Introdu√ß√£o a Op√ß√µes Diversas, Compartilhado, Op√ß√µes Diversas, Op√ß√µes Diversas
+@section Introdu√ß√£o a Op√ß√µes Diversas
 
-Nessa secÁ„o v·rias opÁıes s„o tratadas pelo facto de possuirem um efeito global
-sobre a operaÁ„o do Maxima.   TambÈm v·rias listas tais como a lista de todas as
-funÁıes definidas pelo utilizador, s„o discutidas.
+Nessa sec√ß√£o v√°rias op√ß√µes s√£o tratadas pelo facto de possuirem um efeito global
+sobre a opera√ß√£o do Maxima.   Tamb√©m v√°rias listas tais como a lista de todas as
+fun√ß√µes definidas pelo utilizador, s√£o discutidas.
 
-@node Compartilhado, DefiniÁıes para OpÁıes Diversas, IntroduÁ„o a OpÁıes Diversas, OpÁıes Diversas
+@node Compartilhado, Defini√ß√µes para Op√ß√µes Diversas, Introdu√ß√£o a Op√ß√µes Diversas, Op√ß√µes Diversas
 @section Compartilhado
-O directÛrio "share" do Maxima contÈm programas e outros ficheiros 
-de interesse para os utilizadors do Maxima, mas que n„o s„o parte da implementaÁ„o do n˙cleo do Maxima.
-Esses programas s„o tipicamente chamados via @code{load} ou @code{setup_autoload}.
+O direct√≥rio "share" do Maxima cont√©m programas e outros ficheiros 
+de interesse para os utilizadors do Maxima, mas que n√£o s√£o parte da implementa√ß√£o do n√∫cleo do Maxima.
+Esses programas s√£o tipicamente chamados via @code{load} ou @code{setup_autoload}.
 
-@code{:lisp *maxima-sharedir*} mostra a localizaÁ„o do directÛrio compartilhado
+@code{:lisp *maxima-sharedir*} mostra a localiza√ß√£o do direct√≥rio compartilhado
 dentro do sistema de ficheiros do utilizador.
 
 @c FIXME FIXME FIXME -- WE REALLY NEED AN UP-TO-DATE LIST OF SHARE PACKAGES !!
 @code{printfile ("share.usg")} imprime uma lista de pacotes desactualizados dos pacotes compartilhados.
-Usu·rios podem encontrar isso de forma mais detalhada navegando no directÛrio compartilhado usando um navegador de sistema de ficheiro.
+Usu√°rios podem encontrar isso de forma mais detalhada navegando no direct√≥rio compartilhado usando um navegador de sistema de ficheiro.
 
 
-@node DefiniÁıes para OpÁıes Diversas,  , Compartilhado, OpÁıes Diversas
-@section DefiniÁıes para OpÁıes Diversas
+@node Defini√ß√µes para Op√ß√µes Diversas,  , Compartilhado, Op√ß√µes Diversas
+@section Defini√ß√µes para Op√ß√µes Diversas
 
-@defvr {Vari·vel de sistema} aliases
-Valor por omiss„o: @code{[]}
+@defvr {Vari√°vel de sistema} aliases
+Valor por omiss√£o: @code{[]}
 
-@code{aliases} È a lista de ·tomos que possuem um alias definido pelo utilizador (escolhido atravÈs
-das funÁıes @code{alias}, @code{ordergreat}, @code{orderless} ou atravÈs da declaraÁ„o do ·tomo como sendo um
+@code{aliases} √© a lista de √°tomos que possuem um alias definido pelo utilizador (escolhido atrav√©s
+das fun√ß√µes @code{alias}, @code{ordergreat}, @code{orderless} ou atrav√©s da declara√ß√£o do √°tomo como sendo um
 @code{noun} (substantivo) com @code{declare}).
 @end defvr
 
 
-@defvr {DeclaraÁ„o} alphabetic
-@code{alphabetic} È uma declaraÁ„o reconhecida por @code{declare}.
-A express„o @code{declare(@var{s}, alphabetic)} diz ao Maxima para reconhecer
-como alfabÈtico todos os caracteres em @var{s}, que deve ser uma sequÍncia de caracteres.
+@defvr {Declara√ß√£o} alphabetic
+@code{alphabetic} √© uma declara√ß√£o reconhecida por @code{declare}.
+A express√£o @code{declare(@var{s}, alphabetic)} diz ao Maxima para reconhecer
+como alfab√©tico todos os caracteres em @var{s}, que deve ser uma sequ√™ncia de caracteres.
  
-Veja tambÈm @emph{Identificadores}.
+Veja tamb√©m @emph{Identificadores}.
 
 Exemplo:
 
@@ -70,49 +70,49 @@ Exemplo:
 
 @c REPHRASE
 @c DOES apropos RETURN THE SAME THING AS THE LIST SHOWN BY describe ??
-@deffn {FunÁ„o} apropos (@var{string})
+@deffn {Fun√ß√£o} apropos (@var{string})
 Procura por nomes Maxima que possuem @var{string} aparecendo em qualquer lugar dentro
 de seu nome.  Dessa forma, @code{apropos (exp)} retorna uma lista de todos os sinalizadores
-e funÁıes que possuem @code{exp} como parte de seus nomes, tais como @code{expand},
+e fun√ß√µes que possuem @code{exp} como parte de seus nomes, tais como @code{expand},
 @code{exp}, e @code{exponentialize}.  Dessa forma, se lembrar apenas uma
 parte do nome
 de alguma coisa, pode usar este comando para achar o restante do nome.
 Similarmente, pode dizer @code{apropos (tr_)} para achar uma lista de muitos dos
-comutadores relatando para o tradutor, muitos dos quais comeÁam com @code{tr_}.
+comutadores relatando para o tradutor, muitos dos quais come√ßam com @code{tr_}.
 
 @end deffn
 
-@deffn {FunÁ„o} args (@var{expr})
+@deffn {Fun√ß√£o} args (@var{expr})
 Retorna a lista de argumentos de @code{expr},
-que pode ser de qualquer tipo de express„o outra como um ·tomo.
-Somente os argumentos do operador de nÌvel mais alto s„o extraÌdos;
-subexpressıes de @code{expr} aparecem como elementos ou subexpressıes de elementos
+que pode ser de qualquer tipo de express√£o outra como um √°tomo.
+Somente os argumentos do operador de n√≠vel mais alto s√£o extra√≠dos;
+subexpress√µes de @code{expr} aparecem como elementos ou subexpress√µes de elementos
 da lista de argumentos.
 
-A ordem dos Ìtens na lista pode depender do sinalizador global @code{inflag}.
+A ordem dos √≠tens na lista pode depender do sinalizador global @code{inflag}.
 
-@code{args (@var{expr})} È equivalente a @code{substpart ("[", @var{expr}, 0)}.
-Veja tambÈm @code{substpart}.
+@code{args (@var{expr})} √© equivalente a @code{substpart ("[", @var{expr}, 0)}.
+Veja tamb√©m @code{substpart}.
 
-Veja tambÈm @code{op}.
+Veja tamb√©m @code{op}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} genindex
-Valor por omiss„o: @code{i}
+@defvr {Vari√°vel de op√ß√£o} genindex
+Valor por omiss√£o: @code{i}
 
-@code{genindex} È o prefixo usado para gerar a
-prÛxima vari·vel do somatÛrio quando necess·rio.
+@code{genindex} √© o prefixo usado para gerar a
+pr√≥xima vari√°vel do somat√≥rio quando necess√°rio.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} gensumnum
-Valor por omiss„o: 0
+@defvr {Vari√°vel de op√ß√£o} gensumnum
+Valor por omiss√£o: 0
 
-@code{gensumnum} È o sufixo numÈrico usado para gerar vari·vel seguinte
-do somatÛrio.  Se isso for escolhido para @code{false} ent„o o Ìndice  consistir· somente
-de @code{genindex} com um sufixo numÈrico.
+@code{gensumnum} √© o sufixo num√©rico usado para gerar vari√°vel seguinte
+do somat√≥rio.  Se isso for escolhido para @code{false} ent√£o o √≠ndice  consistir√° somente
+de @code{genindex} com um sufixo num√©rico.
 
 @end defvr
 
@@ -124,75 +124,75 @@ Infinito positivo real.
 
 @c NEEDS EXPANSION AND EXAMPLES
 @defvr {Constante} infinity
-Infinito complexo, uma magnitude infinita de ‚ngulo de fase
-arbitr·ria.  Veja tambÈm @code{inf} e @code{minf}.
+Infinito complexo, uma magnitude infinita de √¢ngulo de fase
+arbitr√°ria.  Veja tamb√©m @code{inf} e @code{minf}.
 
 @end defvr
 
-@defvr {Vari·vel de sistema} infolists
-Valor por omiss„o: @code{[]}
+@defvr {Vari√°vel de sistema} infolists
+Valor por omiss√£o: @code{[]}
 
-@code{infolists} È uma lista dos nomes de todas as listas de
-informaÁ„o no Maxima. S„o elas:
+@code{infolists} √© uma lista dos nomes de todas as listas de
+informa√ß√£o no Maxima. S√£o elas:
 
 @table @code
 @item labels
-Todos associam @code{%i}, @code{%o}, e rÛtulos @code{%t}.
+Todos associam @code{%i}, @code{%o}, e r√≥tulos @code{%t}.
 @item values
-Todos associam ·tomos que s„o vari·veis de utilizador, n„o opÁıes do
-Maxima ou comutadores, criados atravÈs de @code{:} ou @code{::} ou associando funcionalmente.
+Todos associam √°tomos que s√£o vari√°veis de utilizador, n√£o op√ß√µes do
+Maxima ou comutadores, criados atrav√©s de @code{:} ou @code{::} ou associando funcionalmente.
 @c WHAT IS INTENDED BY "FUNCTIONAL BINDING" HERE ??
 
 @item functions
-Todas as funÁıes definidas pelo utilizador, criadas atravÈs de @code{:=} ou @code{define}.
+Todas as fun√ß√µes definidas pelo utilizador, criadas atrav√©s de @code{:=} ou @code{define}.
 
 @item arrays
-Todos os arrays declarados e n„o declarados, criados atravÈs de @code{:}, @code{::}, ou @code{:=}.
+Todos os arrays declarados e n√£o declarados, criados atrav√©s de @code{:}, @code{::}, ou @code{:=}.
 @c AREN'T THERE OTHER MEANS OF CREATING ARRAYS ??
 @item macros
 Todas as macros definidas pelo utilizador.
 
 @item myoptions
-Todas as opÁıes alguma vez alteradas pelo utilizador (mesmo que tenham ou n„o elas
-tenham mais tarde retornadas para seus valores padr„o).
+Todas as op√ß√µes alguma vez alteradas pelo utilizador (mesmo que tenham ou n√£o elas
+tenham mais tarde retornadas para seus valores padr√£o).
 
 @item rules
-Todos os modelos definidos pelo utilizador que coincidirem e regras de simplificaÁ„o, criadas
-atravÈs de @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, ou @code{defrule}.
+Todos os modelos definidos pelo utilizador que coincidirem e regras de simplifica√ß√£o, criadas
+atrav√©s de @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, ou @code{defrule}.
 
 @item aliases
-Todos os ·tomos que possuem um alias definido pelo utilizador, criado atravÈs das funÁıes
-@code{alias}, @code{ordergreat}, @code{orderless} ou declarando os ·tomos como um @code{noun}
+Todos os √°tomos que possuem um alias definido pelo utilizador, criado atrav√©s das fun√ß√µes
+@code{alias}, @code{ordergreat}, @code{orderless} ou declarando os √°tomos como um @code{noun}
 com @code{declare}.
 
 @item dependencies
-Todos os ·tomos que possuem dependÍncias funcionais, criadas atravÈs das
-funÁıes @code{depends} ou @code{gradef}.
+Todos os √°tomos que possuem depend√™ncias funcionais, criadas atrav√©s das
+fun√ß√µes @code{depends} ou @code{gradef}.
 
 @item gradefs
-Todas as funÁıes que possuem derivadas definidas pelo utilizador, cridas atravÈs da
-funÁ„o @code{gradef}.
+Todas as fun√ß√µes que possuem derivadas definidas pelo utilizador, cridas atrav√©s da
+fun√ß√£o @code{gradef}.
 
 @c UMM, WE REALLY NEED TO BE SPECIFIC -- WHAT DOES "ETC" CONTAIN HERE ??
 @item props
-Todos os ·tomos que possuem quaisquer propriedades outras que n„o essas mencionadas
-acima, tais como propriedades estabelecidas por @code{atvalue} , @code{matchdeclare}, etc., tambÈm propriedades
-estabelecidas na funÁ„o @code{declare}.
+Todos os √°tomos que possuem quaisquer propriedades outras que n√£o essas mencionadas
+acima, tais como propriedades estabelecidas por @code{atvalue} , @code{matchdeclare}, etc., tamb√©m propriedades
+estabelecidas na fun√ß√£o @code{declare}.
 
 @item let_rule_packages
-Todos os pacote de rÈgras em uso definidos pelo utilizador
+Todos os pacote de r√©gras em uso definidos pelo utilizador
 mais o pacote especial @code{default_let_rule_package}.
-(@code{default_let_rule_package} È o nome do pacote de rÈgras usado quando
-um n„o est· explicitamente escolhido pelo utilizador.)
+(@code{default_let_rule_package} √© o nome do pacote de r√©gras usado quando
+um n√£o est√° explicitamente escolhido pelo utilizador.)
 
 @end table
 
 @end defvr
 
-@deffn {FunÁ„o} integerp (@var{expr})
-Retorna @code{true} se @var{expr} È um inteiro numÈrico literal, de outra forma retorna @code{false}.
+@deffn {Fun√ß√£o} integerp (@var{expr})
+Retorna @code{true} se @var{expr} √© um inteiro num√©rico literal, de outra forma retorna @code{false}.
 
-@code{integerp} retorna falso se seu argumento for um sÌmbolo,
+@code{integerp} retorna falso se seu argumento for um s√≠mbolo,
 mesmo se o argumento for declarado inteiro.
 
 Exemplos:
@@ -220,12 +220,12 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} m1pbranch
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} m1pbranch
+Valor por omiss√£o: @code{false}
 
-@code{m1pbranch} È principal descendente de @code{-1} a um expoente.
-Quantidades tais como @code{(-1)^(1/3)} (isto È, um expoente racional "Ìmpar") e 
-@code{(-1)^(1/4)} (isto È, um expoente racional "par") s„o manuseados como segue:
+@code{m1pbranch} √© principal descendente de @code{-1} a um expoente.
+Quantidades tais como @code{(-1)^(1/3)} (isto √©, um expoente racional "√≠mpar") e 
+@code{(-1)^(1/4)} (isto √©, um expoente racional "par") s√£o manuseados como segue:
 
 @c REDRAW THIS AS A TABLE
 @example
@@ -242,14 +242,14 @@ m1pbranch:false          m1pbranch:true
 
 @end defvr
 
-@deffn {FunÁ„o} numberp (@var{expr})
-Retorna @code{true} se @var{expr} for um inteiro literal, n˙mero racional, 
-n˙mero em ponto flutuante, ou um grande n˙mero em ponto flutuante, de outra forma retorna @code{false}.
+@deffn {Fun√ß√£o} numberp (@var{expr})
+Retorna @code{true} se @var{expr} for um inteiro literal, n√∫mero racional, 
+n√∫mero em ponto flutuante, ou um grande n√∫mero em ponto flutuante, de outra forma retorna @code{false}.
 
-@code{numberp} retorna falso se seu argumento for um sÌmbolo,
-mesmo se o argumento for um n˙mero simbÛlico tal como @code{%pi} ou @code{%i},
+@code{numberp} retorna falso se seu argumento for um s√≠mbolo,
+mesmo se o argumento for um n√∫mero simb√≥lico tal como @code{%pi} ou @code{%i},
 ou declarado ser 
-par, Ìmpar, inteiro, racional, irracional, real, imagin·rio, ou complexo.
+par, √≠mpar, inteiro, racional, irracional, real, imagin√°rio, ou complexo.
 
 Exemplos:
 
@@ -275,28 +275,28 @@ Exemplos:
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@deffn {FunÁ„o} properties (@var{a})
+@deffn {Fun√ß√£o} properties (@var{a})
 Retorna uma lista de nomes de todas as
-propriedades associadas com o ·tomo @var{a}.
+propriedades associadas com o √°tomo @var{a}.
 
 @end deffn
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c WHAT IS HIDDEN IN THE "etc" HERE ??
-@defvr {SÌmbolo especial} props
-@code{props} s„o ·tomos que possuem qualquer propriedade outra como essas explicitamente
-mencionadas em @code{infolists}, tais como atvalues, matchdeclares, etc., tambÈm
-propriedades especificadas na funÁ„o  @code{declare}.
+@defvr {S√≠mbolo especial} props
+@code{props} s√£o √°tomos que possuem qualquer propriedade outra como essas explicitamente
+mencionadas em @code{infolists}, tais como atvalues, matchdeclares, etc., tamb√©m
+propriedades especificadas na fun√ß√£o  @code{declare}.
 
 @end defvr
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@deffn {FunÁ„o} propvars (@var{prop})
-Retorna uma lista desses ·tomos sobre a lista @code{props} que
-possui a propriedade indicada atravÈs de @var{prop}.  Dessa forma @code{propvars (atvalue)}
-retorna uma lista de ·tomos que possuem atvalues.
+@deffn {Fun√ß√£o} propvars (@var{prop})
+Retorna uma lista desses √°tomos sobre a lista @code{props} que
+possui a propriedade indicada atrav√©s de @var{prop}.  Dessa forma @code{propvars (atvalue)}
+retorna uma lista de √°tomos que possuem atvalues.
 
 @end deffn
 
@@ -304,9 +304,9 @@ retorna uma lista de ·tomos que possuem atvalues.
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c ARE PROPERTIES ESTABLISHED BY put THE SAME AS PROPERTIES ESTABLISHED BY declare OR OTHER FUNCTIONS ??
 @c IS put (foo, true, integer) EQUIVALENT TO declare (foo, integer) FOR EXAMPLE ??
-@deffn {FunÁ„o} put (@var{·tomo}, @var{valor}, @var{indicador})
-Atribui @var{valor} para a propriedade (especificada atravÈs de @var{indicador}) do @var{·tomo}.
-@var{indicador} pode ser o nome de qualquer propriedade, n„o apenas uma propriedade definida pelo sistema.
+@deffn {Fun√ß√£o} put (@var{√°tomo}, @var{valor}, @var{indicador})
+Atribui @var{valor} para a propriedade (especificada atrav√©s de @var{indicador}) do @var{√°tomo}.
+@var{indicador} pode ser o nome de qualquer propriedade, n√£o apenas uma propriedade definida pelo sistema.
 
 @code{put} avalia seus argumentos. 
 @code{put} retorna @var{valor}.
@@ -330,10 +330,10 @@ Exemplos:
 
 @end deffn
 
-@deffn {FunÁ„o} qput (@var{·tomo}, @var{valor}, @var{indicador})
-Atribui @var{valor} para a propriedade (especificada atravÈs de @var{indicador}) do @var{·tomo}.
-Isso È o mesmo que @code{put},
-excepto que os argumentos n„ s„o avaliados.
+@deffn {Fun√ß√£o} qput (@var{√°tomo}, @var{valor}, @var{indicador})
+Atribui @var{valor} para a propriedade (especificada atrav√©s de @var{indicador}) do @var{√°tomo}.
+Isso √© o mesmo que @code{put},
+excepto que os argumentos n√£ s√£o avaliados.
 
 Exemplo:
 
@@ -361,8 +361,8 @@ Exemplo:
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
 @c HOW IS THIS DIFFERENT FROM remove ??
-@deffn {FunÁ„o} rem (@var{·tomo}, @var{indicador})
-Remove a propriedade indicada atravÈs de @var{indicador} do @var{·tomo}.
+@deffn {Fun√ß√£o} rem (@var{√°tomo}, @var{indicador})
+Remove a propriedade indicada atrav√©s de @var{indicador} do @var{√°tomo}.
 
 @end deffn
 
@@ -370,23 +370,23 @@ Remove a propriedade indicada atravÈs de @var{indicador} do @var{·tomo}.
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
 @c HOW IS THIS DIFFERENT FROM rem ??
-@deffn {FunÁ„o} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
-@deffnx {FunÁ„o} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
-@deffnx {FunÁ„o} remove ("@var{a}", operator)
-@deffnx {FunÁ„o} remove (@var{a}, transfun)
-@deffnx {FunÁ„o} remove (all, @var{p})
-Remove propriedades associadas a ·tomos.
+@deffn {Fun√ß√£o} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
+@deffnx {Fun√ß√£o} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
+@deffnx {Fun√ß√£o} remove ("@var{a}", operator)
+@deffnx {Fun√ß√£o} remove (@var{a}, transfun)
+@deffnx {Fun√ß√£o} remove (all, @var{p})
+Remove propriedades associadas a √°tomos.
 
 @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
-remove a propriedade @code{p_k} do ·tomo @code{a_k}.
+remove a propriedade @code{p_k} do √°tomo @code{a_k}.
 
 @code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
 remove as propriedades @code{@var{p_1}, ..., @var{p_n}}
-dos ·tomos @var{a_1}, ..., @var{a_m}.
+dos √°tomos @var{a_1}, ..., @var{a_m}.
 Pode existir mais que um par de listas.
 
 @c VERIFY THAT THIS WORKS AS ADVERTISED
-@code{remove (all, @var{p})} remove a propriedade @var{p} de todos os ·tomos que a possuem.
+@code{remove (all, @var{p})} remove a propriedade @var{p} de todos os √°tomos que a possuem.
 
 @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
 A propriedade removida pode ser definida pelo sistema tal como
@@ -395,70 +395,70 @@ A propriedade removida pode ser definida pelo sistema tal como
 @c VERIFY THAT THIS WORKS AS ADVERTISED
 @c IS transfun PECULIAR TO remove ?? IF SO, SHOW SPECIAL CASE AS @defunx
 uma propriedade pode ser @code{transfun} para remover
-a vers„o traduzida Lisp de uma funÁ„o.
-ApÛs executar isso, a vers„o Maxima da funÁ„o È executada
-em lugar da vers„o traduzida.
+a vers√£o traduzida Lisp de uma fun√ß√£o.
+Ap√≥s executar isso, a vers√£o Maxima da fun√ß√£o √© executada
+em lugar da vers√£o traduzida.
 
 @code{remove ("@var{a}", operator)} ou, equivalentemente, @code{remove ("@var{a}", op)}
-remove de @var{a} as propriedades @code{operator} declaradas atravÈs de
+remove de @var{a} as propriedades @code{operator} declaradas atrav√©s de
 @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix}, ou @code{nofix}.
-Note que o nome do operador deve ser escrito como uma sequÍncia de caracteres com apÛstofo.
+Note que o nome do operador deve ser escrito como uma sequ√™ncia de caracteres com ap√≥stofo.
 
-@code{remove} sempre retorna @code{done} se um ·tomo possui ou n„o uma propriedade especificada.
-Esse comportamento È diferente das funÁıes remove mais especÌficas
+@code{remove} sempre retorna @code{done} se um √°tomo possui ou n√£o uma propriedade especificada.
+Esse comportamento √© diferente das fun√ß√µes remove mais espec√≠ficas
 @code{remvalue}, @code{remarray}, @code{remfunction}, e @code{remrule}.
 
 @c IN SERIOUS NEED OF EXAMPLES HERE
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {FunÁ„o} remvalue (@var{nome_1}, ..., @var{nome_n})
-@deffnx {FunÁ„o} remvalue (all)
-Remove os valores de Vari·veis de utilizador @var{nome_1}, ..., @var{nome_n}
+@deffn {Fun√ß√£o} remvalue (@var{nome_1}, ..., @var{nome_n})
+@deffnx {Fun√ß√£o} remvalue (all)
+Remove os valores de Vari√°veis de utilizador @var{nome_1}, ..., @var{nome_n}
 (que podem ser subscritas) do sistema.
 
-@code{remvalue (all)} remove os valores de todas as vari·veis em @code{values},
-a lista de todas as vari·veis nomeadas atravÈs do utilizador
-(em oposiÁ„o a essas que s„o automaticamente atribuÌdas atravÈs do Maxima).
+@code{remvalue (all)} remove os valores de todas as vari√°veis em @code{values},
+a lista de todas as vari√°veis nomeadas atrav√©s do utilizador
+(em oposi√ß√£o a essas que s√£o automaticamente atribu√≠das atrav√©s do Maxima).
 
-Veja tambÈm @code{values}.
+Veja tamb√©m @code{values}.
 
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {FunÁ„o} rncombine (@var{expr})
+@deffn {Fun√ß√£o} rncombine (@var{expr})
 Transforma @var{expr} combinando todos os termos de @var{expr} que possuem
-denominadores idÍnticos ou denominadores que diferem de cada um dos outros apenas por
-factores numÈricos somente.  Isso È ligeiramente diferente do comportamento de
-de @code{combine}, que colecta termos que possuem denominadores idÍnticos.
+denominadores id√™nticos ou denominadores que diferem de cada um dos outros apenas por
+factores num√©ricos somente.  Isso √© ligeiramente diferente do comportamento de
+de @code{combine}, que colecta termos que possuem denominadores id√™nticos.
 
 Escolhendo @code{pfeformat: true} e usando @code{combine} retorna resultados similares
 a esses que podem ser obtidos com @code{rncombine}, mas @code{rncombine} pega o
-passo adicional de multiplicar cruzado factores numÈrios do denominador.
+passo adicional de multiplicar cruzado factores num√©rios do denominador.
 Esses resultados em forma ideal, e a possibilidade de reconhecer alguns
 cancelamentos.
 
-Para usar essa funÁ„o escreva primeiramente @code{load(rncomb)}.
+Para usar essa fun√ß√£o escreva primeiramente @code{load(rncomb)}.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {FunÁ„o} scalarp (@var{expr})
-Retorna @code{true} se @var{expr} for um n˙mero, constante, ou vari·vel
-declarada @code{scalar} com @code{declare}, ou composta inteiramente de n˙meros, constantes, e tais
-Vari·veis, bmas n„o contendo matrizes ou listas.
+@deffn {Fun√ß√£o} scalarp (@var{expr})
+Retorna @code{true} se @var{expr} for um n√∫mero, constante, ou vari√°vel
+declarada @code{scalar} com @code{declare}, ou composta inteiramente de n√∫meros, constantes, e tais
+Vari√°veis, bmas n√£o contendo matrizes ou listas.
 
 @end deffn
 
-@deffn {FunÁ„o} setup_autoload (@var{nomeficheiro}, @var{funÁ„o_1}, ..., @var{funÁ„o_n})
+@deffn {Fun√ß√£o} setup_autoload (@var{nomeficheiro}, @var{fun√ß√£o_1}, ..., @var{fun√ß√£o_n})
 Especifica que
-se qualquer entre @var{funÁ„o_1}, ..., @var{funÁ„o_n} for referenciado e n„o ainda definido,
-@var{nomedeqrquivo} È chamado via @code{load}.
-@var{nomeficheiro} usualmente contÈm definiÁıes para as funÁıes especificadas,
-embora isso n„o seja obrigatÛrio.
+se qualquer entre @var{fun√ß√£o_1}, ..., @var{fun√ß√£o_n} for referenciado e n√£o ainda definido,
+@var{nomedeqrquivo} √© chamado via @code{load}.
+@var{nomeficheiro} usualmente cont√©m defini√ß√µes para as fun√ß√µes especificadas,
+embora isso n√£o seja obrigat√≥rio.
 
-@code{setup_autoload} n„o trabalha para funÁıes array.
+@code{setup_autoload} n√£o trabalha para fun√ß√µes array.
 
-@code{setup_autoload} n„o avalia seus argumentos.
+@code{setup_autoload} n√£o avalia seus argumentos.
 
 Exemplo:
 
@@ -474,8 +474,8 @@ Exemplo:
 (%i2) setup_autoload ("specfun.mac", legendre_p, ultraspherical);
 (%o2)                         done
 (%i3) ultraspherical (2, 1/2, %pi);
-Warning - you are redefining the Macsyma funÁ„o ultraspherical
-Warning - you are redefining the Macsyma funÁ„o legendre_p
+Warning - you are redefining the Macsyma fun√ß√£o ultraspherical
+Warning - you are redefining the Macsyma fun√ß√£o legendre_p
                             2
                  3 (%pi - 1)
 (%o3)            ------------ + 3 (%pi - 1) + 1

@@ -1,13 +1,13 @@
 @c English version: 2012-11-28
 @menu
-* Introducción a simplex::
+* IntroducciÃ³n a simplex::
 * Funciones y variables para simplex::
 @end menu
 
-@node Introducción a simplex, Funciones y variables para simplex, simplex, simplex
-@section Introducción a simplex
+@node IntroducciÃ³n a simplex, Funciones y variables para simplex, simplex, simplex
+@section IntroducciÃ³n a simplex
 
-El paquete @code{simplex} utiliza el algoritmo simplex para programación lineal.
+El paquete @code{simplex} utiliza el algoritmo simplex para programaciÃ³n lineal.
 
 Ejemplo:
 
@@ -23,33 +23,33 @@ Ejemplo:
                        10       10      5
 @end example
 
-@node Funciones y variables para simplex,  , Introducción a simplex, simplex
+@node Funciones y variables para simplex,  , IntroducciÃ³n a simplex, simplex
 @section Funciones y variables para simplex
 
 @defvr {Variable opcional} epsilon_lp
 Valor por defecto: @code{10^-8}
 
-Error epsilon utilizado en los cálculos numéricos de @code{linear_program}.
+Error epsilon utilizado en los cÃ¡lculos numÃ©ricos de @code{linear_program}.
 
-Véase también @code{linear_program}.
+VÃ©ase tambiÃ©n @code{linear_program}.
 
 @end defvr
 
-@deffn {Función} linear_program (@var{A}, @var{b}, @var{c})
+@deffn {FunciÃ³n} linear_program (@var{A}, @var{b}, @var{c})
 
-La función @code{linear_program} es una implementación del algoritmo
-simplex. La instrucción @code{linear_program(A, b, c)} calcula un 
+La funciÃ³n @code{linear_program} es una implementaciÃ³n del algoritmo
+simplex. La instrucciÃ³n @code{linear_program(A, b, c)} calcula un 
 vector @var{x} tal que minimiza @code{c.x} bajo las restricciones @code{A.x = b}
 y @code{x >= 0}. El argumento @var{A} es una matriz y los argumentos @var{b} y
 @var{c} son listas.
 
-La función @code{linear_program} devuelve una lista que contiene el vector
-solución @var{x} y el valor mínimo de @code{c.x}.
-Si el problema no está acotado, devuelve el mensaje "Problem not bounded!"
+La funciÃ³n @code{linear_program} devuelve una lista que contiene el vector
+soluciÃ³n @var{x} y el valor mÃ­nimo de @code{c.x}.
+Si el problema no estÃ¡ acotado, devuelve el mensaje "Problem not bounded!"
 y si el problema no es factible, devuelve el mensaje "Problem not feasible!".
 
-Para usar esta función, cárguese primero el paquete con la
-instrucción @code{load(simplex);}.
+Para usar esta funciÃ³n, cÃ¡rguese primero el paquete con la
+instrucciÃ³n @code{load(simplex);}.
 
 Ejemplo:
 
@@ -70,45 +70,45 @@ Ejemplo:
                    2      2         2
 @end example
 
-Véanse también @code{minimize_lp}, @code{scale_lp} y @code{epsilon_lp}.
+VÃ©anse tambiÃ©n @code{minimize_lp}, @code{scale_lp} y @code{epsilon_lp}.
 
 @end deffn
 
-@deffn {Función} maximize_lp (@var{obj}, @var{cond}, [@var{pos}])
+@deffn {FunciÃ³n} maximize_lp (@var{obj}, @var{cond}, [@var{pos}])
 
-Maximiza la función objetivo lineal @var{obj} sujeta a ciertas restricciones
-lineales @var{cond}. Véase @code{minimize_lp} para una descripción detallada
-de los argumentos y de la respuesta dada por esta función.
+Maximiza la funciÃ³n objetivo lineal @var{obj} sujeta a ciertas restricciones
+lineales @var{cond}. VÃ©ase @code{minimize_lp} para una descripciÃ³n detallada
+de los argumentos y de la respuesta dada por esta funciÃ³n.
 
 @end deffn
 
-@deffn {Función} minimize_lp (@var{obj}, @var{cond}, [@var{pos}])
+@deffn {FunciÃ³n} minimize_lp (@var{obj}, @var{cond}, [@var{pos}])
 
-Minimiza la función objetivo lineal @var{obj} sujeta a ciertas restricciones
-lineales @var{cond}, siendo ésta una lista de ecuaciones o inecuaciones lineales.
+Minimiza la funciÃ³n objetivo lineal @var{obj} sujeta a ciertas restricciones
+lineales @var{cond}, siendo Ã©sta una lista de ecuaciones o inecuaciones lineales.
 En las inecuaciones estrictas se reemplaza @code{>} por @code{>=} y @code{<}
 por @code{<=}. El argumento opcional @var{pos} es una lista de variables de
-decisión que se suponen positivas.
+decisiÃ³n que se suponen positivas.
 
-Si el mínimo existe, @code{minimize_lp} devuelve una lista que
-contiene el valor mínimo de la función objetivo y una lista 
-de valores para las variables de decisión con los que se alcanza el 
-mínimo. 
-Si el problema no está acotado, devuelve el mensaje "Problem not bounded!"
+Si el mÃ­nimo existe, @code{minimize_lp} devuelve una lista que
+contiene el valor mÃ­nimo de la funciÃ³n objetivo y una lista 
+de valores para las variables de decisiÃ³n con los que se alcanza el 
+mÃ­nimo. 
+Si el problema no estÃ¡ acotado, devuelve el mensaje "Problem not bounded!"
 y si el problema no es factible, devuelve el mensaje "Problem not feasible!".
 
-Las variables de decisión no se suponen no negativas. Si todas las 
-variables de decisión son no negativas, asígnese el valor
-@code{true} a la variable @code{nonegative_lp}. Si sólo algunas de las
-variables de decisión son positivas, lístense
-en el argumento opcional @var{pos}, lo cual es más eficiente que 
-añadir restricciones.
+Las variables de decisiÃ³n no se suponen no negativas. Si todas las 
+variables de decisiÃ³n son no negativas, asÃ­gnese el valor
+@code{true} a la variable @code{nonegative_lp}. Si sÃ³lo algunas de las
+variables de decisiÃ³n son positivas, lÃ­stense
+en el argumento opcional @var{pos}, lo cual es mÃ¡s eficiente que 
+aÃ±adir restricciones.
 
-La función @code{minimize_lp} utiliza el algoritmo simplex implementado
-en la función @code{linear_program} de Maxima.
+La funciÃ³n @code{minimize_lp} utiliza el algoritmo simplex implementado
+en la funciÃ³n @code{linear_program} de Maxima.
 
-Para usar esta función, cárguese primero el paquete con la
-instrucción @code{load(simplex);}.
+Para usar esta funciÃ³n, cÃ¡rguese primero el paquete con la
+instrucciÃ³n @code{load(simplex);}.
 
 Ejemplos:
 
@@ -132,17 +132,17 @@ Ejemplos:
 @end example
 
 
-Véanse también @code{maximize_lp}, @code{nonegative_lp} y @code{epsilon_lp}.
+VÃ©anse tambiÃ©n @code{maximize_lp}, @code{nonegative_lp} y @code{epsilon_lp}.
 
 @end deffn
 
 @defvr {Variable opcional} nonegative_lp
 Valor por defecto: @code{false}
 
-Si @code{nonegative_lp} vale @code{true} todas las variables de decisión
+Si @code{nonegative_lp} vale @code{true} todas las variables de decisiÃ³n
 pasadas a @code{minimize_lp} y a @code{maximize_lp} se suponen positivas.
 
-Véase también @code{minimize_lp}.
+VÃ©ase tambiÃ©n @code{minimize_lp}.
 
 @end defvr
 

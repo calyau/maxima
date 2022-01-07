@@ -1,70 +1,70 @@
 @menu
-* Definições para Detecção e Relato de Erros::  
+* DefiniÃ§Ãµes para DetecÃ§Ã£o e Relato de Erros::  
 @end menu
 
-@node Definições para Detecção e Relato de Erros
-@section Definições para Detecção e Relato de Erros
-@deffn {Função} run_testsuite ()
-@deffnx {Função} run_testsuite (@var{boolean})
-@deffnx {Função} run_testsuite (@var{boolean}, @var{boolean})
-@deffnx {Função} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
+@node DefiniÃ§Ãµes para DetecÃ§Ã£o e Relato de Erros
+@section DefiniÃ§Ãµes para DetecÃ§Ã£o e Relato de Erros
+@deffn {FunÃ§Ã£o} run_testsuite ()
+@deffnx {FunÃ§Ã£o} run_testsuite (@var{boolean})
+@deffnx {FunÃ§Ã£o} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {FunÃ§Ã£o} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
 Executa o conjunto de testes do Maxima.  Testes que produzem a resposta
-desejada são considerados ``aprovações'' (em inglês, passes) e testes que
-não produzem a resposta desejada são marcados como erros.
+desejada sÃ£o considerados ``aprovaÃ§Ãµes'' (em inglÃªs, passes) e testes que
+nÃ£o produzem a resposta desejada sÃ£o marcados como erros.
 
-@code{run_testsuite ()} mostra somente testes que não são aprovados.
+@code{run_testsuite ()} mostra somente testes que nÃ£o sÃ£o aprovados.
 
-@code{run_testsuite (true)} mostra somente testes que são marcados como
+@code{run_testsuite (true)} mostra somente testes que sÃ£o marcados como
 erros, bem como as falhas.
 
 @code{run_testsuite (true, true)} mostra todos os testes.
 
 Se for usado o terceiro argumento opcional, que deve ser uma lista,
 executam-se unicamente os testes indicados nessa lista. Os nomes de
-todos os testes é especificado por @code{testsuite_files}.
+todos os testes Ã© especificado por @code{testsuite_files}.
 
-@code{run_testsuite} altera a variável de ambiente Maxima.  Tipicamente
-um script de teste executa @code{kill} para estabelecer uma variável de
-ambiente (uma a saber sem funções definidas pelo utilizador e variáveis)
-e então define funções e variáveis apropriadamente para o teste.
+@code{run_testsuite} altera a variÃ¡vel de ambiente Maxima.  Tipicamente
+um script de teste executa @code{kill} para estabelecer uma variÃ¡vel de
+ambiente (uma a saber sem funÃ§Ãµes definidas pelo utilizador e variÃ¡veis)
+e entÃ£o define funÃ§Ãµes e variÃ¡veis apropriadamente para o teste.
 
 @code{run_testsuite} retorna @code{done}.
 @end deffn
 
 @defvar testsuite_files
      
-@code{testsuite_files} é o conjunto de testes a ser executado por
-@code{run_testsuite}. É uma lista de nomes de ficheiros contendo os
+@code{testsuite_files} Ã© o conjunto de testes a ser executado por
+@code{run_testsuite}. Ã‰ uma lista de nomes de ficheiros contendo os
 testes a executar. Se alguns dos testes num ficheiro falha de forma
-conhecida, então em lugar de listar o nome do ficheiro mostra-se uma
-lista com o nome do ficheiro e o número dos testes que falharam.
+conhecida, entÃ£o em lugar de listar o nome do ficheiro mostra-se uma
+lista com o nome do ficheiro e o nÃºmero dos testes que falharam.
 
-Por exemplo, a linha seguinte é uma parte do conjunto de testes padrão:
+Por exemplo, a linha seguinte Ã© uma parte do conjunto de testes padrÃ£o:
 
 @example
  ["rtest13s", ["rtest14", 57, 63]]
 @end example
 
 Essa linha especifica o conjunto de testes contidos nos ficheiros "rtest13s" e
-"rtest14", em que os testes números 57 e 63 do ficheiro "rtest14" falharam de forma conhecida.
+"rtest14", em que os testes nÃºmeros 57 e 63 do ficheiro "rtest14" falharam de forma conhecida.
 @end defvar
 
 @defun bug_report ()
-Mostra os números de versão do Maxima e do Lisp e o apontador para o
-sítio onde devem informar-se os erros encontrados no Maxima, para que
-possam ser solucionados.  A informação das versões pode ser consultada
-também com @code{build_info}.
+Mostra os nÃºmeros de versÃ£o do Maxima e do Lisp e o apontador para o
+sÃ­tio onde devem informar-se os erros encontrados no Maxima, para que
+possam ser solucionados.  A informaÃ§Ã£o das versÃµes pode ser consultada
+tambÃ©m com @code{build_info}.
 
-Quando se informa sobre um erro, é muito útil indicar a versão do Maxima
+Quando se informa sobre um erro, Ã© muito Ãºtil indicar a versÃ£o do Maxima
 e do Lisp usadas.
 
-A saída do comando @code{bug_report} é uma sequência de caracteres vazia
+A saÃ­da do comando @code{bug_report} Ã© uma sequÃªncia de caracteres vazia
 @code{""}.
 @end defun
 
 @defun build_info ()
-Mostra os números de versão do Maxima e do Lisp.
+Mostra os nÃºmeros de versÃ£o do Maxima e do Lisp.
 
-A saída do comando @code{build_info} é uma sequência de caracteres vazia
+A saÃ­da do comando @code{build_info} Ã© uma sequÃªncia de caracteres vazia
 @code{""}.
 @end defun

@@ -1,78 +1,78 @@
 @c /Arrays.texi/1.14/Mon Jan  1 07:26:48 2007/-ko/
 @menu
-* Definições para Arrays::  
+* DefiniÃ§Ãµes para Arrays::  
 @end menu
 
-@node Definições para Arrays,  , Arrays, Arrays
-@section Definições para Arrays
+@node DefiniÃ§Ãµes para Arrays,  , Arrays, Arrays
+@section DefiniÃ§Ãµes para Arrays
 
-@deffn {Função} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
-@deffnx {Função} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
-@deffnx {Função} array ([@var{nome_1}, ..., @var{nome_m}], @var{dim_1}, ..., @var{dim_n})
+@deffn {FunÃ§Ã£o} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {FunÃ§Ã£o} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {FunÃ§Ã£o} array ([@var{nome_1}, ..., @var{nome_m}], @var{dim_1}, ..., @var{dim_n})
 
 Cria um array @math{n}-dimensional.  
 @math{n} pode ser menor ou igual a 5.
 Os subscritos para
-a @math{i}'ésima dimensão são inteiros no intervalo de 0 a @var{dim_i}.  
+a @math{i}'Ã©sima dimensÃ£o sÃ£o inteiros no intervalo de 0 a @var{dim_i}.  
 
-@code{array (@var{name}, @var{dim_1}, ..., @var{dim_n})} cria um array genérico.
+@code{array (@var{name}, @var{dim_1}, ..., @var{dim_n})} cria um array genÃ©rico.
 
 @code{array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} cria
 um array, com elementos de um tipo especificado.
 @var{type} pode ser @code{fixnum} para
-inteiros de tamanho limitado ou @code{flonum} para números em ponto flutuante.
+inteiros de tamanho limitado ou @code{flonum} para nÃºmeros em ponto flutuante.
 
 @code{array ([@var{nome_1}, ..., @var{nome_m}], @var{dim_1}, ..., @var{dim_n})}
-cria @math{m} arrays, todos da mesma dimensão.
+cria @math{m} arrays, todos da mesma dimensÃ£o.
 @c SAME TYPE AS WELL ??
 
 @c THIS DISCUSSION OF UNDECLARED ARRAYS REALLY WANTS TO BE SOMEWHERE ELSE
-Se o utilizador atribui a uma variável subscrita antes de declarar o
-array correspondente, um array não declarado é criado.
-Arrays não declarados, também conhecidos como array desordenado (porque
-o codigo desordenado termina nos subscritos), são mais gerais que arrays
-declarados.  O utilizador não declara seu tamanho máximo, e ele cresce
-dinamicamente e desordenadamente à medida que são atribuídos valores a mais elementos.  Os
-subscritos de um array não declarado não precisam sempre ser números.  Todavia,
-excepto para um array um tanto quanto esparso, é provavelmente mais eficiente
-declarar isso quando possível que deixar não declarado.  A função @code{array}
-pode ser usada para transformar um array não declarado em um array
+Se o utilizador atribui a uma variÃ¡vel subscrita antes de declarar o
+array correspondente, um array nÃ£o declarado Ã© criado.
+Arrays nÃ£o declarados, tambÃ©m conhecidos como array desordenado (porque
+o codigo desordenado termina nos subscritos), sÃ£o mais gerais que arrays
+declarados.  O utilizador nÃ£o declara seu tamanho mÃ¡ximo, e ele cresce
+dinamicamente e desordenadamente Ã  medida que sÃ£o atribuÃ­dos valores a mais elementos.  Os
+subscritos de um array nÃ£o declarado nÃ£o precisam sempre ser nÃºmeros.  Todavia,
+excepto para um array um tanto quanto esparso, Ã© provavelmente mais eficiente
+declarar isso quando possÃ­vel que deixar nÃ£o declarado.  A funÃ§Ã£o @code{array}
+pode ser usada para transformar um array nÃ£o declarado em um array
 declarado.
 @c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
 
 @end deffn
 
-@deffn {Função} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
+@deffn {FunÃ§Ã£o} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
 Avalia @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
-quando @var{A} for um array e @var{i_1}, ..., @var{i_n} são inteiros.
+quando @var{A} for um array e @var{i_1}, ..., @var{i_n} sÃ£o inteiros.
 
-Ela é remanescente de @code{apply}, excepto o primeiro argumento que é um array ao invés de uma função.
+Ela Ã© remanescente de @code{apply}, excepto o primeiro argumento que Ã© um array ao invÃ©s de uma funÃ§Ã£o.
 
 @end deffn
 
-@deffn {Função} arrayinfo (@var{A})
-Retorna informações sobre o array @var{A}.
-O argumento @var{A} pode ser um array declarado, uma array não declarado ( que sofreu um hash),
-uma função de array, ou uma função que possui subscrito.
+@deffn {FunÃ§Ã£o} arrayinfo (@var{A})
+Retorna informaÃ§Ãµes sobre o array @var{A}.
+O argumento @var{A} pode ser um array declarado, uma array nÃ£o declarado ( que sofreu um hash),
+uma funÃ§Ã£o de array, ou uma funÃ§Ã£o que possui subscrito.
 
 Para arrays declarados, @code{arrayinfo} retorna uma lista
-compreendendo o átomo @code{declared}, o n;umero de dimensões, e o tamanho de cada dimensão.
-Os elementos do array, ambos associados e não associados, são retornados por @code{listarray}.
+compreendendo o Ã¡tomo @code{declared}, o n;umero de dimensÃµes, e o tamanho de cada dimensÃ£o.
+Os elementos do array, ambos associados e nÃ£o associados, sÃ£o retornados por @code{listarray}.
 
-Para arrays não declarados (arrays que sofreram um hash),
-@code{arrayinfo} retorna uma lista compreendendo o átomo @code{hashed}, o número de subscritos,
+Para arrays nÃ£o declarados (arrays que sofreram um hash),
+@code{arrayinfo} retorna uma lista compreendendo o Ã¡tomo @code{hashed}, o nÃºmero de subscritos,
 e os subscritos de de todo elemento que tiver um valor.
-Os valores são retornados por meio de @code{listarray}.
+Os valores sÃ£o retornados por meio de @code{listarray}.
 
-Para funções de array,
-@code{arrayinfo} retretorna uma lista compreendendo o átomo @code{hashed}, o número de subscritos,
+Para funÃ§Ãµes de array,
+@code{arrayinfo} retretorna uma lista compreendendo o Ã¡tomo @code{hashed}, o nÃºmero de subscritos,
 e quaisquer valores de subscritos para os quais exista valores funcionais armazenados.
-Os valores funcionais armazenados são retornados através de @code{listarray}.
+Os valores funcionais armazenados sÃ£o retornados atravÃ©s de @code{listarray}.
 
-Para funções que possuem subscritos,
-@code{arrayinfo} retorna uma lista compreendendo o átomo @code{hashed}, o número de subscritos,
-e qualquer valores subscritos para os quais existe uma expressões lambda.
-As expressões lambda são retornadas por @code{listarray}.
+Para funÃ§Ãµes que possuem subscritos,
+@code{arrayinfo} retorna uma lista compreendendo o Ã¡tomo @code{hashed}, o nÃºmero de subscritos,
+e qualquer valores subscritos para os quais existe uma expressÃµes lambda.
+As expressÃµes lambda sÃ£o retornadas por @code{listarray}.
 
 Examples:
 
@@ -99,7 +99,7 @@ Examples:
                                         #####, #####, #####, %pi]
 @end example
 
-@code{arrayinfo} e @code{listarray} aplicado a um array não declarado (no qual foi aplicado um hash).
+@code{arrayinfo} e @code{listarray} aplicado a um array nÃ£o declarado (no qual foi aplicado um hash).
 
 @c ===beg===
 @c bb [FOO] : (a + b)^2;
@@ -121,7 +121,7 @@ Examples:
 (%o4)                 [(c - d) , (b + a) ]
 @end example
 
-@code{arrayinfo} e @code{listarray} aplicado a uma função de array.
+@code{arrayinfo} e @code{listarray} aplicado a uma funÃ§Ã£o de array.
 
 @c ===beg===
 @c cc [x, y] := y / x;
@@ -151,7 +151,7 @@ Examples:
                               4  u
 @end example
 
-@code{arrayinfo} e @code{listarray} aplicadas a funções com subscritos.
+@code{arrayinfo} e @code{listarray} aplicadas a funÃ§Ãµes com subscritos.
 
 @c ===beg===
 @c dd [x] (y) := y ^ x;
@@ -179,13 +179,13 @@ Examples:
 @end example
 @end deffn
 
-@deffn {Função} arraymake (@var{A}, [@var{i_1}, ..., @var{i_n}])
-Retorna a expressão @code{@var{A}[@var{i_1}, ..., @var{i_n}]}.
-O resultado é uma referência a um array não avaliado.
+@deffn {FunÃ§Ã£o} arraymake (@var{A}, [@var{i_1}, ..., @var{i_n}])
+Retorna a expressÃ£o @code{@var{A}[@var{i_1}, ..., @var{i_n}]}.
+O resultado Ã© uma referÃªncia a um array nÃ£o avaliado.
 
-@code{arraymake} é remanicência de @code{funmake},
-excepto o valor retornado é um array de referência não avaliado
-ao invés de uma chamada de função não avaliada.
+@code{arraymake} Ã© remanicÃªncia de @code{funmake},
+excepto o valor retornado Ã© um array de referÃªncia nÃ£o avaliado
+ao invÃ©s de uma chamada de funÃ§Ã£o nÃ£o avaliada.
 
 Exemplos:
 @c ===beg===
@@ -244,16 +244,16 @@ Exemplos:
 
 @end deffn
 
-@defvr {Variável de sistema} arrays
-Valor por omissão: @code{[]}
+@defvr {VariÃ¡vel de sistema} arrays
+Valor por omissÃ£o: @code{[]}
 
-@code{arrays} é uma lista dos arrays que tiverem sido alocados.
-Essa lista compreende arrays declarados através de @code{array},
-arrays desordenados (hashed) construídos através de definição implícita (atribuindo alguma coisa a um elemento de array),
-e funções de array definidas por meio de @code{:=} e @code{define}.
-Arrays definidos por meio de @code{make_array} não estão incluídos.
+@code{arrays} Ã© uma lista dos arrays que tiverem sido alocados.
+Essa lista compreende arrays declarados atravÃ©s de @code{array},
+arrays desordenados (hashed) construÃ­dos atravÃ©s de definiÃ§Ã£o implÃ­cita (atribuindo alguma coisa a um elemento de array),
+e funÃ§Ãµes de array definidas por meio de @code{:=} e @code{define}.
+Arrays definidos por meio de @code{make_array} nÃ£o estÃ£o incluÃ­dos.
 
-Veja também
+Veja tambÃ©m
 @code{array}, @code{arrayapply}, @code{arrayinfo}, @code{arraymake}, 
 @code{fillarray}, @code{listarray}, e @code{rearray}.
 @c IS THIS AN EXHAUSTIVE LIST ??
@@ -285,26 +285,26 @@ Exemplos:
 
 @end defvr
 
-@deffn {Função} bashindices (@var{expr})
-Transforma a expressão @var{expr} dando a cada
-somatório e a cada produto um único índice.  Isso dá a @code{changevar} grande
-precisão quando se está trabalhando com somatórios e produtos.  A forma do
-único índice é @code{j@var{number}}.  A quantidade @var{number} é determindad por
-referência a @code{gensumnum}, que pode ser alterada pelo utilizador.  Por
+@deffn {FunÃ§Ã£o} bashindices (@var{expr})
+Transforma a expressÃ£o @var{expr} dando a cada
+somatÃ³rio e a cada produto um Ãºnico Ã­ndice.  Isso dÃ¡ a @code{changevar} grande
+precisÃ£o quando se estÃ¡ trabalhando com somatÃ³rios e produtos.  A forma do
+Ãºnico Ã­ndice Ã© @code{j@var{number}}.  A quantidade @var{number} Ã© determindad por
+referÃªncia a @code{gensumnum}, que pode ser alterada pelo utilizador.  Por
 exemplo, @code{gensumnum:0$} reseta isso.
 
 @end deffn
 
-@deffn {Função} fillarray (@var{A}, @var{B})
-Preenche o array @var{A} com @var{B}, que é uma lista ou um array.
+@deffn {FunÃ§Ã£o} fillarray (@var{A}, @var{B})
+Preenche o array @var{A} com @var{B}, que Ã© uma lista ou um array.
 
-Se um tipo específico for declarado para @var{A} no momento de sua criação,
+Se um tipo especÃ­fico for declarado para @var{A} no momento de sua criaÃ§Ã£o,
 @var{A} somente porde ser preenchido com elementos do tipo especificado;
 Constitui um erro alguma tentativa feita para copiar um um elemento de um tipo diferente.
  
-Se as dimensões dos arrays @var{A} e @var{B} forem
-diferents, @var{A} é preenchido no ordem de maior fileira.  Se não existirem elementos
-livres em @var{B} o último elemento é usado para preencher todo o 
+Se as dimensÃµes dos arrays @var{A} e @var{B} forem
+diferents, @var{A} Ã© preenchido no ordem de maior fileira.  Se nÃ£o existirem elementos
+livres em @var{B} o Ãºltimo elemento Ã© usado para preencher todo o 
 resto de @var{A}.  Se existirem muitos , esses restantes seram ignorados.
 
 @code{fillarray} retorna esse primeiro argumento.
@@ -331,9 +331,9 @@ Create an array of 9 elements and fill it from a list.
 @end example
 
 Quando existirem poucos elementos para preencher o array,
-o último elemento é repetido.
+o Ãºltimo elemento Ã© repetido.
 Quando houverem muitos elementos,
-os elementos extras são ignorados.
+os elementos extras sÃ£o ignorados.
 @c ===beg===
 @c a2 : make_array (fixnum, 8);
 @c fillarray (a2, [1, 2, 3, 4, 5]);
@@ -352,7 +352,7 @@ os elementos extras são ignorados.
 (%o4)             @{Array:  #(1 2 3 4 5 6 7 8)@}
 @end example
 
-Arrays multi-dimensionais são preenchidos em ordem de maior fileira.
+Arrays multi-dimensionais sÃ£o preenchidos em ordem de maior fileira.
 @c ===beg===
 @c a3 : make_array (fixnum, 2, 5);
 @c fillarray (a3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -373,24 +373,24 @@ Arrays multi-dimensionais são preenchidos em ordem de maior fileira.
 
  @end deffn
 
-@deffn {Função} listarray (@var{A})
+@deffn {FunÃ§Ã£o} listarray (@var{A})
 Retorna uma lista dos elementos do array @var{A}.
-O argumento @var{A} pode ser um array declarado, um array não declarado (desordenado - hashed),
-uma função de array, ou uma função com subscritos.
+O argumento @var{A} pode ser um array declarado, um array nÃ£o declarado (desordenado - hashed),
+uma funÃ§Ã£o de array, ou uma funÃ§Ã£o com subscritos.
 
-Elementos são listados em ordem de linha maior.
-Isto é, elementos são ordenados conforme o primeiro índice, en seguida conforme o segundo índice, e assim sucessivamente.
-A sequuência de ordenação por meio dos valores dos índices é a mesma ordem estabelecida por meio de @code{orderless}.
+Elementos sÃ£o listados em ordem de linha maior.
+Isto Ã©, elementos sÃ£o ordenados conforme o primeiro Ã­ndice, en seguida conforme o segundo Ã­ndice, e assim sucessivamente.
+A sequuÃªncia de ordenaÃ§Ã£o por meio dos valores dos Ã­ndices Ã© a mesma ordem estabelecida por meio de @code{orderless}.
 
-Para arrays não declarados , funções de arrays, e funções com subscritos,
-os elementos correspondem aos valores de índice retornados através de @code{arrayinfo}.
+Para arrays nÃ£o declarados , funÃ§Ãµes de arrays, e funÃ§Ãµes com subscritos,
+os elementos correspondem aos valores de Ã­ndice retornados atravÃ©s de @code{arrayinfo}.
 
-Elemetos não associados de arrays genéricos declarados (isto é, não @code{fixnum} e não @code{flonum})
-são retornados como @code{#####}.
-Elementos não associados de arrays declarados @code{fixnum} ou @code{flonum}
-são retornados como 0 ou 0.0, respectivamente.
-Elementos não associados de arrays não declarados, funções de array,
-e funções subscritas não são retornados.
+Elemetos nÃ£o associados de arrays genÃ©ricos declarados (isto Ã©, nÃ£o @code{fixnum} e nÃ£o @code{flonum})
+sÃ£o retornados como @code{#####}.
+Elementos nÃ£o associados de arrays declarados @code{fixnum} ou @code{flonum}
+sÃ£o retornados como 0 ou 0.0, respectivamente.
+Elementos nÃ£o associados de arrays nÃ£o declarados, funÃ§Ãµes de array,
+e funÃ§Ãµes subscritas nÃ£o sÃ£o retornados.
 
 Exemplos:
 
@@ -417,7 +417,7 @@ Exemplos:
 (%o5)                 [declared, 2, [2, 3]]
 @end example
 
-@code{listarray} e @code{arrayinfo} aplicadas a arrays não declarados (hashed - desordenados).
+@code{listarray} e @code{arrayinfo} aplicadas a arrays nÃ£o declarados (hashed - desordenados).
 
 @c ===beg===
 @c bb [FOO] : (a + b)^2;
@@ -439,7 +439,7 @@ Exemplos:
 (%o4)               [hashed, 1, [BAR], [FOO]]
 @end example
 
-@code{listarray} e @code{arrayinfo} aplicada a uma função de array.
+@code{listarray} e @code{arrayinfo} aplicada a uma funÃ§Ã£o de array.
 
 @c ===beg===
 @c cc [x, y] := y / x;
@@ -469,7 +469,7 @@ Exemplos:
 (%o5)              [hashed, 2, [4, z], [u, v]]
 @end example
 
-@code{listarray} e @code{arrayinfo} aplicadas a funções com subscritos.
+@code{listarray} e @code{arrayinfo} aplicadas a funÃ§Ãµes com subscritos.
 
 @c ===beg===
 @c dd [x] (y) := y ^ x;
@@ -499,18 +499,18 @@ Exemplos:
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Função} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffn {FunÃ§Ã£o} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
 Cria e retorna um array de Lisp.  @var{type} pode
 ser @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} ou
 @code{functional}.
 Existem @math{n} indices,
-e o @math{i}'enésimo indice está no intervalo de 0 a @math{@var{dim_i} - 1}.
+e o @math{i}'enÃ©simo indice estÃ¡ no intervalo de 0 a @math{@var{dim_i} - 1}.
 
-A vantagem de @code{make_array} sobre @code{array} é que o valor de retorno não tem 
-um nome, e uma vez que um ponteiro a ele vai, ele irá também.
-Por exemplo, se @code{y: make_array (...)} então @code{y} aponta para um objecto 
-que ocupa espaço, mas depois de @code{y: false}, @code{y} não mais
-aponta para aquele objecto, então o objecto pode ser descartado.  
+A vantagem de @code{make_array} sobre @code{array} Ã© que o valor de retorno nÃ£o tem 
+um nome, e uma vez que um ponteiro a ele vai, ele irÃ¡ tambÃ©m.
+Por exemplo, se @code{y: make_array (...)} entÃ£o @code{y} aponta para um objecto 
+que ocupa espaÃ§o, mas depois de @code{y: false}, @code{y} nÃ£o mais
+aponta para aquele objecto, entÃ£o o objecto pode ser descartado.  
 
 @c NEEDS CLARIFICATION HERE
 @c 'FUNCTIONAL ARGUMENT IN MAKE_ARRAY APPEARS TO BE BROKEN
@@ -573,39 +573,39 @@ Exemplos:
 @end deffn
 
 @c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
-@deffn {Função} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
-Altera as dimenções de um array.  
-O novo array será preenchido com os elementos do antigo em
+@deffn {FunÃ§Ã£o} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
+Altera as dimenÃ§Ãµes de um array.  
+O novo array serÃ¡ preenchido com os elementos do antigo em
 ordem da maior linha.  Se o array antigo era muito pequeno, 
-os elementos restantes serão preenchidos com
+os elementos restantes serÃ£o preenchidos com
 @code{false}, @code{0.0} ou @code{0},
-dependendo do tipo do array.  O tipo do array não pode ser
+dependendo do tipo do array.  O tipo do array nÃ£o pode ser
 alterado.
 
 @end deffn
 
-@deffn {Função} remarray (@var{A_1}, ..., @var{A_n})
-@deffnx {Função} remarray (all)
-Remove arrays e funções associadas
-a arrays e libera o espaço ocupado.
-Os argumentos podem ser arrays declarados, arrays não declarados (dsordenados - hashed), funções de array functions, e funções com subscritos.
+@deffn {FunÃ§Ã£o} remarray (@var{A_1}, ..., @var{A_n})
+@deffnx {FunÃ§Ã£o} remarray (all)
+Remove arrays e funÃ§Ãµes associadas
+a arrays e libera o espaÃ§o ocupado.
+Os argumentos podem ser arrays declarados, arrays nÃ£o declarados (dsordenados - hashed), funÃ§Ãµes de array functions, e funÃ§Ãµes com subscritos.
 
-@code{remarray (all)} remove todos os ítens na lista global @code{arrays}.
+@code{remarray (all)} remove todos os Ã­tens na lista global @code{arrays}.
 
 @c WHAT DOES THIS MEAN EXACTLY ??
-Isso pode ser necessário para usar essa função se isso é
+Isso pode ser necessÃ¡rio para usar essa funÃ§Ã£o se isso Ã©
 desejado para redefinir os valores em um array desordenado.
 
 @code{remarray} retorna a lista dos arrays removidos.
 
 @end deffn
-@deffn {Função} subvar (@var{x}, @var{i})
-Avalia a expressão subscrita @code{@var{x}[@var{i}]}.
+@deffn {FunÃ§Ã£o} subvar (@var{x}, @var{i})
+Avalia a expressÃ£o subscrita @code{@var{x}[@var{i}]}.
 
 @code{subvar} avalia seus argumentos.
 
-@code{arraymake (@var{x}, [@var{i}]} constrói a expressão @code{@var{x}[@var{i}]},
-mas não a avalia.
+@code{arraymake (@var{x}, [@var{i}]} constrÃ³i a expressÃ£o @code{@var{x}[@var{i}]},
+mas nÃ£o a avalia.
 
 Exemplos:
 
@@ -645,30 +645,30 @@ Exemplos:
 @end deffn
 
 @c THIS IS REALLY CONFUSING
-@defvr {Variável de pção} use_fast_arrays
-- Se @code{true} somente dois tipos de arrays são reconhecidos.  
+@defvr {VariÃ¡vel de pÃ§Ã£o} use_fast_arrays
+- Se @code{true} somente dois tipos de arrays sÃ£o reconhecidos.  
 
-1) O array art-q (t no Lisp Comum) que pode ter muitas dimensões
+1) O array art-q (t no Lisp Comum) que pode ter muitas dimensÃµes
 indexadas por inteiros, e pode aceitar qualquer objecto do Lisp ou do Maxima como uma
 entrada.  Para construir assim um array, insira @code{a:make_array(any,3,4);} 
-então @code{a} terá como valor, um array com doze posições, e o 
-índice é baseado em zero.
+entÃ£o @code{a} terÃ¡ como valor, um array com doze posiÃ§Ãµes, e o 
+Ã­ndice Ã© baseado em zero.
 
-2) O array Hash_table que é o tipo padrão de array criado se um
-faz @code{b[x+1]:y^2} (e @code{b} não é ainda um array, uma lista, ou uma
+2) O array Hash_table que Ã© o tipo padrÃ£o de array criado se um
+faz @code{b[x+1]:y^2} (e @code{b} nÃ£o Ã© ainda um array, uma lista, ou uma
 matriz -- se isso ou um desses ocorrer um erro pode ser causado desde
-@code{x+1} não poderá ser um subscrito válido para um array art-q, uma lista ou
-uma matriz).  Esses índices (também conhecidos como chaves) podem ser quaisquer objectos.  
-Isso somente pega uma chave por vez a cada vez (@code{b[x+1,u]:y} ignorará o @code{u}).  
-A referência termina em @code{b[x+1] ==> y^2}.  Certamente a chave poe ser uma lista
-, e.g.  @code{b[[x+1,u]]:y} poderá ser válido.  Isso é incompatível 
+@code{x+1} nÃ£o poderÃ¡ ser um subscrito vÃ¡lido para um array art-q, uma lista ou
+uma matriz).  Esses Ã­ndices (tambÃ©m conhecidos como chaves) podem ser quaisquer objectos.  
+Isso somente pega uma chave por vez a cada vez (@code{b[x+1,u]:y} ignorarÃ¡ o @code{u}).  
+A referÃªncia termina em @code{b[x+1] ==> y^2}.  Certamente a chave poe ser uma lista
+, e.g.  @code{b[[x+1,u]]:y} poderÃ¡ ser vÃ¡lido.  Isso Ã© incompatÃ­vel 
 com os arrays antigos do Maxima, mas poupa recursos.
 
-Uma vantagem de armazenar os arrays como valores de símbolos é que as
-convenções usuais sobre variáveis locais de uma função aplicam-se a arrays
-também.  O tipo Hash_table também usa menos recursos e é mais eficiente
+Uma vantagem de armazenar os arrays como valores de sÃ­mbolos Ã© que as
+convenÃ§Ãµes usuais sobre variÃ¡veis locais de uma funÃ§Ã£o aplicam-se a arrays
+tambÃ©m.  O tipo Hash_table tambÃ©m usa menos recursos e Ã© mais eficiente
 que o velho tipo hashar do Maxima.  Para obter comportamento consistente em
-códigos traduzidos e compilados posicione @code{translate_fast_arrays} para ser
+cÃ³digos traduzidos e compilados posicione @code{translate_fast_arrays} para ser
 @code{true}.
  
 @end defvr

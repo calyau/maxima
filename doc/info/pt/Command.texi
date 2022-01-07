@@ -6,48 +6,48 @@
 @hyphenation{va-lo-res}
 @end iftex
 @menu
-* IntroduÁ„o a Linha de Comandos::  
-* DefiniÁıes para Linha de Comandos::  
+* Introdu√ß√£o a Linha de Comandos::  
+* Defini√ß√µes para Linha de Comandos::  
 @end menu
 
-@node IntroduÁ„o a Linha de Comandos, DefiniÁıes para Linha de Comandos, Linha de Comandos, Linha de Comandos
-@section IntroduÁ„o a Linha de Comandos
+@node Introdu√ß√£o a Linha de Comandos, Defini√ß√µes para Linha de Comandos, Linha de Comandos, Linha de Comandos
+@section Introdu√ß√£o a Linha de Comandos
 
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
 @deffn {Operador} '
 @ifinfo
-@fnindex Operador ApÛstrofo
+@fnindex Operador Ap√≥strofo
 @end ifinfo
-O operador apÛstrofo @code{'} evita avaliaÁ„o.
+O operador ap√≥strofo @code{'} evita avalia√ß√£o.
 
-Aplicado a um sÌmbolo,
-o apÛstrofo evita avaliaÁ„o do sÌmbolo.
+Aplicado a um s√≠mbolo,
+o ap√≥strofo evita avalia√ß√£o do s√≠mbolo.
 
-Aplicado a uma chamada de funÁ„o,
-o apÛstrofo evita avaliaÁ„o da chamada de funÁ„o,
-embora os argumentos da funÁ„o sejam ainda avaliados (se a avaliaÁ„o n„o for de outra forma evitada).
-O resultado È a forma substantiva da chamada de funÁ„o.
+Aplicado a uma chamada de fun√ß√£o,
+o ap√≥strofo evita avalia√ß√£o da chamada de fun√ß√£o,
+embora os argumentos da fun√ß√£o sejam ainda avaliados (se a avalia√ß√£o n√£o for de outra forma evitada).
+O resultado √© a forma substantiva da chamada de fun√ß√£o.
 
-Aplicada a uma espress„o com parÍntesis,
-o apÛstrofo evita avaliaÁ„o de todos os sÌmbolos e chamadas de funÁ„o na express„o.
+Aplicada a uma espress√£o com par√™ntesis,
+o ap√≥strofo evita avalia√ß√£o de todos os s√≠mbolos e chamadas de fun√ß√£o na express√£o.
 @c DUNNO IF THESE EXAMPLES ARE STILL NEEDED -- COVERED BY ITEMS UNDER "Examples"
-E.g., @code{'(f(x))} significa n„o avalie a express„o @code{f(x)}.
-@code{'f(x)} (com apÛstrofo aplicado a @code{f} em lugar de @code{f(x)})
+E.g., @code{'(f(x))} significa n√£o avalie a express√£o @code{f(x)}.
+@code{'f(x)} (com ap√≥strofo aplicado a @code{f} em lugar de @code{f(x)})
 retorna a forma substantiva de @code{f} aplicada a @code{[x]}.
 
-O apÛstrofo nao evita simplificaÁ„o.
+O ap√≥strofo nao evita simplifica√ß√£o.
 
 Quando o sinalizador global @code{noundisp} for @code{true},
-substantivos s„o mostrados com um apÛstrofo.
-Esse comutador È sempre @code{true} quando mostrando definiÁıes de funÁıes.
+substantivos s√£o mostrados com um ap√≥strofo.
+Esse comutador √© sempre @code{true} quando mostrando defini√ß√µes de fun√ß√µes.
 
-Veja tambÈm operador apÛstrofo-apÛstrofo @code{''} e @code{nouns}.
+Veja tamb√©m operador ap√≥strofo-ap√≥strofo @code{''} e @code{nouns}.
 
 Exemplos:
 
-Aplicado a um sÌmbolo,
-o apÛstrofo evita avaliaÁ„o do sÌmbolo.
+Aplicado a um s√≠mbolo,
+o ap√≥strofo evita avalia√ß√£o do s√≠mbolo.
 
 @c ===beg===
 @c aa: 1024;
@@ -67,9 +67,9 @@ o apÛstrofo evita avaliaÁ„o do sÌmbolo.
 (%o4)                        1048576
 @end example
 
-Aplicado a uma chamada de funÁ„o,
-o apÛstrofo evita avaliaÁ„o da chamada de funÁ„o.
-O resultado È a forma substantiva da chamada de funÁ„o.
+Aplicado a uma chamada de fun√ß√£o,
+o ap√≥strofo evita avalia√ß√£o da chamada de fun√ß√£o.
+O resultado √© a forma substantiva da chamada de fun√ß√£o.
 
 @c ===beg===
 @c x0: 5;
@@ -101,8 +101,8 @@ O resultado È a forma substantiva da chamada de funÁ„o.
                                 3
 @end example
 
-Aplicado a uma express„o com parÍntesis,
-o apÛstrofo evita avaliaÁ„o de todos os sÌmbolos e chamadas de funÁ„o na express„o.
+Aplicado a uma express√£o com par√™ntesis,
+o ap√≥strofo evita avalia√ß√£o de todos os s√≠mbolos e chamadas de fun√ß√£o na express√£o.
 
 @c ===beg===
 @c aa: 1024;
@@ -124,7 +124,7 @@ o apÛstrofo evita avaliaÁ„o de todos os sÌmbolos e chamadas de funÁ„o na express
 (%o5)                          51
 @end example
 
-O apÛstrofo n„o evita simplificaÁ„o.
+O ap√≥strofo n√£o evita simplifica√ß√£o.
 
 @c ===beg===
 @c sin (17 * %pi) + cos (17 * %pi);
@@ -141,31 +141,31 @@ O apÛstrofo n„o evita simplificaÁ„o.
 
 @deffn {Operador} ''
 @ifinfo
-@fnindex Operador apÛstrofo-apÛstrofo
+@fnindex Operador ap√≥strofo-ap√≥strofo
 @end ifinfo
-O operador apÛstrofo-apÛstrofo @code{'@w{}'} (dois apÛstrofost) modifica avaliaÁ„o em expressıes de entrada.
+O operador ap√≥strofo-ap√≥strofo @code{'@w{}'} (dois ap√≥strofost) modifica avalia√ß√£o em express√µes de entrada.
 
-Aplicado a uma express„o geral @var{expr}, apÛstrofo-apÛstrofo faz com que o valor de @var{expr}
-seja substituÌdo por @var{expr} na express„o de entrada.
+Aplicado a uma express√£o geral @var{expr}, ap√≥strofo-ap√≥strofo faz com que o valor de @var{expr}
+seja substitu√≠do por @var{expr} na express√£o de entrada.
 
-Aplicado ao operadro de uma express„o,
-apÛstrofo-apÛstrofo modifica o operadro de um susbstantivo para um verbo (se esse operador n„o for j· um verbo).
+Aplicado ao operadro de uma express√£o,
+ap√≥strofo-ap√≥strofo modifica o operadro de um susbstantivo para um verbo (se esse operador n√£o for j√° um verbo).
 
-O operador apÛstrofo-apÛstrofo È aplicado atravÈs do passador de entrada;
-o apÛstrofo-apÛstrofo n„o È armazenado como parte de uma express„o de entrada passada.
-O operador apÛstrofo-apÛstrofo È sempre aplicado t„o rapidamente quanto for passado,
-e n„o pode receber um terceiro apÛstrofo.
-Dessa forma faz com que ocorra avaliaÁ„o quando essa avaliaÁ„o for de outra forma suprimida,
-da mesma forma que em definiÁıes de funÁ„o, definiÁıes de express„oes lambda, e expressıes que recebem um apÛstrofo simples @code{'}.
+O operador ap√≥strofo-ap√≥strofo √© aplicado atrav√©s do passador de entrada;
+o ap√≥strofo-ap√≥strofo n√£o √© armazenado como parte de uma express√£o de entrada passada.
+O operador ap√≥strofo-ap√≥strofo √© sempre aplicado t√£o rapidamente quanto for passado,
+e n√£o pode receber um terceiro ap√≥strofo.
+Dessa forma faz com que ocorra avalia√ß√£o quando essa avalia√ß√£o for de outra forma suprimida,
+da mesma forma que em defini√ß√µes de fun√ß√£o, defini√ß√µes de express√£oes lambda, e express√µes que recebem um ap√≥strofo simples @code{'}.
 
-ApÛstrofo-apÛstrofo È reconhecido por @code{batch} e @code{load}.
+Ap√≥strofo-ap√≥strofo √© reconhecido por @code{batch} e @code{load}.
 
-Veja tambÈm o operador apÛstrofo @code{'} e @code{nouns}.
+Veja tamb√©m o operador ap√≥strofo @code{'} e @code{nouns}.
 
 Exemplos:
 
-Aplicado a uma express„o geral @var{expr}, apÛstrofo-apÛstrofo fazem com que o valor de @var{expr}
-seja substituido por @var{expr} na express„o de entrada.
+Aplicado a uma express√£o geral @var{expr}, ap√≥strofo-ap√≥strofo fazem com que o valor de @var{expr}
+seja substituido por @var{expr} na express√£o de entrada.
 
 @c ===beg===
 @c expand ((a + b)^3);
@@ -217,8 +217,8 @@ seja substituido por @var{expr} na express„o de entrada.
 (%o14)                         x3
 @end example
 
-Aplicado ao operador de uma express„o,
-apÛstrofo-apÛstrofo muda o operadro de um substantivo para um verbo (se esse operadro n„o for j· um verbo).
+Aplicado ao operador de uma express√£o,
+ap√≥strofo-ap√≥strofo muda o operadro de um substantivo para um verbo (se esse operadro n√£o for j√° um verbo).
 
 @c ===beg===
 @c sin (1);
@@ -243,8 +243,8 @@ apÛstrofo-apÛstrofo muda o operadro de um substantivo para um verbo (se esse ope
 (%o6)                        - 1629
 @end example
 
-O operador apÛstrofo-apÛstrofo È aplicado por meio de um passador de entrada;
-operador-apÛstrofo n„o È armazenado como parte da express„o de entrada.
+O operador ap√≥strofo-ap√≥strofo √© aplicado por meio de um passador de entrada;
+operador-ap√≥strofo n√£o √© armazenado como parte da express√£o de entrada.
 
 @c ===beg===
 @c [aa : bb, cc : dd, bb : 1234, dd : 5678];
@@ -278,8 +278,8 @@ operador-apÛstrofo n„o È armazenado como parte da express„o de entrada.
 (%o5)                         done
 @end example
 
-ApÛstrofo apÛstrofo faz com que ocorra avaliaÁ„o quando a avaliaÁ„o tiver sido de outra forma suprimida,
-da mesma forma que em definiÁıes de funÁ„o, da mesma forma que em definiÁıes de funÁ„o lambda expressions, E expressıes que recebem o apÛstrofo simples @code{'}.
+Ap√≥strofo ap√≥strofo faz com que ocorra avalia√ß√£o quando a avalia√ß√£o tiver sido de outra forma suprimida,
+da mesma forma que em defini√ß√µes de fun√ß√£o, da mesma forma que em defini√ß√µes de fun√ß√£o lambda expressions, E express√µes que recebem o ap√≥strofo simples @code{'}.
 
 @c ===beg===
 @c foo_1a (x) := ''(integrate (log (x), x));
@@ -331,25 +331,25 @@ da mesma forma que em definiÁıes de funÁ„o, da mesma forma que em definiÁıes de 
 
 @end deffn
 
-@node DefiniÁıes para Linha de Comandos,  , IntroduÁ„o a Linha de Comandos, Linha de Comandos
-@section DefiniÁıes para Linha de Comandos
+@node Defini√ß√µes para Linha de Comandos,  , Introdu√ß√£o a Linha de Comandos, Linha de Comandos
+@section Defini√ß√µes para Linha de Comandos
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
-@deffn {FunÁ„o} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
-provÍ um
-nome alternativo para uma funÁ„o (de utilizador ou de sistema), vari·vel, array, etc.
-Qualquer n˙mero de argumentos pode ser usado.
+@deffn {Fun√ß√£o} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
+prov√™ um
+nome alternativo para uma fun√ß√£o (de utilizador ou de sistema), vari√°vel, array, etc.
+Qualquer n√∫mero de argumentos pode ser usado.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} debugmode
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} debugmode
+Valor por omiss√£o: @code{false}
 
-Quando um erro do Maxima ocorre, Maxima iniciar· o depurador se @code{debugmode} for @code{true}.
-O utilizador pode informar comandos para examinar o histÛrico de chamadas, marcar pontos de parada, percorrer uma linha por vez
-o cÛdigo do Maxima, e assim por diante.  Veja @code{debugging} para uma lista de opÁıes do depurador.
+Quando um erro do Maxima ocorre, Maxima iniciar√° o depurador se @code{debugmode} for @code{true}.
+O utilizador pode informar comandos para examinar o hist√≥rico de chamadas, marcar pontos de parada, percorrer uma linha por vez
+o c√≥digo do Maxima, e assim por diante.  Veja @code{debugging} para uma lista de op√ß√µes do depurador.
 
-Habilitando @code{debugmode} por meio da alteraÁ„o de seu valor para @code{true}, n„o ser„o capturados erros do Lisp.
+Habilitando @code{debugmode} por meio da altera√ß√£o de seu valor para @code{true}, n√£o ser√£o capturados erros do Lisp.
 @c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
 @c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
@@ -357,131 +357,131 @@ Habilitando @code{debugmode} por meio da alteraÁ„o de seu valor para @code{true}
 
 @c NEEDS CLARIFICATION
 @c VERY IMPORTANT !!
-@deffn {FunÁ„o} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
-Avalia a express„o @var{expr} no ambiente
+@deffn {Fun√ß√£o} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+Avalia a express√£o @var{expr} no ambiente
 especificado pelos argumentos @var{arg_1}, ..., @var{arg_n}.
-Os argumentos s„o comutadores (sinalizadores Booleanos), atribuiÁıes, equaÁıes, e funÁıes.
-@code{ev} retorna o resultado (outra express„o) da avaliaÁ„o.
+Os argumentos s√£o comutadores (sinalizadores Booleanos), atribui√ß√µes, equa√ß√µes, e fun√ß√µes.
+@code{ev} retorna o resultado (outra express√£o) da avalia√ß√£o.
 
-A avaliaÁ„o È realizada em passos, como segue.
+A avalia√ß√£o √© realizada em passos, como segue.
 
 @enumerate
 @item
-Primeiro o ambiente È preparado examinando os argumentos que podem
+Primeiro o ambiente √© preparado examinando os argumentos que podem
 ser quaisquer ou todos os seguintes.
 
 @itemize @bullet
 @item
-@code{simp} faz com que @var{expr} seja simplificado independentemente da posiÁ„o do
-comutador @code{simp} que inibe simplificaÁ„o se @code{false}.
+@code{simp} faz com que @var{expr} seja simplificado independentemente da posi√ß√£o do
+comutador @code{simp} que inibe simplifica√ß√£o se @code{false}.
 @item
-@code{noeval} suprime a fase de avaliaÁ„o de @code{ev} (veja passo (4) adiante).
-Isso È ˙til juntamente com outros comutadores e faz com que
+@code{noeval} suprime a fase de avalia√ß√£o de @code{ev} (veja passo (4) adiante).
+Isso √© √∫til juntamente com outros comutadores e faz com que
 @var{expr} seja simplificado novamente sem ser reavaliado.
 @item
-@code{nouns} causa a avaliaÁ„o de formas substantivas
-(tipicamente funÁıes n„o avaliadas tais como @code{'integrate} ou @code{'diff})
+@code{nouns} causa a avalia√ß√£o de formas substantivas
+(tipicamente fun√ß√µes n√£o avaliadas tais como @code{'integrate} ou @code{'diff})
 em @var{expr}.
 @item
-@code{expand} causa expans„o.
+@code{expand} causa expans√£o.
 @item
-@code{expand (@var{m}, @var{n})} causa expans„o, alterando os valores de @code{maxposex} e
+@code{expand (@var{m}, @var{n})} causa expans√£o, alterando os valores de @code{maxposex} e
 @code{maxnegex} para @var{m} e @var{n} respectivamente.
 @item
 @code{detout} faz com que qualquer matriz inversa calculada em @var{expr} tenha seu
-determinante mantido fora da inversa ao invÈs de dividindo a
+determinante mantido fora da inversa ao inv√©s de dividindo a
 cada elemento.
 @item
-@code{diff} faz com que todas as diferenciaÁıes indicadas em @var{expr} sejam executadas.
+@code{diff} faz com que todas as diferencia√ß√µes indicadas em @var{expr} sejam executadas.
 @item
-@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causa somente diferenciaÁıes referentes ‡s
-vari·veis indicadas.
+@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causa somente diferencia√ß√µes referentes √†s
+vari√°veis indicadas.
 @item
-@code{float} faz com que n˙meros racionais n„o inteiros sejam convertidos para ponto 
+@code{float} faz com que n√∫meros racionais n√£o inteiros sejam convertidos para ponto 
 flutuante.
 @item
-@code{numer} faz com que algumas funÁıes matem·ticas (incluindo a exponenciaÁ„o)
+@code{numer} faz com que algumas fun√ß√µes matem√°ticas (incluindo a exponencia√ß√£o)
 com argumentos sejam valiadas em ponto flutuante.  Isso faz com que
-vari·vels em @var{expr} que tenham sido dados numervals (valores numÈricos) sejam substituÌdas por
-seus valores.  Isso tambÈm modifica o comutador @code{float} para activado.
+vari√°vels em @var{expr} que tenham sido dados numervals (valores num√©ricos) sejam substitu√≠das por
+seus valores.  Isso tamb√©m modifica o comutador @code{float} para activado.
 @item
-@code{pred} faz com que predicados (expressıes que podem ser avaliados em @code{true} ou @code{false})
+@code{pred} faz com que predicados (express√µes que podem ser avaliados em @code{true} ou @code{false})
 sejam avaliadas.
 @item
-@code{eval} faz com que uma avaliaÁ„o posterior de @var{expr} ocorra.  (Veja passo (5)
+@code{eval} faz com que uma avalia√ß√£o posterior de @var{expr} ocorra.  (Veja passo (5)
 adiante.)
-@code{eval} pode ocorrer m˙ltiplas vezes.
-Para cada inst‚ncia de @code{eval}, a express„o È avaliada novamente.
+@code{eval} pode ocorrer m√∫ltiplas vezes.
+Para cada inst√¢ncia de @code{eval}, a express√£o √© avaliada novamente.
 @item
-@code{A} onde @code{A} È um ·tomo declarado seja um sinalizador de avaliaÁ„o (veja @code{evflag})
+@code{A} onde @code{A} √© um √°tomo declarado seja um sinalizador de avalia√ß√£o (veja @code{evflag})
 faz com que @code{A} seja associado a
-@code{true} durante a avaliaÁ„o de @var{expr}.
+@code{true} durante a avalia√ß√£o de @var{expr}.
 @item
-@code{V: expres„o} (ou alternativamente @code{V=express„o}) faz com que @code{V} seja associado ao
-valor de @code{express„o} durante a avaliaÁ„o de @var{expr}.  Note que se @code{V} È uma
-opÁ„o do Maxima, ent„o @code{expression} È usada para seu valor durante a
-avaliaÁ„o de @var{expr}.  Se mais que um argumento para @code{ev} È desse tipo
-ent„o a associaÁ„o termina em paralelo.  Se @code{V} È uma express„o n„o at@^omica
-ent„o a substituiÁ„o, ao invÈs de uma associaÁ„o, È executada.
+@code{V: expres√£o} (ou alternativamente @code{V=express√£o}) faz com que @code{V} seja associado ao
+valor de @code{express√£o} durante a avalia√ß√£o de @var{expr}.  Note que se @code{V} √© uma
+op√ß√£o do Maxima, ent√£o @code{expression} √© usada para seu valor durante a
+avalia√ß√£o de @var{expr}.  Se mais que um argumento para @code{ev} √© desse tipo
+ent√£o a associa√ß√£o termina em paralelo.  Se @code{V} √© uma express√£o n√£o at@^omica
+ent√£o a substitui√ß√£o, ao inv√©s de uma associa√ß√£o, √© executada.
 @item
-@code{F} onde @code{F}, um nome de funÁ„o, tenha sido declarado para ser uma funÁ„o de avaliaÁ„o (veja @code{evfun})
+@code{F} onde @code{F}, um nome de fun√ß√£o, tenha sido declarado para ser uma fun√ß√£o de avalia√ß√£o (veja @code{evfun})
 faz com que @code{F}
 seja aplicado a @var{expr}.
 @item
-Qualquer outro nome de funÁ„o (e.g., @code{sum}) causa a avaliaÁ„o de ocorrÍncias
+Qualquer outro nome de fun√ß√£o (e.g., @code{sum}) causa a avalia√ß√£o de ocorr√™ncias
 desses nomes em @var{expr} mesmo que eles tenham sido verbos.
 @item
-De forma adicional uma funÁ„o ocorrendo em @var{expr} (digamos @code{F(x)}) pode ser definida
-localmente para o propÛsito dessa avaliaÁ„o de @var{expr} dando
-@code{F(x) := express„o} como um argumento para @code{ev}.
+De forma adicional uma fun√ß√£o ocorrendo em @var{expr} (digamos @code{F(x)}) pode ser definida
+localmente para o prop√≥sito dessa avalia√ß√£o de @var{expr} dando
+@code{F(x) := express√£o} como um argumento para @code{ev}.
 @item
-Se um ·tomo n„o mensionado acima ou uma vari·vel subscrita ou
-express„o subscrita for dada como um argumento, isso È avaliado e
-se o resultado for uma equaÁ„o ou uma atribuiÁ„o ent„o a associaÁ„o indicada
-ou substituiÁ„o È executada.  Se o resultado for uma lista ent„o os
-membros da lista ser„o tratados  como se eles fossem argumentos adicionais
-dados para @code{ev}.  Isso permite que uma lista de equaÁıes seja dada (e.g. @code{[X=1, Y=A**2]})
-ou que seja dado uma lista de nomes de equaÁıes (e.g., @code{[%t1, %t2]} onde @code{%t1} e
-@code{%t2} s„o equaÁıes) tais como aquelas listas retornadas por @code{solve}.
+Se um √°tomo n√£o mensionado acima ou uma vari√°vel subscrita ou
+express√£o subscrita for dada como um argumento, isso √© avaliado e
+se o resultado for uma equa√ß√£o ou uma atribui√ß√£o ent√£o a associa√ß√£o indicada
+ou substitui√ß√£o √© executada.  Se o resultado for uma lista ent√£o os
+membros da lista ser√£o tratados  como se eles fossem argumentos adicionais
+dados para @code{ev}.  Isso permite que uma lista de equa√ß√µes seja dada (e.g. @code{[X=1, Y=A**2]})
+ou que seja dado uma lista de nomes de equa√ß√µes (e.g., @code{[%t1, %t2]} onde @code{%t1} e
+@code{%t2} s√£o equa√ß√µes) tais como aquelas listas retornadas por @code{solve}.
 @end itemize
 
-Os argumentos de @code{ev} podem ser dados em qualquer ordem com exceÁ„o de
-substituiÁıes de equaÁıes que s„o manuseadas em sequÍncia, da esquerda para a direita,
-e funÁıes de avaliaÁ„o que s„o compostas, e.g., @code{ev (@var{expr}, ratsimp, realpart)} s„o
+Os argumentos de @code{ev} podem ser dados em qualquer ordem com exce√ß√£o de
+substitui√ß√µes de equa√ß√µes que s√£o manuseadas em sequ√™ncia, da esquerda para a direita,
+e fun√ß√µes de avalia√ß√£o que s√£o compostas, e.g., @code{ev (@var{expr}, ratsimp, realpart)} s√£o
 manuseadas como @code{realpart (ratsimp (@var{expr}))}.
 
-Os comutadores @code{simp}, @code{numer}, @code{float}, e @code{pred} podem tambÈm ser alterados localmente em um
-bloco, ou globalmente no Maxima dessa forma eles ir„
-permanecer em efeito atÈ serem resetados ao tÈrmino da execuÁ„o do bloco.
+Os comutadores @code{simp}, @code{numer}, @code{float}, e @code{pred} podem tamb√©m ser alterados localmente em um
+bloco, ou globalmente no Maxima dessa forma eles ir√£
+permanecer em efeito at√© serem resetados ao t√©rmino da execu√ß√£o do bloco.
 
-Se @var{expr} for uma express„o racional canÛnica (CRE),
-ent„o a express„o retornada por @code{ev} È tambÈm uma CRE,
-contanto que os comutadores @code{numer} e @code{float} n„o sejam ambos @code{true}.
+Se @var{expr} for uma express√£o racional can√≥nica (CRE),
+ent√£o a express√£o retornada por @code{ev} √© tamb√©m uma CRE,
+contanto que os comutadores @code{numer} e @code{float} n√£o sejam ambos @code{true}.
 
 @item
-Durante o passo (1), È feito uma lista  de vari·veis n„o subscritas
-aparecendo do lado esquerdo das equaÁıes nos argumentos ou nos
-valores de alguns argumentos se o valor for uma equaÁ„o.  As vari·veis
-(vari·veis subscritas que n„o possuem funÁıes array
-associadas bem como vari·veis n„o subscritas) na express„o @var{expr} s„o
-substituÌdas por seus valores globais, excepto para esse aparecendo nessa 
-lista.  Usualmente, @var{expr} È apenas um rÛtulo ou @code{%}
-(como em @code{%i2} no exemplo adiante), ent„o esse 
-passo simplesmente repete a express„o nomeada pelo rÛtulo, de modo que @code{ev}
+Durante o passo (1), √© feito uma lista  de vari√°veis n√£o subscritas
+aparecendo do lado esquerdo das equa√ß√µes nos argumentos ou nos
+valores de alguns argumentos se o valor for uma equa√ß√£o.  As vari√°veis
+(vari√°veis subscritas que n√£o possuem fun√ß√µes array
+associadas bem como vari√°veis n√£o subscritas) na express√£o @var{expr} s√£o
+substitu√≠das por seus valores globais, excepto para esse aparecendo nessa 
+lista.  Usualmente, @var{expr} √© apenas um r√≥tulo ou @code{%}
+(como em @code{%i2} no exemplo adiante), ent√£o esse 
+passo simplesmente repete a express√£o nomeada pelo r√≥tulo, de modo que @code{ev}
 possa trabalhar sobre isso.
 
 @item
-Se quaisquer substituiÁıes tiveem sido indicadas pelos argumentos, elas ser„o
+Se quaisquer substitui√ß√µes tiveem sido indicadas pelos argumentos, elas ser√£o
 realizadas agora.
 
 @item
-A express„o resultante È ent„o reavaliada (a menos que um dos
+A express√£o resultante √© ent√£o reavaliada (a menos que um dos
 argumentos seja @code{noeval}) e simplificada conforme os argumentos.  Note que
-qualquer chamada de funÁ„o em @var{expr} ser· completada depois das vari·veis
+qualquer chamada de fun√ß√£o em @var{expr} ser√° completada depois das vari√°veis
 nela serem avalidas e que @code{ev(F(x))} dessa forma possa comportar-se como @code{F(ev(x))}.
 
 @item
-Para cada inst‚ncia de @code{eval} nos argumentos, os passos (3) e (4) s„o repetidos.
+Para cada inst√¢ncia de @code{eval} nos argumentos, os passos (3) e (4) s√£o repetidos.
 @end enumerate
 
                      Exemplos
@@ -496,18 +496,18 @@ Para cada inst‚ncia de @code{eval} nos argumentos, os passos (3) e (4) s„o repet
 (%o2)           cos(w) + w  + 2 w + cos(1) + 1.909297426825682
 @end example
 
-Uma sintaxe alternativa de alto nÌvel tem sido provida por @code{ev}, por meio da qual
-se pode apenas digitar seus argumentos, sem o @code{ev()}.  Isto È, se pode
+Uma sintaxe alternativa de alto n√≠vel tem sido provida por @code{ev}, por meio da qual
+se pode apenas digitar seus argumentos, sem o @code{ev()}.  Isto √©, se pode
 escrever simplesmente
 
 @example
 @var{expr}, @var{arg_1}, ..., @var{arg_n}
 @end example
 
-Isso n„o È permitido como parte de
-outra express„o, e.g., em funÁıes, blocos, etc.
+Isso n√£o √© permitido como parte de
+outra express√£o, e.g., em fun√ß√µes, blocos, etc.
 
-Observe o processo de associaÁ„o paralela no seguinte exemplo.
+Observe o processo de associa√ß√£o paralela no seguinte exemplo.
 
 @example
 (%i3) programmode: false;
@@ -542,15 +542,15 @@ Solution
 @end deffn
 
 @defvr {Propriedade} evflag
-Quando um sÌmbolo @var{x} tem a propriedade @code{evflag},
-as expressıes @code{ev(@var{expr}, @var{x})} e @code{@var{expr}, @var{x}}
-(na linha de comando interativa) s„o equivalentes a @code{ev(@var{expr}, @var{x} = true)}.
-Isto È, @var{x} est· associada a @code{true} enquanto @var{expr} for avaliada.
+Quando um s√≠mbolo @var{x} tem a propriedade @code{evflag},
+as express√µes @code{ev(@var{expr}, @var{x})} e @code{@var{expr}, @var{x}}
+(na linha de comando interativa) s√£o equivalentes a @code{ev(@var{expr}, @var{x} = true)}.
+Isto √©, @var{x} est√° associada a @code{true} enquanto @var{expr} for avaliada.
 
-A express„o @code{declare(@var{x}, evflag)}
-fornece a propriedade @code{evflag} para a vari·vel @var{x}.
+A express√£o @code{declare(@var{x}, evflag)}
+fornece a propriedade @code{evflag} para a vari√°vel @var{x}.
 
-Os sinalizadores que possuem a propriedade @code{evflag} por padr„o s„o os seguintes:
+Os sinalizadores que possuem a propriedade @code{evflag} por padr√£o s√£o os seguintes:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
 @c NEAR LINE 2649 OF mlisp.lisp AT PRESENT (2004/11).
 @code{algebraic},
@@ -635,27 +635,27 @@ Exemplos:
                                6
 (%i10) declare (aa, evflag);
 (%o10)                        done
-(%i11) if aa = true then SIM else N√O;
-(%o11)                         N√O
-(%i12) if aa = true then SIM else N√O, aa;
+(%i11) if aa = true then SIM else N√ÉO;
+(%o11)                         N√ÉO
+(%i12) if aa = true then SIM else N√ÉO, aa;
 (%o12)                         SIM
 @end example
 
 @end defvr
 
 @defvr {Propriedade}  evfun
-Quando uma funÁ„o @var{F} tem a propriedade @code{evfun},
-as expressıes @code{ev(@var{expr}, @var{F})} e @code{@var{expr}, @var{F}}
+Quando uma fun√ß√£o @var{F} tem a propriedade @code{evfun},
+as express√µes @code{ev(@var{expr}, @var{F})} e @code{@var{expr}, @var{F}}
 (na linha de comando interativa)
-s„o equivalentes a @code{@var{F}(ev(@var{expr}))}.
+s√£o equivalentes a @code{@var{F}(ev(@var{expr}))}.
 
-Se duas ou mais funÁıes @var{F}, @var{G}, etc., que possuem a propriedade @code{evfun} forem especificadas,
-as funÁıes ser„o aplicadas na ordem em que forem especificadas.
+Se duas ou mais fun√ß√µes @var{F}, @var{G}, etc., que possuem a propriedade @code{evfun} forem especificadas,
+as fun√ß√µes ser√£o aplicadas na ordem em que forem especificadas.
 
-A express„o @code{declare(@var{F}, evfun)}
-fornece a propriedade @code{evfun} para a funÁ„o @var{F}.
+A express√£o @code{declare(@var{F}, evfun)}
+fornece a propriedade @code{evfun} para a fun√ß√£o @var{F}.
 
-As funÁıes que possuem a propriedade @code{evfun} por padr„o s„o as seguintes:
+As fun√ß√µes que possuem a propriedade @code{evfun} por padr√£o s√£o as seguintes:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
 @c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
 @code{bfloat},
@@ -744,132 +744,132 @@ Exemplos:
 @end defvr
 
 @c NEEDS WORK
-@defvr {Vari·vel de opÁ„o} infeval
-Habilita o modo "avaliaÁ„o infinita".  @code{ev} repetidamente avalia
-uma express„o atÈ que ela permaneÁa invariante.  Para prevenir uma
-vari·vel, digamos @code{X}, seja demoradamente avaliada nesso modo, simplesmente
-inclua @code{X='X} como um argumento para @code{ev}.  Certamente expressıes tais como
-@code{ev (X, X=X+1, infeval)} ir„o gerar um ciclo infinito.
+@defvr {Vari√°vel de op√ß√£o} infeval
+Habilita o modo "avalia√ß√£o infinita".  @code{ev} repetidamente avalia
+uma express√£o at√© que ela permane√ßa invariante.  Para prevenir uma
+vari√°vel, digamos @code{X}, seja demoradamente avaliada nesso modo, simplesmente
+inclua @code{X='X} como um argumento para @code{ev}.  Certamente express√µes tais como
+@code{ev (X, X=X+1, infeval)} ir√£o gerar um ciclo infinito.
 
 @end defvr
 
 @c REVIEW FOR ACCURACY AND COMPLETENESS
 @c THIS ITEM IS VERY IMPORTANT !!
 @c NEEDS EXAMPLES
-@deffn {FunÁ„o} kill (@var{a_1}, ..., @var{a_n})
-@deffnx {FunÁ„o} kill (labels)
-@deffnx {FunÁ„o} kill (inlabels, outlabels, linelabels)
-@deffnx {FunÁ„o} kill (@var{n})
-@deffnx {FunÁ„o} kill ([@var{m}, @var{n}])
-@deffnx {FunÁ„o} kill (values, functions, arrays, ...)
-@deffnx {FunÁ„o} kill (all)
-@deffnx {FunÁ„o} kill (allbut (@var{a_1}, ..., @var{a_n}))
+@deffn {Fun√ß√£o} kill (@var{a_1}, ..., @var{a_n})
+@deffnx {Fun√ß√£o} kill (labels)
+@deffnx {Fun√ß√£o} kill (inlabels, outlabels, linelabels)
+@deffnx {Fun√ß√£o} kill (@var{n})
+@deffnx {Fun√ß√£o} kill ([@var{m}, @var{n}])
+@deffnx {Fun√ß√£o} kill (values, functions, arrays, ...)
+@deffnx {Fun√ß√£o} kill (all)
+@deffnx {Fun√ß√£o} kill (allbut (@var{a_1}, ..., @var{a_n}))
 
-Remove todas as associaÁıes (valor, funÁıes, array, ou regra) dos argumentos
+Remove todas as associa√ß√µes (valor, fun√ß√µes, array, ou regra) dos argumentos
 @var{a_1}, ..., @var{a_n}.
-Um argumento @var{a_k} pode ser um sÌmbolo ou um elemento de array simples.
-Quando @var{a_k} for um elemento de array simples, @code{kill} remove a associaÁ„o daquele elemento
+Um argumento @var{a_k} pode ser um s√≠mbolo ou um elemento de array simples.
+Quando @var{a_k} for um elemento de array simples, @code{kill} remove a associa√ß√£o daquele elemento
 sem afectar qualquer outro elemento do array.
 
-Muitos argumentos especiais s„o reconhecidos.  
-Diferentes famÌlias de argumentos 
+Muitos argumentos especiais s√£o reconhecidos.  
+Diferentes fam√≠lias de argumentos 
 podem ser combinadas, e.g., @code{kill (inlabels, functions, allbut (foo, bar))}
 
-todos os rÛtulos de entrada, de saÌda, e de expressıes intermÈdias criados atÈ ent„o.
-@code{kill (inlabels)} libera somente rÛtudos de entrada 
-que comeÁam com o valor corrente de @code{inchar}.
+todos os r√≥tulos de entrada, de sa√≠da, e de express√µes interm√©dias criados at√© ent√£o.
+@code{kill (inlabels)} libera somente r√≥tudos de entrada 
+que come√ßam com o valor corrente de @code{inchar}.
 De forma semelhante,
-@code{kill (outlabels)} libera somente rÛtulos de saÌda
-que comeÁam com o valor corrente de @code{outchar},
-e @code{kill (linelabels)} libera somente rÛtulos de expressıes intermÈdias
-que comeÁam com o valor corrente de @code{linechar}.
+@code{kill (outlabels)} libera somente r√≥tulos de sa√≠da
+que come√ßam com o valor corrente de @code{outchar},
+e @code{kill (linelabels)} libera somente r√≥tulos de express√µes interm√©dias
+que come√ßam com o valor corrente de @code{linechar}.
 
-@code{kill (@var{n})}, onde @var{n} È um inteiro,
-libera os @var{n} mais recentes rÛtulos de entrada e saÌda.
+@code{kill (@var{n})}, onde @var{n} √© um inteiro,
+libera os @var{n} mais recentes r√≥tulos de entrada e sa√≠da.
 
-@code{kill ([@var{m}, @var{n}])} libera rÛtulos de entrada e saÌda de @var{m} atÈ @var{n}.
+@code{kill ([@var{m}, @var{n}])} libera r√≥tulos de entrada e sa√≠da de @var{m} at√© @var{n}.
 
-@code{kill (@var{infolist})}, onde @var{infolist} È um item em @code{infolists}
+@code{kill (@var{infolist})}, onde @var{infolist} √© um item em @code{infolists}
 (tais como @code{values}, @code{functions}, ou @code{arrays})
-libera todos os Ìtens em @var{infolist}.
-Veja tambÈm @code{infolists}.
+libera todos os √≠tens em @var{infolist}.
+Veja tamb√©m @code{infolists}.
 
-@code{kill (all)} liberar todos os Ìtens em todas as infolists.
-@code{kill (all)} n„o retorna vari·veis globais para seus valores padrıes;
+@code{kill (all)} liberar todos os √≠tens em todas as infolists.
+@code{kill (all)} n√£o retorna vari√°veis globais para seus valores padr√µes;
 Veja @code{reset} sobre esse ponto.
 
 @code{kill (allbut (@var{a_1}, ..., @var{a_n}))}
-remove a associaÁ„o de todos os itens sobre todas as infolistas excepto para @var{a_1}, ..., @var{a_n}.
-@code{kill (allbut (@var{infolist}))} libera todos os Ìtens excepto para si prÛprio em @var{infolist},
-onde @var{infolist} È @code{values}, @code{functions}, @code{arrays}, etc.
+remove a associa√ß√£o de todos os itens sobre todas as infolistas excepto para @var{a_1}, ..., @var{a_n}.
+@code{kill (allbut (@var{infolist}))} libera todos os √≠tens excepto para si pr√≥prio em @var{infolist},
+onde @var{infolist} √© @code{values}, @code{functions}, @code{arrays}, etc.
 
-A memÛria usada por uma propriedade de associaÁ„o n„o ser· liberada atÈ que todos os sÌmbolos
+A mem√≥ria usada por uma propriedade de associa√ß√£o n√£o ser√° liberada at√© que todos os s√≠mbolos
 sejam liberados disso.
-Em particular, para liberar a memÛria usada pelo valor de um sÌmbolo,
-deve-se liberar o rÛtulo de saÌda que mosta o valor associado, bem como liberando o prÛprio sÌmbolo.
+Em particular, para liberar a mem√≥ria usada pelo valor de um s√≠mbolo,
+deve-se liberar o r√≥tulo de sa√≠da que mosta o valor associado, bem como liberando o pr√≥prio s√≠mbolo.
 
-@code{kill} coloca um apÛstro em seus argumentos (n„o os avalia).
-O operador apÛstrofo-apÛstrofo, @code{'@w{}'}, faz com que ocorra avaliaÁ„o.
+@code{kill} coloca um ap√≥stro em seus argumentos (n√£o os avalia).
+O operador ap√≥strofo-ap√≥strofo, @code{'@w{}'}, faz com que ocorra avalia√ß√£o.
 
-@code{kill (@var{sÌmbolo})} libera todas as propriedades de @var{sÌmbolo}.
-Em oposiÁ„o, @code{remvalue}, @code{remfunction}, @code{remarray}, e @code{remrule}
-liberam uma propriedade especÌfica.
+@code{kill (@var{s√≠mbolo})} libera todas as propriedades de @var{s√≠mbolo}.
+Em oposi√ß√£o, @code{remvalue}, @code{remfunction}, @code{remarray}, e @code{remrule}
+liberam uma propriedade espec√≠fica.
 
-@code{kill} sempre retorna @code{done}, igualmente se um argumento n„o tem associaÁıes.
+@code{kill} sempre retorna @code{done}, igualmente se um argumento n√£o tem associa√ß√µes.
 
 @end deffn
 
-@deffn {FunÁ„o} labels (@var{sÌmbolo})
-@deffnx {Vari·vel de sistema} labels
-Retorna a lista de rÛtulos de entradas, de saÌda, de expressıes intermÈdias que comeÁam com @var{sÌmbolo}.
-Tipicamente @var{sÌmbolo} È o valor de @code{inchar}, @code{outchar}, ou @code{linechar}.
-O caracter rÛtulo pode ser dado com ou sem o sinal de porcentagem,
-ent„o, por exemplo, @code{i} e @code{%i} retornam o mesmo resultado.
+@deffn {Fun√ß√£o} labels (@var{s√≠mbolo})
+@deffnx {Vari√°vel de sistema} labels
+Retorna a lista de r√≥tulos de entradas, de sa√≠da, de express√µes interm√©dias que come√ßam com @var{s√≠mbolo}.
+Tipicamente @var{s√≠mbolo} √© o valor de @code{inchar}, @code{outchar}, ou @code{linechar}.
+O caracter r√≥tulo pode ser dado com ou sem o sinal de porcentagem,
+ent√£o, por exemplo, @code{i} e @code{%i} retornam o mesmo resultado.
 
-Se nenhum rÛtulo comeÁa com @var{sÌmbolo}, @code{labels} retorna uma lista vazia.
+Se nenhum r√≥tulo come√ßa com @var{s√≠mbolo}, @code{labels} retorna uma lista vazia.
 
-A funÁ„o @code{labels} n„o avalia seu argumento.
-O operador apÛstrofo-apÛstrofo @code{'@w{}'} faz com que ocorra avaliaÁ„o.
+A fun√ß√£o @code{labels} n√£o avalia seu argumento.
+O operador ap√≥strofo-ap√≥strofo @code{'@w{}'} faz com que ocorra avalia√ß√£o.
 Por exemplo,
-@code{labels (''inchar)} retorna os rÛtulos de entrada que comeÁam com o caractere corrente do rÛtulo de entrada.
+@code{labels (''inchar)} retorna os r√≥tulos de entrada que come√ßam com o caractere corrente do r√≥tulo de entrada.
 
-A vari·vel @code{labels} È uma lista de rÛtulos de entrada, saÌda, e de expressıes intermÈdias,
-incluindo todos os rÛtulos anteriores se @code{inchar}, @code{outchar}, ou @code{linechar} que tiverem sido redefinidos.
+A vari√°vel @code{labels} √© uma lista de r√≥tulos de entrada, sa√≠da, e de express√µes interm√©dias,
+incluindo todos os r√≥tulos anteriores se @code{inchar}, @code{outchar}, ou @code{linechar} que tiverem sido redefinidos.
 
-Por padr„o, Maxima mostra o resultado de cada express„o de entrada do utilizador,
-dando ao resultado um rÛtulo de saÌda.
-A exibiÁ„o da saÌda È suprimida pelo encerramento da entrada com @code{$} (sinal de dolar)
-em lugar de @code{;} (ponto e vÌrgula).
-Um rÛtulo de saÌda È construido e associado ao resultado, mas n„o È mostrado, 
-e o rÛtulo pode ser referenciado da mesma forma que rÛtulos de saÌda mostrados.
-Veja tambÈm @code{%}, @code{%%}, e @code{%th}.
+Por padr√£o, Maxima mostra o resultado de cada express√£o de entrada do utilizador,
+dando ao resultado um r√≥tulo de sa√≠da.
+A exibi√ß√£o da sa√≠da √© suprimida pelo encerramento da entrada com @code{$} (sinal de dolar)
+em lugar de @code{;} (ponto e v√≠rgula).
+Um r√≥tulo de sa√≠da √© construido e associado ao resultado, mas n√£o √© mostrado, 
+e o r√≥tulo pode ser referenciado da mesma forma que r√≥tulos de sa√≠da mostrados.
+Veja tamb√©m @code{%}, @code{%%}, e @code{%th}.
 
-RÛtulos de expressıes intermÈdias podem ser gerados por algumas funÁıes.
-O sinalizador @code{programmode} controla se @code{solve} e algumas outras funÁıes
-geram rÛtulos de expressıes intermÈdias em lugar de retornar uma lista de expressıes.
-Algumas outras funÁıes, tais como @code{ldisplay}, sempre geram rÛtulos de expressıes intermÈdias.
+R√≥tulos de express√µes interm√©dias podem ser gerados por algumas fun√ß√µes.
+O sinalizador @code{programmode} controla se @code{solve} e algumas outras fun√ß√µes
+geram r√≥tulos de express√µes interm√©dias em lugar de retornar uma lista de express√µes.
+Algumas outras fun√ß√µes, tais como @code{ldisplay}, sempre geram r√≥tulos de express√µes interm√©dias.
 
-Veja tambÈm @code{inchar}, @code{outchar}, @code{linechar}, e @code{infolists}.
+Veja tamb√©m @code{inchar}, @code{outchar}, @code{linechar}, e @code{infolists}.
 
 @end deffn
 
 @c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
-@defvr {Vari·vel de sistema} linenum
-Retorna o n˙mero da linha do par corrente de expressıes de entrada e saÌda.
+@defvr {Vari√°vel de sistema} linenum
+Retorna o n√∫mero da linha do par corrente de express√µes de entrada e sa√≠da.
 
 @end defvr
 
 @c NEEDS WORK
-@defvr {Vari·vel de sistema} myoptions
-Valor por omiss„o: @code{[]}
+@defvr {Vari√°vel de sistema} myoptions
+Valor por omiss√£o: @code{[]}
 
-@code{myoptions} È a lista de todas as opÁıes alguma vez alteradas pelo utilizador,
-tenha ou n„o ele retornado a alteraÁ„o para o seu valor padr„o.
+@code{myoptions} √© a lista de todas as op√ß√µes alguma vez alteradas pelo utilizador,
+tenha ou n√£o ele retornado a altera√ß√£o para o seu valor padr√£o.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} nolabels
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} nolabels
+Valor por omiss√£o: @code{false}
 
 @c PREVIOUS DESCRIPTION OF nolabels: THIS IS OUT OF DATE
 @c When @code{nolabels} is @code{true}, then no labels will be bound
@@ -878,82 +878,82 @@ Valor por omiss„o: @code{false}
 @c @code{kill (labels)} in order to free up storage.
 
 Quando @code{nolabels} for @code{true},
-rÛtulos de entrada e saÌda
+r√≥tulos de entrada e sa√≠da
 (@code{%i} e @code{%o}, respectivamente)
-s„o mostrados,
-mas os rÛtulos n„o s„o associados aos resultados,
-e os rÛtulos n„o s„o anexados ao final da lista @code{labels}.
-Uma vez que rÛtulos n„o s„o associados aos resultados,
-a reciclagem pode recuperar a memÛria tomada pelos resultados.
+s√£o mostrados,
+mas os r√≥tulos n√£o s√£o associados aos resultados,
+e os r√≥tulos n√£o s√£o anexados ao final da lista @code{labels}.
+Uma vez que r√≥tulos n√£o s√£o associados aos resultados,
+a reciclagem pode recuperar a mem√≥ria tomada pelos resultados.
 
-De outra forma rÛtulos de entrada e saÌda s„o associados aos resultados,
-e os rÛtulos s„o anexados ao final da lista @code{labels}.
+De outra forma r√≥tulos de entrada e sa√≠da s√£o associados aos resultados,
+e os r√≥tulos s√£o anexados ao final da lista @code{labels}.
 
-Veja tambÈm @code{batch}, @code{batchload}, e @code{labels}.
+Veja tamb√©m @code{batch}, @code{batchload}, e @code{labels}.
 
 @end defvr
 
 @c NEEDS WORK
-@defvr {Vari·vel de opÁ„o} optionset
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} optionset
+Valor por omiss√£o: @code{false}
 
-Quando @code{optionset} for @code{true}, Maxima mostrar· uma
-mensagem sempre que uma opÁ„o do Maxima for alterada.  Isso È ˙til se o
-utilizador est· incerto sobre a ortografia de alguma opÁ„o e quer ter certeza
-que a vari·vel por ele atribuÌdo um valor foi realmente uma vari·vel de opÁ„o.
+Quando @code{optionset} for @code{true}, Maxima mostrar√° uma
+mensagem sempre que uma op√ß√£o do Maxima for alterada.  Isso √© √∫til se o
+utilizador est√° incerto sobre a ortografia de alguma op√ß√£o e quer ter certeza
+que a vari√°vel por ele atribu√≠do um valor foi realmente uma vari√°vel de op√ß√£o.
 
 @end defvr
 
-@deffn {FunÁ„o} playback ()
-@deffnx {FunÁ„o} playback (@var{n})
-@deffnx {FunÁ„o} playback ([@var{m}, @var{n}])
-@deffnx {FunÁ„o} playback ([@var{m}])
-@deffnx {FunÁ„o} playback (input)
-@deffnx {FunÁ„o} playback (slow)
-@deffnx {FunÁ„o} playback (time)
-@deffnx {FunÁ„o} playback (grind)
-Mostra expressıes de entrada, de saÌda, e expressıes intermÈdias,
-sem refazer os c·lculos.
-@code{playback} somente mostra as expressıes associadas a rÛtulos;
-qualquer outra saÌda (tais como textos impressos por @code{print} ou @code{describe}, ou messagens de erro)
-n„o È mostrada.
-Veja tambÈm @code{labels}.
+@deffn {Fun√ß√£o} playback ()
+@deffnx {Fun√ß√£o} playback (@var{n})
+@deffnx {Fun√ß√£o} playback ([@var{m}, @var{n}])
+@deffnx {Fun√ß√£o} playback ([@var{m}])
+@deffnx {Fun√ß√£o} playback (input)
+@deffnx {Fun√ß√£o} playback (slow)
+@deffnx {Fun√ß√£o} playback (time)
+@deffnx {Fun√ß√£o} playback (grind)
+Mostra express√µes de entrada, de sa√≠da, e express√µes interm√©dias,
+sem refazer os c√°lculos.
+@code{playback} somente mostra as express√µes associadas a r√≥tulos;
+qualquer outra sa√≠da (tais como textos impressos por @code{print} ou @code{describe}, ou messagens de erro)
+n√£o √© mostrada.
+Veja tamb√©m @code{labels}.
 
-@code{playback} n„o avalia seus argumentos.
-O operador apÛstrofo-apÛstrofo, @code{'@w{}'}, sobrepıe-se ‡s aspas.
+@code{playback} n√£o avalia seus argumentos.
+O operador ap√≥strofo-ap√≥strofo, @code{'@w{}'}, sobrep√µe-se √†s aspas.
 @code{playback} sempre retorna @code{done}.
 
-@code{playback ()} (sem argumentos) mostra todas as entradas, saÌdas e expressıes intermÈdias
-geradas atÈ ent„o.
-Uma express„o de saÌda È mostrada mesmo se for suprimida pelo terminador @code{$}
+@code{playback ()} (sem argumentos) mostra todas as entradas, sa√≠das e express√µes interm√©dias
+geradas at√© ent√£o.
+Uma express√£o de sa√≠da √© mostrada mesmo se for suprimida pelo terminador @code{$}
 quando ela tiver sido originalmente calculada.
 
-@code{playback (@var{n})} mostra as mais recentes @var{n} expressıes.
-Cada entrada, saÌda e express„o intermÈdia
+@code{playback (@var{n})} mostra as mais recentes @var{n} express√µes.
+Cada entrada, sa√≠da e express√£o interm√©dia
 conta como um.
 
-@code{playback ([@var{m}, @var{n}])} mostra entradas, saÌdas e expressıes intermÈdias
-com os n˙meros de @var{m} atÈ @var{n}, inclusive.
+@code{playback ([@var{m}, @var{n}])} mostra entradas, sa√≠das e express√µes interm√©dias
+com os n√∫meros de @var{m} at√© @var{n}, inclusive.
 
-@code{playback ([@var{m}])} È equivalente a @code{playback ([@var{m}, @var{m}])};
-isso usualmente imprime um par de expressıes de entrada e saÌda.
+@code{playback ([@var{m}])} √© equivalente a @code{playback ([@var{m}, @var{m}])};
+isso usualmente imprime um par de express√µes de entrada e sa√≠da.
 
-@code{playback (input)} mostra todas as expressıes de entrada geradas atÈ ent„o.
+@code{playback (input)} mostra todas as express√µes de entrada geradas at√© ent√£o.
 
-@code{playback (slow)} insere pausas entre expressıes
+@code{playback (slow)} insere pausas entre express√µes
 e espera que o utilizador pressione @code{enter}.
-Esse comportamento È similar a @code{demo}.
+Esse comportamento √© similar a @code{demo}.
 @c WHAT DOES THE FOLLOWING MEAN ???
-@code{playback (slow)} È ˙til juntamente com @code{save} ou @code{stringout}
-quando criamos um ficheiro secund·rio de armazenagem com a finalidade de capturar expressıes ˙teis.
+@code{playback (slow)} √© √∫til juntamente com @code{save} ou @code{stringout}
+quando criamos um ficheiro secund√°rio de armazenagem com a finalidade de capturar express√µes √∫teis.
 
-@code{playback (time)} mostra o tempo de computaÁ„o de cada express„o.
+@code{playback (time)} mostra o tempo de computa√ß√£o de cada express√£o.
 @c DON'T BOTHER TO MENTION OBSOLETE OPTIONS !!!
 @c The arguments @code{gctime} e @code{totaltime} have the same effect as @code{time}.
 
-@code{playback (grind)} mostra expressıes de entrada
-no mesmo formato da funÁ„o @code{grind}.
-Expressıes de saÌda n„o s„o afectadas pela opÁ„o @code{grind}.
+@code{playback (grind)} mostra express√µes de entrada
+no mesmo formato da fun√ß√£o @code{grind}.
+Express√µes de sa√≠da n√£o s√£o afectadas pela op√ß√£o @code{grind}.
 Veja @code{grind}.
 
 Argumentos podem ser combinados, e.g., 
@@ -964,101 +964,101 @@ Argumentos podem ser combinados, e.g.,
 
 @c NEEDS WORK ESPECIALLY EXAMPLES
 @c WHOLE BUSINESS WITH PROPERTIES IS PRETTY CONFUSING, TRY TO CLEAR IT UP
-@deffn {FunÁ„o} printprops (@var{a}, @var{i})
-@deffnx {FunÁ„o} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
-@deffnx {FunÁ„o} printprops (all, @var{i})
+@deffn {Fun√ß√£o} printprops (@var{a}, @var{i})
+@deffnx {Fun√ß√£o} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
+@deffnx {Fun√ß√£o} printprops (all, @var{i})
 Mostra a propriedade como o indicador @var{i}
-associada com o ·tomo @var{a}.  @var{a} pode tambÈm ser uma lista de ·tomos ou o ·tomo
-@code{all} nesse caso todos os ·tomos com a propriedade dada ser„o
-usados.  Por exemplo, @code{printprops ([f, g], atvalue)}.  @code{printprops} È para
-propriedades que n„o podem  ser mostradas de outra forma, i.e. para
+associada com o √°tomo @var{a}.  @var{a} pode tamb√©m ser uma lista de √°tomos ou o √°tomo
+@code{all} nesse caso todos os √°tomos com a propriedade dada ser√£o
+usados.  Por exemplo, @code{printprops ([f, g], atvalue)}.  @code{printprops} √© para
+propriedades que n√£o podem  ser mostradas de outra forma, i.e. para
 @code{atvalue}, @code{atomgrad}, @code{gradef}, e @code{matchdeclare}.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} prompt
-Valor por omiss„o: @code{_}
+@defvr {Vari√°vel de op√ß√£o} prompt
+Valor por omiss√£o: @code{_}
 
-@code{prompt} È o sÌmbolo de linha de comando da funÁ„o @code{demo},
-modo @code{playback (slow)}, e da interrupÁ„o de ciclos do Maxima (como invocado por @code{break}).
+@code{prompt} √© o s√≠mbolo de linha de comando da fun√ß√£o @code{demo},
+modo @code{playback (slow)}, e da interrup√ß√£o de ciclos do Maxima (como invocado por @code{break}).
 
 @end defvr
 
-@deffn {FunÁ„o} quit ()
-Encerra a sess„o do Maxima.
-Note que a funÁ„o pode ser invocada como @code{quit();} ou @code{quit()$},
-n„o por sÌ mesma @code{quit}.
+@deffn {Fun√ß√£o} quit ()
+Encerra a sess√£o do Maxima.
+Note que a fun√ß√£o pode ser invocada como @code{quit();} ou @code{quit()$},
+n√£o por s√≠ mesma @code{quit}.
 
-Para parar um c·lculo muito longo,
+Para parar um c√°lculo muito longo,
 digite @code{control-C}.
-A aÁ„o padr„o È retornar ‡ linha de comando do Maxima.
-Se @code{*debugger-hook*} È @code{nil},
+A a√ß√£o padr√£o √© retornar √† linha de comando do Maxima.
+Se @code{*debugger-hook*} √© @code{nil},
 @code{control-C} abre o depurador Lisp.
-Veja tambÈm @code{debugging}.
+Veja tamb√©m @code{debugging}.
 
 @end deffn
 
-@deffn {FunÁ„o} remfunction (@var{f_1}, ..., @var{f_n})
-@deffnx {FunÁ„o} remfunction (all)
-Desassocia as definiÁıes de funÁ„o dos sÌbolos @var{f_1}, ..., @var{f_n}.
-Os argumentos podem ser os nomes de funÁıes comuns (criadas por meio de @code{:=} ou @code{define})
-ou funÁıes macro (criadas por meio de @code{::=}).
+@deffn {Fun√ß√£o} remfunction (@var{f_1}, ..., @var{f_n})
+@deffnx {Fun√ß√£o} remfunction (all)
+Desassocia as defini√ß√µes de fun√ß√£o dos s√≠bolos @var{f_1}, ..., @var{f_n}.
+Os argumentos podem ser os nomes de fun√ß√µes comuns (criadas por meio de @code{:=} ou @code{define})
+ou fun√ß√µes macro (criadas por meio de @code{::=}).
 
-@code{remfunction (all)} desassocia todas as definiÁıes de funcÁ„o.
+@code{remfunction (all)} desassocia todas as defini√ß√µes de func√ß√£o.
 
-@code{remfunction} coloca um ap'ostrofo em seus argumentos (n„o os avalia).
+@code{remfunction} coloca um ap'ostrofo em seus argumentos (n√£o os avalia).
 
-@code{remfunction} retorna uma lista de sÌmbolos para a qual a definiÁ„o de funÁ„o foi desassociada.
-@code{false} È retornado em lugar de qualquer sÌmbolo para o qual n„o exista definiÁ„o de funÁ„o.
-
-@end deffn
-
-@deffn {FunÁ„o} reset ()
-Retorna muitas vari·veis globais e opÁıes, e algumas outras vari·veis, para seus valores padrıes.
-
-@code{reset} processa as vari·veis na lista Lisp @code{*variable-initial-values*}.
-A macro Lisp @code{defmvar} coloca vari·veis nessa lista (entre outras aÁıes).
-Muitas, mas n„o todas, vari·veis globais e opÁıes s„o definidas por @code{defmvar},
- e algumas vari·veis definidas por @code{defmvar} n„o s„o vari·veis globais ou vari·veis de opÁ„o.
+@code{remfunction} retorna uma lista de s√≠mbolos para a qual a defini√ß√£o de fun√ß√£o foi desassociada.
+@code{false} √© retornado em lugar de qualquer s√≠mbolo para o qual n√£o exista defini√ß√£o de fun√ß√£o.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} showtime
-Valor por omiss„o: @code{false}
+@deffn {Fun√ß√£o} reset ()
+Retorna muitas vari√°veis globais e op√ß√µes, e algumas outras vari√°veis, para seus valores padr√µes.
 
-Quando @code{showtime} for @code{true}, o tempo de computaÁ„o e o tempo decorrido s„o
-impressos na tela com cada express„o de saÌda.
+@code{reset} processa as vari√°veis na lista Lisp @code{*variable-initial-values*}.
+A macro Lisp @code{defmvar} coloca vari√°veis nessa lista (entre outras a√ß√µes).
+Muitas, mas n√£o todas, vari√°veis globais e op√ß√µes s√£o definidas por @code{defmvar},
+ e algumas vari√°veis definidas por @code{defmvar} n√£o s√£o vari√°veis globais ou vari√°veis de op√ß√£o.
 
-O tempo de c·lculo È sempre gravado,
-ent„o @code{time} e @code{playback} podem mostrar o tempo de c·lculo
+@end deffn
+
+@defvr {Vari√°vel de op√ß√£o} showtime
+Valor por omiss√£o: @code{false}
+
+Quando @code{showtime} for @code{true}, o tempo de computa√ß√£o e o tempo decorrido s√£o
+impressos na tela com cada express√£o de sa√≠da.
+
+O tempo de c√°lculo √© sempre gravado,
+ent√£o @code{time} e @code{playback} podem mostrar o tempo de c√°lculo
 mesmo quando @code{showtime} for @code{false}.
 
-Veja tambÈm @code{timer}.
+Veja tamb√©m @code{timer}.
 
 @end defvr
 
 @c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
 @c THIS REALLY SEEMS LIKE A HACK
-@deffn {FunÁ„o} sstatus (@var{recurso}, @var{pacote})
+@deffn {Fun√ß√£o} sstatus (@var{recurso}, @var{pacote})
 Altera o status de @var{recurso} em @var{pacote}.
-ApÛs @code{sstatus (@var{recurso}, @var{pacote})} ser executado,
+Ap√≥s @code{sstatus (@var{recurso}, @var{pacote})} ser executado,
 @code{status (@var{recurso}, @var{pacote})} retorna @code{true}.
-Isso pode ser ˙til para quem escreve pacotes, para
+Isso pode ser √∫til para quem escreve pacotes, para
 manter um registro de quais recursos os pacotes usam.
 
 @end deffn
 
 @c NEEDS EXPANSION, EXAMPLES
-@deffn {FunÁ„o} to_lisp ()
+@deffn {Fun√ß√£o} to_lisp ()
 Insere o sistema Lisp dentro do Maxima.  @code{(to-maxima)} retorna para o Maxima.
 
 @end deffn
 
-@defvr {Vari·vel de sistema} values
+@defvr {Vari√°vel de sistema} values
 Valor inicial: @code{[]}
 
-@code{values} È uma lista de todas as var·veis de utilizador associadas (n„o opÁıes Maxima ou comutadores).
-A lista compreende sÌmbolos associados por @code{:} , @code{::}, ou @code{:=}.
+@code{values} √© uma lista de todas as var√°veis de utilizador associadas (n√£o op√ß√µes Maxima ou comutadores).
+A lista compreende s√≠mbolos associados por @code{:} , @code{::}, ou @code{:=}.
 
 @end defvr
 

@@ -1,75 +1,75 @@
 @c /lbfgs.texi/1.2/Sat Dec  9 06:10:42 2006//
 
 @menu
-* Introdução a lbfgs::
-* Definições para lbfgs::
+* IntroduÃ§Ã£o a lbfgs::
+* DefiniÃ§Ãµes para lbfgs::
 @end menu
 
-@node Introdução a lbfgs, Definições para lbfgs, Top, Top
-@section Introdução a lbfgs
+@node IntroduÃ§Ã£o a lbfgs, DefiniÃ§Ãµes para lbfgs, Top, Top
+@section IntroduÃ§Ã£o a lbfgs
 
-@code{lbfgs} é uma implementação do algoritmo[1] L-BFGS (Broyden-Fletcher-Goldfarb-Shanno)
-para resolver problemas de minimização não limitada através de um algoritmo de memória limitada quasi-Newton (BFGS).
-Esse algoritmo é chamado de método de memória limitada porque uma aproximação de baixo ranque da
-inverso da matriz Hessiana é armazenado em lugar da inversa da matriz Hessiana completa.
-O programa foi escrito origináriamente em Fortran [2] por Jorge Nocedal,
-incorporando algumas funções originalmente escritas por Jorge J. Moré e David J. Thuente,
-e traduzidas para Lisp automaticamente através do programa @code{f2cl}.
-O pacote do Maxima @code{lbfgs} compreende o código traduzido e adicionalmente
-uma interface de função que gerencia alguns detallhes.
+@code{lbfgs} Ã© uma implementaÃ§Ã£o do algoritmo[1] L-BFGS (Broyden-Fletcher-Goldfarb-Shanno)
+para resolver problemas de minimizaÃ§Ã£o nÃ£o limitada atravÃ©s de um algoritmo de memÃ³ria limitada quasi-Newton (BFGS).
+Esse algoritmo Ã© chamado de mÃ©todo de memÃ³ria limitada porque uma aproximaÃ§Ã£o de baixo ranque da
+inverso da matriz Hessiana Ã© armazenado em lugar da inversa da matriz Hessiana completa.
+O programa foi escrito originÃ¡riamente em Fortran [2] por Jorge Nocedal,
+incorporando algumas funÃ§Ãµes originalmente escritas por Jorge J. MorÃ© e David J. Thuente,
+e traduzidas para Lisp automaticamente atravÃ©s do programa @code{f2cl}.
+O pacote do Maxima @code{lbfgs} compreende o cÃ³digo traduzido e adicionalmente
+uma interface de funÃ§Ã£o que gerencia alguns detallhes.
 
-Referências:
+ReferÃªncias:
 
 [1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
 scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
 [2] http://netlib.org/opt/lbfgs_um.shar
 
-@node Definições para lbfgs, , Introdução a lbfgs, Top
-@section Definições para lbfgs
+@node DefiniÃ§Ãµes para lbfgs, , IntroduÃ§Ã£o a lbfgs, Top
+@section DefiniÃ§Ãµes para lbfgs
 
-@deffn {Função} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffn {FunÃ§Ã£o} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 
-Encontra uma solução aproximada da minimização não limitada de número de mérito @var{FOM}
-sobre a lista de variáveis @var{X},
-começando a partir da estimativa inicial @var{X0},
+Encontra uma soluÃ§Ã£o aproximada da minimizaÃ§Ã£o nÃ£o limitada de nÃºmero de mÃ©rito @var{FOM}
+sobre a lista de variÃ¡veis @var{X},
+comeÃ§ando a partir da estimativa inicial @var{X0},
 tal que @math{norm grad FOM < epsilon max(1, norm X)}.
 
-O algoritmo aplicado é um algoritmo de memória limitada[1] quasi-Newton (BFGS).
-Esse algoritmo é chamado de método de memória limitada porque uma aproximação de baixo ranque da
-inverso da matriz Hessiana é armazenado em lugar da inversa da matriz Hessiana completa.
+O algoritmo aplicado Ã© um algoritmo de memÃ³ria limitada[1] quasi-Newton (BFGS).
+Esse algoritmo Ã© chamado de mÃ©todo de memÃ³ria limitada porque uma aproximaÃ§Ã£o de baixo ranque da
+inverso da matriz Hessiana Ã© armazenado em lugar da inversa da matriz Hessiana completa.
 
-@var{iprint} controla as messaens de progresso mostradas através de @code{lbfgs}.
+@var{iprint} controla as messaens de progresso mostradas atravÃ©s de @code{lbfgs}.
 
 @table @code
 @item iprint[1]
-@code{@var{iprint}[1]} controla a frequência das mensagens de progresso.
+@code{@var{iprint}[1]} controla a frequÃªncia das mensagens de progresso.
 @table @code
 @item iprint[1] < 0
 Nenhuma mensagem de progresso.
 @item iprint[1] = 0
-Messagens na primeira iteração e na última iteração.
+Messagens na primeira iteraÃ§Ã£o e na Ãºltima iteraÃ§Ã£o.
 @item iprint[1] > 0
-Mostra uma mensagem a cada @code{@var{iprint}[1]} iterações.
+Mostra uma mensagem a cada @code{@var{iprint}[1]} iteraÃ§Ãµes.
 @end table
 @item iprint[2]
-@code{@var{iprint}[2]} controla a quantidade de informações fornecidas pelas mensagens de progresso (verbosidade).
+@code{@var{iprint}[2]} controla a quantidade de informaÃ§Ãµes fornecidas pelas mensagens de progresso (verbosidade).
 @table @code
 @item iprint[2] = 0
-Mostra na tela o contador de iterações, o número de avaliações de @var{FOM}, o valor de @var{FOM},
+Mostra na tela o contador de iteraÃ§Ãµes, o nÃºmero de avaliaÃ§Ãµes de @var{FOM}, o valor de @var{FOM},
 a norma do gradiente de @var{FOM}, e o comprimento do salto.
 @item iprint[2] = 1
 O mesmo que @code{@var{iprint}[2] = 0}, adicionando @var{X0} e o gradiente de @var{FOM} avaliado em @var{X0}.
 @item iprint[2] = 2
-O mesmo que @code{@var{iprint}[2] = 1}, adicionando valores de @var{X} a cada iteração.
+O mesmo que @code{@var{iprint}[2] = 1}, adicionando valores de @var{X} a cada iteraÃ§Ã£o.
 @item iprint[2] = 3
-O mesmo que @code{@var{iprint}[2] = 2}, adicionando o gradiente de @var{FOM} a cada iteração.
+O mesmo que @code{@var{iprint}[2] = 2}, adicionando o gradiente de @var{FOM} a cada iteraÃ§Ã£o.
 @end table
 @end table
 
-Veja também @code{lbfgs_nfeval_max} e @code{lbfgs_ncorrections}.
+Veja tambÃ©m @code{lbfgs_nfeval_max} e @code{lbfgs_ncorrections}.
 
-Referências:
+ReferÃªncias:
 
 [1] D. Liu and J. Nocedal. "On the limited memory BFGS method for large
 scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
@@ -146,13 +146,13 @@ Exemplo:
 
 @end deffn
 
-@defvr {Variãvel} lbfgs_nfeval_max
-Valor por omissão: 100
+@defvr {VariÃ£vel} lbfgs_nfeval_max
+Valor por omissÃ£o: 100
 
 @end defvr
 
-@defvr {Variãvel} lbfgs_ncorrections
-Valor por omissão: 25
+@defvr {VariÃ£vel} lbfgs_ncorrections
+Valor por omissÃ£o: 25
 
 @end defvr
 

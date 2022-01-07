@@ -1,48 +1,48 @@
 @c English version 2013-03-31
 @menu
-* IntroducciÛn a itensor::
+* Introducci√≥n a itensor::
 * Funciones y variables para itensor::
 @end menu
 
-@node IntroducciÛn a itensor, Funciones y variables para itensor, itensor, itensor
-@section IntroducciÛn a itensor
+@node Introducci√≥n a itensor, Funciones y variables para itensor, itensor, itensor
+@section Introducci√≥n a itensor
 
-Maxima implementa dos tipos diferentes de manipulaciÛn simbÛlica de tensores: la manipulaciÛn de componentes
-(paquete @code{ctensor}) y la manipulaciÛn indexada (paquete @code{itensor}).
+Maxima implementa dos tipos diferentes de manipulaci√≥n simb√≥lica de tensores: la manipulaci√≥n de componentes
+(paquete @code{ctensor}) y la manipulaci√≥n indexada (paquete @code{itensor}).
 
-VÈase m·s abajo la nota sobre 'notaciÛn tensorial'.
+V√©ase m√°s abajo la nota sobre 'notaci√≥n tensorial'.
 
-La manipulaciÛn de componentes significa que los objetos geomÈtricos tensoriales se representan como arreglos (arrays) o matrices. Operaciones tensoriales como la contracciÛn o la diferenciaciÛn covariante se llevan a cabo sumando Ìndices mudos con la sentencia @code{do}. Esto es, se realizan operaciones directamente con las componentes del tensor almacenadas en un arreglo o matriz.
+La manipulaci√≥n de componentes significa que los objetos geom√©tricos tensoriales se representan como arreglos (arrays) o matrices. Operaciones tensoriales como la contracci√≥n o la diferenciaci√≥n covariante se llevan a cabo sumando √≠ndices mudos con la sentencia @code{do}. Esto es, se realizan operaciones directamente con las componentes del tensor almacenadas en un arreglo o matriz.
 
-La manipulaciÛn indexada de tensores se lleva a cabo mediante la representaciÛn de los tensores como funciones de sus Ìndices covariantes, contravariantes y de derivadas. Operaciones tensoriales como la contracciÛn o la diferenciaciÛn covariante se realizan manipulando directamente los Ìndices, en lugar de sus componentes asociadas.
+La manipulaci√≥n indexada de tensores se lleva a cabo mediante la representaci√≥n de los tensores como funciones de sus √≠ndices covariantes, contravariantes y de derivadas. Operaciones tensoriales como la contracci√≥n o la diferenciaci√≥n covariante se realizan manipulando directamente los √≠ndices, en lugar de sus componentes asociadas.
 
-Estas dos tÈcnicas para el tratamiento de los procesos diferenciales, algebraicos y analÌticos en el contexto de la geometrÌa riemanniana tienen varias ventajas y desventajas que surgen seg˙n la naturaleza y dificultad del problema que est· abordando el usuario. Sin embargo, se deben tener presentes las siguientes caracterÌsticas de estas dos tÈcnicas:
+Estas dos t√©cnicas para el tratamiento de los procesos diferenciales, algebraicos y anal√≠ticos en el contexto de la geometr√≠a riemanniana tienen varias ventajas y desventajas que surgen seg√∫n la naturaleza y dificultad del problema que est√° abordando el usuario. Sin embargo, se deben tener presentes las siguientes caracter√≠sticas de estas dos t√©cnicas:
 
-La representaciÛn de los tensores y sus operaciones en tÈrminos de sus componentes facilita el uso de paquete @code{ctensor}. La especificaciÛn de la mÈtrica y el c·lculo de los tensores inducidos e invariantes es inmediato. Aunque toda la potencia de simplificaciÛn de Maxima se encuentra siempre a mano, una mÈtrica compleja con dependencias funcionales y de coordenadas intrincada, puede conducir a expresiones de gran tamaÒo en las que la estructura interna quede oculta. Adem·s, muchos c·lculos requieren de expresiones intermedias que pueden provocar la detenciÛn s˙bita de los programas antes de que se termine el c·lculo. Con la experiencia, el usuario podr· evitar muchas de estas dificultades.
+La representaci√≥n de los tensores y sus operaciones en t√©rminos de sus componentes facilita el uso de paquete @code{ctensor}. La especificaci√≥n de la m√©trica y el c√°lculo de los tensores inducidos e invariantes es inmediato. Aunque toda la potencia de simplificaci√≥n de Maxima se encuentra siempre a mano, una m√©trica compleja con dependencias funcionales y de coordenadas intrincada, puede conducir a expresiones de gran tama√±o en las que la estructura interna quede oculta. Adem√°s, muchos c√°lculos requieren de expresiones intermedias que pueden provocar la detenci√≥n s√∫bita de los programas antes de que se termine el c√°lculo. Con la experiencia, el usuario podr√° evitar muchas de estas dificultades.
 
-Devido a la forma en que los tensores y sus operaciones se representan en tÈrminos de operaciones simbÛlicas con sus Ìndices, expresiones que serÌan intratables en su representaciÛn por componentes pueden en ocasiones simplificarse notablemente utilizando las rutinas especiales para objetos simÈtricos del paquete @code{itensor}. De esta manera, la estructura de expresiones grandes puede hacerse m·s transparente. Por otro lado, debido a la forma especial de la representaciÛn indexada de tensores en @code{itensor}, en algunos casos el usuario encontrar· dificultades con la especificaciÛn de la mÈtrica o la definiciÛn de funciones.
+Devido a la forma en que los tensores y sus operaciones se representan en t√©rminos de operaciones simb√≥licas con sus √≠ndices, expresiones que ser√≠an intratables en su representaci√≥n por componentes pueden en ocasiones simplificarse notablemente utilizando las rutinas especiales para objetos sim√©tricos del paquete @code{itensor}. De esta manera, la estructura de expresiones grandes puede hacerse m√°s transparente. Por otro lado, debido a la forma especial de la representaci√≥n indexada de tensores en @code{itensor}, en algunos casos el usuario encontrar√° dificultades con la especificaci√≥n de la m√©trica o la definici√≥n de funciones.
 
 El paquete @code{itensor} puede derivar respecto de una variable indexada, lo que 
 permite utilizar el paquete cuando se haga uso del formalismo de lagrangiano y
 hamiltoniano. Puesto que es posible derivar un campo lagrangiano respecto de
 una variable de campo indexada, se puede hacer uso de Maxima para derivar las
 ecuaciones de Euler-Lagrange correspondientes en forma indexada. Estas ecuaciones
-pueden traducirse a componentes tensoriales (@code{ctensor}) con la funciÛn 
+pueden traducirse a componentes tensoriales (@code{ctensor}) con la funci√≥n 
 @code{ic_convert}, lo que permite resolver las ecuaciones de campo en cualquier
 sistema de coordenadas, o obtener las ecuaciones de movimiento en forma 
-hamiltoniana. VÈanse dos ejemplos en @code{einhil.dem} y @code{bradic.dem}; 
-el primero utiliza la acciÛn de Einstein-Hilbert para derivar el campo
-tensorial de Einstein en el caso homogÈneo e isotrÛpico (ecuaciones de
-Friedmann), asÌ como en el caso esferosimÈtrico est·tico
-(soluciÛn de Schwarzschild); el segundo demuestra cÛmo calcular las
-ecuaciones de Friedmann a partir de la acciÛn de la teorÌa
-de la gravedad de Brans-Dicke, y tambiÈn muestra cÛmo derivar el
-hamiltoniano asociado con la teorÌa del campo escalar.
+hamiltoniana. V√©anse dos ejemplos en @code{einhil.dem} y @code{bradic.dem}; 
+el primero utiliza la acci√≥n de Einstein-Hilbert para derivar el campo
+tensorial de Einstein en el caso homog√©neo e isotr√≥pico (ecuaciones de
+Friedmann), as√≠ como en el caso esferosim√©trico est√°tico
+(soluci√≥n de Schwarzschild); el segundo demuestra c√≥mo calcular las
+ecuaciones de Friedmann a partir de la acci√≥n de la teor√≠a
+de la gravedad de Brans-Dicke, y tambi√©n muestra c√≥mo derivar el
+hamiltoniano asociado con la teor√≠a del campo escalar.
 
 
-@subsection NotaciÛn tensorial
+@subsection Notaci√≥n tensorial
 
-Hasta ahora, el paquete @code{itensor} de Maxima utilizaba una notaciÛn que algunas veces llevaba a una ordenaciÛn incorrecta de los Ìndices. Por ejemplo:
+Hasta ahora, el paquete @code{itensor} de Maxima utilizaba una notaci√≥n que algunas veces llevaba a una ordenaci√≥n incorrecta de los √≠ndices. Por ejemplo:
 
 @example
 (%i2) imetric(g);
@@ -56,11 +56,11 @@ Hasta ahora, el paquete @code{itensor} de Maxima utilizaba una notaciÛn que algu
 (%t4)                                a
 @end example
 
-Este resultado no es correcto a menos que @code{a} sea un tensor simÈtrico. La razÛn por la que esto ocurre es que aunque @code{itensor} mantenga correctamente el orden dentro del conjunto de Ìndices covariantes y contravariantes, una vez un Ìndice sea aumentado o disminuido, su posiciÛn relativa al otro conjunto de Ìndices se pierde.
+Este resultado no es correcto a menos que @code{a} sea un tensor sim√©trico. La raz√≥n por la que esto ocurre es que aunque @code{itensor} mantenga correctamente el orden dentro del conjunto de √≠ndices covariantes y contravariantes, una vez un √≠ndice sea aumentado o disminuido, su posici√≥n relativa al otro conjunto de √≠ndices se pierde.
 
-Para evitar este problema, se ha desarrollado una notaciÛn totalmente compatible con la anterior.En esta notaciÛn, los Ìndices contravariantes se insertan en las posiciones correctas en la lista de Ìndices covariantes, pero precedidos del signo negativo.
+Para evitar este problema, se ha desarrollado una notaci√≥n totalmente compatible con la anterior.En esta notaci√≥n, los √≠ndices contravariantes se insertan en las posiciones correctas en la lista de √≠ndices covariantes, pero precedidos del signo negativo.
 
-En esta notaciÛn, el ejemplo anterior da el resultado correcto:
+En esta notaci√≥n, el ejemplo anterior da el resultado correcto:
 
 @example
 (%i5) ishow(g([-j,-k],[])*g([-i,-l],[])*a([i,j],[]))$
@@ -72,24 +72,24 @@ En esta notaciÛn, el ejemplo anterior da el resultado correcto:
 (%t6)                                a
 @end example
 
-El ˙nico cÛdigo que hace uso de esta notaciÛn es la funciÛn @code{lc2kdt}. @c FALTA TERMINAR ESTE PARRAFO (Mario)
+El √∫nico c√≥digo que hace uso de esta notaci√≥n es la funci√≥n @code{lc2kdt}. @c FALTA TERMINAR ESTE PARRAFO (Mario)
 
-Devido a que este cÛdigo es nuevo, puede contener errores.
+Devido a que este c√≥digo es nuevo, puede contener errores.
 
 
-@subsection ManipulaciÛn indexada de tensores
+@subsection Manipulaci√≥n indexada de tensores
 
-El paquete @code{itensor} se carga haciendo @code{load(itensor)}. Para acceder a las demos se har· @code{demo(tensor)}.
+El paquete @code{itensor} se carga haciendo @code{load(itensor)}. Para acceder a las demos se har√° @code{demo(tensor)}.
 
-En el paquete @code{itensor} un tensor se representa como un objeto indexado, esto es, como una funciÛn de tres grupos de Ìndices: los covariantes, los contravariantes y los de derivadas. Los Ìndices covariantes se especifican mediante una lista que ser· el primer argumento del objeto indexado, siendo los Ìndices contravariantes otra lista que ser· el segundo argumento del mismo objeto indexado. Si al objeto indexado le falta cualquiera de estos grupos de Ìndices, entonces se le asignar· al argumento correspondiente la lista vacÌa @code{[]}.  AsÌ, @code{g([a,b],[c])} representa un objeto indexado llamado @code{g}, el cual tiene dos Ìndices covariantes @code{(a,b)}, un Ìndice contravariante (@code{c}) y no tiene Ìndices de derivadas.
+En el paquete @code{itensor} un tensor se representa como un objeto indexado, esto es, como una funci√≥n de tres grupos de √≠ndices: los covariantes, los contravariantes y los de derivadas. Los √≠ndices covariantes se especifican mediante una lista que ser√° el primer argumento del objeto indexado, siendo los √≠ndices contravariantes otra lista que ser√° el segundo argumento del mismo objeto indexado. Si al objeto indexado le falta cualquiera de estos grupos de √≠ndices, entonces se le asignar√° al argumento correspondiente la lista vac√≠a @code{[]}.  As√≠, @code{g([a,b],[c])} representa un objeto indexado llamado @code{g}, el cual tiene dos √≠ndices covariantes @code{(a,b)}, un √≠ndice contravariante (@code{c}) y no tiene √≠ndices de derivadas.
 
-Los Ìndices de derivadas, si est·n presentes, se aÒaden como argumentos adicionales a la funciÛn simbÛlica que representa al tensor. Se pueden especificar explÌcitamente por el usuario o pueden crearse durante el proceso de diferenciaciÛn respecto de alguna coordenada. Puesto que la diferenciaciÛn ordinaria es conmutativa, los Ìndices de derivadas se ordenan alfanumÈricamente, a menos que la variable @code{iframe_flag} valga @code{true}, indicando que se est· utilizando una mÈtrica del sistema de referencia. Esta ordenaciÛn canÛnica hace posible que Maxima reconozca, por ejemplo, que @code{t([a],[b],i,j)} es lo mismo que @code{t([a],[b],j,i)}. La diferenciaciÛn de un objeto indexado con respecto de alguna coordenada cuyo Ìndice no aparece como argumento de dicho objeto indexado, dar· como resultado cero. Esto se debe a que Maxima no sabe si el tensor representado por el objeto indexado depende implÌcitamente de la coordenada correspondiente. Modificando la funciÛn @code{diff} de Maxima en @code{itensor}, se da por hecho que todos los objetos indexados dependen de cualquier variable de diferenciaciÛn, a menos que se indique lo contrario. Esto hace posible que la convenciÛn sobre la sumaciÛn se extienda a los Ìndices de derivadas. El paquete @code{itensor} trata a los Ìndices de derivadas como covariantes.
+Los √≠ndices de derivadas, si est√°n presentes, se a√±aden como argumentos adicionales a la funci√≥n simb√≥lica que representa al tensor. Se pueden especificar expl√≠citamente por el usuario o pueden crearse durante el proceso de diferenciaci√≥n respecto de alguna coordenada. Puesto que la diferenciaci√≥n ordinaria es conmutativa, los √≠ndices de derivadas se ordenan alfanum√©ricamente, a menos que la variable @code{iframe_flag} valga @code{true}, indicando que se est√° utilizando una m√©trica del sistema de referencia. Esta ordenaci√≥n can√≥nica hace posible que Maxima reconozca, por ejemplo, que @code{t([a],[b],i,j)} es lo mismo que @code{t([a],[b],j,i)}. La diferenciaci√≥n de un objeto indexado con respecto de alguna coordenada cuyo √≠ndice no aparece como argumento de dicho objeto indexado, dar√° como resultado cero. Esto se debe a que Maxima no sabe si el tensor representado por el objeto indexado depende impl√≠citamente de la coordenada correspondiente. Modificando la funci√≥n @code{diff} de Maxima en @code{itensor}, se da por hecho que todos los objetos indexados dependen de cualquier variable de diferenciaci√≥n, a menos que se indique lo contrario. Esto hace posible que la convenci√≥n sobre la sumaci√≥n se extienda a los √≠ndices de derivadas. El paquete @code{itensor} trata a los √≠ndices de derivadas como covariantes.
 
-Las siguientes funciones forman parte del paquete @code{itensor} para la manipulaciÛn indexada de vectores. En lo que respecta a las rutinas de simplificaciÛn, no se considera en general que los objetos indexados tengan propiedades simÈtricas. Esto puede cambiarse reasignando a la variable @code{allsym[false]} el valor @code{true}, con lo cual los objetos indexados se considerar·n simÈtricos tanto respecto de sus Ìndices covariantes como contravariantes.
+Las siguientes funciones forman parte del paquete @code{itensor} para la manipulaci√≥n indexada de vectores. En lo que respecta a las rutinas de simplificaci√≥n, no se considera en general que los objetos indexados tengan propiedades sim√©tricas. Esto puede cambiarse reasignando a la variable @code{allsym[false]} el valor @code{true}, con lo cual los objetos indexados se considerar√°n sim√©tricos tanto respecto de sus √≠ndices covariantes como contravariantes.
 
-En general, el paquete @code{itensor} trata a los tensores como objetos opacos. Las ecuaciones tensoriales se manipulan en base a reglas algebraicas, como la simetrÌa y la contracciÛn. Adem·s, en el paquete @code{itensor} hay funciones para la diferenciaciÛn covariante, la curvatura y la torsiÛn. Los c·lculos se pueden realizar respecto de una mÈtrica del sistema de referencia mÛvil, dependiendo de las asignaciones dadas a la variable @code{iframe_flag}.
+En general, el paquete @code{itensor} trata a los tensores como objetos opacos. Las ecuaciones tensoriales se manipulan en base a reglas algebraicas, como la simetr√≠a y la contracci√≥n. Adem√°s, en el paquete @code{itensor} hay funciones para la diferenciaci√≥n covariante, la curvatura y la torsi√≥n. Los c√°lculos se pueden realizar respecto de una m√©trica del sistema de referencia m√≥vil, dependiendo de las asignaciones dadas a la variable @code{iframe_flag}.
 
-La siguiente sesiÛn de ejemplo demuestra cÛmo cargar el paquete @code{itensor}, especificar el nombre de la mÈtrica y realizar algunos c·lculos sencillos.
+La siguiente sesi√≥n de ejemplo demuestra c√≥mo cargar el paquete @code{itensor}, especificar el nombre de la m√©trica y realizar algunos c√°lculos sencillos.
 
 @example
 (%i1) load(itensor);
@@ -166,14 +166,14 @@ La siguiente sesiÛn de ejemplo demuestra cÛmo cargar el paquete @code{itensor}, 
 @end example
 
 
-@node Funciones y variables para itensor,  , IntroducciÛn a itensor, itensor
+@node Funciones y variables para itensor,  , Introducci√≥n a itensor, itensor
 
 @section Funciones y variables para itensor
 @subsection Trabajando con objetos indexados
 
 
-@deffn {FunciÛn} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
-@deffnx {FunciÛn} dispcon (all)
+@deffn {Funci√≥n} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
+@deffnx {Funci√≥n} dispcon (all)
 
 Muestra las propiedades contractivas de sus argumentos tal como 
 fueron asignadas por @code{defcon}. La llamada @code{dispcon (all)}
@@ -181,21 +181,21 @@ muestra todas propiedades contractivas que fueron definidas.
 @end deffn
 
 
-@deffn {FunciÛn} entertensor (@var{nombre})
+@deffn {Funci√≥n} entertensor (@var{nombre})
 
-Permite crear un objeto indexado llamado @var{nombre}, con cualquier n˙mero de Ìndices tensoriales y de derivadas. Se admiten desde un ˙nico Ìndice hasta una lista de Ìndices. VÈase el ejemplo en la descripciÛn de @code{covdiff}.
-
-@end deffn
-
-@deffn {FunciÛn} changename (@var{anterior}, @var{nuevo}, @var{expr})
-
-Cambia el nombre de todos los objetos indexados llamados @var{anterior} a @var{new} en @var{expr}. El argumento @var{anterior} puede ser un sÌmbolo o una lista de la forma @code{[@var{nombre}, @var{m}, @var{n}]}, en cuyo caso sÛlo los objetos indexados de llamados @var{nombre} con @var{m} Ìndices covariantes y @var{n} contravariantes se renombrar·n como @var{nuevo}.
+Permite crear un objeto indexado llamado @var{nombre}, con cualquier n√∫mero de √≠ndices tensoriales y de derivadas. Se admiten desde un √∫nico √≠ndice hasta una lista de √≠ndices. V√©ase el ejemplo en la descripci√≥n de @code{covdiff}.
 
 @end deffn
 
-@deffn {FunciÛn} listoftens
+@deffn {Funci√≥n} changename (@var{anterior}, @var{nuevo}, @var{expr})
 
-Hace un listado de todos los tensores y sus Ìndices en una expresiÛn tensorial. Por ejemplo,
+Cambia el nombre de todos los objetos indexados llamados @var{anterior} a @var{new} en @var{expr}. El argumento @var{anterior} puede ser un s√≠mbolo o una lista de la forma @code{[@var{nombre}, @var{m}, @var{n}]}, en cuyo caso s√≥lo los objetos indexados de llamados @var{nombre} con @var{m} √≠ndices covariantes y @var{n} contravariantes se renombrar√°n como @var{nuevo}.
+
+@end deffn
+
+@deffn {Funci√≥n} listoftens
+
+Hace un listado de todos los tensores y sus √≠ndices en una expresi√≥n tensorial. Por ejemplo,
 
 @example
 
@@ -212,15 +212,15 @@ Hace un listado de todos los tensores y sus Ìndices en una expresiÛn tensorial. 
 
 @end deffn
 
-@deffn {FunciÛn} ishow (@var{expr})
+@deffn {Funci√≥n} ishow (@var{expr})
 
-Muestra @var{expr} con todos los objetos indexados que contiene, junto con los correspondientes Ìndices covariantes (como subÌndices) y contravariantes (como superÌndices). Los Ìndices de derivadas se muestran como subÌndices, separados de los covariantes por una coma; vÈanse los m˙ltiples ejemplos de este documento.
+Muestra @var{expr} con todos los objetos indexados que contiene, junto con los correspondientes √≠ndices covariantes (como sub√≠ndices) y contravariantes (como super√≠ndices). Los √≠ndices de derivadas se muestran como sub√≠ndices, separados de los covariantes por una coma; v√©anse los m√∫ltiples ejemplos de este documento.
 
 @end deffn
 
-@deffn {FunciÛn} indices (@var{expr})
+@deffn {Funci√≥n} indices (@var{expr})
 
-Devuelve una lista con dos elementos. El primer elemento es una lista con los Ìndices libres, aquellos que aparecen una sola vez. El segundo elemento es una lista con los Ìndices mudos en @var{expr}, aquellos que aparecen exactamente dos veces. Por ejemplo,
+Devuelve una lista con dos elementos. El primer elemento es una lista con los √≠ndices libres, aquellos que aparecen una sola vez. El segundo elemento es una lista con los √≠ndices mudos en @var{expr}, aquellos que aparecen exactamente dos veces. Por ejemplo,
 
 @example
 
@@ -235,15 +235,15 @@ Devuelve una lista con dos elementos. El primer elemento es una lista con los Ìn
 
 @end example
 
-Un producto tensorial que contenga el mismo Ìndice m·s de dos veces es sint·cticamente incorrecto. La funciÛn @code{indices} intenta tratar estas expresiones de una forma razonable; sin embargo, cuando se la obliga a manipular una expresiÛn incorrecta puede tener un comportamiento imprevisto.
+Un producto tensorial que contenga el mismo √≠ndice m√°s de dos veces es sint√°cticamente incorrecto. La funci√≥n @code{indices} intenta tratar estas expresiones de una forma razonable; sin embargo, cuando se la obliga a manipular una expresi√≥n incorrecta puede tener un comportamiento imprevisto.
 
 
 @end deffn
 
-@deffn {FunciÛn} rename (@var{expr})
-@deffnx {FunciÛn} rename (@var{expr}, @var{count})
+@deffn {Funci√≥n} rename (@var{expr})
+@deffnx {Funci√≥n} rename (@var{expr}, @var{count})
 
-Devuelve una expresiÛn equivalente a @var{expr} pero con los Ìndices mudos de cada tÈrmino elegidos del conjunto  @code{[%1, %2,...]} si el segundo argumento opcional se omite. En otro caso, los Ìndices mudos son indexados empezando con el valor @var{count}. Cada Ìndice mudo en un producto ser· diferente. En el caso de las sumas, la funciÛn @code{rename} operar· sobre cada tÈrmino de la suma reinicializando el contador con cada tÈrmino. De esta manera @code{rename} puede servir como simplificador tensorial. Adem·s, los Ìndices se ordenar·n alfanumÈricamente, si la variable @code{allsym} vale @code{true}, respecto de los Ìndices covariantes y contravariantes dependiendo del valor de @code{flipflag}. Si  @code{flipflag} vale @code{false}, entonces los Ìndices se renombrar·n de acuerdo con el orden de los Ìndices contravariantes. Si @code{flipflag} vale @code{true}, entonces los Ìndices se renombrar·n de acuerdo con el orden de los Ìndices covariantes. Suele acontecer que el efecto combinado de los dos cambios de nombre reduzcan la expresiÛn m·s de lo que que pueda reducir cualquiera de ellas por separado.
+Devuelve una expresi√≥n equivalente a @var{expr} pero con los √≠ndices mudos de cada t√©rmino elegidos del conjunto  @code{[%1, %2,...]} si el segundo argumento opcional se omite. En otro caso, los √≠ndices mudos son indexados empezando con el valor @var{count}. Cada √≠ndice mudo en un producto ser√° diferente. En el caso de las sumas, la funci√≥n @code{rename} operar√° sobre cada t√©rmino de la suma reinicializando el contador con cada t√©rmino. De esta manera @code{rename} puede servir como simplificador tensorial. Adem√°s, los √≠ndices se ordenar√°n alfanum√©ricamente, si la variable @code{allsym} vale @code{true}, respecto de los √≠ndices covariantes y contravariantes dependiendo del valor de @code{flipflag}. Si  @code{flipflag} vale @code{false}, entonces los √≠ndices se renombrar√°n de acuerdo con el orden de los √≠ndices contravariantes. Si @code{flipflag} vale @code{true}, entonces los √≠ndices se renombrar√°n de acuerdo con el orden de los √≠ndices covariantes. Suele acontecer que el efecto combinado de los dos cambios de nombre reduzcan la expresi√≥n m√°s de lo que que pueda reducir cualquiera de ellas por separado.
 
 
 @example
@@ -292,8 +292,8 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @end deffn
 
 
-@deffn {FunciÛn} show (@var{expr})
-Muestra @code{expr} con sus objetos indexados que tengan Ìndices covariantes como subÌndices y los contravariantes como superÌndices.  Los Ìndices derivados se muestran como subÌndices, separados por una coma de los covariantes.
+@deffn {Funci√≥n} show (@var{expr})
+Muestra @code{expr} con sus objetos indexados que tengan √≠ndices covariantes como sub√≠ndices y los contravariantes como super√≠ndices.  Los √≠ndices derivados se muestran como sub√≠ndices, separados por una coma de los covariantes.
 @end deffn
 
 
@@ -301,49 +301,49 @@ Muestra @code{expr} con sus objetos indexados que tengan Ìndices covariantes com
 @defvr {Variable opcional} flipflag
 Valor por defecto: @code{false}
 
-Si vale @code{false} los Ìndices se renombrar·n de acuerdo con el orden de los Ìndices covariantes, si @code{true} se renombrar·n de acuerdo con el orden de los Ìndices covariantes.
+Si vale @code{false} los √≠ndices se renombrar√°n de acuerdo con el orden de los √≠ndices covariantes, si @code{true} se renombrar√°n de acuerdo con el orden de los √≠ndices covariantes.
 
-Si @code{flipflag} vale @code{false}, entonces @code{rename} construye una lista con los Ìndices contravariantes seg˙n van apareciendo de izquierda a derecha; si vale @code{true}, entonces va formando la lista con los covariantes. Al primer Ìndice mudo se le da el nombre @code{%1}, al siguiente @code{%2}, etc. Finalmente se hace la ordenaciÛn. VÈase el ejemplo en la descripciÛn de la funciÛn @code{rename}.
+Si @code{flipflag} vale @code{false}, entonces @code{rename} construye una lista con los √≠ndices contravariantes seg√∫n van apareciendo de izquierda a derecha; si vale @code{true}, entonces va formando la lista con los covariantes. Al primer √≠ndice mudo se le da el nombre @code{%1}, al siguiente @code{%2}, etc. Finalmente se hace la ordenaci√≥n. V√©ase el ejemplo en la descripci√≥n de la funci√≥n @code{rename}.
 
 @end defvr
 
-@deffn {FunciÛn} defcon (@var{tensor_1})
-@deffnx {FunciÛn} defcon (@var{tensor_1}, @var{tensor_2}, @var{tensor_3})
+@deffn {Funci√≥n} defcon (@var{tensor_1})
+@deffnx {Funci√≥n} defcon (@var{tensor_1}, @var{tensor_2}, @var{tensor_3})
 
-Le asigna a gives @var{tensor_1} la propiedad de que la contracciÛn de un producto de @var{tensor_1} por @var{tensor_2} da como resultado un @var{tensor_3} con los Ìndices apropiados. Si sÛlo se aporta un argumento, @var{tensor_1}, entonces la contracciÛn del producto de @var{tensor_1} por cualquier otro objeto indexado que tenga los Ìndices apropiados, por ejemplo @code{my_tensor}, dar· como resultado un objeto indexado con ese nombre, @code{my_tensor}, y con un nuevo conjunto de Ìndices que reflejen las contracciones realizadas. Por ejemplo, si @code{imetric:g}, entonces @code{defcon(g)} implementar· el aumento o disminuciÛn de los Ìndices a travÈs de la contracciÛn con el tensor mÈtrico. Se puede dar m·s de un @code{defcon} para el mismo objeto indexado, aplic·ndose el ˙ltimo. La variable 
-@code{contractions} es una lista con aquellos objetos indexados a los que se le han dado propiedades de contracciÛn con  @code{defcon}.
-
-@end deffn
-
-@deffn {FunciÛn} remcon (@var{tensor_1}, ..., @var{tensor_n})
-@deffnx {FunciÛn} remcon (all)
-
-Borra todas las propiedades de contracciÛn de @var{tensor_1}, ..., @var{tensor_n}). La llamada @code{remcon(all)} borra todas las propiedades de contracciÛn de todos los objetos indexados.
+Le asigna a gives @var{tensor_1} la propiedad de que la contracci√≥n de un producto de @var{tensor_1} por @var{tensor_2} da como resultado un @var{tensor_3} con los √≠ndices apropiados. Si s√≥lo se aporta un argumento, @var{tensor_1}, entonces la contracci√≥n del producto de @var{tensor_1} por cualquier otro objeto indexado que tenga los √≠ndices apropiados, por ejemplo @code{my_tensor}, dar√° como resultado un objeto indexado con ese nombre, @code{my_tensor}, y con un nuevo conjunto de √≠ndices que reflejen las contracciones realizadas. Por ejemplo, si @code{imetric:g}, entonces @code{defcon(g)} implementar√° el aumento o disminuci√≥n de los √≠ndices a trav√©s de la contracci√≥n con el tensor m√©trico. Se puede dar m√°s de un @code{defcon} para el mismo objeto indexado, aplic√°ndose el √∫ltimo. La variable 
+@code{contractions} es una lista con aquellos objetos indexados a los que se le han dado propiedades de contracci√≥n con  @code{defcon}.
 
 @end deffn
 
-@deffn {FunciÛn} contract (@var{expr})
+@deffn {Funci√≥n} remcon (@var{tensor_1}, ..., @var{tensor_n})
+@deffnx {Funci√≥n} remcon (all)
 
-Lleva a cabo las contracciones tensoriales en @var{expr}, la cual puede ser cualquier combinaciÛn de sumas y productos. Esta funciÛn utiliza la informaciÛn dada a la funciÛn @code{defcon}. Para obtener mejores resultados, @code{expr}
-deberÌa estar completamente expandida. La funciÛn @code{ratexpand} es la forma m·s r·pida de expandir productos y potencias de sumas si no hay variables en los denominadores de los tÈrminos.
-
-@end deffn
-
-@deffn {FunciÛn} indexed_tensor (@var{tensor})
-
-Debe ejecutarse antes de asignarle componentes a un @var{tensor} para el que ya existe un valor, como @code{ichr1}, @code{ichr2} o @code{icurvature}. VÈase el ejemplo de la descripciÛn de @code{icurvature}.
+Borra todas las propiedades de contracci√≥n de @var{tensor_1}, ..., @var{tensor_n}). La llamada @code{remcon(all)} borra todas las propiedades de contracci√≥n de todos los objetos indexados.
 
 @end deffn
 
-@deffn {FunciÛn} components (@var{tensor}, @var{expr})
+@deffn {Funci√≥n} contract (@var{expr})
 
-Permite asignar un valor indexado a la expresiÛn @var{expr} dando los valores de las componentes de @var{tensor}. El tensor debe ser de la forma @code{t([...],[...])}, donde cualquiera de las listas puede estar vacÌa. La expresiÛn  @var{expr} puede ser cualquier objeto indexado que tenga otros objetos con los mismos Ìndices libres que @var{tensor}. Cuando se utiliza para asignar valores al tensor mÈtrico en el que las componentes contengan Ìndices mudos, se debe tener cuidado en no generar Ìndices mudos m˙ltiples. Se pueden borrar estas asignaciones con la funciÛn  @code{remcomps}.
+Lleva a cabo las contracciones tensoriales en @var{expr}, la cual puede ser cualquier combinaci√≥n de sumas y productos. Esta funci√≥n utiliza la informaci√≥n dada a la funci√≥n @code{defcon}. Para obtener mejores resultados, @code{expr}
+deber√≠a estar completamente expandida. La funci√≥n @code{ratexpand} es la forma m√°s r√°pida de expandir productos y potencias de sumas si no hay variables en los denominadores de los t√©rminos.
 
-Es importante tener en cuenta que @code{components} controla la valencia del tensor, no el orden de los Ìndices. AsÌ, asignando componentes de la forma @code{x([i,-j],[])}, @code{x([-j,i],[])} o @code{x([i],[j])} todos ellos producen el mismo resultado, la asignaciÛn de componentes a un tensor de nombre @code{x} con valencia @code{(1,1)}.
+@end deffn
 
-Las componentes se pueden asignar a una expresiÛn indexada de cuatro maneras, dos de las cuales implican el uso de la instrucciÛn @code{components}:
+@deffn {Funci√≥n} indexed_tensor (@var{tensor})
 
-1) Como una expresiÛn indexada. Por ejemplo:
+Debe ejecutarse antes de asignarle componentes a un @var{tensor} para el que ya existe un valor, como @code{ichr1}, @code{ichr2} o @code{icurvature}. V√©ase el ejemplo de la descripci√≥n de @code{icurvature}.
+
+@end deffn
+
+@deffn {Funci√≥n} components (@var{tensor}, @var{expr})
+
+Permite asignar un valor indexado a la expresi√≥n @var{expr} dando los valores de las componentes de @var{tensor}. El tensor debe ser de la forma @code{t([...],[...])}, donde cualquiera de las listas puede estar vac√≠a. La expresi√≥n  @var{expr} puede ser cualquier objeto indexado que tenga otros objetos con los mismos √≠ndices libres que @var{tensor}. Cuando se utiliza para asignar valores al tensor m√©trico en el que las componentes contengan √≠ndices mudos, se debe tener cuidado en no generar √≠ndices mudos m√∫ltiples. Se pueden borrar estas asignaciones con la funci√≥n  @code{remcomps}.
+
+Es importante tener en cuenta que @code{components} controla la valencia del tensor, no el orden de los √≠ndices. As√≠, asignando componentes de la forma @code{x([i,-j],[])}, @code{x([-j,i],[])} o @code{x([i],[j])} todos ellos producen el mismo resultado, la asignaci√≥n de componentes a un tensor de nombre @code{x} con valencia @code{(1,1)}.
+
+Las componentes se pueden asignar a una expresi√≥n indexada de cuatro maneras, dos de las cuales implican el uso de la instrucci√≥n @code{components}:
+
+1) Como una expresi√≥n indexada. Por ejemplo:
 
 @example
 
@@ -378,7 +378,7 @@ Las componentes se pueden asignar a una expresiÛn indexada de cuatro maneras, do
 
 @end example
 
-3) Como una funciÛn. Se puede utilizar una funciÛn de Maxima para especificar las componentes de un tensor en base a sus Ìndices. Por ejemplo, el cÛdigo siguiente asigna  @code{kdelta} a @code{h} si @code{h} tiene el mismo n˙mero de Ìndices covariantes y contravariantes y no tiene Ìndices de derivadas, asign·ndole @code{g} en otro caso:
+3) Como una funci√≥n. Se puede utilizar una funci√≥n de Maxima para especificar las componentes de un tensor en base a sus √≠ndices. Por ejemplo, el c√≥digo siguiente asigna  @code{kdelta} a @code{h} si @code{h} tiene el mismo n√∫mero de √≠ndices covariantes y contravariantes y no tiene √≠ndices de derivadas, asign√°ndole @code{g} en otro caso:
 
 @example
 
@@ -423,16 +423,16 @@ Las componentes se pueden asignar a una expresiÛn indexada de cuatro maneras, do
 
 @end deffn
 
-@deffn {FunciÛn} remcomps (@var{tensor})
+@deffn {Funci√≥n} remcomps (@var{tensor})
 
-Borra todos los valores de @var{tensor} que han sido asignados con la funciÛn @code{components}.
+Borra todos los valores de @var{tensor} que han sido asignados con la funci√≥n @code{components}.
 
 @end deffn
 
 
-@deffn {FunciÛn} showcomps (@var{tensor})
+@deffn {Funci√≥n} showcomps (@var{tensor})
 
-Muestra las componentes de un tensor definidas con la instrucciÛn @code{components}. Por ejemplo:
+Muestra las componentes de un tensor definidas con la instrucci√≥n @code{components}. Por ejemplo:
 
 @example
 
@@ -471,40 +471,40 @@ Muestra las componentes de un tensor definidas con la instrucciÛn @code{componen
 
 @end example
 
-La funciÛn @code{showcomps} tambiÈn puede mostrar las componentes de tensores de rango mayor de 2.
+La funci√≥n @code{showcomps} tambi√©n puede mostrar las componentes de tensores de rango mayor de 2.
 
 @end deffn
 
-@deffn {FunciÛn} idummy ()
+@deffn {Funci√≥n} idummy ()
 
-Incrementa @code{icounter} y devuelve un Ìndice de la forma @code{%n} siendo @code{n} un entero positivo.  Esto garantiza que Ìndices mudos que sean necesarios para formar expresiones no entren en conflico con Ìndices que ya est·n en uso. VÈase el ejemplo de la descripciÛn de @code{indices}.
+Incrementa @code{icounter} y devuelve un √≠ndice de la forma @code{%n} siendo @code{n} un entero positivo.  Esto garantiza que √≠ndices mudos que sean necesarios para formar expresiones no entren en conflico con √≠ndices que ya est√°n en uso. V√©ase el ejemplo de la descripci√≥n de @code{indices}.
 
 @end deffn
 
 @defvr {Variable opcional} idummyx
 Valor por defecto: @code{%}
 
-Es el prefijo de los Ìndices mudos. VÈase @code{indices}.
+Es el prefijo de los √≠ndices mudos. V√©ase @code{indices}.
 
 @end defvr
 
 @defvr {Variable opcional} icounter
 Valor por defecto: @code{1}
 
-Determina el sufijo numÈrico a ser utilizado en la generaciÛn del siguiente Ìndice mudo. El prefijo se determina con la opciÛn @code{idummy} (por defecto: %).
+Determina el sufijo num√©rico a ser utilizado en la generaci√≥n del siguiente √≠ndice mudo. El prefijo se determina con la opci√≥n @code{idummy} (por defecto: %).
 @end defvr
 
-@deffn {FunciÛn} kdelta (@var{L1}, @var{L2})
+@deffn {Funci√≥n} kdelta (@var{L1}, @var{L2})
 
-Es la funciÛn delta generalizada de Kronecker definida en el paquete @code{itensor} siendo @var{L1} la lista de Ìndices covariantes y @var{L2} la lista de Ìndices contravariantes. La funciÛn  @code{kdelta([i],[j])} devuelve el valor de la delta ordinaria de Kronecker. La instrucciÛn @code{ev(@var{expr},kdelta)} provoca la evaluaciÛn de una expresiÛn que contenga @code{kdelta([],[])}.
+Es la funci√≥n delta generalizada de Kronecker definida en el paquete @code{itensor} siendo @var{L1} la lista de √≠ndices covariantes y @var{L2} la lista de √≠ndices contravariantes. La funci√≥n  @code{kdelta([i],[j])} devuelve el valor de la delta ordinaria de Kronecker. La instrucci√≥n @code{ev(@var{expr},kdelta)} provoca la evaluaci√≥n de una expresi√≥n que contenga @code{kdelta([],[])}.
 
-En un abuso de la notaciÛn, @code{itensor} tambiÈn permite a @code{kdelta} tener 2 Ìndices covariantes y ninguno contravariante, o 2 contravariantes y ninguno covariante. Esto es una funcionalidad del paquete, loque no implica que  @code{kdelta([i,j],[])} sea un objeto tensorial de pleno derecho.
+En un abuso de la notaci√≥n, @code{itensor} tambi√©n permite a @code{kdelta} tener 2 √≠ndices covariantes y ninguno contravariante, o 2 contravariantes y ninguno covariante. Esto es una funcionalidad del paquete, loque no implica que  @code{kdelta([i,j],[])} sea un objeto tensorial de pleno derecho.
 
 @end deffn
 
-@deffn {FunciÛn} kdels (@var{L1}, @var{L2})
+@deffn {Funci√≥n} kdels (@var{L1}, @var{L2})
 
-FunciÛn delta de Kronecker simetrizada, utilizada en algunos c·lculos. Por ejemplo:
+Funci√≥n delta de Kronecker simetrizada, utilizada en algunos c√°lculos. Por ejemplo:
 
 @example
 
@@ -527,15 +527,15 @@ FunciÛn delta de Kronecker simetrizada, utilizada en algunos c·lculos. Por ejemp
 
 @end deffn
 
-@deffn {FunciÛn} levi_civita (@var{L})
+@deffn {Funci√≥n} levi_civita (@var{L})
 
-Es el tensor de permutaciÛn de Levi-Civita, el cual devuelve 1  si la lista @var{L} con una permutaciÛn par de enteros, -1 si es en una permutaciÛn impar y 0 si algunos de los Ìndices de @var{L} est·n repetidos.
+Es el tensor de permutaci√≥n de Levi-Civita, el cual devuelve 1  si la lista @var{L} con una permutaci√≥n par de enteros, -1 si es en una permutaci√≥n impar y 0 si algunos de los √≠ndices de @var{L} est√°n repetidos.
 
 @end deffn
 
-@deffn {FunciÛn} lc2kdt (@var{expr})
+@deffn {Funci√≥n} lc2kdt (@var{expr})
 
-Simplifica expresiones que contengan el sÌmbolo de Levi-Civita, convirtiÈndolas en expresiones con la delta de Kronecker siempre que sea posible. La diferencia principal entre esta funciÛn y la simple evaluaciÛn del sÌmbolo de Levi-Civita consiste en que de esta ˙ltima forma se obtienen expresiones de Kronecker con Ìndices numÈricos, lo que impide simplificaciones ulteriores. La funciÛn @code{lc2kdt} evita este problema, dando resultados con son m·s f·ciles de simplificar con @code{rename} o @code{contract}.
+Simplifica expresiones que contengan el s√≠mbolo de Levi-Civita, convirti√©ndolas en expresiones con la delta de Kronecker siempre que sea posible. La diferencia principal entre esta funci√≥n y la simple evaluaci√≥n del s√≠mbolo de Levi-Civita consiste en que de esta √∫ltima forma se obtienen expresiones de Kronecker con √≠ndices num√©ricos, lo que impide simplificaciones ulteriores. La funci√≥n @code{lc2kdt} evita este problema, dando resultados con son m√°s f√°ciles de simplificar con @code{rename} o @code{contract}.
 
 @example
 
@@ -569,7 +569,7 @@ Simplifica expresiones que contengan el sÌmbolo de Levi-Civita, convirtiÈndolas 
 
 @end example
 
-La funciÛn @code{lc2kdt} en ocasiones hace uso del tensor mÈtrico. Si el tensor mÈtrico no fue previamente definido con @code{imetric}, se obtiene un mensaje de error.
+La funci√≥n @code{lc2kdt} en ocasiones hace uso del tensor m√©trico. Si el tensor m√©trico no fue previamente definido con @code{imetric}, se obtiene un mensaje de error.
 
 @example
 
@@ -606,9 +606,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 @c HMM, WHICH CATEGORY DOES THIS FALL INTO -- FUNCTION, VARIABLE, OTHER ??
-@deffn {FunciÛn} lc_l
+@deffn {Funci√≥n} lc_l
 
-Regla de simplificaciÛn utilizada en expresiones que contienen el sÌmbolo de @code{levi_civita} sin evaluar. Junto con  @code{lc_u}, puede utilizarse para simplificar muchas expresiones de forma m·s eficiente que la evaluaciÛn de @code{levi_civita}. Por ejemplo:
+Regla de simplificaci√≥n utilizada en expresiones que contienen el s√≠mbolo de @code{levi_civita} sin evaluar. Junto con  @code{lc_u}, puede utilizarse para simplificar muchas expresiones de forma m√°s eficiente que la evaluaci√≥n de @code{levi_civita}. Por ejemplo:
 
 @example
 
@@ -632,38 +632,38 @@ Regla de simplificaciÛn utilizada en expresiones que contienen el sÌmbolo de @co
 @end deffn
 
 @c HMM, WHICH CATEGORY DOES THIS FALL INTO -- FUNCTION, VARIABLE, OTHER ??
-@deffn {FunciÛn} lc_u
+@deffn {Funci√≥n} lc_u
 
-Regla de simplificaciÛn utilizada en expresiones que contienen el sÌmbolo de @code{levi_civita} sin evaluar. Junto con  @code{lc_l}, puede utilizarse para simplificar muchas expresiones de forma m·s eficiente que la evaluaciÛn de @code{levi_civita}. VÈase @code{lc_l}.
-
-@end deffn
-
-@deffn {FunciÛn} canten (@var{expr})
-
-Simplifica @var{expr} renombrando (vÈase @code{rename}) y permutando Ìndices mudos. La funciÛn @code{rename} se restringe a sumas de productos de tensores en los cuales no hay derivadas, por lo que est· limitada y sÛlo deberÌa utilizarse si @code{canform} no es capaz de de llevar a cabo la simplificaciÛn requerida.
-
-La funciÛn @code{canten} devuelve un resultado matem·ticamente correcto sÛlo si su argumento es una expresiÛn completamente simÈtrica respecto de sus Ìndices. Por esta razÛn, @code{canten} devuelve un error si @code{allsym} no vale @code{true}.
+Regla de simplificaci√≥n utilizada en expresiones que contienen el s√≠mbolo de @code{levi_civita} sin evaluar. Junto con  @code{lc_l}, puede utilizarse para simplificar muchas expresiones de forma m√°s eficiente que la evaluaci√≥n de @code{levi_civita}. V√©ase @code{lc_l}.
 
 @end deffn
 
-@deffn {FunciÛn} concan (@var{expr})
+@deffn {Funci√≥n} canten (@var{expr})
 
-Similar a @code{canten} pero tambiÈn realiza la contracciÛn de los Ìndices.
+Simplifica @var{expr} renombrando (v√©ase @code{rename}) y permutando √≠ndices mudos. La funci√≥n @code{rename} se restringe a sumas de productos de tensores en los cuales no hay derivadas, por lo que est√° limitada y s√≥lo deber√≠a utilizarse si @code{canform} no es capaz de de llevar a cabo la simplificaci√≥n requerida.
+
+La funci√≥n @code{canten} devuelve un resultado matem√°ticamente correcto s√≥lo si su argumento es una expresi√≥n completamente sim√©trica respecto de sus √≠ndices. Por esta raz√≥n, @code{canten} devuelve un error si @code{allsym} no vale @code{true}.
 
 @end deffn
 
-@subsection SimetrÌas de tensores
+@deffn {Funci√≥n} concan (@var{expr})
+
+Similar a @code{canten} pero tambi√©n realiza la contracci√≥n de los √≠ndices.
+
+@end deffn
+
+@subsection Simetr√≠as de tensores
 
 @defvr {Variable opcional} allsym
 Valor por defecto: @code{false}
 
-Si vale @code{true} entonces todos los objetos indexados se consideran simÈtricos respecto de todos sus Ìndices covariantes y contravariantes. Si vale @code{false} entonces no se tienen en cuenta ning˙n tipo de simetrÌa para estos Ìndices. Los Ìndices de derivadas se consideran siempre simÈtricos, a menos que la variable @code{iframe_flag} valga @code{true}.
+Si vale @code{true} entonces todos los objetos indexados se consideran sim√©tricos respecto de todos sus √≠ndices covariantes y contravariantes. Si vale @code{false} entonces no se tienen en cuenta ning√∫n tipo de simetr√≠a para estos √≠ndices. Los √≠ndices de derivadas se consideran siempre sim√©tricos, a menos que la variable @code{iframe_flag} valga @code{true}.
 
 @end defvr
 
-@deffn {FunciÛn} decsym (@var{tensor}, @var{m}, @var{n}, [@var{cov_1}, @var{cov_2}, ...], [@var{contr_1}, @var{contr_2}, ...])
+@deffn {Funci√≥n} decsym (@var{tensor}, @var{m}, @var{n}, [@var{cov_1}, @var{cov_2}, ...], [@var{contr_1}, @var{contr_2}, ...])
 
-Declara propiedades de simetrÌa para el @var{tensor} de @var{m} Ìndices covariantes y @var{n} contravariantes. Los @var{cov_i} y @var{contr_i} son seudofunciones que expresan relaciones de simetrÌa entre los Ìndices covariantes y contravariantes, respectivamente. …stos son de la forma @code{symoper(@var{index_1}, @var{index_2},...)} donde @code{symoper} es uno de @code{sym}, @code{anti} o @code{cyc} y los @var{index_i} son enteros que indican la posiciÛn del Ìndice en el @var{tensor}.  Esto declarar· a @var{tensor} simÈtrico, antisimÈtrico o cÌclico respecto de @var{index_i}. La llamada @code{symoper(all)} indica que todos los Ìndices cumplen la condiciÛn de simetrÌa. Por ejemplo, dado un objeto @code{b} con 5 Ìndices covariantes, @code{decsym(b,5,3,[sym(1,2),anti(3,4)],[cyc(all)])} declara @code{b} simÈtrico en el primer y segundo Ìndices covariantes, antisimÈtrico en su tercer y cuarto Ìndices tambiÈn covariantes y cÌclico en todos sus Ìndices contravariantes. Cualquiera de las listas de declaraciÛn de simetrÌas puede ser nula. La funciÛn que realiza las simplificaciones es @code{canform}, como se ilustra en el siguiente ejemplo,
+Declara propiedades de simetr√≠a para el @var{tensor} de @var{m} √≠ndices covariantes y @var{n} contravariantes. Los @var{cov_i} y @var{contr_i} son seudofunciones que expresan relaciones de simetr√≠a entre los √≠ndices covariantes y contravariantes, respectivamente. √âstos son de la forma @code{symoper(@var{index_1}, @var{index_2},...)} donde @code{symoper} es uno de @code{sym}, @code{anti} o @code{cyc} y los @var{index_i} son enteros que indican la posici√≥n del √≠ndice en el @var{tensor}.  Esto declarar√° a @var{tensor} sim√©trico, antisim√©trico o c√≠clico respecto de @var{index_i}. La llamada @code{symoper(all)} indica que todos los √≠ndices cumplen la condici√≥n de simetr√≠a. Por ejemplo, dado un objeto @code{b} con 5 √≠ndices covariantes, @code{decsym(b,5,3,[sym(1,2),anti(3,4)],[cyc(all)])} declara @code{b} sim√©trico en el primer y segundo √≠ndices covariantes, antisim√©trico en su tercer y cuarto √≠ndices tambi√©n covariantes y c√≠clico en todos sus √≠ndices contravariantes. Cualquiera de las listas de declaraci√≥n de simetr√≠as puede ser nula. La funci√≥n que realiza las simplificaciones es @code{canform}, como se ilustra en el siguiente ejemplo,
 
 @example
 
@@ -700,47 +700,47 @@ Declara propiedades de simetrÌa para el @var{tensor} de @var{m} Ìndices covarian
 
 @end deffn
 
-@deffn {FunciÛn} remsym (@var{tensor}, @var{m}, @var{n})
+@deffn {Funci√≥n} remsym (@var{tensor}, @var{m}, @var{n})
 
-Borra todas las propiedades de simetrÌa del @var{tensor} que tiene @var{m} Ìndices covariantes y @var{n} contravariantes.
+Borra todas las propiedades de simetr√≠a del @var{tensor} que tiene @var{m} √≠ndices covariantes y @var{n} contravariantes.
 @end deffn
 
-@deffn {FunciÛn} canform (@var{expr})
-@deffnx {FunciÛn} canform (@var{expr}, @var{rename})
+@deffn {Funci√≥n} canform (@var{expr})
+@deffnx {Funci√≥n} canform (@var{expr}, @var{rename})
 
-Simplifica @var{expr} renombrando Ìndices mudos y reordenando todos los Ìndices seg˙n las condiciones de simetrÌa que se le hayan impuesto. Si @code{allsym} vale @code{true} entonces todos los Ìndices se consideran simÈtricos, en otro caso se utilizar· la informaciÛn sobre simetrÌas suministrada por @code{decsym}. Los Ìndices mudos se renombran de la misma manera que en la funciÛn @code{rename}. Cuando @code{canform} se aplica a una expresiÛn grande el c·lculo puede llevar mucho tiempo. Este tiempo se puede acortar llamando primero  a @code{rename}.
-VÈase tambiÈn el ejemplo de la descripciÛn de @code{decsym}. La funciÛn @code{canform} puede que no reduzca completamente una expresiÛn a su forma m·s sencilla, pero en todo caso devolver· un resultado matem·ticamente correcto.
+Simplifica @var{expr} renombrando √≠ndices mudos y reordenando todos los √≠ndices seg√∫n las condiciones de simetr√≠a que se le hayan impuesto. Si @code{allsym} vale @code{true} entonces todos los √≠ndices se consideran sim√©tricos, en otro caso se utilizar√° la informaci√≥n sobre simetr√≠as suministrada por @code{decsym}. Los √≠ndices mudos se renombran de la misma manera que en la funci√≥n @code{rename}. Cuando @code{canform} se aplica a una expresi√≥n grande el c√°lculo puede llevar mucho tiempo. Este tiempo se puede acortar llamando primero  a @code{rename}.
+V√©ase tambi√©n el ejemplo de la descripci√≥n de @code{decsym}. La funci√≥n @code{canform} puede que no reduzca completamente una expresi√≥n a su forma m√°s sencilla, pero en todo caso devolver√° un resultado matem√°ticamente correcto.
 
-Si al par·metro opcional @var{rename} se le asigna el valor @code{false}, no se renombrar·n los Ìndices mudos.
+Si al par√°metro opcional @var{rename} se le asigna el valor @code{false}, no se renombrar√°n los √≠ndices mudos.
 @end deffn
 
-@subsection C·lculo tensorial indexado
+@subsection C√°lculo tensorial indexado
 
 
-@deffn {FunciÛn} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
+@deffn {Funci√≥n} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
 
-Se trata de la funciÛn de Maxima para la diferenciaciÛn, ampliada para las necesidades del paquete @code{itensor}. Calcula la derivada de @var{expr} respecto de @var{v_1} @var{n_1} veces, respecto de @var{v_2} @var{n_2} veces, etc. Para el paquete de tensores,la funciÛn ha sido modificada de manera que @var{v_i} puedan ser enteros desde 1 hasta el valor que tome la variable @code{dim}. Esto permite que la derivaciÛn se pueda realizar con respecto del @var{v_i}-Èsimo miembro de la lista @code{vect_coords}. Si @code{vect_coords} guarda una variable atÛmica, entonces esa variable ser· la que se utilice en la derivaciÛn. Con esto se hace posible la utilizaciÛn de una lista con nombres de coordenadas subindicadas, como @code{x[1]}, @code{x[2]}, ...
+Se trata de la funci√≥n de Maxima para la diferenciaci√≥n, ampliada para las necesidades del paquete @code{itensor}. Calcula la derivada de @var{expr} respecto de @var{v_1} @var{n_1} veces, respecto de @var{v_2} @var{n_2} veces, etc. Para el paquete de tensores,la funci√≥n ha sido modificada de manera que @var{v_i} puedan ser enteros desde 1 hasta el valor que tome la variable @code{dim}. Esto permite que la derivaci√≥n se pueda realizar con respecto del @var{v_i}-√©simo miembro de la lista @code{vect_coords}. Si @code{vect_coords} guarda una variable at√≥mica, entonces esa variable ser√° la que se utilice en la derivaci√≥n. Con esto se hace posible la utilizaci√≥n de una lista con nombres de coordenadas subindicadas, como @code{x[1]}, @code{x[2]}, ...
 
-El paquete sobre tensores amplÌa las capacidades de @code{diff} con el
+El paquete sobre tensores ampl√≠a las capacidades de @code{diff} con el
 fin de poder calcular derivadas respecto de variables indexadas. En particular, es
-posible derivar expresiones que contengan combinaciones del tensor mÈtrico y
-sus derivadas respecto del tensor mÈtrico y su primera y segunda derivadas.
-Estos mÈtodos son particularmente ˙tiles cuando se consideran los
-formalismos lagrangianos de la teorÌa gravitatoria, permitiendo
+posible derivar expresiones que contengan combinaciones del tensor m√©trico y
+sus derivadas respecto del tensor m√©trico y su primera y segunda derivadas.
+Estos m√©todos son particularmente √∫tiles cuando se consideran los
+formalismos lagrangianos de la teor√≠a gravitatoria, permitiendo
 obtener el tensor de Einstein y las ecuaciones de campo a partir del principio
-de acciÛn.
+de acci√≥n.
 @end deffn
 
 
-@deffn {FunciÛn} idiff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
-DiferenciaciÛn inicial. Al contrario que @code{diff}, que deriva respecto de una variable independiente, @code{idiff} puede usarse para derivar respecto de una coordenada. @c FALTA COMPLETAR PARRAFO.
+@deffn {Funci√≥n} idiff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
+Diferenciaci√≥n inicial. Al contrario que @code{diff}, que deriva respecto de una variable independiente, @code{idiff} puede usarse para derivar respecto de una coordenada. @c FALTA COMPLETAR PARRAFO.
 
-La funciÛn @code{idiff} tambiÈn puede derivar el determinante del tensor mÈtrico. AsÌ, si @code{imetric} toma el valor @code{G} entonces @code{idiff(determinant(g),k)} devolver· @code{2*determinant(g)*ichr2([%i,k],[%i])} donde la Ìndice mudo @code{%i} se escoge de forma apropiada.
+La funci√≥n @code{idiff} tambi√©n puede derivar el determinante del tensor m√©trico. As√≠, si @code{imetric} toma el valor @code{G} entonces @code{idiff(determinant(g),k)} devolver√° @code{2*determinant(g)*ichr2([%i,k],[%i])} donde la √≠ndice mudo @code{%i} se escoge de forma apropiada.
 @end deffn
 
-@deffn {FunciÛn} liediff (@var{v}, @var{ten})
+@deffn {Funci√≥n} liediff (@var{v}, @var{ten})
 
-Calcula la derivada de Lie de la expresiÛn tensorial @var{ten} respecto de campo vectorial @var{v}. La expresiÛn @var{ten} debe ser cualquier tensor indexado; @var{v} debe ser el nombre (sin Ìndices) de un campo vectorial. Por ejemplo:
+Calcula la derivada de Lie de la expresi√≥n tensorial @var{ten} respecto de campo vectorial @var{v}. La expresi√≥n @var{ten} debe ser cualquier tensor indexado; @var{v} debe ser el nombre (sin √≠ndices) de un campo vectorial. Por ejemplo:
 
 @example
 
@@ -760,24 +760,24 @@ Calcula la derivada de Lie de la expresiÛn tensorial @var{ten} respecto de campo
 
 @end deffn
 
-@deffn {FunciÛn} rediff (@var{ten})
+@deffn {Funci√≥n} rediff (@var{ten})
 
-Calcula todas las instrucciones @code{idiff} que aparezcan en la expresiÛn tensorial @var{ten}.
-
-@end deffn
-
-@deffn {FunciÛn} undiff (@var{expr})
-
-Devuelve una expresiÛn equivalente a @var{expr} pero con todas las derivadas de los objetos indexados reemplazadas por la forma nominal de la funciÛn @code{idiff}. @c FALTA TERMINAR EL PARRAFO
+Calcula todas las instrucciones @code{idiff} que aparezcan en la expresi√≥n tensorial @var{ten}.
 
 @end deffn
 
+@deffn {Funci√≥n} undiff (@var{expr})
 
-@deffn {FunciÛn} evundiff (@var{expr})
+Devuelve una expresi√≥n equivalente a @var{expr} pero con todas las derivadas de los objetos indexados reemplazadas por la forma nominal de la funci√≥n @code{idiff}. @c FALTA TERMINAR EL PARRAFO
+
+@end deffn
+
+
+@deffn {Funci√≥n} evundiff (@var{expr})
 
 Equivale a @code{undiff} seguido de  @code{ev} y @code{rediff}.
 
-La razÛn de esta operaciÛn es evaluar de forma sencilla expresiones que no pueden ser directamente evaluadas en su forma derivada. Por ejemplo, lo siguiente provoca un error:
+La raz√≥n de esta operaci√≥n es evaluar de forma sencilla expresiones que no pueden ser directamente evaluadas en su forma derivada. Por ejemplo, lo siguiente provoca un error:
 
 @example
 (%i1) load(itensor);
@@ -809,8 +809,8 @@ Sin embargo, si @code{icurvature} se da en forma nominal, puede ser evaluada uti
              i j,k m        %1 k      i j,m        %1 k,m      i j
 @end example
 
-Nota: en versiones antiguas de Maxima, las formas derivadas de los sÌmbolos de
-Christoffel no se podÌan evaluar. Este fallo ha sido subsanado, de manera que
+Nota: en versiones antiguas de Maxima, las formas derivadas de los s√≠mbolos de
+Christoffel no se pod√≠an evaluar. Este fallo ha sido subsanado, de manera que
 @code{evundiff} ya no se necesita en expresiones como esta:
 
 @example
@@ -834,22 +834,22 @@ Christoffel no se podÌan evaluar. Este fallo ha sido subsanado, de manera que
 
 @end deffn
 
-@deffn {FunciÛn} flush (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Funci√≥n} flush (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
 
-Iguala a cero en la expresiÛn @var{expr} todas las apariciones de @var{tensor_i} que no tengan Ìndices de derivadas.
-
-@end deffn
-
-@deffn {FunciÛn} flushd (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
-
-Iguala a cero en la expresiÛn @var{expr} todas las apariciones de @var{tensor_i} que tengan Ìndices de derivadas
+Iguala a cero en la expresi√≥n @var{expr} todas las apariciones de @var{tensor_i} que no tengan √≠ndices de derivadas.
 
 @end deffn
 
-@deffn {FunciÛn} flushnd (@var{expr}, @var{tensor}, @var{n})
+@deffn {Funci√≥n} flushd (@var{expr}, @var{tensor_1}, @var{tensor_2}, ...)
 
-Iguala a cero en @var{expr} todas las apariciones del objeto diferenciado  @var{tensor} que tenga @var{n} o m·s
-Ìndices de derivadas, como demuestra el siguiente ejemplo:
+Iguala a cero en la expresi√≥n @var{expr} todas las apariciones de @var{tensor_i} que tengan √≠ndices de derivadas
+
+@end deffn
+
+@deffn {Funci√≥n} flushnd (@var{expr}, @var{tensor}, @var{n})
+
+Iguala a cero en @var{expr} todas las apariciones del objeto diferenciado  @var{tensor} que tenga @var{n} o m√°s
+√≠ndices de derivadas, como demuestra el siguiente ejemplo:
 
 @example
 
@@ -866,27 +866,27 @@ Iguala a cero en @var{expr} todas las apariciones del objeto diferenciado  @var{
 @end example
 @end deffn
 
-@deffn {FunciÛn} coord (@var{tensor_1}, @var{tensor_2}, ...)
+@deffn {Funci√≥n} coord (@var{tensor_1}, @var{tensor_2}, ...)
 
-Le da a @var{tensor_i} la propiedad de diferenciaciÛn coordenada, que la derivada del vector contravariante cuyo nombre es uno de los @var{tensor_i} es igual a la delta de Kronecker.  Por ejemplo, si se ha hecho @code{coord(x)} entonces  @code{idiff(x([],[i]),j)} da @code{kdelta([i],[j])}. La llamada @code{coord} devuelve una lista de todos los objetos indexados con esta propiedad.
-
-@end deffn
-
-@deffn {FunciÛn} remcoord (@var{tensor_1}, @var{tensor_2}, ...)
-@deffnx {FunciÛn} remcoord (all)
-
-Borra todas las propiedades de diferenciaciÛn coordenada de @code{tensor_i} que hayan sido establecidas por la funciÛn @code{coord}. La llamada @code{remcoord(all)} borra esta propiedad de todos los objetos indexados.
+Le da a @var{tensor_i} la propiedad de diferenciaci√≥n coordenada, que la derivada del vector contravariante cuyo nombre es uno de los @var{tensor_i} es igual a la delta de Kronecker.  Por ejemplo, si se ha hecho @code{coord(x)} entonces  @code{idiff(x([],[i]),j)} da @code{kdelta([i],[j])}. La llamada @code{coord} devuelve una lista de todos los objetos indexados con esta propiedad.
 
 @end deffn
 
-@deffn {FunciÛn} makebox (@var{expr})
-Muestra @var{expr} de la misma manera que lo hace @code{show}; sin embargo, cualquier tensor de d'Alembert que aparezca en  @var{expr} estar· indicado por @code{[]}.  Por ejemplo, @code{[]p([m],[n])} representa @code{g([],[i,j])*p([m],[n],i,j)}.
+@deffn {Funci√≥n} remcoord (@var{tensor_1}, @var{tensor_2}, ...)
+@deffnx {Funci√≥n} remcoord (all)
+
+Borra todas las propiedades de diferenciaci√≥n coordenada de @code{tensor_i} que hayan sido establecidas por la funci√≥n @code{coord}. La llamada @code{remcoord(all)} borra esta propiedad de todos los objetos indexados.
 
 @end deffn
 
-@deffn {FunciÛn} conmetderiv (@var{expr}, @var{tensor})
+@deffn {Funci√≥n} makebox (@var{expr})
+Muestra @var{expr} de la misma manera que lo hace @code{show}; sin embargo, cualquier tensor de d'Alembert que aparezca en  @var{expr} estar√° indicado por @code{[]}.  Por ejemplo, @code{[]p([m],[n])} representa @code{g([],[i,j])*p([m],[n],i,j)}.
 
-Simplifica expresiones que contengan derivadas ordinarias tanto de las formas covariantes como contravariantes del tensor mÈtrico. Por ejemplo,  @code{conmetderiv} puede relacionar la derivada del tensor mÈtrico contravariante con los sÌmbolos de Christoffel, como se ve en el ejemplo:
+@end deffn
+
+@deffn {Funci√≥n} conmetderiv (@var{expr}, @var{tensor})
+
+Simplifica expresiones que contengan derivadas ordinarias tanto de las formas covariantes como contravariantes del tensor m√©trico. Por ejemplo,  @code{conmetderiv} puede relacionar la derivada del tensor m√©trico contravariante con los s√≠mbolos de Christoffel, como se ve en el ejemplo:
 
 @example
 
@@ -903,10 +903,10 @@ Simplifica expresiones que contengan derivadas ordinarias tanto de las formas co
 @end example
 @end deffn
 
-@deffn {FunciÛn} simpmetderiv (@var{expr})
-@deffnx {FunciÛn} simpmetderiv (@var{expr}[, @var{stop}])
+@deffn {Funci√≥n} simpmetderiv (@var{expr})
+@deffnx {Funci√≥n} simpmetderiv (@var{expr}[, @var{stop}])
 
-Simplifica expresiones que contienen productos de las derivadas del tensor mÈtrico. La funciÛn @code{simpmetderiv} reconoce dos identidades:
+Simplifica expresiones que contienen productos de las derivadas del tensor m√©trico. La funci√≥n @code{simpmetderiv} reconoce dos identidades:
 
 @example
 
@@ -935,11 +935,11 @@ y
 
 @end example
 
-que se deduce de las simetrÌas de los sÌmbolos de Christoffel.
+que se deduce de las simetr√≠as de los s√≠mbolos de Christoffel.
 
-La funciÛn @code{simpmetderiv} tiene un argumento opcional, el cual detiene la funciÛn despuÈs de la primera sustituciÛn exitosa en un expresiÛn producto. La funciÛn @code{simpmetderiv} tambiÈn hace uso de la variable global @var{flipflag} que determina cÛmo aplicar una ordenaciÛn ``canÛnica'' a los Ìndices de los productos.
+La funci√≥n @code{simpmetderiv} tiene un argumento opcional, el cual detiene la funci√≥n despu√©s de la primera sustituci√≥n exitosa en un expresi√≥n producto. La funci√≥n @code{simpmetderiv} tambi√©n hace uso de la variable global @var{flipflag} que determina c√≥mo aplicar una ordenaci√≥n ``can√≥nica'' a los √≠ndices de los productos.
 
-Todo esto se puede utilizar para conseguir buenas simplificaciones que serÌan difÌciles o imposibles de conseguir, lo que se demuestra en el siguiente ejemplo, que utiliza explÌcitamente las simplificaciones parciales de @code{simpmetderiv}:
+Todo esto se puede utilizar para conseguir buenas simplificaciones que ser√≠an dif√≠ciles o imposibles de conseguir, lo que se demuestra en el siguiente ejemplo, que utiliza expl√≠citamente las simplificaciones parciales de @code{simpmetderiv}:
 
 @example
 
@@ -978,42 +978,42 @@ errexp1 has improper indices
 
 @end example
 
-VÈase tambiÈn @code{weyl.dem} para un ejemplo que utiliza @code{simpmetderiv} y @code{conmetderiv} para simplificar contracciones del tensor de Weyl.
+V√©ase tambi√©n @code{weyl.dem} para un ejemplo que utiliza @code{simpmetderiv} y @code{conmetderiv} para simplificar contracciones del tensor de Weyl.
 
 @end deffn
 
-@deffn {FunciÛn} flush1deriv (@var{expr}, @var{tensor})
+@deffn {Funci√≥n} flush1deriv (@var{expr}, @var{tensor})
 
-Iguala a cero en @code{expr} todas las apariciones de @code{tensor} que tengan exactamente un Ìndice derivado.
+Iguala a cero en @code{expr} todas las apariciones de @code{tensor} que tengan exactamente un √≠ndice derivado.
 
 @end deffn
 
 @subsection Tensores en espacios curvos
 
-@deffn {FunciÛn} imetric (@var{g})
+@deffn {Funci√≥n} imetric (@var{g})
 @deffnx {Variable de sistema} imetric
-Especifica la mÈtrica haciendo la asignaciÛn de la variable @code{imetric:@var{g}}, adem·s las propiedades de contracciÛn de la mÈtrica @var{g} se fijan ejecutando las instrucciones @code{defcon(@var{g}), defcon(@var{g},@var{g},kdelta)}. La variable @code{imetric}, a la que no se le asigna ning˙n valor por defecto, tiene el valor de la mÈtrica que se le haya asignado con la instrucciÛn @code{imetric(@var{g})}.
+Especifica la m√©trica haciendo la asignaci√≥n de la variable @code{imetric:@var{g}}, adem√°s las propiedades de contracci√≥n de la m√©trica @var{g} se fijan ejecutando las instrucciones @code{defcon(@var{g}), defcon(@var{g},@var{g},kdelta)}. La variable @code{imetric}, a la que no se le asigna ning√∫n valor por defecto, tiene el valor de la m√©trica que se le haya asignado con la instrucci√≥n @code{imetric(@var{g})}.
 
 @end deffn
 
-@deffn {FunciÛn} idim (@var{n})
-Establece las dimensiones de la mÈtrica. TambiÈn inicializa las propiedades de antisimetrÌa de los sÌmbolos de Levi-Civita para la dimensiÛn dada.
+@deffn {Funci√≥n} idim (@var{n})
+Establece las dimensiones de la m√©trica. Tambi√©n inicializa las propiedades de antisimetr√≠a de los s√≠mbolos de Levi-Civita para la dimensi√≥n dada.
 
 @end deffn
 
-@deffn {FunciÛn} ichr1 ([@var{i}, @var{j}, @var{k}])
-Devuelve el sÌmbolo de Christoffel de primera especie dado por la definiciÛn 
+@deffn {Funci√≥n} ichr1 ([@var{i}, @var{j}, @var{k}])
+Devuelve el s√≠mbolo de Christoffel de primera especie dado por la definici√≥n 
 @example
        (g      + g      - g     )/2 .
          ik,j     jk,i     ij,k
 @end example
 
-Para evaluar los sÌmbolos de Christoffel de una mÈtrica determinada, a la variable  @code{imetric} hay que asignarle un nombre como en el ejemplo de la descripciÛn de @code{chr2}.
+Para evaluar los s√≠mbolos de Christoffel de una m√©trica determinada, a la variable  @code{imetric} hay que asignarle un nombre como en el ejemplo de la descripci√≥n de @code{chr2}.
 
 @end deffn
 
-@deffn {FunciÛn} ichr2 ([@var{i}, @var{j}], [@var{k}])
-Devuelve el sÌmbolo de Christoffel de segunda especie dado por la definiciÛn
+@deffn {Funci√≥n} ichr2 ([@var{i}, @var{j}], [@var{k}])
+Devuelve el s√≠mbolo de Christoffel de segunda especie dado por la definici√≥n
 @example
                        ks
    ichr2([i,j],[k]) = g    (g      + g      - g     )/2
@@ -1021,8 +1021,8 @@ Devuelve el sÌmbolo de Christoffel de segunda especie dado por la definiciÛn
 @end example
 @end deffn
 
-@deffn {FunciÛn} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
-Devuelve el tensor de curvatura de Riemann en tÈrminos de los sÌmbolos de Christoffel de segunda especie (@code{ichr2}).  Se utiliza la siguiente notaciÛn:
+@deffn {Funci√≥n} icurvature ([@var{i}, @var{j}, @var{k}], [@var{h}])
+Devuelve el tensor de curvatura de Riemann en t√©rminos de los s√≠mbolos de Christoffel de segunda especie (@code{ichr2}).  Se utiliza la siguiente notaci√≥n:
 @example
                h             h            h         %1         h
      icurvature     = - ichr2      - ichr2     ichr2    + ichr2
@@ -1033,8 +1033,8 @@ Devuelve el tensor de curvatura de Riemann en tÈrminos de los sÌmbolos de Christ
 @end example
 @end deffn
 
-@deffn {FunciÛn} covdiff (@var{expr}, @var{v_1}, @var{v_2}, ...)
-Devuelve la derivada covariante de @var{expr} respecto de las variables  @var{v_i} en tÈrminos de los sÌmbolos de Christoffel de segunda especie (@code{ichr2}). Para evaluarlos debe hacerse @code{ev(@var{expr},ichr2)}.
+@deffn {Funci√≥n} covdiff (@var{expr}, @var{v_1}, @var{v_2}, ...)
+Devuelve la derivada covariante de @var{expr} respecto de las variables  @var{v_i} en t√©rminos de los s√≠mbolos de Christoffel de segunda especie (@code{ichr2}). Para evaluarlos debe hacerse @code{ev(@var{expr},ichr2)}.
 
 @example
 
@@ -1079,14 +1079,14 @@ Enter a list of the derivative indices: [];
 
 @end deffn
 
-@deffn {FunciÛn} lorentz_gauge (@var{expr})
-Impone la condiciÛn de Lorentz sustituyendo por 0 todos los objetos indexados de @var{expr} que tengan un Ìndice derivado idÈntico a un Ìndice contravariante.
+@deffn {Funci√≥n} lorentz_gauge (@var{expr})
+Impone la condici√≥n de Lorentz sustituyendo por 0 todos los objetos indexados de @var{expr} que tengan un √≠ndice derivado id√©ntico a un √≠ndice contravariante.
 
 @end deffn
 
-@deffn {FunciÛn} igeodesic_coords (@var{expr}, @var{nombre})
+@deffn {Funci√≥n} igeodesic_coords (@var{expr}, @var{nombre})
 
-Elimina los sÌmbolos no diferenciados de Christoffel y las primeras derivadas del tensor mÈtrico de @var{expr}. El argumento @var{nombre} de la funciÛn @code{igeodesic_coords} se refiere a la mÈtrica @var{nombre} si aparece en @var{expr}, mientras que los coeficientes de conexiÛn deben tener los nombres  @code{ichr1} y/o @code{ichr2}. El siguiente ejemplo hace la verificaciÛn de la identidad cÌclica satisfecha por el tensor de curvatura de Riemann haciendo uso de la funciÛn @code{igeodesic_coords}.
+Elimina los s√≠mbolos no diferenciados de Christoffel y las primeras derivadas del tensor m√©trico de @var{expr}. El argumento @var{nombre} de la funci√≥n @code{igeodesic_coords} se refiere a la m√©trica @var{nombre} si aparece en @var{expr}, mientras que los coeficientes de conexi√≥n deben tener los nombres  @code{ichr1} y/o @code{ichr2}. El siguiente ejemplo hace la verificaci√≥n de la identidad c√≠clica satisfecha por el tensor de curvatura de Riemann haciendo uso de la funci√≥n @code{igeodesic_coords}.
 
 @example
 
@@ -1121,19 +1121,19 @@ Elimina los sÌmbolos no diferenciados de Christoffel y las primeras derivadas de
 
 @end deffn
 
-@subsection Sistemas de referencia mÛviles
+@subsection Sistemas de referencia m√≥viles
 
-Maxima puede hacer c·lculos utilizando sistemas de referencia mÛviles, los cuales pueden ser ortonormales o cualesquiera otros.
+Maxima puede hacer c√°lculos utilizando sistemas de referencia m√≥viles, los cuales pueden ser ortonormales o cualesquiera otros.
 
-Para utilizar sistemas de referencia, primero se debe asignar a la variable @code{iframe_flag} el valor @code{true}. Con esto se hace que los sÌmbolos de Christoffel, @code{ichr1} y @code{ichr2}, sean reemplazados por los coeficientes @code{icc1} y @code{icc2} en los c·lculos, cambiando asÌ el comportamiento de @code{covdiff} y @code{icurvature}.
+Para utilizar sistemas de referencia, primero se debe asignar a la variable @code{iframe_flag} el valor @code{true}. Con esto se hace que los s√≠mbolos de Christoffel, @code{ichr1} y @code{ichr2}, sean reemplazados por los coeficientes @code{icc1} y @code{icc2} en los c√°lculos, cambiando as√≠ el comportamiento de @code{covdiff} y @code{icurvature}.
 
-El sistema de referencia se define con dos tensores: el campo del sistema de referencia inverso (@code{ifri}, la base dual tetrad) y la mÈtrica del sistema de referencia @code{ifg}. La mÈtrica del sistema de referencia es la matriz identidad en los sistemas de referencia ortonormales, o la mÈtrica de Lorentz en sistemas de referencia ortonormales en el espacio-tiempo de Minkowski.  El campo del sistema de referencia inverso define la base del sistema de referencia con vectores unitarios. Las propiedades contractivas se definen para el campo y la mÈtrica del sistema de referencia.
+El sistema de referencia se define con dos tensores: el campo del sistema de referencia inverso (@code{ifri}, la base dual tetrad) y la m√©trica del sistema de referencia @code{ifg}. La m√©trica del sistema de referencia es la matriz identidad en los sistemas de referencia ortonormales, o la m√©trica de Lorentz en sistemas de referencia ortonormales en el espacio-tiempo de Minkowski.  El campo del sistema de referencia inverso define la base del sistema de referencia con vectores unitarios. Las propiedades contractivas se definen para el campo y la m√©trica del sistema de referencia.
 
-Si @code{iframe_flag} vale @code{true}, muchas expresiones de @code{itensor} utilizan la mÈtrica @code{ifg} en lugar de la mÈtrica definida por @code{imetric} para incrementar y reducir Ìndices.
+Si @code{iframe_flag} vale @code{true}, muchas expresiones de @code{itensor} utilizan la m√©trica @code{ifg} en lugar de la m√©trica definida por @code{imetric} para incrementar y reducir √≠ndices.
 
-IMPORTANTE: Asignando a la variable @code{iframe_flag} el valor @code{true} NO deshace las propiedades contractivas de una mÈtrica establecidas con una llamada a @code{defcon} o a @code{imetric}. Si se utiliza el campo del sistema de referencia, es mejor definir la mÈtrica asignando su nombre a la variable  @code{imetric} y NO hacer una llamada a la funciÛn @code{imetric}.
+IMPORTANTE: Asignando a la variable @code{iframe_flag} el valor @code{true} NO deshace las propiedades contractivas de una m√©trica establecidas con una llamada a @code{defcon} o a @code{imetric}. Si se utiliza el campo del sistema de referencia, es mejor definir la m√©trica asignando su nombre a la variable  @code{imetric} y NO hacer una llamada a la funci√≥n @code{imetric}.
 
-Maxima utiliza estos dos tensores para definir los coeficientes del sistema de referencia: @code{ifc1} y and @code{ifc2}, los cuales forman parte de los coeficientes de conexiÛn @code{icc1} y @code{icc2}, tal como demuestra el siguiente ejemplo:
+Maxima utiliza estos dos tensores para definir los coeficientes del sistema de referencia: @code{ifc1} y and @code{ifc2}, los cuales forman parte de los coeficientes de conexi√≥n @code{icc1} y @code{icc2}, tal como demuestra el siguiente ejemplo:
 
 @example
 
@@ -1166,7 +1166,7 @@ Maxima utiliza estos dos tensores para definir los coeficientes del sistema de r
 
 @end example
 
-Se utiliza un mÈtodo alternativo  para calcular el sistema de referencia @code{ifb} si la variable @code{iframe_bracket_form} vale @code{false}:
+Se utiliza un m√©todo alternativo  para calcular el sistema de referencia @code{ifb} si la variable @code{iframe_bracket_form} vale @code{false}:
 
 @example
 
@@ -1180,7 +1180,7 @@ Se utiliza un mÈtodo alternativo  para calcular el sistema de referencia @code{i
 
 @defvr {Variable} ifb
 
-Es el sistema de referencia soporte. La contribuciÛn de la mÈtrica del campo a los coeficientes de conexiÛn se expresa utilizando:
+Es el sistema de referencia soporte. La contribuci√≥n de la m√©trica del campo a los coeficientes de conexi√≥n se expresa utilizando:
 
 @example
 
@@ -1191,7 +1191,7 @@ ifc1    = --------------------------------
 
 @end example
 
-El sistema de referencia soporte se define en tÈrminos del campo y la mÈtrica del sistema de referencia. Se utilizan dos mÈtodos alternativos dependiendo del valor de @code{frame_bracket_form}. Si vale @code{true} (que es el valor por defecto) o si @code{itorsion_flag} vale @code{true}:
+El sistema de referencia soporte se define en t√©rminos del campo y la m√©trica del sistema de referencia. Se utilizan dos m√©todos alternativos dependiendo del valor de @code{frame_bracket_form}. Si vale @code{true} (que es el valor por defecto) o si @code{itorsion_flag} vale @code{true}:
 
 @example
 
@@ -1218,7 +1218,7 @@ ifb    = (ifr    ifr    - ifr    ifr   ) ifri
 
 @defvr {Variable} icc1
 
-Coeficientes de conexiÛn de primera especie. Se definen en @code{itensor} como
+Coeficientes de conexi√≥n de primera especie. Se definen en @code{itensor} como
 
 @example
 
@@ -1227,14 +1227,14 @@ icc1    = ichr1    - ikt1    - inmc1
 
 @end example
 
-En esta expresiÛn, si @code{iframe_flag} vale @code{true}, el sÌmbolo de Christoffel @code{ichr1} se reemplaza por el coeficiente de conexiÛn del sistema de referencia @code{ifc1}. Si @code{itorsion_flag} vale @code{false}, @code{ikt1} ser· omitido. TambiÈn se omite si se utiliza una base, ya que la torsiÛn ya est· calculada como parte del sistema de referencia.
+En esta expresi√≥n, si @code{iframe_flag} vale @code{true}, el s√≠mbolo de Christoffel @code{ichr1} se reemplaza por el coeficiente de conexi√≥n del sistema de referencia @code{ifc1}. Si @code{itorsion_flag} vale @code{false}, @code{ikt1} ser√° omitido. Tambi√©n se omite si se utiliza una base, ya que la torsi√≥n ya est√° calculada como parte del sistema de referencia.
 
 @end defvr
 
 
 @defvr {Variable} icc2
 
-Coeficientes de conexiÛn de segunda especie. Se definen en @code{itensor} como
+Coeficientes de conexi√≥n de segunda especie. Se definen en @code{itensor} como
 
 @example
 
@@ -1244,13 +1244,13 @@ icc2   = ichr2   - ikt2   - inmc2
 
 @end example
 
-En esta expresiÛn, si la variable @code{iframe_flag} vale @code{true}, el sÌmbolo de Christoffel @code{ichr2} se reemplaza por el coeficiente de conexiÛn del sistema de referencia @code{ifc2}. Si @code{itorsion_flag} vale @code{false}, @code{ikt2} se omite. TambiÈn se omite si se utiliza una base de referncia. Por ˙ltimo, si  @code{inonmet_flag} vale @code{false}, se omite @code{inmc2}.
+En esta expresi√≥n, si la variable @code{iframe_flag} vale @code{true}, el s√≠mbolo de Christoffel @code{ichr2} se reemplaza por el coeficiente de conexi√≥n del sistema de referencia @code{ifc2}. Si @code{itorsion_flag} vale @code{false}, @code{ikt2} se omite. Tambi√©n se omite si se utiliza una base de referncia. Por √∫ltimo, si  @code{inonmet_flag} vale @code{false}, se omite @code{inmc2}.
 
 @end defvr
 
 @defvr {Variable} ifc1
 
-Coeficiente del sistema de referencia de primera especie, tambiÈn conocido como coeficientes de rotaciÛn de Ricci. Este tensor represnta la contribuciÛn de la mÈtrica del sistema de referencia al coeficiente de conexiÛn de primera especie, definido como
+Coeficiente del sistema de referencia de primera especie, tambi√©n conocido como coeficientes de rotaci√≥n de Ricci. Este tensor represnta la contribuci√≥n de la m√©trica del sistema de referencia al coeficiente de conexi√≥n de primera especie, definido como
 
 @example
 
@@ -1267,8 +1267,8 @@ ifc1    = --------------------------------
 @defvr {Variable} ifc2
 
 Coeficiente del sistema de referencia de segunda especie. Este tensor representa
-la contribuciÛn de la mÈtrica del sistema de referencia al coeficiente 
-de conexiÛn de segunda especie, definido como
+la contribuci√≥n de la m√©trica del sistema de referencia al coeficiente 
+de conexi√≥n de segunda especie, definido como
 
 @example
 
@@ -1282,7 +1282,7 @@ ifc2   = ifg   ifc1
 
 @defvr {Variable} ifr
 
-El campo del sistema de referencia. Se contrae con el campo inverso @code{ifri} para formar la mÈtrica del sistema de referencia, @code{ifg}.
+El campo del sistema de referencia. Se contrae con el campo inverso @code{ifri} para formar la m√©trica del sistema de referencia, @code{ifg}.
 
 @end defvr
 
@@ -1294,31 +1294,31 @@ Campo inverso del sistema de referencia. Especifica la base del sistema de refer
 
 @defvr {Variable} ifg
 
-La mÈtrica del sistema de referencia. Su valor por defecto es @code{kdelta}, pero puede cambiarse utilizando 
+La m√©trica del sistema de referencia. Su valor por defecto es @code{kdelta}, pero puede cambiarse utilizando 
 @code{components}.
 
 @end defvr
 
 @defvr {Variable} ifgi
 
-La mÈtrica inversa del sistema de referencia. Se contrae con la mÈtrica @code{ifg} para dar @code{kdelta}.
+La m√©trica inversa del sistema de referencia. Se contrae con la m√©trica @code{ifg} para dar @code{kdelta}.
 
 @end defvr
 
 @defvr {Variable opcional} iframe_bracket_form
 Valor por defecto: @code{true}
 
-Especifica cÛmo se calcula @code{ifb}.
+Especifica c√≥mo se calcula @code{ifb}.
 
 @end defvr
 
-@subsection TorsiÛn y no metricidad
+@subsection Torsi√≥n y no metricidad
 
-Maxima trabaja con conceptos como la torsiÛn y la no metricidad. Cuando la variable @code{itorsion_flag} vale @code{true}, la contribuciÛn de la torsiÛn se aÒade a los coeficientes de conexiÛn. TambiÈn se aÒaden las componentes de no metricidad cuando @code{inonmet_flag} vale  @code{true}.
+Maxima trabaja con conceptos como la torsi√≥n y la no metricidad. Cuando la variable @code{itorsion_flag} vale @code{true}, la contribuci√≥n de la torsi√≥n se a√±ade a los coeficientes de conexi√≥n. Tambi√©n se a√±aden las componentes de no metricidad cuando @code{inonmet_flag} vale  @code{true}.
 
 @defvr {Variable} inm
 
-Vector de no metricidad. La no metricidad conforme se define a partir de la derivada covariante del tensor mÈtrico. La derivada covariante del tensor mÈtrico, que normalmente es nula, se calcula, cuando @code{inonmet_flag} vale @code{true}, como 
+Vector de no metricidad. La no metricidad conforme se define a partir de la derivada covariante del tensor m√©trico. La derivada covariante del tensor m√©trico, que normalmente es nula, se calcula, cuando @code{inonmet_flag} vale @code{true}, como 
 
 @example
 g     =- g  inm
@@ -1330,7 +1330,7 @@ g     =- g  inm
 
 @defvr {Variable} inmc1
 
-PermutaciÛn covariante de las componentes del vector de no metricidad. Se define como
+Permutaci√≥n covariante de las componentes del vector de no metricidad. Se define como
 
 @example
 
@@ -1341,13 +1341,13 @@ inmc1    = ------------------------------
 
 @end example
 
-(Sustit˙yase @code{g} por @code{ifg} si se utiliza una mÈtrica para el sistema de referencia.)
+(Sustit√∫yase @code{g} por @code{ifg} si se utiliza una m√©trica para el sistema de referencia.)
 
 @end defvr
 
 @defvr {Variable} inmc2
 
-PermutaciÛn contravariante de las componentes del vector de no metricidad. Se utiliza en los coeficientes de conexiÛn si @code{inonmet_flag} vale @code{true}. Se define como
+Permutaci√≥n contravariante de las componentes del vector de no metricidad. Se utiliza en los coeficientes de conexi√≥n si @code{inonmet_flag} vale @code{true}. Se define como
 
 @example
 
@@ -1359,13 +1359,13 @@ inmc2   = -------------------------------------------
 
 @end example
 
-(Sustit˙yase @code{g} por @code{ifg} si se utiliza una mÈtrica para el sistema de referencia.)
+(Sustit√∫yase @code{g} por @code{ifg} si se utiliza una m√©trica para el sistema de referencia.)
 
 @end defvr
 
 @defvr {Variable} ikt1
 
-PermutaciÛn covariante del tensor de permutaciÛn, tambiÈn conocido como contorsiÛn. Se define como
+Permutaci√≥n covariante del tensor de permutaci√≥n, tambi√©n conocido como contorsi√≥n. Se define como
 
 @example
 
@@ -1377,13 +1377,13 @@ ikt1    = ----------------------------------
 
 @end example
 
-(Sustit˙yase @code{g} por @code{ifg} si se utiliza una mÈtrica para el sistema de referencia.)
+(Sustit√∫yase @code{g} por @code{ifg} si se utiliza una m√©trica para el sistema de referencia.)
 
 @end defvr
 
 @defvr {Variable} ikt2
 
-PermutaciÛn contravariante del tensor de permutaciÛn, tambiÈn conocido como contorsiÛn. Se define como
+Permutaci√≥n contravariante del tensor de permutaci√≥n, tambi√©n conocido como contorsi√≥n. Se define como
 
 @example
 
@@ -1393,13 +1393,13 @@ ikt2   = g   ikt1
 
 @end example
 
-(Sustit˙yase @code{g} por @code{ifg} si se utiliza una mÈtrica para el sistema de referencia.)
+(Sustit√∫yase @code{g} por @code{ifg} si se utiliza una m√©trica para el sistema de referencia.)
 
 @end defvr
 
 @defvr {Variable} itr
 
-Tensor de torsiÛn. Para una mÈtrica con torsiÛn, la diferenciaciÛn covariante iterada de una funciÛn escalar no conmuta, tal como demuestra el siguiente ejemplo:
+Tensor de torsi√≥n. Para una m√©trica con torsi√≥n, la diferenciaci√≥n covariante iterada de una funci√≥n escalar no conmuta, tal como demuestra el siguiente ejemplo:
 
 @example
 
@@ -1455,11 +1455,11 @@ Tensor de torsiÛn. Para una mÈtrica con torsiÛn, la diferenciaciÛn covariante it
 
 @end defvr
 
-@subsection ¡lgebra exterior
+@subsection √Ålgebra exterior
 
-Con el paquete @code{itensor} se pueden realizar operaciones en campos tensoriales covariantes antisimÈtricos. Un campo tensorial totalmente antisimÈtrrico de rango (0,L) se corresponde con una L-forma diferencial. Sobre estos objetos se define una operaciÛn que se llama producto exterior.
+Con el paquete @code{itensor} se pueden realizar operaciones en campos tensoriales covariantes antisim√©tricos. Un campo tensorial totalmente antisim√©trrico de rango (0,L) se corresponde con una L-forma diferencial. Sobre estos objetos se define una operaci√≥n que se llama producto exterior.
 
-Desafortunadamente no hay consenso entre los autores a la hora de definir el producto exterior. Algunos autores prefieren una definiciÛn que se corresponde con la nociÛn de antisimetrizaciÛn, con lo que el producto externo de dos campos vectoriales se definirÌa como
+Desafortunadamente no hay consenso entre los autores a la hora de definir el producto exterior. Algunos autores prefieren una definici√≥n que se corresponde con la noci√≥n de antisimetrizaci√≥n, con lo que el producto externo de dos campos vectoriales se definir√≠a como
 
 @example
             a a  - a a
@@ -1468,7 +1468,7 @@ Desafortunadamente no hay consenso entre los autores a la hora de definir el pro
   i     j        2
 @end example
 
-De forma m·s general, el producto de una p-forma por una q-forma se definirÌa como
+De forma m√°s general, el producto de una p-forma por una q-forma se definir√≠a como
 
 @example
                        1     k1..kp l1..lq
@@ -1478,7 +1478,7 @@ A       /\ B       = ------ D              A       B
 
 donde @code{D} es la delta de Kronecker.
 
-Otros autores, sin embargo, prefieren una definiciÛn ``geomÈtrica'' que se corresponde con la nociÛn del elemento de volumen,
+Otros autores, sin embargo, prefieren una definici√≥n ``geom√©trica'' que se corresponde con la noci√≥n del elemento de volumen,
 
 @example
 a  /\ a  = a a  - a a
@@ -1493,14 +1493,14 @@ A       /\ B       = ----- D              A       B
  i1..ip     j1..jq   p! q!  i1..ip j1..jq  k1..kp  l1..lq
 @end example
 
-Puesto que @code{itensor} un paquete de ·lgebra tensorial, la primera de estas dos definiciones parece la m·s natural. Sin embargo, muchas aplicaciones hacen uso de la segunda definiciÛn. Para resolver el dilema, se define una variable que controla el comportamiento del producto exteriort: si @code{igeowedge_flag} vale @code{false} (el valor por defecto), se utiliza la primera definiciÛn, si vale @code{true}, la segunda.
+Puesto que @code{itensor} un paquete de √°lgebra tensorial, la primera de estas dos definiciones parece la m√°s natural. Sin embargo, muchas aplicaciones hacen uso de la segunda definici√≥n. Para resolver el dilema, se define una variable que controla el comportamiento del producto exteriort: si @code{igeowedge_flag} vale @code{false} (el valor por defecto), se utiliza la primera definici√≥n, si vale @code{true}, la segunda.
 
 @defvr {Operador} ~
 @ifinfo
 @fnindex Producto exterior
 @end ifinfo
 
-El operador del producto exterior se representa por el sÌmbolo @code{~}. Este es un operador binario. Sus argumentos deben ser expresiones que tengan escalares, tensores covariantes de rango uno o tensores covariantes de rango @code{l} que hayan sido declarados antisimÈtricos en todos los Ìndices covariantes.
+El operador del producto exterior se representa por el s√≠mbolo @code{~}. Este es un operador binario. Sus argumentos deben ser expresiones que tengan escalares, tensores covariantes de rango uno o tensores covariantes de rango @code{l} que hayan sido declarados antisim√©tricos en todos los √≠ndices covariantes.
 
 El comportamiento del operador del producto exterior se controla con la variable @code{igeowedge_flag}, como en el ejemplo siguiente:
 
@@ -1533,12 +1533,12 @@ El comportamiento del operador del producto exterior se controla con la variable
 
 @defvr {Operador} |
 @ifinfo
-@fnindex ContracciÛn con vector
+@fnindex Contracci√≥n con vector
 @end ifinfo
 
-La barra vertical @code{|} representa la operaciÛn "contracciÛn con un vector". Cuando un tensor covariante totalmente antisimÈtrico se contrae con un vector contravariante, el resultado no depende del Ìndice utilizado para la contracciÛn. AsÌ, es posible definir la operaciÛn de contracciÛn de forma que no se haga referencia al Ìndice.
+La barra vertical @code{|} representa la operaci√≥n "contracci√≥n con un vector". Cuando un tensor covariante totalmente antisim√©trico se contrae con un vector contravariante, el resultado no depende del √≠ndice utilizado para la contracci√≥n. As√≠, es posible definir la operaci√≥n de contracci√≥n de forma que no se haga referencia al √≠ndice.
 
-En el paquete @code{itensor} la contracciÛn con un vector se realiza siempre respecto del primer Ìndice de la ordenaciÛn literal. Ejemplo:
+En el paquete @code{itensor} la contracci√≥n con un vector se realiza siempre respecto del primer √≠ndice de la ordenaci√≥n literal. Ejemplo:
 
 @example
 (%i1) load(itensor);
@@ -1555,13 +1555,13 @@ En el paquete @code{itensor} la contracciÛn con un vector se realiza siempre res
                                          %1 j
 @end example
 
-NÛtese que es primordial que los tensores utilizados junto con el operador @code{|} se declaren totalmente antisimÈtricos en sus  Ìndices covariantes. De no ser asÌ, se pueden obtener resultados incorrectos.
+N√≥tese que es primordial que los tensores utilizados junto con el operador @code{|} se declaren totalmente antisim√©tricos en sus  √≠ndices covariantes. De no ser as√≠, se pueden obtener resultados incorrectos.
 
 @end defvr
 
-@deffn {FunciÛn} extdiff (@var{expr}, @var{i})
+@deffn {Funci√≥n} extdiff (@var{expr}, @var{i})
 
-Calcula la derivada exterior de @var{expr} con respecto del Ìndice @var{i}. La derivada exterior se define formalmente como el producto exterior del operador de la derivada parcial y una forma diferencial. Por lo tanto, esta operaciÛn tambiÈn se ve afectada por el valor que tome la variable @code{igeowedge_flag}. Ejemplo:
+Calcula la derivada exterior de @var{expr} con respecto del √≠ndice @var{i}. La derivada exterior se define formalmente como el producto exterior del operador de la derivada parcial y una forma diferencial. Por lo tanto, esta operaci√≥n tambi√©n se ve afectada por el valor que tome la variable @code{igeowedge_flag}. Ejemplo:
 
 @example
 (%i1) load(itensor);
@@ -1591,7 +1591,7 @@ Calcula la derivada exterior de @var{expr} con respecto del Ìndice @var{i}. La d
 
 @end deffn
 
-@deffn {FunciÛn} hodge (@var{expr})
+@deffn {Funci√≥n} hodge (@var{expr})
 
 Calcula el dual de Hodge  @var{expr}. Por ejemplo:
 
@@ -1637,7 +1637,7 @@ Calcula el dual de Hodge  @var{expr}. Por ejemplo:
 @defvr {Variable opcional} igeowedge_flag
 Valor por defecto: @code{false}
 
-Controla el comportamiento del producto exterior y de la derivada exterior. Cuando vale @code{false}, la nociÛn de formas diferenciales se corresponde con el de campo tensorial covariante totalmente antisimÈtrico. Cuando vale @code{true}, las formas diferenciales se corresponden con la idea de elemento de volumen.
+Controla el comportamiento del producto exterior y de la derivada exterior. Cuando vale @code{false}, la noci√≥n de formas diferenciales se corresponde con el de campo tensorial covariante totalmente antisim√©trico. Cuando vale @code{true}, las formas diferenciales se corresponden con la idea de elemento de volumen.
 
 @end defvr
 
@@ -1645,11 +1645,11 @@ Controla el comportamiento del producto exterior y de la derivada exterior. Cuan
 @subsection Exportando expresiones en TeX
 
 
-El paquete @code{itensor} dispone de soporte limitado para exportar expresiones con tensores a TeX. Puesto que las expresiones de @code{itensor} son llamadas a funciones, puede que la instrucciÛn habitual en Maxima, @code{tex}, no devuleva los resultados esperados. Se puede utlizar el comando @code{tentex}, que tratar· de traducir expresiones tensoriales a objetos de TeX correctamente indexados.
+El paquete @code{itensor} dispone de soporte limitado para exportar expresiones con tensores a TeX. Puesto que las expresiones de @code{itensor} son llamadas a funciones, puede que la instrucci√≥n habitual en Maxima, @code{tex}, no devuleva los resultados esperados. Se puede utlizar el comando @code{tentex}, que tratar√° de traducir expresiones tensoriales a objetos de TeX correctamente indexados.
 
-@deffn {FunciÛn} tentex (@var{expr})
+@deffn {Funci√≥n} tentex (@var{expr})
 
-Para utilizar la funciÛn @code{tentex}, primero se debe cargar @code{tentex}, tal como muestra el siguiente ejemplo:
+Para utilizar la funci√≥n @code{tentex}, primero se debe cargar @code{tentex}, tal como muestra el siguiente ejemplo:
 
 @example
 
@@ -1673,19 +1673,19 @@ $$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
 
 @end example
 
-NÛtese la asignaciÛn de la variable @code{idummyx} para evitar la apariciÛn del sÌmbolo del porcentaje en la expresiÛn en TeX, que puede dar errores de compilaciÛn.
+N√≥tese la asignaci√≥n de la variable @code{idummyx} para evitar la aparici√≥n del s√≠mbolo del porcentaje en la expresi√≥n en TeX, que puede dar errores de compilaci√≥n.
 
-TÈngase en cuenta que esta versiÛn de la funciÛn @code{tentex} es experimental.
+T√©ngase en cuenta que esta versi√≥n de la funci√≥n @code{tentex} es experimental.
 
 @end deffn
 
 @subsection Interactuando con ctensor
 
-El paquete @code{itensor} genera cÛdigo Maxima que luego puede ser ejecutado en el contexto del paquete @code{ctensor}. La funciÛn que se encarga de esta tarea es @code{ic_convert}.
+El paquete @code{itensor} genera c√≥digo Maxima que luego puede ser ejecutado en el contexto del paquete @code{ctensor}. La funci√≥n que se encarga de esta tarea es @code{ic_convert}.
 
 @deffn {Function} ic_convert (@var{eqn})
 
-Convierte la ecuaciÛn @var{eqn} del entorno @code{itensor} a una sentencia de asignaciÛn de @code{ctensor}. Sumas implÌcitas sobre Ìndices mudos se hacen explÌcitas mientras que objetos indexados se transforman en arreglos (los subÌndices de los arreglos se ordenan poniendo primero los covariantes seguidos de los contravariantes. La derivada de un objeto indexado se reemplazar· por por la forma nominal de @code{diff} tomada con respecto a @code{ct_coords} con el subÌndice correspondiente al Ìndice derivado. Los sÌmbolos de Christoffel @code{ichr1}  @code{ichr2} se traducen a @code{lcs} y @code{mcs}, respectivamente. Adem·s, se aÒaden bucles @code{do} para la sumaciÛn de todos los Ìndices libres, de manera que la sentencia traducida pueda ser evaluada haciendo simplemente @code{ev}. Los siguientes ejemplos muestran las funcionalidades de esta funciÛn.
+Convierte la ecuaci√≥n @var{eqn} del entorno @code{itensor} a una sentencia de asignaci√≥n de @code{ctensor}. Sumas impl√≠citas sobre √≠ndices mudos se hacen expl√≠citas mientras que objetos indexados se transforman en arreglos (los sub√≠ndices de los arreglos se ordenan poniendo primero los covariantes seguidos de los contravariantes. La derivada de un objeto indexado se reemplazar√° por por la forma nominal de @code{diff} tomada con respecto a @code{ct_coords} con el sub√≠ndice correspondiente al √≠ndice derivado. Los s√≠mbolos de Christoffel @code{ichr1}  @code{ichr2} se traducen a @code{lcs} y @code{mcs}, respectivamente. Adem√°s, se a√±aden bucles @code{do} para la sumaci√≥n de todos los √≠ndices libres, de manera que la sentencia traducida pueda ser evaluada haciendo simplemente @code{ev}. Los siguientes ejemplos muestran las funcionalidades de esta funci√≥n.
 
 @example
 (%i1) load(itensor);
@@ -1721,16 +1721,16 @@ Convierte la ecuaciÛn @var{eqn} del entorno @code{itensor} a una sentencia de as
 
 @subsection Palabras reservadas
 
-Las siguientes palabras son utilizadas por el paquete @code{itensor} internamente, por lo que no deberÌan ser modificadas por el usuario:
+Las siguientes palabras son utilizadas por el paquete @code{itensor} internamente, por lo que no deber√≠an ser modificadas por el usuario:
 
 @c REFORMAT THIS TABLE USING TEXINFO MARKUP
 @example
   Palabra    Comentarios
   ------------------------------------------
-  indices2() VersiÛn interna de indices()
-  conti      Lista los Ìndices contravariantes
-  covi       Lista los Ìndices covariantes
-  deri       Lista los Ìndices de derivadas
+  indices2() Versi√≥n interna de indices()
+  conti      Lista los √≠ndices contravariantes
+  covi       Lista los √≠ndices covariantes
+  deri       Lista los √≠ndices de derivadas
   name       Devuelve el nombre de un objeto indexado
   concan
   irpmon

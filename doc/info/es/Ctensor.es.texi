@@ -1,22 +1,22 @@
 @c English version 2011-03-14
 @menu
-* IntroducciÛn a ctensor::     
+* Introducci√≥n a ctensor::     
 * Funciones y variables para ctensor::     
 @end menu
 
-@node IntroducciÛn a ctensor, Funciones y variables para ctensor, ctensor, ctensor
-@section IntroducciÛn a ctensor
+@node Introducci√≥n a ctensor, Funciones y variables para ctensor, ctensor, ctensor
+@section Introducci√≥n a ctensor
 
-El paquete @code{ctensor} dispone de herramientas para manipular componentes de tensores. Para poder hacer uso de @code{ctensor} es necesario cargarlo previamente en memoria ejecutando  @code{load(ctensor)}. Para comenzar una sesiÛn interactiva con @code{ctensor}, ejecutar la funciÛn @code{csetup()}. Primero se le pregunta al usuario la dimensiÛn de la variedad. Si la dimensiÛn es 2, 3 o 4, entonces la lista de coordenadas ser· por defecto  @code{[x,y]}, @code{[x,y,z]}
-o @code{[x,y,z,t]}, respectivamente. Estos nombres pueden cambiarse asignando una nueva lista de coordenadas a la variable @code{ct_coords} (que se describe m·s abajo), siendo el usuario advertido sobre este particular. 
+El paquete @code{ctensor} dispone de herramientas para manipular componentes de tensores. Para poder hacer uso de @code{ctensor} es necesario cargarlo previamente en memoria ejecutando  @code{load(ctensor)}. Para comenzar una sesi√≥n interactiva con @code{ctensor}, ejecutar la funci√≥n @code{csetup()}. Primero se le pregunta al usuario la dimensi√≥n de la variedad. Si la dimensi√≥n es 2, 3 o 4, entonces la lista de coordenadas ser√° por defecto  @code{[x,y]}, @code{[x,y,z]}
+o @code{[x,y,z,t]}, respectivamente. Estos nombres pueden cambiarse asignando una nueva lista de coordenadas a la variable @code{ct_coords} (que se describe m√°s abajo), siendo el usuario advertido sobre este particular. 
 Se debe tener cuidado en evitar que los nombres de las coordenadas entren en conflicto con los nombres de otros objetos en Maxima.
 
-A continuaciÛn, el usuario introduce la mÈtrica, bien directamente, o desde un fichero especificando su posiciÛn ordinal. 
+A continuaci√≥n, el usuario introduce la m√©trica, bien directamente, o desde un fichero especificando su posici√≥n ordinal. 
 @c NO SUCH FILE !
 @c As an example of a file of common metrics, see @code{share/tensor/metrics.mac}.
-La mÈtrica se almacena en la matriz @code{lg}. Por ˙ltimo, la mÈtrica inversa se obtiene y almacena en la matriz @code{ug}. TambiÈn se dispone de la opciÛn de efectuar todos los c·lculos en serie de potencias.
+La m√©trica se almacena en la matriz @code{lg}. Por √∫ltimo, la m√©trica inversa se obtiene y almacena en la matriz @code{ug}. Tambi√©n se dispone de la opci√≥n de efectuar todos los c√°lculos en serie de potencias.
 
-Se desarrolla a continuaciÛn un ejemplo para la mÈtrica est·tica, esfÈrica y simÈtrica, en coordenadas est·ndar, que se aplicar· posteriormente al problema de derivar las ecuaciones de vacÌo de Einstein (de las que se obtiene la soluciÛn de Schwarzschild). Muchas de las funciones de @code{ctensor} se mostrar·n  en los ejemplos para la mÈtrica est·ndar.
+Se desarrolla a continuaci√≥n un ejemplo para la m√©trica est√°tica, esf√©rica y sim√©trica, en coordenadas est√°ndar, que se aplicar√° posteriormente al problema de derivar las ecuaciones de vac√≠o de Einstein (de las que se obtiene la soluci√≥n de Schwarzschild). Muchas de las funciones de @code{ctensor} se mostrar√°n  en los ejemplos para la m√©trica est√°ndar.
 
 @example
 (%i1) load(ctensor);
@@ -105,65 +105,65 @@ y;
 @end example
 
 
-@node Funciones y variables para ctensor,  , IntroducciÛn a ctensor, ctensor
+@node Funciones y variables para ctensor,  , Introducci√≥n a ctensor, ctensor
 @section Funciones y variables para ctensor
 
-@subsection InicializaciÛn y preparaciÛn
+@subsection Inicializaci√≥n y preparaci√≥n
 
-@deffn {FunciÛn} csetup ()
-Es la funciÛn del paquete @code{ctensor} que inicializa el paquete y permite al usuario introducir una mÈtrica de forma interactiva. VÈase @code{ctensor} para m·s detalles.
+@deffn {Funci√≥n} csetup ()
+Es la funci√≥n del paquete @code{ctensor} que inicializa el paquete y permite al usuario introducir una m√©trica de forma interactiva. V√©ase @code{ctensor} para m√°s detalles.
 @end deffn
 
-@deffn {FunciÛn} cmetric (@var{dis})
-@deffnx {FunciÛn} cmetric ()
-Es la funciÛn del paquete @code{ctensor} que calcula la mÈtrica inversa y prepara el paquete para c·lculos ulteriores.
+@deffn {Funci√≥n} cmetric (@var{dis})
+@deffnx {Funci√≥n} cmetric ()
+Es la funci√≥n del paquete @code{ctensor} que calcula la m√©trica inversa y prepara el paquete para c√°lculos ulteriores.
 
-Si @code{cframe_flag} vale @code{false}, la funciÛn calcula la mÈtrica inversa @code{ug} a partir de la matriz @code{lg} definida por el usuario. Se calcula tambiÈn la mÈtrica determinante y se almacena en la variable @code{gdet}. Adem·s, el paquete determina si la mÈtrica es diagonal y ajusta el valor de @code{diagmetric} de la forma apropiada. Si el argumento opcional @var{dis} est· presente y no es igual a @code{false}, el usuario podr· ver la mÈtrica inversa.
+Si @code{cframe_flag} vale @code{false}, la funci√≥n calcula la m√©trica inversa @code{ug} a partir de la matriz @code{lg} definida por el usuario. Se calcula tambi√©n la m√©trica determinante y se almacena en la variable @code{gdet}. Adem√°s, el paquete determina si la m√©trica es diagonal y ajusta el valor de @code{diagmetric} de la forma apropiada. Si el argumento opcional @var{dis} est√° presente y no es igual a @code{false}, el usuario podr√° ver la m√©trica inversa.
 
-Si @code{cframe_flag} vale @code{true}, la funciÛn espera que los valores de @code{fri} (la matriz del sistema de referencia inverso) y @code{lfg} (la matriz del sistema de referencia) estÈn definidos. A partir de ellos, se calculan la matriz del sistema de referencia @code{fr} y su mÈtrica @code{ufg}.
+Si @code{cframe_flag} vale @code{true}, la funci√≥n espera que los valores de @code{fri} (la matriz del sistema de referencia inverso) y @code{lfg} (la matriz del sistema de referencia) est√©n definidos. A partir de ellos, se calculan la matriz del sistema de referencia @code{fr} y su m√©trica @code{ufg}.
 
 @end deffn
 
 
-@deffn {FunciÛn} ct_coordsys (@var{sistema_coordenadas}, @var{extra_arg})
-@deffnx {FunciÛn} ct_coordsys (@var{sistema_coordenadas})
+@deffn {Funci√≥n} ct_coordsys (@var{sistema_coordenadas}, @var{extra_arg})
+@deffnx {Funci√≥n} ct_coordsys (@var{sistema_coordenadas})
 
-Prepara un sistema de coordenadas predefinido y una mÈtrica. El argumento @var{sistema_coordenadas} puede ser cualquiera de los siguientes sÌmbolos:
+Prepara un sistema de coordenadas predefinido y una m√©trica. El argumento @var{sistema_coordenadas} puede ser cualquiera de los siguientes s√≠mbolos:
 
 @example
 
-  SÌmbolo              Dim Coordenadas       DescripciÛn/comentarios
+  S√≠mbolo              Dim Coordenadas       Descripci√≥n/comentarios
   --------------------------------------------------------------------------------
   cartesian2d           2  [x,y]             Sistema de coordenadas cartesianas en 2D
   polar                 2  [r,phi]           Sistema de coordenadas polares
-  elliptic              2  [u,v]             Sistema de coordenadas elÌpticas
-  confocalelliptic      2  [u,v]             Coordenadas elÌpticas confocales
+  elliptic              2  [u,v]             Sistema de coordenadas el√≠pticas
+  confocalelliptic      2  [u,v]             Coordenadas el√≠pticas confocales
   bipolar               2  [u,v]             Sistema de coordenas bipolares
-  parabolic             2  [u,v]             Sistema de coordenadas parabÛlicas
+  parabolic             2  [u,v]             Sistema de coordenadas parab√≥licas
   cartesian3d           3  [x,y,z]           Sistema de coordenadas cartesianas en 3D
-  polarcylindrical      3  [r,theta,z]       Polares en 2D con cilÌndrica z
-  ellipticcylindrical   3  [u,v,z]           ElÌpticas en 2D con cilÌndrica z
+  polarcylindrical      3  [r,theta,z]       Polares en 2D con cil√≠ndrica z
+  ellipticcylindrical   3  [u,v,z]           El√≠pticas en 2D con cil√≠ndrica z
   confocalellipsoidal   3  [u,v,w]           Elipsoidales confocales
-  bipolarcylindrical    3  [u,v,z]           Bipolares en 2D con cilÌndrica z
-  paraboliccylindrical  3  [u,v,z]           ParabÛlicas en 2D con cilÌndrica z
+  bipolarcylindrical    3  [u,v,z]           Bipolares en 2D con cil√≠ndrica z
+  paraboliccylindrical  3  [u,v,z]           Parab√≥licas en 2D con cil√≠ndrica z
   paraboloidal          3  [u,v,phi]         Coordenadas paraboloidales
-  conical               3  [u,v,w]           Coordenadas cÛnicas
+  conical               3  [u,v,w]           Coordenadas c√≥nicas
   toroidal              3  [u,v,phi]         Coordenadas toroidales
-  spherical             3  [r,theta,phi]     Sistema de coordenadas esfÈricas
+  spherical             3  [r,theta,phi]     Sistema de coordenadas esf√©ricas
   oblatespheroidal      3  [u,v,phi]         Coordenadas esferoidales obleadas
   oblatespheroidalsqrt  3  [u,v,phi]
   prolatespheroidal     3  [u,v,phi]         Coordenadas esferoidales prolatas
   prolatespheroidalsqrt 3  [u,v,phi]
   ellipsoidal           3  [r,theta,phi]     Coordenadas elipsoidales
   cartesian4d           4  [x,y,z,t]         Sistema de coordenadas cartesianas en 4D
-  spherical4d           4  [r,theta,eta,phi] Sistema de coordenadas esfÈricas en 4D
-  exteriorschwarzschild 4  [t,r,theta,phi]   MÈtrica de Schwarzschild
-  interiorschwarzschild 4  [t,z,u,v]         MÈtrica interior de Schwarzschild
-  kerr_newman           4  [t,r,theta,phi]   MÈtrica simÈtrica con carga axial
+  spherical4d           4  [r,theta,eta,phi] Sistema de coordenadas esf√©ricas en 4D
+  exteriorschwarzschild 4  [t,r,theta,phi]   M√©trica de Schwarzschild
+  interiorschwarzschild 4  [t,z,u,v]         M√©trica interior de Schwarzschild
+  kerr_newman           4  [t,r,theta,phi]   M√©trica sim√©trica con carga axial
 
 @end example
 
-El argumento @code{sistema_coordenadas} puede ser tambiÈn una lista de funciones de transformaciÛn, seguida de una lista que contenga los nombres de las coordenadas. Por ejemplo, se puede especificar una mÈtrica esfÈrica como se indica a continuaciÛn:
+El argumento @code{sistema_coordenadas} puede ser tambi√©n una lista de funciones de transformaci√≥n, seguida de una lista que contenga los nombres de las coordenadas. Por ejemplo, se puede especificar una m√©trica esf√©rica como se indica a continuaci√≥n:
 
 @example
 
@@ -187,7 +187,7 @@ El argumento @code{sistema_coordenadas} puede ser tambiÈn una lista de funciones
 
 @end example
 
-Las funciones de transformaciÛn se pueden utilizar tambiÈn si @code{cframe_flag} vale @code{true}:
+Las funciones de transformaci√≥n se pueden utilizar tambi√©n si @code{cframe_flag} vale @code{true}:
 
 @example
 
@@ -219,28 +219,28 @@ Las funciones de transformaciÛn se pueden utilizar tambiÈn si @code{cframe_flag}
 
 El argumento opcional @var{extra_arg} puede ser cualquiera de los siguientes:
 
-@code{cylindrical} indica a @code{ct_coordsys} que aÒada una coordenada cilÌndrica m·s.
+@code{cylindrical} indica a @code{ct_coordsys} que a√±ada una coordenada cil√≠ndrica m√°s.
 
-@code{minkowski} indica a  @code{ct_coordsys} que aÒada una coordenada m·s con signatura mÈtrica negativa.
+@code{minkowski} indica a  @code{ct_coordsys} que a√±ada una coordenada m√°s con signatura m√©trica negativa.
 
-@code{all} indica a  @code{ct_coordsys} que llame a  @code{cmetric} y a @code{christof(false)} tras activar la mÈtrica.
+@code{all} indica a  @code{ct_coordsys} que llame a  @code{cmetric} y a @code{christof(false)} tras activar la m√©trica.
 
 Si la variable global @code{verbose} vale @code{true}, @code{ct_coordsys} muestra los valores de @code{dim}, @code{ct_coords}, junto con @code{lg} o @code{lfg} y @code{fri}, dependiendo del valor de @code{cframe_flag}.
 
 @end deffn
 
-@deffn {FunciÛn} init_ctensor ()
+@deffn {Funci√≥n} init_ctensor ()
 Inicializa el paquete @code{ctensor}.
 
-La funciÛn @code{init_ctensor} reinicializa el paquete @code{ctensor}. Borra todos los arreglos ("arrays") y matrices utilizados por @code{ctensor} y reinicializa todas las variables, asignando a @code{dim} el valor 4 y la mÈtrica del sistema de referencia a la de Lorentz.
+La funci√≥n @code{init_ctensor} reinicializa el paquete @code{ctensor}. Borra todos los arreglos ("arrays") y matrices utilizados por @code{ctensor} y reinicializa todas las variables, asignando a @code{dim} el valor 4 y la m√©trica del sistema de referencia a la de Lorentz.
 
 @end deffn
 
 @subsection Los tensores del espacio curvo
 
-El propÛsito principal del paquete @code{ctensor} es calcular los tensores del espacio (-tiempo) curvo, en especial los tensores utilizados en relatividad general.
+El prop√≥sito principal del paquete @code{ctensor} es calcular los tensores del espacio (-tiempo) curvo, en especial los tensores utilizados en relatividad general.
 
-Cuando se utiliza una mÈtrica, @code{ctensor} puede calcular los siguientes tensores:
+Cuando se utiliza una m√©trica, @code{ctensor} puede calcular los siguientes tensores:
 
 @example
 
@@ -257,7 +257,7 @@ Cuando se utiliza una mÈtrica, @code{ctensor} puede calcular los siguientes tens
 
 @end example
 
-El paquete @code{ctensor} tambiÈn puede trabajar con sistemas de referencia mÛviles. Si @code{cframe_flag} vale @code{true}, se pueden calcular los siguientes tensores:
+El paquete @code{ctensor} tambi√©n puede trabajar con sistemas de referencia m√≥viles. Si @code{cframe_flag} vale @code{true}, se pueden calcular los siguientes tensores:
 
 @example
 
@@ -273,39 +273,39 @@ El paquete @code{ctensor} tambiÈn puede trabajar con sistemas de referencia mÛvi
 
 @end example
 
-@deffn {FunciÛn} christof (@var{dis})
-Es una funciÛn del paquete @code{ctensor}. Calcula los sÌmbolos de Christoffel de ambos tipos. El argumento @var{dis} determina quÈ resultados se mostrar·n de forma inmediata. Los sÌmbolos de Christoffel de primer y segundo tipo se almacenan en los arreglos  @code{lcs[i,j,k]} y @code{mcs[i,j,k]}, respectivamente, y se definen simÈtricos en sus dos primeros Ìndices. Si el argumento de @code{christof} es @code{lcs} o @code{mcs} entonces ser·n mostrados ˙nicamente los valores no nulos de @code{lcs[i,j,k]} o @code{mcs[i,j,k]}, respectivamente. Si el argumento es @code{all} entonces se mostrar·n los valores no nulos de @code{lcs[i,j,k]} y @code{mcs[i,j,k]}.  Si el argumento vale @code{false} entonces no se mostrar·n los elementos. El arreglo @code{mcs[i,j,k]} est· definido de tal modo que el ˙ltimo Ìndice es contravariante.
+@deffn {Funci√≥n} christof (@var{dis})
+Es una funci√≥n del paquete @code{ctensor}. Calcula los s√≠mbolos de Christoffel de ambos tipos. El argumento @var{dis} determina qu√© resultados se mostrar√°n de forma inmediata. Los s√≠mbolos de Christoffel de primer y segundo tipo se almacenan en los arreglos  @code{lcs[i,j,k]} y @code{mcs[i,j,k]}, respectivamente, y se definen sim√©tricos en sus dos primeros √≠ndices. Si el argumento de @code{christof} es @code{lcs} o @code{mcs} entonces ser√°n mostrados √∫nicamente los valores no nulos de @code{lcs[i,j,k]} o @code{mcs[i,j,k]}, respectivamente. Si el argumento es @code{all} entonces se mostrar√°n los valores no nulos de @code{lcs[i,j,k]} y @code{mcs[i,j,k]}.  Si el argumento vale @code{false} entonces no se mostrar√°n los elementos. El arreglo @code{mcs[i,j,k]} est√° definido de tal modo que el √∫ltimo √≠ndice es contravariante.
 @end deffn
 
-@deffn {FunciÛn} ricci (@var{dis})
-Es una funciÛn del paquete @code{ctensor}. La funciÛn @code{ricci} calcula las componentes covariantes (simÈtricas) 
+@deffn {Funci√≥n} ricci (@var{dis})
+Es una funci√≥n del paquete @code{ctensor}. La funci√≥n @code{ricci} calcula las componentes covariantes (sim√©tricas) 
 @code{ric[i,j]} del tensor de Ricci. Si el argumento @var{dis} vale @code{true}, entonces se muestran las componentes no nulas.
 @end deffn
 
 
-@deffn {FunciÛn} uricci (@var{dis})
-Esta funciÛn calcula en primer lugar las componentes covariantes  @code{ric[i,j]} del tensor de Ricci. DespuÈs se calcula el tensor de Ricci utilizando la mÈtrica contravariante. Si el valor del argumento @var{dis} vale @code{true}, entonces se mostrar·n directamente las componentes @code{uric[i,j]} (el Ìndice @var{i} es covariante y el @var{j} contravariante). En otro caso,  @code{ricci(false)} simplemente calcular· las entradas del arreglo @code{uric[i,j]} sin mostrar los resultados.
+@deffn {Funci√≥n} uricci (@var{dis})
+Esta funci√≥n calcula en primer lugar las componentes covariantes  @code{ric[i,j]} del tensor de Ricci. Despu√©s se calcula el tensor de Ricci utilizando la m√©trica contravariante. Si el valor del argumento @var{dis} vale @code{true}, entonces se mostrar√°n directamente las componentes @code{uric[i,j]} (el √≠ndice @var{i} es covariante y el @var{j} contravariante). En otro caso,  @code{ricci(false)} simplemente calcular√° las entradas del arreglo @code{uric[i,j]} sin mostrar los resultados.
 
 @end deffn
 
-@deffn {FunciÛn} scurvature ()
+@deffn {Funci√≥n} scurvature ()
 
-Devuelve la curvatura escalar (obtenida por contracciÛn del tensor de Ricci) de la variedad de Riemannian con la mÈtrica dada.
-
-@end deffn
-
-@deffn {FunciÛn} einstein (@var{dis})
-Es una funciÛn del paquete @code{ctensor}. La funciÛn  @code{einstein} calcula el tensor de Einstein despuÈs de que los sÌmbolos de  Christoffel y el tensor de Ricci hayan sido calculados (con las funciones @code{christof} y @code{ricci}).  Si el argumento @var{dis} vale @code{true}, entonces se mostrar·n los valores no nulos del tensor de Einstein @code{ein[i,j]}, donde @code{j} es el Ìndice contravariante. La variable @code{rateinstein} causar· la simplificaciÛn racional de estas componentes. Si @code{ratfac} vale @code{true} entonces las componentes tambiÈn se factorizar·n.
+Devuelve la curvatura escalar (obtenida por contracci√≥n del tensor de Ricci) de la variedad de Riemannian con la m√©trica dada.
 
 @end deffn
 
-@deffn {FunciÛn} leinstein (@var{dis})
-Es el tensor covariante de Einstein. La funciÛn @code{leinstein} almacena los valores del tensor covariante de Einstein en el arreglo @code{lein}. El tensor covariante de Einstein se calcula a partir del tensor de Einstein @code{ein} multiplic·ndolo por el tensor mÈtrico. Si el argumento  @var{dis} vale @code{true}, entonces se mostrar·n los valores no nulos del tensor covariante de Einstein.
+@deffn {Funci√≥n} einstein (@var{dis})
+Es una funci√≥n del paquete @code{ctensor}. La funci√≥n  @code{einstein} calcula el tensor de Einstein despu√©s de que los s√≠mbolos de  Christoffel y el tensor de Ricci hayan sido calculados (con las funciones @code{christof} y @code{ricci}).  Si el argumento @var{dis} vale @code{true}, entonces se mostrar√°n los valores no nulos del tensor de Einstein @code{ein[i,j]}, donde @code{j} es el √≠ndice contravariante. La variable @code{rateinstein} causar√° la simplificaci√≥n racional de estas componentes. Si @code{ratfac} vale @code{true} entonces las componentes tambi√©n se factorizar√°n.
 
 @end deffn
 
-@deffn {FunciÛn} riemann (@var{dis})
-Es una funciÛn del paquete @code{ctensor}. La funciÛn @code{riemann} calcula el tensor de curvatura de Riemann a partir de la mÈtrica dada y de los sÌmbolos de Christoffel correspondientes. Se utiliza el siguiente convenio sobre los Ìndices:
+@deffn {Funci√≥n} leinstein (@var{dis})
+Es el tensor covariante de Einstein. La funci√≥n @code{leinstein} almacena los valores del tensor covariante de Einstein en el arreglo @code{lein}. El tensor covariante de Einstein se calcula a partir del tensor de Einstein @code{ein} multiplic√°ndolo por el tensor m√©trico. Si el argumento  @var{dis} vale @code{true}, entonces se mostrar√°n los valores no nulos del tensor covariante de Einstein.
+
+@end deffn
+
+@deffn {Funci√≥n} riemann (@var{dis})
+Es una funci√≥n del paquete @code{ctensor}. La funci√≥n @code{riemann} calcula el tensor de curvatura de Riemann a partir de la m√©trica dada y de los s√≠mbolos de Christoffel correspondientes. Se utiliza el siguiente convenio sobre los √≠ndices:
 
 @example
                 l      _l       _l       _l   _m    _l   _m
@@ -313,55 +313,55 @@ Es una funciÛn del paquete @code{ctensor}. La funciÛn @code{riemann} calcula el 
                 ijk     ij,k     ik,j     mk   ij    mj   ik
 @end example
 
-Esta notaciÛn es consistente con la notaciÛn utilizada por el paquete @code{itensor} y su funciÛn @code{icurvature}. Si el argumento opcional @var{dis} vale @code{true}, se muestran las componentes no nulas ˙nicas de @code{riem[i,j,k,l]}. Como en el caso del tensor de Einstein, ciertas variables permiten controlar al usuario la simplificaciÛn de las componentes del tensor de Riemann. Si  @code{ratriemann} vale @code{true}, entonces se har· la simplificaciÛn racional. Si @code{ratfac} vale @code{true}, entonces se factorizar·n todas las componentes.
+Esta notaci√≥n es consistente con la notaci√≥n utilizada por el paquete @code{itensor} y su funci√≥n @code{icurvature}. Si el argumento opcional @var{dis} vale @code{true}, se muestran las componentes no nulas √∫nicas de @code{riem[i,j,k,l]}. Como en el caso del tensor de Einstein, ciertas variables permiten controlar al usuario la simplificaci√≥n de las componentes del tensor de Riemann. Si  @code{ratriemann} vale @code{true}, entonces se har√° la simplificaci√≥n racional. Si @code{ratfac} vale @code{true}, entonces se factorizar√°n todas las componentes.
 
-Si la variable @code{cframe_flag} vale @code{false}, el tensor de Riemann se calcula directamente a partir de los sÌmbolos de Christoffel. Si @code{cframe_flag} vale @code{true}, el tensor covariante de Riemann se calcula a partir de los coeficientes del campo.
+Si la variable @code{cframe_flag} vale @code{false}, el tensor de Riemann se calcula directamente a partir de los s√≠mbolos de Christoffel. Si @code{cframe_flag} vale @code{true}, el tensor covariante de Riemann se calcula a partir de los coeficientes del campo.
 
 @end deffn
 
-@deffn {FunciÛn} lriemann (@var{dis})
+@deffn {Funci√≥n} lriemann (@var{dis})
 Es el tensor covariante de Riemann (@code{lriem[]}).
 
-Calcula el tensor covariante de Riemann como un arreglo @code{lriem}. Si el argumento @var{dis} vale @code{true}, sÛlo se muestran los valores no nulos.
+Calcula el tensor covariante de Riemann como un arreglo @code{lriem}. Si el argumento @var{dis} vale @code{true}, s√≥lo se muestran los valores no nulos.
 
 Si la variable @code{cframe_flag} vale @code{true}, el tensor covariante de Riemann se calcula directamente de los coeficientes del campo. En otro caso, el tensor de Riemann (3,1) se calcula en primer lugar.
 
-Para m·s informaciÛn sobre la ordenaciÛn de los Ìndices, vÈase @code{riemann}.
+Para m√°s informaci√≥n sobre la ordenaci√≥n de los √≠ndices, v√©ase @code{riemann}.
 
 @end deffn
 
-@deffn {FunciÛn} uriemann (@var{dis})
-Calcula las componentes contravariantes del tensor de curvatura de Riemann como un arreglo @code{uriem[i,j,k,l]}.  …stos se muestran si @var{dis} vale @code{true}.
+@deffn {Funci√≥n} uriemann (@var{dis})
+Calcula las componentes contravariantes del tensor de curvatura de Riemann como un arreglo @code{uriem[i,j,k,l]}.  √âstos se muestran si @var{dis} vale @code{true}.
 
 @end deffn
 
-@deffn {FunciÛn} rinvariant ()
-Calcula la invariante de Kretchmann (@code{kinvariant}) obtenida por contracciÛn de los tensores.
+@deffn {Funci√≥n} rinvariant ()
+Calcula la invariante de Kretchmann (@code{kinvariant}) obtenida por contracci√≥n de los tensores.
 
 @example
 lriem[i,j,k,l]*uriem[i,j,k,l].
 @end example
 
-Este objeto no se simplifica autom·ticamente al ser en ocasiones muy grande.
+Este objeto no se simplifica autom√°ticamente al ser en ocasiones muy grande.
 
 @end deffn
 
-@deffn {FunciÛn} weyl (@var{dis})
-Calcula el tensor conforme de Weyl. Si el argumento @var{dis} vale @code{true}, se le mostrar·n al usuario las componentes no nulas @code{weyl[i,j,k,l]}. En otro caso, estas componentes ser·n ˙nicamente calculadas y almacenadas. Si la variable @code{ratweyl} vale @code{true}, entonces las componentes se simplifican racionalmente; si @code{ratfac} vale @code{true} los resultados tambiÈn se simplificar·n.
+@deffn {Funci√≥n} weyl (@var{dis})
+Calcula el tensor conforme de Weyl. Si el argumento @var{dis} vale @code{true}, se le mostrar√°n al usuario las componentes no nulas @code{weyl[i,j,k,l]}. En otro caso, estas componentes ser√°n √∫nicamente calculadas y almacenadas. Si la variable @code{ratweyl} vale @code{true}, entonces las componentes se simplifican racionalmente; si @code{ratfac} vale @code{true} los resultados tambi√©n se simplificar√°n.
 
 @end deffn
 
 @subsection Desarrollo de Taylor
 
-El paquete @code{ctensor} puede truncar resultados e interpretarlos como aproximaciones de Taylor. Este comportamiento se controla con lavariable @code{ctayswitch}; cuando vale @code{true}, @code{ctensor} utiliza internamente la funciÛn @code{ctaylor} cuando simplifica resultados.
+El paquete @code{ctensor} puede truncar resultados e interpretarlos como aproximaciones de Taylor. Este comportamiento se controla con lavariable @code{ctayswitch}; cuando vale @code{true}, @code{ctensor} utiliza internamente la funci√≥n @code{ctaylor} cuando simplifica resultados.
 
-La funciÛn @code{ctaylor} es llamada desde las siguientes funciones del paquete @code{ctensor}:
+La funci√≥n @code{ctaylor} es llamada desde las siguientes funciones del paquete @code{ctensor}:
 
 @example
 
-    FunciÛn      Comentarios
+    Funci√≥n      Comentarios
     ---------------------------------
-    christof()   SÛlo para mcs
+    christof()   S√≥lo para mcs
     ricci()
     uricci()
     einstein()
@@ -370,11 +370,11 @@ La funciÛn @code{ctaylor} es llamada desde las siguientes funciones del paquete 
     checkdiv()
 @end example
 
-@deffn {FunciÛn} ctaylor ()
+@deffn {Funci√≥n} ctaylor ()
 
-La funciÛn @code{ctaylor} trunca su argumento convirtiÈndolo en un desarrollo de Taylor por medio de la funciÛn @code{taylor} e invocando despuÈs a @code{ratdisrep}. Esto tiene el efecto de eliminar tÈrminos de orden alto en la variable de expansiÛn @code{ctayvar}. El orden de los tÈrminos que deben ser eliminados se define @code{ctaypov}; el punto alrededor del cual se desarrolla la serie se especifica en @code{ctaypt}.
+La funci√≥n @code{ctaylor} trunca su argumento convirti√©ndolo en un desarrollo de Taylor por medio de la funci√≥n @code{taylor} e invocando despu√©s a @code{ratdisrep}. Esto tiene el efecto de eliminar t√©rminos de orden alto en la variable de expansi√≥n @code{ctayvar}. El orden de los t√©rminos que deben ser eliminados se define @code{ctaypov}; el punto alrededor del cual se desarrolla la serie se especifica en @code{ctaypt}.
 
-Como ejemplo, considÈrese una sencilla mÈtrica que es una perturbaciÛn de la de Minkowski. Sin aÒadir restricciones, incluso una mÈtrica diagonal produce expansiones del tensor de Einstein que pueden llegar a ser muy complejas:
+Como ejemplo, consid√©rese una sencilla m√©trica que es una perturbaci√≥n de la de Minkowski. Sin a√±adir restricciones, incluso una m√©trica diagonal produce expansiones del tensor de Einstein que pueden llegar a ser muy complejas:
 
 @example
 
@@ -441,7 +441,7 @@ Como ejemplo, considÈrese una sencilla mÈtrica que es una perturbaciÛn de la de 
 
 @end example
 
-Sin embargo, si se recalcula este ejemplo como una aproximaciÛn lineal en la variable @code{l}, se obtienen expresiones m·s sencillas:
+Sin embargo, si se recalcula este ejemplo como una aproximaci√≥n lineal en la variable @code{l}, se obtienen expresiones m√°s sencillas:
 
 @example
 
@@ -490,18 +490,18 @@ Sin embargo, si se recalcula este ejemplo como una aproximaciÛn lineal en la var
 
 @end example
 
-Esta capacidad del paquete @code{ctensor} puede ser muy ˙til; por ejemplo, cuando se trabaja en zonas del campo gravitatorio alejadas del origen de Èste.
+Esta capacidad del paquete @code{ctensor} puede ser muy √∫til; por ejemplo, cuando se trabaja en zonas del campo gravitatorio alejadas del origen de √©ste.
 
 @end deffn
 
 @subsection Campos del sistema de referencia
 
-Cuando la variable @code{cframe_flag} vale @code{true}, el paquete @code{ctensor} realiza sus c·lculos utilizando un sistema de referencia mÛvil.
+Cuando la variable @code{cframe_flag} vale @code{true}, el paquete @code{ctensor} realiza sus c√°lculos utilizando un sistema de referencia m√≥vil.
 
-@deffn {FunciÛn} frame_bracket (@var{fr}, @var{fri}, @var{diagframe})
+@deffn {Funci√≥n} frame_bracket (@var{fr}, @var{fri}, @var{diagframe})
 Es el sistema de referencia soporte (@code{fb[]}).
 
-Calcula el soporte del sistema de referencia de acuerdo con la siguiente definiciÛn:
+Calcula el soporte del sistema de referencia de acuerdo con la siguiente definici√≥n:
 
 @example
    c          c         c        d     e
@@ -511,15 +511,15 @@ ifb   = ( ifri    - ifri    ) ifr   ifr
 
 @end deffn
 
-@subsection ClasificaciÛn algebraica
+@subsection Clasificaci√≥n algebraica
 
-Una nueva funcionalidad (Noviembre de 2004) de @code{ctensor} es su capacidad de obtener la clasificaciÛn de Petrov de una mÈtrica espaciotemporal de dimensiÛn 4. Para una demostraciÛn de esto vÈase el fichero 
+Una nueva funcionalidad (Noviembre de 2004) de @code{ctensor} es su capacidad de obtener la clasificaci√≥n de Petrov de una m√©trica espaciotemporal de dimensi√≥n 4. Para una demostraci√≥n de esto v√©ase el fichero 
 @code{share/tensor/petrov.dem}.
 
-@deffn {FunciÛn} nptetrad ()
-Calcula la cuaterna nula de Newman-Penrose (@code{np}). VÈase @code{petrov} para un ejemplo.
+@deffn {Funci√≥n} nptetrad ()
+Calcula la cuaterna nula de Newman-Penrose (@code{np}). V√©ase @code{petrov} para un ejemplo.
 
-La cuaterna nula se construye bajo la suposiciÛn de que se est· utilizando una mÈtrica tetradimensional ortonormal con signatura mÈtrica (-,+,+,+). Los componentes de la cuaterna nula se relacionan con la inversa de la matriz del sistema de referencia de la siguiente manera:
+La cuaterna nula se construye bajo la suposici√≥n de que se est√° utilizando una m√©trica tetradimensional ortonormal con signatura m√©trica (-,+,+,+). Los componentes de la cuaterna nula se relacionan con la inversa de la matriz del sistema de referencia de la siguiente manera:
 
 @example
 
@@ -539,20 +539,20 @@ np  = (fri  - %i fri ) / sqrt(2)
 
 @end deffn
 
-@deffn {FunciÛn} psi (@var{dis})
+@deffn {Funci√≥n} psi (@var{dis})
 Calcula los cinco coeficientes de Newman-Penrose @code{psi[0]}...@code{psi[4]}.
 Si @code{dis} vale @code{true}, se muestran estos coeficientes. 
-VÈase @code{petrov} para un ejemplo.
+V√©ase @code{petrov} para un ejemplo.
 
 @c AQUI HAY UN PARRAFO COMPLETO POR TRADUCIR (Mario)
 Estos coeficientes se calculan a partir del tensor de Weyl.
 
 @end deffn
 
-@deffn {FunciÛn} petrov ()
-Calcula la clasificaciÛn de  Petrov de la mÈtrica caracterizada por @code{psi[0]}...@code{psi[4]}.
+@deffn {Funci√≥n} petrov ()
+Calcula la clasificaci√≥n de  Petrov de la m√©trica caracterizada por @code{psi[0]}...@code{psi[4]}.
 
-Por ejemplo, lo que sigue demuestra cÛmo obtener la clasificaciÛn de Petrov para la mÈtrica de Kerr:
+Por ejemplo, lo que sigue demuestra c√≥mo obtener la clasificaci√≥n de Petrov para la m√©trica de Kerr:
 
 @example
 (%i1) load(ctensor);
@@ -623,16 +623,16 @@ Por ejemplo, lo que sigue demuestra cÛmo obtener la clasificaciÛn de Petrov para
 
 @end example
 
-La funciÛn de clasificaciÛn de Petrov se basa en el algoritmo publicado en "Classifying geometries in general relativity: III Classification in practice" de Pollney, Skea, and d'Inverno, Class. Quant. Grav. 17 2885-2902 (2000).
-Excepto para algunos ejemplos sencillos, esta implementaciÛn no ha sido exhaustivamente probada, por lo que puede contener errores.
+La funci√≥n de clasificaci√≥n de Petrov se basa en el algoritmo publicado en "Classifying geometries in general relativity: III Classification in practice" de Pollney, Skea, and d'Inverno, Class. Quant. Grav. 17 2885-2902 (2000).
+Excepto para algunos ejemplos sencillos, esta implementaci√≥n no ha sido exhaustivamente probada, por lo que puede contener errores.
 
 @end deffn
 
-@subsection TorsiÛn y no metricidad
+@subsection Torsi√≥n y no metricidad
 
-El paquete @code{ctensor} es capaz de calcular e incluir coeficientes de torsiÛn y no metricidad en los coeficientes de conexiÛn.
+El paquete @code{ctensor} es capaz de calcular e incluir coeficientes de torsi√≥n y no metricidad en los coeficientes de conexi√≥n.
 
-Los coeficientes de torsiÛn se calculan a partir de un tensor suministrado por el usuario, @code{tr}, el cual debe ser de rango (2,1). A partir de ahÌ, los coeficientes de torsiÛn @code{kt} se calculan de acuerdo con las siguientes fÛrmulas:
+Los coeficientes de torsi√≥n se calculan a partir de un tensor suministrado por el usuario, @code{tr}, el cual debe ser de rango (2,1). A partir de ah√≠, los coeficientes de torsi√≥n @code{kt} se calculan de acuerdo con las siguientes f√≥rmulas:
 
 @example
 
@@ -651,7 +651,7 @@ kt   = g   kt
 
 @c AQUI FALTA UN PARRAFO
 
-Los coeficientes de no metricidad se calculan a partir de un vector de no metricidad, @code{nm}, suministrado por el usuario. A partir de ahÌ, los coeficientes de no metricidad, @code{nmc}, se calculan como se indica a continuaciÛn:
+Los coeficientes de no metricidad se calculan a partir de un vector de no metricidad, @code{nm}, suministrado por el usuario. A partir de ah√≠, los coeficientes de no metricidad, @code{nmc}, se calculan como se indica a continuaci√≥n:
 
 @example
 
@@ -667,13 +667,13 @@ donde D es la delta de Kronecker.
 
 @c AQUI FALTAN DOS PARRAFOS
 
-@deffn {FunciÛn} contortion (@var{tr})
+@deffn {Funci√≥n} contortion (@var{tr})
 
-Calcula los coeficientes (2,1) de contorsiÛn del tensor de torsiÛn @var{tr}.
+Calcula los coeficientes (2,1) de contorsi√≥n del tensor de torsi√≥n @var{tr}.
 
 @end deffn
 
-@deffn {FunciÛn} nonmetricity (@var{nm})
+@deffn {Funci√≥n} nonmetricity (@var{nm})
 
 Calcula los coeficientes (2,1) de no metricidad del vector de no metricidad @var{nm}.
 
@@ -681,14 +681,14 @@ Calcula los coeficientes (2,1) de no metricidad del vector de no metricidad @var
 
 @subsection Otras funcionalidades
 
-@deffn {FunciÛn} ctransform (@var{M})
-Es una funciÛn del paquete @code{ctensor}.  Realiza una transformaciÛn de coordenadas a partir de una matriz cuadrada simÈtrica @var{M} arbitraria. El usuario debe introducir las funciones que definen la transformaciÛn.
+@deffn {Funci√≥n} ctransform (@var{M})
+Es una funci√≥n del paquete @code{ctensor}.  Realiza una transformaci√≥n de coordenadas a partir de una matriz cuadrada sim√©trica @var{M} arbitraria. El usuario debe introducir las funciones que definen la transformaci√≥n.
 
 @end deffn
 
-@deffn {FunciÛn} findde (@var{A}, @var{n})
+@deffn {Funci√≥n} findde (@var{A}, @var{n})
 
-Devuelve la lista de las ecuaciones diferenciales que corresponden a los elementos del arreglo cuadrado @var{n}-dimensional. El argumento @var{n} puede ser 2 Û 3; @code{deindex} es una lista global que contiene los Ìndices de @var{A} que corresponden a estas ecuaciones diferenciales. Para el tensor de Einstein (@code{ein}), que es un arreglo bidimensional, si se calcula para la mÈtrica del ejemplo de m·s abajo, @code{findde} devuelve las siguientes ecuaciones diferenciales independientes:
+Devuelve la lista de las ecuaciones diferenciales que corresponden a los elementos del arreglo cuadrado @var{n}-dimensional. El argumento @var{n} puede ser 2 √≥ 3; @code{deindex} es una lista global que contiene los √≠ndices de @var{A} que corresponden a estas ecuaciones diferenciales. Para el tensor de Einstein (@code{ein}), que es un arreglo bidimensional, si se calcula para la m√©trica del ejemplo de m√°s abajo, @code{findde} devuelve las siguientes ecuaciones diferenciales independientes:
 
 @example
 (%i1) load(ctensor);
@@ -730,16 +730,16 @@ Devuelve la lista de las ecuaciones diferenciales que corresponden a los element
 
 @end deffn
 
-@deffn {FunciÛn} cograd ()
-Calcula el gradiente covariante de una funciÛn escalar permitiendo al usuario
-elegir el nombre del vector correspondiente, tal como ilustra el ejemplo que acompaÒa
-a la definiciÛn de la funciÛn @code{contragrad}.
+@deffn {Funci√≥n} cograd ()
+Calcula el gradiente covariante de una funci√≥n escalar permitiendo al usuario
+elegir el nombre del vector correspondiente, tal como ilustra el ejemplo que acompa√±a
+a la definici√≥n de la funci√≥n @code{contragrad}.
 @end deffn
 
 
 @deffn {Function} contragrad ()
 
-Calcula el gradiente contravariante de una funciÛn escalar permitiendo al usuario elegir el nombre del vector correspondiente, tal como muestra el siguiente ejemplo para la mÈtrica de Schwarzschild:
+Calcula el gradiente contravariante de una funci√≥n escalar permitiendo al usuario elegir el nombre del vector correspondiente, tal como muestra el siguiente ejemplo para la m√©trica de Schwarzschild:
 
 @example
 
@@ -768,8 +768,8 @@ Calcula el gradiente contravariante de una funciÛn escalar permitiendo al usuari
 
 @end deffn
 
-@deffn {FunciÛn} dscalar ()
-Calcula el tensor de d'Alembertian de la funciÛn escalar una vez se han declarado las dependencias. Por ejemplo:
+@deffn {Funci√≥n} dscalar ()
+Calcula el tensor de d'Alembertian de la funci√≥n escalar una vez se han declarado las dependencias. Por ejemplo:
 
 @example
 (%i1) load(ctensor);
@@ -791,25 +791,25 @@ Calcula el tensor de d'Alembertian de la funciÛn escalar una vez se han declarad
 
 @end deffn
 
-@deffn {FunciÛn} checkdiv ()
+@deffn {Funci√≥n} checkdiv ()
 
-Calcula la divergencia covariante del tensor de segundo rango (mixed second rank tensor), cuyo primer Ìndice debe ser covariante, devolviendo las @code{n} componentes correspondientes del campo vectorial (la divergencia), siendo @code{n = dim}. @c FALTA POR COMPLETAR ESTE PARRAFO.
+Calcula la divergencia covariante del tensor de segundo rango (mixed second rank tensor), cuyo primer √≠ndice debe ser covariante, devolviendo las @code{n} componentes correspondientes del campo vectorial (la divergencia), siendo @code{n = dim}. @c FALTA POR COMPLETAR ESTE PARRAFO.
 @end deffn
 
-@deffn {FunciÛn} cgeodesic (@var{dis})
-Es una funciÛn del paquete @code{ctensor} que calcula las ecuaciones geodÈsicas del movimiento para una mÈtrica dada, las cuales se almacenan en el arreglo @code{geod[i]}. Si el argumento  @var{dis} vale @code{true} entonces se muestran estas ecuaciones.
+@deffn {Funci√≥n} cgeodesic (@var{dis})
+Es una funci√≥n del paquete @code{ctensor} que calcula las ecuaciones geod√©sicas del movimiento para una m√©trica dada, las cuales se almacenan en el arreglo @code{geod[i]}. Si el argumento  @var{dis} vale @code{true} entonces se muestran estas ecuaciones.
 
 @end deffn
 
-@deffn {FunciÛn} bdvac (@var{f})
+@deffn {Funci√≥n} bdvac (@var{f})
 
-Genera las componentes covariantes de las ecuaciones del campo vacÌo de la teorÌa gravitacional de Brans- Dicke gravitational. El campo escalar se especifica con el argumento  @var{f}, el cual debe ser el nombre de una funciÛn no evaluada (precedida de apÛstrofo) con dependencias funcionales, por ejemplo,  @code{'p(x)}.
+Genera las componentes covariantes de las ecuaciones del campo vac√≠o de la teor√≠a gravitacional de Brans- Dicke gravitational. El campo escalar se especifica con el argumento  @var{f}, el cual debe ser el nombre de una funci√≥n no evaluada (precedida de ap√≥strofo) con dependencias funcionales, por ejemplo,  @code{'p(x)}.
 
 Las componentes del tensor covariante (second rank covariant field tensor) se almacenan en el arreglo @code{bd}.
 
 @end deffn
 
-@deffn {FunciÛn} invariant1 ()
+@deffn {Funci√≥n} invariant1 ()
 
 Genera el tensor de Euler-Lagrange (ecuaciones de campo) para la densidad invariante de  R^2. Las ecuaciones de campo son las componentes del arreglo @code{inv1}.
 
@@ -817,26 +817,26 @@ Genera el tensor de Euler-Lagrange (ecuaciones de campo) para la densidad invari
 
 @subsection Utilidades
 
-@deffn {FunciÛn} diagmatrixp (@var{M})
+@deffn {Funci√≥n} diagmatrixp (@var{M})
 
 Devuelve @code{true} si @var{M} es una matriz diagonal o un arreglo bidimensional.
 
 @end deffn
 
-@deffn {FunciÛn} symmetricp (@var{M})
+@deffn {Funci√≥n} symmetricp (@var{M})
 
-Devuelve @code{true} si @var{M} es una matriz simÈtrica o un arreglo bidimensional.
-
-@end deffn
-
-@deffn {FunciÛn} ntermst (@var{f})
-Permite hacerse una idea del tamaÒo del tensor @var{f}. @c FALTA COMPLETAR PARRAFO
+Devuelve @code{true} si @var{M} es una matriz sim√©trica o un arreglo bidimensional.
 
 @end deffn
 
+@deffn {Funci√≥n} ntermst (@var{f})
+Permite hacerse una idea del tama√±o del tensor @var{f}. @c FALTA COMPLETAR PARRAFO
 
-@deffn {FunciÛn} cdisplay (@var{ten})
-Muestra todos los elementos del tensor @var{ten} como arreglo multidimensional. Tensors de rango 0 y 1, asÌ como otros tipos de variables, se muestran como en @code{ldisplay}. Tensors de rango 2 se muestran como matrices bidimensionales, mientras que tensores de mayor rango se muestran como listas de matrices bidimensionales. Por ejemplo, el tensor de Riemann de la mÈtrica de Schwarzschild se puede ver como:
+@end deffn
+
+
+@deffn {Funci√≥n} cdisplay (@var{ten})
+Muestra todos los elementos del tensor @var{ten} como arreglo multidimensional. Tensors de rango 0 y 1, as√≠ como otros tipos de variables, se muestran como en @code{ldisplay}. Tensors de rango 2 se muestran como matrices bidimensionales, mientras que tensores de mayor rango se muestran como listas de matrices bidimensionales. Por ejemplo, el tensor de Riemann de la m√©trica de Schwarzschild se puede ver como:
 
 @example
 (%i1) load(ctensor);
@@ -1048,8 +1048,8 @@ Muestra todos los elementos del tensor @var{ten} como arreglo multidimensional. 
 @end example
 @end deffn
 
-@deffn {FunciÛn} deleten (@var{L}, @var{n})
-Devuelve una nueva lista consistente en @var{L} sin su @var{n}-Èsimo elemento.
+@deffn {Funci√≥n} deleten (@var{L}, @var{n})
+Devuelve una nueva lista consistente en @var{L} sin su @var{n}-√©simo elemento.
 @end deffn
 
 @subsection Variables utilizadas por @code{ctensor}
@@ -1057,45 +1057,45 @@ Devuelve una nueva lista consistente en @var{L} sin su @var{n}-Èsimo elemento.
 @defvr {Variable opcional} dim
 Valor por defecto: 4
 
-Es la dimensiÛn de la variedad, que por defecto ser· 4. La instrucciÛn @code{dim: n} establecer· la dimensiÛn a cualquier otro valor @code{n}.
+Es la dimensi√≥n de la variedad, que por defecto ser√° 4. La instrucci√≥n @code{dim: n} establecer√° la dimensi√≥n a cualquier otro valor @code{n}.
 
 @end defvr
 
 @defvr {Variable opcional} diagmetric
 Valor por defecto: @code{false}
 
-Si @code{diagmetric} vale @code{true} se utilizar·n rutinas especiales para calcular todos los objetos geomÈtricos teniendo en cuenta la diagonalidad de la mÈtrica, lo que redundar· en una reducciÛn del tiempo de c·lculo. Esta opciÛn se fija autom·ticamente por @code{csetup} si se especifica una mÈtrica diagonal.
+Si @code{diagmetric} vale @code{true} se utilizar√°n rutinas especiales para calcular todos los objetos geom√©tricos teniendo en cuenta la diagonalidad de la m√©trica, lo que redundar√° en una reducci√≥n del tiempo de c√°lculo. Esta opci√≥n se fija autom√°ticamente por @code{csetup} si se especifica una m√©trica diagonal.
 
 @end defvr
 
 @defvr {Variable opcional} ctrgsimp
 
-Provoca que se realicen simplificaciones trigonomÈtricas cuando se calculan tensores. La variable @code{ctrgsimp} afecta ˙nicamente a aquellos c·lculos que utilicen un sistema de referencia mÛvil.
+Provoca que se realicen simplificaciones trigonom√©tricas cuando se calculan tensores. La variable @code{ctrgsimp} afecta √∫nicamente a aquellos c√°lculos que utilicen un sistema de referencia m√≥vil.
 
 @end defvr
 
 @defvr {Variable opcional} cframe_flag
 
-Provoca que los c·lculos se realicen respecto de un sistema de referencia mÛvil. @c FALTA POR COMPLETAR EL PARRAFO
+Provoca que los c√°lculos se realicen respecto de un sistema de referencia m√≥vil. @c FALTA POR COMPLETAR EL PARRAFO
 
 @end defvr
 
 @defvr {Variable opcional} ctorsion_flag
 
-Obliga a que se calcule tambiÈn el tensor de contorsiÛn junto con los coeficientes de conexiÛn. El propio tensor de contorsiÛn se calcula con la funciÛn @code{contortion} a partir del tensor @code{tr} suministrado por el usuario.
+Obliga a que se calcule tambi√©n el tensor de contorsi√≥n junto con los coeficientes de conexi√≥n. El propio tensor de contorsi√≥n se calcula con la funci√≥n @code{contortion} a partir del tensor @code{tr} suministrado por el usuario.
 
 @end defvr
 
 @defvr {Variable opcional} cnonmet_flag
 
-Obliga a que se calculen tambiÈn los coeficientes de no metricidad junto con los coeficientes de conexiÛn. Los coeficientes de no metricidad se calculan con la funciÛn @code{nonmetricity} a partir del vector de no metricidad@code{nm} suministrado por el usuario.
+Obliga a que se calculen tambi√©n los coeficientes de no metricidad junto con los coeficientes de conexi√≥n. Los coeficientes de no metricidad se calculan con la funci√≥n @code{nonmetricity} a partir del vector de no metricidad@code{nm} suministrado por el usuario.
 
 @end defvr
 
 @defvr {Variable opcional} ctayswitch
 
-Si vale @code{true}, obliga a que ciertos c·lculos de @code{ctensor} se lleven a cabo utilizando desarrollos de series de 
-Taylor. Estos c·lculos hacen referencia a las funciones @code{christof}, @code{ricci}, @code{uricci}, @code{einstein} y @code{weyl}.
+Si vale @code{true}, obliga a que ciertos c√°lculos de @code{ctensor} se lleven a cabo utilizando desarrollos de series de 
+Taylor. Estos c√°lculos hacen referencia a las funciones @code{christof}, @code{ricci}, @code{uricci}, @code{einstein} y @code{weyl}.
 
 @end defvr
 
@@ -1107,7 +1107,7 @@ Variable utilizada para desarrollos de Taylor cuando la variable @code{ctayswitc
 
 @defvr {Variable opcional} ctaypov
 
-M·ximo exponente utilizado en los desarrollos de Taylor cuando @code{ctayswitch} vale @code{true}.
+M√°ximo exponente utilizado en los desarrollos de Taylor cuando @code{ctayswitch} vale @code{true}.
 
 @end defvr
 
@@ -1119,46 +1119,46 @@ Punto alrededor del cual se realiza un desarrollo de Taylor cuando @code{ctayswi
 
 @defvr {Variable opcional} gdet
 
-Es el determinante del tensor mÈtrico @code{lg}, calculado por  @code{cmetric} cuando @code{cframe_flag} vale @code{false}.
+Es el determinante del tensor m√©trico @code{lg}, calculado por  @code{cmetric} cuando @code{cframe_flag} vale @code{false}.
 
 @end defvr
 
 @defvr {Variable opcional} ratchristof
 
-Obliga a que la funciÛn @code{christof} aplique la simplificaciÛn racional.
+Obliga a que la funci√≥n @code{christof} aplique la simplificaci√≥n racional.
 
 @end defvr
 
 @defvr {Variable opcional} rateinstein
 Valor por defecto: @code{true}
 
-Si vale @code{true} entonces se har· la simplificaciÛn racional en los componentes no nulos de los tensores de Einstein; si @code{ratfac} vale @code{true} entonces las componentes tambiÈn ser·n factorizadas.
+Si vale @code{true} entonces se har√° la simplificaci√≥n racional en los componentes no nulos de los tensores de Einstein; si @code{ratfac} vale @code{true} entonces las componentes tambi√©n ser√°n factorizadas.
 
 @end defvr
 
 @defvr {Variable opcional} ratriemann
 Valor por defecto: @code{true}
 
-Es una de las variables que controlan la simplificaciÛn de los tensores de Riemann; si vale @code{true}, entonces se llevar· a cabo la simplificaciÛn racional; si @code{ratfac} vale @code{true} entonces las componentes tambiÈn ser·n factorizadas.
+Es una de las variables que controlan la simplificaci√≥n de los tensores de Riemann; si vale @code{true}, entonces se llevar√° a cabo la simplificaci√≥n racional; si @code{ratfac} vale @code{true} entonces las componentes tambi√©n ser√°n factorizadas.
 
 @end defvr
 
 @defvr {Variable opcional} ratweyl
 Valor por defecto: @code{true}
 
-Si vale @code{true}, entonces la funciÛn @code{weyl} llevar· a cabo la simplificaciÛn racional de los valores del tensor de Weyl. si @code{ratfac} vale @code{true} entonces las componentes tambiÈn ser·n factorizadas.
+Si vale @code{true}, entonces la funci√≥n @code{weyl} llevar√° a cabo la simplificaci√≥n racional de los valores del tensor de Weyl. si @code{ratfac} vale @code{true} entonces las componentes tambi√©n ser√°n factorizadas.
 @end defvr
 
 @defvr {Variable} lfg
-Es la covariante de la mÈtrica del sistema de referencia. Por defecto, est· inicializada al sistema de referencia tetradimensional de Lorentz con signatura  (+,+,+,-). Se utiliza cuando @code{cframe_flag} vale @code{true}.
+Es la covariante de la m√©trica del sistema de referencia. Por defecto, est√° inicializada al sistema de referencia tetradimensional de Lorentz con signatura  (+,+,+,-). Se utiliza cuando @code{cframe_flag} vale @code{true}.
 @end defvr
 
 @defvr {Variable} ufg
-Es la mÈtrica del sistema de referencia inverso. La calcula @code{lfg} cuando @code{cmetric} es invocada tomando  @code{cframe_flag} el valor  @code{true}.
+Es la m√©trica del sistema de referencia inverso. La calcula @code{lfg} cuando @code{cmetric} es invocada tomando  @code{cframe_flag} el valor  @code{true}.
 @end defvr
 
 @defvr {Variable} riem
-Es el tensor (3,1) de Riemann. Se calcula cuando se invoca la funciÛn @code{riemann}. Para informaciÛn sobre el indexado, vÈase la descripciÛn de  @code{riemann}.
+Es el tensor (3,1) de Riemann. Se calcula cuando se invoca la funci√≥n @code{riemann}. Para informaci√≥n sobre el indexado, v√©ase la descripci√≥n de  @code{riemann}.
 
 Si @code{cframe_flag} vale @code{true}, @code{riem} se calcula a partir del tensor covariante de Riemann @code{lriem}.
 
@@ -1166,43 +1166,43 @@ Si @code{cframe_flag} vale @code{true}, @code{riem} se calcula a partir del tens
 
 @defvr {Variable} lriem
 
-Es el tensor covariante de Riemann. Lo calcula la funciÛn @code{lriemann}.
+Es el tensor covariante de Riemann. Lo calcula la funci√≥n @code{lriemann}.
 
 @end defvr
 
 @defvr {Variable} uriem
 
-Es el tensor contravariante de Riemann. Lo calcula la funciÛn @code{uriemann}.
+Es el tensor contravariante de Riemann. Lo calcula la funci√≥n @code{uriemann}.
 
 @end defvr
 
 @defvr {Variable} ric
 
-Es el tensor de Ricci. Lo calcula la funciÛn @code{ricci}.
+Es el tensor de Ricci. Lo calcula la funci√≥n @code{ricci}.
 
 @end defvr
 
 @defvr {Variable} uric
 
-Es el tensor contravariante de Ricci. Lo calcula la funciÛn @code{uricci}.
+Es el tensor contravariante de Ricci. Lo calcula la funci√≥n @code{uricci}.
 
 @end defvr
 
 @defvr {Variable} lg
 
-Es el tensor mÈtrico. Este tensor se debe especificar (como matriz cuadrada de orden @code{dim}) antes de que se hagan otros c·lculos.
+Es el tensor m√©trico. Este tensor se debe especificar (como matriz cuadrada de orden @code{dim}) antes de que se hagan otros c√°lculos.
 
 @end defvr
 
 @defvr {Variable} ug
 
-Es la inversa del tensor mÈtrico. Lo calcula la funciÛn @code{cmetric}.
+Es la inversa del tensor m√©trico. Lo calcula la funci√≥n @code{cmetric}.
 
 @end defvr
 
 @defvr {Variable} weyl
 
-Es el tensor de Weyl. Lo calcula la funciÛn @code{weyl}.
+Es el tensor de Weyl. Lo calcula la funci√≥n @code{weyl}.
 
 @end defvr
 
@@ -1214,19 +1214,19 @@ Son los coeficientes del sistema de referencia soporte, tal como los calcula @co
 
 @defvr {Variable} kinvariant
 
-Es la invariante de Kretchmann, tal como la calcula la funciÛn @code{rinvariant}.
+Es la invariante de Kretchmann, tal como la calcula la funci√≥n @code{rinvariant}.
 
 @end defvr
 
 @defvr {Variable} np
 
-Es la cuaterna nula de Newman-Penrose, tal como la calcula la funciÛn @code{nptetrad}.
+Es la cuaterna nula de Newman-Penrose, tal como la calcula la funci√≥n @code{nptetrad}.
 
 @end defvr
 
 @defvr {Variable} npi
 
-Es la cuaterna nula "raised-index Newman-Penrose". Lo calcula la funciÛn @code{nptetrad}.
+Es la cuaterna nula "raised-index Newman-Penrose". Lo calcula la funci√≥n @code{nptetrad}.
 Se define como @code{ug.np}. El producto @code{np.transpose(npi)} es constante:
 
 @example
@@ -1244,22 +1244,22 @@ Se define como @code{ug.np}. El producto @code{np.transpose(npi)} es constante:
 
 @defvr {Variable} tr
 
-Tensor de rango 3 suministrado por el usuario y que representa una torsiÛn. Lo utiliza la funciÛn @code{contortion}.
+Tensor de rango 3 suministrado por el usuario y que representa una torsi√≥n. Lo utiliza la funci√≥n @code{contortion}.
 @end defvr
 
 @defvr {Variable} kt
 
-Es el tensor de contorsiÛn, calculado a partir de @code{tr} por la funciÛn @code{contortion}.
+Es el tensor de contorsi√≥n, calculado a partir de @code{tr} por la funci√≥n @code{contortion}.
 @end defvr
 
 @defvr {Variable} nm
 
-Vector de no metricidad suministrado por el usuario. Lo utiliza la funciÛn @code{nonmetricity}.
+Vector de no metricidad suministrado por el usuario. Lo utiliza la funci√≥n @code{nonmetricity}.
 @end defvr
 
 @defvr {Variable} nmc
 
-Son los coeficientes de no metricidad, calculados a partir de @code{nm} por la funciÛn @code{nonmetricity}.
+Son los coeficientes de no metricidad, calculados a partir de @code{nm} por la funci√≥n @code{nonmetricity}.
 
 @end defvr
 
@@ -1272,41 +1272,41 @@ Variable que indica si el paquete de tensores se ha inicializado. Utilizada por 
 @defvr {Variable opcional} ct_coords
 Valor por defecto: @code{[]}
 
-La variable @code{ct_coords} contiene una lista de coordenadas. Aunque se define normalmente cuando se llama a la funciÛn @code{csetup}, tambiÈn se pueden redefinir las coordenadas con la asignaciÛn @code{ct_coords: [j1, j2, ..., jn]} donde  @code{j} es el nuevo nombre de las coordenadas. VÈase tambiÈn @code{csetup}.
+La variable @code{ct_coords} contiene una lista de coordenadas. Aunque se define normalmente cuando se llama a la funci√≥n @code{csetup}, tambi√©n se pueden redefinir las coordenadas con la asignaci√≥n @code{ct_coords: [j1, j2, ..., jn]} donde  @code{j} es el nuevo nombre de las coordenadas. V√©ase tambi√©n @code{csetup}.
 
 @end defvr
 
 @subsection Nombres reservados
 
-Los siguientes nombres se utilizan internamente en el paquete @code{ctensor} y no deberÌan redefinirse:
+Los siguientes nombres se utilizan internamente en el paquete @code{ctensor} y no deber√≠an redefinirse:
 
 @example
-  Nombre       DescripciÛn
+  Nombre       Descripci√≥n
   ---------------------------------------
-  _lg()        Toma el valor @code{lfg} si se utiliza mÈtrica del sistema de referencia,
+  _lg()        Toma el valor @code{lfg} si se utiliza m√©trica del sistema de referencia,
                @code{lg} en otro caso
-  _ug()        Toma el valor @code{ufg} si se utiliza mÈtrica del sistema de referencia,
+  _ug()        Toma el valor @code{ufg} si se utiliza m√©trica del sistema de referencia,
                @code{ug} en otro caso
   cleanup()    Elimina elementos de la lista @code{deindex}
   contract4()  Utilizada por @code{psi()}
-  filemet()    Utilizada por @code{csetup()} cuando se lee la mÈtrica desde un fichero
+  filemet()    Utilizada por @code{csetup()} cuando se lee la m√©trica desde un fichero
   findde1()    Utilizada por @code{findde()}
   findde2()    Utilizada por @code{findde()}
   findde3()    Utilizada por @code{findde()}
   kdelt()      Delta de Kronecker (no generalizada)
-  newmet()     Utilizada por @code{csetup()} para establecer una mÈtrica interactivamente
+  newmet()     Utilizada por @code{csetup()} para establecer una m√©trica interactivamente
   setflags()   Utilizada por @code{init_ctensor()}
   readvalue()
   resimp()
-  sermet()     Utilizada por @code{csetup()} para definir una mÈtrica como serie de Taylor
+  sermet()     Utilizada por @code{csetup()} para definir una m√©trica como serie de Taylor
   txyzsum()
-  tmetric()    MÈtrica del sistema de referencia, utilizada por @code{cmetric()}
+  tmetric()    M√©trica del sistema de referencia, utilizada por @code{cmetric()}
                cuando @code{cframe_flag:true}
   triemann()   Tensor de Riemann en la base del sistema de referencia, se utiliza cuando
                @code{cframe_flag:true}
   tricci()     Tensor de Ricci en la base del sistema de referencia, se utiliza cuando
                @code{cframe_flag:true}
-  trrc()       Coeficientes de rotaciÛn de Ricci, utilizada por @code{christof()}
+  trrc()       Coeficientes de rotaci√≥n de Ricci, utilizada por @code{christof()}
   yesp()
 @end example
 

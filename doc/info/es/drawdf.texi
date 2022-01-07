@@ -1,22 +1,22 @@
 @c English version: 2011-06-11
 @menu
-* IntroducciÛn a drawdf::
+* Introducci√≥n a drawdf::
 * Funciones y variables para drawdf::
 @end menu
 
-@node IntroducciÛn a drawdf, Funciones y variables para drawdf, drawdf, drawdf
-@section IntroducciÛn a drawdf
+@node Introducci√≥n a drawdf, Funciones y variables para drawdf, drawdf, drawdf
+@section Introducci√≥n a drawdf
 
-La funciÛn @code{drawdf} dibuja el campo de direcciones de una ecuaciÛn
+La funci√≥n @code{drawdf} dibuja el campo de direcciones de una ecuaci√≥n
 diferencial ordinaria de primer orden (EDO) o de un sistema de dos ecuaciones
-autÛnomas de primer orden.
+aut√≥nomas de primer orden.
 
 Puesto que @code{drawdf} es un paquete adicional, es necesario cargarlo en
-memoria ejecutando previamente la instrucciÛn @code{load(drawdf)}.
+memoria ejecutando previamente la instrucci√≥n @code{load(drawdf)}.
 @code{drawdf} utiliza el paquete @code{draw}, que necesita como 
-mÌnimo la versiÛn 4.2 de Gnuplot.
+m√≠nimo la versi√≥n 4.2 de Gnuplot.
 
-Para dibujar el campo de direcciones de una EDO, Èsta debe escribirse de la
+Para dibujar el campo de direcciones de una EDO, √©sta debe escribirse de la
 forma
 @ifnottex
 @example
@@ -29,13 +29,13 @@ forma
 $${{dy}\over{dx}} = F(x,y)$$
 @end tex
 
-y ser la funciÛn @var{F} la que se pase a @code{drawdf} como argumento.
+y ser la funci√≥n @var{F} la que se pase a @code{drawdf} como argumento.
 Si las variables independiente y dependiente no son @var{x} e @var{y},
-como en la ecuaciÛn anterior, entonces deben nombrarse de forma
-explÌcita en una lista que se pasar· a @code{drawdf}
-(ver ejemplos m·s abajo).
+como en la ecuaci√≥n anterior, entonces deben nombrarse de forma
+expl√≠cita en una lista que se pasar√° a @code{drawdf}
+(ver ejemplos m√°s abajo).
 
-Para dibujar el campo de direcciones de un conjunto de dos EDOs autÛnomas,
+Para dibujar el campo de direcciones de un conjunto de dos EDOs aut√≥nomas,
 deben escribirse de la forma
 @ifnottex
 @example
@@ -48,78 +48,78 @@ deben escribirse de la forma
 $${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
 @end tex
 
-y ser· una lista con las dos funciones @var{G} y @var{F} la que
+y ser√° una lista con las dos funciones @var{G} y @var{F} la que
 se pase a @code{drawdf} como argumento. El orden de las funciones es
-importante; la primera ser· la derivada de la abscisa respecto del tiempo
+importante; la primera ser√° la derivada de la abscisa respecto del tiempo
 y la segunda la derivada de la ordenada respecto del tiempo.
 Si las variables no son las @var{x} e @var{y} habituales, el segundo
-argumento que se pase a la funciÛn @code{drawdf} ser· una lista
+argumento que se pase a la funci√≥n @code{drawdf} ser√° una lista
 con los nombres de ambas variables, primero la correspondiente a las
 abscisas, seguida de la asociada a las ordenadas.
 
-Si sÛlo se trata de una EDO, @code{drawdf} admitir· por defecto
-que @code{x=t} y @code{G(x,y)=1}, transformanado la ecuaciÛn no
-autÛnoma en un sistema de dos ecuaciones autÛnomas.
+Si s√≥lo se trata de una EDO, @code{drawdf} admitir√° por defecto
+que @code{x=t} y @code{G(x,y)=1}, transformanado la ecuaci√≥n no
+aut√≥noma en un sistema de dos ecuaciones aut√≥nomas.
 
 
 
 
-@node Funciones y variables para drawdf,  , IntroducciÛn a drawdf, drawdf
+@node Funciones y variables para drawdf,  , Introducci√≥n a drawdf, drawdf
 @section Funciones y variables para drawdf
 
 @subsection Funciones
 
-@deffn {FunciÛn} drawdf (@var{dydx}, ...options and objects...)
-@deffnx {FunciÛn} drawdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...opciones y objetos...)
-@deffnx {FunciÛn} drawdf (@var{dvdu}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...opciones y objetos...)
-@deffnx {FunciÛn} drawdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...opciones y objetos...)
-@deffnx {FunciÛn} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...opciones y objetos...)
-@deffnx {FunciÛn} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...opciones y objetos...)
+@deffn {Funci√≥n} drawdf (@var{dydx}, ...options and objects...)
+@deffnx {Funci√≥n} drawdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...opciones y objetos...)
+@deffnx {Funci√≥n} drawdf (@var{dvdu}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...opciones y objetos...)
+@deffnx {Funci√≥n} drawdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...opciones y objetos...)
+@deffnx {Funci√≥n} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...opciones y objetos...)
+@deffnx {Funci√≥n} drawdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{umin},@var{umax}@code{]}, @code{[}@var{v},@var{vmin},@var{vmax}@code{]}, ...opciones y objetos...)
 
-La funciÛn @code{drawdf} dibuja un campo de direcciones 2D, incluyendo
-opcionalmente curvas asociadas a soluciones particulares, asÌ
-como otros objeto gr·ficos del paquete @code{draw}.
+La funci√≥n @code{drawdf} dibuja un campo de direcciones 2D, incluyendo
+opcionalmente curvas asociadas a soluciones particulares, as√≠
+como otros objeto gr√°ficos del paquete @code{draw}.
 
 El primer argumento especifica la(s) derivada(s), el cual debe estar
-formado por una expresiÛn o una lista de dos expresiones. @var{dydx}, @var{dxdt} y
+formado por una expresi√≥n o una lista de dos expresiones. @var{dydx}, @var{dxdt} y
 @var{dydt} son expresiones que dependen de @var{x} y @var{y}.
 @var{dvdu}, @var{dudt} y @var{dvdt} son expresiones que dependen de
 @var{u} y @var{v}.
 
 Si las variables independiente y dependiente no son @var{x} e @var{y},
-sus nombres deben especificarse a continuaciÛn de las derivadas,
+sus nombres deben especificarse a continuaci√≥n de las derivadas,
 bien como una lista de dos nombres,
 @code{[}@var{u},@var{v}@code{]}, o como dos listas de la forma
 @code{[}@var{u},@var{umin},@var{umax}@code{]} y
 @code{[}@var{v},@var{vmin},@var{vmax}@code{]}.
 
-El resto de argumentos son @i{opciones gr·ficas}, @i{objetos gr·ficos},
+El resto de argumentos son @i{opciones gr√°ficas}, @i{objetos gr√°ficos},
 o listas conteniendo elementos de ambos tipos. El conjunto de opciones y
-objetos gr·ficos soportados por @code{drawdf} incluye los soportados
+objetos gr√°ficos soportados por @code{drawdf} incluye los soportados
 por @code{draw2d} y @code{gr2d} del paquete @code{draw}.
 
-Los argumentos se iterpretan secuencialmente: las @i{opciones gr·ficas}
-afectan a todos los @i{objetos gr·ficos} que le siguen. Adem·s,
-los @i{objetos gr·ficos} se dibujan en el orden en el que se
-especifican, pudiendo tapar otros gr·ficos dibujados con anterioridad.
-Algunas @i{opciones gr·ficas} afectan al aspecto general de la escena.
+Los argumentos se iterpretan secuencialmente: las @i{opciones gr√°ficas}
+afectan a todos los @i{objetos gr√°ficos} que le siguen. Adem√°s,
+los @i{objetos gr√°ficos} se dibujan en el orden en el que se
+especifican, pudiendo tapar otros gr√°ficos dibujados con anterioridad.
+Algunas @i{opciones gr√°ficas} afectan al aspecto general de la escena.
 
-Los nuevos @i{objetos gr·ficos} que se definen en @code{drawdf} son:
+Los nuevos @i{objetos gr√°ficos} que se definen en @code{drawdf} son:
 @code{solns_at}, @code{points_at}, @code{saddles_at}, @code{soln_at},
 @code{point_at} y @code{saddle_at}.
 
-Las nuevas @i{opciones gr·ficas} que se definen en @code{drawdf} son:
+Las nuevas @i{opciones gr√°ficas} que se definen en @code{drawdf} son:
 @code{field_degree}, @code{soln_arrows}, @code{field_arrows},
 @code{field_grid}, @code{field_color}, @code{show_field},
 @code{tstep}, @code{nsteps}, @code{duration}, @code{direction},
 @code{field_tstep}, @code{field_nsteps} y @code{field_duration}.
 
-@i{Objetos gr·ficos} que se heredan del paquete @code{draw} incluyen:
+@i{Objetos gr√°ficos} que se heredan del paquete @code{draw} incluyen:
 @code{explicit}, @code{implicit}, @code{parametric},
 @code{polygon}, @code{points}, @code{vector}, @code{label} y cualesquiera
 otros soportados por @code{draw2d} y @code{gr2d}.
 
-@i{Opciones gr·ficas} que se heredan del paquete @code{draw} incluyen:
+@i{Opciones gr√°ficas} que se heredan del paquete @code{draw} incluyen:
 @code{points_joined}, @code{color},
 @code{point_type}, @code{point_size}, @code{line_width},
 @code{line_type}, @code{key}, @code{title}, @code{xlabel},
@@ -127,13 +127,13 @@ otros soportados por @code{draw2d} y @code{gr2d}.
 @code{dimensions}, @code{file_name} y cualesquiera
 otros soportados por @code{draw2d} y @code{gr2d}.
 
-VÈase tambiÈn @code{draw2d}. 
+V√©ase tambi√©n @code{draw2d}. 
 
-Los usuarios de wxMaxima y Imaxima pueden hacer uso tambiÈn @code{wxdrawdf},
-que es idÈntica a @code{drawdf}, pero que inserta el gr·fico en el 
-propio documento utilizando la funciÛn @code{wxdraw}.
+Los usuarios de wxMaxima y Imaxima pueden hacer uso tambi√©n @code{wxdrawdf},
+que es id√©ntica a @code{drawdf}, pero que inserta el gr√°fico en el 
+propio documento utilizando la funci√≥n @code{wxdraw}.
 
-Para hacer uso de esta funciÛn, ejec˙tese primero @code{load(drawdf)}.
+Para hacer uso de esta funci√≥n, ejec√∫tese primero @code{load(drawdf)}.
 
 Ejemplos:
 
@@ -145,7 +145,7 @@ Ejemplos:
 @end example
 
 A efectos de compatibilidad, @code{drawdf} acepta la mayor
-parte de par·metros soportados por @code{plotdf}.
+parte de par√°metros soportados por @code{plotdf}.
 
 @example
 (%i5) drawdf(2*cos(t)-1+y, [t,y], [t,-5,10], [y,-4,9],
@@ -154,7 +154,7 @@ parte de par·metros soportados por @code{plotdf}.
 
 @code{soln_at} y @code{solns_at} dibujan soluciones particulares
 que pasen por los puntos especificados, utilizando el integrador
-numÈrico de Runge Kutta de cuarto orden.
+num√©rico de Runge Kutta de cuarto orden.
 
 @example
 (%i6) drawdf(2*cos(t)-1+y, [t,-5,10], [y,-4,9],
@@ -163,10 +163,10 @@ numÈrico de Runge Kutta de cuarto orden.
 @end example
 
 @code{field_degree=2} hace que el campo se componga de @i{splines}
-cuadr·ticos basados en las derivadas de primer y segundo orden en
+cuadr√°ticos basados en las derivadas de primer y segundo orden en
 cada punto de la malla. 
 @code{field_grid=[}@var{COLS},@var{ROWS}@code{]} 
-especifica el n˙mero de columnas y filas a utilizar en la malla.
+especifica el n√∫mero de columnas y filas a utilizar en la malla.
 
 @example
 (%i7) drawdf(2*cos(t)-1+y, [t,-5,10], [y,-4,9],
@@ -175,8 +175,8 @@ especifica el n˙mero de columnas y filas a utilizar en la malla.
              color=blue, soln_at(0,0))$
 @end example
 
-@code{soln_arrows=true} aÒade flechas a las soluciones particulares y,
-por defecto, las borra. TambiÈn cambia los colores por defecto para 
+@code{soln_arrows=true} a√±ade flechas a las soluciones particulares y,
+por defecto, las borra. Tambi√©n cambia los colores por defecto para 
 destacar las curvas de las soluciones particulares.
 
 @example
@@ -185,11 +185,11 @@ destacar las curvas de las soluciones particulares.
              solns_at([0,0.1],[0,-0.1],[0,0]))$
 @end example
 
-@code{duration=40} especifica el intervalo temporal de la integraciÛn
-numÈrica, cuyo valor por defecto es 10. La integraciÛn se detendr·
-autom·ticamente si la soluciÛn se aparta mucho de la regiÛn a dibujar,
-o si la derivada se vuelve compleja o infinita. AquÌ tambiÈn
-hacemos @code{field_degree=2} para dibujar @i{splines} cuadr·ticos. Las
+@code{duration=40} especifica el intervalo temporal de la integraci√≥n
+num√©rica, cuyo valor por defecto es 10. La integraci√≥n se detendr√°
+autom√°ticamente si la soluci√≥n se aparta mucho de la regi√≥n a dibujar,
+o si la derivada se vuelve compleja o infinita. Aqu√≠ tambi√©n
+hacemos @code{field_degree=2} para dibujar @i{splines} cuadr√°ticos. Las
 ecuaciones de este ejemplo modelizan un sistema depredador-presa.
 
 @example
@@ -202,7 +202,7 @@ ecuaciones de este ejemplo modelizan un sistema depredador-presa.
 @end example
 
 @code{field_degree='solns} hace que el campo se componga de muchas
-pequeÒas soluciones calculadas a partir del Runge Kutta
+peque√±as soluciones calculadas a partir del Runge Kutta
 de cuarto orden.
 
 @example
@@ -214,11 +214,11 @@ de cuarto orden.
                        [0.05,0.4], [1,0.01], [0.01,0.75]))$
 @end example
 
-@code{saddles_at} trata de linearizar autom·ticamente la ecuaciÛn
-en cada punto de silla y dibujar la soluciÛn numÈrica correspondiente
+@code{saddles_at} trata de linearizar autom√°ticamente la ecuaci√≥n
+en cada punto de silla y dibujar la soluci√≥n num√©rica correspondiente
 a cada vector propio, incluyendo las separatrices. @code{tstep=0.05} establece
-el salto temporal m·ximo para el integrador numÈrico, cuyo valor por
-defecto es 0.1. Las siguientes ecuaciones modelizan un pÈndulo amortiguado.
+el salto temporal m√°ximo para el integrador num√©rico, cuyo valor por
+defecto es 0.1. Las siguientes ecuaciones modelizan un p√©ndulo amortiguado.
 
 @example
 (%i11) drawdf([y,-9*sin(x)-y/5], tstep=0.05,
@@ -239,7 +239,7 @@ defecto es 0.1. Las siguientes ecuaciones modelizan un pÈndulo amortiguado.
                          [%pi,0], [-%pi,0]))$
 @end example
 
-@code{drawdf} pasa todos los par·metros que no reconoce a @code{draw2d}
+@code{drawdf} pasa todos los par√°metros que no reconoce a @code{draw2d}
 o @code{gr2d}, permitiendo combinar la potencia del paquete @code{draw}
 con @code{drawdf}.
 
@@ -251,9 +251,9 @@ con @code{drawdf}.
               nticks=100, parametric(cos(t),sin(t),t,0,2*%pi))$
 @end example
 
-@code{drawdf} acepta listas anidadas de opciones y objetos gr·ficos,
-permitiendo el uso de @code{makelist} y otras funciones de forma m·s
-flexible para generar gr·ficos.
+@code{drawdf} acepta listas anidadas de opciones y objetos gr√°ficos,
+permitiendo el uso de @code{makelist} y otras funciones de forma m√°s
+flexible para generar gr√°ficos.
 
 @example
 (%i14) colors : ['red,'blue,'purple,'orange,'green]$

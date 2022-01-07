@@ -1,24 +1,24 @@
 @c /lindstedt.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* DefiniÁıes para lindstedt::
+* Defini√ß√µes para lindstedt::
 @end menu
 
-@node DefiniÁıes para lindstedt,  , lindstedt, lindstedt
-@section DefiniÁıes para lindstedt
+@node Defini√ß√µes para lindstedt,  , lindstedt, lindstedt
+@section Defini√ß√µes para lindstedt
 
 
-@deffn {FunÁ„o} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
-Esse È um primeiro passo para um cÛdigo de Lindstedt.  Esse cÛdigo pode resolver problemas
-com condiÁıes iniciais fornecidas, ‡s quais podem ser constantes arbitr·rias,
-(n„o apenas @var{%k1} e @var{%k2}) onde as condiÁıes iniciais sobre as equaÁıes
-de perturbaÁ„o s„o @math{z[i]=0, z'[i]=0} para @math{i>0}. @var{ic} È a lista de 
-condiÁıes iniciais.
+@deffn {Fun√ß√£o} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
+Esse √© um primeiro passo para um c√≥digo de Lindstedt.  Esse c√≥digo pode resolver problemas
+com condi√ß√µes iniciais fornecidas, √†s quais podem ser constantes arbitr√°rias,
+(n√£o apenas @var{%k1} e @var{%k2}) onde as condi√ß√µes iniciais sobre as equa√ß√µes
+de perturba√ß√£o s√£o @math{z[i]=0, z'[i]=0} para @math{i>0}. @var{ic} √© a lista de 
+condi√ß√µes iniciais.
 
-Problemas ocorrem quando condiÁıes iniciais n„o forem dadas, como as constantes
-nas equaÁıes de perturbaÁ„o s„o as mesmas que a soluÁ„o da equaÁ„o de
-ordem zero.  TambÈm, problemas ocorrem quando as condiÁıes iniciais para as
-equaÁıes de perturbaÁ„o n„o s„o @math{z[i]=0, z'[i]=0} para @math{i>0}, tais como a
-equaÁ„o de Van der Pol.
+Problemas ocorrem quando condi√ß√µes iniciais n√£o forem dadas, como as constantes
+nas equa√ß√µes de perturba√ß√£o s√£o as mesmas que a solu√ß√£o da equa√ß√£o de
+ordem zero.  Tamb√©m, problemas ocorrem quando as condi√ß√µes iniciais para as
+equa√ß√µes de perturba√ß√£o n√£o s√£o @math{z[i]=0, z'[i]=0} para @math{i>0}, tais como a
+equa√ß√£o de Van der Pol.
 
 Exemplo:
 @example
@@ -40,6 +40,6 @@ T = (- ---- - -- + 1) t]]
        3072   16
 @end example
 
-Para usar essa funÁ„o escreva primeiro @code{load("makeOrders")} e @code{load("lindstedt")}.
+Para usar essa fun√ß√£o escreva primeiro @code{load("makeOrders")} e @code{load("lindstedt")}.
 @end deffn
 

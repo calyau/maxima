@@ -1,40 +1,40 @@
 @menu
 * El paquete dynamics::
-* An·lisis gr·fico de sistemas din·micos discretos::
-* VisualizaciÛn usando VTK::
+* An√°lisis gr√°fico de sistemas din√°micos discretos::
+* Visualizaci√≥n usando VTK::
 @end menu
 
-@node El paquete dynamics, An·lisis gr·fico de sistemas din·micos discretos, dynamics, dynamics
+@node El paquete dynamics, An√°lisis gr√°fico de sistemas din√°micos discretos, dynamics, dynamics
 @section El paquete dynamics
 
 El paquete adicional @code{dynamics} incluye funciones para
-visualizaciÛn 3D, animaciones, an·lisis gr·fico de ecuaciones
-diferenciales y ecuaciones de diferencias y para resoluciÛn numÈrica de
+visualizaci√≥n 3D, animaciones, an√°lisis gr√°fico de ecuaciones
+diferenciales y ecuaciones de diferencias y para resoluci√≥n num√©rica de
 ecuaciones diferenciales. Las funciones para ecuaciones diferenciales se
-describen en la secciÛn sobre @mref{MÈtodos numÈricos} y las funciones
-para representar las gr·ficas de los conjuntos de Mandelbrot y de Julia
-se describen en la secciÛn sobre @mrefdot{Gr·ficos}
+describen en la secci√≥n sobre @mref{M√©todos num√©ricos} y las funciones
+para representar las gr√°ficas de los conjuntos de Mandelbrot y de Julia
+se describen en la secci√≥n sobre @mrefdot{Gr√°ficos}
 
-Todas las funciones en este paquete se cargan autom·ticamente la primera
+Todas las funciones en este paquete se cargan autom√°ticamente la primera
 vez que se usan.
 
-@node An·lisis gr·fico de sistemas din·micos discretos, VisualizaciÛn usando VTK, El paquete dynamics, dynamics
-@section An·lisis gr·fico de sistemas din·micos discretos
+@node An√°lisis gr√°fico de sistemas din√°micos discretos, Visualizaci√≥n usando VTK, El paquete dynamics, dynamics
+@section An√°lisis gr√°fico de sistemas din√°micos discretos
 
 @anchor{chaosgame}
-@deffn {FunciÛn} chaosgame ([[@var{x1}, @var{y1}]@dots{}[@var{xm}, @var{ym}]], [@var{x0}, @var{y0}], @var{b}, @var{n}, @var{opciones}, @dots{});
+@deffn {Funci√≥n} chaosgame ([[@var{x1}, @var{y1}]@dots{}[@var{xm}, @var{ym}]], [@var{x0}, @var{y0}], @var{b}, @var{n}, @var{opciones}, @dots{});
 
-Usa el mÈtodo llamado juego del caos, para producir fractales: se dibuja
+Usa el m√©todo llamado juego del caos, para producir fractales: se dibuja
 un punto inicial (@var{x0}, @var{y0}) y luego se elije aleatoriamente
 uno de los @var{m} puntos @code{[}@var{x1},
-@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}. DespuÈs se dibuja
-un nuevo punto que estar· en el segmento entre el ˙ltimo punto dibujado
-y el punto que se acabÛ de elegir aleatoriamente, a una distancia del
-punto elegido que ser· @var{b} veces la longitud del segmento. El
+@var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}. Despu√©s se dibuja
+un nuevo punto que estar√° en el segmento entre el √∫ltimo punto dibujado
+y el punto que se acab√≥ de elegir aleatoriamente, a una distancia del
+punto elegido que ser√° @var{b} veces la longitud del segmento. El
 proceso se repite @var{n} veces.  Este programa acepta las mismas
 opciones de @mrefdot{plot2d}
 
-@strong{Ejemplo}. Gr·fico del tri·ngulo de Sierpinsky:
+@strong{Ejemplo}. Gr√°fico del tri√°ngulo de Sierpinsky:
 
 @example
 (%i1) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
@@ -48,13 +48,13 @@ opciones de @mrefdot{plot2d}
 @end deffn
 
 @anchor{evolution}
-@deffn {FunciÛn} evolution evolution (@var{F}, @var{y0}, @var{n},  @dots{}, @var{opciones}, @dots{});
+@deffn {Funci√≥n} evolution evolution (@var{F}, @var{y0}, @var{n},  @dots{}, @var{opciones}, @dots{});
 
-Dibuja @var{n+1} puntos en una gr·fica bidimensional (serie de
+Dibuja @var{n+1} puntos en una gr√°fica bidimensional (serie de
 tiempo), en que las coordenadas horizontales de los puntos son los
-n˙meros enteros 0, 1, 2, ..., @var{n}, y las coordenadas verticales
+n√∫meros enteros 0, 1, 2, ..., @var{n}, y las coordenadas verticales
 son los valores @var{y(n)} correspondientes, obtenidos a partir de la
-relaciÛn de recurrencia
+relaci√≥n de recurrencia
 @ifnottex
 @example
         y(n+1) = F(y(n))
@@ -64,10 +64,10 @@ relaciÛn de recurrencia
 $$y_{n+1} = F(y_n)$$
 @end tex
 
-Con valor inicial @var{y(0)} igual a @var{y0}. @var{F} deber· ser una
-expresiÛn que dependa ˙nicamente de la variable @var{y} (y no de @var{n}),
-@var{y0} deber· ser un n˙mero real y @var{n} un n˙mero entero positivo.
-Esta funciÛn acepta las mismas opciones que @mrefdot{plot2d}
+Con valor inicial @var{y(0)} igual a @var{y0}. @var{F} deber√° ser una
+expresi√≥n que dependa √∫nicamente de la variable @var{y} (y no de @var{n}),
+@var{y0} deber√° ser un n√∫mero real y @var{n} un n√∫mero entero positivo.
+Esta funci√≥n acepta las mismas opciones que @mrefdot{plot2d}
 
 @strong{Ejemplo}.
 
@@ -81,10 +81,10 @@ Esta funciÛn acepta las mismas opciones que @mrefdot{plot2d}
 @end deffn
 
 @anchor{evolution2d}
-@deffn {FunciÛn} evolution2d ([@var{F}, @var{G}], [@var{u}, @var{v}], [@var{u0}, @var{y0}], @var{n}, @var{opciones}, @dots{});
+@deffn {Funci√≥n} evolution2d ([@var{F}, @var{G}], [@var{u}, @var{v}], [@var{u0}, @var{y0}], @var{n}, @var{opciones}, @dots{});
 
-Muestra, en una gr·fica bidimensional, los primeros @var{n+1} puntos de
-la sucesiÛn definida a partir del sistema din·mico discreto con
+Muestra, en una gr√°fica bidimensional, los primeros @var{n+1} puntos de
+la sucesi√≥n definida a partir del sistema din√°mico discreto con
 relaciones de recurrencia:
 @ifnottex 
 @example
@@ -96,10 +96,10 @@ $$\cases{x_{n+1} = F(x_n, y_n) &\cr y_{n+1} = G(x_n, y_n)}$$
 @end tex
 
 Con valores iniciales @var{x0} y @var{y0}. @var{F} y @var{G} deben ser dos
-expresiones que dependan ˙nicamente de @var{x} y @var{y}. Esta funciÛn
+expresiones que dependan √∫nicamente de @var{x} y @var{y}. Esta funci√≥n
 acepta las mismas opciones que @mrefdot{plot2d}
 
-@strong{Ejemplo}. EvoluciÛn de un sistema din·mico discreto en dos
+@strong{Ejemplo}. Evoluci√≥n de un sistema din√°mico discreto en dos
 dimensiones:
 
 @example
@@ -112,7 +112,7 @@ dimensiones:
 @figure{dynamics5}
 @end ifnotinfo
 
-Y un acercamiento de una pequeÒa regiÛn en ese fractal:
+Y un acercamiento de una peque√±a regi√≥n en ese fractal:
 
 @example
 (%i9) evolution2d([f,g], [x,y], [-0.5,0], 300000, [x,-0.8,-0.6],
@@ -126,22 +126,22 @@ Y un acercamiento de una pequeÒa regiÛn en ese fractal:
 @end deffn
 
 @anchor{ifs}
-@deffn {FunciÛn} ifs ([@var{r1}, @dots{}, @var{rm}], [@var{A1},@dots{}, @var{Am}], [[@var{x1}, @var{y1}], @dots{}, [@var{xm}, @var{ym}]], [@var{x0}, @var{y0}], @var{n}, @var{opciones}, @dots{});
+@deffn {Funci√≥n} ifs ([@var{r1}, @dots{}, @var{rm}], [@var{A1},@dots{}, @var{Am}], [[@var{x1}, @var{y1}], @dots{}, [@var{xm}, @var{ym}]], [@var{x0}, @var{y0}], @var{n}, @var{opciones}, @dots{});
 
-Usa el mÈtodo del Sistema de Funciones Iteradas (IFS, en inglÈs
-Iterated Function System). Ese mÈtodo es semejante al mÈtodo descrito
-en la funciÛn @mrefdot{chaosgame} pero en vez de aproximar el ˙ltimo punto
-al punto elegido aleatoriamente, las dos coordenadas del ˙ltimo punto
+Usa el m√©todo del Sistema de Funciones Iteradas (IFS, en ingl√©s
+Iterated Function System). Ese m√©todo es semejante al m√©todo descrito
+en la funci√≥n @mrefdot{chaosgame} pero en vez de aproximar el √∫ltimo punto
+al punto elegido aleatoriamente, las dos coordenadas del √∫ltimo punto
 se multiplican por una matriz 2 por 2 @var{Ai} correspondiente al punto
 que fue elegido aleatoriamente.
 
-La selecciÛn aleatoria de uno de los @var{m} puntos atractivos puede
-ser realizada con una funciÛn de probabilidad no uniforme, definida
+La selecci√≥n aleatoria de uno de los @var{m} puntos atractivos puede
+ser realizada con una funci√≥n de probabilidad no uniforme, definida
 con los pesos @var{r1},...,@var{rm}. Esos pesos deben ser dados en forma
 acumulada; por ejemplo, si se quieren 3 puntos con probabilidades 0.2, 0.5 y
-0.3, los pesos @var{r1}, @var{r2} y @var{r3} podrÌan ser 2, 7 y 10, o
-cualquier otro grupo de n˙meros que tengan la misma proporciÛn. Esta
-funciÛn acepta las mismas opciones que @mrefdot{plot2d}
+0.3, los pesos @var{r1}, @var{r2} y @var{r3} podr√≠an ser 2, 7 y 10, o
+cualquier otro grupo de n√∫meros que tengan la misma proporci√≥n. Esta
+funci√≥n acepta las mismas opciones que @mrefdot{plot2d}
 
 @strong{Ejemplo}. El helecho de Barnsley, creado con 4 matrices y 4
 puntos:
@@ -166,24 +166,24 @@ puntos:
 @end deffn
 
 @anchor{orbits}
-@deffn {FunciÛn} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], @var{opciones}, @dots{});
+@deffn {Funci√≥n} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], @var{opciones}, @dots{});
 
-Dibuja el diagrama de Ûrbitas de una familia de sistemas din·micos
-discretos unidimensionales, con un par·metro @var{x}; ese tipo de
+Dibuja el diagrama de √≥rbitas de una familia de sistemas din√°micos
+discretos unidimensionales, con un par√°metro @var{x}; ese tipo de
 diagrama se usa para mostrar las bifurcaciones de un sistema discreto
 unidimensional.
 
-La funciÛn @var{F(y)} define una secuencia que comienza con un valor
-inicial @var{y0}, igual que en el caso de la funciÛn @code{evolution},
-pero en este caso la funciÛn tambiÈn depender· del par·metro @var{x}, el
-cual tomar· valores comprendidos en el intervalo de @var{x0} a @var{xf},
-con incrementos @var{xstep}. Cada valor usado para el par·metro @var{x}
-se muestra en el eje horizontal. En el eje vertical se mostrar·n
-@var{n2} valores de la sucesiÛn @var{y(n1+1)},..., @var{y(n1+n2+1)},
-obtenidos despuÈs de dejarla evolucionar durante @var{n1} iteraciones
+La funci√≥n @var{F(y)} define una secuencia que comienza con un valor
+inicial @var{y0}, igual que en el caso de la funci√≥n @code{evolution},
+pero en este caso la funci√≥n tambi√©n depender√° del par√°metro @var{x}, el
+cual tomar√° valores comprendidos en el intervalo de @var{x0} a @var{xf},
+con incrementos @var{xstep}. Cada valor usado para el par√°metro @var{x}
+se muestra en el eje horizontal. En el eje vertical se mostrar√°n
+@var{n2} valores de la sucesi√≥n @var{y(n1+1)},..., @var{y(n1+n2+1)},
+obtenidos despu√©s de dejarla evolucionar durante @var{n1} iteraciones
 iniciales.
 
-@strong{Ejemplo}. Diagrama de Ûrbitas para el mapa cuadr·tico
+@strong{Ejemplo}. Diagrama de √≥rbitas para el mapa cuadr√°tico
 
 @example
 (%i1) orbits(x^2+a, 0, 50, 200, [a, -2, 0.25], [style, dots]);
@@ -193,7 +193,7 @@ iniciales.
 @figure{dynamics3}
 @end ifnotinfo
 
-Para ampliar la regiÛn alrededor de la bifurcaciÛn en la parte de
+Para ampliar la regi√≥n alrededor de la bifurcaci√≥n en la parte de
 abajo, cerca de x @code{=} -1.25, se usa el comando:
 @example
 (%i2) orbits(x^2+a, 0, 100, 400, [a,-1,-1.53], [x,-1.6,-0.8],
@@ -207,10 +207,10 @@ abajo, cerca de x @code{=} -1.25, se usa el comando:
 @end deffn
 
 @anchor{staircase}
-@deffn {FunciÛn} staircase (@var{F}, @var{y0}, @var{n},@var{opciones},@dots{});
+@deffn {Funci√≥n} staircase (@var{F}, @var{y0}, @var{n},@var{opciones},@dots{});
 
-Dibuja un diagrama de escalera (o diagrama de red) para la sucesiÛn
-definida por la ecuaciÛn de recurrencia
+Dibuja un diagrama de escalera (o diagrama de red) para la sucesi√≥n
+definida por la ecuaci√≥n de recurrencia
 @ifnottex
 @example
         y(n+1) = F(y(n))
@@ -220,16 +220,16 @@ definida por la ecuaciÛn de recurrencia
 $$y_{n+1} = F(y_n)$$
 @end tex
 
-La interpretaciÛn y valores permitidos de los par·metros de entrada
-es la misma que para la funciÛn @code{evolution}. Un diagrama de
-escalera consiste en una gr·fica de la funciÛn @var{F(y)}, junto con
+La interpretaci√≥n y valores permitidos de los par√°metros de entrada
+es la misma que para la funci√≥n @code{evolution}. Un diagrama de
+escalera consiste en una gr√°fica de la funci√≥n @var{F(y)}, junto con
 la recta @var{G(y)} @code{=} @var{y}. Se comienza por dibujar un
 segmento vertical desde el punto (@var{y0}, @var{y0}) en la recta, hasta
-el punto de intersecciÛn con la funciÛn @var{F}. En seguida, desde
+el punto de intersecci√≥n con la funci√≥n @var{F}. En seguida, desde
 ese punto se dibuja un segmento horizontal hasta el punto de
-intersecciÛn con la recta, (@var{y1}, @var{y1}); el procedimiento se
+intersecci√≥n con la recta, (@var{y1}, @var{y1}); el procedimiento se
 repite @var{n} veces hasta alcanzar el punto (@var{yn}, @var{yn}). Esta
-funciÛn acepta las mismas opciones que @mrefdot{plot2d}
+funci√≥n acepta las mismas opciones que @mrefdot{plot2d}
 
 @strong{Ejemplo}.
 
@@ -242,19 +242,19 @@ funciÛn acepta las mismas opciones que @mrefdot{plot2d}
 
 @end deffn
 
-@node VisualizaciÛn usando VTK, , An·lisis gr·fico de sistemas din·micos discretos, dynamics
-@section VisualizaciÛn usando VTK
+@node Visualizaci√≥n usando VTK, , An√°lisis gr√°fico de sistemas din√°micos discretos, dynamics
+@section Visualizaci√≥n usando VTK
 
-La funciÛn scene crea im·genes tridimensionales y animaciones usando el
-software @emph{Visualization ToolKit} (VTK). Para poder usar esa funciÛn
+La funci√≥n scene crea im√°genes tridimensionales y animaciones usando el
+software @emph{Visualization ToolKit} (VTK). Para poder usar esa funci√≥n
 es necesario tener Xmaxima y VTK instalados en el sistema (incluyendo la
 biblioteca para usar VTK desde TCL que en algunos sistemas viene en un
 paquete separado).
 
 @anchor{scene}
-@deffn {FunciÛn} scene (@var{objetos}, @dots{}, @var{opciones}, @dots{});
+@deffn {Funci√≥n} scene (@var{objetos}, @dots{}, @var{opciones}, @dots{});
 
-Acepta una lista vacÌa o una lista de varios
+Acepta una lista vac√≠a o una lista de varios
 @mxref{scene_objetos,objetos} y @mxrefdot{scene_opciones,opciones} El
 programa ejecuta Xmaxima, que abre una ventana donde se representan los
 objetos dados, en un espacio tridimensional y aplicando las opciones
@@ -264,7 +264,7 @@ objetos se identifican dando el nombre de su clase, o una lista en que
 el primer elemento es el nombre de la clase y los restantes elementos
 son opciones para ese objeto.
  
-@strong{Ejemplo}. Una pir·mide hexagonal con fondo azul:
+@strong{Ejemplo}. Una pir√°mide hexagonal con fondo azul:
 @c ===beg===
 @c scene(cone, [background,"#9980e5"])$
 @c ===end===
@@ -275,23 +275,23 @@ son opciones para ese objeto.
 @figure{scene1}
 @end ifnotinfo
 
-Presionando el botÛn izquierdo del ratÛn mientras se mueve dentro de la
-ventana gr·fica, se puede rotar la c·mara, mostrando diferentes vistas
-de la pir·mide. Las dos opciones @mxref{scene_elevation,elevation} y
-@mxref{scene_azimuth,azimuth} se pueden usar tambiÈn para cambiar la
-orientaciÛn de la c·mara. La c·mara se puede mover presionando el botÛn
-del medio y moviendo el ratÛn y el botÛn del lado derecho se usa para
-aumentar o disminuir el zoom, moviendo el ratÛn para arriba y para
+Presionando el bot√≥n izquierdo del rat√≥n mientras se mueve dentro de la
+ventana gr√°fica, se puede rotar la c√°mara, mostrando diferentes vistas
+de la pir√°mide. Las dos opciones @mxref{scene_elevation,elevation} y
+@mxref{scene_azimuth,azimuth} se pueden usar tambi√©n para cambiar la
+orientaci√≥n de la c√°mara. La c√°mara se puede mover presionando el bot√≥n
+del medio y moviendo el rat√≥n y el bot√≥n del lado derecho se usa para
+aumentar o disminuir el zoom, moviendo el rat√≥n para arriba y para
 bajo.
 
-Cada opciÛn de un objeto deber· ser una lista comenzando con el nombre
-de la opciÛn, seguido por su valor. La lista de posibles opciones se
-encuentra en la secciÛn
+Cada opci√≥n de un objeto deber√° ser una lista comenzando con el nombre
+de la opci√≥n, seguido por su valor. La lista de posibles opciones se
+encuentra en la secci√≥n
 @mxrefdot{objeto_opciones,Opciones de objetos de scene}
 
-@strong{Ejemplo}. Este ejemplo mostrar· una esfera cayendo para el piso
-y rebotando sin perder energÌa. Para comenzar o poner en pausa la
-animaciÛn se debe oprimir el botÛn de play/pausa.
+@strong{Ejemplo}. Este ejemplo mostrar√° una esfera cayendo para el piso
+y rebotando sin perder energ√≠a. Para comenzar o poner en pausa la
+animaci√≥n se debe oprimir el bot√≥n de play/pausa.
 @c ===beg===
 @c p: makelist ([0,0,2.1- 9.8*t^2/2], t, 0, 0.64, 0.01)$
 @c p: append (p, reverse(p))$
@@ -321,9 +321,9 @@ animaciÛn se debe oprimir el botÛn de play/pausa.
 @figure{scene2}
 @end ifnotinfo
 
-La opciÛn @var{restart} fue usada para hacer que la animaciÛn recomienze
-cada vez que se llega al ˙ltimo punto en la lista. Los valores
-permitidos para los colores son los mismo que para la opciÛn @mref{color}
+La opci√≥n @var{restart} fue usada para hacer que la animaci√≥n recomienze
+cada vez que se llega al √∫ltimo punto en la lista. Los valores
+permitidos para los colores son los mismo que para la opci√≥n @mref{color}
 de plot2d. 
 
 @end deffn
@@ -332,89 +332,89 @@ de plot2d.
 @subsection Opciones de scene
 
 @anchor{scene_azimuth}
-@defvr {OpciÛn de scene} azimuth [azimuth, @var{·ngulo}]
+@defvr {Opci√≥n de scene} azimuth [azimuth, @var{√°ngulo}]
 Valor predefinido: @code{135}
 
-La rotaciÛn de la c·mara en el plano horizontal (x, y). @var{·ngulo}
-debe ser un n˙mero real; un ·ngulo de 0 significa que la c·mara apunta
-en la direcciÛn del eje y, haciendo que el eje x aparezca a la derecha.
+La rotaci√≥n de la c√°mara en el plano horizontal (x, y). @var{√°ngulo}
+debe ser un n√∫mero real; un √°ngulo de 0 significa que la c√°mara apunta
+en la direcci√≥n del eje y, haciendo que el eje x aparezca a la derecha.
 
 @end defvr
 
 @anchor{scene_background}
-@defvr {OpciÛn de scene} background [background, @var{color}]
+@defvr {Opci√≥n de scene} background [background, @var{color}]
 Valor predefinido: @code{black}
 
-El color del fondo de la ventana gr·fica. Acepta nombres de colores o
+El color del fondo de la ventana gr√°fica. Acepta nombres de colores o
 secuencias de caracteres hexadecimales para rojo-verde-azul (ver la
-opciÛn @mref{color} de plot2d).
+opci√≥n @mref{color} de plot2d).
 
 @end defvr
 
 @anchor{scene_elevation}
-@defvr {OpciÛn de scene} elevation [elevation, @var{·ngulo}]
+@defvr {Opci√≥n de scene} elevation [elevation, @var{√°ngulo}]
 Valor predefinido: @code{30}
 
-La rotaciÛn vertical de la c·mara. El @var{·ngulo} debe ser un n˙mero
-real; un ·ngulo de 0 significa que la c·mara apunta en la horizontal y
-el valor predefinido de 30 significa que la c·mara apunta 30 grados para
+La rotaci√≥n vertical de la c√°mara. El @var{√°ngulo} debe ser un n√∫mero
+real; un √°ngulo de 0 significa que la c√°mara apunta en la horizontal y
+el valor predefinido de 30 significa que la c√°mara apunta 30 grados para
 abajo de la horizontal.
 
 @end defvr
 
 @anchor{scene_height}
-@defvr {OpciÛn de scene} height [height, @var{pixels}]
+@defvr {Opci√≥n de scene} height [height, @var{pixels}]
 Valor predefinido: @code{500}
 
-La altura, en pixels, de la ventana gr·fica. @var{pixels} debe ser un
-n˙mero entero positivo.
+La altura, en pixels, de la ventana gr√°fica. @var{pixels} debe ser un
+n√∫mero entero positivo.
 
 @end defvr
 
 @anchor{scene_restart}
-@defvr {OpciÛn de scene} restart [restart, @var{valor}]
+@defvr {Opci√≥n de scene} restart [restart, @var{valor}]
 Valor predefinido: @code{false}
 
-Un valor 'true' significa que la animaciÛn recomenzar· autom·ticamente
+Un valor 'true' significa que la animaci√≥n recomenzar√° autom√°ticamente
 cuando llegue al final. Escribir simplemente ``restart'' es equivalente
 a escribir [restart, @var{true}].
 
 @end defvr
 
 @anchor{scene_tstep}
-@defvr {OpciÛn de scene} tstep [tstep, @var{tiempo}]
+@defvr {Opci√≥n de scene} tstep [tstep, @var{tiempo}]
 Valor predefinido: @code{10}
 
 El intervalo de tiempo, en milisegundos, entre iteraciones consecutivas
-de las partes de una animaciÛn. @var{tiempo} debe ser un n˙mero real.
+de las partes de una animaci√≥n. @var{tiempo} debe ser un n√∫mero real.
 
 @end defvr
 
 @anchor{scene_width}
-@defvr {OpciÛn de scene} width [width, @var{pixels}]
+@defvr {Opci√≥n de scene} width [width, @var{pixels}]
 Valor predefinido: @code{500}
 
-El ancho, en pixels, de la ventana gr·fica. @var{pixels} deber· ser un
-n˙mero entero positivo.
+El ancho, en pixels, de la ventana gr√°fica. @var{pixels} deber√° ser un
+n√∫mero entero positivo.
 
 @end defvr
 
 @anchor{scene_windowname}
-@defvr {OpciÛn de scene} windowname [windowtitle, @var{nombre}]
+@defvr {Opci√≥n de scene} windowname [windowtitle, @var{nombre}]
 Valor predefinido: @code{.scene}
 
-@var{nombre} deber· ser una secuencia de caracteres que pueda ser usada
+@var{nombre} deber√° ser una secuencia de caracteres que pueda ser usada
 para el nombre de una ventana de Tk, creada por Xmaxima para los
-gr·ficos de @code{scene}. El valor predefinido @code{.scene} implica que
-ser· creada una nueva ventana.
+gr√°ficos de @code{scene}. El valor predefinido @code{.scene} implica que
+ser√° creada una nueva ventana.
 
 @end defvr
 
 @anchor{scene_windowtitle}
-@defvr {OpciÛn de scene} windowtitle [windowtitle, @var{nombre}]
+@defvr {Opci√≥n de scene} windowtitle [windowtitle, @var{nombre}]
 Valor predefinido: @code{Xmaxima: scene}
 
-@var{nombre} debe ser una secuencia de caracteres que ser·n escritos en
+@var{nombre} debe ser una secuencia de caracteres que ser√°n escritos en
 el encabezado de la ventana creada por  @code{scene}.
 
 @end defvr
@@ -425,19 +425,19 @@ el encabezado de la ventana creada por  @code{scene}.
 @anchor{cone}
 @defvr {Objeto de scene} cone [cone, @var{opciones}]
 
-Crea una pir·mide regular con altura 1 unidad y base hexagonal con
-vÈrtices a 0.5 unidades del eje. Las opciones
+Crea una pir√°mide regular con altura 1 unidad y base hexagonal con
+v√©rtices a 0.5 unidades del eje. Las opciones
 @mxref{objeto_height,height} y @mxref{objeto_radius,radius} se pueden
-usar para alterar esos valores predefinidos y la opciÛn
-@mxref{objeto_resolution, resolution} se usa para alterar el n˙mero de
-aristas de la base; valores mayores har·n que la pir·mide parezca un
-cono. Por omisiÛn, el eje estar· a lo largo del eje x, el punto medio de
-la altura estar· en el origen y el vÈrtice en el lado positivo del eje
+usar para alterar esos valores predefinidos y la opci√≥n
+@mxref{objeto_resolution, resolution} se usa para alterar el n√∫mero de
+aristas de la base; valores mayores har√°n que la pir√°mide parezca un
+cono. Por omisi√≥n, el eje estar√° a lo largo del eje x, el punto medio de
+la altura estar√° en el origen y el v√©rtice en el lado positivo del eje
 x; las opciones @mxref{objeto_orientation,orientation} y
 @mxref{objeto_center,center} permiten alterar eso.
 
-@strong{Ejemplo}. El siguiente comando muestra una pir·mide que comienza
-a dar vueltas cuando se oprime el botÛn de animaciÛn.
+@strong{Ejemplo}. El siguiente comando muestra una pir√°mide que comienza
+a dar vueltas cuando se oprime el bot√≥n de animaci√≥n.
  
 @example
 (%i1) scene([cone, [orientation,0,30,0], [tstep,100],
@@ -452,8 +452,8 @@ a dar vueltas cuando se oprime el botÛn de animaciÛn.
 Un cubo con aristas de 1 unidad y caras paralelas al los planos xy, xz y
 yz. Las longitudes de las 3 aristas se pueden modificar con las opciones
 @mxref{objeto_xlength,xlength}, @mxref{objeto_ylength,ylength} y
-@mxref{objeto_zlength,zlength}, convirtiÈndolo en un paralelepÌpedo y
-las caras se pueden hacer rotar con la opciÛn
+@mxref{objeto_zlength,zlength}, convirti√©ndolo en un paralelep√≠pedo y
+las caras se pueden hacer rotar con la opci√≥n
 @mxrefdot{objeto_orientation,orientation}
 
 @end defvr
@@ -462,14 +462,14 @@ las caras se pueden hacer rotar con la opciÛn
 @defvr {Objeto de scene} cylinder [cylinder, @var{opciones}]
 
 Crea un prisma regular con altura de 1 unidad y base hexagonal con los
-vÈrtices a 0.5 unidades del eje. Las opciones
+v√©rtices a 0.5 unidades del eje. Las opciones
 @mxref{objeto_height,height} y @mxref{objeto_radius,radius} permiten
-modificar esos valores predefinidos y la opciÛn
+modificar esos valores predefinidos y la opci√≥n
 @mxref{objeto_resolution,resolution} se puede usar para modificar el
-n˙mero de aristas de la base; valores mayores tornan el prisma m·s
+n√∫mero de aristas de la base; valores mayores tornan el prisma m√°s
 parecido a un cilindro. La altura predefinida se puede alterar con la
-opciÛn @mxrefdot{objeto_height,height} Por omisiÛn el eje estar·
-orientado a lo largo del eje x, y el punto medio de la altura estar· en
+opci√≥n @mxrefdot{objeto_height,height} Por omisi√≥n el eje estar√°
+orientado a lo largo del eje x, y el punto medio de la altura estar√° en
 el origen; se pueden cambiar esas propiedades con las opciones
 @mxref{objeto_orientation,orientation} y @mxrefdot{objeto_center,center}
 
@@ -486,205 +486,205 @@ Una esfera de radio igual a 0.5 unidades y centro en el origen.
 @subsection Opciones de objetos de scene
 
 @anchor{objeto_animation}
-@defvr {OpciÛn de objeto} animation [animation, @var{propiedad}, @var{posiciones}]
+@defvr {Opci√≥n de objeto} animation [animation, @var{propiedad}, @var{posiciones}]
 
-@var{propiedad} deber· ser una de las 4 siguientes propiedades del
+@var{propiedad} deber√° ser una de las 4 siguientes propiedades del
 objeto: @mxrefcomma{objeto_origin,origin}
 @mxrefcomma{objeto_scale,scale} @mxref{objeto_position,position} o
-@mxref{objeto_orientation,orientation} y @var{posiciones} deber· ser una
-lista de puntos. Cuando se oprime el botÛn ``play'', esa propiedad
-tomar· sucesivamente los valores en la lista, en intervalos regulares de
-tiempo definidos por la opciÛn @mxrefdot{scene_tstep,tstep} El botÛn de
+@mxref{objeto_orientation,orientation} y @var{posiciones} deber√° ser una
+lista de puntos. Cuando se oprime el bot√≥n ``play'', esa propiedad
+tomar√° sucesivamente los valores en la lista, en intervalos regulares de
+tiempo definidos por la opci√≥n @mxrefdot{scene_tstep,tstep} El bot√≥n de
 volver al comienzo puede usarse para recomenzar desde el principio de la
-lista, haciendo que la animaciÛn comience nuevamente cuando se presione
-otra vez el botÛn de play.
+lista, haciendo que la animaci√≥n comience nuevamente cuando se presione
+otra vez el bot√≥n de play.
 
-Consulte tambiÈn @mxrefdot{objeto_track,track}
+Consulte tambi√©n @mxrefdot{objeto_track,track}
 
 @end defvr
 
 @anchor{objeto_capping}
-@defvr {OpciÛn de objeto} capping [capping, @var{n˙mero}]
+@defvr {Opci√≥n de objeto} capping [capping, @var{n√∫mero}]
 Valor predefinido: @code{1}
 
 En un objeto ``cone'' o ``cylinder'', determina si la base (o bases) se
-muestran o no. Un valor de 1 para @var{n˙mero} torna la base visible y
+muestran o no. Un valor de 1 para @var{n√∫mero} torna la base visible y
 un valor de 0 la hace invisible.
  
 @end defvr
 
 @anchor{objeto_center}
-@defvr {OpciÛn de objeto} center [center, @var{punto}]
+@defvr {Opci√≥n de objeto} center [center, @var{punto}]
 Valor predefinido: @code{[0, 0, 0]}
 
-Coordenadas del centro geomÈtrico del objeto, en relaciÛn a su posiciÛn
+Coordenadas del centro geom√©trico del objeto, en relaci√≥n a su posici√≥n
 (@mxref{objeto_position, position}); @var{punto} puede ser una lista de
-3 n˙meros reales o 3 n˙meros separados por comas. En objetos de clase
-``cylinder'',''cone'' o ``cube'' estar· localizado en el punto medio de
-la altura y en objetos de clase ``sphere'' estar· en su centro.
+3 n√∫meros reales o 3 n√∫meros separados por comas. En objetos de clase
+``cylinder'',''cone'' o ``cube'' estar√° localizado en el punto medio de
+la altura y en objetos de clase ``sphere'' estar√° en su centro.
 
 @end defvr
 
 @anchor{objeto_color}
-@defvr {OpciÛn de objeto} color [color, @var{nombre}]
+@defvr {Opci√≥n de objeto} color [color, @var{nombre}]
 Valor predefinido: @code{white}
 
 El color del objeto. Acepta nombres de colores conocidos o secuencias de
-6 dÌgitos (rojo-verde-azul) precedidos por # (ver la opciÛn @mref{color}
+6 d√≠gitos (rojo-verde-azul) precedidos por # (ver la opci√≥n @mref{color}
 de plot2d).
 
 @end defvr
 
 @anchor{objeto_endphi}
-@defvr {OpciÛn de objeto} endphi [endphi, @var{·ngulo}]
+@defvr {Opci√≥n de objeto} endphi [endphi, @var{√°ngulo}]
 Valor predefinido: @code{180}
 
-En una esfera, phi es el ·ngulo en el plano vertical que pasa por el eje
-z, medido a partir de la parte positiva del eje z. @var{·ngulo} debe ser
-un m˙mero entre 0 y 180 que determina el valor final de phi hasta donde
-se mostrar· la superficie. Valores menores que 180 eliminan una parte de
+En una esfera, phi es el √°ngulo en el plano vertical que pasa por el eje
+z, medido a partir de la parte positiva del eje z. @var{√°ngulo} debe ser
+un m√∫mero entre 0 y 180 que determina el valor final de phi hasta donde
+se mostrar√° la superficie. Valores menores que 180 eliminan una parte de
 la superficie.
 
-Consulte tambiÈn @mxref{objeto_startphi,startphi} y
+Consulte tambi√©n @mxref{objeto_startphi,startphi} y
 @mxrefdot{objeto_phiresolution,phiresolution}
 
 @end defvr
 
 @anchor{objeto_endtheta}
-@defvr {OpciÛn de objeto} endtheta [endtheta, @var{·ngulo}]
+@defvr {Opci√≥n de objeto} endtheta [endtheta, @var{√°ngulo}]
 Valor predefinido: @code{360}
 
-En una esfera, theta es el ·ngulo en el plano horizontal (longitud),
-medido desde la parte positiva del eje x. @var{·ngulo} debe ser un
-n˙mero entre 0 y 360 que determina el valor final donde la superficie
-terminar·. Valores menores que 360 hacen que se elimine una parte de la
+En una esfera, theta es el √°ngulo en el plano horizontal (longitud),
+medido desde la parte positiva del eje x. @var{√°ngulo} debe ser un
+n√∫mero entre 0 y 360 que determina el valor final donde la superficie
+terminar√°. Valores menores que 360 hacen que se elimine una parte de la
 superficie de la esfera.
 
-Consulte tambiÈn @mxref{objeto_starttheta,starttheta} y
+Consulte tambi√©n @mxref{objeto_starttheta,starttheta} y
 @mxrefdot{objeto_thetaresolution,thetaresolution}
 
 @end defvr
 
 @anchor{objeto_height}
-@defvr {OpciÛn de objeto} height [height, @var{valor}]
+@defvr {Opci√≥n de objeto} height [height, @var{valor}]
 Valor predefinido: @code{1}
 
-@var{valor} debe ser un n˙mero positivo que define la altura de un cono
+@var{valor} debe ser un n√∫mero positivo que define la altura de un cono
 o cilindro.
 
 @end defvr
 
 @anchor{objeto_linewidth}
-@defvr {OpciÛn de objeto} linewidth [linewidth, @var{valor}]
+@defvr {Opci√≥n de objeto} linewidth [linewidth, @var{valor}]
 Valor predefinido: @code{1}
 
-El ancho de las lÌneas cuando se usa la opciÛn
-@mxref{objeto_wireframe,wireframe}. @var{valor} debe ser un n˙mero
+El ancho de las l√≠neas cuando se usa la opci√≥n
+@mxref{objeto_wireframe,wireframe}. @var{valor} debe ser un n√∫mero
 positivo.
 
 @end defvr
 
 @anchor{objeto_opacity}
-@defvr {OpciÛn de objeto} opacity [opacity, @var{valor}]
+@defvr {Opci√≥n de objeto} opacity [opacity, @var{valor}]
 Valor predefinido: @code{1}
 
-@var{valor} debe se un n˙mero entre 0 y 1. Cuanto menor sea el n˙mero,
-mas transparente ser· el objeto. El valor predefinido de 1 implica un
+@var{valor} debe se un n√∫mero entre 0 y 1. Cuanto menor sea el n√∫mero,
+mas transparente ser√° el objeto. El valor predefinido de 1 implica un
 objeto completamente opaco.
 
 @end defvr
 
 @anchor{objeto_orientation}
-@defvr {OpciÛn de objeto} orientation [orientation, @var{·ngulos}]
+@defvr {Opci√≥n de objeto} orientation [orientation, @var{√°ngulos}]
 Valor predefinido: @code{[0, 0, 0]}
 
-Tres ·ngulos que de rotaciones que ser·n realizadas en el objeto,
-alrededor de los tres ejes.@var{·ngulos} puede ser una lista con tres
-n˙meros reales o tres n˙meros separados por comas. @strong{Ejemplo}:
+Tres √°ngulos que de rotaciones que ser√°n realizadas en el objeto,
+alrededor de los tres ejes.@var{√°ngulos} puede ser una lista con tres
+n√∫meros reales o tres n√∫meros separados por comas. @strong{Ejemplo}:
 @code{[0, 0, 90]} rota el eje x del objeto hasta el eje y del sistema de
 referencia.
 
 @end defvr
 
 @anchor{objeto_origin}
-@defvr {OpciÛn de objeto} origin [origin, @var{punto}]
+@defvr {Opci√≥n de objeto} origin [origin, @var{punto}]
 Valor predefinido: @code{[0, 0, 0]}
 
-Coordenadas del origen del objeto, en relaciÛn al cual las otras
-dimensiones ser·n definidas. @var{punto} pueden ser tres n˙meros
-separados por comas, o una lista de tres n˙meros.
+Coordenadas del origen del objeto, en relaci√≥n al cual las otras
+dimensiones ser√°n definidas. @var{punto} pueden ser tres n√∫meros
+separados por comas, o una lista de tres n√∫meros.
 
 @end defvr
 
 @anchor{objeto_phiresolution}
-@defvr {OpciÛn de objeto} phiresolution [phiresolution, @var{num}]
+@defvr {Opci√≥n de objeto} phiresolution [phiresolution, @var{num}]
 Valor predefinido: @code{}
 
-N˙mero de sub-intervalos en que se divide el intervalo de valores del
-·ngulo phi, que comienza en @mxref{objeto_startphi,startphi} y termina
-en @mxrefdot{objeto_endphi,endphi} @var{num} debe ser un n˙mero entero
+N√∫mero de sub-intervalos en que se divide el intervalo de valores del
+√°ngulo phi, que comienza en @mxref{objeto_startphi,startphi} y termina
+en @mxrefdot{objeto_endphi,endphi} @var{num} debe ser un n√∫mero entero
 positivo.
 
-Consulte tambiÈn @mxref{objeto_startphi,startphi} y
+Consulte tambi√©n @mxref{objeto_startphi,startphi} y
 @mxrefdot{objeto_endphi,endphi}
 
 @end defvr
 
 @anchor{objeto_points}
-@defvr {OpciÛn de objeto} points  [points]
+@defvr {Opci√≥n de objeto} points  [points]
 
-Esta opciÛn hace que en vez de que se muestre la superficie, se muestren
-˙nicamente los vÈrtices en la triangulaciÛn usada para construir la
+Esta opci√≥n hace que en vez de que se muestre la superficie, se muestren
+√∫nicamente los v√©rtices en la triangulaci√≥n usada para construir la
 superficie. @strong{Ejemplo}: @code{[sphere, [points]]}
 
-Consulte tambiÈn @mxref{objeto_surface,surface} y
+Consulte tambi√©n @mxref{objeto_surface,surface} y
 @mxrefdot{objeto_wireframe,wireframe}
 
 @end defvr
 
 @anchor{objeto_pointsize}
-@defvr {OpciÛn de objeto} pointsize [pointsize, @var{valor}]
+@defvr {Opci√≥n de objeto} pointsize [pointsize, @var{valor}]
 Valor predefinido: @code{1}
 
-TamaÒo de los puntos, cuando se usa la opciÛn
-@mxrefdot{objeto_points,points} @var{valor} debe ser un n˙mero positivo.
+Tama√±o de los puntos, cuando se usa la opci√≥n
+@mxrefdot{objeto_points,points} @var{valor} debe ser un n√∫mero positivo.
 
 @end defvr
 
 @anchor{objeto_position}
-@defvr {OpciÛn de objeto} position [position, @var{punto}]
+@defvr {Opci√≥n de objeto} position [position, @var{punto}]
 Valor predefinido: @code{[0, 0, 0]}
 
-Coordenadas de la posiciÛn del objeto. @var{punto} puede ser tres
-n˙meros separados por comas o una lista de tres n˙meros.
+Coordenadas de la posici√≥n del objeto. @var{punto} puede ser tres
+n√∫meros separados por comas o una lista de tres n√∫meros.
 
 @end defvr
 
 @anchor{objeto_radius}
-@defvr {OpciÛn de objeto} radius [radius, @var{valor}]
+@defvr {Opci√≥n de objeto} radius [radius, @var{valor}]
 Valor predefinido: @code{0.5}
 
-El radio de una esfera o la distancia desde el eje hasta los vÈrtices de
-la base en cilindros o conos. @var{valor} debe ser un n˙mero positivo.
+El radio de una esfera o la distancia desde el eje hasta los v√©rtices de
+la base en cilindros o conos. @var{valor} debe ser un n√∫mero positivo.
 
 @end defvr
 
 @anchor{objeto_resolution}
-@defvr {OpciÛn de objeto} resolution [resolution, @var{n˙mero}]
+@defvr {Opci√≥n de objeto} resolution [resolution, @var{n√∫mero}]
 Valor predefinido: @code{6}
 
-@var{n˙mero} debe ser un n˙mero entero mayor que 2, que define el n˙mero
+@var{n√∫mero} debe ser un n√∫mero entero mayor que 2, que define el n√∫mero
 de aristas de la base en objetos de clase ``cone'' o ``cylinder''.
  
 @end defvr
 
 @anchor{objeto_scale}
-@defvr {OpciÛn de objeto} scale [scale, @var{factores}]
+@defvr {Opci√≥n de objeto} scale [scale, @var{factores}]
 Valor predefinido: @code{[1, 1, 1]}
 
-Tres factores de escala en que ser·n deformadas las dimensiones del
-objeto en relaciÛn a los tres ejes. @var{factors} pueden ser tres n˙mero
-separados por comas o una lista con tres n˙meros. @strong{Ejemplo}:
+Tres factores de escala en que ser√°n deformadas las dimensiones del
+objeto en relaci√≥n a los tres ejes. @var{factors} pueden ser tres n√∫mero
+separados por comas o una lista con tres n√∫meros. @strong{Ejemplo}:
 @code{[2, 0.5, 1]} estira el objeto suplicando sus dimensiones paralelas
 la eje x, reduce a mitad las dimensiones paralelas al eje y, dejando
 iguales las dimensiones paralelas al eje z.
@@ -692,71 +692,71 @@ iguales las dimensiones paralelas al eje z.
 @end defvr
 
 @anchor{objeto_startphi}
-@defvr {OpciÛn de objeto} startphi [startphi, @var{·ngulo}]
+@defvr {Opci√≥n de objeto} startphi [startphi, @var{√°ngulo}]
 Valor predefinido: @code{0}
 
-En una esfera, phi es el ·ngulo en el plano vertical que pasa por el eje
-z, medido a partir de la parte positiva del eje z. @var{·ngulo} debe ser
-un m˙mero entre 0 y 180 que determina el valor inicial de phi desde donde
-se mostrar· la superficie. Valores superiores a 0 eliminan una parte de
+En una esfera, phi es el √°ngulo en el plano vertical que pasa por el eje
+z, medido a partir de la parte positiva del eje z. @var{√°ngulo} debe ser
+un m√∫mero entre 0 y 180 que determina el valor inicial de phi desde donde
+se mostrar√° la superficie. Valores superiores a 0 eliminan una parte de
 la superficie.
 
-Consulte tambiÈn @mxref{objeto_endphi,endphi} y
+Consulte tambi√©n @mxref{objeto_endphi,endphi} y
 @mxrefdot{objeto_phiresolution,phiresolution}
 
 @end defvr
 
 @anchor{objeto_starttheta}
-@defvr {OpciÛn de objeto} starttheta [starttheta, @var{·ngulo}]
+@defvr {Opci√≥n de objeto} starttheta [starttheta, @var{√°ngulo}]
 Valor predefinido: @code{0}
 
-En una esfera, theta es el ·ngulo en el plano horizontal (longitud),
-medido desde la parte positiva del eje x. @var{·ngulo} debe ser un
-n˙mero entre 0 y 360 que determina el valor inicial donde la superficie
+En una esfera, theta es el √°ngulo en el plano horizontal (longitud),
+medido desde la parte positiva del eje x. @var{√°ngulo} debe ser un
+n√∫mero entre 0 y 360 que determina el valor inicial donde la superficie
 comienza. Valores mayores que 0 hacen que se elimine una parte de la
 superficie de la esfera.
 
-Consulte tambiÈn @mxref{objeto_endtheta,endtheta} y
+Consulte tambi√©n @mxref{objeto_endtheta,endtheta} y
 @mxrefdot{objeto_thetaresolution,thetaresolution}
 
 @end defvr
 
 @anchor{objeto_surface}
-@defvr {OpciÛn de objeto} surface [surface]
+@defvr {Opci√≥n de objeto} surface [surface]
 
-Hace que se muestre la superficie del objeto y no los las lÌneas ni los
-vÈrtices de la triangulaciÛn usada para construirlo. Ese es el
+Hace que se muestre la superficie del objeto y no los las l√≠neas ni los
+v√©rtices de la triangulaci√≥n usada para construirlo. Ese es el
 comportamiento habitual que se puede alterar con las opciones
 @mxref{objeto_points,points} o @mxrefdot{objeto_wireframe,wireframe}
 
 @end defvr
 
 @anchor{objeto_thetaresolution}
-@defvr {OpciÛn de objeto} thetaresolution [thetaresolution, @var{num}]
+@defvr {Opci√≥n de objeto} thetaresolution [thetaresolution, @var{num}]
 Valor predefinido: @code{}
 
-N˙mero de sub-intervalos en que se divide el intervalo de valores del
-·ngulo theta, que comienza en @mxref{objeto_starttheta,starttheta} y termina
-en @mxrefdot{objeto_endtheta,endtheta} @var{num} debe ser un n˙mero entero
+N√∫mero de sub-intervalos en que se divide el intervalo de valores del
+√°ngulo theta, que comienza en @mxref{objeto_starttheta,starttheta} y termina
+en @mxrefdot{objeto_endtheta,endtheta} @var{num} debe ser un n√∫mero entero
 positivo.
-Consulte tambiÈn @mxref{objeto_starttheta,starttheta} y
+Consulte tambi√©n @mxref{objeto_starttheta,starttheta} y
 @mxrefdot{objeto_endtheta,endtheta}
 
 @end defvr
 
 @anchor{objeto_track}
-@defvr {OpciÛn de objeto} track [track, @var{posiciones}]
+@defvr {Opci√≥n de objeto} track [track, @var{posiciones}]
 
-@var{posiciones} deber· ser una lista de puntos. Cuando se oprime el
-botÛn de ``play'', la posiciÛn del objeto tomara secuencialmente los
+@var{posiciones} deber√° ser una lista de puntos. Cuando se oprime el
+bot√≥n de ``play'', la posici√≥n del objeto tomara secuencialmente los
 valores en la lista, a intervalos regulares de tiempo definidos por la
-opciÛn @mxrefcomma{scene_tstep,tstep} dejando un rastro de la
-trayectoria del objeto. El botÛn de volver al comienzo puede usarse para
-recomenzar desde el principio de la lista, haciendo que la animaciÛn
-comience nuevamente cuando se presione otra vez el botÛn de play.
+opci√≥n @mxrefcomma{scene_tstep,tstep} dejando un rastro de la
+trayectoria del objeto. El bot√≥n de volver al comienzo puede usarse para
+recomenzar desde el principio de la lista, haciendo que la animaci√≥n
+comience nuevamente cuando se presione otra vez el bot√≥n de play.
 
 @strong{Ejemplo}. Estos comandos muestran la trayectoria de una bola
-lanzada con velocidad inicial de 5 m/s, a un ·ngulo de 45 grados, cuando
+lanzada con velocidad inicial de 5 m/s, a un √°ngulo de 45 grados, cuando
 se puede ignorar la resistencia del aire:
 
 @example
@@ -770,48 +770,48 @@ se puede ignorar la resistencia del aire:
 (%i4) scene (bola, piso)$
 @end example
 
-Consulte tambiÈn @mxrefdot{objeto_animation,animation}
+Consulte tambi√©n @mxrefdot{objeto_animation,animation}
 
 @end defvr
 
 @anchor{objeto_xlength}
-@defvr {OpciÛn de objeto} xlength [xlength, @var{altura}]
+@defvr {Opci√≥n de objeto} xlength [xlength, @var{altura}]
 Valor predefinido: @code{1}
 
-Altura de un objeto de clase ``cube'', en la direcciÛn x. @var{altura}
-debe ser un n˙mero positivo. Consulte tambiÈn
+Altura de un objeto de clase ``cube'', en la direcci√≥n x. @var{altura}
+debe ser un n√∫mero positivo. Consulte tambi√©n
 @mxref{objeto_ylength,ylength} y @mxrefdot{objeto_zlength,zlength}
 
 @end defvr
 
 @anchor{objeto_ylength}
-@defvr {OpciÛn de objeto} ylength [ylength, @var{altura}]
+@defvr {Opci√≥n de objeto} ylength [ylength, @var{altura}]
 Valor predefinido: @code{1}
 
-Altura de un objeto de clase ``cube'', en la direcciÛn y. @var{altura}
-debe ser un n˙mero positivo. Consulte tambiÈn
+Altura de un objeto de clase ``cube'', en la direcci√≥n y. @var{altura}
+debe ser un n√∫mero positivo. Consulte tambi√©n
 @mxref{objeto_xlength,xlength} y @mxrefdot{objeto_zlength,zlength}
 
 @end defvr
 
 @anchor{objeto_zlength}
-@defvr {OpciÛn de objeto} zlength [zlength, @var{altura}]
+@defvr {Opci√≥n de objeto} zlength [zlength, @var{altura}]
 Valor predefinido: @code{1}
 
-Altura de un objeto de clase ``cube'', en la direcciÛn z. @var{altura}
-debe ser un n˙mero positivo. Consulte tambiÈn
+Altura de un objeto de clase ``cube'', en la direcci√≥n z. @var{altura}
+debe ser un n√∫mero positivo. Consulte tambi√©n
 @mxref{objeto_xlength,xlength} y @mxrefdot{objeto_ylength,ylength}
 
 @end defvr
 
 @anchor{objeto_wireframe}
-@defvr {OpciÛn de objeto} wireframe  [wireframe]
+@defvr {Opci√≥n de objeto} wireframe  [wireframe]
 
-Esta opciÛn hace que en vez de que se muestre la superficie, se muestren
-˙nicamente las aristas de la triangulaciÛn usada para construir la
+Esta opci√≥n hace que en vez de que se muestre la superficie, se muestren
+√∫nicamente las aristas de la triangulaci√≥n usada para construir la
 superficie. @strong{Ejemplo}: @code{[cube, [wireframe]]}
 
-Consulte tambiÈn @mxref{objeto_surface,surface} y
+Consulte tambi√©n @mxref{objeto_surface,surface} y
 @mxrefdot{objeto_points,points}
 
 @end defvr

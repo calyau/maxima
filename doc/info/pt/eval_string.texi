@@ -1,17 +1,17 @@
 @c /eval_string.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Definições para eval_string::
+* DefiniÃ§Ãµes para eval_string::
 @end menu
 
-@node Definições para eval_string,  , eval_string, eval_string
-@section Definições para eval_string
+@node DefiniÃ§Ãµes para eval_string,  , eval_string, eval_string
+@section DefiniÃ§Ãµes para eval_string
 
-@deffn {Função} eval_string (@var{str})
-Entrega a sequência de caracteres do Maxima @var{str} como uma expressão do Maxima e a avalia.
-@var{str} é uma sequência de caracteres do Maxima. Essa sequência pode ou não ter um marcador de final (sinal de dólar @code{$} ou ponto e vírgula @code{;}).
-Somente a primeira expressão é entregue e avaliada, se ouver mais de uma.
+@deffn {FunÃ§Ã£o} eval_string (@var{str})
+Entrega a sequÃªncia de caracteres do Maxima @var{str} como uma expressÃ£o do Maxima e a avalia.
+@var{str} Ã© uma sequÃªncia de caracteres do Maxima. Essa sequÃªncia pode ou nÃ£o ter um marcador de final (sinal de dÃ³lar @code{$} ou ponto e vÃ­rgula @code{;}).
+Somente a primeira expressÃ£o Ã© entregue e avaliada, se ouver mais de uma.
 
-Reclama se @var{str} não for uma sequência de caracteres do Maxima.
+Reclama se @var{str} nÃ£o for uma sequÃªncia de caracteres do Maxima.
 
 Exemplos:
 @example
@@ -23,16 +23,16 @@ Exemplos:
 (%o3)                   baz + 1764
 @end example
 
-Para usar essa função escreva primeiro @code{load("eval_string")}. Veja também @code{parse_string}.
+Para usar essa funÃ§Ã£o escreva primeiro @code{load("eval_string")}. Veja tambÃ©m @code{parse_string}.
 @end deffn
 
 
-@deffn {Função} parse_string (@var{str})
-Entrega a sequência de caracteres do Maxima @var{str} como uma expressão do Maxima (sem fazer nenhuma avaliação dessa expressão).
-@var{str} é uma sequência de caracteres do Maxima. Essa sequência pode ou não ter um marcador de final (sinal de dólar @code{$} ou ponto e vírgula @code{;}).
-Somente a primeira expressão é entregue e avaliada, se ouver mais de uma.
+@deffn {FunÃ§Ã£o} parse_string (@var{str})
+Entrega a sequÃªncia de caracteres do Maxima @var{str} como uma expressÃ£o do Maxima (sem fazer nenhuma avaliaÃ§Ã£o dessa expressÃ£o).
+@var{str} Ã© uma sequÃªncia de caracteres do Maxima. Essa sequÃªncia pode ou nÃ£o ter um marcador de final (sinal de dÃ³lar @code{$} ou ponto e vÃ­rgula @code{;}).
+Somente a primeira expressÃ£o Ã© entregue e avaliada, se ouver mais de uma.
 
-Reclama se @var{str} não for uma sequência de caracteres do Maxima.
+Reclama se @var{str} nÃ£o for uma sequÃªncia de caracteres do Maxima.
 
 Exemplos:
 @example
@@ -45,6 +45,6 @@ Exemplos:
 (%o3)          (foo : 42, bar : foo  + baz)
 @end example
 
-Para usar essa função escreva primeiro @code{load("eval_string")}. Veja também a função @code{eval_string}.
+Para usar essa funÃ§Ã£o escreva primeiro @code{load("eval_string")}. Veja tambÃ©m a funÃ§Ã£o @code{eval_string}.
 @end deffn
 

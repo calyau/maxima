@@ -1,12 +1,12 @@
-O Maxima inicia-se executando alguma das suas interfaces gráficas ou
-numa consola, com o comando "maxima". No início Maxima mostra informação
-do número de versão e uma linha de entrada de comando, identificada por
-@code{(%i1)} (entrada número 1). Cada comando deve terminar-se com ponto
-e vírgula ``@kbd{;}'', para que seja executado e apareça a resposta, ou
+O Maxima inicia-se executando alguma das suas interfaces grÃ¡ficas ou
+numa consola, com o comando "maxima". No inÃ­cio Maxima mostra informaÃ§Ã£o
+do nÃºmero de versÃ£o e uma linha de entrada de comando, identificada por
+@code{(%i1)} (entrada nÃºmero 1). Cada comando deve terminar-se com ponto
+e vÃ­rgula ``@kbd{;}'', para que seja executado e apareÃ§a a resposta, ou
 com ``@kbd{$}'', para que seja executado sem aparecer a resposta. Para
-terminar a sessão usa-se o comando ``@code{quit}();''. Normalmente, as
-teclas @kbd{Ctrl-d} (Ctrl e d em simultâneo) servem como atalho para
-terminar a sessão. Eis um exemplo de uma sessão no Maxima:
+terminar a sessÃ£o usa-se o comando ``@code{quit}();''. Normalmente, as
+teclas @kbd{Ctrl-d} (Ctrl e d em simultÃ¢neo) servem como atalho para
+terminar a sessÃ£o. Eis um exemplo de uma sessÃ£o no Maxima:
 
 @example
 @group
@@ -37,10 +37,10 @@ The function bug_report() provides bug reporting information.
 $
 @end example
 
-Maxima pode procurar informação nas páginas do manual. Usa-se o comando
-@kbd{describe} para mostrar todas as funções e variáveis relacionadas
-com o termo de pesquisa e opcionalmente a sua documentação. O símbolo de
-interrogação @kbd{?} é uma abreviatura para @code{describe}:
+Maxima pode procurar informaÃ§Ã£o nas pÃ¡ginas do manual. Usa-se o comando
+@kbd{describe} para mostrar todas as funÃ§Ãµes e variÃ¡veis relacionadas
+com o termo de pesquisa e opcionalmente a sua documentaÃ§Ã£o. O sÃ­mbolo de
+interrogaÃ§Ã£o @kbd{?} Ã© uma abreviatura para @code{describe}:
 
 @example
 (%i1) ?? integer
@@ -78,9 +78,9 @@ Enter space-separated numbers, `all' or `none': 0
 @end group
 @end example
 
-Para usar um resultado em cálculos posteriores, pode atribuir-se esse
-valor a uma variável ou usar-se a etiqueta @code{%o}@var{n}, onde
-@var{n} é o número da saída. Adicionalmente, @kbd{%} refere-se sempre
+Para usar um resultado em cÃ¡lculos posteriores, pode atribuir-se esse
+valor a uma variÃ¡vel ou usar-se a etiqueta @code{%o}@var{n}, onde
+@var{n} Ã© o nÃºmero da saÃ­da. Adicionalmente, @kbd{%} refere-se sempre
 ao resultado mais recente:
 
 @c ===beg===
@@ -106,7 +106,7 @@ ao resultado mais recente:
 @end group
 @end example
 
-Maxima tem conhecimento sobre números complexos e constantes numéricas:
+Maxima tem conhecimento sobre nÃºmeros complexos e constantes numÃ©ricas:
 
 @c ===beg===
 @c cos(%pi);
@@ -123,7 +123,7 @@ Maxima tem conhecimento sobre números complexos e constantes numéricas:
 @end group
 @end example
 
-Maxima pode fazer contas de cálculo diferencial e integral:
+Maxima pode fazer contas de cÃ¡lculo diferencial e integral:
 
 @c ===beg===
 @c u: expand ((x + y)^6);
@@ -151,7 +151,7 @@ Maxima pode fazer contas de cálculo diferencial e integral:
 @end group
 @end example
 
-Maxima pode resolver sistemas lineares de equações e equações cúbicas:
+Maxima pode resolver sistemas lineares de equaÃ§Ãµes e equaÃ§Ãµes cÃºbicas:
 
 @c ===beg===
 @c linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
@@ -170,8 +170,8 @@ Maxima pode resolver sistemas lineares de equações e equações cúbicas:
 @end group
 @end example
 
-Maxima pode também resolver sistemas de equações não lineares. Note-se
-os comandos terminados com @kbd{$}, que não mostram o resultado obtido.
+Maxima pode tambÃ©m resolver sistemas de equaÃ§Ãµes nÃ£o lineares. Note-se
+os comandos terminados com @kbd{$}, que nÃ£o mostram o resultado obtido.
 
 @c ===beg===
 @c eq_1: x^2 + 3*x*y + y^2 = 0$
@@ -192,7 +192,7 @@ os comandos terminados com @kbd{$}, que não mostram o resultado obtido.
 @end group
 @end example
 
-Maxima pode gerar gráficos de uma ou mais funções:
+Maxima pode gerar grÃ¡ficos de uma ou mais funÃ§Ãµes:
 
 @example
 (%i1) plot2d (sin(x)/x, [x, -20, 20])$

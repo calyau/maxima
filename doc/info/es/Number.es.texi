@@ -1,19 +1,19 @@
 @c English version 2013-07-30
 @menu
-* Funciones y variables para teoría de números::  
+* Funciones y variables para teorÃ­a de nÃºmeros::  
 @end menu
 
-@node Funciones y variables para teoría de números,  , Teoría de Números, Teoría de Números
-@section Funciones y variables para teoría de números
+@node Funciones y variables para teorÃ­a de nÃºmeros,  , TeorÃ­a de NÃºmeros, TeorÃ­a de NÃºmeros
+@section Funciones y variables para teorÃ­a de nÃºmeros
 
 
-@deffn {Función} bern (@var{n})
-Devuelve el @var{n}-ésimo número de Bernoulli del entero @var{n}.
+@deffn {FunciÃ³n} bern (@var{n})
+Devuelve el @var{n}-Ã©simo nÃºmero de Bernoulli del entero @var{n}.
 @c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
 @c OR JUST PRETEND IT'S "RETURNED" ???
-Los números de Bernoulli iguales a cero son suprimidos si @code{zerobern} vale @code{false}.
+Los nÃºmeros de Bernoulli iguales a cero son suprimidos si @code{zerobern} vale @code{false}.
 
-Véase también @code{burn}.
+VÃ©ase tambiÃ©n @code{burn}.
 
 @example
 (%i1) zerobern: true$
@@ -32,23 +32,23 @@ Véase también @code{burn}.
 
 @end deffn
 
-@deffn {Función} bernpoly (@var{x}, @var{n})
-Devuelve el @var{n}-ésimo polinomio de Bernoulli de variable @var{x}.
+@deffn {FunciÃ³n} bernpoly (@var{x}, @var{n})
+Devuelve el @var{n}-Ã©simo polinomio de Bernoulli de variable @var{x}.
 
 @end deffn
 
-@deffn {Función} bfzeta (@var{s}, @var{n})
-Devuelve la función zeta de Riemann para el argumento @var{s}. El valor que devuelve es del tipo "big float" (bfloat) y 
-@var{n}  es su número de dígitos.
+@deffn {FunciÃ³n} bfzeta (@var{s}, @var{n})
+Devuelve la funciÃ³n zeta de Riemann para el argumento @var{s}. El valor que devuelve es del tipo "big float" (bfloat) y 
+@var{n}  es su nÃºmero de dÃ­gitos.
 
-Es necesario cargar en memoria esta función haciendo @code{load ("bffac")}.
+Es necesario cargar en memoria esta funciÃ³n haciendo @code{load ("bffac")}.
 
 @end deffn
 
-@deffn {Función} bfhzeta (@var{s}, @var{h}, @var{n})
-Devuelve la función zeta de Hurwitz para los argumentos @var{s} y @var{h}. El valor que devuelve es del tipo "big float" (bfloat) y @var{n}  es su número de dígitos.
+@deffn {FunciÃ³n} bfhzeta (@var{s}, @var{h}, @var{n})
+Devuelve la funciÃ³n zeta de Hurwitz para los argumentos @var{s} y @var{h}. El valor que devuelve es del tipo "big float" (bfloat) y @var{n}  es su nÃºmero de dÃ­gitos.
 
-La función zeta de Hurwitz se define como
+La funciÃ³n zeta de Hurwitz se define como
 
 @tex
 $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
@@ -65,18 +65,18 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
 @end example
 @end ifnottex
 
-Ejecútese @code{load (bffac)} antes de hacer uso de esta función.
+EjecÃºtese @code{load (bffac)} antes de hacer uso de esta funciÃ³n.
 
 @end deffn
 
 
 
 
-@deffn {Función} burn (@var{n})
-Siendo @var{n} entero, Devuelve un número racional que aproxima el 
-@var{n}-ésimo número de Bernoulli. La función @code{burn} aprovecha
-el hecho de que los números de Bernoulli racionales se pueden aproximar
-con notable precisión gracias a 
+@deffn {FunciÃ³n} burn (@var{n})
+Siendo @var{n} entero, Devuelve un nÃºmero racional que aproxima el 
+@var{n}-Ã©simo nÃºmero de Bernoulli. La funciÃ³n @code{burn} aprovecha
+el hecho de que los nÃºmeros de Bernoulli racionales se pueden aproximar
+con notable precisiÃ³n gracias a 
 
 @example
                    n - 1  1 - 2 n
@@ -86,23 +86,23 @@ con notable precisión gracias a
                              %pi
 @end example
 
-La función @code{burn} puede ser más eficiente que @code{bern} cuando 
-@var{n} es un número grande, ya que @code{bern} calcula todos los números
-de Bernoulli hasta el @var{n}-ésimo. Por el contrario, @code{burn} hace 
-uso de la aproximación para enteros pares @var{n} > 255. En caso de
-enteros impares y @var{n} <= 255, se hace uso de la función @code{bern}.
+La funciÃ³n @code{burn} puede ser mÃ¡s eficiente que @code{bern} cuando 
+@var{n} es un nÃºmero grande, ya que @code{bern} calcula todos los nÃºmeros
+de Bernoulli hasta el @var{n}-Ã©simo. Por el contrario, @code{burn} hace 
+uso de la aproximaciÃ³n para enteros pares @var{n} > 255. En caso de
+enteros impares y @var{n} <= 255, se hace uso de la funciÃ³n @code{bern}.
 
-Para utilizar esta función hay que cargarla antes en memoria escribiendo
-@code{load ("bffac")}. Véase también @code{bern}.
+Para utilizar esta funciÃ³n hay que cargarla antes en memoria escribiendo
+@code{load ("bffac")}. VÃ©ase tambiÃ©n @code{bern}.
 
 @end deffn
 
 
 
-@deffn {Función} chinese ([@var{r_1}, @dots{}, @var{r_n}], [@var{m_1}, @dots{}, @var{m_n}])
+@deffn {FunciÃ³n} chinese ([@var{r_1}, @dots{}, @var{r_n}], [@var{m_1}, @dots{}, @var{m_n}])
 
 Resulve el sistema de congruencias @code{x = r_1 mod m_1}, @dots{}, @code{x = r_n mod m_n}.
-Los restos @var{r_n} pueden ser enteros arbitrarios, mientras que los módulos @var{m_n}
+Los restos @var{r_n} pueden ser enteros arbitrarios, mientras que los mÃ³dulos @var{m_n}
 deben ser positivos y primos dos a dos. 
 
 @example
@@ -125,42 +125,42 @@ deben ser positivos y primos dos a dos.
 
 
 
-@deffn {Función} cf (@var{expr})
+@deffn {FunciÃ³n} cf (@var{expr})
 
-Calcula aproximaciones con fracciones continuas. @var{expr} es una expresión
-que contiene fracciones continuas, raíces cuadradas de enteros,
-y números reales (enteros, racionales, decimales en coma flotante y decimales de
-precisión arbitraria). @code{cf} calcula expansiones exactas de números 
-racionales, pero las expansiones de nÃºmeros decimales de coma flotante se truncan
-de acuerdo con el valor de @code{ratepsilon}, y la de los de decimales de precisión
+Calcula aproximaciones con fracciones continuas. @var{expr} es una expresiÃ³n
+que contiene fracciones continuas, raÃ­ces cuadradas de enteros,
+y nÃºmeros reales (enteros, racionales, decimales en coma flotante y decimales de
+precisiÃ³n arbitraria). @code{cf} calcula expansiones exactas de nÃºmeros 
+racionales, pero las expansiones de nÃƒÂºmeros decimales de coma flotante se truncan
+de acuerdo con el valor de @code{ratepsilon}, y la de los de decimales de precisiÃ³n
 arbitraria (bigfloats) lo hacen respecto de @code{10^(-fpprec)}.
 
-En las expresiones se pueden combinar operandos con operadores aritméticos.
-Maxima no conoce operaciones con fracciones continuas más allá de
-la función @code{cf}.
+En las expresiones se pueden combinar operandos con operadores aritmÃ©ticos.
+Maxima no conoce operaciones con fracciones continuas mÃ¡s allÃ¡ de
+la funciÃ³n @code{cf}.
 
-La función @code{cf} evalúa sus argumentos después de asignar a la 
-variable @code{listarith} el valor @code{false}, retornando una fracción
+La funciÃ³n @code{cf} evalÃºa sus argumentos despuÃ©s de asignar a la 
+variable @code{listarith} el valor @code{false}, retornando una fracciÃ³n
 continua en forma de lista.
 
-Una fracción continua @code{a + 1/(b + 1/(c + ...))} se representa como la
+Una fracciÃ³n continua @code{a + 1/(b + 1/(c + ...))} se representa como la
 lista @code{[a, b, c, ...]}, donde los elementos @code{a}, @code{b}, @code{c}, ... 
-se evalúan como enteros. La expresión @var{expr} puede contener también  
-@code{sqrt (n)} donde @code{n} es un entero; en tal caso, @code{cf} devolverá 
-tantos términos de la fracción continua como indique el valor de la variable 
-@code{cflength} multiplicado por el período.
+se evalÃºan como enteros. La expresiÃ³n @var{expr} puede contener tambiÃ©n  
+@code{sqrt (n)} donde @code{n} es un entero; en tal caso, @code{cf} devolverÃ¡ 
+tantos tÃ©rminos de la fracciÃ³n continua como indique el valor de la variable 
+@code{cflength} multiplicado por el perÃ­odo.
 
-Una fracción continua puede reducirse a un número evaluando la representación 
-aritmética que devuelve @code{cfdisrep}. Véase también  @code{cfexpand}, 
+Una fracciÃ³n continua puede reducirse a un nÃºmero evaluando la representaciÃ³n 
+aritmÃ©tica que devuelve @code{cfdisrep}. VÃ©ase tambiÃ©n  @code{cfexpand}, 
 que es otra alternativa para evaluar fracciones continuas.
 
-Véanse asimismo @code{cfdisrep}, @code{cfexpand} y @code{cflength}.
+VÃ©anse asimismo @code{cfdisrep}, @code{cfexpand} y @code{cflength}.
 
 Ejemplos:
 
 @itemize @bullet
 @item
-La expresión @var{expr} contiene fracciones continuas y raíces
+La expresiÃ³n @var{expr} contiene fracciones continuas y raÃ­ces
 cuadradas de enteros.
 
 @example
@@ -171,8 +171,8 @@ cuadradas de enteros.
 @end example
 
 @item
-La variable @code{cflength} controla cuantos períodos de la fracción 
-continua se calculan para números irracionales algebraicos.
+La variable @code{cflength} controla cuantos perÃ­odos de la fracciÃ³n 
+continua se calculan para nÃºmeros irracionales algebraicos.
 
 @example
 (%i1) cflength: 1$
@@ -187,7 +187,7 @@ continua se calculan para números irracionales algebraicos.
 @end example
 
 @item
-Una fracción continua puede calcularse evaluando la representación aritmética 
+Una fracciÃ³n continua puede calcularse evaluando la representaciÃ³n aritmÃ©tica 
 que devuelve @code{cfdisrep}.
 
 @example
@@ -198,8 +198,8 @@ que devuelve @code{cfdisrep}.
 @end example
 
 @item
-Maxima no sabe sobre operaciones con fracciones continuas más de lo que aporta 
-la función @code{cf}.
+Maxima no sabe sobre operaciones con fracciones continuas mÃ¡s de lo que aporta 
+la funciÃ³n @code{cf}.
 
 @example
 (%i1) cf ([1,1,1,1,1,2] * 3);
@@ -214,8 +214,8 @@ la función @code{cf}.
 
 
 
-@deffn {Función} cfdisrep (@var{lista})
-Construye y devuelve una expresión aritmética ordinaria de la forma  @code{a + 1/(b + 1/(c + ...))} a partir de la representación en formato lista de la fracción continua  @code{[a, b, c, ...]}.
+@deffn {FunciÃ³n} cfdisrep (@var{lista})
+Construye y devuelve una expresiÃ³n aritmÃ©tica ordinaria de la forma  @code{a + 1/(b + 1/(c + ...))} a partir de la representaciÃ³n en formato lista de la fracciÃ³n continua  @code{[a, b, c, ...]}.
 
 @example
 (%i1) cf ([1, 2, -3] + [1, -2, 1]);
@@ -235,8 +235,8 @@ Construye y devuelve una expresión aritmética ordinaria de la forma  @code{a + 1
 
 
 
-@deffn {Función} cfexpand (@var{x})
-Devuelve la matriz con los numeradores y denominadores de la última (columna 1) y penúltima (columna 2) convergentes de la fracción continua @var{x}.
+@deffn {FunciÃ³n} cfexpand (@var{x})
+Devuelve la matriz con los numeradores y denominadores de la Ãºltima (columna 1) y penÃºltima (columna 2) convergentes de la fracciÃ³n continua @var{x}.
 
 @example
 (%i1) cf (rat (ev (%pi, numer)));
@@ -256,7 +256,7 @@ Devuelve la matriz con los numeradores y denominadores de la última (columna 1) 
 @defvr {Variable opcional} cflength
 Valor por defecto: 1
 
-La variable @code{cflength} controla el número de términos de la fracción continua que devuelve la función @code{cf}, que será @code{cflength} multiplicado por el período. Así, el valor por defecto será el de un período.
+La variable @code{cflength} controla el nÃºmero de tÃ©rminos de la fracciÃ³n continua que devuelve la funciÃ³n @code{cf}, que serÃ¡ @code{cflength} multiplicado por el perÃ­odo. AsÃ­, el valor por defecto serÃ¡ el de un perÃ­odo.
 
 @example
 (%i1) cflength: 1$
@@ -275,10 +275,10 @@ La variable @code{cflength} controla el número de términos de la fracción contin
 
 
 
-@deffn {Función} divsum (@var{n}, @var{k})
-@deffnx {Función} divsum (@var{n})
+@deffn {FunciÃ³n} divsum (@var{n}, @var{k})
+@deffnx {FunciÃ³n} divsum (@var{n})
 
-La llamada @code{divsum (@var{n}, @var{k})} devuelve la suma de los divisores de @var{n} elevados a la @var{k}-ésima potencia.
+La llamada @code{divsum (@var{n}, @var{k})} devuelve la suma de los divisores de @var{n} elevados a la @var{k}-Ã©sima potencia.
 
 La llamada @code{divsum (@var{n})} devuelve la suma de los divisores de @var{n}.
 
@@ -296,11 +296,11 @@ La llamada @code{divsum (@var{n})} devuelve la suma de los divisores de @var{n}.
 @end deffn
 
 
-@deffn {Función} euler (@var{n})
-Devuelve el @var{n}-ésimo número de Euler del entero no negativo @var{n}.
-Los número de Euler iguales a cero se eliminan si @code{zerobern} vale @code{false}.
+@deffn {FunciÃ³n} euler (@var{n})
+Devuelve el @var{n}-Ã©simo nÃºmero de Euler del entero no negativo @var{n}.
+Los nÃºmero de Euler iguales a cero se eliminan si @code{zerobern} vale @code{false}.
 
-Para la constante de Euler-Mascheroni, véase @code{%gamma}.
+Para la constante de Euler-Mascheroni, vÃ©ase @code{%gamma}.
 
 @example
 (%i1) zerobern: true$
@@ -319,22 +319,22 @@ Para la constante de Euler-Mascheroni, véase @code{%gamma}.
 Valor por defecto: @code{false}
 
 Controla el resultado devuelto por @code{ifactors}. El valor por defecto
-@code{false} hace que @code{ifactors} no dé información sobre las
+@code{false} hace que @code{ifactors} no dÃ© informaciÃ³n sobre las
 multiplicidades de los factores primos calculados. Cuando @code{factors_only}
 vale @code{true}, @code{ifactors} solo devuelve la lista de factores primos.
 
-Para ejemplos, véase @code{ifactors}.
+Para ejemplos, vÃ©ase @code{ifactors}.
 @end defvr
 
 
 
-@deffn {Función} fib (@var{n})
-Devuelve el @var{n}-ésimo número de Fibonacci. La llamada @code{fib(0)} 
+@deffn {FunciÃ³n} fib (@var{n})
+Devuelve el @var{n}-Ã©simo nÃºmero de Fibonacci. La llamada @code{fib(0)} 
 devuelve 0, @code{fib(1)} devuelve 1 y @code{fib (-@var{n})} es igual a 
 @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
 
-Después de llamar a @code{fib}, la variable @code{prevfib} toma el valor 
-@code{fib (@var{n} - 1)}, que es el número de Fibonacci que precede al último calculado.
+DespuÃ©s de llamar a @code{fib}, la variable @code{prevfib} toma el valor 
+@code{fib (@var{n} - 1)}, que es el nÃºmero de Fibonacci que precede al Ãºltimo calculado.
 
 @example
 (%i1) map (fib, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
@@ -343,8 +343,8 @@ Después de llamar a @code{fib}, la variable @code{prevfib} toma el valor
 
 @end deffn
 
-@deffn {Función} fibtophi (@var{expr})
-Expresa los números de Fibonacci en @var{expr} en términos de la razón áurea @code{%phi},
+@deffn {FunciÃ³n} fibtophi (@var{expr})
+Expresa los nÃºmeros de Fibonacci en @var{expr} en tÃ©rminos de la razÃ³n Ã¡urea @code{%phi},
 que es @code{(1 + sqrt(5))/2}, aproximadamente 1.61803399.
 
 Ejemplos:
@@ -381,17 +381,17 @@ Ejemplos:
 
 
 
-@deffn {Función} ifactors (@var{n})
-Devuelve la factorización del entero positivo @var{n}. Si @code{n=p1^e1..pk^nk} es
-la descomposición de @var{n} en números primos, @code{ifactors} devuelve 
+@deffn {FunciÃ³n} ifactors (@var{n})
+Devuelve la factorizaciÃ³n del entero positivo @var{n}. Si @code{n=p1^e1..pk^nk} es
+la descomposiciÃ³n de @var{n} en nÃºmeros primos, @code{ifactors} devuelve 
 @code{[[p1, e1], ... , [pk, ek]]}.
 
-Los métodos de factorización se basan en divisiones tentativas con números primos
-hasta 9973, en los métodos rho y p-1 de Pollard y en curvas elípticas.
+Los mÃ©todos de factorizaciÃ³n se basan en divisiones tentativas con nÃºmeros primos
+hasta 9973, en los mÃ©todos rho y p-1 de Pollard y en curvas elÃ­pticas.
 
-La respuesta que se obtiene de @code{ifactors} está controlada por la variable opcional
+La respuesta que se obtiene de @code{ifactors} estÃ¡ controlada por la variable opcional
 @code{factors_only}. El valor por defecto @code{false} hace que @code{ifactors} no 
-dé información sobre las multiplicidades de los factores primos calculados. 
+dÃ© informaciÃ³n sobre las multiplicidades de los factores primos calculados. 
 Cuando @code{factors_only} vale @code{true}, @code{ifactors} solo devuelve la lista 
 de factores primos.
 
@@ -408,16 +408,16 @@ de factores primos.
 
 
 
-@deffn {Función} igcdex (@var{n}, @var{k})
+@deffn {FunciÃ³n} igcdex (@var{n}, @var{k})
 
 Devuelve la lista @code{[@var{a}, @var{b}, @var{u}]}, donde @var{u} es
-el máximo común divisor de @var{n} y @var{k}, siendo @var{u}
+el mÃ¡ximo comÃºn divisor de @var{n} y @var{k}, siendo @var{u}
 igual a @code{@var{a} @var{n} + @var{b} @var{k}}. Los argumentos
 @var{n} y @var{k} deben ser enteros.
 
-@code{igcdex} implementa el algoritmo de Euclides. Véase también @code{gcdex}.
+@code{igcdex} implementa el algoritmo de Euclides. VÃ©ase tambiÃ©n @code{gcdex}.
 
-La instrucción @code{load(gcdex)} carga esta función.
+La instrucciÃ³n @code{load(gcdex)} carga esta funciÃ³n.
 
 Ejemplos:
 
@@ -437,8 +437,8 @@ Ejemplos:
 
 
 
-@deffn {Función} inrt (@var{x}, @var{n})
-Devuelve la raíz entera @var{n}-ésima del valor absoluto de  @var{x}.
+@deffn {FunciÃ³n} inrt (@var{x}, @var{n})
+Devuelve la raÃ­z entera @var{n}-Ã©sima del valor absoluto de  @var{x}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -448,10 +448,10 @@ Devuelve la raíz entera @var{n}-ésima del valor absoluto de  @var{x}.
 
 @end deffn
 
-@deffn {Función} inv_mod (@var{n}, @var{m})
-Calcula el inverso de @var{n} módulo @var{m}. 
+@deffn {FunciÃ³n} inv_mod (@var{n}, @var{m})
+Calcula el inverso de @var{n} mÃ³dulo @var{m}. 
 La llamada @code{inv_mod (n,m)} devuelve @code{false}
-si @var{n} es un divisor nulo módulo @var{m}.
+si @var{n} es un divisor nulo mÃ³dulo @var{m}.
 
 @example
 (%i1) inv_mod(3, 41);
@@ -465,8 +465,8 @@ si @var{n} es un divisor nulo módulo @var{m}.
 @end deffn
 
 
-@deffn {Función} isqrt (@var{x})
-Devuelve la "raíz cuadrada entera"
+@deffn {FunciÃ³n} isqrt (@var{x})
+Devuelve la "raÃ­z cuadrada entera"
 del valor absoluto de @var{x},
 el cual debe ser un entero.
 
@@ -474,8 +474,8 @@ el cual debe ser un entero.
 
 
 
-@deffn {Función} jacobi (@var{p}, @var{q})
-Devuelve el símbolo de Jacobi para @var{p} y @var{q}.
+@deffn {FunciÃ³n} jacobi (@var{p}, @var{q})
+Devuelve el sÃ­mbolo de Jacobi para @var{p} y @var{q}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -485,11 +485,11 @@ Devuelve el símbolo de Jacobi para @var{p} y @var{q}.
 
 @end deffn
 
-@deffn {Función} lcm (@var{expr_1}, ..., @var{expr_n})
-Devuelve el mínimo común múltiplo de sus argumentos. 
+@deffn {FunciÃ³n} lcm (@var{expr_1}, ..., @var{expr_n})
+Devuelve el mÃ­nimo comÃºn mÃºltiplo de sus argumentos. 
 Los argumentos pueden ser tanto expresiones en general como enteros.
 
-Es necesario cargar en memoria esta función haciendo @code{load ("functs")}.
+Es necesario cargar en memoria esta funciÃ³n haciendo @code{load ("functs")}.
 
 @end deffn
 
@@ -497,8 +497,8 @@ Es necesario cargar en memoria esta función haciendo @code{load ("functs")}.
 
 
 
-@deffn {Función} lucas (@var{n})
-Devuelve el @var{n}-ésimo número de Lucas.
+@deffn {FunciÃ³n} lucas (@var{n})
+Devuelve el @var{n}-Ã©simo nÃºmero de Lucas.
 @code{lucas(0)} es igual a 2, @code{lucas(1)} es igual a 1 y 
 @code{lucas(-@var{n})} es igual a @code{(-1)^(-@var{n}) * lucas(@var{n})}.
 
@@ -507,9 +507,9 @@ Devuelve el @var{n}-ésimo número de Lucas.
 (%o1)             [7, - 4, 3, - 1, 2, 1, 3, 4, 7, 11, 18, 29, 47]
 @end example
 
-Después de llamar a @code{lucas}, la variable global @code{next_lucas}
-es igual a @code{lucas (@var{n} + 1)}, el número de Lucas que sigue al
-último que se ha devuelto. El ejemplo muestra como los números de
+DespuÃ©s de llamar a @code{lucas}, la variable global @code{next_lucas}
+es igual a @code{lucas (@var{n} + 1)}, el nÃºmero de Lucas que sigue al
+Ãºltimo que se ha devuelto. El ejemplo muestra como los nÃºmeros de
 Fibonacci se pueden calcular mediante  @code{lucas} y @code{next_lucas}.
 
 @example
@@ -526,18 +526,18 @@ Fibonacci se pueden calcular mediante  @code{lucas} y @code{next_lucas}.
 
 
 
-@deffn {Función} mod (@var{x}, @var{y})
+@deffn {FunciÃ³n} mod (@var{x}, @var{y})
 
-Si @var{x} e @var{y} son números reales e @var{y} es distinto de cero,
+Si @var{x} e @var{y} son nÃºmeros reales e @var{y} es distinto de cero,
 devuelve @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
-Para todos los reales @var{x}, se tiene @code{mod (@var{x}, 0) = @var{x}}. Para información sobre la definición de  @code{mod (@var{x}, 0) = @var{x}}, véase la sección 3.4 de "Concrete Mathematics", 
-by Graham, Knuth, and Patashnik. La función @code{mod (@var{x}, 1)} es de diente de sierra con periodo unidad y con @code{mod (1, 1) = 0} y @code{mod (0, 1) = 0}.
+Para todos los reales @var{x}, se tiene @code{mod (@var{x}, 0) = @var{x}}. Para informaciÃ³n sobre la definiciÃ³n de  @code{mod (@var{x}, 0) = @var{x}}, vÃ©ase la secciÃ³n 3.4 de "Concrete Mathematics", 
+by Graham, Knuth, and Patashnik. La funciÃ³n @code{mod (@var{x}, 1)} es de diente de sierra con periodo unidad y con @code{mod (1, 1) = 0} y @code{mod (0, 1) = 0}.
 
-Para encontrar el argumento principal (un número del intervalo @code{(-%pi, %pi]}) de un número complejo, hágase uso de la función @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, donde @var{x} es un argumento.
+Para encontrar el argumento principal (un nÃºmero del intervalo @code{(-%pi, %pi]}) de un nÃºmero complejo, hÃ¡gase uso de la funciÃ³n @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, donde @var{x} es un argumento.
 
-Si @var{x} e @var{y} son expresiones constantes (por ejemplo, @code{10 * %pi}), @code{mod} utiliza el mismo esquema de evaluación basado en números grandes en coma flotante (big floats) que @code{floor} y @code{ceiling}. También es posible, pero improbable, que @code{mod} pueda retornar un valor erróneo en tales casos.
+Si @var{x} e @var{y} son expresiones constantes (por ejemplo, @code{10 * %pi}), @code{mod} utiliza el mismo esquema de evaluaciÃ³n basado en nÃºmeros grandes en coma flotante (big floats) que @code{floor} y @code{ceiling}. TambiÃ©n es posible, pero improbable, que @code{mod} pueda retornar un valor errÃ³neo en tales casos.
 
-Para argumentos no numéricos @var{x} o @var{y}, @code{mod} aplica algunas reglas de simplificación:
+Para argumentos no numÃ©ricos @var{x} o @var{y}, @code{mod} aplica algunas reglas de simplificaciÃ³n:
 
 @c ===beg===
 @c mod (x, 0);
@@ -556,7 +556,7 @@ Para argumentos no numéricos @var{x} o @var{y}, @code{mod} aplica algunas reglas
 
 
 
-@deffn {Función} next_prime (@var{n})
+@deffn {FunciÃ³n} next_prime (@var{n})
 Devuelve el menor de los primos mayores que @var{n}.
 
 @example
@@ -567,8 +567,8 @@ Devuelve el menor de los primos mayores que @var{n}.
 @end deffn
 
 
-@deffn {Función} partfrac (@var{expr}, @var{var})
-Expande la expresión @var{expr} en fracciones parciales respecto de la variable principal @var{var}. La función @code{partfrac} hace una descomposición completa en fracciones parciales. El algoritmo que se utiliza se basa en el hecho de que los denominadores de la expansión en fracciones parciales (los factores del denominador original) son primos relativos. Los numeradores se pueden escribir como combinaciones lineales de los denominadores.
+@deffn {FunciÃ³n} partfrac (@var{expr}, @var{var})
+Expande la expresiÃ³n @var{expr} en fracciones parciales respecto de la variable principal @var{var}. La funciÃ³n @code{partfrac} hace una descomposiciÃ³n completa en fracciones parciales. El algoritmo que se utiliza se basa en el hecho de que los denominadores de la expansiÃ³n en fracciones parciales (los factores del denominador original) son primos relativos. Los numeradores se pueden escribir como combinaciones lineales de los denominadores.
 
 @example
 (%i1) 1/(1+x)^2 - 2/(1+x) + 2/(2+x);
@@ -593,10 +593,10 @@ Expande la expresión @var{expr} en fracciones parciales respecto de la variable 
 
 
 
-@deffn {Función} power_mod (@var{a}, @var{n}, @var{m})
+@deffn {FunciÃ³n} power_mod (@var{a}, @var{n}, @var{m})
 Utiliza un algoritmo modular para calcular @code{a^n mod m},
 siendo @var{a} y @var{n} enteros cualesquiera y @var{m} un entero positivo.
-Si @var{n} es negativo, se utilizará @code{inv_mod} para encontrar el
+Si @var{n} es negativo, se utilizarÃ¡ @code{inv_mod} para encontrar el
 inverso modular.
 
 @example
@@ -612,20 +612,20 @@ inverso modular.
 
 @end deffn
 
-@deffn {Función} primep (@var{n})
-Comprueba si el número entero @var{n} es o no primo, devolviendo @code{true}
-o @code{false} según el caso.
+@deffn {FunciÃ³n} primep (@var{n})
+Comprueba si el nÃºmero entero @var{n} es o no primo, devolviendo @code{true}
+o @code{false} segÃºn el caso.
 
 Cuando el resultado de @code{primep (@var{n})} es @code{false}, @var{n} es un
-número compuesto, y si es @code{true}, @var{n} es primo con alta probabilidad.
+nÃºmero compuesto, y si es @code{true}, @var{n} es primo con alta probabilidad.
 
-Si @var{n} es menor que 341550071728321, se utiliza una versión 
-determinística de la prueba de Miller-Rabin. En tal caso,
-si @code{primep (@var{n})} devuelve @code{true}, entonces @var{n} es un número primo.
+Si @var{n} es menor que 341550071728321, se utiliza una versiÃ³n 
+determinÃ­stica de la prueba de Miller-Rabin. En tal caso,
+si @code{primep (@var{n})} devuelve @code{true}, entonces @var{n} es un nÃºmero primo.
 
 Para @var{n} mayor que 341550071728321 @code{primep} realiza 
 @code{primep_number_of_tests} pruebas de seudo-primalidad de Miller-Rabin y una 
-prueba de seudo-primalidad de Lucas. La probabilidad de que un número compuesto 
+prueba de seudo-primalidad de Lucas. La probabilidad de que un nÃºmero compuesto 
 @var{n} pase una prueba de Miller-Rabin es menor que 1/4. Con el valor por defecto de 
 @code{primep_number_of_tests}, que es 25, la probabilidad de que @var{n}
 sea compuesto es menor que 10^-15.
@@ -638,10 +638,10 @@ sea compuesto es menor que 10^-15.
 @defvr {Variable opcional} primep_number_of_tests
 Valor por defecto: 25
 
-Número de pruebas de Miller-Rabin a realizar por @code{primep}.
+NÃºmero de pruebas de Miller-Rabin a realizar por @code{primep}.
 @end defvr
 
-@deffn {Función} prev_prime (@var{n})
+@deffn {FunciÃ³n} prev_prime (@var{n})
 Devuelve el mayor de los primos menores que @var{n}.
 
 @example
@@ -651,8 +651,8 @@ Devuelve el mayor de los primos menores que @var{n}.
 @end deffn
 
 
-@deffn {Función} qunit (@var{n})
-Devuelve la unidad principal de @code{sqrt (@var{n})}, siendo @var{n} un entero; consiste en la resolución de la ecuación de Pell  @code{a^2 - @var{n} b^2 = 1}.
+@deffn {FunciÃ³n} qunit (@var{n})
+Devuelve la unidad principal de @code{sqrt (@var{n})}, siendo @var{n} un entero; consiste en la resoluciÃ³n de la ecuaciÃ³n de Pell  @code{a^2 - @var{n} b^2 = 1}.
 
 @example
 (%i1) qunit (17);
@@ -665,41 +665,41 @@ Devuelve la unidad principal de @code{sqrt (@var{n})}, siendo @var{n} un entero;
 
 
 
-@deffn {Función} totient (@var{n})
-Devuelve el número de enteros menores o iguales a @var{n} que son primos relativos con @var{n}.
+@deffn {FunciÃ³n} totient (@var{n})
+Devuelve el nÃºmero de enteros menores o iguales a @var{n} que son primos relativos con @var{n}.
 @end deffn
 
 @defvr {Variable opcional} zerobern
 Valor por defecto: @code{true}
 
-Si @code{zerobern} vale @code{false}, @code{bern} excluye los números de Bernoulli
-y @code{euler} excluye los números de Euler que sean iguales a cero.
-Véase @code{bern} y @code{euler}.
+Si @code{zerobern} vale @code{false}, @code{bern} excluye los nÃºmeros de Bernoulli
+y @code{euler} excluye los nÃºmeros de Euler que sean iguales a cero.
+VÃ©ase @code{bern} y @code{euler}.
 @end defvr
 
 
 
 
-@deffn {Función} zeta (@var{n})
-Devuelve la función zeta de Riemann. Si @var{n} es entero negativo,
-0 o número par positivo, la función zeta de Riemann devuelve un
-valor exacto; en el caso de número par positivo, la variable opcional
-@code{zeta%pi}, además, tiene que tener el valor @code{true} 
-(véase @code{zeta%pi}). 
-Cuando el argumento es un número decimal o bigfloat,
-entonces la función zeta de Riemann se calcula numéricamente.
+@deffn {FunciÃ³n} zeta (@var{n})
+Devuelve la funciÃ³n zeta de Riemann. Si @var{n} es entero negativo,
+0 o nÃºmero par positivo, la funciÃ³n zeta de Riemann devuelve un
+valor exacto; en el caso de nÃºmero par positivo, la variable opcional
+@code{zeta%pi}, ademÃ¡s, tiene que tener el valor @code{true} 
+(vÃ©ase @code{zeta%pi}). 
+Cuando el argumento es un nÃºmero decimal o bigfloat,
+entonces la funciÃ³n zeta de Riemann se calcula numÃ©ricamente.
 Maxima devuelve una forma nominal @code{zeta (@var{n})} para
 cualesquiera otros argumentos, incluidos los racionales no enteros,
-los números complejos y los enteros pares si @code{zeta%pi} vale
+los nÃºmeros complejos y los enteros pares si @code{zeta%pi} vale
 @code{false}.
 
-@code{zeta(1)} no está definida, pero Maxima conce el límite 
+@code{zeta(1)} no estÃ¡ definida, pero Maxima conce el lÃ­mite 
 de @code{limit(zeta(x), x, 1)} por ambos lados.
 
-La función zeta de Riemann se distribuye sobre las listas, matrices
+La funciÃ³n zeta de Riemann se distribuye sobre las listas, matrices
 y ecuaciones.
 
-Véanse también @code{bfzeta} y @code{zeta%pi}.
+VÃ©anse tambiÃ©n @code{bfzeta} y @code{zeta%pi}.
 
 Ejemplos:
 
@@ -730,7 +730,7 @@ Ejemplos:
 @defvr {Variable opcional} zeta%pi
 Valor por defecto: @code{true}
 
-Si @code{zeta%pi} vale @code{true}, @code{zeta} devuelve una expresión proporcional a @code{%pi^n} si @code{n} es un número par positivo. En caso contrario, @code{zeta} no se evalúa y devuelve la forma nominal @code{zeta (n)}.
+Si @code{zeta%pi} vale @code{true}, @code{zeta} devuelve una expresiÃ³n proporcional a @code{%pi^n} si @code{n} es un nÃºmero par positivo. En caso contrario, @code{zeta} no se evalÃºa y devuelve la forma nominal @code{zeta (n)}.
 
 Ejemplos:
 
@@ -759,10 +759,10 @@ Ejemplos:
 
 
 
-@deffn {Función} zn_add_table (@var{n}) 
+@deffn {FunciÃ³n} zn_add_table (@var{n}) 
 Muestra la tabla de la suma de todos los elementos de (Z/@var{n}Z).
 
-Véanse también @code{zn_mult_table} y @code{zn_power_table}.
+VÃ©anse tambiÃ©n @code{zn_mult_table} y @code{zn_power_table}.
 
 @end deffn
 
@@ -772,14 +772,14 @@ Véanse también @code{zn_mult_table} y @code{zn_power_table}.
 
 
 
-@deffn {Función} zn_determinant (@var{matrix}, @var{p}) 
-Utiliza el procedimiento de la descomposición LU para calcular el determinante
-de @var{matrix} sobre (Z/@var{p}Z). El argumento @var{p} debe ser un número primo.
+@deffn {FunciÃ³n} zn_determinant (@var{matrix}, @var{p}) 
+Utiliza el procedimiento de la descomposiciÃ³n LU para calcular el determinante
+de @var{matrix} sobre (Z/@var{p}Z). El argumento @var{p} debe ser un nÃºmero primo.
 
 Si el determinante es igual a cero, el procedimiento puede fallar, en cuyo caso
 @code{zn_determinant} calcula el determinante no modular y luego reduce.
 
-Véase también @code{zn_invert_by_lu}.
+VÃ©ase tambiÃ©n @code{zn_invert_by_lu}.
 
 Ejemplo:
 
@@ -806,13 +806,13 @@ Ejemplo:
 
 
 
-@deffn {Función} zn_invert_by_lu (@var{matrix}, @var{p}) 
-Utiliza el procedimiento de la descomposición LU para calcular la inversa
+@deffn {FunciÃ³n} zn_invert_by_lu (@var{matrix}, @var{p}) 
+Utiliza el procedimiento de la descomposiciÃ³n LU para calcular la inversa
 modular de @var{matrix} sobre (Z/@var{p}Z). El argumento @var{p} debe ser 
-un número primo y @var{matrix} invertible. La función @code{zn_invert_by_lu}
+un nÃºmero primo y @var{matrix} invertible. La funciÃ³n @code{zn_invert_by_lu}
 devuelve @code{false} si @var{matrix} no es invertible.
 
-Véase @code{zn_determinant}.
+VÃ©ase @code{zn_determinant}.
 
 Ejemplo:
 
@@ -840,23 +840,23 @@ Ejemplo:
 
 
 
-@deffn {Función} zn_log (@var{a}, @var{g}, @var{n}) 
-@deffnx {Función} zn_log (@var{a}, @var{g}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
-Calcula el logaritmo discreto. Sea (Z/@var{n}Z)* un grupo cíclico,
-@var{g} una raíz primitiva módulo @var{n} y @var{a} un miembro
+@deffn {FunciÃ³n} zn_log (@var{a}, @var{g}, @var{n}) 
+@deffnx {FunciÃ³n} zn_log (@var{a}, @var{g}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+Calcula el logaritmo discreto. Sea (Z/@var{n}Z)* un grupo cÃ­clico,
+@var{g} una raÃ­z primitiva mÃ³dulo @var{n} y @var{a} un miembro
 de este grupo, entonces @code{zn_log (a, g, n)} calcula la congruencia @code{g^x = a mod n}.
 
-El algoritmo que se aplica necesita una factorización prima de @code{totient(n)}. Esta 
-factorización puede requerir mucho tiempo de cálculo, por lo que en ciertos casos puede
+El algoritmo que se aplica necesita una factorizaciÃ³n prima de @code{totient(n)}. Esta 
+factorizaciÃ³n puede requerir mucho tiempo de cÃ¡lculo, por lo que en ciertos casos puede
 ser aconsejable factorizar primero y luego pasar la lista de factores a @code{zn_log} como
 cuarto argumento. La lista debe ser de la misma forma que las lista devuelta por 
-@code{ifactors(totient(n))} utilizando la opción por defecto @code{factors_only : false}.
+@code{ifactors(totient(n))} utilizando la opciÃ³n por defecto @code{factors_only : false}.
 
-El algoritmo utiliza la reducción de Pohlig-Hellman y el método Rho de Pollard
-para los logaritmos discretos. El tiempo de ejecución de @code{zn_log} depende en
-primer lugar del número de bits del mayor factor primo del totient.
+El algoritmo utiliza la reducciÃ³n de Pohlig-Hellman y el mÃ©todo Rho de Pollard
+para los logaritmos discretos. El tiempo de ejecuciÃ³n de @code{zn_log} depende en
+primer lugar del nÃºmero de bits del mayor factor primo del totient.
 
-Véanse también @code{zn_primroot}, @code{zn_order}, @code{ifactors} y @code{totient}.
+VÃ©anse tambiÃ©n @code{zn_primroot}, @code{zn_order}, @code{ifactors} y @code{totient}.
 
 Ejemplos:
 
@@ -903,16 +903,16 @@ El cuarto argumento opcional debe ser de la misma forma que la lista devuelta po
 
 
 
-@deffn {Función} zn_mult_table (@var{n}) 
-@deffnx {Función} zn_mult_table (@var{n}, all)
+@deffn {FunciÃ³n} zn_mult_table (@var{n}) 
+@deffnx {FunciÃ³n} zn_mult_table (@var{n}, all)
 Sin el argumento opcional @var{all}, @code{zn_mult_table(n)} 
-muestra la tabla de multiplicación de los elementos de (Z/@var{n}Z)*,
-que son todos elementos invertibles módulo @var{n}.
+muestra la tabla de multiplicaciÃ³n de los elementos de (Z/@var{n}Z)*,
+que son todos elementos invertibles mÃ³dulo @var{n}.
 
 El argumento opcional @var{all} hace que la tabla se genere para todos los 
 elementos no nulos.
 
-Véanse también @code{zn_add_table} y @code{zn_power_table}.
+VÃ©anse tambiÃ©n @code{zn_add_table} y @code{zn_power_table}.
 
 Ejemplo:
 
@@ -937,18 +937,18 @@ Ejemplo:
 
 
 
-@deffn {Función} zn_order (@var{x}, @var{n}) 
-@deffnx {Función} zn_order (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+@deffn {FunciÃ³n} zn_order (@var{x}, @var{n}) 
+@deffnx {FunciÃ³n} zn_order (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
 Devuelve el orden de @var{x} si es una unidad del grupo finito (Z/@var{n}Z)*, o devuelve @code{false}.
-@var{x} una unidad módulo @var{n} si es coprimo con @var{n}.
+@var{x} una unidad mÃ³dulo @var{n} si es coprimo con @var{n}.
 
-El algoritmo que se aplica necesita una factorización prima de @code{totient(n)}. Esta 
-factorización puede requerir mucho tiempo de cálculo, por lo que en ciertos casos puede
+El algoritmo que se aplica necesita una factorizaciÃ³n prima de @code{totient(n)}. Esta 
+factorizaciÃ³n puede requerir mucho tiempo de cÃ¡lculo, por lo que en ciertos casos puede
 ser aconsejable factorizar primero y luego pasar la lista de factores a @code{zn_log} como
 tercer argumento. La lista debe ser de la misma forma que las lista devuelta por 
-@code{ifactors(totient(n))} utilizando la opción por defecto @code{factors_only : false}.
+@code{ifactors(totient(n))} utilizando la opciÃ³n por defecto @code{factors_only : false}.
 
-Véanse también @code{zn_primroot}, @code{ifactors} y @code{totient}.
+VÃ©anse tambiÃ©n @code{zn_primroot}, @code{ifactors} y @code{totient}.
 
 Ejemplos:
 
@@ -993,20 +993,20 @@ por @code{ifactors(totient(n))}.
 
 
 
-@deffn {Función} zn_power_table (@var{n}) 
-@deffnx {Función} zn_power_table (@var{n}, all)
+@deffn {FunciÃ³n} zn_power_table (@var{n}) 
+@deffnx {FunciÃ³n} zn_power_table (@var{n}, all)
 Sin el argumento opcional @var{all}, @code{zn_power_table(n)} 
 muestra la tabla de potencias de los elementos de (Z/@var{n}Z)*,
-que son todos elementos invertibles módulo @var{n}. El exponente 
+que son todos elementos invertibles mÃ³dulo @var{n}. El exponente 
 se obtiene con un bucle desde @code{1} hasta @code{totient(n)}
 y la tabla termina con una columna de unos al lado derecho.
 
 El argumento opcional @var{all} hace que la tabla se genere para todos los 
 elementos no nulos. En este caso, el exponente se calcula con un bucle desde
-@code{1} hasta @code{totient(n) + 1} y la última columna es por lo tanto 
+@code{1} hasta @code{totient(n) + 1} y la Ãºltima columna es por lo tanto 
 igual a la primera.
 
-Véanse también @code{zn_add_table} y @code{zn_mult_table}.
+VÃ©anse tambiÃ©n @code{zn_add_table} y @code{zn_mult_table}.
 
 Ejemplo:
 
@@ -1034,32 +1034,32 @@ Ejemplo:
 
 
 
-@deffn {Función} zn_primroot (@var{n}) 
-@deffnx {Función} zn_primroot (@var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
-Si el grupo multiplicativo es cíclico, @code{zn_primroot}
-calcula la menor raíz primitiva de módulo @var{n}. (Z/@var{n}Z)* es
-cíclico si @var{n} es igual a @code{2}, @code{4}, @code{p^k} o @code{2*p^k},
-siendo @code{p} primo y mayor que @code{2} y @code{k} un número natural.
+@deffn {FunciÃ³n} zn_primroot (@var{n}) 
+@deffnx {FunciÃ³n} zn_primroot (@var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+Si el grupo multiplicativo es cÃ­clico, @code{zn_primroot}
+calcula la menor raÃ­z primitiva de mÃ³dulo @var{n}. (Z/@var{n}Z)* es
+cÃ­clico si @var{n} es igual a @code{2}, @code{4}, @code{p^k} o @code{2*p^k},
+siendo @code{p} primo y mayor que @code{2} y @code{k} un nÃºmero natural.
 Si a la variable opcional @code{zn_primroot_pretest}, cuyo valor por defecto es
 @code{false}, se le da el valor @code{true}, entonces @code{zn_primroot} 
-realiza una prueba previa. En cualquier caso, el cálculo está limitado por la
+realiza una prueba previa. En cualquier caso, el cÃ¡lculo estÃ¡ limitado por la
 cota superior @code{zn_primroot_limit}.
 
-Si (Z/@var{n}Z)* no es cíclico o si no tiene raíces
+Si (Z/@var{n}Z)* no es cÃ­clico o si no tiene raÃ­ces
 primitivas menores que @code{zn_primroot_limit}, @code{zn_primroot} devuelve
 @code{false}.
 
-El algoritmo que se aplica necesita una factorización prima de @code{totient(n)}. Esta 
-factorización puede requerir mucho tiempo de cálculo, por lo que en ciertos casos puede
+El algoritmo que se aplica necesita una factorizaciÃ³n prima de @code{totient(n)}. Esta 
+factorizaciÃ³n puede requerir mucho tiempo de cÃ¡lculo, por lo que en ciertos casos puede
 ser aconsejable factorizar primero y luego pasar la lista de factores a @code{zn_log} como
 argumento adicional. La lista debe ser de la misma forma que las lista devuelta por 
-@code{ifactors(totient(n))} utilizando la opción por defecto @code{factors_only : false}.
+@code{ifactors(totient(n))} utilizando la opciÃ³n por defecto @code{factors_only : false}.
 
-Véanse también @code{zn_primroot_p}, @code{zn_order}, @code{ifactors} y @code{totient}.
+VÃ©anse tambiÃ©n @code{zn_primroot_p}, @code{zn_order}, @code{ifactors} y @code{totient}.
 
 Ejemplos:
 
-@code{zn_primroot} calcula la menor raíz primitiva de módulo @var{n} o
+@code{zn_primroot} calcula la menor raÃ­z primitiva de mÃ³dulo @var{n} o
 devuelve @code{false}.
 
 @example
@@ -1104,9 +1104,9 @@ por @code{ifactors(totient(n))}.
 @defvr {Option variable} zn_primroot_limit
 Valor por defecto: @code{1000} 
 
-Si @code{zn_primroot} no puede encontrar una raíz primitiva,
+Si @code{zn_primroot} no puede encontrar una raÃ­z primitiva,
 entonces se para en esta cota superior. Si a la variable opcional 
-@code{zn_primroot_verbose} se le da el valor @code{true}, se imprimirá un
+@code{zn_primroot_verbose} se le da el valor @code{true}, se imprimirÃ¡ un
 mensaje cuando @code{zn_primroot_limit} sea alcanzado.
 
 @end defvr
@@ -1117,22 +1117,22 @@ mensaje cuando @code{zn_primroot_limit} sea alcanzado.
 
 
 
-@deffn {Función} zn_primroot_p (@var{x}, @var{n}) 
-@deffnx {Función} zn_primroot_p (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
-Comprueba si @var{x} es una raíz primitiva en el 
+@deffn {FunciÃ³n} zn_primroot_p (@var{x}, @var{n}) 
+@deffnx {FunciÃ³n} zn_primroot_p (@var{x}, @var{n}, [[@var{p1}, @var{e1}], @dots{}, [@var{pk}, @var{ek}]])
+Comprueba si @var{x} es una raÃ­z primitiva en el 
 grupo multiplizativo (Z/@var{n}Z)*.
 
-El algoritmo que se aplica necesita una factorización prima de @code{totient(n)}. Esta 
-factorización puede requerir mucho tiempo de cálculo, por lo que en ciertos casos puede
+El algoritmo que se aplica necesita una factorizaciÃ³n prima de @code{totient(n)}. Esta 
+factorizaciÃ³n puede requerir mucho tiempo de cÃ¡lculo, por lo que en ciertos casos puede
 ser aconsejable factorizar primero y luego pasar la lista de factores a @code{zn_log} como
 tercer argumento. La lista debe ser de la misma forma que las lista devuelta por 
-@code{ifactors(totient(n))} utilizando la opción por defecto @code{factors_only : false}.
+@code{ifactors(totient(n))} utilizando la opciÃ³n por defecto @code{factors_only : false}.
 
-Véanse también @code{zn_primroot}, @code{zn_order}, @code{ifactors} y @code{totient}.
+VÃ©anse tambiÃ©n @code{zn_primroot}, @code{zn_order}, @code{ifactors} y @code{totient}.
 
 Ejemplos:
 
-@code{zn_primroot_p} como función de predicado.
+@code{zn_primroot_p} como funciÃ³n de predicado.
 
 @example
 (%i1) n : 14$
@@ -1169,13 +1169,13 @@ devuelta por @code{ifactors(totient(n))}.
 @defvr {Option variable} zn_primroot_pretest
 Valor por defecto: @code{false} 
 
-El grupo multiplicativo (Z/@var{n}Z)* es cíclico si if @var{n}
+El grupo multiplicativo (Z/@var{n}Z)* es cÃ­clico si if @var{n}
 es igual a @code{2}, @code{4}, @code{p^k} o @code{2*p^k}, siendo @code{p}
-un número primo mayor que @code{2} y @code{k} es un número natural.
+un nÃºmero primo mayor que @code{2} y @code{k} es un nÃºmero natural.
 
 La variable @code{zn_primroot_pretest} controla si @code{zn_primroot} debe
 comprobar si sucede alguna de estas situaciones antes de calcular la menor
-raíz primitiva. Solo se realizará esta comprobación si
+raÃ­z primitiva. Solo se realizarÃ¡ esta comprobaciÃ³n si
 @code{zn_primroot_pretest} toma el valor @code{true}.
 
 @end defvr

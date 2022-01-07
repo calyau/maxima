@@ -1,96 +1,96 @@
 @c /stats.texi/1.4/Sat Jan 13 04:30:36 2007//
 @menu
-* Introdução a stats::
-* Definições para inference_result::
-* Definições para stats::
-* Definições para distribuições especiais::
+* IntroduÃ§Ã£o a stats::
+* DefiniÃ§Ãµes para inference_result::
+* DefiniÃ§Ãµes para stats::
+* DefiniÃ§Ãµes para distribuiÃ§Ãµes especiais::
 @end menu
 
-@node Introdução a stats, Definições para inference_result, Top, Top
-@section Introdução a stats
+@node IntroduÃ§Ã£o a stats, DefiniÃ§Ãµes para inference_result, Top, Top
+@section IntroduÃ§Ã£o a stats
 
 
-O pacote @code{stats} contém um conjunto de procedimentos de inferência clássica 
-estatística e procedimentos de teste.
+O pacote @code{stats} contÃ©m um conjunto de procedimentos de inferÃªncia clÃ¡ssica 
+estatÃ­stica e procedimentos de teste.
 
-Todas essas funções retornam um objecto do Maxima chamado @code{inference_result} que contém
-os resultados necessários para inferências de manipulação e tomada de decisões.
+Todas essas funÃ§Ãµes retornam um objecto do Maxima chamado @code{inference_result} que contÃ©m
+os resultados necessÃ¡rios para inferÃªncias de manipulaÃ§Ã£o e tomada de decisÃµes.
 
-A variável global @code{stats_numer} controla se resultados são mostrados em 
-ponto flutuante ou simbólico e no formato racional; seu valor padrão é @code{true}
-e os resultados são retornados no formato de ponto flutuante.
+A variÃ¡vel global @code{stats_numer} controla se resultados sÃ£o mostrados em 
+ponto flutuante ou simbÃ³lico e no formato racional; seu valor padrÃ£o Ã© @code{true}
+e os resultados sÃ£o retornados no formato de ponto flutuante.
 
-O pacote @code{descriptive} contém alguns utilitários para manipular estruturas de dados
-(listas e matrizes); por exemplo, para extrair subamostras. O pacote @code{descriptive} também contém alguns
+O pacote @code{descriptive} contÃ©m alguns utilitÃ¡rios para manipular estruturas de dados
+(listas e matrizes); por exemplo, para extrair subamostras. O pacote @code{descriptive} tambÃ©m contÃ©m alguns
 exemplos sobre como usar o pacote @code{numericalio} para ler dados a partir de ficheiro no formato texto 
 plano. Veja @code{descriptive} e @code{numericalio} para maiores detalhes.
 
 O pacote @code{stats} precisa dos pacotes @code{descriptive}, @code{distrib} e
 @code{inference_result}.
 
-Para comentários, erros ou sugestões, por favor contate o autor em
+Para comentÃ¡rios, erros ou sugestÃµes, por favor contate o autor em
 
 @var{'mario AT edu DOT xunta DOT es'}.
 
 
-@node Definições para inference_result, Definições para stats, Introdução a stats, Top
-@section Definições para inference_result
+@node DefiniÃ§Ãµes para inference_result, DefiniÃ§Ãµes para stats, IntroduÃ§Ã£o a stats, Top
+@section DefiniÃ§Ãµes para inference_result
 
-@deffn {Função} inference_result (@var{título}, @var{valores}, @var{números})
+@deffn {FunÃ§Ã£o} inference_result (@var{tÃ­tulo}, @var{valores}, @var{nÃºmeros})
 
-Constrói um objecto @code{inference_result} do tipo retornado pelas
-funções stats. O argumento @var{título} é uma
-sequência de caracteres do Maxima co o nome do procedimento; @var{valores} é uma lissta com
-elementos da forma @code{símbolo = valor} e @var{números} é uma lista
-com números inteiros positivos no intervalo de um para @code{length(@var{valores})},
-indicando que valores serão mostrados por padrão.
+ConstrÃ³i um objecto @code{inference_result} do tipo retornado pelas
+funÃ§Ãµes stats. O argumento @var{tÃ­tulo} Ã© uma
+sequÃªncia de caracteres do Maxima co o nome do procedimento; @var{valores} Ã© uma lissta com
+elementos da forma @code{sÃ­mbolo = valor} e @var{nÃºmeros} Ã© uma lista
+com nÃºmeros inteiros positivos no intervalo de um para @code{length(@var{valores})},
+indicando que valores serÃ£o mostrados por padrÃ£o.
 
 Exemplo:
 
-Este é um exemplo que mostras os resultados associados a um retángulo. O
-título deste bojeto é a sequência de caraceteres @code{"Retângulo"}, o qual
+Este Ã© um exemplo que mostras os resultados associados a um retÃ¡ngulo. O
+tÃ­tulo deste bojeto Ã© a sequÃªncia de caraceteres @code{"RetÃ¢ngulo"}, o qual
 armazena cinco resultados, a saber, @code{'base}, @code{'altura}, 
-@code{'diagonal}, @code{'área} y @code{'perímetro}, porém só mostra
-o primeiro, segundo, quinto e quarto resultado. O resultado @code{'diagonal} também
-é armazenado neste objecto, no entanto não é mostrado por padrão; para se ter acesso
-a este valor, faz-se uso da função @code{take_inference}.
+@code{'diagonal}, @code{'Ã¡rea} y @code{'perÃ­metro}, porÃ©m sÃ³ mostra
+o primeiro, segundo, quinto e quarto resultado. O resultado @code{'diagonal} tambÃ©m
+Ã© armazenado neste objecto, no entanto nÃ£o Ã© mostrado por padrÃ£o; para se ter acesso
+a este valor, faz-se uso da funÃ§Ã£o @code{take_inference}.
 
 @c ===beg===
 @c load (inference_result)$
 @c b: 3$ h: 2$
-@c inference_result("Retângulo",
+@c inference_result("RetÃ¢ngulo",
 @c                  ['base=b,
 @c                   'altura=h,
 @c                   'diagonal=sqrt(b^2+h^2),
 @c                   'area=b*h,
-@c                   'perímetro=2*(b+h)],
+@c                   'perÃ­metro=2*(b+h)],
 @c                  [1,2,5,4] );
 @c take_inference('diagonal,%);
 @c ===end===
 @example
 (%i1) load(inference_result)$
 (%i2) b: 3$ h: 2$
-(%i3) inference_result("Retângulo",
+(%i3) inference_result("RetÃ¢ngulo",
                         ['base=b,
                          'altura=h,
                          'diagonal=sqrt(b^2+h^2),
-                         'área=b*h,
-                         'perímetro=2*(b+h)],
+                         'Ã¡rea=b*h,
+                         'perÃ­metro=2*(b+h)],
                         [1,2,5,4] );
-                        |   Retângulo
+                        |   RetÃ¢ngulo
                         |
                         |    base = 3
                         |
 (%o3)                   |   altura = 2
                         |
-                        | perímetro = 10
+                        | perÃ­metro = 10
                         |
                         |    area = 6
 (%i4) take_inference('diagonal,%);
 (%o4)                        sqrt(13)
 @end example
 
-Veja também @code{take_inference}.
+Veja tambÃ©m @code{take_inference}.
 @end deffn
 
 
@@ -98,10 +98,10 @@ Veja também @code{take_inference}.
 
 
 
-@deffn {Função} inferencep (@var{obj})
+@deffn {FunÃ§Ã£o} inferencep (@var{obj})
 
-Retorna @code{true} ou @code{false}, dependendo se @var{obj} é
-um objecto @code{inference_result} ou não.
+Retorna @code{true} ou @code{false}, dependendo se @var{obj} Ã©
+um objecto @code{inference_result} ou nÃ£o.
 
 @end deffn
 
@@ -110,7 +110,7 @@ um objecto @code{inference_result} ou não.
 
 
 
-@deffn {Função} items_inference (@var{obj})
+@deffn {FunÃ§Ã£o} items_inference (@var{obj})
 
 Retorna uma lista com os nomes dos itens em @var{obj}, que devem
 ser um objecto @code{inference_result}.
@@ -118,8 +118,8 @@ ser um objecto @code{inference_result}.
 Exemplo:
 
 O objecto @code{inference_result} armazena dois valores, a saber @code{'pi} e @code{'e},
-mas somente o segundo é mostrado. A função @code{items_inference} retorna os nomes
-de todos os itens, não importa se eles são ou não mostrados.
+mas somente o segundo Ã© mostrado. A funÃ§Ã£o @code{items_inference} retorna os nomes
+de todos os itens, nÃ£o importa se eles sÃ£o ou nÃ£o mostrados.
 
 @c ===beg===
 @c load (inference_result)$
@@ -143,29 +143,29 @@ de todos os itens, não importa se eles são ou não mostrados.
 
 
 
-@deffn {Função} take_inference (@var{n}, @var{obj})
-@deffnx {Função} take_inference (@var{nome}, @var{obj})
-@deffnx {Função} take_inference (@var{lista}, @var{obj})
+@deffn {FunÃ§Ã£o} take_inference (@var{n}, @var{obj})
+@deffnx {FunÃ§Ã£o} take_inference (@var{nome}, @var{obj})
+@deffnx {FunÃ§Ã£o} take_inference (@var{lista}, @var{obj})
 
-Retorna o @var{n}-ésimo valor armazenado em @var{obj} se @var{n} for um inteiro positivo,
+Retorna o @var{n}-Ã©simo valor armazenado em @var{obj} se @var{n} for um inteiro positivo,
 ou o item chamado @var{nome} se esse for o nome de um item. Se o primeiro
-argumento for uma lista de números e/ou símbolos, a função @code{take_inference} retorna
+argumento for uma lista de nÃºmeros e/ou sÃ­mbolos, a funÃ§Ã£o @code{take_inference} retorna
 uma lista com os resultados correspondentes.
 
 Exemplo:
 
-Fornece um objecto @code{inference_result}, a função @code{take_inference} é
-chamada com o objectivo de extrair alguma informação armazenada nesse objecto.
+Fornece um objecto @code{inference_result}, a funÃ§Ã£o @code{take_inference} Ã©
+chamada com o objectivo de extrair alguma informaÃ§Ã£o armazenada nesse objecto.
 
 @c ===beg===
 @c load (inference_result)$
 @c b: 3$ h: 2$
-@c sol:inference_result("Retângulo",
+@c sol:inference_result("RetÃ¢ngulo",
 @c                      ['base=b,
 @c                       'altura=h,
 @c                       'diagonal=sqrt(b^2+h^2),
 @c                       'area=b*h,
-@c                       'perímetro=2*(b+h)],
+@c                       'perÃ­metro=2*(b+h)],
 @c                      [1,2,5,4] );
 @c take_inference('base,sol);
 @c take_inference(5,sol);
@@ -175,20 +175,20 @@ chamada com o objectivo de extrair alguma informação armazenada nesse objecto.
 @example
 (%i1) load(inference_result)$
 (%i2) b: 3$ h: 2$
-(%i3) sol: inference_result("Retângulo",
+(%i3) sol: inference_result("RetÃ¢ngulo",
                             ['base=b,
                              'altura=h,
                              'diagonal=sqrt(b^2+h^2),
                              'area=b*h,
-                             'perímetro=2*(b+h)],
+                             'perÃ­metro=2*(b+h)],
                             [1,2,5,4] );
-                        |   Retângulo
+                        |   RetÃ¢ngulo
                         |
                         |    base = 3
                         |
 (%o3)                   |   altura = 2
                         |
-                        | perímetro = 10
+                        | perÃ­metro = 10
                         |
                         |    area = 6
 (%i4) take_inference('base,sol);
@@ -201,7 +201,7 @@ chamada com o objectivo de extrair alguma informação armazenada nesse objecto.
 (%o7)                [3, 2, sqrt(13), 6, 10]
 @end example
 
-Veja também @code{inference_result} e @code{take_inference}.
+Veja tambÃ©m @code{inference_result} e @code{take_inference}.
 @end deffn
 
 
@@ -212,79 +212,79 @@ Veja também @code{inference_result} e @code{take_inference}.
 
 
 
-@node Definições para stats, Definições para distribuições especiais, Definições para inference_result, Top
-@section Definições para stats
+@node DefiniÃ§Ãµes para stats, DefiniÃ§Ãµes para distribuiÃ§Ãµes especiais, DefiniÃ§Ãµes para inference_result, Top
+@section DefiniÃ§Ãµes para stats
 
 
-@defvr {Variável de opção} stats_numer
-Valor por omissão: @code{true}
+@defvr {VariÃ¡vel de opÃ§Ã£o} stats_numer
+Valor por omissÃ£o: @code{true}
 
-Se @code{stats_numer} for @code{true}, funções de inferência estatística 
-retornam seus resultados em números com ponto flutuante. Se @code{stats_numer} for @code{false},
-resultados são fornecidos em formato simbólico e racional.
+Se @code{stats_numer} for @code{true}, funÃ§Ãµes de inferÃªncia estatÃ­stica 
+retornam seus resultados em nÃºmeros com ponto flutuante. Se @code{stats_numer} for @code{false},
+resultados sÃ£o fornecidos em formato simbÃ³lico e racional.
 
 @end defvr
 
 
-@deffn {Função} test_mean (@var{x})
-@deffnx {Função} test_mean (@var{x}, @var{opção_1}, @var{opção_2}, ...)
+@deffn {FunÃ§Ã£o} test_mean (@var{x})
+@deffnx {FunÃ§Ã£o} test_mean (@var{x}, @var{opÃ§Ã£o_1}, @var{opÃ§Ã£o_2}, ...)
 
-Esse é o teste-@var{t} de média. O argumento @var{x} é uma lista ou uma matriz coluna
-contendo uma amostra unidimensional. @code{test_mean} tamb;em executa um teste assintótico
-baseado no @i{Teorema do Limite Central} se a opção @code{'asymptotic} for
+Esse Ã© o teste-@var{t} de mÃ©dia. O argumento @var{x} Ã© uma lista ou uma matriz coluna
+contendo uma amostra unidimensional. @code{test_mean} tamb;em executa um teste assintÃ³tico
+baseado no @i{Teorema do Limite Central} se a opÃ§Ã£o @code{'asymptotic} for
 @code{true}.
 
-Opções:
+OpÃ§Ãµes:
 
 @itemize @bullet
 
 @item
-@code{'mean}, o valor padrão é @code{0}, é o valor da média a ser verificado.
+@code{'mean}, o valor padrÃ£o Ã© @code{0}, Ã© o valor da mÃ©dia a ser verificado.
 
 @item
-@code{'alternative}, o valor padrão é @code{'twosided}, é a hipótese alternativa;
-valores válidos são: @code{'twosided}, @code{'greater} e @code{'less}.
+@code{'alternative}, o valor padrÃ£o Ã© @code{'twosided}, Ã© a hipÃ³tese alternativa;
+valores vÃ¡lidos sÃ£o: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'dev}, o valor padrão é @code{'unknown}, corresponde ao valor do desvio padrão quando esse valor de desvio padrão for
-conhecido; valores válidos são: @code{'unknown} ou uma expressão positiva.
+@code{'dev}, o valor padrÃ£o Ã© @code{'unknown}, corresponde ao valor do desvio padrÃ£o quando esse valor de desvio padrÃ£o for
+conhecido; valores vÃ¡lidos sÃ£o: @code{'unknown} ou uma expressÃ£o positiva.
 
 @item
-@code{'conflevel}, o valor padrão é @code{95/100}, nível de confidência para o intervalo de confidência; deve
-ser uma expressão que toma um valor em (0,1).
+@code{'conflevel}, o valor padrÃ£o Ã© @code{95/100}, nÃ­vel de confidÃªncia para o intervalo de confidÃªncia; deve
+ser uma expressÃ£o que toma um valor em (0,1).
 
 @item
-@code{'asymptotic}, o valor padrão é @code{false}, indica se @code{test_mean} exeecuta um teste-@var{t} exato ou
-um teste assintótico baseando-se no @i{Teorema do Limite Central};
-valores válidos são @code{true} e @code{false}.
+@code{'asymptotic}, o valor padrÃ£o Ã© @code{false}, indica se @code{test_mean} exeecuta um teste-@var{t} exato ou
+um teste assintÃ³tico baseando-se no @i{Teorema do Limite Central};
+valores vÃ¡lidos sÃ£o @code{true} e @code{false}.
 
 @end itemize
 
-A saída da função @code{test_mean} é um objecto @code{inference_result} do Maxima
+A saÃ­da da funÃ§Ã£o @code{test_mean} Ã© um objecto @code{inference_result} do Maxima
 mostrando os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'mean_estimate}: a média da amostra.
+@code{'mean_estimate}: a mÃ©dia da amostra.
 
 @item
-@code{'conf_level}: nível de confidência seleccionado pelo utilizador.
+@code{'conf_level}: nÃ­vel de confidÃªncia seleccionado pelo utilizador.
 
 @item
-@code{'conf_interval}: intervalo de confidência para a média da população.
+@code{'conf_interval}: intervalo de confidÃªncia para a mÃ©dia da populaÃ§Ã£o.
 
 @item
-@code{'method}: procedimento de inferência.
+@code{'method}: procedimento de inferÃªncia.
 
 @item
-@code{'hypotheses}: hipótese do nulo e hipótese alternativa a ser testada.
+@code{'hypotheses}: hipÃ³tese do nulo e hipÃ³tese alternativa a ser testada.
 
 @item
-@code{'statistic}: valor da amostra estatística a ser usado para testar a hipótese do nulo.
+@code{'statistic}: valor da amostra estatÃ­stica a ser usado para testar a hipÃ³tese do nulo.
 
 @item
-@code{'distribution}: distribuição da amostra estatística, juntamente com seus parâmetro(s).
+@code{'distribution}: distribuiÃ§Ã£o da amostra estatÃ­stica, juntamente com seus parÃ¢metro(s).
 
 @item
 @code{'p_value}: valores de @math{p} do teste.
@@ -293,10 +293,10 @@ mostrando os seguintes resultados:
 
 Exemplos:
 
-Executa um teste-@var{t} exato com variância desconhecida. A hipótese do nulo
-é @math{H_0: mean=50} contra a alternativa unilatera @math{H_1: mean<50};
-conforme os resultados, o valor de @math{p} é muito grande, não existem
-evidências paa rejeitar @math{H_0}.
+Executa um teste-@var{t} exato com variÃ¢ncia desconhecida. A hipÃ³tese do nulo
+Ã© @math{H_0: mean=50} contra a alternativa unilatera @math{H_1: mean<50};
+conforme os resultados, o valor de @math{p} Ã© muito grande, nÃ£o existem
+evidÃªncias paa rejeitar @math{H_0}.
 
 @c ===beg===
 @c load (stats)$
@@ -326,9 +326,9 @@ evidências paa rejeitar @math{H_0}.
           |        p_value = .7845100411786889
 @end example
 
-Nesta ocasião Maxima executa um testte assintótico, baseado no @i{Teorema do Limite Central}.
-A hipótese do nulo é @math{H_0: equal(mean, 50)} contra a alternativa de duas vias @math{H_1: not equal(mean, 50)};
-conforme os resultados, o valor de @math{p} é muito pequeno, @math{H_0} pode ser rejeitado em
+Nesta ocasiÃ£o Maxima executa um testte assintÃ³tico, baseado no @i{Teorema do Limite Central}.
+A hipÃ³tese do nulo Ã© @math{H_0: equal(mean, 50)} contra a alternativa de duas vias @math{H_1: not equal(mean, 50)};
+conforme os resultados, o valor de @math{p} Ã© muito pequeno, @math{H_0} pode ser rejeitado em
 favor da alternativa @math{H_1}. Note que, como indicado pela componente @code{Method},
 esse procedimento pode ser aplicado a grandes amostras.
 
@@ -372,78 +372,78 @@ esse procedimento pode ser aplicado a grandes amostras.
 
 
 
-@deffn {Função} test_means_difference (@var{x1}, @var{x2})
-@deffnx {Função} test_means_difference (@var{x1}, @var{x2}, @var{opção_1}, @var{opção_2}, ...)
+@deffn {FunÃ§Ã£o} test_means_difference (@var{x1}, @var{x2})
+@deffnx {FunÃ§Ã£o} test_means_difference (@var{x1}, @var{x2}, @var{opÃ§Ã£o_1}, @var{opÃ§Ã£o_2}, ...)
 
-Esse é o teste-@var{t} de diferença de médias entre duas amostras.
-Os argumentos @var{x1} e @var{x2} são listas ou matrizes colunas
-contendo duas amostras independentes. No caso de diferentes variâncias desconhecidas
-(veja opções @code{'dev1}, @code{'dev2} e @code{'varequal} abaixo),
-os graus de liberdade são calculados por meio da aproximação de Welch.
-@code{test_means_difference} também executa um teste assintótico
-baseado no @i{Teorema do Limite Central} se a opção @code{'asymptotic} for
+Esse Ã© o teste-@var{t} de diferenÃ§a de mÃ©dias entre duas amostras.
+Os argumentos @var{x1} e @var{x2} sÃ£o listas ou matrizes colunas
+contendo duas amostras independentes. No caso de diferentes variÃ¢ncias desconhecidas
+(veja opÃ§Ãµes @code{'dev1}, @code{'dev2} e @code{'varequal} abaixo),
+os graus de liberdade sÃ£o calculados por meio da aproximaÃ§Ã£o de Welch.
+@code{test_means_difference} tambÃ©m executa um teste assintÃ³tico
+baseado no @i{Teorema do Limite Central} se a opÃ§Ã£o @code{'asymptotic} for
 escolhida para @code{true}.
 
-Opções:
+OpÃ§Ãµes:
 
 @itemize @bullet
 
 @item
 
 @item
-@code{'alternative}, o valor padrão é @code{'twosided}, é a hipótese alternativa;
-valores válidos são: @code{'twosided}, @code{'greater} e @code{'less}.
+@code{'alternative}, o valor padrÃ£o Ã© @code{'twosided}, Ã© a hipÃ³tese alternativa;
+valores vÃ¡lidos sÃ£o: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'dev1}, o valor padrão é @code{'unknown}, é o valor do desvio padrão
-da amostra @var{x1} quando esse desvio for conhecido; valores válidos são: @code{'unknown} ou uma expressão positiva.
+@code{'dev1}, o valor padrÃ£o Ã© @code{'unknown}, Ã© o valor do desvio padrÃ£o
+da amostra @var{x1} quando esse desvio for conhecido; valores vÃ¡lidos sÃ£o: @code{'unknown} ou uma expressÃ£o positiva.
 
 @item
-@code{'dev2}, o valor padrão é @code{'unknown}, é o valor do desvio padrão
-da amostra @var{x2} quando esse desvio for conhecido; valores válidos são: @code{'unknown} ou uma expressão positiva.
+@code{'dev2}, o valor padrÃ£o Ã© @code{'unknown}, Ã© o valor do desvio padrÃ£o
+da amostra @var{x2} quando esse desvio for conhecido; valores vÃ¡lidos sÃ£o: @code{'unknown} ou uma expressÃ£o positiva.
 
 @item
-@code{'varequal}, o valor padrão é @code{false}, se variâncias podem serem consideradas como iguais ou não;
-essa opção tem efeito somente quando @code{'dev1} e/ou @code{'dev2} forem  @code{'unknown}.
+@code{'varequal}, o valor padrÃ£o Ã© @code{false}, se variÃ¢ncias podem serem consideradas como iguais ou nÃ£o;
+essa opÃ§Ã£o tem efeito somente quando @code{'dev1} e/ou @code{'dev2} forem  @code{'unknown}.
 
 @item
-@code{'conflevel}, o valor padrão é @code{95/100}, nível de confidência para o intervalo de confidência; deve
-ser uma expressão que toma valores em (0,1). 
+@code{'conflevel}, o valor padrÃ£o Ã© @code{95/100}, nÃ­vel de confidÃªncia para o intervalo de confidÃªncia; deve
+ser uma expressÃ£o que toma valores em (0,1). 
 
-Nota de Tradução: (0,1) representa intervalo aberto.
+Nota de TraduÃ§Ã£o: (0,1) representa intervalo aberto.
 
 @item
-@code{'asymptotic}, o valor padrão é @code{false}, indica se @code{test_means_difference} executa um teste-@var{t} exato ou
-um teste assíntótico baseando-se no @i{Teorema do Limite Central};
-valores válidos são @code{true} e @code{false}.
+@code{'asymptotic}, o valor padrÃ£o Ã© @code{false}, indica se @code{test_means_difference} executa um teste-@var{t} exato ou
+um teste assÃ­ntÃ³tico baseando-se no @i{Teorema do Limite Central};
+valores vÃ¡lidos sÃ£o @code{true} e @code{false}.
 
 @end itemize
 
-A saída da função @code{test_means_difference} é um objecto @code{inference_result} do Maxima
+A saÃ­da da funÃ§Ã£o @code{test_means_difference} Ã© um objecto @code{inference_result} do Maxima
 mostrando os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'diff_estimate}: a diferença de médias estimadas.
+@code{'diff_estimate}: a diferenÃ§a de mÃ©dias estimadas.
 
 @item
-@code{'conf_level}: nível de confidência seleccionado pelo utilizador.
+@code{'conf_level}: nÃ­vel de confidÃªncia seleccionado pelo utilizador.
 
 @item
-@code{'conf_interval}: intervalo de confidência para a diferença de médias.
+@code{'conf_interval}: intervalo de confidÃªncia para a diferenÃ§a de mÃ©dias.
 
 @item
-@code{'method}: procedimento de inferência.
+@code{'method}: procedimento de inferÃªncia.
 
 @item
-@code{'hypotheses}: a hipótese do nulo e a hipótese alternativa a serem testadas.
+@code{'hypotheses}: a hipÃ³tese do nulo e a hipÃ³tese alternativa a serem testadas.
 
 @item
-@code{'statistic}: valor da amostra estatística usado para testar a hipótese do nulo.
+@code{'statistic}: valor da amostra estatÃ­stica usado para testar a hipÃ³tese do nulo.
 
 @item
-@code{'distribution}: distribuição da amostra estatística, juntamente com seu(s) parâmetro(s).
+@code{'distribution}: distribuiÃ§Ã£o da amostra estatÃ­stica, juntamente com seu(s) parÃ¢metro(s).
 
 @item
 @code{'p_value}: valor de @math{p} do teste.
@@ -452,9 +452,9 @@ mostrando os seguintes resultados:
 
 Exemplos:
 
-A igualdade de médias é testada com duas pequenas amostras @var{x} e @var{y},
+A igualdade de mÃ©dias Ã© testada com duas pequenas amostras @var{x} e @var{y},
 contra a alternativa @math{H_1: m_1>m_2}, sendo @math{m_1} e @math{m_2}
-as médias das populações; variâncias são desconhecidas e supostamente admitidas para serem diferentes.
+as mÃ©dias das populaÃ§Ãµes; variÃ¢ncias sÃ£o desconhecidas e supostamente admitidas para serem diferentes.
 
 @c equivalent code for R:
 @c x <- c(20.4,62.5,61.3,44.2,11.1,23.7)
@@ -491,7 +491,7 @@ as médias das populações; variâncias são desconhecidas e supostamente admitidas 
             |            p_value = .05032746527991905
 @end example
 
-O mesmo teste que antes, mas agora as variâncias são admitidas serem supostamente
+O mesmo teste que antes, mas agora as variÃ¢ncias sÃ£o admitidas serem supostamente
 iguais.
 
 @c equivalent code for R:
@@ -537,57 +537,57 @@ iguais.
 
 
 
-@deffn {Função} test_variance (@var{x})
-@deffnx {Função} test_variance (@var{x}, @var{opção_1}, @var{opção_2}, ...)
+@deffn {FunÃ§Ã£o} test_variance (@var{x})
+@deffnx {FunÃ§Ã£o} test_variance (@var{x}, @var{opÃ§Ã£o_1}, @var{opÃ§Ã£o_2}, ...)
 
-Esse é o teste da variância @var{chi^2}. O argumento @var{x} é uma lista ou uma matriz coluna
-contendo uma amostra unidimensional tomada entre a população normal.
+Esse Ã© o teste da variÃ¢ncia @var{chi^2}. O argumento @var{x} Ã© uma lista ou uma matriz coluna
+contendo uma amostra unidimensional tomada entre a populaÃ§Ã£o normal.
 
-Opções:
+OpÃ§Ãµes:
 
 @itemize @bullet
 
 @item
-@code{'mean}, o valor padrão é @code{'unknown}, é a média da população, quando for conhecida.
+@code{'mean}, o valor padrÃ£o Ã© @code{'unknown}, Ã© a mÃ©dia da populaÃ§Ã£o, quando for conhecida.
 
 @item
-@code{'alternative}, o valor padrão é @code{'twosided}, é a hipótese alternativa;
-valores válidos são: @code{'twosided}, @code{'greater} e @code{'less}.
+@code{'alternative}, o valor padrÃ£o Ã© @code{'twosided}, Ã© a hipÃ³tese alternativa;
+valores vÃ¡lidos sÃ£o: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'variance}, o valor padrão é @code{1}, isso é o valor (positivo) da variância a ser testado.
+@code{'variance}, o valor padrÃ£o Ã© @code{1}, isso Ã© o valor (positivo) da variÃ¢ncia a ser testado.
 
 @item
-@code{'conflevel}, o valor padrão é @code{95/100}, nível de confidência para o intervalo de confidência; deve
-ser uma expressão que toma valores em (0,1).
+@code{'conflevel}, o valor padrÃ£o Ã© @code{95/100}, nÃ­vel de confidÃªncia para o intervalo de confidÃªncia; deve
+ser uma expressÃ£o que toma valores em (0,1).
 
 @end itemize
 
-A saída da função @code{test_variance} está no objecto @code{inference_result} do Maxima
+A saÃ­da da funÃ§Ã£o @code{test_variance} estÃ¡ no objecto @code{inference_result} do Maxima
 mostrando os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'var_estimate}: a variância da amostra.
+@code{'var_estimate}: a variÃ¢ncia da amostra.
 
 @item
-@code{'conf_level}: nível de confidência seleccionado pelo utilizador.
+@code{'conf_level}: nÃ­vel de confidÃªncia seleccionado pelo utilizador.
 
 @item
-@code{'conf_interval}: intervalo de confidência para a variância da população.
+@code{'conf_interval}: intervalo de confidÃªncia para a variÃ¢ncia da populaÃ§Ã£o.
 
 @item
-@code{'method}: procedimento de inferência.
+@code{'method}: procedimento de inferÃªncia.
 
 @item
-@code{'hypotheses}: a hipótese do nulo e a hipótese alternativa a serem testadas.
+@code{'hypotheses}: a hipÃ³tese do nulo e a hipÃ³tese alternativa a serem testadas.
 
 @item
-@code{'statistic}: valor da amostra estatística usado para testar a hipótese do nulo.
+@code{'statistic}: valor da amostra estatÃ­stica usado para testar a hipÃ³tese do nulo.
 
 @item
-@code{'distribution}: distribuição da amostra estatística, juntamente com seu parâmetro.
+@code{'distribution}: distribuiÃ§Ã£o da amostra estatÃ­stica, juntamente com seu parÃ¢metro.
 
 @item
 @code{'p_value}: o valor de @math{p} do teste.
@@ -596,7 +596,7 @@ mostrando os seguintes resultados:
 
 Exemplos:
 
-Isso é testado se a variância de uma população com média desconhhecida
+Isso Ã© testado se a variÃ¢ncia de uma populaÃ§Ã£o com mÃ©dia desconhhecida
 for igual ou maior que 200.
 
 @c ===beg===
@@ -635,60 +635,60 @@ for igual ou maior que 200.
 
 
 
-@deffn {Função} test_variance_ratio (@var{x1}, @var{x2})
-@deffnx {Função} test_variance_ratio (@var{x1}, @var{x2}, @var{opção_1}, @var{opção_2}, ...)
+@deffn {FunÃ§Ã£o} test_variance_ratio (@var{x1}, @var{x2})
+@deffnx {FunÃ§Ã£o} test_variance_ratio (@var{x1}, @var{x2}, @var{opÃ§Ã£o_1}, @var{opÃ§Ã£o_2}, ...)
 
-Isso é o teste @var{F} da razão de variância para duas populações normais.
-Os argumentos @var{x1} e @var{x2} são listas ou matrizes colunas
+Isso Ã© o teste @var{F} da razÃ£o de variÃ¢ncia para duas populaÃ§Ãµes normais.
+Os argumentos @var{x1} e @var{x2} sÃ£o listas ou matrizes colunas
 contendo duas amostras independentes.
 
-Opções:
+OpÃ§Ãµes:
 
 @itemize @bullet
 
 @item
-@code{'alternative}, o valor padrão é @code{'twosided}, é a hipótese alternativa;
-valores válidos são: @code{'twosided}, @code{'greater} e @code{'less}.
+@code{'alternative}, o valor padrÃ£o Ã© @code{'twosided}, Ã© a hipÃ³tese alternativa;
+valores vÃ¡lidos sÃ£o: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'mean1}, o valor padrão é @code{'unknown}, quando for conhecida, isso é a média da
-população da qual @var{x1} foi tomada.
+@code{'mean1}, o valor padrÃ£o Ã© @code{'unknown}, quando for conhecida, isso Ã© a mÃ©dia da
+populaÃ§Ã£o da qual @var{x1} foi tomada.
 
 @item
-@code{'mean2}, o valor padrão é @code{'unknown}, quando for conhecida, isso é a média da
-população da qual @var{x2} foi tomada.
+@code{'mean2}, o valor padrÃ£o Ã© @code{'unknown}, quando for conhecida, isso Ã© a mÃ©dia da
+populaÃ§Ã£o da qual @var{x2} foi tomada.
 
 @item
-@code{'conflevel}, o valor padrão é @code{95/100}, nível de confidência para o intervalo de confidência da
-razão; deve ser uma expressão que tome valores em (0,1).
+@code{'conflevel}, o valor padrÃ£o Ã© @code{95/100}, nÃ­vel de confidÃªncia para o intervalo de confidÃªncia da
+razÃ£o; deve ser uma expressÃ£o que tome valores em (0,1).
 
 @end itemize
 
-A saída da função @code{test_variance_ratio} é um objecto @code{inference_result} do Maxima
+A saÃ­da da funÃ§Ã£o @code{test_variance_ratio} Ã© um objecto @code{inference_result} do Maxima
 mostrando os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'ratio_estimate}: a razão de variância da amostra.
+@code{'ratio_estimate}: a razÃ£o de variÃ¢ncia da amostra.
 
 @item
-@code{'conf_level}: nível de confidência seleccionado pelo utilizador.
+@code{'conf_level}: nÃ­vel de confidÃªncia seleccionado pelo utilizador.
 
 @item
-@code{'conf_interval}: intervalo de confidência para a razão de variância.
+@code{'conf_interval}: intervalo de confidÃªncia para a razÃ£o de variÃ¢ncia.
 
 @item
-@code{'method}: procedimento de inferência.
+@code{'method}: procedimento de inferÃªncia.
 
 @item
-@code{'hypotheses}: a hipótese do nulo e a hipótese alternativa a serem testadas.
+@code{'hypotheses}: a hipÃ³tese do nulo e a hipÃ³tese alternativa a serem testadas.
 
 @item
-@code{'statistic}: valor da amostra estatística usado para testar a hipótese do nulo.
+@code{'statistic}: valor da amostra estatÃ­stica usado para testar a hipÃ³tese do nulo.
 
 @item
-@code{'distribution}: distribuição da amostra estatística, juntamente com seus parâmetros.
+@code{'distribution}: distribuiÃ§Ã£o da amostra estatÃ­stica, juntamente com seus parÃ¢metros.
 
 @item
 @code{'p_value}: o valor de @math{p} do teste.
@@ -698,8 +698,8 @@ mostrando os seguintes resultados:
 
 Exemplos:
 
-a igualdade das variâncias de duas populações normais é verificado
-contra a alternativa que a primeira é maior que a segunda.
+a igualdade das variÃ¢ncias de duas populaÃ§Ãµes normais Ã© verificado
+contra a alternativa que a primeira Ã© maior que a segunda.
 
 @c equivalent code for R:
 @c x <- c(20.4,62.5,61.3,44.2,11.1,23.7)
@@ -743,26 +743,26 @@ contra a alternativa que a primeira é maior que a segunda.
 
 
 
-@deffn {Função} test_sign (@var{x})
-@deffnx {Função} test_sign (@var{x}, @var{opção_1}, @var{opção_2}, ...)
+@deffn {FunÃ§Ã£o} test_sign (@var{x})
+@deffnx {FunÃ§Ã£o} test_sign (@var{x}, @var{opÃ§Ã£o_1}, @var{opÃ§Ã£o_2}, ...)
 
-Esse é o teste de sinal não paramétrico para a mediana de uma população contínua.
-O argumento @var{x} é uma lista ou uma matriz coluna contendo uma amostra unidimensional.
+Esse Ã© o teste de sinal nÃ£o paramÃ©trico para a mediana de uma populaÃ§Ã£o contÃ­nua.
+O argumento @var{x} Ã© uma lista ou uma matriz coluna contendo uma amostra unidimensional.
 
-Opções:
+OpÃ§Ãµes:
 
 @itemize @bullet
 
 @item
-@code{'alternative}, o valor padrão é @code{'twosided}, é a hipótese alternativa;
-valores válidos são: @code{'twosided}, @code{'greater} e @code{'less}.
+@code{'alternative}, o valor padrÃ£o Ã© @code{'twosided}, Ã© a hipÃ³tese alternativa;
+valores vÃ¡lidos sÃ£o: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @item
-@code{'median}, o valor padrão é @code{0}, é o valor da mediana a ser verificado.
+@code{'median}, o valor padrÃ£o Ã© @code{0}, Ã© o valor da mediana a ser verificado.
 
 @end itemize
 
-A saída da função @code{test_sign} é um objecto @code{inference_result} do Maxima
+A saÃ­da da funÃ§Ã£o @code{test_sign} Ã© um objecto @code{inference_result} do Maxima
 mostrando os seguintes resultados:
 
 @enumerate
@@ -771,16 +771,16 @@ mostrando os seguintes resultados:
 @code{'med_estimate}: a mediana da amostra.
 
 @item
-@code{'method}: procedimento de inferência.
+@code{'method}: procedimento de inferÃªncia.
 
 @item
-@code{'hypotheses}: a hipótese do nulo e a hipótese alternativa a serem testadas.
+@code{'hypotheses}: a hipÃ³tese do nulo e a hipÃ³tese alternativa a serem testadas.
 
 @item
-@code{'statistic}: valor da amostra estatística usada para testar a hipótese do nulo.
+@code{'statistic}: valor da amostra estatÃ­stica usada para testar a hipÃ³tese do nulo.
 
 @item
-@code{'distribution}: distribuição da amostra estatística, juntamente com seu(s) parâmetro(s).
+@code{'distribution}: distribuiÃ§Ã£o da amostra estatÃ­stica, juntamente com seu(s) parÃ¢metro(s).
 
 @item
 @code{'p_value}: o valor de @math{p} do teste.
@@ -789,7 +789,7 @@ mostrando os seguintes resultados:
 
 Exemplos:
 
-Verifica se a população da qual a amostra foi tomada tem mediana 6, 
+Verifica se a populaÃ§Ã£o da qual a amostra foi tomada tem mediana 6, 
 contra a alternativa @math{H_1: median > 6}.
 
 @c ===beg===
@@ -826,30 +826,30 @@ contra a alternativa @math{H_1: median > 6}.
 
 
 
-@deffn {Função} test_signed_rank (@var{x})
-@deffnx {Função} test_signed_rank (@var{x}, @var{opção_1}, @var{opção_2}, ...)
+@deffn {FunÃ§Ã£o} test_signed_rank (@var{x})
+@deffnx {FunÃ§Ã£o} test_signed_rank (@var{x}, @var{opÃ§Ã£o_1}, @var{opÃ§Ã£o_2}, ...)
 
-Esse é o teste de ranque sinalizado de Wilcoxon para fazer inferências sobre a mediana de uma
-população contínua. O argumento @var{x} é uma lista ou uma matriz coluna
-contendo uma amostra unidimensional. Executa uma aproximação normal se o
+Esse Ã© o teste de ranque sinalizado de Wilcoxon para fazer inferÃªncias sobre a mediana de uma
+populaÃ§Ã£o contÃ­nua. O argumento @var{x} Ã© uma lista ou uma matriz coluna
+contendo uma amostra unidimensional. Executa uma aproximaÃ§Ã£o normal se o
 tamanho da amostra for maior que 20, ou se existirem zeros ou houverem empates.
 
-Veja também @code{pdf_rank_test} e @code{cdf_rank_test}.
+Veja tambÃ©m @code{pdf_rank_test} e @code{cdf_rank_test}.
 
-Opções:
+OpÃ§Ãµes:
 
 @itemize @bullet
 
 @item
-@code{'median}, o valor padrão é @code{0}, é o valor da mediana a ser verificado.
+@code{'median}, o valor padrÃ£o Ã© @code{0}, Ã© o valor da mediana a ser verificado.
 
 @item
-@code{'alternative}, o valor padrão é @code{'twosided}, é a hipótese alternativa;
-valores válidos são: @code{'twosided}, @code{'greater} e @code{'less}.
+@code{'alternative}, o valor padrÃ£o Ã© @code{'twosided}, Ã© a hipÃ³tese alternativa;
+valores vÃ¡lidos sÃ£o: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @end itemize
 
-A saída da função @code{test_signed_rank} é um objecto @code{inference_result} do Maxima
+A saÃ­da da funÃ§Ã£o @code{test_signed_rank} Ã© um objecto @code{inference_result} do Maxima
 com os seguintes resultados:
 
 @enumerate
@@ -858,16 +858,16 @@ com os seguintes resultados:
 @code{'med_estimate}: a mediana da amostra.
 
 @item
-@code{'method}: procedimento de inferência.
+@code{'method}: procedimento de inferÃªncia.
 
 @item
-@code{'hypotheses}: a hipótese do nulo e a hipótese alternativa a serem testadas.
+@code{'hypotheses}: a hipÃ³tese do nulo e a hipÃ³tese alternativa a serem testadas.
 
 @item
-@code{'statistic}: valor da amostra estatística usado para testar a hipótese do nulo.
+@code{'statistic}: valor da amostra estatÃ­stica usado para testar a hipÃ³tese do nulo.
 
 @item
-@code{'distribution}: distribuição da amostra estatística, juntamente com seu(s) parâmetro(s).
+@code{'distribution}: distribuiÃ§Ã£o da amostra estatÃ­stica, juntamente com seu(s) parÃ¢metro(s).
 
 @item
 @code{'p_value}: o valor de @math{p} do teste.
@@ -876,9 +876,9 @@ com os seguintes resultados:
 
 Exemplos:
 
-Verifica a hipótese do nulo @math{H_0: median = 15} contra a 
-alternativa @math{H_1: median > 15}. Esse é um teste exato, ua vez que
-não exite empates.
+Verifica a hipÃ³tese do nulo @math{H_0: median = 15} contra a 
+alternativa @math{H_1: median > 15}. Esse Ã© um teste exato, ua vez que
+nÃ£o exite empates.
 
 @c equivalent code for R:
 @c x <- c(17.1,15.9,13.7,13.4,15.5,17.6)
@@ -908,8 +908,8 @@ não exite empates.
                  |            p_value = 0.28125
 @end example
 
-Verifica a hipótese do nulo @math{H_0: equal(median, 2.5)} contra a
-alternativa @math{H_1: not equal(median, 2.5)}. Esse é um teste aproximado,
+Verifica a hipÃ³tese do nulo @math{H_0: equal(median, 2.5)} contra a
+alternativa @math{H_1: not equal(median, 2.5)}. Esse Ã© um teste aproximado,
 uma vez que ocorrem empates.
 
 @c equivalent code for R:
@@ -948,40 +948,40 @@ uma vez que ocorrem empates.
 
 
 
-@deffn {Função} test_rank_sum (@var{x1}, @var{x2})
-@deffnx {Função} test_rank_sum (@var{x1}, @var{x2}, @var{opção_1})
+@deffn {FunÃ§Ã£o} test_rank_sum (@var{x1}, @var{x2})
+@deffnx {FunÃ§Ã£o} test_rank_sum (@var{x1}, @var{x2}, @var{opÃ§Ã£o_1})
 
-Esse é o teste de Wilcoxon-Mann-Whitney para comparação das medianas de duas
-populações contínuas. Os primeiros dois argumentos @var{x1} e @var{x2} são listas
-ou matrizes colunas com os dados de duas amostras independentes. Executa aproximação
+Esse Ã© o teste de Wilcoxon-Mann-Whitney para comparaÃ§Ã£o das medianas de duas
+populaÃ§Ãµes contÃ­nuas. Os primeiros dois argumentos @var{x1} e @var{x2} sÃ£o listas
+ou matrizes colunas com os dados de duas amostras independentes. Executa aproximaÃ§Ã£o
 normal se quaisquer dos tamanhos de amostra for maior que 10, ou se houverem empates.
 
-Opção:
+OpÃ§Ã£o:
 
 @itemize @bullet
 
 @item
-@code{'alternative}, o valor padrão é @code{'twosided}, é a hipótese alternativa;
-valores válidos são: @code{'twosided}, @code{'greater} e @code{'less}.
+@code{'alternative}, o valor padrÃ£o Ã© @code{'twosided}, Ã© a hipÃ³tese alternativa;
+valores vÃ¡lidos sÃ£o: @code{'twosided}, @code{'greater} e @code{'less}.
 
 @end itemize
 
-A saída da função @code{test_rank_sum} é um objecto @code{inference_result} do Maxima
+A saÃ­da da funÃ§Ã£o @code{test_rank_sum} Ã© um objecto @code{inference_result} do Maxima
 com os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'method}: procedimento de inferência.
+@code{'method}: procedimento de inferÃªncia.
 
 @item
-@code{'hypotheses}: a hipótese do nulo e a hipótese alternativa a serem testadas.
+@code{'hypotheses}: a hipÃ³tese do nulo e a hipÃ³tese alternativa a serem testadas.
 
 @item
-@code{'statistic}: valor da amostra estatística usada para testar a hipótese do nulo.
+@code{'statistic}: valor da amostra estatÃ­stica usada para testar a hipÃ³tese do nulo.
 
 @item
-@code{'distribution}: distribuição da amostra estatística, juntamente com seus parâmetros.
+@code{'distribution}: distribuiÃ§Ã£o da amostra estatÃ­stica, juntamente com seus parÃ¢metros.
 
 @item
 @code{'p_value}: o valor de @math{p} do teste.
@@ -990,8 +990,8 @@ com os seguintes resultados:
 
 Exemplos:
 
-Verifica se populações possuem medianas similares. Tamanhos de amotra
-são pequenos e é feito um teste exato.
+Verifica se populaÃ§Ãµes possuem medianas similares. Tamanhos de amotra
+sÃ£o pequenos e Ã© feito um teste exato.
 
 @c equivalent code for R:
 @c x <- c(12,15,17,38,42,10,23,35,28)
@@ -1023,7 +1023,7 @@ são pequenos e é feito um teste exato.
 @end example
 
 Agora, com grandes amostras e empates, o procedimento faz 
-aproximação norma. A hipótese alternativa é
+aproximaÃ§Ã£o norma. A hipÃ³tese alternativa Ã©
 @math{H_1: median1 < median2}.
 
 @c equivalent code for R:
@@ -1063,32 +1063,32 @@ aproximação norma. A hipótese alternativa é
 
 
 
-@deffn {Função} test_normality (@var{x})
+@deffn {FunÃ§Ã£o} test_normality (@var{x})
 
-Teste de Shapiro-Wilk para normalidade. O argumento @var{x} é uma lista de números, e o tamanho
-da amostra deve ser maior que 2 e menor ou igua a 5000, de outra forma, a função
+Teste de Shapiro-Wilk para normalidade. O argumento @var{x} Ã© uma lista de nÃºmeros, e o tamanho
+da amostra deve ser maior que 2 e menor ou igua a 5000, de outra forma, a funÃ§Ã£o
 @code{test_normality} sinaliza com um erro.
 
-Referência:
+ReferÃªncia:
 
   [1] Algorithm AS R94, Applied Statistics (1995), vol.44, no.4, 547-551
 
-A saída da função @code{test_normality} é um objecto @code{inference_result} do Maxima
+A saÃ­da da funÃ§Ã£o @code{test_normality} Ã© um objecto @code{inference_result} do Maxima
 com os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'statistic}: valor do @var{W} estatístico.
+@code{'statistic}: valor do @var{W} estatÃ­stico.
 
 @item
-@code{'p_value}: valor de @math{p} sob a hipótese de normalidade.
+@code{'p_value}: valor de @math{p} sob a hipÃ³tese de normalidade.
 
 @end enumerate
 
 Exemplos:
 
-Verifica a normalidade de uma população, baseada em uma amostra de tamanho 9.
+Verifica a normalidade de uma populaÃ§Ã£o, baseada em uma amostra de tamanho 9.
 
 @c equivalent code for R:
 @c x <- c(12,15,17,38,42,10,23,35,28)
@@ -1120,97 +1120,97 @@ Verifica a normalidade de uma população, baseada em uma amostra de tamanho 9.
 
 
 
-@deffn {Função} simple_linear_regression (@var{x})
-@deffnx {Função} simple_linear_regression (@var{x} @var{opção_1})
+@deffn {FunÃ§Ã£o} simple_linear_regression (@var{x})
+@deffnx {FunÃ§Ã£o} simple_linear_regression (@var{x} @var{opÃ§Ã£o_1})
 
-Regressão linear simples, @math{y_i=a+b x_i+e_i}, onde os @math{e_i} são @math{N(0,sigma)}
-variáveis aleatórias independentes. O argumento @var{x} deve ser uma matriz de duas colunas ou uma lista de
+RegressÃ£o linear simples, @math{y_i=a+b x_i+e_i}, onde os @math{e_i} sÃ£o @math{N(0,sigma)}
+variÃ¡veis aleatÃ³rias independentes. O argumento @var{x} deve ser uma matriz de duas colunas ou uma lista de
 pares.
 
-Opções:
+OpÃ§Ãµes:
 
 @itemize @bullet
 
 @item
-@code{'conflevel}, o valor padrão é @code{95/100}, nível de confidência para o intervalo de confidência; isso deve
-ser uma expressão que tome valores em (0,1).
+@code{'conflevel}, o valor padrÃ£o Ã© @code{95/100}, nÃ­vel de confidÃªncia para o intervalo de confidÃªncia; isso deve
+ser uma expressÃ£o que tome valores em (0,1).
 
 @item
-@code{'regressor}, o valor padrão é @code{'x}, nome da variável independente.
+@code{'regressor}, o valor padrÃ£o Ã© @code{'x}, nome da variÃ¡vel independente.
 
 @end itemize
 
-A saída da função @code{simple_linear_regression} é um objecto @code{inference_result} do Maxima
+A saÃ­da da funÃ§Ã£o @code{simple_linear_regression} Ã© um objecto @code{inference_result} do Maxima
 com os seguintes resultados:
 
 @enumerate
 
 @item
-@code{'model}: a equação ajustada. Útil para fazer novas previsões. Veja exemplos abaixo.
+@code{'model}: a equaÃ§Ã£o ajustada. Ãštil para fazer novas previsÃµes. Veja exemplos abaixo.
 
 @item
-@code{'means}: média de duas variáveis pseudo-aleatórias.
+@code{'means}: mÃ©dia de duas variÃ¡veis pseudo-aleatÃ³rias.
 
 @item
-@code{'variances}: variâncias de ambas as variáveis.
+@code{'variances}: variÃ¢ncias de ambas as variÃ¡veis.
 
 @item
-@code{'correlation}: coeficiente de correlação.
+@code{'correlation}: coeficiente de correlaÃ§Ã£o.
 
 @item
-@code{'adc}: coeficiente de determinação ajustado.
+@code{'adc}: coeficiente de determinaÃ§Ã£o ajustado.
 
 @item
-@code{'a_estimation}: estimador do parâmetro @var{a}.
+@code{'a_estimation}: estimador do parÃ¢metro @var{a}.
 
 @item
-@code{'a_conf_int}: intervalo de confidência do parâmetro @var{a}.
+@code{'a_conf_int}: intervalo de confidÃªncia do parÃ¢metro @var{a}.
 
 @item
-@code{'b_estimation}: estimador do parâmetro @var{b}.
+@code{'b_estimation}: estimador do parÃ¢metro @var{b}.
 
 @item
-@code{'b_conf_int}: intervalo de confidência do parâmetro @var{b}.
+@code{'b_conf_int}: intervalo de confidÃªncia do parÃ¢metro @var{b}.
 
 @item
-@code{'hypotheses}: a hipótese do nulo e a hipótese alternativa sobre o parâmetro @var{b}.
+@code{'hypotheses}: a hipÃ³tese do nulo e a hipÃ³tese alternativa sobre o parÃ¢metro @var{b}.
 
 @item
-@code{'statistic}: valor da amostra estatística usado para testar a hipótese do nulo.
+@code{'statistic}: valor da amostra estatÃ­stica usado para testar a hipÃ³tese do nulo.
 
 @item
-@code{'distribution}: distribuição da amostra estatística, juntamente com seu parâmetro.
+@code{'distribution}: distribuiÃ§Ã£o da amostra estatÃ­stica, juntamente com seu parÃ¢metro.
 
 @item
 @code{'p_value}: o valor de @math{p} do teste sobre @var{b}.
 
 @item
-@code{'v_estimation}: estimador de variância imparcial, ou variância residual.
+@code{'v_estimation}: estimador de variÃ¢ncia imparcial, ou variÃ¢ncia residual.
 
 @item
-@code{'v_conf_int}: intervalo de confidência da variância.
+@code{'v_conf_int}: intervalo de confidÃªncia da variÃ¢ncia.
 
 @item
-@code{'cond_mean_conf_int}: intervalo de confidência paa a média condicionada. Veja exemplos abaixo.
+@code{'cond_mean_conf_int}: intervalo de confidÃªncia paa a mÃ©dia condicionada. Veja exemplos abaixo.
 
 @item
-@code{'new_pred_conf_int}: intervalo de confidência para uma nova previsão. Veja exemplos abaixo.
+@code{'new_pred_conf_int}: intervalo de confidÃªncia para uma nova previsÃ£o. Veja exemplos abaixo.
 
 @item
-@code{'residuals}: lista de pares (previsão, resíduo), ordenados em relação às previsões.
-Útil para achar o melhor da análise de ajuste. Veja exemplos abaixo.
+@code{'residuals}: lista de pares (previsÃ£o, resÃ­duo), ordenados em relaÃ§Ã£o Ã s previsÃµes.
+Ãštil para achar o melhor da anÃ¡lise de ajuste. Veja exemplos abaixo.
 
 @end enumerate
 
-Somente os itens 1, 4, 14, 9, 10, 11, 12, e 13 acima, nessa ordem, são mostrados por padrão. Os restantes
-escondem-se até que o utilizador faça uso de funções @code{items_inference} e @code{take_inference}.
+Somente os itens 1, 4, 14, 9, 10, 11, 12, e 13 acima, nessa ordem, sÃ£o mostrados por padrÃ£o. Os restantes
+escondem-se atÃ© que o utilizador faÃ§a uso de funÃ§Ãµes @code{items_inference} e @code{take_inference}.
 
 Exemplo:
 
-Ajustando um modelo linear para uma amostras de duas variáveis. A entrada @code{%i4} monta p gráfico
-da amostra junto com a linha de regressão; a entrada @code{%i5}
-calcula @code{y} dado @code{x=113}; a média e o 
-intervalo de confidência para uma nova previsão quando @code{x=113} são também calculados.
+Ajustando um modelo linear para uma amostras de duas variÃ¡veis. A entrada @code{%i4} monta p grÃ¡fico
+da amostra junto com a linha de regressÃ£o; a entrada @code{%i5}
+calcula @code{y} dado @code{x=113}; a mÃ©dia e o 
+intervalo de confidÃªncia para uma nova previsÃ£o quando @code{x=113} sÃ£o tambÃ©m calculados.
 
 @c ===beg===
 @c load (stats)$
@@ -1288,40 +1288,40 @@ intervalo de confidência para uma nova previsão quando @code{x=113} são também c
 
 
 
-@node Definições para distribuições especiais, , Definições para stats, Top
-@section Definições para distribuições especiais
+@node DefiniÃ§Ãµes para distribuiÃ§Ãµes especiais, , DefiniÃ§Ãµes para stats, Top
+@section DefiniÃ§Ãµes para distribuiÃ§Ãµes especiais
 
 
-@deffn {Função} pdf_signed_rank (@var{x}, @var{n})
-Função densidade de probabilidade da distribuição exacta da
-estatística do rank sinalizado. O argumento @var{x} é um número
+@deffn {FunÃ§Ã£o} pdf_signed_rank (@var{x}, @var{n})
+FunÃ§Ã£o densidade de probabilidade da distribuiÃ§Ã£o exacta da
+estatÃ­stica do rank sinalizado. O argumento @var{x} Ã© um nÃºmero
 real e @var{n} um inteiro positivo.
 
-Veja também @code{test_signed_rank}.
+Veja tambÃ©m @code{test_signed_rank}.
 @end deffn
 
-@deffn {Função} cdf_signed_rank (@var{x}, @var{n})
-Função de densidade cumulativa da distribuição exacta da
-estatística do rank sinalizado. O argumento @var{x} é um número
+@deffn {FunÃ§Ã£o} cdf_signed_rank (@var{x}, @var{n})
+FunÃ§Ã£o de densidade cumulativa da distribuiÃ§Ã£o exacta da
+estatÃ­stica do rank sinalizado. O argumento @var{x} Ã© um nÃºmero
 real e @var{n} um inteiro positivo. 
 
-Veja também @code{test_signed_rank}.
+Veja tambÃ©m @code{test_signed_rank}.
 @end deffn
 
-@deffn {Função} pdf_rank_sum (@var{x}, @var{n}, @var{m})
-Função densidade de probabilidade da distribuição exacta da
-estatística do somatório do rank. O argumento @var{x} é um número
-real e @var{n} e @var{m} são ambos inteiros positivos. 
+@deffn {FunÃ§Ã£o} pdf_rank_sum (@var{x}, @var{n}, @var{m})
+FunÃ§Ã£o densidade de probabilidade da distribuiÃ§Ã£o exacta da
+estatÃ­stica do somatÃ³rio do rank. O argumento @var{x} Ã© um nÃºmero
+real e @var{n} e @var{m} sÃ£o ambos inteiros positivos. 
 
-Veja também @code{test_rank_sum}.
+Veja tambÃ©m @code{test_rank_sum}.
 @end deffn
 
-@deffn {Função} cdf_rank_sum (@var{x}, @var{n}, @var{m})
-Função de densidade cumulativa da distribuição exacta da
-estatística do somatório do rank. O argumento @var{x} é um número
-real e @var{n} e @var{m} são ambos inteiro positivos. 
+@deffn {FunÃ§Ã£o} cdf_rank_sum (@var{x}, @var{n}, @var{m})
+FunÃ§Ã£o de densidade cumulativa da distribuiÃ§Ã£o exacta da
+estatÃ­stica do somatÃ³rio do rank. O argumento @var{x} Ã© um nÃºmero
+real e @var{n} e @var{m} sÃ£o ambos inteiro positivos. 
 
-Veja também @code{test_rank_sum}.
+Veja tambÃ©m @code{test_rank_sum}.
 @end deffn
 
 

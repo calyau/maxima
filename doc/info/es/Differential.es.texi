@@ -1,34 +1,34 @@
 @c English version 2011-03-14
 @menu
-* IntroducciÛn a las ecuaciones diferenciales::
+* Introducci√≥n a las ecuaciones diferenciales::
 * Funciones y variables para ecuaciones diferenciales::  
 @end menu
 
-@node IntroducciÛn a las ecuaciones diferenciales, Funciones y variables para ecuaciones diferenciales, Ecuaciones Diferenciales, Ecuaciones Diferenciales
-@section IntroducciÛn a las ecuaciones diferenciales
+@node Introducci√≥n a las ecuaciones diferenciales, Funciones y variables para ecuaciones diferenciales, Ecuaciones Diferenciales, Ecuaciones Diferenciales
+@section Introducci√≥n a las ecuaciones diferenciales
 
-Esta secciÛn describe las funciones disponibles en Maxima para
-el c·lculo de las soluciones analÌticas de ciertos
+Esta secci√≥n describe las funciones disponibles en Maxima para
+el c√°lculo de las soluciones anal√≠ticas de ciertos
 tipos de ecuaciones de primer y segundo orden. Para las soluciones
-numÈricas de sistemas de ecuaciones diferenciales, vÈase el
+num√©ricas de sistemas de ecuaciones diferenciales, v√©ase el
 paquete adicional @code{dynamics}. Para las representaciones
-gr·ficas en el espacio de fases, vÈase el paquete @code{plotdf}.
+gr√°ficas en el espacio de fases, v√©ase el paquete @code{plotdf}.
 
 
-@node Funciones y variables para ecuaciones diferenciales,  , IntroducciÛn a las ecuaciones diferenciales, Ecuaciones Diferenciales
+@node Funciones y variables para ecuaciones diferenciales,  , Introducci√≥n a las ecuaciones diferenciales, Ecuaciones Diferenciales
 @section Funciones y variables para ecuaciones diferenciales.
 
 
-@deffn {FunciÛn} bc2 (@var{soluc}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
+@deffn {Funci√≥n} bc2 (@var{soluc}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
 Resuelve el problema del valor en la frontera para ecuaciones diferenciales de segundo orden. 
-AquÌ, @var{soluc} es una soluciÛn general de la ecuaciÛn, como las que calcula @code{ode2}, @var{xval1} especifica el valor de la variable independiente en el primer punto mediante una expresiÛn de la forma @code{@var{x} = @var{x0}}, mientras que @var{yval1} hace lo propio para la variable dependiente.  Las expresiones @var{xval2} y @var{yval2} dan los valores de estas mismas variables en un segundo punto, utilizando el mismo formato.
+Aqu√≠, @var{soluc} es una soluci√≥n general de la ecuaci√≥n, como las que calcula @code{ode2}, @var{xval1} especifica el valor de la variable independiente en el primer punto mediante una expresi√≥n de la forma @code{@var{x} = @var{x0}}, mientras que @var{yval1} hace lo propio para la variable dependiente.  Las expresiones @var{xval2} y @var{yval2} dan los valores de estas mismas variables en un segundo punto, utilizando el mismo formato.
 
 @end deffn
 
-@deffn {FunciÛn} desolve (@var{ecu}, @var{x})
-@deffnx {FunciÛn} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Funci√≥n} desolve (@var{ecu}, @var{x})
+@deffnx {Funci√≥n} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
 
-La funciÛn @code{desolve} resuelve sistemas de ecuaciones diferenciales ordinarias lineales utilizando la transformada de Laplace.  AquÌ las @var{eqi} (@code{i}=1,..,n) son ecuaciones diferenciales con variables dependientes @var{x_1}, ..., @var{x_n}. La dependencia funcional de @var{x_1}, ..., @var{x_n} respecto de una variable independiente, por ejemplo @var{x}, debe indicarse explÌcitamente, tanto en las variables como en las derivadas. Por ejemplo, 
+La funci√≥n @code{desolve} resuelve sistemas de ecuaciones diferenciales ordinarias lineales utilizando la transformada de Laplace.  Aqu√≠ las @var{eqi} (@code{i}=1,..,n) son ecuaciones diferenciales con variables dependientes @var{x_1}, ..., @var{x_n}. La dependencia funcional de @var{x_1}, ..., @var{x_n} respecto de una variable independiente, por ejemplo @var{x}, debe indicarse expl√≠citamente, tanto en las variables como en las derivadas. Por ejemplo, 
 
 
 @example
@@ -36,19 +36,19 @@ eqn_1: 'diff(f,x,2) = sin(x) + 'diff(g,x);
 eqn_2: 'diff(f,x) + x^2 - f = 2*'diff(g,x,2);
 @end example
 
-no es el formato apropiado. El mÈtodo correcto es
+no es el formato apropiado. El m√©todo correcto es
 
 @example
 eqn_1: 'diff(f(x),x,2) = sin(x) + 'diff(g(x),x);
 eqn_2: 'diff(f(x),x) + x^2 - f(x) = 2*'diff(g(x),x,2);
 @end example
 
-La llamada a la funciÛn @code{desolve} serÌa entonces
+La llamada a la funci√≥n @code{desolve} ser√≠a entonces
 @example
 desolve([eqn_1, eqn_2], [f(x),g(x)]);
 @end example
 
-Si las condiciones iniciales en @code{x=0} son conocidas, deben ser suministradas antes de llamar a @code{desolve} haciendo uso previo de la funciÛn @code{atvalue},
+Si las condiciones iniciales en @code{x=0} son conocidas, deben ser suministradas antes de llamar a @code{desolve} haciendo uso previo de la funci√≥n @code{atvalue},
 
 @c ===beg===
 @c 'diff(f(x),x)='diff(g(x),x)+sin(x);
@@ -85,31 +85,31 @@ Si las condiciones iniciales en @code{x=0} son conocidas, deben ser suministrada
 
 @end example
 
-Si @code{desolve} no encuentra una soluciÛn, entonces devuelve @code{false}.
+Si @code{desolve} no encuentra una soluci√≥n, entonces devuelve @code{false}.
 
 @end deffn
 
-@deffn {FunciÛn} ic1 (@var{soluc}, @var{xval}, @var{yval})
+@deffn {Funci√≥n} ic1 (@var{soluc}, @var{xval}, @var{yval})
 
 Resuelve el problema del valor inicial en ecuaciones diferenciales de primer orden. 
-AquÌ, @var{soluc} es una soluciÛn general de la ecuaciÛn, como las que calcula @code{ode2}, @var{xval} es una ecuaciÛn de la forma @code{@var{x} = @var{x0}} para la variable independiente y @var{yval} es una ecuaciÛn de la forma @code{@var{y} = @var{y0}} para la variable dependiente. VÈase @code{ode2} para un ejemplo sobre su utilizaciÛn.
+Aqu√≠, @var{soluc} es una soluci√≥n general de la ecuaci√≥n, como las que calcula @code{ode2}, @var{xval} es una ecuaci√≥n de la forma @code{@var{x} = @var{x0}} para la variable independiente y @var{yval} es una ecuaci√≥n de la forma @code{@var{y} = @var{y0}} para la variable dependiente. V√©ase @code{ode2} para un ejemplo sobre su utilizaci√≥n.
 
 @end deffn
 
-@deffn {FunciÛn} ic2 (@var{soluc}, @var{xval}, @var{yval}, @var{dval})
+@deffn {Funci√≥n} ic2 (@var{soluc}, @var{xval}, @var{yval}, @var{dval})
 
 Resuelve el problema del valor inicial en ecuaciones diferenciales de segundo orden.
-AquÌ, @var{soluc} es una soluciÛn general de la ecuaciÛn, como las que calcula @code{ode2}, @var{xval} es una ecuaciÛn de la forma @code{@var{x} = @var{x0}} para la variable independiente y @var{yval} es una ecuaciÛn de la forma @code{@var{y} = @var{y0}} para la variable dependiente, siendo @var{dval} una expresiÛn de la forma @code{diff(@var{y},@var{x}) = @var{dy0}} que especifica la primera derivada de la variable dependiente respecto de la independiente en el punto @var{xval}.
+Aqu√≠, @var{soluc} es una soluci√≥n general de la ecuaci√≥n, como las que calcula @code{ode2}, @var{xval} es una ecuaci√≥n de la forma @code{@var{x} = @var{x0}} para la variable independiente y @var{yval} es una ecuaci√≥n de la forma @code{@var{y} = @var{y0}} para la variable dependiente, siendo @var{dval} una expresi√≥n de la forma @code{diff(@var{y},@var{x}) = @var{dy0}} que especifica la primera derivada de la variable dependiente respecto de la independiente en el punto @var{xval}.
 
-VÈase @code{ode2} para un ejemplo de su uso.
+V√©ase @code{ode2} para un ejemplo de su uso.
 @end deffn
 
 
-@deffn {FunciÛn} ode2 (@var{ecu}, @var{dvar}, @var{ivar})
-La funciÛn @code{ode2} resuelve ecuaciones diferenciales ordinarias de primer y segundo orden. Admite tres argumentos: 
-una ecuaciÛn diferencial ordinaria @var{ecu}, la variable dependiente @var{dvar} y la variable independiente @var{ivar}.  Si ha tenido Èxito en la resoluciÛn de la ecuaciÛn, devuelve una soluciÛn, explÌcita o implÌcita, para la variable dependiente. El sÌmbolo @code{%c} se utiliza para representar la constante en el caso de ecuaciones de primer orden y los sÌmbolos @code{%k1} y @code{%k2} son las constantes de las ecuaciones de segundo orden. Si por cualquier razÛn @code{ode2} no puede calcular la soluciÛn, devolver· @code{false}, acompaÒado quiz·s de un mensaje de error. Los mÈtodos utilizados para las ecuaciones de primer orden, en el orden en que se hace la tentativa de resoluciÛn son: lineal, separable, exacto (pudiendo solicitar en este caso un factor de integraciÛn), homogÈneo, ecuaciÛn de Bernoulli y un mÈtodo homogÈneo generalizado. Para las ecuaciones de segundo orden: coeficiente constante, exacto, homogÈneo lineal con coeficientes no constantes  que pueden ser transformados en coeficientes constantes, ecuaciÛn equidimensional o de Euler, mÈtodo de variaciÛn de par·metros y ecuaciones exentas de las variables dependientes o independientes de manera que se puedan reducir a dos ecuaciones lineales de primer a ser resueltas secuencialmente. Durante el proceso de resoluciÛn de ecuaciones diferenciales ordinarias, ciertas variables se utilizan con el ˙nico propÛsito de suministrar informaciÛn al usuario: @code{method} almacena el mÈtodo utilizado para encontrar la soluciÛn (como por ejemplo @code{linear}), @code{intfactor} para el factor de integraciÛn que se haya podido utilizar, @code{odeindex} para el Ìndice del mÈtodo de Bernoulli o el homogÈneo generalizado y @code{yp} para la soluciÛn particular del mÈtodo de variaciÛn de par·metros.
+@deffn {Funci√≥n} ode2 (@var{ecu}, @var{dvar}, @var{ivar})
+La funci√≥n @code{ode2} resuelve ecuaciones diferenciales ordinarias de primer y segundo orden. Admite tres argumentos: 
+una ecuaci√≥n diferencial ordinaria @var{ecu}, la variable dependiente @var{dvar} y la variable independiente @var{ivar}.  Si ha tenido √©xito en la resoluci√≥n de la ecuaci√≥n, devuelve una soluci√≥n, expl√≠cita o impl√≠cita, para la variable dependiente. El s√≠mbolo @code{%c} se utiliza para representar la constante en el caso de ecuaciones de primer orden y los s√≠mbolos @code{%k1} y @code{%k2} son las constantes de las ecuaciones de segundo orden. Si por cualquier raz√≥n @code{ode2} no puede calcular la soluci√≥n, devolver√° @code{false}, acompa√±ado quiz√°s de un mensaje de error. Los m√©todos utilizados para las ecuaciones de primer orden, en el orden en que se hace la tentativa de resoluci√≥n son: lineal, separable, exacto (pudiendo solicitar en este caso un factor de integraci√≥n), homog√©neo, ecuaci√≥n de Bernoulli y un m√©todo homog√©neo generalizado. Para las ecuaciones de segundo orden: coeficiente constante, exacto, homog√©neo lineal con coeficientes no constantes  que pueden ser transformados en coeficientes constantes, ecuaci√≥n equidimensional o de Euler, m√©todo de variaci√≥n de par√°metros y ecuaciones exentas de las variables dependientes o independientes de manera que se puedan reducir a dos ecuaciones lineales de primer a ser resueltas secuencialmente. Durante el proceso de resoluci√≥n de ecuaciones diferenciales ordinarias, ciertas variables se utilizan con el √∫nico prop√≥sito de suministrar informaci√≥n al usuario: @code{method} almacena el m√©todo utilizado para encontrar la soluci√≥n (como por ejemplo @code{linear}), @code{intfactor} para el factor de integraci√≥n que se haya podido utilizar, @code{odeindex} para el √≠ndice del m√©todo de Bernoulli o el homog√©neo generalizado y @code{yp} para la soluci√≥n particular del m√©todo de variaci√≥n de par√°metros.
 
-A fin de resolver problemas con valores iniciales y problemas con valores en la frontera, la funciÛn @code{ic1} est· disponible para ecuaciones de primer orden y las funciones @code{ic2} y @code{bc2} para problemas de valores iniciales y de frontera, respectivamente, en el caso de las ecuaciones de segundo orden.
+A fin de resolver problemas con valores iniciales y problemas con valores en la frontera, la funci√≥n @code{ic1} est√° disponible para ecuaciones de primer orden y las funciones @code{ic2} y @code{bc2} para problemas de valores iniciales y de frontera, respectivamente, en el caso de las ecuaciones de segundo orden.
 
 Ejemplo:
 

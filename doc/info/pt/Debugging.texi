@@ -1,32 +1,32 @@
 @c Language: Portuguese
 @c Source: Debugging.texi (en) 1.16
 @menu
-* Depuração do Código Fonte::
+* DepuraÃ§Ã£o do CÃ³digo Fonte::
 * Comandos Palavra Chave::
-* Definições para Depuração::   
+* DefiniÃ§Ãµes para DepuraÃ§Ã£o::   
 @end menu
 
-@node Depuração do Código Fonte, Comandos Palavra Chave, , Depuração
-@section Depuração do Código Fonte
+@node DepuraÃ§Ã£o do CÃ³digo Fonte, Comandos Palavra Chave, , DepuraÃ§Ã£o
+@section DepuraÃ§Ã£o do CÃ³digo Fonte
 
-Maxima tem um depurador interno de código fonte.  O utilizador pode
-escolher um ponto de parada numa função, e executar o programa
-linha por linha a partir daí. A pilha de chamadas pode ser
-examinada, juntamente com as variáveis existentes nesse nível.
+Maxima tem um depurador interno de cÃ³digo fonte.  O utilizador pode
+escolher um ponto de parada numa funÃ§Ã£o, e executar o programa
+linha por linha a partir daÃ­. A pilha de chamadas pode ser
+examinada, juntamente com as variÃ¡veis existentes nesse nÃ­vel.
 
 O comando @code{:help} ou @code{:h} mostra a lista de comandos de
-depuração.  (Em geral, os comandos podem ser abreviados se a
-abreviação for única. Se não for única, as alternativas
-podem ser listadas.)  Dentro do depurador, o utilizador pode também
-usar quaisquer funções comuns do Maxima para examinar, definir,
-e manipular variáveis e expressões.
+depuraÃ§Ã£o.  (Em geral, os comandos podem ser abreviados se a
+abreviaÃ§Ã£o for Ãºnica. Se nÃ£o for Ãºnica, as alternativas
+podem ser listadas.)  Dentro do depurador, o utilizador pode tambÃ©m
+usar quaisquer funÃ§Ãµes comuns do Maxima para examinar, definir,
+e manipular variÃ¡veis e expressÃµes.
 
-Um ponto de parada é escolhido através do comando @code{:br} na
+Um ponto de parada Ã© escolhido atravÃ©s do comando @code{:br} na
 linha de comando do Maxima. Dentro do depurador, o utilizador pode
-avançar uma linha de cada vez usando o comando @code{:n}
+avanÃ§ar uma linha de cada vez usando o comando @code{:n}
 (``next'').  o comando @code{:bt} (``backtrace'') mostra uma lista da
 pilha de frames.  O comando @code{:r} (``resume'') sai do depurador e
-continua com a execução.  Esses comandos são demostrados no
+continua com a execuÃ§Ã£o.  Esses comandos sÃ£o demostrados no
 exemplo a seguir.
 
 @example
@@ -46,11 +46,11 @@ Bkpt 0:(foobar.mac 1)
 #0: foo(y=5)(foobar.mac line 1)
 #1: bar(x=2,y=3)(foobar.mac line 9)
 
-(dbm:1) :n                         <-- Aqui digite :n para avançar linha
+(dbm:1) :n                         <-- Aqui digite :n para avanÃ§ar linha
 (foobar.mac 2)
 /tmp/foobar.mac:2::
 
-(dbm:1) :n                         <-- Aqui digite :n para avançar linha
+(dbm:1) :n                         <-- Aqui digite :n para avanÃ§ar linha
 (foobar.mac 3)
 /tmp/foobar.mac:3::
 
@@ -60,12 +60,12 @@ Bkpt 0:(foobar.mac 1)
 (dbm:1) u: 33;                     <-- Altera u para ser 33
 33
 
-(dbm:1) :r                         <-- Digite :r para retomar a computação
+(dbm:1) :r                         <-- Digite :r para retomar a computaÃ§Ã£o
 
 (%o2)                                1094
 @end example
 
-O ficheiro @code{/tmp/foobar.mac} é o seguinte:
+O ficheiro @code{/tmp/foobar.mac} Ã© o seguinte:
 
 @example
 foo(y) := block ([u:y^2],
@@ -80,19 +80,19 @@ bar(x,y) := (
   x+y);
 @end example
 
-USO DO DEPURADOR ATRAVÉS DO EMACS E DE XMAXIMA
+USO DO DEPURADOR ATRAVÃ‰S DO EMACS E DE XMAXIMA
 
-Se o utilizador estiver a executar o código sob o GNU Emacs numa janela
-shell (shel dbl), ou estiver usando a interface gráfica,
-@code{xmaxima}, então quando parar num ponto de parada, verá a sua
-posição actual no ficheiro fonte apresentada na
+Se o utilizador estiver a executar o cÃ³digo sob o GNU Emacs numa janela
+shell (shel dbl), ou estiver usando a interface grÃ¡fica,
+@code{xmaxima}, entÃ£o quando parar num ponto de parada, verÃ¡ a sua
+posiÃ§Ã£o actual no ficheiro fonte apresentada na
 outra metade da janela, ou em vermelho brilhante, ou com uma pequena
-seta apontando na direita da linha. Poderá avançar uma linha por
+seta apontando na direita da linha. PoderÃ¡ avanÃ§ar uma linha por
 vez digitando M-n (Alt-n).
 
 No Emacs pode executar o Maxima numa shell @code{dbl}, o qual requer o
-ficheiro @code{dbl.el} no directório elisp.
-Verifique que tenha instalado os ficheiros elisp ou adicionado o directório elisp do Maxima ao seu caminho:
+ficheiro @code{dbl.el} no directÃ³rio elisp.
+Verifique que tenha instalado os ficheiros elisp ou adicionado o directÃ³rio elisp do Maxima ao seu caminho:
 e.g., adicione o seguinte ao seu ficheiro @file{.emacs} ou ao seu ficheiro
 @code{site-init.el}
 
@@ -101,33 +101,33 @@ e.g., adicione o seguinte ao seu ficheiro @file{.emacs} ou ao seu ficheiro
 (autoload 'dbl "dbl")
 @end example
 
-então no Emacs 
+entÃ£o no Emacs 
 
 @example
 M-x dbl
 @end example
 
 pode iniciar uma janela shell na qual pode executar programas, por exemplo
-Maxima, gcl, gdb etc. Essa janela de shell também reconhece informações sobre
-depuração de código fonte, e mostra o código fonte em outra janela.  
+Maxima, gcl, gdb etc. Essa janela de shell tambÃ©m reconhece informaÃ§Ãµes sobre
+depuraÃ§Ã£o de cÃ³digo fonte, e mostra o cÃ³digo fonte em outra janela.  
 
 O utilizador pode escolher um ponto de parada em certa linha do
-ficheiro digitando @code{C-x space}. Isso encontra qual a função
-onde o cursor está posicionado, e mostra qual a linha daquela função
-onde o cursor está habilitado. Se o cursor estiver habilitado, digamos, na linha
-2 de @code{foo}, então isso irá inserir na outra janela o comando,
+ficheiro digitando @code{C-x space}. Isso encontra qual a funÃ§Ã£o
+onde o cursor estÃ¡ posicionado, e mostra qual a linha daquela funÃ§Ã£o
+onde o cursor estÃ¡ habilitado. Se o cursor estiver habilitado, digamos, na linha
+2 de @code{foo}, entÃ£o isso irÃ¡ inserir na outra janela o comando,
 ``@code{:br foo 2}'', para parar @code{foo} nessa segunda linha.
 Para ter isso habilitado, o utilizador deve ter
 maxima-mode.el habilitado na janela na qual o ficheiro @code{foobar.mac} estiver interagindo.
-Existe comandos adicional disponíveis naquela janela de ficheiro, tais como
-avaliando a função dentro do Maxima, através da digitação de @code{Alt-Control-x}.
+Existe comandos adicional disponÃ­veis naquela janela de ficheiro, tais como
+avaliando a funÃ§Ã£o dentro do Maxima, atravÃ©s da digitaÃ§Ã£o de @code{Alt-Control-x}.
 
-@node Comandos Palavra Chave, Definições para Depuração, Depuração do Código Fonte, Depuração
+@node Comandos Palavra Chave, DefiniÃ§Ãµes para DepuraÃ§Ã£o, DepuraÃ§Ã£o do CÃ³digo Fonte, DepuraÃ§Ã£o
 @section Comandos Palavra Chave
 
-Comandos palavra chave são palavras chaves especiais que não são interpretadas como expressões do Maxima.
+Comandos palavra chave sÃ£o palavras chaves especiais que nÃ£o sÃ£o interpretadas como expressÃµes do Maxima.
 Um comando palavra chave pode ser inserido na linha de comando do Maxima ou na linha de comando do depurador,
-embora não possa ser inserido na linha de comando de parada.
+embora nÃ£o possa ser inserido na linha de comando de parada.
 Comandos palavra chave iniciam com um dois pontos Keyword commands start with a colon, ':'.
 Por exemplo, para avaliar um comando do Lisp,
 pode escrever @code{:lisp} seguido pelo comando a ser avaliado.  
@@ -137,25 +137,25 @@ pode escrever @code{:lisp} seguido pelo comando a ser avaliado.
 5
 @end example
 
-O número de argumentos necessários depende do comando em particular.
-Também, não precisa escrever o comando completo, apenas o suficiente
-para ser único no meio das palavras chave de parada. Dessa forma
-@code{:br} será suficiente para @code{:break}.
+O nÃºmero de argumentos necessÃ¡rios depende do comando em particular.
+TambÃ©m, nÃ£o precisa escrever o comando completo, apenas o suficiente
+para ser Ãºnico no meio das palavras chave de parada. Dessa forma
+@code{:br} serÃ¡ suficiente para @code{:break}.
 
-Os comandos de palavra chave são listados abaixo.
+Os comandos de palavra chave sÃ£o listados abaixo.
 
 @table @code
 @item :break F n
-Escolhe um ponto de parada em uma função @code{F} na linha @code{n} 
-a partir do início da função.
-Se @code{F} for dado como uma sequência de caracteres, então essa sequência de caracteres é assumida referir-se a
-um ficheiro, e @code{n} é o deslocamente a partir do início do ficheiro.
-O deslocamento é opcional. Se for omitido, é assumido ser zero
-(primeira linha da função ou do ficheiro).
+Escolhe um ponto de parada em uma funÃ§Ã£o @code{F} na linha @code{n} 
+a partir do inÃ­cio da funÃ§Ã£o.
+Se @code{F} for dado como uma sequÃªncia de caracteres, entÃ£o essa sequÃªncia de caracteres Ã© assumida referir-se a
+um ficheiro, e @code{n} Ã© o deslocamente a partir do inÃ­cio do ficheiro.
+O deslocamento Ã© opcional. Se for omitido, Ã© assumido ser zero
+(primeira linha da funÃ§Ã£o ou do ficheiro).
 @item :bt
 Imprime na tela uma lista da pilha de frames
 @item :continue
-Continua a computação
+Continua a computaÃ§Ã£o
 @c CAN'T SEEM TO GET :delete TO WORK !!!
 @item :delete
 Remove o ponto de parada seleccionado, ou todos se nenum for especificado
@@ -172,245 +172,245 @@ Imprime na tela a pilha de frame @code{n}, ou o corrente frame se nenhum for esp
 Imprime na tela a ajuda sobre um comando do depurador, ou todos os comandos se nenhum for especificado
 @c CAN'T SEEM TO GET :info TO WORK !!!
 @item :info
-Imprime na tela informações sobre um item
+Imprime na tela informaÃ§Ãµes sobre um item
 @item :lisp alguma-forma
 Avalia @code{alguma-forma} como uma forma Lisp
 @item :lisp-quiet alguma-forma
-Avalia a forma Lisp @code{alguma-forma} sem qualquer saída
+Avalia a forma Lisp @code{alguma-forma} sem qualquer saÃ­da
 @item :next
-Como @code{:step}, excepto @code{:next} passos sobre chamadas de fução
+Como @code{:step}, excepto @code{:next} passos sobre chamadas de fuÃ§Ã£o
 @item :quit
-Sai do nível corrente do depurador sem concluir a computação
+Sai do nÃ­vel corrente do depurador sem concluir a computaÃ§Ã£o
 @item :resume
-Continua a computação
+Continua a computaÃ§Ã£o
 @item :step
-Continua a computação até encontraruma nova linha de códico
+Continua a computaÃ§Ã£o atÃ© encontraruma nova linha de cÃ³dico
 @item :top
-Retorne para a linha de comando do Maxima (saindo de qualquer nível do depurador) sem 
-completar a computação
+Retorne para a linha de comando do Maxima (saindo de qualquer nÃ­vel do depurador) sem 
+completar a computaÃ§Ã£o
 @end table 
 
 
-@node Definições para Depuração, , Comandos Palavra Chave, Depuração
-@section Definições para Depuração
+@node DefiniÃ§Ãµes para DepuraÃ§Ã£o, , Comandos Palavra Chave, DepuraÃ§Ã£o
+@section DefiniÃ§Ãµes para DepuraÃ§Ã£o
 
-@defvr {Variável de opção} refcheck
-Valor por omissão: @code{false}
+@defvr {VariÃ¡vel de opÃ§Ã£o} refcheck
+Valor por omissÃ£o: @code{false}
 
 Quando @code{refcheck} for @code{true}, Maxima imprime uma mensagem
-cada vez que uma variável associada for usada pela primeira vez em uma
-computação.
+cada vez que uma variÃ¡vel associada for usada pela primeira vez em uma
+computaÃ§Ã£o.
 
 @end defvr
 
-@defvr {Variável de opção} setcheck
-Valor por omissão: @code{false}
+@defvr {VariÃ¡vel de opÃ§Ã£o} setcheck
+Valor por omissÃ£o: @code{false}
 
-Se @code{setcheck} for escolhido para uma lista de variáveis (as quais podem
+Se @code{setcheck} for escolhido para uma lista de variÃ¡veis (as quais podem
 ser subscritas), 
-Maxima mostra uma mensagem quando as variáveis, ou
-ocorrências subscritas delas, forem associadas com o
-operador comum de atribuição @code{:}, o operador @code{::}
-de atribuição, ou associando argumentos de função,
-mas não com o operador de atribuição de função @code{:=} nem o operador de atribuição
+Maxima mostra uma mensagem quando as variÃ¡veis, ou
+ocorrÃªncias subscritas delas, forem associadas com o
+operador comum de atribuiÃ§Ã£o @code{:}, o operador @code{::}
+de atribuiÃ§Ã£o, ou associando argumentos de funÃ§Ã£o,
+mas nÃ£o com o operador de atribuiÃ§Ã£o de funÃ§Ã£o @code{:=} nem o operador de atribuiÃ§Ã£o
 @code{::=} de macro.
-A mensagem compreende o nome das variáveis e o
+A mensagem compreende o nome das variÃ¡veis e o
 valor associado a ela.
 
 @code{setcheck} pode ser escolhida para @code{all} ou @code{true} incluindo
-desse modo todas as variáveis.
+desse modo todas as variÃ¡veis.
 
-Cada nova atribuição de @code{setcheck} estabelece uma nova lista de variáveis
-para verificar, e quaisquer variáveis previamente atribuídas a @code{setcheck} são esquecidas.
+Cada nova atribuiÃ§Ã£o de @code{setcheck} estabelece uma nova lista de variÃ¡veis
+para verificar, e quaisquer variÃ¡veis previamente atribuÃ­das a @code{setcheck} sÃ£o esquecidas.
 
-Os nomes atribuídos a @code{setcheck} devem ter um apóstrofo no início se eles forem de outra forma
-avaliam para alguma outra coisa que não eles mesmo.
-Por exemplo, se @code{x}, @code{y}, e @code{z} estiverem actualmente associados, então digite
+Os nomes atribuÃ­dos a @code{setcheck} devem ter um apÃ³strofo no inÃ­cio se eles forem de outra forma
+avaliam para alguma outra coisa que nÃ£o eles mesmo.
+Por exemplo, se @code{x}, @code{y}, e @code{z} estiverem actualmente associados, entÃ£o digite
 
 @example
 setcheck: ['x, 'y, 'z]$
 @end example
 
-para colocá-los na lista de variáveis monitoradas.
+para colocÃ¡-los na lista de variÃ¡veis monitoradas.
 
-Nenhuma saída é gerada quando uma
-variável na lista @code{setcheck} for atribuída a sí mesma, e.g., @code{X: 'X}.
+Nenhuma saÃ­da Ã© gerada quando uma
+variÃ¡vel na lista @code{setcheck} for atribuÃ­da a sÃ­ mesma, e.g., @code{X: 'X}.
 
 @end defvr
 
-@defvr {Variável de opção} setcheckbreak
-Valor por omissão: @code{false}
+@defvr {VariÃ¡vel de opÃ§Ã£o} setcheckbreak
+Valor por omissÃ£o: @code{false}
 
 Quando @code{setcheckbreak} for @code{true},
-Maxima mostrará um ponto de parada 
-quando uma variável sob a lista @code{setcheck} for atribuída a um novo valor.
-A parada ocorre antes que a atribuíção seja concluída.
-Nesse ponto, @code{setval} retém o valor para o qual a variável está 
-para ser atribuída.
-Consequentemente, se pode atribuir um valor diferente através da atribuição a @code{setval}.
+Maxima mostrarÃ¡ um ponto de parada 
+quando uma variÃ¡vel sob a lista @code{setcheck} for atribuÃ­da a um novo valor.
+A parada ocorre antes que a atribuÃ­Ã§Ã£o seja concluÃ­da.
+Nesse ponto, @code{setval} retÃ©m o valor para o qual a variÃ¡vel estÃ¡ 
+para ser atribuÃ­da.
+Consequentemente, se pode atribuir um valor diferente atravÃ©s da atribuiÃ§Ã£o a @code{setval}.
 
-Veja também @code{setcheck} e @code{setval}.
+Veja tambÃ©m @code{setcheck} e @code{setval}.
 
 @end defvr
 
-@defvr {Variável de sistema} setval
-Mantém o valor para o qual a variável está para ser escolhida quando
+@defvr {VariÃ¡vel de sistema} setval
+MantÃ©m o valor para o qual a variÃ¡vel estÃ¡ para ser escolhida quando
 um @code{setcheckbreak} ocorrer.
-Consequentemente, se pode atribuir um valor diferente através da atribuição a @code{setval}.
+Consequentemente, se pode atribuir um valor diferente atravÃ©s da atribuiÃ§Ã£o a @code{setval}.
 
-Veja também @code{setcheck} e @code{setcheckbreak}.
+Veja tambÃ©m @code{setcheck} e @code{setcheckbreak}.
 
 @end defvr
 
-@deffn {Função} timer (@var{f_1}, ..., @var{f_n})
-@deffnx {Função} timer ()
-Dadas as funções @var{f_1}, ..., @var{f_n},
-@code{timer} coloca cada uma na lista de funções para as quais cronometragens estatísticas são colectadas.
-@code{timer(f)$ timer(g)$} coloca @code{f} e então @code{g} sobre a lista;
+@deffn {FunÃ§Ã£o} timer (@var{f_1}, ..., @var{f_n})
+@deffnx {FunÃ§Ã£o} timer ()
+Dadas as funÃ§Ãµes @var{f_1}, ..., @var{f_n},
+@code{timer} coloca cada uma na lista de funÃ§Ãµes para as quais cronometragens estatÃ­sticas sÃ£o colectadas.
+@code{timer(f)$ timer(g)$} coloca @code{f} e entÃ£o @code{g} sobre a lista;
 a lista acumula de uma chamada para a chamada seguinte.
 
 Sem argumentos, 
-@code{timer} retorna a lista das funções tempo estatisticamente monitoradas.
+@code{timer} retorna a lista das funÃ§Ãµes tempo estatisticamente monitoradas.
 
-Maxima armazena quanto tempo é empregado executando cada função
-na lista de funções tempo estatisticamente monitoradas.
-@code{timer_info} retorna a coronometragem estatística, incluindo o
-tempo médio decorrido por chamada de função, o número de chamadas, e o
+Maxima armazena quanto tempo Ã© empregado executando cada funÃ§Ã£o
+na lista de funÃ§Ãµes tempo estatisticamente monitoradas.
+@code{timer_info} retorna a coronometragem estatÃ­stica, incluindo o
+tempo mÃ©dio decorrido por chamada de funÃ§Ã£o, o nÃºmero de chamadas, e o
 tempo total decorrido.
-@code{untimer} remove funções da lista de funções tempo estatisticamente monitoradas.
+@code{untimer} remove funÃ§Ãµes da lista de funÃ§Ãµes tempo estatisticamente monitoradas.
 
-@code{timer} não avalia seus argumentos. 
-@code{f(x) := x^2$ g:f$ timer(g)$} não coloca @code{f} na lista de funções estatisticamente monitoradas.
+@code{timer} nÃ£o avalia seus argumentos. 
+@code{f(x) := x^2$ g:f$ timer(g)$} nÃ£o coloca @code{f} na lista de funÃ§Ãµes estatisticamente monitoradas.
 
-Se @code{trace(f)} está vigorando, então @code{timer(f)} não tem efeito; @code{trace} e
-@code{timer} não podem ambas atuarem ao mesmo tempo.
+Se @code{trace(f)} estÃ¡ vigorando, entÃ£o @code{timer(f)} nÃ£o tem efeito; @code{trace} e
+@code{timer} nÃ£o podem ambas atuarem ao mesmo tempo.
 
-Veja também @code{timer_devalue}.
+Veja tambÃ©m @code{timer_devalue}.
 
 @end deffn
-@deffn {Função} untimer (@var{f_1}, ..., @var{f_n})
-@deffnx {Função} untimer ()
-Dadas as funções @var{f_1}, ..., @var{f_n},
-@code{untimer} remove cada uma das funções listadas da lista de funções estatisticamente monitoradas.
+@deffn {FunÃ§Ã£o} untimer (@var{f_1}, ..., @var{f_n})
+@deffnx {FunÃ§Ã£o} untimer ()
+Dadas as funÃ§Ãµes @var{f_1}, ..., @var{f_n},
+@code{untimer} remove cada uma das funÃ§Ãµes listadas da lista de funÃ§Ãµes estatisticamente monitoradas.
 
-Sem argumentos, @code{untimer} remove todas as funções actualmente na  lista de funções estatisticamente monitoradas.
+Sem argumentos, @code{untimer} remove todas as funÃ§Ãµes actualmente na  lista de funÃ§Ãµes estatisticamente monitoradas.
 
-Após @code{untimer (f)} ser executada, @code{timer_info (f)} ainda retorna
+ApÃ³s @code{untimer (f)} ser executada, @code{timer_info (f)} ainda retorna
 estatisticas de tempo previamente colectadas,
-embora @code{timer_info()} (sem argumentos) não
-retorna informações sobre qualquer função que não estiver actualmente na lista de funções tempo estatisticamente monitoradas.
+embora @code{timer_info()} (sem argumentos) nÃ£o
+retorna informaÃ§Ãµes sobre qualquer funÃ§Ã£o que nÃ£o estiver actualmente na lista de funÃ§Ãµes tempo estatisticamente monitoradas.
 @code{timer (f)} reposiciona todas as estatisticas de tempo para zero
-e coloca @code{f} na lista de funções estatisticamente monitoradas novamente.
+e coloca @code{f} na lista de funÃ§Ãµes estatisticamente monitoradas novamente.
 
 @end deffn
 
-@defvr {Variável de opção} timer_devalue
-Valor Padrão: @code{false}
+@defvr {VariÃ¡vel de opÃ§Ã£o} timer_devalue
+Valor PadrÃ£o: @code{false}
 
-Quando @code{timer_devalue} for @code{true}, Maxima subtrai de cada função estatisticamente monitorada
-o tempo empregado em ou funções estatisticamente monitoradas. De outra forma, o tempo reportado 
-para cada função inclui o tempo empregado em outras funções.
-Note que tempo empregado em funções não estatisticamente monitoradas não é subtraído do
+Quando @code{timer_devalue} for @code{true}, Maxima subtrai de cada funÃ§Ã£o estatisticamente monitorada
+o tempo empregado em ou funÃ§Ãµes estatisticamente monitoradas. De outra forma, o tempo reportado 
+para cada funÃ§Ã£o inclui o tempo empregado em outras funÃ§Ãµes.
+Note que tempo empregado em funÃ§Ãµes nÃ£o estatisticamente monitoradas nÃ£o Ã© subtraÃ­do do
 tempo total.
 
-Veja também @code{timer} e @code{timer_info}.
+Veja tambÃ©m @code{timer} e @code{timer_info}.
 
 @end defvr
 
-@deffn {Função} timer_info (@var{f_1}, ..., @var{f_n})
-@deffnx {Função} timer_info ()
-Dadas as funções @var{f_1}, ..., @var{f_n},
-@code{timer_info} retorna uma matriz contendo informações de cronometragem para cada função.
-Sem argumentos, @code{timer_info} retorna informações de cronometragem para
-todas as funções actualmente na lista de funções estatisticamente monitoradas.
+@deffn {FunÃ§Ã£o} timer_info (@var{f_1}, ..., @var{f_n})
+@deffnx {FunÃ§Ã£o} timer_info ()
+Dadas as funÃ§Ãµes @var{f_1}, ..., @var{f_n},
+@code{timer_info} retorna uma matriz contendo informaÃ§Ãµes de cronometragem para cada funÃ§Ã£o.
+Sem argumentos, @code{timer_info} retorna informaÃ§Ãµes de cronometragem para
+todas as funÃ§Ãµes actualmente na lista de funÃ§Ãµes estatisticamente monitoradas.
 
-A matriz retornada através de @code{timer_info} contém o nome da função,
-tempo por chamda de função, número de chamadas a funções,tempo total,
+A matriz retornada atravÃ©s de @code{timer_info} contÃ©m o nome da funÃ§Ã£o,
+tempo por chamda de funÃ§Ã£o, nÃºmero de chamadas a funÃ§Ãµes,tempo total,
 e @code{gctime}, cujja forma "tempo de descarte" no Macsyma original
-mas agora é sempre zero.
+mas agora Ã© sempre zero.
 
-Os dados sobre os quais @code{timer_info} constrói seu valor de retorno
-podem também serem obtidos através da função @code{get}:
+Os dados sobre os quais @code{timer_info} constrÃ³i seu valor de retorno
+podem tambÃ©m serem obtidos atravÃ©s da funÃ§Ã£o @code{get}:
 
 @example
 get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 @end example
 
-Veja também @code{timer}.
+Veja tambÃ©m @code{timer}.
 
 @end deffn
 
-@deffn {Função} trace (@var{f_1}, ..., @var{f_n})
-@deffnx {Função} trace ()
-Dadas as funções @var{f_1}, ..., @var{f_n},
+@deffn {FunÃ§Ã£o} trace (@var{f_1}, ..., @var{f_n})
+@deffnx {FunÃ§Ã£o} trace ()
+Dadas as funÃ§Ãµes @var{f_1}, ..., @var{f_n},
 @code{trace} instrui Maxima para mostrar
-informações de depuração quando essas funções forem chamadas.
-@code{trace(f)$ trace(g)$} coloca @code{f} e então @code{g} na lista de funções
-para serem colocadas sob a ação de @code{trace}; a lista acumula de uma chamada para a seguinte.
+informaÃ§Ãµes de depuraÃ§Ã£o quando essas funÃ§Ãµes forem chamadas.
+@code{trace(f)$ trace(g)$} coloca @code{f} e entÃ£o @code{g} na lista de funÃ§Ãµes
+para serem colocadas sob a aÃ§Ã£o de @code{trace}; a lista acumula de uma chamada para a seguinte.
 
 Sem argumentos,
-@code{trace} retorna uma lista de todas as funções actualmente sob a ação de @code{trace}.
+@code{trace} retorna uma lista de todas as funÃ§Ãµes actualmente sob a aÃ§Ã£o de @code{trace}.
 
-A função @code{untrace} desabilita a ação de @code{trace}.
-Veja também @code{trace_options}. 
+A funÃ§Ã£o @code{untrace} desabilita a aÃ§Ã£o de @code{trace}.
+Veja tambÃ©m @code{trace_options}. 
 
-@code{trace} não avalia seus argumentos. Dessa forma,
-@code{f(x) := x^2$ g:f$ trace(g)$} não coloca @code{f} sobre a lista de funções monitoradas por @code{trace}.
+@code{trace} nÃ£o avalia seus argumentos. Dessa forma,
+@code{f(x) := x^2$ g:f$ trace(g)$} nÃ£o coloca @code{f} sobre a lista de funÃ§Ãµes monitoradas por @code{trace}.
 
-Quando uma função for redefinida, ela é removida da lista de @code{timer}.
-Dessa forma após @code{timer(f)$ f(x) := x^2$},
-a função @code{f} não mais está na lista de @code{timer}.
+Quando uma funÃ§Ã£o for redefinida, ela Ã© removida da lista de @code{timer}.
+Dessa forma apÃ³s @code{timer(f)$ f(x) := x^2$},
+a funÃ§Ã£o @code{f} nÃ£o mais estÃ¡ na lista de @code{timer}.
 
-Se @code{timer (f)} estiver em efeito, então @code{trace (f)} não está agindo; @code{trace} e
-@code{timer} não podem ambas estar agindo para a mesma função.
+Se @code{timer (f)} estiver em efeito, entÃ£o @code{trace (f)} nÃ£o estÃ¡ agindo; @code{trace} e
+@code{timer} nÃ£o podem ambas estar agindo para a mesma funÃ§Ã£o.
 
 @end deffn
 
-@deffn {Função} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
-@deffnx {Função} trace_options (@var{f})
-Escolhe as opções de @code{trace} para a função @var{f}.
-Quaisquer opções anteriores são substituídas.
-@code{trace_options (@var{f}, ...)} não tem efeito a menos que
-@code{trace (@var{f})} tenha sido também chamada (ou antes ou após @code{trace_options}). 
+@deffn {FunÃ§Ã£o} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
+@deffnx {FunÃ§Ã£o} trace_options (@var{f})
+Escolhe as opÃ§Ãµes de @code{trace} para a funÃ§Ã£o @var{f}.
+Quaisquer opÃ§Ãµes anteriores sÃ£o substituÃ­das.
+@code{trace_options (@var{f}, ...)} nÃ£o tem efeito a menos que
+@code{trace (@var{f})} tenha sido tambÃ©m chamada (ou antes ou apÃ³s @code{trace_options}). 
 
-@code{trace_options (@var{f})} reposiciona todas as opções para seus valores padrão.
+@code{trace_options (@var{f})} reposiciona todas as opÃ§Ãµes para seus valores padrÃ£o.
 
-As opções de palavra chave são:
+As opÃ§Ãµes de palavra chave sÃ£o:
 
 @itemize @bullet
 @item
 @code{noprint}
-Não mostre uma mensagem na entrada da função e saia.
+NÃ£o mostre uma mensagem na entrada da funÃ§Ã£o e saia.
 @item
 @code{break}
-Coloque um ponto de parada antes da função ser inserida,
-e após a funçãos er retirada. Veja @code{break}.
+Coloque um ponto de parada antes da funÃ§Ã£o ser inserida,
+e apÃ³s a funÃ§Ã£os er retirada. Veja @code{break}.
 @item
 @code{lisp_print}
 Mostre argumentos e valores de retorno com objectos Lisp.
 @item
 @code{info}
-Mostre @code{-> true} na entrada da funçào e saia.
+Mostre @code{-> true} na entrada da funÃ§Ã o e saia.
 @item
 @code{errorcatch}
-Capture os erros, fornecendo a opção para sinalizar um erro,
-tentar novamente a chamada de função, ou especificar um valor de retorno.
+Capture os erros, fornecendo a opÃ§Ã£o para sinalizar um erro,
+tentar novamente a chamada de funÃ§Ã£o, ou especificar um valor de retorno.
 @end itemize
 
-Opções para @code{trace} são especificadas em duas formas. A presença da palavra chave de 
-opção sozinha coloca a opção para ter efeito incondicionalmente.
-(Note que opção @var{foo} não coloca para ter efeito especificando 
-@code{@var{foo}: true} ou uma forma similar; note também que palavras chave não precisam
-estar com apóstrofo.) Especificando a opção palavra chave com uma função
-predicado torna a opção condicional sobre o predicado.
+OpÃ§Ãµes para @code{trace} sÃ£o especificadas em duas formas. A presenÃ§a da palavra chave de 
+opÃ§Ã£o sozinha coloca a opÃ§Ã£o para ter efeito incondicionalmente.
+(Note que opÃ§Ã£o @var{foo} nÃ£o coloca para ter efeito especificando 
+@code{@var{foo}: true} ou uma forma similar; note tambÃ©m que palavras chave nÃ£o precisam
+estar com apÃ³strofo.) Especificando a opÃ§Ã£o palavra chave com uma funÃ§Ã£o
+predicado torna a opÃ§Ã£o condicional sobre o predicado.
 
-A lista de argumentos para a função predicado é sempre 
-@code{[level, direction, function, item]} onde @code{level} é o nível rerecursão
-para a função,  @code{direction} é ou @code{enter} ou @code{exit}, @code{function} é o
-nome da função, e @code{item} é a lista de argumentos (sobre entrada)
-ou o valor de retorno (sobre a saída).
+A lista de argumentos para a funÃ§Ã£o predicado Ã© sempre 
+@code{[level, direction, function, item]} onde @code{level} Ã© o nÃ­vel rerecursÃ£o
+para a funÃ§Ã£o,  @code{direction} Ã© ou @code{enter} ou @code{exit}, @code{function} Ã© o
+nome da funÃ§Ã£o, e @code{item} Ã© a lista de argumentos (sobre entrada)
+ou o valor de retorno (sobre a saÃ­da).
 
-Aqui está um exemplo de opções incondicionais de @code{trace}:
+Aqui estÃ¡ um exemplo de opÃ§Ãµes incondicionais de @code{trace}:
 
 @example
 (%i1) ff(n) := if equal(n, 0) then 1 else n * ff(n - 1)$
@@ -422,7 +422,7 @@ Aqui está um exemplo de opções incondicionais de @code{trace}:
 (%i4) ff(3);
 @end example
 
-Aqui está a mesma função, com a opção @code{break} condicional
+Aqui estÃ¡ a mesma funÃ§Ã£o, com a opÃ§Ã£o @code{break} condicional
 sobre um predicado:
 
 @example
@@ -436,14 +436,14 @@ sobre um predicado:
 
 @end deffn
 
-@deffn {Função} untrace (@var{f_1}, ..., @var{f_n})
-@deffnx {Função} untrace ()
-Dadas as funções @var{f_1}, ..., @var{f_n},
-@code{untrace} desabilita a a monitoração habilitada pela função @code{trace}.
-Sem argumentos, @code{untrace} desabilita a atuação da função @code{trade} para todas as funções.
+@deffn {FunÃ§Ã£o} untrace (@var{f_1}, ..., @var{f_n})
+@deffnx {FunÃ§Ã£o} untrace ()
+Dadas as funÃ§Ãµes @var{f_1}, ..., @var{f_n},
+@code{untrace} desabilita a a monitoraÃ§Ã£o habilitada pela funÃ§Ã£o @code{trace}.
+Sem argumentos, @code{untrace} desabilita a atuaÃ§Ã£o da funÃ§Ã£o @code{trade} para todas as funÃ§Ãµes.
 
-@code{untrace} retorne uma lista das funções para as quais 
-@code{untrace} desabilita a atuação de @code{trace}.
+@code{untrace} retorne uma lista das funÃ§Ãµes para as quais 
+@code{untrace} desabilita a atuaÃ§Ã£o de @code{trace}.
 
 @end deffn
 

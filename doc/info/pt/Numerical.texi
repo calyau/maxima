@@ -1,44 +1,44 @@
 @c /Numerical.texi/1.24/Mon Feb 19 14:23:08 2007/-ko/
 @menu
-* IntroduÁ„o a NumÈrico::
+* Introdu√ß√£o a Num√©rico::
 * Pacotes de Fourier::
-* DefiniÁıes para NumÈrico::
-* DefiniÁıes para SÈries de Fourier::
+* Defini√ß√µes para Num√©rico::
+* Defini√ß√µes para S√©ries de Fourier::
 @end menu
 
-@node IntroduÁ„o a NumÈrico, Pacotes de Fourier, NumÈrico, NumÈrico
-@section IntroduÁ„o a NumÈrico
+@node Introdu√ß√£o a Num√©rico, Pacotes de Fourier, Num√©rico, Num√©rico
+@section Introdu√ß√£o a Num√©rico
 
-@node Pacotes de Fourier, DefiniÁıes para NumÈrico, IntroduÁ„o a NumÈrico, NumÈrico
+@node Pacotes de Fourier, Defini√ß√µes para Num√©rico, Introdu√ß√£o a Num√©rico, Num√©rico
 @section Pacotes de Fourier
-O pacote @code{fft} compreende funÁıes para computaÁ„o numÈrica (n„o simbÛlica)
-das transformaÁıes r·pidas de Fourier.
+O pacote @code{fft} compreende fun√ß√µes para computa√ß√£o num√©rica (n√£o simb√≥lica)
+das transforma√ß√µes r√°pidas de Fourier.
 @code{load ("fft")} chama esse pacote.
 Veja @code{fft}.
 
-O pacote @code{fourie} compreende funÁıes para computaÁ„o simbÛlica
-de sÈries de Fourier.
+O pacote @code{fourie} compreende fun√ß√µes para computa√ß√£o simb√≥lica
+de s√©ries de Fourier.
 @code{load ("fourie")} chama esse pacote.
-Existem funÁıes no pacote @code{fourie} para calcular coeficientes da
-integral de Fourier e algumas funÁıes para manipulaÁ„o de expressıes.
-Veja @code{DefiniÁıes para SÈries}.
+Existem fun√ß√µes no pacote @code{fourie} para calcular coeficientes da
+integral de Fourier e algumas fun√ß√µes para manipula√ß√£o de express√µes.
+Veja @code{Defini√ß√µes para S√©ries}.
 
 @c end concepts Numerical
 
-@node DefiniÁıes para NumÈrico, DefiniÁıes para SÈries de Fourier, Pacotes de Fourier, NumÈrico
-@section DefiniÁıes para NumÈrico
+@node Defini√ß√µes para Num√©rico, Defini√ß√µes para S√©ries de Fourier, Pacotes de Fourier, Num√©rico
+@section Defini√ß√µes para Num√©rico
 @c NOTE: Let's keep POLARTORECT, RECTTOPOLAR, and IFT before FFT
 @c in this file. Otherwise DESCRIBE returns the FFT text (because
 @c POLARTORECT, etc are list in the heading of FFT with @defunx).
 
-@deffn {FunÁ„o} polartorect (@var{magnitude_array}, @var{phase_array})
+@deffn {Fun√ß√£o} polartorect (@var{magnitude_array}, @var{phase_array})
 
 Traduz valores complexos da forma @code{r %e^(%i t)} para a forma @code{a + b %i}.
-@code{load ("fft")} chama essa funÁ„o dentro do Maxima. Veja tambÈm @code{fft}.
+@code{load ("fft")} chama essa fun√ß√£o dentro do Maxima. Veja tamb√©m @code{fft}.
 
-O mÛdulo e a fase, @code{r} e @code{t}, S„o tomados de @var{magnitude_array} e
-@var{phase_array}, respectivamente. Os valores originais de arrays de entrada s„o
-substituÌdos pelas partes real e emagin·ria, @code{a} e @code{b}, no retorno. As saÌdas s„o
+O m√≥dulo e a fase, @code{r} e @code{t}, S√£o tomados de @var{magnitude_array} e
+@var{phase_array}, respectivamente. Os valores originais de arrays de entrada s√£o
+substitu√≠dos pelas partes real e emagin√°ria, @code{a} e @code{b}, no retorno. As sa√≠das s√£o
 calculadas como
 
 @example
@@ -47,20 +47,20 @@ b: r sin (t)
 @end example
 
 Os arrays de entrada devem ter o mesmo tamanho  e ser unidimensionais.
-O tamanho do array n„o deve ser uma potÍncia de 2.
+O tamanho do array n√£o deve ser uma pot√™ncia de 2.
 
-@code{polartorect} È a funÁ„o inversa de @code{recttopolar}.
+@code{polartorect} √© a fun√ß√£o inversa de @code{recttopolar}.
 
 @end deffn
 
-@deffn {FunÁ„o} recttopolar (@var{real_array}, @var{imaginary_array})
+@deffn {Fun√ß√£o} recttopolar (@var{real_array}, @var{imaginary_array})
 
 Traduz valores complexos da forma @code{a + b %i} para a forma @code{r %e^(%i t)}.
-@code{load ("fft")} chama essa funÁ„o dentro do Maxima. Veja tambÈm @code{fft}.
+@code{load ("fft")} chama essa fun√ß√£o dentro do Maxima. Veja tamb√©m @code{fft}.
 
-As partes real e imagin·ria, @code{a} e @code{b}, s„o tomadas de @var{real_array} e
+As partes real e imagin√°ria, @code{a} e @code{b}, s√£o tomadas de @var{real_array} e
 @var{imaginary_array}, respectivamente. Os valores originais dos arrays de entrada
-s„o substituÌdos pelo mÛdulo e pelo ‚ngulo, @code{r} e @code{t}, no retorno. As saÌdas s„o
+s√£o substitu√≠dos pelo m√≥dulo e pelo √¢ngulo, @code{r} e @code{t}, no retorno. As sa√≠das s√£o
 calculadas como
 
 @example
@@ -68,22 +68,22 @@ r: sqrt (a^2 + b^2)
 t: atan2 (b, a)
 @end example
 
-O ‚ngulo calculado encontra-se no intervalo de @code{-%pi} a @code{%pi}. 
+O √¢ngulo calculado encontra-se no intervalo de @code{-%pi} a @code{%pi}. 
 
 Os arrays de entrada devem ter o mesmo tamanho e ser unidimensionais.
-O tamanho do array n„o deve ser uma potÍncia de 2.
+O tamanho do array n√£o deve ser uma pot√™ncia de 2.
 
-@code{recttopolar} È a funÁ„o inversa de @code{polartorect}.
+@code{recttopolar} √© a fun√ß√£o inversa de @code{polartorect}.
 
 @end deffn
 
-@deffn {FunÁ„o} ift (@var{real_array}, @var{imaginary_array})
+@deffn {Fun√ß√£o} ift (@var{real_array}, @var{imaginary_array})
 
-TransformaÁ„o r·pida inversa discreta de Fourier . @code{load ("fft")} chama essa funÁ„o
+Transforma√ß√£o r√°pida inversa discreta de Fourier . @code{load ("fft")} chama essa fun√ß√£o
 dentro do Maxima.
 
-@code{ift} realiza a transformaÁ„o r·pida complexa de Fourier sobre
-arrays em ponto flutuante unidimensionais. A transformaÁ„o inversa È definida como
+@code{ift} realiza a transforma√ß√£o r√°pida complexa de Fourier sobre
+arrays em ponto flutuante unidimensionais. A transforma√ß√£o inversa √© definida como
 
 @example
 x[j]: sum (y[j] exp (+2 %i %pi j k / n), k, 0, n-1)
@@ -93,31 +93,31 @@ Veja @code{fft} para maiores detalhes.
 
 @end deffn
 
-@deffn {FunÁ„o} fft (@var{real_array}, @var{imaginary_array})
-@deffnx {FunÁ„o} ift (@var{real_array}, @var{imaginary_array})
-@deffnx {FunÁ„o} recttopolar (@var{real_array}, @var{imaginary_array})
-@deffnx {FunÁ„o} polartorect (@var{magnitude_array}, @var{phase_array})
+@deffn {Fun√ß√£o} fft (@var{real_array}, @var{imaginary_array})
+@deffnx {Fun√ß√£o} ift (@var{real_array}, @var{imaginary_array})
+@deffnx {Fun√ß√£o} recttopolar (@var{real_array}, @var{imaginary_array})
+@deffnx {Fun√ß√£o} polartorect (@var{magnitude_array}, @var{phase_array})
 
-TransformaÁ„o r·pidada de Fourier e funÁıes relacionadas. @code{load ("fft")}
-chama essas funÁıes dentro do Maxima.
+Transforma√ß√£o r√°pidada de Fourier e fun√ß√µes relacionadas. @code{load ("fft")}
+chama essas fun√ß√µes dentro do Maxima.
 
-@code{fft} e @code{ift} realiza transformaÁ„o r·pida complexa de Fourier e
-a transformaÁ„o inversa, respectivamente, sobre arrays em ponto flutuante
+@code{fft} e @code{ift} realiza transforma√ß√£o r√°pida complexa de Fourier e
+a transforma√ß√£o inversa, respectivamente, sobre arrays em ponto flutuante
 unidimensionais. O tamanho de @var{imaginary_array} deve ser igual ao tamanho de @var{real_array}.
 
-@code{fft} e @code{ift} operam in-loco. Isto È, sobre o retorno de @code{fft} ou de @code{ift},
-O conte˙do original dos arrays de entrada È substituÌdo pela saÌda.
-A funÁ„o @code{fillarray} pode fazer uma cÛpia de um array, isso pode
-ser necess·rio.
+@code{fft} e @code{ift} operam in-loco. Isto √©, sobre o retorno de @code{fft} ou de @code{ift},
+O conte√∫do original dos arrays de entrada √© substitu√≠do pela sa√≠da.
+A fun√ß√£o @code{fillarray} pode fazer uma c√≥pia de um array, isso pode
+ser necess√°rio.
 
-A transformaÁ„o discreta de Fourier e sua transformaÁ„o inversa s„o definidas
+A transforma√ß√£o discreta de Fourier e sua transforma√ß√£o inversa s√£o definidas
 como segue. Tome @code{x} sendo os dados originais, com
 
 @example
 x[i]: real_array[i] + %i imaginary_array[i]
 @end example
   
-Tome @code{y} sendo os dados transformados. A transformaÁ„o normal e sua transformaÁ„o inversa s„o
+Tome @code{y} sendo os dados transformados. A transforma√ß√£o normal e sua transforma√ß√£o inversa s√£o
 
 @example
 y[k]: (1/n) sum (x[j] exp (-2 %i %pi j k / n), j, 0, n-1)
@@ -125,17 +125,17 @@ y[k]: (1/n) sum (x[j] exp (-2 %i %pi j k / n), j, 0, n-1)
 x[j]:       sum (y[j] exp (+2 %i %pi j k / n), k, 0, n-1)
 @end example
 
-Arrays adequadas podem ser alocadas pela funÁ„o @code{array}. Por exemplo:
+Arrays adequadas podem ser alocadas pela fun√ß√£o @code{array}. Por exemplo:
 
 @example
 array (my_array, float, n-1)$
 @end example
 
 declara um array unidimensional com n elementos, indexado de 0 a
-n-1 inclusive. O n˙mero de elementos n deve ser igual a 2^m para algum m.
+n-1 inclusive. O n√∫mero de elementos n deve ser igual a 2^m para algum m.
 
-@code{fft} pode ser aplicada a dados reais (todos os arrays imagin·rios s„o iguais a zero) para obter
-coeficientes seno e co-seno.  ApÛs chamar @code{fft}, os coeficientes
+@code{fft} pode ser aplicada a dados reais (todos os arrays imagin√°rios s√£o iguais a zero) para obter
+coeficientes seno e co-seno.  Ap√≥s chamar @code{fft}, os coeficientes
 seno e co-seno, digamos @code{a} e @code{b}, podem ser calculados como
 
 @example
@@ -163,45 +163,45 @@ a forma @code{r %e^(%i t)}. Veja @code{recttopolar}.
 @code{polartorect} traduz valores complexos da forma @code{r %e^(%i t)}
 para a forma @code{a + b %i}. Veja @code{polartorect}.
 
-@code{demo ("fft")} exibe uma demonstraÁ„o do pacote @code{fft}.
+@code{demo ("fft")} exibe uma demonstra√ß√£o do pacote @code{fft}.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} fortindent
-Valor por omiss„o: 0
+@defvr {Vari√°vel de op√ß√£o} fortindent
+Valor por omiss√£o: 0
 
-@code{fortindent} controla a margem esquerda de indentaÁ„o de
-expressıes mostradas pelo comando @code{fortran}.  0 fornece indentaÁ„o
-normal (i.e., 6 espaÁos), e valores positivos far„o com que
-expressıes sejam mostrados mais alÈm para a direita.
+@code{fortindent} controla a margem esquerda de indenta√ß√£o de
+express√µes mostradas pelo comando @code{fortran}.  0 fornece indenta√ß√£o
+normal (i.e., 6 espa√ßos), e valores positivos far√£o com que
+express√µes sejam mostrados mais al√©m para a direita.
 
 @end defvr
 
-@deffn {FunÁ„o} fortran (@var{expr})
-Mostra @var{expr} como uma declaraÁ„o Fortran.
-A linha de saÌda È indentada com espaÁos.
-Se a linha for muito longa, @code{fortran} imprime linhas de continuaÁ„o.
-@code{fortran} mostra o operador de exponenciaÁ„o @code{^} como @code{**},
-e mostra um n˙mero complexo @code{a + b %i} na forma @code{(a,b)}.
+@deffn {Fun√ß√£o} fortran (@var{expr})
+Mostra @var{expr} como uma declara√ß√£o Fortran.
+A linha de sa√≠da √© indentada com espa√ßos.
+Se a linha for muito longa, @code{fortran} imprime linhas de continua√ß√£o.
+@code{fortran} mostra o operador de exponencia√ß√£o @code{^} como @code{**},
+e mostra um n√∫mero complexo @code{a + b %i} na forma @code{(a,b)}.
 
-@var{expr} pode ser uma equaÁ„o. Nesse caso, @code{fortran} mostra uma declaraÁ„o de
-atribuiÁ„o, atribuindo o primeiro membro (esquerda) da equaÁ„o ao segundo membro (direita).
-Em particular, se o primeiro membro @var{expr} È um nome de uma matriz,
-ent„o @code{fortran} mostra uma declaraÁ„o de atribuiÁ„o para cada elemento da matriz.
+@var{expr} pode ser uma equa√ß√£o. Nesse caso, @code{fortran} mostra uma declara√ß√£o de
+atribui√ß√£o, atribuindo o primeiro membro (esquerda) da equa√ß√£o ao segundo membro (direita).
+Em particular, se o primeiro membro @var{expr} √© um nome de uma matriz,
+ent√£o @code{fortran} mostra uma declara√ß√£o de atribui√ß√£o para cada elemento da matriz.
 
-Se @var{expr} n„o for alguma coisa reconhecida por @code{fortran},
-a express„o È mostrada no formato @code{grind} sem reclamaÁ„o.
-@code{fortran} n„o conhece listas, arrays ou funÁıes.
+Se @var{expr} n√£o for alguma coisa reconhecida por @code{fortran},
+a express√£o √© mostrada no formato @code{grind} sem reclama√ß√£o.
+@code{fortran} n√£o conhece listas, arrays ou fun√ß√µes.
 
 @code{fortindent} controla o margem esquerda das linhas mostradas.
-0 È a margem normal (i.e., indentada 6 espaÁos). Incrementando @code{fortindent}
-faz com que expressıes sejam mostradas adiante para a direita.
+0 √© a margem normal (i.e., indentada 6 espa√ßos). Incrementando @code{fortindent}
+faz com que express√µes sejam mostradas adiante para a direita.
 
 quando @code{fortspaces} for @code{true}, @code{fortran} preenche
-cada linha mostrada com espaÁos em branco atÈ completar 80 columas.
+cada linha mostrada com espa√ßos em branco at√© completar 80 columas.
 
 @code{fortran} avalia seus argumentos;
-colocando um apÛstrofo em um argumento evita avaliaÁ„o.
+colocando um ap√≥strofo em um argumento evita avalia√ß√£o.
 @code{fortran} sempre retorna @code{done}.
 
 Exemplos:
@@ -233,24 +233,24 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} fortspaces
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} fortspaces
+Valor por omiss√£o: @code{false}
 
 Quando @code{fortspaces} for @code{true}, @code{fortran} preenche
-cada linha mostrada com espaÁos em branco atÈ completar 80 columas.
+cada linha mostrada com espa√ßos em branco at√© completar 80 columas.
 
 @end defvr
 
-@deffn {FunÁ„o} horner (@var{expr}, @var{x})
-@deffnx {FunÁ„o} horner (@var{expr})
-Retorna uma representaÁ„o rearranjada de @var{expr} como
-na regra de Horner, usando @var{x} como vari·vel principal se isso for especificado.
-@code{x} pode ser omitido e nesse caso a vari·vel principal da forma de express„o racional
-canÛnica de @var{expr} È usada.
+@deffn {Fun√ß√£o} horner (@var{expr}, @var{x})
+@deffnx {Fun√ß√£o} horner (@var{expr})
+Retorna uma representa√ß√£o rearranjada de @var{expr} como
+na regra de Horner, usando @var{x} como vari√°vel principal se isso for especificado.
+@code{x} pode ser omitido e nesse caso a vari√°vel principal da forma de express√£o racional
+can√≥nica de @var{expr} √© usada.
 
 @code{horner} algumas vezes melhora a estabilidade se @code{expr} for
-ser numericamente avaliada.  Isso tambÈm È ˙til se Maxima È usado para
-gerar programas para rodar em Fortran. Veja tambÈm @code{stringout}.
+ser numericamente avaliada.  Isso tamb√©m √© √∫til se Maxima √© usado para
+gerar programas para rodar em Fortran. Veja tamb√©m @code{stringout}.
 
 @example
 (%i1) expr: 1e-155*x^2 - 5.5*x + 5.2e155;
@@ -272,40 +272,40 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 @c NEEDS WORK
-@deffn {FunÁ„o} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
-@deffnx {FunÁ„o} find_root (@var{f}, @var{a}, @var{b})
-Encontra a raÌz da funÁ„o @var{f} com a vari·vel @var{x} percorrendo o intervalo @code{[@var{a}, @var{b}]}.
-A funÁ„o deve ter um
-sinal diferente em cada ponto final.  Se essa condiÁ„o n„o for alcanÁada, a
+@deffn {Fun√ß√£o} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
+@deffnx {Fun√ß√£o} find_root (@var{f}, @var{a}, @var{b})
+Encontra a ra√≠z da fun√ß√£o @var{f} com a vari√°vel @var{x} percorrendo o intervalo @code{[@var{a}, @var{b}]}.
+A fun√ß√£o deve ter um
+sinal diferente em cada ponto final.  Se essa condi√ß√£o n√£o for alcan√ßada, a
 action of the function is governed by @code{find_root_error}.  If
 @code{find_root_error} is @code{true} then an error occurs, otherwise the value of
 @code{find_root_error} is returned (thus for plotting @code{find_root_error} might be set to
 0.0).  De outra forma (dado que Maxima pode avaliar o primeiro argumento
-no intervalo especificado, e que o intervalo È contÌnuo) @code{find_root} È
-garantido vir para cima com a raÌz (ou um deles se existir mais
-que uma raÌz).  A precis„o de @code{find_root} È governada por
-@code{intpolabs} e @code{intpolrel} os quais devem ser n˙meros em ponto flutuante
-n„o negativos.  @code{find_root} encerrar· quando o primeiro argumento avaliar para
+no intervalo especificado, e que o intervalo √© cont√≠nuo) @code{find_root} √©
+garantido vir para cima com a ra√≠z (ou um deles se existir mais
+que uma ra√≠z).  A precis√£o de @code{find_root} √© governada por
+@code{intpolabs} e @code{intpolrel} os quais devem ser n√∫meros em ponto flutuante
+n√£o negativos.  @code{find_root} encerrar√° quando o primeiro argumento avaliar para
 alguma coisa menor que ou igual a @code{intpolabs} ou se sucessivas
-aproximaÁıes da raÌz diferirem por n„o mais que @code{intpolrel * <um dos aproximandos>}.
-O valor padr„o de @code{intpolabs} e @code{intpolrel} s„o
-0.0 de forma que @code{find_root} pega como boa uma resposta como for possÌvel com a
-precis„o aritmÈtica simples que tivermos.  O primeiro argumento pode ser uma
-equaÁ„o.  A ordem dos dois ˙ltimos argumentos È irrelevante.  Dessa forma
+aproxima√ß√µes da ra√≠z diferirem por n√£o mais que @code{intpolrel * <um dos aproximandos>}.
+O valor padr√£o de @code{intpolabs} e @code{intpolrel} s√£o
+0.0 de forma que @code{find_root} pega como boa uma resposta como for poss√≠vel com a
+precis√£o aritm√©tica simples que tivermos.  O primeiro argumento pode ser uma
+equa√ß√£o.  A ordem dos dois √∫ltimos argumentos √© irrelevante.  Dessa forma
 
 @example
 find_root (sin(x) = x/2, x, %pi, 0.1);
 @end example
 
-È equivalente a
+√© equivalente a
 
 @example
 find_root (sin(x) = x/2, x, 0.1, %pi);
 @end example
 
-O mÈtodo usado È uma busca bin·ria no intervalo especificado pelos ˙ltimos
-dois argumentos.  Quando o resultado da busca for encontrado a funÁ„o È fechada o suficiente para ser
-linear, isso inicia usando interpolaÁ„o linear.
+O m√©todo usado √© uma busca bin√°ria no intervalo especificado pelos √∫ltimos
+dois argumentos.  Quando o resultado da busca for encontrado a fun√ß√£o √© fechada o suficiente para ser
+linear, isso inicia usando interpola√ß√£o linear.
 
 Examples:
 @c ===beg===
@@ -339,64 +339,64 @@ Examples:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} find_root_abs
-Valor por omiss„o: 0.0
+@defvr {Vari√°vel de op√ß√£o} find_root_abs
+Valor por omiss√£o: 0.0
 
-@code{find_root_abs} È a precis„o do comando @code{find_root}. A precis„o È
+@code{find_root_abs} √© a precis√£o do comando @code{find_root}. A precis√£o √©
 governada por @code{find_root_abs} e @code{find_root_rel} que devem ser
-n˙meros n„o negativos em ponto flutuante.  @code{find_root} terminar· quando o
+n√∫meros n√£o negativos em ponto flutuante.  @code{find_root} terminar√° quando o
 primeiro argumento avaliar para alguma coisa menor que ou igual a @code{find_root_abs} ou se
-sucessivos aproximandos para a raÌz diferirem por n„o mais que @code{find_root_rel * <um dos aproximandos>}.
-Os valores padr„o de @code{find_root_abs} e
-@code{find_root_rel} s„o 0.0 de forma que @code{find_root} tome como boa uma resposta que for possÌvel
-com a precis„o aritmÈtica simples que tivermos.
+sucessivos aproximandos para a ra√≠z diferirem por n√£o mais que @code{find_root_rel * <um dos aproximandos>}.
+Os valores padr√£o de @code{find_root_abs} e
+@code{find_root_rel} s√£o 0.0 de forma que @code{find_root} tome como boa uma resposta que for poss√≠vel
+com a precis√£o aritm√©tica simples que tivermos.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} find_root_error
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} find_root_error
+Valor por omiss√£o: @code{true}
 
 @code{find_root_error} governa o comportamento de @code{find_root}.
-Quando @code{find_root} for chamada, ela determina se a funÁ„o
-a ser resolvida satisfaz ou n„o a condiÁ„o que os valores da
-funÁ„o nos pontos finais do intervalo de interpolaÁ„o s„o opostos
-em sinal.  Se eles forem de sinais opostos, a interpolaÁ„o prossegue.
-Se eles forem de mesmo sinal, e @code{find_root_error} for @code{true}, ent„o um erro È
-sinalizado.  Se eles forem de mesmo sinal e @code{find_root_error} n„o for @code{true}, o
-valor de @code{find_root_error} È retornado.  Dessa forma para montagem de gr·fico, @code{find_root_error}
+Quando @code{find_root} for chamada, ela determina se a fun√ß√£o
+a ser resolvida satisfaz ou n√£o a condi√ß√£o que os valores da
+fun√ß√£o nos pontos finais do intervalo de interpola√ß√£o s√£o opostos
+em sinal.  Se eles forem de sinais opostos, a interpola√ß√£o prossegue.
+Se eles forem de mesmo sinal, e @code{find_root_error} for @code{true}, ent√£o um erro √©
+sinalizado.  Se eles forem de mesmo sinal e @code{find_root_error} n√£o for @code{true}, o
+valor de @code{find_root_error} √© retornado.  Dessa forma para montagem de gr√°fico, @code{find_root_error}
 pode ser escolhida para 0.0.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} find_root_rel
-Valor por omiss„o: 0.0
+@defvr {Vari√°vel de op√ß√£o} find_root_rel
+Valor por omiss√£o: 0.0
 
-@code{find_root_rel} È a precis„o do comando @code{find_root} e È
+@code{find_root_rel} √© a precis√£o do comando @code{find_root} e √©
 governada por @code{find_root_abs} e @code{find_root_rel} que devem ser
-n˙meros n„o negativos em ponto flutuante.  @code{find_root} terminar· quando o
+n√∫meros n√£o negativos em ponto flutuante.  @code{find_root} terminar√° quando o
 primeiro argumento avaliar para alguma coisa menor que ou igual a @code{find_root_abs} ou se
-sucessivos aproximandos para a raÌz diferirem de n„o mais que @code{find_root_rel * <um dos aproximandos>}.
-Os valores padr„o de @code{find_root_labs} e
-@code{find_root_rel} È 0.0 de forma que @code{find_root} toma como boa uma resposta que for possÌvel
-com a precis„o aritmÈtica simples que tivermos.
+sucessivos aproximandos para a ra√≠z diferirem de n√£o mais que @code{find_root_rel * <um dos aproximandos>}.
+Os valores padr√£o de @code{find_root_labs} e
+@code{find_root_rel} √© 0.0 de forma que @code{find_root} toma como boa uma resposta que for poss√≠vel
+com a precis√£o aritm√©tica simples que tivermos.
 
 @end defvr
 
-@deffn {FunÁ„o} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
-Retorna uma soluÁ„o aproximada de @code{@var{expr} = 0} atravÈs do mÈtodo de Newton,
-considerando @var{expr} como sendo uma funÁ„o de uma vari·vel, @var{x}.
-A busca pela soluÁ„o comeÁa com @code{@var{x} = @var{x_0}}
-e prossegue atÈ @code{abs(@var{expr}) < @var{eps}}
+@deffn {Fun√ß√£o} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+Retorna uma solu√ß√£o aproximada de @code{@var{expr} = 0} atrav√©s do m√©todo de Newton,
+considerando @var{expr} como sendo uma fun√ß√£o de uma vari√°vel, @var{x}.
+A busca pela solu√ß√£o come√ßa com @code{@var{x} = @var{x_0}}
+e prossegue at√© @code{abs(@var{expr}) < @var{eps}}
 (com @var{expr} avaliada para o valor corrente de @var{x}).
 
-@code{newton} permite que vari·veis indefinidas apareÁam em @var{expr},
-contanto que o teste de terminaÁ„o @code{abs(@var{expr}) < @var{eps}} avalie
+@code{newton} permite que vari√°veis indefinidas apare√ßam em @var{expr},
+contanto que o teste de termina√ß√£o @code{abs(@var{expr}) < @var{eps}} avalie
 para @code{true} ou @code{false}.
-Dessa forma n„o È necess·rio que @var{expr} avalie para um n˙mero.
+Dessa forma n√£o √© necess√°rio que @var{expr} avalie para um n√∫mero.
 
-@code{load(newton1)} chama essa funÁ„o.
+@code{load(newton1)} chama essa fun√ß√£o.
 
-Veja tambÈm @code{realroots}, @code{allroots}, @code{find_root}, e @code{mnewton}.
+Veja tamb√©m @code{realroots}, @code{allroots}, @code{find_root}, e @code{mnewton}.
 
 Exemplos:
 
@@ -426,54 +426,54 @@ Exemplos:
 
 @end deffn
 
-@node DefiniÁıes para SÈries de Fourier, , DefiniÁıes para NumÈrico, NumÈrico
-@section DefiniÁıes para SÈries de Fourier
+@node Defini√ß√µes para S√©ries de Fourier, , Defini√ß√µes para Num√©rico, Num√©rico
+@section Defini√ß√µes para S√©ries de Fourier
 
 @c REPHRASE
-@deffn {FunÁ„o} equalp (@var{x}, @var{y})
-Retorna @code{true} se @code{equal (@var{x}, @var{y})} de outra forma @code{false} (n„o fornece uma
+@deffn {Fun√ß√£o} equalp (@var{x}, @var{y})
+Retorna @code{true} se @code{equal (@var{x}, @var{y})} de outra forma @code{false} (n√£o fornece uma
 mensagem de erro como @code{equal (x, y)} poderia fazer nesse caso).
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@deffn {FunÁ„o} remfun (@var{f}, @var{expr})
-@deffnx {FunÁ„o} remfun (@var{f}, @var{expr}, @var{x})
+@deffn {Fun√ß√£o} remfun (@var{f}, @var{expr})
+@deffnx {Fun√ß√£o} remfun (@var{f}, @var{expr}, @var{x})
 @code{remfun (@var{f}, @var{expr})}
-substitue todas as ocorrÍncias de @code{@var{f} (@var{arg})} por @var{arg} em @var{expr}.
+substitue todas as ocorr√™ncias de @code{@var{f} (@var{arg})} por @var{arg} em @var{expr}.
 
 @code{remfun (@var{f}, @var{expr}, @var{x})}
-substitue todas as ocorrÍncias de @code{@var{f} (@var{arg})} por @var{arg} em @var{expr}
-somente se @var{arg} contiver a vari·vel @var{x}.
+substitue todas as ocorr√™ncias de @code{@var{f} (@var{arg})} por @var{arg} em @var{expr}
+somente se @var{arg} contiver a vari√°vel @var{x}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@deffn {FunÁ„o} funp (@var{f}, @var{expr})
-@deffnx {FunÁ„o} funp (@var{f}, @var{expr}, @var{x})
+@deffn {Fun√ß√£o} funp (@var{f}, @var{expr})
+@deffnx {Fun√ß√£o} funp (@var{f}, @var{expr}, @var{x})
 @code{funp (@var{f}, @var{expr})}
-retorna @code{true} se @var{expr} contÈm a funÁ„o @var{f}.
+retorna @code{true} se @var{expr} cont√©m a fun√ß√£o @var{f}.
 
 @code{funp (@var{f}, @var{expr}, @var{x})}
-retorna @code{true} se @var{expr} contÈm a funÁ„o @var{f} e a vari·vel
-@var{x} em algum lugar no argumento de uma das inst‚ncias de @var{f}.
+retorna @code{true} se @var{expr} cont√©m a fun√ß√£o @var{f} e a vari√°vel
+@var{x} em algum lugar no argumento de uma das inst√¢ncias de @var{f}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@deffn {FunÁ„o} absint (@var{f}, @var{x}, @var{halfplane})
-@deffnx {FunÁ„o} absint (@var{f}, @var{x})
-@deffnx {FunÁ„o} absint (@var{f}, @var{x}, @var{a}, @var{b})
+@deffn {Fun√ß√£o} absint (@var{f}, @var{x}, @var{halfplane})
+@deffnx {Fun√ß√£o} absint (@var{f}, @var{x})
+@deffnx {Fun√ß√£o} absint (@var{f}, @var{x}, @var{a}, @var{b})
 @code{absint (@var{f}, @var{x}, @var{halfplane})}
-retorna a integral indefinida de @var{f} com relaÁ„o a
+retorna a integral indefinida de @var{f} com rela√ß√£o a
 @var{x} no dado semi-plano (@code{pos}, @code{neg}, ou @code{both}).
-@var{f} pode conter expressıes da forma
+@var{f} pode conter express√µes da forma
 @code{abs (x)}, @code{abs (sin (x))}, @code{abs (a) * exp (-abs (b) * abs (x))}.
 
-@code{absint (@var{f}, @var{x})} È equivalente a @code{absint (@var{f}, @var{x}, pos)}.
+@code{absint (@var{f}, @var{x})} √© equivalente a @code{absint (@var{f}, @var{x}, pos)}.
 
 @code{absint (@var{f}, @var{x}, @var{a}, @var{b})}
-retorna a integral definida de @var{f} com relaÁ„o a @var{x} de @var{a} atÈ @var{b}.
+retorna a integral definida de @var{f} com rela√ß√£o a @var{x} de @var{a} at√© @var{b}.
 @c SAME LIST AS ABOVE ??
 @var{f} pode incluir valores absolutos.
 
@@ -481,7 +481,7 @@ retorna a integral definida de @var{f} com relaÁ„o a @var{x} de @var{a} atÈ @var
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {FunÁ„o} fourier (@var{f}, @var{x}, @var{p})
+@deffn {Fun√ß√£o} fourier (@var{f}, @var{x}, @var{p})
 Retorna uma lista de coeficientes de Fourier de @code{@var{f}(@var{x})} definidos
 sobre o intervalo @code{[-p, p]}.
 
@@ -489,31 +489,31 @@ sobre o intervalo @code{[-p, p]}.
 @end deffn
 
 @c NEES EXPANSION. WHAT IS THE ARGUMENT l ??
-@deffn {FunÁ„o} foursimp (@var{l})
+@deffn {Fun√ß√£o} foursimp (@var{l})
 Simplifica @code{sin (n %pi)} para 0 se @code{sinnpiflag} for @code{true} e
 @code{cos (n %pi)} para @code{(-1)^n} se @code{cosnpiflag} for @code{true}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} sinnpiflag
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} sinnpiflag
+Valor por omiss√£o: @code{true}
 
 Veja @code{foursimp}.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} cosnpiflag
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} cosnpiflag
+Valor por omiss√£o: @code{true}
 
 Veja @code{foursimp}.
 
 @end defvr
 
 @c NEEDS EXPANSION. EXPLAIN x AND p HERE (DO NOT REFER SOMEWHERE ELSE)
-@deffn {FunÁ„o} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
-ConstrÛi e retorna a sÈrie de Fourier partindo da lista de
-coeficientes de Fourier @var{l} atÈ (up through) @var{limit} termos (@var{limit}
+@deffn {Fun√ß√£o} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
+Constr√≥i e retorna a s√©rie de Fourier partindo da lista de
+coeficientes de Fourier @var{l} at√© (up through) @var{limit} termos (@var{limit}
 pode ser @code{inf}). @var{x} e @var{p} possuem o mesmo significado que em
 @code{fourier}.
 
@@ -521,43 +521,43 @@ pode ser @code{inf}). @var{x} e @var{p} possuem o mesmo significado que em
 @end deffn
 
 @c NEEDS EXPANSION. WHAT IS THE ARGUMENT p ??
-@deffn {FunÁ„o} fourcos (@var{f}, @var{x}, @var{p})
+@deffn {Fun√ß√£o} fourcos (@var{f}, @var{x}, @var{p})
 Retorna os coeficientes do co-seno de Fourier para @code{@var{f}(@var{x})} definida sobre @code{[0, %pi]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {FunÁ„o} foursin (@var{f}, @var{x}, @var{p})
+@deffn {Fun√ß√£o} foursin (@var{f}, @var{x}, @var{p})
 Retorna os coeficientes do seno de Fourier para @code{@var{f}(@var{x})} definida sobre @code{[0, @var{p}]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {FunÁ„o} totalfourier (@var{f}, @var{x}, @var{p})
+@deffn {Fun√ß√£o} totalfourier (@var{f}, @var{x}, @var{p})
 Retorna @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x}, @var{p}, 'inf)}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {FunÁ„o} fourint (@var{f}, @var{x})
-ConstrÛi e retorna uma lista de coeficientes de integral de Fourier de @code{@var{f}(@var{x})}
+@deffn {Fun√ß√£o} fourint (@var{f}, @var{x})
+Constr√≥i e retorna uma lista de coeficientes de integral de Fourier de @code{@var{f}(@var{x})}
 definida sobre @code{[minf, inf]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {FunÁ„o} fourintcos (@var{f}, @var{x})
+@deffn {Fun√ß√£o} fourintcos (@var{f}, @var{x})
 Retorna os coeficientes da integral do co-seno de Fourier para @code{@var{f}(@var{x})} on @code{[0, inf]}.
 
 @c NEEDS EXAMPLES
 @end deffn
 
 @c NEEDS EXPANSION
-@deffn {FunÁ„o} fourintsin (@var{f}, @var{x})
+@deffn {Fun√ß√£o} fourintsin (@var{f}, @var{x})
 Retorna os coeficientes da integral do seno de Fourier para @code{@var{f}(@var{x})} on @code{[0, inf]}.
 
 @c NEEDS EXAMPLES

@@ -1,62 +1,62 @@
 @c /Contexts.texi/1.12/Thu Feb  9 00:55:29 2006/-ko/
 @c end concepts Contexts
 @menu
-* DefiniÁıes para Contextos::    
+* Defini√ß√µes para Contextos::    
 @end menu
 
-@node DefiniÁıes para Contextos,  , Contextos, Contextos
-@section DefiniÁıes para Contextos
+@node Defini√ß√µes para Contextos,  , Contextos, Contextos
+@section Defini√ß√µes para Contextos
 
-@deffn {FunÁ„o} activate (@var{context_1}, ..., @var{context_n})
+@deffn {Fun√ß√£o} activate (@var{context_1}, ..., @var{context_n})
 Ativa os contextos @var{context_1}, ..., @var{context_n}.
-Os factos nesses contextos est„o ent„o disponÌveis para
-fazer deduÁıes e recuperar informaÁ„o.
-Os factos nesses contextos n„o s„o listadas atravÈs de @code{facts ()}.
+Os factos nesses contextos est√£o ent√£o dispon√≠veis para
+fazer dedu√ß√µes e recuperar informa√ß√£o.
+Os factos nesses contextos n√£o s√£o listadas atrav√©s de @code{facts ()}.
 
-A vari·vel @code{activecontexts} È a lista
-de contextos que est„o activos pelo caminho da funÁ„o @code{activate}.
+A vari√°vel @code{activecontexts} √© a lista
+de contextos que est√£o activos pelo caminho da fun√ß√£o @code{activate}.
 
 @end deffn
 
-@defvr {Vari·vel de sistema} activecontexts
-Valor por omiss„o: @code{[]}
+@defvr {Vari√°vel de sistema} activecontexts
+Valor por omiss√£o: @code{[]}
 
-@code{activecontexts} È a lista de contextos que est„o activos
-pelo caminho da funÁ„o @code{activate}, em oposiÁ„o a sendo activo porque
-eles s„o subcontextos do contexto corrente.
+@code{activecontexts} √© a lista de contextos que est√£o activos
+pelo caminho da fun√ß√£o @code{activate}, em oposi√ß√£o a sendo activo porque
+eles s√£o subcontextos do contexto corrente.
 
 @end defvr
 
-@deffn {FunÁ„o} assume (@var{pred_1}, ..., @var{pred_n})
+@deffn {Fun√ß√£o} assume (@var{pred_1}, ..., @var{pred_n})
 Adiciona predicados @var{pred_1}, ..., @var{pred_n} ao contexto corrente.
 Se um predicado for incossistente ou redundante 
 com os predicados no contexto corrente,
-esses predicados n„o s„o adicionados ao contexto.
+esses predicados n√£o s√£o adicionados ao contexto.
 O contexto acumula predicados de cada chamada a @code{assume}.
 
-@code{assume} retorna uma lista cujos elementos s„o os predicados adicionados ao contexto
-ou os ·tomos @code{redundant} ou @code{inconsistent} onde for aplic·vel.
+@code{assume} retorna uma lista cujos elementos s√£o os predicados adicionados ao contexto
+ou os √°tomos @code{redundant} ou @code{inconsistent} onde for aplic√°vel.
 
-Os predicados @var{pred_1}, ..., @var{pred_n} podem somente ser expressıes
+Os predicados @var{pred_1}, ..., @var{pred_n} podem somente ser express√µes
 com os operadores relacionais @code{< <= equal notequal >=} e @code{>}.
-Predicados n„o podem ser expressıes de igualdades literais @code{=} ou expressıes de desigualdades literais @code{#},
-nem podem elas serem funÁıes de predicado tais como @code{integerp}.
+Predicados n√£o podem ser express√µes de igualdades literais @code{=} ou express√µes de desigualdades literais @code{#},
+nem podem elas serem fun√ß√µes de predicado tais como @code{integerp}.
 
 Predicados combinados da forma @code{@var{pred_1} and ... and @var{pred_n}}
-s„o reconhecidos,
-mas n„o @code{@var{pred_1} or ... or @var{pred_n}}.
-@code{not @var{pred_k}} È reconhecidos se @var{pred_k} for um predicado relacional.
-Expressıes da forma @code{not (@var{pred_1} e @var{pred_2})}
+s√£o reconhecidos,
+mas n√£o @code{@var{pred_1} or ... or @var{pred_n}}.
+@code{not @var{pred_k}} √© reconhecidos se @var{pred_k} for um predicado relacional.
+Express√µes da forma @code{not (@var{pred_1} e @var{pred_2})}
 and @code{not (@var{pred_1} or @var{pred_2})}
-n„o s„o reconhecidas.
+n√£o s√£o reconhecidas.
 
-O mecanismo de deduÁ„o do Maxima n„o È muito forte;
-exitem consequÍncias muito Ûbvias as quais n„o podem ser determinadas por meio de @code{is}.
-Isso È uma fraqueza conhecida.
+O mecanismo de dedu√ß√£o do Maxima n√£o √© muito forte;
+exitem consequ√™ncias muito √≥bvias as quais n√£o podem ser determinadas por meio de @code{is}.
+Isso √© uma fraqueza conhecida.
 
 @code{assume} avalia seus argumentos.
 
-Veja tambÈm @code{is}, @code{facts}, @code{forget}, @code{context}, e @code{declare}.
+Veja tamb√©m @code{is}, @code{facts}, @code{forget}, @code{context}, e @code{declare}.
 
 Exemplos:
 
@@ -98,83 +98,83 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} assumescalar
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} assumescalar
+Valor por omiss√£o: @code{true}
 
-@code{assumescalar} ajuda a governar se expressıes @code{expr}
+@code{assumescalar} ajuda a governar se express√µes @code{expr}
 para as quais @code{nonscalarp (expr)} for @code{false}
-s„o assumidas comportar-se como escalares
-para certas transformaÁıes.
+s√£o assumidas comportar-se como escalares
+para certas transforma√ß√µes.
 
-Tomemos @code{expr} representando qualquer express„o outra que n„o uma lista ou uma matriz,
+Tomemos @code{expr} representando qualquer express√£o outra que n√£o uma lista ou uma matriz,
 e tomemos @code{[1, 2, 3]} representando qualquer lista ou matriz.
-Ent„o @code{expr . [1, 2, 3]} retorna @code{[expr, 2 expr, 3 expr]}
+Ent√£o @code{expr . [1, 2, 3]} retorna @code{[expr, 2 expr, 3 expr]}
 se @code{assumescalar} for @code{true}, ou @code{scalarp (expr)} for
 @code{true}, ou @code{constantp (expr)} for @code{true}.
 
 Se @code{assumescalar} for @code{true}, tais
-expressıes ir„o comportar-se como escalares somente para operadores
-comutativos, mas n„o para multiplicaÁ„o n„o comutativa @code{.}.
+express√µes ir√£o comportar-se como escalares somente para operadores
+comutativos, mas n√£o para multiplica√ß√£o n√£o comutativa @code{.}.
 
 Quando @code{assumescalar} for @code{false}, tais
-expressıes ir„o comportar-se como n„o escalares.
+express√µes ir√£o comportar-se como n√£o escalares.
 
 Quando @code{assumescalar} for @code{all},
-tais expressıes ir„o comportar-se como escalares para todos os operadores listados
+tais express√µes ir√£o comportar-se como escalares para todos os operadores listados
 acima.
 
 @end defvr
 
 
-@defvr {Vari·vel de opÁ„o} assume_pos
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} assume_pos
+Valor por omiss√£o: @code{false}
 
 Quando @code{assume_pos} for @code{true}
-e o sinal de um par‚metro @var{x} n„o pode ser determinado a partir do contexto corrente
-ou outras consideraÁıes,
+e o sinal de um par√¢metro @var{x} n√£o pode ser determinado a partir do contexto corrente
+ou outras considera√ß√µes,
 @code{sign} e @code{asksign (@var{x})} retornam @code{true}.
 Isso pode impedir algum questionamento de @code{asksign} gerado automaticamente,
-tal como pode surgir de @code{integrate} ou de outros c·lculos.
+tal como pode surgir de @code{integrate} ou de outros c√°lculos.
 
-Por padr„o, um par‚metro È @var{x} tal como @code{symbolp (@var{x})}
+Por padr√£o, um par√¢metro √© @var{x} tal como @code{symbolp (@var{x})}
 or @code{subvarp (@var{x})}.
-A classe de expressıes consideradas par‚metros pode ser modificada para alguma abrangÍncia
-atravÈs da vari·vel @code{assume_pos_pred}.
+A classe de express√µes consideradas par√¢metros pode ser modificada para alguma abrang√™ncia
+atrav√©s da vari√°vel @code{assume_pos_pred}.
 
-@code{sign} e @code{asksign} tentam deduzir o sinal de expressıes
-a partir de sinais de operandos dentro da express„o.
-Por exemplo, se @code{a} e @code{b} s„o ambos positivos,
-ent„o @code{a + b} È tambÈm positivo.
+@code{sign} e @code{asksign} tentam deduzir o sinal de express√µes
+a partir de sinais de operandos dentro da express√£o.
+Por exemplo, se @code{a} e @code{b} s√£o ambos positivos,
+ent√£o @code{a + b} √© tamb√©m positivo.
 
-Todavia, n„o existe caminho para desviar todos os questionamentos de @code{asksign}.
+Todavia, n√£o existe caminho para desviar todos os questionamentos de @code{asksign}.
 Particularmente, quando o argumento de @code{asksign} for uma
-diferenÁa @code{@var{x} - @var{y}} ou um logaritmo @code{log(@var{x})},
+diferen√ßa @code{@var{x} - @var{y}} ou um logaritmo @code{log(@var{x})},
 @code{asksign} sempre solicita uma entrada ao utilizador,
 mesmo quando @code{assume_pos} for @code{true} e @code{assume_pos_pred} for
-uma funÁ„o que retorna @code{true} para todos os argumentos.
+uma fun√ß√£o que retorna @code{true} para todos os argumentos.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
 
-@defvr {Vari·vel de opÁ„o} assume_pos_pred
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} assume_pos_pred
+Valor por omiss√£o: @code{false}
 
-Quando @code{assume_pos_pred} for atribuÌdo o nome de uma funÁ„o
-ou uma express„o lambda de um argumento @var{x},
-aquela funÁ„o È chamada para determinar
-se @var{x} È considerado um par‚metro para o propÛsito de @code{assume_pos}.
-@code{assume_pos_pred} È ignorado quando @code{assume_pos} for @code{false}.
+Quando @code{assume_pos_pred} for atribu√≠do o nome de uma fun√ß√£o
+ou uma express√£o lambda de um argumento @var{x},
+aquela fun√ß√£o √© chamada para determinar
+se @var{x} √© considerado um par√¢metro para o prop√≥sito de @code{assume_pos}.
+@code{assume_pos_pred} √© ignorado quando @code{assume_pos} for @code{false}.
 
-A funÁ„o @code{assume_pos_pred} È chamada atravÈs de @code{sign} e de @code{asksign}
+A fun√ß√£o @code{assume_pos_pred} √© chamada atrav√©s de @code{sign} e de @code{asksign}
 com um argumento @var{x}
-que È ou um ·tomo, uma vari·vel subscrita, ou uma express„o de chamada de funÁ„o.
-Se a funÁ„o @code{assume_pos_pred} retorna @code{true},
-@var{x} È considerado um par‚metro para o propÛsito de @code{assume_pos}.
+que √© ou um √°tomo, uma vari√°vel subscrita, ou uma express√£o de chamada de fun√ß√£o.
+Se a fun√ß√£o @code{assume_pos_pred} retorna @code{true},
+@var{x} √© considerado um par√¢metro para o prop√≥sito de @code{assume_pos}.
 
-Por padr„o, um par‚metro È @var{x} tal que @code{symbolp (x)} ou @code{subvarp (x)}.
+Por padr√£o, um par√¢metro √© @var{x} tal que @code{symbolp (x)} ou @code{subvarp (x)}.
 
-Veja tambÈm @code{assume} e @code{assume_pos}.
+Veja tamb√©m @code{assume} e @code{assume_pos}.
 
 Exemplos:
 @c EXAMPLE OUTPUT GENERATED FROM:
@@ -242,92 +242,92 @@ p;
 @end defvr
 
 
-@defvr {Vari·vel de opÁ„o} context
-Valor por omiss„o: @code{initial}
+@defvr {Vari√°vel de op√ß√£o} context
+Valor por omiss√£o: @code{initial}
 
-@code{context} nomeia a colecÁ„o de factos mantida atravÈs de @code{assume} e @code{forget}.
-@code{assume} adiciona factos ‡ colecÁ„o nomeada atravÈs de @code{context},
+@code{context} nomeia a colec√ß√£o de factos mantida atrav√©s de @code{assume} e @code{forget}.
+@code{assume} adiciona factos √† colec√ß√£o nomeada atrav√©s de @code{context},
 enquanto @code{forget} remove factos.
 
 Associando @code{context} para um nome @var{foo} altera o contexto corrente para @var{foo}.
-Se o contexto especificado @var{foo} n„o existe ainda,
-ele È criado automaticamente atravÈs de uma chamada a @code{newcontext}.
+Se o contexto especificado @var{foo} n√£o existe ainda,
+ele √© criado automaticamente atrav√©s de uma chamada a @code{newcontext}.
 @c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
-O contexto especificado È activado automaticamente.
+O contexto especificado √© activado automaticamente.
 
-Veja @code{contexts} para uma descriÁ„o geral do mecanismo de contexto.
+Veja @code{contexts} para uma descri√ß√£o geral do mecanismo de contexto.
 
 @end defvr
 
 @c UMM, I'M HAVING TROUBLE GETTING THE CONTEXT-SWITCHING STUFF TO BEHAVE AS EXPECTED
 @c SOME EXAMPLES WILL HELP A LOT HERE
-@defvr {Vari·vel de opÁ„o} contexts
-Valor por omiss„o: @code{[initial, global]}
+@defvr {Vari√°vel de op√ß√£o} contexts
+Valor por omiss√£o: @code{[initial, global]}
 
-@code{contexts} È uma lista dos contextos que
+@code{contexts} √© uma lista dos contextos que
 existem actualmente, incluindo o contexto activo actualmente.
 
-O mecanismo de contexto torna possÌvel para um utilizador associar
-e nomear uma porÁ„o seleccionada de factos, chamada um contexto.
-Assim que isso for concluÌdo, o utilizador pode ter o Maxima assumindo ou esquecendo grande quantidade
-de factos meramente atravÈs da activaÁ„o ou desativaÁ„o seu contexto.
+O mecanismo de contexto torna poss√≠vel para um utilizador associar
+e nomear uma por√ß√£o seleccionada de factos, chamada um contexto.
+Assim que isso for conclu√≠do, o utilizador pode ter o Maxima assumindo ou esquecendo grande quantidade
+de factos meramente atrav√©s da activa√ß√£o ou desativa√ß√£o seu contexto.
 
-Qualquer ·tomo simbÛlico pode ser um contexto, e os factos contidos naquele
-contexto ir„o ser retidos em armazenamento atÈ que sejam destruÌdos um por um
-atravÈs de chamadas a @code{forget} ou destruÌdos com um conjunto atravÈs de uma chamada a @code{kill}
+Qualquer √°tomo simb√≥lico pode ser um contexto, e os factos contidos naquele
+contexto ir√£o ser retidos em armazenamento at√© que sejam destru√≠dos um por um
+atrav√©s de chamadas a @code{forget} ou destru√≠dos com um conjunto atrav√©s de uma chamada a @code{kill}
 para destruir o contexto que eles pertencem.
 
-Contextos existem em uma hierarquÌa, com o raÌz sempre sendo
-o contexto @code{global}, que contÈm informaÁıes sobre Maxima que alguma
-funÁ„o precisa.  Quando em um contexto dado, todos os factos naquele
-contexto est„o "ativos" (significando que eles s„o usados em deduÁıes e
-recuperados) como est„o tambÈm todos os factos em qualquer contexto que for um subcontexto
+Contextos existem em uma hierarqu√≠a, com o ra√≠z sempre sendo
+o contexto @code{global}, que cont√©m informa√ß√µes sobre Maxima que alguma
+fun√ß√£o precisa.  Quando em um contexto dado, todos os factos naquele
+contexto est√£o "ativos" (significando que eles s√£o usados em dedu√ß√µes e
+recuperados) como est√£o tamb√©m todos os factos em qualquer contexto que for um subcontexto
 do contexto activo.
 
-Quando um novo Maxima for iniciado, o utilizador est· em um
+Quando um novo Maxima for iniciado, o utilizador est√° em um
 contexto chamado @code{initial}, que tem @code{global} como um subcontexto.
 
-Veja tambÈm @code{facts}, @code{newcontext},
+Veja tamb√©m @code{facts}, @code{newcontext},
 @code{supcontext}, @code{killcontext}, @code{activate}, @code{deactivate}, @code{assume}, e @code{forget}.
 
 @end defvr
 
-@deffn {FunÁ„o} deactivate (@var{context_1}, ..., @var{context_n})
+@deffn {Fun√ß√£o} deactivate (@var{context_1}, ..., @var{context_n})
 Desativa os contextos especificados @var{context_1}, ..., @var{context_n}.
 
 @end deffn
 
-@deffn {FunÁ„o} facts (@var{item})
-@deffnx {FunÁ„o} facts ()
+@deffn {Fun√ß√£o} facts (@var{item})
+@deffnx {Fun√ß√£o} facts ()
 Se @var{item} for o nome de um contexto,
 @code{facts (@var{item})} retorna uma lista
 de factos no contexto especificado.
 
-Se @var{item} n„o for o nome de um contexto,
+Se @var{item} n√£o for o nome de um contexto,
 @code{facts (@var{item})} retorna uma lista de factos conhecidos sobre @var{item} no contexto
-actual.  Fatos que est„o atuvos, mas em um diferente contexto, n„o s„o listados.
+actual.  Fatos que est√£o atuvos, mas em um diferente contexto, n√£o s√£o listados.
 
 @code{facts ()} (i.e., sem argumento) lista o contexto actual.
 
 @end deffn
 
-@defvr {DeclaraÁ„o} features
-Maxima recnhece ceertas propriedades matem·ticas de funÁıes e vari·veis.
-Essas s„o chamadas "recursos".
+@defvr {Declara√ß√£o} features
+Maxima recnhece ceertas propriedades matem√°ticas de fun√ß√µes e vari√°veis.
+Essas s√£o chamadas "recursos".
 
-@code{declare (@var{x}, @var{foo})} fornece a propriedade @var{foo} para a funÁ„o ou vari·vel @var{x}.
+@code{declare (@var{x}, @var{foo})} fornece a propriedade @var{foo} para a fun√ß√£o ou vari√°vel @var{x}.
 
 @code{declare (@var{foo}, recurso)} declara um novo recurso @var{foo}.
 Por exemplo,
 @code{declare ([red, green, blue], feature)}
-declara trÍs novos recursos, @code{red}, @code{green}, e @code{blue}.
+declara tr√™s novos recursos, @code{red}, @code{green}, e @code{blue}.
 
 O predicado @code{featurep (@var{x}, @var{foo})}
 retorna @code{true} se @var{x} possui a propriedade @var{foo},
 e @code{false} de outra forma.
 
-A infolista @code{features} È uma lista de recursos conhecidos.
-S„o esses
+A infolista @code{features} √© uma lista de recursos conhecidos.
+S√£o esses
 @code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
 @code{irrational}, @code{real}, @code{imaginary}, @code{complex},
 @code{analytic}, @code{increasing}, @code{decreasing}, @code{oddfun},
@@ -335,43 +335,43 @@ S„o esses
 @code{rassociative}, @code{symmetric}, e @code{antisymmetric},
 mais quaisquer recursos definidos pelo utilizador.
 
-@code{features} È uma lista de recursos matem·ticos.
-Existe tambÈm uma lista de recursos n„o matem·ticos, recursos dependentes do sistema. Veja @code{status}.
+@code{features} √© uma lista de recursos matem√°ticos.
+Existe tamb√©m uma lista de recursos n√£o matem√°ticos, recursos dependentes do sistema. Veja @code{status}.
 
 @end defvr
 
-@deffn {FunÁ„o} forget (@var{pred_1}, ..., @var{pred_n})
-@deffnx {FunÁ„o} forget (@var{L})
-Remove predicados estabelecidos atravÈs de @code{assume}.
-Os predicados podem ser expressıes equivalentes a (mas n„o necess·riamente idÍnticas a)
+@deffn {Fun√ß√£o} forget (@var{pred_1}, ..., @var{pred_n})
+@deffnx {Fun√ß√£o} forget (@var{L})
+Remove predicados estabelecidos atrav√©s de @code{assume}.
+Os predicados podem ser express√µes equivalentes a (mas n√£o necess√°riamente id√™nticas a)
 esses prevamentes assumidos.
 
-@code{forget (@var{L})}, onde @var{L} È uma lista de predicados,
+@code{forget (@var{L})}, onde @var{L} √© uma lista de predicados,
 esquece cada item da lista.
 
 @end deffn
 
-@deffn {FunÁ„o} killcontext (@var{context_1}, ..., @var{context_n})
+@deffn {Fun√ß√£o} killcontext (@var{context_1}, ..., @var{context_n})
 Mata os contextos @var{context_1}, ..., @var{context_n}.
 
 Se um dos contextos estiver for o contexto actual, o novo contexto
-actual ir· tornar-se o primeiro subcontexto disponÌvel do contexto
-actual que n„o tiver sido morto.  Se o primeiro contexto disponÌvel
-n„o morto for @code{global} ent„o @code{initial} È usado em seu lugar.  Se o contexto
-@code{initial} for morto, um novo, porÈm vazio contexto @code{initial} È criado.
+actual ir√° tornar-se o primeiro subcontexto dispon√≠vel do contexto
+actual que n√£o tiver sido morto.  Se o primeiro contexto dispon√≠vel
+n√£o morto for @code{global} ent√£o @code{initial} √© usado em seu lugar.  Se o contexto
+@code{initial} for morto, um novo, por√©m vazio contexto @code{initial} √© criado.
 
 @code{killcontext} recusa-se a matar um contexto que estiver
-ativo actualmente, ou porque ele È um subcontexto do contexto
-actual, ou atravÈs do uso da funÁ„o @code{activate}.
+ativo actualmente, ou porque ele √© um subcontexto do contexto
+actual, ou atrav√©s do uso da fun√ß√£o @code{activate}.
 
 @code{killcontext} avalia seus argumentos.
 @code{killcontext} retorna @code{done}.
 
 @end deffn
 
-@deffn {FunÁ„o} newcontext (@var{nome})
-Cria um novo contexto, porÈm vazio, chamado @var{nome}, que
-tem @code{global} como seu ˙nico subcontexto.  O contexto recentemente criado
+@deffn {Fun√ß√£o} newcontext (@var{nome})
+Cria um novo contexto, por√©m vazio, chamado @var{nome}, que
+tem @code{global} como seu √∫nico subcontexto.  O contexto recentemente criado
 torna-se o contexto activo actualmente.
 
 @code{newcontext} avalia seu argumento.
@@ -379,13 +379,13 @@ torna-se o contexto activo actualmente.
 
 @end deffn
 
-@deffn {FunÁ„o} supcontext (@var{nome}, @var{context})
-@deffnx {FunÁ„o} supcontext (@var{nome})
+@deffn {Fun√ß√£o} supcontext (@var{nome}, @var{context})
+@deffnx {Fun√ß√£o} supcontext (@var{nome})
 Cria um novo contexto, chamado @var{nome},
 que tem @var{context} como um subcontexto.
 @var{context} deve existir.
 
-Se @var{context} n„o for especificado, o contexto actual È assumido.
+Se @var{context} n√£o for especificado, o contexto actual √© assumido.
 
 @end deffn
 

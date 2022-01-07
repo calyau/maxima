@@ -1,60 +1,60 @@
 @c /romberg.texi/1.1/Mon Jan  8 01:45:16 2007//
 @menu
-* Definições para romberg::
+* DefiniÃ§Ãµes para romberg::
 @end menu
 
-@node Definições para romberg, , Top, Top
-@section Definições para romberg
+@node DefiniÃ§Ãµes para romberg, , Top, Top
+@section DefiniÃ§Ãµes para romberg
 
-@deffn {Função} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
-@deffnx {Função} romberg (@var{F}, @var{a}, @var{b})
+@deffn {FunÃ§Ã£o} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffnx {FunÃ§Ã£o} romberg (@var{F}, @var{a}, @var{b})
 
-Calcula uma integração numérica pelo método de Romberg.
+Calcula uma integraÃ§Ã£o numÃ©rica pelo mÃ©todo de Romberg.
 
 @code{romberg(@var{expr}, @var{x}, @var{a}, @var{b})}
 retorna uma estimativa da integral @code{integrate(@var{expr}, @var{x}, @var{a}, @var{b})}.
-@var{expr} deve ser uma expressão que avalie para um valor em ponto flutuante
+@var{expr} deve ser uma expressÃ£o que avalie para um valor em ponto flutuante
 quando @var{x} estiver associado a um valor em ponto flutuante.
 
 @code{romberg(@var{F}, @var{a}, @var{b})}
 retorna uma estimativa da integral @code{integrate(@var{F}(x), x, @var{a}, @var{b})}
-onde @code{x} representa o não nomeado, isolado argumeno de @var{F};
-o actual argumento não é chamado @code{x}.
-@var{F} deve ser uma função do Maxima ou do Lisp que retorne um valor em ponto flutuante
-quando o argumento for um número em ponto flutuante.
-@var{F} pode nomear uma função traduzida ou compilada do Maxima.
+onde @code{x} representa o nÃ£o nomeado, isolado argumeno de @var{F};
+o actual argumento nÃ£o Ã© chamado @code{x}.
+@var{F} deve ser uma funÃ§Ã£o do Maxima ou do Lisp que retorne um valor em ponto flutuante
+quando o argumento for um nÃºmero em ponto flutuante.
+@var{F} pode nomear uma funÃ§Ã£o traduzida ou compilada do Maxima.
 
-A precisão de @code{romberg} é governada pelas variáveis globais
+A precisÃ£o de @code{romberg} Ã© governada pelas variÃ¡veis globais
 @code{rombergabs} e @code{rombergtol}.
 @code{romberg} termina com sucesso quando
-a diferença absoluta entre duas aproximações sucessivas for menor que @code{rombergabs},
-ou a diferença relativa em aproximações sucessivas for menor que @code{rombergtol}.
-Dessa forma quando @code{rombergabs} for 0.0 (o padrão)
+a diferenÃ§a absoluta entre duas aproximaÃ§Ãµes sucessivas for menor que @code{rombergabs},
+ou a diferenÃ§a relativa em aproximaÃ§Ãµes sucessivas for menor que @code{rombergtol}.
+Dessa forma quando @code{rombergabs} for 0.0 (o padrÃ£o)
 somente o erro relativo tem algum efeito sobre @code{romberg}.
 
-@code{romberg} divide ao meio o tamanho do passo no máximo @code{rombergit} vezes antes de interromper;
-o número máximo de avaliações de função é portanto @code{2^rombergit}.
-Se o critério de erro estabelecido por @code{rombergabs} e por @code{rombergtol}
-não for satisfeito, @code{romberg} mostra uma mensagem de erro.
-@code{romberg} sempre faz ao menos @code{rombergmin} iterações;
-isso é uma intenção eurísstica de previnir encerramentos espúrios quando o integrando for oscilatório.
+@code{romberg} divide ao meio o tamanho do passo no mÃ¡ximo @code{rombergit} vezes antes de interromper;
+o nÃºmero mÃ¡ximo de avaliaÃ§Ãµes de funÃ§Ã£o Ã© portanto @code{2^rombergit}.
+Se o critÃ©rio de erro estabelecido por @code{rombergabs} e por @code{rombergtol}
+nÃ£o for satisfeito, @code{romberg} mostra uma mensagem de erro.
+@code{romberg} sempre faz ao menos @code{rombergmin} iteraÃ§Ãµes;
+isso Ã© uma intenÃ§Ã£o eurÃ­sstica de previnir encerramentos espÃºrios quando o integrando for oscilatÃ³rio.
 
-@code{romberg} repetidamente avalia o integrando após associar a variável
-de integração a um valor específico (e não antes).
-Essa política de avaliação torna possível aninhar chamadas a @code{romberg},
+@code{romberg} repetidamente avalia o integrando apÃ³s associar a variÃ¡vel
+de integraÃ§Ã£o a um valor especÃ­fico (e nÃ£o antes).
+Essa polÃ­tica de avaliaÃ§Ã£o torna possÃ­vel aninhar chamadas a @code{romberg},
 para calcular integrais multidimensionais.
-Todavia, os cálculos de erro não tomam os erros de integrações aninhadas
-em consideração, então erros podem ser subestimados.
-Também, métodos imaginados especialmente para problemas multidimensionais podem retornar
-a mesma precisão com poucas avaliações de função.
+Todavia, os cÃ¡lculos de erro nÃ£o tomam os erros de integraÃ§Ãµes aninhadas
+em consideraÃ§Ã£o, entÃ£o erros podem ser subestimados.
+TambÃ©m, mÃ©todos imaginados especialmente para problemas multidimensionais podem retornar
+a mesma precisÃ£o com poucas avaliaÃ§Ãµes de funÃ§Ã£o.
 
-@code{load(romberg)} torna essa função disponível para uso.
+@code{load(romberg)} torna essa funÃ§Ã£o disponÃ­vel para uso.
 
-Veja também @code{QUADPACK}, uma colecção de funções de integração numérica.
+Veja tambÃ©m @code{QUADPACK}, uma colecÃ§Ã£o de funÃ§Ãµes de integraÃ§Ã£o numÃ©rica.
 
 Exemplos:
 
-Uma integração unidimensonal.
+Uma integraÃ§Ã£o unidimensonal.
 @c ===beg===
 @c load (romberg);
 @c f(x) := 1/((x - 1)^2 + 1/100) + 1/((x - 2)^2 + 1/1000) + 1/((x - 3)^2 + 1/200);
@@ -88,7 +88,7 @@ Uma integração unidimensonal.
 (%o7)                7.5527060865060088E-11
 @end example
 
-Uma integração bidimensional, implementada com chamadas aninhadas a @code{romberg}.
+Uma integraÃ§Ã£o bidimensional, implementada com chamadas aninhadas a @code{romberg}.
 @c ===beg===
 @c load (romberg);
 @c g(x, y) := x*y / (x + y);
@@ -129,57 +129,57 @@ Uma integração bidimensional, implementada com chamadas aninhadas a @code{romber
 
 @end deffn
 
-@defvr {Variável de opção} rombergabs
-Valor por omissão: 0.0
+@defvr {VariÃ¡vel de opÃ§Ã£o} rombergabs
+Valor por omissÃ£o: 0.0
 
-A precisão de @code{romberg} é governada pelas variávies globais
+A precisÃ£o de @code{romberg} Ã© governada pelas variÃ¡vies globais
 @code{rombergabs} e @code{rombergtol}.
 @code{romberg} termina com sucesso quando
-a diferença absoluta entre duas aproximações sucessivas for menor que @code{rombergabs},
-ou a diferença relativa em aproximações sucessivas for menor que @code{rombergtol}.
-Dessa forma quando @code{rombergabs} for 0.0 (o padrão)
+a diferenÃ§a absoluta entre duas aproximaÃ§Ãµes sucessivas for menor que @code{rombergabs},
+ou a diferenÃ§a relativa em aproximaÃ§Ãµes sucessivas for menor que @code{rombergtol}.
+Dessa forma quando @code{rombergabs} for 0.0 (o padrÃ£o)
 somente o erro relativo tem algum efeito sobre @code{romberg}.
 
-Veja também @code{rombergit} e @code{rombergmin}.
+Veja tambÃ©m @code{rombergit} e @code{rombergmin}.
 
 @end defvr
 
-@defvr {Variável de opção} rombergit
-Valor por omissão: 11
+@defvr {VariÃ¡vel de opÃ§Ã£o} rombergit
+Valor por omissÃ£o: 11
 
-@code{romberg} divide ao meio o tamanho do passo no máximo @code{rombergit} vezes antes de interromper;
-o número máximo de avaliações de função é portanto @code{2^rombergit}.
-Se o critério de erro estabelecido por @code{rombergabs} e por @code{rombergtol}
-não for satisfeito, @code{romberg} mostra uma mensagem de erro.
-@code{romberg} sempre faz ao menos @code{rombergmin} iterações;
-isso é uma intenção eurísstica de previnir encerramentos espúrios quando o integrando for oscilatório.
+@code{romberg} divide ao meio o tamanho do passo no mÃ¡ximo @code{rombergit} vezes antes de interromper;
+o nÃºmero mÃ¡ximo de avaliaÃ§Ãµes de funÃ§Ã£o Ã© portanto @code{2^rombergit}.
+Se o critÃ©rio de erro estabelecido por @code{rombergabs} e por @code{rombergtol}
+nÃ£o for satisfeito, @code{romberg} mostra uma mensagem de erro.
+@code{romberg} sempre faz ao menos @code{rombergmin} iteraÃ§Ãµes;
+isso Ã© uma intenÃ§Ã£o eurÃ­sstica de previnir encerramentos espÃºrios quando o integrando for oscilatÃ³rio.
 
-Veja também @code{rombergabs} e @code{rombergtol}.
-
-@end defvr
-
-@defvr {Variável de opção} rombergmin
-Valor por omissão: 0
-
-@code{romberg} sempre faz ao menos @code{rombergmin} iterações;
-isso é uma intenção eurísstica para prevenir terminações espúrias quando o integrando for.
-
-Veja também @code{rombergit}, @code{rombergabs}, e @code{rombergtol}.
+Veja tambÃ©m @code{rombergabs} e @code{rombergtol}.
 
 @end defvr
 
-@defvr {Variável de opção} rombergtol
-Valor por omissão: 1e-4
+@defvr {VariÃ¡vel de opÃ§Ã£o} rombergmin
+Valor por omissÃ£o: 0
 
-A precisão de @code{romberg} é governada pelas variáveis globais
+@code{romberg} sempre faz ao menos @code{rombergmin} iteraÃ§Ãµes;
+isso Ã© uma intenÃ§Ã£o eurÃ­sstica para prevenir terminaÃ§Ãµes espÃºrias quando o integrando for.
+
+Veja tambÃ©m @code{rombergit}, @code{rombergabs}, e @code{rombergtol}.
+
+@end defvr
+
+@defvr {VariÃ¡vel de opÃ§Ã£o} rombergtol
+Valor por omissÃ£o: 1e-4
+
+A precisÃ£o de @code{romberg} Ã© governada pelas variÃ¡veis globais
 @code{rombergabs} e @code{rombergtol}.
 @code{romberg} termina com sucesso quando
-a diferença absoluta entre duas aproximações sucessivas for menor que @code{rombergabs},
-ou a diferença relativa em aproximações sucessivas for menor que @code{rombergtol}.
-Dessa forma quando @code{rombergabs} for 0.0 (o padrão)
+a diferenÃ§a absoluta entre duas aproximaÃ§Ãµes sucessivas for menor que @code{rombergabs},
+ou a diferenÃ§a relativa em aproximaÃ§Ãµes sucessivas for menor que @code{rombergtol}.
+Dessa forma quando @code{rombergabs} for 0.0 (o padrÃ£o)
 somente o erro relativo tem algum efeito sobre @code{romberg}.
 
-Veja também @code{rombergit} e @code{rombergmin}.
+Veja tambÃ©m @code{rombergit} e @code{rombergmin}.
 
 @end defvr
 

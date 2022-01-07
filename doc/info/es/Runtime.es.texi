@@ -1,32 +1,32 @@
 @c English version 2011-09-03
 @menu
-* IntroducciÛn al entorno de ejecuciÛn::   
+* Introducci√≥n al entorno de ejecuci√≥n::   
 * Interrupciones::  
-* Funciones y variables para el entorno de ejecuciÛn::
+* Funciones y variables para el entorno de ejecuci√≥n::
 @end menu
 
-@node IntroducciÛn al entorno de ejecuciÛn, Interrupciones, Entorno de EjecuciÛn, Entorno de EjecuciÛn
-@section IntroducciÛn al entorno de ejecuciÛn
+@node Introducci√≥n al entorno de ejecuci√≥n, Interrupciones, Entorno de Ejecuci√≥n, Entorno de Ejecuci√≥n
+@section Introducci√≥n al entorno de ejecuci√≥n
 
-El fichero @code{maxima-init.mac} se carga autom·ticamente cada vez que se empieza a ejecutar Maxima.
-Se puede utilizar @code{maxima-init.mac} para personalizar el entorno de Maxima. Si existe, @code{maxima-init.mac} se almacena normalmente en el directorio indicado por @code{maxima_userdir}, aunque puede estar alojado en cualquier otro directorio que estÈ al alcance de la funciÛn  @code{file_search}.
+El fichero @code{maxima-init.mac} se carga autom√°ticamente cada vez que se empieza a ejecutar Maxima.
+Se puede utilizar @code{maxima-init.mac} para personalizar el entorno de Maxima. Si existe, @code{maxima-init.mac} se almacena normalmente en el directorio indicado por @code{maxima_userdir}, aunque puede estar alojado en cualquier otro directorio que est√© al alcance de la funci√≥n  @code{file_search}.
 
-He aquÌ un ejemplo de fichero @code{maxima-init.mac}:
+He aqu√≠ un ejemplo de fichero @code{maxima-init.mac}:
 
 @example
 setup_autoload ("specfun.mac", ultraspherical, assoc_legendre_p);
 showtime:all;
 @end example
 
-En este ejemplo, @code{setup_autoload} le dice a Maxima que cargue en memoria el fichero @code{specfun.mac} si cualquiera de las funciones @code{ultraspherical} o @code{assoc_legendre_p} es invocada pero todavÌa no est· definida. De esta manera, no es necesario recordar cargar el fichero antes de llamar a las funciones.
+En este ejemplo, @code{setup_autoload} le dice a Maxima que cargue en memoria el fichero @code{specfun.mac} si cualquiera de las funciones @code{ultraspherical} o @code{assoc_legendre_p} es invocada pero todav√≠a no est√° definida. De esta manera, no es necesario recordar cargar el fichero antes de llamar a las funciones.
 
-La sentencia  @code{showtime: all} le dice a Maxima que haga una asignaciÛn a la variable @code{showtime}.
+La sentencia  @code{showtime: all} le dice a Maxima que haga una asignaci√≥n a la variable @code{showtime}.
 El fichero  @code{maxima-init.mac} puede contener cualesquiera otras asignaciones o sentencias de Maxima.
 
-@node Interrupciones, Funciones y variables para el entorno de ejecuciÛn, IntroducciÛn al entorno de ejecuciÛn, Entorno de EjecuciÛn
+@node Interrupciones, Funciones y variables para el entorno de ejecuci√≥n, Introducci√≥n al entorno de ejecuci√≥n, Entorno de Ejecuci√≥n
 @section Interrupciones
 
-El usuario puede detener un cÛmputo que estÈ consumiendo recursos excesivos con el car·cter ^C (control-C). La acciÛn que se sigue por defecto es la detenciÛn del cÛmputo y la impresiÛn de otro prompt. En este caso, no ser· posible reiniciar la tarea interrumpida.
+El usuario puede detener un c√≥mputo que est√© consumiendo recursos excesivos con el car√°cter ^C (control-C). La acci√≥n que se sigue por defecto es la detenci√≥n del c√≥mputo y la impresi√≥n de otro prompt. En este caso, no ser√° posible reiniciar la tarea interrumpida.
 
 Si a la variable Lisp @code{*debugger-hook*} se le asigna @code{nil} haciendo
 
@@ -35,21 +35,21 @@ Si a la variable Lisp @code{*debugger-hook*} se le asigna @code{nil} haciendo
 @end example
 
 @noindent
-entonces tras recibir ^C, Maxima entra en el depurador de Lisp y el usuario podr· utilizar el depurador para inspeccionar el entorno Lisp. La tarea que haya sido interrumpida podr· reiniciarse escribiendo @code{continue} en el depurado de Lisp. La forma de volver a Maxima desde el depurador de Lisp, que no sea la de permitir la computaciÛn hasta la terminaciÛn de la tarea, depender· de la versiÛn de Lisp.
+entonces tras recibir ^C, Maxima entra en el depurador de Lisp y el usuario podr√° utilizar el depurador para inspeccionar el entorno Lisp. La tarea que haya sido interrumpida podr√° reiniciarse escribiendo @code{continue} en el depurado de Lisp. La forma de volver a Maxima desde el depurador de Lisp, que no sea la de permitir la computaci√≥n hasta la terminaci√≥n de la tarea, depender√° de la versi√≥n de Lisp.
 
-En sistemas Unix el car·cter ^Z (control-Z) hace que Maxima deje de ejecutarse devolviendo el control al terminal del sistema. El comando @code{fg} hace que la ejecuciÛn de Maxima se reanude en el punto que lo dejÛ.
+En sistemas Unix el car√°cter ^Z (control-Z) hace que Maxima deje de ejecutarse devolviendo el control al terminal del sistema. El comando @code{fg} hace que la ejecuci√≥n de Maxima se reanude en el punto que lo dej√≥.
 
 
-@node Funciones y variables para el entorno de ejecuciÛn,  , Interrupciones, Entorno de EjecuciÛn
-@section Funciones y variables para el entorno de ejecuciÛn
+@node Funciones y variables para el entorno de ejecuci√≥n,  , Interrupciones, Entorno de Ejecuci√≥n
+@section Funciones y variables para el entorno de ejecuci√≥n
 
 
 @defvr {Variable del sistema} maxima_tempdir
 
 La variable @code{maxima_tempdir} almacena la ruta del directorio
 en el que Maxima crea ciertos ficheros temporales.
-En particular, los ficheros temporales para la realizaciÛn de
-gr·ficos se guardan en @code{maxima_tempdir}.
+En particular, los ficheros temporales para la realizaci√≥n de
+gr√°ficos se guardan en @code{maxima_tempdir}.
 
 El valor que inicialmente toma esta variable es el directorio
 de inicio del usuario, si Maxima es capaz de localizarlo; en
@@ -63,10 +63,10 @@ cadena de caracteres con la ruta del directorio.
 @defvr {Variable del sistema} maxima_userdir
 
 La variable @code{maxima_userdir} almacena la ruta del 
-directorio en el que Maxima buscar· ficheros Lisp y de
-Maxima. Maxima tambiÈn busca en otros directorios, guardando las variables
+directorio en el que Maxima buscar√° ficheros Lisp y de
+Maxima. Maxima tambi√©n busca en otros directorios, guardando las variables
 @code{file_search_maxima} y @code{file_search_lisp} la lista
-completa de b˙squeda.
+completa de b√∫squeda.
 
 El valor que inicialmente toma esta variable es el de un subdirectorio
 del directorio de inicio del usuario, si Maxima es capaz de localizarlo;
@@ -80,11 +80,11 @@ no se alteran @code{file_search_maxima} ni @code{file_search_lisp},
 cuyos contenidos se modifican mediante otro sistema.
 @end defvr
 
-@deffn {FunciÛn} room ()
-@deffnx {FunciÛn} room (true)
-@deffnx {FunciÛn} room (false)
+@deffn {Funci√≥n} room ()
+@deffnx {Funci√≥n} room (true)
+@deffnx {Funci√≥n} room (false)
 
-Presenta una descrpciÛn del estado de almacenamiento y gestiÛn de la pila en Maxima. La llamada @code{room} invoca a la funciÛn Lisp homÛnima.
+Presenta una descrpci√≥n del estado de almacenamiento y gesti√≥n de la pila en Maxima. La llamada @code{room} invoca a la funci√≥n Lisp hom√≥nima.
 
 @itemize @bullet
 @item
@@ -97,59 +97,59 @@ Presenta una descrpciÛn del estado de almacenamiento y gestiÛn de la pila en Max
 
 @end deffn
 
-@deffn {FunciÛn} sstatus (@var{keyword}, @var{item})
+@deffn {Funci√≥n} sstatus (@var{keyword}, @var{item})
 
-Si @var{keyword} es el sÌmbolo @code{feature}, @var{item}
-ser· colocado en la lista de propiedades del sistema. Una vez ejecutado
+Si @var{keyword} es el s√≠mbolo @code{feature}, @var{item}
+ser√° colocado en la lista de propiedades del sistema. Una vez ejecutado
 @code{sstatus (keyword, item)}, @code{status (feature, item)} devuelve
-@code{true}. Si @var{keyword} es el sÌmbolo @code{nofeature},
-@var{item} se borrar· de la lista de propiedades del sistema.
+@code{true}. Si @var{keyword} es el s√≠mbolo @code{nofeature},
+@var{item} se borrar√° de la lista de propiedades del sistema.
 Esto puede ser de utilidad para los autores de paquetes, permitiendo
 mantener el control sobre las propiedades que se han ido estableciendo.
 
-VÈase tambiÈn @code{status}.
+V√©ase tambi√©n @code{status}.
 
 @end deffn
 
 
-@deffn {FunciÛn} status (@code{feature})
-@deffnx {FunciÛn} status (@code{feature}, @var{item})
+@deffn {Funci√≥n} status (@code{feature})
+@deffnx {Funci√≥n} status (@code{feature}, @var{item})
 
-Devuelve informaciÛn sobre la presencia o ausencia de ciertas
+Devuelve informaci√≥n sobre la presencia o ausencia de ciertas
 propiedades dependientes del sistema.
 
 @itemize @bullet
 @item
-@code{status (feature)} devuelve una lista con caracterÌsticas
-del sistema. …stas incluyen la versiÛn de Lisp, tipo de sistema 
+@code{status (feature)} devuelve una lista con caracter√≠sticas
+del sistema. √âstas incluyen la versi√≥n de Lisp, tipo de sistema 
 operativo, etc. La lista puede variar de un Lisp a otro.
 
 @item
 @code{status (feature, item)} devuelve @code{true} si @var{item}
-est· en la lista de elementos retornados por @code{status (feature)}
+est√° en la lista de elementos retornados por @code{status (feature)}
 y @code{false} en otro caso.
-La funciÛn @code{status} no eval˙a el argumento @var{item}. El operador
-de doble comilla simple, @code{'@w{}'}, permite la evaluaciÛn. Una 
-propiedad cuyo nombre contenga un car·cter especial debe ser suministrada
+La funci√≥n @code{status} no eval√∫a el argumento @var{item}. El operador
+de doble comilla simple, @code{'@w{}'}, permite la evaluaci√≥n. Una 
+propiedad cuyo nombre contenga un car√°cter especial debe ser suministrada
 como un argumento del tipo cadena. Por ejemplo,
 @code{status (feature, "ansi-cl")}.
 @end itemize
 
-VÈase tambiÈn @code{sstatus}.
+V√©ase tambi√©n @code{sstatus}.
 
 La variable @code{features} contiene una lista de propiedades que se 
-aplican a expresiones matem·ticas. VÈanse @code{features} y @code{featurep}
-para m·s informaciÛn.
+aplican a expresiones matem√°ticas. V√©anse @code{features} y @code{featurep}
+para m√°s informaci√≥n.
 
 @end deffn
 
 
 
 
-@deffn {FunciÛn} system (@var{command})
-Ejecuta la instrucciÛn @var{command} como un proceso independiente de Maxima.
-La instrucciÛn se le pasa a la consola del sistema para su ejecuciÛn.
-La funciÛn @code{system} no est· soportada por todos los sistemas operativos, pero suele estarlo en todos los entornos  Unix y similares.
+@deffn {Funci√≥n} system (@var{command})
+Ejecuta la instrucci√≥n @var{command} como un proceso independiente de Maxima.
+La instrucci√≥n se le pasa a la consola del sistema para su ejecuci√≥n.
+La funci√≥n @code{system} no est√° soportada por todos los sistemas operativos, pero suele estarlo en todos los entornos  Unix y similares.
 
 Suponiendo que @code{_hist.out} es una lista de frecuencias que se quieren representar en un diagrama de barras utilizando el programa @code{xgraph},
 
@@ -160,7 +160,7 @@ Suponiendo que @code{_hist.out} es una lista de frecuencias que se quieren repre
        system("xgraph -bar -brw .7 -nl < _hist.out"));
 @end example
 
-A fin de hacer el diagrama y eliminar el archivo temporal posteriormente, h·gase:
+A fin de hacer el diagrama y eliminar el archivo temporal posteriormente, h√°gase:
 
 @example
 system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
@@ -170,27 +170,27 @@ system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
 
 
 
-@deffn {FunciÛn} time (%o1, %o2, %o3, ...)
+@deffn {Funci√≥n} time (%o1, %o2, %o3, ...)
 
-Devuelve una lista de los tiempos, en segundos, que fueron necesarios para calcular los resultados de las salidas @code{%o1}, @code{%o2}, @code{%o3}, .... Los tiempos devueltos son estimaciones hechas por Maxima del tiempo interno de computaciÛn. La funciÛn @code{time} sÛlo puede utilizarse para variables correspondientes a lÌneas de salida; para cualquier otro tipo de variables, @code{time} devuelve @code{unknown}.
+Devuelve una lista de los tiempos, en segundos, que fueron necesarios para calcular los resultados de las salidas @code{%o1}, @code{%o2}, @code{%o3}, .... Los tiempos devueltos son estimaciones hechas por Maxima del tiempo interno de computaci√≥n. La funci√≥n @code{time} s√≥lo puede utilizarse para variables correspondientes a l√≠neas de salida; para cualquier otro tipo de variables, @code{time} devuelve @code{unknown}.
 
-H·gase @code{showtime: true} para que Maxima devuelva el tiempo de ejecuciÛn de cada lÌnea de salida.
+H√°gase @code{showtime: true} para que Maxima devuelva el tiempo de ejecuci√≥n de cada l√≠nea de salida.
 
 @end deffn
 
-@deffn {FunciÛn} timedate ()
-@deffnx {FunciÛn} timedate (@var{T})
+@deffn {Funci√≥n} timedate ()
+@deffnx {Funci√≥n} timedate (@var{T})
 
 Sin argumento, @code{timedate} devuelve una cadena que 
 representa la hora y fecha actuales. La cadena tiene el
 formato @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ}, donde
-los campos indicados son: aÒo, mes, dÌa,
-horas, minutos, segundos y n˙mero de horas de diferencia
+los campos indicados son: a√±o, mes, d√≠a,
+horas, minutos, segundos y n√∫mero de horas de diferencia
 con respecto a la hora GMT.
 
 Con argumento, @code{timedate(@var{T})} devuelve la hora
 @var{T} como una cadena con formato @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ}.
-@var{T} se interpreta como el n˙mero de segundos transcurridos
+@var{T} se interpreta como el n√∫mero de segundos transcurridos
 desde la medianoche del uno de enero de 1900, tal como lo devuelve
 @code{absolute_real_time}.
 
@@ -224,13 +224,13 @@ timedate reports current time 2010-06-08 04:08:09+01:00
 @end deffn
 
 
-@deffn {FunciÛn} absolute_real_time ()
+@deffn {Funci√≥n} absolute_real_time ()
 
-Devuelve el n˙mero de segundos transcurridos desde la medianoche
-del 1 de enero de 1900 UTC. Este valor es un n˙mero entero
+Devuelve el n√∫mero de segundos transcurridos desde la medianoche
+del 1 de enero de 1900 UTC. Este valor es un n√∫mero entero
 positivo.
 
-VÈanse tambiÈn @code{elapsed_real_time} y @code{elapsed_run_time}.
+V√©anse tambi√©n @code{elapsed_real_time} y @code{elapsed_run_time}.
 
 Ejemplo:
 
@@ -247,13 +247,13 @@ Ejemplo:
 
 @end deffn
 
-@deffn {FunciÛn} elapsed_real_time ()
+@deffn {Funci√≥n} elapsed_real_time ()
 
 Devuelve los segundos (incluyendo fracciones de segundo) 
-transcurridos desde que Maxima se iniciÛ (o reiniciÛ) la sesiÛn de
+transcurridos desde que Maxima se inici√≥ (o reinici√≥) la sesi√≥n de
 Maxima. Este valor es un decimal en coma flotante.
 
-VÈanse tambiÈn @code{absolute_real_time} y @code{elapsed_run_time}.
+V√©anse tambi√©n @code{absolute_real_time} y @code{elapsed_run_time}.
 
 Ejemplo:
 
@@ -272,14 +272,14 @@ Ejemplo:
 
 @end deffn
 
-@deffn {FunciÛn} elapsed_run_time ()
+@deffn {Funci√≥n} elapsed_run_time ()
 
-Devuelve una estimaciÛn en segundos (incluyendo fracciones de segundo) 
-durante los cuales Maxima ha estado realizando c·lculos desde que se
-iniciÛ (o reiniciÛ) la sesiÛn actual. 
+Devuelve una estimaci√≥n en segundos (incluyendo fracciones de segundo) 
+durante los cuales Maxima ha estado realizando c√°lculos desde que se
+inici√≥ (o reinici√≥) la sesi√≥n actual. 
 Este valor es un decimal en coma flotante.
 
-VÈanse tambiÈn @code{absolute_real_time} y @code{elapsed_real_time}.
+V√©anse tambi√©n @code{absolute_real_time} y @code{elapsed_real_time}.
 
 Ejemplo:
 

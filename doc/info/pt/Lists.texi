@@ -1,14 +1,14 @@
 @c /Lists.texi/1.28/Mon Jan  8 04:17:44 2007/-ko/
 @menu
-* IntroduÁ„o a Listas::
-* DefiniÁıes para Listas::
+* Introdu√ß√£o a Listas::
+* Defini√ß√µes para Listas::
 @end menu
 
-@node IntroduÁ„o a Listas, DefiniÁıes para Listas, Listas, Listas
-@section IntroduÁ„o a Listas
+@node Introdu√ß√£o a Listas, Defini√ß√µes para Listas, Listas, Listas
+@section Introdu√ß√£o a Listas
 
-Listas s„o o bloco b·sico de construÁ„o para Maxima e Lisp.**Todos os outros tipos
-de dado como arrays, tabelas desordenadas, n˙meros s„o representados como listas Lisp.
+Listas s√£o o bloco b√°sico de constru√ß√£o para Maxima e Lisp.**Todos os outros tipos
+de dado como arrays, tabelas desordenadas, n√∫meros s√£o representados como listas Lisp.
 Essas listas Lisp possuem a forma
 
 @example
@@ -16,8 +16,8 @@ Essas listas Lisp possuem a forma
 @end example
 
 @noindent
-para indicar a express„o @code{a+2}.**No nÌvel um do Maxima poderemos ver
-a notaÁ„o infixa @code{a+2}.**Maxima tambÈm tem listas que foram impressas
+para indicar a express√£o @code{a+2}.**No n√≠vel um do Maxima poderemos ver
+a nota√ß√£o infixa @code{a+2}.**Maxima tamb√©m tem listas que foram impressas
 como
 
 @example
@@ -33,74 +33,74 @@ da forma
 @end example
 
 @noindent
-O sinalizador que denota o tipo campo de uma express„o Maxima È uma lista
-em si mesmo, apÛs ter sido adicionado o simplificador a lista poder· transforma-se
+O sinalizador que denota o tipo campo de uma express√£o Maxima √© uma lista
+em si mesmo, ap√≥s ter sido adicionado o simplificador a lista poder√° transforma-se
 
 @example
 ((MLIST SIMP) 1 2 7 ((MPLUS SIMP) $X $Y))
 @end example
 
-@node DefiniÁıes para Listas,  , IntroduÁ„o a Listas, Listas
-@section DefiniÁıes para Listas
+@node Defini√ß√µes para Listas,  , Introdu√ß√£o a Listas, Listas
+@section Defini√ß√µes para Listas
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {FunÁ„o} append (@var{list_1}, ..., @var{list_n})
+@deffn {Fun√ß√£o} append (@var{list_1}, ..., @var{list_n})
 Retorna uma lista simples dos elementos de @var{list_1} seguidos
-pelos elementos de @var{list_2}, ....  @code{append} tambÈm trabalha sobre
-expressıes gerais, e.g. @code{append (f(a,b), f(c,d,e));} retorna
+pelos elementos de @var{list_2}, ....  @code{append} tamb√©m trabalha sobre
+express√µes gerais, e.g. @code{append (f(a,b), f(c,d,e));} retorna
 @code{f(a,b,c,d,e)}.
 
-FaÁa @code{example(append);} para um exemplo.
+Fa√ßa @code{example(append);} para um exemplo.
 
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {FunÁ„o} assoc (@var{key}, @var{list}, @var{default})
-@deffnx {FunÁ„o} assoc (@var{key}, @var{list})
-Essa funÁ„o procura pela chave @var{key} do lado esquerdo da entrada @var{list}
-que È da forma @code{[x,y,z,...]} onde cada elemento de @var{list} È uma express„o de
-um operando bin·rio e 2 elementos.  Por exemplo @code{x=1}, @code{2^3}, @code{[a,b]} etc.
-A chave @var{key} È verificada contra o primeiro operando.  @code{assoc} retorna o segundo
-operando se @code{key} for achada.  Se a chave @code{key} n„o for achada isso
-retorna o valor padr„o @var{default}.  @var{default} È opcional
-e o padr„o È @code{false}.
+@deffn {Fun√ß√£o} assoc (@var{key}, @var{list}, @var{default})
+@deffnx {Fun√ß√£o} assoc (@var{key}, @var{list})
+Essa fun√ß√£o procura pela chave @var{key} do lado esquerdo da entrada @var{list}
+que √© da forma @code{[x,y,z,...]} onde cada elemento de @var{list} √© uma express√£o de
+um operando bin√°rio e 2 elementos.  Por exemplo @code{x=1}, @code{2^3}, @code{[a,b]} etc.
+A chave @var{key} √© verificada contra o primeiro operando.  @code{assoc} retorna o segundo
+operando se @code{key} for achada.  Se a chave @code{key} n√£o for achada isso
+retorna o valor padr√£o @var{default}.  @var{default} √© opcional
+e o padr√£o √© @code{false}.
 
 @end deffn
 
 @c REPHRASE
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {FunÁ„o} atom (@var{expr})
-Retorna @code{true} se @var{expr} for atomica (i.e. um n˙mero, nome ou sequÍncia de caracteres) de outra forma retorna
-@code{false}.  Desse modo @code{atom(5)} È @code{true} enquanto @code{atom(a[1])} e @code{atom(sin(x))} S„o
-@code{false} (assumindo @code{a[1]} e @code{x} n„o est„o associados).
+@deffn {Fun√ß√£o} atom (@var{expr})
+Retorna @code{true} se @var{expr} for atomica (i.e. um n√∫mero, nome ou sequ√™ncia de caracteres) de outra forma retorna
+@code{false}.  Desse modo @code{atom(5)} √© @code{true} enquanto @code{atom(a[1])} e @code{atom(sin(x))} S√£o
+@code{false} (assumindo @code{a[1]} e @code{x} n√£o est√£o associados).
 
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {FunÁ„o} cons (@var{expr}, @var{list})
-Retorna uma nova lista construÌda do elemento @var{expr} como
-seu primeiro elemento, seguido por elementos de @var{list}.  @code{cons} tambÈm trabalha
-sobre outras expressıes, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
+@deffn {Fun√ß√£o} cons (@var{expr}, @var{list})
+Retorna uma nova lista constru√≠da do elemento @var{expr} como
+seu primeiro elemento, seguido por elementos de @var{list}.  @code{cons} tamb√©m trabalha
+sobre outras express√µes, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
 @end deffn
 
-@deffn {FunÁ„o} copylist (@var{list})
-Retorna uma cÛpia da lista @var{list}.
+@deffn {Fun√ß√£o} copylist (@var{list})
+Retorna uma c√≥pia da lista @var{list}.
 
 @end deffn
 
-@deffn {FunÁ„o} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
+@deffn {Fun√ß√£o} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
 
-Cria uma lista por avaliaÁ„o de @var{form} com @var{x_1} associando a
-cada elemento @var{list_1}, e para cada tal associaÁ„o anexa @var{x_2}
+Cria uma lista por avalia√ß√£o de @var{form} com @var{x_1} associando a
+cada elemento @var{list_1}, e para cada tal associa√ß√£o anexa @var{x_2}
 para cada elemento de @var{list_2}, ....
-O n˙mero de elementos no resultado ser·
-o produto do n˙mero de elementos de cada lista.
-Cada vari·vel @var{x_i} pode actualmente ser um sÌbolo --o qual n„o pode ser avaliado.
-A lista de argumentos ser· avaliada uma ˙nica vez no inÌcio do bloco de 
-repetiÁ„o.  
+O n√∫mero de elementos no resultado ser√°
+o produto do n√∫mero de elementos de cada lista.
+Cada vari√°vel @var{x_i} pode actualmente ser um s√≠bolo --o qual n√£o pode ser avaliado.
+A lista de argumentos ser√° avaliada uma √∫nica vez no in√≠cio do bloco de 
+repeti√ß√£o.  
 
 @example
 (%i82) create_list1(x^i,i,[1,3,7]);
@@ -108,31 +108,31 @@ repetiÁ„o.
 @end example
 
 @noindent
-Com um bloco de repetiÁ„o duplo:
+Com um bloco de repeti√ß√£o duplo:
 
 @example
 (%i79) create_list([i,j],i,[a,b],j,[e,f,h]);
 (%o79) [[a,e],[a,f],[a,h],[b,e],[b,f],[b,h]]
 @end example
 
-Em lugar de @var{list_i} dois argumentos podem ser fornecidos cada um dos quais ser·
-avaliado como um n˙mero.   Esses podem vir a ser inclusive o limite inferior e
-superior do bloco de repetiÁ„o.   
+Em lugar de @var{list_i} dois argumentos podem ser fornecidos cada um dos quais ser√°
+avaliado como um n√∫mero.   Esses podem vir a ser inclusive o limite inferior e
+superior do bloco de repeti√ß√£o.   
 
 @example
 (%i81) create_list([i,j],i,[1,2,3],j,1,i);
 (%o81) [[1,1],[2,1],[2,2],[3,1],[3,2],[3,3]]
 @end example
 
-Note que os limites ou lista para a vari·vel @var{j} podem
+Note que os limites ou lista para a vari√°vel @var{j} podem
 depender do valor corrente de @var{i}.
 
 @end deffn
 
-@deffn {FunÁ„o} delete (@var{expr_1}, @var{expr_2})
-@deffnx {FunÁ„o} delete (@var{expr_1}, @var{expr_2}, @var{n})
-Remove todas as ocorrÍncias de @var{expr_1} em @var{expr_2}. @var{expr_1}
-pode ser uma parcela de @var{expr_2} (se isso for uma adiÁ„o) ou um factor de @var{expr_2}
+@deffn {Fun√ß√£o} delete (@var{expr_1}, @var{expr_2})
+@deffnx {Fun√ß√£o} delete (@var{expr_1}, @var{expr_2}, @var{n})
+Remove todas as ocorr√™ncias de @var{expr_1} em @var{expr_2}. @var{expr_1}
+pode ser uma parcela de @var{expr_2} (se isso for uma adi√ß√£o) ou um factor de @var{expr_2}
 (se isso for um produto).
 
 @c ===beg===
@@ -144,9 +144,9 @@ pode ser uma parcela de @var{expr_2} (se isso for uma adiÁ„o) ou um factor de @v
 
 @end example
 
-@code{delete(@var{expr_1}, @var{expr_2}, @var{n})} remove as primeiras @var{n} ocorrÍncias de
+@code{delete(@var{expr_1}, @var{expr_2}, @var{n})} remove as primeiras @var{n} ocorr√™ncias de
 @var{expr_1} em @var{expr_2}.  Se houver menos que @var{n}
-ocorrÍncias de @var{expr_1} em @var{expr_2} ent„o todas as corrÍncias seram excluÌdas.
+ocorr√™ncias de @var{expr_1} em @var{expr_2} ent√£o todas as corr√™ncias seram exclu√≠das.
 
 @c ===beg===
 @c delete(a, f(a,b,c,d,a));
@@ -162,51 +162,51 @@ ocorrÍncias de @var{expr_1} em @var{expr_2} ent„o todas as corrÍncias seram excl
 
 @end deffn
 
-@deffn {FunÁ„o} eighth (@var{expr})
-Retorna o oitavo item de uma express„o ou lista @var{expr}.
+@deffn {Fun√ß√£o} eighth (@var{expr})
+Retorna o oitavo item de uma express√£o ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {FunÁ„o} endcons (@var{expr}, @var{list})
+@deffn {Fun√ß√£o} endcons (@var{expr}, @var{list})
 Retorna uma nova lista consistindo de elementos de
-@code{list} seguidos por @var{expr}.  @code{endcons} tambÈm trabalha  sobre expressıes gerais, e.g.
+@code{list} seguidos por @var{expr}.  @code{endcons} tamb√©m trabalha  sobre express√µes gerais, e.g.
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
 @end deffn
 
-@deffn {FunÁ„o} fifth (@var{expr})
-Retorna o quinto item da express„o ou lista @var{expr}.
+@deffn {Fun√ß√£o} fifth (@var{expr})
+Retorna o quinto item da express√£o ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {FunÁ„o} first (@var{expr})
+@deffn {Fun√ß√£o} first (@var{expr})
 Retorna a primeira parte de @var{expr} que pode resultar no primeiro
-elemento de uma lista, a primeira linha de uma matriz, a primeira parcela de uma adiÁ„o,
-etc.  Note que @code{first} e suas funÁıes relacionadas, @code{rest} e @code{last}, trabalham
-sobre a forma de @var{expr} que È mostrada n„o da forma que È digitada na
-entrada.  Se a vari·vel @code{inflag} È escolhida para @code{true} todavia, essa
-funÁıes olhar„o  na forma interna de @var{expr}.  Note que o
-simplificador re-ordena expressıes.  Desse modo @code{first(x+y)} ser· @code{x} se @code{inflag}
+elemento de uma lista, a primeira linha de uma matriz, a primeira parcela de uma adi√ß√£o,
+etc.  Note que @code{first} e suas fun√ß√µes relacionadas, @code{rest} e @code{last}, trabalham
+sobre a forma de @var{expr} que √© mostrada n√£o da forma que √© digitada na
+entrada.  Se a vari√°vel @code{inflag} √© escolhida para @code{true} todavia, essa
+fun√ß√µes olhar√£o  na forma interna de @var{expr}.  Note que o
+simplificador re-ordena express√µes.  Desse modo @code{first(x+y)} ser√° @code{x} se @code{inflag}
 for @code{true} e @code{y} se @code{inflag} for @code{false} (@code{first(y+x)} fornece os mesmos
-resultados).  As funÁıes @code{second} .. @code{tenth} retornam da segunda atÈ a
-dÈcima parte do seu argumento.
+resultados).  As fun√ß√µes @code{second} .. @code{tenth} retornam da segunda at√© a
+d√©cima parte do seu argumento.
 
 @end deffn
 
-@deffn {FunÁ„o} fourth (@var{expr})
-Retorna o quarto item da expressı ou lista @var{expr}.
+@deffn {Fun√ß√£o} fourth (@var{expr})
+Retorna o quarto item da express√µ ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
-@deffn {FunÁ„o} get (@var{a}, @var{i})
+@deffn {Fun√ß√£o} get (@var{a}, @var{i})
 Recupera a propriedade de utilizador indicada por @var{i} associada com
-o ·tomo @var{a} ou retorna @code{false} se "a" n„o tem a propriedade @var{i}.
+o √°tomo @var{a} ou retorna @code{false} se "a" n√£o tem a propriedade @var{i}.
 
 @code{get} avalia seus argumentos.
 
@@ -248,14 +248,14 @@ x is not numeric.
 
 @end deffn
 
-@deffn {FunÁ„o} join (@var{l}, @var{m})
+@deffn {Fun√ß√£o} join (@var{l}, @var{m})
 Cria uma nova lista contendo os elementos das lista @var{l} e @var{m}, intercaladas.
 O resultado tem os elementos @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
 As listas @var{l} e @var{m} podem conter qualquer tipo de elementos.
 
 Se as listas forem de diferentes comprimentos, @code{join} ignora elementos da lista mais longa.
 
-Maxima reclama se @var{L_1} ou @var{L_2} n„o for uma lista.
+Maxima reclama se @var{L_1} ou @var{L_2} n√£o for uma lista.
 
 Exemplos:
 
@@ -277,51 +277,51 @@ Exemplos:
 
 @c NEEDS EXAMPLES
 @c HOW IS "LAST" PART DETERMINED ??
-@deffn {FunÁ„o} last (@var{expr})
-Retorna a ˙ltima parte (parcela, linha, elemento, etc.) de @var{expr}.
+@deffn {Fun√ß√£o} last (@var{expr})
+Retorna a √∫ltima parte (parcela, linha, elemento, etc.) de @var{expr}.
 
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {FunÁ„o} length (@var{expr})
-Retorna (por padr„o) o n˙mero de partes na forma
-externa (mostrada) de @var{expr}.  Para listas isso È o n˙mero de elementos,
-para matrizes isso È o n˙mero de linhas, e para adiÁıes isso È o n˙mero
+@deffn {Fun√ß√£o} length (@var{expr})
+Retorna (por padr√£o) o n√∫mero de partes na forma
+externa (mostrada) de @var{expr}.  Para listas isso √© o n√∫mero de elementos,
+para matrizes isso √© o n√∫mero de linhas, e para adi√ß√µes isso √© o n√∫mero
 de parcelas (veja @code{dispform}).
 
-O comando @code{length} È afectado pelo comutador
-@code{inflag}.  Ent„o, e.g. @code{length(a/(b*c));} retorna 2 se
+O comando @code{length} √© afectado pelo comutador
+@code{inflag}.  Ent√£o, e.g. @code{length(a/(b*c));} retorna 2 se
 @code{inflag} for @code{false} (Assumindo @code{exptdispflag} sendo @code{true}), mas 3 se @code{inflag} for
-@code{true} (A representaÁ„o interna È essencialmente @code{a*b^-1*c^-1}).
+@code{true} (A representa√ß√£o interna √© essencialmente @code{a*b^-1*c^-1}).
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} listarith
-Valor por omiss„o: @code{true} - se @code{false} faz com que quaisquer operaÁıes aritmÈticas
-com listas sejam suprimidas; quando @code{true}, operaÁıes lista-matriz s„o
+@defvr {Vari√°vel de op√ß√£o} listarith
+Valor por omiss√£o: @code{true} - se @code{false} faz com que quaisquer opera√ß√µes aritm√©ticas
+com listas sejam suprimidas; quando @code{true}, opera√ß√µes lista-matriz s√£o
 contagiosas fazendo com que listas sejam convertidas para matrizes retornando um resultado
-que È sempre uma matriz.  Todavia, operaÁıes lista-lista podem retornar
+que √© sempre uma matriz.  Todavia, opera√ß√µes lista-lista podem retornar
 listas.
 
 @end defvr
 
-@deffn {FunÁ„o} listp (@var{expr})
+@deffn {Fun√ß√£o} listp (@var{expr})
 Retorna @code{true} se @var{expr} for uma lista de outra forma retorna @code{false}.
 
 @end deffn
 
-@deffn {FunÁ„o} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
-@deffnx {FunÁ„o} makelist (@var{expr}, @var{x}, @var{list})
-ConstrÛi e retorna uma lista,
-cada elemento dessa lista È gerado usando @var{expr}.
+@deffn {Fun√ß√£o} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffnx {Fun√ß√£o} makelist (@var{expr}, @var{x}, @var{list})
+Constr√≥i e retorna uma lista,
+cada elemento dessa lista √© gerado usando @var{expr}.
 
 @code{makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})} retorna uma lista,
-o @code{j}'Èsimo elemento dessa lista È igual a @code{ev (@var{expr}, @var{i}=j)}
-para @code{j} variando de @var{i_0} atÈ @var{i_1}.
+o @code{j}'√©simo elemento dessa lista √© igual a @code{ev (@var{expr}, @var{i}=j)}
+para @code{j} variando de @var{i_0} at√© @var{i_1}.
 
 @code{makelist (@var{expr}, @var{x}, @var{list})} retorna uma lista,
-o @code{j}'Èsimo elemento È igual a @code{ev (@var{expr}, @var{x}=@var{list}[j])}
-para @code{j} variando de 1 atÈ @code{length (@var{list})}.
+o @code{j}'√©simo elemento √© igual a @code{ev (@var{expr}, @var{x}=@var{list}[j])}
+para @code{j} variando de 1 at√© @code{length (@var{list})}.
 
 Exemplos:
 
@@ -339,20 +339,20 @@ Exemplos:
 
 @end deffn
 
-@deffn {FunÁ„o} member (@var{expr_1}, @var{expr_2})
+@deffn {Fun√ß√£o} member (@var{expr_1}, @var{expr_2})
 
 Retorna @code{true} se @code{is(@var{expr_1} = @var{a})}
 para algum elemento @var{a} em @code{args(@var{expr_2})},
 de outra forma retorna @code{false}.
 
-@code{expr_2} È tipicamente uma lista,
+@code{expr_2} √© tipicamente uma lista,
 nesse caso @code{args(@var{expr_2}) = @var{expr_2}}
-e @code{is(@var{expr_1} = @var{a})} para algum elemento @var{a} em @code{expr_2} È o teste.
+e @code{is(@var{expr_1} = @var{a})} para algum elemento @var{a} em @code{expr_2} √© o teste.
 
-@code{member} n„o inspeciona partes dos argumentos de @code{expr_2},
-ent„o @code{member} pode retornar @code{false} mesmo se @code{expr_1} for uma parte de algum argumento de @code{expr_2}.
+@code{member} n√£o inspeciona partes dos argumentos de @code{expr_2},
+ent√£o @code{member} pode retornar @code{false} mesmo se @code{expr_1} for uma parte de algum argumento de @code{expr_2}.
 
-Veja tambÈm @code{elementp}.
+Veja tamb√©m @code{elementp}.
 
 Exemplos:
 
@@ -389,54 +389,54 @@ Exemplos:
 
 @end deffn
 
-@deffn {FunÁ„o} ninth (@var{expr})
-Retorna o nono item da express„o ou lista @var{expr}.
+@deffn {Fun√ß√£o} ninth (@var{expr})
+Retorna o nono item da express√£o ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {FunÁ„o} rest (@var{expr}, @var{n})
-@deffnx {FunÁ„o} rest (@var{expr})
+@deffn {Fun√ß√£o} rest (@var{expr}, @var{n})
+@deffnx {Fun√ß√£o} rest (@var{expr})
 Retorna @var{expr} com seus primeiros @var{n} elementos removidos se @var{n} for
-positivo e seus ˙ltimos @code{- @var{n}} elementos removidos se @var{n} for negativo.  Se @var{n} for 1
-isso pode ser omitido.  @var{expr} pode ser uma lista, matriz, ou outra express„o.
+positivo e seus √∫ltimos @code{- @var{n}} elementos removidos se @var{n} for negativo.  Se @var{n} for 1
+isso pode ser omitido.  @var{expr} pode ser uma lista, matriz, ou outra express√£o.
 
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {FunÁ„o} reverse (@var{list})
-Ordem reversa para os membros de @var{list} (n„o
-os membros em si mesmos).  @code{reverse} tambÈm trabalha sobre expressıes gerais,
+@deffn {Fun√ß√£o} reverse (@var{list})
+Ordem reversa para os membros de @var{list} (n√£o
+os membros em si mesmos).  @code{reverse} tamb√©m trabalha sobre express√µes gerais,
 e.g.  @code{reverse(a=b);} fornece @code{b=a}.
 
 @end deffn
 
-@deffn {FunÁ„o} second (@var{expr})
-Retorna o segundo item da express„o ou lista @var{expr}.
+@deffn {Fun√ß√£o} second (@var{expr})
+Retorna o segundo item da express√£o ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
-@deffn {FunÁ„o} seventh (@var{expr})
-Retorna o sÈtimo item da express„o ou lista @var{expr}.
+@deffn {Fun√ß√£o} seventh (@var{expr})
+Retorna o s√©timo item da express√£o ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
-@deffn {FunÁ„o} sixth (@var{expr})
-Retorna o sexto item da express„o ou lista @var{expr}.
+@deffn {Fun√ß√£o} sixth (@var{expr})
+Retorna o sexto item da express√£o ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
-@deffn {FunÁ„o} sublist_indices (@var{L}, @var{P})
+@deffn {Fun√ß√£o} sublist_indices (@var{L}, @var{P})
 
-Retorna os Ìndices dos elementos @code{x} da lista @var{L} para os quais
+Retorna os √≠ndices dos elementos @code{x} da lista @var{L} para os quais
 o predicado @code{maybe(@var{P}(x))} retornar @code{true};
 isso inclui @code{unknown} bem como @code{false}.
-@var{P} pode ser um nome de funÁ„o ou uma express„o lambda.
+@var{P} pode ser um nome de fun√ß√£o ou uma express√£o lambda.
 @var{L} deve ser uma lista literal.
 
 Exemplos:
@@ -466,14 +466,14 @@ Exemplos:
 
 @end deffn
 
-@deffn {FunÁ„o} tenth (@var{expr})
-Retorna o dÈcimo item da express„o ou lista @var{expr}.
+@deffn {Fun√ß√£o} tenth (@var{expr})
+Retorna o d√©cimo item da express√£o ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
-@deffn {FunÁ„o} third (@var{expr})
-Retorna o terceiro item da express„o ou lista @var{expr}.
+@deffn {Fun√ß√£o} third (@var{expr})
+Retorna o terceiro item da express√£o ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
