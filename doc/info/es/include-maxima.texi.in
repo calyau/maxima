@@ -2,7 +2,7 @@
 @c english version 1.48
 
 @c start of header
-@documentencoding ISO-8859-1
+@documentencoding UTF-8
 @documentlanguage es_ES
 @settitle Manual de Maxima @manual_version@
 
