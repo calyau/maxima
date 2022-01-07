@@ -81,7 +81,7 @@ Mario Rodríguez Riotorto. (@code{mario ARROBA edu PUNTO xunta PUNTO es})
 @summarycontents
 @contents
 
-@include maxima-macros.texi
+@include category-macros.texi
 
 @ifnottex
 @node Top, Introducción a Maxima, (dir), (dir)
