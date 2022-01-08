@@ -1932,6 +1932,37 @@ block ([translate : false],
 (kill (foo, l1, l2, l3), 0);
 0;
 
+/* The string "**" no longer translates to the string "^".
+ * This test compares the interpreted and translated results.
+ */
+
+block ([translate : false],
+  foo () := ["^", "^" (2, 3), apply ("^", [2, 3]),
+             "**", "**" (2, 3), apply ("**", [2, 3])],
+  l1 : foo (),
+  translate_or_lose (foo),
+  l2 : foo (),
+  [l2, is (l1 = l2)]);
+[["^", 8, 8, "**", 8, 8], true];
+
+(kill (foo, l1, l2), 0);
+0;
+
+/* Attempting to translate some atoms like lisp arrays would
+ * cause lisp errors during translation.
+ */
+
+(a : make_array (fixnum, 1),
+ a[0] : 13,
+ define (foo (), a),
+ translate_or_lose (foo),
+ listarray (foo ()));
+[13];
+
+(kill (foo, a), 0);
+0;
+
+
 
 
 

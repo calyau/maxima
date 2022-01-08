@@ -29,7 +29,7 @@ prefix("laplacian", 142, 'expr, 'expr) $
 declare(order,commutative,
         ordern,nary,
         ["grad","div","curl","laplacian"],outative,
-        "curl",nonscalar)$
+        ["~", "grad", "curl"], nonscalar)$
 
 /* Protect against "circular rule" error in case vect.mac is loaded twice.
  * Most of these operators are defined here in vect.mac, so it's unlikely
@@ -256,7 +256,10 @@ matchdeclare (zz, vector0p);
 vector0p(e) := listp(e) and length(e) = dimension and every (lambda ([x], x = 0), e);
 defrule (rule_vector0_additive_identity, nn + zz, nn);
 
-vsimp(expn) := apply1 (vsimp1(expn), rule_vector0_additive_identity);
+matchdeclare (aa, all, bb, ordergreatp (aa));
+defrule (rule_dot_commutative, aa . bb, bb . aa);
+
+vsimp(expn) := apply1 (vsimp1(expn), rule_vector0_additive_identity, rule_dot_commutative);
 
 vsimp1(expn) :=
    if mapatom(expn) then expn

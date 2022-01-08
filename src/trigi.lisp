@@ -215,12 +215,29 @@
   (frob %tanh #'cl:tanh)
 
   (frob %sech #'(lambda (x)
-		  (let ((y (ignore-errors (/ 1 (cl:cosh x)))))
-		    (if y y (domain-error x 'sech)))))
+		  (flet ((sech (x)
+			   ;; For large x > 0, cosh(x) ~= exp(x)/2.
+			   ;; Hence, sech(x) ~= 2*exp(-x).  And since
+			   ;; cosh(x) is even, we only need to deal
+			   ;; with |x|.  By large, we mean
+			   ;; acosh(most-positive-double-float).
+			   (if (>= (abs x) (cl:acosh most-positive-double-float))
+			       (* 2 (exp (- (abs x))))
+			       (/ (cl:cosh x)))))
+		  (let ((y (ignore-errors (sech x))))
+		    (if y y (domain-error x 'sech))))))
 
   (frob %csch #'(lambda (x)
-		  (let ((y (ignore-errors (/ 1 (cl:sinh x)))))
-		    (if y y (domain-error x 'csch)))))
+		  (flet ((csch (x)
+			   ;; For large x > 0, sinh(x) ~= exp(x)/2.
+			   ;; Hence csch(x) = 2*exp(-x).  Since
+			   ;; sinh(x) is odd, we also have csch(x) =
+			   ;; -2*exp(x) when x < 0 and |x| is large.
+			   (if (>= (abs x) (cl:asinh most-positive-double-float))
+			       (float-sign x (* 2 (exp (- (abs x)))))
+			       (/ (cl:sinh x)))))
+		  (let ((y (ignore-errors (csch x))))
+		    (if y y (domain-error x 'csch))))))
 
   (frob %coth #'(lambda (x)
 		  (let ((y (ignore-errors (/ 1 (cl:tanh x)))))
@@ -235,9 +252,27 @@
 		   (let ((y (ignore-errors (cl:acosh (/ 1 x)))))
 		     (if y y (domain-error x 'asech)))))
 
-  (frob %acsch #'(lambda (x)
-		   (let ((y (ignore-errors (cl:asinh (/ 1 x)))))
-		     (if y y (domain-error x 'acsch)))))
+  (frob %acsch
+	#'(lambda (x)
+	    (flet ((acsch (x)
+		     ;; logarc(acsch(x)) = log(1/x+sqrt(1/x^2+1)).
+		     ;; Assume x > 0.  Then we can rewrite this as
+		     ;; log((1+sqrt(1+x^2))/x) = log(1+sqrt(1+x^2)) -
+		     ;; log(x).  If we choose x such that 1+x^2 = 1,
+		     ;; then this simplifies to log(2) - log(x).
+		     ;; Don't convert this to log(2/x) because if x is
+		     ;; very small 2/x can overflow.
+		     ;;
+		     ;; 1+x^2 = 1 when x^2 = double-float-epsilon.  So
+		     ;; x = sqrt(double-float-epsilon).  But sinh(1/x)
+		     ;; is ok, as long as x is a normalized number.
+		     ;; So use instead of sqrt(epsilon), just use
+		     ;; least-positive-normalized-double-float.
+		     (if (< (abs x) least-positive-normalized-double-float)
+			 (float-sign x (- (log 2d0) (log (abs x))))
+			 (cl:asinh (/ x)))))
+	      (let ((y (ignore-errors (acsch x))))
+		(if y y (domain-error x 'acsch))))))
 
   (frob %acoth #'(lambda (x)
 		   (let ((y (ignore-errors (maxima-branch-atanh (/ 1 x))))) 

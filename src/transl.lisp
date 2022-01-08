@@ -671,8 +671,10 @@ APPLY means like APPLY.")
 	 (cdr temp))
 	((and (setq temp (mget form '$numer)) $tr_numer)
 	 `($float . ,temp))
-	((setq temp (implied-quotep form))
-	 `($any . ',temp))
+	((implied-quotep form)
+	 `($any . ',form))
+	((self-evaluating-lisp-object-p form)
+	 `($any . ,form))
 	((tboundp form)
 	 (setq form (teval form))
 	 `(,(value-mode form) . ,form))
@@ -807,22 +809,12 @@ APPLY means like APPLY.")
 	(args (tr-args (cdr form))))
     `($any . (simplify (list ',op ,@args)))))
 
-
-
 ;;; Some atoms, solely by usage, are self evaluating. 
+(defun implied-quotep (x)
+  (safe-get x 'implied-quotep))
 
-(defun implied-quotep (atom)
-  (cond
-	((stringp atom)
-	 (cond
-       ;; I WONDER IF THIS NEXT CONDITION CAN BE CUT OUT ?? !!
-       ((equal atom "**") ;;; foolishness. The PARSER should do this.
-		;; Losing Fortran hackers.
-		(tr-format "~% `**' is obsolete, use `^' !!!")
-		"^")
-       (t atom)))
-    ((get atom 'implied-quotep) atom)
-	(t nil)))
+(defun self-evaluating-lisp-object-p (x)
+  (not (or (symbolp x) (consp x))))
 
 ;;; the Translation Properties. the heart of TRANSL.
 

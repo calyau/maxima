@@ -2713,3 +2713,22 @@ facts ();
  featurep (I, irrational)];
 [false, false, false, false];
 
+/*
+ * Check sech/csch don't overflow for large numbers.  Use relative
+ *  error to test for accuracy.
+ */
+
+closetorel(actual, expected, tol) := block([numer:true, relerr: abs(actual-expected)/expected], if (relerr < tol) then true else relerr);
+closetorel(actual, expected, tol) := block([numer:true, relerr: abs(actual-expected)/expected], if (relerr < tol) then true else relerr);
+
+closetorel(sech(715.0), sech(715b0), 1b-13);
+true;
+closetorel(csch(715.0), csch(715b0), 1b-13);
+true;
+
+/*
+ * Check acsch doesn't overflow for small numbers
+ */
+
+closetorel(acsch(1e-309), acsch(bfloat(1e-309)), 1b-13);
+true;
