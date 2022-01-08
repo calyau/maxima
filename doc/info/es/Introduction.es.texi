@@ -164,13 +164,13 @@ Maxima puede generar gráficos de una o más funciones:
 (%i1) plot2d (sin(x)/x, [x, -20, 20])$
 @end example
 @ifnotinfo
-@image{../figures/introduction1, 10cm}
+@image{@value{figuresfolder}/introduction1, 10cm}
 @end ifnotinfo
 @example
 (%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5], [y, -1.5, 2])$
 @end example
 @ifnotinfo
-@image{../figures/introduction2, 10cm}
+@image{@value{figuresfolder}/introduction2, 10cm}
 @end ifnotinfo
 @example
 @group
@@ -179,7 +179,7 @@ Maxima puede generar gráficos de una o más funciones:
 @end group
 @end example
 @ifnotinfo
-@image{../figures/introduction3, 12cm}
+@image{@value{figuresfolder}/introduction3, 12cm}
 @end ifnotinfo 
 
 @c Traducido por: Juan Pablo Romero Bernal

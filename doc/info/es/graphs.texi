@@ -241,7 +241,7 @@ Ejemplo:
 @end deffn
 
 @ifhtml
-@image{../figures/graphs01,6cm}
+@image{@value{figuresfolder}/graphs01,6cm}
 @end ifhtml
 
 @deffn {Función} graph_union (@var{g1}, @var{g1})
@@ -552,7 +552,7 @@ Ejemplo:
 @end example
 
 @ifhtml
-@image{../figures/graphs13,6cm}
+@image{@value{figuresfolder}/graphs13,6cm}
 @end ifhtml
 @end deffn
 
@@ -578,7 +578,7 @@ Ejemplo:
 @end deffn
 
 @ifhtml
-@image{../figures/graphs02,6cm}
+@image{@value{figuresfolder}/graphs02,6cm}
 @end ifhtml
 
 @deffn {Función} chromatic_index (@var{gr})
@@ -966,7 +966,7 @@ Ejemplo:
 @end deffn
 
 @ifhtml
-@image{../figures/graphs03,6cm}
+@image{@value{figuresfolder}/graphs03,6cm}
 @end ifhtml
 
 @deffn {Función} hamilton_path (@var{gr})
@@ -991,7 +991,7 @@ Ejemplo:
 @end deffn
 
 @ifhtml
-@image{../figures/graphs04,6cm}
+@image{@value{figuresfolder}/graphs04,6cm}
 @end ifhtml
 
 @deffn {Función} isomorphism (@var{gr1}, @var{gr2})
@@ -1426,7 +1426,7 @@ Ejemplo:
 @end deffn
 
 @ifhtml
-@image{../figures/graphs05,6cm}
+@image{@value{figuresfolder}/graphs05,6cm}
 @end ifhtml
 
 @deffn {Función} max_matching (@var{gr})
@@ -1451,7 +1451,7 @@ Ejemplo:
 @end deffn
 
 @ifhtml
-@image{../figures/graphs06,6cm}
+@image{@value{figuresfolder}/graphs06,6cm}
 @end ifhtml
 
 @deffn {Función} min_degree (@var{gr})
@@ -1515,7 +1515,7 @@ Ejemplo:
 @end deffn
 
 @ifhtml
-@image{../figures/graphs07,6cm}
+@image{@value{figuresfolder}/graphs07,6cm}
 @end ifhtml
 
 @deffn {Función} neighbors (@var{v}, @var{gr})
@@ -1724,7 +1724,7 @@ Ejemplo:
 @end deffn
 
 @ifhtml
-@image{../figures/graphs08,6cm}
+@image{@value{figuresfolder}/graphs08,6cm}
 @end ifhtml
 
 
@@ -2252,7 +2252,7 @@ Ejemplo 1:
 @end example
 
 @ifhtml
-@image{../figures/graphs09,6cm}
+@image{@value{figuresfolder}/graphs09,6cm}
 @end ifhtml
 
 Ejemplo 2:
@@ -2297,7 +2297,7 @@ Ejemplo 2:
 @end example
 
 @ifhtml
-@image{../figures/graphs10,6cm}
+@image{@value{figuresfolder}/graphs10,6cm}
 @end ifhtml
 
 Ejemplo 3:
@@ -2332,7 +2332,7 @@ Ejemplo 3:
 @end example
 
 @ifhtml
-@image{../figures/graphs11,6cm}
+@image{@value{figuresfolder}/graphs11,6cm}
 @end ifhtml
 
 Ejemplo 4:
@@ -2387,7 +2387,7 @@ Ejemplo 4:
 @end example
 
 @ifhtml
-@image{../figures/graphs12,6cm}
+@image{@value{figuresfolder}/graphs12,6cm}
 @end ifhtml
 
 Ejemplo 5:
@@ -2406,7 +2406,7 @@ Ejemplo 5:
 @end example
 
 @ifhtml
-@image{../figures/graphs14,6cm}
+@image{@value{figuresfolder}/graphs14,6cm}
 @end ifhtml
 
 Ejemplo 6:
@@ -2427,7 +2427,7 @@ Ejemplo 6:
 @end example
 
 @ifhtml
-@image{../figures/graphs15,6cm}
+@image{@value{figuresfolder}/graphs15,6cm}
 @end ifhtml
 
 @end deffn

@@ -246,7 +246,7 @@ Para mostrar el campo de direcciones de la ecuación diferencial
 @end example
 
 @ifnotinfo
-@image{../figures/plotdf1,8cm}
+@image{@value{figuresfolder}/plotdf1,8cm}
 @end ifnotinfo
 
 @item
@@ -261,7 +261,7 @@ inicial @math{y(-1) = 3}, se puede utilizar la sentencia:
 El gráfico también muestra la función @math{y = sqrt(x)}.
 
 @ifnotinfo
-@image{../figures/plotdf2,8cm}
+@image{@value{figuresfolder}/plotdf2,8cm}
 @end ifnotinfo
 
 @item
@@ -277,7 +277,7 @@ permitirá cambiar el valor de @math{m} interactivamente
 @end example
 
 @ifnotinfo
-@image{../figures/plotdf3,8cm}
+@image{@value{figuresfolder}/plotdf3,8cm}
 @end ifnotinfo
 
 @item
@@ -291,7 +291,7 @@ variable @math{y=x'} y se hace:
 @end example
 
 @ifnotinfo
-@image{../figures/plotdf4,8cm}
+@image{@value{figuresfolder}/plotdf4,8cm}
 @end ifnotinfo
 
 @item
@@ -311,7 +311,7 @@ de las dos variables de estado como funciones del tiempo:
 @end example
 
 @ifnotinfo
-@image{../figures/plotdf5,8cm}@image{../figures/plotdf6,8cm}
+@image{@value{figuresfolder}/plotdf5,8cm}@image{@value{figuresfolder}/figures/plotdf6,8cm}
 @end ifnotinfo
 
 @end itemize

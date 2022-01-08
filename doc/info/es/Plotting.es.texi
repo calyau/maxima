@@ -127,7 +127,7 @@ Ejemplos:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting1,8cm}
+@image{@value{figuresfolder}/plotting1,8cm}
 @end ifnotinfo
 
 Se pueden añadir cualesquiera opciones que acepte @code{plot3d};
@@ -151,7 +151,7 @@ de Gnuplot:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting2,8cm}
+@image{@value{figuresfolder}/plotting2,8cm}
 @end ifnotinfo
 
 @end deffn
@@ -267,7 +267,7 @@ Dibujando la función sinusoidal:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting2,8cm}
+@image{@value{figuresfolder}/plotting2,8cm}
 @end ifnotinfo
 
 Si la función crece rápidamente puede ser necesario limitar los
@@ -284,7 +284,7 @@ plot2d: some values were clipped.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting3,8cm}
+@image{@value{figuresfolder}/plotting3,8cm}
 @end ifnotinfo
 
 El aspecto del gráfico puede ser diferente dependiendo del programa
@@ -303,7 +303,7 @@ Xmaxima dibuja los ejes como flechas:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting1,8cm}
+@image{@value{figuresfolder}/plotting1,8cm}
 @end ifnotinfo
 
 Gráfico con escala logarítmica:
@@ -316,7 +316,7 @@ Gráfico con escala logarítmica:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting4,8cm}
+@image{@value{figuresfolder}/plotting4,8cm}
 @end ifnotinfo
 
 Dibujando funciones especificadas por su nombre:
@@ -338,7 +338,7 @@ $g
 @end example
 
 @ifnotinfo
-@image{../figures/plotting5,8cm}
+@image{@value{figuresfolder}/plotting5,8cm}
 @end ifnotinfo
 
 Ejemplo de función paramétrica. Curva de la mariposa:
@@ -355,7 +355,7 @@ Ejemplo de función paramétrica. Curva de la mariposa:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting6,8cm}
+@image{@value{figuresfolder}/plotting6,8cm}
 @end ifnotinfo
 
 Una circunferencia de dos vueltas y solo siete puntos:
@@ -372,7 +372,7 @@ Una circunferencia de dos vueltas y solo siete puntos:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting7,8cm}
+@image{@value{figuresfolder}/plotting7,8cm}
 @end ifnotinfo
 
 Dibujo de una función junto con la representación paramétrica de una
@@ -396,7 +396,7 @@ plot2d: some values were clipped.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting8,8cm}
+@image{@value{figuresfolder}/plotting8,8cm}
 @end ifnotinfo
 
 Puntos discretos definiendo separadamente las coordenadas x e y:
@@ -413,7 +413,7 @@ Puntos discretos definiendo separadamente las coordenadas x e y:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting9,8cm}
+@image{@value{figuresfolder}/plotting9,8cm}
 @end ifnotinfo
 
 Los mismos puntos del ejemplo anterior, pero definiendo una a una las
@@ -433,7 +433,7 @@ coordenadas y sin segmentos que unan los puntos:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting10,8cm}
+@image{@value{figuresfolder}/plotting10,8cm}
 @end ifnotinfo
 
 En este ejemplo, se guarda una tabla de tres columnas en el
@@ -458,7 +458,7 @@ para representar las dos últimas columnas:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting11,8cm}
+@image{@value{figuresfolder}/plotting11,8cm}
 @end ifnotinfo
 
 Un gráfico de datos empíricos junto con su modelo
@@ -486,7 +486,7 @@ teórico:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting12,8cm}
+@image{@value{figuresfolder}/plotting12,8cm}
 @end ifnotinfo
 
 @end deffn
@@ -516,7 +516,7 @@ Representación de una función:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting13,8cm}
+@image{@value{figuresfolder}/plotting13,8cm}
 @end ifnotinfo
 
 Uso de la opción z para acotar una función que tiende a infinito
@@ -533,7 +533,7 @@ x e y):
 @end example
 
 @ifnotinfo
-@image{../figures/plotting14,8cm}
+@image{@value{figuresfolder}/plotting14,8cm}
 @end ifnotinfo
 
 Los valores infinitos de z se pueden obviar eligiendo una retícula
@@ -554,7 +554,7 @@ cómo seleccionar las paletas predefinidas, en este caso la número 4:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting15,8cm}
+@image{@value{figuresfolder}/plotting15,8cm}
 @end ifnotinfo
 
 Dos superficies en el mismo gráfico, compartiendo el mismo dominio; en 
@@ -570,7 +570,7 @@ Gnuplot, ambas superfifies comparten la misma paleta:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting16,8cm}
+@image{@value{figuresfolder}/plotting16,8cm}
 @end ifnotinfo
 
 Las mismas superficies, pero con diferentes dominios; en Xmaxima
@@ -591,7 +591,7 @@ definida por la opción @code{palette}:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting17,8cm}
+@image{@value{figuresfolder}/plotting17,8cm}
 @end ifnotinfo
 
 La botella de Klein, definida paramétricamente:
@@ -614,7 +614,7 @@ La botella de Klein, definida paramétricamente:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting18,8cm}
+@image{@value{figuresfolder}/plotting18,8cm}
 @end ifnotinfo
 
 Gráfico de un armónico esférico, utilizando las transformaciones
@@ -634,7 +634,7 @@ predefinidas @code{spherical_to_xyz}:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting19,8cm}
+@image{@value{figuresfolder}/plotting19,8cm}
 @end ifnotinfo
 
 Uso de la transformación predefinida @code{polar_to_xy}. Este
@@ -656,7 +656,7 @@ ejemplo también muestra cómo eliminar el marco y la leyenda:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting20,8cm}
+@image{@value{figuresfolder}/plotting20,8cm}
 @end ifnotinfo
 
 Dibujo de una esfera utilizando la transformación esférica. En 
@@ -680,7 +680,7 @@ degradado:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting21,8cm}
+@image{@value{figuresfolder}/plotting21,8cm}
 @end ifnotinfo
 
 Definición de una función con dos variables utilizando una matriz. 
@@ -705,7 +705,7 @@ apply: subscript must be an integer; found: round(x)
 @end example
 
 @ifnotinfo
-@image{../figures/plotting22,8cm}
+@image{@value{figuresfolder}/plotting22,8cm}
 @end ifnotinfo
 
 Asignando a la opción @code{elevation} el valor cero, una superficie
@@ -728,7 +728,7 @@ se desactivan para facilitar la visualización de los colores:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting23,8cm}
+@image{@value{figuresfolder}/plotting23,8cm}
 @end ifnotinfo
 
 Véase también la sección Opciones gráficas.
