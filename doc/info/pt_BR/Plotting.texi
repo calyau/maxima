@@ -163,7 +163,7 @@ Gr@'{a}ficos de fun@value{cedilha}@~{o}es comuns.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting6,8cm}
+@image{@value{figuresfolder}/plotting6,8cm}
 @end ifnotinfo
 
 @c ===beg===
@@ -174,7 +174,7 @@ Gr@'{a}ficos de fun@value{cedilha}@~{o}es comuns.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting7,8cm}
+@image{@value{figuresfolder}/plotting7,8cm}
 @end ifnotinfo
 
 Montando gr@'{a}fico de fun@value{cedilha}@~{o}es pelo nome.
@@ -196,7 +196,7 @@ $g
 @end example
 
 @ifnotinfo
-@image{../figures/plotting10,8cm}
+@image{@value{figuresfolder}/plotting10,8cm}
 @end ifnotinfo
 
 Podemos montar o gr@'{a}fico de um c@'{i}rculo usando um gr@'{a}fico param@'{e}trico com um par@^{a}metro
@@ -217,7 +217,7 @@ dom@'{i}nio. Todavia, usaremos a op@value{cedilha}@~{a}o
 @end example
 
 @ifnotinfo
-@image{../figures/plotting12,8cm}
+@image{@value{figuresfolder}/plotting12,8cm}
 @end ifnotinfo
 
 Exemplo de um gr@'{a}fico logar@'{i}tmico:
@@ -229,7 +229,7 @@ Exemplo de um gr@'{a}fico logar@'{i}tmico:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting9,8cm}
+@image{@value{figuresfolder}/plotting9,8cm}
 @end ifnotinfo
 
 Exemplo de gr@'{a}fico discreto, definindo as coordenadas x e y por separado:
@@ -244,7 +244,7 @@ Exemplo de gr@'{a}fico discreto, definindo as coordenadas x e y por separado:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting14,8cm}
+@image{@value{figuresfolder}/plotting14,8cm}
 @end ifnotinfo
 
 O gr@'{a}fico de pontos pode ser mostrado juntamente com um gr@'{a}fico da
@@ -272,7 +272,7 @@ fun@value{cedilha}@~{a}o teor@'{e}tica/doutrin@'{a}ria/est@'{e}tica que prev@^{e
 @end example
 
 @ifnotinfo
-@image{../figures/plotting16,8cm}
+@image{@value{figuresfolder}/plotting16,8cm}
 @end ifnotinfo
 
 Veja tamb@'{e}m @code{plot_options}, que descreve op@value{cedilha}@~{o}es de montagem de gr@'{a}fico e tem mais exemplos.
@@ -720,7 +720,7 @@ Mostra um gr@'{a}fico de uma ou tr@^{e}s express@~{o}es como fun@value{cedilha}@
 @end example
 
 @ifnotinfo
-@image{../figures/plotting17,8cm}
+@image{@value{figuresfolder}/plotting17,8cm}
 @end ifnotinfo
 
 monta o gr@'{a}fico de @code{u^2-v^2} com @code{u} e @code{v} variando no intervalo fechado [-2,2] e
@@ -747,7 +747,7 @@ Outro exemplo @'{e} uma superf@'{i}cie de Klein:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting21,8cm}
+@image{@value{figuresfolder}/plotting21,8cm}
 @end ifnotinfo
 
 Algumas vezes isso @'{e} necess@'{a}rio para definir uma fun@value{cedilha}@~{a}o para montar o graico da express@~{a}o. Todos
@@ -769,7 +769,7 @@ dif@'{i}cil e pode ser mais f@'{a}cil fazer uma fun@value{cedilha}@~{a}o.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting25,8cm}
+@image{@value{figuresfolder}/plotting25,8cm}
 @end ifnotinfo
 
 Veja @code{plot_options} para mais exemplos.

@@ -234,8 +234,8 @@ Graphical representation and staircase diagram for the sequence:
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics1,8cm}
-@image{../figures/dynamics2,8cm}
+@image{@value{figuresfolder}/dynamics1,8cm}
+@image{@value{figuresfolder}/dynamics2,8cm}
 @end ifnotinfo
 
 If your system is slow, you'll have to reduce the number of iterations in
@@ -258,7 +258,7 @@ $$x_{n+1} = a + x_n^2$$
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics3,8cm}
+@image{@value{figuresfolder}/dynamics3,8cm}
 @end ifnotinfo
 
 To enlarge the region around the lower bifurcation near x @code{=} -1.25 use:
@@ -268,7 +268,7 @@ To enlarge the region around the lower bifurcation near x @code{=} -1.25 use:
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics4,8cm}
+@image{@value{figuresfolder}/dynamics4,8cm}
 @end ifnotinfo
 
 Evolution of a two-dimensional system that leads to a fractal:
@@ -282,7 +282,7 @@ Evolution of a two-dimensional system that leads to a fractal:
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics5,8cm}
+@image{@value{figuresfolder}/dynamics5,8cm}
 @end ifnotinfo
 
 And an enlargement of a small region in that fractal:
@@ -293,7 +293,7 @@ And an enlargement of a small region in that fractal:
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics6,8cm}
+@image{@value{figuresfolder}/dynamics6,8cm}
 @end ifnotinfo
 
 A plot of Sierpinsky's triangle, obtained with the chaos game:
@@ -304,7 +304,7 @@ A plot of Sierpinsky's triangle, obtained with the chaos game:
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics7,8cm}
+@image{@value{figuresfolder}/dynamics7,8cm}
 @end ifnotinfo
 
 Barnsley's fern, obtained with an Iterated Function System:
@@ -332,7 +332,7 @@ Barnsley's fern, obtained with an Iterated Function System:
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics8,8cm}
+@image{@value{figuresfolder}/dynamics8,8cm}
 @end ifnotinfo
 
 

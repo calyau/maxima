@@ -28,7 +28,7 @@ Exemplo:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting3,8cm}
+@image{@value{figuresfolder}/plotting3,8cm}
 @end ifnotinfo
 
 @end deffn

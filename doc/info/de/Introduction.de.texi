@@ -187,7 +187,7 @@ mit einer oder mehreren Funktionen zeichnen.
 @end example
 
 @ifnotinfo
-@image{../figures/introduction1, 10cm}
+@image{@value{figuresfolder}/introduction1, 10cm}
 @end ifnotinfo
 
 @example
@@ -195,7 +195,7 @@ mit einer oder mehreren Funktionen zeichnen.
 @end example
 
 @ifnotinfo
-@image{../figures/introduction2, 10cm}
+@image{@value{figuresfolder}/introduction2, 10cm}
 @end ifnotinfo
 
 @example
@@ -206,7 +206,7 @@ mit einer oder mehreren Funktionen zeichnen.
 @end example
 
 @ifnotinfo
-@image{../figures/introduction3, 12cm}
+@image{@value{figuresfolder}/introduction3, 12cm}
 @end ifnotinfo
 
 @c --- End of file Introduction.de.texi ----------------------------------------

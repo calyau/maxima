@@ -542,7 +542,7 @@ um polin@^{o}mio de Legendre.
 @end example
 
 @ifnotinfo
-@image{../figures/orthopoly1,8cm}
+@image{@value{figuresfolder}/orthopoly1,8cm}
 @end ifnotinfo
 
 A express@~{a}o @i{completa} @code{legendre_p (5, x)} recebe ap@'{o}strofo; isso @'{e} 

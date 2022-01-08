@@ -18,12 +18,12 @@
 
 @ifhtml
 @macro figure {file}
-@image{../figures/\file\}
+@image{@value{figuresfolder}/\file\}
 @end macro
 @end ifhtml
 @iftex
 @macro figure {file}
-@center @image{../figures/\file\, 10cm}
+@center @image{@value{figuresfolder}/\file\, 10cm}
 @end macro
 @end iftex
 @ifinfo
