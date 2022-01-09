@@ -648,17 +648,6 @@ AC_ARG_ENABLE(lang-de,
 
 AM_CONDITIONAL(LANG_DE, test x$lang_de = xtrue)
 
-AC_ARG_ENABLE(lang-de-utf8,
-	[  --enable-lang-de-utf8        German language support (UTF-8)],
-     	[case "${enableval}" in
-       		yes) lang_de_utf8=true  ;;
-       		no)  lang_de_utf8=false ;;
-		*) AC_MSG_ERROR(bad value ${enableval} for --enable-lang-de-utf8) ;;
-     	esac],
-	[lang_de_utf8=false])
-
-AM_CONDITIONAL(LANG_DE_UTF8, test x$lang_de_utf8 = xtrue)
-
 AC_ARG_ENABLE(lang-ja,
 	[  --enable-lang-ja             Japanese language support],
      	[case "${enableval}" in
@@ -682,17 +671,6 @@ AC_ARG_ENABLE(lang-es,
 AC_SUBST(lang_es)
 AM_CONDITIONAL(LANG_ES, test x$lang_es = xtrue)
 
-AC_ARG_ENABLE(lang-es-utf8,
-	[  --enable-lang-es-utf8        Spanish language support (UTF-8)],
-     	[case "${enableval}" in
-       		yes) lang_es_utf8=true  ;;
-       		no)  lang_es_utf8=false ;;
-		*) AC_MSG_ERROR(bad value ${enableval} for --enable-lang-es-utf8) ;;
-     	esac],
-	[lang_es_utf8=false])
-
-AM_CONDITIONAL(LANG_ES_UTF8, test x$lang_es_utf8 = xtrue)
-
 AC_ARG_ENABLE(lang-pt,
 	[  --enable-lang-pt             Portuguese language support],
      	[case "${enableval}" in
@@ -705,17 +683,6 @@ AC_ARG_ENABLE(lang-pt,
 AC_SUBST(lang_pt)
 AM_CONDITIONAL(LANG_PT, test x$lang_pt = xtrue)
 
-AC_ARG_ENABLE(lang-pt-utf8,
-	[  --enable-lang-pt-utf8        Portuguese language support (UTF-8)],
-     	[case "${enableval}" in
-       		yes) lang_pt_utf8=true  ;;
-       		no)  lang_pt_utf8=false ;;
-		*) AC_MSG_ERROR(bad value ${enableval} for --enable-lang-pt-utf8) ;;
-     	esac],
-	[lang_pt_utf8=false])
-
-AM_CONDITIONAL(LANG_PT_UTF8, test x$lang_pt_utf8 = xtrue)
-
 AC_ARG_ENABLE(lang-pt_BR,
 	[  --enable-lang-pt_BR          Brazilian Portuguese language support],
      	[case "${enableval}" in
@@ -727,42 +694,6 @@ AC_ARG_ENABLE(lang-pt_BR,
 
 AC_SUBST(lang_pt_br)
 AM_CONDITIONAL(LANG_PT_BR, test x$lang_pt_br = xtrue)
-
-AC_ARG_ENABLE(lang-pt_BR-utf8,
-	[  --enable-lang-pt_BR-utf8     Brazilian Portuguese language support (UTF-8)],
-     	[case "${enableval}" in
-       		yes) lang_pt_br_utf8=true  ;;
-       		no)  lang_pt_br_utf8=false ;;
-		*) AC_MSG_ERROR(bad value ${enableval} for --enable-lang-pt_BR-utf8) ;;
-     	esac],
-	[lang_pt_br_utf8=false])
-
-AM_CONDITIONAL(LANG_PT_BR_UTF8, test x$lang_pt_br_utf8 = xtrue)
-
-AC_ARG_ENABLE(recode,
-	[  --enable-recode              Use recode for charset conversion],
-     	[case "${enableval}" in
-       		yes) use_recode=true  ;;
-       		no)  use_recode=false ;;
-		*) AC_MSG_ERROR(bad value ${enableval} for --enable-recode) ;;
-     	esac],
-	[use_recode=false])
-
-dnl iconv and/or recode
-AC_CHECK_PROG(iconv_found,iconv,true,false)
-AC_CHECK_PROG(recode_found,recode,true,false)
-
-if test x"${use_recode}" = xtrue ; then
-    if test x"${recode_found}" = xfalse ; then
-	AC_MSG_ERROR(No recode found)
-    fi
-elif test x"${iconv_found}" = xfalse ; then
-    use_recode=true 
-else
-    use_recode=false
-fi
-
-AM_CONDITIONAL(USE_RECODE, test x$use_recode = xtrue)
 
 dnl Optionally build the windows CHM help files
 dnl default to false as requires win32 and Microsoft HTML Help Workshop
@@ -1301,12 +1232,12 @@ doc/info/category-macros.texi \
 doc/info/texi2html.init \
 doc/info/figures/Makefile \
 doc/info/de/Makefile \
-doc/info/de.utf8/Makefile doc/info/es/Makefile doc/info/es.utf8/Makefile \
+doc/info/es/Makefile \
 doc/info/ja/Makefile \
 doc/info/ja/include-maxima.texi \
-doc/info/pt/Makefile doc/info/pt.utf8/Makefile \
+doc/info/pt/Makefile \
 doc/info/pt/include-maxima.texi \
-doc/info/pt_BR/Makefile doc/info/pt_BR.utf8/Makefile \
+doc/info/pt_BR/Makefile \
 doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/man/ru/Makefile doc/man/ru/maxima.1 doc/man/de/Makefile doc/man/de/maxima.1 \
 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile \
 interfaces/emacs/emaxima/Makefile interfaces/emacs/imaxima/Makefile \
