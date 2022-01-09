@@ -30,7 +30,7 @@ wxMaxima:
 
 I file presenti nella sottocartella wxMaxima provengono dalla 
 distribuzione Windows di wxMaxima disponibile su 
-http://wxmaxima.sourceforge.net
+https://wxmaxima-developers.github.io/wxmaxima/
 
 
 Le GUI di Maxima e i firewall

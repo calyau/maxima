@@ -29,7 +29,7 @@ Windows distribution of gnuplot from http://gnuplot.sourceforge.net
 wxMaxima:
 
 The files in the wxMaxima subdirectory are from the Windows distribution
-of wxMaxima available from http://wxmaxima.sourceforge.net
+of wxMaxima available from https://wxmaxima-developers.github.io/wxmaxima/
 
 
 Maxima GUI and firewall
