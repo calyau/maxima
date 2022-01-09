@@ -377,8 +377,8 @@ Mandelbrot集合にはmandelbrotです。
 @end example
 
 @ifnotinfo
-@image{figures/dynamics1,8cm}
-@image{figures/dynamics2,8cm}
+@image{@value{figuresfolder}/dynamics1,8cm}
+@image{@value{figuresfolder}/dynamics2,8cm}
 @end ifnotinfo
 
 もしシステムが遅いなら、
@@ -402,7 +402,7 @@ $$x_{n+1} = a + x_n^2$$
 @end example
 
 @ifnotinfo
-@image{figures/dynamics3,8cm}
+@image{@value{figuresfolder}/dynamics3,8cm}
 @end ifnotinfo
 
 
@@ -413,7 +413,7 @@ x @code{=} -1.25近くのより低い分岐の回りの領域を拡大するに�
 @end example
 
 @ifnotinfo
-@image{figures/dynamics4,8cm}
+@image{@value{figuresfolder}/dynamics4,8cm}
 @end ifnotinfo
 
 フラクタルに導かれる二次元系の発展:
@@ -427,7 +427,7 @@ x @code{=} -1.25近くのより低い分岐の回りの領域を拡大するに�
 @end example
 
 @ifnotinfo
-@image{figures/dynamics5,8cm}
+@image{@value{figuresfolder}/dynamics5,8cm}
 @end ifnotinfo
 
 そしてそのフラクタルの小さな領域の拡大:
@@ -438,7 +438,7 @@ x @code{=} -1.25近くのより低い分岐の回りの領域を拡大するに�
 @end example
 
 @ifnotinfo
-@image{figures/dynamics6,8cm}
+@image{@value{figuresfolder}/dynamics6,8cm}
 @end ifnotinfo
 
 カオスゲームで得られるSierpinski三角形のプロット:
@@ -449,7 +449,7 @@ x @code{=} -1.25近くのより低い分岐の回りの領域を拡大するに�
 @end example
 
 @ifnotinfo
-@image{figures/dynamics7,8cm}
+@image{@value{figuresfolder}/dynamics7,8cm}
 @end ifnotinfo
 
 反復函数系で得られるBarnsleyのシダ:
@@ -477,7 +477,7 @@ x @code{=} -1.25近くのより低い分岐の回りの領域を拡大するに�
 @end example
 
 @ifnotinfo
-@image{figures/dynamics8,8cm}
+@image{@value{figuresfolder}/dynamics8,8cm}
 @end ifnotinfo
 
 Mandelbrot集合の12色のグラフィックス表現を納めた
@@ -489,7 +489,7 @@ mandelbrot([filename,"dynamics9"])$
 @end example
 
 @ifnotinfo
-@image{figures/dynamics9,8cm}
+@image{@value{figuresfolder}/dynamics9,8cm}
 @end ifnotinfo
 
 そして数(-0.55 + i 0.6)に関するJulia集合は以下で得られます:
@@ -504,7 +504,7 @@ x方向に-0.3から0.3まで、y方向に0.3から0.9までの領域を表示�
 青から始まり黄で終わる36色が使われます。
 
 @ifnotinfo
-@image{figures/dynamics10,8cm}
+@image{@value{figuresfolder}/dynamics10,8cm}
 @end ifnotinfo
 
 微分方程式

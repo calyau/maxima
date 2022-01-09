@@ -142,7 +142,7 @@ xmaximaプログラムはそのファイルの位置の名前を引数として�
 @end example
 
 @ifnotinfo
-@image{figures/contour1,8cm}
+@image{@value{figuresfolder}/contour1,8cm}
 @end ifnotinfo
 
 @c ===beg===
@@ -159,7 +159,7 @@ xmaximaプログラムはそのファイルの位置の名前を引数として�
 @end example
 
 @ifnotinfo
-@image{figures/contour2,8cm}
+@image{@value{figuresfolder}/contour2,8cm}
 @end ifnotinfo
 
 @code{plot3d}が受け付ける任意のオプションを足すことができます;
@@ -181,7 +181,7 @@ Gnuplotはデフォルトで3つの高等線を示すように選びます。
 @end example
 
 @ifnotinfo
-@image{figures/contour3,8cm}
+@image{@value{figuresfolder}/contour3,8cm}
 @end ifnotinfo
 
 @opencatbox
@@ -306,7 +306,7 @@ plot3dの@code{transform_xy}オプションに対する値として与えるこ�
 @end example
 
 @ifnotinfo
-@image{figures/plotting2,8cm}
+@image{@value{figuresfolder}/plotting2,8cm}
 @end ifnotinfo
 
 もし関数の増大が速すぎるなら、yオプションを使って、垂直軸の値を制限する必要があるかもしれません:
@@ -322,7 +322,7 @@ plot2d: some values were clipped.
 @end example
 
 @ifnotinfo
-@image{figures/plotting3,8cm}
+@image{@value{figuresfolder}/plotting3,8cm}
 @end ifnotinfo
 
 プロットの外観は使うプロットプログラムに依存して異なるかもしれません。
@@ -340,7 +340,7 @@ plot2d: some values were clipped.
 @end example
 
 @ifnotinfo
-@image{figures/plotting1,8cm}
+@image{@value{figuresfolder}/plotting1,8cm}
 @end ifnotinfo
 
 対数プロットの例:
@@ -353,7 +353,7 @@ plot2d: some values were clipped.
 @end example
 
 @ifnotinfo
-@image{figures/plotting4,8cm}
+@image{@value{figuresfolder}/plotting4,8cm}
 @end ifnotinfo
 
 関数を名前でプロット:
@@ -375,7 +375,7 @@ $g
 @end example
 
 @ifnotinfo
-@image{figures/plotting5,8cm}
+@image{@value{figuresfolder}/plotting5,8cm}
 @end ifnotinfo
 
 パラメトリックに定義されたバタフライカーブのプロット:
@@ -392,7 +392,7 @@ $g
 @end example
 
 @ifnotinfo
-@image{figures/plotting6,8cm}
+@image{@value{figuresfolder}/plotting6,8cm}
 @end ifnotinfo
 
 7点だけでプロットする時の2回転「円」:
@@ -409,7 +409,7 @@ $g
 @end example
 
 @ifnotinfo
-@image{figures/plotting7,8cm}
+@image{@value{figuresfolder}/plotting7,8cm}
 @end ifnotinfo
 
 円のパラメトリック表現と一緒に、よくある関数のプロット。
@@ -433,7 +433,7 @@ plot2d: some values were clipped.
 @end example
 
 @ifnotinfo
-@image{figures/plotting8,8cm}
+@image{@value{figuresfolder}/plotting8,8cm}
 @end ifnotinfo
 
 x座標、y座標を別々に定義した点の離散集合のプロット:
@@ -450,7 +450,7 @@ x座標、y座標を別々に定義した点の離散集合のプロット:
 @end example
 
 @ifnotinfo
-@image{figures/plotting9,8cm}
+@image{@value{figuresfolder}/plotting9,8cm}
 @end ifnotinfo
 
 それぞれの点を別々に定義し、点を繋ぐ線をなくした、前の例で示された同じ点:
@@ -469,7 +469,7 @@ x座標、y座標を別々に定義した点の離散集合のプロット:
 @end example
 
 @ifnotinfo
-@image{figures/plotting10,8cm}
+@image{@value{figuresfolder}/plotting10,8cm}
 @end ifnotinfo
 
 この例では、3つの列を持つテーブルがファイル''data.txt''に保存され、
@@ -493,7 +493,7 @@ x座標、y座標を別々に定義した点の離散集合のプロット:
 @end example
 
 @ifnotinfo
-@image{figures/plotting11,8cm}
+@image{@value{figuresfolder}/plotting11,8cm}
 @end ifnotinfo
 
 実験データ点を、データを予測する理論的関数と一緒にプロット:
@@ -520,7 +520,7 @@ x座標、y座標を別々に定義した点の離散集合のプロット:
 @end example
 
 @ifnotinfo
-@image{figures/plotting12,8cm}
+@image{@value{figuresfolder}/plotting12,8cm}
 @end ifnotinfo
 
 プロットオプションに関する節も参照してください。
@@ -552,7 +552,7 @@ x座標、y座標を別々に定義した点の離散集合のプロット:
 @end example
 
 @ifnotinfo
-@image{figures/plotting13,8cm}
+@image{@value{figuresfolder}/plotting13,8cm}
 @end ifnotinfo
 
 無限大に発散する関数を制限するためのzオプションの使用(この場合、関数はxとy軸上でマイナス無限だい);
@@ -570,7 +570,7 @@ x座標、y座標を別々に定義した点の離散集合のプロット:
 @end example
 
 @ifnotinfo
-@image{figures/plotting14,8cm}
+@image{@value{figuresfolder}/plotting14,8cm}
 @end ifnotinfo
 
 zの無限大は、いかなる漸近線上にも落ちないグリッドを選ぶことによっても避けることができます;
@@ -590,7 +590,7 @@ zの無限大は、いかなる漸近線上にも落ちないグリッドを選�
 @end example
 
 @ifnotinfo
-@image{figures/plotting15,8cm}
+@image{@value{figuresfolder}/plotting15,8cm}
 @end ifnotinfo
 
 同じ領域を共有する同じプロットでの2つの表面;
@@ -606,7 +606,7 @@ gnuplotでは2つの表面は同じパレットを使用します:
 @end example
 
 @ifnotinfo
-@image{figures/plotting16,8cm}
+@image{@value{figuresfolder}/plotting16,8cm}
 @end ifnotinfo
 
 異なる領域を持つ、同じ2つの表面;
@@ -627,7 +627,7 @@ xmaximaでは、それぞれの表面は、オプションパレットで定義�
 @end example
 
 @ifnotinfo
-@image{figures/plotting17,8cm}
+@image{@value{figuresfolder}/plotting17,8cm}
 @end ifnotinfo
 
 パラメトリックに定義されたKleinの壷のプロット:
@@ -650,7 +650,7 @@ xmaximaでは、それぞれの表面は、オプションパレットで定義�
 @end example
 
 @ifnotinfo
-@image{figures/plotting18,8cm}
+@image{@value{figuresfolder}/plotting18,8cm}
 @end ifnotinfo
 
 球座標から直交座標に変換するのにあらかじめ定義された変換@code{spherical_to_xyz}
@@ -671,7 +671,7 @@ xmaximaでは、それぞれの表面は、オプションパレットで定義�
 @end example
 
 @ifnotinfo
-@image{figures/plotting19,8cm}
+@image{@value{figuresfolder}/plotting19,8cm}
 @end ifnotinfo
 
 円筒座標から直交座標に変換するのにあらかじめ定義された変換@code{polar_to_xyz}
@@ -694,7 +694,7 @@ xmaximaでは、それぞれの表面は、オプションパレットで定義�
 @end example
 
 @ifnotinfo
-@image{figures/plotting20,8cm}
+@image{@value{figuresfolder}/plotting20,8cm}
 @end ifnotinfo
 
 球座標から直交座標への変換を使っての球のプロット。
@@ -717,7 +717,7 @@ xmaximaでは、球の対称形を維持するように3つの軸は同じ比で
 @end example
 
 @ifnotinfo
-@image{figures/plotting21,8cm}
+@image{@value{figuresfolder}/plotting21,8cm}
 @end ifnotinfo
 
 行列を使った2変数関数の定義。
@@ -741,7 +741,7 @@ apply: subscript must be an integer; found: round(x)
 @end example
 
 @ifnotinfo
-@image{figures/plotting22,8cm}
+@image{@value{figuresfolder}/plotting22,8cm}
 @end ifnotinfo
 
 elevationを零の等しく設定することで，
@@ -764,7 +764,7 @@ elevationを零の等しく設定することで，
 @end example
 
 @ifnotinfo
-@image{figures/plotting23,8cm}
+@image{@value{figuresfolder}/plotting23,8cm}
 @end ifnotinfo
 
 プロットオプションについての節も参照してください。

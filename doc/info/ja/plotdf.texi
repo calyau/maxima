@@ -228,7 +228,7 @@ Configメニューで設定できます。
 @end example
 
 @ifnotinfo
-@image{figures/plotdf1,8cm}
+@image{@value{figuresfolder}/plotdf1,8cm}
 @end ifnotinfo
 
 @item
@@ -251,7 +251,7 @@ Configメニューで設定できます。
 グラフは関数@math{y = sqrt(x)}も表示します。
 
 @ifnotinfo
-@image{figures/plotdf2,8cm}
+@image{@value{figuresfolder}/plotdf2,8cm}
 @end ifnotinfo
 
 @item
@@ -272,7 +272,7 @@ Configメニューで設定できます。
 @end example
 
 @ifnotinfo
-@image{figures/plotdf3,8cm}
+@image{@value{figuresfolder}/plotdf3,8cm}
 @end ifnotinfo
 
 @item
@@ -292,7 +292,7 @@ Duffing方程式@math{m*x''+c*x'+k*x+b*x^3 = 0}の方向場をプロットする
 @end example
 
 @ifnotinfo
-@image{figures/plotdf4,8cm}
+@image{@value{figuresfolder}/plotdf4,8cm}
 @end ifnotinfo
 
 @item
@@ -318,7 +318,7 @@ Duffing方程式@math{m*x''+c*x'+k*x+b*x^3 = 0}の方向場をプロットする
 @end example
 
 @ifnotinfo
-@image{figures/plotdf5,8cm}@image{figures/plotdf6,8cm}
+@image{@value{figuresfolder}/plotdf5,8cm}@image{@value{figuresfolder}/plotdf6,8cm}
 @end ifnotinfo
 
 @end itemize

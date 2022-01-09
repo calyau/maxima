@@ -318,7 +318,7 @@ Fruchtグラフを返します。
 @end deffn
 
 @ifhtml
-@image{figures/graphs01,6cm}
+@image{@value{figuresfolder}/graphs01,6cm}
 @end ifhtml
 
 @deffn {関数} graph_union (@var{g1}, @var{g1})
@@ -814,7 +814,7 @@ Tutteグラフを返します。
 @end example
 
 @ifhtml
-@image{figures/graphs13,6cm}
+@image{@value{figuresfolder}/graphs13,6cm}
 @end ifhtml
 
 @opencatbox
@@ -849,7 +849,7 @@ Tutteグラフを返します。
 @end deffn
 
 @ifhtml
-@image{figures/graphs02,6cm}
+@image{@value{figuresfolder}/graphs02,6cm}
 @end ifhtml
 
 @deffn {関数} chromatic_index (@var{gr})
@@ -1319,7 +1319,7 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @end deffn
 
 @ifhtml
-@image{figures/graphs03,6cm}
+@image{@value{figuresfolder}/graphs03,6cm}
 @end ifhtml
 
 @deffn {関数} hamilton_path (@var{gr})
@@ -1348,7 +1348,7 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @end deffn
 
 @ifhtml
-@image{figures/graphs04,6cm}
+@image{@value{figuresfolder}/graphs04,6cm}
 @end ifhtml
 
 @deffn {関数} isomorphism (@var{gr1}, @var{gr2})
@@ -1862,7 +1862,7 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @end deffn
 
 @ifhtml
-@image{figures/graphs05,6cm}
+@image{@value{figuresfolder}/graphs05,6cm}
 @end ifhtml
 
 @deffn {関数} max_matching (@var{gr})
@@ -1891,7 +1891,7 @@ maxima @code{eigenvalue}関数と同じフォーマットで固有値を返し�
 @end deffn
 
 @ifhtml
-@image{figures/graphs06,6cm}
+@image{@value{figuresfolder}/graphs06,6cm}
 @end ifhtml
 
 @deffn {関数} min_degree (@var{gr})
@@ -1975,7 +1975,7 @@ Returns the minimum vertex cut in the graph
 @end deffn
 
 @ifhtml
-@image{figures/graphs07,6cm}
+@image{@value{figuresfolder}/graphs07,6cm}
 @end ifhtml
 
 @deffn {関数} neighbors (@var{v}, @var{gr})
@@ -2221,7 +2221,7 @@ Adjacencies:
 @end deffn
 
 @ifhtml
-@image{figures/graphs08,6cm}
+@image{@value{figuresfolder}/graphs08,6cm}
 @end ifhtml
 
 @deffn {関数} shortest_weighted_path (@var{u}, @var{v}, @var{gr})
@@ -2859,7 +2859,7 @@ graphvizを別途インストールしなければいけません。
 @end example
 
 @ifhtml
-@image{figures/graphs09,6cm}
+@image{@value{figuresfolder}/graphs09,6cm}
 @end ifhtml
 
 例 2:
@@ -2904,7 +2904,7 @@ graphvizを別途インストールしなければいけません。
 @end example
 
 @ifhtml
-@image{figures/graphs10,6cm}
+@image{@value{figuresfolder}/graphs10,6cm}
 @end ifhtml
 
 例 3:
@@ -2953,7 +2953,7 @@ graphvizを別途インストールしなければいけません。
 @end example
 
 @ifhtml
-@image{figures/graphs11,6cm}
+@image{@value{figuresfolder}/graphs11,6cm}
 @end ifhtml
 
 例 4:
@@ -3008,7 +3008,7 @@ graphvizを別途インストールしなければいけません。
 @end example
 
 @ifhtml
-@image{figures/graphs12,6cm}
+@image{@value{figuresfolder}/graphs12,6cm}
 @end ifhtml
 
 例 5:
@@ -3027,7 +3027,7 @@ graphvizを別途インストールしなければいけません。
 @end example
 
 @ifhtml
-@image{figures/graphs14,6cm}
+@image{@value{figuresfolder}/graphs14,6cm}
 @end ifhtml
 
 例 6:
@@ -3048,7 +3048,7 @@ graphvizを別途インストールしなければいけません。
 @end example
 
 @ifhtml
-@image{figures/graphs15,6cm}
+@image{@value{figuresfolder}/graphs15,6cm}
 @end ifhtml
 
 @opencatbox

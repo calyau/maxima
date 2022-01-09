@@ -588,7 +588,7 @@ Maximaはプロットする前にそれらを多項式に評価します;
 @end example
 
 @ifnotinfo
-@image{figures/orthopoly1,8cm}
+@image{@value{figuresfolder}/orthopoly1,8cm}
 @end ifnotinfo
 
 式 @code{legendre_p (5, x)}@i{全体}をクォートします;
