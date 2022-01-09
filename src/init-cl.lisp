@@ -238,6 +238,9 @@ When one changes, the other does too."
 			     (setq *maxima-lang-subdir* language))
 			 (if (member codeset '("utf-8" "utf8") :test #'equal)
 			     (setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".utf8"))))
+			;; Japanese.
+			((string= language "ja")
+			 (setq *maxima-lang-subdir* "ja"))
 			;; Russian. Default codepage cp1251
 			((string= language "ru")
 			 (setq *maxima-lang-subdir* language)
