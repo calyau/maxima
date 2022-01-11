@@ -2663,6 +2663,26 @@ limit(log((x^2+1)/x^2)-2*log((x-1)/x), x, 0, minus);
 (remove(n,integer),0);
 0$
 
+/*
+ * Check sech/csch don't overflow for large numbers.  Use relative
+ *  error to test for accuracy.
+ */
+
+closetorel(actual, expected, tol) := block([numer:true, relerr: abs(actual-expected)/expected], if (relerr < tol) then true else relerr);
+closetorel(actual, expected, tol) := block([numer:true, relerr: abs(actual-expected)/expected], if (relerr < tol) then true else relerr);
+
+closeto(sech(715.0), 6.033b-311);
+true;
+closeto(csch(715.0), 6.033b-311);
+true;
+
+/*
+ * Check acsch doesn't overflow for small numbers.  But some lisps like clisp don't support denormals, so we have to be careful.
+ */
+
+if (1e-309 = 0) then closetorel(acsch(1e-300), acsch(bfloat(1e-300)), 0) else closetorel(acsch(1e-309), acsch(bfloat(1b-309)), 7.1559b-17);
+true;
+
 /* SF bug #3825: "apply('forget, facts()) gives Lisp error" */
 
 (kill (all), declare (F, increasing));
@@ -2713,22 +2733,3 @@ facts ();
  featurep (I, irrational)];
 [false, false, false, false];
 
-/*
- * Check sech/csch don't overflow for large numbers.  Use relative
- *  error to test for accuracy.
- */
-
-closetorel(actual, expected, tol) := block([numer:true, relerr: abs(actual-expected)/expected], if (relerr < tol) then true else relerr);
-closetorel(actual, expected, tol) := block([numer:true, relerr: abs(actual-expected)/expected], if (relerr < tol) then true else relerr);
-
-closetorel(sech(715.0), sech(715b0), 1b-13);
-true;
-closetorel(csch(715.0), csch(715b0), 1b-13);
-true;
-
-/*
- * Check acsch doesn't overflow for small numbers
- */
-
-closetorel(acsch(1e-309), acsch(bfloat(1e-309)), 1b-13);
-true;
