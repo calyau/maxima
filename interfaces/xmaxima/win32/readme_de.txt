@@ -33,7 +33,7 @@ wxMaxima:
 
 Die Dateien im wxMaxima-Unterverzeichnis stammen aus der Windows-
 Distribution von wxMaxima erhältlich unter 
-http://wxmaxima.sourceforge.net
+https://wxmaxima-developers.github.io/wxmaxima/
 
 
 Maxima-GUI und Firewall

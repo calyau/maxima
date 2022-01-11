@@ -299,7 +299,7 @@ set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\maxima-command.ico")
 set(CPACK_NSIS_DISPLAY_NAME "Maxima computer algebra system")
 set(CPACK_PACKAGE_EXECUTABLES "..\\\\bin\\\\wxmaxima" "wxMaxima (GUI for Maxima)")
 set(CPACK_NSIS_URL_INFO_ABOUT "https://maxima.sourceforge.io")
-set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "https://maxima.sourceforge.io" "About Maxima" "http://wxmaxima-developers.github.io/wxmaxima/" "About wxMaxima" "${MAXIMA_SINGLEPAGE_HTML}" "Maxima documentation"  "share/doc/licenses.html" "Maxima and included software licenses" "bin/lispselector.bat" "Configure default LISP for Maxima")
+set(CPACK_NSIS_MENU_LINKS "bin/maxima.bat" "Maxima (command line)" "bin/xmaxima.bat" "XMaxima (simple GUI)" "https://maxima.sourceforge.io" "About Maxima" "https://wxmaxima-developers.github.io/wxmaxima/" "About wxMaxima" "${MAXIMA_SINGLEPAGE_HTML}" "Maxima documentation"  "share/doc/licenses.html" "Maxima and included software licenses" "bin/lispselector.bat" "Configure default LISP for Maxima")
 set(CPACK_PACKAGE_FILE_NAME "maxima-${CPACK_PACKAGE_VERSION}-${INSTALLERSUFFIX}")
 set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
 

@@ -30,7 +30,7 @@ http://gnuplot.sourceforge.net
 wxMaxima:
 
 Les fichiers dans le sou répertoire wxMaxima sont la distribution 
-Windows de wxMaxima disponible sur http://wxmaxima.sourceforge.net
+Windows de wxMaxima disponible sur https://wxmaxima-developers.github.io/wxmaxima/
 
 
 Interface graphique utilisateur (GUI) Maxima et pare-feux

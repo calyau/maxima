@@ -31,7 +31,7 @@ la distribución para Windows de gnuplot, http://gnuplot.sourceforge.net
 wxMaxima:
 
 Los ficheros del sudirectorio wxMaxima proceden de la distribución
-para Windows de wxMaxima, alojado en http://wxmaxima.sourceforge.net
+para Windows de wxMaxima, alojado en https://wxmaxima-developers.github.io/wxmaxima/
 
 
 Entornos gráficos de Maxima y cortafuegos
