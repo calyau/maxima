@@ -53,7 +53,8 @@ Maximaは構造体と呼ばれる簡単なデータ集合体を提供します�
 @code{defstruct}で定義されたユーザー定義の構造体のリストです。
 
 @opencatbox
-@category{Structures} @category{Global variables}
+@category{Structures}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -227,6 +228,7 @@ Maximaは構造体と呼ばれる簡単なデータ集合体を提供します�
 @end example
 
 @opencatbox
-@category{Structures} @category{Operators}
+@category{Structures}
+@category{Operators}
 @closecatbox
 @end deffn

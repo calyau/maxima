@@ -43,7 +43,8 @@ Maximaはアルファベットの順序付けを選びます。
 CRE形として、そんな式の行ラベルにはシンボル/T/が続きます。
 
 @opencatbox
-@category{Polynomials} @category{Rational expressions}
+@category{Polynomials}
+@category{Rational expressions}
 @closecatbox
 
 @c end concepts Polynomials
@@ -359,7 +360,8 @@ Kroneckerの因数分解アルゴリズムが使われます。
 @end example
 
 @opencatbox
-@category{Polynomials} @category{Algebraic equations}
+@category{Polynomials}
+@category{Algebraic equations}
 @closecatbox
 @end deffn
 
@@ -706,7 +708,8 @@ GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd
 @end example
 
 @opencatbox
-@category{Simplification functions} @category{Rational expressions}
+@category{Simplification functions}
+@category{Rational expressions}
 @opencatbox
 @end deffn
 
@@ -862,7 +865,8 @@ GCDは最初、関数 @code{gcd}で計算され、その後、関数 @code{ezgcd
 @end example
 
 @opencatbox
-@category{Polynomials} @category{Rational expressions}
+@category{Polynomials}
+@category{Rational expressions}
 @closecatbox
 @end deffn
 
@@ -928,7 +932,8 @@ gcdは、他の変数の有理関数係数を持つ１変数多項式として�
 @end example
 
 @opencatbox
-@category{Polynomials} @category{Rational expressions}
+@category{Polynomials}
+@category{Rational expressions}
 @closecatbox
 @end deffn
 
@@ -1161,7 +1166,8 @@ Maximaは、整数の素因素分解をあきらめ、素因数分解は完了�
 @end example
 
 @opencatbox
-@category{Polynomials} @category{Rational expressions}
+@category{Polynomials}
+@category{Rational expressions}
 @closecatbox
 @end deffn
 
@@ -1353,7 +1359,8 @@ compose (L, x) :=
 @c AND MANY OTHER SIMILAR USEFUL HACKS.
 
 @opencatbox
-@category{Expressions} @category{Polynomials}
+@category{Expressions}
+@category{Polynomials}
 @closecatbox
 @end deffn
 
@@ -1487,7 +1494,8 @@ CRE形式の中のアトム(数と変数）は一般形式でのそれと同じ�
 @c NEED MORE EXAMPLES HERE
 
 @opencatbox
-@category{Polynomials} @category{Rational expressions}
+@category{Polynomials}
+@category{Rational expressions}
 @closecatbox
 @end deffn
 
@@ -1560,7 +1568,8 @@ CREではなく通常の式を返します。
 @end example
 
 @opencatbox
-@category{Simplification flags and variables} @category{Rational expressions}
+@category{Simplification flags and variables}
+@category{Rational expressions}
 @closecatbox
 @end defvr
 
@@ -1768,7 +1777,8 @@ CREは、@code{rat}と関連関数によって生成されます。
 拡張CREは、@code{taylor}と関連関数によって生成されます。
 
 @opencatbox
-@category{Predicate functions} @category{Rational expressions}
+@category{Predicate functions}
+@category{Rational expressions}
 @closecatbox
 @end deffn
 
@@ -1780,7 +1790,9 @@ CREは、@code{rat}と関連関数によって生成されます。
 ユーザーに浮動小数点を有理数に変換したことを通知するメッセージが表示されます。
 
 @opencatbox
-@category{Rational expressions} @category{Numerical evaluation} @category{Console interaction}
+@category{Rational expressions}
+@category{Numerical evaluation}
+@category{Console interaction}
 @closecatbox
 @end defvr
 
@@ -1845,7 +1857,8 @@ CREは、@code{rat}と関連関数によって生成されます。
 @end example
 
 @opencatbox
-@category{Simplification functions} @category{Rational expressions}
+@category{Simplification functions}
+@category{Rational expressions}
 @closecatbox
 @end deffn
 
@@ -1858,7 +1871,8 @@ CREは、@code{rat}と関連関数によって生成されます。
 
 @c NEED AN EXAMPLE HERE -- RECYCLE THE ratsimpexpons EXAMPLE FROM ratsimp ABOVE
 @opencatbox
-@category{Simplification flags and variables} @category{Rational expressions}
+@category{Simplification flags and variables}
+@category{Rational expressions}
 @closecatbox
 @end defvr
 
@@ -2035,7 +2049,8 @@ MaximaはLisp変数@code{VARLIST}の中に有理式の主変数の内部リス�
 @end example
 
 @opencatbox
-@category{Rational expressions} @category{Global flags}
+@category{Rational expressions}
+@category{Global flags}
 @closecatbox
 @end defvr
 
@@ -2178,7 +2193,8 @@ MaximaはLisp変数@code{VARLIST}の中に有理式の主変数の内部リス�
 @code{ratvars}も参照してください。
 
 @opencatbox
-@category{Rational expressions} @category{Display functions}
+@category{Rational expressions}
+@category{Display functions}
 @closecatbox
 
 @end deffn
@@ -2285,7 +2301,8 @@ Maximaは、特定の順序付けを選びますが、
 @end example
 
 @opencatbox
-@category{Polynomials} @category{Rational expressions}
+@category{Polynomials}
+@category{Rational expressions}
 @closecatbox
 @end deffn
 
@@ -2313,6 +2330,7 @@ CRE形の部分式を持つ等式やリストや行列などの式をratdisrep�
 
 @c NEED EXAMPLES HERE
 @opencatbox
-@category{Polynomials} @category{Rational expressions}
+@category{Polynomials}
+@category{Rational expressions}
 @closecatbox
 @end deffn

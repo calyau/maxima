@@ -116,7 +116,9 @@ y;
 @end example
 
 @opencatbox
-@category{Tensors} @category{Share packages} @category{Package ctensor}
+@category{Tensors}
+@category{Share packages}
+@category{Package ctensor}
 @closecatbox
 
 @c end concepts ctensor
@@ -1199,7 +1201,8 @@ Rosenの二計量(bimetric)理論の場の方程式を生成します。
 @code{true}を返します。
 
 @opencatbox
-@category{Package ctensor} @category{Predicate functions}
+@category{Package ctensor}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -1210,7 +1213,8 @@ Rosenの二計量(bimetric)理論の場の方程式を生成します。
 @code{true}を返します。
 
 @opencatbox
-@category{Package ctensor} @category{Predicate functions}
+@category{Package ctensor}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -1508,7 +1512,8 @@ riem     = [        0         - -------------         0         0 ]
 動標構を含む計算だけに影響します。
 
 @opencatbox
-@category{Package ctensor} @category{Simplification flags and variables}
+@category{Package ctensor}
+@category{Simplification flags and variables}
 @closecatbox
 
 @end defvr

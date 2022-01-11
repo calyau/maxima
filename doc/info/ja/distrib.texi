@@ -256,7 +256,9 @@ Discrete distributions:
 ご意見、バグ、提案は著者 @var{'mario AT edu DOT xunta DOT es'}に連絡ください。
 
 @opencatbox
-@category{Statistical functions} @category{Share packages} @category{Package distrib}
+@category{Statistical functions}
+@category{Share packages}
+@category{Package distrib}
 @closecatbox
 
 
@@ -398,7 +400,8 @@ Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programmin
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -550,7 +553,8 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -737,7 +741,8 @@ $$U={{X}\over{\sqrt{{S^2}\over{n}}}}$$
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -1003,7 +1008,8 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -1127,7 +1133,8 @@ Maximaが結果を得るのに充分な情報を持たない時には、
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -1291,7 +1298,8 @@ $$F={{n X}\over{m Y}}$$
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -1577,7 +1585,8 @@ Weibull尖度係数に基づいた名詞形を返します。
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -1726,7 +1735,8 @@ Weibull尖度係数に基づいた名詞形を返します。
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -1860,7 +1870,8 @@ Weibull尖度係数に基づいた名詞形を返します。
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -1993,7 +2004,8 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -2116,7 +2128,8 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -2228,7 +2241,8 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -2347,7 +2361,8 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -2463,7 +2478,8 @@ Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Para
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -2756,7 +2772,8 @@ Weibull尖度係数に基づいた名詞形を返します。
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -2867,7 +2884,8 @@ Weibull尖度係数に基づいた名詞形を返します。
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -2921,7 +2939,8 @@ Weibull尖度係数に基づいた名詞形を返します。
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -3039,7 +3058,8 @@ Weibull尖度係数に基づいた名詞形を返します。
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Package distrib}
+@category{Package distrib}
+@category{Package distrib}
 @closecatbox
 
 @end deffn
@@ -3056,7 +3076,8 @@ Weibull尖度係数に基づいた名詞形を返します。
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -3244,7 +3265,8 @@ Weibull尖度係数に基づいた名詞形を返します。
 @end example
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -3378,7 +3400,8 @@ Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Ge
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -3499,7 +3522,8 @@ Ahrens, J.H. and Dieter, U. (1982) @var{Computer Generation of Poisson Deviates 
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -3715,7 +3739,8 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -3838,7 +3863,8 @@ Maximaが結果を得るのに十分な情報を持たない時は、
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -3954,7 +3980,8 @@ Returns the mean of a @math{Discrete Uniform(n)} random variable, with @math{n} 
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -4080,7 +4107,8 @@ Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hyperg
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn
@@ -4217,7 +4245,8 @@ Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag,
 この関数を利用するには、初めに @code{load(distrib)}を書いてください。
 
 @opencatbox
-@category{Package distrib} @category{Random numbers}
+@category{Package distrib}
+@category{Random numbers}
 @closecatbox
 
 @end deffn

@@ -1,62 +1,62 @@
 @c English version: 2012-08-06
 @menu
-* IntroducciÛn a stats::
+* Introducci√≥n a stats::
 * Funciones y variables para inference_result::
 * Funciones y variables para stats::
 * Funciones y variables para distribuciones especiales::
 @end menu
 
-@node IntroducciÛn a stats, Funciones y variables para inference_result, Top, Top
-@section IntroducciÛn a stats
+@node Introducci√≥n a stats, Funciones y variables para inference_result, Top, Top
+@section Introducci√≥n a stats
 
 
-El paquete @code{stats} contiene procedimientos cl·sicos sobre inferencia
-estadÌstica y contraste de hipÛtesis.
+El paquete @code{stats} contiene procedimientos cl√°sicos sobre inferencia
+estad√≠stica y contraste de hip√≥tesis.
 
 Todas estas funciones devuelven un objeto Maxima de tipo @code{inference_result},
 el cual contiene los resultados necesarios para hacer inferencias sobre la 
-poblaciÛn y toma de decisiones.
+poblaci√≥n y toma de decisiones.
 
 La variable global @code{stats_numer} controla si los resultados deben darse
-en formato decimal o simbÛlico y racional; su valor por defecto es @code{true},
+en formato decimal o simb√≥lico y racional; su valor por defecto es @code{true},
 por lo que el formato de salida es decimal.
 
 El paquete @code{descriptive} contiene algunas utilidades para manipular 
 estructuras de datos (listas y matrices); por ejemplo para extraer submuestras.
-TambiÈn contiene algunos ejemplos sobre cÛmo utilizar el paquete
-@code{numericalio} para leer datos de ficheros en texto plano. VÈanse
-@code{descriptive} y @code{numericalio} para m·s detalles.
+Tambi√©n contiene algunos ejemplos sobre c√≥mo utilizar el paquete
+@code{numericalio} para leer datos de ficheros en texto plano. V√©anse
+@code{descriptive} y @code{numericalio} para m√°s detalles.
 
 El paquete @code{stats} carga en memoria los paquetes @code{descriptive},
 @code{distrib} y @code{inference_result}.
 
-Para comentarios, errores o sugerencias, cont·ctese con el autor en
+Para comentarios, errores o sugerencias, cont√°ctese con el autor en
 
 @var{'mario ARROBA edu PUNTO xunta PUNTO es'}.
 
 
-@node Funciones y variables para inference_result, Funciones y variables para stats, IntroducciÛn a stats, Top
+@node Funciones y variables para inference_result, Funciones y variables para stats, Introducci√≥n a stats, Top
 @section Funciones y variables para inference_result
 
 
-@deffn {FunciÛn} inference_result (@var{title}, @var{values}, @var{numbers})
+@deffn {Funci√≥n} inference_result (@var{title}, @var{values}, @var{numbers})
 
 Construye un objeto @code{inference_result} del tipo devuelto por las funciones
-estadÌsticas. El argumento @var{title} es una cadena con
+estad√≠sticas. El argumento @var{title} es una cadena con
 el nombre del procedimiento; @var{values} es una lista con elementos de la
 forma @code{symbol = value} y @var{numbers} es una lista con enteros positivos
-desde uno hasta @code{length(@var{values})}, que indican quÈ valores ser·n
+desde uno hasta @code{length(@var{values})}, que indican qu√© valores ser√°n
 mostrados por defecto.
 
 Ejemplo:
 
-Este es un ejemplo que muestra los resultados asociados a un rect·ngulo. El
-tÌtulo de este objeto es la cadena @code{"Rectangle"}, el cual
+Este es un ejemplo que muestra los resultados asociados a un rect√°ngulo. El
+t√≠tulo de este objeto es la cadena @code{"Rectangle"}, el cual
 almacena cinco resultados, a saber, @code{'base}, @code{'height}, 
-@code{'diagonal}, @code{'area} y @code{'perimeter}, pero sÛlo muestra
-el primero, segundo, quinto y cuarto. El resultado @code{'diagonal} tambiÈn
+@code{'diagonal}, @code{'area} y @code{'perimeter}, pero s√≥lo muestra
+el primero, segundo, quinto y cuarto. El resultado @code{'diagonal} tambi√©n
 se almacena en este objeto, pero no se muestra por defecto; para tener acceso
-a este valor, h·gase uso de la funciÛn @code{take_inference}.
+a este valor, h√°gase uso de la funci√≥n @code{take_inference}.
 
 @c ===beg===
 @c load (inference_result)$
@@ -93,7 +93,7 @@ a este valor, h·gase uso de la funciÛn @code{take_inference}.
 (%o4)                        sqrt(13)
 @end example
 
-VÈase tambiÈn @code{take_inference}.
+V√©ase tambi√©n @code{take_inference}.
 @end deffn
 
 
@@ -101,7 +101,7 @@ VÈase tambiÈn @code{take_inference}.
 
 
 
-@deffn {FunciÛn} inferencep (@var{obj})
+@deffn {Funci√≥n} inferencep (@var{obj})
 
 Devuelve @code{true} o @code{false}, dependiendo de que @var{obj} sea un
 objeto de tipo @code{inference_result} o no.
@@ -113,7 +113,7 @@ objeto de tipo @code{inference_result} o no.
 
 
 
-@deffn {FunciÛn} items_inference (@var{obj})
+@deffn {Funci√≥n} items_inference (@var{obj})
 
 Devuelve una lista con los nombres de los elementos almacenados en
 @var{obj}, el cual debe ser un objeto de tipo @code{inference_result}.
@@ -121,7 +121,7 @@ Devuelve una lista con los nombres de los elementos almacenados en
 Ejemplo:
 
 El objeto @code{inference_result} almacena dos valores, cuyos nombres son @code{'pi} y @code{'e},
-pero sÛlo se muestra el segundo. La funciÛn @code{items_inference} devuelve los nombres de 
+pero s√≥lo se muestra el segundo. La funci√≥n @code{items_inference} devuelve los nombres de 
 todos los elementos almacenados, independientemente de que sean mostrados o no.
 
 @c ===beg===
@@ -146,21 +146,21 @@ todos los elementos almacenados, independientemente de que sean mostrados o no.
 
 
 
-@deffn {FunciÛn} take_inference (@var{n}, @var{obj})
-@deffnx {FunciÛn} take_inference (@var{name}, @var{obj})
-@deffnx {FunciÛn} take_inference (@var{list}, @var{obj})
+@deffn {Funci√≥n} take_inference (@var{n}, @var{obj})
+@deffnx {Funci√≥n} take_inference (@var{name}, @var{obj})
+@deffnx {Funci√≥n} take_inference (@var{list}, @var{obj})
 
-Si @var{n} es un entero positivo, devuelve el @var{n}-Èsimo
-valor almacenado en @var{obj}; si el sÌmbolo @var{name}
-es el nombre de uno de los elementos almacenados, tambiÈn
-devuelve su valor. Si el primer elemento es una lista de n˙meros y/o 
-sÌmbolos, la funciÛn @code{take_inference}
+Si @var{n} es un entero positivo, devuelve el @var{n}-√©simo
+valor almacenado en @var{obj}; si el s√≠mbolo @var{name}
+es el nombre de uno de los elementos almacenados, tambi√©n
+devuelve su valor. Si el primer elemento es una lista de n√∫meros y/o 
+s√≠mbolos, la funci√≥n @code{take_inference}
 devuelve una lista con los resultados correspondientes.
 
 Ejemplo:
 
-Dado un objeto @code{inference_result}, la funciÛn @code{take_inference}
-es invocada para extraer cierta informaciÛn almacenada en Èl.
+Dado un objeto @code{inference_result}, la funci√≥n @code{take_inference}
+es invocada para extraer cierta informaci√≥n almacenada en √©l.
 
 @c ===beg===
 @c load (inference_result)$
@@ -206,7 +206,7 @@ es invocada para extraer cierta informaciÛn almacenada en Èl.
 (%o7)                [3, 2, sqrt(13), 6, 10]
 @end example
 
-VÈanse tambiÈn @code{inference_result} y @code{take_inference}.
+V√©anse tambi√©n @code{inference_result} y @code{take_inference}.
 @end deffn
 
 
@@ -223,19 +223,19 @@ VÈanse tambiÈn @code{inference_result} y @code{take_inference}.
 Valor por defecto: @code{true}
 
 Cuando @code{stats_numer} vale @code{true}, las funciones de inferencia
-estadÌstica devuelven sus resultados en formato decimal de
+estad√≠stica devuelven sus resultados en formato decimal de
 coma flotante. Cuando vale @code{false}, los resultados se devuelven en
-formato simbÛlico y racional.
+formato simb√≥lico y racional.
 @end defvr
 
 
-@deffn {FunciÛn} test_mean (@var{x})
-@deffnx {FunciÛn} test_mean (@var{x}, @var{options} ...)
+@deffn {Funci√≥n} test_mean (@var{x})
+@deffnx {Funci√≥n} test_mean (@var{x}, @var{options} ...)
 
 Es el test @var{t} de la media. El argumento @var{x} es una lista o matriz
-columna con los datos de una muestra unidimensional. TambiÈn realiza el
-test asintÛtico basado en el @i{Teorema Central del lÌmite}
-si se le asigna a la opciÛn @code{'asymptotic} el valor @code{true}.
+columna con los datos de una muestra unidimensional. Tambi√©n realiza el
+test asint√≥tico basado en el @i{Teorema Central del l√≠mite}
+si se le asigna a la opci√≥n @code{'asymptotic} el valor @code{true}.
 
 Opciones:
 
@@ -245,26 +245,26 @@ Opciones:
 @code{'mean}, valor por defecto @code{0}, es el valor de la media a contrastar.
 
 @item
-@code{'alternative}, valor por defecto @code{'twosided}, es la hipÛtesis alternativa;
-valores v·lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip√≥tesis alternativa;
+valores v√°lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @item
-@code{'dev}, valor por defecto @code{'unknown}, este es el valor de la desviaciÛn
-tÌpica cuando se conoce; valores v·lidos son: @code{'unknown} o una
-expresiÛn con valor positivo.
+@code{'dev}, valor por defecto @code{'unknown}, este es el valor de la desviaci√≥n
+t√≠pica cuando se conoce; valores v√°lidos son: @code{'unknown} o una
+expresi√≥n con valor positivo.
 
 @item
 @code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo de confianza;
-debe ser una expresiÛn que tome un valor en el intervalo (0,1).
+debe ser una expresi√≥n que tome un valor en el intervalo (0,1).
 
 @item
 @code{'asymptotic}, valor por defecto @code{false}, indica si debe realizar el test
-exacto basado en la @var{t} de Student, o el asintÛtico basado en el
-@i{Teorema Central del lÌmite}; valores v·lidos son @code{true} y @code{false}.
+exacto basado en la @var{t} de Student, o el asint√≥tico basado en el
+@i{Teorema Central del l√≠mite}; valores v√°lidos son @code{true} y @code{false}.
 
 @end itemize
 
-El resultado devuelto por la funciÛn  @code{test_mean} es un objeto
+El resultado devuelto por la funci√≥n  @code{test_mean} es un objeto
 @code{inference_result} con los siguientes apartados:
 
 @enumerate
@@ -282,13 +282,13 @@ El resultado devuelto por la funciÛn  @code{test_mean} es un objeto
 @code{'method}: procedimiento de inferencia.
 
 @item
-@code{'hypotheses}: hipÛtesis nula y alternativa a ser contrastada.
+@code{'hypotheses}: hip√≥tesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estadÌstico de contraste utilizado para probar la hipÛtesis.
+@code{'statistic}: valor del estad√≠stico de contraste utilizado para probar la hip√≥tesis.
 
 @item
-@code{'distribution}: distribuciÛn del estadÌstico de contraste, junto con su(s) par·metro(s).
+@code{'distribution}: distribuci√≥n del estad√≠stico de contraste, junto con su(s) par√°metro(s).
 
 @item
 @code{'p_value}: @math{p}-valor del test.
@@ -298,8 +298,8 @@ El resultado devuelto por la funciÛn  @code{test_mean} es un objeto
 Ejemplos:
 
 Realiza el contraste exacto @var{t} con varianza desconocida. La
-hipÛtesis nula es @math{H_0: mean=50}, frente a la alternativa
-unil·tera @math{H_1: mean<50}; de acuerdo con los resultados,
+hip√≥tesis nula es @math{H_0: mean=50}, frente a la alternativa
+unil√°tera @math{H_1: mean<50}; de acuerdo con los resultados,
 no hay evidencia para rechazar @math{H_0}, pues el @math{p}-valor
 es muy grande.
 
@@ -331,12 +331,12 @@ es muy grande.
           |        p_value = .7845100411786889
 @end example
 
-En esta ocasiÛn Maxima realiza un test asintÛtico. La hipÛtesis
-nula es @math{H_0: equal(mean, 50)} frente a la alternativa bil·tera @math{H_1: not equal(mean, 50)};
+En esta ocasi√≥n Maxima realiza un test asint√≥tico. La hip√≥tesis
+nula es @math{H_0: equal(mean, 50)} frente a la alternativa bil√°tera @math{H_1: not equal(mean, 50)};
 de acuerdo con los resultados, @math{H_0} debe rechazarse en favor de
-la alternativa @math{H_1}, pues el @math{p}-valor es muy pequeÒo. 
-NÛtese que, tal como indica la componente @code{Method}, este
-procedimiento sÛlo puede aplicarse en muestras grandes.
+la alternativa @math{H_1}, pues el @math{p}-valor es muy peque√±o. 
+N√≥tese que, tal como indica la componente @code{Method}, este
+procedimiento s√≥lo puede aplicarse en muestras grandes.
 
 @c ===beg===
 @c load (stats)$
@@ -378,18 +378,18 @@ procedimiento sÛlo puede aplicarse en muestras grandes.
 
 
 
-@deffn {FunciÛn} test_means_difference (@var{x1}, @var{x2})
-@deffnx {FunciÛn} test_means_difference (@var{x1}, @var{x2}, @var{options} ...)
+@deffn {Funci√≥n} test_means_difference (@var{x1}, @var{x2})
+@deffnx {Funci√≥n} test_means_difference (@var{x1}, @var{x2}, @var{options} ...)
 
 Este es el test @var{t} para la diferencia de medias con muestras.
 Los argumentos @var{x1} y @var{x2} son listas o matrices columna
 que contienen dos muestras independientes. En caso de varianzas
-diferentes y desconocidas (vÈanse las opciones @code{'dev1},
-@code{'dev2} y @code{'varequal} m·s abajo) los grados de libertad
-se calculan mediante la aproximaciÛn de Welch.
-TambiÈn realiza el test asintÛtico basado en el
-@i{Teorema Central del lÌmite} si se le asigna a 
-la opciÛn @code{'asymptotic} el valor @code{true}.
+diferentes y desconocidas (v√©anse las opciones @code{'dev1},
+@code{'dev2} y @code{'varequal} m√°s abajo) los grados de libertad
+se calculan mediante la aproximaci√≥n de Welch.
+Tambi√©n realiza el test asint√≥tico basado en el
+@i{Teorema Central del l√≠mite} si se le asigna a 
+la opci√≥n @code{'asymptotic} el valor @code{true}.
 
 Opciones:
 
@@ -398,34 +398,34 @@ Opciones:
 @item
 
 @item
-@code{'alternative}, valor por defecto @code{'twosided}, es la hipÛtesis alternativa;
-valores v·lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip√≥tesis alternativa;
+valores v√°lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @item
-@code{'dev1}, valor por defecto @code{'unknown}, es el valor de la desviaciÛn 
-tÌpica de la muestra @var{x1} cuando se conoce; valores v·lidos 
-son: @code{'unknown} o una expresiÛn positiva.
+@code{'dev1}, valor por defecto @code{'unknown}, es el valor de la desviaci√≥n 
+t√≠pica de la muestra @var{x1} cuando se conoce; valores v√°lidos 
+son: @code{'unknown} o una expresi√≥n positiva.
 
 @item
-@code{'dev2}, valor por defecto @code{'unknown}, es el valor de la desviaciÛn 
-tÌpica de la muestra @var{x2} cuando se conoce; valores v·lidos 
-son: @code{'unknown} o una expresiÛn positiva.
+@code{'dev2}, valor por defecto @code{'unknown}, es el valor de la desviaci√≥n 
+t√≠pica de la muestra @var{x2} cuando se conoce; valores v√°lidos 
+son: @code{'unknown} o una expresi√≥n positiva.
 
 @item
-@code{'varequal}, valor por defecto @code{false}, indica si las varianzas deben considerarse iguales o no; esta opciÛn sÛlo toma efecto cuando @code{'dev1} y/o @code{'dev2} tienen el valor @code{'unknown}.
+@code{'varequal}, valor por defecto @code{false}, indica si las varianzas deben considerarse iguales o no; esta opci√≥n s√≥lo toma efecto cuando @code{'dev1} y/o @code{'dev2} tienen el valor @code{'unknown}.
 
 @item
 @code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el
-intervalo de confianza; debe ser una expresiÛn que tome un valor en el intervalo (0,1).
+intervalo de confianza; debe ser una expresi√≥n que tome un valor en el intervalo (0,1).
 
 @item
 @code{'asymptotic}, valor por defecto @code{false}, indica si debe realizar el test
-exacto basado en la @var{t} de Student, o el asintÛtico basado en el
-@i{Teorema Central del lÌmite}; valores v·lidos son @code{true} y @code{false}.
+exacto basado en la @var{t} de Student, o el asint√≥tico basado en el
+@i{Teorema Central del l√≠mite}; valores v√°lidos son @code{true} y @code{false}.
 
 @end itemize
 
-El resultado devuelto por la funciÛn  @code{test_means_difference} es un objeto
+El resultado devuelto por la funci√≥n  @code{test_means_difference} es un objeto
 @code{inference_result} con los siguientes apartados:
 
 @enumerate
@@ -443,13 +443,13 @@ El resultado devuelto por la funciÛn  @code{test_means_difference} es un objeto
 @code{'method}: procedimiento de inferencia.
 
 @item
-@code{'hypotheses}: hipÛtesis nula y alternativa a ser contrastada.
+@code{'hypotheses}: hip√≥tesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estadÌstico de contraste utilizado para probar la hipÛtesis.
+@code{'statistic}: valor del estad√≠stico de contraste utilizado para probar la hip√≥tesis.
 
 @item
-@code{'distribution}: distribuciÛn del estadÌstico de contraste, junto con su(s) par·metro(s).
+@code{'distribution}: distribuci√≥n del estad√≠stico de contraste, junto con su(s) par√°metro(s).
 
 @item
 @code{'p_value}: @math{p}-valor del test.
@@ -458,7 +458,7 @@ El resultado devuelto por la funciÛn  @code{test_means_difference} es un objeto
 
 Ejemplos:
 
-La igualdad de medias se contrasta con dos pequeÒas muestras
+La igualdad de medias se contrasta con dos peque√±as muestras
 @var{x} y @var{y}, contra la alternativa @math{H_1: m_1>m_2},
 siendo @math{m_1} y @math{m_2} las medias poblacionales; las
 varianzas son desconocidas y se supone que diferentes.
@@ -548,34 +548,34 @@ iguales.
 
 
 
-@deffn {FunciÛn} test_variance (@var{x})
-@deffnx {FunciÛn} test_variance (@var{x}, @var{options} ...)
+@deffn {Funci√≥n} test_variance (@var{x})
+@deffnx {Funci√≥n} test_variance (@var{x}, @var{options} ...)
 
 Este es el test @var{chi^2} de la varianza. El argumento @var{x}
 es una lista o matriz columna con los datos de una muestra unidimensional
-extraÌda de una poblaciÛn normal.
+extra√≠da de una poblaci√≥n normal.
 
 Opciones:
 
 @itemize @bullet
 
 @item
-@code{'mean}, valor por defecto @code{'unknown}, es la media de la poblaciÛn, si se conoce.
+@code{'mean}, valor por defecto @code{'unknown}, es la media de la poblaci√≥n, si se conoce.
 
 @item
-@code{'alternative}, valor por defecto @code{'twosided}, es la hipÛtesis alternativa;
-valores v·lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip√≥tesis alternativa;
+valores v√°lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @item
 @code{'variance}, valor por defecto @code{1}, este es el valor (positivo) de la varianza a contrastar.
 
 @item
 @code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo de confianza;
-debe ser una expresiÛn que tome un valor en el intervalo (0,1).
+debe ser una expresi√≥n que tome un valor en el intervalo (0,1).
 
 @end itemize
 
-El resultado devuelto por la funciÛn  @code{test_variance} es un objeto
+El resultado devuelto por la funci√≥n  @code{test_variance} es un objeto
 @code{inference_result} con los siguientes apartados:
 
 @enumerate
@@ -593,13 +593,13 @@ El resultado devuelto por la funciÛn  @code{test_variance} es un objeto
 @code{'method}: procedimiento de inferencia.
 
 @item
-@code{'hypotheses}: hipÛtesis nula y alternativa a ser contrastada.
+@code{'hypotheses}: hip√≥tesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estadÌstico de contraste utilizado para probar la hipÛtesis.
+@code{'statistic}: valor del estad√≠stico de contraste utilizado para probar la hip√≥tesis.
 
 @item
-@code{'distribution}: distribuciÛn del estadÌstico de contraste, junto con su par·metro.
+@code{'distribution}: distribuci√≥n del estad√≠stico de contraste, junto con su par√°metro.
 
 @item
 @code{'p_value}: @math{p}-valor del test.
@@ -608,7 +608,7 @@ El resultado devuelto por la funciÛn  @code{test_variance} es un objeto
 
 Ejemplos:
 
-Se contrasta si la varianza de una poblaciÛn de media desconocida
+Se contrasta si la varianza de una poblaci√≥n de media desconocida
 es igual o mayor que 200.
 
 @c ===beg===
@@ -647,8 +647,8 @@ es igual o mayor que 200.
 
 
 
-@deffn {FunciÛn} test_variance_ratio (@var{x1}, @var{x2})
-@deffnx {FunciÛn} test_variance_ratio (@var{x1}, @var{x2}, @var{options} ...)
+@deffn {Funci√≥n} test_variance_ratio (@var{x1}, @var{x2})
+@deffnx {Funci√≥n} test_variance_ratio (@var{x1}, @var{x2}, @var{options} ...)
 
 Este es el test @var{F} del cociente de las varianzas para dos
 poblaciones normales. Los argumentos @var{x1} y @var{x2} son listas
@@ -660,24 +660,24 @@ Opciones:
 @itemize @bullet
 
 @item
-@code{'alternative}, valor por defecto @code{'twosided}, es la hipÛtesis alternativa;
-valores v·lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip√≥tesis alternativa;
+valores v√°lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @item
-@code{'mean1}, valor por defecto @code{'unknown}, es la media de la poblaciÛn de la
+@code{'mean1}, valor por defecto @code{'unknown}, es la media de la poblaci√≥n de la
 que procede @var{x1} cuando se conoce.
 
 @item
-@code{'mean2}, valor por defecto @code{'unknown}, es la media de la poblaciÛn de la
+@code{'mean2}, valor por defecto @code{'unknown}, es la media de la poblaci√≥n de la
 que procede @var{x2} cuando se conoce.
 
 @item
 @code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo
-de confianza del cociente; debe ser una expresiÛn que tome un valor en el intervalo (0,1).
+de confianza del cociente; debe ser una expresi√≥n que tome un valor en el intervalo (0,1).
 
 @end itemize
 
-El resultado devuelto por la funciÛn  @code{test_variance_ratio} es un objeto
+El resultado devuelto por la funci√≥n  @code{test_variance_ratio} es un objeto
 @code{inference_result} con los siguientes resultados
 
 @enumerate
@@ -695,13 +695,13 @@ El resultado devuelto por la funciÛn  @code{test_variance_ratio} es un objeto
 @code{'method}: procedimiento de inferencia.
 
 @item
-@code{'hypotheses}: hipÛtesis nula y alternativa a ser contrastada.
+@code{'hypotheses}: hip√≥tesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estadÌstico de contraste utilizado para probar la hipÛtesis.
+@code{'statistic}: valor del estad√≠stico de contraste utilizado para probar la hip√≥tesis.
 
 @item
-@code{'distribution}: distribuciÛn del estadÌstico de contraste, junto con sus par·metros.
+@code{'distribution}: distribuci√≥n del estad√≠stico de contraste, junto con sus par√°metros.
 
 @item
 @code{'p_value}: @math{p}-valor del test.
@@ -755,11 +755,11 @@ a la alternativa de que la primera es mayor que la segunda.
 
 
 
-@deffn {FunciÛn} test_proportion (@var{x}, @var{n})
-@deffnx {FunciÛn} test_proportion (@var{x}, @var{n}, @var{options} ...)
+@deffn {Funci√≥n} test_proportion (@var{x}, @var{n})
+@deffnx {Funci√≥n} test_proportion (@var{x}, @var{n}, @var{options} ...)
 
-Inferencias sobre una proporciÛn. El argumento @var{x} es el
-n˙mero de Èxitos observados en @var{n} pruebas de Bernoulli
+Inferencias sobre una proporci√≥n. El argumento @var{x} es el
+n√∫mero de √©xitos observados en @var{n} pruebas de Bernoulli
 con probabilidad desconocida.
 
 Opciones:
@@ -771,50 +771,50 @@ Opciones:
 probabilidad a contrastar.
 
 @item
-@code{'alternative}, valor por defecto @code{'twosided}, es la hipÛtesis alternativa;
-valores v·lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip√≥tesis alternativa;
+valores v√°lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @item
 @code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo
-de confianza; debe ser una expresiÛn que tome un valor en el intervalo (0,1).
+de confianza; debe ser una expresi√≥n que tome un valor en el intervalo (0,1).
 
 @item
 @code{'asymptotic}, valor por defecto @code{false}, indica si debe realizar el test
-exacto basado en la binomial, o el asintÛtico basado en el
-@i{Teorema Central del lÌmite}; valores v·lidos son @code{true} y @code{false}.
+exacto basado en la binomial, o el asint√≥tico basado en el
+@i{Teorema Central del l√≠mite}; valores v√°lidos son @code{true} y @code{false}.
 
 @item
 @code{'correct}, valor por defecto @code{true}, indica si se aplica o no la
-correcciÛn de Yates.
+correcci√≥n de Yates.
 
 @end itemize
 
-El resultado devuelto por la funciÛn @code{test_proportion} es un objeto
+El resultado devuelto por la funci√≥n @code{test_proportion} es un objeto
 @code{inference_result} con los siguientes apartados:
 
 @enumerate
 
 @item
-@code{'sample_proportion}: proporciÛn muestral.
+@code{'sample_proportion}: proporci√≥n muestral.
 
 @item
 @code{'conf_level}: nivel de confianza seleccionado.
 
 @item
-@code{'conf_interval}: intervalo de confianza de Wilson para la proporciÛn.
+@code{'conf_interval}: intervalo de confianza de Wilson para la proporci√≥n.
 
 @item
 @code{'method}: procedimiento de inferencia.
 
 @item
-@code{'hypotheses}: hipÛtesis nula y alternativa a ser contrastada.
+@code{'hypotheses}: hip√≥tesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estadÌstico de contraste utilizado
-para probar la hipÛtesis.
+@code{'statistic}: valor del estad√≠stico de contraste utilizado
+para probar la hip√≥tesis.
 
 @item
-@code{'distribution}: distribuciÛn del estadÌstico de contraste, junto con sus par·metros.
+@code{'distribution}: distribuci√≥n del estad√≠stico de contraste, junto con sus par√°metros.
 
 @item
 @code{'p_value}: @math{p}-valor del test.
@@ -823,8 +823,8 @@ para probar la hipÛtesis.
 
 Ejemplos:
 
-Realiza un contraste exacto. La hipÛtesis nula es @math{H_0: p=1/2} 
-y la alternativa unil·tera es @math{H_1: p<1/2}.
+Realiza un contraste exacto. La hip√≥tesis nula es @math{H_0: p=1/2} 
+y la alternativa unil√°tera es @math{H_1: p<1/2}.
 
 @c ===beg===
 @c load (stats)$
@@ -852,7 +852,7 @@ y la alternativa unil·tera es @math{H_1: p<1/2}.
          |      p_value = .1184509388901454 
 @end example
 
-Un contraste asintÛtico bil·tero. El nivel de confianza es 99/100.
+Un contraste asint√≥tico bil√°tero. El nivel de confianza es 99/100.
 
 @c ===beg===
 @c load (stats)$
@@ -892,35 +892,35 @@ Un contraste asintÛtico bil·tero. El nivel de confianza es 99/100.
 
 
 
-@deffn {FunciÛn} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2})
-@deffnx {FunciÛn} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2}, @var{options} ...)
+@deffn {Funci√≥n} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2})
+@deffnx {Funci√≥n} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2}, @var{options} ...)
 
 Inferencias sobre la diferencia de dos proporciones. El argumento @var{x1} 
-es el n˙mero de Èxitos en @var{n1} experimentos de Bernoulli en la
-primera poblaciÛn y @var{x2} y @var{n2} son los valores correspondientes
-para la segunda poblaciÛn. Las muestras son independientes y el contraste
-es asintÛtico.
+es el n√∫mero de √©xitos en @var{n1} experimentos de Bernoulli en la
+primera poblaci√≥n y @var{x2} y @var{n2} son los valores correspondientes
+para la segunda poblaci√≥n. Las muestras son independientes y el contraste
+es asint√≥tico.
 
 Opciones:
 
 @itemize @bullet
 
 @item
-@code{'alternative}, valor por defecto @code{'twosided}, es la hipÛtesis alternativa;
-valores v·lidos son:: @code{'twosided} (@code{p1 # p2}), @code{'greater} (@code{p1 > p2})
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip√≥tesis alternativa;
+valores v√°lidos son:: @code{'twosided} (@code{p1 # p2}), @code{'greater} (@code{p1 > p2})
 and @code{'less} (@code{p1 < p2}).
 
 @item
 @code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo
-de confianza; debe ser una expresiÛn que tome un valor en el intervalo (0,1).
+de confianza; debe ser una expresi√≥n que tome un valor en el intervalo (0,1).
 
 @item
 @code{'correct}, valor por defecto @code{true}, indica si se aplica o no la
-correcciÛn de Yates.
+correcci√≥n de Yates.
 
 @end itemize
 
-El resultado devuelto por la funciÛn @code{test_proportions_difference} es un objeto
+El resultado devuelto por la funci√≥n @code{test_proportions_difference} es un objeto
 @code{inference_result} con los siguientes apartados:
 
 @enumerate
@@ -936,17 +936,17 @@ El resultado devuelto por la funciÛn @code{test_proportions_difference} es un ob
 
 @item
 @code{'method}: procedimiento de inferencia y mensaje de aviso en caso de que
-alguno de los tamaÒos muestrales sea menor de 10.
+alguno de los tama√±os muestrales sea menor de 10.
 
 @item
-@code{'hypotheses}: hipÛtesis nula y alternativa a ser contrastada.
+@code{'hypotheses}: hip√≥tesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estadÌstico de contraste utilizado
-para probar la hipÛtesis.
+@code{'statistic}: valor del estad√≠stico de contraste utilizado
+para probar la hip√≥tesis.
 
 @item
-@code{'distribution}: distribuciÛn del estadÌstico de contraste, junto con sus par·metros.
+@code{'distribution}: distribuci√≥n del estad√≠stico de contraste, junto con sus par√°metros.
 
 @item
 @code{'p_value}: @math{p}-valor del test.
@@ -955,14 +955,14 @@ para probar la hipÛtesis.
 
 Ejemplos:
 
-Una m·quina produce 10 piezas defectuosas en un lote de 250.
-DespuÈs de ciertas tareas de mantenimiento, produce 4 piezas
+Una m√°quina produce 10 piezas defectuosas en un lote de 250.
+Despu√©s de ciertas tareas de mantenimiento, produce 4 piezas
 defectuosas de un lote de 150. A fin de saber si la tarea de 
-mantenimiento produjo alguna mejora, se contrasta la hipÛtesis
+mantenimiento produjo alguna mejora, se contrasta la hip√≥tesis
 nula @code{H0:p1=p2} contra la alternativa @code{H0:p1>p2},
 donde @code{p1} y @code{p2} son las probabilidades de que un
-artÌculo producido por la m·quina sea defectuoso,
-antes y despuÈs de la reparaciÛn. De acuerdo con el p valor, no hay
+art√≠culo producido por la m√°quina sea defectuoso,
+antes y despu√©s de la reparaci√≥n. De acuerdo con el p valor, no hay
 evidencia suficiente para aceptar la alternativa.
 
 @c ===beg===
@@ -995,8 +995,8 @@ evidencia suficiente para aceptar la alternativa.
       |             p_value = .2411936 
 @end example
 
-DesviaciÛn tÌpica exacta de la
-distribuciÛn normal asintÛtica con datos
+Desviaci√≥n t√≠pica exacta de la
+distribuci√≥n normal asint√≥tica con datos
 desconocidos.
 
 @c ===beg===
@@ -1025,11 +1025,11 @@ desconocidos.
 
 
 
-@deffn {FunciÛn} test_sign (@var{x})
-@deffnx {FunciÛn} test_sign (@var{x}, @var{options} ...)
+@deffn {Funci√≥n} test_sign (@var{x})
+@deffnx {Funci√≥n} test_sign (@var{x}, @var{options} ...)
 
-Este es el test no paramÈtrico de los signos para contrastes
-sobre la mediana de una poblaciÛn continua. El argumento @var{x}
+Este es el test no param√©trico de los signos para contrastes
+sobre la mediana de una poblaci√≥n continua. El argumento @var{x}
 es una lista o matriz columna que contiene los datos de una muestra
 unidimensional.
 
@@ -1038,15 +1038,15 @@ Opciones:
 @itemize @bullet
 
 @item
-@code{'alternative}, valor por defecto @code{'twosided}, es la hipÛtesis alternativa;
-valores v·lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip√≥tesis alternativa;
+valores v√°lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @item
 @code{'median}, valor por defecto @code{0}, es el valor de la mediana a contrastar.
 
 @end itemize
 
-El resultado devuelto por la funciÛn @code{test_sign} es un objeto
+El resultado devuelto por la funci√≥n @code{test_sign} es un objeto
 @code{inference_result} con los siguientes apartados:
 
 @enumerate
@@ -1058,13 +1058,13 @@ El resultado devuelto por la funciÛn @code{test_sign} es un objeto
 @code{'method}: procedimiento de inferencia.
 
 @item
-@code{'hypotheses}: hipÛtesis nula y alternativa a ser contrastada.
+@code{'hypotheses}: hip√≥tesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estadÌstico de contraste utilizado para probar la hipÛtesis.
+@code{'statistic}: valor del estad√≠stico de contraste utilizado para probar la hip√≥tesis.
 
 @item
-@code{'distribution}: distribuciÛn del estadÌstico de contraste, junto con sus par·metros.
+@code{'distribution}: distribuci√≥n del estad√≠stico de contraste, junto con sus par√°metros.
 
 @item
 @code{'p_value}: @math{p}-valor del test.
@@ -1073,7 +1073,7 @@ El resultado devuelto por la funciÛn @code{test_sign} es un objeto
 
 Ejemplos:
 
-Contrasta si la mediana de la poblaciÛn de la que se ha extraido
+Contrasta si la mediana de la poblaci√≥n de la que se ha extraido
 la muestra es 6, frente a la alternativa @math{H_1: median > 6}.
 
 @c ===beg===
@@ -1110,16 +1110,16 @@ la muestra es 6, frente a la alternativa @math{H_1: median > 6}.
 
 
 
-@deffn {FunciÛn} test_signed_rank (@var{x})
-@deffnx {FunciÛn} test_signed_rank (@var{x}, @var{options} ...)
+@deffn {Funci√≥n} test_signed_rank (@var{x})
+@deffnx {Funci√≥n} test_signed_rank (@var{x}, @var{options} ...)
 
 Este el test de los rangos signados de Wilcoxon para hacer inferencias sobre
-la mediana de una poblaciÛn continua. El argumento @var{x} es una lista
+la mediana de una poblaci√≥n continua. El argumento @var{x} es una lista
 o matriz columna que contiene los datos de una muestra unidimensional.
-Realiza la aproximaciÛn normal si el tamaÒo muestral es mayor que 20,
-o si en la muestra aparece alg˙n cero o hay empates.
+Realiza la aproximaci√≥n normal si el tama√±o muestral es mayor que 20,
+o si en la muestra aparece alg√∫n cero o hay empates.
 
-VÈanse tambiÈn @code{pdf_rank_test} y @code{cdf_rank_test}.
+V√©anse tambi√©n @code{pdf_rank_test} y @code{cdf_rank_test}.
 
 
 Opciones:
@@ -1130,12 +1130,12 @@ Opciones:
 @code{'median}, valor por defecto @code{0}, es el valor de la mediana a ser contrastado.
 
 @item
-@code{'alternative}, valor por defecto @code{'twosided}, es la hipÛtesis alternativa;
-valores v·lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip√≥tesis alternativa;
+valores v√°lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @end itemize
 
-El resultado devuelto por la funciÛn  @code{test_signed_rank} es
+El resultado devuelto por la funci√≥n  @code{test_signed_rank} es
 un objeto @code{inference_result} con los siguientes apartados:
 
 @enumerate
@@ -1147,13 +1147,13 @@ un objeto @code{inference_result} con los siguientes apartados:
 @code{'method}: procedimiento de inferencia.
 
 @item
-@code{'hypotheses}: hipÛtesis nula y alternativa a ser contrastada.
+@code{'hypotheses}: hip√≥tesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estadÌstico de contraste utilizado para probar la hipÛtesis.
+@code{'statistic}: valor del estad√≠stico de contraste utilizado para probar la hip√≥tesis.
 
 @item
-@code{'distribution}: distribuciÛn del estadÌstico de contraste, junto con su(s) par·metro(s).
+@code{'distribution}: distribuci√≥n del estad√≠stico de contraste, junto con su(s) par√°metro(s).
 
 @item
 @code{'p_value}: @math{p}-valor del test.
@@ -1162,7 +1162,7 @@ un objeto @code{inference_result} con los siguientes apartados:
 
 Ejemplos:
 
-Contrasta la hipÛtesis nula @math{H_0: median = 15} frente 
+Contrasta la hip√≥tesis nula @math{H_0: median = 15} frente 
 a la alternativa @math{H_1: median > 15}. Este test es exacto, 
 puesto que no hay empates.
 
@@ -1195,8 +1195,8 @@ puesto que no hay empates.
                  |            p_value = 0.28125
 @end example
 
-Contrasta la hipÛtesis nula @math{H_0: equal(median, 2.5)} frente 
-a la alternativa @math{H_1: not equal(median, 2.5)}. Este es un test asintÛtico,
+Contrasta la hip√≥tesis nula @math{H_0: equal(median, 2.5)} frente 
+a la alternativa @math{H_1: not equal(median, 2.5)}. Este es un test asint√≥tico,
 debido a la presencia de empates.
 
 @c equivalent code for R:
@@ -1235,28 +1235,28 @@ debido a la presencia de empates.
 
 
 
-@deffn {FunciÛn} test_rank_sum (@var{x1}, @var{x2})
-@deffnx {FunciÛn} test_rank_sum (@var{x1}, @var{x2}, @var{option})
+@deffn {Funci√≥n} test_rank_sum (@var{x1}, @var{x2})
+@deffnx {Funci√≥n} test_rank_sum (@var{x1}, @var{x2}, @var{option})
 
 Este es el test de Wilcoxon-Mann-Whitney para comparar las medianas
 de dos poblaciones continuas. Los dos primeros argumentos @var{x1}
 y @var{x2} son listas o matrices columna con los datos de dos
-muestras independientes. Realiza la aproximaciÛn normal si
-alguna de las muestras tiene tamaÒo mayor que 10, o si hay
+muestras independientes. Realiza la aproximaci√≥n normal si
+alguna de las muestras tiene tama√±o mayor que 10, o si hay
 empates.
 
 
-OpciÛn:
+Opci√≥n:
 
 @itemize @bullet
 
 @item
-@code{'alternative}, valor por defecto @code{'twosided}, es la hipÛtesis alternativa;
-valores v·lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip√≥tesis alternativa;
+valores v√°lidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 
 @end itemize
 
-El resultado devuelto por la funciÛn  @code{test_rank_sum}
+El resultado devuelto por la funci√≥n  @code{test_rank_sum}
 es un objeto @code{inference_result} con los siguientes apartados:
 
 @enumerate
@@ -1265,13 +1265,13 @@ es un objeto @code{inference_result} con los siguientes apartados:
 @code{'method}: procedimiento de inferencia.
 
 @item
-@code{'hypotheses}: hipÛtesis nula y alternativa a ser contrastada.
+@code{'hypotheses}: hip√≥tesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estadÌstico de contraste utilizado para probar la hipÛtesis.
+@code{'statistic}: valor del estad√≠stico de contraste utilizado para probar la hip√≥tesis.
 
 @item
-@code{'distribution}: distribuciÛn del estadÌstico de contraste, junto con sus par·metros.
+@code{'distribution}: distribuci√≥n del estad√≠stico de contraste, junto con sus par√°metros.
 
 @item
 @code{'p_value}: @math{p}-valor del test.
@@ -1280,8 +1280,8 @@ es un objeto @code{inference_result} con los siguientes apartados:
 
 Ejemplos:
 
-Contrasta si dos poblaciones tiene medianas similares. Al ser los tamaÒos
-muestrales pequeÒos, se realiza el test exacto.
+Contrasta si dos poblaciones tiene medianas similares. Al ser los tama√±os
+muestrales peque√±os, se realiza el test exacto.
 
 @c equivalent code for R:
 @c x <- c(12,15,17,38,42,10,23,35,28)
@@ -1313,7 +1313,7 @@ muestrales pequeÒos, se realiza el test exacto.
 @end example
 
 Ahora, con muestras mayores y empates, el procedimiento
-realiza la aproximaciÛn normal. La hipÛtesis
+realiza la aproximaci√≥n normal. La hip√≥tesis
 alternativa es @math{H_1: median1 < median2}.
 
 @c equivalent code for R:
@@ -1353,35 +1353,35 @@ alternativa es @math{H_1: median1 < median2}.
 
 
 
-@deffn {FunciÛn} test_normality (@var{x})
+@deffn {Funci√≥n} test_normality (@var{x})
 
 Test de Shapiro-Wilk para el contraste de normalidad. El argumento
-@var{x} es una lista de n˙meros, con tamaÒo muestral mayor que 2
+@var{x} es una lista de n√∫meros, con tama√±o muestral mayor que 2
 y menor o igual que 5000; bajo cualesquiera otras condiciones, la
-funciÛn @code{test_normality} emite un mensaje de error.
+funci√≥n @code{test_normality} emite un mensaje de error.
 
 Referencia:
 
   [1] Algorithm AS R94, Applied Statistics (1995), vol.44, no.4, 547-551
 
-El resultado devuelto por la funciÛn @code{test_normality} es
+El resultado devuelto por la funci√≥n @code{test_normality} es
 un objeto @code{inference_result} con los siguientes apartados:
 
 
 @enumerate
 
 @item
-@code{'statistic}: valor del estadÌstico @var{W}.
+@code{'statistic}: valor del estad√≠stico @var{W}.
 
 @item
-@code{'p_value}: @math{p}-valor bajo la hipÛtesis de normalidad.
+@code{'p_value}: @math{p}-valor bajo la hip√≥tesis de normalidad.
 
 @end enumerate
 
 Ejemplos:
 
-Contrasta la normalidad de una poblaciÛn a partir de una muestra
-de tamaÒo 9.
+Contrasta la normalidad de una poblaci√≥n a partir de una muestra
+de tama√±o 9.
 
 @c equivalent code for R:
 @c x <- c(12,15,17,38,42,10,23,35,28)
@@ -1413,50 +1413,50 @@ de tamaÒo 9.
 
 
 
-@deffn {FunciÛn} linear_regression (@var{x})
-@deffnx {FunciÛn} linear_regression (@var{x} @var{option})
+@deffn {Funci√≥n} linear_regression (@var{x})
+@deffnx {Funci√≥n} linear_regression (@var{x} @var{option})
 
-RegresiÛn lineal m˙ltiple, 
+Regresi√≥n lineal m√∫ltiple, 
 @math{y_i = b0 + b1*x_1i + b2*x_2i + ... + bk*x_ki + u_i},
 donde @math{u_i} son variables aleatorias independientes 
 @math{N(0,sigma)}. El argumento @var{x} debe ser una matriz 
-con m·s de una columna. La ˙ltima columna se considera
+con m√°s de una columna. La √∫ltima columna se considera
 que son las respuestas (@math{y_i}).
 
-OpciÛn:
+Opci√≥n:
 
 @itemize @bullet
 
 @item
 @code{'conflevel}, valor por defecto @code{95/100}, nivel de
-confianza para los intervalos de confianza; debe ser una expresiÛn 
+confianza para los intervalos de confianza; debe ser una expresi√≥n 
 que tome un valor en el intervalo (0,1).
 @end itemize
 
-El resultado devuelto por la funciÛn @code{linear_regression} es
+El resultado devuelto por la funci√≥n @code{linear_regression} es
 un objeto @code{inference_result} de Maxima con los siguientes campos:
 
 @enumerate
 
 @item
-@code{'b_estimation}: estimadores de los coeficientes de regresiÛn.
+@code{'b_estimation}: estimadores de los coeficientes de regresi√≥n.
 
 @item
 @code{'b_covariances}: matriz de covarianzas de los estimadores
-de los coeficientes de regresiÛn.
+de los coeficientes de regresi√≥n.
 
 @item
-@code{b_conf_int}: intervalos de confianza para los coeficientes de regresiÛn.
+@code{b_conf_int}: intervalos de confianza para los coeficientes de regresi√≥n.
 
 @item
-@code{b_statistics}: estadÌsticos para los contrastes
+@code{b_statistics}: estad√≠sticos para los contrastes
 de los coeficientes.
 
 @item
 @code{b_p_values}: p-valores para los contrastes de los coeficientes.
 
 @item
-@code{b_distribution}: distribuciÛn de probabilidad para
+@code{b_distribution}: distribuci√≥n de probabilidad para
 los contrastes de los coeficientes.
 
 @item
@@ -1466,20 +1466,20 @@ los contrastes de los coeficientes.
 @code{v_conf_int}: intervalo de confianza de la varianza.
 
 @item
-@code{v_distribution}: distribuciÛn de probabilidad para
+@code{v_distribution}: distribuci√≥n de probabilidad para
 el contraste de la varianza.
 
 @item
 @code{residuals}: residuos.
 
 @item
-@code{adc}: coeficiente de determinaciÛn ajustado.
+@code{adc}: coeficiente de determinaci√≥n ajustado.
 
 @item
-@code{aic}: Criterio de informaciÛn de Akaike.
+@code{aic}: Criterio de informaci√≥n de Akaike.
 
 @item
-@code{bic}: Criterio de informaciÛn de Bayes.
+@code{bic}: Criterio de informaci√≥n de Bayes.
 
 @end enumerate
 
@@ -1491,7 +1491,7 @@ y @code{take_inference}.
 Ejemplo:
 
 Ajustando un modelo lineal a una muestra tridimensional. La 
-˙ltima columna se considera que son las respuestas (@math{y_i}).
+√∫ltima columna se considera que son las respuestas (@math{y_i}).
 
 @c ===beg===
 @c load ("stats")$
@@ -1564,39 +1564,39 @@ v_distribution, residuals, adc, aic, bic]
 @section Funciones y variables para distribuciones especiales
 
 
-@deffn {FunciÛn} pdf_signed_rank (@var{x}, @var{n})
-FunciÛn de densidad de probabilidad de la distribuciÛn exacta
-del estadÌstico de contraste del test de los
-rangos signados. El argumento @var{x} es un n˙mero real y
+@deffn {Funci√≥n} pdf_signed_rank (@var{x}, @var{n})
+Funci√≥n de densidad de probabilidad de la distribuci√≥n exacta
+del estad√≠stico de contraste del test de los
+rangos signados. El argumento @var{x} es un n√∫mero real y
 @var{n} un entero positivo.
 
-VÈase tambiÈn @code{test_signed_rank}.
+V√©ase tambi√©n @code{test_signed_rank}.
 @end deffn
 
-@deffn {FunciÛn} cdf_signed_rank (@var{x}, @var{n})
-FunciÛn de probabilidad acumulada de la distribuciÛn exacta
-del estadÌstico de contraste del test de los
-rangos signados. El argumento @var{x} es un n˙mero real y
+@deffn {Funci√≥n} cdf_signed_rank (@var{x}, @var{n})
+Funci√≥n de probabilidad acumulada de la distribuci√≥n exacta
+del estad√≠stico de contraste del test de los
+rangos signados. El argumento @var{x} es un n√∫mero real y
 @var{n} un entero positivo.
 
-VÈase tambiÈn @code{test_signed_rank}.
+V√©ase tambi√©n @code{test_signed_rank}.
 @end deffn
 
-@deffn {FunciÛn} pdf_rank_sum (@var{x}, @var{n}, @var{m})
-FunciÛn de densidad de probabilidad de la distribuciÛn exacta
-del estadÌstico de contraste de Wilcoxon-Mann-Whitney.
-El argumento @var{x} es un n˙mero real y
+@deffn {Funci√≥n} pdf_rank_sum (@var{x}, @var{n}, @var{m})
+Funci√≥n de densidad de probabilidad de la distribuci√≥n exacta
+del estad√≠stico de contraste de Wilcoxon-Mann-Whitney.
+El argumento @var{x} es un n√∫mero real y
 @var{n} y @var{m} son ambos enteros positivos.
 
-VÈase tambiÈn @code{test_rank_sum}.
+V√©ase tambi√©n @code{test_rank_sum}.
 @end deffn
 
-@deffn {FunciÛn} cdf_rank_sum (@var{x}, @var{n}, @var{m})
-FunciÛn de probabilidad acumulada de la distribuciÛn exacta
-del estadÌstico de contraste de Wilcoxon-Mann-Whitney.
-El argumento @var{x} es un n˙mero real y
+@deffn {Funci√≥n} cdf_rank_sum (@var{x}, @var{n}, @var{m})
+Funci√≥n de probabilidad acumulada de la distribuci√≥n exacta
+del estad√≠stico de contraste de Wilcoxon-Mann-Whitney.
+El argumento @var{x} es un n√∫mero real y
 @var{n} y @var{m} son ambos enteros positivos.
 
-VÈase tambiÈn @code{test_rank_sum}.
+V√©ase tambi√©n @code{test_rank_sum}.
 @end deffn
 

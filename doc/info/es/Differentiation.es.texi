@@ -1,24 +1,24 @@
 @c English version 2011-06-07
 @menu
-* Funciones y variables para la diferenciación::  
+* Funciones y variables para la diferenciaciÃ³n::  
 @end menu
 
-@node Funciones y variables para la diferenciación,  , Diferenciación, Diferenciación
-@section Funciones y variables para la diferenciación
+@node Funciones y variables para la diferenciaciÃ³n,  , DiferenciaciÃ³n, DiferenciaciÃ³n
+@section Funciones y variables para la diferenciaciÃ³n
 
-@deffn {Función} antid (@var{expr}, @var{x}, @var{u(x)}) 
-Devuelve una lista con dos elementos, de manera que se pueda calcular la antiderivada de @var{expr} respecto de  @var{x} a partir de la lista. La expresión @var{expr} puede contener una función no especificada @var{u} y sus derivadas.
+@deffn {FunciÃ³n} antid (@var{expr}, @var{x}, @var{u(x)}) 
+Devuelve una lista con dos elementos, de manera que se pueda calcular la antiderivada de @var{expr} respecto de  @var{x} a partir de la lista. La expresiÃ³n @var{expr} puede contener una funciÃ³n no especificada @var{u} y sus derivadas.
 
-Sea @var{L} la lista con dos elementos que devuelve la función @code{antid}.
+Sea @var{L} la lista con dos elementos que devuelve la funciÃ³n @code{antid}.
 Entonces, @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}
 es una antiderivada de @var{expr} con respecto a @var{x}.
 
-Si la ejecución de @code{antid} resulta exitosa, el segundo elemento de la lista retornada es cero. En caso contrario, el segundo elemento es distinto de cero y el primero puede ser nulo o no. Si @code{antid} no es capaz de hacer ningún progreso, el primer elemento es nulo y el segundo no nulo.
+Si la ejecuciÃ³n de @code{antid} resulta exitosa, el segundo elemento de la lista retornada es cero. En caso contrario, el segundo elemento es distinto de cero y el primero puede ser nulo o no. Si @code{antid} no es capaz de hacer ningÃºn progreso, el primer elemento es nulo y el segundo no nulo.
 
-Es necesario ejecutar @code{load ("antid")} para cargar esta función. El paquete @code{antid} define también las funciones @code{nonzeroandfreeof} y @code{linear}.
+Es necesario ejecutar @code{load ("antid")} para cargar esta funciÃ³n. El paquete @code{antid} define tambiÃ©n las funciones @code{nonzeroandfreeof} y @code{linear}.
 
-La función @code{antid} está relacionada con @code{antidiff} como se indica a continuación.
-Sea @var{L} la lista devuelta por la función @code{antid}. Entonces, el resultado de @code{antidiff} es igual a  @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}, donde @var{x} es la variable de integración.
+La funciÃ³n @code{antid} estÃ¡ relacionada con @code{antidiff} como se indica a continuaciÃ³n.
+Sea @var{L} la lista devuelta por la funciÃ³n @code{antid}. Entonces, el resultado de @code{antidiff} es igual a  @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}, donde @var{x} es la variable de integraciÃ³n.
 
 Ejemplos:
 @c FOLLOWING EXAMPLES GENERATED FROM THESE INPUTS
@@ -66,16 +66,16 @@ Ejemplos:
 @end deffn
 
 
-@deffn {Función} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
+@deffn {FunciÃ³n} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
 Devuelve la antiderivada de @var{expr} respecto de @var{x}.
-La expresión @var{expr} puede contener una función no especificada @var{u} y sus derivadas.
+La expresiÃ³n @var{expr} puede contener una funciÃ³n no especificada @var{u} y sus derivadas.
 
-Cuando @code{antidiff} se ejecuta con éxito, la expresión resultante no tiene símbolos integrales (esto es, no tiene referencias a la función @code{integrate}). En otro caso, @code{antidiff} devuelve una expresión que se encuentra total o parcialmente bajo el signo de integración. Si @code{antidiff} no puede ralizar ningún progreso, el valor devuelto se encuentra completamente bajo la integral.
+Cuando @code{antidiff} se ejecuta con Ã©xito, la expresiÃ³n resultante no tiene sÃ­mbolos integrales (esto es, no tiene referencias a la funciÃ³n @code{integrate}). En otro caso, @code{antidiff} devuelve una expresiÃ³n que se encuentra total o parcialmente bajo el signo de integraciÃ³n. Si @code{antidiff} no puede ralizar ningÃºn progreso, el valor devuelto se encuentra completamente bajo la integral.
 
-Es necesario ejecutar @code{load ("antid")} para cargar esta función. El paquete @code{antid} define también las funciones @code{nonzeroandfreeof} y @code{linear}.
+Es necesario ejecutar @code{load ("antid")} para cargar esta funciÃ³n. El paquete @code{antid} define tambiÃ©n las funciones @code{nonzeroandfreeof} y @code{linear}.
 
-La función @code{antidiff} está relacionada con @code{antid} como se indica a continuación.
-Sea @var{L} la lista de dos elementos que devuelve @code{antid}. Entonces, el valor retornado por @code{antidiff} es igual a @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}, donde @var{x} es la variable de integración.
+La funciÃ³n @code{antidiff} estÃ¡ relacionada con @code{antid} como se indica a continuaciÃ³n.
+Sea @var{L} la lista de dos elementos que devuelve @code{antid}. Entonces, el valor retornado por @code{antidiff} es igual a @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}, donde @var{x} es la variable de integraciÃ³n.
 
 Ejemplos:
 @c FOLLOWING EXAMPLES GENERATED FROM THESE INPUTS
@@ -125,16 +125,16 @@ Ejemplos:
 
 
 
-@deffn {Función} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
-@deffnx {Función} at (@var{expr}, @var{eqn})
-Evalúa la expresión @var{expr} asignando a las variables los valores especificados para ellas en la lista de ecuaciones @code{[@var{eqn_1}, ..., @var{eqn_n}]} o en la ecuación simple @var{eqn}.
+@deffn {FunciÃ³n} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
+@deffnx {FunciÃ³n} at (@var{expr}, @var{eqn})
+EvalÃºa la expresiÃ³n @var{expr} asignando a las variables los valores especificados para ellas en la lista de ecuaciones @code{[@var{eqn_1}, ..., @var{eqn_n}]} o en la ecuaciÃ³n simple @var{eqn}.
 
-Si una subexpresión depende de cualquiera de las variables para la cual se especifica un valor, pero  no puede ser evaluado, entonces @code{at} devuelve una forma nominal.
+Si una subexpresiÃ³n depende de cualquiera de las variables para la cual se especifica un valor, pero  no puede ser evaluado, entonces @code{at} devuelve una forma nominal.
 
-La función @code{at} realiza múltiples sustituciones en serie, no en paralelo.
+La funciÃ³n @code{at} realiza mÃºltiples sustituciones en serie, no en paralelo.
 
-Véase también @code{atvalue}.
-Para otras funciones que también llevan a cabo sustituciones, consúltense @code{subst} y @code{ev}.
+VÃ©ase tambiÃ©n @code{atvalue}.
+Para otras funciones que tambiÃ©n llevan a cabo sustituciones, consÃºltense @code{subst} y @code{ev}.
 
 Ejemplos:
 @c COPIED FROM example(at)
@@ -187,30 +187,30 @@ La propiedad @code{atomgrad} es asignada por @code{gradef}.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@deffn {Función} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
-@deffnx {Función} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
+@deffn {FunciÃ³n} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
+@deffnx {FunciÃ³n} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
 Asigna el valor @var{c} a @var{expr} en el punto @code{@var{x} = @var{a}}.
 
-La expresión @var{expr} es una función del tipo 
+La expresiÃ³n @var{expr} es una funciÃ³n del tipo 
 @code{@var{f}(@var{x_1}, ..., @var{x_m})},
 o una derivada,
 @code{diff (@var{f}(@var{x_1}, ..., @var{x_m}), @var{x_1}, @var{n_1}, ..., @var{x_n}, @var{n_m})}
 @c HMM, WHAT IS THIS NEXT PHRASE GETTING AT ??
 @c DOES IT INTEND TO IMPLY THAT IMPLICIT DEPENDENCIES ARE IGNORED ??
-en la que aparecen los argumentos de la función de forma explícita.
-Los símbolos @var{n_i} se refieren al orden de diferenciación respecto de @var{x_i}.
+en la que aparecen los argumentos de la funciÃ³n de forma explÃ­cita.
+Los sÃ­mbolos @var{n_i} se refieren al orden de diferenciaciÃ³n respecto de @var{x_i}.
 
 El punto en el que @code{atvalue} establece el valor se especifica mediante la lista de ecuaciones
 @code{[@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}]}.
-Si hay una única variable @var{x_1}, la ecuación puede escribirse sin formar parte de una lista.
+Si hay una Ãºnica variable @var{x_1}, la ecuaciÃ³n puede escribirse sin formar parte de una lista.
 
 La llamada @code{printprops ([@var{f_1}, @var{f_2}, ...], atvalue)} muestra los valores asignados por @code{atvalue} a las funciones @code{@var{f_1}, @var{f_2}, ...}.
-La llamada  @code{printprops (@var{f}, atvalue)} muestra los valores asignados por @code{atvalue} a la función @var{f}.
+La llamada  @code{printprops (@var{f}, atvalue)} muestra los valores asignados por @code{atvalue} a la funciÃ³n @var{f}.
 La llamada  @code{printprops (all, atvalue)} muestra los valores asignados por @code{atvalue} a todas las funciones.
 
-Los símbolos @code{@@1}, @code{@@2}, ... representan las variables @var{x_1}, @var{x_2}, ... cuando se muestran los valores asignados por @code{atvalue}.
+Los sÃ­mbolos @code{@@1}, @code{@@2}, ... representan las variables @var{x_1}, @var{x_2}, ... cuando se muestran los valores asignados por @code{atvalue}.
 
-La función @code{atvalue} evalúa sus argumentos y devuelve @var{c}, el valor asignado.
+La funciÃ³n @code{atvalue} evalÃºa sus argumentos y devuelve @var{c}, el valor asignado.
 
 Ejemplos:
 @c FOLLOWING ADAPTED FROM example (atvalue)
@@ -251,18 +251,18 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Función} cartan  -
-El cálculo exterior de formas diferenciales es una herramienta básica de la geometría diferencial desarrollada por Elie Cartan, teniendo importantes aplicaciones en la teoría de ecuaciones diferenciales en derivadas parciales.
-El paquete @code{cartan} dispone de las funciones @code{ext_diff} y @code{lie_diff}, así como de los operadores @code{~} (producto exterior) y @code{|} (contracción de una forma con un vector). La orden @code{demo (tensor)} permite ver una breve descripción de estas instrucciones, junto con ejemplos.
+@deffn {FunciÃ³n} cartan  -
+El cÃ¡lculo exterior de formas diferenciales es una herramienta bÃ¡sica de la geometrÃ­a diferencial desarrollada por Elie Cartan, teniendo importantes aplicaciones en la teorÃ­a de ecuaciones diferenciales en derivadas parciales.
+El paquete @code{cartan} dispone de las funciones @code{ext_diff} y @code{lie_diff}, asÃ­ como de los operadores @code{~} (producto exterior) y @code{|} (contracciÃ³n de una forma con un vector). La orden @code{demo (tensor)} permite ver una breve descripciÃ³n de estas instrucciones, junto con ejemplos.
 
 El paquete @code{cartan} fue escrito por F.B. Estabrook y H.D. Wahlquist.
 
 @end deffn
 
-@deffn {Función} del (@var{x})
-La expresión @code{del (@var{x})} representa el diferencial de la variable @math{x}.
+@deffn {FunciÃ³n} del (@var{x})
+La expresiÃ³n @code{del (@var{x})} representa el diferencial de la variable @math{x}.
 
-La función @code{diff} devuelve una expresión que contiene a @code{del} si no se ha especificado una variable independiente. En este caso, el valor retornado es el llamado "diferencial total".
+La funciÃ³n @code{diff} devuelve una expresiÃ³n que contiene a @code{del} si no se ha especificado una variable independiente. En este caso, el valor retornado es el llamado "diferencial total".
 
 Ejemplos:
 @c GENERATED FROM THE FOLLOWING
@@ -284,10 +284,10 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Función} delta (@var{t})
-Es la función delta de Dirac.
+@deffn {FunciÃ³n} delta (@var{t})
+Es la funciÃ³n delta de Dirac.
 
-En el estado actual de desarrollo de Maxima, sólo @code{laplace} reconoce la función @code{delta}.
+En el estado actual de desarrollo de Maxima, sÃ³lo @code{laplace} reconoce la funciÃ³n @code{delta}.
 
 Ejemplo:
 
@@ -305,28 +305,28 @@ p;
 @defvr {Variable del sistema} dependencies
 Valor por defecto: @code{[]}
 
-La variable @code{dependencies} es la lista de átomos que tienen algún tipo de dependencia funcional, asignada por @code{depends} o @code{gradef}. La lista @code{dependencies} es acumulativa: cada llamada a @code{depends} o @code{gradef} añade elementos adicionales.
+La variable @code{dependencies} es la lista de Ã¡tomos que tienen algÃºn tipo de dependencia funcional, asignada por @code{depends} o @code{gradef}. La lista @code{dependencies} es acumulativa: cada llamada a @code{depends} o @code{gradef} aÃ±ade elementos adicionales.
 
-Véanse @code{depends} y @code{gradef}.
+VÃ©anse @code{depends} y @code{gradef}.
 
 @end defvr
 
-@deffn {Función} depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
-Declara dependencias funcionales entre variables con el propósito de calcular derivadas.
+@deffn {FunciÃ³n} depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
+Declara dependencias funcionales entre variables con el propÃ³sito de calcular derivadas.
 En ausencia de una dependencia declarada, @code{diff (f, x)} devuelve cero.
-Si se declara @code{depends (f, x)}, @code{diff (f, x)} devuelve una derivada simbólica (esto es, una expresión con @code{diff}).
+Si se declara @code{depends (f, x)}, @code{diff (f, x)} devuelve una derivada simbÃ³lica (esto es, una expresiÃ³n con @code{diff}).
 
 Cada argumento  @var{f_1}, @var{x_1}, etc., puede ser el nombre de una variable, de un arreglo o una lista de nombres.
-Cada elemento de @var{f_i} (quizás un único elemento) se declara como dependiente de cada elemento de @var{x_i} (quizás también un único elemento). Si alguno de los  @var{f_i} es el nombre de un arreglo o contiene el nombre de un arreglo, todos los elemento del arregl dependen de @var{x_i}.
+Cada elemento de @var{f_i} (quizÃ¡s un Ãºnico elemento) se declara como dependiente de cada elemento de @var{x_i} (quizÃ¡s tambiÃ©n un Ãºnico elemento). Si alguno de los  @var{f_i} es el nombre de un arreglo o contiene el nombre de un arreglo, todos los elemento del arregl dependen de @var{x_i}.
 
-La función @code{diff} reconoce dependencias indirectas establecidas por @code{depends} y aplica la regla de la cadena en tales casos.
+La funciÃ³n @code{diff} reconoce dependencias indirectas establecidas por @code{depends} y aplica la regla de la cadena en tales casos.
 
-La instrucción @code{remove (@var{f}, dependency)} borra todas las dependencias declaradas para @var{f}.
+La instrucciÃ³n @code{remove (@var{f}, dependency)} borra todas las dependencias declaradas para @var{f}.
 
-La función @code{depends} devuelve una lista con las dependencias que han sido establecidas. Las dependencias se añaden a la variable global @code{dependencies}. La función @code{depends} evalúa sus argumentos.
+La funciÃ³n @code{depends} devuelve una lista con las dependencias que han sido establecidas. Las dependencias se aÃ±aden a la variable global @code{dependencies}. La funciÃ³n @code{depends} evalÃºa sus argumentos.
 
-La función @code{diff} es la única instrucción de Maxima que reconoce las dependencias establecidas por @code{depends}. Otras funciones (@code{integrate}, @code{laplace}, etc.) solamente reconocen dependencias explícitamente representadas por sus argumentos. Por ejemplo, @code{integrate} no reconoce la dependencia de @code{f} respecto de @code{x}
-a menos que se represente explícitamente como @code{integrate (f(x), x)}.
+La funciÃ³n @code{diff} es la Ãºnica instrucciÃ³n de Maxima que reconoce las dependencias establecidas por @code{depends}. Otras funciones (@code{integrate}, @code{laplace}, etc.) solamente reconocen dependencias explÃ­citamente representadas por sus argumentos. Por ejemplo, @code{integrate} no reconoce la dependencia de @code{f} respecto de @code{x}
+a menos que se represente explÃ­citamente como @code{integrate (f(x), x)}.
 
 @c GENERATED BY THE FOLLOWING
 @c depends ([f, g], x);
@@ -375,12 +375,12 @@ a menos que se represente explícitamente como @code{integrate (f(x), x)}.
 @defvr {Variable optativa} derivabbrev
 Valor por defecto: @code{false}
 
-Si @code{derivabbrev} vale @code{true}, las derivadas simbólicas (esto es, expresiones con @code{diff}) se muestran como subíndices. En otro caso, las derivadas se muestran en la notación de Leibniz, @code{dy/dx}.
+Si @code{derivabbrev} vale @code{true}, las derivadas simbÃ³licas (esto es, expresiones con @code{diff}) se muestran como subÃ­ndices. En otro caso, las derivadas se muestran en la notaciÃ³n de Leibniz, @code{dy/dx}.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
-@deffn {Función} derivdegree (@var{expr}, @var{y}, @var{x})
+@deffn {FunciÃ³n} derivdegree (@var{expr}, @var{y}, @var{x})
 Devuelve el mayor grado de la derivada de la variable dependiente @var{y} respecto de la variable independiente @var{x} que aparece en @var{expr}.
 
 Ejemplo:
@@ -401,23 +401,23 @@ Ejemplo:
 @end deffn
 
 @c I HAVE NO IDEA WHAT THIS DOES
-@deffn {Función} derivlist (@var{var_1}, ..., @var{var_k})
-Hace que las derivadas calculadas por la instrucción @code{ev} se calculen respecto de las variables indicadas.
+@deffn {FunciÃ³n} derivlist (@var{var_1}, ..., @var{var_k})
+Hace que las derivadas calculadas por la instrucciÃ³n @code{ev} se calculen respecto de las variables indicadas.
 
 @end deffn
 
 @defvr {Variable optativa} derivsubst
 Valor por defecto: @code{false}
 
-Si @code{derivsubst} vale @code{true}, una sustitución no sintáctica del estilo 
+Si @code{derivsubst} vale @code{true}, una sustituciÃ³n no sintÃ¡ctica del estilo 
 @code{subst (x, 'diff (y, t), 'diff (y, t, 2))} devuelve @code{'diff (x, t)}.
 
 @end defvr
 
-@deffn {Función} diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})
-@deffnx {Función} diff (@var{expr}, @var{x}, @var{n})
-@deffnx {Función} diff (@var{expr}, @var{x})
-@deffnx {Función} diff (@var{expr})
+@deffn {FunciÃ³n} diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})
+@deffnx {FunciÃ³n} diff (@var{expr}, @var{x}, @var{n})
+@deffnx {FunciÃ³n} diff (@var{expr}, @var{x})
+@deffnx {FunciÃ³n} diff (@var{expr})
 Devuelve la derivada o diferencial de  @var{expr} respecto de alguna o de todas las variables presentes en @var{expr}.
 
 La llamada @code{diff (@var{expr}, @var{x}, @var{n})} devuelve la @var{n}-esima derivada de @var{expr} respecto de @var{x}.
@@ -434,9 +434,9 @@ La llamada @code{diff (@var{expr})} devuelve el diferencial total de @var{expr},
 @c FALTA AQUI UNA FRASE.
 
 La forma nominal de @code{diff} es necesaria en algunos contextos, como para definir ecuaciones diferenciales.
-En tales casos, @code{diff} puede ir precedida de un apóstrofo (como @code{'diff}) para evitar el cálculo de la derivada.
+En tales casos, @code{diff} puede ir precedida de un apÃ³strofo (como @code{'diff}) para evitar el cÃ¡lculo de la derivada.
 
-Si @code{derivabbrev} vale @code{true}, las derivadas se muestran como subíndices. En otro caso, se muestran en la notación de Leibniz, @code{dy/dx}.
+Si @code{derivabbrev} vale @code{true}, las derivadas se muestran como subÃ­ndices. En otro caso, se muestran en la notaciÃ³n de Leibniz, @code{dy/dx}.
 
 Ejemplos:
 @c GENERATED FROM THE FOLLOWING
@@ -473,28 +473,28 @@ Ejemplos:
 
 Para el paquete sobre tensores se han introducido las siguientes modificaciones:
 
-(1) Las derivadas de los objetos indexados en @var{expr} tendrán las variables @var{x_i} añadidas como argumentos adicionales. Entonces se ordenarán todos los índices de derivadas.
+(1) Las derivadas de los objetos indexados en @var{expr} tendrÃ¡n las variables @var{x_i} aÃ±adidas como argumentos adicionales. Entonces se ordenarÃ¡n todos los Ã­ndices de derivadas.
 
-(2) Las @var{x_i} pueden ser enteros entre 1 hasta el valor de la variable @code{dimension} [valor por defecto: 4].  Esto hará que la diferenciación sea llevada a cabo con respecto al @var{x_i}-ésimo número de la lista @code{coordinates}, la cual debería contener una lista con los nombres de las coordenadas, por ejemplo, @code{[x, y, z, t]}. Si @code{coordinates} es una variableis atómica, entonces esa variable será utilizada como variable de diferenciación. Se permite la utilización de arreglos con los nombres de las coordenadas o nombres con subíndices, como @code{X[1]}, @code{X[2]}, ... to be used.  Si a @code{coordinates} no se le ha asignado ningún valor, entonces las variables serán tratadas como se ha indicado en (1).
+(2) Las @var{x_i} pueden ser enteros entre 1 hasta el valor de la variable @code{dimension} [valor por defecto: 4].  Esto harÃ¡ que la diferenciaciÃ³n sea llevada a cabo con respecto al @var{x_i}-Ã©simo nÃºmero de la lista @code{coordinates}, la cual deberÃ­a contener una lista con los nombres de las coordenadas, por ejemplo, @code{[x, y, z, t]}. Si @code{coordinates} es una variableis atÃ³mica, entonces esa variable serÃ¡ utilizada como variable de diferenciaciÃ³n. Se permite la utilizaciÃ³n de arreglos con los nombres de las coordenadas o nombres con subÃ­ndices, como @code{X[1]}, @code{X[2]}, ... to be used.  Si a @code{coordinates} no se le ha asignado ningÃºn valor, entonces las variables serÃ¡n tratadas como se ha indicado en (1).
 
 @c NEED EXAMPLES FOR TENSOR STUFF
 @end deffn
 
-@defvr {Símbolo especial} diff
+@defvr {SÃ­mbolo especial} diff
 
-Si el nombre @code{diff} está presente en una llamada a la función @code{ev} en modo @code{evflag}, entonces se calculan todas las derivadas presentes en @code{expr}.
+Si el nombre @code{diff} estÃ¡ presente en una llamada a la funciÃ³n @code{ev} en modo @code{evflag}, entonces se calculan todas las derivadas presentes en @code{expr}.
 
 @c NEED EXAMPLE HERE
 @end defvr
 
 @c FALTA DESCRIPCION DE dscalar
 
-@deffn {Función} express (@var{expr})
-Transforma los nombres de los operadores diferenciales en expresiones que contienen derivadas parciales. Los operadores reconocidos por la función @code{express} son: @code{grad} (gradiente), @code{div} (divergencia), @code{curl} (rotacional), @code{laplacian} (laplaciano) y @code{~} (producto vectorial).
+@deffn {FunciÃ³n} express (@var{expr})
+Transforma los nombres de los operadores diferenciales en expresiones que contienen derivadas parciales. Los operadores reconocidos por la funciÃ³n @code{express} son: @code{grad} (gradiente), @code{div} (divergencia), @code{curl} (rotacional), @code{laplacian} (laplaciano) y @code{~} (producto vectorial).
 
-Las derivadas simbólicas (es decir, las que incluyen la forma nominal @code{diff}) que aparecen en la expresión devuelta por @code{express}, se pueden calcular pasándole a @code{ev} el argumento @code{diff}, o escribiéndolo directamente en la línea de comandos. En este contexto, @code{diff} actúa como @code{evfun}.
+Las derivadas simbÃ³licas (es decir, las que incluyen la forma nominal @code{diff}) que aparecen en la expresiÃ³n devuelta por @code{express}, se pueden calcular pasÃ¡ndole a @code{ev} el argumento @code{diff}, o escribiÃ©ndolo directamente en la lÃ­nea de comandos. En este contexto, @code{diff} actÃºa como @code{evfun}.
 
-Es necesario ejecutar @code{load ("vect")} para cargar esta función.
+Es necesario ejecutar @code{load ("vect")} para cargar esta funciÃ³n.
 
 Ejemplos:
 @c GENERATED FROM THE FOLLOWING
@@ -563,32 +563,32 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Función} gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})
-@deffnx {Función} gradef (@var{a}, @var{x}, @var{expr})
-Define las derivadas parciales, o componentes del gradiente, de la función @var{f} o variable @var{a}.
+@deffn {FunciÃ³n} gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})
+@deffnx {FunciÃ³n} gradef (@var{a}, @var{x}, @var{expr})
+Define las derivadas parciales, o componentes del gradiente, de la funciÃ³n @var{f} o variable @var{a}.
 
 La llamada @code{gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}
 define @code{d@var{f}/d@var{x_i}} como @var{g_i}, 
-donde @var{g_i} es una expresión; @var{g_i} puede ser una llamada a función, pero no el nombre de una función.
-El número de derivadas parciales @var{m} puede ser menor que el número de argumentos @var{n}, en cuyo caso las derivadas se definen solamente con respecto a  @var{x_1}, ...., @var{x_m}.
+donde @var{g_i} es una expresiÃ³n; @var{g_i} puede ser una llamada a funciÃ³n, pero no el nombre de una funciÃ³n.
+El nÃºmero de derivadas parciales @var{m} puede ser menor que el nÃºmero de argumentos @var{n}, en cuyo caso las derivadas se definen solamente con respecto a  @var{x_1}, ...., @var{x_m}.
 
-La llamada @code{gradef (@var{a}, @var{x}, @var{expr})} define la derivada de la variable @var{a} respecto de @var{x} en @var{expr}. Con esto se establece la dependencia de @var{a} respecto de @var{x} a través de @code{depends (@var{a}, @var{x})}.
+La llamada @code{gradef (@var{a}, @var{x}, @var{expr})} define la derivada de la variable @var{a} respecto de @var{x} en @var{expr}. Con esto se establece la dependencia de @var{a} respecto de @var{x} a travÃ©s de @code{depends (@var{a}, @var{x})}.
 
-El primer argumento @code{@var{f}(@var{x_1}, ..., @var{x_n})} o @var{a} no se evalúa, pero sí lo hacen el resto de argumentos @var{g_1}, ..., @var{g_m}.  La llamada a @code{gradef} devuelve la función o variable para la que se define la derivada parcial.
+El primer argumento @code{@var{f}(@var{x_1}, ..., @var{x_n})} o @var{a} no se evalÃºa, pero sÃ­ lo hacen el resto de argumentos @var{g_1}, ..., @var{g_m}.  La llamada a @code{gradef} devuelve la funciÃ³n o variable para la que se define la derivada parcial.
 
-La instrucción @code{gradef} puede redefinir las derivadas de las funciones propias de Maxima.
+La instrucciÃ³n @code{gradef} puede redefinir las derivadas de las funciones propias de Maxima.
 Por ejemplo, @code{gradef (sin(x), sqrt (1 - sin(x)^2))} redefine la derivada de @code{sin}.
 
-La instrucción @code{gradef} no puede definir derivadas parciales de funciones subindicadas.
+La instrucciÃ³n @code{gradef} no puede definir derivadas parciales de funciones subindicadas.
 
-La llamada @code{printprops ([@var{f_1}, ..., @var{f_n}], gradef)} muestra las derivadas parciales de las funciones @var{f_1}, ..., @var{f_n}, tal como las definió @code{gradef}.
+La llamada @code{printprops ([@var{f_1}, ..., @var{f_n}], gradef)} muestra las derivadas parciales de las funciones @var{f_1}, ..., @var{f_n}, tal como las definiÃ³ @code{gradef}.
 
-La llamada @code{printprops ([@var{a_n}, ..., @var{a_n}], atomgrad)} muestra las derivadas parciales de las variables @var{a_n}, ..., @var{a_n}, tal como las definió @code{gradef}.
+La llamada @code{printprops ([@var{a_n}, ..., @var{a_n}], atomgrad)} muestra las derivadas parciales de las variables @var{a_n}, ..., @var{a_n}, tal como las definiÃ³ @code{gradef}.
 
-La variable @code{gradefs} contiene la lista de las funciones para las que se han definido derivadas parciales con la instrucción @code{gradef}, pero no incluye las variables para las que se han definido las derivadas parciales.
+La variable @code{gradefs} contiene la lista de las funciones para las que se han definido derivadas parciales con la instrucciÃ³n @code{gradef}, pero no incluye las variables para las que se han definido las derivadas parciales.
 
 @c REPHRASE THIS NEXT BIT
-Los gradientes son necesarios cuando una función no se conoce explícitamente pero sí sus primeras derivadas y es necesario calcular las derivadas de orden mayor.
+Los gradientes son necesarios cuando una funciÃ³n no se conoce explÃ­citamente pero sÃ­ sus primeras derivadas y es necesario calcular las derivadas de orden mayor.
 
 @c NEED EXAMPLES HERE
 @end deffn
@@ -596,38 +596,38 @@ Los gradientes son necesarios cuando una función no se conoce explícitamente per
 @defvr {Variable del sistema} gradefs
 Valor por defecto: @code{[]}
 
-La variable @code{gradefs} contiene la lista de las funciones para las que se han definido derivadas parciales con la instrucción @code{gradef}, pero no incluye las variables para las que se han definido las derivadas parciales.
+La variable @code{gradefs} contiene la lista de las funciones para las que se han definido derivadas parciales con la instrucciÃ³n @code{gradef}, pero no incluye las variables para las que se han definido las derivadas parciales.
 
 @end defvr
 
-@deffn {Función} laplace (@var{expr}, @var{t}, @var{s})
+@deffn {FunciÃ³n} laplace (@var{expr}, @var{t}, @var{s})
 Calcula la transformada de Laplace de @var{expr} con respecto
-de la variable @var{t} y parámetro de transformación @var{s}.
+de la variable @var{t} y parÃ¡metro de transformaciÃ³n @var{s}.
 
-La función @code{laplace} reconoce en @var{expr} las funciones
+La funciÃ³n @code{laplace} reconoce en @var{expr} las funciones
 @code{delta}, @code{exp}, @code{log}, @code{sin}, @code{cos},
-@code{sinh}, @code{cosh} y @code{erf}, así como 
+@code{sinh}, @code{cosh} y @code{erf}, asÃ­ como 
 @code{derivative}, @code{integrate}, @code{sum} y @code{ilt}. 
 Si @code{laplace} no encuentra una transformada, entonces
-llama a la función @code{specint}, la cual puede encontrar
+llama a la funciÃ³n @code{specint}, la cual puede encontrar
 la transformada de Laplace de expresiones con funciones especiales,
-tales como las de Bessel. @code{specint} también puede manipular la 
-función @code{unit_step}. Véase @code{specint} para más información.
+tales como las de Bessel. @code{specint} tambiÃ©n puede manipular la 
+funciÃ³n @code{unit_step}. VÃ©ase @code{specint} para mÃ¡s informaciÃ³n.
 
-Cuando tampoco @code{specint} sea capaz de encontrar una solución,
-se devolverá una forma nominal.
+Cuando tampoco @code{specint} sea capaz de encontrar una soluciÃ³n,
+se devolverÃ¡ una forma nominal.
 
 
 @c REPHRASE THIS
 @c FALTA AQUI UN PARRAFO
 
-La función @code{laplace} reconoce integrales de convolución 
+La funciÃ³n @code{laplace} reconoce integrales de convoluciÃ³n 
 de la forma @code{integrate (f(x) * g(t - x), x, 0, t)},
 no pudiendo reconocer otros tipos de convoluciones.
 
-Las relaciones funcionales se deben representar explícitamente en @var{expr}; las relaciones implícitas establecidas por @code{depends} no son reconocidas. Así, si @var{f} depende de @var{x} y @var{y}, @code{f (x, y)} debe aparecer en @var{expr}.
+Las relaciones funcionales se deben representar explÃ­citamente en @var{expr}; las relaciones implÃ­citas establecidas por @code{depends} no son reconocidas. AsÃ­, si @var{f} depende de @var{x} y @var{y}, @code{f (x, y)} debe aparecer en @var{expr}.
 
-Véase también @code{ilt}, la transformada inversa de Laplace.
+VÃ©ase tambiÃ©n @code{ilt}, la transformada inversa de Laplace.
 
 Ejemplos:
 @c GENERATED FROM THE FOLLOWING:

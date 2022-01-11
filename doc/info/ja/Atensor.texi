@@ -104,7 +104,9 @@ dotexptsimp:false;
 望みの整理を得ることができるわけではありません。
 
 @opencatbox
-@category{Tensors} @category{Share packages} @category{Package atensor}
+@category{Tensors}
+@category{Share packages}
+@category{Package atensor}
 @closecatbox
 
 @c end concepts atensor
@@ -187,7 +189,8 @@ dotexptsimp:false;
 保護手段が使われます。
 
 @opencatbox
-@category{Package atensor} @category{Simplification functions}
+@category{Package atensor}
+@category{Simplification functions}
 @closecatbox
 
 @end deffn
@@ -213,7 +216,8 @@ dotexptsimp:false;
 @code{abasep}を参照してください。
 
 @opencatbox
-@category{Package atensor} @category{Global variables}
+@category{Package atensor}
+@category{Global variables}
 @closecatbox
 
 @end defvr
@@ -225,7 +229,8 @@ dotexptsimp:false;
 デフォルトは、単位行列 @code{ident(3)}です。
 
 @opencatbox
-@category{Package atensor} @category{Global variables}
+@category{Package atensor}
+@category{Global variables}
 @closecatbox
 
 @end defvr
@@ -236,7 +241,8 @@ dotexptsimp:false;
 基底ベクトルのシンボル。
 
 @opencatbox
-@category{Package atensor} @category{Global variables}
+@category{Package atensor}
+@category{Global variables}
 @closecatbox
 
 @end defvr
@@ -308,7 +314,8 @@ dotexptsimp:false;
 1と @code{adim}の間の数値の添字を持つ添字付きシンボルかどうか、チェックします。
 
 @opencatbox
-@category{Package atensor} @category{Predicate functions}
+@category{Package atensor}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn

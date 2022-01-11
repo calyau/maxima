@@ -1,41 +1,41 @@
 @c English version 2013-04-04
 @menu
-* Funciones para los números::
-* Funciones para los números complejos::
+* Funciones para los nÃºmeros::
+* Funciones para los nÃºmeros complejos::
 * Funciones combinatorias::
-* Funciones radicales exponenciales y logarítmicas::
-* Funciones trigonométricas::
-* Números aleatorios::
+* Funciones radicales exponenciales y logarÃ­tmicas::
+* Funciones trigonomÃ©tricas::
+* NÃºmeros aleatorios::
 @end menu
 
 
 
 
-@node Funciones para los números, Funciones para los números complejos, Funciones matemáticas, Funciones matemáticas
-@section Funciones para los números
+@node Funciones para los nÃºmeros, Funciones para los nÃºmeros complejos, Funciones matemÃ¡ticas, Funciones matemÃ¡ticas
+@section Funciones para los nÃºmeros
 
 
-@deffn {Función} abs (@var{z})
-La función @code{abs} representa el valor absoluto y se puede aplicar tanto 
-a argumentos numéricos como simbólicos. Si el argumento @var{z} es un
-número real o complejo, @code{abs} devuelve el valor absoluto de @var{z}.
-Si es posible, las expresiones simbólicas que utilizan la función del
-valor absoluto también se simplifican.
+@deffn {FunciÃ³n} abs (@var{z})
+La funciÃ³n @code{abs} representa el valor absoluto y se puede aplicar tanto 
+a argumentos numÃ©ricos como simbÃ³licos. Si el argumento @var{z} es un
+nÃºmero real o complejo, @code{abs} devuelve el valor absoluto de @var{z}.
+Si es posible, las expresiones simbÃ³licas que utilizan la funciÃ³n del
+valor absoluto tambiÃ©n se simplifican.
 
-Maxima puede derivar, integrar y calcular límites de expresiones
+Maxima puede derivar, integrar y calcular lÃ­mites de expresiones
 que contengan a @code{abs}. El paquete @code{abs_integrate} extiende las
 capacidades de Maxima para calcular integrales que contengan llamadas a
-@code{abs}. Véase @code{(%i12)} en el ejemplo de más abajo.
+@code{abs}. VÃ©ase @code{(%i12)} en el ejemplo de mÃ¡s abajo.
 
-Cuando se aplica a una lista o matriz, @code{abs} se distribuye automáticamente
-sobre sus elementos. De forma similar, también se distribuye sobre los dos
+Cuando se aplica a una lista o matriz, @code{abs} se distribuye automÃ¡ticamente
+sobre sus elementos. De forma similar, tambiÃ©n se distribuye sobre los dos
 miembros de una igualdad. Para cambiar este comportamiento por defecto, 
-véase la variable @code{distribute_over}.
+vÃ©ase la variable @code{distribute_over}.
 
 Ejemplos:
 
-Cálculo del valor absoluto de números reales y complejos, incluyendo
-constantes numéricas e infinitos. El primer ejemplo muestra cómo 
+CÃ¡lculo del valor absoluto de nÃºmeros reales y complejos, incluyendo
+constantes numÃ©ricas e infinitos. El primer ejemplo muestra cÃ³mo 
 @code{abs} se distribuye sobre los elementos de una lista.
 
 @example
@@ -51,7 +51,7 @@ constantes numéricas e infinitos. El primer ejemplo muestra cómo
 (%o4)                   [inf, inf, inf]
 @end example
 
-Simplificación de expresiones que contienen @code{abs}:
+SimplificaciÃ³n de expresiones que contienen @code{abs}:
 
 @example
 (%i5) abs(x^2);
@@ -67,10 +67,10 @@ Simplificación de expresiones que contienen @code{abs}:
 (%o8)                       abs(x)
 @end example
 
-Integrando y derivando con la función @code{abs}. Nótese que se pueden
-calcular más integrales que involucren la función @code{abs} si se
-carga el paquete @code{abs_integrate}. El último ejemplo muestra la
-transformada de Laplace de @code{abs}. Véase @code{laplace}.
+Integrando y derivando con la funciÃ³n @code{abs}. NÃ³tese que se pueden
+calcular mÃ¡s integrales que involucren la funciÃ³n @code{abs} si se
+carga el paquete @code{abs_integrate}. El Ãºltimo ejemplo muestra la
+transformada de Laplace de @code{abs}. VÃ©ase @code{laplace}.
 
 @example
 (%i9) diff(x*abs(x),x),expand;
@@ -111,14 +111,14 @@ transformada de Laplace de @code{abs}. Véase @code{laplace}.
 
 
 
-@deffn {Función} ceiling (@var{x})
-Si @var{x} es un número real, devuelve el menor entero mayor o igual que @var{x}.  
+@deffn {FunciÃ³n} ceiling (@var{x})
+Si @var{x} es un nÃºmero real, devuelve el menor entero mayor o igual que @var{x}.  
 
-Si @var{x} es una expresión constante (por ejemplo, @code{10 * %pi}), 
-@code{ceiling} evalúa @var{x} haciendo uso de números grandes en coma flotante (big floats), aplicando a continuación
- @code{ceiling} al número decimal obtenido. Puesto que @code{ceiling} hace evaluaciones en coma flotante, es posible, pero improbable, que esta función devuelva un valor erróneo para entradas constantes. Para evitar estos errores, la evaluación en punto flotante se lleva a cabo utilizando tres valores para @code{fpprec}.
+Si @var{x} es una expresiÃ³n constante (por ejemplo, @code{10 * %pi}), 
+@code{ceiling} evalÃºa @var{x} haciendo uso de nÃºmeros grandes en coma flotante (big floats), aplicando a continuaciÃ³n
+ @code{ceiling} al nÃºmero decimal obtenido. Puesto que @code{ceiling} hace evaluaciones en coma flotante, es posible, pero improbable, que esta funciÃ³n devuelva un valor errÃ³neo para entradas constantes. Para evitar estos errores, la evaluaciÃ³n en punto flotante se lleva a cabo utilizando tres valores para @code{fpprec}.
 
-Para argumentos no constantes, @code{ceiling} intenta devolver un valor simplificado. Aquí se presentan algunos ejemplos sobre las simplificaciones que @code{ceiling} es capaz de hacer:
+Para argumentos no constantes, @code{ceiling} intenta devolver un valor simplificado. AquÃ­ se presentan algunos ejemplos sobre las simplificaciones que @code{ceiling} es capaz de hacer:
 
 @c ===beg===
 @c ceiling (ceiling (x));
@@ -145,10 +145,10 @@ $$\left \lceil a \right \rceil$$
 (%o7)                                false
 @end example
 
-La función @code{ceiling} no se extiende automáticamente a los elementos de listas y matrices.
-Por último, para todos los argumentos que tengan una forma compleja, @code{ceiling} devuelve una forma nominal.
+La funciÃ³n @code{ceiling} no se extiende automÃ¡ticamente a los elementos de listas y matrices.
+Por Ãºltimo, para todos los argumentos que tengan una forma compleja, @code{ceiling} devuelve una forma nominal.
 
-Si el rango de una función es subconjunto de los números enteros, entonces puede ser declarada como @code{integervalued}. Tanto @code{ceiling} como @code{floor} son funciones que hacen uso de esta información; por ejemplo:
+Si el rango de una funciÃ³n es subconjunto de los nÃºmeros enteros, entonces puede ser declarada como @code{integervalued}. Tanto @code{ceiling} como @code{floor} son funciones que hacen uso de esta informaciÃ³n; por ejemplo:
 
 @c ===beg===
 @c declare (f, integervalued)$
@@ -219,23 +219,23 @@ Ejemplo de uso:
 
 
 
-@deffn {Función} entier (@var{x})
-Devuelve el mayor entero menor o igual a @var{x}, siendo @var{x} numérico. La función  @code{fix} (como en
-@code{fixnum}) es un sinónimo, de modo que @code{fix(@var{x})} hace justamente lo mismo.
+@deffn {FunciÃ³n} entier (@var{x})
+Devuelve el mayor entero menor o igual a @var{x}, siendo @var{x} numÃ©rico. La funciÃ³n  @code{fix} (como en
+@code{fixnum}) es un sinÃ³nimo, de modo que @code{fix(@var{x})} hace justamente lo mismo.
 
 @end deffn
 
 
 
-@deffn {Función} floor (@var{x})
+@deffn {FunciÃ³n} floor (@var{x})
 
-Si @var{x} es un número real, devuelve el mayor entero menor o igual que @var{x}.
+Si @var{x} es un nÃºmero real, devuelve el mayor entero menor o igual que @var{x}.
 
-Si @var{x} es una expresión constante (por ejemplo, @code{10 * %pi}), 
-@code{floor} evalúa @var{x} haciendo uso de números grandes en coma flotante (big floats), aplicando a continuación
- @code{floor} al número decimal obtenido. Puesto que @code{floor} hace evaluaciones en coma flotante, es posible, pero improbable, que esta función devuelva un valor erróneo para entradas constantes. Para evitar estos errores, la evaluación en punto flotante se lleva a cabo utilizando tres valores para @code{fpprec}.
+Si @var{x} es una expresiÃ³n constante (por ejemplo, @code{10 * %pi}), 
+@code{floor} evalÃºa @var{x} haciendo uso de nÃºmeros grandes en coma flotante (big floats), aplicando a continuaciÃ³n
+ @code{floor} al nÃºmero decimal obtenido. Puesto que @code{floor} hace evaluaciones en coma flotante, es posible, pero improbable, que esta funciÃ³n devuelva un valor errÃ³neo para entradas constantes. Para evitar estos errores, la evaluaciÃ³n en punto flotante se lleva a cabo utilizando tres valores para @code{fpprec}.
 
-Para argumentos no constantes, @code{floor} intenta devolver un valor simplificado. Aquí se presentan algunos ejemplos sobre las simplificaciones que @code{floor} es capaz de hacer:
+Para argumentos no constantes, @code{floor} intenta devolver un valor simplificado. AquÃ­ se presentan algunos ejemplos sobre las simplificaciones que @code{floor} es capaz de hacer:
 
 @c ===beg===
 @c floor (ceiling (x));
@@ -262,10 +262,10 @@ $$\left \lfloor a \right \rfloor$$
 (%o7)                         false
 @end example
 
-La función @code{floor} no se extiende automáticamente a los elementos de listas y matrices.
-Por último, para todos los argumentos que tengan una forma compleja, @code{floor} devuelve una forma nominal.
+La funciÃ³n @code{floor} no se extiende automÃ¡ticamente a los elementos de listas y matrices.
+Por Ãºltimo, para todos los argumentos que tengan una forma compleja, @code{floor} devuelve una forma nominal.
 
-Si el rango de una función es subconjunto de los números enteros, entonces puede ser declarada como @code{integervalued}. Tanto @code{ceiling} como @code{floor} son funciones que hacen uso de esta información; por ejemplo:
+Si el rango de una funciÃ³n es subconjunto de los nÃºmeros enteros, entonces puede ser declarada como @code{integervalued}. Tanto @code{ceiling} como @code{floor} son funciones que hacen uso de esta informaciÃ³n; por ejemplo:
 
 @c ===beg===
 @c declare (f, integervalued)$
@@ -283,42 +283,42 @@ Si el rango de una función es subconjunto de los números enteros, entonces puede
 @end deffn
 
 
-@deffn {Función} fix (@var{x})
-Es un sinónimo de  @code{entier (@var{x})}.
+@deffn {FunciÃ³n} fix (@var{x})
+Es un sinÃ³nimo de  @code{entier (@var{x})}.
 
 @end deffn
 
 
 
-@deffn {Función} lmax (@var{L})
+@deffn {FunciÃ³n} lmax (@var{L})
 
-Si @var{L} es una lista o conjunto, devuelve @code{apply ('max, args (@var{L}))}.  Si @var{L} no es una lista o conjunto, envía un mensaje de error.
+Si @var{L} es una lista o conjunto, devuelve @code{apply ('max, args (@var{L}))}.  Si @var{L} no es una lista o conjunto, envÃ­a un mensaje de error.
 @end deffn
 
 
 
-@deffn {Función} lmin (@var{L})
+@deffn {FunciÃ³n} lmin (@var{L})
 
-Si @var{L} es una lista o conjunto, devuelve @code{apply ('min, args (@var{L}))}.  Si @var{L} no es una lista o conjunto, envía un mensaje de error.
+Si @var{L} es una lista o conjunto, devuelve @code{apply ('min, args (@var{L}))}.  Si @var{L} no es una lista o conjunto, envÃ­a un mensaje de error.
 @end deffn
 
 
 
-@deffn {Función} max (@var{x_1}, ..., @var{x_n})
+@deffn {FunciÃ³n} max (@var{x_1}, ..., @var{x_n})
 Devuelve un valor simplificado de la mayor de las expresiones desde @var{x_1} hasta @var{x_n}.
-Si @code{get (trylevel, maxmin)} es 2 o más, @code{max} aplica la simplificación 
-@code{max (e, -e) --> |e|}.  Si @code{get (trylevel, maxmin)} es 3 o más, @var{max} intenta
-eliminar las expresiones que estén entre otros dos de los argumentos dados; por ejemplo,
+Si @code{get (trylevel, maxmin)} es 2 o mÃ¡s, @code{max} aplica la simplificaciÃ³n 
+@code{max (e, -e) --> |e|}.  Si @code{get (trylevel, maxmin)} es 3 o mÃ¡s, @var{max} intenta
+eliminar las expresiones que estÃ©n entre otros dos de los argumentos dados; por ejemplo,
 @code{max (x, 2*x, 3*x) --> max (x, 3*x)}. Para asignar el valor 2 a @code{trylevel} se puede hacer
 @code{put (trylevel, 2, maxmin)}.
 
 @end deffn
 
-@deffn {Función} min (@var{x_1}, ..., @var{x_n})
+@deffn {FunciÃ³n} min (@var{x_1}, ..., @var{x_n})
 Devuelve un valor simplificado de la menor de las expresiones desde @var{x_1} hasta @var{x_n}.
-Si @code{get (trylevel, maxmin)} es 2 o más, @code{min} aplica la simplificación 
-@code{min (e, -e) --> |e|}.  Si @code{get (trylevel, maxmin)} es 3 o más, @var{min} intenta
-eliminar las expresiones que estén entre otros dos de los argumentos dados; por ejemplo,
+Si @code{get (trylevel, maxmin)} es 2 o mÃ¡s, @code{min} aplica la simplificaciÃ³n 
+@code{min (e, -e) --> |e|}.  Si @code{get (trylevel, maxmin)} es 3 o mÃ¡s, @var{min} intenta
+eliminar las expresiones que estÃ©n entre otros dos de los argumentos dados; por ejemplo,
 @code{min (x, 2*x, 3*x) --> min (x, 3*x)}. Para asignar el valor 2 a @code{trylevel} se puede hacer
 @code{put (trylevel, 2, maxmin)}.
 
@@ -326,29 +326,29 @@ eliminar las expresiones que estén entre otros dos de los argumentos dados; por 
 
 
 
-@deffn {Función} round (@var{x})
-Si @var{x} es un número real, la función devuelve el entero más 
-próximo a @var{x}. Los múltiplos de 1/2 se redondean al entero par más próximo.
-La evaluación de @var{x} es similar a @code{floor} y @code{ceiling}.
+@deffn {FunciÃ³n} round (@var{x})
+Si @var{x} es un nÃºmero real, la funciÃ³n devuelve el entero mÃ¡s 
+prÃ³ximo a @var{x}. Los mÃºltiplos de 1/2 se redondean al entero par mÃ¡s prÃ³ximo.
+La evaluaciÃ³n de @var{x} es similar a @code{floor} y @code{ceiling}.
 
 @end deffn
 
 
 
-@deffn {Función} signum (@var{x})
-Tanto sea @var{x} real o complejo, la función @code{signum} devuelve 0 si @var{x}
-es cero. Para un valor no nulo de @var{x}, la función devuelve @code{x/abs(x)}.
+@deffn {FunciÃ³n} signum (@var{x})
+Tanto sea @var{x} real o complejo, la funciÃ³n @code{signum} devuelve 0 si @var{x}
+es cero. Para un valor no nulo de @var{x}, la funciÃ³n devuelve @code{x/abs(x)}.
 
-Para valores no numéricos de @var{x}, Maxima intenta determinar el
+Para valores no numÃ©ricos de @var{x}, Maxima intenta determinar el
 signo del argumento. Cuando es negativo, cero o positivo, @code{signum}
 devuelve -1, 0 o 1, respectivamente. En caso de no poder determinarse,
 @code{signum} devuelve una forma simplificada equivalente. Estas 
-simplificaciones incluyen la transformación de @code{signum(-x)}
+simplificaciones incluyen la transformaciÃ³n de @code{signum(-x)}
 en @code{-signum(x)} y la de @code{signum(x*y)} en
 @code{signum(x) * signum(y)}.
 
-La función @code{signum} es distributiva respecto de listas,
-matrices o ecuaciones. Véase @code{distribute_over}.
+La funciÃ³n @code{signum} es distributiva respecto de listas,
+matrices o ecuaciones. VÃ©ase @code{distribute_over}.
 
 @end deffn
 
@@ -359,36 +359,36 @@ matrices o ecuaciones. Véase @code{distribute_over}.
 
 
 
-@node Funciones para los números complejos, Funciones combinatorias, Funciones para los números, Funciones matemáticas
-@section Funciones para los números complejos
+@node Funciones para los nÃºmeros complejos, Funciones combinatorias, Funciones para los nÃºmeros, Funciones matemÃ¡ticas
+@section Funciones para los nÃºmeros complejos
 
 
-@deffn {Función} cabs (@var{expr})
-Calcula el valor absoluto de una expresión que representa a un número
-complejo. Al contrario que @code{abs}, la función @code{cabs} siempre
+@deffn {FunciÃ³n} cabs (@var{expr})
+Calcula el valor absoluto de una expresiÃ³n que representa a un nÃºmero
+complejo. Al contrario que @code{abs}, la funciÃ³n @code{cabs} siempre
 descompone su argumento en sus partes real e imaginaria. Si @code{x} e
-@code{y} representan variables o expresiones reales, la función @code{cabs}
+@code{y} representan variables o expresiones reales, la funciÃ³n @code{cabs}
 calcula el valor absoluto de @code{x + %i*y} como
 @example
                            2    2
                      sqrt(y  + x )
 @end example
 
-La función @code{cabs} puede utilizar propiedades como la simetría
-de funciones complejas para calcular el valor absoluto de una expresión.
+La funciÃ³n @code{cabs} puede utilizar propiedades como la simetrÃ­a
+de funciones complejas para calcular el valor absoluto de una expresiÃ³n.
 
-@code{cabs} no es una función apropiada para cálculos simbólicos; en tales
-casos, que incluyen la integración, diferenciación y límites que
+@code{cabs} no es una funciÃ³n apropiada para cÃ¡lculos simbÃ³licos; en tales
+casos, que incluyen la integraciÃ³n, diferenciaciÃ³n y lÃ­mites que
 contienen valores absolutos, es mejor utilizar @code{abs}.
 
-El resultado devuelto por @code{cabs} puede incluir la función de valor absoluto,
+El resultado devuelto por @code{cabs} puede incluir la funciÃ³n de valor absoluto,
 @code{abs}, y el arco tangente, @code{atan2}.
 
-Cuando se aplica a una lista o matriz, @code{cabs} automáticamente se distribuye
-sobre sus elementos. También se distribuye sobre los dos miembros de una 
+Cuando se aplica a una lista o matriz, @code{cabs} automÃ¡ticamente se distribuye
+sobre sus elementos. TambiÃ©n se distribuye sobre los dos miembros de una 
 igualdad.
 
-Para otras formas de operar con números complejos, véanse las funciones
+Para otras formas de operar con nÃºmeros complejos, vÃ©anse las funciones
 @code{rectform}, @code{realpart}, @code{imagpart}, @code{carg}, @code{conjugate}
 y @code{polarform}.
 
@@ -405,7 +405,7 @@ Ejemplos con @code{sqrt} and @code{sin}:
 (%o2)       sqrt(cos (x) sinh (y) + sin (x) cosh (y))
 @end example
 
-La simetría especular de la función de error @code{erf} se utiliza
+La simetrÃ­a especular de la funciÃ³n de error @code{erf} se utiliza
 para calcular el valor absoluto del argumento complejo:
 
 @example
@@ -433,15 +433,15 @@ complejos. Un ejemplo para @code{bessel_j}:
 
 
 
-@deffn {Función} carg (@var{z})
+@deffn {FunciÃ³n} carg (@var{z})
 Devuelve el argumento complejo de @var{z}.
-El argumento complejo es un ángulo @code{theta} en @code{(-%pi, %pi]}
+El argumento complejo es un Ã¡ngulo @code{theta} en @code{(-%pi, %pi]}
 tal que @code{r exp (theta %i) = @var{z}} donde @code{r} es la magnitud de @var{z}.
 
-La función @code{carg} es computacional, no simplificativa.
+La funciÃ³n @code{carg} es computacional, no simplificativa.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 
-Véanse también @code{abs} (módulo complejo), @code{polarform}, @code{rectform},
+VÃ©anse tambiÃ©n @code{abs} (mÃ³dulo complejo), @code{polarform}, @code{rectform},
 @code{realpart} y @code{imagpart}.
 
 Ejemplos:
@@ -478,7 +478,7 @@ Ejemplos:
 
 
 
-@deffn {Función} conjugate (@var{x})
+@deffn {FunciÃ³n} conjugate (@var{x})
 Devuelve el conjugado complejo de @var{x}.
 
 @c ===beg===
@@ -510,15 +510,15 @@ Devuelve el conjugado complejo de @var{x}.
 
 
 
-@deffn {Función} imagpart (@var{expr})
-Devuelve la parte imaginaria de la expresión @var{expr}.
+@deffn {FunciÃ³n} imagpart (@var{expr})
+Devuelve la parte imaginaria de la expresiÃ³n @var{expr}.
 
-La función @code{imagpart} es computacional,
+La funciÃ³n @code{imagpart} es computacional,
 no simplificativa.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 @c SEE ALSO SF BUG REPORT # 902290
 
-Véanse también @code{abs}, @code{carg}, @code{polarform}, @code{rectform} y @code{realpart}.
+VÃ©anse tambiÃ©n @code{abs}, @code{carg}, @code{polarform}, @code{rectform} y @code{realpart}.
 
 @c NEED EXAMPLES HERE
 @end deffn
@@ -526,8 +526,8 @@ Véanse también @code{abs}, @code{carg}, @code{polarform}, @code{rectform} y @cod
 
 
 @c NEEDS EXAMPLES
-@deffn {Función} polarform (@var{expr})
-Devuelve una expresión de la forma @code{r %e^(%i theta)} equivalente a @var{expr},
+@deffn {FunciÃ³n} polarform (@var{expr})
+Devuelve una expresiÃ³n de la forma @code{r %e^(%i theta)} equivalente a @var{expr},
 con @code{r} y @code{theta} son reales.
 
 @end deffn
@@ -536,14 +536,14 @@ con @code{r} y @code{theta} son reales.
 
 
 @c NEEDS EXAMPLES
-@deffn {Función} realpart (@var{expr})
-Devuelve la parte real de @var{expr}. La funciones @code{realpart} y @code{imagpart} operan también con expresiones que contengan funciones trigonométricas e hiperbólicas, raíces cuadradas, logaritmos y exponentes.
+@deffn {FunciÃ³n} realpart (@var{expr})
+Devuelve la parte real de @var{expr}. La funciones @code{realpart} y @code{imagpart} operan tambiÃ©n con expresiones que contengan funciones trigonomÃ©tricas e hiperbÃ³licas, raÃ­ces cuadradas, logaritmos y exponentes.
 
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {Función} rectform (@var{expr})
-Devuelve una expresión de la forma @code{a + b %i} equivalente a @var{expr}, con @var{a} y @var{b} reales.
+@deffn {FunciÃ³n} rectform (@var{expr})
+Devuelve una expresiÃ³n de la forma @code{a + b %i} equivalente a @var{expr}, con @var{a} y @var{b} reales.
 
 @end deffn
 
@@ -553,7 +553,7 @@ Devuelve una expresión de la forma @code{a + b %i} equivalente a @var{expr}, con
 
 
 
-@node Funciones combinatorias, Funciones radicales exponenciales y logarítmicas, Funciones para los números complejos, Funciones matemáticas
+@node Funciones combinatorias, Funciones radicales exponenciales y logarÃ­tmicas, Funciones para los nÃºmeros complejos, Funciones matemÃ¡ticas
 @section Funciones combinatorias
 
 
@@ -564,18 +564,18 @@ Devuelve una expresión de la forma @code{a + b %i} equivalente a @var{expr}, con
 @end ifinfo
 El operador doble factorial.
 
-Para un número entero, de punto flotante o racional @code{n},
-@code{n!!} se evaluará como el producto de @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))}
+Para un nÃºmero entero, de punto flotante o racional @code{n},
+@code{n!!} se evaluarÃ¡ como el producto de @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))}
 donde @code{k} es igual a @code{entier(n/2)}, que es, el mayor entero
 menor o igual a @code{n/2}. 
-Note que esta definición no coincide con otras definciones publicadas para argumentos, los cuales no son enteros. 
+Note que esta definiciÃ³n no coincide con otras definciones publicadas para argumentos, los cuales no son enteros. 
 
 @c REPORTED TO BUG TRACKER AS BUG # 1093138 !!!
 
 Para un entero par (o impar) @code{n}, @code{n!} se evalua el producto de
 todos los enteros pares (o impares) consecutivos desde 2 (o 1) por @code{n} inclusive.  
 
-Para un argumento @code{n} el cual no es un número entero, punto flotante o racional, @code{n!!} produce una forma de nombre @code{genfact (n, n/2, 2)}. 
+Para un argumento @code{n} el cual no es un nÃºmero entero, punto flotante o racional, @code{n!!} produce una forma de nombre @code{genfact (n, n/2, 2)}. 
 
 @c n!! IS NEITHER SIMPLIFIED NOR EVALUATED IN THIS CASE -- MENTION THAT? OR TOO MUCH DETAIL ???
 
@@ -584,9 +584,9 @@ Para un argumento @code{n} el cual no es un número entero, punto flotante o raci
 
 
 
-@deffn {Función} binomial (@var{x}, @var{y})
+@deffn {FunciÃ³n} binomial (@var{x}, @var{y})
 Es el coeficiente binomial @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}.
-Si @var{x} y @var{y} son enteros, entonces se calcula el valor numérico 
+Si @var{x} y @var{y} son enteros, entonces se calcula el valor numÃ©rico 
 del coeficiente binomial. Si @var{y} o @var{x - y} son enteros, 
 el coeficiente binomial se expresa como un polinomio.
 
@@ -619,63 +619,63 @@ Ejemplos:
 
 
 
-@deffn {Función} factcomb (@var{expr})
+@deffn {FunciÃ³n} factcomb (@var{expr})
 Trata de combinar los coeficientes de los factoriales de @var{expr} con los mismos factoriales, convirtiendo, por ejemplo, @code{(n + 1)*n!} en @code{(n + 1)!}.
 
-Si la variable @code{sumsplitfact} vale @code{false} hará que @code{minfactorial} se aplique después de @code{factcomb}.
+Si la variable @code{sumsplitfact} vale @code{false} harÃ¡ que @code{minfactorial} se aplique despuÃ©s de @code{factcomb}.
 
 @end deffn
 
 
 
-@deffn {Función} factorial (@var{x})
+@deffn {FunciÃ³n} factorial (@var{x})
 @deffnx {Operador} !
 
-Representa la función factorial. Maxima considera @code{factorial (@var{x})}
-y @code{@var{x}!} como sinónimos.
+Representa la funciÃ³n factorial. Maxima considera @code{factorial (@var{x})}
+y @code{@var{x}!} como sinÃ³nimos.
 
-Para cualquier número complejo @code{x}, excepto para
+Para cualquier nÃºmero complejo @code{x}, excepto para
 enteros negativos, @code{x!} se define como @code{gamma(x+1)}. 
 
 Para un entero @code{x}, @code{x!} se reduce al producto de los enteros
 desde 1 hasta @code{x} inclusive. @code{0!} se reduce a 1.
-Para un número real o complejo en formato de coma flotante @code{x}, 
+Para un nÃºmero real o complejo en formato de coma flotante @code{x}, 
 @code{x!} se reduce al valor de @code{gamma(x+1)}. Cuando
 @code{x} es igual a @code{n/2}, siendo @code{n} un entero impar, entonces
 @code{x!} se reduce a un factor racional multiplicado por @code{sqrt(%pi)}
 (pues @code{gamma(1/2)}) es igual a @code{sqrt(%pi)}).
 
 Las variables opcionales @code{factlim} y @code{gammalim} controlan la
-evaluación numérica de factoriales de argumentos enteros y racionales.
+evaluaciÃ³n numÃ©rica de factoriales de argumentos enteros y racionales.
 
 Las funciones @code{minfactorial} y @code{factcomb} simplifican expresiones
 que contiene factoriales.
 
-Véanse también @code{factlim}, @code{gammalim}, @code{minfactorial} y 
+VÃ©anse tambiÃ©n @code{factlim}, @code{gammalim}, @code{minfactorial} y 
 @code{factcomb}.
 
 Las funciones @code{gamma}, @code{bffac} y @code{cbffac} son variaciones de
-la función matemática gamma. Las funciones @code{bffac} y @code{cbffac} 
-son llamadas internamente desde @code{gamma} para evaluar la función gamma 
-de números reales y complejos decimales con precisión de reales grandes
+la funciÃ³n matemÃ¡tica gamma. Las funciones @code{bffac} y @code{cbffac} 
+son llamadas internamente desde @code{gamma} para evaluar la funciÃ³n gamma 
+de nÃºmeros reales y complejos decimales con precisiÃ³n de reales grandes
 (bigfloats).
 
 Las funciones @code{makegamma} substituye a @code{gamma} para factoriales 
 y funciones relacionadas. 
 
-Maxima reconoce la derivada de la función factorial y los límites
-para ciertos valores específicos, tales como los enteros negativos.
+Maxima reconoce la derivada de la funciÃ³n factorial y los lÃ­mites
+para ciertos valores especÃ­ficos, tales como los enteros negativos.
 
-La variable opcional @code{factorial_expand} controla la simplificación de
+La variable opcional @code{factorial_expand} controla la simplificaciÃ³n de
 expresiones como @code{(n+x)!}, para @code{n} entero.
 
-Véase también @code{binomial}.
+VÃ©ase tambiÃ©n @code{binomial}.
 
 Ejemplos:
 
-El factorial de un entero se reduce a un número exacto, a menos que
-el argumento sea mayor que @code{factlim}. Los factoriales de números
-reales o complejos se evalúan como decimales de coma flotante.
+El factorial de un entero se reduce a un nÃºmero exacto, a menos que
+el argumento sea mayor que @code{factlim}. Los factoriales de nÃºmeros
+reales o complejos se evalÃºan como decimales de coma flotante.
 
 @c ===beg===
 @c factlim : 10;
@@ -698,8 +698,8 @@ reales o complejos se evalúan como decimales de coma flotante.
        3.430658398165454b-1 %i + 6.529654964201667b-1]
 @end example
 
-El factorial de una constante conocida o de una expresión general
-no se calcula. Pero puede ser posible reducir el factorial después de
+El factorial de una constante conocida o de una expresiÃ³n general
+no se calcula. Pero puede ser posible reducir el factorial despuÃ©s de
 evaluado el argumento.
 
 @c ===beg===
@@ -716,7 +716,7 @@ evaluado el argumento.
 @end example
 
 Los factoriales son simplificados o reducidos, no evaluados.
-Así @code{x!} puede ser reemplazado en una expresión 
+AsÃ­ @code{x!} puede ser reemplazado en una expresiÃ³n 
 nominal. 
 
 @c ===beg===
@@ -730,7 +730,7 @@ nominal.
                              2432902008176640000]
 @end example
 
-Maxima reconoce la derivada de la función factorial.
+Maxima reconoce la derivada de la funciÃ³n factorial.
 
 @c ===beg===
 @c diff(x!,x);
@@ -741,8 +741,8 @@ Maxima reconoce la derivada de la función factorial.
                                       0
 @end example
 
-La variable opcional @code{factorial_expand} controla la simplificación de
-expresiones con la función factorial.
+La variable opcional @code{factorial_expand} controla la simplificaciÃ³n de
+expresiones con la funciÃ³n factorial.
 
 @c ===beg===
 @c (n+1)!/n!,factorial_expand:true;
@@ -758,7 +758,7 @@ expresiones con la función factorial.
 @defvr {Variable opcional} factlim
 Valor por defecto: -1
 
-La variable @code{factlim} especifica el mayor factorial que será expandido automáticamente.  Si su valor es -1, entonces se expandirán todos los enteros.
+La variable @code{factlim} especifica el mayor factorial que serÃ¡ expandido automÃ¡ticamente.  Si su valor es -1, entonces se expandirÃ¡n todos los enteros.
 
 @end defvr
 
@@ -767,30 +767,30 @@ La variable @code{factlim} especifica el mayor factorial que será expandido auto
 @defvr {Variable opcional} factorial_expand
 Valor por defecto: false
 
-La variable @code{factorial_expand} controla la simplificación
+La variable @code{factorial_expand} controla la simplificaciÃ³n
 de expresiones tales como @code{(n+1)!}, siendo @code{n} un entero. 
 
-Véase @code{!} para un ejemplo.
+VÃ©ase @code{!} para un ejemplo.
 
 @end defvr
 
 
 
 @c IS THIS DEFINITION CORRECT ??
-@deffn {Función} genfact (@var{x}, @var{y}, @var{z})
+@deffn {FunciÃ³n} genfact (@var{x}, @var{y}, @var{z})
 Devuelve el factorial generalizado, definido como
-@code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Así, para el entero @var{x},
+@code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  AsÃ­, para el entero @var{x},
 @code{genfact (x, x, 1) = x!} y @code{genfact (x, x/2, 2) = x!!}.
 
 @end deffn
 
 
 
-@deffn {Función} minfactorial (@var{expr})
+@deffn {FunciÃ³n} minfactorial (@var{expr})
 
 Busca en @var{expr} la presencia de dos factoriales que solo se
 diferencien en una unidad; en tal caso, @code{minfactorial}
-devuelve una expresión simplificada.
+devuelve una expresiÃ³n simplificada.
 
 @example
 (%i1) n!/(n+2)!;
@@ -811,7 +811,7 @@ Valor por defecto: @code{true}
 
 Si @code{sumsplitfact} vale @code{false},
 @c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
-@code{minfactorial} se aplica después de  @code{factcomb}.
+@code{minfactorial} se aplica despuÃ©s de  @code{factcomb}.
 
 @end defvr
 
@@ -823,14 +823,14 @@ Si @code{sumsplitfact} vale @code{false},
 
 
 
-@node Funciones radicales exponenciales y logarítmicas, Funciones trigonométricas, Funciones combinatorias, Funciones matemáticas
-@section Funciones radicales, exponenciales y logarítmicas
+@node Funciones radicales exponenciales y logarÃ­tmicas, Funciones trigonomÃ©tricas, Funciones combinatorias, Funciones matemÃ¡ticas
+@section Funciones radicales, exponenciales y logarÃ­tmicas
 
 
 @defvr {Variable opcional} %e_to_numlog
 Valor por defecto: @code{false}
 
-Si @code{%e_to_numlog} vale @code{true}, @code{r} es un número racional y @code{x} una expresión, @code{%e^(r*log(x))} se reduce a @code{x^r} .  Téngase en cuenta que la instrucción @code{radcan} también hace este tipo de transformaciones, así como otras más complicadas. La instrucción @code{logcontract} "contrae" expresiones que contienen algún @code{log}.
+Si @code{%e_to_numlog} vale @code{true}, @code{r} es un nÃºmero racional y @code{x} una expresiÃ³n, @code{%e^(r*log(x))} se reduce a @code{x^r} .  TÃ©ngase en cuenta que la instrucciÃ³n @code{radcan} tambiÃ©n hace este tipo de transformaciones, asÃ­ como otras mÃ¡s complicadas. La instrucciÃ³n @code{logcontract} "contrae" expresiones que contienen algÃºn @code{log}.
 @end defvr
 
 
@@ -841,11 +841,11 @@ Si @code{%emode} vale @code{true},
 @code{%e^(%pi %i x)} se simplifica como sigue.
 
 @code{%e^(%pi %i x)} se simplifica a @code{cos (%pi x) + %i sin (%pi x)} si @code{x} es
-un número decimal de coma flotante, un entero o un múltiplo de 1/2, 1/3, 1/4 o 1/6, y luego se sigue simplificando.
+un nÃºmero decimal de coma flotante, un entero o un mÃºltiplo de 1/2, 1/3, 1/4 o 1/6, y luego se sigue simplificando.
 
-Para otros valores numéricos de @code{x},
+Para otros valores numÃ©ricos de @code{x},
 @code{%e^(%pi %i x)} se simplifica a @code{%e^(%pi %i y)} donde @code{y} es @code{x - 2 k}
-para algún entero @code{k} tal que @code{abs(y) < 1}.  
+para algÃºn entero @code{k} tal que @code{abs(y) < 1}.  
 
 Si @code{%emode} vale @code{false}, no se realizan simplificaciones especiales a @code{%e^(%pi %i x)}.
 
@@ -859,9 +859,9 @@ Valor por defecto: @code{false}
 Si la variable @code{%enumer} vale @code{true} hace que @code{%e} se reemplace por
 2.718...  siempre que @code{numer} valga @code{true}. 
 
-Si @code{%enumer} vale @code{false}, esta sustitución se realiza sólo si el exponente en @code{%e^x} tiene un valor numérico.
+Si @code{%enumer} vale @code{false}, esta sustituciÃ³n se realiza sÃ³lo si el exponente en @code{%e^x} tiene un valor numÃ©rico.
 
-Véanse también @code{ev} y @code{numer}.
+VÃ©anse tambiÃ©n @code{ev} y @code{numer}.
 
 @c NEED EXAMPLES HERE
 @end defvr
@@ -869,27 +869,27 @@ Véanse también @code{ev} y @code{numer}.
 
 
 
-@deffn {Función} exp (@var{x})
-Representa la función exponencial.  
-La expresión  @code{exp (@var{x})} en la entrada se simplifica en @code{%e^@var{x}};
+@deffn {FunciÃ³n} exp (@var{x})
+Representa la funciÃ³n exponencial.  
+La expresiÃ³n  @code{exp (@var{x})} en la entrada se simplifica en @code{%e^@var{x}};
 @code{exp} no aparece en expresiones simplificadas.
 
 Si la variable @code{demoivre} vale @code{true} hace que @code{%e^(a + b %i)} se simplifique a
-@code{%e^(a (cos(b) + %i sin(b)))} si @code{b} no contiene a @code{%i}. Véase @code{demoivre}.
+@code{%e^(a (cos(b) + %i sin(b)))} si @code{b} no contiene a @code{%i}. VÃ©ase @code{demoivre}.
 
 Si la variable @code{%emode} vale @code{true}, 
-hace que  @code{%e^(%pi %i x)} se simplifique. Véase @code{%emode}.
+hace que  @code{%e^(%pi %i x)} se simplifique. VÃ©ase @code{%emode}.
 
 Si la variable @code{%enumer} vale @code{true} hace que @code{%e} se reemplace por
-2.718...  siempre que @code{numer} valga @code{true}. Véase @code{%enumer}.
+2.718...  siempre que @code{numer} valga @code{true}. VÃ©ase @code{%enumer}.
 
 @end deffn
 
 
 
-@deffn {Función} li [@var{s}] (@var{z})
+@deffn {FunciÃ³n} li [@var{s}] (@var{z})
 
-Representa la función polilogarítmica de orden @var{s} y argumento @var{z},
+Representa la funciÃ³n polilogarÃ­tmica de orden @var{s} y argumento @var{z},
 definida por la serie infinita
 
 @tex
@@ -911,12 +911,12 @@ $${\rm Li}_s \left(z\right) = \sum_{k=1}^\infty {z^k \over k^s}$$
 @code{li [2]} y @code{li [3]} son las funciones di- y trilogaritmo, respectivamente.
 
 Cuando el orden es 1, el polilogaritmo se simplifica a @code{- log (1 - z)},
-el cual a su vez se reduce a un valor numérico si @var{z} es un número
-real o complejo en coma flotante o si está presente el término @code{numer}.
+el cual a su vez se reduce a un valor numÃ©rico si @var{z} es un nÃºmero
+real o complejo en coma flotante o si estÃ¡ presente el tÃ©rmino @code{numer}.
 
-Cuando el orden es 2 ó 3,
-el polilogaritmo se reduce a un valor numérico si @var{z} es
-un número real en coma flotante o si está presente el término @code{numer}.
+Cuando el orden es 2 Ã³ 3,
+el polilogaritmo se reduce a un valor numÃ©rico si @var{z} es
+un nÃºmero real en coma flotante o si estÃ¡ presente el tÃ©rmino @code{numer}.
 
 Ejemplos:
 
@@ -970,24 +970,24 @@ Ejemplos:
 
 
 
-@deffn {Función} log (@var{x})
+@deffn {FunciÃ³n} log (@var{x})
 Representa el logaritmo natural (en base @math{e}) de @var{x}.
 
-Maxima no tiene definida una función para el logaritmo de base 10 u
-otras bases. El usuario puede hacer uso de la definición 
+Maxima no tiene definida una funciÃ³n para el logaritmo de base 10 u
+otras bases. El usuario puede hacer uso de la definiciÃ³n 
 @code{log10(x) := log(x) / log(10)}.
 
-La simplificación y evaluación de logaritmos se controla con
+La simplificaciÃ³n y evaluaciÃ³n de logaritmos se controla con
 ciertas variables globales:
 
 @table @code
 @item @code{logexpand}
 hace que @code{log(a^b)} se convierta en @code{b*log(a)}.
-Si toma el valor @code{all}, @code{log(a*b)} también se reducirá a  @code{log(a)+log(b)}.
-Si toma el valor @code{super}, entonces @code{log(a/b)} también se reducirá a
+Si toma el valor @code{all}, @code{log(a*b)} tambiÃ©n se reducirÃ¡ a  @code{log(a)+log(b)}.
+Si toma el valor @code{super}, entonces @code{log(a/b)} tambiÃ©n se reducirÃ¡ a
 @code{log(a)-log(b)}, siendo @code{a/b} racional con @code{a#1}, 
-(la expresión @code{log(1/b)}, para @code{b} entero, se simplifica siempre). 
-Si toma el valor  @code{false}, se desactivarán todas estas simplificaciones.
+(la expresiÃ³n @code{log(1/b)}, para @code{b} entero, se simplifica siempre). 
+Si toma el valor  @code{false}, se desactivarÃ¡n todas estas simplificaciones.
 
 @item @code{logsimp}
 si vale @code{false}, entonces no se transforma @code{%e} a potencias que contengan logaritmos.
@@ -997,11 +997,11 @@ si vale @code{true} se aplica la regla @code{log(-n)} -> @code{log(n)+%i*%pi},
 siendo @code{n} un entero positivo.
 
 @item @code{%e_to_numlog}
-si vale @code{true}, @code{r} es un número racional y @code{x} una expresión,
-@code{%e^(r*log(x))} se reduce a @code{x^r}. Téngase en cuenta que la 
-instrucción @code{radcan} también hace este tipo de transformaciones, 
-así como otras más complicadas. La instrucción @code{logcontract}
-"contrae" expresiones que contengan algún @code{log}.
+si vale @code{true}, @code{r} es un nÃºmero racional y @code{x} una expresiÃ³n,
+@code{%e^(r*log(x))} se reduce a @code{x^r}. TÃ©ngase en cuenta que la 
+instrucciÃ³n @code{radcan} tambiÃ©n hace este tipo de transformaciones, 
+asÃ­ como otras mÃ¡s complicadas. La instrucciÃ³n @code{logcontract}
+"contrae" expresiones que contengan algÃºn @code{log}.
 @end table
 
 @end deffn
@@ -1012,21 +1012,21 @@ así como otras más complicadas. La instrucción @code{logcontract}
 Valor por defecto: @code{false}
 
 Cuando se calculan integrales indefinidas en las que se generan logaritmos, como en @code{integrate(1/x,x)}, el resultado se devuelve de la forma  @code{log(abs(...))} si @code{logabs} vale @code{true}, o de la forma @code{log(...)} si
-@code{logabs} vale @code{false}. En la integración definida se hace la asignación @code{logabs:true}, ya que aquí es normalmente necesario evaluar la integral indefinida en los extremos del intervalo de integración.
+@code{logabs} vale @code{false}. En la integraciÃ³n definida se hace la asignaciÃ³n @code{logabs:true}, ya que aquÃ­ es normalmente necesario evaluar la integral indefinida en los extremos del intervalo de integraciÃ³n.
 
 @end defvr
 
 @c NEEDS EXAMPLES
 @defvr {Variable opcional} logarc
-@defvrx {Función} logarc (@var{expr})
+@defvrx {FunciÃ³n} logarc (@var{expr})
 
 Si la variable global @code{logarc} toma el valor @code{true},
-las funciones circulares e hiperbólicas inversas se 
-reemplazan por funciones logarítmicas equivalentes.
+las funciones circulares e hiperbÃ³licas inversas se 
+reemplazan por funciones logarÃ­tmicas equivalentes.
 El valor por defecto de @code{logarc} es @code{false}.
 
-La función @code{logarc(@var{expr})} realiza la anterior transformación
-en la expresión @var{expr} sin necesidad de alterar el valor de la
+La funciÃ³n @code{logarc(@var{expr})} realiza la anterior transformaciÃ³n
+en la expresiÃ³n @var{expr} sin necesidad de alterar el valor de la
 variable global @code{logarc}.
 
 @end defvr
@@ -1036,13 +1036,13 @@ variable global @code{logarc}.
 @defvr {Variable opcional} logconcoeffp
 Valor por defecto: @code{false}
 
-Controla qué coeficientes se contraen cuando se utiliza @code{logcontract}. Se le puede asignar el nombre de una función de predicado de un argumento; por ejemplo, si se quiere introducir raíces cuadradas, se puede hacer @code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Entonces 
-@code{logcontract(1/2*log(x));} devolverá @code{log(sqrt(x))}.
+Controla quÃ© coeficientes se contraen cuando se utiliza @code{logcontract}. Se le puede asignar el nombre de una funciÃ³n de predicado de un argumento; por ejemplo, si se quiere introducir raÃ­ces cuadradas, se puede hacer @code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Entonces 
+@code{logcontract(1/2*log(x));} devolverÃ¡ @code{log(sqrt(x))}.
 
 @end defvr
 
-@deffn {Función} logcontract (@var{expr})
-Analiza la expresión @var{expr} recursivamente, transformando subexpresiones de la forma @code{a1*log(b1) + a2*log(b2) + c} en @code{log(ratsimp(b1^a1 * b2^a2)) + c}
+@deffn {FunciÃ³n} logcontract (@var{expr})
+Analiza la expresiÃ³n @var{expr} recursivamente, transformando subexpresiones de la forma @code{a1*log(b1) + a2*log(b2) + c} en @code{log(ratsimp(b1^a1 * b2^a2)) + c}
 
 @c ===beg===
 @c 2*(a*log(x) + 2*a*log(y))$
@@ -1058,7 +1058,7 @@ Analiza la expresión @var{expr} recursivamente, transformando subexpresiones de 
 
 Si se hace @code{declare(n,integer);} entonces @code{logcontract(2*a*n*log(x));} da
 @code{a*log(x^(2*n))}.  Los coeficientes que se contraen de esta manera son aquellos que como el 2 y el @code{n} satisfacen 
-@code{featurep(coeff,integer)}. El usuario puede controlar qué coeficientes se contraen asignándole a la variable global @code{logconcoeffp} el nombre de una función de predicado de un argumento; por ejemplo, si se quiere introducir raíces cuadradas, se puede hacer @code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Entonces @code{logcontract(1/2*log(x));} devolverá @code{log(sqrt(x))}.
+@code{featurep(coeff,integer)}. El usuario puede controlar quÃ© coeficientes se contraen asignÃ¡ndole a la variable global @code{logconcoeffp} el nombre de una funciÃ³n de predicado de un argumento; por ejemplo, si se quiere introducir raÃ­ces cuadradas, se puede hacer @code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Entonces @code{logcontract(1/2*log(x));} devolverÃ¡ @code{log(sqrt(x))}.
 
 @end deffn
 
@@ -1067,12 +1067,12 @@ Si se hace @code{declare(n,integer);} entonces @code{logcontract(2*a*n*log(x));}
 Valor por defecto: @code{true}
 
 Si @code{logexpand} vale @code{true} hace que @code{log(a^b)} se convierta
-en @code{b*log(a)}. Si toma el valor @code{all}, @code{log(a*b)} también se
-reducirá a  @code{log(a)+log(b)}. Si toma el valor @code{super}, entonces 
-@code{log(a/b)} también se reducirá a @code{log(a)-log(b)}, siendo 
-@code{a/b} racional con @code{a#1},  (la expresión @code{log(1/b)}, para
+en @code{b*log(a)}. Si toma el valor @code{all}, @code{log(a*b)} tambiÃ©n se
+reducirÃ¡ a  @code{log(a)+log(b)}. Si toma el valor @code{super}, entonces 
+@code{log(a/b)} tambiÃ©n se reducirÃ¡ a @code{log(a)-log(b)}, siendo 
+@code{a/b} racional con @code{a#1},  (la expresiÃ³n @code{log(1/b)}, para
 @code{b} entero, se simplifica siempre). Si toma el valor  @code{false},
-se desactivarán todas estas simplificaciones.
+se desactivarÃ¡n todas estas simplificaciones.
 @end defvr
 
 
@@ -1095,17 +1095,17 @@ Si @code{logsimp} vale @code{false}, entonces no se transforma @code{%e} a poten
 
 
 
-@deffn {Función} plog (@var{x})
+@deffn {FunciÃ³n} plog (@var{x})
 Representa la rama principal del logaritmo natural complejo con @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
 
 @end deffn
 
 
 
-@deffn {Función} sqrt (@var{x})
-Raíz cuadrada de @var{x}. Se representa internamente por @code{@var{x}^(1/2)}.  Véase también @code{rootscontract}.
+@deffn {FunciÃ³n} sqrt (@var{x})
+RaÃ­z cuadrada de @var{x}. Se representa internamente por @code{@var{x}^(1/2)}.  VÃ©ase tambiÃ©n @code{rootscontract}.
 
-Si la variable @code{radexpand} vale @code{true} hará que las raíces @code{n}-ésimas de los factores de un producto que sean potencias de @code{n} sean extraídas del radical; por ejemplo, @code{sqrt(16*x^2)} se convertirá en @code{4*x} sólo si @code{radexpand} vale @code{true}.
+Si la variable @code{radexpand} vale @code{true} harÃ¡ que las raÃ­ces @code{n}-Ã©simas de los factores de un producto que sean potencias de @code{n} sean extraÃ­das del radical; por ejemplo, @code{sqrt(16*x^2)} se convertirÃ¡ en @code{4*x} sÃ³lo si @code{radexpand} vale @code{true}.
 
 @end deffn
 
@@ -1117,28 +1117,28 @@ Si la variable @code{radexpand} vale @code{true} hará que las raíces @code{n}-és
 
 
 
-@node Funciones trigonométricas, Números aleatorios, Funciones radicales exponenciales y logarítmicas, Funciones matemáticas
-@section Funciones trigonométricas
+@node Funciones trigonomÃ©tricas, NÃºmeros aleatorios, Funciones radicales exponenciales y logarÃ­tmicas, Funciones matemÃ¡ticas
+@section Funciones trigonomÃ©tricas
 
 
 @menu
-* Introducción a la trigonometría::  
-* Funciones y variables para trigonometría:: 
+* IntroducciÃ³n a la trigonometrÃ­a::  
+* Funciones y variables para trigonometrÃ­a:: 
 @end menu
 
 
-@node Introducción a la trigonometría, Funciones y variables para trigonometría, Funciones trigonométricas, Funciones trigonométricas
-@subsection Introducción a la trigonometría
+@node IntroducciÃ³n a la trigonometrÃ­a, Funciones y variables para trigonometrÃ­a, Funciones trigonomÃ©tricas, Funciones trigonomÃ©tricas
+@subsection IntroducciÃ³n a la trigonometrÃ­a
 
 
-Maxima reconoce muchas funciones trigonométricas. No están programadas todas las identidades trigonométricas, pero el usuario puede añadir muchas de ellas haciendo uso de las técnicas basadas en patrones.  Las funciones trigonométricas definidas en Maxima son:  @code{acos},
+Maxima reconoce muchas funciones trigonomÃ©tricas. No estÃ¡n programadas todas las identidades trigonomÃ©tricas, pero el usuario puede aÃ±adir muchas de ellas haciendo uso de las tÃ©cnicas basadas en patrones.  Las funciones trigonomÃ©tricas definidas en Maxima son:  @code{acos},
 @code{acosh}, @code{acot}, @code{acoth}, @code{acsc},
 @code{acsch}, @code{asec}, @code{asech}, @code{asin}, 
 @code{asinh}, @code{atan}, @code{atanh}, @code{cos}, 
 @code{cosh}, @code{cot}, @code{coth}, @code{csc}, @code{csch}, 
 @code{sec}, @code{sech}, @code{sin}, @code{sinh}, @code{tan} y 
-@code{tanh}. Hay también un determinado número de instrucciones especiales para manipular funciones trigonométricas;  véanse a este respecto @code{trigexpand},
-@code{trigreduce} y la variable @code{trigsign}.  Dos paquetes adicionales amplían las reglas de simplificación de Maxima, @code{ntrig} y @code{atrig1}.  Ejecútese @code{describe(@var{command})} para más detalles.
+@code{tanh}. Hay tambiÃ©n un determinado nÃºmero de instrucciones especiales para manipular funciones trigonomÃ©tricas;  vÃ©anse a este respecto @code{trigexpand},
+@code{trigreduce} y la variable @code{trigsign}.  Dos paquetes adicionales amplÃ­an las reglas de simplificaciÃ³n de Maxima, @code{ntrig} y @code{atrig1}.  EjecÃºtese @code{describe(@var{command})} para mÃ¡s detalles.
 
 
 
@@ -1147,8 +1147,8 @@ Maxima reconoce muchas funciones trigonométricas. No están programadas todas las
 
 
 
-@node Funciones y variables para trigonometría,  , Introducción a la trigonometría, Funciones trigonométricas
-@subsection Funciones y variables para trigonometría
+@node Funciones y variables para trigonometrÃ­a,  , IntroducciÃ³n a la trigonometrÃ­a, Funciones trigonomÃ©tricas
+@subsection Funciones y variables para trigonometrÃ­a
 
 
 
@@ -1156,8 +1156,8 @@ Maxima reconoce muchas funciones trigonométricas. No están programadas todas las
 @defvr {Variable opcional} %piargs
 Valor por defecto: @code{true}
 
-Cuando @code{%piargs} vale @code{true}, las funciones trigonométricas
-se simplifican a constantes algebraicas cuando el argumento es múltiplo
+Cuando @code{%piargs} vale @code{true}, las funciones trigonomÃ©tricas
+se simplifican a constantes algebraicas cuando el argumento es mÃºltiplo
 entero de 
 @iftex
 @math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4} o @math{\pi/6}.
@@ -1172,7 +1172,7 @@ Maxima conoce algunas identidades aplicables cuando @math{\pi}, etc.,
 @ifnottex
 Maxima conoce algunas identidades aplicables cuando @math{%pi}, etc.,
 @end ifnottex
-se multiplican por una variable entera (esto es, un símbolo
+se multiplican por una variable entera (esto es, un sÃ­mbolo
 declarado como entero).
 
 Ejemplo:
@@ -1254,21 +1254,21 @@ Se aplican ciertas identidades cuando @math{%pi} o @math{%pi/2} se multiplican p
 @defvr {Variable opcional} %iargs
 Valor por defecto: @code{true}
 
-Cuando @code{%iargs} vale @code{true}, las funciones trigonométricas
-se simplifican a funciones hiperbólicas
+Cuando @code{%iargs} vale @code{true}, las funciones trigonomÃ©tricas
+se simplifican a funciones hiperbÃ³licas
 @iftex
-si el argumento es aparentemente un múltiplo de la unidad imaginaria @math{i}.
+si el argumento es aparentemente un mÃºltiplo de la unidad imaginaria @math{i}.
 @end iftex
 @ifnottex
-si el argumento es aparentemente un múltiplo de la unidad imaginaria @math{%i}.
+si el argumento es aparentemente un mÃºltiplo de la unidad imaginaria @math{%i}.
 @end ifnottex
 
-La simplificación se lleva a cabo incluso cuando el argumento es manifiestamente real;
+La simplificaciÃ³n se lleva a cabo incluso cuando el argumento es manifiestamente real;
 @iftex
-Maxima sólo se fija en si el argumento es un múltiplo literal de @math{i}.
+Maxima sÃ³lo se fija en si el argumento es un mÃºltiplo literal de @math{i}.
 @end iftex
 @ifnottex
-Maxima sólo se fija en si el argumento es un múltiplo literal de @math{%i}.
+Maxima sÃ³lo se fija en si el argumento es un mÃºltiplo literal de @math{%i}.
 @end ifnottex
 
 Ejemplos:
@@ -1292,8 +1292,8 @@ Ejemplos:
 @end group
 @end example
 
-La simplificación se aplica incluso en el caso de que
-el argumento se reduzca a un número real.
+La simplificaciÃ³n se aplica incluso en el caso de que
+el argumento se reduzca a un nÃºmero real.
 
 @c ===beg===
 @c declare (x, imaginary)$
@@ -1323,101 +1323,101 @@ Arco coseno.
 
 @end deffn
 
-@deffn {Función} acosh (@var{x})
-Arco coseno hiperbólico.
+@deffn {FunciÃ³n} acosh (@var{x})
+Arco coseno hiperbÃ³lico.
 
 @end deffn
 
-@deffn {Función} acot (@var{x})
+@deffn {FunciÃ³n} acot (@var{x})
 Arco cotangente.
 
 @end deffn
 
-@deffn {Función} acoth (@var{x})
-Arco cotangente hiperbólica.
+@deffn {FunciÃ³n} acoth (@var{x})
+Arco cotangente hiperbÃ³lica.
 
 @end deffn
 
-@deffn {Función} acsc (@var{x})
+@deffn {FunciÃ³n} acsc (@var{x})
 Arco cosecante.
 
 @end deffn
 
-@deffn {Función} acsch (@var{x})
-Arco cosecante hiperbólica.
+@deffn {FunciÃ³n} acsch (@var{x})
+Arco cosecante hiperbÃ³lica.
 
 @end deffn
 
-@deffn {Función} asec (@var{x})
+@deffn {FunciÃ³n} asec (@var{x})
 Arco secante.
 
 @end deffn
 
-@deffn {Función} asech (@var{x})
-Arco secante hiperbólica.
+@deffn {FunciÃ³n} asech (@var{x})
+Arco secante hiperbÃ³lica.
 
 @end deffn
 
-@deffn {Función} asin (@var{x})
+@deffn {FunciÃ³n} asin (@var{x})
 Arco seno.
 
 @end deffn
 
-@deffn {Función} asinh (@var{x})
-Arco seno hiperbólico.
+@deffn {FunciÃ³n} asinh (@var{x})
+Arco seno hiperbÃ³lico.
 
 @end deffn
 
-@deffn {Función} atan (@var{x})
+@deffn {FunciÃ³n} atan (@var{x})
 Arco tangente.
 
 @end deffn
 
-@deffn {Función} atan2 (@var{y}, @var{x})
+@deffn {FunciÃ³n} atan2 (@var{y}, @var{x})
 Calcula el valor de @code{atan(@var{y}/@var{x})} en el intervalo de @code{-%pi} a @code{%pi}.
 
 @end deffn
 
-@deffn {Función} atanh (@var{x})
-Arco tangente hiperbólica.
+@deffn {FunciÃ³n} atanh (@var{x})
+Arco tangente hiperbÃ³lica.
 
 @end deffn
 
 @defvr {Paquete} atrig1
-El paquete @code{atrig1} contiene ciertas reglas de simplificación adicionales para las funciones trigonométricas inversas. Junto con las reglas que ya conoce Maxima, los siguientes ángulos están completamente implementados:
+El paquete @code{atrig1} contiene ciertas reglas de simplificaciÃ³n adicionales para las funciones trigonomÃ©tricas inversas. Junto con las reglas que ya conoce Maxima, los siguientes Ã¡ngulos estÃ¡n completamente implementados:
 @code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3} y @code{%pi/2}.  
-Los ángulos correspondientes en los otros tres cuadrantes también están disponibles.  
-Para hacer uso de estas reglas, ejecútese @code{load(atrig1);}.
+Los Ã¡ngulos correspondientes en los otros tres cuadrantes tambiÃ©n estÃ¡n disponibles.  
+Para hacer uso de estas reglas, ejecÃºtese @code{load(atrig1);}.
 
 @end defvr
 
-@deffn {Función} cos (@var{x})
+@deffn {FunciÃ³n} cos (@var{x})
 Coseno.
 
 @end deffn
 
-@deffn {Función} cosh (@var{x})
-Coseno hiperbólico.
+@deffn {FunciÃ³n} cosh (@var{x})
+Coseno hiperbÃ³lico.
 
 @end deffn
 
-@deffn {Función} cot (@var{x})
+@deffn {FunciÃ³n} cot (@var{x})
 Cotangente.
 
 @end deffn
 
-@deffn {Función} coth (@var{x})
-Cotangente hiperbólica.
+@deffn {FunciÃ³n} coth (@var{x})
+Cotangente hiperbÃ³lica.
 
 @end deffn
 
-@deffn {Función} csc (@var{x})
+@deffn {FunciÃ³n} csc (@var{x})
 Cosecante.
 
 @end deffn
 
-@deffn {Función} csch (@var{x})
-Cosecante hiperbólica.
+@deffn {FunciÃ³n} csch (@var{x})
+Cosecante hiperbÃ³lica.
 
 @end deffn
 
@@ -1426,11 +1426,11 @@ Cosecante hiperbólica.
 Valor por defecto: @code{false}
 
 Si @code{halfangles} vale @code{true}, las funciones
-trigonométricas con argumentos del tipo @code{@var{expr}/2}
+trigonomÃ©tricas con argumentos del tipo @code{@var{expr}/2}
 se simplifican a funciones con argumentos @var{expr}.
 
 Para un argumento real @var{x} en el intervalo @code{0 < x < 2*%pi}
-el seno del semiángulo se simplifica como
+el seno del semiÃ¡ngulo se simplifica como
 
 @example
                     sqrt(1 - cos(x))
@@ -1438,8 +1438,8 @@ el seno del semiángulo se simplifica como
                         sqrt(2)
 @end example
 
-Se necesita un factor relativamente complicado para que esta fórmula
-sea también válida para cualquier argumento complejo @var{z}:
+Se necesita un factor relativamente complicado para que esta fÃ³rmula
+sea tambiÃ©n vÃ¡lida para cualquier argumento complejo @var{z}:
 
 @example
            realpart(z)
@@ -1494,55 +1494,55 @@ Ejemplos:
 
 
 @defvr {Paquete} ntrig
-El paquete @code{ntrig} contiene un conjunto de reglas de simplificación que se pueden usar para simplificar funciones trigonométricas cuyos argumentos son de la forma
+El paquete @code{ntrig} contiene un conjunto de reglas de simplificaciÃ³n que se pueden usar para simplificar funciones trigonomÃ©tricas cuyos argumentos son de la forma
 @code{@var{f}(@var{n} %pi/10)} donde @var{f} es cualquiera de las funciones 
 @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} o @code{cot}.
 @c NEED TO LOAD THIS PACKAGE ??
 
 @end defvr
 
-@deffn {Función} sec (@var{x})
+@deffn {FunciÃ³n} sec (@var{x})
 Secante.
 
 @end deffn
 
-@deffn {Función} sech (@var{x})
-Secante hiperbólica.
+@deffn {FunciÃ³n} sech (@var{x})
+Secante hiperbÃ³lica.
 
 @end deffn
 
-@deffn {Función} sin (@var{x})
+@deffn {FunciÃ³n} sin (@var{x})
 Seno.
 
 @end deffn
 
-@deffn {Función} sinh (@var{x})
-Seno hiperbólico.
+@deffn {FunciÃ³n} sinh (@var{x})
+Seno hiperbÃ³lico.
 
 @end deffn
 
-@deffn {Función} tan (@var{x})
+@deffn {FunciÃ³n} tan (@var{x})
 Tangente.
 
 @end deffn
 
-@deffn {Función} tanh (@var{x})
-Tangente hiperbólica.
+@deffn {FunciÃ³n} tanh (@var{x})
+Tangente hiperbÃ³lica.
 
 @end deffn
 
-@deffn {Función} trigexpand (@var{expr})
-Expande funciones trigonométricas e hiperbólicas de sumas de ángulos y de múltiplos de ángulos presentes en @var{expr}.  Para mejorar los resultados, @var{expr} debería expandirse. Para facilitar el control por parte del usuario de las simplificaciones, esta función tan solo expande un nivel de cada vez, expandiendo sumas de ángulos o de múltiplos de ángulos. A fin de obtener una expansión completa en senos y coseno, se le dará a la variable @code{trigexpand} el valor @code{true}.
+@deffn {FunciÃ³n} trigexpand (@var{expr})
+Expande funciones trigonomÃ©tricas e hiperbÃ³licas de sumas de Ã¡ngulos y de mÃºltiplos de Ã¡ngulos presentes en @var{expr}.  Para mejorar los resultados, @var{expr} deberÃ­a expandirse. Para facilitar el control por parte del usuario de las simplificaciones, esta funciÃ³n tan solo expande un nivel de cada vez, expandiendo sumas de Ã¡ngulos o de mÃºltiplos de Ã¡ngulos. A fin de obtener una expansiÃ³n completa en senos y coseno, se le darÃ¡ a la variable @code{trigexpand} el valor @code{true}.
 
-La función @code{trigexpand} está controlada por las siguientes variables:
+La funciÃ³n @code{trigexpand} estÃ¡ controlada por las siguientes variables:
 
 @table @code
 @item trigexpand
-Si vale @code{true}, provoca la expansión de todas las expresiones que contengan senos y cosenos.
+Si vale @code{true}, provoca la expansiÃ³n de todas las expresiones que contengan senos y cosenos.
 @item trigexpandplus
-Controla la regla de la suma para @code{trigexpand}, la expansión de una suma como @code{sin(x + y)} se llevará a cabo sólo si @code{trigexpandplus} vale @code{true}.
+Controla la regla de la suma para @code{trigexpand}, la expansiÃ³n de una suma como @code{sin(x + y)} se llevarÃ¡ a cabo sÃ³lo si @code{trigexpandplus} vale @code{true}.
 @item trigexpandtimes
-Controla la regla del producto para @code{trigexpand}, la expansión de un producto como @code{sin(2 x)} se llevará a cabo sólo si @code{trigexpandtimes} vale @code{true}.
+Controla la regla del producto para @code{trigexpand}, la expansiÃ³n de un producto como @code{sin(2 x)} se llevarÃ¡ a cabo sÃ³lo si @code{trigexpandtimes} vale @code{true}.
 @end table
 
 Ejemplos:
@@ -1568,25 +1568,25 @@ Ejemplos:
 @defvr {Variable optativa} trigexpandplus
 Valor por defecto: @code{true}
 
-La variable @code{trigexpandplus} controla la regla de la suma para @code{trigexpand}.  Así, si la instrucción @code{trigexpand} se utiliza o si la variable @code{trigexpand} vale @code{true}, se realizará la expansión de sumas como @code{sin(x+y)} sólo si @code{trigexpandplus} vale @code{true}.
+La variable @code{trigexpandplus} controla la regla de la suma para @code{trigexpand}.  AsÃ­, si la instrucciÃ³n @code{trigexpand} se utiliza o si la variable @code{trigexpand} vale @code{true}, se realizarÃ¡ la expansiÃ³n de sumas como @code{sin(x+y)} sÃ³lo si @code{trigexpandplus} vale @code{true}.
 
 @end defvr
 
 @defvr {Variable optativa} trigexpandtimes
 Valor por defecto: @code{true}
 
-La variable @code{trigexpandtimes} controla la regla del producto para @code{trigexpand}.  Así, si la instrucción @code{trigexpand} se utiliza o si la variable @code{trigexpand} vale @code{true}, se realizará la expansión de productos como @code{sin(2*x)} sólo si @code{trigexpandtimes} vale @code{true}.
+La variable @code{trigexpandtimes} controla la regla del producto para @code{trigexpand}.  AsÃ­, si la instrucciÃ³n @code{trigexpand} se utiliza o si la variable @code{trigexpand} vale @code{true}, se realizarÃ¡ la expansiÃ³n de productos como @code{sin(2*x)} sÃ³lo si @code{trigexpandtimes} vale @code{true}.
 
 @end defvr
 
 @defvr {Variable optativa} triginverses
 Valor por defecto: @code{true}
 
-La variable @code{triginverses} controla la simplificación de la composición de funciones trigonométricas e hiperbólicas con sus funciones inversas.
+La variable @code{triginverses} controla la simplificaciÃ³n de la composiciÃ³n de funciones trigonomÃ©tricas e hiperbÃ³licas con sus funciones inversas.
 
 Si vale @code{all}, tanto @code{atan(tan(@var{x}))}  como @code{tan(atan(@var{x}))} se reducen a @var{x}.  
 
-Si vale @code{true}, se desactiva la simplificación de @code{@var{arcfun}(@var{fun}(@var{x}))}.
+Si vale @code{true}, se desactiva la simplificaciÃ³n de @code{@var{arcfun}(@var{fun}(@var{x}))}.
 
 Si vale @code{false}, se desactivan las simplificaciones de 
 @code{@var{arcfun}(@var{fun}(@var{x}))} y 
@@ -1594,11 +1594,11 @@ Si vale @code{false}, se desactivan las simplificaciones de
 
 @end defvr
 
-@deffn {Función} trigreduce (@var{expr}, @var{x})
-@deffnx {Función} trigreduce (@var{expr})
-Combina productos y potencias de senos y cosenos trigonométricos e hiperbólicos de @var{x}, transformándolos en otros que son múltiplos de @var{x}.  También intenta eliminar estas funciones cuando aparecen en los denominadores.  Si no se introduce el argumento @var{x}, entonces se utilizan todas las variables de @var{expr}.
+@deffn {FunciÃ³n} trigreduce (@var{expr}, @var{x})
+@deffnx {FunciÃ³n} trigreduce (@var{expr})
+Combina productos y potencias de senos y cosenos trigonomÃ©tricos e hiperbÃ³licos de @var{x}, transformÃ¡ndolos en otros que son mÃºltiplos de @var{x}.  TambiÃ©n intenta eliminar estas funciones cuando aparecen en los denominadores.  Si no se introduce el argumento @var{x}, entonces se utilizan todas las variables de @var{expr}.
 
-Véase también @code{poissimp}.
+VÃ©ase tambiÃ©n @code{poissimp}.
 
 @c ===beg===
 @c trigreduce(-sin(x)^2+3*cos(x)^2+x);
@@ -1613,7 +1613,7 @@ Véase también @code{poissimp}.
 @end example
 
 
-Las rutinas de simplificación trigonométrica utilizan información declarada en algunos casos sencillos. Las declaraciones sobre variables se utilizan como se indica a continuación:
+Las rutinas de simplificaciÃ³n trigonomÃ©trica utilizan informaciÃ³n declarada en algunos casos sencillos. Las declaraciones sobre variables se utilizan como se indica a continuaciÃ³n:
 
 @c ===beg===
 @c declare(j, integer, e, even, o, odd)$
@@ -1634,11 +1634,11 @@ Las rutinas de simplificación trigonométrica utilizan información declarada en a
 @defvr {Variable optativa} trigsign
 Valor por defecto: @code{true}
 
-Si @code{trigsign} vale @code{true}, se permite la simplificación de argumentos negativos en funciones trigonométricas, como en @code{sin(-x)}, que se transformará en @code{-sin(x)} sólo si @code{trigsign} vale @code{true}.
+Si @code{trigsign} vale @code{true}, se permite la simplificaciÃ³n de argumentos negativos en funciones trigonomÃ©tricas, como en @code{sin(-x)}, que se transformarÃ¡ en @code{-sin(x)} sÃ³lo si @code{trigsign} vale @code{true}.
 
 @end defvr
 
-@deffn {Función} trigsimp (@var{expr})
+@deffn {FunciÃ³n} trigsimp (@var{expr})
 @iftex
 Utiliza las identidades
 @tex
@@ -1657,20 +1657,20 @@ Utiliza las identidades @math{sin(x)^2 + cos(x)^2 = 1} y
 etc., en expresiones con @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
 @end ifnottex
 
-Las funciones @code{trigreduce}, @code{ratsimp} y @code{radcan} puden seguir siendo útiles para continuar el proceso de simplificación.
+Las funciones @code{trigreduce}, @code{ratsimp} y @code{radcan} puden seguir siendo Ãºtiles para continuar el proceso de simplificaciÃ³n.
 
-La instrucción @code{demo ("trgsmp.dem")} muestra algunos ejemplos de @code{trigsimp}.
+La instrucciÃ³n @code{demo ("trgsmp.dem")} muestra algunos ejemplos de @code{trigsimp}.
 @c MERGE EXAMPLES INTO THIS ITEM
 
 @end deffn
 
-@deffn {Función} trigrat (@var{expr})
-Devuelve una forma canónica simplificada cuasi-lineal de una expresión trigonométrica;
-@var{expr} es una fracción racional que contiene @code{sin}, @code{cos} o @code{tan}, 
+@deffn {FunciÃ³n} trigrat (@var{expr})
+Devuelve una forma canÃ³nica simplificada cuasi-lineal de una expresiÃ³n trigonomÃ©trica;
+@var{expr} es una fracciÃ³n racional que contiene @code{sin}, @code{cos} o @code{tan}, 
 cuyos argumentos son formas lineales respecto de ciertas variables (o kernels) y @code{%pi/@var{n}}
-(@var{n} entero) con coeficientes enteros. El resultado es una fracción simplificada con 
-el numerador y denominador lineales respecto de @code{sin} y @code{cos}. Así,
- @code{trigrat} devuelve una expresión lineal siempre que sea posible.
+(@var{n} entero) con coeficientes enteros. El resultado es una fracciÃ³n simplificada con 
+el numerador y denominador lineales respecto de @code{sin} y @code{cos}. AsÃ­,
+ @code{trigrat} devuelve una expresiÃ³n lineal siempre que sea posible.
 
 @c ===beg===
 @c trigrat(sin(3*a)/sin(a+%pi/3));
@@ -1683,8 +1683,8 @@ el numerador y denominador lineales respecto de @code{sin} y @code{cos}. Así,
 @end example
 
 El siguiente ejemplo se ha tomado de
-Davenport, Siret y Tournier, @i{Calcul Formel}, Masson (o en inglés,
-Addison-Wesley), sección 1.5.5, teorema de Morley.
+Davenport, Siret y Tournier, @i{Calcul Formel}, Masson (o en inglÃ©s,
+Addison-Wesley), secciÃ³n 1.5.5, teorema de Morley.
 
 @c ===beg===
 @c c : %pi/3 - a - b$
@@ -1756,50 +1756,50 @@ Addison-Wesley), sección 1.5.5, teorema de Morley.
 
 
 
-@node Números aleatorios, , Funciones trigonométricas, Funciones matemáticas
-@section Números aleatorios
+@node NÃºmeros aleatorios, , Funciones trigonomÃ©tricas, Funciones matemÃ¡ticas
+@section NÃºmeros aleatorios
 
 
 
-@deffn {Función} make_random_state (@var{n})
-@deffnx {Función} make_random_state (@var{s})
-@deffnx {Función} make_random_state (true)
-@deffnx {Función} make_random_state (false)
+@deffn {FunciÃ³n} make_random_state (@var{n})
+@deffnx {FunciÃ³n} make_random_state (@var{s})
+@deffnx {FunciÃ³n} make_random_state (true)
+@deffnx {FunciÃ³n} make_random_state (false)
 
-Un objeto de estado aleatorio representa el estado del generador de números aleatorios. El estado consiste en 627 cadenas binarias de 32 bits.
+Un objeto de estado aleatorio representa el estado del generador de nÃºmeros aleatorios. El estado consiste en 627 cadenas binarias de 32 bits.
 
-La llamada @code{make_random_state (@var{n})} devuelve un nuevo objeto de estado aleatorio creado a partir de una semilla entera igual a @var{n} módulo 2^32. El argumento @var{n} puede ser negativo.
+La llamada @code{make_random_state (@var{n})} devuelve un nuevo objeto de estado aleatorio creado a partir de una semilla entera igual a @var{n} mÃ³dulo 2^32. El argumento @var{n} puede ser negativo.
 
 La llamada @code{make_random_state (@var{s})} devuelve una copia del estado aleatorio @var{s}.
 
 La llamada @code{make_random_state (true)} devuelve un nuevo objeto de estado aleatorio, cuya semilla se genera a partir de la hora actual del reloj del sistema como semilla.
 
-La llamada @code{make_random_state (false)} devuelve una copia del estado actual del generador de números aleatorios.
+La llamada @code{make_random_state (false)} devuelve una copia del estado actual del generador de nÃºmeros aleatorios.
 
 @end deffn
 
 
 
-@deffn {Función} set_random_state (@var{s})
-Establece @var{s} como estado del generador de números aleatorios.
+@deffn {FunciÃ³n} set_random_state (@var{s})
+Establece @var{s} como estado del generador de nÃºmeros aleatorios.
 
-La función @code{set_random_state} devuelve @code{done} en todo caso.
+La funciÃ³n @code{set_random_state} devuelve @code{done} en todo caso.
 
 @end deffn
 
 
 
-@deffn {Función} random (@var{x})
-Devuelve un número seudoaleatorio. Si @var{x} es un entero, @code{random (@var{x})} devuelve un
+@deffn {FunciÃ³n} random (@var{x})
+Devuelve un nÃºmero seudoaleatorio. Si @var{x} es un entero, @code{random (@var{x})} devuelve un
 entero entre 0 y @code{@var{x} - 1}, ambos inclusive. Si @var{x} es un decimal en punto flotante,
 @code{random (@var{x})} devuelve un decimal no negativo en punto flotante menor que @var{x}.
-La función @code{random} emite un mensaje de error si @var{x} no es ni entero ni de punto flotante,
+La funciÃ³n @code{random} emite un mensaje de error si @var{x} no es ni entero ni de punto flotante,
 o si @var{x} no es positivo.
 
 Las funciones @code{make_random_state} y @code{set_random_state}
-permiten controlar el estado del generador de números aleatorios.
+permiten controlar el estado del generador de nÃºmeros aleatorios.
 
-El generador de números aleatorios de Maxima implementa el algoritmo de Mersenne twister MT 19937.
+El generador de nÃºmeros aleatorios de Maxima implementa el algoritmo de Mersenne twister MT 19937.
 
 Ejemplos:
 

@@ -1,110 +1,110 @@
 @c /Special.texi/1.27/Mon Jan 15 06:08:56 2007/-ko/
 @menu
-* IntroduÁ„o a FunÁıes Especiais::  
-* DefiniÁıes para FunÁıes Especiais::  
+* Introdu√ß√£o a Fun√ß√µes Especiais::  
+* Defini√ß√µes para Fun√ß√µes Especiais::  
 @end menu
 
-@node IntroduÁ„o a FunÁıes Especiais, DefiniÁıes para FunÁıes Especiais, FunÁıes Especiais, FunÁıes Especiais
-@section IntroduÁ„o a FunÁıes Especiais
+@node Introdu√ß√£o a Fun√ß√µes Especiais, Defini√ß√µes para Fun√ß√µes Especiais, Fun√ß√µes Especiais, Fun√ß√µes Especiais
+@section Introdu√ß√£o a Fun√ß√µes Especiais
 
-A notaÁ„o de funÁ„o especial segue adiante:
+A nota√ß√£o de fun√ß√£o especial segue adiante:
 
 @example
-bessel_j (index, expr)         FunÁ„o de Bessel, primeiro tipo
-bessel_y (index, expr)         FunÁ„o de Bessel, segundo tipo
-bessel_i (index, expr)         FunÁ„o de Bessel modificada, primeiro tipo
-bessel_k (index, expr)         FunÁ„o de Bessel modificada, segundo tipo
-%he[n] (z)                     PolinÛmio de Hermite (Note bem: @code{he}, n„o @code{h}. Veja A&S 22.5.18)
-%p[u,v] (z)                    FunÁ„o de Legendre
-%q[u,v] (z)                    FunÁ„o de Legendre, segundo tipo
-hstruve[n] (z)                 FunÁ„o H de Struve H
-lstruve[n] (z)                 FunÁ„o de L Struve
-%f[p,q] ([], [], expr)         FunÁ„o HipergeomÈtrica Generalizada
-gamma()                        FunÁ„o Gamma
-gamma_incomplete_lower(a,z)    FunÁ„o gama incompleta inferior
-gammaincomplete(a,z)           Final da funÁ„o gama incompleta
+bessel_j (index, expr)         Fun√ß√£o de Bessel, primeiro tipo
+bessel_y (index, expr)         Fun√ß√£o de Bessel, segundo tipo
+bessel_i (index, expr)         Fun√ß√£o de Bessel modificada, primeiro tipo
+bessel_k (index, expr)         Fun√ß√£o de Bessel modificada, segundo tipo
+%he[n] (z)                     Polin√≥mio de Hermite (Note bem: @code{he}, n√£o @code{h}. Veja A&S 22.5.18)
+%p[u,v] (z)                    Fun√ß√£o de Legendre
+%q[u,v] (z)                    Fun√ß√£o de Legendre, segundo tipo
+hstruve[n] (z)                 Fun√ß√£o H de Struve H
+lstruve[n] (z)                 Fun√ß√£o de L Struve
+%f[p,q] ([], [], expr)         Fun√ß√£o Hipergeom√©trica Generalizada
+gamma()                        Fun√ß√£o Gamma
+gamma_incomplete_lower(a,z)    Fun√ß√£o gama incompleta inferior
+gammaincomplete(a,z)           Final da fun√ß√£o gama incompleta
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
 slommel
-%m[u,k] (z)                    FunÁ„o de Whittaker, primeiro tipo
-%w[u,k] (z)                    FunÁ„o de Whittaker, segundo tipo
-erfc (z)                       Complemento da funÁ„o erf (funÁ„o de erros - integral da distribuiÁ„o normal)
+%m[u,k] (z)                    Fun√ß√£o de Whittaker, primeiro tipo
+%w[u,k] (z)                    Fun√ß√£o de Whittaker, segundo tipo
+erfc (z)                       Complemento da fun√ß√£o erf (fun√ß√£o de erros - integral da distribui√ß√£o normal)
 ei (z)                         Integral de exponencial (?)
 kelliptic (z)                  integral eliptica completa de primeiro tipo (K)
-%d [n] (z)                     FunÁ„o cilÌndrica parabÛlica
+%d [n] (z)                     Fun√ß√£o cil√≠ndrica parab√≥lica
 @end example
 
-@node DefiniÁıes para FunÁıes Especiais,  , IntroduÁ„o a FunÁıes Especiais, FunÁıes Especiais
-@section DefiniÁıes para FunÁıes Especiais
+@node Defini√ß√µes para Fun√ß√µes Especiais,  , Introdu√ß√£o a Fun√ß√µes Especiais, Fun√ß√µes Especiais
+@section Defini√ß√µes para Fun√ß√µes Especiais
 
-@deffn {FunÁ„o} airy_ai (@var{x})
-A funÁ„o de Airy Ai, como definida em Abramowitz e Stegun,
-@i{Handbook of Mathematical Functions}, Sess„o 10.4. 
+@deffn {Fun√ß√£o} airy_ai (@var{x})
+A fun√ß√£o de Airy Ai, como definida em Abramowitz e Stegun,
+@i{Handbook of Mathematical Functions}, Sess√£o 10.4. 
 
-A equaÁ„o de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tem duas 
-soluÁıes linearmente independentes, @code{y = Ai(x)} e @code{y = Bi(x)}.
-A derivada de @code{diff (airy_ai(x), x)} È @code{airy_dai(x)}.
+A equa√ß√£o de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tem duas 
+solu√ß√µes linearmente independentes, @code{y = Ai(x)} e @code{y = Bi(x)}.
+A derivada de @code{diff (airy_ai(x), x)} √© @code{airy_dai(x)}.
 
-Se o argumento @code{x} for um n˙mero real ou um n˙mero complexo qualquer deles em ponto
-flutuante , o valor numÈrico de @code{airy_ai} È retornado 
-quando possÌvel.
+Se o argumento @code{x} for um n√∫mero real ou um n√∫mero complexo qualquer deles em ponto
+flutuante , o valor num√©rico de @code{airy_ai} √© retornado 
+quando poss√≠vel.
 
-Veja tambÈm @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
+Veja tamb√©m @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
 @end deffn
 
 
-@deffn {FunÁ„o} airy_dai (@var{x})
-A derivada da funÁ„o de Airy Ai @code{airy_ai(x)}. 
+@deffn {Fun√ß√£o} airy_dai (@var{x})
+A derivada da fun√ß√£o de Airy Ai @code{airy_ai(x)}. 
 
 Veja @code{airy_ai}.
 @end deffn
 
-@deffn {FunÁ„o} airy_bi (@var{x})
-A funÁ„o de Airy Bi, como definida em Abramowitz e Stegun,
-@i{Handbook of Mathematical Functions}, Sess„o 10.4, 
-È a segunda soluÁ„o da equaÁ„o de Airy
+@deffn {Fun√ß√£o} airy_bi (@var{x})
+A fun√ß√£o de Airy Bi, como definida em Abramowitz e Stegun,
+@i{Handbook of Mathematical Functions}, Sess√£o 10.4, 
+√© a segunda solu√ß√£o da equa√ß√£o de Airy
 @code{diff (y(x), x, 2) - x y(x) = 0}.
 
-Se o argumento @code{x} for um n˙mero real ou um n˙mero complexo qualquer deles em ponto flutuante,
-o valor numÈrico de @code{airy_bi} È retornado quando possÌvel.
-Em outros casos a express„o n„o avaliada È retornada.
+Se o argumento @code{x} for um n√∫mero real ou um n√∫mero complexo qualquer deles em ponto flutuante,
+o valor num√©rico de @code{airy_bi} √© retornado quando poss√≠vel.
+Em outros casos a express√£o n√£o avaliada √© retornada.
 
-A derivada de @code{diff (airy_bi(x), x)} È @code{airy_dbi(x)}.
+A derivada de @code{diff (airy_bi(x), x)} √© @code{airy_dbi(x)}.
 
 Veja @code{airy_ai}, @code{airy_dbi}.
 @end deffn
 
 
-@deffn {FunÁ„o} airy_dbi (@var{x})
-A derivada de funÁ„o de Airy Bi @code{airy_bi(x)}.
+@deffn {Fun√ß√£o} airy_dbi (@var{x})
+A derivada de fun√ß√£o de Airy Bi @code{airy_bi(x)}.
 
 Veja @code{airy_ai} e @code{airy_bi}.
 @end deffn
 
-@deffn {FunÁ„o} asympa
-@code{asympa} È um pacote para an·lise assintÛtica. O pacote contÈm
-funÁıes de simplificaÁ„o para an·lise assintÛtica, incluindo as funÁıes 
-``grande O'' e ``pequeno o'' que s„o largamente usadas em an·lises de complexidade e
-an·lise numÈrica.
+@deffn {Fun√ß√£o} asympa
+@code{asympa} √© um pacote para an√°lise assint√≥tica. O pacote cont√©m
+fun√ß√µes de simplifica√ß√£o para an√°lise assint√≥tica, incluindo as fun√ß√µes 
+``grande O'' e ``pequeno o'' que s√£o largamente usadas em an√°lises de complexidade e
+an√°lise num√©rica.
 
 @code{load ("asympa")} chama esse pacote.
 
 @end deffn
 
-@deffn {FunÁ„o} bessel (@var{z}, @var{a}) 
-A funÁ„o de Bessel de primeiro tipo.
+@deffn {Fun√ß√£o} bessel (@var{z}, @var{a}) 
+A fun√ß√£o de Bessel de primeiro tipo.
 
-Essa funÁ„o est· desactualizada.  Escreva @code{bessel_j (@var{z}, @var{a})} em lugar dessa.
+Essa fun√ß√£o est√° desactualizada.  Escreva @code{bessel_j (@var{z}, @var{a})} em lugar dessa.
 
 @end deffn
 
 
-@deffn {FunÁ„o} bessel_j (@var{v}, @var{z})
-A funÁ„o de Bessel do primeiro tipo de ordem @math{v} e argumento @math{z}.
+@deffn {Fun√ß√£o} bessel_j (@var{v}, @var{z})
+A fun√ß√£o de Bessel do primeiro tipo de ordem @math{v} e argumento @math{z}.
 
 @code{bessel_j} calcula o array @code{besselarray} tal que
 @code{besselarray [i] = bessel_j [i + v - int(v)] (z)} para @code{i} de zero a @code{int(v)}.
 
-@code{bessel_j} È definida como
+@code{bessel_j} √© definida como
 @ifhtml
 @example
                 inf
@@ -133,18 +133,18 @@ $$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
  }\over{k!\,\Gamma\left(v+k+1\right)}}}$$
 @end tex
 
-todavia sÈries infinitas n„o s„o usadas nos c·lculos.
+todavia s√©ries infinitas n√£o s√£o usadas nos c√°lculos.
 
 @end deffn
 
 
-@deffn {FunÁ„o} bessel_y (@var{v}, @var{z})
-A funÁ„o de Bessel do segundo tipo de ordem @math{v} e argumento @math{z}.
+@deffn {Fun√ß√£o} bessel_y (@var{v}, @var{z})
+A fun√ß√£o de Bessel do segundo tipo de ordem @math{v} e argumento @math{z}.
 
 @code{bessel_y} calcula o array @code{besselarray} tal que
 @code{besselarray [i] = bessel_y [i + v - int(v)] (z)} para @code{i} de zero a @code{int(v)}.
 
-@code{bessel_y} È definida como
+@code{bessel_y} √© definida como
 @ifhtml
 @example
               cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
@@ -165,19 +165,19 @@ $${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
  \sin \left(\pi\,v\right)}}$$
 @end tex
 
-quando @math{v} n„o for um inteiro.  Quando @math{v} for um inteiro @math{n},
-o limite com @math{v} aprocimando-se de @math{n} È tomado.
+quando @math{v} n√£o for um inteiro.  Quando @math{v} for um inteiro @math{n},
+o limite com @math{v} aprocimando-se de @math{n} √© tomado.
 
 @end deffn
 
 
-@deffn {FunÁ„o} bessel_i (@var{v}, @var{z})
-A funÁ„o de Bessel modificada de primeiro tipo de ordem @math{v} e argumento @math{z}.
+@deffn {Fun√ß√£o} bessel_i (@var{v}, @var{z})
+A fun√ß√£o de Bessel modificada de primeiro tipo de ordem @math{v} e argumento @math{z}.
 
 @code{bessel_i} calcula o array @code{besselarray} tal que
 @code{besselarray [i] = bessel_i [i + v - int(v)] (z)} para @code{i} de zero a @code{int(v)}.
 
-@code{bessel_i} È definida como
+@code{bessel_i} √© definida como
 @ifhtml
 @example
                     inf
@@ -206,18 +206,18 @@ $$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
  \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}$$
 @end tex
 
-todavia sÈries infinitas n„o s„o usadas nos c·lculos.
+todavia s√©ries infinitas n√£o s√£o usadas nos c√°lculos.
 
 @end deffn
 
 
-@deffn {FunÁ„o} bessel_k (@var{v}, @var{z})
-A funÁ„o de Bessel modificada de segundo tipo de ordem @math{v} e argumento @math{z}.
+@deffn {Fun√ß√£o} bessel_k (@var{v}, @var{z})
+A fun√ß√£o de Bessel modificada de segundo tipo de ordem @math{v} e argumento @math{z}.
 
 @code{bessel_k} calcula o array @code{besselarray} tal que
 @code{besselarray [i] = bessel_k [i + v - int(v)] (z)} para @code{i} de zero a @code{int(v)}.
 
-@code{bessel_k} È definida como
+@code{bessel_k} √© definida como
 @ifhtml
 @example
            %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
@@ -236,19 +236,19 @@ A funÁ„o de Bessel modificada de segundo tipo de ordem @math{v} e argumento @mat
 $${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
 @end tex
 
-quando @math{v} n„o for inteiro.  Se @math{v} for um inteiro @math{n},
-ent„o o limite  com @math{v} aproximando-se de @math{n} È tomado.
+quando @math{v} n√£o for inteiro.  Se @math{v} for um inteiro @math{n},
+ent√£o o limite  com @math{v} aproximando-se de @math{n} √© tomado.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} besselexpand
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} besselexpand
+Valor por omiss√£o: @code{false}
 
 @c REPHRASE
-Expansıes de controle de funÁıes de Bessel quando a ordem for a metade de
-um inteiro Ìmpar.  Nesse caso, as funÁıes de Bessel podem ser expandidas
-em termos de outras funÁıes elementares.  Quando @code{besselexpand} for @code{true},
-a funÁ„o de Bessel È expandida.
+Expans√µes de controle de fun√ß√µes de Bessel quando a ordem for a metade de
+um inteiro √≠mpar.  Nesse caso, as fun√ß√µes de Bessel podem ser expandidas
+em termos de outras fun√ß√µes elementares.  Quando @code{besselexpand} for @code{true},
+a fun√ß√£o de Bessel √© expandida.
 
 @example
 (%i1) besselexpand: false$
@@ -265,97 +265,97 @@ a funÁ„o de Bessel È expandida.
 @end example
 @end defvr
 
-@deffn {FunÁ„o} scaled_bessel_i (@var{v}, @var{z}) 
+@deffn {Fun√ß√£o} scaled_bessel_i (@var{v}, @var{z}) 
 
-A funÁ„o homotÈtica modificada de Bessel de primeiro tipo de ordem
-@math{v} e argumento @math{z}.  Isto È, @math{scaled_bessel_i(v,z) =
-exp(-abs(z))*bessel_i(v, z)}. Essa funÁ„o È particularmente ˙til
+A fun√ß√£o homot√©tica modificada de Bessel de primeiro tipo de ordem
+@math{v} e argumento @math{z}.  Isto √©, @math{scaled_bessel_i(v,z) =
+exp(-abs(z))*bessel_i(v, z)}. Essa fun√ß√£o √© particularmente √∫til
 para calcular @math{bessel_i} para grandes valores de @math{z}.
-Todavia, maxima n„o conhece outra forma muito mais sobre essa funÁ„o.  Para
-computaÁ„o simbÛlica, È provavelmete preferÌvel trabalhar com a express„o
+Todavia, maxima n√£o conhece outra forma muito mais sobre essa fun√ß√£o.  Para
+computa√ß√£o simb√≥lica, √© provavelmete prefer√≠vel trabalhar com a express√£o
 @code{exp(-abs(z))*bessel_i(v, z)}.
 
 @end deffn
 
-@deffn {FunÁ„o} scaled_bessel_i0 (@var{z}) 
+@deffn {Fun√ß√£o} scaled_bessel_i0 (@var{z}) 
 
-IdÍntica a @code{scaled_bessel_i(0,z)}.
-
-@end deffn
-
-@deffn {FunÁ„o} scaled_bessel_i1 (@var{z}) 
-
-IdÍntica a @code{scaled_bessel_i(1,z)}.
+Id√™ntica a @code{scaled_bessel_i(0,z)}.
 
 @end deffn
 
-@deffn {FunÁ„o} beta (@var{x}, @var{y})
-A funÁ„o beta, definida como @code{gamma(x) gamma(y)/gamma(x + y)}.
+@deffn {Fun√ß√£o} scaled_bessel_i1 (@var{z}) 
+
+Id√™ntica a @code{scaled_bessel_i(1,z)}.
+
+@end deffn
+
+@deffn {Fun√ß√£o} beta (@var{x}, @var{y})
+A fun√ß√£o beta, definida como @code{gamma(x) gamma(y)/gamma(x + y)}.
 @c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
 @c ANY SIMPLIFICATION RULES FOR THIS FUNCTION ??
 
 @end deffn
 
-@deffn {FunÁ„o} gamma (@var{x})
-A funÁ„o gama.
+@deffn {Fun√ß√£o} gamma (@var{x})
+A fun√ß√£o gama.
 
 @c SEEMS POINTLESS TO MENTION THE FOLLOWING IDENTITY, 
 @c AS MAXIMA DOESN'T SEEM TO CARRY OUT THIS SIMPLIFICATION
 @c GAMMA(I)=(I-1)!  for I a positive integer.
 
-Veja tambÈm @code{makegamma}.
+Veja tamb√©m @code{makegamma}.
 
-A vari·vel @code{gammalim} controla a simplificaÁ„o da funÁ„o gama.
+A vari√°vel @code{gammalim} controla a simplifica√ß√£o da fun√ß√£o gama.
 
-A constante de Euler-Mascheroni È @code{%gamma}.
+A constante de Euler-Mascheroni √© @code{%gamma}.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} gammalim
-Valor por omiss„o: 1000000
+@defvr {Vari√°vel de op√ß√£o} gammalim
+Valor por omiss√£o: 1000000
 
 @c REPHRASE
-@code{gammalim} controla a simplificaÁ„o da funÁ„o
-gama para integral e argumentos na forma de n˙meros racionais.  Se o valor
-absoluto do argumento n„o for maior que @code{gammalim}, ent„o
-a simplificaÁ„o ocorrer·.  Note que @code{factlim} comuta controle de
-simplificaÁc„o do resultado de @code{gamma} de um argumento inteiro tambÈm.
+@code{gammalim} controla a simplifica√ß√£o da fun√ß√£o
+gama para integral e argumentos na forma de n√∫meros racionais.  Se o valor
+absoluto do argumento n√£o for maior que @code{gammalim}, ent√£o
+a simplifica√ß√£o ocorrer√°.  Note que @code{factlim} comuta controle de
+simplifica√ßc√£o do resultado de @code{gamma} de um argumento inteiro tamb√©m.
 
 @end defvr
 
 @c NEED EXAMPLES HERE
-@deffn {FunÁ„o} intopois (@var{a})
-Converte @var{a} em um cÛdigo de Poisson.
+@deffn {Fun√ß√£o} intopois (@var{a})
+Converte @var{a} em um c√≥digo de Poisson.
 
 @end deffn
 
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
-@deffn {FunÁ„o} makefact (@var{expr})
-Transforma inst‚ncias de funÁıes binomiais, gama,
+@deffn {Fun√ß√£o} makefact (@var{expr})
+Transforma inst√¢ncias de fun√ß√µes binomiais, gama,
 e beta em @var{expr} para factoriais.
 
-Veja tambÈm @code{makegamma}.
+Veja tamb√©m @code{makegamma}.
 
 @end deffn
 
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
-@deffn {FunÁ„o} makegamma (@var{expr})
-Transforma inst‚ncias de funÁıes binomiais, factorial,
-e beta em @var{expr} para funÁıes gama.
+@deffn {Fun√ß√£o} makegamma (@var{expr})
+Transforma inst√¢ncias de fun√ß√µes binomiais, factorial,
+e beta em @var{expr} para fun√ß√µes gama.
 
-Veja tambÈm @code{makefact}.
+Veja tamb√©m @code{makefact}.
 
 @end deffn
 
 @c AREN'T THERE OTHER FUNCTIONS THAT DO ESSENTIALLY THE SAME THING ??
-@deffn {FunÁ„o} numfactor (@var{expr})
-Retorna o factor numÈrico multiplicando a express„o
+@deffn {Fun√ß√£o} numfactor (@var{expr})
+Retorna o factor num√©rico multiplicando a express√£o
 @var{expr}, que pode ser um termo simples.
 
 @c WHY IS content MENTIONED IN THIS CONTEXT ??
-@code{content} retorna o m·ximo divisor comum (mdc) de todos os termos em uma adiÁ„o.
+@code{content} retorna o m√°ximo divisor comum (mdc) de todos os termos em uma adi√ß√£o.
 
 @example
 (%i1) gamma (7/2);
@@ -371,184 +371,184 @@ Retorna o factor numÈrico multiplicando a express„o
 @end deffn
 
 @c NEED EXAMPLES HERE
-@deffn {FunÁ„o} outofpois (@var{a})
-Converte @var{a} de um cÛdigo de Poisson para uma representaÁ„o
-geral.  Se @var{a} n„o for uma forma de Poisson, @code{outofpois} realiza a convers„o,
-i.e., o valor de retorno È @code{outofpois (intopois (@var{a}))}.
-Essa funÁ„o È desse modo um simplificador canÛnico
-para adiÁıes e potÍncias de termos de seno e co-seno de um tipo particular.
+@deffn {Fun√ß√£o} outofpois (@var{a})
+Converte @var{a} de um c√≥digo de Poisson para uma representa√ß√£o
+geral.  Se @var{a} n√£o for uma forma de Poisson, @code{outofpois} realiza a convers√£o,
+i.e., o valor de retorno √© @code{outofpois (intopois (@var{a}))}.
+Essa fun√ß√£o √© desse modo um simplificador can√≥nico
+para adi√ß√µes e pot√™ncias de termos de seno e co-seno de um tipo particular.
 
 @end deffn
 
 @c NEED MORE INFO HERE
 @c NEED EXAMPLES HERE
-@deffn {FunÁ„o} poisdiff (@var{a}, @var{b})
-Deriva @var{a} com relaÁ„o a @var{b}.  @var{b} deve ocorrer somente
-nos argumentos trigonomÈtricos ou somente nos coeficientes.
+@deffn {Fun√ß√£o} poisdiff (@var{a}, @var{b})
+Deriva @var{a} com rela√ß√£o a @var{b}.  @var{b} deve ocorrer somente
+nos argumentos trigonom√©tricos ou somente nos coeficientes.
 
 @end deffn
 
 @c LOOKING AT THE CODE IN src/pois3.lisp, THIS FCN SEEMS TO COMPUTE THE EXPONENT BY MULTIPLYING IN A LOOP
 @c DUNNO HOW WE WANT TO EXPLAIN THAT
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
-@deffn {FunÁ„o} poisexpt (@var{a}, @var{b})
+@deffn {Fun√ß√£o} poisexpt (@var{a}, @var{b})
 Funcionalmente identica a @code{intopois (@var{a}^@var{b})}.
 @var{b} deve ser um inteiro positico.
 
 @end deffn
 
 @c WHAT IS THIS ABOUT ??
-@deffn {FunÁ„o} poisint (@var{a}, @var{b})
+@deffn {Fun√ß√£o} poisint (@var{a}, @var{b})
 Integra em um senso restrito similarmente (para
-@code{poisdiff}).  Termos n„o periÛdicos em @var{b} s„o diminuÌdos se @var{b} estiver em argumentos
-trigonomÈtricos.
+@code{poisdiff}).  Termos n√£o peri√≥dicos em @var{b} s√£o diminu√≠dos se @var{b} estiver em argumentos
+trigonom√©tricos.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} poislim
-Valor por omiss„o: 5
+@defvr {Vari√°vel de op√ß√£o} poislim
+Valor por omiss√£o: 5
 
-@code{poislim} determina o domÌnio dos coeficientes nos
-argumentos de funÁıes trigonomÈtricas.  O valor inicial de 5
+@code{poislim} determina o dom√≠nio dos coeficientes nos
+argumentos de fun√ß√µes trigonom√©tricas.  O valor inicial de 5
 corresponde ao intervalo [-2^(5-1)+1,2^(5-1)], ou [-15,16], mas isso
 pode ser alterado para [-2^(n-1)+1, 2^(n-1)].
 
 @end defvr
 
 @c UMM, WHAT IS THIS ABOUT EXACTLY ?? EXAMPLES NEEDED
-@deffn {FunÁ„o} poismap (@var{series}, @var{sinfn}, @var{cosfn})
-mapear· as funÁıes @var{sinfn} sobre os
-termos de seno e @var{cosfn} ssobre os termos de co-seno das sÈries de Poisson dadas.
-@var{sinfn} e @var{cosfn} s„o funÁıes de dois argumentos que s„o um coeficiente
-e uma parte trigonomÈtrica de um termo em sÈries respectivamente.
+@deffn {Fun√ß√£o} poismap (@var{series}, @var{sinfn}, @var{cosfn})
+mapear√° as fun√ß√µes @var{sinfn} sobre os
+termos de seno e @var{cosfn} ssobre os termos de co-seno das s√©ries de Poisson dadas.
+@var{sinfn} e @var{cosfn} s√£o fun√ß√µes de dois argumentos que s√£o um coeficiente
+e uma parte trigonom√©trica de um termo em s√©ries respectivamente.
 
 @end deffn
 
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
-@deffn {FunÁ„o} poisplus (@var{a}, @var{b})
-… funcionalmente identica a @code{intopois (a + b)}.
+@deffn {Fun√ß√£o} poisplus (@var{a}, @var{b})
+√â funcionalmente identica a @code{intopois (a + b)}.
 
 @end deffn
 
-@deffn {FunÁ„o} poissimp (@var{a})
-Converte @var{a} em sÈries de Poisson para @var{a} em representaÁ„o
+@deffn {Fun√ß√£o} poissimp (@var{a})
+Converte @var{a} em s√©ries de Poisson para @var{a} em representa√ß√£o
 geral.
 
 @end deffn
 
 @c MORE INFO NEEDED HERE
-@defvr {SÌmbolo especial} poisson
-O sÌmbolo @code{/P/} segue o rÛtulo de linha de uma express„o contendo sÈries de
+@defvr {S√≠mbolo especial} poisson
+O s√≠mbolo @code{/P/} segue o r√≥tulo de linha de uma express√£o contendo s√©ries de
 Poisson.
 
 @end defvr
 
-@deffn {FunÁ„o} poissubst (@var{a}, @var{b}, @var{c})
-Substitue @var{a} por @var{b} em @var{c}.  @var{c} È uma sÈrie de Poisson.
+@deffn {Fun√ß√£o} poissubst (@var{a}, @var{b}, @var{c})
+Substitue @var{a} por @var{b} em @var{c}.  @var{c} √© uma s√©rie de Poisson.
 
-(1) Quando @var{B} È uma vari·vel @var{u}, @var{v}, @var{w}, @var{x}, @var{y}, ou @var{z},
-ent„o @var{a} deve ser uma
-express„o linear nessas vari·veis (e.g., @code{6*u + 4*v}).
+(1) Quando @var{B} √© uma vari√°vel @var{u}, @var{v}, @var{w}, @var{x}, @var{y}, ou @var{z},
+ent√£o @var{a} deve ser uma
+express√£o linear nessas vari√°veis (e.g., @code{6*u + 4*v}).
 
-(2) Quando @var{b} for outra que n„o essas vari·veis, ent„o @var{a} deve tambÈm ser
-livre dessas vari·veis, e alÈm disso, livre de senos ou co-senos.
+(2) Quando @var{b} for outra que n√£o essas vari√°veis, ent√£o @var{a} deve tamb√©m ser
+livre dessas vari√°veis, e al√©m disso, livre de senos ou co-senos.
 
-@code{poissubst (@var{a}, @var{b}, @var{c}, @var{d}, @var{n})} È um tipo especial d substituiÁ„o que
-opera sobre @var{a} e @var{b} como no tipo (1) acima, mas onde @var{d} È uma sÈrie de
+@code{poissubst (@var{a}, @var{b}, @var{c}, @var{d}, @var{n})} √© um tipo especial d substitui√ß√£o que
+opera sobre @var{a} e @var{b} como no tipo (1) acima, mas onde @var{d} √© uma s√©rie de
 Poisson, expande @code{cos(@var{d})} e @code{sin(@var{d})} para a ordem @var{n} como provendo o
-resultado da substituiÁ„o @code{@var{a} + @var{d}} por @var{b} em @var{c}.  A idÈia È que @var{d} È uma
-expans„o em termos de um pequeno par‚metro.  Por exemplo,
+resultado da substitui√ß√£o @code{@var{a} + @var{d}} por @var{b} em @var{c}.  A id√©ia √© que @var{d} √© uma
+expans√£o em termos de um pequeno par√¢metro.  Por exemplo,
 @code{poissubst (u, v, cos(v), %e, 3)} retorna @code{cos(u)*(1 - %e^2/2) - sin(u)*(%e - %e^3/6)}.
 
 @end deffn
 
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
-@deffn {FunÁ„o} poistimes (@var{a}, @var{b})
-… funcionalmente idÍntica a @code{intopois (@var{a}*@var{b})}.
+@deffn {Fun√ß√£o} poistimes (@var{a}, @var{b})
+√â funcionalmente id√™ntica a @code{intopois (@var{a}*@var{b})}.
 
 @end deffn
 
 @c HOW DOES THIS WORK ?? NEED MORE INFO AND EXAMPLES
-@deffn {FunÁ„o} poistrim ()
-È um nome de funÁ„o reservado que (se o utilizador tiver definido
-uma funÁ„o com esse nome) È aplicada durante multiplicaÁ„o de Poisson.  Isso È uma funÁ„o
-predicada de 6 argumentos que s„o os coeficientes de @var{u}, @var{v}, ..., @var{z}
+@deffn {Fun√ß√£o} poistrim ()
+√© um nome de fun√ß√£o reservado que (se o utilizador tiver definido
+uma fun√ß√£o com esse nome) √© aplicada durante multiplica√ß√£o de Poisson.  Isso √© uma fun√ß√£o
+predicada de 6 argumentos que s√£o os coeficientes de @var{u}, @var{v}, ..., @var{z}
 em um termo.  Termos para os quais @code{poistrim} for @code{true} (para os coeficientes
-daquele termo) s„o eliminados durante a multiplicaÁ„o.
+daquele termo) s√£o eliminados durante a multiplica√ß√£o.
 
 @end deffn
 
-@deffn {FunÁ„o} printpois (@var{a})
-Mostra uma sÈrie de Poisson em um formato legÌvel.  Em comum
-com @code{outofpois}, essa funÁ„o converter· @var{a} em um cÛdigo de Poisson primeiro, se
-necess·rio.
+@deffn {Fun√ß√£o} printpois (@var{a})
+Mostra uma s√©rie de Poisson em um formato leg√≠vel.  Em comum
+com @code{outofpois}, essa fun√ß√£o converter√° @var{a} em um c√≥digo de Poisson primeiro, se
+necess√°rio.
 
 @end deffn
 
 @c NEED INFO HERE ABOUT THE SUBSCRIPTED FORM psi[n](x)
 @c I (rtoy) don't think there is a plain psi(x) function anymore.
-@c @deffn {FunÁ„o} psi (@var{x})
-@c @deffnx {FunÁ„o} psi [@var{n}](@var{x})
-@deffn {FunÁ„o} psi [@var{n}](@var{x})
+@c @deffn {Fun√ß√£o} psi (@var{x})
+@c @deffnx {Fun√ß√£o} psi [@var{n}](@var{x})
+@deffn {Fun√ß√£o} psi [@var{n}](@var{x})
 
 A derivada de @code{log (gamma (@var{x}))} de ordem @code{@var{n}+1}.
-Dessa forma, @code{psi[0](@var{x})} È a primeira derivada,
-@code{psi[1](@var{x})} È a segunda derivada, etc.
+Dessa forma, @code{psi[0](@var{x})} √© a primeira derivada,
+@code{psi[1](@var{x})} √© a segunda derivada, etc.
 
-Maxima n„o sabe como, em geral, calcular um valor numÈrico de
+Maxima n√£o sabe como, em geral, calcular um valor num√©rico de
 @code{psi}, mas Maxima pode calcular alguns valores exatos para argumentos racionais.
-Muitas vari·veis controlam qual intervalo de argumentos racionais @code{psi} ir·
-retornar um valor exato, se possÌvel.  Veja @code{maxpsiposint},
+Muitas vari√°veis controlam qual intervalo de argumentos racionais @code{psi} ir√°
+retornar um valor exato, se poss√≠vel.  Veja @code{maxpsiposint},
 @code{maxpsinegint}, @code{maxpsifracnum}, e @code{maxpsifracdenom}.
-Isto È, @var{x} deve localizar-se entre @code{maxpsinegint} e
-@code{maxpsiposint}.  Se o valor absoluto da parte facion·ria de
+Isto √©, @var{x} deve localizar-se entre @code{maxpsinegint} e
+@code{maxpsiposint}.  Se o valor absoluto da parte facion√°ria de
 @var{x} for racional e tiver um numerador menor que @code{maxpsifracnum}
 e tiver um denominador menor que @code{maxpsifracdenom}, @code{psi}
-ir· retornar um valor exato.
+ir√° retornar um valor exato.
 
-A funÁ„o @code{bfpsi} no pacote @code{bffac} pode calcular
-valores numÈricos.
+A fun√ß√£o @code{bfpsi} no pacote @code{bffac} pode calcular
+valores num√©ricos.
  
  @end deffn
 
-@defvr {Vari·vel de opÁ„o} maxpsiposint
-Valor por omiss„o: 20
+@defvr {Vari√°vel de op√ß√£o} maxpsiposint
+Valor por omiss√£o: 20
 
-@code{maxpsiposint} È o maior valor positivo para o qual
-@code{psi[n](x)} ir· tentar calcular um valor exato.
-
-@end defvr
-
-@defvr {Vari·vel de opÁ„o} maxpsinegint
-Valor por omiss„o: -10
-
-@code{maxpsinegint} È o valor mais negativo para o qual
-@code{psi[n](x)} ir· tentar calcular um valor exato.  Isto È, se
-@var{x} for menor que @code{maxnegint}, @code{psi[n](@var{x})} n„o ir·
-retornar resposta simplificada, mesmo se isso for possÌvel.
+@code{maxpsiposint} √© o maior valor positivo para o qual
+@code{psi[n](x)} ir√° tentar calcular um valor exato.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} maxpsifracnum
-Valor por omiss„o: 4
+@defvr {Vari√°vel de op√ß√£o} maxpsinegint
+Valor por omiss√£o: -10
 
-Tomemos @var{x} como sendo um n˙mero racional menor que a unidade e da forma @code{p/q}.
-Se @code{p} for menor que @code{maxpsifracnum}, ent„o
-@code{psi[@var{n}](@var{x})} n„o ir· tentar retornar um valor
+@code{maxpsinegint} √© o valor mais negativo para o qual
+@code{psi[n](x)} ir√° tentar calcular um valor exato.  Isto √©, se
+@var{x} for menor que @code{maxnegint}, @code{psi[n](@var{x})} n√£o ir√°
+retornar resposta simplificada, mesmo se isso for poss√≠vel.
+
+@end defvr
+
+@defvr {Vari√°vel de op√ß√£o} maxpsifracnum
+Valor por omiss√£o: 4
+
+Tomemos @var{x} como sendo um n√∫mero racional menor que a unidade e da forma @code{p/q}.
+Se @code{p} for menor que @code{maxpsifracnum}, ent√£o
+@code{psi[@var{n}](@var{x})} n√£o ir√° tentar retornar um valor
 simplificado.
 
 @end defvr
 
-@deffn {FunÁ„o} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
+@deffn {Fun√ß√£o} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
 
-Calcula a transformada de Laplace de @var{expr} com ralaÁ„o ‡ vari·vel @var{t}.
-O integrando @var{expr} pode conter funÁıes especiais.
+Calcula a transformada de Laplace de @var{expr} com rala√ß√£o √† vari√°vel @var{t}.
+O integrando @var{expr} pode conter fun√ß√µes especiais.
 
-Se @code{specint} n„o puder calcular a integral, o valore de retorno pode
-conter v·rios sÌmbolos do Lisp, incluindo
+Se @code{specint} n√£o puder calcular a integral, o valore de retorno pode
+conter v√°rios s√≠mbolos do Lisp, incluindo
 @code{other-defint-to-follow-negtest},
 @code{other-lt-exponential-to-follow},
-@code{product-of-y-with-nofract-indices}, etc.; isso È um erro.  
+@code{product-of-y-with-nofract-indices}, etc.; isso √© um erro.  
 @c REPORTED AS SOURCEFORGE BUG # 1162505
 
 @code{demo(hypgeo)} mostra muitos exemplos de transformadas de Laplace calculados por @code{specint}.
@@ -579,12 +579,12 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} maxpsifracdenom
-Valor por omiss„o: 4
+@defvr {Vari√°vel de op√ß√£o} maxpsifracdenom
+Valor por omiss√£o: 4
 
-Tomemos @var{x} como sendo um n˙mero racional menor que a unidade e da forma @code{p/q}.
-Se @code{q} for maior que @code{maxpsifracdeonm}, ent„o
-@code{psi[@var{n}](@var{x})} n„o ir· tentar retornar um valor
+Tomemos @var{x} como sendo um n√∫mero racional menor que a unidade e da forma @code{p/q}.
+Se @code{q} for maior que @code{maxpsifracdeonm}, ent√£o
+@code{psi[@var{n}](@var{x})} n√£o ir√° tentar retornar um valor
 simplificado.
 
 

@@ -227,7 +227,7 @@ Para mostrar o campo de dire@value{cedilha}@~{a}o da equa@value{cedilha}@~{a}o d
 @end example
 
 @ifnotinfo
-@image{../figures/plotdf1,8cm}
+@image{@value{figuresfolder}/plotdf1,8cm}
 @end ifnotinfo
 
 @item
@@ -240,7 +240,7 @@ Para obter o campo de dire@value{cedilha}@~{a}o para a equa@value{cedilha}@~{a}o
 O gr@'{a}fico tamb@'{e}m mostra a fun@value{cedilha}@~{a}o @math{y = sqrt(x)}. 
 
 @ifnotinfo
-@image{../figures/plotdf2,8cm}
+@image{@value{figuresfolder}/plotdf2,8cm}
 @end ifnotinfo
 
 @item
@@ -255,7 +255,7 @@ fixado em 2):
 @end example
 
 @ifnotinfo
-@image{../figures/plotdf3,8cm}
+@image{@value{figuresfolder}/plotdf3,8cm}
 @end ifnotinfo
 
 @item
@@ -267,7 +267,7 @@ Para montar o gr@'{a}fico do campo de dire@value{cedilha}@~{a}o da equa@value{ce
 @end example
 
 @ifnotinfo
-@image{../figures/plotdf4,8cm}
+@image{@value{figuresfolder}/plotdf4,8cm}
 @end ifnotinfo
 
 @item
@@ -286,7 +286,7 @@ duas  vari@'{a}veis de estado como uma fun@value{cedilha}@~{a}o do tempo:
 @end example
 
 @ifnotinfo
-@image{../figures/plotdf5,8cm}@image{../figures/plotdf6,8cm}
+@image{@value{figuresfolder}/plotdf5,8cm}@image{@value{figuresfolder}/plotdf6,8cm}
 @end ifnotinfo
 
 @end itemize

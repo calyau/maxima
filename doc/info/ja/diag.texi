@@ -35,7 +35,9 @@
 この関数を使うためには、最初に@code{load("diag")}を書いてください。
 
 @opencatbox
-@category{Matrices} @category{Share packages} @category{Package diag}
+@category{Matrices}
+@category{Share packages}
+@category{Package diag}
 @closecatbox
 
 @end deffn

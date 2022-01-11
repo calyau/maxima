@@ -174,7 +174,8 @@ Incorrect syntax: # is not a prefix operator
 @end example
 
 @opencatbox
-@category{Operators} @category{Syntax}
+@category{Operators}
+@category{Syntax}
 @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -1021,7 +1022,8 @@ Maximaは入力の中で @code{**}を @code{^}と同じ演算子と認識し、
 @end example
 
 @opencatbox
-@category{Evaluation} @category{Operators}
+@category{Evaluation}
+@category{Operators}
 @closecatbox
 @end deffn
 
@@ -1069,7 +1071,8 @@ Maximaは入力の中で @code{**}を @code{^}と同じ演算子と認識し、
 @end example
 
 @opencatbox
-@category{Evaluation} @category{Operators}
+@category{Evaluation}
+@category{Operators}
 @closecatbox
 @end deffn
 
@@ -1182,7 +1185,8 @@ x is equal to 1234 - 1729 w
 @end example
 
 @opencatbox
-@category{Function definition} @category{Operators}
+@category{Function definition}
+@category{Operators}
 @closecatbox
 @end deffn
 
@@ -1284,7 +1288,8 @@ x is equal to 1234 - 1729 w
 @end example
 
 @opencatbox
-@category{Function definition} @category{Operators}
+@category{Function definition}
+@category{Operators}
 @closecatbox
 @end deffn
 
@@ -1419,7 +1424,9 @@ if x ## y then
 @end example
 
 @opencatbox
-@category{Operators} @category{Declarations and inferences} @category{Syntax}
+@category{Operators}
+@category{Declarations and inferences}
+@category{Syntax}
 @closecatbox
 
 @end deffn
@@ -1553,7 +1560,8 @@ Matchfix演算子は通常のユーザー定義関数です。
 @end example
 
 @opencatbox
-@category{Syntax} @category{Operators}
+@category{Syntax}
+@category{Operators}
 @closecatbox
 @end deffn
 
@@ -1575,7 +1583,8 @@ Matchfix演算子は通常のユーザー定義関数です。
 @ref{Introduction to operators}も参照してください。
 
 @opencatbox
-@category{Operators} @category{Syntax}
+@category{Operators}
+@category{Syntax}
 @closecatbox
 @end deffn
 
@@ -1595,7 +1604,8 @@ Matchfix演算子は通常のユーザー定義関数です。
 @ref{Introduction to operators}も参照してください。
 
 @opencatbox
-@category{Operators} @category{Syntax}
+@category{Operators}
+@category{Syntax}
 @closecatbox
 @end deffn
 
@@ -1611,7 +1621,8 @@ Matchfix演算子は通常のユーザー定義関数です。
 @ref{Introduction to operators}も参照してください。
 
 @opencatbox
-@category{Operators} @category{Syntax}
+@category{Operators}
+@category{Syntax}
 @closecatbox
 @end deffn
 
@@ -1627,6 +1638,7 @@ Matchfix演算子は通常のユーザー定義関数です。
 @ref{Introduction to operators}も参照してください。
 
 @opencatbox
-@category{Operators} @category{Syntax}
+@category{Operators}
+@category{Syntax}
 @closecatbox
 @end deffn

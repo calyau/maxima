@@ -138,7 +138,8 @@ MaximaかLispの関数でなければいけません。
 @end example
 
 @opencatbox
-@category{Package romberg} @category{Numerical methods}
+@category{Package romberg}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn

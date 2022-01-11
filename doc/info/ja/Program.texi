@@ -559,7 +559,8 @@ Example expression is --------------
 @end example
 
 @opencatbox
-@category{Debugging} @category{Display flags and variables}
+@category{Debugging}
+@category{Display flags and variables}
 @closecatbox
 @end defvr
 
@@ -582,7 +583,8 @@ Example expression is --------------
 @code{error}と@code{error_size}も参照してください。
 
 @opencatbox
-@category{Debugging} @category{Display flags and variables}
+@category{Debugging}
+@category{Display flags and variables}
 @closecatbox
 @end defvr
 
@@ -764,7 +766,8 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 @end example
 
 @opencatbox
-@category{Programming} @category{Predicate functions}
+@category{Programming}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -914,7 +917,8 @@ mapは主演算子が@var{expr_i}と同じ式を返します。
 @code{is}と@code{maybe}も参照してください。
 
 @opencatbox
-@category{Programming} @category{Predicate functions}
+@category{Programming}
+@category{Predicate functions}
 @closecatbox
 @end defvr
 

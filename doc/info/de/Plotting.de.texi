@@ -219,7 +219,7 @@ Beispiele:
 (%i1) contour_plot(x^2 + y^2, [x, -4, 4], [y, -4, 4])$
 @end example
 @ifnotinfo
-@image{../figures/plotting1,8cm}
+@image{@value{figuresfolder}/plotting1,8cm}
 @end ifnotinfo
 
 @c You can add any options accepted by @code{plot3d}; for instance, the option 
@@ -246,7 +246,7 @@ gezeichnet und die Legende ist entfernt.
 @end group
 @end example
 @ifnotinfo
-@image{../figures/plotting2,8cm}
+@image{@value{figuresfolder}/plotting2,8cm}
 @end ifnotinfo
 @end deffn
 
@@ -331,7 +331,7 @@ Beispiel:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting3,8cm}
+@image{@value{figuresfolder}/plotting3,8cm}
 @end ifnotinfo
 @end deffn
 
@@ -524,7 +524,7 @@ Graph einer einfachen Funktion.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting6,8cm}
+@image{@value{figuresfolder}/plotting6,8cm}
 @end ifnotinfo
 
 @c If the functions grows too fast, it might be necessary to limit the
@@ -543,7 +543,7 @@ vertikalen Achse mit der Grafikoption @code{y} zu begrenzen.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting7,8cm}
+@image{@value{figuresfolder}/plotting7,8cm}
 @end ifnotinfo
 
 @c The aspect of the plot might be different depending on the plotting
@@ -568,7 +568,7 @@ Koordinatenachsen mit Pfeilen dargestellt werden.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting8,8cm}
+@image{@value{figuresfolder}/plotting8,8cm}
 @end ifnotinfo
 
 @c A plot with a logarithmic scale:
@@ -583,7 +583,7 @@ Ein Graph mit einer logarithmischen Skala:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting9,8cm}
+@image{@value{figuresfolder}/plotting9,8cm}
 @end ifnotinfo
 
 @c Plotting functions by name:
@@ -607,7 +607,7 @@ $g
 @end example
 
 @ifnotinfo
-@image{../figures/plotting10,8cm}
+@image{@value{figuresfolder}/plotting10,8cm}
 @end ifnotinfo
 
 @c A plot of the butterfly curve, defined parametrically:
@@ -624,7 +624,7 @@ Graph einer parametrisch definierten Schmetterlingskurve.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting11,8cm}
+@image{@value{figuresfolder}/plotting11,8cm}
 @end ifnotinfo
 
 @c Plot of a common function together with the parametric representation of
@@ -646,7 +646,7 @@ Seitenverh@"altnis der Grafik wurde mit den Grafikoptionen @code{same_xy}.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting12,8cm}
+@image{@value{figuresfolder}/plotting12,8cm}
 @end ifnotinfo
 
 @c A plot of a discrete set of points, defining x and y coordinates separately:
@@ -665,7 +665,7 @@ mit einer Linie verbunden.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting14,8cm}
+@image{@value{figuresfolder}/plotting14,8cm}
 @end ifnotinfo
 
 @c In this example, a table with three columns is saved in a file
@@ -696,7 +696,7 @@ Spalte werden gezeichnet.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting15,8cm}
+@image{@value{figuresfolder}/plotting15,8cm}
 @end ifnotinfo
 
 @c A plot of experimental data points together with the theoretical
@@ -727,7 +727,7 @@ Funktion, die die Daten beschreibt.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting16,8cm}
+@image{@value{figuresfolder}/plotting16,8cm}
 @end ifnotinfo
 @end deffn
 
@@ -773,7 +773,7 @@ Graph einer einfachen Funktion.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting17,8cm}
+@image{@value{figuresfolder}/plotting17,8cm}
 @end ifnotinfo
 
 @c Use of the z option to limit a function that goes to infinity (in this
@@ -793,7 +793,7 @@ Dieses Beispiel zeigt den Graph ohne F@"arbung der Fl@"ache.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting18,10cm}
+@image{@value{figuresfolder}/plotting18,10cm}
 @end ifnotinfo
 
 @c The infinite values of z can also be avoided by choosing a grid that
@@ -821,7 +821,7 @@ Das Beispiel zeigt zudem die Nutzung einer Palette.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting19,8cm}
+@image{@value{figuresfolder}/plotting19,8cm}
 @end ifnotinfo
 
 @c Two surfaces in the same plot. Ranges specific to one of the surfaces can
@@ -847,7 +847,7 @@ Graph mit zwei Fl@"achen mit verschiedenen Wertebereichen.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting20,8cm}
+@image{@value{figuresfolder}/plotting20,8cm}
 @end ifnotinfo
 
 @c Plot of a Klein bottle, defined parametrically:
@@ -872,7 +872,7 @@ Graph der kleinschen Flasche, die parametrisch definiert ist.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting21,8cm}
+@image{@value{figuresfolder}/plotting21,8cm}
 @end ifnotinfo
 
 @c Plot of a spherical harmonic, using of the predefined transformations,
@@ -899,7 +899,7 @@ kartesisches Koordinatensystem zu transformieren.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting22,8cm}
+@image{@value{figuresfolder}/plotting22,8cm}
 @end ifnotinfo
 
 @c Use of the predefined function @code{polar_to_xy} to transform from
@@ -924,7 +924,7 @@ wie der Rahmen und die Legende entfernt werden k@"onnen.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting23,8cm}
+@image{@value{figuresfolder}/plotting23,8cm}
 @end ifnotinfo
 
 @c Plot of a sphere using the transformation from spherical to rectangular
@@ -947,7 +947,7 @@ ein kartesisches Koordinatensystem genutzt wird.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting24,8cm}
+@image{@value{figuresfolder}/plotting24,8cm}
 @end ifnotinfo
 
 @c Definition of a function of two-variables using a matrix. Notice the
@@ -972,7 +972,7 @@ das @code{plot3d} fehlschl@"agt, wenn die Argumente keine ganze Zahlen sind.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting25,8cm}
+@image{@value{figuresfolder}/plotting25,8cm}
 @end ifnotinfo
 
 @c By setting the elevation equal to zero, a surface can be seen as a map
@@ -996,7 +996,7 @@ Fl@"ache.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting26,8cm}
+@image{@value{figuresfolder}/plotting26,8cm}
 @end ifnotinfo
 
 @end deffn

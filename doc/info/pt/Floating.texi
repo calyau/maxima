@@ -2,11 +2,11 @@
 @c ITEMS IN THIS FILE ARE IN NEED OF EXPANSION, CLARIFICATION, AND EXAMPLES
 
 @menu
-* Definições para ponto Flutuante::  
+* DefiniÃ§Ãµes para ponto Flutuante::  
 @end menu
 
-@node Definições para ponto Flutuante,  , Ponto Flutuante, Ponto Flutuante
-@section Definições para ponto Flutuante
+@node DefiniÃ§Ãµes para ponto Flutuante,  , Ponto Flutuante, Ponto Flutuante
+@section DefiniÃ§Ãµes para ponto Flutuante
 
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE NOT DESCRIBED IN .texi FILES: !!!
 @c obfac, azetb, vonschtoonk, divrlst, obzeta, bfhzeta, bfpsi0 !!!
@@ -18,137 +18,137 @@
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED HERE: !!!
 @c bfpsi, bffac, cbffac !!!
 
-@deffn {Função} bffac (@var{expr}, @var{n})
-Versão para grandes números em ponto flutuante da função
-@code{factorial} (usa o artifício gamma).  O segundo argumento informa quantos dígitos reter e retornar,
-isso é uma boa idéia para requisitar precisão adicional.
+@deffn {FunÃ§Ã£o} bffac (@var{expr}, @var{n})
+VersÃ£o para grandes nÃºmeros em ponto flutuante da funÃ§Ã£o
+@code{factorial} (usa o artifÃ­cio gamma).  O segundo argumento informa quantos dÃ­gitos reter e retornar,
+isso Ã© uma boa idÃ©ia para requisitar precisÃ£o adicional.
 
-@code{load ("bffac")} chama essa função.
+@code{load ("bffac")} chama essa funÃ§Ã£o.
 
 @end deffn
 
-@defvr {Variável de Opção} algepsilon
-Valor por omissão: 10^8
+@defvr {VariÃ¡vel de OpÃ§Ã£o} algepsilon
+Valor por omissÃ£o: 10^8
 
 @c WHAT IS algepsilon, EXACTLY ??? describe ("algsys") IS NOT VERY INFORMATIVE !!!
-@code{algepsilon} é usada por @code{algsys}.
+@code{algepsilon} Ã© usada por @code{algsys}.
 
 @end defvr
 
-@deffn {Função} bfloat (@var{expr})
-Converte todos os números e funções de números em @var{expr} para grandes números em 
-ponto flutuante (bigfloat).  O número de algarismos significativos no grande número em ponto flutuante resultante é especificado através da variável global @code{fpprec}.
+@deffn {FunÃ§Ã£o} bfloat (@var{expr})
+Converte todos os nÃºmeros e funÃ§Ãµes de nÃºmeros em @var{expr} para grandes nÃºmeros em 
+ponto flutuante (bigfloat).  O nÃºmero de algarismos significativos no grande nÃºmero em ponto flutuante resultante Ã© especificado atravÃ©s da variÃ¡vel global @code{fpprec}.
 
-Quando @code{float2bf} for @code{false} uma mensagem de alerta é mostrada quando
-uma número em ponto flutuante (float) é convertido em um grande número em ponto flutuante (bigfloat - uma vez que
-isso pode resultar em perda de precisão).
-
-@end deffn
-
-@deffn {Função} bfloatp (@var{expr})
-Retorna @code{true} se a avaliação da @var{expr} resultar em um grande número em ponto flutuante, de outra forma retorna @code{false}.
+Quando @code{float2bf} for @code{false} uma mensagem de alerta Ã© mostrada quando
+uma nÃºmero em ponto flutuante (float) Ã© convertido em um grande nÃºmero em ponto flutuante (bigfloat - uma vez que
+isso pode resultar em perda de precisÃ£o).
 
 @end deffn
 
-@deffn {Função} bfpsi (@var{n}, @var{z}, @var{fpprec})
-@deffnx {Função} bfpsi0 (@var{z}, @var{fpprec})
-@code{bfpsi} é a função @code{polygamma} de argumentos reais @var{z} e ordem de inteiro @var{n}.
-@code{bfpsi0} é a função @code{digamma}. 
-@code{bfpsi0 (@var{z}, @var{fpprec})} é equivalente a @code{bfpsi (0, @var{z}, @var{fpprec})}.
+@deffn {FunÃ§Ã£o} bfloatp (@var{expr})
+Retorna @code{true} se a avaliaÃ§Ã£o da @var{expr} resultar em um grande nÃºmero em ponto flutuante, de outra forma retorna @code{false}.
 
-Essas funções retornam valores em grandes números em ponto flutuante.
-@var{fpprec} é a precisão do valor de retorno dos grandes números em ponto flutuante.
+@end deffn
+
+@deffn {FunÃ§Ã£o} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@deffnx {FunÃ§Ã£o} bfpsi0 (@var{z}, @var{fpprec})
+@code{bfpsi} Ã© a funÃ§Ã£o @code{polygamma} de argumentos reais @var{z} e ordem de inteiro @var{n}.
+@code{bfpsi0} Ã© a funÃ§Ã£o @code{digamma}. 
+@code{bfpsi0 (@var{z}, @var{fpprec})} Ã© equivalente a @code{bfpsi (0, @var{z}, @var{fpprec})}.
+
+Essas funÃ§Ãµes retornam valores em grandes nÃºmeros em ponto flutuante.
+@var{fpprec} Ã© a precisÃ£o do valor de retorno dos grandes nÃºmeros em ponto flutuante.
 
 @c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
 @c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
 @c Note @code{-bfpsi0 (1, fpprec)} provides @code{%gamma} (Euler's constant) as a bigfloat.
 
-@code{load ("bffac")} chama essas funções.
+@code{load ("bffac")} chama essas funÃ§Ãµes.
 
 @end deffn
 
-@defvr {Variável de Opção} bftorat
-Valor por omissão: @code{false}
+@defvr {VariÃ¡vel de OpÃ§Ã£o} bftorat
+Valor por omissÃ£o: @code{false}
 
-@code{bftorat} controla a conversão de @code{bfloats} para
-números racionais. 
+@code{bftorat} controla a conversÃ£o de @code{bfloats} para
+nÃºmeros racionais. 
 Quando @code{bftorat} for @code{false},
-@code{ratepsilon} será usada para
-controlar a conversão (isso resulta em números racionais relativametne
+@code{ratepsilon} serÃ¡ usada para
+controlar a conversÃ£o (isso resulta em nÃºmeros racionais relativametne
 pequenos).
 Quando @code{bftorat} for @code{true},
-o número racional gerado irá
+o nÃºmero racional gerado irÃ¡
 representar precisamente o @code{bfloat}.
 
 @end defvr
 
-@defvr {Variável de Opção} bftrunc
-Valor por omissão: @code{true}
+@defvr {VariÃ¡vel de OpÃ§Ã£o} bftrunc
+Valor por omissÃ£o: @code{true}
 
-@code{bftrunc} faz com que tilhas de zeros em grandes números em ponto flutuante
+@code{bftrunc} faz com que tilhas de zeros em grandes nÃºmeros em ponto flutuante
 diferentes de zero sejam ocultadas.  Desse modo, se @code{bftrunc} for @code{false}, @code{bfloat (1)}
-será mostrado como @code{1.000000000000000B0}. De outra forma, será mostrado como
+serÃ¡ mostrado como @code{1.000000000000000B0}. De outra forma, serÃ¡ mostrado como
 @code{1.0B0}.
 
 @end defvr
 
-@deffn {Função} cbffac (@var{z}, @var{fpprec})
-Factorial complexo de grandes números em ponto flutuante.
+@deffn {FunÃ§Ã£o} cbffac (@var{z}, @var{fpprec})
+Factorial complexo de grandes nÃºmeros em ponto flutuante.
 
-@code{load ("bffac")} chama essa função.
+@code{load ("bffac")} chama essa funÃ§Ã£o.
 
 @end deffn
 
-@deffn {Função} float (@var{expr})
-Converte inteiros, números racionais e grandes números em ponto flutuante em @var{expr}
-para números em ponto flutuante.  Da mesma forma um @code{evflag}, @code{float} faz com que
-números racionais não-inteiros e grandes números em ponto flutuante sejam convertidos para
+@deffn {FunÃ§Ã£o} float (@var{expr})
+Converte inteiros, nÃºmeros racionais e grandes nÃºmeros em ponto flutuante em @var{expr}
+para nÃºmeros em ponto flutuante.  Da mesma forma um @code{evflag}, @code{float} faz com que
+nÃºmeros racionais nÃ£o-inteiros e grandes nÃºmeros em ponto flutuante sejam convertidos para
 ponto flutuante.
 
 @end deffn
 
-@defvr {Variável de Opção} float2bf
-Valor por omissão: @code{false}
+@defvr {VariÃ¡vel de OpÃ§Ã£o} float2bf
+Valor por omissÃ£o: @code{false}
  
-Quando @code{float2bf} for @code{false}, uma mensagem de alerta é mostrada quando
-um número em ponto flutuante é convertido em um grande número em ponto flutuante (uma vez que
-isso pode resultar em perda de precisão).
+Quando @code{float2bf} for @code{false}, uma mensagem de alerta Ã© mostrada quando
+um nÃºmero em ponto flutuante Ã© convertido em um grande nÃºmero em ponto flutuante (uma vez que
+isso pode resultar em perda de precisÃ£o).
 
 @end defvr
 
-@deffn {Função} floatnump (@var{expr})
-Retorna @code{true} se @var{expr} for um número em ponto flutuante, de outra forma retorna @code{false}.
+@deffn {FunÃ§Ã£o} floatnump (@var{expr})
+Retorna @code{true} se @var{expr} for um nÃºmero em ponto flutuante, de outra forma retorna @code{false}.
 
 @end deffn
 
-@defvr {Variável de Opção} fpprec
-Valor por omissão: 16
+@defvr {VariÃ¡vel de OpÃ§Ã£o} fpprec
+Valor por omissÃ£o: 16
 
-@code{fpprec} é o número de algarismos significativos para aritmética sobre grandes números em ponto flutuante
-@code{fpprec} não afecta cálculos sobre números em ponto flutuante comuns.
+@code{fpprec} Ã© o nÃºmero de algarismos significativos para aritmÃ©tica sobre grandes nÃºmeros em ponto flutuante
+@code{fpprec} nÃ£o afecta cÃ¡lculos sobre nÃºmeros em ponto flutuante comuns.
 
-Veja também @code{bfloat} e @code{fpprintprec}.
+Veja tambÃ©m @code{bfloat} e @code{fpprintprec}.
 
 @end defvr
 
-@defvr {Variável de Opção} fpprintprec
-Valor por omissão: 0
+@defvr {VariÃ¡vel de OpÃ§Ã£o} fpprintprec
+Valor por omissÃ£o: 0
 
-@code{fpprintprec} é o n;umero de dígitos a serem mostrados na tela quando no caso de nuúmeros em ponto flutuante e no caso de grandes números em ponto flutuante.
+@code{fpprintprec} Ã© o n;umero de dÃ­gitos a serem mostrados na tela quando no caso de nuÃºmeros em ponto flutuante e no caso de grandes nÃºmeros em ponto flutuante.
 
-Para números em ponto flutuante comuns,
+Para nÃºmeros em ponto flutuante comuns,
 quando @code{fpprintprec} tiver um valor entre 2 e 16  (inclusive),
-o n;umero de dígitos mostrado na tela é igual a @code{fpprintprec}.
-De outra forma, @code{fpprintprec} é 0, ou maior que 16,
-e o número de dígitos mostrados é 16.
+o n;umero de dÃ­gitos mostrado na tela Ã© igual a @code{fpprintprec}.
+De outra forma, @code{fpprintprec} Ã© 0, ou maior que 16,
+e o nÃºmero de dÃ­gitos mostrados Ã© 16.
 
-Para grandes números em ponto flutuante,
+Para grandes nÃºmeros em ponto flutuante,
 quando @code{fpprintprec} tiver um valor entre 2 e @code{fpprec} (inclusive),
-o n;umero de dígitos mostrados é giaul a @code{fpprintprec}.
-De outra forma, @code{fpprintprec} é 0, ou maior que @code{fpprec},
-e o n;umero de dígitos mostrados é igual a @code{fpprec}.
+o n;umero de dÃ­gitos mostrados Ã© giaul a @code{fpprintprec}.
+De outra forma, @code{fpprintprec} Ã© 0, ou maior que @code{fpprec},
+e o n;umero de dÃ­gitos mostrados Ã© igual a @code{fpprec}.
 
-@code{fpprintprec} não pode ser 1.
+@code{fpprintprec} nÃ£o pode ser 1.
 
 @end defvr
 

@@ -25,7 +25,8 @@ Maximaの整理器によって自動的に適用されます。
 @code{affine}パッケージの可換/非可換代数用メカニズムがあります。
 
 @opencatbox
-@category{Simplification} @category{Rules and patterns}
+@category{Simplification}
+@category{Rules and patterns}
 @closecatbox
 
 @c end concepts Rules and Patterns
@@ -385,7 +386,8 @@ Maximaの整理器によって自動的に適用されます。
 @end example
 
 @opencatbox
-@category{Rules and patterns} @category{Display functions}
+@category{Rules and patterns}
+@category{Display functions}
 @closecatbox
 @end deffn
 
@@ -806,7 +808,8 @@ bb aa partitions `product'
 @end example
 
 @opencatbox
-@category{Rules and patterns} @category{Declarations and inferences}
+@category{Rules and patterns}
+@category{Declarations and inferences}
 @closecatbox
 @end deffn
 

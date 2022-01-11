@@ -87,7 +87,8 @@ Maximaのパーサは、コメントを、入力外リームでのトークン�
 @mref{closefile}は、@code{appendfile}や@code{writefile}によって開かれた筆記録ファイルを閉じます。
 
 @opencatbox
-@category{File output} @category{Console interaction}
+@category{File output}
+@category{Console interaction}
 @closecatbox
 @end deffn
 
@@ -150,7 +151,8 @@ Maximaのパーサは、コメントを、入力外リームでのトークン�
 @mref{load}, @mref{batchload}, @mref{demo}も参照してください。
 
 @opencatbox
-@category{Session management} @category{File input}
+@category{Session management}
+@category{File input}
 @closecatbox
 
 @end deffn
@@ -177,7 +179,8 @@ Maximaのパーサは、コメントを、入力外リームでのトークン�
 @c batchload APPEARS TO HAVE THE SAME EFFECT AS load. WHY NOT GET RID OF batchload ???
 
 @opencatbox
-@category{Session management} @category{File input}
+@category{Session management}
+@category{File input}
 @closecatbox
 @end deffn
 
@@ -188,7 +191,8 @@ Maximaのパーサは、コメントを、入力外リームでのトークン�
 @mref{writefile}や@mref{appendfile}で開いたトランスクリプトファイルを閉じます。
 
 @opencatbox
-@category{File output} @category{Console interaction}
+@category{File output}
+@category{Console interaction}
 @closecatbox
 @end deffn
 
@@ -210,7 +214,8 @@ Maximaのパーサは、コメントを、入力外リームでのトークン�
 @c WHAT ABOUT WRITEFILE ??
 
 @opencatbox
-@category{File output} @category{Global flags}
+@category{File output}
+@category{Global flags}
 @closecatbox
 @end defvr
 
@@ -229,7 +234,8 @@ Maximaのパーサは、コメントを、入力外リームでのトークン�
 結果はLispのパス名オブジェクトです。
 
 @opencatbox
-@category{File input} @category{File output}
+@category{File input}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -337,7 +343,8 @@ Maximaが起動した時にファイル検索パスが自動的に割り当て�
 @end flushleft
 
 @opencatbox
-@category{File input} @category{Global variables}
+@category{File input}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -432,7 +439,8 @@ Maximaファイルをロードするために@mref{batchload}をコールしま�
 @code{load}は引数を評価します。
 
 @opencatbox
-@category{Session management} @category{File input}
+@category{Session management}
+@category{File input}
 @closecatbox
 @end deffn
 
@@ -487,7 +495,8 @@ End of batchfile
 ユーザーは、@code{loadfile}の代わりに@mref{load}を使うほうが便利だと気づくでしょう。
 
 @opencatbox
-@category{Session management} @category{File input}
+@category{Session management}
+@category{File input}
 @closecatbox
 @end deffn
 
@@ -515,7 +524,8 @@ End of batchfile
 @end itemize
 
 @opencatbox
-@category{File input} @category{Global flags}
+@category{File input}
+@category{Global flags}
 @closecatbox
 @end defvr
 
@@ -594,7 +604,8 @@ Maxima初期化ファイルを生成するにも役に立ちます。
 成功したファイル名マージの結果を返します。
 
 @opencatbox
-@category{File input} @category{Console interaction}
+@category{File input}
+@category{Console interaction}
 @closecatbox
 @end deffn
 
@@ -724,7 +735,8 @@ Tcl/Tk言語でプログラムの一部として適した形です。
 @code{save}は@var{filename}を評価し、他の引数すべてをクォートします。
 
 @opencatbox
-@category{Session management} @category{File output}
+@category{Session management}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -775,7 +787,8 @@ mからnまでの入力ラベルの値を書き込みます。
 @code{stringout}の一般形式は変数を割り当て文として出力しないことに注意してください。
 
 @opencatbox
-@category{Session management} @category{File output}
+@category{Session management}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -847,7 +860,8 @@ $$-\cos x$$
 @end example
 
 @opencatbox
-@category{TeX output} @category{File output}
+@category{TeX output}
+@category{File output}
 @closecatbox
 
 @end deffn
@@ -1263,6 +1277,7 @@ Maximaセッションのトランスクリプトを@var{filename}に書き込む
 @mref{closefile}は、@code{writefile}や@code{appendfile}が開いたトランスクリプトファイルを閉じます。
 
 @opencatbox
-@category{File output} @category{Console interaction}
+@category{File output}
+@category{Console interaction}
 @closecatbox
 @end deffn

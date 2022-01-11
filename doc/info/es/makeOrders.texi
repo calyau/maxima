@@ -7,8 +7,8 @@
 @node Funciones y variables para makeOrders,  , makeOrders, makeOrders
 @section Funciones y variables para makeOrders
 
-@deffn {Función} makeOrders (@var{indvarlist},@var{orderlist})
-Devuelve una lista con las potencias de las variables de un polinomio término a término.
+@deffn {FunciÃ³n} makeOrders (@var{indvarlist},@var{orderlist})
+Devuelve una lista con las potencias de las variables de un polinomio tÃ©rmino a tÃ©rmino.
 
 @example
 (%i1) load("makeOrders")$
@@ -22,9 +22,9 @@ Devuelve una lista con las potencias de las variables de un polinomio término a 
                                                   2
                                            + b + a  + a + 1
 @end example
-donde @code{[0, 1]} se asocia al término @math{b} y @code{[2, 3]} a @math{a^2 b^3}.
+donde @code{[0, 1]} se asocia al tÃ©rmino @math{b} y @code{[2, 3]} a @math{a^2 b^3}.
 
-Antes de hacer uso de esta función ejecútese @code{load("makeOrders")}.
+Antes de hacer uso de esta funciÃ³n ejecÃºtese @code{load("makeOrders")}.
 @end deffn
 
 

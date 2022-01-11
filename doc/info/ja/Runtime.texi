@@ -129,7 +129,8 @@ See also
 @end example
 
 @opencatbox
-@category{Predicate functions} @category{Declarations and inferences}
+@category{Predicate functions}
+@category{Declarations and inferences}
 @closecatbox
 @end deffn
 

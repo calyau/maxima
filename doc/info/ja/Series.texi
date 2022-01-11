@@ -177,7 +177,8 @@
 値は、数学で使われるΣ表示の表現である和の名詞形です。
 
 @opencatbox
-@category{Sums and products} @category{Simplification flags and variables}
+@category{Sums and products}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -359,7 +360,8 @@
 @end example
 
 @opencatbox
-@category{Sums and products} @category{Simplification flags and variables}
+@category{Sums and products}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -1085,7 +1087,8 @@ Taylor級数@var{expr}についての情報を返します。
 そうでないなら、@code{false}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Power series}
+@category{Predicate functions}
+@category{Power series}
 @closecatbox
 @end deffn
 
@@ -1110,7 +1113,8 @@ Taylor級数@var{expr}についての情報を返します。
 
 @c NEED EXAMPLES HERE
 @opencatbox
-@category{Power series} @category{Exponential and logarithm functions}
+@category{Power series}
+@category{Exponential and logarithm functions}
 @closecatbox
 @end defvr
 
@@ -1172,7 +1176,8 @@ Taylor級数の係数は標準に順序付けられます。
 効果は@code{rat (ratdisrep (@var{expr}))}と同じですが、より速いです。
 
 @opencatbox
-@category{Power series} @category{Rational expressions}
+@category{Power series}
+@category{Rational expressions}
 @closecatbox
 @end deffn
 
@@ -1479,7 +1484,8 @@ Poisson乗算の間、適用する予約関数です。
 もし必要なら、@var{a}を最初にPoisson符号に変換します。
 
 @opencatbox
-@category{Poisson series} @category{Display functions}
+@category{Poisson series}
+@category{Display functions}
 @closecatbox
 @end deffn
 

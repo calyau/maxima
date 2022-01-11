@@ -1,114 +1,114 @@
 @c /Polynomials.texi/1.22/Sun May 21 07:18:29 2006/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
-* IntroduÁ„o a PolinÛmios::  
-* DefiniÁıes para PolinÛmios::  
+* Introdu√ß√£o a Polin√≥mios::  
+* Defini√ß√µes para Polin√≥mios::  
 @end menu
 
-@node IntroduÁ„o a PolinÛmios, DefiniÁıes para PolinÛmios, PolinÛmios, PolinÛmios
-@section IntroduÁ„o a PolinÛmios
+@node Introdu√ß√£o a Polin√≥mios, Defini√ß√µes para Polin√≥mios, Polin√≥mios, Polin√≥mios
+@section Introdu√ß√£o a Polin√≥mios
 
-PolinÛmios s„o armazenados no Maxima ou na forma geral ou na
-forma de Expressıes Racionais CanÛnicas (CRE).  Essa ˙ltima È uma forma
-padr„o, e È usada internamente por operaÁıes tais como @code{factor}, @code{ratsimp}, e
+Polin√≥mios s√£o armazenados no Maxima ou na forma geral ou na
+forma de Express√µes Racionais Can√≥nicas (CRE).  Essa √∫ltima √© uma forma
+padr√£o, e √© usada internamente por opera√ß√µes tais como @code{factor}, @code{ratsimp}, e
 assim por diante.
 
-Expressıes Racionais CanÛnicas constituem um tipo de representaÁ„o
-que È especialmente adequado para polinÛmios expandidos e funÁıes
-racionais (tambÈm para polinÛmios parcialmente factorizados e funÁıes
+Express√µes Racionais Can√≥nicas constituem um tipo de representa√ß√£o
+que √© especialmente adequado para polin√≥mios expandidos e fun√ß√µes
+racionais (tamb√©m para polin√≥mios parcialmente factorizados e fun√ß√µes
 racionais quando RATFAC for escolhida para @code{true}).  Nessa forma CRE uma
-ordenaÁ„o de vari·veis (da mais para a menos importante) È assumida para cada
-express„o.  PolinÛmios s„o representados recursivamente por uma lista
-consistindo da vari·vel principal seguida por uma sÈrie de pares de
-expressıes, uma para cada termo do polinÛmio.  O primeiro membro de
-cada par È o expoente da vari·vel principal naquele termo e o
-segundo membro È o coeficiente daquele termo que pode ser um n˙mero ou
-um polinÛmio em outra vari·vel novamente respresentado nessa forma.  Sendo assim
-a parte principal da forma CRE de 3*X^2-1 È (X 2 3 0 -1) e que a parte principal da
-forma CRE de 2*X*Y+X-3 È (Y 1 (X 1 2) 0 (X 1 1 0 -3)) assumindo Y como sendo a
-vari·vel principal, e È (X 1 (Y 1 2 0 1) 0 -3) assumindo X como sendo a
-vari·vel principal. A vari·vel principal È usualmente determineda pela ordem alfabÈtica
-reversa.  As "vari·veis" de uma express„o CRE n„o necessariamente devem ser at@^omicas.  De facto
-qualquer subexpress„o cujo principal operador n„o for + - * / or ^ com expoente
-inteiro ser· considerado uma "vari·vel" da express„o (na forma CRE) na
-qual essa ocorrer.  Por exemplo as vari·veis CRE da express„o
-X+SIN(X+1)+2*SQRT(X)+1 s„o X, SQRT(X), e SIN(X+1).  Se o utilizador
-n„o especifica uma ordem de vari·veis pelo uso da funÁ„o RATVARS
-Maxima escolher· a alfabÈtica por conta prÛpria.  Em geral, CREs representam
-expressıes racionais, isto È, razıes de polinÛmios, onde o
-numerador e o denominador n„o possuem factores comuns, e o denominador for
-positivo.  A forma interna È essencialmente um par de polinÛmios (o
-numerador e o denominador) precedidos pela lista de ordenaÁ„o de vari·vel.  Se
-uma express„o a ser mostrada estiver na forma CRE ou se contiver quaisquer
-subexpressıes na forma CRE, o sÌmbolo /R/ seguir· o rÛtulo da linha.
-Veja a funÁ„o RAT para saber como converter uma express„o para a forma CRE.  Uma
-forma CRE extendida È usada para a representaÁ„o de sÈries de Taylor.  A
-noÁ„o de uma express„o racional È extendida de modo que os expoentes das
-vari·veis podem ser n˙meros racionais positivos ou negativos em lugar de apenas
-inteiros positivos e os coeficientes podem eles mesmos serem expressıes
-racionais como descrito acima em lugar de apenas polinÛmios.  Estes s„o
-representados internamente por uma forma polinomial recursiva que È similar
-‡ forma CRE e È a generalizaÁ„o dessa mesma forma CRE, mas carrega informaÁ„o
-adicional tal com o grau de truncaÁ„o.  Do mesmo modo que na forma CRE, o
-sÌmbolo /T/ segue o rÛtulo de linha que contÈm as tais expressıes.
+ordena√ß√£o de vari√°veis (da mais para a menos importante) √© assumida para cada
+express√£o.  Polin√≥mios s√£o representados recursivamente por uma lista
+consistindo da vari√°vel principal seguida por uma s√©rie de pares de
+express√µes, uma para cada termo do polin√≥mio.  O primeiro membro de
+cada par √© o expoente da vari√°vel principal naquele termo e o
+segundo membro √© o coeficiente daquele termo que pode ser um n√∫mero ou
+um polin√≥mio em outra vari√°vel novamente respresentado nessa forma.  Sendo assim
+a parte principal da forma CRE de 3*X^2-1 √© (X 2 3 0 -1) e que a parte principal da
+forma CRE de 2*X*Y+X-3 √© (Y 1 (X 1 2) 0 (X 1 1 0 -3)) assumindo Y como sendo a
+vari√°vel principal, e √© (X 1 (Y 1 2 0 1) 0 -3) assumindo X como sendo a
+vari√°vel principal. A vari√°vel principal √© usualmente determineda pela ordem alfab√©tica
+reversa.  As "vari√°veis" de uma express√£o CRE n√£o necessariamente devem ser at@^omicas.  De facto
+qualquer subexpress√£o cujo principal operador n√£o for + - * / or ^ com expoente
+inteiro ser√° considerado uma "vari√°vel" da express√£o (na forma CRE) na
+qual essa ocorrer.  Por exemplo as vari√°veis CRE da express√£o
+X+SIN(X+1)+2*SQRT(X)+1 s√£o X, SQRT(X), e SIN(X+1).  Se o utilizador
+n√£o especifica uma ordem de vari√°veis pelo uso da fun√ß√£o RATVARS
+Maxima escolher√° a alfab√©tica por conta pr√≥pria.  Em geral, CREs representam
+express√µes racionais, isto √©, raz√µes de polin√≥mios, onde o
+numerador e o denominador n√£o possuem factores comuns, e o denominador for
+positivo.  A forma interna √© essencialmente um par de polin√≥mios (o
+numerador e o denominador) precedidos pela lista de ordena√ß√£o de vari√°vel.  Se
+uma express√£o a ser mostrada estiver na forma CRE ou se contiver quaisquer
+subexpress√µes na forma CRE, o s√≠mbolo /R/ seguir√° o r√≥tulo da linha.
+Veja a fun√ß√£o RAT para saber como converter uma express√£o para a forma CRE.  Uma
+forma CRE extendida √© usada para a representa√ß√£o de s√©ries de Taylor.  A
+no√ß√£o de uma express√£o racional √© extendida de modo que os expoentes das
+vari√°veis podem ser n√∫meros racionais positivos ou negativos em lugar de apenas
+inteiros positivos e os coeficientes podem eles mesmos serem express√µes
+racionais como descrito acima em lugar de apenas polin√≥mios.  Estes s√£o
+representados internamente por uma forma polinomial recursiva que √© similar
+√† forma CRE e √© a generaliza√ß√£o dessa mesma forma CRE, mas carrega informa√ß√£o
+adicional tal com o grau de trunca√ß√£o.  Do mesmo modo que na forma CRE, o
+s√≠mbolo /T/ segue o r√≥tulo de linha que cont√©m as tais express√µes.
 
-@node DefiniÁıes para PolinÛmios,  , IntroduÁ„o a PolinÛmios, PolinÛmios
-@section DefiniÁıes para PolinÛmios
+@node Defini√ß√µes para Polin√≥mios,  , Introdu√ß√£o a Polin√≥mios, Polin√≥mios
+@section Defini√ß√µes para Polin√≥mios
 
-@defvr {Vari·vel de opÁ„o} algebraic
-Valor Padr„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} algebraic
+Valor Padr√£o: @code{false}
 
 @code{algebraic} deve ser escolhida para @code{true} com o objectivo de que a
-simplificaÁ„o de inteiros algÈbricos tenha efeito.
+simplifica√ß√£o de inteiros alg√©bricos tenha efeito.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} berlefact
-Valor Padr„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} berlefact
+Valor Padr√£o: @code{true}
 
-Quando @code{berlefact} for @code{false} ent„o o algoritmo de factorizaÁ„o de
-Kronecker ser· usado.  De outra forma o algoritmo de Berlekamp, que È o
-padr„o, ser· usado.
+Quando @code{berlefact} for @code{false} ent√£o o algoritmo de factoriza√ß√£o de
+Kronecker ser√° usado.  De outra forma o algoritmo de Berlekamp, que √© o
+padr√£o, ser√° usado.
 
 @end defvr
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-@deffn {FunÁ„o} bezout (@var{p1}, @var{p2}, @var{x})
+@deffn {Fun√ß√£o} bezout (@var{p1}, @var{p2}, @var{x})
 uma alternativa para o comando @code{resultant}.  Isso
-retorna uma matriz.  @code{determinant} dessa matriz È o resultante desejado.
+retorna uma matriz.  @code{determinant} dessa matriz √© o resultante desejado.
 
 @end deffn
 
 @c REWORD THIS ITEM -- COULD BE MORE CONCISE
-@deffn {FunÁ„o} bothcoef (@var{expr}, @var{x})
-Retorna uma lista da qual o primeiro membro È o
-coeficiente de @var{x} em @var{expr} (como achado por @code{ratcoef} se @var{expr} est· na forma CRE
-de outro modo por @code{coeff}) e cujo segundo membro È a parte restante de
-@var{expr}.  Isto È, @code{[A, B]} onde @code{@var{expr} = A*@var{x} + B}.
+@deffn {Fun√ß√£o} bothcoef (@var{expr}, @var{x})
+Retorna uma lista da qual o primeiro membro √© o
+coeficiente de @var{x} em @var{expr} (como achado por @code{ratcoef} se @var{expr} est√° na forma CRE
+de outro modo por @code{coeff}) e cujo segundo membro √© a parte restante de
+@var{expr}.  Isto √©, @code{[A, B]} onde @code{@var{expr} = A*@var{x} + B}.
 
 Exemplo:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
 @c islinear (expr, x) := block ([c],
 @c         c: bothcoef (rat (expr, x), x),
-@c         È (freeof (x, c) and c[1] # 0))$
+@c         √© (freeof (x, c) and c[1] # 0))$
 @c islinear ((r^2 - (x - r)^2)/x, x);
 
 @example
 (%i1) islinear (expr, x) := block ([c],
         c: bothcoef (rat (expr, x), x),
-        È (freeof (x, c) and c[1] # 0))$
+        √© (freeof (x, c) and c[1] # 0))$
 (%i2) islinear ((r^2 - (x - r)^2)/x, x);
 (%o2)                         true
 @end example
 
 @end deffn
 
-@deffn {FunÁ„o} coeff (@var{expr}, @var{x}, @var{n})
+@deffn {Fun√ß√£o} coeff (@var{expr}, @var{x}, @var{n})
 Retorna o coeficiente de @code{@var{x}^@var{n}} em @var{expr}.  @var{n} pode ser
-omitido se for 1.  @var{x} pode ser um ·tomo, ou subexpress„o completa de
-@var{expr} e.g., @code{sin(x)}, @code{a[i+1]}, @code{x + y}, etc. (No ˙ltimo caso a
-express„o @code{(x + y)} pode ocorrer em @var{expr}).  Algumas vezes isso pode ser necess·rio
-para expandir ou factorizar @var{expr} com o objectivo de fazer @code{@var{x}^@var{n}} explicito.  Isso n„o È
+omitido se for 1.  @var{x} pode ser um √°tomo, ou subexpress√£o completa de
+@var{expr} e.g., @code{sin(x)}, @code{a[i+1]}, @code{x + y}, etc. (No √∫ltimo caso a
+express√£o @code{(x + y)} pode ocorrer em @var{expr}).  Algumas vezes isso pode ser necess√°rio
+para expandir ou factorizar @var{expr} com o objectivo de fazer @code{@var{x}^@var{n}} explicito.  Isso n√£o √©
 realizado por @code{coeff}.
 
 Exemplos:
@@ -125,18 +125,18 @@ Exemplos:
 
 @end deffn
 
-@deffn {FunÁ„o} combine (@var{expr})
-Simplifica a adiÁ„o @var{expr} por termos combinados com o mesmo
+@deffn {Fun√ß√£o} combine (@var{expr})
+Simplifica a adi√ß√£o @var{expr} por termos combinados com o mesmo
 denominador dentro de um termo simples.
 
 @c NEED EXAMPLE HERE
 @end deffn
 
-@deffn {FunÁ„o} content (@var{p_1}, @var{x_1}, ..., @var{x_n})
-Retorna uma lista cujo primeiro elemento È
-o m·ximo divisor comum dos coeficientes dos termos do
-polinÛmio @var{p_1} na vari·vel @var{x_n} (isso È o conte˙do) e cujo
-segundo elemento È o polinÛmio @var{p_1} dividido pelo conte˙do.
+@deffn {Fun√ß√£o} content (@var{p_1}, @var{x_1}, ..., @var{x_n})
+Retorna uma lista cujo primeiro elemento √©
+o m√°ximo divisor comum dos coeficientes dos termos do
+polin√≥mio @var{p_1} na vari√°vel @var{x_n} (isso √© o conte√∫do) e cujo
+segundo elemento √© o polin√≥mio @var{p_1} dividido pelo conte√∫do.
 @c APPEARS TO WORK AS ADVERTISED -- ONLY x_n HAS ANY EFFECT ON THE RESULT
 @c WHAT ARE THE OTHER VARIABLES x_1 THROUGH x_{n-1} FOR ??
 
@@ -152,19 +152,19 @@ Exemplos:
 
 @end deffn
 
-@deffn {FunÁ„o} denom (@var{expr})
-Retorna o denominador da express„o racional @var{expr}.
+@deffn {Fun√ß√£o} denom (@var{expr})
+Retorna o denominador da express√£o racional @var{expr}.
 
 @end deffn
 
-@deffn {FunÁ„o} divide (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+@deffn {Fun√ß√£o} divide (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
 calcula o quocietne e o resto
-do polinÛmio @var{p_1} dividido pelo polinÛmio @var{p_2}, na vari·vel
-principal do polinÛmio, @var{x_n}.
+do polin√≥mio @var{p_1} dividido pelo polin√≥mio @var{p_2}, na vari√°vel
+principal do polin√≥mio, @var{x_n}.
 @c SPELL OUT THE PURPOSE OF THE OTHER VARIABLES
-As outras vari·veis s„o como na funÁ„o @code{ratvars}.
-O resultado È uma lista cujo primeiro elemento È o quociente
-e cujo segundo elemento È o resto.
+As outras vari√°veis s√£o como na fun√ß√£o @code{ratvars}.
+O resultado √© uma lista cujo primeiro elemento √© o quociente
+e cujo segundo elemento √© o resto.
 
 Exemplos:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -179,18 +179,18 @@ Exemplos:
 @end example
 
 @noindent
-Note que @code{y} È a vari·vel principal no segundo exemplo.
+Note que @code{y} √© a vari√°vel principal no segundo exemplo.
 
 @end deffn
 
-@deffn {FunÁ„o} eliminate ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_k}])
-Elimina vari·veis de
-equaÁıes (ou expressıes assumidas iguais a zero) obtendo resultantes
-sucessivos. Isso retorna uma lista de @code{@var{n} - @var{k}} expressıes com @var{k}
-vari·veis @var{x_1}, ..., @var{x_k} eliminadas.  Primeiro @var{x_1} È eliminado retornando @code{@var{n} - 1}
-expressıes, ent„o @code{x_2} È eliminado, etc.  Se @code{@var{k} = @var{n}} ent„o uma express„o simples em uma
-lista È retornada livre das vari·veis @var{x_1}, ..., @var{x_k}.  Nesse caso @code{solve}
-È chamado para resolver a ˙ltima resultante para a ˙ltima vari·vel.
+@deffn {Fun√ß√£o} eliminate ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_k}])
+Elimina vari√°veis de
+equa√ß√µes (ou express√µes assumidas iguais a zero) obtendo resultantes
+sucessivos. Isso retorna uma lista de @code{@var{n} - @var{k}} express√µes com @var{k}
+vari√°veis @var{x_1}, ..., @var{x_k} eliminadas.  Primeiro @var{x_1} √© eliminado retornando @code{@var{n} - 1}
+express√µes, ent√£o @code{x_2} √© eliminado, etc.  Se @code{@var{k} = @var{n}} ent√£o uma express√£o simples em uma
+lista √© retornada livre das vari√°veis @var{x_1}, ..., @var{x_k}.  Nesse caso @code{solve}
+√© chamado para resolver a √∫ltima resultante para a √∫ltima vari√°vel.
 
 Exemplo:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -218,30 +218,30 @@ Exemplo:
 
 @end deffn
 
-@deffn {FunÁ„o} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, ...)
-Retorna uma lista cujo primeiro elemento È o m.d.c. dos
-polinÛmios @var{p_1}, @var{p_2}, @var{p_3}, ...  e cujos restantes elementos s„o os
-polinÛmios divididos pelo mdc.  Isso sempre usa o algoritmo
+@deffn {Fun√ß√£o} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, ...)
+Retorna uma lista cujo primeiro elemento √© o m.d.c. dos
+polin√≥mios @var{p_1}, @var{p_2}, @var{p_3}, ...  e cujos restantes elementos s√£o os
+polin√≥mios divididos pelo mdc.  Isso sempre usa o algoritmo
 @code{ezgcd}.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} facexpand
-Valor Padr„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} facexpand
+Valor Padr√£o: @code{true}
 
-@code{facexpand} controla se os factores irredutÌveis
-retornados por @code{factor} est„o na forma expandida (o padr„o) ou na forma recursiva
+@code{facexpand} controla se os factores irredut√≠veis
+retornados por @code{factor} est√£o na forma expandida (o padr√£o) ou na forma recursiva
 (CRE normal).
 
 @end defvr
 
-@deffn {FunÁ„o} factcomb (@var{expr})
+@deffn {Fun√ß√£o} factcomb (@var{expr})
 Tenta combinar os coeficientes de factoriais em @var{expr}
-com os prÛprios factoriais convertendo, por exemplo, @code{(n + 1)*n!}
+com os pr√≥prios factoriais convertendo, por exemplo, @code{(n + 1)*n!}
 em @code{(n + 1)!}.
 
-@code{sumsplitfact} se escolhida para @code{false} far· com que @code{minfactorial} seja
-aplicado apÛs um @code{factcomb}.
+@code{sumsplitfact} se escolhida para @code{false} far√° com que @code{minfactorial} seja
+aplicado ap√≥s um @code{factcomb}.
 
 @c Example:
 @c UH, THESE ARE THE EXPRESSIONS WHICH WERE GIVEN IN 
@@ -251,39 +251,39 @@ aplicado apÛs um @code{factcomb}.
 @c factcomb (%);
 @end deffn
 
-@deffn {FunÁ„o} factor (@var{expr})
-@deffnx {FunÁ„o} factor (@var{expr}, @var{p})
+@deffn {Fun√ß√£o} factor (@var{expr})
+@deffnx {Fun√ß√£o} factor (@var{expr}, @var{p})
 
-Factoriza a express„o @var{expr}, contendo qualquer n˙mero de
-vari·veis ou funÁıes, em factores irredutÌveis sobre os inteiros.
+Factoriza a express√£o @var{expr}, contendo qualquer n√∫mero de
+vari√°veis ou fun√ß√µes, em factores irredut√≠veis sobre os inteiros.
 @code{factor (@var{expr}, @var{p})} factoriza @var{expr} sobre o campo dos inteiros com um elemento
-adjunto cujo menor polinÛmio È @var{p}.
+adjunto cujo menor polin√≥mio √© @var{p}.
 
-@code{factor} usa a funÁ„o @code{ifactors} para factorizar inteiros.
+@code{factor} usa a fun√ß√£o @code{ifactors} para factorizar inteiros.
 
-@code{factorflag} se @code{false} suprime a factorizaÁ„o de factores inteiros
-de expressıes racionais.
+@code{factorflag} se @code{false} suprime a factoriza√ß√£o de factores inteiros
+de express√µes racionais.
 
-@code{dontfactor} pode ser escolhida para uma lista de vari·veis com relaÁ„o ‡ qual
-factorizaÁ„o n„o È para ocorrer.  (Essa È inicialmente vazia).  FactorizaÁ„o tambÈm
-n„o acontece com relaÁ„o a quaisquer vari·veis que s„o menos
-importantes (usando a ordenaÁ„o de vari·vel assumida pela forma CRE) como
+@code{dontfactor} pode ser escolhida para uma lista de vari√°veis com rela√ß√£o √† qual
+factoriza√ß√£o n√£o √© para ocorrer.  (Essa √© inicialmente vazia).  Factoriza√ß√£o tamb√©m
+n√£o acontece com rela√ß√£o a quaisquer vari√°veis que s√£o menos
+importantes (usando a ordena√ß√£o de vari√°vel assumida pela forma CRE) como
 essas na lista @code{dontfactor}.
 
-@code{savefactors} se @code{true} faz com que os factores de uma express„o que
-È um produto de factores seja guardada por certas funÁıes com o objectivo de
-aumentar a velocidade de futuras factorizaÁıes de expressıes contendo alguns dos
+@code{savefactors} se @code{true} faz com que os factores de uma express√£o que
+√© um produto de factores seja guardada por certas fun√ß√µes com o objectivo de
+aumentar a velocidade de futuras factoriza√ß√µes de express√µes contendo alguns dos
 mesmos factores.
 
-@code{berlefact} se @code{false} ent„o o algoritmo de factorizaÁ„o de Kronecker ser·
-usado de outra forma o algoritmo de Berlekamp, que È o padr„o, ser·
+@code{berlefact} se @code{false} ent√£o o algoritmo de factoriza√ß√£o de Kronecker ser√°
+usado de outra forma o algoritmo de Berlekamp, que √© o padr√£o, ser√°
 usado.
 
-@code{intfaclim} se @code{true} maxima ir· interromper a factorizaÁ„o de
-inteiros se nenhum factor for encontrado apÛs tentar divisıes e o mÈtodo rho de
-Pollard.  Se escolhida para @code{false} (esse È o caso quando o utilizador chama
-@code{factor} explicitamente), a factorizaÁ„o completa do inteiro ser·
-tentada.  A escolha do utilizador para @code{intfaclim} È usada para chamadas
+@code{intfaclim} se @code{true} maxima ir√° interromper a factoriza√ß√£o de
+inteiros se nenhum factor for encontrado ap√≥s tentar divis√µes e o m√©todo rho de
+Pollard.  Se escolhida para @code{false} (esse √© o caso quando o utilizador chama
+@code{factor} explicitamente), a factoriza√ß√£o completa do inteiro ser√°
+tentada.  A escolha do utilizador para @code{intfaclim} √© usada para chamadas
 internas a @code{factor}. Dessa forma, @code{intfaclim} pode ser resetada para evitar que o
 Maxima gaste um tempo muito longo factorizando inteiros grandes.
 
@@ -403,28 +403,28 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} factorflag
-Valor Padr„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} factorflag
+Valor Padr√£o: @code{false}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-Quando @code{factorflag} for @code{false}, suprime a factorizaÁ„o de
-factores inteiros em expressıes racionais.
+Quando @code{factorflag} for @code{false}, suprime a factoriza√ß√£o de
+factores inteiros em express√µes racionais.
 
 @end defvr
 
-@deffn {FunÁ„o} factorout (@var{expr}, @var{x_1}, @var{x_2}, ...)
-Rearranja a adiÁ„o @var{expr} em uma adiÁ„o de
-parcelas da forma @code{f (@var{x_1}, @var{x_2}, ...)*g} onde @code{g} È um produto de
-expressıes que n„o possuem qualquer @var{x_i} e @code{f} È factorizado.
+@deffn {Fun√ß√£o} factorout (@var{expr}, @var{x_1}, @var{x_2}, ...)
+Rearranja a adi√ß√£o @var{expr} em uma adi√ß√£o de
+parcelas da forma @code{f (@var{x_1}, @var{x_2}, ...)*g} onde @code{g} √© um produto de
+express√µes que n√£o possuem qualquer @var{x_i} e @code{f} √© factorizado.
 @c NEED EXAMPLE HERE
 
 @end deffn
 
-@deffn {FunÁ„o} factorsum (@var{expr})
-Tenta agrupar parcelas em factores de @var{expr} que s„o adiÁıes
-em grupos de parcelas tais que sua adiÁ„o È factor·vel.  @code{factorsum} pode
-recuperar o resultado de @code{expand ((x + y)^2 + (z + w)^2)} mas n„o pode recuperar
-@code{expand ((x + 1)^2 + (x + y)^2)} porque os termos possuem vari·veis em comum.
+@deffn {Fun√ß√£o} factorsum (@var{expr})
+Tenta agrupar parcelas em factores de @var{expr} que s√£o adi√ß√µes
+em grupos de parcelas tais que sua adi√ß√£o √© factor√°vel.  @code{factorsum} pode
+recuperar o resultado de @code{expand ((x + y)^2 + (z + w)^2)} mas n√£o pode recuperar
+@code{expand ((x + 1)^2 + (x + y)^2)} porque os termos possuem vari√°veis em comum.
 
 Exemplo:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -445,27 +445,27 @@ Exemplo:
 
 @end deffn
 
-@deffn {FunÁ„o} fasttimes (@var{p_1}, @var{p_2})
-Retorna o produto dos polinÛmios @var{p_1} e @var{p_2} usando um
-algoritmo especial para a multiplicaÁ„o de polinÛmios.  @code{p_1} e @code{p_2} podem ser
-de v·rias vari·veis, densos, e aproximadamente do mesmo tamanho.  A multiplicaÁ„o
-cl·ssica È de ordem @code{n_1 n_2} onde
-@code{n_1} È o grau de @code{p_1}
-and @code{n_2} È o grau de @code{p_2}.
-@code{fasttimes} È da ordem @code{max (n_1, n_2)^1.585}.
+@deffn {Fun√ß√£o} fasttimes (@var{p_1}, @var{p_2})
+Retorna o produto dos polin√≥mios @var{p_1} e @var{p_2} usando um
+algoritmo especial para a multiplica√ß√£o de polin√≥mios.  @code{p_1} e @code{p_2} podem ser
+de v√°rias vari√°veis, densos, e aproximadamente do mesmo tamanho.  A multiplica√ß√£o
+cl√°ssica √© de ordem @code{n_1 n_2} onde
+@code{n_1} √© o grau de @code{p_1}
+and @code{n_2} √© o grau de @code{p_2}.
+@code{fasttimes} √© da ordem @code{max (n_1, n_2)^1.585}.
 
 @end deffn
 
-@deffn {FunÁ„o} fullratsimp (@var{expr})
+@deffn {Fun√ß√£o} fullratsimp (@var{expr})
 @code{fullratsimp} aplica
-repetidamente @code{ratsimp} seguido por simplificaÁ„o n„o racional a uma
-express„o atÈ que nenhuma mudanÁa adicional ocorra,
+repetidamente @code{ratsimp} seguido por simplifica√ß√£o n√£o racional a uma
+express√£o at√© que nenhuma mudan√ßa adicional ocorra,
 e retorna o resultado.
 
-Quando expressıes n„o racionais est„o envolvidas, uma chamada
-a @code{ratsimp} seguida como È usual por uma simplificaÁ„o n„o racional
-("geral") pode n„o ser suficiente para retornar um resultado simplificado.
-Algumas vezes, mais que uma tal chamada pode ser necess·ria. 
+Quando express√µes n√£o racionais est√£o envolvidas, uma chamada
+a @code{ratsimp} seguida como √© usual por uma simplifica√ß√£o n√£o racional
+("geral") pode n√£o ser suficiente para retornar um resultado simplificado.
+Algumas vezes, mais que uma tal chamada pode ser necess√°ria. 
 @code{fullratsimp} faz esse processo convenientemente.
 
 @code{fullratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})} aceita um ou
@@ -506,16 +506,16 @@ Exemplo:
 
 @c SPELL OUT WHAT fullratsubst DOES INSTEAD OF ALLUDING TO ratsubst AND lratsubst
 @c THIS ITEM NEEDS MORE WORK
-@deffn {FunÁ„o} fullratsubst (@var{a}, @var{b}, @var{c})
-È o mesmo que @code{ratsubst} excepto que essa chama
-a si mesma recursivamente sobre esse resultado atÈ que o resultado para de mudar.
-Essa funÁ„o È ˙til quando a express„o de substituiÁ„o e a
-express„o substituÌda tenham uma ou mais vari·veis em comum.
+@deffn {Fun√ß√£o} fullratsubst (@var{a}, @var{b}, @var{c})
+√© o mesmo que @code{ratsubst} excepto que essa chama
+a si mesma recursivamente sobre esse resultado at√© que o resultado para de mudar.
+Essa fun√ß√£o √© √∫til quando a express√£o de substitui√ß√£o e a
+express√£o substitu√≠da tenham uma ou mais vari√°veis em comum.
 
-@code{fullratsubst} ir· tambÈm aceitar seus argumentos no formato de
-@code{lratsubst}.  Isto È, o primeiro argumento pode ser uma substituiÁ„o simples
-de equaÁ„o ou uma lista de tais equaÁıes, enquanto o segundo argumento È a
-express„o sendo processada.
+@code{fullratsubst} ir√° tamb√©m aceitar seus argumentos no formato de
+@code{lratsubst}.  Isto √©, o primeiro argumento pode ser uma substitui√ß√£o simples
+de equa√ß√£o ou uma lista de tais equa√ß√µes, enquanto o segundo argumento √© a
+express√£o sendo processada.
 
 @code{load ("lrats")} chama @code{fullratsubst} e @code{lratsubst}.
 
@@ -537,8 +537,8 @@ Exemplos:
 @end example
 @itemize @bullet
 @item
-@code{subst} pode realizar multiplas substituiÁıes.
-@code{lratsubst} È analogo a @code{subst}.
+@code{subst} pode realizar multiplas substitui√ß√µes.
+@code{lratsubst} √© analogo a @code{subst}.
 @end itemize
 @example
 (%i2) subst ([a = b, c = d], a + c);
@@ -548,7 +548,7 @@ Exemplos:
 @end example
 @itemize @bullet
 @item
-Se somente uma substituiÁ„o È desejada, ent„o uma equaÁ„o
+Se somente uma substitui√ß√£o √© desejada, ent√£o uma equa√ß√£o
 simples pode ser dada como primeiro argumento.
 @end itemize
 @example
@@ -557,8 +557,8 @@ simples pode ser dada como primeiro argumento.
 @end example
 @itemize @bullet
 @item
-@code{fullratsubst} È equivalente a @code{ratsubst}
-excepto que essa executa recursivamente atÈ que seu resultado para de mudar.
+@code{fullratsubst} √© equivalente a @code{ratsubst}
+excepto que essa executa recursivamente at√© que seu resultado para de mudar.
 @end itemize
 @example
 (%i5) ratsubst (b*a, a^2, a^3);
@@ -570,7 +570,7 @@ excepto que essa executa recursivamente atÈ que seu resultado para de mudar.
 @end example
 @itemize @bullet
 @item
-@code{fullratsubst} tambÈm aceita uma lista de equaÁıes ou uma equaÁ„o
+@code{fullratsubst} tamb√©m aceita uma lista de equa√ß√µes ou uma equa√ß√£o
 simples como primeiro argumento.
 @end itemize
 @example
@@ -583,7 +583,7 @@ simples como primeiro argumento.
 @itemize @bullet
 @item
 @c REWORD THIS SENTENCE
-@code{fullratsubst} pode causar uma recurs„o infinita.
+@code{fullratsubst} pode causar uma recurs√£o infinita.
 @end itemize
 @example
 (%i9) errcatch (fullratsubst (b*a^2, a^2, a^3));
@@ -595,45 +595,45 @@ simples como primeiro argumento.
 
 @c GCD IS A VARIABLE AND A FUNCTION
 @c THIS ITEM NEEDS A LOT OF WORK
-@deffn {FunÁ„o} gcd (@var{p_1}, @var{p_2}, @var{x_1}, ...)
-Retorna o m·ximo divisor comum entre @var{p_1} e @var{p_2}.
-O sinalizador @code{gcd} determina qual algoritmo È empregado.
+@deffn {Fun√ß√£o} gcd (@var{p_1}, @var{p_2}, @var{x_1}, ...)
+Retorna o m√°ximo divisor comum entre @var{p_1} e @var{p_2}.
+O sinalizador @code{gcd} determina qual algoritmo √© empregado.
 Escolhendo @code{gcd} para @code{ez}, @code{subres}, @code{red}, ou @code{spmod} selecciona o algoritmo @code{ezgcd},
 subresultante @code{prs}, reduzido, ou modular,
-respectivamente.  Se @code{gcd} for @code{false} ent„o @code{gcd (@var{p_1}, @var{p_2}, @var{x})} sempre retorna 1
-para todo @var{x}.  Muitas funÁıes (e.g.  @code{ratsimp}, @code{factor}, etc.) fazem com que mdc's
-sejam feitos implicitamente.  Para polinÛmios homogÍneos È recomendado
-que @code{gcd} igual a @code{subres} seja usado.  Para obter o mdc quando uma express„o algÈbrica est·
+respectivamente.  Se @code{gcd} for @code{false} ent√£o @code{gcd (@var{p_1}, @var{p_2}, @var{x})} sempre retorna 1
+para todo @var{x}.  Muitas fun√ß√µes (e.g.  @code{ratsimp}, @code{factor}, etc.) fazem com que mdc's
+sejam feitos implicitamente.  Para polin√≥mios homog√™neos √© recomendado
+que @code{gcd} igual a @code{subres} seja usado.  Para obter o mdc quando uma express√£o alg√©brica est√°
 presente, e.g. @code{gcd (@var{x}^2 - 2*sqrt(2)*@var{x} + 2, @var{x} - sqrt(2))}, @code{algebraic} deve ser
-@code{true} e @code{gcd} n„o deve ser @code{ez}.  @code{subres} È um novo algoritmo, e pessoas
-que tenham estado usando a opÁ„o @code{red} podem provavelmente alterar isso para
+@code{true} e @code{gcd} n√£o deve ser @code{ez}.  @code{subres} √© um novo algoritmo, e pessoas
+que tenham estado usando a op√ß√£o @code{red} podem provavelmente alterar isso para
 @code{subres}.
 
-O sinalizador @code{gcd}, padr„o: @code{subres}, se @code{false} ir· tambÈm evitar o m·ximo
-divisor comum de ser usado quando expressıes s„o convertidas para a forma de express„o racional
-canÛnica (CRE).  Isso ir· algumas vezes aumentar a velocidade dos c·lculos se mdc's n„o s„o
+O sinalizador @code{gcd}, padr√£o: @code{subres}, se @code{false} ir√° tamb√©m evitar o m√°ximo
+divisor comum de ser usado quando express√µes s√£o convertidas para a forma de express√£o racional
+can√≥nica (CRE).  Isso ir√° algumas vezes aumentar a velocidade dos c√°lculos se mdc's n√£o s√£o
 requeridos.
 @c NEEDS EXAMPLES HERE
 
 @end deffn
 
 @c IN NEED OF SERIOUS CLARIFICATION HERE
-@deffn {FunÁ„o} gcdex (@var{f}, @var{g})
-@deffnx {FunÁ„o} gcdex (@var{f}, @var{g}, @var{x})
+@deffn {Fun√ß√£o} gcdex (@var{f}, @var{g})
+@deffnx {Fun√ß√£o} gcdex (@var{f}, @var{g}, @var{x})
 Retornam uma lista @code{[@var{a}, @var{b}, @var{u}]}
-onde @var{u} È o m·ximo divisor comum (mdc) entre @var{f} e @var{g},
-e @var{u} È igual a @code{@var{a} @var{f} + @var{b} @var{g}}.
-Os argumentos @var{f} e @var{g} podem ser polinÛmios de uma vari·vel,
-ou de outra forma polinÛmios em @var{x} uma @b{main}(principal) vari·vel suprida
-desde que nÛs precisamos estar em um domÌnio de ideal principal para isso trabalhar.
-O mdc significa o mdc considerando @var{f} e @var{g} como polinÛmios de uma ˙nica vari·vel com coeficientes
-sendo funÁıes racionais em outras vari·veis.
+onde @var{u} √© o m√°ximo divisor comum (mdc) entre @var{f} e @var{g},
+e @var{u} √© igual a @code{@var{a} @var{f} + @var{b} @var{g}}.
+Os argumentos @var{f} e @var{g} podem ser polin√≥mios de uma vari√°vel,
+ou de outra forma polin√≥mios em @var{x} uma @b{main}(principal) vari√°vel suprida
+desde que n√≥s precisamos estar em um dom√≠nio de ideal principal para isso trabalhar.
+O mdc significa o mdc considerando @var{f} e @var{g} como polin√≥mios de uma √∫nica vari√°vel com coeficientes
+sendo fun√ß√µes racionais em outras vari√°veis.
 
 @code{gcdex} implementa o algoritmo Euclideano,
-onde temos a sequÍncia
-of @code{L[i]: [a[i], b[i], r[i]]} que s„o todos perpendiculares
-a @code{[f, g, -1]} e o prÛximo se È construÌdo como
-se @code{q = quotient(r[i]/r[i+1])} ent„o @code{L[i+2]: L[i] - q L[i+1]}, e isso
+onde temos a sequ√™ncia
+of @code{L[i]: [a[i], b[i], r[i]]} que s√£o todos perpendiculares
+a @code{[f, g, -1]} e o pr√≥ximo se √© constru√≠do como
+se @code{q = quotient(r[i]/r[i+1])} ent√£o @code{L[i+2]: L[i] - q L[i+1]}, e isso
 encerra em @code{L[i+1]} quando o resto @code{r[i+2]} for zero.
 
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -651,8 +651,8 @@ encerra em @code{L[i+1]} quando o resto @code{r[i+2]} for zero.
 @end example
 
 @c SORRY FOR BEING DENSE BUT WHAT IS THIS ABOUT EXACTLY
-Note que o mdc adiante È @code{1}
-uma vez que trabalhamos em @code{k(y)[x]}, o @code{y+1} n„o pode ser esperado em @code{k[y, x]}.
+Note que o mdc adiante √© @code{1}
+uma vez que trabalhamos em @code{k(y)[x]}, o @code{y+1} n√£o pode ser esperado em @code{k[y, x]}.
 
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
 @c gcdex (x*(y + 1), y^2 - 1, x);
@@ -669,21 +669,21 @@ uma vez que trabalhamos em @code{k(y)[x]}, o @code{y+1} n„o pode ser esperado em
 
 
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
-@deffn {FunÁ„o} gcfactor (@var{n})
+@deffn {Fun√ß√£o} gcfactor (@var{n})
 Factoriza o inteiro Gaussiano @var{n} sobre os inteiros Gaussianos, i.e.,
-n˙meros da forma @code{@var{a} + @var{b} @code{%i}} onde @var{a} e @var{b} s„o inteiros raconais
-(i.e.,  inteiros comuns).  FactorizaÁıes s„o normalizadas fazendo @var{a} e @var{b}
-n„o negativos.
+n√∫meros da forma @code{@var{a} + @var{b} @code{%i}} onde @var{a} e @var{b} s√£o inteiros raconais
+(i.e.,  inteiros comuns).  Factoriza√ß√µes s√£o normalizadas fazendo @var{a} e @var{b}
+n√£o negativos.
 @c NEED EXAMPLES HERE
 
 @end deffn
 
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
-@deffn {FunÁ„o} gfactor (@var{expr})
-Factoriza o polinÛmio @var{expr} sobre os inteiros de Gauss
-(isto È, os inteiros com a unidade imagin·ria @code{%i} adjunta).
+@deffn {Fun√ß√£o} gfactor (@var{expr})
+Factoriza o polin√≥mio @var{expr} sobre os inteiros de Gauss
+(isto √©, os inteiros com a unidade imagin√°ria @code{%i} adjunta).
 @c "This is like" -- IS IT THE SAME OR NOT ??
-Isso È como @code{factor (@var{expr}, @var{a}^2+1)} trocando @var{a} por @code{%i}.
+Isso √© como @code{factor (@var{expr}, @var{a}^2+1)} trocando @var{a} por @code{%i}.
 
 Exemplo:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -698,21 +698,21 @@ Exemplo:
 
 @c DESCRIBE THIS INDEPENDENTLY OF factorsum
 @c THIS ITEM NEEDS MORE WORK
-@deffn {FunÁ„o} gfactorsum (@var{expr})
-È similar a @code{factorsum} mas aplica @code{gfactor} em lugar
+@deffn {Fun√ß√£o} gfactorsum (@var{expr})
+√© similar a @code{factorsum} mas aplica @code{gfactor} em lugar
 de @code{factor}.
 
 @end deffn
 
-@deffn {FunÁ„o} hipow (@var{expr}, @var{x})
-Retorna o maior expoente explÌcito de @var{x} em @var{expr}.
-@var{x} pode ser uma vari·vel ou uma express„o geral.
-Se @var{x} n„o aparece em @var{expr},
+@deffn {Fun√ß√£o} hipow (@var{expr}, @var{x})
+Retorna o maior expoente expl√≠cito de @var{x} em @var{expr}.
+@var{x} pode ser uma vari√°vel ou uma express√£o geral.
+Se @var{x} n√£o aparece em @var{expr},
 @code{hipow} retorna @code{0}.
 
-@code{hipow} n„o considera expressıes equivalentes a @code{expr}.
-Em particular, @code{hipow} n„o expande @code{expr},
-ent„o @code{hipow (@var{expr}, @var{x})} e @code{hipow (expand (@var{expr}, @var{x}))}
+@code{hipow} n√£o considera express√µes equivalentes a @code{expr}.
+Em particular, @code{hipow} n√£o expande @code{expr},
+ent√£o @code{hipow (@var{expr}, @var{x})} e @code{hipow (expand (@var{expr}, @var{x}))}
 podem retornar diferentes resultados.
 
 Exemplos:
@@ -732,16 +732,16 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} intfaclim
-Valor por omiss„o: true
+@defvr {Vari√°vel de op√ß√£o} intfaclim
+Valor por omiss√£o: true
 
-Se @code{true}, maxima ir· interromper a factorizaÁ„o de
-inteiros se nenhum factor for encontrado apÛs tentar divisıes e o mÈtodo rho de
-Pollard e a factorizaÁ„o n„o ser· completada.
+Se @code{true}, maxima ir√° interromper a factoriza√ß√£o de
+inteiros se nenhum factor for encontrado ap√≥s tentar divis√µes e o m√©todo rho de
+Pollard e a factoriza√ß√£o n√£o ser√° completada.
 
-Quando @code{intfaclim} for @code{false} (esse È o caso quando o utilizador
-chama @code{factor} explicitamente), a factorizaÁ„o completa ser·
-tentada.  @code{intfaclim} È escolhida para @code{false} quando factores s„o
+Quando @code{intfaclim} for @code{false} (esse √© o caso quando o utilizador
+chama @code{factor} explicitamente), a factoriza√ß√£o completa ser√°
+tentada.  @code{intfaclim} √© escolhida para @code{false} quando factores s√£o
 calculados em @code{divisors}, @code{divsum} e @code{totient}.
 @c ANY OTHERS ??
 
@@ -754,27 +754,27 @@ o tempo gasto factorizando grandes inteiros.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} keepfloat
-Valor Padr„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} keepfloat
+Valor Padr√£o: @code{false}
 
-Quando @code{keepfloat} for @code{true}, evitamos que n˙meros
-em ponto flutuante sejam racionalizados quando expressıes que os possuem
-s„o ent„o convertidas para a forma de express„o racional canÛnica (CRE).
+Quando @code{keepfloat} for @code{true}, evitamos que n√∫meros
+em ponto flutuante sejam racionalizados quando express√µes que os possuem
+s√£o ent√£o convertidas para a forma de express√£o racional can√≥nica (CRE).
 @c NEED EXAMPLES HERE
 
 @end defvr
 
 @c DESCRIBE lratsubst INDEPENDENTLY OF subst
 @c THIS ITEM NEEDS MORE WORK
-@deffn {FunÁ„o} lratsubst (@var{L}, @var{expr})
-È an·logo a @code{subst (@var{L}, @var{expr})}
+@deffn {Fun√ß√£o} lratsubst (@var{L}, @var{expr})
+√© an√°logo a @code{subst (@var{L}, @var{expr})}
 excepto que esse usa @code{ratsubst} em lugar de @code{subst}.
 
 O primeiro argumento de
-@code{lratsubst} È uma equaÁ„o ou uma lista de equaÁıes idÍnticas em
+@code{lratsubst} √© uma equa√ß√£o ou uma lista de equa√ß√µes id√™nticas em
 formato para que sejam aceitas por @code{subst}.  As
-substituiÁıes s„o feitas na ordem dada pela lista de equaÁıes,
-isto È, da esquerda para a direita.
+substitui√ß√µes s√£o feitas na ordem dada pela lista de equa√ß√µes,
+isto √©, da esquerda para a direita.
 
 @code{load ("lrats")} chama @code{fullratsubst} e @code{lratsubst}.
 
@@ -791,8 +791,8 @@ Exemplos:
 @end example
 @itemize @bullet
 @item
-@code{subst} pode realizar multiplas substituiÁıes.
-@code{lratsubst} È analoga a @code{subst}.
+@code{subst} pode realizar multiplas substitui√ß√µes.
+@code{lratsubst} √© analoga a @code{subst}.
 @end itemize
 @example
 (%i2) subst ([a = b, c = d], a + c);
@@ -802,7 +802,7 @@ Exemplos:
 @end example
 @itemize @bullet
 @item
-Se somente uma substituiÁ„o for desejada, ent„o uma equaÁ„o
+Se somente uma substitui√ß√£o for desejada, ent√£o uma equa√ß√£o
 simples pode ser dada como primeiro argumento.
 @end itemize
 @example
@@ -812,31 +812,31 @@ simples pode ser dada como primeiro argumento.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} modulus
-Valor Padr„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} modulus
+Valor Padr√£o: @code{false}
 
-Quando @code{modulus} for um n˙mero positivo @var{p},
-operaÁıes sobre os n˙meros racionais (como retornado por @code{rat} e funÁıes relacionadas)
-s„o realizadas mÛdulo @var{p},
-usando o ent„o chamado sistema de mÛdulo "balanceado"
-no qual @code{@var{n} mÛdulo @var{p}} È definido como 
+Quando @code{modulus} for um n√∫mero positivo @var{p},
+opera√ß√µes sobre os n√∫meros racionais (como retornado por @code{rat} e fun√ß√µes relacionadas)
+s√£o realizadas m√≥dulo @var{p},
+usando o ent√£o chamado sistema de m√≥dulo "balanceado"
+no qual @code{@var{n} m√≥dulo @var{p}} √© definido como 
 um inteiro @var{k} em @code{[-(@var{p}-1)/2, ..., 0, ..., (@var{p}-1)/2]}
-quando @var{p} for Ìmpar, ou @code{[-(@var{p}/2 - 1), ..., 0, ...., @var{p}/2]} quando @var{p} for par,
+quando @var{p} for √≠mpar, ou @code{[-(@var{p}/2 - 1), ..., 0, ...., @var{p}/2]} quando @var{p} for par,
 tal que @code{@var{a} @var{p} + @var{k}} seja igual a @var{n} para algum inteiro @var{a}.
 @c NEED EXAMPLES OF "BALANCED MODULUS" HERE
 
 @c WHAT CAN THIS MEAN ?? IS THE MODULUS STORED WITH THE EXPRESSION ??
 @c "... in order to get correct results" -- WHAT DO YOU GET IF YOU DON'T RE-RAT ??
-Se @var{expr} j· estiver na forma de express„o racional canÛnica
-(CRE) quando @code{modulus} for colocado no seu valor original, ent„o
+Se @var{expr} j√° estiver na forma de express√£o racional can√≥nica
+(CRE) quando @code{modulus} for colocado no seu valor original, ent√£o
 pode precisar repetir o rat @var{expr}, e.g., @code{expr: rat (ratdisrep
 (expr))}, com o objectivo de obter resultados correctos.
 
-Tipicamente @code{modulus} È escolhido para um n˙mero primo.
-Se @code{modulus} for escolhido para um inteiro n„o primo positivo,
-essa escolha È aceita, mas uma mensagem de alerta È mostrada.
-Maxima permitir· que zero ou um inteiro negativo seja atribuÌdo a @code{modulus},
-embora isso n„o seja limpo se aquele tiver quaisquer consequÍncias ˙teis.
+Tipicamente @code{modulus} √© escolhido para um n√∫mero primo.
+Se @code{modulus} for escolhido para um inteiro n√£o primo positivo,
+essa escolha √© aceita, mas uma mensagem de alerta √© mostrada.
+Maxima permitir√° que zero ou um inteiro negativo seja atribu√≠do a @code{modulus},
+embora isso n√£o seja limpo se aquele tiver quaisquer consequ√™ncias √∫teis.
 
 @c NEED EXAMPLES HERE
 @end defvr
@@ -853,19 +853,19 @@ embora isso n„o seja limpo se aquele tiver quaisquer consequÍncias ˙teis.
 @c 
 @c @end defvar
 
-@deffn {FunÁ„o} num (@var{expr})
-Retorna o numerador de @var{expr} se isso for uma raz„o.
-Se @var{expr} n„o for uma raz„o, @var{expr} È retornado.
+@deffn {Fun√ß√£o} num (@var{expr})
+Retorna o numerador de @var{expr} se isso for uma raz√£o.
+Se @var{expr} n√£o for uma raz√£o, @var{expr} √© retornado.
 
 @code{num} avalia seu argumento.
 
 @c NEED SOME EXAMPLES HERE
 @end deffn
 
-@deffn {FunÁ„o} polydecomp (@var{p}, @var{x})
+@deffn {Fun√ß√£o} polydecomp (@var{p}, @var{x})
 
-Decompıes o polinÛmio @var{p} na vari·vel  @var{x}
-em uma composiÁ„o funcional de polinÛmios em @var{x}.
+Decomp√µes o polin√≥mio @var{p} na vari√°vel  @var{x}
+em uma composi√ß√£o funcional de polin√≥mios em @var{x}.
 @code{polydecomp} retorna uma lista @code{[@var{p_1}, ..., @var{p_n}]} tal que
 
 @example
@@ -873,9 +873,9 @@ lambda ([x], p_1) (lambda ([x], p_2) (... (lambda ([x], p_n) (x)) ...))
 @end example
 
 seja igual a @var{p}.
-O grau de @var{p_i} È maior que 1 para @var{i} menor que @var{n}.
+O grau de @var{p_i} √© maior que 1 para @var{i} menor que @var{n}.
 
-Tal decomposiÁ„o n„o È ˙nica.
+Tal decomposi√ß√£o n√£o √© √∫nica.
 
 Exemplos:
 
@@ -896,8 +896,8 @@ Exemplos:
 (%o3)                 [x  - a, x  - x - 1]
 @end example
 
-As seguintes funÁıes compıem @code{L = [e_1, ..., e_n]} como funÁıes em @code{x};
-essa funÁ‡o È a inversa de @code{polydecomp}:
+As seguintes fun√ß√µes comp√µem @code{L = [e_1, ..., e_n]} como fun√ß√µes em @code{x};
+essa fun√ß√†o √© a inversa de @code{polydecomp}:
 
 @c ===beg===
 @c compose (L, x) :=
@@ -920,9 +920,9 @@ Re-exprimindo o exemplo acima usando @code{compose}:
 @end example
 
 Note que apesar de @code{compose (polydecomp (@var{p}, @var{x}), @var{x})}
-sempre retornar @var{p} (n„o expandido),
-@code{polydecomp (compose ([@var{p_1}, ..., @var{p_n}], @var{x}), @var{x})} @i{n„o}
-necess·riamente retorna @code{[@var{p_1}, ..., @var{p_n}]}:
+sempre retornar @var{p} (n√£o expandido),
+@code{polydecomp (compose ([@var{p_1}, ..., @var{p_n}], @var{x}), @var{x})} @i{n√£o}
+necess√°riamente retorna @code{[@var{p_1}, ..., @var{p_n}]}:
 
 @c ===beg===
 @c polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
@@ -941,10 +941,10 @@ necess·riamente retorna @code{[@var{p_1}, ..., @var{p_n}]}:
 
 @end deffn
 
-@deffn {FunÁ„o} quotient (@var{p_1}, @var{p_2})
-@deffnx {FunÁ„o} quotient (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
-Retorna o polinÛmio @var{p_1} dividido pelo polinÛmio @var{p_2}.
-Os argumentos @var{x_1}, ..., @var{x_n} s„o interpretados como em @code{ratvars}.
+@deffn {Fun√ß√£o} quotient (@var{p_1}, @var{p_2})
+@deffnx {Fun√ß√£o} quotient (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+Retorna o polin√≥mio @var{p_1} dividido pelo polin√≥mio @var{p_2}.
+Os argumentos @var{x_1}, ..., @var{x_n} s√£o interpretados como em @code{ratvars}.
 
 @code{quotient} retorna o primeiro elemento de uma lista de dois elementos retornada por @code{divide}.
 
@@ -952,43 +952,43 @@ Os argumentos @var{x_1}, ..., @var{x_n} s„o interpretados como em @code{ratvars}
 @end deffn
 
 @c THIS ITEM CAN PROBABLY BE IMPROVED
-@deffn {FunÁ„o} rat (@var{expr})
-@deffnx {FunÁ„o} rat (@var{expr}, @var{x_1}, ..., @var{x_n})
-Converte @var{expr} para a forma de express„o racional canÛnica (CRE) expandindo e
+@deffn {Fun√ß√£o} rat (@var{expr})
+@deffnx {Fun√ß√£o} rat (@var{expr}, @var{x_1}, ..., @var{x_n})
+Converte @var{expr} para a forma de express√£o racional can√≥nica (CRE) expandindo e
 combinando todos os termos sobre um denominador comum e cancelando para fora o
-m·ximo divisor comum entre o numerador e o denominador, tambÈm
-convertendo n˙meros em ponto flutuante para n˙meros racionais dentro da
-toler‚ncia de @code{ratepsilon}.
-As vari·veis s„o ordenadas de acordo com
+m√°ximo divisor comum entre o numerador e o denominador, tamb√©m
+convertendo n√∫meros em ponto flutuante para n√∫meros racionais dentro da
+toler√¢ncia de @code{ratepsilon}.
+As vari√°veis s√£o ordenadas de acordo com
 @var{x_1}, ..., @var{x_n}, se especificado, como em @code{ratvars}.
 
-@code{rat} geralmente n„o simplifica funÁıes outras que n„o sejam
-adiÁ„o @code{+}, subtraÁ„o @code{-}, multiplicaÁ„o @code{*}, divis„o @code{/}, e
-exponenciaÁ„o com expoente inteiro,
-uma vez que @code{ratsimp} n„o manuseia esses casos.
-Note que ·tomos (n˙meros e vari·veis) na forma CRE n„o s„o os
-mesmos que eles s„o na forma geral.
+@code{rat} geralmente n√£o simplifica fun√ß√µes outras que n√£o sejam
+adi√ß√£o @code{+}, subtra√ß√£o @code{-}, multiplica√ß√£o @code{*}, divis√£o @code{/}, e
+exponencia√ß√£o com expoente inteiro,
+uma vez que @code{ratsimp} n√£o manuseia esses casos.
+Note que √°tomos (n√∫meros e vari√°veis) na forma CRE n√£o s√£o os
+mesmos que eles s√£o na forma geral.
 Por exemplo, @code{rat(x)- x} retorna 
-@code{rat(0)} que tem uma representaÁ„o interna diferente de 0.
+@code{rat(0)} que tem uma representa√ß√£o interna diferente de 0.
 
 @c WHAT'S THIS ABOUT EXACTLY ??
 Quando @code{ratfac} for @code{true}, @code{rat} retorna uma forma parcialmente factorizada para CRE.
-Durante operaÁıes racionais a express„o È
-mantida como totalmente factorizada como possÌvel sem uma chamada ao
-pacote de factorizaÁ„o (@code{factor}).  Isso pode sempre economizar espaÁo de memÛria e algum tempo
-em algumas computaÁıes.  O numerador e o denominador s„o ainda tidos como
+Durante opera√ß√µes racionais a express√£o √©
+mantida como totalmente factorizada como poss√≠vel sem uma chamada ao
+pacote de factoriza√ß√£o (@code{factor}).  Isso pode sempre economizar espa√ßo de mem√≥ria e algum tempo
+em algumas computa√ß√µes.  O numerador e o denominador s√£o ainda tidos como
 relativamente primos
 (e.g.  @code{rat ((x^2 - 1)^4/(x + 1)^2)} retorna @code{(x - 1)^4 (x + 1)^2)},
-mas os factores dentro de cada parte podem n„o ser relativamente primos.
+mas os factores dentro de cada parte podem n√£o ser relativamente primos.
 
-@code{ratprint} se @code{false} suprime a impress„o de mensagens
-informando o utilizador de conversıes de n˙meros em ponto flutuante para
-n˙meros racionais.
+@code{ratprint} se @code{false} suprime a impress√£o de mensagens
+informando o utilizador de convers√µes de n√∫meros em ponto flutuante para
+n√∫meros racionais.
 
-@code{keepfloat} se @code{true} evita que n˙meros em ponto flutuante sejam
-convertidos para n˙meros racionais.
+@code{keepfloat} se @code{true} evita que n√∫meros em ponto flutuante sejam
+convertidos para n√∫meros racionais.
 
-Veja tambÈm @code{ratexpand} e  @code{ratsimp}.
+Veja tamb√©m @code{ratexpand} e  @code{ratsimp}.
 
 Exemplos:
 @c FOLLOW GENERATED FROM THESE EXPRESSIONS
@@ -1013,41 +1013,41 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} ratalgdenom
-Valor Padr„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} ratalgdenom
+Valor Padr√£o: @code{true}
 
-Quando @code{ratalgdenom} for @code{true}, permite racionalizaÁ„o de
+Quando @code{ratalgdenom} for @code{true}, permite racionaliza√ß√£o de
 denominadores com respeito a radicais tenham efeito.
-@code{ratalgdenom} tem efeito somente quando expressıes racionais canÛnicas (CRE) forem usadas no modo algÈbrico.
+@code{ratalgdenom} tem efeito somente quando express√µes racionais can√≥nicas (CRE) forem usadas no modo alg√©brico.
 
 @end defvr
 
 @c THIS ITEM NEEDS MORE WORK
-@deffn {FunÁ„o} ratcoef (@var{expr}, @var{x}, @var{n})
-@deffnx {FunÁ„o} ratcoef (@var{expr}, @var{x})
-Retorna o coeficiente da express„o @code{@var{x}^@var{n}}
-dentro da express„o @var{expr}.
-Se omitido, @var{n} È assumido ser 1.
+@deffn {Fun√ß√£o} ratcoef (@var{expr}, @var{x}, @var{n})
+@deffnx {Fun√ß√£o} ratcoef (@var{expr}, @var{x})
+Retorna o coeficiente da express√£o @code{@var{x}^@var{n}}
+dentro da express√£o @var{expr}.
+Se omitido, @var{n} √© assumido ser 1.
 
-O valor de retorno est· livre
-(excepto possivelmente em um senso n„o racional) das vari·veis em @var{x}.
-Se nenhum coeficiente desse tipo existe, 0 È retornado.
+O valor de retorno est√° livre
+(excepto possivelmente em um senso n√£o racional) das vari√°veis em @var{x}.
+Se nenhum coeficiente desse tipo existe, 0 √© retornado.
 
 @code{ratcoef}
 expande e simplifica racionalmente seu primeiro argumento e dessa forma pode
-produzir respostas diferentes das de @code{coeff} que È puramente
-sint·tica.
+produzir respostas diferentes das de @code{coeff} que √© puramente
+sint√°tica.
 @c MOVE THIS TO EXAMPLES SECTION
 Dessa forma @code{ratcoef ((x + 1)/y + x, x)} retorna @code{(y + 1)/y} ao passo que @code{coeff} retorna 1.
 
-@code{ratcoef (@var{expr}, @var{x}, 0)}, visualiza @var{expr} como uma adiÁ„o,
-retornando uma soma desses termos que n„o possuem @var{x}.
+@code{ratcoef (@var{expr}, @var{x}, 0)}, visualiza @var{expr} como uma adi√ß√£o,
+retornando uma soma desses termos que n√£o possuem @var{x}.
 @c "SHOULD NOT" -- WHAT DOES THIS MEAN ??
-portanto se @var{x} ocorre para quaisquer expoentes negativos, @code{ratcoef} pode n„o ser usado.
+portanto se @var{x} ocorre para quaisquer expoentes negativos, @code{ratcoef} pode n√£o ser usado.
 
 @c WHAT IS THE INTENT HERE ??
-Uma vez que @var{expr} È racionalmente
-simplificada antes de ser examinada, coeficientes podem n„o aparecer inteiramente
+Uma vez que @var{expr} √© racionalmente
+simplificada antes de ser examinada, coeficientes podem n√£o aparecer inteiramente
 no caminho que eles foram pensados.
 
 Exemplo:
@@ -1064,34 +1064,34 @@ Exemplo:
 
 @end deffn
 
-@deffn {FunÁ„o} ratdenom (@var{expr})
+@deffn {Fun√ß√£o} ratdenom (@var{expr})
 Retorna o denominador de @var{expr},
-apÛs forÁar a convers„o de @var{expr} para express„o racional canÛnica (CRE).
-O valor de retorno È a CRE.
+ap√≥s for√ßar a convers√£o de @var{expr} para express√£o racional can√≥nica (CRE).
+O valor de retorno √© a CRE.
 
 @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-@var{expr} È forÁada para uma CRE por @code{rat}
-se n„o for j· uma CRE.
-Essa convers„o pode mudar a forma de @var{expr} colocando todos os termos
+@var{expr} √© for√ßada para uma CRE por @code{rat}
+se n√£o for j√° uma CRE.
+Essa convers√£o pode mudar a forma de @var{expr} colocando todos os termos
 sobre um denominador comum.
 
-@code{denom} È similar, mas retorna uma express„o comum em lugar de uma CRE.
-TambÈm, @code{denom} n„o tenta colocar todos os termos sobre um denominador comum,
-e dessa forma algumas expressıes que s„o consideradas razıes por @code{ratdenom}
-n„o s„o consideradas razıes por @code{denom}.
+@code{denom} √© similar, mas retorna uma express√£o comum em lugar de uma CRE.
+Tamb√©m, @code{denom} n√£o tenta colocar todos os termos sobre um denominador comum,
+e dessa forma algumas express√µes que s√£o consideradas raz√µes por @code{ratdenom}
+n√£o s√£o consideradas raz√µes por @code{denom}.
 
 @c NEEDS AN EXAMPLE HERE
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} ratdenomdivide
-Valor Padr„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} ratdenomdivide
+Valor Padr√£o: @code{true}
 
 Quando @code{ratdenomdivide} for @code{true},
-@code{ratexpand} expande uma raz„o cujo o numerador for uma adiÁ„o 
-dentro de uma soma de razıes,
+@code{ratexpand} expande uma raz√£o cujo o numerador for uma adi√ß√£o 
+dentro de uma soma de raz√µes,
 tendo todos um denominador comum.
-De outra forma, @code{ratexpand} colapsa uma adiÁ„o de razıes dentro de uma raz„o simples,
-cujo numerador seja a adiÁ„o dos numeradores de cada raz„o.
+De outra forma, @code{ratexpand} colapsa uma adi√ß√£o de raz√µes dentro de uma raz√£o simples,
+cujo numerador seja a adi√ß√£o dos numeradores de cada raz√£o.
 
 Exemplos:
 
@@ -1132,27 +1132,27 @@ Exemplos:
 
 @end defvr
 
-@deffn {FunÁ„o} ratdiff (@var{expr}, @var{x})
-Realiza a derivaÁ„o da express„o racional @var{expr} com relaÁ„o a @var{x}.
-@var{expr} deve ser uma raz„o de polinÛmios ou um polinÛmio em @var{x}.
-O argumento @var{x} pode ser uma vari·vel ou uma subexpress„o de @var{expr}.
+@deffn {Fun√ß√£o} ratdiff (@var{expr}, @var{x})
+Realiza a deriva√ß√£o da express√£o racional @var{expr} com rela√ß√£o a @var{x}.
+@var{expr} deve ser uma raz√£o de polin√≥mios ou um polin√≥mio em @var{x}.
+O argumento @var{x} pode ser uma vari√°vel ou uma subexpress√£o de @var{expr}.
 @c NOT CLEAR (FROM READING CODE) HOW x OTHER THAN A VARIABLE IS HANDLED --
 @c LOOKS LIKE (a+b), 10*(a+b), (a+b)^2 ARE ALL TREATED LIKE (a+b);
 @c HOW TO DESCRIBE THAT ??
 
-O resultado È equivalente a @code{diff}, embora talvez em uma forma diferente.
-@code{ratdiff} pode ser mais r·pida que @code{diff}, para expressıes racionais.
+O resultado √© equivalente a @code{diff}, embora talvez em uma forma diferente.
+@code{ratdiff} pode ser mais r√°pida que @code{diff}, para express√µes racionais.
 
-@code{ratdiff} retorna uma express„o racional canÛnica (CRE) se @code{expr} for uma CRE.
-De outra forma, @code{ratdiff} retorna uma express„o geral.
+@code{ratdiff} retorna uma express√£o racional can√≥nica (CRE) se @code{expr} for uma CRE.
+De outra forma, @code{ratdiff} retorna uma express√£o geral.
 
-@code{ratdiff} considera somente as dependÍncias de @var{expr} sobre @var{x},
-e ignora quaisquer dependÍncias estabelecidas por @code{depends}.
+@code{ratdiff} considera somente as depend√™ncias de @var{expr} sobre @var{x},
+e ignora quaisquer depend√™ncias estabelecidas por @code{depends}.
 
 @c WHAT THIS IS ABOUT -- ratdiff (rat (factor (expr)), x) AND ratdiff (factor (rat (expr)), x) BOTH SUCCEED
 @c COMMENTING THIS OUT UNTIL SOMEONE CAN ESTABLISH SOME CRE'S FOR WHICH ratdiff FAILS
 @c However, @code{ratdiff} should not be used on factored CRE forms;
-@c use @code{diff} instead for such expressıes.
+@c use @code{diff} instead for such express√µes.
 
 Exemplo:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -1192,57 +1192,57 @@ Exemplo:
 
 @end deffn
 
-@deffn {FunÁ„o} ratdisrep (@var{expr})
-Retorna seu argumento como uma express„o geral.
-Se @var{expr} for uma express„o geral, È retornada inalterada.
+@deffn {Fun√ß√£o} ratdisrep (@var{expr})
+Retorna seu argumento como uma express√£o geral.
+Se @var{expr} for uma express√£o geral, √© retornada inalterada.
 
-Tipicamente @code{ratdisrep} È chamada para converter uma express„o racional canÛnica (CRE)
-em uma express„o geral.
+Tipicamente @code{ratdisrep} √© chamada para converter uma express√£o racional can√≥nica (CRE)
+em uma express√£o geral.
 @c NOT REALLY FOND OF YOU-CAN-DO-THIS-YOU-CAN-DO-THAT STATEMENTS
-Isso È algumas vezes conveniente se deseja-se parar o "cont·gio", ou
-caso se esteja usando funÁıes racionais em contextos n„o racionais.
+Isso √© algumas vezes conveniente se deseja-se parar o "cont√°gio", ou
+caso se esteja usando fun√ß√µes racionais em contextos n√£o racionais.
 
-Veja tambÈm @code{totaldisrep}.
+Veja tamb√©m @code{totaldisrep}.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} ratepsilon
-Valor Padr„o: 2.0e-8
+@defvr {Vari√°vel de op√ß√£o} ratepsilon
+Valor Padr√£o: 2.0e-8
 
-@code{ratepsilon} È a toler‚ncia usada em conversıes
-de n˙meros em ponto flutuante para n˙meros racionais.
+@code{ratepsilon} √© a toler√¢ncia usada em convers√µes
+de n√∫meros em ponto flutuante para n√∫meros racionais.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
-@deffn {FunÁ„o} ratexpand (@var{expr})
-@deffnx {Vari·vel de opÁ„o} ratexpand
+@deffn {Fun√ß√£o} ratexpand (@var{expr})
+@deffnx {Vari√°vel de op√ß√£o} ratexpand
 Expande @var{expr} multiplicando para fora produtos de somas e
-somas exponenciadas, combinando fraÁıes sobre um denominador comum,
-cancelando o m·ximo divisor comum entre entre o numerador e o
-denominador, ent„o quebrando o numerador (se for uma soma) dentro de suas
+somas exponenciadas, combinando fra√ß√µes sobre um denominador comum,
+cancelando o m√°ximo divisor comum entre entre o numerador e o
+denominador, ent√£o quebrando o numerador (se for uma soma) dentro de suas
 respectivas parcelas divididas pelo denominador.
 
-O valor de retorno de @code{ratexpand} È uma express„o geral,
-mesmo se @var{expr} for uma express„o racional canÛnica (CRE).
+O valor de retorno de @code{ratexpand} √© uma express√£o geral,
+mesmo se @var{expr} for uma express√£o racional can√≥nica (CRE).
 
 @c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
-O comutador @code{ratexpand} se @code{true} far· com que expressıes
+O comutador @code{ratexpand} se @code{true} far√° com que express√µes
 CRE sejam completamente expandidas quando forem convertidas de volta para
-a forma geral ou mostradas, enquanto se for @code{false} ent„o elas ser„o colocadas
+a forma geral ou mostradas, enquanto se for @code{false} ent√£o elas ser√£o colocadas
 na forma recursiva.
-Veja tambÈm @code{ratsimp}.
+Veja tamb√©m @code{ratsimp}.
 
 Quando @code{ratdenomdivide} for @code{true},
-@code{ratexpand} expande uma raz„o na qual o numerador È uma adiÁ„o
-dentro de uma adiÁ„o de razıes,
+@code{ratexpand} expande uma raz√£o na qual o numerador √© uma adi√ß√£o
+dentro de uma adi√ß√£o de raz√µes,
 todas tendo um denominador comum.
-De outra forma, @code{ratexpand} contrai uma soma de razıes em uma raz„o simples,
-cujo numerador È a soma dos numeradores de cada raz„o.
+De outra forma, @code{ratexpand} contrai uma soma de raz√µes em uma raz√£o simples,
+cujo numerador √© a soma dos numeradores de cada raz√£o.
 
-Quando @code{keepfloat} for @code{true}, evita que n˙meros
-em ponto flutuante sejam racionalizados quando expressıes que contenham
-n˙meros em ponto flutuante forem convertidas para a forma de express„o racional canÛnica (CRE).
+Quando @code{keepfloat} for @code{true}, evita que n√∫meros
+em ponto flutuante sejam racionalizados quando express√µes que contenham
+n√∫meros em ponto flutuante forem convertidas para a forma de express√£o racional can√≥nica (CRE).
 
 Exemplos:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -1275,93 +1275,93 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} ratfac
-Valor Padr„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} ratfac
+Valor Padr√£o: @code{false}
 
 Quando @code{ratfac} for @code{true},
-expressıes racionais canÛnicas (CRE) s„o manipuladas na forma parcialmente factorizada.
+express√µes racionais can√≥nicas (CRE) s√£o manipuladas na forma parcialmente factorizada.
 
-Durante operaÁıes racionais a
-express„o È mantida como completamente factorizada como foi possÌvel sem chamadas a @code{factor}.
-Isso pode sempre economizar espaÁo e pode economizar tempo em algumas computaÁıes.
-O numerador e o denominador s„o feitos relativamente primos, por exemplo
+Durante opera√ß√µes racionais a
+express√£o √© mantida como completamente factorizada como foi poss√≠vel sem chamadas a @code{factor}.
+Isso pode sempre economizar espa√ßo e pode economizar tempo em algumas computa√ß√µes.
+O numerador e o denominador s√£o feitos relativamente primos, por exemplo
 @code{rat ((x^2 - 1)^4/(x + 1)^2)} retorna @code{(x - 1)^4 (x + 1)^2)},
-mas o factor dentro de cada parte pode n„o ser relativamente primo.
+mas o factor dentro de cada parte pode n√£o ser relativamente primo.
 
-No pacote @code{ctensor} (ManipulaÁ„o de componentes de tensores),
+No pacote @code{ctensor} (Manipula√ß√£o de componentes de tensores),
 tensores de Ricci, Einstein, Riemann, e de Weyl e a curvatura escalar 
-s„o factorizados automaticamente quando @code{ratfac} for @code{true}.
+s√£o factorizados automaticamente quando @code{ratfac} for @code{true}.
 @i{@code{ratfac} pode somente ser
 escolhido para casos onde as componentes tensoriais sejam sabidametne consistidas de
 poucos termos.}
 
-Os esquemas de @code{ratfac} e de @code{ratweight} s„o incompatÌveis e n„o podem
+Os esquemas de @code{ratfac} e de @code{ratweight} s√£o incompat√≠veis e n√£o podem
 ambos serem usados ao mesmo tempo.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
-@deffn {FunÁ„o} ratnumer (@var{expr})
+@deffn {Fun√ß√£o} ratnumer (@var{expr})
 Retorna o numerador de @var{expr},
-apÛs forÁar @var{expr} para uma express„o racional canÛnica (CRE).
-O valor de retorno È uma CRE.
+ap√≥s for√ßar @var{expr} para uma express√£o racional can√≥nica (CRE).
+O valor de retorno √© uma CRE.
 
 @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-@var{expr} È forÁada para uma CRE por @code{rat}
-se isso n„o for j· uma CRE.
-Essa convers„o pode alterar a forma de @var{expr} pela colocaÁ„o de todos os termos
+@var{expr} √© for√ßada para uma CRE por @code{rat}
+se isso n√£o for j√° uma CRE.
+Essa convers√£o pode alterar a forma de @var{expr} pela coloca√ß√£o de todos os termos
 sobre um denominador comum.
 
-@code{num} È similar, mas retorna uma express„o comum em lugar de uma CRE.
-TambÈm, @code{num} n„o tenta colocar todos os termos sobre um denominador comum,
-e dessa forma algumas expressıes que s„o consideradas razıes por @code{ratnumer}
-n„o s„o consideradas razıes por @code{num}.
+@code{num} √© similar, mas retorna uma express√£o comum em lugar de uma CRE.
+Tamb√©m, @code{num} n√£o tenta colocar todos os termos sobre um denominador comum,
+e dessa forma algumas express√µes que s√£o consideradas raz√µes por @code{ratnumer}
+n√£o s√£o consideradas raz√µes por @code{num}.
 
 @c NEEDS AN EXAMPLE HERE
 @end deffn
 
-@deffn {FunÁ„o} ratnump (@var{expr})
-Retorna @code{true} se @var{expr} for um inteiro literal ou raz„o de inteiros literais,
+@deffn {Fun√ß√£o} ratnump (@var{expr})
+Retorna @code{true} se @var{expr} for um inteiro literal ou raz√£o de inteiros literais,
 de outra forma retorna @code{false}.
 
 @end deffn
 
-@deffn {FunÁ„o} ratp (@var{expr})
-Retorna @code{true} se @var{expr} for uma express„o racional canÛnica (CRE) ou CRE extendida,
+@deffn {Fun√ß√£o} ratp (@var{expr})
+Retorna @code{true} se @var{expr} for uma express√£o racional can√≥nica (CRE) ou CRE extendida,
 de outra forma retorna @code{false}.
 
-CRE s„o criadas por @code{rat} e funÁıes relacionadas.
-CRE extendidas s„o criadas por @code{taylor} e funÁıes relacionadas.
+CRE s√£o criadas por @code{rat} e fun√ß√µes relacionadas.
+CRE extendidas s√£o criadas por @code{taylor} e fun√ß√µes relacionadas.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} ratprint
-Valor Padr„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} ratprint
+Valor Padr√£o: @code{true}
 
 Quando @code{ratprint} for @code{true},
-uma mensagem informando ao utilizador da convers„o de n˙meros em ponto flutuante
-para n˙meros racionais È mostrada.
+uma mensagem informando ao utilizador da convers√£o de n√∫meros em ponto flutuante
+para n√∫meros racionais √© mostrada.
 
 @end defvr
 
-@deffn {FunÁ„o} ratsimp (@var{expr})
-@deffnx {FunÁ„o} ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})
-Simplifica a express„o @var{expr} e todas as suas subexpressıes,
-incluindo os argumentos para funÁıes n„o racionais.
-O resultado È retornado como o quociente de dois polinÛmios na forma recursiva,
-isto È, os coeficientes de vari·vel principal s„o polinÛmios em outras vari·veis.
-Vari·veis podem incluir funÁıes n„o racionais (e.g., @code{sin (x^2 + 1)})
-e os argumentos para quaisquer tais funÁıes s„o tambÈm simplificados racionalmente.
+@deffn {Fun√ß√£o} ratsimp (@var{expr})
+@deffnx {Fun√ß√£o} ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})
+Simplifica a express√£o @var{expr} e todas as suas subexpress√µes,
+incluindo os argumentos para fun√ß√µes n√£o racionais.
+O resultado √© retornado como o quociente de dois polin√≥mios na forma recursiva,
+isto √©, os coeficientes de vari√°vel principal s√£o polin√≥mios em outras vari√°veis.
+Vari√°veis podem incluir fun√ß√µes n√£o racionais (e.g., @code{sin (x^2 + 1)})
+e os argumentos para quaisquer tais fun√ß√µes s√£o tamb√©m simplificados racionalmente.
 
 @code{ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})}
-habilita simplificaÁ„o racional com a
-especiicaÁ„o de vari·vel ordenando como em @code{ratvars}.
+habilita simplifica√ß√£o racional com a
+especiica√ß√£o de vari√°vel ordenando como em @code{ratvars}.
 
 Quando @code{ratsimpexpons} for @code{true},
-@code{ratsimp} È aplicado para os expoentes de expressıes durante a simplificaÁ„o.
+@code{ratsimp} √© aplicado para os expoentes de express√µes durante a simplifica√ß√£o.
 
-Veja tambÈm @code{ratexpand}.
-Note que @code{ratsimp} È afectado por algum dos
+Veja tamb√©m @code{ratexpand}.
+Note que @code{ratsimp} √© afectado por algum dos
 sinalizadores que afectam @code{ratexpand}.
 
 Exemplos:
@@ -1403,29 +1403,29 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} ratsimpexpons
-Valor Padr„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} ratsimpexpons
+Valor Padr√£o: @code{false}
 
 Quando @code{ratsimpexpons} for @code{true},
-@code{ratsimp} È aplicado para os expoentes de expressıes durante uma simplificaÁ„o.
+@code{ratsimp} √© aplicado para os expoentes de express√µes durante uma simplifica√ß√£o.
 
 @c NEED AN EXAMPLE HERE -- RECYCLE THE ratsimpexpons EXAMPLE FROM ratsimp ABOVE
 @end defvr
 
-@deffn {FunÁ„o} ratsubst (@var{a}, @var{b}, @var{c})
-Substitue @var{a} por @var{b} em @var{c} e retorna a express„o resultante. 
+@deffn {Fun√ß√£o} ratsubst (@var{a}, @var{b}, @var{c})
+Substitue @var{a} por @var{b} em @var{c} e retorna a express√£o resultante. 
 @c "ETC" SUGGESTS THE READER KNOWS WHAT ELSE GOES THERE -- NOT LIKELY THE CASE
-@var{b} pode tambÈm ser uma adiÁ„o, produto, expoente, etc.
+@var{b} pode tamb√©m ser uma adi√ß√£o, produto, expoente, etc.
 
 @c WHAT, EXACTLY, DOES ratsubst KNOW ??
-@code{ratsubst} sabe alguma coisa do significado de expressıes
-uma vez que @code{subst} n„o È uma substituiÁ„o puramente sint·tica.
+@code{ratsubst} sabe alguma coisa do significado de express√µes
+uma vez que @code{subst} n√£o √© uma substitui√ß√£o puramente sint√°tica.
 Dessa forma @code{subst (a, x + y, x + y + z)} retorna @code{x + y + z}
 ao passo que @code{ratsubst} retorna @code{z + a}.
 
 Quando @code{radsubstflag} for @code{true},
-@code{ratsubst} faz substituiÁ„o de radicais em expressıes
-que explicitamente n„o possuem esses radicais.
+@code{ratsubst} faz substitui√ß√£o de radicais em express√µes
+que explicitamente n√£o possuem esses radicais.
 
 Exemplos:
 @c EXAMPLES BELOW ADAPTED FROM examples (ratsubst)
@@ -1463,43 +1463,43 @@ Exemplos:
 
 @end deffn
 
-@deffn {FunÁ„o} ratvars (@var{x_1}, ..., @var{x_n})
-@deffnx {FunÁ„o} ratvars ()
-@deffnx {Vari·vel de sistema} ratvars
-Declara vari·veis principais @var{x_1}, ..., @var{x_n} para expressıes racionais.
-@var{x_n}, se presente em uma express„o racional, È considerada a vari·vel principal.
-De outra forma, @var{x_[n-1]} È considerada a vari·vel principal se presente,
-e assim por diante atÈ as vari·veis precedentes para @var{x_1},
-que È considerada a vari·vel principal somente se nenhuma das vari·veis que a sucedem estiver presente.
+@deffn {Fun√ß√£o} ratvars (@var{x_1}, ..., @var{x_n})
+@deffnx {Fun√ß√£o} ratvars ()
+@deffnx {Vari√°vel de sistema} ratvars
+Declara vari√°veis principais @var{x_1}, ..., @var{x_n} para express√µes racionais.
+@var{x_n}, se presente em uma express√£o racional, √© considerada a vari√°vel principal.
+De outra forma, @var{x_[n-1]} √© considerada a vari√°vel principal se presente,
+e assim por diante at√© as vari√°veis precedentes para @var{x_1},
+que √© considerada a vari√°vel principal somente se nenhuma das vari√°veis que a sucedem estiver presente.
 
-Se uma vari·vel em uma express„o racional n„o est· presente na lista @code{ratvars},
-a ela È dada uma prioridade menor que @var{x_1}.
+Se uma vari√°vel em uma express√£o racional n√£o est√° presente na lista @code{ratvars},
+a ela √© dada uma prioridade menor que @var{x_1}.
 
-Os argumentos para @code{ratvars} podem ser ou vari·veis ou funÁıes n„o racionais
+Os argumentos para @code{ratvars} podem ser ou vari√°veis ou fun√ß√µes n√£o racionais
 tais como @code{sin(x)}.
 
-A vari·vel @code{ratvars} È uma lista de argumentos da
-funÁ„o @code{ratvars} quando ela foi chamada mais recentemente.
-Cada chamada para a funÁ„o @code{ratvars} sobre-grava a lista apagando seu conte˙do anterior.
+A vari√°vel @code{ratvars} √© uma lista de argumentos da
+fun√ß√£o @code{ratvars} quando ela foi chamada mais recentemente.
+Cada chamada para a fun√ß√£o @code{ratvars} sobre-grava a lista apagando seu conte√∫do anterior.
 @code{ratvars ()} limpa a lista.
 
 @c NEED EXAMPLES HERE
 @end deffn
 
-@deffn {FunÁ„o} ratweight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
-@deffnx {FunÁ„o} ratweight ()
-Atribui um peso @var{w_i} para a vari·vel @var{x_i}.
-Isso faz com que um termo seja substituÌdo por 0 se seu peso exceder o
-valor da vari·vel @code{ratwtlvl} (o padr„o retorna sem truncaÁ„o).
-O peso de um termo È a soma dos produtos dos
-pesos de uma vari·vel no termo vezes seu expoente.
-Por exemplo, o peso de @code{3 x_1^2 x_2} È @code{2 w_1 + w_2}.
-A truncaÁ„o de acordo com @code{ratwtlvl} È realizada somente quando multiplicando
-ou exponencializando expressıes racionais canÛnicas (CRE).
+@deffn {Fun√ß√£o} ratweight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@deffnx {Fun√ß√£o} ratweight ()
+Atribui um peso @var{w_i} para a vari√°vel @var{x_i}.
+Isso faz com que um termo seja substitu√≠do por 0 se seu peso exceder o
+valor da vari√°vel @code{ratwtlvl} (o padr√£o retorna sem trunca√ß√£o).
+O peso de um termo √© a soma dos produtos dos
+pesos de uma vari√°vel no termo vezes seu expoente.
+Por exemplo, o peso de @code{3 x_1^2 x_2} √© @code{2 w_1 + w_2}.
+A trunca√ß√£o de acordo com @code{ratwtlvl} √© realizada somente quando multiplicando
+ou exponencializando express√µes racionais can√≥nicas (CRE).
 
-@code{ratweight ()} retorna a lista cumulativa de atribuiÁıes de pesos.
+@code{ratweight ()} retorna a lista cumulativa de atribui√ß√µes de pesos.
 
-Nota: Os esquemas de @code{ratfac} e @code{ratweight} s„o incompatÌveis e n„o podem
+Nota: Os esquemas de @code{ratfac} e @code{ratweight} s√£o incompat√≠veis e n√£o podem
 ambo serem usados ao mesmo tempo.
 
 Exemplos:
@@ -1524,31 +1524,31 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari·vel de sistema} ratweights
-Valor Padr„o: @code{[]}
+@defvr {Vari√°vel de sistema} ratweights
+Valor Padr√£o: @code{[]}
 
-@code{ratweights} È a lista de pesos atribuÌdos por @code{ratweight}.
-A lista È cumulativa:
-cada chamada a @code{ratweight} coloca Ìtens adicionais na lista.
+@code{ratweights} √© a lista de pesos atribu√≠dos por @code{ratweight}.
+A lista √© cumulativa:
+cada chamada a @code{ratweight} coloca √≠tens adicionais na lista.
 
 @c DO WE REALLY NEED TO MENTION THIS ??
 @code{kill (ratweights)} e @code{save (ratweights)} ambos trabalham como esperado.
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} ratwtlvl
-Valor Padr„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} ratwtlvl
+Valor Padr√£o: @code{false}
 
-@code{ratwtlvl} È usada em combinaÁ„o com a funÁ„o 
-@code{ratweight} para controlar a truncaÁ„o de express„o racionais canÛnicas (CRE).
-Para o valor padr„o @code{false}, nenhuma truncaÁ„o ocorre.
+@code{ratwtlvl} √© usada em combina√ß√£o com a fun√ß√£o 
+@code{ratweight} para controlar a trunca√ß√£o de express√£o racionais can√≥nicas (CRE).
+Para o valor padr√£o @code{false}, nenhuma trunca√ß√£o ocorre.
 
 @end defvr
 
-@deffn {FunÁ„o} remainder (@var{p_1}, @var{p_2})
-@deffnx {FunÁ„o} remainder (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
-Retorna o resto do polinÛmio @var{p_1} dividido pelo polinÛmio @var{p_2}.
-Os argumentos @var{x_1}, ..., @var{x_n} s„o interpretados como em @code{ratvars}.
+@deffn {Fun√ß√£o} remainder (@var{p_1}, @var{p_2})
+@deffnx {Fun√ß√£o} remainder (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+Retorna o resto do polin√≥mio @var{p_1} dividido pelo polin√≥mio @var{p_2}.
+Os argumentos @var{x_1}, ..., @var{x_n} s√£o interpretados como em @code{ratvars}.
 
 @code{remainder} retorna o segundo elemento
 de uma lista de dois elementos retornada por @code{divide}.
@@ -1557,53 +1557,53 @@ de uma lista de dois elementos retornada por @code{divide}.
 @end deffn
 
 @c CAN PROBABLY BE CLARIFIED
-@deffn {FunÁ„o} resultant (@var{p_1}, @var{p_2}, @var{x})
-@deffnx {Vari·vel} resultant
-Calcula o resultante de dois polinÛmios @var{p_1} e @var{p_2},
-eliminando a vari·vel @var{x}.
-O resultante È um determinante dos coeficientes de @var{x}
+@deffn {Fun√ß√£o} resultant (@var{p_1}, @var{p_2}, @var{x})
+@deffnx {Vari√°vel} resultant
+Calcula o resultante de dois polin√≥mios @var{p_1} e @var{p_2},
+eliminando a vari√°vel @var{x}.
+O resultante √© um determinante dos coeficientes de @var{x}
 em @var{p_1} e @var{p_2},
-que È igual a zero
-se e somente se @var{p_1} e @var{p_2} tiverem um factor em comum n„o constante.
+que √© igual a zero
+se e somente se @var{p_1} e @var{p_2} tiverem um factor em comum n√£o constante.
 
 Se @var{p_1} ou @var{p_2} puderem ser factorizados,
-pode ser desej·vel chamar @code{factor} antes de chamar @code{resultant}.
+pode ser desej√°vel chamar @code{factor} antes de chamar @code{resultant}.
 
-A vari·vel @code{resultant} controla que algoritmo ser· usado para calcular
+A vari√°vel @code{resultant} controla que algoritmo ser√° usado para calcular
 o resultante.
 @c WHAT DOES THE FOLLOWING MEAN EXACTLY ??
 @code{subres} para o prs subresultante,
 @code{mod} para o algoritmo resultante modular,
 e @code{red} para prs reduzido.
 Para muitos problemas @code{subres} pode ser melhor.
-Para alguns problemas com valores grandes de grau de uma ˙nica vari·vel ou de duas vari·veis @code{mod} pode ser melhor.
+Para alguns problemas com valores grandes de grau de uma √∫nica vari√°vel ou de duas vari√°veis @code{mod} pode ser melhor.
 
-A funÁ„o @code{bezout} aceita os mesmos argumentos que @code{resultant} e retorna
-uma matriz.  O determinante do valor de retorno È o resultante desejado.
+A fun√ß√£o @code{bezout} aceita os mesmos argumentos que @code{resultant} e retorna
+uma matriz.  O determinante do valor de retorno √© o resultante desejado.
 
 @c NEED AN EXAMPLE HERE
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} savefactors
-Valor Padr„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} savefactors
+Valor Padr√£o: @code{false}
 
 @c "certain functions" -- WHICH ONES ??
 Quando @code{savefactors} for @code{true}, faz com que os factores de uma
-express„o que È um produto de factores sejam gravados por certas
-funÁıes com o objectivo de aumentar a velocidade em posteriores factorizaÁıes de expressıes
+express√£o que √© um produto de factores sejam gravados por certas
+fun√ß√µes com o objectivo de aumentar a velocidade em posteriores factoriza√ß√µes de express√µes
 contendo algum desses mesmos factores.
 
 @end defvr
 
 @c I CAN'T TELL WHAT THIS IS SUPPOSED TO BE ABOUT
-@deffn {FunÁ„o} sqfr (@var{expr})
-È similar a @code{factor} excepto que os factores do polinÛmio s„o "livres de raÌzes".
-Isto È, eles possuem factores somente de grau um.
-Esse algoritmo, que È tambÈm usado no primeiro est·gio de @code{factor}, utiliza
-o facto que um polinÛmio tem em comum com sua n'Èsima derivada todos
+@deffn {Fun√ß√£o} sqfr (@var{expr})
+√© similar a @code{factor} excepto que os factores do polin√≥mio s√£o "livres de ra√≠zes".
+Isto √©, eles possuem factores somente de grau um.
+Esse algoritmo, que √© tamb√©m usado no primeiro est√°gio de @code{factor}, utiliza
+o facto que um polin√≥mio tem em comum com sua n'√©sima derivada todos
 os seus factores de grau maior que n.  Dessa forma obtendo o maior divisor comum
-com o polinÛmio das
-derivadas com relaÁ„o a cada vari·vel no polinÛmio, todos
+com o polin√≥mio das
+derivadas com rela√ß√£o a cada vari√°vel no polin√≥mio, todos
 os factores de grau maior que 1 podem ser achados.
 
 Exemplo:
@@ -1619,32 +1619,32 @@ Exemplo:
 @end deffn
 
 @c THIS ITEM STILL NEEDS WORK
-@deffn {FunÁ„o} tellrat (@var{p_1}, ..., @var{p_n})
-@deffnx {FunÁ„o} tellrat ()
-Adiciona ao anel dos inteiros algÈbricos conhecidos do Maxima
-os elementos que s„o as soluÁıes dos polinÛmios @var{p_1}, ..., @var{p_n}.
-Cada argumento @var{p_i} È um polinÛmio concoeficientes inteiros.
+@deffn {Fun√ß√£o} tellrat (@var{p_1}, ..., @var{p_n})
+@deffnx {Fun√ß√£o} tellrat ()
+Adiciona ao anel dos inteiros alg√©bricos conhecidos do Maxima
+os elementos que s√£o as solu√ß√µes dos polin√≥mios @var{p_1}, ..., @var{p_n}.
+Cada argumento @var{p_i} √© um polin√≥mio concoeficientes inteiros.
 
-@code{tellrat (@var{x})} efectivamente significa substituir 0 por @var{x} em funÁıes
+@code{tellrat (@var{x})} efectivamente significa substituir 0 por @var{x} em fun√ß√µes
 racionais.
 
-@code{tellrat ()} retorna uma lista das substituiÁıes correntes.
+@code{tellrat ()} retorna uma lista das substitui√ß√µes correntes.
 
-@code{algebraic} deve ser escolhida para @code{true} com o objectivo de que a simplificaÁ„o de
-inteiros algÈbricos tenha efeito.
+@code{algebraic} deve ser escolhida para @code{true} com o objectivo de que a simplifica√ß√£o de
+inteiros alg√©bricos tenha efeito.
 
-Maxima inicialmente sabe sobre a unidade imagin·ria @code{%i}
-e todas as raÌzes de inteiros.
+Maxima inicialmente sabe sobre a unidade imagin√°ria @code{%i}
+e todas as ra√≠zes de inteiros.
 
-Existe um comando @code{untellrat} que recebe n˙cleos e
+Existe um comando @code{untellrat} que recebe n√∫cleos e
 remove propriedades @code{tellrat}.
 
-Quando fazemos @code{tellrat} em um polinÛmio
-de v·rias vari·veis, e.g., @code{tellrat (x^2 - y^2)}, pode existir uma ambiguidade como para
+Quando fazemos @code{tellrat} em um polin√≥mio
+de v√°rias vari√°veis, e.g., @code{tellrat (x^2 - y^2)}, pode existir uma ambiguidade como para
 ou substituir @code{@var{y}^2} por @code{@var{x}^2}
 ou vice-versa.  
-Maxima selecciona uma ordenaÁ„o particular, mas se o utilizador desejar especificar qual e.g.
-@code{tellrat (y^2 = x^2)} forneÁe uma sintaxe que diga para substituir
+Maxima selecciona uma ordena√ß√£o particular, mas se o utilizador desejar especificar qual e.g.
+@code{tellrat (y^2 = x^2)} forne√ße uma sintaxe que diga para substituir
 @code{@var{y}^2} por @code{@var{x}^2}.
 
 @c CAN'T TELL WHAT THIS IS ABOUT -- tellrat(w^3-1)$ algebraic:true$ rat(1/(w^2-w));
@@ -1690,20 +1690,20 @@ Exemplos:
 
 @end deffn
 
-@deffn {FunÁ„o} totaldisrep (@var{expr})
-Converte toda subexpress„o de @var{expr} da forma de express„o racionais canÛnicas (CRE) para
+@deffn {Fun√ß√£o} totaldisrep (@var{expr})
+Converte toda subexpress√£o de @var{expr} da forma de express√£o racionais can√≥nicas (CRE) para
 a forma geral e retorna o resultado.
-Se @var{expr} È em sÌ mesma na forma CRE ent„o @code{totaldisrep} È identica a
+Se @var{expr} √© em s√≠ mesma na forma CRE ent√£o @code{totaldisrep} √© identica a
 @code{ratdisrep}.
 
 @code{totaldisrep} pode ser usada para
-fazer um @code{ratdisrep} em expressıes tais como equaÁıes, listas, matrizes, etc., que
-tiverem algumas subexpressıes na forma CRE.
+fazer um @code{ratdisrep} em express√µes tais como equa√ß√µes, listas, matrizes, etc., que
+tiverem algumas subexpress√µes na forma CRE.
 
 @c NEED EXAMPLES HERE
 @end deffn
 
-@deffn {FunÁ„o} untellrat (@var{x_1}, ..., @var{x_n})
+@deffn {Fun√ß√£o} untellrat (@var{x_1}, ..., @var{x_n})
 Remove propriedades @code{tellrat} de @var{x_1}, ..., @var{x_n}.
 
 @c NEED EXAMPLES HERE

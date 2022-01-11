@@ -70,7 +70,10 @@ Springer-Verlag, New York Berlin, 308-320, 1989.
 @end iftex
 
 @opencatbox
-@category{Group theory} @category{Polynomials} @category{Share packages} @category{Package sym}
+@category{Group theory}
+@category{Polynomials}
+@category{Share packages}
+@category{Package sym}
 @closecatbox
 
 
@@ -1704,6 +1707,7 @@ Cayley解核に関して、最後の2つの引数は中立で、
 リスト@var{L}の置換のリストを返します。
 
 @opencatbox
-@category{Package sym} @category{Lists}
+@category{Package sym}
+@category{Lists}
 @closecatbox
 @end deffn

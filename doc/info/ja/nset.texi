@@ -657,7 +657,8 @@ Returns a set of lists of the form
 @end example
 
 @opencatbox
-@category{Sets} @category{Predicate functions}
+@category{Sets}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -753,7 +754,8 @@ Returns a set of lists of the form
 @end example
 
 @opencatbox
-@category{Sets} @category{Predicate functions}
+@category{Sets}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -777,7 +779,8 @@ Returns a set of lists of the form
 @end example
 
 @opencatbox
-@category{Sets} @category{Predicate functions}
+@category{Sets}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -1079,7 +1082,8 @@ Wrong number of arguments to mod
 @end example
 
 @opencatbox
-@category{Sets} @category{Lists}
+@category{Sets}
+@category{Lists}
 @closecatbox
 
 @end deffn
@@ -1734,7 +1738,8 @@ Wrong number of arguments to mod
 @end example
 
 @opencatbox
-@category{Sets} @category{Lists}
+@category{Sets}
+@category{Lists}
 @closecatbox
 
 @end deffn
@@ -1816,7 +1821,8 @@ Wrong number of arguments to mod
 @end example
 
 @opencatbox
-@category{Sets} @category{Lists}
+@category{Sets}
+@category{Lists}
 @closecatbox
 
 @end deffn
@@ -1961,7 +1967,8 @@ Wrong number of arguments to mod
 @end example
 
 @opencatbox
-@category{Sets} @category{Predicate functions}
+@category{Sets}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -2029,7 +2036,8 @@ Wrong number of arguments to mod
 @end example
 
 @opencatbox
-@category{Sets} @category{Predicate functions}
+@category{Sets}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -2233,7 +2241,8 @@ Wrong number of arguments to mod
 @end example
 
 @opencatbox
-@category{Sets} @category{Lists}
+@category{Sets}
+@category{Lists}
 @closecatbox
 
 @end deffn
@@ -2493,7 +2502,8 @@ Maximaは
 @end example
 
 @opencatbox
-@category{Sets} @category{Predicate functions}
+@category{Sets}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -2597,7 +2607,8 @@ Maximaは
 @end example
 
 @opencatbox
-@category{Sets} @category{Lists}
+@category{Sets}
+@category{Lists}
 @closecatbox
 
 @end deffn
@@ -2716,7 +2727,8 @@ n項とわかっていない関数に適用された@code{xreduce}。
 @end example
 
 @opencatbox
-@category{Sets} @category{Lists}
+@category{Sets}
+@category{Lists}
 @closecatbox
 
 @end deffn

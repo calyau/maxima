@@ -21,7 +21,10 @@
 そのオブジェクトを返します。
 
 @opencatbox
-@category{File input} @category{File output} @category{Share packages} @category{Package numericalio}
+@category{File input}
+@category{File output}
+@category{Share packages}
+@category{Package numericalio}
 @closecatbox
 
 @subsection Plain-text input and output
@@ -132,7 +135,8 @@ IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)�
 もし@var{separator_flag}が指定されないなら、ファイルは空白で区切られていると仮定されます。
 
 @opencatbox
-@category{Package numericalio} @category{File input}
+@category{Package numericalio}
+@category{File input}
 @closecatbox
 
 @end deffn
@@ -152,7 +156,8 @@ IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)�
 もし@var{separator_flag}が指定されないなら、ファイルは空白で区切られていると仮定されます。
 
 @opencatbox
-@category{Package numericalio} @category{File input}
+@category{Package numericalio}
+@category{File input}
 @closecatbox
 
 @end deffn
@@ -176,7 +181,8 @@ IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)�
 もし@var{separator_flag}が指定されないなら、ファイルは空白で区切られていると仮定されます。
 
 @opencatbox
-@category{Package numericalio} @category{File input}
+@category{Package numericalio}
+@category{File input}
 @closecatbox
 
 @end deffn
@@ -198,7 +204,8 @@ IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)�
 もし@var{separator_flag}が指定されないなら、ファイルは空白で区切られていると仮定されます。
 
 @opencatbox
-@category{Package numericalio} @category{File input}
+@category{Package numericalio}
+@category{File input}
 @closecatbox
 
 @end deffn
@@ -224,7 +231,8 @@ IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)�
 もし@var{separator_flag}が指定されないなら、ファイルは空白で区切られていると仮定されます。
 
 @opencatbox
-@category{Package numericalio} @category{File input}
+@category{Package numericalio}
+@category{File input}
 @closecatbox
 
 @end deffn
@@ -264,7 +272,8 @@ IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)�
 もし@var{separator_flag}が指定されないなら、ファイルは空白で区切られていると仮定されます。
 
 @opencatbox
-@category{Package numericalio} @category{File output}
+@category{Package numericalio}
+@category{File output}
 @closecatbox
 
 @end deffn
@@ -293,7 +302,8 @@ IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)�
 8ビット符号なしバイトの入力ストリームを返します。
 
 @opencatbox
-@category{Package numericalio} @category{File input}
+@category{Package numericalio}
+@category{File input}
 @closecatbox
 @end deffn
 
@@ -302,7 +312,8 @@ IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)�
 8ビット符号なしバイトの出力ストリームを返します。
 
 @opencatbox
-@category{Package numericalio} @category{File output}
+@category{Package numericalio}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -311,7 +322,8 @@ IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)�
 8ビット符号なしバイトの出力ストリームを返します。
 
 @opencatbox
-@category{Package numericalio} @category{File output}
+@category{Package numericalio}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -326,7 +338,8 @@ IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)�
 @code{assume_external_byte_order}で指定されます。
 
 @opencatbox
-@category{Package numericalio} @category{File input}
+@category{Package numericalio}
+@category{File input}
 @closecatbox
 @end deffn
 
@@ -341,7 +354,8 @@ IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)�
 @code{assume_external_byte_order}で指定されます。
 
 @opencatbox
-@category{Package numericalio} @category{File input}
+@category{Package numericalio}
+@category{File input}
 @closecatbox
 @end deffn
 
@@ -361,7 +375,8 @@ IEEE 754の特殊値(正負の無限大、非数値、指数表現でない数)�
 @code{assume_external_byte_order}で指定されます。
 
 @opencatbox
-@category{Package numericalio} @category{File input}
+@category{Package numericalio}
+@category{File input}
 @closecatbox
 @end deffn
 
@@ -393,6 +408,7 @@ The object
 @code{assume_external_byte_order}で指定されます。
 
 @opencatbox
-@category{Package numericalio} @category{File output}
+@category{Package numericalio}
+@category{File output}
 @closecatbox
 @end deffn

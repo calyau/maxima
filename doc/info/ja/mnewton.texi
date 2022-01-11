@@ -13,7 +13,9 @@
 Newton法の実装です。
 
 @opencatbox
-@category{Numerical methods} @category{Share packages} @category{Package mnewton}
+@category{Numerical methods}
+@category{Share packages}
+@category{Package mnewton}
 @closecatbox
 
 @c -----------------------------------------------------------------------------

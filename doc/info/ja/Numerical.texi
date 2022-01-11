@@ -13,7 +13,10 @@
 @code{fft}パッケージは、高速Fourier変換の（数式計算ではなく）数値計算に関する関数を含みます。
 
 @opencatbox
-@category{Fourier transform} @category{Numerical methods} @category{Share packages} @category{Package fft}
+@category{Fourier transform}
+@category{Numerical methods}
+@category{Share packages}
+@category{Package fft}
 @closecatbox
 
 @c end concepts Numerical
@@ -46,7 +49,8 @@ b = r sin(t)
 @code{fft}も参照してください。
 
 @opencatbox
-@category{Package fft} @category{Complex variables}
+@category{Package fft}
+@category{Complex variables}
 @closecatbox
 @end deffn
 
@@ -75,7 +79,8 @@ t = atan2(b, a)
 @code{fft}も参照してください。
 
 @opencatbox
-@category{Package fft} @category{Complex variables}
+@category{Package fft}
+@category{Complex variables}
 @closecatbox
 @end deffn
 
@@ -569,7 +574,8 @@ Maximaは@var{expr}もしくは@var{f}を@math{[@var{a}, @var{b}]}上で評価�
 @end example
 
 @opencatbox
-@category{Algebraic equations} @category{Numerical methods}
+@category{Algebraic equations}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn
@@ -620,7 +626,8 @@ Newton法による、@code{@var{expr} = 0}の近似解を返します。
 @end example
 
 @opencatbox
-@category{Algebraic equations} @category{Numerical methods}
+@category{Algebraic equations}
+@category{Numerical methods}
 @closecatbox
 @end deffn
 
@@ -635,7 +642,9 @@ Newton法による、@code{@var{expr} = 0}の近似解を返します。
 Fourier積分係数を計算する関数や、式の操作のためのいくつかの関数があります。
 
 @opencatbox
-@category{Fourier transform} @category{Share packages} @category{Package fourie}
+@category{Fourier transform}
+@category{Share packages}
+@category{Package fourie}
 @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -724,7 +733,8 @@ Fourier積分係数を計算する関数や、式の操作のためのいくつ�
 
 @c NEEDS EXAMPLES
 @opencatbox
-@category{Package fourie} @category{Integral calculus}
+@category{Package fourie}
+@category{Integral calculus}
 @closecatbox
 @end deffn
 
@@ -753,7 +763,9 @@ Fourier積分係数を計算する関数や、式の操作のためのいくつ�
 
 @c NEEDS EXAMPLES
 @opencatbox
-@category{Package fourie} @category{Trigonometric functions} @category{Simplification functions}
+@category{Package fourie}
+@category{Trigonometric functions}
+@category{Simplification functions}
 @closecatbox
 @end deffn
 

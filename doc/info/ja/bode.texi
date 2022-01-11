@@ -56,7 +56,8 @@ Bodeのゲイン線図を描く関数。
 @code{bode_phase}も参照してください。
 
 @opencatbox
-@category{Plotting} @category{Package bode}
+@category{Plotting}
+@category{Package bode}
 @closecatbox
 
 @end deffn
@@ -118,7 +119,8 @@ Bodeの位相線図を描く関数。
 @code{bode_gain}も参照してください。
 
 @opencatbox
-@category{Plotting} @category{Package bode}
+@category{Plotting}
+@category{Package bode}
 @closecatbox
 
 @end deffn

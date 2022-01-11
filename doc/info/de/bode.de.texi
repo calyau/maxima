@@ -42,7 +42,7 @@ Examples (1 through 7 from
 (%i3) bode_gain (H1 (s), [w, 1/1000, 1000])$
 @end example
 @ifnotinfo
-@image{../figures/bodegain1, 7cm}
+@image{@value{figuresfolder}/bodegain1, 7cm}
 @end ifnotinfo
 
 @example
@@ -50,7 +50,7 @@ Examples (1 through 7 from
 (%i5) bode_gain (H2 (s), [w, 1/1000, 1000]), omega0 = 10$
 @end example
 @ifnotinfo
-@image{../figures/bodegain2, 7cm}
+@image{@value{figuresfolder}/bodegain2, 7cm}
 @end ifnotinfo
 
 @example
@@ -60,7 +60,7 @@ Examples (1 through 7 from
 @end group
 @end example
 @ifnotinfo
-@image{../figures/bodegain3, 7cm}
+@image{@value{figuresfolder}/bodegain3, 7cm}
 @end ifnotinfo
 
 @example
@@ -70,7 +70,7 @@ Examples (1 through 7 from
 @end group
 @end example
 @ifnotinfo
-@image{../figures/bodegain4, 7cm}
+@image{@value{figuresfolder}/bodegain4, 7cm}
 @end ifnotinfo
 
 @example
@@ -78,7 +78,7 @@ Examples (1 through 7 from
 (%i11) bode_gain (H5 (s), [w, 1/1000, 1000])$
 @end example
 @ifnotinfo
-@image{../figures/bodegain5, 7cm}
+@image{@value{figuresfolder}/bodegain5, 7cm}
 @end ifnotinfo
 
 @example
@@ -89,7 +89,7 @@ Examples (1 through 7 from
 @end group
 @end example
 @ifnotinfo
-@image{../figures/bodegain6, 7cm}
+@image{@value{figuresfolder}/bodegain6, 7cm}
 @end ifnotinfo
 
 @example
@@ -98,7 +98,7 @@ Examples (1 through 7 from
                           omega0 = 10, zeta = 1/10$
 @end example
 @ifnotinfo
-@image{../figures/bodegain7, 7cm}
+@image{@value{figuresfolder}/bodegain7, 7cm}
 @end ifnotinfo
 
 @example
@@ -106,7 +106,7 @@ Examples (1 through 7 from
 (%i17) bode_gain (H8 (s), [w, 1/1000, 1000])$
 @end example
 @ifnotinfo
-@image{../figures/bodegain8, 7cm}
+@image{@value{figuresfolder}/bodegain8, 7cm}
 @end ifnotinfo
 @end deffn
 
@@ -134,7 +134,7 @@ Examples (1 through 7 from
 (%i3) bode_phase (H1 (s), [w, 1/1000, 1000])$
 @end example
 @ifnotinfo
-@image{../figures/bodephase1, 7cm}
+@image{@value{figuresfolder}/bodephase1, 7cm}
 @end ifnotinfo
 
 @example
@@ -142,7 +142,7 @@ Examples (1 through 7 from
 (%i5) bode_phase (H2 (s), [w, 1/1000, 1000]), omega0 = 10$
 @end example
 @ifnotinfo
-@image{../figures/bodephase2, 7cm}
+@image{@value{figuresfolder}/bodephase2, 7cm}
 @end ifnotinfo
 
 @example
@@ -150,7 +150,7 @@ Examples (1 through 7 from
 (%i7) bode_phase (H3 (s), [w, 1/1000, 1000]), omega0 = 10$
 @end example
 @ifnotinfo
-@image{../figures/bodephase3, 7cm}
+@image{@value{figuresfolder}/bodephase3, 7cm}
 @end ifnotinfo
 
 @example
@@ -160,7 +160,7 @@ Examples (1 through 7 from
 @end group
 @end example
 @ifnotinfo
-@image{../figures/bodephase4, 7cm}
+@image{@value{figuresfolder}/bodephase4, 7cm}
 @end ifnotinfo
 
 @example
@@ -168,7 +168,7 @@ Examples (1 through 7 from
 (%i11) bode_phase (H5 (s), [w, 1/1000, 1000])$
 @end example
 @ifnotinfo
-@image{../figures/bodephase5, 7cm}
+@image{@value{figuresfolder}/bodephase5, 7cm}
 @end ifnotinfo
 
 @example
@@ -177,7 +177,7 @@ Examples (1 through 7 from
                    omega0 = 10, zeta = 1/10$
 @end example
 @ifnotinfo
-@image{../figures/bodephase6, 7cm}
+@image{@value{figuresfolder}/bodephase6, 7cm}
 @end ifnotinfo
 
 @example
@@ -186,7 +186,7 @@ Examples (1 through 7 from
                    omega0 = 10, zeta = 1/10$
 @end example
 @ifnotinfo
-@image{../figures/bodephase7, 7cm}
+@image{@value{figuresfolder}/bodephase7, 7cm}
 @end ifnotinfo
 
 @example
@@ -194,7 +194,7 @@ Examples (1 through 7 from
 (%i17) bode_phase (H8 (s), [w, 1/1000, 1000])$
 @end example
 @ifnotinfo
-@image{../figures/bodephase8, 7cm}
+@image{@value{figuresfolder}/bodephase8, 7cm}
 @end ifnotinfo
 
 @c THIS EXAMPLE IS IDENTICAL TO THE ABOVE EXAMPLE
@@ -207,7 +207,7 @@ Examples (1 through 7 from
               bode_phase (H8 (s), [w, 1/1000, 1000]));
 @end example
 @ifnotinfo
-@image{../figures/bodephase9, 7cm}
+@image{@value{figuresfolder}/bodephase9, 7cm}
 @end ifnotinfo
 @end deffn
 

@@ -2,35 +2,23 @@ if LANG_ES
   ES_DIR = es
 endif
 
-if LANG_ES_UTF8
-  ES_DIR_UTF8 = es.utf8
-endif
-
 if LANG_PT
   PT_DIR = pt
-endif
-
-if LANG_PT_UTF8
-  PT_DIR_UTF8 = pt.utf8
 endif
 
 if LANG_PT_BR
   PT_BR_DIR = pt_BR
 endif
 
-if LANG_PT_BR_UTF8
-  PT_BR_DIR_UTF8 = pt_BR.utf8
-endif
-
 if LANG_DE
   DE_DIR = de
 endif
 
-if LANG_DE_UTF8
-  DE_DIR_UTF8 = de.utf8
+if LANG_JA
+  JA_DIR = ja
 endif
 
-SUBDIRS = $(ES_DIR) $(ES_DIR_UTF8) $(PT_DIR) $(PT_DIR_UTF8) $(PT_BR_DIR) $(PT_BR_DIR_UTF8) $(DE_DIR) $(DE_DIR_UTF8)
+SUBDIRS = $(ES_DIR) $(PT_DIR) $(PT_BR_DIR) $(DE_DIR) $(JA_DIR)
 
 info_TEXINFOS = #maxima.texi
 maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
@@ -755,7 +743,7 @@ clean-chm:
 	rm -rf chm
 endif
 
-EXTRA_DIST = texi2html manual.css texi2html.init maxima.texi maxima.html \
+EXTRA_DIST = manual.css texi2html.init maxima.texi \
     $(genericdirDATA) $(pdffigures) $(macfiles) $(maxima_TEXINFOS) $(figurefiles) \
     create_index build_index.pl maxima-index.lisp docdraw.mac \
     extract_categories1.awk extract_categories1.sed check_tab fix_tab \

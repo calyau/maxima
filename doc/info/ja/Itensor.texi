@@ -72,7 +72,9 @@ Brans-Dicke重力理論の作用からFriedmann方程式を計算する方法を
 理論のスカラー場に関連したハミルトニアンも演繹します。
 
 @opencatbox
-@category{Tensors} @category{Share packages} @category{Package itensor}
+@category{Tensors}
+@category{Share packages}
+@category{Package itensor}
 @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -453,7 +455,8 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 コンマによって共変インデックスと区別されます。
 
 @opencatbox
-@category{Package itensor} @category{Display functions}
+@category{Package itensor}
+@category{Display functions}
 @closecatbox
 
 @end deffn
@@ -2313,7 +2316,8 @@ A       /\ B       = ----- D              A       B
 @end example
 
 @opencatbox
-@category{Package itensor} @category{Operators}
+@category{Package itensor}
+@category{Operators}
 @closecatbox
 @end defvr
 
@@ -2358,7 +2362,8 @@ A       /\ B       = ----- D              A       B
 そうでないなら、結果は正しくありません。
 
 @opencatbox
-@category{Package itensor} @category{Operators}
+@category{Package itensor}
+@category{Operators}
 @closecatbox
 @end defvr
 
@@ -2515,7 +2520,8 @@ $$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
 注意せよ: このバージョンの@code{tentex}関数は幾分実験的です。
 
 @opencatbox
-@category{Package itensor} @category{TeX output}
+@category{Package itensor}
+@category{TeX output}
 @closecatbox
 @end deffn
 
@@ -2582,7 +2588,8 @@ Christoffel記号 @code{ichr1}と @code{ichr2}は
 @end example
 
 @opencatbox
-@category{Package itensor} @category{Package ctensor}
+@category{Package itensor}
+@category{Package ctensor}
 @closecatbox
 @end deffn
 

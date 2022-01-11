@@ -1,53 +1,53 @@
 /lsquares.texi/1.1/Mon Feb 27 22:09:17 2006//
 @c /lsquares.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Definições para lsquares::
+* DefiniÃ§Ãµes para lsquares::
 @end menu
 
-@node Definições para lsquares,  , lsquares, lsquares
-@section Definições para lsquares
+@node DefiniÃ§Ãµes para lsquares,  , lsquares, lsquares
+@section DefiniÃ§Ãµes para lsquares
 
 
-@defvr {Variável global} DETCOEF
+@defvr {VariÃ¡vel global} DETCOEF
 
-Essa variável é usada pelas funções
+Essa variÃ¡vel Ã© usada pelas funÃ§Ãµes
 @code{lsquares} e @code{plsquares} para armazenar o Coeficiente de
-Determinação que mede o melhor ajuste. Esse intervalo
-vai de 0 (nenhuma correlação) a 1 (correlação
+DeterminaÃ§Ã£o que mede o melhor ajuste. Esse intervalo
+vai de 0 (nenhuma correlaÃ§Ã£o) a 1 (correlaÃ§Ã£o
 exacta). 
 
-Quando @code{plsquares} for chamada com uma lista de variáveis independentes, @var{DETCOEF} é escolhida para uma lista de Coeficientes de Determinação. Veja @code{plsquares} para detalhes.
+Quando @code{plsquares} for chamada com uma lista de variÃ¡veis independentes, @var{DETCOEF} Ã© escolhida para uma lista de Coeficientes de DeterminaÃ§Ã£o. Veja @code{plsquares} para detalhes.
 
-Veja também @code{lsquares}.
+Veja tambÃ©m @code{lsquares}.
 @end defvr
 
 
-@deffn {Função} lsquares (@var{Mat},@var{VarList},@var{equação},@var{ParamList})
-@deffnx {Função} lsquares (@var{Mat},@var{VarList},@var{equação},@var{ParamList},@var{EsperadosList})
-Ajuste múltiplo de equações não lineares de uma tabela de dados pelo
-método dos "mínimos quadrados". @var{Mat} é uma matriz contendo os dados,
-@var{VarList} é uma lista de nomes de variáveis (um para cada coluna de @var{Mat}),
-@var{equação} é a equação a ser ajustada (essa equação deve estar na forma:
+@deffn {FunÃ§Ã£o} lsquares (@var{Mat},@var{VarList},@var{equaÃ§Ã£o},@var{ParamList})
+@deffnx {FunÃ§Ã£o} lsquares (@var{Mat},@var{VarList},@var{equaÃ§Ã£o},@var{ParamList},@var{EsperadosList})
+Ajuste mÃºltiplo de equaÃ§Ãµes nÃ£o lineares de uma tabela de dados pelo
+mÃ©todo dos "mÃ­nimos quadrados". @var{Mat} Ã© uma matriz contendo os dados,
+@var{VarList} Ã© uma lista de nomes de variÃ¡veis (um para cada coluna de @var{Mat}),
+@var{equaÃ§Ã£o} Ã© a equaÃ§Ã£o a ser ajustada (essa equaÃ§Ã£o deve estar na forma:
 @code{depvar=f(indepvari,..., paramj,...)}, @code{g(depvar)=f(indepvari,..., paramj,...)} 
-ou na forma @code{g(depvar, paramk,...)=f(indepvari,..., paramj,...)}), @var{ParamList} é a
-lista de parâmetros para obter, e @var{EsperadosList} é uma lista opcional de aproximações 
-iniciais para os parâmetros; quando esse último argumento estiver presente, @code{mnewton} é usado
-em lugar de @code{solve} com o objectivo de pegar os parâmetros.
+ou na forma @code{g(depvar, paramk,...)=f(indepvari,..., paramj,...)}), @var{ParamList} Ã© a
+lista de parÃ¢metros para obter, e @var{EsperadosList} Ã© uma lista opcional de aproximaÃ§Ãµes 
+iniciais para os parÃ¢metros; quando esse Ãºltimo argumento estiver presente, @code{mnewton} Ã© usado
+em lugar de @code{solve} com o objectivo de pegar os parÃ¢metros.
 
-A equação pode ser completamente não linear com relação às variáveis
-independentes e à variável dependente.
-Com o objectivo de usar @code{solve()}, as equações devem ser lineares ou polinomiais com
-relação aos parâmetros. Equações como @code{y=a*b^x+c} podem ser ajustadas para
+A equaÃ§Ã£o pode ser completamente nÃ£o linear com relaÃ§Ã£o Ã s variÃ¡veis
+independentes e Ã  variÃ¡vel dependente.
+Com o objectivo de usar @code{solve()}, as equaÃ§Ãµes devem ser lineares ou polinomiais com
+relaÃ§Ã£o aos parÃ¢metros. EquaÃ§Ãµes como @code{y=a*b^x+c} podem ser ajustadas para
 @code{[a,b,c]} com @code{solve} se os valores de @code{x} forem inteiros positivos pequenos e
 existirem poucos dados (veja o exemplo em lsquares.dem).
-@code{mnewton} permite ajustar uma equação não linear com relação aos
-parâmetros, mas um bom conjunto de aproximações iniciais deve ser fornecido.
+@code{mnewton} permite ajustar uma equaÃ§Ã£o nÃ£o linear com relaÃ§Ã£o aos
+parÃ¢metros, mas um bom conjunto de aproximaÃ§Ãµes iniciais deve ser fornecido.
 
-Se possível, a equação ajustada é retornada. Se existir mais
-de uma solução, uma lista de equações é retornada.
-O Coeficiente de Determinação é mostrado para informar sobre
-o melhor ajuste, de 0 (nenhuma correlação) a 1 (correlação exacta).
-Esse valor é também armazenado na variável global @var{DETCOEF}.
+Se possÃ­vel, a equaÃ§Ã£o ajustada Ã© retornada. Se existir mais
+de uma soluÃ§Ã£o, uma lista de equaÃ§Ãµes Ã© retornada.
+O Coeficiente de DeterminaÃ§Ã£o Ã© mostrado para informar sobre
+o melhor ajuste, de 0 (nenhuma correlaÃ§Ã£o) a 1 (correlaÃ§Ã£o exacta).
+Esse valor Ã© tambÃ©m armazenado na variÃ¡vel global @var{DETCOEF}.
 
 Exemplos usando @code{solve}:
 @example
@@ -101,25 +101,25 @@ Exemplos usando @code{mnewton}:
                                          + 2.00000000000012
 @end example
 
-Para usar essa função escreva primeiro @code{load("lsquares")}. Veja também @code{DETCOEF} e @code{mnewton}.
+Para usar essa funÃ§Ã£o escreva primeiro @code{load("lsquares")}. Veja tambÃ©m @code{DETCOEF} e @code{mnewton}.
 @end deffn
 
 
-@deffn {Função} plsquares (@var{Mat},@var{VarList},@var{depvars})
-@deffnx {Função} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
-@deffnx {Função} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
-Ajuste de polinómios de várias variáveis de uma tabela de dados pelo método dos
-"mínimos quadrados". @var{Mat} é uma matriz contendo os dados, @var{VarList} é uma lista de nomes de variáveis (um nome para cada coluna de Mat, mas use "-" em lugar de nomes de variáveis para colunas de Mat), @var{depvars} é o
-nome de uma variável dependente ou uma
-lista com um ou mais nomes de variáveis dependentes (cujos nomes podem estar em @var{VarList}), @var{maxexpon} é o expoente máximo opcional para cada variável independente (1 por padrão), e @var{maxdegree} é o argumento opcional
-grau máximo do polinómio (@var{maxexpon} por padrão); note que a soma dos expoentes de cada termo deve ser menor ou igual a @var{maxdegree}, e se @code{maxdgree = 0} então nenhum limite é aplicado.
+@deffn {FunÃ§Ã£o} plsquares (@var{Mat},@var{VarList},@var{depvars})
+@deffnx {FunÃ§Ã£o} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
+@deffnx {FunÃ§Ã£o} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
+Ajuste de polinÃ³mios de vÃ¡rias variÃ¡veis de uma tabela de dados pelo mÃ©todo dos
+"mÃ­nimos quadrados". @var{Mat} Ã© uma matriz contendo os dados, @var{VarList} Ã© uma lista de nomes de variÃ¡veis (um nome para cada coluna de Mat, mas use "-" em lugar de nomes de variÃ¡veis para colunas de Mat), @var{depvars} Ã© o
+nome de uma variÃ¡vel dependente ou uma
+lista com um ou mais nomes de variÃ¡veis dependentes (cujos nomes podem estar em @var{VarList}), @var{maxexpon} Ã© o expoente mÃ¡ximo opcional para cada variÃ¡vel independente (1 por padrÃ£o), e @var{maxdegree} Ã© o argumento opcional
+grau mÃ¡ximo do polinÃ³mio (@var{maxexpon} por padrÃ£o); note que a soma dos expoentes de cada termo deve ser menor ou igual a @var{maxdegree}, e se @code{maxdgree = 0} entÃ£o nenhum limite Ã© aplicado.
 
-Se @var{depvars} é o nome de uma variável dependente (fora de uma lista), @code{plsquares} retorna o polinómio ajustado. Se @var{depvars} for uma lista de uma ou mais variáveis dependentes, @code{plsquares} retorna uma lista com
-o(s) polinómio(s) ajustado(s). Os Coeficientes de Determinação são mostrados com o objectivo de informar sobre o melhor do ajuste, cujo intervalo vai de 0 (nenhuma correlação) a 1 (correlação exacta). Esses valores são também armazenados na variável
+Se @var{depvars} Ã© o nome de uma variÃ¡vel dependente (fora de uma lista), @code{plsquares} retorna o polinÃ³mio ajustado. Se @var{depvars} for uma lista de uma ou mais variÃ¡veis dependentes, @code{plsquares} retorna uma lista com
+o(s) polinÃ³mio(s) ajustado(s). Os Coeficientes de DeterminaÃ§Ã£o sÃ£o mostrados com o objectivo de informar sobre o melhor do ajuste, cujo intervalo vai de 0 (nenhuma correlaÃ§Ã£o) a 1 (correlaÃ§Ã£o exacta). Esses valores sÃ£o tambÃ©m armazenados na variÃ¡vel
 global @var{DETCOEF} (uma lista se @var{depvars} for tamb@'numa lista).
 
 
-Um simples exemplo de ajuste linear de várias variáveis:
+Um simples exemplo de ajuste linear de vÃ¡rias variÃ¡veis:
 @example
 (%i1) load("plsquares")$
 
@@ -131,7 +131,7 @@ Um simples exemplo de ajuste linear de várias variáveis:
                               3
 @end example
 
-O mesmo exemplo sem restrições de grau:
+O mesmo exemplo sem restriÃ§Ãµes de grau:
 @example
 (%i3) plsquares(matrix([1,2,0],[3,5,4],[4,7,9],[5,8,10]),
                 [x,y,z],z,1,0);
@@ -141,8 +141,8 @@ O mesmo exemplo sem restrições de grau:
                               6
 @end example
 
-Quantas diagonais possui um polígono de N lados? Que
-grau polinomial deverá ser usado?
+Quantas diagonais possui um polÃ­gono de N lados? Que
+grau polinomial deverÃ¡ ser usado?
 @example
 (%i4) plsquares(matrix([3,0],[4,2],[5,5],[6,9],[7,14],[8,20]),
                 [N,diagonais],diagonais,5);
@@ -151,11 +151,11 @@ grau polinomial deverá ser usado?
                                N  - 3 N
 (%o4)              diagonais = --------
                                   2
-(%i5) ev(%, N=9);   /* Testando para um polígono de 9 lados - o eneágono */
+(%i5) ev(%, N=9);   /* Testando para um polÃ­gono de 9 lados - o eneÃ¡gono */
 (%o5)                 diagonals = 27
 @end example
 
-De quantas formas dispomos para colocar  duas raínhas sem que elas estejam ameaçadas num tabuleiro de xadrez n x n ?
+De quantas formas dispomos para colocar  duas raÃ­nhas sem que elas estejam ameaÃ§adas num tabuleiro de xadrez n x n ?
 @example
 (%i6) plsquares(matrix([0,0],[1,0],[2,0],[3,8],[4,44]),
                 [n,posicoes],[posicoes],4);
@@ -168,7 +168,7 @@ De quantas formas dispomos para colocar  duas raínhas sem que elas estejam ameaç
 (%o7)                posicoes = 1288
 @end example
 
-Um exemplo com seis variáveis dependentes:
+Um exemplo com seis variÃ¡veis dependentes:
 @example
 (%i8) mtrx:matrix([0,0,0,0,0,1,1,1],[0,1,0,1,1,1,0,0],
                   [1,0,0,1,1,1,0,0],[1,1,1,1,0,0,0,1])$
@@ -182,7 +182,7 @@ _Xor = - 2 a b + b + a, _Nand = 1 - a b,
 _Nor = a b - b - a + 1, _Nxor = 2 a b - b - a + 1]
 @end example
 
-Para usar essa função escreva primeiramente @code{load("lsquares")}.
+Para usar essa funÃ§Ã£o escreva primeiramente @code{load("lsquares")}.
 @end deffn
 
 

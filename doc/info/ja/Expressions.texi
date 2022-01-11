@@ -130,7 +130,8 @@ Maximaに、先頭のクォートマーク@code{'}で名詞形を表示させま
 @end example
 
 @opencatbox
-@category{Evaluation} @category{Nouns and verbs}
+@category{Evaluation}
+@category{Nouns and verbs}
 @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -246,7 +247,8 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 アトムのリストです。
 
 @opencatbox
-@category{Declarations and inferences} @category{Global variables}
+@category{Declarations and inferences}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -341,7 +343,8 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 (@code{a[1]}と @code{x}はバインドされていないと仮定して) @code{atom(a[1])}や @code{atom(sin(x))}は @code{false}です。
 
 @opencatbox
-@category{Expressions} @category{Predicate functions}
+@category{Expressions}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -602,7 +605,8 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 
 @c NEED EXAMPLES HERE
 @opencatbox
-@category{Exponential and logarithm functions} @category{Expressions}
+@category{Exponential and logarithm functions}
+@category{Expressions}
 @closecatbox
 @end defvr
 
@@ -964,7 +968,8 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 @code{x}もまた保存すべきです。）
 
 @opencatbox
-@category{Declarations and inferences} @category{Expressions}
+@category{Declarations and inferences}
+@category{Expressions}
 @closecatbox
 @end defvr
 
@@ -995,7 +1000,8 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 このスイッチは、関数定義を表示する時には、常に@code{true}です。
 
 @opencatbox
-@category{Display flags and variables} @category{Nouns and verbs}
+@category{Display flags and variables}
+@category{Nouns and verbs}
 @closecatbox
 @end defvr
 
@@ -1108,7 +1114,8 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 @end example
 
 @opencatbox
-@category{Expressions} @category{Operators}
+@category{Expressions}
+@category{Operators}
 @closecatbox
 @end deffn
 
@@ -1126,7 +1133,8 @@ Maximaは、不等式演算子@code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}
 @code{operatorp (@var{expr}, [@var{op_1}, @dots{}, @var{op_n}])}は@code{true}を返します。
 
 @opencatbox
-@category{Operators} @category{Predicate functions}
+@category{Operators}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -1330,7 +1338,8 @@ Maximaのアトムや式のすべては、@code{ordergreatp}と@code{orderlessp}
 @end example
 
 @opencatbox
-@category{Expressions} @category{Predicate functions}
+@category{Expressions}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -1755,7 +1764,8 @@ Maximaのアトムや式のすべては、@code{ordergreatp}と@code{orderlessp}
 @end example
 
 @opencatbox
-@category{Expressions} @category{Display functions}
+@category{Expressions}
+@category{Display functions}
 @closecatbox
 @end deffn
 

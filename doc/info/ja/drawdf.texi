@@ -60,8 +60,10 @@ drawdfに与えられる二番目の引数は
 非自励方程式を2つの自励方程式系に変換します。
 
 @opencatbox
-@category{Differential equations} @category{Plotting}
-@category{Share packages} @category{Package drawdf}
+@category{Differential equations}
+@category{Plotting}
+@category{Share packages}
+@category{Package drawdf}
 @category{Package draw}
 @closecatbox
 

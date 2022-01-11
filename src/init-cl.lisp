@@ -212,40 +212,42 @@ When one changes, the other does too."
            (t "/tmp")))))
 
 (defun set-locale-subdir ()
-  (let (language territory codeset)
+  (let (language territory #+nil codeset)
     ;; Determine *maxima-lang-subdir*
     ;;   1. from MAXIMA_LANG_SUBDIR environment variable
     ;;   2. from INTL::*LOCALE* if (1) fails
     (unless  (setq *maxima-lang-subdir* (maxima-getenv "MAXIMA_LANG_SUBDIR"))
       (cond ((or (null intl::*locale*) (equal intl::*locale* ""))
-	     (setq *maxima-lang-subdir* nil))
-	      ((member intl::*locale* '("C" "POSIX" "c" "posix") :test #'equal)
-	       (setq *maxima-lang-subdir* nil))
-	      (t  (when (eql (position #\. intl::*locale*) 5)
-		    (setq codeset (string-downcase (subseq intl::*locale* 6))))
-		  (when (eql (position #\_ intl::*locale*) 2)
-		    (setq territory (string-downcase (subseq intl::*locale* 3 5))))
-		  (setq language (string-downcase (subseq intl::*locale* 0 2)))
-		  ;; Set *maxima-lang-subdir* only for known languages.
-		  ;; Extend procedure below as soon as new translation
-		  ;; is available.
-		  (cond ((equal language "en") ;; English
-			 (setq *maxima-lang-subdir* nil))
-			;; Latin-1 aka iso-8859-1 languages
-			((member language '("es" "pt" "fr" "de" "it") :test #'equal)
-			 (if (and (string= language "pt") (string= territory "br"))
-			     (setq *maxima-lang-subdir* (concatenate 'string language "_BR"))
-			     (setq *maxima-lang-subdir* language))
-			 (if (member codeset '("utf-8" "utf8") :test #'equal)
-			     (setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".utf8"))))
-			;; Russian. Default codepage cp1251
-			((string= language "ru")
-			 (setq *maxima-lang-subdir* language)
-			 (cond ((member codeset '("utf-8" "utf8") :test #'equal)
-				(setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".utf8")))
-			       ((member codeset '("koi8-r" "koi8r") :test #'equal)
-				(setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".koi8r")))))
-			(t  (setq *maxima-lang-subdir* nil))))))))
+             (setq *maxima-lang-subdir* nil))
+            ((member intl::*locale* '("C" "POSIX" "c" "posix") :test #'equal)
+             (setq *maxima-lang-subdir* nil))
+            (t
+              ;; Code to parse code set in locale string, in case we figure out
+              ;; something to do with it; it isn't needed for language
+              ;; subdirectory any more, since all language files are UTF-8.
+              ;; We might make use of code set in ADJUST-CHARACTER-ENCODING.
+              #+nil (when (eql (position #\. intl::*locale*) 5)
+                (setq codeset (string-downcase (subseq intl::*locale* 6))))
+              (when (eql (position #\_ intl::*locale*) 2)
+                (setq territory (string-downcase (subseq intl::*locale* 3 5))))
+              (setq language (string-downcase (subseq intl::*locale* 0 2)))
+              ;; Set *maxima-lang-subdir* only for known languages.
+              ;; Extend procedure below as soon as new translation
+              ;; is available.
+              (cond ((equal language "en") ;; English
+                     (setq *maxima-lang-subdir* nil))
+                ;; Latin-1 aka iso-8859-1 languages
+                ((member language '("es" "pt" "de") :test #'equal)
+                 (if (and (string= language "pt") (string= territory "br"))
+                   (setq *maxima-lang-subdir* (concatenate 'string language "_BR"))
+                   (setq *maxima-lang-subdir* language)))
+                ;; Japanese.
+                ((string= language "ja")
+                 (setq *maxima-lang-subdir* language))
+                ;; Russian.
+                ((string= language "ru")
+                 (setq *maxima-lang-subdir* language))
+                (t  (setq *maxima-lang-subdir* nil))))))))
 
 (flet ((sanitize-string (s)
 	 (map 'string (lambda(x) (if (alphanumericp x) x #\_))

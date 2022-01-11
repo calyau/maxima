@@ -12,7 +12,9 @@
 コメント、バグ、提案は@var{'mario AT edu DOT xunta DOT es'}にコンタクトを取ってください。
 
 @opencatbox
-@category{Numerical methods} @category{Share packages} @category{Package interpol}
+@category{Numerical methods}
+@category{Share packages}
+@category{Package interpol}
 @closecatbox
 
 @node Functions and Variables for interpol,  , Introduction to interpol, interpol

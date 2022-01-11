@@ -1,25 +1,25 @@
 @c /Atensor.texi/1.8/Mon Nov 21 00:19:56 2005//
 @menu
-* IntroduÁ„o ao Pacote atensor::
-* DefiniÁıes para o Pacote atensor::
+* Introdu√ß√£o ao Pacote atensor::
+* Defini√ß√µes para o Pacote atensor::
 @end menu
 
-@node IntroduÁ„o ao Pacote atensor, DefiniÁıes para o Pacote atensor, Pacote atensor, Pacote atensor
-@section IntroduÁ„o ao Pacote atensor
+@node Introdu√ß√£o ao Pacote atensor, Defini√ß√µes para o Pacote atensor, Pacote atensor, Pacote atensor
+@section Introdu√ß√£o ao Pacote atensor
 
-@code{atensor} È um pacote de manipulÁ„o de tensores algÈbricos.  Para usar @code{atensor},
-digite @code{load(atensor)}, seguido por uma chamada ‡ funÁ„o 
+@code{atensor} √© um pacote de manipul√ß√£o de tensores alg√©bricos.  Para usar @code{atensor},
+digite @code{load(atensor)}, seguido por uma chamada √† fun√ß√£o 
 @code{init_atensor}.
 
-A essÍncia de @code{atensor} È um conjunto de regras de simplificaÁ„o para o operador
-de produto (ponto) n„o comutativo ("@code{.}").  @code{atensor} reconhece
-muitos tipos de ·lgebra; as regras de simplificaÁ„o correspondentes s„o activadas quando
-a funÁ„o @code{init_atensor} È chamada.
+A ess√™ncia de @code{atensor} √© um conjunto de regras de simplifica√ß√£o para o operador
+de produto (ponto) n√£o comutativo ("@code{.}").  @code{atensor} reconhece
+muitos tipos de √°lgebra; as regras de simplifica√ß√£o correspondentes s√£o activadas quando
+a fun√ß√£o @code{init_atensor} √© chamada.
 
 A compatibilidade de @code{atensor} pode ser demonstrada pela
-definiÁ„o da ·lgebra de quaterniıes como uma
-·lgebra de Clifford Cl(0,2) com dois vectores fundamentais.  As trÍs
-unidades quaterniÛnicas imagin·rias fundamentais s„o ent„o os
+defini√ß√£o da √°lgebra de quaterni√µes como uma
+√°lgebra de Clifford Cl(0,2) com dois vectores fundamentais.  As tr√™s
+unidades quaterni√≥nicas imagin√°rias fundamentais s√£o ent√£o os
 dois vectores base e seu produto, i.e.:
 
 @example
@@ -27,10 +27,10 @@ dois vectores base e seu produto, i.e.:
          1         2         1    2
 @end example
 
-Embora o pacote @code{atensor} tenha uma definiÁ„o
-interna para a ·lgebra dos quaterniıes, isso n„o foi usado nesse
-exemplo, no qual nÛs nos esforÁamos para construir a
-tabela de multiplicaÁ„o dos quaterniıes como uma
+Embora o pacote @code{atensor} tenha uma defini√ß√£o
+interna para a √°lgebra dos quaterni√µes, isso n√£o foi usado nesse
+exemplo, no qual n√≥s nos esfor√ßamos para construir a
+tabela de multiplica√ß√£o dos quaterni√µes como uma
 matriz:
 
 @example
@@ -75,19 +75,19 @@ matriz:
                    [  1    2      2          1            ]
 @end example
 
-@code{atensor} reconhece como bases vectoriais sÌmbolos indexados, onde o sÌmbolo 
-È aquele armazenado em @code{asymbol} e o iÌndice est· entre 1 e @code{adim}.
-Para sÌmbolos indexado, e somente para sÌmbolos indexados, as formas bilineares
-@code{sf}, @code{af}, e @code{av} s„o avaliadas.  A avaliaÁ„o
+@code{atensor} reconhece como bases vectoriais s√≠mbolos indexados, onde o s√≠mbolo 
+√© aquele armazenado em @code{asymbol} e o i√≠ndice est√° entre 1 e @code{adim}.
+Para s√≠mbolos indexado, e somente para s√≠mbolos indexados, as formas bilineares
+@code{sf}, @code{af}, e @code{av} s√£o avaliadas.  A avalia√ß√£o
 substitui os valores  de @code{aform[i,j]} em lugar de @code{fun(v[i],v[j])}
-onde @code{v} representa o valor de @code{asymbol} e @code{fun} È
+onde @code{v} representa o valor de @code{asymbol} e @code{fun} √©
 ainda @code{af} ou @code{sf}; ou, isso substitui @code{v[aform[i,j]]}
 em lugar de @code{av(v[i],v[j])}.
 
-Desnecess·rio dizer, as funÁıes @code{sf}, @code{af} e @code{av}
+Desnecess√°rio dizer, as fun√ß√µes @code{sf}, @code{af} e @code{av}
 podem ser redefinidas.
 
-Quando o pacote @code{atensor} È chamado, os seguintes sinalizadores s„o configurados:
+Quando o pacote @code{atensor} √© chamado, os seguintes sinalizadores s√£o configurados:
 
 @example
 dotscrules:true;
@@ -95,138 +95,138 @@ dotdistrib:true;
 dotexptsimp:false;
 @end example
 
-Se quiser experimentar com uma ·lgebra n„o associativa, pode
-tambÈm considerar a configuraÁ„o de @code{dotassoc}
-para @code{false}.  Nesse caso, todavia, @code{atensimp} n„o star·
-sempre habilitado a obter as simplificaÁıes desejadas.
+Se quiser experimentar com uma √°lgebra n√£o associativa, pode
+tamb√©m considerar a configura√ß√£o de @code{dotassoc}
+para @code{false}.  Nesse caso, todavia, @code{atensimp} n√£o star√°
+sempre habilitado a obter as simplifica√ß√µes desejadas.
 
 
 @c end concepts atensor
-@node DefiniÁıes para o Pacote atensor,  , IntroduÁ„o ao Pacote atensor, Pacote atensor
+@node Defini√ß√µes para o Pacote atensor,  , Introdu√ß√£o ao Pacote atensor, Pacote atensor
 
-@section DefiniÁıes para o Pacote atensor
+@section Defini√ß√µes para o Pacote atensor
 
-@deffn {FunÁ„o} init_atensor (@var{alg_type}, @var{opt_dims})
-@deffnx {FunÁ„o} init_atensor (@var{alg_type})
+@deffn {Fun√ß√£o} init_atensor (@var{alg_type}, @var{opt_dims})
+@deffnx {Fun√ß√£o} init_atensor (@var{alg_type})
 
-Inicializa o pacote @code{atensor} com o tipo especificado de ·lgebra.  @var{alg_type}
+Inicializa o pacote @code{atensor} com o tipo especificado de √°lgebra.  @var{alg_type}
 pode ser um dos seguintes:
 
-@code{universal}: A ·lgebra universal tendo regras n„o comutativas.
+@code{universal}: A √°lgebra universal tendo regras n√£o comutativas.
 
-@code{grassmann}: A ·lgebra de Grassman È definida pela relaÁ„o de 
-comutaÁ„o @code{u.v+v.u=0}.
+@code{grassmann}: A √°lgebra de Grassman √© definida pela rela√ß√£o de 
+comuta√ß√£o @code{u.v+v.u=0}.
 
-@code{clifford}: A ·lgebra de Clifford È definida pela relaÁ„o
-de comutaÁ„o @code{u.v+v.u=-2*sf(u,v)} onde @code{sf} È a funÁ„o
-valor-escalar simÈtrico.  Para essa ·lgebra, @var{opt_dims} pode ser acima de trÍs 
-inteiros n„o negativos, representando o n˙mero de dimensıes positivas,
-dimensıes degeneradas, e dimensıes negativas da ·lgebra, respectivamente.  Se
-quaisquer valores @var{opt_dims} s„o fornecidos, @code{atensor} ir· configurar os
-valores de @code{adim} e @code{aform} apropriadamente.  Caso contr·rio,
-@code{adim} ir· por padr„o para 0 e @code{aform} n„o ser· definida.
+@code{clifford}: A √°lgebra de Clifford √© definida pela rela√ß√£o
+de comuta√ß√£o @code{u.v+v.u=-2*sf(u,v)} onde @code{sf} √© a fun√ß√£o
+valor-escalar sim√©trico.  Para essa √°lgebra, @var{opt_dims} pode ser acima de tr√™s 
+inteiros n√£o negativos, representando o n√∫mero de dimens√µes positivas,
+dimens√µes degeneradas, e dimens√µes negativas da √°lgebra, respectivamente.  Se
+quaisquer valores @var{opt_dims} s√£o fornecidos, @code{atensor} ir√° configurar os
+valores de @code{adim} e @code{aform} apropriadamente.  Caso contr√°rio,
+@code{adim} ir√° por padr√£o para 0 e @code{aform} n√£o ser√° definida.
 
-@code{symmetric}: A ·lgebra simÈtrica È definida pela relaÁ„o de 
-comutaÁ„o @code{u.v-v.u=0}.
+@code{symmetric}: A √°lgebra sim√©trica √© definida pela rela√ß√£o de 
+comuta√ß√£o @code{u.v-v.u=0}.
 
-@code{symplectic}: A ·lgebra simplÈtica È definida pela relaÁ„o de 
-comutaÁ„o @code{u.v-v.u=2*af(u,v)} onde @code{af} È uma funÁ„o valor-escalar 
-antisimÈtrica.  Para a ·lgebra simplÈtica, @var{opt_dims} pode
-mais de dois inteiros n„o negativos, representando a dimens„o n„o degenerada e
-e a dimens„o degenerada, respectivamente.  Se quaisquer valores @var{opt_dims} s„o
-fornecidos, @code{atensor} ir· configurar os valores de @code{adim} e @code{aform}
-apropriadamente.  Caso contr·rio, @code{adim} ir· por padr„o para 0 e @code{aform}
-n„o ser· definida.
+@code{symplectic}: A √°lgebra simpl√©tica √© definida pela rela√ß√£o de 
+comuta√ß√£o @code{u.v-v.u=2*af(u,v)} onde @code{af} √© uma fun√ß√£o valor-escalar 
+antisim√©trica.  Para a √°lgebra simpl√©tica, @var{opt_dims} pode
+mais de dois inteiros n√£o negativos, representando a dimens√£o n√£o degenerada e
+e a dimens√£o degenerada, respectivamente.  Se quaisquer valores @var{opt_dims} s√£o
+fornecidos, @code{atensor} ir√° configurar os valores de @code{adim} e @code{aform}
+apropriadamente.  Caso contr√°rio, @code{adim} ir√° por padr√£o para 0 e @code{aform}
+n√£o ser√° definida.
 
-@code{lie_envelop}: O invÛlucro da ·lgebra de Lie È definido pela 
-relaÁ„o de comutaÁ„o @code{u.v-v.u=2*av(u,v)} onde @code{av} È
-uma funÁ„o antisimÈtrica.
+@code{lie_envelop}: O inv√≥lucro da √°lgebra de Lie √© definido pela 
+rela√ß√£o de comuta√ß√£o @code{u.v-v.u=2*av(u,v)} onde @code{av} √©
+uma fun√ß√£o antisim√©trica.
 
-A funÁ„o @code{init_atensor} tambÈm reconhece muitos tipos prÈ-definidos de 
-·lgebra:
+A fun√ß√£o @code{init_atensor} tamb√©m reconhece muitos tipos pr√©-definidos de 
+√°lgebra:
 
-@code{complex} implementa a ·lgebra de n˙meros complexos como a
-·lgebra de Clifford Cl(0,1).  A chamada @code{init_atensor(complex)} È
+@code{complex} implementa a √°lgebra de n√∫meros complexos como a
+√°lgebra de Clifford Cl(0,1).  A chamada @code{init_atensor(complex)} √©
 equivalente a @code{init_atensor(clifford,0,0,1)}.
 
-@code{quaternion} implementa a ·lgebra de quaterniıes.  A chamada
-@code{init_atensor(quaternion)} È equivalente a 
+@code{quaternion} implementa a √°lgebra de quaterni√µes.  A chamada
+@code{init_atensor(quaternion)} √© equivalente a 
 @code{init_atensor(clifford,0,0,2)}.
 
-@code{pauli} implementa a ·lgebra de spinores de Pauli como a
-·lgebra de Clifford Cl(3,0).  Uma chamada a @code{init_atensor(pauli)}
-È equivalente a @code{init_atensor(clifford,3)}.
+@code{pauli} implementa a √°lgebra de spinores de Pauli como a
+√°lgebra de Clifford Cl(3,0).  Uma chamada a @code{init_atensor(pauli)}
+√© equivalente a @code{init_atensor(clifford,3)}.
 
-@code{dirac} implementa a ·lgebra de spinores de Dirac como a
-·lgebra de Clifford Cl(3,1).  Uma chamada a @code{init_atensor(dirac)}
-È equivalente a @code{init_atensor(clifford,3,0,1)}.
+@code{dirac} implementa a √°lgebra de spinores de Dirac como a
+√°lgebra de Clifford Cl(3,1).  Uma chamada a @code{init_atensor(dirac)}
+√© equivalente a @code{init_atensor(clifford,3,0,1)}.
 
 @end deffn
 
 
-@deffn {FunÁ„o} atensimp (@var{expr})
+@deffn {Fun√ß√£o} atensimp (@var{expr})
 
-Simplifica a express„o algÈbrica de tensores @var{expr} conforme as
+Simplifica a express√£o alg√©brica de tensores @var{expr} conforme as
 regras configuradas por uma chamada a @code{init_atensor}.
-SimplificaÁıes incluem aplicaÁ„o
-recursiva de relaÁıes comutativas e
-resoluÁıes de chamadas a @code{sf}, @code{af}, e
-@code{av} onde for aplic·vel.  Uma salvaguarda È usada para garantir
-que a funÁ„o sempre termine, mesmo para expressıes
+Simplifica√ß√µes incluem aplica√ß√£o
+recursiva de rela√ß√µes comutativas e
+resolu√ß√µes de chamadas a @code{sf}, @code{af}, e
+@code{av} onde for aplic√°vel.  Uma salvaguarda √© usada para garantir
+que a fun√ß√£o sempre termine, mesmo para express√µes
 complexas.
 
 @end deffn
 
-@deffn {FunÁ„o} alg_type
+@deffn {Fun√ß√£o} alg_type
 
-O tipo de ·lgebra.  Valores v·lidos s·o @code{universal}, @code{grassmann},
+O tipo de √°lgebra.  Valores v√°lidos s√°o @code{universal}, @code{grassmann},
 @code{clifford}, @code{symmetric}, @code{symplectic} e @code{lie_envelop}.
 
 @end deffn
 
-@defvr {Vari·vel} adim
+@defvr {Vari√°vel} adim
 
-A dimensionalidade da ·lgebra.  @code{atensor} usa o valor de @code{adim}
-para determinar se um objecto indexado È uma base vectorial v·lida. Veja @code{abasep}.
-
-@end defvr
-
-@defvr {Vari·vel} aform
-
-Valor por omiss„o para as formas bilineares @code{sf}, @code{af}, e
-@code{av}.  O padr„o È a matriz identidade @code{ident(3)}.
+A dimensionalidade da √°lgebra.  @code{atensor} usa o valor de @code{adim}
+para determinar se um objecto indexado √© uma base vectorial v√°lida. Veja @code{abasep}.
 
 @end defvr
 
-@defvr {Vari·vel} asymbol
+@defvr {Vari√°vel} aform
 
-O sÌmbolo para bases vectoriais.
+Valor por omiss√£o para as formas bilineares @code{sf}, @code{af}, e
+@code{av}.  O padr√£o √© a matriz identidade @code{ident(3)}.
 
 @end defvr
 
-@deffn {FunÁ„o} sf (@var{u}, @var{v})
+@defvr {Vari√°vel} asymbol
 
-… uma funÁ„o escalar simÈtrica que È usada em
-relaÁıes comutativas.  A implementaÁ„o
-padr„o verifica se ambos os argumentos s„o bases vectoriais usando
+O s√≠mbolo para bases vectoriais.
+
+@end defvr
+
+@deffn {Fun√ß√£o} sf (@var{u}, @var{v})
+
+√â uma fun√ß√£o escalar sim√©trica que √© usada em
+rela√ß√µes comutativas.  A implementa√ß√£o
+padr√£o verifica se ambos os argumentos s√£o bases vectoriais usando
 @code{abasep} e se esse for o caso, substitui o valor correspondente da
 matriz @code{aform}.
 
 @end deffn
 
-@deffn {FunÁ„o} af (@var{u}, @var{v})
+@deffn {Fun√ß√£o} af (@var{u}, @var{v})
 
-… uma funÁ„o escalar antisimÈtrica que È usada em relaÁıes comutativas.
-A implementaÁ„o padr„o verifica se ambos os argumentos s„o bases vectoriais
+√â uma fun√ß√£o escalar antisim√©trica que √© usada em rela√ß√µes comutativas.
+A implementa√ß√£o padr√£o verifica se ambos os argumentos s√£o bases vectoriais
 usando @code{abasep} e se esse for o caso, substitui o
 valor correspondente da matriz @code{aform}.
 
 @end deffn
 
-@deffn {FunÁ„o} av (@var{u}, @var{v})
+@deffn {Fun√ß√£o} av (@var{u}, @var{v})
 
-… uma funÁ„o antisimÈtrica que È usada em relaÁıes comutativas.
-A implementaÁ„o padr„o verifica se ambos os argumentos s„o bases vectoriais
+√â uma fun√ß√£o antisim√©trica que √© usada em rela√ß√µes comutativas.
+A implementa√ß√£o padr√£o verifica se ambos os argumentos s√£o bases vectoriais
 usando @code{abasep} e se esse for o caso, substitui o
 valor correspondente da matriz @code{aform}.
 
@@ -253,13 +253,13 @@ Por exemplo:
 @end deffn
 
 
-@deffn {FunÁ„o} abasep (@var{v})
+@deffn {Fun√ß√£o} abasep (@var{v})
 
-Verifica se esse argumento È uma base vectorial @code{atensor} .  
+Verifica se esse argumento √© uma base vectorial @code{atensor} .  
 
-E ser·, se ele for
-um sÌmbolo indexado, com o sÌmbolo sendo o mesmo que o valor de
-@code{asymbol}, e o Ìndice tiver o mesmo valor numÈrico entre 1
+E ser√°, se ele for
+um s√≠mbolo indexado, com o s√≠mbolo sendo o mesmo que o valor de
+@code{asymbol}, e o √≠ndice tiver o mesmo valor num√©rico entre 1
 e @code{adim}.
 
 @end deffn

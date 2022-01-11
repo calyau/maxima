@@ -222,7 +222,9 @@ Lie方法が試みられます。
 長いデバッグトレースとメッセージが表示されます。
 
 @opencatbox
-@category{Differential equations} @category{Share packages} @category{Package contrib_ode}
+@category{Differential equations}
+@category{Share packages}
+@category{Package contrib_ode}
 @closecatbox
 
 

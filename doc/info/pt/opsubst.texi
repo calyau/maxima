@@ -1,23 +1,23 @@
 @c /opsubst.texi/1.1/Mon Feb 27 22:09:17 2006//
 
 @menu
-* DefiniÁıes para  opsubst::
+* Defini√ß√µes para  opsubst::
 @end menu
 
-@node DefiniÁıes para opsubst,  , opsubst, opsubst
-@section DefiniÁıes para  opsubst
+@node Defini√ß√µes para opsubst,  , opsubst, opsubst
+@section Defini√ß√µes para  opsubst
 
-@deffn {FunÁ„o} opsubst (@var{f},@var{g},@var{e})
-@deffnx {FunÁ„o} opsubst (@var{g}=@var{f},@var{e})
-@deffnx {FunÁ„o} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
-A funÁ„o @code{opsubst}  similar ‡ funÁ„o @code{subst}, excepto que
-@code{opsubst} somente faz substituiÁıes para as operaÁıes em uma expressıes. Em geral, 
-quando @var{f} for um operador em uma express„o @var{e}, substitui @var{g} 
-por @var{f} na express„o @var{e}.
+@deffn {Fun√ß√£o} opsubst (@var{f},@var{g},@var{e})
+@deffnx {Fun√ß√£o} opsubst (@var{g}=@var{f},@var{e})
+@deffnx {Fun√ß√£o} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
+A fun√ß√£o @code{opsubst}  similar √† fun√ß√£o @code{subst}, excepto que
+@code{opsubst} somente faz substitui√ß√µes para as opera√ß√µes em uma express√µes. Em geral, 
+quando @var{f} for um operador em uma express√£o @var{e}, substitui @var{g} 
+por @var{f} na express√£o @var{e}.
 
 Para determinar o operador, @code{opsubst} escolhe @code{inflag} para verdadeiro ( true ). Isso significa que
-@code{opsubst} substitui para a forma de operador interna, n„o para a mostrada,
-na express„o.
+@code{opsubst} substitui para a forma de operador interna, n√£o para a mostrada,
+na express√£o.
 
 Exemplos:
 @example
@@ -38,8 +38,8 @@ Exemplos:
 (%o7)                       h(x)
 @end example
 
-Internamente, Maxima n„o usa os operadores de negaÁ„o un·ria,
-divis„o, ou de subtraÁ„o; dessa forma:
+Internamente, Maxima n√£o usa os operadores de nega√ß√£o un√°ria,
+divis√£o, ou de subtra√ß√£o; dessa forma:
 @example
 (%i8) opsubst("+","-",a-b);
 (%o8)                     a - b
@@ -51,14 +51,14 @@ divis„o, ou de subtraÁ„o; dessa forma:
                              b
 @end example
 
-A representaÁ„o interna de -a*b È *(-1,a,b); dessa forma
+A representa√ß√£o interna de -a*b √© *(-1,a,b); dessa forma
 @example
 (%i11) opsubst("[","*", -a*b);
 (%o11)                  [- 1, a, b]
 @end example
 
-Quando o operador n„o for um sÌmbolo Maxima, geralmente alguma outra funÁ„o
-sinalizar· um erro:
+Quando o operador n√£o for um s√≠mbolo Maxima, geralmente alguma outra fun√ß√£o
+sinalizar√° um erro:
 @example
 (%i12) opsubst(a+b,f, f(x));
 
@@ -67,14 +67,14 @@ b + a
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
-Todavia, operadores subscritos s„o permitidos:
+Todavia, operadores subscritos s√£o permitidos:
 @example
 (%i13) opsubst(g[5],f, f(x));
 (%o13)                     g (x)
                             5
 @end example
 
-Para usar essa funÁ„o escreva primeiramente @code{load("opsubst")}.
+Para usar essa fun√ß√£o escreva primeiramente @code{load("opsubst")}.
 @end deffn
 
 

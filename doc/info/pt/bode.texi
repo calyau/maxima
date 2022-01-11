@@ -1,14 +1,14 @@
 @c /bode.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Definições para bode::
+* DefiniÃ§Ãµes para bode::
 @end menu
 
-@node Definições para bode,  , bode, bode
-@section Definições para bode
+@node DefiniÃ§Ãµes para bode,  , bode, bode
+@section DefiniÃ§Ãµes para bode
 
 
-@deffn {Função} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
-Função para desenhar gráficos de ganho para Bode.
+@deffn {FunÃ§Ã£o} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
+FunÃ§Ã£o para desenhar grÃ¡ficos de ganho para Bode.
 
 Exemplos (1 a 7 provenientes de 
 @example
@@ -53,12 +53,12 @@ http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html,
 (%i17) bode_gain (H8 (s), [w, 1/1000, 1000])$
 @end example
 
-Para usar essa função escreva primeiramente @code{load("bode")}. Veja também @code{bode_phase}
+Para usar essa funÃ§Ã£o escreva primeiramente @code{load("bode")}. Veja tambÃ©m @code{bode_phase}
 @end deffn
 
 
-@deffn {Função} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
-Função para desenhar gráficos de fase para Bode
+@deffn {FunÃ§Ã£o} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
+FunÃ§Ã£o para desenhar grÃ¡ficos de fase para Bode
 
 Exemplos (1 a 7 provenientes de
 @example
@@ -109,7 +109,7 @@ http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html,
               bode_phase (H8 (s), [w, 1/1000, 1000]));
 @end example
 
-Para usar essa função escreva primeiramente @code{load("bode")}. Veja também @code{bode_gain}
+Para usar essa funÃ§Ã£o escreva primeiramente @code{load("bode")}. Veja tambÃ©m @code{bode_gain}
 @end deffn
 
 

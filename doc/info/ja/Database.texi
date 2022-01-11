@@ -598,7 +598,8 @@ x is not numeric.
 @code{is (f(x) > 0)}は@code{true}を出力します。
 
 @opencatbox
-@category{Declarations and inferences} @category{Operators}
+@category{Declarations and inferences}
+@category{Operators}
 @closecatbox
 @end defvr
 
@@ -619,7 +620,8 @@ x is not numeric.
 すなわち@mref{atvalue}, @mref{atomgrad}, @mref{gradef}, @mref{matchdeclare}のためのものです。
 
 @opencatbox
-@category{Declarations and inferences} @category{Display functions}
+@category{Declarations and inferences}
+@category{Display functions}
 @closecatbox
 
 @end deffn
@@ -1146,7 +1148,8 @@ a > 0
 @end example
 
 @opencatbox
-@category{Predicate functions} @category{Declarations and inferences}
+@category{Predicate functions}
+@category{Declarations and inferences}
 @closecatbox
 @end deffn
 
@@ -1209,7 +1212,8 @@ a > 0
 @end example
 
 @opencatbox
-@category{Predicate functions} @category{Declarations and inferences}
+@category{Predicate functions}
+@category{Declarations and inferences}
 @closecatbox
 @end deffn
 
@@ -1364,7 +1368,8 @@ or @code{pnz} (正、負もしくはゼロ、すなわちなにもわからな�
 @c WHAT EXACTLY ARE THE CONSEQUENCES OF DECLARING AN ATOM TO BE CONSTANT ??
 
 @opencatbox
-@category{Declarations and inferences} @category{Constants}
+@category{Declarations and inferences}
+@category{Constants}
 @closecatbox
 @end deffn
 
@@ -1414,7 +1419,8 @@ or @code{pnz} (正、負もしくはゼロ、すなわちなにもわからな�
 @end example
 
 @opencatbox
-@category{Predicate functions} @category{Constants}
+@category{Predicate functions}
+@category{Constants}
 @closecatbox
 @end deffn
 
@@ -1630,7 +1636,8 @@ equal(x  + 2 x + 1, x  - 2 x - 1)
 @code{true}を返します。
 
 @opencatbox
-@category{Predicate functions} @category{Simplification functions}
+@category{Predicate functions}
+@category{Simplification functions}
 @closecatbox
 @end deffn
 

@@ -26,7 +26,8 @@
 この整理はされません。
 
 @opencatbox
-@category{Operators} @category{Declarations and inferences}
+@category{Operators}
+@category{Declarations and inferences}
 @closecatbox
 @end defvr
 
@@ -40,7 +41,8 @@
 ここで、nはその形に変換するのに必要な置換の回数です。
 
 @opencatbox
-@category{Operators} @category{Declarations and inferences}
+@category{Operators}
+@category{Declarations and inferences}
 @closecatbox
 @end defvr
 
@@ -64,7 +66,8 @@
 これは@code{symmetric}と同じです。
 
 @opencatbox
-@category{Operators} @category{Declarations and inferences}
+@category{Operators}
+@category{Declarations and inferences}
 @closecatbox
 @end defvr
 
@@ -90,7 +93,9 @@
 @code{demoivre}と@code{exponentialize}は、同時に両方trueにはできません。
 
 @opencatbox
-@category{Complex variables} @category{Trigonometric functions} @category{Hyperbolic functions}
+@category{Complex variables}
+@category{Trigonometric functions}
+@category{Hyperbolic functions}
 @closecatbox
 @end deffn
 
@@ -447,7 +452,9 @@
 @code{exponentialize}や@code{demoivre}は同時にtrueにすることはできません。
 
 @opencatbox
-@category{Complex variables} @category{Trigonometric functions} @category{Hyperbolic functions}
+@category{Complex variables}
+@category{Trigonometric functions}
+@category{Hyperbolic functions}
 @closecatbox
 @end deffn
 
@@ -482,7 +489,9 @@ Maximaの整理器に
 例えば、@code{g (g (a, b), g (c, d))}は@code{g (g (g (a, b), c), d)}に整理されます。
 
 @opencatbox
-@category{Declarations and inferences} @category{Operators} @category{Simplification}
+@category{Declarations and inferences}
+@category{Operators}
+@category{Simplification}
 @closecatbox
 @end defvr
 
@@ -506,7 +515,9 @@ Maximaの演算子のプロパティの１つ。
 @code{opproperties}も参照してください。
 
 @opencatbox
-@category{Declarations and inferences} @category{Operators} @category{Simplification}
+@category{Declarations and inferences}
+@category{Operators}
+@category{Simplification}
 @closecatbox
 @end defvr
 
@@ -568,7 +579,9 @@ Maximaの演算子のプロパティの１つ。
 この式整理は、@code{f}が@code{product (x[i], i, m, n)}の形の式に適用された時にはなされません。
 
 @opencatbox
-@category{Declarations and inferences} @category{Expressions} @category{Simplification}
+@category{Declarations and inferences}
+@category{Expressions}
+@category{Simplification}
 @closecatbox
 @end defvr
 
@@ -688,7 +701,8 @@ Maximaの演算子のプロパティの１つ。
 @code{lassociative}, @code{rassociative}.
 
 @opencatbox
-@category{Global variables} @category{Operators}
+@category{Global variables}
+@category{Operators}
 @closecatbox
 @end defvr
 
@@ -718,7 +732,8 @@ outativityは、@code{sum}や@code{integrate}の場合のように定義され�
 @code{sum}, @code{integrate}, @code{limit}はすべて@code{outative}です。
 
 @opencatbox
-@category{Declarations and inferences} @category{Operators}
+@category{Declarations and inferences}
+@category{Operators}
 @closecatbox
 @end defvr
 
@@ -826,7 +841,8 @@ Maximaの整理器に
 @code{g(g(a, b), g(c, d))}は、@code{g(a, g(b, g(c, d)))}に整理されます。
 
 @opencatbox
-@category{Declarations and inferences} @category{Operators}
+@category{Declarations and inferences}
+@category{Operators}
 @closecatbox
 @end defvr
 
@@ -927,7 +943,8 @@ Maximaの整理器に
 @code{commutative}は@code{symmetric}と同義です。
 
 @opencatbox
-@category{Declarations and inferences} @category{Operators}
+@category{Declarations and inferences}
+@category{Operators}
 @closecatbox
 @end defvr
 

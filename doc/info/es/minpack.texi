@@ -1,14 +1,14 @@
 @c English version: 2010-10-10
 @menu
-* Introducción a minpack::
+* IntroducciÃ³n a minpack::
 * Funciones y variables para minpack::
 @end menu
 
-@node Introducción a minpack, , , 
-@section Introducción a minpack
+@node IntroducciÃ³n a minpack, , , 
+@section IntroducciÃ³n a minpack
 
-@code{Minpack} es una traducción a Common Lisp (via @code{f2cl}) de la
-librería MINPACK escrita en Fortran, tal como se puede
+@code{Minpack} es una traducciÃ³n a Common Lisp (via @code{f2cl}) de la
+librerÃ­a MINPACK escrita en Fortran, tal como se puede
 obtener de Netlib.
 
 
@@ -17,12 +17,12 @@ obtener de Netlib.
 
 
 
-@deffn {Función} minpack_lsquares (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
+@deffn {FunciÃ³n} minpack_lsquares (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
 
 Calcula el punto @code{x} que minimiza la suma de los cuadrados de las
 funciones de la lista @var{flist}. Las variables se escriben en
 la lista @code{varlist}. El argumento @var{guess} debe guardar una
-estimación inicial del punto óptimo.
+estimaciÃ³n inicial del punto Ã³ptimo.
 
 Los argumentos opcionales @var{tolerance} y @var{jacobian} permiten
 mantener cierto control sobre el algoritmo; @var{tolerance} es el
@@ -31,37 +31,37 @@ mientras que @var{jacobian} puede utilizarse para especificar el
 jacobiano. Si @var{jacobian} no se suministra, o se le da el valor
 @code{true}, el que ya tiene por defecto, el jacobiano se calcula
 a partir de @var{flist}. Si @var{jacobian} vale @code{false}, se
-utilizará una aproximación numérica.
+utilizarÃ¡ una aproximaciÃ³n numÃ©rica.
 
 @code{minpack_lsquares} devuelve una lista, siendo su primer 
-elemento la solución estimada, el segundo la suma de cuadrados y
+elemento la soluciÃ³n estimada, el segundo la suma de cuadrados y
 el tercero indica la bondad del algoritmo, siendo sus posibles valores
 los siguientes:
 
 @table @code
 @item 0
-Número incorrecto de parámetros.
+NÃºmero incorrecto de parÃ¡metros.
 @item 1
 El algoritmo estima que el error relativo de la suma de cuadrados
 es, como mucho, igual a @code{tolerance}.
 @item 2
-El algoritmo estima que el error relativo entre @var{x} y la solución es,
+El algoritmo estima que el error relativo entre @var{x} y la soluciÃ³n es,
 como mucho, igual a @code{tolerance}.
 @item 3
 Las dos condiciones anteriores se cumplen.
 @item 4
 El vector formado por las funciones evaluadas en el punto @var{x} es
-ortogonal a las columnas del jacobiano dentro de la precisión de la
-máquina. 
+ortogonal a las columnas del jacobiano dentro de la precisiÃ³n de la
+mÃ¡quina. 
 @item 5
-El número de llamadas a las funciones ha alcanzado 100*(n+1), siendo
-n el número de variables.
+El nÃºmero de llamadas a las funciones ha alcanzado 100*(n+1), siendo
+n el nÃºmero de variables.
 @item 6
-La tolerancia es demasiado pequeña, no siendo posible reducir más la
+La tolerancia es demasiado pequeÃ±a, no siendo posible reducir mÃ¡s la
 suma de cuadrados.
 @item 7
-La tolerancia es demasiado pequeña, no siendo posible mejorar la
-solución aproximada @var{x}.
+La tolerancia es demasiado pequeÃ±a, no siendo posible mejorar la
+soluciÃ³n aproximada @var{x}.
 @end table
 
 @example
@@ -89,12 +89,12 @@ solución aproximada @var{x}.
 
 
 
-@deffn {Función} minpack_solve (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
+@deffn {FunciÃ³n} minpack_solve (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
 
-Resuelve un sistema de @code{n} ecuaciones con @code{n} incógnitas.
+Resuelve un sistema de @code{n} ecuaciones con @code{n} incÃ³gnitas.
 Las @code{n} ecuaciones forman la lista @var{flist}, estando la
-lista @var{varlist} formada por las incógnitas. El argumento
-@var{guess} es una estimación inicial de la solución.
+lista @var{varlist} formada por las incÃ³gnitas. El argumento
+@var{guess} es una estimaciÃ³n inicial de la soluciÃ³n.
 
 Los argumentos opcionales @var{tolerance} y @var{jacobian} permiten
 mantener cierto control sobre el algoritmo; @var{tolerance} es el
@@ -103,24 +103,24 @@ mientras que @var{jacobian} puede utilizarse para especificar el
 jacobiano. Si @var{jacobian} no se suministra, o se le da el valor
 @code{true}, el que ya tiene por defecto, el jacobiano se calcula
 a partir de @var{flist}. Si @var{jacobian} vale @code{false}, se
-utilizará una aproximación numérica.
+utilizarÃ¡ una aproximaciÃ³n numÃ©rica.
 
 @code{minpack_solve} devuelve una lista, siendo su primer 
-elemento la solución estimada, el segundo la suma de cuadrados y
+elemento la soluciÃ³n estimada, el segundo la suma de cuadrados y
 el tercero indica la bondad del algoritmo, siendo sus posibles valores
 los siguientes:
 
 @table @code
 @item 0
-Número incorrecto de parámetros.
+NÃºmero incorrecto de parÃ¡metros.
 @item 1
 El algoritmo estima que el error relativo de la suma de cuadrados
 es, como mucho, igual a @code{tolerance}.
 @item 2
-El número de llamadas a las funciones ha alcanzado 100*(n+1), siendo
-n el número de incógnitas.
+El nÃºmero de llamadas a las funciones ha alcanzado 100*(n+1), siendo
+n el nÃºmero de incÃ³gnitas.
 @item 3
-La tolerancia es demasiado pequeña, no siendo posible reducir más la
+La tolerancia es demasiado pequeÃ±a, no siendo posible reducir mÃ¡s la
 suma de cuadrados.
 @item 4
 El algoritmo no progresa adecuadamente.

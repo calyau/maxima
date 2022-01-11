@@ -42,7 +42,9 @@ T = (- ---- - -- + 1) t]]
 この関数を使うには、最初に@code{load("makeOrders")}と@code{load("lindstedt")}を書いてください。
 
 @opencatbox
-@category{Differential equations} @category{Share packages} @category{Package lindstedt}
+@category{Differential equations}
+@category{Share packages}
+@category{Package lindstedt}
 @closecatbox
 
 @end deffn

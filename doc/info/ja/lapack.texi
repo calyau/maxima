@@ -13,7 +13,9 @@ SLATECプロジェクトから得られるようなFortranライブラリLAPACK�
 (訳者注意書き: lapackを使用するには、load("lapack"); load("eigensys");を実行してください。load("lapack")には、初回だけコンパイルで時間がかかるかもしれません。)
 
 @opencatbox
-@category{Numerical methods} @category{Share packages} @category{Package lapack}
+@category{Numerical methods}
+@category{Share packages}
+@category{Package lapack}
 @closecatbox
 
 
@@ -254,7 +256,8 @@ All elements of
 @end example
 
 @opencatbox
-@category{Package lapack} @category{Linear equations}
+@category{Package lapack}
+@category{Linear equations}
 @closecatbox
 
 @end deffn

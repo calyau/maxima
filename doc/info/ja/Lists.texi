@@ -99,7 +99,8 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 @end example
 
 @opencatbox
-@category{Lists} @category{Operators}
+@category{Lists}
+@category{Operators}
 @closecatbox
 @end defvr
 
@@ -119,7 +120,8 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 例を見るには、 @code{example(append);}を実行してください。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -142,7 +144,8 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 @var{default}はオプションで、省略すると @code{false}に設定されます。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -159,7 +162,8 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 例えば、 @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -326,7 +330,8 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 @end example
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -338,7 +343,8 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 詳細は @code{first}を参照してください。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -355,7 +361,8 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -367,7 +374,8 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 詳細は @mref{first}を参照してください。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -393,7 +401,8 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 入力引数の二番目から十番目の部分をもたらします。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -405,7 +414,8 @@ Maxima式のタイプフィールドを意味するフラグはそれ自体リ�
 詳細は @mref{first}を参照してください。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -453,7 +463,8 @@ Maximaは文句を言います。
 @var{expr}最後の(項、行、要素など）部分を返します。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -477,7 +488,8 @@ Maximaは文句を言います。
  (内部表現は本質的には @code{a*b^-1*c^-1}です。)
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -491,7 +503,8 @@ Maximaは文句を言います。
 しかしながら、リスト-リスト演算はリストを返します。
 
 @opencatbox
-@category{Lists} @category{Global flags}
+@category{Lists}
+@category{Global flags}
 @closecatbox
 
 @end defvr
@@ -503,7 +516,8 @@ Maximaは文句を言います。
 そうでなければ @code{false}を返します。
 
 @opencatbox
-@category{Lists} @category{Predicate functions}
+@category{Lists}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -600,7 +614,9 @@ Maximaは文句を言います。
 @end example
 
 @opencatbox
-@category{Lists} @category{Expressions} @category{Predicate functions}
+@category{Lists}
+@category{Expressions}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -612,7 +628,8 @@ Maximaは文句を言います。
 詳細は @code{first}を参照してください。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -631,7 +648,8 @@ Maximaはエラーメッセージを生成します。
 @code{load(basic)}はこの関数をロードします。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -690,7 +708,8 @@ Maximaはエラーメッセージを生成します。
 @end example
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -711,7 +730,8 @@ Maximaはエラーメッセージを生成します。
 @var{expr}は、リスト、行列、他の式を取り得ます。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -728,7 +748,8 @@ Maximaはエラーメッセージを生成します。
 例えば、 @code{reverse(a=b);}は @code{b=a}を与えます。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -740,7 +761,8 @@ Maximaはエラーメッセージを生成します。
 詳細は @mref{first}を参照してください。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -752,7 +774,8 @@ Maximaはエラーメッセージを生成します。
 詳細は @mref{first}を参照してください。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -764,7 +787,8 @@ Maximaはエラーメッセージを生成します。
 詳細は @mref{first}を参照してください。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -961,7 +985,8 @@ Maxima数と定数、定数式を大きさ順に並べ、他のすべての要�
 
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
@@ -973,7 +998,8 @@ Maxima数と定数、定数式を大きさ順に並べ、他のすべての要�
 詳細は @code{first}を参照してください。
 
 @opencatbox
-@category{Lists} @category{Expressions}
+@category{Lists}
+@category{Expressions}
 @closecatbox
 @end deffn
 
