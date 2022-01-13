@@ -2677,10 +2677,16 @@ closeto(csch(715.0), 6.033b-311);
 true;
 
 /*
- * Check acsch doesn't overflow for small numbers.  But some lisps like clisp don't support denormals, so we have to be careful.
+ *
+ * Check acsch doesn't overflow for small numbers.  But some lisps
+ * like clisp don't support denormals, so we have to be careful.
+ *
  */
 
-if (1e-309 = 0) then closetorel(acsch(1e-300), acsch(bfloat(1e-300)), 0) else closetorel(acsch(1e-309), acsch(bfloat(1b-309)), 7.1559b-17);
+if (1e-309 = 0.0) then
+    closetorel(acsch(1e-300), acsch(bfloat(1e-300)), 1.1375b-16)
+  else
+    closetorel(acsch(1e-309), acsch(bfloat(1b-309)), 7.1559b-17);
 true;
 
 /* SF bug #3825: "apply('forget, facts()) gives Lisp error" */
