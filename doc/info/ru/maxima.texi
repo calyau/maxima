@@ -18,7 +18,7 @@
 
 @c %**start of header
 @setfilename  maxima.info
-@documentencoding windows-1251
+@documentencoding UTF-8
 @synindex vr fn
 @settitle Maxima Manual
 @c %**end of header
@@ -101,7 +101,6 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась професс
 * Simplification::                   Simplifying expressions.
 * Plotting::                         2D and 3D graphical output.
 * Ввод и вывод::                     Ввод и вывод файлов.
-* Floating Point::                   Low level numerical routines.
 * Контексты::                        Наборы известных фактов.
 
 Поддержка специальных разделов математики
@@ -109,8 +108,6 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась професс
 * Polynomials::                      Standard forms for polynomials, and
                                      functions operating on them.
 * Константы::                        Числовые и логические константы.
-* Logarithms::                       Manipulation of expressions involving
-                                     logarithms.
 * Тригонометрия::                    Работа с выражениями, содержащими 
                                      тригонометрические и братные 
                                      тригонометрические функции.
@@ -130,7 +127,7 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась професс
 * Пакет itensor::                    Индексные тензорные вычисления.
 * Пакет ctensor::                    Компонентные тензорные вычисления.
 * Пакет atensor::                    Вычисления с тензорными алгебрами.
-* Series::                           Taylor and power series.
+* Sums Products and Series::         Taylor and power series.
 * Теория чисел::                     Теория чисел.
 * Symmetries::                  
 * Groups::                           Abstract algebra.
@@ -161,37 +158,36 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась професс
 * Пакет draw::                    Интерфейс Maxima к прогрпмме Gnuplot.
 * Пакет dynamics::                Графика для динамических систем и фракталов.
 * Пакет f90::                     Транслятор из Maxima в Fortran.
-* ggf::                           Generating function of sequences.
+* ggf-pkg::                       Generating function of sequences.
 * Пакет graphs::                  Теория графов.
 * Пакет grobner::                 Функции для работы с базисом Гребнера.
 * Пакет impdiff::                 Неявные производные.
 * Пакет implicit_plot::           Графики неявных функций.
 * Пакет interpol::                Интерполяция.
-* lapack::                        LAPACK functions for linear algebra.
-* lbfgs::                         L-BFGS unconstrained minimization package.
-* lindstedt::                     Lindstedt package.
-* linearalgebra::                 Functions for linear algebra.
-* lsquares::                      Least squares.
-* makeOrders::                    Polynomial utility.
-* mnewton::                       Newton's method.
-* numericalio::                   Reading and writing files.
-* opsubst::                       Substitutions utility.
-* orthopoly::                     Orthogonal polynomials.
-* plotdf::                        Direction fields plots.
-* romberg::                       Romberg method for numerical integration.
-* simplex::                       Linear programming.
-* simplification::                Simplification rules and functions.
-* solve_rec::                     Linear recurrences.
-* stats::                         Statistical inference package.
+* lapack-pkg::                    LAPACK functions for linear algebra.
+* lbfgs-pkg::                     L-BFGS unconstrained minimization package.
+* lindstedt-pkg::                 Lindstedt package.
+* linearalgebra-pkg::             Functions for linear algebra.
+* lsquares-pkg::                  Least squares.
+* makeOrders-pkg::                Polynomial utility.
+* mnewton-pkg::                   Newton's method.
+* numericalio-pkg::               Reading and writing files.
+* opsubst-pkg::                   Substitutions utility.
+* orthopoly-pkg::                 Orthogonal polynomials.
+* romberg-pkg::                   Romberg method for numerical integration.
+* simplex-pkg::                   Linear programming.
+* simplification-pkg::            Simplification rules and functions.
+* solve_rec-pkg::                 Linear recurrences.
+* stats-pkg::                     Statistical inference package.
 * Пакет stirling::                Формула Стирлинга.
-* stringproc::                    String processing.
-* unit::                          Units and dimensions package.
-* zeilberger::                    Functions for hypergeometric summation.
+* stringproc-pkg::                String processing.
+* unit-pkg::                      Units and dimensions package.
+* zeilberger-pkg::                Functions for hypergeometric summation.
 
 
 Индекс
 
-* Function and Variable Index:: Index.
+* Указатель функций и переменных:: Указатель.
 
 @comment @detailmenu
  --- The Detailed Node Listing ---
@@ -235,21 +231,17 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась професс
 
 Simplification
 
-* Definitions for Simplification::  
+* Functions and Variables for Simplification::  
 
 Plotting
 
-* Definitions for Plotting::    
+* Functions and Variables for Plotting::    
 
 Ввод и вывод
 
 * Комментарии::
 * Файлы::                       
 * Функции и переменные для ввода и вывода::
-
-Floating Point
-
-* Definitions for Floating Point::  
 
 Контексты
 
@@ -258,15 +250,11 @@ Floating Point
 Polynomials
 
 * Introduction to Polynomials::  
-* Definitions for Polynomials::  
+* Functions and Variables for Polynomials::  
 
 Константы
 
 * Математические константы::   
-
-Logarithms
-
-* Definitions for Logarithms::  
 
 Тригонометрия
 
@@ -276,7 +264,7 @@ Logarithms
 Special Functions
 
 * Introduction to Special Functions::  
-* Definitions for Special Functions::  
+* Functions and Variables for Special Functions::  
 
 Эллиптические функции
 
@@ -290,16 +278,16 @@ Special Functions
 
 Differentiation
 
-* Definitions for Differentiation::  
+* Functions and Variables for Differentiation::  
 
 Integration
 
 * Introduction to Integration::  
-* Definitions for Integration::  
+* Functions and Variables for Integration::  
 
 Equations
 
-* Definitions for Equations::   
+* Functions and Variables for Equations::   
 
 Дифференциальные уравнения
 
@@ -308,10 +296,12 @@ Equations
 
 Numerical
 
-* Introduction to Numerical::   
-* Fourier packages::                     
-* Definitions for Numerical::   
-* Definitions for Fourier Series::
+* Introduction to fast Fourier transform::                     
+* Functions and Variables for fast Fourier transform::
+* Functions and Variables for FFTPACK5::
+* Functions for numerical solution of equations::
+* Introduction to numerical solution of differential equations::
+* Functions for numerical solution of differential equations::
 
 Массивы
 
@@ -323,7 +313,7 @@ Matrices and Linear Algebra
 * Dot::                         
 * Vectors::                     
 * eigen::
-* Definitions for Matrices and Linear Algebra::  
+* Functions and Variables for Matrices and Linear Algebra::  
 
 Пакет affine
 
@@ -345,10 +335,10 @@ Matrices and Linear Algebra
 * Введение в пакет atensor::     
 * Функции и переменные пакета atensor::     
 
-Series
+Sums Products and Series
 
 * Introduction to Series::      
-* Definitions for Series::      
+* Functions and Variables for Series::      
 
 Теория чисел
 
@@ -356,11 +346,11 @@ Series
 
 Symmetries
 
-* Definitions for Symmetries::  
+* Functions and Variables for Symmetries::  
 
 Groups
 
-* Definitions for Groups::      
+* Functions and Variables for Groups::      
 
 Окружение времени выполнения
 
@@ -381,8 +371,8 @@ Groups
 
 Списки
 
-* Введение в работу со спискми::       
-* Функции и переменные для работы со списками::       
+* Ведение в работу со списками::
+* Функции и переменные для работы со списками::
 
 Множества
 
@@ -412,7 +402,7 @@ Groups
 
 Пакет bode
 
-* Функции и переменные для пакета bode::
+* Функции и переменные пакета bode::
 
 Пакет contrib_ode
 
@@ -458,7 +448,7 @@ Groups
 
 ggf
 
-* Definitions for ggf::
+* Functions and Variables for ggf::
 
 Пакет graphs
 
@@ -491,28 +481,28 @@ lapack
 lbfgs
 
 * Introduction to lbfgs::
-* Definitions for lbfgs::
+* Functions and Variables for lbfgs::
 
 lindstedt
 
-* Definitions for lindstedt::
+* Functions and Variables for lindstedt::
 
 linearalgebra
 
 * Introduction to linearalgebra::
-* Definitions for linearalgebra::
+* Functions and Variables for linearalgebra::
 
 lsquares
 
-* Definitions for lsquares::
+* Functions and Variables for lsquares::
 
 makeOrders
 
-* Definitions for makeOrders::
+* Functions and Variables for makeOrders::
 
 mnewton
 
-* Definitions for mnewton::
+* Functions and Variables for mnewton::
 
 numericalio
 
@@ -522,43 +512,43 @@ numericalio
 
 opsubst
 
-* Definitions for opsubst::
+* Functions and Variables for opsubst::
 
 orthopoly
 
 * Introduction to orthogonal polynomials::
-* Definitions for orthogonal polynomials::
-
-plotdf
-
-* Introduction to plotdf::
-* Definitions for plotdf::
+* Functions and Variables for orthogonal polynomials::
 
 romberg
 
-* Definitions for romberg::
+* Functions and Variables for romberg::
 
 simplex
 
 * Introduction to simplex::
-* Definitions for simplex::
+* Functions and Variables for simplex::
 
 simplification
 
 * Introduction to simplification::
-* Definitions for simplification::
+* Package absimp::
+* Package facexp::
+* Package functs::
+* Package ineq::
+* Package rducon::
+* Package scifac::
 
 solve_rec
 
 * Introduction to solve_rec::
-* Definitions for solve_rec::
+* Functions and Variables for solve_rec::
 
 stats
 
 * Introduction to stats::
-* Definitions for inference_result::
-* Definitions for stats::
-* Definitions for special distributions::
+* Functions and Variables for inference_result::
+* Functions and Variables for stats::
+* Functions and Variables for special distributions::
 
 Пакет stirling
 
@@ -566,20 +556,21 @@ stats
 
 stringproc
 
-* Introduction to string processing::
-* Definitions for input and output::
-* Definitions for characters::
-* Definitions for strings::
+* Introduction to String Processing::
+* String Input and Output::
+* Characters::
+* String Processing::
+* Octets and Utilities for Cryptography::
 
 unit
 
 * Introduction to Units::       
-* Definitions for Units::
+* Functions and Variables for Units::
 
 zeilberger
 
 * Introduction to zeilberger::
-* Definitions for zeilberger::
+* Functions and Variables for zeilberger::
 
 @comment @end detailmenu
 @end menu
@@ -601,35 +592,33 @@ zeilberger
 @chapter Справка
 @include Help.texi
 
-@node Командная строка, Operators, Справка, Top
+@anchor{Functions and Variables for Evaluation}
+@node Командная строка, Операторы, Справка, Top
 @chapter Командная строка
 @include Command.texi
 
-@node Operators, Expressions, Командная строка, Top
-@chapter Operators
+@node Операторы, Выражения, Командная строка, Top
+@chapter Операторы
 @include Operators.texi
 
-@node Expressions, Simplification, Operators, Top
-@chapter Expressions
+@node Выражения, Simplification, Операторы, Top
+@chapter Выражения
 @include Expressions.texi
 
-@node Simplification, Plotting, Expressions, Top
+@node Simplification, Plotting, Выражения, Top
 @chapter Simplification
 @include Simplification.texi
 
-@node Plotting, Input and Output, Simplification, Top
+@node Plotting, Ввод и вывод, Simplification, Top
 @chapter Plotting
 @include Plotting.texi
 
-@node Input and Output, Floating Point, Plotting, Top
-@chapter Input and Output
+@node Ввод и вывод, Контексты, Plotting, Top
+@chapter Ввод и вывод
 @include Input.texi
 
-@node Floating Point, Контексты, Input and Output, Top
-@chapter Floating Point
-@include Floating.texi
-
-@node Контексты, Polynomials, Floating Point, Top
+@anchor{Introduction to Maxima's Database}
+@node Контексты, Polynomials, Ввод и вывод, Top
 @chapter Контексты
 @include Contexts.texi
 
@@ -637,27 +626,23 @@ zeilberger
 @chapter Polynomials
 @include Polynomials.texi
 
-@node Константы, Logarithms, Polynomials, Top
+@node Константы, Тригонометрия, Polynomials, Top
 @chapter Константы
 @include Constants.texi
 
-@node Logarithms, Trigonometric, Константы, Top
-@chapter Logarithms
-@include Logarithms.texi
-
-@node Trigonometric, Special Functions, Logarithms, Top
-@chapter Trigonometric
+@node Тригонометрия, Special Functions, Константы, Top
+@chapter Тригонометрия
 @include Trigonometric.texi
 
-@node Special Functions, Elliptic Functions, Trigonometric, Top
+@node Special Functions, Эллиптические функции, Тригонометрия, Top
 @chapter Special Functions
 @include Special.texi
 
-@node Elliptic Functions, Пределы, Special Functions, Top
-@chapter Elliptic Functions
+@node Эллиптические функции, Пределы, Special Functions, Top
+@chapter Эллиптические функции
 @include Elliptic.texi
 
-@node Пределы, Differentiation, Elliptic Functions, Top
+@node Пределы, Differentiation, Эллиптические функции, Top
 @chapter Пределы
 @include Limits.texi
 
@@ -669,17 +654,17 @@ zeilberger
 @chapter Integration
 @include Integration.texi
 
-@node Equations, Differential Equations, Integration, Top
+@node Equations, Дифференциальные уравнения, Integration, Top
 @chapter Equations
 @include Equations.texi
 
-@node Differential Equations, Numerical, Equations, Top
-@chapter Differential Equations
+@node Дифференциальные уравнения, Numerical, Equations, Top
+@chapter Дифференциальные уравнения
 @include Differential.texi
 
 @c @include NonCommutative.texi
 
-@node Numerical, Массивы, Differential Equations, Top
+@node Numerical, Массивы, Дифференциальные уравнения, Top
 @chapter Numerical
 @include Numerical.texi
 
@@ -703,200 +688,198 @@ zeilberger
 @chapter Пакет ctensor
 @include Ctensor.texi
 
-@node Пакет atensor, Series, Пакет ctensor, Top
+@node Пакет atensor, Sums Products and Series, Пакет ctensor, Top
 @chapter Пакет atensor
 @include Atensor.texi
 
-@node Series, Number Theory, Пакет atensor, Top
-@chapter Series
+@node Sums Products and Series, Теория чисел, Пакет atensor, Top
+@chapter Sums, Products, and Series
 @include Series.texi
 
-@node Number Theory, Symmetries, Series, Top
-@chapter Number Theory
+@node Теория чисел, Symmetries, Sums Products and Series, Top
+@chapter Теория чисел
 @include Number.texi
 
-@node Symmetries, Groups, Number Theory, Top
+@node Symmetries, Groups, Теория чисел, Top
 @chapter Symmetries
 @include Symmetries.texi
 
-@node Groups, Runtime Environment, Symmetries, Top
+@node Groups, Окружение времени выполнения, Symmetries, Top
 @chapter Groups
 @include Groups.texi
 
-@node Runtime Environment, Miscellaneous Options, Groups, Top
-@chapter Runtime Environment
+@node Окружение времени выполнения, Вспомогательные опции, Groups, Top
+@chapter Окружение времени выполнения
 @include Runtime.texi
 
-@node Miscellaneous Options, Rules and Patterns, Runtime Environment, Top
-@chapter Miscellaneous Options
+@node Вспомогательные опции, Правила преобразования и шаблоны, Окружение времени выполнения, Top
+@chapter Вспомогательные опции
 @include Miscellaneous.texi
 
-@node Rules and Patterns, Lists, Miscellaneous Options, Top
-@chapter Rules and Patterns
+@anchor{Rules and Patterns}
+@node Правила преобразования и шаблоны, Списки, Вспомогательные опции, Top
+@chapter Правила преобразования и шаблоны
 @include Rules.texi
 
-@node Lists, Sets, Rules and Patterns, Top
-@chapter Lists
+@node Списки, Множества, Правила преобразования и шаблоны, Top
+@chapter Списки
 @include Lists.texi
 
-@node Sets, Function Definition, Lists, Top
-@chapter Sets
+@node Множества, Определение функций, Списки, Top
+@chapter Множества
 @include nset.texi
 
-@node Function Definition, Program Flow, Sets, Top
-@chapter Function Definition
+@node Определение функций, Программы Maxima, Множества, Top
+@chapter Определение функций
 @include Function.texi
 
-@node Program Flow, Debugging, Function Definition, Top
-@chapter Program Flow
+@node Программы Maxima, Отладка, Определение функций, Top
+@chapter Программы Maxima
 @include Program.texi
 
-@node Debugging, augmented_lagrangian, Program Flow, Top
-@chapter Debugging
+@node Отладка, Пакет augmented_lagrangian, Программы Maxima, Top
+@chapter Отладка
 @include Debugging.texi
 
-@node augmented_lagrangian, bode, Debugging, Top
-@chapter augmented_lagrangian
+@node Пакет augmented_lagrangian, Пакет bode, Отладка, Top
+@chapter Пакет augmented_lagrangian
 @include augmented_lagrangian.texi
 
-@node bode, contrib_ode, augmented_lagrangian, Top
-@chapter bode
+@node Пакет bode, Пакет contrib_ode, Пакет augmented_lagrangian, Top
+@chapter Пакет bode
 @include bode.texi
 
-@node contrib_ode, descriptive, bode, Top
-@chapter contrib_ode
+@node Пакет contrib_ode, Пакет descriptive, Пакет bode, Top
+@chapter Пакет contrib_ode
 @include contrib_ode.texi
 
-@node descriptive, diag, contrib_ode, Top
-@chapter descriptive
+@node Пакет descriptive, Пакет diag, Пакет contrib_ode, Top
+@chapter Пакет descriptive
 @include descriptive.texi
 
-@node diag, distrib, descriptive, Top
-@chapter diag
+@node Пакет diag, Пакет distrib, Пакет descriptive, Top
+@chapter Пакет diag
 @include diag.texi
 
-@node distrib, draw, diag, Top
-@chapter distrib
+@node Пакет distrib, Пакет draw, Пакет diag, Top
+@chapter Пакет distrib
 @include distrib.texi
 
-@node draw, dynamics, distrib, Top
-@chapter draw
+@anchor{draw}
+@node Пакет draw, Пакет dynamics, Пакет distrib, Top
+@chapter Пакет draw
 @include draw.texi
 
-@node dynamics, f90, draw, Top
-@chapter dynamics
+@node Пакет dynamics, Пакет f90, Пакет draw, Top
+@chapter Пакет dynamics
 @include dynamics.texi
 
-@node f90, ggf, dynamics, Top
-@chapter f90
+@node Пакет f90, ggf-pkg, Пакет dynamics, Top
+@chapter Пакет f90
 @include f90.texi
 
-@node ggf, graphs, f90, Top
+@node ggf-pkg, Пакет graphs, Пакет f90, Top
 @chapter ggf
 @include ggf.texi
 
-@node graphs, grobner, ggf, Top
-@chapter graphs
+@node Пакет graphs, Пакет grobner, ggf-pkg, Top
+@chapter Пакет graphs
 @include graphs.texi
 
-@node grobner, impdiff, graphs, Top
-@chapter grobner
+@node Пакет grobner, Пакет impdiff, Пакет graphs, Top
+@chapter Пакет grobner
 @include grobner.texi
 
-@node impdiff, implicit_plot, grobner, Top
-@chapter impdiff
+@node Пакет impdiff, Пакет implicit_plot, Пакет grobner, Top
+@chapter Пакет impdiff
 @include impdiff.texi
 
-@node implicit_plot, interpol, impdiff, Top
-@chapter implicit_plot
+@node Пакет implicit_plot, Пакет interpol, Пакет impdiff, Top
+@chapter Пакет implicit_plot
 @include implicit_plot.texi
 
-@node interpol, lapack, implicit_plot, Top
-@chapter interpol
+@node Пакет interpol, lapack-pkg, Пакет implicit_plot, Top
+@chapter Пакет interpol
 @include interpol.texi
 
-@node lapack, lbfgs, interpol, Top
+@node lapack-pkg, lbfgs-pkg, Пакет interpol, Top
 @chapter lapack
 @include lapack.texi
 
-@node lbfgs, lindstedt, lapack, Top
+@node lbfgs-pkg, lindstedt-pkg, lapack-pkg, Top
 @chapter lbfgs
 @include lbfgs.texi
 
-@node lindstedt, linearalgebra, lbfgs, Top
+@node lindstedt-pkg, linearalgebra-pkg, lbfgs-pkg, Top
 @chapter lindstedt
 @include lindstedt.texi
 
-@node linearalgebra, lsquares, lindstedt, Top
+@node linearalgebra-pkg, lsquares-pkg, lindstedt-pkg, Top
 @chapter linearalgebra
 @include linearalgebra.texi
 
-@node lsquares, makeOrders, linearalgebra, Top
+@node lsquares-pkg, makeOrders-pkg, linearalgebra-pkg, Top
 @chapter lsquares
 @include lsquares.texi
 
-@node makeOrders, mnewton, lsquares, Top
+@node makeOrders-pkg, mnewton-pkg, lsquares-pkg, Top
 @chapter makeOrders
 @include makeOrders.texi
 
-@node mnewton, numericalio, makeOrders, Top
+@node mnewton-pkg, numericalio-pkg, makeOrders-pkg, Top
 @chapter mnewton
 @include mnewton.texi
 
-@node numericalio, opsubst, mnewton, Top
+@node numericalio-pkg, opsubst-pkg, mnewton-pkg, Top
 @chapter numericalio
 @include numericalio.texi
 
-@node opsubst, orthopoly, numericalio, Top
+@node opsubst-pkg, orthopoly-pkg, numericalio-pkg, Top
 @chapter opsubst
 @include opsubst.texi
 
-@node orthopoly, plotdf, opsubst, Top
+@node orthopoly-pkg, romberg-pkg, opsubst-pkg, Top
 @chapter orthopoly
 @include orthopoly.texi
 
-@node plotdf, romberg, orthopoly, Top
-@chapter plotdf
-@include plotdf.texi
-
-@node romberg, simplex, plotdf, Top
+@node romberg-pkg, simplex-pkg, orthopoly-pkg, Top
 @chapter romberg
 @include romberg.texi
 
-@node simplex, simplification, romberg, Top
+@node simplex-pkg, simplification-pkg, romberg-pkg, Top
 @chapter simplex
 @include simplex.texi
 
-@node simplification, solve_rec, simplex, Top
+@node simplification-pkg, solve_rec-pkg, simplex-pkg, Top
 @chapter simplification
 @include simplifications.texi
 
-@node solve_rec, stats, simplification, Top
+@node solve_rec-pkg, stats-pkg, simplification-pkg, Top
 @chapter solve_rec
 @include solve_rec.texi
 
-@node stats, stirling, solve_rec, Top
+@node stats-pkg, Пакет stirling, solve_rec-pkg, Top
 @chapter stats
 @include stats.texi
 
-@node stirling, stringproc, stats, Top
-@chapter stirling
+@node Пакет stirling, stringproc-pkg, stats-pkg, Top
+@chapter Пакет stirling
 @include stirling.texi
 
-@node stringproc, unit, stirling, Top
+@node stringproc-pkg, unit-pkg, Пакет stirling, Top
 @chapter stringproc
 @include stringproc.texi
 
-@node unit, zeilberger, stringproc, Top
+@node unit-pkg, zeilberger-pkg, stringproc-pkg, Top
 @chapter unit
 @include unit.texi
 
-@node zeilberger, Function and Variable Index, unit, Top
+@node zeilberger-pkg, Указатель функций и переменных, unit-pkg, Top
 @chapter zeilberger
 @include zeilberger.texi
 
-@node Function and Variable Index,  , zeilberger, Top
-@chapter Indices
+@node Указатель функций и переменных,  , zeilberger-pkg, Top
+@chapter Указатель функций и переменных
 @include Indices.texi
 
 @c end includes

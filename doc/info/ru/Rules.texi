@@ -788,7 +788,7 @@ bb aa partitions `product'
 работают как матчфиксные операторы, однако не обрабатываются
 синтаксическим анализатором Maxima как таковые.
 
-Функция @mcode{matchfix} вычисляет свои аргументы.
+Функция @code{matchfix} вычисляет свои аргументы.
 Функция @code{matchfix} возвращает свой первый аргумент @var{ldelimiter}.
 @c HOW TO TAKE AWAY THE MATCHFIX PROPERTY ??
 

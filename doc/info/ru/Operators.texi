@@ -2773,7 +2773,7 @@ reverse(uf))
 
 @c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
 @c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
-См. также @ref{Identifiers}.
+См. также @ref{Идентификаторы}.
 
 @opencatbox
 @category{Функции предикаты}
