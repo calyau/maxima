@@ -1143,11 +1143,16 @@ ignoring dummy variables and array indices."
 		;; When e is a mapatom, substitute v for var and return.
 		(($mapatom e) ($substitute v var e))
 	    ;; Special case mexpt expressions. Decline direct subsitution for 
-		;; extended reals.
+		;; extended reals. 
 		((and (mexptp e) (not (extended-real-p v)))
-		   (setq ee (mapcar #'(lambda(q) (simplimsubst v q)) (cdr e)))
-		   (if (or (off-negative-real-axisp (car ee)) (integerp (cadr ee)))
-		   	     (ftake 'mexpt (car ee) (cadr ee)) nil))
+		   (let ((x (simplimsubst v (second e)))
+		   		 (n (simplimsubst v (third e))))
+		   ;; Decline direct substitution (DS) for 0^negative. Also decline
+		   ;; DS when x is on the negative real axis and n isn't an integer.
+		   ;; Additionally, we require that DS is OK for both x & n.
+		   (if (and x n (not (and (zerop2 x) (eq t (mgqp 0 n)))) ; not 0^negative
+		            (or (off-negative-real-axisp x) (integerp n)))
+		   	     (ftake 'mexpt x n) nil)))
         ;; Special case product and sum expressions. Again, we decline direct 
 		;; subsitution for extended reals. 
         ((and (or (mplusp e) (mtimesp e)) (not (extended-real-p v)))
@@ -1164,24 +1169,28 @@ ignoring dummy variables and array indices."
 		  (let ((w (simplimsubst v (cadr e))))
 		    (if (and w (off-negative-real-axisp w)) (ftake '%log w) nil))) 
 		;; Special case %cos and %sin expressions--we could special case others.
+		;; The lenient-realp check declines direct substitution for complex arguments--
+		;; this check could be relaxed.
 		((and (consp e) (consp (car e)) (or (member (caar e) (list '%cos '%sin)))) 
 		  (let ((op (caar e)))
 			 (setq e (simplimsubst v (second e)))
 		 (if (and e (lenient-realp e) (not (extended-real-p e))) (ftake op e) nil)))
-		;; Don't use direct substituion on expressions whose main operator has
+		;; Don't use direct substitution on expressions whose main operator has
 		;; a simplim%function. 
 	    ((and (consp e) (consp (car e)) (get (caar e) 'simplim%function)) nil)
-		(t	
-	    	(setq ans (no-err-sub (ridofab v) e))
+		;; The function no-err-sub returns true when there is an error
+		((not (eq t (setq ans (no-err-sub (ridofab v) e))))
 	        ;; Previously the condition (zerop2 ans) was (=0 ($radcan ans)). In 
 			;; December 2021, the testsuite + the share testsuite only gives ans = 0,
-			;; making the radcan unneeded.
- 	        (cond ((and (member v '($zeroa $zerob) :test #'eq) (zerop2 ans));
+			;; making the radcan unneeded. 
+ 	        (cond ((and (member v '($zeroa $zerob) :test #'eq) (zerop2 ans))
 	     	  	    (setq ans (behavior e var v))
 	                (cond ((eql ans 1) '$zeroa)
 		                  ((eql ans -1) '$zerob)
-		                  (t nil)))	; behavior can't find direction
-	              (t ans))))))
+		                  (t nil)))  ;behavior can't find direction
+	              (t ans)))
+		;; direct substitution fails, so return nil.		  
+		(t nil))))		  
 
 ;;;returns (cons numerator denominator)
 (defun numden* (e)
@@ -1835,7 +1844,6 @@ ignoring dummy variables and array indices."
 	;; to rootscontract takes care of this case, almost surely there are
 	;; many other limit problems that need more than rootscontract.
     ((mplusp exp) (let (($rootsconmode nil)) ($rootscontract (simplimplus exp))))
-	((mplusp exp) (simplimplus exp))
     ((mtimesp exp)  (simplimtimes (cdr exp)))
     ((mexptp exp)  (simplimexpt (cadr exp) (caddr exp)
 				(limit (cadr exp) var val 'think)
