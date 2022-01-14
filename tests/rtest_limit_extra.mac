@@ -728,7 +728,7 @@ limit((a/x^b + (1-a)/y^b)^(-1/b),b,0);
 
 /* #2706 Limit runs forever, never returning (simplified bug) */
 limit((%e^(-sqrt(-zzz))*(w3*sqrt(-zzz)*%e^(2*sqrt(-zzz))-w3*sqrt(-zzz)))/(2*zzz),zzz,0);
-w3$
+-w3$
 
 /* #2388 wrong limit */
 X : limit(((9*x)^(1/3)-3)/(sqrt(3+x)-sqrt(2*x)),x,3);
