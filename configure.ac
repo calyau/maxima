@@ -695,6 +695,17 @@ AC_ARG_ENABLE(lang-pt_BR,
 AC_SUBST(lang_pt_br)
 AM_CONDITIONAL(LANG_PT_BR, test x$lang_pt_br = xtrue)
 
+AC_ARG_ENABLE(lang-ru,
+	[  --enable-lang-ru             Russian language support],
+     	[case "${enableval}" in
+       		yes) lang_ru=true  ;;
+       		no)  lang_ru=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-lang-ru) ;;
+     	esac],
+	[lang_ru=false])
+
+AM_CONDITIONAL(LANG_RU, test x$lang_ru = xtrue)
+
 dnl Optionally build the windows CHM help files
 dnl default to false as requires win32 and Microsoft HTML Help Workshop
 AC_ARG_ENABLE(chm,
@@ -1238,6 +1249,7 @@ doc/info/ja/include-maxima.texi \
 doc/info/pt/Makefile \
 doc/info/pt/include-maxima.texi \
 doc/info/pt_BR/Makefile \
+doc/info/ru/Makefile \
 doc/intromax/Makefile doc/man/Makefile doc/man/maxima.1 doc/man/ru/Makefile doc/man/ru/maxima.1 doc/man/de/Makefile doc/man/de/maxima.1 \
 doc/share/Makefile interfaces/Makefile interfaces/emacs/Makefile \
 interfaces/emacs/emaxima/Makefile interfaces/emacs/imaxima/Makefile \

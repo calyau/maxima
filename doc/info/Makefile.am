@@ -18,7 +18,11 @@ if LANG_JA
   JA_DIR = ja
 endif
 
-SUBDIRS = $(ES_DIR) $(PT_DIR) $(PT_BR_DIR) $(DE_DIR) $(JA_DIR)
+if LANG_RU
+  RU_DIR = ru
+endif
+
+SUBDIRS = $(ES_DIR) $(PT_DIR) $(PT_BR_DIR) $(DE_DIR) $(JA_DIR) $(RU_DIR)
 
 info_TEXINFOS = #maxima.texi
 maxima_TEXINFOS = include-maxima.texi category-macros.texi Introduction.texi \
