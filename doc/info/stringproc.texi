@@ -1,6 +1,6 @@
 @menu
 * Introduction to String Processing::
-* Input and Output::
+* String Input and Output::
 * Characters::
 * String Processing::
 * Octets and Utilities for Cryptography::
@@ -8,7 +8,7 @@
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node Introduction to String Processing, Input and Output, stringproc-pkg, stringproc-pkg
+@node Introduction to String Processing, String Input and Output, stringproc-pkg, stringproc-pkg
 @section Introduction to String Processing
 
 The package @code{stringproc} contains functions for processing strings 
@@ -118,8 +118,8 @@ finally parsed by @ref{parse_string}.
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node Input and Output, Characters, Introduction to String Processing, stringproc-pkg
-@section Input and Output
+@node String Input and Output, Characters, Introduction to String Processing, stringproc-pkg
+@section String Input and Output
 
 Example: Formatted printing to a file.
 
@@ -667,7 +667,7 @@ GNU/Linux
 
 @c -----------------------------------------------------------------------------
 @c -----------------------------------------------------------------------------
-@node Characters, String Processing, Input and Output, stringproc-pkg
+@node Characters, String Processing, String Input and Output, stringproc-pkg
 @section Characters
 
 Characters are strings of length 1.
