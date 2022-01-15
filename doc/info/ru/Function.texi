@@ -20,8 +20,9 @@
 @section Функции
 @subsection Обычные функции
 
-@opencatbox
-@category{Определение функций} @category{Программирование}
+@opencatbox{Категории:}
+@category{Определение функций}
+@category{Программирование}
 @closecatbox
 
 Для определения функций в Maxima используется оператор @code{:=}.
@@ -304,7 +305,7 @@ block ([x: 1], expr1, ..., exprn)
 (%o3)                       3 (b + a)
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Определение функций}
 @closecatbox
 
@@ -350,7 +351,7 @@ block ([x: 1], expr1, ..., exprn)
                                99
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Применение функций}
 @closecatbox
 
@@ -394,7 +395,7 @@ block ([x: 1], expr1, ..., exprn)
                                99
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Применение функций}
 @closecatbox
 
@@ -409,8 +410,9 @@ block ([x: 1], expr1, ..., exprn)
 
 См.также @code{infolists}.
 
-@opencatbox
-@category{Определение функций} @category{Глобальные переменные}
+@opencatbox{Категории:}
+@category{Определение функций}
+@category{Глобальные переменные}
 @closecatbox
 
 @end defvr
@@ -455,7 +457,7 @@ block ([x: 1], expr1, ..., exprn)
 (%o4)                   <>1, %pi, z - y<>
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Определение функций}
 @closecatbox
 
@@ -546,7 +548,7 @@ Improper name or value in functional position.
 (%o4)                  %i sin(x) + cos(x)
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Применение функций}
 @closecatbox
 
@@ -596,8 +598,9 @@ Improper name or value in functional position.
 Блоки обычно применяются в правых частях определения функций, но могут быть
 использованы и в других местах.
 
-@opencatbox
-@category{Выражения} @category{Программирование}
+@opencatbox{Категории:}
+@category{Выражения}
+@category{Программирование}
 @closecatbox
 
 @end deffn
@@ -608,7 +611,7 @@ Improper name or value in functional position.
 вызывает прерывание Maxima с тем, чтобы пользователь мог исследовать и изменить
 окружение.  Ввод @code{exit;} возобновляет вычисление.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Отладка}
 @closecatbox
 
@@ -641,7 +644,7 @@ Improper name or value in functional position.
 список функций @code{f}, примененных к элементам @code{l}, иначе, @code{g} "ловит" первое
 отрицательное число в @code{l} и "бросает" его вверх.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Программирование}
 @closecatbox
 
@@ -666,7 +669,7 @@ Improper name or value in functional position.
 
 См. также @code{translate}, @code{translate_file} и @code{compile_file}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Трансляция и компиляция}
 @closecatbox
 
@@ -697,7 +700,7 @@ Improper name or value in functional position.
 Оператор кавычка-кавычка @code{'@w{}'} может быть использован
 для их вычисления.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Трансляция и компиляция}
 @closecatbox
 
@@ -816,7 +819,7 @@ Improper name or value in functional position.
 (%o6)             bar(y, x) := sin(x) - cos(y)
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Определение функций}
 @closecatbox
 
@@ -964,7 +967,7 @@ Cannot assign to `baz_quux'.
 (%o6)                       baz_quux
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Трансляция и компиляция}
 @closecatbox
 
@@ -1065,8 +1068,9 @@ Cannot assign to `baz_quux'.
                                 5             10
 @end example
 
-@opencatbox
-@category{Определение функций} @category{Функции вывода}
+@opencatbox{Категории:}
+@category{Определение функций}
+@category{Функции вывода}
 @closecatbox
 
 @end deffn
@@ -1128,8 +1132,9 @@ Lisp функции не включаются в список.
 (%o9)                 [G_1, G_2, G_3, H_1]
 @end example
 
-@opencatbox
-@category{Определение функций} @category{Глобальные переменные}
+@opencatbox{Категории:}
+@category{Определение функций}
+@category{Глобальные переменные}
 @closecatbox
 
 @end defvr
@@ -1156,7 +1161,7 @@ Lisp функции не включаются в список.
 
 @c PROBABLY NEED SOME EXAMPLES HERE
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Определение функций}
 @closecatbox
 
@@ -1289,8 +1294,9 @@ Maxima упрощает возвращаемое @code{funmake} значение
 (%o1)                           1
 @end example
 
-@opencatbox
-@category{Применение функций} @category{Выражения}
+@opencatbox{Категории:}
+@category{Применение функций}
+@category{Выражения}
 @closecatbox
 
 @end deffn
@@ -1476,7 +1482,7 @@ Maxima упрощает возвращаемое @code{funmake} значение
 (%o4)                  z + y + x + %e + 46
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Определение функций}
 @closecatbox
 
@@ -1495,8 +1501,9 @@ Maxima упрощает возвращаемое @code{funmake} значение
 
 @code{local} независима от @code{context}.
 
-@opencatbox
-@category{Определение функций} @category{Программирование}
+@opencatbox{Категории:}
+@category{Определение функций}
+@category{Программирование}
 @closecatbox
 
 @end deffn
@@ -1678,8 +1685,9 @@ x + 99 is equal to x
                             a b + 99
 @end example
 
-@opencatbox
-@category{Применение функций} @category{Глобальные переменные}
+@opencatbox{Категории:}
+@category{Применение функций}
+@category{Глобальные переменные}
 @closecatbox
 
 @end defvr
@@ -1692,7 +1700,7 @@ x + 99 is equal to x
 типы переменных, имеющих значение до вызова @code{mode_declare}.
 @c NEED SOME EXAMPLES HERE.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -1706,7 +1714,7 @@ x + 99 is equal to x
 вызывает ошибку.
 @c NEED SOME EXAMPLES HERE.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -1720,7 +1728,7 @@ x + 99 is equal to x
 предупреждения о ошибках типизации.
 @c NEED SOME EXAMPLES HERE.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -1779,7 +1787,7 @@ mode_declare ([function (f_1, f_2, ...)], fixnum)
 
 Функция @code{modedeclare} является синонимом @code{mode_declare}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Трансляция и компиляция}
 @closecatbox
 
@@ -1812,7 +1820,7 @@ firstnumb (x) ::= buildq ([x], mode_identity (number, first(x)));
 и использовать @code{firstnumb} всякий раз при обращении
 к первому элементу списка чисел.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Трансляция и компиляция}
 @closecatbox
 
@@ -1829,7 +1837,7 @@ firstnumb (x) ::= buildq ([x], mode_identity (number, first(x)));
 
 Функция @code{compfile} устанавливает @code{transcompile: true} на время своей работы.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -1890,7 +1898,7 @@ f (x_1, x_2, ...) := block ([v_1, v_2, ...],
 
 Функция @code{translate} возвращает список транслированных функций.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Трансляция и компиляция}
 @closecatbox
 
@@ -1960,7 +1968,7 @@ Maxima @var{maxima_filename} в Lisp файл @var{lisp_filename}.
 @code{tr_warn_undefined_variable}
 и @code{tr_windy}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Трансляция и компиляция}
 @closecatbox
 
@@ -1972,7 +1980,7 @@ Maxima @var{maxima_filename} в Lisp файл @var{lisp_filename}.
 Если @code{transrun} равна @code{false}, то для всех функций интерпретируемые 
 варианты будут выполняться (если они еще доступны) вместо транслированных.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -1990,7 +1998,7 @@ Maxima @var{maxima_filename} в Lisp файл @var{lisp_filename}.
 
 @code{tr_array_as_ref} не действует если @code{translate_fast_arrays} равна @code{true}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2007,7 +2015,7 @@ Maxima @var{maxima_filename} в Lisp файл @var{lisp_filename}.
 
 Например, выражение @code{g (f, x) := f (x+1)} вызовет предупреждение.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2021,7 +2029,7 @@ Maxima @var{maxima_filename} в Lisp файл @var{lisp_filename}.
 и выводятся в UNLISP файл. 
 Если @code{false}, то сообщения выводятся только в UNLISP файл.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2044,7 +2052,7 @@ Maxima @var{maxima_filename} в Lisp файл @var{lisp_filename}.
 Если ли же он равен @code{false}, то @code{acos(x)} имеет тип @code{float} тогда и тоько тогда,
 когда @code{x} имеет тип @code{float}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2063,7 +2071,7 @@ Maxima @var{maxima_filename} в Lisp файл @var{lisp_filename}.
 отсутствие предупреждений не означает полную совместимость транслированного и
 интерпретируемого кода.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2075,7 +2083,7 @@ Maxima @var{maxima_filename} в Lisp файл @var{lisp_filename}.
 Если @code{tr_numer} равна @code{true}, то для атомов, имеющих свойство @code{numer}, 
 например, @code{%pi}, это свойство принимается во внимание транслятором.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2089,7 +2097,7 @@ Maxima @var{maxima_filename} в Lisp файл @var{lisp_filename}.
 при трансляции формы.  Данный предел установлен для обнаружения
 ошибок макро-расширения и зацикливания оптимизатора.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2102,7 +2110,7 @@ Maxima @var{maxima_filename} в Lisp файл @var{lisp_filename}.
 генерируют формы, которые будут макро-расширены но не скомпилированы в машинный код 
 Lisp компилятором.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2123,7 +2131,7 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 Сравнивая результат трансляции с ожидаемым для данного состояния результатом,
 можно обнаружить ошибки транслятора.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2136,7 +2144,7 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 Печатает список предупреждений, сгенерированных транслятором в процессе текущей
 трансляции.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Трансляция и компиляция}
 @closecatbox
 
@@ -2148,7 +2156,7 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 -- выдает предупреждение в случае вызова функции, который может быть неверным
 из-за неправильных деклараций, сделанных во время трансляции.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2160,7 +2168,7 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 -- выдает предупреждение если встречается FEXPR.  Обычно, FEXPR не должны присутствовать 
 в транслированном коде.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2172,7 +2180,7 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 -- выдает предупреждение при вызове функции @code{meval}.  Вызов @code{meval} означает проблему
 в транслированном коде.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2184,7 +2192,7 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 -- выдает предупреждение, когда переменной присваивается значение, несовместимое
 с ее типом.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2196,7 +2204,7 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 -- управляет тем, когда печатать сообщения о
 необъявленных переменных.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2207,7 +2215,7 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 
 -- печатает предупреждение, когда встречается необъявленная переменная.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2222,7 +2230,7 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 
 -- вызывает печать полезных комментариев и советов по программированию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Переменные и флаги трансляции}
 @closecatbox
 
@@ -2263,7 +2271,7 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 
 Функция @code{compile_file} вычисляет свои аргументы.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Трансляция и компиляция}
 @closecatbox
 
@@ -2279,7 +2287,7 @@ tr_function_call_default, tr_array_as_ref,tr_numer]
 Если транслятор не знает, что @code{fn} будет Lisp функцией, то
 генерируется код @code{(MFUNCTION-CALL fn arg1 arg2 ...)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Трансляция и компиляция}
 @closecatbox
 

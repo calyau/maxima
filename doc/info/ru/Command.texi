@@ -140,8 +140,9 @@
 (%o2)                          - 1
 @end example
 
-@opencatbox
-@category{Вычисление} @category{Операторы}
+@opencatbox{Категории:}
+@category{Вычисление}
+@category{Операторы}
 @closecatbox
 @end deffn
 
@@ -335,8 +336,9 @@
                     3    3    2    2    1    1
 @end example
 
-@opencatbox
-@category{Вычисление} @category{Операторы}
+@opencatbox{Категории:}
+@category{Вычисление}
+@category{Операторы}
 @closecatbox
 @end deffn
 
@@ -350,7 +352,7 @@
 функции, переменной, массива и т.п.
 Данная функция может иметь любое число парных аргументов.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 @end deffn
@@ -369,8 +371,9 @@
 @c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
 @c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
-@opencatbox
-@category{Отладка} @category{Глобальные флаги}
+@opencatbox{Категории:}
+@category{Отладка}
+@category{Глобальные флаги}
 @closecatbox
 @end defvr
 
@@ -568,7 +571,7 @@ Solution
 (%o11)                               true
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Вычисление}
 @closecatbox
 @end deffn
@@ -673,8 +676,9 @@ Solution
 (%o12)                         YES
 @end example
 
-@opencatbox
-@category{Флаги вычисления} @category{Флаги и переменные упрощения}
+@opencatbox{Категории:}
+@category{Флаги вычисления}
+@category{Флаги и переменные упрощения}
 @closecatbox
 @end defvr
 
@@ -776,7 +780,7 @@ Solution
 (%o15)                      G(F(cc))
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Флаги вычисления}
 @closecatbox
 @end defvr
@@ -789,7 +793,7 @@ Solution
 аргумента @code{ev}.  Разумеется, выражения вроде
 @code{ev (X, X=X+1, infeval)} приводят к бесконечному циклу.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Флаги вычисления}
 @closecatbox
 @end defvr
@@ -864,8 +868,10 @@ Solution
 @code{kill} всегда возвращает @code{done} даже если аргументы не имели
 значения.
 
-@opencatbox
-@category{Вычисление} @category{Управление сессией} @category{Работа в консоли}
+@opencatbox{Категории:}
+@category{Вычисление}
+@category{Управление сессией}
+@category{Работа в консоли}
 @closecatbox
 @end deffn
 
@@ -907,8 +913,10 @@ Solution
 
 См. также @code{inchar}, @code{outchar}, @code{linechar} и @code{infolists}.
 
-@opencatbox
-@category{Функции вывода} @category{Флаги и переменные вывода} @category{Работа в консоли}
+@opencatbox{Категории:}
+@category{Функции вывода}
+@category{Флаги и переменные вывода}
+@category{Работа в консоли}
 @closecatbox
 @end deffn
 
@@ -917,8 +925,9 @@ Solution
 Порядковый номер текущей пары входного и результирующего выражений.
 
 
-@opencatbox
-@category{Флаги и переменные вывода} @category{Работа в консоли}
+@opencatbox{Категории:}
+@category{Флаги и переменные вывода}
+@category{Работа в консоли}
 @closecatbox
 @end defvr
 
@@ -930,8 +939,10 @@ Solution
 пользователем вне зависимости от того имеет ли в данный момент
 переключатель значение по умолчанию или нет.
 
-@opencatbox
-@category{Глобальные переменные} @category{Управление сессией} @category{Работа в консоли}
+@opencatbox{Категории:}
+@category{Глобальные переменные}
+@category{Управление сессией}
+@category{Работа в консоли}
 @closecatbox
 @end defvr
 
@@ -959,8 +970,9 @@ Solution
 
 См. также @code{batch}, @code{load} и @code{labels}.
 
-@opencatbox
-@category{Глобальные флаги} @category{Управление сессией}
+@opencatbox{Категории:}
+@category{Глобальные флаги}
+@category{Управление сессией}
 @closecatbox
 @end defvr
 
@@ -974,8 +986,10 @@ Solution
 названия опции и хочет быть уверен, что он переопределил
 значение правильной переменной.
 
-@opencatbox
-@category{Глобальные флаги} @category{Управление сессией} @category{Работа в консоли}
+@opencatbox{Категории:}
+@category{Глобальные флаги}
+@category{Управление сессией}
+@category{Работа в консоли}
 @closecatbox
 @end defvr
 
@@ -1036,8 +1050,9 @@ Solution
 например @code{playback ([5, 10], grind, time, slow)}.
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
 
-@opencatbox
-@category{Функции вывода} @category{Работа в консоли}
+@opencatbox{Категории:}
+@category{Функции вывода}
+@category{Работа в консоли}
 @closecatbox
 @end deffn
 
@@ -1054,8 +1069,9 @@ Solution
 отображены другим способом, например для
 @code{atvalue}, @code{atomgrad}, @code{gradef} и @code{matchdeclare}.
 
-@opencatbox
-@category{Факты и выводы} @category{Функции вывода}
+@opencatbox{Категории:}
+@category{Факты и выводы}
+@category{Функции вывода}
 @closecatbox
 @end deffn
 
@@ -1066,8 +1082,9 @@ Solution
 @code{playback (slow)} и диалога прерывания Maxima (break loop)
 (см. @code{break}).
 
-@opencatbox
-@category{Глобальные переменные} @category{Работа в консоли}
+@opencatbox{Категории:}
+@category{Глобальные переменные}
+@category{Работа в консоли}
 @closecatbox
 @end defvr
 
@@ -1083,7 +1100,7 @@ Solution
 тогда нажатие @code{control-C} запускает Lisp отладчик.
 См. также @code{debugging}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Работа в консоли}
 @closecatbox
 @end deffn
@@ -1109,7 +1126,7 @@ Solution
 Функция @code{remfunction} не применима к функциям массивам и переменным с индексом,
 к этим типам функций применима @code{remarray}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Определение функций}
 @closecatbox
 @end deffn
@@ -1126,7 +1143,7 @@ Lisp макрос @code{defmvar} добавляет переменные в эт
 некоторые, определенные с помощью @code{defmvar} переменные, не
 являются глобальными переменными или опциями.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Управление сессией}
 @closecatbox
 @end deffn
@@ -1143,8 +1160,9 @@ Lisp макрос @code{defmvar} добавляет переменные в эт
 
 См. также @code{timer}.
 
-@opencatbox
-@category{Флаги и переменные вывода} @category{Отладка}
+@opencatbox{Категории:}
+@category{Флаги и переменные вывода}
+@category{Отладка}
 @closecatbox
 @end defvr
 
@@ -1157,7 +1175,7 @@ Lisp макрос @code{defmvar} добавляет переменные в эт
 Этот механизм может быть полезен при работе с пакетами для того, чтобы
 иметь возможность проверять какие опции пакета загружены.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 @end deffn
@@ -1168,7 +1186,7 @@ Lisp макрос @code{defmvar} добавляет переменные в эт
 Lisp функция @code{(to-maxima)} возвращает на уровень командной
 строки Maxima.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Работа в консоли}
 @closecatbox
 @end deffn
@@ -1223,7 +1241,7 @@ Examples:
 
 See also @ref{eval_string}.
 
-@opencatbox{Categories:}
+@opencatbox{Категории:}
 @category{Debugging}
 @category{Evaluation}
 @closecatbox
@@ -1238,8 +1256,9 @@ See also @ref{eval_string}.
 Этот список состоит из символов, которым было присвоено значение при
 помощи операторов @code{:}, @code{::} или @code{:=}.
 
-@opencatbox
-@category{Вычисление} @category{Глобальные переменные} 
+@opencatbox{Категории:}
+@category{Вычисление}
+@category{Глобальные переменные} 
 @closecatbox
 @end defvr
 

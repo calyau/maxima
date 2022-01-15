@@ -32,8 +32,10 @@
 
 Для работы программы требуется Gnuplot 4.2.
 
-@opencatbox
-@category{Графика} @category{Пакеты библиотеки share} @category{Пакет draw}
+@opencatbox{Категории:}
+@category{Графика}
+@category{Пакеты библиотеки share}
+@category{Пакет draw}
 @closecatbox
 
 
@@ -64,7 +66,7 @@
 
 См. @code{yrange} и @code{zrange}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -94,7 +96,7 @@
 
 См. @code{xrange} и @code{zrange}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -125,7 +127,7 @@
 
 См. @code{xrange} и @code{yrange}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -151,7 +153,7 @@
 
 См. @code{logy} и @code{logz}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -177,7 +179,7 @@
 
 См. @code{logx} и @code{logz}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -203,7 +205,7 @@
 
 См. @code{logx} и @code{logy}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -263,7 +265,7 @@ End of animation sequence
 
 См. @code{file_name}, @code{pic_width}, @code{pic_height} и @code{delay}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -287,7 +289,7 @@ End of animation sequence
              explicit(exp(u),u,-2,2))$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -312,7 +314,7 @@ End of animation sequence
              title = "Exponential function")$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -340,7 +342,7 @@ End of animation sequence
 
 См. @code{ylabel} и @code{zlabel}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -368,7 +370,7 @@ End of animation sequence
 
 См. @code{xlabel} и @code{zlabel}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -397,7 +399,7 @@ End of animation sequence
 
 См. @code{xlabel} и @code{ylabel}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -475,7 +477,7 @@ End of animation sequence
 
 См. @code{ytics} и @code{ztics}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -490,7 +492,7 @@ End of animation sequence
 
 См. @code{xtics} для полного описания.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -505,7 +507,7 @@ End of animation sequence
 
 См. @code{xtics} для полного описания.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -519,7 +521,7 @@ End of animation sequence
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -533,7 +535,7 @@ End of animation sequence
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -547,7 +549,7 @@ End of animation sequence
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -562,7 +564,7 @@ End of animation sequence
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -576,7 +578,7 @@ End of animation sequence
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -590,7 +592,7 @@ End of animation sequence
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -616,7 +618,7 @@ End of animation sequence
 
 См. @code{xaxis_width}, @code{xaxis_type} и @code{xaxis_color}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -644,7 +646,7 @@ End of animation sequence
 
 См. @code{xaxis}, @code{xaxis_type} и @code{xaxis_color}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -672,7 +674,7 @@ End of animation sequence
 
 См. @code{xaxis}, @code{xaxis_width} и @code{xaxis_color}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -700,7 +702,7 @@ End of animation sequence
 
 См. @code{xaxis}, @code{xaxis_width} и @code{xaxis_type}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -727,7 +729,7 @@ End of animation sequence
 
 См. @code{yaxis_width}, @code{yaxis_type} и @code{yaxis_color}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -755,7 +757,7 @@ End of animation sequence
 
 См. @code{yaxis}, @code{yaxis_type} и @code{yaxis_color}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -783,7 +785,7 @@ End of animation sequence
 
 См. @code{yaxis}, @code{yaxis_width} и @code{yaxis_color}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -811,7 +813,7 @@ End of animation sequence
 
 См. @code{yaxis}, @code{yaxis_width} и @code{yaxis_type}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -840,7 +842,7 @@ End of animation sequence
 
 См. @code{zaxis_width}, @code{zaxis_type} и @code{zaxis_color}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -870,7 +872,7 @@ End of animation sequence
 
 См. @code{zaxis}, @code{zaxis_type} и @code{zaxis_color}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -899,7 +901,7 @@ End of animation sequence
 
 См. @code{zaxis}, @code{zaxis_width} и @code{zaxis_color}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -929,7 +931,7 @@ End of animation sequence
 
 См. @code{zaxis}, @code{zaxis_width} и @code{zaxis_type}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -958,7 +960,7 @@ End of animation sequence
 
 См. @code{rot_horizontal}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -988,7 +990,7 @@ End of animation sequence
 
 См. @code{rot_vertical}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1004,7 +1006,7 @@ End of animation sequence
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1035,7 +1037,7 @@ End of animation sequence
              user_preamble="set terminal dumb")$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1063,7 +1065,7 @@ End of animation sequence
 
 См. @code{terminal}, @code{pic_width} и @code{pic_height}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1097,7 +1099,7 @@ End of animation sequence
 
 См. @code{terminal}, @code{pic_width} и @code{pic_height}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1123,7 +1125,7 @@ End of animation sequence
 
 См. @code{terminal}, @code{file_name} и @code{pic_height}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1151,7 +1153,7 @@ End of animation sequence
 
 См. @code{terminal}, @code{file_name} и @code{pic_width}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1180,7 +1182,7 @@ End of animation sequence
 
 См. @code{terminal}, @code{file_name} и @code{eps_height}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1209,7 +1211,7 @@ End of animation sequence
 
 См. @code{terminal}, @code{file_name} и @code{eps_width}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1236,7 +1238,7 @@ End of animation sequence
 
 См. @code{axis_left},  @code{axis_top}, @code{axis_right} и @code{axis_3d}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1262,7 +1264,7 @@ End of animation sequence
 
 См. @code{axis_bottom},  @code{axis_top}, @code{axis_right} и @code{axis_3d}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1288,7 +1290,7 @@ End of animation sequence
 
 См. @code{axis_bottom},  @code{axis_left}, @code{axis_right} и @code{axis_3d}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1314,7 +1316,7 @@ End of animation sequence
 
 См. @code{axis_bottom},  @code{axis_left}, @code{axis_top} и @code{axis_3d}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1341,7 +1343,7 @@ End of animation sequence
 
 См. @code{axis_bottom},  @code{axis_left}, @code{axis_top} и @code{axis_right} для двух измерений.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1400,7 +1402,7 @@ End of animation sequence
 
 См. @code{colorbox}. 
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1430,7 +1432,7 @@ End of animation sequence
 
 См. @code{palette}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1456,7 +1458,7 @@ End of animation sequence
              explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1488,7 +1490,7 @@ End of animation sequence
         points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1543,7 +1545,7 @@ End of animation sequence
              points([[1,9],[5,9],[9,9]]) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1585,7 +1587,7 @@ End of animation sequence
              points([[1,3],[5,3],[9,3]]) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1628,7 +1630,7 @@ End of animation sequence
 
 См. @code{fill_color} и @code{explicit}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1658,7 +1660,7 @@ End of animation sequence
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1690,7 +1692,7 @@ End of animation sequence
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1720,7 +1722,7 @@ End of animation sequence
 
 См. @code{head_length}, @code{head_angle} и @code{head_type}. 
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1752,7 +1754,7 @@ End of animation sequence
 
 См. @code{head_both}, @code{head_angle} и @code{head_type}. 
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1796,7 +1798,7 @@ End of animation sequence
 
 См. @code{head_both}, @code{head_length} и @code{head_type}. 
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1829,7 +1831,7 @@ End of animation sequence
 
 См. @code{head_both}, @code{head_angle} и @code{head_length}. 
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1858,7 +1860,7 @@ End of animation sequence
              vector([0,3],[5,2]))$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1892,7 +1894,7 @@ End of animation sequence
 
 См. @code{label_orientation} и @code{color}. 
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1927,7 +1929,7 @@ End of animation sequence
 
 См. @code{label_alignment} и @code{color}. 
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1982,7 +1984,7 @@ End of animation sequence
 
 См. @code{fill_color}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -1997,7 +1999,7 @@ End of animation sequence
 
 См. @code{color} для способа задания цвета.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2013,7 +2015,7 @@ End of animation sequence
 
 См. @code{bars} для примеров.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2051,7 +2053,7 @@ End of animation sequence
 
 См. @code{line_type}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2088,7 +2090,7 @@ End of animation sequence
 
 См. @code{line_width}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2120,7 +2122,7 @@ End of animation sequence
              ellipse(0,0,4,2,180,180) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2135,7 +2137,7 @@ End of animation sequence
 
 Эта опция влияет только на двумерные @code{explicit} функции.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2171,7 +2173,7 @@ End of animation sequence
              explicit(cos(x),x,0,10) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2203,7 +2205,7 @@ End of animation sequence
 
 См. @code{yv_grid}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2235,7 +2237,7 @@ End of animation sequence
 
 См. @code{xu_grid}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2261,7 +2263,7 @@ End of animation sequence
                 explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2313,7 +2315,7 @@ End of animation sequence
              surface_hide   = true) $
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2382,7 +2384,7 @@ End of animation sequence
 
 См. @code{contour}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2410,7 +2412,7 @@ End of animation sequence
 (%i4) draw(scene1, scene2, columns = 2)$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2425,7 +2427,7 @@ End of animation sequence
 
 Эта опция влияет только на объекты типа @code{implicit}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2440,7 +2442,7 @@ End of animation sequence
 
 Эта опция влияет только на объекты типа @code{implicit}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2453,7 +2455,7 @@ End of animation sequence
 @code{x_voxel} есть число вокселей в направлении x, используемых в
 @i{алгоритме марширующих кубов}, реализованном лоя трехмерных @code{implicit} объектов.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2465,7 +2467,7 @@ End of animation sequence
 @code{y_voxel} есть число вокселей в направлении y, используемых в
 @i{алгоритме марширующих кубов}, реализованном лоя трехмерных @code{implicit} объектов.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2477,7 +2479,7 @@ End of animation sequence
 @code{z_voxel} есть число вокселей в направлении z, используемых в
 @i{алгоритме марширующих кубов}, реализованном лоя трехмерных @code{implicit} объектов.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2510,7 +2512,7 @@ End of animation sequence
 
 Для того, чтобы использовать эту функцию, ее следует загрузить командой @code{load(draw)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2547,7 +2549,7 @@ End of animation sequence
 
 Для того, чтобы использовать эту функцию, ее следует загрузить командой @code{load(draw)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2636,7 +2638,7 @@ End of animation sequence
          points(args(submatrix (s2, 2, 3))) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2669,7 +2671,7 @@ End of animation sequence
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2706,7 +2708,7 @@ End of animation sequence
              yrange      = [-3,4.5] )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2743,7 +2745,7 @@ End of animation sequence
        xaxis = true);
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2785,7 +2787,7 @@ End of animation sequence
              yrange      = [2,9] )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2834,7 +2836,7 @@ End of animation sequence
              label(["DOWN 1",2,0,-3]) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2887,7 +2889,7 @@ End of animation sequence
              vector([0,0,0],[1,1,-2]/sqrt(6)) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -2945,7 +2947,7 @@ End of animation sequence
 
 См. @code{filled_func} по поводу функций с заполнением.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3003,7 +3005,7 @@ End of animation sequence
         surface_hide=true);
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3036,7 +3038,7 @@ End of animation sequence
              polar(10/theta,theta,1,10*%pi) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3063,7 +3065,7 @@ End of animation sequence
 (%i2) draw3d(spherical(1,a,0,2*%pi,z,0,%pi))$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3090,7 +3092,7 @@ End of animation sequence
 (%i2) draw3d(cylindrical(1,z,-2,2,az,0,2*%pi))$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3140,7 +3142,7 @@ End of animation sequence
              title = "Surface & curves" )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3244,7 +3246,7 @@ End of animation sequence
 По ссылке URL @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image}
 находятся более развернутые примеры.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3262,7 +3264,7 @@ End of animation sequence
 
 См. @code{geomap}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3411,7 +3413,7 @@ End of animation sequence
 См. @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/geomap}
 для более сложных примеров.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3453,7 +3455,7 @@ End of animation sequence
                            u, 0, 13*%pi, v, -%pi, %pi) )$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3519,8 +3521,9 @@ End of animation sequence
 
 См. @code{gr2d}, @code{gr3d}, @code{draw2d} и @code{draw3d}.
 
-@opencatbox
-@category{Пакет draw} @category{Вывод файлов}
+@opencatbox{Категории:}
+@category{Пакет draw}
+@category{Вывод файлов}
 @closecatbox
 
 @end deffn
@@ -3536,8 +3539,9 @@ End of animation sequence
 
 См. также @code{draw} и @code{gr2d}.
 
-@opencatbox
-@category{Пакет draw} @category{Вывод файлов}
+@opencatbox{Категории:}
+@category{Пакет draw}
+@category{Вывод файлов}
 @closecatbox
 
 @end deffn
@@ -3554,8 +3558,9 @@ End of animation sequence
 
 См. также @code{draw} и @code{gr3d}.
 
-@opencatbox
-@category{Пакет draw} @category{Вывод файлов}
+@opencatbox{Категории:}
+@category{Пакет draw}
+@category{Вывод файлов}
 @closecatbox
 
 @end deffn
@@ -3603,7 +3608,7 @@ End of animation sequence
 (%o2)            picture(level, 2, 2, @{Array:  #(0 0 54 3)@})
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3614,8 +3619,9 @@ End of animation sequence
 Возвращает @code{true}, если аргумент является правильно сформированной картиной,
 и @code{false} в противном случае.
 
-@opencatbox
-@category{Пакет draw} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Пакет draw}
+@category{Функции предикаты}
 @closecatbox
 
 @end deffn
@@ -3624,8 +3630,9 @@ End of animation sequence
 @deffn  {Функция} picture_equalp (@var{x},@var{y})
 Возвращает @code{true}, если картины совпадают, и @code{false} в противном случае.
 
-@opencatbox
-@category{Пакет draw} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Пакет draw}
+@category{Функции предикаты}
 @closecatbox
 
 @end deffn
@@ -3661,7 +3668,7 @@ End of animation sequence
               @{Array:  #(3 54 123 2 23 82 7 73 45 255 0 33)@})
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3688,7 +3695,7 @@ End of animation sequence
 (%o6)           picture(level, 2, 2, @{Array:  #(54 23 73 0)@})
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3698,7 +3705,7 @@ End of animation sequence
 @deffn  {Функция} negative_picture (@var{pic})
 Возвращает негатив картины (@var{уровней} или @var{rgb}).
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3709,7 +3716,7 @@ End of animation sequence
 Преобразует @var{rgb} картину в картину @var{уровней}
 усреднением красного, зеленого и синего каналов.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3720,7 +3727,7 @@ End of animation sequence
 Возвращает пиксел из картины. Координаты @var{x} и @var{y} должны быть от 0 до
 @code{width-1} и @code{height-1} соответственно.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3730,7 +3737,7 @@ End of animation sequence
 @deffn  {Функция} read_xpm (@var{xpm_file})
 Читает файл в формате xpm и возвращает объект типа картина.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3763,7 +3770,7 @@ End of animation sequence
 (%i4) draw2d(geomap(%))$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3786,7 +3793,7 @@ End of animation sequence
 (%i4) numbered_boundaries(european_borders)$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3849,7 +3856,7 @@ End of animation sequence
 (%i8) draw2d(Bhutan_polygon)$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3869,7 +3876,7 @@ End of animation sequence
 (%i4) apply(draw2d, %)$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 
@@ -3894,7 +3901,7 @@ End of animation sequence
 (%i6) apply(draw2d, %)$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет draw}
 @closecatbox
 

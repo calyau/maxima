@@ -126,8 +126,10 @@ y;
 
 @end example
 
-@opencatbox
-@category{Тензоры} @category{Пакеты библиотеки share} @category{Пакет ctensor}
+@opencatbox{Категории:}
+@category{Тензоры}
+@category{Пакеты библиотеки share}
+@category{Пакет ctensor}
 @closecatbox
 
 @node Функции и переменные пакета ctensor,  , Введение в пакет ctensor, Пакет ctensor
@@ -141,7 +143,7 @@ y;
 и позволяет пользователю ввести метрику интерактивно.
 См. @code{ctensor} для более подробного описания.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -167,7 +169,7 @@ y;
 вычисляются матрица @code{fr} и обратная метрика @code{ufg}
 относительно заданного базиса.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -302,7 +304,7 @@ y;
 или @code{lg} или @code{lfg} и @code{fri}, в зависимости от значения
 @code{cframe_flag}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -316,7 +318,7 @@ y;
 ключей, в том числе: размерность многообразия, @code{dim},
 устанавливается равной 4, а метрика устанавливается равной метрике Лоренца.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -380,7 +382,7 @@ y;
 отображаются.  Массив @code{mcs[i,j,k]} определен таким образом,
 что последний индекс является контравариантным.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -391,7 +393,7 @@ y;
 Если аргумент @var{dis} равен @code{true}, то на экран выводится печать
 результатов вычисления ненулевых компонент тензора.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -407,7 +409,7 @@ y;
 При @code{ricci(false)} просто вычисляется массив @code{uric[i,j]}
 без печати на экран.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -416,7 +418,7 @@ y;
 Возвращает значение скалярной кривизны, получаемое
 сверткой тензора кривизны Риччи.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -432,7 +434,7 @@ y;
 результирующих компонент.  Если @code{ratfac} равен @code{true}
 тогда компоненты будут автоматически факторизованы.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -445,7 +447,7 @@ y;
 равен  @code{true}, тогда ненулевые компоненты ковариантного тензора
 Эйнштейна распечатываются на экране.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -478,7 +480,7 @@ y;
 вычисляется ковариантный тензор Римана исходя из компонент
 неголономного базиса.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -496,7 +498,7 @@ y;
 
 Информация о порядке следования индексов подробнее освящена в пункте @code{riemann}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -506,7 +508,7 @@ y;
 матрицу @code{uriem[i,j,k,l]}. Результаты вычислений печатаются на
 экране если флаг @var{dis} равен @code{true}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -522,7 +524,7 @@ lriem[i,j,k,l]*uriem[i,j,k,l].
 Поскольку выражение может быть громоздким, то по умолчанию отключено
 автоматическое упрощение результата вычисления инварианта.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -536,7 +538,7 @@ lriem[i,j,k,l]*uriem[i,j,k,l].
 алгебры рациональных чисел; при  @code{ratfac} равном @code{true}
 результат вычислений автоматически факторизуется.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -696,7 +698,7 @@ lriem[i,j,k,l]*uriem[i,j,k,l].
 Данное приближение полезно в пределе слабого поля, вдали от
 гравитационных источников.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -719,7 +721,7 @@ ifb   = ( ifri    - ifri    ) ifr   ifr
    ab         d,e       e,d      a     b
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -756,7 +758,7 @@ np  = (fri  - %i fri ) / sqrt(2)
 
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -784,7 +786,7 @@ np  = (fri  - %i fri ) / sqrt(2)
 перемешиваются результаты вычислений компонент тензоров выполненных в
 различных базисах.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -870,7 +872,7 @@ by Pollney, Skea, and d'Inverno, Class. Quant. Grav. 17 2885-2902 (2000).
 В текущем виде (по состоянию на 19 декабря 2004) код программы протестирован только для некоторых простых
 случаев и может содержать ошибки.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -930,7 +932,7 @@ Maxima поступает, если флаг @code{cnonmet_flag} равен @cod
 
 Вычисляет коэффициенты кручения ранга (2,1) из тензора кручения @var{tr}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -939,7 +941,7 @@ Maxima поступает, если флаг @code{cnonmet_flag} равен @cod
 
 Вычисляет коэффициенты неметричности  ранга  (2,1) из вектора неметричности @var{nm}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -953,7 +955,7 @@ Maxima поступает, если флаг @code{cnonmet_flag} равен @cod
 симметричной  матрицы @var{M}. Пользователь интерактивно запрашивается
 системой о функциях осуществляющих преобразование (прошлое название @code{transform}).
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1009,7 +1011,7 @@ Maxima поступает, если флаг @code{cnonmet_flag} равен @cod
 @end example
 
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1019,7 +1021,7 @@ Maxima поступает, если флаг @code{cnonmet_flag} равен @cod
 задать имя полученному вектору, согласно процедуре проиллюстрированной
 ниже в пункте @code{contragrad}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1056,7 +1058,7 @@ Maxima поступает, если флаг @code{cnonmet_flag} равен @cod
 
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1083,7 +1085,7 @@ Maxima поступает, если флаг @code{cnonmet_flag} равен @cod
                                       r
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1098,7 +1100,7 @@ n = @code{dim}. Если аргументом функции является  @
 ковариантной дивергенции тензора Эйнштейна. Результат вычислений (вектор)
 запоминается в массиве с именем @code{div}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1108,7 +1110,7 @@ n = @code{dim}. Если аргументом функции является  @
 заданной метрики. Результат запоминается в массиве @code{geod[i]}. Если аргумент
  @var{dis} равен @code{true}, тогда на экране печатается результат вычислений.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1122,7 +1124,7 @@ n = @code{dim}. Если аргументом функции является  @
  аргументами, например, @code{bdvac('p(x))}. Результат вычислений
  (компоненты поля ковариантного тензора 2-го ранга) запоминается в @code{bd}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1132,7 +1134,7 @@ n = @code{dim}. Если аргументом функции является  @
 генерирует полевые уравнения Эйлера-Лагранжа для инвариантной плотности
 R^2. Результат запоминается в массиве @code{inv1}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1143,7 +1145,7 @@ R^2. Результат запоминается в массиве @code{inv1}.
 генерирует смешанные полевые уравнения Эйлера-Лагранжа для инвариантной плотности
 @code{ric[i,j]*uriem[i,j]}. Результат запоминается в массиве @code{inv2}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1154,7 +1156,7 @@ R^2. Результат запоминается в массиве @code{inv1}.
 генерирует полевые уравнения биметрической теории Розена.
  Результат запоминается в массиве @code{rosen}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1165,8 +1167,9 @@ R^2. Результат запоминается в массиве @code{inv1}.
 
 Возвращает @code{true} если @var{M} - диагональная матрица (2-х мерный массив).
 
-@opencatbox
-@category{Пакет ctensor} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Пакет ctensor}
+@category{Функции предикаты}
 @closecatbox
 @end deffn
 
@@ -1174,8 +1177,9 @@ R^2. Результат запоминается в массиве @code{inv1}.
 
 Возвращает @code{true} если @var{M} - симметричная матрица (2-х мерный массив).
 
-@opencatbox
-@category{Пакет ctensor} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Пакет ctensor}
+@category{Функции предикаты}
 @closecatbox
 @end deffn
 
@@ -1187,7 +1191,7 @@ R^2. Результат запоминается в массиве @code{inv1}.
 Таким способом можно быстро выявить ненулевые компоненты и оценить
  стратегию упрощения  тензора.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1409,7 +1413,7 @@ riem     = [        0         - -------------         0         0 ]
 
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1418,7 +1422,7 @@ riem     = [        0         - -------------         0         0 ]
 Возвращает новый список состоящий из элементов списка @var{L} с
 удаленным @var{n}-ым элементом.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end deffn
@@ -1432,7 +1436,7 @@ riem     = [        0         - -------------         0         0 ]
 Размерность многообразия, по умолчанию: 4
 Команда  @code{dim: n} переопределяет размерность величине равной @code{n}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1447,7 +1451,7 @@ riem     = [        0         - -------------         0         0 ]
 устанавливается автоматически если при вызове  @code{csetup} была задана
 диагональная метрика.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1458,8 +1462,9 @@ riem     = [        0         - -------------         0         0 ]
 тензора. В настоящее время, @code{ctrgsimp} влияет только на результаты
 вычислений, выполненные  в  тетрадном базисе.
 
-@opencatbox
-@category{Пакет ctensor} @category{Флаги и переменные упрощения}
+@opencatbox{Категории:}
+@category{Пакет ctensor}
+@category{Флаги и переменные упрощения}
 @closecatbox
 @end defvr
 
@@ -1473,7 +1478,7 @@ riem     = [        0         - -------------         0         0 ]
 вычислениях с Лоренцевой тетрадой,  массив @code{lfg} должен иметь
 соответствующую сигнатуру.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1485,7 +1490,7 @@ riem     = [        0         - -------------         0         0 ]
 В свою очередь, коэффициенты кручения, @code{contortion}, вычисляются из
 заданного пользователем тензора кручения @code{tr}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1496,7 +1501,7 @@ riem     = [        0         - -------------         0         0 ]
 связности учитывается неметричность @code{nonmetricity}, которая, сама
 по себе,  вычисляется из заданного пользователем вектора неметричности @code{nm}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1508,7 +1513,7 @@ riem     = [        0         - -------------         0         0 ]
 следующих тензоров: @code{christof}, @code{ricci},
 @code{uricci}, @code{einstein}, и @code{weyl}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1518,7 +1523,7 @@ riem     = [        0         - -------------         0         0 ]
 Переменная ряда Тейлора. Она активируется при @code{ctayswitch} равном
 @code{true}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1528,7 +1533,7 @@ riem     = [        0         - -------------         0         0 ]
 Максимальная ряда Тэйлора. Ее определение влияет на
 вычисления только если @code{ctayswitch} равен @code{true}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1538,7 +1543,7 @@ riem     = [        0         - -------------         0         0 ]
 Центральная точка ряда Тэйлора. Ее определение влияет на
 вычисления только если @code{ctayswitch} равен @code{true}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1548,7 +1553,7 @@ riem     = [        0         - -------------         0         0 ]
 Детерминант метрического тензора @code{lg}. Вычисляется функцией
 @code{cmetric}, когда флаг @code{cframe_flag} равен @code{false}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1557,7 +1562,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Включает рациональное упрощение коэффициентов связности @code{christof}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1569,7 +1574,7 @@ riem     = [        0         - -------------         0         0 ]
 тензора Эйнштейна; если @code{ratfac} равен @code{true}, тогда
 компоненты тензора автоматически факторизуются.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1582,7 +1587,7 @@ riem     = [        0         - -------------         0         0 ]
 если @code{ratfac} равен @code{true}, тогда
 компоненты тензора автоматически факторизуются.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1594,7 +1599,7 @@ riem     = [        0         - -------------         0         0 ]
 если @code{ratfac} равен @code{true}, тогда
 компоненты тензора автоматически факторизуются.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1603,7 +1608,7 @@ riem     = [        0         - -------------         0         0 ]
 Имя ковариантной метрики тетрады. По умолчанию совпадает с Лоренцевой
 метрикой,  имеет сигнатуру (+,+,+,-). Используется когда @code{cframe_flag} равен @code{true}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1612,7 +1617,7 @@ riem     = [        0         - -------------         0         0 ]
 Имя контравариантной метрики тетрады. Вычисляется из @code{lfg}, если
 вызывается функция @code{cmetric} и флаг @code{cframe_flag} равен @code{true}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1624,7 +1629,7 @@ riem     = [        0         - -------------         0         0 ]
 Если @code{cframe_flag} равен @code{true}, @code{riem} вычисляется по
 ковариантным компонентам тензора Римана @code{lriem}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1633,7 +1638,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Ковариантная версия тензора Римана. Вычисляется вызовом функции @code{lriemann}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1642,7 +1647,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Контравариантная версия тензора Римана. Вычисляется вызовом функции @code{uriemann}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1651,7 +1656,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Смешанный тензор Риччи. Вычисляется функцией @code{ricci}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1660,7 +1665,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Контравариантный тензор Риччи. Вычисляется функцией @code{uricci}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1670,7 +1675,7 @@ riem     = [        0         - -------------         0         0 ]
 Метрический тензор. Данный тензор должен (наравне с переменной
 @code{dim}) определен до начала других вычислений.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1679,7 +1684,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Обратный метрический тензор. Вычисляется функцией @code{cmetric}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1688,7 +1693,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Тензор Вейля. Вычисляется функцией @code{weyl}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1697,7 +1702,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Коммутатор (скобка) тетрады, вычисляется функцией @code{frame_bracket}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1706,7 +1711,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Инвариант Кретчмана. Вычисляется функцией @code{rinvariant}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1715,7 +1720,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Нуль-тетрада Ньюмана-Пенроуза. Вычисляется функцией @code{nptetrad}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1737,7 +1742,7 @@ riem     = [        0         - -------------         0         0 ]
                               [  0    0   1  0 ]
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1747,7 +1752,7 @@ riem     = [        0         - -------------         0         0 ]
 Определенный пользователем тензор 3-го ранга, задающий
 кручение. Используется процедурой @code{contortion}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1756,7 +1761,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Вклад кручения в коэффициенты связности, вычисляется из тензора кручения @code{tr} функцией @code{contortion}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1765,7 +1770,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Определенный пользователем  вектор неметричности. Используется функцией @code{nonmetricity}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1774,7 +1779,7 @@ riem     = [        0         - -------------         0         0 ]
 
 Вклад неметричности в связность; вычисляется из @code{nm} функцией @code{nonmetricity}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1784,7 +1789,7 @@ riem     = [        0         - -------------         0         0 ]
 Переменная показывающая, что пакет @code{ctensor} инициализирован. Эти
 установки используются процедурой @code{csetup}, и переопределяются процедурой @code{init_ctensor}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr
@@ -1798,7 +1803,7 @@ riem     = [        0         - -------------         0         0 ]
 назначением нового списка
 @code{ct_coords: [j1, j2, ..., jn]},  j's имена новых координат. Смотри также @code{csetup}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет ctensor}
 @closecatbox
 @end defvr

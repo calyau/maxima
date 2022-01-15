@@ -20,7 +20,7 @@
 Переменная @code{activecontexts} содержит список активных контекстов,
 активированных с помощью @code{activate}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -33,7 +33,7 @@
 при помощи функции @code{activate}, в отличии от контекстов, которые
 являются активными как подконтексты текущего контекста.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -107,7 +107,7 @@
 (%o10)                       unknown
 @end example
  
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -137,7 +137,7 @@
 трактуются как скаляры для всех перечисленных выше операций,
 включая некоммутативное умножение.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -173,7 +173,7 @@
 
 @c NEED EXAMPLES HERE
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -263,7 +263,7 @@ p;
 (%o11)                         neg
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -287,7 +287,7 @@ p;
 
 См. @code{contexts} для общего описания механизма контекстов.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -326,7 +326,7 @@ Maxima нужную некоторым функциям.  Когда мы нах
 @code{supcontext}, @code{killcontext}, @code{activate},
 @code{deactivate}, @code{assume} и @code{forget}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -335,7 +335,7 @@ Maxima нужную некоторым функциям.  Когда мы нах
 @deffn {Функция} deactivate (@var{context_1}, ..., @var{context_n})
 Деактивирует все указанные контексты @var{context_1}, ..., @var{context_n}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -355,7 +355,7 @@ Maxima нужную некоторым функциям.  Когда мы нах
 @code{facts ()} (т.е. без аргументов) отображает все факты
 текущего контекста.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -390,7 +390,7 @@ Maxima "распознает" некоторые математические с
 Существует также список нематематических, системо-зависимых свойств.
 См. @code{status}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -406,7 +406,7 @@ Maxima "распознает" некоторые математические с
 @code{forget (@var{L})}, где @var{L} есть список предикатов,
 удаляет все предикаты из данного списка.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -428,7 +428,7 @@ Maxima "распознает" некоторые математические с
 @code{killcontext} вычисляет свои аргументы.
 @code{killcontext} возвращает @code{done}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -442,7 +442,7 @@ Maxima "распознает" некоторые математические с
 @code{newcontext} вычисляет свои аргумент.
 @code{newcontext} возвращает @var{name}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 
@@ -456,7 +456,7 @@ Maxima "распознает" некоторые математические с
 
 Если @var{context} не указан, тогда подразумевается текущий контекст.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Факты и выводы}
 @closecatbox
 

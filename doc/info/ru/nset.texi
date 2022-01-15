@@ -240,7 +240,7 @@ Function union expects a set, instead found [1,2]
 Раздел @ref{Функции и переменные для работы с множествами} содержит полный список
 функций Maxima, предназначенных для работы с множествами.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -449,7 +449,7 @@ University of Nebraska at Kearney (UNK)).
 
 @end deffn
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -496,7 +496,7 @@ University of Nebraska at Kearney (UNK)).
 (%o1)        [belln(x), belln(sqrt(3)), belln(- 9)]
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -529,7 +529,7 @@ University of Nebraska at Kearney (UNK)).
 (%o4)                           3
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -562,7 +562,7 @@ University of Nebraska at Kearney (UNK)).
 (%o4)              @{[x, - 1], [x, 0], [x, 1]@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -597,7 +597,7 @@ University of Nebraska at Kearney (UNK)).
 (%o3)                  @{5, %pi, b + a, z@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -622,8 +622,9 @@ University of Nebraska at Kearney (UNK)).
 (%o2)                         false
 @end example
 
-@opencatbox
-@category{Множества} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Множества}
+@category{Функции предикаты}
 @closecatbox
 
 @end deffn
@@ -692,7 +693,7 @@ University of Nebraska at Kearney (UNK)).
 (%o4)        @{divisors(a), divisors(b), divisors(c)@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Целые числа}
 @closecatbox
 
@@ -717,8 +718,9 @@ University of Nebraska at Kearney (UNK)).
 (%o2)                         false
 @end example
 
-@opencatbox
-@category{Множества} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Множества}
+@category{Функции предикаты}
 @closecatbox
 
 @end deffn
@@ -740,8 +742,9 @@ University of Nebraska at Kearney (UNK)).
 (%o2)                 [false, false, false]
 @end example
 
-@opencatbox
-@category{Множества} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Множества}
+@category{Функции предикаты}
 @closecatbox
 
 @end deffn
@@ -798,7 +801,7 @@ University of Nebraska at Kearney (UNK)).
 (%o1)              @{@{1, 4, 7@}, @{2, 5@}, @{3, 6@}@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -897,7 +900,7 @@ University of Nebraska at Kearney (UNK)).
 (%o5)                         false
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -928,7 +931,7 @@ University of Nebraska at Kearney (UNK)).
 (%o2)                       @{sqrt(2)@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -1025,8 +1028,9 @@ Wrong number of arguments to mod
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
-@opencatbox
-@category{Множества} @category{Списки}
+@opencatbox{Категории:}
+@category{Множества}
+@category{Списки}
 @closecatbox
 
 @end deffn
@@ -1052,7 +1056,7 @@ Wrong number of arguments to mod
 (%o2)              F(G([a, b, H([c, d, e])]))
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -1082,7 +1086,7 @@ Wrong number of arguments to mod
 (%o2)                      @{a, f([b])@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Списки}
 @closecatbox
 
@@ -1171,7 +1175,7 @@ Wrong number of arguments to mod
 (%o4) @{[2, 2, 2, 2, 2], [3, 3, 2, 2], [5, 3, 2], [5, 5], [7, 3]@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Целые числа}
 @closecatbox
 
@@ -1182,7 +1186,7 @@ Wrong number of arguments to mod
 
 Функция @code{intersect} идентична @code{intersection}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -1225,7 +1229,7 @@ Wrong number of arguments to mod
 (%o8)                          @{@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -1411,7 +1415,7 @@ Warning:  Float to bigfloat conversion of 0.25
 
 @end deffn
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -1473,7 +1477,7 @@ Warning:  Float to bigfloat conversion of 0.25
                               b c d
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Списки}
 @closecatbox
 
@@ -1528,7 +1532,7 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o5)               @{sin(1), sin(2), sin(3)@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -1582,7 +1586,7 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o9)                      @{- 1, 0, 1@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Целые числа}
 @closecatbox
 
@@ -1629,7 +1633,7 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o4)                          10
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Целые числа}
 @closecatbox
 
@@ -1664,7 +1668,7 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o3)              num_distinct_partitions(n)
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Целые числа}
 @closecatbox
 
@@ -1702,7 +1706,7 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o3)                   num_partitions(n)
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Целые числа}
 @closecatbox
 
@@ -1739,7 +1743,7 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o2)/R/              [@{1, x@}, @{y, y + z@}]
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -1770,8 +1774,9 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o2)           @{[a, a, b], [a, b, a], [b, a, a]@}
 @end example
 
-@opencatbox
-@category{Множества} @category{Списки}
+@opencatbox{Категории:}
+@category{Множества}
+@category{Списки}
 @closecatbox
 
 @end deffn
@@ -1816,7 +1821,7 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o6)                         @{@{@}@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -1849,8 +1854,9 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o4)                 [x + 1, y + 2, z + 3]
 @end example
 
-@opencatbox
-@category{Множества} @category{Списки}
+@opencatbox{Категории:}
+@category{Множества}
+@category{Списки}
 @closecatbox
 
 @end deffn
@@ -1915,7 +1921,7 @@ Warning:  Float to bigfloat conversion of 0.25
                                b d
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Списки}
 @closecatbox
 
@@ -1957,7 +1963,7 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o7)                          @{@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -1990,8 +1996,9 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o3)                         false
 @end example
 
-@opencatbox
-@category{Множества} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Множества}
+@category{Функции предикаты}
 @closecatbox
 
 @end deffn
@@ -2021,7 +2028,7 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o3)                @{1, 3, 5, 7, 9, 11, 13@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Списки}
 @closecatbox
 
@@ -2055,8 +2062,9 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o3)                         true
 @end example
 
-@opencatbox
-@category{Множества} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Множества}
+@category{Функции предикаты}
 @closecatbox
 
 @end deffn
@@ -2140,7 +2148,7 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o3)                 @{@{0, 1, 2, 3, 4, 5@}@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -2245,8 +2253,9 @@ Warning:  Float to bigfloat conversion of 0.25
 (%o7)                         true
 @end example
 
-@opencatbox
-@category{Множества} @category{Списки}
+@opencatbox{Категории:}
+@category{Множества}
+@category{Списки}
 @closecatbox
 
 @end deffn
@@ -2335,7 +2344,7 @@ Maxima применяет тождества для @code{stirling1}.
 (%o4)                          n!
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Целые числа}
 @closecatbox
 
@@ -2434,7 +2443,7 @@ Maxima применяет тождества для @code{stirling2}.
 (%o4)                        2  - 1
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Целые числа}
 @closecatbox
 
@@ -2466,7 +2475,7 @@ Maxima применяет тождества для @code{stirling2}.
 (%o2)                      @{2, 8, 14@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -2492,8 +2501,9 @@ Maxima применяет тождества для @code{stirling2}.
 (%o2)                         false
 @end example
 
-@opencatbox
-@category{Множества} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Множества}
+@category{Функции предикаты}
 @closecatbox
 
 @end deffn
@@ -2540,7 +2550,7 @@ Maxima применяет тождества для @code{stirling2}.
 (%o8)                        @{1, z@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -2592,8 +2602,9 @@ Maxima применяет тождества для @code{stirling2}.
 (%o1)               f(f(f(a, b), f(c, d)), e)
 @end example
 
-@opencatbox
-@category{Множества} @category{Списки}
+@opencatbox{Категории:}
+@category{Множества}
+@category{Списки}
 @closecatbox
 
 @end deffn
@@ -2637,7 +2648,7 @@ Maxima применяет тождества для @code{stirling2}.
 (%o8)       @{17, 29, 1729, %e, %i, %pi, a, b, d + c@}
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Множества}
 @closecatbox
 
@@ -2703,8 +2714,9 @@ Maxima применяет тождества для @code{stirling2}.
 (%o3)                 [[[[a, b], c], d], e]
 @end example
 
-@opencatbox
-@category{Множества} @category{Списки}
+@opencatbox{Категории:}
+@category{Множества}
+@category{Списки}
 @closecatbox
 
 @end deffn

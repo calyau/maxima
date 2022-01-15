@@ -18,7 +18,7 @@
 @code{limit}. Это предотвращает зацикливание в случаях вроде 
 @code{limit (cot(x)/csc(x), x, 0)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пределы}
 @closecatbox
 @end defvr
@@ -55,7 +55,7 @@
 Относительно метода см. Wang, P., "Evaluation of Definite Integrals by Symbolic
 Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пределы}
 @closecatbox
 @end deffn
@@ -65,7 +65,7 @@ Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 позволяет избежать ошибок, когда выражение вида @code{limit (f(n)/f(n+1), n, inf)}
 дает 1. Подобные подстановки будут использоваться, если @code{limsubst} равно @code{true}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пределы}
 @closecatbox
 @end defvr
@@ -76,7 +76,7 @@ Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 Вычисляет предел разложения выражения @code{expr} в ряд Тейлора в точке @code{x}
 равной @code{val} с направления @code{dir}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пределы}
 @closecatbox
 @end deffn
@@ -91,7 +91,7 @@ Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 Если значение @code{tlimswitch} равно @code{false} и предел выражения не может быть вычислен
 непосредственно, то @code{limit} возвращает исходное выражение предела невычисленным.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пределы}
 @closecatbox
 @end defvr

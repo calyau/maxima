@@ -72,8 +72,10 @@ LIP6/CNRS Universit@'e Paris VI
 January 20, 1999
 @end smallformat
 
-@opencatbox
-@category{Базис Гребнера} @category{Пакеты библиотеки share} @category{Пакет grobner}
+@opencatbox{Категории:}
+@category{Базис Гребнера}
+@category{Пакеты библиотеки share}
+@category{Пакет grobner}
 @closecatbox
 
 @subsection Реализации и допустимые способы упорядочивания одночленов в пакете grobner
@@ -109,7 +111,7 @@ January 20, 1999
 используется с многочленах и в вычислении базиса Гребнера. 
 Если значение не задано, то будет использовано @code{lex}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -123,7 +125,7 @@ January 20, 1999
 в вычислениях базиса Гребнера. Если значение не задано, то используется общее кольцо выражений @emph{maxima}.
 Если необходимо, значение переключателя может быть установлено равным @code{ring_of_integers}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -135,7 +137,7 @@ January 20, 1999
 Определяет порядок исключения переменных в функциях, основанных на исключении переменных.
 Если значение не задано, то будет использовано @code{lex}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -147,7 +149,7 @@ January 20, 1999
 Определяет порядок сохраняемых переменных в функциях, основанных на исключении переменных.
 Если значение не задано, то будет использовано @code{lex}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -162,7 +164,7 @@ January 20, 1999
 Пользователь должен обеспечить, что заданный порядок исключения
 применим для данного числа исключаемых переменных.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -174,7 +176,7 @@ January 20, 1999
 Если равно @code{true}, то все функции пакета возвращают многочлены в виде списков
 членов с текущим порядком одночленов, а не в виде выражений @emph{maxima}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -185,7 +187,7 @@ January 20, 1999
 
 Если равно @code{true}, то выводится трассировка и отладочная информация.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -203,7 +205,7 @@ January 20, 1999
 
 Определяет алгоритм, используемый для поиска базиса Гребнера.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -216,7 +218,7 @@ January 20, 1999
 Приведение верхнего уровня означает, что алгоритм деления останавливается после первого
 приведения.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -237,7 +239,7 @@ January 20, 1999
 (%o1)                              x  y + x
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -252,7 +254,7 @@ January 20, 1999
 (%o1)                          2 z + x  y - x
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -266,7 +268,7 @@ January 20, 1999
 (%o1)                                  0
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -275,7 +277,7 @@ January 20, 1999
 @deffn {Функция} poly_s_polynomial (@var{poly1}, @var{poly2}, @var{varlist})
 Возвращает S-многочлен (@emph{syzygy polynomial}) двух многочленов @var{poly1} и @var{poly2}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -289,7 +291,7 @@ January 20, 1999
 (%o1)                              5 y + 3 x
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -300,7 +302,7 @@ January 20, 1999
 Подразумевается, что деление возможно, что может быть не всегда верно в случае
 колец не являющихся полями.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -340,7 +342,7 @@ January 20, 1999
 
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -355,7 +357,7 @@ January 20, 1999
 (%o1)                                  0
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -369,7 +371,7 @@ January 20, 1999
 (%o1)                                  7
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -393,7 +395,7 @@ $$c*poly=\sum_{i=1}^{n}({a}_{i}*{polylist}_{i})+r$$
 @math{c*poly=sum(a[i]*polylist[i],i=1...n)+r}.
 @end ifnottex
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -404,7 +406,7 @@ $$c*poly=\sum_{i=1}^{n}({a}_{i}*{polylist}_{i})+r$$
 Предполагается, что деление без остатка возможно.
 Возвращает частное.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -414,7 +416,7 @@ $$c*poly=\sum_{i=1}^{n}({a}_{i}*{polylist}_{i})+r$$
 Функция @code{poly_normal_form} вычисляет нормальную форму многочлена @var{poly} 
 по отношению к множеству многочленов @var{polylist}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -426,7 +428,7 @@ $$c*poly=\sum_{i=1}^{n}({a}_{i}*{polylist}_{i})+r$$
 для любых двух многочленов @math{h1} и @math{h2} из @var{polylist} e
 S-многочлен @math{S(h1,h2)} приводим к 0 по модулю @var{polylist}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -436,7 +438,7 @@ S-многочлен @math{S(h1,h2)} приводим к 0 по модулю @va
 @code{poly_buchberger} применяет алгоритм Бухбергера к списку многочленов
 и возвращает результирующий базис Гребнера.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -485,7 +487,7 @@ h^n \in I \}$.@*
 @code{poly_reduction} приводит список многочленов @var{polylist}, так что каждый
 многочлен полностью приведен по отношению к другим.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -497,7 +499,7 @@ h^n \in I \}$.@*
 т.е. старшие одночлены многочленов из подмножества не делят ни один из
 других старших одночленов других многочленов этого подмножества.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -508,7 +510,7 @@ h^n \in I \}$.@*
 @code{poly_normalize_list} применяет @code{poly_normalize} к каждому многочлену в списке.
 Т.е. делит каждый из многочленов списка @var{polylist} на его старший коэффициент.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -518,7 +520,7 @@ h^n \in I \}$.@*
 Возвращает базис Гребнера идеала, порожденного многочленами @var{polylist}. 
 Зависит от глобальных флагов.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -528,7 +530,7 @@ h^n \in I \}$.@*
 Возвращает приведенный базис Гребнера идеала, порожденного многочленами @var{polylist}. 
 Зависит от глобальных флагов.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -538,8 +540,9 @@ h^n \in I \}$.@*
 @deffn {Функция} poly_depends_p (@var{poly}, @var{var}, @var{varlist})
 @code{poly_depends} проверяет, зависит ли многочлен от переменной @var{var}.
 
-@opencatbox
-@category{Пакет grobner} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Пакет grobner}
+@category{Функции предикаты}
 @closecatbox
 
 @end deffn
@@ -551,7 +554,7 @@ h^n \in I \}$.@*
 @code{poly_elimination_ideal} возвращает базис Гребнера идеала @math{number}-го исключения идеала,
 порожденного списком многочленов (не обязательно образующих базис Гребнера).
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -566,7 +569,7 @@ h^n \in I \}$.@*
 @noindent
 где @math{polylist1} и @math{polylist2} -- два списка многочленов.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -576,7 +579,7 @@ h^n \in I \}$.@*
 
 @code{poly_ideal_intersection} возвращает пересечение двух идеалов.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -586,7 +589,7 @@ h^n \in I \}$.@*
 @deffn {Функция} poly_lcm (@var{poly1}, @var{poly2}, @var{varlist})
 Возвращает наименьший общий множитель многочленов @var{poly1} и @var{poly2}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -595,7 +598,7 @@ h^n \in I \}$.@*
 @deffn {Функция} poly_gcd (@var{poly1}, @var{poly2}, @var{varlist})
 Возвращает наибольший общий делитель многочленов @var{poly1} и @var{poly2}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -614,7 +617,7 @@ h^n \in I \}$.@*
 (%o1)                         false
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -626,8 +629,9 @@ h^n \in I \}$.@*
 в идеале, порожденном @var{polylist2}. 
 Чтобы тест всегда выполнялся, нужно чтобы @var{polylist2} был бы базисом Гребнера.
 
-@opencatbox
-@category{Пакет grobner} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Пакет grobner}
+@category{Функции предикаты}
 @closecatbox
 
 @end deffn
@@ -638,7 +642,7 @@ h^n \in I \}$.@*
 многочленов @var{polylist}, который предполагается базисом Гребнера. 
 Иначе возвращает @code{false}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -661,7 +665,7 @@ I(polylist):poly^inf
 множество многочленов в идеале, порожденном @var{polylist},
 которые не исчезают на многообразии @var{poly}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -684,7 +688,7 @@ I(polylist1):I(polylist2)^inf
 множество многочленов в идеале, порожденном @var{polylist1},
 которые не исчезают на многообразии @var{polylist2}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -707,7 +711,7 @@ I(polylist):poly1^inf:...:polyn^inf
 полученного последовательным насыщением многочленами из списка
 @var{polylist2} идеала, порожденного списком многочленов @var{polylist1}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -726,7 +730,7 @@ $$I(polylist):I(polylist_1)^\infty:...:I(polylist_n)^\infty$$
 I(polylist):I(polylist_1)^inf:...:I(polylist_n)^inf
 @end ifnottex
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -736,7 +740,7 @@ I(polylist):I(polylist_1)^inf:...:I(polylist_n)^inf
 
 @code{poly_saturation_extension} реализует знаменитый трюк Рабиновича.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 
@@ -744,7 +748,7 @@ I(polylist):I(polylist_1)^inf:...:I(polylist_n)^inf
 
 @deffn {Функция} poly_polysaturation_extension (@var{poly}, @var{polylist}, @var{varlist1}, @var{varlist2})
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет grobner}
 @closecatbox
 

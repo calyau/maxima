@@ -41,7 +41,7 @@ END-INFO-DIR-ENTRY
 @end macro
 @end ifinfo
 
-@include ../category-macros.texi
+@include category-macros.texi
 
 @titlepage
 @sp 10

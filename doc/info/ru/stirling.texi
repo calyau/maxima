@@ -57,8 +57,10 @@
 
 Для использования этой функции сначала напишите @code{load("stirling")}.
 
-@opencatbox
-@category{Гамма-функция и факториал} @category{Пакеты библиотеки share} @category{Пакет stirling}
+@opencatbox{Категории:}
+@category{Гамма-функция и факториал}
+@category{Пакеты библиотеки share}
+@category{Пакет stirling}
 @closecatbox
 
 @end deffn
