@@ -138,23 +138,10 @@
 				  ,@(for-eval-then-mquote-simp-argl argl))
 		      ,flag1 ,flag2 ,flag3 ',fn)))))))
 
-;;; This is could be done better on the LISPM
-
 (def%tr $errcatch (form)
-  (let ((form (translate `((mprogn) ,@(cdr form))))
-        (ret (tr-gensym)))
-    `($any . ((lambda (errcatch ,ret)
-                (declare (special errcatch))
-                ;; Very important to declare errcatch special
-                ;; here because merror uses it to figure out if
-                ;; someone is catching an error so it can be
-                ;; signaled in a way that we can catch.
-                (cond ((null (setq ,ret
-                                   (errset ,(cdr form))))
-                       (errlfun1 errcatch)))
-                (cons '(mlist) ,ret))
-              (cons bindlist loclist) nil))))
-
+  (destructuring-bind (mode . body) (translate `((mprogn) ,@(cdr form)))
+    (declare (ignore mode))
+    (cons '$any `(cons '(mlist) (errcatch ,body)))))
 
 ;;; The MODE of a CATCH could either be the MODE of the last of the PROGN
 ;;; or the mode of the THROW. The THROW may be hard to find, so this goes
