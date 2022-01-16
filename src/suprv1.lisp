@@ -804,11 +804,14 @@
 (defmspec $errcatch (form)
   (cons '(mlist) (errcatch (mevaln (cdr form)))))
 
+(defmacro mcatch (form)
+  `(let ((mcatch (cons bindlist loclist)))
+     (prog1
+         (catch 'mcatch (rat-error-to-merror ,form))
+       (errlfun1 mcatch))))
+
 (defmspec $catch (form)
-  (let ((mcatch (cons bindlist loclist)))
-    (prog1
-	(catch 'mcatch (rat-error-to-merror (mevaln (cdr form))))
-      (errlfun1 mcatch))))
+  (mcatch (mevaln (cdr form))))
 
 (defmfun $throw (exp)
   (if (null mcatch) (merror (intl:gettext "throw: not within 'catch'; expression: ~M") exp))

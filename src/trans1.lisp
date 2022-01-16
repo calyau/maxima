@@ -148,12 +148,8 @@
 ;;; on the assumption that the mode of the PROGN is enough to tell.
 
 (def%tr $catch (form)
-  (destructuring-let (((mode . body) (translate `((mprogn) . ,(cdr form)))))
-    `(,mode . ((lambda (mcatch)
-                 (prog1
-                   (catch 'mcatch ,body)
-                   (errlfun1 mcatch)))
-               (cons bindlist loclist)))))
+  (destructuring-bind (mode . body) (translate `((mprogn) . ,(cdr form)))
+    (cons mode `(mcatch ,body))))
 
 (def%tr $throw (form)
   (destructuring-let (((mode . exp) (translate (cadr form))))
