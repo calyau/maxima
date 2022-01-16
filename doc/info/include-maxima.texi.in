@@ -626,7 +626,7 @@ stirling
 
 stringproc
 * Introduction to String Processing::
-* Input and Output::
+* String Input and Output::
 * Characters::
 * String Processing::
 * Octets and Utilities for Cryptography::
