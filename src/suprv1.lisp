@@ -806,7 +806,7 @@
 
 (defmacro mcatch (form)
   `(let ((mcatch (cons bindlist loclist)))
-     (prog1
+     (unwind-protect
          (catch 'mcatch (rat-error-to-merror ,form))
        (errlfun1 mcatch))))
 
