@@ -152,12 +152,8 @@
     (cons mode `(mcatch ,body))))
 
 (def%tr $throw (form)
-  (destructuring-let (((mode . exp) (translate (cadr form))))
-    `(,mode . ((lambda (x)
-		 (when (null mcatch)
-		   (merror (intl:gettext "throw: not within 'catch'; expression: ~M") x))
-		 (throw 'mcatch x))
-	       ,exp))))
+  (destructuring-bind (mode . body) (translate (cadr form))
+    (cons mode `($throw ,body))))
 
 ;;; Makelist is a very sorry FSUBR. All these FSUBRS are just to avoid
 ;;; writing LAMBDA. But lots of users use MAKELIST now. 
