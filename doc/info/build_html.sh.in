@@ -35,24 +35,45 @@ fi
 
 echo "$0: abs_srcdir=@abs_srcdir@, pwd=`pwd`, language=$language, languagedir=$languagedir"
 
+# THIS IS KIND OF TERRIBLE BECAUSE IT DEPENDS ON A CONVENTION ABOUT FILE NAMES IN DOC/INFO/*
+# Assume that per-topic Texinfo files are @include'd in
+# a top-level file. That top-level file is either maxima.texi
+# or include-maxima.texi for all languages at present (January 2022).
+
+if [ -e include-maxima.texi ]
+    then includerfile=include-maxima.texi
+    else includerfile=maxima.texi
+fi
+
+includedfiles=`@AWK@ '/^[[:space:]]*@include/ { print $NF; }' $includerfile`
+
 # If output dir exists, remove it so we start clean
 if [ -d tmp_html ]; then
     rm -rf tmp_html
 fi
 mkdir tmp_html
+
+if [ -e include-maxima.texi ]
+    then cp include-maxima.texi tmp_html
+fi
+
 cd tmp_html
 
-for f in $languagedir/*.texi
+for f in $includedfiles
 do
-  filenamebase=`echo $f | @SED@ -e 's/^.*\///;s/\.texi//'`
+  if [ -e $languagedir/$f ]
+      then g=$languagedir/$f
+      else g=/home/robert/maxima/maxima-code/doc/info/$f
+  fi
+  filenamebase=`echo $g | @SED@ -e 's/^.*\///;s/\.texi//'`
   @SED@ -e 's/^@deffnx*  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: '$filenamebase'\/deffn\/\1}\
 &/' \
         -e 's/^@defvrx*  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: '$filenamebase'\/defvr\/\1}\
 &/' \
         -e 's/^@node  *\([^,]*\).*/@anchor{Item: '$filenamebase'\/node\/\1}\
-&/' $f \
+&/' $g \
   | @AWK@ 'BEGIN { iftex = 0; } /^@iftex/ {iftex = 1;} {if (!iftex) {print;}} /^@end iftex/ {iftex = 0;}' \
-  | @AWK@ '/@anchor/ {if (!(foo[$0])) {foo[$0] = 1; print;}} !/@anchor/' > $(basename $f)
+  | @AWK@ '/@anchor/ {if (!(foo[$0])) {foo[$0] = 1; print;}} !/@anchor/' > $(basename $g)
 done 
 
 catprogname=make-categories.lisp
@@ -112,7 +133,7 @@ fi
 
 # --no-node-files so we don't have thousands of little html files
 # --force -e 10000 because the category stuff causes lots of errors.
-TEXIOPT="--html -c INLINE_CONTENTS=0 -c OUTPUT_ENCODING_NAME=UTF-8 --force -e 10000 --document-lang=$language -I . -I ../.. -I $languagedir --css-include=@abs_srcdir@/manual.css --init-file @abs_srcdir@/texi2html.init"
+TEXIOPT="--html -c INLINE_CONTENTS=0 -c OUTPUT_ENCODING_NAME=UTF-8 --force -e 10000 --document-lang=$language -I . -I $languagedir -I ../.. --css-include=@abs_srcdir@/manual.css --init-file @abs_srcdir@/texi2html.init"
 makeinfo --split=chapter --no-node-files --output="$languagedir" $TEXIOPT maxima.texi 
 makeinfo --no-split --output="$languagedir/maxima_singlepage.html" $TEXIOPT maxima.texi 
 
