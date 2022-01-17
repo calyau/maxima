@@ -20,7 +20,7 @@
 @code{%e} представляет основание натурального логарифма, также известное как число Эйлера.
 Численное значение @code{%e} является числом с плавающей точкой двойной точности 2.718281828459045d0.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Константы}
 @closecatbox
 @end defvr
@@ -32,7 +32,7 @@
 @end ifinfo
 @code{%i} представляет мнимую единицу, @math{sqrt(-1)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Константы}
 @closecatbox
 @end defvr
@@ -41,7 +41,7 @@
 @code{false} -- логическая константа "ложь".
 В Maxima @code{false} представляется значением @code{NIL} в Lisp.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Константы}
 @closecatbox
 @end defvr
@@ -65,7 +65,7 @@
 (%o1)                          ind
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Константы}
 @closecatbox
 @end defvr
@@ -76,7 +76,7 @@
 @end ifinfo
 @code{inf} представляет вещественную положительную бесконечность.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Константы}
 @closecatbox
 @end defvr
@@ -87,7 +87,7 @@
 @end ifinfo
 @code{infinity} представляет комплексную бесконечность.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Константы}
 @closecatbox
 @end defvr
@@ -99,7 +99,7 @@
 @end ifinfo
 @code{minf} представляет вещественную минус (т.е. отрицательную) бесконечность.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Константы}
 @closecatbox
 @end defvr
@@ -178,7 +178,7 @@
 (%o5)                           0
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Константы}
 @closecatbox
 @end defvr
@@ -190,7 +190,7 @@
 @code{%pi} представляет отношение длины окружности к ее диаметру.
 Численное значение @code{%pi} является числом с плавающей точкой двойной точности 3.141592653589793d0.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Константы}
 @closecatbox
 @end defvr
@@ -199,7 +199,7 @@
 @code{true} -- логическая константа "истина".
 В Maxima @code{true} представляется значением @code{T} в Lisp.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Константы}
 @closecatbox
 @end defvr
@@ -223,7 +223,7 @@
 (%o1)                          und
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Константы}
 @closecatbox
 @end defvr

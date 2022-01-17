@@ -104,8 +104,10 @@ dotexptsimp:false;
 данном случае @code{atensimp} не всегда может получить желаемое
 упрощение.
 
-@opencatbox
-@category{Тензоры} @category{Пакеты библиотеки share} @category{Пакет atensor}
+@opencatbox{Категории:}
+@category{Тензоры}
+@category{Пакеты библиотеки share}
+@category{Пакет atensor}
 @closecatbox
 
 
@@ -172,7 +174,7 @@ Cl(3,0).  Вызов @code{init_atensor(pauli)} эквивалентен
 Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 @code{init_atensor(clifford,3,0,1)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет atensor}
 @closecatbox
 
@@ -188,8 +190,9 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 При этом применяются предосторожности, обеспечивающие то,
 что процесс упрощения завершится.
 
-@opencatbox
-@category{Пакет atensor} @category{Упрощающие функции}
+@opencatbox{Категории:}
+@category{Пакет atensor}
+@category{Упрощающие функции}
 @closecatbox
 
 @end deffn
@@ -200,7 +203,7 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 Тип алгебры.  Допустимые значения:  @code{universal}, @code{grassmann},
 @code{clifford}, @code{symmetric}, @code{symplectic} или @code{lie_envelop}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет atensor}
 @closecatbox
 
@@ -213,8 +216,9 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 для того чтобы определить является ли индексированный объект
 допустимым базисным вектором.  См. @code{abasep}.
 
-@opencatbox
-@category{Пакет atensor} @category{Глобальные переменные}
+@opencatbox{Категории:}
+@category{Пакет atensor}
+@category{Глобальные переменные}
 @closecatbox
 
 @end defvr
@@ -225,8 +229,9 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 Значение билинейных форм @code{sf}, @code{af} или
 @code{av}.  Значение по умолчанию -- единичная 3х3 матрица @code{ident(3)}.
 
-@opencatbox
-@category{Пакет atensor} @category{Глобальные переменные}
+@opencatbox{Категории:}
+@category{Пакет atensor}
+@category{Глобальные переменные}
 @closecatbox
 
 @end defvr
@@ -236,8 +241,9 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 
 Символ, используемый для обозначения базисного вектора.
 
-@opencatbox
-@category{Пакет atensor} @category{Глобальные переменные}
+@opencatbox{Категории:}
+@category{Пакет atensor}
+@category{Глобальные переменные}
 @closecatbox
 
 @end defvr
@@ -249,7 +255,7 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 оба аргумента функции являются базисными векторами, и если это так,
 подставляется соответствующее значение из матрицы @code{aform}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет atensor}
 @closecatbox
 
@@ -262,7 +268,7 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 оба аргумента функции являются базисными векторами, и если это так,
 подставляется соответствующее значение из матрицы @code{aform}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет atensor}
 @closecatbox
 
@@ -295,7 +301,7 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
                                        3
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет atensor}
 @closecatbox
 
@@ -309,8 +315,9 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 переменной совпадает с значением @code{asymbol}, индекс имеет
 числовое значение в пределах от 1 до @code{adim}.
 
-@opencatbox
-@category{Пакет atensor} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Пакет atensor}
+@category{Функции предикаты}
 @closecatbox
 
 @end deffn

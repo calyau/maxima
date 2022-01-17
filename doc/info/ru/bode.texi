@@ -60,8 +60,9 @@
 
 Для использования этой функции необходимо сначала выполнить @code{load("bode")}. См. также @code{bode_phase}
 
-@opencatbox
-@category{Графика} @category{Пакет bode}
+@opencatbox{Категории:}
+@category{Графика}
+@category{Пакет bode}
 @closecatbox
 
 @end deffn
@@ -121,8 +122,9 @@
 
 Для использования этой функции необходимо сначала выполнить @code{load("bode")}. См. также @code{bode_gain}
 
-@opencatbox
-@category{Графика} @category{Пакет bode}
+@opencatbox{Категории:}
+@category{Графика}
+@category{Пакет bode}
 @closecatbox
 
 @end deffn

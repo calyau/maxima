@@ -34,7 +34,7 @@
 
 Пример использования см. в @code{ode2}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Дифференциальные уравнения}
 @closecatbox
 @end deffn
@@ -106,8 +106,9 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 
 Если @code{desolve} не может получить решение, возвращается @code{false}.
 
-@opencatbox
-@category{Дифференциальные уравнения} @category{Преобразование Лапласа}
+@opencatbox{Категории:}
+@category{Дифференциальные уравнения}
+@category{Преобразование Лапласа}
 @closecatbox
 @end deffn
 
@@ -121,7 +122,7 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 
 Пример использования см. в @code{ode2}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Дифференциальные уравнения}
 @closecatbox
 @end deffn
@@ -138,7 +139,7 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 
 Пример использования см. в @code{ode2}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Дифференциальные уравнения}
 @closecatbox
 @end deffn
@@ -230,7 +231,7 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Дифференциальные уравнения}
 @closecatbox
 @end deffn

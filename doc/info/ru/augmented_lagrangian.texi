@@ -85,8 +85,10 @@ BFGS с ограничением памяти (LBFGS), являющимся кв
                                  %lambda = [- 1.333337940892525]]
 @end example
 
-@opencatbox
-@category{Численные методы} @category{Пакеты библиотеки share} @category{Пакет augmented_lagrangian}
+@opencatbox{Категории:}
+@category{Численные методы}
+@category{Пакеты библиотеки share}
+@category{Пакет augmented_lagrangian}
 @closecatbox
 
 @end deffn

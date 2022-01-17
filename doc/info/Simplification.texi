@@ -9,46 +9,49 @@
 @c -----------------------------------------------------------------------------
 
 @c -----------------------------------------------------------------------------
-Maxima performs a cycle of actions in response to each new user-typed command. This 
-consists of four steps: reading or "parsing" the input, evaluation, simplification 
-and output. Parsing converts a syntactically valid sequence of typed characters into 
-a data structure to be used for the rest of the operations. Evaluation includes 
-replacing names with their assigned values. Simplification means rewriting an 
-expression to be easier for the user or other programs to understand. Output includes 
-displaying computational results in a variety of different formats and notations.
+Maxima interacts with the user through a cycle of actions called the read-eval-print loop (REPL).
+This consists of three steps: reading and parsing, evaluating and simplifying, 
+and outputing. Parsing converts a syntactically valid sequence of typed characters into 
+a internal data structure. Evaluation
+replaces variable and functions names with their values and simplification rewrites 
+expressions to be easier for the user or other programs to understand. Output 
+displays results in a variety of different formats and notations.
 
-Evaluation and simplification sometimes appear to have similar functionality as they 
-both have the goal of removing "complexity" and system designers have sometimes divided a 
-task so that it is performed partly in each. For example, @code{integrate(x,x)} evaluates 
-the answer as @code{x*x/2}, which is then simplified to @code{x^2/2}.
+Evaluation and simplification sometimes appear to have similar functionality, and
+Maxima uses simplification in many cases where other systems use evaluation.
+For example, arithmetic both on numbers and on symbolic expressions is simplification, not evaluation:
+@code{2+2} simplifies to @code{4}, @code{2+x+x} simplifies to @code{2+2*x}, and
+@code{sqrt(7)^4} simplifies to @code{49}.
+Evaluation and simplification are interleaved.
+For example, @code{factor(integrate(x+1,x)} first calls the built-in function @mref{integrate},
+giving @code{x+x*x*2^-1};
+that simplifies to @code{x+(1/2)*x^2}; this in turn is passed to the @mref{factor} function,
+which returns @code{(x*(x+2))/2}.
 
-Evaluation is always present: it is the consequence of having a programming system with 
-functions, subroutines, variables, values, loops, assignments and so on. In the 
-evaluation step, built-in or user-defined function names are replaced by their definitions, 
-variables are replaced by their values. This is largely the same as activities of a 
+Evaluation is what makes Maxima a programming language: it implements
+functions, subroutines, variables, values, loops, assignments and so on.
+Evaluation replaces built-in or user-defined function names by their definitions and
+variables by their values. This is largely the same as activities of a 
 conventional programming language, but extended to work with symbolic mathematical data. 
-Because of the generality of the mathematics at hand, there are different possible models 
-of evaluation and so the systems has optional "flags" that can steer the process of 
+The system has various optional "flags" which the user can set to control the details of
 evaluation. @xref{Functions and Variables for Evaluation}.
 
-By contrast, the intent of simplification is to maintain the value of an expression 
-while re-formulating its representation to be smaller, simpler to understand, or to 
-conform to particular specifications (like factored, expanded). For
-example, @code{sin(0)} to @code{0} or @code{x+x to 2*x}.
-There are several powerful tools to alter the results
-of simplification, since it is largely in this part of the system that a user can
-incorporate knowledge of newly introduced functions or symbolic notation into Maxima.
+Simplification maintains the value of an expression 
+while re-formulating its form to be smaller, simpler to understand, or to 
+conform to a particular specification (like expanded). For
+example, @code{sin(%pi/2)} to @code{1}, and @code{x+x} to @code{2*x}.
+There are many flags which control simplification. For example,
+with @code{triginverses:true}, @code{atan(tan(x))} does not simplify to @code{x},
+but with @code{triginverses:all}, it does.
 
-Simplification is generally done at four different levels:
+Simplification can be provided in three ways:
 @itemize @bullet
 @item The internal, built-in automated simplifier,
-@item Built-in simplification routines that can be explicitly called by the user
-      at selected places in a program or command sequence,
-@item User-written simplification routines, linked to the simplifier by using
+@item User-written pattern-matching transformations, linked to the simplifier by using
       "tellsimp" or "tellsimpafter" and called automatically,
-@item User-written routines that can be explicitly called by the user at selected 
-      places in a program or command sequence.
+@item User-written simplification routines adding using the @code{simplifying} subsystem.
 @end itemize
+
 The internal simplifier belongs to the heart of Maxima. It is a large and 
 complicated collection of programs, and it has been refined over many years and by 
 thousands of users. Nevertheless, especially if you are trying out novel ideas or 
@@ -68,16 +71,25 @@ the simplifier encounters the respective arithmetic operators in an expression
 tree to be analyzed. 
 
 The structure of the simplifier dates back to 1965, and many hands have worked 
-on it through the years. The structure turns out to be, in modern jargon, data-
-directed, or object-oriented. The program dispatches to the appropriate routine 
+on it through the years. It is data-directed, or object-oriented in the sense that
+it dispatches to the appropriate routine 
 depending on the root of some sub-tree of the expression, recursively. This general
-notion means you can make modifications to the simplification process by very local 
-changes to the program. In many cases it is conceptually straightforward to add an 
-operator and add its simplification routine without disturbing existing code.
+approach means that modifications to simplification are generally localized.
+In many cases it is straightforward to add an 
+operator and its simplification routine without disturbing existing code.
 
-We note that in addition to this general simplifier operating on algebraic 
+Maxima also provides a variety of transformation routines that can change the form of an
+expression, including @mref{factor} (polynomial factorization), @mref{horner}
+(reorganize a polynomial using Horner's rule), @mref{partfrac}
+(rewrite a rational function as partial fractions),
+@mref{trigexpand} (apply the sum formulas for trigonometric functions),
+and so on.
+
+Users can also write routines that change the form of an expression.
+
+Besides this general simplifier operating on algebraic 
 expression trees, there are several other representations of expressions in 
-Maxima which have separate methods and simplifiers. For example, the
+Maxima which have separate methods. For example, the
 @mref{rat} function converts polynomials to vectors of coefficients to
 assist in rapid manipulation of such forms. Other representations include
 Taylor series and the (rarely used) Poisson series.
@@ -104,11 +116,10 @@ expressed in Maxima). However, some aspects of the expression, such as the
 ordering of terms in a sum or product, are made uniform. This is important 
 for the other programs to work properly.
 
-You can set a number of option variables which direct Maxima's processing to 
-favor particular kinds of patterns as being goals. You can even use the most 
-extreme option which is to turn the simplifier off by simp:false. We do not 
-recommend this since many internal routines expect their arguments to be 
-simplified. (About the only time it seems plausible to turn off the simplifier 
+A number of option variables control simplification. Indeed, simplification
+can be turned off entirely using @code{simp:false}. However, many
+internal routines will not operate correctly with @code{simp:false}.
+(About the only time it seems plausible to turn off the simplifier 
 is in the rare case that you want to over-ride a built-in simplification. 
 In that case  you might temporarily disable the simplifier, put in the new 
 transformation via @mrefcomma{tellsimp} and then re-enable the simplifier

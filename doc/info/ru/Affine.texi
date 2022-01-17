@@ -14,8 +14,11 @@
 
 Пакет @code{affine} предназначен для работы с группами многочленов.
 
-@opencatbox
-@category{Многочлены} @category{Базисы Гребнера} @category{Пакеты библиотеки share} @category{Пакет affine}
+@opencatbox{Категории:}
+@category{Многочлены}
+@category{Базисы Гребнера}
+@category{Пакеты библиотеки share}
+@category{Пакет affine}
 @closecatbox
 
 
@@ -36,7 +39,7 @@
 
 Команда @code{load(affine)} загружает эту функцию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end deffn
@@ -60,7 +63,7 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 
 Команда @code{load(affine)} загружает эту функцию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end deffn
@@ -85,7 +88,7 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 
 Команда @code{load(affine)} загружает эту функцию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end deffn
@@ -96,7 +99,7 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 
 Команда @code{load(affine)} загружает эту функцию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end deffn
@@ -107,7 +110,7 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 
 Команда @code{load(affine)} загружает эту функцию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end deffn
@@ -120,7 +123,7 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 
 Команда @code{load(affine)} загружает эту функцию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end deffn
@@ -139,7 +142,7 @@ fast_central_elements ([x, y], 2);
 
 Команда @code{load(affine)} загружает эту функцию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end deffn
@@ -159,7 +162,7 @@ fast_central_elements ([x, y], 2);
 
 Команда @code{load(affine)} загружает эту функцию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end deffn
@@ -170,7 +173,7 @@ fast_central_elements ([x, y], 2);
 
 Команда @code{load(affine)} загружает эту функцию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end deffn
@@ -180,7 +183,7 @@ fast_central_elements ([x, y], 2);
 
 Команда @code{load(affine)} загружает эту функцию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end deffn
@@ -193,7 +196,7 @@ fast_central_elements ([x, y], 2);
 
 Команда @code{load(affine)} загружает эту функцию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end deffn
@@ -205,7 +208,7 @@ fast_central_elements ([x, y], 2);
 
 Команда @code{load(affine)} загружает эту функцию.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end deffn
@@ -258,7 +261,7 @@ fast_central_elements ([x, y], 2);
 
 По умолчанию @code{dotsimp} не собирает числители.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет affine}
 @closecatbox
 @end defvr

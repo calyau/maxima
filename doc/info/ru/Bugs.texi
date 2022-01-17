@@ -38,7 +38,7 @@
 
 @code{run_testsuite} возвращает @code{done}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Отладка}
 @closecatbox
 
@@ -62,8 +62,9 @@
 "rtest14". При этом "rtest14" содержит два заведомо ошибочных теста с
 номерами 57 и 63.
 
-@opencatbox
-@category{Отладка} @category{Глобальные переменные}
+@opencatbox{Категории:}
+@category{Отладка}
+@category{Глобальные переменные}
 @closecatbox
 
 @end defvr
@@ -77,7 +78,7 @@
 
 @code{bug_report} возвращает пустую строку @code{""}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Отладка}
 @closecatbox
 
@@ -88,7 +89,7 @@
 
 @code{build_info} возвращает пустую строку @code{""}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Отладка}
 @closecatbox
 

@@ -37,8 +37,10 @@
 @image{figures/implicit_plot,8cm}
 @end ifnotinfo
 
-@opencatbox
-@category{Графика} @category{Пакеты библиотеки share} @category{Пакет implicit_plot}
+@opencatbox{Категории:}
+@category{Графика}
+@category{Пакеты библиотеки share}
+@category{Пакет implicit_plot}
 @closecatbox
 
 @end deffn

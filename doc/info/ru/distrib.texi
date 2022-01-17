@@ -297,8 +297,10 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для комментариев, сообщений об ошибках и предложений обращайтесь к автору пакета по адресу @var{'mario AT edu DOT xunta DOT es'}.
 
-@opencatbox
-@category{Статистические функции} @category{Пакеты библиотеки share} @category{Пакет distrib}
+@opencatbox{Категории:}
+@category{Статистические функции}
+@category{Пакеты библиотеки share}
+@category{Пакет distrib}
 @closecatbox
 
 
@@ -312,7 +314,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Чтобы использовать эту функцию, ее следует сначала загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -341,7 +343,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 См. также @code{erf}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -355,7 +357,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Чтобы использовать эту функцию, ее следует сначала загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -367,7 +369,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -379,7 +381,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -390,7 +392,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -403,7 +405,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -416,7 +418,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -439,7 +441,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 См. также @code{random_normal}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -459,7 +461,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -471,7 +473,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -500,7 +502,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 (%o3)                   .6698450596140417
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -514,7 +516,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -527,7 +529,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -549,7 +551,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
                               n - 2
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -561,7 +563,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -574,7 +576,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -586,7 +588,7 @@ Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -635,8 +637,9 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 
 См. также @code{random_student_t}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end defvr
@@ -655,8 +658,9 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -689,7 +693,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
                                     2
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -717,7 +721,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 (%o3)                   .4421745996289249
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -749,7 +753,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
                                         2
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -778,7 +782,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 (%o4)                           n
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -807,7 +811,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 (%o4)                          2 n
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -836,7 +840,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 (%o4)                    sqrt(2) sqrt(n)
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -867,7 +871,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
                              sqrt(n)
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -898,7 +902,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
                                n
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -923,7 +927,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 
 См. также @code{random_chi2}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -943,7 +947,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -955,8 +959,9 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -984,7 +989,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 (%o3)                   0.66756728179008
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1015,7 +1020,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 (%o3)                   0.518947838573693
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1027,7 +1032,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1039,7 +1044,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1051,7 +1056,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1063,7 +1068,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1075,7 +1080,7 @@ $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1118,7 +1123,7 @@ $$F={{n X}\over{m Y}}$$
 
 См. также @code{random_f}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1138,8 +1143,9 @@ $$F={{n X}\over{m Y}}$$
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -1169,7 +1175,7 @@ $$F={{n X}\over{m Y}}$$
 (%o4)                       m %e
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1200,7 +1206,7 @@ $$F={{n X}\over{m Y}}$$
 (%o4)                      1 - %e
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1231,7 +1237,7 @@ $$F={{n X}\over{m Y}}$$
                                             m
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1263,7 +1269,7 @@ $$F={{n X}\over{m Y}}$$
                                 m
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1296,7 +1302,7 @@ $$F={{n X}\over{m Y}}$$
                                m
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1328,7 +1334,7 @@ $$F={{n X}\over{m Y}}$$
                                 m
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1358,7 +1364,7 @@ $$F={{n X}\over{m Y}}$$
 (%o4)                           2
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1388,7 +1394,7 @@ $$F={{n X}\over{m Y}}$$
 (%o4)                           6
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1419,7 +1425,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 См. также @code{random_exp}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1439,8 +1445,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -1452,7 +1459,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1481,7 +1488,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 См. также @code{erf}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1496,7 +1503,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1509,7 +1516,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1522,7 +1529,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1534,7 +1541,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1547,7 +1554,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1560,7 +1567,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1581,8 +1588,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -1594,7 +1602,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1622,7 +1630,7 @@ Comm, ACM, 15, Oct.,  873-882.
 (%o3)                 4.402663157135039E-7
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1636,7 +1644,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1648,7 +1656,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1660,7 +1668,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1671,7 +1679,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1683,7 +1691,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1695,7 +1703,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1725,7 +1733,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 См. также @code{random_gamma}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1745,8 +1753,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -1757,7 +1766,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1786,7 +1795,7 @@ Comm, ACM, 15, Oct.,  873-882.
 (%o3)                 7.666089131388224E-7
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1800,7 +1809,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1812,7 +1821,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1824,7 +1833,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1835,7 +1844,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1847,7 +1856,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1859,7 +1868,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1889,7 +1898,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 См. также @code{random_beta}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1909,8 +1918,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -1921,7 +1931,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1934,7 +1944,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1949,7 +1959,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1962,7 +1972,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1975,7 +1985,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -1987,7 +1997,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2000,7 +2010,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2013,7 +2023,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2031,7 +2041,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2044,7 +2054,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2057,7 +2067,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2071,7 +2081,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2083,7 +2093,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2095,7 +2105,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2107,7 +2117,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2119,7 +2129,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2131,7 +2141,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2147,8 +2157,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -2160,7 +2171,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2173,7 +2184,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2187,7 +2198,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2199,7 +2210,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2210,7 +2221,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2221,7 +2232,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2232,7 +2243,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2243,7 +2254,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2258,8 +2269,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -2271,7 +2283,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2284,7 +2296,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2298,7 +2310,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2310,7 +2322,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2322,7 +2334,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2333,7 +2345,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2344,7 +2356,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2355,7 +2367,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2371,8 +2383,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -2404,7 +2417,7 @@ Comm, ACM, 15, Oct.,  873-882.
 (%o4)                   2 b  x %e
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2436,7 +2449,7 @@ Comm, ACM, 15, Oct.,  873-882.
 (%o4)                     1 - %e
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2469,7 +2482,7 @@ Comm, ACM, 15, Oct.,  873-882.
                                 b
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2500,7 +2513,7 @@ Comm, ACM, 15, Oct.,  873-882.
                                2 b
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2534,7 +2547,7 @@ Comm, ACM, 15, Oct.,  873-882.
                                b
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2567,7 +2580,7 @@ Comm, ACM, 15, Oct.,  873-882.
                                 b
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2603,7 +2616,7 @@ Comm, ACM, 15, Oct.,  873-882.
                                 4
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2639,7 +2652,7 @@ Comm, ACM, 15, Oct.,  873-882.
                                4
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2655,8 +2668,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -2670,7 +2684,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2683,7 +2697,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2697,7 +2711,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2709,7 +2723,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2721,7 +2735,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2733,7 +2747,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2745,7 +2759,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2757,7 +2771,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2773,8 +2787,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -2787,7 +2802,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2800,7 +2815,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2814,7 +2829,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2830,8 +2845,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -2845,7 +2861,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2858,7 +2874,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2872,7 +2888,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2893,7 +2909,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end example
 где @code{%gamma} -- константа Эйлера-Маскерони. См. также @code{%gamma}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2905,7 +2921,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2917,7 +2933,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2944,7 +2960,7 @@ Comm, ACM, 15, Oct.,  873-882.
 @end example
 где @code{zeta} -- дзэта-функция Римана.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2956,7 +2972,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -2972,8 +2988,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -2990,7 +3007,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3020,7 +3037,7 @@ Comm, ACM, 15, Oct.,  873-882.
 (%o3)                   .9998713991769548
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3035,7 +3052,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3048,7 +3065,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3061,7 +3078,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3074,7 +3091,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3087,7 +3104,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3100,7 +3117,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3128,7 +3145,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 См. также @code{random_binomial}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3149,8 +3166,9 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -3161,7 +3179,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3189,7 +3207,7 @@ Comm, ACM, 15, Oct.,  873-882.
 (%o3)                   .2650259152973617
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3203,7 +3221,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3215,7 +3233,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3227,7 +3245,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3239,7 +3257,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3251,7 +3269,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3263,7 +3281,7 @@ Comm, ACM, 15, Oct.,  873-882.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3289,7 +3307,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 См. также @code{random_poisson}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3309,8 +3327,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -3337,7 +3356,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 (%o4)                           p
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3350,7 +3369,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3364,7 +3383,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3391,7 +3410,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 (%o4)                           p
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3418,7 +3437,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 (%o4)                       (1 - p) p
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3445,7 +3464,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 (%o4)                  sqrt(1 - p) sqrt(p)
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3474,7 +3493,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
                        sqrt(1 - p) sqrt(p)
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3503,7 +3522,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
                             (1 - p) p
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3521,8 +3540,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -3535,7 +3555,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3548,7 +3568,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3562,7 +3582,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3574,7 +3594,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3586,7 +3606,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3598,7 +3618,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3610,7 +3630,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3622,7 +3642,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3650,7 +3670,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 См. также @code{random_geometric}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3670,8 +3690,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -3683,7 +3704,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3696,7 +3717,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3711,7 +3732,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3724,7 +3745,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3737,7 +3758,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3750,7 +3771,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3763,7 +3784,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3776,7 +3797,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3795,8 +3816,9 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -3809,7 +3831,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3823,7 +3845,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3838,7 +3860,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3851,7 +3873,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3864,7 +3886,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3877,7 +3899,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3890,7 +3912,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3903,7 +3925,7 @@ ACM Trans. Math. Software, 8, 2, June,163-179.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3928,7 +3950,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 См. также @code{random_hypergeometric}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3949,8 +3971,9 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn
@@ -3963,7 +3986,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -3994,7 +4017,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 (%o3)                  .006238937377929698
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -4009,7 +4032,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -4022,7 +4045,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -4035,7 +4058,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -4048,7 +4071,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -4061,7 +4084,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -4074,7 +4097,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -4102,7 +4125,7 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 См. также @code{random_negative_binomial}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет distrib}
 @closecatbox
 
@@ -4123,8 +4146,9 @@ Journal of Statistical Computation and Simulation 22, 127-145.
 
 Для использования этой функции, ее необходимо загрузить командой @code{load(distrib)}.
 
-@opencatbox
-@category{Пакет distrib} @category{Случайные числа}
+@opencatbox{Категории:}
+@category{Пакет distrib}
+@category{Случайные числа}
 @closecatbox
 
 @end deffn

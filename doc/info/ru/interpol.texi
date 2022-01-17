@@ -19,8 +19,10 @@
 С комментариями, сообщениями об ошибках и предложениями, пожалуйста
 обращайтесь ко мне по адресу @var{'mario AT edu DOT xunta DOT es'}.
 
-@opencatbox
-@category{Численные методы} @category{Пакеты библиотеки share} @category{Пакет interpol}
+@opencatbox{Категории:}
+@category{Численные методы}
+@category{Пакеты библиотеки share}
+@category{Пакет interpol}
 @closecatbox
 
 @node Функции и переменные пакета interpol,  , Введение в пакет interpol, Пакет interpol
@@ -93,7 +95,7 @@
               420     210       420      105      5
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет interpol}
 @closecatbox
 
@@ -103,7 +105,7 @@
 @deffn {Функция} charfun2 (@var{x}, @var{a}, @var{b})
 Возвращает @code{true} если число @var{x} принадлежит интервалу @math{[a, b)}, и @code{false} в противном случае.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет interpol}
 @closecatbox
 
@@ -178,7 +180,7 @@
      3
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет interpol}
 @closecatbox
 
@@ -290,7 +292,7 @@
         points(p))$
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет interpol}
 @closecatbox
 

@@ -19,8 +19,10 @@
 
 Для того, чтобы использовать эту функцию, сначала напишите @code{load("impdiff")}.
 
-@opencatbox
-@category{Дифференциальное исчисление} @category{Пакеты библиотеки share} @category{Пакет impdiff}
+@opencatbox{Категории:}
+@category{Дифференциальное исчисление}
+@category{Пакеты библиотеки share}
+@category{Пакет impdiff}
 @closecatbox
 
 @end deffn

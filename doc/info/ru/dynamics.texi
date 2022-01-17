@@ -41,8 +41,10 @@
 Размер шага теперь может быть изменен с помощью опции @var{nticks}.
 @var{nticks}.
 
-@opencatbox
-@category{Динамические системы} @category{Пакеты библиотеки share} @category{Пакет dynamics}
+@opencatbox{Категории:}
+@category{Динамические системы}
+@category{Пакеты библиотеки share}
+@category{Пакет dynamics}
 @closecatbox
 
 @node Функции и переменные пакета dynamics,  , Введение в пакет dynamics, Пакет dynamics
@@ -58,8 +60,9 @@
 равном длине этого отрезка, умноженной на @var{b}
 Процедура повторяется @var{n} раз.
 
-@opencatbox
-@category{Пакет dynamics} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет dynamics}
+@category{Графика}
 @closecatbox
 
 @end deffn
@@ -84,8 +87,9 @@ $$y_{n+1} = F(y_n)$$
 оно зависит от @var{y}, но может быть использована только одна переменная),
 @var{y0} должно быть вещественным числом, а @var{n} должно быть положительным целым.
 
-@opencatbox
-@category{Пакет dynamics} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет dynamics}
+@category{Графика}
 @closecatbox
 
 @end deffn
@@ -108,8 +112,9 @@ $$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 зависеть только от двух переменных @var{u} и @var{v}, 
 которые должны быть явно объявлены в списке. 
 
-@opencatbox
-@category{Пакет dynamics} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет dynamics}
+@category{Графика}
 @closecatbox
 
 @end deffn
@@ -128,8 +133,9 @@ $$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 например, если есть 3 точки с вероятностями 0.2, 0.5 и 0.3, 
 то веса @var{r1}, @var{r2} и @var{r3} могут быть 2, 7 и 10.
 
-@opencatbox
-@category{Пакет dynamics} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет dynamics}
+@category{Графика}
 @closecatbox
 
 @end deffn
@@ -158,8 +164,9 @@ $$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 @var{options} -- набор необязательных опций. Список допустимых опций приведен
 в разделе ниже.
 
-@opencatbox
-@category{Пакет dynamics} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет dynamics}
+@category{Графика}
 @closecatbox
 
 @end deffn
@@ -187,8 +194,9 @@ $$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 @var{options} -- набор необязательных опций. Список допустимых опций приведен
 в разделе ниже.
 
-@opencatbox
-@category{Пакет dynamics} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет dynamics}
+@category{Графика}
 @closecatbox
 
 @end deffn
@@ -209,8 +217,9 @@ $$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 @var{y(n1+1)},..., @var{y(n1+n2+1)}, полученных поле @var{n1} 
 начальных итераций.
 
-@opencatbox
-@category{Пакет dynamics} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет dynamics}
+@category{Графика}
 @closecatbox
 
 @end deffn
@@ -256,8 +265,10 @@ $$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 значение зависимой переменной с последующими значениями зависимых переменных
 в соответствующей точке.
 
-@opencatbox
-@category{Пакет dynamics} @category{Дифференциальные уравнения} @category{Численные методы}
+@opencatbox{Категории:}
+@category{Пакет dynamics}
+@category{Дифференциальные уравнения}
+@category{Численные методы}
 @closecatbox
 
 @end deffn
@@ -282,8 +293,9 @@ $$y_{n+1} = F(y_n)$$
 точки пересечения с прямой в точке (@var{y1}, @var{y1}).
 Процедура повторяется @var{n} раз до достижения точки (@var{yn}, @var{yn}).
 
-@opencatbox
-@category{Пакет dynamics} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет dynamics}
+@category{Графика}
 @closecatbox
 
 @end deffn
