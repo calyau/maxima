@@ -1,105 +1,105 @@
 @c English version 2011-08-21
 @menu
-* Introducción a la transformada rápida de Fourier::
-* Funciones y variables para la transformada rápida de Fourier::
-* Funciones para la resolución numérica de ecuaciones::
-* Introducción a la resolución numérica de ecuaciones diferenciales::
-* Funciones para la resolución numérica de ecuaciones diferenciales::
+* IntroducciÃ³n a la transformada rÃ¡pida de Fourier::
+* Funciones y variables para la transformada rÃ¡pida de Fourier::
+* Funciones para la resoluciÃ³n numÃ©rica de ecuaciones::
+* IntroducciÃ³n a la resoluciÃ³n numÃ©rica de ecuaciones diferenciales::
+* Funciones para la resoluciÃ³n numÃ©rica de ecuaciones diferenciales::
 @end menu
 
-@node Introducción a la transformada rápida de Fourier, Funciones y variables para la transformada rápida de Fourier, Métodos numéricos, Métodos numéricos
-@section Introducción a la transformada rápida de Fourier
+@node IntroducciÃ³n a la transformada rÃ¡pida de Fourier, Funciones y variables para la transformada rÃ¡pida de Fourier, MÃ©todos numÃ©ricos, MÃ©todos numÃ©ricos
+@section IntroducciÃ³n a la transformada rÃ¡pida de Fourier
 
-El paquete @code{fft} contiene funciones para el cálculo numérico (no simbólico)
-de la transformada rápida de Fourier.
-
-
+El paquete @code{fft} contiene funciones para el cÃ¡lculo numÃ©rico (no simbÃ³lico)
+de la transformada rÃ¡pida de Fourier.
 
 
 
 
-@node Funciones y variables para la transformada rápida de Fourier, Funciones para la resolución numérica de ecuaciones, Introducción a la transformada rápida de Fourier, Métodos numéricos
-@section Funciones y variables para la transformada rápida de Fourier
 
-@deffn {Función} polartorect (@var{magnitude_array}, @var{phase_array})
+
+@node Funciones y variables para la transformada rÃ¡pida de Fourier, Funciones para la resoluciÃ³n numÃ©rica de ecuaciones, IntroducciÃ³n a la transformada rÃ¡pida de Fourier, MÃ©todos numÃ©ricos
+@section Funciones y variables para la transformada rÃ¡pida de Fourier
+
+@deffn {FunciÃ³n} polartorect (@var{magnitude_array}, @var{phase_array})
 
 Transforma valores complejos de la forma @code{r %e^(%i t)} a la forma
-@code{a + b %i}, siendo @var{r} el módulo y @var{t} la fase.
+@code{a + b %i}, siendo @var{r} el mÃ³dulo y @var{t} la fase.
 Ambos valores @var{r} y @var{t} son arrays unidimensionales cuyos
-tamños son iguales a la misma potencia de dos.
+tamÃ±os son iguales a la misma potencia de dos.
 
 Los valores originales de los arrays de entrada son reemplazados por
 las partes real e imaginaria, @code{a} y @code{b}, de los correspondientes
-números complejos. El resultado se calcula como
+nÃºmeros complejos. El resultado se calcula como
 
 @example
 a = r cos(t)
 b = r sin(t)
 @end example
 
-@code{polartorect} es la función inversa de @code{recttopolar}.
+@code{polartorect} es la funciÃ³n inversa de @code{recttopolar}.
 
-Para utilizar esta función ejecútese antes @code{load(fft)}.
-Véase también @code{fft}.
+Para utilizar esta funciÃ³n ejecÃºtese antes @code{load(fft)}.
+VÃ©ase tambiÃ©n @code{fft}.
 
 @end deffn
 
 
 
-@deffn {Función} recttopolar (@var{real_array}, @var{imaginary_array})
+@deffn {FunciÃ³n} recttopolar (@var{real_array}, @var{imaginary_array})
 
 Transforma valores complejos de la forma @code{a + b %i} a la forma
 @code{r %e^(%i t)}, siendo @var{a} la parte real y @var{a} la imaginaria.
 Ambos valores @var{a} y @var{b} son arrays unidimensionales cuyos
-tamños son iguales a la misma potencia de dos.
+tamÃ±os son iguales a la misma potencia de dos.
 
 Los valores originales de los arrays de entrada son reemplazados por
-los módulos y las fases, @code{r} y @code{t}, de los correspondientes
-números complejos. El resultado se calcula como
+los mÃ³dulos y las fases, @code{r} y @code{t}, de los correspondientes
+nÃºmeros complejos. El resultado se calcula como
 
 @example
 r = sqrt(a^2 + b^2)
 t = atan2(b, a)
 @end example
 
-El ángulo calculado pertence al rango de @code{-%pi} a @code{%pi}. 
+El Ã¡ngulo calculado pertence al rango de @code{-%pi} a @code{%pi}. 
 
-@code{recttopolar} es la función inversa de @code{polartorect}.
+@code{recttopolar} es la funciÃ³n inversa de @code{polartorect}.
 
-Para utilizar esta función ejecútese antes @code{load(fft)}.
-Véase también @code{fft}.
+Para utilizar esta funciÃ³n ejecÃºtese antes @code{load(fft)}.
+VÃ©ase tambiÃ©n @code{fft}.
 
 @end deffn
 
 
 
-@deffn {Función} inverse_fft (@var{y})
+@deffn {FunciÃ³n} inverse_fft (@var{y})
 
-Calcula la transformada inversa rápida de Fourier.
+Calcula la transformada inversa rÃ¡pida de Fourier.
 
 @var{y} es una lista o array (declarado o no) que contiene los datos a
-transformar. El número de elementos debe ser una potencia de dos.
-Los elementos deben ser números literales (enteros, racionales,
-de punto flotante o decimales grandes), constantes simbólicas,
+transformar. El nÃºmero de elementos debe ser una potencia de dos.
+Los elementos deben ser nÃºmeros literales (enteros, racionales,
+de punto flotante o decimales grandes), constantes simbÃ³licas,
 expresiones del tipo @code{a + b*%i}, siendo @code{a} y @code{b}
-números literales, o constantes simbólicas.
+nÃºmeros literales, o constantes simbÃ³licas.
 
-La función @code{inverse_fft} devuelve un nuevo objeto del
+La funciÃ³n @code{inverse_fft} devuelve un nuevo objeto del
 mismo tipo que @var{y}, el cual no se ve modificado. Los
 resultados se calculan siempre como decimales o expresiones @code{a + b*%i},
 siendo @code{a} y @code{b} decimales.
 
 La transformada inversa discreta de Fourier se define como se indica
-a continuación. Si @code{x} es el resultado de la transformada inversa,
+a continuaciÃ³n. Si @code{x} es el resultado de la transformada inversa,
 entonces para @code{j} entre 0 y @code{n - 1} se tiene
 
 @example
 x[j] = sum(y[k] exp(-2 %i %pi j k / n), k, 0, n - 1)
 @end example
 
-Para utilizar esta función ejecútese antes @code{load(fft)}.
+Para utilizar esta funciÃ³n ejecÃºtese antes @code{load(fft)}.
 
-Véanse también @code{fft} (transformada directa), @code{recttopolar} y @code{polartorect}.
+VÃ©anse tambiÃ©n @code{fft} (transformada directa), @code{recttopolar} y @code{polartorect}.
 
 Ejemplos:
 
@@ -156,24 +156,24 @@ Datos complejos.
 
 @end deffn
 
-@deffn {Función} fft (@var{x})
+@deffn {FunciÃ³n} fft (@var{x})
 
-Calcula la transformada rápida compleja de Fourier.
+Calcula la transformada rÃ¡pida compleja de Fourier.
 
 @var{x} es una lista o array (declarado o no) que contiene los datos a
-transformar. El número de elementos debe ser una potencia de dos.
-Los elementos deben ser números literales (enteros, racionales,
-de punto flotante o decimales grandes), constantes simbólicas,
+transformar. El nÃºmero de elementos debe ser una potencia de dos.
+Los elementos deben ser nÃºmeros literales (enteros, racionales,
+de punto flotante o decimales grandes), constantes simbÃ³licas,
 expresiones del tipo @code{a + b*%i}, siendo @code{a} y @code{b}
-números literales, o constantes simbólicas.
+nÃºmeros literales, o constantes simbÃ³licas.
 
-La función @code{fft} devuelve un nuevo objeto del
+La funciÃ³n @code{fft} devuelve un nuevo objeto del
 mismo tipo que @var{x}, el cual no se ve modificado. Los
 resultados se calculan siempre como decimales o expresiones @code{a + b*%i},
 siendo @code{a} y @code{b} decimales.
 
 La transformada discreta de Fourier se define como se indica
-a continuación. Si @code{y} es el resultado de la transformada inversa,
+a continuaciÃ³n. Si @code{y} es el resultado de la transformada inversa,
 entonces para @code{k} entre 0 y @code{n - 1} se tiene
 
 @example
@@ -208,9 +208,9 @@ a[n/2] = realpart (y[n/2])
 b[n/2] = 0
 @end example
 
-Para utilizar esta función ejecútese antes @code{load(fft)}.
+Para utilizar esta funciÃ³n ejecÃºtese antes @code{load(fft)}.
 
-Véanse también @code{inverse_fft} (transformada inversa), @code{recttopolar} y @code{polartorect}.
+VÃ©anse tambiÃ©n @code{inverse_fft} (transformada inversa), @code{recttopolar} y @code{polartorect}.
 
 Ejemplos:
 
@@ -265,7 +265,7 @@ Datos complejos.
 (%o6)                       6.83L-17
 @end example
 
-Cálculo de los coeficientes del seno y coseno.
+CÃ¡lculo de los coeficientes del seno y coseno.
 
 @c ===beg===
 @c load (fft) $
@@ -327,16 +327,16 @@ Cálculo de los coeficientes del seno y coseno.
 
 
 
-@node Funciones para la resolución numérica de ecuaciones, Introducción a la resolución numérica de ecuaciones diferenciales, Funciones y variables para la transformada rápida de Fourier, Métodos numéricos
-@section Funciones para la resolución numérica de ecuaciones
+@node Funciones para la resoluciÃ³n numÃ©rica de ecuaciones, IntroducciÃ³n a la resoluciÃ³n numÃ©rica de ecuaciones diferenciales, Funciones y variables para la transformada rÃ¡pida de Fourier, MÃ©todos numÃ©ricos
+@section Funciones para la resoluciÃ³n numÃ©rica de ecuaciones
 
 
 
-@deffn {Función} horner (@var{expr}, @var{x})
-@deffnx {Función} horner (@var{expr})
-Cambia el formato de @var{expr} según la regla de Horner utilizando @var{x} como variable principal, si ésta se especifica. El argumento @code{x} se puede omitir, en cuyo caso se considerará como variable principal la de @var{expr} en su formato racional canónico (CRE).
+@deffn {FunciÃ³n} horner (@var{expr}, @var{x})
+@deffnx {FunciÃ³n} horner (@var{expr})
+Cambia el formato de @var{expr} segÃºn la regla de Horner utilizando @var{x} como variable principal, si Ã©sta se especifica. El argumento @code{x} se puede omitir, en cuyo caso se considerarÃ¡ como variable principal la de @var{expr} en su formato racional canÃ³nico (CRE).
 
-La función @code{horner} puede mejorar las estabilidad si @code{expr} va a ser numéricamente evaluada. También es útil si Maxima se utiliza para generar programas que serán ejecutados en Fortran. Véase también @code{stringout}.
+La funciÃ³n @code{horner} puede mejorar las estabilidad si @code{expr} va a ser numÃ©ricamente evaluada. TambiÃ©n es Ãºtil si Maxima se utiliza para generar programas que serÃ¡n ejecutados en Fortran. VÃ©ase tambiÃ©n @code{stringout}.
 
 @example
 (%i1) expr: 1e-155*x^2 - 5.5*x + 5.2e155;
@@ -358,70 +358,70 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 
-@deffn {Función} find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
-@deffnx {Función} find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
-@deffnx {Función} bf_find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
-@deffnx {Función} bf_find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffn {FunciÃ³n} find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {FunciÃ³n} find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {FunciÃ³n} bf_find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {FunciÃ³n} bf_find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
 @deffnx {Variable opcional} find_root_error
 @deffnx {Variable opcional} find_root_abs
 @deffnx {Variable opcional} find_root_rel
 
-Calcula una raíz de la expresión @var{expr} o de
-la función @var{f} en el intervalo cerrado @math{[@var{a}, @var{b}]}.
-La expresión @var{expr} puede ser una ecuación, en cuyo caso 
-@code{find_root} busca una raíz de
+Calcula una raÃ­z de la expresiÃ³n @var{expr} o de
+la funciÃ³n @var{f} en el intervalo cerrado @math{[@var{a}, @var{b}]}.
+La expresiÃ³n @var{expr} puede ser una ecuaciÃ³n, en cuyo caso 
+@code{find_root} busca una raÃ­z de
 @code{lhs(@var{expr}) - rhs(@var{expr})}.
 
 Dado que Maxima puede evaluar @var{expr} o @var{f} en 
 @math{[@var{a}, @var{b}]}, entonces, si @var{expr} o @var{f} es
-continua, @code{find_root} encuentrará la raíz
-buscada, o raíces, en caso de existir varias.
+continua, @code{find_root} encuentrarÃ¡ la raÃ­z
+buscada, o raÃ­ces, en caso de existir varias.
 
-La función @code{find_root} aplica al principio la
-búsqueda por bipartición. Si la expresión es lo suficientemente
-suave, entonces @code{find_root} aplicará el método
-de interpolación lineal.
+La funciÃ³n @code{find_root} aplica al principio la
+bÃºsqueda por biparticiÃ³n. Si la expresiÃ³n es lo suficientemente
+suave, entonces @code{find_root} aplicarÃ¡ el mÃ©todo
+de interpolaciÃ³n lineal.
 
-@code{bf_find_root} es una versión de @code{find_root} para números
-reales de precisión arbitraria (bigfloat). La función se 
-evalúa utilizando la aritmética de estos números, devolviendo
-un resultado numérico de este tipo. En cualquier otro aspecto,
-@code{bf_find_root} es idéntica a @code{find_root}, siendo la
-explicación que sigue igualmente válida para @code{bf_find_root}. 
+@code{bf_find_root} es una versiÃ³n de @code{find_root} para nÃºmeros
+reales de precisiÃ³n arbitraria (bigfloat). La funciÃ³n se 
+evalÃºa utilizando la aritmÃ©tica de estos nÃºmeros, devolviendo
+un resultado numÃ©rico de este tipo. En cualquier otro aspecto,
+@code{bf_find_root} es idÃ©ntica a @code{find_root}, siendo la
+explicaciÃ³n que sigue igualmente vÃ¡lida para @code{bf_find_root}. 
 
-La precisión de @code{find_root} está controlada por @code{abserr} y
+La precisiÃ³n de @code{find_root} estÃ¡ controlada por @code{abserr} y
 @code{relerr}, que son claves opcionales para @code{find_root}. 
 Estas claves toman la forma @code{key=val}. Las claves disponibles son:
 
 @table @code
 @item abserr
-Error absoluto deseado de la función en la raíz. El
+Error absoluto deseado de la funciÃ³n en la raÃ­z. El
 valor por defecto es @code{find_root_abs}. 
 @item relerr
-Error relativo deseado de la raíz. El valor por defecto
+Error relativo deseado de la raÃ­z. El valor por defecto
 es @code{find_root_rel}.
 @end table
 
-@code{find_root} se detiene cuando la función alcanza un valor menor o
+@code{find_root} se detiene cuando la funciÃ³n alcanza un valor menor o
 igual que @code{abserr}, o si las sucesivas aproximaciones @var{x_0}, @var{x_1}
-difieren en no más que @code{relerr * max(abs(x_0), abs(x_1))}. Los
+difieren en no mÃ¡s que @code{relerr * max(abs(x_0), abs(x_1))}. Los
 valores por defecto de @code{find_root_abs} y @code{find_root_rel} son
 ambos cero.
 
-@code{find_root} espera que la función en cuestión tenga signos
+@code{find_root} espera que la funciÃ³n en cuestiÃ³n tenga signos
 diferentes en los extremos del intervalo.
-Si la función toma valores numéricos en ambos extremos y estos
-números son del mismo signo, entonces
+Si la funciÃ³n toma valores numÃ©ricos en ambos extremos y estos
+nÃºmeros son del mismo signo, entonces
 el comportamiento de @code{find_root} se controla con @code{find_root_error}.
 Cuando @code{find_root_error} vale @code{true}, @code{find_root}
 devuelve un mensaje de error; en caso contrario, @code{find_root}
 devuelve el valor de @code{find_root_error}. El valor por defecto
 de @code{find_root_error} es @code{true}.
 
-Si en algún momento del proceso de búsqueda @var{f} alcanza un valor
-no numérico, @code{find_root} devuelve una expresión parcialmente evaluada.
+Si en algÃºn momento del proceso de bÃºsqueda @var{f} alcanza un valor
+no numÃ©rico, @code{find_root} devuelve una expresiÃ³n parcialmente evaluada.
 
-Se ignora el orden de @var{a} y @var{b}; la región de búsqueda es
+Se ignora el orden de @var{a} y @var{b}; la regiÃ³n de bÃºsqueda es
 @math{[min(@var{a}, @var{b}), max(@var{a}, @var{b})]}.
 
 Ejemplos:
@@ -479,23 +479,23 @@ Ejemplos:
 
 
 
-@deffn {Función} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
-Devuelve una solución aproximada de @code{@var{expr} = 0} obtenida
-por el método de Newton, considerando @var{expr} como una función
+@deffn {FunciÃ³n} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
+Devuelve una soluciÃ³n aproximada de @code{@var{expr} = 0} obtenida
+por el mÃ©todo de Newton, considerando @var{expr} como una funciÃ³n
 de una variable, @var{x}.
-La búsqueda comienza con @code{@var{x} = @var{x_0}} y continúa
+La bÃºsqueda comienza con @code{@var{x} = @var{x_0}} y continÃºa
 hasta que se verifique @code{abs(@var{expr}) < @var{eps}}, donde
-@var{expr} se evalúa con el valor actual de @var{x}.
+@var{expr} se evalÃºa con el valor actual de @var{x}.
 
-La función @code{newton} permite que en @var{expr} haya variables
-no definidas, siempre y cuando la condición de terminación
+La funciÃ³n @code{newton} permite que en @var{expr} haya variables
+no definidas, siempre y cuando la condiciÃ³n de terminaciÃ³n
 @code{abs(@var{expr}) < @var{eps}} pueda reducirse a un valor
-lógico @code{true} o @code{false}; de este modo, no es necesario
-que @var{expr} tome un valor numérico.
+lÃ³gico @code{true} o @code{false}; de este modo, no es necesario
+que @var{expr} tome un valor numÃ©rico.
 
-Ejecútese @code{load(newton1)} para cargar esta función.
+EjecÃºtese @code{load(newton1)} para cargar esta funciÃ³n.
 
-Véanse también @code{realroots}, @code{allroots}, @code{find_root} y @code{mnewton}.
+VÃ©anse tambiÃ©n @code{realroots}, @code{allroots}, @code{find_root} y @code{mnewton}.
 
 Ejemplos:
 
@@ -531,11 +531,11 @@ Ejemplos:
 
 
 
-@node Introducción a la resolución numérica de ecuaciones diferenciales, Funciones para la resolución numérica de ecuaciones diferenciales, Funciones para la resolución numérica de ecuaciones, Métodos numéricos
-@section Introducción a la resolución numérica de ecuaciones diferenciales
+@node IntroducciÃ³n a la resoluciÃ³n numÃ©rica de ecuaciones diferenciales, Funciones para la resoluciÃ³n numÃ©rica de ecuaciones diferenciales, Funciones para la resoluciÃ³n numÃ©rica de ecuaciones, MÃ©todos numÃ©ricos
+@section IntroducciÃ³n a la resoluciÃ³n numÃ©rica de ecuaciones diferenciales
 
 Las ecuaciones diferenciales ordinarias (EDO) que se resuelven con las funciones de esta
-sección deben tener la forma
+secciÃ³n deben tener la forma
 @ifnottex
 @example
        dy
@@ -565,9 +565,9 @@ El primer argumento de las funciones debe ser una lista con las expresiones
 de los miembros derechos de las EDOs. Las variables cuyas derivadas se representan
 por las expresiones anteriores deben darse en una segunda lista. En el caso antes
 citado, las variables son @var{x} y @var{y}. La variable independiente, @var{t}
-en los mismos ejemplos anteriores, pueden darse mediante una opción adicional. 
+en los mismos ejemplos anteriores, pueden darse mediante una opciÃ³n adicional. 
 Si las expresiones dadas no dependen de esa variable independiente, el sistema
-recibe el nombre de autónomo.
+recibe el nombre de autÃ³nomo.
 
 
 
@@ -575,120 +575,120 @@ recibe el nombre de autónomo.
 
 
 
-@node Funciones para la resolución numérica de ecuaciones diferenciales, , Introducción a la resolución numérica de ecuaciones diferenciales, Métodos numéricos
-@section Funciones para la resolución numérica de ecuaciones diferenciales
+@node Funciones para la resoluciÃ³n numÃ©rica de ecuaciones diferenciales, , IntroducciÃ³n a la resoluciÃ³n numÃ©rica de ecuaciones diferenciales, MÃ©todos numÃ©ricos
+@section Funciones para la resoluciÃ³n numÃ©rica de ecuaciones diferenciales
 
 
 
-@deffn {Función} plotdf (@var{dydx}, ...options...)
-@deffnx {Función} plotdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...options...)
-@deffnx {Función} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...options...)
-@deffnx {Función} plotdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...options...)
+@deffn {FunciÃ³n} plotdf (@var{dydx}, ...options...)
+@deffnx {FunciÃ³n} plotdf (@var{dvdu}, @code{[}@var{u},@var{v}@code{]}, ...options...)
+@deffnx {FunciÃ³n} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]}, ...options...)
+@deffnx {FunciÃ³n} plotdf (@code{[}@var{dudt},@var{dvdt}@code{]}, @code{[}@var{u},@var{v}@code{]}, ...options...)
 Dibuja un campo de direcciones en dos dimensiones @var{x} y @var{y}.
 
 @var{dydx}, @var{dxdt} y @var{dydt} son expresiones que dependen de @var{x} y
-@var{y}. Además de esas dos variables, las dos expresiones pueden depender de
-un conjunto de parámetros, con valores numéricos que son dados por medio
-de la opción @code{parameters} (la sintaxis de esa opción se explica mas al
-frente), o con un rango de posibles valores definidos con la opción
+@var{y}. AdemÃ¡s de esas dos variables, las dos expresiones pueden depender de
+un conjunto de parÃ¡metros, con valores numÃ©ricos que son dados por medio
+de la opciÃ³n @code{parameters} (la sintaxis de esa opciÃ³n se explica mas al
+frente), o con un rango de posibles valores definidos con la opciÃ³n
 @var{sliders}.
 
 Varias otras opciones se pueden incluir dentro del comando, o
-seleccionadas en el menú.  Haciendo click en un punto del gráfico se
+seleccionadas en el menÃº.  Haciendo click en un punto del grÃ¡fico se
 puede hacer que sea dibujada la curva integral que pasa por ese punto;
-lo mismo puede ser hecho dando las coordenadas del punto con la opción
-@code{trajectory_at} dentro del comando plotdf. La dirección de
-integración se puede controlar con la opción @code{direction}, que
+lo mismo puede ser hecho dando las coordenadas del punto con la opciÃ³n
+@code{trajectory_at} dentro del comando plotdf. La direcciÃ³n de
+integraciÃ³n se puede controlar con la opciÃ³n @code{direction}, que
 acepta valores de @emph{forward}, @emph{backward} ou @emph{both}. El
-número de pasos realizado en la integración numérica se controla
-con la opción @code{nsteps} y el incremento del tiempo en cada paso
-con la opción @code{tstep}. Se usa el método de Adams Moulton para
-hacer la integración numérica; también es posible cambiar para el
-método de Runge-Kutta de cuarto orden con ajuste de pasos.
+nÃºmero de pasos realizado en la integraciÃ³n numÃ©rica se controla
+con la opciÃ³n @code{nsteps} y el incremento del tiempo en cada paso
+con la opciÃ³n @code{tstep}. Se usa el mÃ©todo de Adams Moulton para
+hacer la integraciÃ³n numÃ©rica; tambiÃ©n es posible cambiar para el
+mÃ©todo de Runge-Kutta de cuarto orden con ajuste de pasos.
 
-@b{Menú de la ventana del gráfico:}
+@b{MenÃº de la ventana del grÃ¡fico:}
 
-El menú de la ventana gráfica dispone de las siguientes opciones:
-@emph{Zoom}, que permite cambiar el comportamiento del ratón, de
-manera que hará posible el hacer zoom en la región del gráfico
-haciendo clic con el botón izquierdo. Cada clic agranda la imagen
+El menÃº de la ventana grÃ¡fica dispone de las siguientes opciones:
+@emph{Zoom}, que permite cambiar el comportamiento del ratÃ³n, de
+manera que harÃ¡ posible el hacer zoom en la regiÃ³n del grÃ¡fico
+haciendo clic con el botÃ³n izquierdo. Cada clic agranda la imagen
 manteniendo como centro de la misma el punto sobre el cual se ha hecho
 clic. Manteniendo pulsada la tecla @key{Shift} mientras se hace clic,
-retrocede al tamaño anterior. Para reanudar el cálculo de las
-trayectorias cuando se hace clic, seleccine la opción @emph{Integrate}
-del menú.
+retrocede al tamaÃ±o anterior. Para reanudar el cÃ¡lculo de las
+trayectorias cuando se hace clic, seleccine la opciÃ³n @emph{Integrate}
+del menÃº.
 
-La opción @emph{Config} del menú se puede utilizar para cambiar
-la(s) EDO(S) y algunos otros ajustes. Después de hacer los cambios, se
-debe utilizar la opción @emph{Replot} para activar los nuevos ajustes.
-Si en el campo @emph{Trajectory at} del menú de diálogo de
+La opciÃ³n @emph{Config} del menÃº se puede utilizar para cambiar
+la(s) EDO(S) y algunos otros ajustes. DespuÃ©s de hacer los cambios, se
+debe utilizar la opciÃ³n @emph{Replot} para activar los nuevos ajustes.
+Si en el campo @emph{Trajectory at} del menÃº de diÃ¡logo de
 @emph{Config} se introducen un par de coordenadas y luego se pulsa la
-tecla @key{retorno}, se mostrará una nueva curva integral, además de
-las ya dibujadas.  Si se selecciona la opción @emph{Replot}, sólo se
-mostrará la última curva integral seleccionada.
+tecla @key{retorno}, se mostrarÃ¡ una nueva curva integral, ademÃ¡s de
+las ya dibujadas.  Si se selecciona la opciÃ³n @emph{Replot}, sÃ³lo se
+mostrarÃ¡ la Ãºltima curva integral seleccionada.
 
-Manteniendo pulsado el botón derecho del ratón mientras se mueve el
-cursor, se puede arrastrar el gráfico horizontal y verticalmente.
-Otros parámetros, como pueden ser el número de pasos, el valor
+Manteniendo pulsado el botÃ³n derecho del ratÃ³n mientras se mueve el
+cursor, se puede arrastrar el grÃ¡fico horizontal y verticalmente.
+Otros parÃ¡metros, como pueden ser el nÃºmero de pasos, el valor
 inicial de @var{t}, las coordenadas del centro y el radio, pueden
-cambiarse en el submenú de la opción @emph{Config}.
+cambiarse en el submenÃº de la opciÃ³n @emph{Config}.
 
-Con la opción @emph{Save}, se puede obtener una copia del gráfico en
+Con la opciÃ³n @emph{Save}, se puede obtener una copia del grÃ¡fico en
 una impresora Postscript o guardarlo en un fichero Postscript. Para
-optar entre la impresión o guardar en fichero, se debe seleccionar
-@emph{Print Options} en la ventana de diálogo de @emph{Config}. Una
-vez cubiertos los campos de la ventana de diálogo de @emph{Save},
-será necesario seleccionar la opción @emph{Save} del primer menú
-para crear el fichero o imprimir el gráfico.
+optar entre la impresiÃ³n o guardar en fichero, se debe seleccionar
+@emph{Print Options} en la ventana de diÃ¡logo de @emph{Config}. Una
+vez cubiertos los campos de la ventana de diÃ¡logo de @emph{Save},
+serÃ¡ necesario seleccionar la opciÃ³n @emph{Save} del primer menÃº
+para crear el fichero o imprimir el grÃ¡fico.
 
-@b{Opciones gráficas:}
+@b{Opciones grÃ¡ficas:}
 
-La función @code{plotdf} admite varias opciones, cada una de las cuales
-es una lista de dos o más elementos. El primer elemento es el nombre de
-la opción, y el resto está formado por el valor o valores asignados
-a dicha opción.
+La funciÃ³n @code{plotdf} admite varias opciones, cada una de las cuales
+es una lista de dos o mÃ¡s elementos. El primer elemento es el nombre de
+la opciÃ³n, y el resto estÃ¡ formado por el valor o valores asignados
+a dicha opciÃ³n.
 
-La función @code{plotdf} reconoce las siguientes opciones:
+La funciÃ³n @code{plotdf} reconoce las siguientes opciones:
 
 @itemize @bullet
 @item
 @dfn{tstep} establece la amplitud de los incrementos en la
 variable independiente @var{t}, utilizados para calcular la curva
-integral. Si se aporta sólo una expresión @var{dydx}, la variable
-@var{x} será directamente proporcional a @var{t}.
+integral. Si se aporta sÃ³lo una expresiÃ³n @var{dydx}, la variable
+@var{x} serÃ¡ directamente proporcional a @var{t}.
 El valor por defecto es 0.1.
 
 @item
-@dfn{nsteps} establece el número de pasos de longitud
-@code{tstep} que se utilizarán en la variable independiente para
+@dfn{nsteps} establece el nÃºmero de pasos de longitud
+@code{tstep} que se utilizarÃ¡n en la variable independiente para
 calcular la curva integral.
 El valor por defecto es 100.
 
 @item
-@dfn{direction} establece la dirección de la variable
-independiente que será seguida para calcular una curva integral.
+@dfn{direction} establece la direcciÃ³n de la variable
+independiente que serÃ¡ seguida para calcular una curva integral.
 Valores posibles son: @code{forward}, para hacer que la variable
 independiente aumente @code{nsteps} veces, con incrementos @code{tstep};
 @code{backward}, para hacer que la variable independiente
 disminuya; @code{both}, para extender la curva integral @code{nsteps}
-pasos hacia adelante y @code{nsteps} pasos hacia atrás.
+pasos hacia adelante y @code{nsteps} pasos hacia atrÃ¡s.
 Las palabras @code{right} y @code{left} se pueden utilizar como
-sinónimos de @code{forward} y @code{backward}.
+sinÃ³nimos de @code{forward} y @code{backward}.
 El valor por defecto es @code{both}.
 
 @item
 @dfn{tinitial} establece el valor inicial de la variable
 @var{t} utilizado para calcular curvas integrales. Puesto que las
-ecuaciones diferenciales son autónomas, esta opción sólo
-aparecerá en los gráficos de las curvas como funciones de @var{t}.
+ecuaciones diferenciales son autÃ³nomas, esta opciÃ³n sÃ³lo
+aparecerÃ¡ en los grÃ¡ficos de las curvas como funciones de @var{t}.
 El valor por defecto es 0.
 
 @item
 @dfn{versus_t} se utiliza para crear una segunda ventana
-gráfica, con el gráfico de una curva integral, como dos funciones
+grÃ¡fica, con el grÃ¡fico de una curva integral, como dos funciones
 @var{x}, @var{y}, de variable independiente @var{t}. Si se le da a
-@code{versus_t} cualquier valor diferente de 0, se mostrará la
-segunda ventana gráfica, la cual incluye otro menú, similar
+@code{versus_t} cualquier valor diferente de 0, se mostrarÃ¡ la
+segunda ventana grÃ¡fica, la cual incluye otro menÃº, similar
 al de la ventana principal.
 El valor por defecto es 0.
 
@@ -698,55 +698,55 @@ y @var{yinitial} para el extremo inicial de la curva integral.
 No tiene asignado valor por defecto.
 
 @item
-@dfn{parameters} establece una lista de parámetros,
-junto con sus valores numéricos, que son utilizados en la
-definición de la ecuación diferencial. Los nombres de los
-parámetros y sus valores deben escribirse en formato de cadena
+@dfn{parameters} establece una lista de parÃ¡metros,
+junto con sus valores numÃ©ricos, que son utilizados en la
+definiciÃ³n de la ecuaciÃ³n diferencial. Los nombres de los
+parÃ¡metros y sus valores deben escribirse en formato de cadena
 de caracteres como una secuencia de pares @code{nombre=valor}
 separados por comas.
 
 @item
-@dfn{sliders} establece una lista de parámetros que
-se cambiarán interactivamente utilizando barras de deslizamiento,
-así como los rangos de variación de dichos parámetros.
-Los nombres de los parámetros y sus rangos deben escribirse en formato
+@dfn{sliders} establece una lista de parÃ¡metros que
+se cambiarÃ¡n interactivamente utilizando barras de deslizamiento,
+asÃ­ como los rangos de variaciÃ³n de dichos parÃ¡metros.
+Los nombres de los parÃ¡metros y sus rangos deben escribirse en formato
 de cadena de caracteres como una secuencia de pares @code{nombre=min:max}
 separados por comas.
 
 @item
 @dfn{xfun} establece una cadena de caracteres con funciones
 de @var{x} separadas por puntos y comas para ser representadas por
-encima del campo de direcciones. Estas funciones serán interpretadas
+encima del campo de direcciones. Estas funciones serÃ¡n interpretadas
 por Tcl, no por Maxima.
 
 @item
 @dfn{xradius} es la mitad de la longitud del rango de valores
-a representar en la dirección x.
+a representar en la direcciÃ³n x.
 El valor por defecto es 10.
 
 @item
 @dfn{yradius} es la mitad de la longitud del rango de valores
-a representar en la dirección y.
+a representar en la direcciÃ³n y.
 El valor por defecto es 10.
 
 @item
 @dfn{xcenter} es la coordenada x del punto situado en el centro
-del gráfico.
+del grÃ¡fico.
 El valor por defecto es 0.
 
 @item
 @dfn{ycenter} es la coordenada y del punto situado en el centro
-del gráfico.
+del grÃ¡fico.
 El valor por defecto es 0.
 
 @item
-@dfn{width} establece el ancho de la ventana gráfica en
-píxeles.
+@dfn{width} establece el ancho de la ventana grÃ¡fica en
+pÃ­xeles.
 El valor por defecto es 500.
 
 @item
-@dfn{height} establece la altura de la ventana gráfica en
-píxeles.
+@dfn{height} establece la altura de la ventana grÃ¡fica en
+pÃ­xeles.
 El valor por defecto es 500.
 
 @end itemize
@@ -755,14 +755,14 @@ El valor por defecto es 500.
 
 NOTA: Dependiendo de la interface que se use para Maxima, las funciones
 que usan @code{openmath}, incluida @code{plotdf}, pueden desencadenar un
-fallo si terminan en punto y coma, en vez del símbolo de
-dólar. Para evitar problemas, se usará el símbolo de
-dólar en todos ejemplos.
+fallo si terminan en punto y coma, en vez del sÃ­mbolo de
+dÃ³lar. Para evitar problemas, se usarÃ¡ el sÃ­mbolo de
+dÃ³lar en todos ejemplos.
 
 @itemize @bullet
 @item
-Para mostrar el campo de direcciones de la ecuación diferencial
-@math{y' = exp(-x) + y} y la solución que pasa por @math{(2, -0.1)}:
+Para mostrar el campo de direcciones de la ecuaciÃ³n diferencial
+@math{y' = exp(-x) + y} y la soluciÃ³n que pasa por @math{(2, -0.1)}:
 @example
 (%i1) load("plotdf")$
 
@@ -770,30 +770,30 @@ Para mostrar el campo de direcciones de la ecuación diferencial
 @end example
 
 @ifnotinfo
-@image{../figures/plotdf1,8cm}
+@image{@value{figuresfolder}/plotdf1,8cm}
 @end ifnotinfo
 
 @item
-Para mostrar el campo de direcciones de la ecuación 
-@math{diff(y,x) = x - y^2} y la solución de condición
+Para mostrar el campo de direcciones de la ecuaciÃ³n 
+@math{diff(y,x) = x - y^2} y la soluciÃ³n de condiciÃ³n
 inicial @math{y(-1) = 3}, se puede utilizar la sentencia:
 @example
 (%i3) plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],
           [trajectory_at,-1,3], [direction,forward],
           [yradius,5],[xcenter,6]);
 @end example
-El gráfico también muestra la función @math{y = sqrt(x)}.
+El grÃ¡fico tambiÃ©n muestra la funciÃ³n @math{y = sqrt(x)}.
 
 @ifnotinfo
-@image{../figures/plotdf2,8cm}
+@image{@value{figuresfolder}/plotdf2,8cm}
 @end ifnotinfo
 
 @item
 El siguiente ejemplo muestra el campo de direcciones de un oscilador
-armónico, definido por las ecuaciones @math{dx/dt = y} y
+armÃ³nico, definido por las ecuaciones @math{dx/dt = y} y
 @math{dy/dt = -k*x/m}, y la curva integral que pasa por
 @math{(x,y) = (6,0)}, con una barra de deslizamiento que 
-permitirá cambiar el valor de @math{m} interactivamente
+permitirÃ¡ cambiar el valor de @math{m} interactivamente
 (@math{k} permanece fijo a 2):
 @example
 (%i4) plotdf([y,-k*x/m],[parameters,"m=2,k=2"],
@@ -801,11 +801,11 @@ permitirá cambiar el valor de @math{m} interactivamente
 @end example
 
 @ifnotinfo
-@image{../figures/plotdf3,8cm}
+@image{@value{figuresfolder}/plotdf3,8cm}
 @end ifnotinfo
 
 @item
-Para representar el campo de direcciones de la ecuación de
+Para representar el campo de direcciones de la ecuaciÃ³n de
 Duffing, @math{m*x''+c*x'+k*x+b*x^3 = 0}, se introduce la
 variable @math{y=x'} y se hace:
 @example
@@ -815,14 +815,14 @@ variable @math{y=x'} y se hace:
 @end example
 
 @ifnotinfo
-@image{../figures/plotdf4,8cm}
+@image{@value{figuresfolder}/plotdf4,8cm}
 @end ifnotinfo
 
 @item
-El campo de direcciones de un péndulo amortiguado,
-incluyendo la solución para condiciones iniciales dadas,
+El campo de direcciones de un pÃ©ndulo amortiguado,
+incluyendo la soluciÃ³n para condiciones iniciales dadas,
 con una barra de deslizamiento que se puede utilizar para
-cambiar el valor de la masa, @math{m}, y con el gráfico
+cambiar el valor de la masa, @math{m}, y con el grÃ¡fico
 de las dos variables de estado como funciones del tiempo:
 
 @example
@@ -835,7 +835,7 @@ de las dos variables de estado como funciones del tiempo:
 @end example
 
 @ifnotinfo
-@image{../figures/plotdf5,8cm}@image{../figures/plotdf6,8cm}
+@image{@value{figuresfolder}/plotdf5,8cm}@image{@value{figuresfolder}/figures/plotdf6,8cm}
 @end ifnotinfo
 
 @end itemize
@@ -844,23 +844,23 @@ de las dos variables de estado como funciones del tiempo:
 
 
 
-@deffn {Función} ploteq (@var{exp}, ...options...)
+@deffn {FunciÃ³n} ploteq (@var{exp}, ...options...)
 
-Dibuja curvas equipotenciales para @var{exp}, que debe ser una expresión
-dependiente de dos variables. Las curvas se obtienen integrando la ecuación
+Dibuja curvas equipotenciales para @var{exp}, que debe ser una expresiÃ³n
+dependiente de dos variables. Las curvas se obtienen integrando la ecuaciÃ³n
 diferencial que define las trayectorias ortogonales a las soluciones del 
-sistema autónomo que se obtiene del gradiente de la expresión dada.
-El dibujo también puede mostrar las curvas integrales de ese sistema
-de gradientes (opción @code{fieldlines}).
+sistema autÃ³nomo que se obtiene del gradiente de la expresiÃ³n dada.
+El dibujo tambiÃ©n puede mostrar las curvas integrales de ese sistema
+de gradientes (opciÃ³n @code{fieldlines}).
 
-Este programa también necesita Xmaxima, incluso si se ejecuta Maxima desde
-una consola, pues el dibujo se creará por el código Tk de Xmaxima.
-Por defecto, la región dibujada estará vacía hasta que el
-usuario haga clic en un punto, dé sus coordenadas a través del menú o
-mediante la opción @code{trajectory_at}.
+Este programa tambiÃ©n necesita Xmaxima, incluso si se ejecuta Maxima desde
+una consola, pues el dibujo se crearÃ¡ por el cÃ³digo Tk de Xmaxima.
+Por defecto, la regiÃ³n dibujada estarÃ¡ vacÃ­a hasta que el
+usuario haga clic en un punto, dÃ© sus coordenadas a travÃ©s del menÃº o
+mediante la opciÃ³n @code{trajectory_at}.
 
 La mayor parte de opciones aceptadas por @code{plotdf} se pueden utilizar
-también con @code{ploteq} y el aspecto del interfaz es el mismo que el
+tambiÃ©n con @code{ploteq} y el aspecto del interfaz es el mismo que el
 descrito para @code{plotdf}.
 
 Ejemplo:
@@ -874,23 +874,23 @@ Ejemplo:
 (%i2) ploteq(V,[x,-2,2],[y,-2,2],[fieldlines,"blue"])$
 @end example
 
-Haciendo clic sobre un punto se dibujará la curva equipotencial que pasa por
+Haciendo clic sobre un punto se dibujarÃ¡ la curva equipotencial que pasa por
 ese punto (en rojo) y la trayectoria ortogonal (en azul).
 
 @end deffn
 
 
 
-@deffn {Función} rk (@var{ODE}, @var{var}, @var{initial}, @var{dominio})
-@deffnx {Función} rk ([@var{ODE1},...,@var{ODEm}], [@var{v1},...,@var{vm}], [@var{init1},...,@var{initm}], @var{dominio})
+@deffn {FunciÃ³n} rk (@var{ODE}, @var{var}, @var{initial}, @var{dominio})
+@deffnx {FunciÃ³n} rk ([@var{ODE1},...,@var{ODEm}], [@var{v1},...,@var{vm}], [@var{init1},...,@var{initm}], @var{dominio})
 
-La primera forma se usa para resolver numéricamente una ecuación
+La primera forma se usa para resolver numÃ©ricamente una ecuaciÃ³n
 diferencial ordinaria de primer orden (EDO), y la segunda forma resuelve
-numéricamente un sistema de @var{m} de esas ecuaciones, usando el método
+numÃ©ricamente un sistema de @var{m} de esas ecuaciones, usando el mÃ©todo
 de Runge-Kutta de cuarto orden. @var{var} representa la variable dependiente.
-EDO debe ser una expresión que dependa únicamente de las variables
+EDO debe ser una expresiÃ³n que dependa Ãºnicamente de las variables
 independiente y dependente, y define la derivada de la variable dependiente
-en función de la variable independiente.
+en funciÃ³n de la variable independiente.
 
 La variable independiente se representa con @var{dominio}, que debe ser
 una lista con cuatro elementos, como por ejemplo:
@@ -899,31 +899,31 @@ una lista con cuatro elementos, como por ejemplo:
 @end example
 el primer elemento de la lista identifica la variable independiente, el
 segundo y tercer elementos son los valores inicial y final para esa
-variable, y el último elemento da el valor de los incrementos que
-deberán ser usados dentro de ese intervalo.
+variable, y el Ãºltimo elemento da el valor de los incrementos que
+deberÃ¡n ser usados dentro de ese intervalo.
 
-Si se van a resolver @var{m} ecuaciones, deberá haber @var{m}
+Si se van a resolver @var{m} ecuaciones, deberÃ¡ haber @var{m}
 variables dependientes @var{v1}, @var{v2}, ..., @var{vm}. Los valores
-iniciales para esas variables serán @var{inic1},
-@var{inic2}, ..., @var{inicm}. Continuará existiendo apenas una
+iniciales para esas variables serÃ¡n @var{inic1},
+@var{inic2}, ..., @var{inicm}. ContinuarÃ¡ existiendo apenas una
 variable independiente definida por la lista @var{domain}, como en
 el caso anterior. @var{EDO1}, ..., @var{EDOm} son las expresiones que
 definen las derivadas de cada una de las variables dependientes en
-función de la variable independiente. Las únicas variables que
+funciÃ³n de la variable independiente. Las Ãºnicas variables que
 pueden aparecer en cada una de esas expresiones son la variable
 independiente y cualquiera de las variables dependientes. Es importante
 que las derivadas @var{EDO1}, ..., @var{EDOm} sean colocadas en la lista
 en el mismo orden en que fueron agrupadas las variables dependientes;
-por ejemplo, el tercer elemento de la lista será interpretado como la
+por ejemplo, el tercer elemento de la lista serÃ¡ interpretado como la
 derivada de la tercera variable dependiente.
 
 El programa intenta integrar las ecuaciones desde el valor inicial de la
 variable independiente, hasta el valor final, usando incrementos
-fijos. Si en algún paso una de las variables dependientes toma un
-valor absoluto muy grande, la integración será suspendida en ese
-punto.  El resultado será una lista con un número de elementos igual
-al número de iteraciones realizadas. Cada elemento en la lista de
-resultados es también una lista con @var{m}+1 elementos: el valor de
+fijos. Si en algÃºn paso una de las variables dependientes toma un
+valor absoluto muy grande, la integraciÃ³n serÃ¡ suspendida en ese
+punto.  El resultado serÃ¡ una lista con un nÃºmero de elementos igual
+al nÃºmero de iteraciones realizadas. Cada elemento en la lista de
+resultados es tambiÃ©n una lista con @var{m}+1 elementos: el valor de
 la variable independiente, seguido de los valores de las variables
 dependientes correspondientes a ese punto.
 

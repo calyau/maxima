@@ -38,7 +38,9 @@ Maxima 5.12以来、現在まで、dynamicsパッケージは
 
 
 @opencatbox
-@category{Dynamical systems} @category{Share packages} @category{Package dynamics}
+@category{Dynamical systems}
+@category{Share packages}
+@category{Package dynamics}
 @closecatbox
 
 @node Functions and Variables for dynamics,  , Introduction to dynamics, dynamics
@@ -55,7 +57,8 @@ Maxima 5.12以来、現在まで、dynamicsパッケージは
 @var{n}回繰り返されます。
 
 @opencatbox
-@category{Package dynamics} @category{Plotting}
+@category{Package dynamics}
+@category{Plotting}
 @closecatbox
 
 @end deffn
@@ -81,7 +84,8 @@ $$y_{n+1} = F(y_n)$$
 @var{y0}は実数でなければいけなく、@var{n}は正の整数でなければいけません。
 
 @opencatbox
-@category{Package dynamics} @category{Plotting}
+@category{Package dynamics}
+@category{Plotting}
 @closecatbox
 
 @end deffn
@@ -105,7 +109,8 @@ $$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 変数はリストの中に明示的に指名されなければいけません。
 
 @opencatbox
-@category{Package dynamics} @category{Plotting}
+@category{Package dynamics}
+@category{Plotting}
 @closecatbox
 
 @end deffn
@@ -125,7 +130,8 @@ $$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 重み@var{r1}, @var{r2}と@var{r3}は2, 7, 10とできます。
 
 @opencatbox
-@category{Package dynamics} @category{Plotting}
+@category{Package dynamics}
+@category{Plotting}
 @closecatbox
 
 @end deffn
@@ -150,7 +156,8 @@ Julia集合に属さない点に使われる色すべては、同じ@var{saturat
 受け付けられるオプションのリストは以下の節で与えられます。
 
 @opencatbox
-@category{Package dynamics} @category{Plotting}
+@category{Package dynamics}
+@category{Plotting}
 @closecatbox
 
 @end deffn
@@ -174,7 +181,8 @@ Mandelbrot集合に属さない点に使われる色すべては、同じ@var{sa
 受け付けられるオプションのリストは以下の節で与えられます。
 
 @opencatbox
-@category{Package dynamics} @category{Plotting}
+@category{Package dynamics}
+@category{Plotting}
 @closecatbox
 
 @end deffn
@@ -193,7 +201,8 @@ Mandelbrot集合に属さない点に使われる色すべては、同じ@var{sa
 数列に@var{n1}回の時間発展させた後得られる数列@var{y(n1+1)},..., @var{y(n1+n2+1)}の@var{n2}個の値を示します。
 
 @opencatbox
-@category{Package dynamics} @category{Plotting}
+@category{Package dynamics}
+@category{Plotting}
 @closecatbox
 
 @end deffn
@@ -234,7 +243,9 @@ Mandelbrot集合に属さない点に使われる色すべては、同じ@var{sa
 独立変数の値にその点に対応する従属変数の値が続きます。
 
 @opencatbox
-@category{Package dynamics} @category{Differential equations} @category{Numerical methods}
+@category{Package dynamics}
+@category{Differential equations}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn
@@ -261,7 +272,8 @@ $$y_{n+1} = F(y_n)$$
 手続きは点(@var{yn}, @var{yn})に届くまで@var{n}回繰り返されます。
 
 @opencatbox
-@category{Package dynamics} @category{Plotting}
+@category{Package dynamics}
+@category{Plotting}
 @closecatbox
 
 @end deffn
@@ -365,8 +377,8 @@ Mandelbrot集合にはmandelbrotです。
 @end example
 
 @ifnotinfo
-@image{figures/dynamics1,8cm}
-@image{figures/dynamics2,8cm}
+@image{@value{figuresfolder}/dynamics1,8cm}
+@image{@value{figuresfolder}/dynamics2,8cm}
 @end ifnotinfo
 
 もしシステムが遅いなら、
@@ -390,7 +402,7 @@ $$x_{n+1} = a + x_n^2$$
 @end example
 
 @ifnotinfo
-@image{figures/dynamics3,8cm}
+@image{@value{figuresfolder}/dynamics3,8cm}
 @end ifnotinfo
 
 
@@ -401,7 +413,7 @@ x @code{=} -1.25近くのより低い分岐の回りの領域を拡大するに�
 @end example
 
 @ifnotinfo
-@image{figures/dynamics4,8cm}
+@image{@value{figuresfolder}/dynamics4,8cm}
 @end ifnotinfo
 
 フラクタルに導かれる二次元系の発展:
@@ -415,7 +427,7 @@ x @code{=} -1.25近くのより低い分岐の回りの領域を拡大するに�
 @end example
 
 @ifnotinfo
-@image{figures/dynamics5,8cm}
+@image{@value{figuresfolder}/dynamics5,8cm}
 @end ifnotinfo
 
 そしてそのフラクタルの小さな領域の拡大:
@@ -426,7 +438,7 @@ x @code{=} -1.25近くのより低い分岐の回りの領域を拡大するに�
 @end example
 
 @ifnotinfo
-@image{figures/dynamics6,8cm}
+@image{@value{figuresfolder}/dynamics6,8cm}
 @end ifnotinfo
 
 カオスゲームで得られるSierpinski三角形のプロット:
@@ -437,7 +449,7 @@ x @code{=} -1.25近くのより低い分岐の回りの領域を拡大するに�
 @end example
 
 @ifnotinfo
-@image{figures/dynamics7,8cm}
+@image{@value{figuresfolder}/dynamics7,8cm}
 @end ifnotinfo
 
 反復函数系で得られるBarnsleyのシダ:
@@ -465,7 +477,7 @@ x @code{=} -1.25近くのより低い分岐の回りの領域を拡大するに�
 @end example
 
 @ifnotinfo
-@image{figures/dynamics8,8cm}
+@image{@value{figuresfolder}/dynamics8,8cm}
 @end ifnotinfo
 
 Mandelbrot集合の12色のグラフィックス表現を納めた
@@ -477,7 +489,7 @@ mandelbrot([filename,"dynamics9"])$
 @end example
 
 @ifnotinfo
-@image{figures/dynamics9,8cm}
+@image{@value{figuresfolder}/dynamics9,8cm}
 @end ifnotinfo
 
 そして数(-0.55 + i 0.6)に関するJulia集合は以下で得られます:
@@ -492,7 +504,7 @@ x方向に-0.3から0.3まで、y方向に0.3から0.9までの領域を表示�
 青から始まり黄で終わる36色が使われます。
 
 @ifnotinfo
-@image{figures/dynamics10,8cm}
+@image{@value{figuresfolder}/dynamics10,8cm}
 @end ifnotinfo
 
 微分方程式

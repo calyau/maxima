@@ -1732,10 +1732,11 @@ TDNEG TDZERO TDPN) to store it, and also sets SIGN."
 	      (t '$pnz))))
 
 (defun sign-mabs (x)
-  (sign (cadr x))
-  (cond ((member sign '($pos $zero) :test #'eq))
-	((member sign '($neg $pn) :test #'eq) (setq sign '$pos))
-	(t (setq sign '$pz minus nil evens (nconc odds evens) odds nil))))
+  (let ((*complexsign* t))
+    (sign (cadr x))
+    (cond ((member sign '($pos $zero) :test #'eq))
+	  ((member sign '($neg $pn) :test #'eq) (setq sign '$pos))
+	  (t (setq sign '$pz minus nil evens (nconc odds evens) odds nil)))))
 
 ;;; Compare min/max
 

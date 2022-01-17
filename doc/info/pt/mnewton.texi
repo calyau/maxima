@@ -1,39 +1,39 @@
 @c /mnewton.texi/1.2/Mon May 15 07:54:51 2006//
 @menu
-* Definições para mnewton::
+* DefiniÃ§Ãµes para mnewton::
 @end menu
 
-@node Definições para mnewton,  , mnewton, mnewton
-@section Definições para mnewton
+@node DefiniÃ§Ãµes para mnewton,  , mnewton, mnewton
+@section DefiniÃ§Ãµes para mnewton
 
-@defvr {Variável de opção} newtonepsilon
-Valor por omissão: @code{10.0^(-fpprec/2)}
+@defvr {VariÃ¡vel de opÃ§Ã£o} newtonepsilon
+Valor por omissÃ£o: @code{10.0^(-fpprec/2)}
 
-Precisão para determinar quando a função @code{mnewton} convergiu em direção à solução.
+PrecisÃ£o para determinar quando a funÃ§Ã£o @code{mnewton} convergiu em direÃ§Ã£o Ã  soluÃ§Ã£o.
 
-Veja também @code{mnewton}.
+Veja tambÃ©m @code{mnewton}.
 @end defvr
 
 
-@defvr {Variável de opção} newtonmaxiter
-Valor por omissão: @code{50}
+@defvr {VariÃ¡vel de opÃ§Ã£o} newtonmaxiter
+Valor por omissÃ£o: @code{50}
 
-Número máximo de iterações que para a função @code{mnewton}
-caso essa função não seja convergente ou se convergir muito lentamente.
+NÃºmero mÃ¡ximo de iteraÃ§Ãµes que para a funÃ§Ã£o @code{mnewton}
+caso essa funÃ§Ã£o nÃ£o seja convergente ou se convergir muito lentamente.
 
-Veja também @code{mnewton}.
+Veja tambÃ©m @code{mnewton}.
 @end defvr
 
-@deffn {Função} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
-Solução de multiplas funções não lineares usando o método de Newton.
-@var{FuncList} é a lista de funções a serem resolvidas,
-@var{VarList} é a lista dos nomes de variáveis, e
-@var{GuessList} é a lista de aproximações iniciais.
+@deffn {FunÃ§Ã£o} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+SoluÃ§Ã£o de multiplas funÃ§Ãµes nÃ£o lineares usando o mÃ©todo de Newton.
+@var{FuncList} Ã© a lista de funÃ§Ãµes a serem resolvidas,
+@var{VarList} Ã© a lista dos nomes de variÃ¡veis, e
+@var{GuessList} Ã© a lista de aproximaÃ§Ãµes iniciais.
 
-A solução é retornada no mesmo formato retornado pela função @code{solve()}.
-Caso a solução não seja encontrada, @code{[]} é retornado.
+A soluÃ§Ã£o Ã© retornada no mesmo formato retornado pela funÃ§Ã£o @code{solve()}.
+Caso a soluÃ§Ã£o nÃ£o seja encontrada, @code{[]} Ã© retornado.
 
-Essa função é controlada através das variáveis globais @code{newtonepsilon} e @code{newtonmaxiter}.
+Essa funÃ§Ã£o Ã© controlada atravÃ©s das variÃ¡veis globais @code{newtonepsilon} e @code{newtonmaxiter}.
 
 @example
 (%i1) load("mnewton")$
@@ -47,7 +47,7 @@ Essa função é controlada através das variáveis globais @code{newtonepsilon} e @c
 (%o4) [[u = 1.066618389595407, v = 1.552564766841786]]
 @end example
 
-Para usar essa função primeiro escreva @code{load("mnewton")}. Veja também @code{newtonepsilon} e @code{newtonmaxiter}.
+Para usar essa funÃ§Ã£o primeiro escreva @code{load("mnewton")}. Veja tambÃ©m @code{newtonepsilon} e @code{newtonmaxiter}.
 @end deffn
 
 

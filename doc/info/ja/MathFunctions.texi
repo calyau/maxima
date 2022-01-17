@@ -188,7 +188,9 @@ $$\left \lfloor a \right \rfloor$$
 @var{L}がリストでも集合でもない時、エラーを示します。
 
 @opencatbox
-@category{Mathematical functions} @category{Lists} @category{Sets}
+@category{Mathematical functions}
+@category{Lists}
+@category{Sets}
 @closecatbox
 @end deffn
 
@@ -200,7 +202,9 @@ $$\left \lfloor a \right \rfloor$$
 @var{L}がリストでも集合でもない時、エラーを示します。
 
 @opencatbox
-@category{Mathematical functions} @category{Lists} @category{Sets}
+@category{Mathematical functions}
+@category{Lists}
+@category{Sets}
 @closecatbox
 @end deffn
 
@@ -397,7 +401,8 @@ $$\left \lfloor a \right \rfloor$$
 ここで、@code{r}と@code{theta}は純粋な実数です。
 
 @opencatbox
-@category{Complex variables} @category{Exponential and logarithm functions}
+@category{Complex variables}
+@category{Exponential and logarithm functions}
 @closecatbox
 @end deffn
 
@@ -455,7 +460,8 @@ $$\left \lfloor a \right \rfloor$$
 @c n!! IS NEITHER SIMPLIFIED NOR EVALUATED IN THIS CASE -- MENTION THAT? OR TOO MUCH DETAIL ???
 
 @opencatbox
-@category{Gamma and factorial functions} @category{Operators}
+@category{Gamma and factorial functions}
+@category{Operators}
 @closecatbox
 @end deffn
 
@@ -651,7 +657,8 @@ Maximaは階乗関数の導関数を知っています。
 @end example
 
 @opencatbox
-@category{Gamma and factorial functions} @category{Operators}
+@category{Gamma and factorial functions}
+@category{Operators}
 @closecatbox
 @end deffn
 
@@ -742,7 +749,8 @@ Maximaは階乗関数の導関数を知っています。
 @code{minfactorial}は、@code{factcomb}の後に適用されます。
 
 @opencatbox
-@category{Gamma and factorial functions} @category{Simplification flags and variables}
+@category{Gamma and factorial functions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -767,7 +775,8 @@ Maximaは階乗関数の導関数を知っています。
 @code{logcontract}コマンドは@code{log}を含む式を「短縮」します。
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@category{Exponential and logarithm functions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -792,7 +801,8 @@ Maximaは階乗関数の導関数を知っています。
 
 @c NEED EXAMPLES HERE
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@category{Exponential and logarithm functions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -813,7 +823,8 @@ Maximaは階乗関数の導関数を知っています。
 
 @c NEED EXAMPLES HERE
 @opencatbox
-@category{Exponential and logarithm functions} @category{Evaluation flags}
+@category{Exponential and logarithm functions}
+@category{Evaluation flags}
 @closecatbox
 @end defvr
 
@@ -998,7 +1009,9 @@ Maximaは、基数10や他の基数の対数の組み込み関数を持ちませ
 終端での不定積分の「評価」がしばしば必要になるので、@code{logabs:true}設定が使われます。
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Integral calculus} @category{Global flags}
+@category{Exponential and logarithm functions}
+@category{Integral calculus}
+@category{Global flags}
 @closecatbox
 
 @end defvr
@@ -1018,7 +1031,9 @@ Maximaは、基数10や他の基数の対数の組み込み関数を持ちませ
 グローバル変数@code{logarc}を設定することなしに、式@var{expr}に対して上記置き換えを実行します。
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables} @category{Simplification functions}
+@category{Exponential and logarithm functions}
+@category{Simplification flags and variables}
+@category{Simplification functions}
 @closecatbox
 @end defvr
 
@@ -1036,7 +1051,8 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$}を実行できます。
 @code{logcontract(1/2*log(x));}は@code{log(sqrt(x))}を与えるでしょう。
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@category{Exponential and logarithm functions}
+@category{Simplification flags and variables}
 @closecatbox
 
 @end defvr
@@ -1093,7 +1109,8 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$}を実行できます。
 これらのすべての整理は止められます。
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@category{Exponential and logarithm functions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -1107,7 +1124,8 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$}を実行できます。
 が実装されます。
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@category{Exponential and logarithm functions}
+@category{Simplification flags and variables}
 @closecatbox
 
 @end defvr
@@ -1124,7 +1142,9 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$}を実行できます。
 引数は、@code{log}の計算の前に絶対値に変換されます。
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables} @category{Numerical evaluation}
+@category{Exponential and logarithm functions}
+@category{Simplification flags and variables}
+@category{Numerical evaluation}
 @closecatbox
 @end defvr
 
@@ -1137,7 +1157,8 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$}を実行できます。
 @code{%e}は、@code{log}を含む累乗へ整理がなされます。
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@category{Exponential and logarithm functions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -1148,7 +1169,8 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$}を実行できます。
 @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi}を虚部係数とする複素数値の自然対数の主値を表します。
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Complex variables}
+@category{Exponential and logarithm functions}
+@category{Complex variables}
 @closecatbox
 @end deffn
 
@@ -1308,7 +1330,8 @@ Maximaは、
 @end example
 
 @opencatbox
-@category{Trigonometric functions} @category{Simplification flags and variables}
+@category{Trigonometric functions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -1375,7 +1398,9 @@ Maximaは、ただ、引数が、
 @end example
 
 @opencatbox
-@category{Trigonometric functions} @category{Hyperbolic functions} @category{Simplification flags and variables}
+@category{Trigonometric functions}
+@category{Hyperbolic functions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -1509,7 +1534,8 @@ Maximaが既に知っている規則と合わせて、
 これらを使うには、@code{load(atrig1);}を実行してください。
 
 @opencatbox
-@category{Trigonometric functions} @category{Package atrig1}
+@category{Trigonometric functions}
+@category{Package atrig1}
 @closecatbox
 @end defvr
 
@@ -1638,7 +1664,8 @@ Maximaは、この因子と、
 @end example
 
 @opencatbox
-@category{Trigonometric functions} @category{Simplification flags and variables}
+@category{Trigonometric functions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -1655,7 +1682,8 @@ Maximaは、この因子と、
 @c NEED TO LOAD THIS PACKAGE ??
 
 @opencatbox
-@category{Trigonometric functions} @category{Package ntrig}
+@category{Trigonometric functions}
+@category{Package ntrig}
 @closecatbox
 @end defvr
 
@@ -1761,7 +1789,8 @@ Maximaは、この因子と、
 @end example
 
 @opencatbox
-@category{Trigonometric functions} @category{Simplification functions}
+@category{Trigonometric functions}
+@category{Simplification functions}
 @closecatbox
 @end deffn
 
@@ -1777,7 +1806,8 @@ Maximaは、この因子と、
 @code{trigexpandplus}が@code{true}の時だけ起こります。
 
 @opencatbox
-@category{Trigonometric functions} @category{Simplification flags and variables}
+@category{Trigonometric functions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -1793,7 +1823,8 @@ Maximaは、この因子と、
 @code{trigexpandtimes}が@code{true}の時だけ起こります。
 
 @opencatbox
-@category{Trigonometric functions} @category{Simplification flags and variables}
+@category{Trigonometric functions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -1817,7 +1848,8 @@ Maximaは、この因子と、
 @code{@var{fun}(@var{arcfun}(@var{x}))}のどちらの整理も止められます。
 
 @opencatbox
-@category{Trigonometric functions} @category{Simplification flags and variables}
+@category{Trigonometric functions}
+@category{Simplification flags and variables}
 @closecatbox
 
 @end defvr
@@ -1869,7 +1901,8 @@ Maximaは、この因子と、
 @c @end example
 
 @opencatbox
-@category{Trigonometric functions} @category{Simplification functions}
+@category{Trigonometric functions}
+@category{Simplification functions}
 @closecatbox
 @end deffn
 
@@ -1885,7 +1918,8 @@ Maximaは、この因子と、
 @code{-sin(x)}になります。
 
 @opencatbox
-@category{Trigonometric functions} @category{Simplification flags and variables}
+@category{Trigonometric functions}
+@category{Simplification flags and variables}
 @closecatbox
 @end defvr
 
@@ -1920,7 +1954,8 @@ $\cosh\left(x\right)^2 - \sinh\left(x\right)^2 = 1$
 @c MERGE EXAMPLES INTO THIS ITEM
 
 @opencatbox
-@category{Trigonometric functions} @category{Simplification functions}
+@category{Trigonometric functions}
+@category{Simplification functions}
 @closecatbox
 @end deffn
 
@@ -2010,7 +2045,8 @@ Davenport, Siret, and Tournierの@i{Calcul Formel}, Masson (もしくは英語�
 @end example
 
 @opencatbox
-@category{Trigonometric functions} @category{Simplification functions}
+@category{Trigonometric functions}
+@category{Simplification functions}
 @closecatbox
 @end deffn
 
@@ -2126,6 +2162,7 @@ Maximaの乱数生成器は、メルセンヌ・ツイスタ MT 19937の実装�
 @end example
 
 @opencatbox
-@category{Random numbers} @category{Numerical methods}
+@category{Random numbers}
+@category{Numerical methods}
 @closecatbox
 @end deffn

@@ -1461,7 +1461,7 @@ setify(makelist(float(rat(1.2345e-320))-1.2345e-320,ratepsilon,[1e-1,1e-2,1e-3,1
 /* setify(makelist(float(rat(-1.5432e-320))-1.5432e-320,ratepsilon,[1e-1,1e-2,1e-3,1e-4,1e-5, 1e-7, 2e-15, 1e-100, 1e-300])); */
 /* {0.0} */
 
-(ratepsilon:2e-15,reset(ratprint),0);
+(ratepsilon:2e-15,0);
 0$
 
 

@@ -132,7 +132,10 @@ IPRINTパラメータ(メッセージ出力を制御する２つの整数のリ�
 @end example
 
 @opencatbox
-@category{Numerical methods} @category{Optimization} @category{Share packages} @category{Package augmented_lagrangian}
+@category{Numerical methods}
+@category{Optimization}
+@category{Share packages}
+@category{Package augmented_lagrangian}
 @closecatbox
 
 @end deffn

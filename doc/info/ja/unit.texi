@@ -79,7 +79,9 @@ Nebraska大学Kearney校(UNK)のBarton Willis, Robert Dodier,
 TODO : 次元機能、温度の扱い、略語表示、仲間。単位を含む量の足し算の例を示す。
 
 @opencatbox
-@category{Physical units} @category{Share packages} @category{Package unit}
+@category{Physical units}
+@category{Share packages}
+@category{Package unit}
 @closecatbox
 
 

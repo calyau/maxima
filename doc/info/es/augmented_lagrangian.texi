@@ -7,25 +7,25 @@
 @section Funciones y variables para augmented_lagrangian
 
 
-@deffn {FunciÛn} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
-@deffnx {FunciÛn} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
-@deffnx {FunciÛn} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy})
-@deffnx {FunciÛn} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy}, optional_args)
+@deffn {Funci√≥n} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffnx {Funci√≥n} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
+@deffnx {Funci√≥n} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy})
+@deffnx {Funci√≥n} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy}, optional_args)
 
-Devuelve una aproximaciÛn del valor mÌnimo de
-la expresiÛn @var{FOM} respecto de las variables @var{xx},
+Devuelve una aproximaci√≥n del valor m√≠nimo de
+la expresi√≥n @var{FOM} respecto de las variables @var{xx},
 manteniendo las restricciones @var{C} igual a cero. La lista
 @var{yy} contiene las soluciones iniciales para @var{xx}.
-El algoritmo que se utiliza es el mÈtodo del lagrangiano
+El algoritmo que se utiliza es el m√©todo del lagrangiano
 aumentado (ver referencias [1] y [2]).
 
-Si @var{grad} est· presente en la llamada a la funciÛn, se interpreta
+Si @var{grad} est√° presente en la llamada a la funci√≥n, se interpreta
 como el gradiente de @var{FOM} respecto de @var{xx}, representado como una
 lista de tantas expresiones como variables tenga @var{xx}. Si el
-argumento @var{grad} no est·, se calcular· de forma autom·tica.
+argumento @var{grad} no est√°, se calcular√° de forma autom√°tica.
 
 Tanto @var{FOM} como cada uno de los elementos de @var{grad}, si se
-da como argumento, deben ser expresiones ordinarias; no admitiÈndose
+da como argumento, deben ser expresiones ordinarias; no admiti√©ndose
 ni nombres de funciones ni expresiones lambda.
 
 El argumento @code{optional_args} hace referencia a otros argumentos adicionales,
@@ -34,24 +34,24 @@ Los argumentos opcionales reconocidos son:
 
 @table @code
 @item niter
-N˙mero de iteraciones del algoritmo.
+N√∫mero de iteraciones del algoritmo.
 @item lbfgs_tolerance
 Tolerancia que se pasa a LBFGS.
 @item iprint
-Par·metro IPRINT (lista de dos enteros que controlan la frecuencia
+Par√°metro IPRINT (lista de dos enteros que controlan la frecuencia
 de mensajes) que se pasa a LBFGS.
 @item %lambda
-Valor inicial de @code{%lambda} que ser· utilizado para calcular el
+Valor inicial de @code{%lambda} que ser√° utilizado para calcular el
 lagrangiano aumentado.
 @end table
 
-Esta funciÛn minimiza el lagrangiano aumentado haciendo uso
-del algoritmo LBFGS, que es un mÈtodo de los llamados
+Esta funci√≥n minimiza el lagrangiano aumentado haciendo uso
+del algoritmo LBFGS, que es un m√©todo de los llamados
 quasi-Newton.
 
-Antes de hacer uso de esta funciÛn ejec˙tense @code{load("augmented_lagrangian")}.
+Antes de hacer uso de esta funci√≥n ejec√∫tense @code{load("augmented_lagrangian")}.
 
-VÈase tambiÈn @code{lbfgs}.
+V√©ase tambi√©n @code{lbfgs}.
 
 Referencias:
 

@@ -104,7 +104,8 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 @code{false}を返します。
 
 @opencatbox
-@category{Differential equations} @category{Laplace transform}
+@category{Differential equations}
+@category{Laplace transform}
 @closecatbox
 @end deffn
 

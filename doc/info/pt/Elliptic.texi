@@ -1,30 +1,30 @@
 @c Language: Portuguese
 @c /Elliptic.texi/1.8/Tue Aug 16 07:43:22 2005/
 @menu
-* Introdução a Funções Elípticas e Integrais::
-* Definições para Funções Elípticas::
-* Definições para Integrais Elípticas::
+* IntroduÃ§Ã£o a FunÃ§Ãµes ElÃ­pticas e Integrais::
+* DefiniÃ§Ãµes para FunÃ§Ãµes ElÃ­pticas::
+* DefiniÃ§Ãµes para Integrais ElÃ­pticas::
 @end menu
 
 
 
-@node Introdução a Funções Elípticas e Integrais, Definições para Funções Elípticas, , Top
+@node IntroduÃ§Ã£o a FunÃ§Ãµes ElÃ­pticas e Integrais, DefiniÃ§Ãµes para FunÃ§Ãµes ElÃ­pticas, , Top
 @comment  node-name,  next,  previous,  up
 
-@section Introdução a Funções Elípticas e Integrais
+@section IntroduÃ§Ã£o a FunÃ§Ãµes ElÃ­pticas e Integrais
 
-Maxima inclui suporte a funções elípticas Jacobianas e a
-integrais elípticas completas e incompletas.  Isso inclui manipulação
-simbólica dessas funções e avaliação numérica também.
-Definições dessas funções e muitas de suas propriedades podem ser
-encontradas em Abramowitz e Stegun, Capítulos 16--17.  Tanto quanto possível,
-usamos as definições e relações dadas aí.
+Maxima inclui suporte a funÃ§Ãµes elÃ­pticas Jacobianas e a
+integrais elÃ­pticas completas e incompletas.  Isso inclui manipulaÃ§Ã£o
+simbÃ³lica dessas funÃ§Ãµes e avaliaÃ§Ã£o numÃ©rica tambÃ©m.
+DefiniÃ§Ãµes dessas funÃ§Ãµes e muitas de suas propriedades podem ser
+encontradas em Abramowitz e Stegun, CapÃ­tulos 16--17.  Tanto quanto possÃ­vel,
+usamos as definiÃ§Ãµes e relaÃ§Ãµes dadas aÃ­.
 
-Em particular, todas as funções elípticas e integrais elípticas usam o parâmetro
-@math{m} em lugar de módulo @math{k} ou o ângulo modular
-@math{\alpha}.  Isso é uma área onde discordamos de Abramowitz e
-Stegun que usam o ângulo modular para as funções elípticas.  As
-seguintes relações são verdadeiras:
+Em particular, todas as funÃ§Ãµes elÃ­pticas e integrais elÃ­pticas usam o parÃ¢metro
+@math{m} em lugar de mÃ³dulo @math{k} ou o Ã¢ngulo modular
+@math{\alpha}.  Isso Ã© uma Ã¡rea onde discordamos de Abramowitz e
+Stegun que usam o Ã¢ngulo modular para as funÃ§Ãµes elÃ­pticas.  As
+seguintes relaÃ§Ãµes sÃ£o verdadeiras:
 @ifinfo
 @math{m = k^2} e @math{k = \sin(\alpha)}
 @end ifinfo
@@ -32,15 +32,15 @@ seguintes relações são verdadeiras:
 $$m = k^2$$ and $$k = \sin\alpha $$
 @end tex
 
-As funções elípticas e integrais elípticas estão primariamente tencionando suportar
-computação simbólica.  Portanto, a maiora das derivadas de funções
-e integrais são conhecidas.  Todavia, se valores em ponto flutuante forem dados,
-um resultado em ponto flutuante é retornado.
+As funÃ§Ãµes elÃ­pticas e integrais elÃ­pticas estÃ£o primariamente tencionando suportar
+computaÃ§Ã£o simbÃ³lica.  Portanto, a maiora das derivadas de funÃ§Ãµes
+e integrais sÃ£o conhecidas.  Todavia, se valores em ponto flutuante forem dados,
+um resultado em ponto flutuante Ã© retornado.
 
-Suporte para a maioria de outras propriedades das funções elípticas e
-integrais elípticas além das derivadas não foram ainda escritas.
+Suporte para a maioria de outras propriedades das funÃ§Ãµes elÃ­pticas e
+integrais elÃ­pticas alÃ©m das derivadas nÃ£o foram ainda escritas.
 
-Alguns exemplos de funções elípticas:
+Alguns exemplos de funÃ§Ãµes elÃ­pticas:
 @c GENERATED FROM THE FOLLOWING
 @c jacobi_sn (u, m);
 @c jacobi_sn (u, 1);
@@ -70,7 +70,7 @@ Alguns exemplos de funções elípticas:
               2 (1 - m)
 @end example
 
-Alguns exemplos de integrais elípticas:
+Alguns exemplos de integrais elÃ­pticas:
 @c GENERATED FROM THE FOLLOWING
 @c elliptic_f (phi, m);
 @c elliptic_f (phi, 0);
@@ -121,120 +121,120 @@ Alguns exemplos de integrais elípticas:
                                sqrt(1 - m sin (phi))
 @end example
 
-Suporte a funções elípticas e integrais elípticas foi escrito por Raymond
-Toy.  Foi colocado sob os termos da Licençã Pública Geral (GPL)
-que governa a distribuição do Maxima.
+Suporte a funÃ§Ãµes elÃ­pticas e integrais elÃ­pticas foi escrito por Raymond
+Toy.  Foi colocado sob os termos da LicenÃ§Ã£ PÃºblica Geral (GPL)
+que governa a distribuiÃ§Ã£o do Maxima.
 
-@node Definições para Funções Elípticas, Definições para Integrais Elípticas, Introdução a Funções Elípticas e Integrais, Top
+@node DefiniÃ§Ãµes para FunÃ§Ãµes ElÃ­pticas, DefiniÃ§Ãµes para Integrais ElÃ­pticas, IntroduÃ§Ã£o a FunÃ§Ãµes ElÃ­pticas e Integrais, Top
 @comment  node-name,  next,  previous,  up
 
-@section Definições para Funções Elípticas
+@section DefiniÃ§Ãµes para FunÃ§Ãµes ElÃ­pticas
 
-@deffn {Função} jacobi_sn (@var{u}, @var{m})
-A Função elíptica Jacobiana @math{sn(u,m)}.
+@deffn {FunÃ§Ã£o} jacobi_sn (@var{u}, @var{m})
+A FunÃ§Ã£o elÃ­ptica Jacobiana @math{sn(u,m)}.
 @end deffn
 
-@deffn {Função} jacobi_cn (@var{u}, @var{m})
-A função elíptica Jacobiana @math{cn(u,m)}.
+@deffn {FunÃ§Ã£o} jacobi_cn (@var{u}, @var{m})
+A funÃ§Ã£o elÃ­ptica Jacobiana @math{cn(u,m)}.
 @end deffn
 
-@deffn {Função} jacobi_dn (@var{u}, @var{m})
-A função elíptica Jacobiana @math{dn(u,m)}.
+@deffn {FunÃ§Ã£o} jacobi_dn (@var{u}, @var{m})
+A funÃ§Ã£o elÃ­ptica Jacobiana @math{dn(u,m)}.
 @end deffn
 
-@deffn {Função} jacobi_ns (@var{u}, @var{m})
-A função elíptica Jacobiana @math{ns(u,m) = 1/sn(u,m)}.
+@deffn {FunÃ§Ã£o} jacobi_ns (@var{u}, @var{m})
+A funÃ§Ã£o elÃ­ptica Jacobiana @math{ns(u,m) = 1/sn(u,m)}.
 @end deffn
 
-@deffn {Função} jacobi_sc (@var{u}, @var{m})
-A função elíptica Jacobiana @math{sc(u,m) = sn(u,m)/cn(u,m)}.
+@deffn {FunÃ§Ã£o} jacobi_sc (@var{u}, @var{m})
+A funÃ§Ã£o elÃ­ptica Jacobiana @math{sc(u,m) = sn(u,m)/cn(u,m)}.
 @end deffn
 
-@deffn {Função} jacobi_sd (@var{u}, @var{m})
-A função elíptica Jacobiana @math{sd(u,m) = sn(u,m)/dn(u,m)}.
+@deffn {FunÃ§Ã£o} jacobi_sd (@var{u}, @var{m})
+A funÃ§Ã£o elÃ­ptica Jacobiana @math{sd(u,m) = sn(u,m)/dn(u,m)}.
 @end deffn
 
-@deffn {Função} jacobi_nc (@var{u}, @var{m})
-A função elíptica Jacobiana @math{nc(u,m) = 1/cn(u,m)}.
+@deffn {FunÃ§Ã£o} jacobi_nc (@var{u}, @var{m})
+A funÃ§Ã£o elÃ­ptica Jacobiana @math{nc(u,m) = 1/cn(u,m)}.
 @end deffn
 
-@deffn {Função} jacobi_cs (@var{u}, @var{m})
-A função elíptica Jacobiana @math{cs(u,m) = cn(u,m)/sn(u,m)}.
+@deffn {FunÃ§Ã£o} jacobi_cs (@var{u}, @var{m})
+A funÃ§Ã£o elÃ­ptica Jacobiana @math{cs(u,m) = cn(u,m)/sn(u,m)}.
 @end deffn
 
-@deffn {Função} jacobi_cd (@var{u}, @var{m})
-A função elíptica Jacobiana @math{cd(u,m) = cn(u,m)/dn(u,m)}.
+@deffn {FunÃ§Ã£o} jacobi_cd (@var{u}, @var{m})
+A funÃ§Ã£o elÃ­ptica Jacobiana @math{cd(u,m) = cn(u,m)/dn(u,m)}.
 @end deffn
 
-@deffn {Função} jacobi_nd (@var{u}, @var{m})
-A função elíptica Jacobiana @math{nc(u,m) = 1/cn(u,m)}.
+@deffn {FunÃ§Ã£o} jacobi_nd (@var{u}, @var{m})
+A funÃ§Ã£o elÃ­ptica Jacobiana @math{nc(u,m) = 1/cn(u,m)}.
 @end deffn
 
-@deffn {Função} jacobi_ds (@var{u}, @var{m})
-A função elíptica Jacobiana @math{ds(u,m) = dn(u,m)/sn(u,m)}.
+@deffn {FunÃ§Ã£o} jacobi_ds (@var{u}, @var{m})
+A funÃ§Ã£o elÃ­ptica Jacobiana @math{ds(u,m) = dn(u,m)/sn(u,m)}.
 @end deffn
 
-@deffn {Função} jacobi_dc (@var{u}, @var{m})
-A função elíptica Jacobiana @math{dc(u,m) = dn(u,m)/cn(u,m)}.
+@deffn {FunÃ§Ã£o} jacobi_dc (@var{u}, @var{m})
+A funÃ§Ã£o elÃ­ptica Jacobiana @math{dc(u,m) = dn(u,m)/cn(u,m)}.
 @end deffn
 
-@deffn {Função} inverse_jacobi_sn (@var{u}, @var{m})
-A inversa da função elíptica Jacobiana @math{sn(u,m)}.
+@deffn {FunÃ§Ã£o} inverse_jacobi_sn (@var{u}, @var{m})
+A inversa da funÃ§Ã£o elÃ­ptica Jacobiana @math{sn(u,m)}.
 @end deffn
 
-@deffn {Função} inverse_jacobi_cn (@var{u}, @var{m})
-A inversa da função elíptica Jacobiana @math{cn(u,m)}.
+@deffn {FunÃ§Ã£o} inverse_jacobi_cn (@var{u}, @var{m})
+A inversa da funÃ§Ã£o elÃ­ptica Jacobiana @math{cn(u,m)}.
 @end deffn
 
-@deffn {Função} inverse_jacobi_dn (@var{u}, @var{m})
-A inversa da função elíptica Jacobiana @math{dn(u,m)}.
+@deffn {FunÃ§Ã£o} inverse_jacobi_dn (@var{u}, @var{m})
+A inversa da funÃ§Ã£o elÃ­ptica Jacobiana @math{dn(u,m)}.
 @end deffn
 
-@deffn {Função} inverse_jacobi_ns (@var{u}, @var{m})
-A inversa da função elíptica Jacobiana @math{ns(u,m)}.
+@deffn {FunÃ§Ã£o} inverse_jacobi_ns (@var{u}, @var{m})
+A inversa da funÃ§Ã£o elÃ­ptica Jacobiana @math{ns(u,m)}.
 @end deffn
 
-@deffn {Função} inverse_jacobi_sc (@var{u}, @var{m})
-A inversa da função elíptica Jacobiana @math{sc(u,m)}.
+@deffn {FunÃ§Ã£o} inverse_jacobi_sc (@var{u}, @var{m})
+A inversa da funÃ§Ã£o elÃ­ptica Jacobiana @math{sc(u,m)}.
 @end deffn
 
-@deffn {Função} inverse_jacobi_sd (@var{u}, @var{m})
-A inversa da função elíptica Jacobiana @math{sd(u,m)}.
+@deffn {FunÃ§Ã£o} inverse_jacobi_sd (@var{u}, @var{m})
+A inversa da funÃ§Ã£o elÃ­ptica Jacobiana @math{sd(u,m)}.
 @end deffn
 
-@deffn {Função} inverse_jacobi_nc (@var{u}, @var{m})
-A inversa da função elíptica Jacobiana @math{nc(u,m)}.
+@deffn {FunÃ§Ã£o} inverse_jacobi_nc (@var{u}, @var{m})
+A inversa da funÃ§Ã£o elÃ­ptica Jacobiana @math{nc(u,m)}.
 @end deffn
 
-@deffn {Função} inverse_jacobi_cs (@var{u}, @var{m})
-A inversa da função elíptica Jacobiana @math{cs(u,m)}.
+@deffn {FunÃ§Ã£o} inverse_jacobi_cs (@var{u}, @var{m})
+A inversa da funÃ§Ã£o elÃ­ptica Jacobiana @math{cs(u,m)}.
 @end deffn
 
-@deffn {Função} inverse_jacobi_cd (@var{u}, @var{m})
-A inversa da função elíptica Jacobiana @math{cd(u,m)}.
+@deffn {FunÃ§Ã£o} inverse_jacobi_cd (@var{u}, @var{m})
+A inversa da funÃ§Ã£o elÃ­ptica Jacobiana @math{cd(u,m)}.
 @end deffn
 
-@deffn {Função} inverse_jacobi_nd (@var{u}, @var{m})
-A inversa da função elíptica Jacobiana @math{nc(u,m)}.
+@deffn {FunÃ§Ã£o} inverse_jacobi_nd (@var{u}, @var{m})
+A inversa da funÃ§Ã£o elÃ­ptica Jacobiana @math{nc(u,m)}.
 @end deffn
 
-@deffn {Função} inverse_jacobi_ds (@var{u}, @var{m})
-A inversa da função elíptica Jacobiana @math{ds(u,m)}.
+@deffn {FunÃ§Ã£o} inverse_jacobi_ds (@var{u}, @var{m})
+A inversa da funÃ§Ã£o elÃ­ptica Jacobiana @math{ds(u,m)}.
 @end deffn
 
-@deffn {Função} inverse_jacobi_dc (@var{u}, @var{m})
-A inversa da função elíptica Jacobiana @math{dc(u,m)}.
+@deffn {FunÃ§Ã£o} inverse_jacobi_dc (@var{u}, @var{m})
+A inversa da funÃ§Ã£o elÃ­ptica Jacobiana @math{dc(u,m)}.
 @end deffn
 
 
-@node Definições para Integrais Elípticas, , Definições para Funções Elípticas, Top
+@node DefiniÃ§Ãµes para Integrais ElÃ­pticas, , DefiniÃ§Ãµes para FunÃ§Ãµes ElÃ­pticas, Top
 @comment  node-name,  next,  previous,  up
 
-@section Definições para Integrais Elípticas
+@section DefiniÃ§Ãµes para Integrais ElÃ­pticas
 
 @anchor{elliptic_f}
-@deffn {Função} elliptic_f (@var{phi}, @var{m})
-A integral elíptica incompleta de primeiro tipo, definida como
+@deffn {FunÃ§Ã£o} elliptic_f (@var{phi}, @var{m})
+A integral elÃ­ptica incompleta de primeiro tipo, definida como
 
 @ifhtml
 @math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}
@@ -247,13 +247,13 @@ A integral elíptica incompleta de primeiro tipo, definida como
 $$\int_0^\phi {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
-Veja também @emph{elliptic_e} e @emph{elliptic_kc}.
+Veja tambÃ©m @emph{elliptic_e} e @emph{elliptic_kc}.
 
 @end deffn
 
 @anchor{elliptic_e}
-@deffn {Função} elliptic_e (@var{phi}, @var{m})
-A integral elíptica incompleta de segundo tipo, definida como
+@deffn {FunÃ§Ã£o} elliptic_e (@var{phi}, @var{m})
+A integral elÃ­ptica incompleta de segundo tipo, definida como
 
 @ifhtml
 @math{elliptic_e(u, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
@@ -264,13 +264,13 @@ A integral elíptica incompleta de segundo tipo, definida como
 @tex
 $$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
-Veja também @emph{elliptic_e} e @emph{elliptic_ec}.
+Veja tambÃ©m @emph{elliptic_e} e @emph{elliptic_ec}.
 
 @end deffn
 
 @anchor{elliptic_eu}
-@deffn {Função} elliptic_eu (@var{u}, @var{m})
-A integral elíptica incompleta de segundo tipo, definida como
+@deffn {FunÃ§Ã£o} elliptic_eu (@var{u}, @var{m})
+A integral elÃ­ptica incompleta de segundo tipo, definida como
 @ifhtml
 @math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
      
@@ -288,7 +288,7 @@ onde $\tau = {\rm sn}(u, m)$
 @end tex
 
 
-Isso é relacionado a @math{elliptic_e} através de
+Isso Ã© relacionado a @math{elliptic_e} atravÃ©s de
 @ifinfo
 @math{elliptic_eu(u, m) = elliptic_e(asin(sn(u,m)),m)}
 @end ifinfo
@@ -297,11 +297,11 @@ $$E(u,m) = E(\phi, m)$$
 
 onde $\phi = \sin^{-1} {\rm sn}(u, m)$
 @end tex
-Veja também @emph{elliptic_e}.
+Veja tambÃ©m @emph{elliptic_e}.
 @end deffn
 
-@deffn {Função} elliptic_pi (@var{n}, @var{phi}, @var{m})
-A integral elíptica incompleta de terceiro tipo, definida como
+@deffn {FunÃ§Ã£o} elliptic_pi (@var{n}, @var{phi}, @var{m})
+A integral elÃ­ptica incompleta de terceiro tipo, definida como
 
 @ifhtml
 @math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
@@ -313,12 +313,12 @@ A integral elíptica incompleta de terceiro tipo, definida como
 $$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
-Somente a derivada em relação a @math{phi} é conhecida pelo Maxima.
+Somente a derivada em relaÃ§Ã£o a @math{phi} Ã© conhecida pelo Maxima.
 @end deffn
 
 @anchor{elliptic_kc}
-@deffn {Função} elliptic_kc (@var{m})
-A integral elíptica completa de primeiro tipo, definida como
+@deffn {FunÃ§Ã£o} elliptic_kc (@var{m})
+A integral elÃ­ptica completa de primeiro tipo, definida como
 
 @ifhtml
 @math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
@@ -330,13 +330,13 @@ A integral elíptica completa de primeiro tipo, definida como
 @tex
 $$\int_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
-Para certos valores de @math{m}, o valor da integral é conhecido em
-termos de funções @math{Gama}.  Use @code{makegamma} para avaliar esse valor.
+Para certos valores de @math{m}, o valor da integral Ã© conhecido em
+termos de funÃ§Ãµes @math{Gama}.  Use @code{makegamma} para avaliar esse valor.
 @end deffn
 
 @anchor{elliptic_ec}
-@deffn {Função} elliptic_ec (@var{m})
-A integral elíptica completa de segundo tipo, definida como
+@deffn {FunÃ§Ã£o} elliptic_ec (@var{m})
+A integral elÃ­ptica completa de segundo tipo, definida como
 
 @ifhtml
 @math{integrate(sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
@@ -348,8 +348,8 @@ A integral elíptica completa de segundo tipo, definida como
 @tex
 $$\int_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
-Para certos valores de @math{m}, o valor da integral é conhecido em
-termos de funções @math{Gama}.  Use @code{makegamma} para avaliar esse valor.
+Para certos valores de @math{m}, o valor da integral Ã© conhecido em
+termos de funÃ§Ãµes @math{Gama}.  Use @code{makegamma} para avaliar esse valor.
 @end deffn
 
 

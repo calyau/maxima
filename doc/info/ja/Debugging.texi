@@ -234,7 +234,8 @@ Maximaのエラーが起こった時Maximaはデバッガーを開始します�
 @c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
 @opencatbox
-@category{Debugging} @category{Global flags}
+@category{Debugging}
+@category{Global flags}
 @closecatbox
 @end defvr
 
@@ -248,7 +249,9 @@ Maximaは
 計算の中で、バイドされた変数が最初に使われる度にメッセージを印字します。
 
 @opencatbox
-@category{Evaluation} @category{Console interaction} @category{Global flags}
+@category{Evaluation}
+@category{Console interaction}
+@category{Global flags}
 @closecatbox
 @end defvr
 
@@ -289,7 +292,8 @@ setcheck: ['x, 'y, 'z]$
 それ自身に割り当てられた時は、なにも印字されません。
 
 @opencatbox
-@category{Console interaction} @category{Global flags}
+@category{Console interaction}
+@category{Global flags}
 @closecatbox
 @end defvr
 
@@ -309,7 +313,8 @@ Maximaはブレイクプロンプトを出します。
 @code{setcheck}と@code{setval}も参照してください。
 
 @opencatbox
-@category{Console interaction} @category{Global flags}
+@category{Console interaction}
+@category{Global flags}
 @closecatbox
 @end defvr
 
@@ -324,7 +329,8 @@ Maximaはブレイクプロンプトを出します。
 @code{setcheck}と@code{setcheckbreak}も参照してください。
 
 @opencatbox
-@category{Console interaction} @category{Global variables}
+@category{Console interaction}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -405,7 +411,8 @@ Maximaは、計られる関数から
 @code{timer}と@code{timer_info}も参照してください。
 
 @opencatbox
-@category{Debugging} @category{Global flags}
+@category{Debugging}
+@category{Global flags}
 @closecatbox
 @end defvr
 

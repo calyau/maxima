@@ -4,83 +4,83 @@
 @hyphenation{di-fe-ren-te-men-te}
 @end iftex
 @menu
-* DefiniÁıes para SimplificaÁ„o::  
+* Defini√ß√µes para Simplifica√ß√£o::  
 @end menu
 
-@node DefiniÁıes para SimplificaÁ„o,  , SimplificaÁ„o, SimplificaÁ„o
-@section DefiniÁıes para SimplificaÁ„o
+@node Defini√ß√µes para Simplifica√ß√£o,  , Simplifica√ß√£o, Simplifica√ß√£o
+@section Defini√ß√µes para Simplifica√ß√£o
 
 @c After studying src/compar.lisp, it appears that askexp would
 @c work as advertised, except that it doesn't appear to be possible
 @c to open a break prompt with ^A or any other character.
 @c What should we do about askexp ???
-@defvr {Vari·vel de sistema} askexp
-Quando @code{asksign} È chamada, @code{askexp} È a express„o que
-@code{asksign} est· a testar.
+@defvr {Vari√°vel de sistema} askexp
+Quando @code{asksign} √© chamada, @code{askexp} √© a express√£o que
+@code{asksign} est√° a testar.
 
-Antigamente, era possÌvel para um utilizador inspecionar
+Antigamente, era poss√≠vel para um utilizador inspecionar
 @code{askexp} parando o Maxima com control-A.
 @end defvr
 
 @c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
-@deffn {FunÁ„o} askinteger (@var{expr}, integer)
-@deffnx {FunÁ„o} askinteger (@var{expr})
-@deffnx {FunÁ„o} askinteger (@var{expr}, even)
-@deffnx {FunÁ„o} askinteger (@var{expr}, odd)
+@deffn {Fun√ß√£o} askinteger (@var{expr}, integer)
+@deffnx {Fun√ß√£o} askinteger (@var{expr})
+@deffnx {Fun√ß√£o} askinteger (@var{expr}, even)
+@deffnx {Fun√ß√£o} askinteger (@var{expr}, odd)
 
 @code{askinteger (@var{expr}, integer)} tenta determinar a partir da
-base de dados do @code{assume} se @var{expr} È um inteiro. Se n„o conseguir,
-@code{askinteger} perguntar· ao utilizador, na linha de comandos,
+base de dados do @code{assume} se @var{expr} √© um inteiro. Se n√£o conseguir,
+@code{askinteger} perguntar√° ao utilizador, na linha de comandos,
 @c UMM, askinteger AND asksign DO NOT APPEAR TO HAVE ANY EFFECT ON THE assume DATABASE !!!
-e inserir· essa informaÁ„o na base de dados do
-@code{assume}, se for possÌvel.  @code{askinteger
-(@var{expr})} È equivalente a @code{askinteger (@var{expr}, integer)}.
+e inserir√° essa informa√ß√£o na base de dados do
+@code{assume}, se for poss√≠vel.  @code{askinteger
+(@var{expr})} √© equivalente a @code{askinteger (@var{expr}, integer)}.
 
 Da mesma forma, @code{askinteger (@var{expr}, even)} e @code{askinteger
-(@var{expr}, odd)} tentam determinar se @var{expr} È um inteiro par ou
-inteiro Ìmpar, respectivamente.
+(@var{expr}, odd)} tentam determinar se @var{expr} √© um inteiro par ou
+inteiro √≠mpar, respectivamente.
 
 @end deffn
 
 @c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
-@deffn {FunÁ„o} asksign (@var{expr})
-Primeiro tenta determinar se a express„o especificada È positiva,
-negativa, ou zero. Se isso n„o for possÌvel,
-@code{asksign} perguntar· ao utilizador as questıes necess·rias
-para completar a sua deduÁ„o. As respostas do utilizador
-ser„o guardadas na base de dados pelo tempo que durar a c·lculo
-actual. O valor de retorno de @code{asksign} ser· @code{pos},
+@deffn {Fun√ß√£o} asksign (@var{expr})
+Primeiro tenta determinar se a express√£o especificada √© positiva,
+negativa, ou zero. Se isso n√£o for poss√≠vel,
+@code{asksign} perguntar√° ao utilizador as quest√µes necess√°rias
+para completar a sua dedu√ß√£o. As respostas do utilizador
+ser√£o guardadas na base de dados pelo tempo que durar a c√°lculo
+actual. O valor de retorno de @code{asksign} ser√° @code{pos},
 @code{neg}, ou @code{zero}.
 
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@deffn {FunÁ„o} demoivre (@var{expr})
-@deffnx {Vari·vel de opÁ„o} demoivre
+@deffn {Fun√ß√£o} demoivre (@var{expr})
+@deffnx {Vari√°vel de op√ß√£o} demoivre
 
-A funÁ„o @code{demoivre (expr)} transforma uma
-express„o sem modificar a vari·vel global @code{demoivre}.
+A fun√ß√£o @code{demoivre (expr)} transforma uma
+express√£o sem modificar a vari√°vel global @code{demoivre}.
 
-Quando a vari·vel @code{demoivre} for @code{true}, as exponenciais
-complexas ser„o convertidas em expressıes equivalentes em termos das
-funÁıes circulares: @code{exp (a + b*%i)} simplifica
-para @code{%e^a * (cos(b) + %i*sin(b))} se @code{b} n„o incluir
-@code{%i}.  @code{a} e @code{b} n„o ser„o expandidos.
+Quando a vari√°vel @code{demoivre} for @code{true}, as exponenciais
+complexas ser√£o convertidas em express√µes equivalentes em termos das
+fun√ß√µes circulares: @code{exp (a + b*%i)} simplifica
+para @code{%e^a * (cos(b) + %i*sin(b))} se @code{b} n√£o incluir
+@code{%i}.  @code{a} e @code{b} n√£o ser√£o expandidos.
 
-O valor padr„o de @code{demoivre} È @code{false}.
+O valor padr√£o de @code{demoivre} √© @code{false}.
 
-@code{exponentialize} converte funÁıes circulares e
-hiperbÛlicas para a forma exponencial.  @code{demoivre} e
-@code{exponentialize} n„o podem ambas serem @code{true} ao mesmo
+@code{exponentialize} converte fun√ß√µes circulares e
+hiperb√≥licas para a forma exponencial.  @code{demoivre} e
+@code{exponentialize} n√£o podem ambas serem @code{true} ao mesmo
 tempo.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} domain
-Valor por omiss„o: @code{real}
+@defvr {Vari√°vel de op√ß√£o} domain
+Valor por omiss√£o: @code{real}
 
 Quando a @code{domain} for dado o valor @code{complex}, @code{sqrt(x^2)}
-permanecer· @code{sqrt (x^2)} em lugar de retornar @code{abs(x)}.
+permanecer√° @code{sqrt (x^2)} em lugar de retornar @code{abs(x)}.
 
 @c PRESERVE EDITORIAL COMMENT -- MAY HAVE SOME SIGNIFICANCE NOT YET UNDERSTOOD !!!
 @c The notion of a "domain" of simplification is still in its infancy,
@@ -89,331 +89,331 @@ permanecer· @code{sqrt (x^2)} em lugar de retornar @code{abs(x)}.
 @end defvr
 
 @c NEEDS WORK
-@deffn {FunÁ„o} expand (@var{expr})
-@deffnx {FunÁ„o} expand (@var{expr}, @var{p}, @var{n})
-Expande a express„o @var{expr}.  Nos rodutos de somas e exponenciais
-de somas s„o expandidos os produtos, os numeradores de expressıes
-racionais que incluirem somas ser„o quebrados nas suas respectivas
-parcelas, e os produtos (comutativos e n„o comutativos) s„o
-distribuÌdos sobre as somas em todos os
-nÌveis de @var{expr}.
+@deffn {Fun√ß√£o} expand (@var{expr})
+@deffnx {Fun√ß√£o} expand (@var{expr}, @var{p}, @var{n})
+Expande a express√£o @var{expr}.  Nos rodutos de somas e exponenciais
+de somas s√£o expandidos os produtos, os numeradores de express√µes
+racionais que incluirem somas ser√£o quebrados nas suas respectivas
+parcelas, e os produtos (comutativos e n√£o comutativos) s√£o
+distribu√≠dos sobre as somas em todos os
+n√≠veis de @var{expr}.
 
-Para polinÛmios se pode usar frequÍntemente @code{ratexpand} que
+Para polin√≥mios se pode usar frequ√™ntemente @code{ratexpand} que
 possui um algoritmo mais eficiente.
 
-@code{maxnegex} e @code{maxposex} controlam o m·ximo expoente negativo
-e o m·ximo expoente positivo, respectivamente, que ir„o expandir.
+@code{maxnegex} e @code{maxposex} controlam o m√°ximo expoente negativo
+e o m√°ximo expoente positivo, respectivamente, que ir√£o expandir.
 
 @code{expand (@var{expr}, @var{p}, @var{n})} expande @var{expr}, usando
-@var{p} para @code{maxposex} e @var{n} para @code{maxnegex}.  Isso È
-˙til para expandir partes numa express„o mas n„o toda.
+@var{p} para @code{maxposex} e @var{n} para @code{maxnegex}.  Isso √©
+√∫til para expandir partes numa express√£o mas n√£o toda.
 
-@code{expon} - o expoente da maior potÍncia negativa que È
+@code{expon} - o expoente da maior pot√™ncia negativa que √©
 automaticamente expandida (independente de chamadas a @code{expand}).
-Por Exemplo se @code{expon} for 4 ent„o @code{(x+1)^(-5)} n„o ser·
+Por Exemplo se @code{expon} for 4 ent√£o @code{(x+1)^(-5)} n√£o ser√°
 automaticamente expandido.
 
-@code{expop} - o maior expoente positivo que È automaticamente
-expandido.  Dessa forma @code{(x+1)^3}, quando digitado, ser·
+@code{expop} - o maior expoente positivo que √© automaticamente
+expandido.  Dessa forma @code{(x+1)^3}, quando digitado, ser√°
 automaticamente expandido somente se @code{expop} for maior que ou igual
 a 3.  Se quiser que @code{(x+1)^n} seja expandido onde @code{n} for
-maior que @code{expop}, ent„o @code{expand ((x+1)^n)} funcionar·
-unicamente se @code{maxposex} n„o for menor que @code{n}.
+maior que @code{expop}, ent√£o @code{expand ((x+1)^n)} funcionar√°
+unicamente se @code{maxposex} n√£o for menor que @code{n}.
 
-O sinalizador @code{expand} usado com @code{ev} causa expans„o.
+O sinalizador @code{expand} usado com @code{ev} causa expans√£o.
 
 O ficheiro @file{simplification/facexp.mac}
 @c I should really use a macro which expands to something like
 @c @uref{file://...,,simplification/facexp.mac}.  But texi2html
 @c currently supports @uref only with one argument.
 @c Worse, the `file:' scheme is OS and browser dependent.
-contÈm muitas funÁıes relacionadas (em particular
-@code{facsum}, @code{factorfacsum} e @code{collectterms}, que s„o
-carregadas automaticamente) e as vari·veis (@code{nextlayerfactor} e
+cont√©m muitas fun√ß√µes relacionadas (em particular
+@code{facsum}, @code{factorfacsum} e @code{collectterms}, que s√£o
+carregadas automaticamente) e as vari√°veis (@code{nextlayerfactor} e
 @code{facsum_combine}) que fornecem ao utilizador a possibilidade de
-estruturar expressıes por expans„o controlada.
+estruturar express√µes por expans√£o controlada.
 @c MERGE share/simplification/facexp.usg INTO THIS FILE OR CREATE NEW FILE facexp.texi
-Uma descriÁ„o breve das funÁ„o
-encontra-se no ficheiro @file{simplification/facexp.usg}.  H· tambÈm
-uma demonstraÁ„o disponÌvel com o comando
+Uma descri√ß√£o breve das fun√ß√£o
+encontra-se no ficheiro @file{simplification/facexp.usg}.  H√° tamb√©m
+uma demonstra√ß√£o dispon√≠vel com o comando
 @code{demo("facexp")}.
 
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {FunÁ„o} expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
-Expande a express„o @code{expr} com relaÁ„o ‡s
-vari·veis @var{x_1}, ..., @var{x_n}.  Todos os produtos que encvolvam
-as vari·veis aparecer„o explicitamente. O resultado estar· livre
-de produtos de somas de expressıes que n„o estejam livres das
-vari·veis.  @var{x_1}, ..., @var{x_n} podem ser vari·veis,
-operadores, ou expressıes.
+@deffn {Fun√ß√£o} expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
+Expande a express√£o @code{expr} com rela√ß√£o √†s
+vari√°veis @var{x_1}, ..., @var{x_n}.  Todos os produtos que encvolvam
+as vari√°veis aparecer√£o explicitamente. O resultado estar√° livre
+de produtos de somas de express√µes que n√£o estejam livres das
+vari√°veis.  @var{x_1}, ..., @var{x_n} podem ser vari√°veis,
+operadores, ou express√µes.
 
-Por omiss„o, os denominadores n„o s„o expandidos, mas isso pode ser
-controlado atravÈs da vari·vel @code{expandwrt_denom}.
+Por omiss√£o, os denominadores n√£o s√£o expandidos, mas isso pode ser
+controlado atrav√©s da vari√°vel @code{expandwrt_denom}.
 
-Esta funÁ„o È carregada automaticamente a partir de
+Esta fun√ß√£o √© carregada automaticamente a partir de
 @file{simplification/stopex.mac}.
 
 @end deffn
 
 
-@defvr {Vari·vel de opÁ„o} expandwrt_denom
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} expandwrt_denom
+Valor por omiss√£o: @code{false}
 
-@code{expandwrt_denom} controla a simplificaÁ„o de expressıes
+@code{expandwrt_denom} controla a simplifica√ß√£o de express√µes
 racionais feita por @code{expandwrt}. Se tiver valor @code{true},
-ent„o tanto o numerador como o denominador da express„o ser„o
+ent√£o tanto o numerador como o denominador da express√£o ser√£o
 expandidos conforme os argumentos de @code{expandwrt}, mas se
-@code{expandwrt_denom} for @code{false}, ent„o somente o numerador
-ser· expandido.
+@code{expandwrt_denom} for @code{false}, ent√£o somente o numerador
+ser√° expandido.
 
 @end defvr
 
 @c NEEDS A STAND-ALONE DESCRIPTION (NOT "IS SIMILAR TO")
 @c NEEDS EXAMPLES
-@deffn {FunÁ„o} expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
-È similar a @code{expandwrt}, mas trata os produtos numa forma
+@deffn {Fun√ß√£o} expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
+√© similar a @code{expandwrt}, mas trata os produtos numa forma
 diferente.  @code{expandwrt_factored} expande somente sobre esses
-factores de @code{expr} que contiverem as vari·veis @var{x_1}, ...,
+factores de @code{expr} que contiverem as vari√°veis @var{x_1}, ...,
 @var{x_n}.
 
 @c NOT SURE WHY WE SHOULD MENTION THIS HERE
-Esta funÁ„o È carregada automaticamente a partir de
+Esta fun√ß√£o √© carregada automaticamente a partir de
 @file{simplification/stopex.mac}.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} expon
-Valor por omiss„o: 0
+@defvr {Vari√°vel de op√ß√£o} expon
+Valor por omiss√£o: 0
 
-@code{expon} È o expoente da maior potÍncia negativa que È
+@code{expon} √© o expoente da maior pot√™ncia negativa que √©
 automaticamente expandido (independente de chamadas a @code{expand}).
-Por exemplo, se @code{expon} for 4 ent„o @code{(x+1)^(-5)} n„o
-ser· automaticamente expandido.
+Por exemplo, se @code{expon} for 4 ent√£o @code{(x+1)^(-5)} n√£o
+ser√° automaticamente expandido.
 
 @end defvr
 
-@deffn {FunÁ„o} exponentialize (@var{expr})
-@deffnx {Vari·vel de opÁ„o} exponentialize
+@deffn {Fun√ß√£o} exponentialize (@var{expr})
+@deffnx {Vari√°vel de op√ß√£o} exponentialize
 
-A funÁ„o @code{exponentialize (expr)} converte as
-funÁıes circulares e hiperbÛlicas em @var{expr} para
-exponenciais, sem modificar a vari·vel global @code{exponentialize}.
+A fun√ß√£o @code{exponentialize (expr)} converte as
+fun√ß√µes circulares e hiperb√≥licas em @var{expr} para
+exponenciais, sem modificar a vari√°vel global @code{exponentialize}.
 
-Quando a vari·vel @code{exponentialize} for @code{true}, todas as
-funÁıes circulares e hiperbÛlicas s„o convertidas
-para a forma exponencial. O valor por omiss„o È @code{false}.
+Quando a vari√°vel @code{exponentialize} for @code{true}, todas as
+fun√ß√µes circulares e hiperb√≥licas s√£o convertidas
+para a forma exponencial. O valor por omiss√£o √© @code{false}.
 
 @code{demoivre} converte exponenciais complexas em
-funÁıes circulares.  @code{exponentialize} e
-@code{demoivre} n„o podem ambas serem @code{true} ao mesmo tempo.
+fun√ß√µes circulares.  @code{exponentialize} e
+@code{demoivre} n√£o podem ambas serem @code{true} ao mesmo tempo.
 
 @end deffn
 
 @c NEEDS CLARIFICATION
 @c NEEDS EXAMPLES
-@defvr {Vari·vel de opÁ„o} expop
-Valor por omiss„o: 0
+@defvr {Vari√°vel de op√ß√£o} expop
+Valor por omiss√£o: 0
 
-@code{expop} - o maior expoente positivo que È automaticamente
-expandido.  Dessa forma @code{(x+1)^3}, ser· automaticamente expandido
+@code{expop} - o maior expoente positivo que √© automaticamente
+expandido.  Dessa forma @code{(x+1)^3}, ser√° automaticamente expandido
 somente se @code{expop} for maior que ou igual a 3.  Se quiser que
 @code{(x+1)^n} seja expandido onde @code{n} for maior que @code{expop},
-ent„o @code{expand ((x+1)^n)} funcionar· somente se @code{maxposex}
-n„o for menor que @code{n}.
+ent√£o @code{expand ((x+1)^n)} funcionar√° somente se @code{maxposex}
+n√£o for menor que @code{n}.
 
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Vari·vel de opÁ„o} factlim
-Valor por omiss„o: -1
+@defvr {Vari√°vel de op√ß√£o} factlim
+Valor por omiss√£o: -1
 
-@code{factlim} especifica o maior factorial que È automaticamente
-expandido. Se for -1 ent„o todos os inteiros s„o expandidos.
+@code{factlim} especifica o maior factorial que √© automaticamente
+expandido. Se for -1 ent√£o todos os inteiros s√£o expandidos.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@deffn {FunÁ„o} intosum (@var{expr})
-Move factores multiplicativos fora de um somatÛrio para dentro.  Se um
-Ìndice for usado na express„o de fora, ent„o a
-funÁ„o tentar· achar um Ìndice
-razo·vel, o mesmo que È feito para @code{sumcontract}.  Isto È
+@deffn {Fun√ß√£o} intosum (@var{expr})
+Move factores multiplicativos fora de um somat√≥rio para dentro.  Se um
+√≠ndice for usado na express√£o de fora, ent√£o a
+fun√ß√£o tentar√° achar um √≠ndice
+razo√°vel, o mesmo que √© feito para @code{sumcontract}.  Isto √©
 essencialmente a ideia inversa da propriedade @code{outative} de
-somatÛrios, mas repare que n„o elimina essa propriedade, apenas faz
+somat√≥rios, mas repare que n√£o elimina essa propriedade, apenas faz
 com que seja ignorada.
 
 @c WHAT ARE THESE CASES ??
-Em alguns casos, poder· ser necess·rio um
+Em alguns casos, poder√° ser necess√°rio um
 @code{scanmap(multthru,@var{expr})} antes de @code{intosum}.
 
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {DeclaraÁ„o} lassociative
+@defvr {Declara√ß√£o} lassociative
 @code{declare (g, lassociative)} diz ao simplificador do Maxima que
-@code{g} È associativa ‡ esquerda.  E.g., @code{g (g (a, b), g (c,
-d))} ir· simplificar para @code{g (g (g (a, b), c), d)}.
+@code{g} √© associativa √† esquerda.  E.g., @code{g (g (a, b), g (c,
+d))} ir√° simplificar para @code{g (g (g (a, b), c), d)}.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @c WHAT'S UP WITH THE QUOTE MARKS ??
-@defvr {DeclaraÁ„o} linear
-Uma das propriedades operativas do Maxima. As funÁıes de
-uma ˙nica vari·vel @code{f} assim declaradas fazem com que a
-express„o @code{f(x + y)} seja expandida em @code{f(x) + f(y)}, a
-express„o @code{f(a*x)} transforma-se em @code{a*f(x)} se @code{a} for
-uma constante. Para funÁıes de dois ou mais argumentos,
+@defvr {Declara√ß√£o} linear
+Uma das propriedades operativas do Maxima. As fun√ß√µes de
+uma √∫nica vari√°vel @code{f} assim declaradas fazem com que a
+express√£o @code{f(x + y)} seja expandida em @code{f(x) + f(y)}, a
+express√£o @code{f(a*x)} transforma-se em @code{a*f(x)} se @code{a} for
+uma constante. Para fun√ß√µes de dois ou mais argumentos,
 a linearidade define-se igual que no caso de @code{sum} ou
-@code{integrate}, isto È, @code{f (a*x + b, x)} retorna @code{a*f(x,x)
+@code{integrate}, isto √©, @code{f (a*x + b, x)} retorna @code{a*f(x,x)
 + b*f(1,x)}, se @code{a} e @code{b} forem independentesx de @code{x}.
 
-@code{linear} È equivalente a @code{additive} e @code{outative}.
-Veja tambÈm @code{opproperties}.
+@code{linear} √© equivalente a @code{additive} e @code{outative}.
+Veja tamb√©m @code{opproperties}.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {DeclaraÁ„o} mainvar
-Permite declarar vari·veis do tipo @code{mainvar} (vari·vel
-principal).  A escala de ordenaÁ„o para ·tomos È
-essencialmente: n˙meros < constantes (e.g., @code{%e}, @code{%pi}) <
-escalares < outras vari·veis < mainvars.  Por exemplo, compare
+@defvr {Declara√ß√£o} mainvar
+Permite declarar vari√°veis do tipo @code{mainvar} (vari√°vel
+principal).  A escala de ordena√ß√£o para √°tomos √©
+essencialmente: n√∫meros < constantes (e.g., @code{%e}, @code{%pi}) <
+escalares < outras vari√°veis < mainvars.  Por exemplo, compare
 @code{expand ((X+Y)^4)} com @code{(declare (x, mainvar), expand
-((x+y)^4))}.  (Nota: este recurso dever· ser usado com cautela. Por
-exemplo, se subtrair uma express„o, na qual @code{x} for uma
-@code{mainvar}, da mesma express„o, mas onde @code{x} n„o for
-@code{mainvar}, poder· precisar de resimplificaÁ„o,
+((x+y)^4))}.  (Nota: este recurso dever√° ser usado com cautela. Por
+exemplo, se subtrair uma express√£o, na qual @code{x} for uma
+@code{mainvar}, da mesma express√£o, mas onde @code{x} n√£o for
+@code{mainvar}, poder√° precisar de resimplifica√ß√£o,
 por exemplo, com @code{ev (expr, simp)}, para que sejam canceladas.
-TambÈm, se grava uma express„o na qual @code{x} for uma
-@code{mainvar}, provavelmente dever· tambÈm gravar @code{x}.)
+Tamb√©m, se grava uma express√£o na qual @code{x} for uma
+@code{mainvar}, provavelmente dever√° tamb√©m gravar @code{x}.)
 
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Vari·vel de opÁ„o} maxapplydepth
-Valor por omiss„o: 10000
+@defvr {Vari√°vel de op√ß√£o} maxapplydepth
+Valor por omiss√£o: 10000
 
-@code{maxapplydepth} È a profundidade m·xima ate a qual @code{apply1}
-e @code{apply2} dever„o descer.
+@code{maxapplydepth} √© a profundidade m√°xima ate a qual @code{apply1}
+e @code{apply2} dever√£o descer.
 
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Vari·vel de opÁ„o} maxapplyheight
-Valor por omiss„o: 10000
+@defvr {Vari√°vel de op√ß√£o} maxapplyheight
+Valor por omiss√£o: 10000
 
-@code{maxapplyheight} È nÌvel m·ximo a ser atingido
+@code{maxapplyheight} √© n√≠vel m√°ximo a ser atingido
 por @code{applyb1} antes de abandonar.
 
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Vari·vel de opÁ„o} maxnegex
-Valor por omiss„o: 1000
+@defvr {Vari√°vel de op√ß√£o} maxnegex
+Valor por omiss√£o: 1000
 
-@code{maxnegex} È o maior expoente negativo que ser· expandido pelo
-comando @code{expand} (veja tambÈm @code{maxposex}).
-
-@end defvr
-
-@c NEEDS EXAMPLES
-@defvr {Vari·vel de opÁ„o} maxposex
-Valor por omiss„o: 1000
-
-@code{maxposex} È o maior expoente que ser· expandido com o comando
-@code{expand} (veja tambÈm @code{maxnegex}).
+@code{maxnegex} √© o maior expoente negativo que ser√° expandido pelo
+comando @code{expand} (veja tamb√©m @code{maxposex}).
 
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {DeclaraÁ„o} multiplicative
+@defvr {Vari√°vel de op√ß√£o} maxposex
+Valor por omiss√£o: 1000
+
+@code{maxposex} √© o maior expoente que ser√° expandido com o comando
+@code{expand} (veja tamb√©m @code{maxnegex}).
+
+@end defvr
+
+@c NEEDS EXAMPLES
+@defvr {Declara√ß√£o} multiplicative
 @code{declare (f, multiplicative)} diz ao simplificador do Maxima que
-@code{f} È multiplicativa.
+@code{f} √© multiplicativa.
 
 @enumerate
 @item
-Se @code{f} for uma funÁ„o de uma ˙nica vari·vel,
+Se @code{f} for uma fun√ß√£o de uma √∫nica vari√°vel,
 sempre que o simplificador encontrar @code{f} aplicada a um produto,
-@code{f} ser· distribuida nesse produto.  Por exemplo, @code{f(x*y)}
+@code{f} ser√° distribuida nesse produto.  Por exemplo, @code{f(x*y)}
 simplifica para @code{f(x)*f(y)}.
 @item
-Se @code{f} for uma funÁ„o de 2 ou mais argumentos, a
+Se @code{f} for uma fun√ß√£o de 2 ou mais argumentos, a
 multiplicatividade entende-se como multiplicatividade no primeiro
 argumento de @code{f}. Por exemplo, @code{f (g(x) * h(x), x)} simplifica
 para @code{f (g(x) ,x) * f (h(x), x)}.
 @end enumerate
 
-Esta simplificaÁ„o n„o È feita quando @code{f} for
-aplicada a expressıes da forma @code{product (x[i], i, m, n)}.
+Esta simplifica√ß√£o n√£o √© feita quando @code{f} for
+aplicada a express√µes da forma @code{product (x[i], i, m, n)}.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Vari·vel de opÁ„o} negdistrib
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} negdistrib
+Valor por omiss√£o: @code{true}
 
 Quando @code{negdistrib} for @code{true}, -1 distribue sobre uma
-express„o. Por exemplo, @code{-(x + y)} transforma-se em @code{- y -
-x}.  Mudando o valor de @code{negdistrib} para @code{false} permitir·
+express√£o. Por exemplo, @code{-(x + y)} transforma-se em @code{- y -
+x}.  Mudando o valor de @code{negdistrib} para @code{false} permitir√°
 que @code{- (x + y)} seja mostrado como foi escrito. Embora isso possa
-ser ˙til, tenha muito cuidado: esta vari·vel e a vari·vel
-@code{simp} n„o deveriam ser escolhidas sempre como @code{false},
+ser √∫til, tenha muito cuidado: esta vari√°vel e a vari√°vel
+@code{simp} n√£o deveriam ser escolhidas sempre como @code{false},
 excepto em forma local no seu Maxima.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Vari·vel de opÁ„o} negsumdispflag
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} negsumdispflag
+Valor por omiss√£o: @code{true}
 
-Quando @code{negsumdispflag} for @code{true}, @code{x - y} È mostrado
+Quando @code{negsumdispflag} for @code{true}, @code{x - y} √© mostrado
 como @code{x - y} em lugar de como @code{- y + x}. Mudando para
-@code{false} faz com que n„o seja feita a verificaÁ„o
-especial para a apresentaÁ„o da diferenÁa entre duas
-expressıes.  Uma aplicaÁ„o È para que @code{a +
+@code{false} faz com que n√£o seja feita a verifica√ß√£o
+especial para a apresenta√ß√£o da diferen√ßa entre duas
+express√µes.  Uma aplica√ß√£o √© para que @code{a +
 %i*b} e @code{a - %i*b} sejam mostrados na mesma forma.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @c NEED TO MENTION THIS IS AN evflag
-@defvr {SÌmbolo especial} noeval
-@code{noeval} suprime a fase de avaliaÁ„o de @code{ev}.
-Isso È ˙til conjuntamente com outras condiÁıes e para fazer com
-que expressıes sejam simplificadas sem serem reavaliadas.
+@defvr {S√≠mbolo especial} noeval
+@code{noeval} suprime a fase de avalia√ß√£o de @code{ev}.
+Isso √© √∫til conjuntamente com outras condi√ß√µes e para fazer com
+que express√µes sejam simplificadas sem serem reavaliadas.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {DeclaraÁ„o} noun
-@code{noun} È uma das opÁıes do comando
-@code{declare}.  Faz com que as funÁıes assim declaradas sejam
-substantivos (noun), implicando que n„o sejam avaliadas
+@defvr {Declara√ß√£o} noun
+@code{noun} √© uma das op√ß√µes do comando
+@code{declare}.  Faz com que as fun√ß√µes assim declaradas sejam
+substantivos (noun), implicando que n√£o sejam avaliadas
 automaticamente.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Vari·vel de opÁ„o} noundisp
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} noundisp
+Valor por omiss√£o: @code{false}
 
-Quando @code{noundisp} for @code{true}, os substantivos (nouns) s„o
-mostrados com um apÛstrofo. Sempre que se mostra a
-definiÁ„o de uma funÁ„o, essa vari·vel
-È igual a @code{true}.
+Quando @code{noundisp} for @code{true}, os substantivos (nouns) s√£o
+mostrados com um ap√≥strofo. Sempre que se mostra a
+defini√ß√£o de uma fun√ß√£o, essa vari√°vel
+√© igual a @code{true}.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {SÌmbolo especial} nouns
-@code{nouns} È um @code{evflag} (sinalizador de
-avaliaÁ„o). Quando usado como uma opÁ„o
+@defvr {S√≠mbolo especial} nouns
+@code{nouns} √© um @code{evflag} (sinalizador de
+avalia√ß√£o). Quando usado como uma op√ß√£o
 para o comando @code{ev}, @code{nouns} converte todas as formas
-substantivas (noun), na express„o a ser avaliada, para verbos
-("verbs"), isto È, avalia essas expressıes. Veja tambÈm
+substantivas (noun), na express√£o a ser avaliada, para verbos
+("verbs"), isto √©, avalia essas express√µes. Veja tamb√©m
 @code{noun}, @code{nounify}, @code{verb}, e @code{verbify}.
 
 @end defvr
@@ -422,34 +422,34 @@ substantivas (noun), na express„o a ser avaliada, para verbos
 @c WHAT ARE THE FUNCTIONS WHICH ARE EVALUATED IN FLOATING POINT ??
 @c WHAT IS A "NUMERVAL" ?? (SOMETHING DIFFERENT FROM A NUMERIC VALUE ??)
 @c NEED TO MENTION THIS IS AN evflag
-@defvr {SÌmbolo especial} numer
-@code{numer} faz com que algumas funÁıes matem·ticas
-(incluindo exponenciaÁ„o) com argumentos numÈricos
-sejam avaliadas em ponto flutuante. Isto faz com que vari·veis em
-@code{expr} que tiverem valores numÈricos sejam
-substituÌdas pelos seus valores correspondentes.
-@code{numer} tambÈm activa a opÁ„o @code{float}.
+@defvr {S√≠mbolo especial} numer
+@code{numer} faz com que algumas fun√ß√µes matem√°ticas
+(incluindo exponencia√ß√£o) com argumentos num√©ricos
+sejam avaliadas em ponto flutuante. Isto faz com que vari√°veis em
+@code{expr} que tiverem valores num√©ricos sejam
+substitu√≠das pelos seus valores correspondentes.
+@code{numer} tamb√©m activa a op√ß√£o @code{float}.
 
 @end defvr
 
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @c HOW TO FIND ALL VARIABLES WHICH HAVE NUMERVALS ??
-@deffn {FunÁ„o} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
-Declara as vari·veis @code{x_1}, ..., @var{x_n} com valores
-numÈricos iguais a @code{expr_1}, ..., @code{expr_n}.  O valor
-numÈrico È avaliado e substituido para a vari·vel em quaisquer
-expressıes em que a vari·vel aparecer, se o sinalizador @code{numer}
-for igual a @code{true}. Veja tambÈm @code{ev}.
+@deffn {Fun√ß√£o} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
+Declara as vari√°veis @code{x_1}, ..., @var{x_n} com valores
+num√©ricos iguais a @code{expr_1}, ..., @code{expr_n}.  O valor
+num√©rico √© avaliado e substituido para a vari√°vel em quaisquer
+express√µes em que a vari√°vel aparecer, se o sinalizador @code{numer}
+for igual a @code{true}. Veja tamb√©m @code{ev}.
 
-As expressıes @code{expr_1}, ..., @code{expr_n} podem ser quaisquer,
-n„o necessariamente numÈricas.
+As express√µes @code{expr_1}, ..., @code{expr_n} podem ser quaisquer,
+n√£o necessariamente num√©ricas.
 @end deffn
 
 
-@defvr {Vari·vel de sistema} opproperties
+@defvr {Vari√°vel de sistema} opproperties
 
-@code{opproperties} È a lista de propriedades de operadores especiais
+@code{opproperties} √© a lista de propriedades de operadores especiais
 reconhecidas pelo simplificador do Maxima: @code{linear},
 @code{additive}, @code{multiplicative}, @code{outative}, @code{evenfun},
 @code{oddfun}, @code{commutative}, @code{symmetric},
@@ -460,74 +460,74 @@ reconhecidas pelo simplificador do Maxima: @code{linear},
 
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Vari·vel de opÁ„o} opsubst
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} opsubst
+Valor por omiss√£o: @code{true}
 
-Quando @code{opsubst} for @code{false}, @code{subst} n„o tenta
-substituir dentro de um operador de uma express„o.  Por exemplo, 
+Quando @code{opsubst} for @code{false}, @code{subst} n√£o tenta
+substituir dentro de um operador de uma express√£o.  Por exemplo, 
 @code{(opsubst: false, subst (x^2, r, r+r[0]))}.
 
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {DeclaraÁ„o} outative
+@defvr {Declara√ß√£o} outative
 @code{declare (f, outative)} diz ao simplificador do Maxima que factores
 constantes no argumento de @code{f} podem ser puxados para fora.
 
 @enumerate
 @item
-Se @code{f} for uma funÁ„o de uma ˙nica vari·vel,
+Se @code{f} for uma fun√ß√£o de uma √∫nica vari√°vel,
 sempre que o simplificador encontrar @code{f} aplicada a um produto, os
-factores que forem constantes nesse produto ser„o puxados para
-fora. Por exemplo, @code{f(a*x)} simplificar· para @code{a*f(x)} se
-@code{a} for uma constante.  Factores de constantes n„o at@^omicas
-n„o ser„o puxados para fora.
+factores que forem constantes nesse produto ser√£o puxados para
+fora. Por exemplo, @code{f(a*x)} simplificar√° para @code{a*f(x)} se
+@code{a} for uma constante.  Factores de constantes n√£o at@^omicas
+n√£o ser√£o puxados para fora.
 @item
-Se @code{f} for uma funÁ„o de 2 ou mais argumentos, a
-colocaÁ„o para fora È definida como no caso de
-@code{sum} ou @code{integrate}, isto È, @code{f (a*g(x), x)} ir·
-simplificar para @code{a * f(g(x), x)} se @code{a} n„o depender de
+Se @code{f} for uma fun√ß√£o de 2 ou mais argumentos, a
+coloca√ß√£o para fora √© definida como no caso de
+@code{sum} ou @code{integrate}, isto √©, @code{f (a*g(x), x)} ir√°
+simplificar para @code{a * f(g(x), x)} se @code{a} n√£o depender de
 @code{x}.
 @end enumerate
 
-@code{sum}, @code{integrate}, e @code{limit} s„o todas do tipo
+@code{sum}, @code{integrate}, e @code{limit} s√£o todas do tipo
 @code{outative}.
 
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {DeclaraÁ„o} posfun
-@code{declare (f, posfun)} declara @code{f} como funÁ„o
+@defvr {Declara√ß√£o} posfun
+@code{declare (f, posfun)} declara @code{f} como fun√ß√£o
 positiva.  @code{is (f(x) > 0)} retorna @code{true}.
 
 @end defvr
 
-@deffn {FunÁ„o} radcan (@var{expr})
+@deffn {Fun√ß√£o} radcan (@var{expr})
 Simplifica @var{expr}, que pode conter logaritmos,
-exponenciais, e radicais, convertendo essa express„o numa forma
-canÛnica sobre uma ampla classe de expressıes e com uma dada
-ordenaÁ„o de vari·veis; isto È, todas as formas
-funcionalmente equivalentes s„o mapeadas numa ˙nica forma.  Para uma
-classe ampla de expressıes, @code{radcan} produz uma forma regular.
-Duas expressıes equivalentes nessa classe n„o possuem
-necess·riamente a mesma aparÍncia, mas as suas diferenÁas podem
+exponenciais, e radicais, convertendo essa express√£o numa forma
+can√≥nica sobre uma ampla classe de express√µes e com uma dada
+ordena√ß√£o de vari√°veis; isto √©, todas as formas
+funcionalmente equivalentes s√£o mapeadas numa √∫nica forma.  Para uma
+classe ampla de express√µes, @code{radcan} produz uma forma regular.
+Duas express√µes equivalentes nessa classe n√£o possuem
+necess√°riamente a mesma apar√™ncia, mas as suas diferen√ßas podem
 ser simplificadas por @code{radcan} para zero.
 
-Para algumas expressıes @code{radcan} demora muito tempo. Esse È o
-custo de explorar as realÁıes entre as componentes da express„o
-para simplificar expoentes usando factorizaÁ„o e expans„o em
-fraÁıes parciais.
+Para algumas express√µes @code{radcan} demora muito tempo. Esse √© o
+custo de explorar as real√ß√µes entre as componentes da express√£o
+para simplificar expoentes usando factoriza√ß√£o e expans√£o em
+fra√ß√µes parciais.
 
 @c %e_to_numlog NEEDS ITS OWN @defvar !!!
 @c DOESN'T APPEAR TO AFFECT radcan !!!
 Quando @code{%e_to_numlog} for @code{true}, @code{%e^(r*log(expr))}
-simplifica para @code{expr^r} se @code{r} for um n˙mero racional.
+simplifica para @code{expr^r} se @code{r} for um n√∫mero racional.
 
 Quando @code{radexpand} for @code{false}, certas
-transformaÁıes s„o inibidas.  @code{radcan (sqrt
-(1-x))} permanece @code{sqrt (1-x)} e n„o È simplificada para
+transforma√ß√µes s√£o inibidas.  @code{radcan (sqrt
+(1-x))} permanece @code{sqrt (1-x)} e n√£o √© simplificada para
 @code{%i sqrt (x-1)}.  @code{radcan (sqrt (x^2 - 2*x + 11))} permanece
-@code{sqrt (x^2 - 2*x + 1)} e n„o È simplificada para @code{x - 1}.
+@code{sqrt (x^2 - 2*x + 1)} e n√£o √© simplificada para @code{x - 1}.
 
 @c MERGE EXAMPLES INTO THIS FILE
 @code{example (radcan)} mostra alguns exemplos.
@@ -535,14 +535,14 @@ transformaÁıes s„o inibidas.  @code{radcan (sqrt
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Vari·vel de opÁ„o} radexpand
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} radexpand
+Valor por omiss√£o: @code{true}
 
-@code{radexpand} controla algumas simplificaÁıes de
+@code{radexpand} controla algumas simplifica√ß√µes de
 radicais.
 
 Quando @code{radexpand} for @code{all}, todos os factores que forem
-potÍncias de ordem n, dentro de uma raiz de ordem n, ser„o puxados
+pot√™ncias de ordem n, dentro de uma raiz de ordem n, ser√£o puxados
 para fora do radical. Por exemplo, se @code{radexpand} for @code{all},
 @code{sqrt (16*x^2)} simplifica para @code{4*x}.
 
@@ -554,12 +554,12 @@ Se @code{radexpand} for @code{all} ou @code{assume (x > 0)} tiver sido
 executado, @code{sqrt(x^2)} simplifica para @code{x}.
 @item
 Se @code{radexpand} for @code{true} e @code{domain} for @code{real}
-(valores usados por omiss„o), @code{sqrt(x^2)} simplifica para
+(valores usados por omiss√£o), @code{sqrt(x^2)} simplifica para
 @code{abs(x)}.
 @item
 Se @code{radexpand} for @code{false}, ou @code{radexpand} for
-@code{true} e @code{domain} for @code{complex}, @code{sqrt(x^2)} n„o
-È simplificado.
+@code{true} e @code{domain} for @code{complex}, @code{sqrt(x^2)} n√£o
+√© simplificado.
 @end itemize
 
 @c CORRECT STATEMENT HERE ???
@@ -568,30 +568,30 @@ Note que, neste exemplo, @code{domain} somente interessa quando
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} radsubstflag
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} radsubstflag
+Valor por omiss√£o: @code{false}
 
 Se @code{radsubstflag} for @code{true}, permite a @code{ratsubst} fazer
-substituiÁıes tais como @code{u} por @code{sqrt (x)} em
+substitui√ß√µes tais como @code{u} por @code{sqrt (x)} em
 @code{x}.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {DeclaraÁ„o} rassociative
+@defvr {Declara√ß√£o} rassociative
 @code{declare (g, rassociative)} diz ao simplificador do Maxima que
-@code{g} È associativa ‡ direita, isto È, @code{g(g(a, b), g(c, d))}
+@code{g} √© associativa √† direita, isto √©, @code{g(g(a, b), g(c, d))}
 simplifica para @code{g(a, g(b, g(c, d)))}.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@deffn {FunÁ„o} scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
-SimplificaÁ„o SequÍncial Comparativa (mÈtodo devido
+@deffn {Fun√ß√£o} scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+Simplifica√ß√£o Sequ√™ncial Comparativa (m√©todo devido
 a Stoute).  @code{scsimp} tenta simplificar @var{expr} conforme as
-regras @var{rule_1}, ..., @var{rule_n}.  Se uma express„o pequena for
-obtida, o processo repete-se.  De outra forma apÛs todas as
-simplificaÁıes serem tentadas, @code{scsimp} retorna a
+regras @var{rule_1}, ..., @var{rule_n}.  Se uma express√£o pequena for
+obtida, o processo repete-se.  De outra forma ap√≥s todas as
+simplifica√ß√µes serem tentadas, @code{scsimp} retorna a
 resposta original.
 
 @c MERGE EXAMPLES INTO THIS FILE
@@ -600,42 +600,42 @@ resposta original.
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Vari·vel de opÁ„o} simpsum
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} simpsum
+Valor por omiss√£o: @code{false}
 
 Quando @code{simpsum} for @code{true}, o resultado de um comando
-@code{sum} È simplificado.  Essa simplificaÁ„o pode
+@code{sum} √© simplificado.  Essa simplifica√ß√£o pode
 algumas vezes produzir uma forma fechada.  Se @code{simpsum} for
-@code{false}, ou se a forma com apÛstrofo @code{'sum} for usada, o
-valor È uma forma substantiva aditiva que È uma
-representaÁ„o da notaÁ„o sigma usada em
-matem·tica.
+@code{false}, ou se a forma com ap√≥strofo @code{'sum} for usada, o
+valor √© uma forma substantiva aditiva que √© uma
+representa√ß√£o da nota√ß√£o sigma usada em
+matem√°tica.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@deffn {FunÁ„o} sumcontract (@var{expr})
-Combina v·rios somatÛrios que possuem limites superiores e inferiores
-que diferem por constantes. O resultado È uma express„o que contÈm
-apenas um somatÛrio mais todos os termos adicionais que tiveram de ser
-extraÌdos para obter essa forma.  @code{sumcontract}
-combina todas as somas compatÌveis e usa os indices de uma
-das somas, se puder, ou tenta formar um Ìndice razo·vel
-se n„o poder usar nenhum dos que foram fornecidos.
+@deffn {Fun√ß√£o} sumcontract (@var{expr})
+Combina v√°rios somat√≥rios que possuem limites superiores e inferiores
+que diferem por constantes. O resultado √© uma express√£o que cont√©m
+apenas um somat√≥rio mais todos os termos adicionais que tiveram de ser
+extra√≠dos para obter essa forma.  @code{sumcontract}
+combina todas as somas compat√≠veis e usa os indices de uma
+das somas, se puder, ou tenta formar um √≠ndice razo√°vel
+se n√£o poder usar nenhum dos que foram fornecidos.
 
 @c WHEN IS intosum NECESSARY BEFORE sumcontract ??
-Poder· ser necess·rio usar @code{intosum (@var{expr})} antes de
+Poder√° ser necess√°rio usar @code{intosum (@var{expr})} antes de
 @code{sumcontract}.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} sumexpand
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} sumexpand
+Valor por omiss√£o: @code{false}
 
 Quando @code{sumexpand} for @code{true}, produtos de somas e somas
 exponeciadas simplificam para somas aninhadas.
 
-Veja tambÈm @code{cauchysum}.
+Veja tamb√©m @code{cauchysum}.
 
 Exemplos:
 
@@ -661,29 +661,29 @@ Exemplos:
 
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} sumsplitfact
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} sumsplitfact
+Valor por omiss√£o: @code{true}
 
 Quando @code{sumsplitfact} for @code{false},
 @c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
-@code{minfactorial} È aplicado apÛs @code{factcomb}.
+@code{minfactorial} √© aplicado ap√≥s @code{factcomb}.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {DeclaraÁ„o} symmetric
+@defvr {Declara√ß√£o} symmetric
 @code{declare (h, symmetric)} diz ao simplificador do Maxima que
-@code{h} È uma funÁ„o simÈtrica.  Nomeadamente,
+@code{h} √© uma fun√ß√£o sim√©trica.  Nomeadamente,
 @code{h (x, z, y)} simplifica para @code{h (x, y, z)}.
 
-@code{commutative} È sin@^onimo de @code{symmetric}.
+@code{commutative} √© sin@^onimo de @code{symmetric}.
 
 @end defvr
 
 
-@deffn {FunÁ„o} unknown (@var{expr})
-Retorna @code{true} se e somente se @var{expr} contÈm um operador ou
-funÁ„o n„o reconhecida pelo simplificador do Maxima.
+@deffn {Fun√ß√£o} unknown (@var{expr})
+Retorna @code{true} se e somente se @var{expr} cont√©m um operador ou
+fun√ß√£o n√£o reconhecida pelo simplificador do Maxima.
 
 @end deffn
 

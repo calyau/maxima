@@ -28,7 +28,9 @@
 この関数を使うには、最初に@code{load("makeOrders")}を書いてください。
 
 @opencatbox
-@category{Polynomials} @category{Share packages} @category{Package makeOrders}
+@category{Polynomials}
+@category{Share packages}
+@category{Package makeOrders}
 @closecatbox
 
 @end deffn

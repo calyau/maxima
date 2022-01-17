@@ -214,7 +214,9 @@ Maximaでこれらの桁をロードするためには、
 @end example
 
 @opencatbox
-@category{Descriptive statistics} @category{Share packages} @category{Package descriptive}
+@category{Descriptive statistics}
+@category{Share packages}
+@category{Package descriptive}
 @closecatbox
 
 @node Functions and Variables for data manipulation, Functions and Variables for descriptive statistics, Introduction to descriptive, descriptive
@@ -2116,7 +2118,8 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 関数@code{histogram}と@code{piechart}も参照してください。
 
 @opencatbox
-@category{Package descriptive} @category{Plotting}
+@category{Package descriptive}
+@category{Plotting}
 @closecatbox
 @end deffn
 
@@ -2212,7 +2215,8 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 @end example
 
 @opencatbox
-@category{Package descriptive} @category{Plotting}
+@category{Package descriptive}
+@category{Plotting}
 @closecatbox
 @end deffn
 
@@ -2328,7 +2332,8 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 @end example
 
 @opencatbox
-@category{Package descriptive} @category{Plotting}
+@category{Package descriptive}
+@category{Plotting}
 @closecatbox
 @end deffn
 
@@ -2401,7 +2406,8 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 関数@code{barsplot}も参照してください。
 
 @opencatbox
-@category{Package descriptive} @category{Plotting}
+@category{Package descriptive}
+@category{Plotting}
 @closecatbox
 @end deffn
 
@@ -2517,7 +2523,8 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 @code{histogram}も参照してください。
 
 @opencatbox
-@category{Package descriptive} @category{Plotting}
+@category{Package descriptive}
+@category{Plotting}
 @closecatbox
 @end deffn
 
@@ -2595,7 +2602,8 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 
 
 @opencatbox
-@category{Package descriptive} @category{Plotting}
+@category{Package descriptive}
+@category{Plotting}
 @closecatbox
 @end deffn
 
@@ -2657,7 +2665,8 @@ key: 6|3 =  6.3
 @end example
 
 @opencatbox
-@category{Package descriptive} @category{Plotting}
+@category{Package descriptive}
+@category{Plotting}
 @closecatbox
 @end deffn
 

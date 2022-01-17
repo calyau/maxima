@@ -1,42 +1,42 @@
 @c /augmented_lagrangian.texi/1.2/Wed Sep 27 07:36:26 2006//
 @menu
-* Definições para augmented_lagrangian::
+* DefiniÃ§Ãµes para augmented_lagrangian::
 @end menu
 
-@node Definições para augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
-@section Definições para augmented_lagrangian
+@node DefiniÃ§Ãµes para augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
+@section DefiniÃ§Ãµes para augmented_lagrangian
 
-@deffn {Função} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
-@deffnx {Função} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, args_opcionais)
+@deffn {FunÃ§Ã£o} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
+@deffnx {FunÃ§Ã£o} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, args_opcionais)
  
-Retorna um mínimo aproximado da expressão @var{FOM}
-com relação às variáveis @var{xx},
+Retorna um mÃ­nimo aproximado da expressÃ£o @var{FOM}
+com relaÃ§Ã£o Ã s variÃ¡veis @var{xx},
 mantendo restrito o valor de @var{C} a zero.
-@var{yy} é uma lista de suposições iniciais para @var{xx}.
-O método utilizado é o método do Lagrangiano aumentado (veja referências [1] e [2]).
+@var{yy} Ã© uma lista de suposiÃ§Ãµes iniciais para @var{xx}.
+O mÃ©todo utilizado Ã© o mÃ©todo do Lagrangiano aumentado (veja referÃªncias [1] e [2]).
 
 @code{args_opcionais} representam argumentos adicionais,
-especificados como @code{@var{símbolo} = @var{valor}}.
-Os argumentos opcionais que podem ser colocados no lugar de @var{símbolo}:
+especificados como @code{@var{sÃ­mbolo} = @var{valor}}.
+Os argumentos opcionais que podem ser colocados no lugar de @var{sÃ­mbolo}:
  
 @table @code
 @item niter
-Número de iterações do algoritmo do Langrangiano aumentado
+NÃºmero de iteraÃ§Ãµes do algoritmo do Langrangiano aumentado
 @item lbfgs_tolerance
-Tolerância forneceida a LBFGS (Limited-memory, Broyden, Fletcher, Goldfarb, Shanno)
+TolerÃ¢ncia forneceida a LBFGS (Limited-memory, Broyden, Fletcher, Goldfarb, Shanno)
 @item iprint
-parâmetro IPRINT (uma lista de dois inteiros que controlam o nível de informação) fornecido a LBFGS
+parÃ¢metro IPRINT (uma lista de dois inteiros que controlam o nÃ­vel de informaÃ§Ã£o) fornecido a LBFGS
 @item %lambda
-valor inicial de @code{%lambda} a ser usado durante o cálculo do Lagrangiano aumentado
+valor inicial de @code{%lambda} a ser usado durante o cÃ¡lculo do Lagrangiano aumentado
 @end table
 
-Essa implementação minimiza o Lagrangiano aumentado pela
-pela aplicação do algoritmo de memória limitada BFGS (LBFGS),
-que é um algoritmo quasi-Newton.
+Essa implementaÃ§Ã£o minimiza o Lagrangiano aumentado pela
+pela aplicaÃ§Ã£o do algoritmo de memÃ³ria limitada BFGS (LBFGS),
+que Ã© um algoritmo quasi-Newton.
 
-@code{load(augmented_lagrangian)} chama essa função.
+@code{load(augmented_lagrangian)} chama essa funÃ§Ã£o.
  
-Veja também @code{lbfgs}.
+Veja tambÃ©m @code{lbfgs}.
 
 References:
 

@@ -10,7 +10,10 @@
 @code{affine}は多項式の群を扱うパッケージです。
 
 @opencatbox
-@category{Polynomials} @category{Groebner bases} @category{Share packages} @category{Package affine}
+@category{Polynomials}
+@category{Groebner bases}
+@category{Share packages}
+@category{Package affine}
 @closecatbox
 
 

@@ -120,7 +120,9 @@
 @end example
 
 @opencatbox
-@category{Linear algebra} @category{Share packages} @category{Package linearalgebra}
+@category{Linear algebra}
+@category{Share packages}
+@category{Package linearalgebra}
 @closecatbox
 
 @c -----------------------------------------------------------------------------
@@ -168,7 +170,8 @@
 trueを返します。
 
 @opencatbox
-@category{Package linearalgebra} @category{Predicate functions}
+@category{Package linearalgebra}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -283,7 +286,8 @@ Maxima式 @var{e}のコピーを返します。
 @var{field}の取り得る値の説明については @code{lu_factor}を参照してください。
 
 @opencatbox
-@category{Matrix decompositions} @category{Package linearalgebra}
+@category{Matrix decompositions}
+@category{Package linearalgebra}
 @closecatbox
 @end deffn
 
@@ -425,7 +429,8 @@ number of rotations: 1
 @end example
 
 @opencatbox
-@category{Matrix decompositions} @category{Package linearalgebra}
+@category{Matrix decompositions}
+@category{Package linearalgebra}
 @closecatbox
 @end deffn
 
@@ -498,7 +503,8 @@ Hessian行列の @code{(i, j)}成分は
 @end example
 
 @opencatbox
-@category{Differential calculus} @category{Package linearalgebra}
+@category{Differential calculus}
+@category{Package linearalgebra}
 @closecatbox
 @end deffn
 
@@ -583,7 +589,8 @@ Jacobi行列の @code{(i, j)}成分は
 @end example
 
 @opencatbox
-@category{Differential calculus} @category{Package linearalgebra}
+@category{Differential calculus}
+@category{Package linearalgebra}
 @closecatbox
 @end deffn
 
@@ -611,7 +618,8 @@ Jacobi行列の @code{(i, j)}成分は
 他のすべての場合、 @code{false}を返します。
 
 @opencatbox
-@category{Package linearalgebra} @category{Predicate functions}
+@category{Package linearalgebra}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -784,7 +792,8 @@ Evaluation took 109.24 seconds (152.10 elapsed)
 @end example
 
 @opencatbox
-@category{Matrix decompositions} @category{Package linearalgebra}
+@category{Matrix decompositions}
+@category{Package linearalgebra}
 @closecatbox
 @end deffn
 
@@ -839,7 +848,8 @@ Evaluation took 109.24 seconds (152.10 elapsed)
 @code{blockmatrixp}も参照してください。
 
 @opencatbox
-@category{Package linearalgebra} @category{Predicate functions}
+@category{Package linearalgebra}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -1051,7 +1061,8 @@ coeffpとexponpにデフォルトでない値を使う例:
 @end example
 
 @opencatbox
-@category{Package linearalgebra} @category{Predicate functions}
+@category{Package linearalgebra}
+@category{Predicate functions}
 @closecatbox
 @end deffn
 
@@ -1233,6 +1244,7 @@ Toeplitz行列 @var{T}を返します。
 @code{true}を返します。
 
 @opencatbox
-@category{Package linearalgebra} @category{Predicate functions}
+@category{Package linearalgebra}
+@category{Predicate functions}
 @closecatbox
 @end deffn

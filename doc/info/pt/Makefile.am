@@ -1,4 +1,4 @@
-MAKEINFOFLAGS = --enable-encoding
+MAKEINFOFLAGS = --enable-encoding -I . -I .. -I ../..
 
 lang = pt
 langsdir = /pt

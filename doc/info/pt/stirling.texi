@@ -1,16 +1,16 @@
 @c /stirling.texi/1.1/Mon Feb 27 22:09:17 2006//
 @menu
-* Definições para stirling::
+* DefiniÃ§Ãµes para stirling::
 @end menu
 
-@node Definições para stirling,  , stirling, stirling
-@section Definições para stirling
+@node DefiniÃ§Ãµes para stirling,  , stirling, stirling
+@section DefiniÃ§Ãµes para stirling
 
-@deffn {Função} stirling (@var{z},@var{n})
-Substitui @code{gamma(x)} pela fórmula de Stirling @math{O(1/x^(2n-1))}. Quando @var{n} for
+@deffn {FunÃ§Ã£o} stirling (@var{z},@var{n})
+Substitui @code{gamma(x)} pela fÃ³rmula de Stirling @math{O(1/x^(2n-1))}. Quando @var{n} for
 um inteiro estritamente negativo, sinaliza um erro.
 
-Referência: Abramowitz & Stegun, " Handbook of mathematical functions", 6.1.40.
+ReferÃªncia: Abramowitz & Stegun, " Handbook of mathematical functions", 6.1.40.
 
 Exemplos:
 @example
@@ -35,8 +35,8 @@ Exemplos:
                                   2
 @end example
 
-A função @code{stirling} conhece a diferença entre a variável @var{gamma} e
-a função @code{gamma}:
+A funÃ§Ã£o @code{stirling} conhece a diferenÃ§a entre a variÃ¡vel @var{gamma} e
+a funÃ§Ã£o @code{gamma}:
 
 @example
 (%i5) stirling(gamma + gamma(x),0);
@@ -49,6 +49,6 @@ a função @code{gamma}:
                          + sqrt(2) sqrt(%pi) x        %e
 @end example
 
-Para usar essa função escreva primeiro @code{load("stirling")}.
+Para usar essa funÃ§Ã£o escreva primeiro @code{load("stirling")}.
 @end deffn
 

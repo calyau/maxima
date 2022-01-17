@@ -61,7 +61,9 @@ plotdfに与えられる二番目の引数は
 非自励方程式を2つの自励方程式系に変換します。
 
 @opencatbox
-@category{Differential equations} @category{Share packages} @category{Package plotdf}
+@category{Differential equations}
+@category{Share packages}
+@category{Package plotdf}
 @closecatbox
 
 @node Functions and Variables for plotdf,  , Introduction to plotdf, plotdf
@@ -226,7 +228,7 @@ Configメニューで設定できます。
 @end example
 
 @ifnotinfo
-@image{figures/plotdf1,8cm}
+@image{@value{figuresfolder}/plotdf1,8cm}
 @end ifnotinfo
 
 @item
@@ -249,7 +251,7 @@ Configメニューで設定できます。
 グラフは関数@math{y = sqrt(x)}も表示します。
 
 @ifnotinfo
-@image{figures/plotdf2,8cm}
+@image{@value{figuresfolder}/plotdf2,8cm}
 @end ifnotinfo
 
 @item
@@ -270,7 +272,7 @@ Configメニューで設定できます。
 @end example
 
 @ifnotinfo
-@image{figures/plotdf3,8cm}
+@image{@value{figuresfolder}/plotdf3,8cm}
 @end ifnotinfo
 
 @item
@@ -290,7 +292,7 @@ Duffing方程式@math{m*x''+c*x'+k*x+b*x^3 = 0}の方向場をプロットする
 @end example
 
 @ifnotinfo
-@image{figures/plotdf4,8cm}
+@image{@value{figuresfolder}/plotdf4,8cm}
 @end ifnotinfo
 
 @item
@@ -316,13 +318,15 @@ Duffing方程式@math{m*x''+c*x'+k*x+b*x^3 = 0}の方向場をプロットする
 @end example
 
 @ifnotinfo
-@image{figures/plotdf5,8cm}@image{figures/plotdf6,8cm}
+@image{@value{figuresfolder}/plotdf5,8cm}@image{@value{figuresfolder}/plotdf6,8cm}
 @end ifnotinfo
 
 @end itemize
 
 @opencatbox
-@category{Package plotdf} @category{Plotting} @category{Numerical methods}
+@category{Package plotdf}
+@category{Plotting}
+@category{Numerical methods}
 @closecatbox
 
 @end deffn

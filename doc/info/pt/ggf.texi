@@ -1,54 +1,54 @@
 @c /ggf.texi/1.3/Tue Jul 25 12:01:54 2006//
 @menu
-* DefiniÁıes para ggf::
+* Defini√ß√µes para ggf::
 @end menu
 
-@node DefiniÁıes para ggf,  , ggf, ggf
-@section DefiniÁıes para ggf
+@node Defini√ß√µes para ggf,  , ggf, ggf
+@section Defini√ß√µes para ggf
 
-@defvr {Vari·vel de OpÁ„o} GGFINFINITY
-Valor por omiss„o: 3
+@defvr {Vari√°vel de Op√ß√£o} GGFINFINITY
+Valor por omiss√£o: 3
 
-Essa È uma vari·vel de opÁ„o para a funÁ„o @code{ggf}.
+Essa √© uma vari√°vel de op√ß√£o para a fun√ß√£o @code{ggf}.
 
-Quando calculando a fraÁ„o contÌnua da
-funÁ„o geradora, um quociente parcial tendo um grau
-(estritamente) maior que @var{GGFINFINITY} ser· descartado e
-o convergente actual ser· considerado como o valor exato
-da funÁ„o geradora; na grande mioria dos casos o grau de todos
-os quocientes parciais ser· ou 0 ou 1; se usar um valor muito grande,
-ent„o poder· fornecer termos suficientes com o objectivo de fazer o
-c·lculo preciso o bastante.
+Quando calculando a fra√ß√£o cont√≠nua da
+fun√ß√£o geradora, um quociente parcial tendo um grau
+(estritamente) maior que @var{GGFINFINITY} ser√° descartado e
+o convergente actual ser√° considerado como o valor exato
+da fun√ß√£o geradora; na grande mioria dos casos o grau de todos
+os quocientes parciais ser√° ou 0 ou 1; se usar um valor muito grande,
+ent√£o poder√° fornecer termos suficientes com o objectivo de fazer o
+c√°lculo preciso o bastante.
 
-Veja tambÈm @code{ggf}.
+Veja tamb√©m @code{ggf}.
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} GGFCFMAX
-Valor por omiss„o: 3
+@defvr {Vari√°vel de op√ß√£o} GGFCFMAX
+Valor por omiss√£o: 3
 
-Essa È uma vari·vel de opÁ„o para a funÁ„o @code{ggf}.
+Essa √© uma vari√°vel de op√ß√£o para a fun√ß√£o @code{ggf}.
 
-Quando calculando a fraÁ„o contÌnua da
-funÁ„o geradora, se nenhum bom resultado for encontrado (veja
-o sinalizador @var{GGFINFINITY}) apÛs se ter calculado uma quantidade de @var{GGFCFMAX} quocientes
-parciais, a funÁ„o geradora ser· considerada como
-n„o sendo uma fraÁ„o de dois polinÛmios e a funÁ„o ir·
-terminar. Coloque livemente um valor muito grande para funÁıes geradoras
+Quando calculando a fra√ß√£o cont√≠nua da
+fun√ß√£o geradora, se nenhum bom resultado for encontrado (veja
+o sinalizador @var{GGFINFINITY}) ap√≥s se ter calculado uma quantidade de @var{GGFCFMAX} quocientes
+parciais, a fun√ß√£o geradora ser√° considerada como
+n√£o sendo uma fra√ß√£o de dois polin√≥mios e a fun√ß√£o ir√°
+terminar. Coloque livemente um valor muito grande para fun√ß√µes geradoras
 mais complicadas.
 
-Veja tambÈm @code{ggf}.
+Veja tamb√©m @code{ggf}.
 @end defvr
 
-@deffn {FunÁ„o} ggf (@var{l})
-Calcula a funÁ„o geradora (se for uma fraÁ„o de dois
-polinÛmios) de uma sequÍncia, sendo dados seus primeiros termos. @var{l}
-È uma lista de n˙meros.
+@deffn {Fun√ß√£o} ggf (@var{l})
+Calcula a fun√ß√£o geradora (se for uma fra√ß√£o de dois
+polin√≥mios) de uma sequ√™ncia, sendo dados seus primeiros termos. @var{l}
+√© uma lista de n√∫meros.
 
-A soluÁ„o È retornada como uma fraÁ„o de dois polinÛmios.
-Se nenhuma soluÁ„o tiver sido encontrada, È retornado @code{done}.
+A solu√ß√£o √© retornada como uma fra√ß√£o de dois polin√≥mios.
+Se nenhuma solu√ß√£o tiver sido encontrada, √© retornado @code{done}.
 
-Essa funÁ„o È controlada attravÈs das vari·veis globais @var{GGFINFINITY} e @var{GGFCFMAX}. Veja tambÈm @var{GGFINFINITY} e @var{GGFCFMAX}.
+Essa fun√ß√£o √© controlada attrav√©s das vari√°veis globais @var{GGFINFINITY} e @var{GGFCFMAX}. Veja tamb√©m @var{GGFINFINITY} e @var{GGFCFMAX}.
 
-Para usar essa funÁ„o primeiro escreva @code{load("ggf")}.
+Para usar essa fun√ß√£o primeiro escreva @code{load("ggf")}.
 @end deffn
 

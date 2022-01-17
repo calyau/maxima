@@ -167,13 +167,13 @@ Maximaは関数のプロットが生成できます:
 (%i1) plot2d (sin(x)/x, [x, -20, 20])$
 @end example
 @ifnotinfo
-@image{figures/introduction1, 10cm}
+@image{@value{figuresfolder}/introduction1, 10cm}
 @end ifnotinfo
 @example
 (%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5], [y, -1.5, 2])$
 @end example
 @ifnotinfo
-@image{figures/introduction2, 10cm}
+@image{@value{figuresfolder}/introduction2, 10cm}
 @end ifnotinfo
 @example
 @group
@@ -182,7 +182,7 @@ Maximaは関数のプロットが生成できます:
 @end group
 @end example
 @ifnotinfo
-@image{figures/introduction3, 12cm}
+@image{@value{figuresfolder}/introduction3, 12cm}
 @end ifnotinfo 
 
 @c FOLLOWING TEXT DESCRIBES THE TCL/TK PLOT WINDOW WHICH IS NO LONGER THE DEFAULT

@@ -57,7 +57,8 @@
 @var{n}は戻り値の小数点以下の桁数です。
 
 @opencatbox
-@category{Number theory} @category{Numerical evaluation}
+@category{Number theory}
+@category{Numerical evaluation}
 @closecatbox
 @end deffn
 
@@ -89,7 +90,8 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
 @code{load ("bffac")}はこの関数をロードします。
 
 @opencatbox
-@category{Number theory} @category{Numerical evaluation}
+@category{Number theory}
+@category{Numerical evaluation}
 @closecatbox
 @end deffn
 
@@ -677,7 +679,8 @@ Miller-Rabinのテストの決定的バージョンが使われます。
 10^-15よりもはるかに小さいです。
 
 @opencatbox
-@category{Predicate functions} @category{Number theory}
+@category{Predicate functions}
+@category{Number theory}
 @closecatbox
 @end deffn
 
@@ -690,7 +693,8 @@ Miller-Rabinのテストの決定的バージョンが使われます。
 
 
 @opencatbox
-@category{Predicate functions} @category{Number theory}
+@category{Predicate functions}
+@category{Number theory}
 @closecatbox
 @end defvr
 

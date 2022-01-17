@@ -1,33 +1,33 @@
 @c /Program.texi/1.23/Mon Feb 19 14:23:10 2007/-ko/
 @menu
-* IntroduÁ„o a Fluxo de Programa::  
-* DefiniÁıes para Fluxo de Programa::  
+* Introdu√ß√£o a Fluxo de Programa::  
+* Defini√ß√µes para Fluxo de Programa::  
 @end menu
 
-@node IntroduÁ„o a Fluxo de Programa, DefiniÁıes para Fluxo de Programa, Fluxo de Programa, Fluxo de Programa
-@section IntroduÁ„o a Fluxo de Programa
+@node Introdu√ß√£o a Fluxo de Programa, Defini√ß√µes para Fluxo de Programa, Fluxo de Programa, Fluxo de Programa
+@section Introdu√ß√£o a Fluxo de Programa
 
-Maxima fornece um @code{do} para ciclos iterativos, tambÈm contruÁıes mais
+Maxima fornece um @code{do} para ciclos iterativos, tamb√©m contru√ß√µes mais
 primitivas tais como @code{go}.
 
 @c end concepts Fluxo de Programa
-@node DefiniÁıes para Fluxo de Programa,  , IntroduÁ„o a Fluxo de Programa, Fluxo de Programa
-@section DefiniÁıes para Fluxo de Programa
+@node Defini√ß√µes para Fluxo de Programa,  , Introdu√ß√£o a Fluxo de Programa, Fluxo de Programa
+@section Defini√ß√µes para Fluxo de Programa
 
-@deffn {FunÁ„o} backtrace ()
-@deffnx {FunÁ„o} backtrace (@var{n})
-Imprime a pilha de chamadas, que È, a lista de funÁıes que
-foram chamadas pela funÁ„o correntemente activa.
+@deffn {Fun√ß√£o} backtrace ()
+@deffnx {Fun√ß√£o} backtrace (@var{n})
+Imprime a pilha de chamadas, que √©, a lista de fun√ß√µes que
+foram chamadas pela fun√ß√£o correntemente activa.
 
 @code{backtrace()} imprime toda a pilha de chamadas.
 
 @code{backtrace (@var{n})} imprime as @var{n} mais recentes chamadas a
-funÁıes, incluindo a funÁ„o correntemente activa.
+fun√ß√µes, incluindo a fun√ß√£o correntemente activa.
 
 @c IS THIS STATMENT REALLY NEEDED ?? 
 @c (WHY WOULD ANYONE BELIEVE backtrace CANNOT BE CALLED OUTSIDE A DEBUGGING CONTEXT??)
-@code{backtrace} pode ser chamada por um script, uma funÁ„o, ou a partir da linha de comando interativa
-(n„o somente em um contexto de depuraÁ„o).
+@code{backtrace} pode ser chamada por um script, uma fun√ß√£o, ou a partir da linha de comando interativa
+(n√£o somente em um contexto de depura√ß√£o).
 
 Exemplos:
 
@@ -54,7 +54,7 @@ Exemplos:
 @itemize @bullet
 @item
 @code{backtrace (@var{n})} imprime as @var{n} mais recentes chamadas a
-funÁıes, incluindo a funÁ„o correntemente activa.
+fun√ß√µes, incluindo a fun√ß√£o correntemente activa.
 
 @example
 (%i1) h(x) := (backtrace(1), g(x/7))$
@@ -75,75 +75,75 @@ funÁıes, incluindo a funÁ„o correntemente activa.
 @end deffn
 
 @deffn {Operador especial} do
-A declaraÁ„o @code{do} È usada para executar iteraÁ„o.  Devido ‡ sua
-grande generalidade a declaraÁ„o @code{do} ser·  descrita em duas partes.
-Primeiro a forma usual ser· dada que È an·loga ‡ forma que È usada em
-muitas outras linguagens de programaÁ„o (Fortran, Algol, PL/I, etc.); em segundo lugar
-os outros recursos ser„o mencionados.
+A declara√ß√£o @code{do} √© usada para executar itera√ß√£o.  Devido √† sua
+grande generalidade a declara√ß√£o @code{do} ser√°  descrita em duas partes.
+Primeiro a forma usual ser√° dada que √© an√°loga √† forma que √© usada em
+muitas outras linguagens de programa√ß√£o (Fortran, Algol, PL/I, etc.); em segundo lugar
+os outros recursos ser√£o mencionados.
 
-Existem trÍs variantes do operador especial @code{do} que diferem somente por suas
-condiÁıes de encerramento.  S„o elas:
+Existem tr√™s variantes do operador especial @code{do} que diferem somente por suas
+condi√ß√µes de encerramento.  S√£o elas:
 
 @itemize @bullet
 @item
-@code{for @var{Vari·vel}: @var{valor_inicial} step @var{incremento}
+@code{for @var{Vari√°vel}: @var{valor_inicial} step @var{incremento}
       thru @var{limite} do @var{corpo}}
 @item
-@code{for @var{Vari·vel}: @var{valor_inicial} step @var{incremento}
+@code{for @var{Vari√°vel}: @var{valor_inicial} step @var{incremento}
       while @var{condition} do @var{corpo}}
 @item
-@code{for @var{Vari·vel}: @var{valor_inicial} step @var{incremento}
+@code{for @var{Vari√°vel}: @var{valor_inicial} step @var{incremento}
       unless @var{condition} do @var{corpo}}
 @end itemize
 
 @c UGH.  DO WE REALLY NEED TO MENTION THIS??
-(Alternativamente, o @code{step} pode ser dado apÛs a condiÁ„o de encerramento
+(Alternativamente, o @code{step} pode ser dado ap√≥s a condi√ß√£o de encerramento
 ou limite.)
 
 @var{valor_inicial}, @var{incremento}, @var{limite}, e @var{corpo} podem ser quaisquer
-expressıes.  Se o incremento for 1 ent„o "@code{step 1}" pode ser omitido.
+express√µes.  Se o incremento for 1 ent√£o "@code{step 1}" pode ser omitido.
 
-A execuÁ„o da declaraÁ„o @code{do} processa-se primeiro atribuindo o
-valor_inicial para a vari·vel (daqui em diante chamada a
-vari·vel de controle).  Ent„o: (1) Se a vari·vel de controle excede
-o limite de uma especificaÁ„o @code{thru}, ou se a condiÁ„o de @code{unless} for
-@code{true}, ou se a condiÁ„o de @code{while} for @code{false} ent„o o @code{do}
-ser· encerrado.  (2) O corpo È avaliado.  (3) O incremento È adicionado ‡
-vari·vel de controle.  O processo de (1) a (3) È executado
-repetidamente atÈ que a condiÁ„o de encerramento seja satisfeita.  Pode-se tambÈm
-dar muitas condiÁıes de encerramento e nesse caso o @code{do} termina
+A execu√ß√£o da declara√ß√£o @code{do} processa-se primeiro atribuindo o
+valor_inicial para a vari√°vel (daqui em diante chamada a
+vari√°vel de controle).  Ent√£o: (1) Se a vari√°vel de controle excede
+o limite de uma especifica√ß√£o @code{thru}, ou se a condi√ß√£o de @code{unless} for
+@code{true}, ou se a condi√ß√£o de @code{while} for @code{false} ent√£o o @code{do}
+ser√° encerrado.  (2) O corpo √© avaliado.  (3) O incremento √© adicionado √†
+vari√°vel de controle.  O processo de (1) a (3) √© executado
+repetidamente at√© que a condi√ß√£o de encerramento seja satisfeita.  Pode-se tamb√©m
+dar muitas condi√ß√µes de encerramento e nesse caso o @code{do} termina
 quando qualquer delas for satisfeita.
 
-Em geral o teste @code{thru} È satisfeito quando a vari·vel de controle for
-maior que o limite se o incremento for n„o negativo, ou quando a
-vari·vel de controle for menor que o limite se o incremento for negativo.
-O incremento e o limite podem ser expressıes n„o numÈricas enquanto essa
+Em geral o teste @code{thru} √© satisfeito quando a vari√°vel de controle for
+maior que o limite se o incremento for n√£o negativo, ou quando a
+vari√°vel de controle for menor que o limite se o incremento for negativo.
+O incremento e o limite podem ser express√µes n√£o num√©ricas enquanto essa
 desigualdade puder ser determinada.  Todavia, a menos que o incremento seja
-sintaticamente negativo (e.g. for um n˙mero negativo) na hora em que a declaraÁ„o @code{do}
-for iniciada, Maxima assume que o incremento e o limite ser„o positivos quando o @code{do} for
-executado.  Se o limite e o incremento n„o forem positivos, ent„o o @code{do} pode n„o terminar
+sintaticamente negativo (e.g. for um n√∫mero negativo) na hora em que a declara√ß√£o @code{do}
+for iniciada, Maxima assume que o incremento e o limite ser√£o positivos quando o @code{do} for
+executado.  Se o limite e o incremento n√£o forem positivos, ent√£o o @code{do} pode n√£o terminar
 propriamente.
 
-Note que o limite, incremento, e condiÁ„o de encerramento s„o
-avaliados cada vez que ocorre um ciclo.  Dessa forma se qualquer desses for respons·vel por
-muitos c·lculos, e retornar um resultado que n„o muda durante todas
-as execuÁıes do corpo, ent„o È mais eficiente escolher uma
-vari·vel para seu valor anterior para o @code{do} e usar essa vari·vel na
+Note que o limite, incremento, e condi√ß√£o de encerramento s√£o
+avaliados cada vez que ocorre um ciclo.  Dessa forma se qualquer desses for respons√°vel por
+muitos c√°lculos, e retornar um resultado que n√£o muda durante todas
+as execu√ß√µes do corpo, ent√£o √© mais eficiente escolher uma
+vari√°vel para seu valor anterior para o @code{do} e usar essa vari√°vel na
 forma @code{do}.
 
-O valor normalmente retornado por uma declaraÁ„o @code{do} È o ·tomo @code{done}.
-Todavia, a funÁ„o
-@code{return} pode ser usada dentro do corpo para sair da delcaraÁ„o @code{do} prematuramente e dar
+O valor normalmente retornado por uma declara√ß√£o @code{do} √© o √°tomo @code{done}.
+Todavia, a fun√ß√£o
+@code{return} pode ser usada dentro do corpo para sair da delcara√ß√£o @code{do} prematuramente e dar
 a isso qualquer valor desejado.
 Note todavia que um @code{return} dentro de um @code{do} que
-ocorre em um @code{block} encerrar· somente o @code{do} e n„o o @code{block}.  Note tambÈm
-que a funÁ„o @code{go} n„o pode ser usada para sair de dentro de um @code{do} dentro de um
+ocorre em um @code{block} encerrar√° somente o @code{do} e n√£o o @code{block}.  Note tamb√©m
+que a fun√ß√£o @code{go} n√£o pode ser usada para sair de dentro de um @code{do} dentro de um
 @code{block} que o envolve.
 
-A vari·vel de controle È sempre local para o @code{do} e dessa forma qualquer
-vari·vel pode ser usada sem afectar o valor de uma vari·vel com
-o mesmo nome fora da declaraÁ„o @code{do}.  A vari·vel de controle È liberada
-apÛs o encerramento da declaraÁ„o @code{do}.
+A vari√°vel de controle √© sempre local para o @code{do} e dessa forma qualquer
+vari√°vel pode ser usada sem afectar o valor de uma vari√°vel com
+o mesmo nome fora da declara√ß√£o @code{do}.  A vari√°vel de controle √© liberada
+ap√≥s o encerramento da declara√ß√£o @code{do}.
 
 @example
 (%i1) for a:-3 thru 26 step 7 do display(a)$
@@ -166,8 +166,8 @@ apÛs o encerramento da declaraÁ„o @code{do}.
 (%o3)                          55
 @end example
 
-Note que a condiÁ„o @code{while i <= 10}
-È equivalente a @code{unless i > 10} e tambÈm @code{thru 10}.
+Note que a condi√ß√£o @code{while i <= 10}
+√© equivalente a @code{unless i > 10} e tamb√©m @code{thru 10}.
 
 @example
 (%i1) series: 1$
@@ -182,7 +182,7 @@ Note que a condiÁ„o @code{while i <= 10}
                  90   240   15   8    2
 @end example
 
-que fornece 8 termos da sÈrie de Taylor para @code{e^sin(x)}.
+que fornece 8 termos da s√©rie de Taylor para @code{e^sin(x)}.
 
 @example
 (%i1) poly: 0$
@@ -199,14 +199,14 @@ que fornece 8 termos da sÈrie de Taylor para @code{e^sin(x)}.
 (%o5)                  - 3.162280701754386
 @end example
 
-Esse exemplo calcula a raÌz quadrada negativa de 10 usando a
-iteraÁ„o de Newton- Raphson um maximum de 10 vezes.  Caso o critÈrio de
-convergÍcia n„o tenha sido encontrado o valor retornado pode ser @code{done}.
-Em lugar de sempre adicionar uma quantidade ‡ vari·vel de controle pode-se
-algumas vezes desejar alterar isso de alguma outra forma para cada iteraÁ„o.
-Nesse caso pode-se usar @code{next @var{express„o}} em lugar de @code{step @var{incremento}}.
-Isso far· com que a vari·vel de controle seja escolhida para o
-resultado da express„o de avaliaÁ„o cada vez que o ciclo de repetiÁ„o for executado.
+Esse exemplo calcula a ra√≠z quadrada negativa de 10 usando a
+itera√ß√£o de Newton- Raphson um maximum de 10 vezes.  Caso o crit√©rio de
+converg√™cia n√£o tenha sido encontrado o valor retornado pode ser @code{done}.
+Em lugar de sempre adicionar uma quantidade √† vari√°vel de controle pode-se
+algumas vezes desejar alterar isso de alguma outra forma para cada itera√ß√£o.
+Nesse caso pode-se usar @code{next @var{express√£o}} em lugar de @code{step @var{incremento}}.
+Isso far√° com que a vari√°vel de controle seja escolhida para o
+resultado da express√£o de avalia√ß√£o cada vez que o ciclo de repeti√ß√£o for executado.
 
 @example
 (%i6) for count: 2 next 3*count thru 20 do display (count)$
@@ -218,17 +218,17 @@ resultado da express„o de avaliaÁ„o cada vez que o ciclo de repetiÁ„o for execut
 @end example
 
 @c UGH.  DO WE REALLY NEED TO MENTION THIS??
-Como uma alternativa para @code{for @var{Vari·vel}: @var{valor} ...do...} a sintaxe
-@code{for @var{Vari·vel} from @var{valor} ...do...}  pode ser usada.  Isso permite o
-@code{from @var{valor}} ser colocado apÛs o @code{step} ou proximo valor ou apÛs a
-condiÁ„o de encerramento.  Se @code{from @var{valor}} for omitido ent„o 1 È usado como
+Como uma alternativa para @code{for @var{Vari√°vel}: @var{valor} ...do...} a sintaxe
+@code{for @var{Vari√°vel} from @var{valor} ...do...}  pode ser usada.  Isso permite o
+@code{from @var{valor}} ser colocado ap√≥s o @code{step} ou proximo valor ou ap√≥s a
+condi√ß√£o de encerramento.  Se @code{from @var{valor}} for omitido ent√£o 1 √© usado como
 o valor inicial.
 
-Algumas vezes se pode estar interessado em executar uma iteraÁ„o onde
-a vari·vel de controle nunca seja usada.  Isso È permissÌvel
-para dar somente as condiÁıes de encerramento omitindo a inicializaÁ„o
-e a informaÁ„o de actualizaÁ„o como no exemplo seguinte para para calcular a
-raÌz quadrada de 5 usando uma fraca suposiÁ„o inicial.
+Algumas vezes se pode estar interessado em executar uma itera√ß√£o onde
+a vari√°vel de controle nunca seja usada.  Isso √© permiss√≠vel
+para dar somente as condi√ß√µes de encerramento omitindo a inicializa√ß√£o
+e a informa√ß√£o de actualiza√ß√£o como no exemplo seguinte para para calcular a
+ra√≠z quadrada de 5 usando uma fraca suposi√ß√£o inicial.
 
 @example
 (%i1) x: 1000$
@@ -239,10 +239,10 @@ raÌz quadrada de 5 usando uma fraca suposiÁ„o inicial.
 (%o4)                   2.23606797749979
 @end example
 
-Se isso for desejado pode-se sempre omitir as condiÁıes de encerramento
-inteiramente e apenas dar o corpo @code{do @var{corpo}} que continuar· a ser 
-avaliado indefinidamente.  Nesse caso a funÁ„o @code{return} ser· usada para
-encerrar a execuÁ„o da declaraÁ„o @code{do}.
+Se isso for desejado pode-se sempre omitir as condi√ß√µes de encerramento
+inteiramente e apenas dar o corpo @code{do @var{corpo}} que continuar√° a ser 
+avaliado indefinidamente.  Nesse caso a fun√ß√£o @code{return} ser√° usada para
+encerrar a execu√ß√£o da declara√ß√£o @code{do}.
 
 @example
 (%i1) newton (f, x):= ([y, df, dfx], df: diff (f ('x), 'x),
@@ -255,22 +255,22 @@ encerrar a execuÁ„o da declaraÁ„o @code{do}.
 
 @c DUNNO IF WE NEED THIS LEVEL OF DETAIL; THIS ARTICLE IS GETTING PRETTY LONG
 (Note que @code{return}, quando executado, faz com que o valor corrente de
-@code{x} seja retornado como o valor da declaraÁ„o @code{do}.  O @code{block} È encerrado e
-esse valor da declaraÁ„o @code{do} È retornado como o valor do @code{block} porque o
-@code{do} È a ˙ltima declaraÁ„o do @code{block}.)
+@code{x} seja retornado como o valor da declara√ß√£o @code{do}.  O @code{block} √© encerrado e
+esse valor da declara√ß√£o @code{do} √© retornado como o valor do @code{block} porque o
+@code{do} √© a √∫ltima declara√ß√£o do @code{block}.)
 
-Uma outra forma de @code{do} È disponÌvel no Maxima.  A sintaxe È:
+Uma outra forma de @code{do} √© dispon√≠vel no Maxima.  A sintaxe √©:
 
 @example
-for @var{Vari·vel} in @var{list} @var{end_tests} do @var{corpo}
+for @var{Vari√°vel} in @var{list} @var{end_tests} do @var{corpo}
 @end example
 
-Os elementos de @var{list} s„o quaisquer expressıes que ir„o
-sucessivamente ser atribuÌdas para a vari·vel a cada iteraÁ„o do
-corpo.  O teste opcional @var{end_tests} pode ser usado para encerrar a execuÁ„o da
-declaraÁ„o @code{do}; de outra forma o @code{do} terminar· quando a lista for exaurida ou quando
+Os elementos de @var{list} s√£o quaisquer express√µes que ir√£o
+sucessivamente ser atribu√≠das para a vari√°vel a cada itera√ß√£o do
+corpo.  O teste opcional @var{end_tests} pode ser usado para encerrar a execu√ß√£o da
+declara√ß√£o @code{do}; de outra forma o @code{do} terminar√° quando a lista for exaurida ou quando
 um @code{return} for executado no corpo.  (De facto, a lista pode ser qualquer
-express„o n„o at@^omica, e partes sucessivas s„o usadas.)
+express√£o n√£o at@^omica, e partes sucessivas s√£o usadas.)
 
 @example
 (%i1)  for f in [log, rho, atan] do ldisp(f(1))$
@@ -285,38 +285,38 @@ express„o n„o at@^omica, e partes sucessivas s„o usadas.)
 
 @end deffn
 
-@deffn {FunÁ„o} errcatch (@var{expr_1}, ..., @var{expr_n})
+@deffn {Fun√ß√£o} errcatch (@var{expr_1}, ..., @var{expr_n})
 Avalia @var{expr_1}, ..., @var{expr_n} uma por uma e
 retorna @code{[@var{expr_n}]} (uma lista) se nenhum erro ocorrer.  Se um
-erro ocorrer na avaliaÁ„o de qualquer argumento, @code{errcatch}
+erro ocorrer na avalia√ß√£o de qualquer argumento, @code{errcatch}
 evita que o erro se propague e
 retorna a lista vazia @code{[]} sem avaliar quaisquer mais argumentos.
 
 @code{errcatch}
-È ˙til em ficheiros @code{batch} onde se suspeita que um erro possa estar ocorrendo o @code{errcatch}
-terminar· o @code{batch} se o erro n„o for detectado.
+√© √∫til em ficheiros @code{batch} onde se suspeita que um erro possa estar ocorrendo o @code{errcatch}
+terminar√° o @code{batch} se o erro n√£o for detectado.
 
 @end deffn
 
-@deffn {FunÁ„o} error (@var{expr_1}, ..., @var{expr_n})
-@deffnx {Vari·vel de sistema} error
+@deffn {Fun√ß√£o} error (@var{expr_1}, ..., @var{expr_n})
+@deffnx {Vari√°vel de sistema} error
 Avalia e imprime @var{expr_1}, ..., @var{expr_n},
-e ent„o causa um retorno de erro para o nÌvel mais alto do Maxima
-ou para o mais prÛximo contendo @code{errcatch}.
+e ent√£o causa um retorno de erro para o n√≠vel mais alto do Maxima
+ou para o mais pr√≥ximo contendo @code{errcatch}.
 
-A vari·vel @code{error} È escolhida para uma lista descrevendo o erro.
-O primeiro elemento de @code{error} È uma sequÍncia de caracteres de formato,
-que junta todas as sequÍncias de caracteres entre os argumentos @var{expr_1}, ..., @var{expr_n},
-e os elementos restantes s„o os valores de quaisquer argumentos que n„o s„o sequÍncias de caracteres.
+A vari√°vel @code{error} √© escolhida para uma lista descrevendo o erro.
+O primeiro elemento de @code{error} √© uma sequ√™ncia de caracteres de formato,
+que junta todas as sequ√™ncias de caracteres entre os argumentos @var{expr_1}, ..., @var{expr_n},
+e os elementos restantes s√£o os valores de quaisquer argumentos que n√£o s√£o sequ√™ncias de caracteres.
 
 @code{errormsg()} formata e imprime @code{error}.
 Isso efectivamente reimprime a mais recente mensagem de erro.
 
 @end deffn
 
-@deffn {FunÁ„o} errormsg ()
+@deffn {Fun√ß√£o} errormsg ()
 Reimprime a mais recente mensagem de erro.
-A vari·vel @code{error} recebe a mensagem,
+A vari√°vel @code{error} recebe a mensagem,
 e @code{errormsg} formata e imprime essa mensagem.
 
 @end deffn
@@ -324,15 +324,15 @@ e @code{errormsg} formata e imprime essa mensagem.
 @c REPHRASE
 @c AT LEAST SHOULD LIST VARIANTS HERE
 @deffn {Operador especial} for
-Usado em iteraÁıes.  Veja @code{do} para uma descriÁ„o das
-facilidades de iteraÁ„o do Maxima.
+Usado em itera√ß√µes.  Veja @code{do} para uma descri√ß√£o das
+facilidades de itera√ß√£o do Maxima.
 
 @end deffn
 
-@deffn {FunÁ„o} go (@var{tag})
-È usada dentro de um @code{block} para transferir o controle para a declaraÁ„o
+@deffn {Fun√ß√£o} go (@var{tag})
+√© usada dentro de um @code{block} para transferir o controle para a declara√ß√£o
 do bloco que for identificada com o argumento para @code{go}.  Para identificar uma
-declaraÁ„o, coloque antes dessa declaraÁ„o um argumento at@^omico como outra declaraÁ„o no
+declara√ß√£o, coloque antes dessa declara√ß√£o um argumento at@^omico como outra declara√ß√£o no
 @code{block}.  Por exemplo:
 
 @example
@@ -340,83 +340,83 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 @end example
 
 O argumento para @code{go} deve ser o nome de um identificardor aparecendo no mesmo
-@code{block}.  N„o se pode usar @code{go} para transferir para um identificador em um outro @code{block} que n„o seja
-o prÛprio contendo o @code{go}.
+@code{block}.  N√£o se pode usar @code{go} para transferir para um identificador em um outro @code{block} que n√£o seja
+o pr√≥prio contendo o @code{go}.
 
 @end deffn
 
 @c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
 @c THIS ITEM IS IMPORTANT
 @deffn {Operador especial} if
-Representa avaliaÁ„o condicional. V·rias formas de expressıes @code{if} s„o reconhecidas.
+Representa avalia√ß√£o condicional. V√°rias formas de express√µes @code{if} s√£o reconhecidas.
 @code{if @var{cond_1} then @var{expr_1} else @var{expr_0}}
 avalia para @var{expr_1} se @var{cond_1} avaliar para @code{true},
-de outra forma a express„o avalia para @code{expr_0}.
+de outra forma a express√£o avalia para @code{expr_0}.
 
 @code{if @var{cond_1} then @var{expr_1} elseif @var{cond_2} then @var{expr_2} elseif ... else @var{expr_0}}
-avalia para @var{expr_k} se @var{cond_k} for @code{true} e todas as condiÁıes precedentes forem @code{false}.
-Se nenhuma das condiÁıes forem @code{true}, a express„o avalia para @code{expr_0}.
+avalia para @var{expr_k} se @var{cond_k} for @code{true} e todas as condi√ß√µes precedentes forem @code{false}.
+Se nenhuma das condi√ß√µes forem @code{true}, a express√£o avalia para @code{expr_0}.
 
-O comportamento @code{else false} È assumido se @code{else} for omitido.
-Isso È, @code{if @var{cond_1} then @var{expr_1}} È equivalente a
+O comportamento @code{else false} √© assumido se @code{else} for omitido.
+Isso √©, @code{if @var{cond_1} then @var{expr_1}} √© equivalente a
 @code{if @var{cond_1} then @var{expr_1} else false},
 e @code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n}}
-È equivalente a
+√© equivalente a
 @code{if @var{cond_1} then @var{expr_1} elseif ... elseif @var{cond_n} then @var{expr_n} else false}.
 
-As alternativas @var{expr_0}, ..., @var{expr_n} podem ser quaisquer expressıes do Maxima,
-incluÌndo expressıes @code{if} aninhadas ( if dentro de if).
-As alternativas n„o s„o nem simplificadas nem avaliadas a menos que a correspondente condiÁ„o seja @code{true}.
+As alternativas @var{expr_0}, ..., @var{expr_n} podem ser quaisquer express√µes do Maxima,
+inclu√≠ndo express√µes @code{if} aninhadas ( if dentro de if).
+As alternativas n√£o s√£o nem simplificadas nem avaliadas a menos que a correspondente condi√ß√£o seja @code{true}.
 
-As condiÁıes @var{cond_1}, ..., @var{cond_n} s„o expressıes tais que @code{is(@var{cond_k})} avaliem
+As condi√ß√µes @var{cond_1}, ..., @var{cond_n} s√£o express√µes tais que @code{is(@var{cond_k})} avaliem
 para @code{true} ou para @code{false};
-de outra forma È um erro.
-Entre outros elementos, condiÁıes podem compreender operadores lÛgicos e relacionais como segue.
+de outra forma √© um erro.
+Entre outros elementos, condi√ß√µes podem compreender operadores l√≥gicos e relacionais como segue.
 
 @c - SEEMS LIKE THIS TABLE WANTS TO BE IN A DISCUSSION OF PREDICATE FUNCTIONS; PRESENT LOCATION IS OK I GUESS
 @c - REFORMAT THIS TABLE USING TEXINFO MARKUP (MAYBE)
 @example
-OperaÁ„o             SÌmbolo      Tipo
+Opera√ß√£o             S√≠mbolo      Tipo
  
 menor que            <           infixo relacional
 menor que            <=
   ou igual a                     infixo relacional
 igualdade            =
-  (sint·tica)                    infixo relacional
-negaÁ„o de =         #           infixo relacional
-igualdade (valor)    equal       funÁ„o relacional
-negaÁ„o de           notequal
-  igualdade                      funÁ„o relacional
+  (sint√°tica)                    infixo relacional
+nega√ß√£o de =         #           infixo relacional
+igualdade (valor)    equal       fun√ß√£o relacional
+nega√ß√£o de           notequal
+  igualdade                      fun√ß√£o relacional
 maior que            >=
   ou igual a                     infixo relacional
 maior que            >           infixo relacional
-e                    and         infixo lÛgico
-ou                   or          infixo lÛgico
-n„o                  not         prefixo lÛgico
+e                    and         infixo l√≥gico
+ou                   or          infixo l√≥gico
+n√£o                  not         prefixo l√≥gico
 @end example
 
 @end deffn
 
 @c NEEDS CLARIFICATION
 @c THIS ITEM IS IMPORTANT
-@deffn {FunÁ„o} map (@var{f}, @var{expr_1}, ..., @var{expr_n})
-Retorna uma express„o cujo operador principal
-È o mesmo que o das expressıes
-@var{expr_1}, ..., @var{expr_n} mas cujas subpartes s„o os resultados da
-aplicaÁ„o de @var{f} nas correspondentes subpartes das expressıes.  @var{f} È ainda
-o nome de uma funÁ„o de @math{n} argumentos
-ou È uma forma @code{lambda} de @math{n} argumentos.
+@deffn {Fun√ß√£o} map (@var{f}, @var{expr_1}, ..., @var{expr_n})
+Retorna uma express√£o cujo operador principal
+√© o mesmo que o das express√µes
+@var{expr_1}, ..., @var{expr_n} mas cujas subpartes s√£o os resultados da
+aplica√ß√£o de @var{f} nas correspondentes subpartes das express√µes.  @var{f} √© ainda
+o nome de uma fun√ß√£o de @math{n} argumentos
+ou √© uma forma @code{lambda} de @math{n} argumentos.
 
-@code{maperror} - se @code{false} far· com que todas as funÁıes mapeadas
-(1) parem quando elas terminarem retornando a menor expi se n„o forem todas as
+@code{maperror} - se @code{false} far√° com que todas as fun√ß√µes mapeadas
+(1) parem quando elas terminarem retornando a menor expi se n√£o forem todas as
 expi do mesmo comprimento e (2) aplique fn a [exp1, exp2,...]
-se expi n„o forem todas do mesmo tipo de objecto.  Se @code{maperror} for @code{true}
-ent„o uma mensagem de erro ser· dada nas duas inst‚ncias acima.
+se expi n√£o forem todas do mesmo tipo de objecto.  Se @code{maperror} for @code{true}
+ent√£o uma mensagem de erro ser√° dada nas duas inst√¢ncias acima.
 
-Um dos usos dessa funÁ„o È para mapear (@code{map}) uma funÁ„o (e.g. @code{partfrac})
-sobre cada termo de uma express„o muito larga onde isso comumente n„o poderia
-ser possÌvel usar a funÁ„o sobre a express„o inteira devido a uma
-exaust„o de espaÁo da lista de armazenamento no decorrer da computaÁ„o.
+Um dos usos dessa fun√ß√£o √© para mapear (@code{map}) uma fun√ß√£o (e.g. @code{partfrac})
+sobre cada termo de uma express√£o muito larga onde isso comumente n√£o poderia
+ser poss√≠vel usar a fun√ß√£o sobre a express√£o inteira devido a uma
+exaust√£o de espa√ßo da lista de armazenamento no decorrer da computa√ß√£o.
 
 @c IN THESE EXAMPLES, SPELL OUT WHAT IS THE MAIN OPERATOR 
 @c AND SHOW HOW THE RESULT FOLLOWS FROM THE DESCRIPTION STATED IN THE FIRST PARAGRAPH
@@ -439,74 +439,74 @@ exaust„o de espaÁo da lista de armazenamento no decorrer da computaÁ„o.
 @end example
 @end deffn
 
-@deffn {FunÁ„o} mapatom (@var{expr})
+@deffn {Fun√ß√£o} mapatom (@var{expr})
 Retorna @code{true} se e somente se @var{expr} for tratada pelas rotinas de
-mapeamento como um ·tomo.  "Mapatoms" s„o ·tomos, n˙meros
-(incluÌndo n˙meros racioanais), e vari·veis subscritas.
+mapeamento como um √°tomo.  "Mapatoms" s√£o √°tomos, n√∫meros
+(inclu√≠ndo n√∫meros racioanais), e vari√°veis subscritas.
 @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION OF ATOMS ??
 
 @end deffn
 
 @c NEEDS CLARIFICATION
-@defvr {Vari·vel de opÁ„o} maperror
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} maperror
+Valor por omiss√£o: @code{true}
 
-Quando @code{maperror} È @code{false}, faz com que todas as funÁıes mapeadas, por exemplo
+Quando @code{maperror} √© @code{false}, faz com que todas as fun√ß√µes mapeadas, por exemplo
 
 @example
 map (f, expr_1, expr_2, ...))
 @end example
 
 (1) parem quando elas terminarem
-retornando a menor expi se n„o forem todas as expi do mesmo
-comprimento e (2) aplique @code{f} a @code{[expr_1, expr_2, ...]} se @code{expr_i} n„o forem todas
+retornando a menor expi se n√£o forem todas as expi do mesmo
+comprimento e (2) aplique @code{f} a @code{[expr_1, expr_2, ...]} se @code{expr_i} n√£o forem todas
 do mesmo tipo de objecto.
 
-Se @code{maperror} for @code{true} ent„o uma ,mensagem de erro
-È mostrada nas duas inst‚ncias acima.
+Se @code{maperror} for @code{true} ent√£o uma ,mensagem de erro
+√© mostrada nas duas inst√¢ncias acima.
 
 @end defvr
 
 @c NEEDS CLARIFICATION
-@deffn {FunÁ„o} maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
-Retorna uma lista de aplicaÁıes de @var{f}
-em todas as partes das expressıes @var{expr_1}, ..., @var{expr_n}.
-@var{f} È o nome de uma funÁ„o, ou uma express„o lambda.
+@deffn {Fun√ß√£o} maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
+Retorna uma lista de aplica√ß√µes de @var{f}
+em todas as partes das express√µes @var{expr_1}, ..., @var{expr_n}.
+@var{f} √© o nome de uma fun√ß√£o, ou uma express√£o lambda.
 
 @code{maplist} difere de @code{map (@var{f}, @var{expr_1}, ..., @var{expr_n})}
-que retorna uma express„o com o mesmo operador principal que @var{expr_i} tem
-(excepto para simplificaÁıes  e o caso onde @code{map} faz um @code{apply}).
+que retorna uma express√£o com o mesmo operador principal que @var{expr_i} tem
+(excepto para simplifica√ß√µes  e o caso onde @code{map} faz um @code{apply}).
 
 @end deffn
 
 @c NEEDS CLARIFICATION
-@defvr {Vari·vel de opÁ„o} prederror
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} prederror
+Valor por omiss√£o: @code{true}
 
-Quando @code{prederror} for @code{true}, uma mensagem de erro È mostrada
-sempre que o predicado de uma declaraÁ„o @code{if} ou uma funÁ„o @code{is} falha em
+Quando @code{prederror} for @code{true}, uma mensagem de erro √© mostrada
+sempre que o predicado de uma declara√ß√£o @code{if} ou uma fun√ß√£o @code{is} falha em
 avaliar ou para @code{true} ou para  @code{false}.
 
-Se @code{false}, @code{unknown} È retornado
-no lugar nesse caso.  O modo @code{prederror: false} n„o È suportado no
-cÛdigo traduzido;
-todavia, @code{maybe} È suportado no cÛdigo traduzido.
+Se @code{false}, @code{unknown} √© retornado
+no lugar nesse caso.  O modo @code{prederror: false} n√£o √© suportado no
+c√≥digo traduzido;
+todavia, @code{maybe} √© suportado no c√≥digo traduzido.
 
-Veja tambÈm @code{is} e @code{maybe}.
+Veja tamb√©m @code{is} e @code{maybe}.
 
 @end defvr
 
-@deffn {FunÁ„o} return (valor)
+@deffn {Fun√ß√£o} return (valor)
 Pode ser usada para sair explicitamente de um bloco, levando
-seu argumento.  Veja @code{block} para mais informaÁ„o.
+seu argumento.  Veja @code{block} para mais informa√ß√£o.
 
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {FunÁ„o} scanmap (@var{f}, @var{expr})
-@deffnx {FunÁ„o} scanmap (@var{f}, @var{expr}, bottomup)
+@deffn {Fun√ß√£o} scanmap (@var{f}, @var{expr})
+@deffnx {Fun√ß√£o} scanmap (@var{f}, @var{expr}, bottomup)
 Recursivamente aplica @var{f} a @var{expr}, de cima
-para baixo.  Isso È muito ˙til quando uma factoraÁ„o completa È
+para baixo.  Isso √© muito √∫til quando uma factora√ß√£o completa √©
 desejada, por exemplo:
 
 @example
@@ -516,10 +516,10 @@ desejada, por exemplo:
 (%o2)                         (a + 1)  y + x
 @end example
 
-Note o caminho atravÈs do qual @code{scanmap} aplica a dada funÁ„o @code{factor} para as
-subexpressıes constituintes de @var{expr}; se outra forma de @var{expr} È apresentada
-para @code{scanmap} ent„o o resultado pode ser diferente.  Dessa forma, @code{%o2} n„o È
-recuperada quando @code{scanmap} È aplicada para a forma expandida de exp:
+Note o caminho atrav√©s do qual @code{scanmap} aplica a dada fun√ß√£o @code{factor} para as
+subexpress√µes constituintes de @var{expr}; se outra forma de @var{expr} √© apresentada
+para @code{scanmap} ent√£o o resultado pode ser diferente.  Dessa forma, @code{%o2} n√£o √©
+recuperada quando @code{scanmap} √© aplicada para a forma expandida de exp:
 
 @example
 (%i3) scanmap(factor,expand(exp));
@@ -527,8 +527,8 @@ recuperada quando @code{scanmap} È aplicada para a forma expandida de exp:
 (%o3)                      a  y + 2 a y + y + x
 @end example
 
-Aqui est· um outro exemplo do caminho no qual @code{scanmap} aplica
-recursivamente uma funÁ„o dada para todas as subexpressıes, incluindo expoentes:
+Aqui est√° um outro exemplo do caminho no qual @code{scanmap} aplica
+recursivamente uma fun√ß√£o dada para todas as subexpress√µes, incluindo expoentes:
 
 @example
 (%i4) expr : u*v^(a*x+b) + c$
@@ -548,14 +548,14 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
      f(f(f(a)*f(x))+f(b))
 @end example
 
-Neste caso, obtÈm-se a mesma resposta pelos dois mÈtodos.
+Neste caso, obt√©m-se a mesma resposta pelos dois m√©todos.
 
 @end deffn
 
-@deffn {FunÁ„o} throw (@var{expr})
+@deffn {Fun√ß√£o} throw (@var{expr})
 Avalia @var{expr} e descarta o valor retornado para o mais recente
-@code{catch}.  @code{throw} È usada com @code{catch} como um mecanismo
-de retorno n„o local.
+@code{catch}.  @code{throw} √© usada com @code{catch} como um mecanismo
+de retorno n√£o local.
 
 @end deffn
 
@@ -566,37 +566,37 @@ Veja @code{do}.
 
 @end deffn
 
-@deffn {FunÁ„o} outermap (@var{f}, @var{a_1}, ..., @var{a_n})
-Aplica a funÁ„o @var{f} para cada um dos elementos do produto externo
+@deffn {Fun√ß√£o} outermap (@var{f}, @var{a_1}, ..., @var{a_n})
+Aplica a fun√ß√£o @var{f} para cada um dos elementos do produto externo
 @var{a_1} vezes @var{a_2} ... vezes @var{a_n}.
 
-@var{f} È o nome de uma funÁ„o de @math{n} argumentos
-ou uma express„o lambda de @math{n} argumentos.
-Cada argumento @var{a_k} pode ser uma lista simples ou lista aninhada ( lista contendo listas como elementos ), ou uma matrz, ou qualquer outro tip de express„o.
+@var{f} √© o nome de uma fun√ß√£o de @math{n} argumentos
+ou uma express√£o lambda de @math{n} argumentos.
+Cada argumento @var{a_k} pode ser uma lista simples ou lista aninhada ( lista contendo listas como elementos ), ou uma matrz, ou qualquer outro tip de express√£o.
 
-O valor de retorno de @code{outermap} È uma estrutura aninhada.
+O valor de retorno de @code{outermap} √© uma estrutura aninhada.
 Tomemos @var{x} como sendo o valor de retorno.
-Ent„o @var{x} tem a mesma estrutura da primeira lista, lista aninhada, ou argumento matriz,
+Ent√£o @var{x} tem a mesma estrutura da primeira lista, lista aninhada, ou argumento matriz,
 @code{@var{x}[i_1]...[i_m]} tem a mesma estrutura que a segunda lista, lista aninhada, ou argumento matriz,
 @code{@var{x}[i_1]...[i_m][j_1]...[j_n]} tem a mesma estrutura que a terceira lista, lista aninhada, ou argumento matriz,
 e assim por diante,
-onde @var{m}, @var{n}, ... s„o os n˙meros dos Ìndices requeridos para acessar os
+onde @var{m}, @var{n}, ... s√£o os n√∫meros dos √≠ndices requeridos para acessar os
 elementos de cada argumento (um para uma lista, dois para uma matriz, um ou mais para uma lista aninhada).
-Argumentos que n„o forem listas ou matrizes n„o afectam a estrutura do valor de retorno.
+Argumentos que n√£o forem listas ou matrizes n√£o afectam a estrutura do valor de retorno.
 
-Note que o efeito de @code{outermap} È diferente daquele de aplicar @var{f}
+Note que o efeito de @code{outermap} √© diferente daquele de aplicar @var{f}
 a cada um dos elementos do produto externo retornado por @code{cartesian_product}.
 @code{outermap} preserva a estrutura dos argumentos no valor de retorno,
-enquanto @code{cartesian_product} n„o reserva essa mesma estrutura.
+enquanto @code{cartesian_product} n√£o reserva essa mesma estrutura.
 
 @code{outermap} avalia seus argumentos.
 
-Veja tambÈm @code{map}, @code{maplist}, e @code{apply}.
+Veja tamb√©m @code{map}, @code{maplist}, e @code{apply}.
 @c CROSS REF OTHER FUNCTIONS HERE ??
 
 Exemplos:
 Exemplos elementares de @code{outermap}.
-Para mostrar a a combinaÁ„o de argumentos mais claramente, @code{F} est· indefinida ‡ esquerda.
+Para mostrar a a combina√ß√£o de argumentos mais claramente, @code{F} est√° indefinida √† esquerda.
 
 @c ===beg===
 @c outermap (F, [a, b, c], [1, 2, 3]);
@@ -633,11 +633,11 @@ Para mostrar a a combinaÁ„o de argumentos mais claramente, @code{F} est· indefin
                                            [c + 1, c + 2, c + 3]]
 @end example
 
-Uma explanaÁ„o final do valor de retorno de @code{outermap}.
-Os argumentos primeiro, segundo, e terceiro s„o matriz, lista, e matriz, respectivamente.
-O valor de retorno È uma matriz.
-Cada elementos daquela matriz È uma lista,
-e cada elemento de cada lista È uma matriz.
+Uma explana√ß√£o final do valor de retorno de @code{outermap}.
+Os argumentos primeiro, segundo, e terceiro s√£o matriz, lista, e matriz, respectivamente.
+O valor de retorno √© uma matriz.
+Cada elementos daquela matriz √© uma lista,
+e cada elemento de cada lista √© uma matriz.
 
 @c ===beg===
 @c arg_1 :  matrix ([a, b], [c, d]);

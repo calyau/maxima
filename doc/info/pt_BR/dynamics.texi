@@ -205,8 +205,8 @@ Representa@value{cedilha}@~{a}o gr@'{a}fica e diagrama em escada para a seq@"{u}
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics1,8cm}
-@image{../figures/dynamics2,8cm}
+@image{@value{figuresfolder}/dynamics1,8cm}
+@image{@value{figuresfolder}/dynamics2,8cm}
 @end ifnotinfo
 
 Se seu sistema for lento, voc@^{e} dever@'{a} reduzir o n@'{u}mero de itera@value{cedilha}@~{o}es nos
@@ -229,7 +229,7 @@ $$y_{n+1} = x + y_n^2$$
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics3,8cm}
+@image{@value{figuresfolder}/dynamics3,8cm}
 @end ifnotinfo
 
 Para ampliar a regi@~{a}o em torno da bifurca@value{cedilha}@~{a}o menor perto de x @code{=} -1.25 use:
@@ -239,7 +239,7 @@ Para ampliar a regi@~{a}o em torno da bifurca@value{cedilha}@~{a}o menor perto d
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics4,8cm}
+@image{@value{figuresfolder}/dynamics4,8cm}
 @end ifnotinfo
 
 Evolu@value{cedilha}@~{a}o de um sistemma bidimensional que leva a um fractal:
@@ -253,7 +253,7 @@ Evolu@value{cedilha}@~{a}o de um sistemma bidimensional que leva a um fractal:
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics5,8cm}
+@image{@value{figuresfolder}/dynamics5,8cm}
 @end ifnotinfo
 
 E uma amplia@value{cedilha}@~{a}o de uma pequena regial naquele fractal:
@@ -264,7 +264,7 @@ E uma amplia@value{cedilha}@~{a}o de uma pequena regial naquele fractal:
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics6,8cm}
+@image{@value{figuresfolder}/dynamics6,8cm}
 @end ifnotinfo
 
 Um gr@'{a}fico do tri@^{a}ngulo de Sierpinsky, obtido com o jogo do caos:
@@ -275,7 +275,7 @@ Um gr@'{a}fico do tri@^{a}ngulo de Sierpinsky, obtido com o jogo do caos:
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics7,8cm}
+@image{@value{figuresfolder}/dynamics7,8cm}
 @end ifnotinfo
 
 A samambaia de Barnsley, obtida com um Sistema de Fun@value{cedilha}@~{o}es Iteradas:
@@ -303,7 +303,7 @@ A samambaia de Barnsley, obtida com um Sistema de Fun@value{cedilha}@~{o}es Iter
 @end example
 
 @ifnotinfo
-@image{../figures/dynamics8,8cm}
+@image{@value{figuresfolder}/dynamics8,8cm}
 @end ifnotinfo
 
 Para resolver numericamente a equa@value{cedilha}@~{a}o diferencial

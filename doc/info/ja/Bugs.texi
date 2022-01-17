@@ -78,7 +78,8 @@ Maximaのテストスイートを走らせます。
 "rtest14" は失敗することが既知の２つのテスト57と63を含みます。
 
 @opencatbox
-@category{Debugging} @category{Global variables}
+@category{Debugging}
+@category{Global variables}
 @closecatbox
 @end defvr
 

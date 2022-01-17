@@ -31,7 +31,9 @@
 コメント、バグ、提案は、作者@var{'mario AT edu DOT xunta DOT es'}にコンタクトしてください。
 
 @opencatbox
-@category{Statistical inference} @category{Share packages} @category{Package stats}
+@category{Statistical inference}
+@category{Share packages}
+@category{Package stats}
 @closecatbox
 
 @node Functions and Variables for inference_result, Functions and Variables for stats, Introduction to stats, Top
@@ -252,7 +254,8 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 結果は記号と有理フォーマットで与えられます。
 
 @opencatbox
-@category{Package stats} @category{Numerical evaluation}
+@category{Package stats}
+@category{Numerical evaluation}
 @closecatbox
 
 @end defvr
@@ -1658,7 +1661,8 @@ Only items
 @end example
 
 @opencatbox
-@category{Package stats} @category{Statistical estimation}
+@category{Package stats}
+@category{Statistical estimation}
 @closecatbox
 
 @end deffn

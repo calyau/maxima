@@ -1,29 +1,29 @@
 @c /Series.texi/1.16/Sun Jan  7 05:49:50 2007/-ko/
 @menu
-* IntroduÁ„o a SÈries::      
-* DefiniÁıes para SÈries::      
+* Introdu√ß√£o a S√©ries::      
+* Defini√ß√µes para S√©ries::      
 @end menu
 
-@node IntroduÁ„o a SÈries, DefiniÁıes para SÈries, SÈries, SÈries
-@section IntroduÁ„o a SÈries
-Maxima contÈm funÁıes @code{taylor} e @code{powerseries} (sÈries de potÍncia) para encontrar as
-sÈries de funÁıes diferenci·veis.   Maxima tambÈm tem ferramentas  tais como @code{nusum}
-capazes de encontrar a forma fechada de algumas sÈries.   OperaÁıes tais como adiÁ„o e multiplicaÁ„o travalham da forma usual sobre sÈries.  Essa secÁ„o apresenta as vari·veis globais que controlam a
-expans„o.
+@node Introdu√ß√£o a S√©ries, Defini√ß√µes para S√©ries, S√©ries, S√©ries
+@section Introdu√ß√£o a S√©ries
+Maxima cont√©m fun√ß√µes @code{taylor} e @code{powerseries} (s√©ries de pot√™ncia) para encontrar as
+s√©ries de fun√ß√µes diferenci√°veis.   Maxima tamb√©m tem ferramentas  tais como @code{nusum}
+capazes de encontrar a forma fechada de algumas s√©ries.   Opera√ß√µes tais como adi√ß√£o e multiplica√ß√£o travalham da forma usual sobre s√©ries.  Essa sec√ß√£o apresenta as vari√°veis globais que controlam a
+expans√£o.
 @c end concepts Series
-@node DefiniÁıes para SÈries,  , IntroduÁ„o a SÈries, SÈries
-@section DefiniÁıes para SÈries
+@node Defini√ß√µes para S√©ries,  , Introdu√ß√£o a S√©ries, S√©ries
+@section Defini√ß√µes para S√©ries
 
-@defvr {Vari·vel de opÁ„o} cauchysum
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} cauchysum
+Valor por omiss√£o: @code{false}
 
 @c REPHRASE
-Quando multiplicando adiÁıes jutas com @code{inf} como seus limites superiores,
+Quando multiplicando adi√ß√µes jutas com @code{inf} como seus limites superiores,
 se @code{sumexpand} for @code{true} e @code{cauchysum} for @code{true}
-ent„o o produto de Cauchy ser· usado em lugar do produto
+ent√£o o produto de Cauchy ser√° usado em lugar do produto
 usual.
-No produto de Cauchy o Ìndice do somatÛrio interno È uma
-funÁ„o do Ìndice do externo em lugar de variar
+No produto de Cauchy o √≠ndice do somat√≥rio interno √© uma
+fun√ß√£o do √≠ndice do externo em lugar de variar
 independentemente.
 
 Exemplo:
@@ -53,16 +53,16 @@ Exemplo:
 
 @end defvr
 
-@deffn {FunÁ„o} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
-Para cada funÁ„o @var{f_i} de uma vari·vel @var{x_i}, 
-@code{deftaylor} define @var{expr_i} como a sÈries de Taylor sobre zero.
-@var{expr_i} È tipicamente um polinÛmio em @var{x_i} ou um somatÛrio;
-expressıes mais gerais s„o aceitas por @code{deftaylor} sem reclamaÁıes.
+@deffn {Fun√ß√£o} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
+Para cada fun√ß√£o @var{f_i} de uma vari√°vel @var{x_i}, 
+@code{deftaylor} define @var{expr_i} como a s√©ries de Taylor sobre zero.
+@var{expr_i} √© tipicamente um polin√≥mio em @var{x_i} ou um somat√≥rio;
+express√µes mais gerais s√£o aceitas por @code{deftaylor} sem reclama√ß√µes.
 
 @code{powerseries (@var{f_i}(@var{x_i}), @var{x_i}, 0)}
-retorna as sÈries definidas por @code{deftaylor}.
+retorna as s√©ries definidas por @code{deftaylor}.
 
-@code{deftaylor} retorna uma lista das funÁıes
+@code{deftaylor} retorna uma lista das fun√ß√µes
 @var{f_1}, ..., @var{f_n}.
 @code{deftaylor} avalia seus argumentos.
 
@@ -88,27 +88,27 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} maxtayorder
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} maxtayorder
+Valor por omiss√£o: @code{true}
 
 @c REPHRASE
-Quando @code{maxtayorder} for @code{true}, durante a manipulaÁ„o
-algÈbrica de sÈries (truncadas) de Taylor, @code{taylor} tenta reter
+Quando @code{maxtayorder} for @code{true}, durante a manipula√ß√£o
+alg√©brica de s√©ries (truncadas) de Taylor, @code{taylor} tenta reter
 tantos termos quantos forem conhecidos serem correctos.
 
 @end defvr
 
-@deffn {FunÁ„o} niceindices (@var{expr})
-Renomeia os Ìndices de adiÁıes e produtos em @var{expr}.
-@code{niceindices} tenta renomear cada Ìndice para o valor de @code{niceindicespref[1]},
-a menos que o nome apareÁa nas parcelas do somatÛrio ou produtÛrio,
+@deffn {Fun√ß√£o} niceindices (@var{expr})
+Renomeia os √≠ndices de adi√ß√µes e produtos em @var{expr}.
+@code{niceindices} tenta renomear cada √≠ndice para o valor de @code{niceindicespref[1]},
+a menos que o nome apare√ßa nas parcelas do somat√≥rio ou produt√≥rio,
 nesses casos @code{niceindices} tenta
-os elementos seguintes de @code{niceindicespref} por sua vez, atÈ que uma var·vel n„o usada unused variable seja encontrada.
+os elementos seguintes de @code{niceindicespref} por sua vez, at√© que uma var√°vel n√£o usada unused variable seja encontrada.
 Se a lista inteira for exaurida,
-Ìndices adicionais s„o constrÌdos atravÈs da anexaao de inteiros ao valor de
+√≠ndices adicionais s√£o constr√≠dos atrav√©s da anexaao de inteiros ao valor de
 @code{niceindicespref[1]}, e.g., @code{i0}, @code{i1}, @code{i2}, ....
 
-@code{niceindices} retorna uma express„o.
+@code{niceindices} retorna uma express√£o.
 @code{niceindices} avalia seu argumento.
 
 Exemplo:
@@ -136,14 +136,14 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} niceindicespref
-Valor por omiss„o: @code{[i, j, k, l, m, n]}
+@defvr {Vari√°vel de op√ß√£o} niceindicespref
+Valor por omiss√£o: @code{[i, j, k, l, m, n]}
 
-@code{niceindicespref} È a lista da qual @code{niceindices}
-obtÈm os nomes dos Ìndices de adiÁıes e produtos products.
+@code{niceindicespref} √© a lista da qual @code{niceindices}
+obt√©m os nomes dos √≠ndices de adi√ß√µes e produtos products.
 
-Os elementos de @code{niceindicespref} s„o tipicamente nomes de vari·veis,
-embora que n„o seja imposto por @code{niceindices}.
+Os elementos de @code{niceindicespref} s√£o tipicamente nomes de vari√°veis,
+embora que n√£o seja imposto por @code{niceindices}.
 
 Exemplo:
 
@@ -169,24 +169,24 @@ Exemplo:
 
 @end defvr
 
-@deffn {FunÁ„o} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
-Realiza o somatÛrio hipergeomÈtrico indefinido de @var{expr} com
-relaÁ„o a @var{x} usando um procedimento de decis„o devido a R.W. Gosper.
-@var{expr} e o resultado deve ser express·vel como produtos de expoentes inteiros,
-factoriais, binomios, e funÁıes recionais.
+@deffn {Fun√ß√£o} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
+Realiza o somat√≥rio hipergeom√©trico indefinido de @var{expr} com
+rela√ß√£o a @var{x} usando um procedimento de decis√£o devido a R.W. Gosper.
+@var{expr} e o resultado deve ser express√°vel como produtos de expoentes inteiros,
+factoriais, binomios, e fun√ß√µes recionais.
 
 @c UMM, DO WE REALLY NEED TO DEFINE "DEFINITE" AND "INDEFINITE" SUMMATION HERE ??
 @c (CAN'T WE MAKE THE POINT WITHOUT DRAGGING IN SOME NONSTANDARD TERMINOLOGY ??)
 Os termos "definido"
-and "e somatÛrio indefinido" s„o usados analogamente a "definida" and
-"integraÁ„o indefinida".
-Adicionar indefinidamente significa dar um resultado simÛlico
-para a adiÁ„o sobre intervalos de comprimentos de vari·veis, n„o apenas e.g. 0 a
-infinito.  Dessa forma, uma vez que n„o existe fÛrmula para a adiÁ„o parcial geral de
-sÈries binomiais, @code{nusum} n„o pode fazer isso.
+and "e somat√≥rio indefinido" s√£o usados analogamente a "definida" and
+"integra√ß√£o indefinida".
+Adicionar indefinidamente significa dar um resultado sim√≥lico
+para a adi√ß√£o sobre intervalos de comprimentos de vari√°veis, n√£o apenas e.g. 0 a
+infinito.  Dessa forma, uma vez que n√£o existe f√≥rmula para a adi√ß√£o parcial geral de
+s√©ries binomiais, @code{nusum} n√£o pode fazer isso.
 
-@code{nusum} e @code{unsum} conhecem um porco sobre adiÁıes e subtraÁıes de produtos finitos.
-Veja tambÈm @code{unsum}.
+@code{nusum} e @code{unsum} conhecem um porco sobre adi√ß√µes e subtra√ß√µes de produtos finitos.
+Veja tamb√©m @code{unsum}.
 
 Exemplos:
 
@@ -226,25 +226,25 @@ Dependent equations eliminated:  (2 3)
 @end deffn
 
 @c THIS ITEM NEEDS SERIOUS WORK
-@deffn {FunÁ„o} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
+@deffn {Fun√ß√£o} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
 Retorna uma lista de
-todas as funÁıes racionais que possuem a dada expans„o da sÈries de Taylor
-onde a adiÁ„o dos graus do numerador e do denominador È
-menor que ou igual ao nÌvel de truncaÁ„o das sÈries de potÍncia, i.e.
-s„o "melhores" aproximaÁıes, e que adicionalmente satisfazem o grau
+todas as fun√ß√µes racionais que possuem a dada expans√£o da s√©ries de Taylor
+onde a adi√ß√£o dos graus do numerador e do denominador √©
+menor que ou igual ao n√≠vel de trunca√ß√£o das s√©ries de pot√™ncia, i.e.
+s√£o "melhores" aproxima√ß√µes, e que adicionalmente satisfazem o grau
 especificado associado.
 
-@var{taylor_series} È uma sÈries de Taylor de uma vari·vel.
+@var{taylor_series} √© uma s√©ries de Taylor de uma vari√°vel.
 @var{numer_deg_bound} e @var{denom_deg_bound}
-s„o inteiros positivos especificando o grau associado sobre
+s√£o inteiros positivos especificando o grau associado sobre
 o numerador e o denominador.
 
-@var{taylor_series} podem tambÈm ser sÈries de Laurent, e o grau
-associado pode ser @code{inf} que acarreta todas funÁıes racionais cujo grau
-total for menor que ou igual ao comprimento das sÈries de potÍncias a serem
-retornadas.  O grau total È definido como @code{@var{numer_deg_bound} + @var{denom_deg_bound}}.
-O comprimento de sÈries de potÍncia È definido como
-@code{"nÌvel de trncaÁ„o" + 1 - min(0, "ordem das sÈries")}.
+@var{taylor_series} podem tamb√©m ser s√©ries de Laurent, e o grau
+associado pode ser @code{inf} que acarreta todas fun√ß√µes racionais cujo grau
+total for menor que ou igual ao comprimento das s√©ries de pot√™ncias a serem
+retornadas.  O grau total √© definido como @code{@var{numer_deg_bound} + @var{denom_deg_bound}}.
+O comprimento de s√©ries de pot√™ncia √© definido como
+@code{"n√≠vel de trnca√ß√£o" + 1 - min(0, "ordem das s√©ries")}.
 
 @example
 (%i1) taylor (1 + x + x^2 + x^3, x, 0, 3);
@@ -272,10 +272,10 @@ O comprimento de sÈries de potÍncia È definido como
 (%o4)                          []
 @end example
 
-N„o existe funÁ„o racional de grau 4 numerador/denominador, com essa
-expans„o de sÈrie de potÍncia.  VocÍ obrigatoriamente em geral tem grau do numerador e
-grau do denominador adicionando para cima ao menor grau das sÈries de potÍncia,
-com o objectivo de ter disponÌvel coeficientes desconhecidos para resolver.
+N√£o existe fun√ß√£o racional de grau 4 numerador/denominador, com essa
+expans√£o de s√©rie de pot√™ncia.  Voc√™ obrigatoriamente em geral tem grau do numerador e
+grau do denominador adicionando para cima ao menor grau das s√©ries de pot√™ncia,
+com o objectivo de ter dispon√≠vel coeficientes desconhecidos para resolver.
 
 @example
 (%i5) pade (t, 5, 5);
@@ -294,25 +294,25 @@ com o objectivo de ter disponÌvel coeficientes desconhecidos para resolver.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} powerdisp
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} powerdisp
+Valor por omiss√£o: @code{false}
 
 Quando @code{powerdisp} for @code{true},
-uma adiÁ„o È mostrada com seus termos em ordem do crescimento do expoente.
-Dessa forma um polinÛmio È mostrado como sÈries de potÍncias truncadas,
-com o termo constante primeiro e o maior expoente por ˙ltimo.
+uma adi√ß√£o √© mostrada com seus termos em ordem do crescimento do expoente.
+Dessa forma um polin√≥mio √© mostrado como s√©ries de pot√™ncias truncadas,
+com o termo constante primeiro e o maior expoente por √∫ltimo.
 
-Por pad„o, termos de uma adiÁ„o s„o mostrados em ordem do expoente decrescente.
+Por pad√£o, termos de uma adi√ß√£o s√£o mostrados em ordem do expoente decrescente.
 
 @c NEED AN EXAMPLE HERE
 @end defvr
 
-@deffn {FunÁ„o} powerseries (@var{expr}, @var{x}, @var{a})
-Retorna a forma geral expans„o de sÈries de potÍncia para @var{expr}
-na vari·vel @var{x} sobre o ponto @var{a} (o qual pode ser @code{inf} para infinito).
+@deffn {Fun√ß√£o} powerseries (@var{expr}, @var{x}, @var{a})
+Retorna a forma geral expans√£o de s√©ries de pot√™ncia para @var{expr}
+na vari√°vel @var{x} sobre o ponto @var{a} (o qual pode ser @code{inf} para infinito).
 
 Se @code{powerseries} incapaz de expandir @var{expr},
-@code{taylor} pode dar os primeiros muitos termos de sÈries.
+@code{taylor} pode dar os primeiros muitos termos de s√©ries.
 
 Quando @code{verbose} for @code{true},
 @code{powerseries} mostra mensagens de progresso. 
@@ -348,31 +348,31 @@ in the first simplification we have returned:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} psexpand
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} psexpand
+Valor por omiss√£o: @code{false}
 
 Quando @code{psexpand} for @code{true},
-uma express„o funÁ„o racional extendida È mostrada completamente expandida.
+uma express√£o fun√ß√£o racional extendida √© mostrada completamente expandida.
 O comutador @code{ratexpand} tem o mesmo efeito.
 
 @c WE NEED TO BE EXPLICIT HERE
 Quando @code{psexpand} for @code{false},
-uma express„o de v·rias vari·veis È mostrada apenas como no pacote de funÁ„o racional.
+uma express√£o de v√°rias vari√°veis √© mostrada apenas como no pacote de fun√ß√£o racional.
 
 @c TERMS OF WHAT ??
 Quando @code{psexpand} for  @code{multi},
-ent„o termos com o mesmo grau total nas vari·veis s„o agrupados juntos.
+ent√£o termos com o mesmo grau total nas vari√°veis s√£o agrupados juntos.
 
 @end defvr
 
-@deffn {FunÁ„o} revert (@var{expr}, @var{x})
-@deffnx {FunÁ„o} revert2 (@var{expr}, @var{x}, @var{n})
-Essas funÁıes retornam a revers„o de @var{expr}, uma sÈrie de Taylor sobre zero na vari·vel @var{x}.
-@code{revert} retorna um polinÛmio de grau igual ao maior expoente em @var{expr}.
-@code{revert2} retorna um polinÛmio de grau @var{n},
+@deffn {Fun√ß√£o} revert (@var{expr}, @var{x})
+@deffnx {Fun√ß√£o} revert2 (@var{expr}, @var{x}, @var{n})
+Essas fun√ß√µes retornam a revers√£o de @var{expr}, uma s√©rie de Taylor sobre zero na vari√°vel @var{x}.
+@code{revert} retorna um polin√≥mio de grau igual ao maior expoente em @var{expr}.
+@code{revert2} retorna um polin√≥mio de grau @var{n},
 o qual pode ser maior que, igual a, ou menor que o grau de @var{expr}.
 
-@code{load ("revert")} chama essas funÁıes.
+@code{load ("revert")} chama essas fun√ß√µes.
 
 Exemplos:
 
@@ -409,55 +409,55 @@ Exemplos:
 
 @end deffn
 
-@deffn {FunÁ„o} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
-@deffnx {FunÁ„o} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
-@deffnx {FunÁ„o} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
-@deffnx {FunÁ„o} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
-@deffnx {FunÁ„o} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
-@code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expande a express„o @var{expr}
-em uma sÈrie truncada de Taylor ou de Laurent na vari·vel @var{x}
+@deffn {Fun√ß√£o} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
+@deffnx {Fun√ß√£o} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
+@deffnx {Fun√ß√£o} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
+@deffnx {Fun√ß√£o} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
+@deffnx {Fun√ß√£o} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
+@code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expande a express√£o @var{expr}
+em uma s√©rie truncada de Taylor ou de Laurent na vari√°vel @var{x}
 em torno do ponto @var{a},
-contendo termos atÈ @code{(@var{x} - @var{a})^@var{n}}.
+contendo termos at√© @code{(@var{x} - @var{a})^@var{n}}.
 
-Se @var{expr} È da forma @code{@var{f}(@var{x})/@var{g}(@var{x})}
-e @code{@var{g}(@var{x})} n„o possui de grau acima do grau @var{n}
-ent„o @code{taylor} tenta expandir @code{@var{g}(@var{x})} acima do gau @code{2 @var{n}}.
-Se existe ainda termos n„o zero, @code{taylor} dobra o
-grau de expans„o de @code{@var{g}(@var{x})}
-contanto que o grau da expans„o o grau da expans„o seja menor que ou igual a @code{@var{n} 2^taylordepth}.
+Se @var{expr} √© da forma @code{@var{f}(@var{x})/@var{g}(@var{x})}
+e @code{@var{g}(@var{x})} n√£o possui de grau acima do grau @var{n}
+ent√£o @code{taylor} tenta expandir @code{@var{g}(@var{x})} acima do gau @code{2 @var{n}}.
+Se existe ainda termos n√£o zero, @code{taylor} dobra o
+grau de expans√£o de @code{@var{g}(@var{x})}
+contanto que o grau da expans√£o o grau da expans√£o seja menor que ou igual a @code{@var{n} 2^taylordepth}.
 
 @code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})}
-retorna uma sÈrie de potÍncia truncada 
-de grau @var{n} em todas as vari·veis @var{x_1}, @var{x_2}, ...
+retorna uma s√©rie de pot√™ncia truncada 
+de grau @var{n} em todas as vari√°veis @var{x_1}, @var{x_2}, ...
 sobre o ponto @code{(@var{a}, @var{a}, ...)}.
 
 @code{taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)}
-retorna uma sÈrie de potÍncia truncada nas vari·veis @var{x_1}, @var{x_2}, ...
+retorna uma s√©rie de pot√™ncia truncada nas vari√°veis @var{x_1}, @var{x_2}, ...
 sobre o ponto @code{(@var{a_1}, @var{a_2}, ...)},
 truncada em @var{n_1}, @var{n_2}, ....
 
 @code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])}
-retorna uma sÈrie de potÍncia truncada nas vari·veis @var{x_1}, @var{x_2}, ...
+retorna uma s√©rie de pot√™ncia truncada nas vari√°veis @var{x_1}, @var{x_2}, ...
 sobre o ponto @code{(@var{a_1}, @var{a_2}, ...)},
 truncada em @var{n_1}, @var{n_2}, ....
 
 @code{taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])}
-retorna uma expans„o de @var{expr} em expoentes negativos de @code{@var{x} - @var{a}}.
-O termo de maior ordem È @code{(@var{x} - @var{a})^@var{-n}}.
+retorna uma expans√£o de @var{expr} em expoentes negativos de @code{@var{x} - @var{a}}.
+O termo de maior ordem √© @code{(@var{x} - @var{a})^@var{-n}}.
 
-Quando @code{maxtayorder} for @code{true}, ent„o durante maniplulaÁ„o
-algÈbrica da sÈries de Taylor (truncada), @code{taylor} tenta reter
+Quando @code{maxtayorder} for @code{true}, ent√£o durante maniplula√ß√£o
+alg√©brica da s√©ries de Taylor (truncada), @code{taylor} tenta reter
 tantos termos quantos forem conhecidos serem correctos.
 
 Quando @code{psexpand} for @code{true},
-uma express„o de funÁ„o racional extendida È mostrada completamente expandida.
+uma express√£o de fun√ß√£o racional extendida √© mostrada completamente expandida.
 O comutador @code{ratexpand} tem o mesmo efeito.
 Quando @code{psexpand} for @code{false},
-uma express„o de v·rias vari·veis È mostrada apenas como no pacote de funÁ„o racional.
+uma express√£o de v√°rias vari√°veis √© mostrada apenas como no pacote de fun√ß√£o racional.
 Quando @code{psexpand} for  @code{multi},
-ent„o os termos com o mesmo grau total nas vari·veis s„o agrupados juntos.
+ent√£o os termos com o mesmo grau total nas vari√°veis s√£o agrupados juntos.
 
-Veja tambÈm o comutador @code{taylor_logexpand} para controlar a expans„o.
+Veja tamb√©m o comutador @code{taylor_logexpand} para controlar a expans√£o.
 
 Exemplos:
 @c EXAMPLES ADAPTED FROM example (taylor)
@@ -588,23 +588,23 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} taylordepth
-Valor por omiss„o: 3
+@defvr {Vari√°vel de op√ß√£o} taylordepth
+Valor por omiss√£o: 3
 
 @c UM, THE CONTEXT FOR THIS REMARK NEEDS TO BE ESTABLISHED
-Se existem ainda termos n„o zero, @code{taylor} dobra o
-grau da expans„o de @code{@var{g}(@var{x})}
-contanto que o grau da expans„o seja menor que ou igual a @code{@var{n} 2^taylordepth}.
+Se existem ainda termos n√£o zero, @code{taylor} dobra o
+grau da expans√£o de @code{@var{g}(@var{x})}
+contanto que o grau da expans√£o seja menor que ou igual a @code{@var{n} 2^taylordepth}.
 
 @end defvr
 
-@deffn {FunÁ„o} taylorinfo (@var{expr})
-Retorna information about the sÈries de Taylor @var{expr}.
-O valor de retorno È uma lista de listas.
-Cada lista compreende o nome de uma vari·vel,
-o ponto de expans„o, e o grau da expans„o.
+@deffn {Fun√ß√£o} taylorinfo (@var{expr})
+Retorna information about the s√©ries de Taylor @var{expr}.
+O valor de retorno √© uma lista de listas.
+Cada lista compreende o nome de uma vari√°vel,
+o ponto de expans√£o, e o grau da expans√£o.
 
-@code{taylorinfo} retorna @code{false} se @var{expr} n„o for uma sÈries de Taylor.
+@code{taylorinfo} retorna @code{false} se @var{expr} n√£o for uma s√©ries de Taylor.
 
 Exemplo:
 
@@ -627,72 +627,72 @@ Exemplo:
 
 @end deffn
 
-@deffn {FunÁ„o} taylorp (@var{expr})
-Retorna @code{true} se @var{expr} for uma sÈries de Taylor,
+@deffn {Fun√ß√£o} taylorp (@var{expr})
+Retorna @code{true} se @var{expr} for uma s√©ries de Taylor,
 e @code{false} de outra forma.
 
 @end deffn
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-@defvr {Vari·vel de opÁ„o} taylor_logexpand
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} taylor_logexpand
+Valor por omiss√£o: @code{true}
 
-@code{taylor_logexpand} controla expans„o de logaritmos em
-sÈries de @code{taylor}.
+@code{taylor_logexpand} controla expans√£o de logaritmos em
+s√©ries de @code{taylor}.
 
-Quando @code{taylor_logexpand} for @code{true}, todos  logaritmos s„o expandidos completamente dessa forma
-problemas de reconhecimento de zero envolvendo envolvendo identidades logarÌtmicas n„o
-atrapalham o processo de expans„o.  Todavia, esse esquema n„o È sempre
-matematicamente correcto uma vez que isso ignora informaÁıes de ramo.
+Quando @code{taylor_logexpand} for @code{true}, todos  logaritmos s√£o expandidos completamente dessa forma
+problemas de reconhecimento de zero envolvendo envolvendo identidades logar√≠tmicas n√£o
+atrapalham o processo de expans√£o.  Todavia, esse esquema n√£o √© sempre
+matematicamente correcto uma vez que isso ignora informa√ß√µes de ramo.
 
-Quando @code{taylor_logexpand} for escolhida para @code{false}, ent„o a expans„o logarÌtmica que ocorre
-È somente aquela que for necess·ria para obter uma sÈries de potÍncia formal.
+Quando @code{taylor_logexpand} for escolhida para @code{false}, ent√£o a expans√£o logar√≠tmica que ocorre
+√© somente aquela que for necess√°ria para obter uma s√©ries de pot√™ncia formal.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Vari·vel de opÁ„o} taylor_order_coefficients
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} taylor_order_coefficients
+Valor por omiss√£o: @code{true}
 
-@code{taylor_order_coefficients} controla a ordenaÁ„o dos
-coeficientes em uma sÈrie de Taylor.
+@code{taylor_order_coefficients} controla a ordena√ß√£o dos
+coeficientes em uma s√©rie de Taylor.
 
 Quando @code{taylor_order_coefficients} for @code{true},
-coeficientes da sÈries de Taylor s„o ordenados canonicamente.
+coeficientes da s√©ries de Taylor s√£o ordenados canonicamente.
 @c IS MAXIMA'S NOTION OF "CANONICALLY" DESCRIBED ELSEWHERE ??
 @c AND WHAT HAPPENS WHEN IT IS FALSE ??
 
 @c NEED EXAMPLES HERE
 @end defvr
 
-@deffn {FunÁ„o} taylor_simplifier (@var{expr})
-Simplifica coeficientes da sÈries  de potÍncia @var{expr}.
-@code{taylor} chama essa funÁ„o.
+@deffn {Fun√ß√£o} taylor_simplifier (@var{expr})
+Simplifica coeficientes da s√©ries  de pot√™ncia @var{expr}.
+@code{taylor} chama essa fun√ß√£o.
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} taylor_truncate_polynomials
-Valor por omiss„o: @code{true}
+@defvr {Vari√°vel de op√ß√£o} taylor_truncate_polynomials
+Valor por omiss√£o: @code{true}
 
 @c WHAT IS THE "INPUT TRUNCATION LEVEL" ?? THE ARGUMENT n OF taylor ??
 Quando @code{taylor_truncate_polynomials} for @code{true},
-polinÛmios s„o truncados baseados sobre a entrada de nÌveis de truncaÁ„o.
+polin√≥mios s√£o truncados baseados sobre a entrada de n√≠veis de trunca√ß√£o.
 
 De outra forma,
-entrada de polinÛmios para @code{taylor} s„o consideradas terem precis„o infinita.
+entrada de polin√≥mios para @code{taylor} s√£o consideradas terem precis√£o infinita.
 @c WHAT IS "INFINITE PRECISION" IN THIS CONTEXT ??
 
 @end defvr
 
-@deffn {FunÁ„o} taytorat (@var{expr})
-Converte @var{expr} da forma @code{taylor} para a forma de express„o racional canÛnica (CRE).
-O efeito È o mesmo que @code{rat (ratdisrep (@var{expr}))}, mas mais r·pido.
+@deffn {Fun√ß√£o} taytorat (@var{expr})
+Converte @var{expr} da forma @code{taylor} para a forma de express√£o racional can√≥nica (CRE).
+O efeito √© o mesmo que @code{rat (ratdisrep (@var{expr}))}, mas mais r√°pido.
 
 @end deffn
 
-@deffn {FunÁ„o} trunc (@var{expr})
-Coloca notas na representaÁ„o interna da express„o geral @var{expr}
-de modo que isso È mostrado como se suas adiÁıes forem sÈries de Taylor truncadas.
+@deffn {Fun√ß√£o} trunc (@var{expr})
+Coloca notas na representa√ß√£o interna da express√£o geral @var{expr}
+de modo que isso √© mostrado como se suas adi√ß√µes forem s√©ries de Taylor truncadas.
 @var{expr} is not otherwise modified.
 
 Exemplo:
@@ -710,11 +710,11 @@ Exemplo:
 
 @end deffn
 
-@deffn {FunÁ„o} unsum (@var{f}, @var{n})
-Retorna a primeira diferenÁ„ de tr·s para frente @code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}.
-Dessa forma @code{unsum} logicamente È a inversa de @code{sum}.
+@deffn {Fun√ß√£o} unsum (@var{f}, @var{n})
+Retorna a primeira diferen√ß√£ de tr√°s para frente @code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}.
+Dessa forma @code{unsum} logicamente √© a inversa de @code{sum}.
 
-Veja tambÈm @code{nusum}.
+Veja tamb√©m @code{nusum}.
 
 Exemplos:
 @c GENERATED FROM THE FOLLOWING INPUTS
@@ -748,8 +748,8 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari·vel de opÁ„o} verbose
-Valor por omiss„o: @code{false}
+@defvr {Vari√°vel de op√ß√£o} verbose
+Valor por omiss√£o: @code{false}
 
 Quando @code{verbose} for @code{true},
 @code{powerseries} mostra mensagens de progresso.

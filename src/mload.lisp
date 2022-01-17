@@ -279,7 +279,7 @@
      ($bfloatp a)
      ($bfloatp b)
      (setq bits (min (third (first a)) (third (first b))))
-     (setq m (mul 32 (expt 2 (- bits)) (min (expt 2 (- (car (last a)) 1)) (expt 2 (- (car (last b)) 1)))))
+     (setq m (* 32 (expt 2 (- bits)) (min (expt 2 (- (car (last a)) 1)) (expt 2 (- (car (last b)) 1)))))
      (setq m (if (rationalp m) (div (numerator m) (denominator m)) m))
      (eq t (mgqp m (take '(mabs) (sub a b)))))))
 

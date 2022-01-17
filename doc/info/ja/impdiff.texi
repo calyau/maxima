@@ -16,7 +16,9 @@
 この関数を使うには、最初に@code{load("impdiff")}を書いてください。
 
 @opencatbox
-@category{Differential calculus} @category{Share packages} @category{Package impdiff}
+@category{Differential calculus}
+@category{Share packages}
+@category{Package impdiff}
 @closecatbox
 
 @end deffn

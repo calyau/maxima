@@ -6,14 +6,14 @@
 @node Funciones y variables para Bernstein,  , Bernstein, Bernstein
 @section Funciones y variables para Bernstein
 
-@deffn {Funci髇} bernstein_poly (@var{k}, @var{n}, @var{x})
+@deffn {Funci贸n} bernstein_poly (@var{k}, @var{n}, @var{x})
 
 Si @code{k} no es un entero negativo, los polinomios de Bernstein se 
 definen como @code{bernstein_poly(k,n,x) = binomial(n,k) x^k (1-x)^(n-k)}; 
 en cambio, si @code{k} es un entero negativo, el polinomio de Bernstein
 @code{bernstein_poly(k,n,x)} se anula. Cuando o bien @code{k} o @code{n} 
 no son enteros, la variable opcional @code{bernstein_explicit} controla
-la expansi髇 de los polinomios de Bernstein a su forma expl韈ita.
+la expansi贸n de los polinomios de Bernstein a su forma expl铆cita.
 
 Ejemplo:
 
@@ -41,8 +41,8 @@ Los polinomios de Bernstein tienen definidas su derivada e integral:
                               k + 1
 @end example
 
-Cuando los argumentos contienen n鷐eros decimales en coma flotante, los
-polinomios de Bernstein tambi閚 devuelven resultados decimales.
+Cuando los argumentos contienen n煤meros decimales en coma flotante, los
+polinomios de Bernstein tambi茅n devuelven resultados decimales.
 
 @example
 (%i6) bernstein_poly(5,9, 1/2 + %i);
@@ -53,7 +53,7 @@ polinomios de Bernstein tambi閚 devuelven resultados decimales.
 (%o7)           3.076171875b2 %i + 1.5380859375b2
 @end example
 
-Para hacer uso de @code{bernstein_poly}, ejec鷗ese primero @code{load("bernstein")}.
+Para hacer uso de @code{bernstein_poly}, ejec煤tese primero @code{load("bernstein")}.
 
 @end deffn
 
@@ -61,7 +61,7 @@ Para hacer uso de @code{bernstein_poly}, ejec鷗ese primero @code{load("bernstein
 Valor por defecto: @code{false}
 
 Cuando o bien @code{k} o @code{n} no son enteros, la variable opcional @code{bernstein_explicit} controla
-la expansi髇 de los polinomios de Bernstein a su forma expl韈ita.
+la expansi贸n de los polinomios de Bernstein a su forma expl铆cita.
 
 Ejemplo:
 
@@ -74,28 +74,28 @@ Ejemplo:
 @end example
 
 Cuando tanto @code{k} como @code{n} son enteros, @code{bernstein(k,n,x)} se
-expande siempre a su forma expl韈ita.
+expande siempre a su forma expl铆cita.
 
 @end defvr
 
 
 
-@deffn {Funci髇} multibernstein_poly (@var{[k1,k2,...,kp]},@var{[n1,n2,..., np]},@var{[x1,x2,..., xp]})
+@deffn {Funci贸n} multibernstein_poly (@var{[k1,k2,...,kp]},@var{[n1,n2,..., np]},@var{[x1,x2,..., xp]})
 
 La sentencia @code{multibernstein_poly (@var{[k1,k2,...,kp]},@var{[n1,n2,..., np]},@var{[x1,x2,..., xp]})}
 es el producto de polinomios de Bernstein 
 @code{bernstein_poly(k1,n1,x1) bernstein_poly(k2,n2,x2) ... bernstein_poly(kp,np,xp)}.
 
-Para hacer uso de @code{multibernstein_poly}, ejec鷗ese primero @code{load("bernstein")}.
+Para hacer uso de @code{multibernstein_poly}, ejec煤tese primero @code{load("bernstein")}.
 
 @end deffn
 
 
 
-@deffn {Funci髇} bernstein_approx (@var{f},@var{[x1,x1,...,xn]},n)
+@deffn {Funci贸n} bernstein_approx (@var{f},@var{[x1,x1,...,xn]},n)
 
-Devuelve el polinomio de Bernstein uniforme de @code{n}-閟imo orden que aproxima 
-la funci髇 @code{(x1,x2,..xn) |--> f}.
+Devuelve el polinomio de Bernstein uniforme de @code{n}-茅simo orden que aproxima 
+la funci贸n @code{(x1,x2,..xn) |--> f}.
 
 Ejemplos:
 
@@ -119,15 +119,15 @@ Ejemplos:
        2
 @end example
 
-Para hacer uso de @code{bernstein_approx}, ejec鷗ese primero @code{load("bernstein")}.
+Para hacer uso de @code{bernstein_approx}, ejec煤tese primero @code{load("bernstein")}.
 
 @end deffn
 
 
 
-@deffn {Funci髇} bernstein_expand (@var{e}, @var{[x1,x1,...,xn]})
+@deffn {Funci贸n} bernstein_expand (@var{e}, @var{[x1,x1,...,xn]})
 
-Expresa el polinomio @code{e} como una combinaci髇 lineal de polinomios de
+Expresa el polinomio @code{e} como una combinaci贸n lineal de polinomios de
 Bernstein multivariantes.
 
 @example
@@ -139,7 +139,7 @@ Bernstein multivariantes.
 
 Maxima devuelve un error si el primer argumento no es un polinomio.
 
-Para hacer uso de @code{bernstein_expand}, ejec鷗ese primero @code{load("bernstein")}.
+Para hacer uso de @code{bernstein_expand}, ejec煤tese primero @code{load("bernstein")}.
 
 @end deffn
 

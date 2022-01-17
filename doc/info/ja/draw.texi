@@ -23,7 +23,9 @@ Maximaレベルで使われる３つの主な関数があります:
 このプログラムを走らせるにはGnuplot 4.2以上が必要です。
 
 @opencatbox
-@category{Plotting} @category{Share packages} @category{Package draw}
+@category{Plotting}
+@category{Share packages}
+@category{Package draw}
 @closecatbox
 
 
@@ -152,7 +154,8 @@ End of animation sequence
 @code{gr2d}, @code{gr3d}, @code{draw2d}, @code{draw3d}も参照してください。
 
 @opencatbox
-@category{Package draw} @category{File output}
+@category{Package draw}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -172,7 +175,8 @@ End of animation sequence
 @code{draw}と@code{gr2d}も参照してください。
 
 @opencatbox
-@category{Package draw} @category{File output}
+@category{Package draw}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -191,7 +195,8 @@ End of animation sequence
 @code{draw}と@code{gr3d}も参照してください。
 
 @opencatbox
-@category{Package draw} @category{File output}
+@category{Package draw}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -215,7 +220,8 @@ End of animation sequence
 @end example
 
 @opencatbox
-@category{Package draw} @category{File output}
+@category{Package draw}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -256,7 +262,8 @@ End of animation sequence
 @end example
 
 @opencatbox
-@category{Package draw} @category{File output}
+@category{Package draw}
+@category{File output}
 @closecatbox
 @end deffn
 
@@ -4690,7 +4697,8 @@ rgb色付けされた@var{picture}オブジェクトを返します。
 を返します。
 
 @opencatbox
-@category{Package draw} @category{Predicate functions}
+@category{Package draw}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -4700,7 +4708,8 @@ rgb色付けされた@var{picture}オブジェクトを返します。
 @code{true}を、そうでなければ@code{false}を返します。
 
 @opencatbox
-@category{Package draw} @category{Predicate functions}
+@category{Package draw}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn

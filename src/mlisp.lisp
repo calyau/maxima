@@ -187,7 +187,6 @@ is EQ to FNNAME if the latter is non-NIL."
   ; are applied to arguments.
   (setq noevalargs nil)
   (let ((params  (cdadr fn))( mlocp  t))
-    (setq loclist (cons nil loclist))
     (do ((a) (p))
 	((or (null params) (and (null args) (not (mdeflistp params))))
 	 (setq args (nreconc a args) params (nreconc p params)))
@@ -213,6 +212,7 @@ is EQ to FNNAME if the latter is non-NIL."
 	     (vector-push args ar)
 	     (vector-push fnname ar)
 	     (mbind finish2032 args fnname)
+	     (push nil loclist)
 	     (setq finish2033 t)
 	     (let ((aexprp (and aexprp (not (atom (caddr fn)))
 				(eq (caar (caddr fn)) 'lambda))))

@@ -142,7 +142,8 @@ Current input expression = --------------
 @end example
 
 @opencatbox
-@category{Console interaction} @category{Global variables}
+@category{Console interaction}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -167,7 +168,8 @@ Current input expression = --------------
 @mref{_}, @mref{%%}, @mref{%th}も参照してください。
 
 @opencatbox
-@category{Console interaction} @category{Global variables}
+@category{Console interaction}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -294,7 +296,8 @@ _
 @mref{describe}も参照してください。
 
 @opencatbox
-@category{Help} @category{Console interaction}
+@category{Help}
+@category{Console interaction}
 @closecatbox
 
 @end deffn
@@ -313,7 +316,8 @@ _
 @mref{describe}も参照してください。
 
 @opencatbox
-@category{Help} @category{Console interaction}
+@category{Help}
+@category{Console interaction}
 @closecatbox
 @end deffn
 
@@ -405,7 +409,8 @@ Maximaは内部的に前置の最初の文字だけを考慮するので、
 @end table
 
 @opencatbox
-@category{Declarations and inferences} @category{Global variables}
+@category{Declarations and inferences}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -471,7 +476,9 @@ Maximaは内部的に前置の最初の文字だけを考慮するので、
 @code{kil}は常に、たとえ引数がバインドされていなくても、@code{done}を返します。
 
 @opencatbox
-@category{Evaluation} @category{Console interaction} @category{Session management}
+@category{Evaluation}
+@category{Console interaction}
+@category{Session management}
 @closecatbox
 @end deffn
 
@@ -509,7 +516,9 @@ Maximaは内部的に前置の最初の文字だけを考慮するので、
 @mref{inchar}や@mref{outchar}, @mref{linechar}, @mref{infolists}も参照してください。
 
 @opencatbox
-@category{Display functions} @category{Display flags and variables} @category{Console interaction}
+@category{Display functions}
+@category{Display flags and variables}
+@category{Console interaction}
 @closecatbox
 @end deffn
 
@@ -548,7 +557,8 @@ Maximaは内部的に
 入力出力式の現在のペアの行番号。
 
 @opencatbox
-@category{Display flags and variables} @category{Console interaction}
+@category{Display flags and variables}
+@category{Console interaction}
 @closecatbox
 @end defvr
 
@@ -563,7 +573,9 @@ Maximaは内部的に
 初期値に再設定されたか否かに関わらずです。
 
 @opencatbox
-@category{Global variables} @category{Session management} @category{Console interaction}
+@category{Global variables}
+@category{Session management}
+@category{Console interaction}
 @closecatbox
 @end defvr
 
@@ -586,7 +598,8 @@ Maximaは内部的に
 @mref{batch}や@mref{load}、 @mref{labels}も参照してください。
 
 @opencatbox
-@category{Global flags} @category{Session management}
+@category{Global flags}
+@category{Session management}
 @closecatbox
 @end defvr
 
@@ -612,7 +625,9 @@ assignment: assigning to option gamma_expand
 @end example
 
 @opencatbox
-@category{Global flags} @category{Session management} @category{Console interaction}
+@category{Global flags}
+@category{Session management}
+@category{Console interaction}
 @closecatbox
 @end defvr
 
@@ -708,7 +723,8 @@ Maximaは内部的に前置の最初の文字だけを考慮するので、
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
 
 @opencatbox
-@category{Display functions} @category{Console interaction}
+@category{Display functions}
+@category{Console interaction}
 @closecatbox
 @end deffn
 
@@ -722,7 +738,8 @@ Maximaは内部的に前置の最初の文字だけを考慮するので、
 （@mref{break}で呼び出された）Maximaブレイクループのプロンプトシンボルです。
 
 @opencatbox
-@category{Global variables} @category{Console interaction}
+@category{Global variables}
+@category{Console interaction}
 @closecatbox
 
 @end defvr
@@ -831,7 +848,8 @@ Lispマクロ@code{defmvar}は（他の動作の間に）このリストに変�
 @mref{timer}も参照してください。
 
 @opencatbox
-@category{Display flags and variables} @category{Debugging}
+@category{Display flags and variables}
+@category{Debugging}
 @closecatbox
 
 @end defvr
@@ -911,7 +929,8 @@ Returning to Maxima
 @end example
 
 @opencatbox
-@category{Evaluation} @category{Global variables}
+@category{Evaluation}
+@category{Global variables}
 @closecatbox
 @end defvr
 
@@ -950,7 +969,8 @@ Maximaは @code{%e}の負の指数乗を商として表示します。
 @end example
 
 @opencatbox
-@category{Exponential and logarithm functions} @category{Display flags and variables}
+@category{Exponential and logarithm functions}
+@category{Display flags and variables}
 @closecatbox
 @end defvr
 
@@ -1196,7 +1216,8 @@ Maximaは式を商を使って負の指数の式を表示します。
 @end example
 
 @opencatbox
-@category{Expressions} @category{Display flags and variables}
+@category{Expressions}
+@category{Display flags and variables}
 @closecatbox
 
 @end defvr
@@ -1334,7 +1355,8 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 @end example
 
 @opencatbox
-@category{Display functions} @category{Display flags and variables}
+@category{Display functions}
+@category{Display flags and variables}
 @closecatbox
 @end deffn
 
@@ -1623,7 +1645,8 @@ Lispシンボルはクエスチョンマーク@code{?}を先頭文字として�
 @end example
 
 @opencatbox
-@category{Display flags and variables} @category{Console interaction}
+@category{Display flags and variables}
+@category{Console interaction}
 @closecatbox
 @end defvr
 
@@ -1731,7 +1754,8 @@ Lispシンボルはクエスチョンマーク@code{?}を先頭文字として�
 @c AND OTHERWISE ... ??
 
 @opencatbox
-@category{Mathematical functions} @category{Display flags and variables}
+@category{Mathematical functions}
+@category{Display flags and variables}
 @closecatbox
 @end defvr
 

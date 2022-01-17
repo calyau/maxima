@@ -4,7 +4,7 @@
 @c Translator: Jaime Villate <villate ARROBA fe PONTO up PONTO pt>
 @c ------------------------------------------------------------------------
 @c start of header
-@documentencoding ISO-8859-1
+@documentencoding UTF-8
 @documentlanguage pt_PT
 @settitle Manual do Maxima @manual_version@
 
@@ -17,13 +17,13 @@
 @c end of header
 
 @ifinfo
-Este é o Manual do Maxima no formato Texinfo
+Este Ã© o Manual do Maxima no formato Texinfo
 
 Copyright 1994, 2001 William F. Schelter
 
 @format
 START-INFO-DIR-ENTRY
-* Maxima: (maxima).     Um sistema de álgebra computacional.
+* Maxima: (maxima).     Um sistema de Ã¡lgebra computacional.
 END-INFO-DIR-ENTRY
 @end format
 
@@ -36,26 +36,26 @@ END-INFO-DIR-ENTRY
 @sp 10
 @comment The title is printed in a large font.
 @center @titlefont{Manual do Maxima}
-@center Versão @manual_version@
+@center VersÃ£o @manual_version@
 @sp 3
-@center Tradução para português de Portugal
+@center TraduÃ§Ã£o para portuguÃªs de Portugal
 @page
 @vskip 0pt plus 1filll
-Maxima é um Sistema de Computação Algébrica, programado em Lisp.
+Maxima Ã© um Sistema de ComputaÃ§Ã£o AlgÃ©brica, programado em Lisp.
 
 Maxima derivou-se do sistema Macsyma, desenvolvido no MIT entre 1968 e
-1982, como parte do Projecto MAC. O MIT transferiu uma cópia do código
+1982, como parte do Projecto MAC. O MIT transferiu uma cÃ³pia do cÃ³digo
 fonte do Macsyma para o Departamento de Energia em 1982, que ficou
 conhecida como Macsyma DOE e o Professor William F. Schelter, da
-Universidade do Texas, desenvolveu essa versão desde 1982 até a sua
-morte em 2001. Em 1998, Schelter obteve autorização do Departamento de
-Energia para publicar o código fonte do Macsyma DOE sob a Licença
-Pública GNU e em 2000 iniciou-se o projeto Maxima no sítio SourceForge,
+Universidade do Texas, desenvolveu essa versÃ£o desde 1982 atÃ© a sua
+morte em 2001. Em 1998, Schelter obteve autorizaÃ§Ã£o do Departamento de
+Energia para publicar o cÃ³digo fonte do Macsyma DOE sob a LicenÃ§a
+PÃºblica GNU e em 2000 iniciou-se o projeto Maxima no sÃ­tio SourceForge,
 para manter e desenvolver o Macsyma DOE, agora chamado Maxima.
 
 @sp 2
-Esta tradução para português de Portugal foi feita com base na tradução
-de Jorge Barros de Abreu para português brasileiro e é mantida por Jaime
+Esta traduÃ§Ã£o para portuguÃªs de Portugal foi feita com base na traduÃ§Ã£o
+de Jorge Barros de Abreu para portuguÃªs brasileiro e Ã© mantida por Jaime
 Villate (@code{villate arroba fe.up.pt}).
 
 @end titlepage
@@ -63,7 +63,7 @@ Villate (@code{villate arroba fe.up.pt}).
 @summarycontents
 @contents
 
-@include maxima-macros.texi
+@include category-macros.texi
 
 @c to update the menus do:
 @c (texinfo-multiple-files-update "maxima.texi" t t)
@@ -71,23 +71,23 @@ Villate (@code{villate arroba fe.up.pt}).
 @c texinfo-multiple-files-update will delete the detailed node listing!
 
 @ifnottex
-@node Top, Introdução ao Maxima, (dir), (dir)
+@node Top, IntroduÃ§Ã£o ao Maxima, (dir), (dir)
 @top
 
-@emph{Maxima é um Sistema de Computação Algébrica, programado em Lisp.}
+@emph{Maxima Ã© um Sistema de ComputaÃ§Ã£o AlgÃ©brica, programado em Lisp.}
 
 Maxima derivou-se do sistema Macsyma, desenvolvido no MIT entre 1968 e
-1982, como parte do Projecto MAC. O MIT transferiu uma cópia do código
+1982, como parte do Projecto MAC. O MIT transferiu uma cÃ³pia do cÃ³digo
 fonte do Macsyma para o Departamento de Energia em 1982, que ficou
 conhecida como Macsyma DOE e o Professor William F. Schelter, da
-Universidade do Texas, desenvolveu essa versão desde 1982 até a sua
-morte em 2001. Em 1998, Schelter obteve autorização do Departamento de
-Energia para publicar o código fonte do Macsyma DOE sob a Licença
-Pública GNU e em 2000 iniciou-se o projeto Maxima no sítio SourceForge,
+Universidade do Texas, desenvolveu essa versÃ£o desde 1982 atÃ© a sua
+morte em 2001. Em 1998, Schelter obteve autorizaÃ§Ã£o do Departamento de
+Energia para publicar o cÃ³digo fonte do Macsyma DOE sob a LicenÃ§a
+PÃºblica GNU e em 2000 iniciou-se o projeto Maxima no sÃ­tio SourceForge,
 para manter e desenvolver o Macsyma DOE, agora chamado Maxima.
 
-Esta tradução para português de Portugal foi feita com base na tradução
-de Jorge Barros de Abreu para português brasileiro e é mantida por Jaime
+Esta traduÃ§Ã£o para portuguÃªs de Portugal foi feita com base na traduÃ§Ã£o
+de Jorge Barros de Abreu para portuguÃªs brasileiro e Ã© mantida por Jaime
 Villate (@code{villate arroba fe.up.pt}).
 @end ifnottex
 @c includes
@@ -95,444 +95,444 @@ Villate (@code{villate arroba fe.up.pt}).
 @menu
 Infraestrutura do Maxima
 
-* Introdução ao Maxima::        Exemplo de sessões do Maxima.
-* Detecção e Relato de Erros::  Como encontrar erros e informar os responsáveis.
-* Ajuda::                       Obtenção de ajuda no Maxima.
+* IntroduÃ§Ã£o ao Maxima::        Exemplo de sessÃµes do Maxima.
+* DetecÃ§Ã£o e Relato de Erros::  Como encontrar erros e informar os responsÃ¡veis.
+* Ajuda::                       ObtenÃ§Ã£o de ajuda no Maxima.
 * Linha de Comandos::           Sintaxe da linha de comandos do Maxima.
-* Operadores::                  Operadores usados em expressões do Maxima.
-* Expressões::                  Expressões no Maxima.
-* Simplificação::               Simplificação de expressões.
-* Criação de Gráficos::         Gráficos em 2D e 3D.
-* Entrada e Saída::             Entrada e saída de ficheiros.
-* Ponto Flutuante::             Rotinas numéricas de baixo nível.
+* Operadores::                  Operadores usados em expressÃµes do Maxima.
+* ExpressÃµes::                  ExpressÃµes no Maxima.
+* SimplificaÃ§Ã£o::               SimplificaÃ§Ã£o de expressÃµes.
+* CriaÃ§Ã£o de GrÃ¡ficos::         GrÃ¡ficos em 2D e 3D.
+* Entrada e SaÃ­da::             Entrada e saÃ­da de ficheiros.
+* Ponto Flutuante::             Rotinas numÃ©ricas de baixo nÃ­vel.
 * Contextos::                   Conjunto de regras assumidas.
 
-Suporte a áreas específicas da matemática
+Suporte a Ã¡reas especÃ­ficas da matemÃ¡tica
 
-* Polinómios::                Formas padrão para polinómios, e funções de polinómios.
-* Constantes::                  Constantes numéricas.
-* Logaritmos::    Manipulação de expressões com logaritmos.
-* Trigonometria::               Manipulação de expressões e funções trigonométricas.
-* Funções Especiais::     Funções especiais.
-* Funções Elípticas::   Funções e integrais Elípticas.
-* Limites::                     Limites de expressões.
-* Diferenciação::         Cálculo diferencial.
-* Integração::            Cálculo integral.
-* Equações::              Definição e resolução de equações.
-* Equações Diferenciais:: Definição e resolução de equações diferenciais.
-* Numérico::                  Integração numérica, transformadas de Fourier, etc.
-* Arrays ::                     Criação e manipulação de arranjos.
-* Matrizes e Álgebra Linear:: Operações com Matrizes.
-* Funções Afins::                        
-* itensor::                     Manipulação de índices de tensores.
-* ctensor::                     Manipulação de componentes de Tensores.
-* Pacote atensor::              Manipulação algébrica de tensores.
-* Séries::                    Séries de potências e de Taylor.
-* Teoria dos Números::        Teoria dos números.
+* PolinÃ³mios::                Formas padrÃ£o para polinÃ³mios, e funÃ§Ãµes de polinÃ³mios.
+* Constantes::                  Constantes numÃ©ricas.
+* Logaritmos::    ManipulaÃ§Ã£o de expressÃµes com logaritmos.
+* Trigonometria::               ManipulaÃ§Ã£o de expressÃµes e funÃ§Ãµes trigonomÃ©tricas.
+* FunÃ§Ãµes Especiais::     FunÃ§Ãµes especiais.
+* FunÃ§Ãµes ElÃ­pticas::   FunÃ§Ãµes e integrais ElÃ­pticas.
+* Limites::                     Limites de expressÃµes.
+* DiferenciaÃ§Ã£o::         CÃ¡lculo diferencial.
+* IntegraÃ§Ã£o::            CÃ¡lculo integral.
+* EquaÃ§Ãµes::              DefiniÃ§Ã£o e resoluÃ§Ã£o de equaÃ§Ãµes.
+* EquaÃ§Ãµes Diferenciais:: DefiniÃ§Ã£o e resoluÃ§Ã£o de equaÃ§Ãµes diferenciais.
+* NumÃ©rico::                  IntegraÃ§Ã£o numÃ©rica, transformadas de Fourier, etc.
+* Arrays ::                     CriaÃ§Ã£o e manipulaÃ§Ã£o de arranjos.
+* Matrizes e Ãlgebra Linear:: OperaÃ§Ãµes com Matrizes.
+* FunÃ§Ãµes Afins::                        
+* itensor::                     ManipulaÃ§Ã£o de Ã­ndices de tensores.
+* ctensor::                     ManipulaÃ§Ã£o de componentes de Tensores.
+* Pacote atensor::              ManipulaÃ§Ã£o algÃ©brica de tensores.
+* SÃ©ries::                    SÃ©ries de potÃªncias e de Taylor.
+* Teoria dos NÃºmeros::        Teoria dos nÃºmeros.
 * Simetrias::                   
-* Grupos::                      Álgebra abstracta.
+* Grupos::                      Ãlgebra abstracta.
 
-Facilidades avançadas e programação
+Facilidades avanÃ§adas e programaÃ§Ã£o
 
-* Ambiente em Tempo de Execução:: Customização do ambiente Maxima.
-* Opções Diversas::       Opções com efeito global sobre o Maxima.
-* Regras e Modelos::            Coincidência de expressões definidas pelo utilizador e regras de simplificação.
-* Listas::                      Manipulação de listas.
-* Conjuntos::                   Manipulação de conjuntos.
-* Definição de Função:: Definição de funções.
-* Fluxo de Programa::           Definição de programas no Maxima.
-* Depuração::                   Depuração de programas no Maxima.
+* Ambiente em Tempo de ExecuÃ§Ã£o:: CustomizaÃ§Ã£o do ambiente Maxima.
+* OpÃ§Ãµes Diversas::       OpÃ§Ãµes com efeito global sobre o Maxima.
+* Regras e Modelos::            CoincidÃªncia de expressÃµes definidas pelo utilizador e regras de simplificaÃ§Ã£o.
+* Listas::                      ManipulaÃ§Ã£o de listas.
+* Conjuntos::                   ManipulaÃ§Ã£o de conjuntos.
+* DefiniÃ§Ã£o de FunÃ§Ã£o:: DefiniÃ§Ã£o de funÃ§Ãµes.
+* Fluxo de Programa::           DefiniÃ§Ã£o de programas no Maxima.
+* DepuraÃ§Ã£o::                   DepuraÃ§Ã£o de programas no Maxima.
 
 Pacotes Adicionais
 
 * augmented_lagrangian::        Pacote augmented_lagrangian.
-* bode::                        Gráficos de ganho e fase de Bode.
-* descriptive::                 Estatística descritiva.
+* bode::                        GrÃ¡ficos de ganho e fase de Bode.
+* descriptive::                 EstatÃ­stica descritiva.
 * diag::                        Matrizes de Jordan.
-* distrib::                     Distribuições de probabilidade.
-* dynamics::                    Visualização 3D, animações e sistemas dinâmicos.
-* eval_string::                 Expressões do Maxima como cadeias de texto.
+* distrib::                     DistribuiÃ§Ãµes de probabilidade.
+* dynamics::                    VisualizaÃ§Ã£o 3D, animaÃ§Ãµes e sistemas dinÃ¢micos.
+* eval_string::                 ExpressÃµes do Maxima como cadeias de texto.
 * f90::                         Tradutor do Maxima para o Fortran.
-* ggf::                         Função geradora para sequências.
-* impdiff::                     Derivadas implícitas.
-* interpol::                    Pacote de interpolação.
-* lbfgs::                       L-BFGS pacote de minimização não limitada.
+* ggf::                         FunÃ§Ã£o geradora para sequÃªncias.
+* impdiff::                     Derivadas implÃ­citas.
+* interpol::                    Pacote de interpolaÃ§Ã£o.
+* lbfgs::                       L-BFGS pacote de minimizaÃ§Ã£o nÃ£o limitada.
 * lindstedt::                   Pacote Lindstedt.
-* linearalgebra::               Funções de álgebra linear.
-* lsquares::                    Método dos mínimos quadrados.
-* makeOrders::                  Expoentes de polinómios.
-* mnewton::                     Método de Newton.
+* linearalgebra::               FunÃ§Ãµes de Ã¡lgebra linear.
+* lsquares::                    MÃ©todo dos mÃ­nimos quadrados.
+* makeOrders::                  Expoentes de polinÃ³mios.
+* mnewton::                     MÃ©todo de Newton.
 * numericalio::                 Leitura e escritura de ficheiros.
-* opsubst::                     Comandos para substituições.
-* orthopoly::                   Polinómios ortogonais.
-* plotdf::                      Gráficos de campos de direcções.
-* romberg::                     Método de Romberg para integração numérica.
-* simplex::                     Programação linear.
-* simplification::              Funções e regras de simplificação.
-* solve_rec::                   Relações de recorrência lineares.
-* stats::                       Pacote de inferências estatísticas.
-* stirling::                    Fórmula de Stirling.
+* opsubst::                     Comandos para substituiÃ§Ãµes.
+* orthopoly::                   PolinÃ³mios ortogonais.
+* plotdf::                      GrÃ¡ficos de campos de direcÃ§Ãµes.
+* romberg::                     MÃ©todo de Romberg para integraÃ§Ã£o numÃ©rica.
+* simplex::                     ProgramaÃ§Ã£o linear.
+* simplification::              FunÃ§Ãµes e regras de simplificaÃ§Ã£o.
+* solve_rec::                   RelaÃ§Ãµes de recorrÃªncia lineares.
+* stats::                       Pacote de inferÃªncias estatÃ­sticas.
+* stirling::                    FÃ³rmula de Stirling.
 * stringproc::                  Processamento de cadeias de texto.
-* unit::                        Pacote de unidades e dimensões.
-* zeilberger::                  Funções para somatórios hipergeométricos.
+* unit::                        Pacote de unidades e dimensÃµes.
+* zeilberger::                  FunÃ§Ãµes para somatÃ³rios hipergeomÃ©tricos.
 
 
-Índice
+Ãndice
 
-* Índice de Funções e Variáveis:: Índice
+* Ãndice de FunÃ§Ãµes e VariÃ¡veis:: Ãndice
 
 @comment @detailmenu
  --- Listagem Detalhada de Nodos ---
 
-Introdução
+IntroduÃ§Ã£o
 
-* Introdução ao Maxima::
+* IntroduÃ§Ã£o ao Maxima::
 
 Ajuda
 
 * Lisp e Maxima::            
 * Descartando::          
-* Documentação::               
-* Definições para Ajuda::        
+* DocumentaÃ§Ã£o::               
+* DefiniÃ§Ãµes para Ajuda::        
 
 Linha de Comandos
 
-* Introdução a Linha de Comandos::  
-* Definições para Linha de Comandos::  
+* IntroduÃ§Ã£o a Linha de Comandos::  
+* DefiniÃ§Ãµes para Linha de Comandos::  
 
 Operadores
 
 * N-Argumentos::                        
-* Operador não fixado::                       
-* Operador Pósfixado::                     
-* Operador Préfixado::                      
-* Operadores Aritméticos::    
+* Operador nÃ£o fixado::                       
+* Operador PÃ³sfixado::                     
+* Operador PrÃ©fixado::                      
+* Operadores AritmÃ©ticos::    
 * Operadores Relacionais::   
 * Operadores Geral::
 
-Expressões
+ExpressÃµes
 
-* Introdução a Expressões::  
+* IntroduÃ§Ã£o a ExpressÃµes::  
 * Complexo::                    
 * Desigualdade::      
 * Sintaxe::                     
-* Definições para Expressões::  
+* DefiniÃ§Ãµes para ExpressÃµes::  
 
-Simplificação
+SimplificaÃ§Ã£o
 
-* Definições para Simplificação::  
+* DefiniÃ§Ãµes para SimplificaÃ§Ã£o::  
 
-Criação de Gráficos
+CriaÃ§Ã£o de GrÃ¡ficos
 
-* Definições para Criação de Gráficos::    
+* DefiniÃ§Ãµes para CriaÃ§Ã£o de GrÃ¡ficos::    
 
-Entrada e Saída
+Entrada e SaÃ­da
 
-* Comentários::
+* ComentÃ¡rios::
 * Ficheiros::                       
-* Definições para Entrada e Saída::  
+* DefiniÃ§Ãµes para Entrada e SaÃ­da::  
 
 Ponto Flutuante
 
-* Definições para ponto Flutuante::  
+* DefiniÃ§Ãµes para ponto Flutuante::  
 
 Contextos
 
-* Definições para Contextos::    
+* DefiniÃ§Ãµes para Contextos::    
 
-Polinómios
+PolinÃ³mios
 
-* Introdução a Polinómios::  
-* Definições para Polinómios::  
+* IntroduÃ§Ã£o a PolinÃ³mios::  
+* DefiniÃ§Ãµes para PolinÃ³mios::  
 
 Constantes
 
-* Definições para Constantes::
+* DefiniÃ§Ãµes para Constantes::
 
 Logaritmos
 
-* Definições para Logaritmos::  
+* DefiniÃ§Ãµes para Logaritmos::  
 
 Trigonometria
 
-* Introdução ao Pacote Trigonométrico::  
-* Definições para Trigonometria::  
+* IntroduÃ§Ã£o ao Pacote TrigonomÃ©trico::  
+* DefiniÃ§Ãµes para Trigonometria::  
 
-Funções Especiais
+FunÃ§Ãµes Especiais
 
-* Introdução a Funções Especiais::  
-* Definições para Funções Especiais::  
+* IntroduÃ§Ã£o a FunÃ§Ãµes Especiais::  
+* DefiniÃ§Ãµes para FunÃ§Ãµes Especiais::  
 
-Funções Elípticas
+FunÃ§Ãµes ElÃ­pticas
 
-* Introdução a Funções Elípticas e Integrais::
-* Definições para Funções Elípticas::
-* Definições para Integrais Elípticas::
+* IntroduÃ§Ã£o a FunÃ§Ãµes ElÃ­pticas e Integrais::
+* DefiniÃ§Ãµes para FunÃ§Ãµes ElÃ­pticas::
+* DefiniÃ§Ãµes para Integrais ElÃ­pticas::
 
 Limites
 
-* Definições para Limites::      
+* DefiniÃ§Ãµes para Limites::      
 
-Diferenciação
+DiferenciaÃ§Ã£o
 
-* Definições para Diferenciação::  
+* DefiniÃ§Ãµes para DiferenciaÃ§Ã£o::  
 
-Integração
+IntegraÃ§Ã£o
 
-* Introdução a Integração::  
-* Definições para Integração::  
+* IntroduÃ§Ã£o a IntegraÃ§Ã£o::  
+* DefiniÃ§Ãµes para IntegraÃ§Ã£o::  
 
-Equações
+EquaÃ§Ãµes
 
-* Definições para Equações::   
+* DefiniÃ§Ãµes para EquaÃ§Ãµes::   
 
-Equações Diferenciais
+EquaÃ§Ãµes Diferenciais
 
-* Introdução às Equações Diferenciais::
-* Definições para Equações Diferenciais::  
+* IntroduÃ§Ã£o Ã s EquaÃ§Ãµes Diferenciais::
+* DefiniÃ§Ãµes para EquaÃ§Ãµes Diferenciais::  
 
-Numérico
+NumÃ©rico
 
-* Introdução a Numérico::   
+* IntroduÃ§Ã£o a NumÃ©rico::   
 * Pacotes de Fourier::                     
-* Definições para Numérico::   
-* Definições para Séries de Fourier::
+* DefiniÃ§Ãµes para NumÃ©rico::   
+* DefiniÃ§Ãµes para SÃ©ries de Fourier::
 
 Arrays
 
-* Definições para Arrays::  
+* DefiniÃ§Ãµes para Arrays::  
 
-Matrizes e Álgebra Linear
+Matrizes e Ãlgebra Linear
 
-* Introdução a Matrizes e Álgebra Linear::  
+* IntroduÃ§Ã£o a Matrizes e Ãlgebra Linear::  
 * Ponto::                         
 * Vetores::                     
 * auto::
-* Definições para Matrizes e Álgebra Linear::  
+* DefiniÃ§Ãµes para Matrizes e Ãlgebra Linear::  
 
-Funções Afins
+FunÃ§Ãµes Afins
 
-* Definições para Funções Afins::      
+* DefiniÃ§Ãµes para FunÃ§Ãµes Afins::      
 
 itensor
 
-* Introdução a itensor::      
-* Definições para itensor::      
+* IntroduÃ§Ã£o a itensor::      
+* DefiniÃ§Ãµes para itensor::      
 
 ctensor
 
-* Introdução a ctensor::     
-* Definições para ctensor::     
+* IntroduÃ§Ã£o a ctensor::     
+* DefiniÃ§Ãµes para ctensor::     
 
 Pacote atensor
 
-* Introdução ao Pacote atensor::
-* Definições para o Pacote atensor::
+* IntroduÃ§Ã£o ao Pacote atensor::
+* DefiniÃ§Ãµes para o Pacote atensor::
 
-Séries
+SÃ©ries
 
-* Introdução a Séries::      
-* Definições para Séries::      
+* IntroduÃ§Ã£o a SÃ©ries::      
+* DefiniÃ§Ãµes para SÃ©ries::      
 
-Teoria dos Números
+Teoria dos NÃºmeros
 
-* Definições para Teoria dos Números::  
+* DefiniÃ§Ãµes para Teoria dos NÃºmeros::  
 
 Simetrias
 
-* Definições para Simetrias::  
+* DefiniÃ§Ãµes para Simetrias::  
 
 Grupos
 
-* Definições para Grupos::      
+* DefiniÃ§Ãµes para Grupos::      
 
-Ambiente em Tempo de Execução
+Ambiente em Tempo de ExecuÃ§Ã£o
 
-* Introdução a Ambiente em Tempo de Execução::  
-* Interrupções::                  
-* Definições para Ambiente em Tempo de Execução::  
+* IntroduÃ§Ã£o a Ambiente em Tempo de ExecuÃ§Ã£o::  
+* InterrupÃ§Ãµes::                  
+* DefiniÃ§Ãµes para Ambiente em Tempo de ExecuÃ§Ã£o::  
 
-Opções Diversas
+OpÃ§Ãµes Diversas
 
-* Introdução a Opções Diversas::  
+* IntroduÃ§Ã£o a OpÃ§Ãµes Diversas::  
 * Compartilhado::                       
-* Definições para Opções Diversas::  
+* DefiniÃ§Ãµes para OpÃ§Ãµes Diversas::  
 
 Regras e Modelos
 
-* Introdução a Regras e Modelos::  
-* Definições para Regras e Modelos::  
+* IntroduÃ§Ã£o a Regras e Modelos::  
+* DefiniÃ§Ãµes para Regras e Modelos::  
 
 Listas
 
-* Introdução a Listas::
-* Definições para Listas::
+* IntroduÃ§Ã£o a Listas::
+* DefiniÃ§Ãµes para Listas::
 
 Conjuntos
 
-* Introdução a Conjuntos::       
-* Definições para Conjuntos::       
+* IntroduÃ§Ã£o a Conjuntos::       
+* DefiniÃ§Ãµes para Conjuntos::       
 
-Definição de Função
+DefiniÃ§Ã£o de FunÃ§Ã£o
 
-* Introdução a Definição de Função::  
-* Função::                    
+* IntroduÃ§Ã£o a DefiniÃ§Ã£o de FunÃ§Ã£o::  
+* FunÃ§Ã£o::                    
 * Macros::                      
-* Definições para Definição de Função::  
+* DefiniÃ§Ãµes para DefiniÃ§Ã£o de FunÃ§Ã£o::  
 
 Fluxo de Programa
 
-* Introdução a Fluxo de Programa::  
-* Definições para Fluxo de Programa::  
+* IntroduÃ§Ã£o a Fluxo de Programa::  
+* DefiniÃ§Ãµes para Fluxo de Programa::  
 
-Depuração
+DepuraÃ§Ã£o
 
-* Definições para Depuração::   
+* DefiniÃ§Ãµes para DepuraÃ§Ã£o::   
 
 augmented_lagrangian
 
-* Definições para augmented_lagrangian::
+* DefiniÃ§Ãµes para augmented_lagrangian::
 
 bode
 
-* Definições para bode::
+* DefiniÃ§Ãµes para bode::
 
 descriptive
 
-* Introdução ao pacote descriptive::
-* Definições para manipulação da dados::
-* Definições para estatística descritiva::
-* Definições específicas para estatística descritiva de várias variáveis::
-* Definições para gráficos estatísticos::
+* IntroduÃ§Ã£o ao pacote descriptive::
+* DefiniÃ§Ãµes para manipulaÃ§Ã£o da dados::
+* DefiniÃ§Ãµes para estatÃ­stica descritiva::
+* DefiniÃ§Ãµes especÃ­ficas para estatÃ­stica descritiva de vÃ¡rias variÃ¡veis::
+* DefiniÃ§Ãµes para grÃ¡ficos estatÃ­sticos::
 
 diag
 
-* Definições para diag::
+* DefiniÃ§Ãµes para diag::
 
 distrib
 
-* Introdução a distrib::
-* Definições para distribuições contínuas::
-* Definições para distribuições discretas::
+* IntroduÃ§Ã£o a distrib::
+* DefiniÃ§Ãµes para distribuiÃ§Ãµes contÃ­nuas::
+* DefiniÃ§Ãµes para distribuiÃ§Ãµes discretas::
 
 dynamics
 
 * O pacote dynamics::
-* Análise gráfica de sistemas dinâmicos discretos::
-* Visualização usando VTK::
+* AnÃ¡lise grÃ¡fica de sistemas dinÃ¢micos discretos::
+* VisualizaÃ§Ã£o usando VTK::
 
 eval_string
 
-* Definições para eval_string::
+* DefiniÃ§Ãµes para eval_string::
 
 f90
 
-* Definições para f90::
+* DefiniÃ§Ãµes para f90::
 
 ggf
 
-* Definições para ggf::
+* DefiniÃ§Ãµes para ggf::
 
 impdiff
 
-* Definições para impdiff::
+* DefiniÃ§Ãµes para impdiff::
 
 interpol
 
-* Introdução a interpol::
-* Definições para interpol::
+* IntroduÃ§Ã£o a interpol::
+* DefiniÃ§Ãµes para interpol::
 
 lbfgs
 
-* Introdução a lbfgs::
-* Definições para lbfgs::
+* IntroduÃ§Ã£o a lbfgs::
+* DefiniÃ§Ãµes para lbfgs::
 
 lindstedt
 
-* Definições para lindstedt::
+* DefiniÃ§Ãµes para lindstedt::
 
 linearalgebra
 
-* Introdução a linearalgebra::
-* Definições para linearalgebra::
+* IntroduÃ§Ã£o a linearalgebra::
+* DefiniÃ§Ãµes para linearalgebra::
 
 lsquares
 
-* Definições para lsquares::
+* DefiniÃ§Ãµes para lsquares::
 
 makeOrders
 
-* Definições para makeOrders::
+* DefiniÃ§Ãµes para makeOrders::
 
 mnewton
 
-* Definições para mnewton::
+* DefiniÃ§Ãµes para mnewton::
 
 numericalio
 
-* Introdução a numericalio::
-* Definições para numericalio::
+* IntroduÃ§Ã£o a numericalio::
+* DefiniÃ§Ãµes para numericalio::
 
 opsubst
 
-* Definições para opsubst::
+* DefiniÃ§Ãµes para opsubst::
 
 orthopoly
 
-* Introdução a polinómios ortogonais::
-* Definições para polinómios ortogonais::
+* IntroduÃ§Ã£o a polinÃ³mios ortogonais::
+* DefiniÃ§Ãµes para polinÃ³mios ortogonais::
 
 plotdf
 
-* Introdução a plotdf::
-* Definições para plotdf::
+* IntroduÃ§Ã£o a plotdf::
+* DefiniÃ§Ãµes para plotdf::
 
 romberg
 
-* Definições para romberg::
+* DefiniÃ§Ãµes para romberg::
 
 simplex
 
-* Introdução a simplex::
-* Definições para simplex::
+* IntroduÃ§Ã£o a simplex::
+* DefiniÃ§Ãµes para simplex::
 
 simplification
 
-* Introdução a simplification::
-* Definições para simplification::
+* IntroduÃ§Ã£o a simplification::
+* DefiniÃ§Ãµes para simplification::
 
 solve_rec
 
-* Introdução a solve_rec::
-* Definições para solve_rec::
+* IntroduÃ§Ã£o a solve_rec::
+* DefiniÃ§Ãµes para solve_rec::
 
 stats
 
-* Introdução a stats::
-* Definições para inference_result::
-* Definições para stats::
-* Definições para distribuições especiais::
+* IntroduÃ§Ã£o a stats::
+* DefiniÃ§Ãµes para inference_result::
+* DefiniÃ§Ãµes para stats::
+* DefiniÃ§Ãµes para distribuiÃ§Ãµes especiais::
 
 stirling
 
-* Definições para stirling::
+* DefiniÃ§Ãµes para stirling::
 
 stringproc
 
-* Introdução a manipulação de sequências de caracteres::
-* Definições para entrada e saída::
-* Definições para caracteres::
-* Definições para sequências de caracteres::
+* IntroduÃ§Ã£o a manipulaÃ§Ã£o de sequÃªncias de caracteres::
+* DefiniÃ§Ãµes para entrada e saÃ­da::
+* DefiniÃ§Ãµes para caracteres::
+* DefiniÃ§Ãµes para sequÃªncias de caracteres::
 
 unit
 
-* Introdução a Units::       
-* Definições para Units::
+* IntroduÃ§Ã£o a Units::       
+* DefiniÃ§Ãµes para Units::
 
 zeilberger
 
-* Introdução a zeilberger::
-* Definições para zeilberger::
+* IntroduÃ§Ã£o a zeilberger::
+* DefiniÃ§Ãµes para zeilberger::
 
 @comment @end detailmenu
 @end menu
@@ -542,15 +542,15 @@ zeilberger
 @c  nota bene: C-c C-u C-a and texinfo-multiple-files-update will delete
 @c  the detailed node listing!
 
-@node Introdução ao Maxima, Detecção e Relato de Erros, Top, Top
-@chapter Introdução ao Maxima
+@node IntroduÃ§Ã£o ao Maxima, DetecÃ§Ã£o e Relato de Erros, Top, Top
+@chapter IntroduÃ§Ã£o ao Maxima
 @include Introduction.texi
 
-@node Detecção e Relato de Erros, Ajuda, Introdução ao Maxima, Top
-@chapter Detecção e Relato de Erros
+@node DetecÃ§Ã£o e Relato de Erros, Ajuda, IntroduÃ§Ã£o ao Maxima, Top
+@chapter DetecÃ§Ã£o e Relato de Erros
 @include Bugs.texi
 
-@node Ajuda, Linha de Comandos, Detecção e Relato de Erros, Top
+@node Ajuda, Linha de Comandos, DetecÃ§Ã£o e Relato de Erros, Top
 @chapter Ajuda
 @include Help.texi
 
@@ -558,39 +558,39 @@ zeilberger
 @chapter Linha de Comandos
 @include Command.texi
 
-@node Operadores, Expressões, Linha de Comandos, Top
+@node Operadores, ExpressÃµes, Linha de Comandos, Top
 @chapter Operadores
 @include Operators.texi
 
-@node Expressões, Simplificação, Operadores, Top
-@chapter Expressões
+@node ExpressÃµes, SimplificaÃ§Ã£o, Operadores, Top
+@chapter ExpressÃµes
 @include Expressions.texi
 
-@node Simplificação, Criação de Gráficos, Expressões, Top
-@chapter Simplificação
+@node SimplificaÃ§Ã£o, CriaÃ§Ã£o de GrÃ¡ficos, ExpressÃµes, Top
+@chapter SimplificaÃ§Ã£o
 @include Simplification.texi
 
-@node Criação de Gráficos, Entrada e Saída, Simplificação, Top
-@chapter Criação de Gráficos
+@node CriaÃ§Ã£o de GrÃ¡ficos, Entrada e SaÃ­da, SimplificaÃ§Ã£o, Top
+@chapter CriaÃ§Ã£o de GrÃ¡ficos
 @include Plotting.texi
 
-@node Entrada e Saída, Ponto Flutuante, Criação de Gráficos, Top
-@chapter Entrada e Saída
+@node Entrada e SaÃ­da, Ponto Flutuante, CriaÃ§Ã£o de GrÃ¡ficos, Top
+@chapter Entrada e SaÃ­da
 @include Input.texi
 
-@node Ponto Flutuante, Contextos, Entrada e Saída, Top
+@node Ponto Flutuante, Contextos, Entrada e SaÃ­da, Top
 @chapter Ponto Flutuante
 @include Floating.texi
 
-@node Contextos, Polinómios, Ponto Flutuante, Top
+@node Contextos, PolinÃ³mios, Ponto Flutuante, Top
 @chapter Contextos
 @include Contexts.texi
 
-@node Polinómios, Constantes, Contextos, Top
-@chapter Polinómios
+@node PolinÃ³mios, Constantes, Contextos, Top
+@chapter PolinÃ³mios
 @include Polynomials.texi
 
-@node Constantes, Logaritmos, Polinómios, Top
+@node Constantes, Logaritmos, PolinÃ³mios, Top
 @chapter Constantes
 @include Constants.texi
 
@@ -598,55 +598,55 @@ zeilberger
 @chapter Logaritmos
 @include Logarithms.texi
 
-@node Trigonometria, Funções Especiais, Logaritmos, Top
+@node Trigonometria, FunÃ§Ãµes Especiais, Logaritmos, Top
 @chapter Trigonometria
 @include Trigonometric.texi
 
-@node Funções Especiais, Funções Elípticas, Trigonometria, Top
-@chapter Funções Especiais
+@node FunÃ§Ãµes Especiais, FunÃ§Ãµes ElÃ­pticas, Trigonometria, Top
+@chapter FunÃ§Ãµes Especiais
 @include Special.texi
 
-@node Funções Elípticas, Limites, Funções Especiais, Top
-@chapter Funções Elípticas
+@node FunÃ§Ãµes ElÃ­pticas, Limites, FunÃ§Ãµes Especiais, Top
+@chapter FunÃ§Ãµes ElÃ­pticas
 @include Elliptic.texi
 
-@node Limites, Diferenciação, Funções Elípticas, Top
+@node Limites, DiferenciaÃ§Ã£o, FunÃ§Ãµes ElÃ­pticas, Top
 @chapter Limites
 @include Limits.texi
 
-@node Diferenciação, Integração, Limites, Top
-@chapter Diferenciação
+@node DiferenciaÃ§Ã£o, IntegraÃ§Ã£o, Limites, Top
+@chapter DiferenciaÃ§Ã£o
 @include Differentiation.texi
 
-@node Integração, Equações, Diferenciação, Top
-@chapter Integração
+@node IntegraÃ§Ã£o, EquaÃ§Ãµes, DiferenciaÃ§Ã£o, Top
+@chapter IntegraÃ§Ã£o
 @include Integration.texi
 
-@node Equações, Equações Diferenciais, Integração, Top
-@chapter Equações
+@node EquaÃ§Ãµes, EquaÃ§Ãµes Diferenciais, IntegraÃ§Ã£o, Top
+@chapter EquaÃ§Ãµes
 @include Equations.texi
 
-@node Equações Diferenciais, Numérico, Equações, Top
-@chapter Equações Diferenciais
+@node EquaÃ§Ãµes Diferenciais, NumÃ©rico, EquaÃ§Ãµes, Top
+@chapter EquaÃ§Ãµes Diferenciais
 @include Differential.texi
 
-@node Numérico, Arrays, Equações Diferenciais, Top
-@chapter Numérico
+@node NumÃ©rico, Arrays, EquaÃ§Ãµes Diferenciais, Top
+@chapter NumÃ©rico
 @include Numerical.texi
 
-@node Arrays, Matrizes e Álgebra Linear, Numérico, Top
+@node Arrays, Matrizes e Ãlgebra Linear, NumÃ©rico, Top
 @chapter Arrays
 @include Arrays.texi
 
-@node Matrizes e Álgebra Linear, Funções Afins, Arrays, Top
-@chapter Matrizes e Álgebra Linear
+@node Matrizes e Ãlgebra Linear, FunÃ§Ãµes Afins, Arrays, Top
+@chapter Matrizes e Ãlgebra Linear
 @include Matrices.texi
 
-@node Funções Afins, itensor, Matrizes e Álgebra Linear, Top
-@chapter Funções Afins
+@node FunÃ§Ãµes Afins, itensor, Matrizes e Ãlgebra Linear, Top
+@chapter FunÃ§Ãµes Afins
 @include Affine.texi
 
-@node itensor, ctensor, Funções Afins, Top
+@node itensor, ctensor, FunÃ§Ãµes Afins, Top
 @chapter itensor
 @include Itensor.texi
 
@@ -654,35 +654,35 @@ zeilberger
 @chapter ctensor
 @include Ctensor.texi
 
-@node Pacote atensor, Séries, ctensor, Top
+@node Pacote atensor, SÃ©ries, ctensor, Top
 @chapter Pacote atensor
 @include Atensor.texi
 
-@node Séries, Teoria dos Números, Pacote atensor, Top
-@chapter Séries
+@node SÃ©ries, Teoria dos NÃºmeros, Pacote atensor, Top
+@chapter SÃ©ries
 @include Series.texi
 
-@node Teoria dos Números, Simetrias, Séries, Top
-@chapter Teoria dos Números
+@node Teoria dos NÃºmeros, Simetrias, SÃ©ries, Top
+@chapter Teoria dos NÃºmeros
 @include Number.texi
 
-@node Simetrias, Grupos, Teoria dos Números, Top
+@node Simetrias, Grupos, Teoria dos NÃºmeros, Top
 @chapter Simetrias
 @include Symmetries.texi
 
-@node Grupos, Ambiente em Tempo de Execução, Simetrias, Top
+@node Grupos, Ambiente em Tempo de ExecuÃ§Ã£o, Simetrias, Top
 @chapter Grupos
 @include Groups.texi
 
-@node Ambiente em Tempo de Execução, Opções Diversas, Grupos, Top
-@chapter Ambiente em Tempo de Execução
+@node Ambiente em Tempo de ExecuÃ§Ã£o, OpÃ§Ãµes Diversas, Grupos, Top
+@chapter Ambiente em Tempo de ExecuÃ§Ã£o
 @include Runtime.texi
 
-@node Opções Diversas, Regras e Modelos, Ambiente em Tempo de Execução, Top
-@chapter Opções Diversas
+@node OpÃ§Ãµes Diversas, Regras e Modelos, Ambiente em Tempo de ExecuÃ§Ã£o, Top
+@chapter OpÃ§Ãµes Diversas
 @include Miscellaneous.texi
 
-@node Regras e Modelos, Listas, Opções Diversas, Top
+@node Regras e Modelos, Listas, OpÃ§Ãµes Diversas, Top
 @chapter Regras e Modelos
 @include Rules.texi
 
@@ -690,23 +690,23 @@ zeilberger
 @chapter Listas
 @include Lists.texi
 
-@node Conjuntos, Definição de Função, Listas, Top
+@node Conjuntos, DefiniÃ§Ã£o de FunÃ§Ã£o, Listas, Top
 @chapter Conjuntos
 @include nset.texi
 
-@node Definição de Função, Fluxo de Programa, Conjuntos, Top
-@chapter Definição de Função
+@node DefiniÃ§Ã£o de FunÃ§Ã£o, Fluxo de Programa, Conjuntos, Top
+@chapter DefiniÃ§Ã£o de FunÃ§Ã£o
 @include Function.texi
 
-@node Fluxo de Programa, Depuração, Definição de Função, Top
+@node Fluxo de Programa, DepuraÃ§Ã£o, DefiniÃ§Ã£o de FunÃ§Ã£o, Top
 @chapter Fluxo de Programa
 @include Program.texi
 
-@node Depuração, augmented_lagrangian, Fluxo de Programa, Top
-@chapter Depuração
+@node DepuraÃ§Ã£o, augmented_lagrangian, Fluxo de Programa, Top
+@chapter DepuraÃ§Ã£o
 @include Debugging.texi
 
-@node augmented_lagrangian, bode, Depuração, Top
+@node augmented_lagrangian, bode, DepuraÃ§Ã£o, Top
 @chapter augmented_lagrangian
 @include augmented_lagrangian.texi
 
@@ -822,14 +822,14 @@ zeilberger
 @chapter unit
 @include unit.texi
 
-@node zeilberger, Índice de Funções e Variáveis, unit, Top
+@node zeilberger, Ãndice de FunÃ§Ãµes e VariÃ¡veis, unit, Top
 @chapter zeilberger
 @include zeilberger.texi
 
 @c end includes
 
-@node Índice de Funções e Variáveis,  , zeilberger, Top
-@appendix Índice de Funções e Variáveis
+@node Ãndice de FunÃ§Ãµes e VariÃ¡veis,  , zeilberger, Top
+@appendix Ãndice de FunÃ§Ãµes e VariÃ¡veis
 
 @printindex fn
 

@@ -1,24 +1,24 @@
 @c english version 1.4
 @menu
-* Introdução a plotdf::
-* Definições para plotdf::
+* IntroduÃ§Ã£o a plotdf::
+* DefiniÃ§Ãµes para plotdf::
 @end menu
 
-@node Introdução a plotdf, Definições para plotdf, plotdf, plotdf
-@section Introdução a plotdf
+@node IntroduÃ§Ã£o a plotdf, DefiniÃ§Ãµes para plotdf, plotdf, plotdf
+@section IntroduÃ§Ã£o a plotdf
 
-A função @code{plotdf} cria um gráfico do campo de
-direcções para uma Equação Diferencial
-Ordinária (EDO) de primeira ordem, ou para um sistema de duas EDO's
-autónomas, de primeira ordem.
+A funÃ§Ã£o @code{plotdf} cria um grÃ¡fico do campo de
+direcÃ§Ãµes para uma EquaÃ§Ã£o Diferencial
+OrdinÃ¡ria (EDO) de primeira ordem, ou para um sistema de duas EDO's
+autÃ³nomas, de primeira ordem.
 
-Por tratar-se de um pacote adicional, para poder usá-lo deverá
-primeiro carregá-lo com o comando @code{load("plotdf")}. Também é
-necessário que Xmaxima esteja instalado, inclusivamente se executar o
+Por tratar-se de um pacote adicional, para poder usÃ¡-lo deverÃ¡
+primeiro carregÃ¡-lo com o comando @code{load("plotdf")}. TambÃ©m Ã©
+necessÃ¡rio que Xmaxima esteja instalado, inclusivamente se executar o
 Maxima desde outra interface diferente.
 
-Para desenhar o campo de direcções de uma única EDO,
-essa equação deverá escrever-se na forma seguinte:
+Para desenhar o campo de direcÃ§Ãµes de uma Ãºnica EDO,
+essa equaÃ§Ã£o deverÃ¡ escrever-se na forma seguinte:
 @ifnottex
 @example
        dy
@@ -30,13 +30,13 @@ essa equação deverá escrever-se na forma seguinte:
 $${{dy}\over{dx}} = F(x,y)$$
 @end tex
 
-e a função @var{F} será dada como argumento para o
-comando @code{plotdf}. A variável independente tem que ser sempre
-@var{x} e a variável dependente @var{y}. A essas duas variáveis
-não poderá estar associado nenhum valor numérico.
+e a funÃ§Ã£o @var{F} serÃ¡ dada como argumento para o
+comando @code{plotdf}. A variÃ¡vel independente tem que ser sempre
+@var{x} e a variÃ¡vel dependente @var{y}. A essas duas variÃ¡veis
+nÃ£o poderÃ¡ estar associado nenhum valor numÃ©rico.
 
-Para desenhar o campo de direcções de um sistema
-autónomo de duas EDO's, as duas equações devem ser
+Para desenhar o campo de direcÃ§Ãµes de um sistema
+autÃ³nomo de duas EDO's, as duas equaÃ§Ãµes devem ser
 escritas na forma seguinte
 @ifnottex
 @example
@@ -49,210 +49,210 @@ escritas na forma seguinte
 $${{dx}\over{dt}} = G(x,y) \qquad {{dy}\over{dt}} = F(x,y)$$
 @end tex
 
-e o argumento para o comando @code{plotdf} será uma lista com duas
-expressões para as funções @var{F} e @var{G}.
+e o argumento para o comando @code{plotdf} serÃ¡ uma lista com duas
+expressÃµes para as funÃ§Ãµes @var{F} e @var{G}.
 
-Quando se trabalha com uma única equação,
+Quando se trabalha com uma Ãºnica equaÃ§Ã£o,
 @code{plotdf} assume implicitamente que @code{x=t} e @code{G(x,y)=1},
-transformando a equação num sistema autónomo com duas
-equações.
+transformando a equaÃ§Ã£o num sistema autÃ³nomo com duas
+equaÃ§Ãµes.
 
-@node Definições para plotdf,  , Introdução a plotdf, plotdf
-@section Definições para plotdf
+@node DefiniÃ§Ãµes para plotdf,  , IntroduÃ§Ã£o a plotdf, plotdf
+@section DefiniÃ§Ãµes para plotdf
 
-@deffn {Function} plotdf (@var{dydx},...opções...)
-@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...opções...)
+@deffn {Function} plotdf (@var{dydx},...opÃ§Ãµes...)
+@deffnx {Function} plotdf (@code{[}@var{dxdt},@var{dydt}@code{]},...opÃ§Ãµes...)
 
-Desenha um campo de direcções em duas
-dimensões @var{x} e @var{y}.
+Desenha um campo de direcÃ§Ãµes em duas
+dimensÃµes @var{x} e @var{y}.
 
-@var{dydx}, @var{dxdt} e @var{dydt} são expressões que dependem de
-@var{x} e @var{y}. Para além dessas duas variáveis, as duas
-expressões podem depender de um conjunto de parâmetros, com valores
-numéricos que são dados por meio da opção
-@code{parameters} (a sintaxe dessa opção explica-se mais
-para a frente), ou com um intervalo de possíveis valores
-definidos com a opção @var{sliders}.
+@var{dydx}, @var{dxdt} e @var{dydt} sÃ£o expressÃµes que dependem de
+@var{x} e @var{y}. Para alÃ©m dessas duas variÃ¡veis, as duas
+expressÃµes podem depender de um conjunto de parÃ¢metros, com valores
+numÃ©ricos que sÃ£o dados por meio da opÃ§Ã£o
+@code{parameters} (a sintaxe dessa opÃ§Ã£o explica-se mais
+para a frente), ou com um intervalo de possÃ­veis valores
+definidos com a opÃ§Ã£o @var{sliders}.
 
-Várias outras opções podem incluirem-se dentro do
-comando, ou serem seleccionadas no menú.  Clicando num ponto do
-gráfico faz com que seja desenhada a curva integral que passa por esse
+VÃ¡rias outras opÃ§Ãµes podem incluirem-se dentro do
+comando, ou serem seleccionadas no menÃº.  Clicando num ponto do
+grÃ¡fico faz com que seja desenhada a curva integral que passa por esse
 ponto; o mesmo pode ser feito dando as coordenadas do ponto com a
-opção @code{trajectory_at} dentro do comando plotdf. A
-direcção de integração pode controlar-se
-com a opção @code{direction}, que aceita valores de
-@emph{forward}, @emph{backward} ou @emph{both}. O número de passos
-realizados na integração numérica controla-se com a
-opção @code{nsteps} e o incremento do tempo em cada
-passo com a opção @code{tstep}. Usa-se o método de
-Adams Moulton para fazer a integração numérica;
-também é possível mudar para o método de Runge-Kutta
+opÃ§Ã£o @code{trajectory_at} dentro do comando plotdf. A
+direcÃ§Ã£o de integraÃ§Ã£o pode controlar-se
+com a opÃ§Ã£o @code{direction}, que aceita valores de
+@emph{forward}, @emph{backward} ou @emph{both}. O nÃºmero de passos
+realizados na integraÃ§Ã£o numÃ©rica controla-se com a
+opÃ§Ã£o @code{nsteps} e o incremento do tempo em cada
+passo com a opÃ§Ã£o @code{tstep}. Usa-se o mÃ©todo de
+Adams Moulton para fazer a integraÃ§Ã£o numÃ©rica;
+tambÃ©m Ã© possÃ­vel mudar para o mÃ©todo de Runge-Kutta
 de quarta ordem com ajuste de passos.
 
-@b{Menú da janela do gráfico:}
+@b{MenÃº da janela do grÃ¡fico:}
 
-O menú da janela gráfica inclui as seguintes opções:
+O menÃº da janela grÃ¡fica inclui as seguintes opÃ§Ãµes:
 @emph{Zoom}, que permite mudar o comportamento do rato, de maneira que
-servirá para fazer zoom na região do gráfico clicando com o
-botão esquerdo. Cada clic alarga a imagem mantendo no centro dela o
+servirÃ¡ para fazer zoom na regiÃ£o do grÃ¡fico clicando com o
+botÃ£o esquerdo. Cada clic alarga a imagem mantendo no centro dela o
 ponto onde se clicou.  Mantendo carregada a tecla @key{Shift} enquanto
 se faz clic, faz diminuir o tamanho. Para continuar a desenhar
-trajectórias com um clic, selecciona-se a opção
-@emph{Integrate} do menú.
+trajectÃ³rias com um clic, selecciona-se a opÃ§Ã£o
+@emph{Integrate} do menÃº.
 
-A opção @emph{Config} do menú pode usar-se para mudar
-a(s) EDO(S) e fazer alguns outros ajustes. Após ter feito alguma
-alteração, deverá usar a opção
-@emph{Replot} para activar as novas configurações.  Se
-introduzir duas coordenadas no campo @emph{Trajectory at} do menú de
-diálogo do @emph{Config}, e a seguir carregar na tecla @key{Enter},
-será acrescentada mais uma curva integral.  Se seleccionar a
-opção @emph{Replot}, só será apresentada a última
+A opÃ§Ã£o @emph{Config} do menÃº pode usar-se para mudar
+a(s) EDO(S) e fazer alguns outros ajustes. ApÃ³s ter feito alguma
+alteraÃ§Ã£o, deverÃ¡ usar a opÃ§Ã£o
+@emph{Replot} para activar as novas configuraÃ§Ãµes.  Se
+introduzir duas coordenadas no campo @emph{Trajectory at} do menÃº de
+diÃ¡logo do @emph{Config}, e a seguir carregar na tecla @key{Enter},
+serÃ¡ acrescentada mais uma curva integral.  Se seleccionar a
+opÃ§Ã£o @emph{Replot}, sÃ³ serÃ¡ apresentada a Ãºltima
 curva integral seleccionada.
 
-Mantendo o botão direito carregado enquanto se desloca o cursor,
-poderá arrastar o gráfico na horizontal e na vertical.  Outros
-parâmetros, por exemplo, o número de passos, o valor inicial de
+Mantendo o botÃ£o direito carregado enquanto se desloca o cursor,
+poderÃ¡ arrastar o grÃ¡fico na horizontal e na vertical.  Outros
+parÃ¢metros, por exemplo, o nÃºmero de passos, o valor inicial de
 @var{t}, as coordenadas do centro e o raio, podem ser alterados no
-sub-menú da opção @emph{Config}.
+sub-menÃº da opÃ§Ã£o @emph{Config}.
 
-Com a opção @emph{Save}, pode imprimir-se o
-gráfico numa impressora Postscript ou gravar uma cópia num ficheiro
-Postscript. Para optar entre impressão ou gravação em
-ficheiro, selecciona-se @emph{Print Options} na janela de diálogo de
-@emph{Config}. Após ter preenchido os campos da janela de diálogo de
-@emph{Save}, será necessário seleccionar a opção
-@emph{Save} do primeiro menú para criar o ficheiro ou imprimir o
-gráfico.
+Com a opÃ§Ã£o @emph{Save}, pode imprimir-se o
+grÃ¡fico numa impressora Postscript ou gravar uma cÃ³pia num ficheiro
+Postscript. Para optar entre impressÃ£o ou gravaÃ§Ã£o em
+ficheiro, selecciona-se @emph{Print Options} na janela de diÃ¡logo de
+@emph{Config}. ApÃ³s ter preenchido os campos da janela de diÃ¡logo de
+@emph{Save}, serÃ¡ necessÃ¡rio seleccionar a opÃ§Ã£o
+@emph{Save} do primeiro menÃº para criar o ficheiro ou imprimir o
+grÃ¡fico.
 
-@b{Opções gráficas:}
+@b{OpÃ§Ãµes grÃ¡ficas:}
 
-A função @code{plotdf} admite varias
-opções, cada uma sendo uma lista de duas ou mais
-elementos. O primeiro elemento é o nome da opção, e o
-resto estará formado pelos argumentos para essa opção.
+A funÃ§Ã£o @code{plotdf} admite varias
+opÃ§Ãµes, cada uma sendo uma lista de duas ou mais
+elementos. O primeiro elemento Ã© o nome da opÃ§Ã£o, e o
+resto estarÃ¡ formado pelos argumentos para essa opÃ§Ã£o.
 
-A função @code{plotdf} reconhece as seguintes
-opções:
+A funÃ§Ã£o @code{plotdf} reconhece as seguintes
+opÃ§Ãµes:
 
 @itemize @bullet
 @item
 @dfn{tstep} estabelece a amplitude dos
-incrementos da variável independente @var{t}, utilizados para calcular
-as curvas integrais. Se for dada só uma expressão @var{dydx}, a
-variável @var{x} será directamente proporcional a @var{t}.
-O valor por omissão é  0.1.
+incrementos da variÃ¡vel independente @var{t}, utilizados para calcular
+as curvas integrais. Se for dada sÃ³ uma expressÃ£o @var{dydx}, a
+variÃ¡vel @var{x} serÃ¡ directamente proporcional a @var{t}.
+O valor por omissÃ£o Ã©  0.1.
 
 @item
-@dfn{nsteps} estabelece o número de passos de
-comprimento @code{tstep} que se utilizarão na variável independente
+@dfn{nsteps} estabelece o nÃºmero de passos de
+comprimento @code{tstep} que se utilizarÃ£o na variÃ¡vel independente
 para calcular a curva integral.
-O valor por omissão é 100.
+O valor por omissÃ£o Ã© 100.
 
 @item
 @dfn{direction} estabelece a
-direcção da variável independente que será seguida
-para calcular uma curva integral.  Os valores possí são:
-@code{forward}, para fazer que a variável independente aumente
+direcÃ§Ã£o da variÃ¡vel independente que serÃ¡ seguida
+para calcular uma curva integral.  Os valores possÃ­ sÃ£o:
+@code{forward}, para fazer que a variÃ¡vel independente aumente
 @code{nsteps} vezes, com incrementos @code{tstep}; @code{backward}, para
-fazer que a variável independente diminua; @code{both}, para estender
+fazer que a variÃ¡vel independente diminua; @code{both}, para estender
 a curva integral @code{nsteps} passos para a frente e @code{nsteps}
-passos para atrás.  As palavras @code{right} e @code{left} podem serem
-usadas como sinónimos de @code{forward} e @code{backward}.
-O valor por omissão é @code{both}.
+passos para atrÃ¡s.  As palavras @code{right} e @code{left} podem serem
+usadas como sinÃ³nimos de @code{forward} e @code{backward}.
+O valor por omissÃ£o Ã© @code{both}.
 
 @item
 @dfn{tinitial} estabelece o valor inicial da
-variável @var{t} utilizado para calcular curvas integrais. Já que as
-equações diferenciais são autónomas, esta
-opção só aparecerá nos gráficos das curvas em
-função de @var{t}.
-O valor por omissão é 0.
+variÃ¡vel @var{t} utilizado para calcular curvas integrais. JÃ¡ que as
+equaÃ§Ãµes diferenciais sÃ£o autÃ³nomas, esta
+opÃ§Ã£o sÃ³ aparecerÃ¡ nos grÃ¡ficos das curvas em
+funÃ§Ã£o de @var{t}.
+O valor por omissÃ£o Ã© 0.
 
 @item
 @dfn{versus_t} utiliza-se para criar uma segunda
-janela gráfica, com o gráfico de uma curva integral, como duas
-funções @var{x}, @var{y}, de variável independente
+janela grÃ¡fica, com o grÃ¡fico de uma curva integral, como duas
+funÃ§Ãµes @var{x}, @var{y}, de variÃ¡vel independente
 @var{t}. Se for dado a @code{versus_t} qualquer valor diferente de 0,
-mostrar-se-á a segunda janela gráfica, que inclui outro menú,
+mostrar-se-Ã¡ a segunda janela grÃ¡fica, que inclui outro menÃº,
 similar ao da janela principal.
-O valor por omissão é 0.
+O valor por omissÃ£o Ã© 0.
 
 @item
 @dfn{trajectory_at} estabelece as coordenadas
 @var{xinitial} e @var{yinitial} para o ponto inicial da curva integral.
-Não tem atribuído nenhum valor por omissão.
+NÃ£o tem atribuÃ­do nenhum valor por omissÃ£o.
 
 @item
 @dfn{parameters} estabelece uma lista de
-parâmetros, junto com os seus valores numéricos, que são
-utilizados na definição da equação
-diferencial. Os nomes dos parâmetros e os seus valores devem
-escrever-se em formato de cadeia de caracteres como uma sequência de
-pares @code{nome=valor} separados por vírgulas.
+parÃ¢metros, junto com os seus valores numÃ©ricos, que sÃ£o
+utilizados na definiÃ§Ã£o da equaÃ§Ã£o
+diferencial. Os nomes dos parÃ¢metros e os seus valores devem
+escrever-se em formato de cadeia de caracteres como uma sequÃªncia de
+pares @code{nome=valor} separados por vÃ­rgulas.
 
 @item
 @dfn{sliders} estabelece uma lista de
-parâmetros que poderão ser alterados interactivamente usando barras
-com sliders, assim como os intervalos de variação dos
-ditos parâmetros.  Os nomes dos parâmetros e os seus intervalos
+parÃ¢metros que poderÃ£o ser alterados interactivamente usando barras
+com sliders, assim como os intervalos de variaÃ§Ã£o dos
+ditos parÃ¢metros.  Os nomes dos parÃ¢metros e os seus intervalos
 devem escrever-se em formato de cadeia de caracteres como uma
-sequência de pares @code{nome=min:max} separados por
-vírgulas.
+sequÃªncia de pares @code{nome=min:max} separados por
+vÃ­rgulas.
 
 @item
 @dfn{xfun} estabelece uma cadeia de caracteres
-com funções de @var{x} separadas por ponto e
-vírgula para ser representadas por cima do campo de
-direcções. Essas funções serão
-interpretadas por Tcl, e não por Maxima.
+com funÃ§Ãµes de @var{x} separadas por ponto e
+vÃ­rgula para ser representadas por cima do campo de
+direcÃ§Ãµes. Essas funÃ§Ãµes serÃ£o
+interpretadas por Tcl, e nÃ£o por Maxima.
 
 @item
-@dfn{xradius} é metade do comprimento do
-intervalo de valores a representar na direcção x.
-O valor por omissão é 10.
+@dfn{xradius} Ã© metade do comprimento do
+intervalo de valores a representar na direcÃ§Ã£o x.
+O valor por omissÃ£o Ã© 10.
 
 @item
-@dfn{yradius} é metade do comprimento do
-intervalo de valores a representar na direcção y.
-O valor por omissão é 10.
+@dfn{yradius} Ã© metade do comprimento do
+intervalo de valores a representar na direcÃ§Ã£o y.
+O valor por omissÃ£o Ã© 10.
 
 @item
-@dfn{xcenter} é a coordenada x do ponto
-situado no centro do gráfico.
-O valor por omissão é 0.
+@dfn{xcenter} Ã© a coordenada x do ponto
+situado no centro do grÃ¡fico.
+O valor por omissÃ£o Ã© 0.
 
 @item
-@dfn{ycenter} é a coordenada y do ponto
-situado no centro do gráfico.
-O valor por omissão é 0.
+@dfn{ycenter} Ã© a coordenada y do ponto
+situado no centro do grÃ¡fico.
+O valor por omissÃ£o Ã© 0.
 
 @item
-@dfn{width} estabelece a largura da janela gráfica em
+@dfn{width} estabelece a largura da janela grÃ¡fica em
 pixels.
-O valor por omissão é 500.
+O valor por omissÃ£o Ã© 500.
 
 @item
-@dfn{height} estabelece a altura da janela gráfica em
+@dfn{height} estabelece a altura da janela grÃ¡fica em
 pixels.
-O valor por omissão é 500.
+O valor por omissÃ£o Ã© 500.
 
 @end itemize
 
 @b{Exemplos:}
 
 NOTA: Em alguns casos, dependendo da interface usada para executar o
-Maxima, as funções que usam @code{openmath}, em
+Maxima, as funÃ§Ãµes que usam @code{openmath}, em
 particular @code{plotdf}, podem desencadear um bug se terminarem em
-ponto e vírgula, e não com o símbolo de
-dólar. Para evitar problemas, usaremos o símbolo de
-dóla nos exemplos a seguir.
+ponto e vÃ­rgula, e nÃ£o com o sÃ­mbolo de
+dÃ³lar. Para evitar problemas, usaremos o sÃ­mbolo de
+dÃ³la nos exemplos a seguir.
 
 @itemize @bullet
 @item
-Para mostrar o campo de direcções da
-equação diferencial @math{y' = exp(-x) + y} e a
-solução que passa por @math{(2, -0.1)}:
+Para mostrar o campo de direcÃ§Ãµes da
+equaÃ§Ã£o diferencial @math{y' = exp(-x) + y} e a
+soluÃ§Ã£o que passa por @math{(2, -0.1)}:
 @example
 (%i1) load("plotdf")$
 
@@ -264,27 +264,27 @@ solução que passa por @math{(2, -0.1)}:
 @end ifnotinfo
 
 @item
-Para mostrar o campo de direcções da
-equação @math{diff(y,x) = x - y^2} e a
-solução com condição inicial @math{y(-1)
+Para mostrar o campo de direcÃ§Ãµes da
+equaÃ§Ã£o @math{diff(y,x) = x - y^2} e a
+soluÃ§Ã£o com condiÃ§Ã£o inicial @math{y(-1)
 = 3}, pode utilizar-se o comando:
 @example
 (%i3) plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],
           [trajectory_at,-1,3], [direction,forward],
           [yradius,5],[xcenter,6]);
 @end example
-O gráfico também mostra a função @math{y = sqrt(x)}.
+O grÃ¡fico tambÃ©m mostra a funÃ§Ã£o @math{y = sqrt(x)}.
 
 @ifnotinfo
 @figure{plotdf2}
 @end ifnotinfo
 
 @item
-O exemplo seguinte mostra o campo de direcções de um
-oscilador harmónico, definido pelas equações
+O exemplo seguinte mostra o campo de direcÃ§Ãµes de um
+oscilador harmÃ³nico, definido pelas equaÃ§Ãµes
 @math{dx/dt = y} e @math{dy/dt = -k*x/m}, e a curva integral que passa
-por @math{(x,y) = (6,0)}, com uma barra de slider que permitirá mudar
-o valor de @math{m} interactivamente (@math{k} permanecerá fixo em 2):
+por @math{(x,y) = (6,0)}, com uma barra de slider que permitirÃ¡ mudar
+o valor de @math{m} interactivamente (@math{k} permanecerÃ¡ fixo em 2):
 @example
 (%i4) plotdf([y,-k*x/m],[parameters,"m=2,k=2"],
             [sliders,"m=1:5"], [trajectory_at,6,0]);
@@ -295,9 +295,9 @@ o valor de @math{m} interactivamente (@math{k} permanecerá fixo em 2):
 @end ifnotinfo
 
 @item
-Para representar o campo de direcções da
-equação de Duffing, @math{m*x''+c*x'+k*x+b*x^3 = 0},
-introduz-se a variável @math{y=x'} e faz-se:
+Para representar o campo de direcÃ§Ãµes da
+equaÃ§Ã£o de Duffing, @math{m*x''+c*x'+k*x+b*x^3 = 0},
+introduz-se a variÃ¡vel @math{y=x'} e faz-se:
 @example
 (%i5) plotdf([y,-(k*x + c*y + b*x^3)/m],
               [parameters,"k=-1,m=1.0,c=0,b=1"],
@@ -309,11 +309,11 @@ introduz-se a variável @math{y=x'} e faz-se:
 @end ifnotinfo
 
 @item
-O campo de direcções dum pêndulo amortecido, incluindo
-a solução para condições iniciales
+O campo de direcÃ§Ãµes dum pÃªndulo amortecido, incluindo
+a soluÃ§Ã£o para condiÃ§Ãµes iniciales
 dadas, com uma barra de slider que pode usar-se para mudar o valor da
-masa, @math{m}, e com o gráfico das duas variáveis de estado em
-função do tempo:
+masa, @math{m}, e com o grÃ¡fico das duas variÃ¡veis de estado em
+funÃ§Ã£o do tempo:
 
 @example
 (%i6) plotdf([y,-g*sin(x)/l - b*y/m/l],

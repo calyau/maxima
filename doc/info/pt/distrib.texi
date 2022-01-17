@@ -1,25 +1,25 @@
 @c Language: Portuguese
 @c /distrib.texi/1.3/Mon Jan  1 07:18:27 2007//
 @menu
-* Introdução a distrib::
-* Definições para distribuições contínuas::
-* Definições para distribuições discretas::
+* IntroduÃ§Ã£o a distrib::
+* DefiniÃ§Ãµes para distribuiÃ§Ãµes contÃ­nuas::
+* DefiniÃ§Ãµes para distribuiÃ§Ãµes discretas::
 @end menu
 
-@node Introdução a distrib, Definições para distribuições contínuas, distrib, distrib
-@section Introdução a distrib
+@node IntroduÃ§Ã£o a distrib, DefiniÃ§Ãµes para distribuiÃ§Ãµes contÃ­nuas, distrib, distrib
+@section IntroduÃ§Ã£o a distrib
 
 
-Pacote @code{distrib} contém um conjunto de funções para fazer cálculos 
-envolvendo probabilidades de modelos de uma única variável estatística e de 
-ambos os tipos discreta e contínua. 
+Pacote @code{distrib} contÃ©m um conjunto de funÃ§Ãµes para fazer cÃ¡lculos 
+envolvendo probabilidades de modelos de uma Ãºnica variÃ¡vel estatÃ­stica e de 
+ambos os tipos discreta e contÃ­nua. 
 
-O que segue é um curto resumo de definiçoes básicas
-relacionadas à teoria das probabilidades.
+O que segue Ã© um curto resumo de definiÃ§oes bÃ¡sicas
+relacionadas Ã  teoria das probabilidades.
 
-Seja @math{f(x)} a @var{função densidade de probabilidade} absoluta 
-de uma variável aleatória contínua @math{X}. A @var{função 
-distribuição de probabilidade} é definida como
+Seja @math{f(x)} a @var{funÃ§Ã£o densidade de probabilidade} absoluta 
+de uma variÃ¡vel aleatÃ³ria contÃ­nua @math{X}. A @var{funÃ§Ã£o 
+distribuiÃ§Ã£o de probabilidade} Ã© definida como
 @ifhtml
 @example
                        x
@@ -45,9 +45,9 @@ distribuição de probabilidade} é definida como
 @tex
 $$F\left(x\right)=\int_{ -\infty }^{x}{f\left(u\right)\;du}$$
 @end tex
-que é igual à probabilidade @var{Pr(X <= x)}.
+que Ã© igual Ã  probabilidade @var{Pr(X <= x)}.
 
-O valor @var{médio} é um parâmetro de localização e está definido como
+O valor @var{mÃ©dio} Ã© um parÃ¢metro de localizaÃ§Ã£o e estÃ¡ definido como
 @ifhtml
 @example
                      inf
@@ -74,7 +74,7 @@ O valor @var{médio} é um parâmetro de localização e está definido como
 $$E\left[X\right]=\int_{ -\infty }^{\infty }{x\,f\left(x\right)\;dx}$$
 @end tex
 
-A @var{variância} é uma medida de variação,
+A @var{variÃ¢ncia} Ã© uma medida de variaÃ§Ã£o,
 @ifhtml
 @example
                  inf
@@ -101,11 +101,11 @@ A @var{variância} é uma medida de variação,
 $$V\left[X\right]=\int_{ -\infty }^{\infty }{f\left(x\right)\,\left(x
  -E\left[X\right]\right)^2\;dx}$$
 @end tex
-que é um número real positivo. A raíz quadrada da variância é o
-@var{desvio padrão}, @math{D[X]=sqrt(V[X])}, e esse @var{desvio padrão}
-é outra medida de variação.
+que Ã© um nÃºmero real positivo. A raÃ­z quadrada da variÃ¢ncia Ã© o
+@var{desvio padrÃ£o}, @math{D[X]=sqrt(V[X])}, e esse @var{desvio padrÃ£o}
+Ã© outra medida de variaÃ§Ã£o.
 
-O @var{coeficiente de assimetria} é uma medida de não simetria,
+O @var{coeficiente de assimetria} Ã© uma medida de nÃ£o simetria,
 @ifhtml
 @example
                  inf
@@ -133,7 +133,7 @@ $$SK\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
  \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}$$
 @end tex
 
-E o @var{coeficiente de curtose} mede o grau de achatamento de uma distribuição,
+E o @var{coeficiente de curtose} mede o grau de achatamento de uma distribuiÃ§Ã£o,
 @ifhtml
 @example
                  inf
@@ -160,14 +160,14 @@ E o @var{coeficiente de curtose} mede o grau de achatamento de uma distribuição,
 $$KU\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
  \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3$$
 @end tex
-Se @math{X} for gaussiana, @math{KU[X]=0}. De facto, ambos assimetria e curtose são
-parâmetros de ajuste usados para medir a não gaussianidade de uma distribuição.
+Se @math{X} for gaussiana, @math{KU[X]=0}. De facto, ambos assimetria e curtose sÃ£o
+parÃ¢metros de ajuste usados para medir a nÃ£o gaussianidade de uma distribuiÃ§Ã£o.
 
-Se a variável aleatória @math{X} for discreta, a função densidade
+Se a variÃ¡vel aleatÃ³ria @math{X} for discreta, a funÃ§Ã£o densidade
 de probabilidade, ou simplesmente @var{probabilidade}, @math{f(x)} toma valores
-positivos dentro de certos conjuntos contáveis de números @math{x_i},
-e zero em caso contrário. Nesse caso, a função
-distribuição de probabilidade é
+positivos dentro de certos conjuntos contÃ¡veis de nÃºmeros @math{x_i},
+e zero em caso contrÃ¡rio. Nesse caso, a funÃ§Ã£o
+distribuiÃ§Ã£o de probabilidade Ã©
 @ifhtml
 @example
                        ====
@@ -194,7 +194,7 @@ distribuição de probabilidade é
 $$F\left(x\right)=\sum_{x_{i}\leq x}{f\left(x_{i}\right)}$$
 @end tex
 
-A média, variância, desvio padrão, coeficiente de assimetria e coeficiente de curtose tomam a forma
+A mÃ©dia, variÃ¢ncia, desvio padrÃ£o, coeficiente de assimetria e coeficiente de curtose tomam a forma
 @ifhtml
 @example
                        ====
@@ -316,18 +316,18 @@ $$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
 @end tex
 respectively.
 
-O Pacote @code{distrib} inclui funções para simulação de
-variáveis estatísticas pseudo-aleatórias. Algumas dessas funções
-fazem uso de variáveis opcionais que indicam o algoritmo a ser usado.
-O método inverso genérico (baseado no facto que se
-@var{u} for um número aleatório uniforme no intervalo @math{(0,1)},
-então @var{F^(-1)(u)} é uma variável estatística pseudo-aleatória
-com distribuição @math{F}) está implementada para a maioria dos casos;
-isso é um método subóptimo em termos de cronometragem, mas útil para
-fazer comparações com outros algoritmos. Nesse exemplo, a
+O Pacote @code{distrib} inclui funÃ§Ãµes para simulaÃ§Ã£o de
+variÃ¡veis estatÃ­sticas pseudo-aleatÃ³rias. Algumas dessas funÃ§Ãµes
+fazem uso de variÃ¡veis opcionais que indicam o algoritmo a ser usado.
+O mÃ©todo inverso genÃ©rico (baseado no facto que se
+@var{u} for um nÃºmero aleatÃ³rio uniforme no intervalo @math{(0,1)},
+entÃ£o @var{F^(-1)(u)} Ã© uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria
+com distribuiÃ§Ã£o @math{F}) estÃ¡ implementada para a maioria dos casos;
+isso Ã© um mÃ©todo subÃ³ptimo em termos de cronometragem, mas Ãºtil para
+fazer comparaÃ§Ãµes com outros algoritmos. Nesse exemplo, a
 @code{perandom_formance} dos algoritmos @code{ahrens_cheng} e
-@code{inverse} em simular  variáveis chi-quadradas (letra grega "chi") 
-são comparadas por meio de seus histogramas:
+@code{inverse} em simular  variÃ¡veis chi-quadradas (letra grega "chi") 
+sÃ£o comparadas por meio de seus histogramas:
 
 @example
 (%i1) load(distrib)$
@@ -342,36 +342,36 @@ Evaluation took 0.00 seconds (0.00 elapsed) using 32 bytes.
 Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
 @end example
 
-Com o objectivo de fazer comparações visuais entre algoritmos para uma
-variável estatística discreta, a função @code{barsplot} do pacote
+Com o objectivo de fazer comparaÃ§Ãµes visuais entre algoritmos para uma
+variÃ¡vel estatÃ­stica discreta, a funÃ§Ã£o @code{barsplot} do pacote
 @code{descriptive} pode ser usada.
 
-Note que algum trabalho resta para ser realizado, uma vez que essas funções
-de simulação não foram ainda verificadas pelos mais rigorosamente
+Note que algum trabalho resta para ser realizado, uma vez que essas funÃ§Ãµes
+de simulaÃ§Ã£o nÃ£o foram ainda verificadas pelos mais rigorosamente
 melhores dos testes de ajuste.
 
-Por favor, consulte um manual introdutório sobre probabilidade e estatística
-para maiores informações sobre todo esse material matemático.
+Por favor, consulte um manual introdutÃ³rio sobre probabilidade e estatÃ­stica
+para maiores informaÃ§Ãµes sobre todo esse material matemÃ¡tico.
 
-Existe uma convenção de nome no pacote @code{distrib}. Todo nome de
-função tem duas partes, a primeira faz referência à função
-ou ao parâmetro que queremos calcular,
+Existe uma convenÃ§Ã£o de nome no pacote @code{distrib}. Todo nome de
+funÃ§Ã£o tem duas partes, a primeira faz referÃªncia Ã  funÃ§Ã£o
+ou ao parÃ¢metro que queremos calcular,
 @example
-Funções:
-   função densidade de probabilidade            (pdf_*)
-   função distribuição de probabilidade       (cdf_*)
+FunÃ§Ãµes:
+   funÃ§Ã£o densidade de probabilidade            (pdf_*)
+   funÃ§Ã£o distribuiÃ§Ã£o de probabilidade       (cdf_*)
    Quartil                    (quantile_*)
-   Média                        (mean_*)
-   Variância                    (var_*)
-   Desvio padrão          (std_*)
+   MÃ©dia                        (mean_*)
+   VariÃ¢ncia                    (var_*)
+   Desvio padrÃ£o          (std_*)
    Coeficiente de assimetria        (skewness_*)
    Coeficiente de curtose        (kurtosis_*)
-   Variável estatística pseudo-aleatória              (random_*)
+   VariÃ¡vel estatÃ­stica pseudo-aleatÃ³ria              (random_*)
 @end example
 
-A segunda parte é uma referência explícita ao modelo probabilístico,
+A segunda parte Ã© uma referÃªncia explÃ­cita ao modelo probabilÃ­stico,
 @example
-Distribuíções contínuas:
+DistribuÃ­Ã§Ãµes contÃ­nuas:
    Normal              (*normal)
    Student             (*student_t)
    Chi^2               (*chi2)
@@ -380,8 +380,8 @@ Distribuíções contínuas:
    Lognormal           (*lognormal)
    Gama               (*gamma)
    Beta                (*beta)
-   contínua uniforme  (*continuous_uniform)
-   Logística            (*logistic)
+   contÃ­nua uniforme  (*continuous_uniform)
+   LogÃ­stica            (*logistic)
    Pareto              (*pareto)
    Weibull             (*weibull)
    Rayleigh            (*rayleigh)
@@ -389,46 +389,46 @@ Distribuíções contínuas:
    Cauchy              (*cauchy)
    Gumbel              (*gumbel)
 
-Distribuições discretas:
+DistribuiÃ§Ãµes discretas:
    Binomial             (*binomial)
    Poisson              (*poisson)
    Bernoulli            (*bernoulli)
-   Geométrica            (*geometric)
+   GeomÃ©trica            (*geometric)
    discreta uniforme     (*discrete_uniform)
-   hipergeométrica       (*hypergeometric)
+   hipergeomÃ©trica       (*hypergeometric)
    Binomial Negativa    (*negative_binomial)
 @end example
 
-Por exemplo, @code{pdf_student_t(x,n)} é a função densidade de
-probabilidade da distribuição de Student com @var{n} graus de liberdade,
-@code{std_pareto(a,b)} é o desvio padrão da distribuição de
-Pareto com parâmetros @var{a} e @var{b} e @code{kurtosis_poisson(m)}
-é o coeficiente de curtose da distribuição de Poisson com média @var{m}.
+Por exemplo, @code{pdf_student_t(x,n)} Ã© a funÃ§Ã£o densidade de
+probabilidade da distribuiÃ§Ã£o de Student com @var{n} graus de liberdade,
+@code{std_pareto(a,b)} Ã© o desvio padrÃ£o da distribuiÃ§Ã£o de
+Pareto com parÃ¢metros @var{a} e @var{b} e @code{kurtosis_poisson(m)}
+Ã© o coeficiente de curtose da distribuiÃ§Ã£o de Poisson com mÃ©dia @var{m}.
 
 
-Para poder usar o pacote @code{distrib} precisa primeiro carregá-lo
+Para poder usar o pacote @code{distrib} precisa primeiro carregÃ¡-lo
 escrevendo
 @example
 (%i1) load(distrib)$
 @end example
 
-Para comentários, melhorias ou sugestões, por favor contacte o autor em
+Para comentÃ¡rios, melhorias ou sugestÃµes, por favor contacte o autor em
 @var{'mario AT edu DOT xunta DOT es'}.
 
-@node Definições para distribuições contínuas, Definições para distribuições discretas, Introdução a distrib, distrib
-@section Definições para distribuições contínuas
+@node DefiniÃ§Ãµes para distribuiÃ§Ãµes contÃ­nuas, DefiniÃ§Ãµes para distribuiÃ§Ãµes discretas, IntroduÃ§Ã£o a distrib, distrib
+@section DefiniÃ§Ãµes para distribuiÃ§Ãµes contÃ­nuas
 
-@deffn {Função} pdf_normal (@var{x},@var{m},@var{s})
-Retorna o valor em @var{x} da função densidade de probabilidade
-de uma  variável aleatória @math{Normal(m,s)}, com @math{s>0}. Para fazer
-uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_normal (@var{x},@var{m},@var{s})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade
+de uma  variÃ¡vel aleatÃ³ria @math{Normal(m,s)}, com @math{s>0}. Para fazer
+uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_normal (@var{x},@var{m},@var{s})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma  variável aleatória @math{Normal(m,s)}, com @math{s>0}. Essa
-função é definida em termos de funções de erro internas do
+@deffn {FunÃ§Ã£o} cdf_normal (@var{x},@var{m},@var{s})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma  variÃ¡vel aleatÃ³ria @math{Normal(m,s)}, com @math{s>0}. Essa
+funÃ§Ã£o Ã© definida em termos de funÃ§Ãµes de erro internas do
 Maxima,
 @code{erf}.
 
@@ -446,101 +446,101 @@ Maxima,
                              2          2
 @end example
 
-Veja também @code{erf}.
+Veja tambÃ©m @code{erf}.
 @end deffn
 
 
-@deffn {Função} quantile_normal (@var{q},@var{m},@var{s})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Normal(m,s)}, com
-@math{s>0}; em outras palavras, isso é o inverso de @code{cdf_normal}. O argumento
-@var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} quantile_normal (@var{q},@var{m},@var{s})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Normal(m,s)}, com
+@math{s>0}; em outras palavras, isso Ã© o inverso de @code{cdf_normal}. O argumento
+@var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_normal (@var{m},@var{s})
-Retorna a média de uma  variável aleatória @math{Normal(m,s)}, com
-@math{s>0}, a saber @var{m}. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} mean_normal (@var{m},@var{s})
+Retorna a mÃ©dia de uma  variÃ¡vel aleatÃ³ria @math{Normal(m,s)}, com
+@math{s>0}, a saber @var{m}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_normal (@var{m},@var{s})
-Retorna a variância de uma  variável aleatória @math{Normal(m,s)}, com
-@math{s>0}, a saber @var{s^2}. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} var_normal (@var{m},@var{s})
+Retorna a variÃ¢ncia de uma  variÃ¡vel aleatÃ³ria @math{Normal(m,s)}, com
+@math{s>0}, a saber @var{s^2}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Função} std_normal (@var{m},@var{s})
-Retorna o desvio padrão de uma  variável aleatória @math{Normal(m,s)},
-com @math{s>0}, a saber @var{s}. Para fazer uso dessa função, escreva
-primeiramente @code{load(distrib)}.
-@end deffn
-
-
-@deffn {Função} skewness_normal (@var{m},@var{s})
-Retorna o coeficiente de assimetria de uma  variável aleatória @math{Normal(m,s)},
-com @math{s>0}, que é sempre igual  a 0. Para fazer uso dessa função,escreva
+@deffn {FunÃ§Ã£o} std_normal (@var{m},@var{s})
+Retorna o desvio padrÃ£o de uma  variÃ¡vel aleatÃ³ria @math{Normal(m,s)},
+com @math{s>0}, a saber @var{s}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_normal (@var{m},@var{s})
-Retorna o coeficiente de curtose de uma  variável aleatória @math{Normal(m,s)},
-com @math{s>0}, que é sempre igual  a 0. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} skewness_normal (@var{m},@var{s})
+Retorna o coeficiente de assimetria de uma  variÃ¡vel aleatÃ³ria @math{Normal(m,s)},
+com @math{s>0}, que Ã© sempre igual  a 0. Para fazer uso dessa funÃ§Ã£o,escreva
+primeiramente @code{load(distrib)}.
+@end deffn
+
+
+@deffn {FunÃ§Ã£o} kurtosis_normal (@var{m},@var{s})
+Retorna o coeficiente de curtose de uma  variÃ¡vel aleatÃ³ria @math{Normal(m,s)},
+com @math{s>0}, que Ã© sempre igual  a 0. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Variável de opção} random_normal_algorithm
-Valor por omissão: @code{box_mueller}
+@defvr {VariÃ¡vel de opÃ§Ã£o} random_normal_algorithm
+Valor por omissÃ£o: @code{box_mueller}
 
-Esse é o algoritmo seleccionado para simular variáveis aleatórias normais.
-O algoritmos implementados são @code{box_mueller} e @code{inverse}:
+Esse Ã© o algoritmo seleccionado para simular variÃ¡veis aleatÃ³rias normais.
+O algoritmos implementados sÃ£o @code{box_mueller} e @code{inverse}:
 @itemize @bullet
 @item
 @code{box_mueller}, Baseado no algoritmo descrito em Knuth, D.E. (1981)
 @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
 
 @item
-@code{inverse}, baseado no método inverso genérico.
+@code{inverse}, baseado no mÃ©todo inverso genÃ©rico.
 @end itemize
 
-Veja também @code{random_normal}.
+Veja tambÃ©m @code{random_normal}.
 @end defvr
 
 
-@deffn {Função} random_normal (@var{m},@var{s})
-@deffnx {Função} random_normal (@var{m},@var{s},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Normal(m,s)},
+@deffn {FunÃ§Ã£o} random_normal (@var{m},@var{s})
+@deffnx {FunÃ§Ã£o} random_normal (@var{m},@var{s},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Normal(m,s)},
 com @math{s>0}. Chamando @code{random_normal} com um terceiro argumento
-@var{n}, uma amostra aleatória de tamanho @var{n} será simulada.
+@var{n}, uma amostra aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Existem dois algoritmos implementados para essa função, e o algoritmo
-a ser usado pode ser seleccionado fornecendo um certo valor para a variável global
-@code{random_normal_algorithm}, cujo valor padrão é
+Existem dois algoritmos implementados para essa funÃ§Ã£o, e o algoritmo
+a ser usado pode ser seleccionado fornecendo um certo valor para a variÃ¡vel global
+@code{random_normal_algorithm}, cujo valor padrÃ£o Ã©
 @code{box_mueller}.
 
-Veja também @code{random_normal_algorithm}. Para fazer uso
-dessa função, escreva primeiramente @code{load(distrib)}.
+Veja tambÃ©m @code{random_normal_algorithm}. Para fazer uso
+dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_student_t (@var{x},@var{n})
-Retorna o valor em @var{x} da função densidade de probabilidade de uma
-variável aleatória de Student @math{t(n)}, com @math{n>0}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_student_t (@var{x},@var{n})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de uma
+variÃ¡vel aleatÃ³ria de Student @math{t(n)}, com @math{n>0}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_student_t (@var{x},@var{n})
-Retorna o valor em @var{x} da função distribuição de probabilidade de
-uma variável aleatória de Student @math{t(n)}, com @math{n>0}. Essa função
-não tem uma forma definitiva e é calculada numericamente
+@deffn {FunÃ§Ã£o} cdf_student_t (@var{x},@var{n})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade de
+uma variÃ¡vel aleatÃ³ria de Student @math{t(n)}, com @math{n>0}. Essa funÃ§Ã£o
+nÃ£o tem uma forma definitiva e Ã© calculada numericamente
 se a
-variável global
+variÃ¡vel global
 @code{numer} for igual a @code{true},  de outra froma @code{cdf_student_t} retorna uma
-expressão nominal.
+expressÃ£o nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -559,24 +559,24 @@ expressão nominal.
 @end deffn
 
 
-@deffn {Função} quantile_student_t (@var{q},@var{n})
-Retorna o @var{q}-quantil de uma variável aleatória de Student @math{t(n)},
-com @math{n>0}; em outras palavras, @code{quantile_student_t} é o inverso de
+@deffn {FunÃ§Ã£o} quantile_student_t (@var{q},@var{n})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria de Student @math{t(n)},
+com @math{n>0}; em outras palavras, @code{quantile_student_t} Ã© o inverso de
 @code{cdf_student_t}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_student_t (@var{n})
-Retorna a média de uma variável aleatória de Student @math{t(n)}, com
-@math{n>0}, que é sempre igual a 0. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} mean_student_t (@var{n})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria de Student @math{t(n)}, com
+@math{n>0}, que Ã© sempre igual a 0. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_student_t (@var{n})
-Retorna a variância de uma variável aleatória de Student @math{t(n)}, com @math{n>2}.
+@deffn {FunÃ§Ã£o} var_student_t (@var{n})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria de Student @math{t(n)}, com @math{n>2}.
 
 @c ===beg===
 @c load (distrib)$
@@ -592,40 +592,40 @@ Retorna a variância de uma variável aleatória de Student @math{t(n)}, com @math{
 @end deffn
 
 
-@deffn {Função} std_student_t (@var{n})
-Retorna o desvio padrão de uma variável aleatória de Student @math{t(n)},
-com @math{n>2}. Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} std_student_t (@var{n})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria de Student @math{t(n)},
+com @math{n>2}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} skewness_student_t (@var{n})
-Retorna o coeficiente de assimetria de uma variável aleatória de Student @math{t(n)},
-com @math{n>3}, que é sempre igual a 0. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} skewness_student_t (@var{n})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria de Student @math{t(n)},
+com @math{n>3}, que Ã© sempre igual a 0. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_student_t (@var{n})
-Retorna o coeficiente de curtose de uma variável aleatória de Student @math{t(n)},
-com @math{n>4}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} kurtosis_student_t (@var{n})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria de Student @math{t(n)},
+com @math{n>4}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Variável de opção} random_student_t_algorithm
-Valor por omissão: @code{ratio}
+@defvr {VariÃ¡vel de opÃ§Ã£o} random_student_t_algorithm
+Valor por omissÃ£o: @code{ratio}
 
-Esse é o  algoritmo seleccionado para simular variáveis estatísticas pseudo-aleatórias
-de Student. Algorítmos implementados são @code{inverse} e @code{ratio}:
+Esse Ã© o  algoritmo seleccionado para simular variÃ¡veis estatÃ­sticas pseudo-aleatÃ³rias
+de Student. AlgorÃ­tmos implementados sÃ£o @code{inverse} e @code{ratio}:
 @itemize @bullet
 @item
-@code{inverse}, baseado no método inverso genérico.
+@code{inverse}, baseado no mÃ©todo inverso genÃ©rico.
 
 
 @item
-@code{ratio}, baseado no facto que se @var{Z} for uma variável aleatória normal @math{N(0,1)} e
-@math{S^2} for uma variável aleatória chi quadrada com @var{n} graus de liberdade,
-@math{Chi^2(n)}, então
+@code{ratio}, baseado no facto que se @var{Z} for uma variÃ¡vel aleatÃ³ria normal @math{N(0,1)} e
+@math{S^2} for uma variÃ¡vel aleatÃ³ria chi quadrada com @var{n} graus de liberdade,
+@math{Chi^2(n)}, entÃ£o
 @ifhtml
 @example
                            Z
@@ -649,36 +649,36 @@ de Student. Algorítmos implementados são @code{inverse} e @code{ratio}:
 @tex
 $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
-é uma variável aleatória de Student com @var{n} graus de liberdade, @math{t(n)}.
+Ã© uma variÃ¡vel aleatÃ³ria de Student com @var{n} graus de liberdade, @math{t(n)}.
 @end itemize
 
-Veja também @code{random_student_t}.
+Veja tambÃ©m @code{random_student_t}.
 @end defvr
 
 
-@deffn {Função} random_student_t (@var{n})
-@deffnx {Função} random_student_t (@var{n},@var{m})
-Retorna uma variável estatística pseudo-aleatória de Student @math{t(n)},
+@deffn {FunÃ§Ã£o} random_student_t (@var{n})
+@deffnx {FunÃ§Ã£o} random_student_t (@var{n},@var{m})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria de Student @math{t(n)},
 com @math{n>0}. Chamando @code{random_student_t} com um segundo argumento
-@var{m}, uma amostra aleatória de tamanho @var{m} será simulada.
+@var{m}, uma amostra aleatÃ³ria de tamanho @var{m} serÃ¡ simulada.
 
-Existem dois algoritmos implementados para essa função, se pode
-seleccionar o algoritmo a ser usado fornecendo um certo valor à variável
-global @code{random_student_t_algorithm}, cujo valor padrão é @code{ratio}.
+Existem dois algoritmos implementados para essa funÃ§Ã£o, se pode
+seleccionar o algoritmo a ser usado fornecendo um certo valor Ã  variÃ¡vel
+global @code{random_student_t_algorithm}, cujo valor padrÃ£o Ã© @code{ratio}.
 
-Veja também @code{random_student_t_algorithm}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+Veja tambÃ©m @code{random_student_t_algorithm}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_chi2 (@var{x},@var{n})
-Retorna o valor em @var{x} da função densidade de probabilidade de uma
-variável aleatória Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
+@deffn {FunÃ§Ã£o} pdf_chi2 (@var{x},@var{n})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de uma
+variÃ¡vel aleatÃ³ria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
-A  variável aleatória @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)},
-portanto quando Maxima não tiver informação para pegar o resultado, uma
-forma nomial baseada na função de densidade densidade de probabilidade da
-função  gama é
+A  variÃ¡vel aleatÃ³ria @math{Chi^2(n)} Ã© equivalente a @math{Gamma(n/2,2)},
+portanto quando Maxima nÃ£o tiver informaÃ§Ã£o para pegar o resultado, uma
+forma nomial baseada na funÃ§Ã£o de densidade densidade de probabilidade da
+funÃ§Ã£o  gama Ã©
 retornada.
 
 @c ===beg===
@@ -703,16 +703,16 @@ retornada.
 @end deffn
 
 
-@deffn {Função} cdf_chi2 (@var{x},@var{n})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma variável aleatória Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
+@deffn {FunÃ§Ã£o} cdf_chi2 (@var{x},@var{n})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma variÃ¡vel aleatÃ³ria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
-Essa função não possui uma forma fechada e é calculada numericamante
-se a variável global @code{numer} for igual a @code{true},  de outra forma essa
-função retorna uma expressão nominal baseada na 
-distribuição gama, uma vez
-que a variável aleatória @math{Chi^2(n)}
-é equivalente a    é equivalente a @math{Gamma(n/2,2)}.
+Essa funÃ§Ã£o nÃ£o possui uma forma fechada e Ã© calculada numericamante
+se a variÃ¡vel global @code{numer} for igual a @code{true},  de outra forma essa
+funÃ§Ã£o retorna uma expressÃ£o nominal baseada na 
+distribuiÃ§Ã£o gama, uma vez
+que a variÃ¡vel aleatÃ³ria @math{Chi^2(n)}
+Ã© equivalente a    Ã© equivalente a @math{Gamma(n/2,2)}.
 
 @c ===beg===
 @c load (distrib)$
@@ -729,17 +729,17 @@ que a variável aleatória @math{Chi^2(n)}
 @end deffn
 
 
-@deffn {Função} quantile_chi2 (@var{q},@var{n})
-Retorna o @var{q}-quantilede uma variável aleatória Chi-quadrada @math{Chi^2(n)},
-com @math{n>0}; em outras palavras, essa função é a inversa da função
+@deffn {FunÃ§Ã£o} quantile_chi2 (@var{q},@var{n})
+Retorna o @var{q}-quantilede uma variÃ¡vel aleatÃ³ria Chi-quadrada @math{Chi^2(n)},
+com @math{n>0}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da funÃ§Ã£o
 @code{cdf_chi2}. O argumento @var{q} deve ser um elemento
 de
 @math{[0,1]}.
 
-This função não possui uma forma fechada e é calculada numericamante se
-a variável global @code{numer} for igual a @code{true},  de outra forma essa
-função retorna uma expressão nominal baseada no quantil da função
-gama, uma vez que a variável aleatória @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)}.
+This funÃ§Ã£o nÃ£o possui uma forma fechada e Ã© calculada numericamante se
+a variÃ¡vel global @code{numer} for igual a @code{true},  de outra forma essa
+funÃ§Ã£o retorna uma expressÃ£o nominal baseada no quantil da funÃ§Ã£o
+gama, uma vez que a variÃ¡vel aleatÃ³ria @math{Chi^2(n)} Ã© equivalente a @math{Gamma(n/2,2)}.
 
 @c ===beg===
 @c load (distrib)$
@@ -758,12 +758,12 @@ gama, uma vez que a variável aleatória @math{Chi^2(n)} é equivalente a @math{Gam
 @end deffn
 
 
-@deffn {Função} mean_chi2 (@var{n})
-Retorna a média de uma variável aleatória Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
+@deffn {FunÃ§Ã£o} mean_chi2 (@var{n})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
-A variável aleatória @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada na média da função gama é
+A variÃ¡vel aleatÃ³ria @math{Chi^2(n)} Ã© equivalente a @math{Gamma(n/2,2)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada na mÃ©dia da funÃ§Ã£o gama Ã©
 retornada.
 
 @c ===beg===
@@ -783,13 +783,13 @@ retornada.
 @end deffn
 
 
-@deffn {Função} var_chi2 (@var{n})
-Retorna a variância de uma variável aleatória Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
+@deffn {FunÃ§Ã£o} var_chi2 (@var{n})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria Chi-quadrada @math{Chi^2(n)}, com @math{n>0}.
 
-A variável aleatória @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada na variância da função gama
-é retornada.
+A variÃ¡vel aleatÃ³ria @math{Chi^2(n)} Ã© equivalente a @math{Gamma(n/2,2)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada na variÃ¢ncia da funÃ§Ã£o gama
+Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -808,14 +808,14 @@ uma forma nominal baseada na variância da função gama
 @end deffn
 
 
-@deffn {Função} std_chi2 (@var{n})
-Retorna o desvio padrão de uma variável aleatória Chi-quadrada
+@deffn {FunÃ§Ã£o} std_chi2 (@var{n})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria Chi-quadrada
 @math{Chi^2(n)}, com @math{n>0}.
 
-A variável aleatória @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada no desvio padrão da função
-gama é retornada.
+A variÃ¡vel aleatÃ³ria @math{Chi^2(n)} Ã© equivalente a @math{Gamma(n/2,2)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada no desvio padrÃ£o da funÃ§Ã£o
+gama Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -834,14 +834,14 @@ gama é retornada.
 @end deffn
 
 
-@deffn {Função} skewness_chi2 (@var{n})
-Retorna o coeficiente de assimetria de uma variável aleatória Chi-quadrada
+@deffn {FunÃ§Ã£o} skewness_chi2 (@var{n})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria Chi-quadrada
 @math{Chi^2(n)}, com @math{n>0}.
 
-A variável aleatória @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
+A variÃ¡vel aleatÃ³ria @math{Chi^2(n)} Ã© equivalente a @math{Gamma(n/2,2)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
 uma forma nominal baseada no coeficiente de assimetria da
-função gama é
+funÃ§Ã£o gama Ã©
 retornada.
 
 @c ===beg===
@@ -863,13 +863,13 @@ retornada.
 @end deffn
 
 
-@deffn {Função} kurtosis_chi2 (@var{n})
-Retorna o coeficiente de curtose de uma variável aleatória Chi-quadrada
+@deffn {FunÃ§Ã£o} kurtosis_chi2 (@var{n})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria Chi-quadrada
 @math{Chi^2(n)}, com @math{n>0}.
 
-A variável aleatória @math{Chi^2(n)} é equivalente a @math{Gamma(n/2,2)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada no coeficiente de curtose da função gama é retornada.
+A variÃ¡vel aleatÃ³ria @math{Chi^2(n)} Ã© equivalente a @math{Gamma(n/2,2)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada no coeficiente de curtose da funÃ§Ã£o gama Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -890,56 +890,56 @@ uma forma nominal baseada no coeficiente de curtose da função gama é retornada.
 @end deffn
 
 
-@defvr {Variável de opção} random_chi2_algorithm
-Valor por omissão: @code{ahrens_cheng}
+@defvr {VariÃ¡vel de opÃ§Ã£o} random_chi2_algorithm
+Valor por omissÃ£o: @code{ahrens_cheng}
 
-Esse é o algoritmo seleccionado para simular variáveis estatística pseudo-aleatórias
-Chi-quadradas. Os algoritmos implementados são @code{ahrens_cheng} e @code{inverse}:
+Esse Ã© o algoritmo seleccionado para simular variÃ¡veis estatÃ­stica pseudo-aleatÃ³rias
+Chi-quadradas. Os algoritmos implementados sÃ£o @code{ahrens_cheng} e @code{inverse}:
 @itemize @bullet
 
 @item
-@code{ahrens_cheng}, baseado na simulação aleatória de variáveis gama.
+@code{ahrens_cheng}, baseado na simulaÃ§Ã£o aleatÃ³ria de variÃ¡veis gama.
 Veja @code{random_gamma_algorithm} para mais detalhes.
 
 @item
-@code{inverse}, baseado no método inverso genérico.
+@code{inverse}, baseado no mÃ©todo inverso genÃ©rico.
 
 @end itemize
 
-Veja também @code{random_chi2}.
+Veja tambÃ©m @code{random_chi2}.
 @end defvr
 
 
-@deffn {Função} random_chi2 (@var{n})
-@deffnx {Função} random_chi2 (@var{n},@var{m})
-Retorna uma variável estatística pseudo-aleatória Chi-square @math{Chi^2(n)},
+@deffn {FunÃ§Ã£o} random_chi2 (@var{n})
+@deffnx {FunÃ§Ã£o} random_chi2 (@var{n},@var{m})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria Chi-square @math{Chi^2(n)},
 com @math{n>0}. Chamando @code{random_chi2} com um segundo argumento @var{m},
-uma amostra aleatória de tamanho @var{m} será simulada.
+uma amostra aleatÃ³ria de tamanho @var{m} serÃ¡ simulada.
 
-Existem dois algoritmos implementados para essa função, se pode seleccionar o
-algoritmo a ser usado fornecendo um certo valor à variável global
-@code{random_chi2_algorithm}, cujo valor padrão é
+Existem dois algoritmos implementados para essa funÃ§Ã£o, se pode seleccionar o
+algoritmo a ser usado fornecendo um certo valor Ã  variÃ¡vel global
+@code{random_chi2_algorithm}, cujo valor padrÃ£o Ã©
 @code{ahrens_cheng}.
 
-Veja também @code{random_chi2_algorithm}. Para fazer uso dessa função,
+Veja tambÃ©m @code{random_chi2_algorithm}. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_f (@var{x},@var{m},@var{n})
-Retorna o valor em @var{x} da função densidade de probabilidade de uma
-variável aleatória F, @math{F(m,n)}, com @math{m,n>0}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_f (@var{x},@var{m},@var{n})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de uma
+variÃ¡vel aleatÃ³ria F, @math{F(m,n)}, com @math{m,n>0}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_f (@var{x},@var{m},@var{n})
-Retorna o valor em @var{x} da função distribuição de probabilidade de
-uma variável aleatória F, @math{F(m,n)}, com @math{m,n>0}. Essa função
-não possui uma forma definitiva e é calculada numericamente se
+@deffn {FunÃ§Ã£o} cdf_f (@var{x},@var{m},@var{n})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade de
+uma variÃ¡vel aleatÃ³ria F, @math{F(m,n)}, com @math{m,n>0}. Essa funÃ§Ã£o
+nÃ£o possui uma forma definitiva e Ã© calculada numericamente se
 a
-variável global
-@code{numer} for igual a @code{true},  de outra forma retorna uma expressão nominal.
+variÃ¡vel global
+@code{numer} for igual a @code{true},  de outra forma retorna uma expressÃ£o nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -958,13 +958,13 @@ variável global
 @end deffn
 
 
-@deffn {Função} quantile_f (@var{q},@var{m},@var{n})
-Retorna o @var{q}-quantil de uma variável aleatória F, @math{F(m,n)}, com @math{m,n>0};
-em outras palavras, essa função é o inverso de @code{cdf_f}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
+@deffn {FunÃ§Ã£o} quantile_f (@var{q},@var{m},@var{n})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria F, @math{F(m,n)}, com @math{m,n>0};
+em outras palavras, essa funÃ§Ã£o Ã© o inverso de @code{cdf_f}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
 
-Essa função não possui uma forma fechada e é calculada numericamante se a
-variável global @code{numer} for igual a @code{true},  de outra forma essa função
-retorna uma expressão nominal.
+Essa funÃ§Ã£o nÃ£o possui uma forma fechada e Ã© calculada numericamante se a
+variÃ¡vel global @code{numer} for igual a @code{true},  de outra forma essa funÃ§Ã£o
+retorna uma expressÃ£o nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -983,50 +983,50 @@ retorna uma expressão nominal.
 @end deffn
 
 
-@deffn {Função} mean_f (@var{m},@var{n})
-Retorna a média de uma variável aleatória F, @math{F(m,n)}, com @math{m>0, n>2}.
-Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} mean_f (@var{m},@var{n})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria F, @math{F(m,n)}, com @math{m>0, n>2}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_f (@var{m},@var{n})
-Retorna a variância de uma variável aleatória F, @math{F(m,n)}, com @math{m>0, n>4}.
-Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} var_f (@var{m},@var{n})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria F, @math{F(m,n)}, com @math{m>0, n>4}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} std_f (@var{m},@var{n})
-Retorna o desvio padrão de uma variável aleatória F, @math{F(m,n)}, com @math{m>0, n>4}.
-Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} std_f (@var{m},@var{n})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria F, @math{F(m,n)}, com @math{m>0, n>4}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} skewness_f (@var{m},@var{n})
-Retorna o coeficiente de assimetria de uma variável aleatória F, @math{F(m,n)},
-com @math{m>0, n>6}. Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} skewness_f (@var{m},@var{n})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria F, @math{F(m,n)},
+com @math{m>0, n>6}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_f (@var{m},@var{n})
-Retorna o coeficiente de curtose de uma variável aleatória F, @math{F(m,n)},
-com @math{m>0, n>8}. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} kurtosis_f (@var{m},@var{n})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria F, @math{F(m,n)},
+com @math{m>0, n>8}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Variável de opção} random_f_algorithm
-Valor por omissão: @code{inverse}
+@defvr {VariÃ¡vel de opÃ§Ã£o} random_f_algorithm
+Valor por omissÃ£o: @code{inverse}
 
-Esse é o algoritmo seleccionado para simular variáveis estatísticas
-pseudo-aleatórias F. Os algoritmos implementados são @code{ratio}
+Esse Ã© o algoritmo seleccionado para simular variÃ¡veis estatÃ­sticas
+pseudo-aleatÃ³rias F. Os algoritmos implementados sÃ£o @code{ratio}
 e @code{inverse}:
 @itemize @bullet
 
 @item
-@code{ratio}, baseado no facto de que se @var{X} for uma variável aleatória
-@math{Chi^2(m)} e @math{Y} for uma variável aleatória @math{Chi^2(n)},
-então
+@code{ratio}, baseado no facto de que se @var{X} for uma variÃ¡vel aleatÃ³ria
+@math{Chi^2(m)} e @math{Y} for uma variÃ¡vel aleatÃ³ria @math{Chi^2(n)},
+entÃ£o
 @ifhtml
 @example
                         n X
@@ -1044,39 +1044,39 @@ então
 @tex
 $$F={{n X}\over{m Y}}$$
 @end tex
-é uma variável aleatória F com @var{m} e @var{n} graus de liberdade, @math{F(m,n)}.
+Ã© uma variÃ¡vel aleatÃ³ria F com @var{m} e @var{n} graus de liberdade, @math{F(m,n)}.
 
 @item
-@code{inverse}, baseado no método inverso genérico.
+@code{inverse}, baseado no mÃ©todo inverso genÃ©rico.
 
 @end itemize
 
-Veja também @code{random_f}.
+Veja tambÃ©m @code{random_f}.
 @end defvr
 
 
-@deffn {Função} random_f (@var{m},@var{n})
-@deffnx {Função} random_f (@var{m},@var{n},@var{k})
-Retorna uma variável estatística pseudo-aleatória F, @math{F(m,n)},
+@deffn {FunÃ§Ã£o} random_f (@var{m},@var{n})
+@deffnx {FunÃ§Ã£o} random_f (@var{m},@var{n},@var{k})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria F, @math{F(m,n)},
 com @math{m,n>0}. Chamando @code{random_f} com um terceiro argumento
-@var{k}, uma amostra aleatória de tamanho @var{k} será simulada.
+@var{k}, uma amostra aleatÃ³ria de tamanho @var{k} serÃ¡ simulada.
 
-Existem dois algoritmos implementados para essa função, se pode seleccionar
-o algoritmo a ser usado fornecendo um certo valor à variável global
-@code{random_f_algorithm}, cujo valor padrão é @code{inverse}.
+Existem dois algoritmos implementados para essa funÃ§Ã£o, se pode seleccionar
+o algoritmo a ser usado fornecendo um certo valor Ã  variÃ¡vel global
+@code{random_f_algorithm}, cujo valor padrÃ£o Ã© @code{inverse}.
 
-Veja também @code{random_f_algorithm}. Para fazer uso dessa função,
+Veja tambÃ©m @code{random_f_algorithm}. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Função} pdf_exp (@var{x},@var{m})
-Retorna o valor em @var{x} da função densidade de probabilidade
-variável aleatória @math{Exponential(m)}, com @math{m>0}.
+@deffn {FunÃ§Ã£o} pdf_exp (@var{x},@var{m})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade
+variÃ¡vel aleatÃ³ria @math{Exponential(m)}, com @math{m>0}.
 
-A variável aleatória @math{Exponential(m)} é equivalente a
-@math{Weibull(1,1/m)}, embora quando Maxima não tiver informação
-disponível para pegar o resultado, uma forma nominal baseada na função
-de densidade de probabilidade de Weibull éretornada.
+A variÃ¡vel aleatÃ³ria @math{Exponential(m)} Ã© equivalente a
+@math{Weibull(1,1/m)}, embora quando Maxima nÃ£o tiver informaÃ§Ã£o
+disponÃ­vel para pegar o resultado, uma forma nominal baseada na funÃ§Ã£o
+de densidade de probabilidade de Weibull Ã©retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1096,14 +1096,14 @@ de densidade de probabilidade de Weibull éretornada.
 @end deffn
 
 
-@deffn {Função} cdf_exp (@var{x},@var{m})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-variável aleatória @math{Exponential(m)}, com @math{m>0}.
+@deffn {FunÃ§Ã£o} cdf_exp (@var{x},@var{m})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+variÃ¡vel aleatÃ³ria @math{Exponential(m)}, com @math{m>0}.
 
-A variável aleatória @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada na distribuição de
-Weibull é
+A variÃ¡vel aleatÃ³ria @math{Exponential(m)} Ã© equivalente a @math{Weibull(1,1/m)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada na distribuiÃ§Ã£o de
+Weibull Ã©
 retornada.
 
 @c ===beg===
@@ -1124,14 +1124,14 @@ retornada.
 @end deffn
 
 
-@deffn {Função} quantile_exp (@var{q},@var{m})
-Retorna o @var{q}-quantil variável aleatória @math{Exponential(m)}, com @math{m>0};
-em outras palavras, essa função é inversa da função @code{cdf_exp}.
+@deffn {FunÃ§Ã£o} quantile_exp (@var{q},@var{m})
+Retorna o @var{q}-quantil variÃ¡vel aleatÃ³ria @math{Exponential(m)}, com @math{m>0};
+em outras palavras, essa funÃ§Ã£o Ã© inversa da funÃ§Ã£o @code{cdf_exp}.
 O argumento @var{q} deve ser um elemento de @math{[0,1]}.
 
-A variável aleatória @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada no qualtil de Weibull é
+A variÃ¡vel aleatÃ³ria @math{Exponential(m)} Ã© equivalente a @math{Weibull(1,1/m)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada no qualtil de Weibull Ã©
 retornada.
 
 @c ===beg===
@@ -1151,12 +1151,12 @@ retornada.
 @end deffn
 
 
-@deffn {Função} mean_exp (@var{m})
-Retorna a média de uma variável aleatória @math{Exponential(m)}, com @math{m>0}.
+@deffn {FunÃ§Ã£o} mean_exp (@var{m})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Exponential(m)}, com @math{m>0}.
 
-A variável aleatória @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada na média de Weibull é
+A variÃ¡vel aleatÃ³ria @math{Exponential(m)} Ã© equivalente a @math{Weibull(1,1/m)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada na mÃ©dia de Weibull Ã©
 reornada.
 
 @c ===beg===
@@ -1178,13 +1178,13 @@ reornada.
 @end deffn
 
 
-@deffn {Função} var_exp (@var{m})
-Retorna a variância de uma variável aleatória @math{Exponential(m)}, com @math{m>0}.
+@deffn {FunÃ§Ã£o} var_exp (@var{m})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Exponential(m)}, com @math{m>0}.
 
-A variável aleatória @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada na variância de Weibull
-é retornada.
+A variÃ¡vel aleatÃ³ria @math{Exponential(m)} Ã© equivalente a @math{Weibull(1,1/m)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada na variÃ¢ncia de Weibull
+Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1206,13 +1206,13 @@ uma forma nominal baseada na variância de Weibull
 @end deffn
 
 
-@deffn {Função} std_exp (@var{m})
-Retorna o desvio padrão de uma variável aleatória @math{Exponential(m)}, com @math{m>0}.
+@deffn {FunÃ§Ã£o} std_exp (@var{m})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Exponential(m)}, com @math{m>0}.
 
-A variável aleatória @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada no desvio padrão de
-Weibull é retornada.
+A variÃ¡vel aleatÃ³ria @math{Exponential(m)} Ã© equivalente a @math{Weibull(1,1/m)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada no desvio padrÃ£o de
+Weibull Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1233,14 +1233,14 @@ Weibull é retornada.
 @end deffn
 
 
-@deffn {Função} skewness_exp (@var{m})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Exponential(m)}, com @math{m>0}.
+@deffn {FunÃ§Ã£o} skewness_exp (@var{m})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Exponential(m)}, com @math{m>0}.
 
-A variável aleatória @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
+A variÃ¡vel aleatÃ³ria @math{Exponential(m)} Ã© equivalente a @math{Weibull(1,1/m)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
 uma forma nominal baseada no coeficiente de assimetria
 de Weibull
-é retornada.
+Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1259,12 +1259,12 @@ de Weibull
 @end deffn
 
 
-@deffn {Função} kurtosis_exp (@var{m})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Exponential(m)}, com @math{m>0}.
+@deffn {FunÃ§Ã£o} kurtosis_exp (@var{m})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Exponential(m)}, com @math{m>0}.
 
-A variável aleatória @math{Exponential(m)} é equivalente a @math{Weibull(1,1/m)}, embora
-quando Maxima não tiver informação disponível para pegar o resultado, uma forma nominal
-baseada no coeficiente de curtose de Weibull é retornada.
+A variÃ¡vel aleatÃ³ria @math{Exponential(m)} Ã© equivalente a @math{Weibull(1,1/m)}, embora
+quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado, uma forma nominal
+baseada no coeficiente de curtose de Weibull Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1283,20 +1283,20 @@ baseada no coeficiente de curtose de Weibull é retornada.
 @end deffn
 
 
-@defvr {Variável de opção} random_exp_algorithm
-Valor por omissão: @code{inverse}
+@defvr {VariÃ¡vel de opÃ§Ã£o} random_exp_algorithm
+Valor por omissÃ£o: @code{inverse}
 
-Esse é o algoritmo seleccionado para simular variáveis exponenciais estatística
-pseudo-aleatórias. Os algoritmos implementados são @code{inverse},
+Esse Ã© o algoritmo seleccionado para simular variÃ¡veis exponenciais estatÃ­stica
+pseudo-aleatÃ³rias. Os algoritmos implementados sÃ£o @code{inverse},
 @code{ahrens_cheng} e @code{ahrens_dieter}
 @itemize @bullet
 
 @item
-@code{inverse}, baseado no método inverso genérico.
+@code{inverse}, baseado no mÃ©todo inverso genÃ©rico.
 
 @item
-@code{ahrens_cheng}, baseado no facto de que a variável aleatória @math{Exp(m)}
-é equivalente a @math{Gamma(1,1/m)}. Veja @code{random_gamma_algorithm}
+@code{ahrens_cheng}, baseado no facto de que a variÃ¡vel aleatÃ³ria @math{Exp(m)}
+Ã© equivalente a @math{Gamma(1,1/m)}. Veja @code{random_gamma_algorithm}
 para maiores detalhes.
 
 @item
@@ -1306,36 +1306,36 @@ Comm, ACM, 15, Oct.,  873-882.
 
 @end itemize
 
-Veja também @code{random_exp}.
+Veja tambÃ©m @code{random_exp}.
 @end defvr
 
 
-@deffn {Função} random_exp (@var{m})
-@deffnx {Função} random_exp (@var{m},@var{k})
-Retorna uma variável estatística pseudo-aleatória @math{Exponential(m)},
+@deffn {FunÃ§Ã£o} random_exp (@var{m})
+@deffnx {FunÃ§Ã£o} random_exp (@var{m},@var{k})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Exponential(m)},
 com @math{m>0}. Chamando @code{random_exp} com um segundo argumento
-@var{k}, uma amostra aleatória de tamanho @var{k} será simulada.
+@var{k}, uma amostra aleatÃ³ria de tamanho @var{k} serÃ¡ simulada.
 
-Existem três algoritmos implementados para essa função, se pode
-seleccionar o algoritmo a ser usado fornecendo um certo valor à variável global
-@code{random_exp_algorithm}, cujo valor padrão é @code{inverse}.
+Existem trÃªs algoritmos implementados para essa funÃ§Ã£o, se pode
+seleccionar o algoritmo a ser usado fornecendo um certo valor Ã  variÃ¡vel global
+@code{random_exp_algorithm}, cujo valor padrÃ£o Ã© @code{inverse}.
 
-Veja também @code{random_exp_algorithm}. Para fazer uso dessa função,
+Veja tambÃ©m @code{random_exp_algorithm}. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_lognormal (@var{x},@var{m},@var{s})
-Retorna o valor em @var{x} da função densidade de probabilidade de uma
-variável aleatória @math{Lognormal(m,s)}, com @math{s>0}. Para fazer uso
-dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_lognormal (@var{x},@var{m},@var{s})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de uma
+variÃ¡vel aleatÃ³ria @math{Lognormal(m,s)}, com @math{s>0}. Para fazer uso
+dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_lognormal (@var{x},@var{m},@var{s})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma variável aleatória @math{Lognormal(m,s)}, com @math{s>0}. Essa
-função é definida em termos de funções @code{erf}de erro
+@deffn {FunÃ§Ã£o} cdf_lognormal (@var{x},@var{m},@var{s})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma variÃ¡vel aleatÃ³ria @math{Lognormal(m,s)}, com @math{s>0}. Essa
+funÃ§Ã£o Ã© definida em termos de funÃ§Ãµes @code{erf}de erro
 internas do Maxima.
 
 @c ===beg===
@@ -1352,81 +1352,81 @@ internas do Maxima.
                               2          2
 @end example
 
-Veja também @code{erf}.
+Veja tambÃ©m @code{erf}.
 @end deffn
 
 
-@deffn {Função} quantile_lognormal (@var{q},@var{m},@var{s})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Lognormal(m,s)},
-com @math{s>0}; em outras palavras, essa função é a inversa da função
+@deffn {FunÃ§Ã£o} quantile_lognormal (@var{q},@var{m},@var{s})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Lognormal(m,s)},
+com @math{s>0}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da funÃ§Ã£o
 @code{cdf_lognormal}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
-Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_lognormal (@var{m},@var{s})
-Retorna a média de uma variável aleatória @math{Lognormal(m,s)}, com @math{s>0}.
-Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} mean_lognormal (@var{m},@var{s})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Lognormal(m,s)}, com @math{s>0}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_lognormal (@var{m},@var{s})
-Retorna a variância de uma variável aleatória @math{Lognormal(m,s)},
-com @math{s>0}. Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} var_lognormal (@var{m},@var{s})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Lognormal(m,s)},
+com @math{s>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
-@deffn {Função} std_lognormal (@var{m},@var{s})
-Retorna o desvio padrão de uma variável aleatória @math{Lognormal(m,s)},
-com @math{s>0}. Para fazer uso dessa função, escreva primeiramente
-@code{load(distrib)}.
-@end deffn
-
-
-@deffn {Função} skewness_lognormal (@var{m},@var{s})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Lognormal(m,s)},
-com @math{s>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
-@end deffn
-
-
-@deffn {Função} kurtosis_lognormal (@var{m},@var{s})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Lognormal(m,s)},
-com @math{s>0}. Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} std_lognormal (@var{m},@var{s})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Lognormal(m,s)},
+com @math{s>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} random_lognormal (@var{m},@var{s})
-@deffnx {Função} random_lognormal (@var{m},@var{s},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Lognormal(m,s)},
+@deffn {FunÃ§Ã£o} skewness_lognormal (@var{m},@var{s})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Lognormal(m,s)},
+com @math{s>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
+@end deffn
+
+
+@deffn {FunÃ§Ã£o} kurtosis_lognormal (@var{m},@var{s})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Lognormal(m,s)},
+com @math{s>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
+@code{load(distrib)}.
+@end deffn
+
+
+@deffn {FunÃ§Ã£o} random_lognormal (@var{m},@var{s})
+@deffnx {FunÃ§Ã£o} random_lognormal (@var{m},@var{s},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Lognormal(m,s)},
 com @math{s>0}. Chamando @code{random_lognormal} com um terceiro argumento
-@var{n}, uma amostra aleatória de tamanho @var{n} será simulada.
+@var{n}, uma amostra aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Variáveis Log-normal são simuladas por meio de variáveis estatísticas normais
-pseudo-aleatórias. Existem dois algoritmos implementados para essa função, se
+VariÃ¡veis Log-normal sÃ£o simuladas por meio de variÃ¡veis estatÃ­sticas normais
+pseudo-aleatÃ³rias. Existem dois algoritmos implementados para essa funÃ§Ã£o, se
 pode seleccionar o algoritmo a ser usado fornecendo um certo valor
-à variável global
-@code{random_normal_algorithm}, cujo valor padrão é @code{box_mueller}.
+Ã  variÃ¡vel global
+@code{random_normal_algorithm}, cujo valor padrÃ£o Ã© @code{box_mueller}.
 
-Veja também @code{random_normal_algorithm}. Para fazer uso dessa função, escreva
+Veja tambÃ©m @code{random_normal_algorithm}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_gamma (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função densidade de probabilidade de uma
-variável aleatória @math{Gamma(a,b)}, com @math{a,b>0}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_gamma (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de uma
+variÃ¡vel aleatÃ³ria @math{Gamma(a,b)}, com @math{a,b>0}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_gamma (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função distribuição de probabilidade de
-uma variável aleatória @math{Gamma(a,b)}, com @math{a,b>0}. 
+@deffn {FunÃ§Ã£o} cdf_gamma (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade de
+uma variÃ¡vel aleatÃ³ria @math{Gamma(a,b)}, com @math{a,b>0}. 
 
-Essa função não possui uma forma fechada e é calculada numericamante se
-a variável global @code{numer} for igual a @code{true},  de outra forma essa função
-retorna uma expressão nominal.
+Essa funÃ§Ã£o nÃ£o possui uma forma fechada e Ã© calculada numericamante se
+a variÃ¡vel global @code{numer} for igual a @code{true},  de outra forma essa funÃ§Ã£o
+retorna uma expressÃ£o nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -1443,56 +1443,56 @@ retorna uma expressão nominal.
 @end deffn
 
 
-@deffn {Função} quantile_gamma (@var{q},@var{a},@var{b})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Gamma(a,b)},
-com @math{a,b>0}; em outras palavras, essa função é a inversa da
-função @code{cdf_gamma}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} quantile_gamma (@var{q},@var{a},@var{b})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Gamma(a,b)},
+com @math{a,b>0}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da
+funÃ§Ã£o @code{cdf_gamma}. O argumento @var{q} deve ser um elemento de
+@math{[0,1]}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_gamma (@var{a},@var{b})
-Retorna a média de uma variável aleatória @math{Gamma(a,b)},
-com @math{a,b>0}. Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} mean_gamma (@var{a},@var{b})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Gamma(a,b)},
+com @math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_gamma (@var{a},@var{b})
-Retorna a variância de uma variável aleatória @math{Gamma(a,b)}, com
-@math{a,b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} var_gamma (@var{a},@var{b})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Gamma(a,b)}, com
+@math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Função} std_gamma (@var{a},@var{b})
-Retorna o desvio padrão de uma variável aleatória @math{Gamma(a,b)},
-com @math{a,b>0}. Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} std_gamma (@var{a},@var{b})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Gamma(a,b)},
+com @math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} skewness_gamma (@var{a},@var{b})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Gamma(a,b)},
-com @math{a,b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} skewness_gamma (@var{a},@var{b})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Gamma(a,b)},
+com @math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_gamma (@var{a},@var{b})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Gamma(a,b)},
-com @math{a,b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} kurtosis_gamma (@var{a},@var{b})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Gamma(a,b)},
+com @math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Variável de opção} random_gamma_algorithm
-Valor por omissão: @code{ahrens_cheng}
+@defvr {VariÃ¡vel de opÃ§Ã£o} random_gamma_algorithm
+Valor por omissÃ£o: @code{ahrens_cheng}
 
-Esse é o algoritmo seleccionado para simular variáveis estatística gama
-pseudo-aleatórias. Os algoritmos implementados são @code{ahrens_cheng}
+Esse Ã© o algoritmo seleccionado para simular variÃ¡veis estatÃ­stica gama
+pseudo-aleatÃ³rias. Os algoritmos implementados sÃ£o @code{ahrens_cheng}
 e @code{inverse}
 @itemize @bullet
 
 @item
-@code{ahrens_cheng}, essa é uma combinação de dois processos, dependendo
-do valor do parâmetro @var{a}:
+@code{ahrens_cheng}, essa Ã© uma combinaÃ§Ã£o de dois processos, dependendo
+do valor do parÃ¢metro @var{a}:
 
 For @math{a>=1}, Cheng, R.C.H. e Feast, G.M. (1979). @var{Some simple gamma variate
 generators}. Appl. Stat., 28, 3, 290-295.
@@ -1501,44 +1501,44 @@ For @math{0<a<1}, Ahrens, J.H. e Dieter, U. (1974). @var{Computer methods for sa
 from gamma, beta, poisson and binomial cdf_tributions}. Computing, 12, 223-246.
 
 @item
-@code{inverse}, baseado no método inverso genérico.
+@code{inverse}, baseado no mÃ©todo inverso genÃ©rico.
 
 @end itemize
 
-Veja também @code{random_gamma}.
+Veja tambÃ©m @code{random_gamma}.
 @end defvr
 
 
-@deffn {Função} random_gamma (@var{a},@var{b})
-@deffnx {Função} random_gamma (@var{a},@var{b},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Gamma(a,b)},
+@deffn {FunÃ§Ã£o} random_gamma (@var{a},@var{b})
+@deffnx {FunÃ§Ã£o} random_gamma (@var{a},@var{b},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Gamma(a,b)},
 com @math{a,b>0}. Chamando @code{random_gamma} com um terceiro argumento
-@var{n}, uma amostra aleatória de tamanho @var{n} será simulada.
+@var{n}, uma amostra aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Existem dois algoritmos implementados para essa função, se pode seleccionar
-o algoritmo a ser usado fornecendo um certo valor à variável global @code{random_gamma_algorithm}, cujo valor padrão é
+Existem dois algoritmos implementados para essa funÃ§Ã£o, se pode seleccionar
+o algoritmo a ser usado fornecendo um certo valor Ã  variÃ¡vel global @code{random_gamma_algorithm}, cujo valor padrÃ£o Ã©
 @code{ahrens_cheng}.
 
-Veja também @code{random_gamma_algorithm}. Para fazer uso dessa função,
+Veja tambÃ©m @code{random_gamma_algorithm}. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_beta (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função densidade de probabilidade de uma variável
-aleatória @math{Beta(a,b)}, com @math{a,b>0}. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} pdf_beta (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de uma variÃ¡vel
+aleatÃ³ria @math{Beta(a,b)}, com @math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Função} cdf_beta (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função distribuição de probabilidade de
-uma variável aleatória @math{Beta(a,b)}, com @math{a,b>0}. 
+@deffn {FunÃ§Ã£o} cdf_beta (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade de
+uma variÃ¡vel aleatÃ³ria @math{Beta(a,b)}, com @math{a,b>0}. 
 
-Essa função não possui uma forma fechada e é calculada numericamante se a
-variável global @code{numer} for igual a @code{true},  de outra forma essa função
-retorna uma expressão nominal.
+Essa funÃ§Ã£o nÃ£o possui uma forma fechada e Ã© calculada numericamante se a
+variÃ¡vel global @code{numer} for igual a @code{true},  de outra forma essa funÃ§Ã£o
+retorna uma expressÃ£o nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -1557,367 +1557,367 @@ retorna uma expressão nominal.
 @end deffn
 
 
-@deffn {Função} quantile_beta (@var{q},@var{a},@var{b})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Beta(a,b)}, com
-@math{a,b>0}; em outras palavras, essa função é a inversa da função
+@deffn {FunÃ§Ã£o} quantile_beta (@var{q},@var{a},@var{b})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Beta(a,b)}, com
+@math{a,b>0}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da funÃ§Ã£o
 @code{cdf_beta}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}. Para
 fazer uso dessa
-função,
+funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_beta (@var{a},@var{b})
-Retorna a média de uma variável aleatória @math{Beta(a,b)}, com @math{a,b>0}.
-Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} mean_beta (@var{a},@var{b})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Beta(a,b)}, com @math{a,b>0}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_beta (@var{a},@var{b})
-Retorna a variância de uma variável aleatória @math{Beta(a,b)}, com @math{a,b>0}.
-Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} var_beta (@var{a},@var{b})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Beta(a,b)}, com @math{a,b>0}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Função} std_beta (@var{a},@var{b})
-Retorna o desvio padrão de uma variável aleatória @math{Beta(a,b)}, com @math{a,b>0}.
-Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
-@end deffn
-
-
-@deffn {Função} skewness_beta (@var{a},@var{b})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Beta(a,b)},
-com @math{a,b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} std_beta (@var{a},@var{b})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Beta(a,b)}, com @math{a,b>0}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_beta (@var{a},@var{b})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Beta(a,b)},
-com @math{a,b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} skewness_beta (@var{a},@var{b})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Beta(a,b)},
+com @math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Variável de opção} random_beta_algorithm
-Valor por omissão: @code{cheng}
+@deffn {FunÃ§Ã£o} kurtosis_beta (@var{a},@var{b})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Beta(a,b)},
+com @math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
+@end deffn
 
-Esse é o algoritmo seleccionado para simular variáveis estatísticas beta
-pseudo-aleatórias. Os algoritmos implementados são @code{cheng},
+
+@defvr {VariÃ¡vel de opÃ§Ã£o} random_beta_algorithm
+Valor por omissÃ£o: @code{cheng}
+
+Esse Ã© o algoritmo seleccionado para simular variÃ¡veis estatÃ­sticas beta
+pseudo-aleatÃ³rias. Os algoritmos implementados sÃ£o @code{cheng},
 @code{inverse} e @code{ratio}
 @itemize @bullet
 
 @item
-@code{cheng}, esse é o algoritmo definido em Cheng, R.C.H.  (1978). 
+@code{cheng}, esse Ã© o algoritmo definido em Cheng, R.C.H.  (1978). 
 @var{Generating Beta Variates with Nonintegral Shape Parameters}.
 Communications of the ACM, 21:317-322
 
 @item
-@code{inverse}, baseado no método inverso genérico.
+@code{inverse}, baseado no mÃ©todo inverso genÃ©rico.
 
 @item
-@code{ratio}, baseado no facto de que se @var{X} for uma variável aleatória
-@math{Gamma(a,1)} e @var{Y} for @math{Gamma(b,1)}, então a razão @math{X/(X+Y)}
-está distribuída como @math{Beta(a,b)}.
+@code{ratio}, baseado no facto de que se @var{X} for uma variÃ¡vel aleatÃ³ria
+@math{Gamma(a,1)} e @var{Y} for @math{Gamma(b,1)}, entÃ£o a razÃ£o @math{X/(X+Y)}
+estÃ¡ distribuÃ­da como @math{Beta(a,b)}.
 
 @end itemize
 
-Veja também @code{random_beta}.
+Veja tambÃ©m @code{random_beta}.
 @end defvr
 
 
-@deffn {Função} random_beta (@var{a},@var{b})
-@deffnx {Função} random_beta (@var{a},@var{b},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Beta(a,b)},
+@deffn {FunÃ§Ã£o} random_beta (@var{a},@var{b})
+@deffnx {FunÃ§Ã£o} random_beta (@var{a},@var{b},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Beta(a,b)},
 com @math{a,b>0}. Chamando @code{random_beta} com um terceiro argumento @var{n},
-uma amostra aleatória de tamanho @var{n} será simulada.
+uma amostra aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Existem três algoritmos implementados para essa função, se pode seleccionar
-o algoritmo a ser usado fornecendo um certo valor à variável global
-@code{random_beta_algorithm}, cujo valor padrão é @code{cheng}.
+Existem trÃªs algoritmos implementados para essa funÃ§Ã£o, se pode seleccionar
+o algoritmo a ser usado fornecendo um certo valor Ã  variÃ¡vel global
+@code{random_beta_algorithm}, cujo valor padrÃ£o Ã© @code{cheng}.
 
-Veja também @code{random_beta_algorithm}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+Veja tambÃ©m @code{random_beta_algorithm}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Função} pdf_continuous_uniform (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função densidade de probabilidade
-de uma variável aleatória @math{Continuous Uniform(a,b)}, com @math{a<b}.
-Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} pdf_continuous_uniform (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade
+de uma variÃ¡vel aleatÃ³ria @math{Continuous Uniform(a,b)}, com @math{a<b}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_continuous_uniform (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma variável aleatória @math{Continuous Uniform(a,b)}, com @math{a<b}.
-Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} cdf_continuous_uniform (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma variÃ¡vel aleatÃ³ria @math{Continuous Uniform(a,b)}, com @math{a<b}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} quantile_continuous_uniform (@var{q},@var{a},@var{b})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Continuous Uniform(a,b)},
-com @math{a<b}; em outras palavras, essa função é a inversa da função
+@deffn {FunÃ§Ã£o} quantile_continuous_uniform (@var{q},@var{a},@var{b})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Continuous Uniform(a,b)},
+com @math{a<b}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da funÃ§Ã£o
 @code{cdf_continuous_uniform}. O argumento @var{q} deve
 ser um elemento
 de @math{[0,1]}.
 Para
-fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_continuous_uniform (@var{a},@var{b})
-Retorna a média de uma variável aleatória @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} mean_continuous_uniform (@var{a},@var{b})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Continuous Uniform(a,b)},
+com @math{a<b}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_continuous_uniform (@var{a},@var{b})
-Retorna a variância de uma variável aleatória @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} var_continuous_uniform (@var{a},@var{b})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Continuous Uniform(a,b)},
+com @math{a<b}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Função} std_continuous_uniform (@var{a},@var{b})
-Retorna o desvio padrão de uma variável aleatória @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
-@end deffn
-
-
-@deffn {Função} skewness_continuous_uniform (@var{a},@var{b})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} std_continuous_uniform (@var{a},@var{b})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Continuous Uniform(a,b)},
+com @math{a<b}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_continuous_uniform (@var{a},@var{b})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} skewness_continuous_uniform (@var{a},@var{b})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Continuous Uniform(a,b)},
+com @math{a<b}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} random_continuous_uniform (@var{a},@var{b})
-@deffnx {Função} random_continuous_uniform (@var{a},@var{b},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Continuous Uniform(a,b)},
+@deffn {FunÃ§Ã£o} kurtosis_continuous_uniform (@var{a},@var{b})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Continuous Uniform(a,b)},
+com @math{a<b}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
+@end deffn
+
+
+@deffn {FunÃ§Ã£o} random_continuous_uniform (@var{a},@var{b})
+@deffnx {FunÃ§Ã£o} random_continuous_uniform (@var{a},@var{b},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Continuous Uniform(a,b)},
 com @math{a<b}. Chamando @code{random_continuous_uniform} com um terceiro
-argumento @var{n}, uma amostra aleatória de tamanho @var{n} será simulada.
+argumento @var{n}, uma amostra aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Essa é uma aplicação directa da função @code{random} interna do Maxima.
+Essa Ã© uma aplicaÃ§Ã£o directa da funÃ§Ã£o @code{random} interna do Maxima.
 
-Veja também @code{random}. Para fazer uso dessa função, escreva
+Veja tambÃ©m @code{random}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_logistic (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função densidade de probabilidade de
-uma variável aleatória @math{Logistic(a,b)} , com @math{b>0}. Para fazer
-uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_logistic (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de
+uma variÃ¡vel aleatÃ³ria @math{Logistic(a,b)} , com @math{b>0}. Para fazer
+uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_logistic (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma variável aleatória @math{Logistic(a,b)}, com @math{b>0}. Para fazer
-uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} cdf_logistic (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma variÃ¡vel aleatÃ³ria @math{Logistic(a,b)}, com @math{b>0}. Para fazer
+uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} quantile_logistic (@var{q},@var{a},@var{b})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Logistic(a,b)} , com
-@math{b>0}; em outras palavras, essa função é a inversa da função
+@deffn {FunÃ§Ã£o} quantile_logistic (@var{q},@var{a},@var{b})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Logistic(a,b)} , com
+@math{b>0}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da funÃ§Ã£o
 @code{cdf_logistic}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}.
 Para fazer uso
 dessa
-função, escreva primeiramente @code{load(distrib)}.
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} meanlog (@var{a},@var{b})
-Retorna a média de uma @math{Logistic(a,b)} variável aleatória , com @math{b>0}.
-Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} meanlog (@var{a},@var{b})
+Retorna a mÃ©dia de uma @math{Logistic(a,b)} variÃ¡vel aleatÃ³ria , com @math{b>0}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_logistic (@var{a},@var{b})
-Retorna a variância de uma variável aleatória @math{Logistic(a,b)} , com @math{b>0}.
-Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} var_logistic (@var{a},@var{b})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Logistic(a,b)} , com @math{b>0}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} std_logistic (@var{a},@var{b})
-Retorna o desvio padrão de uma variável aleatória @math{Logistic(a,b)} ,
-com @math{b>0}. Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} std_logistic (@var{a},@var{b})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Logistic(a,b)} ,
+com @math{b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} skewness_logistic (@var{a},@var{b})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Logistic(a,b)} ,
-com @math{b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} skewness_logistic (@var{a},@var{b})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Logistic(a,b)} ,
+com @math{b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_logistic (@var{a},@var{b})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Logistic(a,b)} ,
-com @math{b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} kurtosis_logistic (@var{a},@var{b})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Logistic(a,b)} ,
+com @math{b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} random_logistic (@var{a},@var{b})
-@deffnx {Função} random_logistic (@var{a},@var{b},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Logistic(a,b)}, com @math{b>0}.
+@deffn {FunÃ§Ã£o} random_logistic (@var{a},@var{b})
+@deffnx {FunÃ§Ã£o} random_logistic (@var{a},@var{b},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Logistic(a,b)}, com @math{b>0}.
 Chamando @code{random_logistic} com um terceiro argumento @var{n}, uma
-amostra aleatória de tamanho @var{n} será simulada.
+amostra aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Somente o método inverso genérico está implementado. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+Somente o mÃ©todo inverso genÃ©rico estÃ¡ implementado. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_pareto (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função densidade de probabilidade de uma
-variável aleatória @math{Pareto(a,b)}, com @math{a,b>0}. Para fazer uso
-dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_pareto (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de uma
+variÃ¡vel aleatÃ³ria @math{Pareto(a,b)}, com @math{a,b>0}. Para fazer uso
+dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_pareto (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma variável aleatória @math{Pareto(a,b)}, com @math{a,b>0}. Para fazer
-uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} cdf_pareto (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma variÃ¡vel aleatÃ³ria @math{Pareto(a,b)}, com @math{a,b>0}. Para fazer
+uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} quantile_pareto (@var{q},@var{a},@var{b})
-Retorna o @var{q}-quantile de uma variável aleatória @math{Pareto(a,b)},
-com @math{a,b>0}; em outras palavras, essa função é a inversa da
-função @code{cdf_pareto}. O argumento @var{q} deve ser um elemento de
+@deffn {FunÃ§Ã£o} quantile_pareto (@var{q},@var{a},@var{b})
+Retorna o @var{q}-quantile de uma variÃ¡vel aleatÃ³ria @math{Pareto(a,b)},
+com @math{a,b>0}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da
+funÃ§Ã£o @code{cdf_pareto}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}. Para
 fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_pareto (@var{a},@var{b})
-Retorna a média de uma variável aleatória @math{Pareto(a,b)}, com
-@math{a>1,b>0}. Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} mean_pareto (@var{a},@var{b})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Pareto(a,b)}, com
+@math{a>1,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_pareto (@var{a},@var{b})
-Retorna a variância de uma variável aleatória @math{Pareto(a,b)},
-com @math{a>2,b>0}. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} var_pareto (@var{a},@var{b})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Pareto(a,b)},
+com @math{a>2,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Função} std_pareto (@var{a},@var{b})
-Retorna o desvio padrão de uma variável aleatória @math{Pareto(a,b)},
-com @math{a>2,b>0}. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} std_pareto (@var{a},@var{b})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Pareto(a,b)},
+com @math{a>2,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Função} skewness_pareto (@var{a},@var{b})
-Retorna o coeficiente de assimetria de uma variável aleatória
-@math{Pareto(a,b)}, com @math{a>3,b>0}. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} skewness_pareto (@var{a},@var{b})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria
+@math{Pareto(a,b)}, com @math{a>3,b>0}. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_pareto (@var{a},@var{b})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Pareto(a,b)},
-com @math{a>4,b>0}. Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} kurtosis_pareto (@var{a},@var{b})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Pareto(a,b)},
+com @math{a>4,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} random_pareto (@var{a},@var{b})
-@deffnx {Função} random_pareto (@var{a},@var{b},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Pareto(a,b)}, com
+@deffn {FunÃ§Ã£o} random_pareto (@var{a},@var{b})
+@deffnx {FunÃ§Ã£o} random_pareto (@var{a},@var{b},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Pareto(a,b)}, com
 @math{a>0,b>0}. Chamando @code{random_pareto} com um terceiro
-argumento @var{n}, uma amostra aleatória de tamanho @var{n} será simulada.
+argumento @var{n}, uma amostra aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Somente o método inverso genérico está implementado. Para fazer uso
-dessa função, escreva primeiramente @code{load(distrib)}.
+Somente o mÃ©todo inverso genÃ©rico estÃ¡ implementado. Para fazer uso
+dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_weibull (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função densidade de probabilidade de uma
-variável aleatória @math{Weibull(a,b)}, com @math{a,b>0}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_weibull (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de uma
+variÃ¡vel aleatÃ³ria @math{Weibull(a,b)}, com @math{a,b>0}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_weibull (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função distribuição de probabilidade de uma
-variável aleatória @math{Weibull(a,b)}, com @math{a,b>0}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} cdf_weibull (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade de uma
+variÃ¡vel aleatÃ³ria @math{Weibull(a,b)}, com @math{a,b>0}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} quantile_weibull (@var{q},@var{a},@var{b})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Weibull(a,b)},
-com @math{a,b>0}; em outras palavras, essa função é a inversa da
-função @code{cdf_weibull}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} quantile_weibull (@var{q},@var{a},@var{b})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Weibull(a,b)},
+com @math{a,b>0}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da
+funÃ§Ã£o @code{cdf_weibull}. O argumento @var{q} deve ser um elemento de
+@math{[0,1]}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_weibull (@var{a},@var{b})
-Retorna a média de uma variável aleatória @math{Weibull(a,b)}, com
-@math{a,b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} mean_weibull (@var{a},@var{b})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Weibull(a,b)}, com
+@math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_weibull (@var{a},@var{b})
-Retorna a variância de uma variável aleatória @math{Weibull(a,b)},
-com @math{a,b>0}. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} var_weibull (@var{a},@var{b})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Weibull(a,b)},
+com @math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
-@deffn {Função} std_weibull (@var{a},@var{b})
-Retorna o desvio padrão de uma variável aleatória @math{Weibull(a,b)},
-com @math{a,b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} std_weibull (@var{a},@var{b})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Weibull(a,b)},
+com @math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Função} skewness_weibull (@var{a},@var{b})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Weibull(a,b)},
-com @math{a,b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} skewness_weibull (@var{a},@var{b})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Weibull(a,b)},
+com @math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_weibull (@var{a},@var{b})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Weibull(a,b)},
-com @math{a,b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} kurtosis_weibull (@var{a},@var{b})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Weibull(a,b)},
+com @math{a,b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} random_weibull (@var{a},@var{b})
-@deffnx {Função} random_weibull (@var{a},@var{b},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Weibull(a,b)},
+@deffn {FunÃ§Ã£o} random_weibull (@var{a},@var{b})
+@deffnx {FunÃ§Ã£o} random_weibull (@var{a},@var{b},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Weibull(a,b)},
 com @math{a,b>0}. Chamando @code{random_weibull} com um terceiro argumento
-@var{n}, uma amostra aleatória de tamanho @var{n} será simulada.
+@var{n}, uma amostra aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Somente o método inverso genérico está implementado. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+Somente o mÃ©todo inverso genÃ©rico estÃ¡ implementado. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Função} pdf_rayleigh (@var{x},@var{b})
-Retorna o valor em @var{x} da função densidade de probabilidade de uma
-variável aleatória @math{Rayleigh(b)}, com @math{b>0}.
+@deffn {FunÃ§Ã£o} pdf_rayleigh (@var{x},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de uma
+variÃ¡vel aleatÃ³ria @math{Rayleigh(b)}, com @math{b>0}.
 
-A variável aleatória @math{Rayleigh(b)} é equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada na função densidade de probabilidade de Weibull é retornada.
+A variÃ¡vel aleatÃ³ria @math{Rayleigh(b)} Ã© equivalente a @math{Weibull(2,1/b)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada na funÃ§Ã£o densidade de probabilidade de Weibull Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1938,13 +1938,13 @@ uma forma nominal baseada na função densidade de probabilidade de Weibull é reto
 @end deffn
 
 
-@deffn {Função} cdf_rayleigh (@var{x},@var{b})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma variável aleatória @math{Rayleigh(b)}, com @math{b>0}.
+@deffn {FunÃ§Ã£o} cdf_rayleigh (@var{x},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma variÃ¡vel aleatÃ³ria @math{Rayleigh(b)}, com @math{b>0}.
 
-A variável aleatória @math{Rayleigh(b)} é equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima não tiver informação disponível para pegar o
-resultado, uma forma nominal baseada na distribuição de Weibull é retornada.
+A variÃ¡vel aleatÃ³ria @math{Rayleigh(b)} Ã© equivalente a @math{Weibull(2,1/b)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o
+resultado, uma forma nominal baseada na distribuiÃ§Ã£o de Weibull Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -1965,15 +1965,15 @@ resultado, uma forma nominal baseada na distribuição de Weibull é retornada.
 @end deffn
 
 
-@deffn {Função} quantile_rayleigh (@var{q},@var{b})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Rayleigh(b)}, com
-@math{b>0}; em outras palavras, essa função é a inversa da função
+@deffn {FunÃ§Ã£o} quantile_rayleigh (@var{q},@var{b})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Rayleigh(b)}, com
+@math{b>0}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da funÃ§Ã£o
 @code{cdf_rayleigh}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}.
 
-A variável aleatória @math{Rayleigh(b)} é equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada no quantil de Weibull é
+A variÃ¡vel aleatÃ³ria @math{Rayleigh(b)} Ã© equivalente a @math{Weibull(2,1/b)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada no quantil de Weibull Ã©
 retornada.
 
 @c ===beg===
@@ -1995,12 +1995,12 @@ retornada.
 @end deffn
 
 
-@deffn {Função} mean_rayleigh (@var{b})
-Retorna a média de uma variável aleatória @math{Rayleigh(b)}, com @math{b>0}.
+@deffn {FunÃ§Ã£o} mean_rayleigh (@var{b})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Rayleigh(b)}, com @math{b>0}.
 
-A variável aleatória @math{Rayleigh(b)} é equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada na meia de Weibull é retornada.
+A variÃ¡vel aleatÃ³ria @math{Rayleigh(b)} Ã© equivalente a @math{Weibull(2,1/b)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada na meia de Weibull Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2021,12 +2021,12 @@ uma forma nominal baseada na meia de Weibull é retornada.
 @end deffn
 
 
-@deffn {Função} var_rayleigh (@var{b})
-Retorna a variância de uma variável aleatória @math{Rayleigh(b)}, com @math{b>0}.
+@deffn {FunÃ§Ã£o} var_rayleigh (@var{b})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Rayleigh(b)}, com @math{b>0}.
 
-A variável aleatória @math{Rayleigh(b)} é equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada na variância de Weibull é retornada.
+A variÃ¡vel aleatÃ³ria @math{Rayleigh(b)} Ã© equivalente a @math{Weibull(2,1/b)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada na variÃ¢ncia de Weibull Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2050,12 +2050,12 @@ uma forma nominal baseada na variância de Weibull é retornada.
 @end deffn
 
 
-@deffn {Função} std_rayleigh (@var{b})
-Retorna o desvio padrão de uma variável aleatória @math{Rayleigh(b)}, com @math{b>0}.
+@deffn {FunÃ§Ã£o} std_rayleigh (@var{b})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Rayleigh(b)}, com @math{b>0}.
 
-A variável aleatória @math{Rayleigh(b)} é equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada na Weibull desvio padrão é retornada.
+A variÃ¡vel aleatÃ³ria @math{Rayleigh(b)} Ã© equivalente a @math{Weibull(2,1/b)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada na Weibull desvio padrÃ£o Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2078,12 +2078,12 @@ uma forma nominal baseada na Weibull desvio padrão é retornada.
 @end deffn
 
 
-@deffn {Função} skewness_rayleigh (@var{b})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Rayleigh(b)}, com @math{b>0}.
+@deffn {FunÃ§Ã£o} skewness_rayleigh (@var{b})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Rayleigh(b)}, com @math{b>0}.
 
-A variável aleatória @math{Rayleigh(b)} é equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada no coeficiente de assimetria de Weibull  é retornada.
+A variÃ¡vel aleatÃ³ria @math{Rayleigh(b)} Ã© equivalente a @math{Weibull(2,1/b)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada no coeficiente de assimetria de Weibull  Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2109,12 +2109,12 @@ uma forma nominal baseada no coeficiente de assimetria de Weibull  é retornada.
 @end deffn
 
 
-@deffn {Função} kurtosis_rayleigh (@var{b})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Rayleigh(b)}, com @math{b>0}.
+@deffn {FunÃ§Ã£o} kurtosis_rayleigh (@var{b})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Rayleigh(b)}, com @math{b>0}.
 
-A variável aleatória @math{Rayleigh(b)} é equivalente a @math{Weibull(2,1/b)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada no coeficiente de curtose de Weibull é retornada.
+A variÃ¡vel aleatÃ³ria @math{Rayleigh(b)} Ã© equivalente a @math{Weibull(2,1/b)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada no coeficiente de curtose de Weibull Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2140,141 +2140,141 @@ uma forma nominal baseada no coeficiente de curtose de Weibull é retornada.
 @end deffn
 
 
-@deffn {Função} random_rayleigh (@var{b})
-@deffnx {Função} random_rayleigh (@var{b},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Rayleigh(b)}, com @math{b>0}.
-Chamando @code{random_rayleigh} com um segundo argumento @var{n}, uma amostra aleatória
-de tamanho @var{n} será simulada.
+@deffn {FunÃ§Ã£o} random_rayleigh (@var{b})
+@deffnx {FunÃ§Ã£o} random_rayleigh (@var{b},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Rayleigh(b)}, com @math{b>0}.
+Chamando @code{random_rayleigh} com um segundo argumento @var{n}, uma amostra aleatÃ³ria
+de tamanho @var{n} serÃ¡ simulada.
 
-Somente o método inverso genérico está implementado. Para fazer uso dessa função,
+Somente o mÃ©todo inverso genÃ©rico estÃ¡ implementado. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Função} pdf_laplace (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função densidade de probabilidade de uma
-variável aleatória @math{Laplace(a,b)}, com @math{b>0}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_laplace (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de uma
+variÃ¡vel aleatÃ³ria @math{Laplace(a,b)}, com @math{b>0}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_laplace (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma variável aleatória @math{Laplace(a,b)}, com @math{b>0}. Para fazer uso
-dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} cdf_laplace (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma variÃ¡vel aleatÃ³ria @math{Laplace(a,b)}, com @math{b>0}. Para fazer uso
+dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} quantile_laplace (@var{q},@var{a},@var{b})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Laplace(a,b)}, com
-@math{b>0}; em outras palavras, essa função é a inversa da função
+@deffn {FunÃ§Ã£o} quantile_laplace (@var{q},@var{a},@var{b})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Laplace(a,b)}, com
+@math{b>0}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da funÃ§Ã£o
 @code{cdf_laplace}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@math{[0,1]}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_laplace (@var{a},@var{b})
-Retorna a média de uma variável aleatória @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} mean_laplace (@var{a},@var{b})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Laplace(a,b)},
+com @math{b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_laplace (@var{a},@var{b})
-Retorna a variância de uma variável aleatória @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} var_laplace (@var{a},@var{b})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Laplace(a,b)},
+com @math{b>0}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} std_laplace (@var{a},@var{b})
-Retorna o desvio padrão de uma variável aleatória @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} std_laplace (@var{a},@var{b})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Laplace(a,b)},
+com @math{b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} skewness_laplace (@var{a},@var{b})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} skewness_laplace (@var{a},@var{b})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Laplace(a,b)},
+com @math{b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_laplace (@var{a},@var{b})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} kurtosis_laplace (@var{a},@var{b})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Laplace(a,b)},
+com @math{b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} random_laplace (@var{a},@var{b})
-@deffnx {Função} random_laplace (@var{a},@var{b},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Laplace(a,b)}, com @math{b>0}.
+@deffn {FunÃ§Ã£o} random_laplace (@var{a},@var{b})
+@deffnx {FunÃ§Ã£o} random_laplace (@var{a},@var{b},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Laplace(a,b)}, com @math{b>0}.
 Chamando @code{random_laplace} com um terceiro argumento @var{n}, uma
-amostra aleatória de tamanho @var{n} será simulada.
+amostra aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Somente o método inverso genérico está implementado. Para fazer uso dessa função,
+Somente o mÃ©todo inverso genÃ©rico estÃ¡ implementado. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Função} pdf_cauchy (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função densidade de probabilidade de uma
-variável aleatória @math{Cauchy(a,b)}, com @math{b>0}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_cauchy (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de uma
+variÃ¡vel aleatÃ³ria @math{Cauchy(a,b)}, com @math{b>0}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_cauchy (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma variável aleatória @math{Cauchy(a,b)}, com @math{b>0}. Para fazer uso
-dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} cdf_cauchy (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma variÃ¡vel aleatÃ³ria @math{Cauchy(a,b)}, com @math{b>0}. Para fazer uso
+dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} quantile_cauchy (@var{q},@var{a},@var{b})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Cauchy(a,b)}, com
-@math{b>0}; em outras palavras, essa função é a inversa da função
+@deffn {FunÃ§Ã£o} quantile_cauchy (@var{q},@var{a},@var{b})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Cauchy(a,b)}, com
+@math{b>0}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da funÃ§Ã£o
 @code{cdf_cauchy}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
-fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} random_cauchy (@var{a},@var{b})
-@deffnx {Função} random_cauchy (@var{a},@var{b},@var{n})
-Retorna uma variável estatística pseudo aleatória @math{Cauchy(a,b)}, com @math{b>0}.
+@deffn {FunÃ§Ã£o} random_cauchy (@var{a},@var{b})
+@deffnx {FunÃ§Ã£o} random_cauchy (@var{a},@var{b},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo aleatÃ³ria @math{Cauchy(a,b)}, com @math{b>0}.
 Chamando @code{random_cauchy} com um terceiro argumento @var{n}, uma amostra
-aleatória de tamanho @var{n} será simulada.
+aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Somente o método inverso genérico está implementado. Para fazer uso dessa função,
+Somente o mÃ©todo inverso genÃ©rico estÃ¡ implementado. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
 
-@deffn {Função} pdf_gumbel (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função densidade de probabilidade de uma variável
-aleatória @math{Gumbel(a,b)}, com @math{b>0}. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} pdf_gumbel (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o densidade de probabilidade de uma variÃ¡vel
+aleatÃ³ria @math{Gumbel(a,b)}, com @math{b>0}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_gumbel (@var{x},@var{a},@var{b})
-Retorna o valor em @var{x} da função distribuição de probabilidade de uma
-variável aleatória @math{Gumbel(a,b)}, com @math{b>0}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} cdf_gumbel (@var{x},@var{a},@var{b})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade de uma
+variÃ¡vel aleatÃ³ria @math{Gumbel(a,b)}, com @math{b>0}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} quantile_gumbel (@var{q},@var{a},@var{b})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Gumbel(a,b)}, com
-@math{b>0}; em outras palavras, essa função é a inversa da função
+@deffn {FunÃ§Ã£o} quantile_gumbel (@var{q},@var{a},@var{b})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Gumbel(a,b)}, com
+@math{b>0}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da funÃ§Ã£o
 @code{cdf_gumbel}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
-fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_gumbel (@var{a},@var{b})
-Retorna a média de uma variável aleatória @math{Gumbel(a,b)}, com @math{b>0}.
+@deffn {FunÃ§Ã£o} mean_gumbel (@var{a},@var{b})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Gumbel(a,b)}, com @math{b>0}.
 
 @c ===beg===
 @c load (distrib)$
@@ -2285,25 +2285,25 @@ Retorna a média de uma variável aleatória @math{Gumbel(a,b)}, com @math{b>0}.
 (%i2) assume(b>0)$  mean_gumbel(a,b);
 (%o3)                     %gamma b + a
 @end example
-onde o símbolol @code{%gamma} representa a constante de Euler-Mascheroni.
-Veja também @code{%gamma}.
+onde o sÃ­mbolol @code{%gamma} representa a constante de Euler-Mascheroni.
+Veja tambÃ©m @code{%gamma}.
 @end deffn
 
 
-@deffn {Função} var_gumbel (@var{a},@var{b})
-Retorna a variância de uma variável aleatória @math{Gumbel(a,b)},
-com @math{b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} var_gumbel (@var{a},@var{b})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Gumbel(a,b)},
+com @math{b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} std_gumbel (@var{a},@var{b})
-Retorna o desvio padrão de uma variável aleatória @math{Gumbel(a,b)},
-com @math{b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} std_gumbel (@var{a},@var{b})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Gumbel(a,b)},
+com @math{b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} skewness_gumbel (@var{a},@var{b})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Gumbel(a,b)}, com @math{b>0}.
+@deffn {FunÃ§Ã£o} skewness_gumbel (@var{a},@var{b})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Gumbel(a,b)}, com @math{b>0}.
 
 @c ===beg===
 @c load (distrib)$
@@ -2320,44 +2320,44 @@ Retorna o coeficiente de assimetria de uma variável aleatória @math{Gumbel(a,b)}
 (%i4) numer:true$ skewness_gumbel(a,b);
 (%o5)                   1.139547099404649
 @end example
-onde @code{zeta} representa a função zeta de Riemann.
+onde @code{zeta} representa a funÃ§Ã£o zeta de Riemann.
 @end deffn
 
 
-@deffn {Função} kurtosis_gumbel (@var{a},@var{b})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Gumbel(a,b)},
-com @math{b>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} kurtosis_gumbel (@var{a},@var{b})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Gumbel(a,b)},
+com @math{b>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} random_gumbel (@var{a},@var{b})
-@deffnx {Função} random_gumbel (@var{a},@var{b},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Gumbel(a,b)},
+@deffn {FunÃ§Ã£o} random_gumbel (@var{a},@var{b})
+@deffnx {FunÃ§Ã£o} random_gumbel (@var{a},@var{b},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Gumbel(a,b)},
 com @math{b>0}. Chamando @code{random_gumbel} com um terceiro argumento @var{n},
-uma amostra aleatória de tamanho @var{n} será simulada.
+uma amostra aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Somente o método inverso genérico está implementado. Para fazer uso dessa função,
+Somente o mÃ©todo inverso genÃ©rico estÃ¡ implementado. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@node Definições para distribuições discretas,  , Definições para distribuições contínuas, distrib
-@section Definições para distribuições discretas
+@node DefiniÃ§Ãµes para distribuiÃ§Ãµes discretas,  , DefiniÃ§Ãµes para distribuiÃ§Ãµes contÃ­nuas, distrib
+@section DefiniÃ§Ãµes para distribuiÃ§Ãµes discretas
 
 
-@deffn {Função} pdf_binomial (@var{x},@var{n},@var{p})
-Retorna o valor em @var{x} da função de probabilidade de uma @math{Binomial(n,p)}
-variável aleatória, com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso
-dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_binomial (@var{x},@var{n},@var{p})
+Retorna o valor em @var{x} da funÃ§Ã£o de probabilidade de uma @math{Binomial(n,p)}
+variÃ¡vel aleatÃ³ria, com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso
+dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_binomial (@var{x},@var{n},@var{p})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma @math{Binomial(n,p)} variável aleatória, com @math{0<p<1} e @math{n} um inteiro positivo.
+@deffn {FunÃ§Ã£o} cdf_binomial (@var{x},@var{n},@var{p})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma @math{Binomial(n,p)} variÃ¡vel aleatÃ³ria, com @math{0<p<1} e @math{n} um inteiro positivo.
 
-@code{cdf_binomial} é calculada numéricamente se a variável global @code{numer}
-for igual a @code{true},  de outra forma @code{cdf_binomial} retorna uma expressão nominal.
+@code{cdf_binomial} Ã© calculada numÃ©ricamente se a variÃ¡vel global @code{numer}
+for igual a @code{true},  de outra forma @code{cdf_binomial} retorna uma expressÃ£o nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -2376,55 +2376,55 @@ for igual a @code{true},  de outra forma @code{cdf_binomial} retorna uma express
 @end deffn
 
 
-@deffn {Função} quantile_binomial (@var{q},@var{n},@var{p})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Binomial(n,p)},
+@deffn {FunÃ§Ã£o} quantile_binomial (@var{q},@var{n},@var{p})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo; em outras palavras, essa
-função é a inversa da função @code{cdf_binomial}. O argumento
+funÃ§Ã£o Ã© a inversa da funÃ§Ã£o @code{cdf_binomial}. O argumento
 @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_binomial (@var{n},@var{p})
-Retorna a média de uma variável aleatória @math{Binomial(n,p)}, com
-@math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} mean_binomial (@var{n},@var{p})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Binomial(n,p)}, com
+@math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_binomial (@var{n},@var{p})
-Retorna a variância de uma variável aleatória @math{Binomial(n,p)},
+@deffn {FunÃ§Ã£o} var_binomial (@var{n},@var{p})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} std_binomial (@var{n},@var{p})
-Retorna o desvio padrão de uma variável aleatória @math{Binomial(n,p)},
+@deffn {FunÃ§Ã£o} std_binomial (@var{n},@var{p})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} skewness_binomial (@var{n},@var{p})
-Retorna o coeficiente de assimetria de uma variável aleatória 
+@deffn {FunÃ§Ã£o} skewness_binomial (@var{n},@var{p})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria 
 @math{Binomial(n,p)}, com @math{0<p<1} e @math{n} um inteiro positivo. Para
-fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_binomial (@var{n},@var{p})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} kurtosis_binomial (@var{n},@var{p})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Binomial(n,p)},
+com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Variável de opção} random_binomial_algorithm
-Valor por omissão: @code{kachit}
+@defvr {VariÃ¡vel de opÃ§Ã£o} random_binomial_algorithm
+Valor por omissÃ£o: @code{kachit}
 
-Esse é o algoritmo seleccionado para simular rvariáveis estatísticas pseudo-aleatórias
-binomiais. Os algoritmos implementados são @code{kachit}, @code{bernoulli} e @code{inverse}:
+Esse Ã© o algoritmo seleccionado para simular rvariÃ¡veis estatÃ­sticas pseudo-aleatÃ³rias
+binomiais. Os algoritmos implementados sÃ£o @code{kachit}, @code{bernoulli} e @code{inverse}:
 @itemize @bullet
 
 @item
@@ -2432,47 +2432,47 @@ binomiais. Os algoritmos implementados são @code{kachit}, @code{bernoulli} e @co
 Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
 
 @item
-@code{bernoulli}, baseado na simulação testes de Bernoulli.
+@code{bernoulli}, baseado na simulaÃ§Ã£o testes de Bernoulli.
 
 @item
-@code{inverse}, baseado no método inverso genérico.
+@code{inverse}, baseado no mÃ©todo inverso genÃ©rico.
 
 @end itemize
 
-Veja também @code{random_binomial}.
+Veja tambÃ©m @code{random_binomial}.
 @end defvr
 
 
-@deffn {Função} random_binomial (@var{n},@var{p})
-@deffnx {Função} random_binomial (@var{n},@var{p},@var{m})
-Retorna uma variável estatística pseudo-aleatória @math{Binomial(n,p)},
+@deffn {FunÃ§Ã£o} random_binomial (@var{n},@var{p})
+@deffnx {FunÃ§Ã£o} random_binomial (@var{n},@var{p},@var{m})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Chamando @code{random_binomial}
-com um terceiro argumento @var{m}, uma amostra aleatória de tamanho @var{m} será
+com um terceiro argumento @var{m}, uma amostra aleatÃ³ria de tamanho @var{m} serÃ¡
 simulada.
 
-Existem três algoritmos implementado para essa função, se pode
-seleccionar o algoritmo a ser usado fornecendo um certo valor à variável
-global @code{random_binomial_algorithm}, cujo valor padrão é @code{kachit}.
+Existem trÃªs algoritmos implementado para essa funÃ§Ã£o, se pode
+seleccionar o algoritmo a ser usado fornecendo um certo valor Ã  variÃ¡vel
+global @code{random_binomial_algorithm}, cujo valor padrÃ£o Ã© @code{kachit}.
 
-Veja também @code{random_binomial_algorithm}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+Veja tambÃ©m @code{random_binomial_algorithm}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_poisson (@var{x},@var{m})
-Retorna o valor em @var{x} da função de probabilidade de uma
-variável aleatória @math{Poisson(m)}, com @math{m>0}. Para fazer
-uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_poisson (@var{x},@var{m})
+Retorna o valor em @var{x} da funÃ§Ã£o de probabilidade de uma
+variÃ¡vel aleatÃ³ria @math{Poisson(m)}, com @math{m>0}. Para fazer
+uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_poisson (@var{x},@var{m})
-Retorna o valor em @var{x} da função distribuição de
-probabilidade de uma variável aleatória @math{Poisson(m)}, com @math{m>0}.
+@deffn {FunÃ§Ã£o} cdf_poisson (@var{x},@var{m})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de
+probabilidade de uma variÃ¡vel aleatÃ³ria @math{Poisson(m)}, com @math{m>0}.
 
-Essa função é calculada numéricamente se a variável global
-@code{numer} for igual a @code{true},  de outra forma essa função
-retorna uma expressão nominal.
+Essa funÃ§Ã£o Ã© calculada numÃ©ricamente se a variÃ¡vel global
+@code{numer} for igual a @code{true},  de outra forma essa funÃ§Ã£o
+retorna uma expressÃ£o nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -2489,51 +2489,51 @@ retorna uma expressão nominal.
 @end deffn
 
 
-@deffn {Função} quantile_poisson (@var{q},@var{m})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Poisson(m)},
-com @math{m>0}; em outras palavras, essa função é a inversa da
-função @code{cdf_poisson}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} quantile_poisson (@var{q},@var{m})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Poisson(m)},
+com @math{m>0}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da
+funÃ§Ã£o @code{cdf_poisson}. O argumento @var{q} deve ser um elemento de
+@math{[0,1]}. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_poisson (@var{m})
-Retorna a média de uma variável aleatória @math{Poisson(m)},
-com @math{m>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} mean_poisson (@var{m})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Poisson(m)},
+com @math{m>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_poisson (@var{m})
-Retorna a variância de uma variável aleatória @math{Poisson(m)},
-com  @math{m>0}. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} var_poisson (@var{m})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Poisson(m)},
+com  @math{m>0}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} std_poisson (@var{m})
-Retorna o desvio padrão de uma variável aleatória @math{Poisson(m)},
-com @math{m>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} std_poisson (@var{m})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Poisson(m)},
+com @math{m>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} skewness_poisson (@var{m})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Poisson(m)},
-com @math{m>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} skewness_poisson (@var{m})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Poisson(m)},
+com @math{m>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_poisson (@var{m})
-Retorna o coeficiente de curtose de uma Poisson variável aleatória  @math{Poi(m)},
-com @math{m>0}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} kurtosis_poisson (@var{m})
+Retorna o coeficiente de curtose de uma Poisson variÃ¡vel aleatÃ³ria  @math{Poi(m)},
+com @math{m>0}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Variável de opção} random_poisson_algorithm
-Valor por omissão: @code{ahrens_dieter}
+@defvr {VariÃ¡vel de opÃ§Ã£o} random_poisson_algorithm
+Valor por omissÃ£o: @code{ahrens_dieter}
 
-Esse é o algoritmo seleccionado para simular variáveis estatísticas
-pseudo-aleatórias de Poisson.Os algoritmos implementados são @code{ahrens_dieter} e @code{inverse}:
+Esse Ã© o algoritmo seleccionado para simular variÃ¡veis estatÃ­sticas
+pseudo-aleatÃ³rias de Poisson.Os algoritmos implementados sÃ£o @code{ahrens_dieter} e @code{inverse}:
 @itemize @bullet
 
 @item
@@ -2542,38 +2542,38 @@ Dieter, U. (1982) @var{Computer Generation of Poisson Deviates From Modified Nor
 ACM Trans. Math. Software, 8, 2, June,163-179.
 
 @item
-@code{inverse}, baseado no método inverso genérico.
+@code{inverse}, baseado no mÃ©todo inverso genÃ©rico.
 
 @end itemize
 
-Veja também @code{random_poisson}.
+Veja tambÃ©m @code{random_poisson}.
 @end defvr
 
 
-@deffn {Função} random_poisson (@var{m})
-@deffnx {Função} random_poisson (@var{m},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Poisson(m)}, com @math{m>0}.
+@deffn {FunÃ§Ã£o} random_poisson (@var{m})
+@deffnx {FunÃ§Ã£o} random_poisson (@var{m},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Poisson(m)}, com @math{m>0}.
 Chamando @code{random_poisson} com um segundo argumento @var{n}, uma amostra
-aleatória de tamanho @var{n} será simulada.
+aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Existem dois algoritmos implementado para essa função, se pode seleccionar o
-algoritmo a ser usado fornecendo um certo valor à variável global 
-@code{random_poisson_algorithm}, cujo valor padrão é
+Existem dois algoritmos implementado para essa funÃ§Ã£o, se pode seleccionar o
+algoritmo a ser usado fornecendo um certo valor Ã  variÃ¡vel global 
+@code{random_poisson_algorithm}, cujo valor padrÃ£o Ã©
 @code{ahrens_dieter}.
 
-Veja também @code{random_poisson_algorithm}. Para fazer uso
-dessa função, escreva primeiramente @code{load(distrib)}.
+Veja tambÃ©m @code{random_poisson_algorithm}. Para fazer uso
+dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_bernoulli (@var{x},@var{p})
-Retorna o valor em @var{x} da função de probabilidade de uma
-variável aleatória @math{Bernoulli(p)}, com @math{0<p<1}.
+@deffn {FunÃ§Ã£o} pdf_bernoulli (@var{x},@var{p})
+Retorna o valor em @var{x} da funÃ§Ã£o de probabilidade de uma
+variÃ¡vel aleatÃ³ria @math{Bernoulli(p)}, com @math{0<p<1}.
 
-A variável aleatória @math{Bernoulli(p)} é equivalente a @math{Binomial(1,p)},
-embora quando Maxima não tiver informação disponível para pegar o
-resultado, uma forma nominal baseada na função binomial de
-probabilidade é retornada.
+A variÃ¡vel aleatÃ³ria @math{Bernoulli(p)} Ã© equivalente a @math{Binomial(1,p)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o
+resultado, uma forma nominal baseada na funÃ§Ã£o binomial de
+probabilidade Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2590,27 +2590,27 @@ probabilidade é retornada.
 @end deffn
 
 
-@deffn {Função} cdf_bernoulli (@var{x},@var{p})
-Retorna o valor em @var{x} da função distribuição de
-probabilidade de uma variável aleatória @math{Bernoulli(p)}, com @math{0<p<1}.
-Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} cdf_bernoulli (@var{x},@var{p})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de
+probabilidade de uma variÃ¡vel aleatÃ³ria @math{Bernoulli(p)}, com @math{0<p<1}.
+Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} quantile_bernoulli (@var{q},@var{p})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Bernoulli(p)},
-com @math{0<p<1}; em outras palavras, essa função é a inversa da
-função @code{cdf_bernoulli}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} quantile_bernoulli (@var{q},@var{p})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Bernoulli(p)},
+com @math{0<p<1}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da
+funÃ§Ã£o @code{cdf_bernoulli}. O argumento @var{q} deve ser um elemento de
+@math{[0,1]}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_bernoulli (@var{p})
-Retorna a média de uma variável aleatória @math{Bernoulli(p)}, com @math{0<p<1}.
+@deffn {FunÃ§Ã£o} mean_bernoulli (@var{p})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Bernoulli(p)}, com @math{0<p<1}.
 
-A variável aleatória @math{Bernoulli(p)} é equivalente a @math{Binomial(1,p)}, embora
-quando Maxima não tiver informação disponível para pegar o resultado, uma forma
-nominal baseada na média binomial é retornada.
+A variÃ¡vel aleatÃ³ria @math{Bernoulli(p)} Ã© equivalente a @math{Binomial(1,p)}, embora
+quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado, uma forma
+nominal baseada na mÃ©dia binomial Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2627,12 +2627,12 @@ nominal baseada na média binomial é retornada.
 @end deffn
 
 
-@deffn {Função} var_bernoulli (@var{p})
-Retorna a variância de uma variável aleatória @math{Bernoulli(p)}, com @math{0<p<1}.
+@deffn {FunÃ§Ã£o} var_bernoulli (@var{p})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Bernoulli(p)}, com @math{0<p<1}.
 
-A variável aleatória @math{Bernoulli(p)} é equivalente a @math{Binomial(1,p)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada na variância binomial é retornada.
+A variÃ¡vel aleatÃ³ria @math{Bernoulli(p)} Ã© equivalente a @math{Binomial(1,p)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada na variÃ¢ncia binomial Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2649,13 +2649,13 @@ uma forma nominal baseada na variância binomial é retornada.
 @end deffn
 
 
-@deffn {Função} std_bernoulli (@var{p})
-Retorna o desvio padrão de uma variável aleatória @math{Bernoulli(p)}, com @math{0<p<1}.
+@deffn {FunÃ§Ã£o} std_bernoulli (@var{p})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Bernoulli(p)}, com @math{0<p<1}.
 
-A variável aleatória @math{Bernoulli(p)} é equivalente a
-@math{Binomial(1,p)}, embora quando Maxima não tiver informação
-disponível para pegar o resultado, uma forma nominal baseada no desvio
-padrão binomial é retornada.
+A variÃ¡vel aleatÃ³ria @math{Bernoulli(p)} Ã© equivalente a
+@math{Binomial(1,p)}, embora quando Maxima nÃ£o tiver informaÃ§Ã£o
+disponÃ­vel para pegar o resultado, uma forma nominal baseada no desvio
+padrÃ£o binomial Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2672,12 +2672,12 @@ padrão binomial é retornada.
 @end deffn
 
 
-@deffn {Função} skewness_bernoulli (@var{p})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Bernoulli(p)}, com @math{0<p<1}.
+@deffn {FunÃ§Ã£o} skewness_bernoulli (@var{p})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Bernoulli(p)}, com @math{0<p<1}.
 
-A variável aleatória @math{Bernoulli(p)} é equivalente a @math{Binomial(1,p)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada no coeficiente de assimetria binomial é retornada.
+A variÃ¡vel aleatÃ³ria @math{Bernoulli(p)} Ã© equivalente a @math{Binomial(1,p)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada no coeficiente de assimetria binomial Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2696,12 +2696,12 @@ uma forma nominal baseada no coeficiente de assimetria binomial é retornada.
 @end deffn
 
 
-@deffn {Função} kurtosis_bernoulli (@var{p})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Bernoulli(p)}, com @math{0<p<1}.
+@deffn {FunÃ§Ã£o} kurtosis_bernoulli (@var{p})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Bernoulli(p)}, com @math{0<p<1}.
 
-A variável aleatória @math{Bernoulli(p)} é equivalente a @math{Binomial(1,p)},
-embora quando Maxima não tiver informação disponível para pegar o resultado,
-uma forma nominal baseada no coeficiente de curtose binomial é retornada.
+A variÃ¡vel aleatÃ³ria @math{Bernoulli(p)} Ã© equivalente a @math{Binomial(1,p)},
+embora quando Maxima nÃ£o tiver informaÃ§Ã£o disponÃ­vel para pegar o resultado,
+uma forma nominal baseada no coeficiente de curtose binomial Ã© retornada.
 
 @c ===beg===
 @c load (distrib)$
@@ -2720,296 +2720,296 @@ uma forma nominal baseada no coeficiente de curtose binomial é retornada.
 @end deffn
 
 
-@deffn {Função} random_bernoulli (@var{p})
-@deffnx {Função} random_bernoulli (@var{p},@var{n})
-Retorna uma variável estatística pseudo-aleatória @math{Bernoulli(p)},
+@deffn {FunÃ§Ã£o} random_bernoulli (@var{p})
+@deffnx {FunÃ§Ã£o} random_bernoulli (@var{p},@var{n})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Bernoulli(p)},
 com @math{0<p<1}. Chamando @code{random_bernoulli} com um segundo
-argumento @var{n}, uma amostra aleatória de tamanho @var{n} será simulada.
+argumento @var{n}, uma amostra aleatÃ³ria de tamanho @var{n} serÃ¡ simulada.
 
-Essa é uma aplicação directa da função @code{random} built-in função do Maxima.
+Essa Ã© uma aplicaÃ§Ã£o directa da funÃ§Ã£o @code{random} built-in funÃ§Ã£o do Maxima.
 
-Veja também @code{random}. Para fazer uso dessa função, escreva
+Veja tambÃ©m @code{random}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_geometric (@var{x},@var{p})
-Retorna o valor em @var{x} da função de probabilidade de uma variável
-aleatória @math{Geometric(p)}, com @math{0<p<1}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_geometric (@var{x},@var{p})
+Retorna o valor em @var{x} da funÃ§Ã£o de probabilidade de uma variÃ¡vel
+aleatÃ³ria @math{Geometric(p)}, com @math{0<p<1}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_geometric (@var{x},@var{p})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma variável aleatória @math{Geometric(p)}, com @math{0<p<1}. Para fazer
-uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} cdf_geometric (@var{x},@var{p})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma variÃ¡vel aleatÃ³ria @math{Geometric(p)}, com @math{0<p<1}. Para fazer
+uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} quantile_geometric (@var{q},@var{p})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Geometric(p)},
-com @math{0<p<1}; em outras palavras, essa função é a inversa da
-função @code{cdf_geometric}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} quantile_geometric (@var{q},@var{p})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Geometric(p)},
+com @math{0<p<1}; em outras palavras, essa funÃ§Ã£o Ã© a inversa da
+funÃ§Ã£o @code{cdf_geometric}. O argumento @var{q} deve ser um elemento de
+@math{[0,1]}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_geometric (@var{p})
-Retorna a média de uma variável aleatória @math{Geometric(p)},
-com @math{0<p<1}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} mean_geometric (@var{p})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Geometric(p)},
+com @math{0<p<1}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_geometric (@var{p})
-Retorna a variância de uma variável aleatória @math{Geometric(p)},
-com @math{0<p<1}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} var_geometric (@var{p})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Geometric(p)},
+com @math{0<p<1}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} std_geometric (@var{p})
-Retorna o desvio padrão de uma variável aleatória @math{Geometric(p)},
-com @math{0<p<1}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} std_geometric (@var{p})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Geometric(p)},
+com @math{0<p<1}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} skewness_geometric (@var{p})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Geometric(p)},
-com @math{0<p<1}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} skewness_geometric (@var{p})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Geometric(p)},
+com @math{0<p<1}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_geometric (@var{p})
-Retorna o coeficiente de curtose de uma geometric variável aleatória  @math{Geo(p)},
-com @math{0<p<1}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} kurtosis_geometric (@var{p})
+Retorna o coeficiente de curtose de uma geometric variÃ¡vel aleatÃ³ria  @math{Geo(p)},
+com @math{0<p<1}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Variável de opção} random_geometric_algorithm
-Valor por omissão: @code{bernoulli}
+@defvr {VariÃ¡vel de opÃ§Ã£o} random_geometric_algorithm
+Valor por omissÃ£o: @code{bernoulli}
 
-Esse é o algoritmo seleccionado para simular variáveis estatísticas pseudo-aleatórias
-geométricas. Algorítmos implementados são @code{bernoulli}, @code{devroye} e @code{inverse}:
+Esse Ã© o algoritmo seleccionado para simular variÃ¡veis estatÃ­sticas pseudo-aleatÃ³rias
+geomÃ©tricas. AlgorÃ­tmos implementados sÃ£o @code{bernoulli}, @code{devroye} e @code{inverse}:
 @itemize @bullet
 
 @item
-@code{bernoulli}, baseado na simulação de testes de Bernoulli.
+@code{bernoulli}, baseado na simulaÃ§Ã£o de testes de Bernoulli.
 
 @item
 @code{devroye}, baseado no algoritmo descrito em Devroye, L. (1986)
 @var{Non-Uniform Random Variate Generation.} Springer Verlag, p. 480.
 
 @item
-@code{inverse}, baseado no método inverso genérico.
+@code{inverse}, baseado no mÃ©todo inverso genÃ©rico.
 
 @end itemize
 
-Veja também @code{random_geometric}.
+Veja tambÃ©m @code{random_geometric}.
 @end defvr
 
 
-@deffn {Função} random_geometric (@var{p})
-@deffnx {Função} random_geometric (@var{p},@var{n})
-Retorna um @math{Geometric(p)} variável estatística pseudo-aleatória, com @math{0<p<1}.
-Chamando @code{random_geometric} com um segundo argumento @var{n}, uma amostra aleatória
-de tamanho @var{n} será simulada.
+@deffn {FunÃ§Ã£o} random_geometric (@var{p})
+@deffnx {FunÃ§Ã£o} random_geometric (@var{p},@var{n})
+Retorna um @math{Geometric(p)} variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria, com @math{0<p<1}.
+Chamando @code{random_geometric} com um segundo argumento @var{n}, uma amostra aleatÃ³ria
+de tamanho @var{n} serÃ¡ simulada.
 
-Existem três algoritmos implementados para essa função, se
-pode seleccionar o algoritmo a ser usado fornecendo um certo valor à
-variável global @code{random_geometric_algorithm}, cujo valor padrão é
+Existem trÃªs algoritmos implementados para essa funÃ§Ã£o, se
+pode seleccionar o algoritmo a ser usado fornecendo um certo valor Ã 
+variÃ¡vel global @code{random_geometric_algorithm}, cujo valor padrÃ£o Ã©
 @code{bernoulli}.
 
-Veja também @code{random_geometric_algorithm}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+Veja tambÃ©m @code{random_geometric_algorithm}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_discrete_uniform (@var{x},@var{n})
-Retorna o valor em @var{x} da função de probabilidade de uma variável
-aleatória @math{Discrete Uniform(n)}, com @math{n} a strictly positive integer. Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} pdf_discrete_uniform (@var{x},@var{n})
+Retorna o valor em @var{x} da funÃ§Ã£o de probabilidade de uma variÃ¡vel
+aleatÃ³ria @math{Discrete Uniform(n)}, com @math{n} a strictly positive integer. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_discrete_uniform (@var{x},@var{n})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma variável aleatória @math{Discrete Uniform(n)}, com @math{n} inteiro
-estritamente positivo. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} cdf_discrete_uniform (@var{x},@var{n})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma variÃ¡vel aleatÃ³ria @math{Discrete Uniform(n)}, com @math{n} inteiro
+estritamente positivo. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} quantile_discrete_uniform (@var{q},@var{n})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Discrete Uniform(n)},
+@deffn {FunÃ§Ã£o} quantile_discrete_uniform (@var{q},@var{n})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Discrete Uniform(n)},
 com @math{n} um inteiro estritamente positivo; em outras palavras, essa
-função é a inversa da função @code{cdf_discrete_uniform}. O
+funÃ§Ã£o Ã© a inversa da funÃ§Ã£o @code{cdf_discrete_uniform}. O
 argumento @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_discrete_uniform (@var{n})
-Retorna a média de uma variável aleatória @math{Discrete Uniform(n)},
+@deffn {FunÃ§Ã£o} mean_discrete_uniform (@var{n})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Discrete Uniform(n)},
 com @math{n} um inteiro estritamente positivo. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_discrete_uniform (@var{n})
-Retorna a variância de uma variável aleatória @math{Discrete Uniform(n)},
-com @math{n} um inteiro estritamente positivo. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} var_discrete_uniform (@var{n})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Discrete Uniform(n)},
+com @math{n} um inteiro estritamente positivo. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} std_discrete_uniform (@var{n})
-Retorna o desvio padrão de uma variável aleatória @math{Discrete Uniform(n)},
-com @math{n} um inteiro estritamente positivo. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} std_discrete_uniform (@var{n})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Discrete Uniform(n)},
+com @math{n} um inteiro estritamente positivo. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} skewness_discrete_uniform (@var{n})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Discrete Uniform(n)},
-com @math{n} um inteiro estritamente positivo. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} skewness_discrete_uniform (@var{n})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Discrete Uniform(n)},
+com @math{n} um inteiro estritamente positivo. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_discrete_uniform (@var{n})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Discrete Uniform(n)},
-com @math{n} um inteiro estritamente positivo. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} kurtosis_discrete_uniform (@var{n})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Discrete Uniform(n)},
+com @math{n} um inteiro estritamente positivo. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} random_discrete_uniform (@var{n})
-@deffnx {Função} random_discrete_uniform (@var{n},@var{m})
-Retorna uma variável estatística pseudo-aleatória @math{Discrete Uniform(n)},
+@deffn {FunÃ§Ã£o} random_discrete_uniform (@var{n})
+@deffnx {FunÃ§Ã£o} random_discrete_uniform (@var{n},@var{m})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Discrete Uniform(n)},
 com @math{n} um inteiro estritamente positivo. Chamando @code{random_discrete_uniform}
-com um segundo argumento @var{m}, uma amostra aleatória de
-tamanho @var{m} será simulada.
+com um segundo argumento @var{m}, uma amostra aleatÃ³ria de
+tamanho @var{m} serÃ¡ simulada.
 
-Isso é uma aplicação directa da função @code{random} built-in função do Maxima.
+Isso Ã© uma aplicaÃ§Ã£o directa da funÃ§Ã£o @code{random} built-in funÃ§Ã£o do Maxima.
 
-Veja também @code{random}. Para fazer uso dessa função, escreva
+Veja tambÃ©m @code{random}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Retorna o valor em @var{x} da função de probabilidade de uma
-variável aleatória @math{Hypergeometric(n1,n2,n)}, com @var{n1}, @var{n2}
-e @var{n} inteiros não negativos e @math{n<=n1+n2}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} pdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
+Retorna o valor em @var{x} da funÃ§Ã£o de probabilidade de uma
+variÃ¡vel aleatÃ³ria @math{Hypergeometric(n1,n2,n)}, com @var{n1}, @var{n2}
+e @var{n} inteiros nÃ£o negativos e @math{n<=n1+n2}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
-Retorna o valor em @var{x} da função distribuição de
-probabilidade de uma variável aleatória @math{Hypergeometric(n1,n2,n)},
-com @var{n1}, @var{n2} e @var{n} inteiros não negativos e @math{n<=n1+n2}. Para
-fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} cdf_hypergeometric (@var{x},@var{n1},@var{n2},@var{n})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de
+probabilidade de uma variÃ¡vel aleatÃ³ria @math{Hypergeometric(n1,n2,n)},
+com @var{n1}, @var{n2} e @var{n} inteiros nÃ£o negativos e @math{n<=n1+n2}. Para
+fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} quantile_hypergeometric (@var{q},@var{n1},@var{n2},@var{n})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Hypergeometric(n1,n2,n)},
-com @var{n1}, @var{n2} e @var{n} inteiros não negativos e @math{n<=n1+n2}; em outras
-palavras, essa função é a inversa da função @code{cdf_hypergeometric}.
+@deffn {FunÃ§Ã£o} quantile_hypergeometric (@var{q},@var{n1},@var{n2},@var{n})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Hypergeometric(n1,n2,n)},
+com @var{n1}, @var{n2} e @var{n} inteiros nÃ£o negativos e @math{n<=n1+n2}; em outras
+palavras, essa funÃ§Ã£o Ã© a inversa da funÃ§Ã£o @code{cdf_hypergeometric}.
 O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_hypergeometric (@var{n1},@var{n2},@var{n})
-Retorna a média de uma variável aleatória discreta univorme
-@math{Hyp(n1,n2,n)}, com @var{n1}, @var{n2} e @var{n} inteiros não negativos
-e @math{n<=n1+n2}. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} mean_hypergeometric (@var{n1},@var{n2},@var{n})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria discreta univorme
+@math{Hyp(n1,n2,n)}, com @var{n1}, @var{n2} e @var{n} inteiros nÃ£o negativos
+e @math{n<=n1+n2}. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_hypergeometric (@var{n1},@var{n2},@var{n})
-Retorna a variância de uma variável aleatória hipergeométrica
+@deffn {FunÃ§Ã£o} var_hypergeometric (@var{n1},@var{n2},@var{n})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria hipergeomÃ©trica
 @math{Hyp(n1,n2,n)}, com @var{n1}, @var{n2} e @var{n} inteiros
-não negativos e @math{n<=n1+n2}. Para fazer uso dessa função,
+nÃ£o negativos e @math{n<=n1+n2}. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} std_hypergeometric (@var{n1},@var{n2},@var{n})
-Retorna o desvio padrão de uma variável aleatória @math{Hypergeometric(n1,n2,n)},
-com @var{n1}, @var{n2} e @var{n} inteiros não negativos e @math{n<=n1+n2}. Para fazer uso dessa função, escreva primeiramente
+@deffn {FunÃ§Ã£o} std_hypergeometric (@var{n1},@var{n2},@var{n})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Hypergeometric(n1,n2,n)},
+com @var{n1}, @var{n2} e @var{n} inteiros nÃ£o negativos e @math{n<=n1+n2}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente
 @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} skewness_hypergeometric (@var{n1},@var{n2},@var{n})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Hypergeometric(n1,n2,n)},
-com @var{n1}, @var{n2} e @var{n} inteiros não negativos e @math{n<=n1+n2}. Para fazer uso
-dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} skewness_hypergeometric (@var{n1},@var{n2},@var{n})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Hypergeometric(n1,n2,n)},
+com @var{n1}, @var{n2} e @var{n} inteiros nÃ£o negativos e @math{n<=n1+n2}. Para fazer uso
+dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_hypergeometric (@var{n1},@var{n2},@var{n})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Hypergeometric(n1,n2,n)},
-com @var{n1}, @var{n2} e @var{n} inteiros não negativos e @math{n<=n1+n2}. Para fazer uso
-dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} kurtosis_hypergeometric (@var{n1},@var{n2},@var{n})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Hypergeometric(n1,n2,n)},
+com @var{n1}, @var{n2} e @var{n} inteiros nÃ£o negativos e @math{n<=n1+n2}. Para fazer uso
+dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
-@defvr {Variável de opção} random_hypergeometric_algorithm
-Valor por omissão: @code{kachit}
+@defvr {VariÃ¡vel de opÃ§Ã£o} random_hypergeometric_algorithm
+Valor por omissÃ£o: @code{kachit}
 
-Esse é o algoritmo seleccionado para simular variáveis estatísticas pseudo
-aleatórias hipergeométricas.Os algoritmos implementados são @code{kachit} e @code{inverse}:
+Esse Ã© o algoritmo seleccionado para simular variÃ¡veis estatÃ­sticas pseudo
+aleatÃ³rias hipergeomÃ©tricas.Os algoritmos implementados sÃ£o @code{kachit} e @code{inverse}:
 @itemize @bullet
 
 @item
 @code{kachit}, baseado no algoritmo descrito em Kachitvichyanukul, V., Schmeiser, B.W. (1985)
-@var{Computer generation of hypergeometric variáveis estatística pseudo-aleatórias.} Journal
+@var{Computer generation of hypergeometric variÃ¡veis estatÃ­stica pseudo-aleatÃ³rias.} Journal
 of Statistical Computation and Simulation 22, 127-145.
 
 @item
-@code{inverse}, baseado no método inverso genérico.
+@code{inverse}, baseado no mÃ©todo inverso genÃ©rico.
 
 @end itemize
 
-Veja também @code{random_hypergeometric}.
+Veja tambÃ©m @code{random_hypergeometric}.
 @end defvr
 
 
-@deffn {Função} random_hypergeometric (@var{n1},@var{n2},@var{n})
-@deffnx {Função} random_hypergeometric (@var{n1},@var{n2},@var{n},@var{m})
-Retorna uma variável estatística pseudo-aleatória @math{Hypergeometric(n1,n2,n)},
-com @var{n1}, @var{n2} e @var{n} inteiros não negativos e @math{n<=n1+n2}. Chamando
+@deffn {FunÃ§Ã£o} random_hypergeometric (@var{n1},@var{n2},@var{n})
+@deffnx {FunÃ§Ã£o} random_hypergeometric (@var{n1},@var{n2},@var{n},@var{m})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Hypergeometric(n1,n2,n)},
+com @var{n1}, @var{n2} e @var{n} inteiros nÃ£o negativos e @math{n<=n1+n2}. Chamando
 @code{random_hypergeometric} com um quarto argumento @var{m}, uma amostra
-aleatória de tamanho @var{m} será simulada.
+aleatÃ³ria de tamanho @var{m} serÃ¡ simulada.
 
-Existem dois algoritmos implementados para essa função, se pode seleccionar o
-algoritmo a ser usado fornecendo um certo valor à variável global @code{random_hypergeometric_algorithm},
-cujo valor padrão é @code{kachit}.
+Existem dois algoritmos implementados para essa funÃ§Ã£o, se pode seleccionar o
+algoritmo a ser usado fornecendo um certo valor Ã  variÃ¡vel global @code{random_hypergeometric_algorithm},
+cujo valor padrÃ£o Ã© @code{kachit}.
 
-Veja também @code{random_hypergeometric_algorithm}. Para fazer uso
-dessa função, escreva primeiramente @code{load(distrib)}.
+Veja tambÃ©m @code{random_hypergeometric_algorithm}. Para fazer uso
+dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} pdf_negative_binomial (@var{x},@var{n},@var{p})
-Retorna o valor em @var{x} da função de probabilidade de uma variável
-aleatória @math{Negative Binomial(n,p)}, com @math{0<p<1} e @math{n} um inteiro
-positivo. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} pdf_negative_binomial (@var{x},@var{n},@var{p})
+Retorna o valor em @var{x} da funÃ§Ã£o de probabilidade de uma variÃ¡vel
+aleatÃ³ria @math{Negative Binomial(n,p)}, com @math{0<p<1} e @math{n} um inteiro
+positivo. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} cdf_negative_binomial (@var{x},@var{n},@var{p})
-Retorna o valor em @var{x} da função distribuição de probabilidade
-de uma @math{Negative Binomial(n,p)} variável aleatória, com @math{0<p<1} e @math{n} um inteiro positivo.
+@deffn {FunÃ§Ã£o} cdf_negative_binomial (@var{x},@var{n},@var{p})
+Retorna o valor em @var{x} da funÃ§Ã£o distribuiÃ§Ã£o de probabilidade
+de uma @math{Negative Binomial(n,p)} variÃ¡vel aleatÃ³ria, com @math{0<p<1} e @math{n} um inteiro positivo.
 
-Essa função é calculada numéricamente se a variável global @code{numer} for
-igual a @code{true},  de outra forma essa função retorna uma expressão nominal.
+Essa funÃ§Ã£o Ã© calculada numÃ©ricamente se a variÃ¡vel global @code{numer} for
+igual a @code{true},  de outra forma essa funÃ§Ã£o retorna uma expressÃ£o nominal.
 
 @c ===beg===
 @c load (distrib)$
@@ -3028,54 +3028,54 @@ igual a @code{true},  de outra forma essa função retorna uma expressão nominal.
 @end deffn
 
 
-@deffn {Função} quantile_negative_binomial (@var{q},@var{n},@var{p})
-Retorna o @var{q}-quantil de uma variável aleatória @math{Negative Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo; em outras palavras, essa função
-é a inversa da função @code{cdf_negative_binomial}. O argumento @var{q} deve ser
-um elemento de @math{[0,1]}. Para fazer uso dessa função, escreva primeiramente @code{load(distrib)}.
+@deffn {FunÃ§Ã£o} quantile_negative_binomial (@var{q},@var{n},@var{p})
+Retorna o @var{q}-quantil de uma variÃ¡vel aleatÃ³ria @math{Negative Binomial(n,p)},
+com @math{0<p<1} e @math{n} um inteiro positivo; em outras palavras, essa funÃ§Ã£o
+Ã© a inversa da funÃ§Ã£o @code{cdf_negative_binomial}. O argumento @var{q} deve ser
+um elemento de @math{[0,1]}. Para fazer uso dessa funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} mean_negative_binomial (@var{n},@var{p})
-Retorna a média de uma variável aleatória @math{Negative Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} mean_negative_binomial (@var{n},@var{p})
+Retorna a mÃ©dia de uma variÃ¡vel aleatÃ³ria @math{Negative Binomial(n,p)},
+com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} var_negative_binomial (@var{n},@var{p})
-Retorna a variância de uma variável aleatória @math{Negative Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} var_negative_binomial (@var{n},@var{p})
+Retorna a variÃ¢ncia de uma variÃ¡vel aleatÃ³ria @math{Negative Binomial(n,p)},
+com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} std_negative_binomial (@var{n},@var{p})
-Retorna o desvio padrão de uma variável aleatória @math{Negative Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa função,
+@deffn {FunÃ§Ã£o} std_negative_binomial (@var{n},@var{p})
+Retorna o desvio padrÃ£o de uma variÃ¡vel aleatÃ³ria @math{Negative Binomial(n,p)},
+com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funÃ§Ã£o,
 escreva primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} skewness_negative_binomial (@var{n},@var{p})
-Retorna o coeficiente de assimetria de uma variável aleatória @math{Negative Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} skewness_negative_binomial (@var{n},@var{p})
+Retorna o coeficiente de assimetria de uma variÃ¡vel aleatÃ³ria @math{Negative Binomial(n,p)},
+com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@deffn {Função} kurtosis_negative_binomial (@var{n},@var{p})
-Retorna o coeficiente de curtose de uma variável aleatória @math{Negative Binomial(n,p)},
-com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa função, escreva
+@deffn {FunÃ§Ã£o} kurtosis_negative_binomial (@var{n},@var{p})
+Retorna o coeficiente de curtose de uma variÃ¡vel aleatÃ³ria @math{Negative Binomial(n,p)},
+com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funÃ§Ã£o, escreva
 primeiramente @code{load(distrib)}.
 @end deffn
 
 
-@defvr {Variável de opção} random_negative_binomial_algorithm
-Valor por omissão: @code{bernoulli}
+@defvr {VariÃ¡vel de opÃ§Ã£o} random_negative_binomial_algorithm
+Valor por omissÃ£o: @code{bernoulli}
 
-Esse é o algoritmo seleccionado para simular variáveis estatísticas pseuso-aleatórias
-binomiais negativas. Os algoritmos implementados são @code{devroye}, @code{bernoulli}
+Esse Ã© o algoritmo seleccionado para simular variÃ¡veis estatÃ­sticas pseuso-aleatÃ³rias
+binomiais negativas. Os algoritmos implementados sÃ£o @code{devroye}, @code{bernoulli}
 e @code{inverse}:
 @itemize @bullet
 
@@ -3084,29 +3084,29 @@ e @code{inverse}:
 @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
 
 @item
-@code{bernoulli}, baseado na simulação de testes de Bernoulli.
+@code{bernoulli}, baseado na simulaÃ§Ã£o de testes de Bernoulli.
 
 @item
-@code{inverse}, baseado no método inverso genérico.
+@code{inverse}, baseado no mÃ©todo inverso genÃ©rico.
 
 @end itemize
 
-Veja também @code{random_negative_binomial}.
+Veja tambÃ©m @code{random_negative_binomial}.
 @end defvr
 
 
-@deffn {Função} random_negative_binomial (@var{n},@var{p})
-@deffnx {Função} random_negative_binomial (@var{n},@var{p},@var{m})
-Retorna uma variável estatística pseudo-aleatória @math{Negative Binomial(n,p)},
+@deffn {FunÃ§Ã£o} random_negative_binomial (@var{n},@var{p})
+@deffnx {FunÃ§Ã£o} random_negative_binomial (@var{n},@var{p},@var{m})
+Retorna uma variÃ¡vel estatÃ­stica pseudo-aleatÃ³ria @math{Negative Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Chamando @code{random_negative_binomial}
-com um terceiro argumento @var{m}, uma amostra aleatória de tamanho
-@var{m} será simulada.
+com um terceiro argumento @var{m}, uma amostra aleatÃ³ria de tamanho
+@var{m} serÃ¡ simulada.
 
-Existem três algoritmos implementados para essa função, se pode
-seleccionar o algoritmo a ser usado fornecendo um certo valor à variável global
-@code{random_negative_binomial_algorithm}, cujo valor padrão é @code{bernoulli}.
+Existem trÃªs algoritmos implementados para essa funÃ§Ã£o, se pode
+seleccionar o algoritmo a ser usado fornecendo um certo valor Ã  variÃ¡vel global
+@code{random_negative_binomial_algorithm}, cujo valor padrÃ£o Ã© @code{bernoulli}.
 
-Veja também @code{random_negative_binomial_algorithm}. Para fazer uso dessa
-função, escreva primeiramente @code{load(distrib)}.
+Veja tambÃ©m @code{random_negative_binomial_algorithm}. Para fazer uso dessa
+funÃ§Ã£o, escreva primeiramente @code{load(distrib)}.
 @end deffn
 

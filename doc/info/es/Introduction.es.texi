@@ -1,5 +1,5 @@
 @c English version 2011-05-31
-Se puede iniciar Maxima con el comando "maxima". Maxima desplegará alguna información importante acerca de la versión que se está usando y un prompt. Cada comando que vaya a ser ejecutado por Maxima debe terminar con un punto y coma. Para finalizar una sesión en Maxima se emplea el comando "quit();". A continuación se presenta un breve ejemplo de sesión:
+Se puede iniciar Maxima con el comando "maxima". Maxima desplegarÃ¡ alguna informaciÃ³n importante acerca de la versiÃ³n que se estÃ¡ usando y un prompt. Cada comando que vaya a ser ejecutado por Maxima debe terminar con un punto y coma. Para finalizar una sesiÃ³n en Maxima se emplea el comando "quit();". A continuaciÃ³n se presenta un breve ejemplo de sesiÃ³n:
 
 @example
 [wfs@@chromium]$ maxima
@@ -22,11 +22,11 @@ provides bug reporting information.
 [wfs@@chromium]$
 @end example
 
-Maxima puede hacer consultas en la documentación. La instrucción @code{describe} mostrará 
-información sobre una función o la lista de todas las funciones y variables que
-contengan el texto pasado a @code{describe}. La interrogación @code{?} 
-(búsqueda exacta) y la doble interrogación @code{??} (búsqueda aproximada)
-son abreviaturas de la instrucción @code{describe}: 
+Maxima puede hacer consultas en la documentaciÃ³n. La instrucciÃ³n @code{describe} mostrarÃ¡ 
+informaciÃ³n sobre una funciÃ³n o la lista de todas las funciones y variables que
+contengan el texto pasado a @code{describe}. La interrogaciÃ³n @code{?} 
+(bÃºsqueda exacta) y la doble interrogaciÃ³n @code{??} (bÃºsqueda aproximada)
+son abreviaturas de la instrucciÃ³n @code{describe}: 
 
 @example
 (%i1) ?? integ
@@ -90,8 +90,8 @@ Enter space-separated numbers, `all' or `none': 5 4
 @end example
 
 Para usar posteriormente un resultado, se puede asignar dicho resultado a 
-una variable o referirse a él por medio de la etiqueta asociada (@code{%i*} o @code{%o*}).
-Además, se puede utilizar @code{%} para referirse al último resultado obtenido.  
+una variable o referirse a Ã©l por medio de la etiqueta asociada (@code{%i*} o @code{%o*}).
+AdemÃ¡s, se puede utilizar @code{%} para referirse al Ãºltimo resultado obtenido.  
 
 @example
 (%i1) u: expand ((x + y)^6);
@@ -105,7 +105,7 @@ Además, se puede utilizar @code{%} para referirse al último resultado obtenido.
 (%o3)                      6 (y + x)
 @end example
 
-Maxima manipula sin ningún problema números complejos y constantes numéricas: 
+Maxima manipula sin ningÃºn problema nÃºmeros complejos y constantes numÃ©ricas: 
 
 @example
 (%i1) cos(%pi);
@@ -132,7 +132,7 @@ Maxima puede hacer derivadas  e integrales:
                   6             sqrt(3)          3
 @end example
 
-Maxima puede resolver sistemas de ecuaciones lineales y cúbicas:
+Maxima puede resolver sistemas de ecuaciones lineales y cÃºbicas:
 
 @example
 (%i1) linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
@@ -158,19 +158,19 @@ Maxima puede resolver sistemas de ecuaciones no lineales. Tenga en cuenta que si
                                      2                   2
 @end example
 
-Maxima puede generar gráficos de una o más funciones:
+Maxima puede generar grÃ¡ficos de una o mÃ¡s funciones:
 
 @example
 (%i1) plot2d (sin(x)/x, [x, -20, 20])$
 @end example
 @ifnotinfo
-@image{../figures/introduction1, 10cm}
+@image{@value{figuresfolder}/introduction1, 10cm}
 @end ifnotinfo
 @example
 (%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5], [y, -1.5, 2])$
 @end example
 @ifnotinfo
-@image{../figures/introduction2, 10cm}
+@image{@value{figuresfolder}/introduction2, 10cm}
 @end ifnotinfo
 @example
 @group
@@ -179,7 +179,7 @@ Maxima puede generar gráficos de una o más funciones:
 @end group
 @end example
 @ifnotinfo
-@image{../figures/introduction3, 12cm}
+@image{@value{figuresfolder}/introduction3, 12cm}
 @end ifnotinfo 
 
 @c Traducido por: Juan Pablo Romero Bernal

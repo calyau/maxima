@@ -75,7 +75,9 @@ January 20, 1999
 @end smallformat
 
 @opencatbox
-@category{Groebner bases} @category{Share packages} @category{Package grobner}
+@category{Groebner bases}
+@category{Share packages}
+@category{Package grobner}
 @closecatbox
 
 @subsection Implementations of admissible monomial orders in grobner
@@ -564,7 +566,8 @@ The @emph{根基イデアル} @math{sqrt(I)}はイデアル
 @code{poly_depends}は多項式が変数 @var{var}に依存するかテストします。
 
 @opencatbox
-@category{Package grobner} @category{Predicate functions}
+@category{Package grobner}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn
@@ -681,7 +684,8 @@ Groebner基底を返します。
 このテストが常に成功するには、@var{polylist2}が Groebner基底でなければいけません。
 
 @opencatbox
-@category{Package grobner} @category{Predicate functions}
+@category{Package grobner}
+@category{Predicate functions}
 @closecatbox
 
 @end deffn

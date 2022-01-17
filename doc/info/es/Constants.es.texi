@@ -13,12 +13,12 @@
 @defvr {Constante} %e
 @ifinfo
 @vrindex e
-@vrindex Número de Euler
+@vrindex NÃºmero de Euler
 @vrindex Base de los logaritmos naturales
 @end ifinfo
-El símbolo @code{%e} representa a la base de los logaritmos
-naturales, también conocido como número de Euler. El valor numérico
-de @code{%e} es el número decimal en coma flotante 2.718281828459045d0.
+El sÃ­mbolo @code{%e} representa a la base de los logaritmos
+naturales, tambiÃ©n conocido como nÃºmero de Euler. El valor numÃ©rico
+de @code{%e} es el nÃºmero decimal en coma flotante 2.718281828459045d0.
 
 @end defvr
 
@@ -28,13 +28,13 @@ de @code{%e} es el número decimal en coma flotante 2.718281828459045d0.
 @vrindex i
 @vrindex Unidad imaginaria
 @end ifinfo
-El símbolo @code{%i} representa la unidad imaginaria, @math{sqrt(- 1)}.
+El sÃ­mbolo @code{%i} representa la unidad imaginaria, @math{sqrt(- 1)}.
 
 @end defvr
 
 
 @defvr {Constante} false
-El símbolo @code{false} representa al valor lógico
+El sÃ­mbolo @code{false} representa al valor lÃ³gico
 "falso". Maxima implementa @code{false} con el valor @code{NIL} de
 Lisp.
 @end defvr
@@ -58,7 +58,7 @@ Es la constante de Euler-Mascheroni, 0.5772156649015329 ....
 
 @code{ind} representa un resultado acotado indeterminado.
 
-Véase también @code{limit}.
+VÃ©ase tambiÃ©n @code{limit}.
 
 Ejemplo:
 
@@ -73,16 +73,16 @@ Ejemplo:
 
 @defvr {Constante} inf
 @ifinfo
-@vrindex Más infinito
+@vrindex MÃ¡s infinito
 @end ifinfo
-El símbolo @code{inf} representa al infinito real positivo.
+El sÃ­mbolo @code{inf} representa al infinito real positivo.
 @end defvr
 
 @defvr {Constante}  infinity
 @ifinfo
 @vrindex Infinito complejo
 @end ifinfo
-El símbolo @code{infinity} representa al infinito complejo.
+El sÃ­mbolo @code{infinity} representa al infinito complejo.
 @end defvr
 
 @defvr {Constante} minf
@@ -90,21 +90,21 @@ El símbolo @code{infinity} representa al infinito complejo.
 @vrindex Menos infinito
 @vrindex Infinito negativo
 @end ifinfo
-El símbolo @code{minf} representa al infinito real negativo.
+El sÃ­mbolo @code{minf} representa al infinito real negativo.
 @end defvr
 
 @defvr {Constante} %phi
 @ifinfo
 @vrindex phi
-@vrindex Razón áurea
+@vrindex RazÃ³n Ã¡urea
 @end ifinfo
 
-El símbolo @code{%phi} representa a la llamada @i{razón áurea},
+El sÃ­mbolo @code{%phi} representa a la llamada @i{razÃ³n Ã¡urea},
 @math{(1 + sqrt(5))/2}.
-El valor numérico de @code{%phi} es el número decimal en coma flotante 1.618033988749895d0.
+El valor numÃ©rico de @code{%phi} es el nÃºmero decimal en coma flotante 1.618033988749895d0.
 
-La función @code{fibtophi} expresa los números de Fibonacci @code{fib(n)} en
-términos de @code{%phi}.
+La funciÃ³n @code{fibtophi} expresa los nÃºmeros de Fibonacci @code{fib(n)} en
+tÃ©rminos de @code{%phi}.
 
 Por defecto, Maxima desconoce las propiedades algebraicas de @code{%phi}.
 Tras evaluar @code{tellrat(%phi^2 - %phi - 1)} y @code{algebraic: true},
@@ -112,7 +112,7 @@ Tras evaluar @code{tellrat(%phi^2 - %phi - 1)} y @code{algebraic: true},
 
 Ejemplos:
 
-@code{fibtophi} expresa el número de Fibonacci @code{fib(n)} en términos de @code{%phi}.
+@code{fibtophi} expresa el nÃºmero de Fibonacci @code{fib(n)} en tÃ©rminos de @code{%phi}.
 
 @c ===beg===
 @c fibtophi (fib (n));
@@ -142,7 +142,7 @@ Ejemplos:
 @end example
 
 Por defecto, Maxima desconoce las propiedades algebraicas de @code{%phi}.
-Después de evaluar @code{tellrat (%phi^2 - %phi - 1)} y
+DespuÃ©s de evaluar @code{tellrat (%phi^2 - %phi - 1)} y
 @code{algebraic: true}, @code{ratsimp} puede simplificar algunas expresiones
 que contengan @code{%phi}.
 
@@ -177,13 +177,13 @@ que contengan @code{%phi}.
 @ifinfo
 @vrindex pi
 @end ifinfo
-El símbolo @code{%pi} representa la razón entre la longitud de
+El sÃ­mbolo @code{%pi} representa la razÃ³n entre la longitud de
 una circunferencia y su radio. 
-El valor numérico de @code{%pi} es el número decimal en coma flotante 3.141592653589793d0.
+El valor numÃ©rico de @code{%pi} es el nÃºmero decimal en coma flotante 3.141592653589793d0.
 @end defvr
 
 @defvr {Constante} true
-El símbolo @code{true} representa al valor lógico
+El sÃ­mbolo @code{true} representa al valor lÃ³gico
 "verdadero". Maxima implementa @code{true} con el valor @code{T} de
 Lisp.
 @end defvr
@@ -195,7 +195,7 @@ Lisp.
 
 @code{und} representa un resultado indefinido.
 
-Véase también @code{limit}.
+VÃ©ase tambiÃ©n @code{limit}.
 
 Ejemplo:
 
@@ -214,7 +214,7 @@ Ejemplo:
 @code{zeroa} puede utilizarse en expresiones. @code{limit}
 simplifica expresiones que contienen infinitesimales.
 
-Véanse también @code{zerob} y @code{limit}.
+VÃ©anse tambiÃ©n @code{zerob} y @code{limit}.
 
 Ejemplo:
 
@@ -238,7 +238,7 @@ Ejemplo:
 @code{zerob} puede utilizarse en expresiones. @code{limit}
 simplifica expresiones que contienen infinitesimales.
 
-Véanse también @code{zeroa} y @code{limit}.
+VÃ©anse tambiÃ©n @code{zeroa} y @code{limit}.
 @end defvr
 
 

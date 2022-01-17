@@ -1,25 +1,25 @@
 @c Language=Russian
-@c Encoding=CP1251
+@c Encoding=UTF-8
 @c File=bode.texi 
 @c OriginalRevision=1.4
 @c TranslatedBy: (c) 2007-07 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
-* Функции и переменные пакета bode::
+* Р¤СѓРЅРєС†РёРё Рё РїРµСЂРµРјРµРЅРЅС‹Рµ РїР°РєРµС‚Р° bode::
 @end menu
 
-@node Функции и переменные пакета bode,  , Пакет bode, Пакет bode
-@section Функции и переменные пакета bode
+@node Р¤СѓРЅРєС†РёРё Рё РїРµСЂРµРјРµРЅРЅС‹Рµ РїР°РєРµС‚Р° bode,  , РџР°РєРµС‚ bode, РџР°РєРµС‚ bode
+@section Р¤СѓРЅРєС†РёРё Рё РїРµСЂРµРјРµРЅРЅС‹Рµ РїР°РєРµС‚Р° bode
 
 
-@deffn {Функция} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
-Функция для построения амплитудной диаграммы Боде.
+@deffn {Р¤СѓРЅРєС†РёСЏ} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
+Р¤СѓРЅРєС†РёСЏ РґР»СЏ РїРѕСЃС‚СЂРѕРµРЅРёСЏ Р°РјРїР»РёС‚СѓРґРЅРѕР№ РґРёР°РіСЂР°РјРјС‹ Р‘РѕРґРµ.
 
-Примеры (c 1 по 7 из  
+РџСЂРёРјРµСЂС‹ (c 1 РїРѕ 7 РёР·  
 @example
 @url{http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html},
 @end example
-8 от Ron Crummett):
+8 РѕС‚ Ron Crummett):
 @example
 (%i1) load("bode")$
 
@@ -58,23 +58,23 @@
 (%i17) bode_gain (H8 (s), [w, 1/1000, 1000])$
 @end example
 
-Для использования этой функции необходимо сначала выполнить @code{load("bode")}. См. также @code{bode_phase}
+Р”Р»СЏ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ СЌС‚РѕР№ С„СѓРЅРєС†РёРё РЅРµРѕР±С…РѕРґРёРјРѕ СЃРЅР°С‡Р°Р»Р° РІС‹РїРѕР»РЅРёС‚СЊ @code{load("bode")}. РЎРј. С‚Р°РєР¶Рµ @code{bode_phase}
 
 @opencatbox
-@category{Графика} @category{Пакет bode}
+@category{Р“СЂР°С„РёРєР°} @category{РџР°РєРµС‚ bode}
 @closecatbox
 
 @end deffn
 
 
-@deffn {Функция} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
-Функция для построения фазовой диаграммы Боде.
+@deffn {Р¤СѓРЅРєС†РёСЏ} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
+Р¤СѓРЅРєС†РёСЏ РґР»СЏ РїРѕСЃС‚СЂРѕРµРЅРёСЏ С„Р°Р·РѕРІРѕР№ РґРёР°РіСЂР°РјРјС‹ Р‘РѕРґРµ.
 
-Примеры (с 1 по 7 из 
+РџСЂРёРјРµСЂС‹ (СЃ 1 РїРѕ 7 РёР· 
 @example
 @url{http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html},
 @end example
-8 от Ron Crummett):
+8 РѕС‚ Ron Crummett):
 @example
 (%i1) load("bode")$
 
@@ -119,10 +119,10 @@
               bode_phase (H8 (s), [w, 1/1000, 1000]));
 @end example
 
-Для использования этой функции необходимо сначала выполнить @code{load("bode")}. См. также @code{bode_gain}
+Р”Р»СЏ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ СЌС‚РѕР№ С„СѓРЅРєС†РёРё РЅРµРѕР±С…РѕРґРёРјРѕ СЃРЅР°С‡Р°Р»Р° РІС‹РїРѕР»РЅРёС‚СЊ @code{load("bode")}. РЎРј. С‚Р°РєР¶Рµ @code{bode_gain}
 
 @opencatbox
-@category{Графика} @category{Пакет bode}
+@category{Р“СЂР°С„РёРєР°} @category{РџР°РєРµС‚ bode}
 @closecatbox
 
 @end deffn

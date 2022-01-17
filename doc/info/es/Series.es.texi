@@ -1,9 +1,9 @@
 @c English version 2013-04-02
 @menu
 * Funciones y variables para sumas y productos::
-* IntroducciÛn a las series::
+* Introducci√≥n a las series::
 * Funciones y variables para las series::
-* IntroducciÛn a las series de Fourier::
+* Introducci√≥n a las series de Fourier::
 * Funciones y variables para series de Fourier::
 * Funciones y variables para series de Poisson::
 @end menu
@@ -11,16 +11,16 @@
 
 
 
-@node Funciones y variables para sumas y productos, IntroducciÛn a las series, Sumas productos y series, Sumas productos y series
+@node Funciones y variables para sumas y productos, Introducci√≥n a las series, Sumas productos y series, Sumas productos y series
 @section Funciones y variables para sumas y productos
 
 
 
-@deffn {FunciÛn} bashindices (@var{expr})
-Transforma la expresiÛn @var{expr} d·ndole a cada sumatorio y producto un
-˙nico Ìndice. Esto le da a @code{changevar} mayor precisiÛn 
-cuando opera con sumas y productos. La forma del ˙nico Ìndice es 
-@code{j@var{number}}. La cantidad @var{number} se determina en funciÛn de 
+@deffn {Funci√≥n} bashindices (@var{expr})
+Transforma la expresi√≥n @var{expr} d√°ndole a cada sumatorio y producto un
+√∫nico √≠ndice. Esto le da a @code{changevar} mayor precisi√≥n 
+cuando opera con sumas y productos. La forma del √∫nico √≠ndice es 
+@code{j@var{number}}. La cantidad @var{number} se determina en funci√≥n de 
 @code{gensumnum}, valor que puede cambiar el usuario. Por ejemplo, haciendo @code{gensumnum:0$}.
 
 @end deffn
@@ -28,10 +28,10 @@ cuando opera con sumas y productos. La forma del ˙nico Ìndice es
 
 
 
-@deffn {FunciÛn} lsum (@var{expr}, @var{x}, @var{L})
+@deffn {Funci√≥n} lsum (@var{expr}, @var{x}, @var{L})
 Representa la suma de @var{expr} para cada elemento @var{x} en @var{L}.
 
-Se retornar· la forma nominal @code{'lsum} si el argumento @var{L} no es una lista.
+Se retornar√° la forma nominal @code{'lsum} si el argumento @var{L} no es una lista.
 
 Ejemplos:
 
@@ -56,11 +56,11 @@ Ejemplos:
 
 
 
-@deffn {FunciÛn} intosum (@var{expr})
-Mueve los factores multiplicativos que est·n fuera de un sumatorio hacia dentro
-de Èste. Si el Ìndice del sumatorio aparece en la expresiÛn exterior,
-entonces @code{intosum} busca un Ìndice razonable, lo mismo que hace con 
-@code{sumcontract}. Se trata de la operaciÛn contraria a extraer factores comunes de los sumatorios.
+@deffn {Funci√≥n} intosum (@var{expr})
+Mueve los factores multiplicativos que est√°n fuera de un sumatorio hacia dentro
+de √©ste. Si el √≠ndice del sumatorio aparece en la expresi√≥n exterior,
+entonces @code{intosum} busca un √≠ndice razonable, lo mismo que hace con 
+@code{sumcontract}. Se trata de la operaci√≥n contraria a extraer factores comunes de los sumatorios.
 
 En algunos caos puede ser necesario hacer @code{scanmap (multthru, @var{expr})} antes que @code{intosum}.
 
@@ -94,19 +94,19 @@ Ejemplo:
 
 
 
-@deffn {FunciÛn} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
-Representa el producto de los valores de @code{expr} seg˙n el Ìndice @var{i} varÌa de @var{i_0} hasta @var{i_1}.
-La forma nominal @code{'product} se presenta en forma de letra pi may˙scula.
+@deffn {Funci√≥n} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+Representa el producto de los valores de @code{expr} seg√∫n el √≠ndice @var{i} var√≠a de @var{i_0} hasta @var{i_1}.
+La forma nominal @code{'product} se presenta en forma de letra pi may√∫scula.
 
-La funciÛn @code{product} eval˙a @var{expr} y los lÌmites inferior y superior, @var{i_0} y @var{i_1}, pero no eval˙a el Ìndice @var{i}.
+La funci√≥n @code{product} eval√∫a @var{expr} y los l√≠mites inferior y superior, @var{i_0} y @var{i_1}, pero no eval√∫a el √≠ndice @var{i}.
 
-Si la diferencia entre los lÌmites superior e inferior es un n˙mero entero, la expresiÛn @var{expr} se eval˙a para cada valor del Ìndice @var{i}, siendo el resultado un producto en forma explÌcita.
+Si la diferencia entre los l√≠mites superior e inferior es un n√∫mero entero, la expresi√≥n @var{expr} se eval√∫a para cada valor del √≠ndice @var{i}, siendo el resultado un producto en forma expl√≠cita.
 
-En caso contrario, el rango del Ìndice no est· definido, aplic·ndose entonces algunas reglas que permitan simplificar el producto.
-Cuando la variable global @code{simpproduct} valga @code{true}, se aplicar·n reglas adicionales.
-En ciertos casos, la simplificaciÛn dar· lugar a un resultado que ya no tenga el formato del producto; en caso contrario se devolver· una forma nominal @code{'product}.
+En caso contrario, el rango del √≠ndice no est√° definido, aplic√°ndose entonces algunas reglas que permitan simplificar el producto.
+Cuando la variable global @code{simpproduct} valga @code{true}, se aplicar√°n reglas adicionales.
+En ciertos casos, la simplificaci√≥n dar√° lugar a un resultado que ya no tenga el formato del producto; en caso contrario se devolver√° una forma nominal @code{'product}.
 
-VÈanse tambiÈn @code{nouns} y @code{evflag}.
+V√©anse tambi√©n @code{nouns} y @code{evflag}.
 
 
 Ejemplos:
@@ -169,34 +169,34 @@ Ejemplos:
 Valor por defecto: @code{false}
 
 Si @code{simpsum} vale @code{true}, se simplifica el resultado de un sumatorio @code{sum}.
-Esta simplificaciÛn podr· producir en ocasiones una expresiÛn compacta. Si 
+Esta simplificaci√≥n podr√° producir en ocasiones una expresi√≥n compacta. Si 
 @code{simpsum} vale @code{false} o si se utiliza la forma apostrofada @code{'sum},
-el valor es una forma nominal que representa la notaciÛn sigma habitual en matem·ticas.
+el valor es una forma nominal que representa la notaci√≥n sigma habitual en matem√°ticas.
 
 @end defvr
 
 
 
-@deffn {FunciÛn} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffn {Funci√≥n} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 
-Representa la suma de los valores de @code{expr} seg˙n el Ìndice @var{i} varÌa de @var{i_0} hasta @var{i_1}.
-La forma nominal @code{'sum} se presenta en forma de letra sigma may˙scula.
+Representa la suma de los valores de @code{expr} seg√∫n el √≠ndice @var{i} var√≠a de @var{i_0} hasta @var{i_1}.
+La forma nominal @code{'sum} se presenta en forma de letra sigma may√∫scula.
 
-La funciÛn @code{sum} eval˙a su sumando @var{expr} y los lÌmites inferior y superior, @var{i_0} y @var{i_1}, pero no eval˙a el Ìndice @var{i}.
+La funci√≥n @code{sum} eval√∫a su sumando @var{expr} y los l√≠mites inferior y superior, @var{i_0} y @var{i_1}, pero no eval√∫a el √≠ndice @var{i}.
 
-Si la diferencia entre los lÌmites superior e inferior es un n˙mero entero, el sumando @var{expr} se eval˙a para cada valor del Ìndice @var{i}, siendo el resultado una suma en forma explÌcita.
+Si la diferencia entre los l√≠mites superior e inferior es un n√∫mero entero, el sumando @var{expr} se eval√∫a para cada valor del √≠ndice @var{i}, siendo el resultado una suma en forma expl√≠cita.
 
-En caso contrario, el rango del Ìndice no est· definido, aplic·ndose entonces algunas reglas que permitan simplificar la suma.
-Cuando la variable global @code{simpsum} valga @code{true}, se aplicar·n reglas adicionales.
-En ciertos casos, la simplificaciÛn dar· lugar a un resultado que ya no tenga el formato del sumatorio; en caso contrario se devolver· una forma nominal @code{'product}.
+En caso contrario, el rango del √≠ndice no est√° definido, aplic√°ndose entonces algunas reglas que permitan simplificar la suma.
+Cuando la variable global @code{simpsum} valga @code{true}, se aplicar√°n reglas adicionales.
+En ciertos casos, la simplificaci√≥n dar√° lugar a un resultado que ya no tenga el formato del sumatorio; en caso contrario se devolver√° una forma nominal @code{'product}.
 
-Cuando @code{cauchysum} vale @code{true}, el producto de sumatorios se expresa como un producto de Cauchy, en cuyo caso el Ìndice del sumatorio interior es funciÛn del Ìndice del exterior, en lugar de variar independientemente.
+Cuando @code{cauchysum} vale @code{true}, el producto de sumatorios se expresa como un producto de Cauchy, en cuyo caso el √≠ndice del sumatorio interior es funci√≥n del √≠ndice del exterior, en lugar de variar independientemente.
 
-La variable global @code{genindex} guarda el prefijo alfabÈtico a utilizar cuando sea necesario generar autom·ticamente el siguiente Ìndice de sumatorio.
+La variable global @code{genindex} guarda el prefijo alfab√©tico a utilizar cuando sea necesario generar autom√°ticamente el siguiente √≠ndice de sumatorio.
 
-La variable global @code{gensumnum} guarda el sufijo numÈrico a utilizar cuando sea necesario generar autom·ticamente el siguiente Ìndice de sumatorio. Si @code{gensumnum} vale @code{false}, un Ìndice generado autom·ticamente constar· sÛlo de @code{genindex}, sin sufijo numÈrico.
+La variable global @code{gensumnum} guarda el sufijo num√©rico a utilizar cuando sea necesario generar autom√°ticamente el siguiente √≠ndice de sumatorio. Si @code{gensumnum} vale @code{false}, un √≠ndice generado autom√°ticamente constar√° s√≥lo de @code{genindex}, sin sufijo num√©rico.
 
-VÈanse tambiÈn @code{sumcontract}, @code{intosum},
+V√©anse tambi√©n @code{sumcontract}, @code{intosum},
 @code{bashindices}, @code{niceindices},
 @code{nouns} y @code{evflag}.
 
@@ -286,14 +286,14 @@ Ejemplos:
 
 
 
-@deffn {FunciÛn} sumcontract (@var{expr})
-Combina todos los sumatorios de una suma cuyos lÌmites inferiores y 
-superiores difieren por constantes. El resultado es una expresiÛn que contiene 
-un sumatorio por cada conjunto de tales sumatorios, m·s todos los dem·s
-tÈrminos adicionales que tuvieron que extraerse para formar la suma. La funciÛn 
+@deffn {Funci√≥n} sumcontract (@var{expr})
+Combina todos los sumatorios de una suma cuyos l√≠mites inferiores y 
+superiores difieren por constantes. El resultado es una expresi√≥n que contiene 
+un sumatorio por cada conjunto de tales sumatorios, m√°s todos los dem√°s
+t√©rminos adicionales que tuvieron que extraerse para formar la suma. La funci√≥n 
 @code{sumcontract} combina todos los sumatorios compatibles y utiliza uno de los
-Ìndices de uno de los sumatorios si puede, si no formar· un 
-Ìndice que sea razonable.
+√≠ndices de uno de los sumatorios si puede, si no formar√° un 
+√≠ndice que sea razonable.
 
 Puede ser necesario hacer @code{intosum (@var{expr})} antes que @code{sumcontract}.
 
@@ -332,7 +332,7 @@ Valor por defecto: @code{false}
 Si @code{sumexpand} vale @code{true}, productos de sumatorios y de sumatorios con exponentes se 
 reducen a sumatorios anidados.
 
-VÈase tambiÈn @code{cauchysum}.
+V√©ase tambi√©n @code{cauchysum}.
 
 Ejemplos:
 
@@ -375,15 +375,15 @@ Ejemplos:
 
 
 
-@node IntroducciÛn a las series, Funciones y variables para las series, Funciones y variables para sumas y productos, Sumas productos y series
-@section IntroducciÛn a las series
+@node Introducci√≥n a las series, Funciones y variables para las series, Funciones y variables para sumas y productos, Sumas productos y series
+@section Introducci√≥n a las series
 
 Maxima dispone de las funciones @code{taylor} y @code{powerseries} para calcular
-las series de las funciones diferenciables. TambiÈn tiene herramientas como 
-@code{nusum} capaces de encontrar la expresiÛn compacta de algunas series. 
-Operaciones como la suma y la multiplicaciÛn operan de la forma habitual en 
-el contexto de las series. Esta secciÛn presenta las variables globales que 
-controlan la expansiÛn.
+las series de las funciones diferenciables. Tambi√©n tiene herramientas como 
+@code{nusum} capaces de encontrar la expresi√≥n compacta de algunas series. 
+Operaciones como la suma y la multiplicaci√≥n operan de la forma habitual en 
+el contexto de las series. Esta secci√≥n presenta las variables globales que 
+controlan la expansi√≥n.
 
 
 
@@ -394,13 +394,13 @@ controlan la expansiÛn.
 
 
 
-@node Funciones y variables para las series, IntroducciÛn a las series de Fourier, IntroducciÛn a las series, Sumas productos y series
+@node Funciones y variables para las series, Introducci√≥n a las series de Fourier, Introducci√≥n a las series, Sumas productos y series
 @section Funciones y variables para las series
 
 @defvr {Variable opcional} cauchysum
 Valor por defecto: @code{false}
 
-Cuando se multiplican sumatorios infinitos, si @code{sumexpand} vale @code{true} y @code{cauchysum} vale @code{true}, entonces se utilizar· el producto  de Cauchy en lugar del usual. En el producto de Cauchy  el Ìndice de la suma interna es funciÛn del Ìndice de la exterior en lugar de variar de forma independiente. Un ejemplo aclara esta idea:
+Cuando se multiplican sumatorios infinitos, si @code{sumexpand} vale @code{true} y @code{cauchysum} vale @code{true}, entonces se utilizar√° el producto  de Cauchy en lugar del usual. En el producto de Cauchy  el √≠ndice de la suma interna es funci√≥n del √≠ndice de la exterior en lugar de variar de forma independiente. Un ejemplo aclara esta idea:
 
 @example
 (%i1) sumexpand: false$
@@ -429,12 +429,12 @@ Cuando se multiplican sumatorios infinitos, si @code{sumexpand} vale @code{true}
 
 
 
-@deffn {FunciÛn} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
-Para cada funciÛn @var{f_i} de variable @var{x_i},  @code{deftaylor} define @var{expr_i} como una serie de Taylor alrededor de cero. La expresiÛn @var{expr_i} ser· un polinomio en  @var{x_i} o una suma; @code{deftaylor} admite tambiÈn expresiones m·s generales.
+@deffn {Funci√≥n} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
+Para cada funci√≥n @var{f_i} de variable @var{x_i},  @code{deftaylor} define @var{expr_i} como una serie de Taylor alrededor de cero. La expresi√≥n @var{expr_i} ser√° un polinomio en  @var{x_i} o una suma; @code{deftaylor} admite tambi√©n expresiones m√°s generales.
 
 La llamada @code{powerseries (@var{f_i}(@var{x_i}), @var{x_i}, 0)} devuelve la serie definida por  @code{deftaylor}.
 
-La funciÛn @code{deftaylor} eval˙a sus argumentos y devuelve la lista de las funciones @var{f_1}, ..., @var{f_n}. 
+La funci√≥n @code{deftaylor} eval√∫a sus argumentos y devuelve la lista de las funciones @var{f_1}, ..., @var{f_n}. 
 
 Ejemplo:
 
@@ -463,17 +463,17 @@ Ejemplo:
 @defvr {Variable opcional} maxtayorder
 Valor por defecto: @code{true}
 
-Si @code{maxtayorder} vale @code{true}, entonces durante la manipulaciÛn algebraica de series truncadas de Taylor, la funciÛn @code{taylor} trata de retener tantos tÈrminos correctos como sea posible.
+Si @code{maxtayorder} vale @code{true}, entonces durante la manipulaci√≥n algebraica de series truncadas de Taylor, la funci√≥n @code{taylor} trata de retener tantos t√©rminos correctos como sea posible.
 
 @end defvr
 
 
 
 
-@deffn {FunciÛn} niceindices (@var{expr})
-Cambia las etiquetas de los Ìndices de sumas y productos de @var{expr}. La funciÛn @code{niceindices} trata de cambiar cada Ìndice al valor de @code{niceindicespref[1]}, a menos que esa etiqueta aparezca ya en el sumando o factor, en cuyo caso  @code{niceindices} realiza intentos con los siguientes elementos de  @code{niceindicespref}, hasta que encuentre una variable que que no estÈ en uso. Si todas las variables de la lista han sido ya revisadas, se formar·n nuevos Ìnices aÒadiendo n˙meros enteros al valor de @code{niceindicespref[1]}, como @code{i0}, @code{i1}, @code{i2}, ....
+@deffn {Funci√≥n} niceindices (@var{expr})
+Cambia las etiquetas de los √≠ndices de sumas y productos de @var{expr}. La funci√≥n @code{niceindices} trata de cambiar cada √≠ndice al valor de @code{niceindicespref[1]}, a menos que esa etiqueta aparezca ya en el sumando o factor, en cuyo caso  @code{niceindices} realiza intentos con los siguientes elementos de  @code{niceindicespref}, hasta que encuentre una variable que que no est√© en uso. Si todas las variables de la lista han sido ya revisadas, se formar√°n nuevos √≠nices a√±adiendo n√∫meros enteros al valor de @code{niceindicespref[1]}, como @code{i0}, @code{i1}, @code{i2}, ....
 
-La funciÛn @code{niceindices} eval˙a sus argumentos y devuelve una expresiÛn.
+La funci√≥n @code{niceindices} eval√∫a sus argumentos y devuelve una expresi√≥n.
 
 Ejemplo:
 
@@ -506,7 +506,7 @@ Ejemplo:
 @defvr {Variable opcional} niceindicespref
 Valor por defecto: @code{[i, j, k, l, m, n]}
 
-La variable @code{niceindicespref} es la lista de la que la funciÛn @code{niceindices} va tomando nombres de etiquetas para Ìndices de sumatorios y productos.
+La variable @code{niceindicespref} es la lista de la que la funci√≥n @code{niceindices} va tomando nombres de etiquetas para √≠ndices de sumatorios y productos.
 
 En @code{niceindicespref} se guardan normalmente nombres de variables.
 
@@ -537,14 +537,14 @@ Ejemplo:
 
 
 
-@deffn {FunciÛn} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
-Calcula la suma hipergeomÈtrica indefinida de  @var{expr} con respecto a la variable  @var{x} utilizando una procedimiento de decisiÛn debido a R.W. Gosper. La expresiÛn @var{expr} y el resultado deben poder ser escritos como productos de potencias enteras, factoriales, coeficientes binomiales y funciones racionales.
+@deffn {Funci√≥n} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
+Calcula la suma hipergeom√©trica indefinida de  @var{expr} con respecto a la variable  @var{x} utilizando una procedimiento de decisi√≥n debido a R.W. Gosper. La expresi√≥n @var{expr} y el resultado deben poder ser escritos como productos de potencias enteras, factoriales, coeficientes binomiales y funciones racionales.
 
 @c UMM, DO WE REALLY NEED TO DEFINE "DEFINITE" AND "INDEFINITE" SUMMATION HERE ??
 @c (CAN'T WE MAKE THE POINT WITHOUT DRAGGING IN SOME NONSTANDARD TERMINOLOGY ??)
-Los tÈrminos suma "definida" e "indefinida" se usan de forma an·loga a integraciÛn "definida" e "indefinida". La suma indefinida significa dar un resultado simbÛlico.
+Los t√©rminos suma "definida" e "indefinida" se usan de forma an√°loga a integraci√≥n "definida" e "indefinida". La suma indefinida significa dar un resultado simb√≥lico.
 
-Las funciones @code{nusum} y @code{unsum} disponen de cierta informaciÛn sobre sumas y diferencias de productos finitos. VÈase tambiÈn @code{unsum}.
+Las funciones @code{nusum} y @code{unsum} disponen de cierta informaci√≥n sobre sumas y diferencias de productos finitos. V√©ase tambi√©n @code{unsum}.
 
 Ejemplos:
 
@@ -587,12 +587,12 @@ Dependent equations eliminated:  (2 3)
 
 
 
-@deffn {FunciÛn} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
+@deffn {Funci√≥n} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
 Devuelve la lista de todas las funciones racionales que tienen el desarrollo de Taylor dado, en las que la suma de los grados del numerador y denominador es menor o igual que el nivel de truncamiento de la serie de potencias.
 
-La expresiÛn @var{taylor_series} es una serie de Taylor univariante. Los argumentos @var{numer_deg_bound} y @var{denom_deg_bound} son enteros positivos que indican las cotas para numerador y denominador.
+La expresi√≥n @var{taylor_series} es una serie de Taylor univariante. Los argumentos @var{numer_deg_bound} y @var{denom_deg_bound} son enteros positivos que indican las cotas para numerador y denominador.
 
-La expresiÛn @var{taylor_series} tambiÈn puede ser una serie de Laurent, y las cotas de los grados pueden ser @code{inf}. El grado total se define como @code{@var{numer_deg_bound} + @var{denom_deg_bound}}. La longitud de una serie de potencias se define como @code{"truncation level" + 1 - min(0, "order of series")}.
+La expresi√≥n @var{taylor_series} tambi√©n puede ser una serie de Laurent, y las cotas de los grados pueden ser @code{inf}. El grado total se define como @code{@var{numer_deg_bound} + @var{denom_deg_bound}}. La longitud de una serie de potencias se define como @code{"truncation level" + 1 - min(0, "order of series")}.
 
 @example
 (%i1) taylor (1 + x + x^2 + x^3, x, 0, 3);
@@ -620,7 +620,7 @@ La expresiÛn @var{taylor_series} tambiÈn puede ser una serie de Laurent, y las c
 (%o4)                          []
 @end example
 
-No hay ninguna funciÛn racional de grado 4 en numerador y denominador con este desarrollo en serie de potencias. Es necesario dar un n˙mero de grados al numerador y denominador cuya suma sea al menos el grado del desarrollo de la serie, a fin de disponer de un n˙mero suficiente de coeficientes desconocidos para calcular.
+No hay ninguna funci√≥n racional de grado 4 en numerador y denominador con este desarrollo en serie de potencias. Es necesario dar un n√∫mero de grados al numerador y denominador cuya suma sea al menos el grado del desarrollo de la serie, a fin de disponer de un n√∫mero suficiente de coeficientes desconocidos para calcular.
 
 @example
 (%i5) pade (t, 5, 5);
@@ -642,7 +642,7 @@ No hay ninguna funciÛn racional de grado 4 en numerador y denominador con este d
 
 
 
-@deffn {FunciÛn} powerseries (@var{expr}, @var{x}, @var{a})
+@deffn {Funci√≥n} powerseries (@var{expr}, @var{x}, @var{a})
 Devuelve la forma general del desarrollo en serie de potencias 
 de @var{expr} para la variable @var{x} alrededor del punto 
 @var{a} (que puede ser @code{inf}, de infinito):
@@ -657,10 +657,10 @@ de @var{expr} para la variable @var{x} alrededor del punto
 @end example
 
 Si @code{powerseries} no es capaz de desarrollar @var{expr},
-la funciÛn @code{taylor} puede calcular los primeros tÈrminos de la serie.
+la funci√≥n @code{taylor} puede calcular los primeros t√©rminos de la serie.
 
 Si @code{verbose} vale @code{true}, @code{powerseries} va 
-mostrando mensajes mientras progresa el c·lculo. 
+mostrando mensajes mientras progresa el c√°lculo. 
 
 @example
 (%i1) verbose: true$
@@ -706,7 +706,7 @@ Si @code{psexpand} vale @code{true}, toda expresi'on racional se muestra complet
 Si @code{psexpand} vale @code{false}, las expresines multivariantes se presentan tal como lo hace el paquete de funciones racionales.
 
 @c TERMS OF WHAT ??
-Si @code{psexpand} vale  @code{multi}, los tÈrminos de igual grado son agrupados.
+Si @code{psexpand} vale  @code{multi}, los t√©rminos de igual grado son agrupados.
 
 @end defvr
 
@@ -714,11 +714,11 @@ Si @code{psexpand} vale  @code{multi}, los tÈrminos de igual grado son agrupados
 
 
 
-@deffn {FunciÛn} revert (@var{expr}, @var{x})
-@deffnx {FunciÛn} revert2 (@var{expr}, @var{x}, @var{n})
+@deffn {Funci√≥n} revert (@var{expr}, @var{x})
+@deffnx {Funci√≥n} revert2 (@var{expr}, @var{x}, @var{n})
 
-Estas funciones devuelven el recÌproco de @var{expr} en forma de desarrollo de Taylor alrededor de cero respecto de la variable @var{x}. La funciÛn @code{revert} devuelve un polinomio de grado igual a la mayor potencia en @var{expr}.
-La funciÛn @code{revert2} devuelve un polinomio de grado @var{n}, el cual puede ser mayor, igual o menor que el grado de  @var{expr}.
+Estas funciones devuelven el rec√≠proco de @var{expr} en forma de desarrollo de Taylor alrededor de cero respecto de la variable @var{x}. La funci√≥n @code{revert} devuelve un polinomio de grado igual a la mayor potencia en @var{expr}.
+La funci√≥n @code{revert2} devuelve un polinomio de grado @var{n}, el cual puede ser mayor, igual o menor que el grado de  @var{expr}.
 
 Para utilizar estas funciones es necesario cargarlas en memoria mediante @code{load ("revert")}.
 
@@ -762,16 +762,16 @@ Ejemplos:
 
 
 
-@deffn {FunciÛn} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
-@deffnx {FunciÛn} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
-@deffnx {FunciÛn} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
-@deffnx {FunciÛn} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
-@deffnx {FunciÛn} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
+@deffn {Funci√≥n} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
+@deffnx {Funci√≥n} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
+@deffnx {Funci√≥n} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
+@deffnx {Funci√≥n} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
+@deffnx {Funci√≥n} taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
 
-La llamada @code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expande la expresiÛn @var{expr} en un desarrollo  de 
- Taylor o de  Laurent respecto de la variable @var{x} alrededor del punto @var{a}, con tÈrminos hasta @code{(@var{x} - @var{a})^@var{n}}.
+La llamada @code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expande la expresi√≥n @var{expr} en un desarrollo  de 
+ Taylor o de  Laurent respecto de la variable @var{x} alrededor del punto @var{a}, con t√©rminos hasta @code{(@var{x} - @var{a})^@var{n}}.
 
-Si @var{expr} es de la forma @code{@var{f}(@var{x})/@var{g}(@var{x})} y @code{@var{g}(@var{x})} no tiene tÈrminos hasta de grado @var{n}, entonces @code{taylor} intenta expandir @code{@var{g}(@var{x})} hasta el grado  @code{2 @var{n}}. Si a˙n asÌ no hay tÈrminos no nulos, @code{taylor} dobla el grado de la expansiÛn de @code{@var{g}(@var{x})} hasta que el grado de la expansiÛn sea menor o igual que @code{@var{n} 2^taylordepth}.
+Si @var{expr} es de la forma @code{@var{f}(@var{x})/@var{g}(@var{x})} y @code{@var{g}(@var{x})} no tiene t√©rminos hasta de grado @var{n}, entonces @code{taylor} intenta expandir @code{@var{g}(@var{x})} hasta el grado  @code{2 @var{n}}. Si a√∫n as√≠ no hay t√©rminos no nulos, @code{taylor} dobla el grado de la expansi√≥n de @code{@var{g}(@var{x})} hasta que el grado de la expansi√≥n sea menor o igual que @code{@var{n} 2^taylordepth}.
 
 La llamada @code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})} devuelve la serie en potencias truncada de grado  @var{n} en todas las variables @var{x_1}, @var{x_2}, ... alrededor del punto @code{(@var{a}, @var{a}, ...)}.
 
@@ -781,14 +781,14 @@ devuelve la serie en potencias truncada en las variables @var{x_1}, @var{x_2}, .
 La llamada @code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])}
 devuelve la serie en potencias truncada en las variables @var{x_1}, @var{x_2}, ... alrededor del punto @code{(@var{a_1}, @var{a_2}, ...)}, el truncamiento se realiza, respectivamente, en los grados @var{n_1}, @var{n_2}, ....
 
-La llamada @code{taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])} devuelve el desarrollo de  @var{expr} en potencias negativas de @code{@var{x} - @var{a}}. El tÈrmino de mayor orden es @code{(@var{x} - @var{a})^@var{-n}}.
+La llamada @code{taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])} devuelve el desarrollo de  @var{expr} en potencias negativas de @code{@var{x} - @var{a}}. El t√©rmino de mayor orden es @code{(@var{x} - @var{a})^@var{-n}}.
 
-Si @code{maxtayorder} vale @code{true}, entonces durante la manipulaciÛn algebraica de las series (truncadas) de Taylor, la funciÛn @code{taylor} intenta mantener tantos tÈrminos correctos como sea posible.
+Si @code{maxtayorder} vale @code{true}, entonces durante la manipulaci√≥n algebraica de las series (truncadas) de Taylor, la funci√≥n @code{taylor} intenta mantener tantos t√©rminos correctos como sea posible.
 
-Si @code{psexpand} vale @code{true}, una expresiÛn racional desarrollada se muestra completamente expandida. La variable  @code{ratexpand} tiene el mismo efecto. Si @code{psexpand} vale @code{false}, una expresiÛn multivariante se mostrar· tal como lo hace el paquete de funciones racionales. Si  @code{psexpand} vale  @code{multi}, los tÈrminos del mismo grado 
+Si @code{psexpand} vale @code{true}, una expresi√≥n racional desarrollada se muestra completamente expandida. La variable  @code{ratexpand} tiene el mismo efecto. Si @code{psexpand} vale @code{false}, una expresi√≥n multivariante se mostrar√° tal como lo hace el paquete de funciones racionales. Si  @code{psexpand} vale  @code{multi}, los t√©rminos del mismo grado 
 son agrupados.
 
-VÈase tambiÈn la variable @code{taylor_logexpand} para el control del desarrollo.
+V√©ase tambi√©n la variable @code{taylor_logexpand} para el control del desarrollo.
 
 Ejemplos:
 @c EXAMPLES ADAPTED FROM example (taylor)
@@ -926,7 +926,7 @@ Ejemplos:
 Valor por defecto: 3
 
 @c UM, THE CONTEXT FOR THIS REMARK NEEDS TO BE ESTABLISHED
-Si todavÌa no hay tÈrminos no nulos, la funciÛn @code{taylor} dobla el grado del desarrollo de @code{@var{g}(@var{x})}
+Si todav√≠a no hay t√©rminos no nulos, la funci√≥n @code{taylor} dobla el grado del desarrollo de @code{@var{g}(@var{x})}
 tantas veces como sea necesario para que el grado del desarrollo sea menor o igual que @code{@var{n} 2^taylordepth}.
 
 @end defvr
@@ -934,10 +934,10 @@ tantas veces como sea necesario para que el grado del desarrollo sea menor o igu
 
 
 
-@deffn {FunciÛn} taylorinfo (@var{expr})
-Devuelve informaciÛn sobre el desarrollo de Taylor @var{expr}. El valor devuelto por esta funciÛn es una lista de listas. Cada lista contiene el nombre de una variable, el punto de expansiÛn y el grado del desarrollo.
+@deffn {Funci√≥n} taylorinfo (@var{expr})
+Devuelve informaci√≥n sobre el desarrollo de Taylor @var{expr}. El valor devuelto por esta funci√≥n es una lista de listas. Cada lista contiene el nombre de una variable, el punto de expansi√≥n y el grado del desarrollo.
 
-La funciÛn @code{taylorinfo} devuelve @code{false} si @var{expr} no es un desarrollo de Taylor.
+La funci√≥n @code{taylorinfo} devuelve @code{false} si @var{expr} no es un desarrollo de Taylor.
 
 Ejemplo:
 
@@ -963,7 +963,7 @@ Ejemplo:
 
 
 
-@deffn {FunciÛn} taylorp (@var{expr})
+@deffn {Funci√≥n} taylorp (@var{expr})
 Devuelve @code{true} si @var{expr} es un desarrollo de Taylor y @code{false} en caso contrario.
 
 @end deffn
@@ -974,9 +974,9 @@ Devuelve @code{true} si @var{expr} es un desarrollo de Taylor y @code{false} en 
 @defvr {Variable opcional} taylor_logexpand
 Valor por defecto: @code{true}
 
-La variable @code{taylor_logexpand} controla los desarrollos de logaritmos en la funciÛn @code{taylor}.
+La variable @code{taylor_logexpand} controla los desarrollos de logaritmos en la funci√≥n @code{taylor}.
 
-Si @code{taylor_logexpand} vale @code{true}, todos los logaritmos se expanden completamente de manera que algunos problemas que se plantean debido a ciertas identidades logarÌtmicas no interfieran con el proceso del c·lculo del desarrollo de Taylor. Sin embargo, este proceder no es del todo correcto.
+Si @code{taylor_logexpand} vale @code{true}, todos los logaritmos se expanden completamente de manera que algunos problemas que se plantean debido a ciertas identidades logar√≠tmicas no interfieran con el proceso del c√°lculo del desarrollo de Taylor. Sin embargo, este proceder no es del todo correcto.
 
 @c NEED EXAMPLES HERE
 @end defvr
@@ -988,9 +988,9 @@ Si @code{taylor_logexpand} vale @code{true}, todos los logaritmos se expanden co
 @defvr {Variable opcional} taylor_order_coefficients
 Valor por defecto: @code{true}
 
-La variable @code{taylor_order_coefficients} controla la ordenaciÛn de los coeficientes en un desarrollo de Taylor.
+La variable @code{taylor_order_coefficients} controla la ordenaci√≥n de los coeficientes en un desarrollo de Taylor.
 
-Si @code{taylor_order_coefficients} vale @code{true}, los coeficientes del desarrollo de Taylor se ordenan de la forma canÛnica.
+Si @code{taylor_order_coefficients} vale @code{true}, los coeficientes del desarrollo de Taylor se ordenan de la forma can√≥nica.
 @c IS MAXIMA'S NOTION OF "CANONICALLY" DESCRIBED ELSEWHERE ??
 @c AND WHAT HAPPENS WHEN IT IS FALSE ??
 
@@ -1001,8 +1001,8 @@ Si @code{taylor_order_coefficients} vale @code{true}, los coeficientes del desar
 
 
 
-@deffn {FunciÛn} taylor_simplifier (@var{expr})
-Simplifica los coeficientes de la serie de potencias @var{expr}. Esta funciÛn es llamada desde la funciÛn @code{taylor}.
+@deffn {Funci√≥n} taylor_simplifier (@var{expr})
+Simplifica los coeficientes de la serie de potencias @var{expr}. Esta funci√≥n es llamada desde la funci√≥n @code{taylor}.
 
 @end deffn
 
@@ -1015,21 +1015,21 @@ Valor por defecto: @code{true}
 @c WHAT IS THE "INPUT TRUNCATION LEVEL" ?? THE ARGUMENT n OF taylor ??
 Si @code{taylor_truncate_polynomials} vale @code{true}, los polinomios quedan truncados en base a los niveles de truncamiento de entrada.
 
-En otro caso, aquellos polinomios que se utilicen como entrada a la funciÛn  @code{taylor} se consideran que tienen precisiÛn infinita.
+En otro caso, aquellos polinomios que se utilicen como entrada a la funci√≥n  @code{taylor} se consideran que tienen precisi√≥n infinita.
 @c WHAT IS "INFINITE PRECISION" IN THIS CONTEXT ??
 
 @end defvr
 
 
-@deffn {FunciÛn} taytorat (@var{expr})
-Convierte @var{expr} del formato de @code{taylor} al formato CRE (Canonical Rational Expression). El efecto es el mismo que haciendo  @code{rat (ratdisrep (@var{expr}))}, pero m·s r·pido.
+@deffn {Funci√≥n} taytorat (@var{expr})
+Convierte @var{expr} del formato de @code{taylor} al formato CRE (Canonical Rational Expression). El efecto es el mismo que haciendo  @code{rat (ratdisrep (@var{expr}))}, pero m√°s r√°pido.
 
 @end deffn
 
 
 
-@deffn {FunciÛn} trunc (@var{expr})
-Devuelve la representaciÛn interna de la expresiÛn @var{expr} de tal forma como si sus sumas fuesen una serie truncada de Taylor. La expresiÛn @var{expr} no sufre ninguna otra modificaciÛn.
+@deffn {Funci√≥n} trunc (@var{expr})
+Devuelve la representaci√≥n interna de la expresi√≥n @var{expr} de tal forma como si sus sumas fuesen una serie truncada de Taylor. La expresi√≥n @var{expr} no sufre ninguna otra modificaci√≥n.
 
 Ejemplo:
 
@@ -1049,10 +1049,10 @@ Ejemplo:
 
 
 
-@deffn {FunciÛn} unsum (@var{f}, @var{n})
+@deffn {Funci√≥n} unsum (@var{f}, @var{n})
 Devuelve la diferencia @code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}. En cierto sentido @code{unsum} es la inversa de @code{sum}.
 
-VÈase tambiÈn @code{nusum}.
+V√©ase tambi√©n @code{nusum}.
 
 Ejemplos:
 @c GENERATED FROM THE FOLLOWING INPUTS
@@ -1090,7 +1090,7 @@ Ejemplos:
 @defvr {Variable opcional} verbose
 Valor por defecto: @code{false}
 
-Si @code{verbose} vale @code{true}, la funciÛn @code{powerseries} va imprimiendo mensajes durante su ejecuciÛn.
+Si @code{verbose} vale @code{true}, la funci√≥n @code{powerseries} va imprimiendo mensajes durante su ejecuci√≥n.
 
 @end defvr
 
@@ -1103,10 +1103,10 @@ Si @code{verbose} vale @code{true}, la funciÛn @code{powerseries} va imprimiendo
 
 
 
-@node IntroducciÛn a las series de Fourier, Funciones y variables para series de Fourier, Funciones y variables para las series, Sumas productos y series
-@section IntroducciÛn a las series de Fourier
+@node Introducci√≥n a las series de Fourier, Funciones y variables para series de Fourier, Funciones y variables para las series, Sumas productos y series
+@section Introducci√≥n a las series de Fourier
 
-El paquete @code{fourie} contiene funciones para el c·lculo simbÛlico de
+El paquete @code{fourie} contiene funciones para el c√°lculo simb√≥lico de
 series de Fourier. Hay funciones en el paquete @code{fourie} para calcular los
 coeficientes y para manipular las expresiones.
 
@@ -1120,36 +1120,36 @@ coeficientes y para manipular las expresiones.
 
 
 
-@node Funciones y variables para series de Fourier, Funciones y variables para series de Poisson, IntroducciÛn a las series de Fourier, Sumas productos y series
+@node Funciones y variables para series de Fourier, Funciones y variables para series de Poisson, Introducci√≥n a las series de Fourier, Sumas productos y series
 @section Funciones y variables para series de Fourier
 
 
-@deffn {FunciÛn} equalp (@var{x}, @var{y})
-Devuelve @code{true} si @code{equal (@var{x}, @var{y})}, en otro caso devuelve @code{false}. No devuelve el mensaje de error que se obtiene de  @code{equal (x, y)} en un caso como Èste.
+@deffn {Funci√≥n} equalp (@var{x}, @var{y})
+Devuelve @code{true} si @code{equal (@var{x}, @var{y})}, en otro caso devuelve @code{false}. No devuelve el mensaje de error que se obtiene de  @code{equal (x, y)} en un caso como √©ste.
 @end deffn
 
 
-@deffn {FunciÛn} remfun (@var{f}, @var{expr})
-@deffnx {FunciÛn} remfun (@var{f}, @var{expr}, @var{x})
+@deffn {Funci√≥n} remfun (@var{f}, @var{expr})
+@deffnx {Funci√≥n} remfun (@var{f}, @var{expr}, @var{x})
 La llamada @code{remfun (@var{f}, @var{expr})} reemplaza todas las subexpresiones @code{@var{f} (@var{arg})} por @var{arg} en @var{expr}.
 
-La llamada @code{remfun (@var{f}, @var{expr}, @var{x})} reemplaza todas las subexpresiones @code{@var{f} (@var{arg})} por @var{arg} en @var{expr} sÛlo si @var{arg} contiene a la variable @var{x}.
+La llamada @code{remfun (@var{f}, @var{expr}, @var{x})} reemplaza todas las subexpresiones @code{@var{f} (@var{arg})} por @var{arg} en @var{expr} s√≥lo si @var{arg} contiene a la variable @var{x}.
 @end deffn
 
 
-@deffn {FunciÛn} funp (@var{f}, @var{expr})
-@deffnx {FunciÛn} funp (@var{f}, @var{expr}, @var{x})
-La llamada @code{funp (@var{f}, @var{expr})} devuelve @code{true} si @var{expr} contiene la funciÛn @var{f}.
+@deffn {Funci√≥n} funp (@var{f}, @var{expr})
+@deffnx {Funci√≥n} funp (@var{f}, @var{expr}, @var{x})
+La llamada @code{funp (@var{f}, @var{expr})} devuelve @code{true} si @var{expr} contiene la funci√≥n @var{f}.
 
-La llamada @code{funp (@var{f}, @var{expr}, @var{x})} devuelve @code{true} si @var{expr} contiene la funciÛn @var{f} y la variable @var{x} est· presente en el argumento de alguna de las presencias de @var{f}.
+La llamada @code{funp (@var{f}, @var{expr}, @var{x})} devuelve @code{true} si @var{expr} contiene la funci√≥n @var{f} y la variable @var{x} est√° presente en el argumento de alguna de las presencias de @var{f}.
 @end deffn
 
 
-@deffn {FunciÛn} absint (@var{f}, @var{x}, @var{halfplane})
-@deffnx {FunciÛn} absint (@var{f}, @var{x})
-@deffnx {FunciÛn} absint (@var{f}, @var{x}, @var{a}, @var{b})
+@deffn {Funci√≥n} absint (@var{f}, @var{x}, @var{halfplane})
+@deffnx {Funci√≥n} absint (@var{f}, @var{x})
+@deffnx {Funci√≥n} absint (@var{f}, @var{x}, @var{a}, @var{b})
 La llamada @code{absint (@var{f}, @var{x}, @var{halfplane})} devuelve la integral indefinida de @var{f} con respecto a 
-@var{x} en el semiplano dado (@code{pos}, @code{neg} o @code{both}). La funciÛn @var{f} puede contener expresiones de la forma @code{abs (x)}, @code{abs (sin (x))}, @code{abs (a) * exp (-abs (b) * abs (x))}.
+@var{x} en el semiplano dado (@code{pos}, @code{neg} o @code{both}). La funci√≥n @var{f} puede contener expresiones de la forma @code{abs (x)}, @code{abs (sin (x))}, @code{abs (a) * exp (-abs (b) * abs (x))}.
 
 La llamada @code{absint (@var{f}, @var{x})} equivale a @code{absint (@var{f}, @var{x}, pos)}.
 
@@ -1157,14 +1157,14 @@ La llamada @code{absint (@var{f}, @var{x}, @var{a}, @var{b})} devuelve la integr
 @end deffn
 
 
-@deffn {FunciÛn} fourier (@var{f}, @var{x}, @var{p})
+@deffn {Funci√≥n} fourier (@var{f}, @var{x}, @var{p})
 Devuelve una lista con los coeficientes de Fourier de 
 @code{@var{f}(@var{x})} definida en el intervalo @code{[-p, p]}.
 @end deffn
 
 
 
-@deffn {FunciÛn} foursimp (@var{l})
+@deffn {Funci√≥n} foursimp (@var{l})
 Simplifica @code{sin (n %pi)} a 0 si @code{sinnpiflag} vale @code{true} y
 @code{cos (n %pi)} a @code{(-1)^n} si @code{cosnpiflag} vale @code{true}.
 @end deffn
@@ -1174,57 +1174,57 @@ Simplifica @code{sin (n %pi)} a 0 si @code{sinnpiflag} vale @code{true} y
 @defvr {Variable opcional} sinnpiflag
 Valor por defecto: @code{true}
 
-VÈase @code{foursimp}.
+V√©ase @code{foursimp}.
 @end defvr
 
 
 @defvr {Variable opcional} cosnpiflag
 Valor por defecto: @code{true}
 
-VÈase @code{foursimp}.
+V√©ase @code{foursimp}.
 
 @end defvr
 
 
 
-@deffn {FunciÛn} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
-Calcula y devuelve la serie de Fourier a partir de la lista de los coeficientes de Fourier @var{l} hasta el tÈrmino @var{limit} (@var{limit} puede ser @code{inf}). Los argumentos @var{x} y @var{p} tienen el mismo significado que en
+@deffn {Funci√≥n} fourexpand (@var{l}, @var{x}, @var{p}, @var{limit})
+Calcula y devuelve la serie de Fourier a partir de la lista de los coeficientes de Fourier @var{l} hasta el t√©rmino @var{limit} (@var{limit} puede ser @code{inf}). Los argumentos @var{x} y @var{p} tienen el mismo significado que en
 @code{fourier}.
 @end deffn
 
 
 
-@deffn {FunciÛn} fourcos (@var{f}, @var{x}, @var{p})
+@deffn {Funci√≥n} fourcos (@var{f}, @var{x}, @var{p})
 Devuelve los coeficientes de los cosenos de Fourier de @code{@var{f}(@var{x})} definida en @code{[0, @var{p}]}.
 @end deffn
 
 
 
-@deffn {FunciÛn} foursin (@var{f}, @var{x}, @var{p})
+@deffn {Funci√≥n} foursin (@var{f}, @var{x}, @var{p})
 Devuelve los coeficientes de los senos de Fourier de @code{@var{f}(@var{x})} definida en @code{[0, @var{p}]}.
 @end deffn
 
 
 
-@deffn {FunciÛn} totalfourier (@var{f}, @var{x}, @var{p})
+@deffn {Funci√≥n} totalfourier (@var{f}, @var{x}, @var{p})
 Devuelve @code{fourexpand (foursimp (fourier (@var{f}, @var{x}, @var{p})), @var{x}, @var{p}, 'inf)}.
 @end deffn
 
 
 
-@deffn {FunciÛn} fourint (@var{f}, @var{x})
+@deffn {Funci√≥n} fourint (@var{f}, @var{x})
 Calcula y devuelve la lista de los coeficientes integrales de Fourier de @code{@var{f}(@var{x})} definida en @code{[minf, inf]}.
 @end deffn
 
 
 
-@deffn {FunciÛn} fourintcos (@var{f}, @var{x})
+@deffn {Funci√≥n} fourintcos (@var{f}, @var{x})
 Devuelve los coeficientes integrales de los cosenos  @code{@var{f}(@var{x})} en @code{[0, inf]}.
 @end deffn
 
 
 
-@deffn {FunciÛn} fourintsin (@var{f}, @var{x})
+@deffn {Funci√≥n} fourintsin (@var{f}, @var{x})
 Devuelve los coeficientes integrales de los senos  @code{@var{f}(@var{x})} en @code{[0, inf]}.
 @end deffn
 
@@ -1243,7 +1243,7 @@ Devuelve los coeficientes integrales de los senos  @code{@var{f}(@var{x})} en @c
 @section Funciones y variables para series de Poisson
 
 
-@deffn {FunciÛn} intopois (@var{a})
+@deffn {Funci√≥n} intopois (@var{a})
 Convierte @var{a} en un codificado Poisson.
 
 @end deffn
@@ -1251,25 +1251,25 @@ Convierte @var{a} en un codificado Poisson.
 
 
 
-@deffn {FunciÛn} outofpois (@var{a})
-Convierte @var{a} desde codificado de Poisson a una representaciÛn general.  Si @var{a} no est· en forma de Poisson, @code{outofpois} hace la conversiÛn, siendo entonces el valor retornado @code{outofpois (intopois (@var{a}))}. Esta funciÛn es un simplificador canÛnico para sumas de potencias de senos y cosenos.
+@deffn {Funci√≥n} outofpois (@var{a})
+Convierte @var{a} desde codificado de Poisson a una representaci√≥n general.  Si @var{a} no est√° en forma de Poisson, @code{outofpois} hace la conversi√≥n, siendo entonces el valor retornado @code{outofpois (intopois (@var{a}))}. Esta funci√≥n es un simplificador can√≥nico para sumas de potencias de senos y cosenos.
 
 @end deffn
 
 
-@deffn {FunciÛn} poisdiff (@var{a}, @var{b})
-Deriva @var{a} con respecto a @var{b}. El argumento @var{b} debe aparecer sÛlo en los argumentos trigonomÈtricos o sÛlo en los coeficientes.
+@deffn {Funci√≥n} poisdiff (@var{a}, @var{b})
+Deriva @var{a} con respecto a @var{b}. El argumento @var{b} debe aparecer s√≥lo en los argumentos trigonom√©tricos o s√≥lo en los coeficientes.
 
 @end deffn
 
 
-@deffn {FunciÛn} poisexpt (@var{a}, @var{b})
-IdÈntico a @code{intopois (@var{a}^@var{b})}. El argumento @var{b} debe ser un entero positivo.
+@deffn {Funci√≥n} poisexpt (@var{a}, @var{b})
+Id√©ntico a @code{intopois (@var{a}^@var{b})}. El argumento @var{b} debe ser un entero positivo.
 
 @end deffn
 
 
-@deffn {FunciÛn} poisint (@var{a}, @var{b})
+@deffn {Funci√≥n} poisint (@var{a}, @var{b})
 Integra en un sentido restringido similar a @code{poisdiff}.
 @end deffn
 
@@ -1277,41 +1277,41 @@ Integra en un sentido restringido similar a @code{poisdiff}.
 @defvr {Variable optativa} poislim
 Valor por defecto: 5
 
-La variable @code{poislim} determina el dominio de los coeficientes en los argumentos de las funciones trigonomÈtricas.  El valor por defecto 5 corresponde al intervalo [-2^(5-1)+1,2^(5-1)], o [-15,16], pero puede reasignarse para  [-2^(n-1)+1, 2^(n-1)].
+La variable @code{poislim} determina el dominio de los coeficientes en los argumentos de las funciones trigonom√©tricas.  El valor por defecto 5 corresponde al intervalo [-2^(5-1)+1,2^(5-1)], o [-15,16], pero puede reasignarse para  [-2^(n-1)+1, 2^(n-1)].
 
 @end defvr
 
 
-@deffn {FunciÛn} poismap (@var{series}, @var{sinfn}, @var{cosfn})
-Aplica las funciones @var{sinfn} a los tÈrminos sinusoidales y
+@deffn {Funci√≥n} poismap (@var{series}, @var{sinfn}, @var{cosfn})
+Aplica las funciones @var{sinfn} a los t√©rminos sinusoidales y
 las funciones @var{cosfn} a los cosenoidales de la serie de Poisson
 dada. Tanto @var{sinfn} como @var{cosfn} son funciones de dos
-argumentos, los cuales son un coeficiente y una parte trigonomÈtrica
-de un tÈrmino de la serie.
+argumentos, los cuales son un coeficiente y una parte trigonom√©trica
+de un t√©rmino de la serie.
 @end deffn
 
 
-@deffn {FunciÛn} poisplus (@var{a}, @var{b})
-IdÈntico a @code{intopois (a + b)}.
+@deffn {Funci√≥n} poisplus (@var{a}, @var{b})
+Id√©ntico a @code{intopois (a + b)}.
 
 @end deffn
 
-@deffn {FunciÛn} poissimp (@var{a})
-Convierte @var{a} en una serie de Poisson para @var{a} en su representaciÛn general.
+@deffn {Funci√≥n} poissimp (@var{a})
+Convierte @var{a} en una serie de Poisson para @var{a} en su representaci√≥n general.
 
 @end deffn
 
 
-@defvr {SÌmbolo especial} poisson
-El sÌmbolo @code{/P/} sigue a la etiqueta de las lÌneas que contienen expresiones que son series de Poisson.
+@defvr {S√≠mbolo especial} poisson
+El s√≠mbolo @code{/P/} sigue a la etiqueta de las l√≠neas que contienen expresiones que son series de Poisson.
 
 @end defvr
 
 
-@deffn {FunciÛn} poissubst (@var{a}, @var{b}, @var{c})
+@deffn {Funci√≥n} poissubst (@var{a}, @var{b}, @var{c})
 Sustituye @var{b} por @var{a} en @var{c}, donde  @var{c} es una serie de Poisson.
 
-(1) Si @var{b} es una de las variables @var{u}, @var{v}, @var{w}, @var{x}, @var{y} o @var{z}, entonces @var{a} debe ser una expresiÛn lineal en esas variables (por ejemplo, @code{6*u + 4*v}).
+(1) Si @var{b} es una de las variables @var{u}, @var{v}, @var{w}, @var{x}, @var{y} o @var{z}, entonces @var{a} debe ser una expresi√≥n lineal en esas variables (por ejemplo, @code{6*u + 4*v}).
 
 (2) Si @var{b} no es ninguna de esas variables, entonces @var{a} no puede contener tampoco a ninguna de ellas, ni senos, ni cosenos.
 
@@ -1319,8 +1319,8 @@ Sustituye @var{b} por @var{a} en @var{c}, donde  @var{c} es una serie de Poisson
 
 @end deffn
 
-@deffn {FunciÛn} poistimes (@var{a}, @var{b})
-IdÈntico a @code{intopois (@var{a}*@var{b})}.
+@deffn {Funci√≥n} poistimes (@var{a}, @var{b})
+Id√©ntico a @code{intopois (@var{a}*@var{b})}.
 
 @end deffn
 
@@ -1329,8 +1329,8 @@ IdÈntico a @code{intopois (@var{a}*@var{b})}.
 @c AQUI FALTA DEFINICION DE poistrim
 
 
-@deffn {FunciÛn} printpois (@var{a})
-Presenta una serie de Poisson en un formato legible.  Conjuntamente con @code{outofpois}, si es necesario convertir· @var{a} primero en una codificaciÛn de Poisson.
+@deffn {Funci√≥n} printpois (@var{a})
+Presenta una serie de Poisson en un formato legible.  Conjuntamente con @code{outofpois}, si es necesario convertir√° @var{a} primero en una codificaci√≥n de Poisson.
 
 @end deffn
 

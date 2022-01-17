@@ -79,7 +79,9 @@ b + a
 この関数を使うためには、最初に@code{load("opsubst")}を書いてください。
 
 @opencatbox
-@category{Expressions} @category{Share packages} @category{Package opsubst}
+@category{Expressions}
+@category{Share packages}
+@category{Package opsubst}
 @closecatbox
 
 @end deffn

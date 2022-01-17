@@ -10,51 +10,51 @@
 @defvr {Variable opcional} GGFINFINITY
 Valor por defecto: 3
 
-Variable opcional para la funciÛn @code{ggf}.
+Variable opcional para la funci√≥n @code{ggf}.
 
-Cuando se calcula la fracciÛn continua de la funciÛn
+Cuando se calcula la fracci√≥n continua de la funci√≥n
 generatriz, si un cociente parcial tiene grado estrictamente
-mayor que @var{GGFINFINITY} ser· descartado y la convergencia
-alcanzada hasta ese momento ser· considerada como exacta para
-la funciÛn generatriz. Lo m·s frecuente es que el grado de
-todos los cocientes parciales sea 0 Û 1, de modo que si se
-utiliza un valor mayor se deber·n dar m·s tÈrminos para
-conseguir un c·lculo m·s exacto.
+mayor que @var{GGFINFINITY} ser√° descartado y la convergencia
+alcanzada hasta ese momento ser√° considerada como exacta para
+la funci√≥n generatriz. Lo m√°s frecuente es que el grado de
+todos los cocientes parciales sea 0 √≥ 1, de modo que si se
+utiliza un valor mayor se deber√°n dar m√°s t√©rminos para
+conseguir un c√°lculo m√°s exacto.
 
-VÈase tambiÈn @code{ggf}.
+V√©ase tambi√©n @code{ggf}.
 @end defvr
 
 
 @defvr {Variable opcional} GGFCFMAX
 Valor por defeco: 3
 
-Variable opcional para la funciÛn @code{ggf}.
+Variable opcional para la funci√≥n @code{ggf}.
 
-Cuando se calcula la fracciÛn continua de la funciÛn
+Cuando se calcula la fracci√≥n continua de la funci√≥n
 generatriz, si no se ha encontrado un resultado aceptable
-(vÈase la variable @var{GGFINFINITY}) despuÈs de haber 
-calculado @var{GGFCFMAX} cocientes parciales, la funciÛn
-generatriz ser· considerada no equivalente a una fracciÛn
-racional y la funciÛn @code{ggf} se detendr·. Puede
-asign·rsele a @var{GGFCFMAX} un valor mayor para funciones
-generatrices m·s complicadas.
+(v√©ase la variable @var{GGFINFINITY}) despu√©s de haber 
+calculado @var{GGFCFMAX} cocientes parciales, la funci√≥n
+generatriz ser√° considerada no equivalente a una fracci√≥n
+racional y la funci√≥n @code{ggf} se detendr√°. Puede
+asign√°rsele a @var{GGFCFMAX} un valor mayor para funciones
+generatrices m√°s complicadas.
 
-VÈase tambiÈn @code{ggf}.
+V√©ase tambi√©n @code{ggf}.
 @end defvr
 
-@deffn {FunciÛn} ggf (@var{l})
-Calcula la funciÛn generatriz de una sucesiÛn de la que
-se suministran tan solo los primeros valores y cuyo tÈrmino
-general es una fracciÛn algebraica (cociente de dos
+@deffn {Funci√≥n} ggf (@var{l})
+Calcula la funci√≥n generatriz de una sucesi√≥n de la que
+se suministran tan solo los primeros valores y cuyo t√©rmino
+general es una fracci√≥n algebraica (cociente de dos
 polinomios).
 
-La soluciÛn se devuelve como una fracciÛn de polinomios. 
-En caso de no poder encontrar una soluciÛn, se devuelve
+La soluci√≥n se devuelve como una fracci√≥n de polinomios. 
+En caso de no poder encontrar una soluci√≥n, se devuelve
 @code{done}.
 
-Esta funciÛn est· controlada por las variables globales 
-@var{GGFINFINITY} y @var{GGFCFMAX}. VÈanse tambiÈn @var{GGFINFINITY} y @var{GGFCFMAX}.
+Esta funci√≥n est√° controlada por las variables globales 
+@var{GGFINFINITY} y @var{GGFCFMAX}. V√©anse tambi√©n @var{GGFINFINITY} y @var{GGFCFMAX}.
 
-Antes de hacer uso de esta funciÛn ejec˙tese  @code{load("ggf")}.
+Antes de hacer uso de esta funci√≥n ejec√∫tese  @code{load("ggf")}.
 @end deffn
 
