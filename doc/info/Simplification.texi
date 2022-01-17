@@ -13,7 +13,7 @@ Maxima interacts with the user through a cycle of actions called the read-eval-p
 This consists of three steps: reading and parsing, evaluating and simplifying, 
 and outputing. Parsing converts a syntactically valid sequence of typed characters into 
 a internal data structure. Evaluation
-replaces variable and functions names with their values and simplification rewrites 
+replaces variable and function names with their values and simplification rewrites 
 expressions to be easier for the user or other programs to understand. Output 
 displays results in a variety of different formats and notations.
 
@@ -23,7 +23,7 @@ For example, arithmetic both on numbers and on symbolic expressions is simplific
 @code{2+2} simplifies to @code{4}, @code{2+x+x} simplifies to @code{2+2*x}, and
 @code{sqrt(7)^4} simplifies to @code{49}.
 Evaluation and simplification are interleaved.
-For example, @code{factor(integrate(x+1,x)} first calls the built-in function @mref{integrate},
+For example, @code{factor(integrate(x+1,x))} first calls the built-in function @mref{integrate},
 giving @code{x+x*x*2^-1};
 that simplifies to @code{x+(1/2)*x^2}; this in turn is passed to the @mref{factor} function,
 which returns @code{(x*(x+2))/2}.
