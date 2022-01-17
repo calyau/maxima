@@ -835,7 +835,7 @@ de las dos variables de estado como funciones del tiempo:
 @end example
 
 @ifnotinfo
-@image{@value{figuresfolder}/plotdf5,8cm}@image{@value{figuresfolder}/figures/plotdf6,8cm}
+@image{@value{figuresfolder}/plotdf5,8cm}@image{@value{figuresfolder}/plotdf6,8cm}
 @end ifnotinfo
 
 @end itemize
