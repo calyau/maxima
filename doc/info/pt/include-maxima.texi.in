@@ -63,7 +63,7 @@ Villate (@code{villate arroba fe.up.pt}).
 @summarycontents
 @contents
 
-@include category-macros.texi
+@include ../category-macros.texi
 
 @c to update the menus do:
 @c (texinfo-multiple-files-update "maxima.texi" t t)

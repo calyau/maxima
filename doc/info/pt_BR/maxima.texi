@@ -87,7 +87,7 @@ Veja o arquivo AUTHORS para conhecer todos os mantenedores do Maxima.
 @summarycontents
 @contents
 
-@include category-macros.texi
+@include ../category-macros.texi
 
 @ifnottex
 @node Top, Introdu@value{cedilha}@~{a}o ao Maxima, (dir), (dir)
