@@ -816,7 +816,7 @@ o executing
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 
 @c -----------------------------------------------------------------------------
-@anchor{residue}
+@anchor{tldefint}
 @deffn {関数} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 
 @code{tlimswitch}が@code{true}に設定されている@code{ldefint}と同値です。
@@ -831,7 +831,6 @@ o executing
 @c -----------------------------------------------------------------------------
 @node Introduction to QUADPACK, Functions and Variables for QUADPACK, Functions and Variables for Integration, Integration
 @section Introduction to QUADPACK
-@anchor{residue}
 
 @c FOLLOWING TEXT ADAPTED WITH HEAVY MODIFICATION FROM http://www.netlib.org/slatec/src/qpdoc.f
 

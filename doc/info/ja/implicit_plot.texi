@@ -28,9 +28,11 @@
  [gnuplot_preamble, "set zeroaxis"]);
 @end example
 
-@ifnotinfo
-@image{@value{figuresfolder}/implicit_plot,8cm}
-@end ifnotinfo
+@c IMPLICIT_PLOT IS SUPERSEDED BY PLOT2D([IMPLICIT, ...])
+@c AND FIGURES/IMPLICIT_PLOT NO LONGER EXISTS
+@c @ifnotinfo
+@c @image{@value{figuresfolder}/implicit_plot,8cm}
+@c @end ifnotinfo
 
 @opencatbox
 @category{Plotting}

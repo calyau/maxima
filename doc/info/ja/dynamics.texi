@@ -480,31 +480,35 @@ x @code{=} -1.25近くのより低い分岐の回りの領域を拡大するに�
 @image{@value{figuresfolder}/dynamics8,8cm}
 @end ifnotinfo
 
-Mandelbrot集合の12色のグラフィックス表現を納めた
-@emph{dynamics9.xpm}という名前のファイルを生成するには、
-以下を使ってください:
+@c FIGURES/DYNAMICS9 NO LONGER EXISTS AND FUNCTION CALL SHOWN
+@c (MANDELBROT([FILENAME,"DYNAMICS9"]) CAUSES AN ERROR.
+@c COMMENTING OUT THIS NEXT EXAMPLE.
 
-@example
-mandelbrot([filename,"dynamics9"])$
-@end example
-
-@ifnotinfo
-@image{@value{figuresfolder}/dynamics9,8cm}
-@end ifnotinfo
+@c Mandelbrot集合の12色のグラフィックス表現を納めた
+@c @emph{dynamics9.xpm}という名前のファイルを生成するには、
+@c 以下を使ってください:
+@c 
+@c @example
+@c mandelbrot([filename,"dynamics9"])$
+@c @end example
+@c 
+@c @ifnotinfo
+@c @image{@value{figuresfolder}/dynamics9,8cm}
+@c @end ifnotinfo
 
 そして数(-0.55 + i 0.6)に関するJulia集合は以下で得られます:
 @example
-julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
-      [hue, 240], [huerange, -180], [filename, "dynamics10"])$
+julia (-0.55, 0.6, [iterations, 36], [x, -0.3, 0.2],
+      [y, 0.3, 0.9], [grid, 400, 400], [color_bar_tics, 0, 6, 36])$
 @end example
 
-the graph will be saved in the file 
-グラフはファイル@emph{dynamics10.xpm}に保存されます。
+@c the graph will be saved in the file 
+@c グラフはファイル@emph{dynamics10.xpm}に保存されます。
 x方向に-0.3から0.3まで、y方向に0.3から0.9までの領域を表示します。
 青から始まり黄で終わる36色が使われます。
 
 @ifnotinfo
-@image{@value{figuresfolder}/dynamics10,8cm}
+@image{@value{figuresfolder}/plotting4,8cm}
 @end ifnotinfo
 
 微分方程式

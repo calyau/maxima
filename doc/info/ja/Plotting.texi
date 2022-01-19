@@ -142,7 +142,7 @@ xmaximaプログラムはそのファイルの位置の名前を引数として�
 @end example
 
 @ifnotinfo
-@image{@value{figuresfolder}/contour1,8cm}
+@image{@value{figuresfolder}/plotting2,8cm}
 @end ifnotinfo
 
 @c ===beg===
@@ -157,10 +157,6 @@ xmaximaプログラムはそのファイルの位置の名前を引数として�
 @end group
 (%i2) contour_plot (F, [u, -4, 4], [v, -4, 4])$
 @end example
-
-@ifnotinfo
-@image{@value{figuresfolder}/contour2,8cm}
-@end ifnotinfo
 
 @code{plot3d}が受け付ける任意のオプションを足すことができます;
 例えば、オプション@code{legend}にfalseの値を入れると、凡例を取り除きます。
@@ -179,10 +175,6 @@ Gnuplotはデフォルトで3つの高等線を示すように選びます。
                     [gnuplot_preamble, "set cntrparam levels 12"])$
 @end group
 @end example
-
-@ifnotinfo
-@image{@value{figuresfolder}/contour3,8cm}
-@end ifnotinfo
 
 @opencatbox
 @category{Plotting}

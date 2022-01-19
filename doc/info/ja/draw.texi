@@ -1,4 +1,4 @@
-,@menu
+@menu
 * Introduction to draw::
 * Functions and Variables for draw::
 * Functions and Variables for pictures::
