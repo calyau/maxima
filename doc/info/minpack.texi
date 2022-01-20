@@ -20,7 +20,10 @@ Fortran library MINPACK, as obtained from Netlib.
 @section Functions and Variables for minpack
 
 @anchor{minpack_lsquares}
-@deffn {Function} minpack_lsquares (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
+@deffn {Function} minpack_lsquares @
+@fname{minpack_lsquares} (@var{flist}, @var{varlist}, @var{guess}) @
+@fname{minpack_lsquares} (..., 'tolerance = @var{tolerance}) @
+@fname{minpack_lsquares} (..., 'jacobian = @var{jacobian})
 
 Compute the point that minimizes the sum of the squares of the
 functions in the list @var{flist}.  The variables are in the list
@@ -87,7 +90,11 @@ is possible.
 @end deffn
 
 @anchor{minpack_solve}
-@deffn {Function} minpack_solve (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
+@deffn {Function} minpack_solve @
+@fname{minpack_solve} (@var{flist}, @var{varlist}, @var{guess}) @
+@fname{minpack_solve} (..., 'tolerance = @var{tolerance}) @
+@fname{minpack_solve} (..., 'jacobian = @var{jacobian})
+
 Solve a system of @code{n} equations in @code{n} unknowns.
 The @code{n} equations are given in the list @var{flist}, and the
 unknowns are in @var{varlist}.  An initial guess of the solution must

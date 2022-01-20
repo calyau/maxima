@@ -17,7 +17,10 @@ obtener de Netlib.
 
 
 
-@deffn {Función} minpack_lsquares (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
+@deffn {Función} minpack_lsquares @
+@fname{minpack_lsquares} (@var{flist}, @var{varlist}, @var{guess}) @
+@fname{minpack_lsquares} (..., 'tolerance = @var{tolerance}) @
+@fname{minpack_lsquares} (..., 'jacobian = @var{jacobian})
 
 Calcula el punto @code{x} que minimiza la suma de los cuadrados de las
 funciones de la lista @var{flist}. Las variables se escriben en
@@ -89,7 +92,10 @@ solución aproximada @var{x}.
 
 
 
-@deffn {Función} minpack_solve (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
+@deffn {Función} minpack_solve @
+@fname{minpack_solve} (@var{flist}, @var{varlist}, @var{guess}) @
+@fname{minpack_solve} (..., 'tolerance = @var{tolerance}) @
+@fname{minpack_solve} (..., 'jacobian = @var{jacobian})
 
 Resuelve un sistema de @code{n} ecuaciones con @code{n} incógnitas.
 Las @code{n} ecuaciones forman la lista @var{flist}, estando la

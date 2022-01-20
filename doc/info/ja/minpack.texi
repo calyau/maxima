@@ -20,7 +20,10 @@ Netlibから得られるFortranライブラリ MINPACKの
 @node Functions and Variables for minpack, , ,
 @section Functions and Variables for minpack
 
-@deffn {関数} minpack_lsquares (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
+@deffn {関数} minpack_lsquares @
+@fname{minpack_lsquares} (@var{flist}, @var{varlist}, @var{guess}) @
+@fname{minpack_lsquares} (..., 'tolerance = @var{tolerance}) @
+@fname{minpack_lsquares} (..., 'jacobian = @var{jacobian})
 
 リスト @var{flist}の関数の平方の和を最小化する
 点を計算します。
@@ -84,7 +87,11 @@ tolが小さすぎます。近似解xの更なる改善は不可能です。
 
 @end deffn
 
-@deffn {関数} minpack_solve (@var{flist}, @var{varlist}, @var{guess} [, @var{tolerance}, @var{jacobian}])
+@deffn {関数} minpack_solve @
+@fname{minpack_solve} (@var{flist}, @var{varlist}, @var{guess}) @
+@fname{minpack_solve} (..., 'tolerance = @var{tolerance}) @
+@fname{minpack_solve} (..., 'jacobian = @var{jacobian})
+
 @code{n}個の未知数に関する
 @code{n}個の方程式系を解きます。
 @code{n}個の方程式形がリスト @var{flist}で
