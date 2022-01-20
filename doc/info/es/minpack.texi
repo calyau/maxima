@@ -4,7 +4,7 @@
 * Funciones y variables para minpack::
 @end menu
 
-@node Introducción a minpack, , , 
+@node Introducción a minpack, Funciones y variables para minpack, , 
 @section Introducción a minpack
 
 @code{Minpack} es una traducción a Common Lisp (via @code{f2cl}) de la
@@ -12,7 +12,7 @@ librería MINPACK escrita en Fortran, tal como se puede
 obtener de Netlib.
 
 
-@node Funciones y variables para minpack, , ,
+@node Funciones y variables para minpack, , Introducción a minpack,
 @section Funciones y variables para minpack
 
 
