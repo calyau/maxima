@@ -208,8 +208,10 @@
 Если выполнена команда @code{put('contrib_ode,true,'verbose)}, то 
 печатается подробная отладочная информация.
 
-@opencatbox
-@category{Дифференциальные уравнения} @category{Пакеты библиотеки share} @category{Пакет contrib_ode}
+@opencatbox{Категории:}
+@category{Дифференциальные уравнения}
+@category{Пакеты библиотеки share}
+@category{Пакет contrib_ode}
 @closecatbox
 
 @node Функции и переменные пакета contrib_ode, Возможные улучшения пакета contrib_ode, Введение в пакет contrib_ode, Пакет contrib_ode
@@ -220,7 +222,7 @@
 Возвращает список решение ОДУ @var{eqn} с независимой переменной 
 @var{x} и зависимой переменной @var{y}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 
@@ -262,7 +264,7 @@
 
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 
@@ -307,7 +309,7 @@
 (%o4)                           0
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 
@@ -317,7 +319,7 @@
 
 Переменной @code{method} присваивается название метода успешного решения ОДУ. 
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 
@@ -327,7 +329,7 @@
 
 @code{%c} -- константа интегрирования для ОДУ первого порядка.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 
@@ -337,7 +339,7 @@
 
 @code{%k1} -- первая константа интегрирования для ОЛУ второго порядка.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 
@@ -347,7 +349,7 @@
 
 @code{%k2} -- вторая константа интегрирования для ОЛУ второго порядка.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 
@@ -366,7 +368,7 @@
 
 См. также @code{gauss_b}, @code{dgauss_a} и @code{gauss_b}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 
@@ -375,7 +377,7 @@
 @deffn {Функция} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 См. @code{gauss_a}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 @end deffn
@@ -383,7 +385,7 @@
 @deffn {Функция} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 Производная @code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})} по @var{x}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 @end deffn
@@ -391,7 +393,7 @@
 @deffn {Функция} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 Производная @code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})} по @var{x}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 @end deffn
@@ -416,7 +418,7 @@ U-функция Куммера, как она определена в Abramowit
 
 См. @code{kummer_m}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 @end deffn
@@ -428,7 +430,7 @@ U-функция Куммера, как она определена в Abramowit
 @deffn {Функция} dkummer_u (@var{a}, @var{b}, @var{x})
 Производная @code{kummer_u(@var{a}, @var{b}, @var{x})} по @var{x}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет contrib_ode}
 @closecatbox
 @end deffn

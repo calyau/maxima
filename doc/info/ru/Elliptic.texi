@@ -123,7 +123,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 Поддержку эллиптических функций и интегралов реализовал Реймонд Той, и его код
 доступен под лицензии GPL, как и весь код Maxima.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 
@@ -135,7 +135,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} jacobi_sn (@var{u}, @var{m})
 Эллиптическая функция Якоби @math{sn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -143,7 +143,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} jacobi_cn (@var{u}, @var{m})
 Эллиптическая функция Якоби @math{cn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -151,7 +151,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} jacobi_dn (@var{u}, @var{m})
 Эллиптическая функция Якоби @math{dn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -159,7 +159,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} jacobi_ns (@var{u}, @var{m})
 Эллиптическая функция Якоби @math{ns(u,m) = 1/sn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -167,7 +167,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} jacobi_sc (@var{u}, @var{m})
 Эллиптическая функция Якоби @math{sc(u,m) = sn(u,m)/cn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -175,7 +175,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} jacobi_sd (@var{u}, @var{m})
 Эллиптическая функция Якоби @math{sd(u,m) = sn(u,m)/dn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -183,7 +183,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} jacobi_nc (@var{u}, @var{m})
 Эллиптическая функция Якоби @math{nc(u,m) = 1/cn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -191,7 +191,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} jacobi_cs (@var{u}, @var{m})
 Эллиптическая функция Якоби @math{cs(u,m) = cn(u,m)/sn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -199,7 +199,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} jacobi_cd (@var{u}, @var{m})
 Эллиптическая функция Якоби @math{cd(u,m) = cn(u,m)/dn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -207,7 +207,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} jacobi_nd (@var{u}, @var{m})
 Эллиптическая функция Якоби @math{nc(u,m) = 1/cn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -215,7 +215,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} jacobi_ds (@var{u}, @var{m})
 Эллиптическая функция Якоби @math{ds(u,m) = dn(u,m)/sn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -223,7 +223,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} jacobi_dc (@var{u}, @var{m})
 Эллиптическая функция Якоби @math{dc(u,m) = dn(u,m)/cn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -231,7 +231,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} inverse_jacobi_sn (@var{u}, @var{m})
 Обратная эллиптическая функция Якоби для @math{sn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -239,7 +239,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} inverse_jacobi_cn (@var{u}, @var{m})
 Обратная эллиптическая функция Якоби для @math{cn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -247,7 +247,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} inverse_jacobi_dn (@var{u}, @var{m})
 Обратная эллиптическая функция Якоби для @math{dn(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -255,7 +255,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} inverse_jacobi_ns (@var{u}, @var{m})
 Обратная эллиптическая функция Якоби для @math{ns(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -263,7 +263,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} inverse_jacobi_sc (@var{u}, @var{m})
 Обратная эллиптическая функция Якоби для @math{sc(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -271,7 +271,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} inverse_jacobi_sd (@var{u}, @var{m})
 Обратная эллиптическая функция Якоби для @math{sd(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -279,7 +279,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} inverse_jacobi_nc (@var{u}, @var{m})
 Обратная эллиптическая функция Якоби для @math{nc(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -287,7 +287,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} inverse_jacobi_cs (@var{u}, @var{m})
 Обратная эллиптическая функция Якоби для @math{cs(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -295,7 +295,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} inverse_jacobi_cd (@var{u}, @var{m})
 Обратная эллиптическая функция Якоби для @math{cd(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -303,7 +303,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} inverse_jacobi_nd (@var{u}, @var{m})
 Обратная эллиптическая функция Якоби для @math{nc(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -311,7 +311,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} inverse_jacobi_ds (@var{u}, @var{m})
 Обратная эллиптическая функция Якоби для @math{ds(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -319,7 +319,7 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 @deffn {Функция} inverse_jacobi_dc (@var{u}, @var{m})
 Обратная эллиптическая функция Якоби для @math{dc(u,m)}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические функции}
 @closecatbox
 @end deffn
@@ -347,7 +347,7 @@ $$\int_0^\phi {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 
 См. также @ref{elliptic_e} и @ref{elliptic_kc}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические интегралы}
 @closecatbox
 @end deffn
@@ -368,7 +368,7 @@ $$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
 
 См. также @ref{elliptic_e} и @ref{elliptic_ec}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические интегралы}
 @closecatbox
 @end deffn
@@ -405,7 +405,7 @@ $$E(u,m) = E(\phi, m)$$
 @end tex
 См. также @ref{elliptic_e}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические интегралы}
 @closecatbox
 @end deffn
@@ -425,7 +425,7 @@ $$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 
 Для Maxima известна только производная по @math{phi}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические интегралы}
 @closecatbox
 @end deffn
@@ -447,7 +447,7 @@ $$\int_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 Для конкретных значений @math{m} значение интеграла выражается через гамма-функцию.
 Для вычисления используйте @code{makegamma}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические интегралы}
 @closecatbox
 @end deffn
@@ -469,7 +469,7 @@ $$\int_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
 Для конкретных значений @math{m} значение интеграла выражается через гамма-функцию.
 Для вычисления используйте @code{makegamma}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Эллиптические интегралы}
 @closecatbox
 @end deffn

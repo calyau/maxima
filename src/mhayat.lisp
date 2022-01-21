@@ -263,9 +263,6 @@
   `(mtell (intl:gettext "taylor: assumed to be zero: ~M~%")
     `((mlabel) () ,,exp)))
 
-
-(defmacro merrcatch (form) `(catch 'errorsw ,form))
-
 ;;There is a duplicate version of this in MAXMAC
 ;;(defmacro infinities () ''($inf $minf $infinity))
 

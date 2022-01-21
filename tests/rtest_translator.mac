@@ -1962,6 +1962,24 @@ block ([translate : false],
 (kill (foo, a), 0);
 0;
 
+/* Simple tests for catch and throw */
+
+block ([translate : false, l1, l2],
+  local (foo, bar, baz),
+
+  foo (p) := if p then throw (13) else 2,
+  bar () := catch (1, foo (false), 3),
+  baz () := catch (1, foo (true), 3),
+
+  l1 : [bar (), baz ()],
+
+  translate_or_lose (foo, bar, baz),
+
+  l2 : [bar (), baz ()],
+
+  [l2, is (l1 = l2)]);
+[[3, 13], true];
+
 
 
 

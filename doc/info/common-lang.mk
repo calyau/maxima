@@ -48,7 +48,7 @@ clean-html:
 	rm -f contents.hhc
 	rm -f index.hhk
 
-EXTRA_DIST = maxima-index.lisp $(genericdirDATA)
+EXTRA_DIST = maxima-index.lisp $(genericdirDATA) maxima_toc.html
 
 # This builds the Windows help file maxima.chm
 maxima.chm: maxima_toc.html maxima.hhp contents.hhc index.hhk

@@ -49,7 +49,7 @@ END-INFO-DIR-ENTRY
 
 @paragraphindent 0
 
-@include category-macros.texi
+@include ../category-macros.texi
 @include hyphenation.de.texi
 
 @titlepage

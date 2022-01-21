@@ -334,10 +334,6 @@ Maximaは組み込み数学関数による浮動小数点演算を整理とみ�
 @closecatbox
 @end deffn
 
-@c end concepts Command Line
-@node Functions and Variables for Command Line,  , Introduction to Command Line, Command Line
-@section Functions and Variables for Command Line
-
 @c NEEDS WORK, ESPECIALLY EXAMPLES
 @deffn {関数} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
 (利用者もしくはシステム)関数や変数、配列等に対して別名を与えます。

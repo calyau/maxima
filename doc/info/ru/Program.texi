@@ -77,7 +77,7 @@ Maxima предоставляет цикл @code{do}, для итерации, �
 @end example
 @end itemize
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Отладка}
 @closecatbox
 @end deffn
@@ -291,7 +291,7 @@ for @var{variable} in @var{list} @var{end_tests} do @var{body}
 (%o4)                             0.78539816
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Программирование}
 @closecatbox
 @end deffn
@@ -307,7 +307,7 @@ for @var{variable} in @var{list} @var{end_tests} do @var{body}
 если ожидается возможное возникновение ошибки, что без 
 перехвата ошибки приводит к завершению @code{batch}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Программирование}
 @closecatbox
 @end deffn
@@ -326,7 +326,7 @@ for @var{variable} in @var{list} @var{end_tests} do @var{body}
 Функция @code{errormsg()} форматирует и печатает @code{error},
 что повторяет печать самой последней ошибки.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Программирование}
 @closecatbox
 @end deffn
@@ -336,7 +336,7 @@ for @var{variable} in @var{list} @var{end_tests} do @var{body}
 Информация об ошибке содержится в переменной @code{error}, и @code{errormsg} 
 форматирует и печатает ее.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Программирование}
 @closecatbox
 @end deffn
@@ -347,7 +347,7 @@ for @var{variable} in @var{list} @var{end_tests} do @var{body}
 Используется в циклах. См. @code{do} для описания средств Maxima для
 организации итераций.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Программирование}
 @closecatbox
 @end deffn
@@ -365,7 +365,7 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 Нельзя использовать @code{go} для передачи управления на метку в блоке отличном от
 того, где находится сама команда @code{go}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Программирование}
 @closecatbox
 @end deffn
@@ -425,8 +425,9 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 нет                         not         логический, префиксный
 @end example
 
-@opencatbox
-@category{Программирование} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Программирование}
+@category{Функции предикаты}
 @closecatbox
 @end deffn
 
@@ -470,7 +471,7 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Применение функций}
 @closecatbox
 @end deffn
@@ -481,7 +482,7 @@ block ([x], x:1, loop, x+1, ..., go(loop), ...)
 переменные с индексом.
 @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION OF ATOMS ??
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Функции предикаты}
 @closecatbox
 @end deffn
@@ -503,7 +504,7 @@ map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
 Если @code{maperror} равна @code{true},
 то в оба вышеуказанных случая считаются ошибками.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Применение функций}
 @closecatbox
 @end defvr
@@ -519,7 +520,7 @@ map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
 
 Если @code{mapprint} равна @code{false}, то данные сообщения подавляются.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Применение функций}
 @closecatbox
 @end defvr
@@ -534,7 +535,7 @@ map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
 которая возвращает выражение с главным оператором, одним для всех выражений @var{expr_i}
 (за исключеним упрощений и случая, когда @code{map} выполняет @code{apply}).
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Применение функций}
 @closecatbox
 @end deffn
@@ -553,8 +554,9 @@ map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
 
 См. также @code{is} и @code{maybe}.
 
-@opencatbox
-@category{Программирование} @category{Функции предикаты}
+@opencatbox{Категории:}
+@category{Программирование}
+@category{Функции предикаты}
 @closecatbox
 @end defvr
 
@@ -562,7 +564,7 @@ map (@var{f}, @var{expr_1}, @var{expr_2}, ...)
 Используется для явного выхода из блока, делая @var{value} значением этого блока.
 См. @code{block} для более детального описания.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Программирование}
 @closecatbox
 @end deffn
@@ -614,7 +616,7 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 
 В данном случае результат одинаков для обоих вариантов вызова.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Применение функций}
 @closecatbox
 @end deffn
@@ -623,7 +625,7 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 Вычисляет выражение @var{expr} и "бросает" его значение вверх до ближайшего @code{catch}.  
 Функции @code{throw} и @code{catch} реализуют механизм нелокального возврата.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Программирование}
 @closecatbox
 @end deffn
@@ -634,7 +636,7 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 @deffnx {Специальный оператор} unless
 См. @code{do}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Программирование}
 @closecatbox
 @end deffn
@@ -789,7 +791,7 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 (%o4)                         true
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Применение функций}
 @closecatbox
 @end deffn

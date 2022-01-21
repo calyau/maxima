@@ -351,6 +351,7 @@ string, or lambda expression; found: a < b
 @end example
 
 @itemize
+@item
  独立変数が違っても、
 Maximaはこれらのラムダ形が意味的に等しいことを演繹できます:
 @end itemize
@@ -1255,6 +1256,7 @@ lのメンバーの合成をそれぞれの解に適用します。
 @end example
 
 @itemize
+@item
 時々追加の整理は整理を戻すことがあります;
 例えば
 @end itemize
@@ -1268,6 +1270,7 @@ lのメンバーの合成をそれぞれの解に適用します。
 @end example
 
 @itemize
+@item
 Maximaは
 関数リスト @code{l}のそれぞれのメンバーが純粋に整理であるかチェックしようとしません;
 例えば
@@ -1279,6 +1282,7 @@ Maximaは
 @end example
 
 @itemize
+@item
 それぞれの解を倍精度浮動小数点数に変換するには
 @code{simpfunc = ['dfloat]}を使います:
 @end itemize
@@ -1352,6 +1356,7 @@ Unable to solve
 @end example
 
 @itemize
+@item
 @code{(%o2)}で、ソルバはダミー変数を導入しました;
 これらのダミー変数を再インデックスするには、
 関数 @code{nicedummies}を使います:
@@ -1470,6 +1475,7 @@ Unable to solve
 @end example
 
 @itemize
+@item
 @i{これはソルバが事実データベースを参照する唯一の状況です。例えば、もし解く変数が整数と宣言されていたら、@code{to_poly_solve}はこの宣言を無視します}。
 @end itemize
 

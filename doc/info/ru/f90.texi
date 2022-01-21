@@ -50,8 +50,10 @@ yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2+294* &
 
 Для того, чтобы использовать эту функцию, сначала введите команду @code{load("f90")}.
 
-@opencatbox
-@category{Трансляция и компиляция} @category{Пакеты библиотеки share} @category{Пакет f90}
+@opencatbox{Категории:}
+@category{Трансляция и компиляция}
+@category{Пакеты библиотеки share}
+@category{Пакет f90}
 @closecatbox
 
 @end deffn

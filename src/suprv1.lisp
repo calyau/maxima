@@ -774,35 +774,44 @@
        (with-$error
          (merror (intl:gettext "An error was caught by errcatch."))))))
 
+; This is similar to the classic errset, but errcatch handles lisp and
+; Maxima errors.
+(defmacro errcatch (form)
+  `(let ((errcatch (cons bindlist loclist))
+         (*mdebug* nil))
+     (declare (special errcatch *mdebug*))
+     (handler-case (list (with-errcatch-tag-$errors ,form))
+       (maxima-$error ()
+         ; If this was signaled by MERROR, then it has already handled
+         ; the setting of the error variable and the printing of any error
+         ; messages (as applicable).
+         ;
+         ; If for some reason this wasn't signaled by MERROR, then it's the
+         ; signaler's responsibility to handle error messages.
+         ;
+         ; Either way, we just need to clean up here.
+         (errlfun1 errcatch)
+         nil)
+       (error (e)
+         ; We store the error report message in the error variable and
+         ; print the message if errormsg is true.  Then we clean up.
+         (setq $error (list '(mlist simp) (princ-to-string e)))
+         (when $errormsg
+           ($errormsg))
+         (errlfun1 errcatch)
+         nil))))
+
 (defmspec $errcatch (form)
-  (let ((errcatch (cons bindlist loclist))
-        (*mdebug* nil))
-    (handler-case (list '(mlist) (with-errcatch-tag-$errors (mevaln (cdr form))))
-      (maxima-$error ()
-        ; If this was signaled by MERROR, then it has already handled
-        ; the setting of the error variable and the printing of any error
-        ; messages (as applicable).
-        ;
-        ; If for some reason this wasn't signaled by MERROR, then it's the
-        ; signaler's responsibility to handle error messages.
-        ;
-        ; Either way, we just need to clean up here.
-        (errlfun1 errcatch)
-        (list '(mlist simp)))
-      (error (e)
-        ; We store the error report message in the error variable and
-        ; print the message if errormsg is true.  Then we clean up.
-        (setq $error (list '(mlist simp) (princ-to-string e)))
-        (when $errormsg
-          ($errormsg))
-        (errlfun1 errcatch)
-        (list '(mlist simp))))))
+  (cons '(mlist) (errcatch (mevaln (cdr form)))))
+
+(defmacro mcatch (form)
+  `(let ((mcatch (cons bindlist loclist)))
+     (unwind-protect
+         (catch 'mcatch (rat-error-to-merror ,form))
+       (errlfun1 mcatch))))
 
 (defmspec $catch (form)
-  (let ((mcatch (cons bindlist loclist)))
-    (prog1
-	(catch 'mcatch (rat-error-to-merror (mevaln (cdr form))))
-      (errlfun1 mcatch))))
+  (mcatch (mevaln (cdr form))))
 
 (defmfun $throw (exp)
   (if (null mcatch) (merror (intl:gettext "throw: not within 'catch'; expression: ~M") exp))

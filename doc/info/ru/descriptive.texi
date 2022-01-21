@@ -194,8 +194,10 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
                             [ b  5 ]
 @end example
 
-@opencatbox
-@category{Описательная статистика} @category{Пакеты библиотеки share} @category{Пакет descriptive}
+@opencatbox{Категории:}
+@category{Описательная статистика}
+@category{Пакеты библиотеки share}
+@category{Пакет descriptive}
 @closecatbox
 
 
@@ -227,7 +229,7 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
 соответствующем интервале: 16 цифр в интервале @code{[0, 1.8]}, 
 что есть 0 или 1, 24 цифры в интервале @code{(1.8, 3.6]}, что есть 2 и 3, и т.д.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -262,7 +264,7 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
 Первый список значения в выборке, а второй их абсолютные частоты. 
 Команды @code{? col} и @code{? transpose} должны помочь понять последний ввод.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -435,7 +437,7 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
                                                              13
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -502,7 +504,7 @@ $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 (%o7)     [9.9485, 10.1607, 10.8685, 15.7166, 14.8441]
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -557,7 +559,7 @@ $${{1}\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
 
 См. также функцию @code{var1}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -618,7 +620,7 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 
 См. также функцию @code{var}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -655,7 +657,7 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 
 См. также функции @code{var} и @code{std1}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -691,7 +693,7 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 
 См. также функции @code{var1} и @code{std}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -752,11 +754,11 @@ $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
 
 См. также функцию @code{central_moment}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -817,7 +819,7 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 
 См. также функции @code{central_moment} и @code{mean}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -852,7 +854,7 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 
 См. также функции @code{std} и @code{mean}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -885,7 +887,7 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 
 См. также функцию @code{maxi}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -918,7 +920,7 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 
 См. также функцию @code{mini}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -951,7 +953,7 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 (%o6)          [19.67, 20.96, 17.37, 24.38, 22.46]
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -990,7 +992,7 @@ American Statistician, 50, 361-365),
 (%o6)    [7.2575, 7.477500000000001, 7.82, 11.28, 11.48]
 @end example
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1030,7 +1032,7 @@ American Statistician, 50, 361-365),
 
 См. также функцию @code{quantile}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1067,7 +1069,7 @@ American Statistician, 50, 361-365),
 
 См. также функцию @code{quantile}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1130,7 +1132,7 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
 
 См. также функцию @code{mean}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1193,7 +1195,7 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
 
 См. также функцию @code{mean}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1258,7 +1260,7 @@ $${{n}\over{\sum_{i=1}^{n}{{{1}\over{x_{i}}}}}}$$
 
 См. также функции @code{mean} и @code{geometric_mean}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1319,7 +1321,7 @@ $$\left(\prod_{i=1}^{n}{x_{i}}\right)^{{{1}\over{n}}}$$
 
 См. также функции @code{mean} и @code{harmonic_mean}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1380,7 +1382,7 @@ $${{1\over{n s^4}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^4}}-3}$$
 
 См. также функции @code{mean}, @code{var} и @code{skewness}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1441,7 +1443,7 @@ $${{1\over{n s^3}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}}$$
 
 См. также функции @code{mean}, @code{var} и @code{kurtosis}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1497,7 +1499,7 @@ $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 
 См. также функции @code{mean}, @code{var} и @code{median}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1556,7 +1558,7 @@ $${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
 
 См. также функцию @code{quantile}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1626,7 +1628,7 @@ $${S={1\over{n}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 
 См. также функцию @code{cov1}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1691,7 +1693,7 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 
 См. также функцию @code{cov}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1762,7 +1764,7 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 
 См. также @code{cov} и @code{cov1}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1834,7 +1836,7 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 
 См. также @code{cov} и @code{cov1}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -1972,7 +1974,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 
 См. также @code{cov} и @code{cov1}.
 
-@opencatbox
+@opencatbox{Категории:}
 @category{Пакет descriptive}
 @closecatbox
 
@@ -2033,8 +2035,9 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
         fill_density = 0.6)$
 @end example
 
-@opencatbox
-@category{Пакет descriptive} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет descriptive}
+@category{Графика}
 @closecatbox
 
 @end deffn
@@ -2148,8 +2151,9 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 
 См. также @code{histogram}.
 
-@opencatbox
-@category{Пакет descriptive} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет descriptive}
+@category{Графика}
 @closecatbox
 
 @end deffn
@@ -2199,8 +2203,9 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 По поводу опций, управляющих выводом диаграмм, см. @code{bars} пакета @code{draw}.
 См. также функции @code{histogram} и @code{piechart}.
 
-@opencatbox
-@category{Пакет descriptive} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет descriptive}
+@category{Графика}
 @closecatbox
 
 @end deffn
@@ -2260,8 +2265,9 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 
 См. также @code{barsplot}.
 
-@opencatbox
-@category{Пакет descriptive} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет descriptive}
+@category{Графика}
 @closecatbox
 
 @end deffn
@@ -2332,8 +2338,9 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 (%i3) boxplot (A)$
 @end example
 
-@opencatbox
-@category{Пакет descriptive} @category{Графика}
+@opencatbox{Категории:}
+@category{Пакет descriptive}
+@category{Графика}
 @closecatbox
 
 @end deffn
