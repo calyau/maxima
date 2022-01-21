@@ -188,7 +188,7 @@ Maximaの基盤
 
 訳者後書き
 
-* Comments fo Translator::       訳者のコメント
+* Translator's Comments::       訳者のコメント
 
 @comment @detailmenu
  --- The Detailed Node Listing ---
@@ -991,12 +991,12 @@ zeilberger
 @chapter zeilberger
 @include zeilberger.texi
 
-@node Function and Variable Index, Comments of Translator, zeilberger, Top
+@node Function and Variable Index, Translator's Comments, zeilberger, Top
 @chapter Indices
 @include Indices.texi
 
-@node Comments of Translator,  , Function and Variable Index, Top
-@appendix Comments of Translator
+@node Translator's Comments,  , Function and Variable Index, Top
+@appendix Translator's Comments
 @include Translator.texi
 
 @c end includes
