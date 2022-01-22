@@ -1,5 +1,7 @@
 MAKEINFOFLAGS = --enable-encoding -I . -I .. -I ../..
 
+TEXINFO_TEX = ../texinfo.tex
+
 lang = es
 langsdir = /es
 

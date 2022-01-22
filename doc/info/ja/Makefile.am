@@ -1,5 +1,7 @@
 MAKEINFOFLAGS = --enable-encoding -I . -I .. --force -e 20
 
+TEXINFO_TEX = ../texinfo.tex
+
 lang = ja
 langsdir = /ja
 
