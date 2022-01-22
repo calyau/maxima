@@ -231,7 +231,11 @@
 			   ;; because cosh(x) = sinh(x) for such a
 			   ;; large value.
 			   (if (and (floatp x)
-				    (>= (abs x) (cl:asinh (sqrt most-positive-double-float))))
+				    (>= (abs x)
+					#+(or clisp)
+					710.4758600739439d0
+					#-(or clisp)
+					(cl:acosh most-positive-double-float)))
 			       (* 2 (exp (- (abs x))))
 			       (/ (cl:cosh x)))))
 		  (let ((y (ignore-errors (sech x))))
@@ -249,7 +253,11 @@
 			   ;; espeically since clisp can't compute
 			   ;; asinh(most-positive).
 			   (if (and (floatp x)
-				    (>= (abs x) (cl:asinh (sqrt most-positive-double-float))))
+				    (>= (abs x)
+					#+(or clisp)
+					710.4758600739439d0
+					#-(or clisp)
+					(cl:asinh most-positive-double-float)))
 			       (float-sign x (* 2 (exp (- (abs x)))))
 			       (/ (cl:sinh x)))))
 		  (let ((y (ignore-errors (csch x))))
@@ -285,11 +293,15 @@
 		     ;; some lisps like clisp don't have denormals.
 		     ;; In that case, use 2*least-positive.
 		     (let ((absx (abs x)))
-		       (if (and (floatp x)
-				(< absx #-clisp least-positive-normalized-double-float
-					#+clisp (/ (sqrt double-float-epsilon))))
-			   (float-sign x (- (log 2d0) (log (abs x))))
-			 (cl:asinh (/ x))))))
+		       (cond ((and (floatp x)
+				   (< absx
+				      #-clisp
+				      least-positive-normalized-double-float
+				      #+clisp
+				      (sqrt double-float-epsilon)))
+			      (float-sign x (- (log 2d0) (log (abs x)))))
+			     (t
+			      (cl:asinh (/ x)))))))
 	      (let ((y (ignore-errors (acsch x))))
 		(if y y (domain-error x 'acsch))))))
 
