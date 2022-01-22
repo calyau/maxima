@@ -26,6 +26,12 @@ have proven helpful:
 
   make pdf
 
+  The japanese documentation (enabled with --enable-lang-ja) can not be build
+  with the usual TeX engine use
+  make pdf PDFTEX=xetex
+  to select xetex for building it.
+
+
 - Do all of the documentation types look like they should
 
 - Is the documentation accessible to the ? and ?? commands of maxima?
