@@ -219,9 +219,23 @@
 			   ;; For large x > 0, cosh(x) ~= exp(x)/2.
 			   ;; Hence, sech(x) ~= 2*exp(-x).  And since
 			   ;; cosh(x) is even, we only need to deal
-			   ;; with |x|.  By large, we mean
-			   ;; acosh(most-positive-double-float).
-			   (if (>= (abs x) (cl:acosh most-positive-double-float))
+			   ;; with |x|.  Note also that if |x| >=
+			   ;; sqrt(most-positive-double-float),
+			   ;; exp(-x) is basically zero, so we can use
+			   ;; a threshold of sqrt(most-positive).
+			   ;;
+			   ;; However, clisp's acosh is broken and
+			   ;; can't compute
+			   ;; acosh(sqrt(most-positive)).  But for
+			   ;; such a large value acosh(x) = asinh(x),
+			   ;; because cosh(x) = sinh(x) for such a
+			   ;; large value.
+			   (if (and (floatp x)
+				    (>= (abs x)
+					#+(or clisp)
+					710.4758600739439d0
+					#-(or clisp)
+					(cl:acosh most-positive-double-float)))
 			       (* 2 (exp (- (abs x))))
 			       (/ (cl:cosh x)))))
 		  (let ((y (ignore-errors (sech x))))
@@ -233,7 +247,16 @@
 			   ;; Hence csch(x) = 2*exp(-x).  Since
 			   ;; sinh(x) is odd, we also have csch(x) =
 			   ;; -2*exp(x) when x < 0 and |x| is large.
-			   (if (>= (abs x) (cl:asinh most-positive-double-float))
+			   ;;
+			   ;; As for sech above, clisp can't compute
+			   ;; asinh(most-positive).  Just use the
+			   ;; actual numerical value instead.
+			   (if (and (floatp x)
+				    (>= (abs x)
+					#+(or clisp)
+					710.4758600739439d0
+					#-(or clisp)
+					(cl:asinh most-positive-double-float)))
 			       (float-sign x (* 2 (exp (- (abs x)))))
 			       (/ (cl:sinh x)))))
 		  (let ((y (ignore-errors (csch x))))
@@ -257,20 +280,27 @@
 	    (flet ((acsch (x)
 		     ;; logarc(acsch(x)) = log(1/x+sqrt(1/x^2+1)).
 		     ;; Assume x > 0.  Then we can rewrite this as
-		     ;; log((1+sqrt(1+x^2))/x) = log(1+sqrt(1+x^2)) -
-		     ;; log(x).  If we choose x such that 1+x^2 = 1,
-		     ;; then this simplifies to log(2) - log(x).
-		     ;; Don't convert this to log(2/x) because if x is
-		     ;; very small 2/x can overflow.
+		     ;; log((1+sqrt(1+x^2))/x).  If we choose x such
+		     ;; that 1+x^2 = 1, then this simplifies to
+		     ;; log(2/x).  However for very small x, 2/x can
+		     ;; overflow, so use log(2)-log(x).
 		     ;;
 		     ;; 1+x^2 = 1 when x^2 = double-float-epsilon.  So
-		     ;; x = sqrt(double-float-epsilon).  But sinh(1/x)
-		     ;; is ok, as long as x is a normalized number.
-		     ;; So use instead of sqrt(epsilon), just use
-		     ;; least-positive-normalized-double-float.
-		     (if (< (abs x) least-positive-normalized-double-float)
-			 (float-sign x (- (log 2d0) (log (abs x))))
-			 (cl:asinh (/ x)))))
+		     ;; x = sqrt(double-float-epsilon).  We'd really
+		     ;; like to use
+		     ;; least-positive-normalized-double-float, but
+		     ;; some lisps like clisp don't have denormals.
+		     ;; In that case, use sqrt(double-float-epsilon).
+		     (let ((absx (abs x)))
+		       (cond ((and (floatp x)
+				   (< absx
+				      #-clisp
+				      least-positive-normalized-double-float
+				      #+clisp
+				      (sqrt double-float-epsilon)))
+			      (float-sign x (- (log 2d0) (log (abs x)))))
+			     (t
+			      (cl:asinh (/ x)))))))
 	      (let ((y (ignore-errors (acsch x))))
 		(if y y (domain-error x 'acsch))))))
 
