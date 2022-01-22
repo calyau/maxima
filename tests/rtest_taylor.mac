@@ -603,3 +603,23 @@ taylor( 'diff(f(t,u),u), u, 0, 1);
 taylor(signum(x), x, -2, 5)$
 -1;
 
+/* Bug #2167: taylor(rat(...)...) gives incorrect results
+ * Bug #3068: taylor of CRE fails
+ */
+
+/* This used to return the bogus series 1/x */
+taylor(rat(1/x),x,1,2);
+1-(x-1)+(x-1)^2;
+
+/* This used to signal an error about an unfamiliar singularity */
+taylor(rat(1/z+1),z,0,1);
+1/z+1;
+
+/* This used to signal an error about an unfamiliar singularity */
+taylor(rat(z+1),z,inf,0);
+z+1;
+
+/* This used to signal an error about an unfamiliar singularity */
+taylor(rat(x/(1+x)),x,inf,2);
+1-1/x+1/x^2;
+
