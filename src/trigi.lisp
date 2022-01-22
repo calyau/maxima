@@ -248,10 +248,9 @@
 			   ;; sinh(x) is odd, we also have csch(x) =
 			   ;; -2*exp(x) when x < 0 and |x| is large.
 			   ;;
-			   ;; As for sech above, we can use a
-			   ;; threshold of sqrt(most-positive),
-			   ;; espeically since clisp can't compute
-			   ;; asinh(most-positive).
+			   ;; As for sech above, clisp can't compute
+			   ;; asinh(most-positive).  Just use the
+			   ;; actual numerical value instead.
 			   (if (and (floatp x)
 				    (>= (abs x)
 					#+(or clisp)
@@ -287,11 +286,11 @@
 		     ;; overflow, so use log(2)-log(x).
 		     ;;
 		     ;; 1+x^2 = 1 when x^2 = double-float-epsilon.  So
-		     ;; x = sqrt(double-float-epsilon).  We're really
+		     ;; x = sqrt(double-float-epsilon).  We'd really
 		     ;; like to use
 		     ;; least-positive-normalized-double-float, but
 		     ;; some lisps like clisp don't have denormals.
-		     ;; In that case, use 2*least-positive.
+		     ;; In that case, use sqrt(double-float-epsilon).
 		     (let ((absx (abs x)))
 		       (cond ((and (floatp x)
 				   (< absx
