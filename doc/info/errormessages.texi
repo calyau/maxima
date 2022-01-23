@@ -276,7 +276,7 @@ draw2d (explicit): non defined variable
 @subsection VTK is not installed, which is required for Scene
 
 This might either mean that VTK is actually not installed - or cannot be found by
-maxima - or that maxima has no write access to the directory whose name is output
+maxima - or that Maxima has no write access to the temporary directory whose name is output
 if the following maxima command is entered:
 @c ===beg===
 @c maxima_tempdir;
@@ -287,6 +287,8 @@ if the following maxima command is entered:
 (%o1)                         /tmp
 @end group
 @end example
+
+Note: The @code{scene()} command requrires VTK with TCL/TK bindings.
 
 @opencatbox{Categories:}
 @category{Error messages}
