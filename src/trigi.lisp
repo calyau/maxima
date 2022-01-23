@@ -1,8 +1,8 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
+;;;     The data in this file contains enhancements.                   ;;;;;
 ;;;                                                                    ;;;;;
-;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
+;;;  Copyright (c) 1984,1987 by William Schelter, University of Texas  ;;;;;
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;     (c) Copyright 1982 Massachusetts Institute of Technology         ;;;
@@ -224,18 +224,15 @@
 			   ;; exp(-x) is basically zero, so we can use
 			   ;; a threshold of sqrt(most-positive).
 			   ;;
-			   ;; However, clisp's acosh is broken and
-			   ;; can't compute
-			   ;; acosh(sqrt(most-positive)).  But for
-			   ;; such a large value acosh(x) = asinh(x),
-			   ;; because cosh(x) = sinh(x) for such a
-			   ;; large value.
+			   ;; Several Lisp's can not compute acosh()
+			   ;; for very large values, e.g.
+			   ;; (acosh most-positive-double-float)
+			   ;; Therefore use the numerical value
+			   ;; 710.4758600739439d0 = (acosh most-positive-double-float)
+			   ;; instead of computing the value.
+			   ;; The most-positive-double-float is standardized (IEEE 754).
 			   (if (and (floatp x)
-				    (>= (abs x)
-					#+(or clisp)
-					710.4758600739439d0
-					#-(or clisp)
-					(cl:acosh most-positive-double-float)))
+				    (>= (abs x) 710.4758600739439d0))
 			       (* 2 (exp (- (abs x))))
 			       (/ (cl:cosh x)))))
 		  (let ((y (ignore-errors (sech x))))
@@ -248,15 +245,15 @@
 			   ;; sinh(x) is odd, we also have csch(x) =
 			   ;; -2*exp(x) when x < 0 and |x| is large.
 			   ;;
-			   ;; As for sech above, clisp can't compute
-			   ;; asinh(most-positive).  Just use the
-			   ;; actual numerical value instead.
+			   ;; Several Lisp's can not compute asinh()
+			   ;; for very large values, e.g.
+			   ;; (asinh most-positive-double-float)
+			   ;; Therefore use the numerical value
+			   ;; 710.4758600739439d0 = (asinh most-positive-double-float)
+			   ;; instead of computing the value.
+			   ;; The most-positive-double-float is standardized (IEEE 754).
 			   (if (and (floatp x)
-				    (>= (abs x)
-					#+(or clisp)
-					710.4758600739439d0
-					#-(or clisp)
-					(cl:asinh most-positive-double-float)))
+				    (>= (abs x) 710.4758600739439d0))
 			       (float-sign x (* 2 (exp (- (abs x)))))
 			       (/ (cl:sinh x)))))
 		  (let ((y (ignore-errors (csch x))))
