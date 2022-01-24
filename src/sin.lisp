@@ -766,7 +766,7 @@
       (exptflag nil)) ; When T, the substitution is not possible.
   
   (defun superexpt (exp var bas1 pow1)
-    (prog (y (new-var (gensym "NEW-VAR-")))
+    (prog (y ($logabs nil) (new-var (gensym "NEW-VAR-")))
       (putprop new-var t 'internal)
       (setq base bas1
             pow pow1

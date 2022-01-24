@@ -169,3 +169,47 @@ sin(x[1](b)) - sin(x[1](a));
 integrate (foo, t);
 sin(x[1](t));
 
+/* SF bug #3921: "Expanded subtracted from unexpanded with e^ix does not integrate to zero" */
+
+(f:%e^-(3*%i*x)*(sin(3*x)+x)-%e^-(3*%i*x)*sin(3*x)-x*%e^-(3*%i*x),
+ expand (f));
+0;
+
+/* examples from the bug report */
+
+integrate(f,x,0,2*%pi);
+0;
+
+integrate(f,x,0,2);        
+0;
+
+integrate(f,x,0,1);
+0;
+
+integrate(f,x,0,2*%pi);
+0;
+
+integrate(f,x,0,-%pi);
+0;
+
+integrate(f,x,0,3*%pi);
+0;
+
+integrate(f,x,-%pi,%pi);
+0;
+
+integrate(f,x,-%pi,2*%pi);
+0;
+
+integrate(f,x,-1,1);
+0;
+
+/* additional examples for #3921 */
+
+(kill(a, b),
+ integrate(f, x, a, b));
+0;
+
+(integrate(f, x),
+ ratsimp (demoivre (%%)));
+0;
