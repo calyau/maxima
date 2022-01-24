@@ -21,7 +21,8 @@
 
 ;; References are to "Evaluation of Definite Integrals by Symbolic
 ;; Manipulation", by Paul S. Wang,
-;; (http://www.lcs.mit.edu/publications/pubs/pdf/MIT-LCS-TR-092.pdf)
+;; (http://www.lcs.mit.edu/publications/pubs/pdf/MIT-LCS-TR-092.pdf;
+;; a better copy might be: https://maxima.sourceforge.io/misc/Paul_Wang_dissertation.pdf)
 ;;
 ;;	nointegrate is a macsyma level flag which inhibits indefinite
 ;;integration.
