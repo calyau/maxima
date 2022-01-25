@@ -34,7 +34,7 @@ END-INFO-DIR-ENTRY
 @end macro
 @end ifinfo
 
-@include ../category-macros.texi
+@include category-macros.texi
 
 @c for texi2html 5.0 following lines were commented out.
 @c @titlepage

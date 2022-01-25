@@ -22,7 +22,7 @@ maxima_toc.html: maxima.texi $(maxima_TEXINFOS)
 	$(srcdir)/../build_html.sh -l $(lang) -D
 
 maxima.pdf: maxima.texi $(maxima_TEXINFOS)
-	$(TEXI2PDF) $(AM_V_texinfo) -o maxima.pdf $(srcdir)/maxima.texi
+	$(TEXI2PDF) $(AM_V_texinfo) -I $(srcdir)/.. -o maxima.pdf $(srcdir)/maxima.texi
 	rm -f maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
 	maxima.toc maxima.fn maxima.aux maxima.log maxima.vrs
 
