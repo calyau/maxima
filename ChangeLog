@@ -18,6 +18,9 @@ Changes in Xmaxima:
 
 Changes in the Windows installer:
 ---------------------------------
+ * Update SBCL, wxMaxima, TCL/TK
+ * Use the HTML manual (not the PDF version) in the start menu.
+ * Strip included C programs (saves some space).
 
 Bug fixes for numbered bugs:
 ----------------------------
