@@ -1,4 +1,4 @@
-@set figuresfolder @abs_srcdir@/figures
+@set figuresfolder @srcdir@/figures
 
 @ifhtml
 @macro fname {name}
