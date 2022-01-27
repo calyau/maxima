@@ -25,6 +25,12 @@ Changes in the Windows installer:
 Bug fixes for numbered bugs:
 ----------------------------
  * #380: algsys a*b=c*d grossly incomplete
+ * #1097: pattern variable appears in letsimp result
+ * #2709: `letsimp' is wrong if `ratexpand' is called
+ * #2837: ev causes bogus WNA checks for sum, product, define and ":"
+ * #2876: Error simplifying infix operators declared l/rassociative
+ * #2921: errcatch fails to catch various errors
+ * #3068: taylor of CRE fails
  * #3793: plot2d fails on small x-range
  * #3797: plot2d(0, ...) gives "can't plot with empty y range" -- regression
  * #3801: error sourcing .xmaximarc on Windows
