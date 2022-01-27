@@ -63,7 +63,7 @@ for f in $includedfiles
 do
   if [ -e $languagedir/$f ]
       then g=$languagedir/$f
-      else g=/home/robert/maxima/maxima-code/doc/info/$f
+      else g=@abs_srcdir@/$f
   fi
   filenamebase=`echo $g | @SED@ -e 's/^.*\///;s/\.texi//'`
   @SED@ -e 's/^@deffnx*  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: '$filenamebase'\/deffn\/\1}\
