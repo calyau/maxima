@@ -52,6 +52,7 @@ if [ -d tmp_html ]; then
     rm -rf tmp_html
 fi
 mkdir tmp_html
+cp -a @abs_srcdir@/figures tmp_html
 
 if [ -e include-maxima.texi ]
     then cp include-maxima.texi tmp_html
