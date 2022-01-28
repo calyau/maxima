@@ -842,9 +842,6 @@ APPLY means like APPLY.")
 	(pushnew v *declared-translated-functions*)
 	else do (merror (intl:gettext "declare_translated: arguments must be symbols or strings; found: ~:M") v)))
 
-(def%tr $declare (form)
-  `($any . (meval ',form)))
-
 (def%tr $eval_when (form)
   (tr-format (intl:gettext "error: found 'eval_when' in a function or expression: ~:M~%") form)
   (tr-format (intl:gettext "note: 'eval_when' can appear only at the top level in a file.~%"))
