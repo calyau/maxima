@@ -362,4 +362,4 @@
 	(t
 	 (warn-meval form)
 	 (side-effect-free-check (cadr frees) form)
-	 `($any . (meval ',form)))))
+	 (punt-to-meval form))))

@@ -315,7 +315,8 @@
 ;;; The following special forms do not call the evaluator.
 
 (def%tr $alias (form)
-  `($any . (meval ',form)))  
+  (punt-to-meval form))
+
 ;;most of these will lose in common since a local variable will not
 ;;have its value accessible to the mfexpr*.  They should
 ;;be redone as macros with any necessary info passed along.

@@ -494,6 +494,8 @@ APPLY means like APPLY.")
 		     (trfail name))
 		    (t name))))))))
 
+(defun punt-to-meval (form &optional (mode '$any))
+  (cons mode `(meval ',form)))
 
 (defun trfail (x)
   (tr-format (intl:gettext "error: failed to translate ~:@M~%") x)
@@ -756,7 +758,7 @@ APPLY means like APPLY.")
 	(t
 	 ;; This case used to be the most common, a real loser.
 	 (warn-meval form)
-	 `(,(function-mode (caar form)) . (meval ',form)))))
+	 (punt-to-meval form (function-mode (caar form))))))
 
 
 (defun attempt-translate-random-macro-op (form)
@@ -765,7 +767,7 @@ APPLY means like APPLY.")
 
 (defun attempt-translate-random-special-op (form)
   (warn-fexpr form)
-  `(,(function-mode (caar form)) . (meval ',form)))
+  (punt-to-meval form (function-mode (caar form))))
 
 
 (defun tr-lisp-function-call (form type)
@@ -855,7 +857,7 @@ APPLY means like APPLY.")
   ; translation without being cleaned it up afterward, but simply
   ; removing this breaks things.
   (meval form)
-  `($any . (meval ',form)))
+  (punt-to-meval form))
 
 (def%tr $local (form)
   (cond (local
@@ -867,7 +869,7 @@ APPLY means like APPLY.")
   ; what used to happen).  That would push onto LOCLIST and bind
   ; MLOCP at the "wrong time".  The push onto LOCLIST and the
   ; binding of MLOCP are handled in TR-LAMBDA.
-  (cons '$any `(meval ',form)))
+  (punt-to-meval form))
 
 
 (def%tr mquote (form)
@@ -1122,7 +1124,7 @@ APPLY means like APPLY.")
 			    ',fn)))
 	  (t
 	   (warn-meval form)
-	   `($any meval ',form)))))
+	   (punt-to-meval form)))))
 
 
 
@@ -1221,7 +1223,7 @@ APPLY means like APPLY.")
        (setq init (dtranslate (caddr form)))
        (cond ((or (cadr (cddddr form)) (caddr (cddddr form)))
 	      (tunbind 'mdo) (tunbind (cadr form))
-	      (return `($any meval '((mdoin) . ,(cdr form))))))
+	      (return (punt-to-meval `((mdoin) . ,(cdr form))))))
        (setq action (translate (cadddr (cddddr form)))
 	     mode (cond ((null returns) '$any)
 			(t return-mode)))
