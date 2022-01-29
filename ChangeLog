@@ -9,6 +9,7 @@ New items in share:
 
 Changes in core:
 ----------------
+* new code to commute conjugate of derivative (Commit [565fcf])
 
 Changes in share:
 -----------------
@@ -34,6 +35,17 @@ Bug fixes for numbered bugs:
  * #3793: plot2d fails on small x-range
  * #3797: plot2d(0, ...) gives "can't plot with empty y range" -- regression
  * #3801: error sourcing .xmaximarc on Windows
+ * #3769: max or min called on CRE expressions
+ * #3764: limit of min works with assume but not with asksign 
+ * #3765: min(und,...) gives error with trylevel > 1 
+ * #3736: Quoting either min or max inhibits simplification
+ * #3820: testsuite with display_all = true 
+ * #3838: limit(atan(sin(x)),x,inf,plus) --> atan(ind) 
+ * #3844: Wrong limit involving gamma function 
+ * #3483: limit apparently causes infinite loop 
+ * #2388: wrong limit 
+ * #2953: limit loops endlessly 
+ * #484 limit(x=0,x,0) wrong  
 
 Unnumbered bugs fixed:
 ---------------------
