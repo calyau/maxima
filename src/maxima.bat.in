@@ -20,14 +20,12 @@ set "version=@VERSION@"
 
 title Maxima Open Source Computer Algebra System %version%
 
-rem For what directory was Maxima configured? Set %prefix% to exactly that directory, if
-rem Maxima was installed in the default path (= %configureprefix%/bin/maxima.bat exists).
-rem %~dp0/.. should be the same, but is something like the 8.3 short path - and that
-rem causes problems with Xmaxima and Clisp.
-rem (the combination will not work if Maxima is installed somewhere else, but that is not recommended)
-set "prefix=%~dp0/.."
-set "configureprefix=@prefix@"
-if exist "%configureprefix%/bin/maxima.bat" set "prefix=%configureprefix%"
+rem Where is Maxima installed? Set %prefix% to exactly that directory.
+rem The path is determined by the path of the executed maxima.bat - using the special variable: %~dp0
+rem The following command removes the filename and the last path component (bin/maxima.bat),
+FOR %%A IN ("%~dp0.") DO SET "prefix=%%~dpA"
+rem remove trailing "\":
+if "%prefix:~-1%"=="\" set "prefix=%prefix:~0,-1%"
 
 rem change "\" to "/" in that path. Works too and causes less troubles (e.g. with xmaxima).
 set "prefix=%prefix:\=/%"
