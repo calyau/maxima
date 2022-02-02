@@ -392,8 +392,8 @@ $$y_{n+1} = F(y_n)$$
 @end example
 
 @ifnotinfo
-@image{figures/dynamics1,8cm}
-@image{figures/dynamics2,8cm}
+@image{@value{figuresfolder}/dynamics1,8cm}
+@image{@value{figuresfolder}/dynamics2,8cm}
 @end ifnotinfo
 
 Если ваша система медленна, следует уменьшить число итераций в следующих примерах. 
@@ -416,7 +416,7 @@ $$x_{n+1} = a + x_n^2$$
 @end example
 
 @ifnotinfo
-@image{figures/dynamics3,8cm}
+@image{@value{figuresfolder}/dynamics3,8cm}
 @end ifnotinfo
 
 Для того, чтобы увеличить область вблизи нижней бифуркации около x @code{=} -1.25 используем:
@@ -426,7 +426,7 @@ $$x_{n+1} = a + x_n^2$$
 @end example
 
 @ifnotinfo
-@image{figures/dynamics4,8cm}
+@image{@value{figuresfolder}/dynamics4,8cm}
 @end ifnotinfo
 
 Эволюция двумерной системы, приводящая к фракталу:
@@ -440,7 +440,7 @@ $$x_{n+1} = a + x_n^2$$
 @end example
 
 @ifnotinfo
-@image{figures/dynamics5,8cm}
+@image{@value{figuresfolder}/dynamics5,8cm}
 @end ifnotinfo
 
 Увеличение небольшой области фрактала:
@@ -451,7 +451,7 @@ $$x_{n+1} = a + x_n^2$$
 @end example
 
 @ifnotinfo
-@image{figures/dynamics6,8cm}
+@image{@value{figuresfolder}/dynamics6,8cm}
 @end ifnotinfo
 
 График треугольника Серпинского, полученный как игра хаоса:
@@ -462,7 +462,7 @@ $$x_{n+1} = a + x_n^2$$
 @end example
 
 @ifnotinfo
-@image{figures/dynamics7,8cm}
+@image{@value{figuresfolder}/dynamics7,8cm}
 @end ifnotinfo
 
 Фрактал папоротник (Barnsley's fern) полученный при помощи 
@@ -491,7 +491,7 @@ $$x_{n+1} = a + x_n^2$$
 @end example
 
 @ifnotinfo
-@image{figures/dynamics8,8cm}
+@image{@value{figuresfolder}/dynamics8,8cm}
 @end ifnotinfo
 
 Чтобы создать файл @emph{dynamics9.xpm} с графическим изображением 
@@ -502,7 +502,7 @@ mandelbrot([filename,"dynamics9"])$
 @end example
 
 @ifnotinfo
-@image{figures/dynamics9,8cm}
+@c commented out, image is missing... @image{@value{figuresfolder}/dynamics9,8cm}
 @end ifnotinfo
 
 Для фрактала Джулия с числом (-0.55 + i 0.6):
@@ -516,7 +516,7 @@ julia(-0.55, 0.6, [levels, 36], [center, 0, 0.6], [radius, 0.3],
 Используется 36 цветов, начиная с синего и заканчивая желтым.
 
 @ifnotinfo
-@image{figures/dynamics10,8cm}
+@c commented out, image is missing @image{@value{figuresfolder}/dynamics10,8cm}
 @end ifnotinfo
 
 Чтобы решить дифференциальное уравнение

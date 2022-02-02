@@ -34,7 +34,7 @@
 @end example
 
 @ifnotinfo
-@image{figures/implicit_plot,8cm}
+@c commented out, image is missing @image{@value{figuresfolder}/implicit_plot,8cm}
 @end ifnotinfo
 
 @opencatbox{Категории:}

@@ -230,7 +230,7 @@ Adjacencies:
 @end deffn
 
 @ifhtml
-@image{figures/graphs01,6cm}
+@image{@value{figuresfolder}/graphs01,6cm}
 @end ifhtml
 
 @deffn {Функция} graph_union (@var{g1}, @var{g1})
@@ -491,7 +491,7 @@ Adjacencies:
 @end example
 
 @ifhtml
-@image{figures/graphs13,6cm}
+@image{@value{figuresfolder}/graphs13,6cm}
 @end ifhtml
 @end deffn
 
@@ -517,7 +517,7 @@ Adjacencies:
 @end deffn
 
 @ifhtml
-@image{figures/graphs02,6cm}
+@image{@value{figuresfolder}/graphs02,6cm}
 @end ifhtml
 
 @deffn {Функция} chromatic_index (@var{gr})
@@ -877,7 +877,7 @@ Adjacencies:
 @end deffn
 
 @ifhtml
-@image{figures/graphs03,6cm}
+@image{@value{figuresfolder}/graphs03,6cm}
 @end ifhtml
 
 @deffn {Функция} hamilton_path (@var{gr})
@@ -901,7 +901,7 @@ Adjacencies:
 @end deffn
 
 @ifhtml
-@image{figures/graphs04,6cm}
+@image{@value{figuresfolder}/graphs04,6cm}
 @end ifhtml
 
 @deffn {Функция} isomorphism (@var{gr1}, @var{gr2})
@@ -1313,7 +1313,7 @@ Adjacencies:
 @end deffn
 
 @ifhtml
-@image{figures/graphs05,6cm}
+@image{@value{figuresfolder}/graphs05,6cm}
 @end ifhtml
 
 @deffn {Функция} max_matching (@var{gr})
@@ -1337,7 +1337,7 @@ Adjacencies:
 @end deffn
 
 @ifhtml
-@image{figures/graphs06,6cm}
+@image{@value{figuresfolder}/graphs06,6cm}
 @end ifhtml
 
 @deffn {Функция} min_degree (@var{gr})
@@ -1385,7 +1385,7 @@ Adjacencies:
 @end deffn
 
 @ifhtml
-@image{figures/graphs07,6cm}
+@image{@value{figuresfolder}/graphs07,6cm}
 @end ifhtml
 
 @deffn {Функция} neighbors (@var{v}, @var{gr})
@@ -1586,7 +1586,7 @@ Adjacencies:
 @end deffn
 
 @ifhtml
-@image{figures/graphs08,6cm}
+@image{@value{figuresfolder}/graphs08,6cm}
 @end ifhtml
 
 @deffn {Функция} strong_components (@var{gr})
@@ -2119,7 +2119,7 @@ fdp), @var{circular}, @var{spring_embedding} или
 @end example
 
 @ifhtml
-@image{figures/graphs09,6cm}
+@image{@value{figuresfolder}/graphs09,6cm}
 @end ifhtml
 
 Пример 2:
@@ -2164,7 +2164,7 @@ fdp), @var{circular}, @var{spring_embedding} или
 @end example
 
 @ifhtml
-@image{figures/graphs10,6cm}
+@image{@value{figuresfolder}/graphs10,6cm}
 @end ifhtml
 
 Пример 3:
@@ -2213,7 +2213,7 @@ fdp), @var{circular}, @var{spring_embedding} или
 @end example
 
 @ifhtml
-@image{figures/graphs11,6cm}
+@image{@value{figuresfolder}/graphs11,6cm}
 @end ifhtml
 
 Пример 4:
@@ -2268,7 +2268,7 @@ fdp), @var{circular}, @var{spring_embedding} или
 @end example
 
 @ifhtml
-@image{figures/graphs12,6cm}
+@image{@value{figuresfolder}/graphs12,6cm}
 @end ifhtml
 
 @end deffn
