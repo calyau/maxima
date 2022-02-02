@@ -1,4 +1,7 @@
 \input texinfo
+@iftex
+@input cyrillic.itexi
+@end iftex
 @c -*-texinfo-*-
 
 @c Language=Russian
@@ -19,6 +22,7 @@
 @c %**start of header
 @setfilename  maxima.info
 @documentencoding UTF-8
+@documentlanguage ru
 @synindex vr fn
 @settitle Maxima Manual
 @c %**end of header
