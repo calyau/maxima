@@ -1,4 +1,9 @@
-@set figuresfolder @srcdir@/figures
+@ifnottex
+@set figuresfolder ./figures
+@end ifnottex
+@iftex
+@set figuresfolder @abs_srcdir@/figures
+@end iftex
 
 @ifhtml
 @macro fname {name}
