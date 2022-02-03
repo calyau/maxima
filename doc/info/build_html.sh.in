@@ -30,7 +30,7 @@ then
     languagedestdir=$pwd
 else
     languagedir=@abs_srcdir@/$language
-    languagedestdir=$pwd/$language
+    languagedestdir=$pwd
     if [ "$language" = "pt_BR" ]
     then language=pt
     fi
