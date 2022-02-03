@@ -45,6 +45,8 @@ if [ -e include-maxima.texi ]
     else includerfile=maxima.texi
 fi
 
+# Extract all filenames that are included using @include commands in the order
+# they are included
 includedfiles=`@AWK@ '/^[[:space:]]*@include/ { print $NF; }' $includerfile`
 
 # If output dir exists, remove it so we start clean
@@ -62,10 +64,16 @@ cd tmp_html
 
 for f in $includedfiles
 do
+  # Find the absolute path of the current element of $includedfiles
   if [ -e $languagedir/$f ]
       then g=$languagedir/$f
-      else g=@abs_srcdir@/$f
+  else if [ -e @abs_srcdir@/$f ]
+       then g=@abs_srcdir@/$f
+       else
+	   g=`pwd`/../$f
+       fi
   fi
+
   filenamebase=`echo $g | @SED@ -e 's/^.*\///;s/\.texi//'`
   @SED@ -e 's/^@deffnx*  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: '$filenamebase'\/deffn\/\1}\
 &/' \
