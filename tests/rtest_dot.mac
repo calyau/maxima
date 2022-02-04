@@ -194,12 +194,32 @@ true$
 (remove(".",commutative),0);
 0$
 
+/* SF bug #3935: Noncommutative multiplication with string argument triggers "declare: argument must be a symbol" */
 
+(kill(a, b),
+ "a" . b);
+"a" . b;
 
+string ("a" . b);
+"\"a\" . b";
 
+a . "b";
+a . "b";
 
+string (a . "b");
+"a . \"b\"";
 
- 
+"a" . "b";
+"a" . "b";
 
+string ("a" . "b");
+"\"a\" . \"b\"";
 
+(a: make_array (fixnum, 3, 2),
+ b: make_array (fixnum, 2, 3),
+ a . b);
+''(a . b); /* this result just verifies there isn't an error */
 
+/* try noncommutative exponent also */
+"a"^^-1;
+"a"^^-1;
