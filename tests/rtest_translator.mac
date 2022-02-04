@@ -1980,6 +1980,22 @@ block ([translate : false, l1, l2],
   [l2, is (l1 = l2)]);
 [[3, 13], true];
 
+/* Translating a define_variable form with translate (but not
+ * translate_file or compfile) used to invoke undefined behavior.
+ * This would cause a lisp error during translation under some
+ * (but not all) lisp implementations.
+ */
+
+block ([translate : false],
+  local (foo),
+  foo () := (define_variable (x, 1, fixnum), x),
+  translate_or_lose (foo),
+  foo ());
+1;
+
+(kill (foo, x), 0);
+0;
+
 
 
 

@@ -43,7 +43,7 @@
 			      (translate mode-form)
 			      (push-pre-transl-form
 			       ;; POSSIBLE OVERKILL HERE
-			       `(declare (special ,var)))
+			       `(declaim (special ,var)))
 			      (push var defined_variables)
 			      ;; Get rid of previous definitions put on by
 			      ;; the translator.
