@@ -21,7 +21,7 @@
 (defmvar meta-prop-l nil)
 
 (defun meta-output (form)
-  (if *in-translate-file* (push form meta-prop-l))
+  (push form meta-prop-l)
   ;; unfortunately, MATCOM needs to see properties in order
   ;; to compose tellsimps. so eval it always.
   (eval form))

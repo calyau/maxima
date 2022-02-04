@@ -1996,6 +1996,30 @@ block ([translate : false],
 (kill (foo, x), 0);
 0;
 
+/* If local was used on a matchdeclared pattern variable, and this
+ * was all translated with something besides translate_file (e.g.,
+ * translate, compfile, etc.), then the MATCHDECLARE property would
+ * not be on the pattern variable.
+ */
+
+block ([translate : false, l1, l2],
+  local (foo),
+
+  foo () := (local (x), matchdeclare (x, true), let (a * x, x), letsimp (a * q)),
+
+  /* This would yield q */
+  l1 : foo (),
+
+  translate_or_lose (foo),
+
+  /* This used to yield a*q */
+  l2 : foo (),
+
+  [l2, is (l1 = l2)]);
+[q, true];
+
+(kill (foo), 0);
+0;
 
 
 
