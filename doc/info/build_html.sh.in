@@ -137,8 +137,18 @@ echo "$0: execute category program: \"$lispprog\" $lispargs"
 "$lispprog" $lispargs
 
 @SED@ -e 's/^@bye/@node Documentation Categories, , Function and Variable Index\n@chapter Documentation Categories/' $languagedir/maxima.texi > maxima.texi 
-( for f in Category-*.texi; do echo '@include' $f; done ; echo @bye ) >> maxima.texi 
 
+# Add all Category-*.texi files to maxima.texi.
+# If there aren't any the file named "Category-*.texi" cannot be found
+# and therefore will be excluded by the 'if'.
+( for f in Category-*.texi; do
+      if [ -e $f ]; then
+	 echo '@include' $f
+      fi
+  done
+  echo @bye
+) >> maxima.texi 
+   
 if [ "X$DEBUG" = "Xyes" ]; then
     set -x
 fi
