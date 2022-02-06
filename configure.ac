@@ -897,7 +897,7 @@ if test x"${clisp}" = xtrue; then
     if test -x ${CLISP_RUNTIME_PATH} ; then
         echo "clisp runtime is \"${CLISP_RUNTIME_PATH}\""
     else
-        AC_MSG_ERROR(clisp runtime \"${CLISP_RUNTIME_PATH}\" is not an executable)
+        AC_MSG_ERROR(clisp runtime "${CLISP_RUNTIME_PATH}" is not an executable)
     fi
     CLISP_RUNTIME=`basename ${CLISP_RUNTIME_PATH}`
 fi
@@ -916,7 +916,7 @@ dnl be a shell script.
 	   	CMUCL_RUNTIME_PATH="${cmucl_path}"
 	else
 		AC_MSG_ERROR([Unable to determine CMUCL runtime path.
-The best guess for CMUCL runtime, \"${CMUCL_RUNTIME_PATH}\", is not
+The best guess for CMUCL runtime, "${CMUCL_RUNTIME_PATH}", is not
 an executable. Use the argument
    --with-cmucl-runtime=<path>
 to set the actual CMUCL executable. If the CMUCL lisp command is a shell
@@ -954,7 +954,7 @@ dnl be a shell script.
 	   	SCL_RUNTIME_PATH="${scl_path}"
 	else
 		AC_MSG_ERROR([Unable to determine SCL runtime path.
-The best guess for SCL runtime, \"${SCL_RUNTIME_PATH}\", is not
+The best guess for SCL runtime, "${SCL_RUNTIME_PATH}", is not
 an executable. Use the argument
    --with-scl-runtime=<path>
 to set the actual SCL executable. If the SCL lisp command is a shell
@@ -968,14 +968,14 @@ if test x"${gcl}" = xtrue; then
    result=`"${GCL_NAME}" -batch -eval '#+ansi-cl (format t "MAXIMA_GCL_ANSI_TEST_SUCCESS~%") #-ansi-cl (format t "MAXIMA_GCL_ANSI_TEST_FAILURE~%")' -eval '(si::bye)'`
    retval=$?
    if test ! x"${retval}" = x"0" ; then
-      AC_MSG_ERROR(unable to run gcl executable \"${GCL_NAME}\".)
+      AC_MSG_ERROR(unable to run gcl executable "${GCL_NAME}".)
    fi
    count=`echo "${result}" | grep -c "MAXIMA_GCL_ANSI_TEST_SUCCESS"`
    if test ! "${count}" = "1" ; then
-      AC_MSG_ERROR([The gcl executable \"${GCL_NAME}\" was not compiled with
+      AC_MSG_ERROR([The gcl executable "${GCL_NAME}" was not compiled with
 the --enable-ansi flag, which is required for Maxima.
 The gcl ANSI-CL check returned
-\"${result}\".])
+"${result}".])
    fi
 fi
 
