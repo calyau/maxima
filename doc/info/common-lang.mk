@@ -26,8 +26,8 @@ maxima.pdf: maxima.texi $(maxima_TEXINFOS)
 	rm -f maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
 	maxima.toc maxima.fn maxima.aux maxima.log maxima.vrs
 
-contents.hhc: maxima_toc.html
-	/usr/bin/env perl $(srcdir)/../create_index maxima_toc.html
+contents.hhc: maxima_singlepage.html
+	/usr/bin/env perl $(srcdir)/../create_index maxima_singlepage.html
 
 include $(top_srcdir)/common.mk
 

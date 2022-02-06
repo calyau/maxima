@@ -693,8 +693,8 @@ maxima.pdf: maxima.texi $(maxima_TEXINFOS) $(pdffigures)
 	rm -f maxima.fns maxima.vr maxima.tp maxima.pg maxima.ky maxima.cp \
 	maxima.toc maxima.fn maxima.aux maxima.log
 
-contents.hhc index.hhk: maxima_toc.html
-	/usr/bin/env perl $(srcdir)/create_index maxima_toc.html
+contents.hhc index.hhk: maxima_singlepage.html
+	/usr/bin/env perl $(srcdir)/create_index maxima_singlepage.html
 
 # Squash error on exit from hhc
 maxima.chm: maxima.hhp contents.hhc index.hhk
