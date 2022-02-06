@@ -161,7 +161,7 @@ makeinfo --split=chapter --no-node-files --output="$languagedestdir" $TEXIOPT ma
 makeinfo --no-split --output="$languagedestdir/maxima_singlepage.html" $TEXIOPT maxima.texi 
 
 if [ "X$DEBUG" = "Xyes" ]; then
-    set +x
+    set -x
 fi
 
 cd ..
