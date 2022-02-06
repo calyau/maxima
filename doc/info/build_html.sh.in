@@ -69,23 +69,24 @@ for f in $includedfiles
 do
   # Find the absolute path of the current element of $includedfiles
   if [ -e $languagedir/$f ]
-      then g=$languagedir/$f
+      then includedfile_absolute=$languagedir/$f
   else if [ -e @abs_srcdir@/$f ]
-       then g=@abs_srcdir@/$f
+       then includedfile_absolute=@abs_srcdir@/$f
        else
-	   g=`pwd`/../$f
+	   includedfile_absolute=`pwd`/../$f
        fi
   fi
 
-  filenamebase=`echo $g | @SED@ -e 's/^.*\///;s/\.texi//'`
+
+  filenamebase=`echo $includedfile_absolute | @SED@ -e 's/^.*\///;s/\.texi//'`
   @SED@ -e 's/^@deffnx*  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: '$filenamebase'\/deffn\/\1}\
 &/' \
         -e 's/^@defvrx*  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: '$filenamebase'\/defvr\/\1}\
 &/' \
         -e 's/^@node  *\([^,]*\).*/@anchor{Item: '$filenamebase'\/node\/\1}\
-&/' $g \
+&/' $includedfile_absolute \
   | @AWK@ 'BEGIN { iftex = 0; } /^@iftex/ {iftex = 1;} {if (!iftex) {print;}} /^@end iftex/ {iftex = 0;}' \
-  | @AWK@ '/@anchor/ {if (!(foo[$0])) {foo[$0] = 1; print;}} !/@anchor/' > $(basename $g)
+  | @AWK@ '/@anchor/ {if (!(foo[$0])) {foo[$0] = 1; print;}} !/@anchor/' > $(basename $includedfile_absolute)
 done 
 
 catprogname=make-categories.lisp
