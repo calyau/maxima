@@ -1,6 +1,6 @@
 ;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2021-06-14 17:26:25 villate"
+;; Time-stamp: "2022-02-08 11:47:11 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -709,7 +709,8 @@
                          #+sbcl (sb-ext:native-namestring file)
                          #-sbcl file
                          :direction :output :if-exists :supersede)
-          (format fl "~a" (slot-value plot 'data)))
+          (format fl "~a" (slot-value plot 'data))
+          (format fl "pause mouse close~%"))
         (gnuplot-process options file output-file)
         (cons '(mlist) (cons file output-file))))
      ($gnuplot_pipes

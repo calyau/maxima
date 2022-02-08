@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2021-06-14 16:29:27 villate"
+;; Time-stamp: "2022-02-08 12:44:32 villate"
 
 (in-package :maxima)
 
@@ -1751,10 +1751,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 (defun gnuplot-process (plot-options &optional file out-file)
   (let ((gnuplot-term (getf plot-options :gnuplot_term))
-        (run-viewer (getf plot-options :run_viewer))
-        #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
-		(gnuplot-preamble
-         (string-downcase (getf plot-options :gnuplot_preamble))))
+        (run-viewer (getf plot-options :run_viewer)))
 
     ;; creates the output file, when there is one to be created
     (when (and out-file (not (eq gnuplot-term '$default)))
@@ -1769,16 +1766,11 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     (when run-viewer
       (case gnuplot-term
         ($default
-         ;; the options given to gnuplot will be different when the user
-         ;; redirects the output by using "set output" in the preamble
-	 #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
-	 ($system $gnuplot_command "-persist" (format nil $gnuplot_file_args file))
-	 #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
-	 ($system 
-	  (format nil "~a ~a" $gnuplot_command
-		  (format nil (if (search "set out" gnuplot-preamble) 
-				  $gnuplot_file_args $gnuplot_view_args)
-			  file))))
+         ($system $gnuplot_command
+                  #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
+                  (format nil " ~s &" file)
+                  #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
+                  file))
         ($dumb
          (if out-file
              ($printfile (car out-file))
@@ -2226,15 +2218,12 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; (adapted from procedure getticks of Xmaxima)
 ;;
 (defun getlevels (fmin fmax n)
-  (let ((len (- fmax fmin)) (best 0) levels val fac j1 j2 step ans)
+  (let ((len (- fmax fmin)) (best 0) levels val fac j1 j2 ans)
     (dolist (v '(0.1 0.2 0.5))
       (setq val (ceiling (/ (log (/ len n v)) (log 10))))
       (setq fac (/ 1 v (expt 10 val)))
       (setq j1 (ceiling (* fmin fac)))
       (setq j2 (floor (* fmax fac)))
-      (if (> j2 14)
-          (setq step 5)
-          (setq step 2))
       (setq levels nil)
       (do ((j j1 (1+ j))) ((> j j2))
         (push (/ j fac) levels))
