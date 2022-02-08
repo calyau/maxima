@@ -1,6 +1,6 @@
 ;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2022-02-08 13:41:51 villate"
+;; Time-stamp: "2022-02-08 16:44:03 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -480,12 +480,8 @@
               (format dest "set label ~s ~a at ~{~f~^, ~}~%"
                       (cadr label) gstrings (cddr label)))))
         ;; identifier for missing data
-        (format dest "set datafile missing ~s~%" *missing-data-indicator*)
-        ;; user's commands; may overule any of the previous settings
-        (when (and (getf plot-options :gnuplot_postamble)
-                   (> (length  (getf plot-options :gnuplot_postamble)) 0))
-          (format dest "~a~%" (getf plot-options :gnuplot_postamble))))))
-        ;;returns a list with the name of the file created, or nil
+        (format dest "set datafile missing ~s~%" *missing-data-indicator*))))
+    ;;returns a list with the name of the file created, or nil
     (if (null (second terminal-file))
         nil (list (second terminal-file)))))
 
@@ -527,6 +523,11 @@
               (psetq ymin (- (* 1.05 ymin) (* 0.05 ymax))
                      ymax (- (* 1.05 ymax) (* 0.05 ymin)))
               (format st "set yrange [~,,,,,,'eg: ~,,,,,,'eg]~%" ymin ymax))))
+        ;; user's commands; may overule any of the previous settings
+        (when (and (getf options :gnuplot_postamble)
+                   (> (length  (getf options :gnuplot_postamble)) 0))
+          (format st "~a~%" (getf options :gnuplot_postamble)))
+        ;; plot command
         (format st "plot")
         (when (getf options :x)
           (format st " [~{~,,,,,,'eg~^ : ~}]" (getf options :x)))
