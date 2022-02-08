@@ -1,6 +1,6 @@
 ;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2022-02-08 11:47:11 villate"
+;; Time-stamp: "2022-02-08 13:41:51 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -545,7 +545,6 @@
           (unless (listp styles) (setq styles (list styles)))
           (loop for v in (cdr fun) for points-list in points-lists do
                (when points-list
-                 ;; case "contour" with several plots in one list
                  (when ($listp (car points-list))
                    (dolist (level (cdar points-list))
                      (if styles
@@ -559,7 +558,6 @@
                      (format st " title ~s ~a" plot-name gstrings)
                      (format st (gnuplot-curve-style style colors types i)))
                    (return))
-                 ;; other cases with only one plot per list
                  (if styles
                      (setq style (nth (mod i (length styles)) styles))
                      (setq style nil))
@@ -638,7 +636,7 @@
                      (format st "~,,,,,,'eg ~,,,,,,'eg ~%"
                              (first (getf options :x))
                              (first (getf options :y)))))
-               (format st "e~%"))))))))
+               (when points-list (format st "e~%")))))))))
 
 (defmethod plot3d-command ((plot gnuplot-plot) functions options titles)
   (let ((i 0) fun xrange yrange lvars trans (n (length functions))
