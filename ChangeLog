@@ -25,27 +25,30 @@ Changes in the Windows installer:
 
 Bug fixes for numbered bugs:
 ----------------------------
- * #380: algsys a*b=c*d grossly incomplete
- * #1097: pattern variable appears in letsimp result
- * #2709: `letsimp' is wrong if `ratexpand' is called
- * #2837: ev causes bogus WNA checks for sum, product, define and ":"
- * #2876: Error simplifying infix operators declared l/rassociative
- * #2921: errcatch fails to catch various errors
- * #3068: taylor of CRE fails
- * #3793: plot2d fails on small x-range
- * #3797: plot2d(0, ...) gives "can't plot with empty y range" -- regression
- * #3801: error sourcing .xmaximarc on Windows
- * #3769: max or min called on CRE expressions
- * #3764: limit of min works with assume but not with asksign 
- * #3765: min(und,...) gives error with trylevel > 1 
- * #3736: Quoting either min or max inhibits simplification
- * #3820: testsuite with display_all = true 
- * #3838: limit(atan(sin(x)),x,inf,plus) --> atan(ind) 
- * #3844: Wrong limit involving gamma function 
- * #3483: limit apparently causes infinite loop 
- * #2388: wrong limit 
- * #2953: limit loops endlessly 
- * #484 limit(x=0,x,0) wrong  
+ * \#380: algsys a*b=c*d grossly incomplete
+ * \#484 limit(x=0,x,0) wrong
+ * \#1097: pattern variable appears in letsimp result
+ * \#2388: wrong limit
+ * \#2709: `letsimp' is wrong if `ratexpand' is called
+ * \#2837: ev causes bogus WNA checks for sum, product, define and ":"
+ * \#2876: Error simplifying infix operators declared l/rassociative
+ * \#2921: errcatch fails to catch various errors
+ * \#2953: limit loops endlessly
+ * \#3068: taylor of CRE fails
+ * \#3483: limit apparently causes infinite loop
+ * \#3793: plot2d fails on small x-range
+ * \#3796: plot3d doesn't support rotation in 5.45
+ * \#3797: plot2d(0, ...) gives "can't plot with empty y range" -- regression
+ * \#3801: error sourcing .xmaximarc on Windows
+ * \#3769: max or min called on CRE expressions
+ * \#3764: limit of min works with assume but not with asksign
+ * \#3765: min(und,...) gives error with trylevel > 1
+ * \#3736: Quoting either min or max inhibits simplification
+ * \#3820: testsuite with display_all = true
+ * \#3838: limit(atan(sin(x)),x,inf,plus) --> atan(ind)
+ * \#3844: Wrong limit involving gamma function
+ * \#3883: plot creates invalid gnuplot command
+ * \#3936: plot2d sends invalid file to gnuplot
 
 Unnumbered bugs fixed:
 ---------------------
