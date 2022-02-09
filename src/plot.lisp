@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-02-09 10:58:06 villate"
+;; Time-stamp: "2022-02-09 11:58:10 villate"
 
 (in-package :maxima)
 
@@ -530,7 +530,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
                 ((mexpr (mget expr 'mexpr))
                  (args (cdr (second mexpr))))
               (coerce-maxima-function-or-maxima-lambda
-               args expr :float-fun float-fun :fname fname)))
+               args expr :float-fun float-fun)))
            ((or
              ;; expr is the name of a function defined by defmspec
              (get expr 'mfexpr*)
@@ -552,7 +552,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 	((and (consp expr) (eq (caar expr) 'lambda))
 	 (let ((args (cdr (second expr))))
 	   (coerce-maxima-function-or-maxima-lambda
-            args expr :float-fun float-fun :fname fname)))
+            args expr :float-fun float-fun)))
         (t
          (let* ((vars (or lvars ($sort ($listofvars expr))))
 		(subscripted-vars ($sublist vars '((lambda) ((mlist) $x) ((mnot) (($atom) $x)))))
@@ -646,25 +646,66 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 		   result)))
 	    'function)))))
-
+;; coerce-float-fun must be given an expression and one or two other optional
+;; arguments: a Maxima list of variables on which that expression depends
+;; and string that will identify the name of the responsible function
+;; when reporting errors.
 (defun coerce-float-fun (expr &rest rest &aux lvars fname)
   (case (length rest)
     (0 (setq lvars nil) (setq fname "coerce-float-fun"))
-    (1 (setq lvars (first rest)) (setq fname "coerce-float-fun"))
-    (2 (setq lvars (first rest)) (setq fname (second rest)))
+    (1
+     (if (stringp (first rest))
+         (progn (setq lvars nil) (setq fname (first rest)))
+         (if ($listp (first rest))
+             (progn (setq lvars (first rest)) (setq fname "coerce-float-fun"))
+             (merror
+              (intl:gettext "coerce-float-fun: expecting a Maxima list, found: ~M")
+              (first rest)))))
+    (2
+     (if ($listp (first rest))
+         (setq lvars (first rest))
+         (merror
+          (intl:gettext "coerce-float-fun: expecting a Maxima list, found: ~M")
+          (first rest)))
+     (if (stringp (second rest))
+         (setq fname (second rest))
+         (merror
+          (intl:gettext "coerce-float-fun: expecting a string, found: ~M")
+          (second rest))))
     (t (merror (intl:gettext "coerce-float-fun: two many arguments given."))))
   (%coerce-float-fun '$float expr lvars fname))
 
+;; coerce-bfloat-fun must be given an expression and one or two other optional
+;; arguments: a Maxima list of variables on which that expression depends
+;; and string that will identify the name of the responsible function
+;; when reporting errors.
 (defun coerce-bfloat-fun (expr &rest rest &aux lvars fname)
   (case (length rest)
     (0 (setq lvars nil) (setq fname "coerce-bfloat-fun"))
-    (1 (setq lvars (first rest)) (setq fname "coerce-bfloat-fun"))
-    (2 (setq lvars (first rest)) (setq fname (second rest)))
+    (1
+     (if (stringp (first rest))
+         (progn (setq lvars nil) (setq fname (first rest)))
+         (if ($listp (first rest))
+             (progn (setq lvars (first rest)) (setq fname "coerce-float-fun"))
+             (merror
+              (intl:gettext "coerce-bfloat-fun: expecting a Maxima list, found: ~M")
+              (first rest)))))
+    (2
+     (if ($listp (first rest))
+         (setq lvars (first rest))
+         (merror
+          (intl:gettext "coerce-bfloat-fun: expecting a Maxima list, found: ~M")
+          (first rest)))
+     (if (stringp (second rest))
+         (setq fname (second rest))
+         (merror
+          (intl:gettext "coerce-bfloat-fun: expecting a string, found: ~M")
+          (second rest))))
     (t (merror (intl:gettext "coerce-bfloat-fun: two many arguments given."))))
-  (%coerce-float-fun '$float expr lvars fname))
+  (%coerce-float-fun '$bfloat expr lvars fname))
 
 (defun coerce-maxima-function-or-maxima-lambda
-    (args expr &key (float-fun '$float) (fname "coerce-float-fun"))
+    (args expr &key (float-fun '$float))
   (let ((gensym-args (loop for x in args collect (gensym))))
     (coerce
       `(lambda ,gensym-args (declare (special ,@gensym-args))
@@ -689,7 +730,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; Same as above, but call APPLY instead of MAPPLY.
 
 (defun coerce-lisp-function-or-lisp-lambda
-    (args expr &key (float-fun '$float) (fname "coerce-float-fun"))
+    (args expr &key (float-fun '$float))
   (let ((gensym-args (loop for x in args collect (gensym))))
     (coerce
       `(lambda ,gensym-args (declare (special ,@gensym-args))
