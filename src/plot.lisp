@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-02-08 12:44:32 villate"
+;; Time-stamp: "2022-02-09 10:58:06 villate"
 
 (in-package :maxima)
 
@@ -468,9 +468,9 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; return a function suitable for the transform function in plot3d.
 ;; FX, FY, and FZ are functions of three arguments.
 (defmfun $make_transform (lvars fx fy fz)
-  (setq fx (coerce-float-fun fx lvars))
-  (setq fy (coerce-float-fun fy lvars))
-  (setq fz (coerce-float-fun fz lvars))
+  (setq fx (coerce-float-fun fx lvars "make_transform"))
+  (setq fy (coerce-float-fun fy lvars "make_transform"))
+  (setq fz (coerce-float-fun fz lvars "make_transform"))
   (let ((sym (gensym "transform")))
     (setf (symbol-function sym)
           #'(lambda (pts &aux  (x1 0.0)(x2 0.0)(x3 0.0))
@@ -504,7 +504,12 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; COERCE-FLOAT-FUN is the user interface for creating a function that
 ;; returns floats.  COERCE-BFLOAT-FUN is the same, except bfloats are
 ;; returned.
-(defun %coerce-float-fun (float-fun expr &optional lvars)
+(defun %coerce-float-fun (float-fun expr &rest rest &aux lvars fname)
+  (case (length rest)
+    (0 (setq lvars nil) (setq fname "coerce-float-fun"))
+    (1 (setq lvars (first rest)) (setq fname "coerce-float-fun"))
+    (2 (setq lvars (first rest)) (setq fname (second rest)))
+    (t (merror (intl:gettext "coerce-float-fun: two many arguments given."))))
   (cond ((and (consp expr) (functionp expr))
          (let ((args (if lvars (cdr lvars) (list (gensym)))))
            (coerce-lisp-function-or-lisp-lambda args expr :float-fun float-fun)))
@@ -512,21 +517,20 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
         ;; (e.g. "!" "+" or a user-defined operator)
         ((and (stringp expr) (getopr0 expr))
          (let ((a (if lvars lvars `((mlist) ,(gensym)))))
-           (%coerce-float-fun float-fun `(($apply) ,(getopr0 expr) ,a) a)))
+           (%coerce-float-fun float-fun `(($apply) ,(getopr0 expr) ,a) a fname)))
         ((and (symbolp expr) (not (member expr lvars)) (not ($constantp expr)))
          (cond
            ((fboundp expr)
             (let ((args (if lvars (cdr lvars) (list (gensym)))))
               (coerce-lisp-function-or-lisp-lambda args expr :float-fun float-fun)))
-
            ;; expr is name of a Maxima function defined by := or
            ;; define
            ((mget expr 'mexpr)
             (let*
                 ((mexpr (mget expr 'mexpr))
                  (args (cdr (second mexpr))))
-              (coerce-maxima-function-or-maxima-lambda args expr :float-fun float-fun)))
-
+              (coerce-maxima-function-or-maxima-lambda
+               args expr :float-fun float-fun :fname fname)))
            ((or
              ;; expr is the name of a function defined by defmspec
              (get expr 'mfexpr*)
@@ -541,14 +545,14 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
              ;; form
              (get ($verbify expr) 'operators))
             (let ((a (if lvars lvars `((mlist) ,(gensym)))))
-              (%coerce-float-fun float-fun `(($apply) ,expr ,a) a)))
+              (%coerce-float-fun float-fun `(($apply) ,expr ,a) a fname)))
            (t
-            (merror (intl:gettext "COERCE-FLOAT-FUN: no such Lisp or Maxima function: ~M") expr))))
-
+            (merror (intl:gettext "~a: unknown function: ~M")
+                    fname expr))))
 	((and (consp expr) (eq (caar expr) 'lambda))
 	 (let ((args (cdr (second expr))))
-	   (coerce-maxima-function-or-maxima-lambda args expr :float-fun float-fun)))
-
+	   (coerce-maxima-function-or-maxima-lambda
+            args expr :float-fun float-fun :fname fname)))
         (t
          (let* ((vars (or lvars ($sort ($listofvars expr))))
 		(subscripted-vars ($sublist vars '((lambda) ((mlist) $x) ((mnot) (($atom) $x)))))
@@ -643,13 +647,24 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 		   result)))
 	    'function)))))
 
-(defun coerce-float-fun (expr &optional lvars)
-  (%coerce-float-fun '$float expr lvars))
+(defun coerce-float-fun (expr &rest rest &aux lvars fname)
+  (case (length rest)
+    (0 (setq lvars nil) (setq fname "coerce-float-fun"))
+    (1 (setq lvars (first rest)) (setq fname "coerce-float-fun"))
+    (2 (setq lvars (first rest)) (setq fname (second rest)))
+    (t (merror (intl:gettext "coerce-float-fun: two many arguments given."))))
+  (%coerce-float-fun '$float expr lvars fname))
 
-(defun coerce-bfloat-fun (expr &optional lvars)
-  (%coerce-float-fun '$bfloat expr lvars))
+(defun coerce-bfloat-fun (expr &rest rest &aux lvars fname)
+  (case (length rest)
+    (0 (setq lvars nil) (setq fname "coerce-bfloat-fun"))
+    (1 (setq lvars (first rest)) (setq fname "coerce-bfloat-fun"))
+    (2 (setq lvars (first rest)) (setq fname (second rest)))
+    (t (merror (intl:gettext "coerce-bfloat-fun: two many arguments given."))))
+  (%coerce-float-fun '$float expr lvars fname))
 
-(defun coerce-maxima-function-or-maxima-lambda (args expr &key (float-fun '$float))
+(defun coerce-maxima-function-or-maxima-lambda
+    (args expr &key (float-fun '$float) (fname "coerce-float-fun"))
   (let ((gensym-args (loop for x in args collect (gensym))))
     (coerce
       `(lambda ,gensym-args (declare (special ,@gensym-args))
@@ -673,7 +688,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 ;; Same as above, but call APPLY instead of MAPPLY.
 
-(defun coerce-lisp-function-or-lisp-lambda (args expr &key (float-fun '$float))
+(defun coerce-lisp-function-or-lisp-lambda
+    (args expr &key (float-fun '$float) (fname "coerce-float-fun"))
   (let ((gensym-args (loop for x in args collect (gensym))))
     (coerce
       `(lambda ,gensym-args (declare (special ,@gensym-args))
@@ -795,6 +811,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          (ymin (first (getf options :y)))
          (xmax (second (getf options :x)))
          (ymax (second (getf options :y)))
+         (fname (or (second (getf options :type)) "plot"))
          (gridx (or (first (getf options :sample)) 50))
          (gridy (or (second (getf options :sample)) 50))
          (eps (or (getf options :plotepsilon) 1e-6))
@@ -805,7 +822,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     (if (getf options :contour)
         (setq fun expr)
         (setq fun (m- ($lhs expr) ($rhs expr))))
-    (setq fun (coerce-float-fun fun `((mlist) ,vx ,vy)))
+    (setq fun (coerce-float-fun fun `((mlist) ,vx ,vy) fname))
     ;; sets up array f with values of the function at corners of sample grid.
     ;; finds maximum and minimum values in that array. 
     (dotimes (i (1+ gridx))
@@ -1180,12 +1197,14 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; parametric ; [parametric,xfun,yfun,[t,tlow,thigh],[nticks ..]]
 ;; the rest of the parametric list after the list will add to the plot options
 
-(defun draw2d-parametric-adaptive (param options &aux range)
+(defun draw2d-parametric-adaptive (param options &aux range fname)
+  (setq fname (or (second (getf options :type)) "plot"))
   (or (= ($length param) 4)
-      (merror (intl:gettext "plot2d: parametric plots must include two expressions and an interval")))
+      (merror (intl:gettext "~a: parametric plots must include two expressions and an interval") fname))
   (setq range (nth 4 param))
   (or (and ($listp range) (symbolp (second range)) (eql ($length range) 3))
-      (merror (intl:gettext "plot2d: wrong interval for parametric plot: ~M") range))
+      (merror (intl:gettext "~a: wrong interval for parametric plot: ~M")
+              fname range))
   (setq range (check-range range))
   (let* ((nticks (getf options :nticks))
          (trange (cddr range))
@@ -1200,8 +1219,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          (ymax (coerce-float (second yrange)))
          f1 f2)
     (declare (type flonum ymin ymax xmin xmax tmin tmax))
-    (setq f1 (coerce-float-fun (third param) `((mlist), tvar)))
-    (setq f2 (coerce-float-fun (fourth param) `((mlist), tvar)))
+    (setq f1 (coerce-float-fun (third param) `((mlist), tvar) fname))
+    (setq f2 (coerce-float-fun (fourth param) `((mlist), tvar) fname))
 
     (let ((n-clipped 0) (n-non-numeric 0)
 	  (t-step (/ (- tmax tmin) (coerce-float nticks) 2))
@@ -2292,9 +2311,9 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                  (setf (getf options :xbounds) (list small huge)))
                (setq prange (check-range ($fourth f))) 
                ;; The two expressions can only depend on the parameter given
-               (setq fpfun (coerce-float-fun ($second f) ($rest prange -2)))
+               (setq fpfun (coerce-float-fun ($second f) ($rest prange -2) "plot2d"))
                (setq vars1 ($listofvars (mfuncall fpfun ($first prange))))
-               (setq fpfun (coerce-float-fun ($third f) ($rest prange -2)))
+               (setq fpfun (coerce-float-fun ($third f) ($rest prange -2) "plot2d"))
                (setq vars2 ($listofvars (mfuncall fpfun ($first prange))))
                (setq vars1 ($listofvars `((mlist) ,vars1 ,vars2)))
                (setq vars1 (delete ($first prange) vars1))
@@ -2306,7 +2325,7 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
               ($contour
                (setq xrange (check-range xrange))
                (setq xrange-required t)
-               (setq fpfun (coerce-float-fun ($second f) ($rest xrange -2)))
+               (setq fpfun (coerce-float-fun ($second f) ($rest xrange -2) "plot2d"))
                (setq vars1 ($listofvars (mfuncall fpfun ($first xrange))))
                (when (and (= ($length vars1) 2)
                           (not (member ($first xrange) vars1)))
@@ -2366,7 +2385,7 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                   ;; Implicit function
                   (setq
                    fpfun
-                   (coerce-float-fun (m- ($lhs f) ($rhs f)) ($rest xrange -2)))
+                   (coerce-float-fun (m- ($lhs f) ($rhs f)) ($rest xrange -2) "plot2d"))
                   (setq vars1 ($listofvars (mfuncall fpfun ($first xrange))))
                   (when
                       (and
@@ -2410,7 +2429,7 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                        f)))
                 (progn
                   ;; Explicit function
-                  (setq fpfun (coerce-float-fun f ($rest xrange -2)))
+                  (setq fpfun (coerce-float-fun f ($rest xrange -2) "plot2d"))
                   (setq vars1 ($listofvars (mfuncall fpfun ($first xrange))))
                   (setq vars1 (delete ($first xrange) vars1))
                   (when (> ($length vars1) 0)
@@ -2692,17 +2711,20 @@ Several functions depending on the two variables v1 and v2:
                 ;; make sure that the 3 parametric equations depend only
                 ;; on the two variables in lvars
                 (setq vars1
-                      ($listofvars (mfuncall
-                                    (coerce-float-fun (second exprn) lvars)
-                                    (second lvars) (third lvars))))
+                      ($listofvars
+                       (mfuncall
+                        (coerce-float-fun (second exprn) lvars "plot3d")
+                        (second lvars) (third lvars))))
                 (setq vars2
-                      ($listofvars (mfuncall
-                                    (coerce-float-fun (third exprn) lvars)
-                                    (second lvars) (third lvars))))
+                      ($listofvars
+                       (mfuncall
+                        (coerce-float-fun (third exprn) lvars "plot3d")
+                        (second lvars) (third lvars))))
                 (setq vars3
-                      ($listofvars (mfuncall
-                                    (coerce-float-fun (fourth exprn) lvars)
-                                    (second lvars) (third lvars))))
+                      ($listofvars
+                       (mfuncall
+                        (coerce-float-fun (fourth exprn) lvars "plot3d")
+                        (second lvars) (third lvars))))
                 (setq lvars ($listofvars `((mlist) ,vars1 ,vars2 ,vars3)))
                 (if (<= ($length lvars) 2)
                     ;; we do have a valid parametric set. Push it into

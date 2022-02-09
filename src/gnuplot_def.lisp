@@ -1,6 +1,6 @@
 ;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2022-02-08 16:44:03 villate"
+;; Time-stamp: "2022-02-09 08:42:45 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -674,7 +674,7 @@
                    (xmid (+ x0 (/ (- x1 x0) 2)))
                    (ymid (+ y0 (/ (- y1 y0) 2))))
                 (setq lvars `((mlist) ,(second xrange) ,(second yrange)))
-                (setq fun (coerce-float-fun fun lvars))
+                (setq fun (coerce-float-fun fun lvars "plot3d"))
                 ;; Evaluate FUN at the middle point of the range.
                 ;; Looking at a single point is somewhat unreliable.
                 ;; Call FUN with numerical arguments (symbolic arguments may
