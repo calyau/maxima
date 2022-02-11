@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-02-11 09:15:40 villate"
+;; Time-stamp: "2022-02-11 15:57:53 villate"
 
 (in-package :maxima)
 
@@ -2331,7 +2331,7 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
   ;; the xrange option is mandatory and will provide the name of
   ;; the horizontal axis and the values of xmin and xmax.
   (let ((xrange-required nil) (bounds-required nil) (yrange-required nil)
-        small huge fpfun vars1 vars2 prange)
+        small huge prange)
     #-clisp (setq small (- (/ most-positive-flonum 1024)))
     #+clisp (setq small (- (/ most-positive-double-float 1024.0)))
     #-clisp (setq huge (/ most-positive-flonum 1024))
@@ -2348,61 +2348,22 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                  ;; prematurely clipped. Don't use most-positive-flonum
                  ;; because draw2d will overflow.
                  (setf (getf options :xbounds) (list small huge)))
-               (setq prange (check-range ($fourth f))) 
-               ;; The two expressions can only depend on the parameter given
-               (setq fpfun (coerce-float-fun ($second f) ($rest prange -2) "plot2d"))
-               (setq vars1 ($listofvars (mfuncall fpfun ($first prange))))
-               (setq fpfun (coerce-float-fun ($third f) ($rest prange -2) "plot2d"))
-               (setq vars2 ($listofvars (mfuncall fpfun ($first prange))))
-               (setq vars1 ($listofvars `((mlist) ,vars1 ,vars2)))
-               (setq vars1 (delete ($first prange) vars1))
-               (when (> ($length vars1) 0)
-                 (merror
-                  (intl:gettext
-                   "plot2d: parametric expressions ~M and ~M should depend only on ~M")
-                  ($second f) ($third f) ($first prange))))
+               (setq prange (check-range ($fourth f))))
               ($contour
                (setq xrange (check-range xrange))
                (setq xrange-required t)
-               (setq fpfun (coerce-float-fun ($second f) ($rest xrange -2) "plot2d"))
-               (setq vars1 ($listofvars (mfuncall fpfun ($first xrange))))
-               (when (and (= ($length vars1) 2)
-                          (not (member ($first xrange) vars1)))
-                 (merror
-                  (intl:gettext "plot2d: ~M is not one of the variables in ~M") 
-                  ($first xrange) f))
-               (setq vars1 (delete ($first xrange) vars1))
-               (if (< ($length vars1) 2)
-                   (progn
-                     (if yrange-required
-                         (unless (or (= ($length vars1) 0)
-                                     (eq ($first yrange) ($first vars1)))
-                           (merror
-                            (intl:gettext
-                             "plot2d: ~M should only depend on ~M and ~M") 
-                            f ($first xrange) ($first vars1)))
-                         (progn
-                           (setq yrange-required t)
-                           (if (null extra-options)
-                               (merror
-                                (intl:gettext
-                                 "plot2d: Missing interval for variable 2."))
-                               (progn
-                                 (setq yrange (pop extra-options))
-                                 (setq vars1 (delete ($first yrange) vars1))
-                                 (unless (= ($length vars1) 0)
-                                   (merror
-                                    (intl:gettext
-                                     "plot2d: ~M should only depend on ~M and ~M")
-                                    f ($first xrange) ($first yrange)))
-                                 (setq yrange (check-range yrange))
-                                 (setf (getf options :xvar) ($first xrange))
-                                 (setf (getf options :yvar) ($first yrange))
-                                 (setf (getf options :x) (cddr xrange))
-                                 (setf (getf options :y) (cddr yrange)))))))
-                   (merror
-                    (intl:gettext "plot2d: ~M should only depend on 2 variables")
-                    ($second f))))
+               (unless yrange-required
+                 (setq yrange-required t)
+                 (if (null extra-options)
+                     (merror
+                      (intl:gettext "plot2d: Missing interval for variable 2."))
+                     (progn
+                       (setq yrange (pop extra-options))
+                       (setq yrange (check-range yrange))
+                       (setf (getf options :xvar) ($first xrange))
+                       (setf (getf options :yvar) ($first yrange))
+                       (setf (getf options :x) (cddr xrange))
+                       (setf (getf options :y) (cddr yrange))))))
               ($discrete)
               (t
                (merror
@@ -2419,63 +2380,18 @@ plot2d ( x^2+y^2 = 1, [x, -2, 2], [y, -2 ,2]);
                 (setf (getf options :xlabel) (ensure-string (second xrange))))
               (setf (getf options :xvar) (cadr xrange))
               (setf (getf options :x) (cddr xrange)))
-            (if (and (listp f) (eq 'mequal (caar f)))
-                (progn
-                  ;; Implicit function
-                  (setq
-                   fpfun
-                   (coerce-float-fun (m- ($lhs f) ($rhs f)) ($rest xrange -2) "plot2d"))
-                  (setq vars1 ($listofvars (mfuncall fpfun ($first xrange))))
-                  (when
-                      (and
-                       (= ($length vars1) 2)
-                       (not (member ($first xrange) vars1)))
+            (when (and (listp f) (eq 'mequal (caar f)))
+              ;; Implicit function
+              (unless yrange-required
+                (setq yrange-required t)
+                (if (null extra-options)
                     (merror
-                     (intl:gettext
-                      "plot2d: ~M is not one of the variables in ~M") 
-                     ($first xrange) f))
-                  (setq vars1 (delete ($first xrange) vars1))
-                  (if (< ($length vars1) 2)
-                      (progn
-                        (if yrange-required
-                            (unless
-                                (or (= ($length vars1) 0)
-                                    (eq ($first yrange) ($first vars1)))
-                              (merror
-                               (intl:gettext
-                                "plot2d: ~M should only depend on ~M and ~M") 
-                               f ($first xrange) ($first vars1)))
-                            (progn
-                              (setq yrange-required t)
-                              (if (null extra-options)
-                                  (merror
-                                   (intl:gettext
-                                    "plot2d: Missing interval for variable 2."))
-                                  (progn
-                                    (setq yrange (pop extra-options))
-                                    (setq vars1 (delete ($first yrange) vars1))
-                                    (unless (= ($length vars1) 0)
-                                      (merror
-                                       (intl:gettext
-                                        "plot2d: ~M should only depend on ~M and ~M")
-                                       f ($first xrange) ($first yrange)))
-                                    (setq yrange (check-range yrange))
-                                    (setf (getf options :yvar) ($first yrange))
-                                    (setf (getf options :y) (cddr yrange)))))))
-                      (merror
-                       (intl:gettext
-                        "plot2d: ~M should only depend on 2 variables")
-                       f)))
-                (progn
-                  ;; Explicit function
-                  (setq fpfun (coerce-float-fun f ($rest xrange -2) "plot2d"))
-                  (setq vars1 ($listofvars (mfuncall fpfun ($first xrange))))
-                  (setq vars1 (delete ($first xrange) vars1))
-                  (when (> ($length vars1) 0)
-                    (merror
-                     (intl:gettext
-                      "plot2d: expression ~M~%    should  depend only on ~M, or be an expression of 2 variables~%    equal another expression of the same variables.")
-                     f ($first xrange))))))))
+                     (intl:gettext "plot2d: Missing interval for variable 2."))
+                    (progn
+                      (setq yrange (pop extra-options))
+                      (setq yrange (check-range yrange))
+                      (setf (getf options :yvar) ($first yrange))
+                      (setf (getf options :y) (cddr yrange)))))))))
     (when (not xrange-required)
       ;; Make the default ranges on X nd Y large so parametric plots
       ;; don't get prematurely clipped. Don't use most-positive-flonum
