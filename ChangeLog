@@ -26,7 +26,7 @@ Changes in the Windows installer:
 Bug fixes for numbered bugs:
 ----------------------------
  * \#380: algsys a*b=c*d grossly incomplete
- * \#484 limit(x=0,x,0) wrong
+ * \#484: limit(x=0,x,0) wrong
  * \#1097: pattern variable appears in letsimp result
  * \#2388: wrong limit
  * \#2709: `letsimp' is wrong if `ratexpand' is called
