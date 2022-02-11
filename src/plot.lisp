@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-02-09 11:58:10 villate"
+;; Time-stamp: "2022-02-11 09:15:40 villate"
 
 (in-package :maxima)
 
@@ -852,7 +852,6 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          (ymin (first (getf options :y)))
          (xmax (second (getf options :x)))
          (ymax (second (getf options :y)))
-         (fname (or (second (getf options :type)) "plot"))
          (gridx (or (first (getf options :sample)) 50))
          (gridy (or (second (getf options :sample)) 50))
          (eps (or (getf options :plotepsilon) 1e-6))
@@ -863,7 +862,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     (if (getf options :contour)
         (setq fun expr)
         (setq fun (m- ($lhs expr) ($rhs expr))))
-    (setq fun (coerce-float-fun fun `((mlist) ,vx ,vy) fname))
+    (setq fun (coerce-float-fun fun `((mlist) ,vx ,vy) "plot2d"))
     ;; sets up array f with values of the function at corners of sample grid.
     ;; finds maximum and minimum values in that array. 
     (dotimes (i (1+ gridx))
@@ -1238,14 +1237,13 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; parametric ; [parametric,xfun,yfun,[t,tlow,thigh],[nticks ..]]
 ;; the rest of the parametric list after the list will add to the plot options
 
-(defun draw2d-parametric-adaptive (param options &aux range fname)
-  (setq fname (or (second (getf options :type)) "plot"))
+(defun draw2d-parametric-adaptive (param options &aux range)
   (or (= ($length param) 4)
-      (merror (intl:gettext "~a: parametric plots must include two expressions and an interval") fname))
+      (merror (intl:gettext "plot2d: parametric plots must include two expressions and an interval")))
   (setq range (nth 4 param))
   (or (and ($listp range) (symbolp (second range)) (eql ($length range) 3))
-      (merror (intl:gettext "~a: wrong interval for parametric plot: ~M")
-              fname range))
+      (merror (intl:gettext "plot2d: wrong interval for parametric plot: ~M")
+              range))
   (setq range (check-range range))
   (let* ((nticks (getf options :nticks))
          (trange (cddr range))
@@ -1260,8 +1258,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          (ymax (coerce-float (second yrange)))
          f1 f2)
     (declare (type flonum ymin ymax xmin xmax tmin tmax))
-    (setq f1 (coerce-float-fun (third param) `((mlist), tvar) fname))
-    (setq f2 (coerce-float-fun (fourth param) `((mlist), tvar) fname))
+    (setq f1 (coerce-float-fun (third param) `((mlist), tvar) "plot2d"))
+    (setq f2 (coerce-float-fun (fourth param) `((mlist), tvar) "plot2d"))
 
     (let ((n-clipped 0) (n-non-numeric 0)
 	  (t-step (/ (- tmax tmin) (coerce-float nticks) 2))
