@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-02-11 15:57:53 villate"
+;; Time-stamp: "2022-02-12 18:43:30 villate"
 
 (in-package :maxima)
 
@@ -1024,10 +1024,18 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
         (dolist (level (reverse levels))
           (dotimes (i gridx)
             (dotimes (j gridy)
-              (setq fij (- (aref f i j) level))
-              (setq fij+ (- (aref f i (1+ j)) level))
-              (setq fi+j (- (aref f (1+ i) j) level))
-              (setq fi+j+ (- (aref f (1+ i) (1+ j)) level))
+              (if (numberp (aref f i j))
+                  (setq fij (- (aref f i j) level))
+                  (setq fij (aref f i j)))
+              (if (numberp (aref f i (1+ j)))
+                  (setq fij+ (- (aref f i (1+ j)) level))
+                  (setq fij+ (aref f i (1+ j))))
+              (if (numberp (aref f (1+ i) j))
+                  (setq fi+j (- (aref f (1+ i) j) level))
+                  (setq fi+j (aref f (1+ i) j)))
+              (if (numberp (aref f (1+ i) (1+ j)))
+                  (setq fi+j+ (- (aref f (1+ i) (1+ j)) level))
+                  (setq fi+j+ (aref f (1+ i) (1+ j))))
               (setq next t)
               ;; 1. undefined at ij
               (when (not (numberp fij))
