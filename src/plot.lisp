@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-02-12 18:43:30 villate"
+;; Time-stamp: "2022-02-13 14:25:55 villate"
 
 (in-package :maxima)
 
@@ -1319,10 +1319,10 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
             (unless (and (<= ymin (car y) ymax)
 			 (<= xmin (car x) xmax))
 	      ;; Let gnuplot do the clipping.  See the comment in DRAW2D.
+	      (incf n-clipped)
 	      (unless (member (getf options :plot_format)
 			      '($gnuplot_pipes $gnuplot))
 
-		(incf n-clipped)
 		(setf (car x) 'moveto)
 		(setf (car y) 'moveto)))
             (progn
@@ -1349,7 +1349,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 	(if (null result-sans-nil)
             (cond
               ((= n-non-numeric 0)
-               (mtell (intl:gettext "plot2d: all values were clipped.~%")))
+               (mtell (intl:gettext "plot2d: all values will be clipped.~%")))
               ((= n-clipped 0)
                (mtell (intl:gettext
 		       "plot2d: expression evaluates to non-numeric value everywhere in plotting range.~%")))
@@ -1361,7 +1361,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 		  (mtell (intl:gettext
 			  "plot2d: expression evaluates to non-numeric value somewhere in plotting range.~%")))
               (if (> n-clipped 0)
-		  (mtell (intl:gettext "plot2d: some values were clipped.~%")))))
+		  (mtell (intl:gettext "plot2d: some values will be clipped.~%")))))
 	(cons '(mlist) result-sans-nil)))))
 
 ;; draw2d-discrete. Accepts [discrete,[x1,x2,...],[y1,y2,...]]
@@ -1702,6 +1702,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
             ((null y))
           (if (numberp (car y))
 	      (unless (<= ymin (car y) ymax)
+		(incf n-clipped)
 		;; If the plot format uses gnuplot, we can let gnuplot
 		;; do the clipping for us.  This results in better
 		;; looking plots.  For example plot2d(x-floor(x),
@@ -1710,7 +1711,6 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 		;; before the limit.
               	(unless (member (getf plot-options :plot_format)
 				'($gnuplot_pipes $gnuplot))
-		  (incf n-clipped)
                   (setf (car x) 'moveto)
                   (setf (car y) 'moveto)))
               (progn
@@ -1745,7 +1745,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
           (if (null result-sans-nil)
             (cond
               ((= n-non-numeric 0)
-               (mtell (intl:gettext "plot2d: all values were clipped.~%")))
+               (mtell (intl:gettext "plot2d: all values will be clipped.~%")))
               ((= n-clipped 0)
                (mtell (intl:gettext "plot2d: expression evaluates to non-numeric value everywhere in plotting range.~%")))
               (t
@@ -1754,7 +1754,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
               (if (> n-non-numeric 0)
                 (mtell (intl:gettext "plot2d: expression evaluates to non-numeric value somewhere in plotting range.~%")))
               (if (> n-clipped 0)
-                (mtell (intl:gettext "plot2d: some values were clipped.~%")))))
+                (mtell (intl:gettext "plot2d: some values will be clipped.~%")))))
           (cons '(mlist) result-sans-nil))))))
 
 (defun get-range (lis)
