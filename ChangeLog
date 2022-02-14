@@ -10,6 +10,7 @@ New items in share:
 Changes in core:
 ----------------
 * new code to commute conjugate of derivative (Commit [565fcf])
+* Gnuplot's plot window title is now "plot2d" or "plot3d" (Commit [3ad574])
 
 Changes in share:
 -----------------
@@ -46,6 +47,7 @@ Bug fixes for numbered bugs:
  * \#3801: error sourcing .xmaximarc on Windows
  * \#3805: plot2d should give a clean user error for undefined functions
  * \#3807: plot2d heuristic to detect unbound variables excludes valid cases
+ * \#3819: Implicit plot2d calculating 1/​0 gives Lisp error
  * \#3820: testsuite with display_all = true
  * \#3838: limit(atan(sin(x)),x,inf,plus) --> atan(ind)
  * \#3844: Wrong limit involving gamma function
