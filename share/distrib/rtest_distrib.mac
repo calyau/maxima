@@ -364,6 +364,97 @@ random_negative_binomial(6,3/5,3);
 [5,8,9];
 
 
+/* inverse gamma distribution */
+
+pdf_inverse_gamma (u, x, y);
+''(y^x/gamma(x)/u^(1 + x)*exp(-y/u)*unit_step(u));
+
+pdf_inverse_gamma (h, 7/2, 20);
+''(20^(7/2)/gamma(7/2)/h^(9/2)*exp(-20/h)*unit_step(h));
+
+pdf_inverse_gamma (12/7, 7/2, 20);
+''(20^(7/2)/gamma(7/2)/(12/7)^(9/2)*exp(-20/(12/7)));
+
+cdf_inverse_gamma (w, f, g);
+gamma_incomplete(f, g/w)/gamma(f)*unit_step(w);
+
+cdf_inverse_gamma (5, 3/4, d);
+gamma_incomplete(3/4, d/5)/gamma(3/4);
+
+cdf_inverse_gamma (5, 3/4, 11/3);
+''(gamma_incomplete(3/4, (11/3)/5)/gamma(3/4));
+
+quantile_inverse_gamma (v, s, t);
+if equal(v, 0) then 0
+    elseif equal(v, 1) then inf
+    else 1/quantile_gamma(1 - v, s, 1/t);
+
+quantile_inverse_gamma(u, 1+z, 2-y);
+if equal(u,0) then 0 elseif equal(u,1) then inf else 1/quantile_gamma(1-u,z+1,1/(2-y));
+
+quantile_inverse_gamma(1-u^2, 1+a*z, 2 - y/x);
+if equal(1-u^2,0) then 0 elseif equal(1-u^2,1) then inf else 1/quantile_gamma(u^2,a*z+1,1/(2-y/x));
+
+quantile_inverse_gamma (0, s, t);
+0;
+
+quantile_inverse_gamma (1, s, t);
+inf;
+
+(foo(q) := find_root (cdf_inverse_gamma (p, 4.4, 2) = q, p, 0.001, 10*2/3.4),
+ qq: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+ map (lambda ([q], quantile_inverse_gamma (q, 4.4, 2)), qq));
+''(map (foo, qq));
+
+mean_inverse_gamma (h, i);
+i/(h - 1);
+
+mean_inverse_gamma (12, 17);
+17/11;
+
+mode_inverse_gamma (u, v);
+v/(1 + u);
+
+mode_inverse_gamma (0.5, 1.5);
+1.0;
+
+var_inverse_gamma (p, q);
+q^2/(p - 1)^2/(p - 2);
+
+var_inverse_gamma (2.5, 0.25);
+''(0.25^2/1.5^2/0.5);
+
+skewness_inverse_gamma (y, z);
+4*sqrt(y - 2)/(y - 3);
+
+skewness_inverse_gamma (14.75, 1e6);
+''(4*sqrt(12.75)/11.75);
+
+kurtosis_inverse_gamma (l, m);
+6*(5*l - 11)/(l - 3)/(l - 4);
+
+kurtosis_inverse_gamma (4.75, 1e-6);
+''(6*(5*4.75 - 11)/1.75/0.75);
+
+/* simple probabilitistic test for random number generator;
+ * construct interval with tail mass approximately 1/10^6.
+ * this is a pretty imprecise test, a test based on the
+ * Kolgomorov-Smirnov statistic would be more precise.
+ */
+(foo (a, b, n, tail_mass) :=
+    block ([x, mean, sd, sample_mean, q, low, high],
+           x: random_inverse_gamma (a, b, n),
+           mean: mean_inverse_gamma (a, b),
+           sd: std_inverse_gamma (a, b),
+           sample_mean: apply ("+", x)/n,
+           q: quantile_normal (tail_mass/2, 0, 1),
+           /* bear in mind q < 0 */
+           low: mean + q*sd/sqrt(n),
+           high: mean - q*sd/sqrt(n),
+           if sample_mean > low and sample_mean < high then true
+               else 'failed_random_inverse_gamma (a, b, n, tail_mass, mean, sd, sample_mean, q, low, high)),
+ foo (5, 4.25, 1000, 1e-6));
+true;
 
 (set_random_state(rnd_state),
  float_approx_equal_tolerance : save_tolerance,

@@ -1819,3 +1819,76 @@ random_general_finite_discrete(v,[num]) :=
                                  k),
                                 i, no) )
             else error("random_general_finite_discrete: check sample size")) $
+
+
+/* INVERSE GAMMA DISTRIBUTION
+ *
+ * Formulas from: https://en.wikipedia.org/wiki/Inverse-gamma_distribution
+ *
+ * Two real parameters, a > 0 (shape), and b > 0 (scale).
+ *
+ * Support: x > 0
+ */
+
+pdf_inverse_gamma (x, a, b) :=
+    if maybe (a > 0) = false or maybe (b > 0) = false
+        then error ("pdf_inverse_gamma: parameters must be positive; found:", a, b)
+        else b^a/gamma(a) * x^(-a-1) * exp(-b/x) * unit_step(x);
+
+cdf_inverse_gamma (x, a, b) :=
+    if maybe (a > 0) = false or maybe (b > 0) = false
+        then error ("cdf_inverse_gamma: parameters must be positive; found:", a, b)
+        else gamma_incomplete(a, b/x) / gamma(a) * unit_step(x);
+
+quantile_inverse_gamma (x, a, b) :=
+    if maybe (a > 0) = false or maybe (b > 0) = false
+        then error ("quantile_inverse_gamma: parameters must be positive; found:", a, b)
+        else if equal(x, 0) then 0
+                 elseif equal(x, 1) then inf
+                 else 1/quantile_gamma(1 - x, a, 1/b);
+
+mean_inverse_gamma (a, b) :=
+    if maybe (a > 0) = false or maybe (b > 0) = false
+        then error ("mean_inverse_gamma: parameters must be positive; found:", a, b)
+    elseif maybe (a > 1) = false
+        then error ("mean_inverse_gamma: mean undefined for shape parameter =", a)
+        else b/(a - 1);
+
+mode_inverse_gamma (a, b) := 
+    if maybe (a > 0) = false or maybe (b > 0) = false
+        then error ("mode_inverse_gamma: parameters must be positive; found:", a, b)
+        else b/(a + 1);
+
+var_inverse_gamma (a, b) :=
+    if maybe (a > 0) = false or maybe (b > 0) = false
+        then error ("var_inverse_gamma: parameters must be positive; found:", a, b)
+    elseif maybe (a > 2) = false
+        then error ("var_inverse_gamma: variance undefined for shape parameter =", a)
+        else b^2/(a - 1)^2/(a - 2);
+
+std_inverse_gamma (a, b) :=
+    if maybe (a > 0) = false or maybe (b > 0) = false
+        then error ("std_inverse_gamma: parameters must be positive; found:", a, b)
+    elseif maybe (a > 2) = false
+        then error ("std_inverse_gamma: standard deviation undefined for shape parameter =", a)
+        else b/(a - 1)/sqrt(a - 2);
+
+skewness_inverse_gamma (a, b) :=
+    if maybe (a > 0) = false or maybe (b > 0) = false
+        then error ("skewness_inverse_gamma: parameters must be positive; found:", a, b)
+    elseif maybe (a > 3) = false
+        then error ("skewness_inverse_gamma: skewness undefined for shape parameter =", a)
+        else 4*sqrt(a - 2)/(a - 3);
+
+kurtosis_inverse_gamma (a, b) :=
+    if maybe (a > 0) = false or maybe (b > 0) = false
+        then error ("kurtosis_inverse_gamma: parameters must be positive; found:", a, b)
+    elseif maybe (a > 4) = false
+        then error ("kurtosis_inverse_gamma: kurtosis undefined for shape parameter =", a)
+        else 6*(5*a - 11)/(a - 3)/(a - 4);
+
+random_inverse_gamma (a, b, [n]) :=
+    if maybe (a > 0) = false or maybe (b > 0) = false
+        then error ("random_inverse_gamma: parameters must be positive; found:", a, b)
+        else block ([listarith: true],
+                    1/random_gamma (a, 1/b, if n = [] then 1 else n[1]));
