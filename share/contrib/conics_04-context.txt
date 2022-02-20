@@ -1,0 +1,33 @@
+Comments by David Billinghurst to maxima-discuss, 2021-09-02, about conics_04.mac:
+
+<quote>
+Here is one way to solve the problem in maxima.
+
+A colleague needed to find the intersection of two conics in C code. I used maxima to eliminate y
+symbolically from the two conic equations, leaving a quartic polynomial in x. We then substituted
+numerical values of the coefficients, solved the quartic then back-substituted to find y.
+
+It is possible to solve the quartic exactly, rather than numerically. This is usually a bad idea.
+
+For example, one of the quartic polynomials in the examples below is
+
+p:(45*x^4)/128-(135*x^3)/64+(675*x^2)/64-(2475*x)/128+5445/512;
+
+solve(p,x) gives roots like
+
+x = (-sqrt((16*sqrt(3)*((88*sqrt(38))/3^(3/2)+197)^(1/6))
+                     /sqrt(3*((88*sqrt(38))/3^(3/2)+197)^(2/3)
+-33*((88*sqrt(38))/3^(3/2)+197)^(1/3)+91)
+                     -((88*sqrt(38))/3^(3/2)+197)^(1/3)
+-91/(3*((88*sqrt(38))/3^(3/2)+197)^(1/3))-22)
+           /2)
+           -sqrt(3*((88*sqrt(38))/3^(3/2)+197)^(2/3)
+                  -33*((88*sqrt(38))/3^(3/2)+197)^(1/3)+91)
+            /(2*sqrt(3)*((88*sqrt(38))/3^(3/2)+197)^(1/6))+3/2
+
+Back-substituting this to solve for y leads to large and useless equations, even for rational coefficients. Try it. The problem is many, many, many times worse with symbolic coefficients.
+
+Remember the code below was structured to give the formulae for the coefficients of the quartic polynomial. There are other ways to structure the calculation.
+
+Run the code using batch("conics_04.mac") or demo("conics_04.mac")
+</quote>

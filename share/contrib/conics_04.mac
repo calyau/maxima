@@ -1,0 +1,146 @@
+/* Intersection of two conics
+    David Billinghurst, 2021-09-02
+  */
+
+display2d:false;
+
+"intersection of two arbitrary conics"$
+
+eq1: a1*x^2+b1*x*y+c1*y^2+d1*x+e1*y+f1$
+eq2: a2*x^2+b2*x*y+c2*y^2+d2*x+e2*y+f2$
+
+"Eliminate y^2"$
+
+eq3a:c2*eq1-c1*eq2$
+eq3a:expand(eq3a);
+
+"New variables to simplify."$
+subs:[
+  a3=a1*c2-a2*c1,
+  b3=b1*c2-b2*c1,
+  d3=d1*c2-d2*c1,
+  e3=e1*c2-e2*c1,
+  f3=f1*c2-f2*c1];
+
+eq3: a3*x^2+b3*x*y+d3*x+e3*y+f3;
+
+"Show (eq3a) is equal to (eq3)"$
+expand(eq3-eq3a),subs;
+
+"Solve eq3 for y
+
+This step can't be performed when b_3*x + e_3 = 0.  This is not uncommon
+For example, it will happen if both conics are centred on the x-axis.
+
+If b3=0 and e3=0 then (eq3) is already free of y and can be solved for x.
+When it occurs we should be able to substitute our solution for x into (eq1)
+and (eq2) and solve for y.  There may be spurious solutions that do not
+satisfy both equations.
+
+The case x=0 and e_3=0 should be investigated."$
+
+eq4:solve(eq3,y);
+eq4:eq4[1];
+
+"Substitute (eq4) into (eq1).  Multiply through by denominator"$
+
+eq5:subst(eq4,eq1);
+eq5*(b3*x+e3)^2;
+eq6:ratsimp(%);
+
+"eq6 is a quartic in x, k4*x^4+k3*x^3+k2*x^2+k1*x+k0"$
+k4:coeff(eq6,x,4);
+k3:coeff(eq6,x,3);
+k2:coeff(eq6,x,2);
+k1:coeff(eq6,x,1);
+k0:coeff(eq6,x,0);
+"Confirm eq6-k4*x^4+k3*x^3+k2*x^2+k1*x+k0 = 0"$
+expand(eq6-(k4*x^4+k3*x^3+k2*x^2+k1*x+k0));
+
+"Example 1"$
+
+"Ellipse centred at origin with semi-major axis 2 and 1"$
+ellipse:(x/2)^2+y^2-1;
+ellipse:expand(ellipse);
+"Create a list of coefficients for later use"$
+coeffs_1:[a1=1/4,b1=0,c1=1,d1=0,e1=0,f1=-1];
+
+"Circle centre (3,0) radius 2"$
+circle:(x-3)^2+y^2-2^2;
+circle:expand(circle);
+coeffs_2:[a2=1,b2=0,c2=1,d2=-6,e2=0,f2=5];
+
+"Generate a list of coefficients to substitute"$
+coeffs:subs,coeffs_1,coeffs_2;
+coeffs:append(coeffs,coeffs_1,coeffs_2);
+s0:subst(coeffs,k0);
+s1:subst(coeffs,k1);
+s2:subst(coeffs,k2);
+s3:subst(coeffs,k3);
+s4:subst(coeffs,k4);
+p:s4*x^4+s3*x^3+s2*x^2+s1*x+s0;
+
+"Solve quartic p and select real roots.  Only one (multiple) root"$
+soln:allroots(p);
+x1:rhs(soln[1]);
+
+"Now solve for y.
+
+Could try eq4: y = -(a3*x^2+d3*x+f3)/(b3*x+e3), but in this case b3=0
+and e3=0 so divide by zero
+
+Alternatively substitute x into either conic eqn and solve for y, then
+check the
+solutions as some may be spurious."$
+
+"First real root x1"$
+subst(x=x1,ellipse);
+ysolns:allroots(%);
+y1:rhs(ysolns[1]);
+y2:rhs(ysolns[2]);
+"Check if roots satisfy other equation circle"$
+circle,x=x1,y=y1;
+circle,x=x1,y=y2;
+
+kill(ellipse,x1,y1,y2,coeffs_1,coeffs,p,s0,s1,s2,s3,s4);
+
+
+"Example 2:
+
+  Ellipse centred at origin
+    semi-major axis length 2 in direction x=-y
+    semi-minor axis length 1 in direction x=y
+
+  Same circle centre (3,0) radius 2"$
+
+ellipse:(5*y^2)/8+(3*x*y)/4+(5*x^2)/8-1;
+ellipse:expand(ellipse);
+coeffs_1:[a1=5/8,b1=3/4,c1=5/8,d1=0,e1=0,f1=-1];
+
+coeffs:subs,coeffs_1,coeffs_2;
+coeffs:append(coeffs,coeffs_1,coeffs_2);
+s0:k0,coeffs;
+s1:k1,coeffs;
+s2:k2,coeffs;
+s3:k3,coeffs;
+s4:k4,coeffs;
+p:s4*x^4+s3*x^3+s2*x^2+s1*x+s0;
+
+soln:allroots(p);
+"Select the real roots"$
+x1:rhs(soln[1]);
+x2:rhs(soln[2]);
+
+"Use eq4 as b3*x+e3 /= 0"$
+y1:rhs(eq4),x=x1,coeffs;
+y2:rhs(eq4),x=x2,coeffs;
+ellipse,x=x1,y=y1;
+circle,x=x1,y=y1;
+ellipse,x=x2,y=y2;
+circle,x=x2,y=y2;
+
+"Or substitute x into conic equations, solve for y and select common roots"$
+allroots(subst(x=x1,circle));
+allroots(subst(x=x1,ellipse));
+allroots(subst(x=x2,circle));
+allroots(subst(x=x2,ellipse));
