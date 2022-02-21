@@ -25,8 +25,6 @@
   (if (not (functionp 'op-equalp)) ($load "linalg-utilities"))
   (if (not (functionp 'require-list-or-set)) ($load "nset")))
 
-($put '$polynomialp 1 '$version)
-
 ;; Return true iff n is an integer and n >= 0.
 
 (defmfun $nonnegintegerp (n)
