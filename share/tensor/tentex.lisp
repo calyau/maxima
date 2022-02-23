@@ -74,19 +74,19 @@
             (cond (y (cons (cons (name x) '(simp array)) y)) (t (name x)))
           )
           (append
-            (and (covi x) (list (cons '(mtimes simp) (covi x))))
+            (and (covi x) (list (cons 'quote (list(cons '(mtimes simp) (covi x))))))
             (and
               (deri x)
               (list
                 (cons
-                  '(mtimes simp) 
-                  (append (and (not (covi x)) (deri x) '(",")) (deri x))
+                  'quote (list(cons '(mtimes simp)
+                  (append (and (not (covi x)) (deri x) '(",")) (deri x))))
                 )
               )
             )
           )
         )
-        (and (conti x) (cons '(mtimes simp) (conti x)))
+        (and (conti x) (cons 'quote (list(cons '(mtimes simp) (conti x)))))
       )
     )
     (t (cons (tenreform (car x)) (tenreform (cdr x))))
