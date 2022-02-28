@@ -384,5 +384,12 @@ plot3d (a[x]^2 - x[a]^3, [a[x], -1, 1], [x[a], -1, 1]);
 F(omega) := abs((%i * omega + 2E4)^2);
 plot2d(F(omega), [omega, 0.01, 2E5]);
 
+/* SF bug 3776: "plot3d(\"*\",...) gives internal error" */
+
+(kill(mul, x, y), mul(a,b):=a*b)$
+/* next two should be the same */
+plot3d(mul,[x,0,1],[y,0,1]);
+plot3d("*",[x,0,1],[y,0,1]);
+
 "FINIS" $
 
