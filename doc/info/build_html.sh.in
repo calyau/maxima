@@ -143,7 +143,7 @@ echo "$0: execute category program: \"$lispprog\" $lispargs"
 # If there aren't any the file named "Category-*.texi" cannot be found
 # and therefore will be excluded by the 'if'.
 ( for f in Category-*.texi; do
-      if [ -e $f ]; then
+      if [ -e "$f" ]; then
 	 echo '@include' $f
       fi
   done
