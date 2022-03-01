@@ -1302,5 +1302,6 @@ done;
  is(equal(A,0)));
 unknown;
 
-killcontext (mycontext);
+(reset (),
+ killcontext (mycontext));
 done;
