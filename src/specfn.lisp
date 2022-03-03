@@ -960,7 +960,7 @@
 	     (incf s (/ (* dpi dpi u) 6))
 	     (decf s (li3numer (- (/ xc x))))
 	     (decf s (li3numer xc))
-	     (incf s (li3numer 1))))
+	     (incf s (li3numer (float 1 x)))))
 	  (t
 	   ;; Sum the power series.  threshold determines when the
 	   ;; summation has converted.
