@@ -289,3 +289,44 @@ g (1, 2, 3);
 (remlet (f (1, 2, 3)), 0);
 0;
 
+/* Bug #3950: letsimp confuses symbols and nullary applications */
+
+(let (f (), g ()), 0);
+0;
+
+/* This used to yield g() */
+letsimp (f);
+f;
+
+/* This used to yield f() */
+letsimp (f ());
+g ();
+
+letsimp (f (1));
+f (1);
+
+letsimp (f (1, 2, 3));
+f (1, 2, 3);
+
+(remlet (f ()), 0);
+0;
+
+(matchdeclare (foo, true), 0);
+0;
+
+(let (foo (), bar ()), 0);
+0;
+
+/* This used to cause a stack overflow */
+letsimp (x);
+x;
+
+/* This also used to cause a stack overflow */
+letsimp (foo ());
+bar ();
+
+(remove (foo, matchdeclare),
+ remlet (foo ()),
+ 0);
+0;
+
