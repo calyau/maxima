@@ -233,3 +233,59 @@ T / n;
 (remlet (U), 0);
 0;
 
+/* Some basic letsimp tests, based on bug #3950 */
+
+(let (f, g), 0);
+0;
+
+letsimp (f);
+g;
+
+letsimp (f ());
+f ();
+
+letsimp (f (1));
+f (1);
+
+letsimp (f (1, 2, 3));
+f (1, 2, 3);
+
+(remlet (f), 0);
+0;
+
+(let (f (1), g (1)), 0);
+0;
+
+letsimp (f);
+f;
+
+letsimp (f ());
+f ();
+
+letsimp (f (1));
+g (1);
+
+letsimp (f (1, 2, 3));
+f (1, 2, 3);
+
+(remlet (f (1)), 0);
+0;
+
+(let (f (1, 2, 3), g (1, 2, 3)), 0);
+0;
+
+letsimp (f);
+f;
+
+letsimp (f ());
+f ();
+
+letsimp (f (1));
+f (1);
+
+letsimp (f (1, 2, 3));
+g (1, 2, 3);
+
+(remlet (f (1, 2, 3)), 0);
+0;
+
