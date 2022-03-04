@@ -938,8 +938,19 @@
 			     (* (/ lg 6)
 				(+ (* lg lg) (* dpi dpi))))))
 		 result))
-	  ((> (abs x) .9)
-	   (li-using-powers-of-log 3 x))
+	  ((> (abs x) series-threshold)
+	   (let ((result (li-using-powers-of-log 3 x)))
+	     ;; For real x, li-using-power-of-log can return a complex
+	     ;; number with a tiny imaginary part.  Get rid of that
+	     ;; when x is real.
+	     (if (realp x)
+		 (realpart result)
+		 result)))
+	  ;; Don't use the identity below because the identity seems
+	  ;; to be incorrect.  For example, for x = -0.862 it returns
+	  ;; a complex value with an imaginary part that is not close
+	  ;; to zero as expected.
+	  #+nil
 	  ((> (abs x) series-threshold)
 	   ;; The series converges too slowly so use the identity:
 	   ;;
