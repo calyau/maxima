@@ -233,9 +233,7 @@ plot2d (x, [x, 1e-5, 100], [logx]);
  matchdeclare (x, floatnump),
  tellsimpafter (k(x), sin(x) + 0.6));
 
-/* BUG: this fails, but should not */
-errcatch(
-  plot2d ([f, g, h, i, sin, k], [u, 0, 1]));
+plot2d ([f, g, h, i, sin, k], [u, 0, 1]);
 
 /* "j" in list of functions tickles a bug -- quote marks not sanitized
  * work around it by explicit legend spec
@@ -262,18 +260,15 @@ plot2d (sin(x), [x, 0, 1], [logx, true]);
 
 plot2d (sin(u), [u, 0, 1], [logx, true]);
 
-errcatch(plot2d (sin(u), [u, 0, 1], [logx, true], [y, 0, 1], [logy, true]));
+plot2d (sin(u), [u, 0, 1], [logx, true], [y, 0, 1], [logy, true]);
 
 "verify that nested numerical integral is handled correctly";
 
-/* BUG: this fails, but should not */
-errcatch(
-  plot2d (w^2 * 'quad_qags (1/(s - w), s, 1, 5) [1], [w, -5, -1], [adapt_depth, 1]));
+plot2d (w^2 * 'quad_qags (1/(s - w), s, 1, 5) [1], [w, -5, -1], [adapt_depth, 1]);
 
 "another nested numerical integral";
 
-/* BUG: this fails, but should not */
-errcatch(kill (W, R, A),
+(kill (W, R, A),
  W(t) := 95*sqrt(t)*sin(t/6)^2,
  R(t) := 275*sin(t/3)^2,
  A(t) := 1200 + quad_qags (W(x) - R(x), x, 0, t) [1],
@@ -372,8 +367,7 @@ plot3d([sin(t), cos(t), t], [t,-5,5], [y,-5,5], [grid,100,2], [gnuplot_pm3d,fals
 
 /* plot2d/plot3d with subscripted variable */
 
-/* BUG? this fails, but should not */
-errcatch(kill (x, a), plot2d (a[x]^3, [a[x], -1, 1]));
+(kill (x, a), plot2d (a[x]^3, [a[x], -1, 1]));
 
 plot3d (a[x]^2 - x[a]^3, [a[x], -1, 1], [x[a], -1, 1]);
 
@@ -390,6 +384,12 @@ plot2d(F(omega), [omega, 0.01, 2E5]);
 /* next two should be the same */
 plot3d(mul,[x,0,1],[y,0,1]);
 plot3d("*",[x,0,1],[y,0,1]);
+
+/* SF bug #3807: "plot2d heuristic to detect unbound variables excludes some valid cases" */
+
+plot2d (quad_qags (sin(u), u, 0, x)[1], [x, 0, 1]);
+plot2d (find_root (sin(u) - x, u, 0, %pi/2), [x, 0, 1]);
+plot2d(sum(w, w, 1, abs(x)), [x, 1, 10]);
 
 "FINIS" $
 

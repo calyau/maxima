@@ -54,6 +54,7 @@ Bug fixes for numbered bugs:
  * \#3883: plot creates invalid gnuplot command
  * \#3907: gnuplot_postamble not actually the last Gnuplot output before plot
  * \#3936: plot2d sends invalid file to gnuplot
+ * \#3950: letsimp confuses symbols and nullary applications
 
 Unnumbered bugs fixed:
 ---------------------
