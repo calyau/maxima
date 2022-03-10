@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-02-14 20:14:40 villate"
+;; Time-stamp: "2022-03-09 10:32:02 villate"
 
 (in-package :maxima)
 
@@ -584,7 +584,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 	   (coerce
 	    `(lambda ,(cdr vars)
-	       (declare (special ,@(cdr vars) errorsw))
+	       (declare (special ,@(cdr vars)))
 
 	       ;; Nothing interpolated here when there are no subscripted
 	       ;; variables.
@@ -609,42 +609,23 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 		     ;; this.  For backward compatibility, we bind
 		     ;; numer to T if we're not trying to bfloat.
 		     ($numer ,(not (eq float-fun '$bfloat)))
-		     (*nounsflag* t)
-		     (errorsw t)
-		     (errcatch t))
-		 (declare (special errcatch))
+		     (*nounsflag* t))
 		 ;; Catch any errors from evaluating the
 		 ;; function.  We're assuming that if an error
 		 ;; is caught, the result is not a number.  We
 		 ;; also assume that for such errors, it's
 		 ;; because the function is not defined there,
 		 ;; not because of some other maxima error.
-		 ;;
-		 ;; GCL 2.6.2 has handler-case but not quite ANSI yet. 
 		 (let ((result
-			#-gcl
-			 (handler-case 
-			     (catch 'errorsw
-			       (,float-fun (maybe-realpart (meval* ',expr))))
-			   ;; Should we just catch all errors here?  It is
-			   ;; rather nice to only catch errors we care
-			   ;; about and let other errors fall through so
-			   ;; that we don't pretend to do something when
-			   ;; it is better to let the error through.
-			   (arithmetic-error () t)
-			   (maxima-$error () t))
-			 #+gcl
-			 (handler-case 
-			     (catch 'errorsw
-			       (,float-fun (maybe-realpart (meval* ',expr))))
-			   (cl::error () t))
-			 ))
+			 (errcatch (,float-fun (maybe-realpart (meval* ',expr))))))
 
 		   ;; Nothing interpolated here when there are no
 		   ;; subscripted variables.
 		   ,@(if (cdr subscripted-vars) `((progn ,@subscripted-vars-restore)))
 
-		   result)))
+		   (if result
+		       (car result)
+		       t))))
 	    'function)))))
 ;; coerce-float-fun must be given an expression and one or two other optional
 ;; arguments: a Maxima list of variables on which that expression depends
@@ -709,22 +690,19 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
   (let ((gensym-args (loop for x in args collect (gensym))))
     (coerce
       `(lambda ,gensym-args (declare (special ,@gensym-args))
+         ;; Just always try to convert the result with
+         ;; float-fun, which handles things like $%pi.
+         ;; See also BUG
+         ;; https://sourceforge.net/p/maxima/bugs/1795/
          (let* (($ratprint nil)
                 ($numer t)
                 (*nounsflag* t)
-		(errorsw t)
-		(errcatch t))
-	   (declare (special errcatch))
-	   ;; Just always try to convert the result to a float,
-	   ;; which handles things like $%pi.  See also BUG
-	   ;; https://sourceforge.net/p/maxima/bugs/1795/
-	   ;;
-	   ;; Should we use HANDLER-CASE like we do above in
-	   ;; %coerce-float-fun?  Seems not necessary for what we want
-	   ;; to do.
-	   (catch 'errorsw
-	     (,float-fun
-	      (maybe-realpart (mapply ',expr (list ,@gensym-args) t))))))
+                (result
+                  (errcatch
+                    (,float-fun (maybe-realpart (mapply ',expr (list ,@gensym-args) t))))))
+           (if result
+               (car result)
+               t)))
       'function)))
 
 ;; Same as above, but call APPLY instead of MAPPLY.
@@ -738,8 +716,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
                 ($numer t)
                 (*nounsflag* t)
                 (result (maybe-realpart (apply ',expr (list ,@gensym-args)))))
-           ;; Always use $float.  See comment for
-           ;; coerce-maxima-function-ormaxima-lambda above.
+           ;; Always use float-fun.  See comment for
+           ;; coerce-maxima-function-or-maxima-lambda above.
            (,float-fun result)))
       'function)))
 
@@ -1319,10 +1297,10 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
             (unless (and (<= ymin (car y) ymax)
 			 (<= xmin (car x) xmax))
 	      ;; Let gnuplot do the clipping.  See the comment in DRAW2D.
+	      (incf n-clipped)
 	      (unless (member (getf options :plot_format)
 			      '($gnuplot_pipes $gnuplot))
 
-		(incf n-clipped)
 		(setf (car x) 'moveto)
 		(setf (car y) 'moveto)))
             (progn
@@ -1349,7 +1327,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 	(if (null result-sans-nil)
             (cond
               ((= n-non-numeric 0)
-               (mtell (intl:gettext "plot2d: all values were clipped.~%")))
+               (mtell (intl:gettext "plot2d: all values will be clipped.~%")))
               ((= n-clipped 0)
                (mtell (intl:gettext
 		       "plot2d: expression evaluates to non-numeric value everywhere in plotting range.~%")))
@@ -1361,7 +1339,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 		  (mtell (intl:gettext
 			  "plot2d: expression evaluates to non-numeric value somewhere in plotting range.~%")))
               (if (> n-clipped 0)
-		  (mtell (intl:gettext "plot2d: some values were clipped.~%")))))
+		  (mtell (intl:gettext "plot2d: some values will be clipped.~%")))))
 	(cons '(mlist) result-sans-nil)))))
 
 ;; draw2d-discrete. Accepts [discrete,[x1,x2,...],[y1,y2,...]]
@@ -1702,6 +1680,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
             ((null y))
           (if (numberp (car y))
 	      (unless (<= ymin (car y) ymax)
+		(incf n-clipped)
 		;; If the plot format uses gnuplot, we can let gnuplot
 		;; do the clipping for us.  This results in better
 		;; looking plots.  For example plot2d(x-floor(x),
@@ -1710,7 +1689,6 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 		;; before the limit.
               	(unless (member (getf plot-options :plot_format)
 				'($gnuplot_pipes $gnuplot))
-		  (incf n-clipped)
                   (setf (car x) 'moveto)
                   (setf (car y) 'moveto)))
               (progn
@@ -1745,7 +1723,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
           (if (null result-sans-nil)
             (cond
               ((= n-non-numeric 0)
-               (mtell (intl:gettext "plot2d: all values were clipped.~%")))
+               (mtell (intl:gettext "plot2d: all values will be clipped.~%")))
               ((= n-clipped 0)
                (mtell (intl:gettext "plot2d: expression evaluates to non-numeric value everywhere in plotting range.~%")))
               (t
@@ -1754,7 +1732,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
               (if (> n-non-numeric 0)
                 (mtell (intl:gettext "plot2d: expression evaluates to non-numeric value somewhere in plotting range.~%")))
               (if (> n-clipped 0)
-                (mtell (intl:gettext "plot2d: some values were clipped.~%")))))
+                (mtell (intl:gettext "plot2d: some values will be clipped.~%")))))
           (cons '(mlist) result-sans-nil))))))
 
 (defun get-range (lis)

@@ -391,5 +391,10 @@ plot2d (quad_qags (sin(u), u, 0, x)[1], [x, 0, 1]);
 plot2d (find_root (sin(u) - x, u, 0, %pi/2), [x, 0, 1]);
 plot2d(sum(w, w, 1, abs(x)), [x, 1, 10]);
 
+/* Bug #3881: plot2d not ignoring errors within functions */
+
+plot2d (gamma (x), [x, -1, 1]);
+plot2d (lambda ([x], gamma (x)), [x, -1, 1]);
+
 "FINIS" $
 
