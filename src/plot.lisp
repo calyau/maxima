@@ -609,8 +609,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 		     ;; this.  For backward compatibility, we bind
 		     ;; numer to T if we're not trying to bfloat.
 		     ($numer ,(not (eq float-fun '$bfloat)))
-		     (*nounsflag* t)
-		     ($errormsg nil))
+		     (*nounsflag* t))
 		 ;; Catch any errors from evaluating the
 		 ;; function.  We're assuming that if an error
 		 ;; is caught, the result is not a number.  We
@@ -697,7 +696,6 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          (let* (($ratprint nil)
                 ($numer t)
                 (*nounsflag* t)
-                ($errormsg nil)
                 (result
                   (errcatch
                     (,float-fun (maybe-realpart (mapply ',expr (list ,@gensym-args) t))))))
