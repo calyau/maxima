@@ -2169,6 +2169,9 @@ true;
 closeto(float(li[3](exp(%pi*%i/3))) - float(zeta(3)/3 + %i*5*%pi^3/162), 5.6611e-16);
 true;
 
+imagpart(li[3](-.862));
+0;
+
 /* Bug 3582: numerical evaluation of li[2] */
 /* this gave an infinite loop */
 closeto(li[2]( 0.5 + %i* 0.6) - ( 0.7535498331267791 * %i + 0.4081870726952078 ), 1e-15);
