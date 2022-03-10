@@ -690,8 +690,9 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
   (let ((gensym-args (loop for x in args collect (gensym))))
     (coerce
       `(lambda ,gensym-args (declare (special ,@gensym-args))
-         ;; Just always try to convert the result to a float,
-         ;; which handles things like $%pi.  See also BUG
+         ;; Just always try to convert the result with
+         ;; float-fun, which handles things like $%pi.
+         ;; See also BUG
          ;; https://sourceforge.net/p/maxima/bugs/1795/
          (let* (($ratprint nil)
                 ($numer t)
@@ -715,8 +716,8 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
                 ($numer t)
                 (*nounsflag* t)
                 (result (maybe-realpart (apply ',expr (list ,@gensym-args)))))
-           ;; Always use $float.  See comment for
-           ;; coerce-maxima-function-ormaxima-lambda above.
+           ;; Always use float-fun.  See comment for
+           ;; coerce-maxima-function-or-maxima-lambda above.
            (,float-fun result)))
       'function)))
 
