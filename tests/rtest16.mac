@@ -2169,8 +2169,22 @@ true;
 closeto(float(li[3](exp(%pi*%i/3))) - float(zeta(3)/3 + %i*5*%pi^3/162), 5.6611e-16);
 true;
 
+/*
+ * li[3] should not return a small imaginary part for this value.
+ * (There are others, but the solution fixes those as well.
+ */
 imagpart(li[3](-.862));
 0;
+
+/*
+ * Likewise li[s](-1.5) was returning small imaginary parts.  In fact,
+ * this was true for -2 < z < -1 because the log series was used to
+ * compute the value.  Check that we return exactly zero now for
+ * select values of s
+ */
+
+makelist(imagpart(li[s](-1.5)), s, 4, 10);
+[0, 0, 0, 0, 0, 0, 0];  
 
 /* Bug 3582: numerical evaluation of li[2] */
 /* this gave an infinite loop */

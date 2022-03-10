@@ -1195,6 +1195,10 @@
 	  ((<= (abs z) series-threshold)
 	   (values (polylog-power-series s z)))
 	  ((<= (abs z) log-series-threshold)
-	   (values (polylog-log-series s z)))
+	   (let ((result (values (polylog-log-series s z))))
+	   ;; If z is real and less than 1, li[s] is real.  Make it so.
+	     (if (and (realp z) (< z 1))
+		 (realpart result)
+		 result)))
 	  ((> (abs z) 1.5)
 	   (polylog-inversion-formula s z)))))
