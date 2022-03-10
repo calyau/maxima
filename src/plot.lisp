@@ -584,7 +584,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 	   (coerce
 	    `(lambda ,(cdr vars)
-	       (declare (special ,@(cdr vars) errorsw))
+	       (declare (special ,@(cdr vars)))
 
 	       ;; Nothing interpolated here when there are no subscripted
 	       ;; variables.
@@ -610,41 +610,23 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 		     ;; numer to T if we're not trying to bfloat.
 		     ($numer ,(not (eq float-fun '$bfloat)))
 		     (*nounsflag* t)
-		     (errorsw t)
-		     (errcatch t))
-		 (declare (special errcatch))
+		     ($errormsg nil))
 		 ;; Catch any errors from evaluating the
 		 ;; function.  We're assuming that if an error
 		 ;; is caught, the result is not a number.  We
 		 ;; also assume that for such errors, it's
 		 ;; because the function is not defined there,
 		 ;; not because of some other maxima error.
-		 ;;
-		 ;; GCL 2.6.2 has handler-case but not quite ANSI yet. 
 		 (let ((result
-			#-gcl
-			 (handler-case 
-			     (catch 'errorsw
-			       (,float-fun (maybe-realpart (meval* ',expr))))
-			   ;; Should we just catch all errors here?  It is
-			   ;; rather nice to only catch errors we care
-			   ;; about and let other errors fall through so
-			   ;; that we don't pretend to do something when
-			   ;; it is better to let the error through.
-			   (arithmetic-error () t)
-			   (maxima-$error () t))
-			 #+gcl
-			 (handler-case 
-			     (catch 'errorsw
-			       (,float-fun (maybe-realpart (meval* ',expr))))
-			   (cl::error () t))
-			 ))
+			 (errcatch (,float-fun (maybe-realpart (meval* ',expr))))))
 
 		   ;; Nothing interpolated here when there are no
 		   ;; subscripted variables.
 		   ,@(if (cdr subscripted-vars) `((progn ,@subscripted-vars-restore)))
 
-		   result)))
+		   (if result
+		       (car result)
+		       t))))
 	    'function)))))
 ;; coerce-float-fun must be given an expression and one or two other optional
 ;; arguments: a Maxima list of variables on which that expression depends
@@ -709,22 +691,19 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
   (let ((gensym-args (loop for x in args collect (gensym))))
     (coerce
       `(lambda ,gensym-args (declare (special ,@gensym-args))
+         ;; Just always try to convert the result to a float,
+         ;; which handles things like $%pi.  See also BUG
+         ;; https://sourceforge.net/p/maxima/bugs/1795/
          (let* (($ratprint nil)
                 ($numer t)
                 (*nounsflag* t)
-		(errorsw t)
-		(errcatch t))
-	   (declare (special errcatch))
-	   ;; Just always try to convert the result to a float,
-	   ;; which handles things like $%pi.  See also BUG
-	   ;; https://sourceforge.net/p/maxima/bugs/1795/
-	   ;;
-	   ;; Should we use HANDLER-CASE like we do above in
-	   ;; %coerce-float-fun?  Seems not necessary for what we want
-	   ;; to do.
-	   (catch 'errorsw
-	     (,float-fun
-	      (maybe-realpart (mapply ',expr (list ,@gensym-args) t))))))
+                ($errormsg nil)
+                (result
+                  (errcatch
+                    (,float-fun (maybe-realpart (mapply ',expr (list ,@gensym-args) t))))))
+           (if result
+               (car result)
+               t)))
       'function)))
 
 ;; Same as above, but call APPLY instead of MAPPLY.

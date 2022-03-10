@@ -51,6 +51,7 @@ Bug fixes for numbered bugs:
  * \#3820: testsuite with display_all = true
  * \#3838: limit(atan(sin(x)),x,inf,plus) --> atan(ind)
  * \#3844: Wrong limit involving gamma function
+ * \#3881: plot2d not ignoring errors within functions
  * \#3883: plot creates invalid gnuplot command
  * \#3907: gnuplot_postamble not actually the last Gnuplot output before plot
  * \#3936: plot2d sends invalid file to gnuplot
