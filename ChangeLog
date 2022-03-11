@@ -56,6 +56,8 @@ Bug fixes for numbered bugs:
  * \#3907: gnuplot_postamble not actually the last Gnuplot output before plot
  * \#3936: plot2d sends invalid file to gnuplot
  * \#3950: letsimp confuses symbols and nullary applications
+ * \#3952: plot2d clipping warnings not appearing
+ * \#3953: Pressing q necessary to continue when plot2d output to svg
 
 Unnumbered bugs fixed:
 ---------------------
