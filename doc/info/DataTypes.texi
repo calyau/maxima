@@ -149,7 +149,7 @@ Example:
 @c ===end===
 @example
 (%i1) ratepsilon:1e-4;
-(%o1)                         1.e-4
+(%o1)                         1.0e-4
 (%i2) rat(bfloat(11111/111111)), bftorat:false;
 `rat' replaced 9.99990999991B-2 by 1/10 = 1.0B-1
                                1
@@ -397,7 +397,8 @@ Examples:
 @c numberp (3.14159);
 @c numberp (-1729b-4);
 @c map (numberp, [%e, %pi, %i, %phi, inf, minf]);
-@c declare (a, even, b, odd, c, integer, d, rational, e, irrational, f, real, g, imaginary, h, complex);
+@c declare (a, even, b, odd, c, integer, d, rational,
+@c     e, irrational, f, real, g, imaginary, h, complex);
 @c map (numberp, [a, b, c, d, e, f, g, h]);
 @c ===end===
 @example
@@ -718,30 +719,33 @@ Examples:
 @end group
 @group
 (%i3) s_3 : "Embedded line termination
+in this string.";
 (%o3) Embedded line termination
 in this string.
 @end group
 @group
-(%i4) in this string.";
+(%i4) s_4 : "Ignore the \
+line termination \
+characters in \
+this string.";
 (%o4) Ignore the line termination characters in this string.
 @end group
 @group
-(%i5) s_4 : "Ignore the \
+(%i5) stringdisp : false;
 (%o5)                         false
 @end group
 @group
-(%i6) line termination \
+(%i6) s_1;
 (%o6)                   This is a string.
 @end group
 @group
-(%i7) characters in \
+(%i7) stringdisp : true;
 (%o7)                         true
 @end group
 @group
-(%i8) this string.";
+(%i8) s_1;
 (%o8)                  "This is a string."
 @end group
-(%i9) stringdisp : false;
 @end example
 
 @opencatbox{Categories:}
@@ -801,10 +805,8 @@ left-hand side.
 (%i7) y44;
 (%o7)                          123
 (%i8) b^a;
-@group
                                y44
 (%o8)                         b
-@end group
 (%i9) %, numer;
                                123
 (%o9)                         b
