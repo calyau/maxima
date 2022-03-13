@@ -1,6 +1,6 @@
 ;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2022-03-09 11:30:41 villate"
+;; Time-stamp: "2022-03-12 18:13:57 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -343,9 +343,12 @@
               (progn
                 (if meshcolor
                     (progn
-                      (format dest "set style line 100 lt rgb ~s lw 1~%"
+                      (format dest
+                              "if (GPVAL_VERSION < 5.0) set style line 100 lt rgb ~s lw 1; set pm3d hidden3d 100~%"
                               (rgb-color meshcolor))
-                      (format dest "set pm3d hidden3d 100~%")
+                      (format dest
+                              "if (GPVAL_VERSION >= 5.0) set pm3d hidden3d 100 border lw 0.5 lt rgb ~s~%"
+                              (rgb-color meshcolor))
                       (unless (getf plot-options :gnuplot_4_0)
                         (format dest "set pm3d depthorder~%")))
                     (format dest "set pm3d~%"))
