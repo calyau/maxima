@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-03-09 10:32:02 villate"
+;; Time-stamp: "2022-03-13 12:43:40 villate"
 
 (in-package :maxima)
 
@@ -168,6 +168,9 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 (defmfun $gnuplot_restart ()
   ($gnuplot_close)
   ($gnuplot_start))
+
+(defmfun $gnuplot_send (command)
+  (send-gnuplot-command command))
 
 (defun stop-gnuplot-process ()
   (unless (null *gnuplot-stream*)

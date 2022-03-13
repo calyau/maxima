@@ -1,4 +1,4 @@
-@c Time-stamp: "2021-05-18 21:10:18 villate"
+@c Time-stamp: "2022-03-13 12:28:43 villate"
 @menu
 * Introduction to Plotting::
 * Plotting Formats::
@@ -2266,6 +2266,19 @@ format.  Is not necessary to manually open the pipe before plotting.
 @deffn {Function} gnuplot_close ()
 
 Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes} format.
+
+@opencatbox{Categories:}
+@category{Plotting}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{gnuplot_send}
+@deffn {Function} gnuplot_send (@var{s})
+
+Sends the command @var{s} to the gnuplot pipe. If that pipe is not currently
+opened, it will be opened before sending the command. @var{s} must be a
+string.
 
 @opencatbox{Categories:}
 @category{Plotting}
