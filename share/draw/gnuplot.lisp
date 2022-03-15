@@ -1,6 +1,7 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
 ;;;  Copyright (C) 2007-2016 Mario Rodriguez Riotorto
+;;; Time-stamp: "2022-03-15 10:42:34 villate"
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -49,7 +50,7 @@
     ($screen
       ($multiplot_mode '$none)
       (send-gnuplot-command
-        (format nil "if(GPVAL_VERSION >= 5.0){set terminal x11 dashed ~a replotonresize~%set multiplot~%} else {set terminal x11 dashed ~a~%set multiplot~%}" (write-font-type) (write-font-type)))
+       (format nil "set terminal GPVAL_TERM dashed ~a~%set multiplot~%" (write-font-type)))
       (setf *multiplot-is-active* t))
     ($wxt
       ($multiplot_mode '$none)
@@ -3370,28 +3371,19 @@
                            (round (second (get-option '$dimensions)))))
 
         (otherwise
-          ;; If we arrive here, (get-option '$terminal) returned something unrecognized;
-          ;; at present (commit ccd8074, 2020-12-07) the following are accepted by
-          ;; UPDATE-TERMINAL, but not handled here: $obj $ply $pnm $screen $stl $tiff $vrml
-          (cond
-            ((string= *autoconf-windows* "true")  ; running on windows operating system
-              (format cmdstorage "set terminal windows enhanced ~a ~a size ~a, ~a~%"
+         ;; If we arrive here, (get-option '$terminal) returned something
+         ;; unrecognized; at present (commit ccd8074, 2020-12-07) the following
+         ;; are accepted by UPDATE-TERMINAL, but not handled here: $obj $ply
+         ;; $pnm $screen $stl $tiff $vrml
+         (unless (eq (get-option '$terminal) '$screen)
+           (mtell "draw: warning: I don't know about terminal '~m'; I'll try to restore the default.~%" (get-option '$terminal))
+           (mtell "draw: try this: set_draw_defaults(terminal = <something>);~%"))
+
+         (format cmdstorage "set terminal GPVAL_TERM ~a ~a size ~a, ~a~%"
                           *draw-terminal-number*
                           (write-font-type)
                           (round (first (get-option '$dimensions)))
-                          (round (second (get-option '$dimensions)))))
-            (t
-              ;; Non-Windows platform. There isn't any terminal specification which
-              ;; works across the board; in the absence of a terminal specification
-              ;; which is known to work, we must refrain altogether.
-              ;;
-              ;; Treat $SCREEN as a default option. Otherwise, complain.
-
-              (unless (eq (get-option '$terminal) '$screen)
-                (mtell "draw: warning: I don't know about terminal '~m'; I'll try to restore the default.~%" (get-option '$terminal))
-                (mtell "draw: try this: set_draw_defaults(terminal = <something>);~%"))
-
-              (format cmdstorage "set terminal pop~%"))))))
+                          (round (second (get-option '$dimensions)))))))
 
     ; compute some parameters for multiplot
     (when (and (not isanimatedgif) (not ismultipage))
@@ -3691,7 +3683,7 @@
          ($wxt      (setf str "wxt"))
          ($aquaterm (setf str "aquaterm"))
          ($qt       (setf str "qt"))
-         (otherwise (setf str "x11")))
+         (otherwise (setf str "GPVAL_TERM")))
       (send-gnuplot-command (format nil "set terminal ~a ~a~%" str num))   ))
 
 
