@@ -1,7 +1,7 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
 ;;;  Copyright (C) 2007-2016 Mario Rodriguez Riotorto
-;;; Time-stamp: "2022-03-15 10:42:34 villate"
+;;; Time-stamp: "2022-03-16 15:25:16 villate"
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -50,7 +50,7 @@
     ($screen
       ($multiplot_mode '$none)
       (send-gnuplot-command
-       (format nil "set terminal GPVAL_TERM dashed ~a~%set multiplot~%" (write-font-type)))
+       (format nil "set terminal @GNUTERM dashed ~a~%set multiplot~%" (write-font-type)))
       (setf *multiplot-is-active* t))
     ($wxt
       ($multiplot_mode '$none)
@@ -3379,7 +3379,7 @@
            (mtell "draw: warning: I don't know about terminal '~m'; I'll try to restore the default.~%" (get-option '$terminal))
            (mtell "draw: try this: set_draw_defaults(terminal = <something>);~%"))
 
-         (format cmdstorage "set terminal GPVAL_TERM ~a ~a size ~a, ~a~%"
+         (format cmdstorage "set terminal @GNUTERM ~a ~a size ~a, ~a~%"
                           *draw-terminal-number*
                           (write-font-type)
                           (round (first (get-option '$dimensions)))
@@ -3683,7 +3683,7 @@
          ($wxt      (setf str "wxt"))
          ($aquaterm (setf str "aquaterm"))
          ($qt       (setf str "qt"))
-         (otherwise (setf str "GPVAL_TERM")))
+         (otherwise (setf str "@GNUTERM")))
       (send-gnuplot-command (format nil "set terminal ~a ~a~%" str num))   ))
 
 
