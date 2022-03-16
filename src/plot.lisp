@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-03-13 12:43:40 villate"
+;; Time-stamp: "2022-03-16 11:54:44 villate"
 
 (in-package :maxima)
 
@@ -1798,7 +1798,10 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 
 (defun gnuplot-process (plot-options &optional file out-file)
   (let ((gnuplot-term (getf plot-options :gnuplot_term))
-        (run-viewer (getf plot-options :run_viewer)))
+        (run-viewer (getf plot-options :run_viewer))
+        #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
+		(gnuplot-preamble
+         (string-downcase (getf plot-options :gnuplot_preamble))))
 
     ;; creates the output file, when there is one to be created
     (when (and out-file (not (eq gnuplot-term '$default)))
@@ -1813,11 +1816,16 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     (when run-viewer
       (case gnuplot-term
         ($default
-         ($system $gnuplot_command
-                  #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
-                  (format nil " ~s &" file)
-                  #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
-                  file))
+         ;; the options given to gnuplot will be different when the user
+         ;; redirects the output by using "set output" in the preamble
+	 #+(or (and sbcl win32) (and sbcl win64) (and ccl windows))
+	 ($system $gnuplot_command "-persist" (format nil $gnuplot_file_args file))
+	 #-(or (and sbcl win32) (and sbcl win64) (and ccl windows))
+	 ($system 
+	  (format nil "~a ~a" $gnuplot_command
+		  (format nil (if (search "set out" gnuplot-preamble) 
+				  $gnuplot_file_args $gnuplot_view_args)
+			  file))))
         ($dumb
          (if out-file
              ($printfile (car out-file))
