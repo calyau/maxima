@@ -2756,3 +2756,20 @@ facts ();
  featurep (I, irrational)];
 [false, false, false, false];
 
+/* Bug #3934: expand(1/(1+%i)^4) => (-4)^(-1) (unsimplified) */
+
+expand((1+%i)^-2);
+-%i/2;
+
+expand(1/(1+%i)^4);
+-1/4;
+
+expand(4/(%i+1)^4)+1;
+0;
+
+expand(1/(1+%i)^8-1/16);
+0;
+
+expand((sqrt(-1/2)+sqrt(1/2))^-8);
+1;
+

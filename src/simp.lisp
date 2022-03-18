@@ -3287,7 +3287,7 @@
   (declare (fixnum power))
   (let ((expansion (exponentiate-sum (cdr sum) (abs power))))
     (cond ((plusp power) expansion)
-	  (t `((mexpt simp) ,expansion -1)))))
+	  (t (inv expansion)))))
 
 (defun exponentiate-sum (terms rpower)
   (declare (fixnum rpower))
