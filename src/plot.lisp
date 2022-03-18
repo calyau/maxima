@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-03-16 11:54:44 villate"
+;; Time-stamp: "2022-03-18 11:44:30 villate"
 
 (in-package :maxima)
 
@@ -76,10 +76,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
 ;; should be changed via set_plot_option
 
 (defvar *plot-options* 
-  `(:plot_format
-    ,(if (string= *autoconf-windows* "true")
-         '$gnuplot
-         '$gnuplot_pipes)
+  '(:plot_format $gnuplot_pipes
     :grid (30 30) :run_viewer t :axes t
     ;; With adaptive plotting, 29 nticks should be enough; adapt_depth
     ;; controls the number of splittings adaptive-plotting will do.
@@ -92,11 +89,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     :gnuplot_preamble "" :gnuplot_term $default))
 
 (defvar $plot_options 
-  `((mlist)
-    ((mlist) $plot_format
-     ,(if (string= *autoconf-windows* "true")
-          '$gnuplot
-          '$gnuplot_pipes))))
+  '((mlist) ((mlist) $plot_format $gnuplot_pipes)))
 
 ;; $plot_realpart option is false by default but *plot-realpart* is true
 ;; because coerce-float-fun is used outside of plot package too.
@@ -2082,12 +2075,6 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($noztics (setf (getf options :ztics) nil))
          (t
           (merror (intl:gettext "Unknown plot option \"~M\".") opt))))))
-  ;; plots that create a file work better in gnuplot than gnuplot_pipes
-  (when (and (eq (getf options :plot_format) '$gnuplot_pipes)
-             (or (eq (getf options :gnuplot_term) '$dumb)
-                 (getf options :pdf_file) (getf options :png_file)
-                 (getf options :ps_file) (getf options :svg_file)))
-    (setf (getf options :plot_format) '$gnuplot))
   options)
 
 ;; natural numbers predicate
