@@ -1108,7 +1108,15 @@
 	    ;; Return the result and the number of terms used for
 	    ;; helping in determining the series threshold and the
 	    ;; log-series threshold.
-	    (values sum k))
+	    ;;
+	    ;; Note that if z is real and less than 0, li[s](z) is
+	    ;; real.  The series can return a tiny complex value in
+	    ;; this case, so we want to clear that out before
+	    ;; returning the answer.
+	    (values (if (and (realp z) (minusp z))
+			(realpart sum)
+			sum)
+		    k))
 	(when *debug-li-eval*
 	  (format t "~3d: ~A / ~A = ~A~%" k top bot term))
 	(incf sum term)
@@ -1195,10 +1203,6 @@
 	  ((<= (abs z) series-threshold)
 	   (values (polylog-power-series s z)))
 	  ((<= (abs z) log-series-threshold)
-	   (let ((result (values (polylog-log-series s z))))
-	   ;; If z is real and less than 1, li[s] is real.  Make it so.
-	     (if (and (realp z) (< z 1))
-		 (realpart result)
-		 result)))
+	   (values (polylog-log-series s z)))
 	  ((> (abs z) 1.5)
 	   (polylog-inversion-formula s z)))))
