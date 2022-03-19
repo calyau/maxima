@@ -1,25 +1,25 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /lindstedt.texi/1.2/Sat Jun  2 00:13:23 2007//
 @menu
-* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lindstedt::
+* Funç@~{o}es e Vari@'{a}veis Definidas para lindstedt::
 @end menu
 
-@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lindstedt,  , lindstedt, lindstedt
-@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lindstedt
+@node Funç@~{o}es e Vari@'{a}veis Definidas para lindstedt,  , lindstedt, lindstedt
+@section Funç@~{o}es e Vari@'{a}veis Definidas para lindstedt
 
 
-@deffn {Fun@value{cedilha}@~{a}o} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
+@deffn {Funç@~{a}o} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
 Esse @'{e} um primeiro passo para um c@'{o}digo de Lindstedt.  Esse c@'{o}digo pode resolver problemas
-com condi@value{cedilha}@~{o}es iniciais fornecidas, @`as quais podem ser constantes arbitr@'{a}rias,
-(n@~{a}o apenas @var{%k1} e @var{%k2}) onde as condi@value{cedilha}@~{o}es iniciais sobre as equa@value{cedilha}@~{o}es
-de perturba@value{cedilha}@~{a}o s@~{a}o @math{z[i]=0, z'[i]=0} para @math{i>0}. @var{ic} @'{e} a lista de 
-condi@value{cedilha}@~{o}es iniciais.
+com condiç@~{o}es iniciais fornecidas, @`as quais podem ser constantes arbitr@'{a}rias,
+(n@~{a}o apenas @var{%k1} e @var{%k2}) onde as condiç@~{o}es iniciais sobre as equaç@~{o}es
+de perturbaç@~{a}o s@~{a}o @math{z[i]=0, z'[i]=0} para @math{i>0}. @var{ic} @'{e} a lista de 
+condiç@~{o}es iniciais.
 
-Problemas ocorrem quando condi@value{cedilha}@~{o}es iniciais n@~{a}o forem dadas, como as constantes
-nas equa@value{cedilha}@~{o}es de perturba@value{cedilha}@~{a}o s@~{a}o as mesmas que a solu@value{cedilha}@~{a}o da equa@value{cedilha}@~{a}o de
-ordem zero.  Tamb@'{e}m, problemas ocorrem quando as condi@value{cedilha}@~{o}es iniciais para as
-equa@value{cedilha}@~{o}es de perturba@value{cedilha}@~{a}o n@~{a}o s@~{a}o @math{z[i]=0, z'[i]=0} para @math{i>0}, tais como a
-equa@value{cedilha}@~{a}o de Van der Pol.
+Problemas ocorrem quando condiç@~{o}es iniciais n@~{a}o forem dadas, como as constantes
+nas equaç@~{o}es de perturbaç@~{a}o s@~{a}o as mesmas que a soluç@~{a}o da equaç@~{a}o de
+ordem zero.  Tamb@'{e}m, problemas ocorrem quando as condiç@~{o}es iniciais para as
+equaç@~{o}es de perturbaç@~{a}o n@~{a}o s@~{a}o @math{z[i]=0, z'[i]=0} para @math{i>0}, tais como a
+equaç@~{a}o de Van der Pol.
 
 Exemplo:
 @example
@@ -41,5 +41,5 @@ T = (- ---- - -- + 1) t]]
        3072   16
 @end example
 
-Para usar essa fun@value{cedilha}@~{a}o escreva primeiro @code{load("makeOrders")} e @code{load("lindstedt")}.
+Para usar essa funç@~{a}o escreva primeiro @code{load("makeOrders")} e @code{load("lindstedt")}.
 @end deffn

@@ -1,22 +1,22 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /lbfgs.texi/1.3/Sat Jun  2 00:13:23 2007//
 @menu
-* Introdu@value{cedilha}@~{a}o a lbfgs::
-* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lbfgs::
+* Introduç@~{a}o a lbfgs::
+* Funç@~{o}es e Vari@'{a}veis Definidas para lbfgs::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a lbfgs, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lbfgs, Top, Top
-@section Introdu@value{cedilha}@~{a}o a lbfgs
+@node Introduç@~{a}o a lbfgs, Funç@~{o}es e Vari@'{a}veis Definidas para lbfgs, Top, Top
+@section Introduç@~{a}o a lbfgs
 
-@code{lbfgs} @'{e} uma implementa@value{cedilha}@~{a}o do algor@'{i}tmo[1] L-BFGS (Broyden-Fletcher-Goldfarb-Shanno)
-para resolver problemas de minimiza@value{cedilha}@~{a}o n@~{a}o limitada atrav@'{e}s de um algor@'{i}tmo de mem@'{o}ria limitada quasi-Newton (BFGS).
-Esse algor@'{i}tmo @'{e} chamado de m@'{e}todo de mem@'{o}ria limitada porque uma aproxima@value{cedilha}@~{a}o de baixo ranque da
+@code{lbfgs} @'{e} uma implementaç@~{a}o do algor@'{i}tmo[1] L-BFGS (Broyden-Fletcher-Goldfarb-Shanno)
+para resolver problemas de minimizaç@~{a}o n@~{a}o limitada atrav@'{e}s de um algor@'{i}tmo de mem@'{o}ria limitada quasi-Newton (BFGS).
+Esse algor@'{i}tmo @'{e} chamado de m@'{e}todo de mem@'{o}ria limitada porque uma aproximaç@~{a}o de baixo ranque da
 inverso da matriz Hessiana @'{e} armazenado em lugar da inversa da matriz Hessiana completa.
 O programa foi escrito origin@'{a}riamente em Fortran [2] por Jorge Nocedal,
-incorporando algumas fun@value{cedilha}@~{o}es originalmente escritas por Jorge J. Mor@'{e} e David J. Thuente,
+incorporando algumas funç@~{o}es originalmente escritas por Jorge J. Mor@'{e} e David J. Thuente,
 e traduzidas para Lisp automaticamente atrav@'{e}s do programa @code{f2cl}.
 O pacote do Maxima @code{lbfgs} compreende o c@'{o}digo traduzido e adicionalmente
-uma interface de fun@value{cedilha}@~{a}o que gerencia alguns detallhes.
+uma interface de funç@~{a}o que gerencia alguns detallhes.
 
 Refer@^{e}ncias:
 
@@ -25,22 +25,22 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
 [2] http://netlib.org/opt/lbfgs_um.shar
 
-@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lbfgs, , Introdu@value{cedilha}@~{a}o a lbfgs, Top
-@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para lbfgs
+@node Funç@~{o}es e Vari@'{a}veis Definidas para lbfgs, , Introduç@~{a}o a lbfgs, Top
+@section Funç@~{o}es e Vari@'{a}veis Definidas para lbfgs
 
-@deffn {Fun@value{cedilha}@~{a}o} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffn {Funç@~{a}o} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 
-Encontra uma solu@value{cedilha}@~{a}o aproximada da minimiza@value{cedilha}@~{a}o n@~{a}o limitada de n@'{u}mero de m@'{e}rito @var{FOM}
+Encontra uma soluç@~{a}o aproximada da minimizaç@~{a}o n@~{a}o limitada de n@'{u}mero de m@'{e}rito @var{FOM}
 sobre a lista de vari@'{a}veis @var{X},
-come@value{cedilha}ando a partir da estimativa inicial @var{X0},
+começando a partir da estimativa inicial @var{X0},
 tal que @math{norm grad FOM < epsilon max(1, norm X)}.
 
 O algor@'{i}tmo aplicado @'{e} um algor@'{i}tmo de mem@'{o}ria limitada[1] quasi-Newton (BFGS).
-Esse algor@'{i}tmo @'{e} chamado de m@'{e}todo de mem@'{o}ria limitada porque uma aproxima@value{cedilha}@~{a}o de baixo ranque da
+Esse algor@'{i}tmo @'{e} chamado de m@'{e}todo de mem@'{o}ria limitada porque uma aproximaç@~{a}o de baixo ranque da
 inverso da matriz Hessiana @'{e} armazenado em lugar da inversa da matriz Hessiana completa.
-Cada itera@value{cedilha}@~{a}o do algor@'{i}tmo @'{e} uma busca de linha, isto @'{e},
+Cada iteraç@~{a}o do algor@'{i}tmo @'{e} uma busca de linha, isto @'{e},
 uma busca ao longo de um raio em torno da vari@'{a}veis @var{X},
-com a dire@value{cedilha}@~{a}o de busca calculada a partir da Hessian inversa aproximada.
+com a direç@~{a}o de busca calculada a partir da Hessian inversa aproximada.
 O FOM @'{e} sempre decrementado por meio de uma busca de linha realizada com sucesso.
 Usualmente (mas n@~{a}o sempre) a norma do gradiente de FOM tamb@'{e}m @'{e} decrementada.
 
@@ -53,22 +53,22 @@ Usualmente (mas n@~{a}o sempre) a norma do gradiente de FOM tamb@'{e}m @'{e} dec
 @item iprint[1] < 0
 Nenhuma mensagem de progresso.
 @item iprint[1] = 0
-Messagens na primeira itera@value{cedilha}@~{a}o e na @'{u}ltima itera@value{cedilha}@~{a}o.
+Messagens na primeira iteraç@~{a}o e na @'{u}ltima iteraç@~{a}o.
 @item iprint[1] > 0
-Mostra uma mensagem a cada @code{@var{iprint}[1]} itera@value{cedilha}@~{o}es.
+Mostra uma mensagem a cada @code{@var{iprint}[1]} iteraç@~{o}es.
 @end table
 @item iprint[2]
-@code{@var{iprint}[2]} controla a quantidade de informa@value{cedilha}@~{o}es fornecidas pelas mensagens de progresso (verbosidade).
+@code{@var{iprint}[2]} controla a quantidade de informaç@~{o}es fornecidas pelas mensagens de progresso (verbosidade).
 @table @code
 @item iprint[2] = 0
-Mostra na tela o contador de itera@value{cedilha}@~{o}es, o n@'{u}mero de avalia@value{cedilha}@~{o}es de @var{FOM}, o valor de @var{FOM},
+Mostra na tela o contador de iteraç@~{o}es, o n@'{u}mero de avaliaç@~{o}es de @var{FOM}, o valor de @var{FOM},
 a norma do gradiente de @var{FOM}, e o comprimento do salto.
 @item iprint[2] = 1
 O mesmo que @code{@var{iprint}[2] = 0}, adicionando @var{X0} e o gradiente de @var{FOM} avaliado em @var{X0}.
 @item iprint[2] = 2
-O mesmo que @code{@var{iprint}[2] = 1}, adicionando valores de @var{X} a cada itera@value{cedilha}@~{a}o.
+O mesmo que @code{@var{iprint}[2] = 1}, adicionando valores de @var{X} a cada iteraç@~{a}o.
 @item iprint[2] = 3
-O mesmo que @code{@var{iprint}[2] = 2}, adicionando o gradiente de @var{FOM} a cada itera@value{cedilha}@~{a}o.
+O mesmo que @code{@var{iprint}[2] = 2}, adicionando o gradiente de @var{FOM} a cada iteraç@~{a}o.
 @end table
 @end table
 
@@ -76,9 +76,9 @@ As colunas mostradas por @code{lbfgs} s@~{a}o as seguintes.
 
 @table @code
 @item I
-n@'{u}mero de itera@value{cedilha}@~{o}es. Esse n@'{u}mero @'{e} incrementado a cada busca de linha.
+n@'{u}mero de iteraç@~{o}es. Esse n@'{u}mero @'{e} incrementado a cada busca de linha.
 @item NFN
-N@'{u}mero de avalia@value{cedilha}@~{o}es do n@'{u}mero de m@'{e}rito.
+N@'{u}mero de avaliaç@~{o}es do n@'{u}mero de m@'{e}rito.
 @item FUNC
 Valor do nero de m@'{e}rito ao final da busca de linha mais recente.
 @item GNORM
@@ -87,7 +87,7 @@ Norma do gradiente do n@'{u}mero de m@'{e}rito ao final da mais recente busca de
 Um par@^{a}metro interno do algor@'{i}tmo de busca.
 @end table
 
-Informa@value{cedilha}@~{a}o adicional com rela@value{cedilha}@~{a}o a detalhes do algor@'{i}tmo podem ser encontradas nos
+Informaç@~{a}o adicional com relaç@~{a}o a detalhes do algor@'{i}tmo podem ser encontradas nos
 coment@'{a}rios do c@'{o}digo Fortran original em [2].
 
 Veja tamb@'{e}m @code{lbfgs_nfeval_max} e @code{lbfgs_ncorrections}.
@@ -196,7 +196,7 @@ u  = 1.000005339815974, u  = 1.000009942839805]
 @defvr {Vari@~{a}vel} lbfgs_nfeval_max
 Valor padr@~{a}o: 100
 
-@code{lbfgs_nfeval_max} @'{e} o n@'{u}mero m@'{a}ximo de avalia@value{cedilha}@~{o}es do n@'{u}mero de m@'{e}rito (FOM - "figure of merit" em ingl@^{e}s) em @code{lbfgs}.
+@code{lbfgs_nfeval_max} @'{e} o n@'{u}mero m@'{a}ximo de avaliaç@~{o}es do n@'{u}mero de m@'{e}rito (FOM - "figure of merit" em ingl@^{e}s) em @code{lbfgs}.
 Quando @code{lbfgs_nfeval_max} for encontrada,
 @code{lbfgs} retorna o resultado da @'{u}ltima busca de linha realizada co sucesso.
 
@@ -205,7 +205,7 @@ Quando @code{lbfgs_nfeval_max} for encontrada,
 @defvr {Vari@~{a}vel} lbfgs_ncorrections
 Valor padr@~{a}o: 25
 
-@code{lbfgs_ncorrections} @'{e} o n@'{u}mero de corre@value{cedilha}@~{o}es aplicadas
+@code{lbfgs_ncorrections} @'{e} o n@'{u}mero de correç@~{o}es aplicadas
 @`{a} matriz Hessiana inversa aproximada que @'{e} mantida por @code{lbfgs}.
 
 @end defvr

@@ -4,13 +4,13 @@
 @hyphenation{ca-rac-te-res}
 @end iftex
 @menu
-* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Montagem de Gr@'{a}ficos::    
+* Funç@~{o}es e Vari@'{a}veis Definidas para Montagem de Gr@'{a}ficos::    
 @end menu
 
-@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Montagem de Gr@'{a}ficos,  , Montando Gr@'{a}ficos, Montando Gr@'{a}ficos
-@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Montagem de Gr@'{a}ficos
+@node Funç@~{o}es e Vari@'{a}veis Definidas para Montagem de Gr@'{a}ficos,  , Montando Gr@'{a}ficos, Montando Gr@'{a}ficos
+@section Funç@~{o}es e Vari@'{a}veis Definidas para Montagem de Gr@'{a}ficos
 
-@deffn {Fun@value{cedilha}@~{a}o} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{op@value{cedilha}@~{o}es}, ...)
+@deffn {Funç@~{a}o} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{opç@~{o}es}, ...)
 
 Monta gr@'{a}ficos de contorno (curvas de n@'{i}vel) de @var{expr}
 sobre a regi@~{a}o @var{x_range} por @var{y_range}.
@@ -65,18 +65,18 @@ caso contr@'{a}rio @code{in_netmath} (mesmo se @code{true}) n@~{a}o tem efeito.
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} plot2d (@var{expr}, @var{x_range}, ..., @var{op@value{cedilha}@~{o}es}, ...)
-@deffnx {Fun@value{cedilha}@~{a}o} plot2d ([@var{expr_1}, ..., @var{expr_n}], ..., @var{op@value{cedilha}@~{o}es}, ...)
-@deffnx {Fun@value{cedilha}@~{a}o} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range},..., @var{op@value{cedilha}@~{o}es}, ...)
+@deffn {Funç@~{a}o} plot2d (@var{expr}, @var{x_range}, ..., @var{opç@~{o}es}, ...)
+@deffnx {Funç@~{a}o} plot2d ([@var{expr_1}, ..., @var{expr_n}], ..., @var{opç@~{o}es}, ...)
+@deffnx {Funç@~{a}o} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range},..., @var{opç@~{o}es}, ...)
 
 onde @var{expr}, @var{expr_1}, ..., @var{expr_n} pode ser uma entre
-express@~{o}es, ou fun@value{cedilha}@~{o}es do Lisp ou do Maxima ou operadores, ou uma lista com
+express@~{o}es, ou funç@~{o}es do Lisp ou do Maxima ou operadores, ou uma lista com
 qualquer das formas: @code{[discrete, [@var{x1}, ..., @var{xn}],
 [@var{y1}, ..., @var{yn}]]}, @code{[discrete, [[@var{x1}, @var{y1}],
 ..., [@var{xn}, ..., @var{yn}]]} ou @code{[parametric, @var{x_expr},
 @var{y_expr}, @var{t_range}]}.
 
-Mostra um gr@'{a}fico de uma ou mais express@~{o}es como uma fun@value{cedilha}@~{a}o de uma
+Mostra um gr@'{a}fico de uma ou mais express@~{o}es como uma funç@~{a}o de uma
 vari@'{a}vel.
 
 @code{plot2d} monta o gr@'{a}fico da express@~{a}o @var{expr} ou muitas express@~{o}es
@@ -102,33 +102,33 @@ com coordenadas (@var{x_expr}, @var{y_expr}) com @var{param} variando
 de @var{min} a @var{max}.
 
 O intervalo do eixo vertical n@~{a}o @'{e} obrigat@'{o}rio. @'{E} somente mais uma das
-op@value{cedilha}@~{o}es para o comando, com a sintaxe: @code{[y, @var{min},
-@var{max}]}. Se aquela op@value{cedilha}@~{a}o for usada, o gr@'{a}fico ir@'{a} mostrar aquele intervalo
+opç@~{o}es para o comando, com a sintaxe: @code{[y, @var{min},
+@var{max}]}. Se aquela opç@~{a}o for usada, o gr@'{a}fico ir@'{a} mostrar aquele intervalo
 completo, mesmo se a express@~{a}o n@~{a}o ocupe todo aquele intervalo. De outra forma,
 se um intervalo vertical n@~{a}o for especificado atrav@'{e}s de @code{set_plot_option}, as
 extremidade do eixo vertical ser@~{a}o encontrada automaticamente.
 
-Todas as outras op@value{cedilha}@~{o}es podem tamb@'{e}m serem listas, iniciando-se com o nome da
-op@value{cedilha}@~{a}o. A op@value{cedilha}@~{a}o @var{xlabel} pode ser usada para fornecer um @'{o}tulo para o
-eixo horizontal; se aquela op@value{cedilha}@~{a}o n@~{a}o for usada, o eixo horizontal ir@'{a}
+Todas as outras opç@~{o}es podem tamb@'{e}m serem listas, iniciando-se com o nome da
+opç@~{a}o. A opç@~{a}o @var{xlabel} pode ser usada para fornecer um @'{o}tulo para o
+eixo horizontal; se aquela opç@~{a}o n@~{a}o for usada, o eixo horizontal ir@'{a}
 ser rotulado com o nome da vari@'{a}vel especificada em @var{x_range}, ou
 com a express@~{a}o @var{x_expr} no caso de apenas uma express@~{a}o
 param@'{e}trica, ou isso ir@'{a} ser deichado em branco de outra forma.
 
-Um r@'{o}tulo para o eixo vertical pode ser fornecido com a op@value{cedilha}@~{a}o
+Um r@'{o}tulo para o eixo vertical pode ser fornecido com a opç@~{a}o
 @var{ylabel}. Se existir somente uma express@~{a}o a ser montado o gr@'{a}fico e a
-op@value{cedilha}@~{a}o @var{ylabel} n@~{a}o tiver sido usada, o eixo vertical ir@'{a} ser rotulado com
+opç@~{a}o @var{ylabel} n@~{a}o tiver sido usada, o eixo vertical ir@'{a} ser rotulado com
 aquela express@~{a}o, a menos que ela seja muito larga, ou com a express@~{a}o
 @var{y_expr} se a express@~{a}o for param@'{e}trica, ou com o texto
 ``discrete data'' se a express@~{a}o for discreta.
 
-As op@value{cedilha}@~{o}es @code{[logx]} e @code{[logy]} n@~{a}o precisam de quaisquer
+As opç@~{o}es @code{[logx]} e @code{[logy]} n@~{a}o precisam de quaisquer
 par@^{a}metros. Elas ir@~{a}o tornar os eixos horizontal e vertical sejam
 escritos em escala logar@'{i}tmica.
 
 Se houverem muitas express@~{o}es para serem montados os gr@'{a}ficos respectivos, uma legenda ir@'{a} ser
 escrita para identificar cada uma das express@~{o}es. Os r@'{o}tulos que podem ser
-usados naquela legenda podem ser fornecidos com a op@value{cedilha}@~{a}o @var{legend}. Se a op@value{cedilha}@~{a}o @var{legend}
+usados naquela legenda podem ser fornecidos com a opç@~{a}o @var{legend}. Se a opç@~{a}o @var{legend}
 n@~{a}o for usada, Maxima ir@'{a} criar r@'{o}tulos a partir das express@~{o}es.
 
 Por padr@~{a}o, as express@~{o}es ter@~{a}o seus gr@'{a}ficos montados como um conjunto de segmentos de reta
@@ -136,24 +136,24 @@ saltando pontos adjacentes dentro de um conjunt de pontos que @'{e} um dos forne
 a forma @var{discrete}, ou calculado automaticamente a partir da express@~{a}o
 fornecida, usando um algor@'{i}tmo que automaticamente adapta os passos entre
 os pontos usando como uma estimativa inicial do total n@'{u}mero de pontos
-o conjunto de valores com a op@value{cedilha}@~{a}o @var{nticks}. A op@value{cedilha}@~{a}o @var{style} pode ser
+o conjunto de valores com a opç@~{a}o @var{nticks}. A opç@~{a}o @var{style} pode ser
 usada para fazer uma das express@~{o}es serem representadas como um conjunto de
 pontos isolados, ou como pontos e segmentos de reta.
 
-Existem muitas op@value{cedilha}@~{o}es globais armazenadas na lsita @var{plot_options}
-que pode ser modificada com a fun@value{cedilha}@~{a}o @code{set_plot_option}; qualque
-daquelas op@value{cedilha}@~{o}es globais pode ser sobrescrita com op@value{cedilha}@~{o}es fornecidas no
+Existem muitas opç@~{o}es globais armazenadas na lsita @var{plot_options}
+que pode ser modificada com a funç@~{a}o @code{set_plot_option}; qualque
+daquelas opç@~{o}es globais pode ser sobrescrita com opç@~{o}es fornecidas no
 comando @var{plot2d}.
 
-Uma fun@value{cedilha}@~{a}o a ter seu gr@'{a}fico montado pode ser especificada como o nome de uma fun@value{cedilha}@~{a}o
+Uma funç@~{a}o a ter seu gr@'{a}fico montado pode ser especificada como o nome de uma funç@~{a}o
 do Maxima ou do Lisp ou um operador, uma express@~{a}o lambda do Maxima, ou uma express@~{a}o
 geral do Maxima.  Se especificado como um nome ou uma express@~{a}o lambda, a
-fun@value{cedilha}@~{a}o deve ser uma fun@value{cedilha}@~{a}o de um argumento.
+funç@~{a}o deve ser uma funç@~{a}o de um argumento.
 
 @c PUT EXAMPLES FOR PRECEDING SIMPLE FORMS OF plot2d HERE
 @b{Exemplos:}
 
-Gr@'{a}ficos de fun@value{cedilha}@~{o}es comuns.
+Gr@'{a}ficos de funç@~{o}es comuns.
 
 @c ===beg===
 @c plot2d (sin(x), [x, -%pi, %pi])$
@@ -177,7 +177,7 @@ Gr@'{a}ficos de fun@value{cedilha}@~{o}es comuns.
 @image{@value{figuresfolder}/plotting7,8cm}
 @end ifnotinfo
 
-Montando gr@'{a}fico de fun@value{cedilha}@~{o}es pelo nome.
+Montando gr@'{a}fico de funç@~{o}es pelo nome.
 
 @c ===beg===
 @c F(x) := x^2 $
@@ -202,7 +202,7 @@ $g
 Podemos montar o gr@'{a}fico de um c@'{i}rculo usando um gr@'{a}fico param@'{e}trico com um par@^{a}metro
 @var{t}. N@~{a}o @'{e} necess@'{a}rio fornecer um intervalo para intervalo horizontal,
 uma vez que o intervalo do par@^{a}metro @var{t} determina o
-dom@'{i}nio. Todavia, usaremos a op@value{cedilha}@~{a}o 
+dom@'{i}nio. Todavia, usaremos a opç@~{a}o 
 @var{same_xy} para obter a mesma escala em ambos os eixos:
 
 @c ===beg===
@@ -248,7 +248,7 @@ Exemplo de gr@'{a}fico discreto, definindo as coordenadas x e y por separado:
 @end ifnotinfo
 
 O gr@'{a}fico de pontos pode ser mostrado juntamente com um gr@'{a}fico da
-fun@value{cedilha}@~{a}o teor@'{e}tica/doutrin@'{a}ria/est@'{e}tica que prev@^{e} as coordenads dos pontos:
+funç@~{a}o teor@'{e}tica/doutrin@'{a}ria/est@'{e}tica que prev@^{e} as coordenads dos pontos:
 
 @c ===beg===
 @c xy: [[10, .6], [20, .9], [30, 1.1], [40, 1.3], [50, 1.4]]$
@@ -275,28 +275,28 @@ fun@value{cedilha}@~{a}o teor@'{e}tica/doutrin@'{a}ria/est@'{e}tica que prev@^{e
 @image{@value{figuresfolder}/plotting16,8cm}
 @end ifnotinfo
 
-Veja tamb@'{e}m @code{plot_options}, que descreve op@value{cedilha}@~{o}es de montagem de gr@'{a}fico e tem mais exemplos.
+Veja tamb@'{e}m @code{plot_options}, que descreve opç@~{o}es de montagem de gr@'{a}fico e tem mais exemplos.
 
 @end deffn
 
 
 @defvr {Vari@'{a}vel de sistema} plot_options
-Elementos dessa lista estabelecem as op@value{cedilha}@~{o}es padr@~{a}o para a montagem do gr@'{a}fico.
-Se uma op@value{cedilha}@~{a}o est@'{a} presente em uma chamada a @code{plot2d} ou @code{plot3d},
-esse valor tem preced@^{e}ncia sobre a op@value{cedilha}@~{a}o padr@~{a}o.
+Elementos dessa lista estabelecem as opç@~{o}es padr@~{a}o para a montagem do gr@'{a}fico.
+Se uma opç@~{a}o est@'{a} presente em uma chamada a @code{plot2d} ou @code{plot3d},
+esse valor tem preced@^{e}ncia sobre a opç@~{a}o padr@~{a}o.
 De outra forma, o valor em @code{plot_options} @'{e} usado.
-Op@value{cedilha}@~{o}es padr@~{a}o s@~{a}o atribu@'{i}das por @code{set_plot_option}.
+Opç@~{o}es padr@~{a}o s@~{a}o atribu@'{i}das por @code{set_plot_option}.
 
 Cada elemento de @code{plot_options} @'{e} uma lista de dois ou mais @'{i}tens.
-O primeiro item @'{e} o nome de uma op@value{cedilha}@~{a}o, e os restantes compreendem o valor ou valores
-atribu@'{i}dos @`a op@value{cedilha}@~{a}o.
+O primeiro item @'{e} o nome de uma opç@~{a}o, e os restantes compreendem o valor ou valores
+atribu@'{i}dos @`a opç@~{a}o.
 Em alguns casos, o valor atribu@'{i}do @'{e} uma lista, que pode compreender muitos @'{i}tens.
 
-As op@value{cedilha}@~{o}es de montagem de gr@'{a}fico que s@~{a}o reconhecidas por @code{plot2d} e @code{plot3d} s@~{a}o as seguintes:
+As opç@~{o}es de montagem de gr@'{a}fico que s@~{a}o reconhecidas por @code{plot2d} e @code{plot3d} s@~{a}o as seguintes:
 
 @itemize @bullet
 @item
-Op@value{cedilha}@~{a}o: @code{plot_format}
+Opç@~{a}o: @code{plot_format}
 
 Determina qual interface gr@'{a}fica @'{e} usada por @code{plot2d} e por
 @code{plot3d}.
@@ -305,21 +305,21 @@ Determina qual interface gr@'{a}fica @'{e} usada por @code{plot2d} e por
 @item
 Valor: @code{gnuplot} padr@~{a}o para windows
 
-Gnuplot @'{e} o mais avan@value{cedilha}ado pacote de montagem de gr@'{a}ficos entre os pacotes
-dispon@'{i}veis no Maxima. Esse valor requer uma instala@value{cedilha}@~{a}o externa do gnuplot.
+Gnuplot @'{e} o mais avançado pacote de montagem de gr@'{a}ficos entre os pacotes
+dispon@'{i}veis no Maxima. Esse valor requer uma instalaç@~{a}o externa do gnuplot.
 @item
 Valor: @code{gnuplot_pipes} padr@~{a}o nas plantaformas n@~{a}o windows
 
-Similar ao formato @code{gnuplot} exceto que a comunica@value{cedilha}@~{a}o com o
+Similar ao formato @code{gnuplot} exceto que a comunicaç@~{a}o com o
 gnuplot @'{e} realizada atrav@'{e}s de um pipe. Esse valor pode ser usado para montar um gr@'{a}fico na tela,
 para redirecionar a sa@'{i}da do gr@'{a}fico para um arquivos @'{e} melhor usar o formato @code{gnuplot}.
 @item
 Valor: @code{mgnuplot}
 
 Mgnuplot @'{e} um ambiente montado em volta do gnuplot baseado no Tk.  Esse ambiente est@'{a} inclu@'{i}do na
-distribu@'{i}@value{cedilha}@~{a}o do Maxima.  Mgnuplot oferece uma GUI rudimentar para o gnuplot,
+distribu@'{i}ç@~{a}o do Maxima.  Mgnuplot oferece uma GUI rudimentar para o gnuplot,
 mas tem menos recursos em geral que a interface plana do
-gnuplot.  Mgnuplot requer uma instala@value{cedilha}@~{a}o externa do gnuplot e
+gnuplot.  Mgnuplot requer uma instalaç@~{a}o externa do gnuplot e
 Tcl/Tk.
 @item
 Valor: @code{openmath}
@@ -332,7 +332,7 @@ o Maxima.
 @end itemize
 
 @item
-Op@value{cedilha}@~{a}o: @code{run_viewer}
+Opç@~{a}o: @code{run_viewer}
 
 Controla se o visualizador apropriado para o formato da montagem do gr@'{a}fico pode ou n@~{a}o
 ser executado.
@@ -350,7 +350,7 @@ N@~{a}o executa o programa visualizador.
 @end itemize
 
 @item
-Op@value{cedilha}@~{a}o: @code{y}
+Opç@~{a}o: @code{y}
 
 O intervalo vertical do gr@'{a}fico.
 
@@ -362,7 +362,7 @@ Exemplo:
 Especifica intervalo vertical para [-3, 3].
 
 @item
-Op@value{cedilha}@~{a}o: @code{plot_realpart}
+Opç@~{a}o: @code{plot_realpart}
 
 Quando @code{plot_realpart} for @code{true},
 a parte real de um valor complexo @var{x} @'{e} mostrada;
@@ -380,10 +380,10 @@ plot2d (log(x), [x, -5, 5], [plot_realpart, true]);
 O valor padr@~{a}o @'{e} @code{false}.
 
 @item
-Op@value{cedilha}@~{a}o: @code{nticks}
+Opç@~{a}o: @code{nticks}
 
-Em plot2d, essa op@value{cedilha}@~{a}o @'{e} fornece o n@'{u}mero inicial de pontos usado pela
-rotina adaptativa de montagem de gr@'{a}ficos para fun@value{cedilha}@~{o}es de montagem de gr@'{a}fico. Ess n@'{u}mero inicial de pontos @'{e} tamb@'{e}m
+Em plot2d, essa opç@~{a}o @'{e} fornece o n@'{u}mero inicial de pontos usado pela
+rotina adaptativa de montagem de gr@'{a}ficos para funç@~{o}es de montagem de gr@'{a}fico. Ess n@'{u}mero inicial de pontos @'{e} tamb@'{e}m
 o n@'{u}mero de pontos que isr@'{a} ser mostrado em um gr@'{a}fico param@'{e}trico.
 
 Exemplo:
@@ -394,7 +394,7 @@ Exemplo:
 O padr@~{a}o para @code{nticks} @'{e} 10.
 
 @item
-Op@value{cedilha}@~{a}o: @code{adapt_depth}
+Opç@~{a}o: @code{adapt_depth}
 
 O n@'{u}mero maximo de quebras usada pela rotina adaptativa de montagem do gr@'{a}fico.
 
@@ -406,7 +406,7 @@ Exemplo:
 O padr@~{a}o para @code{adapt_depth} @'{e} 10.
 
 @item
-Op@value{cedilha}@~{a}o: @code{xlabel}
+Opç@~{a}o: @code{xlabel}
 
 O r@'{o}tulo para o eixo horizontal em um gr@'{a}fico bidimensional.
 
@@ -416,7 +416,7 @@ Exemplo:
 @end example
 
 @item
-Op@value{cedilha}@~{a}o: @code{ylabel}
+Opç@~{a}o: @code{ylabel}
 
 O r@'{o}tulo do eixo vertical em gr@'{a}ficos bidimensionais.
 
@@ -426,24 +426,24 @@ Exemplo:
 @end example
 
 @item
-Op@value{cedilha}@~{a}o: @code{logx}
+Opç@~{a}o: @code{logx}
 
-Essa op@value{cedilha}@~{a}o faz com que o eixo horizontal de um gr@'{a}fico bidimensional seja desenhado
-em propor@value{cedilha}@~{a}o logar@'{i}tmica. Essa op@value{cedilha}@~{a}o n@~{a}o precisa de quaisquer par@^{a}metros adicionais.
-
-@item
-Op@value{cedilha}@~{a}o: @code{logy}
-
-Essa op@value{cedilha}@~{a}o faz com que o eixo vertical de um gr@'{a}fico bidimensional seja desenhado
-em propor@value{cedilha}@~{a}o logar@'{i}tmica. Essa op@value{cedilha}@~{a}o n@~{a}o precisa de quaisquer par@^{a}metros adicionais.
+Essa opç@~{a}o faz com que o eixo horizontal de um gr@'{a}fico bidimensional seja desenhado
+em proporç@~{a}o logar@'{i}tmica. Essa opç@~{a}o n@~{a}o precisa de quaisquer par@^{a}metros adicionais.
 
 @item
-Op@value{cedilha}@~{a}o: @code{legend}
+Opç@~{a}o: @code{logy}
+
+Essa opç@~{a}o faz com que o eixo vertical de um gr@'{a}fico bidimensional seja desenhado
+em proporç@~{a}o logar@'{i}tmica. Essa opç@~{a}o n@~{a}o precisa de quaisquer par@^{a}metros adicionais.
+
+@item
+Opç@~{a}o: @code{legend}
 
 Os r@'{o}tulos para v@'{a}rias express@~{o}es em um gr@'{a}fico bidimensional com muitas
 express@~{o}es. Se houverem mais express@~{o}es que o n@'{u}mero de r@'{o}tulos
 fornecidos, eles ir@~{a}o ser repetidos. Por padr@~{a}o, os nomes das express@~{o}es
-ou fun@value{cedilha}@~{o}e ir@~{a}o ser usados, ou as palavras discrete1, discrete2, ..., para
+ou funç@~{o}e ir@~{a}o ser usados, ou as palavras discrete1, discrete2, ..., para
 conjuntos discretos de pontos.
 
 Exemplo:
@@ -452,11 +452,11 @@ Exemplo:
 @end example
 
 @item
-Op@value{cedilha}@~{a}o: @code{style}
+Opç@~{a}o: @code{style}
 
-Os estilos que ir@~{a}o ser usados para v@'{a}rias fun@value{cedilha}@~{o}es ou conjuntos de dados
+Os estilos que ir@~{a}o ser usados para v@'{a}rias funç@~{o}es ou conjuntos de dados
 em um gr@'{a}fico bidimensional. A palavra @var{style} deve ser seguida por um ou mais
-estilos. Se houverem mais fun@value{cedilha}@~{o}es e conjuntos de pontos que estilos
+estilos. Se houverem mais funç@~{o}es e conjuntos de pontos que estilos
 fornecidos, os estilos ir@~{a}o ser repetidos. Cada estilo pode ser um entre os seguintes
 @var{lines} para segmentos de reta, @var{points} para pontos isolados,
 @var{linespoints} para segmentos e pontos, ou @var{dots} para pequenos
@@ -485,13 +485,13 @@ largura 2, e o segundo com pontos alaranjados de raio 1; note que
 openmath_color(3) openmath_color(4) retornam ``magenta'' e
 ``orange'' (alaranjado).
 
-O padr@~{a}o para a op@value{cedilha}@~{a}o de estilo @'{e} @var{lines} com largura 1, e
+O padr@~{a}o para a opç@~{a}o de estilo @'{e} @var{lines} com largura 1, e
 diferentes cores.
 
 @item
-Op@value{cedilha}@~{a}o: @code{grid}
+Opç@~{a}o: @code{grid}
 
-Escolhe o n@'{u}mero de pontos da grade para usar nas dire@value{cedilha}@~{o}es x e y
+Escolhe o n@'{u}mero de pontos da grade para usar nas direç@~{o}es x e y
 para montagem de gr@'{a}ficos tridimensionais.
 
 Exemplo:
@@ -501,9 +501,9 @@ Exemplo:
 Escolhe a grade para 50 por 50 pontos.  A grade padr@~{a}o @'{e} 30 por 30.
 
 @item
-Op@value{cedilha}@~{a}o: @code{transform_xy}
+Opç@~{a}o: @code{transform_xy}
 
-Permite que transforma@value{cedilha}@~{o}es sejam aplicadas @`a montagem de gr@'{a}ficos tridimensionais.
+Permite que transformaç@~{o}es sejam aplicadas @`a montagem de gr@'{a}ficos tridimensionais.
 
 Exemplo:
 @example
@@ -515,22 +515,22 @@ a sa@'{i}da de
 @example
 make_transform ([x, y, z], f1(x, y, z), f2(x, y, z), f3(x, y, z))$
 @end example
-A transforma@value{cedilha}@~{a}o @code{polar_xy} @'{e} previamente definida no Maxima.  Isso fornece a mesma
-transforma@value{cedilha}@~{a}o que
+A transformaç@~{a}o @code{polar_xy} @'{e} previamente definida no Maxima.  Isso fornece a mesma
+transformaç@~{a}o que
 @example
 make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @end example
 @end itemize
 
-@b{Op@value{cedilha}@~{o}es do Gnuplot:}
+@b{Opç@~{o}es do Gnuplot:}
 
-Existem muitas op@value{cedilha}@~{o}es de montagem de gr@'{a}fico espec@'{i}ficas para gnuplot.  Algumas dessas
-op@value{cedilha}@~{o}es s@~{a}o naturais do gnuplot, especificados como seq@"{u}@^{e}ncias de caracteres. Consulte a
-documenta@value{cedilha}@~{a}o do gnuplot para mais detalhes.
+Existem muitas opç@~{o}es de montagem de gr@'{a}fico espec@'{i}ficas para gnuplot.  Algumas dessas
+opç@~{o}es s@~{a}o naturais do gnuplot, especificados como seq@"{u}@^{e}ncias de caracteres. Consulte a
+documentaç@~{a}o do gnuplot para mais detalhes.
 
 @itemize @bullet
 @item
-Op@value{cedilha}@~{a}o: @code{gnuplot_term}
+Opç@~{a}o: @code{gnuplot_term}
 
 Escolhe a sa@'{i}da para o tipo terminal para o gnuplot.
 @itemize @bullet
@@ -542,34 +542,34 @@ A sa@'{i}da do Gnuplot @'{e} mostrada em uma janela gr@'{a}fica separada.
 @item
 Valor: @code{dumb}
 
-A s@'{i}da do Gnuplot @'{e} mostrada no console do Maxima por meio de uma "concep@value{cedilha}@~{a}o art@'{i}stica em ASCII" aproximada para gr@'{a}ficos.
+A s@'{i}da do Gnuplot @'{e} mostrada no console do Maxima por meio de uma "concepç@~{a}o art@'{i}stica em ASCII" aproximada para gr@'{a}ficos.
 
 @item
 Valor: @code{ps}
 
-Gnuplot gera comandos na linguagem PostScript de descri@value{cedilha}@~{a}o de p@'{a}gina.
-Se a op@value{cedilha}@~{a}o
+Gnuplot gera comandos na linguagem PostScript de descriç@~{a}o de p@'{a}gina.
+Se a opç@~{a}o
 @code{gnuplot_out_file} for escolhida para @var{nomearquivo}, gnuplot escreve os comandos PostScript em @var{nomearquivo}.
 De outra forma, Esse arquivo @'{e} salvo com o nome @code{maxplot.ps}.
 
 @item
-Valor: qualquer outra especifica@value{cedilha}@~{a}o v@'{a}lida do terminal @code{term} do gnuplot
+Valor: qualquer outra especificaç@~{a}o v@'{a}lida do terminal @code{term} do gnuplot
 
 Gnuplot pode gerar sa@'{i}das em muitos outros formatos gr@'{a}ficos tais
-como png, jpeg, svg etc.  Paa criar gr@'{a}ficos em todos esses formatos a op@value{cedilha}@~{a}o
+como png, jpeg, svg etc.  Paa criar gr@'{a}ficos em todos esses formatos a opç@~{a}o
 @code{gnuplot_term} pode ser escolhida para qualquer terminalsuportado pelo gnuplot (s@'{i}mbolo)
-ou mesmo especifica@value{cedilha}@~{a}o completa de terminal do gnuplot com quaisquer op@value{cedilha}@~{o}es (seq@"{u}@^{e}ncia de caracteres).
+ou mesmo especificaç@~{a}o completa de terminal do gnuplot com quaisquer opç@~{o}es (seq@"{u}@^{e}ncia de caracteres).
 Por exemplo @code{[gnuplot_term,png]} cria sa@'{i}das no formato PNG (Portable
 +Network Graphics) enquanto @code{[gnuplot_term,"png size 1000,1000"]}
 cria PNG de tamanho 1000x1000 pixels. 
-Se a op@value{cedilha}@~{a}o @code{gnuplot_out_file} for escolhida para @var{nomearquivo}, gnuplot 
+Se a opç@~{a}o @code{gnuplot_out_file} for escolhida para @var{nomearquivo}, gnuplot 
 escreve a sa@'{i}da para @var{nomearquivo}. De outra forma, esse arquivo @'{e} gravado com o nome de
 @code{maxplot.@var{term}}, onde @var{term} @'{e} o nome do terminal do
 gnuplot .
 @end itemize
 
 @item
-Op@value{cedilha}@~{a}o: @code{gnuplot_out_file}
+Opç@~{a}o: @code{gnuplot_out_file}
 
 Escreve a sa@'{i}da do gnuplot para um arquivo.
 
@@ -589,10 +589,10 @@ usada conjuntamente com o terminal PostScript do gnuplot.
 @end itemize
 
 @item
-Op@value{cedilha}@~ao: @code{gnuplot_pm3d}
+Opç@~ao: @code{gnuplot_pm3d}
 
 Controla o uso do modo PM3D, que tem recursos
-avan@value{cedilha}ados em 3D.  PM3D est@'{a} somente dispon@'{i}vel no gnuplot em vers@~{o}es ap@'{o}s a 3.7.  O
+avançados em 3D.  PM3D est@'{a} somente dispon@'{i}vel no gnuplot em vers@~{o}es ap@'{o}s a 3.7.  O
 valor padr@~{a}o para @code{gnuplot_pm3d} @'{e} @code{false}.
 
 Exemplo:
@@ -602,7 +602,7 @@ Exemplo:
 @end example
 
 @item
-Op@value{cedilha}@~{a}o: @code{gnuplot_preamble} 
+Opç@~{a}o: @code{gnuplot_preamble} 
 
 Insere comandos antes que o gr@'{a}fico seja
 desenhado.  Quaisquer comandos v@'{a}lidos para o gnuplot podem ser usados.  Multiplos comandos
@@ -616,11 +616,11 @@ Exemplo:
 @end example
 
 @item
-Op@value{cedilha}@~{a}o: @code{gnuplot_curve_titles}
+Opç@~{a}o: @code{gnuplot_curve_titles}
 
 Controla os t@'{i}tulos dados na chave da montagem do gr@'{a}fico.  O
 valor padr@~{a}o @'{e} @code{[default]}, que automaticamente escolhe o t@'{i}tulo de cada
-curva para a fun@value{cedilha}@~{a}o cujo gr@'{a}fico est@'{a} sendo constru@'{i}do. Se n@~{a}o contiver @code{[default]}, @code{gnuplot_curve_titles}
+curva para a funç@~{a}o cujo gr@'{a}fico est@'{a} sendo constru@'{i}do. Se n@~{a}o contiver @code{[default]}, @code{gnuplot_curve_titles}
 pode conter uma lista de seq@"{u}@^{e}ncias de caracteres,
 cada uma das quais @'{e} @code{"title '@var{title_string}'"}.
 (Para disabilitar a chave de impress@~{a}o de gr@'{a}fico, adicione @code{"set nokey"} a @code{gnuplot_preamble}.)
@@ -629,17 +629,17 @@ Exemplo:
 
 @example
 [gnuplot_curve_titles,
-["title 'Minha primeira fun@value{cedilha}@~{a}o'", "title 'Minha segunda fun@value{cedilha}@~{a}o'"]]
+["title 'Minha primeira funç@~{a}o'", "title 'Minha segunda funç@~{a}o'"]]
 @end example
 
 @item
-Op@value{cedilha}@~{a}o: @code{gnuplot_curve_styles}
+Opç@~{a}o: @code{gnuplot_curve_styles}
 
 Uma lista de seq@"{u}@^{e}ncias de caracteres controlando a apar@^{e}ncia
 das curvas, i.e., cor, largura, brilho, etc., para serem enviadas para o
 comando de montagem do gr@'{a}fico do gnuplot.  O valor padr@~{a}o @'{e}
 @code{["with lines 3", "with lines 1", "with lines 2", "with lines 5", "with lines 4", "with lines 6", "with lines 7"]}, que circula atrav@'{e}s de diferentes cores.  Veja a
-documenta@value{cedilha}@~{a}o do gnuplot de @code{plot} para maiores informa@value{cedilha}@~{o}es.
+documentaç@~{a}o do gnuplot de @code{plot} para maiores informaç@~{o}es.
 
 Exemplo:
 
@@ -648,7 +648,7 @@ Exemplo:
 @end example
 
 @item
-Op@value{cedilha}@~{a}o: @code{gnuplot_default_term_command}
+Opç@~{a}o: @code{gnuplot_default_term_command}
 
 O comando gnuplot para escolher o
 tipo de terminal para o terminal padr@~{a}o. O valor padr@~{a}o @'{e} @code{set
@@ -662,7 +662,7 @@ Exemplo:
 @end example
 
 @item
-Op@value{cedilha}@~{a}o: @code{gnuplot_dumb_term_command}
+Opç@~{a}o: @code{gnuplot_dumb_term_command}
 
 O comando gnuplot para escolher o
 tipo de terminal para o terminal dumb.  O valor padr@~{a}o @'{e} @code{"set term dumb 79 22"},
@@ -676,18 +676,18 @@ Exemplo:
 @end example
 
 @item
-Op@value{cedilha}@~{a}o: @code{gnuplot_ps_term_command}
+Opç@~{a}o: @code{gnuplot_ps_term_command}
 
 O comando gnuplot para escolher o tipo
 de terminal para o terminal PostScript.  O valor padr@~{a}o @'{e} 
 @code{"set size 1.5, 1.5;set term postscript eps enhanced color solid 24"},
 que escolhe o
 tamanho para 1.5 vezes o padr@~{a}o do gnuplot, e o tamanho da fonte para 24, al@'{e}m de
-outras coisas.  Veja a documenta@value{cedilha}@~{a}o do gnuplot de @code{set term postscript} para mais informa@value{cedilha}@~{a}o.
+outras coisas.  Veja a documentaç@~{a}o do gnuplot de @code{set term postscript} para mais informaç@~{a}o.
 
 Exemplo:
 
-Todos os n@'{u}meros nos exemplos para a fun@value{cedilha}@~{a}o @var{plot2d} nesse
+Todos os n@'{u}meros nos exemplos para a funç@~{a}o @var{plot2d} nesse
 manual foram obtidos de arquivos Postscript que foram gerados ap@'{o}s
 escolher @code{gnuplot_ps_term_command} como:
 
@@ -700,13 +700,13 @@ escolher @code{gnuplot_ps_term_command} como:
 
 @end defvr
 
-@deffn {Fun@value{cedilha}@~{a}o} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{op@value{cedilha}@~{o}es}, ...)
-@deffnx {Fun@value{cedilha}@~{a}o} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{op@value{cedilha}@~{o}es}, ...)
-@deffnx {Fun@value{cedilha}@~{a}o} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{op@value{cedilha}@~{o}es}, ...)
-@deffnx {Fun@value{cedilha}@~{a}o} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
-@deffnx {Fun@value{cedilha}@~{a}o} plot3d ([@var{nome_1}, @var{nome_2}, @var{nome_3}], @var{x_range}, @var{y_range}, ..., @var{op@value{cedilha}@~{o}es}, ...)
+@deffn {Funç@~{a}o} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{opç@~{o}es}, ...)
+@deffnx {Funç@~{a}o} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{opç@~{o}es}, ...)
+@deffnx {Funç@~{a}o} plot3d (@var{name}, @var{x_range}, @var{y_range}, ..., @var{opç@~{o}es}, ...)
+@deffnx {Funç@~{a}o} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
+@deffnx {Funç@~{a}o} plot3d ([@var{nome_1}, @var{nome_2}, @var{nome_3}], @var{x_range}, @var{y_range}, ..., @var{opç@~{o}es}, ...)
 
-Mostra um gr@'{a}fico de uma ou tr@^{e}s express@~{o}es como fun@value{cedilha}@~{o}es de duas vari@'{a}veis.
+Mostra um gr@'{a}fico de uma ou tr@^{e}s express@~{o}es como funç@~{o}es de duas vari@'{a}veis.
 
 @c ===beg===
 @c plot3d (u^2 - v^2, [u, -2, 2], [v, -3, 3], [grid, 100, 100],
@@ -750,10 +750,10 @@ Outro exemplo @'{e} uma superf@'{i}cie de Klein:
 @image{@value{figuresfolder}/plotting21,8cm}
 @end ifnotinfo
 
-Algumas vezes isso @'{e} necess@'{a}rio para definir uma fun@value{cedilha}@~{a}o para montar o graico da express@~{a}o. Todos
+Algumas vezes isso @'{e} necess@'{a}rio para definir uma funç@~{a}o para montar o graico da express@~{a}o. Todos
 os argumentos para plot3d s@~{a}o avaliados antes de serem passados para plot3d. Tentar
 fazer um express@~{a}o que faz apenas o que @'{e} preciso pode ser 
-dif@'{i}cil e pode ser mais f@'{a}cil fazer uma fun@value{cedilha}@~{a}o.   
+dif@'{i}cil e pode ser mais f@'{a}cil fazer uma funç@~{a}o.   
 
 @c ===beg===
 @c M: matrix([1,2,3,4], [1,2,3,2], [1,2,3,4], [1,2,3,3])$
@@ -776,18 +776,18 @@ Veja @code{plot_options} para mais exemplos.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o}  make_transform (@var{vars}, @var{fx}, @var{fy}, @var{fz})
-Retorna uma fun@value{cedilha}@~{a}o adequada para a fun@value{cedilha}@~{a}o transforma@value{cedilha}@~{a}o em plot3d.  Use
-com a op@value{cedilha}@~{a}o de montagem de gr@'{a}fico @code{transform_xy}.
+@deffn {Funç@~{a}o}  make_transform (@var{vars}, @var{fx}, @var{fy}, @var{fz})
+Retorna uma funç@~{a}o adequada para a funç@~{a}o transformaç@~{a}o em plot3d.  Use
+com a opç@~{a}o de montagem de gr@'{a}fico @code{transform_xy}.
 @example
 make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @end example
-@'{e} uma transforma@value{cedilha}@~{a}o para coordenadas polares.
+@'{e} uma transformaç@~{a}o para coordenadas polares.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o}  set_plot_option (@var{op@value{cedilha}@~{a}o})
+@deffn {Funç@~{a}o}  set_plot_option (@var{opç@~{a}o})
 Atribui uma das var@'{a}veis globais para impress@~{a}o.
-@var{op@value{cedilha}@~{a}o} @'{e} especificada como uma lista de dois ou mais elementos,
+@var{opç@~{a}o} @'{e} especificada como uma lista de dois ou mais elementos,
 na qual o primeiro elemento @'{e} uma das palavras chave
 dentro da lista @code{plot_options}.
 
@@ -801,7 +801,7 @@ Exemplos:
 
 Modifica a malha (@code{grid}) e valores de @code{x}.
 Quando uma palavra chave em @code{plot_options} tem um valor atribu@'{i}do,
-colocar um ap@'{o}strofo evita avalia@value{cedilha}@~{a}o.
+colocar um ap@'{o}strofo evita avaliaç@~{a}o.
 
 @c ===beg===
 @c set_plot_option ([grid, 30, 40]);
@@ -844,9 +844,9 @@ eps enhanced color solid 24]]
 
 @end deffn
 
-@subsection Fun@value{cedilha}@~{o}es para trabalhar com o formato @code{gnuplot_pipes}
+@subsection Funç@~{o}es para trabalhar com o formato @code{gnuplot_pipes}
 
-@deffn {Fun@value{cedilha}@~{a}o} gnuplot_start ()
+@deffn {Funç@~{a}o} gnuplot_start ()
 
 Abre o pipe para o gnuplot usado para montar um gr@'{a}fico com o formato
 @code{gnuplot_pipes}. N@~{a}o @'{e} necess@'{a}rio abrir manualmente o
@@ -854,22 +854,22 @@ pipe antes de montar o gr@'{a}fico.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} gnuplot_close ()
+@deffn {Funç@~{a}o} gnuplot_close ()
 
 Fecha o pipe para o gnuplot que est@'{a} sendo usado com o formato 
 @code{gnuplot_pipes}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} gnuplot_restart ()
+@deffn {Funç@~{a}o} gnuplot_restart ()
 
 Fecha o pipe para o gnuplot que @'{e} usado com o formato 
 @code{gnuplot_pipes} e abre um novo pipe.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} gnuplot_replot ()
-@deffnx {Fun@value{cedilha}@~{a}o} gnuplot_replot (@var{s})
+@deffn {Funç@~{a}o} gnuplot_replot ()
+@deffnx {Funç@~{a}o} gnuplot_replot (@var{s})
 
 Atualiza a janela gr@'{a}fica do gnuplot. Se @code{gnuplot_replot} for chamado com um
 comando gnuplot em uma seq@"{u}@^{e}ncia de caracteres @var{s}, ent@~{a}o @code{s} @'{e} enviado para o gnuplot
@@ -877,7 +877,7 @@ antes de atualizar a janela.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} gnuplot_reset ()
+@deffn {Funç@~{a}o} gnuplot_reset ()
 
 Restaura o estado inicial padr@~{a}o do gnuplot usado com o formato
 @code{gnuplot_pipes}. Para atualizar a janela do gnuplot chama @code{gnuplot_replot} ap@'{o}s

@@ -1,28 +1,28 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Differential.texi/1.11/Sat Jun  2 00:12:38 2007/-ko/
 @menu
-* Introdu@value{cedilha}@~{a}o a Equa@value{cedilha}@~{o}es Diferenciais::
-* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Equa@value{cedilha}@~{o}es Diferenciais::
-Defini@value{cedilha}@~{o}es para Equa@value{cedilha}@~{o}es Diferenciais
+* Introduç@~{a}o a Equaç@~{o}es Diferenciais::
+* Funç@~{o}es e Vari@'{a}veis Definidas para Equaç@~{o}es Diferenciais::
+Definiç@~{o}es para Equaç@~{o}es Diferenciais
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a Equa@value{cedilha}@~{o}es Diferenciais, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Equa@value{cedilha}@~{o}es Diferenciais, Equa@value{cedilha}@~{o}es Diferenciais, Equa@value{cedilha}@~{o}es Diferenciais
-@section Introdu@value{cedilha}@~{a}o a Equa@value{cedilha}@~{o}es Diferenciais
+@node Introduç@~{a}o a Equaç@~{o}es Diferenciais, Funç@~{o}es e Vari@'{a}veis Definidas para Equaç@~{o}es Diferenciais, Equaç@~{o}es Diferenciais, Equaç@~{o}es Diferenciais
+@section Introduç@~{a}o a Equaç@~{o}es Diferenciais
 
-Essa se@value{cedilha}@~{a}o descreve as fun@value{cedilha}@~{o}es dispon@'{i}ves no Maxima para obter
-solu@value{cedilha}@~{o}es anal@'{i}ticas para alguns tipos espec@'{i}ficos de equa@value{cedilha}@~{o}es diferencias de primeira ordem e de equa@value{cedilha}@~{o}es diferencias de
-segunda ordem. Para obter uma solu@value{cedilha}@~{a}o num@'{e}rica para um sistema de equa@value{cedilha}@~{o}es
-diferenciais, veja o pacote adicional @code{dynamics}. Para representa@value{cedilha}@~{o}es
-gr@'{a}ficas em espa@value{cedilha}o de fase, veja o pacote adicional
+Essa seç@~{a}o descreve as funç@~{o}es dispon@'{i}ves no Maxima para obter
+soluç@~{o}es anal@'{i}ticas para alguns tipos espec@'{i}ficos de equaç@~{o}es diferencias de primeira ordem e de equaç@~{o}es diferencias de
+segunda ordem. Para obter uma soluç@~{a}o num@'{e}rica para um sistema de equaç@~{o}es
+diferenciais, veja o pacote adicional @code{dynamics}. Para representaç@~{o}es
+gr@'{a}ficas em espaço de fase, veja o pacote adicional
 @code{plotdf}.
 
-@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Equa@value{cedilha}@~{o}es Diferenciais,  , Introdu@value{cedilha}@~{a}o a Equa@value{cedilha}@~{o}es Diferenciais, Equa@value{cedilha}@~{o}es Diferenciais
-@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para Equa@value{cedilha}@~{o}es Diferenciais
+@node Funç@~{o}es e Vari@'{a}veis Definidas para Equaç@~{o}es Diferenciais,  , Introduç@~{a}o a Equaç@~{o}es Diferenciais, Equaç@~{o}es Diferenciais
+@section Funç@~{o}es e Vari@'{a}veis Definidas para Equaç@~{o}es Diferenciais
 
 
-@deffn {Fun@value{cedilha}@~{a}o} bc2 (@var{solu@value{cedilha}@~{a}o}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
-Resolve o problema do valor limite para equa@value{cedilha}@~{o}es diferenciais de segunda ordem. 
-Aqui: @var{solu@value{cedilha}@~{a}o} @'{e} uma solu@value{cedilha}@~{a}o geral para a equa@value{cedilha}@~{a}o, como encontrado por
+@deffn {Funç@~{a}o} bc2 (@var{soluç@~{a}o}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
+Resolve o problema do valor limite para equaç@~{o}es diferenciais de segunda ordem. 
+Aqui: @var{soluç@~{a}o} @'{e} uma soluç@~{a}o geral para a equaç@~{a}o, como encontrado por
 @code{ode2}, @var{xval1} especifica o valor da vari@'{a}vel independente
 em um primeiro ponto, na forma @code{@var{x} = @var{x1}}, e @var{yval1}
 fornece o valor da vari@'{a}vel dependente naquele ponto, na forma
@@ -30,20 +30,20 @@ fornece o valor da vari@'{a}vel dependente naquele ponto, na forma
 fornecem os valores para essas vari@'{a}veis em um segundo ponto, usando a mesma
 forma.
 
-Veja @code{ode2} para um exemplo de sua utiliza@value{cedilha}@~{a}o.
+Veja @code{ode2} para um exemplo de sua utilizaç@~{a}o.
 
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} desolve (@var{eqn}, @var{x})
-@deffnx {Fun@value{cedilha}@~{a}o} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
-A Fun@value{cedilha}@~{a}o @code{dsolve} resolve sistema de equa@value{cedilha}@~{o}es diferenciais
+@deffn {Funç@~{a}o} desolve (@var{eqn}, @var{x})
+@deffnx {Funç@~{a}o} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+A Funç@~{a}o @code{dsolve} resolve sistema de equaç@~{o}es diferenciais
 lineares ordin@'{a}rias usando a transformada de Laplace.  Aqui as @var{eqn}'s
-s@~{a}o equa@value{cedilha}@~{o}es diferenciais nas vari@'{a}veis dependentes @var{x_1}, ...,
-@var{x_n}.  A depend@^{e}ncia funcional de @var{x_1}, ..., @var{x_n} com rela@value{cedilha}@~{a}o @`{a}
+s@~{a}o equaç@~{o}es diferenciais nas vari@'{a}veis dependentes @var{x_1}, ...,
+@var{x_n}.  A depend@^{e}ncia funcional de @var{x_1}, ..., @var{x_n} com relaç@~{a}o @`{a}
 vari@'{a}vel independente, por exemplo @var{x}, deve ser explicitamente indicada
 nas vari@'{a}veis e em suas derivadas. Por exemplo, isso pode n@~{a}o ser
-caminho correto para definir duas equa@value{cedilha}@~{o}es:
+caminho correto para definir duas equaç@~{o}es:
 
 @example
 eqn_1: 'diff(f,x,2) = sin(x) + 'diff(g,x);
@@ -57,12 +57,12 @@ eqn_1: 'diff(f(x),x,2) = sin(x) + 'diff(g(x),x);
 eqn_2: 'diff(f(x),x) + x^2 - f(x) = 2*'diff(g(x),x,2);
 @end example
 
-A chamada @`{a} fun@value{cedilha}@~{a}o @code{desolve} pode ent@~{a}o ser
+A chamada @`{a} funç@~{a}o @code{desolve} pode ent@~{a}o ser
 @example
 desolve([eqn_1, eqn_2], [f(x),g(x)]);
 @end example
 
-Se condi@value{cedilha}@~{o}es iniciais em @code{x=0} forem conhecidas, elas podem ser fornecidas antes
+Se condiç@~{o}es iniciais em @code{x=0} forem conhecidas, elas podem ser fornecidas antes
 chamando @code{desolve} atrav@'{e}s de @code{atvalue}.
 
 @c ===beg===
@@ -100,74 +100,74 @@ chamando @code{desolve} atrav@'{e}s de @code{atvalue}.
 
 @end example
 
-Se @code{desolve} n@~{a}o pode obter uma solu@value{cedilha}@~{a}o, retorna @code{false}.
+Se @code{desolve} n@~{a}o pode obter uma soluç@~{a}o, retorna @code{false}.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ic1 (@var{solu@value{cedilha}@~{a}o}, @var{xval}, @var{yval})
-Resolve problemas de valor inicial para equa@value{cedilha}@~{o}es diferenciais de primeira ordem.
-Aqui @var{solu@value{cedilha}@~{a}o} @'{e} uma solu@value{cedilha}@~{a}o geral para a equa@value{cedilha}@~{a}o, como encontrado por
+@deffn {Funç@~{a}o} ic1 (@var{soluç@~{a}o}, @var{xval}, @var{yval})
+Resolve problemas de valor inicial para equaç@~{o}es diferenciais de primeira ordem.
+Aqui @var{soluç@~{a}o} @'{e} uma soluç@~{a}o geral para a equaç@~{a}o, como encontrado por
 @code{ode2}, @var{xval} fornece um valor inicial para a vari@'{a}vel
 independente na forma @code{@var{x} = @var{x0}}, e @var{yval} fornece o
 valor inicial para a vari@'{a}vel dependente na forma @code{@var{y} =
 @var{y0}}.
 
-Veja @code{ode2} para um exemplo de sua utiliza@value{cedilha}@~{a}o.
+Veja @code{ode2} para um exemplo de sua utilizaç@~{a}o.
 
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} ic2 (@var{solu@value{cedilha}@~{a}o}, @var{xval}, @var{yval}, @var{dval})
-Resolve problemas de valor inicial para equa@value{cedilha}@~{o}es diferenciais de segunda ordem.
-Aqui @var{solu@value{cedilha}@~{a}o} @'{e} uma solu@value{cedilha}@~{a}o geral para a equa@value{cedilha}@~{a}o, como encontrada por
+@deffn {Funç@~{a}o} ic2 (@var{soluç@~{a}o}, @var{xval}, @var{yval}, @var{dval})
+Resolve problemas de valor inicial para equaç@~{o}es diferenciais de segunda ordem.
+Aqui @var{soluç@~{a}o} @'{e} uma soluç@~{a}o geral para a equaç@~{a}o, como encontrada por
 @code{ode2}, @var{xval} fornece o valor inicial para a vari@'{a}vel
 independente na forma @code{@var{x} = @var{x0}}, @var{yval} fornece o
 valor inicial da veri@'{a}vel dependente na forma @code{@var{y} =
 @var{y0}}, e @var{dval} fornece o valor inicial para a primeira
-derivada da vari@'{a}vel dependente com rela@value{cedilha}@~{a}o @`{a} vari@'{a}vel
+derivada da vari@'{a}vel dependente com relaç@~{a}o @`{a} vari@'{a}vel
 independente, na forma @code{diff(@var{y},@var{x}) = @var{dy0}}
-(@code{diff} n@~{a}o precisa receber ap@'{o}strofo para evitar avalia@value{cedilha}@~{a}o).
+(@code{diff} n@~{a}o precisa receber ap@'{o}strofo para evitar avaliaç@~{a}o).
 
 Veja @code{ode2} para um exemplo de seu uso.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
-A fun@value{cedilha}@~{a}o @code{ode2} resolve uma equa@value{cedilha}@~{a}o diferencial ordin@'{a}ria (EDO)
+@deffn {Funç@~{a}o} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
+A funç@~{a}o @code{ode2} resolve uma equaç@~{a}o diferencial ordin@'{a}ria (EDO)
 de primeira ou de segunda ordem. @code{ode2} usa tr@^{e}s argumentos: uma EDO fornecida por
 @var{eqn}, a vari@'{a}vel dependente @var{dvar}, e a vari@'{a}vel
-independente @var{ivar}. Quando @code{ode2} encontra uma solu@value{cedilha}@~{a}o, @code{ode2} retorna ou uma solu@value{cedilha}@~{a}o expl@'{i}cita ou
-uma sulu@value{cedilha}@~{a}o impl@'{i}cita para a vari@'{a}vel dependente. @code{%c} @'{e} usado para
-representar a constante de integra@value{cedilha}@~{a}o no caso de equa@value{cedilha}@~{o}es de primeira ordem,
-e @code{%k1} e @code{%k2} as constantes para equa@value{cedilha}@~{o}es de
-segunda ordem. A depend@^{e}ncia da vari@'{a}vel dependente com rela@value{cedilha}@~{a}o @`{a} vari@'{a}vel
+independente @var{ivar}. Quando @code{ode2} encontra uma soluç@~{a}o, @code{ode2} retorna ou uma soluç@~{a}o expl@'{i}cita ou
+uma suluç@~{a}o impl@'{i}cita para a vari@'{a}vel dependente. @code{%c} @'{e} usado para
+representar a constante de integraç@~{a}o no caso de equaç@~{o}es de primeira ordem,
+e @code{%k1} e @code{%k2} as constantes para equaç@~{o}es de
+segunda ordem. A depend@^{e}ncia da vari@'{a}vel dependente com relaç@~{a}o @`{a} vari@'{a}vel
 independente n@~{a}o tem que ser escrita explicitamente, como no caso de
 @code{desolve}, mas a vari@'{a}vel independente deve sempre ser fornecida como o
 terceiro argumento.
 
-Se @code{ode2} n@~{a}o conseguir obter uma solu@value{cedilha}@~{a}o por qualquer raza@~{a}o, @code{ode2} retorna
+Se @code{ode2} n@~{a}o conseguir obter uma soluç@~{a}o por qualquer raza@~{a}o, @code{ode2} retorna
 @code{false}, ap@'{o}s talvez imprimir uma mensagem de erro. Os m@'{e}todos
-implementados para equa@value{cedilha}@~{o}es de primeira ordem na seq@"{u}@^{e}ncia em que eles foram
+implementados para equaç@~{o}es de primeira ordem na seq@"{u}@^{e}ncia em que eles foram
 testados s@~{a}o: linear, separ@'{a}vel, exato - talvez requerendo um fator de
-integra@value{cedilha}@~{a}o, homog@^{e}neo, equa@value{cedilha}@~{a}o de Bernoulli, e um m@'{e}todo homog@^{e}neo
-generalizado. Os tipos de equa@value{cedilha}@~{o}e de segunda ordem que podem ser resolvidos s@~{a}o:
+integraç@~{a}o, homog@^{e}neo, equaç@~{a}o de Bernoulli, e um m@'{e}todo homog@^{e}neo
+generalizado. Os tipos de equaç@~{o}e de segunda ordem que podem ser resolvidos s@~{a}o:
 coeficientes constantes, exato, linear homog@^{e}neo com coeficientes
 n@~{a}o constantes que podem ser transformados em coeficientes constantes, o
-tipo de equa@value{cedilha}@~{a}o de Euler tamb@'{e}m chamado de equa@value{cedilha}@~{a}o equi-dimensional, equa@value{cedilha}@~{o}es resolv@'{i}veis pelo m@'{e}todo de
-varia@value{cedilha}@~{a}o de par@^{a}metros, e equa@value{cedilha}@~{o}es as quais s@~{a}o livres ou da
+tipo de equaç@~{a}o de Euler tamb@'{e}m chamado de equaç@~{a}o equi-dimensional, equaç@~{o}es resolv@'{i}veis pelo m@'{e}todo de
+variaç@~{a}o de par@^{a}metros, e equaç@~{o}es as quais s@~{a}o livres ou da
 vari@'{a}vel independente ou da dependente de modo que elas possam ser reduzidas a
-duas equa@value{cedilha}@~{o}es lineares de primeira ordem para serem resolvidas seq@"{u}@^{e}ncialmente.
+duas equaç@~{o}es lineares de primeira ordem para serem resolvidas seq@"{u}@^{e}ncialmente.
 
-Na resolu@value{cedilha}@~{a}o de EDO's pelo Maxima, muitas vari@'{a}veis s@~{a}o escolhidas puramente para
-prop@'{o}sitos informativos: @code{m@'{e}todo} denota o m@'{e}todo de solu@value{cedilha}@~{a}o
+Na resoluç@~{a}o de EDO's pelo Maxima, muitas vari@'{a}veis s@~{a}o escolhidas puramente para
+prop@'{o}sitos informativos: @code{m@'{e}todo} denota o m@'{e}todo de soluç@~{a}o
 usado (e.g., @code{linear}), @code{intfactor} denota qualquer fator de
-integra@value{cedilha}@~{a}o usado, @code{odeindex} denota o @'{i}ndice para o m@'{e}todo de Bernoulli ou
+integraç@~{a}o usado, @code{odeindex} denota o @'{i}ndice para o m@'{e}todo de Bernoulli ou
 para o m@'{e}todo homog@^{e}neo generalizado, e @code{yp} denota a
-solu@value{cedilha}@~{a}o particular para a t@'{e}cnica de varia@value{cedilha}@~{a}o de par@^{a}metros.
+soluç@~{a}o particular para a t@'{e}cnica de variaç@~{a}o de par@^{a}metros.
 
-Com o objetivo de resolver poblemas de valor inicial (PVI) as fun@value{cedilha}@~{o}es @code{ic1} e
-@code{ic2} est@~{a}o dispon@'{i}veis para equa@value{cedilha}@~{o}es de primeira e de segunda ordem, e para
-resolver problemas do valor de segunda ordem associado (BVP em ingl@^{e}s) a fun@value{cedilha}@~{a}o @code{bc2}
+Com o objetivo de resolver poblemas de valor inicial (PVI) as funç@~{o}es @code{ic1} e
+@code{ic2} est@~{a}o dispon@'{i}veis para equaç@~{o}es de primeira e de segunda ordem, e para
+resolver problemas do valor de segunda ordem associado (BVP em ingl@^{e}s) a funç@~{a}o @code{bc2}
 pode ser usada.
 
 Exemplo:

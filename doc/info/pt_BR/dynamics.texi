@@ -1,46 +1,46 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /dynamics.texi/1.13/Sat Jun  2 00:13:21 2007//
 @menu
-* Introdu@value{cedilha}@~{a}o a dynamics::
-* Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para dynamics::
+* Introduç@~{a}o a dynamics::
+* Funç@~{o}es e Vari@'{a}veis Definidas para dynamics::
 @end menu
 
-@node Introdu@value{cedilha}@~{a}o a dynamics, Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para dynamics, dynamics, dynamics
-@section Introdu@value{cedilha}@~{a}o a dynamics
+@node Introduç@~{a}o a dynamics, Funç@~{o}es e Vari@'{a}veis Definidas para dynamics, dynamics, dynamics
+@section Introduç@~{a}o a dynamics
 
 O pacote adicional @code{dynamics} inclui muitas
-fun@value{cedilha}@~{o}es para criar v@'{a}rias representa@value{cedilha}@~{o}es gr@'{a}ficas de sistemas
-din@^{a}micos discretos e fractais, e uma implementa@value{cedilha}@~{a}o deo m@'{e}todo
-num@'{e}rico de Runge-Kutta de quarta ordem para a resolu@value{cedilha}@~{a}o de sistemas de equa@value{cedilha}@~oes diferenciais.
+funç@~{o}es para criar v@'{a}rias representaç@~{o}es gr@'{a}ficas de sistemas
+din@^{a}micos discretos e fractais, e uma implementaç@~{a}o deo m@'{e}todo
+num@'{e}rico de Runge-Kutta de quarta ordem para a resoluç@~{a}o de sistemas de equaç@~oes diferenciais.
 
-Para usar as fun@value{cedilha}@~{o}es nesse pacote voc@^{e} deve primeiramente torn@'{a}-lo dispon@'{i}vel para uso com
+Para usar as funç@~{o}es nesse pacote voc@^{e} deve primeiramente torn@'{a}-lo dispon@'{i}vel para uso com
 @code{load("dynamics")}.
 
-@b{Modifica@value{cedilha}@~{o}es introduzidas no Maxima 5.12}
+@b{Modificaç@~{o}es introduzidas no Maxima 5.12}
 
-Iniciando no Maxima 5.12, o pacote dynamics agora utiliza a fun@value{cedilha}@~{a}o
+Iniciando no Maxima 5.12, o pacote dynamics agora utiliza a funç@~{a}o
 @code{plot2d} para monar os gr@'{a}ficos. Os comandos que produzem gr@'{a}ficos
-(com exce@value{cedilha}@~{a}o de @code{julia} e de @code{mandelbrot}) agora aceitam
-qualquer op@value{cedilha}@~{a}o de @code{plot2d}, incluindo a op@value{cedilha}@~{a}o que modificam o montante das
+(com exceç@~{a}o de @code{julia} e de @code{mandelbrot}) agora aceitam
+qualquer opç@~{a}o de @code{plot2d}, incluindo a opç@~{a}o que modificam o montante das
 v@'{a}rias interfaces gr@'{a}ficas, usando diferentes estilos de montagem de gr@'{a}fico e cores,
 e representando um ou ambos os eixos em uma escala logar@'{i}tmica. As antigas
-op@value{cedilha}@~{o}es @var{domain}, @var{pointsize}, @var{xcenter}, @var{xradius},
+opç@~{o}es @var{domain}, @var{pointsize}, @var{xcenter}, @var{xradius},
 @var{ycenter}, @var{yradius}, @var{xaxislabel} e @var{yaxislabel}
 n@~{a}o s@~{a}o aceitas nessa nova vers@~{a}o.
 
 Todos os programas ir@~{a}o agora aceitar quaisquer nomes de vari@'{a}veis, e n@~{a}o apenas @var{x}
 e @var{y} como nas antigas vers@~{o}es. Dois par@^{a}metros requeridos tiveram
-modifica@value{cedilha}@~{o}es em dois desses programas: @code{evolution2d} agora requer uma lista
+modificaç@~{o}es em dois desses programas: @code{evolution2d} agora requer uma lista
 nomeando explicitamente as duas vari@'{a}veis independentes, e o intervalo
 horizontal para @code{orbits} n@~{a}o mais requer um tamanho de passo; o intervalo
 pode somente espcificar o nome da vari@'{a}vel, e o menor e o maior
-valores; o n@'{u}mero de passos pode agora ser modificado com a op@value{cedilha}@~{a}o
+valores; o n@'{u}mero de passos pode agora ser modificado com a opç@~{a}o
 @var{nticks}.
 
-@node Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para dynamics,  , Introdu@value{cedilha}@~{a}o a dynamics, dynamics
-@section Fun@value{cedilha}@~{o}es e Vari@'{a}veis Definidas para dynamics
+@node Funç@~{o}es e Vari@'{a}veis Definidas para dynamics,  , Introduç@~{a}o a dynamics, dynamics
+@section Funç@~{o}es e Vari@'{a}veis Definidas para dynamics
 
-@deffn {Fun@value{cedilha}@~{a}o} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...op@value{cedilha}@~{o}es...);
+@deffn {Funç@~{a}o} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...opç@~{o}es...);
 
 Implementa o ent@~{a}o chamado jogo do caos: o ponto inicial (@var{x0},
 @var{y0}) @'{e} colocado no gr@'{a}fico e ent@~{a}o um dos @var{m} pontos
@@ -52,12 +52,12 @@ segmento. o procedimento @'{e} repetido @var{n} vezes.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} evolution (@var{F}, @var{y0}, @var{n}, ..., op@value{cedilha}@~{o}es, ...);
+@deffn {Funç@~{a}o} evolution (@var{F}, @var{y0}, @var{n}, ..., opç@~{o}es, ...);
 
 Desenha @var{n+1} pontos em gr@'{a}fico bidimensional, onde as coordenadas
 horizontais dos pontos s@~{a}o os inteiros 0, 1, 2, ..., @var{n}, e
 as coordenadas verticais s@~{a}o os valores correspondentes @var{y(n)} da
-seq@"{u}@^{e}ncia definida pela rela@value{cedilha}@~{a}o de recorr@^{e}ncia
+seq@"{u}@^{e}ncia definida pela relaç@~{a}o de recorr@^{e}ncia
 @ifnottex
 @example
         y(n+1) = F(y(n))
@@ -74,11 +74,11 @@ dependente de @var{y}, mas qualquer outra vari@'{a}vel pode ser usada em lugar d
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{u}, @var{v}@code{]}, @code{[}@var{u0}, @var{y0}@code{]}, @var{n}, ..., op@value{cedilha}@~{o}es, ...);
+@deffn {Funç@~{a}o} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{u}, @var{v}@code{]}, @code{[}@var{u0}, @var{y0}@code{]}, @var{n}, ..., opç@~{o}es, ...);
 
 Mostra, em um gr@'{a}fico bidimensional, os primeiros @var{n+1} pontos na
 seq@"{u}@^{e}ncia de pontos definida por meio do sistema din@^{a}mico discreto
-bidimensional com rela@value{cedilha}@~{o}es de recorr@^{e}ncia
+bidimensional com relaç@~{o}es de recorr@^{e}ncia
 @ifnottex
 @example
         u(n+1) = F(u(n), v(n))    v(n+1) = G(u(n), v(n))
@@ -94,31 +94,31 @@ duas express@~{o}es que dependem somente de duas vari@'{a}veis @var{u} e
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} ifs (@code{[}@var{r1}, ..., @var{rm}@code{]}, @code{[}@var{A1}, ..., @var{Am}@code{]}, @code{[[}@var{x1}, @var{y1}@code{]}, ..., @code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ..., op@value{cedilha}@~{o}es, ...);
+@deffn {Funç@~{a}o} ifs (@code{[}@var{r1}, ..., @var{rm}@code{]}, @code{[}@var{A1}, ..., @var{Am}@code{]}, @code{[[}@var{x1}, @var{y1}@code{]}, ..., @code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ..., opç@~{o}es, ...);
 
-Implemanta o m@'{e}todo de Sistemas de Fun@value{cedilha}@~{o}es iteradas. Esse m@'{e}todo @'{e} similar
-ao m@'{e}todo descrito na fun@value{cedilha}@~{a}o @code{chaosgame}, mas em lugar de
+Implemanta o m@'{e}todo de Sistemas de Funç@~{o}es iteradas. Esse m@'{e}todo @'{e} similar
+ao m@'{e}todo descrito na funç@~{a}o @code{chaosgame}, mas em lugar de
 encolher o segmento do ponto corrente ao ponto escolhido
 aleat@'{o}riamente, as duas componentes daquele segmento ir@~{a}o ser multiplicadas pela matrix 2 por 2
 @var{Ai} que corresponde ao ponto escolhido aleat@'{o}riamente.
 
-A escolha aleat@'{o}ria de um dos @var{m} pontos de atra@value{cedilha}@~{a}o pode ser feita com
-uma distribui@value{cedilha}@~{a}o de probabilidade n@~{a}o uniforme definida por meio dos pesos
+A escolha aleat@'{o}ria de um dos @var{m} pontos de atraç@~{a}o pode ser feita com
+uma distribuiç@~{a}o de probabilidade n@~{a}o uniforme definida por meio dos pesos
 @var{r1},...,@var{rm}. Esses pesos s@~{a}o fornecidos de forma cumulativa; por exemplo se existem 3 pontos com probabilidades 0.2, 0.5 e
 0.3, os pesos @var{r1}, @var{r2} e @var{r3} podem ser 2, 7 e 10.
 
 @end deffn
 
 
-@deffn {Fun@value{cedilha}@~{a}o} rk (EDO, var, inicio, domain)
-@deffnx {Fun@value{cedilha}@~{a}o} rk ([EDO1,...,EDOm], [v1,...,vm], [inic1,...,inicm], domain)
+@deffn {Funç@~{a}o} rk (EDO, var, inicio, domain)
+@deffnx {Funç@~{a}o} rk ([EDO1,...,EDOm], [v1,...,vm], [inic1,...,inicm], domain)
 
-A primeira forma resolve numericamente uma equa@value{cedilha}@~{a}o diferencial  de primeira
-ordem, e a segunda formaresolve um sistema de m dessas equa@value{cedilha}@~{o}es,
+A primeira forma resolve numericamente uma equaç@~{a}o diferencial  de primeira
+ordem, e a segunda formaresolve um sistema de m dessas equaç@~{o}es,
 usando o m@'{e}todo de Runge-Kutta de quarta ordem. @code{var} representa a vari@'{a}vel
 dependente. EDO deve ser uma express@~{a}o que dependa somente da vari@'{a}vel  independente e da
 vari@'{a}vel dependente e defina a derivada da vari@'{a}vel
-dependente com rela@value{cedilha}@~{a}o @`a vari@'{a}vel independente.
+dependente com relaç@~{a}o @`a vari@'{a}vel independente.
 
 A vari@'{a}vel independente @'{e} especificada com @code{domain}, que deve ser uma
 lista dde quatro elementos como, por exemplo:
@@ -130,7 +130,7 @@ segundo e o terceiro elementos s@~{a}o os valores inicial e final para para aque
 vari@'{a}vel, e o @'{u}ltimo elemento escolhe o incremento que pode ser usado
 dentro daquele intervalo.
 
-Se @var{m} equa@value{cedilha}@~{o}es est@~{a}o sendo resolvidas, podem existir @var{m}
+Se @var{m} equaç@~{o}es est@~{a}o sendo resolvidas, podem existir @var{m}
 vari@'{a}veis dependentes @var{v1}, @var{v2}, ..., @var{vm}. Os valores iniciais
 para aquelas vari@'{a}veis ser@~{a}o @var{inic1}, @var{inic2}, ..., @var{inicm}.
 Ainda pode ser apenas uma vari@'{a}vel independente definida por @code{domain},
@@ -143,20 +143,20 @@ dependentes. @'{E} importante fornecer as derivadas @var{EDO1}, ...,
 dependentes; por exemplo, o terceiro elemento na lista ir@'{a} ser interpretado
 com a derivada da terceira vari@'{a}vel dependente.
 
-O programa tentar@'{a} integrar as equa@value{cedilha}@~{o}es a partir do valor inicial
+O programa tentar@'{a} integrar as equaç@~{o}es a partir do valor inicial
 da vari@'{a}vel independente at@'{e} seu @'{u}ltimo valor, usando incrementos
 constantes. Se em algum passo uma das vari@'{a}veis dependentes recebe um
-valor absoluto muito grande, a integra@value{cedilha}@~{a}o ser@'{a} interrompida naquele
+valor absoluto muito grande, a integraç@~{a}o ser@'{a} interrompida naquele
 ponto. O resultado ser@'{a} uma lista com tamtos elementos quantos forem o n@'{u}mero de
-itera@value{cedilha}@~{o}es feitas. Cada elemento na lista de resultado @'{e} em si mesmo outra lista
+iteraç@~{o}es feitas. Cada elemento na lista de resultado @'{e} em si mesmo outra lista
 comh @var{m}+1 elementos: o valor da vari@'{a}vel independente, seguido
 pelos valores das vari@'{a}veis dependentes correspondentes @`aquele ponto.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} staircase (@var{F}, @var{y0}, @var{n}, ...op@value{cedilha}@~{o}es...);
+@deffn {Funç@~{a}o} staircase (@var{F}, @var{y0}, @var{n}, ...opç@~{o}es...);
 
-Desenha um diagrama em escada para a seq@"{u}@^{e}ncia definida pela rela@value{cedilha}@~{a}o de
+Desenha um diagrama em escada para a seq@"{u}@^{e}ncia definida pela relaç@~{a}o de
 recorr@^{e}ncia
 @ifnottex
 @example
@@ -167,33 +167,33 @@ recorr@^{e}ncia
 $$y_{n+1} = F(y_n)$$
 @end tex
 
-A interpreta@value{cedilha}@~{a}o e os valores permitidos dos par@^{a}metros de entrada s@~{a}o os
-mesmos que para a fun@value{cedilha}@~{a}o @code{evolution}. Um diagrama em escada consiste
-de um gr@'{a}fico da fun@value{cedilha}@~{a}o @var{F(y)}, juntamente com a linha
+A interpretaç@~{a}o e os valores permitidos dos par@^{a}metros de entrada s@~{a}o os
+mesmos que para a funç@~{a}o @code{evolution}. Um diagrama em escada consiste
+de um gr@'{a}fico da funç@~{a}o @var{F(y)}, juntamente com a linha
 @var{G(y)} @code{=} @var{y}. Um segmento vertical @'{e} desenhado a partir das
 point (@var{y0}, @var{y0}) on that line until the point where it
-intersec@value{cedilha}@~{o}es com a fun@value{cedilha}@~{a}o @var{F}. A partir daquele ponto um segmento horizontal @'{e}
+intersecç@~{o}es com a funç@~{a}o @var{F}. A partir daquele ponto um segmento horizontal @'{e}
 desenhado at@'{e} encontrar o ponto (@var{y1}, @var{y1}) sobre a linha, e
 o procedimento @'{e} repetido @var{n} vezes at@'{e} que o ponto (@var{yn}, @var{yn})
 @'{e} encontrado.
 
 @end deffn
 
-@b{op@value{cedilha}@~{o}es}
+@b{opç@~{o}es}
 
-Cada op@value{cedilha}@~{a}o @'{e} uma lista de dois ou mais itens. O primeiro item @'{e} o nome
-da op@value{cedilha}@~{a}o, e os restantes compreendem os argumentos para a op@value{cedilha}@~{a}o.
+Cada opç@~{a}o @'{e} uma lista de dois ou mais itens. O primeiro item @'{e} o nome
+da opç@~{a}o, e os restantes compreendem os argumentos para a opç@~{a}o.
 
-As op@value{cedilha}@~{o}es aceitas pelas fun@value{cedilha}@~{o}es @code{evolution}, @code{evolution2d},
-@code{staircase}, @code{orbits}, @code{ifs} e @code{chaosgame} s@~{a}o as mesmas op@value{cedilha}@~{o}es para
-@code{plot2d}. Adicionalmente para aquelas op@value{cedilha}@~{o}es, @code{orbits} aceita a
-op@value{cedilha}@~{a}o extra @var{pixels} que escolhe o n@'{u}mero m@'{a}ximo de pontos
-diferentes que ir@~{a}o ser representados na dire@value{cedilha}@~{a}o vertical.
+As opç@~{o}es aceitas pelas funç@~{o}es @code{evolution}, @code{evolution2d},
+@code{staircase}, @code{orbits}, @code{ifs} e @code{chaosgame} s@~{a}o as mesmas opç@~{o}es para
+@code{plot2d}. Adicionalmente para aquelas opç@~{o}es, @code{orbits} aceita a
+opç@~{a}o extra @var{pixels} que escolhe o n@'{u}mero m@'{a}ximo de pontos
+diferentes que ir@~{a}o ser representados na direç@~{a}o vertical.
 
 
 @b{Exemplos}
 
-Representa@value{cedilha}@~{a}o gr@'{a}fica e diagrama em escada para a seq@"{u}@^{e}ncia:
+Representaç@~{a}o gr@'{a}fica e diagrama em escada para a seq@"{u}@^{e}ncia:
 2, cos(2), cos(cos(2)),...
 
 @example
@@ -209,7 +209,7 @@ Representa@value{cedilha}@~{a}o gr@'{a}fica e diagrama em escada para a seq@"{u}
 @image{@value{figuresfolder}/dynamics2,8cm}
 @end ifnotinfo
 
-Se seu sistema for lento, voc@^{e} dever@'{a} reduzir o n@'{u}mero de itera@value{cedilha}@~{o}es nos
+Se seu sistema for lento, voc@^{e} dever@'{a} reduzir o n@'{u}mero de iteraç@~{o}es nos
 seguintes exemplos. E se os pontos parecerem muito pequenos no seu
 monitor, voc@^{e} pode querer tentar um estilo diferente, tal como
 @code{[}@var{style},@code{[}@var{points},0.8@code{]]}.
@@ -232,7 +232,7 @@ $$y_{n+1} = x + y_n^2$$
 @image{@value{figuresfolder}/dynamics3,8cm}
 @end ifnotinfo
 
-Para ampliar a regi@~{a}o em torno da bifurca@value{cedilha}@~{a}o menor perto de x @code{=} -1.25 use:
+Para ampliar a regi@~{a}o em torno da bifurcaç@~{a}o menor perto de x @code{=} -1.25 use:
 @example
 (%i5) orbits(x+y^2, 0, 100, 400, [a,-1,-1.53], [x,-1.6,-0.8],
              [nticks, 400], [style,dots]);
@@ -242,7 +242,7 @@ Para ampliar a regi@~{a}o em torno da bifurca@value{cedilha}@~{a}o menor perto d
 @image{@value{figuresfolder}/dynamics4,8cm}
 @end ifnotinfo
 
-Evolu@value{cedilha}@~{a}o de um sistemma bidimensional que leva a um fractal:
+Evoluç@~{a}o de um sistemma bidimensional que leva a um fractal:
 
 @example
 (%i6) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
@@ -256,7 +256,7 @@ Evolu@value{cedilha}@~{a}o de um sistemma bidimensional que leva a um fractal:
 @image{@value{figuresfolder}/dynamics5,8cm}
 @end ifnotinfo
 
-E uma amplia@value{cedilha}@~{a}o de uma pequena regial naquele fractal:
+E uma ampliaç@~{a}o de uma pequena regial naquele fractal:
 
 @example
 (%i9) evolution2d([f,g], [x,y], [-0.5,0], 300000, [x,-0.8,-0.6],
@@ -278,7 +278,7 @@ Um gr@'{a}fico do tri@^{a}ngulo de Sierpinsky, obtido com o jogo do caos:
 @image{@value{figuresfolder}/dynamics7,8cm}
 @end ifnotinfo
 
-A samambaia de Barnsley, obtida com um Sistema de Fun@value{cedilha}@~{o}es Iteradas:
+A samambaia de Barnsley, obtida com um Sistema de Funç@~{o}es Iteradas:
 
 @example
 (%i10) a1: matrix([0.85,0.04],[-0.04,0.85])$
@@ -306,7 +306,7 @@ A samambaia de Barnsley, obtida com um Sistema de Fun@value{cedilha}@~{o}es Iter
 @image{@value{figuresfolder}/dynamics8,8cm}
 @end ifnotinfo
 
-Para resolver numericamente a equa@value{cedilha}@~{a}o diferencial
+Para resolver numericamente a equaç@~{a}o diferencial
 
 @ifnottex
 @example
