@@ -119,7 +119,10 @@ will generate a EPUB version of the Maxima reference manual in
 doc/info/maxima.epub
 Calibre is required for building the EPUB, LaTeX is required for
 building the PDFs.
-
+If you want to build the Japanese and Russian translation as PDF,
+you will need to use xetex instead of pdftex, so call
+make pdf PDFTEX=xetex
+to build the PDFs.
 
 Generic Autotools build instructions follow.
 
