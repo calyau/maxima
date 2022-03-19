@@ -9,8 +9,8 @@ New items in share:
 
 Changes in core:
 ----------------
-* new code to commute conjugate of derivative (Commit [565fcf])
-* Gnuplot's plot window title is now "plot2d" or "plot3d" (Commit [3ad574])
+ * new code to commute conjugate of derivative (Commit [565fcf])
+ * Gnuplot's plot window title is now "plot2d" or "plot3d" (Commit [3ad574])
 
 Changes in share:
 -----------------
@@ -67,5 +67,12 @@ Unnumbered bugs fixed:
 
 Documentation:
 --------------
-Examples in the introduction to strings (Data Types and Structures chapter)
-fixed.
+ * Examples in the introduction to strings (Data Types and Structures chapter)
+   fixed.
+ * New build scripts in Lisp, Python is no longer needed to build the documentation
+ * Update japanese documentation
+ * Add new configuration options --enable-lang-ru and --enable-lang-ja for building
+   japanese and russian documentation
+ * Expunge build and runtime machinery for doc/info/<lang>.utf8
+ * Remove configuration options --enable-lang-<lang>-utf8 
+
