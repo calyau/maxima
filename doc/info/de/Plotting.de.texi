@@ -90,7 +90,7 @@ sind:
 @c @code{maxout.gnuplot}.
 
 @itemize @bullet
-@item @strong{gnuplot} (Standard f@"ur Windows)
+@item @strong{gnuplot}
 
 Startet das externe Programm Gnuplot.  Gnuplot muss installiert sein.  Die
 Grafikkommandos und Daten werden in die Datei @code{maxout.gnuplot} gespeichert.
@@ -104,7 +104,7 @@ Grafikkommandos und Daten werden in die Datei @code{maxout.gnuplot} gespeichert.
 @c the function @code{gnuplot_replot} can be used to modify a plot that has 
 @c already displayed on the screen (see @code{gnuplot_replot}).
 
-@item @strong{gnuplot_pipes} (Standard, wenn nicht Windows)
+@item @strong{gnuplot_pipes} (Standardwert)
 
 Es ist @"ahnlich dem Format
 @code{gnuplot}, mit der Ausnahme, dass die Grafikkommandos als Datenstrom @"uber
@@ -1395,7 +1395,7 @@ wird in diesem Fall mit der Grafikoption @mref{color} festgelegt.
 @c --- 02.11.2010 DK -----------------------------------------------------------
 @anchor{plot_format}
 @defvr {Grafikoption} plot_format [plot_format, @var{format}]
-Standardwert: @code{gnuplot} f@"ur Windows, ansonsten @code{gnuplot_pipes}
+Standardwert: @code{gnuplot_pipes}
 
 @c It sets the format to be used for plotting.
 @c Where @var{format} is one of the following: gnuplot, xmaxima, mgnuplot or

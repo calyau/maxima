@@ -84,14 +84,14 @@ The plotting formats are the following:
 
 @itemize @bullet
 @item
-@strong{gnuplot} (default on Windows)
+@strong{gnuplot}
 
 Used to launch the external program gnuplot, which must be installed in
 your system.  All plotting commands and data are saved into the file
 @code{maxout_xxx.gnuplot}.
 
 @item
-@strong{gnuplot_pipes} (default on non-Windows platforms)
+@strong{gnuplot_pipes} (default value)
 
 It is similar to the @code{gnuplot} format except that the commands and
 plot data are sent directly to @code{gnuplot} without creating any
