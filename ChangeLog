@@ -10,10 +10,13 @@ New items in share:
 Changes in core:
 ----------------
  * new code to commute conjugate of derivative (Commit [565fcf])
- * Gnuplot's plot window title is now "plot2d" or "plot3d" (Commit [3ad574])
+ * new function gnuplot_send (Commit [54380c])
 
 Changes in share:
 -----------------
+ * draw: Restored the detfault gnuplot_pipes format (Commit [a54f2f])
+ * draw: Restores the window, font and size options for defaut
+   terminal (Commit [096f0b])
 
 Changes in Xmaxima:
 -------------------
@@ -31,6 +34,7 @@ Bug fixes for numbered bugs:
  * \#380: algsys a*b=c*d grossly incomplete
  * \#484: limit(x=0,x,0) wrong
  * \#1097: pattern variable appears in letsimp result
+ * \#2247: not plotting from Vista, probably due to national characters
  * \#2388: wrong limit
  * \#2709: `letsimp' is wrong if `ratexpand' is called
  * \#2837: ev causes bogus WNA checks for sum, product, define and ":"
@@ -38,7 +42,11 @@ Bug fixes for numbered bugs:
  * \#2921: errcatch fails to catch various errors
  * \#2953: limit loops endlessly
  * \#3068: taylor of CRE fails
+ * \#3159: plot3d in Windows not recognizing plot option color
+ * \#3453: Mesh Lines Bugged | Cannot Change Their Color from Default
  * \#3483: limit apparently causes infinite loop
+ * \#3520: "Directory does not exist" errors on Windows 10
+ * \#3542: Unable to display second plot until first one is closed
  * \#3736: Quoting either min or max inhibits simplification
  * \#3764: limit of min works with assume but not with asksign
  * \#3765: min(und,...) gives error with trylevel > 1
@@ -59,6 +67,7 @@ Bug fixes for numbered bugs:
  * \#3934: expand(1/(1+%i)^4) => (-4)^(-1) (unsimplified)
  * \#3936: plot2d sends invalid file to gnuplot
  * \#3950: letsimp confuses symbols and nullary applications
+ * \#3951: screen terminal no longer works as described in docs
  * \#3952: plot2d clipping warnings not appearing
  * \#3953: Pressing q necessary to continue when plot2d output to svg
 
