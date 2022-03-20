@@ -2773,3 +2773,14 @@ expand(1/(1+%i)^8-1/16);
 expand((sqrt(-1/2)+sqrt(1/2))^-8);
 1;
 
+/* Bug #3956: expand(1/((sqrt(2)-1)*(sqrt(2)+1))) => 1/1 (unsimplified) */
+
+expand(1/((sqrt(2)-1)*(sqrt(2)+1)));
+1;
+
+expand(1/(-(sqrt(3)-1)*(sqrt(3)+1)));
+-1/2;
+
+expand(1/(-(sqrt(n+1)-1)*(sqrt(n+1)+1)));
+-1/n;
+
