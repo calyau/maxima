@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-03-18 11:44:30 villate"
+;; Time-stamp: "2022-03-20 18:04:29 villate"
 
 (in-package :maxima)
 
@@ -260,11 +260,11 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
           ($run_viewer :run_viewer) ($same_xy :samexy)
           ($same_xyz :same_xyz) ($sample :sample) ($style :style)
           ($svg_file :svg_file) ($t :t) ($title :title)
-          ($transform_xy :transform_xy) ($x :x) ($xbounds :xbounds)
-          ($xlabel :xlabel) ($xtics :xtics) ($xy_scale :xy_scale)
-          ($y :y) ($ybounds :ybounds) ($ylabel :ylabel) ($ytics :ytics)
-          ($yx_ratio :yx_ratio) ($z :z) ($zlabel :zlabel) ($zmin :zmin)
-          ($ztics :ztics)
+          ($transform_xy :transform_xy) ($window :window) ($x :x)
+          ($xbounds :xbounds) ($xlabel :xlabel) ($xtics :xtics)
+          ($xy_scale :xy_scale) ($y :y) ($ybounds :ybounds) ($ylabel :ylabel)
+          ($ytics :ytics) ($yx_ratio :yx_ratio) ($z :z) ($zlabel :zlabel)
+          ($zmin :zmin) ($ztics :ztics)
           ($gnuplot_4_0 :gnuplot_4_0)
           ($gnuplot_curve_titles :gnuplot_curve_titles)
           ($gnuplot_curve_styles :gnuplot_curve_styles)
@@ -1930,6 +1930,10 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
                        (check-option (cdr opt) #'stringp "a string" 1)))
          ($transform_xy (setf (getf options :transform_xy)
                               (check-option-b (cdr opt) #'functionp "a function make_transform" 1)))
+         ($window (setf (getf options :window)
+                        (check-option (cdr opt)
+                                      #'(lambda (n) (and (integerp n) (>= n 0)))
+			              "a non-negative integer" 1)))
          ($x (setf (getf options :x) (cddr (check-range opt))))
          ($xbounds (setf (getf options :xbounds) (cddr (check-range opt))))
          ($xlabel (setf (getf options :xlabel)

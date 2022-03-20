@@ -1,6 +1,6 @@
 ;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2022-03-16 18:54:00 villate"
+;; Time-stamp: "2022-03-20 17:52:18 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -292,7 +292,10 @@
          (setq terminal-command
                (getf plot-options :gnuplot_default_term_command))
          (setq terminal-command
-               (format nil "set term @GNUTERM ~%"))))
+               (if (getf plot-options :window)
+                   (format nil "set term @GNUTERM ~d~%"
+                           (getf plot-options :window))
+                   (format nil "set term @GNUTERM ~%")))))
     ((getf plot-options :gnuplot_term)
      (setq
       terminal-command

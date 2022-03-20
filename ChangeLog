@@ -16,6 +16,8 @@ Changes in core:
  * plot2d, plot3d, mandelbrot and julia now use gnuplot_pipes by default
    in all operating systems and in all cases (plot shown on the screen or
    saved to a graphics file). No temporary files are used.
+ * new plot option window. It can be used to send the plot to a window
+   different from the default 0 window.
 
 Changes in share:
 -----------------

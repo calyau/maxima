@@ -1,4 +1,4 @@
-@c Time-stamp: "2022-03-13 12:28:43 villate"
+@c Time-stamp: "2022-03-20 18:10:47 villate"
 @menu
 * Introduction to Plotting::
 * Plotting Formats::
@@ -1755,6 +1755,20 @@ See @mrefcomma{make_transform} @mref{polar_to_xy} and
 @category{Plotting}
 @closecatbox
 @end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{window}
+@defvr {Plot option} window [window, @var{n}]
+
+Opens the plot in window number @var{n}, instead of the default window
+0. If window number @var{n} is already opened, the plot in that window
+will be replaced by the current plot.
+
+@opencatbox{Categories:}
+@category{Plotting}
+@closecatbox
+@end defvr
+
 
 @c -----------------------------------------------------------------------------
 @anchor{x}
