@@ -1,0 +1,331 @@
+@menu
+* Package quantum_computing::
+* Functions and Variables for Quantum_Computing::       
+@end menu
+
+@node Package quantum_computing, Functions and Variables for Quantum_Computing, quantum_computing-pkg, quantum_computing-pkg
+@section Package quantum_computing
+
+The @code{quantum_computing} package provides several functions to
+simulate quantum computing circuits. The state of a system of @var{n}
+qubits is represented by a list of 2^@var{n} complex numbers and an
+operator acting on @var{m} qubits is represented by a 2^@var{m} by
+2^@var{m} matrix. A hsh array @var{qmatrix} is defined with 6 common
+one-qubit matrices: the identity, the Pauli matrices, the Hadamard
+matrix and the phase matrix.
+
+The major disadvantage compared to a real quantum computer is very slow
+computing times even with a few qubits. An advantage is that unlike a
+quantum computer in this simulator a quantum state can be cloned using
+@mrefdot{copylist}
+
+This is an additional package that must be loaded with
+@code{load(quantum_computing)} in order to use it.
+
+@opencatbox{Categories:}
+@category{Share packages}
+@category{Package quantum_computing}
+@closecatbox
+
+@node Functions and Variables for Quantum_Computing,  , Package quantum_computing, quantum_computing-pkg
+@section Functions and Variables for Quantum_Computing
+
+@anchor{binlist}
+@deffn {Function} binlist @
+@fname{binlist} (@var{k}) @
+@fname{binlist} (@var{k}, @var{n})
+
+@code{binlist}(@var{k}), where @var{k} must be a natural number,
+returns a list of binary digits 0 or 1 corresponding to the digits of
+@var{k} in binary representation. @code{binlist}(@var{k}, @var{n}) does
+the same but returns a list of length @var{n}, with leading zeros as
+necessary. Notice that for the result to represent a possible state of
+@var{m} qubits, @var{n} should be equal to 2^@var{m} and @var{k} should
+be between 0 and 2^@var{m}-1.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{binlist2dec}
+@deffn {Function} binlist2dec (@var{l})
+
+Given a list @var{l} with @var{n} binary digits, it returns the decimal
+number it represents.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{CNOT}
+@deffn {Function} CNOT (@var{q}, @var{i}, @var{j})
+
+Changes the value of the j'th qubit, in a state @var{q} of @var{m}
+qubits, when the value of the i'th qubit equals 1. It modifies the list
+@var{q} and returns its modified value.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{controlled}
+@deffn {Function} controlled (@var{U}, @var{q}, @var{c}, @var{i})
+
+Applies a matrix @var{U}, acting on @var{m} qubits, on qubits @var{i}
+through @var{i}+@var{m}-1 of the state @var{q} of @var{n} qubits
+(@var{n} > @var{m}), when the value of the c'th qubit in @var{q} equals
+1. @var{i} should be an integer between 1 and @var{n}+1-@var{m} and
+@var{c} should be an integer between 1 and @var{n}, excluding the qubits
+to be modified (@var{i} through @var{i}+@var{m}-1).
+
+@var{U} can be one of the indices of the array of common matrices
+@var{qmatrix} (see @mref{qmatrix}). The state @var{q} is modified and
+shown in the output.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{gate}
+@deffn {Function} gate @
+@fname{gate} (@var{U}, @var{q}) @
+@fname{gate} (@var{U}, @var{q}, @var{i}) @
+@fname{gate} (@var{U}, @var{q}, @var{i1}, @dots{}, @var{im})
+
+@var{U} must be a matrix acting on states of @var{m} qubits; @var{q} a
+list correspondig to a state of @var{n} qubits (@var{n} >= @var{m});
+@var{i} and the @var{m} numbers @var{i1}, @dots{}, @var{im} must be
+different integers between 1 and @var{n}.
+
+@code{gate}(@var{U}, @var{q}) applies matrix @var{U} to each qubit of
+@var{q}, when @var{m} equals 1, or to the first @var{m} qubits of
+@var{q} when @var{m} is bigger than 1.
+
+@code{gate}(@var{U}, @var{q}, @var{i}) applies matrix @var{U} to the
+qubits @var{i} through @var{i}+@var{m}-1 of @var{q}.
+
+@code{gate}(@var{U}, @var{q}, @var{i1}, @dots{}, @var{in}) applies
+matrix @var{U} to the in the positions @var{i1}, @dots{}, @var{im}.
+
+@var{U} can be one of the indices of the array of common matrices
+@var{qmatrix} (see @mref{qmatrix}). The state @var{q} is modified and
+shown in the output.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{gate_matrix}
+@deffn {Function} gate_matrix @
+@fname{gate_matrix} (@var{U}, @var{n}) @
+@fname{gate_matrix} (@var{U}, @var{n}, @var{i1}, @dots{}, @var{im})
+
+@var{U} must be a 2 by 2 matrix or one of the indices of the array of
+common matrices @var{qmatrix} (see @mref{qmatrix}).
+@code{gate_matrix}(@var{U}, @var{n}) returns the matrix corresponding to
+the action of @var{U} on each qubit in a state of @var{n} qubits.
+
+@code{gate_matrix} (@var{U}, @var{n}, @var{i1}, @dots{}, @var{im})
+returns the matrix corresponding to the action of @var{U} on qubits
+@var{i1}, @dots{}, @var{im} of a state of @var{n} qubits, where
+@var{i1}, @dots{}, @var{im} are different integers between 1 and
+@var{n}.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{linsert}
+@deffn {Function} linsert (@var{e}, @var{l}, @var{p})
+
+Inserts the expression or list @var{e} into the list @var{l} at position
+@var{p}. The list can be empty and @var{p} must be an integer between 1 and
+the length of @var{l} plus 1.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{lreplace}
+@deffn {Function} lreplace (@var{e}, @var{l}, @var{p})
+
+If @var{e} is a list of length @var{n}, the elements in the positions
+@var{p}, @var{p}+1, @dots{}, @var{p}+@var{n}-1 of the list @var{l} are
+replaced by @var{e}, or the first elements of @var{e} if the end of
+@var{l} is reached.  If @var{e} is an expression, the element in
+position @var{p} of list @var{l} is replaced by that expression.
+@var{p} must be an integer between 1 and the length of @var{l}.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{normalize}
+@deffn {Function} normalize (@var{q})
+
+Returns the normalized version of a quantum state given as a list @var{q}.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{qdisplay}
+@deffn {Function} qdisplay (@var{q})
+
+Represents the state @var{q} of a system of @var{n} qubits as a linear
+combination of the computational states with @var{n} binary digits.  It
+returns an expression including strings and symbols.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@defvr {System variable} qmatrix
+
+This variable is a predefined hash array of two by two matrices with the
+standard matrices: identity, Pauli matrices, Hadamard matrix and the
+phase matrix. The six possible indices are I, X, Y, Z, H,
+S. @var{qmatrix}[I] is the identity matrix, @var{qmatrix}[X] the Pauli x
+matrix, @var{qmatrix}[Y] the Pauli y matrix, @var{qmatrix}[Z] the Pauli
+z matrix, @var{qmatrix}[H] the Hadamard matrix and @var{qmatrix}[S] the
+phase matrix.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end defvr
+
+@anchor{qmeasure}
+@deffn {Function} qmeasure @
+@fname{qmeasure} (@var{q}) @
+@fname{qmeasure} (@var{q}, @var{i1}, @dots{}, @var{im})
+
+Measures the value of one or more qubits in a system of @var{n} qubits
+with state @var{q}. The @var{m} positive integers @var{i1}, @dots{},
+@var{im} are the positions of the qubits to be measured It requires 1 or
+more arguments. The first argument must be the state q. If the only
+argument given is @var{q}, all the n qubits will be measured.
+
+It returns a list with the values of the qubits measured (either 0 or
+1), in the same order they were requested or in ascending order if the
+only argument given was @var{q}. It modifies the list @var{q},
+reflecting the collapse of the quantum state after the measurement.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{qubits}
+@deffn {Function} qubits @
+@fname{qubits} (@var{n}) @
+@fname{qubits} (@var{i1}, @dots{}, @var{in})
+
+@code{qubits}(@var{n}) returns a list representing the ground state of a
+system of @var{n} qubits.
+
+@code{qubits}(@var{i1}, @dots{}, @var{in}) returns a list with
+representing the state of @var{n} qubits with values @var{i1}, @dots{},
+@var{in}.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{qswap}
+@deffn {Function} qswap (@var{q}, @var{i}, @var{j})
+
+Interchanges the states of qubits @var{i} and @var{j} in the state
+@var{q} of a system of several qubits.  It modifies the list @var{q} and
+returns its modified value.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{Rx}
+@deffn {Function} Rx (@var{a})
+
+Returns the 2 by two matrix (acting on one qubit) corresponding to a
+rotation of with an angle of @var{a} radians around the x axis.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{Ry}
+@deffn {Function} Ry (@var{a})
+
+Returns the 2 by two matrix (acting on one qubit) corresponding to a
+rotation of with an angle of @var{a} radians around the y axis.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{Rz}
+@deffn {Function} Rz (@var{a})
+
+Returns the 2 by two matrix (acting on one qubit) corresponding to a
+rotation of with an angle of @var{a} radians around the z axis.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{tprod}
+@deffn {Function} tprod (@var{o1}, @dots{}, @var{on})
+
+Returns the tensor product of the @var{n} matrices or lists @var{o1},
+@dots{}, @var{on}.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
+
+@anchor{toffoli}
+@deffn {Function} toffoli (@var{q}, (@var{i}, (@var{j}, (@var{k})
+
+Changes the value of the @var{k}'th qubit, in the state @var{q} of
+@var{n} qubits, if the values of the @var{i}'th anf @var{j}'th qubits
+are equal to 1. It modifies the list @var{q} and returns its new value.
+
+@opencatbox{Categories:}
+@category{Package quantum_computing}
+@closecatbox
+
+@end deffn
