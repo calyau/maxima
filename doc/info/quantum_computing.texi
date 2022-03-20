@@ -10,13 +10,13 @@ The @code{quantum_computing} package provides several functions to
 simulate quantum computing circuits. The state of a system of @var{n}
 qubits is represented by a list of 2^@var{n} complex numbers and an
 operator acting on @var{m} qubits is represented by a 2^@var{m} by
-2^@var{m} matrix. A hsh array @var{qmatrix} is defined with 6 common
+2^@var{m} matrix. A hash array @var{qmatrix} is defined with 6 common
 one-qubit matrices: the identity, the Pauli matrices, the Hadamard
 matrix and the phase matrix.
 
 The major disadvantage compared to a real quantum computer is very slow
-computing times even with a few qubits. An advantage is that unlike a
-quantum computer in this simulator a quantum state can be cloned using
+computing times even with a few qubits. An advantage is that, unlike a
+quantum computer, in this simulator a quantum state can be cloned using
 @mrefdot{copylist}
 
 This is an additional package that must be loaded with
@@ -50,9 +50,9 @@ be between 0 and 2^@var{m}-1.
 @end deffn
 
 @anchor{binlist2dec}
-@deffn {Function} binlist2dec (@var{l})
+@deffn {Function} binlist2dec (@var{lst})
 
-Given a list @var{l} with @var{n} binary digits, it returns the decimal
+Given a list @var{lst} with @var{n} binary digits, it returns the decimal
 number it represents.
 
 @opencatbox{Categories:}
@@ -64,9 +64,9 @@ number it represents.
 @anchor{CNOT}
 @deffn {Function} CNOT (@var{q}, @var{i}, @var{j})
 
-Changes the value of the j'th qubit, in a state @var{q} of @var{m}
-qubits, when the value of the i'th qubit equals 1. It modifies the list
-@var{q} and returns its modified value.
+Changes the value of the @var{j}'th qubit, in a state @var{q} of @var{m}
+qubits, when the value of the @var{i}'th qubit equals 1. It modifies the
+list @var{q} and returns its modified value.
 
 @opencatbox{Categories:}
 @category{Package quantum_computing}
@@ -79,10 +79,10 @@ qubits, when the value of the i'th qubit equals 1. It modifies the list
 
 Applies a matrix @var{U}, acting on @var{m} qubits, on qubits @var{i}
 through @var{i}+@var{m}-1 of the state @var{q} of @var{n} qubits
-(@var{n} > @var{m}), when the value of the c'th qubit in @var{q} equals
-1. @var{i} should be an integer between 1 and @var{n}+1-@var{m} and
-@var{c} should be an integer between 1 and @var{n}, excluding the qubits
-to be modified (@var{i} through @var{i}+@var{m}-1).
+(@var{n} > @var{m}), when the value of the @var{c}'th qubit in @var{q}
+equals 1. @var{i} should be an integer between 1 and @var{n}+1-@var{m}
+and @var{c} should be an integer between 1 and @var{n}, excluding the
+qubits to be modified (@var{i} through @var{i}+@var{m}-1).
 
 @var{U} can be one of the indices of the array of common matrices
 @var{qmatrix} (see @mref{qmatrix}). The state @var{q} is modified and
@@ -148,11 +148,11 @@ returns the matrix corresponding to the action of @var{U} on qubits
 @end deffn
 
 @anchor{linsert}
-@deffn {Function} linsert (@var{e}, @var{l}, @var{p})
+@deffn {Function} linsert (@var{e}, @var{lst}, @var{p})
 
-Inserts the expression or list @var{e} into the list @var{l} at position
+Inserts the expression or list @var{e} into the list @var{lst} at position
 @var{p}. The list can be empty and @var{p} must be an integer between 1 and
-the length of @var{l} plus 1.
+the length of @var{lst} plus 1.
 
 @opencatbox{Categories:}
 @category{Package quantum_computing}
@@ -161,14 +161,14 @@ the length of @var{l} plus 1.
 @end deffn
 
 @anchor{lreplace}
-@deffn {Function} lreplace (@var{e}, @var{l}, @var{p})
+@deffn {Function} lreplace (@var{e}, @var{lst}, @var{p})
 
 If @var{e} is a list of length @var{n}, the elements in the positions
-@var{p}, @var{p}+1, @dots{}, @var{p}+@var{n}-1 of the list @var{l} are
+@var{p}, @var{p}+1, @dots{}, @var{p}+@var{n}-1 of the list @var{lst} are
 replaced by @var{e}, or the first elements of @var{e} if the end of
-@var{l} is reached.  If @var{e} is an expression, the element in
-position @var{p} of list @var{l} is replaced by that expression.
-@var{p} must be an integer between 1 and the length of @var{l}.
+@var{lst} is reached.  If @var{e} is an expression, the element in
+position @var{p} of list @var{lst} is replaced by that expression.
+@var{p} must be an integer between 1 and the length of @var{lst}.
 
 @opencatbox{Categories:}
 @category{Package quantum_computing}
@@ -200,6 +200,7 @@ returns an expression including strings and symbols.
 
 @end deffn
 
+@anchor{qmatrix}
 @defvr {System variable} qmatrix
 
 This variable is a predefined hash array of two by two matrices with the
