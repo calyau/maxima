@@ -3129,15 +3129,18 @@ ignoring dummy variables and array indices."
 
 (defun simplim%li (expr x pt)
   (let ((n (car (subfunsubs expr))) (e (car (subfunargs expr))))
-	(cond ((freeof x n)
-			(setq e (limit e x pt 'think))
-			(cond ((and (eq e '$minf) (eql n 2)) '$minf)
-				  ((and (eq e '$inf) (eql n 2)) '$infinity)
-			      ((or (eql e 1) (off-one-to-inf e))
-					(subftake '$li (list n) (list e)))
-				  (t (throw 'limit nil))))
-		  ;; Claim ignorance when order depends on limit variable.	
-		  (t (throw 'limit nil)))))	
+    (cond ((freeof x n)
+	   (setq e (limit e x pt 'think))
+	   (cond ((and (eq e '$minf) (eql n 2))
+		  '$minf)
+		 ((and (eq e '$inf) (eql n 2))
+		  '$infinity)
+		 ((or (eql e 1) (off-one-to-inf e))
+		  (subftake '$li (list n) (list e)))
+		 (t (throw 'limit nil))))
+	  ;; Claim ignorance when order depends on limit variable.	
+	  (t (throw 'limit nil)))))
+
 (setf (get '$li 'simplim%function) #'simplim%li)
 (setf (get '%li 'simplim%function) #'simplim%li)
 
