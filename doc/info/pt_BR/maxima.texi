@@ -18,7 +18,7 @@
 @setfilename  maxima.info
 @synindex vr fn
 @documentencoding UTF-8
-@set cedilha @,{c}
+@documentlanguage pt_BR
 @set mail <maxima at math dot utexas dot edu>
 @settitle Manual do Maxima
 @c %**end of header
