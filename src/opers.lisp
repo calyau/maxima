@@ -157,10 +157,7 @@
   (cond ((=1 power) (simplifya *base nil))
 	(t (simplifya `((mexpt) ,*base ,power) nil))))
 
-(defun ncpower (x y)
-  (cond ((=0 y) 1)
-	((=1 y) x)
-	(t (simplifya `((mncexpt) ,x ,y) t))))
+(defun ncpower (x y) (simplifya `((mncexpt) ,x ,y) t))
 
 ;; [Add something for constructing equations here at some point.]
 

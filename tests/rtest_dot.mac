@@ -33,6 +33,9 @@ x . 0$
 
 /*--- dotident ---*/
 
+(reset (dotident), 0);
+0;
+
 x . dotident;
 x$
 
@@ -42,7 +45,10 @@ x$
 x^^0;
 ''(dotident)$
 
-x^^0, dotident : id;
+(kill(id), dotident: id);
+id;
+
+x^^0;
 id$
 
 /*--- exponent rules ----*/
@@ -61,6 +67,12 @@ a^^2 . a^^-2;
 
 (1 + x - x^2)^^2 .(1 + x - x^2)^^-2;
 ''(dotident)$
+
+a^^-2 . a^^3;
+a;
+
+a^^-3 . a^^5;
+a^^2;
 
 /*--- dotdistrib ---*/
 
