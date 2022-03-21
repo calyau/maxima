@@ -50,6 +50,7 @@ Bug fixes for numbered bugs:
  * \#2953: limit loops endlessly
  * \#3068: taylor of CRE fails
  * \#3159: plot3d in Windows not recognizing plot option color
+ * \#3910: correct 'an Unicode' in doc/info/stringproc.texi
  * \#3453: Mesh Lines Bugged | Cannot Change Their Color from Default
  * \#3483: limit apparently causes infinite loop
  * \#3520: "Directory does not exist" errors on Windows 10
