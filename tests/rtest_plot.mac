@@ -396,5 +396,10 @@ plot2d(sum(w, w, 1, abs(x)), [x, 1, 10]);
 plot2d (gamma (x), [x, -1, 1]);
 plot2d (lambda ([x], gamma (x)), [x, -1, 1]);
 
+/* SF bug #1055: "parameter in parametric plot must be named t" */
+
+kill (foo); 
+plot2d ([parametric, sin(foo), cos(foo), [foo, 0, %pi]]);
+
 "FINIS" $
 
