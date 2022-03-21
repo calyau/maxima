@@ -1833,12 +1833,12 @@ random_general_finite_discrete(v,[num]) :=
 pdf_inverse_gamma (x, a, b) :=
     if maybe (a > 0) = false or maybe (b > 0) = false
         then error ("pdf_inverse_gamma: parameters must be positive; found:", a, b)
-        else b^a/gamma(a) * x^(-a-1) * exp(-b/x) * unit_step(x);
+        else if x > 0 then b^a/gamma(a) * x^(-a-1) * exp(-b/x) else 0;
 
 cdf_inverse_gamma (x, a, b) :=
     if maybe (a > 0) = false or maybe (b > 0) = false
         then error ("cdf_inverse_gamma: parameters must be positive; found:", a, b)
-        else gamma_incomplete(a, b/x) / gamma(a) * unit_step(x);
+        else if x > 0 then gamma_incomplete(a, b/x) / gamma(a) else 0;
 
 quantile_inverse_gamma (x, a, b) :=
     if maybe (a > 0) = false or maybe (b > 0) = false
