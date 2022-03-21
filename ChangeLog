@@ -3,6 +3,8 @@ Maxima 5.45-post change log
 
 New items in core:
 ------------------
+ * Maxima compiled with ABCL can use network connections (option "-s"),
+   which is used by frontends like Xmaxima and wxMaxima.
 
 New items in share:
 -------------------
@@ -93,4 +95,7 @@ Documentation:
    japanese and russian documentation
  * Expunge build and runtime machinery for doc/info/<lang>.utf8
  * Remove configuration options --enable-lang-<lang>-utf8 
+ * Fix building PDF documentation for non-english languages. Use xeTeX
+   make pdf PDFTEX=xetex
+   to build Japanese and Russian PDFs.
 
