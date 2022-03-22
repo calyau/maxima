@@ -547,3 +547,6 @@ endif
 clean-abcl:
 	rm -rf binary-abcl libmaxima.a
 CLEAN_TARGETS += clean-abcl
+
+distclean-local:
+	rm -f sbcl-depends.mk.tmp
