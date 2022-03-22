@@ -3,6 +3,7 @@ Maxima 5.45-post change log
 
 New items in core:
 ------------------
+ * Added eval_string_lisp to read in and evaluate lisp forms from a string
  * Maxima compiled with ABCL can use network connections (option "-s"),
    which is used by frontends like Xmaxima and wxMaxima.
 
