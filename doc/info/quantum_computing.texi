@@ -101,7 +101,7 @@ shown in the output.
 @fname{gate} (@var{U}, @var{q}, @var{i1}, @dots{}, @var{im})
 
 @var{U} must be a matrix acting on states of @var{m} qubits; @var{q} a
-list correspondig to a state of @var{n} qubits (@var{n} >= @var{m});
+list corresponding to a state of @var{n} qubits (@var{n} >= @var{m});
 @var{i} and the @var{m} numbers @var{i1}, @dots{}, @var{im} must be
 different integers between 1 and @var{n}.
 

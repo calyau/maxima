@@ -1297,7 +1297,7 @@ gamma_incomplete(nu+1,a*s)*s^(-nu-1)*%e^(a*s);
    With 
      gamma_incomplete(-v,a*s) = gamma(-v,a*s) - gamma_incomplete_lower(-v,a*s) and
      gamma(v+1) = v * gamma(v) 
-   the result of Maxima can be shown to be equivalent ot the
+   the result of Maxima can be shown to be equivalent of the
    tabulated result: a^nu*gamma(nu+1)*e^(a*s)*gamma_incomplete(-nu,a*s);
 */
 
@@ -1812,7 +1812,7 @@ radcan(specint(%e^(-s*t)*bessel_j(nu,a*t),t));
 a^nu/(sqrt(s^2+a^2)*(sqrt(s^2+a^2)+s)^nu);
 
 /* Problem 232: No. 03 (OK)
-   Thats the same result as Problem 233, because Maxima don't distinguish
+   That's the same result as Problem 233, because Maxima don't distinguish
    real and integer order of the Bessel function.
    But we have a problem with a factor 1/2, see Problem 86.
    I think EqWorld is wrong.

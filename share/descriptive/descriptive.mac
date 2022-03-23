@@ -96,8 +96,8 @@ Multivariate descriptive statistics:
       mean variance
       generalized variance
       generalized standard deviation
-      efective variance
-      efective standard deviation
+      effective variance
+      effective standard deviation
    list_correlations: gives a list with
       precision matrix
       multiple correlation coefficients
@@ -647,8 +647,8 @@ cov1(x):=block([n:length(x)], cov(x)*n/(n-1))$
 /*  2) mean variance                                                      */
 /*  3) generalized variance                                               */
 /*  4) generalized standard deviation                                     */
-/*  5) efective variance                                                  */
-/*  6) efective standard deviation                                        */
+/*  5) effective variance                                                 */
+/*  6) effective standard deviation                                       */
 /* Admits the following options:                                            */
 /*   'data='true: x stores sampled data and the covariance matrix 'cov1'    */
 /*        must be computed; if false, x is the covariance matrix and 'cov1' */
@@ -680,8 +680,8 @@ global_variances(x,[select]):=
          out:endcons(aux,out),       /* generalized variance */
          out:endcons(sqrt(aux),out), /* generalized standard deviation */
          aux:aux^(1/p),
-         out:endcons(aux,out),       /* efective variance */
-         out:endcons(sqrt(aux),out),  /* efective standard deviation */
+         out:endcons(aux,out),       /* effective variance */
+         out:endcons(sqrt(aux),out),  /* effective standard deviation */
          out )
     else error("global_variances: the argument is not a matrix") )$
 

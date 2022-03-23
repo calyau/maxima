@@ -1413,7 +1413,7 @@ on the interval @code{[-p, p]}.
 @closecatbox
 @end deffn
 
-@c NEES EXPANSION. WHAT IS THE ARGUMENT l ??
+@c NEEDS EXPANSION. WHAT IS THE ARGUMENT l ??
 
 @c -----------------------------------------------------------------------------
 @anchor{foursimp}
