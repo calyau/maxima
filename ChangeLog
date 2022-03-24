@@ -31,8 +31,8 @@ Changes in core:
 
 Changes in share:
 -----------------
- * draw: Restored the detfault gnuplot_pipes format (Commit [a54f2f])
- * draw: Restores the window, font and size options for defaut
+ * draw: Restored the default gnuplot_pipes format (Commit [a54f2f])
+ * draw: Restores the window, font and size options for default
    terminal (Commit [096f0b])
 
 Changes in Xmaxima:
