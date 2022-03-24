@@ -66,7 +66,7 @@ Building a 32 bit installer
 
 By default a 64 bit installer will be generated.
 If you want to crosscompile a 32 bit installer, install the 32 bit
-crosscompiler package (g++-mingw-w64-i686-g++) - and reconfigure it
+crosscompiler package (i686-w64-mingw32-g++) - and reconfigure it
 for posix threads.
 It might be necessary to add the i386 architecture:
 https://wiki.debian.org/Multiarch/HOWTO
