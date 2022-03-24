@@ -28,15 +28,17 @@ then
     language=en
     languagedir=@abs_srcdir@
     languagedestdir=$pwd
+    texiinitfile=$pwd/texi2html.init
 else
     languagedir=@abs_srcdir@/$language
     languagedestdir=$pwd
     if [ "$language" = "pt_BR" ]
     then language=pt
     fi
+    texiinitfile=$pwd/../texi2html.init
 fi
 
-echo "$0: abs_srcdir=@abs_srcdir@, pwd=$pwd, language=$language, languagedir=$languagedir"
+echo "$0: abs_srcdir=@abs_srcdir@, pwd=$pwd, language=$language, languagedir=$languagedir, texiinitfile=$texiinitfile"
 
 # THIS IS KIND OF TERRIBLE BECAUSE IT DEPENDS ON A CONVENTION ABOUT FILE NAMES IN DOC/INFO/*
 # Assume that per-topic Texinfo files are @include'd in
@@ -156,7 +158,7 @@ fi
 
 # --no-node-files so we don't have thousands of little html files
 # --force -e 10000 because the category stuff causes lots of errors.
-TEXIOPT="--html -c INLINE_CONTENTS=0 -c OUTPUT_ENCODING_NAME=UTF-8 --force -e 10000 --document-lang=$language -I . -I $languagedir -I ../.. --css-include=@abs_srcdir@/manual.css --init-file $pwd/texi2html.init"
+TEXIOPT="--html -c INLINE_CONTENTS=0 -c OUTPUT_ENCODING_NAME=UTF-8 --force -e 10000 --document-lang=$language -I . -I $languagedir -I ../.. --css-include=@abs_srcdir@/manual.css --init-file $texiinitfile"
 makeinfo --split=chapter --no-node-files --output="$languagedestdir" $TEXIOPT maxima.texi 
 makeinfo --no-split --output="$languagedestdir/maxima_singlepage.html" $TEXIOPT maxima.texi 
 
