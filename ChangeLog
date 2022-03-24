@@ -61,7 +61,6 @@ Bug fixes for numbered bugs:
  * \#2953: limit loops endlessly
  * \#3068: taylor of CRE fails
  * \#3159: plot3d in Windows not recognizing plot option color
- * \#3910: correct 'an Unicode' in doc/info/stringproc.texi
  * \#3453: Mesh Lines Bugged | Cannot Change Their Color from Default
  * \#3462: simplify_sum() variable name clash
  * \#3483: limit apparently causes infinite loop
@@ -93,6 +92,7 @@ Bug fixes for numbered bugs:
  * \#3883: plot creates invalid gnuplot command
  * \#3893: display2d and long numbers
  * \#3907: gnuplot_postamble not actually the last Gnuplot output before plot
+ * \#3910: correct 'an Unicode' in doc/info/stringproc.texi
  * \#3921: Expanded subtracted from unexpanded with e^ix does not integrate to zero
  * \#3934: expand(1/(1+%i)^4) => (-4)^(-1) (unsimplified)
  * \#3935: Noncommutative multiplication with string argument triggers "declare: argument must be a symbol"
