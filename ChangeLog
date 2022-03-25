@@ -103,6 +103,7 @@ Bug fixes for numbered bugs:
  * \#3952: plot2d clipping warnings not appearing
  * \#3953: Pressing q necessary to continue when plot2d output to svg
  * \#3956: expand(1/((sqrt(2)-1)*(sqrt(2)+1))) => 1/1 (unsimplified)
+ * \#3958: plot2d with multiple discrete plots fails
 
 Unnumbered bugs fixed:
 ---------------------
