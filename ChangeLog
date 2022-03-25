@@ -131,3 +131,6 @@ Documentation:
    make pdf PDFTEX=xetex
    to build Japanese and Russian PDFs.
 
+Build system:
+-------------
+ * Many improvements wrt out-of-tree-builds and translations of the manual
