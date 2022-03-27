@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-03-20 18:04:29 villate"
+;; Time-stamp: "2022-03-27 12:16:12 villate"
 
 (in-package :maxima)
 
@@ -2077,6 +2077,7 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
          ($noxtics (setf (getf options :xtics) nil))
          ($noytics (setf (getf options :ytics) nil))
          ($noztics (setf (getf options :ztics) nil))
+         ($nognuplot_strings (setf (getf options :gnuplot_strings) nil))
          (t
           (merror (intl:gettext "Unknown plot option \"~M\".") opt))))))
   options)
