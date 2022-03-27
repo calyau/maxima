@@ -11,3 +11,6 @@ that allows it still to run other tests or to run this test again.
 
 In order to make the new file automatically be run by the run_testsuite()
 command please register eventual new test files in src/testsuite.lisp.
+
+Historically the test files were numbered. New tests normally are added to
+files with more speaking names.
