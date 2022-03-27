@@ -35,9 +35,6 @@ Changes in share:
  * draw: Restores the window, font and size options for default
    terminal (Commit [096f0b])
 
-Changes in Xmaxima:
--------------------
-
 Changes in the Windows installer:
 ---------------------------------
  * Update SBCL, wxMaxima, TCL/TK.
@@ -104,6 +101,7 @@ Bug fixes for numbered bugs:
  * \#3953: Pressing q necessary to continue when plot2d output to svg
  * \#3956: expand(1/((sqrt(2)-1)*(sqrt(2)+1))) => 1/1 (unsimplified)
  * \#3958: plot2d with multiple discrete plots fails
+ * \#3959: plot2d + Gnuplot 4 with `plot title noenhanced`
 
 Unnumbered bugs fixed:
 ---------------------
