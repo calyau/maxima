@@ -1,6 +1,6 @@
 ;; gnuplot_def.lisp: routines for Maxima's interface to gnuplot
 ;; Copyright (C) 2007-2021 J. Villate
-;; Time-stamp: "2022-03-27 12:00:04 villate"
+;; Time-stamp: "2022-03-28 11:45:15 villate"
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -565,7 +565,7 @@
                      (setq plot-name (ensure-string level))
                      (when (> i 1) (format st ","))
                      (format st " '-'")
-                     (format st " title ~s" plot-name)
+                     (format st " title ~s " plot-name)
                      (format st (gnuplot-curve-style style colors types i)))
                    (return))
                  (if styles
@@ -599,7 +599,7 @@
                  (when (> i 1) (format st ","))
                  (format st " '-'")
                  (if plot-name 
-                     (format st " title ~s" plot-name)
+                     (format st " title ~s " plot-name)
                      (format st " notitle "))
                  (format st (gnuplot-curve-style style colors types i)))))
         ;; Parses points data
