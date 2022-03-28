@@ -6,6 +6,10 @@ New items in core:
  * Added eval_string_lisp to read in and evaluate lisp forms from a string
  * Maxima compiled with ABCL can use network connections (option "-s"),
    which is used by frontends like Xmaxima and wxMaxima.
+ * Added gnuplot_send to open a Gnuplot pipe and send a command to it.
+ * new code to commute conjugate of derivative (Commit [565fcf]).
+ * new plot option window. It can be used to send the plot to a window
+   different from the default 0 window.
 
 New items in share:
 -------------------
@@ -21,13 +25,11 @@ New items in share:
 
 Changes in core:
 ----------------
- * new code to commute conjugate of derivative (Commit [565fcf])
- * new function gnuplot_send (Commit [54380c])
  * plot2d, plot3d, mandelbrot and julia now use gnuplot_pipes by default
    in all operating systems and in all cases (plot shown on the screen or
    saved to a graphics file). No temporary files are used.
- * new plot option window. It can be used to send the plot to a window
-   different from the default 0 window.
+ * option gnuplot_strings made more consistent in different terminals.
+ * option gnuplot_script_file now accepts complete path file names.
 
 Changes in share:
 -----------------

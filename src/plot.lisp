@@ -1,6 +1,6 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
 ;;
-;; Time-stamp: "2022-03-27 12:16:12 villate"
+;; Time-stamp: "2022-03-28 12:59:37 villate"
 
 (in-package :maxima)
 
@@ -1777,12 +1777,21 @@ plot3d([cos(y)*(10.0+6*cos(x)), sin(y)*(10.0+6*cos(x)),-6*sin(x)],
     (format nil "~a" filename)
     ))
 (defun plot-temp-file (file &optional (preserve-file nil) (plot-options nil))
-  (let ((script-name (and plot-options (getf plot-options :gnuplot_script_file))))
-    (plot-temp-file0
-     (cond ((null script-name) file)
-	   ((symbolp script-name) (mfuncall script-name file))
-	   (t script-name)) preserve-file)))
-
+  (let (script-name
+        (script-name-or-fun
+         (and plot-options (getf plot-options :gnuplot_script_file))))
+    (if (null script-name-or-fun)
+        (plot-temp-file0 file preserve-file)
+        (progn
+          (setq
+           script-name
+           (cond 
+	     ((symbolp script-name-or-fun) (mfuncall script-name-or-fun file))
+	     (t script-name-or-fun)))
+          (if (pathname-directory script-name)
+              script-name
+              (plot-temp-file0 script-name preserve-file))))))
+              
 ;; If no file path is given, uses temporary directory path
 (defun plot-file-path (file &optional (preserve-file nil) (plot-options nil))
   (if (pathname-directory file)
