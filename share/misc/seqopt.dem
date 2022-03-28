@@ -86,7 +86,7 @@ sequence_optim_prefix:'optim;
 sequence_optim_counter:1$
 sequence_optimize(eqns3);
 /* Notice that SEQUENCE_OPTIMIZE was able to use the multi-level information
-   in OPTIM_EQUIVS("optb6(k)" at top level, with "optb1(k)", etc. imbedded one
+   in OPTIM_EQUIVS("optb6(k)" at top level, with "optb1(k)", etc. embedded one
    level).  Note also the new value of OPTIM_EQUIVS: */
 optim_equivs;
 /* Had it been useful to retain the previous value of OPTIM_EQUIVS, we

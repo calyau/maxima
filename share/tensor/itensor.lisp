@@ -1476,7 +1476,7 @@
               (set *linelabel* f)))
 
 (defun ishow (f) 
-       ((lambda (foobar)                              ;FOOBAR intialized to NIL
+       ((lambda (foobar)                              ;FOOBAR initialized to NIL
 		(cond ((atom f) f)
 		      ((rpobj f)                      ;If an indexed object ...
 		       (setq foobar

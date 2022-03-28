@@ -366,23 +366,51 @@ random_negative_binomial(6,3/5,3);
 
 /* inverse gamma distribution */
 
+(mycontext: newcontext (), 0);
+0;
+
+pdf_inverse_gamma (0, x, y);
+0;
+
 pdf_inverse_gamma (u, x, y);
-''(y^x/gamma(x)/u^(1 + x)*exp(-y/u)*unit_step(u));
+if u > 0 then ''(y^x/gamma(x)/u^(1 + x)*exp(-y/u)) else 0;
+
+(assume (u > 0),
+ pdf_inverse_gamma (u, x, y));
+''(y^x/gamma(x)/u^(1 + x)*exp(-y/u));
+
+(assume (x > 0),
+ limit (pdf_inverse_gamma (u, x, y), u, inf));
+0;
 
 pdf_inverse_gamma (h, 7/2, 20);
-''(20^(7/2)/gamma(7/2)/h^(9/2)*exp(-20/h)*unit_step(h));
+if h > 0 then ''(20^(7/2)/gamma(7/2)/h^(9/2)*exp(-20/h)) else 0;
 
 pdf_inverse_gamma (12/7, 7/2, 20);
 ''(20^(7/2)/gamma(7/2)/(12/7)^(9/2)*exp(-20/(12/7)));
 
+cdf_inverse_gamma (0, f, g);
+0;
+
 cdf_inverse_gamma (w, f, g);
-gamma_incomplete(f, g/w)/gamma(f)*unit_step(w);
+if w > 0 then gamma_incomplete(f, g/w)/gamma(f) else 0;
+
+(assume (w > 0),
+ cdf_inverse_gamma (w, f, g));
+gamma_incomplete(f, g/w)/gamma(f);
 
 cdf_inverse_gamma (5, 3/4, d);
 gamma_incomplete(3/4, d/5)/gamma(3/4);
 
 cdf_inverse_gamma (5, 3/4, 11/3);
 ''(gamma_incomplete(3/4, (11/3)/5)/gamma(3/4));
+
+(assume (f > 0),
+ limit (cdf_inverse_gamma (w, f, g), w, inf));
+1;
+
+killcontext (mycontext);
+done;
 
 quantile_inverse_gamma (v, s, t);
 if equal(v, 0) then 0

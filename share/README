@@ -29,6 +29,8 @@ numericalio/	Robert Dodier's package for reading and writing
 pdiff/          This is Barton Willis's pdiff package from
                 http://www.unk.edu/acad/math/people/willisb/
 
+quantum/        Simulator of quantum computer circuits. By Jaime Villate.
+
 simplex/        Andrej Vodopivec's code for the two-phase standard simplex
                 method.
 

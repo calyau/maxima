@@ -1,4 +1,4 @@
-@c Time-stamp: "2022-03-13 12:28:43 villate"
+@c Time-stamp: "2022-03-28 13:36:15 villate"
 @menu
 * Introduction to Plotting::
 * Plotting Formats::
@@ -1757,6 +1757,20 @@ See @mrefcomma{make_transform} @mref{polar_to_xy} and
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{window}
+@defvr {Plot option} window [window, @var{n}]
+
+Opens the plot in window number @var{n}, instead of the default window
+0. If window number @var{n} is already opened, the plot in that window
+will be replaced by the current plot.
+
+@opencatbox{Categories:}
+@category{Plotting}
+@closecatbox
+@end defvr
+
+
+@c -----------------------------------------------------------------------------
 @anchor{x}
 @defvr {Plot option} x [x, @var{min}, @var{max}]
 
@@ -2048,24 +2062,32 @@ or @mrefdot{svg_file}
 @anchor{gnuplot_script_file}
 @defvr {Plot option} gnuplot_script_file [gnuplot_script_file, @var{file_name_or_function}]
 
-Set the name of the script file created by @code{plot2d} or @code{plot3d}
-when the @mref{plot_format} is @code{gnuplot}. The value
-@var{file_name_or_function} can be a string or a Maxima function of one
-variable that returns a string.
+Creates a plot with @code{plot2d}, @code{plot3d}, @code{mandelbrot} or
+@code{julia} using the @code{gnuplot} @mref{plot_format} and saving
+the script sent to Gnuplot in the file specified by @var{file_name_or_function}.
+The value @var{file_name_or_function} can be a string or a Maxima function of
+one variable that returns a string. If that string corresponds to a
+complete file path (directory and file name), the script will be created in
+that file and will not be deleted after Maxima is closed; otherwise, the
+string will give the name of a file to be created in the temporary directory
+and deleted when Maxima is closed.
 
-In this example, the script file name is set to ``sin.gnuplot''.
+In this example, the script file name is set to ``sin.gnuplot'', in the
+current directory.
 
 @example
-(%i1) plot2d( sin(x), [x,0,2*%pi], [gnuplot_script_file, "sin.gnuplot"]);
+(%i1) plot2d( sin(x), [x,0,2*%pi], [gnuplot_script_file, "./sin.gnuplot"]);
 
-(%o1) ["/tmp/sin.gnuplot"]
+(%o1) ["./sin.gnuplot"]
 @end example
 
 In this example, @code{gnuplot_maxout_prt(@var{file})} is a function
 that takes the default file name, @var{file}. It constructs a full file
 name for the data file by interpolating a random 8-digit integer with a
-pad of zeros into the default file name. The directory is determined by
-@mref{maxima_tempdir} (it is ``/tmp'' in this example).
+pad of zeros into the default file name (``maxout'' followed by the id
+number of the Maxima process, followed by ``.gnuplot''). The temporary
+directory is determined by @mref{maxima_tempdir} (it is ``/tmp'' in this
+example).
 
 @example
 (%i1) gnuplot_maxout_prt(file) := block([beg,end],
@@ -2078,7 +2100,10 @@ pad of zeros into the default file name. The directory is determined by
 @end example
 
 By default, the script would have been saved in a file named
-@code{maxoutXXXXX.gnuplot} (XXXXX=68715 in this example).
+@code{maxoutXXXXX.gnuplot} (XXXXX=68715 in this example) in the temporary
+directory. If the print statement in function @code{gnuplot_maxout_prt}
+above included a directory path, the file would have been saved in that
+directory rather than in the temporary directory.
 
 @opencatbox{Categories:}
 @category{Plotting}

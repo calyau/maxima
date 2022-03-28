@@ -364,7 +364,7 @@ flfrnk2nd():=block([frlist, unklist, ueqnlist, eqno, %c],
 	globals: eqno (current number of subscripted unknowns %c),
 		 ueqnlist (list of equations relating %c's)
 		 unklist (list of all %c unknowns to be solved for)
-		 xvar (indepedent variable) */
+		 xvar (independent variable) */
 fconvert(fun):=
 	if mapatom(fun) then fun else
 	if opr(fun)#'?%integrate then map('fconvert, fun) else

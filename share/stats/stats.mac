@@ -1007,7 +1007,7 @@ block([numer:stats_numer, options, defaults, aux, phat, method, statistic,
 /* 'x1' and 'n1>=x1', are the number of successes and total number of trials in  */
 /* the first sample, respectively; and the third and fourth arguments,           */
 /* 'x2' and 'n2>=x2', are the corresponding numbers in the second sample.        */
-/* This is an asymptotic test which requieres n1 and n2 to be both >= 10,        */
+/* This is an asymptotic test which requires n1 and n2 to be both >= 10,         */
 /* and both samples are considered independent.                                  */
 /* It admits the following options:                                              */
 /*   'alternative='twosided: this is the alternative hypothesis H1; valid        */

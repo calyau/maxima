@@ -200,6 +200,7 @@ and develop DOE Macsyma, now called Maxima.
 * opsubst-pkg::                     Substitutions utility.
 * orthopoly-pkg::                   Orthogonal polynomials.
 * pytranslate::                     Maxima to Python Translation
+* quantum_computing-pkg::           Quantum computing circuits simulator.
 * ratpow-pkg::                      Determine the coefficients of polynoms.
 * romberg-pkg::                     Romberg method for numerical integration.
 * simplex-pkg::                     Linear programming.
@@ -592,6 +593,10 @@ pytranslate
 * Functions in pytranslate::
 * Extending pytranslate::
 
+quantum_computing
+* Package quantum_computing::
+* Functions and Variables for Quantum_Computing::       
+
 ratpow
 * Functions and Variables for ratpow::
 
@@ -979,11 +984,15 @@ Understanding maxima's output
 @chapter orthopoly
 @include orthopoly.texi
 
-@node pytranslate, ratpow-pkg, orthopoly-pkg, Top
+@node pytranslate, quantum_computing-pkg, orthopoly-pkg, Top
 @chapter pytranslate
 @include pytranslate.texi
 
-@node ratpow-pkg, romberg-pkg, pytranslate, Top
+@node quantum_computing-pkg, ratpow-pkg, pytranslate, Top
+@chapter quantum_computing-pkg
+@include quantum_computing.texi
+
+@node ratpow-pkg, romberg-pkg, quantum_computing-pkg, Top
 @chapter ratpow
 @include ratpow.texi
 

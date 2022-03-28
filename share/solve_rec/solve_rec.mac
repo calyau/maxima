@@ -1054,7 +1054,7 @@ simplify_product(prod) := block(
   /* Take care of fractions. */
   else if part(term, 0)="/" then block(
     [nu : num(term), de : denom(term)],
-    /* Check for cancelations. */
+    /* Check for cancellations. */
     for %kk:-deg thru deg do block(
       [g],
       g : gcd(expand(subst(%n+%kk, %n, nu)), de),

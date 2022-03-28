@@ -18,7 +18,7 @@ uninstall-local: $(UNINSTALL_CHM)
 maxima-index.lisp: maxima.info $(srcdir)/../build_index.pl
 	/usr/bin/env perl $(srcdir)/../build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
-maxima_toc.html: maxima.texi $(maxima_TEXINFOS)
+maxima_singlepage.html maxima_toc.html: maxima.texi $(maxima_TEXINFOS)
 	$(srcdir)/../build_html.sh -l $(lang) -D
 
 maxima.pdf: maxima.texi $(maxima_TEXINFOS)

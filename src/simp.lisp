@@ -3402,9 +3402,9 @@
 		       (cdr negsums))))
      (setq expnegsums (expandterms negprods (fixexpand expnegsums)))
      (return (if (mplusp prods)
-		 (expandterms (list '(mexpt simp) expnegsums -1) (cdr prods))
+		 (expandterms (inv expnegsums) (cdr prods))
 		 (let ((expandflag t))
-		   (mul2 prods (list '(mexpt simp) expnegsums -1)))))))
+		   (mul2 prods (inv expnegsums)))))))
 
 (defun expand1 (exp $expop $expon)
   (unless (and (integerp $expop) (> $expop -1))

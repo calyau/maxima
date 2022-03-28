@@ -11,7 +11,7 @@
 @c -----------------------------------------------------------------------------
 Maxima interacts with the user through a cycle of actions called the read-eval-print loop (REPL).
 This consists of three steps: reading and parsing, evaluating and simplifying, 
-and outputing. Parsing converts a syntactically valid sequence of typed characters into 
+and outputting. Parsing converts a syntactically valid sequence of typed characters into
 a internal data structure. Evaluation
 replaces variable and function names with their values and simplification rewrites 
 expressions to be easier for the user or other programs to understand. Output 

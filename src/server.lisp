@@ -83,6 +83,7 @@
 	(ccl:*default-socket-character-encoding* :utf-8))
     #+allegro (socket:make-socket :remote-host host :remote-port port
                                   :format (if bin :binary :text))
+    #+abcl (ext:get-socket-stream (ext:make-socket host port))
     #+clisp (socket:socket-connect port host :element-type
 				   (if bin '(unsigned-byte 8) 'character))
     #+scl (sys:make-fd-stream (ext:connect-to-inet-socket host port)
@@ -106,7 +107,7 @@
     #+lispworks (comm:open-tcp-stream host port :direction :io :element-type
                                       (if bin 'unsigned-byte 'base-char))
     #+ccl (ccl::make-socket :remote-host host :remote-port port)
-    #-(or allegro clisp cmu scl sbcl gcl lispworks ecl ccl)
+    #-(or allegro abcl clisp cmu scl sbcl gcl lispworks ecl ccl)
     (error 'not-implemented :proc (list 'open-socket host port bin))))
 
 

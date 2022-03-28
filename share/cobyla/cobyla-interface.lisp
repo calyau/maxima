@@ -15,7 +15,7 @@
 ;; COBYLA always calls CALCFC to compute the function value and the
 ;; constraint equations.  But we want to be able to specify different
 ;; versions.  So, COBYLA calls CALCFC, which then calls *CALCFC* to
-;; do the real compuation.
+;; do the real computation.
 (defun cobyla::calcfc (n m x f con)
   (declare (ignore f))
   (funcall maxima::*calcfc* n m x con))
