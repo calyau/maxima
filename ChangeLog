@@ -44,6 +44,7 @@ Changes in the Windows installer:
    pipes on Windows, therefore that was not updated.
  * Use the HTML manual (not the PDF version) in the start menu.
  * Strip included C programs (saves some space).
+ * The command line option "--userdir" did not work on Windows, fixed that.
 
 Bug fixes for numbered bugs:
 ----------------------------
@@ -81,7 +82,7 @@ Bug fixes for numbered bugs:
  * \#3805: plot2d should give a clean user error for undefined functions
  * \#3807: plot2d heuristic to detect unbound variables excludes valid cases
  * \#3810: integrate error "not of type FIXNUM" for integrand with floats in it
- * \#3819: Implicit plot2d calculating 1/​0 gives Lisp error
+ * \#3819: Implicit plot2d calculating 1/0 gives Lisp error
  * \#3820: testsuite with display_all = true
  * \#3825: apply('forget, facts()) gives Lisp error
  * \#3826: limit returns temp variable expression
@@ -93,6 +94,7 @@ Bug fixes for numbered bugs:
  * \#3907: gnuplot_postamble not actually the last Gnuplot output before plot
  * \#3910: correct 'an Unicode' in doc/info/stringproc.texi
  * \#3921: Expanded subtracted from unexpanded with e^ix does not integrate to zero
+ * \#3925: Maxima help button opens "file not found"
  * \#3934: expand(1/(1+%i)^4) => (-4)^(-1) (unsimplified)
  * \#3935: Noncommutative multiplication with string argument triggers "declare: argument must be a symbol"
  * \#3936: plot2d sends invalid file to gnuplot
