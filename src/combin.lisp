@@ -1400,8 +1400,8 @@
 	(t (ratf ($ratdisrep e)))))
 
 (defun srrat (e)
-  (cons (list 'mrat 'simp (caddar e) (cadddr (car e)))
-	(srrat2 (cdr e))))
+  (cons (list 'mrat 'simp (mrat-varlist e) (mrat-genvar e))
+	(srrat2 (mrat-ps e))))
 
 (defun srrat2 (e)
   (if (pscoefp e) e (srrat3 (terms e) (gvar e))))
