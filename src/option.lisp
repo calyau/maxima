@@ -860,8 +860,6 @@
 
 (subc $sqrt (c))
 
-(subc $srrat (c))
-
 (subc $stardisp (c))
 
 (subc $status (c))
