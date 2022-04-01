@@ -52,8 +52,10 @@ Bug fixes for numbered bugs:
  * \#484: limit(x=0,x,0) wrong
  * \#926: sign errors in cartan package
  * \#1097: pattern variable appears in letsimp result
+ * \#1848: taytorat leaks internal gensyms from multivar expansions
  * \#2247: not plotting from Vista, probably due to national characters
  * \#2388: wrong limit
+ * \#2446: horner of multivariate taylor gives junk
  * \#2709: `letsimp' is wrong if `ratexpand' is called
  * \#2837: ev causes bogus WNA checks for sum, product, define and ":"
  * \#2876: Error simplifying infix operators declared l/rassociative

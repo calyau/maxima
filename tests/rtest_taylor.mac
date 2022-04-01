@@ -623,3 +623,15 @@ z+1;
 taylor(rat(x/(1+x)),x,inf,2);
 1-1/x+1/x^2;
 
+/* Bug #1848: taytorat leaks internal gensyms from multivar expansions
+ * Bug #2446: horner of multivariate taylor gives junk
+ */
+
+taytorat (taylor (x, [x], 0, 1));
+''(rat (x));
+
+taytorat (taylor (taylor (x + y, [x], 0, 1), [y], 0, 1));
+''(rat (x + y));
+
+horner (taylor (x, [x], 0, 1));
+x;
