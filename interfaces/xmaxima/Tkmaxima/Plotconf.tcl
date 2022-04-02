@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2021-04-29 14:33:48 villate"            #
+#     Time-stamp: "2022-04-02 10:25:09 villate"            #
 ############################################################
 
 proc makeFrame { w type } {
@@ -445,8 +445,8 @@ proc set_xy_region { win fac } {
 #
 # set_xy_transforms --  set up transformations for the canvas of WINDOW
 # so that the plot is a fraction of the window (fac).
-# these transformation are used to convert from real values of x and y
-# to screen coordinates in pixel and vice versa.
+# these transformations are used to convert from real values of x and y
+# to screen coordinates in pixels and vice versa.
 #
 #  Side Effects: transform functions rtosx$win rtosy$win storx$win story$win
 #  are defined.
