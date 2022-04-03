@@ -18,7 +18,7 @@ The code is still under development and the calling sequence may change
 in future releases.  Once the code has stabilized it may be
 moved from the contrib directory and integrated into Maxima.
 
-This package must be loaded with the command @code{load('contrib_ode)}
+This package must be loaded with the command @code{load("contrib_ode")}
 before use.
 
 The calling convention for @code{contrib_ode} is identical to @code{ode2}.  
@@ -56,13 +56,13 @@ It is necessary to return a list of solutions, as even first order
 non-linear ODEs can have multiple solutions.  For example:
 
 @c ===beg===
-@c load('contrib_ode)$
+@c load("contrib_ode")$
 @c eqn:x*'diff(y,x)^2-(1+x*y)*'diff(y,x)+y=0;
 @c contrib_ode(eqn,y,x);
 @c method;
 @c ===end===
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 @group
 (%i2) eqn:x*'diff(y,x)^2-(1+x*y)*'diff(y,x)+y=0;
                     dy 2             dy
@@ -90,13 +90,13 @@ Nonlinear ODEs can have singular solutions without constants of
 integration, as in the second solution of the following example:
 
 @c ===beg===
-@c load('contrib_ode)$
+@c load("contrib_ode")$
 @c eqn:'diff(y,x)^2+x*'diff(y,x)-y=0;
 @c contrib_ode(eqn,y,x);
 @c method;
 @c ===end===
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 @group
 (%i2) eqn:'diff(y,x)^2+x*'diff(y,x)-y=0;
                        dy 2     dy
@@ -126,13 +126,13 @@ variable @code{%t}.  In this case the parametric solutions can be manipulated
 to give explicit solutions.
 
 @c ===beg===
-@c load('contrib_ode)$
+@c load("contrib_ode")$
 @c eqn:'diff(y,x)=(x+y)^2;
 @c contrib_ode(eqn,y,x);
 @c method;
 @c ===end===
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 @group
 (%i2) eqn:'diff(y,x)=(x+y)^2;
                           dy          2
@@ -153,14 +153,14 @@ to give explicit solutions.
 The following example (Kamke 1.112) demonstrates an implicit solution.
 
 @c ===beg===
-@c load('contrib_ode)$
+@c load("contrib_ode")$
 @c assume(x>0,y>0);
 @c eqn:x*'diff(y,x)-x*sqrt(y^2+x^2)-y;
 @c contrib_ode(eqn,y,x);
 @c method;
 @c ===end===
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 @group
 (%i2) assume(x>0,y>0);
 (%o2)                    [x > 0, y > 0]
@@ -189,13 +189,13 @@ The following Riccati equation is transformed into a linear
 second order ODE in the variable @code{%u}.  Maxima is unable to
 solve the new ODE, so it is returned unevaluated.
 @c ===beg===
-@c load('contrib_ode)$
+@c load("contrib_ode")$
 @c eqn:x^2*'diff(y,x)=a+b*x^n+c*x^2*y^2;
 @c contrib_ode(eqn,y,x);
 @c method;
 @c ===end===
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 @group
 (%i2) eqn:x^2*'diff(y,x)=a+b*x^n+c*x^2*y^2;
                     2 dy      2  2      n
@@ -264,11 +264,11 @@ and Lafaille, that searches for solutions in terms of given
 special functions. 
 
 @c ===beg===
-@c load('contrib_ode)$
+@c load("contrib_ode")$
 @c odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
 @c ===end===
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 @group
 (%i2) odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
        gauss_a(- 6, - 2, - 3, - x)  gauss_b(- 6, - 2, - 3, - x)
@@ -292,14 +292,14 @@ possible solution @var{soln}.  The value is equivalent to
 zero if @var{soln} is a solution of @var{eqn}.
 
 @c ===beg===
-@c load('contrib_ode)$
+@c load("contrib_ode")$
 @c eqn:'diff(y,x,2)+(a*x+b)*y;
 @c ans:[y = bessel_y(1/3,2*(a*x+b)^(3/2)/(3*a))*%k2*sqrt(a*x+b)
 @c          +bessel_j(1/3,2*(a*x+b)^(3/2)/(3*a))*%k1*sqrt(a*x+b)];
 @c ode_check(eqn,ans[1]);
 @c ===end===
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 @group
 (%i2) eqn:'diff(y,x,2)+(a*x+b)*y;
                          2
@@ -487,7 +487,7 @@ This process repeated until all the orders
 differ by less than 2.
 
 @c ===beg===
-@c load('contrib_ode)$
+@c load("contrib_ode")$
 @c bessel_simplify(4*bessel_j(n,x^2)*(x^2-n^2/x^2) 
 @c   +x*((bessel_j(n-2,x^2)-bessel_j(n,x^2))*x
 @c   -(bessel_j(n,x^2)-bessel_j(n+2,x^2))*x)
@@ -499,7 +499,7 @@ differ by less than 2.
 @c    *struve_h(2,z) + 30*%pi*struve_h(1,z)*bessel_j(2,z));
 @c ===end===
 @example
-(%i1) load('contrib_ode)$
+(%i1) load("contrib_ode")$
 @group
 (%i2) bessel_simplify(4*bessel_j(n,x^2)*(x^2-n^2/x^2)
   +x*((bessel_j(n-2,x^2)-bessel_j(n,x^2))*x
