@@ -1990,7 +1990,7 @@ zur@"uck.  Diese Funktion ist eine Alternative zur Funktion @code{charpoly}.
 
 Der Algorithmus von @code{ncharpoly} ist vorteilhaft gegen@"uber 
 @code{charpoly}, wenn gro@ss{}e und d@"unn besetzte Matrizen vorliegen.  Das 
-Kommando @code{load(nchrpl} l@"adt die Funktion.
+Kommando @code{load("nchrpl")} l@"adt die Funktion.
 @end deffn
 
 @c --- 10.12.2010 DK -----------------------------------------------------------

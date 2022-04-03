@@ -952,7 +952,7 @@ log: encountered log(0).
  -- an error. To debug this try: debugmode(true);
 @end example
 
-Para hacer uso de esta función, ejecútese @code{load(to_poly_solve_extra.lisp)}.
+Para hacer uso de esta función, ejecútese @code{load("to_poly_solve_extra.lisp")}.
 
 Véanse también @code{subst}, @code{sublis} y @code{ratsubst}.
 

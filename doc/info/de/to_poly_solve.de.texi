@@ -961,7 +961,7 @@ log: encountered log(0).
 
 @b{Related functions} @i{subst, sublis, ratsubst}
 
-@b{To use} @file{load(to_poly_solve_extra.lisp)}
+@b{To use} @file{load("to_poly_solve_extra.lisp")}
 
 @b{Status} The function @code{subst_parallel} is experimental; the
 specifications of this function might change might change and its

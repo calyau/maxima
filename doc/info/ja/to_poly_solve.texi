@@ -997,7 +997,7 @@ log: encountered log(0).
 
 @b{関連関数} @i{subst, sublis, ratsubst}
 
-@b{利用するには} @file{load(to_poly_solve_extra.lisp)}
+@b{利用するには} @file{load("to_poly_solve_extra.lisp")}
 
 @b{状況} 関数 @code{subst_parallel}は実験的です;
 仕様は変更の可能性があり、
