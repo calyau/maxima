@@ -64,7 +64,7 @@ If @code{lsquares_estimates} needs excessive amounts of time or runs out of memo
 @mrefcomma{lsquares_estimates_approximate} which skips the attempt to find an exact 
 solution, might still succeed.
 
-@code{load(lsquares)} loads this function.
+@code{load("lsquares")} loads this function.
 
 See also
 @mref{lsquares_estimates_exact},
@@ -298,7 +298,7 @@ comprise only numeric constants such as @code{%pi} and @code{%e} and literal num
 Numerical calculations are carried out with ordinary floating-point arithmetic,
 so all other kinds of numbers are converted to ordinary floats for calculations.
 
-@code{load(lsquares)} loads this function.
+@code{load("lsquares")} loads this function.
 
 See also
 @mref{lsquares_estimates},
@@ -385,7 +385,7 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 where @var{n} is the number of data and @code{@var{e}[i]} is the equation @var{e}
 evaluated with the variables in @var{x} assigned values from the @code{i}-th datum, @code{@var{D}[i]}.
 
-@code{load(lsquares)} loads this function.
+@code{load("lsquares")} loads this function.
 
 Example:
 
@@ -518,7 +518,7 @@ where @code{@var{e}[i]} is the equation @var{e}
 evaluated with the variables in @var{x} assigned values from the @code{i}-th datum, @code{@var{D}[i]},
 and assigning any remaining free variables from @var{a}.
 
-@code{load(lsquares)} loads this function.
+@code{load("lsquares")} loads this function.
 
 Example:
 
@@ -597,7 +597,7 @@ where @code{@var{e}[i]} is the equation @var{e}
 evaluated with the variables in @var{x} assigned values from the @code{i}-th datum, @code{@var{D}[i]},
 and assigning any remaining free variables from @var{a}.
 
-@code{load(lsquares)} loads this function.
+@code{load("lsquares")} loads this function.
 
 Example:
 

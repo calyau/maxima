@@ -438,7 +438,7 @@ passo adicional de multiplicar cruzado factores numérios do denominador.
 Esses resultados em forma ideal, e a possibilidade de reconhecer alguns
 cancelamentos.
 
-Para usar essa função escreva primeiramente @code{load(rncomb)}.
+Para usar essa função escreva primeiramente @code{load("rncomb")}.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES

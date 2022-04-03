@@ -50,7 +50,7 @@ Por otro lado, métodos especialmente desarrollados para integraciones
 múltiples pueden dar la misma exactitud con menos evaluaciones
 del integrando.
 
-Para hacer uso de esta función ejecútese primero @code{load(romberg)}.
+Para hacer uso de esta función ejecútese primero @code{load("romberg")}.
 
 Véase también @code{QUADPACK}, un conjunto de funciones para 
 integración numérica.
@@ -59,7 +59,7 @@ Ejemplos:
 
 Una integración unidimensional.
 @c ===beg===
-@c load (romberg);
+@c load ("romberg");
 @c f(x) := 1/((x - 1)^2 + 1/100) + 1/((x - 2)^2 + 1/1000)
 @c             + 1/((x - 3)^2 + 1/200);
 @c rombergtol : 1e-6;
@@ -70,7 +70,7 @@ Una integración unidimensional.
 @c ===end===
 
 @example
-(%i1) load (romberg);
+(%i1) load ("romberg");
 (%o1)    /usr/share/maxima/5.11.0/share/numeric/romberg.lisp
 (%i2) f(x) := 1/((x - 1)^2 + 1/100) + 1/((x - 2)^2 + 1/1000)
                 + 1/((x - 3)^2 + 1/200);
@@ -95,7 +95,7 @@ Una integración unidimensional.
 
 Una integración bidimensional, implementada mediante llamadas anidadas a @code{romberg}.
 @c ===beg===
-@c load (romberg);
+@c load ("romberg");
 @c g(x, y) := x*y / (x + y);
 @c rombergtol : 1e-6;
 @c estimate : romberg (romberg (g(x, y), y, 0, x/2), x, 1, 3);
@@ -106,7 +106,7 @@ Una integración bidimensional, implementada mediante llamadas anidadas a @code{
 @c ===end===
 
 @example
-(%i1) load (romberg);
+(%i1) load ("romberg");
 (%o1)    /usr/share/maxima/5.11.0/share/numeric/romberg.lisp
 (%i2) g(x, y) := x*y / (x + y);
                                     x y

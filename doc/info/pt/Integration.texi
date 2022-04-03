@@ -97,7 +97,7 @@ Por exemplo,
 @deffn {Função} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
 Esta é uma rotina de integral duplo que foi escrita na linguagem de
 alto nível do Maxima sendo logo traduzida e compilada para
-linguagem de máquina. Use @code{load (dblint)} para poder usar este
+linguagem de máquina. Use @code{load ("dblint")} para poder usar este
 pacote. Esta função usa o método da regra de Simpson
 em ambas as direções x e y para calcular
 

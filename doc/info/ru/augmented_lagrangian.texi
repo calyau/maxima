@@ -37,7 +37,7 @@
 Данная реализация минимизирует расширенный лагранжиан методом 
 BFGS с ограничением памяти (LBFGS), являющимся квази-нюьтоновым алгоритмом.
 
-Команда @code{load(augmented_lagrangian)} загружает данную функцию.
+Команда @code{load("augmented_lagrangian")} загружает данную функцию.
 
 См. также @code{lbfgs}.
 
@@ -57,8 +57,8 @@ BFGS с ограничением памяти (LBFGS), являющимся кв
 Пример:
 
 @c ===beg===
-@c load (lbfgs);
-@c load (augmented_lagrangian);
+@c load ("lbfgs");
+@c load ("augmented_lagrangian");
 @c FOM: x^2 + 2*y^2;
 @c xx: [x, y];
 @c C: [x + y - 1];
@@ -66,9 +66,9 @@ BFGS с ограничением памяти (LBFGS), являющимся кв
 @c augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
 @c ===end===
 @example
-(%i1) load (lbfgs);
+(%i1) load ("lbfgs");
 (%o1)     /maxima/share/lbfgs/lbfgs.mac
-(%i2) load (augmented_lagrangian);
+(%i2) load ("augmented_lagrangian");
 (%o2) 
    /maxima/share/contrib/augmented_lagrangian.mac
 (%i3) FOM: x^2 + 2*y^2;

@@ -278,7 +278,7 @@ For a specific @var{n}, we can reduce the expression to zero.
 Generally, the polynomial form of an orthogonal polynomial is ill-suited
 for floating point evaluation. Here's an example.
 
-@c ACTUALLY NEEDS load(orthopoly); BEFORE ANYTHING ELSE
+@c ACTUALLY NEEDS load("orthopoly"); BEFORE ANYTHING ELSE
 @c ===beg===
 @c p : jacobi_p (100, 2, 3, x)$
 @c subst (0.2, x, p);

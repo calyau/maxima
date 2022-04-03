@@ -41,7 +41,7 @@ exponential time for solving is required without scaling.
 Example:
 
 @example
-load(klee_minty)$
+load("klee_minty")$
 apply(linear_program, klee_minty(6));
 @end example
 
@@ -108,13 +108,13 @@ set to 0 in @code{linear_program} when all inputs are rational.
 Example:
 
 @c ===beg===
-@c load(simplex)$
+@c load("simplex")$
 @c minimize_lp(-x, [1e-9*x + y <= 1], [x,y]);
 @c minimize_lp(-x, [10^-9*x + y <= 1], [x,y]);
 @c minimize_lp(-x, [1e-9*x + y <= 1], [x,y]), epsilon_lp=0;
 @c ===end===
 @example
-(%i1) load(simplex)$
+(%i1) load("simplex")$
 
 (%i2) minimize_lp(-x, [1e-9*x + y <= 1], [x,y]);
 Warning: linear_program(A,b,c): non-rat inputs found, epsilon_lp= 1.0e-8
@@ -149,7 +149,7 @@ bounded, it returns "Problem not bounded!" and if the problem is not
 feasible, it returns "Problem not feasible!".
 
 To use this function first load the @code{simplex} package with
-@code{load(simplex);}.
+@code{load("simplex");}.
 
 Example:
 
@@ -222,7 +222,7 @@ constraints).
 maxima @code{linear_program} function.
 
 To use this function first load the @code{simplex} package with
-@code{load(simplex);}.
+@code{load("simplex");}.
 
 Examples:
 

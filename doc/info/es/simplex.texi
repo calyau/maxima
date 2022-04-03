@@ -49,7 +49,7 @@ Si el problema no está acotado, devuelve el mensaje "Problem not bounded!"
 y si el problema no es factible, devuelve el mensaje "Problem not feasible!".
 
 Para usar esta función, cárguese primero el paquete con la
-instrucción @code{load(simplex);}.
+instrucción @code{load("simplex");}.
 
 Ejemplo:
 
@@ -108,7 +108,7 @@ La función @code{minimize_lp} utiliza el algoritmo simplex implementado
 en la función @code{linear_program} de Maxima.
 
 Para usar esta función, cárguese primero el paquete con la
-instrucción @code{load(simplex);}.
+instrucción @code{load("simplex");}.
 
 Ejemplos:
 

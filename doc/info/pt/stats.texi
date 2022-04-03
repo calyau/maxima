@@ -56,7 +56,7 @@ o primeiro, segundo, quinto e quarto resultado. O resultado @code{'diagonal} tam
 a este valor, faz-se uso da função @code{take_inference}.
 
 @c ===beg===
-@c load (inference_result)$
+@c load ("inference_result")$
 @c b: 3$ h: 2$
 @c inference_result("Retângulo",
 @c                  ['base=b,
@@ -68,7 +68,7 @@ a este valor, faz-se uso da função @code{take_inference}.
 @c take_inference('diagonal,%);
 @c ===end===
 @example
-(%i1) load(inference_result)$
+(%i1) load("inference_result")$
 (%i2) b: 3$ h: 2$
 (%i3) inference_result("Retângulo",
                         ['base=b,
@@ -122,12 +122,12 @@ mas somente o segundo é mostrado. A função @code{items_inference} retorna os 
 de todos os itens, não importa se eles são ou não mostrados.
 
 @c ===beg===
-@c load (inference_result)$
+@c load ("inference_result")$
 @c inference_result("Hi", ['pi=%pi,'e=%e],[2]);
 @c items_inference(%);
 @c ===end===
 @example
-(%i1) load(inference_result)$
+(%i1) load("inference_result")$
 (%i2) inference_result("Hi", ['pi=%pi,'e=%e],[2]);
                             |   Hi
 (%o2)                       |
@@ -158,7 +158,7 @@ Fornece um objecto @code{inference_result}, a função @code{take_inference} é
 chamada com o objectivo de extrair alguma informação armazenada nesse objecto.
 
 @c ===beg===
-@c load (inference_result)$
+@c load ("inference_result")$
 @c b: 3$ h: 2$
 @c sol:inference_result("Retângulo",
 @c                      ['base=b,
@@ -173,7 +173,7 @@ chamada com o objectivo de extrair alguma informação armazenada nesse objecto.
 @c take_inference(items_inference(sol),sol);
 @c ===end===
 @example
-(%i1) load(inference_result)$
+(%i1) load("inference_result")$
 (%i2) b: 3$ h: 2$
 (%i3) sol: inference_result("Retângulo",
                             ['base=b,
@@ -299,7 +299,7 @@ conforme os resultados, o valor de @math{p} é muito grande, não existem
 evidências paa rejeitar @math{H_0}.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c data: [78,64,35,45,45,75,43,74,42,42]$
 @c test_mean(data,'conflevel=0.9,'alternative='less,'mean=50);
 @c ===end===
@@ -333,7 +333,7 @@ favor da alternativa @math{H_1}. Note que, como indicado pela componente @code{M
 esse procedimento pode ser aplicado a grandes amostras.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c test_mean([36,118,52,87,35,256,56,178,57,57,89,34,25,98,35,
 @c         98,41,45,198,54,79,63,35,45,44,75,42,75,45,45,
 @c         45,51,123,54,151],
@@ -462,7 +462,7 @@ as médias das populações; variâncias são desconhecidas e supostamente admit
 @c t.test(x,y,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
 @c test_means_difference(x,y,'alternative='greater);
@@ -500,7 +500,7 @@ iguais.
 @c t.test(x,y,var.equal=T,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
 @c test_means_difference(x,y,'alternative='greater,'varequal=true);
@@ -600,7 +600,7 @@ Isso é testado se a variância de uma população com média desconhhecida
 for igual ou maior que 200.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [203,229,215,220,223,233,208,228,20]$
 @c test_variance(x,'alternative='greater,'variance=200);
 @c ===end===
@@ -707,7 +707,7 @@ contra a alternativa que a primeira é maior que a segunda.
 @c var.test(x,y,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
 @c test_variance_ratio(x,y,'alternative='greater);
@@ -793,7 +793,7 @@ Verifica se a população da qual a amostra foi tomada tem mediana 6,
 contra a alternativa @math{H_1: median > 6}.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [2,0.1,7,1.8,4,2.3,5.6,7.4,5.1,6.1,6]$
 @c test_sign(x,'median=6,'alternative='greater);
 @c ===end===
@@ -885,7 +885,7 @@ não exite empates.
 @c wilcox.test(x,mu=15,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [17.1,15.9,13.7,13.4,15.5,17.6]$
 @c test_signed_rank(x,median=15,alternative=greater);
 @c ===end===
@@ -917,7 +917,7 @@ uma vez que ocorrem empates.
 @c wilcox.test(y,mu=2.5)
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c y:[1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1]$
 @c test_signed_rank(y,median=2.5);
 @c ===end===
@@ -999,7 +999,7 @@ são pequenos e é feito um teste exato.
 @c wilcox.test(x,y)
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x:[12,15,17,38,42,10,23,35,28]$
 @c y:[21,18,25,14,52,65,40,43]$
 @c test_rank_sum(x,y);
@@ -1032,7 +1032,7 @@ aproximação norma. A hipótese alternativa é
 @c wilcox.test(x,y,alternative="less")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [39,42,35,13,10,23,15,20,17,27]$
 @c y: [20,52,66,19,41,32,44,25,14,39,43,35,19,56,27,15]$
 @c test_rank_sum(x,y,'alternative='less);
@@ -1095,7 +1095,7 @@ Verifica a normalidade de uma população, baseada em uma amostra de tamanho 9.
 @c shapiro.test(x)
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x:[12,15,17,38,42,10,23,35,28]$
 @c test_normality(x);
 @c ===end===
@@ -1213,7 +1213,7 @@ calcula @code{y} dado @code{x=113}; a média e o
 intervalo de confidência para uma nova previsão quando @code{x=113} são também calculados.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c s:[[125,140.7],[130,155.1],[135,160.3],[140,167.2],[145,169.8]]$
 @c z:simple_linear_regression(s,conflevel=0.99);
 @c plot2d([[discrete, s], take_inference(model,z)],

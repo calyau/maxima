@@ -7,7 +7,7 @@
 @section Introduction to ctensor
 
 @code{ctensor}は、成分テンソル操作パッケージです。
-@code{ctensor}パッケージを使うには、@code{load(ctensor)}をタイプしてください。
+@code{ctensor}パッケージを使うには、@code{load("ctensor")}をタイプしてください。
 @code{ctensor}と対話的セッションを始めるには、@code{csetup()}をタイプしてください。
 最初に、多様体の次元を指定するよう尋ねられます。
 もし次元が、2, 3, 4のいずれかなら、
@@ -30,7 +30,7 @@
 @code{ctensor}の関数の多くは例のように標準計量に対して表示されます。
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)      /share/tensor/ctensor.mac
 (%i2) csetup();
 Enter the dimension of the coordinate system:
@@ -203,7 +203,7 @@ y;
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
       r*sin(theta),[r,theta,phi]]);
@@ -228,7 +228,7 @@ y;
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) cframe_flag:true;
 (%o2)                                true
@@ -573,7 +573,7 @@ Minkowski計量の置換である簡単な計量を考えます。
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
 (%o2)                                true
@@ -805,7 +805,7 @@ Christoffel記号を計算し始める前に
 Kerr計量の Petrov分類を得る方法を例示します:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) (cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
 (%o2)                                true
@@ -993,7 +993,7 @@ nmc  = ------------------------------
 
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -1055,7 +1055,7 @@ Schwarzschild計量に関する以下の例が例示するように
 ユーザーは対応するベクトル名を選べます:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -1088,7 +1088,7 @@ Schwarzschild計量に関する以下の例が例示するように
 例えば:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -1245,7 +1245,7 @@ Rosenの二計量(bimetric)理論の場の方程式を生成します。
 Schwarzschild計量のRiemannテンソルは以下のように見ることができます:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
 (%o2)                                true

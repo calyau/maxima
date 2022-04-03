@@ -17,7 +17,7 @@ Bernstein多項式の明示形式への展開を制御します。
 例:
 
 @example
-(%i1) load(bernstein)$
+(%i1) load("bernstein")$
 
 (%i2) bernstein_poly(k,n,x);
 (%o2)                bernstein_poly(k, n, x)

@@ -16,7 +16,7 @@ and characters including formatting, encoding and data streams.
 This package is completed by some tools for cryptography, e.g. base64 and hash 
 functions.
 
-It can be directly loaded via @code{load(stringproc)} or automatically by 
+It can be directly loaded via @code{load("stringproc")} or automatically by 
 using one of its functions.
 
 For questions and bug reports please contact the author. The following 

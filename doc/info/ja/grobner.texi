@@ -19,7 +19,7 @@ MaximaでGroebner基底を使うためのパッケージです。
 以下の関数を使うには、@file{grobner.lisp}パッケージをロードしなければいけません。
 
 @example
-load(grobner);
+load("grobner");
 @end example
 
 @noindent

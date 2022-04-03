@@ -5737,7 +5737,7 @@ Example:
 Map of Europe labeling borders with their component number in
 @code{boundaries_array}.
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) european_borders: 
            region_boundaries(-31.81,74.92,49.84,32.06)$
 (%i3) numbered_boundaries(european_borders)$
@@ -5763,7 +5763,7 @@ or a list of countries.
 Example:
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) /* A continent */
       make_poly_continent(Africa)$
 (%i3) apply(draw2d, %)$
@@ -5795,7 +5795,7 @@ just one polygon.
 Example:
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) make_poly_country(India)$
 (%i3) apply(draw2d, %)$
 @end example
@@ -5833,7 +5833,7 @@ of @code{boundaries_array[1143]}; in conclusion, boundary numbers
 171, 173 and 1143 (in this order) are compatible and the colored 
 polygon can be drawn.
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) Bhutan;
 (%o2)                        [[171, 173, 1143]]
 (%i3) boundaries_array[171];
@@ -5890,7 +5890,7 @@ Example:
 
 Returns segment numbers for plotting southern Italy.
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) region_boundaries(10.4,41.5,20.7,35.4);
 (%o2)                [1846, 1863, 1864, 1881, 1888, 1894]
 (%i3) draw2d(geomap(%))$
@@ -5914,7 +5914,7 @@ containing at least one vertex in the rectangle defined by vertices (@var{x1},@v
 Example:
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) region_boundaries_plus(10.4,41.5,20.7,35.4);
 (%o2) [1060, 1062, 1076, 1835, 1839, 1844, 1846, 1858,
        1861, 1863, 1864, 1871, 1881, 1888, 1894, 1897]
@@ -5962,7 +5962,7 @@ Examples:
 
 A simple map defined by hand:
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) /* Vertices of boundary #0: @{(1,1),(2,5),(4,3)@} */
    ( bnd0: make_array(flonum,6),
      bnd0[0]:1.0, bnd0[1]:1.0, bnd0[2]:2.0,
@@ -6002,7 +6002,7 @@ continents and coastlines as lists with the necessary components of
 for more information). Package @code{worldmap} automatically loads 
 package @code{worldmap}.
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) c1: gr2d(geomap([Canada,United_States,
                        Mexico,Cuba]))$
 (%i3) c2: gr2d(geomap(Africa))$
@@ -6021,7 +6021,7 @@ object is used instead. Since lists are now used and not
 arrays, maps rendering will be slower. See also @mref{make_poly_country}
 and @mref{make_poly_continent} to understand the following code.
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) mymap: append(
    [color      = white],  /* borders are white */
    [fill_color = red],             make_poly_country(Bolivia),
@@ -6049,7 +6049,7 @@ Available 3D projections:
 @code{[spherical_projection,@var{x},@var{y},@var{z},@var{r}]}: projects map boundaries on the sphere of
 radius @var{r} centered at (@var{x},@var{y},@var{z}).
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) draw3d(geomap(Australia), /* default projection */
              geomap(Australia,
                     [spherical_projection,2,2,2,3]))$
@@ -6060,7 +6060,7 @@ radius @var{r} centered at (@var{x},@var{y},@var{z}).
 @code{[cylindrical_projection,@var{x},@var{y},@var{z},@var{r},@var{rc}]}: re-projects spherical map boundaries on the cylinder of radius
 @var{rc} and axis passing through the poles of the globe of radius @var{r} centered at (@var{x},@var{y},@var{z}).
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) draw3d(geomap([America_coastlines,Eurasia_coastlines],
                     [cylindrical_projection,2,2,2,3,4]))$
 @end example
@@ -6071,7 +6071,7 @@ radius @var{r} centered at (@var{x},@var{y},@var{z}).
 with axis passing through the poles of the globe of radius @var{r} centered at (@var{x},@var{y},@var{z}). Both 
 the northern and southern cones are tangent to sphere.
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) draw3d(geomap(World_coastlines,
                     [conic_projection,0,0,0,1,90]))$
 @end example

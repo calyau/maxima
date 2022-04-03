@@ -105,7 +105,7 @@ O mesmo FOM como calculada por FGCOMPUTE no programa sdrive.f no pacote LBFGS de
 Note que as vari@'{a}veis em quest@~{a}o s@~{a}o vari@'{a}veis com subscritos.
 O FOM tem um m@'{i}nimo exato igual a zero em @math{u[k] = 1} for @math{k = 1, ..., 8}.
 @c ===beg===
-@c load (lbfgs);
+@c load ("lbfgs");
 @c t1[j] := 1 - u[j];
 @c t2[j] := 10*(u[j + 1] - u[j]^2);
 @c n : 8;
@@ -115,7 +115,7 @@ O FOM tem um m@'{i}nimo exato igual a zero em @math{u[k] = 1} for @math{k = 1, .
 @c ===end===
 
 @example
-(%i1) load (lbfgs);
+(%i1) load ("lbfgs");
 (%o1)   /usr/share/maxima/5.10.0cvs/share/lbfgs/lbfgs.mac
 (%i2) t1[j] := 1 - u[j];
 (%o2)                     t1  := 1 - u

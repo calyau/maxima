@@ -21,7 +21,7 @@ Um tutorial sobre @emph{Bases de Groebner} pode ser encontrado em
 Para usar as seguintes funç@~{o}es voc@^{e} deve primeiramente tornar o pacote @file{grobner.lisp} dispon@'{i}vel para uso:
 
 @example
-load(grobner);
+load("grobner");
 @end example
 
 @noindent

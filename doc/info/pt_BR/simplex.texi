@@ -47,7 +47,7 @@ poss@'{i}vel entre vetores para os quais @code{A.x = b} e @code{x >= 0}. O argum
 valor m@'{i}nimo @code{c.x}. Se o problema for n@~{a}o associado, @'{e} retornado "Problem not bounded!" e
 se o problema for n@~{a}o vi@'{a}vel, @'{e} retornado "Problem not feasible!".
 
-Para usar essa funç@~{a}o primeiramente chame o pacote @code{simplex} com @code{load(simplex);}.
+Para usar essa funç@~{a}o primeiramente chame o pacote @code{simplex} com @code{load("simplex");}.
 
 Exemplo:
 
@@ -105,7 +105,7 @@ restriç@~{o}es).
 @code{minimize_sx} utiliza o algor@'{i}tmo simplex que @'{e} implementado na funç@~{a}o
 @code{linear_program} do Maxima.
 
-Para usar essa funç@~{a}o primeiramente chame o pacote @code{simplex} com @code{load(simplex);}.
+Para usar essa funç@~{a}o primeiramente chame o pacote @code{simplex} com @code{load("simplex");}.
 
 Exemplos:
 

@@ -25,7 +25,7 @@
 Для использования, описанных ниже функций, необходимо загрузить пакет @file{grobner.lisp}.
 
 @example
-load(grobner);
+load("grobner");
 @end example
 
 @noindent

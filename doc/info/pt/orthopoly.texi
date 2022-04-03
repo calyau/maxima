@@ -37,7 +37,7 @@ o pacote @code{orthopoly} e sua documetação. O pacote
 
 @subsection Iniciando com orthopoly
 
-@code{load (orthopoly)} torna o pacote @code{orthopoly} disponível para uso.
+@code{load ("orthopoly")} torna o pacote @code{orthopoly} disponível para uso.
 
 Para encontrar o polinómio de Legendre de terceira ordem,
 
@@ -272,7 +272,7 @@ Para um @var{n} específico, podemos reduzir a expressão a zero.
 Geralmente, a forma polinomial de um polinómio ortogonal esteja adequada de forma hostil
 para avaliaçao em ponto flutuante. Aqui está um exemplo.
 
-@c ACTUALLY NEEDS load(orthopoly); BEFORE ANYTHING ELSE
+@c ACTUALLY NEEDS load("orthopoly"); BEFORE ANYTHING ELSE
 @c ===beg===
 @c p : jacobi_p (100, 2, 3, x)$
 @c subst (0.2, x, p);

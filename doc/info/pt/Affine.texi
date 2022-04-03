@@ -22,7 +22,7 @@ O valor de retorno é uma lista de equações da forma
 @code{fast_linsolve} é mais rápido que @code{linsolve} para sistemas
 de equações que são esparsas.
 
-Para usar essa função escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load("affine")}.
 @end deffn
 
 @deffn {Função} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
@@ -41,7 +41,7 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 se e somente se @var{f} for uma combinação polinomial dos elementos de
 @var{expr_1}, ..., @var{expr_m}.
 
-Para usar essa função escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load("affine")}.
 @end deffn
 
 @c NEEDS CLARIFICATION IN A SERIOUS WAY
@@ -64,20 +64,20 @@ equações.
 O grau é aquele retornado por @code{nc_degree}.  Isso por sua vez é
 influenciado pelos pesos das variáveis individuais.
 
-Para usar essa função escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load("affine")}.
 @end deffn
 
 @deffn {Função} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 Atribui pesos @var{w_1}, ..., @var{w_n} to @var{x_1}, ..., @var{x_n}, respectivamente.
 Esses são pesos usados em cálculos @code{nc_degree}.
 
-Para usar essa função escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load("affine")}.
 @end deffn
 
 @deffn {Função} nc_degree (@var{p})
 Retorna o grau de um polinómio não comutativo @var{p}.  Veja @code{declare_weights}.
 
-Para usar essa função escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load("affine")}.
 @end deffn
 
 @c NEEDS CLARIFICATION -- TO WHICH EQUATIONS DOES THIS DESCRIPTION REFER ??
@@ -85,7 +85,7 @@ Para usar essa função escreva primeiramente @code{load(affine)}.
 Retorna 0 se e somente se @var{f} for um ideal gerado pelas equações, i.e.,
 se e somente se @var{f} for uma combinação polinomial dos elementos das equações.
 
-Para usar essa função escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load("affine")}.
 @end deffn
 
 @deffn {Função} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
@@ -99,7 +99,7 @@ fast_central_elements ([x, y], 2);
 [y.y, x.x];
 @end example
 
-Para usar essa função escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load("affine")}.
 @end deffn
 
 @c THIS IS NOT AT ALL CLEAR
@@ -114,7 +114,7 @@ especifique nenhum @code{rank_function}.  Um terceiro argumento
 opcional, @code{reset}, @code{false} diz para não se incomodar em
 perguntar sobre reiniciar coisas.
 
-Para usar essa função escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load("affine")}.
 @end deffn
 
 @deffn {Função} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
@@ -122,13 +122,13 @@ Retorna a lista de monómios independentes
 relativamente à simplificação actual do grau @var{n}
 nas variáveis @var{x_1}, ..., @var{x_n}.
 
-Para usar essa função escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load("affine")}.
 @end deffn
 
 @deffn {Função} monomial_dimensions (@var{n})
 Calcula a série de Hilbert através do grau @var{n} para a algebra corrente.
 
-Para usar essa função escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load("affine")}.
 @end deffn
 
 @deffn {Função} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
@@ -138,7 +138,7 @@ dos monomios não comutatvos @var{m_1}, ..., @var{m_n}.
 Os coeficientes podem ser escalares.   Use @code{list_nc_monomials} para construir a lista dos
 monómios.
 
-Para usar essa função escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load("affine")}.
 @end deffn
 
 @deffn {Função} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
@@ -147,7 +147,7 @@ Para usar essa função escreva primeiramente @code{load(affine)}.
 Retorna uma lista de monómios não comutativos que ocorrem em um polinómio @var{p}
 ou em uma lista de polinómios @var{p_1}, ..., @var{p_n}.
 
-Para usar essa função escreva primeiramente @code{load(affine)}.
+Para usar essa função escreva primeiramente @code{load("affine")}.
 @end deffn
 
 @c THIS FUNCTION DOESN'T SEEM TO BE APPROPRIATE IN USER-LEVEL DOCUMENTATION

@@ -15,7 +15,7 @@
 
 Пакет @code{ctensor} предназначен для операций с компонентами тензоров.
 Для загрузки @code{ctensor} необходимо ввести команду
-@code{load(ctensor)}.  Стандартная интерактивная
+@code{load("ctensor")}.  Стандартная интерактивная
 сессия в @code{ctensor} начинается с команды @code{csetup()}.  После этого
 пользователь запрашивается о размерности многообразия.  Если размерность
 равна 2, 3 или 4, тогда список координат по умолчанию устанавливается
@@ -41,7 +41,7 @@
 @code{ctensor} будут продемонстрированы на примере этой метрики.
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)      /usr/local/lib/maxima/share/tensor/ctensor.mac
 (%i2) csetup();
 Enter the dimension of the coordinate system:
@@ -232,7 +232,7 @@ y;
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
       r*sin(theta),[r,theta,phi]]);
@@ -257,7 +257,7 @@ y;
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) cframe_flag:true;
 (%o2)                                true
@@ -583,7 +583,7 @@ lriem[i,j,k,l]*uriem[i,j,k,l].
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
 (%o2)                                true
@@ -798,7 +798,7 @@ np  = (fri  - %i fri ) / sqrt(2)
 для метрики Керра:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) (cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
 (%o2)                                true
@@ -972,7 +972,7 @@ Maxima поступает, если флаг @code{cnonmet_flag} равен @cod
 
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -1035,7 +1035,7 @@ Maxima поступает, если флаг @code{cnonmet_flag} равен @cod
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -1068,7 +1068,7 @@ Maxima поступает, если флаг @code{cnonmet_flag} равен @cod
 должна быть определена заранее), например:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -1205,7 +1205,7 @@ R^2. Результат запоминается в массиве @code{inv1}.
 результаты вычисления тензора Римана для метрики Шварцшильда:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
 (%o2)                                true

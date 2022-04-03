@@ -45,7 +45,7 @@ b = r sin(t)
 
 @code{polartorect}は、@code{recttopolar}の逆関数です。
 
-@code{load(fft)}はこの関数をロードします。
+@code{load("fft")}はこの関数をロードします。
 @code{fft}も参照してください。
 
 @opencatbox
@@ -75,7 +75,7 @@ t = atan2(b, a)
 
 @code{recttopolar}は@code{polartorect}の逆関数です。
 
-@code{load(fft)}はこの関数をロードします。
+@code{load("fft")}はこの関数をロードします。
 @code{fft}も参照してください。
 
 @opencatbox
@@ -108,7 +108,7 @@ t = atan2(b, a)
 x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
 @end example
 
-@code{load(fft)}はこの関数をロードします。
+@code{load("fft")}はこの関数をロードします。
 
 @code{fft} (正変換), @code{recttopolar}, @code{polartorect}も参照してください。
 
@@ -117,7 +117,7 @@ x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
 実数データ。
 
 @c ===beg===
-@c load (fft) $
+@c load ("fft") $
 @c fpprintprec : 4 $
 @c L : [1, 2, 3, 4, -1, -2, -3, -4] $
 @c L1 : inverse_fft (L);
@@ -125,7 +125,7 @@ x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
 @c lmax (abs (L2 - L));
 @c ===end===
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 2, 3, 4, -1, -2, -3, -4] $
 (%i4) L1 : inverse_fft (L);
@@ -142,7 +142,7 @@ x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
 複素数データ
 
 @c ===beg===
-@c load (fft) $
+@c load ("fft") $
 @c fpprintprec : 4 $
 @c L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
 @c L1 : inverse_fft (L);
@@ -150,7 +150,7 @@ x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
 @c lmax (abs (L2 - L));
 @c ===end===
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $                 
 (%i3) L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
 (%i4) L1 : inverse_fft (L);
@@ -221,7 +221,7 @@ a[n/2] = realpart (y[n/2])
 b[n/2] = 0
 @end example
 
-@code{load(fft)}はこの関数をロードします。
+@code{load("fft")}はこの関数をロードします。
 
 @code{inverse_fft} (逆変換), @code{recttopolar}, @code{polartorect}も参照してください。
 
@@ -230,7 +230,7 @@ b[n/2] = 0
 実数データ。
 
 @c ===beg===
-@c load (fft) $
+@c load ("fft") $
 @c fpprintprec : 4 $
 @c L : [1, 2, 3, 4, -1, -2, -3, -4] $
 @c L1 : fft (L);
@@ -238,7 +238,7 @@ b[n/2] = 0
 @c lmax (abs (L2 - L));
 @c ===end===
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 2, 3, 4, -1, -2, -3, -4] $
 (%i4) L1 : fft (L);
@@ -255,7 +255,7 @@ b[n/2] = 0
 複素数データ
 
 @c ===beg===
-@c load (fft) $
+@c load ("fft") $
 @c fpprintprec : 4 $
 @c L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
 @c L1 : fft (L);
@@ -263,7 +263,7 @@ b[n/2] = 0
 @c lmax (abs (L2 - L));
 @c ===end===
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
 (%i4) L1 : fft (L);
@@ -281,7 +281,7 @@ b[n/2] = 0
 サインとコサイン係数の計算。
 
 @c ===beg===
-@c load (fft) $
+@c load ("fft") $
 @c fpprintprec : 4 $
 @c L : [1, 2, 3, 4, 5, 6, 7, 8] $
 @c n : length (L) $
@@ -303,7 +303,7 @@ b[n/2] = 0
 @c makelist (float (f (j)), j, 0, n - 1);
 @c ===end===
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 2, 3, 4, 5, 6, 7, 8] $
 (%i4) n : length (L) $

@@ -59,7 +59,7 @@ se almacena en este objeto, pero no se muestra por defecto; para tener acceso
 a este valor, hágase uso de la función @code{take_inference}.
 
 @c ===beg===
-@c load (inference_result)$
+@c load ("inference_result")$
 @c b: 3$ h: 2$
 @c inference_result("Rectangle",
 @c                  ['base=b,
@@ -71,7 +71,7 @@ a este valor, hágase uso de la función @code{take_inference}.
 @c take_inference('diagonal,%);
 @c ===end===
 @example
-(%i1) load(inference_result)$
+(%i1) load("inference_result")$
 (%i2) b: 3$ h: 2$
 (%i3) inference_result("Rectangle",
                         ['base=b,
@@ -125,12 +125,12 @@ pero sólo se muestra el segundo. La función @code{items_inference} devuelve lo
 todos los elementos almacenados, independientemente de que sean mostrados o no.
 
 @c ===beg===
-@c load (inference_result)$
+@c load ("inference_result")$
 @c inference_result("Hi", ['pi=%pi,'e=%e],[2]);
 @c items_inference(%);
 @c ===end===
 @example
-(%i1) load(inference_result)$
+(%i1) load("inference_result")$
 (%i2) inference_result("Hi", ['pi=%pi,'e=%e],[2]);
                             |   Hi
 (%o2)                       |
@@ -163,7 +163,7 @@ Dado un objeto @code{inference_result}, la función @code{take_inference}
 es invocada para extraer cierta información almacenada en él.
 
 @c ===beg===
-@c load (inference_result)$
+@c load ("inference_result")$
 @c b: 3$ h: 2$
 @c sol:inference_result("Rectangle",
 @c                      ['base=b,
@@ -178,7 +178,7 @@ es invocada para extraer cierta información almacenada en él.
 @c take_inference(items_inference(sol),sol);
 @c ===end===
 @example
-(%i1) load(inference_result)$
+(%i1) load("inference_result")$
 (%i2) b: 3$ h: 2$
 (%i3) sol: inference_result("Rectangle",
                             ['base=b,
@@ -304,7 +304,7 @@ no hay evidencia para rechazar @math{H_0}, pues el @math{p}-valor
 es muy grande.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c data: [78,64,35,45,45,75,43,74,42,42]$
 @c test_mean(data,'conflevel=0.9,'alternative='less,'mean=50);
 @c ===end===
@@ -339,7 +339,7 @@ Nótese que, tal como indica la componente @code{Method}, este
 procedimiento sólo puede aplicarse en muestras grandes.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c test_mean([36,118,52,87,35,256,56,178,57,57,89,34,25,98,35,
 @c         98,41,45,198,54,79,63,35,45,44,75,42,75,45,45,
 @c         45,51,123,54,151],
@@ -469,7 +469,7 @@ varianzas son desconocidas y se supone que diferentes.
 @c t.test(x,y,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
 @c test_means_difference(x,y,'alternative='greater);
@@ -507,7 +507,7 @@ iguales.
 @c t.test(x,y,var.equal=T,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
 @c test_means_difference(x,y,
@@ -612,7 +612,7 @@ Se contrasta si la varianza de una población de media desconocida
 es igual o mayor que 200.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [203,229,215,220,223,233,208,228,20]$
 @c test_variance(x,'alternative='greater,'variance=200);
 @c ===end===
@@ -720,7 +720,7 @@ a la alternativa de que la primera es mayor que la segunda.
 @c var.test(x,y,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
 @c test_variance_ratio(x,y,'alternative='greater);
@@ -827,7 +827,7 @@ Realiza un contraste exacto. La hipótesis nula es @math{H_0: p=1/2}
 y la alternativa unilátera es @math{H_1: p<1/2}.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c test_proportion(45, 103, alternative = less);
 @c ===end===
 @example
@@ -855,7 +855,7 @@ y la alternativa unilátera es @math{H_1: p<1/2}.
 Un contraste asintótico bilátero. El nivel de confianza es 99/100.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c fpprintprec:7$
 @c test_proportion(45, 103, 
 @c               conflevel = 99/100, asymptotic=true);
@@ -966,7 +966,7 @@ antes y después de la reparación. De acuerdo con el p valor, no hay
 evidencia suficiente para aceptar la alternativa.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c fpprintprec:7$
 @c test_proportions_difference(10, 250, 4, 150,
 @c                             alternative = greater);
@@ -1000,7 +1000,7 @@ distribución normal asintótica con datos
 desconocidos.
 
 @c ===beg===
-@c load(stats)$
+@c load("stats")$
 @c stats_numer: false$
 @c sol: test_proportions_difference(x1,n1,x2,n2)$
 @c last(take_inference('distribution,sol));
@@ -1077,7 +1077,7 @@ Contrasta si la mediana de la población de la que se ha extraido
 la muestra es 6, frente a la alternativa @math{H_1: median > 6}.
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [2,0.1,7,1.8,4,2.3,5.6,7.4,5.1,6.1,6]$
 @c test_sign(x,'median=6,'alternative='greater);
 @c ===end===
@@ -1172,7 +1172,7 @@ puesto que no hay empates.
 @c wilcox.test(x,mu=15,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [17.1,15.9,13.7,13.4,15.5,17.6]$
 @c test_signed_rank(x,median=15,alternative=greater);
 @c ===end===
@@ -1204,7 +1204,7 @@ debido a la presencia de empates.
 @c wilcox.test(y,mu=2.5)
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c y:[1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1]$
 @c test_signed_rank(y,median=2.5);
 @c ===end===
@@ -1289,7 +1289,7 @@ muestrales pequeños, se realiza el test exacto.
 @c wilcox.test(x,y)
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x:[12,15,17,38,42,10,23,35,28]$
 @c y:[21,18,25,14,52,65,40,43]$
 @c test_rank_sum(x,y);
@@ -1322,7 +1322,7 @@ alternativa es @math{H_1: median1 < median2}.
 @c wilcox.test(x,y,alternative="less")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [39,42,35,13,10,23,15,20,17,27]$
 @c y: [20,52,66,19,41,32,44,25,14,39,43,35,19,56,27,15]$
 @c test_rank_sum(x,y,'alternative='less);
@@ -1388,7 +1388,7 @@ de tamaño 9.
 @c shapiro.test(x)
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x:[12,15,17,38,42,10,23,35,28]$
 @c test_normality(x);
 @c ===end===

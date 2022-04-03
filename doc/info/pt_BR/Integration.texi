@@ -93,7 +93,7 @@ funç@~{a}o de grau mais alto.  E.g.,
 @deffn {Funç@~{a}o} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
 Uma rotina de integral dupla que foi escrita no 
 alto-n@'{i}vel do Maxima e ent@~{a}o traduzida e compilada para linguagem de m@'{a}quina.
-Use @code{load (dblint)} para acessar esse pacote.  Isso usa o m@'{e}todo da regra de 
+Use @code{load ("dblint")} para acessar esse pacote.  Isso usa o m@'{e}todo da regra de 
 Simpson em ambas as direç@~{o}es x e y para calcular
 
 @example

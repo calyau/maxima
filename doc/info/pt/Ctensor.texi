@@ -9,7 +9,7 @@
 
 @code{ctensor} é um pacote de manipulação de
 componentes.  Para usar o pacote @code{ctensor}, digite
-@code{load(ctensor)}.  Para começar uma sessão iterativa
+@code{load("ctensor")}.  Para começar uma sessão iterativa
 com @code{ctensor}, digite @code{csetup()}. O primeiro que será pedido
 pelo pacote é a dimensão a ser manipulada. Se a dimensão for 2, 3
 ou 4 então a lista de coordenadas padrão é @code{[x,y]},
@@ -36,7 +36,7 @@ Schwarzschild). Muitas das funções em @code{ctensor}
 irão ser mostradas como exemplos para a métrica padrão.
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)      /usr/local/lib/maxima/share/tensor/ctensor.mac
 (%i2) csetup();
 Enter the dimension of the coordinate system: 
@@ -202,7 +202,7 @@ pode especificar uma métrica esférica como segue:
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
       r*sin(theta),[r,theta,phi]]);
@@ -227,7 +227,7 @@ serem usadas quando @code{cframe_flag} for @code{true}:
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) cframe_flag:true;
 (%o2)                                true
@@ -515,7 +515,7 @@ complexas:
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
 (%o2)                                true
@@ -723,7 +723,7 @@ Por exemplo, o seguinte demonstra como obter a classificação de Petrov
 da métrica de Kerr:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) (cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
 (%o2)                                true
@@ -889,7 +889,7 @@ abaixo, @code{findde} fornece as seguintes equações diferenciais independentes
 
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -942,7 +942,7 @@ abaixo como ilustra a métrica de Schwarzschild:
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -971,7 +971,7 @@ Calcula o tensor d'Alembertiano da função escalar assim que
 as dependências tiverem sido declaradas sobre a função. Po exemplo:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -1079,7 +1079,7 @@ como uma lista de matrizes bidimensionais. Por exemplo, o tensor de Riemann da
 métrica de Schwarzschild pode ser visto como:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
 (%o2)                                true

@@ -116,7 +116,7 @@ WARNING: found some hypergeometrical solutions!
 @var{expr}に現れるすべての和を閉形式に整理しようとします。
 
 この関数を初めて使うには、
-@code{load(simplify_sum)}で
+@code{load("simplify_sum")}で
 @code{simplify_sum}パッケージをロードしてください。
 
 例:
@@ -168,7 +168,7 @@ Ricatti型漸化式を解くことができます。
 
 この関数を使うには、
 最初に
-@code{load(solve_rec);}で@code{solve_rec}パッケージをロードしてください。
+@code{load("solve_rec");}で@code{solve_rec}パッケージをロードしてください。
 
 
 定係数の線形漸化式の例:
@@ -246,7 +246,7 @@ Ricatti型漸化式の例:
 
 この関数を使うには、
 最初に
-@code{load(solve_rec);}で@code{solve_rec}パッケージをロードしてください。
+@code{load("solve_rec");}で@code{solve_rec}パッケージをロードしてください。
 
 例:
 
@@ -315,7 +315,7 @@ Ricatti型漸化式の例:
 それらは@code{lo = -inf}、@code{hi = inf}と仮定されます。
 
 この関数を初めて使うには、
-@code{load(simplify_sum)}で
+@code{load("simplify_sum")}で
 @code{simplify_sum}パッケージをロードしてください。
 
 例:

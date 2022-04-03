@@ -67,7 +67,7 @@
 数値計算は通常の浮動小数点算出で実行されます。
 他の種類の数値は計算のため、すべて通常の浮動小数点に変換されます。
 
-@code{load(lsquares)}はこの関数をロードします。
+@code{load("lsquares")}はこの関数をロードします。
 
 @code{lsquares_estimates_exact},
 @code{lsquares_estimates_approximate},@*
@@ -80,14 +80,14 @@
 厳密解が見つかる問題。
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c         [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c lsquares_estimates (
 @c          M, [z,x,y], (z+D)^2 = A*x+B*y+C, [A,B,C,D]);
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
         [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @group
@@ -116,13 +116,13 @@
 だから @code{lsquares_estimates}は数値近似に頼ります。
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix ([1, 1], [2, 7/4], [3, 11/4], [4, 13/4]);
 @c lsquares_estimates (
 @c   M, [x,y], y=a*x^b+c, [a,b,c], initial=[3,3,3], iprint=[-1,0]);
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix ([1, 1], [2, 7/4], [3, 11/4], [4, 13/4]);
                                    [ 1  1  ]
                                    [       ]
@@ -174,14 +174,14 @@
 例:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c mse : lsquares_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C);
 @c lsquares_estimates_exact (mse, [A, B, C, D]);
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
@@ -251,7 +251,7 @@ This requires that the data from which
 数値計算は通常の浮動小数点算出で実行されます。
 他の種類の数値は計算のため、すべて通常の浮動小数点に変換されます。
 
-@code{load(lsquares)}はこの関数をロードします。
+@code{load("lsquares")}はこの関数をロードします。
 
 @code{lsquares_estimates},
 @code{lsquares_estimates_exact},
@@ -262,7 +262,7 @@ This requires that the data from which
 例:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c mse : lsquares_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C);
@@ -270,7 +270,7 @@ This requires that the data from which
 @c         mse, [A, B, C, D], iprint = [-1, 0]);
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
@@ -337,12 +337,12 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 @code{i}番目のデータ @code{@var{D}[i]}から値を割り当てられた
 @var{x}の中の変数に対して評価された方程式 @var{e}です。
 
-@code{load(lsquares)}はこの関数をロードします。
+@code{load("lsquares")}はこの関数をロードします。
 
 例:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c mse : lsquares_mse (M, [z, x, y], (z + D)^2 = A*x + B*y + C);
@@ -350,7 +350,7 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 @c ''mse, nouns;
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]
@@ -443,12 +443,12 @@ $${\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right),$$
 @code{i}番目のデータ @code{@var{D}[i]}から値を割り当てられた
 @var{x}の中の変数に対して評価された方程式 @var{e}です。
 
-@code{load(lsquares)}はこの関数をロードします。
+@code{load("lsquares")}はこの関数をロードします。
 
 例:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c a : lsquares_estimates (
@@ -457,7 +457,7 @@ $${\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right),$$
 @c           M, [z,x,y], (z+D)^2 = A*x+B*y+C, first(a));
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                                   [ 1  1  1 ]
@@ -519,12 +519,12 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 @code{i}番目のデータ @code{@var{D}[i]}から値を割り当てられた
 @var{x}の中の変数に対して評価された方程式 @var{e}です。
 
-@code{load(lsquares)}はこの関数をロードします。
+@code{load("lsquares")}はこの関数をロードします。
 
 例:
 
 @c ===beg===
-@c load (lsquares)$
+@c load ("lsquares")$
 @c M : matrix (
 @c          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
 @c a : lsquares_estimates (
@@ -533,7 +533,7 @@ $${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e
 @c        M, [z,x,y], (z + D)^2 = A*x + B*y + C, first (a));
 @c ===end===
 @example
-(%i1) load (lsquares)$
+(%i1) load ("lsquares")$
 (%i2) M : matrix (
          [1,1,1], [3/2,1,2], [9/4,2,1], [3,2,2], [2,2,1]);
                            [ 1  1  1 ]

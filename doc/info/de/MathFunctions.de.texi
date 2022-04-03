@@ -100,7 +100,7 @@ Betragsfunktion.  Siehe @mrefdot{laplace}
                            ]
                            /
 
-(%i12) load(abs_integrate)$
+(%i12) load("abs_integrate")$
 (%i13) integrate(x*abs(x),x);
                       2           3
                      x  abs(x)   x  signum(x)
@@ -550,7 +550,7 @@ Signumfunktion l@"osen.  Ausdr@"ucke mit der Signumfunktion k@"onnen
 differenziert werden.
 
 @example
-(%i5) load(abs_integrate)$
+(%i5) load("abs_integrate")$
 
 (%i6) integrate(signum(x),x);
 (%o6)                        abs(x)
@@ -2501,7 +2501,7 @@ die Argumente der Form @code{@var{f}(@var{n} %pi/10)} haben.  @var{f} ist eine
 der Funktionen @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} oder 
 @code{cot}.
 
-Das Kommando @code{load(ntrig)} l@"adt das Paket.  Die Vereinfachungen werden
+Das Kommando @code{load("ntrig")} l@"adt das Paket.  Die Vereinfachungen werden
 dann von Maxima automatisch ausgef@"uhrt.
 @end defvr
 

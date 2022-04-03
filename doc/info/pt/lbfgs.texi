@@ -77,7 +77,7 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 Exemplo:
 
 @c ===beg===
-@c load (lbfgs);
+@c load ("lbfgs");
 @c FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1, length(X)));
 @c X : [1, 2, 3, 4, 5];
 @c Y : [0, 0.5, 1, 1.25, 1.5];
@@ -87,7 +87,7 @@ Exemplo:
 @c plot2d ([F(x), [discrete, X, Y]], [x, -1, 6]), ''estimates;
 @c ===end===
 @example
-(%i1) load (lbfgs);
+(%i1) load ("lbfgs");
 (%o1)   /usr/share/maxima/5.10.0cvs/share/lbfgs/lbfgs.mac
 (%i2) FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1, length(X)));
                                2

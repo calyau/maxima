@@ -27,11 +27,11 @@
 @c -----------------------------------------------------------------------------
 
 @c @code{atensor} is an algebraic tensor manipulation package. To use 
-@c @code{atensor}, type @code{load(atensor)}, followed by a call to the 
+@c @code{atensor}, type @code{load("atensor")}, followed by a call to the 
 @c @code{init_atensor} function.
 
 Das Paket @code{atensor} erlaubt das algebraische Rechnen mit Tensoren.  Mit
-dem Kommando @code{load(atensor)} wird das Paket geladen.  Um das Paket zu
+dem Kommando @code{load("atensor")} wird das Paket geladen.  Um das Paket zu
 initialisieren, wird die Funktion @mref{init_atensor} ausgef@"uhrt.
 
 @c The essence of @code{atensor} is a set of simplification rules for the
@@ -69,7 +69,7 @@ wird die Algebra der Quaterinonen als Clifford-Algebra Cl(0,2) definiert und
 die Multiplikationstabelle der Basisvektoren konstruiert.
 
 @example
-(%i1) load(atensor)$
+(%i1) load("atensor")$
 
 (%i2) init_atensor(clifford,0,0,2);
 (%o2)                         done
@@ -305,7 +305,7 @@ Beispiele:
 Die folgenden Beispiele zeigen das Rechnen mit der Algebra der Quaternionen.
 
 @example
-(%i1) load(atensor)$
+(%i1) load("atensor")$
 
 (%i2) init_atensor(quaternion);
 (%o2)                         done
@@ -360,7 +360,7 @@ Die Dirac-Algebra hat die Dimension @code{4} und @code{v[4]} ist ein
 Basisvektor.
 
 @example
-(%i1) load(atensor)$
+(%i1) load("atensor")$
 
 (%i2) init_atensor(dirac);
 (%o2)                         done
@@ -388,7 +388,7 @@ Das Beispiel zeigt die Matrix @code{aform} f@"ur eine Lie-Algebra mit drei
 Dimensionen und die Ergebnisse der Bilinearform @code{av} f@"ur diese Algebra.
 
 @example
-(%i1) load(atensor)$
+(%i1) load("atensor")$
 
 (%i2) init_atensor(lie_envelop, 3);
 (%o2)                         done
@@ -423,7 +423,7 @@ Beispiel:
 In diesem Beispiel wird @code{asymbol} auf den Wert @code{x} gesetzt.
 
 @example
-(%i1) load(atensor)$
+(%i1) load("atensor")$
 
 (%i2) init_atensor(symmetric, 2);
 (%o2)                         done
@@ -491,7 +491,7 @@ Basisvektoren sind und setzt f@"ur diesen Fall den entsprechenden Wert
 Beispiel:
 
 @example
-(%i1) load(atensor)$
+(%i1) load("atensor")$
 (%i2) adim: 3;
 (%o2)                           3
 (%i3) aform:matrix([0,3,-2],[-3,0,1],[2,-1,0]);
@@ -527,7 +527,7 @@ Index im Bereich von @code{1} bis @mrefdot{adim}
 Beispiel:
 
 @example
-(%i1) load(atensor)$
+(%i1) load("atensor")$
 (%i2) asymbol: x$
 (%i3) adim:3$
 (%i4) abasep(x[1]);

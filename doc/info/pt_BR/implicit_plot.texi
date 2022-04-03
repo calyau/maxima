@@ -22,15 +22,15 @@ a funç@~{a}o @code{implicit_plot} como argumentos opcionais.
 fornecida atrav@'{e}s de @var{x_range} e @var{y_range} e pode falhar em express@~{o}es
 complicadas.
 
-@code{load(implicit_plot)} torna essa funç@~{a}o dispon@'{i}vel para uso.
+@code{load("implicit_plot")} torna essa funç@~{a}o dispon@'{i}vel para uso.
 
 Exemplo:
 @c ===beg===
-@c load(implicit_plot)$
+@c load("implicit_plot")$
 @c implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4])$
 @c ===end===
 @example
-(%i1) load(implicit_plot)$
+(%i1) load("implicit_plot")$
 (%i2) implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4])$
 @end example
 

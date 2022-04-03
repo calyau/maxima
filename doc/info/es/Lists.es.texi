@@ -577,7 +577,7 @@ simplemente no es una lista, Maxima devuelve un mensaje de error.
 
 Véase @code{push} para los ejemplos.
 
-Ejecútese @code{load(basic)} antes de utilizar esta función.
+Ejecútese @code{load("basic")} antes de utilizar esta función.
 @end deffn
 
 
@@ -595,7 +595,7 @@ mensaje de error.
 
 Véase @code{pop} para eliminar el primer elemento de una lista.
 
-Ejecútese @code{load(basic)} antes de utilizar esta función.
+Ejecútese @code{load("basic")} antes de utilizar esta función.
 
 Ejemplos:
 

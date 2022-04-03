@@ -9,7 +9,7 @@
 @section Introduç@~{a}o ao Pacote atensor
 
 @code{atensor} @'{e} um pacote de manipulç@~{a}o de tensores alg@'{e}bricos.  Para usar @code{atensor},
-digite @code{load(atensor)}, seguido por uma chamada @`a funç@~{a}o 
+digite @code{load("atensor")}, seguido por uma chamada @`a funç@~{a}o 
 @code{init_atensor}.
 
 A ess@^{e}ncia de @code{atensor} @'{e} um conjunto de regras de simplificaç@~{a}o para o operador
@@ -33,7 +33,7 @@ nos esforçamos para construir a tabela de multiplicaç@~{a}o dos quat@'{e}rnios
 
 @example
 
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) init_atensor(clifford,0,0,2);
 (%o2)                                done
@@ -230,7 +230,7 @@ valor correspondente da matriz @code{aform}.
 Por exemplo:
 
 @example
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) adim:3;
 (%o2)                                  3

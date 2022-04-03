@@ -2054,7 +2054,7 @@ tal que @code{r} e @code{theta} sejam puramente reais.
 @deffn {Funç@~{a}o} powers (@var{expr}, @var{x})
 Fornece os expoentes de @var{x} que ocorrem em express@~{a}o @var{expr}.
 
-@code{load (powers)} chama essa funç@~{a}o.
+@code{load ("powers")} chama essa funç@~{a}o.
 @c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
 @c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
 

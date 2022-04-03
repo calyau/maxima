@@ -18,7 +18,7 @@ la expansión de los polinomios de Bernstein a su forma explícita.
 Ejemplo:
 
 @example
-(%i1) load(bernstein)$
+(%i1) load("bernstein")$
 
 (%i2) bernstein_poly(k,n,x);
 (%o2)                bernstein_poly(k, n, x)

@@ -892,7 +892,7 @@ und der zu ersetzende Ausdruck mehrere Variablen gemeinsam haben.
 Liste von Gleichungen sein.  Das zweite Argument ist in diesem Fall der
 Ausdruck in dem die Ersetzungen durchgef@"uhrt werden.
 
-Mit dem Kommando @code{load(lrats)} werden die Funktionen @code{fullratsubst}
+Mit dem Kommando @code{load("lrats")} werden die Funktionen @code{fullratsubst}
 und @code{lratsubst} geladen.
 
 Beispiele:
@@ -1365,7 +1365,7 @@ Mit dem Kommando @code{lrats} werden die Funktionen @code{fullratsubst} und
 Beispiele:
 
 @example
-(%i1) load (lrats)$
+(%i1) load ("lrats")$
 @end example
 
 @c @code{subst} can carry out multiple substitutions.
@@ -1659,12 +1659,12 @@ Siehe auch @mrefdot{modulus}
 @deffn {Funktion} powers (@var{expr}, @var{x})
 
 @c Gives the powers of @var{x} occuring in @var{expr}.
-@c @code{load (powers)} loads this function.
+@c @code{load ("powers")} loads this function.
 
 Gibt eine Liste mit den Potenzen der Variablen @var{x} zur@"uck, die im
 Ausdruck @var{expr} auftreten.
 
-Mit dem Kommando @code{load(powers)} wird die Funktion geladen.
+Mit dem Kommando @code{load("powers")} wird die Funktion geladen.
 
 @c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
 @c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE

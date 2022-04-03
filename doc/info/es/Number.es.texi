@@ -65,7 +65,7 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
 @end example
 @end ifnottex
 
-Ejecútese @code{load (bffac)} antes de hacer uso de esta función.
+Ejecútese @code{load ("bffac")} antes de hacer uso de esta función.
 
 @end deffn
 
@@ -417,12 +417,12 @@ igual a @code{@var{a} @var{n} + @var{b} @var{k}}. Los argumentos
 
 @code{igcdex} implementa el algoritmo de Euclides. Véase también @code{gcdex}.
 
-La instrucción @code{load(gcdex)} carga esta función.
+La instrucción @code{load("gcdex")} carga esta función.
 
 Ejemplos:
 
 @example
-(%i1) load(gcdex)$
+(%i1) load("gcdex")$
 
 (%i2) igcdex(30,18);
 (%o2)                      [- 1, 2, 6]

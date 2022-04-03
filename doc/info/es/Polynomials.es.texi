@@ -1075,7 +1075,7 @@ Véase @code{modulus}.
 @deffn {Función} powers (@var{expr}, @var{x})
 Devuelve las potencias de @var{x} dentro de @var{expr}.
 
-La instrucción @code{load (powers)} carga esta función.
+La instrucción @code{load ("powers")} carga esta función.
 @c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
 @c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
 

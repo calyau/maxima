@@ -702,7 +702,7 @@ Fehlermeldung aus.
 
 Siehe auch die Funktion @mref{push} f@"ur Beispiele.
 
-Mit dem Kommando @code{load(basic)} wird die Funktion geladen.
+Mit dem Kommando @code{load("basic")} wird die Funktion geladen.
 @end deffn
 
 @c --- 16.03.2011 DK -----------------------------------------------------------
@@ -721,7 +721,7 @@ Fehlermeldung aus.
 Siehe auch die Funktion @mrefcomma{pop} um das erste Element einer Liste zu
 entfernen.
 
-Mit dem Kommando @code{load(basic)} wird die Funktion geladen.
+Mit dem Kommando @code{load("basic")} wird die Funktion geladen.
 
 Beispiele:
 

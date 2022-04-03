@@ -115,7 +115,7 @@ interoperar com certas funções ou recursos. Essas falhas serão corrigidas
 @subsection Manipulação de tensores indiciais
 
 o pacote de manipulação de tensores indiciais pode ser chamado através de
-@code{load(itensor)}. Demonstações estão também disponíveis: tente @code{demo(tensor)}.
+@code{load("itensor")}. Demonstações estão também disponíveis: tente @code{demo(tensor)}.
 Em @code{itensor} um tensor é representado como um "objecto indexado" .  Um "objecto indexado" é uma
 função de 3 grupos de índices os quais representam o covariante,
 o contravariante e o índice de derivação.  Os índices covariantes são
@@ -167,7 +167,7 @@ Uma sessão demonstrativa abaixo mostra como chamar o pacote @code{itensor},
 especificando o nome da métrica, e executando alguns cálculos simples.
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                                done
@@ -306,7 +306,7 @@ como demonstra o seguinte exemplo.
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i,j],[k,l],m,n)*b([k,o],[j,m,p],q,r))$
                                 k l      j m p
@@ -345,7 +345,7 @@ reduzidos a uma expressão de valor um ou mais que um por si mesma.
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) allsym:true;
 (%o2)                                true
@@ -526,7 +526,7 @@ comandos @code{defrule} e @code{applyb1}:
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) matchdeclare(l1,listp);
 (%o2)                                done
@@ -567,9 +567,9 @@ seguinte exemplo:
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
-(%i2) load(itensor);
+(%i2) load("itensor");
 (%o2)      /share/tensor/itensor.lisp
 (%i3) lg:matrix([sqrt(r/(r-2*m)),0,0,0],[0,r,0,0],
                 [0,0,sin(theta)*r,0],[0,0,0,sqrt((r-2*m)/r)]);
@@ -653,7 +653,7 @@ Delta de Kronecker simetrizado, usado em alguns cálculos. Por exemplo:
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) kdelta([1,2],[2,1]);
 (%o2)                                 - 1
@@ -691,7 +691,7 @@ são mais facilmente simplificadas com @code{rename} ou @code{contract}.
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) expr:ishow('levi_civita([],[i,j])*'levi_civita([k,l],[])*a([j],[k]))$
                                   i j  k
@@ -763,7 +763,7 @@ Por exemplo:
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2)  el1:ishow('levi_civita([i,j,k],[])*a([],[i])*a([],[j]))$
                              i  j
@@ -845,7 +845,7 @@ ilustra.
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) expr:contract(expand(a([i1,j1,k1],[])*kdels([i,j,k],[i1,j1,k1])))$
 (%i3) ishow(expr)$
@@ -939,7 +939,7 @@ vectorial. Por exemplo:
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(liediff(v,a([i,j],[])*b([],[k],l)))$
        k    %2            %2          %2
@@ -984,7 +984,7 @@ ser directamente avaliadas na forma derivada. Por exemplo, o seguinte
 causa um erro:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) icurvature([i,j,k],[l],m);
 Maxima encountered a Lisp error:
@@ -1056,7 +1056,7 @@ ocorrências do objecto diferenciado @var{tensor} que tem @var{n} ou mais
 índices derivativos como demonstra o seguinte exemplo.
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i],[J,r],k,r)+a([i],[j,r,s],k,r,s))$
                                 J r      j r s
@@ -1106,7 +1106,7 @@ Christoffel como visto adiante:
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(g([],[a,b],c))$
                                       a b
@@ -1168,7 +1168,7 @@ expressão contractível:
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                                done
@@ -1279,7 +1279,7 @@ segundo tipo (@code{ichr2}).  Com o objectivo de avaliar esses, se pode usar
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) entertensor()$
 Enter tensor name: a;
@@ -1335,7 +1335,7 @@ curvatura de Riemann usando a função @code{igeodesic_coords}.
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(icurvature([r,s,t],[u]))$
              u            u         %1         u            u         %1
@@ -1396,7 +1396,7 @@ e @code{icc2}), como demonstra o seguinte exemplo:
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) iframe_flag:true;
 (%o2)                                true
@@ -1707,7 +1707,7 @@ através do seguinte exemplo:
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric:g;
 (%o2)                                  g
@@ -1824,7 +1824,7 @@ O comportamento do operador do produto cunha é controlado através do
 sinalizador @code{igeowedge_flag}, como no seguinte exemplo:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i])~b([j]))$
                                  a  b  - b  a
@@ -1865,7 +1865,7 @@ com relação ao primeiro índice na ordem literal de ordenação. Isso garante
 uma melhor simplificação de expressões envolvendo o operador @code{|}. Por exemplo:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) decsym(a,2,0,[anti(all)],[]);
 (%o2)                                done
@@ -1894,7 +1894,7 @@ tal, essa operação é também controlada através da escolha de @code{igeowedg
 Por exemplo:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(extdiff(v([i]),j))$
                                   v    - v
@@ -1926,7 +1926,7 @@ Calcula o Hodge dual de @var{expr}. Por exemplo:
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                            done
@@ -1990,9 +1990,9 @@ como no seguinte exemplo:
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
-(%i2) load(tentex);
+(%i2) load("tentex");
 (%o2)       /share/tensor/tentex.lisp
 (%i3) idummyx:m;
 (%o3)                                  m
@@ -2038,7 +2038,7 @@ declaração de atribuição transformada pode ser avaliada através de apenas f
 função.
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) eqn:ishow(t([i,j],[k])=f([],[])*g([l,m],[])*a([],[m],j)*b([i],[l,k]))$
                              k        m   l k

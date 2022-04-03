@@ -88,7 +88,7 @@ transformada de Laplace de @code{abs}. Véase @code{laplace}.
                            ]
                            /
 
-(%i12) load(abs_integrate)$
+(%i12) load("abs_integrate")$
 (%i13) integrate(x*abs(x),x);
                       2           3
                      x  abs(x)   x  signum(x)

@@ -8,7 +8,7 @@
 @section Introdução ao Pacote atensor
 
 @code{atensor} é um pacote de manipulção de tensores algébricos.  Para usar @code{atensor},
-digite @code{load(atensor)}, seguido por uma chamada à função 
+digite @code{load("atensor")}, seguido por uma chamada à função 
 @code{init_atensor}.
 
 A essência de @code{atensor} é um conjunto de regras de simplificação para o operador
@@ -35,7 +35,7 @@ matriz:
 
 @example
 
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) init_atensor(clifford,0,0,2);
 (%o2)                                done
@@ -233,7 +233,7 @@ valor correspondente da matriz @code{aform}.
 Por exemplo:
 
 @example
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) adim:3;
 (%o2)                                  3

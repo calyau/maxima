@@ -1751,7 +1751,7 @@ también el paquete @code{orthopoly}. Nótese que @var{L} es el
 polinomio generalizado de Laguerre.
 
 @example
-(%i5) load(orthopoly)$
+(%i5) load("orthopoly")$
 (%i6) hgfred([-2],[a],z);
 
                                     (a - 1)

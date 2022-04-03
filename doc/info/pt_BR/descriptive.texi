@@ -20,13 +20,13 @@ Para coment@'{a}rios, erros ou sugest@~{o}es, por favor entre em contato comigo 
 Aqui est@'{a} um exemplo sobre como as funç@~{o}es de estat@'{i}stica descritiva no pacote @code{descriptive} fazem esse trabalho, dependendo da natureza de seus argumentos, listas e matrizes,
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c /* univariate sample */   mean ([a, b, c]);
 @c matrix ([a, b], [c, d], [e, f]);
 @c /* amostra de v@'{a}rias vari@'{a}veis */ mean (%);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) /* univariate sample */   mean ([a, b, c]);
                             c + b + a
 (%o2)                       ---------
@@ -48,11 +48,11 @@ Note que em amostras de v@'{a}rias vari@'{a}veis a m@'{e}dia @'{e} calculada em 
 No caso de muitas amostras amostras com poss@'{i}veis tamanhos diferentes, A funç@~{a}o do Maxima @code{map} pode ser usada para pegar os resultados desejados de cada amostra,
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c map (mean, [[a, b, c], [d, e]]);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) map (mean, [[a, b, c], [d, e]]);
                         c + b + a  e + d
 (%o2)                  [---------, -----]
@@ -112,12 +112,12 @@ Dados podem ser introduzidos manualmente, mas grandes amostras s@~{a}o usualment
 Com o objetivo de chamar esses d@'{i}gitos no Maxima,
 
 @c ===beg===
-@c load (numericalio)$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c length (s1);
 @c ===end===
 @example
-(%i1) load (numericalio)$
+(%i1) load ("numericalio")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) length (s1);
 (%o3)                          100
@@ -126,13 +126,13 @@ Com o objetivo de chamar esses d@'{i}gitos no Maxima,
 Por outro lado, o arquivo @code{wind.data} cont@'{e}m a m@'{e}dia di@'{a}ria de velocidades do ventoem 5 estaç@~{o}es meteorol@'{o}gicas na Rep@'{u}blica da Irlanda (Esses dados s@~{a}o parte de um conjunto de dados tomados em 12 estaç@~{o}es meteorol@'{o}gicas. O arquivo original est@'{a} disponivel livremente para download no Reposit@'{o}rio de Dados StatLib e sua an@'{a}lise @'{e} discutida em Haslett, J., Raftery, A. E. (1989) @var{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied Statistics 38, 1-50). As linhas seguintes mostram como tornar os dados dispon@'{i}veis para o Maxima:
 
 @c ===beg===
-@c load (numericalio)$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c length (s2);
 @c s2 [%]; /* last record */
 @c ===end===
 @example
-(%i1) load (numericalio)$
+(%i1) load ("numericalio")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) length (s2);
 (%o3)                          100
@@ -143,13 +143,13 @@ Por outro lado, o arquivo @code{wind.data} cont@'{e}m a m@'{e}dia di@'{a}ria de 
 Algumas amostras possuem dados n@~{a}o num@'{e}ricos. Como um exemplo, o arquivo @code{biomed.data} (que @'{e} parte de outro grande arquivo tomado do Rep@'{o}sit@'{o}rio de Dados StatLib) cont@'{e}m quatro medidas sang@"{u}@'{i}neas tomadas de dois grupos de pacientes, @code{A} e @code{B}, de diferentes idades,
 
 @c ===beg===
-@c load (numericalio)$
+@c load ("numericalio")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c length (s3);
 @c s3 [1]; /* first record */
 @c ===end===
 @example
-(%i1) load (numericalio)$
+(%i1) load ("numericalio")$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 (%i3) length (s3);
 (%o3)                          100
@@ -183,14 +183,14 @@ Se deve tomar cuidado quando se trabalha com dados divididos por categorias. no 
 O argumetno de @code{continuous_freq} deve ser uma lista de n@'{u}meros, que ser@~{a}o ent@~{a}o agrupadas em intervalos e contado quantos desses dados pertencem a cada grupo. Opcionalmente, a funç@~{a}o @code{continuous_freq} admite um segundo argumento indicando o n@'{u}mero de classes, 10 @'{e} o valor padr@~{a}o,
 
 @c ===beg===
-@c load (numericalio)$
-@c load (descriptive)$
+@c load ("numericalio")$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c continuous_freq (s1, 5);
 @c ===end===
 @example
-(%i1) load (numericalio)$
-(%i2) load (descriptive)$
+(%i1) load ("numericalio")$
+(%i2) load ("descriptive")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) continuous_freq (s1, 5);
 (%o4) [[0, 1.8, 3.6, 5.4, 7.2, 9.0], [16, 24, 18, 17, 25]]
@@ -205,14 +205,14 @@ A primeira lista cont@'{e}m os limites de intervalos e o segundo a correspondent
 Conta as freq@"{u}@^{e}ncias absolutas em amostras discretas, em amostras num@'{e}ricas e em amostras divididas em categorias. Seu @'{u}nico argumento @'{e} uma lista,
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"));
 @c discrete_freq (s1);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"));
 (%o3) [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 2, 3, 8, 
 4, 6, 2, 6, 4, 3, 3, 8, 3, 2, 7, 9, 5, 0, 2, 8, 8, 4, 1, 9, 7, 
@@ -234,14 +234,14 @@ A primeira lista fornece os valores da amostra e a segunda seuas freq@"{u}@^{e}n
 Essas funç@~{o}es s@~{a}o um tipo de variaç@~{a}o da funç@~{a}o @code{submatrix} do Maxima. O primeiro argumento @'{e} o nome da matriz de dados, o segundo argumento @'{e} uma express@~{a}o l@'{o}gica que recebeu ap@'{o}strofo e os argumentos opcionais adicionais s@~{a}o o n@'{u}mero de colunas a serem tomadas. Esse comportamento @'{e} melhor entendido com exemplos,
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c subsample (s2, '(%c[1] > 18));
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) subsample (s2, '(%c[1] > 18));
               [ 19.38  15.37  15.12  23.09  25.25 ]
@@ -256,14 +256,14 @@ Essas funç@~{o}es s@~{a}o um tipo de variaç@~{a}o da funç@~{a}o @code{submatr
 Existem registros de v@'{a}rias vari@'{a}veis nos quais a velocidade do vento na primeira estaç@~{a}o meteorol@'{o}gica foram maiores que 18. Veja que na express@~{a}o l@'{o}gica que recebeu ap@'{o}strofo o @var{i}-@'{e}simo componente @'{e} referenciado como @code{%c[i]}. O s@'{i}mbolo @code{%c[i]} @'{e} usado dentro da funç@~{a}o @code{subsample}, portanto quando usado como uma vari@'{a}vel de uma categoria, Maxima fica confuso. No seguinte exemplo, requisitamos somente o primeiro, o segundo e o quinto componentes desses registro com velocidades de vento maiores que ou igual a 16 n@'{o}s na estaç@~{a}o meteorol@'{o}gica n@'{u}mero 1 e menor que 25 n@'{o}s na estaç@~{a}o meteorol@'{o}gica n@'{u}mero 4,
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c subsample (s2, '(%c[1] >= 16 and %c[4] < 25), 1, 2, 5);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) subsample (s2, '(%c[1] >= 16 and %c[4] < 25), 1, 2, 5);
                      [ 19.38  15.37  25.25 ]
@@ -278,14 +278,14 @@ Existem registros de v@'{a}rias vari@'{a}veis nos quais a velocidade do vento na
 Aqui est@'{a} um exemplo com as vari@'{a}veis divididas em categorias do arquivo @code{biomed.data}. Queremos os registros correspondentes a aqueles pacientes no grupo @code{B} que possuem idade maior que 38 anos,
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c subsample (s3, '(%c[1] = B and %c[2] > 38));
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
 (%i4) subsample (s3, '(%c[1] = B and %c[2] > 38));
                 [ B  39  28.0  102.3  17.1  146 ]
@@ -309,14 +309,14 @@ Aqui est@'{a} um exemplo com as vari@'{a}veis divididas em categorias do arquivo
 Probavelmente, a an@'{a}lise estat@'{i}stica ir@'{a} envolver somente as medidas sang@"{u}@'{i}neas,
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c subsample (s3, '(%c[1] = B and %c[2] > 38), 3, 4, 5, 6);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
 (%i4) subsample (s3, '(%c[1] = B and %c[2] > 38), 3, 4, 5, 6);
                    [ 28.0  102.3  17.1  146 ]
@@ -340,14 +340,14 @@ Probavelmente, a an@'{a}lise estat@'{i}stica ir@'{a} envolver somente as medidas
 Essa @'{e} a m@'{e}dia de v@'{a}rias vari@'{a}veis de @code{s3},
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c mean (s3);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
 (%i4) mean (s3);
        65 B + 35 A  317          6 NA + 8145.0
@@ -360,14 +360,14 @@ Essa @'{e} a m@'{e}dia de v@'{a}rias vari@'{a}veis de @code{s3},
 Aqui, a primeira componente @'{e} sem sentido, uma vez que @code{A} e @code{B} s@~{a}o categorias, o segundo componente @'{e} a idade m@'{e}dia dos indiv@'{i}duos na forma racional, e o quarto eo @'{u}ltimo valores exibem um comportamento estranho. Isso ocorre porque o s@'{i}mbolo @code{NA} @'{e} usado aqui para indicar dado n@~{a}o dispon@'{i}vel (@var{non available} em ingl@^{e}s), e as duas m@'{e}dias s@~{a}o certamente sem sentido. Uma soluç@~{a}o poss@'{i}vel pode ser jogar fora a matriz cujas linhas possuam s@'{i}mbolos @code{NA}, embora isso cause alguma perda de informaç@~{a}o,
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c mean (subsample (s3, '(%c[4] # NA and %c[6] # NA), 3, 4, 5, 6));
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
 (%i4) mean (subsample (s3, '(%c[4] # NA and %c[6] # NA), 3, 4, 5, 6));
 (%o4) [79.4923076923077, 86.2032967032967, 16.93186813186813, 
@@ -415,8 +415,8 @@ $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c mean (s1);
 @c %, numer;
@@ -424,8 +424,8 @@ Exemplo:
 @c mean (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) mean (s1);
                                471
@@ -473,14 +473,14 @@ $${{1}\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c var (s1), numer;
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) var (s1), numer;
 (%o4)                   8.425899999999999
@@ -523,16 +523,16 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c var1 (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c var1 (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) var1 (s1), numer;
 (%o4)                    8.5110101010101
@@ -554,16 +554,16 @@ A ra@'{i}z quadrada da funç@~{a}o @code{var}, a vari@^{a}ncia com denominador @
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c std (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c std (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) std (s1), numer;
 (%o4)                   2.902740084816414
@@ -585,16 +585,16 @@ Veja tamb@'{e}m as funç@~{o}es @code{var} e @code{std1}.
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c std1 (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c std1 (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) std1 (s1), numer;
 (%o4)                   2.917363553109228
@@ -641,16 +641,16 @@ $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c noncentral_moment (s1, 1), numer; /* the mean */
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c noncentral_moment (s2, 5);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) noncentral_moment (s1, 1), numer; /* the mean */
 (%o4)                         4.71
@@ -697,16 +697,16 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c central_moment (s1, 2), numer; /* the variance */
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c central_moment (s2, 3);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) central_moment (s1, 2), numer; /* a vari@^{a}ncia */
 (%o4)                   8.425899999999999
@@ -726,16 +726,16 @@ Veja tamb@'{e}m as funç@~{o}es @code{central_moment} e @code{mean}.
 O coeficiente de variaç@~{a}o @'{e} o quociente entre o desvio padr@~{a}o da amostra (@code{std}) e a m@'{e}dia @code{mean},
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c cv (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c cv (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) cv (s1), numer;
 (%o4)                   .6193977819764815
@@ -755,16 +755,16 @@ Veja tamb@'{e}m as funç@~{o}es @code{std} e @code{mean}.
 @'E o valor m@'{i}nimo da amostra @var{lista},
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c mini (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c mini (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) mini (s1);
 (%o4)                           0
@@ -783,16 +783,16 @@ Veja tamb@'{e}m funç@~{a}o @code{maxi}.
 @'{E} o valor m@'{a}ximo da amostra @var{lista},
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c maxi (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c maxi (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) maxi (s1);
 (%o4)                           9
@@ -813,16 +813,16 @@ A amplitude @'{e} a diferença entre os valores de maximo e de m@'{i}nimo.
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c range (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c range (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) range (s1);
 (%o4)                           9
@@ -842,16 +842,16 @@ Embora exista muitas definiç@~{o}es para quantil de uma amostra (Hyndman, R. J.
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c /* 1st and 3rd quartiles */ [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c quantile (s2, 1/4);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) /* 1st and 3rd quartiles */ [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
 (%o4)                      [2.0, 7.25]
@@ -870,16 +870,16 @@ Uma vez que a amostra est@'{a} ordenada, se o tamanho da amostra for @'{i}mpar a
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c median (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c median (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) median (s1);
                                 9
@@ -902,16 +902,16 @@ Veja tamb@'{e}m function @code{quantile}.
 A amplitude do interquartil @'{e} a diferença entre o terceiro e o primeiro quartil, @code{quantile(@var{lista},3/4) - quantile(@var{lista},1/4)},
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c qrange (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c qrange (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) qrange (s1);
                                21
@@ -960,16 +960,16 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c mean_deviation (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c mean_deviation (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) mean_deviation (s1);
                                51
@@ -1019,16 +1019,16 @@ onde @code{med} @'{e} a mediana da @var{lista}.
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c median_deviation (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c median_deviation (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) median_deviation (s1);
                                 5
@@ -1080,16 +1080,16 @@ $${{n}\over{\sum_{i=1}^{n}{{{1}\over{x_{i}}}}}}$$
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @c harmonic_mean (y), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c harmonic_mean (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 (%i4) harmonic_mean (y), numer;
 (%o4)                   3.901858027632205
@@ -1136,16 +1136,16 @@ $$\left(\prod_{i=1}^{n}{x_{i}}\right)^{{{1}\over{n}}}$$
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @c geometric_mean (y), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c geometric_mean (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 (%i4) geometric_mean (y), numer;
 (%o4)                   4.454845412337012
@@ -1192,16 +1192,16 @@ $${{1\over{n s^4}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^4}}-3}$$
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c kurtosis (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c kurtosis (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) kurtosis (s1), numer;
 (%o4)                  - 1.273247946514421
@@ -1248,16 +1248,16 @@ $${{1\over{n s^3}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}}$$
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c skewness (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) skewness (s1), numer;
 (%o4)                  .009196180476450306
@@ -1299,16 +1299,16 @@ onde @var{med} @'{e} a mediana de @var{lista}.
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c pearson_skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c pearson_skewness (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) pearson_skewness (s1), numer;
 (%o4)                   .2159484029093895
@@ -1353,16 +1353,16 @@ onde @math{c_p} @'{e} o quartil de ordem @var{p} da amostra @var{lista}.
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c quartile_skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c quartile_skewness (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) quartile_skewness (s1), numer;
 (%o4)                  .04761904761904762
@@ -1414,15 +1414,15 @@ onde @math{X_j} @'{e} a @math{j}-@'{e}sima linha da matriz de amostra.
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c fpprintprec : 7$  /* modifique a precis@~{a}o para uma sa@'{i}da melhor */
 @c cov (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) fpprintprec : 7$  /* modifique a precis@~{a}o para obter uma sa@'{i}da melhor */
 (%i5) cov (s2);
@@ -1474,15 +1474,15 @@ where @math{X_j} is the @math{j}-th row of the sample matrix.
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c fpprintprec : 7$ /* modifique a precis@~{a}o para obter uma sa@'{i}da melhor */
 @c cov1 (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) fpprintprec : 7$ /* modifique a precis@~{a}o para obter uma sa@'{i}da melhor */
 (%i5) cov1 (s2);
@@ -1525,14 +1525,14 @@ onde @var{p} @'{e} a dimens@~{a}o das v@'{a}rias vari@'{a}veis aleat@'{o}rias e 
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c global_variances (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) global_variances (s2);
 (%o4) [105.338342060606, 21.06766841212119, 12874.34690469686, 
@@ -1542,15 +1542,15 @@ Exemplo:
 A funç@~{a}o @code{global_variances} tem um argumento l@'{o}gico opcional: @code{global_variances(x,true)} diz ao Maxima que @code{x} @'{e} a matriz de dados, fazendo o mesmo que @code{global_variances(x)}. Por outro lado, @code{global_variances(x,false)} significa que @code{x} n@~{a}o @'{e} a matriz de dados, mas a matriz de covari@^{a}ncia, evitando a repetiç@~{a}o seu c@'{a}lculo,
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
 @c global_variances (s, false);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) s : cov1 (s2)$
 (%i5) global_variances (s, false);
@@ -1570,15 +1570,15 @@ A matriz de correlaç@~{a}o da maostra de v@'{a}rias vari@'{a}veis.
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c fpprintprec:7$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c cor (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) fpprintprec:7$
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 (%i5) cor (s2);
@@ -1596,16 +1596,16 @@ Exemplo:
 A funç@~{a}o @code{cor} tem um argumento l@'{o}gico opcional: @code{cor(x,true)} diz ao Maxima que @code{x} @'{e} a matriz de dados, fazendo o mesmo que @code{cor(x)}. Por outro lado, @code{cor(x,false)} significa que @code{x} n@~{a}o @'{e} a matriz de dados, mas a matriz de covari@^{a}ncia, evitando a repetiç@~{a}o de seu c@'{a}lculo,
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c fpprintprec:7$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
 @c cor (s, false); /* this is faster */
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) fpprintprec:7$
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 (%i5) s : cov1 (s2)$
@@ -1708,8 +1708,8 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 Exemplo:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c z : list_correlations (s2)$
 @c fpprintprec : 5$ /* for pretty output */
@@ -1718,8 +1718,8 @@ Exemplo:
 @c z[3];  /* matriz parcial de correlaç@~{a}o */
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) z : list_correlations (s2)$
 (%i5) fpprintprec : 5$ /* for pretty output */
@@ -1799,14 +1799,14 @@ A funç@~{a}o @code{dataplot} permite visualizaç@~{a}o direta de dados de amost
 Por exemplo, com a seguite entrada um gr@'{a}fico simples dos primeiros vinte d@'{i}gitos de @code{%pi} @'{e} requisitado e a sa@'{i}da @'{e} armazenada em um arquivo no formato eps.
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c dataplot (makelist (s1[k], k, 1, 20), 'pointstyle = 3)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) dataplot (makelist (s1[k], k, 1, 20), 'pointstyle = 3)$
 @end example
@@ -1814,16 +1814,16 @@ Por exemplo, com a seguite entrada um gr@'{a}fico simples dos primeiros vinte d@
 Note que dados unidimensionais s@~{a}o colocados no gr@'{a}fico como uma s@'{e}rie de tempo. No caso seguinte, ocorre a mesma coisa s@'{o} que com mais dados e com mais configuraç@~{o}es,
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c dataplot (makelist (s1[k], k, 1, 50), 'maintitle = "Primeiros d@'{i}gitos de pi",
 @c  'axisnames = ["ordem do d@'{i}gito", "valor do d@'{i}gito"], 'pointstyle = 2,
 @c  'joined = true)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) dataplot (makelist (s1[k], k, 1, 50), 'maintitle = "Primeiros d@'{i}gitos de pi",
  'axisnames = ["ordem do d@'{i}gito", "valor do d@'{i}gito"], 'pointstyle = 2,
@@ -1833,16 +1833,16 @@ Note que dados unidimensionais s@~{a}o colocados no gr@'{a}fico como uma s@'{e}r
 A funç@~{a}o @code{dataplot} pode ser usada para montar gr@'{a}ficos de pontos no plano. O exemplo seguinte @'{e} gr@'{a}fico de dispers@~{a}o de pares de pontos de velocidades de vento para o primeira e para o quinta estaç@~{a}o meteorol@'{o}gica,
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c dataplot (submatrix (s2, 2, 3, 4), 'pointstyle = 2,
 @c  'maintitle = "Pares de medidas de velocidade do vento em n@'{o}s",
 @c  'axisnames = ["Velocidade do vento em A", "Velocidade do vento em E"])$
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) dataplot (submatrix (s2, 2, 3, 4), 'pointstyle = 2,
  'maintitle = "Pares de medidas de velocidade do vento em n@'{o}s",
@@ -1852,13 +1852,13 @@ A funç@~{a}o @code{dataplot} pode ser usada para montar gr@'{a}ficos de pontos 
 Se pontos forem armazenados em uma matriz de duas colunas, @code{dataplot} pode montar o gr@'{a}fico desses pontos diretamente, mas se eles forem formatados em uma lista de pares, essa lista deve ser transformada em uma matriz como no seguinte exemplo.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c x : [[-1, 2], [5, 7], [5, -3], [-6, -9], [-4, 6]]$
 @c dataplot (apply ('matrix, x), 'maintitle = "Pontos",
 @c  'joined = true, 'axisnames = ["", ""], 'picturescales = [0.5, 1.0])$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) x : [[-1, 2], [5, 7], [5, -3], [-6, -9], [-4, 6]]$
 (%i3) dataplot (apply ('matrix, x), 'maintitle = "Pontos",
  'joined = true, 'axisnames = ["", ""], 'picturescales = [0.5, 1.0])$
@@ -1867,8 +1867,8 @@ Se pontos forem armazenados em uma matriz de duas colunas, @code{dataplot} pode 
 Pontos no espaço tridimensional podem ser vistos como uma projeç@~{a}o no plano. Nesse exemplo, o gr@'{a}fico de velocidades do vento correspondendo a tr@^{e}s estaç@~oes meteorol@'{o}gicas s@~{a}o requisitados, primeiramente em um gr@'{a}fico em 3D e a seguir em um gr@'{a}fico de dispers@@~ao de v@'{a}rias vari@'{a}veis.
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c /* Gr@'{a}fico em 3Dt */ dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
 @c  'maintitle = "Pares de medidas de velocidades do vento em n@'{o}s",
@@ -1877,8 +1877,8 @@ Pontos no espaço tridimensional podem ser vistos como uma projeç@~{a}o no plan
 @c  'nclasses = 6, 'threedim = false)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) /* 3D plot */ dataplot (submatrix (s2, 4, 5), 'pointstyle = 2,
  'maintitle = "Pares de medidas de velocidades do vento em n@'{o}s",
@@ -1891,14 +1891,14 @@ Note que no @'{u}ltimo exemplo, o n@'{u}mero de classes no histogramas da diagon
 Para mais que tr@^{e}s dimens@~{o}es somente gr@'{a}ficos de dispers@~{a}o de v@'{a}rias vari@'{a}veis s@~{a}o poss@'{i}vel, como em
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c dataplot (s2)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) dataplot (s2)$
 @end example
@@ -1943,8 +1943,8 @@ Essa funç@~{a}o monta um gr@'{a}fico de um histograma. Dados de amostras devem 
 Nos pr@'{o}ximos dois exemplos, histogramas s@~{a}o requisitados para os primeiros 100 d@'{i}gitos do n@'{u}mero @code{%pi} e para velocidades do vento na terceira estaç@~{a}o meteorol@'{o}gica.
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c histogram (s1, 'maintitle = "d@'{i}gitos de pi", 'axisnames = ["", "Freq@"{u}@^{e}ncia absoluta"],
 @c  'relbarwidth = 0.2, 'barcolor = 3, 'colorintensity = 0.6)$
@@ -1952,8 +1952,8 @@ Nos pr@'{o}ximos dois exemplos, histogramas s@~{a}o requisitados para os primeir
 @c histogram (col (s2, 3), 'colorintensity = 0.3)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) histogram (s1, 'maintitle = "d@'{i}gitos de pi", 'axisnames = ["", "Freq@"{u}@^{e}ncia absoluta"],
  'relbarwidth = 0.2, 'barcolor = 3, 'colorintensity = 0.6)$
@@ -2002,15 +2002,15 @@ Similar a @code{histogram} mas para vari@'{a}veis estat@'{i}sticas, num@'{e}rica
 Esse exemplo monta um gr@'{a}fico de barras para os grupos @code{A} e @code{B} de pacientes na amostra @code{s3},
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c barsplot (col (s3, 1), 'maintitle = "Grupos de pacientes",
 @c  'axisnames = ["Grupo", "# de indiv@'{i}duos"], 'colorintensity = 0.2)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
 (%i4) barsplot (col (s3, 1), 'maintitle = "Grupos de pacientes",
  'axisnames = ["Grupo", "# de indiv@'{i}duos"], 'colorintensity = 0.2)$
@@ -2018,16 +2018,16 @@ Esse exemplo monta um gr@'{a}fico de barras para os grupos @code{A} e @code{B} d
 A primeira coluna na amostra @code{s3} armazena os valores das categorias @code{A} e @code{B}, tamb@'{e}m conhecidos algumas vezes como fatores. Por outro lado, os n@'{u}meros inteiros positivos na segunda coluna s@`ao idades, em anos, que se comportam como vari@'{a}vel discreta, ent@~{a}o podemos montar um gr@'{a}fico as freq@"{u}@^{e}ncias absolutas para esses valores,
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c barsplot (col (s3, 2), 'maintitle = "Idades",
 @c  'axisnames = ["Anos", "# dos indiv@'{i}duos"], 'colorintensity = 0.2,
 @c  'relbarwidth = 0.6)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
 (%i4) barsplot (col (s3, 2), 'maintitle = "Idades",
  'axisnames = ["Anos", "# dos indiv@'{i}duos"], 'colorintensity = 0.2,
@@ -2063,8 +2063,8 @@ Essa funç@~{a}o monta diagramas em caixas. O argumento @var{data} pode ser uma 
 Examples:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c boxplot (s2, 'maintitle = "Velocidade do vento em n@'{o}s",
 @c  'axisnames = ["Estaç@~{a}o do ano", ""])$
@@ -2075,8 +2075,8 @@ Examples:
 @c boxplot (A)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) boxplot (s2, 'maintitle = "Velocidade do vento em n@'{o}s",
  'axisnames = ["Estaç@~{a}o do ano", ""])$

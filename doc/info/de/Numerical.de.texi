@@ -59,10 +59,10 @@ Die Werte der originalen Arrays werden durch den Realteil @code{a = r cos(t)}
 und den Imagin@"arteil @code{b = r sin(t)} ersetzt.
 
 @c @code{polartorect} is the inverse function of @code{recttopolar}.
-@c @code{load(fft)} loads this function.  See also @code{fft}.
+@c @code{load("fft")} loads this function.  See also @code{fft}.
 
 @code{polartorect} ist die inverse Funktion zu @mrefdot{recttopolar}
-Das Kommando @code{load(fft)} l@"adt die Funktion.
+Das Kommando @code{load("fft")} l@"adt die Funktion.
 @end deffn
 
 @c --- 28.05.2011 DK -----------------------------------------------------------
@@ -92,10 +92,10 @@ Die Werte der originalen Arrays werden durch den Betrag
 Phase ist ein Winkel in dem Bereich @code{-%pi} bis @code{%pi}.
 
 @c @code{recttopolar} is the inverse function of @code{polartorect}.
-@c @code{load(fft)} loads this function.  See also @code{fft}.
+@c @code{load("fft")} loads this function.  See also @code{fft}.
 
 @code{recttoploar} ist die inverse Funktion zu @mrefdot{polartorect}
-Das Kommando @code{load(fft)} l@"adt die Funktion.
+Das Kommando @code{load("fft")} l@"adt die Funktion.
 @end deffn
 
 @c --- 28.05.2011 DK -----------------------------------------------------------
@@ -145,11 +145,11 @@ x[j] = sum(y[k] exp(2 %i %pi j k / n), k, 0, n - 1)
 $$x_{j}=\sum_{k=0}^{n-1}{y_{k}\,e^{{{2\,i\,\pi\,j\,k}\over{n}}}}$$
 @end tex
 
-@c @code{load(fft)} loads this function.
+@c @code{load("fft")} loads this function.
 @c See also @code{fft} (forward transform), @code{recttopolar}, and 
 @c @code{polartorect}.
 
-Mit dem Kommando @code{load(fft)} wird die Funktion geladen.  Siehe auch 
+Mit dem Kommando @code{load("fft")} wird die Funktion geladen.  Siehe auch 
 @mref{fft} f@"ur die schnelle Fourier-Transformation.
 
 Beispiele:
@@ -159,7 +159,7 @@ Beispiele:
 Reelle Daten.
 
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 2, 3, 4, -1, -2, -3, -4] $
 (%i4) L1 : inverse_fft (L);
@@ -178,7 +178,7 @@ Reelle Daten.
 Komplexe Daten.
 
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $                 
 (%i3) L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
 (%i4) L1 : inverse_fft (L);
@@ -301,11 +301,11 @@ $$a_{{{n}\over{2}}}={\it realpart}\left(y_{{{n}\over{2}}}\right)$$
 $$b_{{{n}\over{2}}}=0$$
 @end tex
 
-@c @code{load(fft)} loads this function.
+@c @code{load("fft")} loads this function.
 @c See also @code{inverse_fft} (inverse transform), @code{recttopolar}, and 
 @c @code{polartorect}.
 
-Das Kommando @code{load(fft)} l@"adt die Funktion.
+Das Kommando @code{load("fft")} l@"adt die Funktion.
 Siehe auch @mref{inverse_fft} f@"ur die inverse schnelle Fourier-Transformation.
 
 Beispiele:
@@ -313,7 +313,7 @@ Beispiele:
 Reelle Daten.
 
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 2, 3, 4, -1, -2, -3, -4] $
 (%i4) L1 : fft (L);
@@ -330,7 +330,7 @@ Reelle Daten.
 Komplexe Daten.
 
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
 (%i4) L1 : fft (L);
@@ -352,7 +352,7 @@ Komplexe Daten.
 Berechnung der Sinus- und Kosinus-Koeffizienten.
 
 @example
-(%i1) load (fft) $
+(%i1) load ("fft") $
 (%i2) fpprintprec : 4 $
 (%i3) L : [1, 2, 3, 4, 5, 6, 7, 8] $
 (%i4) n : length (L) $
@@ -709,7 +709,7 @@ Koeffizienten der Kosinus- und Sinus-Entwicklung berechnet.
 Beispiel:
 
 @example
-(%i1) load(fourie)$
+(%i1) load("fourie")$
 
 (%i2) fourier(x, x, 1);
 (%t2)                        a  = 0
@@ -838,7 +838,7 @@ Ergebnis der Funktion @mref{fourier} angewendet werden.
 Beispiel:
 
 @example
-(%i1) load(fourie)$
+(%i1) load("fourie")$
 
 (%i2) totalfourier(x, x, 1);
 (%t2)                        a  = 0

@@ -1868,7 +1868,7 @@ Empirical distribution function.
 @c load ("descriptive")$
 @c F(x):= ''(cdf_empirical([1,3,3,5,7,7,7,8,9]));
 @c F(6);
-@c load(draw)$
+@c load("draw")$
 @c draw2d(
 @c    line_width = 3,
 @c    grid       = true,
@@ -1888,7 +1888,7 @@ Empirical distribution function.
 (%o3)                      -
                            9
 @end group
-(%i4) load(draw)$
+(%i4) load("draw")$
 (%i5) draw2d(
         line_width = 3,
         grid       = true,
@@ -3302,7 +3302,7 @@ Example:
 
 @example
 (%i1) load ("descriptive")$
-(%i2) load(distrib)$
+(%i2) load("distrib")$
 @group
 (%i3) stemplot(
         random_normal(15, 6, 100),

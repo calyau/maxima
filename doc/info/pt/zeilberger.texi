@@ -16,7 +16,7 @@ indefinidos.
 
 @code{zeilberger} foi desenvolvido por Fabrizio Caruso.
 
-@code{load (zeilberger)} torna esse pacote disponível para uso.
+@code{load ("zeilberger")} torna esse pacote disponível para uso.
 
 @subsection O problema dos somatórios hipergeométricos indefinidos
 
@@ -90,7 +90,7 @@ De outra forma, @code{GosperSum} retorna @code{nongosper_summable}.
 Exemplos:
 
 @c ===beg===
-@c load (zeilberger);
+@c load ("zeilberger");
 @c GosperSum ((-1)^k*k / (4*k^2 - 1), k, 1, n);
 @c GosperSum (1 / (4*k^2 - 1), k, 1, n);
 @c GosperSum (x^k, k, 1, n);
@@ -100,7 +100,7 @@ Exemplos:
 @c GosperSum (1 / ((a - k)!*k!), k, 1, n);
 @c ===end===
 @example
-(%i1) load (zeilberger);
+(%i1) load ("zeilberger");
 (%o1)  /usr/share/maxima/share/contrib/Zeilberger/zeilberger.mac
 (%i2) GosperSum ((-1)^k*k / (4*k^2 - 1), k, 1, n);
 

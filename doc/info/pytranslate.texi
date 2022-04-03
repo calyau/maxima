@@ -9,19 +9,19 @@
 
 @code{pytranslate} package provides Maxima to Python translation functionality. The package is experimental, and the specifications of the functions in this package might change. It was written as a Google Summer of Code project by Lakshya A Agrawal (Undergraduate Student, IIIT-Delhi) in 2019. A detailed project report is available as a @url{https://gist.github.com/LakshyAAAgrawal/33eee2d33c4788764087eef1fa67269e, GitHub Gist}.@*
 
-The package needs to be loaded in a Maxima instance for use, by executing @code{load(pytranslate);}@*
+The package needs to be loaded in a Maxima instance for use, by executing @code{load("pytranslate");}@*
 The statements are converted to python3 syntax. The file pytranslate.py must be imported for all translations to run, as shown in example.
 
 Example:
 @c ===beg===
-@c load (pytranslate)$
+@c load ("pytranslate")$
 @c /* Define an example function to calculate factorial */
 @c pytranslate(my_factorial(x) := if (x = 1 or x = 0) then 1
 @c                  else x * my_factorial(x - 1));
 @c my_factorial(5);
 @c ===end===
 @example
-(%i1) load (pytranslate)$
+(%i1) load ("pytranslate")$
 @group
 /* Define an example function to calculate factorial */
 (%i2) pytranslate(my_factorial(x) := if (x = 1 or x = 0) then 1
@@ -80,11 +80,11 @@ Translates the expression @var{expr} to equivalent python3 statements. Output is
 
 Example:
 @c ===beg===
-@c load (pytranslate)$
+@c load ("pytranslate")$
 @c pytranslate('(for i:8 step -1 unless i<3 do (print(i))));
 @c ===end===
 @example
-(%i1) load (pytranslate)$
+(%i1) load ("pytranslate")$
 @group
 (%i2) pytranslate('(for i:8 step -1 unless i<3 do (print(i))));
 (%o2) 
@@ -98,12 +98,12 @@ del v["i"]
 
 @var{expr} is evaluated, and the return value is used for translation. Hence, for statements like assignment, it might be useful to quote the statement:
 @c ===beg===
-@c load (pytranslate)$
+@c load ("pytranslate")$
 @c pytranslate(x:20);
 @c pytranslate('(x:20));
 @c ===end===
 @example
-(%i1) load (pytranslate)$
+(%i1) load ("pytranslate")$
 @group
 (%i2) pytranslate(x:20);
 (%o2) 
@@ -119,13 +119,13 @@ v["x"] = 20
 Passing the optional parameter (@var{print-ir}) to @code{pytranslate} as t, will print the internal IR representation of @code{expr} and return the translated python3 code.
 
 @c ===beg===
-@c load(pytranslate);
+@c load("pytranslate");
 @c pytranslate('(plot3d(lambda([x, y], x^2+y^(-1)), [x, 1, 10],
 @c                    [y, 1, 10])), t);
 @c ===end===
 @example
 @group
-(%i1) load(pytranslate);
+(%i1) load("pytranslate");
 (%o1) pytranslate
 @end group
 @group

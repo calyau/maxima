@@ -55,7 +55,7 @@ Maximaレベルで使われる３つの主な関数があります:
 
 @code{draw}と@code{draw2d}も参照してください。
 
-このオブジェクトを利用するには、最初に@code{load(draw)}を書いてください。
+このオブジェクトを利用するには、最初に@code{load("draw")}を書いてください。
 
 @opencatbox
 @category{Package draw}
@@ -84,7 +84,7 @@ Maximaレベルで使われる３つの主な関数があります:
 
 @code{draw}と@code{draw3d}も参照してください。
 
-このオブジェクトを利用するには、最初に@code{load(draw)}を書いてください。
+このオブジェクトを利用するには、最初に@code{load("draw")}を書いてください。
 
 @opencatbox
 @category{Package draw}
@@ -114,12 +114,12 @@ Maximaレベルで使われる３つの主な関数があります:
 
 @code{gr2d}と@code{gr3d}も参照してください。
 
-この関数を利用するには、最初に@code{load(draw)}を書いてください。
+この関数を利用するには、最初に@code{load("draw")}を書いてください。
 
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) scene1: gr2d(title="Ellipse",
                    nticks=30,
                    parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
@@ -130,7 +130,7 @@ Maximaレベルで使われる３つの主な関数があります:
 
 2つの描画文は同値です:
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)));
 (%o2)                          [gr3d(explicit)]
 (%i3) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1));
@@ -139,7 +139,7 @@ Maximaレベルで使われる３つの主な関数があります:
 
 アニメーティドgifファイル:
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(
         delay     = 100,
         file_name = "zzz",
@@ -170,7 +170,7 @@ End of animation sequence
 
 2dで唯一のシーンをプロットするのに使うことができます。
 
-この関数を利用するには、最初に@code{load(draw)}を書いてください。
+この関数を利用するには、最初に@code{load("draw")}を書いてください。
 
 @code{draw}と@code{gr2d}も参照してください。
 
@@ -190,7 +190,7 @@ End of animation sequence
 
 3dでユニークなシーンをプロットするのに使うことができます。
 
-この関数を利用するには、最初に@code{load(draw)}を書いてください。
+この関数を利用するには、最初に@code{load("draw")}を書いてください。
 
 @code{draw}と@code{gr3d}も参照してください。
 
@@ -211,7 +211,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) /* screen plot */
       draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)))$
 (%i3) /* same plot in eps format */
@@ -248,7 +248,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) set_draw_defaults(
          xrange = [-1,1],
          yrange = [-1,1],
@@ -280,7 +280,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) set_draw_defaults(
          xrange = [-10,10],
          yrange = [-2, 2],
@@ -294,7 +294,7 @@ End of animation sequence
 @end example
 
 この関数を利用するには、
-最初に@code{load(draw)}を書いてください。
+最初に@code{load("draw")}を書いてください。
 
 @opencatbox
 @category{Package draw}
@@ -333,7 +333,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(axis_3d = false,
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
@@ -362,7 +362,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(axis_bottom = false,
              explicit(x^3,x,-1,1))$
 @end example
@@ -389,7 +389,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(axis_left = false,
              explicit(x^3,x,-1,1))$
 @end example
@@ -416,7 +416,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(axis_right = false,
              explicit(x^3,x,-1,1))$
 @end example
@@ -444,7 +444,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(axis_top = false,
              explicit(x^3,x,-1,1))$
 @end example
@@ -489,7 +489,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(color       = brown,
              line_width  = 8,
              polygon([[3,2],[7,2],[5,5]]),
@@ -527,7 +527,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d (
         enhanced3d     = true,
         color          = green,
@@ -559,7 +559,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d (
         enhanced3d = true,
         color      = green,
@@ -613,7 +613,7 @@ dark_violet      plum             purple
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^2,x,-1,1), /* default is black */
              color = "red",
              explicit(0.5 + x^2,x,-1,1),
@@ -649,7 +649,7 @@ dark_violet      plum             purple
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: apply('matrix,
                  makelist(makelist(random(200),i,1,30),i,1,30))$
 (%i3) draw2d(image(im,0,0,30,30))$
@@ -676,7 +676,7 @@ dark_violet      plum             purple
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) scene1: gr2d(title="Ellipse",
                    nticks=30,
                    parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
@@ -728,7 +728,7 @@ dark_violet      plum             purple
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
              contour_levels = 15,
              contour        = both,
@@ -778,7 +778,7 @@ dark_violet      plum             purple
 10の等しく間隔の空けられた等高線。
 レベルの実際の数は簡単なラベルを与えるために調整することができます。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(color = green,
              explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
              contour_levels = 10,
@@ -789,7 +789,7 @@ dark_violet      plum             purple
 
 -8から8まで4つのステップで。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(color = green,
              explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
              contour_levels = [-8,4,8],
@@ -799,7 +799,7 @@ dark_violet      plum             purple
 
 レベル-7, -6, 0.8, 5での等値線。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(color = green,
              Explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
              Contour_levels = @{-7, -6, 0.8, 5@},
@@ -848,7 +848,7 @@ dark_violet      plum             purple
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(
         delay     = 100,
         file_name = "zzz",
@@ -897,7 +897,7 @@ End of animation sequence
 ファイル出力とwxtキャンバスに適用されたオプション@code{dimensions}。
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         dimensions = [300,300],
         terminal   = 'png,
@@ -912,7 +912,7 @@ eps出力に適用されたオプション@code{dimensions}。
 A4縦寸法のepsファイルが欲しいです。
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) A4portrait: 100*[21, 29.7]$
 (%i3) draw3d(
         dimensions = A4portrait,
@@ -944,7 +944,7 @@ Gnuplotのpm3dモードを設定して表面が色付けられます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
          surface_hide = true,
          enhanced3d   = true,
@@ -996,7 +996,7 @@ Gnuplotのpm3dモードを設定して表面が色付けられます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(file_name = "myfile",
              explicit(x^2,x,-1,1),
              terminal  = 'png)$
@@ -1053,7 +1053,7 @@ Gnuplotのpm3dモードを設定して表面が色付けられます。
 
 @code{explicit}オブジェクトとグラフィックウィンドウによって閉ざされた領域。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(fill_color  = red,
              filled_func = true,
              explicit(sin(x),x,0,10) )$
@@ -1064,7 +1064,7 @@ Gnuplotのpm3dモードを設定して表面が色付けられます。
 @code{filled_func}の中の変数は must be the same as that used in 
 @code{explicit}の中で使われるものと同じでなければいけないことに注意してください。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(fill_color  = grey,
              filled_func = sin(x),
              explicit(-sin(x),x,0,%pi));
@@ -1102,7 +1102,7 @@ Gnuplotはそれ自身フォントを扱いません。
 
 例:
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(font      = "Arial", 
              font_size = 20,
              label(["Arial font, size 20",1,1]))$
@@ -1124,7 +1124,7 @@ Windows端末はプロット内部でフォントの変更をサポートしま�
 
 オプション@code{font}はフォントファイルへの完全なパスを与えることができます:
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) path: "/usr/share/fonts/truetype/freefont/" $
 (%i3) file: "FreeSerifBoldItalic.ttf" $
 (%i4) draw2d(
@@ -1139,7 +1139,7 @@ Windows端末はプロット内部でフォントの変更をサポートしま�
 フォントファイルが配置されているパスに設定されているなら、
 set グラフィックオプション@code{font}をフォント名に設定することが可能です。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         font      = "FreeSerifBoldItalic", 
         font_size = 20,
@@ -1160,7 +1160,7 @@ set グラフィックオプション@code{font}をフォント名に設定す�
   
 例:
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         font      = "Courier-Oblique", 
         font_size = 15,
@@ -1231,7 +1231,7 @@ Gnuplotで処理される必要なコマンドを含む
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
        file_name = "my_file",
        gnuplot_file_name = "my_commands_for_gnuplot",
@@ -1260,7 +1260,7 @@ Gnuplotで処理される必要なコマンドを含む
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(grid = true,
              explicit(exp(u),u,-2,2))$
 @end example
@@ -1281,7 +1281,7 @@ Gnuplotで処理される必要なコマンドを含む
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,10],
              yrange      = [0,9],
              head_length = 0.7,
@@ -1326,7 +1326,7 @@ Gnuplotで処理される必要なコマンドを含む
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,8],
              yrange      = [0,8],
              head_length = 0.7,
@@ -1355,7 +1355,7 @@ See also @code{head_length}, @code{head_angle}, and @code{head_type}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,12],
              yrange      = [0,8],
              vector([0,1],[5,5]),
@@ -1392,7 +1392,7 @@ See also @code{head_length}, @code{head_angle}, and @code{head_type}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,12],
              yrange      = [0,10],
              head_length = 1,
@@ -1461,7 +1461,7 @@ See also @code{head_length}, @code{head_angle}, and @code{head_type}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(key   = "Sinus",
              explicit(sin(x),x,0,10),
              key   = "Cosinus",
@@ -1488,7 +1488,7 @@ See also @code{head_length}, @code{head_angle}, and @code{head_type}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange          = [0,10],
              yrange          = [0,10],
              points_joined   = true,
@@ -1524,7 +1524,7 @@ See also @code{head_length}, @code{head_angle}, and @code{head_type}.
 この例では、ダミーの点がイメージを得るために加えられます。
 パッケージ@code{draw}はいつもシーンを描くのにデータを必要とします。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange     = [0,10],
              yrange     = [0,10],
              point_size = 0,
@@ -1564,7 +1564,7 @@ See also @code{head_length}, @code{head_angle}, and @code{head_type}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(line_type = dots,
              explicit(1 + x^2,x,-1,1),
              line_type = solid, /* default */
@@ -1599,7 +1599,7 @@ See also @code{line_width}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^2,x,-1,1), /* default width */
              line_width = 5.5,
              explicit(1 + x^2,x,-1,1),
@@ -1630,7 +1630,7 @@ See also @code{line_width}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d (
         enhanced3d = true,
         color      = green,
@@ -1660,7 +1660,7 @@ See also @code{line_width}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(log(x),x,0.01,5),
              logx = true)$
 @end example
@@ -1687,7 +1687,7 @@ See also @code{line_width}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(logy = true,
              explicit(exp(x),x,0,5))$
 @end example
@@ -1714,7 +1714,7 @@ See also @code{line_width}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(logz = true,
              explicit(exp(u^2+v^2),u,-2,2,v,-2,2))$
 @end example
@@ -1747,7 +1747,7 @@ See also @code{line_width}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(transparent = true,
              ellipse(0,0,4,2,0,180),
              nticks = 5,
@@ -1809,7 +1809,7 @@ See also @code{line_width}.
 3Dオブジェクトでのオプション@code{enhanced3d}と一緒に機能します。
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         enhanced3d = [z-x+2*y,x,y,z],
         palette = [32, -8, 17],
@@ -1819,7 +1819,7 @@ See also @code{line_width}.
 グレイイメージとも一緒に機能します。
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: apply(
            'matrix,
             makelist(makelist(random(200),i,1,30),i,1,30))$
@@ -1835,7 +1835,7 @@ See also @code{line_width}.
 @code{x}の低いレベルは赤に割り当てられ、高いレベルは黄色に割り当てられています。
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
          palette = [red, blue, yellow],
          enhanced3d = x,
@@ -1872,7 +1872,7 @@ See also @code{line_width}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(points(makelist([random(20),random(50)],k,1,10)),
         point_size = 5,
         points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
@@ -1906,7 +1906,7 @@ See also @code{line_width}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange = [0,10],
              yrange = [0,10],
              point_size = 3,
@@ -1958,7 +1958,7 @@ See also @code{line_width}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange        = [0,10],
              yrange        = [0,4],
              point_size    = 3,
@@ -1999,7 +1999,7 @@ See also @code{line_width}.
 単プロット。
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         ellipse(0,0,1,1,0,360),
         transparent=true,
@@ -2012,7 +2012,7 @@ See also @code{line_width}.
 多重プロット。
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(
         terminal = wxt,
         gr2d(proportional_axes = xy,
@@ -2043,7 +2043,7 @@ See also @code{line_width}.
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(columns=2,
            gr3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)),
            gr3d(surface_hide = true,
@@ -2084,7 +2084,7 @@ pdfライブラリは以下で利用可能です: @url{http://www.pdflib.com/en/
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) /* screen terminal (default) */
       draw2d(explicit(x^2,x,-1,1))$
 (%i3) /* png file */
@@ -2110,14 +2110,14 @@ pdfライブラリは以下で利用可能です: @url{http://www.pdflib.com/en/
 
 複数のウィンドウ。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^5,x,-2,2), terminal=[screen, 3])$
 (%i3) draw2d(explicit(x^2,x,-2,2), terminal=[screen, 0])$
 @end example
 
 動画gifファイル。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(
         delay     = 100,
         file_name = "zzz",
@@ -2153,7 +2153,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(exp(u),u,-2,2),
              title = "Exponential function")$
 @end example
@@ -2182,7 +2182,7 @@ End of animation sequence
 2Dの回転。
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) th : %pi / 4$
 (%i3) draw2d(
         color = "#e245f0",
@@ -2199,7 +2199,7 @@ End of animation sequence
 3Dでの変形。
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         color     = "#a02c00",
         explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
@@ -2228,7 +2228,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(polygon([[3,2],[7,2],[5,5]]),
              transparent = true,
              color       = blue,
@@ -2252,7 +2252,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         tube_extremes = [open, closed],
         tube(0, 0, a, 1,
@@ -2280,7 +2280,7 @@ End of animation sequence
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [-1,6],
              yrange      = [-1,6],
              head_length = 0.1,
@@ -2315,7 +2315,7 @@ Gnuplotの振る舞いを微調整することができます。
 @i{ダム}端末は、パッケージ@code{draw}でサポートされていませんが、
 オプション@code{user_preamble}の利用によって、それを設定することが可能です。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(exp(x)-1,x,-1,1),
              parametric(cos(u),sin(u),u,0,2*%pi),
              user_preamble="set terminal dumb")$
@@ -2341,7 +2341,7 @@ Gnuplotの振る舞いを微調整することができます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(view = [170, 360],
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
@@ -2381,7 +2381,7 @@ x方向のボクセルの数です。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              xaxis       = true,
              xaxis_color = blue)$
@@ -2408,7 +2408,7 @@ x方向のボクセルの数です。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              xaxis       = true,
              xaxis_color = red)$
@@ -2436,7 +2436,7 @@ x方向のボクセルの数です。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
          key   = "Bottom x-axis",
          explicit(x+1,x,1,2),
@@ -2469,7 +2469,7 @@ x方向のボクセルの数です。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              xaxis       = true,
              xaxis_type  = solid)$
@@ -2498,7 +2498,7 @@ x方向のボクセルの数です。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              xaxis       = true,
              xaxis_width = 3)$
@@ -2527,7 +2527,7 @@ x方向のボクセルの数です。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xlabel = "Time",
              explicit(exp(u),u,-2,2),
              ylabel = "Population")$
@@ -2557,7 +2557,7 @@ x方向のボクセルの数です。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange = [-3,5],
              explicit(x^2,x,-1,1))$
 @end example
@@ -2638,14 +2638,14 @@ x方向のボクセルの数です。
 
 チックをディセーブルします。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xtics = 'none,
              explicit(x^3,x,-1,1)  )$
 @end example
 
 1/4単位毎のチック。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xtics = 1/4,
              explicit(x^3,x,-1,1)  )$
 @end example
@@ -2653,21 +2653,21 @@ x方向のボクセルの数です。
 -3/4から3/4まで
 1/8のステップでチック。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xtics = [-3/4,1/8,3/4],
              explicit(x^3,x,-1,1)  )$
 @end example
 
 点-1/2, -1/4, 3/4にチック。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xtics = @{-1/2,-1/4,3/4@},
              explicit(x^3,x,-1,1)  )$
 @end example
 
 ラベルされたチック。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xtics = @{["High",0.75],["Medium",0],["Low",-0.75]@},
              explicit(x^3,x,-1,1)  )$
 @end example
@@ -2778,7 +2778,7 @@ x方向のボクセルの数です。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(xu_grid = 10,
              yv_grid = 50,
              explicit(x^2+y^2,x,-3,3,y,-3,3) )$
@@ -2826,7 +2826,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(xyplane = %e-2,
              explicit(x^2+y^2,x,-1,1,y,-1,1))$
 @end example
@@ -2863,7 +2863,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              yaxis       = true,
              yaxis_color = blue)$
@@ -2890,7 +2890,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              yaxis       = true,
              yaxis_color = red)$
@@ -2919,7 +2919,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
          explicit(sin(x),x,0,10),
          yaxis_secondary = true,
@@ -2949,7 +2949,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              yaxis       = true,
              yaxis_type  = solid)$
@@ -2978,7 +2978,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^3,x,-1,1),
              yaxis       = true,
              yaxis_width = 3)$
@@ -3008,7 +3008,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xlabel = "Time",
              ylabel = "Population",
              explicit(exp(u),u,-2,2) )$
@@ -3037,7 +3037,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(yrange = [-2,3],
              explicit(x^2,x,-1,1),
              xrange = [-3,3])$
@@ -3068,7 +3068,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
          explicit(sin(x),x,0,10),
          yaxis_secondary = true,
@@ -3193,7 +3193,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(xu_grid = 10,
              yv_grid = 50,
              explicit(x^2+y^2,x,-3,3,y,-3,3) )$
@@ -3234,7 +3234,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
              zaxis       = true,
              zaxis_type  = solid,
@@ -3263,7 +3263,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
              zaxis       = true,
              zaxis_type  = solid,
@@ -3294,7 +3294,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
              zaxis       = true,
              zaxis_type  = solid)$
@@ -3323,7 +3323,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
              zaxis       = true,
              zaxis_type  = solid,
@@ -3353,7 +3353,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(zlabel = "Z variable",
              ylabel = "Y variable",
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2),
@@ -3386,7 +3386,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(yrange = [-3,3],
              zrange = [-2,5],
              explicit(x^2+y^2,x,-1,1,y,-1,1),
@@ -3469,7 +3469,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
        key          = "Group A",
        fill_color   = blue,
@@ -3503,7 +3503,7 @@ xy平面は自動的に置かれます;
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(cylindrical(1,z,-2,2,az,0,2*%pi))$
 @end example
 
@@ -3533,7 +3533,7 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) m: apply(
             matrix,
             makelist(makelist(random(10.0),k,1,30),i,1,20)) $
@@ -3571,7 +3571,7 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(transparent = false,
              fill_color  = red,
              color       = gray30,
@@ -3623,7 +3623,7 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 水平エラーバー。
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         error_type = y,
         errors([[1,2,1], [3,5,3], [10,3,1], [17,6,2]]))$
@@ -3632,7 +3632,7 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 垂直および水平エラーバー。
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         error_type = xy,
         points_joined = true,
@@ -3666,7 +3666,7 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(line_width = 3,
              color      = blue,
              explicit(x^2,x,-3,3) )$
@@ -3689,7 +3689,7 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(key   = "Gauss",
              color = "#a02c00",
              explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
@@ -3755,7 +3755,7 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 もし@var{im}が実数の行列なら、ピクセル値は
 グラフィックオプション@code{palette}に従って解釈されます。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: apply(
            'matrix,
             makelist(makelist(random(200),i,1,30),i,1,30))$
@@ -3772,7 +3772,7 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 もし@var{im}が長さ3のベクトルの行列なら、
 それらは赤、緑、青の色成分として解釈されます。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: apply(
             'matrix,
              makelist(
@@ -3785,7 +3785,7 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 パッケージ@code{draw}は自動的にパッケージ@code{picture}をロードします。
 この例では、レベルピクチャオブジェクトは手動で組み立てられ、描画されます。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: make_level_picture([45,87,2,134,204,16],3,2);
 (%o2)       picture(level, 3, 2, @{Array:  #(45 87 2 134 204 16)@})
 (%i3) /* default color palette */
@@ -3797,7 +3797,7 @@ Maximaの古いバージョンでは、@code{elevation_grid}は@code{mesh}と呼
 
 xpmファイルが読み込まれ、描写されます。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: read_xpm("myfile.xpm")$
 (%i3) draw2d(image(im,0,0,10,7))$
 @end example
@@ -3832,7 +3832,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(terminal  = eps,
              grid      = true,
              line_type = solid,
@@ -3860,7 +3860,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         color=blue,
         implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
@@ -3894,7 +3894,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(yrange = [0.1,1.4],
              color = "red",
              label(["Label in red",0,0.3]),
@@ -3913,7 +3913,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
              color = red,
              label(["UP 1",-2,0,3], ["UP 2",1.5,0,4]),
@@ -3943,7 +3943,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) m: apply(
             matrix,
             makelist(makelist(random(10.0),k,1,30),i,1,20)) $
@@ -3979,7 +3979,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(exp(x),x,-1,3),
              color = red,
              key   = "This is the parametric one!!",
@@ -3997,7 +3997,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
              color = royalblue,
              parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
@@ -4036,7 +4036,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(title          = "Sea shell",
              xu_grid        = 100,
              yv_grid        = 25,
@@ -4100,7 +4100,7 @@ xpmファイルが読み込まれ、描写されます。
 
 @code{points}への2種類の引数、ペアのリストと分離した座標の2つのリスト。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         key = "Small points",
         points(makelist([random(20),random(50)],k,1,10)),
@@ -4117,7 +4117,7 @@ xpmファイルが読み込まれ、描写されます。
 
 衝撃を描画。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         points_joined = impulses,
         line_width    = 2,
@@ -4127,7 +4127,7 @@ xpmファイルが読み込まれ、描写されます。
 
 座標の配列。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) a: make_array (flonum, 100) $
 (%i3) for i:0 thru 99 do a[i]: random(1.0) $
 (%i4) draw2d(points(a)) $
@@ -4135,7 +4135,7 @@ xpmファイルが読み込まれ、描写されます。
 
 分離した座標の2つの配列。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) x: make_array (flonum, 100) $
 (%i3) y: make_array (fixnum, 100) $
 (%i4) for i:0 thru 99 do (
@@ -4146,7 +4146,7 @@ xpmファイルが読み込まれ、描写されます。
 
 2列2D配列。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) xy: make_array(flonum, 100, 2) $
 (%i3) for i:0 thru 99 do (
         xy[i, 0]: float(i/100),
@@ -4156,7 +4156,7 @@ xpmファイルが読み込まれ、描写されます。
 
 関数@code{read_array}で埋められた配列の描画。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) a: make_array(flonum,100) $
 (%i3) read_array (file_search ("pidigits.data"), a) $
 (%i4) draw2d(points(a)) $
@@ -4182,8 +4182,8 @@ xpmファイルが読み込まれ、描写されます。
 
 3次元のサンプル１つ、
 @example
-(%i1) load(draw)$
-(%i2) load (numericalio)$
+(%i1) load("draw")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) draw3d(title = "Daily average wind speeds",
              point_size = 2,
@@ -4192,8 +4192,8 @@ xpmファイルが読み込まれ、描写されます。
 
 3次元のサンプル２つ、
 @example
-(%i1) load(draw)$
-(%i2) load (numericalio)$
+(%i1) load("draw")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) draw3d(
          title = "Daily average wind speeds. Two data sets",
@@ -4207,7 +4207,7 @@ xpmファイルが読み込まれ、描写されます。
 
 1次元配列、
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) x: make_array (fixnum, 10) $
 (%i3) y: make_array (fixnum, 10) $
 (%i4) z: make_array (fixnum, 10) $
@@ -4220,7 +4220,7 @@ xpmファイルが読み込まれ、描写されます。
 
 2次元色付け配列、
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) xyz: make_array(fixnum, 10, 3) $
 (%i3) for i:0 thru 9 do (
         xyz[i, 0]: random(10),
@@ -4234,7 +4234,7 @@ xpmファイルが読み込まれ、描写されます。
 
 ユーザーが陽に指定した色数。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) pts: makelist([t,t^2,cos(t)], t, 0, 15)$
 (%i3) col_num: makelist(k, k, 1, length(pts))$
 (%i4) draw3d(
@@ -4269,7 +4269,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(user_preamble = "set grid polar",
              nticks        = 200,
              xrange        = [-5,5],
@@ -4307,7 +4307,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(color      = "#e245f0",
              line_width = 8,
              polygon([[3,2],[7,2],[5,5]]),
@@ -4341,7 +4341,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         quadrilateral([1,1],[2,2],[3,-1],[2,-2]))$
 @end example
@@ -4380,7 +4380,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(fill_color  = red,
              line_width  = 6,
              line_type   = dots,
@@ -4420,7 +4420,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         x_voxel = 30,
         y_voxel = 30,
@@ -4452,7 +4452,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(spherical(1,a,0,2*%pi,z,0,%pi))$
 @end example
 
@@ -4480,7 +4480,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(
         triangle([1,1],[2,2],[3,-1]))$
 @end example
@@ -4519,7 +4519,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(
         enhanced3d = true,
         xu_grid = 50,
@@ -4553,7 +4553,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,12],
              yrange      = [0,10],
              head_length = 1,
@@ -4575,7 +4575,7 @@ xpmファイルが読み込まれ、描写されます。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(color = cyan,
              vector([0,0,0],[1,1,1]/sqrt(3)),
              vector([0,0,0],[1,-1,0]/sqrt(2)),
@@ -4630,14 +4630,14 @@ xpmファイルが読み込まれ、描写されます。
 
 行列からのレベルピクチャ。
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) make_level_picture(matrix([3,2,5],[7,-9,3000]));
 (%o2)         picture(level, 3, 2, @{Array:  #(3 2 5 7 0 255)@})
 @end example
 
 数値リストからのレベルピクチャ
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) make_level_picture([-2,0,54,%pi],2,2);
 (%o2)            picture(level, 2, 2, @{Array:  #(0 0 54 3)@})
 @end example
@@ -4665,7 +4665,7 @@ rgb色付けされた@var{picture}オブジェクトを返します。
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) red: make_level_picture(matrix([3,2],[7,260]));
 (%o2)           picture(level, 2, 2, @{Array:  #(3 2 7 255)@})
 (%i3) green: make_level_picture(matrix([54,23],[73,-9]));
@@ -4745,7 +4745,7 @@ xpm形式のファイルを読み、ピクチャオブジェクトを返しま�
 例:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) red: make_level_picture(matrix([3,2],[7,260]));
 (%o2)           picture(level, 2, 2, @{Array:  #(3 2 7 255)@})
 (%i3) green: make_level_picture(matrix([54,23],[73,-9]));
@@ -4803,7 +4803,7 @@ Each component of
 
 @code{boundaries_array}内の成分数で境界をラベルされたヨーロッパの地図
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) european_borders: 
            region_boundaries(-31.81,74.92,49.84,32.06)$
 (%i3) numbered_boundaries(european_borders)$
@@ -4823,7 +4823,7 @@ Each component of
 例:
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) /* A continent */
       make_poly_continent(Africa)$
 (%i3) apply(draw2d, %)$
@@ -4847,7 +4847,7 @@ Each component of
 例:
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) make_poly_country(India)$
 (%i3) apply(draw2d, %)$
 @end example
@@ -4880,7 +4880,7 @@ appends arrays of coordinates
 @code{boundaries_array[1143]}の最初の2つに等しいです;
 結論として、境界番号171, 173, 1143は (この順で)互換性があり、色付けられたポリゴンは描画できます。
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) Bhutan;
 (%o2)                        [[171, 173, 1143]]
 (%i3) boundaries_array[171];
@@ -4931,7 +4931,7 @@ appends arrays of coordinates
 
 南イタリアをプロットするためのセグメントの数を返します。
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) region_boundaries(10.4,41.5,20.7,35.4);
 (%o2)                [1846, 1863, 1864, 1881, 1888, 1894]
 (%i3) draw2d(geomap(%))$
@@ -4952,7 +4952,7 @@ appends arrays of coordinates
 例:
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) region_boundaries_plus(10.4,41.5,20.7,35.4);
 (%o2) [1060, 1062, 1076, 1835, 1839, 1844, 1846, 1858,
        1861, 1863, 1864, 1871, 1881, 1888, 1894, 1897]
@@ -4996,7 +4996,7 @@ Each component of
 
 手で定義された簡単な地図:
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) /* Vertices of boundary #0: @{(1,1),(2,5),(4,3)@} */
    ( bnd0: make_array(flonum,6),
      bnd0[0]:1.0, bnd0[1]:1.0, bnd0[2]:2.0,
@@ -5038,7 +5038,7 @@ Each component of
 パッケージ@code{draw}は自動的に@code{worldmap}をロードしません。
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) c1: gr2d(geomap(Canada,United_States,
                       Mexico,Cuba))$
 (%i3) c2: gr2d(geomap(Africa))$
@@ -5059,7 +5059,7 @@ Each component of
 @code{make_poly_country}と@code{make_poly_continent}も
 参照してください。
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) mymap: append(
    [color      = white],  /* borders are white */
    [fill_color = red],             make_poly_country(Bolivia),
@@ -5090,7 +5090,7 @@ Each component of
 射影します。
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) draw3d(geomap(Australia), /* default projection */
              geomap(Australia,
                     [spherical_projection,2,2,2,3]))$
@@ -5103,7 +5103,7 @@ Each component of
 半径@var{rc}の円柱に再射影します。
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) draw3d(geomap([America_coastlines,Eurasia_coastlines],
                     [cylindrical_projection,2,2,2,3,4]))$
 @end example
@@ -5117,7 +5117,7 @@ Each component of
 北円錐と南円錐両方が球に接触します。
 
 @example
-(%i1) load(worldmap)$
+(%i1) load("worldmap")$
 (%i2) draw3d(geomap(World_coastlines,
                     [conic_projection,0,0,0,1,90]))$
 @end example

@@ -50,7 +50,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange = [-3,5],
              explicit(x^2,x,-1,1))$
 @end example
@@ -75,7 +75,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(yrange = [-2,3],
              explicit(x^2,x,-1,1),
              xrange = [-3,3])$
@@ -101,7 +101,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(yrange = [-3,3],
              zrange = [-2,5],
              explicit(x^2+y^2,x,-1,1,y,-1,1),
@@ -125,7 +125,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(log(x),x,0.01,5),
              logx = true)$
 @end example
@@ -147,7 +147,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(logy = true,
              explicit(exp(x),x,0,5))$
 @end example
@@ -169,7 +169,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(logz = true,
              explicit(exp(u^2+v^2),u,-2,2,v,-2,2))$
 @end example
@@ -191,7 +191,7 @@ n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usada como um argumento da funç@~
 Exemplos:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) /* screen terminal (default) */
       draw2d(explicit(x^2,x,-1,1))$
 (%i3) /* png file */
@@ -225,7 +225,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(grid = true,
              explicit(exp(u),u,-2,2))$
 @end example
@@ -245,7 +245,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(exp(u),u,-2,2),
              title = "Exponential function")$
 @end example
@@ -265,7 +265,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xlabel = "Time",
              explicit(exp(u),u,-2,2),
              ylabel = "Population")$
@@ -288,7 +288,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xlabel = "Time",
              ylabel = "Population",
              explicit(exp(u),u,-2,2) )$
@@ -311,7 +311,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(zlabel = "Z variable",
              ylabel = "Y variable",
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2),
@@ -334,7 +334,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) /* No tics in the x-axis */
       draw2d(xtics = false,
              explicit(exp(u),u,-2,2))$
@@ -356,7 +356,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(ytics = false,
              explicit(exp(u),u,-2,2),
              xtics = false)$
@@ -378,7 +378,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) /* No tics in the z-axis */
       draw3d(ztics = false,
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
@@ -403,7 +403,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(rot_vertical = 170,
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
@@ -427,7 +427,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(rot_vertical = 170,
              rot_horizontal = 360,
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
@@ -468,7 +468,7 @@ Exemplo:
 O terminal @i{dumb} n@~{a}o @'{e} suportado pelo pacote @code{draw},
 mas @'{e} poss@'{i}vel escolher o terminal @i{dumb} fazendo uso da opç@~{a}o @code{user_preamble},
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(exp(x)-1,x,-1,1),
              parametric(cos(u),sin(u),u,0,2*%pi),
              user_preamble="set terminal dumb")$
@@ -489,7 +489,7 @@ n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usada como um argumento da funç@~
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(file_name = "myfile",
              explicit(x^2,x,-1,1),
              terminal  = 'png)$
@@ -511,7 +511,7 @@ n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usada como um argumento da funç@~
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(terminal   = 'png,
              pic_width  = 300,
              pic_height = 300,
@@ -534,7 +534,7 @@ n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usada como um argumento da funç@~
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(terminal   = 'png,
              pic_width  = 300,
              pic_height = 300,
@@ -557,7 +557,7 @@ n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usada como um argumento da funç@~
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(terminal   = 'eps,
              eps_width  = 3,
              eps_height = 3,
@@ -581,7 +581,7 @@ n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usada como um argumento da funç@~
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(terminal   = 'eps,
              eps_width  = 3,
              eps_height = 3,
@@ -604,7 +604,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(axis_bottom = false,
              explicit(x^3,x,-1,1))$
 @end example
@@ -625,7 +625,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(axis_left = false,
              explicit(x^3,x,-1,1))$
 @end example
@@ -646,7 +646,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(axis_top = false,
              explicit(x^3,x,-1,1))$
 @end example
@@ -667,7 +667,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(axis_right = false,
              explicit(x^3,x,-1,1))$
 @end example
@@ -688,7 +688,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(axis_3d = false,
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
@@ -734,7 +734,7 @@ n@~{a}o @'{e} importante.
 Exemplos:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: apply(
            'matrix,
             makelist(makelist(random(200),i,1,30),i,1,30))$
@@ -764,7 +764,7 @@ does not matter.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: apply('matrix,
                  makelist(makelist(random(200),i,1,30),i,1,30))$
 (%i3) draw2d(image(im,0,0,30,30))$
@@ -787,7 +787,7 @@ Veja a opç@~{a}o @code{palette} para aprender como paletas s@~{a}o especificada
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(surface_hide = true,
              enhanced3d   = true,
              palette      = gray,
@@ -815,7 +815,7 @@ Essa opç@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(points(makelist([random(20),random(50)],k,1,10)),
              point_size = 5,
              points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
@@ -847,7 +847,7 @@ Essa opç@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange = [0,10],
              yrange = [0,10],
              point_size = 3,
@@ -891,7 +891,7 @@ Essa opç@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange        = [0,10],
              yrange        = [0,4],
              point_size    = 3,
@@ -922,7 +922,7 @@ Essa opç@~{a}o afeta somente objetos gr@'{a}fico bidimensional @code{explicit}.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(fill_color  = red,
              filled_func = true,
              explicit(sin(x),x,0,10) )$
@@ -948,7 +948,7 @@ Essa opç@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(polygon([[3,2],[7,2],[5,5]]),
              transparent = true,
              color       = blue,
@@ -973,7 +973,7 @@ Essa opç@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(color       = brown,
              line_width  = 8,
              polygon([[3,2],[7,2],[5,5]]),
@@ -996,7 +996,7 @@ Essa opç@~{a}o somente @'{e} relevante para objetos do tipo @code{vector}.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,8],
              yrange      = [0,8],
              head_length = 0.7,
@@ -1020,7 +1020,7 @@ Essa opç@~{a}o @'{e} relevante somente para objetos do tipo @code{vector}.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,12],
              yrange      = [0,8],
              vector([0,1],[5,5]),
@@ -1048,7 +1048,7 @@ Essa opç@~{a}o @'{e} relevante somente para objetos do tipo @code{vector}.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,10],
              yrange      = [0,9],
              head_length = 0.7,
@@ -1089,7 +1089,7 @@ Essa opç@~{a}o @'{e} relevante somente para objetos do tipo @code{vector}.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,12],
              yrange      = [0,10],
              head_length = 1,
@@ -1117,7 +1117,7 @@ Essa opç@~{a}o @'{e} relevante somente para objetos do tipo @code{label}.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange          = [0,10],
              yrange          = [0,10],
              points_joined   = true,
@@ -1148,7 +1148,7 @@ Exemplo:
 Nesse exemplo, um ponto fict@'{i}cio @'{e} adicionado para firmar uma imagem.
 o pacote @code{draw} precisa sempre de dados para montar um fundo.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange     = [0,10],
              yrange     = [0,10],
              point_size = 0,
@@ -1199,7 +1199,7 @@ Componentes crom@'{a}ticos em c@'{o}digo hexadecimal s@~{a}o introduzidos na for
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^2,x,-1,1), /* default is black */
              color = "red",
              explicit(0.5 + x^2,x,-1,1),
@@ -1247,7 +1247,7 @@ Essa opç@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^2,x,-1,1), /* default width */
              line_width = 5.5,
              explicit(1 + x^2,x,-1,1),
@@ -1280,7 +1280,7 @@ Essa opç@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(line_type = dots,
              explicit(1 + x^2,x,-1,1),
              line_type = solid, /* default */
@@ -1309,7 +1309,7 @@ Essa opç@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(transparent = true,
              ellipse(0,0,4,2,0,180),
              nticks = 5,
@@ -1350,7 +1350,7 @@ e @code{parametric_surface}.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(key = "Seno",
              explicit(sin(x),x,0,10),
              key = "Cosseno",
@@ -1377,7 +1377,7 @@ Essa opç@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(xu_grid = 10,
              yv_grid = 50,
              explicit(x^2+y^2,x,-3,3,y,-3,3) )$
@@ -1404,7 +1404,7 @@ Essa opç@~{a}o afeta os seguintes objetos gr@'{a}ficos:
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(xu_grid = 10,
              yv_grid = 50,
              explicit(x^2+y^2,x,-3,3,y,-3,3) )$
@@ -1426,7 +1426,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw(columns=2,
            gr3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)),
            gr3d(surface_hide = true,
@@ -1473,7 +1473,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
              contour_levels = 15,
              contour        = both,
@@ -1494,7 +1494,7 @@ n@~{a}o @'{e} importante.
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
              contour_levels = 15,
              contour        = both,
@@ -1515,7 +1515,7 @@ n@~{a}o @'{e} importante. Pode tamb@'{e}m ser usado como um argumento da funç@~
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) scene1: gr2d(title="Elipse",
                    nticks=30,
                    parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
@@ -1561,7 +1561,7 @@ A funç@~{a}o @code{gr2d} constr@'{o}i um objeto descrevendo um fundo gr@'{a}fic
 seq@"{u}@^{e}ncialmente: @i{opç@~{o}es gr@'{a}ficas} afetam aqueles @i{objetos gr@'{a}ficos} colocados
 imediatamente @`a sua direita.
 
-Para fazer uso dessa funç@~{a}o escreva primeiramente @code{load(draw)}.
+Para fazer uso dessa funç@~{a}o escreva primeiramente @code{load("draw")}.
 
 Adiante encontra-se uma lista de @i{objetos gr@'{a}ficos} dispon@'{i}vies para fundos gr@'{a}ficos em duas dimens@~{o}es:
 
@@ -1577,7 +1577,7 @@ Esse objeto @'{e} efetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{po
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(key           = "Small points",
              points(makelist([random(20),random(50)],k,1,10)),
              point_type    = 6,
@@ -1598,7 +1598,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opçs gr@'{a}ficas}: @code{transpar
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(color      = "#e245f0",
              line_width = 8,
              polygon([[3,2],[7,2],[5,5]]),
@@ -1620,7 +1620,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{tr
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(fill_color  = red,
              line_width  = 6,
              line_type   = dots,
@@ -1651,7 +1651,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{nt
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(transparent = false,
              fill_color  = 8,
              color       = gray30,
@@ -1680,7 +1680,7 @@ Nesse exemplo, um ponto imagin@'{a}rio @'{e} adicionado para firmar a imagem.
 O pacote @code{draw} precisa sempre da dados para desenhar um fundo.
 Essas cores podem mudar em diferentes terminais.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(x^2,x,-1,1),
              color = "red",
              label("Label in red",0,0.3),
@@ -1702,7 +1702,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{he
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(xrange      = [0,12],
              yrange      = [0,10],
              head_length = 1,
@@ -1728,7 +1728,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{nt
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(line_width = 3,
              color      = blue,
              explicit(x^2,x,-3,3) )$
@@ -1750,7 +1750,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{ip
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(terminal  = eps,
              grid      = true,
              line_type = solid,
@@ -1774,7 +1774,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{nt
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(user_preamble = "set grid polar",
              nticks        = 200,
              xrange        = [-5,5],
@@ -1797,7 +1797,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{nt
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw2d(explicit(exp(x),x,-1,3),
              color = red,
              key   = "Esse @'{e} a unidade param@'{e}trica!!",
@@ -1846,7 +1846,7 @@ Exemplos:
 se @code{im} for uma matriz de n@'{u}meros reais, valores de pixel s@~{a}o interpretados conforme
 a opç@~{a}o gr@'{a}fica @code{palette}.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: apply(
            'matrix,
             makelist(makelist(random(200),i,1,30),i,1,30))$
@@ -1863,7 +1863,7 @@ Veja tamb@'{e}m @code{colorbox}.
 Se @code{im} for uma matriz de vetores de comprimento tr@^{e}s, eles s@~{a}o interpretados
 como componentes da cores vermelho, verde e azul.
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) im: apply(
             'matrix,
              makelist(
@@ -1900,7 +1900,7 @@ A funç@~{a}o @code{gr3d} constr@'{o}i um objeto descrevendo um fundo gr@'{a}fic
 seq@"{u}@^{e}ncialmente: @i{opç@~{o}es gr@'{a}ficas} afetam aqueles @i{objetos gr@'{a}ficos} colocados
 imediatamente @`a sua direita.
 
-Para fazer uso dessa funç@~{a}o escreva primeiramente @code{load(draw)}.
+Para fazer uso dessa funç@~{a}o escreva primeiramente @code{load("draw")}.
 
 Essa @'{e} a lista dos @i{objetos gr@'{a}ficos} dispon@'{i}veis para fundos gr@'{a}ficos tridimensionais:
 
@@ -1918,8 +1918,8 @@ Exemplos:
 
 Uma amostra tridimensional,
 @example
-(%i1) load(draw)$
-(%i2) load (numericalio)$
+(%i1) load("draw")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) draw3d(title      = "Velocidades di@'{a}rias de ventos dispon@'{i}veis",
              point_size = 2,
@@ -1928,8 +1928,8 @@ Uma amostra tridimensional,
 
 Duas amostras tridimensionais,
 @example
-(%i1) load(draw)$
-(%i2) load (numericalio)$
+(%i1) load("draw")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) draw3d(title      = "Velocidades di@'{a}rias de ventos dispon@'{i}veis. Dois conjuntos de dados",
              point_size = 2,
@@ -1951,7 +1951,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{la
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
              color = red,
              label("SUBINDO",-2,0,3),
@@ -1973,7 +1973,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{he
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(color = cyan,
              vector([0,0,0],[1,1,1]/sqrt(3)),
              vector([0,0,0],[1,-1,0]/sqrt(2)),
@@ -1994,7 +1994,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{xu
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(key   = "Gauss",
              color = "#a02c00",
              explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
@@ -2016,7 +2016,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{nt
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
              color = royalblue,
              parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
@@ -2040,7 +2040,7 @@ Esse objeto @'{e} afetado pelas seguintes @i{opç@~{o}es gr@'{a}ficas}: @code{xu
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) draw3d(title          = "Concha do mar",
              xu_grid        = 100,
              yv_grid        = 25,
@@ -2088,12 +2088,12 @@ e @code{columns}.
 As funç@~{o}es @code{draw2d} e @code{draw3d} s@~{a}o atalhos para serem usados 
 quando somente um fundo gr@'{a}fico @'{e} requerido, em duas ou tr@^{e}s dimens@~{o}es, respectivamente.
 
-Para fazer uso dessa funç@~{a}o escreva primeiramente @code{load(draw)}.
+Para fazer uso dessa funç@~{a}o escreva primeiramente @code{load("draw")}.
 
 Exemplo:
 
 @example
-(%i1) load(draw)$
+(%i1) load("draw")$
 (%i2) scene1: gr2d(title="Ellipse",
                    nticks=30,
                    parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
@@ -2111,7 +2111,7 @@ Essa funç@~{a}o @'{e} um atalho para
 
 Pode ser usada para montar gr@'{a}fico de um @'{u}nico fundo bidimensional.
 
-Para fazer uso dessa funç@~{a}o escreva primeiramente @code{load(draw)}.
+Para fazer uso dessa funç@~{a}o escreva primeiramente @code{load("draw")}.
 
 @end deffn
 
@@ -2123,7 +2123,7 @@ Essa funç@~{a}o @'{e} um atalho para
 
 Pode ser usada para montar o fundo gr@'{a}fico @'{u}nico tridmensional.
 
-Para fazer uso dessa funç@~{a}o escreva primeiramente @code{load(draw)}.
+Para fazer uso dessa funç@~{a}o escreva primeiramente @code{load("draw")}.
 
 @end deffn
 

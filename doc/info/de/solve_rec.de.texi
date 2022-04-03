@@ -119,7 +119,7 @@ See also: @code{solve_rec}.
 Tries to simplify all sums appearing in @var{expr} to a closed form.
 
 To use this function first load the @code{simplify_sum} package with
-@code{load(simplify_sum)}.
+@code{load("simplify_sum")}.
 
 Example:
 
@@ -164,7 +164,7 @@ solutions is exponential in the degree of the leading and trailing
 coefficient.
 
 To use this function first load the @code{solve_rec} package with
-@code{load(solve_rec);}.
+@code{load("solve_rec");}.
 
 Example of linear recurrence with constant coefficients:
 
@@ -237,7 +237,7 @@ Solves for rational solutions to linear recurrences.  See solve_rec for
 description of arguments.
 
 To use this function first load the @code{solve_rec} package with
-@code{load(solve_rec);}.
+@code{load("solve_rec");}.
 
 Example:
 
@@ -296,7 +296,7 @@ where summand is hypergeometrical in @var{k} and @var{n}.  If @var{lo} and
 @code{hi = inf}.
 
 To use this function first load the @code{simplify_sum} package with
-@code{load(simplify_sum)}.
+@code{load("simplify_sum")}.
 
 Example:
 

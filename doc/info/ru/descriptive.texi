@@ -28,13 +28,13 @@
 от природы своих аргументов
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c /* univariate sample */   mean ([a, b, c]);
 @c matrix ([a, b], [c, d], [e, f]);
 @c /* multivariate sample */ mean (%);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) /* univariate sample */   mean ([a, b, c]);
                             c + b + a
 (%o2)                       ---------
@@ -57,11 +57,11 @@
 выборки можно использовать функцию @code{map}
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c map (mean, [[a, b, c], [d, e]]);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) map (mean, [[a, b, c], [d, e]]);
                         c + b + a  e + d
 (%o2)                  [---------, -----]
@@ -123,12 +123,12 @@
 Для загрузки этих данных в Maxima следует делать так
 
 @c ===beg===
-@c load (numericalio)$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c length (s1);
 @c ===end===
 @example
-(%i1) load (numericalio)$
+(%i1) load ("numericalio")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) length (s1);
 (%o3)                          100
@@ -142,13 +142,13 @@ Haslett, J., Raftery, A. E. (1989)
 Applied Statistics 38, 1-50).  Данные загружаются при помощи:
 
 @c ===beg===
-@c load (numericalio)$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c length (s2);
 @c s2 [%]; /* last record */
 @c ===end===
 @example
-(%i1) load (numericalio)$
+(%i1) load ("numericalio")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) length (s2);
 (%o3)                          100
@@ -162,13 +162,13 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
 @code{A} и @code{B}
 
 @c ===beg===
-@c load (numericalio)$
+@c load ("numericalio")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c length (s3);
 @c s3 [1]; /* first record */
 @c ===end===
 @example
-(%i1) load (numericalio)$
+(%i1) load ("numericalio")$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 (%i3) length (s3);
 (%o3)                          100
@@ -212,14 +212,14 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
 задает число интервалов, по умолчанию 10,
 
 @c ===beg===
-@c load (numericalio)$
-@c load (descriptive)$
+@c load ("numericalio")$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c continuous_freq (s1, 5);
 @c ===end===
 @example
-(%i1) load (numericalio)$
-(%i2) load (descriptive)$
+(%i1) load ("numericalio")$
+(%i2) load ("descriptive")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) continuous_freq (s1, 5);
 (%o4) [[0, 1.8, 3.6, 5.4, 7.2, 9.0], [16, 24, 18, 17, 25]]
@@ -242,14 +242,14 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
 Ее единственный аргумент является списком
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"));
 @c discrete_freq (s1);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"));
 (%o3) [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 2, 3, 8, 
 4, 6, 2, 6, 4, 3, 3, 8, 3, 2, 7, 9, 5, 0, 2, 8, 8, 4, 1, 9, 7, 
@@ -280,14 +280,14 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
 Работу функции лучше всего проиллюстрировать на примерах
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c subsample (s2, '(%c[1] > 18));
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) subsample (s2, '(%c[1] > 18));
               [ 19.38  15.37  15.12  23.09  25.25 ]
@@ -310,14 +310,14 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
 менее 25 узлов на станции номер 4
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c subsample (s2, '(%c[1] >= 16 and %c[4] < 25), 1, 2, 5);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) subsample (s2, '(%c[1] >= 16 and %c[4] < 25), 1, 2, 5);
                      [ 19.38  15.37  25.25 ]
@@ -333,14 +333,14 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
 Мы выбираем записи, которые соответствуют пациентам в группе @code{B} старше 38 лет
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c subsample (s3, '(%c[1] = B and %c[2] > 38));
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
 (%i4) subsample (s3, '(%c[1] = B and %c[2] > 38));
                 [ B  39  28.0  102.3  17.1  146 ]
@@ -364,14 +364,14 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
 Вероятно статистический анализ будет включать только измерения крови
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c subsample (s3, '(%c[1] = B and %c[2] > 38), 3, 4, 5, 6);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
 (%i4) subsample (s3, '(%c[1] = B and %c[2] > 38), 3, 4, 5, 6);
                    [ 28.0  102.3  17.1  146 ]
@@ -395,14 +395,14 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
 Это многомерное среднее значение @code{s3}
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c mean (s3);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
 (%i4) mean (s3);
        65 B + 35 A  317          6 NA + 8145.0
@@ -421,14 +421,14 @@ Applied Statistics 38, 1-50).  Данные загружаются при пом
 данных
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c mean (subsample (s3, '(%c[4] # NA and %c[6] # NA), 3, 4, 5, 6));
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s3 : read_matrix (file_search ("biomed.data"))$
 (%i4) mean(subsample(s3, '(%c[4] # NA and %c[6] # NA), 3,4,5,6));
 (%o4) [79.4923076923077, 86.2032967032967, 16.93186813186813, 
@@ -481,8 +481,8 @@ $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c mean (s1);
 @c %, numer;
@@ -490,8 +490,8 @@ $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 @c mean (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) mean (s1);
                                471
@@ -544,14 +544,14 @@ $${{1}\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c var (s1), numer;
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) var (s1), numer;
 (%o4)                   8.425899999999999
@@ -599,16 +599,16 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c var1 (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c var1 (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) var1 (s1), numer;
 (%o4)                    8.5110101010101
@@ -636,16 +636,16 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c std (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c std (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) std (s1), numer;
 (%o4)                   2.902740084816414
@@ -672,16 +672,16 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c std1 (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c std1 (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) std1 (s1), numer;
 (%o4)                   2.917363553109228
@@ -733,16 +733,16 @@ $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c noncentral_moment (s1, 1), numer; /* the mean */
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c noncentral_moment (s2, 5);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) noncentral_moment (s1, 1), numer; /* the mean */
 (%o4)                         4.71
@@ -798,16 +798,16 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c central_moment (s1, 2), numer; /* the variance */
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c central_moment (s2, 3);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) central_moment (s1, 2), numer; /* the variance */
 (%o4)                   8.425899999999999
@@ -833,16 +833,16 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 среднему значению @code{mean},
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c cv (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c cv (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) cv (s1), numer;
 (%o4)                   .6193977819764815
@@ -867,16 +867,16 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 Минимальное значение выборки @var{list},
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c mini (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c mini (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) mini (s1);
 (%o4)                           0
@@ -900,16 +900,16 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 Максимальное значение выборки @var{list},
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c maxi (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c maxi (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) maxi (s1);
 (%o4)                           9
@@ -935,16 +935,16 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c range (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c range (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) range (s1);
 (%o4)                           9
@@ -972,8 +972,8 @@ American Statistician, 50, 361-365),
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c /* 1st and 3rd quartiles */ 
 @c          [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
@@ -981,8 +981,8 @@ American Statistician, 50, 361-365),
 @c quantile (s2, 1/4);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) /* 1st and 3rd quartiles */
          [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
@@ -1008,16 +1008,16 @@ American Statistician, 50, 361-365),
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c median (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c median (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) median (s1);
                                 9
@@ -1046,16 +1046,16 @@ American Statistician, 50, 361-365),
 @code{quantile(@var{list},3/4) - quantile(@var{list},1/4)},
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c qrange (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c qrange (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) qrange (s1);
                                21
@@ -1109,16 +1109,16 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c mean_deviation (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c mean_deviation (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) mean_deviation (s1);
                                51
@@ -1173,16 +1173,16 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c median_deviation (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c median_deviation (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) median_deviation (s1);
                                 5
@@ -1239,16 +1239,16 @@ $${{n}\over{\sum_{i=1}^{n}{{{1}\over{x_{i}}}}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @c harmonic_mean (y), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c harmonic_mean (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 (%i4) harmonic_mean (y), numer;
 (%o4)                   3.901858027632205
@@ -1300,16 +1300,16 @@ $$\left(\prod_{i=1}^{n}{x_{i}}\right)^{{{1}\over{n}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @c geometric_mean (y), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c geometric_mean (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 (%i4) geometric_mean (y), numer;
 (%o4)                   4.454845412337012
@@ -1361,16 +1361,16 @@ $${{1\over{n s^4}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^4}}-3}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c kurtosis (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c kurtosis (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) kurtosis (s1), numer;
 (%o4)                  - 1.273247946514421
@@ -1422,16 +1422,16 @@ $${{1\over{n s^3}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c skewness (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) skewness (s1), numer;
 (%o4)                  .009196180476450306
@@ -1478,16 +1478,16 @@ $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c pearson_skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c pearson_skewness (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) pearson_skewness (s1), numer;
 (%o4)                   .2159484029093895
@@ -1537,16 +1537,16 @@ $${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c quartile_skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c quartile_skewness (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s1 : read_list (file_search ("pidigits.data"))$
 (%i4) quartile_skewness (s1), numer;
 (%o4)                  .04761904761904762
@@ -1603,15 +1603,15 @@ $${S={1\over{n}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c fpprintprec : 7$  /* change precision for pretty output */
 @c cov (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) fpprintprec : 7$  /* change precision for pretty output */
 (%i5) cov (s2);
@@ -1668,15 +1668,15 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c fpprintprec : 7$ /* change precision for pretty output */
 @c cov1 (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) fpprintprec : 7$ /* change precision for pretty output */
 (%i5) cov1 (s2);
@@ -1725,14 +1725,14 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c global_variances (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) global_variances (s2);
 (%o4) [105.338342060606, 21.06766841212119, 12874.34690469686, 
@@ -1746,15 +1746,15 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 а является матрицей ковариации, что позволяет избежать перевычисления
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
 @c global_variances (s, false);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) s : cov1 (s2)$
 (%i5) global_variances (s, false);
@@ -1779,15 +1779,15 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c fpprintprec:7$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c cor (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) fpprintprec:7$
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 (%i5) cor (s2);
@@ -1809,16 +1809,16 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 а является матрицей ковариации, что позволяет избежать перевычисления
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c fpprintprec:7$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
 @c cor (s, false); /* this is faster */
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) fpprintprec:7$
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 (%i5) s : cov1 (s2)$
@@ -1927,8 +1927,8 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
-@c load (numericalio)$
+@c load ("descriptive")$
+@c load ("numericalio")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c z : list_correlations (s2)$
 @c fpprintprec : 5$ /* for pretty output */
@@ -1937,8 +1937,8 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c z[3];  /* partial correlation matrix */
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (numericalio)$
+(%i1) load ("descriptive")$
+(%i2) load ("numericalio")$
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) z : list_correlations (s2)$
 (%i5) fpprintprec : 5$ /* for pretty output */
@@ -2011,7 +2011,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 Простая гистограмма с восемью классами.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c histogram (
 @c      s1,
@@ -2023,7 +2023,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c      fill_density = 0.6)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) histogram (
         s1,
@@ -2065,8 +2065,8 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 Одномерная корреляционная диаграмма для гауссовой выборки. 
 
 @c ===beg===
-@c load (descriptive)$
-@c load (distrib)$
+@c load ("descriptive")$
+@c load ("distrib")$
 @c scatterplot(
 @c   random_normal(0,1,200),
 @c   xaxis      = true,
@@ -2076,8 +2076,8 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c   eps_height = 2)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (distrib)$
+(%i1) load ("descriptive")$
+(%i2) load ("distrib")$
 (%i3) scatterplot(
         random_normal(0,1,200),
         xaxis      = true,
@@ -2090,7 +2090,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 Двумерная корреляционная диаграмма.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c scatterplot(
 @c  submatrix(s2, 1,2,3),
@@ -2100,7 +2100,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c  color      = blue)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) scatterplot(
         submatrix(s2, 1,2,3),
@@ -2113,12 +2113,12 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 Трехмерная корреляционная диаграмма.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c scatterplot(submatrix (s2, 1,2))$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) scatterplot(submatrix (s2, 1,2))$
 @end example
@@ -2126,7 +2126,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 Пятимерная корреляционная диаграмма, с гистограммой, содержащей пать классов.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c scatterplot(
 @c   s2,
@@ -2136,7 +2136,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c   xtics        = 5)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) scatterplot(
         s2,
@@ -2182,7 +2182,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c barsplot(col(s3,2),
 @c   title        = "Ages",
@@ -2191,7 +2191,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c   fill_density = 0.3)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 (%i3) barsplot(col(s3,2),
          title        = "Ages",
@@ -2233,7 +2233,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 Пример:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c piechart(
 @c   s1,
@@ -2248,7 +2248,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c   title       = "Digit frequencies in pi")$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) piechart(
         s1,
@@ -2299,7 +2299,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 Диаграмма "ящик-с-усами" для многомерной выборки.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix(file_search("wind.data"))$
 @c boxplot(s2,
 @c   box_width  = 0.2,
@@ -2309,7 +2309,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c   line_width = 2)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix(file_search("wind.data"))$
 (%i3) boxplot(s2,
         box_width  = 0.2,
@@ -2322,7 +2322,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 Диаграмма "ящик-с-усами" для трех выборок различной длины.
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c A :
 @c  [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
 @c   [8, 10, 7, 9, 12, 8, 10],
@@ -2330,7 +2330,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c boxplot (A)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) A :
        [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
         [8, 10, 7, 9, 12, 8, 10],

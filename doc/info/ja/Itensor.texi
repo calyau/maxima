@@ -140,7 +140,7 @@ Maximaの@code{itensor}パッケージの初期のバージョンは、
 @subsection Indicial tensor manipulation
 @c -----------------------------------------------------------------------------
 
-添字テンソル操作パッケージは@code{load(itensor)}でロードできます。
+添字テンソル操作パッケージは@code{load("itensor")}でロードできます。
 デモも利用可能です: @code{demo(tensor)}を試してください。
 
 @code{itensor}では、
@@ -184,7 +184,7 @@ Maximaの@code{itensor}パッケージの初期のバージョンは、
 例示します。
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                                done
@@ -351,7 +351,7 @@ Maximaの@code{itensor}パッケージの初期のバージョンは、
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i,j],[k,l],m,n)*b([k,o],[j,m,p],q,r))$
                                 k l      j m p
@@ -396,7 +396,7 @@ Maximaの@code{itensor}パッケージの初期のバージョンは、
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) allsym:true;
 (%o2)                                true
@@ -633,7 +633,7 @@ It is important to keep in mind that
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) matchdeclare(l1,listp);
 (%o2)                                done
@@ -684,9 +684,9 @@ It is important to keep in mind that
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
-(%i2) load(itensor);
+(%i2) load("itensor");
 (%o2)      /share/tensor/itensor.lisp
 (%i3) lg:matrix([sqrt(r/(r-2*m)),0,0,0],[0,r,0,0],
                 [0,0,sin(theta)*r,0],[0,0,0,sqrt((r-2*m)/r)]);
@@ -794,7 +794,7 @@ Increments
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) kdelta([1,2],[2,1]);
 (%o2)                                 - 1
@@ -839,7 +839,7 @@ Levi-Civitaシンボルを含む式を整理し、可能ならこれらをKronec
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) expr:ishow('levi_civita([],[i,j])
                  *'levi_civita([k,l],[])*a([j],[k]))$
@@ -923,7 +923,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) el1:ishow('levi_civita([i,j,k],[])*a([],[i])*a([],[j]))$
                              i  j
@@ -1035,7 +1035,7 @@ contravariant indices respectively.  These are of the form
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) expr:contract( expand( a([i1, j1, k1], [])
            *kdels([i, j, k], [i1, j1, k1])))$
@@ -1181,7 +1181,7 @@ It takes the derivative of
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(liediff(v,a([i,j],[])*b([],[k],l)))$
        k    %2            %2          %2
@@ -1237,7 +1237,7 @@ It takes the derivative of
 例えば、以下はエラーをもたらします:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) icurvature([i,j,k],[l],m);
 Maxima encountered a Lisp error:
@@ -1321,7 +1321,7 @@ Christoffel記号の微分形式も評価できませんでした。
 @var{n}以上の微分添字を持つ微分されたオブジェクト @var{tensor}をすべて0にします。
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i],[J,r],k,r)+a([i],[j,r,s],k,r,s))$
                                 J r      j r s
@@ -1390,7 +1390,7 @@ Christoffel記号の微分形式も評価できませんでした。
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(g([],[a,b],c))$
                                       a b
@@ -1458,7 +1458,7 @@ Christoffel記号の微分形式も評価できませんでした。
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                                done
@@ -1603,7 +1603,7 @@ Riemann曲率テンソルをもたらします。
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) entertensor()$
 Enter tensor name: a;
@@ -1676,7 +1676,7 @@ Riemann曲率テンソルが満たす巡回恒等式の検証を例示します�
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(icurvature([r,s,t],[u]))$
              u            u         %1         u     
@@ -1756,7 +1756,7 @@ Maximaはこれら2つのテンソルを使って、
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) iframe_flag:true;
 (%o2)                                true
@@ -2155,7 +2155,7 @@ ikt2   = g   ikt1
 ねじれを伴う計量に関してスカラー関数上の繰り返される共変微分は計算されません:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric:g;
 (%o2)                                  g
@@ -2291,7 +2291,7 @@ A       /\ B       = ----- D              A       B
 フラグで制御されます:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i])~b([j]))$
                                  a  b  - b  a
@@ -2342,7 +2342,7 @@ A       /\ B       = ----- D              A       B
 例えば:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) decsym(a,2,0,[anti(all)],[]);
 (%o2)                                done
@@ -2380,7 +2380,7 @@ A       /\ B       = ----- D              A       B
 例えば:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(extdiff(v([i]),j))$
                                   v    - v
@@ -2418,7 +2418,7 @@ A       /\ B       = ----- D              A       B
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                            done
@@ -2495,9 +2495,9 @@ A       /\ B       = ----- D              A       B
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
-(%i2) load(tentex);
+(%i2) load("tentex");
 (%o2)       /share/tensor/tentex.lisp
 (%i3) idummyx:m;
 (%o3)                                  m
@@ -2558,7 +2558,7 @@ Christoffel記号 @code{ichr1}と @code{ichr2}は
 以下の例はこの関数の特長を例示します。
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) eqn:ishow(t([i,j],[k])=f([],[])*g([l,m],[])*a([],[m],j)
       *b([i],[l,k]))$

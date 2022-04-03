@@ -14,7 +14,7 @@
 
 Пакет @code{atensor} предназначен для вычислений с тензорными алгебрами.
 Для того, чтобы использовать @code{atensor}, надо ввести
-@code{load(atensor)}, с последующим вызовом функции @code{init_atensor}.
+@code{load("atensor")}, с последующим вызовом функции @code{init_atensor}.
 
 Основой пакета @code{atensor} является набор правил упрощения для
 оператора некоммутативного произведения ("@code{.}" -- dot product).
@@ -37,7 +37,7 @@
 
 @example
 
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) init_atensor(clifford,0,0,2);
 (%o2)                                done
@@ -284,7 +284,7 @@ Cl(3,1). Вызов @code{init_atensor(dirac)} эквивалентен
 Например:
 
 @example
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) adim:3;
 (%o2)                                  3

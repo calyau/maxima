@@ -24,13 +24,13 @@
 簡単な例です。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c /* univariate sample */   mean ([a, b, c]);
 @c matrix ([a, b], [c, d], [e, f]);
 @c /* multivariate sample */ mean (%);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 @group
 (%i2) /* univariate sample */   mean ([a, b, c]);
                             c + b + a
@@ -59,11 +59,11 @@
 Maxima関数@code{map}が標本それぞれに対して望みの結果を得るのに使うことができます。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c map (mean, [[a, b, c], [d, e]]);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 @group
 (%i2) map (mean, [[a, b, c], [d, e]]);
                         c + b + a  e + d
@@ -244,12 +244,12 @@ Maximaでこれらの桁をロードするためには、
 @code{(1.8, 3.6]}すなわち2か3である桁が24あり、など。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c continuous_freq (s1, 5);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) continuous_freq (s1, 5);
 (%o3) [[0, 1.8, 3.6, 5.4, 7.2, 9.0], [16, 24, 18, 17, 25]]
@@ -258,12 +258,12 @@ Maximaでこれらの桁をロードするためには、
 オプション引数は、境界-2と12を持つクラスを7個欲しいことを示します。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c continuous_freq (s1, [-2,12,7]);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) continuous_freq (s1, [-2,12,7]);
 (%o3) [[- 2, 0, 2, 4, 6, 8, 10, 12], [8, 20, 22, 17, 20, 13, 0]]
@@ -272,12 +272,12 @@ Maximaでこれらの桁をロードするためには、
 オプション引数は、境界-2と12を持つクラスをデフォルト個欲しいことを示します:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c continuous_freq (s1, [-2,12]);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) continuous_freq (s1, [-2,12]);
                 3  4  11  18     32  39  46  53
@@ -298,12 +298,12 @@ Maximaでこれらの桁をロードするためには、
 唯一の引数はリストです。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c discrete_freq (s1);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) discrete_freq (s1);
@@ -332,12 +332,12 @@ Maximaでこれらの桁をロードするためには、
 以下は最初の測候所での風速が18より大きかった多変量レコードです。
 ラムダ式の中で@var{i}番目の成分は@code{v[i]}として参照されることを参考にしてください。
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c subsample (s2, lambda([v], v[1] > 18));
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i3) subsample (s2, lambda([v], v[1] > 18));
@@ -356,13 +356,13 @@ Maximaでこれらの桁をロードするためには、
 標本は、測候所1, 2, 5からのデータだけを含みます。
 この場合、述語関数は通常のMaxima関数として定義されます。
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c g(x):= x[1] >= 16 and x[4] < 25$
 @c subsample (s2, g, 1, 2, 5);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) g(x):= x[1] >= 16 and x[4] < 25$
 @group
@@ -380,13 +380,13 @@ Maximaでこれらの桁をロードするためには、
 以下は@code{biomed.data}のカテゴリ変数の例です。
 38歳より年上のグループ@code{B}の患者に対応するレコードが欲しいです。
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c h(u):= u[1] = B and u[2] > 38 $
 @c subsample (s3, h);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 (%i3) h(u):= u[1] = B and u[2] > 38 $
 @group
@@ -411,13 +411,13 @@ Maximaでこれらの桁をロードするためには、
 
 統計解析には血圧だけを使うかもしれません。
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c subsample (s3, lambda([v], v[1] = B and v[2] > 38),
 @c            3, 4, 5, 6);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 @group
 (%i3) subsample (s3, lambda([v], v[1] = B and v[2] > 38),
@@ -442,12 +442,12 @@ Maximaでこれらの桁をロードするためには、
 
 いかは@code{s3}の多変量平均です。
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c mean (s3);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 @group
 (%i3) mean (s3);
@@ -470,13 +470,13 @@ This is because symbol
 情報のある種の喪失を意味しますが、
 可能な解は@code{NA}シンボルを持つ行を行列から取り除くことです。
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s3 : read_matrix (file_search ("biomed.data"))$
 @c g(v):= v[4] # NA and v[6] # NA $
 @c mean (subsample (s3, g, 3, 4, 5, 6));
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 (%i3) g(v):= v[4] # NA and v[6] # NA $
 @group
@@ -520,7 +520,7 @@ $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c mean (s1);
 @c %, numer;
@@ -528,7 +528,7 @@ $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 @c mean (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) mean (s1);
@@ -577,12 +577,12 @@ $${{1}\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c var (s1), numer;
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) var (s1), numer;
@@ -622,14 +622,14 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c var1 (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c var1 (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) var1 (s1), numer;
@@ -659,14 +659,14 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c std (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c std (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) std (s1), numer;
@@ -696,14 +696,14 @@ $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c std1 (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c std1 (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) std1 (s1), numer;
@@ -749,14 +749,14 @@ $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c noncentral_moment (s1, 1), numer; /* the mean */
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c noncentral_moment (s2, 5);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) noncentral_moment (s1, 1), numer; /* the mean */
@@ -804,14 +804,14 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c central_moment (s1, 2), numer; /* the variance */
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c central_moment (s2, 3);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) central_moment (s1, 2), numer; /* the variance */
@@ -838,14 +838,14 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 @deffnx {関数} cv (@var{matrix})
 変動係数は標本標準偏差(@code{std})を平均@code{mean}で割った商です。
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c cv (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c cv (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) cv (s1), numer;
@@ -876,14 +876,14 @@ $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 統計変数に関連付けられた列の最小値を含むリストを返します。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c smin (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c smin (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) smin (s1);
@@ -913,14 +913,14 @@ See also function @code{smax}.
 統計変数に関連付けられた列の最大値を含むリストを返します。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c smax (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c smax (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) smax (s1);
@@ -949,14 +949,14 @@ See also function @code{smax}.
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c range (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c range (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) range (s1);
@@ -986,7 +986,7 @@ See also function @code{smax}.
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c /* 1st and 3rd quartiles */ 
 @c          [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
@@ -994,7 +994,7 @@ See also function @code{smax}.
 @c quantile (s2, 1/4);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) /* 1st and 3rd quartiles */
@@ -1024,14 +1024,14 @@ See also function @code{smax}.
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c median (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c median (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) median (s1);
@@ -1065,14 +1065,14 @@ See also function @code{smax}.
 です。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c qrange (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c qrange (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) qrange (s1);
@@ -1120,14 +1120,14 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c mean_deviation (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c mean_deviation (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) mean_deviation (s1);
@@ -1176,14 +1176,14 @@ $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c median_deviation (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c median_deviation (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) median_deviation (s1);
@@ -1232,14 +1232,14 @@ $${{n}\over{\sum_{i=1}^{n}{{{1}\over{x_{i}}}}}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @c harmonic_mean (y), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c harmonic_mean (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @group
 (%i3) harmonic_mean (y), numer;
@@ -1286,14 +1286,14 @@ $$\left(\prod_{i=1}^{n}{x_{i}}\right)^{{{1}\over{n}}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @c geometric_mean (y), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c geometric_mean (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
 @group
 (%i3) geometric_mean (y), numer;
@@ -1339,14 +1339,14 @@ $${{1\over{n s^4}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^4}}-3}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c kurtosis (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c kurtosis (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) kurtosis (s1), numer;
@@ -1392,14 +1392,14 @@ $${{1\over{n s^3}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c skewness (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) skewness (s1), numer;
@@ -1443,14 +1443,14 @@ $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c pearson_skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c pearson_skewness (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) pearson_skewness (s1), numer;
@@ -1496,14 +1496,14 @@ $${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c quartile_skewness (s1), numer;
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c quartile_skewness (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
 (%i3) quartile_skewness (s1), numer;
@@ -1549,13 +1549,13 @@ $${S={1\over{n}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c fpprintprec : 7$  /* change precision for pretty output */
 @c cov (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) fpprintprec : 7$  /* change precision for pretty output */
 @group
@@ -1604,13 +1604,13 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c fpprintprec : 7$ /* change precision for pretty output */
 @c cov1 (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) fpprintprec : 7$ /* change precision for pretty output */
 @group
@@ -1660,12 +1660,12 @@ $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c global_variances (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i3) global_variances (s2);
@@ -1681,13 +1681,13 @@ Maximaに@code{x}がデータ行列であることを伝え、@code{global_varia
 @code{x}がデータ行列ではなく、共分散行列であることを意味し、再計算は避けられます。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
 @c global_variances (s, false);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) s : cov1 (s2)$
 @group
@@ -1713,13 +1713,13 @@ Maximaに@code{x}がデータ行列であることを伝え、@code{global_varia
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c fpprintprec : 7 $
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c cor (s2);
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) fpprintprec : 7 $
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 @group
@@ -1743,14 +1743,14 @@ Maximaに@code{x}がデータ行列であることを伝え、@code{cor(x)}と�
 @code{x}がデータ行列ではなく、共分散行列であることを意味し、再計算は避けられます。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c fpprintprec : 7 $
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
 @c cor (s, false); /* this is faster */
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) fpprintprec : 7 $
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) s : cov1 (s2)$
@@ -1840,7 +1840,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c z : list_correlations (s2)$
 @c fpprintprec : 5$ /* for pretty output */
@@ -1849,7 +1849,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @c z[3];  /* partial correlation matrix */
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) z : list_correlations (s2)$
 (%i4) fpprintprec : 5$ /* for pretty output */
@@ -1977,7 +1977,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 行列形式での1変量標本。絶対頻度。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c m : read_matrix (file_search ("biomed.data"))$
 @c barsplot(
 @c   col(m,2),
@@ -1987,7 +1987,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 @c   fill_density = 3/4)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) m : read_matrix (file_search ("biomed.data"))$
 @group
 (%i3) barsplot(
@@ -2003,7 +2003,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 相対頻度とユーザー宣言の色を使って。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c l1:makelist(random(10),k,1,50)$
 @c l2:makelist(random(10),k,1,100)$
 @c barsplot(
@@ -2015,7 +2015,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 @c    sample_keys = ["A", "B"])$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) l1:makelist(random(10),k,1,50)$
 (%i3) l2:makelist(random(10),k,1,100)$
 @group
@@ -2032,7 +2032,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 サイズが等しい4つの非数標本。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c barsplot(
 @c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
 @c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
@@ -2045,7 +2045,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 @c   ordering = ordergreatp)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 @group
 (%i2) barsplot(
         makelist([Yes, No, Maybe][random(3)+1],k,1,50),
@@ -2063,7 +2063,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 スタックバー。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c barsplot(
 @c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
 @c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
@@ -2076,7 +2076,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 @c   ordering = ordergreatp)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 @group
 (%i2) barsplot(
         makelist([Yes, No, Maybe][random(3)+1],k,1,50),
@@ -2094,7 +2094,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 複数プロット文脈での@code{barsplot}。
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) l1:makelist(random(10),k,1,50)$
 (%i3) l2:makelist(random(10),k,1,100)$
 (%i4) bp1 : 
@@ -2171,7 +2171,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 多変量標本の箱ひげ図。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix(file_search("wind.data"))$
 @c boxplot(s2,
 @c   box_width  = 0.2,
@@ -2181,7 +2181,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 @c   line_width = 2)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix(file_search("wind.data"))$
 @group
 (%i3) boxplot(s2,
@@ -2196,7 +2196,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 異なるサイズの3つの標本の箱ひげ図。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c A :
 @c  [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
 @c   [8, 10, 7, 9, 12, 8, 10],
@@ -2204,7 +2204,7 @@ wxMaximaとiMaximaインターフェイスで埋め込みヒストグラムを�
 @c boxplot (A, box_orientation = horizontal)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 @group
 (%i2) A :
        [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
@@ -2272,7 +2272,7 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 8クラスを持つ簡単なヒストグラム。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c histogram (
 @c      s1,
@@ -2284,7 +2284,7 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 @c      fill_density = 0.6)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) histogram (
            s1,
@@ -2301,7 +2301,7 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 また予め定義されたチックを導入します:
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) histogram (
            s1,
@@ -2316,7 +2316,7 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 @code{histogram_description}を利用します:
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) ( load("distrib"),
         m: 14, s: 2,
         s2: random_normal(m, s, 1000) ) $
@@ -2385,7 +2385,7 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 例:
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s1 : read_list (file_search ("pidigits.data"))$
 @c piechart(
 @c   s1,
@@ -2394,7 +2394,7 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 @c   title  = "Digit frequencies in pi")$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 (%i3) piechart(
         s1,
@@ -2433,8 +2433,8 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 シミュレーティッドGauss標本の1変量散布図。
 
 @c ===beg===
-@c load (descriptive)$
-@c load (distrib)$
+@c load ("descriptive")$
+@c load ("distrib")$
 @c scatterplot(
 @c   random_normal(0,1,200),
 @c   xaxis      = true,
@@ -2442,8 +2442,8 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 @c   dimensions = [600,150]$
 @c ===end===
 @example
-(%i1) load (descriptive)$
-(%i2) load (distrib)$
+(%i1) load ("descriptive")$
+(%i2) load ("distrib")$
 @group
 (%i3) scatterplot(
         random_normal(0,1,200),
@@ -2456,7 +2456,7 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 二次元散布図。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c scatterplot(
 @c  submatrix(s2, 1,2,3),
@@ -2466,7 +2466,7 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 @c  color      = blue)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i3) scatterplot(
@@ -2481,12 +2481,12 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 3次元散布図。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c scatterplot(submatrix (s2, 1,2), nclasses=4)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) scatterplot(submatrix (s2, 1,2), nclasses=4)$
 @end example
@@ -2494,7 +2494,7 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 5つのクラスのヒストグラムと5次元散布図。
 
 @c ===beg===
-@c load (descriptive)$
+@c load ("descriptive")$
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c scatterplot(
 @c   s2,
@@ -2505,7 +2505,7 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 @c   xtics        = 5)$
 @c ===end===
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 @group
 (%i3) scatterplot(
@@ -2585,7 +2585,7 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 ユーザーが定義した位置と半径。
 
 @example
-(%i1) load (descriptive)$
+(%i1) load ("descriptive")$
 (%i2) l1: makelist(random(10),k,1,50)$
 (%i3) l2: makelist(random(10),k,1,200)$
 @group
@@ -2626,8 +2626,8 @@ wxMaximaと iMaximaインターフェイスで埋め込みヒストグラムを�
 例:
 
 @example
-(%i1) load (descriptive)$
-(%i2) load(distrib)$
+(%i1) load ("descriptive")$
+(%i2) load("distrib")$
 @group
 (%i3) stemplot(
         random_normal(15, 6, 100),

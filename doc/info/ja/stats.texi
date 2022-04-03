@@ -62,7 +62,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 その値にアクセスするには関数 @code{take_inference}を利用してください。
 
 @c ===beg===
-@c load (inference_result)$
+@c load ("inference_result")$
 @c b: 3$ h: 2$
 @c inference_result("Rectangle",
 @c                  ['base=b,
@@ -74,7 +74,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 @c take_inference('diagonal,%);
 @c ===end===
 @example
-(%i1) load(inference_result)$
+(%i1) load("inference_result")$
 (%i2) b: 3$ h: 2$
 (%i3) inference_result("Rectangle",
                         ['base=b,
@@ -139,12 +139,12 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 表示されるされないに関係なく、項目すべての名前を返します。
 
 @c ===beg===
-@c load (inference_result)$
+@c load ("inference_result")$
 @c inference_result("Hi", ['pi=%pi,'e=%e],[2]);
 @c items_inference(%);
 @c ===end===
 @example
-(%i1) load(inference_result)$
+(%i1) load("inference_result")$
 (%i2) inference_result("Hi", ['pi=%pi,'e=%e],[2]);
                             |   Hi
 (%o2)                       |
@@ -182,7 +182,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 それに格納されたある情報を抽出するためにコールされます。
 
 @c ===beg===
-@c load (inference_result)$
+@c load ("inference_result")$
 @c b: 3$ h: 2$
 @c sol:inference_result("Rectangle",
 @c                      ['base=b,
@@ -197,7 +197,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 @c take_inference(items_inference(sol),sol);
 @c ===end===
 @example
-(%i1) load(inference_result)$
+(%i1) load("inference_result")$
 (%i2) b: 3$ h: 2$
 (%i3) sol: inference_result("Rectangle",
                             ['base=b,
@@ -336,7 +336,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 @math{H_0}を却下する証拠がありません。
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c data: [78,64,35,45,45,75,43,74,42,42]$
 @c test_mean(data,'conflevel=0.9,'alternative='less,'mean=50);
 @c ===end===
@@ -374,7 +374,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 この手続きは多くの標本に適用すべきです。
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c test_mean([36,118,52,87,35,256,56,178,57,57,89,34,25,98,35,
 @c         98,41,45,198,54,79,63,35,45,44,75,42,75,45,45,
 @c         45,51,123,54,151],
@@ -511,7 +511,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 @c t.test(x,y,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
 @c test_means_difference(x,y,'alternative='greater);
@@ -549,7 +549,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 @c t.test(x,y,var.equal=T,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
 @c test_means_difference(x,y,'alternative='greater,
@@ -661,7 +661,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 平均が未知の母集団の分散が200以上か検定します。
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [203,229,215,220,223,233,208,228,20]$
 @c test_variance(x,'alternative='greater,'variance=200);
 @c ===end===
@@ -774,7 +774,7 @@ statsの関数が返す型の @code{inference_result}オブジェクトを構成
 @c var.test(x,y,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [20.4,62.5,61.3,44.2,11.1,23.7]$
 @c y: [1.2,6.9,38.7,20.4,17.2]$
 @c test_variance_ratio(x,y,'alternative='greater);
@@ -889,7 +889,7 @@ The output of function
 帰無仮説は @math{H_0: p=1/2}です。
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c test_proportion(45, 103, alternative = less);
 @c ===end===
 @example
@@ -917,7 +917,7 @@ The output of function
 両側漸近検定。信頼度は99/100です。
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c fpprintprec:7$
 @c test_proportion(45, 103, 
 @c               conflevel = 99/100, asymptotic=true);
@@ -1034,7 +1034,7 @@ The output of function
 p値に従うと、対立を受け入れる十分な証拠はありません。
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c fpprintprec:7$
 @c test_proportions_difference(10, 250, 4, 150,
 @c                             alternative = greater);
@@ -1066,7 +1066,7 @@ p値に従うと、対立を受け入れる十分な証拠はありません。
 データが未知の時の漸近正規分布の正確確率標準偏差。
 
 @c ===beg===
-@c load(stats)$
+@c load("stats")$
 @c stats_numer: false$
 @c sol: test_proportions_difference(x1,n1,x2,n2)$
 @c last(take_inference('distribution,sol));
@@ -1147,7 +1147,7 @@ p値に従うと、対立を受け入れる十分な証拠はありません。
 標本が採られた母集団がメジアン6を持つかどうかチェックします。
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [2,0.1,7,1.8,4,2.3,5.6,7.4,5.1,6.1,6]$
 @c test_sign(x,'median=6,'alternative='greater);
 @c ===end===
@@ -1250,7 +1250,7 @@ Wilcoxonの符号順位検定です。
 @c wilcox.test(x,mu=15,alternative="greater")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [17.1,15.9,13.7,13.4,15.5,17.6]$
 @c test_signed_rank(x,median=15,alternative=greater);
 @c ===end===
@@ -1282,7 +1282,7 @@ since there are ties.
 @c wilcox.test(y,mu=2.5)
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c y:[1.9,2.3,2.6,1.9,1.6,3.3,4.2,4,2.4,2.9,1.5,3,2.9,4.2,3.1]$
 @c test_signed_rank(y,median=2.5);
 @c ===end===
@@ -1374,7 +1374,7 @@ The output of function
 @c wilcox.test(x,y)
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x:[12,15,17,38,42,10,23,35,28]$
 @c y:[21,18,25,14,52,65,40,43]$
 @c test_rank_sum(x,y);
@@ -1408,7 +1408,7 @@ The output of function
 @c wilcox.test(x,y,alternative="less")
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x: [39,42,35,13,10,23,15,20,17,27]$
 @c y: [20,52,66,19,41,32,44,25,14,39,43,35,19,56,27,15]$
 @c test_rank_sum(x,y,'alternative='less);
@@ -1478,7 +1478,7 @@ The output of function
 @c shapiro.test(x)
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c x:[12,15,17,38,42,10,23,35,28]$
 @c test_normality(x);
 @c ===end===
@@ -1616,7 +1616,7 @@ Only items
 平均と、新しい予測の信頼区間も計算されます。
 
 @c ===beg===
-@c load (stats)$
+@c load ("stats")$
 @c s:[[125,140.7], [130,155.1], [135,160.3], [140,167.2],
 @c                                                 [145,169.8]]$
 @c z:simple_linear_regression(s,conflevel=0.99);

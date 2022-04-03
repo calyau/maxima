@@ -7,7 +7,7 @@
 @node Introducción a atensor, Funciones y variables para atensor, atensor, atensor
 @section Introducción a atensor
 
-El paquete @code{atensor} contiene funciones para la manipulación algebraica de tensores. Para hacer uso de @code{atensor} es necesario cargarlo en memoria haciendo @code{load(atensor)}, seguido de una llamada a la función  @code{init_atensor}.
+El paquete @code{atensor} contiene funciones para la manipulación algebraica de tensores. Para hacer uso de @code{atensor} es necesario cargarlo en memoria haciendo @code{load("atensor")}, seguido de una llamada a la función  @code{init_atensor}.
 
 La parte más importante de @code{atensor} es una batería de reglas de simplificación para el producto no conmutativo ("@code{.}"). El paquete @code{atensor} reconoce algunos tipos de álgebras; las correspondientes reglas de simplificación se activan tan pronto como se hace una llamada a la función @code{init_atensor}.
 
@@ -22,7 +22,7 @@ Aunque el paquete @code{atensor} incluye su propia definición para el álgebra 
 
 @example
 
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) init_atensor(clifford,0,0,2);
 (%o2)                                done
@@ -168,7 +168,7 @@ Una función antisimétrica que se utiliza en relaciones de conmutación. La imp
 Ejemplo:
 
 @example
-(%i1) load(atensor);
+(%i1) load("atensor");
 (%o1)       /share/tensor/atensor.mac
 (%i2) adim:3;
 (%o2)                                  3

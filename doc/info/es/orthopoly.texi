@@ -35,7 +35,7 @@ distribuye con la licencia GNU General Public License (GPL).
 
 @subsection Iniciándose con orthopoly
 
-@code{load (orthopoly)} carga el paquete @code{orthopoly}.
+@code{load ("orthopoly")} carga el paquete @code{orthopoly}.
 
 Para obtener el polinomio de Legendre de tercer orden,
 

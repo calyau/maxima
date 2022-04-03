@@ -2106,7 +2106,7 @@ any @code{%f}, @code{%w}, and @code{%m} in the expression @var{e} are not affect
 Any unsimplified hypergeometric functions are returned unchanged
 (instead of changing to @code{%f} as @code{hgfred} would).
 
-@code{load(hypergeometric);} loads this function.
+@code{load("hypergeometric");} loads this function.
 
 See also @mrefdot{hgfred}
 
@@ -2184,7 +2184,7 @@ It can be beneficial to load orthopoly too as the following example
 shows.  Note that @var{L} is the generalized Laguerre polynomial.
 
 @example
-(%i5) load(orthopoly)$
+(%i5) load("orthopoly")$
 (%i6) hgfred([-2],[a],z);
 @group
 

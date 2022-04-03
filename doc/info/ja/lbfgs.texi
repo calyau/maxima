@@ -119,7 +119,7 @@ FGCOMPUTEが計算したのと同じFOM。
 問題の変数が添字付き変数であることに注意してください。
 FOMは@math{u[k] = 1}(@math{k = 1, ..., 8})で0に等しい厳密な最小を持ちます。
 @c ===beg===
-@c load (lbfgs);
+@c load ("lbfgs");
 @c t1[j] := 1 - u[j];
 @c t2[j] := 10*(u[j + 1] - u[j]^2);
 @c n : 8;
@@ -129,7 +129,7 @@ FOMは@math{u[k] = 1}(@math{k = 1, ..., 8})で0に等しい厳密な最小を持
 @c ===end===
 
 @example
-(%i1) load (lbfgs);
+(%i1) load ("lbfgs");
 (%o1)   /usr/share/maxima/5.10.0cvs/share/lbfgs/lbfgs.mac
 (%i2) t1[j] := 1 - u[j];
 (%o2)                     t1  := 1 - u
@@ -259,7 +259,7 @@ FOMは、予言値@math{F(X[i])}と観測値@math{Y[i]}の二乗平均差です�
 この例では、@math{F}のパラメータに関して@code{lbfgs}は近似値を計算し、
 @code{plot2d}は@math{F}の観測データとの比較を表示します。
 @c ===beg===
-@c load (lbfgs);
+@c load ("lbfgs");
 @c FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1, 
 @c                                                 length(X)));
 @c X : [1, 2, 3, 4, 5];
@@ -271,7 +271,7 @@ FOMは、予言値@math{F(X[i])}と観測値@math{Y[i]}の二乗平均差です�
 @c ===end===
 
 @example
-(%i1) load (lbfgs);
+(%i1) load ("lbfgs");
 (%o1)   /usr/share/maxima/5.10.0cvs/share/lbfgs/lbfgs.mac
 (%i2) FOM : '((1/length(X))*sum((F(X[i]) - Y[i])^2, i, 1,
                                                 length(X)));
@@ -352,14 +352,14 @@ I& NFN&   FUNC&                    GNORM&                   STEPLENGTH\cr
 FOMの勾配が(自動的に計算される代わりに)指定されます。
 
 @c ===beg===
-@c load (lbfgs)$
+@c load ("lbfgs")$
 @c F(a, b, c) := (a - 5)^2 + (b - 3)^4 + (c - 2)^6;
 @c F_grad : map (lambda ([x], diff (F(a, b, c), x)), [a, b, c]);
 @c estimates : lbfgs ([F(a, b, c), F_grad],
 @c                    [a, b, c], [0, 0, 0], 1e-4, [1, 0]);
 @c ===end===
 @example
-(%i1) load (lbfgs)$
+(%i1) load ("lbfgs")$
 (%i2) F(a, b, c) := (a - 5)^2 + (b - 3)^4 + (c - 2)^6;
                                2          4          6
 (%o2)     F(a, b, c) := (a - 5)  + (b - 3)  + (c - 2)

@@ -865,7 +865,7 @@ Unterschied, dass mit dem dritten Argument @var{n} der Grad der neuen
 Taylorreihe explizit angegeben werden kann.  Dieser kann kleiner oder
 gr@"o@ss{}er als der Grad der Taylorreihe @var{expr} sein.
 
-Mit dem Kommando @code{load(revert)} werden die Funktionen geladen.
+Mit dem Kommando @code{load("revert")} werden die Funktionen geladen.
 
 Siehe auch die Funktion @mrefdot{taylor}
 
@@ -876,7 +876,7 @@ Mit dem Kommando @code{revert(taylor(exp(x) - 1, x, 0, 6), x)} wird die
 Taylorreihe der Inversen @code{log(x+1)} berechnet.
 
 @example
-(%i1) load (revert)$
+(%i1) load ("revert")$
 (%i2) t: taylor (exp(x) - 1, x, 0, 6);
                    2    3    4    5     6
                   x    x    x    x     x

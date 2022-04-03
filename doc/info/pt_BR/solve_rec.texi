@@ -96,7 +96,7 @@ Tenta simplificar todos os somat@'{o}rios que aparecem na @var{expr} para uma fo
 @code{simplify_sum} usa os algor@'{i}tmos de Gosper e de Zeilberger para simplificar somat@'{o}rios.
 
 Para usar essa funç@~{a}o primeiramente chame o pacote @code{simplify_sum} com
-@code{load(simplify_sum)}.
+@code{load("simplify_sum")}.
 
 Exemplo:
 
@@ -134,7 +134,7 @@ hipergeom@'{e}tricas aumenta exponencialmente com o grau do coeficiente lider e
 guia.
 
 Para usar essa funç@~{a}o primeiramente chame o pacote @code{solve_rec} com
-@code{load(solve_rec);}.
+@code{load("solve_rec");}.
 
 Exemplo de recorr@^{e}ncia linear com coeficientes constantes:
 
@@ -196,7 +196,7 @@ Encontra soluç@~{o}es racionais para recorr@^{e}ncias lineares. Veja solve_rec 
 uma descriç@~{a}o dos argumentos.
 
 Para usar essa funç@~{a}o primeirametne chame o pacote @code{solve_rec} com
-@code{load(solve_rec);}.
+@code{load("solve_rec");}.
 
 Exemplo:
 
@@ -247,7 +247,7 @@ onde x @'{e} hipergeom@'{e}trico em @var{k} e @var{n}. SE @var{inf} e @var{sup}
 forem omitidos, s@~{a}o assumidos como sendo @code{inf = -inf} e @code{sup = inf}.
 
 Para usar essa funç@~{a}o primeiro chame o pacote @code{simplify_sum} com
-@code{load(simplify_sum)}.
+@code{load("simplify_sum")}.
 
 Exemplo:
 

@@ -12,7 +12,7 @@
 Exemplo:
 
 @c ===beg===
-@c load (linearalgebra)$
+@c load ("linearalgebra")$
 @c M : matrix ([1, 2], [1, 2]);
 @c nullspace (M);
 @c columnspace (M);
@@ -28,7 +28,7 @@ Exemplo:
 @c apply ('orthogonal_complement, args (nullspace (transpose (M))));
 @c ===end===
 @example
-(%i1) load (linearalgebra);
+(%i1) load ("linearalgebra");
 Warning - you are redefining the Maxima function require_list
 Warning - you are redefining the Maxima function matrix_size
 Warning - you are redefining the Maxima function rank
@@ -188,7 +188,7 @@ Retorna uma cópia da expressão @var{e} do Maxima. Embora @var{e} possa ser qua
 expressão do Maxima, Afunção @code{copy} é mais útil quando @var{e} for ou
 uma lista ou uma matriz; considere:
 @c ===beg===
-load (linearalgebra);
+load ("linearalgebra");
 m : [1,[2,3]]$
 mm : m$
 mm[2][1] : x$
@@ -248,12 +248,12 @@ Retorna uma matriz diagonal matriz com entradas de diagonal @var{d_1}, @var{d_2}
 Quando as entradas de diagonal forem matrizes, as entradas zero da matriz retornada
 serão todas matrizes de tamanho apropriado; por exemplo:
 @c ===beg===
-@c load(linearalgebra)$
+@c load("linearalgebra")$
 @c diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
 @c diag_matrix(p,q);
 @c ===end===
 @example
-(%i1) load(linearalgebra)$
+(%i1) load("linearalgebra")$
 
 (%i2) diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
 
@@ -293,7 +293,7 @@ via @code{float} ou @code{bfloat} (dependendo do valor de @var{tipo_corpo}).
 
 Exemplos:
 @c ===beg===
-@c load (linearalgebra);
+@c load ("linearalgebra");
 @c S : matrix ([1/sqrt(2), 1/sqrt(2)], [- 1/sqrt(2), 1/sqrt(2)]);
 @c L : matrix ([sqrt(3), 0], [0, sqrt(5)]);
 @c M : S . L . transpose (S);
@@ -303,7 +303,7 @@ Exemplos:
 @c ===end===
 
 @example
-(%i1) load (linearalgebra);
+(%i1) load ("linearalgebra");
 (%o1) /home/robert/tmp/maxima-head/maxima/share/linearalgebra/li\
 nearalgebra.mac
 (%i2) S : matrix ([1/sqrt(2), 1/sqrt(2)], [- 1/sqrt(2), 1/sqrt(2)]);
@@ -532,7 +532,7 @@ Veja também  @code{get_lu_factors}.
 
 Exemplos:
 @c ===beg===
-@c load (linearalgebra);
+@c load ("linearalgebra");
 @c w[i,j] := random (1.0) + %i * random (1.0);
 @c showtime : true$
 @c M : genmatrix (w, 100, 100)$
@@ -545,7 +545,7 @@ Exemplos:
 @c %[1] . %[2] . %[3];
 @c ===end===
 @example
-(%i1) load (linearalgebra);
+(%i1) load ("linearalgebra");
 Warning - you are redefining the Maxima function require_list
 Warning - you are redefining the Maxima function matrix_size
 Warning - you are redefining the Maxima function rank
@@ -661,14 +661,14 @@ Se usar matrizes de bloco, muito provavelmente irá querer escolher @code{matrix
 Exemplo:
 
 @c ===beg===
-@c load (linearalgebra);
+@c load ("linearalgebra");
 @c A : matrix ([1, 2], [3, 4]);
 @c B : matrix ([7, 8], [9, 10]);
 @c matrix ([A, B]);
 @c mat_unblocker (%);
 @c ===end===
 @example
-(%i1) load (linearalgebra);
+(%i1) load ("linearalgebra");
 Warning - you are redefining the Maxima function require_list
 Warning - you are redefining the Maxima function matrix_size
 Warning - you are redefining the Maxima function rank
@@ -743,12 +743,12 @@ o valor padrão para @var{coeffp}.
 O polinómio não precisa ser expandido:
 
 @c ===beg===
-@c load (linearalgebra);
+@c load ("linearalgebra");
 @c polynomialp ((x + 1)*(x + 2), [x]);
 @c polynomialp ((x + 1)*(x + 2)^a, [x]);
 @c ===end===
 @example
-(%i1) load (linearalgebra);
+(%i1) load ("linearalgebra");
 Warning - you are redefining the Maxima function require_list
 Warning - you are redefining the Maxima function matrix_size
 Warning - you are redefining the Maxima function rank
@@ -762,12 +762,12 @@ Warning - you are redefining the Maxima function rank
 Um exemplo usando um valor personalizado para @code{coeffp} e para @code{exponp}:
 
 @c ===beg===
-@c load (linearalgebra);
+@c load ("linearalgebra");
 @c polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
 @c polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, numberp);
 @c ===end===
 @example
-(%i1) load (linearalgebra);
+(%i1) load ("linearalgebra");
 Warning - you are redefining the Maxima function require_list
 Warning - you are redefining the Maxima function matrix_size
 Warning - you are redefining the Maxima function rank
@@ -781,12 +781,12 @@ Warning - you are redefining the Maxima function rank
 Polinómios com duas variáveis:
 
 @c ===beg===
-@c load (linearalgebra);
+@c load ("linearalgebra");
 @c polynomialp (x^2 + 5*x*y + y^2, [x]);
 @c polynomialp (x^2 + 5*x*y + y^2, [x, y]);
 @c ===end===
 @example
-(%i1) load (linearalgebra);
+(%i1) load ("linearalgebra");
 Warning - you are redefining the Maxima function require_list
 Warning - you are redefining the Maxima function matrix_size
 Warning - you are redefining the Maxima function rank
@@ -839,12 +839,12 @@ operação de linha @code{R_i <- R_i - theta * R_j}. Se @var{M} não tiver uma l
 Retorna o ranque daquela matriz @var{M}. O rank é a dimensão do
 espaço coluna. Exemplo:
 @c ===beg===
-@c load (linearalgebra)$
+@c load ("linearalgebra")$
 @c rank(matrix([1,2],[2,4]));
 @c rank(matrix([1,b],[c,d]));
 @c ===end===
 @example
-(%i1) load (linearalgebra)$
+(%i1) load ("linearalgebra")$
 WARNING: DEFUN/DEFMACRO: redefining function $COPY in
          /share/maxima/5.11.0/share/linearalgebra/linalg-utilities.lisp,
          was defined in
@@ -873,12 +873,12 @@ Retorna uma matriz de Toeplitz @var{T}. a primeira coluna de @var{T} é @var{col
 excepto para a primeira entrada, a primeira linha de @var{T} é @var{lin}. O
 padrão para @var{lin} é o conjugado complexo de @var{col}. Exemplo:
 @c ===beg===
-@c load(linearalgebra)$
+@c load("linearalgebra")$
 @c toeplitz([1,2,3],[x,y,z]);
 @c toeplitz([1,1+%i]);
 @c ===end===
 @example
-(%i1) load(linearalgebra)$
+(%i1) load("linearalgebra")$
 
 (%i2)  toeplitz([1,2,3],[x,y,z]);
 

@@ -79,7 +79,7 @@ Devido a que este código es nuevo, puede contener errores.
 
 @subsection Manipulación indexada de tensores
 
-El paquete @code{itensor} se carga haciendo @code{load(itensor)}. Para acceder a las demos se hará @code{demo(tensor)}.
+El paquete @code{itensor} se carga haciendo @code{load("itensor")}. Para acceder a las demos se hará @code{demo(tensor)}.
 
 En el paquete @code{itensor} un tensor se representa como un objeto indexado, esto es, como una función de tres grupos de índices: los covariantes, los contravariantes y los de derivadas. Los índices covariantes se especifican mediante una lista que será el primer argumento del objeto indexado, siendo los índices contravariantes otra lista que será el segundo argumento del mismo objeto indexado. Si al objeto indexado le falta cualquiera de estos grupos de índices, entonces se le asignará al argumento correspondiente la lista vacía @code{[]}.  Así, @code{g([a,b],[c])} representa un objeto indexado llamado @code{g}, el cual tiene dos índices covariantes @code{(a,b)}, un índice contravariante (@code{c}) y no tiene índices de derivadas.
 
@@ -92,7 +92,7 @@ En general, el paquete @code{itensor} trata a los tensores como objetos opacos. 
 La siguiente sesión de ejemplo demuestra cómo cargar el paquete @code{itensor}, especificar el nombre de la métrica y realizar algunos cálculos sencillos.
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                                done
@@ -224,7 +224,7 @@ Devuelve una lista con dos elementos. El primer elemento es una lista con los í
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i,j],[k,l],m,n)*b([k,o],[j,m,p],q,r))$
                                 k l      j m p
@@ -248,7 +248,7 @@ Devuelve una expresión equivalente a @var{expr} pero con los índices mudos de 
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) allsym:true;
 (%o2)                                true
@@ -399,7 +399,7 @@ Las componentes se pueden asignar a una expresión indexada de cuatro maneras, d
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) matchdeclare(l1,listp);
 (%o2)                                done
@@ -436,9 +436,9 @@ Muestra las componentes de un tensor definidas con la instrucción @code{compone
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
-(%i2) load(itensor);
+(%i2) load("itensor");
 (%o2)      /share/tensor/itensor.lisp
 (%i3) lg:matrix([sqrt(r/(r-2*m)),0,0,0],[0,r,0,0],
                 [0,0,sin(theta)*r,0],[0,0,0,sqrt((r-2*m)/r)]);
@@ -508,7 +508,7 @@ Función delta de Kronecker simetrizada, utilizada en algunos cálculos. Por eje
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) kdelta([1,2],[2,1]);
 (%o2)                                 - 1
@@ -539,7 +539,7 @@ Simplifica expresiones que contengan el símbolo de Levi-Civita, convirtiéndola
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) expr:ishow('levi_civita([],[i,j])
                  *'levi_civita([k,l],[])*a([j],[k]))$
@@ -612,7 +612,7 @@ Regla de simplificación utilizada en expresiones que contienen el símbolo de @
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2)  el1:ishow('levi_civita([i,j,k],[])*a([],[i])*a([],[j]))$
                              i  j
@@ -667,7 +667,7 @@ Declara propiedades de simetría para el @var{tensor} de @var{m} índices covari
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) expr:contract(expand(a([i1,j1,k1],[])
             *kdels([i,j,k],[i1,j1,k1])))$
@@ -744,7 +744,7 @@ Calcula la derivada de Lie de la expresión tensorial @var{ten} respecto de camp
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(liediff(v,a([i,j],[])*b([],[k],l)))$
        k    %2            %2          %2
@@ -780,7 +780,7 @@ Equivale a @code{undiff} seguido de  @code{ev} y @code{rediff}.
 La razón de esta operación es evaluar de forma sencilla expresiones que no pueden ser directamente evaluadas en su forma derivada. Por ejemplo, lo siguiente provoca un error:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) icurvature([i,j,k],[l],m);
 Maxima encountered a Lisp error:
@@ -853,7 +853,7 @@ Iguala a cero en @var{expr} todas las apariciones del objeto diferenciado  @var{
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i],[J,r],k,r)+a([i],[j,r,s],k,r,s))$
                                 J r      j r s
@@ -890,7 +890,7 @@ Simplifica expresiones que contengan derivadas ordinarias tanto de las formas co
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(g([],[a,b],c))$
                                       a b
@@ -943,7 +943,7 @@ Todo esto se puede utilizar para conseguir buenas simplificaciones que serían d
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                                done
@@ -1038,7 +1038,7 @@ Devuelve la derivada covariante de @var{expr} respecto de las variables  @var{v_
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) entertensor()$
 Enter tensor name: a;
@@ -1090,7 +1090,7 @@ Elimina los símbolos no diferenciados de Christoffel y las primeras derivadas d
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(icurvature([r,s,t],[u]))$
              u            u         %1         u     
@@ -1137,7 +1137,7 @@ Maxima utiliza estos dos tensores para definir los coeficientes del sistema de r
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) iframe_flag:true;
 (%o2)                                true
@@ -1403,7 +1403,7 @@ Tensor de torsión. Para una métrica con torsión, la diferenciación covariant
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric:g;
 (%o2)                                  g
@@ -1505,7 +1505,7 @@ El operador del producto exterior se representa por el símbolo @code{~}. Este e
 El comportamiento del operador del producto exterior se controla con la variable @code{igeowedge_flag}, como en el ejemplo siguiente:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(a([i])~b([j]))$
                                  a  b  - b  a
@@ -1541,7 +1541,7 @@ La barra vertical @code{|} representa la operación "contracción con un vector"
 En el paquete @code{itensor} la contracción con un vector se realiza siempre respecto del primer índice de la ordenación literal. Ejemplo:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) decsym(a,2,0,[anti(all)],[]);
 (%o2)                                done
@@ -1564,7 +1564,7 @@ Nótese que es primordial que los tensores utilizados junto con el operador @cod
 Calcula la derivada exterior de @var{expr} con respecto del índice @var{i}. La derivada exterior se define formalmente como el producto exterior del operador de la derivada parcial y una forma diferencial. Por lo tanto, esta operación también se ve afectada por el valor que tome la variable @code{igeowedge_flag}. Ejemplo:
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) ishow(extdiff(v([i]),j))$
                                   v    - v
@@ -1597,7 +1597,7 @@ Calcula el dual de Hodge  @var{expr}. Por ejemplo:
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) imetric(g);
 (%o2)                            done
@@ -1653,9 +1653,9 @@ Para utilizar la función @code{tentex}, primero se debe cargar @code{tentex}, t
 
 @example
 
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
-(%i2) load(tentex);
+(%i2) load("tentex");
 (%o2)       /share/tensor/tentex.lisp
 (%i3) idummyx:m;
 (%o3)                                  m
@@ -1688,7 +1688,7 @@ El paquete @code{itensor} genera código Maxima que luego puede ser ejecutado en
 Convierte la ecuación @var{eqn} del entorno @code{itensor} a una sentencia de asignación de @code{ctensor}. Sumas implícitas sobre índices mudos se hacen explícitas mientras que objetos indexados se transforman en arreglos (los subíndices de los arreglos se ordenan poniendo primero los covariantes seguidos de los contravariantes. La derivada de un objeto indexado se reemplazará por por la forma nominal de @code{diff} tomada con respecto a @code{ct_coords} con el subíndice correspondiente al índice derivado. Los símbolos de Christoffel @code{ichr1}  @code{ichr2} se traducen a @code{lcs} y @code{mcs}, respectivamente. Además, se añaden bucles @code{do} para la sumación de todos los índices libres, de manera que la sentencia traducida pueda ser evaluada haciendo simplemente @code{ev}. Los siguientes ejemplos muestran las funcionalidades de esta función.
 
 @example
-(%i1) load(itensor);
+(%i1) load("itensor");
 (%o1)      /share/tensor/itensor.lisp
 (%i2) eqn:ishow(t([i,j],[k])=f([],[])*g([l,m],[])*a([],[m],j)
       *b([i],[l,k]))$

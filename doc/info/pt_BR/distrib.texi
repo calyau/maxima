@@ -330,8 +330,8 @@ fazer comparaç@~{o}es com outros algor@'{i}tmos. Nesse exemplo, a
 s@~{a}o comparadas por meio de seus histogramas:
 
 @example
-(%i1) load(distrib)$
-(%i2) load(descriptive)$
+(%i1) load("distrib")$
+(%i2) load("descriptive")$
 (%i3) showtime: true$
 Evaluation took 0.00 seconds (0.00 elapsed) using 32 bytes.
 (%i4) random_chi2_algorithm: 'ahrens_cheng$ histogram(random_chi2(10,500))$
@@ -409,7 +409,7 @@ Pareto com par@^{a}metros @var{a} e @var{b} e @code{kurtosis_poisson(m)}
 Com o objetivo de fazer uso do pacote @code{distrib} voc@^{e} precisa primeiro
 tornar esse pacote dispon@'{i}vel para uso escrevendo
 @example
-(%i1) load(distrib)$
+(%i1) load("distrib")$
 @end example
 
 Para coment@'{a}rios, melhorias ou sugest@~{o}es, por favor contacte o autor em
@@ -421,7 +421,7 @@ Para coment@'{a}rios, melhorias ou sugest@~{o}es, por favor contacte o autor em
 @deffn {Funç@~{a}o} pdf_normal (@var{x},@var{m},@var{s})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade
 de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)}, com @math{s>0}. Para fazer
-uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -433,11 +433,11 @@ Maxima,
 @code{erf}.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(s>0)$ cdf_normal(x,m,s);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(s>0)$ cdf_normal(x,m,s);
                              x - m
                        erf(---------)
@@ -454,41 +454,41 @@ Veja tamb@'{e}m @code{erf}.
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)}, com
 @math{s>0}; em outras palavras, isso @'{e} o inverso de @code{cdf_normal}. O argumento
 @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_normal (@var{m},@var{s})
 Retorna a m@'{e}dia de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)}, com
 @math{s>0}, a saber @var{m}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_normal (@var{m},@var{s})
 Retorna a vari@^{a}ncia de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)}, com
 @math{s>0}, a saber @var{s^2}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 @deffn {Funç@~{a}o} std_normal (@var{m},@var{s})
 Retorna o desvio padr@~{a}o de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)},
 com @math{s>0}, a saber @var{s}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_normal (@var{m},@var{s})
 Retorna o coeficiente de assimetria de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)},
 com @math{s>0}, que @'{e} sempre igual  a 0. Para fazer uso dessa funç@~{a}o,escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_normal (@var{m},@var{s})
 Retorna o coeficiente de curtose de uma  vari@'{a}vel aleat@'{o}ria @math{Normal(m,s)},
 com @math{s>0}, que @'{e} sempre igual  a 0. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -522,14 +522,14 @@ a ser usado pode ser selecionado fornecendo um certo valor para a vari@'{a}vel g
 @code{box_mueller}.
 
 Veja tamb@'{e}m @code{random_normal_algorithm}. Para fazer uso
-dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} pdf_student_t (@var{x},@var{n})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria de Student @math{t(n)}, com @math{n>0}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -543,12 +543,12 @@ vari@'{a}vel global
 express@~{a}o nominal.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_student_t(1/2, 7/3);
 @c %,numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_student_t(1/2, 7/3);
                                      1  7
 (%o2)                  cdf_student_t(-, -)
@@ -564,14 +564,14 @@ Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n
 com @math{n>0}; em outras palavras, @code{quantile_student_t} @'{e} o inverso de
 @code{cdf_student_t}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_student_t (@var{n})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)}, com
 @math{n>0}, que @'{e} sempre igual a 0. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -579,11 +579,11 @@ primeiramente @code{load(distrib)}.
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)}, com @math{n>2}.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(n>2)$  var_student_t(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(n>2)$  var_student_t(n);
                                 n
 (%o3)                         -----
@@ -595,20 +595,20 @@ Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)}
 @deffn {Funç@~{a}o} std_student_t (@var{n})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)},
 com @math{n>2}. Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_student_t (@var{n})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)},
 com @math{n>3}, que @'{e} sempre igual a 0. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_student_t (@var{n})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria de Student @math{t(n)},
-com @math{n>4}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{n>4}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -667,7 +667,7 @@ selecionar o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}ve
 global @code{random_student_t_algorithm}, cujo valor padr@~{a}o @'{e} @code{ratio}.
 
 Veja tamb@'{e}m @code{random_student_t_algorithm}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -682,12 +682,12 @@ funç@~{a}o  gama @'{e}
 retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_chi2(x,n);
 @c assume(x>0, n>0)$  pdf_chi2(x,n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_chi2(x,n);
                                     n
 (%o2)                  pdf_gamma(x, -, 2)
@@ -715,12 +715,12 @@ que a vari@'{a}vel aleat@'{o}ria @math{Chi^2(n)}
 @'{e} equivalente a    @'{e} equivalente a @math{Gamma(n/2,2)}.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_chi2(3,4);
 @c cdf_chi2(3,4),numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_chi2(3,4);
 (%o2)                  cdf_gamma(3, 2, 2)
 (%i3) cdf_chi2(3,4),numer;
@@ -742,12 +742,12 @@ funç@~{a}o retorna uma express@~{a}o nominal baseada no quantil da funç@~{a}o
 gama, uma vez que a vari@'{a}vel aleat@'{o}ria @math{Chi^2(n)} @'{e} equivalente a @math{Gamma(n/2,2)}.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_chi2(0.99,9);
 @c quantile_chi2(0.99,n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_chi2(0.99,9);
 (%o2)                   21.66599433346194
 (%i3) quantile_chi2(0.99,n);
@@ -767,12 +767,12 @@ uma forma nominal baseada na m@'{e}dia da funç@~{a}o gama @'{e}
 retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c mean_chi2(n);
 @c assume(n>0)$ mean_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) mean_chi2(n);
                                    n
 (%o2)                   mean_gamma(-, 2)
@@ -792,12 +792,12 @@ uma forma nominal baseada na vari@^{a}ncia da funç@~{a}o gama
 @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c var_chi2(n);
 @c assume(n>0)$ var_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) var_chi2(n);
                                    n
 (%o2)                    var_gamma(-, 2)
@@ -818,12 +818,12 @@ uma forma nominal baseada no desvio padr@~{a}o da funç@~{a}o
 gama @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c std_chi2(n);
 @c assume(n>0)$ std_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) std_chi2(n);
                                    n
 (%o2)                    std_gamma(-, 2)
@@ -845,12 +845,12 @@ funç@~{a}o gama @'{e}
 retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c skewness_chi2(n);
 @c assume(n>0)$ skewness_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) skewness_chi2(n);
                                      n
 (%o2)                 skewness_gamma(-, 2)
@@ -872,12 +872,12 @@ embora quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o r
 uma forma nominal baseada no coeficiente de curtose da funç@~{a}o gama @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c kurtosis_chi2(n);
 @c assume(n>0)$ kurtosis_chi2(n);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) kurtosis_chi2(n);
                                      n
 (%o2)                 kurtosis_gamma(-, 2)
@@ -922,14 +922,14 @@ algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global
 @code{ahrens_cheng}.
 
 Veja tamb@'{e}m @code{random_chi2_algorithm}. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} pdf_f (@var{x},@var{m},@var{n})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)}, com @math{m,n>0}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -942,12 +942,12 @@ vari@'{a}vel global
 @code{numer} for igual a @code{true},  de outra forma retorna uma express@~{a}o nominal.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_f(2,3,9/4);
 @c %,numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_f(2,3,9/4);
                                      9
 (%o2)                    cdf_f(2, 3, -)
@@ -967,12 +967,12 @@ vari@'{a}vel global @code{numer} for igual a @code{true},  de outra forma essa f
 retorna uma express@~{a}o nominal.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_f(2/5,sqrt(3),5);
 @c %,numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_f(2/5,sqrt(3),5);
                                2
 (%o2)               quantile_f(-, sqrt(3), 5)
@@ -985,33 +985,33 @@ retorna uma express@~{a}o nominal.
 
 @deffn {Funç@~{a}o} mean_f (@var{m},@var{n})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)}, com @math{m>0, n>2}.
-Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_f (@var{m},@var{n})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)}, com @math{m>0, n>4}.
-Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} std_f (@var{m},@var{n})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)}, com @math{m>0, n>4}.
-Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_f (@var{m},@var{n})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)},
 com @math{m>0, n>6}. Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_f (@var{m},@var{n})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria F, @math{F(m,n)},
 com @math{m>0, n>8}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1066,7 +1066,7 @@ o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global
 @code{random_f_algorithm}, cujo valor padr@~{a}o @'{e} @code{inverse}.
 
 Veja tamb@'{e}m @code{random_f_algorithm}. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 @deffn {Funç@~{a}o} pdf_exp (@var{x},@var{m})
@@ -1079,12 +1079,12 @@ dispon@'{i}vel para pegar o resultado, uma forma nominal baseada na funç@~{a}o
 de densidade de probabilidade de Weibull @'{e}retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_exp(x,m);
 @c assume(x>0,m>0)$  pdf_exp(x,m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_exp(x,m);
                                         1
 (%o2)                 pdf_weibull(x, 1, -)
@@ -1107,12 +1107,12 @@ Weibull @'{e}
 retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_exp(x,m);
 @c assume(x>0,m>0)$  cdf_exp(x,m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_exp(x,m);
                                         1
 (%o2)                 cdf_weibull(x, 1, -)
@@ -1135,12 +1135,12 @@ uma forma nominal baseada no qualtil de Weibull @'{e}
 retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_exp(0.56,5);
 @c quantile_exp(0.56,m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_exp(0.56,5);
 (%o2)                   .1641961104139661
 (%i3) quantile_exp(0.56,m);
@@ -1160,12 +1160,12 @@ uma forma nominal baseada na m@'{e}dia de Weibull @'{e}
 reornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c mean_exp(m);
 @c assume(m>0)$  mean_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) mean_exp(m);
                                        1
 (%o2)                  mean_weibull(1, -)
@@ -1187,12 +1187,12 @@ uma forma nominal baseada na vari@^{a}ncia de Weibull
 @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c var_exp(m);
 @c assume(m>0)$  var_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) var_exp(m);
                                        1
 (%o2)                   var_weibull(1, -)
@@ -1215,12 +1215,12 @@ uma forma nominal baseada no desvio padr@~{a}o de
 Weibull @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c std_exp(m);
 @c assume(m>0)$  std_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) std_exp(m);
                                        1
 (%o2)                   std_weibull(1, -)
@@ -1243,12 +1243,12 @@ de Weibull
 @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c skewness_exp(m);
 @c assume(m>0)$  skewness_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) skewness_exp(m);
                                          1
 (%o2)                skewness_weibull(1, -)
@@ -1267,12 +1267,12 @@ quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o resultad
 baseada no coeficiente de curtose de Weibull @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c kurtosis_exp(m);
 @c assume(m>0)$  kurtosis_exp(m);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) kurtosis_exp(m);
                                          1
 (%o2)                kurtosis_weibull(1, -)
@@ -1321,14 +1321,14 @@ selecionar o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}ve
 @code{random_exp_algorithm}, cujo valor padr@~{a}o @'{e} @code{inverse}.
 
 Veja tamb@'{e}m @code{random_exp_algorithm}. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} pdf_lognormal (@var{x},@var{m},@var{s})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)}, com @math{s>0}. Para fazer uso
-dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1339,11 +1339,11 @@ funç@~{a}o @'{e} definida em termos de funç@~{o}es @code{erf}de erro
 internas do Maxima.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(x>0, s>0)$  cdf_lognormal(x,m,s);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(x>0, s>0)$  cdf_lognormal(x,m,s);
                            log(x) - m
                        erf(----------)
@@ -1360,39 +1360,39 @@ Veja tamb@'{e}m @code{erf}.
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)},
 com @math{s>0}; em outras palavras, essa funç@~{a}o @'{e} a inversa da funç@~{a}o
 @code{cdf_lognormal}. O argumento @var{q} deve ser um elemento de @math{[0,1]}.
-Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_lognormal (@var{m},@var{s})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)}, com @math{s>0}.
-Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_lognormal (@var{m},@var{s})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)},
 com @math{s>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 @deffn {Funç@~{a}o} std_lognormal (@var{m},@var{s})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)},
 com @math{s>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_lognormal (@var{m},@var{s})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)},
-com @math{s>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{s>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_lognormal (@var{m},@var{s})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Lognormal(m,s)},
 com @math{s>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
@@ -1409,14 +1409,14 @@ pode selecionar o algor@'{i}tmo a ser usado fornecendo um certo valor
 @code{random_normal_algorithm}, cujo valor padr@~{a}o @'{e} @code{box_mueller}.
 
 Veja tamb@'{e}m @code{random_normal_algorithm}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} pdf_gamma (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)}, com @math{a,b>0}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1429,12 +1429,12 @@ a vari@'{a}vel global @code{numer} for igual a @code{true},  de outra forma essa
 retorna uma express@~{a}o nominal.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_gamma(3,5,21);
 @c %,numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_gamma(3,5,21);
 (%o2)                  cdf_gamma(3, 5, 21)
 (%i3) %,numer;
@@ -1447,38 +1447,38 @@ retorna uma express@~{a}o nominal.
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)},
 com @math{a,b>0}; em outras palavras, essa funç@~{a}o @'{e} a inversa da
 funç@~{a}o @code{cdf_gamma}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+@math{[0,1]}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_gamma (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)},
 com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_gamma (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)}, com
-@math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+@math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 @deffn {Funç@~{a}o} std_gamma (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)},
 com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_gamma (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)},
-com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_gamma (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Gamma(a,b)},
-com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1520,14 +1520,14 @@ o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global @c
 @code{ahrens_cheng}.
 
 Veja tamb@'{e}m @code{random_gamma_algorithm}. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} pdf_beta (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade de uma vari@'{a}vel
 aleat@'{o}ria @math{Beta(a,b)}, com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1541,12 +1541,12 @@ vari@'{a}vel global @code{numer} for igual a @code{true},  de outra forma essa f
 retorna uma express@~{a}o nominal.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_beta(1/3,15,2);
 @c %,numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_beta(1/3,15,2);
                                  1
 (%o2)                   cdf_beta(-, 15, 2)
@@ -1564,36 +1564,36 @@ Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)}, co
 @math{[0,1]}. Para
 fazer uso dessa
 funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_beta (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)}, com @math{a,b>0}.
-Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_beta (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)}, com @math{a,b>0}.
-Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 @deffn {Funç@~{a}o} std_beta (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)}, com @math{a,b>0}.
-Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_beta (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)},
-com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_beta (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Beta(a,b)},
-com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1635,14 +1635,14 @@ o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global
 @code{random_beta_algorithm}, cujo valor padr@~{a}o @'{e} @code{cheng}.
 
 Veja tamb@'{e}m @code{random_beta_algorithm}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 @deffn {Funç@~{a}o} pdf_continuous_uniform (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)}, com @math{a<b}.
 Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
@@ -1650,7 +1650,7 @@ Para fazer uso dessa funç@~{a}o, escreva primeiramente
 Retorna o valor em @var{x} da funç@~{a}o distribuiç@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)}, com @math{a<b}.
 Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
@@ -1661,36 +1661,36 @@ com @math{a<b}; em outras palavras, essa funç@~{a}o @'{e} a inversa da funç@~{
 ser um elemento
 de @math{[0,1]}.
 Para
-fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_continuous_uniform (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a<b}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_continuous_uniform (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a<b}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 @deffn {Funç@~{a}o} std_continuous_uniform (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a<b}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_continuous_uniform (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a<b}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_continuous_uniform (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Continuous Uniform(a,b)},
-com @math{a<b}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a<b}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1703,14 +1703,14 @@ argumento @var{n}, uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulad
 Essa @'{e} uma aplicaç@~{a}o direta da funç@~{a}o @code{random} interna do Maxima.
 
 Veja tamb@'{e}m @code{random}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} pdf_logistic (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade de
 uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)} , com @math{b>0}. Para fazer
-uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1718,7 +1718,7 @@ uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
 Retorna o valor em @var{x} da funç@~{a}o distribuiç@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)}, com @math{b>0}. Para fazer
 uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
@@ -1729,38 +1729,38 @@ Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)}
 @math{[0,1]}.
 Para fazer uso
 dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} meanlog (@var{a},@var{b})
 Retorna a m@'{e}dia de uma @math{Logistic(a,b)} vari@'{a}vel aleat@'{o}ria , com @math{b>0}.
-Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_logistic (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)} , com @math{b>0}.
-Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} std_logistic (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)} ,
 com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_logistic (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)} ,
-com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_logistic (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Logistic(a,b)} ,
-com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1771,14 +1771,14 @@ Chamando @code{random_logistic} com um terceiro argumento @var{n}, uma
 amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
 Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} pdf_pareto (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)}, com @math{a,b>0}. Para fazer uso
-dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1786,7 +1786,7 @@ dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
 Retorna o valor em @var{x} da funç@~{a}o distribuiç@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)}, com @math{a,b>0}. Para fazer
 uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
@@ -1796,27 +1796,27 @@ com @math{a,b>0}; em outras palavras, essa funç@~{a}o @'{e} a inversa da
 funç@~{a}o @code{cdf_pareto}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}. Para
 fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_pareto (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)}, com
 @math{a>1,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_pareto (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)},
 com @math{a>2,b>0}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 @deffn {Funç@~{a}o} std_pareto (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)},
 com @math{a>2,b>0}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1824,14 +1824,14 @@ primeiramente @code{load(distrib)}.
 @deffn {Funç@~{a}o} skewness_pareto (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria
 @math{Pareto(a,b)}, com @math{a>3,b>0}. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_pareto (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Pareto(a,b)},
 com @math{a>4,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
@@ -1842,21 +1842,21 @@ Retorna uma vari@'{a}vel estat@'{i}stica pseudo-aleat@'{o}ria @math{Pareto(a,b)}
 argumento @var{n}, uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
 Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso
-dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} pdf_weibull (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)}, com @math{a,b>0}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} cdf_weibull (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o distribuiç@~{a}o de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)}, com @math{a,b>0}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1864,38 +1864,38 @@ funç@~{a}o, escreva primeiramente @code{load(distrib)}.
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)},
 com @math{a,b>0}; em outras palavras, essa funç@~{a}o @'{e} a inversa da
 funç@~{a}o @code{cdf_weibull}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+@math{[0,1]}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_weibull (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)}, com
-@math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+@math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_weibull (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)},
 com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 @deffn {Funç@~{a}o} std_weibull (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)},
-com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 
 @deffn {Funç@~{a}o} skewness_weibull (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)},
-com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_weibull (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Weibull(a,b)},
-com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{a,b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1906,7 +1906,7 @@ com @math{a,b>0}. Chamando @code{random_weibull} com um terceiro argumento
 @var{n}, uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
 Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -1920,12 +1920,12 @@ embora quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o r
 uma forma nominal baseada na funç@~{a}o densidade de probabilidade de Weibull @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_rayleigh(x,b);
 @c assume(x>0,b>0)$ pdf_rayleigh(x,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_rayleigh(x,b);
                                         1
 (%o2)                 pdf_weibull(x, 2, -)
@@ -1947,12 +1947,12 @@ embora quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o
 resultado, uma forma nominal baseada na distribuiç@~{a}o de Weibull @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_rayleigh(x,b);
 @c assume(x>0,b>0)$ cdf_rayleigh(x,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_rayleigh(x,b);
                                         1
 (%o2)                 cdf_weibull(x, 2, -)
@@ -1977,12 +1977,12 @@ uma forma nominal baseada no quantil de Weibull @'{e}
 retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c quantile_rayleigh(0.99,b);
 @c assume(x>0,b>0)$ quantile_rayleigh(0.99,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) quantile_rayleigh(0.99,b);
                                             1
 (%o2)             quantile_weibull(0.99, 2, -)
@@ -2003,12 +2003,12 @@ embora quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o r
 uma forma nominal baseada na meia de Weibull @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c mean_rayleigh(b);
 @c assume(b>0)$ mean_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) mean_rayleigh(b);
                                        1
 (%o2)                  mean_weibull(2, -)
@@ -2029,12 +2029,12 @@ embora quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o r
 uma forma nominal baseada na vari@^{a}ncia de Weibull @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c var_rayleigh(b);
 @c assume(b>0)$ var_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) var_rayleigh(b);
                                        1
 (%o2)                   var_weibull(2, -)
@@ -2058,12 +2058,12 @@ embora quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o r
 uma forma nominal baseada na Weibull desvio padr@~{a}o @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c std_rayleigh(b);
 @c assume(b>0)$ std_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) std_rayleigh(b);
                                        1
 (%o2)                   std_weibull(2, -)
@@ -2086,12 +2086,12 @@ embora quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o r
 uma forma nominal baseada no coeficiente de assimetria de Weibull  @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c skewness_rayleigh(b);
 @c assume(b>0)$ skewness_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) skewness_rayleigh(b);
                                          1
 (%o2)                skewness_weibull(2, -)
@@ -2117,12 +2117,12 @@ embora quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o r
 uma forma nominal baseada no coeficiente de curtose de Weibull @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c kurtosis_rayleigh(b);
 @c assume(b>0)$ kurtosis_rayleigh(b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) kurtosis_rayleigh(b);
                                          1
 (%o2)                kurtosis_weibull(2, -)
@@ -2147,7 +2147,7 @@ Chamando @code{random_rayleigh} com um segundo argumento @var{n}, uma amostra al
 de tamanho @var{n} ser@'{a} simulada.
 
 Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2155,14 +2155,14 @@ escreva primeiramente @code{load(distrib)}.
 @deffn {Funç@~{a}o} pdf_laplace (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)}, com @math{b>0}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} cdf_laplace (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o distribuiç@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)}, com @math{b>0}. Para fazer uso
-dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2170,38 +2170,38 @@ dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)}, com
 @math{b>0}; em outras palavras, essa funç@~{a}o @'{e} a inversa da funç@~{a}o
 @code{cdf_laplace}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+@math{[0,1]}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_laplace (@var{a},@var{b})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_laplace (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)},
 com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} std_laplace (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_laplace (@var{a},@var{b})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_laplace (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Laplace(a,b)},
-com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2212,7 +2212,7 @@ Chamando @code{random_laplace} com um terceiro argumento @var{n}, uma
 amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
 Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2220,14 +2220,14 @@ escreva primeiramente @code{load(distrib)}.
 @deffn {Funç@~{a}o} pdf_cauchy (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Cauchy(a,b)}, com @math{b>0}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} cdf_cauchy (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o distribuiç@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Cauchy(a,b)}, com @math{b>0}. Para fazer uso
-dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2235,7 +2235,7 @@ dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Cauchy(a,b)}, com
 @math{b>0}; em outras palavras, essa funç@~{a}o @'{e} a inversa da funç@~{a}o
 @code{cdf_cauchy}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
-fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2246,7 +2246,7 @@ Chamando @code{random_cauchy} com um terceiro argumento @var{n}, uma amostra
 aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
 Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2254,14 +2254,14 @@ escreva primeiramente @code{load(distrib)}.
 @deffn {Funç@~{a}o} pdf_gumbel (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o densidade de probabilidade de uma vari@'{a}vel
 aleat@'{o}ria @math{Gumbel(a,b)}, com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} cdf_gumbel (@var{x},@var{a},@var{b})
 Retorna o valor em @var{x} da funç@~{a}o distribuiç@~{a}o de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)}, com @math{b>0}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2269,7 +2269,7 @@ funç@~{a}o, escreva primeiramente @code{load(distrib)}.
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)}, com
 @math{b>0}; em outras palavras, essa funç@~{a}o @'{e} a inversa da funç@~{a}o
 @code{cdf_gumbel}. O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para
-fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2277,11 +2277,11 @@ fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)}, com @math{b>0}.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(b>0)$  mean_gumbel(a,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(b>0)$  mean_gumbel(a,b);
 (%o3)                     %gamma b + a
 @end example
@@ -2292,13 +2292,13 @@ Veja tamb@'{e}m @code{%gamma}.
 
 @deffn {Funç@~{a}o} var_gumbel (@var{a},@var{b})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)},
-com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} std_gumbel (@var{a},@var{b})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)},
-com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2306,12 +2306,12 @@ com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{lo
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)}, com @math{b>0}.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c assume(b>0)$ skewness_gumbel(a,b);
 @c numer:true$ skewness_gumbel(a,b);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) assume(b>0)$ skewness_gumbel(a,b);
                        12 sqrt(6) zeta(3)
 (%o3)                  ------------------
@@ -2326,7 +2326,7 @@ onde @code{zeta} representa a funç@~{a}o zeta de Riemann.
 
 @deffn {Funç@~{a}o} kurtosis_gumbel (@var{a},@var{b})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Gumbel(a,b)},
-com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{b>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2337,7 +2337,7 @@ com @math{b>0}. Chamando @code{random_gumbel} com um terceiro argumento @var{n},
 uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulada.
 
 Somente o m@'{e}todo inverso gen@'{e}rico est@'{a} implementado. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2348,7 +2348,7 @@ escreva primeiramente @code{load(distrib)}.
 @deffn {Funç@~{a}o} pdf_binomial (@var{x},@var{n},@var{p})
 Retorna o valor em @var{x} da funç@~{a}o de probabilidade de uma @math{Binomial(n,p)}
 vari@'{a}vel aleat@'{o}ria, com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso
-dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2360,12 +2360,12 @@ de uma @math{Binomial(n,p)} vari@'{a}vel aleat@'{o}ria, com @math{0<p<1} e @math
 for igual a @code{true},  de outra forma @code{cdf_binomial} retorna uma express@~{a}o nominal.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_binomial(5,7,1/6);
 @c cdf_binomial(5,7,1/6), numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_binomial(5,7,1/6);
                                          1
 (%o2)                 cdf_binomial(5, 7, -)
@@ -2381,42 +2381,42 @@ Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Binomial(n,p)}
 com @math{0<p<1} e @math{n} um inteiro positivo; em outras palavras, essa
 funç@~{a}o @'{e} a inversa da funç@~{a}o @code{cdf_binomial}. O argumento
 @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_binomial (@var{n},@var{p})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Binomial(n,p)}, com
 @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_binomial (@var{n},@var{p})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} std_binomial (@var{n},@var{p})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_binomial (@var{n},@var{p})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria 
 @math{Binomial(n,p)}, com @math{0<p<1} e @math{n} um inteiro positivo. Para
-fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_binomial (@var{n},@var{p})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2455,14 +2455,14 @@ selecionar o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}ve
 global @code{random_binomial_algorithm}, cujo valor padr@~{a}o @'{e} @code{kachit}.
 
 Veja tamb@'{e}m @code{random_binomial_algorithm}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} pdf_poisson (@var{x},@var{m})
 Retorna o valor em @var{x} da funç@~{a}o de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Poisson(m)}, com @math{m>0}. Para fazer
-uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2475,12 +2475,12 @@ Essa funç@~{a}o @'{e} calculada num@'{e}ricamente se a vari@'{a}vel global
 retorna uma express@~{a}o nominal.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_poisson(3,5);
 @c cdf_poisson(3,5), numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_poisson(3,5);
 (%o2)                   cdf_poisson(3, 5)
 (%i3) cdf_poisson(3,5), numer;
@@ -2494,38 +2494,38 @@ Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Poisson(m)},
 com @math{m>0}; em outras palavras, essa funç@~{a}o @'{e} a inversa da
 funç@~{a}o @code{cdf_poisson}. O argumento @var{q} deve ser um elemento de
 @math{[0,1]}. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_poisson (@var{m})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Poisson(m)},
-com @math{m>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{m>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_poisson (@var{m})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Poisson(m)},
 com  @math{m>0}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} std_poisson (@var{m})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Poisson(m)},
-com @math{m>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{m>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_poisson (@var{m})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Poisson(m)},
-com @math{m>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{m>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_poisson (@var{m})
 Retorna o coeficiente de curtose de uma Poisson vari@'{a}vel aleat@'{o}ria  @math{Poi(m)},
-com @math{m>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{m>0}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2562,7 +2562,7 @@ algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global
 @code{ahrens_dieter}.
 
 Veja tamb@'{e}m @code{random_poisson_algorithm}. Para fazer uso
-dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2576,12 +2576,12 @@ resultado, uma forma nominal baseada na funç@~{a}o binomial de
 probabilidade @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c pdf_bernoulli(1,p);
 @c assume(0<p,p<1)$ pdf_bernoulli(1,p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) pdf_bernoulli(1,p);
 (%o2)                 pdf_binomial(1, 1, p)
 (%i3) assume(0<p,p<1)$ pdf_bernoulli(1,p);
@@ -2593,7 +2593,7 @@ probabilidade @'{e} retornada.
 @deffn {Funç@~{a}o} cdf_bernoulli (@var{x},@var{p})
 Retorna o valor em @var{x} da funç@~{a}o distribuiç@~{a}o de
 probabilidade de uma vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)}, com @math{0<p<1}.
-Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2601,7 +2601,7 @@ Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Bernoulli(p)},
 com @math{0<p<1}; em outras palavras, essa funç@~{a}o @'{e} a inversa da
 funç@~{a}o @code{cdf_bernoulli}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+@math{[0,1]}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2613,12 +2613,12 @@ quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o resultad
 nominal baseada na m@'{e}dia binomial @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c mean_bernoulli(p);
 @c assume(0<p,p<1)$ mean_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) mean_bernoulli(p);
 (%o2)                  mean_binomial(1, p)
 (%i3) assume(0<p,p<1)$ mean_bernoulli(p);
@@ -2635,12 +2635,12 @@ embora quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o r
 uma forma nominal baseada na vari@^{a}ncia binomial @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c var_bernoulli(p);
 @c assume(0<p,p<1)$ var_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) var_bernoulli(p);
 (%o2)                  var_binomial(1, p)
 (%i3) assume(0<p,p<1)$ var_bernoulli(p);
@@ -2658,12 +2658,12 @@ dispon@'{i}vel para pegar o resultado, uma forma nominal baseada no desvio
 padr@~{a}o binomial @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c std_bernoulli(p);
 @c assume(0<p,p<1)$ std_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) std_bernoulli(p);
 (%o2)                  std_binomial(1, p)
 (%i3) assume(0<p,p<1)$ std_bernoulli(p);
@@ -2680,12 +2680,12 @@ embora quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o r
 uma forma nominal baseada no coeficiente de assimetria binomial @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c skewness_bernoulli(p);
 @c assume(0<p,p<1)$ skewness_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) skewness_bernoulli(p);
 (%o2)                skewness_binomial(1, p)
 (%i3) assume(0<p,p<1)$ skewness_bernoulli(p);
@@ -2704,12 +2704,12 @@ embora quando Maxima n@~{a}o tiver informaç@~{a}o dispon@'{i}vel para pegar o r
 uma forma nominal baseada no coeficiente de curtose binomial @'{e} retornada.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c kurtosis_bernoulli(p);
 @c assume(0<p,p<1)$ kurtosis_bernoulli(p);
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) kurtosis_bernoulli(p);
 (%o2)                kurtosis_binomial(1, p)
 (%i3) assume(0<p,p<1)$ kurtosis_bernoulli(p);
@@ -2729,21 +2729,21 @@ argumento @var{n}, uma amostra aleat@'{o}ria de tamanho @var{n} ser@'{a} simulad
 Essa @'{e} uma aplicaç@~{a}o direta da funç@~{a}o @code{random} built-in funç@~{a}o do Maxima.
 
 Veja tamb@'{e}m @code{random}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} pdf_geometric (@var{x},@var{p})
 Retorna o valor em @var{x} da funç@~{a}o de probabilidade de uma vari@'{a}vel
 aleat@'{o}ria @math{Geometric(p)}, com @math{0<p<1}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} cdf_geometric (@var{x},@var{p})
 Retorna o valor em @var{x} da funç@~{a}o distribuiç@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Geometric(p)}, com @math{0<p<1}. Para fazer
-uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2751,37 +2751,37 @@ uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Geometric(p)},
 com @math{0<p<1}; em outras palavras, essa funç@~{a}o @'{e} a inversa da
 funç@~{a}o @code{cdf_geometric}. O argumento @var{q} deve ser um elemento de
-@math{[0,1]}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+@math{[0,1]}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_geometric (@var{p})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Geometric(p)},
-com @math{0<p<1}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_geometric (@var{p})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Geometric(p)},
-com @math{0<p<1}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} std_geometric (@var{p})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Geometric(p)},
-com @math{0<p<1}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_geometric (@var{p})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Geometric(p)},
-com @math{0<p<1}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_geometric (@var{p})
 Retorna o coeficiente de curtose de uma geometric vari@'{a}vel aleat@'{o}ria  @math{Geo(p)},
-com @math{0<p<1}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+com @math{0<p<1}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2820,14 +2820,14 @@ vari@'{a}vel global @code{random_geometric_algorithm}, cujo valor padr@~{a}o @'{
 @code{bernoulli}.
 
 Veja tamb@'{e}m @code{random_geometric_algorithm}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} pdf_discrete_uniform (@var{x},@var{n})
 Retorna o valor em @var{x} da funç@~{a}o de probabilidade de uma vari@'{a}vel
 aleat@'{o}ria @math{Discrete Uniform(n)}, com @math{n} a strictly positive integer. Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
@@ -2836,7 +2836,7 @@ Retorna o valor em @var{x} da funç@~{a}o distribuiç@~{a}o de probabilidade
 de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)}, com @math{n} inteiro
 estritamente positivo. Para fazer uso dessa funç@~{a}o, escreva
 primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
@@ -2845,42 +2845,42 @@ Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Unifo
 com @math{n} um inteiro estritamente positivo; em outras palavras, essa
 funç@~{a}o @'{e} a inversa da funç@~{a}o @code{cdf_discrete_uniform}. O
 argumento @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_discrete_uniform (@var{n})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)},
 com @math{n} um inteiro estritamente positivo. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_discrete_uniform (@var{n})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)},
 com @math{n} um inteiro estritamente positivo. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} std_discrete_uniform (@var{n})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)},
 com @math{n} um inteiro estritamente positivo. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_discrete_uniform (@var{n})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)},
 com @math{n} um inteiro estritamente positivo. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_discrete_uniform (@var{n})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Discrete Uniform(n)},
 com @math{n} um inteiro estritamente positivo. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2894,7 +2894,7 @@ tamanho @var{m} ser@'{a} simulada.
 Isso @'{e} uma aplicaç@~{a}o direta da funç@~{a}o @code{random} built-in funç@~{a}o do Maxima.
 
 Veja tamb@'{e}m @code{random}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2902,7 +2902,7 @@ primeiramente @code{load(distrib)}.
 Retorna o valor em @var{x} da funç@~{a}o de probabilidade de uma
 vari@'{a}vel aleat@'{o}ria @math{Hypergeometric(n1,n2,n)}, com @var{n1}, @var{n2}
 e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2910,7 +2910,7 @@ funç@~{a}o, escreva primeiramente @code{load(distrib)}.
 Retorna o valor em @var{x} da funç@~{a}o distribuiç@~{a}o de
 probabilidade de uma vari@'{a}vel aleat@'{o}ria @math{Hypergeometric(n1,n2,n)},
 com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}. Para
-fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2919,7 +2919,7 @@ Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Hypergeometric
 com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}; em outras
 palavras, essa funç@~{a}o @'{e} a inversa da funç@~{a}o @code{cdf_hypergeometric}.
 O argumento @var{q} deve ser um elemento de @math{[0,1]}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2927,7 +2927,7 @@ funç@~{a}o, escreva primeiramente @code{load(distrib)}.
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria discreta univorme
 @math{Hyp(n1,n2,n)}, com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos
 e @math{n<=n1+n2}. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -2935,28 +2935,28 @@ primeiramente @code{load(distrib)}.
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria hipergeom@'{e}trica
 @math{Hyp(n1,n2,n)}, com @var{n1}, @var{n2} e @var{n} inteiros
 n@~{a}o negativos e @math{n<=n1+n2}. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} std_hypergeometric (@var{n1},@var{n2},@var{n})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Hypergeometric(n1,n2,n)},
 com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}. Para fazer uso dessa funç@~{a}o, escreva primeiramente
-@code{load(distrib)}.
+@code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_hypergeometric (@var{n1},@var{n2},@var{n})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Hypergeometric(n1,n2,n)},
 com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}. Para fazer uso
-dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_hypergeometric (@var{n1},@var{n2},@var{n})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Hypergeometric(n1,n2,n)},
 com @var{n1}, @var{n2} e @var{n} inteiros n@~{a}o negativos e @math{n<=n1+n2}. Para fazer uso
-dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 @defvr {Vari@'{a}vel de opç@~{a}o} random_hypergeometric_algorithm
@@ -2992,7 +2992,7 @@ algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}vel global @cod
 cujo valor padr@~{a}o @'{e} @code{kachit}.
 
 Veja tamb@'{e}m @code{random_hypergeometric_algorithm}. Para fazer uso
-dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -3000,7 +3000,7 @@ dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
 Retorna o valor em @var{x} da funç@~{a}o de probabilidade de uma vari@'{a}vel
 aleat@'{o}ria @math{Negative Binomial(n,p)}, com @math{0<p<1} e @math{n} um inteiro
 positivo. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -3012,12 +3012,12 @@ Essa funç@~{a}o @'{e} calculada num@'{e}ricamente se a vari@'{a}vel global @cod
 igual a @code{true},  de outra forma essa funç@~{a}o retorna uma express@~{a}o nominal.
 
 @c ===beg===
-@c load (distrib)$
+@c load ("distrib")$
 @c cdf_negative_binomial(3,4,1/8);
 @c cdf_negative_binomial(3,4,1/8), numer;
 @c ===end===
 @example
-(%i1) load (distrib)$
+(%i1) load ("distrib")$
 (%i2) cdf_negative_binomial(3,4,1/8);
                                              1
 (%o2)            cdf_negative_binomial(3, 4, -)
@@ -3032,42 +3032,42 @@ igual a @code{true},  de outra forma essa funç@~{a}o retorna uma express@~{a}o 
 Retorna o @var{q}-quantil de uma vari@'{a}vel aleat@'{o}ria @math{Negative Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo; em outras palavras, essa funç@~{a}o
 @'{e} a inversa da funç@~{a}o @code{cdf_negative_binomial}. O argumento @var{q} deve ser
-um elemento de @math{[0,1]}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+um elemento de @math{[0,1]}. Para fazer uso dessa funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} mean_negative_binomial (@var{n},@var{p})
 Retorna a m@'{e}dia de uma vari@'{a}vel aleat@'{o}ria @math{Negative Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} var_negative_binomial (@var{n},@var{p})
 Retorna a vari@^{a}ncia de uma vari@'{a}vel aleat@'{o}ria @math{Negative Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} std_negative_binomial (@var{n},@var{p})
 Retorna o desvio padr@~{a}o de uma vari@'{a}vel aleat@'{o}ria @math{Negative Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funç@~{a}o,
-escreva primeiramente @code{load(distrib)}.
+escreva primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} skewness_negative_binomial (@var{n},@var{p})
 Retorna o coeficiente de assimetria de uma vari@'{a}vel aleat@'{o}ria @math{Negative Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
 @deffn {Funç@~{a}o} kurtosis_negative_binomial (@var{n},@var{p})
 Retorna o coeficiente de curtose de uma vari@'{a}vel aleat@'{o}ria @math{Negative Binomial(n,p)},
 com @math{0<p<1} e @math{n} um inteiro positivo. Para fazer uso dessa funç@~{a}o, escreva
-primeiramente @code{load(distrib)}.
+primeiramente @code{load("distrib")}.
 @end deffn
 
 
@@ -3107,5 +3107,5 @@ selecionar o algor@'{i}tmo a ser usado fornecendo um certo valor @`a vari@'{a}ve
 @code{random_negative_binomial_algorithm}, cujo valor padr@~{a}o @'{e} @code{bernoulli}.
 
 Veja tamb@'{e}m @code{random_negative_binomial_algorithm}. Para fazer uso dessa
-funç@~{a}o, escreva primeiramente @code{load(distrib)}.
+funç@~{a}o, escreva primeiramente @code{load("distrib")}.
 @end deffn

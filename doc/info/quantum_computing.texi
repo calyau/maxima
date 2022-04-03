@@ -20,7 +20,7 @@ quantum computer, in this simulator a quantum state can be cloned using
 @mrefdot{copylist}
 
 This is an additional package that must be loaded with
-@code{load(quantum_computing)} in order to use it.
+@code{load("quantum_computing")} in order to use it.
 
 @opencatbox{Categories:}
 @category{Share packages}

@@ -21,7 +21,7 @@ na expressão.
 
 Exemplos:
 @example
-(%i1) load (opsubst)$
+(%i1) load ("opsubst")$
 
 (%i2) opsubst(f,g,g(g(x)));
 (%o2)                     f(f(x))

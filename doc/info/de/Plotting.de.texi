@@ -315,18 +315,18 @@ Der Algorithmus von @code{implicit_plot} stellt Vorzeichenwechsel der Funktion
 in den Bereichen @var{x_range} und @var{y_range} fest.  F@"ur komplizierte
 Fl@"achen kann der Algorithmus versagen.
 
-@c @code{load(implicit_plot)} loads this function.
+@c @code{load("implicit_plot")} loads this function.
 
-Die Funktion wird mit dem Kommando @code{load(implicit_plot)} geladen.
+Die Funktion wird mit dem Kommando @code{load("implicit_plot")} geladen.
 
 Beispiel:
 
 @c ===beg===
-@c load(implicit_plot)$
+@c load("implicit_plot")$
 @c implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4])$
 @c ===end===
 @example
-(%i1) load(implicit_plot)$
+(%i1) load("implicit_plot")$
 (%i2) implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4])$
 @end example
 

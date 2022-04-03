@@ -54,7 +54,7 @@ b = r sin(t)
 
 @mref{polartorect} is the inverse function of @mrefdot{recttopolar}
 
-@code{load(fft)} loads this function.  See also @mrefdot{fft}
+@code{load("fft")} loads this function.  See also @mrefdot{fft}
 
 @opencatbox{Categories:}
 @category{Package fft}
@@ -84,7 +84,7 @@ The computed angle is in the range @code{-%pi} to @code{%pi}.
 
 @code{recttopolar} is the inverse function of @mrefdot{polartorect}
 
-@code{load(fft)} loads this function.  See also @mrefdot{fft}
+@code{load("fft")} loads this function.  See also @mrefdot{fft}
 
 @opencatbox{Categories:}
 @category{Package fft}
@@ -123,7 +123,7 @@ x[j] = sum(y[k] exp(-2 %i %pi j k / n), k, 0, n - 1)
 As there are various sign and normalization conventions possible,
 this definition of the transform may differ from that used by other mathematical software.
 
-@code{load(fft)} loads this function.
+@code{load("fft")} loads this function.
 
 See also @mref{fft} (forward transform), @mrefcomma{recttopolar} and
 @mrefdot{polartorect}
@@ -247,7 +247,7 @@ a[n/2] = realpart (y[n/2])
 b[n/2] = 0
 @end example
 
-@code{load(fft)} loads this function.
+@code{load("fft")} loads this function.
 
 See also @mref{inverse_fft} (inverse transform),
 @mrefcomma{recttopolar} and @mrefdot{polartorect}. See @mref{real_fft}

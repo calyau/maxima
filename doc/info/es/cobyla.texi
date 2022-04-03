@@ -113,7 +113,7 @@ Código de retorno con los siguientes significados:
  @end enumerate
 @end enumerate
 
-El código @code{load(fmin_cobyla)} carga en memoria esta función..
+El código @code{load("fmin_cobyla")} carga en memoria esta función..
 
 @end deffn
 
@@ -126,7 +126,7 @@ valor por defecto de @var{rhoend} es @code{10^(fpprec/2)}.
 
 Véase @code{fmin_cobyla}.
 
-El código @code{load(fmin_cobyla)} carga en memoria esta función..
+El código @code{load("fmin_cobyla")} carga en memoria esta función..
 
 @end deffn
 
@@ -137,11 +137,11 @@ Minimizar x1*x2 bajo la condición 1-x1^2-x2^2 >= 0.
 La solución teórica es x1 = 1/sqrt(2), x2 = -1/sqrt(2).
 
 @c ===beg===
-@c load(fmin_cobyla);
+@c load("fmin_cobyla");
 @c fmin_cobyla(x1*x2, [x1, x2], [1,1], constraints = [x1^2+x2^2<=1], iprint=1);
 @c ===end===
 @example
-(%i1) load(fmin_cobyla)$
+(%i1) load("fmin_cobyla")$
 
 (%i2) fmin_cobyla(x1*x2, [x1, x2], [1,1], constraints = [x1^2+x2^2<=1], iprint=1);
 

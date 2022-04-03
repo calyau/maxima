@@ -20,7 +20,7 @@
 @var{x_range}と@var{y_range}で与えられる領域上で符号の変化を辿ることで機能し、
 複雑な式では失敗する可能性があります。
 
-@code{load(implicit_plot)}はこの関数をロードします。
+@code{load("implicit_plot")}はこの関数をロードします。
 
 例:
 @example

@@ -31,19 +31,19 @@ como @code{modedeclare (m, even, n, odd)}  para inteiros paes ou @'{i}mpares.
 @code{absimp} define as funç@~{o}es @code{unitramp} e @code{unitstep}
 em termos de @code{abs} e @code{signum}.
 
-@code{load (absimp)} torna esse pacote dispon@'{i}vel para uso.
+@code{load ("absimp")} torna esse pacote dispon@'{i}vel para uso.
 @code{demo (absimp)} faz uma demonstraç@~{a}o desse pacote.
 
 Exemplos:
 
 @c ===beg===
-@c load (absimp)$
+@c load ("absimp")$
 @c (abs (x))^2;
 @c diff (abs (x), x);
 @c cosh (abs (x));
 @c ===end===
 @example
-(%i1) load (absimp)$
+(%i1) load ("absimp")$
 (%i2) (abs (x))^2;
                                        2
 (%o2)                                 x
@@ -93,7 +93,7 @@ resimplificar a express@~{a}o completa novamente.  Essa funç@~{a}o pode ser
 @c after loading @code{diageval}. They are special functions used for  tensor
 @c manipulation.
 
-@code{load (facexp)} torna dispon;ivel para uso esse pacote.
+@code{load ("facexp")} torna dispon;ivel para uso esse pacote.
 @code{demo (facexp)} faz uma demonstraç@~{a}o desse pacote.
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
@@ -199,7 +199,7 @@ Remove a parte @var{n} da express@~{a}o @var{expr}.
 Se @var{n} @'{e} uma lsita da forma @code{[@var{l}, @var{m}]}
 ent@~{a}o as partes de @var{l} at@'{e} @var{m} s@~{a}o removidas.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
@@ -211,7 +211,7 @@ ou express@~{o}es na vari@'{a}vel @var{x}.
 O determinante da matriz Wronskiana @'{e} o determinante Wronskiano do conjunto de funç@~{o}es.
 As funç@~{o}es s@~{a}o linearmente independentes entre si se seu determinante for igual a zero.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @c adjoint already described in doc/info/Matrices.texi
@@ -219,7 +219,7 @@ Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
 @deffn {Funç@~{a}o} tracematrix (@var{M})
 Retorna o traço (somat@'{o}rio dos elementos da diagonal principal) da matriz @var{M}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} rational (@code{z})
@@ -227,7 +227,7 @@ Multiplica o numerador e o denominador de @var{z} pelo complexo conjugado do den
 racionalizando dessa forma o denominador complexo.
 Retorna a forma de express@~{a}o racional can@^{o}nica (CRE) se fornecida uma CRE, caso contr@'{a}rio retorna a forma geral.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @c uprobe calls ?uprobe and assumes file is a list => obsolete, not common lisp
@@ -238,7 +238,7 @@ Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
 Retorna @code{true} se @var{expr} for diferente de zero e @code{freeof (@var{x}, @var{expr})} retorna @code{true}.
 Retorna @code{false} de outra forma.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} linear (@var{expr}, @var{x})
@@ -247,7 +247,7 @@ Quando @var{expr} for uma express@~{a}o linear na vari@'{a}vel @var{x},
 e @var{a} e @var{b} s@~{a}o livres de @var{x}.
 De outra forma, @code{linear} retorna @var{expr}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} gcdivide (@var{p}, @var{q})
@@ -258,7 +258,7 @@ e retorna a raz@~{a}o dos resultados.
 Quando @code{takegcd} for @code{false},
 @code{gcdivide} retorna a raz@~{a}o @code{@var{p}/@var{q}}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @c lcm already described in doc/info/Number.texi
@@ -267,27 +267,27 @@ Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
 Retorna o @var{n}-@'{e}siomo termo da s@'{e}rie aritm@'{e}tica
 @code{@var{a}, @var{a} + @var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} geometric (@var{a}, @var{r}, @var{n})
 Retorna o @var{n}-@'{e}simo termo da s@'{e}rie geom@'{e}trica
 @code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ..., @var{a}*@var{r}^(@var{n} - 1)}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
 Retorna o @var{n}-@'{e}simo termo da s@'{e}rie harm@^{o}nica
 @code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} + 2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} arithsum (@var{a}, @var{d}, @var{n})
 Retorna a soma dos elementos da s@'{e}rie aritm@'{e}tica de 1 a @var{n}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} geosum (@var{a}, @var{r}, @var{n})
@@ -295,52 +295,52 @@ Retorna a soma dos elementos da s@'{e}rie geom@'{e}trica de 1 a @var{n}.  Se @va
 infinito (@code{inf}) ent@~{a}o a soma ser@'{a} finita se e somente se o valor absoluto
 de @var{r} for menor que 1.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} gaussprob (@var{x})
 Retorna a funç@~{a}o de probalilidade de Gauss
 @code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} gd (@var{x})
 Retorna a funç@~{a}o de Gudermann
 @code{2 * atan(%e^@var{x} - %pi/2)}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} agd (@var{x})
 Retorna o inverso da funç@~{a}o de Gudermann
 @code{log (tan (%pi/4 + x/2)))}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} vers (@var{x})
 Retorna o @i{sinus versus} @code{1 - cos (x)}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} covers (@var{x})
 Retorna o @i{sinus versus} do complemento @code{1 - sin (@var{x})}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} exsec (@var{x})
 Retorna a parte externa da secante @code{sec (@var{x}) - 1}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @deffn {Funç@~{a}o} hav (@var{x})
 Retorna o semi-@i{sinus versus} @code{(1 - cos(x))/2}.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @c REDUNDANT WITH BINOMIAL COEFFICIENT; CUT IT ??
@@ -348,7 +348,7 @@ Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
 Retorna o n@'{u}mero de combinaç@~{o}es de @var{n} objetos
 tomados em grupos de @var{r} elementos.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @c REDUNDANT WITH PERMUTATIONS FUNCTION IN NSET; CUT IT ??
@@ -356,7 +356,7 @@ Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
 Retorna o n@'{u}mero de permutaç@~{o}es de @var{r} objetos
 selecionados de um conjunto de @var{n} objetos.
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load(functs)}.
+Para usar essa funç@~{a}o escreva primeiramente @code{load("functs")}.
 @end deffn
 
 @c Adapted from ineq.usg ----------------------
@@ -369,7 +369,7 @@ para desigualdades.
 Sess@~{a}o exemplo:
 
 @c ===beg===
-@c load(ineq)$
+@c load("ineq")$
 @c a>=4;  /* uma desigualdade exemplo */
 @c (b>c)+%; /* adiciona uma segunda e estrita desigualdade */
 @c 7*(x<y); /* multiplica por um n@'{u}mero positivo */
@@ -388,7 +388,7 @@ Sess@~{a}o exemplo:
 @c %,pred;
 @c ===end===
 @example
-(%i1) load(ineq)$
+(%i1) load("ineq")$
 Warning: Putting rules on '+' or '*' is inefficient, and may not work.
 Warning: Putting rules on '+' or '*' is inefficient, and may not work.
 Warning: Putting rules on '+' or '*' is inefficient, and may not work.
@@ -522,7 +522,7 @@ os s@'{i}mbolos gerados por @code{reduce_consts} para representar subexpress@~{o
 @code{const_counter} (valor padr@~{a}o: 1) @'{e} o @'{i}ndice inteiro usado para gerar s@'{i}mbolos
 @'{u}nicos para representar cada subexpress@~{a}o constante emcontrada por @code{reduce_consts}.
 
-@code{load (rducon)} torna essa funç@~{a}o dispon@'{i}vel para uso.
+@code{load ("rducon")} torna essa funç@~{a}o dispon@'{i}vel para uso.
 @code{demo (rducon)} faz uma demonstraç@~{a}o dessa funç@~{a}o.
 @end deffn
 
@@ -554,7 +554,7 @@ par a par devido @`a dificuldade combinat@'{o}ria natural de encontrar
 qual de todas dos poss@'{i}veis rearranjos de pares retorna o mais
 compacto resultado de fatoraç@~{a}o de um par.
 
-@code{load (scifac)} torna essa funç@~{a}o dispon@'{i}vel para uso.
+@code{load ("scifac")} torna essa funç@~{a}o dispon@'{i}vel para uso.
 @code{demo (scifac)} faz uma demonstraç@~{a}o dessa funç@~{a}o.
 @end deffn
 
@@ -566,12 +566,12 @@ compacto resultado de fatoraç@~{a}o de um par.
 Desaninha @code{sqrt} de simples, num@'{e}rico, bin@^{o}mios de ra@'{i}zes irracionais de n@'{u}meros racionais , onde for poss@'{i}vel.  E.g.
 
 @c ===beg===
-@c load (sqdnst)$
+@c load ("sqdnst")$
 @c sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12);
 @c sqrtdenest(%);
 @c ===end===
 @example
-(%i1) load (sqdnst)$
+(%i1) load ("sqdnst")$
 (%i2) sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12);
                                     sqrt(3)
                                sqrt(------- + 1)
@@ -590,7 +590,7 @@ Desaninha @code{sqrt} de simples, num@'{e}rico, bin@^{o}mios de ra@'{i}zes irrac
 Algumas vezes isso ajuda na hora de aplicar @code{sqrtdenest} mais que uma vez, sobre coisas como
 @code{(19601-13860 sqrt(2))^(7/4)}.
 
-@code{load (sqdnst)} Torna essa funç@~{a}o dispon@'{i}vel para uso.
+@code{load ("sqdnst")} Torna essa funç@~{a}o dispon@'{i}vel para uso.
 @end deffn
 
 @c stopex.usg: "expandwrt", "expandwrt_denom", and "expandwrt_factored" already in doc/info/Simplification.texi

@@ -9,7 +9,7 @@
 @section Introduç@~{a}o a ctensor
 
 @code{ctensor} @'{e} um pacote de manipulaç@~{a}o de componentes.  Para usar o pacote
-@code{ctensor}, digite @code{load(ctensor)}.
+@code{ctensor}, digite @code{load("ctensor")}.
 Para começar uma sess@~{a}o iterativa com @code{ctensor}, digite @code{csetup()}.  Voc@^{e} @'{e}
 primeiramente solicitado a especificar a dimens@~{a}o a ser manipulada. Se a dimens@~{a}o
 for 2, 3 ou 4 ent@~{a}o a lista de coordenadas padr@~{a}o @'{e} @code{[x,y]}, @code{[x,y,z]}
@@ -33,7 +33,7 @@ Schwarzschild) como um exemplo. Muitas das funç@~{o}es em @code{ctensor} ir@~{a
 mostradas para a m@'{e}trica padr@~{a}o como exemplos.
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)      /usr/local/lib/maxima/share/tensor/ctensor.mac
 (%i2) csetup();
 Enter the dimension of the coordinate system: 
@@ -196,7 +196,7 @@ voc@^{e} pode especificar uma m@'{e}trica esf@'{e}rica como segue:
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
       r*sin(theta),[r,theta,phi]]);
@@ -220,7 +220,7 @@ Funç@~{o}es de transformaç@~{a}o podem tamb@'{e}m serem usadas quando @code{cf
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) cframe_flag:true;
 (%o2)                                true
@@ -476,7 +476,7 @@ complexas:
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
 (%o2)                                true
@@ -676,7 +676,7 @@ Por exemplo, o seguinte demonstra como obter a classificaç@~{a}o de Petrov
 da m@'{e}trica de Kerr:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) (cframe_flag:true,gcd:spmod,ctrgsimp:true,ratfac:true);
 (%o2)                                true
@@ -842,7 +842,7 @@ abaixo, @code{findde} fornece as seguintes equaç@~{o}es diferenciais independen
 
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -895,7 +895,7 @@ abaixo como ilustra a m@'{e}trica de Schwarzschild:
 
 @example
 
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -924,7 +924,7 @@ Calcula o tensor d'Alembertiano da funç@~{a}o escalar assim que
 as depend@^{e}ncias tiverem sido declaradas sobre a funç@~{a}o. Po exemplo:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) derivabbrev:true;
 (%o2)                                true
@@ -1032,7 +1032,7 @@ como uma lista de matrizes bidimensionais. Por exemplo, o tensor de Riemann da
 m@'{e}trica de Schwarzschild pode ser visto como:
 
 @example
-(%i1) load(ctensor);
+(%i1) load("ctensor");
 (%o1)       /share/tensor/ctensor.mac
 (%i2) ratfac:true;
 (%o2)                                true

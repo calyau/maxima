@@ -74,7 +74,7 @@ Ejemplo:
 @c THIS ITEM IS A MESS, BUT DON'T BOTHER TO CLEAN IT UP:
 @c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
 @deffn {Función} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
-Es una rutina para integrales dobles escrita en lenguaje Maxima y posteriormente traducida y compilada a código máquina. La instrucción @code{load (dblint)} carga esta función. Utiliza el método de Simpson en las dos direcciones @code{x} e @code{y} para calcular
+Es una rutina para integrales dobles escrita en lenguaje Maxima y posteriormente traducida y compilada a código máquina. La instrucción @code{load ("dblint")} carga esta función. Utiliza el método de Simpson en las dos direcciones @code{x} e @code{y} para calcular
 
 @tex
 $$\int_a^b \int_{r\left(x\right)}^{s\left(x\right)} f\left(x,y\right) \, dy \, dx.$$

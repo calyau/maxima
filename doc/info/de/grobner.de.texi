@@ -27,7 +27,7 @@ A tutorial on @emph{Groebner Bases} can be found at@*
 To use the following functions you must load the @file{grobner.lisp} package.
 
 @example
-load(grobner);
+load("grobner");
 @end example
 
 A demo can be started by 

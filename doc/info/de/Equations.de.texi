@@ -533,7 +533,7 @@ Solution:
 @deffn  {Funktion} dimension (@var{eqn})
 @deffnx {Funktion} dimension (@var{eqn_1}, @dots{}, @var{eqn_n})
 
-@code{dimen} ist ein Paket f@"ur die Dimensionsanalyse.  @code{load(dimen)}
+@code{dimen} ist ein Paket f@"ur die Dimensionsanalyse.  @code{load("dimen")}
 l@"adt dieses Paket.  @code{demo(dimen)} zeigt eine kleine Demonstration.
 @end deffn
 
@@ -673,7 +673,7 @@ und von Integralgleichungen erster Art der Form
 @end group
 @end example
 
-Das Kommando @code{load(inteqn)} l@"adt das Paket.
+Das Kommando @code{load("inteqn")} l@"adt das Paket.
 
 Das erste Argument @var{ie} ist die Integralgleichung und das Argument @var{unk}
 die unbekannte Funktion.  Mit dem Argument @var{tech} wird die Methode

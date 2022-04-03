@@ -33,19 +33,19 @@
 @code{abs}と@code{signum}を使って
 @code{unitramp}と@code{unitstep}関数を定義します。
 
-@code{load (absimp)}はこのパッケージをロードします。
+@code{load ("absimp")}はこのパッケージをロードします。
 @code{demo (absimp)}はこのパッケージのデモを表示します。
 
 例:
 
 @c ===beg===
-@c load (absimp)$
+@c load ("absimp")$
 @c (abs (x))^2;
 @c diff (abs (x), x);
 @c cosh (abs (x));
 @c ===end===
 @example
-(%i1) load (absimp)$
+(%i1) load ("absimp")$
 (%i2) (abs (x))^2;
                                        2
 (%o2)                                 x
@@ -101,7 +101,7 @@
 @c after loading @code{diageval}. They are special functions used for  tensor
 @c manipulation.
 
-@code{load (facexp)}はこのパッケージをロードします。
+@code{load ("facexp")}はこのパッケージをロードします。
 @code{demo (facexp)}はこのパッケージのデモを見せます。
 
 @opencatbox
@@ -266,7 +266,7 @@ complicated subexpressions,  such as
 もし@var{n}が形式@code{[@var{l}, @var{m}]}のリストなら、
 パーツ@var{l}から@var{m}までが取り除かれます。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -281,14 +281,14 @@ Wronskian行列を返します。
 Wronskian行列の行列式は、
 式のリストのWronskian行列式です。
 
-@code{wronskian}を使うには、最初に@code{load(functs)}してください。例えば:
+@code{wronskian}を使うには、最初に@code{load("functs")}してください。例えば:
 
 @c ===beg===
-@c load (functs)$
+@c load ("functs")$
 @c wronskian([f(x), g(x)],x);
 @c ===end===
 @example
-(%i1) load(functs)$
+(%i1) load("functs")$
 (%i2) wronskian([f(x), g(x)],x);
 (%o2) matrix([f(x),g(x)],['diff(f(x),x,1),'diff(g(x),x,1)])
 @end example
@@ -305,7 +305,7 @@ Wronskian行列の行列式は、
 @deffn {関数} tracematrix (@var{M})
 行列@var{M}の跡(対角要素の和)を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -320,7 +320,7 @@ Wronskian行列の行列式は、
 もし与えられたものがそうであれば、正準有理式(CRE)形式を返し、
 そうでないなら、一般形式を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -339,7 +339,7 @@ Wronskian行列の行列式は、
 @code{true}を返します。
 そうでなければ、@code{false}を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -354,7 +354,7 @@ Wronskian行列の行列式は、
 ここで、@var{a}はゼロでなく、@var{a}と@var{b}は@var{x}に依存しません。
 そうでなければ、@code{linear}は@var{expr}を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -374,14 +374,14 @@ Wronskian行列の行列式は、
 @code{takegcd}が@code{false}の時、
 @code{gcdivide}は比@code{@var{p}/@var{q}}を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @mref{ezgcd}, @mref{gcd}, @mref{gcdex}, @mref{poly_gcd}も参照してください。
 
 例:
 
 @example
-(%i1) load(functs)$
+(%i1) load("functs")$
 
 (%i2) p1:6*x^3+19*x^2+19*x+6; 
                         3       2
@@ -420,7 +420,7 @@ Wronskian行列の行列式は、
 @deffn {関数} arithmetic (@var{a}, @var{d}, @var{n})
 算術級数@code{@var{a}, @var{a} + @var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}の第@var{n}項を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -432,7 +432,7 @@ Wronskian行列の行列式は、
 @deffn {関数} geometric (@var{a}, @var{r}, @var{n})
 幾何級数@code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ..., @var{a}*@var{r}^(@var{n} - 1)}の第@var{n}項を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -444,7 +444,7 @@ Wronskian行列の行列式は、
 @deffn {関数} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
 調和級数@code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} + 2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}の第@var{n}項を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -456,7 +456,7 @@ Wronskian行列の行列式は、
 @deffn {関数} arithsum (@var{a}, @var{d}, @var{n})
 算術級数の1から@var{n}までの和を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -470,7 +470,7 @@ Wronskian行列の行列式は、
 もし@var{n}が無限大(@code{inf})なら、
 @var{r}の絶対値が1未満でのみ、和は有限です。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -482,7 +482,7 @@ Wronskian行列の行列式は、
 @deffn {関数} gaussprob (@var{x})
 Gaussian確率函数@code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -494,7 +494,7 @@ Gaussian確率函数@code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}を返します。
 @deffn {関数} gd (@var{x})
 Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -506,7 +506,7 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 @deffn {関数} agd (@var{x})
 逆Gudermannian函数@code{log (tan (%pi/4 + x/2)))}を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -518,7 +518,7 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 @deffn {関数} vers (@var{x})
 正矢(せいし)@code{1 - cos (x)}を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -530,7 +530,7 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 @deffn {関数} covers (@var{x})
 余矢(よし)@code{1 - sin (@var{x})}を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -542,7 +542,7 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 @deffn {関数} exsec (@var{x})
 外正割(exsecant)@code{sec (@var{x}) - 1}を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -554,7 +554,7 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 @deffn {関数} hav (@var{x})
 半正矢@code{(1 - cos(x))/2}を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -567,7 +567,7 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 @deffn {関数} combination (@var{n}, @var{r})
 一度に@var{r}個を取る@var{n}個のオブジェクトの組み合わせの数を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -580,7 +580,7 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 @deffn {関数} permutation (@var{n}, @var{r})
 @var{n}個のオブジェクトの集合から選択された@var{r}個のオブジェクトの置換の数を返します。
 
-この関数を使うには、最初に@code{load(functs)}を書いてください。
+この関数を使うには、最初に@code{load("functs")}を書いてください。
 
 @opencatbox
 @category{Package functs}
@@ -599,7 +599,7 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 セッション例:
 
 @c ===beg===
-@c load(ineq)$
+@c load("ineq")$
 @c a>=4;  /* a sample inequality */
 @c (b>c)+%; /* add a second, strict inequality */
 @c 7*(x<y); /* multiply by a positive number */
@@ -618,7 +618,7 @@ Gudermannian函数@code{2*atan(%e^x)-%pi/2}を返します。
 @c %,pred;
 @c ===end===
 @example
-(%i1) load(ineq)$
+(%i1) load("ineq")$
 Warning: Putting rules on '+' or '*' is inefficient, and may not work.
 Warning: Putting rules on '+' or '*' is inefficient, and may not work.
 Warning: Putting rules on '+' or '*' is inefficient, and may not work.
@@ -773,7 +773,7 @@ map ('fortran, const_eqns)$
 @code{const_counter} (デフォルト値: 1)は
 @code{reduce_consts}が見つける定部分式それぞれを表すためのユニークなシンボルを生成するのに使われる整数添字です。
 
-@code{load (rducon)}はこの関数をロードします。
+@code{load ("rducon")}はこの関数をロードします。
 @code{demo (rducon)}はこの関数のデモを見せます。
 
 @opencatbox
@@ -819,7 +819,7 @@ map ('fortran, const_eqns)$
 組み合わせ的に困難な性質のため、
 項目(3)は必ずしも、対での因数分解の最善の仕事をしません。
 
-@code{load (scifac)}はこの関数をロードします。
+@code{load ("scifac")}はこの関数をロードします。
 @code{demo (scifac)}はこの関数のデモを見せます。
 
 @opencatbox
@@ -840,12 +840,12 @@ map ('fortran, const_eqns)$
 例えば、
 
 @c ===beg===
-@c load (sqdnst)$
+@c load ("sqdnst")$
 @c sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12);
 @c sqrtdenest(%);
 @c ===end===
 @example
-(%i1) load (sqdnst)$
+(%i1) load ("sqdnst")$
 (%i2) sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12);
                                     sqrt(3)
                                sqrt(------- + 1)
@@ -865,7 +865,7 @@ map ('fortran, const_eqns)$
 @code{(19601-13860 sqrt(2))^(7/4)}に対してのように、
 @code{sqrtdenest}を複数回適用することが役立ちます。
 
-@code{load (sqdnst)}はこの関数をロードします。
+@code{load ("sqdnst")}はこの関数をロードします。
 
 @opencatbox
 @category{Expressions}
