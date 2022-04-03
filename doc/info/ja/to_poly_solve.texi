@@ -101,7 +101,7 @@ Maxima演算子 @code{and}と @code{or}はどちらも短絡的です。
 @code{%or}上に @code{%and}を分配するためのサポートはありません;
 @code{%and}上に論理否定を分配するサポートもありません。
 
-@b{利用のためには} @file{load("to_poly_solve")}
+@b{利用のためには} @code{load("to_poly_solve")}
 
 @b{関連関数} @code{%or, %if, and, or, not}
 
@@ -162,7 +162,7 @@ Maxima演算子 @code{if}はn項演算子ですが、演算子 @code{%if}は n�
 同値の線形inequationに容易に変換可能な非線形inequationだけを
 整理します。
 
-@b{利用には:} @file{load("to_poly_solve")}
+@b{利用には:} @code{load("to_poly_solve")}
 
 @b{状況:} 演算子 @code{%if}は実験的です;
 仕様は変更の可能性があり、
@@ -258,7 +258,7 @@ Maxima演算子 @code{and}と @code{or}はどちらも短絡的です。
 また、@code{%and}上に @code{%or}を分配するためのサポートはありません;
 @code{%or}上に論理否定を分配するサポートもありません。
 
-@b{利用のためには} @file{load("to_poly_solve")}
+@b{利用のためには} @code{load("to_poly_solve")}
 
 @b{関連関数} @code{%or, %if, and, or, not}
 
@@ -288,7 +288,7 @@ Maxima演算子 @code{and}と @code{or}はどちらも短絡的です。
 
 @b{関連関数} @code{isreal_p}
 
-@b{利用するには} @file{load("to_poly_solve")}
+@b{利用するには} @code{load("to_poly_solve")}
 
 @b{状況} 関数 @code{complex_number_p}は実験的です;
 仕様は変更の可能性があり、
@@ -361,7 +361,7 @@ Maximaはこれらのラムダ形が意味的に等しいことを演繹でき�
 (%o8)                         true
 @end example
 
-@b{利用するには} @file{load("to_poly_solve")}
+@b{利用するには} @code{load("to_poly_solve")}
 
 @b{状況} 関数 @code{compose_functions}は実験的です;
 仕様は変更の可能性があり、
@@ -400,7 +400,7 @@ Maximaはこれらのラムダ形が意味的に等しいことを演繹でき�
 
 @b{関連関数} @code{float, bfloat}
 
-@b{利用するには} @file{load("to_poly_solve")}
+@b{利用するには} @code{load("to_poly_solve")}
 
 @b{状況} 関数 @code{dfloat}は実験的です;
 仕様は変更の可能性があり、
@@ -481,7 +481,7 @@ Maximaがどのアルゴリズムを使うか決めます。
 
 @b{オプション変数} @i{resultant}
 
-@b{利用するには} @file{load("to_poly")}
+@b{利用するには} @code{load("to_poly")}
 
 @b{状況} 関数 @code{elim}は実験的です;
 仕様は変更の可能性があり、
@@ -504,7 +504,7 @@ Maximaがどのアルゴリズムを使うか決めます。
 (%o2)                [[x - 1], [y + x - 1]]
 @end example
 
-@b{利用するには} @file{load("to_poly")}
+@b{利用するには} @code{load("to_poly")}
 
 @b{オプション変数} @i{resultant}
 
@@ -544,7 +544,7 @@ returns a set.
 
 @b{関連関数} @i{elim, eliminate, elim_allbut}
 
-@b{利用するには} @file{load("to_poly")}
+@b{利用するには} @code{load("to_poly")}
 
 @b{状況} 関数 @code{elimimate_using}は実験的です;
 仕様は変更の可能性があり、
@@ -641,7 +641,7 @@ Fourier消去コードは
 (%o12)      [- 1 < x, x < 1] or [1 < x] or [x < - 1]
 @end example
 
-@b{利用するには} @file{load("fourier_elim")}
+@b{利用するには} @code{load("fourier_elim")}
 
 @end deffn
 
@@ -691,7 +691,7 @@ falseを返すことができる時に名詞形を返します;
 (%o5)                   isreal_p(log(x))
 @end example
 
-@b{利用するには} @file{load("to_poly_solve")}
+@b{利用するには} @code{load("to_poly_solve")}
 
 @b{関連関数} @i{complex_number_p}
 
@@ -745,7 +745,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
 
 @b{関連関数} @i{nicedummies}
 
-@b{利用するには} @file{load("to_poly_solve")}
+@b{利用するには} @code{load("to_poly_solve")}
 
 @b{状況} 関数 @code{new_variable}は実験的です;
 仕様は変更の可能性があり、
@@ -769,7 +769,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
 
 @b{関連関数} @i{new_variable}
 
-@b{利用するには} @file{load("to_poly_solve")}
+@b{利用するには} @code{load("to_poly_solve")}
 
 @b{状況} 関数 @code{nicedummies}は実験的です;
 仕様は変更の可能性があり、
@@ -828,7 +828,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
 
 @b{Related function} @i{carg, isreal_p}
 
-@b{利用するには} @file{load("to_poly_solve")}
+@b{利用するには} @code{load("to_poly_solve")}
 
 @b{状況} 関数 @code{parg}は実験的です;
 仕様は変更の可能性があり、
@@ -851,7 +851,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
                  2                     2
 @end example
 
-@b{利用するには} @file{load("to_poly_solve")}
+@b{利用するには} @code{load("to_poly_solve")}
 
 @b{状況} 関数 @code{real_imagpart_to_conjugate}は実験的です;
 仕様は変更の可能性があり、
@@ -880,7 +880,7 @@ Maximaは自動的にこの情報を事実データベースに追加します�
                        2
 @end example
 
-@b{利用するには} @file{load("to_poly_solve")}
+@b{利用するには} @code{load("to_poly_solve")}
 
 @b{状況} 関数 @code{rectform_log_if_constant}は実験的です;
 仕様は変更の可能性があり、
@@ -912,7 +912,7 @@ inequationの論理積と論理和にいくつかの整理を適用します。
 (%o3)                         x > 0
 @end example
 
-@b{利用するには} @file{load("to_poly_solve")}
+@b{利用するには} @code{load("to_poly_solve")}
 
 @b{状況} 関数 @code{simp_inequality}は実験的です;
 仕様は変更の可能性があり、
@@ -929,7 +929,7 @@ inequationの論理積と論理和にいくつかの整理を適用します。
 Abramowitz and Stegun, 
 Eqs. 4.4.6 から 4.4.8までと 4.6.4から 4.6.6までを参照してください。
 
-@b{利用するには} @file{load("to_poly_solve")}
+@b{利用するには} @code{load("to_poly_solve")}
 
 @b{状況} 関数 @code{standardize_inverse_trig}は実験的です;
 仕様は変更の可能性があり、
@@ -997,7 +997,7 @@ log: encountered log(0).
 
 @b{関連関数} @i{subst, sublis, ratsubst}
 
-@b{利用するには} @file{load("to_poly_solve_extra.lisp")}
+@b{利用するには} @code{load("to_poly_solve_extra.lisp")}
 
 @b{状況} 関数 @code{subst_parallel}は実験的です;
 仕様は変更の可能性があり、
@@ -1071,7 +1071,7 @@ inequation制約を伴う多項式系に変換しようとします;
 
 @b{関連関数} @i{to_poly_solve}
 
-@b{利用するには} @file{load("to_poly")}
+@b{利用するには} @code{load("to_poly")}
 
 @b{状況:} 関数 @code{to_poly}は実験的です;
 仕様は変更の可能性があり、
@@ -1483,7 +1483,7 @@ Unable to solve
 
 @b{関連関数} @i{to_poly}
 
-@b{利用するには} @file{load("to_poly_solve")}
+@b{利用するには} @code{load("to_poly_solve")}
 
 @b{状況:} 関数 @code{to_poly_solve}は実験的です;
 仕様は変更の可能性があり、
