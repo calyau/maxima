@@ -1531,7 +1531,7 @@ Maximaが既に知っている規則と合わせて、
 以下の角度が完全に実装されます:
 @code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, @code{%pi/2}。
 他の3象限の対応する角度も利用可能です。
-これらを使うには、@code{load(atrig1);}を実行してください。
+これらを使うには、@code{load("atrig1");}を実行してください。
 
 @opencatbox
 @category{Trigonometric functions}

@@ -1387,7 +1387,7 @@ Arco tangente hiperbólica.
 El paquete @code{atrig1} contiene ciertas reglas de simplificación adicionales para las funciones trigonométricas inversas. Junto con las reglas que ya conoce Maxima, los siguientes ángulos están completamente implementados:
 @code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3} y @code{%pi/2}.  
 Los ángulos correspondientes en los otros tres cuadrantes también están disponibles.  
-Para hacer uso de estas reglas, ejecútese @code{load(atrig1);}.
+Para hacer uso de estas reglas, ejecútese @code{load("atrig1");}.
 
 @end defvr
 

@@ -101,7 +101,7 @@ para funç@~{o}es trigonom@'{e}tricas inversas.  Junto com regras
 j@'{a} conhecidas para Maxima, os seguintes @^{a}ngulos est@~{a}o completamente implementados:
 @code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, e @code{%pi/2}.  
 Os @^{a}ngulos correspondentes nos outros tr@^{e}s quadrantes est@~{a}o tamb@'{e}m dispon@'{i}veis.  
-Faça @code{load(atrig1);} para us@'{a}-lo.
+Faça @code{load("atrig1");} para us@'{a}-lo.
 
 @end defvr
 

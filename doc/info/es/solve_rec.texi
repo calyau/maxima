@@ -260,7 +260,7 @@ donde el sumando es hipergeométrico en  @var{k} y @var{n}.
 
 Para hacer uso de esta función deben cargarse previamente los paquetes
 @code{zeilberger} y @code{solve_rec} mediante la ejecución de las sentencias
-@code{load("solve_rec")} y @code{load(zeilberger)}.
+@code{load("solve_rec")} y @code{load("zeilberger")}.
 
 @example
 (%i17) load("zeilberger")$

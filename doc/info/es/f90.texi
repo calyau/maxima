@@ -18,19 +18,19 @@ Fortran 90: no se presta atención alguna a las posiciones de caracteres
 respecto de las columnas y los renglones largos se dividen a un ancho fijo con el
 carácter @code{&} indicando continuación de código.
 
-Ejecútese @code{load(f90)} antes de utilizar esta función.
+Ejecútese @code{load("f90")} antes de utilizar esta función.
 
 Véase también @code{fortran}.
 
 Ejemplos:
 
 @c ===beg===
-@c load (f90)$
+@c load ("f90")$
 @c foo : expand ((xxx + yyy + 7)^4);
 @c f90 ('foo = foo);
 @c ===end===
 @example
-(%i1) load (f90)$
+(%i1) load ("f90")$
 (%i2) foo : expand ((xxx + yyy + 7)^4);
          4            3         3        2    2             2
 (%o2) yyy  + 4 xxx yyy  + 28 yyy  + 6 xxx  yyy  + 84 xxx yyy
@@ -49,13 +49,13 @@ Expresiones múltiples. Captura de la salida estándar a un fichero
 por medio de la función @code{with_stdout}.
 
 @c ===beg===
-@c load (f90)$
+@c load ("f90")$
 @c foo : sin (3*x + 1) - cos (7*x - 2);
 @c with_stdout ("foo.f90", f90 (x = 0.25, y = 0.625, 'foo = foo, 'stop, 'end));
 @c printfile ("foo.f90");
 @c ===end===
 @example
-(%i1) load (f90)$
+(%i1) load ("f90")$
 (%i2) foo : sin (3*x + 1) - cos (7*x - 2);
 (%o2)              sin(3 x + 1) - cos(7 x - 2)
 (%i3) with_stdout ("foo.f90",

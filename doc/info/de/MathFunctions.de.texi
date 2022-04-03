@@ -1569,7 +1569,7 @@ ist f@"ur das numerische und symbolische Rechnen geeignet.
 
 Maxima hat keine vordefinierte Logarithmusfunktion zur Basis 10 oder anderen 
 Basen.  Eine einfache Definition ist zum Beispiel 
-@code{log10(x) := log(x)/log(10)}.  Mit dem Kommando @code{load(log10)} kann ein
+@code{log10(x) := log(x)/log(10)}.  Mit dem Kommando @code{load("log10")} kann ein
 Paket geladen werden, dass eine dekadische Logarithmusfunktion @code{log10}
 definiert.
 

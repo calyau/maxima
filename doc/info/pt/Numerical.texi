@@ -394,14 +394,14 @@ contanto que o teste de terminação @code{abs(@var{expr}) < @var{eps}} avalie
 para @code{true} ou @code{false}.
 Dessa forma não é necessário que @var{expr} avalie para um número.
 
-@code{load(newton1)} chama essa função.
+@code{load("newton1")} chama essa função.
 
 Veja também @code{realroots}, @code{allroots}, @code{find_root}, e @code{mnewton}.
 
 Exemplos:
 
 @c ===beg===
-@c load (newton1);
+@c load ("newton1");
 @c newton (cos (u), u, 1, 1/100);
 @c ev (cos (u), u = %);
 @c assume (a > 0);
@@ -409,7 +409,7 @@ Exemplos:
 @c ev (x^2 - a^2, x = %);
 @c ===end===
 @example
-(%i1) load (newton1);
+(%i1) load ("newton1");
 (%o1) /usr/share/maxima/5.10.0cvs/share/numeric/newton1.mac
 (%i2) newton (cos (u), u, 1, 1/100);
 (%o2)                   1.570675277161251

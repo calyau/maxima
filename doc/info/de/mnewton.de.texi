@@ -152,9 +152,9 @@ Ausdruck @code{abs(@var{expr}) < @var{eps}} zu @code{true} oder @code{false}
 ausgewertet werden kann.  Daher ist es nicht notwendig, dass der Ausdruck
 @var{expr} zu einer Zahl ausgewertet werden kann.
 
-@c @code{load(newton1)} loads this function.
+@c @code{load("newton1")} loads this function.
 
-Das Kommando @code{load(newton1)} l@"adt die Funktion.
+Das Kommando @code{load("newton1")} l@"adt die Funktion.
 
 @c See also @code{realroots}, @code{allroots}, @code{find_root}, and 
 @c @code{mnewton}.
@@ -171,7 +171,7 @@ beschriebenen Funktion unterscheidet und auch nicht dokumentiert ist.
 Beispiele:
 
 @example
-(%i1) load (newton1);
+(%i1) load ("newton1");
 (%o1) /usr/share/maxima/5.10.0cvs/share/numeric/newton1.mac
 (%i2) newton (cos (u), u, 1, 1/100);
 (%o2)                   1.570675277161251

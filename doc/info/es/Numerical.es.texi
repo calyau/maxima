@@ -493,14 +493,14 @@ no definidas, siempre y cuando la condición de terminación
 lógico @code{true} o @code{false}; de este modo, no es necesario
 que @var{expr} tome un valor numérico.
 
-Ejecútese @code{load(newton1)} para cargar esta función.
+Ejecútese @code{load("newton1")} para cargar esta función.
 
 Véanse también @code{realroots}, @code{allroots}, @code{find_root} y @code{mnewton}.
 
 Ejemplos:
 
 @c ===beg===
-@c load (newton1);
+@c load ("newton1");
 @c newton (cos (u), u, 1, 1/100);
 @c ev (cos (u), u = %);
 @c assume (a > 0);
@@ -508,7 +508,7 @@ Ejemplos:
 @c ev (x^2 - a^2, x = %);
 @c ===end===
 @example
-(%i1) load (newton1);
+(%i1) load ("newton1");
 (%o1) /usr/share/maxima/5.10.0cvs/share/numeric/newton1.mac
 (%i2) newton (cos (u), u, 1, 1/100);
 (%o2)                   1.570675277161251
