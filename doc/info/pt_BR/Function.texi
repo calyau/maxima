@@ -1,22 +1,22 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Function.texi/1.48/Sat Jun  2 00:12:46 2007/-ko/
 @menu
-* Introduç@~{a}o a Definiç@~{a}o de Funç@~{a}o::  
-* Funç@~{a}o::                    
+* Introdução a Definição de Função::  
+* Função::                    
 * Macros::                      
-* Funç@~{o}es e Vari@'{a}veis para Definiç@~{a}o de Funç@~{a}o::  
+* Funções e Variáveis para Definição de Função::  
 @end menu
 
-@node Introduç@~{a}o a Definiç@~{a}o de Funç@~{a}o, Funç@~{a}o, Definiç@~{a}o de Funç@~{a}o, Definiç@~{a}o de Funç@~{a}o
-@section Introduç@~{a}o a Definiç@~{a}o de Funç@~{a}o
+@node Introdução a Definição de Função, Função, Definição de Função, Definição de Função
+@section Introdução a Definição de Função
 
-@node Funç@~{a}o, Macros, Introduç@~{a}o a Definiç@~{a}o de Funç@~{a}o, Definiç@~{a}o de Funç@~{a}o
+@node Função, Macros, Introdução a Definição de Função, Definição de Função
 @c NEEDS WORK, THIS TOPIC IS IMPORTANT
 @c MENTION DYNAMIC SCOPE (VS LEXICAL SCOPE)
-@section Funç@~{a}o
+@section Função
 @subsection Ordinary functions
 
-Para definir uma funç@~{a}o no Maxima voc@^{e} usa o operador @code{:=}.
+Para definir uma função no Maxima você usa o operador @code{:=}.
 E.g.
 
 @example
@@ -24,8 +24,8 @@ f(x) := sin(x)
 @end example
 
 @noindent
-define uma funç@~{a}o @code{f}.
-Funç@~{o}es an@^{o}nimas podem tamb@'{e}m serem criadas usando @code{lambda}.
+define uma função @code{f}.
+Funções anônimas podem também serem criadas usando @code{lambda}.
 Por exemplo
 
 @example
@@ -42,10 +42,10 @@ map (lambda ([i], i+1), l)
 @end example
 
 @noindent
-retornar@'{a} uma lista com 1 adicionado a cada termo.
+retornará uma lista com 1 adicionado a cada termo.
 
-Voc@^{e} pode tamb@'{e}m definir uma funç@~{a}o com um n@'{u}mero vari@'{a}vel de argumentos,
-teno um argumento final que @'{e} atribu@'{i}do para uma lista de argumentos
+Você pode também definir uma função com um número variável de argumentos,
+teno um argumento final que é atribuído para uma lista de argumentos
 extras:
 
 @example
@@ -59,57 +59,57 @@ extras:
 (%o4)                 [1, 2, [3, 4, 5, 6]]
 @end example
 
-O lado direito de uma funç@~{a}o @'{e} uma express@~{a}o.  Desse modo
-Se voc@^{e} quer uma seq@"{u}@^{e}ncia de express@~{o}es, voc@^{e} faz
+O lado direito de uma função é uma expressão.  Desse modo
+Se você quer uma seq@"{u}ência de expressões, você faz
 
 @example
 f(x) := (expr1, expr2, ...., exprn);
 @end example
 
-e o valor de @var{exprn} @'{e} que @'{e} retornado pela funç@~{a}o.
+e o valor de @var{exprn} é que é retornado pela função.
 
-Se voc@^{e} deseja fazer um @code{return} de alguma express@~{a}o dentro da
-funç@~{a}o ent@~{a}o voc@^{e} deve usar @code{block} e @code{return}.
+Se você deseja fazer um @code{return} de alguma expressão dentro da
+função então você deve usar @code{block} e @code{return}.
 
 @example
 block ([], expr1, ..., if (a > 10) then return(a), ..., exprn)
 @end example
 
-@'{e} em si mesma uma express@~{a}o, e ent@~{a}o poder@'{a} ocupar o lugar do
-lado direito de uma definiç@~{a}o de funç@~{a}o.  Aqui pode acontecer
-que o retorno aconteça mais facilmente que no exemplo anterior a essa @'{u}ltima express@~{a}o.
+é em si mesma uma expressão, e então poderá ocupar o lugar do
+lado direito de uma definição de função.  Aqui pode acontecer
+que o retorno aconteça mais facilmente que no exemplo anterior a essa última expressão.
 
 @c COPY THIS STUFF TO @defun block AS NEEDED
 @c ESPECIALLY STUFF ABOUT LOCAL VARIABLES
-O primeiro @code{[]} no bloco, pode conter uma lista de vari@'{a}veis e
-atribuiç@~{o}es de vari@'{a}veis, tais como @code{[a: 3, b, c: []]}, que far@~{a}o com que as
-tr@^{e}s vari@'{a}veis @code{a},@code{b},e @code{c} n@~{a}o se refiram a seus
-valores globais, mas ao contr@'{a}rio tenham esses valores especiais enquanto o
-c@'{o}digo estiver executando a parte dentro do bloco @code{block}, ou dentro da funç@~{o}es chamadas de
-dentro do bloco @code{block}.  Isso @'{e} chamado associaç@~{a}o @i{dynamic}, uma vez que as
-vari@'{a}veis permanecem do in@'{i}cio do bloco pelo tempo que ele existir.  Uma vez que
-voc@^{e} retorna do @code{block}, ou descarta-o, os valores antigos (quaisquer que
-sejam) das vari@'{a}veis ser@~{a}o restaurados.   @'{E} certamente uma boa id@'{e}ia
-para proteger suas vari@'{a}veis nesse caminho.   Note que as atribuiç@~{o}es
-em vari@'{a}veis do bloco, s@~{a}o conclu@'{i}das em paralelo.   Isso significa, que se
-tiver usado @code{c: a} acima, o valor de @code{c} ser@'{a}
-o valor de @code{a} a partir do momento em que voc@^{e}ntrou no bloco,
+O primeiro @code{[]} no bloco, pode conter uma lista de variáveis e
+atribuições de variáveis, tais como @code{[a: 3, b, c: []]}, que farão com que as
+três variáveis @code{a},@code{b},e @code{c} não se refiram a seus
+valores globais, mas ao contrário tenham esses valores especiais enquanto o
+código estiver executando a parte dentro do bloco @code{block}, ou dentro da funções chamadas de
+dentro do bloco @code{block}.  Isso é chamado associação @i{dynamic}, uma vez que as
+variáveis permanecem do início do bloco pelo tempo que ele existir.  Uma vez que
+você retorna do @code{block}, ou descarta-o, os valores antigos (quaisquer que
+sejam) das variáveis serão restaurados.   É certamente uma boa idéia
+para proteger suas variáveis nesse caminho.   Note que as atribuições
+em variáveis do bloco, são concluídas em paralelo.   Isso significa, que se
+tiver usado @code{c: a} acima, o valor de @code{c} será
+o valor de @code{a} a partir do momento em que vocêntrou no bloco,
 mas antes @code{a} foi associado.   Dessa forma fazendo alguma coisa como
 
 @example
 block ([a: a], expr1, ...  a: a+3, ..., exprn)
 @end example
 
-proteger@'{a} o valor externo de @code{a} de ser alterado, mas
-impedir@'{a} voc@^{e} acessar o valor antigo.   Dessa forma o lado direito
-de atribuiç@~{o}es, @'{e} avaliado no contexto inserido, antes que
-qualquer avaliaç@~{a}o ocorra.
+protegerá o valor externo de @code{a} de ser alterado, mas
+impedirá você acessar o valor antigo.   Dessa forma o lado direito
+de atribuições, é avaliado no contexto inserido, antes que
+qualquer avaliação ocorra.
 Usando apenas @code{block ([x], ...} faremos com que o @code{x} tenha a si mesmo
-como valor, apenas como x teria se voc@^{e} tivesse entrado numa breve sess@~{a}o do
+como valor, apenas como x teria se você tivesse entrado numa breve sessão do
 @b{Maxima}.
 
-Os atuais argumentos para uma funç@~{a}o s@~{a}o tratados exatamente da mesma que
-as vari@'{a}veis em um bloco.  Dessa forma em
+Os atuais argumentos para uma função são tratados exatamente da mesma que
+as variáveis em um bloco.  Dessa forma em
 
 @example
 f(x) := (expr1, ..., exprn);
@@ -121,85 +121,85 @@ e
 f(1);
 @end example
 
-teremos um contexto similar para avaliaç@~{a}o de express@~{o}es
-como se tiv@'{e}ssemos conclu@'{i}do
+teremos um contexto similar para avaliação de expressões
+como se tivéssemos concluído
 
 @example
 block ([x: 1], expr1, ..., exprn)
 @end example
 
-Dentro de funç@~{o}es, quando o lado direito de uma definiç@~{a}o,
-pode ser calculado em tempo de execuç@~{a}o, isso @'{e} @'{u}ti para usar @code{define} e
+Dentro de funções, quando o lado direito de uma definição,
+pode ser calculado em tempo de execução, isso é úti para usar @code{define} e
 possivelmente @code{buildq}.  
 
-@subsection Funç@~{a}o de Array
+@subsection Função de Array
 
-Uma funç@~{a}o de Array armazena o valor da funç@~{a}o na primeira vez que ela for chamada com um argumento dado,
+Uma função de Array armazena o valor da função na primeira vez que ela for chamada com um argumento dado,
 e retorna o valor armazenado, sem recalcular esse valor, quando o mesmo argumento for fornecido.
-De modo que uma funç@~{a}o @'{e} muitas vezes chamada uma @i{funç@~{a}o de memorizaç@~{a}o}.
+De modo que uma função é muitas vezes chamada uma @i{função de memorização}.
 
-Nomes de funç@~{o}es de Array s@~{a}o anexados ao final da lista global @code{arrays}
-(n@~{a}o na lista global @code{functions}).
+Nomes de funções de Array são anexados ao final da lista global @code{arrays}
+(não na lista global @code{functions}).
 O comando @code{arrayinfo} retorna a lista de argumentos para os quais exite valores armazenados,
 e @code{listarray} retorna os valores armazenados. 
-Os comandos @code{dispfun} e @code{fundef} retornam a definiç@~{a}o da funç@~{a}o de array.
+Os comandos @code{dispfun} e @code{fundef} retornam a definição da função de array.
 
-O comando @code{arraymake} contr@'{o}i uma chamada de funç@~{a}o de array,
-an@'{a}logamente a @code{funmake} para funç@~{o}es comuns.
-O comando @code{arrayapply} aplica uma funç@~{a}o de array a seus argmentos,
-an@'{a}logamente a @code{apply} para funç@~{o}es comuns.
-N@~{a}o existe nada exatamente an@'{a}logo a @code{map} para funç@~{o}es de array,
+O comando @code{arraymake} contrói uma chamada de função de array,
+análogamente a @code{funmake} para funções comuns.
+O comando @code{arrayapply} aplica uma função de array a seus argmentos,
+análogamente a @code{apply} para funções comuns.
+Não existe nada exatamente análogo a @code{map} para funções de array,
 embora @code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} ou
-@code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, onde @var{L} @'{e} uma lista,
-n@~{a}o estejam t@~{a}o longe disso.
+@code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, onde @var{L} é uma lista,
+não estejam tão longe disso.
 
-O comando @code{remarray} remove uma definiç@~{a}o de funç@~{a}o de array (incluindo qualquer valor armazenado pela funç@~{a}o removida),
-an@'{a}logo a @code{remfunction} para funç@~{o}es comuns.
+O comando @code{remarray} remove uma definição de função de array (incluindo qualquer valor armazenado pela função removida),
+análogo a @code{remfunction} para funções comuns.
 
-o comando @code{kill(@var{a}[@var{x}])} remove o valor da funç@~{a}o de array @var{a}
+o comando @code{kill(@var{a}[@var{x}])} remove o valor da função de array @var{a}
 armazenado para o argumento @var{x};
-a pr@'{o}xima vez que @var{a} foor chamada com o argumento @var{x},
-o valor da funç@~{a}o @'{e} recomputado.
-Todavia, n@~{a}o exite caminho para remover todos os valores armazenados de uma vez,
+a próxima vez que @var{a} foor chamada com o argumento @var{x},
+o valor da função é recomputado.
+Todavia, não exite caminho para remover todos os valores armazenados de uma vez,
 exceto para @code{kill(@var{a})} ou @code{remarray(@var{a})},
-o qual remove tamb@'{e}m remove a definiç@~{a}o da funç@~{a}o de array.
+o qual remove também remove a definição da função de array.
 
-@node Macros, Funç@~{o}es e Vari@'{a}veis para Definiç@~{a}o de Funç@~{a}o, Funç@~{a}o, Definiç@~{a}o de Funç@~{a}o
+@node Macros, Funções e Variáveis para Definição de Função, Função, Definição de Função
 @section Macros
 
-@deffn {Funç@~{a}o} buildq (@var{L}, @var{expr})
-Substitue vari@'{a}veis nomeadas pela lista @var{L} dentro da express@~{a}o @var{expr},
+@deffn {Função} buildq (@var{L}, @var{expr})
+Substitue variáveis nomeadas pela lista @var{L} dentro da expressão @var{expr},
 paralelamente,
 sem avaliar @var{expr}.
-A express@~{a}o resultante @'{e} simplificada,
-mas n@~{a}o avaliada,
-ap@'{o}s @code{buildq} realizar a substituiç@~{a}o.
+A expressão resultante é simplificada,
+mas não avaliada,
+após @code{buildq} realizar a substituição.
 
-Os elementos de @var{L} s@~{a}o s@'{i}mbolos ou express@~{o}es de atribuiç@~{a}o @code{@var{s@'{i}mbolo}: @var{valor}},
+Os elementos de @var{L} são símbolos ou expressões de atribuição @code{@var{símbolo}: @var{valor}},
 avaliadas paralelamente.
-Isto @'{e}, a associaç@~{a}o de uma vari@'{a}vel sobre o lado direito de uma atribuiç@~{a}o
-@'{e} a associaç@~{a}o daquela vari@'{a}vel no contexto do qual @code{buildq} for chamada,
-n@~{a}o a associaç@~{a}o daquela vari@'{a}vel na lista @var{L} de vari@'{a}veis.
-Se alguma vari@'{a}vel em @var{L} n@~{a}o dada como uma atribuiç@~{a}o expl@'{i}cita,
-sua associaç@~{a}o em @code{buildq} @'{e} a mesma que no contexto no qual @code{buildq} for chamada.
+Isto é, a associação de uma variável sobre o lado direito de uma atribuição
+é a associação daquela variável no contexto do qual @code{buildq} for chamada,
+não a associação daquela variável na lista @var{L} de variáveis.
+Se alguma variável em @var{L} não dada como uma atribuição explícita,
+sua associação em @code{buildq} é a mesma que no contexto no qual @code{buildq} for chamada.
 
-Ent@~{a}o as vari@'{a}veis nomeadas em @var{L} s@~{a}o substituidas em @var{expr} paralelamente.
-Isto @'{e}, a substituiç@~{a}o para cada vari@'{a}vel @'{e} determinada antes que qualquer substituiç@~{a}o seja feita,
-ent@~{a}o a substituiç@~{a}o para uma vari@'{a}vel n@~{a}o tem efeito sobre qualquer outra.
+Então as variáveis nomeadas em @var{L} são substituidas em @var{expr} paralelamente.
+Isto é, a substituição para cada variável é determinada antes que qualquer substituição seja feita,
+então a substituição para uma variável não tem efeito sobre qualquer outra.
 
-Se qualquer vari@'{a}vel @var{x} aparecer como @code{splice (@var{x})} em @var{expr},
-ent@~{a}o @var{x} deve estar associada para uma lista,
-e a lista recebe uma aplicaç@~{a}o da funç@~{a}o @code{splice} (@'{e} interpolada) na @var{expr} em lugar de substitu@'{i}da.
+Se qualquer variável @var{x} aparecer como @code{splice (@var{x})} em @var{expr},
+então @var{x} deve estar associada para uma lista,
+e a lista recebe uma aplicação da função @code{splice} (é interpolada) na @var{expr} em lugar de substituída.
 
-Quaisquer vari@'{a}veis em @var{expr} n@~{a}o aparecendo em @var{L} s@~{a}o levados no resultado tal como foram escritos,
-mesmo se elas tiverem associaç@~{o}es no contexto do qual @code{buildq} tiver sido chamada.
+Quaisquer variáveis em @var{expr} não aparecendo em @var{L} são levados no resultado tal como foram escritos,
+mesmo se elas tiverem associações no contexto do qual @code{buildq} tiver sido chamada.
 
 Exemplos
 
-@code{a} @'{e} explicitamente associada a @code{x},
-enquanto @code{b} tem a mesma associaç@~{a}o (nomeadamente 29) como no contexto chamado,
-e @code{c} @'{e} levada do começo ao fim da forma como foi escrita.
-A express@~{a}o resultante n@~{a}o @'{e} avaliada at@'{e} a avaliaç@~{a}o expl@'{i}cita ( com duplo ap@'{o}strofo - n@~{a}o com aspas - @code{''%}.
+@code{a} é explicitamente associada a @code{x},
+enquanto @code{b} tem a mesma associação (nomeadamente 29) como no contexto chamado,
+e @code{c} é levada do começo ao fim da forma como foi escrita.
+A expressão resultante não é avaliada até a avaliação explícita ( com duplo apóstrofo - não com aspas - @code{''%}.
 
 @c ===beg===
 @c (a: 17, b: 29, c: 1729)$
@@ -214,7 +214,7 @@ A express@~{a}o resultante n@~{a}o @'{e} avaliada at@'{e} a avaliaç@~{a}o expl@
 (%o3)                       x + 1758
 @end example
 
-@code{e} est@'{a} associado a uma lista, a qual aparece tamb@'{e}m como tal nos argumentos de @code{foo},
+@code{e} está associado a uma lista, a qual aparece também como tal nos argumentos de @code{foo},
 e interpolada nos argumentos de @code{bar}.
 
 @c ===beg===
@@ -228,8 +228,8 @@ e interpolada nos argumentos de @code{bar}.
 (%o2)                  bar(x, a, b, c, y)
 @end example
 
-O resultado @'{e} simplificado ap@'{o}s substituiç@~{a}o.
-Se a simplificaç@~{a}o for aplicada antes da substituiç@~{a}o, esses dois resultados podem ser iguais.
+O resultado é simplificado após substituição.
+Se a simplificação for aplicada antes da substituição, esses dois resultados podem ser iguais.
 @c ===beg===
 @c buildq ([e: [a, b, c]], splice (e) + splice (e));
 @c buildq ([e: [a, b, c]], 2 * splice (e));
@@ -241,11 +241,11 @@ Se a simplificaç@~{a}o for aplicada antes da substituiç@~{a}o, esses dois resu
 (%o2)                        2 a b c
 @end example
 
-As vari@'{a}veis em @var{L} s@~{a}o associadas em paralelo; se associadas seq@"{u}@^{e}ncialmente,
+As variáveis em @var{L} são associadas em paralelo; se associadas seq@"{u}êncialmente,
 o primeiro resultado pode ser @code{foo (b, b)}.
-Substituiç@~{o}es s@~{a}o realizadas em paralelo;
+Substituições são realizadas em paralelo;
 compare o segundo resultado com o resultado de @code{subst},
-que realiza substituiç@~{o}es seq@"{u}@^{e}ncialmente.
+que realiza substituições seq@"{u}êncialmente.
 
 @c ===beg===
 @c buildq ([a: b, b: a], foo (a, b));
@@ -261,9 +261,9 @@ que realiza substituiç@~{o}es seq@"{u}@^{e}ncialmente.
 (%o3)                 bar(u, u, u, u, u, u)
 @end example
 
-Constr@'{o}i uma lista de euqç@~{o}es com algumas vari@'{a}veis ou express@~{o}es sobre o lado esquerdo
+Constrói uma lista de euqções com algumas variáveis ou expressões sobre o lado esquerdo
 e seus valores sobre o lado direito.
-@code{macroexpand} mostra a express@~{a}o retornada por @code{show_values}.
+@code{macroexpand} mostra a expressão retornada por @code{show_values}.
 
 @c ===beg===
 @c show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
@@ -283,19 +283,19 @@ e seus valores sobre o lado direito.
 
 @end deffn
 
-@deffn {Funç@~{a}o} macroexpand (@var{expr})
-Retorna a expans@~{a}o da macro de @var{expr} sem avaliar a express@~{a}o,
-quando @code{expr} for uma chamada de funç@~{a}o de macro.
+@deffn {Função} macroexpand (@var{expr})
+Retorna a expansão da macro de @var{expr} sem avaliar a expressão,
+quando @code{expr} for uma chamada de função de macro.
 De outra forma, @code{macroexpand} retorna @var{expr}.
 
-Se a expans@~{a}o de @var{expr} retorna outra chamada de funç@~{a}o de macro,
-aquela chamada de funç@~{a}o de macro @'{e} tamb@'{e}m expandida.
+Se a expansão de @var{expr} retorna outra chamada de função de macro,
+aquela chamada de função de macro é também expandida.
 
-@code{macroexpand} coloca ap@'{o}strofo em seus argumentos, isto @'{e}, n@~{a}o os avalia.
-Todavia, se a expans@~{a}o de uma chamada de funç@~{a}o de macro tiver algum efeito,
-esse efeito colateral @'{e} executado.
+@code{macroexpand} coloca apóstrofo em seus argumentos, isto é, não os avalia.
+Todavia, se a expansão de uma chamada de função de macro tiver algum efeito,
+esse efeito colateral é executado.
 
-Veja tamb@'{e}m @code{::=}, @code{macros}, e @code{macroexpand1}.
+Veja também @code{::=}, @code{macros}, e @code{macroexpand1}.
 
 Exemplos
 
@@ -327,19 +327,19 @@ Exemplos
 
 @end deffn
 
-@deffn {Funç@~{a}o} macroexpand1 (@var{expr})
-Retorna a expans@~{a}o de macro de @var{expr} sem avaliar a express@~{a}o,
-quando @code{expr} for uma chamada de funç@~{a}o de macro.
+@deffn {Função} macroexpand1 (@var{expr})
+Retorna a expansão de macro de @var{expr} sem avaliar a expressão,
+quando @code{expr} for uma chamada de função de macro.
 De outra forma, @code{macroexpand1} retorna @var{expr}.
 
-@code{macroexpand1} n@~{a}o avalia seus argumentos.
-Todavia, se a expans@~{a}o de uma chamada de funç@~{a}o de macro tiver algum efeito,
-esse efeito colateral @'{e} executado.
+@code{macroexpand1} não avalia seus argumentos.
+Todavia, se a expansão de uma chamada de função de macro tiver algum efeito,
+esse efeito colateral é executado.
 
-Se a expans@~{a}o de @var{expr} retornar outra chamada de funç@~{a}o de macro,
-aquela chamada de funç@~{a}o de macro n@~{a}o @'{e} expandida.
+Se a expansão de @var{expr} retornar outra chamada de função de macro,
+aquela chamada de função de macro não é expandida.
 
-Veja tamb@'{e}m @code{::=}, @code{macros}, e @code{macroexpand}.
+Veja também @code{::=}, @code{macros}, e @code{macroexpand}.
 
 Exemplos
 
@@ -372,27 +372,27 @@ Exemplos
 @defvr {Global variable} macros
 Default value: @code{[]}
 
-@code{macros} @'{e} a lista de funç@~{o}es de macro definidas pelo usu@'{a}rio.
-O operador de definiç@~{a}o de funç@~{a}o de macro @code{::=} coloca uma nova funç@~{a}o de macro nessa lista,
-e @code{kill}, @code{remove}, e @code{remfunction} removem funç@~{o}es de macro da lista.
+@code{macros} é a lista de funções de macro definidas pelo usuário.
+O operador de definição de função de macro @code{::=} coloca uma nova função de macro nessa lista,
+e @code{kill}, @code{remove}, e @code{remfunction} removem funções de macro da lista.
 
-Veja tamb@'{e}m @code{infolists}.
+Veja também @code{infolists}.
 
 @end defvr
 
-@deffn {Funç@~{a}o} splice (@var{a})
-Une como se fosse um elo de ligaç@~{a}o (interpola) a lista nomeada atrav@'{e}s do @'{a}tomo @var{a} em uma express@~{a}o,
+@deffn {Função} splice (@var{a})
+Une como se fosse um elo de ligação (interpola) a lista nomeada através do átomo @var{a} em uma expressão,
 mas somente se @code{splice} aparecer dentro de @code{buildq};
-de outra forma, @code{splice} @'{e} tratada como uma funç@~{a}o indefinida.
+de outra forma, @code{splice} é tratada como uma função indefinida.
 Se aparecer dentro de @code{buildq} com @var{a} sozinho (sem @code{splice}),
-@var{a} @'{e} substituido (n@~{a}o interpolado) como uma lista no resultado.
-O argumento de @code{splice} pode somente ser um @'{a}tomo;
-n@~{a}o pode ser uma lista lateral ou uma express@~{a}o que retorna uma lista.
+@var{a} é substituido (não interpolado) como uma lista no resultado.
+O argumento de @code{splice} pode somente ser um átomo;
+não pode ser uma lista lateral ou uma expressão que retorna uma lista.
 
-Tipicamente @code{splice} fornece os argumentos para uma funç@~{a}o ou operador.
-Para uma funç@~{a}o @code{f}, a express@~{a}o @code{f (splice (@var{a}))} dentro de @code{buildq}
+Tipicamente @code{splice} fornece os argumentos para uma função ou operador.
+Para uma função @code{f}, a expressão @code{f (splice (@var{a}))} dentro de @code{buildq}
 expande para @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}.
-Para um operador @code{o}, a express@~{a}o @code{"o" (splice (@var{a})} dentro de @code{buildq}
+Para um operador @code{o}, a expressão @code{"o" (splice (@var{a})} dentro de @code{buildq}
 expande para @code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)},
 onde @code{o} pode ser qualquer tipo de operador (tipicamente um que toma multiplos argumentos).
 Note que o operador deve ser contido dentro de aspas duplas @code{"}.
@@ -423,23 +423,23 @@ Exemplos
 @end deffn
 
 
-@c end concepts Definiç@~{a}o de Funç@~{a}o
-@node Funç@~{o}es e Vari@'{a}veis para Definiç@~{a}o de Funç@~{a}o,  , Macros, Definiç@~{a}o de Funç@~{a}o
-@section Funç@~{o}es e Vari@'{a}veis para Definiç@~{a}o de Funç@~{a}o
+@c end concepts Definição de Função
+@node Funções e Variáveis para Definição de Função,  , Macros, Definição de Função
+@section Funções e Variáveis para Definição de Função
 
-@deffn {Funç@~{a}o} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
-Constr@'{o}i e avalia uma express@~{a}p @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
+@deffn {Função} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
+Constrói e avalia uma expressãp @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
 
-@code{apply} n@~{a}o tenta distinguir funç@~{o}es de array de funç@~{o}es comuns;
-quando @var{F} for o nome de uma funç@~{a}o de array,
+@code{apply} não tenta distinguir funções de array de funções comuns;
+quando @var{F} for o nome de uma função de array,
 @code{apply} avalia @code{@var{F}(...)}
-(isto @'{e}, uma chamada de funç@~{a}o com par@^{e}ntesis em lugar de colch@^{e}tes).
-@code{arrayapply} avalia uma chamada de funç@~{a}o com colch@^{e}tes nesse caso.
+(isto é, uma chamada de função com parêntesis em lugar de colchêtes).
+@code{arrayapply} avalia uma chamada de função com colchêtes nesse caso.
 
 Exemplos:
 
 @code{apply} avalia seus argumentos.
-Nesse exemplo, @code{min} @'{e} aplicado a @code{L}.
+Nesse exemplo, @code{min} é aplicado a @code{L}.
 
 @c ===beg===
 @c L : [1, 5, -10.2, 4, 3];
@@ -452,7 +452,7 @@ Nesse exemplo, @code{min} @'{e} aplicado a @code{L}.
 (%o2)                        - 10.2
 @end example
 
-@code{apply} avalia argumentos, mesmo se a funç@~{a}o @var{F} disser que os argumentos n@~{a}o devem ser avaliados.
+@code{apply} avalia argumentos, mesmo se a função @var{F} disser que os argumentos não devem ser avaliados.
 
 @c ===beg===
 @c F (x) := x / 1729;
@@ -485,9 +485,9 @@ fname is not the name of a user function.
 (%o5)                         [%t5]
 @end example
 
-@code{apply} avalia o nome de funç@~{a}o @var{F}.
-Ap@'{o}strofo @code{'} evita avaliaç@~{a}o.
-@code{demoivre} @'{e} o nome de uma vari@'{a}vel global e tamb@'{e}m de uma funç@~{a}o.
+@code{apply} avalia o nome de função @var{F}.
+Apóstrofo @code{'} evita avaliação.
+@code{demoivre} é o nome de uma variável global e também de uma função.
 
 @c ===beg===
 @c demoivre;
@@ -511,76 +511,76 @@ Improper name or value in functional position.
 @end deffn
 
 
-@deffn {Funç@~{a}o} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Funç@~{a}o} block (@var{expr_1}, ..., @var{expr_n})
-@code{block} avalia @var{expr_1}, ..., @var{expr_n} em seq@"{u}@^{e}ncia
-e retorna o valor da @'{u}ltima express@~{a}o avaliada.
-A seq@"{u}@^{e}ncia pode ser modificada pelas funç@~{o}es @code{go}, @code{throw}, e @code{return}.
-A @'{u}ltima express@~{a}o @'{e} @var{expr_n} a menos que @code{return} ou uma express@~{a}o contendo @code{throw}
+@deffn {Função} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Função} block (@var{expr_1}, ..., @var{expr_n})
+@code{block} avalia @var{expr_1}, ..., @var{expr_n} em seq@"{u}ência
+e retorna o valor da última expressão avaliada.
+A seq@"{u}ência pode ser modificada pelas funções @code{go}, @code{throw}, e @code{return}.
+A última expressão é @var{expr_n} a menos que @code{return} ou uma expressão contendo @code{throw}
 seja avaliada.
-Algumas vari@'{a}veis @var{v_1}, ..., @var{v_m} podem ser declaradas locais para o bloco;
-essas s@~{a}o distinguidas das vari@'{a}veis globais dos mesmos nomes.
-Se vari@'{a}veis n@~{a}o forem declaradas locais ent@~{a}o a lista pode ser omitida.
+Algumas variáveis @var{v_1}, ..., @var{v_m} podem ser declaradas locais para o bloco;
+essas são distinguidas das variáveis globais dos mesmos nomes.
+Se variáveis não forem declaradas locais então a lista pode ser omitida.
 Dentro do bloco,
-qualquer vari@'{a}vel que n@~{a}o @var{v_1}, ..., @var{v_m} @'{e} uma vari@'{a}vel global.
+qualquer variável que não @var{v_1}, ..., @var{v_m} é uma variável global.
 
-@code{block} salva os valores correntes das vari@'{a}veis @var{v_1}, ..., @var{v_m} (quaisquer valores)
+@code{block} salva os valores correntes das variáveis @var{v_1}, ..., @var{v_m} (quaisquer valores)
 na hora da entrada para o bloco,
-ent@~{a}o libera as vari@'{a}veis dessa forma eles avaliam para si mesmos.
-As vari@'{a}veis locais podem ser associadas a valores arbitr@'{a}rios dentro do bloco mas quando o
-bloco @'{e} encerrado o valores salvos s@~{a}o restaurados,
-e os valores atribu@'{i}dos dentro do bloco s@~{a}o perdidos.
+então libera as variáveis dessa forma eles avaliam para si mesmos.
+As variáveis locais podem ser associadas a valores arbitrários dentro do bloco mas quando o
+bloco é encerrado o valores salvos são restaurados,
+e os valores atribuídos dentro do bloco são perdidos.
 
 @code{block} pode aparecer dentro de outro @code{block}.
-Vari@'{a}veis locais s@~{a}o estabelecidas cada vez que um novo @code{block} @'{e} avaliado.
-Vari@'{a}veis locais parecem ser globais para quaisquer blocos fechados.
-Se uma vari@'{a}vel @'{e} n@~{a}o local em um bloco,
-seu valor @'{e} o valor mais recentemente atribu@'{i}do por um bloco fechado, quaisquer que sejam,
-de outra forma, seu valor @'{e} o valor da vari@'{a}vel no ambiente global.
-Essa pol@'{i}tica pode coincidir com o entendimento usual de "escopo din@^{a}mico".
+Variáveis locais são estabelecidas cada vez que um novo @code{block} é avaliado.
+Variáveis locais parecem ser globais para quaisquer blocos fechados.
+Se uma variável é não local em um bloco,
+seu valor é o valor mais recentemente atribuído por um bloco fechado, quaisquer que sejam,
+de outra forma, seu valor é o valor da variável no ambiente global.
+Essa política pode coincidir com o entendimento usual de "escopo dinâmico".
 
 Se isso for desejado para salvar e restaurar outras propriedades locais
 ao lado de @code{value}, por exemplo @code{array} (exceto para arrays completos),
 @code{function}, @code{dependencies}, @code{atvalue}, @code{matchdeclare}, @code{atomgrad}, @code{constant}, e
-@code{nonscalar} ent@~{a}o a funç@~{a}o @code{local} pode ser usada dentro do bloco
-com argumentos sendo o nome das vari@'{a}veis.
+@code{nonscalar} então a função @code{local} pode ser usada dentro do bloco
+com argumentos sendo o nome das variáveis.
 
-O valor do bloco @'{e} o valor da @'{u}ltima declaraç@~{a}o ou o
-valor do argumento para a funç@~{a}o @code{return} que pode ser usada para sair
-explicitamente do bloco.  A funç@~{a}o @code{go} pode ser usada para transferir o
-controle para a declaraç@~{a}o do bloco que @'{e} identificada com o argumento
-para @code{go}.  Para identificar uma declaraç@~{a}o, coloca-se antes dela um argumento at@^{o}mico como
-outra declaraç@~{a}o no bloco.  Por exemplo:
+O valor do bloco é o valor da última declaração ou o
+valor do argumento para a função @code{return} que pode ser usada para sair
+explicitamente do bloco.  A função @code{go} pode ser usada para transferir o
+controle para a declaração do bloco que é identificada com o argumento
+para @code{go}.  Para identificar uma declaração, coloca-se antes dela um argumento atômico como
+outra declaração no bloco.  Por exemplo:
 @code{block ([x], x:1, loop, x: x+1, ..., go(loop), ...)}.  O argumento para @code{go} deve
-ser o nome de um identificador que aparece dentro do bloco.  N@~{a}o se deve usar @code{go} para
-transferir para um identificador em um outro bloco a n@~{a}o ser esse que cont@'{e}m o @code{go}.
+ser o nome de um identificador que aparece dentro do bloco.  Não se deve usar @code{go} para
+transferir para um identificador em um outro bloco a não ser esse que contém o @code{go}.
 
-Blocos tipicamente aparecem do lado direito de uma definiç@~{a}o de funç@~{a}o
-mas podem ser usados em outros lugares tamb@'{e}m.
+Blocos tipicamente aparecem do lado direito de uma definição de função
+mas podem ser usados em outros lugares também.
 
 @end deffn
 
 @c REPHRASE, NEEDS EXAMPLE
-@deffn {Funç@~{a}o} break (@var{expr_1}, ..., @var{expr_n})
-Avalia e imprime @var{expr_1}, ..., @var{expr_n} e ent@~{a}o
-causa uma parada do Maxima nesse ponto e o usu@'{a}rio pode examinar e alterar
-seu ambiente.  Nessa situaç@~{a}o digite @code{exit;} para que o c@'{a}lculo seja retomado.
+@deffn {Função} break (@var{expr_1}, ..., @var{expr_n})
+Avalia e imprime @var{expr_1}, ..., @var{expr_n} e então
+causa uma parada do Maxima nesse ponto e o usuário pode examinar e alterar
+seu ambiente.  Nessa situação digite @code{exit;} para que o cálculo seja retomado.
 
 @end deffn
 
 @c FOR SOME REASON throw IS IN SOME OTHER FILE.  MOVE throw INTO THIS FILE.
 @c NEEDS CLARIFICATION
-@deffn {Funç@~{a}o} catch (@var{expr_1}, ..., @var{expr_n})
-Avalia @var{expr_1}, ..., @var{expr_n} uma por uma; se qualquer avaliaç@~{a}o
-levar a uma avaliaç@~{a}o de uma express@~{a}o da
-forma @code{throw (arg)}, ent@~{a}o o valor de @code{catch} @'{e} o valor de
-@code{throw (arg)}, e express@~{o}es adicionais n@~{a}o s@~{a}o avaliadas.
-Esse "retorno n@~{a}o local" atravessa assim qualquer profundidade de
-aninhar para o mais pr@'{o}ximo contendo @code{catch}.
-Se n@~{a}o existe nenhum @code{catch} contendo um @code{throw}, uma mensagem de erro @'{e} impressa.
+@deffn {Função} catch (@var{expr_1}, ..., @var{expr_n})
+Avalia @var{expr_1}, ..., @var{expr_n} uma por uma; se qualquer avaliação
+levar a uma avaliação de uma expressão da
+forma @code{throw (arg)}, então o valor de @code{catch} é o valor de
+@code{throw (arg)}, e expressões adicionais não são avaliadas.
+Esse "retorno não local" atravessa assim qualquer profundidade de
+aninhar para o mais próximo contendo @code{catch}.
+Se não existe nenhum @code{catch} contendo um @code{throw}, uma mensagem de erro é impressa.
 
-Se a avaliaç@~{a}o de argumentos n@~{a}o leva para a avaliaç@~{a}o de qualquer @code{throw}
-ent@~{a}o o valor de @code{catch} @'{e} o valor de @var{expr_n}.
+Se a avaliação de argumentos não leva para a avaliação de qualquer @code{throw}
+então o valor de @code{catch} é o valor de @var{expr_n}.
 
 @example
 (%i1) lambda ([x], if x < 0 then throw(x) else f(x))$
@@ -592,30 +592,30 @@ ent@~{a}o o valor de @code{catch} @'{e} o valor de @var{expr_n}.
 @end example
 
 @c REWORD THIS PART.
-A funç@~{a}o @code{g} retorna uma lista de @code{f} de cada elemento de @code{l} se @code{l}
-consiste somente de n@'{u}meros n@~{a}o negativos; de outra forma, @code{g} "captura" o
+A função @code{g} retorna uma lista de @code{f} de cada elemento de @code{l} se @code{l}
+consiste somente de números não negativos; de outra forma, @code{g} "captura" o
 primeiro elemento negativo de @code{l} e "arremessa-o".
 
 @end deffn
 
-@deffn {Funç@~{a}o} compfile (@var{nomearquivo}, @var{f_1}, ..., @var{f_n})
-@deffnx {Funç@~{a}o} compfile (@var{nomearquivo}, funç@~{o}es)
-@deffnx {Funç@~{a}o} compfile (@var{nomearquivo}, all)
+@deffn {Função} compfile (@var{nomearquivo}, @var{f_1}, ..., @var{f_n})
+@deffnx {Função} compfile (@var{nomearquivo}, funções)
+@deffnx {Função} compfile (@var{nomearquivo}, all)
 
-Traduz fuç@~{o}es Maxima para Lisp 
-e escreve o c@'{o}digo traduzido no arquivo @var{nomearquivo}.
+Traduz fuções Maxima para Lisp 
+e escreve o código traduzido no arquivo @var{nomearquivo}.
 
 @code{compfile(@var{nomearquivo}, @var{f_1}, ..., @var{f_n})} traduz as
-funç@~{o}es especificadas.
+funções especificadas.
 @code{compfile(@var{nomearquivo}, functions)} e @code{compfile(@var{nomearquivo}, all)}
-traduz todas as funç@~{o}es definidas pelo usu@'{a}rio.
+traduz todas as funções definidas pelo usuário.
 
-As traduç@~{o}es Lisp n@~{a}o s@~{a}o avaliadas, nem @'{e} o arquivo de sa@'{i}da processado pelo compilador Lisp.
+As traduções Lisp não são avaliadas, nem é o arquivo de saída processado pelo compilador Lisp.
 @c SO LET'S CONSIDER GIVING THIS FUNCTION A MORE ACCURATE NAME.
-@code{translate} cria e avalia traduç@~{o}es Lisp.
-@code{compile_file} traduz Maxima para Lisp, e ent@~{a}o executa o compilador Lisp.  
+@code{translate} cria e avalia traduções Lisp.
+@code{compile_file} traduz Maxima para Lisp, e então executa o compilador Lisp.  
 
-Veja tamb@'{e}m @code{translate}, @code{translate_file}, e @code{compile_file}.
+Veja também @code{translate}, @code{translate_file}, e @code{compile_file}.
 
 @end deffn
 
@@ -625,63 +625,63 @@ Veja tamb@'{e}m @code{translate}, @code{translate_file}, e @code{compile_file}.
 @c @defvar compgrind
 @c Default value: @code{false}
 @c 
-@c When @code{compgrind} @'{e} @code{true}, function definitions printed by
+@c When @code{compgrind} é @code{true}, function definitions printed by
 @c @code{compfile} are pretty-printed.
 @c 
 @c @end defvar
 
-@deffn {Funç@~{a}o} compile (@var{f_1}, ..., @var{f_n})
-@deffnx {Funç@~{a}o} compile (funç@~{o}es)
-@deffnx {Funç@~{a}o} compile (all)
-Traduz funç@~{o}es Maxima @var{f_1}, ..., @var{f_n} para Lisp, avalia a traduç@~{a}o Lisp,
-e chama a funç@~{a}o Lisp @code{COMPILE} sobre cada funç@~{a}o traduzida.
-@code{compile} retorna uma lista de nomes de funç@~{o}es compiladas.
+@deffn {Função} compile (@var{f_1}, ..., @var{f_n})
+@deffnx {Função} compile (funções)
+@deffnx {Função} compile (all)
+Traduz funções Maxima @var{f_1}, ..., @var{f_n} para Lisp, avalia a tradução Lisp,
+e chama a função Lisp @code{COMPILE} sobre cada função traduzida.
+@code{compile} retorna uma lista de nomes de funções compiladas.
 
-@code{compile (all)} ou @code{compile (funç@~{o}es)} compila todas as funç@~{o}es definidas pelo usu@'{a}rio.
+@code{compile (all)} ou @code{compile (funções)} compila todas as funções definidas pelo usuário.
 
-@code{compile} n@~{a}o avalia seus argumentos; 
-o operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} faz com que ocorra avaliaç@~{a}o sobrepondo-se ao ap@'{o}strofo.
+@code{compile} não avalia seus argumentos; 
+o operador apóstrofo-apóstrofo @code{'@w{}'} faz com que ocorra avaliação sobrepondo-se ao apóstrofo.
 
 @end deffn
 
-@deffn {Funç@~{a}o} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
-@deffnx {Funç@~{a}o} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
-@deffnx {Funç@~{a}o} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
-@deffnx {Funç@~{a}o} define (arraymake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
-@deffnx {Funç@~{a}o} define (ev (@var{expr_1}), @var{expr_2})
+@deffn {Função} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
+@deffnx {Função} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
+@deffnx {Função} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Função} define (arraymake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
+@deffnx {Função} define (ev (@var{expr_1}), @var{expr_2})
 
-Define uma funç@~{a}o chamada @var{f} com argumentos @var{x_1}, ..., @var{x_n} e corpo da funç@~{a}o @var{expr}.
-@code{define} sempre avalia seu segundo argumento (a menos que expl@'{i}citamente receba um apostrofo de forma a evitar a avaliaç@~{a}o).
-A funç@~{a}o ent@~{a}o definida pode ser uma funç@~{a}o comum do Maxima (com argumentos contidos entre par@^{e}tesis)
-ou uma funç@~{a}o de array (com argumentos contidos entre colch@^{e}tes).
+Define uma função chamada @var{f} com argumentos @var{x_1}, ..., @var{x_n} e corpo da função @var{expr}.
+@code{define} sempre avalia seu segundo argumento (a menos que explícitamente receba um apostrofo de forma a evitar a avaliação).
+A função então definida pode ser uma função comum do Maxima (com argumentos contidos entre parêtesis)
+ou uma função de array (com argumentos contidos entre colchêtes).
 
-Quando o @'{u}ltimo ou @'{u}nico argumento da funç@~{a}o @var{x_n} for uma lista de um elemento,
-a funç@~{a}o definida por @code{define} aceita um n@'{u}mero vari@'{a}vel de argumentos.
-Os argumentos atuais s@~{a}o atribu@'{i}dos um a um a argumentos formais @var{x_1}, ..., @var{x_(n - 1)},
-e quaisquer argumentos adicionais atuais, se estiverem presentes, s@~{a}o atribu@'{i}dos a @var{x_n} como uma lista.
+Quando o último ou único argumento da função @var{x_n} for uma lista de um elemento,
+a função definida por @code{define} aceita um número variável de argumentos.
+Os argumentos atuais são atribuídos um a um a argumentos formais @var{x_1}, ..., @var{x_(n - 1)},
+e quaisquer argumentos adicionais atuais, se estiverem presentes, são atribuídos a @var{x_n} como uma lista.
 
-Quando o primeiro argumento de @code{define} for uma express@~{a}o da forma
+Quando o primeiro argumento de @code{define} for uma expressão da forma
 @code{@var{f}(@var{x_1}, ..., @var{x_n})} or @code{@var{f}[@var{x_1}, ..., @var{x_n}]},
-os argumentos s@~{a}o avaliados mas @var{f} n@~{a}o @'{e} avaliada,
-mesmo se j@'{a} existe anteriormente uma funç@~{a}o ou vari@'{a}vel com aquele nome.
+os argumentos são avaliados mas @var{f} não é avaliada,
+mesmo se já existe anteriormente uma função ou variável com aquele nome.
 
-Quando o primeiro argumento for uma express@~{a}o com operador @code{funmake}, @code{arraymake}, ou @code{ev},
-o primeiro argumento ser@'{a} avaliado;
-isso permite para o nome da funç@~{a}o seja calculado, tamb@'{e}m como o corpo.
+Quando o primeiro argumento for uma expressão com operador @code{funmake}, @code{arraymake}, ou @code{ev},
+o primeiro argumento será avaliado;
+isso permite para o nome da função seja calculado, também como o corpo.
 
-Todas as definiç@~{o}es de funç@~{a}o aparecem no mesmo n@'{i}vel de escopo e visibilidade;
-definindo uma funç@~{a}o @code{f} dentro de outra funç@~{a}o @code{g}
-n@~{a}o limita o escopo de @code{f} a @code{g}.
+Todas as definições de função aparecem no mesmo nível de escopo e visibilidade;
+definindo uma função @code{f} dentro de outra função @code{g}
+não limita o escopo de @code{f} a @code{g}.
 
-Se algum argumento formal @var{x_k} for um s@'{i}mbolo com ap@'{o}strofo (ap@'{o}s ter sido feita uma avaliaç@~{a}o),
-a funç@~{a}o definida por @code{define} n@~{a}o avalia o correspondente atual argumento.
-de outra forma todos os argumentos atuais s@~{a}o avaliados.
+Se algum argumento formal @var{x_k} for um símbolo com apóstrofo (após ter sido feita uma avaliação),
+a função definida por @code{define} não avalia o correspondente atual argumento.
+de outra forma todos os argumentos atuais são avaliados.
 
-Veja tamb@'{e}m @code{:=} and @code{::=}.
+Veja também @code{:=} and @code{::=}.
 
 Exemplos:
 
-@code{define} sempre avalia seu segundo argumento (a menos que expl@'{i}citamente receba um apostrofo de forma a evitar a avaliaç@~{a}o).
+@code{define} sempre avalia seu segundo argumento (a menos que explícitamente receba um apostrofo de forma a evitar a avaliação).
 
 @c ===beg===
 @c expr : cos(y) - sin(x);
@@ -703,7 +703,7 @@ Exemplos:
 (%o5)                    cos(y) - sin(x)
 @end example
 
-A funç@~{a}o definida por @code{define} pode ser uma funç@~{a}o comum do Maxima ou uma funç@~{a}o de array.
+A função definida por @code{define} pode ser uma função comum do Maxima ou uma função de array.
 
 @c ===beg===
 @c define (G1 (x, y), x.y - y.x);
@@ -717,8 +717,8 @@ A funç@~{a}o definida por @code{define} pode ser uma funç@~{a}o comum do Maxim
                        x, y
 @end example
 
-Quando o @'{u}ltimo ou @'{u}nico argumento da funç@~{a}o @var{x_n} for uma lista de um @'{u}nico elemento,
-a funç@~{a}o definida por @code{define} aceita um n@'{u}mero vari@'{a}vel de argumentos.
+Quando o último ou único argumento da função @var{x_n} for uma lista de um único elemento,
+a função definida por @code{define} aceita um número variável de argumentos.
 
 @c ===beg===
 @c define (H ([L]), '(apply ("+", L)));
@@ -761,30 +761,30 @@ the first argument is evaluated.
 @end deffn
 
 @c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING
-@c @deffn {Funç@~{a}o} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
-@deffn {Funç@~{a}o} define_variable (@var{name}, @var{default_value}, @var{mode})
+@c @deffn {Função} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
+@deffn {Função} define_variable (@var{name}, @var{default_value}, @var{mode})
 
-Introduz uma vari@'{a}vel global dentro do ambiente Maxima.
+Introduz uma variável global dentro do ambiente Maxima.
 @c IMPORT OF FOLLOWING STATEMENT UNCLEAR: IN WHAT WAY IS define_variable MORE USEFUL IN TRANSLATED CODE ??
-@code{define_variable} @'{e} @'{u}til em pacotes escritos pelo usu@'{a}rio, que s@~{a}o muitas vezes traduzidos ou compilados.
+@code{define_variable} é útil em pacotes escritos pelo usuário, que são muitas vezes traduzidos ou compilados.
 
 @code{define_variable} realiza os seguintes passos:
 
 @enumerate
 @item
 @code{mode_declare (@var{name}, @var{mode})} declara o modo de @var{name} para o tradutor.
-Veja @code{mode_declare} para uma lista dos modos poss@'{i}veis.
+Veja @code{mode_declare} para uma lista dos modos possíveis.
 
 @item
-Se a vari@'{a}vel @'{e} n@~{a}o associada, @var{default_value} @'{e} atribu@'{i}do para @var{name}.
+Se a variável é não associada, @var{default_value} é atribuído para @var{name}.
 
 @item
-@code{declare (@var{name}, special)} declara essa vari@'{a}vel especial.
+@code{declare (@var{name}, special)} declara essa variável especial.
 @c CLARIFY THE MEANING OF SPECIAL FOR THE BENEFIT OF READERS OTHER THAN LISP PROGRAMMERS
 
 @item
-Associa @var{name} com uma funç@~{a}o de teste
-para garantir que a @var{name} seja somente atribu@'{i}do valores do modo declarado.
+Associa @var{name} com uma função de teste
+para garantir que a @var{name} seja somente atribuído valores do modo declarado.
 @end enumerate
 
 
@@ -794,26 +794,26 @@ para garantir que a @var{name} seja somente atribu@'{i}do valores do modo declar
 @c EXECUTING translate_file ON A MAXIMA BATCH FILE WHICH CONTAINS
 @c define_variable (foo, 2222, integer, "THIS IS FOO");
 @c DOES NOT PUT "THIS IS FOO" INTO THE LISP FILE NOR THE UNLISP FILE.
-@c The optional 4th argumento @'{e} a documentation string.  When
-@c @code{translate_file} @'{e} used on a package which includes documentation
-@c strings, a second file @'{e} output in addition to the Lisp file which
+@c The optional 4th argumento é a documentation string.  When
+@c @code{translate_file} é used on a package which includes documentation
+@c strings, a second file é output in addition to the Lisp file which
 @c will contain the documentation strings, formatted suitably for use in
 @c manuals, usage files, or (for instance) @code{describe}.
 
-A propriedade @code{value_check} pode ser atribu@'{i}da a qualquer vari@'{a}vel que tenha sido definida
-via @code{define_variable} com um outro modo que n@~{a}o @code{any}.
-A propriedade @code{value_check} @'{e} uma express@~{a}o lambda ou o nome de uma funç@~{a}o de uma vari@'{a}vel,
-que @'{e} chamada quando uma tentativa @'{e} feita para atribuir um valor a uma vari@'{a}vel.
-O argumento da  funç@~{a}o @code{value_check} @'{e} o valor que ser@'{a} atribu@'{i}do.
+A propriedade @code{value_check} pode ser atribuída a qualquer variável que tenha sido definida
+via @code{define_variable} com um outro modo que não @code{any}.
+A propriedade @code{value_check} é uma expressão lambda ou o nome de uma função de uma variável,
+que é chamada quando uma tentativa é feita para atribuir um valor a uma variável.
+O argumento da  função @code{value_check} é o valor que será atribuído.
 
-@code{define_variable} avalia @code{default_value}, e n@~{a}o avalia @code{name} e @code{mode}.
+@code{define_variable} avalia @code{default_value}, e não avalia @code{name} e @code{mode}.
 @code{define_variable} retorna o valor corrente de @code{name},
-que @'{e} @code{default_value} se @code{name} n@~{a}o tiver sido associada antes,
-e de outra forma isso @'{e} o valor pr@'{e}vio de @code{name}.
+que é @code{default_value} se @code{name} não tiver sido associada antes,
+e de outra forma isso é o valor prévio de @code{name}.
 
 Exemplos:
 
-@code{foo} @'{e} uma vari@'{a}vel Booleana, com o valor inicial @code{true}.
+@code{foo} é uma variável Booleana, com o valor inicial @code{true}.
 @c GENERATED FROM:
 @c define_variable (foo, true, boolean);
 @c foo;
@@ -835,7 +835,7 @@ Error: foo was declared mode boolean, has value: %pi
 (%o5)                         false
 @end example
 
-@code{bar} @'{e} uma vari@'{a}vel inteira, que deve ser um n@'{u}mero primo.
+@code{bar} é uma variável inteira, que deve ser um número primo.
 @c GENERATED FROM:
 @c define_variable (bar, 2, integer);
 @c qput (bar, prime_test, value_check);
@@ -856,16 +856,16 @@ Error: foo was declared mode boolean, has value: %pi
 (%i4) bar: 1439;
 (%o4)                         1439
 (%i5) bar: 1440;
-1440 @'{e} not prime.
+1440 é not prime.
 #0: prime_test(y=1440)
  -- an error.  Quitting.  To debug this try debugmode(true);
 (%i6) bar;
 (%o6)                         1439
 @end example
 
-@code{baz_quux} @'{e} uma vari@'{a}vel que n@~{a}o pode receber a atribuiç@~{a}o de um valor.
-O modo @code{any_check} @'{e} como @code{any}, 
-mas @code{any_check} habilita o mecanismo @code{value_check}, e @code{any} n@~{a}o habilita.
+@code{baz_quux} é uma variável que não pode receber a atribuição de um valor.
+O modo @code{any_check} é como @code{any}, 
+mas @code{any_check} habilita o mecanismo @code{value_check}, e @code{any} não habilita.
 @c GENERATED FROM:
 @c define_variable (baz_quux, 'baz_quux, any_check);
 @c F: lambda ([y], if y # 'baz_quux then error ("Cannot assign to `baz_quux'."));
@@ -897,30 +897,30 @@ Cannot assign to `baz_quux'.
 
 @end deffn
 
-@deffn {Funç@~{a}o} dispfun (@var{f_1}, ..., @var{f_n})
-@deffnx {Funç@~{a}o} dispfun (all)
-Mostra a definiç@~{a}o de funç@~{o}es definidas pelo usu@'{a}rio @var{f_1}, ..., @var{f_n}.
+@deffn {Função} dispfun (@var{f_1}, ..., @var{f_n})
+@deffnx {Função} dispfun (all)
+Mostra a definição de funções definidas pelo usuário @var{f_1}, ..., @var{f_n}.
 Cada argumento pode ser o nome de uma macro (definida com @code{::=}),
-uma funç@~{a}o comum (definida com @code{:=} ou @code{define}),
-uma funç@~{a}o array (definida com @code{:=} ou com @code{define},
-mas contendo argumentos entre colch@^{e}tes @code{[ ]}),
-uma funç@~{a}o subscrita, (definida com @code{:=} ou @code{define},
-mas contendo alguns argumentos entre colch@^{e}tes e outros entre par@^{e}ntesis @code{( )})
-uma da fam@'{i}lia de funç@~{o}es subscritas selecionadas por um valor subscrito particular,
-ou uma funç@~{a}o subscrita definida com uma constante subscrita.
+uma função comum (definida com @code{:=} ou @code{define}),
+uma função array (definida com @code{:=} ou com @code{define},
+mas contendo argumentos entre colchêtes @code{[ ]}),
+uma função subscrita, (definida com @code{:=} ou @code{define},
+mas contendo alguns argumentos entre colchêtes e outros entre parêntesis @code{( )})
+uma da família de funções subscritas selecionadas por um valor subscrito particular,
+ou uma função subscrita definida com uma constante subscrita.
 
-@code{dispfun (all)} mostra todas as funç@~{o}es definidas pelo usu@'{a}rio como
+@code{dispfun (all)} mostra todas as funções definidas pelo usuário como
 dadas pelas @code{functions}, @code{arrays}, e listas de @code{macros},
-omitindo funç@~{o}es subscritas definidas com constantes subscritas.
+omitindo funções subscritas definidas com constantes subscritas.
 
-@code{dispfun} cria um R@'{o}tulo de express@~{a}o intermedi@'{a}ria
+@code{dispfun} cria um Rótulo de expressão intermediária
 (@code{%t1}, @code{%t2}, etc.)
-para cada funç@~{a}o mostrada, e atribui a definiç@~{a}o de funç@~{a}o para o r@'{o}tulo.
-Em contraste, @code{fundef} retorna a definiç@~{a}o de funç@~{a}o.
+para cada função mostrada, e atribui a definição de função para o rótulo.
+Em contraste, @code{fundef} retorna a definição de função.
 
-@code{dispfun} n@~{a}o avalia seus argumentos; 
-O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} faz com que ocorra avaliaç@~{a}o.
-@code{dispfun} retorna a lista de r@'{o}tulos de express@~{o}es intermedi@'{a}rias correspondendo @`as funç@~{o}es mostradas.
+@code{dispfun} não avalia seus argumentos; 
+O operador apóstrofo-apóstrofo @code{'@w{}'} faz com que ocorra avaliação.
+@code{dispfun} retorna a lista de rótulos de expressões intermediárias correspondendo às funções mostradas.
 
 Exemplos:
 
@@ -994,21 +994,21 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de sistema} functions
-Valor padr@~{a}o: @code{[]}
+@defvr {Variável de sistema} functions
+Valor padrão: @code{[]}
 
-@code{functions} @'{e} a lista de todas as funç@~{o}es comuns do Maxima
-na sess@~{a}o corrente.
-Uma funç@~{a}o comum @'{e} uma funç@~{a}o constru@'{i}da atrav@'{e}s de
-@code{define} ou de @code{:=} e chamada com par@^{e}ntesis @code{()}.
-Uma funç@~{a}o pode ser definida pela linha de comando do Maxima de forma interativa com o usu@'{a}rio
+@code{functions} é a lista de todas as funções comuns do Maxima
+na sessão corrente.
+Uma função comum é uma função construída através de
+@code{define} ou de @code{:=} e chamada com parêntesis @code{()}.
+Uma função pode ser definida pela linha de comando do Maxima de forma interativa com o usuário
 ou em um arquivo Maxima chamado por @code{load} ou @code{batch}.
 
-Funç@~{o}es de array (chamadas com colch@^{e}tes, e.g., @code{F[x]})
-e funç@~{o}es com subscritos (chamadas com colch@^{e}tes e par@^{e}ntesis, e.g., @code{F[x](y)})
-s@~{a}o lsitados atrav@'{e}s da vari@'{a}vel global @code{arrays}, e n@~{a}o por meio de @code{functions}.
+Funções de array (chamadas com colchêtes, e.g., @code{F[x]})
+e funções com subscritos (chamadas com colchêtes e parêntesis, e.g., @code{F[x](y)})
+são lsitados através da variável global @code{arrays}, e não por meio de @code{functions}.
 
-Funç@~{o}es Lisp n@~{a}o s@~{a}o mantidas em nenhuma lista.
+Funções Lisp não são mantidas em nenhuma lista.
 
 Exemplos:
 
@@ -1054,45 +1054,45 @@ Exemplos:
 
 @end defvr
 
-@deffn {Funç@~{a}o} fundef (@var{f})
-Retorna a definiç@~{a}o da funç@~{a}o @var{f}.
+@deffn {Função} fundef (@var{f})
+Retorna a definição da função @var{f}.
 
 @c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
 O argumento pode ser o nome de uma macro (definida com @code{::=}),
-uma funç@~{a}o comum (definida com @code{:=} ou @code{define}),
-uma funç@~{a}o array (definida com @code{:=} ou @code{define},
-mas contendo argumentos entre colch@^{e}tes @code{[ ]}),
-Uma funç@~{a}o subscrita, (definida com @code{:=} ou @code{define},
-mas contendo alguns argumentos entre colch@^{e}tes e par@^{e}ntesis @code{( )})
-uma da fam@'{i}lia de funç@~{o}es subscritas selecionada por um valor particular subscrito,
-ou uma funç@~{a}o subscrita definida com uma constante subscrita.
+uma função comum (definida com @code{:=} ou @code{define}),
+uma função array (definida com @code{:=} ou @code{define},
+mas contendo argumentos entre colchêtes @code{[ ]}),
+Uma função subscrita, (definida com @code{:=} ou @code{define},
+mas contendo alguns argumentos entre colchêtes e parêntesis @code{( )})
+uma da família de funções subscritas selecionada por um valor particular subscrito,
+ou uma função subscrita definida com uma constante subscrita.
 
-@code{fundef} n@~{a}o avalia seu argumento;
-o operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} faz com que ocorra avaliaç@~{a}o.
+@code{fundef} não avalia seu argumento;
+o operador apóstrofo-apóstrofo @code{'@w{}'} faz com que ocorra avaliação.
 
-@code{fundef (@var{f})} retorna a definiç@~{a}o de @var{f}.
-Em contraste, @code{dispfun (@var{f})} cria um r@'{o}tulo de express@~{a}o intermedi@'{a}ria
-e atribui a definiç@~{a}o para o r@'{o}tulo.
+@code{fundef (@var{f})} retorna a definição de @var{f}.
+Em contraste, @code{dispfun (@var{f})} cria um rótulo de expressão intermediária
+e atribui a definição para o rótulo.
 
 @c PROBABLY NEED SOME EXAMPLES HERE
 @end deffn
 
-@deffn {Funç@~{a}o} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
-Retorna uma express@~{a}o @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
-O valor de retorno @'{e} simplificado, mas n@~{a}o avaliado,
-ent@~{a}o a funç@~{a}o @var{F} n@~{a}o @'{e} chamada, mesmo se essa funç@~{a}o @var{F} existir.
+@deffn {Função} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
+Retorna uma expressão @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
+O valor de retorno é simplificado, mas não avaliado,
+então a função @var{F} não é chamada, mesmo se essa função @var{F} existir.
 
-@code{funmake} n@~{a}o tenta distinguir funç@~{o}es de array de funç@~{o}es comuns;
-quando @var{F} for o nome de uma funç@~{a}o de array,
+@code{funmake} não tenta distinguir funções de array de funções comuns;
+quando @var{F} for o nome de uma função de array,
 @code{funmake} retorna @code{@var{F}(...)}
-(isto @'{e}, uma chamada de funç@~{a}o com par@^{e}ntesis em lugar de colch@^{e}tes).
-@code{arraymake} retorna uma chamada de funç@~{a}o com colch@^{e}tes nesse caso.
+(isto é, uma chamada de função com parêntesis em lugar de colchêtes).
+@code{arraymake} retorna uma chamada de função com colchêtes nesse caso.
 
 @code{funmake} avalia seus argumentos.
 
 Exemplos:
 
-@code{funmake} aplicada a uma funç@~{a}o comum do Maxima.
+@code{funmake} aplicada a uma função comum do Maxima.
 
 @c ===beg===
 @c F (x, y) := y^2 - x^2;
@@ -1130,7 +1130,7 @@ Exemplos:
                                 2
 @end example
 
-@code{funmake} aplicada a uma funç@~{a}o subscrita.
+@code{funmake} aplicada a uma função subscrita.
 
 @c ===beg===
 @c H [a] (x) := (x - 1)^a;
@@ -1158,7 +1158,7 @@ Exemplos:
 (%o5)                       (%e - 1)
 @end example
 
-@code{funmake} aplicada a um s@'{i}mbolo que n@~{a}o @'{e} uma funç@~{a}o definida de qualquer tipo.
+@code{funmake} aplicada a um símbolo que não é uma função definida de qualquer tipo.
 
 @c ===beg===
 @c funmake (A, [u]);
@@ -1171,7 +1171,7 @@ Exemplos:
 (%o2)                         A(u)
 @end example
 
- @code{funmake} avalia seus argumentos, mas n@~{a}o o valor de retorno.
+ @code{funmake} avalia seus argumentos, mas não o valor de retorno.
 
 @c ===beg===
 @c det(a,b,c) := b^2 -4*a*c;
@@ -1206,46 +1206,46 @@ Maxima simplifica o valor de retorno de @code{funmake}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Funç@~{a}o} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
-@deffnx {Funç@~{a}o} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
-Define e retorna uma express@~{a}o lambda (que @'{e}, uma funç@~{a}o an@^{o}nima)
-A funç@~{a}o pode ter argumentos que sejam necess@'{a}rios @var{x_1}, ..., @var{x_m}
-e/ou argumentos opcionais @var{L}, os quais aparecem dentro do corpo da funç@~{a}o como uma lista.
-O valor de retorno da funç@~{a}o @'{e} @var{expr_n}.
-Uma express@~{a}o lambda pode ser atribu@'{i}da para uma vari@'{a}vel e avaliada como uma funç@~{a}o comum.
-Uma express@~{a}o lambda pode aparecer em alguns contextos nos quais um nome de funç@~{a}o @'{e} esperado.
+@deffn {Função} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Função} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Função} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
+Define e retorna uma expressão lambda (que é, uma função anônima)
+A função pode ter argumentos que sejam necessários @var{x_1}, ..., @var{x_m}
+e/ou argumentos opcionais @var{L}, os quais aparecem dentro do corpo da função como uma lista.
+O valor de retorno da função é @var{expr_n}.
+Uma expressão lambda pode ser atribuída para uma variável e avaliada como uma função comum.
+Uma expressão lambda pode aparecer em alguns contextos nos quais um nome de função é esperado.
 
-Quando a funç@~{a}o @'{e} avaliada,
-vari@'{a}veis locais n@~{a}o associadas @var{x_1}, ..., @var{x_m} s@~{a}o criadas.
-@code{lambda} pode aparecer dentro de @code{block} ou outra funç@~{a}o @code{lambda};
-vari@'{a}veis locais s@~{a}o estabelecidas cada vez que outro @code{block} ou funç@~{a}o @code{lambda} @'{e} avaliada.
-Vari@'{a}veis locais parecem ser globais para qualquer coisa contendo @code{block} ou @code{lambda}.
-Se uma vari@'{a}vel @'{e} n@~{a}o local,
-seu valor @'{e} o valor mais recentemente atribu@'{i}do em alguma coisa contendo @code{block} ou @code{lambda}, qualquer que seja,
-de outra forma, seu valor @'{e} o valor da vari@'{a}vel no ambiente global.
-Essa pol@'{i}tica pode coincidir com o entendimento usual de "escopo din@^{a}mico".
+Quando a função é avaliada,
+variáveis locais não associadas @var{x_1}, ..., @var{x_m} são criadas.
+@code{lambda} pode aparecer dentro de @code{block} ou outra função @code{lambda};
+variáveis locais são estabelecidas cada vez que outro @code{block} ou função @code{lambda} é avaliada.
+Variáveis locais parecem ser globais para qualquer coisa contendo @code{block} ou @code{lambda}.
+Se uma variável é não local,
+seu valor é o valor mais recentemente atribuído em alguma coisa contendo @code{block} ou @code{lambda}, qualquer que seja,
+de outra forma, seu valor é o valor da variável no ambiente global.
+Essa política pode coincidir com o entendimento usual de "escopo dinâmico".
 
-Ap@'{o}s vari@'{a}veis locais serem estabelecidas,
-@var{expr_1} at@'{e} @var{expr_n} s@~{a}o avaliadas novamente.
-a vari@'{a}vel especial @code{%%}, representando o valor da express@~{a}o precedente,
-@'{e} reconhecida.
-@code{throw} e @code{catch} pode tamb@'{e}m aparecer na lista de express@~{o}es.
+Após variáveis locais serem estabelecidas,
+@var{expr_1} até @var{expr_n} são avaliadas novamente.
+a variável especial @code{%%}, representando o valor da expressão precedente,
+é reconhecida.
+@code{throw} e @code{catch} pode também aparecer na lista de expressões.
 
-@code{return} n@~{a}o pode aparecer em uma express@~{a}o lambda a menos que contendo @code{block},
-nesse caso @code{return} define o valor de retorno do  bloco e n@~{a}o da
-express@~{a}o lambda,
+@code{return} não pode aparecer em uma expressão lambda a menos que contendo @code{block},
+nesse caso @code{return} define o valor de retorno do  bloco e não da
+expressão lambda,
 a menos que o bloco seja @var{expr_n}.
-Da mesma forma, @code{go} n@~{a}o pode aparecer em uma express@~{a}o lambda a menos que contendo @code{block}.
+Da mesma forma, @code{go} não pode aparecer em uma expressão lambda a menos que contendo @code{block}.
 
-@code{lambda} n@~{a}o avalia seus argumentos; 
-o operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} faz com que ocorra avaliaç@~{a}o.
+@code{lambda} não avalia seus argumentos; 
+o operador apóstrofo-apóstrofo @code{'@w{}'} faz com que ocorra avaliação.
 
 Exemplos:
 
 @itemize @bullet
 @item
-A express@~{a}o lambda pode ser atribu@'{i}da para uma vari@'{a}vel e avaliada como uma funç@~{a}o comum.
+A expressão lambda pode ser atribuída para uma variável e avaliada como uma função comum.
 @end itemize
 @c ===beg===
 @c f: lambda ([x], x^2);
@@ -1261,7 +1261,7 @@ A express@~{a}o lambda pode ser atribu@'{i}da para uma vari@'{a}vel e avaliada c
 @end example
 @itemize @bullet
 @item
-Uma express@~{a}o lambda pode aparecer em contextos nos quais uma avaliaç@~{a}o de funç@~{a}o @'{e} esperada como resposta.
+Uma expressão lambda pode aparecer em contextos nos quais uma avaliação de função é esperada como resposta.
 @end itemize
 @c ===beg===
 @c lambda ([x], x^2) (a);
@@ -1281,10 +1281,10 @@ Uma express@~{a}o lambda pode aparecer em contextos nos quais uma avaliaç@~{a}o
 @end example
 @itemize @bullet
 @item
-Vari@'{a}veis argumento s@~{a}o vari@'{a}veis locais.
-Outras vari@'{a}veis aparecem para serem vari@'{a}veis globais.
-Vari@'{a}veis globais s@~{a}o avaliadas ao mesmo tempo em que a express@~{a}o lambda @'{e} avaliada,
-a menos que alguma avaliaç@~{a}o especial seja forçada por alguns meios, tais como @code{'@w{}'}.
+Variáveis argumento são variáveis locais.
+Outras variáveis aparecem para serem variáveis globais.
+Variáveis globais são avaliadas ao mesmo tempo em que a expressão lambda é avaliada,
+a menos que alguma avaliação especial seja forçada por alguns meios, tais como @code{'@w{}'}.
 @end itemize
 @c ===beg===
 @c a: %pi$
@@ -1316,9 +1316,9 @@ a menos que alguma avaliaç@~{a}o especial seja forçada por alguns meios, tais 
 @end example
 @itemize @bullet
 @item
-Express@~{o}es lambda podem ser aninhadas.
-Vari@'{a}veis locais dentro de outra express@~{a}o lambda parece ser global para a express@~{a}o interna
-a menos que mascarada por vari@'{a}veis locais de mesmos nomes.
+Expressões lambda podem ser aninhadas.
+Variáveis locais dentro de outra expressão lambda parece ser global para a expressão interna
+a menos que mascarada por variáveis locais de mesmos nomes.
 @end itemize
 @c ===beg===
 @c h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
@@ -1336,9 +1336,9 @@ a menos que mascarada por vari@'{a}veis locais de mesmos nomes.
 @end example
 @itemize @bullet
 @item
-Uma vez que @code{lambda} n@~{a}o avalia seus argumentos, a express@~{a}o lambda @code{i} abaixo
-n@~{a}o define uma funç@~{a}o "multiplicaç@~{a}o por @code{a}".
-Tanto uma funç@~{a}o pode ser definida via @code{buildq}, como na express@~{a}o lambda @code{i2} abaixo.
+Uma vez que @code{lambda} não avalia seus argumentos, a expressão lambda @code{i} abaixo
+não define uma função "multiplicação por @code{a}".
+Tanto uma função pode ser definida via @code{buildq}, como na expressão lambda @code{i2} abaixo.
 @end itemize
 @c ===beg===
 @c i: lambda ([a], lambda ([x], a*x));
@@ -1365,9 +1365,9 @@ Tanto uma funç@~{a}o pode ser definida via @code{buildq}, como na express@~{a}o
 @end example
 @itemize @bullet
 @item
-Uma express@~{a}o lambda pode receber um n@'{u}mero vari@'{a}vel de argumentos,
-os quais s@~{a}o indicados por meio de @code{[@var{L}]} como o argumento @'{u}nico ou argumento final.
-Os argumentos aparecem dentro do corpo da funç@~{a}o como uma lista.
+Uma expressão lambda pode receber um número variável de argumentos,
+os quais são indicados por meio de @code{[@var{L}]} como o argumento único ou argumento final.
+Os argumentos aparecem dentro do corpo da função como uma lista.
 @end itemize
 @c ===beg===
 @c f : lambda ([aa, bb, [cc]], aa * cc + bb);
@@ -1388,56 +1388,56 @@ Os argumentos aparecem dentro do corpo da funç@~{a}o como uma lista.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Funç@~{a}o} local (@var{v_1}, ..., @var{v_n})
-Declara as vari@'{a}veis @var{v_1}, ..., @var{v_n} para serem locais com
-relaç@~{a}o a todas as propriedades na declaraç@~{a}o na qual essa funç@~{a}o
-@'{e} usada.
+@deffn {Função} local (@var{v_1}, ..., @var{v_n})
+Declara as variáveis @var{v_1}, ..., @var{v_n} para serem locais com
+relação a todas as propriedades na declaração na qual essa função
+é usada.
 
-@code{local} n@~{a}o avalia seus argumentos.
+@code{local} não avalia seus argumentos.
 @code{local} retorna @code{done}.
 
-@code{local} pode somente ser usada em @code{block}, no corpo de definiç@~{o}es
-de funç@~{a}o ou express@~{o}es @code{lambda}, ou na funç@~{a}o @code{ev}, e somente uma
-ocorr@^{e}cia @'{e} permitida em cada.
+@code{local} pode somente ser usada em @code{block}, no corpo de definições
+de função ou expressões @code{lambda}, ou na função @code{ev}, e somente uma
+ocorrêcia é permitida em cada.
 
-@code{local} @'{e} independente de @code{context}.
+@code{local} é independente de @code{context}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} macroexpansion
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de opção} macroexpansion
+Valor padrão: @code{false}
 
-@code{macroexpansion} controla se a expans@~{a}o (isto @'{e}, o valor de retorno) de uma funç@~{a}o de macro
-@'{e} substitu@'{i}do pela chamada @`{a} funç@~{a}o de macro.
-Uma substituiç@~{a}o pode aumentar a velocidade de subseq@"{u}@^{e}nte avaliaç@~{o}es da express@~{a}o,
-ao custo de armazenar a expans@~{a}o.
+@code{macroexpansion} controla se a expansão (isto é, o valor de retorno) de uma função de macro
+é substituído pela chamada à função de macro.
+Uma substituição pode aumentar a velocidade de subseq@"{u}ênte avaliações da expressão,
+ao custo de armazenar a expansão.
 
 @table @code
 @item false
-A expans@~{a}o de uma funç@~{a}o de macro n@~{a}o @'{e} substitu@'{i}da pela chamada de funç@~{a}o de macro.
+A expansão de uma função de macro não é substituída pela chamada de função de macro.
 @item expand
-Da primeira vez que a funç@~{a}o de macro @'{e} avaliada,
-a expans@~{a}o @'{e} armazenada.
-A expans@~{a}o n@~{a}o @'{e} recalculada sobre chamadas subseq@"{u}@^{e}ntes;
-qualquer efeito colateral (tais como @code{print} ou atribuiç@~{o}es a vari@'{a}veis globais) ocorrem
-somente quando chamadas @`{a} funç@~{a}o de macro forem avaliadas primeiramente.
-Expans@~{o}es em uma express@~{a}o n@~{a}o afetam outras express@~{o}es
-que possuem a mesma chamada @`{a} funç@~{a}o de macro.
+Da primeira vez que a função de macro é avaliada,
+a expansão é armazenada.
+A expansão não é recalculada sobre chamadas subseq@"{u}êntes;
+qualquer efeito colateral (tais como @code{print} ou atribuições a variáveis globais) ocorrem
+somente quando chamadas à função de macro forem avaliadas primeiramente.
+Expansões em uma expressão não afetam outras expressões
+que possuem a mesma chamada à função de macro.
 @item displace
-Na primeira vez que uma funç@~{a}o de macro @'{e} avaliada,
-a expans@~{a}o @'{e} substitu@'{i}da pela chamada,
-dessa forma modificando a express@~{a}o a partir da qual a funç@~{a}o de macro foi chamada.
-A expans@~{a}o n@~{a}o @'{e} recalculada nas chamadas subseq@"{u}@^{e}ntes;
-qualquer efeito colateral acontece somente quando a chamada @`{a} funç@~{a}o de macro for avaliada primeiramente.
-Expans@~{o}es na express@~{a}o n@~{a}o afetam outras express@~{o}es
-que possuem a mesma chamada @`{a} funç@~{a}o de macro.
+Na primeira vez que uma função de macro é avaliada,
+a expansão é substituída pela chamada,
+dessa forma modificando a expressão a partir da qual a função de macro foi chamada.
+A expansão não é recalculada nas chamadas subseq@"{u}êntes;
+qualquer efeito colateral acontece somente quando a chamada à função de macro for avaliada primeiramente.
+Expansões na expressão não afetam outras expressões
+que possuem a mesma chamada à função de macro.
 @end table
 
 Exemplos
 
 Quandon @code{macroexpansion} for @code{false},
-uma funç@~{a}o de macro @'{e} chamada a cada vez que a express@~{a}o que est@'{a} chamando @'{e} avaliada,
-e a express@~{a}o que est@'{a} chamandon@~{a}o @'{e} modificada.
+uma função de macro é chamada a cada vez que a expressão que está chamando é avaliada,
+e a expressão que está chamandonão é modificada.
 
 @c ===beg===
 @c f (x) := h (x) / g (x);
@@ -1482,8 +1482,8 @@ x + 99 is equal to x
 @end example
 
 Quando @code{macroexpansion} for @code{expand},
-uma funç@~{a}o de macro @'{e} chamada uma @'{u}nica vez,
-e a express@~{a}o que est@'{a} chamando n@~{a}o @'{e} modificada.
+uma função de macro é chamada uma única vez,
+e a expressão que está chamando não é modificada.
 
 @c ===beg===
 @c f (x) := h (x) / g (x);
@@ -1526,8 +1526,8 @@ x + 99 is equal to x
 @end example
 
 Quando @code{macroexpansion} for @code{expand},
-uma funç@~{a}o de macro @'{e} chamada uma @'{u}nica vez,
-e a express@~{a}o que est@'{a} chamando @'{e} modificada.
+uma função de macro é chamada uma única vez,
+e a expressão que está chamando é modificada.
 
 @c ===beg===
 @c f (x) := h (x) / g (x);
@@ -1571,148 +1571,148 @@ x + 99 is equal to x
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} mode_checkp
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} mode_checkp
+Valor padrão: @code{true}
 
 @c WHAT DOES THIS MEAN ??
-Quando @code{mode_checkp} @'{e} @code{true}, @code{mode_declare} verifica os modos
-de associaç@~{a}o de vari@'{a}veis.
+Quando @code{mode_checkp} é @code{true}, @code{mode_declare} verifica os modos
+de associação de variáveis.
 @c NEED SOME EXAMPLES HERE.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} mode_check_errorp
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de opção} mode_check_errorp
+Valor padrão: @code{false}
 
 @c WHAT DOES THIS MEAN ??
-Quando @code{mode_check_errorp} @'{e} @code{true}, @code{mode_declare} chama
-a funç@~{a}o "error".
+Quando @code{mode_check_errorp} é @code{true}, @code{mode_declare} chama
+a função "error".
 @c NEED SOME EXAMPLES HERE.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} mode_check_warnp
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} mode_check_warnp
+Valor padrão: @code{true}
 
 @c WHAT DOES THIS MEAN ??
-Quando @code{mode_check_warnp} @'{e} @code{true}, modo "errors" s@~{a}o
+Quando @code{mode_check_warnp} é @code{true}, modo "errors" são
 descritos.
 @c NEED SOME EXAMPLES HERE.
 
 @end defvr
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Funç@~{a}o} mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
-@code{mode_declare} @'{e} usado para declarar os modos de vari@'{a}veis e
-funç@~{o}es para subseq@"{u}@^{e}nte traduç@~{a}o ou compilaç@~{a}o das funç@~{o}es.
-@code{mode_declare} @'{e} tipicamente colocada no in@'{i}cio de uma definiç@~{a}o de
-funç@~{a}o, no in@'{i}cio de um script Maxima, ou executado atrav@'{e}s da linha de comando de forma interativa.
+@deffn {Função} mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
+@code{mode_declare} é usado para declarar os modos de variáveis e
+funções para subseq@"{u}ênte tradução ou compilação das funções.
+@code{mode_declare} é tipicamente colocada no início de uma definição de
+função, no início de um script Maxima, ou executado através da linha de comando de forma interativa.
 
-Os argumentos de @code{mode_declare} s@~{a}o pares consistindo de  uma vari@'{a}vel e o modo que @'{e}
+Os argumentos de @code{mode_declare} são pares consistindo de  uma variável e o modo que é
 um de @code{boolean}, @code{fixnum}, @code{number}, @code{rational}, ou @code{float}.
-Cada vari@'{a}vel pode tamb@'{e}m
-ser uma lista de vari@'{a}veis todas as quais s@~{a}o declaradas para ter o mesmo modo.
+Cada variável pode também
+ser uma lista de variáveis todas as quais são declaradas para ter o mesmo modo.
 
 @c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
-Se uma vari@'{a}vel @'{e} um array, e se todo elemento do array que @'{e}
-referenciado tiver um valor ent@~{a}o @code{array (yi, complete, dim1, dim2, ...)}
+Se uma variável é um array, e se todo elemento do array que é
+referenciado tiver um valor então @code{array (yi, complete, dim1, dim2, ...)}
 em lugar de 
 @example
 array(yi, dim1, dim2, ...)
 @end example
-dever@'{a} ser usado primeiro
-declarando as associaç@~{o}es do array.
+deverá ser usado primeiro
+declarando as associações do array.
 @c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
 Se todos os elementos do array
-est@~{a}o no modo @code{fixnum} (@code{float}), use @code{fixnum} (@code{float}) em lugar de @code{complete}.
+estão no modo @code{fixnum} (@code{float}), use @code{fixnum} (@code{float}) em lugar de @code{complete}.
 @c WHAT DOES THE FOLLOWING STATEMENT MEAN ???
-Tamb@'{e}m se todo elemento do array est@'{a} no mesmo modo, digamos @code{m}, ent@~{a}o
+Também se todo elemento do array está no mesmo modo, digamos @code{m}, então
 
 @example
 mode_declare (completearray (yi), m))
 @end example
 
-dever@'{a} ser usado para uma traduç@~{a}o
+deverá ser usado para uma tradução
 eficiente.
 
-C@'{o}digo num@'{e}ricos usando arrays podem rodar mais r@'{a}pidamente
+Código numéricos usando arrays podem rodar mais rápidamente
 se for decladado o tamanho esperado do array, como em:
 
 @example
 mode_declare (completearray (a [10, 10]), float)
 @end example
 
-para um array num@'{e}rico em ponto flutuante que @'{e} 10 x 10.
+para um array numérico em ponto flutuante que é 10 x 10.
 
-Pode-se declarar o modo do resultado de uma funç@~{a}o
+Pode-se declarar o modo do resultado de uma função
 usando @code{function (f_1, f_2, ...)} como um argumento;
-aqui @code{f_1}, @code{f_2}, ...  s@~{a}o nomes
-de funç@~{o}es.  Por exemplo a express@~{a}o,
+aqui @code{f_1}, @code{f_2}, ...  são nomes
+de funções.  Por exemplo a expressão,
 
 @example
 mode_declare ([function (f_1, f_2, ...)], fixnum)
 @end example
 
-declara que os valores retornados por @code{f_1}, @code{f_2}, ...  s@~{a}o inteiros palavra simples.
+declara que os valores retornados por @code{f_1}, @code{f_2}, ...  são inteiros palavra simples.
 
-@code{modedeclare} @'{e} um sin@^{o}nimo para @code{mode_declare}.
+@code{modedeclare} é um sinônimo para @code{mode_declare}.
 
 @end deffn
 
 @c WHAT IS THIS ABOUT ??
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Funç@~{a}o} mode_identity (@var{arg_1}, @var{arg_2})
+@deffn {Função} mode_identity (@var{arg_1}, @var{arg_2})
 Uma forma especial usada com @code{mode_declare} e
-@code{macros} para declarar, e.g., uma lista de listas de n@'{u}meros em ponto flutuante ou outros
-objetos de dados.  O primeiro argumento para @code{mode_identity} @'{e} um valor primitivo
+@code{macros} para declarar, e.g., uma lista de listas de números em ponto flutuante ou outros
+objetos de dados.  O primeiro argumento para @code{mode_identity} é um valor primitivo
 nome de modo como dado para @code{mode_declare} (i.e., um de @code{float}, @code{fixnum}, @code{number},
-@code{list}, ou @code{any}), e o segundo argumento @'{e} uma express@~{a}o que @'{e}
+@code{list}, ou @code{any}), e o segundo argumento é uma expressão que é
 avaliada e retornada com o valor de @code{mode_identity}.  Todavia, se o
-valor de retorno n@~{a}o @'{e} permitido pelo modo declarado no primeiro
-argumento, um erro ou alerta @'{e} sinalizado.  Um ponto importante @'{e}
-que o modo da express@~{a}o como determinado pelo Maxima para o tradutor
-Lisp, ser@'{a} aquele dado como o primeiro argumento, independente de
-qualquer coisa que v@'{a} no segundo argumento.
+valor de retorno não é permitido pelo modo declarado no primeiro
+argumento, um erro ou alerta é sinalizado.  Um ponto importante é
+que o modo da expressão como determinado pelo Maxima para o tradutor
+Lisp, será aquele dado como o primeiro argumento, independente de
+qualquer coisa que vá no segundo argumento.
 E.g., @code{x: 3.3; mode_identity (fixnum, x);} retorna um erro.  @code{mode_identity (flonum, x)}
 returns 3.3 .  
-Isso tem n@'{u}merosas utilidades, e.g., se voc@^{e} soube que @code{first (l)} retornou um
-n@'{u}mero ent@~{a}o voc@^{e} pode escrever @code{mode_identity (number, first (l))}.  Todavia,
-um mais eficiente caminho para fazer isso @'{e} definir uma nova primitiva,
+Isso tem númerosas utilidades, e.g., se você soube que @code{first (l)} retornou um
+número então você pode escrever @code{mode_identity (number, first (l))}.  Todavia,
+um mais eficiente caminho para fazer isso é definir uma nova primitiva,
 
 @example
 firstnumb (x) ::= buildq ([x], mode_identity (number, first(x)));
 @end example
 
 e usar @code{firstnumb}
-toda vez que voc@^{e} pegar o primeiro de uma lista de n@'{u}meros.
+toda vez que você pegar o primeiro de uma lista de números.
 
 @end deffn
 
 @c IS THERE ANY REASON TO SET transcompile: false ??
 @c MAYBE THIS VARIABLE COULD BE PERMANENTLY SET TO true AND STRUCK FROM THE DOCUMENTATION.
-@defvr {Vari@'{a}vel de opç@~{a}o} transcompile
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} transcompile
+Valor padrão: @code{true}
 
-Quando @code{transcompile} @'{e} @code{true}, @code{translate} e @code{translate_file} geram
-declaraç@~{o}es para fazer o c@'{o}digo traduzido mais adequado para compilaç@~{a}o.
+Quando @code{transcompile} é @code{true}, @code{translate} e @code{translate_file} geram
+declarações para fazer o código traduzido mais adequado para compilação.
 @c BUT THE DECLARATIONS DON'T SEEM TO BE NECESSARY, SO WHAT'S THE POINT AGAIN ??
 
-@code{compfile} escolhe @code{transcompile: true} para a duraç@~{a}o.
+@code{compfile} escolhe @code{transcompile: true} para a duração.
 
 @end defvr
 
-@deffn {Funç@~{a}o} translate (@var{f_1}, ..., @var{f_n})
-@deffnx {Funç@~{a}o} translate (funç@~{o}es)
-@deffnx {Funç@~{a}o} translate (all)
-Traduz funç@~{o}es definidas pelo usu@'{a}rio
+@deffn {Função} translate (@var{f_1}, ..., @var{f_n})
+@deffnx {Função} translate (funções)
+@deffnx {Função} translate (all)
+Traduz funções definidas pelo usuário
 @var{f_1}, ..., @var{f_n} da linguagem de Maxima para Lisp
-e avalia a traduç@~{a}o Lisp.
-Tipicamente as funç@~{o}es traduzidas executam mais r@'{a}pido que as originais.
+e avalia a tradução Lisp.
+Tipicamente as funções traduzidas executam mais rápido que as originais.
 
-@code{translate (all)} ou @code{translate (funç@~{o}es)} traduz todas as funç@~{o}es definidas pelo usu@'{a}rio.
+@code{translate (all)} ou @code{translate (funções)} traduz todas as funções definidas pelo usuário.
 
-Funç@~{o}es a serem traduzidas incluir~ao uma chamada para @code{mode_declare} no
-in@'{i}cio quando poss@'{i}vel com o objetivo de produzir um c@'{o}digo mais eficiente.  Por
+Funções a serem traduzidas incluir~ao uma chamada para @code{mode_declare} no
+início quando possível com o objetivo de produzir um código mais eficiente.  Por
 exemplo:
 
 @example
@@ -1722,89 +1722,89 @@ f (x_1, x_2, ...) := block ([v_1, v_2, ...],
 
 @noindent
 
-quando @var{x_1}, @var{x_2}, ...  s@~{a}o par@^{a}metros para a funç@~{a}o e
-@var{v_1}, @var{v_2}, ...  s@~{a}o vari@'{a}veis locais.
+quando @var{x_1}, @var{x_2}, ...  são parâmetros para a função e
+@var{v_1}, @var{v_2}, ...  são variáveis locais.
 
-Os nomes de funç@~{o}es traduzidas
-s@~{a}o removidos da lista @code{functions} se @code{savedef} @'{e} @code{false} (veja abaixo)
-e s@~{a}o adicionados nas listas @code{props}.
+Os nomes de funções traduzidas
+são removidos da lista @code{functions} se @code{savedef} é @code{false} (veja abaixo)
+e são adicionados nas listas @code{props}.
 
-Funç@~{o}es n@~{a}o poder@~{a}o ser traduzidas
+Funções não poderão ser traduzidas
 a menos que elas sejam totalmente depuradas.
 
-Express@~{o}es s@~{a}o assumidas simplificadas; se n@~{a}o forem, um c@'{o}digo correto ser@'{a} gerado mas n@~{a}o ser@'{a} um c@'{o}digo
-@'{o}timo.  Dessa forma, o usu@'{a}rio n@~{a}o poder@'{a} escolher o comutador @code{simp} para @code{false}
-o qual inibe simplificaç@~{a}o de express@~{o}es a serem traduzidas.
+Expressões são assumidas simplificadas; se não forem, um código correto será gerado mas não será um código
+ótimo.  Dessa forma, o usuário não poderá escolher o comutador @code{simp} para @code{false}
+o qual inibe simplificação de expressões a serem traduzidas.
 
-O comutador @code{translate}, se @code{true}, causa traduç@~{a}o
-automatica de uma funç@~{a}o de usu@'{a}rio para Lisp.
+O comutador @code{translate}, se @code{true}, causa tradução
+automatica de uma função de usuário para Lisp.
 
-Note que funç@~{o}es
-traduzidas podem n@~{a}o executar identicamente para o caminho que elas faziam antes da
-traduç@~{a}o como certas incompatabilidades podem existir entre o Lisp
-e vers@~{o}es do Maxima.  Principalmente, a funç@~{a}o  @code{rat} com mais de
-um argumento e a funç@~{a}o @code{ratvars} n@~{a}o poder@'{a} ser usada se quaisquer
-vari@'{a}veis s@~{a}o declaradas com @code{mode_declare} como sendo express@~{o}es rotacionais can@^{o}nicas(CRE).
-Tamb@'{e}m a escolha @code{prederror: false}
-n@~{a}o traduzir@'{a}.
+Note que funções
+traduzidas podem não executar identicamente para o caminho que elas faziam antes da
+tradução como certas incompatabilidades podem existir entre o Lisp
+e versões do Maxima.  Principalmente, a função  @code{rat} com mais de
+um argumento e a função @code{ratvars} não poderá ser usada se quaisquer
+variáveis são declaradas com @code{mode_declare} como sendo expressões rotacionais canônicas(CRE).
+Também a escolha @code{prederror: false}
+não traduzirá.
 @c WHAT ABOUT % AND %% ???
 
-@code{savedef} - se @code{true} far@'{a} com que a vers@~{a}o Maxima de uma funç@~{a}o
- usu@'{a}rio permaneça quando a funç@~{a}o @'{e} traduzida com @code{translate}.  Isso permite a
-que definiç@~{a}o seja mostrada por @code{dispfun} e autoriza a funç@~{a}o a ser
+@code{savedef} - se @code{true} fará com que a versão Maxima de uma função
+ usuário permaneça quando a função é traduzida com @code{translate}.  Isso permite a
+que definição seja mostrada por @code{dispfun} e autoriza a função a ser
 editada.
 
-@code{transrun} - se @code{false} far@'{a} com que a vers@~{a}o interpretada de todas as
-funç@~{o}es sejam executadas (desde que estejam ainda dispon@'{i}veis) em lugar da
-vers@~{a}o traduzida.
+@code{transrun} - se @code{false} fará com que a versão interpretada de todas as
+funções sejam executadas (desde que estejam ainda disponíveis) em lugar da
+versão traduzida.
 
-O resultado retornado por @code{translate} @'{e} uma lista de nomes de
-funç@~{o}es traduzidas.
+O resultado retornado por @code{translate} é uma lista de nomes de
+funções traduzidas.
 
 @end deffn
 
-@deffn {Funç@~{a}o} translate_file (@var{maxima_nomearquivo})
-@deffnx {Funç@~{a}o} translate_file (@var{maxima_nomearquivo}, @var{lisp_nomearquivo})
-Traduz um arquivo com c@'{o}digo Maxima para um arquivo com c@'{o}digo Lisp.
-@code{translate_file} retorna uma lista de tr@^{e}s nomes de arquivo:
+@deffn {Função} translate_file (@var{maxima_nomearquivo})
+@deffnx {Função} translate_file (@var{maxima_nomearquivo}, @var{lisp_nomearquivo})
+Traduz um arquivo com código Maxima para um arquivo com código Lisp.
+@code{translate_file} retorna uma lista de três nomes de arquivo:
 O nome do arquivo Maxima, o nome do arquivo Lisp, e o nome do arquivo
-contendo informaç@~{o}es adicionais sobre a traduç@~{a}o.
+contendo informações adicionais sobre a tradução.
 @code{translate_file} avalia seus argumentos.
 
-@code{translate_file ("foo.mac"); load("foo.LISP")} @'{e} o mesmo que
-@code{batch ("foo.mac")} exceto por certas restriç@~{o}es,
+@code{translate_file ("foo.mac"); load("foo.LISP")} é o mesmo que
+@code{batch ("foo.mac")} exceto por certas restrições,
 o uso de @code{'@w{}'} e @code{%}, por exemplo.
 @c FIGURE OUT WHAT THE RESTRICTIONS ARE AND STATE THEM
 
 @code{translate_file (@var{maxima_nomearquivo})} traduz um arquivo Maxima @var{maxima_nomearquivo}
 para um similarmente chamado arquivo Lisp.
-Por exemplo, @code{foo.mac} @'{e} traduzido em @code{foo.LISP}.
-O nome de arquivo Maxima pod incluir nome ou nomes de diret@'{o}rio(s),
-nesse caso o arquivo de sa@'{i}da Lisp @'{e} escrito
-para o mesmo diret@'{o}rio que a entrada Maxima.
+Por exemplo, @code{foo.mac} é traduzido em @code{foo.LISP}.
+O nome de arquivo Maxima pod incluir nome ou nomes de diretório(s),
+nesse caso o arquivo de saída Lisp é escrito
+para o mesmo diretório que a entrada Maxima.
 
 @code{translate_file (@var{maxima_nomearquivo}, @var{lisp_nomearquivo})} traduz
 um arquivo Maxima @var{maxima_nomearquivo} em um arquivo Lisp @var{lisp_nomearquivo}.
-@code{translate_file} ignora a extens@~{a}o do nome do arquivo, se qualquer, de @code{lisp_nomearquivo};
-a extens@~{a}o do arquivo de sa@'{i}da Lisp @'{e} sempre @code{LISP}.
-O nome de arquivo Lisp pode incluir um nome ou nomes de diret@'{o}rios),
-nesse caso o arquivo de sa@'{i}da Lisp @'{e} escrito para o diret@'{o}rio especificado.
+@code{translate_file} ignora a extensão do nome do arquivo, se qualquer, de @code{lisp_nomearquivo};
+a extensão do arquivo de saída Lisp é sempre @code{LISP}.
+O nome de arquivo Lisp pode incluir um nome ou nomes de diretórios),
+nesse caso o arquivo de saída Lisp é escrito para o diretório especificado.
 
-@code{translate_file} tamb@'{e}m escreve um arquivo de mensagens de alerta
-do tradutor em v@'{a}rios graus de severidade.
-A extens@~{a}o do nome de arquivo desse arquivo @'{e} @code{UNLISP}.
-Esse arquivo pode conter informaç@~{a}o valiosa, apesar de possivelmente obscura,
-para rastrear erros no c@'{o}digo traduzido.
-O arquivo @code{UNLISP} @'{e} sempre escrito
-para o mesmo diret@'{o}rio que a entrada Maxima.
+@code{translate_file} também escreve um arquivo de mensagens de alerta
+do tradutor em vários graus de severidade.
+A extensão do nome de arquivo desse arquivo é @code{UNLISP}.
+Esse arquivo pode conter informação valiosa, apesar de possivelmente obscura,
+para rastrear erros no código traduzido.
+O arquivo @code{UNLISP} é sempre escrito
+para o mesmo diretório que a entrada Maxima.
 
-@code{translate_file} emite c@'{o}digo Lisp o qual faz com que
-algumas definiç@~{o}es tenham efeito t@~{a}o logo
-o c@'{o}digo Lisp @'{e} compilado.
-Veja @code{compile_file} para mais sobre esse t@'{o}pico.
+@code{translate_file} emite código Lisp o qual faz com que
+algumas definições tenham efeito tão logo
+o código Lisp é compilado.
+Veja @code{compile_file} para mais sobre esse tópico.
 
 @c CHECK ALL THESE AND SEE WHICH ONES ARE OBSOLETE
-Veja tamb@'{e}m @code{tr_array_as_ref},
+Veja também @code{tr_array_as_ref},
 @c tr_bind_mode_hook EXISTS BUT IT APPEARS TO BE A GROTESQUE UNDOCUMENTED HACK
 @c WE DON'T WANT TO MENTION IT
 @c @code{tr_bind_mode_hook}, 
@@ -1829,132 +1829,132 @@ e @code{tr_warn_undefined_variable}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} transrun
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} transrun
+Valor padrão: @code{true}
 
-Quando @code{transrun} @'{e} @code{false} far@'{a} com que a vers@~{a}o
-interpretada de todas as funç@~{o}es sejam executadas (desde que estejam ainda dispon@'{i}veis)
-em lugar de vers@~{a}o traduzidas.
+Quando @code{transrun} é @code{false} fará com que a versão
+interpretada de todas as funções sejam executadas (desde que estejam ainda disponíveis)
+em lugar de versão traduzidas.
 
 @end defvr
 
 @c IN WHAT CONTEXT IS tr_array_as_ref: false APPROPRIATE ??? NOT SEEING THE USEFULNESS HERE.
 @c ALSO, I GUESS WE SHOULD HAVE AN ITEM FOR translate_fast_arrays, ANOTHER CONFUSING FLAG ...
-@defvr {Vari@'{a}vel de opç@~{a}o} tr_array_as_ref
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} tr_array_as_ref
+Valor padrão: @code{true}
 
-Se @code{translate_fast_arrays} for @code{false}, refer@^{e}ncias a arrays no
-C@'{o}digo Lisp emitidas por @code{translate_file} s@~{a}o afetadas por @code{tr_array_as_ref}.
-Quando @code{tr_array_as_ref} @'{e} @code{true},
-nomes de arrays s@~{a}o avaliados,
-de outra forma nomes de arrays aparecem como s@'{i}mbolos literais no c@'{o}digo traduzido.
+Se @code{translate_fast_arrays} for @code{false}, referências a arrays no
+Código Lisp emitidas por @code{translate_file} são afetadas por @code{tr_array_as_ref}.
+Quando @code{tr_array_as_ref} é @code{true},
+nomes de arrays são avaliados,
+de outra forma nomes de arrays aparecem como símbolos literais no código traduzido.
 
-@code{tr_array_as_ref} n@~{a}o ter@~{a}o efeito se @code{translate_fast_arrays} for @code{true}.
+@code{tr_array_as_ref} não terão efeito se @code{translate_fast_arrays} for @code{true}.
 
 @end defvr
 
 @c WHY IS THIS FLAG NEEDED ??? UNDER WHAT CIRCUMSTANCES CAN TRANSLATION
 @c OF A BOUND VARIABLE USED AS A FUNCTION GO WRONG ???
-@defvr {Vari@'{a}vel de opç@~{a}o} tr_bound_function_applyp
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} tr_bound_function_applyp
+Valor padrão: @code{true}
 
-Quando @code{tr_bound_function_applyp} for @code{true}, Maxima emite um alerta se uma associaç@~{a}o
-de vari@'{a}vel (tal como um argumento de funç@~{a}o) @'{e} achada sendo usada como uma funç@~{a}o.
+Quando @code{tr_bound_function_applyp} for @code{true}, Maxima emite um alerta se uma associação
+de variável (tal como um argumento de função) é achada sendo usada como uma função.
 +@c WHAT DOES THIS MEAN ??
-@code{tr_bound_function_applyp} n@~{a}o afeta o c@'{o}digo gerado em tais casos.
+@code{tr_bound_function_applyp} não afeta o código gerado em tais casos.
 
-Por exemplo, uma express@~{a}o tal como @code{g (f, x) := f (x+1)} ir@'{a} disparar
+Por exemplo, uma expressão tal como @code{g (f, x) := f (x+1)} irá disparar
 a mensagem de alerta.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} tr_file_tty_messagesp
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de opção} tr_file_tty_messagesp
+Valor padrão: @code{false}
 
-Quando @code{tr_file_tty_messagesp} @'{e} @code{true},
-messagens geradas por @code{translate_file} durante a traduç@~{a}o de um arquivo s@~{a}o mostradas
+Quando @code{tr_file_tty_messagesp} é @code{true},
+messagens geradas por @code{translate_file} durante a tradução de um arquivo são mostradas
 sobre o console e inseridas dentro do arquivo UNLISP.  
-Quando @code{false}, messagens sobre traduç@~{o}es de
-arquivos s@~{a}o somente inseridas dentro do arquivo UNLISP.
+Quando @code{false}, messagens sobre traduções de
+arquivos são somente inseridas dentro do arquivo UNLISP.
 
 @end defvr
 
 @c THIS FLAG APPEARS TO HAVE NO EFFECT.  SHOULD CUT OUT THIS ITEM AND RELATED CODE.
 @c NOTE THAT THERE IS CODE IN src/transf.lisp WHICH USES THIS FLAG BUT THE MODE
 @c FLAG IS LOST SOMEWHERE ALONG THE WAY TO THE LISP OUTPUT FILE.
-@defvr {Vari@'{a}vel de opç@~{a}o} tr_float_can_branch_complex
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} tr_float_can_branch_complex
+Valor padrão: @code{true}
 
-Diz ao tradutor Maxima-para-Lisp assumir que as funç@~{o}es 
+Diz ao tradutor Maxima-para-Lisp assumir que as funções 
 @code{acos}, @code{asin}, @code{asec}, e @code{acsc} podem retornar resultados complexos.
 
-O efeito ostensivo de @code{tr_float_can_branch_complex} @'{e} mostrado adiante.
-Todavia, parece que esse sinalizador n@~{a}o tem efeito sobre a sa@'{i}da do tradutor.
+O efeito ostensivo de @code{tr_float_can_branch_complex} é mostrado adiante.
+Todavia, parece que esse sinalizador não tem efeito sobre a saída do tradutor.
 
-Quando isso for @code{true} ent@~{a}o @code{acos(x)} ser@'{a} do modo @code{any}
+Quando isso for @code{true} então @code{acos(x)} será do modo @code{any}
 sempre que @code{x} for do modo @code{float} (como escolhido por @code{mode_declare}).
-Quando @code{false} ent@~{a}o @code{acos(x)} ser@'{a} do modo
+Quando @code{false} então @code{acos(x)} será do modo
 @code{float} se e somente se @code{x} for do modo @code{float}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} tr_function_call_default
-Valor padr@~{a}o: @code{general}
+@defvr {Variável de opção} tr_function_call_default
+Valor padrão: @code{general}
 
 @code{false} significa abandonando e
-chamando @code{meval}, @code{expr} significa que Lisp assume funç@~{a}o de argumento fixado.  @code{general}, o
-c@'{o}digo padr@~{a}o dado como sendo bom para @code{mexprs} e @code{mlexprs} mas n@~{a}o @code{macros}.
-@code{general} garante que associaç@~{o}es de vari@'{a}vel s@~{a}o corretas em c@'{o}digos compilados.  No
-modo @code{general}, quando traduzindo F(X), se F for uma vari@'{a}vel associada, ent@~{a}o isso
-assumir@'{a} que @code{apply (f, [x])} @'{e} significativo, e traduz como tal, com
-o alerta apropriado.  N@~{a}o @'{e} necess@'{a}rio desabilitar isso.  Com as
-escolhas padr@~{a}o, sem mensagens de alerta implica compatibilidade total do
-c@'{o}digo traduzido e compilado com o interpretador Maxima.
+chamando @code{meval}, @code{expr} significa que Lisp assume função de argumento fixado.  @code{general}, o
+código padrão dado como sendo bom para @code{mexprs} e @code{mlexprs} mas não @code{macros}.
+@code{general} garante que associações de variável são corretas em códigos compilados.  No
+modo @code{general}, quando traduzindo F(X), se F for uma variável associada, então isso
+assumirá que @code{apply (f, [x])} é significativo, e traduz como tal, com
+o alerta apropriado.  Não é necessário desabilitar isso.  Com as
+escolhas padrão, sem mensagens de alerta implica compatibilidade total do
+código traduzido e compilado com o interpretador Maxima.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} tr_numer
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de opção} tr_numer
+Valor padrão: @code{false}
 
-Quando @code{tr_numer} for @code{true} propriedades @code{numer} s@~{a}o usadas para
-@'{a}tomos que possuem essa propriedade, e.g. @code{%pi}.
-
-@end defvr
-
-@defvr {Vari@'{a}vel de opç@~{a}o} tr_optimize_max_loop
-Valor padr@~{a}o: 100
-
-@code{tr_optimize_max_loop} @'{e} n@'{u}mero m@'{a}ximo de vezes do
-passo de macro-expans@~{a}o e otimizaç@~{a}o que o tradutor ir@'{a} executar
-considerando uma forma.  Isso @'{e} para capturar erros de expans@~{a}o de macro, e
-propriedades de otimizaç@~{a}o n@~{a}o terminadas.
+Quando @code{tr_numer} for @code{true} propriedades @code{numer} são usadas para
+átomos que possuem essa propriedade, e.g. @code{%pi}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} tr_semicompile
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de opção} tr_optimize_max_loop
+Valor padrão: 100
 
-Quando @code{tr_semicompile} for @code{true}, as formas de sa@'{i}da de @code{translate_file}
-e @code{compfile} ser@~{a}o macroexpandidas mas n@~{a}o compiladas em c@'{o}digo
-de m@'{a}quina pelo compilador Lisp.
+@code{tr_optimize_max_loop} é número máximo de vezes do
+passo de macro-expansão e otimização que o tradutor irá executar
+considerando uma forma.  Isso é para capturar erros de expansão de macro, e
+propriedades de otimização não terminadas.
+
+@end defvr
+
+@defvr {Variável de opção} tr_semicompile
+Valor padrão: @code{false}
+
+Quando @code{tr_semicompile} for @code{true}, as formas de saída de @code{translate_file}
+e @code{compfile} serão macroexpandidas mas não compiladas em código
+de máquina pelo compilador Lisp.
 
 @end defvr
 
 @c ARE ANY OF THESE OBSOLETE ??
-@defvr {Vari@'{a}vel de sistema} tr_state_vars
-Valor padr@~{a}o:
+@defvr {Variável de sistema} tr_state_vars
+Valor padrão:
 @example
 [transcompile, tr_semicompile, tr_warn_undeclared, tr_warn_meval,
 tr_warn_fexpr, tr_warn_mode, tr_warn_undefined_variable,
 tr_function_call_default, tr_array_as_ref,tr_numer]
 @end example
 
-A lista de comutadores que afetam a forma de sa@'{i}da da
-traduç@~{a}o.
+A lista de comutadores que afetam a forma de saída da
+tradução.
 @c DOES THE GENERAL USER REALLY CARE ABOUT DEBUGGING THE TRANSLATOR ???
-Essa informaç@~{a}o @'{e} @'{u}til para sistemas populares quando
+Essa informação é útil para sistemas populares quando
 tentam depurar o tradutor.  Comparando o produto traduzido
-para o qual pode ter sido produzido por um dado estado, isso @'{e} poss@'{i}vel para
+para o qual pode ter sido produzido por um dado estado, isso é possível para
 rastrear erros.
 
 @end defvr
@@ -1962,78 +1962,78 @@ rastrear erros.
 @c tr_warnings_get EXISTS AND FUNCTIONS AS ADVERTISED (SORT OF) -- RETURNS *tr-runtime-warned*
 @c WHICH HAS ONLY A FEW KINDS OF WARNINGS PUSHED ONTO IT; IT'S CERTAINLY NOT COMPREHENSIVE
 @c DO WE REALLY NEED THIS SLIGHTLY WORKING FUNCTION ??
-@deffn {Funç@~{a}o} tr_warnings_get ()
+@deffn {Função} tr_warnings_get ()
 Imprime uma lista de alertas que podem ter sido dadas pelo
-tradutor durante a traduç@~{a}o corrente.
+tradutor durante a tradução corrente.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} tr_warn_bad_function_calls
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} tr_warn_bad_function_calls
+Valor padrão: @code{true}
 
 - Emite um alerta quando
-chamadas de funç@~{a}o est@~{a}o sendo feitas por um caminho que pode n@~{a}o ser correto devido
-a declaraç@~{o}es impr@'{o}prias que foram feitas em tempo de traduç@~{a}o.
+chamadas de função estão sendo feitas por um caminho que pode não ser correto devido
+a declarações impróprias que foram feitas em tempo de tradução.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} tr_warn_fexpr
-Valor padr@~{a}o: @code{compfile}
+@defvr {Variável de opção} tr_warn_fexpr
+Valor padrão: @code{compfile}
 
 - Emite um alerta se quaisquer FEXPRs forem
-encontradas.  FEXPRs n@~{a}o poder@~{a}o normalmente ser sa@'{i}da em c@'{o}digo traduzido,
-todas as formas de programa especial leg@'{i}timo s@~{a}o traduzidas.
+encontradas.  FEXPRs não poderão normalmente ser saída em código traduzido,
+todas as formas de programa especial legítimo são traduzidas.
 
 @end defvr
 
-@defvr {Vari@'{a}vel} tr_warn_meval
-Valor padr@~{a}o: @code{compfile}
+@defvr {Variável} tr_warn_meval
+Valor padrão: @code{compfile}
 
-- Emite um alerta se a funç@~{a}o
-@code{meval} recebe chamadas.  Se @code{meval} @'{e} chamada isso indica problemas na
-traduç@~{a}o.
-
-@end defvr
-
-@defvr {Vari@'{a}vel} tr_warn_mode
-Valor padr@~{a}o: @code{all}
-
-- Emite um alerta quando a vari@'{a}veis forem
-atribu@'{i}dos valores inapropriados para seu modo.
+- Emite um alerta se a função
+@code{meval} recebe chamadas.  Se @code{meval} é chamada isso indica problemas na
+tradução.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} tr_warn_undeclared
-Valor padr@~{a}o: @code{compile}
+@defvr {Variável} tr_warn_mode
+Valor padrão: @code{all}
+
+- Emite um alerta quando a variáveis forem
+atribuídos valores inapropriados para seu modo.
+
+@end defvr
+
+@defvr {Variável de opção} tr_warn_undeclared
+Valor padrão: @code{compile}
 
 - Determina quando enviar
-alertas sobre vari@'{a}veis n@~{a}o declaradas para o TTY.
+alertas sobre variáveis não declaradas para o TTY.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} tr_warn_undefined_variable
-Valor padr@~{a}o: @code{all}
+@defvr {Variável de opção} tr_warn_undefined_variable
+Valor padrão: @code{all}
 
 - Emite um alerta quando
-vari@'{a}veis globais indefinidas forem vistas.
+variáveis globais indefinidas forem vistas.
 
 @end defvr
 
-@deffn {Funç@~{a}o} compile_file (@var{nomearquivo})
-@deffnx {Funç@~{a}o} compile_file (@var{nomearquivo}, @var{nomearquivo_compilado})
-@deffnx {Funç@~{a}o} compile_file (@var{nomearquivo}, @var{nomearquivo_compilado}, @var{lisp_nomearquivo})
+@deffn {Função} compile_file (@var{nomearquivo})
+@deffnx {Função} compile_file (@var{nomearquivo}, @var{nomearquivo_compilado})
+@deffnx {Função} compile_file (@var{nomearquivo}, @var{nomearquivo_compilado}, @var{lisp_nomearquivo})
 Traduz o arquivo Maxima @var{nomearquivo} para Lisp,
 executa o compilador Lisp,
-e, se a traduç@~{a}o e a compilaç@~{a}o obtiverem sucesso, chama o c@'{o}digo compilado dentro do Maxima.
+e, se a tradução e a compilação obtiverem sucesso, chama o código compilado dentro do Maxima.
 
 @code{compile_file} retorna uma lista dos nomes de quatro arquivos:
-o arquivo original do Maxima, o nome da traduç@~{a}o Lisp, uma arquivo de notas sobre a traduç@~{a}o, e o nome do arquivo que cont@'{e}m o c@'{o}digo compilado.
-Se a compilaç@~{a}o falhar,
-o quarto item @'{e} @code{false}.
+o arquivo original do Maxima, o nome da tradução Lisp, uma arquivo de notas sobre a tradução, e o nome do arquivo que contém o código compilado.
+Se a compilação falhar,
+o quarto item é @code{false}.
 
-Algumas declaraç@~{o}es e definiç@~{o}es passam a ter efeito t@~{a}o logo
-o c@'{o}digo Lisp seja compilado (sem que seja necess@'{a}rio chamar o c@'{o}digo compilado).
-Isso inclui funç@~{o}es definidas com o operador @code{:=},
+Algumas declarações e definições passam a ter efeito tão logo
+o código Lisp seja compilado (sem que seja necessário chamar o código compilado).
+Isso inclui funções definidas com o operador @code{:=},
 macros definidas com o operador @code{::=}, @c HEDGE -- DON'T KNOW IF THERE IS ANOTHER WAY
 @code{alias}, @code{declare},
 @code{define_variable},  @code{mode_declare},
@@ -2042,31 +2042,32 @@ e
 @code{nofix}, @code{postfix}, @code{prefix},
 e @code{compfile}.
 
-Atribuiç@~{o}es e chamadas de funç@~{a}o n@~{a}o ser@~{a}o avaliadas at@'{e} que o c@'{o}digo compilado seja carregado.
+Atribuições e chamadas de função não serão avaliadas até que o código compilado seja carregado.
 Em particular, dentro do arquivo Maxima,
-atribuiç@~{o}es para sinalizadores traduzidos (@code{tr_numer}, etc.) n@~{a}o t@^{e}m efeito sobre a traduç@~{a}o.
+atribuições para sinalizadores traduzidos (@code{tr_numer}, etc.) não têm efeito sobre a tradução.
 
 @c @code{compile_file} may mistake warnings for errors and
 @c return @code{false} as the name of the compiled code when, in fact,
-@c the compilation succeeded.  This @'{e} a bug.  
+@c the compilation succeeded.  This é a bug.  
 @c REPORTED AS SOURCEFORGE BUG # 1103722.
 
-@var{nomearquivo} pode n@~{a}o conter declaraç@~{o}es @code{:lisp}.
+@var{nomearquivo} pode não conter declarações @code{:lisp}.
 
 @code{compile_file} avalia seus argumentos.
 
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {Funç@~{a}o} declare_translated (@var{f_1}, @var{f_2}, ...)
-Quando traduzindo um arquivo do c@'{o}digo Maxima
-para Lisp, @'{e} importante para o programa tradutor saber quais funç@~{o}es
-no arquivo s@~{a}o para serem chamadas como funç@~{o}es traduzidas ou compiladas,
-e quais outras s@~{a}o apenas funç@~{o}es Maxima ou indefinidas.  Colocando essa
-declaraç@~{a}o no topo do arquivo, faremos conhecido que embora um s@'{i}mbolo
-diga que n@~{a}o temos ainda um valor de funç@~{a}o Lisp, teremos uma em
-tempo de chamada.  @code{(MFUNCTION-CALL fn arg1 arg2 ...)} @'{e} gerado quando
-o tradutor n~ao sabe que @code{fn} est@'{a} sendo compilada para ser uma funç@~{a}o Lisp.
+@deffn {Função} declare_translated (@var{f_1}, @var{f_2}, ...)
+Quando traduzindo um arquivo do código Maxima
+para Lisp, é importante para o programa tradutor saber quais funções
+no arquivo são para serem chamadas como funções traduzidas ou compiladas,
+e quais outras são apenas funções Maxima ou indefinidas.  Colocando essa
+declaração no topo do arquivo, faremos conhecido que embora um símbolo
+diga que não temos ainda um valor de função Lisp, teremos uma em
+tempo de chamada.  @code{(MFUNCTION-CALL fn arg1 arg2 ...)} é gerado quando
+o tradutor n~ao sabe que @code{fn} está sendo compilada para ser uma função Lisp.
 
 @end deffn
+
 

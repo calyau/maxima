@@ -2,62 +2,62 @@
 @c /Contexts.texi/1.13/Sat Jun  2 00:12:34 2007/-ko/
 @c end concepts Contexts
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para Contextos::    
+* Funções e Variáveis Definidas para Contextos::    
 @end menu
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para Contextos,  , Contextos, Contextos
-@section Funç@~{o}es e Vari@'{a}veis Definidas para Contextos
+@node Funções e Variáveis Definidas para Contextos,  , Contextos, Contextos
+@section Funções e Variáveis Definidas para Contextos
 
-@deffn {Funç@~{a}o} activate (@var{context_1}, ..., @var{context_n})
+@deffn {Função} activate (@var{context_1}, ..., @var{context_n})
 Ativa os contextos @var{context_1}, ..., @var{context_n}.
-Os fatos nesses contextos est@~{a}o ent@~{a}o dispon@'{i}veis para
-fazer deduç@~{o}es e recuperar informaç@~{a}o.
-Os fatos nesses contextos n@~{a}o s@~{a}o listadas atrav@'{e}s de @code{facts ()}.
+Os fatos nesses contextos estão então disponíveis para
+fazer deduções e recuperar informação.
+Os fatos nesses contextos não são listadas através de @code{facts ()}.
 
-A vari@'{a}vel @code{activecontexts} @'{e} a lista
-de contextos que est@~{a}o ativos pelo caminho da funç@~{a}o @code{activate}.
+A variável @code{activecontexts} é a lista
+de contextos que estão ativos pelo caminho da função @code{activate}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de sistema} activecontexts
-Valor padr@~{a}o: @code{[]}
+@defvr {Variável de sistema} activecontexts
+Valor padrão: @code{[]}
 
-@code{activecontexts} @'{e} a lista de contextos que est@~{a}o ativos
-pelo caminho da funç@~{a}o @code{activate}, em oposiç@~{a}o a sendo ativo porque
-eles s@~{a}o subcontextos do contexto corrente.
+@code{activecontexts} é a lista de contextos que estão ativos
+pelo caminho da função @code{activate}, em oposição a sendo ativo porque
+eles são subcontextos do contexto corrente.
 
 @end defvr
 
-@deffn {Funç@~{a}o} assume (@var{pred_1}, ..., @var{pred_n})
+@deffn {Função} assume (@var{pred_1}, ..., @var{pred_n})
 Adiciona predicados @var{pred_1}, ..., @var{pred_n} ao contexto corrente.
 Se um predicado for incossistente ou redundante 
 com os predicados no contexto corrente,
-esses predicados n@~{a}o s@~{a}o adicionados ao contexto.
+esses predicados não são adicionados ao contexto.
 O contexto acumula predicados de cada chamada a @code{assume}.
 
-@code{assume} retorna uma lista cujos elementos s@~{a}o os predicados adicionados ao contexto
-ou os @'{a}tomos @code{redundant} ou @code{inconsistent} onde for aplic@'{a}vel.
+@code{assume} retorna uma lista cujos elementos são os predicados adicionados ao contexto
+ou os átomos @code{redundant} ou @code{inconsistent} onde for aplicável.
 
-Os predicados @var{pred_1}, ..., @var{pred_n} podem somente ser express@~{o}es
+Os predicados @var{pred_1}, ..., @var{pred_n} podem somente ser expressões
 com os operadores relacionais @code{< <= equal notequal >=} e @code{>}.
-Predicados n@~{a}o podem ser express@~{o}es de igualdades literais @code{=} ou express@~{o}es de desigualdades literais @code{#},
-nem podem elas serem funç@~{o}es de predicado tais como @code{integerp}.
+Predicados não podem ser expressões de igualdades literais @code{=} ou expressões de desigualdades literais @code{#},
+nem podem elas serem funções de predicado tais como @code{integerp}.
 
 Predicados combinados da forma @code{@var{pred_1} and ... and @var{pred_n}}
-s@~{a}o reconhecidos,
-mas n@~{a}o @code{@var{pred_1} or ... or @var{pred_n}}.
-@code{not @var{pred_k}} @'{e} reconhecidos se @var{pred_k} for um predicado relacional.
-Express@~{o}es da forma @code{not (@var{pred_1} e @var{pred_2})}
+são reconhecidos,
+mas não @code{@var{pred_1} or ... or @var{pred_n}}.
+@code{not @var{pred_k}} é reconhecidos se @var{pred_k} for um predicado relacional.
+Expressões da forma @code{not (@var{pred_1} e @var{pred_2})}
 and @code{not (@var{pred_1} or @var{pred_2})}
-n@~{a}o s@~{a}o reconhecidas.
+não são reconhecidas.
 
-O mecanismo de deduç@~{a}o do Maxima n@~{a}o @'{e} muito forte;
-exitem conseq@"{u}@^{e}ncias muito @'{o}bvias as quais n@~{a}o podem ser determinadas por meio de @code{is}.
-Isso @'{e} uma fraqueza conhecida.
+O mecanismo de dedução do Maxima não é muito forte;
+exitem conseq@"{u}ências muito óbvias as quais não podem ser determinadas por meio de @code{is}.
+Isso é uma fraqueza conhecida.
 
 @code{assume} avalia seus argumentos.
 
-Veja tamb@'{e}m @code{is}, @code{facts}, @code{forget}, @code{context}, e @code{declare}.
+Veja também @code{is}, @code{facts}, @code{forget}, @code{context}, e @code{declare}.
 
 Exemplos:
 
@@ -99,84 +99,84 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} assumescalar
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} assumescalar
+Valor padrão: @code{true}
 
-@code{assumescalar} ajuda a governar se express@~{o}es @code{expr}
+@code{assumescalar} ajuda a governar se expressões @code{expr}
 para as quais @code{nonscalarp (expr)} for @code{false}
-s@~{a}o assumidas comportar-se como escalares
-para certas transformaç@~{o}es.
+são assumidas comportar-se como escalares
+para certas transformações.
 
-Tomemos @code{expr} representando qualquer express@~{a}o outra que n@~{a}o uma lista ou uma matriz,
+Tomemos @code{expr} representando qualquer expressão outra que não uma lista ou uma matriz,
 e tomemos @code{[1, 2, 3]} representando qualquer lista ou matriz.
-Ent@~{a}o @code{expr . [1, 2, 3]} retorna @code{[expr, 2 expr, 3 expr]}
+Então @code{expr . [1, 2, 3]} retorna @code{[expr, 2 expr, 3 expr]}
 se @code{assumescalar} for @code{true}, ou @code{scalarp (expr)} for
 @code{true}, ou @code{constantp (expr)} for @code{true}.
 
 Se @code{assumescalar} for @code{true}, tais
-express@~{o}es ir@~{a}o comportar-se como escalares somente para operadores
-comutativos, mas n@~{a}o para multiplicaç@~{a}o n@~{a}o comutativa @code{.}.
+expressões irão comportar-se como escalares somente para operadores
+comutativos, mas não para multiplicação não comutativa @code{.}.
 
 Quando @code{assumescalar} for @code{false}, tais
-express@~{o}es ir@~{a}o comportar-se como n@~{a}o escalares.
+expressões irão comportar-se como não escalares.
 
 Quando @code{assumescalar} for @code{all},
-tais express@~{o}es ir@~{a}o comportar-se como escalares para todos os operadores listados
+tais expressões irão comportar-se como escalares para todos os operadores listados
 acima.
 
 @end defvr
 
 
-@defvr {Vari@'{a}vel de opç@~{a}o} assume_pos
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de opção} assume_pos
+Valor padrão: @code{false}
 
 Quando @code{assume_pos} for @code{true}
-e o sinal de um par@^{a}metro @var{x} n@~{a}o pode ser determinado a partir do contexto corrente
-ou outras consideraç@~{o}es,
+e o sinal de um parâmetro @var{x} não pode ser determinado a partir do contexto corrente
+ou outras considerações,
 @code{sign} e @code{asksign (@var{x})} retornam @code{true}.
 Isso pode impedir algum questionamento de @code{asksign} gerado automaticamente,
-tal como pode surgir de @code{integrate} ou de outros c@'{a}lculos.
+tal como pode surgir de @code{integrate} ou de outros cálculos.
 
-Por padr@~{a}o, um par@^{a}metro @'{e} @var{x} tal como @code{symbolp (@var{x})}
+Por padrão, um parâmetro é @var{x} tal como @code{symbolp (@var{x})}
 or @code{subvarp (@var{x})}.
-A classe de express@~{o}es consideradas par@^{a}metros pode ser modificada para alguma abrang@^{e}ncia
-atrav@'{e}s da vari@'{a}vel @code{assume_pos_pred}.
+A classe de expressões consideradas parâmetros pode ser modificada para alguma abrangência
+através da variável @code{assume_pos_pred}.
 
-@code{sign} e @code{asksign} tentam deduzir o sinal de express@~{o}es
-a partir de sinais de operandos dentro da express@~{a}o.
-Por exemplo, se @code{a} e @code{b} s@~{a}o ambos positivos,
-ent@~{a}o @code{a + b} @'{e} tamb@'{e}m positivo.
+@code{sign} e @code{asksign} tentam deduzir o sinal de expressões
+a partir de sinais de operandos dentro da expressão.
+Por exemplo, se @code{a} e @code{b} são ambos positivos,
+então @code{a + b} é também positivo.
 
-Todavia, n@~{a}o existe caminho para desviar todos os questionamentos de @code{asksign}.
+Todavia, não existe caminho para desviar todos os questionamentos de @code{asksign}.
 Particularmente, quando o argumento de @code{asksign} for uma
-diferença @code{@var{x} - @var{y}} ou um logar@'{i}tmo @code{log(@var{x})},
-@code{asksign} sempre solicita uma entrada ao usu@'{a}rio,
+diferença @code{@var{x} - @var{y}} ou um logarítmo @code{log(@var{x})},
+@code{asksign} sempre solicita uma entrada ao usuário,
 mesmo quando @code{assume_pos} for @code{true} e @code{assume_pos_pred} for
-uma funç@~{a}o que retorna @code{true} para todos os argumentos.
+uma função que retorna @code{true} para todos os argumentos.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
 
-@defvr {Vari@'{a}vel de opç@~{a}o} assume_pos_pred
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de opção} assume_pos_pred
+Valor padrão: @code{false}
 
-Quando @code{assume_pos_pred} for atribu@'{i}do o nome de uma funç@~{a}o
-ou uma express@~{a}o lambda de um argumento @var{x},
-aquela funç@~{a}o @'{e} chamada para determinar
-se @var{x} @'{e} considerado um par@^{a}metro para o prop@'{o}sito de @code{assume_pos}.
-@code{assume_pos_pred} @'{e} ignorado quando @code{assume_pos} for @code{false}.
+Quando @code{assume_pos_pred} for atribuído o nome de uma função
+ou uma expressão lambda de um argumento @var{x},
+aquela função é chamada para determinar
+se @var{x} é considerado um parâmetro para o propósito de @code{assume_pos}.
+@code{assume_pos_pred} é ignorado quando @code{assume_pos} for @code{false}.
 
-A funç@~{a}o @code{assume_pos_pred} @'{e} chamada atrav@'{e}s de @code{sign} e de @code{asksign}
+A função @code{assume_pos_pred} é chamada através de @code{sign} e de @code{asksign}
 com um argumento @var{x}
-que @'{e} ou um @'{a}tomo, uma vari@'{a}vel subscrita, ou uma express@~{a}o de chamada de funç@~{a}o.
-Se a funç@~{a}o @code{assume_pos_pred} retorna @code{true},
-@var{x} @'{e} considerado um par@^{a}metro para o prop@'{o}sito de @code{assume_pos}.
+que é ou um átomo, uma variável subscrita, ou uma expressão de chamada de função.
+Se a função @code{assume_pos_pred} retorna @code{true},
+@var{x} é considerado um parâmetro para o propósito de @code{assume_pos}.
 
-Por padr@~{a}o, um par@^{a}metro @'{e} @var{x} tal que @code{symbolp (x)}
+Por padrão, um parâmetro é @var{x} tal que @code{symbolp (x)}
 ou @code{subvarp (x)}.
 
-Veja tamb@'{e}m @code{assume} e @code{assume_pos}.
+Veja também @code{assume} e @code{assume_pos}.
 
 Exemplos:
 @c EXAMPLE OUTPUT GENERATED FROM:
@@ -244,136 +244,136 @@ p;
 @end defvr
 
 
-@defvr {Vari@'{a}vel de opç@~{a}o} context
-Valor padr@~{a}o: @code{initial}
+@defvr {Variável de opção} context
+Valor padrão: @code{initial}
 
-@code{context} nomeia a coleç@~{a}o de fatos mantida atrav@'{e}s de @code{assume} e @code{forget}.
-@code{assume} adiciona fatos @`a coleç@~{a}o nomeada atrav@'{e}s de @code{context},
+@code{context} nomeia a coleção de fatos mantida através de @code{assume} e @code{forget}.
+@code{assume} adiciona fatos à coleção nomeada através de @code{context},
 enquanto @code{forget} remove fatos.
 
 Associando @code{context} para um nome @var{foo} altera o contexto corrente para @var{foo}.
-Se o contexto especificado @var{foo} n@~{a}o existe ainda,
-ele @'{e} criado automaticamente atrav@'{e}s de uma chamada a @code{newcontext}.
+Se o contexto especificado @var{foo} não existe ainda,
+ele é criado automaticamente através de uma chamada a @code{newcontext}.
 @c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
-O contexto especificado @'{e} ativado automaticamente.
+O contexto especificado é ativado automaticamente.
 
-Veja @code{contexts} para uma descriç@~{a}o geral do mecanismo de contexto.
+Veja @code{contexts} para uma descrição geral do mecanismo de contexto.
 
 @end defvr
 
 @c UMM, I'M HAVING TROUBLE GETTING THE CONTEXT-SWITCHING STUFF TO BEHAVE AS EXPECTED
 @c SOME EXAMPLES WILL HELP A LOT HERE
-@defvr {Vari@'{a}vel de opç@~{a}o} contexts
-Valor padr@~{a}o: @code{[initial, global]}
+@defvr {Variável de opção} contexts
+Valor padrão: @code{[initial, global]}
 
-@code{contexts} @'{e} uma lista dos contextos que
+@code{contexts} é uma lista dos contextos que
 existem atualmente, incluindo o contexto ativo atualmente.
 
-O mecanismo de contexto torna poss@'{i}vel para um usu@'{a}rio associar
-e nomear uma porç@~{a}o selecionada de fatos, chamada um contexto.
-Assim que isso for conclu@'{i}do, o usu@'{a}rio pode ter o Maxima assumindo ou esquecendo grande quantidade
-de fatos meramente atrav@'{e}s da ativaç@~{a}o ou desativaç@~{a}o seu contexto.
+O mecanismo de contexto torna possível para um usuário associar
+e nomear uma porção selecionada de fatos, chamada um contexto.
+Assim que isso for concluído, o usuário pode ter o Maxima assumindo ou esquecendo grande quantidade
+de fatos meramente através da ativação ou desativação seu contexto.
 
-Qualquer @'{a}tomo simb@'{o}lico pode ser um contexto, e os fatos contidos naquele
-contexto ir@~{a}o ser retidos em armazenamento at@'{e} que sejam destru@'{i}dos um por um
-atrav@'{e}s de chamadas a @code{forget} ou destru@'{i}dos com um conjunto atrav@'{e}s de uma chamada a @code{kill}
+Qualquer átomo simbólico pode ser um contexto, e os fatos contidos naquele
+contexto irão ser retidos em armazenamento até que sejam destruídos um por um
+através de chamadas a @code{forget} ou destruídos com um conjunto através de uma chamada a @code{kill}
 para destruir o contexto que eles pertencem.
 
-Contextos existem em uma hierarqu@'{i}a, com o ra@'{i}z sempre sendo
-o contexto @code{global}, que cont@'{e}m informaç@~{o}es sobre Maxima que alguma
-funç@~{a}o precisa.  Quando em um contexto dado, todos os fatos naquele
-contexto est@~{a}o "ativos" (significando que eles s@~{a}o usados em deduç@~{o}es e
-recuperados) como est@~{a}o tamb@'{e}m todos os fatos em qualquer contexto que for um subcontexto
+Contextos existem em uma hierarquía, com o raíz sempre sendo
+o contexto @code{global}, que contém informações sobre Maxima que alguma
+função precisa.  Quando em um contexto dado, todos os fatos naquele
+contexto estão "ativos" (significando que eles são usados em deduções e
+recuperados) como estão também todos os fatos em qualquer contexto que for um subcontexto
 do contexto ativo.
 
-Quando um novo Maxima for iniciado, o usu@'{a}rio est@'{a} em um
+Quando um novo Maxima for iniciado, o usuário está em um
 contexto chamado @code{initial}, que tem @code{global} como um subcontexto.
 
-Veja tamb@'{e}m @code{facts}, @code{newcontext},
+Veja também @code{facts}, @code{newcontext},
 @code{supcontext}, @code{killcontext}, @code{activate}, @code{deactivate}, @code{assume}, e @code{forget}.
 
 @end defvr
 
-@deffn {Funç@~{a}o} deactivate (@var{context_1}, ..., @var{context_n})
+@deffn {Função} deactivate (@var{context_1}, ..., @var{context_n})
 Desativa os contextos especificados @var{context_1}, ..., @var{context_n}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} facts (@var{item})
-@deffnx {Funç@~{a}o} facts ()
+@deffn {Função} facts (@var{item})
+@deffnx {Função} facts ()
 Se @var{item} for o nome de um contexto,
 @code{facts (@var{item})} retorna uma lista
 de fatos no contexto especificado.
 
-Se @var{item} n@~{a}o for o nome de um contexto,
+Se @var{item} não for o nome de um contexto,
 @code{facts (@var{item})} retorna uma lista de fatos conhecidos sobre @var{item} no contexto
-atual.  Fatos que est@~{a}o atuvos, mas em um diferente contexto, n@~{a}o s@~{a}o listados.
+atual.  Fatos que estão atuvos, mas em um diferente contexto, não são listados.
 
 @code{facts ()} (i.e., sem argumento) lista o contexto atual.
 
 @end deffn
 
-@defvr {Declaraç@~{a}o} features
-Maxima recnhece ceertas propriedades matem@'{a}ticas de funç@~{o}es e vari@'{a}veis.
-Essas s@~{a}o chamadas "recursos".
+@defvr {Declaração} features
+Maxima recnhece ceertas propriedades matemáticas de funções e variáveis.
+Essas são chamadas "recursos".
 
-@code{declare (@var{x}, @var{foo})} fornece a propriedade @var{foo} para a funç@~{a}o ou vari@'{a}vel @var{x}.
+@code{declare (@var{x}, @var{foo})} fornece a propriedade @var{foo} para a função ou variável @var{x}.
 
 @code{declare (@var{foo}, recurso)} declara um novo recurso @var{foo}.
 Por exemplo,
 @code{declare ([red, green, blue], feature)}
-declara tr@^{e}s novos recursos, @code{red}, @code{green}, e @code{blue}.
+declara três novos recursos, @code{red}, @code{green}, e @code{blue}.
 
 O predicado @code{featurep (@var{x}, @var{foo})}
 retorna @code{true} se @var{x} possui a propriedade @var{foo},
 e @code{false} de outra forma.
 
-A infolista @code{features} @'{e} uma lista de recursos conhecidos.
-S@~{a}o esses
+A infolista @code{features} é uma lista de recursos conhecidos.
+São esses
 @code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
 @code{irrational}, @code{real}, @code{imaginary}, @code{complex},
 @code{analytic}, @code{increasing}, @code{decreasing}, @code{oddfun},
 @code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
 @code{rassociative}, @code{symmetric}, e @code{antisymmetric},
-mais quaisquer recursos definidos pelo usu@'{a}rio.
+mais quaisquer recursos definidos pelo usuário.
 
-@code{features} @'{e} uma lista de recursos matem@'{a}ticos.
-Existe tamb@'{e}m uma lista de recursos n@~{a}o matem@'{a}ticos, recursos dependentes do sistema. Veja @code{status}.
+@code{features} é uma lista de recursos matemáticos.
+Existe também uma lista de recursos não matemáticos, recursos dependentes do sistema. Veja @code{status}.
 
 @end defvr
 
-@deffn {Funç@~{a}o} forget (@var{pred_1}, ..., @var{pred_n})
-@deffnx {Funç@~{a}o} forget (@var{L})
-Remove predicados estabelecidos atrav@'{e}s de @code{assume}.
-Os predicados podem ser express@~{o}es equivalentes a (mas n@~{a}o necess@'{a}riamente id@^{e}nticas a)
+@deffn {Função} forget (@var{pred_1}, ..., @var{pred_n})
+@deffnx {Função} forget (@var{L})
+Remove predicados estabelecidos através de @code{assume}.
+Os predicados podem ser expressões equivalentes a (mas não necessáriamente idênticas a)
 esses prevamentes assumidos.
 
-@code{forget (@var{L})}, onde @var{L} @'{e} uma lista de predicados,
+@code{forget (@var{L})}, onde @var{L} é uma lista de predicados,
 esquece cada item da lista.
 
 @end deffn
 
-@deffn {Funç@~{a}o} killcontext (@var{context_1}, ..., @var{context_n})
+@deffn {Função} killcontext (@var{context_1}, ..., @var{context_n})
 Mata os contextos @var{context_1}, ..., @var{context_n}.
 
 Se um dos contextos estiver for o contexto atual, o novo contexto
-atual ir@'{a} tornar-se o primeiro subcontexto dispon@'{i}vel do contexto
-atual que n@~{a}o tiver sido morto.  Se o primeiro contexto dispon@'{i}vel
-n@~{a}o morto for @code{global} ent@~{a}o @code{initial} @'{e} usado em seu lugar.  Se o contexto
-@code{initial} for morto, um novo, por@'{e}m vazio contexto @code{initial} @'{e} criado.
+atual irá tornar-se o primeiro subcontexto disponível do contexto
+atual que não tiver sido morto.  Se o primeiro contexto disponível
+não morto for @code{global} então @code{initial} é usado em seu lugar.  Se o contexto
+@code{initial} for morto, um novo, porém vazio contexto @code{initial} é criado.
 
 @code{killcontext} recusa-se a matar um contexto que estiver
-ativo atualmente, ou porque ele @'{e} um subcontexto do contexto
-atual, ou atrav@'{e}s do uso da funç@~{a}o @code{activate}.
+ativo atualmente, ou porque ele é um subcontexto do contexto
+atual, ou através do uso da função @code{activate}.
 
 @code{killcontext} avalia seus argumentos.
 @code{killcontext} retorna @code{done}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} newcontext (@var{nome})
-Cria um novo contexto, por@'{e}m vazio, chamado @var{nome}, que
-tem @code{global} como seu @'{u}nico subcontexto.  O contexto recentemente criado
+@deffn {Função} newcontext (@var{nome})
+Cria um novo contexto, porém vazio, chamado @var{nome}, que
+tem @code{global} como seu único subcontexto.  O contexto recentemente criado
 torna-se o contexto ativo atualmente.
 
 @code{newcontext} avalia seu argumento.
@@ -381,12 +381,13 @@ torna-se o contexto ativo atualmente.
 
 @end deffn
 
-@deffn {Funç@~{a}o} supcontext (@var{nome}, @var{context})
-@deffnx {Funç@~{a}o} supcontext (@var{nome})
+@deffn {Função} supcontext (@var{nome}, @var{context})
+@deffnx {Função} supcontext (@var{nome})
 Cria um novo contexto, chamado @var{nome},
 que tem @var{context} como um subcontexto.
 @var{context} deve existir.
 
-Se @var{context} n@~{a}o for especificado, o contexto atual @'{e} assumido.
+Se @var{context} não for especificado, o contexto atual é assumido.
 
 @end deffn
+

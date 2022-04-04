@@ -110,7 +110,7 @@ consistindo das @math{q} primeiras linhas e as colunas @math{1 + i_1,
 @end ifinfo
 @ifhtml
 @math{L = [i_1, i_2, ..., i_q]}, com @math{i_1 <= i_2 <= ... <= i_q}.
-A funçõ de Schur @math{S_[i_1, i_2, ..., i_q]} é a menor
+A função de Schur @math{S_[i_1, i_2, ..., i_q]} é a menor
 da matriz infinita @math{h_[i-j]}, @math{i <= 1, j <= 1},
 consistindo das @math{q} primeiras linhas e as colunas @math{1 + i_1,
 2 + i_2, ..., q + i_q}.

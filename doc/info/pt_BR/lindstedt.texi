@@ -1,25 +1,25 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /lindstedt.texi/1.2/Sat Jun  2 00:13:23 2007//
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para lindstedt::
+* Funções e Variáveis Definidas para lindstedt::
 @end menu
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para lindstedt,  , lindstedt, lindstedt
-@section Funç@~{o}es e Vari@'{a}veis Definidas para lindstedt
+@node Funções e Variáveis Definidas para lindstedt,  , lindstedt, lindstedt
+@section Funções e Variáveis Definidas para lindstedt
 
 
-@deffn {Funç@~{a}o} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
-Esse @'{e} um primeiro passo para um c@'{o}digo de Lindstedt.  Esse c@'{o}digo pode resolver problemas
-com condiç@~{o}es iniciais fornecidas, @`as quais podem ser constantes arbitr@'{a}rias,
-(n@~{a}o apenas @var{%k1} e @var{%k2}) onde as condiç@~{o}es iniciais sobre as equaç@~{o}es
-de perturbaç@~{a}o s@~{a}o @math{z[i]=0, z'[i]=0} para @math{i>0}. @var{ic} @'{e} a lista de 
-condiç@~{o}es iniciais.
+@deffn {Função} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
+Esse é um primeiro passo para um código de Lindstedt.  Esse código pode resolver problemas
+com condições iniciais fornecidas, às quais podem ser constantes arbitrárias,
+(não apenas @var{%k1} e @var{%k2}) onde as condições iniciais sobre as equações
+de perturbação são @math{z[i]=0, z'[i]=0} para @math{i>0}. @var{ic} é a lista de 
+condições iniciais.
 
-Problemas ocorrem quando condiç@~{o}es iniciais n@~{a}o forem dadas, como as constantes
-nas equaç@~{o}es de perturbaç@~{a}o s@~{a}o as mesmas que a soluç@~{a}o da equaç@~{a}o de
-ordem zero.  Tamb@'{e}m, problemas ocorrem quando as condiç@~{o}es iniciais para as
-equaç@~{o}es de perturbaç@~{a}o n@~{a}o s@~{a}o @math{z[i]=0, z'[i]=0} para @math{i>0}, tais como a
-equaç@~{a}o de Van der Pol.
+Problemas ocorrem quando condições iniciais não forem dadas, como as constantes
+nas equações de perturbação são as mesmas que a solução da equação de
+ordem zero.  Também, problemas ocorrem quando as condições iniciais para as
+equações de perturbação não são @math{z[i]=0, z'[i]=0} para @math{i>0}, tais como a
+equação de Van der Pol.
 
 Exemplo:
 @example
@@ -41,5 +41,6 @@ T = (- ---- - -- + 1) t]]
        3072   16
 @end example
 
-Para usar essa funç@~{a}o escreva primeiro @code{load("makeOrders")} e @code{load("lindstedt")}.
+Para usar essa função escreva primeiro @code{load("makeOrders")} e @code{load("lindstedt")}.
 @end deffn
+

@@ -427,7 +427,7 @@ conjuntos, e não use @code{unorder}.
 @c @end example
 
 Se encontrar alguma coisa que pense ser uma falha em alguma
-funçõ de conjunto, por favor relate isso para a base de
+função de conjunto, por favor relate isso para a base de
 dados de falhas do Maxima. Veja @code{bug_report}.
 
 @subsection Autores
@@ -746,7 +746,7 @@ sobre o produto cartesiano @var{s} por @var{s}.  O valor de retorno de
 @var{expr} tal que @code{is(@var{expr})} é ou @code{true} ou
 @code{false}.
 
-Quando @var{F} nõ for uma relação de equivalência,
+Quando @var{F} não for uma relação de equivalência,
 @code{equiv_classes} aceita-a sem reclamação,
 mas o resultado é geralmente incorrecto nesse caso.
 

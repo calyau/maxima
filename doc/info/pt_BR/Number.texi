@@ -2,19 +2,19 @@
 @c /Number.texi/1.23/Sat Jun  2 00:12:58 2007/-ko/
 @c end concepts Number Theory
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para Teoria dos N@'{u}meros::  
+* Funções e Variáveis Definidas para Teoria dos Números::  
 @end menu
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para Teoria dos N@'{u}meros,  , Teoria dos N@'{u}meros, Teoria dos N@'{u}meros
-@section Funç@~{o}es e Vari@'{a}veis Definidas para Teoria dos N@'{u}meros
+@node Funções e Variáveis Definidas para Teoria dos Números,  , Teoria dos Números, Teoria dos Números
+@section Funções e Variáveis Definidas para Teoria dos Números
 
-@deffn {Funç@~{a}o} bern (@var{n})
-Retorna o @var{n}'@'{e}simo n@'{u}mero de Bernoulli para o inteiro @var{n}.
+@deffn {Função} bern (@var{n})
+Retorna o @var{n}'ésimo número de Bernoulli para o inteiro @var{n}.
 @c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
 @c OR JUST PRETEND IT'S "RETURNED" ???
-N@'{u}meros de Bernoulli iguais a zero s@~{a}o suprimidos se @code{zerobern} for @code{false}.
+Números de Bernoulli iguais a zero são suprimidos se @code{zerobern} for @code{false}.
 
-Veja tamb@'{e}m @code{burn}.
+Veja também @code{burn}.
 
 @example
 (%i1) zerobern: true$
@@ -31,42 +31,42 @@ Veja tamb@'{e}m @code{burn}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} bernpoly (@var{x}, @var{n})
-Retorna o @var{n}'@'{e}simo polin@^{o}mio de Bernoulli na
-vari@'{a}vel @var{x}.
+@deffn {Função} bernpoly (@var{x}, @var{n})
+Retorna o @var{n}'ésimo polinômio de Bernoulli na
+variável @var{x}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} bfzeta (@var{s}, @var{n})
-Retorna a funç@~{a}o zeta de Riemann para o argumento @var{s}.
-O valor de retorno @'{e} um grande inteiro em ponto flutuante (bfloat);
-@var{n} @'{e} o n@'{u}mero de d@'{i}gitos no valor de retorno.
+@deffn {Função} bfzeta (@var{s}, @var{n})
+Retorna a função zeta de Riemann para o argumento @var{s}.
+O valor de retorno é um grande inteiro em ponto flutuante (bfloat);
+@var{n} é o número de dígitos no valor de retorno.
 
-@code{load ("bffac")} chama essa funç@~{a}o.
+@code{load ("bffac")} chama essa função.
 
 @end deffn
 
-@deffn {Funç@~{a}o} bfhzeta (@var{s}, @var{h}, @var{n})
-Retorna a funç@~{a}o zeta de Hurwitz para os argumentos @var{s} e @var{h}.
-O valor de retorno @'{e} um grande inteiro em ponto flutuante (bfloat);
-@var{n} @'{e} o n@'{u}meros de d@'{i}gitos no valor de retorno.
+@deffn {Função} bfhzeta (@var{s}, @var{h}, @var{n})
+Retorna a função zeta de Hurwitz para os argumentos @var{s} e @var{h}.
+O valor de retorno é um grande inteiro em ponto flutuante (bfloat);
+@var{n} é o números de dígitos no valor de retorno.
 
-A funç@~{a}o zeta de Hurwitz @'{e} definida como
+A função zeta de Hurwitz é definida como
 
 @example
 sum ((k+h)^-s, k, 0, inf)
 @end example
 
-@code{load ("bffac")} chama essa funç@~{a}o.
+@code{load ("bffac")} chama essa função.
 
 @end deffn
 
-@deffn {Funç@~{a}o} binomial (@var{x}, @var{y})
+@deffn {Função} binomial (@var{x}, @var{y})
 O coeficiente binomial @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}.
-Se @var{x} e @var{y} forem inteiros, ent@~{a}o o valor num@'{e}rico do coeficiente
-binomial @'{e} calculado.
+Se @var{x} e @var{y} forem inteiros, então o valor numérico do coeficiente
+binomial é calculado.
 Se @var{y}, ou @var{x - y}, for um inteiro,
-o the coeficiente binomial @'{e} expresso como um polin@^{o}mio.
+o the coeficiente binomial é expresso como um polinômio.
 
 Exemplos:
 
@@ -96,11 +96,11 @@ Exemplos:
 
 @end deffn
 
-@deffn {Funç@~{a}o} burn (@var{n})
-Retorna o @var{n}'@'{e}simo n@'{u}mero de Bernoulli para o inteiro @var{n}.
+@deffn {Função} burn (@var{n})
+Retorna o @var{n}'ésimo número de Bernoulli para o inteiro @var{n}.
 @code{burn} pode ser mais eficitente que @code{bern} para valores grandes e isolados de @var{n}
 (talvez @var{n} maior que 105 ou algo parecido), @c CLAIM MADE IN bffac.usg !!!
-como @code{bern} calcula todos os n@'{u}meros de Bernoulli at@'{e} o @'{i}ndice @var{n} antes de retornar.
+como @code{bern} calcula todos os números de Bernoulli até o índice @var{n} antes de retornar.
 
 @c STATEMENTS ABOUT TIMING NEED VERIFICATION !!!
 @c CAN'T VERIFY NOW AS burn IS BROKEN IN 5.9.1 AND CVS BUILD AT PRESENT !!!
@@ -112,45 +112,45 @@ como @code{bern} calcula todos os n@'{u}meros de Bernoulli at@'{e} o @'{i}ndice 
 @c maybe 14 secs or maybe 25, depending on whether Maxima needs to
 @c BFLOAT a better value of %PI.)
 
-@code{burn} explora a observaç@~{a}o que n@'{u}meros de Bernoulli (racionais) podem ser
-aproximados atrav@'{e}s de zetas (transcendentes) com efici@^{e}ncia toler@'{a}vel.
+@code{burn} explora a observação que números de Bernoulli (racionais) podem ser
+aproximados através de zetas (transcendentes) com eficiência tolerável.
 
-@code{load ("bffac")} chama essa funç@~{a}o.
+@code{load ("bffac")} chama essa função.
 
 @end deffn
 
-@deffn {Funç@~{a}o} cf (@var{expr})
-Converte @var{expr} em uma fraç@~{a}o cont@'{i}nua.
-@var{expr} @'{e} uma express@~{a}o
-compreendendo fraç@~{o}es cont@'{i}nuas e ra@'{i}zes quadradas de inteiros.
-Operandos na express@~{a}o podem ser combinados com operadores aritm@'{e}ticos.
-Com excess@~{a}o de fraç@~{o}es cont@'{i}nuas e ra@'{i}zes quadradas,
-fatores na express@~{a}o devem ser n@'{u}meros inteiros ou racionais.
-Maxima n@~{a}o conhece operaç@~{o}es sobre fraç@~{o}es cont@'{i}nuas fora de @code{cf}.
+@deffn {Função} cf (@var{expr})
+Converte @var{expr} em uma fração contínua.
+@var{expr} é uma expressão
+compreendendo frações contínuas e raízes quadradas de inteiros.
+Operandos na expressão podem ser combinados com operadores aritméticos.
+Com excessão de frações contínuas e raízes quadradas,
+fatores na expressão devem ser números inteiros ou racionais.
+Maxima não conhece operações sobre frações contínuas fora de @code{cf}.
 
-@code{cf} avalia seus argumentos ap@'{o}s associar @code{listarith} a @code{false}.
-@code{cf} retorna uma fraç@~{a}o cont@'{i}nua, representada como uma lista.
+@code{cf} avalia seus argumentos após associar @code{listarith} a @code{false}.
+@code{cf} retorna uma fração contínua, representada como uma lista.
 
-Uma fraç@~{a}o cont@'{i}nua @code{a + 1/(b + 1/(c + ...))}
-@'{e} representada atrav@'{e}s da lista @code{[a, b, c, ...]}.
+Uma fração contínua @code{a + 1/(b + 1/(c + ...))}
+é representada através da lista @code{[a, b, c, ...]}.
 Os elementos da lista @code{a}, @code{b}, @code{c}, ... devem avaliar para inteiros. 
-@var{expr} pode tamb@'{e}m conter @code{sqrt (n)} onde @code{n} @'{e} um inteiro.
-Nesse caso @code{cf} fornecer@'{a} tantos
-termos de fraç@~{a}o cont@'{i}nua quantos forem o valor da vari@'{a}vel
-@code{cflength} vezes o per@'{i}odo.
+@var{expr} pode também conter @code{sqrt (n)} onde @code{n} é um inteiro.
+Nesse caso @code{cf} fornecerá tantos
+termos de fração contínua quantos forem o valor da variável
+@code{cflength} vezes o período.
 
-Uma fraç@~{a}o cont@'{i}nua pode ser avaliada para um n@'{u}mero
-atrav@'{e}s de avaliaç@~{a}o da representaç@~{a}o aritm@'{e}tica
+Uma fração contínua pode ser avaliada para um número
+através de avaliação da representação aritmética
 retornada por @code{cfdisrep}.
-Veja tamb@'{e}m @code{cfexpand} para outro caminho para avaliar uma fraç@~{a}o cont@'{i}nua.
+Veja também @code{cfexpand} para outro caminho para avaliar uma fração contínua.
 
-Veja tamb@'{e}m @code{cfdisrep}, @code{cfexpand}, e @code{cflength}.
+Veja também @code{cfdisrep}, @code{cfexpand}, e @code{cflength}.
 
 Exemplos:
 
 @itemize @bullet
 @item
-@var{expr} @'{e} uma express@~{a}o compreendendo fraç@~{o}es cont@'{i}nuas e ra@'{i}zes quadradas de inteiros.
+@var{expr} é uma expressão compreendendo frações contínuas e raízes quadradas de inteiros.
 
 @example
 (%i1) cf ([5, 3, 1]*[11, 9, 7] + [3, 7]/[4, 3, 2]);
@@ -160,8 +160,8 @@ Exemplos:
 @end example
 
 @item
-@code{cflength} controla quantos per@'{i}odos de fraç@~{a}o cont@'{i}nua
-s@~{a}o computados para n@'{u}meros alg@'{e}bricos, n@'{u}meros irracionais.
+@code{cflength} controla quantos períodos de fração contínua
+são computados para números algébricos, números irracionais.
 
 @example
 (%i1) cflength: 1$
@@ -176,7 +176,7 @@ s@~{a}o computados para n@'{u}meros alg@'{e}bricos, n@'{u}meros irracionais.
 @end example
 
 @item
-Um fraç@~{a}o cont@'{i}nua pode ser avaliado atrav@'{e}s da avaliaç@~{a}o da representaç@~{a}o aritm@'{e}tica
+Um fração contínua pode ser avaliado através da avaliação da representação aritmética
 retornada por @code{cfdisrep}.
 
 @example
@@ -187,7 +187,7 @@ retornada por @code{cfdisrep}.
 @end example
 
 @item
-Maxima n@~{a}o conhece operaç@~{o}es sobre fraç@~{o}es cont@'{i}nuas fora de @code{cf}.
+Maxima não conhece operações sobre frações contínuas fora de @code{cf}.
 
 @example
 (%i1) cf ([1,1,1,1,1,2] * 3);
@@ -201,10 +201,10 @@ Maxima n@~{a}o conhece operaç@~{o}es sobre fraç@~{o}es cont@'{i}nuas fora de @
 
 @c NEEDS CLARIFICATION -- MAKE EXPLICIT HOW list IS RELATED TO a, b, c, ...
 @c ALSO, CAN list CONTAIN ANYTHING OTHER THAN LITERAL INTEGERS ??
-@deffn {Funç@~{a}o} cfdisrep (@var{list})
-Constr@'{o}i e retorna uma express@~{a}o aritm@'{e}tica comum
+@deffn {Função} cfdisrep (@var{list})
+Constrói e retorna uma expressão aritmética comum
 da forma @code{a + 1/(b + 1/(c + ...))}
-a partir da representaç@~{a}o lista de uma fraç@~{a}o cont@'{i}nua @code{[a, b, c, ...]}.
+a partir da representação lista de uma fração contínua @code{[a, b, c, ...]}.
 
 @example
 (%i1) cf ([1, 2, -3] + [1, -2, 1]);
@@ -221,9 +221,9 @@ a partir da representaç@~{a}o lista de uma fraç@~{a}o cont@'{i}nua @code{[a, b
 
 @end deffn
 
-@deffn {Funç@~{a}o} cfexpand (@var{x})
+@deffn {Função} cfexpand (@var{x})
 Retorna uma matriz de numeradores e denominadores dos
-@'{u}ltimo (columa 1) e pen@'{u}ltimo (columa 2) convergentes da fraç@~{a}o cont@'{i}nua @var{x}.
+último (columa 1) e penúltimo (columa 2) convergentes da fração contínua @var{x}.
 
 @example
 (%i1) cf (rat (ev (%pi, numer)));
@@ -240,12 +240,12 @@ Retorna uma matriz de numeradores e denominadores dos
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} cflength
-Valor padr@~{a}o: 1
+@defvr {Variável de opção} cflength
+Valor padrão: 1
 
-@code{cflength} controla o n@'{u}mero de termos da fraç@~{a}o
-cont@'{i}nua que a funç@~{a}o @code{cf} fornecer@'{a}, como o valor de @code{cflength} vezes o
-per@'{i}odo.  Dessa forma o padr@~{a}o @'{e} fornecer um per@'{i}odo.
+@code{cflength} controla o número de termos da fração
+contínua que a função @code{cf} fornecerá, como o valor de @code{cflength} vezes o
+período.  Dessa forma o padrão é fornecer um período.
 
 @example
 (%i1) cflength: 1$
@@ -261,13 +261,13 @@ per@'{i}odo.  Dessa forma o padr@~{a}o @'{e} fornecer um per@'{i}odo.
 
 @end defvr
 
-@deffn {Funç@~{a}o} divsum (@var{n}, @var{k})
-@deffnx {Funç@~{a}o} divsum (@var{n})
+@deffn {Função} divsum (@var{n}, @var{k})
+@deffnx {Função} divsum (@var{n})
 
-@code{divsum (@var{n}, @var{k})} retorna a adiç@~{a}o dos divisores de @var{n}
-elevados @`a @var{k}'@'{e}sima pot@^{e}ncia.
+@code{divsum (@var{n}, @var{k})} retorna a adição dos divisores de @var{n}
+elevados à @var{k}'ésima potência.
 
-@code{divsum (@var{n})} retorna a adiç@~{a}o dos divisores de @var{n}.
+@code{divsum (@var{n})} retorna a adição dos divisores de @var{n}.
 
 @example
 (%i1) divsum (12);
@@ -282,8 +282,8 @@ elevados @`a @var{k}'@'{e}sima pot@^{e}ncia.
 
 @end deffn
 
-@deffn {Funç@~{a}o} euler (@var{n})
-Retorna o @var{n}'@'{e}simo n@'{u}mero de Euler para o inteiro @var{n} n@~{a}o negativo.
+@deffn {Função} euler (@var{n})
+Retorna o @var{n}'ésimo número de Euler para o inteiro @var{n} não negativo.
 
 Para a constante de Euler-Mascheroni, veja @code{%gamma}.
 
@@ -303,21 +303,21 @@ A constante de Euler-Mascheroni, 0.5772156649015329 ....
 
 @end defvr
 
-@deffn {Funç@~{a}o} factorial (@var{x})
-Representa a funç@~{a}o fatorial. Maxima trata @code{factorial (@var{x})} da mesma forma que @code{@var{x}!}.
+@deffn {Função} factorial (@var{x})
+Representa a função fatorial. Maxima trata @code{factorial (@var{x})} da mesma forma que @code{@var{x}!}.
 Veja @code{!}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} fib (@var{n})
-Retorna o @var{n}'@'{e}simo n@'{u}mero de Fibonacci.
+@deffn {Função} fib (@var{n})
+Retorna o @var{n}'ésimo número de Fibonacci.
 @code{fib(0)} igual a 0 e @code{fib(1)} igual a 1,
 e
 @code{fib (-@var{n})} igual a @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
 
-Ap@'{o}s chamar @code{fib},
-@code{prevfib} @'{e} iguala @code{fib (@var{x} - 1)},
-o n@'{u}mero de Fibonacci anterior ao @'{u}ltimo calculado.
+Após chamar @code{fib},
+@code{prevfib} é iguala @code{fib (@var{x} - 1)},
+o número de Fibonacci anterior ao último calculado.
 
 @example
 (%i1) map (fib, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -326,9 +326,9 @@ o n@'{u}mero de Fibonacci anterior ao @'{u}ltimo calculado.
 
 @end deffn
 
-@deffn {Funç@~{a}o} fibtophi (@var{expr})
-Expressa n@'{u}meros de Fibonacci que aparecem em @var{expr} em termos da constante @code{%phi},
-que @'{e} @code{(1 + sqrt(5))/2}, aproximadamente 1.61803399.
+@deffn {Função} fibtophi (@var{expr})
+Expressa números de Fibonacci que aparecem em @var{expr} em termos da constante @code{%phi},
+que é @code{(1 + sqrt(5))/2}, aproximadamente 1.61803399.
 
 Exemplos:
  
@@ -362,13 +362,13 @@ Exemplos:
 
 @end deffn
 
-@deffn {Funç@~{a}o} ifactors (@var{n})
-Para um inteiro positivo @var{n} retorna a fatoraç@~{a}o de @var{n}. Se
-@code{n=p1^e1..pk^nk} for a decomposiç@~{a}o de @var{n} em fatores
+@deffn {Função} ifactors (@var{n})
+Para um inteiro positivo @var{n} retorna a fatoração de @var{n}. Se
+@code{n=p1^e1..pk^nk} for a decomposição de @var{n} em fatores
 primos, @code{ifactors} retorna @code{[[p1, e1], ... , [pk, ek]]}.
 
-Os m@'{e}todos de fatoraç@~{a}o usados s@~{a}o divis@~{o}es triviais por primos at@'{e} 9973,
-o m@'{e}todo rho de Pollard e o m@'{e}todo da curva el@'{i}ptica.
+Os métodos de fatoração usados são divisões triviais por primos até 9973,
+o método rho de Pollard e o método da curva elíptica.
 
 @example
 (%i1) ifactors(51575319651600);
@@ -379,8 +379,8 @@ o m@'{e}todo rho de Pollard e o m@'{e}todo da curva el@'{i}ptica.
 
 @end deffn
 
-@deffn {Funç@~{a}o} inrt (@var{x}, @var{n})
-Retorna a parte inteira da @var{n}'@'{e}sima ra@'{i}z do valor absoluto de @var{x}.
+@deffn {Função} inrt (@var{x}, @var{n})
+Retorna a parte inteira da @var{n}'ésima raíz do valor absoluto de @var{x}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -390,8 +390,8 @@ Retorna a parte inteira da @var{n}'@'{e}sima ra@'{i}z do valor absoluto de @var{
 
 @end deffn
 
-@deffn {Funç@~{a}o} inv_mod (@var{n}, @var{m})
-Calcula o  inverso de @var{n} m@'{o}dulo @var{m}. 
+@deffn {Função} inv_mod (@var{n}, @var{m})
+Calcula o  inverso de @var{n} módulo @var{m}. 
 @code{inv_mod (n,m)} retorna @code{false}, 
 se @var{n} modulo @var{m} for zero.
 
@@ -406,8 +406,8 @@ se @var{n} modulo @var{m} for zero.
 
 @end deffn
 
-@deffn {Funç@~{a}o} jacobi (@var{p}, @var{q})
-Retorna s@'{i}mbolo de Jacobi de @var{p} e @var{q}.
+@deffn {Função} jacobi (@var{p}, @var{q})
+Retorna símbolo de Jacobi de @var{p} e @var{q}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -417,18 +417,18 @@ Retorna s@'{i}mbolo de Jacobi de @var{p} e @var{q}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} lcm (@var{expr_1}, ..., @var{expr_n})
-Retorna o menor m@'{u}ltiplo comum entre seus argumentos.
-Os argumentos podem ser express@~{o}es gerais tamb@'{e}m inteiras.
+@deffn {Função} lcm (@var{expr_1}, ..., @var{expr_n})
+Retorna o menor múltiplo comum entre seus argumentos.
+Os argumentos podem ser expressões gerais também inteiras.
 
-@code{load ("functs")} chama essa funç@~{a}o.
+@code{load ("functs")} chama essa função.
 
 @end deffn
 
-@deffn {Funç@~{a}o} minfactorial (@var{expr})
-Examina @var{expr} procurando por ocorr@^{e}ncias de dois fatoriais
+@deffn {Função} minfactorial (@var{expr})
+Examina @var{expr} procurando por ocorrências de dois fatoriais
 que diferem por um inteiro.  
-@code{minfactorial} ent@~{a}o converte um em um polin@^{o}mio vezes o outro.
+@code{minfactorial} então converte um em um polinômio vezes o outro.
 
 @c I CAN'T TELL WHAT THIS IS SUPPOSED TO MEAN. !!!
 @c minfactorial DOESN'T SEEM TO DO ANYTHING binomial DOESN'T DO BY ITSELF !!!
@@ -449,7 +449,7 @@ que diferem por um inteiro.
 
 @end deffn
 
-@deffn {Funç@~{a}o} next_prime (@var{n})
+@deffn {Função} next_prime (@var{n})
 Retorna o menor primo maior que @var{n}.
 
 @example
@@ -459,14 +459,14 @@ Retorna o menor primo maior que @var{n}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} partfrac (@var{expr}, @var{var})
-Expande a express@~{a}o @var{expr} em fraç@~{o}es parciais
-com relaç@~{a}o @`a vari@'{a}vel principal @var{var}.  @code{partfrac} faz uma decomposiç@~{a}o
-completa de fraç@~{a}o parcial.  O algor@'{i}tmo utilizado @'{e} baseado no
-fato que os denominadores de uma expans@~{a}o de fraç@~{a}o parcial (os
-fatores do denominador original) s@~{a}o relativamente primos.  Os
-numeradores podem ser escritos como combinaç@~{a}o linear dos denominadores, e
-a expans@~{a}o acontece.
+@deffn {Função} partfrac (@var{expr}, @var{var})
+Expande a expressão @var{expr} em frações parciais
+com relação à variável principal @var{var}.  @code{partfrac} faz uma decomposição
+completa de fração parcial.  O algorítmo utilizado é baseado no
+fato que os denominadores de uma expansão de fração parcial (os
+fatores do denominador original) são relativamente primos.  Os
+numeradores podem ser escritos como combinação linear dos denominadores, e
+a expansão acontece.
 
 @example
 (%i1) 1/(1+x)^2 - 2/(1+x) + 2/(2+x);
@@ -488,10 +488,10 @@ a expans@~{a}o acontece.
 
 @end deffn
 
-@deffn {Funç@~{a}o} power_mod (@var{a}, @var{n}, @var{m})
-Usa um algor@'{i}tmo modular para calcular @code{a^n mod m} 
-onde @var{a} e @var{n} s@~{a}o inteiros e @var{m} @'{e} um inteiro positivo. 
-Se @var{n} for negativo, @code{inv_mod} @'{e} usada para encontrar o inverso modular.
+@deffn {Função} power_mod (@var{a}, @var{n}, @var{m})
+Usa um algorítmo modular para calcular @code{a^n mod m} 
+onde @var{a} e @var{n} são inteiros e @var{m} é um inteiro positivo. 
+Se @var{n} for negativo, @code{inv_mod} é usada para encontrar o inverso modular.
 
 @example
 (%i1) power_mod(3, 15, 5);
@@ -506,31 +506,31 @@ Se @var{n} for negativo, @code{inv_mod} @'{e} usada para encontrar o inverso mod
 
 @end deffn
 
-@deffn {Funç@~{a}o} primep (@var{n})
-Teste de primalidade. Se @code{primep (n)} retornar @code{false}, @var{n} @'{e} um
-n@'{u}mero compostro e se esse teste retornar @code{true}, @var{n} @'{e} um n@'{u}mero primo
+@deffn {Função} primep (@var{n})
+Teste de primalidade. Se @code{primep (n)} retornar @code{false}, @var{n} é um
+número compostro e se esse teste retornar @code{true}, @var{n} é um número primo
 com grande probabilidade.
 
-Para @var{n} menor que 341550071728321 uma vers@~{a}o deterministra do teste de 
-Miller-Rabin @'{e} usada. Se @code{primep (n)} retornar @code{true}, ent@~{a}o @var{n} @'{e} um
-n@'{u}mero primo.
+Para @var{n} menor que 341550071728321 uma versão deterministra do teste de 
+Miller-Rabin é usada. Se @code{primep (n)} retornar @code{true}, então @var{n} é um
+número primo.
 
 Para @var{n} maior que 34155071728321 @code{primep} usa
-@code{primep_number_of_tests} que @'{e} os testes de pseudo-primalidade de Miller-Rabin
-e um teste de pseudo-primalidade de Lucas. A probabilidade que @var{n} ir@'{a}
-passar por um teste de Miller-Rabin @'{e} menor que 1/4. Usando o valor padr@~{a}o 25 para
+@code{primep_number_of_tests} que é os testes de pseudo-primalidade de Miller-Rabin
+e um teste de pseudo-primalidade de Lucas. A probabilidade que @var{n} irá
+passar por um teste de Miller-Rabin é menor que 1/4. Usando o valor padrão 25 para
 @code{primep_number_of_tests}, a probabilidade de @var{n} passar no teste sendo
-composto @'{e} muito menor que 10^-15.
+composto é muito menor que 10^-15.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} primep_number_of_tests
-Valor padr@~{a}o: 25
+@defvr {Variável de opção} primep_number_of_tests
+Valor padrão: 25
 
-N@'{u}mero de testes de Miller-Rabin usados em @code{primep}.
+Número de testes de Miller-Rabin usados em @code{primep}.
 @end defvr
 
-@deffn {Funç@~{a}o} prev_prime (@var{n})
+@deffn {Função} prev_prime (@var{n})
 Retorna o maior primo menor que @var{n}.
 
 @example
@@ -539,11 +539,11 @@ Retorna o maior primo menor que @var{n}.
 @end example
 @end deffn
 
-@deffn {Funç@~{a}o} qunit (@var{n})
-Retorna a principal unidade do campo dos n@'{u}meros quadr@'{a}ticos reais
-@code{sqrt (@var{n})} onde @var{n} @'{e} um inteiro,
-i.e., o elemento cuja norma @'{e} unidade.
-Isso @'{e} importante para resolver a equaç@~{a}o de Pell @code{a^2 - @var{n} b^2 = 1}.
+@deffn {Função} qunit (@var{n})
+Retorna a principal unidade do campo dos números quadráticos reais
+@code{sqrt (@var{n})} onde @var{n} é um inteiro,
+i.e., o elemento cuja norma é unidade.
+Isso é importante para resolver a equação de Pell @code{a^2 - @var{n} b^2 = 1}.
 
 @example
 (%i1) qunit (17);
@@ -554,28 +554,28 @@ Isso @'{e} importante para resolver a equaç@~{a}o de Pell @code{a^2 - @var{n} b
 
 @end deffn
 
-@deffn {Funç@~{a}o} totient (@var{n})
-Retorna o n@'{u}mero de inteiros menores que ou iguais a @var{n} que
-s@~{a}o relativamente primos com @var{n}.
+@deffn {Função} totient (@var{n})
+Retorna o número de inteiros menores que ou iguais a @var{n} que
+são relativamente primos com @var{n}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} zerobern
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} zerobern
+Valor padrão: @code{true}
 
 Quando @code{zerobern} for @code{false},
-@code{bern} exclui os n@'{u}meros de Bernoulli que forem iguais a zero. 
+@code{bern} exclui os números de Bernoulli que forem iguais a zero. 
 Veja @code{bern}.
 
 @end defvr
 
-@deffn {Funç@~{a}o} zeta (@var{n})
-Retorna a funç@~{a}o zeta de Riemann se @var{x} for um inteiro negativo, 0, 1,
-ou n@'{u}mero par positivo,
+@deffn {Função} zeta (@var{n})
+Retorna a função zeta de Riemann se @var{x} for um inteiro negativo, 0, 1,
+ou número par positivo,
 e retorna uma forma substantiva @code{zeta (@var{n})} para todos os outros argumentos,
-incluindo n@~{a}o inteiros racionais, ponto flutuante, e argumentos complexos.
+incluindo não inteiros racionais, ponto flutuante, e argumentos complexos.
 
-Veja tamb@'{e}m @code{bfzeta} e @code{zeta%pi}.
+Veja também @code{bfzeta} e @code{zeta%pi}.
 
 @example
 (%i1) map (zeta, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5]);
@@ -587,10 +587,10 @@ Veja tamb@'{e}m @code{bfzeta} e @code{zeta%pi}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} zeta%pi
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} zeta%pi
+Valor padrão: @code{true}
 
-Quando @code{zeta%pi} for @code{true}, @code{zeta} retorna uma express@~{a}o
+Quando @code{zeta%pi} for @code{true}, @code{zeta} retorna uma expressão
 proporcional a @code{%pi^n} para inteiro par @code{n}.
 De outra forma, @code{zeta} retorna uma forma substantiva @code{zeta (n)}
 para inteiro par @code{n}.
@@ -608,3 +608,4 @@ para inteiro par @code{n}.
 @end example
 
 @end defvr
+

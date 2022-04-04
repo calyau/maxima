@@ -1,111 +1,111 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Special.texi/1.29/Sat Jun  2 00:13:09 2007/-ko/
 @menu
-* Introduç@~{a}o a Funç@~{o}es Especiais::  
-* Funç@~{o}es e Vari@'{a}veis Definidas para Funç@~{o}es Especiais::  
+* Introdução a Funções Especiais::  
+* Funções e Variáveis Definidas para Funções Especiais::  
 @end menu
 
-@node Introduç@~{a}o a Funç@~{o}es Especiais, Funç@~{o}es e Vari@'{a}veis Definidas para Funç@~{o}es Especiais, Funç@~{o}es Especiais, Funç@~{o}es Especiais
-@section Introduç@~{a}o a Funç@~{o}es Especiais
+@node Introdução a Funções Especiais, Funções e Variáveis Definidas para Funções Especiais, Funções Especiais, Funções Especiais
+@section Introdução a Funções Especiais
 
-A notaç@~{a}o de funç@~{a}o especial segue adiante:
+A notação de função especial segue adiante:
 
 @example
-bessel_j (index, expr)         Funç@~{a}o de Bessel, primeiro tipo
-bessel_y (index, expr)         Funç@~{a}o de Bessel, segundo tipo
-bessel_i (index, expr)         Funç@~{a}o de Bessel modificada, primeiro tipo
-bessel_k (index, expr)         Funç@~{a}o de Bessel modificada, segundo tipo
-%he[n] (z)                     Polin@^{o}mio de Hermite (Note bem: @code{he}, n@~{a}o @code{h}. Veja A&S 22.5.18)
-%p[u,v] (z)                    Funç@~{a}o de Legendre
-%q[u,v] (z)                    Funç@~{a}o de Legendre, segundo tipo
-hstruve[n] (z)                 Funç@~{a}o H de Struve H
-lstruve[n] (z)                 Funç@~{a}o L de Struve
-%f[p,q] ([], [], expr)         Funç@~{a}o Hipergeom@'{e}trica Generalizada
-gamma()                        Funç@~{a}o Gamma
-gamma_incomplete_lower(a,z)    Funç@~{a}o gama incompleta inferior
-gammaincomplete(a,z)           Final da funç@~{a}o gama incompleta
+bessel_j (index, expr)         Função de Bessel, primeiro tipo
+bessel_y (index, expr)         Função de Bessel, segundo tipo
+bessel_i (index, expr)         Função de Bessel modificada, primeiro tipo
+bessel_k (index, expr)         Função de Bessel modificada, segundo tipo
+%he[n] (z)                     Polinômio de Hermite (Note bem: @code{he}, não @code{h}. Veja A&S 22.5.18)
+%p[u,v] (z)                    Função de Legendre
+%q[u,v] (z)                    Função de Legendre, segundo tipo
+hstruve[n] (z)                 Função H de Struve H
+lstruve[n] (z)                 Função L de Struve
+%f[p,q] ([], [], expr)         Função Hipergeométrica Generalizada
+gamma()                        Função Gamma
+gamma_incomplete_lower(a,z)    Função gama incompleta inferior
+gammaincomplete(a,z)           Final da função gama incompleta
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
 slommel
-%m[u,k] (z)                    Funç@~{a}o de Whittaker, primeiro tipo
-%w[u,k] (z)                    Funç@~{a}o de Whittaker, segundo tipo
-erfc (z)                       Complemento da funç@~{a}o erf (funç@~{a}o de erros - integral da distribuiç@~{a}o normal)
+%m[u,k] (z)                    Função de Whittaker, primeiro tipo
+%w[u,k] (z)                    Função de Whittaker, segundo tipo
+erfc (z)                       Complemento da função erf (função de erros - integral da distribuição normal)
 ei (z)                         Integral de exponencial (?)
 kelliptic (z)                  integral eliptica completa de primeiro tipo (K)
-%d [n] (z)                     Funç@~{a}o cil@'{i}ndrica parab@'{o}lica
+%d [n] (z)                     Função cilíndrica parabólica
 @end example
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para Funç@~{o}es Especiais,  , Introduç@~{a}o a Funç@~{o}es Especiais, Funç@~{o}es Especiais
-@section Funç@~{o}es e Vari@'{a}veis Definidas para Funç@~{o}es Especiais
+@node Funções e Variáveis Definidas para Funções Especiais,  , Introdução a Funções Especiais, Funções Especiais
+@section Funções e Variáveis Definidas para Funções Especiais
 
-@deffn {Funç@~{a}o} airy_ai (@var{x})
-A funç@~{a}o de Airy Ai, como definida em Abramowitz e Stegun,
-@i{Handbook of Mathematical Functions}, Sess@~{a}o 10.4. 
+@deffn {Função} airy_ai (@var{x})
+A função de Airy Ai, como definida em Abramowitz e Stegun,
+@i{Handbook of Mathematical Functions}, Sessão 10.4. 
 
-A equaç@~{a}o de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tem duas 
-soluç@~{o}es linearmente independentes, @code{y = Ai(x)} e @code{y = Bi(x)}.
-A derivada de @code{diff (airy_ai(x), x)} @'{e} @code{airy_dai(x)}.
+A equação de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tem duas 
+soluções linearmente independentes, @code{y = Ai(x)} e @code{y = Bi(x)}.
+A derivada de @code{diff (airy_ai(x), x)} é @code{airy_dai(x)}.
 
-Se o argumento @code{x} for um n@'{u}mero real ou um n@'{u}mero complexo qualquer deles em ponto
-flutuante , o valor num@'{e}rico de @code{airy_ai} @'{e} retornado 
-quando poss@'{i}vel.
+Se o argumento @code{x} for um número real ou um número complexo qualquer deles em ponto
+flutuante , o valor numérico de @code{airy_ai} é retornado 
+quando possível.
 
-Veja tamb@'{e}m @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
+Veja também @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
 @end deffn
 
 
-@deffn {Funç@~{a}o} airy_dai (@var{x})
-A derivada da funç@~{a}o de Airy Ai @code{airy_ai(x)}. 
+@deffn {Função} airy_dai (@var{x})
+A derivada da função de Airy Ai @code{airy_ai(x)}. 
 
 Veja @code{airy_ai}.
 @end deffn
 
-@deffn {Funç@~{a}o} airy_bi (@var{x})
-A funç@~{a}o de Airy Bi, como definida em Abramowitz e Stegun,
-@i{Handbook of Mathematical Functions}, Sess@~{a}o 10.4, 
-@'{e} a segunda soluç@~{a}o da equaç@~{a}o de Airy
+@deffn {Função} airy_bi (@var{x})
+A função de Airy Bi, como definida em Abramowitz e Stegun,
+@i{Handbook of Mathematical Functions}, Sessão 10.4, 
+é a segunda solução da equação de Airy
 @code{diff (y(x), x, 2) - x y(x) = 0}.
 
-Se o argumento @code{x} for um n@'{u}mero real ou um n@'{u}mero complexo qualquer deles em ponto flutuante,
-o valor num@'{e}rico de @code{airy_bi} @'{e} retornado quando poss@'{i}vel.
-Em outros casos a express@~{a}o n@~{a}o avaliada @'{e} retornada.
+Se o argumento @code{x} for um número real ou um número complexo qualquer deles em ponto flutuante,
+o valor numérico de @code{airy_bi} é retornado quando possível.
+Em outros casos a expressão não avaliada é retornada.
 
-A derivada de @code{diff (airy_bi(x), x)} @'{e} @code{airy_dbi(x)}.
+A derivada de @code{diff (airy_bi(x), x)} é @code{airy_dbi(x)}.
 
 Veja @code{airy_ai}, @code{airy_dbi}.
 @end deffn
 
 
-@deffn {Funç@~{a}o} airy_dbi (@var{x})
-A derivada de funç@~{a}o de Airy Bi @code{airy_bi(x)}.
+@deffn {Função} airy_dbi (@var{x})
+A derivada de função de Airy Bi @code{airy_bi(x)}.
 
 Veja @code{airy_ai} e @code{airy_bi}.
 @end deffn
 
-@deffn {Funç@~{a}o} asympa
-@code{asympa} @'{e} um pacote para an@'{a}lise assint@'{o}tica. O pacote cont@'{e}m
-funç@~{o}es de simplificaç@~{a}o para an@'{a}lise assint@'{o}tica, incluindo as funç@~{o}es 
-``grande O'' e ``pequeno o'' que s@~{a}o largamente usadas em an@'{a}lises de complexidade e
-an@'{a}lise num@'{e}rica.
+@deffn {Função} asympa
+@code{asympa} é um pacote para análise assintótica. O pacote contém
+funções de simplificação para análise assintótica, incluindo as funções 
+``grande O'' e ``pequeno o'' que são largamente usadas em análises de complexidade e
+análise numérica.
 
 @code{load ("asympa")} chama esse pacote.
 
 @end deffn
 
-@deffn {Funç@~{a}o} bessel (@var{z}, @var{a}) 
-A funç@~{a}o de Bessel de primeiro tipo.
+@deffn {Função} bessel (@var{z}, @var{a}) 
+A função de Bessel de primeiro tipo.
 
-Essa funç@~{a}o est@'{a} desatualizada.  Escreva @code{bessel_j (@var{z}, @var{a})} em lugar dessa.
+Essa função está desatualizada.  Escreva @code{bessel_j (@var{z}, @var{a})} em lugar dessa.
 
 @end deffn
 
 
-@deffn {Funç@~{a}o} bessel_j (@var{v}, @var{z})
-A funç@~{a}o de Bessel do primeiro tipo de ordem @math{v} e argumento @math{z}.
+@deffn {Função} bessel_j (@var{v}, @var{z})
+A função de Bessel do primeiro tipo de ordem @math{v} e argumento @math{z}.
 
 @code{bessel_j} calcula o array @code{besselarray} tal que
 @code{besselarray [i] = bessel_j [i + v - int(v)] (z)} para @code{i} de zero a @code{int(v)}.
 
-@code{bessel_j} @'{e} definida como
+@code{bessel_j} é definida como
 @ifhtml
 @example
                 inf
@@ -134,18 +134,18 @@ $$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
  }\over{k!\,\Gamma\left(v+k+1\right)}}}$$
 @end tex
 
-todavia s@'{e}ries infinitas n@~{a}o s@~{a}o usadas nos c@'{a}lculos.
+todavia séries infinitas não são usadas nos cálculos.
 
 @end deffn
 
 
-@deffn {Funç@~{a}o} bessel_y (@var{v}, @var{z})
-A funç@~{a}o de Bessel do segundo tipo de ordem @math{v} e argumento @math{z}.
+@deffn {Função} bessel_y (@var{v}, @var{z})
+A função de Bessel do segundo tipo de ordem @math{v} e argumento @math{z}.
 
 @code{bessel_y} calcula o array @code{besselarray} tal que
 @code{besselarray [i] = bessel_y [i + v - int(v)] (z)} para @code{i} de zero a @code{int(v)}.
 
-@code{bessel_y} @'{e} definida como
+@code{bessel_y} é definida como
 @ifhtml
 @example
               cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
@@ -166,19 +166,19 @@ $${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
  \sin \left(\pi\,v\right)}}$$
 @end tex
 
-quando @math{v} n@~{a}o for um inteiro.  Quando @math{v} for um inteiro @math{n},
-o limite com @math{v} aprocimando-se de @math{n} @'{e} tomado.
+quando @math{v} não for um inteiro.  Quando @math{v} for um inteiro @math{n},
+o limite com @math{v} aprocimando-se de @math{n} é tomado.
 
 @end deffn
 
 
-@deffn {Funç@~{a}o} bessel_i (@var{v}, @var{z})
-A funç@~{a}o de Bessel modificada de primeiro tipo de ordem @math{v} e argumento @math{z}.
+@deffn {Função} bessel_i (@var{v}, @var{z})
+A função de Bessel modificada de primeiro tipo de ordem @math{v} e argumento @math{z}.
 
 @code{bessel_i} calcula o array @code{besselarray} tal que
 @code{besselarray [i] = bessel_i [i + v - int(v)] (z)} para @code{i} de zero a @code{int(v)}.
 
-@code{bessel_i} @'{e} definida como
+@code{bessel_i} é definida como
 @ifhtml
 @example
                     inf
@@ -207,18 +207,18 @@ $$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
  \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}$$
 @end tex
 
-embora s@'{e}ries infinitas n@~{a}o s@~{a}o usadas nos c@'{a}lculos.
+embora séries infinitas não são usadas nos cálculos.
 
 @end deffn
 
 
-@deffn {Funç@~{a}o} bessel_k (@var{v}, @var{z})
-A funç@~{a}o de Bessel modificada de segundo tipo de ordem @math{v} e argumento @math{z}.
+@deffn {Função} bessel_k (@var{v}, @var{z})
+A função de Bessel modificada de segundo tipo de ordem @math{v} e argumento @math{z}.
 
 @code{bessel_k} calcula o array @code{besselarray} tal que
 @code{besselarray [i] = bessel_k [i + v - int(v)] (z)} para @code{i} de zero a @code{int(v)}.
 
-@code{bessel_k} @'{e} definida como
+@code{bessel_k} é definida como
 @ifhtml
 @example
            %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
@@ -237,19 +237,19 @@ A funç@~{a}o de Bessel modificada de segundo tipo de ordem @math{v} e argumento
 $${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
 @end tex
 
-quando @math{v} n@~{a}o for inteiro.  Se @math{v} for um inteiro @math{n},
-ent@~{a}o o limite  com @math{v} aproximando-se de @math{n} @'{e} tomado.
+quando @math{v} não for inteiro.  Se @math{v} for um inteiro @math{n},
+então o limite  com @math{v} aproximando-se de @math{n} é tomado.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} besselexpand
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de opção} besselexpand
+Valor padrão: @code{false}
 
 @c REPHRASE
-Expans@~{o}es de controle de funç@~{o}es de Bessel quando a ordem for a metade de
-um inteiro @'{i}mpar.  Nesse caso, as funç@~{o}es de Bessel podem ser expandidas
-em termos de outras funç@~{o}es elementares.  Quando @code{besselexpand} for @code{true},
-a funç@~{a}o de Bessel @'{e} expandida.
+Expansões de controle de funções de Bessel quando a ordem for a metade de
+um inteiro ímpar.  Nesse caso, as funções de Bessel podem ser expandidas
+em termos de outras funções elementares.  Quando @code{besselexpand} for @code{true},
+a função de Bessel é expandida.
 
 @example
 (%i1) besselexpand: false$
@@ -266,97 +266,97 @@ a funç@~{a}o de Bessel @'{e} expandida.
 @end example
 @end defvr
 
-@deffn {Funç@~{a}o} scaled_bessel_i (@var{v}, @var{z}) 
+@deffn {Função} scaled_bessel_i (@var{v}, @var{z}) 
 
-A funç@~{a}o homot@'{e}tica modificada de Bessel de primeiro tipo de ordem
-@math{v} e argumento @math{z}.  Isto @'{e}, @math{scaled_bessel_i(v,z) =
-exp(-abs(z))*bessel_i(v, z)}. Essa funç@~{a}o @'{e} particularmente @'{u}til
+A função homotética modificada de Bessel de primeiro tipo de ordem
+@math{v} e argumento @math{z}.  Isto é, @math{scaled_bessel_i(v,z) =
+exp(-abs(z))*bessel_i(v, z)}. Essa função é particularmente útil
 para calcular @math{bessel_i} para grandes valores de @math{z}.
-Todavia, maxima n@~{a}o conhece outra forma muito mais sobre essa funç@~{a}o.  Para
-computaç@~{a}o simb@'{o}lica, @'{e} provavelmete prefer@'{i}vel trabalhar com a express@~{a}o
+Todavia, maxima não conhece outra forma muito mais sobre essa função.  Para
+computação simbólica, é provavelmete preferível trabalhar com a expressão
 @code{exp(-abs(z))*bessel_i(v, z)}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} scaled_bessel_i0 (@var{z}) 
+@deffn {Função} scaled_bessel_i0 (@var{z}) 
 
-Id@^{e}ntica a @code{scaled_bessel_i(0,z)}.
-
-@end deffn
-
-@deffn {Funç@~{a}o} scaled_bessel_i1 (@var{z}) 
-
-Id@^{e}ntica a @code{scaled_bessel_i(1,z)}.
+Idêntica a @code{scaled_bessel_i(0,z)}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} beta (@var{x}, @var{y})
-A funç@~{a}o beta, definida como @code{gamma(x) gamma(y)/gamma(x + y)}.
+@deffn {Função} scaled_bessel_i1 (@var{z}) 
+
+Idêntica a @code{scaled_bessel_i(1,z)}.
+
+@end deffn
+
+@deffn {Função} beta (@var{x}, @var{y})
+A função beta, definida como @code{gamma(x) gamma(y)/gamma(x + y)}.
 @c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
 @c ANY SIMPLIFICATION RULES FOR THIS FUNCTION ??
 
 @end deffn
 
-@deffn {Funç@~{a}o} gamma (@var{x})
-A funç@~{a}o gama.
+@deffn {Função} gamma (@var{x})
+A função gama.
 
 @c SEEMS POINTLESS TO MENTION THE FOLLOWING IDENTITY, 
 @c AS MAXIMA DOESN'T SEEM TO CARRY OUT THIS SIMPLIFICATION
 @c GAMMA(I)=(I-1)!  for I a positive integer.
 
-Veja tamb@'{e}m @code{makegamma}.
+Veja também @code{makegamma}.
 
-A vari@'{a}vel @code{gammalim} controla a simplificaç@~{a}o da funç@~{a}o gama.
+A variável @code{gammalim} controla a simplificação da função gama.
 
-A constante de Euler-Mascheroni @'{e} @code{%gamma}.
+A constante de Euler-Mascheroni é @code{%gamma}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} gammalim
-Valor padr@~{a}o: 1000000
+@defvr {Variável de opção} gammalim
+Valor padrão: 1000000
 
 @c REPHRASE
-@code{gammalim} controla a simplificaç@~{a}o da funç@~{a}o
-gama para integral e argumentos na forma de n@'{u}meros racionais.  Se o valor
-absoluto do argumento n@~{a}o for maior que @code{gammalim}, ent@~{a}o
-a simplificaç@~{a}o ocorrer@'{a}.  Note que @code{factlim} comuta controle de
-simplificaçc@~{a}o do resultado de @code{gamma} de um argumento inteiro tamb@'{e}m.
+@code{gammalim} controla a simplificação da função
+gama para integral e argumentos na forma de números racionais.  Se o valor
+absoluto do argumento não for maior que @code{gammalim}, então
+a simplificação ocorrerá.  Note que @code{factlim} comuta controle de
+simplificaçcão do resultado de @code{gamma} de um argumento inteiro também.
 
 @end defvr
 
 @c NEED EXAMPLES HERE
-@deffn {Funç@~{a}o} intopois (@var{a})
-Converte @var{a} em um c@'{o}digo de Poisson.
+@deffn {Função} intopois (@var{a})
+Converte @var{a} em um código de Poisson.
 
 @end deffn
 
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
-@deffn {Funç@~{a}o} makefact (@var{expr})
-Transforma inst@^{a}ncias de funç@~{o}es binomiais, gama,
+@deffn {Função} makefact (@var{expr})
+Transforma instâncias de funções binomiais, gama,
 e beta em @var{expr} para fatoriais.
 
-Veja tamb@'{e}m @code{makegamma}.
+Veja também @code{makegamma}.
 
 @end deffn
 
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
-@deffn {Funç@~{a}o} makegamma (@var{expr})
-Transforma inst@^{a}ncias de funç@~{o}es binomiais, fatorial,
-e beta em @var{expr} para funç@~{o}es gama.
+@deffn {Função} makegamma (@var{expr})
+Transforma instâncias de funções binomiais, fatorial,
+e beta em @var{expr} para funções gama.
 
-Veja tamb@'{e}m @code{makefact}.
+Veja também @code{makefact}.
 
 @end deffn
 
 @c AREN'T THERE OTHER FUNCTIONS THAT DO ESSENTIALLY THE SAME THING ??
-@deffn {Funç@~{a}o} numfactor (@var{expr})
-Retorna o fator num@'{e}rico multiplicando a express@~{a}o
+@deffn {Função} numfactor (@var{expr})
+Retorna o fator numérico multiplicando a expressão
 @var{expr}, que pode ser um termo simples.
 
 @c WHY IS content MENTIONED IN THIS CONTEXT ??
-@code{content} retorna o m@'{a}ximo divisor comum (mdc) de todos os termos em uma adiç@~{a}o.
+@code{content} retorna o máximo divisor comum (mdc) de todos os termos em uma adição.
 
 @example
 (%i1) gamma (7/2);
@@ -372,194 +372,194 @@ Retorna o fator num@'{e}rico multiplicando a express@~{a}o
 @end deffn
 
 @c NEED EXAMPLES HERE
-@deffn {Funç@~{a}o} outofpois (@var{a})
-Converte @var{a} de um c@'{o}digo de Poisson para uma representaç@~{a}o
-geral.  Se @var{a} n@~{a}o for uma forma de Poisson, @code{outofpois} realiza a convers@~{a}o,
-i.e., o valor de retorno @'{e} @code{outofpois (intopois (@var{a}))}.
-Essa funç@~{a}o @'{e} desse modo um simplificador can@^{o}nico
-para adiç@~{o}es e pot@^{e}ncias de termos de seno e cosseno de um tipo particular.
+@deffn {Função} outofpois (@var{a})
+Converte @var{a} de um código de Poisson para uma representação
+geral.  Se @var{a} não for uma forma de Poisson, @code{outofpois} realiza a conversão,
+i.e., o valor de retorno é @code{outofpois (intopois (@var{a}))}.
+Essa função é desse modo um simplificador canônico
+para adições e potências de termos de seno e cosseno de um tipo particular.
 
 @end deffn
 
 @c NEED MORE INFO HERE
 @c NEED EXAMPLES HERE
-@deffn {Funç@~{a}o} poisdiff (@var{a}, @var{b})
-Deriva @var{a} em relaç@~{a}o a @var{b}.  @var{b} deve ocorrer somente
-nos argumentos trigonom@'{e}tricos ou somente nos coeficientes.
+@deffn {Função} poisdiff (@var{a}, @var{b})
+Deriva @var{a} em relação a @var{b}.  @var{b} deve ocorrer somente
+nos argumentos trigonométricos ou somente nos coeficientes.
 
 @end deffn
 
 @c LOOKING AT THE CODE IN src/pois3.lisp, THIS FCN SEEMS TO COMPUTE THE EXPONENT BY MULTIPLYING IN A LOOP
 @c DUNNO HOW WE WANT TO EXPLAIN THAT
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
-@deffn {Funç@~{a}o} poisexpt (@var{a}, @var{b})
+@deffn {Função} poisexpt (@var{a}, @var{b})
 Funcionalmente identica a @code{intopois (@var{a}^@var{b})}.
 @var{b} deve ser um inteiro positico.
 
 @end deffn
 
 @c WHAT IS THIS ABOUT ??
-@deffn {Funç@~{a}o} poisint (@var{a}, @var{b})
+@deffn {Função} poisint (@var{a}, @var{b})
 Integra em um senso restrito similarmente (para
-@code{poisdiff}).  Termos n@~{a}o peri@'{o}dicos em @var{b} s@~{a}o diminu@'{i}dos se @var{b} estiver em argumentos
-trigonom@'{e}tricos.
+@code{poisdiff}).  Termos não periódicos em @var{b} são diminuídos se @var{b} estiver em argumentos
+trigonométricos.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} poislim
-Valor padr@~{a}o: 5
+@defvr {Variável de opção} poislim
+Valor padrão: 5
 
-@code{poislim} determina o dom@'{i}nio dos coeficientes nos
-argumentos de funç@~{o}es trigonom@'{e}tricas.  O valor inicial de 5
+@code{poislim} determina o domínio dos coeficientes nos
+argumentos de funções trigonométricas.  O valor inicial de 5
 corresponde ao intervalo [-2^(5-1)+1,2^(5-1)], ou [-15,16], mas isso
 pode ser alterado para [-2^(n-1)+1, 2^(n-1)].
 
 @end defvr
 
 @c UMM, WHAT IS THIS ABOUT EXACTLY ?? EXAMPLES NEEDED
-@deffn {Funç@~{a}o} poismap (@var{series}, @var{sinfn}, @var{cosfn})
-mapear@'{a} as funç@~{o}es @var{sinfn} sobre os
-termos de seno e @var{cosfn} ssobre os termos de cosseno das s@'{e}ries de Poisson dadas.
-@var{sinfn} e @var{cosfn} s@~{a}o funç@~{o}es de dois argumentos que s@~{a}o um coeficiente
-e uma parte trigonom@'{e}trica de um termo em s@'{e}ries respectivamente.
+@deffn {Função} poismap (@var{series}, @var{sinfn}, @var{cosfn})
+mapeará as funções @var{sinfn} sobre os
+termos de seno e @var{cosfn} ssobre os termos de cosseno das séries de Poisson dadas.
+@var{sinfn} e @var{cosfn} são funções de dois argumentos que são um coeficiente
+e uma parte trigonométrica de um termo em séries respectivamente.
 
 @end deffn
 
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
-@deffn {Funç@~{a}o} poisplus (@var{a}, @var{b})
-@'{E} funcionalmente identica a @code{intopois (a + b)}.
+@deffn {Função} poisplus (@var{a}, @var{b})
+É funcionalmente identica a @code{intopois (a + b)}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} poissimp (@var{a})
-Converte @var{a} em s@'{e}ries de Poisson para @var{a} em representaç@~{a}o
+@deffn {Função} poissimp (@var{a})
+Converte @var{a} em séries de Poisson para @var{a} em representação
 geral.
 
 @end deffn
 
 @c MORE INFO NEEDED HERE
-@defvr {S@'{i}mbolo especial} poisson
-O s@'{i}mbolo @code{/P/} segue o r@'{o}tulo de linha de uma express@~{a}o contendo s@'{e}ries de
+@defvr {Símbolo especial} poisson
+O símbolo @code{/P/} segue o rótulo de linha de uma expressão contendo séries de
 Poisson.
 
 @end defvr
 
-@deffn {Funç@~{a}o} poissubst (@var{a}, @var{b}, @var{c})
-Substitue @var{a} por @var{b} em @var{c}.  @var{c} @'{e} uma s@'{e}rie de Poisson.
+@deffn {Função} poissubst (@var{a}, @var{b}, @var{c})
+Substitue @var{a} por @var{b} em @var{c}.  @var{c} é uma série de Poisson.
 
-(1) Quando @var{B} @'{e} uma vari@'{a}vel @var{u}, @var{v}, @var{w}, @var{x}, @var{y}, ou @var{z},
-ent@~{a}o @var{a} deve ser uma
-express@~{a}o linear nessas vari@'{a}veis (e.g., @code{6*u + 4*v}).
+(1) Quando @var{B} é uma variável @var{u}, @var{v}, @var{w}, @var{x}, @var{y}, ou @var{z},
+então @var{a} deve ser uma
+expressão linear nessas variáveis (e.g., @code{6*u + 4*v}).
 
-(2) Quando @var{b} for outra que n@~{a}o essas vari@'{a}veis, ent@~{a}o @var{a} deve tamb@'{e}m ser
-livre dessas vari@'{a}veis, e al@'{e} disso, livre de senos ou cossenos.
+(2) Quando @var{b} for outra que não essas variáveis, então @var{a} deve também ser
+livre dessas variáveis, e alé disso, livre de senos ou cossenos.
 
-@code{poissubst (@var{a}, @var{b}, @var{c}, @var{d}, @var{n})} @'{e} um tipo especial d substituiç@~{a}o que
-opera sobre @var{a} e @var{b} como no tipo (1) acima, mas onde @var{d} @'{e} uma s@'{e}rie de
+@code{poissubst (@var{a}, @var{b}, @var{c}, @var{d}, @var{n})} é um tipo especial d substituição que
+opera sobre @var{a} e @var{b} como no tipo (1) acima, mas onde @var{d} é uma série de
 Poisson, expande @code{cos(@var{d})} e @code{sin(@var{d})} para a ordem @var{n} como provendo o
-resultado da substituiç@~{a}o @code{@var{a} + @var{d}} por @var{b} em @var{c}.  A id@'{e}ia @'{e} que @var{d} @'{e} uma
-expans@~{a}o em termos de um pequeno par@^{a}metro.  Por exemplo,
+resultado da substituição @code{@var{a} + @var{d}} por @var{b} em @var{c}.  A idéia é que @var{d} é uma
+expansão em termos de um pequeno parâmetro.  Por exemplo,
 @code{poissubst (u, v, cos(v), %e, 3)} retorna @code{cos(u)*(1 - %e^2/2) - sin(u)*(%e - %e^3/6)}.
 
 @end deffn
 
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
-@deffn {Funç@~{a}o} poistimes (@var{a}, @var{b})
-@'{E} funcionalmente id@^{e}ntica a @code{intopois (@var{a}*@var{b})}.
+@deffn {Função} poistimes (@var{a}, @var{b})
+É funcionalmente idêntica a @code{intopois (@var{a}*@var{b})}.
 
 @end deffn
 
 @c HOW DOES THIS WORK ?? NEED MORE INFO AND EXAMPLES
-@deffn {Funç@~{a}o} poistrim ()
-@'{e} um nome de funç@~{a}o reservado que (se o usu@'{a}rio tiver definido
-uma funç@~{a}o com esse nome) @'{e} aplicada durante multiplicaç@~{a}o de Poisson.  Isso @'{e} uma funç@~{a}o
-predicada de 6 argumentos que s@~{a}o os coeficientes de @var{u}, @var{v}, ..., @var{z}
+@deffn {Função} poistrim ()
+é um nome de função reservado que (se o usuário tiver definido
+uma função com esse nome) é aplicada durante multiplicação de Poisson.  Isso é uma função
+predicada de 6 argumentos que são os coeficientes de @var{u}, @var{v}, ..., @var{z}
 em um termo.  Termos para os quais @code{poistrim} for @code{true} (para os coeficientes
-daquele termo) s@~{a}o eliminados durante a multiplicaç@~{a}o.
+daquele termo) são eliminados durante a multiplicação.
 
 @end deffn
 
-@deffn {Funç@~{a}o} printpois (@var{a})
-Mostra uma s@'{e}rie de Poisson em um formato leg@'{i}vel.  Em comum
-com @code{outofpois}, essa funç@~{a}o converter@'{a} @var{a} em um c@'{o}digo de Poisson primeiro, se
-necess@'{a}rio.
+@deffn {Função} printpois (@var{a})
+Mostra uma série de Poisson em um formato legível.  Em comum
+com @code{outofpois}, essa função converterá @var{a} em um código de Poisson primeiro, se
+necessário.
 
 @end deffn
 
 @c NEED INFO HERE ABOUT THE SUBSCRIPTED FORM psi[n](x)
 @c I (rtoy) don't think there is a plain psi(x) function anymore.
-@c @deffn {Funç@~{a}o} psi (@var{x})
-@c @deffnx {Funç@~{a}o} psi [@var{n}](@var{x})
-@deffn {Funç@~{a}o} psi [@var{n}](@var{x})
+@c @deffn {Função} psi (@var{x})
+@c @deffnx {Função} psi [@var{n}](@var{x})
+@deffn {Função} psi [@var{n}](@var{x})
 
 A derivada de @code{log (gamma (@var{x}))} de ordem @code{@var{n}+1}.
-Dessa forma, @code{psi[0](@var{x})} @'{e} a primeira derivada,
-@code{psi[1](@var{x})} @'{e} a segunda derivada, etc.
+Dessa forma, @code{psi[0](@var{x})} é a primeira derivada,
+@code{psi[1](@var{x})} é a segunda derivada, etc.
 
-Maxima n@~{a}o sabe como, em geral, calcular um valor num@'{e}rico de
+Maxima não sabe como, em geral, calcular um valor numérico de
 @code{psi}, mas Maxima pode calcular alguns valores exatos para argumentos racionais.
-Muitas vari@'{a}veis controlam qual intervalo de argumentos racionais @code{psi} ir@'{a}
-retornar um valor exato, se poss@'{i}vel.  Veja @code{maxpsiposint},
+Muitas variáveis controlam qual intervalo de argumentos racionais @code{psi} irá
+retornar um valor exato, se possível.  Veja @code{maxpsiposint},
 @code{maxpsinegint}, @code{maxpsifracnum}, e @code{maxpsifracdenom}.
-Isto @'{e}, @var{x} deve localizar-se entre @code{maxpsinegint} e
-@code{maxpsiposint}.  Se o valor absoluto da parte facion@'{a}ria de
+Isto é, @var{x} deve localizar-se entre @code{maxpsinegint} e
+@code{maxpsiposint}.  Se o valor absoluto da parte facionária de
 @var{x} for racional e tiver um numerador menor que @code{maxpsifracnum}
 e tiver um denominador menor que @code{maxpsifracdenom}, @code{psi}
-ir@'{a} retornar um valor exato.
+irá retornar um valor exato.
 
-A funç@~{a}o @code{bfpsi} no pacote @code{bffac} pode calcular
-valores num@'{e}ricos.
+A função @code{bfpsi} no pacote @code{bffac} pode calcular
+valores numéricos.
  
  @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} maxpsiposint
-Valor padr@~{a}o: 20
+@defvr {Variável de opção} maxpsiposint
+Valor padrão: 20
 
-@code{maxpsiposint} @'{e} o maior valor positivo para o qual
-@code{psi[n](x)} ir@'{a} tentar calcular um valor exato.
-
-@end defvr
-
-@defvr {Vari@'{a}vel de opç@~{a}o} maxpsinegint
-Valor padr@~{a}o: -10
-
-@code{maxpsinegint} @'{e} o valor mais negativo para o qual
-@code{psi[n](x)} ir@'{a} tentar calcular um valor exato.  Isto @'{e}, se
-@var{x} for menor que @code{maxnegint}, @code{psi[n](@var{x})} n@~{a}o ir@'{a}
-retornar resposta simplificada, mesmo se isso for poss@'{i}vel.
+@code{maxpsiposint} é o maior valor positivo para o qual
+@code{psi[n](x)} irá tentar calcular um valor exato.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} maxpsifracnum
-Valor padr@~{a}o: 6
+@defvr {Variável de opção} maxpsinegint
+Valor padrão: -10
 
-Tomemos @var{x} como sendo um n@'{u}mero racional menor que a unidade e da forma @code{p/q}.
-Se @code{p} for menor que @code{maxpsifracnum}, ent@~{a}o
-@code{psi[@var{n}](@var{x})} n@~{a}o ir@'{a} tentar retornar um valor
+@code{maxpsinegint} é o valor mais negativo para o qual
+@code{psi[n](x)} irá tentar calcular um valor exato.  Isto é, se
+@var{x} for menor que @code{maxnegint}, @code{psi[n](@var{x})} não irá
+retornar resposta simplificada, mesmo se isso for possível.
+
+@end defvr
+
+@defvr {Variável de opção} maxpsifracnum
+Valor padrão: 6
+
+Tomemos @var{x} como sendo um número racional menor que a unidade e da forma @code{p/q}.
+Se @code{p} for menor que @code{maxpsifracnum}, então
+@code{psi[@var{n}](@var{x})} não irá tentar retornar um valor
 simplificado.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} maxpsifracdenom
-Valor padr@~{a}o: 6
+@defvr {Variável de opção} maxpsifracdenom
+Valor padrão: 6
 
-Tomemos @var{x} como sendo um n@'{u}mero racional menor que a unidade e da forma @code{p/q}.
-Se @code{q} for maior que @code{maxpsifracdenom}, ent@~{a}o
-@code{psi[@var{n}](@var{x})} n@~{a}o ir@'{a} tentar retornar um valor
+Tomemos @var{x} como sendo um número racional menor que a unidade e da forma @code{p/q}.
+Se @code{q} for maior que @code{maxpsifracdenom}, então
+@code{psi[@var{n}](@var{x})} não irá tentar retornar um valor
 simplificado.
 
 @end defvr
 
 @deffn {Function} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
 
-Calcula a trasformada de Laplace de @var{expr} com relaç@~{a}o @`{a} vari@'{a}vel @var{t}.
-O integrando @var{expr} pode conter funç@~{o}es especiais.
+Calcula a trasformada de Laplace de @var{expr} com relação à variável @var{t}.
+O integrando @var{expr} pode conter funções especiais.
 
-Se @code{specint} n@~{a}o puder calcular a integral, o valor de retorno pode
-coter v@'{a}rios s@'{i}mbolos do Lisp, incluindo
+Se @code{specint} não puder calcular a integral, o valor de retorno pode
+coter vários símbolos do Lisp, incluindo
 @code{other-defint-to-follow-negtest},
 @code{other-lt-exponential-to-follow},
-@code{product-of-y-with-nofract-indices}, etc.; isso @'{e} um erro.  
+@code{product-of-y-with-nofract-indices}, etc.; isso é um erro.  
 @c REPORTED AS SOURCEFORGE BUG # 1162505
 
 @code{demo(hypgeo)} mostra muitos exemplos de tansformadas de Laplace calculados por meio de @code{specint}.
@@ -589,3 +589,4 @@ Exemplos:
 @end example
 
 @end deffn
+

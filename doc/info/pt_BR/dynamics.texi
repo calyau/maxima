@@ -1,63 +1,63 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /dynamics.texi/1.13/Sat Jun  2 00:13:21 2007//
 @menu
-* Introduç@~{a}o a dynamics::
-* Funç@~{o}es e Vari@'{a}veis Definidas para dynamics::
+* Introdução a dynamics::
+* Funções e Variáveis Definidas para dynamics::
 @end menu
 
-@node Introduç@~{a}o a dynamics, Funç@~{o}es e Vari@'{a}veis Definidas para dynamics, dynamics, dynamics
-@section Introduç@~{a}o a dynamics
+@node Introdução a dynamics, Funções e Variáveis Definidas para dynamics, dynamics, dynamics
+@section Introdução a dynamics
 
 O pacote adicional @code{dynamics} inclui muitas
-funç@~{o}es para criar v@'{a}rias representaç@~{o}es gr@'{a}ficas de sistemas
-din@^{a}micos discretos e fractais, e uma implementaç@~{a}o deo m@'{e}todo
-num@'{e}rico de Runge-Kutta de quarta ordem para a resoluç@~{a}o de sistemas de equaç@~oes diferenciais.
+funções para criar várias representações gráficas de sistemas
+dinâmicos discretos e fractais, e uma implementação deo método
+numérico de Runge-Kutta de quarta ordem para a resolução de sistemas de equações diferenciais.
 
-Para usar as funç@~{o}es nesse pacote voc@^{e} deve primeiramente torn@'{a}-lo dispon@'{i}vel para uso com
+Para usar as funções nesse pacote você deve primeiramente torná-lo disponível para uso com
 @code{load("dynamics")}.
 
-@b{Modificaç@~{o}es introduzidas no Maxima 5.12}
+@b{Modificações introduzidas no Maxima 5.12}
 
-Iniciando no Maxima 5.12, o pacote dynamics agora utiliza a funç@~{a}o
-@code{plot2d} para monar os gr@'{a}ficos. Os comandos que produzem gr@'{a}ficos
-(com exceç@~{a}o de @code{julia} e de @code{mandelbrot}) agora aceitam
-qualquer opç@~{a}o de @code{plot2d}, incluindo a opç@~{a}o que modificam o montante das
-v@'{a}rias interfaces gr@'{a}ficas, usando diferentes estilos de montagem de gr@'{a}fico e cores,
-e representando um ou ambos os eixos em uma escala logar@'{i}tmica. As antigas
-opç@~{o}es @var{domain}, @var{pointsize}, @var{xcenter}, @var{xradius},
+Iniciando no Maxima 5.12, o pacote dynamics agora utiliza a função
+@code{plot2d} para monar os gráficos. Os comandos que produzem gráficos
+(com exceção de @code{julia} e de @code{mandelbrot}) agora aceitam
+qualquer opção de @code{plot2d}, incluindo a opção que modificam o montante das
+várias interfaces gráficas, usando diferentes estilos de montagem de gráfico e cores,
+e representando um ou ambos os eixos em uma escala logarítmica. As antigas
+opções @var{domain}, @var{pointsize}, @var{xcenter}, @var{xradius},
 @var{ycenter}, @var{yradius}, @var{xaxislabel} e @var{yaxislabel}
-n@~{a}o s@~{a}o aceitas nessa nova vers@~{a}o.
+não são aceitas nessa nova versão.
 
-Todos os programas ir@~{a}o agora aceitar quaisquer nomes de vari@'{a}veis, e n@~{a}o apenas @var{x}
-e @var{y} como nas antigas vers@~{o}es. Dois par@^{a}metros requeridos tiveram
-modificaç@~{o}es em dois desses programas: @code{evolution2d} agora requer uma lista
-nomeando explicitamente as duas vari@'{a}veis independentes, e o intervalo
-horizontal para @code{orbits} n@~{a}o mais requer um tamanho de passo; o intervalo
-pode somente espcificar o nome da vari@'{a}vel, e o menor e o maior
-valores; o n@'{u}mero de passos pode agora ser modificado com a opç@~{a}o
+Todos os programas irão agora aceitar quaisquer nomes de variáveis, e não apenas @var{x}
+e @var{y} como nas antigas versões. Dois parâmetros requeridos tiveram
+modificações em dois desses programas: @code{evolution2d} agora requer uma lista
+nomeando explicitamente as duas variáveis independentes, e o intervalo
+horizontal para @code{orbits} não mais requer um tamanho de passo; o intervalo
+pode somente espcificar o nome da variável, e o menor e o maior
+valores; o número de passos pode agora ser modificado com a opção
 @var{nticks}.
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para dynamics,  , Introduç@~{a}o a dynamics, dynamics
-@section Funç@~{o}es e Vari@'{a}veis Definidas para dynamics
+@node Funções e Variáveis Definidas para dynamics,  , Introdução a dynamics, dynamics
+@section Funções e Variáveis Definidas para dynamics
 
-@deffn {Funç@~{a}o} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...opç@~{o}es...);
+@deffn {Função} chaosgame (@code{[[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{b}, @var{n}, ...opções...);
 
-Implementa o ent@~{a}o chamado jogo do caos: o ponto inicial (@var{x0},
-@var{y0}) @'{e} colocado no gr@'{a}fico e ent@~{a}o um dos @var{m} pontos
+Implementa o então chamado jogo do caos: o ponto inicial (@var{x0},
+@var{y0}) é colocado no gráfico e então um dos @var{m} pontos
 @code{[}@var{x1}, @var{y1}@code{]}...@code{[}@var{xm}, @var{ym}@code{]}
-ser@'{a} selecionado de forma aleat@'{o}ria. O pr@'{o}ximo ponto colocado no gr@'{a}fico ser@'{a} sobre o
-segmento que vai do ponto anteriormente colocado no gr@'{a}fico ao ponto escolhido aleat@'{o}riamente, @`a
-dist@^{a}ncia do ponto aleat@'{o}rio que ser@'{a} @var{b} vezes o comprimento daquele
-segmento. o procedimento @'{e} repetido @var{n} vezes.
+será selecionado de forma aleatória. O próximo ponto colocado no gráfico será sobre o
+segmento que vai do ponto anteriormente colocado no gráfico ao ponto escolhido aleatóriamente, à
+distância do ponto aleatório que será @var{b} vezes o comprimento daquele
+segmento. o procedimento é repetido @var{n} vezes.
 
 @end deffn
 
-@deffn {Funç@~{a}o} evolution (@var{F}, @var{y0}, @var{n}, ..., opç@~{o}es, ...);
+@deffn {Função} evolution (@var{F}, @var{y0}, @var{n}, ..., opções, ...);
 
-Desenha @var{n+1} pontos em gr@'{a}fico bidimensional, onde as coordenadas
-horizontais dos pontos s@~{a}o os inteiros 0, 1, 2, ..., @var{n}, e
-as coordenadas verticais s@~{a}o os valores correspondentes @var{y(n)} da
-seq@"{u}@^{e}ncia definida pela relaç@~{a}o de recorr@^{e}ncia
+Desenha @var{n+1} pontos em gráfico bidimensional, onde as coordenadas
+horizontais dos pontos são os inteiros 0, 1, 2, ..., @var{n}, e
+as coordenadas verticais são os valores correspondentes @var{y(n)} da
+seq@"{u}ência definida pela relação de recorrência
 @ifnottex
 @example
         y(n+1) = F(y(n))
@@ -68,17 +68,17 @@ $$y_{n+1} = F(y_n)$$
 @end tex
 
 com valor inicial @var{y(0)} igual a @var{y0}. @var{F} deve ser uma
-express@~{a}o que depende somente de uma vari@'{a}vel (no exemplo, essa vari@'{a}vel
-dependente de @var{y}, mas qualquer outra vari@'{a}vel pode ser usada em lugar de @var{y}),
-@var{y0} deve ser um n@'{u}mero real e @var{n} deve ser um inteiro positivo.
+expressão que depende somente de uma variável (no exemplo, essa variável
+dependente de @var{y}, mas qualquer outra variável pode ser usada em lugar de @var{y}),
+@var{y0} deve ser um número real e @var{n} deve ser um inteiro positivo.
 
 @end deffn
 
-@deffn {Funç@~{a}o} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{u}, @var{v}@code{]}, @code{[}@var{u0}, @var{y0}@code{]}, @var{n}, ..., opç@~{o}es, ...);
+@deffn {Função} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{u}, @var{v}@code{]}, @code{[}@var{u0}, @var{y0}@code{]}, @var{n}, ..., opções, ...);
 
-Mostra, em um gr@'{a}fico bidimensional, os primeiros @var{n+1} pontos na
-seq@"{u}@^{e}ncia de pontos definida por meio do sistema din@^{a}mico discreto
-bidimensional com relaç@~{o}es de recorr@^{e}ncia
+Mostra, em um gráfico bidimensional, os primeiros @var{n+1} pontos na
+seq@"{u}ência de pontos definida por meio do sistema dinâmico discreto
+bidimensional com relações de recorrência
 @ifnottex
 @example
         u(n+1) = F(u(n), v(n))    v(n+1) = G(u(n), v(n))
@@ -89,75 +89,75 @@ $$\cases{u_{n+1} = F(u_n, v_n) &\cr v_{n+1} = G(u_n, v_n)}$$
 @end tex
 
 Com valores iniciais @var{u0} e @var{v0}. @var{F} e @var{G} devem ser
-duas express@~{o}es que dependem somente de duas vari@'{a}veis @var{u} e
+duas expressões que dependem somente de duas variáveis @var{u} e
 @var{v}, que devem ser nomeadas explicitamente em uma lista. 
 
 @end deffn
 
-@deffn {Funç@~{a}o} ifs (@code{[}@var{r1}, ..., @var{rm}@code{]}, @code{[}@var{A1}, ..., @var{Am}@code{]}, @code{[[}@var{x1}, @var{y1}@code{]}, ..., @code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ..., opç@~{o}es, ...);
+@deffn {Função} ifs (@code{[}@var{r1}, ..., @var{rm}@code{]}, @code{[}@var{A1}, ..., @var{Am}@code{]}, @code{[[}@var{x1}, @var{y1}@code{]}, ..., @code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ..., opções, ...);
 
-Implemanta o m@'{e}todo de Sistemas de Funç@~{o}es iteradas. Esse m@'{e}todo @'{e} similar
-ao m@'{e}todo descrito na funç@~{a}o @code{chaosgame}, mas em lugar de
+Implemanta o método de Sistemas de Funções iteradas. Esse método é similar
+ao método descrito na função @code{chaosgame}, mas em lugar de
 encolher o segmento do ponto corrente ao ponto escolhido
-aleat@'{o}riamente, as duas componentes daquele segmento ir@~{a}o ser multiplicadas pela matrix 2 por 2
-@var{Ai} que corresponde ao ponto escolhido aleat@'{o}riamente.
+aleatóriamente, as duas componentes daquele segmento irão ser multiplicadas pela matrix 2 por 2
+@var{Ai} que corresponde ao ponto escolhido aleatóriamente.
 
-A escolha aleat@'{o}ria de um dos @var{m} pontos de atraç@~{a}o pode ser feita com
-uma distribuiç@~{a}o de probabilidade n@~{a}o uniforme definida por meio dos pesos
-@var{r1},...,@var{rm}. Esses pesos s@~{a}o fornecidos de forma cumulativa; por exemplo se existem 3 pontos com probabilidades 0.2, 0.5 e
+A escolha aleatória de um dos @var{m} pontos de atração pode ser feita com
+uma distribuição de probabilidade não uniforme definida por meio dos pesos
+@var{r1},...,@var{rm}. Esses pesos são fornecidos de forma cumulativa; por exemplo se existem 3 pontos com probabilidades 0.2, 0.5 e
 0.3, os pesos @var{r1}, @var{r2} e @var{r3} podem ser 2, 7 e 10.
 
 @end deffn
 
 
-@deffn {Funç@~{a}o} rk (EDO, var, inicio, domain)
-@deffnx {Funç@~{a}o} rk ([EDO1,...,EDOm], [v1,...,vm], [inic1,...,inicm], domain)
+@deffn {Função} rk (EDO, var, inicio, domain)
+@deffnx {Função} rk ([EDO1,...,EDOm], [v1,...,vm], [inic1,...,inicm], domain)
 
-A primeira forma resolve numericamente uma equaç@~{a}o diferencial  de primeira
-ordem, e a segunda formaresolve um sistema de m dessas equaç@~{o}es,
-usando o m@'{e}todo de Runge-Kutta de quarta ordem. @code{var} representa a vari@'{a}vel
-dependente. EDO deve ser uma express@~{a}o que dependa somente da vari@'{a}vel  independente e da
-vari@'{a}vel dependente e defina a derivada da vari@'{a}vel
-dependente com relaç@~{a}o @`a vari@'{a}vel independente.
+A primeira forma resolve numericamente uma equação diferencial  de primeira
+ordem, e a segunda formaresolve um sistema de m dessas equações,
+usando o método de Runge-Kutta de quarta ordem. @code{var} representa a variável
+dependente. EDO deve ser uma expressão que dependa somente da variável  independente e da
+variável dependente e defina a derivada da variável
+dependente com relação à variável independente.
 
-A vari@'{a}vel independente @'{e} especificada com @code{domain}, que deve ser uma
+A variável independente é especificada com @code{domain}, que deve ser uma
 lista dde quatro elementos como, por exemplo:
 @example
 [t, 0, 10, 0.1]
 @end example
-O primeiro elemento da lista identifica a vari@'{a}vel independente, o
-segundo e o terceiro elementos s@~{a}o os valores inicial e final para para aquela
-vari@'{a}vel, e o @'{u}ltimo elemento escolhe o incremento que pode ser usado
+O primeiro elemento da lista identifica a variável independente, o
+segundo e o terceiro elementos são os valores inicial e final para para aquela
+variável, e o último elemento escolhe o incremento que pode ser usado
 dentro daquele intervalo.
 
-Se @var{m} equaç@~{o}es est@~{a}o sendo resolvidas, podem existir @var{m}
-vari@'{a}veis dependentes @var{v1}, @var{v2}, ..., @var{vm}. Os valores iniciais
-para aquelas vari@'{a}veis ser@~{a}o @var{inic1}, @var{inic2}, ..., @var{inicm}.
-Ainda pode ser apenas uma vari@'{a}vel independente definida por @code{domain},
-como no caso anterior. @var{EDO1}, ..., @var{EDOm} s@~{a}o as express@~{o}es
-que definem as derivadas de cada vari@'{a}vel dependente em
-termos da vari@'{a}vel independente. As vari@'{a}veis que podem aparecer
-naquelas express@~{o}es s@~{a}o a vari@'{a}vel independente e quaisquer outras vari@'{a}veis
-dependentes. @'{E} importante fornecer as derivadas @var{EDO1}, ...,
-@var{EDOm} na lista exatamente na mesma ordem usada para vari@'{a}veis
-dependentes; por exemplo, o terceiro elemento na lista ir@'{a} ser interpretado
-com a derivada da terceira vari@'{a}vel dependente.
+Se @var{m} equações estão sendo resolvidas, podem existir @var{m}
+variáveis dependentes @var{v1}, @var{v2}, ..., @var{vm}. Os valores iniciais
+para aquelas variáveis serão @var{inic1}, @var{inic2}, ..., @var{inicm}.
+Ainda pode ser apenas uma variável independente definida por @code{domain},
+como no caso anterior. @var{EDO1}, ..., @var{EDOm} são as expressões
+que definem as derivadas de cada variável dependente em
+termos da variável independente. As variáveis que podem aparecer
+naquelas expressões são a variável independente e quaisquer outras variáveis
+dependentes. É importante fornecer as derivadas @var{EDO1}, ...,
+@var{EDOm} na lista exatamente na mesma ordem usada para variáveis
+dependentes; por exemplo, o terceiro elemento na lista irá ser interpretado
+com a derivada da terceira variável dependente.
 
-O programa tentar@'{a} integrar as equaç@~{o}es a partir do valor inicial
-da vari@'{a}vel independente at@'{e} seu @'{u}ltimo valor, usando incrementos
-constantes. Se em algum passo uma das vari@'{a}veis dependentes recebe um
-valor absoluto muito grande, a integraç@~{a}o ser@'{a} interrompida naquele
-ponto. O resultado ser@'{a} uma lista com tamtos elementos quantos forem o n@'{u}mero de
-iteraç@~{o}es feitas. Cada elemento na lista de resultado @'{e} em si mesmo outra lista
-comh @var{m}+1 elementos: o valor da vari@'{a}vel independente, seguido
-pelos valores das vari@'{a}veis dependentes correspondentes @`aquele ponto.
+O programa tentará integrar as equações a partir do valor inicial
+da variável independente até seu último valor, usando incrementos
+constantes. Se em algum passo uma das variáveis dependentes recebe um
+valor absoluto muito grande, a integração será interrompida naquele
+ponto. O resultado será uma lista com tamtos elementos quantos forem o número de
+iterações feitas. Cada elemento na lista de resultado é em si mesmo outra lista
+comh @var{m}+1 elementos: o valor da variável independente, seguido
+pelos valores das variáveis dependentes correspondentes àquele ponto.
 
 @end deffn
 
-@deffn {Funç@~{a}o} staircase (@var{F}, @var{y0}, @var{n}, ...opç@~{o}es...);
+@deffn {Função} staircase (@var{F}, @var{y0}, @var{n}, ...opções...);
 
-Desenha um diagrama em escada para a seq@"{u}@^{e}ncia definida pela relaç@~{a}o de
-recorr@^{e}ncia
+Desenha um diagrama em escada para a seq@"{u}ência definida pela relação de
+recorrência
 @ifnottex
 @example
         y(n+1) = F(y(n))
@@ -167,33 +167,33 @@ recorr@^{e}ncia
 $$y_{n+1} = F(y_n)$$
 @end tex
 
-A interpretaç@~{a}o e os valores permitidos dos par@^{a}metros de entrada s@~{a}o os
-mesmos que para a funç@~{a}o @code{evolution}. Um diagrama em escada consiste
-de um gr@'{a}fico da funç@~{a}o @var{F(y)}, juntamente com a linha
-@var{G(y)} @code{=} @var{y}. Um segmento vertical @'{e} desenhado a partir das
+A interpretação e os valores permitidos dos parâmetros de entrada são os
+mesmos que para a função @code{evolution}. Um diagrama em escada consiste
+de um gráfico da função @var{F(y)}, juntamente com a linha
+@var{G(y)} @code{=} @var{y}. Um segmento vertical é desenhado a partir das
 point (@var{y0}, @var{y0}) on that line until the point where it
-intersecç@~{o}es com a funç@~{a}o @var{F}. A partir daquele ponto um segmento horizontal @'{e}
-desenhado at@'{e} encontrar o ponto (@var{y1}, @var{y1}) sobre a linha, e
-o procedimento @'{e} repetido @var{n} vezes at@'{e} que o ponto (@var{yn}, @var{yn})
-@'{e} encontrado.
+intersecções com a função @var{F}. A partir daquele ponto um segmento horizontal é
+desenhado até encontrar o ponto (@var{y1}, @var{y1}) sobre a linha, e
+o procedimento é repetido @var{n} vezes até que o ponto (@var{yn}, @var{yn})
+é encontrado.
 
 @end deffn
 
-@b{opç@~{o}es}
+@b{opções}
 
-Cada opç@~{a}o @'{e} uma lista de dois ou mais itens. O primeiro item @'{e} o nome
-da opç@~{a}o, e os restantes compreendem os argumentos para a opç@~{a}o.
+Cada opção é uma lista de dois ou mais itens. O primeiro item é o nome
+da opção, e os restantes compreendem os argumentos para a opção.
 
-As opç@~{o}es aceitas pelas funç@~{o}es @code{evolution}, @code{evolution2d},
-@code{staircase}, @code{orbits}, @code{ifs} e @code{chaosgame} s@~{a}o as mesmas opç@~{o}es para
-@code{plot2d}. Adicionalmente para aquelas opç@~{o}es, @code{orbits} aceita a
-opç@~{a}o extra @var{pixels} que escolhe o n@'{u}mero m@'{a}ximo de pontos
-diferentes que ir@~{a}o ser representados na direç@~{a}o vertical.
+As opções aceitas pelas funções @code{evolution}, @code{evolution2d},
+@code{staircase}, @code{orbits}, @code{ifs} e @code{chaosgame} são as mesmas opções para
+@code{plot2d}. Adicionalmente para aquelas opções, @code{orbits} aceita a
+opção extra @var{pixels} que escolhe o número máximo de pontos
+diferentes que irão ser representados na direção vertical.
 
 
 @b{Exemplos}
 
-Representaç@~{a}o gr@'{a}fica e diagrama em escada para a seq@"{u}@^{e}ncia:
+Representação gráfica e diagrama em escada para a seq@"{u}ência:
 2, cos(2), cos(cos(2)),...
 
 @example
@@ -209,12 +209,12 @@ Representaç@~{a}o gr@'{a}fica e diagrama em escada para a seq@"{u}@^{e}ncia:
 @image{@value{figuresfolder}/dynamics2,8cm}
 @end ifnotinfo
 
-Se seu sistema for lento, voc@^{e} dever@'{a} reduzir o n@'{u}mero de iteraç@~{o}es nos
+Se seu sistema for lento, você deverá reduzir o número de iterações nos
 seguintes exemplos. E se os pontos parecerem muito pequenos no seu
-monitor, voc@^{e} pode querer tentar um estilo diferente, tal como
+monitor, você pode querer tentar um estilo diferente, tal como
 @code{[}@var{style},@code{[}@var{points},0.8@code{]]}.
 
-Diagrama de @'{o}rbitas para o mapa quadr@'{a}tico, com um par@^{a}metro @var{a}.
+Diagrama de órbitas para o mapa quadrático, com um parâmetro @var{a}.
 @ifnottex
 @example
         x(n+1) = a + x(n)^2
@@ -232,7 +232,7 @@ $$y_{n+1} = x + y_n^2$$
 @image{@value{figuresfolder}/dynamics3,8cm}
 @end ifnotinfo
 
-Para ampliar a regi@~{a}o em torno da bifurcaç@~{a}o menor perto de x @code{=} -1.25 use:
+Para ampliar a região em torno da bifurcação menor perto de x @code{=} -1.25 use:
 @example
 (%i5) orbits(x+y^2, 0, 100, 400, [a,-1,-1.53], [x,-1.6,-0.8],
              [nticks, 400], [style,dots]);
@@ -242,7 +242,7 @@ Para ampliar a regi@~{a}o em torno da bifurcaç@~{a}o menor perto de x @code{=} 
 @image{@value{figuresfolder}/dynamics4,8cm}
 @end ifnotinfo
 
-Evoluç@~{a}o de um sistemma bidimensional que leva a um fractal:
+Evolução de um sistemma bidimensional que leva a um fractal:
 
 @example
 (%i6) f: 0.6*x*(1+2*x)+0.8*y*(x-1)-y^2-0.9$
@@ -256,7 +256,7 @@ Evoluç@~{a}o de um sistemma bidimensional que leva a um fractal:
 @image{@value{figuresfolder}/dynamics5,8cm}
 @end ifnotinfo
 
-E uma ampliaç@~{a}o de uma pequena regial naquele fractal:
+E uma ampliação de uma pequena regial naquele fractal:
 
 @example
 (%i9) evolution2d([f,g], [x,y], [-0.5,0], 300000, [x,-0.8,-0.6],
@@ -267,7 +267,7 @@ E uma ampliaç@~{a}o de uma pequena regial naquele fractal:
 @image{@value{figuresfolder}/dynamics6,8cm}
 @end ifnotinfo
 
-Um gr@'{a}fico do tri@^{a}ngulo de Sierpinsky, obtido com o jogo do caos:
+Um gráfico do triângulo de Sierpinsky, obtido com o jogo do caos:
 
 @example
 (%i9) chaosgame([[0, 0], [1, 0], [0.5, sqrt(3)/2]], [0.1, 0.1], 1/2,
@@ -278,7 +278,7 @@ Um gr@'{a}fico do tri@^{a}ngulo de Sierpinsky, obtido com o jogo do caos:
 @image{@value{figuresfolder}/dynamics7,8cm}
 @end ifnotinfo
 
-A samambaia de Barnsley, obtida com um Sistema de Funç@~{o}es Iteradas:
+A samambaia de Barnsley, obtida com um Sistema de Funções Iteradas:
 
 @example
 (%i10) a1: matrix([0.85,0.04],[-0.04,0.85])$
@@ -306,7 +306,7 @@ A samambaia de Barnsley, obtida com um Sistema de Funç@~{o}es Iteradas:
 @image{@value{figuresfolder}/dynamics8,8cm}
 @end ifnotinfo
 
-Para resolver numericamente a equaç@~{a}o diferencial
+Para resolver numericamente a equação diferencial
 
 @ifnottex
 @example
@@ -324,7 +324,7 @@ incrementos de 0.1 para @code{t}, use:
 (%i20) results: rk(t-x^2,x,1,[t,0,8,0.1])$
 @end example
 
-os resultados ser@~{a}o salvos na lista de resultados.
+os resultados serão salvos na lista de resultados.
 
 Para resolver numericamente o sistema:
 
@@ -342,3 +342,4 @@ para @code{t} entre 0 e 4, e com valores de -1.25 e 0.75 para x e y em t=0:
 @example
 (%i21) sol: rk([4-x^2-4*y^2,y^2-x^2+1],[x,y],[-1.25,0.75],[t,0,4,0.02])$
 @end example
+

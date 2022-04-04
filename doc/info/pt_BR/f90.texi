@@ -1,19 +1,19 @@
 @c @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /f90.texi/1.2/Sat Jun  2 00:13:21 2007//
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para f90::
+* Funções e Variáveis Definidas para f90::
 @end menu
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para f90,  , f90, f90
-@section Funç@~{o}es e Vari@'{a}veis Definidas para f90
+@node Funções e Variáveis Definidas para f90,  , f90, f90
+@section Funções e Variáveis Definidas para f90
 
 
-@deffn {Funç@~{a}o} f90 (@var{expr})
-O comando f90 @'{e} uma atualizaç@~{a}o para o comando @code{fortran} original do
-maxima. A diferença prim@'{a}ria @'{e} o caminho atrav@'{e}s do qual linhas longas s@~{a}o quebradas.
+@deffn {Função} f90 (@var{expr})
+O comando f90 é uma atualização para o comando @code{fortran} original do
+maxima. A diferença primária é o caminho através do qual linhas longas são quebradas.
 
-No exemplo seguinte, observe como o comando @code{fortran} para linhas dentro de s@'{i}mbolos. O comando
-@code{f90} jamais para linha dentro de um s@'{i}mbolo.
+No exemplo seguinte, observe como o comando @code{fortran} para linhas dentro de símbolos. O comando
+@code{f90} jamais para linha dentro de um símbolo.
 
 @example
 (%i1) load("f90")$
@@ -38,10 +38,11 @@ yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2+294* &
 (%o4)                       done
 @end example
 
-A implementaç@~{a}o @code{f90} termina como um r@'{a}pido reparo em @code{fortran}. N@~{a}o @'{e}
-necess@'{a}riamente um bom exemplo sobre o qual se deva basear outros tradutores do
-Maxima para outras linguagens de programaç@~{a}o.
+A implementação @code{f90} termina como um rápido reparo em @code{fortran}. Não é
+necessáriamente um bom exemplo sobre o qual se deva basear outros tradutores do
+Maxima para outras linguagens de programação.
 
-Para usar essa funç@~{a}o escreva primeiro @code{load("f90")}.
+Para usar essa função escreva primeiro @code{load("f90")}.
 @end deffn
+
 

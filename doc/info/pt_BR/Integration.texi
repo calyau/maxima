@@ -1,38 +1,38 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Integration.texi/1.31/Sat Jun  2 00:12:51 2007/-ko/
 @menu
-* Introduç@~{a}o a Integraç@~{a}o::  
-* Funç@~{o}es e Vari@'{a}veis Definidas para Integraç@~{a}o::  
-* Introduç@~{a}o a QUADPACK::
-* Funç@~{o}es e Vari@'{a}veis Definidas para QUADPACK::
+* Introdução a Integração::  
+* Funções e Variáveis Definidas para Integração::  
+* Introdução a QUADPACK::
+* Funções e Variáveis Definidas para QUADPACK::
 @end menu
 
-@node Introduç@~{a}o a Integraç@~{a}o, Funç@~{o}es e Vari@'{a}veis Definidas para Integraç@~{a}o, Integraç@~{a}o, Integraç@~{a}o
-@section Introduç@~{a}o a Integraç@~{a}o
+@node Introdução a Integração, Funções e Variáveis Definidas para Integração, Integração, Integração
+@section Introdução a Integração
 
-Maxima tem muitas rotinas para manusear integraç@~{a}o.
-A funç@~{a}o @code{integrate} faz uso de muitas dessas.  Exite tamb@'{e}m o
-pacote @code{antid}, que manuseia uma funç@~{a}o n@~{a}o especificada (e suas
+Maxima tem muitas rotinas para manusear integração.
+A função @code{integrate} faz uso de muitas dessas.  Exite também o
+pacote @code{antid}, que manuseia uma função não especificada (e suas
 derivadas, certamente).  Para usos numericos,
 existe um conjunto de integradores adaptativos de QUADPACK,
-a saber @code{quad_qag}, @code{quad_qags}, etc., os quais s@~{a}o descritos sob o t@'{o}pico @code{QUADPACK}.
-Funç@~{o}es hipergeom@'{e}tricas est@~{a}o sendo trabalhadas,
+a saber @code{quad_qag}, @code{quad_qags}, etc., os quais são descritos sob o tópico @code{QUADPACK}.
+Funções hipergeométricas estão sendo trabalhadas,
 veja @code{specint} para detalhes.
-Geralmente falando, Maxima somente manuseia integrais que s@~{a}o
-integr@'{a}veis em termos de "funç@~{o}es elementares" (funç@~{o}es racionais,
-trigonometricas, logar@'{i}tmicas, exponenciais, radicais, etc.) e umas poucas
-extens@~{o}es (funç@~{a}o de erro, dilogarithm).  Isso n@~{a}o manuseia
-integrais em termos de funç@~{o}es desconhecidas tais como @code{g(x)} e @code{h(x)}.
+Geralmente falando, Maxima somente manuseia integrais que são
+integráveis em termos de "funções elementares" (funções racionais,
+trigonometricas, logarítmicas, exponenciais, radicais, etc.) e umas poucas
+extensões (função de erro, dilogarithm).  Isso não manuseia
+integrais em termos de funções desconhecidas tais como @code{g(x)} e @code{h(x)}.
 
 @c end concepts Integration
-@node Funç@~{o}es e Vari@'{a}veis Definidas para Integraç@~{a}o, Introduç@~{a}o a QUADPACK, Introduç@~{a}o a Integraç@~{a}o, Integraç@~{a}o
-@section Funç@~{o}es e Vari@'{a}veis Definidas para Integraç@~{a}o
+@node Funções e Variáveis Definidas para Integração, Introdução a QUADPACK, Introdução a Integração, Integração
+@section Funções e Variáveis Definidas para Integração
 @c NEEDS WORK
-@deffn {Funç@~{a}o} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
-Faz a mudança de vari@'{a}vel dada por
-@code{@var{f(x,y)} = 0} em todas as integrais que ocorrem em @var{expr} com integraç@~{a}o em
-relaç@~{a}o a @var{x}.
-A nova vari@'{a}vel @'{e} @var{y}.
+@deffn {Função} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
+Faz a mudança de variável dada por
+@code{@var{f(x,y)} = 0} em todas as integrais que ocorrem em @var{expr} com integração em
+relação a @var{x}.
+A nova variável é @var{y}.
 
 @c HMM, THIS EXAMPLE YIELDS A CORRECT BUT SLIGHTLY STRANGE RESULT...
 @example
@@ -57,15 +57,15 @@ A nova vari@'{a}vel @'{e} @var{y}.
                                 a
 @end example
 
-Uma express@~{a}o contendo uma forma substantiva, tais como as inst@^{a}ncias de @code{'integrate} acima,
+Uma expressão contendo uma forma substantiva, tais como as instâncias de @code{'integrate} acima,
 pode ser avaliada por @code{ev} com o sinalizador @code{nouns}.
-Por exemplo, a express@~{a}o retornada por @code{changevar} acima pode ser avaliada
+Por exemplo, a expressão retornada por @code{changevar} acima pode ser avaliada
 por @code{ev (%o3, nouns)}.
 
-@code{changevar} pode tamb@'{e}m ser usada para alteraç@~{o}es nos @'{i}ndices de uma soma ou de um
-produto.  Todavia, isso deve obrigat@'{o}riamente ser realizado de forma que quando uma alteraç@~{a}o @'{e} feita em uma
-soma ou produto, essa mudança deve ser um artif@'{i}cio, i.e., @code{i = j+ ...}, n@~{a}o uma
-funç@~{a}o de grau mais alto.  E.g.,
+@code{changevar} pode também ser usada para alterações nos índices de uma soma ou de um
+produto.  Todavia, isso deve obrigatóriamente ser realizado de forma que quando uma alteração é feita em uma
+soma ou produto, essa mudança deve ser um artifício, i.e., @code{i = j+ ...}, não uma
+função de grau mais alto.  E.g.,
 
 @example
 (%i4) sum (a[i]*x^(i-2), i, 0, inf);
@@ -90,11 +90,11 @@ funç@~{a}o de grau mais alto.  E.g.,
 
 @c THIS ITEM IS A MESS, BUT DON'T BOTHER TO CLEAN IT UP:
 @c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
-@deffn {Funç@~{a}o} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
+@deffn {Função} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
 Uma rotina de integral dupla que foi escrita no 
-alto-n@'{i}vel do Maxima e ent@~{a}o traduzida e compilada para linguagem de m@'{a}quina.
-Use @code{load ("dblint")} para acessar esse pacote.  Isso usa o m@'{e}todo da regra de 
-Simpson em ambas as direç@~{o}es x e y para calcular
+alto-nível do Maxima e então traduzida e compilada para linguagem de máquina.
+Use @code{load ("dblint")} para acessar esse pacote.  Isso usa o método da regra de 
+Simpson em ambas as direções x e y para calcular
 
 @example
 /b /s(x)
@@ -104,77 +104,77 @@ Simpson em ambas as direç@~{o}es x e y para calcular
 /a /r(x)
 @end example
 
-A funç@~{a}o @var{f} deve ser uma funç@~{a}o traduzida ou compilada de duas
-vari@'{a}veis, e @var{r} e @var{s} devem cada uma ser uma funç@~{a}o traduzida ou
-compilada de uma vari@'{a}vel, enquanto @var{a} e @var{b} devem ser n@'{u}meros em ponto
-flutuante.  A rotina tem duas vari@'{a}veis globais que determinam o
-n@'{u}mero de divis@~{o}es dos intervalos x e y: @code{dblint_x} e @code{dblint_y},
-ambas as quais s@~{a}o inicialmente 10, e podem ser alteradas independentemente para
+A função @var{f} deve ser uma função traduzida ou compilada de duas
+variáveis, e @var{r} e @var{s} devem cada uma ser uma função traduzida ou
+compilada de uma variável, enquanto @var{a} e @var{b} devem ser números em ponto
+flutuante.  A rotina tem duas variáveis globais que determinam o
+número de divisões dos intervalos x e y: @code{dblint_x} e @code{dblint_y},
+ambas as quais são inicialmente 10, e podem ser alteradas independentemente para
 outros valores inteiros (existem @code{2*dblint_x+1} pontos calculados na
-direç@~{a}o x , e @code{2*dblint_y+1} na direç@~{a}o y).
-A rotina subdivide o eixo X e ent@~{a}o para cada valor de X isso
-primeiro calcula @code{@var{r}(x)} e @code{@var{s}(x)}; ent@~{a}o o eixo Y entre @code{@var{r}(x)} e @code{@var{s}(x)} @'{e}
-subdividido e a integral ao longo do eixo Y @'{e} executada usando
-a regra de Simpson; ent@~{a}o a integral ao longo do eixo X @'{e} conclu@'{i}da usando
-a regra de Simpson com os valores da funç@~{a}o sendo as integrais-Y.  Esse
-procedimento pode ser numericamente inst@'{a}vel por uma grande variedade raz@~{o}es,
-mas razo@'{a}velmente r@'{a}pido: evite usar isso sobre funç@~{o}es altamente oscilat@'{o}rias
-e funç@~{o}es com singularidades (postes ou pontos de ramificaç@~{a}o na
-regi@~{a}o).  As integrais Y dependem de quanto fragmentados @code{@var{r}(x)} e @code{@var{s}(x)} s@~{a}o,
-ent@~{a}o se a dit@^{a}ncia @code{@var{s}(x) - @var{r}(x)} varia rapidamente com X, nesse ponto pode ter
-erros substanciais provenientes de truncaç@~{a}o com diferentes saltos-tamanhos
-nas v@'{a}rias integrais Y.  Um pode incrementar @code{dblint_x} e @code{dblint_y} em
-uma tentativa para melhorar a converg@^{e}ncia da rei@~{a}o, com sacrif@'{i}cio do
-tempo de computaç@~{a}o.  Os valores da funç@~{a}o n@~{a}o s@~{a}o salvos, ent@~{a}o se a
-funç@~{a}o @'{e} muito desperdiçadora de tempo,voc@^{e} ter@'{a} de esperar por
-re-computaç@~{a}o se voc@^{e} mudar qualquer coisa (desculpe).
-Isso @'{e} requerido que as funç@~{o}es @var{f}, @var{r}, e @var{s} sejam ainda traduzidas
-ou compiladas previamente chamando @code{dblint}.  Isso resultar@'{a} em ordens de
-magnitude de melhoramentos de velocidade sobre o c@'{o}digo interpretado em muitos casos!
+direção x , e @code{2*dblint_y+1} na direção y).
+A rotina subdivide o eixo X e então para cada valor de X isso
+primeiro calcula @code{@var{r}(x)} e @code{@var{s}(x)}; então o eixo Y entre @code{@var{r}(x)} e @code{@var{s}(x)} é
+subdividido e a integral ao longo do eixo Y é executada usando
+a regra de Simpson; então a integral ao longo do eixo X é concluída usando
+a regra de Simpson com os valores da função sendo as integrais-Y.  Esse
+procedimento pode ser numericamente instável por uma grande variedade razões,
+mas razoávelmente rápido: evite usar isso sobre funções altamente oscilatórias
+e funções com singularidades (postes ou pontos de ramificação na
+região).  As integrais Y dependem de quanto fragmentados @code{@var{r}(x)} e @code{@var{s}(x)} são,
+então se a ditância @code{@var{s}(x) - @var{r}(x)} varia rapidamente com X, nesse ponto pode ter
+erros substanciais provenientes de truncação com diferentes saltos-tamanhos
+nas várias integrais Y.  Um pode incrementar @code{dblint_x} e @code{dblint_y} em
+uma tentativa para melhorar a convergência da reião, com sacrifício do
+tempo de computação.  Os valores da função não são salvos, então se a
+função é muito desperdiçadora de tempo,você terá de esperar por
+re-computação se você mudar qualquer coisa (desculpe).
+Isso é requerido que as funções @var{f}, @var{r}, e @var{s} sejam ainda traduzidas
+ou compiladas previamente chamando @code{dblint}.  Isso resultará em ordens de
+magnitude de melhoramentos de velocidade sobre o código interpretado em muitos casos!
 
-@code{demo (dblint)} executa uma demonstraç@~{a}o de @code{dblint} aplicado a um problema exemplo.
+@code{demo (dblint)} executa uma demonstração de @code{dblint} aplicado a um problema exemplo.
 @c demo (dblint_1) FAILS WITH Could not find `fltdfnk.mc' -- DON'T BOTHER TO MENTION IT.  !!!
-@c @code{demo (dblint_1)} executa outra demonstraç@~{a}o.
+@c @code{demo (dblint_1)} executa outra demonstração.
 
 @end deffn
 
-@deffn {Funç@~{a}o} defint (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Função} defint (@var{expr}, @var{x}, @var{a}, @var{b})
 Tenta calcular uma integral definida.
-@code{defint} @'{e} chamada por @code{integrate} quando limites de integraç@~{a}o s@~{a}o especificados,
-i.e., quando @code{integrate} @'{e} chamado como @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
-Dessa forma do ponto de vista do usu@'{a}rio, isso @'{e} suficiente para chamar @code{integrate}.
+@code{defint} é chamada por @code{integrate} quando limites de integração são especificados,
+i.e., quando @code{integrate} é chamado como @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
+Dessa forma do ponto de vista do usuário, isso é suficiente para chamar @code{integrate}.
 @c SHOULD WE BOTHER TO DOCUMENT defint ??? NO FUNCTIONALITY HERE THAT IS NOT ALREADY PRESENT IN integrate !!!
 
-@code{defint} retorna uma express@~{a}o simb@'{o}lica,
+@code{defint} retorna uma expressão simbólica,
 e executa um dos dois: ou calcula a integral ou a forma substantiva da integral.
-Veja @code{quad_qag} e funç@~{o}es rellacionadas para aproximaç@~{a}o num@'{e}rica de integrais definidas.
+Veja @code{quad_qag} e funções rellacionadas para aproximação numérica de integrais definidas.
 
 @end deffn
 
 @c NEEDS EXPANSION AND EXAMPLES
-@deffn {Funç@~{a}o} erf (@var{x})
-Representa a funç@~{a}o de erro, cuja derivada @'{e}:
+@deffn {Função} erf (@var{x})
+Representa a função de erro, cuja derivada é:
 @code{2*exp(-x^2)/sqrt(%pi)}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} erfflag
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} erfflag
+Valor padrão: @code{true}
 
-Quando @code{erfflag} @'{e} @code{false}, previne @code{risch} da introduç@~{a}o da
-funç@~{a}o @code{erf} na resposta se n@~{a}o houver nenhum no integrando para
+Quando @code{erfflag} é @code{false}, previne @code{risch} da introdução da
+função @code{erf} na resposta se não houver nenhum no integrando para
 começar.
 
 @end defvr
 
 @c NEEDS WORK
-@deffn {Funç@~{a}o} ilt (@var{expr}, @var{t}, @var{s})
-Calcula a transformaç@~{a}o inversa de Laplace de @var{expr} em
-relaç@~{a}o a @var{t} e par@^{a}metro @var{s}.  @var{expr} deve ser uma raz@~{a}o de
-polin@^{o}mios cujo denominador tem somente fatores lineares e quadr@'{a}ticos.
-Usando a funç@~{o}es @code{laplace} e @code{ilt} juntas com as funç@~{o}es @code{solve} ou
-@code{linsolve} o usu@'{a}rio pode resolver uma diferencial simples ou
-uma equaç@~{a}o integral de convoluç@~{a}o ou um conjunto delas.
+@deffn {Função} ilt (@var{expr}, @var{t}, @var{s})
+Calcula a transformação inversa de Laplace de @var{expr} em
+relação a @var{t} e parâmetro @var{s}.  @var{expr} deve ser uma razão de
+polinômios cujo denominador tem somente fatores lineares e quadráticos.
+Usando a funções @code{laplace} e @code{ilt} juntas com as funções @code{solve} ou
+@code{linsolve} o usuário pode resolver uma diferencial simples ou
+uma equação integral de convolução ou um conjunto delas.
 
 @example
 (%i1) 'integrate (sinh(a*x)*f(t-x), x, 0, t) + b*f(t) = t**2;
@@ -215,81 +215,81 @@ pos;
 
 @end deffn
 
-@deffn {Funç@~{a}o} integrate (@var{expr}, @var{x})
-@deffnx {Funç@~{a}o} integrate (@var{expr}, @var{x}, @var{a}, @var{b})
-Tenta s@'{i}mbolicamente calcular a integral de @var{expr} em relaç@~{a}o a @var{x}.
-@code{integrate (@var{expr}, @var{x})} @'{e} uma integral indefinida,
-enquanto @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})} @'{e} uma integral definida,
-com limites de integraç@~{a}o @var{a} e @var{b}.
-Os limites n@~{a}o poderam conter @var{x}, embora @code{integrate} n@~{a}o imponha essa restriç@~{a}o.
-@var{a} n@~{a}o precisa ser menor que @var{b}.
-Se @var{b} @'{e} igual a @var{a}, @code{integrate} retorna zero.
+@deffn {Função} integrate (@var{expr}, @var{x})
+@deffnx {Função} integrate (@var{expr}, @var{x}, @var{a}, @var{b})
+Tenta símbolicamente calcular a integral de @var{expr} em relação a @var{x}.
+@code{integrate (@var{expr}, @var{x})} é uma integral indefinida,
+enquanto @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})} é uma integral definida,
+com limites de integração @var{a} e @var{b}.
+Os limites não poderam conter @var{x}, embora @code{integrate} não imponha essa restrição.
+@var{a} não precisa ser menor que @var{b}.
+Se @var{b} é igual a @var{a}, @code{integrate} retorna zero.
 
-Veja @code{quad_qag} e funç@~{o}es relacionadas para aproximaç@~{a}o num@'{e}rica de integrais definidas.
-Veja @code{residue} para computaç@~{a}o de res@'{i}duos (integraç@~{a}o complexa).
+Veja @code{quad_qag} e funções relacionadas para aproximação numérica de integrais definidas.
+Veja @code{residue} para computação de resíduos (integração complexa).
 Veja @code{antid} para uma forma alternativa de calcular integrais indefinidas.
 
-A integral (uma express@~{a}o livre de @code{integrate}) @'{e} retornada se @code{integrate} obt@'{e}m sucesso.
-De outra forma o valor de retorno @'{e}
-a forma substantiva da integral (o operador com ap@'{o}strofo @code{'integrate})
-ou uma express@~{a}o contendo uma ou mais formas substantivas.
-A forma substantiva de @code{integrate} @'{e} mostrada com um sinal de integral.
+A integral (uma expressão livre de @code{integrate}) é retornada se @code{integrate} obtém sucesso.
+De outra forma o valor de retorno é
+a forma substantiva da integral (o operador com apóstrofo @code{'integrate})
+ou uma expressão contendo uma ou mais formas substantivas.
+A forma substantiva de @code{integrate} é mostrada com um sinal de integral.
 
-Em algumas circunst@^{a}ncias isso @'{e} @'{u}til para construir uma forma substantiva manualmente,
-colocando em @code{integrate} um ap@'{o}strofo, e.g., @code{'integrate (@var{expr}, @var{x})}.
-Por exemplo, a integral pode depender de alguns par@^{a}metos que n@~{a}o est@~{a}o ainda calculados.
+Em algumas circunstâncias isso é útil para construir uma forma substantiva manualmente,
+colocando em @code{integrate} um apóstrofo, e.g., @code{'integrate (@var{expr}, @var{x})}.
+Por exemplo, a integral pode depender de alguns parâmetos que não estão ainda calculados.
 A forma substantiva pode ser aplicada a seus argumentos por @code{ev (@var{i}, nouns)}
-onde @var{i} @'{e} a forma substantiva de interesse.
+onde @var{i} é a forma substantiva de interesse.
 
 @c BEGIN EXPOSITION ON HEURISTICS
 @code{integrate} manuseia integrais definidas separadamente das indefinidas,
-e utiliza uma gama de heur@'{i}sticas para manusear cada caso.
-Casos especiais de integrais definidas incluem limites de integraç@~{a}o iguais a
+e utiliza uma gama de heurísticas para manusear cada caso.
+Casos especiais de integrais definidas incluem limites de integração iguais a
 zero ou infinito (@code{inf} ou @code{minf}),
-funç@~{o}es trigonom@'{e}tricas com limites de integraç@~{a}o iguais a zero e @code{%pi} ou @code{2 %pi},
-funç@~{o}es racionais,
-integrais relacionadas para as definiç@~{o}es de funç@~{o}es @code{beta} e @code{psi},
-e algumas integrais logar@'{i}tmicas e trigonom@'{e}tricas.
-Processando funç@~{o}es racionais pode incluir computaç@~{a}o de res@'{i}duo.
-Se um caso especial aplic@'{a}vel n@~{a}o @'{e} encontrado,
-tentativa ser@'{a} feita para calcular a integra indefinida e avaliar isso nos limites de integraç@~{a}o.
-Isso pode incluir pegar um limite como um limite de integraç@~{a}o tendendo ao infinito ou a menos infinito;
-veja tamb@'{e}m @code{ldefint}.
+funções trigonométricas com limites de integração iguais a zero e @code{%pi} ou @code{2 %pi},
+funções racionais,
+integrais relacionadas para as definições de funções @code{beta} e @code{psi},
+e algumas integrais logarítmicas e trigonométricas.
+Processando funções racionais pode incluir computação de resíduo.
+Se um caso especial aplicável não é encontrado,
+tentativa será feita para calcular a integra indefinida e avaliar isso nos limites de integração.
+Isso pode incluir pegar um limite como um limite de integração tendendo ao infinito ou a menos infinito;
+veja também @code{ldefint}.
 
-Casos especiais de integrais indefinidas incluem funç@~{o}es trigonom@'{e}tricas,
-exponenciais e funç@~{o}es logar@'{i}tmicas,
-e funç@~{o}es racionais.
-@code{integrate} pode tamb@'{e}m fazer uso de uma curta tabela de integais elementares.
+Casos especiais de integrais indefinidas incluem funções trigonométricas,
+exponenciais e funções logarítmicas,
+e funções racionais.
+@code{integrate} pode também fazer uso de uma curta tabela de integais elementares.
 
-@code{integrate} pode realizar uma mudança de vari@'{a}vel
+@code{integrate} pode realizar uma mudança de variável
 se o integrando tem a forma @code{f(g(x)) * diff(g(x), x)}.
-@code{integrate} tenta achar uma subexpress@~{a}o @code{g(x)} de forma que
+@code{integrate} tenta achar uma subexpressão @code{g(x)} de forma que
 a derivada de @code{g(x)} divida o integrando.
-Essa busca pode fazer uso de derivadas definidas pela funç@~{a}o @code{gradef}.
-Veja tamb@'{e}m @code{changevar} e @code{antid}.
+Essa busca pode fazer uso de derivadas definidas pela função @code{gradef}.
+Veja também @code{changevar} e @code{antid}.
 
-Se nenhum dos procedimentos heur@'{i}sticos acha uma integral indefinida,
-o algor@'{i}tmo de Risch @'{e} executado.
+Se nenhum dos procedimentos heurísticos acha uma integral indefinida,
+o algorítmo de Risch é executado.
 O sinalizador @code{risch} pode ser escolhido como um @code{evflag},
 na chamada para @code{ev} ou na linha de comando,
 e.g., @code{ev (integrate (@var{expr}, @var{x}), risch)} ou @code{integrate (@var{expr}, @var{x}), risch}.
-Se @code{risch} est@'{a} presente, @code{integrate} chama a funç@~{a}o @code{risch}
-sem tentar heur@'{i}sticas primeiro.  Veja tamb@'{e}m @code{risch}.
+Se @code{risch} está presente, @code{integrate} chama a função @code{risch}
+sem tentar heurísticas primeiro.  Veja também @code{risch}.
 @c END EXPOSITION ON HEURISTICS
 
-@code{integrate} trabalha somente com relaç@~{o}es funcionais representadas explicitamente com a notaç@~{a}o @code{f(x)}.
-@code{integrate} n@~{a}o respeita depend@^{e}ncias implicitas estabelecidas pela funç@~{a}o @code{depends}.
-@code{integrate} pode necessitar conhecer alguma propriedade de um par@^{a}metro no integrando.
-@code{integrate} ir@'{a} primeiro consultar a base de dados do @code{assume},
-e , se a vari@'{a}vel de interesse n@~{a}o est@'{a} l@'{a},
-@code{integrate} perguntar@'{a} ao usu@'{a}rio.
+@code{integrate} trabalha somente com relações funcionais representadas explicitamente com a notação @code{f(x)}.
+@code{integrate} não respeita dependências implicitas estabelecidas pela função @code{depends}.
+@code{integrate} pode necessitar conhecer alguma propriedade de um parâmetro no integrando.
+@code{integrate} irá primeiro consultar a base de dados do @code{assume},
+e , se a variável de interesse não está lá,
+@code{integrate} perguntará ao usuário.
 Dependendo da pergunta,
-respostas adequadas s@~{a}o @code{yes;} ou @code{no;},
+respostas adequadas são @code{yes;} ou @code{no;},
 ou @code{pos;}, @code{zero;}, ou @code{neg;}.
 
-@code{integrate} n@~{a}o @'{e}, por padr@~{a}o, declarada ser linear.  Veja @code{declare} e @code{linear}.
+@code{integrate} não é, por padrão, declarada ser linear.  Veja @code{declare} e @code{linear}.
 
-@code{integrate} tenta integraç@~{a}o por partes somente em uns poucos casos especiais.
+@code{integrate} tenta integração por partes somente em uns poucos casos especiais.
 
 Exemplos:
 
@@ -318,7 +318,7 @@ Integrais definidas e indefinidas elementares.
 @end example
 
 @item
-Uso de @code{assume} e d@'{u}vida interativa.
+Uso de @code{assume} e dúvida interativa.
 
 @example
 (%i1) assume (a > 1)$
@@ -337,9 +337,9 @@ neg;
 @end example
 
 @item
-Mudança de vari@'{a}vel.  Existem duas mudanças de vari@'{a}vel nesse exemplo:
+Mudança de variável.  Existem duas mudanças de variável nesse exemplo:
 uma usando a derivada estabelecida por @code{gradef},
-e uma usando a derivaç@~{a}o @code{diff(r(x))} de uma funç@~{a}o n@~{a}o especificada @code{r(x)}.
+e uma usando a derivação @code{diff(r(x))} de uma função não especificada @code{r(x)}.
 
 @example
 (%i3) gradef (q(x), sin(x**2));
@@ -355,11 +355,11 @@ e uma usando a derivaç@~{a}o @code{diff(r(x))} de uma funç@~{a}o n@~{a}o espec
 @end example
 
 @item
-O valor de retorno cont@'{e}m a forma substantiva @code{'integrate}.
+O valor de retorno contém a forma substantiva @code{'integrate}.
 Nesse exemplo, Maxima pode extrair um fator do denominador
-de uma funç@~{a}o racional, mas n@~{a}o pode fatorar o restante ou de outra forma achar sua integral.
+de uma função racional, mas não pode fatorar o restante ou de outra forma achar sua integral.
 @code{grind} mostra a forma substantiva @code{'integrate} no resultado.
-Veja tamb@'{e}m @code{integrate_use_rootsof} para mais sobre integrais de funç@~{o}es racionais.
+Veja também @code{integrate_use_rootsof} para mais sobre integrais de funções racionais.
 
 @example
 (%i1) expand ((x-4) * (x^3+2*x+1));
@@ -378,10 +378,10 @@ log(x-4)/73-('integrate((x^2+4*x+18)/(x^3+2*x+1),x))/73$
 @end example
 
 @item
-Definindo uma funç@~{a}o em termos de uma integral.
-O corpo de uma funç@~{a}o n@~{a}o @'{e} avaliado quando a funç@~{a}o @'{e} definida.
-Dessa forma o corpo de @code{f_1} nesse exemplo cont@'{e}m a forma substantiva de @code{integrate}.
-O operador ap@'{o}strofo-ap@'{o}strofo @code{'@w{}'} faz com que a integral seja avaliada,
+Definindo uma função em termos de uma integral.
+O corpo de uma função não é avaliado quando a função é definida.
+Dessa forma o corpo de @code{f_1} nesse exemplo contém a forma substantiva de @code{integrate}.
+O operador apóstrofo-apóstrofo @code{'@w{}'} faz com que a integral seja avaliada,
 e o resultado transforme-se no corpo de @code{f_2}.
 
 @example
@@ -403,26 +403,26 @@ e o resultado transforme-se no corpo de @code{f_2}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de sistema} integration_constant_counter
-Valor padr@~{a}o: 0
+@defvr {Variável de sistema} integration_constant_counter
+Valor padrão: 0
 
-@c WHEN DOES integraç@~{a}oconstant1 SHOW UP IN THE OUTPUT OF integrate ???
-@c integrate (a, x) YIELDS "a x", NOT "a x + integraç@~{a}oconstant1" !!!
-@code{integraç@~{a}o_constant_counter} @'{e} um contador que @'{e} atualizado a cada vez que uma
-constante de integraç@~{a}o (nomeada pelo Maxima, e.g., @code{integrationconstant1})
-@'{e} introduzida em uma express@~{a}o pela integraç@~{a}o indefinida de uma equaç@~{a}o.
+@c WHEN DOES integraçãoconstant1 SHOW UP IN THE OUTPUT OF integrate ???
+@c integrate (a, x) YIELDS "a x", NOT "a x + integraçãoconstant1" !!!
+@code{integração_constant_counter} é um contador que é atualizado a cada vez que uma
+constante de integração (nomeada pelo Maxima, e.g., @code{integrationconstant1})
+é introduzida em uma expressão pela integração indefinida de uma equação.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} integrate_use_rootsof
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de opção} integrate_use_rootsof
+Valor padrão: @code{false}
 
-Quando @code{integrate_use_rootsof} @'{e} @code{true} e o denominador de
-uma funç@~{a}o racional n@~{a}o pode ser fatorado, @code{integrate} retorna a integral
-em uma forma que @'{e} uma soma sobre as ra@'{i}zes (n@~{a}o conhecidas ainda) do denominador.
+Quando @code{integrate_use_rootsof} é @code{true} e o denominador de
+uma função racional não pode ser fatorado, @code{integrate} retorna a integral
+em uma forma que é uma soma sobre as raízes (não conhecidas ainda) do denominador.
 
 Por exemplo, com @code{integrate_use_rootsof} escolhido para @code{false},
-@code{integrate} retorna uma integral n@~{a}o resolvida de uma funç@~{a}o racional na forma substantiva:
+@code{integrate} retorna uma integral não resolvida de uma função racional na forma substantiva:
 
 @example
 (%i1) integrate_use_rootsof: false$
@@ -436,8 +436,8 @@ Por exemplo, com @code{integrate_use_rootsof} escolhido para @code{false},
                 7                 14             7 sqrt(3)
 @end example
 
-Agora vamos escolher o sinalizador para ser true e a parte n@~{a}o resolvida da
-integral ser@'{a} expressa como um somat@'{o}rio sobre as ra@'{i}zes do denominador da funç@~{a}o racional:
+Agora vamos escolher o sinalizador para ser true e a parte não resolvida da
+integral será expressa como um somatório sobre as raízes do denominador da função racional:
 
 @example
 (%i3) integrate_use_rootsof: true$
@@ -459,53 +459,53 @@ integral ser@'{a} expressa como um somat@'{o}rio sobre as ra@'{i}zes do denomina
                                           14             7 sqrt(3)
 @end example
 
-Alternativamente o usu@'{a}rio pode calcular as ra@'{i}zes do denominador separadamente,
-e ent@~{a}o expressar o integrando em termos dessas ra@'{i}zes,
+Alternativamente o usuário pode calcular as raízes do denominador separadamente,
+e então expressar o integrando em termos dessas raízes,
 e.g., @code{1/((x - a)*(x - b)*(x - c))} ou @code{1/((x^2 - (a+b)*x + a*b)*(x - c))}
-se o denominador for um polin@^{o}mio c@'{u}bico.
-Algumas vezes isso ajudar@'{a} Maxima a obter resultados mais @'{u}teis.
+se o denominador for um polinômio cúbico.
+Algumas vezes isso ajudará Maxima a obter resultados mais úteis.
 
 @end defvr
 
 @c NEEDS EXAMPLES
-@deffn {Funç@~{a}o} ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Função} ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 Tenta calcular a integral definida de @var{expr} pelo uso de 
-@code{limit} para avaliar a integral indefinida @var{expr} em relaç@~{a}o a @var{x}
+@code{limit} para avaliar a integral indefinida @var{expr} em relação a @var{x}
 no limite superior @var{b} e no limite inferior @var{a}.
 Se isso falha para calcular a integral definida,
-@code{ldefint} retorna uma express@~{a}o contendo limites como formas substantivas.
+@code{ldefint} retorna uma expressão contendo limites como formas substantivas.
 
-@code{ldefint} n@~{a}o @'{e} chamada por @code{integrate},
-ent@~{a}o executando @code{ldefint (@var{expr}, @var{x}, @var{a}, @var{b})} pode retornar um resultado diferente de
+@code{ldefint} não é chamada por @code{integrate},
+então executando @code{ldefint (@var{expr}, @var{x}, @var{a}, @var{b})} pode retornar um resultado diferente de
 @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
-@code{ldefint} sempre usa o mesmo m@'{e}todo para avaliar a integral definida,
-enquanto @code{integrate} pode utilizar v@'{a}rias heur@'{i}sticas e pode reconhecer alguns casos especiais.
+@code{ldefint} sempre usa o mesmo método para avaliar a integral definida,
+enquanto @code{integrate} pode utilizar várias heurísticas e pode reconhecer alguns casos especiais.
 
 @end deffn
 
 @c UMM, IS THERE SOME TEXT MISSING HERE ???
 @c WHAT IS THIS ABOUT EXACTLY ??
-@deffn {Funç@~{a}o} potential (@var{givengradient})
-O c@'{a}lculo faz uso da vari@'{a}vel global @code{potentialzeroloc[0]}
+@deffn {Função} potential (@var{givengradient})
+O cálculo faz uso da variável global @code{potentialzeroloc[0]}
 que deve ser @code{nonlist} ou da forma
 
 @example
-[indeterminatej=express@~{a}oj, indeterminatek=express@~{a}ok, ...]
+[indeterminatej=expressãoj, indeterminatek=expressãok, ...]
 @end example
 
 O
-formador sendo equivalente para a express@~{a}o nonlist para todos os lados
-direitos-manuseados mais tarde.  Os lados direitos indicados s@~{a}o usados como o
-limite inferior de integraç@~{a}o.  O sucesso das integraç@~{o}es pode
-depender de seus valores e de sua ordem.  @code{potentialzeroloc} @'{e} inicialmente escolhido
+formador sendo equivalente para a expressão nonlist para todos os lados
+direitos-manuseados mais tarde.  Os lados direitos indicados são usados como o
+limite inferior de integração.  O sucesso das integrações pode
+depender de seus valores e de sua ordem.  @code{potentialzeroloc} é inicialmente escolhido
 para 0.
 
 @end deffn
 
-@deffn {Funç@~{a}o} residue (@var{expr}, @var{z}, @var{z_0})
-Calcula o res@'{i}duo no plano complexo da
-express@~{a}o @var{expr} quando a vari@'{a}vel @var{z} assumes o valor @var{z_0}.  O
-res@'{i}duo @'{e} o coeficiente de @code{(@var{z} - @var{z_0})^(-1)} nas s@'{e}ries de Laurent
+@deffn {Função} residue (@var{expr}, @var{z}, @var{z_0})
+Calcula o resíduo no plano complexo da
+expressão @var{expr} quando a variável @var{z} assumes o valor @var{z_0}.  O
+resíduo é o coeficiente de @code{(@var{z} - @var{z_0})^(-1)} nas séries de Laurent
 para @var{expr}.
 
 @example
@@ -522,16 +522,16 @@ para @var{expr}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} risch (@var{expr}, @var{x})
-Integra @var{expr} em relaç@~{a}o a @var{x} usando um
-caso transcendental do algor@'{i}tmo de Risch.  (O caso alg@'{e}brico do
-algor@'{i}tmo de Risch foi implementado.)  Isso atualmente
-manuseia os casos de exponenciais aninhadas e logar@'{i}tmos que a parte
-principal de @code{integrate} n@~{a}o pode fazer.  @code{integrate} ir@'{a} aplicar automaticamente @code{risch}
+@deffn {Função} risch (@var{expr}, @var{x})
+Integra @var{expr} em relação a @var{x} usando um
+caso transcendental do algorítmo de Risch.  (O caso algébrico do
+algorítmo de Risch foi implementado.)  Isso atualmente
+manuseia os casos de exponenciais aninhadas e logarítmos que a parte
+principal de @code{integrate} não pode fazer.  @code{integrate} irá aplicar automaticamente @code{risch}
 se dados esses casos.
 
-@code{erfflag}, se @code{false}, previne @code{risch} da introduç@~{a}o da funç@~{a}o
-@code{erf} na resposta se n@~{a}o for achado nenhum no integrando para 
+@code{erfflag}, se @code{false}, previne @code{risch} da introdução da função
+@code{erf} na resposta se não for achado nenhum no integrando para 
 começar.
 
 @example
@@ -549,42 +549,42 @@ começar.
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@deffn {Funç@~{a}o} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Função} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 Equivalente a @code{ldefint} com @code{tlimswitch} escolhido para @code{true}.
 
 @end deffn
 
 @footnotestyle end
 
-@node Introduç@~{a}o a QUADPACK, Funç@~{o}es e Vari@'{a}veis Definidas para QUADPACK, Funç@~{o}es e Vari@'{a}veis Definidas para Integraç@~{a}o, Integraç@~{a}o
-@section Introduç@~{a}o a QUADPACK
+@node Introdução a QUADPACK, Funções e Variáveis Definidas para QUADPACK, Funções e Variáveis Definidas para Integração, Integração
+@section Introdução a QUADPACK
 
 
 @c FOLLOWING TEXT ADAPTED WITH HEAVY MODIFICATION FROM http://www.netlib.org/slatec/src/qpdoc.f
 
-QUADPACK @'{e} uma coleç@~{a}o de funç@~{o}es para a@'{a}lculo
-num@'{e}rico de integrais definidas unidimensionais.
-O pacote QUADPACK resultou da junç@~{a}o de um projeto de
+QUADPACK é uma coleção de funções para aálculo
+numérico de integrais definidas unidimensionais.
+O pacote QUADPACK resultou da junção de um projeto de
 R. Piessens @footnote{Applied Mathematics and Programming Division, K.U. Leuven},
 E. de Doncker @footnote{Applied Mathematics and Programming Division, K.U. Leuven},
 C. Ueberhuber @footnote{Institut f@"{u}r Mathematik, T.U. Wien},
 e D. Kahaner @footnote{National Bureau of Standards, Washington, D.C., U.S.A}.
 
-A biblioteca QUADPACK incl@'{i}da no Maxima @'{e} uma traduç@~{a}o autom@'{a}tica
-(feita atrav@'{e}s do programa @code{f2cl}) do c@'{o}digo fonte em de QUADPACK como aparece na
-SLATEC Common Mathematical Library, Vers@~{a}o 4.1 @footnote{http://www.netlib.org/slatec}.
-A biblioteca Fortran SLATEC @'{e} datada de Julho de 1993, mas as funç@~{o}es QUADPACK
+A biblioteca QUADPACK inclída no Maxima é uma tradução automática
+(feita através do programa @code{f2cl}) do código fonte em de QUADPACK como aparece na
+SLATEC Common Mathematical Library, Versão 4.1 @footnote{http://www.netlib.org/slatec}.
+A biblioteca Fortran SLATEC é datada de Julho de 1993, mas as funções QUADPACK
 foram escritas alguns anos antes.
-Existe outra vers@~{a}o de QUADPACK em Netlib @footnote{http://www.netlib.org/quadpack};
-n@~{a}o est@'{a} claro no que aquela vers@~{a}o difere da vers@~{a}o existente em SLATEC.
+Existe outra versão de QUADPACK em Netlib @footnote{http://www.netlib.org/quadpack};
+não está claro no que aquela versão difere da versão existente em SLATEC.
 
-As funç@~{o}es QUADPACK inclu@'{i}das no Maxima s@~{a}o toda autom@'{a}ticas,
-no sentido de que essas funç@~{o}es tentam calcular um resultado para uma precis@~{a}o espec@'{i}fica,
-requerendo um n@'{u}mero n@~{a}o especificado de avaliaç@~{o}es de funç@~{a}o.
-A traduç@~{a}o do Lisp do Maxima da iblioteca QUADPACK tamb@'{e}m inclui algumas funç@~es n@~{a}o autom@'{a}ticas,
-mas elas n@~{a}o s@~{a}o expostas a n@'{i}vel de Maxima.
+As funções QUADPACK incluídas no Maxima são toda automáticas,
+no sentido de que essas funções tentam calcular um resultado para uma precisão específica,
+requerendo um número não especificado de avaliações de função.
+A tradução do Lisp do Maxima da iblioteca QUADPACK também inclui algumas funç@~es não automáticas,
+mas elas não são expostas a nível de Maxima.
 
-Informaç@~{a}o adicionalsobre a bilioteca QUADPACK pode ser encontrada no livro do QUADPACK
+Informação adicionalsobre a bilioteca QUADPACK pode ser encontrada no livro do QUADPACK
 @footnote{R. Piessens, E. de Doncker-Kapenga, C.W. Uberhuber, e D.K. Kahaner.
 @i{QUADPACK: A Subroutine Package for Automatic Integration.}
 Berlin: Springer-Verlag, 1983, ISBN 0387125531.}.
@@ -593,63 +593,63 @@ Berlin: Springer-Verlag, 1983, ISBN 0387125531.}.
 
 @table @code
 @item quad_qag
-Integraç@~{a}o de uma funç@~{a}o gen@'{e}rica sobre um intervalo finito.
-@code{quad_qag} implementa um integrador adaptativo globalmente simples usando a estrat@'{e}gia de Aind (Piessens, 1973).
+Integração de uma função genérica sobre um intervalo finito.
+@code{quad_qag} implementa um integrador adaptativo globalmente simples usando a estratégia de Aind (Piessens, 1973).
 O chamador pode escolher entre 6 pares de formulas da quadratura de 
-Gauss-Kronrod para a componente de avaliaç@~{a}o da regra.
-As regras de alto grau s@~{a}o adequadas para integrandos fortemente oscilantes.
+Gauss-Kronrod para a componente de avaliação da regra.
+As regras de alto grau são adequadas para integrandos fortemente oscilantes.
 
 @item quad_qags
-Integraç@~{a}o de uma funç@~{a}o gen@'{e}rica sob um intervalo finito.
-@code{quad_qags} implementa subdivis@~{a}o de intervalos globalmente adaptativos com extrapolaç@~{a}o
-(de Doncker, 1978) por meio do algor@'{i}tmo de Epsilon (Wynn, 1956).
+Integração de uma função genérica sob um intervalo finito.
+@code{quad_qags} implementa subdivisão de intervalos globalmente adaptativos com extrapolação
+(de Doncker, 1978) por meio do algorítmo de Epsilon (Wynn, 1956).
 
 @item quad_qagi
-Integraç@~{a}o de uma funç@~{a}o gen@'{e}rica  sobre um intervalo finito ou semi-finito.
-O intervalo @'{e} mapeado sobre um intervalo finito e
-ent@~{a}o a mesma estrat@'{e}gia de @code{quad_qags} @'{e} aplicada.
+Integração de uma função genérica  sobre um intervalo finito ou semi-finito.
+O intervalo é mapeado sobre um intervalo finito e
+então a mesma estratégia de @code{quad_qags} é aplicada.
 
 @item quad_qawo
-Integraç@~{a}o de @math{cos(omega x) f(x)} ou @math{sin(omega x) f(x)} sobre um intervalo finito,
-onde @math{omega} @'{e} uma constante.
-A componente de avaliaç@~{a}o da regra @'{e} baseada na t@'{e}cnica modificada de Clenshaw-Curtis.
-@code{quad_qawo} aplica subdivis@~{a}o adaptativa com extrapolaç@~{a}o, similar a @code{quad_qags}.
+Integração de @math{cos(omega x) f(x)} ou @math{sin(omega x) f(x)} sobre um intervalo finito,
+onde @math{omega} é uma constante.
+A componente de avaliação da regra é baseada na técnica modificada de Clenshaw-Curtis.
+@code{quad_qawo} aplica subdivisão adaptativa com extrapolação, similar a @code{quad_qags}.
 
 @item quad_qawf
-Calcula uma transformaç@~{a}o de cosseno de Fourier ou de um seno de Fourier sobre um intervalo semi-finito.
+Calcula uma transformação de cosseno de Fourier ou de um seno de Fourier sobre um intervalo semi-finito.
 O mesmo aproxima como @code{quad_qawo} aplicado sobre intervalos finitos sucessivos,
-e aceleraç@~{a}o de converg@^{e}ncia por meio d algor@'{i}timo de Epsilon (Wynn, 1956) 
-aplicado a s@'{e}ries de contribuiç@~{o}es de integrais.
+e aceleração de convergência por meio d algorítimo de Epsilon (Wynn, 1956) 
+aplicado a séries de contribuições de integrais.
 
 @item quad_qaws
-Integraç@`ao de @math{w(x) f(x)} sobre um intervalo finito @math{[a, b]},
-onde @math{w} @'{e} uma funç@~{a}o da forma @math{(x - a)^alpha (b - x)^beta v(x)}
-e @math{v(x)} @'{e} 1 ou @math{log(x - a)} ou @math{log(b - x)} ou @math{log(x - a) log(b - x)},
+Integraçào de @math{w(x) f(x)} sobre um intervalo finito @math{[a, b]},
+onde @math{w} é uma função da forma @math{(x - a)^alpha (b - x)^beta v(x)}
+e @math{v(x)} é 1 ou @math{log(x - a)} ou @math{log(b - x)} ou @math{log(x - a) log(b - x)},
 e @math{alpha > -1} e @math{beta > -1}.
-Auma estrat@'{e}gia de subdivis@~{a}o adaptativa @'{e} aplicada,
-com integraç@~{a}o modificada de Clenshaw-Curtis sobre os subintervalos que possuem @math{a} ou @math{b}.
+Auma estratégia de subdivisão adaptativa é aplicada,
+com integração modificada de Clenshaw-Curtis sobre os subintervalos que possuem @math{a} ou @math{b}.
 
 @item quad_qawc
 Calcula o valor principal de Cauchy de @math{f(x)/(x - c)} sobre um intervalo finito @math{(a, b)}
 e um @math{c} especificado.
-A estrat@'{e}gia @'{e} globalmente adaptativa, e a integraç@~{a}o
-modificada de Clenshaw-Curtis @'{e} usada sobre subamplitudes
-que possu@'{i}rem o ponto @math{x = c}.
+A estratégia é globalmente adaptativa, e a integração
+modificada de Clenshaw-Curtis é usada sobre subamplitudes
+que possuírem o ponto @math{x = c}.
 @end table
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para QUADPACK, , Introduç@~{a}o a QUADPACK, Integraç@~{a}o
-@section Funç@~{o}es e Vari@'{a}veis Definidas para QUADPACK
+@node Funções e Variáveis Definidas para QUADPACK, , Introdução a QUADPACK, Integração
+@section Funções e Variáveis Definidas para QUADPACK
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funç@~{a}o} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{chave}, @var{epsrel}, @var{limite})
-@deffnx {Funç@~{a}o} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{chave}, @var{epsrel}, @var{limite})
+@deffn {Função} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{chave}, @var{epsrel}, @var{limite})
+@deffnx {Função} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{chave}, @var{epsrel}, @var{limite})
 
-Integraç@~{a}o de uma funç@~{a}o gen@'{e}rica sobre um intervalo finito.
-@code{quad_qag} implementa um integrador adaptativo globalmente simples usando a estrat@'{e}gia de Aind (Piessens, 1973).
-O chamador pode escolher entre 6 pares de f@'{o}rmulas da quadratura de
-Gauss-Kronrod para a componente de avaliaç@~{a}o da regra.
-As regras de alto n@'{i}vel s@~{a}o adequadas para integrandos fortemente oscilat@'{o}rios.
+Integração de uma função genérica sobre um intervalo finito.
+@code{quad_qag} implementa um integrador adaptativo globalmente simples usando a estratégia de Aind (Piessens, 1973).
+O chamador pode escolher entre 6 pares de fórmulas da quadratura de
+Gauss-Kronrod para a componente de avaliação da regra.
+As regras de alto nível são adequadas para integrandos fortemente oscilatórios.
 
 @code{quad_qag} calcula a integral
 
@@ -663,50 +663,50 @@ As regras de alto n@'{i}vel s@~{a}o adequadas para integrandos fortemente oscila
 $$\int_a^b {f(x) dx}$$
 @end tex
 
-A funç@~{a}o a ser integrada @'{e} @var{f(x)}, com vari@'{a}vel
-dependente @var{x}, e a funç@~{a}o @'{e} para ser integrada entre os
-limites @var{a} e @var{b}.  @var{chave} @'{e} o integrador a ser usado
+A função a ser integrada é @var{f(x)}, com variável
+dependente @var{x}, e a função é para ser integrada entre os
+limites @var{a} e @var{b}.  @var{chave} é o integrador a ser usado
 e pode ser um inteiro entre 1 e 6, inclusive.  O valor de
-@var{chave} seleciona a ordem da regra de integraç@~{a}o de Gauss-Kronrod.
-Regra de alta ordem s@~{a}o adequadas para integrandos fortemente oscilat@'{o}rios.
+@var{chave} seleciona a ordem da regra de integração de Gauss-Kronrod.
+Regra de alta ordem são adequadas para integrandos fortemente oscilatórios.
 
-O integrando pode ser especidficado como o nome de uma funç@~{a}o Maxima ou uma funç@~{a}o Lisp ou um operador,
-uma express@~{a}o lambda do Maxima, ou uma express@~{a}o geral do Maxima.
+O integrando pode ser especidficado como o nome de uma função Maxima ou uma função Lisp ou um operador,
+uma expressão lambda do Maxima, ou uma expressão geral do Maxima.
 
-A integraç@~{a}o num@'{e}rica @'{e} conclu@'{i}da adaptativamente pela subdivis@~{a}o a
-regi@~{a}o de integraç@~{a}o at@'{e} que a precis@~{a}o desejada for
+A integração numérica é concluída adaptativamente pela subdivisão a
+região de integração até que a precisão desejada for
 completada.
 
-Os argumentos opcionais @var{epsrel} e @var{limite} s@~{a}o o erro relativo
-desejado e o n@'{u}mero m@'{a}ximo de subintervalos respectivamente.
-@var{epsrel} padr@~{a}o em 1e-8 e @var{limite} @'{e} 200.
+Os argumentos opcionais @var{epsrel} e @var{limite} são o erro relativo
+desejado e o número máximo de subintervalos respectivamente.
+@var{epsrel} padrão em 1e-8 e @var{limite} é 200.
 
 @code{quad_qag} retorna uma lista de quatro elementos:
 
 @itemize
 @item
-uma aproximaç@~{a}o para a integral,
+uma aproximação para a integral,
 @item
-o erro absoluto estimado da aproximaç@~{a}o, 
+o erro absoluto estimado da aproximação, 
 @item
-o n@'{u}mero de avaliaç@~{o}es do integrando,
+o número de avaliações do integrando,
 @item
-um c@'{o}digo de erro.
+um código de erro.
 @end itemize
 
-O c@'{o}digo de erro (quarto elemento do valor de retorno) pode ter os valores:
+O código de erro (quarto elemento do valor de retorno) pode ter os valores:
 
 @table @code
 @item 0
 se nenhum problema for encontrado; 
 @item 1
-se muitos subintervalos foram conclu@'{i}dos;
+se muitos subintervalos foram concluídos;
 @item 2
-se erro excessivo @'{e} detectado;
+se erro excessivo é detectado;
 @item 3
 se ocorre comportamento extremamente ruim do integrando;
 @item 6
-se a entrada @'{e} inv@'{a}lida.
+se a entrada é inválida.
 
 @end table
 
@@ -726,12 +726,12 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funç@~{a}o} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
-@deffnx {Funç@~{a}o} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
+@deffn {Função} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
+@deffnx {Função} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
 
-Integraç@~{a}o de uma funç@~{a}o geral sobre um intervalo finito.
-@code{quad_qags} implementa subdivis@~{a}o de intervalo globalmente adaptativa com extrapolaç@~{a}o
-(de Doncker, 1978) atrav@'{e}s do algor@'{i}tmo de (Wynn, 1956).
+Integração de uma função geral sobre um intervalo finito.
+@code{quad_qags} implementa subdivisão de intervalo globalmente adaptativa com extrapolação
+(de Doncker, 1978) através do algorítmo de (Wynn, 1956).
 
 @code{quad_qags} computes the integral
 
@@ -745,47 +745,47 @@ Integraç@~{a}o de uma funç@~{a}o geral sobre um intervalo finito.
 $$\int_a^b {f(x) dx}$$
 @end tex
 
-A funç@~{a}o a ser integrada @'{e} @var{f(x)}, com
-vari@'{a}vel dependente @var{x}, e a funç@~{a}o @'{e} para ser integrada
+A função a ser integrada é @var{f(x)}, com
+variável dependente @var{x}, e a função é para ser integrada
 entre os limites @var{a} e @var{b}.
 
-O integrando pode ser especidficado como o nome de uma funç@~{a}o Maxima ou uma funç@~{a}o Lisp ou um operador,
-uma express@~{a}o lambda do Maxima, ou uma express@~{a}o geral do Maxima.
+O integrando pode ser especidficado como o nome de uma função Maxima ou uma função Lisp ou um operador,
+uma expressão lambda do Maxima, ou uma expressão geral do Maxima.
 
-Os argumentos opcionais @var{epsrel} e @var{limite} s@~{a}o o erro relativo
-desejado e o n@'{u}mero m@'{a}ximo de subintervalos, respectivamente.
-@var{epsrel} padr@~{a}o em 1e-8 e @var{limite} @'{e} 200.
+Os argumentos opcionais @var{epsrel} e @var{limite} são o erro relativo
+desejado e o número máximo de subintervalos, respectivamente.
+@var{epsrel} padrão em 1e-8 e @var{limite} é 200.
 
 @code{quad_qags} retorna uma lista de quatro elementos:
 
 @itemize
 @item
-uma aproximaç@~{a}o para a integral,
+uma aproximação para a integral,
 @item
-o erro absoluto estimado da aproximaç@~{a}o, 
+o erro absoluto estimado da aproximação, 
 @item
-o n@'{u}mero de avaliaç@~{o}es do integrando,
+o número de avaliações do integrando,
 @item
-um c@'{o}digo de erro.
+um código de erro.
 @end itemize
 
-O c@'{o}digo de erro (quarto elemento do valor de retorno) pode ter os valores:
+O código de erro (quarto elemento do valor de retorno) pode ter os valores:
 
 @table @code
 @item 0
 nenhum problema foi encontrado; 
 @item 1
-muitos subintervalos foram conclu@'{i}dos;
+muitos subintervalos foram concluídos;
 @item 2
-erro excessivo @'{e} detectado;
+erro excessivo é detectado;
 @item 3
 ocorreu comportamento excessivamente ruim do integrando;
 @item 4
-falhou para converg@^{e}ncia
+falhou para convergência
 @item 5
-integral @'{e} provavelmente divergente ou lentamente convergente
+integral é provavelmente divergente ou lentamente convergente
 @item 6
-se a entrada @'{e} inv@'{a}lida.
+se a entrada é inválida.
 @end table
 
 @c NEED CROSS REFS HERE -- EITHER CROSS REF A QUADPACK OVERVIEW, OR CROSS REF EACH OF THE quad_* FUNCTIONS
@@ -797,18 +797,18 @@ Exemplos:
 (%o1)   [.4444444444444448, 1.11022302462516E-15, 315, 0]
 @end example
 
-Note que @code{quad_qags} @'{e} mais preciso e eficiente que @code{quad_qag} para esse integrando.
+Note que @code{quad_qags} é mais preciso e eficiente que @code{quad_qag} para esse integrando.
 
 @end deffn
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funç@~{a}o} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limite})
-@deffnx {Funç@~{a}o} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limite})
+@deffn {Função} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limite})
+@deffnx {Função} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limite})
 
-Integraç@~{a}o de uma funç@~{a}o gen@'{e}rica sobre um intervalo finito ou semi-finito.
-O intervalo @'{e} mapeado sobre um intervalo finito e
-ent@~{a}o a mesma estrat@'{e}gia que em @code{quad_qags} @'{e} aplicada.
+Integração de uma função genérica sobre um intervalo finito ou semi-finito.
+O intervalo é mapeado sobre um intervalo finito e
+então a mesma estratégia que em @code{quad_qags} é aplicada.
 
 @code{quad_qagi} avalia uma das seguintes integrais
 
@@ -842,58 +842,58 @@ $$\int_\infty^a {f(x) dx}$$
 $$\int_{-\infty}^\infty {f(x) dx}$$
 @end tex
 
-usando a rotina Quadpack QAGI.  A funç@~{a}o a ser integrada @'{e}
-@var{f(x)}, com vari@'{a}vel dependente @var{x}, e a funç@~{a}o @'{e} para
+usando a rotina Quadpack QAGI.  A função a ser integrada é
+@var{f(x)}, com variável dependente @var{x}, e a função é para
 ser integrada sobre um intervalo infinito.
 
-O integrando pode ser especidficado como o nome de uma funç@~{a}o Maxima ou uma funç@~{a}o Lisp ou um operador,
-uma express@~{a}o lambda do Maxima, ou uma express@~{a}o geral do Maxima.
+O integrando pode ser especidficado como o nome de uma função Maxima ou uma função Lisp ou um operador,
+uma expressão lambda do Maxima, ou uma expressão geral do Maxima.
 
-O par@^{a}metro @var{inftype} determina o intervalo de integraç@~{a}o como segue:
+O parâmetro @var{inftype} determina o intervalo de integração como segue:
 
 @table @code
 @item inf
 O intervalo vai de @var{a} ao infinito positivo.
 @item minf
-O intervalo vai do infinito negativo at@'{e} @var{a}.
+O intervalo vai do infinito negativo até @var{a}.
 @item both
 O intervalo corresponde a toda reta real.
 @end table
 
-Os argumentos opcionais @var{epsrel} e @var{limite} s@~{a}o o erro relativo
-desejado e o n@'{u}mero maximo de subintervalos, respectivamente.
-@var{epsrel} padr@~{a}o para 1e-8 e @var{limite} @'{e} 200.
+Os argumentos opcionais @var{epsrel} e @var{limite} são o erro relativo
+desejado e o número maximo de subintervalos, respectivamente.
+@var{epsrel} padrão para 1e-8 e @var{limite} é 200.
 
 @code{quad_qagi} retorna uma lista de quatro elementos:
 
 @itemize
 @item
-uma aproximaç@~{a}o para a integral,
+uma aproximação para a integral,
 @item
-o erro absoluto estimado da aproximaç@~{a}o, 
+o erro absoluto estimado da aproximação, 
 @item
-o n@'{u}mero de avaliaç@~{o}es do integrando,
+o número de avaliações do integrando,
 @item
-um c@'{o}digo de erro.
+um código de erro.
 @end itemize
 
-O c@'{o}digo de erro (quarto elemento do valor de retorno) pode ter os valores:
+O código de erro (quarto elemento do valor de retorno) pode ter os valores:
 
 @table @code
 @item 0
 nenhum problema foi encontrado; 
 @item 1
-muitos subintervalos foram conclu@'{i}dos;
+muitos subintervalos foram concluídos;
 @item 2
-erro excessivo @'{e} detectado;
+erro excessivo é detectado;
 @item 3
 ocorreu comportamento excessivamente ruim do integrando;
 @item 4
-falhou para converg@^{e}ncia;
+falhou para convergência;
 @item 5
-integral @'{e} provavelmente divergente ou lentamente convergente;
+integral é provavelmente divergente ou lentamente convergente;
 @item 6
-se a entrada for inv@'{a}lida.
+se a entrada for inválida.
 
 @end table
 
@@ -914,13 +914,13 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funç@~{a}o} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
-@deffnx {Funç@~{a}o} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
+@deffn {Função} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
+@deffnx {Função} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
 
 Calcula o valor principal de Cauchy de @math{f(x)/(x - c)} over a finite interval.
-A estrat@'{e}gia @'{e} globalmente adaptativa, e a integraç@~{a}o de
-Clenshaw-Curtis modificada @'{e} usada sobre as subamplitudes
-que possu@'{i}rem o ponto @math{x = c}.
+A estratégia é globalmente adaptativa, e a integração de
+Clenshaw-Curtis modificada é usada sobre as subamplitudes
+que possuírem o ponto @math{x = c}.
 
 @code{quad_qawc} calcula o valor principal de Cauchy de
 
@@ -934,43 +934,43 @@ que possu@'{i}rem o ponto @math{x = c}.
 $$\int_{a}^{b}{{{f\left(x\right)}\over{x-c}}\>dx}$$
 @end tex
 
-usando a rotina Quadpack QAWC.  A funç@~{a}o a ser integrada @'{e}
-@code{@var{f(x)}/(@var{x} - @var{c})}, com vari@'{a}vel dependente @var{x}, e a funç@~{a}o
-@'{e} para ser integrada sobre o intervalo que vai de @var{a} at@'{e} @var{b}.
+usando a rotina Quadpack QAWC.  A função a ser integrada é
+@code{@var{f(x)}/(@var{x} - @var{c})}, com variável dependente @var{x}, e a função
+é para ser integrada sobre o intervalo que vai de @var{a} até @var{b}.
 
-O integrando pode ser especidficado como o nome de uma funç@~{a}o Maxima ou uma funç@~{a}o Lisp ou um operador,
-uma express@~{a}o lambda do Maxima, ou uma express@~{a}o geral do Maxima.
+O integrando pode ser especidficado como o nome de uma função Maxima ou uma função Lisp ou um operador,
+uma expressão lambda do Maxima, ou uma expressão geral do Maxima.
 
-Os argumentos opcionais @var{epsrel} e @var{limite} s@~{a}o o erro relativo
-desejado e o m@'{a}ximo n@'{u}mero de subintervalos, respectivamente.
-@var{epsrel} padr@~{a}o para 1e-8 e @var{limite} @'{e} 200.
+Os argumentos opcionais @var{epsrel} e @var{limite} são o erro relativo
+desejado e o máximo número de subintervalos, respectivamente.
+@var{epsrel} padrão para 1e-8 e @var{limite} é 200.
 
 @code{quad_qawc} retorna uma lista de quatro elementos:
 
 @itemize
 @item
-uma aproximaç@~{a}o para a integral,
+uma aproximação para a integral,
 @item
-o erro absoluto estimado da aproximaç@~{a}o, 
+o erro absoluto estimado da aproximação, 
 @item
-o n@'{u}mero de avaliaç@~{o}es do integrando,
+o número de avaliações do integrando,
 @item
-um c@'{o}digo de erro.
+um código de erro.
 @end itemize
 
-O c@'{o}digo de erro (quarto elemento do valoor de retorno) pode ter os valores:
+O código de erro (quarto elemento do valoor de retorno) pode ter os valores:
 
 @table @code
 @item 0
 nenhum problema foi encontrado; 
 @item 1
-muitos subintervalos foram conclu@'{i}dos;
+muitos subintervalos foram concluídos;
 @item 2
-erro excessivo @'{e} detectado;
+erro excessivo é detectado;
 @item 3
 ocorreu comportamento excessivamente ruim do integrando;
 @item 6
-se a entrada @'{e} inv@'{a}lida.
+se a entrada é inválida.
 
 @end table
 
@@ -1005,14 +1005,14 @@ Principal Value
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funç@~{a}o} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
-@deffnx {Funç@~{a}o} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffn {Função} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffnx {Função} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
-Calcula uma transformaç@~{a}o de cosseno de Fourier ou de um seno de Fourier sobre um intervalo semi-finito.
-usando a funç@~{a}o QAWF do pacote Quadpack.
+Calcula uma transformação de cosseno de Fourier ou de um seno de Fourier sobre um intervalo semi-finito.
+usando a função QAWF do pacote Quadpack.
 A mesma aproxima como em @code{quad_qawo} quando aplicada sobre intervalos finitos sucessivos,
-e aceleraç@~{a}o de converg@^{e}ncia por meio d algor@'{i}timo de Epsilon (Wynn, 1956) 
-aplicado a s@'{e}ries de contribuiç@~{o}es de integrais.
+e aceleração de convergência por meio d algorítimo de Epsilon (Wynn, 1956) 
+aplicado a séries de contribuições de integrais.
 
 @code{quad_qawf} calcula a integral
 
@@ -1026,7 +1026,7 @@ aplicado a s@'{e}ries de contribuiç@~{o}es de integrais.
 $$\int_a^\infty f(x) w(x) dx$$
 @end tex
 
-A funç@~{a}o peso @math{w} @'{e} selecionada por @var{trig}:
+A função peso @math{w} é selecionada por @var{trig}:
 
 @table @code
 @item cos
@@ -1035,56 +1035,56 @@ A funç@~{a}o peso @math{w} @'{e} selecionada por @var{trig}:
 @math{w(x) = sin (omega x)}
 @end table
 
-O integrando pode ser especidficado como o nome de uma funç@~{a}o Maxima ou uma funç@~{a}o Lisp ou um operador,
-uma express@~{a}o lambda do Maxima, ou uma express@~{a}o geral do Maxima.
+O integrando pode ser especidficado como o nome de uma função Maxima ou uma função Lisp ou um operador,
+uma expressão lambda do Maxima, ou uma expressão geral do Maxima.
 
-Os argumentos opcionais s@~{a}o:
+Os argumentos opcionais são:
 
 @table @code
 @item epsabs
-Erro absoluto de aproximaç@~{a}o desejado.  Padr@~{a}o @'{e} 1d-10.
+Erro absoluto de aproximação desejado.  Padrão é 1d-10.
 @item limit
-Tamanho de array interno de trabalho.  (@var{limit} - @var{limlst})/2 @'{e} o
-maximo n@'{u}mero de subintervalos para usar.  O Padr@~{a}o @'{e} 200.
+Tamanho de array interno de trabalho.  (@var{limit} - @var{limlst})/2 é o
+maximo número de subintervalos para usar.  O Padrão é 200.
 @item maxp1
-O n@'{u}mero m@'{a}ximo dos momentos de Chebyshev.  Deve ser maior que 0.  O padr@~{a}o
-@'{e} 100.
+O número máximo dos momentos de Chebyshev.  Deve ser maior que 0.  O padrão
+é 100.
 @item limlst
-Limite superior sobre n@'{u}mero de ciclos.  Deve ser maior ou igual a
-3.  O padr@~{a}o @'{e} 10.
+Limite superior sobre número de ciclos.  Deve ser maior ou igual a
+3.  O padrão é 10.
 @end table
 
 @c MERGE THESE LINES INTO PRECEDING TABLE
-@var{epsabs} e @var{limit} s@~{a}o o erro relativo
-desejado e o n@'{u}mero maximo de subintervalos, respectivamente.
-@var{epsrel} padr@~{a}o para 1e-8 e @var{limit} @'{e} 200.
+@var{epsabs} e @var{limit} são o erro relativo
+desejado e o número maximo de subintervalos, respectivamente.
+@var{epsrel} padrão para 1e-8 e @var{limit} é 200.
 
 @code{quad_qawf} retorna uma lista de quatro elementos:
 
 @itemize
 @item
-uma aproximaç@~{a}o para a integral,
+uma aproximação para a integral,
 @item
-o erro absoluto estimado da aproximaç@~{a}o, 
+o erro absoluto estimado da aproximação, 
 @item
-o n@'{u}mero de avaliaç@~{o}es do integrando,
+o número de avaliações do integrando,
 @item
-um c@'{o}digo de erro.
+um código de erro.
 @end itemize
 
-O c@'{o}digo de erro (quarto elemento do valor de retorno) pode ter os valores:
+O código de erro (quarto elemento do valor de retorno) pode ter os valores:
 
 @table @code
 @item 0
 nenhum problema foi encontrado; 
 @item 1
-muitos subintervalos foram conclu@'{i}dos;
+muitos subintervalos foram concluídos;
 @item 2
-erro excessivo @'{e} detectado;
+erro excessivo é detectado;
 @item 3
 ocorreu um comportamento excessivamente ruim do integrando;
 @item 6
-se a entrada @'{e} invalida.
+se a entrada é invalida.
 
 @end table
 
@@ -1106,13 +1106,13 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funç@~{a}o} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limite}, @var{maxp1}, @var{limlst})
-@deffnx {Funç@~{a}o} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limite}, @var{maxp1}, @var{limlst})
+@deffn {Função} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limite}, @var{maxp1}, @var{limlst})
+@deffnx {Função} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limite}, @var{maxp1}, @var{limlst})
 
-Integraç@~{a}o de @math{cos(omega x) f(x)} ou @math{sin(omega x) f(x)} sobre um intervalo finito,
-onde @math{omega} @'{e} uma constante.
-A componente de avaliaç@~{a}o da regra @'{e} baseada na t@'{e}cnica modificada de Clenshaw-Curtis.
-@code{quad_qawo} aplica subdivis@~{a}o adaptativa com extrapolaç@~{a}o, similar a @code{quad_qags}.
+Integração de @math{cos(omega x) f(x)} ou @math{sin(omega x) f(x)} sobre um intervalo finito,
+onde @math{omega} é uma constante.
+A componente de avaliação da regra é baseada na técnica modificada de Clenshaw-Curtis.
+@code{quad_qawo} aplica subdivisão adaptativa com extrapolação, similar a @code{quad_qags}.
 
 @code{quad_qawo} calcula a integral usando a rotina
 Quadpack QAWO:
@@ -1128,7 +1128,7 @@ $$\int_a^b f(x) w(x) dx$$
 @end tex
 
 
-A funç@~{a}o peso @math{w} @'{e} selecionada por @var{trig}:
+A função peso @math{w} é selecionada por @var{trig}:
 
 @table @code
 @item cos
@@ -1137,56 +1137,56 @@ A funç@~{a}o peso @math{w} @'{e} selecionada por @var{trig}:
 @math{w(x) = sin (omega x)}
 @end table
 
-O integrando pode ser especidficado como o nome de uma funç@~{a}o Maxima ou uma funç@~{a}o Lisp ou um operador,
-uma express@~{a}o lambda do Maxima, ou uma express@~{a}o geral do Maxima.
+O integrando pode ser especidficado como o nome de uma função Maxima ou uma função Lisp ou um operador,
+uma expressão lambda do Maxima, ou uma expressão geral do Maxima.
 
-Os argumentos opcionais s@~{a}o:
+Os argumentos opcionais são:
 
 @table @code
 @item epsabs
-Erro absoluto desejado de aproximaç@~{a}o.  O Padr@~{a}o @'{e} 1d-10.
+Erro absoluto desejado de aproximação.  O Padrão é 1d-10.
 @item limite
-Tamanho do array interno de trabalho.  (@var{limite} - @var{limlst})/2 @'{e} o
-n@'{u}mero m@'{a}ximo de subintervalos a serem usados.  Default @'{e} 200.
+Tamanho do array interno de trabalho.  (@var{limite} - @var{limlst})/2 é o
+número máximo de subintervalos a serem usados.  Default é 200.
 @item maxp1
-N@'{u}mero m@'{a}ximo dos momentos de Chebyshev.  Deve ser maior que 0.  O padr@~{a}o
-@'{e} 100.
+Número máximo dos momentos de Chebyshev.  Deve ser maior que 0.  O padrão
+é 100.
 @item limlst
-Limite superior sobre o n@'{u}mero de ciclos.  Deve ser maior que ou igual a
-3.  O padr@~{a}o @'{e} 10.
+Limite superior sobre o número de ciclos.  Deve ser maior que ou igual a
+3.  O padrão é 10.
 @end table
 
 @c MERGE THESE LINES INTO PRECEDING TABLE
-@var{epsabs} e @var{limite} s@~{a}o o erro relativo
-desejado e o n@'{u}mero m@'{a}ximo de subintervalos, respectivamente.
-@var{epsrel} o padr@~{a}o @'{e} 1e-8 e @var{limite} @'{e} 200.
+@var{epsabs} e @var{limite} são o erro relativo
+desejado e o número máximo de subintervalos, respectivamente.
+@var{epsrel} o padrão é 1e-8 e @var{limite} é 200.
 
 @code{quad_qawo} retorna uma lista de quatro elementos:
 
 @itemize
 @item
-uma aproximaç@~{a}o para a integral,
+uma aproximação para a integral,
 @item
-o erro absoluto estimado da aproximaç@~{a}o, 
+o erro absoluto estimado da aproximação, 
 @item
-o n@'{u}mero de avaliaç@~{o}es do integrando,
+o número de avaliações do integrando,
 @item
-um c@'{o}digo de erro.
+um código de erro.
 @end itemize
 
-O c@'{o}digo de erro (quarto elemento do valor de retorno) pode ter os valores:
+O código de erro (quarto elemento do valor de retorno) pode ter os valores:
 
 @table @code
 @item 0
 nenhum problema foi encontrado; 
 @item 1
-muitos subintervalos foram conclu@'{i}dos;
+muitos subintervalos foram concluídos;
 @item 2
-erro excessivo @'{e} detectado;
+erro excessivo é detectado;
 @item 3
 comportamento extremamente ruim do integrando;
 @item 6
-se a entrada @'{e} inv@'{a}lida.
+se a entrada é inválida.
 
 @end table
 
@@ -1209,14 +1209,14 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funç@~{a}o} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
-@deffnx {Funç@~{a}o} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
+@deffn {Função} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
+@deffnx {Função} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
 
-Integraç@~{a}o de @math{w(x) f(x)} sobre um intervalo finito,
-onde @math{w(x)} @'{e} uma certa funç@~{a}o alg@'{e}brica ou logar@'{i}tmica.
-Uma estrat@'{e}gia de subdivis@~{a}o globalmente adaptativa @'{e} aplicada,
-com integraç@~{a}o modificada de Clenshaw-Curtis sobre os subintervalos que possu@'{i}rem os pontos finais
-dos intervalos de integraç@~{a}o.
+Integração de @math{w(x) f(x)} sobre um intervalo finito,
+onde @math{w(x)} é uma certa função algébrica ou logarítmica.
+Uma estratégia de subdivisão globalmente adaptativa é aplicada,
+com integração modificada de Clenshaw-Curtis sobre os subintervalos que possuírem os pontos finais
+dos intervalos de integração.
  
 @code{quad_qaws} calcula a integral usando a rotina
 Quadpack QAWS:
@@ -1231,7 +1231,7 @@ Quadpack QAWS:
 $$\int_a^b f(x) w(x) dx$$
 @end tex
 
-A funç@~{a}o peso @math{w} @'{e} selecionada por @var{wfun}:
+A função peso @math{w} é selecionada por @var{wfun}:
 
 @table @code
 @item 1
@@ -1244,50 +1244,50 @@ A funç@~{a}o peso @math{w} @'{e} selecionada por @var{wfun}:
 @math{w(x) = (x - a)^alpha (b - x)^beta log(x - a) log(b - x)}
 @end table
 
-O integrando pode ser especidficado como o nome de uma funç@~{a}o Maxima ou uma funç@~{a}o Lisp ou um operador,
-uma express@~{a}o lambda do Maxima, ou uma express@~{a}o geral do Maxima.
+O integrando pode ser especidficado como o nome de uma função Maxima ou uma função Lisp ou um operador,
+uma expressão lambda do Maxima, ou uma expressão geral do Maxima.
 
-O argumentos opcionais s@~{a}o:
+O argumentos opcionais são:
 
 @table @code
 @item epsabs
-Erro absoluto desejado de aproximaç@~{a}o.  O padr@~{a}o @'{e} 1d-10.
+Erro absoluto desejado de aproximação.  O padrão é 1d-10.
 @item limite
-Tamanho do array interno de trabalho.  (@var{limite} - @var{limlst})/2 @'{e} o
-n@'{u}mero m@'{a}ximo de subintervalos para usar.  O padr@~{a}o @'{e} 200.
+Tamanho do array interno de trabalho.  (@var{limite} - @var{limlst})/2 é o
+número máximo de subintervalos para usar.  O padrão é 200.
 @end table
 
 @c MERGE THESE LINES INTO PRECEDING TABLE
-@var{epsabs} e @var{limit} s@~{a}o o erro relativo
-desejado e o n@'{u}mero m@'{a}ximo de subintervalos, respectivamente.
-@var{epsrel} o padr@~{a}o @'{e} 1e-8 e @var{limite} @'{e} 200.
+@var{epsabs} e @var{limit} são o erro relativo
+desejado e o número máximo de subintervalos, respectivamente.
+@var{epsrel} o padrão é 1e-8 e @var{limite} é 200.
 
 @code{quad_qaws} retorna uma lista de quatro elementos:
 
 @itemize
 @item
-uma aproximaç@~{a}o para a integral,
+uma aproximação para a integral,
 @item
-o erro absoluto estimado da aproximaç@~{a}o, 
+o erro absoluto estimado da aproximação, 
 @item
-o n@'{u}mero de avaliaç@~{o}es do integrando,
+o número de avaliações do integrando,
 @item
-um c@'{o}digo de erro.
+um código de erro.
 @end itemize
 
-O c@'{o}digo de erro (quarto elemento do valor de retorno) pode ter os valores:
+O código de erro (quarto elemento do valor de retorno) pode ter os valores:
 
 @table @code
 @item 0
 nenhum problema foi encontrado; 
 @item 1
-muitos subintervalos foram conclu@'{i}dos;
+muitos subintervalos foram concluídos;
 @item 2
-erro excessivo @'{e} detectado;
+erro excessivo é detectado;
 @item 3
 ocorreu um comportamento excessivamente ruim do integrando;
 @item 6
-se a entrada @'{e} invalida.
+se a entrada é invalida.
 
 @end table
 
@@ -1311,4 +1311,5 @@ pos;
 @end example
 
 @end deffn
+
 

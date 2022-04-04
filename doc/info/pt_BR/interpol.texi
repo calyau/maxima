@@ -1,29 +1,29 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /interpol.texi/1.3/Sat Jun  2 00:13:22 2007//
 @menu
-* Introduç@~{a}o a interpol::
-* Funç@~{o}es e Vari@'{a}veis Definidas para interpol::
+* Introdução a interpol::
+* Funções e Variáveis Definidas para interpol::
 @end menu
 
-@node Introduç@~{a}o a interpol, Funç@~{o}es e Vari@'{a}veis Definidas para interpol, interpol, interpol
-@section Introduç@~{a}o a interpol
+@node Introdução a interpol, Funções e Variáveis Definidas para interpol, interpol, interpol
+@section Introdução a interpol
 
-Pacote @code{interpol} define os m@'{e}todos Lagrangiano, linear e o de
-splines c@'{u}bicos para interpolaç@~{a}o polinomial.
-
-
-
-Coment@'{a}rios, correç@~{o}es e sugest@~{o}es, por favor contacte-me em @var{'mario AT edu DOT xunta DOT es'}.
+Pacote @code{interpol} define os métodos Lagrangiano, linear e o de
+splines cúbicos para interpolação polinomial.
 
 
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para interpol,  , Introduç@~{a}o a interpol, interpol
-@section Funç@~{o}es e Vari@'{a}veis Definidas para interpol
+Comentários, correções e sugestões, por favor contacte-me em @var{'mario AT edu DOT xunta DOT es'}.
 
 
-@deffn {Funç@~{a}o} lagrange (@var{pontos})
-@deffnx {Funç@~{a}o} lagrange (@var{pontos}, @var{opç@~{a}o})
-Calcula a interpolaç@~{a}o polinomial atrav@'{e}s do m@'{e}todo Lagrangiano. O argumento @var{pontos} deve ser um dos seguintes:
+
+@node Funções e Variáveis Definidas para interpol,  , Introdução a interpol, interpol
+@section Funções e Variáveis Definidas para interpol
+
+
+@deffn {Função} lagrange (@var{pontos})
+@deffnx {Função} lagrange (@var{pontos}, @var{opção})
+Calcula a interpolação polinomial através do método Lagrangiano. O argumento @var{pontos} deve ser um dos seguintes:
 
 @itemize @bullet
 @item
@@ -31,12 +31,12 @@ uma matriz de duas colunas, @code{p:matrix([2,4],[5,6],[9,3])},
 @item
 uma lista de pares, @code{p: [[2,4],[5,6],[9,3]]},
 @item
-uma lista de n@'{u}meros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~{a}o ser atribu@'{i}das automaticamente aos valores 1, 2, 3, etc.
+uma lista de números, @code{p: [4,6,3]}, e nesse caso as abcissas irão ser atribuídas automaticamente aos valores 1, 2, 3, etc.
 @end itemize
 
-Nos dois primeiros casos os pares s@~{a}o ordenados em relaç@~{a}o @`a primeira coordenada antes de fazer os c@'{a}lculos.
+Nos dois primeiros casos os pares são ordenados em relação à primeira coordenada antes de fazer os cálculos.
 
-Com o argumento @var{opç@~{a}o} @'{e} poss@'{i}vel escolher o nome da vari@'{a}vel independente, o qual @'{e} @code{'x} por padr@~{a}o; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
+Com o argumento @var{opção} é possível escolher o nome da variável independente, o qual é @code{'x} por padrão; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
 
 Exemplos:
 
@@ -79,14 +79,14 @@ Exemplos:
 @end deffn
 
 
-@deffn {Funç@~{a}o} charfun2 (@var{x}, @var{a}, @var{b})
-Retorna @code{true}, i. e., verdadeiro se o n@'{u}mero @var{x} pertence ao intervalo @math{[a, b)}, e @code{false}, i. e., falsono caso contr@'{a}rio.
+@deffn {Função} charfun2 (@var{x}, @var{a}, @var{b})
+Retorna @code{true}, i. e., verdadeiro se o número @var{x} pertence ao intervalo @math{[a, b)}, e @code{false}, i. e., falsono caso contrário.
 @end deffn
 
 
-@deffn {Funç@~{a}o} linearinterpol (@var{pontos})
-@deffnx {Funç@~{a}o} linearinterpol (@var{pontos}, @var{opç@~{a}o})
-Calcula a interpolaç@~{a}o polinomial atrav@'{e}s do m@'{e}todo linear. O argumento @var{pontos} deve ser um dos seguintes:
+@deffn {Função} linearinterpol (@var{pontos})
+@deffnx {Função} linearinterpol (@var{pontos}, @var{opção})
+Calcula a interpolação polinomial através do método linear. O argumento @var{pontos} deve ser um dos seguintes:
 
 @itemize @bullet
 @item
@@ -94,12 +94,12 @@ uma matriz de duas colunas, @code{p:matrix([2,4],[5,6],[9,3])},
 @item
 uma lista de pares, @code{p: [[2,4],[5,6],[9,3]]},
 @item
-uma lista de n@'{u}meros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~{a}o ser atribu@'{i}das automaticamente aos valores 1, 2, 3, etc.
+uma lista de números, @code{p: [4,6,3]}, e nesse caso as abcissas irão ser atribuídas automaticamente aos valores 1, 2, 3, etc.
 @end itemize
 
-Nos dois primeiros casos os pares s@~{a}o ordenados em relaç@~{a}o @`a primeira coordenada antes de fazer os c@'{a}lculos.
+Nos dois primeiros casos os pares são ordenados em relação à primeira coordenada antes de fazer os cálculos.
 
-Com o argumento @var{opç@~{a}o} @'{e} poss@'{i}vel escolher o nome da vari@'{a}vel independente, o qual @'{e} @code{'x} por padr@~{a}o; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
+Com o argumento @var{opção} é possível escolher o nome da variável independente, o qual é @code{'x} por padrão; para definir qualquer outra, z por exemplo, escreva @code{varname='z}. 
 
 Examples:
 @example
@@ -148,9 +148,9 @@ Examples:
 
 
 
-@deffn {Funç@~{a}o} cspline (@var{pontos})
-@deffnx {Funç@~{a}o} cspline (@var{pontos}, @var{opç@~{a}o1}, @var{opç@~{a}o2}, ...)
-Calcula a interpolaç@~{a}o polnomial pelo m@'{e}todo de splines ( polin@^{o}mios de ordem k que interpolam os dados e t@^{e}m k-1 derivadas cont@'{i}nuas em todo o intervalo ) c@'{u}bicos. O argumento @var{pontos} deve ser um dos seguintes:
+@deffn {Função} cspline (@var{pontos})
+@deffnx {Função} cspline (@var{pontos}, @var{opção1}, @var{opção2}, ...)
+Calcula a interpolação polnomial pelo método de splines ( polinômios de ordem k que interpolam os dados e têm k-1 derivadas contínuas em todo o intervalo ) cúbicos. O argumento @var{pontos} deve ser um dos seguintes:
 
 @itemize @bullet
 @item
@@ -158,21 +158,21 @@ uma matriz de duas colunas, @code{p:matrix([2,4],[5,6],[9,3])},
 @item
 uma lista de pares, @code{p: [[2,4],[5,6],[9,3]]},
 @item
-uma lista de n@'{u}meros, @code{p: [4,6,3]}, e nesse caso as abcissas ir@~{a}o ser atribu@'{i}das automaticamente aos valores 1, 2, 3, etc.
+uma lista de números, @code{p: [4,6,3]}, e nesse caso as abcissas irão ser atribuídas automaticamente aos valores 1, 2, 3, etc.
 @end itemize
 
-Nos dois primeiros casos os pares s@~{a}o ordenados em relaç@~{a}o @`a primeira coordenada antes de fazer os c@'{a}lculos.
+Nos dois primeiros casos os pares são ordenados em relação à primeira coordenada antes de fazer os cálculos.
 
-Existem tr@^{e}s opç@~{o}es para ajustar necessidades espec@'{i}ficas:
+Existem três opções para ajustar necessidades específicas:
 @itemize @bullet
 @item
-@code{'d1}, o padr@~{a}o @'{e} @code{'unknown}, @'{e} a primeira derivada em @math{x_1}; se essa primeira derivada for desconhecida, @code{'unknown}, a segunda derivada em @math{x_1} @'{e} igualada a 0 (o spline c@'{u}bico natural); se essa primeira derivada for igual a um n@'{u}mero, a segunda derivada @'{e} calculada baseando-se nesse n@'{u}mero.
+@code{'d1}, o padrão é @code{'unknown}, é a primeira derivada em @math{x_1}; se essa primeira derivada for desconhecida, @code{'unknown}, a segunda derivada em @math{x_1} é igualada a 0 (o spline cúbico natural); se essa primeira derivada for igual a um número, a segunda derivada é calculada baseando-se nesse número.
 
 @item
-@code{'dn}, o padr@~{a}o @'{e} @code{'unknown}, @'{e} a primeira derivada em @math{x_n}; se essa primeira derivada for desconhecida, @code{'unknown}, a segunda derivada em @math{x_n} @'{e} igualada a 0 (o spline c@'{u}bico natural); se essa primeira derivada for igual a um n@'{u}mero, a segunda derivada @'{e} calculada baseando-se nesse n@'{u}mero.
+@code{'dn}, o padrão é @code{'unknown}, é a primeira derivada em @math{x_n}; se essa primeira derivada for desconhecida, @code{'unknown}, a segunda derivada em @math{x_n} é igualada a 0 (o spline cúbico natural); se essa primeira derivada for igual a um número, a segunda derivada é calculada baseando-se nesse número.
 
 @item
-@code{'nome_var}, o padr@~{a}o @'{e} @code{'x}, @'{e} o nome da vari@'{a}vel independente.
+@code{'nome_var}, o padrão é @code{'x}, é o nome da variável independente.
 @end itemize
 
 Exemplos:
@@ -234,3 +234,4 @@ Exemplos:
 @end example
 
 @end deffn
+

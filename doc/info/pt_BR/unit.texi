@@ -1,39 +1,39 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /unit.texi/1.3/Sat Jun  2 00:13:35 2007//
 @menu
-* Introduç@~{a}o a Units::       
-* Funç@~{o}es e Vari@'{a}veis Definidas para Units::       
+* Introdução a Units::       
+* Funções e Variáveis Definidas para Units::       
 @end menu
 
-@node Introduç@~{a}o a Units, Funç@~{o}es e Vari@'{a}veis Definidas para Units, unit, unit
-@section Introduç@~{a}o a Units
+@node Introdução a Units, Funções e Variáveis Definidas para Units, unit, unit
+@section Introdução a Units
 
-O pacote @emph{unit} torna o usu@'{a}rio apto a converter entre unidades
-arbitr@'{a}rias e trabalhar com dimens@~{o}es em equaç@~{o}es. O funcionamento desse pacote
-@'{e} radicalmente diferente do pacote original units do Maxima - apesar de
-o original conter uma lista b@'{a}sica de definiç@~{o}es, o pacote atual usa um conjunto de regras para permitir
-ao usu@'{a}rio escolher, sobre uma base dimensional, qual a resposta fianl de unidade pode ser
-convertida.  Isso ir@'{a} separar unidades em lugar de mistur@'{a}-las na tela,
-permitindo ao usu@'{a}rio durante a leitura identificar as unidades associadas com uma resposta em
-particular.  Isso permitir@'{a} ao usu@'{a}rio simplificar uma express@~{a}o em sua Base fundamental
-de Unidades, bem como fornecer ajuste fino sobre a simplificaç@~{a}o de unidades derivadas.
-An@'{a}lise dimensional @'{e} poss@'{i}vel, e uma variedade de ferramentas est@'{a} dispon@'{i}vel para 
-gerenciar a convers@~{a}o e tamb@'{e}m uma variedade de opç@~{o}es de simplificaç@~{a}o. Adicionalmente para personalizar
-convers@~{a}o autom@'{a}tica, @emph{units} tamb@'{e}m fornede um manual tradicional 
-de opç@~{o}es de convers@~{a}o.  
+O pacote @emph{unit} torna o usuário apto a converter entre unidades
+arbitrárias e trabalhar com dimensões em equações. O funcionamento desse pacote
+é radicalmente diferente do pacote original units do Maxima - apesar de
+o original conter uma lista básica de definições, o pacote atual usa um conjunto de regras para permitir
+ao usuário escolher, sobre uma base dimensional, qual a resposta fianl de unidade pode ser
+convertida.  Isso irá separar unidades em lugar de misturá-las na tela,
+permitindo ao usuário durante a leitura identificar as unidades associadas com uma resposta em
+particular.  Isso permitirá ao usuário simplificar uma expressão em sua Base fundamental
+de Unidades, bem como fornecer ajuste fino sobre a simplificação de unidades derivadas.
+Análise dimensional é possível, e uma variedade de ferramentas está disponível para 
+gerenciar a conversão e também uma variedade de opções de simplificação. Adicionalmente para personalizar
+conversão automática, @emph{units} também fornede um manual tradicional 
+de opções de conversão.  
 
-Nota -quando convers@~{o}es de unidade forem n@~{a}o exatas Maxima ir@'{a} fazer aproximaç@~{o}es resultando 
-em fraç@~{o}es. Esso @'{e} uma conceq@"{u}@^{e}ncia das t@'{e}cnicas usadas para simplificar unidades.
-A mensagem de alerta desse tipo de substituiç@~{a}o est@'{a} desabilitada por padr@~{a}o no
-caso de inidades (normalmente essas mensagens est@~{a}o habilitadas) uma vez que essa situaç@~{a}o de iemiss@~{a}o de mensagens de alerta ocorre freq@"{u}@^{e}ntemente
-e os alertas confundem a sa@'{i}da.  (O estado atual de @code{ratprint} @'{e} restabelecido
-ap@'{o}s uma convers@~{a}o de unidades, de forma que modificaç@~{o}es de usu@'{a}rio para aquela configuraç@~{a}o ir@~{a}o ser preservadas 
-de outra forma.)  Se o usu@'{a}rio precisar dessa informaç@~{a}o para @code{units}, ele pode escolher
-@emph{unitverbose:on} para reativar a impress@~{a}o de mensagens de alerta do
-processo de convers@~{a}o.
+Nota -quando conversões de unidade forem não exatas Maxima irá fazer aproximações resultando 
+em frações. Esso é uma conceq@"{u}ência das técnicas usadas para simplificar unidades.
+A mensagem de alerta desse tipo de substituição está desabilitada por padrão no
+caso de inidades (normalmente essas mensagens estão habilitadas) uma vez que essa situação de iemissão de mensagens de alerta ocorre freq@"{u}êntemente
+e os alertas confundem a saída.  (O estado atual de @code{ratprint} é restabelecido
+após uma conversão de unidades, de forma que modificações de usuário para aquela configuração irão ser preservadas 
+de outra forma.)  Se o usuário precisar dessa informação para @code{units}, ele pode escolher
+@emph{unitverbose:on} para reativar a impressão de mensagens de alerta do
+processo de conversão.
 
-@emph{unit} est@'{a} incl@'{i}do no Maxima no diret@'{o}rio share/contrib/unit directory. Isso segue
-aos pacotes normais do Maxima conforme convenç@~{o}es:
+@emph{unit} está inclído no Maxima no diretório share/contrib/unit directory. Isso segue
+aos pacotes normais do Maxima conforme convenções:
 
 @example
 (%i1) load("unit")$
@@ -54,32 +54,32 @@ Initializing unit arrays...
 Done.
 @end example
 
-As mensagens WARNING (DE ALERTA) s@~{a}o esperadas n @~{a}o uma causa de preocupaç@~{a}o - elas indicam
-que o pacote @emph{unit} est@'{a} redefinindo funç@~{o}es anteriormente definidas no local adequado do Maxima.  
-Essa redefiniç@~{a}o @'{e} necess@'{a}ria com o bojetivo de manusear adequadamente as unidades.  O usu@'{a}rio
-pode estar consciente que se outras modificaç@~{o}es tiverem sido feitas para essas funç@~{o}es por outros
-pacotes essas novas mudanças ir@~{a}o ser sobrescritas por meio desse processo de disponibilizaç@~{a}o do pacote @code{unit}.
+As mensagens WARNING (DE ALERTA) são esperadas n ão uma causa de preocupação - elas indicam
+que o pacote @emph{unit} está redefinindo funções anteriormente definidas no local adequado do Maxima.  
+Essa redefinição é necessária com o bojetivo de manusear adequadamente as unidades.  O usuário
+pode estar consciente que se outras modificações tiverem sido feitas para essas funções por outros
+pacotes essas novas mudanças irão ser sobrescritas por meio desse processo de disponibilização do pacote @code{unit}.
 
-O arquivo @emph{unit.mac} tamb@'{e}m chama um arquivo lisp, a saber @emph{unit-functions.lisp}, que
-cont@'{e}m as funç@~{a}oes lisp necess@'{a}rias ao pacote.
+O arquivo @emph{unit.mac} também chama um arquivo lisp, a saber @emph{unit-functions.lisp}, que
+contém as funçãoes lisp necessárias ao pacote.
 
-Clifford Yapp @'{e} o autor prim@'{a}rio.  Ele recebeu grande contribuiç@~{a}o de
+Clifford Yapp é o autor primário.  Ele recebeu grande contribuição de
 Barton Willis da University of Nebraska at Kearney (UNK), Robert Dodier, e
-da intr@'{e}pida tribo da lista de mensagens do Maxima.
+da intrépida tribo da lista de mensagens do Maxima.
 
 Existem provavelmente muitos erros.  Diga-me quais.  @code{float} e @code{numer}
-n@~{a}o fazem o que @'{e} esperado.
+não fazem o que é esperado.
 
-PORFAZER : funcionalidade de dimens@~{a}o, manuseio de temperatura, 
-a funç@~{a}o @code{showabbr} e Cia. Ltda.  Mostrar exemplos com adiç@~{a}o de quantidades contendo
+PORFAZER : funcionalidade de dimensão, manuseio de temperatura, 
+a função @code{showabbr} e Cia. Ltda.  Mostrar exemplos com adição de quantidades contendo
 unidades.
 
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para Units,  , Introduç@~{a}o a Units, unit
-@section Funç@~{o}es e Vari@'{a}veis Definidas para Units
+@node Funções e Variáveis Definidas para Units,  , Introdução a Units, unit
+@section Funções e Variáveis Definidas para Units
 
-@deffn {Funç@~{a}o} setunits (@var{list})
-Por padr@~{a}o, o pacote @emph{unit} n@~{a}o usa qualquer dimens@~{o}es derivadas, mas ir@'{a}
+@deffn {Função} setunits (@var{list})
+Por padrão, o pacote @emph{unit} não usa qualquer dimensões derivadas, mas irá
 converter todas as unidades nas sete fundamentais do sistema MKS.
 @example
 (%i2) N;
@@ -103,8 +103,8 @@ converter todas as unidades nas sete fundamentais do sistema MKS.
                                               s
 @end example
 
-Em alguns casos esse @'{e} o comportamento desejado.  Se o usu@'{a}rio desejar usar outras
-unidades, isso @'{e} conseguido com o comando @code{setunits}:
+Em alguns casos esse é o comportamento desejado.  Se o usuário desejar usar outras
+unidades, isso é conseguido com o comando @code{setunits}:
 @example
 (%i6) setunits([centigram,inch,minute]);
 (%o6)                                done
@@ -127,9 +127,9 @@ unidades, isso @'{e} conseguido com o comando @code{setunits}:
                                     %min
 @end example
 
-A escolha de unidades @'{e} completamente flex@'{i}vel.  Por exemplo, se quisermos
-voltar para quiilogramas, metros, e segundos como padr@~{a}o para essas
-dimens@~{a}o n@'{o}s podemos fazer:
+A escolha de unidades é completamente flexível.  Por exemplo, se quisermos
+voltar para quiilogramas, metros, e segundos como padrão para essas
+dimensão nós podemos fazer:
 @example
 (%i11) setunits([kg,m,s]);
 (%o11)                               done
@@ -140,7 +140,7 @@ dimens@~{a}o n@'{o}s podemos fazer:
                                               s
 @end example
 
-Unidade derivadas s@~{a}o tamb@'{e}m manuse@'{a}veis por meio desse comando:
+Unidade derivadas são também manuseáveis por meio desse comando:
 @example
 (%i17) setunits(N);
 (%o17)                               done
@@ -158,9 +158,9 @@ Unidade derivadas s@~{a}o tamb@'{e}m manuse@'{a}veis por meio desse comando:
                                1800000000000
 @end example
 
-Note que o pacote @emph{unit} reconhece a combinaç@~{a}o n@~{a}o MKS
+Note que o pacote @emph{unit} reconhece a combinação não MKS
 de massa, comprimento, e tempo inverso elevado ao quadrado como uma força, e converte isso
-para Newtons.  @'{E} dessa forma que Maxima trabalha geralmente.  Se, por exemplo, n@'{o}s
+para Newtons.  É dessa forma que Maxima trabalha geralmente.  Se, por exemplo, nós
 preferirmos dinas em lugar de Newtons, simplesmente fazemos o seguinte:
 @example
 (%i22) setunits(dyn);
@@ -191,14 +191,14 @@ Para descontinuar simplificando para qualquer unidade de força, usamos o comand
 Isso pode trabalhar igualmente bem com @code{uforget(N)} ou
 @code{uforget(%force)}.
 
-Veja tamb@'{e}m @code{uforget}. Para usar essa funç@~{a}o escreva primeiro @code{load("unit")}.
+Veja também @code{uforget}. Para usar essa função escreva primeiro @code{load("unit")}.
 @end deffn
 
-@deffn {Funç@~{a}o} uforget (@var{list})
-Por padr@~{a}o, o pacote @emph{unit} converte todas as unidades para as
+@deffn {Função} uforget (@var{list})
+Por padrão, o pacote @emph{unit} converte todas as unidades para as
 sete unidaes fundamentais do sitema MKS de unidades. Ess comportamento pode
-ser mudado com o comando @code{setunits}. Ap@'{o}s o qual, o
-usu@'{a}rio pode restabelecer o comportamento padr@~{a}o para uma dimens@~{a}o em particular
+ser mudado com o comando @code{setunits}. Após o qual, o
+usuário pode restabelecer o comportamento padrão para uma dimensão em particular
 mediante o comando @code{uforget}:
 @example
 (%i13) setunits([centigram,inch,minute]);
@@ -217,24 +217,24 @@ mediante o comando @code{uforget}:
                                               s
 @end example
 
-@code{uforget} opera sobre dimens@~{o}es,
-n@~{a}o sobre unidades, de forma que qualquer unidade de uma dimens@~{a}o em particular ir@'{a} trabalhar.  A
-pr@'{o}pia dimens@~{a}o @'{e} tamb@'{e}m um argumento legal.
+@code{uforget} opera sobre dimensões,
+não sobre unidades, de forma que qualquer unidade de uma dimensão em particular irá trabalhar.  A
+própia dimensão é também um argumento legal.
 
-Veja tamb@'{e}m @code{setunits}. To use this function write first @code{load("unit")}.
+Veja também @code{setunits}. To use this function write first @code{load("unit")}.
 @end deffn
 
-@deffn {Funç@~{a}o} convert (@var{expr}, @var{list})
-Quando do restabelecimento dos valores padr@~{a}o o ambiente global @'{e} destru@'{i}do, existe o comando
-@code{convert}, que permite convers@~{o}es imediatas.  @code{convert} pode aceitar  um argumetno
-simples ou uma lista de unidades a serem usadas na convers@~{a}o.  Quando uma operaç@~{a}o de convers@~{a}o for
-conclu@'{i}da, o sistema normal de avaliaç@~{a}o global @'{e} contornado, com o objetivo de evitar que
-o resultado desejado seja convertido novamente.  Como conseq@"{u}@^{e}ncia, em c@'{a}lculos aproximados
-alertas de "rat" ir@~{a}o ser vis@'{i}veis se o ambiente global que controla esse comportamento
-(@code{ratprint}) for @code{true}.  @code{convert} tamb@'{e}m @'{e} @'{u}til para uma verificaç@~{a}o pontual e imediata da
-precis@~{a}o de uma convers@~{a}o global.  Outro recurso @'{e} que @code{convert} ir@'{a} permitir a um
-usu@'{a}rio fazer um Base de Convers@~{o}es Dimensionais mesmo se o ambiente global for escolhido para
-simplificar par uma Dimens@~{a}o Derivada.
+@deffn {Função} convert (@var{expr}, @var{list})
+Quando do restabelecimento dos valores padrão o ambiente global é destruído, existe o comando
+@code{convert}, que permite conversões imediatas.  @code{convert} pode aceitar  um argumetno
+simples ou uma lista de unidades a serem usadas na conversão.  Quando uma operação de conversão for
+concluída, o sistema normal de avaliação global é contornado, com o objetivo de evitar que
+o resultado desejado seja convertido novamente.  Como conseq@"{u}ência, em cálculos aproximados
+alertas de "rat" irão ser visíveis se o ambiente global que controla esse comportamento
+(@code{ratprint}) for @code{true}.  @code{convert} também é útil para uma verificação pontual e imediata da
+precisão de uma conversão global.  Outro recurso é que @code{convert} irá permitir a um
+usuário fazer um Base de Conversões Dimensionais mesmo se o ambiente global for escolhido para
+simplificar par uma Dimensão Derivada.
 
 @example
 (%i2) kg*m/s^2;
@@ -292,24 +292,24 @@ simplificar par uma Dimens@~{a}o Derivada.
                                            s
 @end example
 
-Veja tamb@'{e}m @code{setunits} e @code{uforget}. Para usar essa funç@~{a}o primeiramente escreva @code{load("unit")}.
+Veja também @code{setunits} e @code{uforget}. Para usar essa função primeiramente escreva @code{load("unit")}.
 @end deffn
 
 
-@defvr {Vari@'{a}vel de opç@~{a}o} usersetunits
-Valor padr@~{a}o: none
+@defvr {Variável de opção} usersetunits
+Valor padrão: none
 
-Se um usu@'{a}rio desejar ter um comportamento padr@~{a}o de unidade diferente daquele descrito,
-ele pode fazer uso de @emph{maxima-init.mac} e da vari@'{a}vel
-@emph{usersetunits}.  O pacote @emph{unit} ir@'{a} verificar o arquivo @emph{maxima-init.mac} na inicializaç@~{a}o para ver se a essa vari@'{a}vel 
-foi atribu@'{i}do uma lista.  Se isso aconteceu, o pacote @emph{unit} ir@'{a} usar @code{setunits} sobre aquela lista e pegar 
-as unidades l@'{a} colocadas para serem as padr@~{o}es.  @code{uforget} ir@'{a} reverter para o comportamento
-definido por @code{usersetunits} sobrescrevendo seus pr@'{o}prios padr@~{o}es.  Por exemplo, Se tivermos um arquivo
+Se um usuário desejar ter um comportamento padrão de unidade diferente daquele descrito,
+ele pode fazer uso de @emph{maxima-init.mac} e da variável
+@emph{usersetunits}.  O pacote @emph{unit} irá verificar o arquivo @emph{maxima-init.mac} na inicialização para ver se a essa variável 
+foi atribuído uma lista.  Se isso aconteceu, o pacote @emph{unit} irá usar @code{setunits} sobre aquela lista e pegar 
+as unidades lá colocadas para serem as padrões.  @code{uforget} irá reverter para o comportamento
+definido por @code{usersetunits} sobrescrevendo seus próprios padrões.  Por exemplo, Se tivermos um arquivo
 @emph{maxima-init.mac} contendo:
 @example
 usersetunits : [N,J];
 @end example
-n@'{o}s poderemos ver o seguinte comportamento:
+nós poderemos ver o seguinte comportamento:
 @example
 (%i1) load("unit")$
 ******************************************************************* 
@@ -360,13 +360,13 @@ User defaults initialized.
 @end example
 Sem @code{usersetunits}, as entradas iniciais poderiam ter sido convertidas
 para o sistema de unidades MKS, e @code{uforget} poderia ter resultado em um retorno para as regras do MKS.  Em vez disso,
-as prefer@^{e}ncias do usu@'{a}rio foram respeitadas em ambos os casos.  Note que esse podem ainda
-serem sobrescritos se for desejado.  Para eliminar completamente essa simplificaç@~{a}o - i.e.
-ter as prefer@^{e}ncias de usu@'{a}rio escolhidas para os padr@~{o}es de unidade do Maxima - o comando
-@code{dontusedimension} pode ser usado.  @code{uforget} pode restabelecer as prefer@^{e}ncias de usu@'{a}rio novamente, mas
+as preferências do usuário foram respeitadas em ambos os casos.  Note que esse podem ainda
+serem sobrescritos se for desejado.  Para eliminar completamente essa simplificação - i.e.
+ter as preferências de usuário escolhidas para os padrões de unidade do Maxima - o comando
+@code{dontusedimension} pode ser usado.  @code{uforget} pode restabelecer as preferências de usuário novamente, mas
 somente se @code{usedimension} liberar isso para uso.  Alternativamente,
-@code{kill(usersetunits)} ir@'{a} remover completametne todo o conhecimento dessas escolhas de usu@'{a}rio
-da sess@~{a}o atual.  Aqui est@'{a} alguns exemplos de como esssas v@'{a}rias opç@~{o}es trabalham.
+@code{kill(usersetunits)} irá remover completametne todo o conhecimento dessas escolhas de usuário
+da sessão atual.  Aqui está alguns exemplos de como esssas várias opções trabalham.
 @example
 (%i2) kg*m/s^2;
 (%o2)                                  N
@@ -472,8 +472,8 @@ to select a unit.
                                        2
                                       s
 @end example
-Desafortunadamente essa ampla variedade de opç@~{o}es @'{e} um pouco confus no in@'{i}cio,
-mas uma vez que o usu@'{a}rio cultiva o uso delas o usu@'{a}rio perceber@'{a} que elas permitem completo
+Desafortunadamente essa ampla variedade de opções é um pouco confus no início,
+mas uma vez que o usuário cultiva o uso delas o usuário perceberá que elas permitem completo
 controle sobre seu ambiente de trabalho.
 
 @c One other significant customization option available is the @code{setunitprefix}
@@ -485,11 +485,11 @@ controle sobre seu ambiente de trabalho.
 @end defvr
 
 
-@deffn {Funç@~{a}o} metricexpandall (@var{x})
-Reconstr@'{o}i listas de unidades globais automaticamente criando todas as unidades m@'{e}tricas desejadas.
-@var{x} @'{e} um argumento num@'{e}rico que @'{e} usado para especificar quantos prefixos
-m@'{e}tricos o usu@'{a}rio deseja que seja definido.  Os argumentos s@~{a}o os seguintes, com cada
-maior n@'{u}mero definindo todos os menores n@'{u}meros de unidade:
+@deffn {Função} metricexpandall (@var{x})
+Reconstrói listas de unidades globais automaticamente criando todas as unidades métricas desejadas.
+@var{x} é um argumento numérico que é usado para especificar quantos prefixos
+métricos o usuário deseja que seja definido.  Os argumentos são os seguintes, com cada
+maior número definindo todos os menores números de unidade:
 @example
            0 - none. Only base units
            1 - kilo, centi, milli
@@ -499,26 +499,27 @@ maior n@'{u}mero definindo todos os menores n@'{u}meros de unidade:
                centi, milli, micro, nano, pico, femto
            4 - all
 @end example
-Normalmente, Maxima n@~{a}o ir@'{a} definir a expans@~{a}o completa desses resultados em uma
-grande n@'{u}mero de unidades, mas @code{metricexpandall} pode ser usada para
-reconstruir a lista em um estilo mais ou menos completo. A vari@'{a}vel relevante
-no arquivo @emph{unit.mac} @'{e} @var{%unitexpand}.
+Normalmente, Maxima não irá definir a expansão completa desses resultados em uma
+grande número de unidades, mas @code{metricexpandall} pode ser usada para
+reconstruir a lista em um estilo mais ou menos completo. A variável relevante
+no arquivo @emph{unit.mac} é @var{%unitexpand}.
 @c This should be made configurable as a maxima-init.mac controllable option.
 @end deffn
 
-@defvr {Vari@'{a}vel} %unitexpand
-Valor padr@~{a}o: @code{2}
+@defvr {Variável} %unitexpand
+Valor padrão: @code{2}
 
-Ess @'{e} o valor fornecido a @code{metricexpandall} durante a inicializaç@~{a}o
+Ess é o valor fornecido a @code{metricexpandall} durante a inicialização
 de @emph{unit}.
 
 @end defvr
 
 
-@c @deffn {Funç@~{a}o} functionname (@var{arg1}, @var{arg2}, ..., @var{argn})
+@c @deffn {Função} functionname (@var{arg1}, @var{arg2}, ..., @var{argn})
 @c @end deffn
 
-@c @defvr {Vari@'{a}vel de opç@~{a}o} variablename
+@c @defvr {Variável de opção} variablename
 @c Default value: @code{true}
 @c @end defvr
+
 

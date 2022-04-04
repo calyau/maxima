@@ -1,20 +1,20 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /Groups.texi/1.12/Sat Jun  2 00:12:46 2007/-ko/
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para Grupos::
+* Funções e Variáveis Definidas para Grupos::
 @end menu
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para Grupos,  , Grupos, Grupos
-@section Funç@~{o}es e Vari@'{a}veis Definidas para Grupos
+@node Funções e Variáveis Definidas para Grupos,  , Grupos, Grupos
+@section Funções e Variáveis Definidas para Grupos
 
-@deffn {Funç@~{a}o} todd_coxeter (@var{relaç@~{a}o}, @var{subgroupo})
-@deffnx {Funç@~{a}o} todd_coxeter (@var{relaç@~{a}o})
+@deffn {Função} todd_coxeter (@var{relação}, @var{subgroupo})
+@deffnx {Função} todd_coxeter (@var{relação})
 
-Acha a ordem de G/H onde G @'{e} o m@'{o}dulo do Grupo Livre @var{relaç@~{a}o}, e
-H @'{e} o subgroupo de G gerado por @var{subgroupo}.  @var{subgroupo} @'{e} um argumento
-opcional, cujo valor padr@~{a}o @'{e} [].  Em fazendo isso a funç@~{a}o produz uma
-tabela de multiplicaç@~{a}o @`a direita de G sobre G/H, onde os
-co-conjuntos s@~{a}o enumerados [H,Hg2,Hg3,...].  Isso pode ser visto internamente no
+Acha a ordem de G/H onde G é o módulo do Grupo Livre @var{relação}, e
+H é o subgroupo de G gerado por @var{subgroupo}.  @var{subgroupo} é um argumento
+opcional, cujo valor padrão é [].  Em fazendo isso a função produz uma
+tabela de multiplicação à direita de G sobre G/H, onde os
+co-conjuntos são enumerados [H,Hg2,Hg3,...].  Isso pode ser visto internamente no
 @code{todd_coxeter_state}.
 
 Exemplo:
@@ -65,4 +65,5 @@ Rows tried 71
 @end example
 
 @end deffn
+
 

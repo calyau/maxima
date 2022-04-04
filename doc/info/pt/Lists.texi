@@ -199,7 +199,7 @@ décima parte do seu argumento.
 @end deffn
 
 @deffn {Função} fourth (@var{expr})
-Retorna o quarto item da expressõ ou lista @var{expr}.
+Retorna o quarto item da expressão ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn

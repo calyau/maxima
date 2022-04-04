@@ -2,121 +2,121 @@
 @c /Equations.texi/1.25/Sat Jun  2 00:12:41 2007/-ko/
 @c end concepts Equations
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para Equaç@~{o}es::   
+* Funções e Variáveis Definidas para Equações::   
 @end menu
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para Equaç@~{o}es,  , Equaç@~{o}es, Equaç@~{o}es
-@section Funç@~{o}es e Vari@'{a}veis Definidas para Equaç@~{o}es
+@node Funções e Variáveis Definidas para Equações,  , Equações, Equações
+@section Funções e Variáveis Definidas para Equações
 
 @c NEED A DESCRIPTION OF %rnum AS WELL
-@defvr {Vari@'{a}vel} %rnum_list
-Valor padr@~{a}o: @code{[]}
+@defvr {Variável} %rnum_list
+Valor padrão: @code{[]}
 
-@code{%rnum_list} @'{e} a lista de vari@'{a}veis introduzidas em soluç@~{o}es
+@code{%rnum_list} é a lista de variáveis introduzidas em soluções
 por @code{algsys}.
-@code{%r} vari@'{a}veis S@~{a}o adicionadas a @code{%rnum_list} na ordem em que
+@code{%r} variáveis São adicionadas a @code{%rnum_list} na ordem em que
 forem criadas.
-Isso @'{e} conveniente para fazer substituiç@~{o}es dentro da
-soluç@~{a}o mais tarde.
+Isso é conveniente para fazer substituições dentro da
+solução mais tarde.
 @c WHAT DOES THIS STATEMENT MEAN ??
-@'{E} recomendado usar essa lista em lugar de
+É recomendado usar essa lista em lugar de
 fazer @code{concat ('%r, j)}.
 
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'{a}vel} algexact
-Valor padr@~{a}o: @code{false}
+@defvr {Variável} algexact
+Valor padrão: @code{false}
 
 @code{algexact} afeta o comportamento de @code{algsys} como segue:
 
-Se @code{algexact} @'{e} @code{true},
-@code{algsys} sempre chama @code{solve} e ent@~{a}o usa @code{realroots}
+Se @code{algexact} é @code{true},
+@code{algsys} sempre chama @code{solve} e então usa @code{realroots}
 sobre falhas de @code{solve}.
 
-Se @code{algexact} @'{e} @code{false}, @code{solve} @'{e} chamada somente se
-o eliminante n@~{a}o for de uma vari@'{a}vel, ou se for uma quadr@'{a}tica ou uma
+Se @code{algexact} é @code{false}, @code{solve} é chamada somente se
+o eliminante não for de uma variável, ou se for uma quadrática ou uma
 biquadrada.
 
-Dessa forma @code{algexact: true} n@~{a}o garante somente soluç@~{o}es
-exatas, apenas que @code{algsys} tentar@'{a} primeiro pegar
-soluç@~{o}es exatas, e somente retorna aproximaç@~{o}es quando tudo mais falha.
+Dessa forma @code{algexact: true} não garante somente soluções
+exatas, apenas que @code{algsys} tentará primeiro pegar
+soluções exatas, e somente retorna aproximações quando tudo mais falha.
 
 @c ABOVE DESCRIPTION NOT TOO CLEAR -- MAYBE EXAMPLES WILL HELP
 @end defvr
 
-@deffn {Funç@~{a}o} algsys ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
-@deffnx {Funç@~{a}o} algsys ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
-Resolve polin@^{o}mios simult@^{a}neos @var{expr_1}, ..., @var{expr_m}
-ou equaç@~{o}es polin@^{o}miais @var{eqn_1}, ..., @var{eqn_m}
-para as vari@'{a}veis @var{x_1}, ..., @var{x_n}.
-Uma express@~{a}o @var{expr} @'{e} equivalente a uma equaç@~{a}o @code{@var{expr} = 0}.
-Pode existir mais equaç@~{o}es que vari@'{a}veis ou vice-versa.
+@deffn {Função} algsys ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+@deffnx {Função} algsys ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+Resolve polinômios simultâneos @var{expr_1}, ..., @var{expr_m}
+ou equações polinômiais @var{eqn_1}, ..., @var{eqn_m}
+para as variáveis @var{x_1}, ..., @var{x_n}.
+Uma expressão @var{expr} é equivalente a uma equação @code{@var{expr} = 0}.
+Pode existir mais equações que variáveis ou vice-versa.
 
-@code{algsys} retorna uma lista de soluç@~{o}es,
-com cada soluç@~{a}o dada com uma lista de valores de estado das equaç@~{o}es
-das vari@'{a}veis @var{x_1}, ..., @var{x_n} que satisfazem o sistema de equaç@~{o}es.
-Se @code{algsys} n@~{a}o pode achar uma soluç@~{a}o, uma lista vazia @code{[]} @'{e} retornada.
+@code{algsys} retorna uma lista de soluções,
+com cada solução dada com uma lista de valores de estado das equações
+das variáveis @var{x_1}, ..., @var{x_n} que satisfazem o sistema de equações.
+Se @code{algsys} não pode achar uma solução, uma lista vazia @code{[]} é retornada.
 
-Os s@'{i}mbolos @code{%r1}, @code{%r2}, ...,
-s@~{a}o introduzidos tantos quantos forem necess@'{a}rios para representar par@^{a}metros arbitr@'{a}rios na soluç@~{a}o;
-essas vari@'{a}veis s@~{a}o tamb@'{e}m anexadas @`a lista @code{%rnum_list}.
+Os símbolos @code{%r1}, @code{%r2}, ...,
+são introduzidos tantos quantos forem necessários para representar parâmetros arbitrários na solução;
+essas variáveis são também anexadas à lista @code{%rnum_list}.
 
-O m@'{e}todo usado @'{e} o seguinte:
+O método usado é o seguinte:
 
-(1) Primeiro as equaç@~{o}es s@~{a}o fatoradas e quebradas em subsistemas.
+(1) Primeiro as equações são fatoradas e quebradas em subsistemas.
 
-(2) Para cada subsistema @var{S_i}, uma equaç@~{a}o @var{E} e uma vari@'{a}vel @var{x} s@~{a}o
+(2) Para cada subsistema @var{S_i}, uma equação @var{E} e uma variável @var{x} são
 selecionados.
-A vari@'{a}vel @'{e} escolhida para ter o menor grau n@~{a}o zero.
-Ent@~{a}o a resultante de @var{E} e @var{E_j} em relaç@~{a}o a @var{x} @'{e} calculada para cada um das
-equaç@~{o}es restantes @var{E_j} nos subsistemas @var{S_i}.
-Isso retorna um novo subsistema @var{S_i'} em umas poucas vari@'{a}veis, como @var{x} tenha sido eliminada.
+A variável é escolhida para ter o menor grau não zero.
+Então a resultante de @var{E} e @var{E_j} em relação a @var{x} é calculada para cada um das
+equações restantes @var{E_j} nos subsistemas @var{S_i}.
+Isso retorna um novo subsistema @var{S_i'} em umas poucas variáveis, como @var{x} tenha sido eliminada.
 O processo agora retorna ao passo (1).
 
-(3) Eventualmente, um subsistema consistindo de uma equaç@~{a}o simples @'{e}
-obtido.  Se a equaç@~{a}o @'{e} de v@'{a}rias vari@'{a}veis e aproximaç@~{o}es na
-forma de n@'{u}meros em ponto flutuante n@~{a} tenham sido introduzidas, ent@~{a}o @code{solve} @'{e}
-chamada para achar uma soluç@~{a}o exata.
+(3) Eventualmente, um subsistema consistindo de uma equação simples é
+obtido.  Se a equação é de várias variáveis e aproximações na
+forma de números em ponto flutuante nã tenham sido introduzidas, então @code{solve} é
+chamada para achar uma solução exata.
 
-Em alguns casos, @code{solve} n@~{a}o est@'{a} habilitada a achar uma soluç@~{a}o,
-ou se isso @'{e} feito a soluç@~{a}o pode ser uma express@~{a}o express@~{a}o muito larga.
+Em alguns casos, @code{solve} não está habilitada a achar uma solução,
+ou se isso é feito a solução pode ser uma expressão expressão muito larga.
 
 @c REMAINDER OF (3) IS PRETTY COMPLEX.  HOW CAN IT BE CLARIFIED ??
-Se a equaç@~{a}o @'{e} de uma @'{u}nica vari@'{a}vel e @'{e} ou linear, ou quadr@'{a}tica, ou
-biquadrada, ent@~{a}o novamente @code{solve} @'{e} chamada se aproximaç@~{o}es n@~{a}o tiverem
-sido introduzidas.  Se aproximaç@~{o}es tiverem sido introduzidas ou a
-equaç@~{a}o n@~{a}o @'{e} de uma @'{u}nica vari@'{a}vel e nem t@~{a}o pouco linear, quadratica, ou
-biquadrada, ent@~{a}o o comutador @code{realonly} @'{e} @code{true}, A funç@~{a}o
-@code{realroots} @'{e} chamada para achar o valor real das soluç@~{o}es.  Se
-@code{realonly} @'{e} @code{false}, ent@~{a}o @code{allroots} @'{e} chamada a qual procura por
-soluç@~{o}es reais e complexas.
+Se a equação é de uma única variável e é ou linear, ou quadrática, ou
+biquadrada, então novamente @code{solve} é chamada se aproximações não tiverem
+sido introduzidas.  Se aproximações tiverem sido introduzidas ou a
+equação não é de uma única variável e nem tão pouco linear, quadratica, ou
+biquadrada, então o comutador @code{realonly} é @code{true}, A função
+@code{realroots} é chamada para achar o valor real das soluções.  Se
+@code{realonly} é @code{false}, então @code{allroots} é chamada a qual procura por
+soluções reais e complexas.
 
-Se @code{algsys} produz uma soluç@~{a}o que tem
-poucos digitos significativos que o requerido, o usu@'{a}rio pode escolher o valor
+Se @code{algsys} produz uma solução que tem
+poucos digitos significativos que o requerido, o usuário pode escolher o valor
 de @code{algepsilon} para um valor maior.
 
-Se @code{algexact} @'{e} escolhido para
-@code{true}, @code{solve} ser@'{a} sempre chamada.
+Se @code{algexact} é escolhido para
+@code{true}, @code{solve} será sempre chamada.
 @c algepsilon IS IN Floating.texi -- MAY WANT TO BRING IT INTO THIS FILE
 
-(4) Finalmente, as soluç@~{o}es obtidas no passo (3) s@~{a}o substitu@'{i}das dentro
-dos n@'{i}veis pr@'{e}vios e o processo de soluç@~{a}o retorna para (1).
+(4) Finalmente, as soluções obtidas no passo (3) são substituídas dentro
+dos níveis prévios e o processo de solução retorna para (1).
 @c "PREVIOUS LEVELS" -- WHAT ARE THOSE ??
 
-Quando @code{algsys} encontrar uma equaç@~{a}o de v@'{a}rias vari@'{a}veis que cont@'{e}m
-aproximaç@~{o}es em ponto flutuante (usualmente devido a suas falhas em achar
-soluç@~{o}es exatas por um est@'{a}gio mais f@'{a}cil), ent@~{a}o n@~{a}o tentar@'{a}
-aplicar m@'{e}todos exatos para tais equaç@~{o}es e em lugar disso imprime a mensagem:
+Quando @code{algsys} encontrar uma equação de várias variáveis que contém
+aproximações em ponto flutuante (usualmente devido a suas falhas em achar
+soluções exatas por um estágio mais fácil), então não tentará
+aplicar métodos exatos para tais equações e em lugar disso imprime a mensagem:
 "@code{algsys} cannot solve - system too complicated."
 
-Interaç@~{o}es com @code{radcan} podem produzir express@~{o}es largas ou
+Interações com @code{radcan} podem produzir expressões largas ou
 complicadas.
-Naquele caso, pode ser poss@'{i}vel isolar partes do resultado
+Naquele caso, pode ser possível isolar partes do resultado
 com @code{pickapart} ou @code{reveal}.
 
-Ocasionalmente, @code{radcan} pode introduzir uma unidade imagin@'{a}ria
-@code{%i} dentro de uma soluç@~{a}o que @'{e} atualmente avaliada como real.
+Ocasionalmente, @code{radcan} pode introduzir uma unidade imaginária
+@code{%i} dentro de uma solução que é atualmente avaliada como real.
 
 Exemplos:
 
@@ -163,31 +163,31 @@ Exemplos:
 
 @end deffn
 
-@deffn {Funç@~{a}o} allroots (@var{expr})
-@deffnx {Funç@~{a}o} allroots (@var{eqn})
-Calcula aproximaç@~{o}es num@'{e}ricas de ra@'{i}zes reais e complexas do
-polin@^{o}mio @var{expr} ou equaç@~{a}o polin@^{o}mial @var{eqn} de uma vari@'{a}vel.
+@deffn {Função} allroots (@var{expr})
+@deffnx {Função} allroots (@var{eqn})
+Calcula aproximações numéricas de raízes reais e complexas do
+polinômio @var{expr} ou equação polinômial @var{eqn} de uma variável.
 
 @c polyfactor IS NOT OTHERWISE DOCUMENTED
 O sinalizador @code{polyfactor} quando @code{true} faz com que
-@code{allroots} fatore o polin@^{o}mio sobre os n@'{u}meros reais se o
-polin@^{o}mio for real, ou sobre os n@'{u}meros complexos, se o polin@^{o}mio for
+@code{allroots} fatore o polinômio sobre os números reais se o
+polinômio for real, ou sobre os números complexos, se o polinômio for
 complexo.
 
-@code{allroots} pode retornar resultados imprecisos no caso de multiplas ra@'{i}zes.
-Se o polin@^{o}mio for real, @code{allroots (%i*@var{p})}) pode retornar
-aproximaç@~{o}es mais precisas que @code{allroots (@var{p})},
-como @code{allroots} invoca um algor@'{i}tmo diferente naquele caso.
+@code{allroots} pode retornar resultados imprecisos no caso de multiplas raízes.
+Se o polinômio for real, @code{allroots (%i*@var{p})}) pode retornar
+aproximações mais precisas que @code{allroots (@var{p})},
+como @code{allroots} invoca um algorítmo diferente naquele caso.
 
-@code{allroots} rejeita n@~{a}o-polin@^{o}mios.  Isso requer que o numerador
-ap@'{o}s a classificaç@~{a}o (@code{rat}'ing) poder@'{a} ser um polin@^{o}mio, e isso requer que o
-denominador seja quando muito um n@'{u}mero complexo.  Com um resultado disso @code{allroots}
-ir@'{a} sempre retornar uma express@~{a}o equivalente (mas fatorada), se
+@code{allroots} rejeita não-polinômios.  Isso requer que o numerador
+após a classificação (@code{rat}'ing) poderá ser um polinômio, e isso requer que o
+denominador seja quando muito um número complexo.  Com um resultado disso @code{allroots}
+irá sempre retornar uma expressão equivalente (mas fatorada), se
 @code{polyfactor} for @code{true}.
 
-Para polin@^{o}mios complexos um algor@'{i}tmo por Jenkins e Traub @'{e}
+Para polinômios complexos um algorítmo por Jenkins e Traub é
 usado (Algorithm 419, @i{Comm.  ACM}, vol.  15, (1972), p.  97).
-Para polin@^{o}mios reais o algor@'{i}tmo usado @'{e} devido a Jenkins (Algorithm 493, @i{ACM TOMS},
+Para polinômios reais o algorítmo usado é devido a Jenkins (Algorithm 493, @i{ACM TOMS},
 vol.  1, (1975), p.178).
 
 Exemplos:
@@ -234,26 +234,26 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 
 @end deffn
 
-@defvr {Vari@'{a}vel} backsubst
-Valor padr@~{a}o: @code{true}
+@defvr {Variável} backsubst
+Valor padrão: @code{true}
 
 @c WHAT IS THE CONTEXT HERE ?? (TO WHICH OTHER FUNCTION DOES THIS APPLY ??)
-Quando @code{backsubst} @'{e} @code{false}, evita substituiç@~{o}es
-em express@~{o}es anteriores ap@'{o}s as equaç@~{o}es terem sido triangularizadas.  Isso pode
-ser de grande ajuda em problemas muito grandes onde substituiç@~{a}o em express@~{o}es anteriores pode vir a causar
-a geraç@~{a}o de express@~{o}es extremamente largas.
+Quando @code{backsubst} é @code{false}, evita substituições
+em expressões anteriores após as equações terem sido triangularizadas.  Isso pode
+ser de grande ajuda em problemas muito grandes onde substituição em expressões anteriores pode vir a causar
+a geração de expressões extremamente largas.
 
 @end defvr
 
-@defvr {Vari@'{a}vel} breakup
-Valor padr@~{a}o: @code{true}
+@defvr {Variável} breakup
+Valor padrão: @code{true}
 
-Quando @code{breakup} @'{e} @code{true}, @code{solve} expressa soluç@~{o}es
-de equaç@~{o}es c@'{u}bicas e qu@'{a}rticas em termos de subexpress@~{o}es comuns,
-que s@~{a}o atribu@'{i}das a r@'{o}tulos de express@~{o}es intermedi@'{a}rias (@code{%t1}, @code{%t2}, etc.).
-De outra forma, subexpress@~{o}es comuns n@~{a}o s@~{a}o identificadas.
+Quando @code{breakup} é @code{true}, @code{solve} expressa soluções
+de equações cúbicas e quárticas em termos de subexpressões comuns,
+que são atribuídas a rótulos de expressões intermediárias (@code{%t1}, @code{%t2}, etc.).
+De outra forma, subexpressões comuns não são identificadas.
 
-@code{breakup: true} tem efeito somente quando @code{programmode} @'{e} @code{false}.
+@code{breakup: true} tem efeito somente quando @code{programmode} é @code{false}.
 
 Exemplos:
 
@@ -321,31 +321,31 @@ Solution:
 
 @end defvr
 
-@deffn {Funç@~{a}o} dimension (@var{eqn})
-@deffnx {Funç@~{a}o} dimension (@var{eqn_1}, ..., @var{eqn_n})
-@code{dimen} @'{e} um pacote de an@'{a}lise dimensional.
+@deffn {Função} dimension (@var{eqn})
+@deffnx {Função} dimension (@var{eqn_1}, ..., @var{eqn_n})
+@code{dimen} é um pacote de análise dimensional.
 @code{load ("dimen")} chama esse pacote.
-@code{demo ("dimen")} mostra uma cura demostraç@~{a}o.
+@code{demo ("dimen")} mostra uma cura demostração.
 @c I GUESS THIS SHOULD BE EXPANDED TO COVER EACH FUNCTION IN THE PACKAGE
 
 @end deffn
 
-@defvr {Vari@'{a}vel} dispflag
-Valor padr@~{a}o: @code{true}
+@defvr {Variável} dispflag
+Valor padrão: @code{true}
 
 @c WHAT DOES THIS MEAN ??
-Se escolhida para @code{false} dentro de um @code{block} inibir@'{a}
-a visualizaç@~{a}o da sa@'{i}da gerada pelas funç@~{o}es solve chamadas de
+Se escolhida para @code{false} dentro de um @code{block} inibirá
+a visualização da saída gerada pelas funções solve chamadas de
 dentro de @code{block}.  Terminando @code{block} com um sinal de dolar, $, escolhe
 @code{dispflag} para @code{false}.
 
 @end defvr
 
 @c THIS COULD BENEFIT FROM REPHRASING
-@deffn {Funç@~{a}o} funcsolve (@var{eqn}, @var{g}(@var{t}))
+@deffn {Função} funcsolve (@var{eqn}, @var{g}(@var{t}))
 Retorna @code{[@var{g}(@var{t}) = ...]}  ou @code{[]}, dependendo de existir
-ou n@~{a}o uma funç@~{a}o racional @code{@var{g}(@var{t})} satisfazendo @var{eqn},
-que deve ser de primeira ordem, polin@^{o}mio linear em (para esse caso) 
+ou não uma função racional @code{@var{g}(@var{t})} satisfazendo @var{eqn},
+que deve ser de primeira ordem, polinômio linear em (para esse caso) 
 @code{@var{g}(@var{t})} e @code{@var{g}(@var{t}+1)}
 
 @example
@@ -355,32 +355,32 @@ que deve ser de primeira ordem, polin@^{o}mio linear em (para esse caso)
                                  n + 1         n + 2
 (%i2) funcsolve (eqn, f(n));
 
-Equaç@~{o}es dependentes eliminadas:  (4 3)
+Equações dependentes eliminadas:  (4 3)
                                    n
 (%o2)                f(n) = ---------------
                             (n + 1) (n + 2)
 @end example
 
-Atenç@~{a}o: essa @'{e} uma implementaç@~{a}o muito rudimentar -- muitas verificaç@~{o}es de segurança
-e obviamente generalizaç@~{o}es est@~{a}o aus@^{e}ntes.
+Atenção: essa é uma implementação muito rudimentar -- muitas verificações de segurança
+e obviamente generalizações estão ausêntes.
 
 @end deffn
 
-@defvr {Vari@'{a}vel} globalsolve
-Valor padr@~{a}o: @code{false}
+@defvr {Variável} globalsolve
+Valor padrão: @code{false}
 
 When @code{globalsolve} for @code{true},
-vari@'{a}veis para as quais as equaç@~{o}es s@~{a}o resolvidas s@~{a}o atribuidas aos valores da soluç@~{a}o encontrados por @code{linsolve},
-e por @code{solve} quando resolvendo duas ou mais equaç@~{o}es lineares.
+variáveis para as quais as equações são resolvidas são atribuidas aos valores da solução encontrados por @code{linsolve},
+e por @code{solve} quando resolvendo duas ou mais equações lineares.
 
 Quando @code{globalsolve} for @code{false},
-soluç@~{o}es encontradas por @code{linsolve} e por @code{solve} quando resolvendo duas ou mais equaç@~{o}es lineares
-s@~{a}o espressas como equaç@~{o}es,
-e as vari@'{a}veis para as quais a equaç@~{a}o foi resolvida n@~{a}o s@~{a}o atribuidas.
+soluções encontradas por @code{linsolve} e por @code{solve} quando resolvendo duas ou mais equações lineares
+são espressas como equações,
+e as variáveis para as quais a equação foi resolvida não são atribuidas.
 
-Quando resolvendo qualquer coisa outra que n@~{a}o duas equaç@~{o}es lineares ou mais,
+Quando resolvendo qualquer coisa outra que não duas equações lineares ou mais,
 @code{solve} ignora @code{globalsolve}.
-Outras funç@~{o}es que resolvem equaç@~{o}es (e.g., @code{algsys}) sempre ignoram @code{globalsolve}.
+Outras funções que resolvem equações (e.g., @code{algsys}) sempre ignoram @code{globalsolve}.
     
 Exemplos:
 
@@ -429,70 +429,70 @@ Solution
 @c THIS DESCRIPTION NEEDS WORK AND EXAMPLES
 @c MERGE IN TEXT FROM share/integequations/inteqn.usg
 @c AND EXAMPLES FROM .../intexs.mac
-@deffn {Funç@~{a}o} ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
-@code{inteqn} @'{e} um pacote para resolver equaç@~{o}es com integrais.
+@deffn {Função} ieqn (@var{ie}, @var{unk}, @var{tech}, @var{n}, @var{guess})
+@code{inteqn} é um pacote para resolver equações com integrais.
 @code{load ("inteqn")} carrega esse pacote.
 
-@var{ie} @'{e} a equaç@~{a}o integral; @var{unk} @'{e} a funç@~{a}o desconhecida; @var{tech} @'{e} a
-t@'{e}cnica a ser tentada nesses dados acima (@var{tech} = @code{first} significa: tente
-a primeira t@'{e}cnica que achar uma soluç@~{a}o; @var{tech} = @code{all} significa: tente todas a
-t@'{e}cnicas aplic@'{a}veis); @var{n} @'{e} o n@'{u}mero m@'{a}ximo de termos a serem usados de
-@code{taylor}, @code{neumann}, @code{firstkindseries}, ou @code{fredseries} (isso @'{e} tamb@'{e}m o
-n@'{u}mero m@'{a}ximo de ciclos de recurss@~{a}o para o m@'{e}todo de diferenciaç@~{a}o); @var{guess} @'{e}
+@var{ie} é a equação integral; @var{unk} é a função desconhecida; @var{tech} é a
+técnica a ser tentada nesses dados acima (@var{tech} = @code{first} significa: tente
+a primeira técnica que achar uma solução; @var{tech} = @code{all} significa: tente todas a
+técnicas aplicáveis); @var{n} é o número máximo de termos a serem usados de
+@code{taylor}, @code{neumann}, @code{firstkindseries}, ou @code{fredseries} (isso é também o
+número máximo de ciclos de recurssão para o método de diferenciação); @var{guess} é
 o inicial suposto para @code{neumann} ou @code{firstkindseries}.
 
-Valores padr@~{a}o do segundo at@'{e} o quinto par@^{a}metro s@~{a}o:
+Valores padrão do segundo até o quinto parâmetro são:
 
-@var{unk}: @code{@var{p}(@var{x})}, onde @var{p} @'{e} a primeira funç@~{a}o encontrada em um integrando
-que @'{e} desconhecida para Maxima e @var{x} @'{e} a vari@'{a}vel que ocorre como um
-argumento para a primeira ocorr@^{e}ncia de @var{p} achada fora de uma integral no
-caso de equaç@~{o}es @code{secondkind} , ou @'{e} somente outra vari@'{a}vel
-ao lado da vari@'{a}vel de integraç@~{a}o em equaç@~{o}es @code{firstkind}.  Se uma
-tentativa de procurar por @var{x} falha, o usu@'{a}rio ser@'{a} perguntado para suprir a
-vari@'{a}vel independente.
+@var{unk}: @code{@var{p}(@var{x})}, onde @var{p} é a primeira função encontrada em um integrando
+que é desconhecida para Maxima e @var{x} é a variável que ocorre como um
+argumento para a primeira ocorrência de @var{p} achada fora de uma integral no
+caso de equações @code{secondkind} , ou é somente outra variável
+ao lado da variável de integração em equações @code{firstkind}.  Se uma
+tentativa de procurar por @var{x} falha, o usuário será perguntado para suprir a
+variável independente.
 
 tech: @code{first}
 
 n: 1
 
-guess: @code{none} o que far@'{a} com que @code{neumann} e @code{firstkindseries} use
-@code{@var{f}(@var{x})} como uma suposiç@~{a}o inicial.
+guess: @code{none} o que fará com que @code{neumann} e @code{firstkindseries} use
+@code{@var{f}(@var{x})} como uma suposição inicial.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} ieqnprint
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} ieqnprint
+Valor padrão: @code{true}
 
 @code{ieqnprint} governa o comportamento do resultado
-retornado pelo comando @code{ieqn}.  Quando @code{ieqnprint} @'{e}
-@code{false}, as listas retornadas pela funç@~{a}o @code{ieqn} s@~{a}o da forma
+retornado pelo comando @code{ieqn}.  Quando @code{ieqnprint} é
+@code{false}, as listas retornadas pela função @code{ieqn} são da forma
 
-   [@var{soluç@~{a}o}, @var{tecnica usada}, @var{nterms}, @var{sinalizador}]
+   [@var{solução}, @var{tecnica usada}, @var{nterms}, @var{sinalizador}]
 
-onde @var{sinalizador} @'{e} retirado se a soluç@~{a}o for exata.
+onde @var{sinalizador} é retirado se a solução for exata.
 
-De outra forma, isso @'{e} a
-palavra @code{approximate} ou @code{incomplete} correspondendo @`a forma inexata ou
-forma aberta de soluç@~{a}o, respectivamente.  Se um m@'{e}todo de s@'{e}rie foi usado,
-@var{nterms} fornece o n@'{u}mero de termos usados (que poder@'{a} ser menor que os n
-dados para @code{ieqn} se ocorrer um erro evita a geraç@~{a}o de termos adicionais).
+De outra forma, isso é a
+palavra @code{approximate} ou @code{incomplete} correspondendo à forma inexata ou
+forma aberta de solução, respectivamente.  Se um método de série foi usado,
+@var{nterms} fornece o número de termos usados (que poderá ser menor que os n
+dados para @code{ieqn} se ocorrer um erro evita a geração de termos adicionais).
 
 @end defvr
 
-@deffn {Funç@~{a}o} lhs (@var{expr})
-Retorna o lado esquerdo (isto @'{e}, o primeiro argumento)
-da express@~{a}o @var{expr},
+@deffn {Função} lhs (@var{expr})
+Retorna o lado esquerdo (isto é, o primeiro argumento)
+da expressão @var{expr},
 quando o operador de @var{expr}
 for um dos operadores relacionais @code{< <= = # equal notequal >= >},
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
-um dos operadores de atribuiç@~{a}o @code{:= ::= : ::},
-ou um operadro infixo definido pelo usu@'{a}rio, como declarado por meio de @code{infix}.
+um dos operadores de atribuição @code{:= ::= : ::},
+ou um operadro infixo definido pelo usuário, como declarado por meio de @code{infix}.
 
-Quando @var{expr} for um @'{a}tomo ou
-seu operador for alguma coisa que n@~{a}o esses listados acima,
+Quando @var{expr} for um átomo ou
+seu operador for alguma coisa que não esses listados acima,
 @code{lhs} retorna @var{expr}.
 
-Veja tamb@'{e}m @code{rhs}.
+Veja também @code{rhs}.
 
 Exemplos:
 
@@ -540,30 +540,30 @@ Exemplos:
 @end deffn
 
 @c REVISIT -- THERE'S PROBABLY MORE TO SAY HERE
-@deffn {Funç@~{a}o} linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Função} linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
 Resolve a lista de
-equaç@~{o}es lineares simult@^{a}neas para a lista de vari@'{a}veis.  As express@~{o}es
-devem ser cada uma polin@^{o}mios nas vari@'{a}veis e podem ser equaç@~{o}es.
+equações lineares simultâneas para a lista de variáveis.  As expressões
+devem ser cada uma polinômios nas variáveis e podem ser equações.
 
-Quando @code{globalsolve} @'{e} @code{true} ent@~{a}o vari@'{a}veis que foram resolvidas
-ser@~{a}o escolhidas para a soluç@~{a}o do conjunto de equaç@~{o}es simult@^{a}neas.
+Quando @code{globalsolve} é @code{true} então variáveis que foram resolvidas
+serão escolhidas para a solução do conjunto de equações simultâneas.
 
-Quando @code{backsubst} @'{e} @code{false}, @code{linsolve}
-n@~{a}o realiza substituiç@~{a}o em equaç@~{o}es anteriores ap@'{o}s
-as equaç@~{o}es terem sido triangularizadas.  Isso pode ser necess@'{a}rio em problemas
-muito grandes onde substituiç@~{a}o em equaç@~{o}es anteriores poder@'{a} causar a geraç@~{a}o de
-express@~{o}es extremamente largas.
+Quando @code{backsubst} é @code{false}, @code{linsolve}
+não realiza substituição em equações anteriores após
+as equações terem sido triangularizadas.  Isso pode ser necessário em problemas
+muito grandes onde substituição em equações anteriores poderá causar a geração de
+expressões extremamente largas.
 
 Quando @code{linsolve_params} for @code{true},
-@code{linsolve} tamb@'{e}m gera s@'{i}mbolos @code{%r}
-usados para representar par@^{a}metros arbitr@'{a}rios descritos no manual sob
+@code{linsolve} também gera símbolos @code{%r}
+usados para representar parâmetros arbitrários descritos no manual sob
 @code{algsys}.
 De outra forma, @code{linsolve} resolve um menor-determinado sistema de
-equaç@~{o}es com algumas vari@'{a}veis expressas em termos de outras.
+equações com algumas variáveis expressas em termos de outras.
 
 Quando @code{programmode} for @code{false},
-@code{linsolve} mostra a soluç@~{a}o com express@~{o}es intermedi@'{a}rias com r@'{o}tulos (@code{%t}),
-e retorna a lista de r@'{o}tulos.
+@code{linsolve} mostra a solução com expressões intermediárias com rótulos (@code{%t}),
+e retorna a lista de rótulos.
 
 @c ===beg===
 @c e1: x + z = y;
@@ -633,43 +633,43 @@ Solution
 @end deffn
 
 @c DO ANY FUNCTIONS OTHER THAN linsolve RESPECT linsolvewarn ??
-@defvr {Vari@'{a}vel} linsolvewarn
-Valor padr@~{a}o: @code{true}
+@defvr {Variável} linsolvewarn
+Valor padrão: @code{true}
 
-Quando @code{linsolvewarn} @'{e} @code{true},
-@code{linsolve} imprime uma mensagem "Dependent equaç@~{o}es eliminated".
+Quando @code{linsolvewarn} é @code{true},
+@code{linsolve} imprime uma mensagem "Dependent equações eliminated".
 
 @end defvr
 
-@defvr {Vari@'{a}vel} linsolve_params
-Valor padr@~{a}o: @code{true}
+@defvr {Variável} linsolve_params
+Valor padrão: @code{true}
 
-Quando @code{linsolve_params} @'{e} @code{true}, @code{linsolve} tamb@'{e}m gera
-os s@'{i}mbolos @code{%r} usados para representar par@^{a}metros arbitr@'{a}rios descritos no
+Quando @code{linsolve_params} é @code{true}, @code{linsolve} também gera
+os símbolos @code{%r} usados para representar parâmetros arbitrários descritos no
 manual sob @code{algsys}.
 De outra forma, @code{linsolve} resolve um menor-determinado sistema de
-equaç@~{o}es com algumas vari@'{a}veis expressas em termos e outras.
+equações com algumas variáveis expressas em termos e outras.
 
 @end defvr
 
-@defvr {Vari@'{a}vel} multiplicities
-Valor padr@~{a}o: @code{not_set_yet}
+@defvr {Variável} multiplicities
+Valor padrão: @code{not_set_yet}
 
-@code{multiplicities} @'{e} escolhida para uma lista de
-multiplicidades das soluç@~{o}es individuais retornadas por @code{solve} ou
+@code{multiplicities} é escolhida para uma lista de
+multiplicidades das soluções individuais retornadas por @code{solve} ou
 @code{realroots}.
 @c NEED AN EXAMPLE HERE
 
 @end defvr
 
-@deffn {Funç@~{a}o} nroots (@var{p}, @var{low}, @var{high})
-Retorna o n@'{u}mero de ra@'{i}zes reais do polin@^{o}mio 
-real de uma @'{u}nica vari@'{a}vel @var{p} no intervalo semi-aberto
+@deffn {Função} nroots (@var{p}, @var{low}, @var{high})
+Retorna o número de raízes reais do polinômio 
+real de uma única variável @var{p} no intervalo semi-aberto
 @code{(@var{low}, @var{high}]}.
 Uma extremidade do intervalo podem ser @code{minf} ou @code{inf}.
 infinito e mais infinito.
 
-@code{nroots} usa o m@'{e}todo das sequ@"{u}@^{e}ncias de Sturm.
+@code{nroots} usa o método das sequ@"{u}ências de Sturm.
 
 @example
 (%i1) p: x^10 - 2*x^4 + 1/2$
@@ -680,67 +680,67 @@ infinito e mais infinito.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Funç@~{a}o} nthroot (@var{p}, @var{n})
-Onde p @'{e} um polin@^{o}mio com coeficientes inteiros e
-n @'{e} um inteiro positivo retorna q, um polin@^{o}mio sobre os inteiros, tal
-que q^n=p ou imprime uma mensagem de erro indicando que p n@~{a}o @'{e} uma pot@^{e}ncia n-@'{e}sima
-perfeita.  Essa rotina @'{e} mais r@'{a}pida que @code{factor} ou mesmo @code{sqfr}.
+@deffn {Função} nthroot (@var{p}, @var{n})
+Onde p é um polinômio com coeficientes inteiros e
+n é um inteiro positivo retorna q, um polinômio sobre os inteiros, tal
+que q^n=p ou imprime uma mensagem de erro indicando que p não é uma potência n-ésima
+perfeita.  Essa rotina é mais rápida que @code{factor} ou mesmo @code{sqfr}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel} programmode
-Valor padr@~{a}o: @code{true}
+@defvr {Variável} programmode
+Valor padrão: @code{true}
 
-Quando @code{programmode} @'{e} @code{true},
+Quando @code{programmode} é @code{true},
 @code{solve}, @code{realroots}, @code{allroots}, e @code{linsolve}
-retornam soluç@~{o}es como elementos em uma lista.
+retornam soluções como elementos em uma lista.
 @c WHAT DOES BACKSUBSTITUTION HAVE TO DO WITH RETURN VALUES ??
-(Exceto quando @code{backsubst} @'{e} escolhido para @code{false}, nesse caso
-@code{programmode: false} @'{e} assumido.)
+(Exceto quando @code{backsubst} é escolhido para @code{false}, nesse caso
+@code{programmode: false} é assumido.)
 
-Quando @code{programmode} @'{e} @code{false}, @code{solve}, etc.
-cria r@'{o}tulos de express@~{o}es intermedi@'{a}rias
-@code{%t1}, @code{t2}, etc., e atribui as soluç@~{o}es para eles.
+Quando @code{programmode} é @code{false}, @code{solve}, etc.
+cria rótulos de expressões intermediárias
+@code{%t1}, @code{t2}, etc., e atribui as soluções para eles.
 @c NEED AN EXAMPLE HERE
 
 @end defvr
 
-@defvr {Vari@'{a}vel} realonly
-Valor padr@~{a}o: @code{false}
+@defvr {Variável} realonly
+Valor padrão: @code{false}
 
-Quando @code{realonly} @'{e} @code{true}, @code{algsys} retorna somente
-aquelas soluç@~{o}es que est@~{a}o livres de @code{%i}.
+Quando @code{realonly} é @code{true}, @code{algsys} retorna somente
+aquelas soluções que estão livres de @code{%i}.
 
 @end defvr
 
-@deffn {Funç@~{a}o} realroots (@var{expr}, @var{bound})
-@deffnx {Funç@~{a}o} realroots (@var{eqn}, @var{bound})
-@deffnx {Funç@~{a}o} realroots (@var{expr})
-@deffnx {Funç@~{a}o} realroots (@var{eqn})
-Calcula aproximaç@~{o}es racionais das ra@'{i}zes reais da express@~{a}o polinomial @var{expr}
-ou da equaç@~{a}o polinomial @var{eqn} de uma vari@'{a}vel,
-dentro de uma toler@^{a}ncia de @var{bound}.
-coeficientes de @var{expr} ou de @var{eqn} devem ser n@'{u}meros literais;
-constantes s@'{i}mbolo tais como @code{%pi} s@~{a}o rejeitadas.
+@deffn {Função} realroots (@var{expr}, @var{bound})
+@deffnx {Função} realroots (@var{eqn}, @var{bound})
+@deffnx {Função} realroots (@var{expr})
+@deffnx {Função} realroots (@var{eqn})
+Calcula aproximações racionais das raízes reais da expressão polinomial @var{expr}
+ou da equação polinomial @var{eqn} de uma variável,
+dentro de uma tolerância de @var{bound}.
+coeficientes de @var{expr} ou de @var{eqn} devem ser números literais;
+constantes símbolo tais como @code{%pi} são rejeitadas.
 
-@code{realroots} atribui as multiplicidades das ra@'{i}zes que encontrar
-para a vari@'{a}vel global @code{multiplicities}.
+@code{realroots} atribui as multiplicidades das raízes que encontrar
+para a variável global @code{multiplicities}.
 
-@code{realroots} constr@'{o}i uma seq@"{u}@^{e}ncia de Sturm para delimitar cada ra@'{i}z,
-e ent@~{a}o palica a bisecç@~{a}o para redefinir as aproximaç@~{o}es.
-Todos os coeficientes s@~{a}o convertidos para os equivalentes racionais antes da busca por ra@'{i}zes,
-e c@'{a}lculos s@~{a}o realizados por meio de aritm@'{e}tica racional exata.
-Mesmo se alguns coeficientes forem n@'{u}meros em ponto flutuante,
-os resultados s@~{a}o racionais (a menos que forçados a n@'{u}meros em ponto flutuante por @code{float} ou por @code{numer} flags).
+@code{realroots} constrói uma seq@"{u}ência de Sturm para delimitar cada raíz,
+e então palica a bisecção para redefinir as aproximações.
+Todos os coeficientes são convertidos para os equivalentes racionais antes da busca por raízes,
+e cálculos são realizados por meio de aritmética racional exata.
+Mesmo se alguns coeficientes forem números em ponto flutuante,
+os resultados são racionais (a menos que forçados a números em ponto flutuante por @code{float} ou por @code{numer} flags).
 
-Quando @var{bound} for menor que 1, todas as ra@'{i}zes inteiras s@~{a}o encontradas exatamente.
-Quando @var{bound} n@~{a}o for especificado, ser@'{a} assumido como sendo igual @`a vari@'{a}vel globa @code{rootsepsilon}.
+Quando @var{bound} for menor que 1, todas as raízes inteiras são encontradas exatamente.
+Quando @var{bound} não for especificado, será assumido como sendo igual à variável globa @code{rootsepsilon}.
 
-Quando a var@'{a}vel global @code{programmode} for @code{true},
+Quando a varável global @code{programmode} for @code{true},
 @code{realroots} retorna uma lista da forma @code{[x = @var{x_1}, x = @var{x_2}, ...]}.
 Quando @code{programmode} for @code{false},
-@code{realroots} cria r@'{o}tulos de express@~{o}es intermedi@'{a}rias @code{%t1}, @code{%t2}, ...,
-atribui os resultados a eles, e retorna a lista de r@'{o}tulos.
+@code{realroots} cria rótulos de expressões intermediárias @code{%t1}, @code{%t2}, ...,
+atribui os resultados a eles, e retorna a lista de rótulos.
 
 Exemplos:
 @c ===beg===
@@ -774,20 +774,20 @@ Exemplos:
 
 @end deffn
 
-@deffn {Funç@~{a}o} rhs (@var{expr})
-Retorna o lado direito (isto @'{e}, o segundo argumento)
-da express@~{a}o @var{expr},
+@deffn {Função} rhs (@var{expr})
+Retorna o lado direito (isto é, o segundo argumento)
+da expressão @var{expr},
 quando o operador de @var{expr}
 for um dos operadores relacionais @code{< <= = # equal notequal >= >},
 @c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
-um dos operadores de atribuiç@~{a}o @code{:= ::= : ::},
-ou um operador bin@'{a}rio infixo definido pelo usu@'{a}rio, como declarado por meio de @code{infix}.
+um dos operadores de atribuição @code{:= ::= : ::},
+ou um operador binário infixo definido pelo usuário, como declarado por meio de @code{infix}.
 
-Quando @var{expr} for um @'{e}tomo ou
-seu operadro for alguma coisa que n@~{a}o esses listados acima,
+Quando @var{expr} for um étomo ou
+seu operadro for alguma coisa que não esses listados acima,
 @code{rhs} retorna 0.
 
-Veja tamb@'{e}m @code{lhs}.
+Veja também @code{lhs}.
 
 Exemplos:
 
@@ -834,8 +834,8 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} rootsconmode
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} rootsconmode
+Valor padrão: @code{true}
 
 @code{rootsconmode} governa o comportamento do comando
 @code{rootscontract}.  Veja @code{rootscontract} para detalhes.
@@ -843,16 +843,16 @@ Valor padr@~{a}o: @code{true}
 @end defvr
 
 @c NEEDS WORK
-@deffn {Funç@~{a}o} rootscontract (@var{expr})
-Converte produtos de ra@'{i}zes em ra@'{i}zes de produtos.
+@deffn {Função} rootscontract (@var{expr})
+Converte produtos de raízes em raízes de produtos.
 Por exemplo,
 @code{rootscontract (sqrt(x)*y^(3/2))} retorna @code{sqrt(x*y^3)}.
 
-Quando @code{radexpand} @'{e} @code{true} e @code{domain} @'{e} @code{real},
+Quando @code{radexpand} é @code{true} e @code{domain} é @code{real},
 @code{rootscontract} converte @code{abs} em @code{sqrt}, e.g.,
 @code{rootscontract (abs(x)*sqrt(y))} retorna @code{sqrt(x^2*y)}.
 
-Existe uma opç@~{a}o @code{rootsconmode}
+Existe uma opção @code{rootsconmode}
 afetando @code{rootscontract} como segue:
 
 @example
@@ -867,9 +867,9 @@ x^(1/2)*y^(1/4)      all            (x^2*y)^(1/4)
 x^(1/2)*y^(1/3)      all            (x^3*y^2)^(1/6)
 @end example
 
-Quando @code{rootsconmode} @'{e} @code{false}, @code{rootscontract} contrai somente como relaç@~{a}o a expoentes
-de n@'{u}mero racional cujos denominadores s@~{a}o os mesmos.  A chave para os exemplos
-@code{rootsconmode: true} @'{e} simplesmente que 2 divides 4 mas n@~{a}o 
+Quando @code{rootsconmode} é @code{false}, @code{rootscontract} contrai somente como relação a expoentes
+de número racional cujos denominadores são os mesmos.  A chave para os exemplos
+@code{rootsconmode: true} é simplesmente que 2 divides 4 mas não 
 divide 3.  @code{rootsconmode: all} envolve pegar o menor multiplo comum
 dos denominadores dos expoentes.
 
@@ -924,77 +924,77 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} rootsepsilon
-Valor padr@~{a}o: 1.0e-7
+@defvr {Variável de opção} rootsepsilon
+Valor padrão: 1.0e-7
 
-@code{rootsepsilon} @'{e} a toler@^{a}ncia que estabelece o
-intervalo de confic@^{e}ncia para as ra@'{i}zes achadas pela funç@~{a}o @code{realroots}.
+@code{rootsepsilon} é a tolerância que estabelece o
+intervalo de conficência para as raízes achadas pela função @code{realroots}.
 @c IS IT GUARANTEED THAT |ACTUAL - ESTIMATE| < rootepsilon OR IS IT SOME OTHER NOTION ??
 @c NEED EXAMPLE HERE
 
 @end defvr
 
 @c NEEDS WORK
-@deffn {Funç@~{a}o} solve (@var{expr}, @var{x})
-@deffnx {Funç@~{a}o} solve (@var{expr})
-@deffnx {Funç@~{a}o} solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
-Resolve a equaç@~{a}o alg@'{e}brica @var{expr} para a vari@'{a}vel
-@var{x} e retorna uma lista de equaç@~{o}es soluç@~{a}o em @var{x}.  Se @var{expr} n@~{a}o @'{e} uma
-equaç@~{a}o, a equaç@~{a}o @code{@var{expr} = 0} @'{e} assumida em seu lugar.
-@var{x} pode ser uma funç@~{a}o (e.g. @code{f(x)}), ou outra express@~{a}o n@~{a}o at@^{o}mica
-exceto uma adiç@~{a}o ou um produto.  @var{x} pode ser omitido se @var{expr} cont@'{e}m somente uma
-vari@'{a}vel.  @var{expr} pode ser uma express@~{a}o racional, e pode conter
-funç@~{o}es trigonom@'{e}tricas, exponenciais, etc.
+@deffn {Função} solve (@var{expr}, @var{x})
+@deffnx {Função} solve (@var{expr})
+@deffnx {Função} solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+Resolve a equação algébrica @var{expr} para a variável
+@var{x} e retorna uma lista de equações solução em @var{x}.  Se @var{expr} não é uma
+equação, a equação @code{@var{expr} = 0} é assumida em seu lugar.
+@var{x} pode ser uma função (e.g. @code{f(x)}), ou outra expressão não atômica
+exceto uma adição ou um produto.  @var{x} pode ser omitido se @var{expr} contém somente uma
+variável.  @var{expr} pode ser uma expressão racional, e pode conter
+funções trigonométricas, exponenciais, etc.
 
-O seguinte m@'{e}todo @'{e} usado:
+O seguinte método é usado:
 
-Tome @var{E} sendo a express@~{a}o e @var{X} sendo a vari@'{a}vel.  Se @var{E} @'{e} linear em @var{X}
-ent@~{a}o isso @'{e} trivialmente resolvido para @var{X}.  De outra forma se @var{E} @'{e} da forma
-@code{A*X^N + B} ent@~{a}o o resultado @'{e} @code{(-B/A)^1/N)} vezes as @code{N}'@'{e}simas ra@'{i}zes da
+Tome @var{E} sendo a expressão e @var{X} sendo a variável.  Se @var{E} é linear em @var{X}
+então isso é trivialmente resolvido para @var{X}.  De outra forma se @var{E} é da forma
+@code{A*X^N + B} então o resultado é @code{(-B/A)^1/N)} vezes as @code{N}'ésimas raízes da
 unidade.
 
-Se @var{E} n@~{a}o @'{e} linear em @var{X} ent@~{a}o o m@'{a}ximo divisor comum (mdc) dos expoentes de @var{X} em @var{E} (digamos
-@var{N}) @'{e} dividido dentro dos expoentes e a multiplicidade das ra@'{i}zes @'{e}
-multiplicada por @var{N}.  Ent@~{a}o @code{solve} @'{e} chamada novamente sobre o resultado.
-Se @var{E} for dada em fatores ent@~{a}o @code{solve} @'{e} chamada sobre cada um dos fatores.  Finalmente
-@code{solve} usar@'{a} as f@'{o}rmulas quadr@'{a}ticas, c@'{u}bicas, ou qu@'{a}rticas onde
-necess@'{a}rio.
+Se @var{E} não é linear em @var{X} então o máximo divisor comum (mdc) dos expoentes de @var{X} em @var{E} (digamos
+@var{N}) é dividido dentro dos expoentes e a multiplicidade das raízes é
+multiplicada por @var{N}.  Então @code{solve} é chamada novamente sobre o resultado.
+Se @var{E} for dada em fatores então @code{solve} é chamada sobre cada um dos fatores.  Finalmente
+@code{solve} usará as fórmulas quadráticas, cúbicas, ou quárticas onde
+necessário.
 
-No caso onde @var{E} for um polin@^{o}mio em alguma funç@~{a}o de vari@'{a}vel a ser
-resolvida, digamos @code{F(X)}, ent@~{a}o isso @'{e} primeiro resolvida para @code{F(X)} (chama o
-resultado @var{C}), ent@~{a}o a equaç@~{a}o @code{F(X)=C} pode ser resolvida para @var{X} fornecendo o
-inverso da funç@~{a}o @var{F} que @'{e} conhecida.
+No caso onde @var{E} for um polinômio em alguma função de variável a ser
+resolvida, digamos @code{F(X)}, então isso é primeiro resolvida para @code{F(X)} (chama o
+resultado @var{C}), então a equação @code{F(X)=C} pode ser resolvida para @var{X} fornecendo o
+inverso da função @var{F} que é conhecida.
 
-@code{breakup} se @code{false} far@'{a} com que @code{solve} expresse as soluç@~{o}es de
-equaç@~{o}es c@'{u}bicas ou qu@'{a}rticas como express@~{o}es simples ao inv@'{e}s de como feito
-em cima de v@'{a}rias subexpress@~{o}es comuns que @'{e} o padr@~{a}o.
+@code{breakup} se @code{false} fará com que @code{solve} expresse as soluções de
+equações cúbicas ou quárticas como expressões simples ao invés de como feito
+em cima de várias subexpressões comuns que é o padrão.
 
-@code{multiplicities} - ser@'{a} escolhido para uma lista de multiplicidades de
-soluç@~{o}es individuais retornadas por @code{solve}, @code{realroots}, ou @code{allroots}.
+@code{multiplicities} - será escolhido para uma lista de multiplicidades de
+soluções individuais retornadas por @code{solve}, @code{realroots}, ou @code{allroots}.
 Tente @code{apropos (solve)} para os comutadores que afetam @code{solve}.  @code{describe} pode
-ent@~{a}o ser usada sobre o nome do comutador individual se seu propr@'{o}sito n@~{a}o @'{e}
+então ser usada sobre o nome do comutador individual se seu proprósito não é
 claro.
 
 @code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
-resolve um sistema de equaç@~{o}es polinomiais
-(lineares ou n@~{a}o-lineares) simult@^{a}neas por chamada a @code{linsolve} ou
-@code{algsys} e retorna uma lista de listas soluç@~{a}o nas vari@'{a}veis.  No
-caso de @code{linsolve} essa lista conter@'{a} uma lista simples de
-soluç@~{o}es.  Isso pega duas listas como argumentos.  A primeira lista
-representa as equaç@~{o}es a serem resolvidas; a segunda lista @'{e} a
-lista de desconhecidos a ser determinada.  Se o n@'{u}mero total de
-vari@'{a}veis nas equaç@~{o}es @'{e} igual ao n@'{u}mero de equaç@~{o}es, a
+resolve um sistema de equações polinomiais
+(lineares ou não-lineares) simultâneas por chamada a @code{linsolve} ou
+@code{algsys} e retorna uma lista de listas solução nas variáveis.  No
+caso de @code{linsolve} essa lista conterá uma lista simples de
+soluções.  Isso pega duas listas como argumentos.  A primeira lista
+representa as equações a serem resolvidas; a segunda lista é a
+lista de desconhecidos a ser determinada.  Se o número total de
+variáveis nas equações é igual ao número de equações, a
 segunda lista-argumento pode ser omitida.  Para sistemas lineares se as dadas
-equaç@~{o}es n@~{a}o s@~{a}o compat@'{i}veis, a mensagem @code{inconsistent} ser@'{a}
-mostrada (veja o comutador @code{solve_inconsistent_error} ); se n@~{a}o existe
-soluç@~{a}o @'{u}nica, ent@~{a}o @code{singular} ser@'{a} mostrado.
+equações não são compatíveis, a mensagem @code{inconsistent} será
+mostrada (veja o comutador @code{solve_inconsistent_error} ); se não existe
+solução única, então @code{singular} será mostrado.
 
 Quando @code{programmode} for @code{false},
-@code{solve} mostra soluç@~{o}es com r@'{o}tulos de express@~{o}es intermedi@'{a}rias (@code{%t}),
-e retorna a lista de r@'{o}tulos.
+@code{solve} mostra soluções com rótulos de expressões intermediárias (@code{%t}),
+e retorna a lista de rótulos.
 
-Quando @code{globalsolve} for @code{true} e o problema for resolver duas ou mais equaç@~{o}es lineares,
-cada vari@'{a}vel para a qual a equaç@~{a}o for resolvida @'{e} associada a seu valor na soluç@~{a}o das equaç@~{o}es.
+Quando @code{globalsolve} for @code{true} e o problema for resolver duas ou mais equações lineares,
+cada variável para a qual a equação for resolvida é associada a seu valor na solução das equações.
 
 Exemplos:
 @c FOLLOWING ADAPTED FROM example (solve)
@@ -1105,82 +1105,82 @@ y = - .1535675710019696]]
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} solvedecomposes
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} solvedecomposes
+Valor padrão: @code{true}
 
-Quando @code{solvedecomposes} @'{e} @code{true}, @code{solve} chama
-@code{polydecomp} se perguntado para resolver polin@^{o}mios.
+Quando @code{solvedecomposes} é @code{true}, @code{solve} chama
+@code{polydecomp} se perguntado para resolver polinômios.
 @c OTHERWISE WHAT HAPPENS -- CAN'T SOLVE POLYNOMIALS, OR SOME OTHER METHOD IS USED ??
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} solveexplicit
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de opção} solveexplicit
+Valor padrão: @code{false}
 
-Quando @code{solveexplicit} @'{e} @code{true}, inibe @code{solve} de
-retornar soluç@~{o}es impl@'{i}citas, isto @'{e}, soluç@~{o}es da forma @code{F(x) = 0}
-onde @code{F} @'{e} alguma funç@~{a}o.
+Quando @code{solveexplicit} é @code{true}, inibe @code{solve} de
+retornar soluções implícitas, isto é, soluções da forma @code{F(x) = 0}
+onde @code{F} é alguma função.
 @c NEED AN EXAMPLE HERE
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} solvefactors
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} solvefactors
+Valor padrão: @code{true}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-Quando @code{solvefactors} @'{e} @code{false}, @code{solve} n@~{a}o tenta
-fatorar a express@~{a}o.  O @code{false} escolhido pode ser desejado em alguns casos
-onde a fatoraç@~{a}o n@~{a}o @'{e} necess@'{a}ria.
+Quando @code{solvefactors} é @code{false}, @code{solve} não tenta
+fatorar a expressão.  O @code{false} escolhido pode ser desejado em alguns casos
+onde a fatoração não é necessária.
 @c NEED AN EXAMPLE HERE
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} solvenullwarn
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} solvenullwarn
+Valor padrão: @code{true}
 
-Quando @code{solvenullwarn} @'{e} @code{true}, 
-@code{solve} imprime uma mensagem de alerta se chamada com ou uma lista equaç@~{a}o ou uma vari@'{a}vel lista nula.
-Por exemplo, @code{solve ([], [])} imprimir@'{a} duas mensagens de alerta e retorna @code{[]}.
+Quando @code{solvenullwarn} é @code{true}, 
+@code{solve} imprime uma mensagem de alerta se chamada com ou uma lista equação ou uma variável lista nula.
+Por exemplo, @code{solve ([], [])} imprimirá duas mensagens de alerta e retorna @code{[]}.
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} solveradcan
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de opção} solveradcan
+Valor padrão: @code{false}
 
-Quando @code{solveradcan} @'{e} @code{true}, @code{solve} chama @code{radcan}
-que faz @code{solve} lento mas permitir@'{a} certamente que problemas
-contendo exponeniais e logar@'{i}tmos sejam resolvidos.
+Quando @code{solveradcan} é @code{true}, @code{solve} chama @code{radcan}
+que faz @code{solve} lento mas permitirá certamente que problemas
+contendo exponeniais e logarítmos sejam resolvidos.
 @c NEED AN EXAMPLE HERE
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} solvetrigwarn
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} solvetrigwarn
+Valor padrão: @code{true}
 
 @c MAYBE THIS CAN BE CLARIFIED
-Quando @code{solvetrigwarn} @'{e} @code{true},
-@code{solve} pode imprimir uma mensagem dizendo que est@'{a} usando funç@~{o}es
-trigonom@'{e}tricas inversas para resolver a equaç@~{a}o, e desse modo perdendo
-soluç@~{o}es.
+Quando @code{solvetrigwarn} é @code{true},
+@code{solve} pode imprimir uma mensagem dizendo que está usando funções
+trigonométricas inversas para resolver a equação, e desse modo perdendo
+soluções.
 @c NEED AN EXAMPLE HERE
 
 @end defvr
 
-@defvr {Vari@'{a}vel de opç@~{a}o} solve_inconsistent_error
-Valor padr@~{a}o: @code{true}
+@defvr {Variável de opção} solve_inconsistent_error
+Valor padrão: @code{true}
 
 Quando @code{solve_inconsistent_error} for @code{true}, @code{solve} e
-@code{linsolve} resultam em erro se as equaç@~{o}es a serem resolvidas forem inconsistentes.
+@code{linsolve} resultam em erro se as equações a serem resolvidas forem inconsistentes.
 
 Se @code{false}, @code{solve} e @code{linsolve} retornam uma lista vazia @code{[]} 
-se as equaç@~{o}es forem inconsistentes.
+se as equações forem inconsistentes.
 
 Exemplo:
 
 @example
 (%i1) solve_inconsistent_error: true$
 (%i2) solve ([a + b = 1, a + b = 2], [a, b]);
-Inconsistent equaç@~{o}es:  (2)
+Inconsistent equações:  (2)
  -- an error.  Quitting.  To debug this try debugmode(true);
 (%i3) solve_inconsistent_error: false$
 (%i4) solve ([a + b = 1, a + b = 2], [a, b]);
@@ -1188,3 +1188,4 @@ Inconsistent equaç@~{o}es:  (2)
 @end example
 
 @end defvr
+

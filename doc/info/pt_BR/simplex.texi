@@ -1,14 +1,14 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /simplex.texi/1.3/Sat Jun  2 00:13:30 2007//
 @menu
-* Introduç@~{a}o a simplex::
-* Funç@~{o}es e Vari@'{a}veis Definidas para simplex::
+* Introdução a simplex::
+* Funções e Variáveis Definidas para simplex::
 @end menu
 
-@node Introduç@~{a}o a simplex, Funç@~{o}es e Vari@'{a}veis Definidas para simplex, simplex, simplex
-@section Introduç@~{a}o a simplex
+@node Introdução a simplex, Funções e Variáveis Definidas para simplex, simplex, simplex
+@section Introdução a simplex
 
-@code{simplex} @'{e} um pacote para otimizaç@~{a}o linear usando o algor@'{i}tmo simplex.
+@code{simplex} é um pacote para otimização linear usando o algorítmo simplex.
 
 Exemplo:
 
@@ -24,30 +24,30 @@ Exemplo:
                   10       10      5
 @end example
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para simplex,  , Introduç@~{a}o a simplex, simplex
-@section Funç@~{o}es e Vari@'{a}veis Definidas para simplex
+@node Funções e Variáveis Definidas para simplex,  , Introdução a simplex, simplex
+@section Funções e Variáveis Definidas para simplex
 
-@defvr {Vari@'{a}vel de opç@~{a}o} epsilon_sx
-Valor padr@~{a}o: @code{10^-8}
+@defvr {Variável de opção} epsilon_sx
+Valor padrão: @code{10^-8}
 
-Epsilon usando para c@'{a}lculos num@'{e}ricos em @code{linear_program}.
+Epsilon usando para cálculos numéricos em @code{linear_program}.
 
-Veja tamb@'{e}m: @code{linear_program}.
+Veja também: @code{linear_program}.
 
 @end defvr
 
-@deffn {Funç@~{a}o} linear_program (@var{A}, @var{b}, @var{c})
+@deffn {Função} linear_program (@var{A}, @var{b}, @var{c})
 
-@code{linear_program} @'{e} uma implementaç@~{a}o do algor@'{i}tmo simplex.
-@code{linear_program(A, b, c)} calcula um vetor @var{x} para o qual @code{c.x} @'{e} o m@'{i}nimo
-poss@'{i}vel entre vetores para os quais @code{A.x = b} e @code{x >= 0}. O argumento
-@var{A} @'{e} uma matriz e os argumentos @var{b} e @var{c} s@~{a}o listas.
+@code{linear_program} é uma implementação do algorítmo simplex.
+@code{linear_program(A, b, c)} calcula um vetor @var{x} para o qual @code{c.x} é o mínimo
+possível entre vetores para os quais @code{A.x = b} e @code{x >= 0}. O argumento
+@var{A} é uma matriz e os argumentos @var{b} e @var{c} são listas.
 
 @code{linear_program} retorna uma lista contendo o vetor minimizado @var{x} e o
-valor m@'{i}nimo @code{c.x}. Se o problema for n@~{a}o associado, @'{e} retornado "Problem not bounded!" e
-se o problema for n@~{a}o vi@'{a}vel, @'{e} retornado "Problem not feasible!".
+valor mínimo @code{c.x}. Se o problema for não associado, é retornado "Problem not bounded!" e
+se o problema for não viável, é retornado "Problem not feasible!".
 
-Para usar essa funç@~{a}o primeiramente chame o pacote @code{simplex} com @code{load("simplex");}.
+Para usar essa função primeiramente chame o pacote @code{simplex} com @code{load("simplex");}.
 
 Exemplo:
 
@@ -67,45 +67,45 @@ Exemplo:
                    2      2         2
 @end example
 
-Veja tamb@'{e}m: @code{minimize_sx}, @code{scale_sx}, e @code{epsilon_sx}.
+Veja também: @code{minimize_sx}, @code{scale_sx}, e @code{epsilon_sx}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} maximize_sx (@var{obj}, @var{cond}, [@var{pos}])
+@deffn {Função} maximize_sx (@var{obj}, @var{cond}, [@var{pos}])
 
-Maximiza a funç@~{a}o linear objetiva @var{obj} submetida a alguma restriç@~{a}o linear
-@var{cond}. Veja @code{minimize_sx} para uma descriç@~{a}o detalhada de argumentos e valores de
+Maximiza a função linear objetiva @var{obj} submetida a alguma restrição linear
+@var{cond}. Veja @code{minimize_sx} para uma descrição detalhada de argumentos e valores de
 retorno.
 
 
-Veja tamb@'{e}m: @code{minimize_sx}.
+Veja também: @code{minimize_sx}.
 
 @end deffn
 
-@deffn {Funç@~{a}o} minimize_sx (@var{obj}, @var{cond}, [@var{pos}])
+@deffn {Função} minimize_sx (@var{obj}, @var{cond}, [@var{pos}])
 
-Minimiza uma funç@~{a}o linear objetiva @var{obj} submetida a alguma restriç@~{a}o
-linear @var{cond}. @var{cond} @'{e} uma lista de equaç@~{o}es lineares ou
-desigualdades. Em desigualdades estritas @code{>} @'{e}  substituido por @code{>=}
-e @code{<} por @code{<=}. O argumento opcional @var{pos} @'{e} uma lista de
-vari@'{a}veis de decis@~{a}o que s@~{a}o assumidas como sendo positivas.
+Minimiza uma função linear objetiva @var{obj} submetida a alguma restrição
+linear @var{cond}. @var{cond} é uma lista de equações lineares ou
+desigualdades. Em desigualdades estritas @code{>} é  substituido por @code{>=}
+e @code{<} por @code{<=}. O argumento opcional @var{pos} é uma lista de
+variáveis de decisão que são assumidas como sendo positivas.
 
-Se o m@'{i}nimo existir, @code{minimize_sx} retorna uma lista que cont@'{e}m
-o menor valor da funç@~{a}o objetiva e uma lista de valores de vari@'{a}veis de
-decis@~{a}o para os quais o m@'{i}nimo @'{e} alcançado. Se o problema for n@~{a}o associado,
+Se o mínimo existir, @code{minimize_sx} retorna uma lista que contém
+o menor valor da função objetiva e uma lista de valores de variáveis de
+decisão para os quais o mínimo é alcançado. Se o problema for não associado,
 @code{minimize_sx} retorna "Problem not bounded!" e se o problema for
-n@~{a}o vi@'{a}vel, @'{e} retornado "Ploblem not feasible!".
+não viável, é retornado "Ploblem not feasible!".
 
-As vari@'{a}veis de decis@~{a}o n@~{a}o s@~{a}o assumidas para serem n@~{a}o negativas por padr@~{a}o. Se todas
-as vari@'{a}veis de dicis@~{a}o forem n@~{a}o negativas, escolha @code{nonegative_sx} para @code{true}.
-Se somente algumas das vari@'{a}veis de decis@~{a}o forem positivas, coloque-as ent@~{a}o no argumento
-opcional @var{pos} (note que isso @'{e} mais eficiente que adicionar
-restriç@~{o}es).
+As variáveis de decisão não são assumidas para serem não negativas por padrão. Se todas
+as variáveis de dicisão forem não negativas, escolha @code{nonegative_sx} para @code{true}.
+Se somente algumas das variáveis de decisão forem positivas, coloque-as então no argumento
+opcional @var{pos} (note que isso é mais eficiente que adicionar
+restrições).
 
-@code{minimize_sx} utiliza o algor@'{i}tmo simplex que @'{e} implementado na funç@~{a}o
+@code{minimize_sx} utiliza o algorítmo simplex que é implementado na função
 @code{linear_program} do Maxima.
 
-Para usar essa funç@~{a}o primeiramente chame o pacote @code{simplex} com @code{load("simplex");}.
+Para usar essa função primeiramente chame o pacote @code{simplex} com @code{load("simplex");}.
 
 Exemplos:
 
@@ -129,16 +129,17 @@ Exemplos:
 @end example
 
 
-Veja tamb@'{e}m: @code{maximize_sx}, @code{nonegative_sx}, @code{epsilon_sx}.
+Veja também: @code{maximize_sx}, @code{nonegative_sx}, @code{epsilon_sx}.
 
 @end deffn
 
-@defvr {Vari@'{a}vel de opç@~{a}o} nonegative_sx
-Valor padr@~{a}o: @code{false}
+@defvr {Variável de opção} nonegative_sx
+Valor padrão: @code{false}
 
-Se @code{nonegative_sx} for verdadeiro (true) todas as vari@'{a}veis de decis@~{a}o para @code{minimize_sx}
-e @code{maximize_sx} s@~{a}o assumidas para serem positivas.
+Se @code{nonegative_sx} for verdadeiro (true) todas as variáveis de decisão para @code{minimize_sx}
+e @code{maximize_sx} são assumidas para serem positivas.
 
-Veja tamb@'{e}m: @code{minimize_sx}.
+Veja também: @code{minimize_sx}.
 
 @end defvr
+

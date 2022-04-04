@@ -1,17 +1,18 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /impdiff.texi/1.2/Sat Jun  2 00:13:21 2007//
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para impdiff::
+* Funções e Variáveis Definidas para impdiff::
 @end menu
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para impdiff,  , impdiff, impdiff
-@section Funç@~{o}es e Vari@'{a}veis Definidas para impdiff
+@node Funções e Variáveis Definidas para impdiff,  , impdiff, impdiff
+@section Funções e Variáveis Definidas para impdiff
 
-@deffn {Funç@~{a}o} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
-Essa subrotina calcula derivadas impl@'{i}citas de funç@~{o}es de v@'{a}rias vari@'{a}veis.
-@var{f} @'{e} uma funç@~{a}o do tipo array, os @'{i}ndices s@~{a}o o grau da derivada na ordem @var{indvarlist};
-@var{indvarlist} @'{e} a lista de vari@'{a}veis independentes; @var{orderlist} @'{e} a ordem desejada; e 
-@var{depvar} @'{e} a vari@'{a}vel dependente.
+@deffn {Função} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
+Essa subrotina calcula derivadas implícitas de funções de várias variáveis.
+@var{f} é uma função do tipo array, os índices são o grau da derivada na ordem @var{indvarlist};
+@var{indvarlist} é a lista de variáveis independentes; @var{orderlist} é a ordem desejada; e 
+@var{depvar} é a variável dependente.
 
-Para usar essa funç@~{a}o escreva primeiro @code{load("impdiff")}.
+Para usar essa função escreva primeiro @code{load("impdiff")}.
 @end deffn
+

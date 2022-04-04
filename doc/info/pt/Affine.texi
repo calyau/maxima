@@ -105,7 +105,7 @@ Para usar essa função escreva primeiramente @code{load("affine")}.
 @c THIS IS NOT AT ALL CLEAR
 @deffn {Função} check_overlaps (@var{n}, @var{add_to_simps})
 Verifica as sobreposições através do grau @var{n}, garantindo
-que tem regras de simplificaçõ suficientes em cada grau,
+que tem regras de simplificação suficientes em cada grau,
 para @code{dotsimp} trabalhar correctamente.  Esse processo pode ser mais
 rápido se souber de antemão a dimensão do espaço de
 monómios.  Se for de dimensão global finita, então @code{hilbert}

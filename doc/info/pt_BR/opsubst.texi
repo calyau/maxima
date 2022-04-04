@@ -1,23 +1,23 @@
 @c Language: Brazilian Portuguese, Encoding: iso-8859-1
 @c /opsubst.texi/1.2/Sat Jun  2 00:13:28 2007//
 @menu
-* Funç@~{o}es e Vari@'{a}veis Definidas para  opsubst::
+* Funções e Variáveis Definidas para  opsubst::
 @end menu
 
-@node Funç@~{o}es e Vari@'{a}veis Definidas para opsubst,  , opsubst, opsubst
-@section Funç@~{o}es e Vari@'{a}veis Definidas para  opsubst
+@node Funções e Variáveis Definidas para opsubst,  , opsubst, opsubst
+@section Funções e Variáveis Definidas para  opsubst
 
-@deffn {Funç@~{a}o} opsubst (@var{f},@var{g},@var{e})
-@deffnx {Funç@~{a}o} opsubst (@var{g}=@var{f},@var{e})
-@deffnx {Funç@~{a}o} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
-A funç@~{a}o @code{opsubst}  similar @`a funç@~{a}o @code{subst}, exceto que
-@code{opsubst} somente faz substituiç@~{o}es para as operaç@~{o}es em uma express@~{o}es. Em geral, 
-quando @var{f} for um operador em uma express@~{a}o @var{e}, substitui @var{g} 
-por @var{f} na express@~{a}o @var{e}.
+@deffn {Função} opsubst (@var{f},@var{g},@var{e})
+@deffnx {Função} opsubst (@var{g}=@var{f},@var{e})
+@deffnx {Função} opsubst ([@var{g1}=@var{f1},@var{g2}=@var{f2},..., @var{gn}=@var{fn}],@var{e})
+A função @code{opsubst}  similar à função @code{subst}, exceto que
+@code{opsubst} somente faz substituições para as operações em uma expressões. Em geral, 
+quando @var{f} for um operador em uma expressão @var{e}, substitui @var{g} 
+por @var{f} na expressão @var{e}.
 
 Para determinar o operador, @code{opsubst} escolhe @code{inflag} para verdadeiro ( true ). Isso significa que
-@code{opsubst} substitui para a forma de operador interna, n@~{a}o para a mostrada,
-na express@~{a}o.
+@code{opsubst} substitui para a forma de operador interna, não para a mostrada,
+na expressão.
 
 Exemplos:
 @example
@@ -38,8 +38,8 @@ Exemplos:
 (%o7)                       h(x)
 @end example
 
-Internamente, Maxima n@~{a}o usa os operadores de negaç@~{a}o un@'{a}ria,
-divis@~{a}o, ou de subtraç@~{a}o; dessa forma:
+Internamente, Maxima não usa os operadores de negação unária,
+divisão, ou de subtração; dessa forma:
 @example
 (%i8) opsubst("+","-",a-b);
 (%o8)                     a - b
@@ -51,14 +51,14 @@ divis@~{a}o, ou de subtraç@~{a}o; dessa forma:
                              b
 @end example
 
-A representaç@~{a}o interna de -a*b @'{e} *(-1,a,b); dessa forma
+A representação interna de -a*b é *(-1,a,b); dessa forma
 @example
 (%i11) opsubst("[","*", -a*b);
 (%o11)                  [- 1, a, b]
 @end example
 
-Quando o operador n@~{a}o for um s@'{i}mbolo Maxima, geralmente alguma outra funç@~{a}o
-sinalizar@'{a} um erro:
+Quando o operador não for um símbolo Maxima, geralmente alguma outra função
+sinalizará um erro:
 @example
 (%i12) opsubst(a+b,f, f(x));
 
@@ -67,13 +67,14 @@ b + a
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
-Todavia, operadores subscritos s@~{a}o permitidos:
+Todavia, operadores subscritos são permitidos:
 @example
 (%i13) opsubst(g[5],f, f(x));
 (%o13)                     g (x)
                             5
 @end example
 
-Para usar essa funç@~{a}o escreva primeiramente @code{load("opsubst")}.
+Para usar essa função escreva primeiramente @code{load("opsubst")}.
 @end deffn
+
 
