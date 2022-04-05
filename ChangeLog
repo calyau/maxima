@@ -37,6 +37,11 @@ Changes in share:
  * draw: Restores the window, font and size options for default
    terminal (Commit [096f0b])
 
+Changes in Xmaxima:
+-------------------
+ * fix to allow several plotdf windows to work independently by refreshing
+   the expressions of the derivatives everry time a new trajectory is plotted.
+
 Changes in the Windows installer:
 ---------------------------------
  * Update SBCL, wxMaxima, TCL/TK.

@@ -4,7 +4,7 @@
 # For distribution under GNU public License.  See COPYING. #
 #                                                          #
 #     Modified by Jaime E. Villate                         #
-#     Time-stamp: "2021-04-02 14:39:08 villate"            #
+#     Time-stamp: "2022-04-05 08:14:35 villate"            #
 ############################################################
 
 global plotdfOptions
@@ -104,8 +104,10 @@ proc doIntegrateScreen { win sx sy  } {
 proc doIntegrate { win x0 y0 } {
     # global xradius yradius c tstep  nsteps
     #    puts "dointegrate $win $x0 $y0"
-    makeLocal $win xradius yradius c tstep  nsteps direction linewidth tinitial versus_t xmin xmax ymin ymax number_of_arrows
+    makeLocal $win xradius yradius c dxdt dydt tinitial tstep nsteps xfun direction linewidth tinitial versus_t xmin xmax ymin ymax number_of_arrows parameters
     linkLocal $win didLast trajectoryStarts
+    setXffYff $dxdt $dydt $parameters
+
     set rtosx rtosx$win ; set rtosy rtosy$win
     set x1 [$rtosx $xmin]
     set y1 [$rtosy $ymax]
