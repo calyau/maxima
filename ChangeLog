@@ -40,7 +40,7 @@ Changes in share:
 Changes in Xmaxima:
 -------------------
  * fix to allow several plotdf windows to work independently by refreshing
-   the expressions of the derivatives everry time a new trajectory is plotted.
+   the expressions of the derivatives every time a new trajectory is plotted.
 
 Changes in the Windows installer:
 ---------------------------------
