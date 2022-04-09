@@ -18,21 +18,12 @@
 #  Spanish 
 %define enable_lang_es 1
 %define lang_es_flags --enable-lang-es
-#  Spanish UTF-8  
-%define enable_lang_es_utf 1
-%define lang_es_flags_utf --enable-lang-es-utf8
 #  Portuguese
 %define enable_lang_pt 1
 %define lang_pt_flags --enable-lang-pt
-#  Portuguese UTF-8
-%define enable_lang_pt_utf 1
-%define lang_pt_flags_utf --enable-lang-pt-utf8
 #  Brazilian Portuguese
 %define enable_lang_pt_br 1
 %define lang_pt_br_flags --enable-lang-pt_BR
-#  Brazilian Portuguese (UTF-8)
-%define enable_lang_pt_br_utf 1
-%define lang_pt_br_flags_utf --enable-lang-pt_BR-utf8
 
 # Inhibit automatic compressing of info files. Compressed info
 # files break maxima's internal help.
@@ -148,15 +139,6 @@ Requires: maxima = %{version}
 Maxima Spanish language support.
 %endif
 
-%if %{enable_lang_es_utf}
-%package lang-es-utf8
-Summary: Maxima Spanish UTF-8 language pack
-Group: Sciences/Mathematics
-Requires: maxima = %{version}
-%description lang-es-utf8
-Maxima Spanish language support (UTF-8).
-%endif
-
 %if %{enable_lang_pt}
 %package lang-pt
 Summary: Maxima Portuguese language pack
@@ -164,15 +146,6 @@ Group: Sciences/Mathematics
 Requires: maxima = %{version}
 %description lang-pt
 Maxima Portuguese language support.
-%endif
-
-%if %{enable_lang_pt_utf}
-%package lang-pt-utf8
-Summary: Maxima Portuguese UTF-8 language pack
-Group: Sciences/Mathematics
-Requires: maxima = %{version}
-%description lang-pt-utf8
-Maxima Portuguese language support (UTF-8).
 %endif
 
 %if %{enable_lang_pt_br}
@@ -184,21 +157,12 @@ Requires: maxima = %{version}
 Maxima Brazilian Portuguese language support.
 %endif
 
-%if %{enable_lang_pt_br_utf}
-%package lang-pt_BR-utf8
-Summary: Maxima Brazilian Portuguese UTF-8 language pack
-Group: Sciences/Mathematics
-Requires: maxima = %{version}
-%description lang-pt_BR-utf8
-Maxima Brazilian Portuguese language support (UTF-8).
-%endif
-
 %prep
 %setup -q
 %configure  %{?sbcl_flags:} %{?cmucl_flags:} %{?gcl_flags:} %{?clisp_flags:} %{?ccl_flags:} \
-	    %{?lang_es_flags:} %{?lang_es_flags_utf:} \
-	    %{?lang_pt_flags:} %{?lang_pt_flags_utf:} \
-	    %{?lang_pt_br_flags:} %{?lang_pt_br_flags_utf:}
+	    %{?lang_es_flags:} \
+	    %{?lang_pt_flags:} \
+	    %{?lang_pt_br_flags:} 
 
 %build
 make
@@ -258,15 +222,6 @@ rm -rf $RPM_BUILD_ROOT
 %if %{enable_lang_pt_br}
 %exclude %{_datadir}/maxima/*/doc/html/pt_BR
 %endif
-%if %{enable_lang_es_utf}
-%exclude %{_datadir}/maxima/*/doc/html/es.utf8
-%endif
-%if %{enable_lang_pt_utf}
-%exclude %{_datadir}/maxima/*/doc/html/pt.utf8
-%endif
-%if %{enable_lang_pt_br_utf}
-%exclude %{_datadir}/maxima/*/doc/html/pt_BR.utf8
-%endif
 %{_datadir}/applications
 %{_datadir}/bash-completion
 %{_datadir}/pixmaps
@@ -284,15 +239,6 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 %if %{enable_lang_pt_br}
 %exclude %{_infodir}/pt_BR
-%endif
-%if %{enable_lang_es_utf}
-%exclude %{_infodir}/es.utf8
-%endif
-%if %{enable_lang_pt_utf}
-%exclude %{_infodir}/pt.utf8
-%endif
-%if %{enable_lang_pt_br_utf}
-%exclude %{_infodir}/pt_BR.utf8
 %endif
 %{_mandir}/man1/maxima.1
 %{_bindir}/maxima
@@ -340,34 +286,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_infodir}/es
 %endif
 
-%if %{enable_lang_es_utf}
-%files lang-es-utf8
-%{_datadir}/maxima/*/doc/html/es.utf8
-%{_infodir}/es.utf8
-%endif
-
 %if %{enable_lang_pt}
 %files lang-pt
 %{_datadir}/maxima/*/doc/html/pt
 %{_infodir}/pt
 %endif
 
-%if %{enable_lang_pt_utf}
-%files lang-pt-utf8
-%{_datadir}/maxima/*/doc/html/pt.utf8
-%{_infodir}/pt.utf8
-%endif
-
 %if %{enable_lang_pt_br}
 %files lang-pt_BR
 %{_datadir}/maxima/*/doc/html/pt_BR
 %{_infodir}/pt_BR
-%endif
-
-%if %{enable_lang_pt_br_utf}
-%files lang-pt_BR-utf8
-%{_datadir}/maxima/*/doc/html/pt_BR.utf8
-%{_infodir}/pt_BR.utf8
 %endif
 
 %doc
