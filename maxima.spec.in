@@ -33,9 +33,9 @@ Summary: Symbolic Computation Program
 Name: maxima
 Version: @VERSION@
 Release: 1
-License: GPL
+License: GPLv2+
 Group: Sciences/Mathematics
-URL: http://maxima.sourceforge.net
+URL: https://maxima.sourceforge.io
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
 Requires: maxima-exec = %{version}
