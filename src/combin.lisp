@@ -562,6 +562,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun simp-zeta (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
@@ -600,6 +601,44 @@
                       (take '(mabs) ($bern z))))))))
     (t
      (eqtest (list '(%zeta) z) expr))))
+
+(def-simplifier zeta (z)
+  (cond
+
+    ;; Check for special values
+    ((eq z '$inf) 1)
+    ((alike1 z '((mtimes) -1 $minf)) 1)
+    ((zerop1 z) 
+     (cond (($bfloatp z) ($bfloat '((rat) -1 2)))
+           ((floatp z) -0.5)
+           (t '((rat simp) -1 2))))
+    ((onep1 z)
+     (simp-domain-error (intl:gettext "zeta: zeta(~:M) is undefined.") z))
+
+    ;; Check for numerical evaluation
+    ((or (bigfloat-numerical-eval-p z)
+	 (complex-bigfloat-numerical-eval-p z)
+	 (float-numerical-eval-p z)
+	 (complex-float-numerical-eval-p z))
+     (to (float-zeta z)))
+    ;; Check for transformations and argument simplifications
+    ((integerp z)
+     (cond
+       ((oddp z)
+        (cond ((> z 1)
+               (give-up))
+              ((setq z (sub 1 z))
+               (mul -1 (div ($bern z) z)))))
+       ((minusp z) 0)
+       ((not $zeta%pi)
+	(give-up))
+       (t (let ($numer $float)
+            (mul (power '$%pi z)
+                 (mul (div (power 2 (1- z)) 
+                           (take '(mfactorial) z))
+                      (take '(mabs) ($bern z))))))))
+    (t
+     (give-up))))
 
 ;; See http://numbers.computation.free.fr/Constants/constants.html
 ;; and, in particular,
